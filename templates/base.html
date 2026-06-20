@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="{{ site.lang }}">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}{{ site.name }}{% endblock %}</title>
+  <meta name="description" content="{% block description %}{{ site.tagline }}{% endblock %}">
+  <link rel="canonical" href="{{ canonical }}">
+
+  <!-- Open Graph / Twitter -->
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="{{ site.name }}">
+  <meta property="og:title" content="{{ self.title() }}">
+  <meta property="og:description" content="{{ self.description() }}">
+  <meta property="og:url" content="{{ canonical }}">
+  <meta property="og:locale" content="ro_RO">
+  <meta name="twitter:card" content="summary">
+
+  <link rel="icon" type="image/svg+xml" href="/static/favicon.svg">
+  <link rel="alternate" type="application/rss+xml" title="{{ site.name }}" href="/feed.xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/static/styles.css">
+
+  <script type="application/ld+json">{{ org_jsonld | tojson }}</script>
+  {% block head_extra %}{% endblock %}
+  {% if analytics_token %}<script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "{{ analytics_token }}"}'></script>{% endif %}
+</head>
+<body>
+  <header class="site-header">
+    <a class="brand" href="/">
+      <span class="logo">IZZ<b>.ro</b></span>
+      <span class="tagline">{{ site.tagline }}</span>
+    </a>
+    <nav class="nav">
+      {% for cat in categories %}<a href="/{{ cat }}/"{% if cat == active_cat %} class="active"{% endif %}>{{ cat }}</a>{% endfor %}
+    </nav>
+  </header>
+
+  <main>
+    {% block content %}{% endblock %}
+  </main>
+
+  <footer class="site-footer">
+    <span>&copy; {{ year }} {{ site.name }} &middot; {{ site.tagline }}</span>
+    <nav>
+      <a href="/legal/contact.html">Contact</a>
+      <a href="/legal/privacy.html">Confidențialitate</a>
+      <a href="/legal/terms.html">Termeni</a>
+      <a href="/legal/method.html">Cum sintetizăm</a>
+      <a href="/legal/takedown.html">Drepturi de autor</a>
+    </nav>
+  </footer>
+</body>
+</html>

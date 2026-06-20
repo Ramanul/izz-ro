@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% from "_card.html" import card %}
+{% block head_extra %}
+  {% if page_jsonld %}<script type="application/ld+json">{{ page_jsonld | tojson }}</script>{% endif %}
+{% endblock %}
+{% block content %}
+  {% if not articles %}
+    <p class="empty">Încă nu sunt știri publicate. Robotul rulează la fiecare 30 de minute.</p>
+  {% else %}
+    {% if hero %}
+    <section class="hero">
+      {{ card(hero[0], lead=True) }}
+      <div class="stack">
+        {% for a in hero[1:3] %}{{ card(a) }}{% endfor %}
+      </div>
+    </section>
+    {% endif %}
+
+    {% for cat, items in by_category.items() %}
+      {% if items %}
+      <h2 class="section-title">{{ cat | capitalize }}</h2>
+      <section class="grid">
+        {% for a in items %}{{ card(a) }}{% endfor %}
+      </section>
+      {% endif %}
+    {% endfor %}
+  {% endif %}
+{% endblock %}

@@ -6,7 +6,7 @@ from datetime import datetime, timezone
 import feedparser
 
 from . import config
-from .util import normalize_url, domain_of
+from .util import normalize_url, domain_of, clean_html
 
 USER_AGENT = "IZZ.ro Bot/1.0 (+https://izz.ro)"
 TIMEOUT = 10  # secunde per feed
@@ -43,7 +43,7 @@ def _fetch_one(key: str, source: dict) -> tuple[list, str | None]:
     feed = feedparser.parse(raw)
     for entry in feed.entries[: config.MAX_PER_SOURCE]:
         link = entry.get("link", "").strip()
-        title = (entry.get("title") or "").strip()
+        title = clean_html(entry.get("title") or "")
         if not link or not title:
             continue
         if _is_agency(link, source["name"]):
@@ -55,7 +55,7 @@ def _fetch_one(key: str, source: dict) -> tuple[list, str | None]:
             "source_name": source["name"],
             "original_title": title,
             "title": title,                       # inlocuit de AI in process.py
-            "description": (entry.get("summary") or entry.get("description") or "").strip(),
+            "description": clean_html(entry.get("summary") or entry.get("description") or ""),
             "category": source["category"],       # categorie initiala (AI o poate ajusta)
             "published": _parse_date(entry),
             "model": None,                          # "B" / "C" dupa procesare

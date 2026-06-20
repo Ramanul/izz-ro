@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% from "_card.html" import card %}
+{% block title %}{{ category | capitalize }} — {{ site.name }}{% endblock %}
+{% block description %}Știri din categoria {{ category }} pe {{ site.name }} — {{ site.tagline }}.{% endblock %}
+{% block content %}
+  <h1 class="section-title">{{ category | capitalize }}</h1>
+  {% if articles %}
+  <section class="grid">
+    {% for a in articles %}{{ card(a) }}{% endfor %}
+  </section>
+  {% else %}
+  <p class="empty">Nicio știre în această categorie deocamdată.</p>
+  {% endif %}
+{% endblock %}

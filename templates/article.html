@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block title %}{{ a.title }} — {{ site.name }}{% endblock %}
+{% block description %}{% if a.model == 'C' %}{{ a.synthesis }}{% else %}{{ a.teaser }}{% endif %}{% endblock %}
+{% block head_extra %}
+  <script type="application/ld+json">{{ article_jsonld | tojson }}</script>
+{% endblock %}
+{% block content %}
+<article class="article">
+  <span class="badge{% if a.model == 'C' %} c{% endif %}">{% if a.model == 'C' %}Sinteză din mai multe surse{% else %}{{ a.category }}{% endif %}</span>
+  <h1>{{ a.title }}</h1>
+  <div class="meta">
+    <span class="source">{{ a.source_name }}</span>
+    <time datetime="{{ a.published }}">{{ a.published_human }}</time>
+  </div>
+
+  <p class="body">{% if a.model == 'C' %}{{ a.synthesis }}{% else %}{{ a.teaser }}{% endif %}</p>
+
+  <p class="notice">IZZ.ro reformulează titlul și extrage faptele cu cuvinte proprii — nu republicăm articolul integral. Pentru toate detaliile, mergi la sursă.</p>
+
+  {% if a.model == 'C' and a.sources %}
+  <div class="sources-box">
+    <h3>Surse</h3>
+    <ul>
+      {% for s in a.sources %}<li><a href="{{ s.url }}" target="_blank" rel="noopener noreferrer">{{ s.name }} &rarr;</a></li>{% endfor %}
+    </ul>
+  </div>
+  {% else %}
+  <a class="btn-source" href="{{ a.original_link }}" target="_blank" rel="noopener noreferrer">Citește pe {{ a.source_name }} &rarr;</a>
+  {% endif %}
+</article>
+{% endblock %}
