@@ -69,7 +69,7 @@ def _article_jsonld(a: dict) -> dict:
         "headline": a.get("title", ""),
         "description": body or "",
         "datePublished": a.get("published", ""),
-        "url": f"{config.SITE['url']}/{a['category']}/{a['slug']}.html",
+        "url": f"{config.SITE['url']}/{a['category']}/{a['slug']}/",
         "inLanguage": config.SITE["lang"],
         "publisher": {"@type": "Organization", "name": config.SITE["name"]},
         "isBasedOn": [s["url"] for s in a.get("sources", [])] or a.get("original_link", ""),
@@ -127,7 +127,7 @@ def build(articles: list, mod: dict | None = None) -> None:
         "@context": "https://schema.org", "@type": "ItemList",
         "itemListElement": [
             {"@type": "ListItem", "position": i + 1,
-             "url": f"{config.SITE['url']}/{a['category']}/{a['slug']}.html"}
+             "url": f"{config.SITE['url']}/{a['category']}/{a['slug']}/"}
             for i, a in enumerate(by_date[:20])
         ],
     }
@@ -144,9 +144,9 @@ def build(articles: list, mod: dict | None = None) -> None:
         _write(os.path.join(OUT_DIR, cat, "index.html"),
                cat_tpl.render(**_base_ctx(f"/{cat}/", category=cat, articles=items, active_cat=cat)))
         for a in items:
-            _write(os.path.join(OUT_DIR, cat, f"{a['slug']}.html"),
+            _write(os.path.join(OUT_DIR, cat, a['slug'], "index.html"),
                    article_tpl.render(**_base_ctx(
-                       f"/{cat}/{a['slug']}.html", a=a, active_cat=cat,
+                       f"/{cat}/{a['slug']}/", a=a, active_cat=cat,
                        article_jsonld=_article_jsonld(a))))
 
     _render_legal(env)
@@ -190,15 +190,15 @@ def _render_legal(env: Environment) -> None:
             raw = fh.read()
         title = raw.lstrip("# ").splitlines()[0].strip() if raw.startswith("#") else name
         html = md.markdown(raw, extensions=["extra"]) if md else "<pre>" + raw + "</pre>"
-        _write(os.path.join(OUT_DIR, "legal", f"{name}.html"),
-               tpl.render(**_base_ctx(f"/legal/{name}.html", page_title=title,
+        _write(os.path.join(OUT_DIR, "legal", name, "index.html"),
+               tpl.render(**_base_ctx(f"/legal/{name}/", page_title=title,
                                       body_html=html, page_heading=title)))
 
 
 def _write_sitemap(articles: list) -> None:
     url = config.SITE["url"]
     locs = [f"{url}/", *[f"{url}/{c}/" for c in config.CATEGORIES]]
-    locs += [f"{url}/{a['category']}/{a['slug']}.html" for a in articles]
+    locs += [f"{url}/{a['category']}/{a['slug']}/" for a in articles]
     items = "\n".join(f"  <url><loc>{xml_escape(l)}</loc></url>" for l in locs)
     _write(os.path.join(OUT_DIR, "sitemap.xml"),
            '<?xml version="1.0" encoding="UTF-8"?>\n'
@@ -217,7 +217,7 @@ def _write_feed(articles: list) -> None:
     entries = []
     for a in articles[:50]:
         body = a.get("synthesis") if a.get("model") == "C" else a.get("teaser")
-        link = f"{url}/{a['category']}/{a['slug']}.html"
+        link = f"{url}/{a['category']}/{a['slug']}/"
         entries.append(
             "    <item>\n"
             f"      <title>{xml_escape(a.get('title',''))}</title>\n"
