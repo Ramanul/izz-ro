@@ -8,18 +8,16 @@
     <p class="empty">Încă nu sunt știri publicate. Robotul rulează la fiecare 30 de minute.</p>
   {% else %}
     {% if hero %}
-    <section class="hero">
-      {{ card(hero[0], lead=True) }}
-      <div class="stack">
-        {% for a in hero[1:3] %}{{ card(a) }}{% endfor %}
-      </div>
+    <h2 class="section-title">Ultimele știri</h2>
+    <section class="masonry">
+      {% for a in hero %}{{ card(a, lead=loop.first) }}{% endfor %}
     </section>
     {% endif %}
 
     {% for cat, items in by_category.items() %}
       {% if items %}
       <h2 class="section-title">{{ cat | capitalize }}</h2>
-      <section class="grid">
+      <section class="masonry">
         {% for a in items %}{{ card(a) }}{% endfor %}
       </section>
       {% endif %}
