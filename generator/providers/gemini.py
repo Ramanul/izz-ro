@@ -1,35 +1,37 @@
-"""Provider Gemini (implicit, gratuit). Cheia: GEMINI_API_KEY (din mediu, niciodata in cod)."""
+"""Provider Gemini prin REST (fara SDK/grpc). Cheia: GEMINI_API_KEY (din mediu, niciodata in cod)."""
+import json
 import os
+import urllib.error
+import urllib.request
 
 from .base import Provider
 
-MODEL = os.getenv("GEMINI_MODEL", "gemini-1.5-flash")
+MODEL = os.getenv("GEMINI_MODEL", "gemini-2.5-flash")
+ENDPOINT = "https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent?key={key}"
 
 
 class GeminiProvider(Provider):
     name = "gemini"
 
     def __init__(self):
-        self._model = None
         self._key = os.getenv("GEMINI_API_KEY", "").strip()
 
     def available(self) -> bool:
-        if not self._key:
-            return False
-        try:
-            import google.generativeai as genai  # noqa: F401
-            return True
-        except ImportError:
-            return False
-
-    def _ensure(self):
-        if self._model is None:
-            import google.generativeai as genai
-            genai.configure(api_key=self._key)
-            self._model = genai.GenerativeModel(MODEL)
-        return self._model
+        return bool(self._key)
 
     def complete(self, system: str, user: str) -> str:
-        model = self._ensure()
-        resp = model.generate_content(f"{system}\n\n{user}")
-        return (resp.text or "").strip()
+        url = ENDPOINT.format(model=MODEL, key=self._key)
+        body = json.dumps({
+            "system_instruction": {"parts": [{"text": system}]},
+            "contents": [{"parts": [{"text": user}]}],
+            "generationConfig": {
+                "temperature": 0.2,
+                "maxOutputTokens": 1024,
+                "responseMimeType": "application/json",
+                "thinkingConfig": {"thinkingBudget": 0},  # task simplu -> fara thinking (rapid, deterministic)
+            },
+        }).encode("utf-8")
+        req = urllib.request.Request(url, data=body, headers={"Content-Type": "application/json"})
+        with urllib.request.urlopen(req, timeout=30) as resp:
+            data = json.load(resp)
+        return data["candidates"][0]["content"]["parts"][0]["text"].strip()
