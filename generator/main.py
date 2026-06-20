@@ -24,25 +24,56 @@ def _utf8_stdout():
 
 
 def process_new(new_items: list, provider) -> tuple[list, set]:
-    """Returneaza (articole_procesate, url_uri_inglobate_in_cluster_C)."""
+    """Returneaza (articole_procesate, url_uri_inglobate_in_cluster_C).
+
+    Buget de apeluri AI per rulare (free-tier are limita pe minut): ce nu intra in
+    buget ramane neprocesat si e preluat la rularea urmatoare (cron 30 min). Asa
+    fiecare build se termina rapid. Clusterele C au prioritate (mai valoroase).
+    """
+    import os
+    budget = int(os.getenv("MAX_AI_CALLS_PER_RUN", "12")) if provider else 10 ** 9
+    used = 0
+
     groups = cluster.cluster(new_items)
     clustered = {a["url"] for g in groups for a in g}
     processed, folded = [], set()
 
-    for g in groups:
-        if len(g) > 1 and cluster.is_synthesis_candidate(g):
-            rep = process_cluster(g, provider)
-            processed.append(rep)
-            folded.update(a["url"] for a in g if a["url"] != rep["url"])
-        else:
-            for it in g:
-                processed.append(process_single(it, provider))
+    # clusterele C intai
+    syn = [g for g in groups if len(g) > 1 and cluster.is_synthesis_candidate(g)]
+    singles = [it for g in groups if g not in syn for it in g]
+    singles += [it for it in new_items if it["url"] not in clustered]
 
-    # articole noi care nu au intrat in clustering (ex. mai vechi de 24h) -> model B
-    for it in new_items:
-        if it["url"] not in clustered:
-            processed.append(process_single(it, provider))
+    for g in syn:
+        if used >= budget:
+            break
+        rep = process_cluster(g, provider)
+        processed.append(rep)
+        folded.update(a["url"] for a in g if a["url"] != rep["url"])
+        used += 1
+
+    for it in singles:
+        if used >= budget:
+            break  # ramane neprocesat -> preluat la rularea urmatoare
+        processed.append(process_single(it, provider))
+        used += 1
+
     return processed, folded
+
+
+def render_only() -> dict:
+    """Doar randeaza starea deja salvata (data/articles.json) -> output/.
+
+    Folosit de Cloudflare Pages: build rapid, fara fetch/AI/quota. Munca grea
+    (fetch + AI + commit state) o face GitHub Actions; commit-ul declanseaza acest render.
+    """
+    _utf8_stdout()
+    from . import render
+    articles = state.load()
+    mod = moderation.load()
+    visible = moderation.apply(articles, mod)
+    render.build(visible, mod)
+    print(f">> Render-only: {len(visible)} articole din state -> output/")
+    return {"rendered": len(visible)}
 
 
 def run(dry_run: bool = False) -> dict:
@@ -115,8 +146,13 @@ def main():
     parser = argparse.ArgumentParser(description="IZZ.ro static site generator")
     parser.add_argument("--dry-run", action="store_true",
                         help="ruleaza pipeline-ul fara a salva starea sau a randa")
+    parser.add_argument("--render-only", action="store_true",
+                        help="doar randeaza starea salvata (pentru Cloudflare: fara fetch/AI)")
     args = parser.parse_args()
-    run(dry_run=args.dry_run)
+    if args.render_only:
+        render_only()
+    else:
+        run(dry_run=args.dry_run)
 
 
 if __name__ == "__main__":

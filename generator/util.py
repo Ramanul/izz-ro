@@ -64,8 +64,9 @@ def clean_html(text: str) -> str:
         return ""
     text = _TAG_RE.sub(" ", text)
     text = _html.unescape(text)
-    # taie footerul tipic de tip "(c) ... Sursa.ro." de la coada
-    text = re.sub(r"\(c\)[^.]*\.\s*$", "", text, flags=re.IGNORECASE)
+    # taie footerul tipic de copyright de la coada: "(c)/© ... Sursa.ro." si "[...]"
+    text = re.sub(r"\[\s*[….]+\s*\]", " ", text)               # [...] / […]
+    text = re.sub(r"[\(\[]?\s*(?:\(c\)|©)[^.]*\.?\s*$", "", text, flags=re.IGNORECASE)
     return _WS_RE.sub(" ", text).strip()
 
 

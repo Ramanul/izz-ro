@@ -1,23 +1,22 @@
-name: build-and-deploy
+name: pipeline
+
+# Munca grea: fetch RSS + AI (buget per rulare) + salveaza starea in git.
+# Commit-ul declanseaza Cloudflare Pages, care doar randeaza (vezi README).
 
 on:
   schedule:
-    - cron: "*/30 * * * *"      # la fiecare 30 min (poate întârzia câteva min — ok)
-  workflow_dispatch: {}          # buton „Run workflow" pentru build manual
-  push:
-    branches: [main]             # la modificări de cod/conținut/moderation
+    - cron: "*/30 * * * *"      # la fiecare 30 min
+  workflow_dispatch: {}          # buton „Run workflow" pentru rulare manuala
 
 permissions:
-  contents: write                # ca să comită starea (data/articles.json)
-  pages: write                   # deploy GitHub Pages
-  id-token: write
+  contents: write                # ca sa comita data/articles.json
 
 concurrency:
-  group: build
-  cancel-in-progress: true
+  group: pipeline
+  cancel-in-progress: false
 
 jobs:
-  build:
+  pipeline:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -29,37 +28,17 @@ jobs:
 
       - run: pip install -r requirements.txt
 
-      - name: Rulează pipeline + build
+      - name: Ruleaza pipeline (fetch + AI, buget)
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           AI_PROVIDER: gemini
-          CF_ANALYTICS_TOKEN: ${{ secrets.CF_ANALYTICS_TOKEN }}
-          SITE_BASE: /izz-ro          # subcale GitHub Pages (gol când treci pe izz.ro)
+          MAX_AI_CALLS_PER_RUN: "12"
         run: python -m generator.main
 
-      - name: Comite starea (articles.json)
+      - name: Comite starea (declanseaza deploy Cloudflare)
         run: |
           git config user.name "izz-bot"
           git config user.email "bot@izz.ro"
           git add data/articles.json
           git commit -m "update content [skip ci]" || echo "nimic de comis"
-          git push || echo "nimic de împins"
-
-      - name: Setup Pages
-        uses: actions/configure-pages@v5
-
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: output
-
-  deploy:
-    needs: build
-    runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    steps:
-      - name: Deploy GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
+          git push || echo "nimic de impins"
