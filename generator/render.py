@@ -79,6 +79,7 @@ def _article_jsonld(a: dict) -> dict:
 def _base_ctx(canonical_path: str, **extra) -> dict:
     ctx = {
         "site": config.SITE,
+        "base": os.getenv("SITE_BASE", "").rstrip("/"),
         "categories": config.CATEGORIES,
         "year": datetime.now().year,
         "canonical": config.SITE["url"] + canonical_path,

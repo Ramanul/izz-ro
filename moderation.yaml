@@ -1,0 +1,10 @@
+# Om în buclă — editezi acest fișier (direct pe GitHub, în browser) ca să controlezi ce apare.
+# După salvare, build-ul următor (sau Actions -> Run workflow) aplică modificările.
+
+blocklist_urls: []          # URL-uri de ascuns (lipești linkul exact al sursei)
+blocklist_keywords: []      # titluri care conțin aceste cuvinte -> ascunse
+suppress_sources: []        # o sursă pe care o oprești temporar (ex.: gsp)
+corrections:                # corectezi un titlu/teaser greșit de AI, pe un URL anume
+  # "https://sursa.ro/articol": { title: "Titlu corect", teaser: "Rezumat corect." }
+featured: []                # URL-uri pe care le forțezi în hero (sus de tot)
+hold_important: false       # true = clusterele C/importante așteaptă aprobare înainte de publicare
