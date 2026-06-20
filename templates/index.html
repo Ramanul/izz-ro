@@ -25,4 +25,11 @@
       {% endif %}
     {% endfor %}
   {% endif %}
+
+  {% if newsletter_html %}
+  <section class="newsletter">
+    <h2 class="section-title">Newsletter</h2>
+    {{ newsletter_html | safe }}
+  </section>
+  {% endif %}
 {% endblock %}

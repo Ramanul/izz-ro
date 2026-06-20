@@ -117,6 +117,14 @@ main { max-width: var(--maxw); margin: 0 auto; padding: var(--space-lg) var(--sp
 .static-page h1, .static-page h2, .static-page h3 { font-family: var(--font-display); color: var(--fg); }
 .static-page a { text-decoration: underline; }
 
+/* Newsletter */
+.newsletter {
+  background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
+  padding: var(--space) var(--space-lg); margin-top: var(--space-xl);
+}
+.newsletter .section-title { margin-top: 0; }
+.newsletter code { font-family: var(--font-mono); color: var(--gold-dim); font-size: .85rem; }
+
 /* Footer */
 .site-footer {
   max-width: var(--maxw); margin: var(--space-xl) auto 0; padding: var(--space-lg) var(--space);
