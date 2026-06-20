@@ -4,6 +4,7 @@
   python -m generator.main --dry-run  # afiseaza rezultatul, NU salveaza, NU randeaza
 """
 import argparse
+import os
 import sys
 
 try:
@@ -23,15 +24,13 @@ def _utf8_stdout():
         pass
 
 
-def process_new(new_items: list, provider) -> tuple[list, set]:
-    """Returneaza (articole_procesate, url_uri_inglobate_in_cluster_C).
+def process_new(new_items: list, provider, budget: int) -> tuple[list, set, int]:
+    """Returneaza (articole_procesate, url_uri_inglobate_in_cluster_C, apeluri_folosite).
 
-    Buget de apeluri AI per rulare (free-tier are limita pe minut): ce nu intra in
-    buget ramane neprocesat si e preluat la rularea urmatoare (cron 30 min). Asa
-    fiecare build se termina rapid. Clusterele C au prioritate (mai valoroase).
+    Bugetul de apeluri AI e impus de apelant (free-tier are limita pe minut): ce nu
+    intra in buget ramane neprocesat si e preluat la rularea urmatoare (cron 30 min).
+    Clusterele C au prioritate (mai valoroase).
     """
-    import os
-    budget = int(os.getenv("MAX_AI_CALLS_PER_RUN", "12")) if provider else 10 ** 9
     used = 0
 
     groups = cluster.cluster(new_items)
@@ -57,7 +56,23 @@ def process_new(new_items: list, provider) -> tuple[list, set]:
         processed.append(process_single(it, provider))
         used += 1
 
-    return processed, folded
+    return processed, folded, used
+
+
+def upgrade_fallbacks(articles: list, provider, remaining: int) -> int:
+    """Reprocesează cu AI articolele ramase pe fallback (din rulari anterioare limitate
+    de quota), in limita bugetului ramas. Le modifica pe loc. Returneaza apelurile folosite.
+    """
+    if not provider or remaining <= 0:
+        return 0
+    used = 0
+    for a in articles:
+        if used >= remaining:
+            break
+        if a.get("processed_by") == "fallback" and a.get("model") == "B":
+            process_single(a, provider)  # rescrie titlu/teaser/processed_by pe loc
+            used += 1
+    return used
 
 
 def render_only() -> dict:
@@ -86,8 +101,13 @@ def run(dry_run: bool = False) -> dict:
     provider = get_provider()
     provider_name = provider.name if provider else "fallback (fara cheie/SDK AI)"
 
-    processed_new, folded = process_new(new_items, provider)
+    budget = int(os.getenv("MAX_AI_CALLS_PER_RUN", "12")) if provider else 10 ** 9
+    # rezerva cateva apeluri garantate pentru upgrade-ul fallback-urilor vechi,
+    # ca sa nu fie infometate cand exista mereu articole noi (umplerea initiala)
+    reserve = min(int(os.getenv("UPGRADE_RESERVE", "3")), budget) if provider else 0
+    processed_new, folded, used = process_new(new_items, provider, budget - reserve)
     combined = [a for a in (existing + processed_new) if a.get("url") not in folded]
+    upgraded = upgrade_fallbacks(combined, provider, budget - used)
     combined = state.expire(combined)
 
     mod = moderation.load()
@@ -102,8 +122,11 @@ def run(dry_run: bool = False) -> dict:
         "total_known": len(combined),
         "visible_after_moderation": len(visible),
         "provider": provider_name,
+        "upgraded_fallbacks": upgraded,
         "hold_important": mod.get("hold_important", False),
     }
+    if upgraded:
+        print(f">> Upgrade fallback -> AI: {upgraded} articole vechi reprocesate")
 
     _print_report(stats, processed_new, dry_run)
 

@@ -14,7 +14,7 @@ SOURCES = {
     "zf":         {"name": "Ziarul Financiar", "url": "https://www.zf.ro/rss",      "category": "economic"},
     "economica":  {"name": "Economica",  "url": "https://www.economica.net/rss",    "category": "economic"},
     "protv":      {"name": "Știrile ProTV","url": "https://stirileprotv.ro/rss",    "category": "general"},
-    "gsp":        {"name": "GSP",        "url": "https://www.gsp.ro/rss",           "category": "sport"},
+    "gsp":        {"name": "GSP",        "url": "https://www.gsp.ro/rss.xml",       "category": "sport"},
 }
 # Exclude orice URL/sursă de agenție (verificare suplimentară pe domeniul linkului)
 AGENCY_BLOCKLIST = ["agerpres", "mediafax", "reuters", "afp.com", "apnews", "ap.org"]
