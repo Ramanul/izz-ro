@@ -1,0 +1,64 @@
+name: build-and-deploy
+
+on:
+  schedule:
+    - cron: "*/30 * * * *"      # la fiecare 30 min (poate întârzia câteva min — ok)
+  workflow_dispatch: {}          # buton „Run workflow" pentru build manual
+  push:
+    branches: [main]             # la modificări de cod/conținut/moderation
+
+permissions:
+  contents: write                # ca să comită starea (data/articles.json)
+  pages: write                   # deploy GitHub Pages
+  id-token: write
+
+concurrency:
+  group: build
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: "pip"
+
+      - run: pip install -r requirements.txt
+
+      - name: Rulează pipeline + build
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          AI_PROVIDER: gemini
+          CF_ANALYTICS_TOKEN: ${{ secrets.CF_ANALYTICS_TOKEN }}
+        run: python -m generator.main
+
+      - name: Comite starea (articles.json)
+        run: |
+          git config user.name "izz-bot"
+          git config user.email "bot@izz.ro"
+          git add data/articles.json
+          git commit -m "update content [skip ci]" || echo "nimic de comis"
+          git push || echo "nimic de împins"
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: output
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

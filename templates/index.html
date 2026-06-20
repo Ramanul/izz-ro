@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% from "_card.html" import card %}
+{% from "_card.html" import card with context %}
 {% block head_extra %}
   {% if page_jsonld %}<script type="application/ld+json">{{ page_jsonld | tojson }}</script>{% endif %}
 {% endblock %}
