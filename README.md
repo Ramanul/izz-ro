@@ -37,15 +37,25 @@ output/      site generat (gitignored; deployat de Actions)
 - **Surse RSS:** `generator/config.py` -> `SOURCES`. (`gsp` dă 404 — de înlocuit cu un feed valid.)
 - **Praguri B/C, TTL, max/sursă:** tot în `config.py`.
 
-## Deploy
-GitHub Actions (`.github/workflows/build.yml`) rulează pipeline-ul, comite `data/articles.json` și publică `output/` pe **GitHub Pages**. Secrete necesare (repo → Settings → Secrets → Actions):
-- `GEMINI_API_KEY` — cheia AI (altfel: fallback).
-- `CF_ANALYTICS_TOKEN` — *opțional*, analytics cookieless.
+## Deploy (GitHub Actions + Cloudflare Pages)
 
-### Trecere pe domeniul izz.ro (Cloudflare) — mai târziu
-1. Cont Cloudflare + adaugă izz.ro + schimbă nameserverele la registrar.
-2. Pages: poți comuta deploy-ul pe Cloudflare (token + Account ID) sau lega izz.ro ca *custom domain* peste GitHub Pages.
-3. Setează `SITE_BASE=""` (gol) pentru domeniu la rădăcină.
+Arhitectura separă **munca grea** de **publicare**:
+
+1. **GitHub Actions** (`.github/workflows/build.yml`, cron 30 min): rulează pipeline-ul (fetch + AI, cu buget per rulare), apoi **comite** `data/articles.json` în repo. Secret necesar: `GEMINI_API_KEY` (repo → Settings → Secrets → Actions).
+2. **Cloudflare Pages** (conectat la repo, auto-deploy la fiecare commit): rulează doar **render-only** și publică `output/`. Setări în Cloudflare Pages → Settings:
+   - **Build command:** `pip install -r requirements.txt && python -m generator.main --render-only`
+   - **Build output directory:** `output`
+   - **Environment variables:** `PYTHON_VERSION=3.11`, `SITE_BASE=` (gol). *(GEMINI nu e necesar aici — render-only nu apelează AI.)*
+
+Astfel: Actions face fetch+AI și salvează starea → commit-ul declanșează Cloudflare → Cloudflare randează rapid (fără AI/quota) și publică. Cron-ul de auto-actualizare vine din Actions.
+
+### Domeniul izz.ro
+1. În Cloudflare „Add a site" → izz.ro → primești 2 nameservere.
+2. La registrar (ICI/ROTLD) setezi acele nameservere pentru izz.ro.
+3. În Pages → proiectul izz-ro → Custom domains → adaugi izz.ro.
+
+### Comutare pe Claude API
+Adaugă secret `ANTHROPIC_API_KEY` în GitHub și pune `AI_PROVIDER: anthropic` în `build.yml`.
 
 ### Comutare pe Claude API
 Adaugă secret `ANTHROPIC_API_KEY` și pune `AI_PROVIDER: anthropic` în `build.yml`. Restul rămâne identic.
