@@ -1,7 +1,11 @@
 """Utilitare comune: normalizare URL, text fara diacritice, taiere la N cuvinte."""
 import re
+import html as _html
 import unicodedata
 from urllib.parse import urlsplit, urlunsplit, parse_qsl, urlencode
+
+_TAG_RE = re.compile(r"<[^>]+>")
+_WS_RE = re.compile(r"\s+")
 
 # Parametri de tracking eliminati la normalizarea URL-ului (pentru dedup stabil)
 _TRACKING_PREFIXES = ("utm_",)
@@ -49,6 +53,20 @@ def domain_of(url: str) -> str:
         return netloc[4:] if netloc.startswith("www.") else netloc
     except ValueError:
         return ""
+
+
+def clean_html(text: str) -> str:
+    """Scoate tagurile HTML, decodeaza entitatile, normalizeaza spatiile.
+
+    Necesar fiindca multe feeduri RSS pun HTML + footer ('(c) Sursa') in <description>.
+    """
+    if not text:
+        return ""
+    text = _TAG_RE.sub(" ", text)
+    text = _html.unescape(text)
+    # taie footerul tipic de tip "(c) ... Sursa.ro." de la coada
+    text = re.sub(r"\(c\)[^.]*\.\s*$", "", text, flags=re.IGNORECASE)
+    return _WS_RE.sub(" ", text).strip()
 
 
 def truncate_words(text: str, max_words: int) -> str:

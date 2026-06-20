@@ -1,0 +1,15 @@
+{% macro card(a, lead=False) %}
+<article class="card{% if lead %} lead{% endif %}{% if a.model == 'C' %} card-c{% endif %}">
+  <span class="badge{% if a.model == 'C' %} c{% endif %}">{% if a.model == 'C' %}Sinteză{% else %}{{ a.category }}{% endif %}</span>
+  <h2 class="card-title"><a href="/{{ a.category }}/{{ a.slug }}.html">{{ a.title }}</a></h2>
+  <div class="meta">
+    <span class="source">{{ a.source_name }}</span>
+    <time datetime="{{ a.published }}">{{ a.published_human }}</time>
+  </div>
+  <p class="summary">{% if a.model == 'C' %}{{ a.synthesis }}{% else %}{{ a.teaser }}{% endif %}</p>
+  {% if a.model == 'C' and a.sources %}
+  <p class="sources-inline"><b>Surse:</b> {{ a.sources | map(attribute='name') | join(', ') }}</p>
+  {% endif %}
+  <a class="read-more" href="/{{ a.category }}/{{ a.slug }}.html">Detalii</a>
+</article>
+{% endmacro %}
