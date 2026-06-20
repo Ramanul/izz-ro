@@ -34,6 +34,7 @@ jobs:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           AI_PROVIDER: gemini
           CF_ANALYTICS_TOKEN: ${{ secrets.CF_ANALYTICS_TOKEN }}
+          SITE_BASE: /izz-ro          # subcale GitHub Pages (gol când treci pe izz.ro)
         run: python -m generator.main
 
       - name: Comite starea (articles.json)
