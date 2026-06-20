@@ -105,10 +105,12 @@ def build(articles: list, mod: dict | None = None) -> None:
     env = _env()
     _assign_slugs(articles)
 
-    # reset output, copiaza static
-    if os.path.isdir(OUT_DIR):
-        shutil.rmtree(OUT_DIR)
+    # reset output (golim CONTINUTUL, nu radacina — ca un server local care tine
+    # folderul deschis sa nu blocheze build-ul pe Windows), apoi copiem static
     os.makedirs(OUT_DIR, exist_ok=True)
+    for entry in os.listdir(OUT_DIR):
+        p = os.path.join(OUT_DIR, entry)
+        shutil.rmtree(p) if os.path.isdir(p) else os.remove(p)
     shutil.copytree(STATIC_DIR, os.path.join(OUT_DIR, "static"))
 
     by_date = sorted(articles, key=lambda a: a.get("published") or "", reverse=True)
@@ -131,7 +133,7 @@ def build(articles: list, mod: dict | None = None) -> None:
     _write(os.path.join(OUT_DIR, "index.html"),
            env.get_template("index.html").render(**_base_ctx(
                "/", articles=by_date, hero=hero, by_category=by_category,
-               page_jsonld=item_list)))
+               page_jsonld=item_list, newsletter_html=_newsletter_html())))
 
     # pagini de categorie + permalink articole
     article_tpl = env.get_template("article.html")
@@ -153,6 +155,18 @@ def build(articles: list, mod: dict | None = None) -> None:
     _write_sitemap(by_date)
     _write_robots()
     _write_feed(by_date)
+
+
+def _newsletter_html() -> str:
+    """Embed-ul Brevo, daca utilizatorul l-a pus in content/newsletter.html; altfel placeholder."""
+    path = os.path.join(ROOT, "content", "newsletter.html")
+    if os.path.exists(path):
+        with open(path, "r", encoding="utf-8") as fh:
+            return fh.read()
+    return ('<p class="summary">Primește rezumatul zilei pe e-mail. '
+            'Formularul de înscriere (Brevo, cu confirmare dublă) va apărea aici.</p>'
+            '<p class="meta">Configurare: lipește codul de embed din contul Brevo în '
+            '<code>content/newsletter.html</code>.</p>')
 
 
 def _render_legal(env: Environment) -> None:

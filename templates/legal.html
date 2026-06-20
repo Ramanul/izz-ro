@@ -1,0 +1,8 @@
+{% extends "base.html" %}
+{% block title %}{{ page_title }} — {{ site.name }}{% endblock %}
+{% block description %}{{ page_title }} — {{ site.name }}, {{ site.tagline }}.{% endblock %}
+{% block content %}
+<article class="static-page">
+  {{ body_html | safe }}
+</article>
+{% endblock %}
