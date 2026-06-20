@@ -5,7 +5,7 @@
 {% block content %}
   <h1 class="section-title">{{ category | capitalize }}</h1>
   {% if articles %}
-  <section class="grid">
+  <section class="masonry">
     {% for a in articles %}{{ card(a) }}{% endfor %}
   </section>
   {% else %}

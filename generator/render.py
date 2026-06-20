@@ -8,6 +8,7 @@ from jinja2 import Environment, FileSystemLoader, select_autoescape
 from slugify import slugify
 
 from . import config
+from .util import title_tokens
 
 ROOT = config.ROOT
 TPL_DIR = os.path.join(ROOT, "templates")
@@ -91,6 +92,30 @@ def _base_ctx(canonical_path: str, **extra) -> dict:
     return ctx
 
 
+def _dedup(articles: list) -> list:
+    """Elimina articolele despre acelasi eveniment (titluri foarte asemanatoare).
+
+    Pastreaza varianta cea mai bogata: C inaintea B, mai multe surse, mai recent.
+    """
+    ordered = sorted(articles, key=lambda a: a.get("published") or "", reverse=True)
+    ordered.sort(key=lambda a: (0 if a.get("model") == "C" else 1, -len(a.get("sources") or [])))
+    kept, kept_tok = [], []
+    for a in ordered:
+        tok = title_tokens(a.get("title") or a.get("original_title") or "")
+        is_dup = False
+        for kt in kept_tok:
+            if not tok or not kt:
+                continue
+            inter = len(tok & kt)
+            if inter >= 4 or inter / len(tok | kt) >= 0.55:
+                is_dup = True
+                break
+        if not is_dup:
+            kept.append(a)
+            kept_tok.append(tok)
+    return kept
+
+
 def _pick_hero(articles: list) -> list:
     featured = [a for a in articles if a.get("featured")]
     rest = [a for a in articles if not a.get("featured")]
@@ -99,11 +124,12 @@ def _pick_hero(articles: list) -> list:
     # C-urile si cele mai recente in fata
     rest_sorted = sorted(rest, key=lambda a: a.get("published") or "", reverse=True)
     rest_sorted = sorted(rest_sorted, key=lambda a: a.get("model") != "C")
-    return (featured + rest_sorted)[:3]
+    return (featured + rest_sorted)[:6]
 
 
 def build(articles: list, mod: dict | None = None) -> None:
     env = _env()
+    articles = _dedup(articles)
     _assign_slugs(articles)
 
     # reset output (golim CONTINUTUL, nu radacina — ca un server local care tine

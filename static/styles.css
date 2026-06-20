@@ -61,14 +61,14 @@ main { max-width: var(--maxw); margin: 0 auto; padding: var(--space-lg) var(--sp
 }
 .section-title:first-child { margin-top: 0; }
 
-/* Hero — rația aurie 61.8 / 38.2 */
-.hero { display: grid; grid-template-columns: 61.8% 38.2%; gap: var(--space); margin-bottom: var(--space-lg); }
-.hero .stack { display: flex; flex-direction: column; gap: var(--space); }
-.hero .lead .card-title { font-size: 2rem; }
-.hero .lead { min-height: 100%; }
+/* Masonry — carduri de inaltime naturala, umplu fara goluri */
+.masonry { column-count: 3; column-gap: var(--space); margin-bottom: var(--space-lg); }
+.masonry > .card { break-inside: avoid; margin: 0 0 var(--space); }
+.card.lead { border-color: var(--gold-dim); background: var(--surface-2); }
+.card.lead .card-title { font-size: 1.45rem; }
 
-/* Grid de carduri */
-.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: var(--space); }
+/* Grid (pagini de categorie / fallback) */
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: var(--space); align-items: start; }
 
 /* Card */
 .card {
@@ -137,9 +137,9 @@ main { max-width: var(--maxw); margin: 0 auto; padding: var(--space-lg) var(--sp
 .empty { text-align: center; color: var(--muted); padding: var(--space-xl); }
 
 /* Responsive — mobile-first colaps */
-@media (max-width: 800px) {
-  .hero { grid-template-columns: 1fr; }
-  .hero .lead .card-title { font-size: 1.5rem; }
+@media (max-width: 1000px) { .masonry { column-count: 2; } }
+@media (max-width: 640px) {
+  .masonry { column-count: 1; }
   main { padding: var(--space) var(--space-sm); }
   .site-header { padding: var(--space-sm); }
 }
