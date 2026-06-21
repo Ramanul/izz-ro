@@ -7,6 +7,13 @@ SITE = {"name": "IZZ.ro", "tagline": "Informația Zero Zgomot",
 
 # Surse = DOAR publicații cu RSS oficial. Agențiile de presă sunt EXCLUSE (conținut licențiat).
 SOURCES = {
+    # Surse niche primele -> bugetul AI le proceseaza prioritar (altfel general le infometeaza)
+    "extern":     {"name": "Digi24 Extern","url": "https://www.digi24.ro/rss/stiri/externe", "category": "extern"},
+    "gsp":        {"name": "GSP",        "url": "https://www.gsp.ro/rss.xml",       "category": "sport"},
+    "digisport":  {"name": "Digi Sport", "url": "https://www.digisport.ro/rss",     "category": "sport"},
+    "startup":    {"name": "Start-up.ro", "url": "https://start-up.ro/feed/",        "category": "tech"},
+    "playtech":   {"name": "Playtech",    "url": "https://playtech.ro/feed/",        "category": "tech"},
+    # Surse cu volum mare
     "digi24":     {"name": "Digi24",     "url": "https://www.digi24.ro/rss",        "category": "general"},
     "hotnews":    {"name": "HotNews",    "url": "https://www.hotnews.ro/rss",       "category": "general"},
     "g4media":    {"name": "G4Media",    "url": "https://www.g4media.ro/feed",      "category": "politic"},
@@ -14,7 +21,6 @@ SOURCES = {
     "zf":         {"name": "Ziarul Financiar", "url": "https://www.zf.ro/rss",      "category": "economic"},
     "economica":  {"name": "Economica",  "url": "https://www.economica.net/rss",    "category": "economic"},
     "protv":      {"name": "Știrile ProTV","url": "https://stirileprotv.ro/rss",    "category": "general"},
-    "gsp":        {"name": "GSP",        "url": "https://www.gsp.ro/rss.xml",       "category": "sport"},
 }
 # Exclude orice URL/sursă de agenție (verificare suplimentară pe domeniul linkului)
 AGENCY_BLOCKLIST = ["agerpres", "mediafax", "reuters", "afp.com", "apnews", "ap.org"]
