@@ -5,6 +5,7 @@
   <div class="meta">
     <span class="source">{{ a.source_name }}</span>
     <time datetime="{{ a.published }}">{{ a.published_human }}</time>
+    {% if a.significance is defined %}<span class="sig"><b>{{ a.significance }}</b>/10</span>{% endif %}
   </div>
   <p class="summary">{% if a.model == 'C' %}{{ a.synthesis }}{% else %}{{ a.teaser }}{% endif %}</p>
   {% if a.model == 'C' and a.sources %}

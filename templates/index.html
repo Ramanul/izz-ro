@@ -8,10 +8,31 @@
     <p class="empty">Încă nu sunt știri publicate. Robotul rulează la fiecare 30 de minute.</p>
   {% else %}
     {% if hero %}
+    {% set top = hero[0] %}
+    <article class="lead-feature">
+      <div class="lead-main">
+        <span class="badge{% if top.model == 'C' %} c{% endif %}">{% if top.model == 'C' %}Sinteză{% else %}{{ top.category }}{% endif %}</span>
+        <h2 class="lead-title"><a href="{{ base }}/{{ top.category }}/{{ top.slug }}/">{{ top.title }}</a></h2>
+        <p class="lead-summary">{% if top.model == 'C' %}{{ top.synthesis }}{% else %}{{ top.teaser }}{% endif %}</p>
+      </div>
+      <aside class="lead-aside">
+        <div>
+          <h3>Proveniență</h3>
+          {% if top.model == 'C' and top.sources %}
+          <ul>{% for s in top.sources[:6] %}<li>{{ s.name }}</li>{% endfor %}</ul>
+          {% else %}<span class="source">{{ top.source_name }}</span>{% endif %}
+        </div>
+        <div><h3>Publicat</h3><time datetime="{{ top.published }}">{{ top.published_human }}</time></div>
+        {% if top.significance is defined %}<div><h3>Relevanță</h3><span class="sig"><b>{{ top.significance }}</b>/10</span></div>{% endif %}
+      </aside>
+    </article>
+
+    {% if hero[1:] %}
     <h2 class="section-title">Ultimele știri</h2>
     <section class="masonry">
-      {% for a in hero %}{{ card(a, lead=loop.first) }}{% endfor %}
+      {% for a in hero[1:] %}{{ card(a) }}{% endfor %}
     </section>
+    {% endif %}
     {% endif %}
 
     {% for cat, items in by_category.items() %}

@@ -1,8 +1,10 @@
 {% extends "base.html" %}
 {% block title %}{{ a.title }} — {{ site.name }}{% endblock %}
 {% block description %}{% if a.model == 'C' %}{{ a.synthesis }}{% else %}{{ a.teaser }}{% endif %}{% endblock %}
+{% block og_type %}article{% endblock %}
 {% block head_extra %}
   <script type="application/ld+json">{{ article_jsonld | tojson }}</script>
+  <meta property="article:published_time" content="{{ a.published }}">
 {% endblock %}
 {% block content %}
 <article class="article">

@@ -1,25 +1,55 @@
-/* IZZ.ro — identitate auriu-dark. Tokeni: aur #D6B25E pe fundal #0B0F14, spacing Fibonacci. */
+/* =============================================================================
+   IZZ.ro — temă LIGHT, sistem pe PROPORȚIA DE AUR (φ = 1.618)
+   Înlocuiește integral vechiul static/styles.css (auriu-dark).
+
+   SISTEMUL φ (de respectat la ORICE componentă nouă):
+   - Scară tipografică: pas = √φ ≈ 1.272; la fiecare DOI pași = ×φ.
+       0.618 · 0.786 · 1.000 · 1.272 · 1.618 · 2.058 · 2.618 · 3.330  (rem)
+   - Spațiere: șir Fibonacci (raport → φ): 5 · 8 · 13 · 21 · 34 · 55 · 89 (px)
+   - Lățimi: coloana de citit = container / φ  (1180 / 1.618 ≈ 729px).
+   - Layout-semnătură: povestea lead spartă φ:1 (sinteză : proveniență).
+   - Line-height body = 1.618 (golden) pentru lectură; titluri strânse.
+   Unde φ strict ar strica uzabilitatea (ex. paddinguri minuscule), s-a relaxat
+   conștient la cel mai apropiat pas Fibonacci. Nu inventa valori în afara scării.
+============================================================================= */
+
 :root {
-  --gold: #D6B25E;
-  --gold-dim: #a9883f;
-  --bg: #0B0F14;
-  --surface: #11161f;
-  --surface-2: #161c28;
-  --border: #1a1f2e;
-  --fg: #e8eaed;
-  --muted: #8b93a7;
+  /* --- Paletă light (neutru rece, NU cream; aur = accent de brand, accesibil) --- */
+  --paper:       #f7f8fa;   /* fundal pagină */
+  --card:        #ffffff;   /* suprafețe */
+  --card-2:      #fffdf7;   /* suprafață caldă (lead) */
+  --ink:         #16191f;   /* text principal  (~15:1 pe paper) */
+  --ink-2:       #525a67;   /* text secundar   (~7:1 pe alb) */
+  --ink-3:       #8a93a1;   /* meta discret */
+  --line:        #e5e8ec;   /* hairline / borduri */
+  --gold:        #c9a227;   /* aur viu: doar fundaluri/decor, NU text pe alb */
+  --gold-strong: #8a6d1f;   /* aur închis: linkuri/text pe alb (AA ✓) */
+  --gold-wash:   #faf6e9;   /* tentă aurie foarte deschisă */
+  --shadow:      0 1px 2px rgba(22,25,31,.04), 0 4px 13px rgba(22,25,31,.06);
+  --shadow-lg:   0 2px 5px rgba(22,25,31,.05), 0 13px 34px rgba(22,25,31,.10);
 
-  --space-xs: 8px;
-  --space-sm: 13px;   /* Fibonacci */
-  --space: 21px;
-  --space-lg: 34px;
-  --space-xl: 55px;
+  /* --- Scară tipografică φ --- */
+  --fs-eyebrow: 0.618rem;
+  --fs-xs:      0.786rem;
+  --fs-base:    1rem;
+  --fs-md:      1.272rem;
+  --fs-lg:      1.618rem;
+  --fs-xl:      2.058rem;
+  --fs-2xl:     2.618rem;
+  --fs-3xl:     3.330rem;
 
+  /* --- Spațiere Fibonacci (golden) --- */
+  --s-5: 5px;  --s-8: 8px;  --s-13: 13px;  --s-21: 21px;
+  --s-34: 34px; --s-55: 55px; --s-89: 89px;
+
+  /* --- Tipografie & layout --- */
   --font-display: "Playfair Display", Georgia, serif;
-  --font-text: "Inter", system-ui, -apple-system, sans-serif;
-  --font-mono: "JetBrains Mono", ui-monospace, monospace;
-  --radius: 10px;
+  --font-text:    "Inter", system-ui, -apple-system, sans-serif;
+  --font-mono:    "JetBrains Mono", ui-monospace, monospace;
+  --radius: 12px;
   --maxw: 1180px;
+  --measure: 729px;            /* = maxw / φ : coloana de lectură */
+  --lh-body: 1.618;            /* line-height golden */
 }
 
 * { box-sizing: border-box; }
@@ -27,119 +57,197 @@ html { scroll-behavior: smooth; }
 body {
   margin: 0;
   font-family: var(--font-text);
-  background: var(--bg);
-  color: var(--fg);
-  line-height: 1.65;
+  background: var(--paper);
+  color: var(--ink);
+  font-size: var(--fs-base);
+  line-height: var(--lh-body);
   -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
 }
-a { color: var(--gold); text-decoration: none; }
-a:hover { color: var(--fg); }
+a { color: var(--gold-strong); text-decoration: none; }
+a:hover { color: var(--ink); }
+:focus-visible { outline: 2px solid var(--gold-strong); outline-offset: 2px; border-radius: 3px; }
 
-/* Header / ticker */
+/* ---------------------------------------------------------------- Header --- */
 .site-header {
   display: flex; align-items: center; justify-content: space-between;
-  gap: var(--space); flex-wrap: wrap;
-  padding: var(--space) var(--space-lg);
-  border-bottom: 1px solid var(--border);
-  background: linear-gradient(180deg, var(--surface), var(--bg));
+  gap: var(--s-21); flex-wrap: wrap;
+  padding: var(--s-21) var(--s-34);
+  background: var(--card);
+  border-bottom: 1px solid var(--line);
   position: sticky; top: 0; z-index: 10;
 }
-.brand { display: flex; align-items: baseline; gap: var(--space-xs); }
-.brand .logo { font-family: var(--font-display); font-size: 1.9rem; font-weight: 800; color: var(--fg); letter-spacing: .5px; }
-.brand .logo b { color: var(--gold); }
-.brand .tagline { font-family: var(--font-mono); font-size: .72rem; color: var(--muted); text-transform: uppercase; letter-spacing: 2px; }
-.nav { display: flex; flex-wrap: wrap; gap: var(--space); }
-.nav a { color: var(--muted); font-weight: 600; font-size: .9rem; text-transform: capitalize; }
-.nav a:hover, .nav a.active { color: var(--gold); }
+/* Lockup pe trei niveluri: kicker auriu (desfășurarea acronimului) / wordmark / descriptor.
+   Gap micro-tipografic (3px) sub scara Fibonacci — e spațiere de linie, nu de layout. */
+.brand { display: flex; flex-direction: column; align-items: flex-start; gap: 3px; line-height: 1.08; }
+.brand-eyebrow {
+  font-family: var(--font-mono); font-size: var(--fs-eyebrow); font-weight: 700;
+  color: var(--gold-strong); text-transform: uppercase; letter-spacing: 2.5px;
+}
+.brand .logo {
+  font-family: var(--font-display); font-size: var(--fs-lg); font-weight: 800;
+  color: var(--ink); letter-spacing: .3px;
+}
+.brand .logo b { color: var(--gold-strong); }
+.brand-descriptor {
+  font-family: var(--font-mono); font-size: var(--fs-eyebrow); color: var(--ink-3);
+  letter-spacing: 1px;
+}
+@media (max-width: 640px) { .brand-descriptor { display: none; } }  /* economisește înălțime pe mobil */
+.nav { display: flex; flex-wrap: wrap; gap: var(--s-21); }
+.nav a {
+  color: var(--ink-2); font-weight: 600; font-size: var(--fs-xs);
+  text-transform: capitalize; padding-bottom: 2px; border-bottom: 2px solid transparent;
+}
+.nav a:hover, .nav a.active { color: var(--gold-strong); border-bottom-color: var(--gold); }
 
-/* Layout */
-main { max-width: var(--maxw); margin: 0 auto; padding: var(--space-lg) var(--space); }
+/* ---------------------------------------------------------------- Layout --- */
+main { max-width: var(--maxw); margin: 0 auto; padding: var(--s-34) var(--s-21); }
 .section-title {
-  font-family: var(--font-display); font-size: 1.5rem; color: var(--fg);
-  margin: var(--space-xl) 0 var(--space); padding-bottom: var(--space-xs);
-  border-bottom: 1px solid var(--border);
+  font-family: var(--font-display); font-size: var(--fs-lg); font-weight: 700; color: var(--ink);
+  margin: var(--s-55) 0 var(--s-21); padding-bottom: var(--s-8);
+  border-bottom: 1px solid var(--line);
 }
 .section-title:first-child { margin-top: 0; }
 
-/* Masonry — carduri de inaltime naturala, umplu fara goluri */
-.masonry { column-count: 3; column-gap: var(--space); margin-bottom: var(--space-lg); }
-.masonry > .card { break-inside: avoid; margin: 0 0 var(--space); }
-.card.lead { border-color: var(--gold-dim); background: var(--surface-2); }
-.card.lead .card-title { font-size: 1.45rem; }
+/* ---- SEMNĂTURĂ: povestea lead spartă în proporția de aur (φ:1) ----
+   Coloana majoră = sinteza; coloana minoră = proveniența (surse/oră/relevanță).
+   Necesită micul wrap din index.html (vezi instrucțiunile însoțitoare). */
+.lead-feature {
+  display: grid; grid-template-columns: 1.618fr 1fr; gap: var(--s-34);
+  background: var(--card-2); border: 1px solid var(--line);
+  border-radius: var(--radius); box-shadow: var(--shadow-lg);
+  padding: var(--s-34); margin-bottom: var(--s-34);
+  position: relative; overflow: hidden;
+}
+.lead-feature::before {           /* fir auriu de φ pe muchia de sus */
+  content: ""; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+  background: linear-gradient(90deg, var(--gold), transparent 61.8%);
+}
+.lead-feature .lead-main { min-width: 0; }
+.lead-feature h2.lead-title {
+  font-family: var(--font-display); font-size: var(--fs-2xl); line-height: 1.12;
+  margin: var(--s-13) 0 var(--s-21); font-weight: 800;
+}
+.lead-feature h2.lead-title a { color: var(--ink); }
+.lead-feature h2.lead-title a:hover { color: var(--gold-strong); }
+.lead-feature .lead-summary { font-size: var(--fs-md); color: var(--ink-2); margin: 0; }
+.lead-feature .lead-aside {
+  border-left: 1px solid var(--line); padding-left: var(--s-34);
+  display: flex; flex-direction: column; gap: var(--s-13);
+  font-family: var(--font-mono); font-size: var(--fs-xs); color: var(--ink-2);
+}
+.lead-feature .lead-aside h3 {
+  font-family: var(--font-mono); font-size: var(--fs-eyebrow); text-transform: uppercase;
+  letter-spacing: 1.5px; color: var(--ink-3); margin: 0 0 var(--s-5);
+}
+.lead-feature .lead-aside ul { margin: 0; padding-left: var(--s-13); }
 
-/* Grid (pagini de categorie / fallback) */
-.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: var(--space); align-items: start; }
+/* ---------------------------------------------------------- Flux carduri --- */
+/* Masonry pe coloane — înălțime naturală, fără goluri. Gap = pas Fibonacci. */
+.masonry { column-count: 3; column-gap: var(--s-21); margin-bottom: var(--s-34); }
+.masonry > .card { break-inside: avoid; margin: 0 0 var(--s-21); }
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(309px, 1fr)); gap: var(--s-21); align-items: start; }
 
-/* Card */
 .card {
-  background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
-  padding: var(--space); display: flex; flex-direction: column; gap: var(--space-xs);
-  transition: transform .15s ease, border-color .15s ease;
+  background: var(--card); border: 1px solid var(--line); border-radius: var(--radius);
+  padding: var(--s-21); display: flex; flex-direction: column; gap: var(--s-8);
+  box-shadow: var(--shadow);
+  transition: transform .16s ease, box-shadow .16s ease;
 }
-.card:hover { transform: translateY(-3px); border-color: var(--gold-dim); }
-.card.lead { background: var(--surface-2); }
+.card:hover { transform: translateY(-3px); box-shadow: var(--shadow-lg); }
+.card.lead { background: var(--card-2); }
+.card.lead .card-title { font-size: var(--fs-lg); }
+
 .badge {
-  align-self: flex-start; font-family: var(--font-mono); font-size: .66rem; font-weight: 700;
-  text-transform: uppercase; letter-spacing: 1.5px; padding: 4px 10px; border-radius: 999px;
-  color: var(--muted); border: 1px solid var(--border);
+  align-self: flex-start; font-family: var(--font-mono); font-size: var(--fs-eyebrow);
+  font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px;
+  padding: 4px 10px; border-radius: 999px;
+  color: var(--ink-2); background: var(--paper); border: 1px solid var(--line);
 }
-.badge.c { color: var(--bg); background: var(--gold); border-color: var(--gold); }
-.card-title { font-family: var(--font-display); font-size: 1.2rem; line-height: 1.25; margin: 0; }
-.card-title a { color: var(--fg); }
-.card-title a:hover { color: var(--gold); }
-.meta { font-family: var(--font-mono); font-size: .72rem; color: var(--muted); display: flex; gap: var(--space-xs); flex-wrap: wrap; }
-.meta .source { color: var(--gold-dim); }
-.summary { color: var(--muted); font-size: .95rem; margin: 0; }
-.read-more { font-size: .82rem; font-weight: 700; margin-top: auto; }
+.badge.c { color: #4a3a00; background: var(--gold); border-color: var(--gold); }
+
+.card-title { font-family: var(--font-display); font-size: var(--fs-md); line-height: 1.2; margin: 0; font-weight: 700; }
+.card-title a { color: var(--ink); }
+.card-title a:hover { color: var(--gold-strong); }
+.meta {
+  font-family: var(--font-mono); font-size: var(--fs-xs); color: var(--ink-3);
+  display: flex; gap: var(--s-8); flex-wrap: wrap;
+}
+.meta .source { color: var(--gold-strong); }
+.summary { color: var(--ink-2); font-size: var(--fs-xs); margin: 0; line-height: 1.55; }
+.read-more { font-size: var(--fs-xs); font-weight: 700; margin-top: auto; }
 .read-more::after { content: " \2192"; }
-.sources-inline { font-size: .78rem; color: var(--muted); }
-.sources-inline b { color: var(--gold-dim); font-weight: 700; }
+.sources-inline { font-size: var(--fs-xs); color: var(--ink-3); }
+.sources-inline b { color: var(--gold-strong); font-weight: 700; }
 
-/* Pagina articol (permalink) */
-.article { max-width: 760px; margin: 0 auto; }
-.article h1 { font-family: var(--font-display); font-size: 2.1rem; line-height: 1.2; margin: var(--space) 0; }
-.article .body { font-size: 1.12rem; margin: var(--space) 0; }
+/* Indicator opțional de relevanță (significance) — discret, în meta */
+.sig { font-family: var(--font-mono); font-size: var(--fs-eyebrow); color: var(--ink-3); }
+.sig b { color: var(--gold-strong); }
+
+/* ----------------------------------------------------- Pagina de articol --- */
+.article { max-width: var(--measure); margin: 0 auto; }
+.article .badge { margin-bottom: var(--s-13); }
+.article h1 {
+  font-family: var(--font-display); font-size: var(--fs-2xl); line-height: 1.14;
+  margin: var(--s-13) 0 var(--s-21); font-weight: 800;
+}
+.article .body { font-size: var(--fs-md); color: var(--ink); margin: var(--s-21) 0; }
 .notice {
-  background: var(--surface-2); border-left: 3px solid var(--gold); border-radius: 4px;
-  padding: var(--space-sm) var(--space); font-size: .92rem; color: var(--muted); margin: var(--space) 0;
+  background: var(--gold-wash); border-left: 3px solid var(--gold); border-radius: 6px;
+  padding: var(--s-13) var(--s-21); font-size: var(--fs-xs); color: var(--ink-2); margin: var(--s-21) 0;
 }
-.sources-box { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: var(--space); margin: var(--space-lg) 0; }
-.sources-box h3 { margin: 0 0 var(--space-xs); font-family: var(--font-display); font-size: 1.05rem; }
-.sources-box ul { margin: 0; padding-left: var(--space); }
+.sources-box {
+  background: var(--card); border: 1px solid var(--line); border-radius: var(--radius);
+  padding: var(--s-21); margin: var(--s-34) 0; box-shadow: var(--shadow);
+}
+.sources-box h3 { margin: 0 0 var(--s-8); font-family: var(--font-display); font-size: var(--fs-md); }
+.sources-box ul { margin: 0; padding-left: var(--s-21); }
 .btn-source {
-  display: inline-block; margin-top: var(--space); padding: var(--space-sm) var(--space);
-  background: var(--gold); color: var(--bg); border-radius: var(--radius); font-weight: 700;
+  display: inline-block; margin-top: var(--s-21); padding: var(--s-13) var(--s-21);
+  background: var(--gold); color: #4a3a00; border-radius: var(--radius); font-weight: 700;
 }
-.btn-source:hover { background: var(--gold-dim); color: var(--bg); }
+.btn-source:hover { background: var(--gold-strong); color: #fff; }
 
-/* Pagina statica (legal) */
-.static-page { max-width: 760px; margin: 0 auto; }
-.static-page h1, .static-page h2, .static-page h3 { font-family: var(--font-display); color: var(--fg); }
+/* ------------------------------------------------------- Pagini statice --- */
+.static-page { max-width: var(--measure); margin: 0 auto; }
+.static-page h1, .static-page h2, .static-page h3 { font-family: var(--font-display); color: var(--ink); }
 .static-page a { text-decoration: underline; }
 
-/* Newsletter */
+/* ---------------------------------------------------------- Newsletter --- */
 .newsletter {
-  background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
-  padding: var(--space) var(--space-lg); margin-top: var(--space-xl);
+  background: var(--card); border: 1px solid var(--line); border-radius: var(--radius);
+  padding: var(--s-21) var(--s-34); margin-top: var(--s-55); box-shadow: var(--shadow);
 }
 .newsletter .section-title { margin-top: 0; }
-.newsletter code { font-family: var(--font-mono); color: var(--gold-dim); font-size: .85rem; }
+.newsletter code { font-family: var(--font-mono); color: var(--gold-strong); font-size: var(--fs-xs); }
 
-/* Footer */
+/* -------------------------------------------------------------- Footer --- */
 .site-footer {
-  max-width: var(--maxw); margin: var(--space-xl) auto 0; padding: var(--space-lg) var(--space);
-  border-top: 1px solid var(--border); color: var(--muted); font-size: .85rem;
-  display: flex; flex-wrap: wrap; gap: var(--space); justify-content: space-between;
+  max-width: var(--maxw); margin: var(--s-55) auto 0; padding: var(--s-34) var(--s-21);
+  border-top: 1px solid var(--line); color: var(--ink-3); font-size: var(--fs-xs);
+  display: flex; flex-wrap: wrap; gap: var(--s-21); justify-content: space-between;
 }
-.site-footer nav { display: flex; flex-wrap: wrap; gap: var(--space); }
-.site-footer a { color: var(--muted); }
-.site-footer a:hover { color: var(--gold); }
-.empty { text-align: center; color: var(--muted); padding: var(--space-xl); }
+.site-footer nav { display: flex; flex-wrap: wrap; gap: var(--s-21); }
+.site-footer a { color: var(--ink-3); }
+.site-footer a:hover { color: var(--gold-strong); }
+.empty { text-align: center; color: var(--ink-3); padding: var(--s-55); }
 
-/* Responsive — mobile-first colaps */
-@media (max-width: 1000px) { .masonry { column-count: 2; } }
+/* ---------------------------------------------------------- Responsive --- */
+@media (max-width: 1000px) {
+  .masonry { column-count: 2; }
+  .lead-feature { grid-template-columns: 1fr; gap: var(--s-21); }
+  .lead-feature .lead-aside { border-left: 0; border-top: 1px solid var(--line); padding-left: 0; padding-top: var(--s-21); }
+}
 @media (max-width: 640px) {
   .masonry { column-count: 1; }
-  main { padding: var(--space) var(--space-sm); }
-  .site-header { padding: var(--space-sm); }
+  main { padding: var(--s-21) var(--s-13); }
+  .site-header { padding: var(--s-13); }
+  .lead-feature { padding: var(--s-21); }
+  .lead-feature h2.lead-title { font-size: var(--fs-xl); }
+  .article h1 { font-size: var(--fs-xl); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * { transition: none !important; scroll-behavior: auto !important; }
 }
