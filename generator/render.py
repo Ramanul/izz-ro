@@ -70,8 +70,11 @@ def _article_jsonld(a: dict) -> dict:
         "headline": a.get("title", ""),
         "description": body or "",
         "datePublished": a.get("published", ""),
+        "dateModified": a.get("published", ""),
         "url": f"{config.SITE['url']}/{a['category']}/{a['slug']}/",
+        "mainEntityOfPage": f"{config.SITE['url']}/{a['category']}/{a['slug']}/",
         "inLanguage": config.SITE["lang"],
+        "author": {"@type": "Organization", "name": config.SITE["name"]},
         "publisher": {"@type": "Organization", "name": config.SITE["name"]},
         "isBasedOn": [s["url"] for s in a.get("sources", [])] or a.get("original_link", ""),
     }
@@ -223,9 +226,12 @@ def _render_legal(env: Environment) -> None:
 
 def _write_sitemap(articles: list) -> None:
     url = config.SITE["url"]
-    locs = [f"{url}/", *[f"{url}/{c}/" for c in config.CATEGORIES]]
-    locs += [f"{url}/{a['category']}/{a['slug']}/" for a in articles]
-    items = "\n".join(f"  <url><loc>{xml_escape(l)}</loc></url>" for l in locs)
+    today = datetime.now(timezone.utc).strftime("%Y-%m-%d")
+    locs = [(f"{url}/", today), *[(f"{url}/{c}/", today) for c in config.CATEGORIES]]
+    locs += [(f"{url}/{a['category']}/{a['slug']}/", (a.get("published") or "")[:10]) for a in articles]
+    items = "\n".join(
+        f"  <url><loc>{xml_escape(l)}</loc>" + (f"<lastmod>{lm}</lastmod>" if lm else "") + "</url>"
+        for l, lm in locs)
     _write(os.path.join(OUT_DIR, "sitemap.xml"),
            '<?xml version="1.0" encoding="UTF-8"?>\n'
            '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'

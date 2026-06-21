@@ -8,7 +8,7 @@
   <link rel="canonical" href="{{ canonical }}">
 
   <!-- Open Graph / Twitter -->
-  <meta property="og:type" content="website">
+  <meta property="og:type" content="{% block og_type %}website{% endblock %}">
   <meta property="og:site_name" content="{{ site.name }}">
   <meta property="og:title" content="{{ self.title() }}">
   <meta property="og:description" content="{{ self.description() }}">
@@ -30,8 +30,9 @@
 <body>
   <header class="site-header">
     <a class="brand" href="{{ base }}/">
+      <span class="brand-eyebrow">{{ site.tagline }}</span>
       <span class="logo">IZZ<b>.ro</b></span>
-      <span class="tagline">{{ site.tagline }}</span>
+      <span class="brand-descriptor">{{ site.descriptor }}</span>
     </a>
     <nav class="nav">
       {% for cat in categories %}<a href="{{ base }}/{{ cat }}/"{% if cat == active_cat %} class="active"{% endif %}>{{ cat }}</a>{% endfor %}
