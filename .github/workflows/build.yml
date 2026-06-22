@@ -32,7 +32,8 @@ jobs:
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           AI_PROVIDER: gemini
-          MAX_AI_CALLS_PER_RUN: "12"
+          MAX_AI_CALLS_PER_RUN: "18"
+          UPGRADE_RESERVE: "8"
         run: python -m generator.main
 
       - name: Comite starea (declanseaza deploy Cloudflare)

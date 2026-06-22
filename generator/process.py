@@ -17,7 +17,7 @@ SYSTEM_B = ("Esti editor de stiri. Reformulezi titlul direct, fara clickbait, si
 USER_B = """Titlu original: {title}
 Descriere RSS: {description}
 
-Returneaza: {{"title": "<titlu reformulat, max 12 cuvinte, fara clickbait>",
+Returneaza: {{"title": "<titlu reformulat care transmite faptul COMPLET, fara clickbait; max 22 de cuvinte; NU taia ideea cu '...'>",
              "teaser": "<max 40 de cuvinte, faptele cheie, propozitii 100% noi, NICIO fraza copiata; ramane util DOAR ca rezumat scurt, nu ca inlocuitor al articolului>",
              "category": "<una din: general|politic|economic|extern|tech|sport>"}}
 Reguli: zero propozitii reproduse din original; zero opinii; daca descrierea e insuficienta -> teaser = "Detalii pe sursa."
@@ -29,7 +29,7 @@ SYSTEM_C = ("Esti editor care sintetizeaza un eveniment din MAI MULTE surse, cu 
 USER_C = """Eveniment, relatat de surse:
 {sources_block}
 
-Returneaza: {{"title": "<titlu reformulat, max 12 cuvinte>",
+Returneaza: {{"title": "<titlu reformulat care transmite faptul complet; max 22 de cuvinte; fara clickbait>",
              "synthesis": "<max 90 de cuvinte: faptele comune confirmate de surse, reformulate complet; un rand de context propriu; mentioneaza ca detaliile sunt la surse>",
              "category": "<una din: general|politic|economic|extern|tech|sport>"}}
 Reguli: trianguleaza faptele (ce confirma mai multe surse); zero propozitii copiate; marcheaza daca sursele se contrazic.
@@ -70,7 +70,7 @@ def process_single(item: dict, provider) -> dict:
     """Model B. Modifica item-ul pe loc: title/teaser/category/model/processed_by."""
     item["model"] = "B"
     if provider is None:
-        item["title"] = truncate_words(item.get("original_title", ""), 12)
+        item["title"] = truncate_words(item.get("original_title", ""), config.TITLE_MAX_WORDS)
         item["teaser"] = truncate_words(item.get("description") or "Detalii pe sursa.",
                                         config.TEASER_MAX_WORDS)
         item["processed_by"] = "fallback"
@@ -85,7 +85,7 @@ def process_single(item: dict, provider) -> dict:
         item["category"] = _valid_category(data.get("category", ""), item.get("category", "general"))
         item["processed_by"] = provider.name
     except Exception as exc:  # un esec pe un articol nu opreste pipeline-ul
-        item["title"] = truncate_words(item.get("original_title", ""), 12)
+        item["title"] = truncate_words(item.get("original_title", ""), config.TITLE_MAX_WORDS)
         item["teaser"] = truncate_words(item.get("description") or "Detalii pe sursa.",
                                         config.TEASER_MAX_WORDS)
         item["processed_by"] = "fallback"
@@ -97,10 +97,15 @@ def process_cluster(group: list, provider) -> dict:
     """Model C. Returneaza un articol-reprezentant cu sinteza + lista de surse."""
     rep = dict(min(group, key=lambda a: a.get("published") or ""))
     rep["model"] = "C"
-    rep["sources"] = [{"name": a["source_name"], "url": a["original_link"]} for a in group]
+    _seen_src = set()
+    rep["sources"] = [
+        {"name": a["source_name"], "url": a["original_link"]}
+        for a in group
+        if a["source_name"] not in _seen_src and not _seen_src.add(a["source_name"])
+    ]
 
     if provider is None:
-        rep["title"] = truncate_words(rep.get("original_title", ""), 12)
+        rep["title"] = truncate_words(rep.get("original_title", ""), config.TITLE_MAX_WORDS)
         rep["synthesis"] = truncate_words(rep.get("description") or "Detalii pe surse.",
                                           config.SYNTHESIS_MAX_WORDS)
         rep["processed_by"] = "fallback"
@@ -117,7 +122,7 @@ def process_cluster(group: list, provider) -> dict:
         rep["category"] = _valid_category(data.get("category", ""), rep.get("category", "general"))
         rep["processed_by"] = provider.name
     except Exception as exc:
-        rep["title"] = truncate_words(rep.get("original_title", ""), 12)
+        rep["title"] = truncate_words(rep.get("original_title", ""), config.TITLE_MAX_WORDS)
         rep["synthesis"] = truncate_words(rep.get("description") or "Detalii pe surse.",
                                           config.SYNTHESIS_MAX_WORDS)
         rep["processed_by"] = "fallback"
