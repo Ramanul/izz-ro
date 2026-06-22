@@ -29,11 +29,12 @@ AGENCY_BLOCKLIST = ["agerpres", "mediafax", "reuters", "afp.com", "apnews", "ap.
 CATEGORIES = ["general", "politic", "economic", "extern", "tech", "sport"]
 
 # Model B+C
+PROMPT_VERSION = "v2-esenta"   # versiunea regulilor AI; la schimbare, articolele vechi se reprocesează
 TITLE_MAX_WORDS = 22           # titlu: soft-cap care transmite faptul complet (nu mai taie la 12)
 TEASER_MAX_WORDS = 40          # B: teaser scurt ("extras foarte scurt")
 SYNTHESIS_MAX_WORDS = 90       # C: sinteză multi-sursă (doar pentru clustere importante)
 CLUSTER_MIN_SOURCES = 2        # >=2 surse pe același eveniment -> candidat pentru C
-ARTICLE_TTL_DAYS = 14          # după 14 zile: arhivat, nu șters brusc (SEO)
-MAX_PER_SOURCE = 12
+ARTICLE_TTL_DAYS = 7           # mai scurt -> volum mai mic -> incape in quota free Gemini
+MAX_PER_SOURCE = 8             # redus de la 12 ca sa scada apelurile AI/rulare
 
 AI_PROVIDER = os.getenv("AI_PROVIDER", "gemini")  # "gemini" | "anthropic"

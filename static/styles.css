@@ -82,7 +82,7 @@ a:hover { color: var(--ink); }
 .brand { display: flex; flex-direction: column; align-items: flex-start; gap: 3px; line-height: 1.08; }
 .brand-eyebrow {
   font-family: var(--font-mono); font-size: var(--fs-eyebrow); font-weight: 700;
-  color: var(--gold-strong); text-transform: uppercase; letter-spacing: 2.5px;
+  color: var(--ink-3); text-transform: uppercase; letter-spacing: 2.5px;
 }
 .brand .logo {
   font-family: var(--font-display); font-size: var(--fs-lg); font-weight: 800;
@@ -90,7 +90,7 @@ a:hover { color: var(--ink); }
 }
 .brand .logo b { color: var(--gold-strong); }
 .brand-descriptor {
-  font-family: var(--font-mono); font-size: var(--fs-eyebrow); color: var(--ink-3);
+  font-family: var(--font-mono); font-size: var(--fs-eyebrow); color: var(--gold-strong);
   letter-spacing: 1px;
 }
 @media (max-width: 640px) { .brand-descriptor { display: none; } }  /* economisește înălțime pe mobil */
