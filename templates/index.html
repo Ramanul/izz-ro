@@ -11,7 +11,7 @@
     {% set top = hero[0] %}
     <article class="lead-feature">
       <div class="lead-main">
-        <span class="badge{% if top.model == 'C' %} c{% endif %}">{% if top.model == 'C' %}Sinteză{% else %}{{ top.category }}{% endif %}</span>
+        <span class="badge{% if top.model == 'C' %} c{% endif %}">{{ top.category }}</span>
         <h2 class="lead-title"><a href="{{ base }}/{{ top.category }}/{{ top.slug }}/">{{ top.title }}</a></h2>
         <p class="lead-summary">{% if top.model == 'C' %}{{ top.synthesis }}{% else %}{{ top.teaser }}{% endif %}</p>
       </div>

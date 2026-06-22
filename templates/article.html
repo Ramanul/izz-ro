@@ -8,7 +8,7 @@
 {% endblock %}
 {% block content %}
 <article class="article">
-  <span class="badge{% if a.model == 'C' %} c{% endif %}">{% if a.model == 'C' %}Sinteză din mai multe surse{% else %}{{ a.category }}{% endif %}</span>
+  <span class="badge{% if a.model == 'C' %} c{% endif %}">{{ a.category }}</span>
   <h1>{{ a.title }}</h1>
   <div class="meta">
     <span class="source">{{ a.source_name }}</span>
