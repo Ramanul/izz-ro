@@ -147,7 +147,13 @@ main { max-width: var(--maxw); margin: 0 auto; padding: var(--s-34) var(--s-21);
 /* Masonry pe coloane — înălțime naturală, fără goluri. Gap = pas Fibonacci. */
 .masonry { column-count: 3; column-gap: var(--s-21); margin-bottom: var(--s-34); }
 .masonry > .card { break-inside: avoid; margin: 0 0 var(--s-21); }
-.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(309px, 1fr)); gap: var(--s-21); align-items: start; }
+/* Grila aliniata — randuri de inaltime EGALA (ordonat, ca peers-ii Digi24/HotNews) */
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: var(--s-21); align-items: stretch; }
+.grid > .card { height: 100%; }
+.see-all {
+  display: inline-block; margin: calc(-1 * var(--s-13)) 0 var(--s-21);
+  font-family: var(--font-mono); font-size: var(--fs-xs); font-weight: 700; color: var(--gold-strong);
+}
 
 .card {
   background: var(--card); border: 1px solid var(--line); border-radius: var(--radius);
