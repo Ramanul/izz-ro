@@ -13,7 +13,7 @@ try:
 except ImportError:
     pass
 
-from . import fetch, state, cluster, moderation
+from . import fetch, state, cluster, moderation, config
 from .process import get_provider, process_single, process_cluster
 
 
@@ -60,8 +60,10 @@ def process_new(new_items: list, provider, budget: int) -> tuple[list, set, int]
 
 
 def upgrade_fallbacks(articles: list, provider, remaining: int) -> int:
-    """Reprocesează cu AI articolele ramase pe fallback (din rulari anterioare limitate
-    de quota), in limita bugetului ramas. Le modifica pe loc. Returneaza apelurile folosite.
+    """Reprocesează cu AI articolele B invechite, in limita bugetului ramas:
+    - cele ramase pe fallback (quota), SI
+    - cele procesate cu o versiune veche a regulilor (prompt_version != curent).
+    Le modifica pe loc. Returneaza apelurile folosite. (C nu se reproceseaza — nu avem grupul.)
     """
     if not provider or remaining <= 0:
         return 0
@@ -69,8 +71,11 @@ def upgrade_fallbacks(articles: list, provider, remaining: int) -> int:
     for a in articles:
         if used >= remaining:
             break
-        if a.get("processed_by") == "fallback" and a.get("model") == "B":
-            process_single(a, provider)  # rescrie titlu/teaser/processed_by pe loc
+        if a.get("model") == "B" and (
+            a.get("processed_by") == "fallback"
+            or a.get("prompt_version") != config.PROMPT_VERSION
+        ):
+            process_single(a, provider)  # rescrie titlu/teaser/processed_by/prompt_version pe loc
             used += 1
     return used
 

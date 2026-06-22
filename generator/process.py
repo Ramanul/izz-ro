@@ -11,29 +11,31 @@ from .util import truncate_words
 
 # ---- Prompturi calibrate juridic (zero propozitii copiate din original) ----
 
-SYSTEM_B = ("Esti editor de stiri. Reformulezi titlul direct, fara clickbait, si extragi "
-            "DOAR faptele esentiale in propozitii complet noi. Raspunzi exclusiv JSON valid.")
+SYSTEM_B = ("Esti editor de stiri. Scopul tau: titlul reda ESENTA faptului, iar rezumatul comprima "
+            "faptele de baza, cu cuvintele tale. Concret, nu vag. Raspunzi exclusiv JSON valid.")
 
 USER_B = """Titlu original: {title}
-Descriere RSS: {description}
+Descriere: {description}
 
-Returneaza: {{"title": "<titlu reformulat care transmite faptul COMPLET, fara clickbait; max 22 de cuvinte; NU taia ideea cu '...'>",
-             "teaser": "<max 40 de cuvinte, faptele cheie, propozitii 100% noi, NICIO fraza copiata; ramane util DOAR ca rezumat scurt, nu ca inlocuitor al articolului>",
-             "category": "<una din: general|politic|economic|extern|tech|sport>"}}
-Reguli: zero propozitii reproduse din original; zero opinii; daca descrierea e insuficienta -> teaser = "Detalii pe sursa."
-"""
+Scrie un titlu si un rezumat care REDAU ESENTA, cu cuvintele tale.
+Returneaza JSON:
+{{"title": "<esenta faptului: CINE face/pateste CE (si unde/cand daca e cheie); concret si clar; 6-16 cuvinte; fara clickbait, fara formulari vagi precum 'iata ce', 'ce a patit'>",
+  "teaser": "<rezumat COMPRIMAT al faptelor de baza in 25-40 de cuvinte: cine, ce, cand, unde, cat/de ce; reformulat 100%, ZERO propozitii copiate din original; trebuie sa transmita esenta fara a citi articolul>",
+  "category": "<una din: general|politic|economic|extern|tech|sport>"}}
+Reguli: titlul trebuie sa se inteleaga singur si sa contina faptul real, nu o intrebare/teaser; NU copia nicio propozitie din original; zero opinii; daca descrierea e saraca, extrage esenta din titlul original (tot reformulat)."""
 
 SYSTEM_C = ("Esti editor care sintetizeaza un eveniment din MAI MULTE surse, cu cuvintele tale. "
-            "Raspunzi exclusiv JSON valid.")
+            "Titlul reda esenta evenimentului; sinteza comprima faptele confirmate. Raspunzi exclusiv JSON valid.")
 
 USER_C = """Eveniment, relatat de surse:
 {sources_block}
 
-Returneaza: {{"title": "<titlu reformulat care transmite faptul complet; max 22 de cuvinte; fara clickbait>",
-             "synthesis": "<max 90 de cuvinte: faptele comune confirmate de surse, reformulate complet; un rand de context propriu; mentioneaza ca detaliile sunt la surse>",
-             "category": "<una din: general|politic|economic|extern|tech|sport>"}}
-Reguli: trianguleaza faptele (ce confirma mai multe surse); zero propozitii copiate; marcheaza daca sursele se contrazic.
-"""
+Scrie titlu + sinteza care REDAU ESENTA evenimentului, cu cuvintele tale.
+Returneaza JSON:
+{{"title": "<esenta evenimentului: ce s-a intamplat, concret; 6-16 cuvinte; fara clickbait>",
+  "synthesis": "<sinteza COMPRIMATA in 40-80 de cuvinte: faptele confirmate de mai multe surse (cine, ce, cand, unde, cat), reformulate 100%; marcheaza daca sursele se contrazic>",
+  "category": "<una din: general|politic|economic|extern|tech|sport>"}}
+Reguli: trianguleaza faptele comune; ZERO propozitii copiate; titlul contine faptul real, nu un teaser; zero opinii."""
 
 
 def get_provider():
@@ -84,6 +86,7 @@ def process_single(item: dict, provider) -> dict:
                                         config.TEASER_MAX_WORDS)
         item["category"] = _valid_category(data.get("category", ""), item.get("category", "general"))
         item["processed_by"] = provider.name
+        item["prompt_version"] = config.PROMPT_VERSION
     except Exception as exc:  # un esec pe un articol nu opreste pipeline-ul
         item["title"] = truncate_words(item.get("original_title", ""), config.TITLE_MAX_WORDS)
         item["teaser"] = truncate_words(item.get("description") or "Detalii pe sursa.",
@@ -121,6 +124,7 @@ def process_cluster(group: list, provider) -> dict:
                                           config.SYNTHESIS_MAX_WORDS)
         rep["category"] = _valid_category(data.get("category", ""), rep.get("category", "general"))
         rep["processed_by"] = provider.name
+        rep["prompt_version"] = config.PROMPT_VERSION
     except Exception as exc:
         rep["title"] = truncate_words(rep.get("original_title", ""), config.TITLE_MAX_WORDS)
         rep["synthesis"] = truncate_words(rep.get("description") or "Detalii pe surse.",
