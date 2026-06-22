@@ -122,17 +122,29 @@ def _dedup(articles: list) -> list:
 def _pick_hero(articles: list) -> list:
     featured = [a for a in articles if a.get("featured")]
     rest = [a for a in articles if not a.get("featured")]
-    rest_sorted = sorted(rest, key=lambda a: (a.get("model") != "C", a.get("published") or ""),
-                         reverse=False)
-    # C-urile si cele mai recente in fata
+    # prioritate: AI (gemini) inaintea fallback, apoi clustere C, apoi cele mai recente
     rest_sorted = sorted(rest, key=lambda a: a.get("published") or "", reverse=True)
-    rest_sorted = sorted(rest_sorted, key=lambda a: a.get("model") != "C")
+    rest_sorted.sort(key=lambda a: (a.get("processed_by") != "gemini", a.get("model") != "C"))
     return (featured + rest_sorted)[:6]
+
+
+def _dedup_sources(a: dict) -> None:
+    """Surse unice dupa nume (evita 'Digi Sport x3' pe acelasi card)."""
+    seen, out = set(), []
+    for s in a.get("sources") or []:
+        if s.get("name") in seen:
+            continue
+        seen.add(s.get("name"))
+        out.append(s)
+    if out:
+        a["sources"] = out
 
 
 def build(articles: list, mod: dict | None = None) -> None:
     env = _env()
     articles = _dedup(articles)
+    for a in articles:
+        _dedup_sources(a)
     _assign_slugs(articles)
 
     # reset output (golim CONTINUTUL, nu radacina — ca un server local care tine
