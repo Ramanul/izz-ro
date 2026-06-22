@@ -161,7 +161,9 @@ def build(articles: list, mod: dict | None = None) -> None:
 
     by_category = {}
     for cat in config.CATEGORIES:
-        by_category[cat] = [a for a in by_date if a.get("category") == cat and a["url"] not in hero_urls]
+        # plafon pe homepage (legea lui Hick): max 9/sectiune; restul pe pagina categoriei
+        items = [a for a in by_date if a.get("category") == cat and a["url"] not in hero_urls]
+        by_category[cat] = items[:9]
 
     # homepage
     item_list = {
