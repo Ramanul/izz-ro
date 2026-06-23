@@ -1,35 +1,28 @@
 /* =============================================================================
-   IZZ.ro — temă LIGHT, sistem pe PROPORȚIA DE AUR (φ = 1.618)
-   Înlocuiește integral vechiul static/styles.css (auriu-dark).
+   IZZ.ro — „Cronică aurie": broadsheet DIGITAL, light, pe PROPORȚIA DE AUR (φ=1.618)
+   Identitate editoriala: fara chenare grele -> tipografie + linii fine + accent auriu.
+   Titluri serif mari (Playfair), etichete mono aurii, mult aer. Personalitate, nu boxe.
 
-   SISTEMUL φ (de respectat la ORICE componentă nouă):
-   - Scară tipografică: pas = √φ ≈ 1.272; la fiecare DOI pași = ×φ.
-       0.618 · 0.786 · 1.000 · 1.272 · 1.618 · 2.058 · 2.618 · 3.330  (rem)
-   - Spațiere: șir Fibonacci (raport → φ): 5 · 8 · 13 · 21 · 34 · 55 · 89 (px)
-   - Lățimi: coloana de citit = container / φ  (1180 / 1.618 ≈ 729px).
-   - Layout-semnătură: povestea lead spartă φ:1 (sinteză : proveniență).
-   - Line-height body = 1.618 (golden) pentru lectură; titluri strânse.
-   Unde φ strict ar strica uzabilitatea (ex. paddinguri minuscule), s-a relaxat
-   conștient la cel mai apropiat pas Fibonacci. Nu inventa valori în afara scării.
+   SISTEM φ (de respectat la ORICE componenta noua):
+   - Tipografie --fs-*: 0.618 0.786 1 1.272 1.618 2.058 2.618 3.330 rem (pas √φ; ×φ la 2 pasi)
+   - Spatiere --s-*: Fibonacci 5 8 13 21 34 55 89 px
+   - Latime de lectura --measure = maxw/φ ≈ 729px
+   - Layout-semnatura: lead spart φ:1 (sinteza : provenienta)
 ============================================================================= */
 
 :root {
-  /* --- Paletă light (neutru rece, NU cream; aur = accent de brand, accesibil) --- */
-  --paper:       #f7f8fa;   /* fundal pagină */
-  --card:        #ffffff;   /* suprafețe */
-  --card-2:      #fffdf7;   /* suprafață caldă (lead) */
-  --ink:         #16191f;   /* text principal  (~15:1 pe paper) */
-  --ink-2:       #525a67;   /* text secundar   (~7:1 pe alb) */
-  --ink-3:       #8a93a1;   /* meta discret */
-  --line:        #e5e8ec;   /* hairline / borduri */
-  --gold:        #c9a227;   /* aur viu: doar fundaluri/decor, NU text pe alb */
-  --gold-strong: #8a6d1f;   /* aur închis: linkuri/text pe alb (AA ✓) */
-  --gold-wash:   #faf6e9;   /* tentă aurie foarte deschisă */
-  --shadow:      0 1px 2px rgba(22,25,31,.04), 0 4px 13px rgba(22,25,31,.06);
-  --shadow-lg:   0 2px 5px rgba(22,25,31,.05), 0 13px 34px rgba(22,25,31,.10);
+  --paper:       #f6f7f9;   /* fundal pagina, alb rece */
+  --paper-2:     #ffffff;   /* zone proeminente (lead) */
+  --ink:         #15171c;   /* text principal (~16:1) */
+  --ink-2:       #4d5562;   /* text secundar */
+  --ink-3:       #889;      /* meta discret */
+  --line:        #e4e7ec;   /* hairline */
+  --line-strong: #c9ccd3;   /* linie de regula mai vizibila */
+  --gold:        #c9a227;   /* aur viu: decor/fundaluri, NU text pe alb */
+  --gold-strong: #94701a;   /* aur inchis: text/linkuri pe alb (AA ✓) */
+  --gold-wash:   #faf5e6;
 
-  /* --- Scară tipografică φ --- */
-  --fs-eyebrow: 0.618rem;
+  --fs-eyebrow: 0.7rem;
   --fs-xs:      0.786rem;
   --fs-base:    1rem;
   --fs-md:      1.272rem;
@@ -38,180 +31,163 @@
   --fs-2xl:     2.618rem;
   --fs-3xl:     3.330rem;
 
-  /* --- Spațiere Fibonacci (golden) --- */
-  --s-5: 5px;  --s-8: 8px;  --s-13: 13px;  --s-21: 21px;
-  --s-34: 34px; --s-55: 55px; --s-89: 89px;
+  --s-5: 5px; --s-8: 8px; --s-13: 13px; --s-21: 21px; --s-34: 34px; --s-55: 55px; --s-89: 89px;
 
-  /* --- Tipografie & layout --- */
   --font-display: "Playfair Display", Georgia, serif;
   --font-text:    "Inter", system-ui, -apple-system, sans-serif;
   --font-mono:    "JetBrains Mono", ui-monospace, monospace;
-  --radius: 12px;
-  --maxw: 1180px;
-  --measure: 729px;            /* = maxw / φ : coloana de lectură */
-  --lh-body: 1.618;            /* line-height golden */
+  --maxw: 1200px;
+  --measure: 729px;
+  --lh-body: 1.6;
 }
 
 * { box-sizing: border-box; }
 html { scroll-behavior: smooth; }
 body {
-  margin: 0;
-  font-family: var(--font-text);
-  background: var(--paper);
-  color: var(--ink);
-  font-size: var(--fs-base);
-  line-height: var(--lh-body);
-  -webkit-font-smoothing: antialiased;
-  text-rendering: optimizeLegibility;
+  margin: 0; font-family: var(--font-text);
+  background: var(--paper); color: var(--ink);
+  font-size: var(--fs-base); line-height: var(--lh-body);
+  -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility;
 }
 a { color: var(--gold-strong); text-decoration: none; }
 a:hover { color: var(--ink); }
-:focus-visible { outline: 2px solid var(--gold-strong); outline-offset: 2px; border-radius: 3px; }
+:focus-visible { outline: 2px solid var(--gold-strong); outline-offset: 3px; }
 
-/* ---------------------------------------------------------------- Header --- */
+/* ---------------------------------------------------------------- Masthead --- */
 .site-header {
+  border-top: 4px solid var(--gold);              /* bara aurie de broadsheet */
+  border-bottom: 1px solid var(--line);
+  background: var(--paper-2);
+  position: sticky; top: 0; z-index: 10;
   display: flex; align-items: center; justify-content: space-between;
   gap: var(--s-21); flex-wrap: wrap;
   padding: var(--s-21) var(--s-34);
-  background: var(--card);
-  border-bottom: 1px solid var(--line);
-  position: sticky; top: 0; z-index: 10;
 }
-/* Lockup pe trei niveluri: kicker auriu (desfășurarea acronimului) / wordmark / descriptor.
-   Gap micro-tipografic (3px) sub scara Fibonacci — e spațiere de linie, nu de layout. */
-.brand { display: flex; flex-direction: column; align-items: flex-start; gap: 3px; line-height: 1.08; }
+.brand { display: flex; flex-direction: column; align-items: flex-start; gap: 3px; line-height: 1.05; }
 .brand-eyebrow {
   font-family: var(--font-mono); font-size: var(--fs-eyebrow); font-weight: 700;
   color: var(--ink-3); text-transform: uppercase; letter-spacing: 2.5px;
 }
 .brand .logo {
-  font-family: var(--font-display); font-size: var(--fs-lg); font-weight: 800;
-  color: var(--ink); letter-spacing: .3px;
+  font-family: var(--font-display); font-size: var(--fs-xl); font-weight: 800;
+  color: var(--ink); letter-spacing: .2px;
 }
 .brand .logo b { color: var(--gold-strong); }
 .brand-descriptor {
   font-family: var(--font-mono); font-size: var(--fs-eyebrow); color: var(--gold-strong);
   letter-spacing: 1px;
 }
-@media (max-width: 640px) { .brand-descriptor { display: none; } }  /* economisește înălțime pe mobil */
+@media (max-width: 640px) { .brand-descriptor { display: none; } }
 .nav { display: flex; flex-wrap: wrap; gap: var(--s-21); }
 .nav a {
-  color: var(--ink-2); font-weight: 600; font-size: var(--fs-xs);
-  text-transform: capitalize; padding-bottom: 2px; border-bottom: 2px solid transparent;
+  color: var(--ink-2); font-family: var(--font-mono); font-weight: 600;
+  font-size: var(--fs-xs); text-transform: uppercase; letter-spacing: 1px;
+  padding-bottom: 3px; border-bottom: 2px solid transparent;
 }
 .nav a:hover, .nav a.active { color: var(--gold-strong); border-bottom-color: var(--gold); }
 
 /* ---------------------------------------------------------------- Layout --- */
-main { max-width: var(--maxw); margin: 0 auto; padding: var(--s-34) var(--s-21); }
+main { max-width: var(--maxw); margin: 0 auto; padding: var(--s-34) var(--s-34); }
 .section-title {
-  font-family: var(--font-display); font-size: var(--fs-lg); font-weight: 700; color: var(--ink);
+  font-family: var(--font-display); font-size: var(--fs-xl); font-weight: 800; color: var(--ink);
   margin: var(--s-55) 0 var(--s-21); padding-bottom: var(--s-8);
-  border-bottom: 1px solid var(--line);
+  border-bottom: 2px solid var(--ink); letter-spacing: -.2px;
 }
-.section-title:first-child { margin-top: 0; }
+.section-title::first-letter { color: var(--gold-strong); }
+.section-title:first-of-type { margin-top: var(--s-21); }
 
-/* ---- SEMNĂTURĂ: povestea lead spartă în proporția de aur (φ:1) ----
-   Coloana majoră = sinteza; coloana minoră = proveniența (surse/oră/relevanță).
-   Necesită micul wrap din index.html (vezi instrucțiunile însoțitoare). */
+/* ---- LEAD: povestea principala, spart in proportia de aur ---- */
 .lead-feature {
   display: grid; grid-template-columns: 1.618fr 1fr; gap: var(--s-34);
-  background: var(--card-2); border: 1px solid var(--line);
-  border-radius: var(--radius); box-shadow: var(--shadow-lg);
-  padding: var(--s-34); margin-bottom: var(--s-34);
-  position: relative; overflow: hidden;
+  background: var(--paper-2); border: 1px solid var(--line);
+  padding: var(--s-34); margin-bottom: var(--s-21);
+  position: relative;
 }
-.lead-feature::before {           /* fir auriu de φ pe muchia de sus */
-  content: ""; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+.lead-feature::before {
+  content: ""; position: absolute; top: 0; left: 0; right: 0; height: 4px;
   background: linear-gradient(90deg, var(--gold), transparent 61.8%);
 }
 .lead-feature .lead-main { min-width: 0; }
+.lead-feature .lead-main .badge { margin-bottom: var(--s-8); }
 .lead-feature h2.lead-title {
-  font-family: var(--font-display); font-size: var(--fs-2xl); line-height: 1.12;
-  margin: var(--s-13) 0 var(--s-21); font-weight: 800;
+  font-family: var(--font-display); font-size: var(--fs-2xl); line-height: 1.08;
+  margin: var(--s-5) 0 var(--s-21); font-weight: 800; letter-spacing: -.5px;
 }
 .lead-feature h2.lead-title a { color: var(--ink); }
 .lead-feature h2.lead-title a:hover { color: var(--gold-strong); }
-.lead-feature .lead-summary { font-size: var(--fs-md); color: var(--ink-2); margin: 0; }
+.lead-feature .lead-summary { font-size: var(--fs-md); color: var(--ink-2); margin: 0; line-height: 1.5; }
 .lead-feature .lead-aside {
   border-left: 1px solid var(--line); padding-left: var(--s-34);
-  display: flex; flex-direction: column; gap: var(--s-13);
+  display: flex; flex-direction: column; gap: var(--s-21);
   font-family: var(--font-mono); font-size: var(--fs-xs); color: var(--ink-2);
 }
 .lead-feature .lead-aside h3 {
   font-family: var(--font-mono); font-size: var(--fs-eyebrow); text-transform: uppercase;
-  letter-spacing: 1.5px; color: var(--ink-3); margin: 0 0 var(--s-5);
+  letter-spacing: 1.5px; color: var(--ink-3); margin: 0 0 var(--s-5); font-weight: 700;
 }
 .lead-feature .lead-aside ul { margin: 0; padding-left: var(--s-13); }
+.lead-feature .lead-aside .source { color: var(--gold-strong); }
 
-/* ---------------------------------------------------------- Flux carduri --- */
-/* Masonry pe coloane — înălțime naturală, fără goluri. Gap = pas Fibonacci. */
-.masonry { column-count: 3; column-gap: var(--s-21); margin-bottom: var(--s-34); }
-.masonry > .card { break-inside: avoid; margin: 0 0 var(--s-21); }
-/* Grila aliniata — randuri de inaltime EGALA (ordonat, ca peers-ii Digi24/HotNews) */
-.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: var(--s-21); align-items: stretch; }
-.grid > .card { height: 100%; }
-.see-all {
-  display: inline-block; margin: calc(-1 * var(--s-13)) 0 var(--s-21);
-  font-family: var(--font-mono); font-size: var(--fs-xs); font-weight: 700; color: var(--gold-strong);
+/* ---- INDEX editorial: fara chenare, separator-linie, inaltime naturala ---- */
+/* Coloane de ziar: gap mare pe orizontala, fiecare stire = bloc tipografic. */
+.grid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(310px, 1fr));
+  column-gap: var(--s-55); row-gap: 0; align-items: start;
 }
-
 .card {
-  background: var(--card); border: 1px solid var(--line); border-radius: var(--radius);
-  padding: var(--s-21); display: flex; flex-direction: column; gap: var(--s-8);
-  box-shadow: var(--shadow);
-  transition: transform .16s ease, box-shadow .16s ease;
+  background: none; border: 0; border-top: 1px solid var(--line-strong);
+  padding: var(--s-21) 0; display: flex; flex-direction: column; gap: var(--s-8);
 }
-.card:hover { transform: translateY(-3px); box-shadow: var(--shadow-lg); }
-.card.lead { background: var(--card-2); }
-.card.lead .card-title { font-size: var(--fs-lg); }
+.card:hover .card-title a { color: var(--gold-strong); }
 
+/* Eticheta = eyebrow auriu (nu pastila). C (sinteza) marcat cu bulina aurie. */
 .badge {
   align-self: flex-start; font-family: var(--font-mono); font-size: var(--fs-eyebrow);
-  font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px;
-  padding: 4px 10px; border-radius: 999px;
-  color: var(--ink-2); background: var(--paper); border: 1px solid var(--line);
+  font-weight: 700; text-transform: uppercase; letter-spacing: 2px; color: var(--gold-strong);
 }
-.badge.c { color: #4a3a00; background: var(--gold); border-color: var(--gold); }
+.badge.c::before { content: "\25CF\00A0"; color: var(--gold); }   /* bulina aurie pt. multi-sursa */
 
-.card-title { font-family: var(--font-display); font-size: var(--fs-md); line-height: 1.2; margin: 0; font-weight: 700; }
-.card-title a { color: var(--ink); }
-.card-title a:hover { color: var(--gold-strong); }
+.card-title { font-family: var(--font-display); font-size: var(--fs-lg); line-height: 1.15; margin: 0; font-weight: 700; letter-spacing: -.2px; }
+.card-title a { color: var(--ink); transition: color .15s ease; }
+.card.lead .card-title { font-size: var(--fs-xl); }
 .meta {
-  font-family: var(--font-mono); font-size: var(--fs-xs); color: var(--ink-3);
+  font-family: var(--font-mono); font-size: var(--fs-eyebrow); color: var(--ink-3);
   display: flex; gap: var(--s-8); flex-wrap: wrap;
 }
-.meta .source { color: var(--gold-strong); }
+.meta .source { color: var(--ink-2); font-weight: 600; }
 .summary { color: var(--ink-2); font-size: var(--fs-xs); margin: 0; line-height: 1.55; }
-.read-more { font-size: var(--fs-xs); font-weight: 700; margin-top: auto; }
+.read-more { font-size: var(--fs-eyebrow); font-family: var(--font-mono); font-weight: 700; text-transform: uppercase; letter-spacing: 1px; margin-top: var(--s-5); }
 .read-more::after { content: " \2192"; }
-.sources-inline { font-size: var(--fs-xs); color: var(--ink-3); }
+.sources-inline { font-size: var(--fs-eyebrow); color: var(--ink-3); font-family: var(--font-mono); }
 .sources-inline b { color: var(--gold-strong); font-weight: 700; }
-
-/* Indicator opțional de relevanță (significance) — discret, în meta */
 .sig { font-family: var(--font-mono); font-size: var(--fs-eyebrow); color: var(--ink-3); }
 .sig b { color: var(--gold-strong); }
 
+.see-all {
+  display: inline-block; margin: var(--s-21) 0 0;
+  font-family: var(--font-mono); font-size: var(--fs-xs); font-weight: 700;
+  text-transform: uppercase; letter-spacing: 1px; color: var(--gold-strong);
+}
+
 /* ----------------------------------------------------- Pagina de articol --- */
 .article { max-width: var(--measure); margin: 0 auto; }
-.article .badge { margin-bottom: var(--s-13); }
+.article .badge { margin-bottom: var(--s-8); }
 .article h1 {
-  font-family: var(--font-display); font-size: var(--fs-2xl); line-height: 1.14;
-  margin: var(--s-13) 0 var(--s-21); font-weight: 800;
+  font-family: var(--font-display); font-size: var(--fs-2xl); line-height: 1.1;
+  margin: var(--s-8) 0 var(--s-21); font-weight: 800; letter-spacing: -.5px;
 }
-.article .body { font-size: var(--fs-md); color: var(--ink); margin: var(--s-21) 0; }
+.article .body { font-size: var(--fs-md); color: var(--ink); margin: var(--s-21) 0; line-height: 1.6; }
 .notice {
-  background: var(--gold-wash); border-left: 3px solid var(--gold); border-radius: 6px;
+  background: var(--gold-wash); border-left: 3px solid var(--gold);
   padding: var(--s-13) var(--s-21); font-size: var(--fs-xs); color: var(--ink-2); margin: var(--s-21) 0;
 }
-.sources-box {
-  background: var(--card); border: 1px solid var(--line); border-radius: var(--radius);
-  padding: var(--s-21); margin: var(--s-34) 0; box-shadow: var(--shadow);
-}
-.sources-box h3 { margin: 0 0 var(--s-8); font-family: var(--font-display); font-size: var(--fs-md); }
+.sources-box { border-top: 2px solid var(--ink); padding-top: var(--s-13); margin: var(--s-34) 0; }
+.sources-box h3 { margin: 0 0 var(--s-8); font-family: var(--font-mono); font-size: var(--fs-eyebrow); text-transform: uppercase; letter-spacing: 1.5px; color: var(--ink-3); }
 .sources-box ul { margin: 0; padding-left: var(--s-21); }
 .btn-source {
   display: inline-block; margin-top: var(--s-21); padding: var(--s-13) var(--s-21);
-  background: var(--gold); color: #4a3a00; border-radius: var(--radius); font-weight: 700;
+  background: var(--ink); color: #fff; font-family: var(--font-mono); font-weight: 700;
+  font-size: var(--fs-xs); text-transform: uppercase; letter-spacing: 1px;
 }
 .btn-source:hover { background: var(--gold-strong); color: #fff; }
 
@@ -221,39 +197,33 @@ main { max-width: var(--maxw); margin: 0 auto; padding: var(--s-34) var(--s-21);
 .static-page a { text-decoration: underline; }
 
 /* ---------------------------------------------------------- Newsletter --- */
-.newsletter {
-  background: var(--card); border: 1px solid var(--line); border-radius: var(--radius);
-  padding: var(--s-21) var(--s-34); margin-top: var(--s-55); box-shadow: var(--shadow);
-}
-.newsletter .section-title { margin-top: 0; }
+.newsletter { border-top: 4px solid var(--gold); background: var(--paper-2); border-bottom: 1px solid var(--line); padding: var(--s-34); margin-top: var(--s-55); }
+.newsletter .section-title { margin-top: 0; border-bottom: 0; }
 .newsletter code { font-family: var(--font-mono); color: var(--gold-strong); font-size: var(--fs-xs); }
 
 /* -------------------------------------------------------------- Footer --- */
 .site-footer {
-  max-width: var(--maxw); margin: var(--s-55) auto 0; padding: var(--s-34) var(--s-21);
+  max-width: var(--maxw); margin: var(--s-89) auto 0; padding: var(--s-34);
   border-top: 1px solid var(--line); color: var(--ink-3); font-size: var(--fs-xs);
   display: flex; flex-wrap: wrap; gap: var(--s-21); justify-content: space-between;
 }
 .site-footer nav { display: flex; flex-wrap: wrap; gap: var(--s-21); }
-.site-footer a { color: var(--ink-3); }
+.site-footer a { color: var(--ink-3); font-family: var(--font-mono); text-transform: uppercase; letter-spacing: .5px; font-size: var(--fs-eyebrow); }
 .site-footer a:hover { color: var(--gold-strong); }
-.empty { text-align: center; color: var(--ink-3); padding: var(--s-55); }
+.empty { text-align: center; color: var(--ink-3); padding: var(--s-89) var(--s-21); }
 
 /* ---------------------------------------------------------- Responsive --- */
 @media (max-width: 1000px) {
-  .masonry { column-count: 2; }
   .lead-feature { grid-template-columns: 1fr; gap: var(--s-21); }
-  .lead-feature .lead-aside { border-left: 0; border-top: 1px solid var(--line); padding-left: 0; padding-top: var(--s-21); }
+  .lead-feature .lead-aside { border-left: 0; border-top: 1px solid var(--line); padding-left: 0; padding-top: var(--s-21); flex-direction: row; flex-wrap: wrap; gap: var(--s-34); }
+  .grid { column-gap: var(--s-34); }
 }
 @media (max-width: 640px) {
-  .masonry { column-count: 1; }
-  main { padding: var(--s-21) var(--s-13); }
-  .site-header { padding: var(--s-13); }
+  main { padding: var(--s-21) var(--s-21); }
+  .site-header { padding: var(--s-13) var(--s-21); }
   .lead-feature { padding: var(--s-21); }
   .lead-feature h2.lead-title { font-size: var(--fs-xl); }
+  .section-title { font-size: var(--fs-lg); }
   .article h1 { font-size: var(--fs-xl); }
 }
-
-@media (prefers-reduced-motion: reduce) {
-  * { transition: none !important; scroll-behavior: auto !important; }
-}
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; scroll-behavior: auto !important; } }
