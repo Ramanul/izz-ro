@@ -15,8 +15,9 @@ SOURCES = {
             "prosport":   {"name": "ProSport",     "url": "https://www.prosport.ro/feed/",              "category": "sport"},
             "startup":    {"name": "Start-up.ro",  "url": "https://start-up.ro/feed/",                 "category": "tech"},
             # "playtech": {"name": "Playtech",     "url": "https://playtech.ro/feed/",                 "category": "tech"},   # publica lifestyle/social, nu tech - dezactivat
-            "iqool":      {"name": "iQool",        "url": "https://iqool.ro/feed/",                    "category": "tech"},
-            "piataauto":  {"name": "Piata Auto MD","url": "https://www.piataauto.md/stiri/rss/",       "category": "economic"},
+                # "iqool":    {"name": "iQool",        "url": "https://iqool.ro/feed/",                    "category": "tech"},   # DNS mort - dezactivat
+                # "piataauto":{"name": "Piata Auto MD","url": "https://www.piataauto.md/stiri/rss/",       "category": "economic"}, # nu are RSS public - dezactivat
+      "autocritica": {"name": "AutoCritica",  "url": "https://www.autocritica.ro/feed/",          "category": "tech"},
             # Surse cu volum mare
             "digi24":     {"name": "Digi24",       "url": "https://www.digi24.ro/rss",                 "category": "general"},
             "hotnews":    {"name": "HotNews",      "url": "https://www.hotnews.ro/rss",                "category": "general"},
