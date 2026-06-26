@@ -11,21 +11,35 @@
 ## 1. What izz.ro is
 AI-powered Romanian news aggregator. Brand promise: **"Zero Zgomot"** (Zero Noise) — synthesized, de-duplicated, clean news. The site is **statically generated** from a content pipeline (scrape -> synthesize -> cluster -> categorize -> render).
 
-## 2. Tech stack — VERIFY, do not assume
-Known: Python + Jinja2 SSG, GitHub Actions (CI/CD), Cloudflare Pages (hosting), SQLite (pipeline state).
-Exact versions, libraries, and entry points are NOT verified in this file. Fill section 9 (Bootstrap) on first run. **Do not invent commands or imports.**
+## 2. Tech stack — VERIFIED 2026-06-26
+Python 3.11 (cloud) / 3.14 (local), Jinja2, feedparser, pyyaml, python-slugify, markdown, python-dotenv.
+AI: Gemini 2.5 Flash Lite via REST (no SDK), switchable to Claude API via `AI_PROVIDER=anthropic`.
+CI/CD: GitHub Actions (`build.yml`, cron 30 min). Hosting: Cloudflare Pages (render-only build).
+Pipeline state: `data/articles.json` (committed to repo — no SQLite).
 
-## 3. Repository structure — fill via Bootstrap
-<<< Document the canonical layout once verified: pipeline modules, templates/, static/, output/, data/, .github/workflows/. >>>
+## 3. Repository structure
+```
+generator/          pipeline: main.py · fetch.py · cluster.py · process.py · render.py
+                             state.py · moderation.py · config.py · util.py · providers/
+templates/          Jinja2 (autoescape ON): base.html · index.html · article.html
+                    category.html · legal.html · _card.html
+static/             styles.css · styles.dark.bak.css · logo.svg · favicon.svg
+content/legal/      legal pages (markdown)
+data/articles.json  pipeline state (committed to repo, persists between runs)
+moderation.yaml     editorial control (human in the loop)
+output/             generated site (gitignored; deployed by Cloudflare Pages)
+.github/workflows/  build.yml (fetch+AI+commit, cron 30min)
+```
 
-## 4. Commands — fill via Bootstrap, then use the EXACT strings
-- Install deps: <<< >>>
-- Run pipeline: <<< >>>
-- Build site: <<< >>>
-- Serve locally: <<< >>>
-- Lint / format: <<< >>>
-- Type-check: <<< >>>
-- Tests: <<< >>>
+## 4. Commands — use EXACT strings
+- Install deps: `pip install -r requirements.txt`
+- Run pipeline (full): `python -m generator.main`
+- Dry run (no save, no render): `python -m generator.main --dry-run`
+- Render only (no AI/fetch): `python -m generator.main --render-only`
+- Serve locally: `python -m http.server 8000 --directory output` → http://localhost:8000
+- Lint / format: *(not configured — ruff not in requirements.txt)*
+- Type-check: *(not configured)*
+- Tests: *(not configured)*
 
 ## 5. Workflow — MANDATORY (this is the fix for past sprawl)
 1. **Spec first.** Before any code, write 3-8 lines: goal, inputs/outputs, acceptance criteria. No spec -> no code.
@@ -49,16 +63,12 @@ Exact versions, libraries, and entry points are NOT verified in this file. Fill 
 - **Source diversity.** Be aware of overconcentration in the Digi / RCS-RDS family; do not introduce logic that worsens it.
 
 ## 8. Design tokens
-All visual styling derives from the token file (golden-ratio type scale, Fibonacci spacing). Reference: <<< path, e.g. static/css/tokens.css >>>.
-- Never hardcode colors, font sizes, or spacing in templates — reference tokens.
-- Value missing? Add a token; do not inline a one-off.
+All visual styling derives from `static/styles.css` (golden-ratio φ=1.618 type scale, Fibonacci spacing, light-golden palette).
+- Never hardcode colors, font sizes, or spacing in templates — reference CSS custom properties from `static/styles.css`.
+- Value missing? Add a custom property; do not inline a one-off.
 
-## 9. Bootstrap — run ONCE, first session in this repo
-Before writing feature code, populate sections 3, 4, and the token path in 8 with VERIFIED values:
-1. Read: README, `.github/workflows/*`, `requirements.txt` / `pyproject.toml`, any `Makefile`, and the pipeline entry point.
-2. Replace each `<<< >>>` with real, tested commands and the real structure.
-3. Show the user the filled sections; ask for confirmation before proceeding.
-If a command or file is not found, say so — never fabricate.
+## 9. Bootstrap — COMPLETED 2026-06-26
+Sections 3, 4, and 8 filled from real repo state. No placeholders remain.
 
 ## 10. Do NOT touch without explicit instruction
 - Synthesis / attribution logic ("Model C" multi-source) and anything legal / GDPR-relevant.
