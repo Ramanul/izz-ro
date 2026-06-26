@@ -74,11 +74,12 @@ Sections 3, 4, and 8 filled from real repo state. No placeholders remain.
 - Synthesis / attribution logic ("Model C" multi-source) and anything legal / GDPR-relevant.
 - Production deploy config (Cloudflare Pages, GitHub Actions secrets).
 
-## 11. SEO — known remaining gaps (treat as discrete slices; do NOT re-audit or rebuild)
-SSR/SSG, JSON-LD, and sitemap already exist. Remaining gaps only:
-- `og:type` on article pages.
-- `dateModified` in article JSON-LD.
-- `lastmod` in sitemap entries.
+## 11. SEO — RESOLVED 2026-06-26
+All previously listed gaps are implemented and verified against real render output:
+- `og:type: article` — present on all article pages (base.html block override in article.html)
+- `dateModified` — present in NewsArticle JSON-LD (render.py `_article_jsonld`)
+- `lastmod` — present on all sitemap URLs (render.py `_write_sitemap`)
+No remaining SEO gaps known. Do NOT re-audit or rebuild without a specific new finding.
 
 ## 12. Tooling & effort
 - PowerShell and Desktop Commander may run without per-command approval, within the security hook's blocklist. Reading files and running the documented dev/build/lint/test commands needs no confirmation. Destructive or irreversible actions still require confirmation.
