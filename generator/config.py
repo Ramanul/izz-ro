@@ -10,7 +10,7 @@ SITE = {"name": "IZZ.ro", "tagline": "Informația Zero Zgomot",
 SOURCES = {
             # Surse niche primele -> bugetul AI le proceseaza prioritar (altfel general le infometeaza)
     "extern":     {"name": "Digi24 Extern","url": "https://www.digi24.ro/rss/stiri/externe",   "category": "extern"},
-            # "gsp":      {"name": "GSP",          "url": "https://www.gsp.ro/rss.xml",                "category": "sport"},  # 404 - dezactivat
+            "gsp":        {"name": "GSP",          "url": "https://www.gsp.ro/rss.xml",                "category": "sport"},
             "digisport":  {"name": "Digi Sport",   "url": "https://www.digisport.ro/rss",               "category": "sport"},
             "prosport":   {"name": "ProSport",     "url": "https://www.prosport.ro/feed/",              "category": "sport"},
             "startup":    {"name": "Start-up.ro",  "url": "https://start-up.ro/feed/",                 "category": "tech"},
@@ -19,12 +19,14 @@ SOURCES = {
                     "piataauto": {"name": "Piata Auto MD", "url": "https://piataauto.md/Stiri/", "base_url": "https://piataauto.md", "category": "tech", "type": "html_scraper"},
       "autocritica": {"name": "AutoCritica",  "url": "https://www.autocritica.ro/feed/",          "category": "tech"},
             # Surse cu volum mare
+            "spotmedia":  {"name": "Spotmedia",    "url": "https://spotmedia.ro/rss",                  "category": "general"},
             "digi24":     {"name": "Digi24",       "url": "https://www.digi24.ro/rss",                 "category": "general"},
             "hotnews":    {"name": "HotNews",      "url": "https://www.hotnews.ro/rss",                "category": "general"},
             "g4media":    {"name": "G4Media",      "url": "https://www.g4media.ro/feed",               "category": "politic"},
-            # "libertatea":{"name": "Libertatea",  "url": "https://www.libertatea.ro/rss",             "category": "general"}, # 429 Too Many Requests - dezactivat temporar
+            "libertatea": {"name": "Libertatea",  "url": "https://www.libertatea.ro/rss",             "category": "general"},
             "zf":         {"name": "Ziarul Financiar", "url": "https://www.zf.ro/rss",                 "category": "economic"},
             "economica":  {"name": "Economica",    "url": "https://www.economica.net/rss",             "category": "economic"},
+            "economedia": {"name": "Economedia",   "url": "https://economedia.ro/feed/",               "category": "economic"},
             "protv":      {"name": "Știrile ProTV","url": "https://stirileprotv.ro/rss",               "category": "general"},
 }
 # Exclude orice URL/sursă de agenție (verificare suplimentară pe domeniul linkului)
