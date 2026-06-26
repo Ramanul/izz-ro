@@ -1,5 +1,66 @@
 [
   {
+    "url": "https://aljazeera.com/news/2026/6/26/us-judge-holds-prosecutor-in-contempt-in-charlie-kirk-murder-case?traffic_source=rss",
+    "original_link": "https://www.aljazeera.com/news/2026/6/26/us-judge-holds-prosecutor-in-contempt-in-charlie-kirk-murder-case?traffic_source=rss",
+    "source": "aljazeera",
+    "source_name": "Al Jazeera",
+    "source_lang": "en",
+    "original_title": "US judge holds prosecutor in contempt in Charlie Kirk murder case",
+    "title": "US judge holds prosecutor in contempt in Charlie Kirk murder case",
+    "description": "Judge says comments to the media by prosecutors about defendant violate rules of what can be said outside of court.",
+    "category": "extern",
+    "published": "2026-06-26T23:14:22+00:00",
+    "model": "B",
+    "teaser": "Judge says comments to the media by prosecutors about defendant violate rules of what can be said outside of court.",
+    "processed_by": "fallback",
+    "error": "HTTP Error 429: Too Many Requests",
+    "featured": false
+  },
+  {
+    "url": "https://aljazeera.com/news/2026/6/26/4-9-earthquake-detected-in-venezuela-just-days-after-major-quakes?traffic_source=rss",
+    "original_link": "https://www.aljazeera.com/news/2026/6/26/4-9-earthquake-detected-in-venezuela-just-days-after-major-quakes?traffic_source=rss",
+    "source": "aljazeera",
+    "source_name": "Al Jazeera",
+    "source_lang": "en",
+    "original_title": "Venezuela shaken by 4.9-magnitude tremor days after major earthquakes",
+    "title": "Venezuela shaken by 4.9-magnitude tremor days after major earthquakes",
+    "description": "The country is still reeling from devastating pair of earthquakes that killed hundreds of people earlier this week.",
+    "category": "extern",
+    "published": "2026-06-26T23:13:03+00:00",
+    "model": "B",
+    "teaser": "The country is still reeling from devastating pair of earthquakes that killed hundreds of people earlier this week.",
+    "processed_by": "fallback",
+    "error": "HTTP Error 429: Too Many Requests",
+    "featured": false
+  },
+  {
+    "url": "https://digisport.ro/fotbal/cm-2026/uruguay-spania-live-text-ora-0300-pe-digisport-ro-nu-e-nimic-decis-in-grupa-h-4340515",
+    "original_link": "https://www.digisport.ro/fotbal/cm-2026/uruguay-spania-live-text-ora-0300-pe-digisport-ro-nu-e-nimic-decis-in-grupa-h-4340515",
+    "source": "digisport",
+    "source_name": "Digi Sport",
+    "source_lang": "ro",
+    "original_title": "Uruguay - Spania LIVE TEXT, ora 03:00, pe digisport.ro. Nu e nimic decis în Grupa H. Echipele",
+    "title": "Uruguay - Spania LIVE TEXT, ora 03:00, pe digisport.ro. Nu e nimic decis în Grupa H. Echipele",
+    "description": "Uruguay - Spania LIVE TEXT, ora 03:00, pe digisport.ro. Nu e nimic decis în Grupa H. Echipele",
+    "category": "sport",
+    "published": "2026-06-26T23:02:06+00:00",
+    "model": "C",
+    "sources": [
+      {
+        "name": "GSP",
+        "url": "https://www.gsp.ro/international/campionatul-mondial-de-fotbal-2026/live-uruguay-spania-capul-verde-arabia-saudita-grupa-h-campionatul-mondial-953251.html"
+      },
+      {
+        "name": "Digi Sport",
+        "url": "https://www.digisport.ro/fotbal/cm-2026/capul-verde-arabia-saudita-live-text-0300-digisport-ro-joao-paulo-fata-in-fata-cu-calificarea-in-16-imi-4340505"
+      }
+    ],
+    "synthesis": "Uruguay - Spania LIVE TEXT, ora 03:00, pe digisport.ro. Nu e nimic decis în Grupa H. Echipele",
+    "processed_by": "fallback",
+    "error": "HTTP Error 429: Too Many Requests",
+    "featured": false
+  },
+  {
     "url": "https://theguardian.com/world/2026/jun/26/delcy-rodriguez-interim-president-venezuela-earthquake-death-toll",
     "original_link": "https://www.theguardian.com/world/2026/jun/26/delcy-rodriguez-interim-president-venezuela-earthquake-death-toll",
     "source": "guardian",
@@ -104,6 +165,37 @@
     "error": "HTTP Error 429: Too Many Requests",
     "featured": false,
     "prompt_version": "v2-esenta"
+  },
+  {
+    "url": "https://digi24.ro/campionatul-mondal-de-fotbal-2026/cm-2026-franta-a-invins-norvegia-si-ambele-echipe-merg-mai-departe-3835399",
+    "original_link": "https://www.digi24.ro/campionatul-mondal-de-fotbal-2026/cm-2026-franta-a-invins-norvegia-si-ambele-echipe-merg-mai-departe-3835399",
+    "source": "digi24",
+    "source_name": "Digi24",
+    "source_lang": "ro",
+    "original_title": "CM 2026. Franța a învins Norvegia și ambele echipe merg mai departe",
+    "title": "CM 2026. Franța a învins Norvegia și ambele echipe merg mai departe",
+    "description": "Echipa naţională a Franţei a dispus vineri seara, scor 4-1, de reprezentativa Norvegiei, într-un meci din grupa I a Cupei Mondiale. Nordicii au ratat un penalti.",
+    "category": "general",
+    "published": "2026-06-26T21:13:13+00:00",
+    "model": "C",
+    "sources": [
+      {
+        "name": "GSP",
+        "url": "https://www.gsp.ro/international/campionatul-mondial-de-fotbal-2026/kylian-mbappe-gest-viral-norvegia-franta-953546.html"
+      },
+      {
+        "name": "ProSport",
+        "url": "https://www.prosport.ro/campionatul-mondial-2026/note-dembele-mbappe-norvegia-franta-1-4-cm-2026-20471399"
+      },
+      {
+        "name": "Digi24",
+        "url": "https://www.digi24.ro/campionatul-mondal-de-fotbal-2026/cm-2026-franta-a-invins-norvegia-si-ambele-echipe-merg-mai-departe-3835399"
+      }
+    ],
+    "synthesis": "Echipa naţională a Franţei a dispus vineri seara, scor 4-1, de reprezentativa Norvegiei, într-un meci din grupa I a Cupei Mondiale. Nordicii au ratat un penalti.",
+    "processed_by": "fallback",
+    "error": "HTTP Error 429: Too Many Requests",
+    "featured": false
   },
   {
     "url": "https://aljazeera.com/news/2026/6/26/us-strikes-iran-in-response-to-drone-strike-on-commercial-ship?traffic_source=rss",
@@ -1309,6 +1401,23 @@
     "featured": false
   },
   {
+    "url": "https://dw.com/en/trump-foe-john-bolton-pleads-guilty-in-classified-docs-case/a-77728826?maca=en-rss-en-all-1573-rdf",
+    "original_link": "https://www.dw.com/en/trump-foe-john-bolton-pleads-guilty-in-classified-docs-case/a-77728826?maca=en-rss-en-all-1573-rdf",
+    "source": "dw_en",
+    "source_name": "DW English",
+    "source_lang": "en",
+    "original_title": "Trump foe John Bolton pleads guilty in classified docs case",
+    "title": "Trump foe John Bolton pleads guilty in classified docs case",
+    "description": "Bolton faces as many as five years in prison. He had earlier served as Trump's national security adviser during the president's first term in office, but later resigned over his differences with Trump.",
+    "category": "extern",
+    "published": "2026-06-26T17:58:00+00:00",
+    "model": "B",
+    "teaser": "Bolton faces as many as five years in prison. He had earlier served as Trump's national security adviser during the president's first term in office, but later resigned over his differences with Trump.",
+    "processed_by": "fallback",
+    "error": "HTTP Error 429: Too Many Requests",
+    "featured": false
+  },
+  {
     "url": "https://dw.com/en/us-lebanon-israel-sign-framework-agreement/a-77729374?maca=en-rss-en-all-1573-rdf",
     "original_link": "https://www.dw.com/en/us-lebanon-israel-sign-framework-agreement/a-77729374?maca=en-rss-en-all-1573-rdf",
     "source": "dw_en",
@@ -2225,6 +2334,23 @@
     "featured": false
   },
   {
+    "url": "https://dw.com/en/creative-climate-messaging-and-other-eco-wins-of-the-week/a-77727778?maca=en-rss-en-all-1573-rdf",
+    "original_link": "https://www.dw.com/en/creative-climate-messaging-and-other-eco-wins-of-the-week/a-77727778?maca=en-rss-en-all-1573-rdf",
+    "source": "dw_en",
+    "source_name": "DW English",
+    "source_lang": "en",
+    "original_title": "Creative climate messaging and other eco wins of the week",
+    "title": "Creative climate messaging and other eco wins of the week",
+    "description": "An artist in Mali and climate scientists in the US are finding new ways to inform the public about the climate crisis.",
+    "category": "extern",
+    "published": "2026-06-26T15:38:00+00:00",
+    "model": "B",
+    "teaser": "An artist in Mali and climate scientists in the US are finding new ways to inform the public about the climate crisis.",
+    "processed_by": "fallback",
+    "error": "HTTP Error 429: Too Many Requests",
+    "featured": false
+  },
+  {
     "url": "https://digi24.ro/stiri/externe/sua/john-bolton-a-pledat-vinovat-pentru-pastrarea-de-documente-secrete-cati-ani-de-inchisoare-risca-fostul-consilier-al-lui-trump-3834955",
     "original_link": "https://www.digi24.ro/stiri/externe/sua/john-bolton-a-pledat-vinovat-pentru-pastrarea-de-documente-secrete-cati-ani-de-inchisoare-risca-fostul-consilier-al-lui-trump-3834955",
     "source": "extern",
@@ -2277,6 +2403,23 @@
     "featured": false
   },
   {
+    "url": "https://dw.com/en/fact-check-throwing-cold-water-on-heat-wave-disinformation/a-77726297?maca=en-rss-en-all-1573-rdf",
+    "original_link": "https://www.dw.com/en/fact-check-throwing-cold-water-on-heat-wave-disinformation/a-77726297?maca=en-rss-en-all-1573-rdf",
+    "source": "dw_en",
+    "source_name": "DW English",
+    "source_lang": "en",
+    "original_title": "Fact check: throwing cold water on heat wave disinformation",
+    "title": "Fact check: throwing cold water on heat wave disinformation",
+    "description": "An outdated air-conditioning law, a viral health myth about sleeping with the fan on and the age-old climate change hoax allegation: DW checked what's spreading in Europe's heat wave.",
+    "category": "extern",
+    "published": "2026-06-26T15:31:00+00:00",
+    "model": "B",
+    "teaser": "An outdated air-conditioning law, a viral health myth about sleeping with the fan on and the age-old climate change hoax allegation: DW checked what's spreading in Europe's heat wave.",
+    "processed_by": "fallback",
+    "error": "HTTP Error 429: Too Many Requests",
+    "featured": false
+  },
+  {
     "url": "https://prosport.ro/campionatul-mondial-2026/nimeni-nu-e-sigur-de-nimic-in-grupa-g-la-cupa-mondiala-toate-calculele-calificarii-live-egipt-iran-si-noua-zeelanda-belgia-20470900",
     "original_link": "https://www.prosport.ro/campionatul-mondial-2026/nimeni-nu-e-sigur-de-nimic-in-grupa-g-la-cupa-mondiala-toate-calculele-calificarii-live-egipt-iran-si-noua-zeelanda-belgia-20470900",
     "source": "prosport",
@@ -2303,6 +2446,23 @@
     "featured": false
   },
   {
+    "url": "https://dw.com/en/world-cup-morocco-s-ismael-saibari-set-for-bayern-munich/a-77727803?maca=en-rss-en-all-1573-rdf",
+    "original_link": "https://www.dw.com/en/world-cup-morocco-s-ismael-saibari-set-for-bayern-munich/a-77727803?maca=en-rss-en-all-1573-rdf",
+    "source": "dw_en",
+    "source_name": "DW English",
+    "source_lang": "en",
+    "original_title": "World Cup: Morocco's Ismael Saibari set for Bayern Munich",
+    "title": "World Cup: Morocco's Ismael Saibari set for Bayern Munich",
+    "description": "Three nationalities, five languages and soon to be resident in a fourth country: Ismael Saibari, the star of Morocco's World Cup so far, is set to join Bayern Munich. But he has business to finish with the Atlas Lions.",
+    "category": "extern",
+    "published": "2026-06-26T15:30:00+00:00",
+    "model": "B",
+    "teaser": "Three nationalities, five languages and soon to be resident in a fourth country: Ismael Saibari, the star of Morocco's World Cup so far, is set to join Bayern Munich. But he has business to finish with the Atlas Lions.",
+    "processed_by": "fallback",
+    "error": "HTTP Error 429: Too Many Requests",
+    "featured": false
+  },
+  {
     "url": "https://digi24.ro/stiri/economie/transporturi/probleme-pe-calea-ferata-pantograful-rupt-al-unei-locomotive-la-fetesti-a-blocat-traficul-pe-linia-bucuresti-constanta-3834943",
     "original_link": "https://www.digi24.ro/stiri/economie/transporturi/probleme-pe-calea-ferata-pantograful-rupt-al-unei-locomotive-la-fetesti-a-blocat-traficul-pe-linia-bucuresti-constanta-3834943",
     "source": "digi24",
@@ -2324,6 +2484,23 @@
       }
     ],
     "synthesis": "Mai multe trenuri de călători staţionează în zona staţiei Feteşti, din cauza unui incident produs la pantograful unei locomotive aparţinând unui operator privat de transport feroviar de marfă.",
+    "processed_by": "fallback",
+    "error": "HTTP Error 429: Too Many Requests",
+    "featured": false
+  },
+  {
+    "url": "https://dw.com/en/comedy-legend-mel-brooks-turns-100/a-19360098?maca=en-rss-en-all-1573-rdf",
+    "original_link": "https://www.dw.com/en/comedy-legend-mel-brooks-turns-100/a-19360098?maca=en-rss-en-all-1573-rdf",
+    "source": "dw_en",
+    "source_name": "DW English",
+    "source_lang": "en",
+    "original_title": "Comedy legend Mel Brooks turns 100",
+    "title": "Comedy legend Mel Brooks turns 100",
+    "description": "His parody of Hitler in the landmark 1968 movie \"The Producers\" was just the beginning for US actor Mel Brooks. The 100-year-old comedian is still on a roll.",
+    "category": "extern",
+    "published": "2026-06-26T15:26:00+00:00",
+    "model": "B",
+    "teaser": "His parody of Hitler in the landmark 1968 movie \"The Producers\" was just the beginning for US actor Mel Brooks. The 100-year-old comedian is still on a roll.",
     "processed_by": "fallback",
     "error": "HTTP Error 429: Too Many Requests",
     "featured": false
@@ -2589,6 +2766,23 @@
       }
     ],
     "synthesis": "Valoarea totală tranzacţionată pe piaţa reglementată a Bursei de Valori Bucureşti (BVB) şi Sistemul Multilateral de Tranzacţionare (SMT) a atins nivelul de 14,18 miliarde de lei, în primele trei luni ale acestui an, în creştere cu 40,49% comparativ cu aceeaşi perioadă din 2025, reiese din sinteza raportului privind evoluţia pieţei de capital în primele trei luni ale anului 2026, publicat vineri de Autoritatea de Supraveghere Financiară (ASF), relatează Agerpres.",
+    "processed_by": "fallback",
+    "error": "HTTP Error 429: Too Many Requests",
+    "featured": false
+  },
+  {
+    "url": "https://dw.com/en/german-lawyers-ban-on-far-right-afd-likely-successful/a-77726537?maca=en-rss-en-all-1573-rdf",
+    "original_link": "https://www.dw.com/en/german-lawyers-ban-on-far-right-afd-likely-successful/a-77726537?maca=en-rss-en-all-1573-rdf",
+    "source": "dw_en",
+    "source_name": "DW English",
+    "source_lang": "en",
+    "original_title": "German lawyers: Ban on far-right AfD 'likely successful'",
+    "title": "German lawyers: Ban on far-right AfD 'likely successful'",
+    "description": "A new report by legal experts has found that efforts to ban Germany's far-right Alternative for Germany (AfD) could be successful — but there would be political dangers to such a move.",
+    "category": "extern",
+    "published": "2026-06-26T14:57:00+00:00",
+    "model": "B",
+    "teaser": "A new report by legal experts has found that efforts to ban Germany's far-right Alternative for Germany (AfD) could be successful — but there would be political dangers to such a move.",
     "processed_by": "fallback",
     "error": "HTTP Error 429: Too Many Requests",
     "featured": false
