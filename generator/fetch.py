@@ -142,6 +142,7 @@ def _fetch_html_scraper(key: str, source: dict) -> tuple[list, str | None]:
             "original_link": link,
             "source": key,
             "source_name": source["name"],
+            "source_lang": source.get("lang", "ro"),
             "original_title": title,
             "title": title,
             "description": "",          # descrierea va fi generata de AI din titlu
@@ -178,6 +179,7 @@ def _fetch_one(key: str, source: dict) -> tuple[list, str | None]:
             "original_link": link,
             "source": key,
             "source_name": source["name"],
+            "source_lang": source.get("lang", "ro"),
             "original_title": title,
             "title": title,
             "description": clean_html(entry.get("summary") or entry.get("description") or ""),

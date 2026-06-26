@@ -111,6 +111,7 @@ def run(dry_run: bool = False) -> dict:
     # ca sa nu fie infometate cand exista mereu articole noi (umplerea initiala)
     reserve = min(int(os.getenv("UPGRADE_RESERVE", "3")), budget) if provider else 0
     processed_new, folded, used = process_new(new_items, provider, budget - reserve)
+    processed_new = [a for a in processed_new if not a.get("skip")]
     combined = [a for a in (existing + processed_new) if a.get("url") not in folded]
     upgraded = upgrade_fallbacks(combined, provider, budget - used)
     combined = state.expire(combined)

@@ -72,6 +72,9 @@ def process_single(item: dict, provider) -> dict:
     """Model B. Modifica item-ul pe loc: title/teaser/category/model/processed_by."""
     item["model"] = "B"
     if provider is None:
+        if item.get("source_lang") == "en":
+            item["skip"] = True
+            return item
         item["title"] = truncate_words(item.get("original_title", ""), config.TITLE_MAX_WORDS)
         item["teaser"] = truncate_words(item.get("description") or "Detalii pe sursa.",
                                         config.TEASER_MAX_WORDS)
@@ -108,6 +111,9 @@ def process_cluster(group: list, provider) -> dict:
     ]
 
     if provider is None:
+        if rep.get("source_lang") == "en":
+            rep["skip"] = True
+            return rep
         rep["title"] = truncate_words(rep.get("original_title", ""), config.TITLE_MAX_WORDS)
         rep["synthesis"] = truncate_words(rep.get("description") or "Detalii pe surse.",
                                           config.SYNTHESIS_MAX_WORDS)
