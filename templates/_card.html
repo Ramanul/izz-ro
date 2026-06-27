@@ -3,7 +3,7 @@
   <span class="badge{% if a.model == 'C' %} c{% endif %}">{{ a.category }}</span>
   <h2 class="card-title"><a href="{{ base }}/{{ a.category }}/{{ a.slug }}/">{{ a.title }}</a></h2>
   <div class="meta">
-    <span class="source">{{ a.source_name }}</span>
+    {% if a.model != 'C' %}<span class="source">{{ a.source_name }}</span>{% endif %}
     <time datetime="{{ a.published }}">{{ a.published_human }}</time>
     {% if a.significance is defined %}<span class="sig"><b>{{ a.significance }}</b>/10</span>{% endif %}
   </div>
@@ -11,6 +11,10 @@
   {% if a.model == 'C' and a.sources %}
   <p class="sources-inline"><b>Surse:</b> {{ a.sources | map(attribute='name') | join(', ') }}</p>
   {% endif %}
+  {% if a.processed_by == 'fallback' %}
+  <a class="read-more" href="{{ a.original_link }}" target="_blank" rel="noopener noreferrer">Sursă →</a>
+  {% else %}
   <a class="read-more" href="{{ base }}/{{ a.category }}/{{ a.slug }}/">Detalii</a>
+  {% endif %}
 </article>
 {% endmacro %}
