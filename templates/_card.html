@@ -1,5 +1,5 @@
 {% macro card(a, lead=False) %}
-<article class="card{% if lead %} lead{% endif %}{% if a.model == 'C' %} card-c{% endif %}">
+<article class="card{% if lead %} lead{% endif %}{% if a.model == 'C' %} card-c{% endif %}" data-cat="{{ a.category }}" data-src="{{ a.source_name }}" data-title="{{ a.title }}">
   <span class="badge{% if a.model == 'C' %} c{% endif %}">{{ a.category }}</span>
   <h2 class="card-title"><a href="{{ base }}/{{ a.category }}/{{ a.slug }}/">{{ a.title }}</a></h2>
   <div class="meta">

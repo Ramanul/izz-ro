@@ -26,8 +26,9 @@
   <script type="application/ld+json">{{ org_jsonld | tojson }}</script>
   {% block head_extra %}{% endblock %}
   {% if analytics_token %}<script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "{{ analytics_token }}"}'></script>{% endif %}
+  <script defer src="{{ base }}/static/personalize.js?v=2"></script>
 </head>
-<body>
+<body{% block body_attrs %}{% endblock %}>
   <header class="site-header">
     <a class="brand" href="{{ base }}/">
       <span class="brand-eyebrow">{{ site.tagline }}</span>

@@ -2,6 +2,7 @@
 {% block title %}{{ a.title }} — {{ site.name }}{% endblock %}
 {% block description %}{% if a.model == 'C' %}{{ a.synthesis }}{% else %}{{ a.teaser }}{% endif %}{% endblock %}
 {% block og_type %}article{% endblock %}
+{% block body_attrs %} data-category="{{ a.category }}" data-source="{{ a.source_name }}" data-title="{{ a.title }}"{% endblock %}
 {% block head_extra %}
   <script type="application/ld+json">{{ article_jsonld | tojson }}</script>
   <meta property="article:published_time" content="{{ a.published }}">
