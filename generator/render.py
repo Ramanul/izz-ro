@@ -143,6 +143,13 @@ def _dedup_sources(a: dict) -> None:
 def build(articles: list, mod: dict | None = None) -> None:
     env = _env()
     articles = _dedup(articles)
+    # §7: no mangled output — skip fallback articles with no usable body content
+    articles = [
+        a for a in articles
+        if a.get("model") == "C"
+        or a.get("processed_by") != "fallback"
+        or (a.get("teaser") and a.get("teaser") not in ("Detalii pe sursa.", ""))
+    ]
     for a in articles:
         _dedup_sources(a)
     _assign_slugs(articles)
