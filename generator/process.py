@@ -75,7 +75,7 @@ def process_single(item: dict, provider) -> dict:
         if item.get("source_lang") == "en":
             item["skip"] = True
             return item
-        item["title"] = truncate_words(item.get("original_title", ""), config.TITLE_MAX_WORDS)
+        item["title"] = item.get("original_title", "")
         item["teaser"] = truncate_words(item.get("description") or "Detalii pe sursa.",
                                         config.TEASER_MAX_WORDS)
         item["processed_by"] = "fallback"
@@ -91,7 +91,7 @@ def process_single(item: dict, provider) -> dict:
         item["processed_by"] = provider.name
         item["prompt_version"] = config.PROMPT_VERSION
     except Exception as exc:  # un esec pe un articol nu opreste pipeline-ul
-        item["title"] = truncate_words(item.get("original_title", ""), config.TITLE_MAX_WORDS)
+        item["title"] = item.get("original_title", "")
         item["teaser"] = truncate_words(item.get("description") or "Detalii pe sursa.",
                                         config.TEASER_MAX_WORDS)
         item["processed_by"] = "fallback"
@@ -114,7 +114,7 @@ def process_cluster(group: list, provider) -> dict:
         if rep.get("source_lang") == "en":
             rep["skip"] = True
             return rep
-        rep["title"] = truncate_words(rep.get("original_title", ""), config.TITLE_MAX_WORDS)
+        rep["title"] = rep.get("original_title", "")
         rep["synthesis"] = truncate_words(rep.get("description") or "Detalii pe surse.",
                                           config.SYNTHESIS_MAX_WORDS)
         rep["processed_by"] = "fallback"
@@ -132,7 +132,7 @@ def process_cluster(group: list, provider) -> dict:
         rep["processed_by"] = provider.name
         rep["prompt_version"] = config.PROMPT_VERSION
     except Exception as exc:
-        rep["title"] = truncate_words(rep.get("original_title", ""), config.TITLE_MAX_WORDS)
+        rep["title"] = rep.get("original_title", "")
         rep["synthesis"] = truncate_words(rep.get("description") or "Detalii pe surse.",
                                           config.SYNTHESIS_MAX_WORDS)
         rep["processed_by"] = "fallback"

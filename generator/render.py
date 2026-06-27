@@ -39,7 +39,7 @@ def _assign_slugs(articles: list) -> None:
     """Slug unic per categorie din titlu (permalink stabil, indexabil)."""
     seen: dict = {}
     for a in articles:
-        base = slugify(a.get("title") or a.get("original_title") or "stire") or "stire"
+        base = (slugify(a.get("title") or a.get("original_title") or "stire") or "stire")[:80]
         key = (a.get("category", "general"), base)
         n = seen.get(key, 0) + 1
         seen[key] = n
@@ -144,12 +144,18 @@ def build(articles: list, mod: dict | None = None) -> None:
     env = _env()
     articles = _dedup(articles)
     # §7: no mangled output — skip fallback articles with no usable body content
-    articles = [
-        a for a in articles
-        if a.get("model") == "C"
-        or a.get("processed_by") != "fallback"
-        or (a.get("teaser") and a.get("teaser") not in ("Detalii pe sursa.", ""))
-    ]
+    def _has_usable_body(a: dict) -> bool:
+        if a.get("model") == "C":
+            return True
+        if a.get("processed_by") != "fallback":
+            return True
+        teaser = (a.get("teaser") or "").strip()
+        if not teaser or teaser in ("Detalii pe sursa.", "Detalii pe surse."):
+            return False
+        if teaser == (a.get("title") or "").strip():
+            return False
+        return True
+    articles = [a for a in articles if _has_usable_body(a)]
     for a in articles:
         _dedup_sources(a)
     _assign_slugs(articles)
