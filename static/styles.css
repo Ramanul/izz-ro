@@ -212,6 +212,72 @@ main { max-width: var(--maxw); margin: 0 auto; padding: var(--s-34) var(--s-34);
 .site-footer a:hover { color: var(--gold-strong); }
 .empty { text-align: center; color: var(--ink-3); padding: var(--s-89) var(--s-21); }
 
+/* ------------------------------------------------- Personalizare JS --- */
+.pt-title { display: flex; align-items: center; gap: var(--s-8); }
+.pt-badge {
+  font-family: var(--font-mono); font-size: var(--fs-eyebrow); font-weight: 700;
+  background: var(--gold); color: #fff; padding: 2px 7px; border-radius: 3px;
+  text-transform: uppercase; letter-spacing: 1px;
+}
+#pentru-tine { border-left: 3px solid var(--gold); padding-left: var(--s-13); margin-bottom: var(--s-34); }
+
+/* buton profil (colț dreapta-jos) */
+.izz-profile-btn {
+  position: fixed; bottom: var(--s-21); right: var(--s-21); z-index: 100;
+  width: 44px; height: 44px; border-radius: 50%;
+  background: var(--paper-2); border: 1px solid var(--line-strong);
+  color: var(--ink-2); font-size: 1.3rem; cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0,0,0,.12);
+  transition: background .15s, color .15s;
+}
+.izz-profile-btn:hover { background: var(--gold); color: #fff; border-color: var(--gold); }
+
+/* panou stats */
+.stats-backdrop {
+  position: fixed; inset: 0; background: rgba(0,0,0,.35); z-index: 200;
+}
+.stats-box {
+  position: fixed; top: 50%; left: 50%; transform: translate(-50%,-50%);
+  z-index: 201; background: var(--paper-2); border: 1px solid var(--line);
+  border-radius: 8px; width: min(480px, 94vw); max-height: 85vh;
+  overflow-y: auto; box-shadow: 0 8px 32px rgba(0,0,0,.18);
+}
+.stats-header {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: var(--s-21); border-bottom: 1px solid var(--line);
+  position: sticky; top: 0; background: var(--paper-2);
+}
+.stats-title { font-family: var(--font-display); font-size: var(--fs-md); font-weight: 700; }
+.stats-close {
+  background: none; border: none; font-size: 1.1rem; cursor: pointer;
+  color: var(--ink-3); padding: var(--s-5); border-radius: 4px;
+}
+.stats-close:hover { color: var(--ink); background: var(--paper); }
+.stats-body { padding: var(--s-21); display: flex; flex-direction: column; gap: var(--s-21); }
+.stats-row {
+  display: grid; grid-template-columns: repeat(3,1fr); gap: var(--s-8);
+  text-align: center; background: var(--paper); border-radius: 6px; padding: var(--s-13);
+}
+.stats-num { font-family: var(--font-display); font-size: var(--fs-lg); font-weight: 800; color: var(--gold-strong); display: block; }
+.stats-lbl { font-size: var(--fs-xs); color: var(--ink-3); display: block; }
+.stats-section { font-family: var(--font-mono); font-size: var(--fs-eyebrow); text-transform: uppercase; letter-spacing: 1.5px; color: var(--ink-3); margin: 0; }
+.stats-bars { display: flex; flex-direction: column; gap: var(--s-8); }
+.bar-row { display: grid; grid-template-columns: 80px 1fr 36px; align-items: center; gap: var(--s-8); }
+.bar-label { font-size: var(--fs-xs); text-transform: capitalize; }
+.bar-track { height: 6px; background: var(--line); border-radius: 3px; overflow: hidden; }
+.bar-fill { height: 100%; background: var(--gold); border-radius: 3px; transition: width .4s ease; }
+.bar-pct { font-size: var(--fs-xs); color: var(--ink-3); text-align: right; }
+.stats-list { margin: 0; padding-left: var(--s-21); display: flex; flex-direction: column; gap: var(--s-5); font-size: var(--fs-xs); }
+.stats-tags { display: flex; flex-wrap: wrap; gap: var(--s-5); }
+.tag { background: var(--gold-wash); color: var(--gold-strong); font-family: var(--font-mono); font-size: var(--fs-eyebrow); padding: 3px 8px; border-radius: 3px; }
+.stats-reset {
+  margin-top: var(--s-8); padding: var(--s-8) var(--s-13);
+  background: none; border: 1px solid var(--line-strong); border-radius: 4px;
+  color: var(--ink-3); font-size: var(--fs-xs); cursor: pointer; align-self: flex-start;
+}
+.stats-reset:hover { border-color: #c0392b; color: #c0392b; }
+.stats-hint { font-size: var(--fs-xs); color: var(--ink-3); margin: 0; font-style: italic; }
+
 /* ---------------------------------------------------------- Responsive --- */
 @media (max-width: 1000px) {
   .lead-feature { grid-template-columns: 1fr; gap: var(--s-21); }
