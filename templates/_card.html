@@ -12,7 +12,7 @@
   <p class="sources-inline"><b>Surse:</b> {{ a.sources | map(attribute='name') | join(', ') }}</p>
   {% endif %}
   {% if a.processed_by == 'fallback' %}
-  <a class="read-more" href="{{ a.original_link }}" target="_blank" rel="noopener noreferrer">Sursă →</a>
+  <a class="read-more" href="{{ a.original_link }}" target="_blank" rel="noopener noreferrer">Sursă</a>
   {% else %}
   <a class="read-more" href="{{ base }}/{{ a.category }}/{{ a.slug }}/">Detalii</a>
   {% endif %}
