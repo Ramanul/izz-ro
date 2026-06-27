@@ -9,13 +9,13 @@ SITE = {"name": "IZZ.ro", "tagline": "Informația Zero Zgomot",
 # Surse = DOAR publicații cu RSS oficial. Agențiile de presă sunt EXCLUSE (conținut licențiat).
 SOURCES = {
             # Surse niche primele -> bugetul AI le proceseaza prioritar (altfel general le infometeaza)
-    # extern — surse internationale (en, AI traduce) + Digi24 Extern (ro)
-            "bbc_world":  {"name": "BBC World",    "url": "https://feeds.bbci.co.uk/news/world/rss.xml", "category": "extern", "lang": "en"},
-            "guardian":   {"name": "The Guardian", "url": "https://www.theguardian.com/world/rss",       "category": "extern", "lang": "en"},
-            "politico_eu":{"name": "Politico EU",  "url": "https://www.politico.eu/feed/",               "category": "extern", "lang": "en"},
-            "dw_en":      {"name": "DW English",   "url": "https://rss.dw.com/rdf/rss-en-all",          "category": "extern", "lang": "en"},
-            "aljazeera":  {"name": "Al Jazeera",   "url": "https://www.aljazeera.com/xml/rss/all.xml",  "category": "extern", "lang": "en"},
-            "extern":     {"name": "Digi24 Extern","url": "https://www.digi24.ro/rss/stiri/externe",     "category": "extern"},
+    # extern — Europa/UE/vecinatate (en, AI traduce) + surse ro
+            "bbc_europe": {"name": "BBC Europe",    "url": "https://feeds.bbci.co.uk/news/world/europe/rss.xml", "category": "extern", "lang": "en"},
+            "guardian_eu":{"name": "The Guardian",  "url": "https://www.theguardian.com/world/europe-news/rss",  "category": "extern", "lang": "en"},
+            "politico_eu":{"name": "Politico EU",   "url": "https://www.politico.eu/feed/",                      "category": "extern", "lang": "en"},
+            "dw_europe":  {"name": "DW Europe",     "url": "https://rss.dw.com/rdf/rss-en-eu",                   "category": "extern", "lang": "en"},
+            "el_moldova": {"name": "Europa Liberă", "url": "https://moldova.europalibera.org/api/epiqq",          "category": "extern"},
+            "extern":     {"name": "Digi24 Extern", "url": "https://www.digi24.ro/rss/stiri/externe",            "category": "extern"},
             "gsp":        {"name": "GSP",          "url": "https://www.gsp.ro/rss.xml",                "category": "sport"},
             "digisport":  {"name": "Digi Sport",   "url": "https://www.digisport.ro/rss",               "category": "sport"},
             "prosport":   {"name": "ProSport",     "url": "https://www.prosport.ro/feed/",              "category": "sport"},
