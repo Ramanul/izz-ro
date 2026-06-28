@@ -46,6 +46,7 @@ CATEGORIES = ["general", "politic", "economic", "extern", "tech", "sport"]
 
 # Model B+C
 PROMPT_VERSION = "v2-esenta"  # versiunea regulilor AI; la schimbare, articolele vechi se reprocesează
+BATCH_SIZE = 6                 # articole model-B procesate intr-UN singur apel AI (economie quota)
 TITLE_MAX_WORDS = 22           # titlu: soft-cap care transmite faptul complet (nu mai taie la 12)
 TEASER_MAX_WORDS = 40          # B: teaser scurt ("extras foarte scurt")
 SYNTHESIS_MAX_WORDS = 90       # C: sinteză multi-sursă (doar pentru clustere importante)
