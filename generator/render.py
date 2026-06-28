@@ -1,4 +1,5 @@
 """Randare SSG cu Jinja2 (autoescape ON) -> output/. Permalink-uri, sitemap, robots, feed, JSON-LD."""
+import logging
 import os
 import shutil
 from datetime import datetime, timezone
@@ -140,22 +141,44 @@ def _dedup_sources(a: dict) -> None:
         a["sources"] = out
 
 
+_BODY_PLACEHOLDERS = {"Detalii pe sursa.", "Detalii pe surse.", ""}
+
+
+def _quality_gate(a: dict) -> bool:
+    """Contract de date: un articol trece gate-ul daca satisface toate conditiile.
+
+    Returneaza True = publicabil. False = exclus din feed (zero output degradat).
+    """
+    title = (a.get("title") or "").strip()
+    if not title:
+        return False
+
+    if a.get("model") == "C":
+        body = (a.get("synthesis") or "").strip()
+    else:
+        body = (a.get("teaser") or "").strip()
+
+    if not body or body in _BODY_PLACEHOLDERS:
+        return False
+    if body == title:
+        return False
+
+    # sursa minima
+    has_source = bool(a.get("sources")) or bool(a.get("original_link"))
+    if not has_source:
+        return False
+
+    return True
+
+
 def build(articles: list, mod: dict | None = None) -> None:
     env = _env()
     articles = _dedup(articles)
-    # §7: no mangled output — skip fallback articles with no usable body content
-    def _has_usable_body(a: dict) -> bool:
-        if a.get("model") == "C":
-            return True
-        if a.get("processed_by") != "fallback":
-            return True
-        teaser = (a.get("teaser") or "").strip()
-        if not teaser or teaser in ("Detalii pe sursa.", "Detalii pe surse."):
-            return False
-        if teaser == (a.get("title") or "").strip():
-            return False
-        return True
-    articles = [a for a in articles if _has_usable_body(a)]
+    before = len(articles)
+    articles = [a for a in articles if _quality_gate(a)]
+    skipped = before - len(articles)
+    if skipped:
+        logging.info("quality_gate: excluded %d/%d articles (no usable body or missing source)", skipped, before)
     for a in articles:
         _dedup_sources(a)
     _assign_slugs(articles)
