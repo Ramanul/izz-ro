@@ -5,8 +5,14 @@ from . import config
 from .util import title_tokens
 
 RECENT_HOURS = 24
-JACCARD_MIN = 0.40        # similaritate minima titluri
-SHARED_TOKENS_MIN = 3     # sau cel putin atatea cuvinte-cheie comune
+JACCARD_MIN = 0.30        # suprapunere minima (cu stemming) — necesara IMPREUNA cu pragul de tokeni
+SHARED_TOKENS_MIN = 3     # cuvinte-cheie comune (dupa stemming) cerute SIMULTAN cu Jaccard
+STEM_LEN = 6              # stemming RO crud: primele N litere (israelul/israelian -> israel)
+
+
+def _stemset(title: str) -> set:
+    """Tokeni semnificativi, redusi la radacina (prefix) ca sa prinda formele flexionate RO."""
+    return {t[:STEM_LEN] for t in title_tokens(title)}
 
 
 def _recent(articles: list) -> list:
@@ -24,37 +30,35 @@ def _recent(articles: list) -> list:
 
 
 def _similar(t1: set, t2: set) -> bool:
+    """Acelasi eveniment doar daca impart SUFICIENTE cuvinte-cheie SI o proportie reala.
+    Conditie AND (nu OR) -> evita lipirea a doua titluri lungi cu 3 cuvinte generice comune.
+    """
     if not t1 or not t2:
         return False
     inter = len(t1 & t2)
-    if inter >= SHARED_TOKENS_MIN:
-        return True
     union = len(t1 | t2)
-    return union > 0 and inter / union >= JACCARD_MIN
+    return inter >= SHARED_TOKENS_MIN and union > 0 and inter / union >= JACCARD_MIN
 
 
 def cluster(articles: list) -> list:
-    """Returneaza lista de clustere (fiecare = lista de articole). Greedy single-link."""
+    """Grupeaza articolele despre acelasi eveniment (candidat pentru model C).
+
+    LEADER clustering (nu single-link): un articol intra intr-un cluster doar daca seamana
+    cu SAMANTA (primul membru), nu cu orice membru -> elimina 'chaining'-ul (A~B, B~C => A,B,C
+    desi A si C n-au legatura). Tokeni cu stemming RO ca sa prinda formele flexionate.
+    """
     recent = _recent(articles)
-    tokens = [title_tokens(a.get("original_title", "")) for a in recent]
-    n = len(recent)
-    parent = list(range(n))
-
-    def find(x):
-        while parent[x] != x:
-            parent[x] = parent[parent[x]]
-            x = parent[x]
-        return x
-
-    for i in range(n):
-        for j in range(i + 1, n):
-            if _similar(tokens[i], tokens[j]):
-                parent[find(i)] = find(j)
-
-    groups: dict = {}
-    for i in range(n):
-        groups.setdefault(find(i), []).append(recent[i])
-    return list(groups.values())
+    clusters = []  # fiecare: {"sig": set_tokeni (uniunea membrilor), "members": [articole]}
+    for a in recent:
+        tk = _stemset(a.get("original_title", ""))
+        for c in clusters:
+            if _similar(tk, c["sig"]):
+                c["members"].append(a)
+                c["sig"] |= tk          # semnatura creste; Jaccard-ul cere tot suprapunere reala
+                break
+        else:
+            clusters.append({"sig": set(tk), "members": [a]})
+    return [c["members"] for c in clusters]
 
 
 def is_synthesis_candidate(group: list) -> bool:
