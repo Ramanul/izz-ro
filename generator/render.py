@@ -168,6 +168,10 @@ def _quality_gate(a: dict) -> bool:
     if not has_source:
         return False
 
+    # articolele EN fara sinteza AI nu se publica (titlu/body in engleza)
+    if a.get("source_lang") == "en" and a.get("processed_by") == "fallback":
+        return False
+
     return True
 
 
