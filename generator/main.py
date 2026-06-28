@@ -14,7 +14,7 @@ except ImportError:
     pass
 
 from . import fetch, state, cluster, moderation, config
-from .process import get_provider, process_single, process_cluster
+from .process import get_provider, process_single, process_cluster, process_batch
 
 
 def _utf8_stdout():
@@ -25,11 +25,11 @@ def _utf8_stdout():
 
 
 def process_new(new_items: list, provider, budget: int) -> tuple[list, set, int]:
-    """Returneaza (articole_procesate, url_uri_inglobate_in_cluster_C, apeluri_folosite).
+    """Returneaza (articole_procesate, url_uri_inglobate_in_cluster_C, apeluri_AI_folosite).
 
-    Bugetul de apeluri AI e impus de apelant (free-tier are limita pe minut): ce nu
-    intra in buget ramane neprocesat si e preluat la rularea urmatoare (cron 30 min).
-    Clusterele C au prioritate (mai valoroase).
+    `budget` = numarul de APELURI AI (free-tier are limita). Model B se proceseaza in
+    LOTURI de config.BATCH_SIZE (1 apel/lot) -> de ~BATCH_SIZE ori mai putine requesturi.
+    Clusterele C (1 apel fiecare) au prioritate. Ce nu intra in buget e reluat la rularea urmatoare.
     """
     used = 0
 
@@ -37,11 +37,11 @@ def process_new(new_items: list, provider, budget: int) -> tuple[list, set, int]
     clustered = {a["url"] for g in groups for a in g}
     processed, folded = [], set()
 
-    # clusterele C intai
     syn = [g for g in groups if len(g) > 1 and cluster.is_synthesis_candidate(g)]
     singles = [it for g in groups if g not in syn for it in g]
     singles += [it for it in new_items if it["url"] not in clustered]
 
+    # clusterele C intai (1 apel fiecare)
     for g in syn:
         if used >= budget:
             break
@@ -50,10 +50,12 @@ def process_new(new_items: list, provider, budget: int) -> tuple[list, set, int]
         folded.update(a["url"] for a in g if a["url"] != rep["url"])
         used += 1
 
-    for it in singles:
+    # model B in LOTURI (1 apel per BATCH_SIZE articole)
+    bs = config.BATCH_SIZE if provider else (len(singles) or 1)
+    for i in range(0, len(singles), bs):
         if used >= budget:
-            break  # ramane neprocesat -> preluat la rularea urmatoare
-        processed.append(process_single(it, provider))
+            break  # restul loturilor -> reluate la rularea urmatoare
+        processed.extend(process_batch(singles[i:i + bs], provider))
         used += 1
 
     return processed, folded, used

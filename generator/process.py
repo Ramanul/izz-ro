@@ -38,6 +38,20 @@ Returneaza JSON:
 Reguli: trianguleaza faptele comune; ZERO propozitii copiate; titlul contine faptul real, nu un teaser; zero opinii."""
 
 
+SYSTEM_BATCH = ("Esti editor de stiri. Pentru FIECARE stire primita, titlul reda ESENTA faptului, "
+                "iar teaserul comprima faptele de baza, cu cuvintele tale. Concret, nu vag. "
+                "Raspunzi EXCLUSIV cu un array JSON valid.")
+
+USER_BATCH = """Ai mai multe stiri (fiecare cu un id). Pentru FIECARE, scrie titlu (esenta) + teaser (rezumat comprimat), cu cuvintele tale.
+
+Stiri:
+{items_block}
+
+Returneaza EXCLUSIV un array JSON, cate UN obiect per stire, cu acelasi id primit:
+[{{"id": <id>, "title": "<esenta faptului: CINE face/pateste CE; concret; 6-16 cuvinte; fara clickbait, fara vag>", "teaser": "<rezumat comprimat 25-40 cuvinte: cine/ce/cand/unde/cat; reformulat 100%, ZERO propozitii copiate>", "category": "<general|politic|economic|extern|tech|sport>"}}]
+Reguli: pastreaza id-ul EXACT (numar); un obiect per id; daca stirea e in alta limba, scrie in romana; titlul = faptul real, nu intrebare; zero opinii."""
+
+
 def get_provider():
     """Returneaza providerul cerut daca e disponibil, altfel None (-> fallback)."""
     if config.AI_PROVIDER == "anthropic":
@@ -66,6 +80,72 @@ def _parse_json(text: str) -> dict:
 
 def _valid_category(cat: str, fallback: str) -> str:
     return cat if cat in config.CATEGORIES else fallback
+
+
+def _parse_json_array(text: str) -> list:
+    """Extrage un array JSON din raspuns (tolerant la ```json fences si la wrapping)."""
+    cleaned = re.sub(r"^```(?:json)?|```$", "", text.strip(), flags=re.MULTILINE).strip()
+    try:
+        data = json.loads(cleaned)
+    except json.JSONDecodeError:
+        m = re.search(r"\[.*\]", cleaned, re.DOTALL)
+        if not m:
+            return []
+        try:
+            data = json.loads(m.group(0))
+        except json.JSONDecodeError:
+            return []
+    if isinstance(data, list):
+        return data
+    if isinstance(data, dict):
+        for v in data.values():
+            if isinstance(v, list):
+                return v
+        return [data]
+    return []
+
+
+def process_batch(items: list, provider) -> list:
+    """Model B in LOT: un singur apel AI pentru `items`. Mapeaza raspunsul pe id (= index).
+    Returneaza DOAR articolele procesate corect; cele nemapate NU se publica brute
+    (regula 'No mangled output') -> raman in afara starii si sunt reluate la rularea urmatoare.
+    """
+    if not items:
+        return []
+    if provider is None:                       # fara AI -> fallback determinist per item
+        return [process_single(it, provider) for it in items]
+
+    block = "\n".join(
+        f"[{i}] Titlu: {it.get('original_title','')} | Descriere: {(it.get('description') or '')[:500]}"
+        for i, it in enumerate(items))
+    try:
+        raw = provider.complete(SYSTEM_BATCH, USER_BATCH.format(items_block=block))
+        arr = _parse_json_array(raw)
+    except Exception:
+        return []                              # tot lotul a esuat -> reluat data viitoare
+
+    by_id = {}
+    for obj in arr:
+        try:
+            by_id[int(obj.get("id"))] = obj
+        except (TypeError, ValueError, AttributeError):
+            continue
+
+    done = []
+    for i, it in enumerate(items):
+        obj = by_id.get(i)
+        title = (obj.get("title") or "").strip() if isinstance(obj, dict) else ""
+        teaser = (obj.get("teaser") or "").strip() if isinstance(obj, dict) else ""
+        if title and teaser:
+            it["model"] = "B"
+            it["title"] = title
+            it["teaser"] = truncate_words(teaser, config.TEASER_MAX_WORDS)
+            it["category"] = _valid_category(obj.get("category", ""), it.get("category", "general"))
+            it["processed_by"] = provider.name
+            it["prompt_version"] = config.PROMPT_VERSION
+            done.append(it)
+        # nemapat/invalid -> nu il adaugam (reluat la rularea urmatoare)
+    return done
 
 
 def process_single(item: dict, provider) -> dict:
