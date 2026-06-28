@@ -74,6 +74,9 @@ def clean_html(text: str) -> str:
     text = re.sub(r"\s*appeared first on\s+\S+.*$", "", text, flags=re.IGNORECASE | re.DOTALL)
     text = re.sub(r"\s*Cite[șs]te\s+mai\s+mult.*$", "", text, flags=re.IGNORECASE)
     text = re.sub(r"\s*Read more.*$", "", text, flags=re.IGNORECASE)
+    # markeri de lista (•, ‣, ●, ▪, –/- la inceput de fapt) -> proza curgatoare
+    text = re.sub(r"^\s*[•‣●▪]\s*", "", text)          # bullet la inceput
+    text = re.sub(r"\s*[•‣●▪]\s*", " ", text)          # bullet ca separator
     return _WS_RE.sub(" ", text).strip()
 
 

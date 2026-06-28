@@ -12,7 +12,7 @@
   <span class="badge{% if a.model == 'C' %} c{% endif %}">{{ a.category }}</span>
   <h1>{{ a.title }}</h1>
   <div class="meta">
-    {% if a.model != 'C' %}<span class="source">{{ a.source_name }}</span>{% endif %}
+    {% if a.model == 'C' and a.sources %}<span class="source">{{ a.sources | length }} {{ 'sursă' if a.sources | length == 1 else 'surse' }}</span>{% else %}<span class="source">{{ a.source_name }}</span>{% endif %}
     <time datetime="{{ a.published }}">{{ a.published_human }}</time>
   </div>
 
