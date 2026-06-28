@@ -64,9 +64,16 @@ def clean_html(text: str) -> str:
         return ""
     text = _TAG_RE.sub(" ", text)
     text = _html.unescape(text)
-    # taie footerul tipic de copyright de la coada: "(c)/© ... Sursa.ro." si "[...]"
+    # taie footerele RSS boilerplate de la coada
     text = re.sub(r"\[\s*[….]+\s*\]", " ", text)               # [...] / […]
     text = re.sub(r"[\(\[]?\s*(?:\(c\)|©)[^.]*\.?\s*$", "", text, flags=re.IGNORECASE)
+    # WordPress footer: "The post ..." (cu sau fara "appeared first on")
+    text = re.sub(r"\s*The post\b.*$", "", text, flags=re.IGNORECASE | re.DOTALL)
+    # Romanian footer oriunde in text
+    text = re.sub(r"\s*apare prima dat[aă]\s+[îi]n\s+\S+.*$", "", text, flags=re.IGNORECASE | re.DOTALL)
+    text = re.sub(r"\s*appeared first on\s+\S+.*$", "", text, flags=re.IGNORECASE | re.DOTALL)
+    text = re.sub(r"\s*Cite[șs]te\s+mai\s+mult.*$", "", text, flags=re.IGNORECASE)
+    text = re.sub(r"\s*Read more.*$", "", text, flags=re.IGNORECASE)
     return _WS_RE.sub(" ", text).strip()
 
 
