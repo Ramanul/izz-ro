@@ -148,10 +148,15 @@ def process_batch(items: list, provider) -> list:
     return done
 
 
-def process_single(item: dict, provider) -> dict:
-    """Model B. Modifica item-ul pe loc: title/teaser/category/model/processed_by."""
-    item["model"] = "B"
+def process_single(item: dict, provider) -> dict | None:
+    """Model B. Modifica item-ul pe loc: title/teaser/category/model/processed_by.
+
+    Daca providerul exista dar apelul AI esueaza, returneaza None FARA a atinge
+    item-ul: nu se publica brut, ci ramane neschimbat si se reia data viitoare
+    (regula 'No mangled output'). Doar fara cheie (provider None) se face fallback.
+    """
     if provider is None:
+        item["model"] = "B"
         if item.get("source_lang") == "en":
             item["skip"] = True
             return item
@@ -164,23 +169,25 @@ def process_single(item: dict, provider) -> dict:
         raw = provider.complete(SYSTEM_B, USER_B.format(
             title=item.get("original_title", ""), description=item.get("description", "")))
         data = _parse_json(raw)
-        item["title"] = (data.get("title") or item.get("original_title", "")).strip()
-        item["teaser"] = truncate_words(data.get("teaser", "") or "Detalii pe sursa.",
-                                        config.TEASER_MAX_WORDS)
-        item["category"] = _valid_category(data.get("category", ""), item.get("category", "general"))
-        item["processed_by"] = provider.name
-        item["prompt_version"] = config.PROMPT_VERSION
-    except Exception as exc:  # un esec pe un articol nu opreste pipeline-ul
-        item["title"] = item.get("original_title", "")
-        item["teaser"] = truncate_words(item.get("description") or "Detalii pe sursa.",
-                                        config.TEASER_MAX_WORDS)
-        item["processed_by"] = "fallback"
-        item["error"] = str(exc)
+    except Exception:
+        return None                            # esec AI -> amanat, item-ul ramane intact
+    item["model"] = "B"
+    item["title"] = (data.get("title") or item.get("original_title", "")).strip()
+    item["teaser"] = truncate_words(data.get("teaser", "") or "Detalii pe sursa.",
+                                    config.TEASER_MAX_WORDS)
+    item["category"] = _valid_category(data.get("category", ""), item.get("category", "general"))
+    item["processed_by"] = provider.name
+    item["prompt_version"] = config.PROMPT_VERSION
     return item
 
 
-def process_cluster(group: list, provider) -> dict:
-    """Model C. Returneaza un articol-reprezentant cu sinteza + lista de surse."""
+def process_cluster(group: list, provider) -> dict | None:
+    """Model C. Returneaza un articol-reprezentant cu sinteza + lista de surse.
+
+    Daca providerul exista dar apelul AI esueaza (429/503/etc.), returneaza None:
+    item-ul NU se publica brut, ci se reia la rularea urmatoare (regula 'No mangled
+    output'). Doar in modul fara cheie (provider None) se face fallback determinist.
+    """
     rep = dict(min(group, key=lambda a: a.get("published") or ""))
     rep["model"] = "C"
     _seen_src = set()
@@ -211,10 +218,6 @@ def process_cluster(group: list, provider) -> dict:
         rep["category"] = _valid_category(data.get("category", ""), rep.get("category", "general"))
         rep["processed_by"] = provider.name
         rep["prompt_version"] = config.PROMPT_VERSION
-    except Exception as exc:
-        rep["title"] = rep.get("original_title", "")
-        rep["synthesis"] = truncate_words(rep.get("description") or "Detalii pe surse.",
-                                          config.SYNTHESIS_MAX_WORDS)
-        rep["processed_by"] = "fallback"
-        rep["error"] = str(exc)
+    except Exception:
+        return None                            # esec AI -> amanat, reluat data viitoare
     return rep
