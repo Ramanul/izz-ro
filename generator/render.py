@@ -190,8 +190,9 @@ def _quality_gate(a: dict) -> bool:
     if not has_source:
         return False
 
-    # articolele EN fara sinteza AI nu se publica (titlu/body in engleza)
-    if a.get("source_lang") == "en" and a.get("processed_by") == "fallback":
+    # fallback = titlu/body brut din RSS, fara sinteza AI -> zgomot, NU se publica
+    # (indiferent de limba). Item-ul ramane in state si se reia/upgrade-eaza la AI.
+    if a.get("processed_by") == "fallback":
         return False
 
     # cluster C cu surse incoerente (linkuri spre articole fara legatura) -> nu se publica
