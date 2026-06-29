@@ -43,3 +43,7 @@ jobs:
           git add data/articles.json
           git commit -m "update content [skip ci]" || echo "nimic de comis"
           git push || echo "nimic de impins"
+
+      - name: QA check (alerta daca scade calitatea publicabila)
+        # ruleaza DUPA commit/deploy -> daca pica, owner-ul e anuntat de GitHub, dar site-ul nu ingheata
+        run: python tools/qa_check.py
