@@ -1,6 +1,7 @@
 """Randare SSG cu Jinja2 (autoescape ON) -> output/. Permalink-uri, sitemap, robots, feed, JSON-LD."""
 import logging
 import os
+import re
 import shutil
 from datetime import datetime, timezone
 from xml.sax.saxutils import escape as xml_escape
@@ -144,6 +145,27 @@ def _dedup_sources(a: dict) -> None:
 _BODY_PLACEHOLDERS = {"Detalii pe sursa.", "Detalii pe surse.", ""}
 
 
+def _slug_stems(url: str) -> set:
+    """Cuvinte-cheie (stem 6 litere) din ultima bucata a URL-ului = subiectul articolului-sursa."""
+    slug = re.sub(r"[?#].*$", "", url or "").rstrip("/").split("/")[-1]
+    return {t[:6] for t in title_tokens(slug.replace("-", " ").replace("_", " "))}
+
+
+def sources_coherent(a: dict) -> bool:
+    """False daca o sursa a unui cluster C nu imparte NICIUN cuvant cu restul (mis-clustering)."""
+    srcs = a.get("sources") or []
+    if len(srcs) < 2:
+        return True
+    toks = [_slug_stems(s.get("url", "")) for s in srcs]
+    for i, t in enumerate(toks):
+        if not t:
+            continue
+        others = set().union(*[toks[j] for j in range(len(toks)) if j != i]) if len(toks) > 1 else set()
+        if others and not (t & others):
+            return False
+    return True
+
+
 def _quality_gate(a: dict) -> bool:
     """Contract de date: un articol trece gate-ul daca satisface toate conditiile.
 
@@ -170,6 +192,14 @@ def _quality_gate(a: dict) -> bool:
 
     # articolele EN fara sinteza AI nu se publica (titlu/body in engleza)
     if a.get("source_lang") == "en" and a.get("processed_by") == "fallback":
+        return False
+
+    # cluster C cu surse incoerente (linkuri spre articole fara legatura) -> nu se publica
+    if a.get("model") == "C" and not sources_coherent(a):
+        return False
+
+    # titlu brut trunchiat ("...") = output degradat
+    if title.endswith("...") or title.endswith("…"):
         return False
 
     return True
