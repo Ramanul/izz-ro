@@ -46,9 +46,11 @@ def process_new(new_items: list, provider, budget: int) -> tuple[list, set, int]
         if used >= budget:
             break
         rep = process_cluster(g, provider)
+        used += 1
+        if rep is None:
+            continue  # esec AI -> cluster amanat; membrii raman nefolded si se reiau data viitoare
         processed.append(rep)
         folded.update(a["url"] for a in g if a["url"] != rep["url"])
-        used += 1
 
     # model B in LOTURI (1 apel per BATCH_SIZE articole)
     bs = config.BATCH_SIZE if provider else (len(singles) or 1)
@@ -65,7 +67,8 @@ def upgrade_fallbacks(articles: list, provider, remaining: int) -> int:
     """Reprocesează cu AI articolele B invechite, in limita bugetului ramas:
     - cele ramase pe fallback (quota), SI
     - cele procesate cu o versiune veche a regulilor (prompt_version != curent).
-    Le modifica pe loc. Returneaza apelurile folosite. (C nu se reproceseaza — nu avem grupul.)
+    Le modifica pe loc. Returneaza upgrade-urile reusite. (C nu se reproceseaza — nu avem grupul.)
+    Pe primul esec AI (quota/eroare) se opreste runda, ca sa nu lovim un API indisponibil.
     """
     if not provider or remaining <= 0:
         return 0
@@ -77,7 +80,8 @@ def upgrade_fallbacks(articles: list, provider, remaining: int) -> int:
             a.get("processed_by") == "fallback"
             or a.get("prompt_version") != config.PROMPT_VERSION
         ):
-            process_single(a, provider)  # rescrie titlu/teaser/processed_by/prompt_version pe loc
+            if process_single(a, provider) is None:
+                break  # AI indisponibil -> oprim upgrade-ul; fallback-urile raman pentru data viitoare
             used += 1
     return used
 
