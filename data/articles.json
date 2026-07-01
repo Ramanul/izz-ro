@@ -1,5 +1,32 @@
 [
   {
+    "url": "https://digi24.ro/stiri/externe/trump-saluta-reuniuni-foarte-bune-cu-iranul-dar-evoca-si-lovituri-foarte-puternice-eu-numesc-asta-denuclearizare-3843201",
+    "original_link": "https://www.digi24.ro/stiri/externe/trump-saluta-reuniuni-foarte-bune-cu-iranul-dar-evoca-si-lovituri-foarte-puternice-eu-numesc-asta-denuclearizare-3843201",
+    "source": "extern",
+    "source_name": "Digi24 Extern",
+    "source_lang": "ro",
+    "original_title": "Trump salută reuniuni „foarte bune” cu Iranul, dar evocă și lovituri „foarte puternice”: „Eu numesc asta denuclearizare”",
+    "title": "Trump salută discuții cu Iranul, menționând lovituri puternice",
+    "description": "Preşedintele american Donald Trump a salutat miercuri progrese în negocieri - indirecte - între Statele Unite şi Iran şi a evocat reuniuni „foarte bune” la Doha, vorbind în același timp de loviturile „foarte puternice” pe care le-a aplicat Iranului.",
+    "category": "politic",
+    "published": "2026-07-01T15:05:15+00:00",
+    "model": "C",
+    "sources": [
+      {
+        "name": "Digi24 Extern",
+        "url": "https://www.digi24.ro/stiri/externe/trump-saluta-reuniuni-foarte-bune-cu-iranul-dar-evoca-si-lovituri-foarte-puternice-eu-numesc-asta-denuclearizare-3843201"
+      },
+      {
+        "name": "Digi24",
+        "url": "https://www.digi24.ro/stiri/externe/trump-saluta-reuniuni-foarte-bune-cu-iranul-dar-evoca-si-lovituri-foarte-puternice-eu-numesc-asta-denuclearizare-3843201"
+      }
+    ],
+    "synthesis": "Președintele american Donald Trump a declarat miercuri că negocierile indirecte cu Iranul, desfășurate la Doha, au fost \"foarte bune\". El a subliniat, de asemenea, impactul \"foarte puternic\" al loviturilor americane asupra Iranului, pe care le-a numit \"denuclearizare\".",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
     "url": "https://digi24.ro/stiri/externe/rusia/inevitabilul-s-a-produs-putin-l-a-rugat-pe-modi-sa-i-vanda-benzina-cantitatile-impresionante-pe-care-le-va-importa-rusia-din-india-3843051",
     "original_link": "https://www.digi24.ro/stiri/externe/rusia/inevitabilul-s-a-produs-putin-l-a-rugat-pe-modi-sa-i-vanda-benzina-cantitatile-impresionante-pe-care-le-va-importa-rusia-din-india-3843051",
     "source": "extern",
@@ -76,6 +103,33 @@
       }
     ],
     "synthesis": "Ucraina a atacat o rafinărie de petrol din Ufa, Rusia, la peste 1.300 de kilometri de linia frontului. Acesta este al doilea atac asupra aceleiași ținte, conform declarațiilor președintelui ucrainean Volodimir Zelenski. Acțiunile marchează o intensificare a atacurilor ucrainene pe distanțe lungi în teritoriul rus.",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://bbc.co.uk/news/articles/c8x2y2vwqn1o?at_medium=RSS&at_campaign=rss",
+    "original_link": "https://www.bbc.co.uk/news/articles/c8x2y2vwqn1o?at_medium=RSS&at_campaign=rss",
+    "source": "bbc_europe",
+    "source_name": "BBC Europe",
+    "source_lang": "en",
+    "original_title": "Canada to make Eurovision Song Contest debut in 2027",
+    "title": "Canada va debuta la Eurovision în 2027",
+    "description": "The country becomes the first new participant since Australia joined the contest in 2015.",
+    "category": "extern",
+    "published": "2026-07-01T12:30:56+00:00",
+    "model": "C",
+    "sources": [
+      {
+        "name": "BBC Europe",
+        "url": "https://www.bbc.co.uk/news/articles/c8x2y2vwqn1o?at_medium=RSS&at_campaign=rss"
+      },
+      {
+        "name": "The Guardian",
+        "url": "https://www.theguardian.com/tv-and-radio/2026/jul/01/canada-joins-eurovision-song-contest"
+      }
+    ],
+    "synthesis": "Canada va participa pentru prima dată la concursul Eurovision începând cu anul 2027. Aceasta marchează prima țară nouă acceptată în competiție după Australia, care s-a alăturat în 2015. Participarea este deschisă membrilor Uniunii Europene de Radiodifuziune (EBU), din care Canada a devenit recent membru.",
     "processed_by": "gemini",
     "prompt_version": "v2-esenta",
     "featured": false
@@ -28037,282 +28091,6 @@
     "synthesis": "Preşedintele american Donald Trump a ameninţat miercuri Iranul că va încheia imediat negocierile de pace dacă acesta din urmă va taxa navele care trec prin Strâmtoarea Ormuz, adăugând că Washingtonul nu a eliberat către Teheran fonduri îngheţate în urma sancţiunilor, relatează agenţia EFE. „Iranul a informat SUA că, în ciuda relatărilor rău intenţionate din ştirile © G4Media.ro .",
     "processed_by": "fallback",
     "error": "HTTP Error 429: Too Many Requests",
-    "featured": false
-  },
-  {
-    "url": "https://playtech.ro/2026/serverele-ai-ale-nvidia-se-racesc-cu-lichid-mai-fierbinte-decat-o-cada-cu-hidromasaj-de-ce-asta-poate-reduce-masiv-consumul-de-energie",
-    "original_link": "https://playtech.ro/2026/serverele-ai-ale-nvidia-se-racesc-cu-lichid-mai-fierbinte-decat-o-cada-cu-hidromasaj-de-ce-asta-poate-reduce-masiv-consumul-de-energie/",
-    "source": "playtech",
-    "source_name": "Playtech",
-    "original_title": "Serverele AI ale NVIDIA se răcesc cu lichid mai fierbinte decât o cadă cu hidromasaj: de ce asta poate reduce masiv consumul de energie",
-    "title": "Serverele AI ale NVIDIA se răcesc cu lichid mai fierbinte decât o cadă cu hidromasaj: de ce asta poate reduce masiv consumul de energie",
-    "description": "",
-    "category": "tech",
-    "published": "2026-06-24T15:52:50+00:00",
-    "model": "B",
-    "teaser": "Detalii pe sursa.",
-    "processed_by": "fallback",
-    "error": "HTTP Error 429: Too Many Requests",
-    "featured": false
-  },
-  {
-    "url": "https://gsp.ro/sporturi/tenis/irina-begu-karolina-muchova-optimi-bad-homburg-952587.html",
-    "original_link": "https://www.gsp.ro/sporturi/tenis/irina-begu-karolina-muchova-optimi-bad-homburg-952587.html",
-    "source": "gsp",
-    "source_name": "GSP",
-    "original_title": "Irina Begu – Karolina Muchova, în „optimi” la Bad Homburg » Românca e dominată: s-a încheiat primul set",
-    "title": "Irina Begu – Karolina Muchova, în „optimi” la Bad Homburg » Românca e dominată: s-a încheiat primul set",
-    "description": "Irina Begu (35 de ani, 211 WTA) se duelează cu Karolina Muchova (29 de ani, 11 WTA) în optimile de finală ale turneului de la Bad Homburg. Meciul a început la ora 19:05 și poate fi urmărit liveTEXT pe GSP.ro și în direct pe Digi Sport 2. Irina Begu încearcă să devină a doua jucătoare din România calificată în sferturile de finală ale turneului de la Bad Homburg. ...",
-    "category": "sport",
-    "published": "2026-06-24T15:47:00+00:00",
-    "model": "C",
-    "sources": [
-      {
-        "name": "GSP",
-        "url": "https://www.gsp.ro/sporturi/tenis/gabriela-ruse-a-scapat-de-iga-swiatek-bad-homburg-952609.html"
-      },
-      {
-        "name": "Digi Sport",
-        "url": "https://www.digisport.ro/tenis/karolina-muchova-irina-begu-acum-dgs-2-gabriela-ruse-anna-kalinskaya-7-5-6-2-turul-doi-la-homburg-4335895"
-      }
-    ],
-    "synthesis": "Irina Begu (35 de ani, 211 WTA) se duelează cu Karolina Muchova (29 de ani, 11 WTA) în optimile de finală ale turneului de la Bad Homburg. Meciul a început la ora 19:05 și poate fi urmărit liveTEXT pe GSP.ro și în direct pe Digi Sport 2. Irina Begu încearcă să devină a doua jucătoare din România calificată în sferturile de finală ale turneului de la Bad Homburg. ...",
-    "processed_by": "fallback",
-    "error": "HTTP Error 429: Too Many Requests",
-    "featured": false
-  },
-  {
-    "url": "https://libertatea.ro/educatie/cum-se-corecteaza-lucrarile-evaluarea-nationala-2026-5792182",
-    "original_link": "https://www.libertatea.ro/educatie/cum-se-corecteaza-lucrarile-evaluarea-nationala-2026-5792182",
-    "source": "libertatea",
-    "source_name": "Libertatea",
-    "original_title": "Cum se corectează lucrările la Evaluarea Națională 2026",
-    "title": "Cum se corectează lucrările la Evaluarea Națională 2026",
-    "description": "Pentru examenul de Evaluare Națională 2026, Ministerul Educației din România continuă și consolidează utilizarea evaluării digitalizate la nivel național, un sistem introdus inițial pentru a elimina subiectivismul și a eficientiza procesul de notare. Platforma de corectare și anonimizarea Imediat după finalizarea probei, lucrările elevilor sunt scanate în sala de examen, în prezența candidatului și a",
-    "category": "general",
-    "published": "2026-06-24T15:44:13+00:00",
-    "model": "C",
-    "sources": [
-      {
-        "name": "Libertatea",
-        "url": "https://www.libertatea.ro/educatie/cum-se-corecteaza-lucrarile-evaluarea-nationala-2026-5792182"
-      },
-      {
-        "name": "Știrile ProTV",
-        "url": "https://stirileprotv.ro/stiri/evaluare-nationala/evaluarea-nationala-2026-la-matematica-i-a-pus-in-dificultate-si-pe-adulti-ziceti-voi-cum-aici-nici-eu-nu-stiu.html"
-      }
-    ],
-    "synthesis": "Pentru examenul de Evaluare Națională 2026, Ministerul Educației din România continuă și consolidează utilizarea evaluării digitalizate la nivel național, un sistem introdus inițial pentru a elimina subiectivismul și a eficientiza procesul de notare. Platforma de corectare și anonimizarea Imediat după finalizarea probei, lucrările elevilor sunt scanate în sala de examen, în prezența candidatului și a",
-    "processed_by": "fallback",
-    "error": "HTTP Error 429: Too Many Requests",
-    "featured": false
-  },
-  {
-    "url": "https://playtech.ro/2026/soferii-scapa-de-o-amenda-de-pana-la-1-600-de-lei-vesti-bune-pentru-cei-care-isi-uita-permisul-sau-talonul-acasa",
-    "original_link": "https://playtech.ro/2026/soferii-scapa-de-o-amenda-de-pana-la-1-600-de-lei-vesti-bune-pentru-cei-care-isi-uita-permisul-sau-talonul-acasa/",
-    "source": "playtech",
-    "source_name": "Playtech",
-    "original_title": "Șoferii scapă de o amendă de până la 1.600 de lei. Vești bune pentru cei care își uită permisul sau talonul acasă",
-    "title": "Șoferii scapă de o amendă de până la 1.600 de lei. Vești bune pentru cei care își uită permisul sau talonul acasă",
-    "description": "",
-    "category": "tech",
-    "published": "2026-06-24T15:30:31+00:00",
-    "model": "B",
-    "teaser": "Detalii pe sursa.",
-    "processed_by": "fallback",
-    "error": "HTTP Error 429: Too Many Requests",
-    "featured": false
-  },
-  {
-    "url": "https://libertatea.ro/stiri/siegfried-muresan-pnl-conditii-guvern-sorin-grindeanu-psd-nordis-5792177",
-    "original_link": "https://www.libertatea.ro/stiri/siegfried-muresan-pnl-conditii-guvern-sorin-grindeanu-psd-nordis-5792177",
-    "source": "libertatea",
-    "source_name": "Libertatea",
-    "original_title": "Condiția pusă de un lider PNL pentru a susține un guvern minoritar PSD, condus de Sorin Grindeanu: „Vom fi în opoziție din prima zi”",
-    "title": "Condiția pusă de un lider PNL pentru a susține un guvern minoritar PSD, condus de Sorin Grindeanu: „Vom fi în opoziție din prima zi”",
-    "description": "Vicepreședintele PNL, Siegfried Mureșan, a anunțat, miercuri, condițiile în schimbul cărora liberalii ar accepta să deblocheze criza politică actuală prin votarea unui guvern condus de social-democratul Sorin Grindeanu. Mureșan a ținut să precizeze că un eventual vot favorabil nu înseamnă un cec în alb acordat partenerilor de dialog și nici instalarea unei liniști politice, ci",
-    "category": "general",
-    "published": "2026-06-24T15:30:00+00:00",
-    "model": "C",
-    "sources": [
-      {
-        "name": "Digi24",
-        "url": "https://www.digi24.ro/stiri/actualitate/politica/pnl-usr-udmr-i-au-propus-lui-nicusor-dan-un-acord-de-reciprocitate-cu-psd-si-3-variante-de-premier-care-sunt-conditiile-pentru-guvern-3830937"
-      },
-      {
-        "name": "Libertatea",
-        "url": "https://www.libertatea.ro/stiri/negocieri-urgente-guvern-minoritar-cotroceni-criza-politica-romania-5791276"
-      }
-    ],
-    "synthesis": "Vicepreședintele PNL, Siegfried Mureșan, a anunțat, miercuri, condițiile în schimbul cărora liberalii ar accepta să deblocheze criza politică actuală prin votarea unui guvern condus de social-democratul Sorin Grindeanu. Mureșan a ținut să precizeze că un eventual vot favorabil nu înseamnă un cec în alb acordat partenerilor de dialog și nici instalarea unei liniști politice, ci",
-    "processed_by": "fallback",
-    "error": "HTTP Error 429: Too Many Requests",
-    "featured": false
-  },
-  {
-    "url": "https://g4media.ro/psd-acuza-usr-ca-submineaza-acordul-politic-cerut-de-presedinte-ce-ar-trebui-sa-duca-la-un-nou-guvern-social-democratii-resping-o-rotativa-la-guvernare.html",
-    "original_link": "https://www.g4media.ro/psd-acuza-usr-ca-submineaza-acordul-politic-cerut-de-presedinte-ce-ar-trebui-sa-duca-la-un-nou-guvern-social-democratii-resping-o-rotativa-la-guvernare.html",
-    "source": "g4media",
-    "source_name": "G4Media",
-    "original_title": "PSD acuză USR că subminează Acordul politic cerut de președinte, ce ar trebui să ducă la un nou guvern / Social democrații resping o rotativă la guvernare",
-    "title": "PSD acuză USR că subminează Acordul politic cerut de președinte, ce ar trebui să ducă la un nou guvern / Social democrații resping o rotativă la guvernare",
-    "description": "PSD acuză, într-un comunicat transmis miercuri, USR că subminează încheierea unui Acord politic, între partide, care să ducă la desemnarea unui nou premier și învestirea unui guvern. „PSD constată că Acordul Politic premergător desemnării prim-ministrului, solicitat de președintele României și agreat de principiu de toate partidele parlamentare pro-occidentale (din cadrul fostei Coaliții) este subminat cu © G4Media.ro .",
-    "category": "politic",
-    "published": "2026-06-24T15:26:58+00:00",
-    "model": "C",
-    "sources": [
-      {
-        "name": "Digi24",
-        "url": "https://www.digi24.ro/stiri/actualitate/politica/psd-acuza-usr-ca-saboteaza-formarea-rapida-a-unui-guvern-prin-propunerea-unei-rotative-tertip-prin-care-schimba-mereu-conditiile-3830861"
-      },
-      {
-        "name": "G4Media",
-        "url": "https://www.g4media.ro/psd-acuza-usr-ca-submineaza-acordul-politic-cerut-de-presedinte-ce-ar-trebui-sa-duca-la-un-nou-guvern-social-democratii-resping-o-rotativa-la-guvernare.html"
-      }
-    ],
-    "synthesis": "PSD acuză, într-un comunicat transmis miercuri, USR că subminează încheierea unui Acord politic, între partide, care să ducă la desemnarea unui nou premier și învestirea unui guvern. „PSD constată că Acordul Politic premergător desemnării prim-ministrului, solicitat de președintele României și agreat de principiu de toate partidele parlamentare pro-occidentale (din cadrul fostei Coaliții) este subminat cu © G4Media.ro .",
-    "processed_by": "fallback",
-    "error": "HTTP Error 429: Too Many Requests",
-    "featured": false
-  },
-  {
-    "url": "https://gsp.ro/international/campionatul-mondial-de-fotbal-2026/noua-furtuna-puternica-ameninta-miami-scotia-brazilia-cm2026-perturbat-de-fulgere-952590.html",
-    "original_link": "https://www.gsp.ro/international/campionatul-mondial-de-fotbal-2026/noua-furtuna-puternica-ameninta-miami-scotia-brazilia-cm2026-perturbat-de-fulgere-952590.html",
-    "source": "gsp",
-    "source_name": "GSP",
-    "original_title": "Scoția - Brazilia, în pericol. „Avem o strategie în minte despre cum să facem față situației”",
-    "title": "Scoția - Brazilia, în pericol. „Avem o strategie în minte despre cum să facem față situației”",
-    "description": "Meciul din cadrul grupei C de la Cupa Mondială 2026 dintre Scoția și Brazilia, care va avea loc în această noapte, riscă serios să fie întrerupt de o furtună. Prima partidă ce a avut de suferit din cauza vremii nefavorabile a fost Franța - Iraq 3-0, suspendată pentru două ore și zece minute. Alerta de vreme rea a afectat confruntarea de la Philadelphia, astfel că arbitrul a trebuit să amâne startul reprizei a doua cu mai bine de două ceasuri. ...",
-    "category": "sport",
-    "published": "2026-06-24T15:26:09+00:00",
-    "model": "B",
-    "teaser": "Meciul din cadrul grupei C de la Cupa Mondială 2026 dintre Scoția și Brazilia, care va avea loc în această noapte, riscă serios să fie întrerupt de o furtună. Prima partidă ce a avut de suferit din cauza vremii nefavorabile...",
-    "processed_by": "fallback",
-    "error": "HTTP Error 429: Too Many Requests",
-    "featured": false
-  },
-  {
-    "url": "https://digi24.ro/campionatul-mondal-de-fotbal-2026/cm-2026-istvan-kovacs-il-va-arbitra-pe-messi-in-al-doilea-meci-al-brigazii-din-romania-in-faza-grupelor-3830809",
-    "original_link": "https://www.digi24.ro/campionatul-mondal-de-fotbal-2026/cm-2026-istvan-kovacs-il-va-arbitra-pe-messi-in-al-doilea-meci-al-brigazii-din-romania-in-faza-grupelor-3830809",
-    "source": "digi24",
-    "source_name": "Digi24",
-    "original_title": "CM 2026. Istvan Kovacs îl va arbitra pe Messi, în al doilea meci al brigăzii din România în faza grupelor",
-    "title": "CM 2026. Istvan Kovacs îl va arbitra pe Messi, în al doilea meci al brigăzii din România în faza grupelor",
-    "description": "Arbitrul român Istvan Kovacs va conduce la centru partida Iordania – Argentina, care se va disputa duminică, de la ora 05:00, în ultima etapă a grupei J a Cupei Mondiale.",
-    "category": "general",
-    "published": "2026-06-24T15:24:55+00:00",
-    "model": "C",
-    "sources": [
-      {
-        "name": "GSP",
-        "url": "https://www.gsp.ro/international/campionatul-mondial-de-fotbal-2026/live-bosnia-qatar-campionatul-mondial-2026-952436.html"
-      },
-      {
-        "name": "Digi24",
-        "url": "https://www.digi24.ro/campionatul-mondal-de-fotbal-2026/cm-2026-istvan-kovacs-il-va-arbitra-pe-messi-in-al-doilea-meci-al-brigazii-din-romania-in-faza-grupelor-3830809"
-      }
-    ],
-    "synthesis": "Arbitrul român Istvan Kovacs va conduce la centru partida Iordania – Argentina, care se va disputa duminică, de la ora 05:00, în ultima etapă a grupei J a Cupei Mondiale.",
-    "processed_by": "fallback",
-    "error": "HTTP Error 429: Too Many Requests",
-    "featured": false
-  },
-  {
-    "url": "https://digi24.ro/stiri/externe/reactii-dure-de-la-roma-dupa-ce-rutte-a-spus-ca-italia-a-permis-ca-500-de-avioane-ale-sua-sa-i-foloseasca-bazele-in-razboiul-din-iran-3830811",
-    "original_link": "https://www.digi24.ro/stiri/externe/reactii-dure-de-la-roma-dupa-ce-rutte-a-spus-ca-italia-a-permis-ca-500-de-avioane-ale-sua-sa-i-foloseasca-bazele-in-razboiul-din-iran-3830811",
-    "source": "extern",
-    "source_name": "Digi24 Extern",
-    "original_title": "Reacții dure de la Roma după ce Rutte a spus că Italia a permis ca 500 de avioane ale SUA să-i folosească bazele în războiul din Iran",
-    "title": "Reacții dure de la Roma după ce Rutte a spus că Italia a permis ca 500 de avioane ale SUA să-i folosească bazele în războiul din Iran",
-    "description": "Secretarul general al NATO, Mark Rutte, a declarat că Roma a permis ca 500 de avioane militare americane să decoleze de pe bazele americane din Italia în timpul atacurilor SUA și Israelului asupra Iranului, ceea ce a stârnit o reacție politică negativă în Italia, scrie Politico.",
-    "category": "extern",
-    "published": "2026-06-24T15:21:22+00:00",
-    "model": "C",
-    "sources": [
-      {
-        "name": "Digi24 Extern",
-        "url": "https://www.digi24.ro/stiri/externe/reactii-dure-de-la-roma-dupa-ce-rutte-a-spus-ca-italia-a-permis-ca-500-de-avioane-ale-sua-sa-i-foloseasca-bazele-in-razboiul-din-iran-3830811"
-      },
-      {
-        "name": "Digi24",
-        "url": "https://www.digi24.ro/stiri/externe/reactii-dure-de-la-roma-dupa-ce-rutte-a-spus-ca-italia-a-permis-ca-500-de-avioane-ale-sua-sa-i-foloseasca-bazele-in-razboiul-din-iran-3830811"
-      }
-    ],
-    "synthesis": "Secretarul general al NATO, Mark Rutte, a declarat că Roma a permis ca 500 de avioane militare americane să decoleze de pe bazele americane din Italia în timpul atacurilor SUA și Israelului asupra Iranului, ceea ce a stârnit o reacție politică negativă în Italia, scrie Politico.",
-    "processed_by": "fallback",
-    "error": "HTTP Error 503: Service Unavailable",
-    "featured": false
-  },
-  {
-    "url": "https://gsp.ro/fotbal/liga-1/martin-pascual-portret-transfer-dinamo-952595.html",
-    "original_link": "https://www.gsp.ro/fotbal/liga-1/martin-pascual-portret-transfer-dinamo-952595.html",
-    "source": "gsp",
-    "source_name": "GSP",
-    "original_title": "6 lucruri mai puțin cunoscute despre Martin Pascual, noua achiziție a lui Dinamo: cine l-a adus + la Kopic nu ar fi avut nicio șansă!",
-    "title": "6 lucruri mai puțin cunoscute despre Martin Pascual, noua achiziție a lui Dinamo: cine l-a adus + la Kopic nu ar fi avut nicio șansă!",
-    "description": "Spaniolul Martin Pascual (26 de ani) a ajuns în cantonamentul lui Dinamo și urmează să devină primul transfer important al „câinilor” din această perioadă de mercato. Ultima oară la Mirandes, în liga a doua din Spania, fundașul central este văzut drept înlocuitorul lui Kennedy Boateng (29 de ani), care a părăsit clubul după ce a refuzat prelungirea contractului. Din informațiile GSP. ...",
-    "category": "sport",
-    "published": "2026-06-24T15:17:11+00:00",
-    "model": "B",
-    "teaser": "Spaniolul Martin Pascual (26 de ani) a ajuns în cantonamentul lui Dinamo și urmează să devină primul transfer important al „câinilor” din această perioadă de mercato. Ultima oară la Mirandes, în liga a doua din Spania, fundașul central este văzut...",
-    "processed_by": "fallback",
-    "error": "HTTP Error 429: Too Many Requests",
-    "featured": false
-  },
-  {
-    "url": "https://digi24.ro/stiri/actualitate/bnr-pune-in-circulatie-esalonat-bancnotele-emisiunea-2026-ce-este-nou-la-ele-3830699",
-    "original_link": "https://www.digi24.ro/stiri/actualitate/bnr-pune-in-circulatie-esalonat-bancnotele-emisiunea-2026-ce-este-nou-la-ele-3830699",
-    "source": "digi24",
-    "source_name": "Digi24",
-    "original_title": "BNR pune în circulaţie, eşalonat, bancnotele emisiunea 2026. Ce este nou la ele",
-    "title": "BNR pune în circulaţie, eşalonat, bancnotele emisiunea 2026. Ce este nou la ele",
-    "description": "Banca Naţională a României pune în circulaţie, eşalonat, bancnote emisiunea 2026, în cupiuri de 1 leu, 5 lei, 10 lei, 20 lei, 50 lei, 100 lei, 200 lei şi 500 lei, informează BNR printr-un comunicat.",
-    "category": "general",
-    "published": "2026-06-24T15:06:19+00:00",
-    "model": "C",
-    "sources": [
-      {
-        "name": "Digi24",
-        "url": "https://www.digi24.ro/stiri/actualitate/bnr-pune-in-circulatie-esalonat-bancnotele-emisiunea-2026-ce-este-nou-la-ele-3830699"
-      },
-      {
-        "name": "Ziarul Financiar",
-        "url": "https://www.zf.ro/banci-si-asigurari/banca-nationala-a-romaniei-pune-in-circulatie-bancnotele-tiparite-in-23181715"
-      }
-    ],
-    "synthesis": "Banca Naţională a României pune în circulaţie, eşalonat, bancnote emisiunea 2026, în cupiuri de 1 leu, 5 lei, 10 lei, 20 lei, 50 lei, 100 lei, 200 lei şi 500 lei, informează BNR printr-un comunicat.",
-    "processed_by": "fallback",
-    "error": "HTTP Error 429: Too Many Requests",
-    "featured": false
-  },
-  {
-    "url": "https://digi24.ro/stiri/actualitate/politica/rares-bogdan-il-critica-pe-bolojan-ipocrizie-fara-margini-dai-vot-unui-pesedist-dar-acum-doua-zile-ai-blocat-un-liberal-3830753",
-    "original_link": "https://www.digi24.ro/stiri/actualitate/politica/rares-bogdan-il-critica-pe-bolojan-ipocrizie-fara-margini-dai-vot-unui-pesedist-dar-acum-doua-zile-ai-blocat-un-liberal-3830753",
-    "source": "digi24",
-    "source_name": "Digi24",
-    "original_title": "Rareş Bogdan îl critică pe Bolojan: Ipocrizie fără margini. Dai vot unui pesedist, dar acum două zile ai blocat un liberal",
-    "title": "Rareș Bogdan acuză PNL de ipocrizie în privința votului pentru guvernul PSD",
-    "description": "Europarlamentarul Rareş Bogdan îl critică miercuri pe liderul PNL, Ilie Bolojan, acuzându-l de ipocrizie fără margini pentru că dă vot unui pesedist, dar acum două zile a blocat un liberal, referitor la refuzul PNL de a vota în Parlament guvernul lui Adrian Veştea. El mai spune că, sub pretextul unei mari responsabilităţi naţionale, se dă oxigen unui guvern minoritar exclusiv PSD, condus chiar de PSD-istul şef, cu sprijinul lui Bolojan si al neoprogresistilor săi din PNL.",
-    "category": "politic",
-    "published": "2026-06-24T15:05:41+00:00",
-    "model": "C",
-    "sources": [
-      {
-        "name": "Digi24",
-        "url": "https://www.digi24.ro/stiri/actualitate/politica/rares-bogdan-il-critica-pe-bolojan-ipocrizie-fara-margini-dai-vot-unui-pesedist-dar-acum-doua-zile-ai-blocat-un-liberal-3830753"
-      },
-      {
-        "name": "HotNews",
-        "url": "https://hotnews.ro/unul-din-disidentii-din-pnl-atac-la-adresa-conducerii-bolojan-si-camarila-slugilor-anunta-ca-va-vota-un-guvern-exclusiv-psd-pe-ei-cine-ii-sanctioneaza-2283421"
-      },
-      {
-        "name": "G4Media",
-        "url": "https://www.g4media.ro/rares-bogdan-nou-atac-la-conducerea-pnl-pe-bolojan-si-pe-cei-ce-vor-vota-un-guvern-in-jurul-psd-cine-i-sanctioneaza-partidul-e-in-picaj-dar-mandrul-carmaci-e-orbit-de-vanitate-in-viteza-trotinetei.html"
-      }
-    ],
-    "synthesis": "Europarlamentarul Rareș Bogdan critică vehement conducerea PNL, condusă de Ilie Bolojan, acuzând-o de ipocrizie. El susține că partidul dă vot unui guvern minoritar PSD, deși anterior a blocat liberali care susțineau un guvern cu participare PNL. Bogdan pune sub semnul întrebării sancționarea celor care susțin actuala direcție a PNL.",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
     "featured": false
   }
 ]
