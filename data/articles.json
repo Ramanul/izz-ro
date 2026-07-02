@@ -54,6 +54,33 @@
     "featured": false
   },
   {
+    "url": "https://dw.com/en/vatican-excommunicates-rebel-sspx-bishops/a-77798543?maca=en-rss-en-eu-2092-rdf",
+    "original_link": "https://www.dw.com/en/vatican-excommunicates-rebel-sspx-bishops/a-77798543?maca=en-rss-en-eu-2092-rdf",
+    "source": "dw_europe",
+    "source_name": "DW Europe",
+    "source_lang": "en",
+    "original_title": "Vatican excommunicates rebel SSPX bishops",
+    "title": "Vaticanul excomunică gruparea rebelă SSPX pentru hirotoniri neautorizate",
+    "description": "The Vatican's watchdog authority has imposed severe disciplinary measures on an ultratraditionalist Catholic group. The move comes after the group, the Society of Saint Pius X, consecrated bishops without papal consent.",
+    "category": "extern",
+    "published": "2026-07-02T10:40:00+00:00",
+    "model": "C",
+    "sources": [
+      {
+        "name": "The Guardian",
+        "url": "https://www.theguardian.com/world/2026/jul/02/vatican-excommunicates-all-members-of-ultra-conservative-rebels-sspx"
+      },
+      {
+        "name": "DW Europe",
+        "url": "https://www.dw.com/en/vatican-excommunicates-rebel-sspx-bishops/a-77798543?maca=en-rss-en-eu-2092-rdf"
+      }
+    ],
+    "synthesis": "Vaticanul a excomunicat membrii grupării ultraconservatoare Societatea Sf. Pius al X-lea (SSPX). Decizia vine ca urmare a hirotonirii a patru episcopi fără consimțământul Papei, un act considerat schismatic conform dreptului canonic. Această măsură reprezintă o criză majoră pentru Biserica Catolică.",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
     "url": "https://digi24.ro/stiri/externe/ue/pentru-prima-data-ucraina-a-aprobat-un-mecanism-care-permite-vanzarea-in-strainatate-a-armelor-de-productie-proprie-3844183",
     "original_link": "https://www.digi24.ro/stiri/externe/ue/pentru-prima-data-ucraina-a-aprobat-un-mecanism-care-permite-vanzarea-in-strainatate-a-armelor-de-productie-proprie-3844183",
     "source": "extern",
@@ -25861,39 +25888,6 @@
     "teaser": "Aster Capital Partners Franța, Iceberg+ și Venture Booster anunță lansarea Asternova Vest, un fond regional de venture capital cu o valoare de 37 de milioane de euro, dedicat startup-urilor și...",
     "processed_by": "fallback",
     "error": "HTTP Error 503: Service Unavailable",
-    "featured": false
-  },
-  {
-    "url": "https://autocritica.ro/live-news/versiune-noua-pentru-hyundai-inster-2",
-    "original_link": "https://www.autocritica.ro/live-news/versiune-noua-pentru-hyundai-inster-2/",
-    "source": "autocritica",
-    "source_name": "AutoCritica",
-    "original_title": "Versiune nouă pentru Hyundai Inster",
-    "title": "Versiune nouă pentru Hyundai Inster",
-    "description": "Hyundai a introdus o versiune nouă pentru modelul electric Inster. Noua variantă este numită Inster Lounge și va intra în producție în această vară. Printre noutăți se numără nuanța de caroserie Glow Mint, jantele de aliaj de 17 inchi și scaunele realizate din material textil și piele. Două opțiuni pentru motoare și baterii: – baterie de 42 kWh și un motor electric cu 97 CP (autonomie de 300 de kilometri) – baterie de 49 kWh și un motor electric cu 115 CP (autonomie de 360 de kilometri) Încărcare AC la 11 kW, încărcare rapidă DC cu 120 kW (10-80% în 30 de minute). Printre rivalii lui Hyundai Inster din segmentul mic se numără Dacia Spring și Fiat 500e. Via: Hyundai",
-    "category": "tech",
-    "published": "2026-06-25T13:27:36+00:00",
-    "model": "B",
-    "teaser": "Hyundai a introdus o versiune nouă pentru modelul electric Inster. Noua variantă este numită Inster Lounge și va intra în producție în această vară. Printre noutăți se numără nuanța de caroserie Glow Mint, jantele de aliaj de...",
-    "processed_by": "fallback",
-    "error": "HTTP Error 429: Too Many Requests",
-    "featured": false
-  },
-  {
-    "url": "https://bbc.co.uk/news/articles/clyrkze46p0o?at_medium=RSS&at_campaign=rss",
-    "original_link": "https://www.bbc.co.uk/news/articles/clyrkze46p0o?at_medium=RSS&at_campaign=rss",
-    "source": "bbc_europe",
-    "source_name": "BBC Europe",
-    "source_lang": "en",
-    "original_title": "Poland's Tusk calls for 'mutual respect' during row with Ukraine",
-    "title": "Tusk cere respect reciproc în disputa Polonia-Ucraina",
-    "description": "Ukraine's Volodmyr Zelensky skips major conference aimed at rebuilding his country after being stripped of a Polish state honour.",
-    "category": "politic",
-    "published": "2026-06-25T12:25:14+00:00",
-    "model": "B",
-    "teaser": "Premierul polonez Donald Tusk a cerut respect reciproc în contextul tensiunilor cu Ucraina, după ce președintele ucrainean Volodimir Zelenski a absentat de la o conferință importantă.",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
     "featured": false
   }
 ]
