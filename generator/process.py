@@ -7,7 +7,7 @@ import json
 import re
 
 from . import config
-from .util import truncate_words
+from .util import truncate_words, domain_of
 
 # ---- Prompturi calibrate juridic (zero propozitii copiate din original) ----
 
@@ -190,11 +190,13 @@ def process_cluster(group: list, provider) -> dict | None:
     """
     rep = dict(min(group, key=lambda a: a.get("published") or ""))
     rep["model"] = "C"
-    _seen_src = set()
+    # dedup dupa domeniu, nu dupa nume: 2 feed-uri RSS ale aceluiasi site
+    # (ex. "Digi24" si "Digi24 Extern") nu sunt 2 surse independente
+    _seen_domain = set()
     rep["sources"] = [
         {"name": a["source_name"], "url": a["original_link"]}
         for a in group
-        if a["source_name"] not in _seen_src and not _seen_src.add(a["source_name"])
+        if domain_of(a["original_link"]) not in _seen_domain and not _seen_domain.add(domain_of(a["original_link"]))
     ]
 
     if provider is None:

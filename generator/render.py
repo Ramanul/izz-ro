@@ -10,7 +10,7 @@ from jinja2 import Environment, FileSystemLoader, select_autoescape
 from slugify import slugify
 
 from . import config
-from .util import title_tokens
+from .util import title_tokens, domain_of
 
 ROOT = config.ROOT
 TPL_DIR = os.path.join(ROOT, "templates")
@@ -131,12 +131,14 @@ def _pick_hero(articles: list) -> list:
 
 
 def _dedup_sources(a: dict) -> None:
-    """Surse unice dupa nume (evita 'Digi Sport x3' pe acelasi card)."""
+    """Surse unice dupa domeniu (evita 'Digi24' + 'Digi24 Extern' duplicate pe acelasi card,
+    inclusiv pentru clustere C deja salvate in state inainte de acest fix)."""
     seen, out = set(), []
     for s in a.get("sources") or []:
-        if s.get("name") in seen:
+        d = domain_of(s.get("url", ""))
+        if d in seen:
             continue
-        seen.add(s.get("name"))
+        seen.add(d)
         out.append(s)
     if out:
         a["sources"] = out
