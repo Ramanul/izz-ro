@@ -1,5 +1,6 @@
 .env
 output/
+.audit/
 __pycache__/
 *.pyc
 *.log
