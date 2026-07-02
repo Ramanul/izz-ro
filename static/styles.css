@@ -82,7 +82,6 @@ a:hover { color: var(--ink); }
   font-family: var(--font-mono); font-size: var(--fs-eyebrow); color: var(--gold-strong);
   letter-spacing: 1px;
 }
-@media (max-width: 640px) { .brand-descriptor { display: none; } }
 .nav { display: flex; flex-wrap: wrap; gap: var(--s-21); }
 .nav a {
   color: var(--ink-2); font-family: var(--font-mono); font-weight: 600;
