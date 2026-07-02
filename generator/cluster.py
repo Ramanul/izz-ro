@@ -2,7 +2,7 @@
 from datetime import datetime, timezone, timedelta
 
 from . import config
-from .util import title_tokens
+from .util import title_tokens, domain_of
 
 RECENT_HOURS = 24
 JACCARD_MIN = 0.30        # suprapunere minima (cu stemming) — necesara IMPREUNA cu pragul de tokeni
@@ -62,5 +62,9 @@ def cluster(articles: list) -> list:
 
 
 def is_synthesis_candidate(group: list) -> bool:
-    """Cluster cu >= CLUSTER_MIN_SOURCES surse DISTINCTE -> sinteza C."""
-    return len({a.get("source") for a in group}) >= config.CLUSTER_MIN_SOURCES
+    """Cluster cu >= CLUSTER_MIN_SOURCES domenii DISTINCTE -> sinteza C.
+
+    Domeniu, nu cheia din config: 2 feed-uri RSS ale aceluiasi site
+    (ex. "digi24" si "extern"/Digi24 Extern) nu inseamna 2 surse independente.
+    """
+    return len({domain_of(a.get("original_link", "")) for a in group}) >= config.CLUSTER_MIN_SOURCES

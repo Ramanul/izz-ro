@@ -10,7 +10,7 @@ from jinja2 import Environment, FileSystemLoader, select_autoescape
 from slugify import slugify
 
 from . import config
-from .util import title_tokens
+from .util import title_tokens, domain_of
 
 ROOT = config.ROOT
 TPL_DIR = os.path.join(ROOT, "templates")
@@ -55,11 +55,16 @@ def _write(path: str, content: str) -> None:
         fh.write(content)
 
 
+def _logo_jsonld() -> dict:
+    return {"@type": "ImageObject", "url": config.SITE["url"] + "/static/logo.png",
+            "width": 512, "height": 512}
+
+
 def _org_jsonld() -> dict:
     return {
         "@context": "https://schema.org", "@type": "Organization",
         "name": config.SITE["name"], "url": config.SITE["url"],
-        "logo": config.SITE["url"] + "/static/logo.svg",
+        "logo": _logo_jsonld(),
         "email": config.SITE["contact"],
         "description": config.SITE["tagline"],
     }
@@ -71,13 +76,14 @@ def _article_jsonld(a: dict) -> dict:
         "@context": "https://schema.org", "@type": "NewsArticle",
         "headline": a.get("title", ""),
         "description": body or "",
+        "image": [config.SITE["url"] + "/static/og-image.png"],
         "datePublished": a.get("published", ""),
         "dateModified": a.get("published", ""),
         "url": f"{config.SITE['url']}/{a['category']}/{a['slug']}/",
         "mainEntityOfPage": f"{config.SITE['url']}/{a['category']}/{a['slug']}/",
         "inLanguage": config.SITE["lang"],
         "author": {"@type": "Organization", "name": config.SITE["name"]},
-        "publisher": {"@type": "Organization", "name": config.SITE["name"]},
+        "publisher": {"@type": "Organization", "name": config.SITE["name"], "logo": _logo_jsonld()},
         "isBasedOn": [s["url"] for s in a.get("sources", [])] or a.get("original_link", ""),
     }
 
@@ -131,12 +137,14 @@ def _pick_hero(articles: list) -> list:
 
 
 def _dedup_sources(a: dict) -> None:
-    """Surse unice dupa nume (evita 'Digi Sport x3' pe acelasi card)."""
+    """Surse unice dupa domeniu (evita 'Digi24' + 'Digi24 Extern' duplicate pe acelasi card,
+    inclusiv pentru clustere C deja salvate in state inainte de acest fix)."""
     seen, out = set(), []
     for s in a.get("sources") or []:
-        if s.get("name") in seen:
+        d = domain_of(s.get("url", ""))
+        if d in seen:
             continue
-        seen.add(s.get("name"))
+        seen.add(d)
         out.append(s)
     if out:
         a["sources"] = out

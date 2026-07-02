@@ -1,9 +1,12 @@
 {% extends "base.html" %}
 {% from "_card.html" import card with context %}
+{% block title %}{{ site.name }} — {{ site.tagline }}{% endblock %}
+{% block description %}Cele mai importante știri din România și din lume, sintetizate din mai multe surse și verificate, fără duplicate și fără zgomot. Actualizat non-stop.{% endblock %}
 {% block head_extra %}
   {% if page_jsonld %}<script type="application/ld+json">{{ page_jsonld | tojson }}</script>{% endif %}
 {% endblock %}
 {% block content %}
+  <h1 class="visually-hidden">{{ site.name }} — {{ site.tagline }}</h1>
   {% if not articles %}
     <p class="empty">Încă nu sunt știri publicate. Robotul rulează la fiecare 30 de minute.</p>
   {% else %}
