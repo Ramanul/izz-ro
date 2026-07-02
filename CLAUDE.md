@@ -84,3 +84,10 @@ No remaining SEO gaps known. Do NOT re-audit or rebuild without a specific new f
 ## 12. Tooling & effort
 - PowerShell and Desktop Commander may run without per-command approval, within the security hook's blocklist. Reading files and running the documented dev/build/lint/test commands needs no confirmation. Destructive or irreversible actions still require confirmation.
 - For substantive, multi-file tasks: enable `/effort ultracode` (session-wide xhigh + dynamic workflow orchestration). For routine single-slice edits: `/effort high` is enough and spends fewer tokens. Use an `ultrathink` turn specifically for planning before a hard slice.
+
+## 13. Front-end verification — measure, don't eyeball
+Prefer local CLI measurement tools over "testing websites": structured JSON output, runs on **localhost before deploy**, no rate limits. External APIs (PageSpeed Insights, W3C) are a *post-deploy* complement on the live site, not a substitute.
+- **After any slice that changes front-end output** (templates, `static/styles.css`, render.py HTML/JSON-LD): run `bash tools/audit.sh` and report Lighthouse scores (Perf / Accessibility / Best-practices / SEO) and pa11y WCAG2AA error count **before vs after**. "It looks fine" is not a result; a score delta is.
+- Setup once: `npm i -g lighthouse pa11y`. The script auto-detects Chromium (`CHROME_PATH` to override), renders, serves `output/`, and writes JSON to `.audit/` (gitignored).
+- **Measure is a compass, not an autopilot.** Scores *inform* the next slice, which you still propose and I confirm (see §5). Never launch an autonomous "optimization" marathon, and never chase a Lighthouse number with tricks that degrade the real experience.
+- Baseline recorded 2026-07-02: home Perf 89 / A11y 92 / BP 96 / SEO 100; article 90 / 91 / 96 / 100. Known open finding: footer legal-nav links fail WCAG2AA contrast (3.25:1) — fix is a `styles.css` token change, not yet done.

@@ -14,7 +14,7 @@ from .base import Provider
 
 MODEL = os.getenv("GEMINI_MODEL", "gemini-2.5-flash-lite")
 ENDPOINT = "https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent?key={key}"
-THROTTLE = float(os.getenv("GEMINI_THROTTLE", "2.0"))   # pauza intre apeluri, anti rate-limit
+THROTTLE = float(os.getenv("GEMINI_THROTTLE", "4.0"))   # pauza intre apeluri: ~15 req/min, sub plafonul RPM free-tier (2s tripa 429 la mijloc de rulare)
 RETRIES_PER_KEY = 2
 
 
