@@ -15,11 +15,11 @@
   --paper-2:     #ffffff;   /* zone proeminente (lead) */
   --ink:         #15171c;   /* text principal (~16:1) */
   --ink-2:       #4d5562;   /* text secundar */
-  --ink-3:       #889;      /* meta discret */
+  --ink-3:       #6d6d7f;   /* meta discret (AA 4.7:1 pe --paper; #889 dadea 3.25:1) */
   --line:        #e4e7ec;   /* hairline */
   --line-strong: #c9ccd3;   /* linie de regula mai vizibila */
   --gold:        #c9a227;   /* aur viu: decor/fundaluri, NU text pe alb */
-  --gold-strong: #94701a;   /* aur inchis: text/linkuri pe alb (AA ✓) */
+  --gold-strong: #8b6918;   /* aur inchis: text/linkuri (AA 4.7:1 pe --paper; #94701a trecea doar pe alb pur) */
   --gold-wash:   #faf5e6;
 
   --fs-eyebrow: 0.7rem;
