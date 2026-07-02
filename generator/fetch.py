@@ -131,6 +131,11 @@ def _fetch_html_scraper(key: str, source: dict) -> tuple[list, str | None]:
     parser = _PiataAutoParser(base_url)
     parser.feed(raw)
 
+    if not parser.items:
+        # pagina a raspuns OK dar parser-ul n-a gasit niciun container -> structura
+        # HTML s-a schimbat probabil; raportam ca sursa moarta ca sa nu esueze tacut
+        return items, f"{key}: 0 articole extrase (posibil structura HTML schimbata)"
+
     for entry in parser.items[: config.MAX_PER_SOURCE]:
         link = entry["href"]
         title = clean_html(entry["title"])
