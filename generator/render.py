@@ -55,11 +55,16 @@ def _write(path: str, content: str) -> None:
         fh.write(content)
 
 
+def _logo_jsonld() -> dict:
+    return {"@type": "ImageObject", "url": config.SITE["url"] + "/static/logo.png",
+            "width": 512, "height": 512}
+
+
 def _org_jsonld() -> dict:
     return {
         "@context": "https://schema.org", "@type": "Organization",
         "name": config.SITE["name"], "url": config.SITE["url"],
-        "logo": config.SITE["url"] + "/static/logo.svg",
+        "logo": _logo_jsonld(),
         "email": config.SITE["contact"],
         "description": config.SITE["tagline"],
     }
@@ -71,13 +76,14 @@ def _article_jsonld(a: dict) -> dict:
         "@context": "https://schema.org", "@type": "NewsArticle",
         "headline": a.get("title", ""),
         "description": body or "",
+        "image": [config.SITE["url"] + "/static/og-image.png"],
         "datePublished": a.get("published", ""),
         "dateModified": a.get("published", ""),
         "url": f"{config.SITE['url']}/{a['category']}/{a['slug']}/",
         "mainEntityOfPage": f"{config.SITE['url']}/{a['category']}/{a['slug']}/",
         "inLanguage": config.SITE["lang"],
         "author": {"@type": "Organization", "name": config.SITE["name"]},
-        "publisher": {"@type": "Organization", "name": config.SITE["name"]},
+        "publisher": {"@type": "Organization", "name": config.SITE["name"], "logo": _logo_jsonld()},
         "isBasedOn": [s["url"] for s in a.get("sources", [])] or a.get("original_link", ""),
     }
 
