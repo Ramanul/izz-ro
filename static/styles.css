@@ -164,6 +164,8 @@ main { max-width: var(--maxw); margin: 0 auto; padding: var(--s-34) var(--s-34);
 .read-more::after { content: " \2192"; }
 .sources-inline { font-size: var(--fs-eyebrow); color: var(--ink-3); font-family: var(--font-mono); }
 .sources-inline b { color: var(--gold-strong); font-weight: 700; }
+/* linkurile de sursa: tinta tactila >=24px (WCAG 2.2 target-size) fara a ingrosa vizual randul */
+.sources-inline a, .lead-aside ul a { display: inline-block; padding: 6px 4px; margin: -4px -2px; }
 .sig { font-family: var(--font-mono); font-size: var(--fs-eyebrow); color: var(--ink-3); }
 .sig b { color: var(--gold-strong); }
 
