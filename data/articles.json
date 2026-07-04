@@ -1,5 +1,145 @@
 [
   {
+    "url": "https://digisport.ro/fotbal/liga-1/cfr-cluj-remiza-in-al-doilea-amical-al-verii-4358733",
+    "original_link": "https://www.digisport.ro/fotbal/liga-1/cfr-cluj-remiza-in-al-doilea-amical-al-verii-4358733",
+    "source": "digisport",
+    "source_name": "Digi Sport",
+    "source_lang": "ro",
+    "title": "CFR Cluj, egal în al doilea amical al verii",
+    "category": "sport",
+    "published": "2026-07-04T18:02:34+00:00",
+    "model": "C",
+    "sources": [
+      {
+        "name": "Digi Sport",
+        "url": "https://www.digisport.ro/fotbal/liga-1/cfr-cluj-remiza-in-al-doilea-amical-al-verii-4358733"
+      },
+      {
+        "name": "GSP",
+        "url": "https://www.gsp.ro/fotbal/liga-1/cfr-cluj-remiza-olimpija-ljubljana-956781.html"
+      }
+    ],
+    "first_source": "Digi Sport",
+    "synthesis": "CFR Cluj a terminat la egalitate, scor 1-1, partida amicală cu Olimpija Ljubljana, al doilea test din cantonamentul de vară din Slovenia. Toate golurile au fost marcate înainte de pauză. Echipa antrenată de Antonio Folha rămâne neînvinsă în pregătirea estivală, după ce a câștigat primul joc cu Neftci Baku (2-1).",
+    "entities": [
+      "CFR Cluj",
+      "Olimpija Ljubljana",
+      "Antonio Folha",
+      "Slovenia"
+    ],
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://dw.com/en/ukraine-strikes-oil-terminals-near-st-petersburg-in-russia/a-77830574?maca=en-rss-en-eu-2092-rdf",
+    "original_link": "https://www.dw.com/en/ukraine-strikes-oil-terminals-near-st-petersburg-in-russia/a-77830574?maca=en-rss-en-eu-2092-rdf",
+    "source": "dw_europe",
+    "source_name": "DW Europe",
+    "source_lang": "en",
+    "title": "Ucraina atacă terminale petroliere lângă Sankt Petersburg",
+    "category": "extern",
+    "published": "2026-07-04T17:48:00+00:00",
+    "model": "C",
+    "sources": [
+      {
+        "name": "DW Europe",
+        "url": "https://www.dw.com/en/ukraine-strikes-oil-terminals-near-st-petersburg-in-russia/a-77830574?maca=en-rss-en-eu-2092-rdf"
+      },
+      {
+        "name": "BBC Europe",
+        "url": "https://www.bbc.co.uk/news/articles/c8j2vmzxezro?at_medium=RSS&at_campaign=rss"
+      }
+    ],
+    "first_source": "DW Europe",
+    "synthesis": "Ucraina a lansat atacuri cu drone asupra unor terminale petroliere din apropierea orașului rusesc Sankt Petersburg. Aceste lovituri vizează infrastructura economică a Rusiei, cu scopul de a-i afecta capacitatea de finanțare a războiului. Președintele ucrainean Volodimir Zelenski a subliniat importanța țintelor pentru veniturile generate de Rusia.",
+    "entities": [
+      "Ucraina",
+      "Rusia",
+      "Sankt Petersburg",
+      "Volodimir Zelenski"
+    ],
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://hotnews.ro/avioane-nato-ridicate-de-ungaria-pentru-a-intercepta-un-avion-de-linie-chinez-care-nu-a-raspuns-controlorilor-de-trafic-aerian-din-romania-2291881",
+    "original_link": "https://hotnews.ro/avioane-nato-ridicate-de-ungaria-pentru-a-intercepta-un-avion-de-linie-chinez-care-nu-a-raspuns-controlorilor-de-trafic-aerian-din-romania-2291881",
+    "source": "hotnews",
+    "source_name": "HotNews",
+    "source_lang": "ro",
+    "title": "Ungaria a ridicat avioane NATO pentru a intercepta un avion chinez",
+    "category": "extern",
+    "published": "2026-07-04T16:01:00+00:00",
+    "model": "C",
+    "sources": [
+      {
+        "name": "HotNews",
+        "url": "https://hotnews.ro/avioane-nato-ridicate-de-ungaria-pentru-a-intercepta-un-avion-de-linie-chinez-care-nu-a-raspuns-controlorilor-de-trafic-aerian-din-romania-2291881"
+      },
+      {
+        "name": "Digi24 Extern",
+        "url": "https://www.digi24.ro/stiri/externe/avioane-de-lupta-ungare-jas-39-gripen-ale-nato-au-fost-ridicate-la-granita-cu-romania-pentru-interceptarea-unui-avion-de-linie-chinez-3847765"
+      },
+      {
+        "name": "Spotmedia",
+        "url": "https://spotmedia.ro/stiri/eveniment/aeronavele-nato-au-interceptat-un-avion-din-china-la-granita-dintre-romania-si-ungaria"
+      },
+      {
+        "name": "Ziarul Financiar",
+        "url": "https://www.zf.ro/eveniment/alerta-la-granita-romaniei-avioane-nato-au-interceptat-un-avion-de-23188316"
+      },
+      {
+        "name": "Știrile ProTV",
+        "url": "https://stirileprotv.ro/stiri/actualitate/avioane-de-lupta-nato-ridicate-de-ungaria-la-granita-cu-romania-din-cauza-unui-avion-de-pasageri-din-china.html"
+      }
+    ],
+    "first_source": "HotNews",
+    "synthesis": "Avioane de luptă ungare, parte a misiunii NATO de patrulare aeriană, au fost activate la granița cu România. Intervenția a avut loc sâmbătă, după ce un avion de pasageri înmatriculat în China nu a răspuns apelurilor controlorilor de trafic aerian români. Aeronava a fost interceptată în spațiul aerian deasupra zonei de graniță.",
+    "entities": [
+      "Ungaria",
+      "NATO",
+      "România",
+      "China"
+    ],
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://hotnews.ro/2291865-2291865",
+    "original_link": "https://hotnews.ro/2291865-2291865",
+    "source": "hotnews",
+    "source_name": "HotNews",
+    "source_lang": "ro",
+    "title": "Erdogan avertizează Israelul să nu submineze acordul SUA-Iran",
+    "category": "politic",
+    "published": "2026-07-04T15:31:23+00:00",
+    "model": "C",
+    "sources": [
+      {
+        "name": "HotNews",
+        "url": "https://hotnews.ro/2291865-2291865"
+      },
+      {
+        "name": "Digi24 Extern",
+        "url": "https://www.digi24.ro/stiri/externe/erdogan-avertizeaza-israelul-sa-nu-dinamiteze-acordul-sua-iran-3847787"
+      }
+    ],
+    "first_source": "HotNews",
+    "synthesis": "Președintele turc Recep Tayyip Erdogan a declarat sâmbătă că Israelul nu trebuie să fie lăsat să afecteze negativ acordul de pace dintre Statele Unite și Iran. El a subliniat importanța sprijinului regional pentru succesul eforturilor de pace din Orientul Mijlociu.",
+    "entities": [
+      "Recep Tayyip Erdogan",
+      "Israel",
+      "Statele Unite",
+      "Iran"
+    ],
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
     "url": "https://prosport.ro/campionatul-mondial-2026/live-canada-maroc-cupa-mondiala-optimi-de-finala-20475808",
     "original_link": "https://www.prosport.ro/campionatul-mondial-2026/live-canada-maroc-cupa-mondiala-optimi-de-finala-20475808",
     "source": "prosport",
@@ -14062,16 +14202,19 @@
     "source": "spotmedia",
     "source_name": "Spotmedia",
     "source_lang": "ro",
-    "original_title": "Pirații plasticului: Experimentul UE în care elevii cartografiază poluarea râurilor",
-    "title": "Pirații plasticului: Experimentul UE în care elevii cartografiază poluarea râurilor",
-    "description": "De-a lungul unui pârâu din Spania, grupuri de adolescenți sunt la muncă. Unul se învârte în jurul unei prelate negre acoperite cu bucăți de plastic ude. Altul stă pe un podeț și pescuiește cu o plasă. Alții triază bucățele de plastic, mucuri de țigară și diverse alte obiecte pe care le-au scos din pârâu. Deși …",
+    "title": "Elevi din UE cartografiază poluarea râurilor cu plastic",
     "category": "general",
     "published": "2026-06-27T21:06:00+00:00",
     "model": "B",
-    "teaser": "De-a lungul unui pârâu din Spania, grupuri de adolescenți sunt la muncă. Unul se învârte în jurul unei prelate negre acoperite cu bucăți de plastic ude. Altul stă pe un podeț și pescuiește cu o plasă. Alții triază bucățele de...",
-    "processed_by": "fallback",
+    "teaser": "Adolescenți din Spania, parte dintr-un proiect UE, colectează și sortează deșeuri din plastic găsite în pârâuri, contribuind la monitorizarea poluării apelor.",
+    "processed_by": "gemini",
     "error": "HTTP Error 429: Too Many Requests",
-    "featured": false
+    "featured": false,
+    "entities": [
+      "UE",
+      "Spania"
+    ],
+    "prompt_version": "v2-esenta"
   },
   {
     "url": "https://spotmedia.ro/stiri/opinii-si-analize/singura-cale-prin-care-europa-se-poate-salva",
@@ -15317,1109 +15460,6 @@
       }
     ],
     "synthesis": "David Popovici a câștigat medalia de aur la proba de 100 de metri liber la Trofeul Sette Colli, desfășurat la Roma. Românul s-a impus cu timpul de 47,26 secunde, stabilind un nou record al competiției. Performanța sa reprezintă al doilea cel mai bun timp al anului la nivel mondial.",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://prosport.ro/diverse/nadia-comaneci-zeita-langa-colin-farrell-si-brad-pitt-romanca-e-un-magnet-pentru-superstaruri-20471879",
-    "original_link": "https://www.prosport.ro/diverse/nadia-comaneci-zeita-langa-colin-farrell-si-brad-pitt-romanca-e-un-magnet-pentru-superstaruri-20471879",
-    "source": "prosport",
-    "source_name": "ProSport",
-    "source_lang": "ro",
-    "title": "Nadia Comăneci, fotografiată cu Brad Pitt și Colin Farrell la Cupa Mondială",
-    "category": "sport",
-    "published": "2026-06-27T18:41:43+00:00",
-    "model": "B",
-    "teaser": "Fosta gimnastă Nadia Comăneci a fost surprinsă alături de actorii Brad Pitt și Colin Farrell. Vedetele de la Hollywood au participat la evenimentele Cupei Mondiale de fotbal.",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://digisport.ro/fotbal/liga-2/daniel-oprita-a-facut-anuntul-despre-viitorul-la-steaua-4343765",
-    "original_link": "https://www.digisport.ro/fotbal/liga-2/daniel-oprita-a-facut-anuntul-despre-viitorul-la-steaua-4343765",
-    "source": "digisport",
-    "source_name": "Digi Sport",
-    "source_lang": "ro",
-    "original_title": "Daniel Oprița a făcut anunțul despre viitorul la Steaua",
-    "title": "Daniel Oprița a făcut anunțul despre viitorul la Steaua",
-    "description": "Daniel Oprița a făcut anunțul despre viitorul la Steaua",
-    "category": "sport",
-    "published": "2026-06-27T18:39:02+00:00",
-    "model": "B",
-    "teaser": "Daniel Oprița a făcut anunțul despre viitorul la Steaua",
-    "processed_by": "fallback",
-    "error": "HTTP Error 429: Too Many Requests",
-    "featured": false
-  },
-  {
-    "url": "https://g4media.ro/presedintele-serbiei-aleksandar-vucic-anunta-ca-va-demisiona-si-va-convoca-alegeri-anticipate.html",
-    "original_link": "https://www.g4media.ro/presedintele-serbiei-aleksandar-vucic-anunta-ca-va-demisiona-si-va-convoca-alegeri-anticipate.html",
-    "source": "g4media",
-    "source_name": "G4Media",
-    "source_lang": "ro",
-    "original_title": "Președintele Serbiei, Aleksandar Vucic, anunță că va demisiona și va convoca alegeri anticipate",
-    "title": "Președintele Serbiei, Aleksandar Vucic, anunță că va demisiona și va convoca alegeri anticipate",
-    "description": "Președintele Serbiei, Aleksandar Vucic, a anunțat sâmbătă că va demisiona în următoarele săptămâni și că vor fi organizate alegeri prezidențiale și parlamentare anticipate. Demisia vine după un an și jumătate de proteste care au dominat țar, relatează Mediafax. Aleksandar Vucic a anunțat, în cadrul unui miting organizat de susținătorii săi la Belgrad, că va renunța © G4Media.ro .",
-    "category": "politic",
-    "published": "2026-06-27T18:35:53+00:00",
-    "model": "C",
-    "sources": [
-      {
-        "name": "HotNews",
-        "url": "https://hotnews.ro/vizat-in-continuare-de-proteste-presedintele-serbiei-anunta-ca-va-demisiona-in-curand-mesajul-lui-vucic-pentru-sustinatorii-sai-2286420"
-      },
-      {
-        "name": "G4Media",
-        "url": "https://www.g4media.ro/presedintele-serbiei-aleksandar-vucic-anunta-ca-va-demisiona-si-va-convoca-alegeri-anticipate.html"
-      },
-      {
-        "name": "Economica",
-        "url": "https://www.economica.net/presedintele-serbiei-aleksandar-vucic-a-anuntat-ca-va-demisiona_954360.html"
-      }
-    ],
-    "synthesis": "Președintele Serbiei, Aleksandar Vucic, a anunțat sâmbătă că va demisiona în următoarele săptămâni și că vor fi organizate alegeri prezidențiale și parlamentare anticipate. Demisia vine după un an și jumătate de proteste care au dominat țar, relatează Mediafax. Aleksandar Vucic a anunțat, în cadrul unui miting organizat de susținătorii săi la Belgrad, că va renunța © G4Media.ro .",
-    "processed_by": "fallback",
-    "error": "HTTP Error 429: Too Many Requests",
-    "featured": false
-  },
-  {
-    "url": "https://hotnews.ro/david-popovici-a-cucerit-medalie-aur-roma-2286394",
-    "original_link": "https://hotnews.ro/david-popovici-a-cucerit-medalie-aur-roma-2286394",
-    "source": "hotnews",
-    "source_name": "HotNews",
-    "source_lang": "ro",
-    "title": "David Popovici, aur la 100m liber cu record la Trofeul Settecolli",
-    "category": "sport",
-    "published": "2026-06-27T18:22:17+00:00",
-    "model": "C",
-    "sources": [
-      {
-        "name": "HotNews",
-        "url": "https://hotnews.ro/david-popovici-a-cucerit-medalie-aur-roma-2286394"
-      },
-      {
-        "name": "G4Media",
-        "url": "https://www.g4media.ro/david-popovici-a-castigat-aurul-la-100-m-liber-la-trofeul-settecolli.html"
-      },
-      {
-        "name": "Ziarul Financiar",
-        "url": "https://www.zf.ro/eveniment/succes-rasunator-al-lui-david-popovici-la-roma-aur-la-100-de-metri-23183355"
-      },
-      {
-        "name": "Știrile ProTV",
-        "url": "https://stirileprotv.ro/stiri/sport/david-popovici-a-cucerit-medalia-de-aur-la-roma-cu-record-al-competitiei-romanul-de-neintrecut-in-proba-de-100-m-liber.html"
-      }
-    ],
-    "synthesis": "Înotătorul român David Popovici a câștigat medalia de aur la proba de 100 de metri liber, sâmbătă, la Trofeul Settecolli de la Roma. El a stabilit un nou record al competiției, terminând cursa în 47,26 secunde. Aceasta este a doua medalie pentru Popovici la această competiție, după argintul obținut la 50m liber.",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://gsp.ro/sporturi/altele/david-popovici-reactie-dupa-finala-100-metri-liber-trofeul-settecolli-953843.html",
-    "original_link": "https://www.gsp.ro/sporturi/altele/david-popovici-reactie-dupa-finala-100-metri-liber-trofeul-settecolli-953843.html",
-    "source": "gsp",
-    "source_name": "GSP",
-    "source_lang": "ro",
-    "title": "Constantin Popovici și Cătălin Preda, medalii la Red Bull Cliff Diving Copenhaga",
-    "category": "sport",
-    "published": "2026-06-27T18:21:30+00:00",
-    "model": "C",
-    "sources": [
-      {
-        "name": "GSP",
-        "url": "https://www.gsp.ro/sporturi/altele/constantin-popovici-aur-sarituri-copenhaga-953871.html"
-      },
-      {
-        "name": "Digi Sport",
-        "url": "https://www.digisport.ro/natatie/prima-reactie-a-lui-david-popovici-dupa-ce-a-scris-istorie-la-trofeul-settecolli-4344191"
-      },
-      {
-        "name": "HotNews",
-        "url": "https://hotnews.ro/david-popovici-a-cucerit-medalie-aur-roma-2286394"
-      },
-      {
-        "name": "G4Media",
-        "url": "https://www.g4media.ro/david-popovici-a-castigat-aurul-la-100-m-liber-la-trofeul-settecolli.html"
-      },
-      {
-        "name": "Știrile ProTV",
-        "url": "https://stirileprotv.ro/stiri/sport/david-popovici-a-cucerit-medalia-de-aur-la-roma-cu-record-al-competitiei-romanul-de-neintrecut-in-proba-de-100-m-liber.html"
-      }
-    ],
-    "synthesis": "Constantin Popovici a câștigat medalia de aur la etapa de la Copenhaga a Red Bull Cliff Diving World Series, cu 420,8 puncte. Cătălin Preda a obținut medalia de bronz, cu 390,8 puncte. Britanicul Aidan Heslop s-a clasat pe locul al doilea.",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://prosport.ro/fotbal-intern/superliga/gigi-becali-a-anuntat-prima-lovitura-a-verii-a-semnat-cu-noi-pe-doi-ani-am-promis-20471877",
-    "original_link": "https://www.prosport.ro/fotbal-intern/superliga/gigi-becali-a-anuntat-prima-lovitura-a-verii-a-semnat-cu-noi-pe-doi-ani-am-promis-20471877",
-    "source": "prosport",
-    "source_name": "ProSport",
-    "source_lang": "ro",
-    "original_title": "MERCATO Gigi Becali a anunțat prima lovitură a verii: „A semnat cu noi pe doi ani! Am promis”",
-    "title": "MERCATO Gigi Becali a anunțat prima lovitură a verii: „A semnat cu noi pe doi ani! Am promis”",
-    "description": "Gigi Becali a anunțat că a ajuns la o înțelegere cu Florin Tănase și că experimentatul fotbalist a semnat o înțelegere valabilă pentru o perioadă de doi ani de zile cu FCSB. Latifundiarul din Pipera a precizat că jucătorul va pleca în cursul zilei de duminică, 28 iunie 2026, în cantonamentul din Olanda, unde va",
-    "category": "sport",
-    "published": "2026-06-27T18:14:58+00:00",
-    "model": "B",
-    "teaser": "Gigi Becali a anunțat că a ajuns la o înțelegere cu Florin Tănase și că experimentatul fotbalist a semnat o înțelegere valabilă pentru o perioadă de doi ani de zile cu FCSB. Latifundiarul din Pipera a precizat că jucătorul va...",
-    "processed_by": "fallback",
-    "error": "HTTP Error 429: Too Many Requests",
-    "featured": false
-  },
-  {
-    "url": "https://digi24.ro/stiri/externe/ue/aleksandar-vucic-anunta-ca-va-demisiona-in-cateva-saptamani-ce-urmeaza-in-serbia-dupa-plecarea-presedintelui-3836367",
-    "original_link": "https://www.digi24.ro/stiri/externe/ue/aleksandar-vucic-anunta-ca-va-demisiona-in-cateva-saptamani-ce-urmeaza-in-serbia-dupa-plecarea-presedintelui-3836367",
-    "source": "extern",
-    "source_name": "Digi24 Extern",
-    "source_lang": "ro",
-    "title": "Președintele Serbiei, Aleksandar Vucic, demisionează și convoacă alegeri anticipate",
-    "category": "politic",
-    "published": "2026-06-27T18:13:03+00:00",
-    "model": "C",
-    "sources": [
-      {
-        "name": "Digi24 Extern",
-        "url": "https://www.digi24.ro/stiri/externe/ue/aleksandar-vucic-anunta-ca-va-demisiona-in-cateva-saptamani-ce-urmeaza-in-serbia-dupa-plecarea-presedintelui-3836367"
-      },
-      {
-        "name": "Digi24",
-        "url": "https://www.digi24.ro/stiri/externe/ue/aleksandar-vucic-anunta-ca-va-demisiona-in-cateva-saptamani-ce-urmeaza-in-serbia-dupa-plecarea-presedintelui-3836367"
-      },
-      {
-        "name": "G4Media",
-        "url": "https://www.g4media.ro/presedintele-serbiei-aleksandar-vucic-anunta-ca-va-demisiona-si-va-convoca-alegeri-anticipate.html"
-      }
-    ],
-    "synthesis": "Președintele Serbiei, Aleksandar Vucic, a anunțat sâmbătă, în cadrul unui miting la Belgrad, că va demisiona în următoarele săptămâni. Acesta a declarat că vor fi organizate alegeri prezidențiale și parlamentare anticipate. Decizia survine după un an și jumătate de proteste în țară.",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://spotmedia.ro/stiri/sport/florin-tanase-s-a-razgandit-semneaza-cu-fcsb-si-ajunge-in-cantonament",
-    "original_link": "https://spotmedia.ro/stiri/sport/florin-tanase-s-a-razgandit-semneaza-cu-fcsb-si-ajunge-in-cantonament",
-    "source": "spotmedia",
-    "source_name": "Spotmedia",
-    "source_lang": "ro",
-    "original_title": "Florin Tănase s-a răzgândit: Semnează cu FCSB și ajunge în cantonament",
-    "title": "Florin Tănase s-a răzgândit: Semnează cu FCSB și ajunge în cantonament",
-    "description": "Florin Tănase s-a răzgândit după ce a avut o nouă rundă de negocieri cu FCSB. După ce a refuzat inițial propunerea FCSB și să meargă în cantonamentul Olanda, Florin Tănase a luat decizia finală. Conform Fanatik, Tănase a ajuns la un acord cu FCSB și va zbura în cantonamentul roș-albaștrilor. El își va prelungi contractul …",
-    "category": "general",
-    "published": "2026-06-27T18:12:26+00:00",
-    "model": "C",
-    "sources": [
-      {
-        "name": "Digi Sport",
-        "url": "https://www.digisport.ro/fotbal/liga-1/s-a-terminat-telenovela-florin-tanase-a-acceptat-oferta-si-duminica-ajunge-in-olanda-salariu-si-bonusuri-uriase-4344195"
-      },
-      {
-        "name": "Spotmedia",
-        "url": "https://spotmedia.ro/stiri/sport/florin-tanase-s-a-razgandit-semneaza-cu-fcsb-si-ajunge-in-cantonament"
-      }
-    ],
-    "synthesis": "Florin Tănase s-a răzgândit după ce a avut o nouă rundă de negocieri cu FCSB. După ce a refuzat inițial propunerea FCSB și să meargă în cantonamentul Olanda, Florin Tănase a luat decizia finală. Conform Fanatik, Tănase a ajuns la un acord cu FCSB și va zbura în cantonamentul roș-albaștrilor. El își va prelungi contractul …",
-    "processed_by": "fallback",
-    "error": "HTTP Error 503: Service Unavailable",
-    "featured": false
-  },
-  {
-    "url": "https://digi24.ro/stiri/sport/david-popovici-medalie-de-aur-la-100-m-liber-la-trofeul-settecolli-de-la-roma-3836379",
-    "original_link": "https://www.digi24.ro/stiri/sport/david-popovici-medalie-de-aur-la-100-m-liber-la-trofeul-settecolli-de-la-roma-3836379",
-    "source": "digi24",
-    "source_name": "Digi24",
-    "source_lang": "ro",
-    "title": "David Popovici, aur și record la 100m liber la Roma",
-    "category": "sport",
-    "published": "2026-06-27T18:11:37+00:00",
-    "model": "C",
-    "sources": [
-      {
-        "name": "GSP",
-        "url": "https://www.gsp.ro/sporturi/altele/constantin-popovici-aur-sarituri-copenhaga-953871.html"
-      },
-      {
-        "name": "Digi Sport",
-        "url": "https://www.digisport.ro/natatie/prima-reactie-a-lui-david-popovici-dupa-ce-a-scris-istorie-la-trofeul-settecolli-4344191"
-      },
-      {
-        "name": "Digi24",
-        "url": "https://www.digi24.ro/stiri/sport/david-popovici-medalie-de-aur-la-100-m-liber-la-trofeul-settecolli-de-la-roma-3836379"
-      },
-      {
-        "name": "HotNews",
-        "url": "https://hotnews.ro/david-popovici-a-cucerit-medalie-aur-roma-2286394"
-      },
-      {
-        "name": "G4Media",
-        "url": "https://www.g4media.ro/david-popovici-a-castigat-aurul-la-100-m-liber-la-trofeul-settecolli.html"
-      },
-      {
-        "name": "Știrile ProTV",
-        "url": "https://stirileprotv.ro/stiri/sport/david-popovici-a-cucerit-medalia-de-aur-la-roma-cu-record-al-competitiei-romanul-de-neintrecut-in-proba-de-100-m-liber.html"
-      }
-    ],
-    "synthesis": "Înotătorul David Popovici a câștigat medalia de aur la proba de 100 de metri liber la Trofeul Settecolli de la Roma, stabilind un nou record al competiției cu timpul de 47,26 secunde. Performanța vine după ce a obținut medalia de argint la 50 de metri liber, confirmând forma sa bună înaintea competițiilor majore.",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://digisport.ro/fotbal/liga-1/nu-vrea-sa-auda-de-ramanerea-la-rapid-si-a-cerut-sa-plece-el-si-agentul-ne-au-anuntat-4344167",
-    "original_link": "https://www.digisport.ro/fotbal/liga-1/nu-vrea-sa-auda-de-ramanerea-la-rapid-si-a-cerut-sa-plece-el-si-agentul-ne-au-anuntat-4344167",
-    "source": "digisport",
-    "source_name": "Digi Sport",
-    "source_lang": "ro",
-    "title": "Fotbalistul a cerut plecarea de la Rapid București",
-    "category": "sport",
-    "published": "2026-06-27T18:11:24+00:00",
-    "model": "B",
-    "teaser": "Un jucător important al echipei Rapid București a solicitat clubului să fie lăsat să plece. Decizia a fost comunicată oficial de către fotbalist și de agentul său.",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://digi24.ro/stiri/externe/un-avion-de-vanatoare-mig-29-ucrainean-a-fost-pierdut-in-timpul-unei-misiuni-de-lupta-ce-s-a-intamplat-cu-pilotul-3836377",
-    "original_link": "https://www.digi24.ro/stiri/externe/un-avion-de-vanatoare-mig-29-ucrainean-a-fost-pierdut-in-timpul-unei-misiuni-de-lupta-ce-s-a-intamplat-cu-pilotul-3836377",
-    "source": "extern",
-    "source_name": "Digi24 Extern",
-    "source_lang": "ro",
-    "original_title": "Un avion de vânătoare MiG-29 ucrainean a fost pierdut în timpul unei misiuni de luptă. Ce s-a întâmplat cu pilotul",
-    "title": "Un avion de vânătoare MiG-29 ucrainean a fost pierdut în timpul unei misiuni de luptă. Ce s-a întâmplat cu pilotul",
-    "description": "Un avion de vânătoare MiG-29 ucrainean a fost pierdut în timpul unei misiuni de luptă nocturne în regiunea centrală Poltava, pe 27 iunie, au raportat Forțele Aeriene Ucrainene. Tot luna aceasta, Ucraina a mai pierdut un bombardier în urma unui incident care este încă în curs de investigare.",
-    "category": "extern",
-    "published": "2026-06-27T18:11:14+00:00",
-    "model": "C",
-    "sources": [
-      {
-        "name": "Digi24 Extern",
-        "url": "https://www.digi24.ro/stiri/externe/un-avion-de-vanatoare-mig-29-ucrainean-a-fost-pierdut-in-timpul-unei-misiuni-de-lupta-ce-s-a-intamplat-cu-pilotul-3836377"
-      },
-      {
-        "name": "Digi24",
-        "url": "https://www.digi24.ro/stiri/externe/un-avion-de-vanatoare-mig-29-ucrainean-a-fost-pierdut-in-timpul-unei-misiuni-de-lupta-ce-s-a-intamplat-cu-pilotul-3836377"
-      }
-    ],
-    "synthesis": "Un avion de vânătoare MiG-29 ucrainean a fost pierdut în timpul unei misiuni de luptă nocturne în regiunea centrală Poltava, pe 27 iunie, au raportat Forțele Aeriene Ucrainene. Tot luna aceasta, Ucraina a mai pierdut un bombardier în urma unui incident care este încă în curs de investigare.",
-    "processed_by": "fallback",
-    "error": "HTTP Error 429: Too Many Requests",
-    "featured": false
-  },
-  {
-    "url": "https://gsp.ro/fotbal/liga-1/florin-tanase-acord-gigi-becali-prelungire-contract-fcsb-953862.html",
-    "original_link": "https://www.gsp.ro/fotbal/liga-1/florin-tanase-acord-gigi-becali-prelungire-contract-fcsb-953862.html",
-    "source": "gsp",
-    "source_name": "GSP",
-    "source_lang": "ro",
-    "title": "Florin Tănase prelungește contractul cu FCSB și pleacă în cantonament",
-    "category": "sport",
-    "published": "2026-06-27T18:07:04+00:00",
-    "model": "C",
-    "sources": [
-      {
-        "name": "GSP",
-        "url": "https://www.gsp.ro/fotbal/liga-1/florin-tanase-acord-gigi-becali-prelungire-contract-fcsb-953862.html"
-      },
-      {
-        "name": "Digi Sport",
-        "url": "https://www.digisport.ro/fotbal/liga-1/s-a-terminat-telenovela-florin-tanase-a-acceptat-oferta-si-duminica-ajunge-in-olanda-salariu-si-bonusuri-uriase-4344195"
-      },
-      {
-        "name": "Spotmedia",
-        "url": "https://spotmedia.ro/stiri/sport/florin-tanase-s-a-razgandit-semneaza-cu-fcsb-si-ajunge-in-cantonament"
-      }
-    ],
-    "synthesis": "Florin Tănase a ajuns la un acord cu FCSB pentru prelungirea contractului, după negocieri intense. Internaționalul român va pleca în Olanda pentru a se alătura lotului în cantonament. Decizia vine după ce inițial refuzase propunerea clubului.",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://stirileprotv.ro/show-buzz/horoscop/horoscop-28-iunie-2026-cu-neti-sandu-zodia-care-va-primi-o-veste-buna.html",
-    "original_link": "https://stirileprotv.ro/show-buzz/horoscop/horoscop-28-iunie-2026-cu-neti-sandu-zodia-care-va-primi-o-veste-buna.html",
-    "source": "protv",
-    "source_name": "Știrile ProTV",
-    "source_lang": "ro",
-    "original_title": "Horoscop 28 iunie 2026, cu Neti Sandu. Zodia care va primi o veste bună",
-    "title": "Horoscop 28 iunie 2026, cu Neti Sandu. Zodia care va primi o veste bună",
-    "description": "Horoscop 28 iunie 2026, prezentat de Neti Sandu la Știrile PRO TV. O zi cu surprize. O să ne facem programul cum vrem noi, dar să ne așteptăm și la vizite și invitații neașteptate, dar plăcute, plăcute.",
-    "category": "general",
-    "published": "2026-06-27T18:06:17+00:00",
-    "model": "C",
-    "sources": [
-      {
-        "name": "Libertatea",
-        "url": "https://www.libertatea.ro/lifestyle/horoscop-azi-28-iunie-2026-5792462"
-      },
-      {
-        "name": "Știrile ProTV",
-        "url": "https://stirileprotv.ro/show-buzz/horoscop/horoscop-28-iunie-2026-cu-neti-sandu-zodia-care-va-primi-o-veste-buna.html"
-      }
-    ],
-    "synthesis": "Horoscop 28 iunie 2026, prezentat de Neti Sandu la Știrile PRO TV. O zi cu surprize. O să ne facem programul cum vrem noi, dar să ne așteptăm și la vizite și invitații neașteptate, dar plăcute, plăcute.",
-    "processed_by": "fallback",
-    "error": "HTTP Error 429: Too Many Requests",
-    "featured": false
-  },
-  {
-    "url": "https://libertatea.ro/sport/david-popovici-medalie-aur-100m-liber-trofeul-sette-colli-roma-5796438",
-    "original_link": "https://www.libertatea.ro/sport/david-popovici-medalie-aur-100m-liber-trofeul-sette-colli-roma-5796438",
-    "source": "libertatea",
-    "source_name": "Libertatea",
-    "source_lang": "ro",
-    "original_title": "David Popovici a câștigat finala de la 100 m liber la Trofeul „Sette Colli” și a stabilit un nou record al competiției",
-    "title": "David Popovici a câștigat finala de la 100 m liber la Trofeul „Sette Colli” și a stabilit un nou record al competiției",
-    "description": "David Popovici a câștigat medalia de aur în proba de 100 de metri liber la cea de-a 62-a ediție a Trofeului „Sette Colli”, desfășurat la Roma. Campionul olimpic și mondial și-a confirmat statutul de favorit după ce dominase și seriile preliminare, încheind finala pe primul loc, cu timpul de 47,26 secunde. Sportivul român a avut",
-    "category": "general",
-    "published": "2026-06-27T18:03:15+00:00",
-    "model": "C",
-    "sources": [
-      {
-        "name": "ProSport",
-        "url": "https://www.prosport.ro/david-popovici/reactia-americanilor-dupa-super-cursa-lui-david-popovici-la-roma-romanul-a-reusit-al-doilea-timp-al-anului-dupa-ce-al-rusului-egor-kornev-20471936"
-      },
-      {
-        "name": "G4Media",
-        "url": "https://www.g4media.ro/david-popovici-a-castigat-aurul-la-100-m-liber-la-trofeul-settecolli.html"
-      },
-      {
-        "name": "Libertatea",
-        "url": "https://www.libertatea.ro/sport/david-popovici-medalie-aur-100m-liber-trofeul-sette-colli-roma-5796438"
-      },
-      {
-        "name": "Ziarul Financiar",
-        "url": "https://www.zf.ro/eveniment/succes-rasunator-al-lui-david-popovici-la-roma-aur-la-100-de-metri-23183355"
-      },
-      {
-        "name": "Știrile ProTV",
-        "url": "https://stirileprotv.ro/stiri/sport/david-popovici-a-cucerit-medalia-de-aur-la-roma-cu-record-al-competitiei-romanul-de-neintrecut-in-proba-de-100-m-liber.html"
-      }
-    ],
-    "synthesis": "David Popovici a câștigat medalia de aur în proba de 100 de metri liber la cea de-a 62-a ediție a Trofeului „Sette Colli”, desfășurat la Roma. Campionul olimpic și mondial și-a confirmat statutul de favorit după ce dominase și seriile preliminare, încheind finala pe primul loc, cu timpul de 47,26 secunde. Sportivul român a avut",
-    "processed_by": "fallback",
-    "error": "HTTP Error 429: Too Many Requests",
-    "featured": false
-  },
-  {
-    "url": "https://hotnews.ro/claudiu-manda-reactie-rapida-la-scenariul-lui-dan-motreanu-pentru-viitorul-guvern-psd-nu-l-ar-respinge-2286379",
-    "original_link": "https://hotnews.ro/claudiu-manda-reactie-rapida-la-scenariul-lui-dan-motreanu-pentru-viitorul-guvern-psd-nu-l-ar-respinge-2286379",
-    "source": "hotnews",
-    "source_name": "HotNews",
-    "source_lang": "ro",
-    "original_title": "Claudiu Manda, reacție rapidă la „scenariul” lui Dan Motreanu pentru viitorul Guvern: „PSD nu l-ar respinge”",
-    "title": "Claudiu Manda, reacție rapidă la „scenariul” lui Dan Motreanu pentru viitorul Guvern: „PSD nu l-ar respinge”",
-    "description": "Secretarul general al PSD, Claudiu Manda, a reacționat la ipoteza expusă de prim-vicepreședintele PNL, Dan Motreanu, care comentase ironic cum ar reacționa cele două partide în cazul în care rolurile ar fi inversate și, de această dată, președintele Nicușor Dan ar propune un social-democrat, fără acordul partidului său, drept candidat la funcția de premier. În …",
-    "category": "general",
-    "published": "2026-06-27T18:01:54+00:00",
-    "model": "B",
-    "teaser": "Secretarul general al PSD, Claudiu Manda, a reacționat la ipoteza expusă de prim-vicepreședintele PNL, Dan Motreanu, care comentase ironic cum ar reacționa cele două partide în cazul în care rolurile ar fi inversate și, de această dată, președintele Nicușor Dan...",
-    "processed_by": "fallback",
-    "error": "HTTP Error 429: Too Many Requests",
-    "featured": false
-  },
-  {
-    "url": "https://spotmedia.ro/stiri/eveniment/un-nou-nascut-salvat-de-sub-daramaturi-la-32-de-ore-dupa-cutremurele-din-venezuela-video",
-    "original_link": "https://spotmedia.ro/stiri/eveniment/un-nou-nascut-salvat-de-sub-daramaturi-la-32-de-ore-dupa-cutremurele-din-venezuela-video",
-    "source": "spotmedia",
-    "source_name": "Spotmedia",
-    "source_lang": "ro",
-    "original_title": "Un nou născut, salvat de sub dărâmături, la 32 de ore după cutremurele din Venezuela (Video)",
-    "title": "Un nou născut, salvat de sub dărâmături, la 32 de ore după cutremurele din Venezuela (Video)",
-    "description": "Un nou-născut a fost salvat de sub dărâmăturile unei clădiri prăbușite, la 32 de ore după cele două cutremure care au devastat Venezuela. O înregistrare video obținută de AFP arată echipele de salvare lucrând la lumina unui proiector în vârful unei grămezi de moloz și scoțând bebelușul, în aplauzele celor prezenți, vineri seara, târziu, în …",
-    "category": "general",
-    "published": "2026-06-27T18:00:55+00:00",
-    "model": "B",
-    "teaser": "Un nou-născut a fost salvat de sub dărâmăturile unei clădiri prăbușite, la 32 de ore după cele două cutremure care au devastat Venezuela. O înregistrare video obținută de AFP arată echipele de salvare lucrând la lumina unui proiector în vârful...",
-    "processed_by": "fallback",
-    "error": "HTTP Error 429: Too Many Requests",
-    "featured": false
-  },
-  {
-    "url": "https://gsp.ro/international/campionatul-mondial-de-fotbal-2026/soc-capul-verde-capitanul-ryan-mendes-acuzat-de-viol-translatoare-braziliana-denuntat-la-politie-953854.html",
-    "original_link": "https://www.gsp.ro/international/campionatul-mondial-de-fotbal-2026/soc-capul-verde-capitanul-ryan-mendes-acuzat-de-viol-translatoare-braziliana-denuntat-la-politie-953854.html",
-    "source": "gsp",
-    "source_name": "GSP",
-    "source_lang": "ro",
-    "original_title": "Șoc în Capul Verde: căpitanul Ryan Mendes este acuzat de viol! » O translatoare braziliană l-a denunțat la poliție",
-    "title": "Șoc în Capul Verde: căpitanul Ryan Mendes este acuzat de viol! » O translatoare braziliană l-a denunțat la poliție",
-    "description": "Sărăbătoarea marii surprize a Campionatului Mondial 2026 a fost stricată de o veste bombă venită de la Antipozi. Ryan Mendes (36 de ani), extrema stângă a naționalei Capului Verde, ar fi agresat sexual acum fix trei luni o femeie în Noua Zeelandă. ...",
-    "category": "sport",
-    "published": "2026-06-27T17:59:54+00:00",
-    "model": "B",
-    "teaser": "Sărăbătoarea marii surprize a Campionatului Mondial 2026 a fost stricată de o veste bombă venită de la Antipozi. Ryan Mendes (36 de ani), extrema stângă a naționalei Capului Verde, ar fi agresat sexual acum fix trei luni o femeie în...",
-    "processed_by": "fallback",
-    "error": "HTTP Error 429: Too Many Requests",
-    "featured": false
-  },
-  {
-    "url": "https://stirileprotv.ro/stiri/international/presedintele-serbiei-aleksandar-vucic-a-anuntat-ca-va-demisiona-in-cateva-saptamani.html",
-    "original_link": "https://stirileprotv.ro/stiri/international/presedintele-serbiei-aleksandar-vucic-a-anuntat-ca-va-demisiona-in-cateva-saptamani.html",
-    "source": "protv",
-    "source_name": "Știrile ProTV",
-    "source_lang": "ro",
-    "original_title": "Președintele Serbiei, Aleksandar Vucic, a anunțat că va demisiona „în câteva săptămâni”. Ce fel de alegeri vor fi",
-    "title": "Președintele Serbiei, Aleksandar Vucic, a anunțat că va demisiona „în câteva săptămâni”. Ce fel de alegeri vor fi",
-    "description": "Președintele populist al Serbiei, Aleksandar Vucic, a declarat sâmbătă că va demisiona în câteva săptămâni și a anunțat organizarea unor alegeri prezidențiale și parlamentare anticipate.",
-    "category": "general",
-    "published": "2026-06-27T17:59:40+00:00",
-    "model": "C",
-    "sources": [
-      {
-        "name": "Digi24 Extern",
-        "url": "https://www.digi24.ro/stiri/externe/ue/aleksandar-vucic-anunta-ca-va-demisiona-in-cateva-saptamani-ce-urmeaza-in-serbia-dupa-plecarea-presedintelui-3836367"
-      },
-      {
-        "name": "Digi24",
-        "url": "https://www.digi24.ro/stiri/externe/ue/aleksandar-vucic-anunta-ca-va-demisiona-in-cateva-saptamani-ce-urmeaza-in-serbia-dupa-plecarea-presedintelui-3836367"
-      },
-      {
-        "name": "Știrile ProTV",
-        "url": "https://stirileprotv.ro/stiri/international/presedintele-serbiei-aleksandar-vucic-a-anuntat-ca-va-demisiona-in-cateva-saptamani.html"
-      }
-    ],
-    "synthesis": "Președintele populist al Serbiei, Aleksandar Vucic, a declarat sâmbătă că va demisiona în câteva săptămâni și a anunțat organizarea unor alegeri prezidențiale și parlamentare anticipate.",
-    "processed_by": "fallback",
-    "error": "HTTP Error 503: Service Unavailable",
-    "featured": false
-  },
-  {
-    "url": "https://spotmedia.ro/stiri/sport/david-popovici-castiga-medalia-de-aur-in-proba-de-100-de-metri-la-settecolli",
-    "original_link": "https://spotmedia.ro/stiri/sport/david-popovici-castiga-medalia-de-aur-in-proba-de-100-de-metri-la-settecolli",
-    "source": "spotmedia",
-    "source_name": "Spotmedia",
-    "source_lang": "ro",
-    "title": "David Popovici, aur la 100m liber și record la Trofeul Settecolli",
-    "category": "sport",
-    "published": "2026-06-27T17:56:14+00:00",
-    "model": "C",
-    "sources": [
-      {
-        "name": "GSP",
-        "url": "https://www.gsp.ro/sporturi/altele/david-popovici-reactie-dupa-finala-100-metri-liber-trofeul-settecolli-953843.html"
-      },
-      {
-        "name": "Digi Sport",
-        "url": "https://www.digisport.ro/natatie/prima-reactie-a-lui-david-popovici-dupa-ce-a-scris-istorie-la-trofeul-settecolli-4344191"
-      },
-      {
-        "name": "Spotmedia",
-        "url": "https://spotmedia.ro/stiri/sport/david-popovici-castiga-medalia-de-aur-in-proba-de-100-de-metri-la-settecolli"
-      },
-      {
-        "name": "Digi24",
-        "url": "https://www.digi24.ro/stiri/sport/david-popovici-medalie-de-aur-la-100-m-liber-la-trofeul-settecolli-de-la-roma-3836379"
-      },
-      {
-        "name": "HotNews",
-        "url": "https://hotnews.ro/david-popovici-a-cucerit-medalie-aur-roma-2286394"
-      }
-    ],
-    "synthesis": "David Popovici a câștigat medalia de aur la proba de 100 de metri liber la Trofeul Settecolli de la Roma, sâmbătă seara. A înotat în 47,26 secunde, stabilind un nou record al competiției. Aceasta este a doua medalie pentru Popovici la această competiție, după ce a obținut argintul la 50 de metri liber cu o zi înainte.",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://spotmedia.ro/stiri/eveniment/ce-contine-acordul-semnat-de-sua-israel-si-liban-pe-care-hezbollah-il-considera-nul-si-neavenit",
-    "original_link": "https://spotmedia.ro/stiri/eveniment/ce-contine-acordul-semnat-de-sua-israel-si-liban-pe-care-hezbollah-il-considera-nul-si-neavenit",
-    "source": "spotmedia",
-    "source_name": "Spotmedia",
-    "source_lang": "ro",
-    "original_title": "Ce conține acordul semnat de SUA, Israel și Liban, pe care Hezbollah îl consideră „nul și neavenit”",
-    "title": "Ce conține acordul semnat de SUA, Israel și Liban, pe care Hezbollah îl consideră „nul și neavenit”",
-    "description": "SUA, Israelul și Libanul au semnat la Washington un acord-cadru care stabilește pașii pentru un posibil acord de pace și securitate între Israel și Liban. Documentul nu este încă un tratat final, ci un cadru de implementare pe etape, mediat de Statele Unite. Acordul prevede ca armata libaneză să preia treptat controlul asupra teritoriului libanez, …",
-    "category": "general",
-    "published": "2026-06-27T17:54:21+00:00",
-    "model": "B",
-    "teaser": "SUA, Israelul și Libanul au semnat la Washington un acord-cadru care stabilește pașii pentru un posibil acord de pace și securitate între Israel și Liban. Documentul nu este încă un tratat final, ci un cadru de implementare pe etape, mediat...",
-    "processed_by": "fallback",
-    "error": "HTTP Error 429: Too Many Requests",
-    "featured": false
-  },
-  {
-    "url": "https://gsp.ro/international/stranieri/alexandru-cimpanu-forma-excelenta-china-gol-decisiv-953849.html",
-    "original_link": "https://www.gsp.ro/international/stranieri/alexandru-cimpanu-forma-excelenta-china-gol-decisiv-953849.html",
-    "source": "gsp",
-    "source_name": "GSP",
-    "source_lang": "ro",
-    "title": "Alexandru Cîmpanu, gol decisiv pentru Chongqing în China",
-    "category": "sport",
-    "published": "2026-06-27T17:49:10+00:00",
-    "model": "B",
-    "teaser": "Fotbalistul român Alexandru Cîmpanu a marcat singurul gol al victoriei echipei sale, Chongqing Tonglianglong, în campionatul chinez. Românul a ajuns la 9 contribuții decisive pentru noua formație.",
-    "processed_by": "gemini",
-    "error": "HTTP Error 429: Too Many Requests",
-    "featured": false,
-    "prompt_version": "v2-esenta"
-  },
-  {
-    "url": "https://digisport.ro/fotbal/fotbal-international/razvan-lucescu-a-ales-si-urmeaza-sa-semneze-salariul-e-urias-4344143",
-    "original_link": "https://www.digisport.ro/fotbal/fotbal-international/razvan-lucescu-a-ales-si-urmeaza-sa-semneze-salariul-e-urias-4344143",
-    "source": "digisport",
-    "source_name": "Digi Sport",
-    "source_lang": "ro",
-    "original_title": "Răzvan Lucescu a ales și urmează să semneze! Salariul e uriaș",
-    "title": "Răzvan Lucescu a ales și urmează să semneze! Salariul e uriaș",
-    "description": "Răzvan Lucescu a ales și urmează să semneze! Salariul e uriaș",
-    "category": "sport",
-    "published": "2026-06-27T17:48:27+00:00",
-    "model": "B",
-    "teaser": "Răzvan Lucescu a ales și urmează să semneze! Salariul e uriaș",
-    "processed_by": "fallback",
-    "error": "HTTP Error 429: Too Many Requests",
-    "featured": false
-  },
-  {
-    "url": "https://prosport.ro/fotbal-intern/superliga/dinamo-amical-motor-lublin-1-3-cantonament-polonia-caini-20471862",
-    "original_link": "https://www.prosport.ro/fotbal-intern/superliga/dinamo-amical-motor-lublin-1-3-cantonament-polonia-caini-20471862",
-    "source": "prosport",
-    "source_name": "ProSport",
-    "source_lang": "ro",
-    "original_title": "Dinamo – Motor Lublin 1-3. „Câinii” au pierdut amicalul din Polonia",
-    "title": "Dinamo – Motor Lublin 1-3. „Câinii” au pierdut amicalul din Polonia",
-    "description": "Dinamo a pierdut amicalul cu Motor Lublin din Polonia, în ciuda faptului că au condus cu 1-0, după reușita lui Alex Pop. A fost al doilea meci de pregătire din cantonamentul verii pentru băieții lui Nuno Campos, după succesul cu Gornik Leczna, scor 2-1. Dinamo a cedat al doilea amical din Polonia: 1-3 cu Motor",
-    "category": "sport",
-    "published": "2026-06-27T17:46:27+00:00",
-    "model": "B",
-    "teaser": "Dinamo a pierdut amicalul cu Motor Lublin din Polonia, în ciuda faptului că au condus cu 1-0, după reușita lui Alex Pop. A fost al doilea meci de pregătire din cantonamentul verii pentru băieții lui Nuno Campos, după succesul cu...",
-    "processed_by": "fallback",
-    "error": "HTTP Error 429: Too Many Requests",
-    "featured": false
-  },
-  {
-    "url": "https://g4media.ro/claudiu-manda-replica-pentru-motreanu-realitatea-este-ca-nu-vreti-sa-va-pierdeti-functiile-si-privilegiile.html",
-    "original_link": "https://www.g4media.ro/claudiu-manda-replica-pentru-motreanu-realitatea-este-ca-nu-vreti-sa-va-pierdeti-functiile-si-privilegiile.html",
-    "source": "g4media",
-    "source_name": "G4Media",
-    "source_lang": "ro",
-    "original_title": "Claudiu Manda, replică pentru Motreanu: Realitatea este că nu vreți să vă pierdeți funcțiile și privilegiile",
-    "title": "Claudiu Manda, replică pentru Motreanu: Realitatea este că nu vreți să vă pierdeți funcțiile și privilegiile",
-    "description": "Secretar general al PSD, Claudiu Manda îi dă un răspuns prim-vicepreședintelui PNL Dan Motreanu, cel care sâmbătă a prezentat scenariul unui puci în PSD, similar celui orchestrat în PNL, prezentând ipoteza ca președintele Nicușor Dan să-l desemneze pentru funcția de premier pe social democratul Constantin Toma (primarul Buzăului), cunoscut pentru criticile aduse conducerii partidului său. © G4Media.ro .",
-    "category": "politic",
-    "published": "2026-06-27T17:45:08+00:00",
-    "model": "C",
-    "sources": [
-      {
-        "name": "HotNews",
-        "url": "https://hotnews.ro/claudiu-manda-reactie-rapida-la-scenariul-lui-dan-motreanu-pentru-viitorul-guvern-psd-nu-l-ar-respinge-2286379"
-      },
-      {
-        "name": "G4Media",
-        "url": "https://www.g4media.ro/claudiu-manda-replica-pentru-motreanu-realitatea-este-ca-nu-vreti-sa-va-pierdeti-functiile-si-privilegiile.html"
-      }
-    ],
-    "synthesis": "Secretar general al PSD, Claudiu Manda îi dă un răspuns prim-vicepreședintelui PNL Dan Motreanu, cel care sâmbătă a prezentat scenariul unui puci în PSD, similar celui orchestrat în PNL, prezentând ipoteza ca președintele Nicușor Dan să-l desemneze pentru funcția de premier pe social democratul Constantin Toma (primarul Buzăului), cunoscut pentru criticile aduse conducerii partidului său. © G4Media.ro .",
-    "processed_by": "fallback",
-    "error": "HTTP Error 429: Too Many Requests",
-    "featured": false
-  },
-  {
-    "url": "https://gsp.ro/international/campionate/transfer-surpriza-granit-xhaka-chelsea-953837.html",
-    "original_link": "https://www.gsp.ro/international/campionate/transfer-surpriza-granit-xhaka-chelsea-953837.html",
-    "source": "gsp",
-    "source_name": "GSP",
-    "source_lang": "ro",
-    "original_title": "De nicăieri! Granit Xhaka a ajuns la un acord cu un colos din Premier League",
-    "title": "De nicăieri! Granit Xhaka a ajuns la un acord cu un colos din Premier League",
-    "description": "Conducerea lui Chelsea a ajuns la un acord verbal complet cu Granit Xhaka (33 de ani) pentru transferul fostului căpitan al lui Arsenal pe „Stamford Bridge”. Informația a fost furnizată de jurnalistul Florian Plettenberg de la Sky Sports Germania, care adaugă că londonezii au demarat deja negocierile cu Sunderland, actuala echipă a lui Xhaka, pentru a stabili termenii pentru transferul internaționalului elvețian. Informația a fost confirmată și de Fabrizio Romano. ...",
-    "category": "sport",
-    "published": "2026-06-27T17:41:48+00:00",
-    "model": "B",
-    "teaser": "Conducerea lui Chelsea a ajuns la un acord verbal complet cu Granit Xhaka (33 de ani) pentru transferul fostului căpitan al lui Arsenal pe „Stamford Bridge”. Informația a fost furnizată de jurnalistul Florian Plettenberg de la Sky Sports Germania, care...",
-    "processed_by": "fallback",
-    "error": "HTTP Error 429: Too Many Requests",
-    "featured": false
-  },
-  {
-    "url": "https://prosport.ro/david-popovici/david-popovici-aur-roma-finala-fabuloasa-100-metri-liber-20471860",
-    "original_link": "https://www.prosport.ro/david-popovici/david-popovici-aur-roma-finala-fabuloasa-100-metri-liber-20471860",
-    "source": "prosport",
-    "source_name": "ProSport",
-    "source_lang": "ro",
-    "original_title": "BREAKING NEWS David Popovici a luat aurul la Roma! Finală fabuloasă la 100 metri liber: 47,26!",
-    "title": "BREAKING NEWS David Popovici a luat aurul la Roma! Finală fabuloasă la 100 metri liber: 47,26!",
-    "description": "Înotătorul român David Popovici concurează, de la ora 20:50, în finala cursei de 100 metri liber de la Trofeului Sette Colli, după ce s-a calificat cu timpul 47,72 de secunde. Cel mai valoros înotător român din istorie face ravagii și la Foro Italico. După argintul la 50 de metri, el poate câștiga o nouă medalie,",
-    "category": "sport",
-    "published": "2026-06-27T17:40:29+00:00",
-    "model": "C",
-    "sources": [
-      {
-        "name": "GSP",
-        "url": "https://www.gsp.ro/sporturi/altele/david-popovici-reactie-dupa-finala-100-metri-liber-trofeul-settecolli-953843.html"
-      },
-      {
-        "name": "Digi Sport",
-        "url": "https://www.digisport.ro/natatie/aur-david-popovici-a-castigat-finala-probei-de-100m-liber-la-trofeul-settecolli-record-la-roma-4343627"
-      },
-      {
-        "name": "ProSport",
-        "url": "https://www.prosport.ro/david-popovici/david-popovici-aur-roma-finala-fabuloasa-100-metri-liber-20471860"
-      },
-      {
-        "name": "Digi24",
-        "url": "https://www.digi24.ro/stiri/sport/david-popovici-medalie-de-aur-la-100-m-liber-la-trofeul-settecolli-de-la-roma-3836379"
-      },
-      {
-        "name": "HotNews",
-        "url": "https://hotnews.ro/david-popovici-a-cucerit-medalie-aur-roma-2286394"
-      },
-      {
-        "name": "Libertatea",
-        "url": "https://www.libertatea.ro/sport/david-popovici-medalie-aur-100m-liber-trofeul-sette-colli-roma-5796438"
-      }
-    ],
-    "synthesis": "Înotătorul român David Popovici concurează, de la ora 20:50, în finala cursei de 100 metri liber de la Trofeului Sette Colli, după ce s-a calificat cu timpul 47,72 de secunde. Cel mai valoros înotător român din istorie face ravagii și la Foro Italico. După argintul la 50 de metri, el poate câștiga o nouă medalie,",
-    "processed_by": "fallback",
-    "error": "HTTP Error 429: Too Many Requests",
-    "featured": false
-  },
-  {
-    "url": "https://digisport.ro/fotbal/liga-1/dinamo-a-pierdut-al-doilea-amical-al-verii-elevii-lui-nuno-campos-si-au-dat-autogol-4344131",
-    "original_link": "https://www.digisport.ro/fotbal/liga-1/dinamo-a-pierdut-al-doilea-amical-al-verii-elevii-lui-nuno-campos-si-au-dat-autogol-4344131",
-    "source": "digisport",
-    "source_name": "Digi Sport",
-    "source_lang": "ro",
-    "original_title": "Dinamo a pierdut al doilea amical al verii! Elevii lui Nuno Campos și-au dat autogol",
-    "title": "Dinamo a pierdut al doilea amical al verii! Elevii lui Nuno Campos și-au dat autogol",
-    "description": "Dinamo a pierdut al doilea amical al verii! Elevii lui Nuno Campos și-au dat autogol",
-    "category": "sport",
-    "published": "2026-06-27T17:39:26+00:00",
-    "model": "B",
-    "teaser": "Dinamo a pierdut al doilea amical al verii! Elevii lui Nuno Campos și-au dat autogol",
-    "processed_by": "fallback",
-    "error": "HTTP Error 429: Too Many Requests",
-    "featured": false
-  },
-  {
-    "url": "https://zf.ro/eveniment/modelul-german-de-a-combate-criza-cancelarul-merz-vrea-sa-taie-23183339",
-    "original_link": "https://www.zf.ro/eveniment/modelul-german-de-a-combate-criza-cancelarul-merz-vrea-sa-taie-23183339",
-    "source": "zf",
-    "source_name": "Ziarul Financiar",
-    "source_lang": "ro",
-    "original_title": "Modelul german de a combate criza: Cancelarul Merz vrea să taie taxele pentru persoanele care câştigă sub 8.300 euro pe lună",
-    "title": "Modelul german de a combate criza: Cancelarul Merz vrea să taie taxele pentru persoanele care câştigă sub 8.300 euro pe lună",
-    "description": "",
-    "category": "economic",
-    "published": "2026-06-27T17:37:30+00:00",
-    "model": "B",
-    "teaser": "Detalii pe sursa.",
-    "processed_by": "fallback",
-    "error": "HTTP Error 429: Too Many Requests",
-    "featured": false
-  },
-  {
-    "url": "https://hotnews.ro/scenariul-vehiculat-de-motreanu-inainte-de-noua-desemnare-de-premier-a-lui-nicusor-dan-de-ce-nu-chiar-constantin-toma-2286357",
-    "original_link": "https://hotnews.ro/scenariul-vehiculat-de-motreanu-inainte-de-noua-desemnare-de-premier-a-lui-nicusor-dan-de-ce-nu-chiar-constantin-toma-2286357",
-    "source": "hotnews",
-    "source_name": "HotNews",
-    "source_lang": "ro",
-    "original_title": "„Scenariul” vehiculat de Motreanu înainte de noua desemnare de premier a lui Nicușor Dan: „De ce nu chiar Constantin Toma?”",
-    "title": "„Scenariul” vehiculat de Motreanu înainte de noua desemnare de premier a lui Nicușor Dan: „De ce nu chiar Constantin Toma?”",
-    "description": "Dan Motreanu, prim-vicepreședinte al PNL, a expus un scenariu în care președintele Nicușor Dan i-ar încredința mandatul de formare a Guvernului unui primar PSD, fără acordul partidului, cum s-a întâmplat cu liberalul Adrian Veștea și PNL. „De ce nu chiar Constantin Toma?”, a scris Dan Motreanu, referindu-se la primarul PSD al Buzăului, catalogat drept „bolojenist” …",
-    "category": "general",
-    "published": "2026-06-27T17:36:50+00:00",
-    "model": "C",
-    "sources": [
-      {
-        "name": "HotNews",
-        "url": "https://hotnews.ro/scenariul-vehiculat-de-motreanu-inainte-de-noua-desemnare-de-premier-a-lui-nicusor-dan-de-ce-nu-chiar-constantin-toma-2286357"
-      },
-      {
-        "name": "Libertatea",
-        "url": "https://www.libertatea.ro/stiri/cearta-pnl-psd-dan-motreanu-claudiu-manda-scenariul-constantin-toma-5796440"
-      }
-    ],
-    "synthesis": "Dan Motreanu, prim-vicepreședinte al PNL, a expus un scenariu în care președintele Nicușor Dan i-ar încredința mandatul de formare a Guvernului unui primar PSD, fără acordul partidului, cum s-a întâmplat cu liberalul Adrian Veștea și PNL. „De ce nu chiar Constantin Toma?”, a scris Dan Motreanu, referindu-se la primarul PSD al Buzăului, catalogat drept „bolojenist” …",
-    "processed_by": "fallback",
-    "error": "HTTP Error 429: Too Many Requests",
-    "featured": false
-  },
-  {
-    "url": "https://economica.net/germania-cehia-si-danemarca-recorduri-absolute-de-temperatura-sambata_954357.html",
-    "original_link": "https://www.economica.net/germania-cehia-si-danemarca-recorduri-absolute-de-temperatura-sambata_954357.html",
-    "source": "economica",
-    "source_name": "Economica",
-    "source_lang": "ro",
-    "title": "Val de căldură istoric în Europa: Recorduri de temperatură în Germania, Cehia și Danemarca",
-    "category": "general",
-    "published": "2026-06-27T17:36:37+00:00",
-    "model": "C",
-    "sources": [
-      {
-        "name": "Economica",
-        "url": "https://www.economica.net/germania-cehia-si-danemarca-recorduri-absolute-de-temperatura-sambata_954357.html"
-      },
-      {
-        "name": "Știrile ProTV",
-        "url": "https://stirileprotv.ro/stiri/international/valul-de-caldura-bate-noi-recorduri-germania-cehia-si-danemarca-au-atins-temperaturi-fara-precedent.html"
-      }
-    ],
-    "synthesis": "Un val de căldură sever a lovit Europa, stabilind noi recorduri absolute de temperatură sâmbătă în Germania, Cehia și Danemarca. Temperaturile fără precedent au fost confirmate de mai multe surse, indicând o intensificare a fenomenului climatic în regiune.",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://zf.ro/eveniment/vrea-javier-milei-presedintele-libertarian-argentinei-plateasca-23183337",
-    "original_link": "https://www.zf.ro/eveniment/vrea-javier-milei-presedintele-libertarian-argentinei-plateasca-23183337",
-    "source": "zf",
-    "source_name": "Ziarul Financiar",
-    "source_lang": "ro",
-    "original_title": "Cum vrea Javier Milei, preşedintele libertarian al Argentinei, să plătească datoriile ţării: Scoate la ”vânzare” cetăţenia în schimbul unei donaţii nerambursabile de 500.000 de dolari sau al achiziţiei de obligaţiuni suverane cu cupon zero de 1 mil. dolari",
-    "title": "Cum vrea Javier Milei, preşedintele libertarian al Argentinei, să plătească datoriile ţării: Scoate la ”vânzare” cetăţenia în schimbul unei donaţii nerambursabile de 500.000 de dolari sau al achiziţiei de obligaţiuni suverane cu cupon zero de 1 mil. dolari",
-    "description": "",
-    "category": "economic",
-    "published": "2026-06-27T17:31:39+00:00",
-    "model": "B",
-    "teaser": "Detalii pe sursa.",
-    "processed_by": "fallback",
-    "error": "HTTP Error 429: Too Many Requests",
-    "featured": false
-  },
-  {
-    "url": "https://prosport.ro/diverse/ramona-olaru-dialog-incendiar-cu-dan-alexa-propunerea-care-a-incins-totul-ce-pot-eu-sa-ti-ofer-pentru-asta-20471837",
-    "original_link": "https://www.prosport.ro/diverse/ramona-olaru-dialog-incendiar-cu-dan-alexa-propunerea-care-a-incins-totul-ce-pot-eu-sa-ti-ofer-pentru-asta-20471837",
-    "source": "prosport",
-    "source_name": "ProSport",
-    "source_lang": "ro",
-    "original_title": "Ramona Olaru, dialog incendiar cu Dan Alexa. Propunerea care a încins totul: „Ce pot eu să-ți ofer pentru asta?”",
-    "title": "Ramona Olaru, dialog incendiar cu Dan Alexa. Propunerea care a încins totul: „Ce pot eu să-ți ofer pentru asta?”",
-    "description": "Ramona Olaru și Dan Alexa au purtat un dialog incendiar în direct, la TV, iar fostul internațional român a primit o propunere care a încins atmosfera în studio. Prezentatoarea TV l-a întrebat pe fostul fotbalist ce ar putea să îi ofere pentru a accepta să își scurteze părul sau pentru a accepta un tratament pentru",
-    "category": "sport",
-    "published": "2026-06-27T17:30:34+00:00",
-    "model": "B",
-    "teaser": "Ramona Olaru și Dan Alexa au purtat un dialog incendiar în direct, la TV, iar fostul internațional român a primit o propunere care a încins atmosfera în studio. Prezentatoarea TV l-a întrebat pe fostul fotbalist ce ar putea să îi...",
-    "processed_by": "fallback",
-    "error": "HTTP Error 429: Too Many Requests",
-    "featured": false
-  },
-  {
-    "url": "https://economica.net/o-centrala-nuclearoelectrica-din-ungaria-reduce-productia-din-cauza-temperaturii-ridicate-a-apei-din-dunare_954351.html",
-    "original_link": "https://www.economica.net/o-centrala-nuclearoelectrica-din-ungaria-reduce-productia-din-cauza-temperaturii-ridicate-a-apei-din-dunare_954351.html",
-    "source": "economica",
-    "source_name": "Economica",
-    "source_lang": "ro",
-    "original_title": "O centrală nuclearoelectrică din Ungaria reduce producţia din cauza temperaturii ridicate a apei din Dunăre",
-    "title": "O centrală nuclearoelectrică din Ungaria reduce producţia din cauza temperaturii ridicate a apei din Dunăre",
-    "description": "Centrala nuclearoelectrică Paks din Ungaria a redus producţia unuia dintre cele patru reactoare ale sale cu 243 MW din cauza temperaturii ridicate a apei din Dunăre, pe fondul unui val de căldura record, a anunţat sâmbătă operatorul centralei, MVM, pe site-ul său, informează Reuters, citată de Agerpres.",
-    "category": "economic",
-    "published": "2026-06-27T17:29:18+00:00",
-    "model": "B",
-    "teaser": "Centrala nuclearoelectrică Paks din Ungaria a redus producţia unuia dintre cele patru reactoare ale sale cu 243 MW din cauza temperaturii ridicate a apei din Dunăre, pe fondul unui val de căldura record, a anunţat sâmbătă operatorul centralei, MVM, pe...",
-    "processed_by": "fallback",
-    "error": "HTTP Error 429: Too Many Requests",
-    "featured": false
-  },
-  {
-    "url": "https://economica.net/centrala-nucleara-paks-din-ungaria-a-redus-productia-de-energie-din-cauza-caniculei-valul-de-caldura-vine-spre-romania_954352.html",
-    "original_link": "https://www.economica.net/centrala-nucleara-paks-din-ungaria-a-redus-productia-de-energie-din-cauza-caniculei-valul-de-caldura-vine-spre-romania_954352.html",
-    "source": "economica",
-    "source_name": "Economica",
-    "source_lang": "ro",
-    "original_title": "Centrala nucleară Paks din Ungaria a redus producția de energie, din cauza caniculei. Valul de căldură vine spre România",
-    "title": "Centrala nucleară Paks din Ungaria a redus producția de energie, din cauza caniculei. Valul de căldură vine spre România",
-    "description": "Centrala nuclearelectrică Paks din Ungaria a redus producţia unuia dintre cele patru reactoare ale sale cu 243 MW din cauza temperaturii ridicate a apei din Dunăre, pe fondul unui val de căldura record, a anunţat sâmbătă operatorul centralei, MVM, pe site-ul său, informează Reuters, preluată de Agerpres.",
-    "category": "economic",
-    "published": "2026-06-27T17:29:01+00:00",
-    "model": "C",
-    "sources": [
-      {
-        "name": "Libertatea",
-        "url": "https://www.libertatea.ro/stiri/temperatura-dunarii-crescuta-centrala-nucleara-paks-reducere-productie-reactor-5796429"
-      },
-      {
-        "name": "Economica",
-        "url": "https://www.economica.net/o-centrala-nuclearoelectrica-din-ungaria-reduce-productia-din-cauza-temperaturii-ridicate-a-apei-din-dunare_954351.html"
-      }
-    ],
-    "synthesis": "Centrala nuclearelectrică Paks din Ungaria a redus producţia unuia dintre cele patru reactoare ale sale cu 243 MW din cauza temperaturii ridicate a apei din Dunăre, pe fondul unui val de căldura record, a anunţat sâmbătă operatorul centralei, MVM, pe site-ul său, informează Reuters, preluată de Agerpres.",
-    "processed_by": "fallback",
-    "error": "HTTP Error 429: Too Many Requests",
-    "featured": false
-  },
-  {
-    "url": "https://digi24.ro/stiri/externe/ue/zeci-de-mii-de-persoane-in-ciuda-caniculei-la-primul-mars-pride-din-budapesta-dupa-era-orban-3836309",
-    "original_link": "https://www.digi24.ro/stiri/externe/ue/zeci-de-mii-de-persoane-in-ciuda-caniculei-la-primul-mars-pride-din-budapesta-dupa-era-orban-3836309",
-    "source": "extern",
-    "source_name": "Digi24 Extern",
-    "source_lang": "ro",
-    "original_title": "Zeci de mii de persoane, în ciuda caniculei, la primul marș Pride din Budapesta după era Orban",
-    "title": "Zeci de mii de persoane, în ciuda caniculei, la primul marș Pride din Budapesta după era Orban",
-    "description": "Zeci de mii de persoane au participat sâmbătă la marșul Pride de la Budapesta, desfășurat pentru prima dată după încheierea celor 16 ani de guvernare ai lui Viktor Orbán. În ciuda caniculei, participanții au celebrat un nou început pentru comunitatea LGBTQ+ din Ungaria, după ani marcați de politici restrictive promovate de fostul premier.",
-    "category": "extern",
-    "published": "2026-06-27T17:28:54+00:00",
-    "model": "C",
-    "sources": [
-      {
-        "name": "Digi24 Extern",
-        "url": "https://www.digi24.ro/stiri/externe/ue/zeci-de-mii-de-persoane-in-ciuda-caniculei-la-primul-mars-pride-din-budapesta-dupa-era-orban-3836309"
-      },
-      {
-        "name": "Digi24",
-        "url": "https://www.digi24.ro/stiri/externe/ue/zeci-de-mii-de-persoane-in-ciuda-caniculei-la-primul-mars-pride-din-budapesta-dupa-era-orban-3836309"
-      },
-      {
-        "name": "Libertatea",
-        "url": "https://www.libertatea.ro/stiri/mars-pride-budapesta-primul-dupa-cadere-regim-viktor-orban-5796427"
-      }
-    ],
-    "synthesis": "Zeci de mii de persoane au participat sâmbătă la marșul Pride de la Budapesta, desfășurat pentru prima dată după încheierea celor 16 ani de guvernare ai lui Viktor Orbán. În ciuda caniculei, participanții au celebrat un nou început pentru comunitatea LGBTQ+ din Ungaria, după ani marcați de politici restrictive promovate de fostul premier.",
-    "processed_by": "fallback",
-    "error": "HTTP Error 429: Too Many Requests",
-    "featured": false
-  },
-  {
-    "url": "https://prosport.ro/fotbal-intern/superliga/gata-florin-tanase-si-gigi-becali-au-terminat-negocierile-fotbalistul-a-luat-decizia-finala-20471853",
-    "original_link": "https://www.prosport.ro/fotbal-intern/superliga/gata-florin-tanase-si-gigi-becali-au-terminat-negocierile-fotbalistul-a-luat-decizia-finala-20471853",
-    "source": "prosport",
-    "source_name": "ProSport",
-    "source_lang": "ro",
-    "title": "Florin Tănase prelungește contractul cu FCSB",
-    "category": "sport",
-    "published": "2026-06-27T17:27:05+00:00",
-    "model": "C",
-    "sources": [
-      {
-        "name": "GSP",
-        "url": "https://www.gsp.ro/fotbal/liga-1/florin-tanase-acord-gigi-becali-prelungire-contract-fcsb-953862.html"
-      },
-      {
-        "name": "Digi Sport",
-        "url": "https://www.digisport.ro/fotbal/liga-1/s-a-terminat-telenovela-florin-tanase-a-acceptat-oferta-si-duminica-ajunge-in-olanda-salariu-si-bonusuri-uriase-4344195"
-      },
-      {
-        "name": "ProSport",
-        "url": "https://www.prosport.ro/fotbal-intern/superliga/gigi-becali-a-anuntat-prima-lovitura-a-verii-a-semnat-cu-noi-pe-doi-ani-am-promis-20471877"
-      },
-      {
-        "name": "Spotmedia",
-        "url": "https://spotmedia.ro/stiri/sport/florin-tanase-s-a-razgandit-semneaza-cu-fcsb-si-ajunge-in-cantonament"
-      }
-    ],
-    "synthesis": "Florin Tănase a ajuns la un acord cu FCSB și va semna prelungirea contractului pentru doi ani. Fotbalistul se va alătura lotului în cantonamentul din Olanda duminică, 28 iunie 2026. Decizia vine după negocieri intense și o posibilă răzgândire din partea jucătorului.",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://digisport.ro/fotbal/liga-1/direct-din-belgia-dinamo-gata-sa-faca-transferul-4344031",
-    "original_link": "https://www.digisport.ro/fotbal/liga-1/direct-din-belgia-dinamo-gata-sa-faca-transferul-4344031",
-    "source": "digisport",
-    "source_name": "Digi Sport",
-    "source_lang": "ro",
-    "original_title": "Direct din Belgia! Dinamo, gata să facă transferul",
-    "title": "Direct din Belgia! Dinamo, gata să facă transferul",
-    "description": "Direct din Belgia! Dinamo, gata să facă transferul",
-    "category": "sport",
-    "published": "2026-06-27T17:26:34+00:00",
-    "model": "B",
-    "teaser": "Direct din Belgia! Dinamo, gata să facă transferul",
-    "processed_by": "fallback",
-    "error": "HTTP Error 429: Too Many Requests",
-    "featured": false
-  },
-  {
-    "url": "https://stirileprotv.ro/stiri/international/budapesta-a-gazduit-din-nou-gay-pride-dupa-regimul-orban-mii-de-oameni-au-defilat-in-ciuda-caniculei.html",
-    "original_link": "https://stirileprotv.ro/stiri/international/budapesta-a-gazduit-din-nou-gay-pride-dupa-regimul-orban-mii-de-oameni-au-defilat-in-ciuda-caniculei.html",
-    "source": "protv",
-    "source_name": "Știrile ProTV",
-    "source_lang": "ro",
-    "original_title": "Budapesta a găzduit din nou Gay Pride, după regimul Orban. Mii de oameni au defilat în ciuda caniculei",
-    "title": "Budapesta a găzduit din nou Gay Pride, după regimul Orban. Mii de oameni au defilat în ciuda caniculei",
-    "description": "Zeci de mii de persoane au defilat sâmbătă la Gay Pride, în pofida caniculei, sărbătorind libertatea regăsită de a se reuni şi plecarea de la putere a lui Viktor Orban.",
-    "category": "general",
-    "published": "2026-06-27T17:26:11+00:00",
-    "model": "C",
-    "sources": [
-      {
-        "name": "Digi24 Extern",
-        "url": "https://www.digi24.ro/stiri/externe/ue/zeci-de-mii-de-persoane-in-ciuda-caniculei-la-primul-mars-pride-din-budapesta-dupa-era-orban-3836309"
-      },
-      {
-        "name": "Digi24",
-        "url": "https://www.digi24.ro/stiri/externe/ue/zeci-de-mii-de-persoane-in-ciuda-caniculei-la-primul-mars-pride-din-budapesta-dupa-era-orban-3836309"
-      },
-      {
-        "name": "Știrile ProTV",
-        "url": "https://stirileprotv.ro/stiri/international/budapesta-a-gazduit-din-nou-gay-pride-dupa-regimul-orban-mii-de-oameni-au-defilat-in-ciuda-caniculei.html"
-      }
-    ],
-    "synthesis": "Zeci de mii de persoane au defilat sâmbătă la Gay Pride, în pofida caniculei, sărbătorind libertatea regăsită de a se reuni şi plecarea de la putere a lui Viktor Orban.",
-    "processed_by": "fallback",
-    "error": "HTTP Error 429: Too Many Requests",
-    "featured": false
-  },
-  {
-    "url": "https://gsp.ro/opinii/editorial-ionut-iordache-antifragil-vs-fragil-la-mondial-953836.html",
-    "original_link": "https://www.gsp.ro/opinii/editorial-ionut-iordache-antifragil-vs-fragil-la-mondial-953836.html",
-    "source": "gsp",
-    "source_name": "GSP",
-    "source_lang": "ro",
-    "original_title": "Antifragil vs Fragil la Mondial",
-    "title": "Antifragil vs Fragil la Mondial",
-    "description": "Cum am trăit 21 de zile sub influenţa lui Nassim Nicholas Taleb. Mondialul pentru mine şi Sergiu se termină pe pământ nord-american. Am parcurs mii de kilometri în această aventură ca niște jurnaliști hiper-tehnologizați, conectați la ecrane, trecând granițe și observând pe viu cel mai mare experiment social și tehnologic al ultimilor ani. Nassim Nicholas Taleb a împărțit lumea în sisteme fragile și antifragile. Pe teren s-a jucat fotbal. ...",
-    "category": "sport",
-    "published": "2026-06-27T17:25:44+00:00",
-    "model": "B",
-    "teaser": "Cum am trăit 21 de zile sub influenţa lui Nassim Nicholas Taleb. Mondialul pentru mine şi Sergiu se termină pe pământ nord-american. Am parcurs mii de kilometri în această aventură ca niște jurnaliști hiper-tehnologizați, conectați la ecrane, trecând granițe și...",
-    "processed_by": "fallback",
-    "error": "HTTP Error 429: Too Many Requests",
-    "featured": false
-  },
-  {
-    "url": "https://digisport.ro/fotbal/cm-2026/imaginile-zilei-la-cupa-mondiala-2026-suedia-s-a-antrenat-pe-un-stadion-aflat-in-santier-4344095",
-    "original_link": "https://www.digisport.ro/fotbal/cm-2026/imaginile-zilei-la-cupa-mondiala-2026-suedia-s-a-antrenat-pe-un-stadion-aflat-in-santier-4344095",
-    "source": "digisport",
-    "source_name": "Digi Sport",
-    "source_lang": "ro",
-    "original_title": "Imaginile zilei la Cupa Mondială 2026! Suedia s-a antrenat pe un stadion aflat în șantier",
-    "title": "Imaginile zilei la Cupa Mondială 2026! Suedia s-a antrenat pe un stadion aflat în șantier",
-    "description": "Imaginile zilei la Cupa Mondială 2026! Suedia s-a antrenat pe un stadion aflat în șantier",
-    "category": "sport",
-    "published": "2026-06-27T17:17:46+00:00",
-    "model": "B",
-    "teaser": "Imaginile zilei la Cupa Mondială 2026! Suedia s-a antrenat pe un stadion aflat în șantier",
-    "processed_by": "fallback",
-    "error": "HTTP Error 429: Too Many Requests",
-    "featured": false
-  },
-  {
-    "url": "https://digisport.ro/fotbal/cm-2026/iranienii-au-lasat-o-scrisoare-emotionanta-in-vestiarul-de-la-seattle-dupa-meciul-cu-egipt-de-la-cupa-mondiala-4344111",
-    "original_link": "https://www.digisport.ro/fotbal/cm-2026/iranienii-au-lasat-o-scrisoare-emotionanta-in-vestiarul-de-la-seattle-dupa-meciul-cu-egipt-de-la-cupa-mondiala-4344111",
-    "source": "digisport",
-    "source_name": "Digi Sport",
-    "source_lang": "ro",
-    "original_title": "Iranienii au lăsat o scrisoare emoționantă în vestiarul de la Seattle, după meciul cu Egipt de la Cupa Mondială",
-    "title": "Iranienii au lăsat o scrisoare emoționantă în vestiarul de la Seattle, după meciul cu Egipt de la Cupa Mondială",
-    "description": "Iranienii au lăsat o scrisoare emoționantă în vestiarul de la Seattle, după meciul cu Egipt de la Cupa Mondială",
-    "category": "sport",
-    "published": "2026-06-27T17:15:04+00:00",
-    "model": "B",
-    "teaser": "Iranienii au lăsat o scrisoare emoționantă în vestiarul de la Seattle, după meciul cu Egipt de la Cupa Mondială",
-    "processed_by": "fallback",
-    "error": "HTTP Error 429: Too Many Requests",
-    "featured": false
-  },
-  {
-    "url": "https://digi24.ro/stiri/externe/mapamond/aproape-200-de-persoane-au-fost-arestate-pentru-terorism-in-turcia-inainte-de-summitul-nato-la-care-e-asteptat-si-trump-3836299",
-    "original_link": "https://www.digi24.ro/stiri/externe/mapamond/aproape-200-de-persoane-au-fost-arestate-pentru-terorism-in-turcia-inainte-de-summitul-nato-la-care-e-asteptat-si-trump-3836299",
-    "source": "extern",
-    "source_name": "Digi24 Extern",
-    "source_lang": "ro",
-    "title": "Arestări pentru terorism în Turcia, înainte de summitul NATO",
-    "category": "politic",
-    "published": "2026-06-27T17:13:58+00:00",
-    "model": "C",
-    "sources": [
-      {
-        "name": "Digi24 Extern",
-        "url": "https://www.digi24.ro/stiri/externe/mapamond/aproape-200-de-persoane-au-fost-arestate-pentru-terorism-in-turcia-inainte-de-summitul-nato-la-care-e-asteptat-si-trump-3836299"
-      },
-      {
-        "name": "Digi24",
-        "url": "https://www.digi24.ro/stiri/externe/mapamond/aproape-200-de-persoane-au-fost-arestate-pentru-terorism-in-turcia-inainte-de-summitul-nato-la-care-e-asteptat-si-trump-3836299"
-      }
-    ],
-    "synthesis": "Aproximativ 178 de persoane au fost arestate preventiv în Turcia, sub acuzații de terorism. Aceste arestări au avut loc înaintea desfășurării summitului NATO, la care este așteptată participarea și a lui Donald Trump. Informația a fost confirmată de agenția publică Anadolu, citând un comunicat al parchetului din Ankara.",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://gsp.ro/sporturi/tenis/flavia-pennetta-opinie-categorica-despre-serena-williams-953838.html",
-    "original_link": "https://www.gsp.ro/sporturi/tenis/flavia-pennetta-opinie-categorica-despre-serena-williams-953838.html",
-    "source": "gsp",
-    "source_name": "GSP",
-    "source_lang": "ro",
-    "original_title": "Opinie categorică despre Serena Williams: „Dacă ar continua, nu cred că ar fi o imagine bună pentru tenisul feminin”",
-    "title": "Opinie categorică despre Serena Williams: „Dacă ar continua, nu cred că ar fi o imagine bună pentru tenisul feminin”",
-    "description": "Flavia Pennetta (44 de ani), fost număr 6 mondial, a vorbit, într-un interviu, despre revenirea Serenei Williams (44 de ani) în tenis și despre ce înseamnă asta pentru circuitul WTA. De asemenea, italianca a spus câteva cuvinte și despre Jannik Sinner (24 de ani, 1 ATP), înainte de Wimbledon. ...",
-    "category": "sport",
-    "published": "2026-06-27T17:11:40+00:00",
-    "model": "B",
-    "teaser": "Flavia Pennetta (44 de ani), fost număr 6 mondial, a vorbit, într-un interviu, despre revenirea Serenei Williams (44 de ani) în tenis și despre ce înseamnă asta pentru circuitul WTA. De asemenea, italianca a spus câteva cuvinte și despre Jannik...",
-    "processed_by": "fallback",
-    "error": "HTTP Error 429: Too Many Requests",
-    "featured": false
-  },
-  {
-    "url": "https://spotmedia.ro/stiri/meteo/canicula-care-vine-spre-noi-face-ravagii-in-europa-recorduri-istorice-autostrazi-afectate-spitale-sub-presiune-si-sute-de-zboruri-intarziate",
-    "original_link": "https://spotmedia.ro/stiri/meteo/canicula-care-vine-spre-noi-face-ravagii-in-europa-recorduri-istorice-autostrazi-afectate-spitale-sub-presiune-si-sute-de-zboruri-intarziate",
-    "source": "spotmedia",
-    "source_name": "Spotmedia",
-    "source_lang": "ro",
-    "title": "Canicula istorică afectează Europa: Recorduri, infrastructură și spitale sub presiune",
-    "category": "extern",
-    "published": "2026-06-27T17:10:00+00:00",
-    "model": "B",
-    "teaser": "Valul de căldură extremă doboară recorduri în Europa, afectând infrastructura, spitalele și transporturile. Fenomenul se extinde spre România, unde se așteaptă temperaturi ridicate.",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://hotnews.ro/sezonul-turistic-din-crimeea-o-destinatie-populara-pentru-rusi-dat-peste-cap-de-valul-de-atacuri-ucrainene-fie-nu-a-inceput-fie-s-a-incheiat-deja-2286348",
-    "original_link": "https://hotnews.ro/sezonul-turistic-din-crimeea-o-destinatie-populara-pentru-rusi-dat-peste-cap-de-valul-de-atacuri-ucrainene-fie-nu-a-inceput-fie-s-a-incheiat-deja-2286348",
-    "source": "hotnews",
-    "source_name": "HotNews",
-    "source_lang": "ro",
-    "title": "Atacurile ucrainene au anulat sezonul turistic în Crimeea",
-    "category": "extern",
-    "published": "2026-06-27T17:05:41+00:00",
-    "model": "B",
-    "teaser": "Crimeea, o destinație turistică rusă populară, se confruntă cu un sezon ruinat de atacuri ucrainene. Exploziile nocturne și problemele logistice au transformat vacanța într-o experiență nesigură.",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://gsp.ro/international/campionatul-mondial-de-fotbal-2026/tragedie-cody-gakpo-partenera-pierdere-sarcina-olanda-campionatul-mondial-2026-953831.html",
-    "original_link": "https://www.gsp.ro/international/campionatul-mondial-de-fotbal-2026/tragedie-cody-gakpo-partenera-pierdere-sarcina-olanda-campionatul-mondial-2026-953831.html",
-    "source": "gsp",
-    "source_name": "GSP",
-    "source_lang": "ro",
-    "title": "Cody Gakpo și partenera sa au pierdut sarcina în timpul Campionatului Mondial",
-    "category": "sport",
-    "published": "2026-06-27T17:02:55+00:00",
-    "model": "B",
-    "teaser": "Fotbalistul olandez Cody Gakpo a primit vestea pierderii sarcinii partenerei sale, Noa van der Bij, în timp ce se afla la Campionatul Mondial 2026. Tragedia a survenit la scurt timp după un meci disputat de Olanda.",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://digisport.ro/fotbal/liga-1/schimbare-unde-poate-juca-csikszereda-daca-lpf-nu-va-omologa-stadionul-pentru-superliga-4343513",
-    "original_link": "https://www.digisport.ro/fotbal/liga-1/schimbare-unde-poate-juca-csikszereda-daca-lpf-nu-va-omologa-stadionul-pentru-superliga-4343513",
-    "source": "digisport",
-    "source_name": "Digi Sport",
-    "source_lang": "ro",
-    "original_title": "Schimbare! Unde poate juca Csikszereda, dacă LPF nu va omologa stadionul pentru SuperLiga",
-    "title": "Schimbare! Unde poate juca Csikszereda, dacă LPF nu va omologa stadionul pentru SuperLiga",
-    "description": "Schimbare! Unde poate juca Csikszereda, dacă LPF nu va omologa stadionul pentru SuperLiga",
-    "category": "sport",
-    "published": "2026-06-27T17:02:50+00:00",
-    "model": "B",
-    "teaser": "Schimbare! Unde poate juca Csikszereda, dacă LPF nu va omologa stadionul pentru SuperLiga",
-    "processed_by": "fallback",
-    "error": "HTTP Error 429: Too Many Requests",
-    "featured": false
-  },
-  {
-    "url": "https://gsp.ro/fotbal/liga-1/live-dinamo-motor-lublin-amical-polonia-nuno-campos-953686.html",
-    "original_link": "https://www.gsp.ro/fotbal/liga-1/live-dinamo-motor-lublin-amical-polonia-nuno-campos-953686.html",
-    "source": "gsp",
-    "source_name": "GSP",
-    "source_lang": "ro",
-    "title": "Dinamo, învinsă în amicalul cu Motor Lublin, scor 1-3",
-    "category": "sport",
-    "published": "2026-06-27T17:01:57+00:00",
-    "model": "B",
-    "teaser": "Echipa Dinamo a pierdut al doilea meci de pregătire din Polonia, scor 1-3 în fața formației Motor Lublin, după ce a condus inițial. Victoria anterioară a fost 2-1 cu Gornik Leczna.",
     "processed_by": "gemini",
     "prompt_version": "v2-esenta",
     "featured": false
