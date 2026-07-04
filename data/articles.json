@@ -1,5 +1,37 @@
 [
   {
+    "url": "https://bbc.co.uk/news/articles/c8j2vmzxezro?at_medium=RSS&at_campaign=rss",
+    "original_link": "https://www.bbc.co.uk/news/articles/c8j2vmzxezro?at_medium=RSS&at_campaign=rss",
+    "source": "bbc_europe",
+    "source_name": "BBC Europe",
+    "source_lang": "en",
+    "title": "Ucraina a atacat cu drone terminale petroliere din Sankt Petersburg",
+    "category": "extern",
+    "published": "2026-07-04T18:41:25+00:00",
+    "model": "C",
+    "sources": [
+      {
+        "name": "BBC Europe",
+        "url": "https://www.bbc.co.uk/news/articles/c8j2vmzxezro?at_medium=RSS&at_campaign=rss"
+      },
+      {
+        "name": "The Guardian",
+        "url": "https://www.theguardian.com/world/2026/jul/04/ukrainian-drones-hit-st-petersburg-oil-terminal-and-nearby-port"
+      }
+    ],
+    "first_source": "BBC Europe",
+    "synthesis": "Ucraina a lansat un atac masiv cu drone asupra infrastructurii din Sankt Petersburg și din regiunea înconjurătoare, vizând un important terminal petrolier și portul Vysotsk. Autoritățile ruse au raportat că nu au existat victime, iar consecințele atacului au fost gestionate. Președintele ucrainean a declarat că țintele sunt infrastructuri cheie ce generează venituri pentru război.",
+    "entities": [
+      "Ucraina",
+      "Sankt Petersburg",
+      "Vysotsk",
+      "Volodymyr Zelensky"
+    ],
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
     "url": "https://digisport.ro/fotbal/liga-1/cfr-cluj-remiza-in-al-doilea-amical-al-verii-4358733",
     "original_link": "https://www.digisport.ro/fotbal/liga-1/cfr-cluj-remiza-in-al-doilea-amical-al-verii-4358733",
     "source": "digisport",
@@ -32,6 +64,38 @@
     "featured": false
   },
   {
+    "url": "https://stirileprotv.ro/stiri/politic/presedintele-romaniei-participa-la-summitul-nato-de-la-ankara-pe-7-8-iunie-cu-cine-se-va-intalni-nicusor-dan.html",
+    "original_link": "https://stirileprotv.ro/stiri/politic/presedintele-romaniei-participa-la-summitul-nato-de-la-ankara-pe-7-8-iunie-cu-cine-se-va-intalni-nicusor-dan.html",
+    "source": "protv",
+    "source_name": "Știrile ProTV",
+    "source_lang": "ro",
+    "title": "Președintele României participă la summitul NATO de la Ankara",
+    "category": "politic",
+    "published": "2026-07-04T17:50:09+00:00",
+    "model": "C",
+    "sources": [
+      {
+        "name": "Știrile ProTV",
+        "url": "https://stirileprotv.ro/stiri/politic/presedintele-romaniei-participa-la-summitul-nato-de-la-ankara-pe-7-8-iunie-cu-cine-se-va-intalni-nicusor-dan.html"
+      },
+      {
+        "name": "HotNews",
+        "url": "https://hotnews.ro/nicusor-dan-se-duce-la-summitul-nato-de-la-ankara-ce-mesaj-va-transmite-2291940"
+      }
+    ],
+    "first_source": "Știrile ProTV",
+    "synthesis": "Președintele României va participa la summitul NATO desfășurat la Ankara, Turcia, între 7 și 8 iulie 2026. Reuniunea la nivel înalt a Consiliului Nord-Atlantic va include discuții și evenimente specifice, conform informațiilor oferite de Administrația Prezidențială.",
+    "entities": [
+      "Președintele României",
+      "NATO",
+      "Ankara",
+      "Turcia"
+    ],
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
     "url": "https://dw.com/en/ukraine-strikes-oil-terminals-near-st-petersburg-in-russia/a-77830574?maca=en-rss-en-eu-2092-rdf",
     "original_link": "https://www.dw.com/en/ukraine-strikes-oil-terminals-near-st-petersburg-in-russia/a-77830574?maca=en-rss-en-eu-2092-rdf",
     "source": "dw_europe",
@@ -58,6 +122,58 @@
       "Rusia",
       "Sankt Petersburg",
       "Volodimir Zelenski"
+    ],
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://zf.ro/business-international/zelenski-felicita-sua-de-ziua-independentei-si-cere-din-nou-sisteme-23188337",
+    "original_link": "https://www.zf.ro/business-international/zelenski-felicita-sua-de-ziua-independentei-si-cere-din-nou-sisteme-23188337",
+    "source": "zf",
+    "source_name": "Ziarul Financiar",
+    "source_lang": "ro",
+    "title": "Zelenski felicită SUA de Ziua Independenței și cere sisteme Patriot",
+    "category": "politic",
+    "published": "2026-07-04T17:28:10+00:00",
+    "model": "C",
+    "sources": [
+      {
+        "name": "Ziarul Financiar",
+        "url": "https://www.zf.ro/business-international/zelenski-felicita-sua-de-ziua-independentei-si-cere-din-nou-sisteme-23188337"
+      },
+      {
+        "name": "G4Media",
+        "url": "https://www.g4media.ro/zelenski-felicita-sua-de-ziua-independentei-si-cere-din-nou-sisteme-patriot-pentru-ucraina.html"
+      }
+    ],
+    "first_source": "Ziarul Financiar",
+    "synthesis": "Președintele ucrainean Volodimir Zelenski a transmis un mesaj de felicitare Statelor Unite ale Americii cu ocazia Zilei Independenței. În mesajul său, liderul de la Kiev a mulțumit pentru sprijinul militar oferit Ucrainei și a reiterat solicitarea de a primi sisteme de apărare antiaeriană Patriot.",
+    "entities": [
+      "Volodimir Zelenski",
+      "Statele Unite ale Americii",
+      "Ucraina",
+      "Patriot"
+    ],
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://theguardian.com/world/video/2026/jul/04/aerial-footage-shows-wildfire-raging-across-catalonia-video",
+    "original_link": "https://www.theguardian.com/world/video/2026/jul/04/aerial-footage-shows-wildfire-raging-across-catalonia-video",
+    "source": "guardian_eu",
+    "source_name": "The Guardian",
+    "source_lang": "en",
+    "title": "Incendiu masiv de vegetație în Catalonia, Spania",
+    "category": "general",
+    "published": "2026-07-04T16:07:28+00:00",
+    "model": "B",
+    "teaser": "Imagini aeriene surprind un incendiu de proporții în Catalonia, Spania, unde flăcările au cuprins aproximativ 750 de hectare în zona La Bisbal d’Empordà, generând un nor imens de fum.",
+    "entities": [
+      "Catalonia",
+      "Spania",
+      "La Bisbal d’Empordà"
     ],
     "processed_by": "gemini",
     "prompt_version": "v2-esenta",
@@ -102,6 +218,46 @@
       "NATO",
       "România",
       "China"
+    ],
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://bbc.co.uk/sport/tennis/articles/clywpdxx9n8o?at_medium=RSS&at_campaign=rss",
+    "original_link": "https://www.bbc.co.uk/sport/tennis/articles/clywpdxx9n8o?at_medium=RSS&at_campaign=rss",
+    "source": "bbc_europe",
+    "source_name": "BBC Europe",
+    "source_lang": "en",
+    "title": "Campioana Swiatek și Rybakina, eliminate surprinzător de la Wimbledon",
+    "category": "sport",
+    "published": "2026-07-04T15:55:15+00:00",
+    "model": "B",
+    "teaser": "Jucătoarea Elena Rybakina, cap de serie numărul 3, a fost eliminată de la Wimbledon în turul al treilea, suferind o înfrângere în două seturi, în timp ce Swiatek a părăsit și ea competiția.",
+    "entities": [
+      "Swiatek",
+      "Rybakina",
+      "Wimbledon",
+      "Elise Mertens"
+    ],
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://bbc.co.uk/news/articles/cd6epx607dqo?at_medium=RSS&at_campaign=rss",
+    "original_link": "https://www.bbc.co.uk/news/articles/cd6epx607dqo?at_medium=RSS&at_campaign=rss",
+    "source": "bbc_europe",
+    "source_name": "BBC Europe",
+    "source_lang": "en",
+    "title": "Fost campion mondial la șah, Kramnik, suspendat pentru acuzații de trișare",
+    "category": "sport",
+    "published": "2026-07-04T15:45:15+00:00",
+    "model": "B",
+    "teaser": "Magnus Carlsen, fost campion mondial la șah, a fost suspendat după ce a acuzat alți jucători, inclusiv pe regretatul Daniel Naroditsky, de trișare în competiții.",
+    "entities": [
+      "Kramnik",
+      "Daniel Naroditsky"
     ],
     "processed_by": "gemini",
     "prompt_version": "v2-esenta",
@@ -259,6 +415,26 @@
       "Friedrich Merz",
       "Ucraina",
       "Kiev"
+    ],
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://bbc.co.uk/news/articles/c5yz83n7q5no?at_medium=RSS&at_campaign=rss",
+    "original_link": "https://www.bbc.co.uk/news/articles/c5yz83n7q5no?at_medium=RSS&at_campaign=rss",
+    "source": "bbc_europe",
+    "source_name": "BBC Europe",
+    "source_lang": "en",
+    "title": "Papa Francisc cere Europei sprijin mai mare pentru migranți",
+    "category": "politic",
+    "published": "2026-07-04T11:25:57+00:00",
+    "model": "B",
+    "teaser": "Papa Francisc a vizitat insula italiană Lampedusa, un punct de tranzit major pentru migranți, unde a adus un omagiu celor care și-au pierdut viața pe mare, îndemnând la acțiuni concrete.",
+    "entities": [
+      "Papa Francisc",
+      "Europa",
+      "Lampedusa"
     ],
     "processed_by": "gemini",
     "prompt_version": "v2-esenta",
@@ -965,6 +1141,44 @@
     "published": "2026-07-04T04:00:02+00:00",
     "model": "B",
     "teaser": "Privatizarea zonelor de coastă de către marile corporații, din Albania până în Portugalia, limitează beneficiile economice pentru localnici și generează proteste, în ciuda fluxului mare de turiști.",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://bbc.co.uk/news/articles/c8e2j0j87reo?at_medium=RSS&at_campaign=rss",
+    "original_link": "https://www.bbc.co.uk/news/articles/c8e2j0j87reo?at_medium=RSS&at_campaign=rss",
+    "source": "bbc_europe",
+    "source_name": "BBC Europe",
+    "source_lang": "en",
+    "title": "Europa se confruntă cu temperaturi record și o climă tot mai fierbinte",
+    "category": "general",
+    "published": "2026-07-04T00:57:05+00:00",
+    "model": "B",
+    "teaser": "Luna iunie a înregistrat temperaturi record în Europa, iar oamenii de știință avertizează că acest lucru este un semnal al schimbărilor climatice majore, cu veri din ce în ce mai caniculare.",
+    "entities": [
+      "Europa"
+    ],
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://bbc.co.uk/news/articles/cp8lnnr080go?at_medium=RSS&at_campaign=rss",
+    "original_link": "https://www.bbc.co.uk/news/articles/cp8lnnr080go?at_medium=RSS&at_campaign=rss",
+    "source": "bbc_europe",
+    "source_name": "BBC Europe",
+    "source_lang": "en",
+    "title": "Rusia recrutează studenți pentru a acoperi pierderile din Ucraina",
+    "category": "politic",
+    "published": "2026-07-03T23:24:20+00:00",
+    "model": "B",
+    "teaser": "Kremlinul încearcă să atragă studenți să semneze contracte militare, pe măsură ce conflictul din Ucraina intră în al cincilea an, pentru a susține efortul de război.",
+    "entities": [
+      "Rusia",
+      "Ucraina",
+      "Kremlin"
+    ],
     "processed_by": "gemini",
     "prompt_version": "v2-esenta",
     "featured": false
@@ -14816,652 +15030,6 @@
     "teaser": "Sute de persoane au participat la marșul Ziua Drapelului Naţional, sâmbătă, la Târgu Mureş, manifestație organizată de formațiunea extremistă AUR. Potrivit unui comunicat de presă al AUR, participanţii la eveniment au mărşăluit purtând Drapelul Naţional pe străzile municipiului Târgu Mureş...",
     "processed_by": "fallback",
     "error": "HTTP Error 429: Too Many Requests",
-    "featured": false
-  },
-  {
-    "url": "https://gsp.ro/international/campionatul-mondial-de-fotbal-2026/live-croatia-ghana-panama-anglia-grupa-l-cupa-mondiala-953660.html",
-    "original_link": "https://www.gsp.ro/international/campionatul-mondial-de-fotbal-2026/live-croatia-ghana-panama-anglia-grupa-l-cupa-mondiala-953660.html",
-    "source": "gsp",
-    "source_name": "GSP",
-    "source_lang": "ro",
-    "title": "Meciuri decisive pentru calificarea în grupul L la Campionatul Mondial",
-    "category": "sport",
-    "published": "2026-06-27T19:54:18+00:00",
-    "model": "C",
-    "sources": [
-      {
-        "name": "GSP",
-        "url": "https://www.gsp.ro/international/campionatul-mondial-de-fotbal-2026/live-croatia-ghana-panama-anglia-grupa-l-cupa-mondiala-953660.html"
-      },
-      {
-        "name": "Digi Sport",
-        "url": "https://www.digisport.ro/fotbal/cm-2026/croatia-ghana-live-text-0000-digisport-ro-duel-decisiv-pentru-primele-locuri-din-grupa-l-4343193"
-      }
-    ],
-    "synthesis": "În grupa L a Campionatului Mondial, Anglia și Ghana sunt deja calificate matematic în șaisprezecimi. Croația are nevoie de un egal împotriva Ghanei pentru a merge mai departe, în timp ce Panama este eliminată. Meciurile Croația - Ghana și Panama - Anglia se desfășoară în aceeași seară, stabilind pozițiile finale în grupă.",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://hotnews.ro/vizat-in-continuare-de-proteste-presedintele-serbiei-anunta-ca-va-demisiona-in-curand-mesajul-lui-vucic-pentru-sustinatorii-sai-2286420",
-    "original_link": "https://hotnews.ro/vizat-in-continuare-de-proteste-presedintele-serbiei-anunta-ca-va-demisiona-in-curand-mesajul-lui-vucic-pentru-sustinatorii-sai-2286420",
-    "source": "hotnews",
-    "source_name": "HotNews",
-    "source_lang": "ro",
-    "original_title": "Vizat în continuare de proteste, președintele Serbiei anunță că va demisiona în curând. Mesajul lui Vucic pentru susținătorii săi",
-    "title": "Vizat în continuare de proteste, președintele Serbiei anunță că va demisiona în curând. Mesajul lui Vucic pentru susținătorii săi",
-    "description": "Președintele sârb Aleksandar Vucic le-a transmis sâmbătă susținătorilor săi că va demisiona în curând și că în țară vor avea loc alegeri prezidențiale și parlamentare anticipate, potrivit Reuters. Anunțul lui Vucic, aflat la putere de 13 ani, a venit după aproximativ un an și jumătate de proteste anticorupție conduse de studenți. Manifestațiile, uneori violente, au …",
-    "category": "general",
-    "published": "2026-06-27T19:51:25+00:00",
-    "model": "C",
-    "sources": [
-      {
-        "name": "HotNews",
-        "url": "https://hotnews.ro/vizat-in-continuare-de-proteste-presedintele-serbiei-anunta-ca-va-demisiona-in-curand-mesajul-lui-vucic-pentru-sustinatorii-sai-2286420"
-      },
-      {
-        "name": "Economica",
-        "url": "https://www.economica.net/presedintele-serbiei-aleksandar-vucic-a-anuntat-ca-va-demisiona_954360.html"
-      }
-    ],
-    "synthesis": "Președintele sârb Aleksandar Vucic le-a transmis sâmbătă susținătorilor săi că va demisiona în curând și că în țară vor avea loc alegeri prezidențiale și parlamentare anticipate, potrivit Reuters. Anunțul lui Vucic, aflat la putere de 13 ani, a venit după aproximativ un an și jumătate de proteste anticorupție conduse de studenți. Manifestațiile, uneori violente, au …",
-    "processed_by": "fallback",
-    "error": "HTTP Error 429: Too Many Requests",
-    "featured": false
-  },
-  {
-    "url": "https://gsp.ro/international/campionate/salariu-faraonic-pentru-razvan-lucescu-la-viitoarea-echipa-isi-depaseste-propriul-record-953898.html",
-    "original_link": "https://www.gsp.ro/international/campionate/salariu-faraonic-pentru-razvan-lucescu-la-viitoarea-echipa-isi-depaseste-propriul-record-953898.html",
-    "source": "gsp",
-    "source_name": "GSP",
-    "source_lang": "ro",
-    "title": "Răzvan Lucescu semnează cu Al-Sadd din Qatar pentru 5 milioane de euro/an",
-    "category": "sport",
-    "published": "2026-06-27T19:50:26+00:00",
-    "model": "C",
-    "sources": [
-      {
-        "name": "GSP",
-        "url": "https://www.gsp.ro/international/campionate/salariu-faraonic-pentru-razvan-lucescu-la-viitoarea-echipa-isi-depaseste-propriul-record-953898.html"
-      },
-      {
-        "name": "ProSport",
-        "url": "https://www.prosport.ro/fotbal-extern/razvan-lucescu-al-sadd-qatar-salariu-lovitura-20471929"
-      }
-    ],
-    "synthesis": "Antrenorul român Răzvan Lucescu, 57 de ani, urmează să semneze un contract cu clubul qatarez Al-Sadd. Potrivit surselor, acesta va avea un salariu anual de 5 milioane de euro, depășind astfel venitul anterior de la Al-Hilal. Al-Sadd este principala forță din Qatar și s-a despărțit recent de Roberto Mancini.",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://gsp.ro/fotbal/liga-1/ioan-ovidiu-sabau-a-debutat-la-farul-cum-s-a-terminat-primul-amical-al-verii-953894.html",
-    "original_link": "https://www.gsp.ro/fotbal/liga-1/ioan-ovidiu-sabau-a-debutat-la-farul-cum-s-a-terminat-primul-amical-al-verii-953894.html",
-    "source": "gsp",
-    "source_name": "GSP",
-    "source_lang": "ro",
-    "original_title": "Ioan Ovidiu Sabău a debutat la Farul » Cum s-a terminat primul amical al verii",
-    "title": "Ioan Ovidiu Sabău a debutat la Farul » Cum s-a terminat primul amical al verii",
-    "description": "Farul a disputat sâmbătă după-amiaza primul test amical al verii sub conducerea noului antrenor, Ioan Ovidiu Sabău. Dobrogenii au terminat la egalitate, scor 1-1, cu Fratria Varna, locul 3 în liga secundă a Bulgariei în sezonul precedent. Meciul a avut loc la Ovidiu și a fost primul test amical, după o serie de partide-teste între jucătorii din cadrul clubului. ...",
-    "category": "sport",
-    "published": "2026-06-27T19:49:29+00:00",
-    "model": "B",
-    "teaser": "Farul a disputat sâmbătă după-amiaza primul test amical al verii sub conducerea noului antrenor, Ioan Ovidiu Sabău. Dobrogenii au terminat la egalitate, scor 1-1, cu Fratria Varna, locul 3 în liga secundă a Bulgariei în sezonul precedent. Meciul a avut...",
-    "processed_by": "fallback",
-    "error": "HTTP Error 429: Too Many Requests",
-    "featured": false
-  },
-  {
-    "url": "https://digi24.ro/stiri/externe/mapamond/noi-tensiuni-in-orientul-mijlociu-bahrain-denunta-o-amenintare-flagranta-dupa-un-atac-cu-drone-atribuit-iranului-3836459",
-    "original_link": "https://www.digi24.ro/stiri/externe/mapamond/noi-tensiuni-in-orientul-mijlociu-bahrain-denunta-o-amenintare-flagranta-dupa-un-atac-cu-drone-atribuit-iranului-3836459",
-    "source": "extern",
-    "source_name": "Digi24 Extern",
-    "source_lang": "ro",
-    "title": "Bahrain acuză Iranul de atac cu drone, în toiul tensiunilor regionale",
-    "category": "extern",
-    "published": "2026-06-27T19:46:30+00:00",
-    "model": "C",
-    "sources": [
-      {
-        "name": "Digi24 Extern",
-        "url": "https://www.digi24.ro/stiri/externe/mapamond/noi-tensiuni-in-orientul-mijlociu-bahrain-denunta-o-amenintare-flagranta-dupa-un-atac-cu-drone-atribuit-iranului-3836459"
-      },
-      {
-        "name": "Digi24",
-        "url": "https://www.digi24.ro/stiri/externe/mapamond/noi-tensiuni-in-orientul-mijlociu-bahrain-denunta-o-amenintare-flagranta-dupa-un-atac-cu-drone-atribuit-iranului-3836459"
-      }
-    ],
-    "synthesis": "Bahrain a raportat sâmbătă un atac cu drone, atribuit Iranului, pe care l-a calificat drept o „amenințare flagrantă”. Incidentul, care nu a cauzat victime sau pagube, survine după lovituri aeriene americane asupra unor ținte iraniene și atacul unei nave în Strâmtoarea Ormuz, intensificând tensiunile în Orientul Mijlociu.",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://gsp.ro/fotbal/liga-1/andrei-nicolescu-plecare-dinamo-devis-epassy-953897.html",
-    "original_link": "https://www.gsp.ro/fotbal/liga-1/andrei-nicolescu-plecare-dinamo-devis-epassy-953897.html",
-    "source": "gsp",
-    "source_name": "GSP",
-    "source_lang": "ro",
-    "original_title": "Andrei Nicolescu a anunțat plecarea titularului din sezonul trecut",
-    "title": "Andrei Nicolescu a anunțat plecarea titularului din sezonul trecut",
-    "description": "Andrei Nicolescu, președintele celor de la Dinamo, a oferit detalii din piața de mercato. Acesta a declarat că unul dintre jucătorii care este puțin probabil să rămână la Dinamo în sezonul viitor este Devis Epassy (33 de ani), portarul camerunez care a apărat poarta „câinilor” în stagiunea precedentă. ...",
-    "category": "sport",
-    "published": "2026-06-27T19:44:56+00:00",
-    "model": "B",
-    "teaser": "Andrei Nicolescu, președintele celor de la Dinamo, a oferit detalii din piața de mercato. Acesta a declarat că unul dintre jucătorii care este puțin probabil să rămână la Dinamo în sezonul viitor este Devis Epassy (33 de ani), portarul camerunez...",
-    "processed_by": "fallback",
-    "error": "HTTP Error 429: Too Many Requests",
-    "featured": false
-  },
-  {
-    "url": "https://g4media.ro/sosoaca-e-din-nou-la-moscova-elogiind-libertatea-rusiei-minunandu-se-de-kremlin-uitati-va-si-voi-ce-frumos-e-stia-sunt-extrem-de-civilizati-ba-eu-n-am-vazut-atata-verdeata.html",
-    "original_link": "https://www.g4media.ro/sosoaca-e-din-nou-la-moscova-elogiind-libertatea-rusiei-minunandu-se-de-kremlin-uitati-va-si-voi-ce-frumos-e-stia-sunt-extrem-de-civilizati-ba-eu-n-am-vazut-atata-verdeata.html",
-    "source": "g4media",
-    "source_name": "G4Media",
-    "source_lang": "ro",
-    "original_title": "Șoșoacă e din nou la Moscova, elogiind „libertatea” Rusiei, minunându-se de Kremlin: Uitați-vă și voi ce frumos e. Ăștia sunt extrem de civilizați, bă, eu n-am văzut atâta verdeață",
-    "title": "Șoșoacă e din nou la Moscova, elogiind „libertatea” Rusiei, minunându-se de Kremlin: Uitați-vă și voi ce frumos e. Ăștia sunt extrem de civilizați, bă, eu n-am văzut atâta verdeață",
-    "description": "Extremista pro-rusă Diana Șoșoacă, lidera partidului SOS și eurodeputată, a transmis sâmbătă un live pe Facebook din zona Pieței Roșii din Moscova, în care a prezentat Rusia drept un model de eficiență, ordine, libertate și dezvoltare, relatează Mediafax. Șoșoacă laudă felul în care rușii repară rapid lucrurile, frumusețea orașului, investițiile și existența unei așa-zise piețe © G4Media.ro .",
-    "category": "politic",
-    "published": "2026-06-27T19:41:58+00:00",
-    "model": "B",
-    "teaser": "Extremista pro-rusă Diana Șoșoacă, lidera partidului SOS și eurodeputată, a transmis sâmbătă un live pe Facebook din zona Pieței Roșii din Moscova, în care a prezentat Rusia drept un model de eficiență, ordine, libertate și dezvoltare, relatează Mediafax. Șoșoacă laudă...",
-    "processed_by": "fallback",
-    "error": "HTTP Error 429: Too Many Requests",
-    "featured": false
-  },
-  {
-    "url": "https://digi24.ro/stiri/externe/nimeni-nu-se-teme-de-marina-voastra-daca-sunteti-intr-o-barca-cu-vasle-avertismentul-aliatilor-nato-pentru-marea-britanie-3828969",
-    "original_link": "https://www.digi24.ro/stiri/externe/nimeni-nu-se-teme-de-marina-voastra-daca-sunteti-intr-o-barca-cu-vasle-avertismentul-aliatilor-nato-pentru-marea-britanie-3828969",
-    "source": "extern",
-    "source_name": "Digi24 Extern",
-    "source_lang": "ro",
-    "title": "Marea Britanie, criticată de aliații NATO pentru cheltuielile de apărare insuficiente",
-    "category": "politic",
-    "published": "2026-06-27T19:35:49+00:00",
-    "model": "C",
-    "sources": [
-      {
-        "name": "Digi24 Extern",
-        "url": "https://www.digi24.ro/stiri/externe/nimeni-nu-se-teme-de-marina-voastra-daca-sunteti-intr-o-barca-cu-vasle-avertismentul-aliatilor-nato-pentru-marea-britanie-3828969"
-      },
-      {
-        "name": "Digi24",
-        "url": "https://www.digi24.ro/stiri/externe/nimeni-nu-se-teme-de-marina-voastra-daca-sunteti-intr-o-barca-cu-vasle-avertismentul-aliatilor-nato-pentru-marea-britanie-3828969"
-      }
-    ],
-    "synthesis": "Țările europene din NATO își exprimă frustrarea față de Marea Britanie, considerând că refuzul acesteia de a atinge țintele de cheltuieli pentru apărare îi subminează poziția în cadrul alianței. Un avertisment din partea aliaților sugerează că forța militară britanică nu este percepută ca o amenințare reală în contextul actual.",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://libertatea.ro/stiri/temperatura-dunarii-crescuta-centrala-nucleara-paks-reducere-productie-reactor-5796429",
-    "original_link": "https://www.libertatea.ro/stiri/temperatura-dunarii-crescuta-centrala-nucleara-paks-reducere-productie-reactor-5796429",
-    "source": "libertatea",
-    "source_name": "Libertatea",
-    "source_lang": "ro",
-    "original_title": "Temperatura Dunării e prea mare și centrala nucleară de la Paks a redus producția unui reactor",
-    "title": "Temperatura Dunării e prea mare și centrala nucleară de la Paks a redus producția unui reactor",
-    "description": "Producția centralei nucleare Paks din Ungaria a fost redusă din cauza temperaturii ridicate a apei Dunării, în conformitate cu legislația de mediu, însă alimentarea cu energie electrică a țării rămâne sigură. Anunțul a fost făcut de ministrul Energiei, István Kapitány, pe pagina sa de Facebook, conform Portfolio. „Atunci când temperatura apei din râu atinge valoarea",
-    "category": "general",
-    "published": "2026-06-27T19:32:19+00:00",
-    "model": "B",
-    "teaser": "Producția centralei nucleare Paks din Ungaria a fost redusă din cauza temperaturii ridicate a apei Dunării, în conformitate cu legislația de mediu, însă alimentarea cu energie electrică a țării rămâne sigură. Anunțul a fost făcut de ministrul Energiei, István Kapitány...",
-    "processed_by": "fallback",
-    "error": "HTTP Error 429: Too Many Requests",
-    "featured": false
-  },
-  {
-    "url": "https://prosport.ro/fotbal-intern/superliga/culisele-repatrierii-fostei-perle-a-lui-gica-hagi-in-superliga-antrenorul-da-cartile-pe-fata-sper-sa-fie-o-afacere-win-win-20471909",
-    "original_link": "https://www.prosport.ro/fotbal-intern/superliga/culisele-repatrierii-fostei-perle-a-lui-gica-hagi-in-superliga-antrenorul-da-cartile-pe-fata-sper-sa-fie-o-afacere-win-win-20471909",
-    "source": "prosport",
-    "source_name": "ProSport",
-    "source_lang": "ro",
-    "original_title": "EXCLUSIV Culisele repatrierii fostei perle a lui Gică Hagi în Superliga! Antrenorul dă cărțile pe față: „Sper să fie o afacere win-win”",
-    "title": "EXCLUSIV Culisele repatrierii fostei perle a lui Gică Hagi în Superliga! Antrenorul dă cărțile pe față: „Sper să fie o afacere win-win”",
-    "description": "UTA a realizat unul dintre cele mai spectaculoase transferuri ale verii în fotbalul românesc. Arădenii l-au readus în SuperLigă pe Alexi Pitu, mijlocașul de 24 de ani vândut de Gică Hagi la Girondins Bordeaux pentru 2 milioane de euro în iarna anului 2023. După despărțirea de francezi, fostul internațional U 21 a mai jucat la",
-    "category": "sport",
-    "published": "2026-06-27T19:31:30+00:00",
-    "model": "B",
-    "teaser": "UTA a realizat unul dintre cele mai spectaculoase transferuri ale verii în fotbalul românesc. Arădenii l-au readus în SuperLigă pe Alexi Pitu, mijlocașul de 24 de ani vândut de Gică Hagi la Girondins Bordeaux pentru 2 milioane de euro în...",
-    "processed_by": "fallback",
-    "error": "HTTP Error 429: Too Many Requests",
-    "featured": false
-  },
-  {
-    "url": "https://hotnews.ro/cum-au-ajuns-teroristi-antifa-membrii-clubului-de-lectura-emma-goldman-condamnati-la-zeci-de-ani-de-inchisoare-2284224",
-    "original_link": "https://hotnews.ro/cum-au-ajuns-teroristi-antifa-membrii-clubului-de-lectura-emma-goldman-condamnati-la-zeci-de-ani-de-inchisoare-2284224",
-    "source": "hotnews",
-    "source_name": "HotNews",
-    "source_lang": "ro",
-    "original_title": "Cum au ajuns „teroriști Antifa” membrii „clubului de lectură Emma Goldman”, condamnați la zeci de ani de închisoare",
-    "title": "Cum au ajuns „teroriști Antifa” membrii „clubului de lectură Emma Goldman”, condamnați la zeci de ani de închisoare",
-    "description": "Un grup de manifestanți anti-ICE din Texas, condamnați pentru acte de terorism, au primit marți pedepse neobișnuit de severe, de la 30 la 100 de ani de închisoare. Cazul este unul urmărit cu mare atenție în SUA, unde a generat controverse, scriu Associated Press, PBS, The Guardian și Fox News. Acuzații din acest dosar au …",
-    "category": "general",
-    "published": "2026-06-27T19:30:42+00:00",
-    "model": "B",
-    "teaser": "Un grup de manifestanți anti-ICE din Texas, condamnați pentru acte de terorism, au primit marți pedepse neobișnuit de severe, de la 30 la 100 de ani de închisoare. Cazul este unul urmărit cu mare atenție în SUA, unde a generat...",
-    "processed_by": "fallback",
-    "error": "HTTP Error 429: Too Many Requests",
-    "featured": false
-  },
-  {
-    "url": "https://digisport.ro/fotbal/liga-1/rapid-e-gata-de-al-3-lea-transfer-al-verii-victor-angelescu-e-jucator-de-echipa-nationala-4344181",
-    "original_link": "https://www.digisport.ro/fotbal/liga-1/rapid-e-gata-de-al-3-lea-transfer-al-verii-victor-angelescu-e-jucator-de-echipa-nationala-4344181",
-    "source": "digisport",
-    "source_name": "Digi Sport",
-    "source_lang": "ro",
-    "original_title": "Rapid e gata de al 3-lea transfer al verii! Victor Angelescu: ”E jucător de echipă națională”",
-    "title": "Rapid e gata de al 3-lea transfer al verii! Victor Angelescu: ”E jucător de echipă națională”",
-    "description": "Rapid e gata de al 3-lea transfer al verii! Victor Angelescu: ”E jucător de echipă națională”",
-    "category": "sport",
-    "published": "2026-06-27T19:27:45+00:00",
-    "model": "B",
-    "teaser": "Rapid e gata de al 3-lea transfer al verii! Victor Angelescu: ”E jucător de echipă națională”",
-    "processed_by": "fallback",
-    "error": "HTTP Error 429: Too Many Requests",
-    "featured": false
-  },
-  {
-    "url": "https://prosport.ro/alte-sporturi/box/gigantul-oleksandr-usyk-a-cutremurat-lumea-a-renuntat-la-toate-centurile-mondiale-anuntul-a-socat-planeta-20471896",
-    "original_link": "https://www.prosport.ro/alte-sporturi/box/gigantul-oleksandr-usyk-a-cutremurat-lumea-a-renuntat-la-toate-centurile-mondiale-anuntul-a-socat-planeta-20471896",
-    "source": "prosport",
-    "source_name": "ProSport",
-    "source_lang": "ro",
-    "original_title": "Gigantul Oleksandr Usyk a cutremurat lumea: A RENUNȚAT la toate centurile mondiale! Anunțul a șocat planeta",
-    "title": "Gigantul Oleksandr Usyk a cutremurat lumea: A RENUNȚAT la toate centurile mondiale! Anunțul a șocat planeta",
-    "description": "Gigantul Oleksandr Usyk (39 de ani) a cutremurat lumea sportului și a anunțat că a renunțat oficial la toate centurile de campion la versiunile WBC, WBA și IBF. Campionul ucrainean neînvins a surprins întreaga planetă, iar decizia pe care a luat-o a schimbat din temelii raporturile de forțe dintre cei mai puternici luptători din lume.",
-    "category": "sport",
-    "published": "2026-06-27T19:20:03+00:00",
-    "model": "B",
-    "teaser": "Gigantul Oleksandr Usyk (39 de ani) a cutremurat lumea sportului și a anunțat că a renunțat oficial la toate centurile de campion la versiunile WBC, WBA și IBF. Campionul ucrainean neînvins a surprins întreaga planetă, iar decizia pe care a...",
-    "processed_by": "fallback",
-    "error": "HTTP Error 429: Too Many Requests",
-    "featured": false
-  },
-  {
-    "url": "https://g4media.ro/social-democratul-rogobete-invitatie-pentru-bolojan-haideti-cu-mine-intr-un-spital-la-patul-bolnavului-nu-exista-propaganda.html",
-    "original_link": "https://www.g4media.ro/social-democratul-rogobete-invitatie-pentru-bolojan-haideti-cu-mine-intr-un-spital-la-patul-bolnavului-nu-exista-propaganda.html",
-    "source": "g4media",
-    "source_name": "G4Media",
-    "source_lang": "ro",
-    "original_title": "Social-democratul Rogobete, invitație pentru Bolojan: „Haideți cu mine într-un spital, la patul bolnavului nu există propagandă”",
-    "title": "Social-democratul Rogobete, invitație pentru Bolojan: „Haideți cu mine într-un spital, la patul bolnavului nu există propagandă”",
-    "description": "Fostul ministru al Sănătății, Alexandru Rogobete (PSD) i-a transmis sâmbătă un nou mesaj premierului demis Ilie Bolojan, pe care îl invită să meargă împreună într-un spital. „Domnule Bolojan, am o invitație pentru dumneavoastră. Haideți cu mine. Doar noi doi. Nu la Palatul Victoria. Nu într-un studio de televiziune. Nu la o conferință de presă. Într-un © G4Media.ro .",
-    "category": "politic",
-    "published": "2026-06-27T19:18:03+00:00",
-    "model": "B",
-    "teaser": "Fostul ministru al Sănătății, Alexandru Rogobete (PSD) i-a transmis sâmbătă un nou mesaj premierului demis Ilie Bolojan, pe care îl invită să meargă împreună într-un spital. „Domnule Bolojan, am o invitație pentru dumneavoastră. Haideți cu mine. Doar noi doi. Nu...",
-    "processed_by": "fallback",
-    "error": "HTTP Error 429: Too Many Requests",
-    "featured": false
-  },
-  {
-    "url": "https://gsp.ro/fotbal/liga-1/csikszereda-victorie-clara-campioanei-ungariei-gyor-amical-953883.html",
-    "original_link": "https://www.gsp.ro/fotbal/liga-1/csikszereda-victorie-clara-campioanei-ungariei-gyor-amical-953883.html",
-    "source": "gsp",
-    "source_name": "GSP",
-    "source_lang": "ro",
-    "title": "Csikszereda a învins campioana Ungariei la Cupa Duna",
-    "category": "sport",
-    "published": "2026-06-27T19:11:36+00:00",
-    "model": "B",
-    "teaser": "Echipa Csikszereda Miercurea Ciuc a obținut o victorie cu 3-1 împotriva formației Gyor ETO, campioana Ungariei, în cadrul unui turneu amical. Succesul le-a asigurat calificarea în finala competiției.",
-    "processed_by": "gemini",
-    "error": "HTTP Error 429: Too Many Requests",
-    "featured": false,
-    "prompt_version": "v2-esenta"
-  },
-  {
-    "url": "https://prosport.ro/fotbal-intern/superliga/gigi-becali-tavi-popescu-gagica-baza-berceni-boschetar-dezvaluiri-incendiare-20471897",
-    "original_link": "https://www.prosport.ro/fotbal-intern/superliga/gigi-becali-tavi-popescu-gagica-baza-berceni-boschetar-dezvaluiri-incendiare-20471897",
-    "source": "prosport",
-    "source_name": "ProSport",
-    "source_lang": "ro",
-    "original_title": "Gigi Becali, dezvăluiri incendiare despre Tavi Popescu: „Are o gagică. Se mută la baza din Berceni. Dacă nu, ajunge boschetar”",
-    "title": "Gigi Becali, dezvăluiri incendiare despre Tavi Popescu: „Are o gagică. Se mută la baza din Berceni. Dacă nu, ajunge boschetar”",
-    "description": "Gigi Becali dezvăluie că Tavi Popescu, marele său pariul din urmă cu câțiva ani, își dorește să revină la forma sportivă cu care a impresionat întreg fotbalul românesc. Mijlocașul de bandă stângă vrea să se mute la baza de pregătire din Berceni, în ciuda faptului că, adaugă magnatul, acesta are acasă o „gagică”, nimeni alta",
-    "category": "sport",
-    "published": "2026-06-27T19:09:11+00:00",
-    "model": "B",
-    "teaser": "Gigi Becali dezvăluie că Tavi Popescu, marele său pariul din urmă cu câțiva ani, își dorește să revină la forma sportivă cu care a impresionat întreg fotbalul românesc. Mijlocașul de bandă stângă vrea să se mute la baza de pregătire...",
-    "processed_by": "fallback",
-    "error": "HTTP Error 429: Too Many Requests",
-    "featured": false
-  },
-  {
-    "url": "https://digisport.ro/fotbal/liga-1/care-e-echipa-din-superliga-care-s-a-intarit-cel-mai-bine-florin-prunea-a-dat-raspunsul-pe-loc-4344229",
-    "original_link": "https://www.digisport.ro/fotbal/liga-1/care-e-echipa-din-superliga-care-s-a-intarit-cel-mai-bine-florin-prunea-a-dat-raspunsul-pe-loc-4344229",
-    "source": "digisport",
-    "source_name": "Digi Sport",
-    "source_lang": "ro",
-    "original_title": "”Care e echipa din SuperLigă care s-a întărit cel mai bine?” Florin Prunea a dat răspunsul pe loc",
-    "title": "”Care e echipa din SuperLigă care s-a întărit cel mai bine?” Florin Prunea a dat răspunsul pe loc",
-    "description": "”Care e echipa din SuperLigă care s-a întărit cel mai bine?” Florin Prunea a dat răspunsul pe loc",
-    "category": "sport",
-    "published": "2026-06-27T19:07:56+00:00",
-    "model": "B",
-    "teaser": "”Care e echipa din SuperLigă care s-a întărit cel mai bine?” Florin Prunea a dat răspunsul pe loc",
-    "processed_by": "fallback",
-    "error": "HTTP Error 429: Too Many Requests",
-    "featured": false
-  },
-  {
-    "url": "https://hotnews.ro/este-posibil-sa-ne-apropiem-de-45-de-grade-sefa-anm-despre-valul-canicula-si-riscul-unui-episod-ulterior-de-fenomene-meteo-extreme-2286408",
-    "original_link": "https://hotnews.ro/este-posibil-sa-ne-apropiem-de-45-de-grade-sefa-anm-despre-valul-canicula-si-riscul-unui-episod-ulterior-de-fenomene-meteo-extreme-2286408",
-    "source": "hotnews",
-    "source_name": "HotNews",
-    "source_lang": "ro",
-    "original_title": "„Posibil să ne apropiem de 45 de grade”. Șefa ANM, despre valul de caniculă și riscul unui episod ulterior de fenomene meteo extreme",
-    "title": "„Posibil să ne apropiem de 45 de grade”. Șefa ANM, despre valul de caniculă și riscul unui episod ulterior de fenomene meteo extreme",
-    "description": "Directoarea generală a ANM, Elena Mateescu, a declarat că episodul de caniculă din aceste zile va fi unul „deosebit de sever”, posibil cu temperaturi resimțite de aproape 45 de grade, și nu a exclus posibilitatea unor fenomene meteo extreme care să se producă odată ce valorile din termometre vor începe să scadă. Administrația Națională de …",
-    "category": "general",
-    "published": "2026-06-27T19:07:28+00:00",
-    "model": "B",
-    "teaser": "Directoarea generală a ANM, Elena Mateescu, a declarat că episodul de caniculă din aceste zile va fi unul „deosebit de sever”, posibil cu temperaturi resimțite de aproape 45 de grade, și nu a exclus posibilitatea unor fenomene meteo extreme care...",
-    "processed_by": "fallback",
-    "error": "HTTP Error 429: Too Many Requests",
-    "featured": false
-  },
-  {
-    "url": "https://digi24.ro/stiri/externe/netanyahu-a-ordonat-armatei-israeliene-sa-se-pregateasca-pentru-o-sedere-prelungita-in-liban-3836439",
-    "original_link": "https://www.digi24.ro/stiri/externe/netanyahu-a-ordonat-armatei-israeliene-sa-se-pregateasca-pentru-o-sedere-prelungita-in-liban-3836439",
-    "source": "extern",
-    "source_name": "Digi24 Extern",
-    "source_lang": "ro",
-    "title": "Israel se pregătește pentru o prezență militară extinsă în sudul Libanului",
-    "category": "extern",
-    "published": "2026-06-27T19:04:42+00:00",
-    "model": "C",
-    "sources": [
-      {
-        "name": "Digi24 Extern",
-        "url": "https://www.digi24.ro/stiri/externe/netanyahu-a-ordonat-armatei-israeliene-sa-se-pregateasca-pentru-o-sedere-prelungita-in-liban-3836439"
-      },
-      {
-        "name": "Digi24",
-        "url": "https://www.digi24.ro/stiri/externe/netanyahu-a-ordonat-armatei-israeliene-sa-se-pregateasca-pentru-o-sedere-prelungita-in-liban-3836439"
-      }
-    ],
-    "synthesis": "Ministrul apărării din Israel, Israel Katz, a anunțat sâmbătă că armata a primit instrucțiuni să se pregătească pentru o \"ședere prelungită\" în zonele ocupate din sudul Libanului. Această decizie survine la o zi după ce a fost semnat un acord-cadru între Liban și Israel pentru încetarea ostilităților.",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://spotmedia.ro/stiri/eveniment/vucic-anunta-ca-va-demisiona-peste-cateva-saptamani-si-convoaca-alegeri-anticipate-in-serbia",
-    "original_link": "https://spotmedia.ro/stiri/eveniment/vucic-anunta-ca-va-demisiona-peste-cateva-saptamani-si-convoaca-alegeri-anticipate-in-serbia",
-    "source": "spotmedia",
-    "source_name": "Spotmedia",
-    "source_lang": "ro",
-    "original_title": "Vučić anunță că va demisiona peste câteva săptămâni și convoacă alegeri anticipate în Serbia",
-    "title": "Vučić anunță că va demisiona peste câteva săptămâni și convoacă alegeri anticipate în Serbia",
-    "description": "Președintele Serbiei, Aleksandar Vučić, a declarat sâmbătă că va demisiona peste câteva săptămâni, cu aproape un an înainte de finalul mandatului, și a anunțat alegeri prezidențiale și parlamentare anticipate. „Voi mai fi președinte doar câteva săptămâni, apoi voi demisiona”, le-a spus Vučić susținătorilor săi, la un miting pro-guvernamental organizat la Belgrad, relatează Reuters. Al doilea …",
-    "category": "general",
-    "published": "2026-06-27T19:03:21+00:00",
-    "model": "C",
-    "sources": [
-      {
-        "name": "Spotmedia",
-        "url": "https://spotmedia.ro/stiri/eveniment/vucic-anunta-ca-va-demisiona-peste-cateva-saptamani-si-convoaca-alegeri-anticipate-in-serbia"
-      },
-      {
-        "name": "HotNews",
-        "url": "https://hotnews.ro/vizat-in-continuare-de-proteste-presedintele-serbiei-anunta-ca-va-demisiona-in-curand-mesajul-lui-vucic-pentru-sustinatorii-sai-2286420"
-      },
-      {
-        "name": "Libertatea",
-        "url": "https://www.libertatea.ro/stiri/aleksandar-vucic-demisie-presedinte-serbia-alegeri-anticipate-5796458"
-      },
-      {
-        "name": "Economica",
-        "url": "https://www.economica.net/presedintele-serbiei-aleksandar-vucic-a-anuntat-ca-va-demisiona_954360.html"
-      }
-    ],
-    "synthesis": "Președintele Serbiei, Aleksandar Vučić, a declarat sâmbătă că va demisiona peste câteva săptămâni, cu aproape un an înainte de finalul mandatului, și a anunțat alegeri prezidențiale și parlamentare anticipate. „Voi mai fi președinte doar câteva săptămâni, apoi voi demisiona”, le-a spus Vučić susținătorilor săi, la un miting pro-guvernamental organizat la Belgrad, relatează Reuters. Al doilea …",
-    "processed_by": "fallback",
-    "error": "HTTP Error 429: Too Many Requests",
-    "featured": false
-  },
-  {
-    "url": "https://digisport.ro/fotbal/liga-1/gigi-becali-surpriza-e-politic-4344239",
-    "original_link": "https://www.digisport.ro/fotbal/liga-1/gigi-becali-surpriza-e-politic-4344239",
-    "source": "digisport",
-    "source_name": "Digi Sport",
-    "source_lang": "ro",
-    "title": "Gigi Becali anunță o surpriză majoră în politică",
-    "category": "politic",
-    "published": "2026-06-27T19:02:46+00:00",
-    "model": "B",
-    "teaser": "Omul de afaceri Gigi Becali a declarat că pregătește o surpriză semnificativă în sfera politică. Detaliile specifice ale acestei inițiative nu au fost dezvăluite încă.",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://gsp.ro/international/campionate/ravasitor-sotia-unui-fotbalist-a-murit-venezuela-cutremur-953841.html",
-    "original_link": "https://www.gsp.ro/international/campionate/ravasitor-sotia-unui-fotbalist-a-murit-venezuela-cutremur-953841.html",
-    "source": "gsp",
-    "source_name": "GSP",
-    "source_lang": "ro",
-    "original_title": "Răvășitor! Soția fotbalistului Hector Bello a murit pentru a-și salva bebelușul la cutremurul din Venezuela: „Cum să-i explic că nu am fost acolo și nu am făcut nimic?!”",
-    "title": "Răvășitor! Soția fotbalistului Hector Bello a murit pentru a-și salva bebelușul la cutremurul din Venezuela: „Cum să-i explic că nu am fost acolo și nu am făcut nimic?!”",
-    "description": "Cele două cutremure puternice care au lovit Venezuela în această săptămână au făcut ca peste 920 de persoane să își piardă viața, iar peste 3.000 să fie grav rănite. În toată această tragedie care a marcat țara, povestea fotbalistului venezuelean Hector Bello este una răvășitoare: acesta a anunțat pe Instagram că soția lui, Andrea, a murit salvând-o pe fiica lor în timpul prăbușirii unei clădiri. ...",
-    "category": "sport",
-    "published": "2026-06-27T18:58:53+00:00",
-    "model": "B",
-    "teaser": "Cele două cutremure puternice care au lovit Venezuela în această săptămână au făcut ca peste 920 de persoane să își piardă viața, iar peste 3.000 să fie grav rănite. În toată această tragedie care a marcat țara, povestea fotbalistului venezuelean...",
-    "processed_by": "fallback",
-    "error": "HTTP Error 429: Too Many Requests",
-    "featured": false
-  },
-  {
-    "url": "https://spotmedia.ro/stiri/social/o-veste-buna-de-pe-munte-romania-are-primul-traseu-accesibilizat-pentru-persoanele-nevazatoare",
-    "original_link": "https://spotmedia.ro/stiri/social/o-veste-buna-de-pe-munte-romania-are-primul-traseu-accesibilizat-pentru-persoanele-nevazatoare",
-    "source": "spotmedia",
-    "source_name": "Spotmedia",
-    "source_lang": "ro",
-    "original_title": "O veste bună de pe munte: România are primul traseu accesibilizat pentru persoanele nevăzătoare",
-    "title": "O veste bună de pe munte: România are primul traseu accesibilizat pentru persoanele nevăzătoare",
-    "description": "România are, de sâmbătă, primul traseu montan accesibilizat pentru persoanele cu deficiențe de vedere. Ruta a fost inaugurată în Masivul Ciucaș și pornește din Valea Berii, în apropiere de Fabrica de Apă din Cheia, județul Prahova, urcând până la Hornul de la baza Vârfului Ciucaș. Este un proiect pilot la nivel național și marchează începutul …",
-    "category": "general",
-    "published": "2026-06-27T18:55:48+00:00",
-    "model": "C",
-    "sources": [
-      {
-        "name": "Spotmedia",
-        "url": "https://spotmedia.ro/stiri/social/o-veste-buna-de-pe-munte-romania-are-primul-traseu-accesibilizat-pentru-persoanele-nevazatoare"
-      },
-      {
-        "name": "Libertatea",
-        "url": "https://www.libertatea.ro/lifestyle/primul-traseu-montan-nevazatori-romania-masivul-ciucas-5796460"
-      }
-    ],
-    "synthesis": "România are, de sâmbătă, primul traseu montan accesibilizat pentru persoanele cu deficiențe de vedere. Ruta a fost inaugurată în Masivul Ciucaș și pornește din Valea Berii, în apropiere de Fabrica de Apă din Cheia, județul Prahova, urcând până la Hornul de la baza Vârfului Ciucaș. Este un proiect pilot la nivel național și marchează începutul …",
-    "processed_by": "fallback",
-    "error": "HTTP Error 429: Too Many Requests",
-    "featured": false
-  },
-  {
-    "url": "https://g4media.ro/david-popovici-a-castigat-aurul-la-100-m-liber-la-trofeul-settecolli.html",
-    "original_link": "https://www.g4media.ro/david-popovici-a-castigat-aurul-la-100-m-liber-la-trofeul-settecolli.html",
-    "source": "g4media",
-    "source_name": "G4Media",
-    "source_lang": "ro",
-    "title": "David Popovici, aur la 100m liber la Trofeul Settecolli, cu record",
-    "category": "sport",
-    "published": "2026-06-27T18:54:58+00:00",
-    "model": "B",
-    "teaser": "Înotătorul român David Popovici a cucerit medalia de aur la 100 de metri liber la competiția de la Roma, stabilind un nou record al evenimentului cu timpul de 47,26 secunde.",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://stirileprotv.ro/stiri/sport/david-popovici-a-cucerit-medalia-de-aur-la-roma-cu-record-al-competitiei-romanul-de-neintrecut-in-proba-de-100-m-liber.html",
-    "original_link": "https://stirileprotv.ro/stiri/sport/david-popovici-a-cucerit-medalia-de-aur-la-roma-cu-record-al-competitiei-romanul-de-neintrecut-in-proba-de-100-m-liber.html",
-    "source": "protv",
-    "source_name": "Știrile ProTV",
-    "source_lang": "ro",
-    "original_title": "David Popovici a cucerit medalia de aur la Roma, cu record al competiției. Românul, de neîntrecut în proba de 100 m liber",
-    "title": "David Popovici a cucerit medalia de aur la Roma, cu record al competiției. Românul, de neîntrecut în proba de 100 m liber",
-    "description": "Înotătorul David Popovici a câştigat sâmbătă, la Roma, medalia de aur în proba de 100 metri liber, în cadrul Trofeului Internaţional Sette Colli. Românul a realizat şi recordul competiţiei la această probă.",
-    "category": "general",
-    "published": "2026-06-27T18:54:13+00:00",
-    "model": "C",
-    "sources": [
-      {
-        "name": "ProSport",
-        "url": "https://www.prosport.ro/david-popovici/david-popovici-a-spus-o-lumii-intregi-dupa-ce-a-inotat-fenomenal-la-roma-vreau-sa-bat-recordul-mondial-e-un-cand-nu-un-daca-20471957"
-      },
-      {
-        "name": "G4Media",
-        "url": "https://www.g4media.ro/david-popovici-a-castigat-aurul-la-100-m-liber-la-trofeul-settecolli.html"
-      },
-      {
-        "name": "Știrile ProTV",
-        "url": "https://stirileprotv.ro/stiri/sport/david-popovici-a-cucerit-medalia-de-aur-la-roma-cu-record-al-competitiei-romanul-de-neintrecut-in-proba-de-100-m-liber.html"
-      }
-    ],
-    "synthesis": "Înotătorul David Popovici a câştigat sâmbătă, la Roma, medalia de aur în proba de 100 metri liber, în cadrul Trofeului Internaţional Sette Colli. Românul a realizat şi recordul competiţiei la această probă.",
-    "processed_by": "fallback",
-    "error": "HTTP Error 429: Too Many Requests",
-    "featured": false
-  },
-  {
-    "url": "https://prosport.ro/fotbal-extern/campionate-externe/italia/record-ac-milan-a-facut-cel-mai-scump-transfer-din-istoria-sa-80-000-000-de-euro-pentru-atacantul-de-la-psg-20471859",
-    "original_link": "https://www.prosport.ro/fotbal-extern/campionate-externe/italia/record-ac-milan-a-facut-cel-mai-scump-transfer-din-istoria-sa-80-000-000-de-euro-pentru-atacantul-de-la-psg-20471859",
-    "source": "prosport",
-    "source_name": "ProSport",
-    "source_lang": "ro",
-    "original_title": "MERCATO RECORD! AC Milan a făcut cel mai scump transfer din istoria sa: 80.000.000 de euro pentru atacantul de la PSG!",
-    "title": "MERCATO RECORD! AC Milan a făcut cel mai scump transfer din istoria sa: 80.000.000 de euro pentru atacantul de la PSG!",
-    "description": "Transfer record pentru AC Milan! Gigantul din Italia a făcut cea mai scumpă mutare din istoria sa: a plătit 80 de milioane de euro pentru atacantul celor de la PSG. Conform informațiilor oferite de jurnalistul Fabrizio Romano, se pare că formația din Serie A a ajuns la o înțelegere cu Goncalo Ramos, iar atacantul a",
-    "category": "sport",
-    "published": "2026-06-27T18:53:59+00:00",
-    "model": "B",
-    "teaser": "Transfer record pentru AC Milan! Gigantul din Italia a făcut cea mai scumpă mutare din istoria sa: a plătit 80 de milioane de euro pentru atacantul celor de la PSG. Conform informațiilor oferite de jurnalistul Fabrizio Romano, se pare că...",
-    "processed_by": "fallback",
-    "error": "HTTP Error 429: Too Many Requests",
-    "featured": false
-  },
-  {
-    "url": "https://gsp.ro/fotbal/liga-1/gigi-becali-situatie-octavian-popescu-fcsb-953872.html",
-    "original_link": "https://www.gsp.ro/fotbal/liga-1/gigi-becali-situatie-octavian-popescu-fcsb-953872.html",
-    "source": "gsp",
-    "source_name": "GSP",
-    "source_lang": "ro",
-    "title": "Becali anunță o surpriză la FCSB și avertizează un jucător",
-    "category": "sport",
-    "published": "2026-06-27T18:51:05+00:00",
-    "model": "C",
-    "sources": [
-      {
-        "name": "GSP",
-        "url": "https://www.gsp.ro/fotbal/liga-1/gigi-becali-situatie-octavian-popescu-fcsb-953872.html"
-      },
-      {
-        "name": "Digi Sport",
-        "url": "https://www.digisport.ro/fotbal/liga-1/gigi-becali-surpriza-e-politic-4344239"
-      }
-    ],
-    "synthesis": "Gigi Becali, patronul FCSB, a declarat că \"surpriza\" la care se referă este \"Politic\". De asemenea, Becali a transmis un avertisment dur lui Octavian Popescu, afirmând că Mihai Stoica se va ocupa personal de el, altfel riscă să ajungă \"boschetar\".",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://digi24.ro/stiri/externe/ue/ue-activeaza-mecanismul-de-protectie-civila-pentru-venezuela-si-trimite-echipe-de-interventie-dupa-cutremurele-devastatoare-3836403",
-    "original_link": "https://www.digi24.ro/stiri/externe/ue/ue-activeaza-mecanismul-de-protectie-civila-pentru-venezuela-si-trimite-echipe-de-interventie-dupa-cutremurele-devastatoare-3836403",
-    "source": "extern",
-    "source_name": "Digi24 Extern",
-    "source_lang": "ro",
-    "title": "UE trimite ajutoare în Venezuela după cutremure devastatoare",
-    "category": "extern",
-    "published": "2026-06-27T18:46:54+00:00",
-    "model": "C",
-    "sources": [
-      {
-        "name": "Digi24 Extern",
-        "url": "https://www.digi24.ro/stiri/externe/ue/ue-activeaza-mecanismul-de-protectie-civila-pentru-venezuela-si-trimite-echipe-de-interventie-dupa-cutremurele-devastatoare-3836403"
-      },
-      {
-        "name": "Digi24",
-        "url": "https://www.digi24.ro/stiri/externe/ue/ue-activeaza-mecanismul-de-protectie-civila-pentru-venezuela-si-trimite-echipe-de-interventie-dupa-cutremurele-devastatoare-3836403"
-      }
-    ],
-    "synthesis": "Uniunea Europeană a activat Mecanismul de Protecție Civilă pentru a oferi sprijin Venezuelei, afectată de cutremure puternice. Echipe de intervenție sunt trimise ca răspuns la seismul de miercuri. ONU raportează peste 1.430 de decese și aproximativ 50.000 de persoane dispărute.",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://prosport.ro/fotbal-intern/superliga/dinamo-transfer-gnahore-samuel-gueulette-international-rwanda-inlocuitor-26-de-ani-20471880",
-    "original_link": "https://www.prosport.ro/fotbal-intern/superliga/dinamo-transfer-gnahore-samuel-gueulette-international-rwanda-inlocuitor-26-de-ani-20471880",
-    "source": "prosport",
-    "source_name": "ProSport",
-    "source_lang": "ro",
-    "original_title": "MERCATO Dinamo a găsit înlocuitor pentru Gnahore în Belgia! Internaționalul rwandez are 26 de ani",
-    "title": "MERCATO Dinamo a găsit înlocuitor pentru Gnahore în Belgia! Internaționalul rwandez are 26 de ani",
-    "description": "Dinamo continuă transferurile în această vară și l-a găsit în Belgia pe înlocuitorul lui Eddy Gnahore, plecat de la echipă la finalul sezonului. „Câinii” au pus ochii pe Samuel Gueulette (26 de ani), internațional rwandez care evoluează RAAL La Louviere, echipă care s-a salvat de la retrogradare în Jupiler League. Înlocuitorul lui Eddy Gnahore vine",
-    "category": "sport",
-    "published": "2026-06-27T18:46:12+00:00",
-    "model": "B",
-    "teaser": "Dinamo continuă transferurile în această vară și l-a găsit în Belgia pe înlocuitorul lui Eddy Gnahore, plecat de la echipă la finalul sezonului. „Câinii” au pus ochii pe Samuel Gueulette (26 de ani), internațional rwandez care evoluează RAAL La Louviere...",
-    "processed_by": "fallback",
-    "error": "HTTP Error 429: Too Many Requests",
-    "featured": false
-  },
-  {
-    "url": "https://hotnews.ro/documentarul-despre-un-alpinist-roman-de-87-de-ani-si-povestea-de-iubire-care-sfideaza-varsta-regizorul-sa-avem-curajul-sa-ne-urmam-visurile-pana-la-capat-2277006",
-    "original_link": "https://hotnews.ro/documentarul-despre-un-alpinist-roman-de-87-de-ani-si-povestea-de-iubire-care-sfideaza-varsta-regizorul-sa-avem-curajul-sa-ne-urmam-visurile-pana-la-capat-2277006",
-    "source": "hotnews",
-    "source_name": "HotNews",
-    "source_lang": "ro",
-    "original_title": "Documentarul despre un alpinist român de 87 de ani și povestea de iubire care sfidează vârsta. Regizorul: „Să avem curajul să ne urmăm visurile până la capăt”",
-    "title": "Documentarul despre un alpinist român de 87 de ani și povestea de iubire care sfidează vârsta. Regizorul: „Să avem curajul să ne urmăm visurile până la capăt”",
-    "description": "Documentarul „Hoinari prin munți” spune povestea de viața și iubire a doi legendari montaniarzi români, Dinu și Marlene Mititeanu. Între 70 și 80 de ani, Mititeanu a urcat 33 de vârfuri montane de peste 4000 de metri, din toată lumea. La 87 de ani, alpinistul continuă să mergă pe munte alături de soția sa. „Când …",
-    "category": "general",
-    "published": "2026-06-27T18:45:03+00:00",
-    "model": "B",
-    "teaser": "Documentarul „Hoinari prin munți” spune povestea de viața și iubire a doi legendari montaniarzi români, Dinu și Marlene Mititeanu. Între 70 și 80 de ani, Mititeanu a urcat 33 de vârfuri montane de peste 4000 de metri, din toată lumea...",
-    "processed_by": "fallback",
-    "error": "HTTP Error 429: Too Many Requests",
-    "featured": false
-  },
-  {
-    "url": "https://zf.ro/eveniment/succes-rasunator-al-lui-david-popovici-la-roma-aur-la-100-de-metri-23183355",
-    "original_link": "https://www.zf.ro/eveniment/succes-rasunator-al-lui-david-popovici-la-roma-aur-la-100-de-metri-23183355",
-    "source": "zf",
-    "source_name": "Ziarul Financiar",
-    "source_lang": "ro",
-    "title": "David Popovici, aur la 100m liber la Roma, cu record personal",
-    "category": "sport",
-    "published": "2026-06-27T18:44:48+00:00",
-    "model": "C",
-    "sources": [
-      {
-        "name": "ProSport",
-        "url": "https://www.prosport.ro/david-popovici/david-popovici-a-spus-o-lumii-intregi-dupa-ce-a-inotat-fenomenal-la-roma-vreau-sa-bat-recordul-mondial-e-un-cand-nu-un-daca-20471957"
-      },
-      {
-        "name": "G4Media",
-        "url": "https://www.g4media.ro/david-popovici-a-castigat-aurul-la-100-m-liber-la-trofeul-settecolli.html"
-      },
-      {
-        "name": "Ziarul Financiar",
-        "url": "https://www.zf.ro/eveniment/succes-rasunator-al-lui-david-popovici-la-roma-aur-la-100-de-metri-23183355"
-      },
-      {
-        "name": "Știrile ProTV",
-        "url": "https://stirileprotv.ro/stiri/sport/david-popovici-a-cucerit-medalia-de-aur-la-roma-cu-record-al-competitiei-romanul-de-neintrecut-in-proba-de-100-m-liber.html"
-      }
-    ],
-    "synthesis": "David Popovici a câștigat medalia de aur la proba de 100 de metri liber la Trofeul Sette Colli, desfășurat la Roma. Românul s-a impus cu timpul de 47,26 secunde, stabilind un nou record al competiției. Performanța sa reprezintă al doilea cel mai bun timp al anului la nivel mondial.",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
     "featured": false
   }
 ]
