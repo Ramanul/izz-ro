@@ -127,6 +127,26 @@ def _dedup(articles: list) -> list:
     return kept
 
 
+def _diversify(items: list, max_run: int = 2) -> list:
+    """Reordonare blanda anti-monotonie (regula 'source diversity'): pastreaza
+    ordinea cronologica, dar acelasi domeniu-sursa nu apare mai mult de `max_run`
+    ori consecutiv -- urmatorul articol de la alta sursa e tras in fata.
+    Nu elimina nimic; sursele vorbarete (ex. Digi24 Extern, 53% din extern) doar
+    se intretes cu restul in loc sa monopolizeze vizual sectiunea.
+    """
+    def dom(a: dict) -> str:
+        return domain_of(a.get("original_link") or "") or a.get("source_name", "")
+
+    pool, out = list(items), []
+    while pool:
+        tail = [dom(x) for x in out[-max_run:]]
+        idx = 0
+        if len(tail) == max_run and len(set(tail)) == 1:
+            idx = next((i for i, a in enumerate(pool) if dom(a) != tail[0]), 0)
+        out.append(pool.pop(idx))
+    return out
+
+
 def _pick_hero(articles: list) -> list:
     featured = [a for a in articles if a.get("featured")]
     rest = [a for a in articles if not a.get("featured")]
@@ -242,7 +262,7 @@ def build(articles: list, mod: dict | None = None) -> None:
     for cat in config.CATEGORIES:
         # plafon pe homepage (legea lui Hick): max 9/sectiune; restul pe pagina categoriei
         items = [a for a in by_date if a.get("category") == cat and a["url"] not in hero_urls]
-        by_category[cat] = items[:9]
+        by_category[cat] = _diversify(items)[:9]
 
     # homepage
     item_list = {
@@ -264,7 +284,8 @@ def build(articles: list, mod: dict | None = None) -> None:
     for cat in config.CATEGORIES:
         items = [a for a in by_date if a.get("category") == cat]
         _write(os.path.join(OUT_DIR, cat, "index.html"),
-               cat_tpl.render(**_base_ctx(f"/{cat}/", category=cat, articles=items, active_cat=cat)))
+               cat_tpl.render(**_base_ctx(f"/{cat}/", category=cat,
+                                          articles=_diversify(items), active_cat=cat)))
         for a in items:
             _write(os.path.join(OUT_DIR, cat, a['slug'], "index.html"),
                    article_tpl.render(**_base_ctx(
