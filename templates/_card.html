@@ -3,13 +3,14 @@
   <span class="badge{% if a.model == 'C' %} c{% endif %}">{{ a.category }}</span>
   <h2 class="card-title"><a href="{{ base }}/{{ a.category }}/{{ a.slug }}/">{{ a.title }}</a></h2>
   <div class="meta">
-    {% if a.model == 'C' and a.sources %}<span class="source">{{ a.sources | length }} {{ 'sursă' if a.sources | length == 1 else 'surse' }}</span>{% else %}<span class="source">{{ a.source_name }}</span>{% endif %}
     <time datetime="{{ a.published }}">{{ a.published_human }}</time>
     {% if a.significance is defined %}<span class="sig"><b>{{ a.significance }}</b>/10</span>{% endif %}
   </div>
   <p class="summary">{% if a.model == 'C' %}{{ a.synthesis }}{% else %}{{ a.teaser }}{% endif %}</p>
   {% if a.model == 'C' and a.sources %}
-  <p class="sources-inline"><b>Surse:</b> {{ a.sources | map(attribute='name') | join(', ') }}</p>
+  <p class="sources-inline"><b>{{ 'Sursă:' if a.sources | length == 1 else 'Surse:' }}</b> {{ a.sources | map(attribute='name') | join(', ') }}</p>
+  {% else %}
+  <p class="sources-inline"><b>Sursă:</b> {{ a.source_name }}</p>
   {% endif %}
   <a class="read-more" href="{{ base }}/{{ a.category }}/{{ a.slug }}/">Citește</a>
 </article>
