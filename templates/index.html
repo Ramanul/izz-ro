@@ -20,10 +20,9 @@
       </div>
       <aside class="lead-aside">
         <div>
-          <h3>Proveniență</h3>
-          {% if top.model == 'C' and top.sources %}
-          <ul>{% for s in top.sources[:6] %}<li>{{ s.name }}</li>{% endfor %}</ul>
-          {% else %}<span class="source">{{ top.source_name }}</span>{% endif %}
+          {% set top_srcs = top.sources[:6] if (top.model == 'C' and top.sources) else [{'name': top.source_name}] %}
+          <h3>{{ 'Sursă' if top_srcs | length == 1 else 'Surse' }}</h3>
+          <ul>{% for s in top_srcs %}<li>{{ s.name }}</li>{% endfor %}</ul>
         </div>
         <div><h3>Publicat</h3><time datetime="{{ top.published }}">{{ top.published_human }}</time></div>
         {% if top.significance is defined %}<div><h3>Relevanță</h3><span class="sig"><b>{{ top.significance }}</b>/10</span></div>{% endif %}
