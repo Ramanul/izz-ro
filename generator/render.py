@@ -364,15 +364,14 @@ def build(articles: list, mod: dict | None = None) -> None:
 
 
 def _newsletter_html() -> str:
-    """Embed-ul Brevo, daca utilizatorul l-a pus in content/newsletter.html; altfel placeholder."""
+    """Embed-ul Brevo din content/newsletter.html. Daca fisierul lipseste, sectiunea
+    NU se randeaza deloc ("" e falsy in template) -- instructiunile de configurare
+    sunt pentru owner (vezi README), nu pentru cititorii site-ului public."""
     path = os.path.join(ROOT, "content", "newsletter.html")
     if os.path.exists(path):
         with open(path, "r", encoding="utf-8") as fh:
             return fh.read()
-    return ('<p class="summary">Primește rezumatul zilei pe e-mail. '
-            'Formularul de înscriere (Brevo, cu confirmare dublă) va apărea aici.</p>'
-            '<p class="meta">Configurare: lipește codul de embed din contul Brevo în '
-            '<code>content/newsletter.html</code>.</p>')
+    return ""
 
 
 def _render_legal(env: Environment) -> None:
