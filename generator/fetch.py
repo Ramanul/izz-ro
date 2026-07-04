@@ -1,6 +1,9 @@
 """Citire RSS robusta (Atom-safe) + filtru de agentii de presa + scraper HTML pentru surse fara RSS."""
+import json
+import os
 import re
 import socket
+import urllib.error
 import urllib.request
 from datetime import datetime, timezone
 from html.parser import HTMLParser
@@ -12,6 +15,39 @@ from .util import normalize_url, domain_of, clean_html
 
 USER_AGENT = "IZZ.ro Bot/1.0 (+https://izz.ro)"
 TIMEOUT = 10  # secunde per feed
+
+# Conditional GET (ETag / Last-Modified): nu re-descarcam feed-uri neschimbate.
+# Valabilitate limitata la 3h: mecanismul de defer (iteme amanate la 429 AI) se
+# bazeaza pe re-fetch pentru retry -- un 304 onorat la nesfarsit pe un feed lent
+# ar bloca reincercarea. Cache-ul e comis in repo (rularile CI sunt stateless).
+CACHE_PATH = os.path.join(config.ROOT, "data", "feed_cache.json")
+CACHE_MAX_AGE_H = 3
+
+
+def _cache_load() -> dict:
+    try:
+        with open(CACHE_PATH, encoding="utf-8") as fh:
+            return json.load(fh)
+    except (OSError, json.JSONDecodeError):
+        return {}
+
+
+def _cache_save(cache: dict) -> None:
+    try:
+        os.makedirs(os.path.dirname(CACHE_PATH), exist_ok=True)
+        with open(CACHE_PATH, "w", encoding="utf-8") as fh:
+            json.dump(cache, fh, ensure_ascii=False, indent=1)
+    except OSError:
+        pass
+
+
+def _cache_fresh(entry: dict) -> bool:
+    try:
+        t = datetime.fromisoformat(entry.get("fetched_at", ""))
+        age = (datetime.now(timezone.utc) - t).total_seconds()
+        return age < CACHE_MAX_AGE_H * 3600
+    except (ValueError, TypeError):
+        return False
 
 
 def _is_agency(url: str, source_name: str) -> bool:
@@ -158,16 +194,33 @@ def _fetch_html_scraper(key: str, source: dict) -> tuple[list, str | None]:
     return items, None
 
 
-def _fetch_one(key: str, source: dict) -> tuple[list, str | None]:
+def _fetch_one(key: str, source: dict, cache: dict | None = None) -> tuple[list, str | None]:
     """Returneaza (articole, eroare). Alege metoda de fetch in functie de tipul sursei."""
     if source.get("type") == "html_scraper":
         return _fetch_html_scraper(key, source)
 
     items = []
+    headers = {"User-Agent": USER_AGENT}
+    ent = (cache or {}).get(key) or {}
+    if _cache_fresh(ent):
+        if ent.get("etag"):
+            headers["If-None-Match"] = ent["etag"]
+        if ent.get("last_modified"):
+            headers["If-Modified-Since"] = ent["last_modified"]
     try:
-        req = urllib.request.Request(source["url"], headers={"User-Agent": USER_AGENT})
+        req = urllib.request.Request(source["url"], headers=headers)
         with urllib.request.urlopen(req, timeout=TIMEOUT) as resp:
             raw = resp.read()
+            if cache is not None:
+                cache[key] = {
+                    "etag": resp.headers.get("ETag"),
+                    "last_modified": resp.headers.get("Last-Modified"),
+                    "fetched_at": datetime.now(timezone.utc).isoformat(),
+                }
+    except urllib.error.HTTPError as exc:
+        if exc.code == 304:
+            return items, None   # feed neschimbat -> nimic nou, sursa e sanatoasa
+        return items, f"{key}: {exc}"
     except (urllib.error.URLError, socket.timeout, ValueError) as exc:
         return items, f"{key}: {exc}"
 
@@ -198,9 +251,11 @@ def _fetch_one(key: str, source: dict) -> tuple[list, str | None]:
 def fetch_all() -> tuple[list, list]:
     """Returneaza (toate_articolele_brute, surse_moarte)."""
     all_items, dead = [], []
+    cache = _cache_load()
     for key, source in config.SOURCES.items():
-        items, err = _fetch_one(key, source)
+        items, err = _fetch_one(key, source, cache)
         if err:
             dead.append(err)
         all_items.extend(items)
+    _cache_save(cache)
     return all_items, dead
