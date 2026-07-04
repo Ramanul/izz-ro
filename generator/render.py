@@ -9,7 +9,7 @@ from xml.sax.saxutils import escape as xml_escape
 from jinja2 import Environment, FileSystemLoader, select_autoescape
 from slugify import slugify
 
-from . import config
+from . import config, covers
 from .util import title_tokens, domain_of
 
 ROOT = config.ROOT
@@ -349,10 +349,16 @@ def build(articles: list, mod: dict | None = None) -> None:
         for a in items:
             topics = [(slugify(e)[:60], e) for e in (a.get("entities") or [])
                       if slugify(e)[:60] in ents]
+            og_image = None
+            if covers.generate(a, os.path.join(OUT_DIR, cat, a["slug"], "cover.png")):
+                og_image = f"{config.SITE['url']}/{cat}/{a['slug']}/cover.png"
+            jsonld = _article_jsonld(a)
+            if og_image:
+                jsonld["image"] = [og_image]
             _write(os.path.join(OUT_DIR, cat, a['slug'], "index.html"),
                    article_tpl.render(**_base_ctx(
                        f"/{cat}/{a['slug']}/", a=a, active_cat=cat, topics=topics,
-                       article_jsonld=_article_jsonld(a))))
+                       og_image=og_image, article_jsonld=jsonld)))
 
     _render_legal(env)
     _write(os.path.join(OUT_DIR, "404.html"),
