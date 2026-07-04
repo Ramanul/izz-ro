@@ -10,6 +10,5 @@
   {% set card_srcs = a.sources if (a.model == 'C' and a.sources) else [{'name': a.source_name, 'url': a.original_link}] %}
   <p class="sources-inline"><b>{{ 'Sursă:' if card_srcs | length == 1 else 'Surse:' }}</b>
     {% for s in card_srcs %}<a href="{{ s.url }}" target="_blank" rel="noopener noreferrer">{{ s.name }}</a>{{ ', ' if not loop.last }}{% endfor %}</p>
-  <a class="read-more" href="{{ base }}/{{ a.category }}/{{ a.slug }}/">Citește</a>
 </article>
 {% endmacro %}
