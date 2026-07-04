@@ -1,0 +1,26 @@
+name: smoke-live
+
+# Verifica SITE-UL LIVE dupa fiecare ciclu de deploy: regulile de format ale
+# ownerului (CLAUDE.md sectiunea 7) trebuie sa fie vizibile pe izz.ro, nu doar in cod.
+# Pipeline-ul ruleaza la :00 -> deploy ~:05-:10 -> smoke la :45. La FAIL, GitHub
+# anunta ownerul automat.
+
+on:
+  schedule:
+    - cron: "45 * * * *"
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - run: python tools/smoke_live.py
+        env:
+          BASE_URL: https://izz.ro
