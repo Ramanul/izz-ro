@@ -24,5 +24,9 @@
       {% for s in srcs %}<li><a href="{{ s.url }}" target="_blank" rel="noopener noreferrer">{{ s.name }} &rarr;</a></li>{% endfor %}
     </ul>
   </div>
+  {% if topics %}
+  <p class="topics">Subiecte:
+    {% for s, n in topics %}<a href="{{ base }}/subiect/{{ s }}/">{{ n }}</a>{{ ' · ' if not loop.last }}{% endfor %}</p>
+  {% endif %}
 </article>
 {% endblock %}

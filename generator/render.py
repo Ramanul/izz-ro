@@ -160,6 +160,20 @@ def _diversify(items: list, max_run: int = 2) -> list:
     return out
 
 
+def _entity_index(articles: list) -> dict:
+    """Slug -> {name, articles} pentru entitatile AI cu >=2 aparitii publicate.
+    Grauntele grafului cunoasterii: pagini statice /subiect/<slug>/."""
+    idx: dict = {}
+    for a in articles:
+        for e in a.get("entities") or []:
+            s = slugify(e)[:60]
+            if not s:
+                continue
+            d = idx.setdefault(s, {"name": e, "articles": []})
+            d["articles"].append(a)
+    return {s: d for s, d in idx.items() if len(d["articles"]) >= 2}
+
+
 def _pick_hero(articles: list) -> list:
     featured = [a for a in articles if a.get("featured")]
     rest = [a for a in articles if not a.get("featured")]
@@ -291,6 +305,21 @@ def build(articles: list, mod: dict | None = None) -> None:
                "/", articles=by_date, hero=hero, by_category=by_category,
                page_jsonld=item_list, newsletter_html=_newsletter_html())))
 
+    # graful cunoasterii v1: pagini de subiect per entitate (+ feed de urmarire >=3)
+    ents = _entity_index(by_date)
+    subject_tpl = env.get_template("subject.html")
+    for s, d in ents.items():
+        has_feed = len(d["articles"]) >= 3
+        _write(os.path.join(OUT_DIR, "subiect", s, "index.html"),
+               subject_tpl.render(**_base_ctx(f"/subiect/{s}/", name=d["name"], slug=s,
+                                              articles=_diversify(d["articles"]),
+                                              has_feed=has_feed)))
+        if has_feed:
+            _write(os.path.join(OUT_DIR, "subiect", s, "feed.xml"),
+                   _feed_xml(d["articles"], f"{d['name']} — {config.SITE['name']}",
+                             f"{config.SITE['url']}/subiect/{s}/",
+                             f"Știri despre {d['name']} pe {config.SITE['name']}"))
+
     # pagini de categorie + permalink articole
     article_tpl = env.get_template("article.html")
     cat_tpl = env.get_template("category.html")
@@ -300,9 +329,11 @@ def build(articles: list, mod: dict | None = None) -> None:
                cat_tpl.render(**_base_ctx(f"/{cat}/", category=cat,
                                           articles=_diversify(items), active_cat=cat)))
         for a in items:
+            topics = [(slugify(e)[:60], e) for e in (a.get("entities") or [])
+                      if slugify(e)[:60] in ents]
             _write(os.path.join(OUT_DIR, cat, a['slug'], "index.html"),
                    article_tpl.render(**_base_ctx(
-                       f"/{cat}/{a['slug']}/", a=a, active_cat=cat,
+                       f"/{cat}/{a['slug']}/", a=a, active_cat=cat, topics=topics,
                        article_jsonld=_article_jsonld(a))))
 
     _render_legal(env)
@@ -370,27 +401,31 @@ def _write_robots() -> None:
            f"User-agent: *\nAllow: /\nSitemap: {config.SITE['url']}/sitemap.xml\n")
 
 
-def _write_feed(articles: list) -> None:
+def _feed_xml(articles: list, title: str, link: str, description: str) -> str:
     url = config.SITE["url"]
     now = datetime.now(timezone.utc).strftime("%a, %d %b %Y %H:%M:%S +0000")
     entries = []
     for a in articles[:50]:
         body = a.get("synthesis") if a.get("model") == "C" else a.get("teaser")
-        link = f"{url}/{a['category']}/{a['slug']}/"
+        alink = f"{url}/{a['category']}/{a['slug']}/"
         entries.append(
             "    <item>\n"
             f"      <title>{xml_escape(a.get('title',''))}</title>\n"
-            f"      <link>{xml_escape(link)}</link>\n"
-            f"      <guid>{xml_escape(link)}</guid>\n"
+            f"      <link>{xml_escape(alink)}</link>\n"
+            f"      <guid>{xml_escape(alink)}</guid>\n"
             f"      <description>{xml_escape(body or '')}</description>\n"
             "    </item>")
+    return ('<?xml version="1.0" encoding="UTF-8"?>\n'
+            '<rss version="2.0"><channel>\n'
+            f"  <title>{xml_escape(title)}</title>\n"
+            f"  <link>{xml_escape(link)}</link>\n"
+            f"  <description>{xml_escape(description)}</description>\n"
+            f"  <language>{config.SITE['lang']}</language>\n"
+            f"  <lastBuildDate>{now}</lastBuildDate>\n"
+            + "\n".join(entries) +
+            "\n</channel></rss>\n")
+
+
+def _write_feed(articles: list) -> None:
     _write(os.path.join(OUT_DIR, "feed.xml"),
-           '<?xml version="1.0" encoding="UTF-8"?>\n'
-           '<rss version="2.0"><channel>\n'
-           f"  <title>{config.SITE['name']}</title>\n"
-           f"  <link>{url}</link>\n"
-           f"  <description>{config.SITE['tagline']}</description>\n"
-           f"  <language>{config.SITE['lang']}</language>\n"
-           f"  <lastBuildDate>{now}</lastBuildDate>\n"
-           + "\n".join(entries) +
-           "\n</channel></rss>\n")
+           _feed_xml(articles, config.SITE["name"], config.SITE["url"], config.SITE["tagline"]))

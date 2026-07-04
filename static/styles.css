@@ -316,3 +316,8 @@ main { max-width: var(--maxw); margin: 0 auto; padding: var(--s-34) var(--s-34);
 }
 #izz-consent .consent-yes { background: var(--gold-strong); color: #fff; border: 1px solid var(--gold-strong); }
 #izz-consent .consent-no { background: transparent; color: var(--ink-2); border: 1px solid var(--line-strong); }
+
+/* ---- subiecte (graful cunoasterii v1) ---- */
+.topics { font-size: var(--fs-eyebrow); color: var(--ink-3); font-family: var(--font-mono); margin: var(--s-13) 0 0; }
+.topics a, .follow a { display: inline-block; padding: 6px 4px; margin: -4px -2px; }
+.follow { font-size: var(--fs-xs); font-family: var(--font-mono); margin: 0 0 var(--s-21); }

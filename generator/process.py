@@ -21,7 +21,8 @@ Scrie un titlu si un rezumat care REDAU ESENTA, cu cuvintele tale.
 Returneaza JSON:
 {{"title": "<esenta faptului: CINE face/pateste CE (si unde/cand daca e cheie); concret si clar; 6-16 cuvinte; fara clickbait, fara formulari vagi precum 'iata ce', 'ce a patit'>",
   "teaser": "<rezumat COMPRIMAT al faptelor de baza in 25-40 de cuvinte: cine, ce, cand, unde, cat/de ce; reformulat 100%, ZERO propozitii copiate din original; trebuie sa transmita esenta fara a citi articolul>",
-  "category": "<una din: general|politic|economic|extern|tech|sport>"}}
+  "category": "<una din: general|politic|economic|extern|tech|sport>",
+  "entities": ["<1-4 nume proprii cheie din stire (persoane, organizatii, locuri), forma scurta canonica, ex. 'Nicusor Dan', 'PSD', 'Timisoara'>"]}}
 Reguli: titlul trebuie sa se inteleaga singur si sa contina faptul real, nu o intrebare/teaser; NU copia nicio propozitie din original; zero opinii; daca descrierea e saraca, extrage esenta din titlul original (tot reformulat)."""
 
 SYSTEM_C = ("Esti editor care sintetizeaza un eveniment din MAI MULTE surse, cu cuvintele tale. "
@@ -34,7 +35,8 @@ Scrie titlu + sinteza care REDAU ESENTA evenimentului, cu cuvintele tale.
 Returneaza JSON:
 {{"title": "<esenta evenimentului: ce s-a intamplat, concret; 6-16 cuvinte; fara clickbait>",
   "synthesis": "<sinteza COMPRIMATA in 40-80 de cuvinte: faptele confirmate de mai multe surse (cine, ce, cand, unde, cat), reformulate 100%; marcheaza daca sursele se contrazic>",
-  "category": "<una din: general|politic|economic|extern|tech|sport>"}}
+  "category": "<una din: general|politic|economic|extern|tech|sport>",
+  "entities": ["<1-4 nume proprii cheie din eveniment (persoane, organizatii, locuri), forma scurta canonica>"]}}
 Reguli: trianguleaza faptele comune; ZERO propozitii copiate; titlul contine faptul real, nu un teaser; zero opinii."""
 
 
@@ -48,7 +50,7 @@ Stiri:
 {items_block}
 
 Returneaza EXCLUSIV un array JSON, cate UN obiect per stire, cu acelasi id primit:
-[{{"id": <id>, "title": "<esenta faptului: CINE face/pateste CE; concret; 6-16 cuvinte; fara clickbait, fara vag>", "teaser": "<rezumat comprimat 25-40 cuvinte: cine/ce/cand/unde/cat; reformulat 100%, ZERO propozitii copiate>", "category": "<general|politic|economic|extern|tech|sport>"}}]
+[{{"id": <id>, "title": "<esenta faptului: CINE face/pateste CE; concret; 6-16 cuvinte; fara clickbait, fara vag>", "teaser": "<rezumat comprimat 25-40 cuvinte: cine/ce/cand/unde/cat; reformulat 100%, ZERO propozitii copiate>", "category": "<general|politic|economic|extern|tech|sport>", "entities": ["<1-4 nume proprii cheie: persoane, organizatii, locuri>"]}}]
 Reguli: pastreaza id-ul EXACT (numar); un obiect per id; daca stirea e in alta limba, scrie in romana; titlul = faptul real, nu intrebare; zero opinii."""
 
 
@@ -80,6 +82,24 @@ def _parse_json(text: str) -> dict:
 
 def _valid_category(cat: str, fallback: str) -> str:
     return cat if cat in config.CATEGORIES else fallback
+
+
+def _clean_entities(raw) -> list:
+    """Valideaza lista de entitati din raspunsul AI: doar stringuri scurte,
+    curatate si deduplicate (case-insensitive), maxim 5."""
+    out, seen = [], set()
+    for e in (raw or [])[:8]:
+        if not isinstance(e, str):
+            continue
+        e = e.strip().strip(".,;:!?„”\"'")
+        if not (2 <= len(e) <= 60) or "<" in e or ">" in e:
+            continue
+        k = e.lower()
+        if k in seen:
+            continue
+        seen.add(k)
+        out.append(e)
+    return out[:5]
 
 
 def _parse_json_array(text: str) -> list:
@@ -141,6 +161,7 @@ def process_batch(items: list, provider) -> list:
             it["title"] = title
             it["teaser"] = truncate_words(teaser, config.TEASER_MAX_WORDS)
             it["category"] = _valid_category(obj.get("category", ""), it.get("category", "general"))
+            it["entities"] = _clean_entities(obj.get("entities"))
             it["processed_by"] = provider.name
             it["prompt_version"] = config.PROMPT_VERSION
             done.append(it)
@@ -176,6 +197,7 @@ def process_single(item: dict, provider) -> dict | None:
     item["teaser"] = truncate_words(data.get("teaser", "") or "Detalii pe sursa.",
                                     config.TEASER_MAX_WORDS)
     item["category"] = _valid_category(data.get("category", ""), item.get("category", "general"))
+    item["entities"] = _clean_entities(data.get("entities"))
     item["processed_by"] = provider.name
     item["prompt_version"] = config.PROMPT_VERSION
     return item
@@ -218,6 +240,7 @@ def process_cluster(group: list, provider) -> dict | None:
         rep["synthesis"] = truncate_words(data.get("synthesis", "") or "Detalii pe surse.",
                                           config.SYNTHESIS_MAX_WORDS)
         rep["category"] = _valid_category(data.get("category", ""), rep.get("category", "general"))
+        rep["entities"] = _clean_entities(data.get("entities"))
         rep["processed_by"] = provider.name
         rep["prompt_version"] = config.PROMPT_VERSION
     except Exception:
