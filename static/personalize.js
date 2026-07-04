@@ -241,10 +241,49 @@
     addStatsButton();
     initArticlePage();
   }
+
+  /* ---- consimtamant (Legea 506/2004 art. 4 / ePrivacy): profilul se creeaza
+     DOAR dupa opt-in explicit. Stocarea alegerii in sine e strict necesara
+     pentru a o respecta, deci exceptata. Refuz = zero stocare, zero UI. ---- */
+  const CONSENT = 'izz_consent_v1';   // 'yes' | 'no'
+
+  function consentBar() {
+    const bar = document.createElement('div');
+    bar.id = 'izz-consent';
+    bar.setAttribute('role', 'region');
+    bar.setAttribute('aria-label', 'Personalizare');
+    bar.innerHTML = `
+      <p>Vrei recomandări personalizate? Profilul tău de lectură se salvează
+      <b>doar în browserul tău</b> — nu îl trimitem nicăieri.
+      <a href="/legal/privacy/">Detalii</a></p>
+      <div class="consent-actions">
+        <button type="button" class="consent-yes">Activează</button>
+        <button type="button" class="consent-no">Nu, mulțumesc</button>
+      </div>`;
+    bar.querySelector('.consent-yes').onclick = () => {
+      try { localStorage.setItem(CONSENT, 'yes'); } catch {}
+      bar.remove();
+      init();
+    };
+    bar.querySelector('.consent-no').onclick = () => {
+      try { localStorage.setItem(CONSENT, 'no'); localStorage.removeItem(KEY); } catch {}
+      bar.remove();
+    };
+    document.body.appendChild(bar);
+  }
+
+  function boot() {
+    let c = null;
+    try { c = localStorage.getItem(CONSENT); } catch {}
+    if (c === 'yes') { init(); return; }
+    if (c === 'no') { return; }
+    consentBar();
+  }
+
   if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', init);
+    document.addEventListener('DOMContentLoaded', boot);
   } else {
-    init();
+    boot();
   }
 
 })();

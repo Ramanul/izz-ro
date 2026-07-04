@@ -76,7 +76,7 @@ def upgrade_fallbacks(articles: list, provider, remaining: int) -> int:
     for a in articles:
         if used >= remaining:
             break
-        if a.get("model") == "B" and (
+        if a.get("model") == "B" and a.get("original_title") and (
             a.get("processed_by") == "fallback"
             or a.get("prompt_version") != config.PROMPT_VERSION
         ):
