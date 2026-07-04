@@ -1,5 +1,37 @@
 [
   {
+    "url": "https://prosport.ro/campionatul-mondial-2026/live-canada-maroc-cupa-mondiala-optimi-de-finala-20475808",
+    "original_link": "https://www.prosport.ro/campionatul-mondial-2026/live-canada-maroc-cupa-mondiala-optimi-de-finala-20475808",
+    "source": "prosport",
+    "source_name": "ProSport",
+    "source_lang": "ro",
+    "title": "Canada și Maroc deschid optimile de finală la CM 2026",
+    "category": "sport",
+    "published": "2026-07-04T15:30:19+00:00",
+    "model": "C",
+    "sources": [
+      {
+        "name": "ProSport",
+        "url": "https://www.prosport.ro/campionatul-mondial-2026/live-canada-maroc-cupa-mondiala-optimi-de-finala-20475808"
+      },
+      {
+        "name": "GSP",
+        "url": "https://www.gsp.ro/international/campionatul-mondial-de-fotbal-2026/live-canada-maroc-campionatul-mondial-optimi-956519.html"
+      }
+    ],
+    "first_source": "ProSport",
+    "synthesis": "Canada și Maroc se întâlnesc în prima partidă din optimile de finală ale Cupei Mondiale 2026. Meciul se dispută pe NRG Stadium din Houston, începând cu ora 20:00 și va fi transmis de Antena 1. Învingătoarea va juca în sferturi cu Paraguay sau Franța. Maroc este favorită conform caselor de pariuri.",
+    "entities": [
+      "Canada",
+      "Maroc",
+      "Cupa Mondială 2026",
+      "Houston"
+    ],
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
     "url": "https://zf.ro/business-international/peter-magyar-propune-modificarea-constitutiei-ungariei-mandatele-23188276",
     "original_link": "https://www.zf.ro/business-international/peter-magyar-propune-modificarea-constitutiei-ungariei-mandatele-23188276",
     "source": "zf",
@@ -13988,16 +14020,19 @@
     "source": "gsp",
     "source_name": "GSP",
     "source_lang": "ro",
-    "original_title": "Leon Marchand a revenit în stil mare într-un bazin din Franța » Performanța anului la 400 m mixt",
-    "title": "Leon Marchand a revenit în stil mare într-un bazin din Franța » Performanța anului la 400 m mixt",
-    "description": "La prima sa apariție în Franța după Jocurile Olimpice de la Paris 2024, Léon Marchand (24 de ani) a câștigat titlul la proba sa favorită, 400 m mixt, la Saint-Étienne. Revenirea lui Léon Marchand în competițiile din Franța a fost marcată cu cea mai bună performanță mondială a anului, cu un timp de 4:04,56. Léon Marchand, revenire spectaculoasă la competițiile de înot din Franța Revenire în stil mare pentru Léon Marchand. ...",
+    "title": "Leon Marchand, performanță de top la 400m mixt în Franța",
     "category": "sport",
     "published": "2026-06-27T21:07:14+00:00",
     "model": "B",
-    "teaser": "La prima sa apariție în Franța după Jocurile Olimpice de la Paris 2024, Léon Marchand (24 de ani) a câștigat titlul la proba sa favorită, 400 m mixt, la Saint-Étienne. Revenirea lui Léon Marchand în competițiile din Franța a fost...",
-    "processed_by": "fallback",
+    "teaser": "Înotătorul francez Leon Marchand a câștigat proba de 400m mixt la Saint-Étienne, stabilind cea mai bună performanță mondială a anului cu 4:04,56. Aceasta marchează revenirea sa în competițiile din țară după Jocurile Olimpice.",
+    "processed_by": "gemini",
     "error": "HTTP Error 429: Too Many Requests",
-    "featured": false
+    "featured": false,
+    "entities": [
+      "Leon Marchand",
+      "Saint-Étienne"
+    ],
+    "prompt_version": "v2-esenta"
   },
   {
     "url": "https://spotmedia.ro/stiri/opinii-si-analize/dronele-de-la-galati-si-constanta-ni-s-au-promis-raspunsuri-in-7-10-zile-am-ramas-doar-cu-intrebari-si-teama-ca-incidentele-s-ar-putea-repeta",
@@ -14005,16 +14040,21 @@
     "source": "spotmedia",
     "source_name": "Spotmedia",
     "source_lang": "ro",
-    "original_title": "Dronele de la Galați și Constanța: Ni s-au promis răspunsuri. În 7-10 zile. Am rămas doar cu întrebări și teama că incidentele s-ar putea repeta",
-    "title": "Dronele de la Galați și Constanța: Ni s-au promis răspunsuri. În 7-10 zile. Am rămas doar cu întrebări și teama că incidentele s-ar putea repeta",
-    "description": "Două incidente grave produse în mai puțin de două săptămâni au ridicat întrebări majore despre capacitatea României de a detecta, urmări și gestiona pericolul generat de drone care ajung pe teritoriul național sau în infrastructură critică: drona rusească prăbușită pe un bloc din Galați și drona maritimă ucraineană care a explodat în Portul Constanța. În …",
-    "category": "general",
+    "title": "Drone rusești și ucrainene au survolat spațiul aerian românesc",
+    "category": "politic",
     "published": "2026-06-27T21:07:00+00:00",
     "model": "B",
-    "teaser": "Două incidente grave produse în mai puțin de două săptămâni au ridicat întrebări majore despre capacitatea României de a detecta, urmări și gestiona pericolul generat de drone care ajung pe teritoriul național sau în infrastructură critică: drona rusească prăbușită pe...",
-    "processed_by": "fallback",
+    "teaser": "Două drone, una rusească prăbușită la Galați și una ucraineană explodată la Constanța, ridică semne de întrebare privind securitatea națională și gestionarea spațiului aerian.",
+    "processed_by": "gemini",
     "error": "HTTP Error 429: Too Many Requests",
-    "featured": false
+    "featured": false,
+    "entities": [
+      "Galați",
+      "Constanța",
+      "Rusia",
+      "Ucraina"
+    ],
+    "prompt_version": "v2-esenta"
   },
   {
     "url": "https://spotmedia.ro/stiri/mediu/piratii-plasticului-experimentul-ue-in-care-elevii-cartografiaza-poluarea-raurilor",
@@ -16382,404 +16422,6 @@
     "teaser": "Echipa Dinamo a pierdut al doilea meci de pregătire din Polonia, scor 1-3 în fața formației Motor Lublin, după ce a condus inițial. Victoria anterioară a fost 2-1 cu Gornik Leczna.",
     "processed_by": "gemini",
     "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://libertatea.ro/lifestyle/pesteri-europa-refugiu-canicula-temperaturi-scazute-5796402",
-    "original_link": "https://www.libertatea.ro/lifestyle/pesteri-europa-refugiu-canicula-temperaturi-scazute-5796402",
-    "source": "libertatea",
-    "source_name": "Libertatea",
-    "source_lang": "ro",
-    "original_title": "Locațiile din Europa unde poți călători pentru a scăpa de valul de căldură: temperaturile nu depășesc niciodată 14 grade Celsius",
-    "title": "Locațiile din Europa unde poți călători pentru a scăpa de valul de căldură: temperaturile nu depășesc niciodată 14 grade Celsius",
-    "description": "Europa se confruntă cu un val de căldură tropicală, temperaturile atingând în unele regiuni aproape 40 de grade Celsius, relatează publicația sârbească Blic, membră a trustului Ringier. Pentru cei care caută o evadare din arșița verii, peșterile Europei oferă un refugiu natural, cu temperaturi constante între 8 și 14 grade pe tot parcursul anului. Aceste",
-    "category": "general",
-    "published": "2026-06-27T16:43:18+00:00",
-    "model": "C",
-    "sources": [
-      {
-        "name": "Libertatea",
-        "url": "https://www.libertatea.ro/lifestyle/pesteri-europa-refugiu-canicula-temperaturi-scazute-5796402"
-      },
-      {
-        "name": "Știrile ProTV",
-        "url": "https://stirileprotv.ro/stiri/international/dorm-in-pijama-sub-cerul-liber-oamenii-cauta-solutii-extreme-pe-masura-ce-temperaturile-ating-40-de-grade-in-europa.html"
-      }
-    ],
-    "synthesis": "Europa se confruntă cu un val de căldură tropicală, temperaturile atingând în unele regiuni aproape 40 de grade Celsius, relatează publicația sârbească Blic, membră a trustului Ringier. Pentru cei care caută o evadare din arșița verii, peșterile Europei oferă un refugiu natural, cu temperaturi constante între 8 și 14 grade pe tot parcursul anului. Aceste",
-    "processed_by": "fallback",
-    "error": "HTTP Error 429: Too Many Requests",
-    "featured": false
-  },
-  {
-    "url": "https://dw.com/en/ukraine-strikes-russian-weapons-plant-moscow-fuel-hub/a-77735059?maca=en-rss-en-eu-2092-rdf",
-    "original_link": "https://www.dw.com/en/ukraine-strikes-russian-weapons-plant-moscow-fuel-hub/a-77735059?maca=en-rss-en-eu-2092-rdf",
-    "source": "dw_europe",
-    "source_name": "DW Europe",
-    "source_lang": "en",
-    "original_title": "Ukraine strikes Russian weapons plant, Moscow fuel hub",
-    "title": "Ukraine strikes Russian weapons plant, Moscow fuel hub",
-    "description": "The two attacks, in Volgograd and Vladimir regions, are part of President Zelenskyy's strategy to bring the war to the Russian people and force Putin into peace negotiations.",
-    "category": "extern",
-    "published": "2026-06-27T16:41:00+00:00",
-    "model": "B",
-    "teaser": "The two attacks, in Volgograd and Vladimir regions, are part of President Zelenskyy's strategy to bring the war to the Russian people and force Putin into peace negotiations.",
-    "processed_by": "fallback",
-    "error": "HTTP Error 429: Too Many Requests",
-    "featured": false
-  },
-  {
-    "url": "https://digisport.ro/fotbal/alex-cimpanu-e-pe-val-romanul-a-marcat-decisiv-si-a-devenit-erou-in-china-4344065",
-    "original_link": "https://www.digisport.ro/fotbal/alex-cimpanu-e-pe-val-romanul-a-marcat-decisiv-si-a-devenit-erou-in-china-4344065",
-    "source": "digisport",
-    "source_name": "Digi Sport",
-    "source_lang": "ro",
-    "original_title": "Alex Cîmpanu e pe val! Românul a marcat decisiv și a devenit erou în China",
-    "title": "Alex Cîmpanu e pe val! Românul a marcat decisiv și a devenit erou în China",
-    "description": "Alex Cîmpanu e pe val! Românul a marcat decisiv și a devenit erou în China",
-    "category": "sport",
-    "published": "2026-06-27T16:39:48+00:00",
-    "model": "B",
-    "teaser": "Alex Cîmpanu e pe val! Românul a marcat decisiv și a devenit erou în China",
-    "processed_by": "fallback",
-    "error": "HTTP Error 429: Too Many Requests",
-    "featured": false
-  },
-  {
-    "url": "https://g4media.ro/motreanu-scenariu-ironic-sugerand-un-puci-in-psd-dupa-modelul-celui-orchestrat-in-pnl-imaginati-va-ca-duminica-presedintele-nicusor-dan-il-desemneaza-premier-pe-primarul-psd-constantin-toma.html",
-    "original_link": "https://www.g4media.ro/motreanu-scenariu-ironic-sugerand-un-puci-in-psd-dupa-modelul-celui-orchestrat-in-pnl-imaginati-va-ca-duminica-presedintele-nicusor-dan-il-desemneaza-premier-pe-primarul-psd-constantin-toma.html",
-    "source": "g4media",
-    "source_name": "G4Media",
-    "source_lang": "ro",
-    "original_title": "Motreanu, scenariu ironic, sugerând un puci în PSD după modelul celui orchestrat în PNL: Imaginați-vă că duminică președintele Nicușor Dan îl desemnează premier pe primarul PSD Constantin Toma",
-    "title": "Motreanu, scenariu ironic, sugerând un puci în PSD după modelul celui orchestrat în PNL: Imaginați-vă că duminică președintele Nicușor Dan îl desemnează premier pe primarul PSD Constantin Toma",
-    "description": "Noul prim-vicepreședinte al PNL, Dan Motreanu, lansează în mod ironic un scenariu în contextul actualei crize guvernamentale, evidențiind cum social-democrații ar putea fi întorși unii împotriva celorlalți, dacă președintele Nicușor Dan ar veni să numească, duminică dimineața, un premier surpriză din partea PSD, în persoană, de exemplu, a primarului de Buzău, Constantin Toma (cel care © G4Media.ro .",
-    "category": "politic",
-    "published": "2026-06-27T16:39:29+00:00",
-    "model": "C",
-    "sources": [
-      {
-        "name": "HotNews",
-        "url": "https://hotnews.ro/scenariul-vehiculat-de-motreanu-inainte-de-noua-desemnare-de-premier-a-lui-nicusor-dan-de-ce-nu-chiar-constantin-toma-2286357"
-      },
-      {
-        "name": "G4Media",
-        "url": "https://www.g4media.ro/motreanu-scenariu-ironic-sugerand-un-puci-in-psd-dupa-modelul-celui-orchestrat-in-pnl-imaginati-va-ca-duminica-presedintele-nicusor-dan-il-desemneaza-premier-pe-primarul-psd-constantin-toma.html"
-      }
-    ],
-    "synthesis": "Noul prim-vicepreședinte al PNL, Dan Motreanu, lansează în mod ironic un scenariu în contextul actualei crize guvernamentale, evidențiind cum social-democrații ar putea fi întorși unii împotriva celorlalți, dacă președintele Nicușor Dan ar veni să numească, duminică dimineața, un premier surpriză din partea PSD, în persoană, de exemplu, a primarului de Buzău, Constantin Toma (cel care © G4Media.ro .",
-    "processed_by": "fallback",
-    "error": "HTTP Error 429: Too Many Requests",
-    "featured": false
-  },
-  {
-    "url": "https://gsp.ro/international/campionatul-mondial-de-fotbal-2026/fifa-despagubiri-manchester-united-accidentare-manuel-ugarte-campionatul-mondial-2026-953812.html",
-    "original_link": "https://www.gsp.ro/international/campionatul-mondial-de-fotbal-2026/fifa-despagubiri-manchester-united-accidentare-manuel-ugarte-campionatul-mondial-2026-953812.html",
-    "source": "gsp",
-    "source_name": "GSP",
-    "source_lang": "ro",
-    "original_title": "Manchester United va primi despăgubiri colosale din partea FIFA după accidentarea gravă a jucătorului la CM 2026",
-    "title": "Manchester United va primi despăgubiri colosale din partea FIFA după accidentarea gravă a jucătorului la CM 2026",
-    "description": "Manchester United așteaptă cu îngrijorare diagnosticul leziunii care l-a forțat pe mijlocașul Manuel Ugarte (25 de ani) să părăsească terenul pe targă și stadionul în scaun cu rotile, în timpul meciului pierdut de Uruguay cu Spania, scor 0-1, care a dus la eliminarea sud-americanilor de la Campionatul Mondial 2026. Faza de coșmar s-a petrecut cu puțin timp înaintea finalului primei reprize, la începutul acțiunii care a dus la golul marcat de Spania. ...",
-    "category": "sport",
-    "published": "2026-06-27T16:39:15+00:00",
-    "model": "B",
-    "teaser": "Manchester United așteaptă cu îngrijorare diagnosticul leziunii care l-a forțat pe mijlocașul Manuel Ugarte (25 de ani) să părăsească terenul pe targă și stadionul în scaun cu rotile, în timpul meciului pierdut de Uruguay cu Spania, scor 0-1, care a...",
-    "processed_by": "fallback",
-    "error": "HTTP Error 429: Too Many Requests",
-    "featured": false
-  },
-  {
-    "url": "https://gsp.ro/international/campionatul-mondial-de-fotbal-2026/joao-paulo-dupa-calificarea-istorica-capul-verde-campionatul-mondial-953818.html",
-    "original_link": "https://www.gsp.ro/international/campionatul-mondial-de-fotbal-2026/joao-paulo-dupa-calificarea-istorica-capul-verde-campionatul-mondial-953818.html",
-    "source": "gsp",
-    "source_name": "GSP",
-    "source_lang": "ro",
-    "title": "Fotbalistul FCSB, Joao Paulo, a sărbătorit calificarea istorică a Capului Verde la Mondial",
-    "category": "sport",
-    "published": "2026-06-27T16:36:36+00:00",
-    "model": "B",
-    "teaser": "Capul Verde, cu jucătorul FCSB Joao Paulo pe teren, a obținut calificarea la Campionatul Mondial după un egal cu Arabia Saudită. Echipa a terminat pe locul doi în grupa sa de calificare.",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://gsp.ro/international/campionatul-mondial-de-fotbal-2026/dan-sucu-transfera-mondial-genoa-4-milioane-euro-elliot-stroud-thun-meichtry-thun-953817.html",
-    "original_link": "https://www.gsp.ro/international/campionatul-mondial-de-fotbal-2026/dan-sucu-transfera-mondial-genoa-4-milioane-euro-elliot-stroud-thun-meichtry-thun-953817.html",
-    "source": "gsp",
-    "source_name": "GSP",
-    "source_lang": "ro",
-    "original_title": "Șucu transferă de la Mondial » Genoa dă 4 milioane € pe adversarul lui Mbappe + Aduce și un campion al Elveției",
-    "title": "Șucu transferă de la Mondial » Genoa dă 4 milioane € pe adversarul lui Mbappe + Aduce și un campion al Elveției",
-    "description": "Genoa vrea să întărească linia de mijloc pentru sezonul viitor și patronul clubului este aproape să rezolve două achiziții. Antrenorul Daniele De Rossi îi va primi pe mijlocașul central elvețian Franz-Ethan Meichtry (20 de ani) de la Thun și pe mijlocașul stânga Elliot Stroud (24 de ani) de la Mjalbby, cheltuiala totală fiind de 6,5 milioane de euro pentru patronul Dan Șucu. ...",
-    "category": "sport",
-    "published": "2026-06-27T16:36:20+00:00",
-    "model": "B",
-    "teaser": "Genoa vrea să întărească linia de mijloc pentru sezonul viitor și patronul clubului este aproape să rezolve două achiziții. Antrenorul Daniele De Rossi îi va primi pe mijlocașul central elvețian Franz-Ethan Meichtry (20 de ani) de la Thun și pe...",
-    "processed_by": "fallback",
-    "error": "HTTP Error 429: Too Many Requests",
-    "featured": false
-  },
-  {
-    "url": "https://gsp.ro/international/campionatul-mondial-de-fotbal-2026/dan-sucu-transfera-mondial-genoa-elliot-stroud-thun-meichtry-thun-953817.html",
-    "original_link": "https://www.gsp.ro/international/campionatul-mondial-de-fotbal-2026/dan-sucu-transfera-mondial-genoa-elliot-stroud-thun-meichtry-thun-953817.html",
-    "source": "gsp",
-    "source_name": "GSP",
-    "source_lang": "ro",
-    "original_title": "Șucu transferă de la Mondial: 2,5 milioane pe adversarul lui Mbappe",
-    "title": "Șucu transferă de la Mondial: 2,5 milioane pe adversarul lui Mbappe",
-    "description": "Genoa vrea să întărească linia de mijloc pentru sezonul viitor și patronul clubului este aproape să rezolve două achiziții. Antrenorul Daniele De Rossi îi va primi pe mijlocașul central elvețian Franz-Ethan Meichtry (20 de ani) de la Thun și pe mijlocașul stânga Elliot Stroud (24 de ani) de la Mjalbby, cheltuiala totală fiind de 6,5 milioane de euro pentru patronul Dan Șucu. ...",
-    "category": "sport",
-    "published": "2026-06-27T16:36:20+00:00",
-    "model": "B",
-    "teaser": "Genoa vrea să întărească linia de mijloc pentru sezonul viitor și patronul clubului este aproape să rezolve două achiziții. Antrenorul Daniele De Rossi îi va primi pe mijlocașul central elvețian Franz-Ethan Meichtry (20 de ani) de la Thun și pe...",
-    "processed_by": "fallback",
-    "error": "HTTP Error 429: Too Many Requests",
-    "featured": false
-  },
-  {
-    "url": "https://digi24.ro/stiri/economie/energie/ungaria-reduce-productia-de-energie-la-centrala-nucleara-paks-dupa-ce-temperatura-dunarii-a-atins-un-prag-critic-3836269",
-    "original_link": "https://www.digi24.ro/stiri/economie/energie/ungaria-reduce-productia-de-energie-la-centrala-nucleara-paks-dupa-ce-temperatura-dunarii-a-atins-un-prag-critic-3836269",
-    "source": "extern",
-    "source_name": "Digi24 Extern",
-    "source_lang": "ro",
-    "original_title": "Ungaria reduce producția de energie la centrala nucleară Paks după ce temperatura Dunării a atins un prag critic",
-    "title": "Ungaria reduce producția de energie la centrala nucleară Paks după ce temperatura Dunării a atins un prag critic",
-    "description": "Ungaria a redus producția unuia dintre reactoarele centralei nucleare Paks după ce apa Dunării, utilizată pentru răcire, a depășit pragul de intervenție stabilit de autorități, a anunţat sâmbătă operatorul centralei, MVM, pe site-ul său.",
-    "category": "extern",
-    "published": "2026-06-27T16:27:21+00:00",
-    "model": "C",
-    "sources": [
-      {
-        "name": "Digi24 Extern",
-        "url": "https://www.digi24.ro/stiri/economie/energie/ungaria-reduce-productia-de-energie-la-centrala-nucleara-paks-dupa-ce-temperatura-dunarii-a-atins-un-prag-critic-3836269"
-      },
-      {
-        "name": "Digi24",
-        "url": "https://www.digi24.ro/stiri/economie/energie/ungaria-reduce-productia-de-energie-la-centrala-nucleara-paks-dupa-ce-temperatura-dunarii-a-atins-un-prag-critic-3836269"
-      }
-    ],
-    "synthesis": "Ungaria a redus producția unuia dintre reactoarele centralei nucleare Paks după ce apa Dunării, utilizată pentru răcire, a depășit pragul de intervenție stabilit de autorități, a anunţat sâmbătă operatorul centralei, MVM, pe site-ul său.",
-    "processed_by": "fallback",
-    "error": "HTTP Error 429: Too Many Requests",
-    "featured": false
-  },
-  {
-    "url": "https://digi24.ro/stiri/externe/ue/80-de-ani-de-vespa-parada-cu-mii-de-scutere-pe-strazile-romei-este-ceva-special-3836251",
-    "original_link": "https://www.digi24.ro/stiri/externe/ue/80-de-ani-de-vespa-parada-cu-mii-de-scutere-pe-strazile-romei-este-ceva-special-3836251",
-    "source": "extern",
-    "source_name": "Digi24 Extern",
-    "source_lang": "ro",
-    "original_title": "80 de ani de Vespa: paradă cu mii de scutere pe străzile Romei. „Este ceva special”",
-    "title": "80 de ani de Vespa: paradă cu mii de scutere pe străzile Romei. „Este ceva special”",
-    "description": "De la „Vacanţă la Roma” („Roman Holiday” ) şi „La Dolce Vita” la „Jurnal intim” („Dear Diary” ), Vespa a devenit pe marile ecrane o emblemă mondială a stilului de viaţă italian. Legendarul scuter, născut odată cu Republica Italiană, aniversează în acest weekend, la Roma, 80 de ani de existenţă, relatează AFP.",
-    "category": "extern",
-    "published": "2026-06-27T16:21:05+00:00",
-    "model": "C",
-    "sources": [
-      {
-        "name": "Digi24 Extern",
-        "url": "https://www.digi24.ro/stiri/externe/ue/80-de-ani-de-vespa-parada-cu-mii-de-scutere-pe-strazile-romei-este-ceva-special-3836251"
-      },
-      {
-        "name": "Digi24",
-        "url": "https://www.digi24.ro/stiri/externe/ue/80-de-ani-de-vespa-parada-cu-mii-de-scutere-pe-strazile-romei-este-ceva-special-3836251"
-      }
-    ],
-    "synthesis": "De la „Vacanţă la Roma” („Roman Holiday” ) şi „La Dolce Vita” la „Jurnal intim” („Dear Diary” ), Vespa a devenit pe marile ecrane o emblemă mondială a stilului de viaţă italian. Legendarul scuter, născut odată cu Republica Italiană, aniversează în acest weekend, la Roma, 80 de ani de existenţă, relatează AFP.",
-    "processed_by": "fallback",
-    "error": "HTTP Error 429: Too Many Requests",
-    "featured": false
-  },
-  {
-    "url": "https://gsp.ro/fotbal/liga-1/live-u-cluj-ujpest-in-al-doilea-amical-al-verii-953794.html",
-    "original_link": "https://www.gsp.ro/fotbal/liga-1/live-u-cluj-ujpest-in-al-doilea-amical-al-verii-953794.html",
-    "source": "gsp",
-    "source_name": "GSP",
-    "source_lang": "ro",
-    "title": "U Cluj joacă al doilea amical al verii contra maghiarilor de la Újpest",
-    "category": "sport",
-    "published": "2026-06-27T16:18:08+00:00",
-    "model": "B",
-    "teaser": "Universitatea Cluj, vicecampioana României, se duelează în Slovenia cu formația maghiară Újpest FC într-un meci amical. Partida începe la ora 19:30 și va fi transmisă online.",
-    "processed_by": "gemini",
-    "error": "HTTP Error 429: Too Many Requests",
-    "featured": false,
-    "prompt_version": "v2-esenta"
-  },
-  {
-    "url": "https://prosport.ro/campionatul-mondial-2026/spania-cupa-mondiala-pierderi-fifa-yeremy-pino-nico-williams-accidentari-20471823",
-    "original_link": "https://www.prosport.ro/campionatul-mondial-2026/spania-cupa-mondiala-pierderi-fifa-yeremy-pino-nico-williams-accidentari-20471823",
-    "source": "prosport",
-    "source_name": "ProSport",
-    "source_lang": "ro",
-    "title": "Spania pierde doi jucători importanți la Cupa Mondială 2026",
-    "category": "sport",
-    "published": "2026-06-27T16:14:28+00:00",
-    "model": "C",
-    "sources": [
-      {
-        "name": "Digi Sport",
-        "url": "https://www.digisport.ro/fotbal/cm-2026/imaginile-zilei-la-cupa-mondiala-2026-suedia-s-a-antrenat-pe-un-stadion-aflat-in-santier-4344095"
-      },
-      {
-        "name": "ProSport",
-        "url": "https://www.prosport.ro/campionatul-mondial-2026/spania-cupa-mondiala-pierderi-fifa-yeremy-pino-nico-williams-accidentari-20471823"
-      }
-    ],
-    "synthesis": "Spania a învins Uruguay cu 1-0 și s-a calificat în optimile Cupei Mondiale 2026. Totuși, echipa a suferit două pierderi majore din cauza accidentărilor lui Nico Williams și Yeremy Pino. Regulamentul FIFA interzice înlocuirea acestor jucători, lăsând selecționerul fără opțiuni suplimentare.",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://gsp.ro/sporturi/tenis/davidovich-fokina-primul-spaniol-care-a-castigat-turneul-de-la-mallorca-953813.html",
-    "original_link": "https://www.gsp.ro/sporturi/tenis/davidovich-fokina-primul-spaniol-care-a-castigat-turneul-de-la-mallorca-953813.html",
-    "source": "gsp",
-    "source_name": "GSP",
-    "source_lang": "ro",
-    "original_title": "A devenit primul spaniol din istorie care a câștigat turneul ATP de la Mallorca",
-    "title": "A devenit primul spaniol din istorie care a câștigat turneul ATP de la Mallorca",
-    "description": "Alejandro Davidovich Fokina (27 de ani, locul 25 mondial) a câștigat sâmbătă titlul la Mallorca, după ce s-a impus în două seturi, scor 7-6 (4), 6-3, în duelul cu Ethan Quinn (22 de ani, locul 63 mondial). A șasea finală a fost cu noroc pentru spaniol, care devine după acest succes primul campion autohton din istoria turneului de 250 de puncte, câștigând primul lui titlu din circuit. ...",
-    "category": "sport",
-    "published": "2026-06-27T16:10:48+00:00",
-    "model": "B",
-    "teaser": "Alejandro Davidovich Fokina (27 de ani, locul 25 mondial) a câștigat sâmbătă titlul la Mallorca, după ce s-a impus în două seturi, scor 7-6 (4), 6-3, în duelul cu Ethan Quinn (22 de ani, locul 63 mondial). A șasea finală...",
-    "processed_by": "fallback",
-    "error": "HTTP Error 429: Too Many Requests",
-    "featured": false
-  },
-  {
-    "url": "https://g4media.ro/autoritatile-iraniene-au-anuntat-sambata-ca-au-lansat-mai-multe-atacuri-asupra-unor-tinte-militare-americane-din-regiunea-orientului-ca-riposta-la-atacurile-lansate-de-statele-unit-in-zona-stramtorii.html",
-    "original_link": "https://www.g4media.ro/autoritatile-iraniene-au-anuntat-sambata-ca-au-lansat-mai-multe-atacuri-asupra-unor-tinte-militare-americane-din-regiunea-orientului-ca-riposta-la-atacurile-lansate-de-statele-unit-in-zona-stramtorii.html",
-    "source": "g4media",
-    "source_name": "G4Media",
-    "source_lang": "ro",
-    "original_title": "Autoritățile iraniene au anunțat sâmbătă că au lansat mai multe atacuri asupra unor ținte militare americane din regiunea Orientului, ca ripostă la atacurile lansate de Statele Unit în zona Strâmtorii Ormuz",
-    "title": "Autoritățile iraniene au anunțat sâmbătă că au lansat mai multe atacuri asupra unor ținte militare americane din regiunea Orientului, ca ripostă la atacurile lansate de Statele Unit în zona Strâmtorii Ormuz",
-    "description": "Gardienii Revoluției Islamice au anunțat sâmbătă că au atacat mai multe ținte militare americane ca ripostă la atacurile lansate vineri de Statele Unite, notează CNN. De asemenea, ministerul de Externe de la Teheran a acuzat Washingtonul că a încălcat termenii acordului încheiat între cele două țări săptămâna trecută, transmite Mediafax. Armata americană nu a confirmat până © G4Media.ro .",
-    "category": "politic",
-    "published": "2026-06-27T16:00:13+00:00",
-    "model": "C",
-    "sources": [
-      {
-        "name": "G4Media",
-        "url": "https://www.g4media.ro/autoritatile-iraniene-au-anuntat-sambata-ca-au-lansat-mai-multe-atacuri-asupra-unor-tinte-militare-americane-din-regiunea-orientului-ca-riposta-la-atacurile-lansate-de-statele-unit-in-zona-stramtorii.html"
-      },
-      {
-        "name": "Știrile ProTV",
-        "url": "https://stirileprotv.ro/stiri/international/riposta-sua-dupa-atacul-iranului-asupra-unei-nave-comerciale-in-stramtoarea-ormuz-ce-au-lovit-americanii.html"
-      }
-    ],
-    "synthesis": "Gardienii Revoluției Islamice au anunțat sâmbătă că au atacat mai multe ținte militare americane ca ripostă la atacurile lansate vineri de Statele Unite, notează CNN. De asemenea, ministerul de Externe de la Teheran a acuzat Washingtonul că a încălcat termenii acordului încheiat între cele două țări săptămâna trecută, transmite Mediafax. Armata americană nu a confirmat până © G4Media.ro .",
-    "processed_by": "fallback",
-    "error": "HTTP Error 429: Too Many Requests",
-    "featured": false
-  },
-  {
-    "url": "https://digi24.ro/stiri/externe/mapamond/biblia-devine-lectura-obligatorie-pentru-milioane-de-elevi-din-scolile-publice-ale-unui-stat-american-3836225",
-    "original_link": "https://www.digi24.ro/stiri/externe/mapamond/biblia-devine-lectura-obligatorie-pentru-milioane-de-elevi-din-scolile-publice-ale-unui-stat-american-3836225",
-    "source": "extern",
-    "source_name": "Digi24 Extern",
-    "source_lang": "ro",
-    "original_title": "Biblia devine lectură obligatorie pentru milioane de elevi din școlile publice ale unui stat american",
-    "title": "Biblia devine lectură obligatorie pentru milioane de elevi din școlile publice ale unui stat american",
-    "description": "Milioane de elevi din școlile publice ale unui stat american vor avea de studiat pasaje din Biblie în cadrul programei școlare, după ce autoritățile locale au aprobat o nouă listă de lecturi obligatorii. Decizia, care va intra în vigoare în 2030, a stârnit controverse și acuzații că favorizează creștinismul în detrimentul altor tradiții religioase.",
-    "category": "extern",
-    "published": "2026-06-27T16:00:10+00:00",
-    "model": "C",
-    "sources": [
-      {
-        "name": "Digi24 Extern",
-        "url": "https://www.digi24.ro/stiri/externe/mapamond/biblia-devine-lectura-obligatorie-pentru-milioane-de-elevi-din-scolile-publice-ale-unui-stat-american-3836225"
-      },
-      {
-        "name": "Digi24",
-        "url": "https://www.digi24.ro/stiri/externe/mapamond/biblia-devine-lectura-obligatorie-pentru-milioane-de-elevi-din-scolile-publice-ale-unui-stat-american-3836225"
-      }
-    ],
-    "synthesis": "Milioane de elevi din școlile publice ale unui stat american vor avea de studiat pasaje din Biblie în cadrul programei școlare, după ce autoritățile locale au aprobat o nouă listă de lecturi obligatorii. Decizia, care va intra în vigoare în 2030, a stârnit controverse și acuzații că favorizează creștinismul în detrimentul altor tradiții religioase.",
-    "processed_by": "fallback",
-    "error": "HTTP Error 503: Service Unavailable",
-    "featured": false
-  },
-  {
-    "url": "https://zf.ro/eveniment/reactia-premierului-interimar-ilie-bolojan-executia-bugetara-prima-23183301",
-    "original_link": "https://www.zf.ro/eveniment/reactia-premierului-interimar-ilie-bolojan-executia-bugetara-prima-23183301",
-    "source": "zf",
-    "source_name": "Ziarul Financiar",
-    "source_lang": "ro",
-    "original_title": "Reacţia premierului interimar Ilie Bolojan la execuţia bugetară: În prima etapă a tratamentului poate să-ţi fie mai rău. Boala se poate întoarce. Populismul, clientelismul şi risipa ne pot readuce cu spatele la zid",
-    "title": "Reacţia premierului interimar Ilie Bolojan la execuţia bugetară: În prima etapă a tratamentului poate să-ţi fie mai rău. Boala se poate întoarce. Populismul, clientelismul şi risipa ne pot readuce cu spatele la zid",
-    "description": "",
-    "category": "economic",
-    "published": "2026-06-27T16:00:00+00:00",
-    "model": "B",
-    "teaser": "Detalii pe sursa.",
-    "processed_by": "fallback",
-    "error": "HTTP Error 429: Too Many Requests",
-    "featured": false
-  },
-  {
-    "url": "https://gsp.ro/gsp-special/special/adrian-stefanescu-aventuri-zimbabwe-dinamo-am-nimerit-la-o-banca-exact-in-timpul-unui-jaf-director-sportiv-pariuri-diamante-953781.html",
-    "original_link": "https://www.gsp.ro/gsp-special/special/adrian-stefanescu-aventuri-zimbabwe-dinamo-am-nimerit-la-o-banca-exact-in-timpul-unui-jaf-director-sportiv-pariuri-diamante-953781.html",
-    "source": "gsp",
-    "source_name": "GSP",
-    "source_lang": "ro",
-    "original_title": "Aventurile în Zimbabwe ale fostului dinamovist: „Am nimerit la o bancă exact în timpul unui jaf” + Cum a ajuns director sportiv la un club finanțat din pariuri și diamante",
-    "title": "Aventurile în Zimbabwe ale fostului dinamovist: „Am nimerit la o bancă exact în timpul unui jaf” + Cum a ajuns director sportiv la un club finanțat din pariuri și diamante",
-    "description": "Adrian Ștefănescu, 43 ani, a fost junior la Dinamo, a lucrat pentru o mare agenție de impresariat prin care a plasat numeroși tineri fotbaliști români la Academii din Anglia și Scoția, s-a dedicat o perioadă vieții monahale, s-a orientat apoi spre turism. A revenit însă recent în fotbal, în Zimbabwe, unde lucrează ca director sportiv la MWOS Norton, un club din prima ligă. ...",
-    "category": "sport",
-    "published": "2026-06-27T15:53:52+00:00",
-    "model": "B",
-    "teaser": "Adrian Ștefănescu, 43 ani, a fost junior la Dinamo, a lucrat pentru o mare agenție de impresariat prin care a plasat numeroși tineri fotbaliști români la Academii din Anglia și Scoția, s-a dedicat o perioadă vieții monahale, s-a orientat apoi...",
-    "processed_by": "fallback",
-    "error": "HTTP Error 429: Too Many Requests",
-    "featured": false
-  },
-  {
-    "url": "https://digi24.ro/stiri/externe/mapamond/danemarca-inregistreaza-cea-mai-ridicata-temperatura-masurata-vreodata-in-tara-3836227",
-    "original_link": "https://www.digi24.ro/stiri/externe/mapamond/danemarca-inregistreaza-cea-mai-ridicata-temperatura-masurata-vreodata-in-tara-3836227",
-    "source": "extern",
-    "source_name": "Digi24 Extern",
-    "source_lang": "ro",
-    "original_title": "Danemarca înregistrează cea mai ridicată temperatură măsurată vreodată în ţară",
-    "title": "Danemarca înregistrează cea mai ridicată temperatură măsurată vreodată în ţară",
-    "description": "Institutul Meteorologic Danez a anunţat, sâmbătă, cea mai ridicată temperatură de la începutul înregistrărilor meteorologice în această ţară: 36,6 grade Celsius, transmite AFP, potrivit Agerpres.",
-    "category": "extern",
-    "published": "2026-06-27T15:52:59+00:00",
-    "model": "C",
-    "sources": [
-      {
-        "name": "Digi24 Extern",
-        "url": "https://www.digi24.ro/stiri/externe/mapamond/danemarca-inregistreaza-cea-mai-ridicata-temperatura-masurata-vreodata-in-tara-3836227"
-      },
-      {
-        "name": "Digi24",
-        "url": "https://www.digi24.ro/stiri/externe/mapamond/danemarca-inregistreaza-cea-mai-ridicata-temperatura-masurata-vreodata-in-tara-3836227"
-      }
-    ],
-    "synthesis": "Institutul Meteorologic Danez a anunţat, sâmbătă, cea mai ridicată temperatură de la începutul înregistrărilor meteorologice în această ţară: 36,6 grade Celsius, transmite AFP, potrivit Agerpres.",
-    "processed_by": "fallback",
-    "error": "HTTP Error 429: Too Many Requests",
-    "featured": false
-  },
-  {
-    "url": "https://gsp.ro/sporturi/formula-1/george-russell-pole-position-marele-premiu-al-austriei-953798.html",
-    "original_link": "https://www.gsp.ro/sporturi/formula-1/george-russell-pole-position-marele-premiu-al-austriei-953798.html",
-    "source": "gsp",
-    "source_name": "GSP",
-    "source_lang": "ro",
-    "original_title": "George Russell va porni din pole-position în Marele Premiu al Austriei! Ultim tur controversat, după un accident al lui Max Verstappen",
-    "title": "George Russell va porni din pole-position în Marele Premiu al Austriei! Ultim tur controversat, după un accident al lui Max Verstappen",
-    "description": "George Russell (28 de ani, Mercedes) va începe Marele Premiu al Austriei din pole-position, după un tur 3 controversat, provocat de un accident al lui Max Verstappen (28 de ani, Red Bull). Charles Leclerc (28 de ani) și Lewis Hamilton (41 de ani), cei doi piloți Ferrari, vor porni de pe locurile 2 și 3 ale grilei de start. Marele Premiu al Austriei are loc duminică, 28 iunie, de la ora 16:00, și va putea fi urmărit liveTEXT pe GSP.ro și în direct pe Antena 1 și AntenaPLAY. ...",
-    "category": "sport",
-    "published": "2026-06-27T15:50:00+00:00",
-    "model": "B",
-    "teaser": "George Russell (28 de ani, Mercedes) va începe Marele Premiu al Austriei din pole-position, după un tur 3 controversat, provocat de un accident al lui Max Verstappen (28 de ani, Red Bull). Charles Leclerc (28 de ani) și Lewis Hamilton...",
-    "processed_by": "fallback",
-    "error": "HTTP Error 429: Too Many Requests",
     "featured": false
   }
 ]
