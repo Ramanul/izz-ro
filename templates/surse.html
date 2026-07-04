@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block title %}Surse și originalitate — {{ site.name }}{% endblock %}
+{% block description %}Cine inițiază știrile și cine le preia: statistici de originalitate pe sursele {{ site.name }}.{% endblock %}
+{% block content %}
+  <h1 class="section-title">Surse și originalitate</h1>
+  <p class="page-intro">La evenimentele relatate de mai multe publicații, măsurăm cine a publicat
+  <b>primul</b> și cine a preluat. Statistica acoperă sintezele multi-sursă din ultimele
+  {{ ttl_days }} zile și se actualizează automat.</p>
+  {% if stats %}
+  <div class="table-wrap">
+  <table class="stats-table">
+    <thead><tr><th>Sursă</th><th>A publicat prima</th><th>Apariții în sinteze</th><th>Rată de inițiativă</th></tr></thead>
+    <tbody>
+      {% for s in stats %}
+      <tr><td>{{ s.name }}</td><td>{{ s.first }}</td><td>{{ s.total }}</td><td>{{ s.rate }}%</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  </div>
+  {% else %}
+  <p class="empty">Încă nu sunt destule sinteze multi-sursă cu date de inițiativă. Statistica se
+  populează automat pe măsură ce apar evenimente noi relatate de mai multe publicații.</p>
+  {% endif %}
+{% endblock %}

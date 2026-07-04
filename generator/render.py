@@ -305,6 +305,24 @@ def build(articles: list, mod: dict | None = None) -> None:
                "/", articles=by_date, hero=hero, by_category=by_category,
                page_jsonld=item_list, newsletter_html=_newsletter_html())))
 
+    # scor de originalitate: cine initiaza vs. cine preia (din sintezele C cu first_source)
+    counts: dict = {}
+    for a in by_date:
+        if a.get("model") != "C" or not a.get("first_source"):
+            continue
+        for s in a.get("sources") or []:
+            d = counts.setdefault(s["name"], {"first": 0, "total": 0})
+            d["total"] += 1
+            if s["name"] == a["first_source"]:
+                d["first"] += 1
+    src_stats = sorted(
+        [{"name": n, "first": d["first"], "total": d["total"],
+          "rate": round(d["first"] / d["total"] * 100)} for n, d in counts.items() if d["total"] >= 2],
+        key=lambda x: (-x["first"], -x["rate"]))
+    _write(os.path.join(OUT_DIR, "surse", "index.html"),
+           env.get_template("surse.html").render(**_base_ctx(
+               "/surse/", stats=src_stats, ttl_days=config.ARTICLE_TTL_DAYS)))
+
     # graful cunoasterii v1: pagini de subiect per entitate (+ feed de urmarire >=3)
     ents = _entity_index(by_date)
     subject_tpl = env.get_template("subject.html")

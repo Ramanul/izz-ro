@@ -210,7 +210,9 @@ def process_cluster(group: list, provider) -> dict | None:
     item-ul NU se publica brut, ci se reia la rularea urmatoare (regula 'No mangled
     output'). Doar in modul fara cheie (provider None) se face fallback determinist.
     """
-    rep = dict(min(group, key=lambda a: a.get("published") or ""))
+    # ordine cronologica: cine a publicat primul deschide lista (scor de originalitate)
+    group = sorted(group, key=lambda a: a.get("published") or "")
+    rep = dict(group[0])
     rep["model"] = "C"
     # dedup dupa domeniu, nu dupa nume: 2 feed-uri RSS ale aceluiasi site
     # (ex. "Digi24" si "Digi24 Extern") nu sunt 2 surse independente
@@ -220,6 +222,7 @@ def process_cluster(group: list, provider) -> dict | None:
         for a in group
         if domain_of(a["original_link"]) not in _seen_domain and not _seen_domain.add(domain_of(a["original_link"]))
     ]
+    rep["first_source"] = group[0]["source_name"]
 
     if provider is None:
         if rep.get("source_lang") == "en":
