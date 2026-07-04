@@ -1,5 +1,196 @@
 [
   {
+    "url": "https://digisport.ro/special/rica-raducanu-transportat-de-urgenta-la-spital-lovituri-la-cap-umarul-dislocat-si-doua-coaste-rupte-4358035",
+    "original_link": "https://www.digisport.ro/special/rica-raducanu-transportat-de-urgenta-la-spital-lovituri-la-cap-umarul-dislocat-si-doua-coaste-rupte-4358035",
+    "source": "digisport",
+    "source_name": "Digi Sport",
+    "source_lang": "ro",
+    "title": "Rică Răducanu, spitalizat după o căzătură pe scări",
+    "category": "sport",
+    "published": "2026-07-04T11:00:19+00:00",
+    "model": "C",
+    "sources": [
+      {
+        "name": "Digi Sport",
+        "url": "https://www.digisport.ro/special/rica-raducanu-transportat-de-urgenta-la-spital-lovituri-la-cap-umarul-dislocat-si-doua-coaste-rupte-4358035"
+      },
+      {
+        "name": "GSP",
+        "url": "https://www.gsp.ro/fotbal/liga-1/rica-raducanu-internat-de-urgenta-a-cazut-pe-scari-956612.html"
+      }
+    ],
+    "first_source": "Digi Sport",
+    "synthesis": "Fostul portar Rică Răducanu, în vârstă de 80 de ani, a fost internat de urgență la Spitalul Municipal din Mangalia. Incidentul a avut loc pe litoral, unde legenda Rapidului a căzut pe scări, suferind leziuni serioase: două coaste rupte, un umăr dislocat și o lovitură la cap. Starea sa este considerată îngrijorătoare de către surse.",
+    "entities": [
+      "Rică Răducanu",
+      "Spitalul Municipal Mangalia",
+      "Rapid"
+    ],
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://zf.ro/business-international/super-el-ni-o-intra-intr-o-faza-periculoasa-ce-efecte-sunt-asteptate-23188203",
+    "original_link": "https://www.zf.ro/business-international/super-el-ni-o-intra-intr-o-faza-periculoasa-ce-efecte-sunt-asteptate-23188203",
+    "source": "zf",
+    "source_name": "Ziarul Financiar",
+    "source_lang": "ro",
+    "title": "Super El Niño se intensifică rapid, avertizează Organizația Meteorologică Mondială",
+    "category": "extern",
+    "published": "2026-07-04T10:53:11+00:00",
+    "model": "C",
+    "sources": [
+      {
+        "name": "Ziarul Financiar",
+        "url": "https://www.zf.ro/business-international/super-el-ni-o-intra-intr-o-faza-periculoasa-ce-efecte-sunt-asteptate-23188203"
+      },
+      {
+        "name": "G4Media",
+        "url": "https://www.g4media.ro/super-el-nino-intra-intr-o-faza-periculoasa-va-creste-probabilitatea-secetei-si-a-ploilor-abundente.html"
+      }
+    ],
+    "first_source": "Ziarul Financiar",
+    "synthesis": "Organizația Meteorologică Mondială a anunțat oficial declanșarea și intensificarea rapidă a fenomenului Super El Niño în Oceanul Pacific. Creșterea temperaturilor apei în zonele centrale și estice ale Pacificului anticipează o probabilitate crescută de secetă și precipitații abundente în lunile următoare.",
+    "entities": [
+      "Super El Niño",
+      "Oceanul Pacific",
+      "Organizația Meteorologică Mondială"
+    ],
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://digi24.ro/stiri/externe/drone-ucrainene-au-lovit-orasul-sankt-petersburg-si-regiunea-leningrad-din-rusia-3847481",
+    "original_link": "https://www.digi24.ro/stiri/externe/drone-ucrainene-au-lovit-orasul-sankt-petersburg-si-regiunea-leningrad-din-rusia-3847481",
+    "source": "extern",
+    "source_name": "Digi24 Extern",
+    "source_lang": "ro",
+    "title": "Ucraina a atacat cu drone un terminal petrolier din Sankt Petersburg",
+    "category": "extern",
+    "published": "2026-07-04T10:40:28+00:00",
+    "model": "C",
+    "sources": [
+      {
+        "name": "Digi24 Extern",
+        "url": "https://www.digi24.ro/stiri/externe/drone-ucrainene-au-lovit-orasul-sankt-petersburg-si-regiunea-leningrad-din-rusia-3847481"
+      },
+      {
+        "name": "Economica",
+        "url": "https://www.economica.net/ucraina-a-lovit-la-scara-mare-cu-drone-orasul-sankt-petersburg-si-regiunea-leningrad-incendiu-la-terminalul-petrolier_956464.html"
+      }
+    ],
+    "first_source": "Digi24 Extern",
+    "synthesis": "Vineri noaptea, un atac masiv cu drone ucrainene a vizat metropola rusă Sankt Petersburg și regiunea Leningrad. Autoritățile locale au confirmat lovituri asupra unui terminal petrolier din port, unde Rusia își exportă petrolul. Armata ucraineană a revendicat atacul și a publicat imagini cu consecințele acestuia.",
+    "entities": [
+      "Ucraina",
+      "Sankt Petersburg",
+      "Regiunea Leningrad"
+    ],
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://zf.ro/business-international/germania-mii-de-oameni-protesteaza-in-estul-tarii-pentru-a-impiedica-23188198",
+    "original_link": "https://www.zf.ro/business-international/germania-mii-de-oameni-protesteaza-in-estul-tarii-pentru-a-impiedica-23188198",
+    "source": "zf",
+    "source_name": "Ziarul Financiar",
+    "source_lang": "ro",
+    "title": "Mii de germani protestează împotriva congresului AfD în estul țării",
+    "category": "politic",
+    "published": "2026-07-04T10:25:23+00:00",
+    "model": "C",
+    "sources": [
+      {
+        "name": "Ziarul Financiar",
+        "url": "https://www.zf.ro/business-international/germania-mii-de-oameni-protesteaza-in-estul-tarii-pentru-a-impiedica-23188198"
+      },
+      {
+        "name": "G4Media",
+        "url": "https://www.g4media.ro/mii-de-germani-protesteaza-in-estul-tarii-pentru-a-impiedica-congresul-afd-alianta-de-contraproteste-supranumita-rezistenta-a-blocat-accesul-in-oras.html"
+      }
+    ],
+    "first_source": "Ziarul Financiar",
+    "synthesis": "Aproximativ 20.000 de persoane au protestat în Erfurt, estul Germaniei, împotriva congresului partidului AfD. Manifestanții au blocat drumuri și au perturbat transportul public, acțiuni organizate sub numele de „Rezistență” pentru a împiedica desfășurarea evenimentului politic.",
+    "entities": [
+      "AfD",
+      "Erfurt",
+      "Germania"
+    ],
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://stirileprotv.ro/stiri/stiinta/studiu-guma-de-mestecat-poate-influenta-tensiunea-arteriala-cercetatorii-au-descoperit-un-efect-neasteptat.html",
+    "original_link": "https://stirileprotv.ro/stiri/stiinta/studiu-guma-de-mestecat-poate-influenta-tensiunea-arteriala-cercetatorii-au-descoperit-un-efect-neasteptat.html",
+    "source": "protv",
+    "source_name": "Știrile ProTV",
+    "source_lang": "ro",
+    "title": "Studiu: Guma de mestecat poate influența tensiunea arterială",
+    "category": "general",
+    "published": "2026-07-04T10:21:52+00:00",
+    "model": "C",
+    "sources": [
+      {
+        "name": "Știrile ProTV",
+        "url": "https://stirileprotv.ro/stiri/stiinta/studiu-guma-de-mestecat-poate-influenta-tensiunea-arteriala-cercetatorii-au-descoperit-un-efect-neasteptat.html"
+      },
+      {
+        "name": "Digi24",
+        "url": "https://www.digi24.ro/stiri/actualitate/sanatate/studiu-efect-neasteptat-al-gumei-de-mestecat-asupra-tensiunii-arteriale-ce-au-descoperit-cercetatorii-3847557"
+      },
+      {
+        "name": "HotNews",
+        "url": "https://hotnews.ro/efectele-gumei-de-mestecat-asupra-tensiunii-arteriale-concluziile-unui-studiu-inedit-2291761"
+      }
+    ],
+    "first_source": "Știrile ProTV",
+    "synthesis": "Un studiu recent a relevat un efect neașteptat al gumei de mestecat asupra tensiunii arteriale. Cercetătorii au investigat legătura dintre consumul de gumă și sănătatea cardiovasculară, subliniind importanța controlului hipertensiunii arteriale, un factor de risc major pentru infarct și AVC. Alimentația, în special legumele bogate în nitrați, joacă un rol esențial în acest sens.",
+    "entities": [
+      "Guma de mestecat",
+      "Tensiune arterială",
+      "Hipertensiune arterială",
+      "Boli cardiovasculare"
+    ],
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://economica.net/comisia-europeana-va-incepe-din-toamna-reformarea-procedurilor-de-licitatie-cu-obiectul-de-a-proteja-productia-din-blocul-comunitar_956452.html",
+    "original_link": "https://www.economica.net/comisia-europeana-va-incepe-din-toamna-reformarea-procedurilor-de-licitatie-cu-obiectul-de-a-proteja-productia-din-blocul-comunitar_956452.html",
+    "source": "economica",
+    "source_name": "Economica",
+    "source_lang": "ro",
+    "title": "UE reformează licitațiile pentru a proteja producția internă",
+    "category": "economic",
+    "published": "2026-07-04T10:06:29+00:00",
+    "model": "C",
+    "sources": [
+      {
+        "name": "Economica",
+        "url": "https://www.economica.net/comisia-europeana-va-incepe-din-toamna-reformarea-procedurilor-de-licitatie-cu-obiectul-de-a-proteja-productia-din-blocul-comunitar_956452.html"
+      },
+      {
+        "name": "Economedia",
+        "url": "https://economedia.ro/comisia-europeana-va-reforma-procedurile-de-licitatie-pentru-a-proteja-productia-din-ue-care-vor-fi-regulile-pentru-cumpararea-de-masini-si-panouri-fotovoltaice.html"
+      }
+    ],
+    "first_source": "Economica",
+    "synthesis": "Comisia Europeană, prin comisarul Stéphane Séjourné, va propune din toamnă o reformă a procedurilor de licitație. Scopul este protejarea producției din UE împotriva concurenței neloiale și apărarea modelului european. Măsurile vizează și achizițiile de bunuri precum mașini și panouri fotovoltaice.",
+    "entities": [
+      "Comisia Europeană",
+      "Stéphane Séjourné",
+      "Uniunea Europeană"
+    ],
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
     "url": "https://stirileprotv.ro/stiri/actualitate/alimentarea-cu-gaze-intrerupta-pentru-190-de-clienti-din-sectorul-3-care-este-cauza.html",
     "original_link": "https://stirileprotv.ro/stiri/actualitate/alimentarea-cu-gaze-intrerupta-pentru-190-de-clienti-din-sectorul-3-care-este-cauza.html",
     "source": "protv",
@@ -18097,375 +18288,6 @@
     "published": "2026-06-27T11:47:29+00:00",
     "model": "B",
     "teaser": "FCSB s-a despărțit deja de 9 jucători în această vară și totalul plecărilor ar putea ajunge în curând la 11, în funcție de ce se întâmplă cu Florin Tănase și Mihai Lixandru. FCSB a fost activă la capitolul plecări în...",
-    "processed_by": "fallback",
-    "error": "HTTP Error 429: Too Many Requests",
-    "featured": false
-  },
-  {
-    "url": "https://stirileprotv.ro/stiri/politic/olguta-vasilescu-voturile-obtinute-de-vestea-punctul-de-plecare-pentru-guvernul-psd-partidul-care-ar-garanta-investirea.html",
-    "original_link": "https://stirileprotv.ro/stiri/politic/olguta-vasilescu-voturile-obtinute-de-vestea-punctul-de-plecare-pentru-guvernul-psd-partidul-care-ar-garanta-investirea.html",
-    "source": "protv",
-    "source_name": "Știrile ProTV",
-    "source_lang": "ro",
-    "original_title": "Olguța Vasilescu: Voturile obținute de Adrian Veștea, punctul de plecare pentru guvernul lui Sorin Grindeanu",
-    "title": "Olguța Vasilescu: Voturile obținute de Adrian Veștea, punctul de plecare pentru guvernul lui Sorin Grindeanu",
-    "description": "Olguta Vasilescu a explicat că voturile obținute de Adrian Veștea atunci când a încercat să obțină învestitura cabinetului său în Parlament reprezintă un punct de pornire pentru guvernul lui Sorin Grindeanu.",
-    "category": "general",
-    "published": "2026-06-27T11:41:33+00:00",
-    "model": "C",
-    "sources": [
-      {
-        "name": "Digi24",
-        "url": "https://www.digi24.ro/stiri/actualitate/politica/olguta-vasilescu-daca-udmr-ar-veni-alaturi-n-ar-fi-o-problema-sa-trecem-guvernul-ce-spune-despre-o-eventuala-sustinere-a-aur-3835987"
-      },
-      {
-        "name": "HotNews",
-        "url": "https://hotnews.ro/lia-olguta-vasilescu-spune-de-la-cine-asteapta-psd-voturi-pentru-guvernul-grindeanu-partidul-e-in-tabara-lui-bolojan-ce-arata-calculele-2286228"
-      },
-      {
-        "name": "G4Media",
-        "url": "https://www.g4media.ro/lia-olguta-vasilescu-iese-din-nou-sa-l-atace-pe-bolojan-a-mintit-de-fiecare-data-este-clar-ca-nu-vrea-sa-plece-de-la-palatul-victoria.html"
-      },
-      {
-        "name": "Știrile ProTV",
-        "url": "https://stirileprotv.ro/stiri/politic/olguta-vasilescu-voturile-obtinute-de-vestea-punctul-de-plecare-pentru-guvernul-psd-partidul-care-ar-garanta-investirea.html"
-      }
-    ],
-    "synthesis": "Olguta Vasilescu a explicat că voturile obținute de Adrian Veștea atunci când a încercat să obțină învestitura cabinetului său în Parlament reprezintă un punct de pornire pentru guvernul lui Sorin Grindeanu.",
-    "processed_by": "fallback",
-    "error": "HTTP Error 429: Too Many Requests",
-    "featured": false
-  },
-  {
-    "url": "https://gsp.ro/sporturi/altele/presa-din-rusia-a-comentat-refuzul-romaniei-emil-boc-953720.html",
-    "original_link": "https://www.gsp.ro/sporturi/altele/presa-din-rusia-a-comentat-refuzul-romaniei-emil-boc-953720.html",
-    "source": "gsp",
-    "source_name": "GSP",
-    "source_lang": "ro",
-    "original_title": "Emil Boc a devenit „inamicul nr. 1” în Rusia: „Încălcări grave ale regulamentului”",
-    "title": "Emil Boc a devenit „inamicul nr. 1” în Rusia: „Încălcări grave ale regulamentului”",
-    "description": "Presa din Rusia n-a trecut cu vederea scandalul declanșat în momentul în care Emil Boc, primarul Clujului, a transmis că nu va permite afișarea steagului și intonarea imnului rusesc la Cupa Mondială de Gimnastică Ritmică de la Cluj-Napoca, ca răspuns la agresiunea declanșată de Federația Rusă în Ucraina în 2022. Federația Internațională de Gimnastică le-a ridicat interdicțiile sportivilor ruși, care pot concura de acum sub steagul țării. ...",
-    "category": "sport",
-    "published": "2026-06-27T11:27:00+00:00",
-    "model": "B",
-    "teaser": "Presa din Rusia n-a trecut cu vederea scandalul declanșat în momentul în care Emil Boc, primarul Clujului, a transmis că nu va permite afișarea steagului și intonarea imnului rusesc la Cupa Mondială de Gimnastică Ritmică de la Cluj-Napoca, ca răspuns...",
-    "processed_by": "fallback",
-    "error": "HTTP Error 429: Too Many Requests",
-    "featured": false
-  },
-  {
-    "url": "https://digi24.ro/stiri/externe/ucraina-ataca-din-nou-cu-drone-infrastructura-care-alimenteaza-moscova-cu-combustibili-3835985",
-    "original_link": "https://www.digi24.ro/stiri/externe/ucraina-ataca-din-nou-cu-drone-infrastructura-care-alimenteaza-moscova-cu-combustibili-3835985",
-    "source": "extern",
-    "source_name": "Digi24 Extern",
-    "source_lang": "ro",
-    "original_title": "Ucraina atacă din nou, cu drone, infrastructura care alimentează Moscova cu combustibili",
-    "title": "Ucraina atacă din nou, cu drone, infrastructura care alimentează Moscova cu combustibili",
-    "description": "Serviciul de Securitate al Ucrainei (SBU) a raportat sâmbătă despre un nou atac asupra unei staţii de pompare a petrolului în localitatea rusă Vtorovo, infrastructură „care alimentează cu combustibil Moscova”, relatează EFE.",
-    "category": "extern",
-    "published": "2026-06-27T11:21:28+00:00",
-    "model": "C",
-    "sources": [
-      {
-        "name": "Digi24 Extern",
-        "url": "https://www.digi24.ro/stiri/externe/ucraina-ataca-din-nou-cu-drone-infrastructura-care-alimenteaza-moscova-cu-combustibili-3835985"
-      },
-      {
-        "name": "Digi24",
-        "url": "https://www.digi24.ro/stiri/externe/ucraina-ataca-din-nou-cu-drone-infrastructura-care-alimenteaza-moscova-cu-combustibili-3835985"
-      }
-    ],
-    "synthesis": "Serviciul de Securitate al Ucrainei (SBU) a raportat sâmbătă despre un nou atac asupra unei staţii de pompare a petrolului în localitatea rusă Vtorovo, infrastructură „care alimentează cu combustibil Moscova”, relatează EFE.",
-    "processed_by": "fallback",
-    "error": "HTTP Error 429: Too Many Requests",
-    "featured": false
-  },
-  {
-    "url": "https://g4media.ro/pnl-acuza-incalcarea-dreptului-la-aparare-in-dosarul-pucistilor-de-la-tribunalul-ilfov-la-zece-zile-de-la-pronuntare-avocatii-pnl-nu-au-primit-inca-acces-la-dosar.html",
-    "original_link": "https://www.g4media.ro/pnl-acuza-incalcarea-dreptului-la-aparare-in-dosarul-pucistilor-de-la-tribunalul-ilfov-la-zece-zile-de-la-pronuntare-avocatii-pnl-nu-au-primit-inca-acces-la-dosar.html",
-    "source": "g4media",
-    "source_name": "G4Media",
-    "source_lang": "ro",
-    "title": "PNL acuză încălcarea dreptului la apărare în dosarul Tribunalului Ilfov",
-    "category": "politic",
-    "published": "2026-06-27T11:13:46+00:00",
-    "model": "C",
-    "sources": [
-      {
-        "name": "G4Media",
-        "url": "https://www.g4media.ro/pnl-acuza-incalcarea-dreptului-la-aparare-in-dosarul-pucistilor-de-la-tribunalul-ilfov-la-zece-zile-de-la-pronuntare-avocatii-pnl-nu-au-primit-inca-acces-la-dosar.html"
-      },
-      {
-        "name": "Economica",
-        "url": "https://www.economica.net/pnl-se-arata-profund-ingrijorat-de-modul-in-care-tribunalul-ilfov-a-judecat-dosarul-deschis-de-o-factiune-dizidenta-din-partid-si-spune-ca-si-va-apara-toate-drepturile-legale_954326.html"
-      }
-    ],
-    "synthesis": "Partidul Național Liberal (PNL) își exprimă îngrijorarea față de modul în care Tribunalul Ilfov a judecat un dosar inițiat de foști membri ai partidului. PNL susține că, la zece zile de la pronunțare, avocații săi nu au primit acces la dosar pentru a consulta documentele.",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://stirileprotv.ro/stiri/international/un-petrolier-a-fost-lovit-in-stramtoarea-ormuz-de-un-proiectil-neidentificat.html",
-    "original_link": "https://stirileprotv.ro/stiri/international/un-petrolier-a-fost-lovit-in-stramtoarea-ormuz-de-un-proiectil-neidentificat.html",
-    "source": "protv",
-    "source_name": "Știrile ProTV",
-    "source_lang": "ro",
-    "original_title": "Un petrolier a fost lovit în Strâmtoarea Ormuz de un proiectil neidentificat",
-    "title": "Un petrolier a fost lovit în Strâmtoarea Ormuz de un proiectil neidentificat",
-    "description": "Un petrolier a fost lovit de un proiectil neidentificat în Strâmtoarea Ormuz, a anunţat sâmbătă agenţia maritimă britanică UKMTO, după primul schimb de lovituri între SUA şi Iran de la încheierea memorandumului de înţelegere la mijlocul lunii iunie.",
-    "category": "general",
-    "published": "2026-06-27T11:09:49+00:00",
-    "model": "C",
-    "sources": [
-      {
-        "name": "Economica",
-        "url": "https://www.economica.net/un-petrolier-sub-pavilion-panamez-a-fost-lovit-de-un-proiectil-necunoscut-in-stramtoarea-ormuz_954322.html"
-      },
-      {
-        "name": "Știrile ProTV",
-        "url": "https://stirileprotv.ro/stiri/international/un-petrolier-a-fost-lovit-in-stramtoarea-ormuz-de-un-proiectil-neidentificat.html"
-      }
-    ],
-    "synthesis": "Un petrolier a fost lovit de un proiectil neidentificat în Strâmtoarea Ormuz, a anunţat sâmbătă agenţia maritimă britanică UKMTO, după primul schimb de lovituri între SUA şi Iran de la încheierea memorandumului de înţelegere la mijlocul lunii iunie.",
-    "processed_by": "fallback",
-    "error": "HTTP Error 429: Too Many Requests",
-    "featured": false
-  },
-  {
-    "url": "https://dw.com/en/germany-news-heat-soars-as-political-reforms-split-opinion/live-77733670?maca=en-rss-en-all-1573-rdf",
-    "original_link": "https://www.dw.com/en/germany-news-heat-soars-as-political-reforms-split-opinion/live-77733670?maca=en-rss-en-all-1573-rdf",
-    "source": "dw_en",
-    "source_name": "DW English",
-    "source_lang": "en",
-    "original_title": "Germany news: Heat soars as political reforms split opinion",
-    "title": "Germany news: Heat soars as political reforms split opinion",
-    "description": "As Europe's heatwave rages, Germany continues to swelter with new records expected Saturday. Elsewhere, politicians bicker over reforms and industry blames train operator DB for billions in losses. DW has the latest.",
-    "category": "extern",
-    "published": "2026-06-27T11:04:00+00:00",
-    "model": "B",
-    "teaser": "As Europe's heatwave rages, Germany continues to swelter with new records expected Saturday. Elsewhere, politicians bicker over reforms and industry blames train operator DB for billions in losses. DW has the latest.",
-    "processed_by": "fallback",
-    "error": "HTTP Error 429: Too Many Requests",
-    "featured": false
-  },
-  {
-    "url": "https://politico.eu/podcast/berlin-playbook-podcast/ein-spaziergang-durch-kyjiw-mit-botschafter-thoms",
-    "original_link": "https://www.politico.eu/podcast/berlin-playbook-podcast/ein-spaziergang-durch-kyjiw-mit-botschafter-thoms/?utm_source=RSS_Feed&utm_medium=RSS&utm_campaign=RSS_Syndication",
-    "source": "politico_eu",
-    "source_name": "Politico EU",
-    "source_lang": "en",
-    "original_title": "Ein Spaziergang durch Kyjiw mit Botschafter Thoms",
-    "title": "Ein Spaziergang durch Kyjiw mit Botschafter Thoms",
-    "description": "Auf einem Spaziergang durch die ukrainische Hauptstadt zeigt Deutschlands Botschafter Heiko Thoms im Gespräch mit Gordon Repinski, wie der Drang nach Alltag für die Ukrainer zu einem bewussten Akt des Widerstands gegen die russische Aggression geworden ist. Thoms blickt auf den härtesten Winter seit Jahrzehnten zurück. Wochenlange zweistellige Minustemperaturen, systematische Angriffe auf die Energieinfrastruktur und",
-    "category": "extern",
-    "published": "2026-06-27T11:01:02+00:00",
-    "model": "B",
-    "teaser": "Auf einem Spaziergang durch die ukrainische Hauptstadt zeigt Deutschlands Botschafter Heiko Thoms im Gespräch mit Gordon Repinski, wie der Drang nach Alltag für die Ukrainer zu einem bewussten Akt des Widerstands gegen die russische Aggression geworden ist. Thoms blickt auf...",
-    "processed_by": "fallback",
-    "error": "HTTP Error 429: Too Many Requests",
-    "featured": false
-  },
-  {
-    "url": "https://digi24.ro/stiri/externe/petrolier-lovit-in-stramtoarea-ormuz-proiectilul-este-neidentificat-nava-sub-pavilion-panamez-a-fost-avariata-3835961",
-    "original_link": "https://www.digi24.ro/stiri/externe/petrolier-lovit-in-stramtoarea-ormuz-proiectilul-este-neidentificat-nava-sub-pavilion-panamez-a-fost-avariata-3835961",
-    "source": "extern",
-    "source_name": "Digi24 Extern",
-    "source_lang": "ro",
-    "original_title": "Petrolier lovit în Strâmtoarea Ormuz: proiectilul este neidentificat. Nava, sub pavilion panamez, a fost avariată",
-    "title": "Petrolier lovit în Strâmtoarea Ormuz: proiectilul este neidentificat. Nava, sub pavilion panamez, a fost avariată",
-    "description": "Un petrolier a fost lovit de un proiectil neidentificat în Strâmtoarea Ormuz, a anunţat sâmbătă agenţia maritimă britanică UKMTO, după primul schimb de lovituri între SUA şi Iran de la încheierea memorandumului de înţelegere la mijlocul lunii iunie, relatează AFP.",
-    "category": "extern",
-    "published": "2026-06-27T10:54:23+00:00",
-    "model": "C",
-    "sources": [
-      {
-        "name": "Digi24 Extern",
-        "url": "https://www.digi24.ro/stiri/externe/petrolier-lovit-in-stramtoarea-ormuz-proiectilul-este-neidentificat-nava-sub-pavilion-panamez-a-fost-avariata-3835961"
-      },
-      {
-        "name": "Digi24",
-        "url": "https://www.digi24.ro/stiri/externe/petrolier-lovit-in-stramtoarea-ormuz-proiectilul-este-neidentificat-nava-sub-pavilion-panamez-a-fost-avariata-3835961"
-      },
-      {
-        "name": "Știrile ProTV",
-        "url": "https://stirileprotv.ro/stiri/international/un-petrolier-a-fost-lovit-in-stramtoarea-ormuz-de-un-proiectil-neidentificat.html"
-      }
-    ],
-    "synthesis": "Un petrolier a fost lovit de un proiectil neidentificat în Strâmtoarea Ormuz, a anunţat sâmbătă agenţia maritimă britanică UKMTO, după primul schimb de lovituri între SUA şi Iran de la încheierea memorandumului de înţelegere la mijlocul lunii iunie, relatează AFP.",
-    "processed_by": "fallback",
-    "error": "HTTP Error 429: Too Many Requests",
-    "featured": false
-  },
-  {
-    "url": "https://spotmedia.ro/stiri/meteo/valul-de-canicula-se-muta-spre-nordul-europei-aproape-200-de-milioane-de-oameni-se-confrunta-cu-temperaturi-extreme",
-    "original_link": "https://spotmedia.ro/stiri/meteo/valul-de-canicula-se-muta-spre-nordul-europei-aproape-200-de-milioane-de-oameni-se-confrunta-cu-temperaturi-extreme",
-    "source": "spotmedia",
-    "source_name": "Spotmedia",
-    "source_lang": "ro",
-    "original_title": "Valul de caniculă se mută spre nordul Europei: aproape 200 de milioane de oameni se confruntă cu temperaturi extreme",
-    "title": "Valul de caniculă se mută spre nordul Europei: aproape 200 de milioane de oameni se confruntă cu temperaturi extreme",
-    "description": "Europa traversează unul dintre cele mai intense episoade de caniculă din ultimii ani. Valul de căldură avansează spre nord-estul continentului, doboară recorduri istorice de temperatură, pune presiune pe sistemele sanitare și obligă autoritățile să anuleze evenimente publice. Potrivit unei analize AFP, aproape 200 de milioane de europeni vor avea sâmbătă temperaturi de peste 35 de …",
-    "category": "general",
-    "published": "2026-06-27T10:50:15+00:00",
-    "model": "C",
-    "sources": [
-      {
-        "name": "Spotmedia",
-        "url": "https://spotmedia.ro/stiri/meteo/valul-de-canicula-se-muta-spre-nordul-europei-aproape-200-de-milioane-de-oameni-se-confrunta-cu-temperaturi-extreme"
-      },
-      {
-        "name": "HotNews",
-        "url": "https://hotnews.ro/temperaturi-de-peste-35-de-grade-pentru-aproape-200-de-milioane-de-europeni-situatia-de-pe-continent-2286243"
-      }
-    ],
-    "synthesis": "Europa traversează unul dintre cele mai intense episoade de caniculă din ultimii ani. Valul de căldură avansează spre nord-estul continentului, doboară recorduri istorice de temperatură, pune presiune pe sistemele sanitare și obligă autoritățile să anuleze evenimente publice. Potrivit unei analize AFP, aproape 200 de milioane de europeni vor avea sâmbătă temperaturi de peste 35 de …",
-    "processed_by": "fallback",
-    "error": "HTTP Error 429: Too Many Requests",
-    "featured": false
-  },
-  {
-    "url": "https://stirileprotv.ro/stiri/politic/simona-bucura-oprescu-aleasa-presedinte-al-organizatiei-de-femei-a-psd-443-de-voturi-pentru.html",
-    "original_link": "https://stirileprotv.ro/stiri/politic/simona-bucura-oprescu-aleasa-presedinte-al-organizatiei-de-femei-a-psd-443-de-voturi-pentru.html",
-    "source": "protv",
-    "source_name": "Știrile ProTV",
-    "source_lang": "ro",
-    "original_title": "Simona Bucura-Oprescu a fost aleasă preşedinte al Organizaţiei de Femei a PSD. 443 de delegate au votat pentru",
-    "title": "Simona Bucura-Oprescu a fost aleasă preşedinte al Organizaţiei de Femei a PSD. 443 de delegate au votat pentru",
-    "description": "Simona Bucura-Oprescu, deputat şi fost ministru al Muncii, a fost aleasă, sâmbătă, în funcţia de conducere a Organizaţiei de Femei a Partidului Social Democrat.",
-    "category": "general",
-    "published": "2026-06-27T10:28:01+00:00",
-    "model": "C",
-    "sources": [
-      {
-        "name": "Digi24",
-        "url": "https://www.digi24.ro/stiri/actualitate/politica/simona-bucura-oprescu-fost-ministru-al-muncii-a-fost-aleasa-presedinte-al-organizatiei-de-femei-a-psd-a-candidat-singura-3835947"
-      },
-      {
-        "name": "Știrile ProTV",
-        "url": "https://stirileprotv.ro/stiri/politic/simona-bucura-oprescu-aleasa-presedinte-al-organizatiei-de-femei-a-psd-443-de-voturi-pentru.html"
-      }
-    ],
-    "synthesis": "Simona Bucura-Oprescu, deputat şi fost ministru al Muncii, a fost aleasă, sâmbătă, în funcţia de conducere a Organizaţiei de Femei a Partidului Social Democrat.",
-    "processed_by": "fallback",
-    "error": "HTTP Error 429: Too Many Requests",
-    "featured": false
-  },
-  {
-    "url": "https://theguardian.com/us-news/2026/jun/27/trump-threatens-tariff-eu-countries-impose-digital-tax",
-    "original_link": "https://www.theguardian.com/us-news/2026/jun/27/trump-threatens-tariff-eu-countries-impose-digital-tax",
-    "source": "guardian_eu",
-    "source_name": "The Guardian",
-    "source_lang": "en",
-    "original_title": "Trump threatens 100% tariff on European countries that impose digital tax",
-    "title": "Trump threatens 100% tariff on European countries that impose digital tax",
-    "description": "US president says levy would be imposed immediately and supersede pre-existing trade deals with the country Donald Trump has threatened to place a 100% import tariff on any European country that imposes a tax on digital services from US companies. Writing on Truth Social on Friday, the US president said that “numerous European countries” had been discussing putting a digital services tax on American companies and that “some of these countries are close to actually doing this”. Continue reading...",
-    "category": "extern",
-    "published": "2026-06-27T10:20:46+00:00",
-    "model": "B",
-    "teaser": "US president says levy would be imposed immediately and supersede pre-existing trade deals with the country Donald Trump has threatened to place a 100% import tariff on any European country that imposes a tax on digital services from US companies...",
-    "processed_by": "fallback",
-    "error": "HTTP Error 429: Too Many Requests",
-    "featured": false
-  },
-  {
-    "url": "https://hotnews.ro/ce-se-intampla-la-tribunalul-ilfov-un-lider-pnl-acuza-ca-nu-are-acces-la-dosarul-deschis-de-liberalii-care-au-ales-drumul-pesedismului-2286204",
-    "original_link": "https://hotnews.ro/ce-se-intampla-la-tribunalul-ilfov-un-lider-pnl-acuza-ca-nu-are-acces-la-dosarul-deschis-de-liberalii-care-au-ales-drumul-pesedismului-2286204",
-    "source": "hotnews",
-    "source_name": "HotNews",
-    "source_lang": "ro",
-    "original_title": "„Ce se întâmplă la Tribunalul Ilfov?”. PNL acuză că nu are acces la dosarul deschis de liberalii care „au ales drumul pesedismului”",
-    "title": "„Ce se întâmplă la Tribunalul Ilfov?”. PNL acuză că nu are acces la dosarul deschis de liberalii care „au ales drumul pesedismului”",
-    "description": "Secretarul general al PNL, Robert Sighiartău, a declarat sâmbătă că avocații partidului nu au acces la dosarul în care Tribunalul Ilfov a dat o ordonață într-un timp record. Acțiunea în instanță a fost deschisă de 16 liberali care au contestat deciziile luate în Biroului Politic Național al formațiunii conduse de Ilie Bolojan. Deputatul a denunțat …",
-    "category": "general",
-    "published": "2026-06-27T10:17:27+00:00",
-    "model": "C",
-    "sources": [
-      {
-        "name": "HotNews",
-        "url": "https://hotnews.ro/ce-se-intampla-la-tribunalul-ilfov-un-lider-pnl-acuza-ca-nu-are-acces-la-dosarul-deschis-de-liberalii-care-au-ales-drumul-pesedismului-2286204"
-      },
-      {
-        "name": "G4Media",
-        "url": "https://www.g4media.ro/pnl-acuza-incalcarea-dreptului-la-aparare-in-dosarul-pucistilor-de-la-tribunalul-ilfov-la-zece-zile-de-la-pronuntare-avocatii-pnl-nu-au-primit-inca-acces-la-dosar.html"
-      }
-    ],
-    "synthesis": "Secretarul general al PNL, Robert Sighiartău, a declarat sâmbătă că avocații partidului nu au acces la dosarul în care Tribunalul Ilfov a dat o ordonață într-un timp record. Acțiunea în instanță a fost deschisă de 16 liberali care au contestat deciziile luate în Biroului Politic Național al formațiunii conduse de Ilie Bolojan. Deputatul a denunțat …",
-    "processed_by": "fallback",
-    "error": "HTTP Error 429: Too Many Requests",
-    "featured": false
-  },
-  {
-    "url": "https://spotmedia.ro/stiri/politica/psd-isi-coordoneaza-atacul-la-adresa-pnl-bolojan-acuzat-ca-blocheaza-formarea-guvernului-olguta-vasilescu-il-ataca-si-pe-siegfried-muresan",
-    "original_link": "https://spotmedia.ro/stiri/politica/psd-isi-coordoneaza-atacul-la-adresa-pnl-bolojan-acuzat-ca-blocheaza-formarea-guvernului-olguta-vasilescu-il-ataca-si-pe-siegfried-muresan",
-    "source": "spotmedia",
-    "source_name": "Spotmedia",
-    "source_lang": "ro",
-    "original_title": "PSD își coordonează ofensiva la adresa PNL: Bolojan, acuzat că blochează formarea Guvernului. Olguța Vasilescu îl atacă și pe Siegfried Mureșan",
-    "title": "PSD își coordonează ofensiva la adresa PNL: Bolojan, acuzat că blochează formarea Guvernului. Olguța Vasilescu îl atacă și pe Siegfried Mureșan",
-    "description": "Liderii PSD au lansat sâmbătă o nouă serie de atacuri coordonate la adresa PNL, pe fondul blocajului privind formarea noului Guvern. Ilie Bolojan este acuzat că schimbă constant condițiile negocierilor și că împiedică ieșirea din criza politică, în timp ce propunerea liberalilor pentru funcția de premier, eurodeputatul Siegfried Mureșan, este contestată deschis de social-democrați. Mesajele …",
-    "category": "general",
-    "published": "2026-06-27T10:15:04+00:00",
-    "model": "C",
-    "sources": [
-      {
-        "name": "Spotmedia",
-        "url": "https://spotmedia.ro/stiri/politica/psd-isi-coordoneaza-atacul-la-adresa-pnl-bolojan-acuzat-ca-blocheaza-formarea-guvernului-olguta-vasilescu-il-ataca-si-pe-siegfried-muresan"
-      },
-      {
-        "name": "HotNews",
-        "url": "https://hotnews.ro/lia-olguta-vasilescu-il-ironizeaza-pe-siegfried-muresan-singurii-bani-pe-care-i-a-absorbit-au-fost-salariile-de-europarlamentar-2286205"
-      }
-    ],
-    "synthesis": "Liderii PSD au lansat sâmbătă o nouă serie de atacuri coordonate la adresa PNL, pe fondul blocajului privind formarea noului Guvern. Ilie Bolojan este acuzat că schimbă constant condițiile negocierilor și că împiedică ieșirea din criza politică, în timp ce propunerea liberalilor pentru funcția de premier, eurodeputatul Siegfried Mureșan, este contestată deschis de social-democrați. Mesajele …",
-    "processed_by": "fallback",
-    "error": "HTTP Error 429: Too Many Requests",
-    "featured": false
-  },
-  {
-    "url": "https://digi24.ro/stiri/externe/ucraina-a-folosit-rachete-flamingo-intr-un-atac-asupra-unei-fabrici-de-armament-din-volgograd-ce-se-stie-despre-aceeasta-arma-3835877",
-    "original_link": "https://www.digi24.ro/stiri/externe/ucraina-a-folosit-rachete-flamingo-intr-un-atac-asupra-unei-fabrici-de-armament-din-volgograd-ce-se-stie-despre-aceeasta-arma-3835877",
-    "source": "extern",
-    "source_name": "Digi24 Extern",
-    "source_lang": "ro",
-    "original_title": "Ucraina a folosit rachete Flamingo într-un atac asupra unei fabrici de armament din Volgograd. Ce se știe despre această armă",
-    "title": "Ucraina a folosit rachete Flamingo într-un atac asupra unei fabrici de armament din Volgograd. Ce se știe despre această armă",
-    "description": "Preşedintele ucrainean,Volodimir Zelenski, a confirmat sâmbătă că Forţele armate ale Ucrainei au utilizat rachete de croazieră de tip Flamingo împotriva unei fabrici din cadrul complexului militaro-industrial al Rusiei din Volgograd, instalaţie situată la aproximativ 400 de kilometri de graniţa ruso-ucraineană, relatează EFE.",
-    "category": "extern",
-    "published": "2026-06-27T10:02:38+00:00",
-    "model": "B",
-    "teaser": "Preşedintele ucrainean,Volodimir Zelenski, a confirmat sâmbătă că Forţele armate ale Ucrainei au utilizat rachete de croazieră de tip Flamingo împotriva unei fabrici din cadrul complexului militaro-industrial al Rusiei din Volgograd, instalaţie situată la aproximativ 400 de kilometri de graniţa ruso-ucraineană...",
-    "processed_by": "fallback",
-    "error": "HTTP Error 429: Too Many Requests",
-    "featured": false
-  },
-  {
-    "url": "https://stirileprotv.ro/stiri/actualitate/explicatia-lui-bogan-ivan-dupa-accidentul-rutier-din-bistrita-eu-am-fost-de-vina-pentru-ca-nu-am-acordat-prioritate.html",
-    "original_link": "https://stirileprotv.ro/stiri/actualitate/explicatia-lui-bogan-ivan-dupa-accidentul-rutier-din-bistrita-eu-am-fost-de-vina-pentru-ca-nu-am-acordat-prioritate.html",
-    "source": "protv",
-    "source_name": "Știrile ProTV",
-    "source_lang": "ro",
-    "original_title": "Explicația lui Bogan Ivan, după accidentul rutier din Bistrița: „Eu am fost de vină pentru că nu am acordat prioritate”",
-    "title": "Explicația lui Bogan Ivan, după accidentul rutier din Bistrița: „Eu am fost de vină pentru că nu am acordat prioritate”",
-    "description": "Deputatul PSD Bogdan Ivan a declarat sâmbătă că a fost implicat zilele trecute într-un accident rutier în Bistriţa, care s-a produs din vina lui.",
-    "category": "general",
-    "published": "2026-06-27T09:54:32+00:00",
-    "model": "C",
-    "sources": [
-      {
-        "name": "Digi24",
-        "url": "https://www.digi24.ro/stiri/fostul-ministru-al-energiei-bogdan-ivan-despre-accidentul-auto-in-care-a-fost-implicat-eu-am-fost-de-vina-putea-sa-fie-o-tragedie-3835923"
-      },
-      {
-        "name": "HotNews",
-        "url": "https://hotnews.ro/video-fostul-ministru-psd-bogdan-ivan-implicat-intr-un-accident-rutier-a-lovit-un-autobuz-era-si-copilul-meu-de-trei-ani-in-masina-am-ramas-doar-cu-cateva-vanatai-putea-sa-fie-o-tragedi-2286191"
-      },
-      {
-        "name": "Știrile ProTV",
-        "url": "https://stirileprotv.ro/stiri/actualitate/explicatia-lui-bogan-ivan-dupa-accidentul-rutier-din-bistrita-eu-am-fost-de-vina-pentru-ca-nu-am-acordat-prioritate.html"
-      }
-    ],
-    "synthesis": "Deputatul PSD Bogdan Ivan a declarat sâmbătă că a fost implicat zilele trecute într-un accident rutier în Bistriţa, care s-a produs din vina lui.",
     "processed_by": "fallback",
     "error": "HTTP Error 429: Too Many Requests",
     "featured": false
