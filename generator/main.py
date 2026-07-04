@@ -24,21 +24,32 @@ def _utf8_stdout():
         pass
 
 
-def process_new(new_items: list, provider, budget: int) -> tuple[list, set, int]:
+def process_new(new_items: list, provider, budget: int, existing: list | None = None) -> tuple[list, set, int]:
     """Returneaza (articole_procesate, url_uri_inglobate_in_cluster_C, apeluri_AI_folosite).
 
     `budget` = numarul de APELURI AI (free-tier are limita). Model B se proceseaza in
     LOTURI de config.BATCH_SIZE (1 apel/lot) -> de ~BATCH_SIZE ori mai putine requesturi.
     Clusterele C (1 apel fiecare) au prioritate. Ce nu intra in buget e reluat la rularea urmatoare.
+
+    Clustering CROSS-RUN: itemele noi se grupeaza IMPREUNA cu stirile B recente din
+    state (`existing`) -- doua surse care relateaza acelasi eveniment la ~20-30 min
+    distanta cad in rulari diferite si altfel ar aparea ca stiri duplicate separate.
+    Doar clusterele atinse de items NOI consuma AI; stirea B absorbita e inlocuita de
+    sinteza C (prin `folded` + inlocuirea pe URL in run()).
     """
     used = 0
+    new_urls = {i["url"] for i in new_items}
+    recent_b = [a for a in (existing or [])
+                if a.get("model") == "B" and a.get("url") not in new_urls]
 
     groups = cluster.cluster(new_items)
+    groups = cluster.attach_recent(groups, recent_b)
     clustered = {a["url"] for g in groups for a in g}
     processed, folded = [], set()
 
-    syn = [g for g in groups if len(g) > 1 and cluster.is_synthesis_candidate(g)]
-    singles = [it for g in groups if g not in syn for it in g]
+    syn = [g for g in groups if len(g) > 1 and cluster.is_synthesis_candidate(g)
+           and any(a["url"] in new_urls for a in g)]
+    singles = [it for g in groups if g not in syn for it in g if it["url"] in new_urls]
     singles += [it for it in new_items if it["url"] not in clustered]
 
     # clusterele C intai (1 apel fiecare)
@@ -116,9 +127,12 @@ def run(dry_run: bool = False) -> dict:
     # rezerva cateva apeluri garantate pentru upgrade-ul fallback-urilor vechi,
     # ca sa nu fie infometate cand exista mereu articole noi (umplerea initiala)
     reserve = min(int(os.getenv("UPGRADE_RESERVE", "3")), budget) if provider else 0
-    processed_new, folded, used = process_new(new_items, provider, budget - reserve)
+    processed_new, folded, used = process_new(new_items, provider, budget - reserve, existing=existing)
     processed_new = [a for a in processed_new if not a.get("skip")]
-    combined = [a for a in (existing + processed_new) if a.get("url") not in folded]
+    # inlocuire pe URL: un rep C poate purta URL-ul unei stiri B existente pe care a absorbit-o
+    rep_urls = {a.get("url") for a in processed_new}
+    combined = [a for a in existing
+                if a.get("url") not in folded and a.get("url") not in rep_urls] + processed_new
     upgraded = upgrade_fallbacks(combined, provider, budget - used)
     combined = state.expire(combined)
 

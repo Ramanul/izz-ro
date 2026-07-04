@@ -50,7 +50,9 @@ def cluster(articles: list) -> list:
     recent = _recent(articles)
     clusters = []  # fiecare: {"sig": set_tokeni (uniunea membrilor), "members": [articole]}
     for a in recent:
-        tk = _stemset(a.get("original_title", ""))
+        # fallback pe titlul AI: itemele deja procesate nu mai au original_title
+        # (scrub-ul juridic il sterge), dar trebuie sa poata intra in clustere cross-run
+        tk = _stemset(a.get("original_title") or a.get("title") or "")
         for c in clusters:
             if _similar(tk, c["sig"]):
                 c["members"].append(a)
@@ -59,6 +61,58 @@ def cluster(articles: list) -> list:
         else:
             clusters.append({"sig": set(tk), "members": [a]})
     return [c["members"] for c in clusters]
+
+
+def _strict_match(inter: int, union: int) -> bool:
+    """Pragul de absorbtie cross-run, calibrat pe perechi reale:
+    CFR/Ceara (duplicat real)    3 tokeni / jac 0.50 -> DA
+    Messi vs Ronaldo (diferite)  3 tokeni / jac 0.43 -> NU
+    Ormuz (duplicat real)        5 tokeni / jac 0.63 -> DA
+    Titluri lungi acelasi eveniment pot avea jac mic dar multi tokeni comuni."""
+    if not union:
+        return False
+    jac = inter / union
+    return (inter >= 4 and jac >= 0.40) or (inter == 3 and jac >= 0.50)
+
+
+def _entity_stems(a: dict) -> set:
+    """Stemuri din entitatile AI ale unei stiri (garda anti-sablon)."""
+    return {t[:STEM_LEN] for e in (a.get("entities") or []) for t in title_tokens(e)}
+
+
+def attach_recent(groups: list, candidates: list) -> list:
+    """Ataseaza stiri din rulari ANTERIOARE (deja procesate) la clusterele itemelor
+    noi -- doua surse care relateaza acelasi eveniment la ~20-30 min distanta cad in
+    rulari diferite si altfel raman stiri duplicate separate. Praguri STRICTE, plus
+    garda pe entitati: cronici sportive-sablon ('X invinge Y si avanseaza in optimi')
+    se potrivesc textual desi sunt meciuri diferite -- daca ambele parti au entitati
+    AI si acestea sunt disjuncte, NU se unesc. (Itemele dinainte de extractia de
+    entitati nu au garda -> regula simpla, tranzitoriu.)"""
+    cands = [(c, _stemset(c.get("original_title") or c.get("title") or ""))
+             for c in _recent(candidates)]
+    used: set = set()
+    out = []
+    for g in groups:
+        sig: set = set()
+        ge: set = set()
+        for a in g:
+            sig |= _stemset(a.get("original_title") or a.get("title") or "")
+            ge |= _entity_stems(a)
+        members = list(g)
+        for c, tk in cands:
+            if c["url"] in used or not tk or not sig:
+                continue
+            if not _strict_match(len(tk & sig), len(tk | sig)):
+                continue
+            ce = _entity_stems(c)
+            if ge and ce and not (ge & ce):
+                continue  # potrivire textuala, dar entitati disjuncte -> evenimente diferite
+            members.append(c)
+            used.add(c["url"])
+            sig |= tk
+            ge |= ce
+        out.append(members)
+    return out
 
 
 def is_synthesis_candidate(group: list) -> bool:
