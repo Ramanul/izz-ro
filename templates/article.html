@@ -12,23 +12,17 @@
   <span class="badge{% if a.model == 'C' %} c{% endif %}">{{ a.category }}</span>
   <h1>{{ a.title }}</h1>
   <div class="meta">
-    {% if a.model == 'C' and a.sources %}<span class="source">{{ a.sources | length }} {{ 'sursă' if a.sources | length == 1 else 'surse' }}</span>{% else %}<span class="source">{{ a.source_name }}</span>{% endif %}
     <time datetime="{{ a.published }}">{{ a.published_human }}</time>
   </div>
 
   <p class="body">{% if a.model == 'C' %}{{ a.synthesis }}{% else %}{{ a.teaser }}{% endif %}</p>
 
-  <p class="notice">IZZ.ro reformulează titlul și extrage faptele cu cuvinte proprii — nu republicăm articolul integral. Pentru toate detaliile, mergi la sursă.</p>
-
-  {% if a.model == 'C' and a.sources %}
+  {% set srcs = a.sources if (a.model == 'C' and a.sources) else [{'name': a.source_name, 'url': a.original_link}] %}
   <div class="sources-box">
-    <h3>Surse</h3>
+    <h2>{{ 'Sursă' if srcs | length == 1 else 'Surse' }}</h2>
     <ul>
-      {% for s in a.sources %}<li><a href="{{ s.url }}" target="_blank" rel="noopener noreferrer">{{ s.name }} &rarr;</a></li>{% endfor %}
+      {% for s in srcs %}<li><a href="{{ s.url }}" target="_blank" rel="noopener noreferrer">{{ s.name }} &rarr;</a></li>{% endfor %}
     </ul>
   </div>
-  {% else %}
-  <a class="btn-source" href="{{ a.original_link }}" target="_blank" rel="noopener noreferrer">Citește pe {{ a.source_name }} &rarr;</a>
-  {% endif %}
 </article>
 {% endblock %}
