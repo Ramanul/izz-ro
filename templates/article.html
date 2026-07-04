@@ -21,8 +21,12 @@
   <div class="sources-box">
     <h2>{{ 'Sursă' if srcs | length == 1 else 'Surse' }}</h2>
     <ul>
-      {% for s in srcs %}<li><a href="{{ s.url }}" target="_blank" rel="noopener noreferrer">{{ s.name }} &rarr;</a></li>{% endfor %}
+      {% for s in srcs %}<li><a href="{{ s.url }}" target="_blank" rel="noopener noreferrer">{{ s.name }} &rarr;</a>{% if a.first_source and s.name == a.first_source and srcs | length > 1 %} <span class="first-badge">primul</span>{% endif %}</li>{% endfor %}
     </ul>
   </div>
+  {% if topics %}
+  <p class="topics">Subiecte:
+    {% for s, n in topics %}<a href="{{ base }}/subiect/{{ s }}/">{{ n }}</a>{{ ' · ' if not loop.last }}{% endfor %}</p>
+  {% endif %}
 </article>
 {% endblock %}

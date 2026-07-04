@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% from "_card.html" import card with context %}
+{% block title %}{{ name }} — subiect pe {{ site.name }}{% endblock %}
+{% block description %}Știri despre {{ name }} pe {{ site.name }} — {{ site.tagline }}.{% endblock %}
+{% block head_extra %}
+  <meta name="robots" content="noindex,follow">
+  {% if has_feed %}<link rel="alternate" type="application/rss+xml" title="{{ name }} — {{ site.name }}" href="{{ base }}/subiect/{{ slug }}/feed.xml">{% endif %}
+{% endblock %}
+{% block content %}
+  <h1 class="section-title">Subiect: {{ name }}</h1>
+  {% if has_feed %}
+  <p class="follow"><a href="{{ base }}/subiect/{{ slug }}/feed.xml">Urmărește acest subiect (RSS) &rarr;</a></p>
+  {% endif %}
+  {% if articles %}
+  <section class="grid">
+    {% for a in articles %}{{ card(a) }}{% endfor %}
+  </section>
+  {% else %}
+  <p class="empty">Nicio știre pe acest subiect deocamdată.</p>
+  {% endif %}
+{% endblock %}

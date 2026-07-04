@@ -51,7 +51,20 @@ def expire(articles: list) -> list:
     return kept
 
 
+def _scrub_processed(articles: list) -> None:
+    """Dupa procesarea AI, textele brute preluate din surse (titlu original,
+    descriere) nu mai sunt necesare si NU trebuie sa ramana intr-un repo public:
+    dreptul editorilor de presa (L8/1996 mod. L69/2022) permite doar 'extrase
+    foarte scurte'. Se pastreaza DOAR pe itemele fallback/neprocesate, unde sunt
+    necesare pentru upgrade-ul la AI."""
+    for a in articles:
+        if a.get("processed_by") and a.get("processed_by") != "fallback":
+            a.pop("original_title", None)
+            a.pop("description", None)
+
+
 def save(articles: list) -> None:
+    _scrub_processed(articles)
     articles_sorted = sorted(articles, key=lambda a: a.get("published") or "", reverse=True)
     os.makedirs(os.path.dirname(STATE_PATH), exist_ok=True)
     with open(STATE_PATH, "w", encoding="utf-8") as fh:

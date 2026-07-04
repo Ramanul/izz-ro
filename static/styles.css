@@ -299,3 +299,36 @@ main { max-width: var(--maxw); margin: 0 auto; padding: var(--s-34) var(--s-34);
   .article h1 { font-size: var(--fs-xl); }
 }
 @media (prefers-reduced-motion: reduce) { * { transition: none !important; scroll-behavior: auto !important; } }
+
+/* ---- bara de consimtamant personalizare (opt-in ePrivacy) ---- */
+#izz-consent {
+  position: fixed; bottom: 0; left: 0; right: 0; z-index: 40;
+  background: var(--paper-2); border-top: 2px solid var(--gold);
+  padding: var(--s-13) var(--s-21);
+  display: flex; flex-wrap: wrap; gap: var(--s-13); align-items: center; justify-content: center;
+  box-shadow: 0 -2px 8px rgba(21, 23, 28, .06);
+}
+#izz-consent p { margin: 0; font-size: var(--fs-xs); color: var(--ink-2); max-width: var(--measure); }
+#izz-consent .consent-actions { display: flex; gap: var(--s-8); }
+#izz-consent button {
+  font-family: var(--font-mono); font-size: var(--fs-xs); font-weight: 700;
+  padding: var(--s-8) var(--s-13); cursor: pointer; border-radius: 2px;
+}
+#izz-consent .consent-yes { background: var(--gold-strong); color: #fff; border: 1px solid var(--gold-strong); }
+#izz-consent .consent-no { background: transparent; color: var(--ink-2); border: 1px solid var(--line-strong); }
+
+/* ---- subiecte (graful cunoasterii v1) ---- */
+.topics { font-size: var(--fs-eyebrow); color: var(--ink-3); font-family: var(--font-mono); margin: var(--s-13) 0 0; }
+.topics a, .follow a { display: inline-block; padding: 6px 4px; margin: -4px -2px; }
+.follow { font-size: var(--fs-xs); font-family: var(--font-mono); margin: 0 0 var(--s-21); }
+
+/* ---- /surse/ : originalitate + marcaj "primul" ---- */
+.first-badge {
+  font-family: var(--font-mono); font-size: var(--fs-eyebrow); font-weight: 700;
+  color: var(--gold-strong); text-transform: uppercase; letter-spacing: 1px;
+}
+.page-intro { color: var(--ink-2); max-width: var(--measure); }
+.table-wrap { overflow-x: auto; }
+.stats-table { border-collapse: collapse; width: 100%; max-width: var(--measure); font-size: var(--fs-xs); }
+.stats-table th, .stats-table td { text-align: left; padding: var(--s-8) var(--s-13); border-bottom: 1px solid var(--line); }
+.stats-table th { font-family: var(--font-mono); font-size: var(--fs-eyebrow); text-transform: uppercase; letter-spacing: 1px; color: var(--ink-3); border-bottom: 2px solid var(--ink); }

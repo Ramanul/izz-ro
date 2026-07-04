@@ -37,7 +37,7 @@ class GeminiProvider(Provider):
             "system_instruction": {"parts": [{"text": system}]},
             "contents": [{"parts": [{"text": user}]}],
             "generationConfig": {
-                "temperature": 0.2, "maxOutputTokens": 1024,
+                "temperature": 0.2, "maxOutputTokens": 2048,
                 "responseMimeType": "application/json",
                 "thinkingConfig": {"thinkingBudget": 0},
             },

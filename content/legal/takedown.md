@@ -3,7 +3,7 @@
 IZZ.ro afișează titluri reformulate și rezumate scurte scrise cu cuvinte proprii, cu link către sursă, în acord cu **Legea nr. 8/1996, modificată prin Legea nr. 69/2022**. Nu republicăm articole integrale și nu folosim imagini din surse.
 
 ## Ești deținător de drepturi și vrei eliminarea unui conținut?
-Scrie-ne la **contact@izz.ro**, cu subiectul **„DMCA / Drepturi de autor"**, și include:
+Scrie-ne la **contact@izz.ro**, cu subiectul **„Drepturi de autor"**, și include:
 
 1. Linkul (URL-ul) paginii de pe IZZ.ro;
 2. Identificarea conținutului care îți încalcă drepturile;
