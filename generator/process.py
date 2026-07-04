@@ -234,8 +234,11 @@ def process_cluster(group: list, provider) -> dict | None:
         rep["processed_by"] = "fallback"
         return rep
 
-    block = "\n".join(f"- {a['source_name']}: {a.get('original_title','')} - {a.get('description','')}"
-                      for a in group)
+    # membrii deja procesati (scrubbed) nu mai au textul original -> folosim versiunea AI
+    block = "\n".join(
+        f"- {a['source_name']}: {a.get('original_title') or a.get('title') or ''}"
+        f" - {a.get('description') or a.get('teaser') or ''}"
+        for a in group)
     try:
         raw = provider.complete(SYSTEM_C, USER_C.format(sources_block=block))
         data = _parse_json(raw)
