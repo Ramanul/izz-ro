@@ -29,11 +29,24 @@ def _env() -> Environment:
     )
 
 
+try:
+    from zoneinfo import ZoneInfo
+    _TZ_RO = ZoneInfo("Europe/Bucharest")
+except Exception:  # fara tzdata (ex. Windows fara pachet) -> aproximare EEST
+    from datetime import timedelta
+    _TZ_RO = timezone(timedelta(hours=3))
+
+
 def _human_date(iso: str) -> str:
+    """Ora afisata cititorului = ora Romaniei (published e stocat in UTC).
+    Fara conversie, o stire de la 01:30 noaptea aparea '22:30, ieri'."""
     try:
         dt = datetime.fromisoformat(iso)
     except (ValueError, TypeError):
         return ""
+    if dt.tzinfo is None:
+        dt = dt.replace(tzinfo=timezone.utc)
+    dt = dt.astimezone(_TZ_RO)
     return f"{dt.day} {_RO_MONTHS[dt.month]} {dt.year}, {dt:%H:%M}"
 
 
