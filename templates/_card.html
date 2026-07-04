@@ -7,11 +7,9 @@
     {% if a.significance is defined %}<span class="sig"><b>{{ a.significance }}</b>/10</span>{% endif %}
   </div>
   <p class="summary">{% if a.model == 'C' %}{{ a.synthesis }}{% else %}{{ a.teaser }}{% endif %}</p>
-  {% if a.model == 'C' and a.sources %}
-  <p class="sources-inline"><b>{{ 'Sursă:' if a.sources | length == 1 else 'Surse:' }}</b> {{ a.sources | map(attribute='name') | join(', ') }}</p>
-  {% else %}
-  <p class="sources-inline"><b>Sursă:</b> {{ a.source_name }}</p>
-  {% endif %}
+  {% set card_srcs = a.sources if (a.model == 'C' and a.sources) else [{'name': a.source_name, 'url': a.original_link}] %}
+  <p class="sources-inline"><b>{{ 'Sursă:' if card_srcs | length == 1 else 'Surse:' }}</b>
+    {% for s in card_srcs %}<a href="{{ s.url }}" target="_blank" rel="noopener noreferrer">{{ s.name }}</a>{{ ', ' if not loop.last }}{% endfor %}</p>
   <a class="read-more" href="{{ base }}/{{ a.category }}/{{ a.slug }}/">Citește</a>
 </article>
 {% endmacro %}
