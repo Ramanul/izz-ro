@@ -178,6 +178,37 @@
     "featured": false
   },
   {
+    "url": "https://zf.ro/business-international/maroc-este-prima-echipa-calificata-in-sferturile-cupei-mondiale-de-23188358",
+    "original_link": "https://www.zf.ro/business-international/maroc-este-prima-echipa-calificata-in-sferturile-cupei-mondiale-de-23188358",
+    "source": "zf",
+    "source_name": "Ziarul Financiar",
+    "source_lang": "ro",
+    "title": "Maroc, prima echipă calificată în sferturile Cupei Mondiale",
+    "category": "sport",
+    "published": "2026-07-04T19:04:28+00:00",
+    "model": "C",
+    "sources": [
+      {
+        "name": "Ziarul Financiar",
+        "url": "https://www.zf.ro/business-international/maroc-este-prima-echipa-calificata-in-sferturile-cupei-mondiale-de-23188358"
+      },
+      {
+        "name": "Digi24",
+        "url": "https://www.digi24.ro/campionatul-mondal-de-fotbal-2026/cm-2026-se-stie-prima-echipa-calificata-in-sferturile-campionatului-mondial-maroc-a-surclasat-canada-3847867"
+      }
+    ],
+    "first_source": "Ziarul Financiar",
+    "synthesis": "Echipa națională de fotbal a Marocului a obținut calificarea în sferturile de finală ale Cupei Mondiale, după ce a învins clar selecționata Canadei în prima partidă din faza optimilor de finală. Performanța marchează o premieră pentru Maroc, devenind prima echipă din istoria competiției care ajunge în această etapă.",
+    "entities": [
+      "Maroc",
+      "Cupa Mondială",
+      "Canada"
+    ],
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
     "url": "https://bbc.co.uk/news/articles/c8j2vmzxezro?at_medium=RSS&at_campaign=rss",
     "original_link": "https://www.bbc.co.uk/news/articles/c8j2vmzxezro?at_medium=RSS&at_campaign=rss",
     "source": "bbc_europe",
@@ -14120,53 +14151,6 @@
     "published": "2026-06-28T00:14:11+00:00",
     "model": "B",
     "teaser": "Steve Clarke, antrenorul naționalei Scoției, a renunțat la funcție imediat după ce echipa a fost eliminată de la Campionatul Mondial. Rezultatele grupei au confirmat ieșirea din competiție.",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://digisport.ro/fotbal/cm-2026/la-40-de-ani-luka-modric-a-intrat-in-istorie-4344605",
-    "original_link": "https://www.digisport.ro/fotbal/cm-2026/la-40-de-ani-luka-modric-a-intrat-in-istorie-4344605",
-    "source": "digisport",
-    "source_name": "Digi Sport",
-    "source_lang": "ro",
-    "title": "Luka Modric, cel mai vârstnic debutant la Euro",
-    "category": "sport",
-    "published": "2026-06-28T00:06:37+00:00",
-    "model": "B",
-    "teaser": "Mijlocașul croat Luka Modric a stabilit un nou record la Campionatul European, devenind cel mai în vârstă jucător care participă la un meci din istoria competiției, la vârsta de 40 de ani.",
-    "processed_by": "gemini",
-    "error": "HTTP Error 429: Too Many Requests",
-    "featured": false,
-    "prompt_version": "v2-esenta"
-  },
-  {
-    "url": "https://digisport.ro/fotbal/cm-2026/columbia-portugalia-0-0-acum-pe-digisport-ro-un-egal-nu-le-e-suficient-lusitanilor-pentru-locul-1-4343361",
-    "original_link": "https://www.digisport.ro/fotbal/cm-2026/columbia-portugalia-0-0-acum-pe-digisport-ro-un-egal-nu-le-e-suficient-lusitanilor-pentru-locul-1-4343361",
-    "source": "digisport",
-    "source_name": "Digi Sport",
-    "source_lang": "ro",
-    "title": "Columbia și Portugalia, remiză albă la pauză",
-    "category": "sport",
-    "published": "2026-06-27T23:44:47+00:00",
-    "model": "B",
-    "teaser": "Columbia și Portugalia au început meciul în forță, dar scorul a rămas 0-0 la finalul primei reprize. Partida este transmisă în direct pe digisport.ro.",
-    "processed_by": "gemini",
-    "error": "HTTP Error 429: Too Many Requests",
-    "featured": false,
-    "prompt_version": "v2-esenta"
-  },
-  {
-    "url": "https://digisport.ro/fotbal/cm-2026/out-de-la-cupa-mondiala-singura-echipa-care-nu-a-marcat-niciun-gol-visul-a-fost-naruit-in-minutul-901-4344567",
-    "original_link": "https://www.digisport.ro/fotbal/cm-2026/out-de-la-cupa-mondiala-singura-echipa-care-nu-a-marcat-niciun-gol-visul-a-fost-naruit-in-minutul-901-4344567",
-    "source": "digisport",
-    "source_name": "Digi Sport",
-    "source_lang": "ro",
-    "title": "Canada, eliminată de la Cupa Mondială fără să marcheze",
-    "category": "sport",
-    "published": "2026-06-27T23:38:48+00:00",
-    "model": "B",
-    "teaser": "Canada părăsește Cupa Mondială după ce nu a reușit să înscrie niciun gol în competiție. Eliminarea s-a confirmat în prelungirile meciului decisiv, încheind visul canadian.",
     "processed_by": "gemini",
     "prompt_version": "v2-esenta",
     "featured": false
