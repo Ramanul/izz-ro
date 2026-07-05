@@ -1,5 +1,37 @@
 [
   {
+    "url": "https://zf.ro/auxiliar/netanyahu-de-ziua-independentei-sua-dusmanii-nostri-striga-moarte-23188434",
+    "original_link": "https://www.zf.ro/auxiliar/netanyahu-de-ziua-independentei-sua-dusmanii-nostri-striga-moarte-23188434",
+    "source": "zf",
+    "source_name": "Ziarul Financiar",
+    "source_lang": "ro",
+    "title": "Netanyahu: Israel și SUA au dușmani comuni care atacă valorile lor",
+    "category": "politic",
+    "published": "2026-07-05T01:07:42+00:00",
+    "model": "C",
+    "sources": [
+      {
+        "name": "Ziarul Financiar",
+        "url": "https://www.zf.ro/auxiliar/netanyahu-de-ziua-independentei-sua-dusmanii-nostri-striga-moarte-23188434"
+      },
+      {
+        "name": "G4Media",
+        "url": "https://www.g4media.ro/netanyahu-de-ziua-independentei-sua-dusmanii-nostri-striga-moarte-americii-moarte-israelului.html"
+      }
+    ],
+    "first_source": "Ziarul Financiar",
+    "synthesis": "Prim-ministrul israelian Benjamin Netanyahu a transmis un mesaj video de Ziua Independenței a SUA, subliniind că cele două țări au dușmani comuni. El a afirmat că aceștia strigă \"Moarte Americii! Moarte Israelului!\" și atacă valorile pe care Israelul și SUA le împărtășesc. Mesajul a fost publicat pe platforma X.",
+    "entities": [
+      "Benjamin Netanyahu",
+      "Israel",
+      "Statele Unite"
+    ],
+    "icon": "flag",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
     "url": "https://digisport.ro/fotbal/cm-2026/paraguayenii-nu-s-au-putut-abtine-si-au-oferit-imaginile-serii-la-cupa-mondiala-dictatorul-kylian-mbappe-4359113",
     "original_link": "https://www.digisport.ro/fotbal/cm-2026/paraguayenii-nu-s-au-putut-abtine-si-au-oferit-imaginile-serii-la-cupa-mondiala-dictatorul-kylian-mbappe-4359113",
     "source": "digisport",
@@ -45,19 +77,33 @@
     "source": "digisport",
     "source_name": "Digi Sport",
     "source_lang": "ro",
-    "title": "Paraguay - Franța 0-0 în optimile Cupei Mondiale 2026",
+    "title": "Franța învinge Paraguay și avansează în sferturile Cupei Mondiale 2026",
     "category": "sport",
     "published": "2026-07-04T21:03:43+00:00",
-    "model": "B",
+    "model": "C",
     "teaser": "Meciul din optimile Cupei Mondiale 2026 dintre Paraguay și Franța s-a încheiat la egalitate, scor 0-0. Paraguay a ajuns în această fază după o surpriză majoră în turneu.",
     "entities": [
-      "Paraguay",
       "Franța",
-      "Cupa Mondială 2026"
+      "Paraguay",
+      "Cupa Mondială 2026",
+      "Kylian Mbappé"
     ],
     "processed_by": "gemini",
     "prompt_version": "v2-esenta",
-    "featured": false
+    "featured": false,
+    "sources": [
+      {
+        "name": "Digi Sport",
+        "url": "https://www.digisport.ro/fotbal/cm-2026/paraguay-franta-0-0-acum-in-optimi-la-cupa-mondiala-2026-sud-americanii-vin-dupa-surpriza-turneului-4356349"
+      },
+      {
+        "name": "G4Media",
+        "url": "https://www.g4media.ro/franta-in-sferturile-cupei-mondiale-2026-mbappe-a-decis-meciul-cu-paraguay-din-penalty.html"
+      }
+    ],
+    "first_source": "Digi Sport",
+    "synthesis": "Franța s-a calificat în sferturile de finală ale Cupei Mondiale 2026, învingând Paraguay cu 1-0. Unicul gol a fost marcat de Kylian Mbappé dintr-un penalty, după o analiză VAR. Meciul s-a desfășurat pe Philadelphia Stadium, în fața a mii de spectatori. Paraguay a fost eliminată din competiție.",
+    "icon": "ball-football"
   },
   {
     "url": "https://digisport.ro/fotbal/fotbal-international/l-au-convins-jurgen-klopp-a-zis-da-pentru-marea-revenire-si-s-a-aflat-cat-va-castiga-cel-mai-bine-platit-din-lume-4358853",
@@ -83,18 +129,32 @@
     "source": "digisport",
     "source_name": "Digi Sport",
     "source_lang": "ro",
-    "title": "Kylian Mbappe egalează performanța lui Didier Deschamps",
+    "title": "Mbappe egalează performanța lui Deschamps la Campionatul Mondial",
     "category": "sport",
     "published": "2026-07-04T20:41:00+00:00",
-    "model": "B",
+    "model": "C",
     "teaser": "Atacantul francez Kylian Mbappe a reușit să egaleze o bornă importantă atinsă anterior de Didier Deschamps, marcând un nou capitol în cariera sa.",
     "entities": [
       "Kylian Mbappe",
-      "Didier Deschamps"
+      "Didier Deschamps",
+      "Campionatul Mondial"
     ],
     "processed_by": "gemini",
     "prompt_version": "v2-esenta",
-    "featured": false
+    "featured": false,
+    "sources": [
+      {
+        "name": "Digi Sport",
+        "url": "https://www.digisport.ro/fotbal/cm-2026/kylian-mbappe-l-a-egalat-pe-didier-deschamps-4359053"
+      },
+      {
+        "name": "GSP",
+        "url": "https://www.gsp.ro/international/campionatul-mondial-de-fotbal-2026/kylian-mbappe-franta-selectii-didier-deschamps-956832.html"
+      }
+    ],
+    "first_source": "Digi Sport",
+    "synthesis": "Kylian Mbappe a atins o bornă importantă în cariera sa, egalând performanța lui Didier Deschamps. Atacantul francez, golgheterul Franței la actuala ediție a Campionatului Mondial cu șase goluri, a fost titular în meciul cu Paraguay din optimile de finală.",
+    "icon": "ball-football"
   },
   {
     "url": "https://digisport.ro/fotbal/au-aparut-imaginile-cu-florinel-coman-4359081",
@@ -13704,455 +13764,6 @@
     "synthesis": "În ultimele două partide ale fazei grupelor de la Campionatul Mondial de fotbal 2026, în dimineața zilei de duminică, în jocurile din grupa J, Argentina a făcut încă o dată spectacol cu Leo Messi la timonă. Argentina a învins Iordania cu scorul de 3-1, iar Messi, chiar dacă nu a început meciul ca titular, a …",
     "processed_by": "fallback",
     "error": "HTTP Error 503: Service Unavailable",
-    "featured": false
-  },
-  {
-    "url": "https://digi24.ro/stiri/externe/omul-din-fruntea-armatei-kievului-vazut-ca-un-magician-dupa-contraofensiva-de-la-harkov-obiectivele-de-razboi-ale-lui-sirskii-3834877",
-    "original_link": "https://www.digi24.ro/stiri/externe/omul-din-fruntea-armatei-kievului-vazut-ca-un-magician-dupa-contraofensiva-de-la-harkov-obiectivele-de-razboi-ale-lui-sirskii-3834877",
-    "source": "extern",
-    "source_name": "Digi24 Extern",
-    "source_lang": "ro",
-    "title": "Generalul Sirskîi, aclamat pentru succesul contraofensivei din Harkov",
-    "category": "extern",
-    "published": "2026-06-28T04:00:59+00:00",
-    "model": "C",
-    "sources": [
-      {
-        "name": "Digi24 Extern",
-        "url": "https://www.digi24.ro/stiri/externe/omul-din-fruntea-armatei-kievului-vazut-ca-un-magician-dupa-contraofensiva-de-la-harkov-obiectivele-de-razboi-ale-lui-sirskii-3834877"
-      },
-      {
-        "name": "Digi24",
-        "url": "https://www.digi24.ro/stiri/externe/omul-din-fruntea-armatei-kievului-vazut-ca-un-magician-dupa-contraofensiva-de-la-harkov-obiectivele-de-razboi-ale-lui-sirskii-3834877"
-      }
-    ],
-    "synthesis": "Comandantul suprem al Ucrainei, generalul Oleksandr Sirskîi, a fost lăudat de presa internațională, fiind descris ca un \"magician\" după succesul contraofensivei din regiunea Harkov. Hotărârea și analiza sa rece au fost evidențiate, sugerându-se că victoria a adus o satisfacție personală.",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://digi24.ro/stiri/externe/rusia/cei-doi-piloni-economici-care-sustin-rusia-lui-putin-risca-sa-se-prabuseasca-ce-tara-a-profitat-cel-mai-mult-de-slabiciunea-moscovei-3834633",
-    "original_link": "https://www.digi24.ro/stiri/externe/rusia/cei-doi-piloni-economici-care-sustin-rusia-lui-putin-risca-sa-se-prabuseasca-ce-tara-a-profitat-cel-mai-mult-de-slabiciunea-moscovei-3834633",
-    "source": "extern",
-    "source_name": "Digi24 Extern",
-    "source_lang": "ro",
-    "original_title": "Cei doi piloni economici care susțin Rusia lui Putin riscă să se prăbușească. Ce țară a profitat cel mai mult de slăbiciunea Moscovei",
-    "title": "Cei doi piloni economici care susțin Rusia lui Putin riscă să se prăbușească. Ce țară a profitat cel mai mult de slăbiciunea Moscovei",
-    "description": "Doi dintre principalii stâlpi de rezistență în vreme de război ai Rusiei lui Putin riscă să se prăbușească: petrolul, care asigura un flux constant de bani, și aurul, o alternativă la comerțul internațional bazat pe dolari, devenit între timp o armă folosită de Occident contra Moscovei. Dronele ucrainene distrug acum infrastructura fizică ce susține comerțul cu petrol al Rusiei, în timp ce situația de pe piața financiară a dus la o scădere abruptă a prețului aurului.",
-    "category": "extern",
-    "published": "2026-06-28T04:00:57+00:00",
-    "model": "C",
-    "sources": [
-      {
-        "name": "Digi24 Extern",
-        "url": "https://www.digi24.ro/stiri/externe/rusia/cei-doi-piloni-economici-care-sustin-rusia-lui-putin-risca-sa-se-prabuseasca-ce-tara-a-profitat-cel-mai-mult-de-slabiciunea-moscovei-3834633"
-      },
-      {
-        "name": "Digi24",
-        "url": "https://www.digi24.ro/stiri/externe/rusia/cei-doi-piloni-economici-care-sustin-rusia-lui-putin-risca-sa-se-prabuseasca-ce-tara-a-profitat-cel-mai-mult-de-slabiciunea-moscovei-3834633"
-      }
-    ],
-    "synthesis": "Doi dintre principalii stâlpi de rezistență în vreme de război ai Rusiei lui Putin riscă să se prăbușească: petrolul, care asigura un flux constant de bani, și aurul, o alternativă la comerțul internațional bazat pe dolari, devenit între timp o armă folosită de Occident contra Moscovei. Dronele ucrainene distrug acum infrastructura fizică ce susține comerțul cu petrol al Rusiei, în timp ce situația de pe piața financiară a dus la o scădere abruptă a prețului aurului.",
-    "processed_by": "fallback",
-    "error": "HTTP Error 429: Too Many Requests",
-    "featured": false
-  },
-  {
-    "url": "https://digi24.ro/stiri/externe/un-demnitar-rus-acuza-o-tara-europeana-ca-se-transforma-intr-o-a-doua-ucraina-incearca-in-toate-modurile-posibile-sa-infurie-rusia-3836333",
-    "original_link": "https://www.digi24.ro/stiri/externe/un-demnitar-rus-acuza-o-tara-europeana-ca-se-transforma-intr-o-a-doua-ucraina-incearca-in-toate-modurile-posibile-sa-infurie-rusia-3836333",
-    "source": "extern",
-    "source_name": "Digi24 Extern",
-    "source_lang": "ro",
-    "title": "Rusie avertizează Finlanda: \"A doua Ucraină\" cu amenințări militare",
-    "category": "politic",
-    "published": "2026-06-28T04:00:50+00:00",
-    "model": "C",
-    "sources": [
-      {
-        "name": "Digi24 Extern",
-        "url": "https://www.digi24.ro/stiri/externe/un-demnitar-rus-acuza-o-tara-europeana-ca-se-transforma-intr-o-a-doua-ucraina-incearca-in-toate-modurile-posibile-sa-infurie-rusia-3836333"
-      },
-      {
-        "name": "Digi24",
-        "url": "https://www.digi24.ro/stiri/externe/un-demnitar-rus-acuza-o-tara-europeana-ca-se-transforma-intr-o-a-doua-ucraina-incearca-in-toate-modurile-posibile-sa-infurie-rusia-3836333"
-      }
-    ],
-    "synthesis": "Un oficial rus din Duma de Stat a acuzat Finlanda că devine \"o a doua Ucraină\", afirmând că țara încearcă să provoace Rusia. Oficialul a avertizat că Moscova dispune de capacitatea militară de a distruge jumătate din teritoriul finlandez. Aceste declarații au fost raportate de Kyiv Independent și preluate de Digi24.",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://digi24.ro/stiri/sci-tech/natura-si-mediu/marea-care-dispare-cea-mai-vasta-intindere-de-apa-care-nu-comunica-cu-oceanul-a-pierdut-o-suprafata-cat-sicilia-care-sunt-cauzele-3835003",
-    "original_link": "https://www.digi24.ro/stiri/sci-tech/natura-si-mediu/marea-care-dispare-cea-mai-vasta-intindere-de-apa-care-nu-comunica-cu-oceanul-a-pierdut-o-suprafata-cat-sicilia-care-sunt-cauzele-3835003",
-    "source": "extern",
-    "source_name": "Digi24 Extern",
-    "source_lang": "ro",
-    "original_title": "Marea care dispare: cea mai vastă întindere de apă care nu comunică cu oceanul a pierdut o suprafața cât Sicilia. Care sunt cauzele",
-    "title": "Marea care dispare: cea mai vastă întindere de apă care nu comunică cu oceanul a pierdut o suprafața cât Sicilia. Care sunt cauzele",
-    "description": "Cea mai mare întindere de apă înconjurată de pământ de pe planetă se micșorează. Nu fluctuează, nu intră într-un alt ciclu natural, ci se micșorează. Timp de zeci de ani, oamenii de știință și factorii de decizie au considerat schimbările ca făcând parte din variabilitatea naturală a bazinului. Nivelul apei din mare a crescut și a scăzut dintotdeauna.",
-    "category": "extern",
-    "published": "2026-06-28T04:00:40+00:00",
-    "model": "C",
-    "sources": [
-      {
-        "name": "Digi24 Extern",
-        "url": "https://www.digi24.ro/stiri/sci-tech/natura-si-mediu/marea-care-dispare-cea-mai-vasta-intindere-de-apa-care-nu-comunica-cu-oceanul-a-pierdut-o-suprafata-cat-sicilia-care-sunt-cauzele-3835003"
-      },
-      {
-        "name": "Digi24",
-        "url": "https://www.digi24.ro/stiri/sci-tech/natura-si-mediu/marea-care-dispare-cea-mai-vasta-intindere-de-apa-care-nu-comunica-cu-oceanul-a-pierdut-o-suprafata-cat-sicilia-care-sunt-cauzele-3835003"
-      }
-    ],
-    "synthesis": "Cea mai mare întindere de apă înconjurată de pământ de pe planetă se micșorează. Nu fluctuează, nu intră într-un alt ciclu natural, ci se micșorează. Timp de zeci de ani, oamenii de știință și factorii de decizie au considerat schimbările ca făcând parte din variabilitatea naturală a bazinului. Nivelul apei din mare a crescut și a scăzut dintotdeauna.",
-    "processed_by": "fallback",
-    "error": "HTTP Error 429: Too Many Requests",
-    "featured": false
-  },
-  {
-    "url": "https://digi24.ro/stiri/externe/cum-au-schimbat-trei-luni-de-razboi-regiunea-golfului-persic-pentru-totdeauna-nyt-3834827",
-    "original_link": "https://www.digi24.ro/stiri/externe/cum-au-schimbat-trei-luni-de-razboi-regiunea-golfului-persic-pentru-totdeauna-nyt-3834827",
-    "source": "extern",
-    "source_name": "Digi24 Extern",
-    "source_lang": "ro",
-    "title": "Țările arabe din Golf își redefinesc strategiile din cauza acordului SUA-Iran",
-    "category": "politic",
-    "published": "2026-06-28T04:00:33+00:00",
-    "model": "B",
-    "teaser": "Țările din Golf își adaptează apărarea, economia și rutele comerciale. Acordul SUA-Iran le lasă vulnerabile, forțând o regândire strategică profundă în regiune.",
-    "processed_by": "gemini",
-    "error": "HTTP Error 429: Too Many Requests",
-    "featured": false,
-    "prompt_version": "v2-esenta"
-  },
-  {
-    "url": "https://digi24.ro/stiri/externe/mapamond/ziua-in-care-patru-bombe-nucleare-au-cazut-pe-teritoriul-spaniei-o-tragedie-aviatica-ale-carei-urmari-se-simt-si-60-de-ani-mai-tarziu-3829397",
-    "original_link": "https://www.digi24.ro/stiri/externe/mapamond/ziua-in-care-patru-bombe-nucleare-au-cazut-pe-teritoriul-spaniei-o-tragedie-aviatica-ale-carei-urmari-se-simt-si-60-de-ani-mai-tarziu-3829397",
-    "source": "extern",
-    "source_name": "Digi24 Extern",
-    "source_lang": "ro",
-    "title": "Bombe nucleare americane au căzut pe teritoriul Spaniei în 1966",
-    "category": "extern",
-    "published": "2026-06-28T04:00:31+00:00",
-    "model": "B",
-    "teaser": "Un accident aviatic a dus la prăbușirea a patru bombe nucleare în Spania. Două s-au spart la impact, contaminând solul și afectând sănătatea veteranilor implicați în curățenie.",
-    "processed_by": "gemini",
-    "error": "HTTP Error 429: Too Many Requests",
-    "featured": false,
-    "prompt_version": "v2-esenta"
-  },
-  {
-    "url": "https://digi24.ro/stiri/externe/mapamond/avem-nevoie-de-ajutor-venezuelenii-critica-reactia-lenta-autoritatilor-dupa-cutremurele-care-au-devastat-tara-3836535",
-    "original_link": "https://www.digi24.ro/stiri/externe/mapamond/avem-nevoie-de-ajutor-venezuelenii-critica-reactia-lenta-autoritatilor-dupa-cutremurele-care-au-devastat-tara-3836535",
-    "source": "extern",
-    "source_name": "Digi24 Extern",
-    "source_lang": "ro",
-    "title": "Locuitorii din Venezuela huiduie oficiali după cutremure, cerând ajutor",
-    "category": "politic",
-    "published": "2026-06-28T04:00:20+00:00",
-    "model": "B",
-    "teaser": "Locuitorii din Caracas, afectați de cutremure, au huiduit-o pe lidera interimară Delcy Rodriguez, acuzând guvernul de lipsă de acțiune și reacție lentă în sprijinirea victimelor prinse sub dărâmături.",
-    "processed_by": "gemini",
-    "error": "HTTP Error 429: Too Many Requests",
-    "featured": false,
-    "prompt_version": "v2-esenta"
-  },
-  {
-    "url": "https://gsp.ro/international/campionatul-mondial-de-fotbal-2026/roberto-martinez-columbia-portugalia-campionatul-mondial-953981.html",
-    "original_link": "https://www.gsp.ro/international/campionatul-mondial-de-fotbal-2026/roberto-martinez-columbia-portugalia-campionatul-mondial-953981.html",
-    "source": "gsp",
-    "source_name": "GSP",
-    "source_lang": "ro",
-    "title": "Martinez: Portugalia a terminat pe locul 2, dar fanii pot fi mândri",
-    "category": "sport",
-    "published": "2026-06-28T03:00:25+00:00",
-    "model": "B",
-    "teaser": "Selecționerul Portugaliei, Roberto Martinez, a lăudat efortul echipei după remiza cu Columbia (0-0), care a dus la clasarea pe locul 2 în grupă. Martinez crede că echipa va atinge potențialul maxim.",
-    "processed_by": "gemini",
-    "error": "HTTP Error 429: Too Many Requests",
-    "featured": false,
-    "prompt_version": "v2-esenta"
-  },
-  {
-    "url": "https://digisport.ro/fotbal/cm-2026/roberto-martinez-nu-a-ezitat-dupa-ce-portugalia-a-remiat-impotriva-columbiei-si-a-terminat-grupa-pe-locul-2-4344841",
-    "original_link": "https://www.digisport.ro/fotbal/cm-2026/roberto-martinez-nu-a-ezitat-dupa-ce-portugalia-a-remiat-impotriva-columbiei-si-a-terminat-grupa-pe-locul-2-4344841",
-    "source": "digisport",
-    "source_name": "Digi Sport",
-    "source_lang": "ro",
-    "title": "Martinez explică remiza Portugaliei cu Columbia și locul 2 în grupă",
-    "category": "sport",
-    "published": "2026-06-28T02:53:19+00:00",
-    "model": "B",
-    "teaser": "Selecționerul Portugaliei, Roberto Martinez, a comentat rezultatul de egalitate cu Columbia, care a plasat echipa pe poziția secundă în clasamentul grupei. El a oferit explicații clare după meci.",
-    "processed_by": "gemini",
-    "error": "HTTP Error 429: Too Many Requests",
-    "featured": false,
-    "prompt_version": "v2-esenta"
-  },
-  {
-    "url": "https://digisport.ro/fotbal/cm-2026/fara-indoiala-presa-din-portugalia-nu-s-a-ferit-dupa-ce-lusitanii-au-remizat-cu-columbia-4344781",
-    "original_link": "https://www.digisport.ro/fotbal/cm-2026/fara-indoiala-presa-din-portugalia-nu-s-a-ferit-dupa-ce-lusitanii-au-remizat-cu-columbia-4344781",
-    "source": "digisport",
-    "source_name": "Digi Sport",
-    "source_lang": "ro",
-    "title": "Presa portugheză critică după remiza cu Columbia",
-    "category": "sport",
-    "published": "2026-06-28T02:25:28+00:00",
-    "model": "B",
-    "teaser": "Jurnaliștii din Portugalia au reacționat vehement după egalul echipei naționale cu Columbia. Titlurile sugerează nemulțumire față de performanța lusitanilor.",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://digisport.ro/fotbal/cm-2026/cristiano-ronaldo-a-intrat-in-istoria-neagra-a-cupei-mondiale-dupa-partida-cu-columbia-4344725",
-    "original_link": "https://www.digisport.ro/fotbal/cm-2026/cristiano-ronaldo-a-intrat-in-istoria-neagra-a-cupei-mondiale-dupa-partida-cu-columbia-4344725",
-    "source": "digisport",
-    "source_name": "Digi Sport",
-    "source_lang": "ro",
-    "title": "Ronaldo, primul fotbalist eliminat de două ori la Mondiale",
-    "category": "sport",
-    "published": "2026-06-28T02:01:00+00:00",
-    "model": "B",
-    "teaser": "Cristiano Ronaldo a stabilit un record negativ la Cupa Mondială, fiind eliminat pentru a doua oară în carieră. Performanța sa a avut loc în timpul meciului cu Columbia.",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://politico.com/live-updates/2026/06/26/world-cup-2026/iran-egypt-pride-match-00979082",
-    "original_link": "https://www.politico.com/live-updates/2026/06/26/world-cup-2026/iran-egypt-pride-match-00979082?utm_source=RSS_Feed&utm_medium=RSS&utm_campaign=RSS_Syndication",
-    "source": "politico_eu",
-    "source_name": "Politico EU",
-    "source_lang": "en",
-    "title": "Eveniment LGBTQ+ la Lumen Field, umbrit de simboluri naționaliste iraniene",
-    "category": "sport",
-    "published": "2026-06-28T02:00:00+00:00",
-    "model": "B",
-    "teaser": "Organizatorii sperau la o prezență masivă a comunității LGBTQ+ la un meci la Lumen Field, dar au fost depășiți numeric de steaguri și simboluri naționaliste iraniene, inclusiv cele asociate cu monarhia.",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://digisport.ro/fotbal/cm-2026/dr-congo-uzbekistan-3-1-africanii-au-intors-scorul-si-s-au-calificat-pentru-prima-oara-in-16-imi-4343475",
-    "original_link": "https://www.digisport.ro/fotbal/cm-2026/dr-congo-uzbekistan-3-1-africanii-au-intors-scorul-si-s-au-calificat-pentru-prima-oara-in-16-imi-4343475",
-    "source": "digisport",
-    "source_name": "Digi Sport",
-    "source_lang": "ro",
-    "title": "RD Congo, victorie în premieră în 16-imi după o revenire spectaculoasă",
-    "category": "sport",
-    "published": "2026-06-28T01:42:26+00:00",
-    "model": "B",
-    "teaser": "Reprezentativa RD Congo a învins Uzbekistan cu 3-1, reușind o revenire impresionantă. Această victorie marchează prima calificare a echipei africane în faza optimilor de finală a competiției.",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://libertatea.ro/sport/program-meciuri-rezultate-campionatul-mondial-de-fotbal-2026-ore-televizare-antena-1-5760236",
-    "original_link": "https://www.libertatea.ro/sport/program-meciuri-rezultate-campionatul-mondial-de-fotbal-2026-ore-televizare-antena-1-5760236",
-    "source": "libertatea",
-    "source_name": "Libertatea",
-    "source_lang": "ro",
-    "title": "CM 2026: Belgia și Uruguay în optimi, Capul Verde surprinde",
-    "category": "sport",
-    "published": "2026-06-28T01:35:00+00:00",
-    "model": "B",
-    "teaser": "Campionatul Mondial de Fotbal 2026, găzduit de SUA, Mexic și Canada, continuă cu meciuri decisive în grupe. Belgia și Uruguay avansează, în timp ce Capul Verde se califică în premieră în optimile de finală.",
-    "processed_by": "gemini",
-    "error": "HTTP Error 429: Too Many Requests",
-    "featured": false,
-    "prompt_version": "v2-esenta"
-  },
-  {
-    "url": "https://digisport.ro/fotbal/cm-2026/columbia-portugalia-0-0-lusitanii-termina-pe-locul-secund-si-vor-intalni-croatia-in-16-imi-4343361",
-    "original_link": "https://www.digisport.ro/fotbal/cm-2026/columbia-portugalia-0-0-lusitanii-termina-pe-locul-secund-si-vor-intalni-croatia-in-16-imi-4343361",
-    "source": "digisport",
-    "source_name": "Digi Sport",
-    "source_lang": "ro",
-    "title": "Portugalia, egal cu Columbia, merge în optimi contra Croației",
-    "category": "sport",
-    "published": "2026-06-28T01:31:00+00:00",
-    "model": "B",
-    "teaser": "Naționala Portugaliei a remizat 0-0 cu Columbia, asigurându-și locul secund în grupă. Următorul adversar din optimile de finală va fi selecționata Croației.",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://prosport.ro/campionatul-mondial-2026/veteranul-orgolios-rastoarna-rusinea-din-missouri-cine-se-califica-la-aceste-scoruri-in-algeria-austria-si-iordania-argentina-cu-istvan-kovacs-arbitru-clasament-live-grupa-j-la-20471935",
-    "original_link": "https://www.prosport.ro/campionatul-mondial-2026/veteranul-orgolios-rastoarna-rusinea-din-missouri-cine-se-califica-la-aceste-scoruri-in-algeria-austria-si-iordania-argentina-cu-istvan-kovacs-arbitru-clasament-live-grupa-j-la-20471935",
-    "source": "prosport",
-    "source_name": "ProSport",
-    "source_lang": "ro",
-    "title": "Istvan Kovacs a arbitrat meciuri decisive la CM 2026",
-    "category": "sport",
-    "published": "2026-06-28T01:30:36+00:00",
-    "model": "C",
-    "sources": [
-      {
-        "name": "GSP",
-        "url": "https://www.gsp.ro/international/campionatul-mondial-de-fotbal-2026/iordania-argentina-algeria-austria-grupa-j-campionatul-mondial-953974.html"
-      },
-      {
-        "name": "Digi Sport",
-        "url": "https://www.digisport.ro/fotbal/cm-2026/istvan-kovacs-a-luat-decizia-fara-sa-stea-pe-ganduri-in-iordania-argentina-iar-ce-a-urmat-e-o-adevarata-bijuterie-4344817"
-      },
-      {
-        "name": "ProSport",
-        "url": "https://www.prosport.ro/campionatul-mondial-2026/luka-modric-a-refuzat-aranjamentul-cu-cine-joaca-anglia-in-16-imi-si-cine-s-a-calificat-din-grupa-l-la-cupa-mondiala-20471418"
-      }
-    ],
-    "synthesis": "Istvan Kovacs a condus ultimele partide din grupa J a Campionatului Mondial 2026: Algeria - Austria și Iordania - Argentina. Argentina, deja calificată, a întâlnit echipa arbitrată de român. În paralel, s-au disputat și meciuri din grupa L, unde Anglia și Croația s-au calificat în optimi.",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://prosport.ro/campionatul-mondial-2026/rusinea-din-missouri-sau-magia-fotbalului-cine-s-a-calificat-dupa-algeria-austria-3-3-si-iordania-argentina-1-3-arbitrat-de-istvan-kovacs-din-grupa-j-la-cupa-mondiala-20471935",
-    "original_link": "https://www.prosport.ro/campionatul-mondial-2026/rusinea-din-missouri-sau-magia-fotbalului-cine-s-a-calificat-dupa-algeria-austria-3-3-si-iordania-argentina-1-3-arbitrat-de-istvan-kovacs-din-grupa-j-la-cupa-mondiala-20471935",
-    "source": "prosport",
-    "source_name": "ProSport",
-    "source_lang": "ro",
-    "original_title": "CM 2026 Rușinea din Missouri sau magia fotbalului? Cine s-a calificat după Algeria – Austria 3-3 și Iordania – Argentina 1-3 arbitrat de Istvan Kovacs din grupa J la Cupa Mondială",
-    "title": "CM 2026 Rușinea din Missouri sau magia fotbalului? Cine s-a calificat după Algeria – Austria 3-3 și Iordania – Argentina 1-3 arbitrat de Istvan Kovacs din grupa J la Cupa Mondială",
-    "description": "Runda decisivă s-a încheiat în grupe la Cupa Mondială 2026 cu Algeria – Austria și Iordania – Argentina, arbitrat de românul Istvan Kovacs, în grupa J. Mai jos toate calculele calificării, echipele de start, clasamentul și desfășurarea liveblog a partidelor. Argentina este deja câștigătoarea grupei și va juca în 16-imi cu un loc trei, vom",
-    "category": "sport",
-    "published": "2026-06-28T01:30:36+00:00",
-    "model": "C",
-    "sources": [
-      {
-        "name": "GSP",
-        "url": "https://www.gsp.ro/international/campionatul-mondial-de-fotbal-2026/iordania-argentina-algeria-austria-grupa-j-campionatul-mondial-953974.html"
-      },
-      {
-        "name": "Digi Sport",
-        "url": "https://www.digisport.ro/fotbal/cm-2026/stim-programul-16-imilor-de-la-cupa-mondiala-2026-cum-se-imperecheaza-mai-departe-echipele-4344965"
-      },
-      {
-        "name": "ProSport",
-        "url": "https://www.prosport.ro/campionatul-mondial-2026/luka-modric-a-refuzat-aranjamentul-cu-cine-joaca-anglia-in-16-imi-si-cine-s-a-calificat-din-grupa-l-la-cupa-mondiala-20471418"
-      },
-      {
-        "name": "Spotmedia",
-        "url": "https://spotmedia.ro/stiri/sport/cupa-mondiala-2026-leo-messi-face-inca-o-data-spectacol-pentru-argentina-algeria-si-austria-o-dau-la-pace"
-      },
-      {
-        "name": "G4Media",
-        "url": "https://www.g4media.ro/messi-devine-primul-jucator-din-lume-care-inscrie-in-sapte-meciuri-consecutive-la-cupa-mondiala-dupa-golul-cu-iordania-argentina-se-califica-dupa-3-victorii-in-grupa.html"
-      }
-    ],
-    "synthesis": "Runda decisivă s-a încheiat în grupe la Cupa Mondială 2026 cu Algeria – Austria și Iordania – Argentina, arbitrat de românul Istvan Kovacs, în grupa J. Mai jos toate calculele calificării, echipele de start, clasamentul și desfășurarea liveblog a partidelor. Argentina este deja câștigătoarea grupei și va juca în 16-imi cu un loc trei, vom",
-    "processed_by": "fallback",
-    "error": "HTTP Error 503: Service Unavailable",
-    "featured": false
-  },
-  {
-    "url": "https://prosport.ro/campionatul-mondial-2026/cu-cine-joaca-portugalia-lui-cristiano-ronaldo-in-16-imi-la-cupa-mondiala-clasament-final-grupa-k-echipele-calificate-si-adversarii-din-faza-urmatoare-20471442",
-    "original_link": "https://www.prosport.ro/campionatul-mondial-2026/cu-cine-joaca-portugalia-lui-cristiano-ronaldo-in-16-imi-la-cupa-mondiala-clasament-final-grupa-k-echipele-calificate-si-adversarii-din-faza-urmatoare-20471442",
-    "source": "prosport",
-    "source_name": "ProSport",
-    "source_lang": "ro",
-    "title": "Portugalia lui Ronaldo se califică în optimile CM 2026",
-    "category": "sport",
-    "published": "2026-06-28T01:30:18+00:00",
-    "model": "B",
-    "teaser": "Portugalia a obținut calificarea în optimile de finală ale Cupei Mondiale 2026, după un meci tensionat cu Columbia. Echipa lui Cristiano Ronaldo își va afla adversarul din faza următoare după finalizarea tuturor meciurilor din grupe.",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://gsp.ro/international/campionatul-mondial-de-fotbal-2026/croatia-zlatko-dalic-campionatul-mondial-ghana-reactie-953964.html",
-    "original_link": "https://www.gsp.ro/international/campionatul-mondial-de-fotbal-2026/croatia-zlatko-dalic-campionatul-mondial-ghana-reactie-953964.html",
-    "source": "gsp",
-    "source_name": "GSP",
-    "source_lang": "ro",
-    "title": "Croația s-a calificat în optimile Mondialului după victoria cu Ghana",
-    "category": "sport",
-    "published": "2026-06-28T01:14:37+00:00",
-    "model": "B",
-    "teaser": "Selecționerul Zlatko Dalic a confirmat revenirea Croației la stilul de joc obișnuit, după ce echipa a învins Ghana cu 2-1, asigurându-și locul în optimile Campionatului Mondial.",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://digisport.ro/fotbal/cm-2026/anuntul-facut-de-thomas-tuchel-dupa-2-0-cu-panama-o-munca-foarte-grea-4344659",
-    "original_link": "https://www.digisport.ro/fotbal/cm-2026/anuntul-facut-de-thomas-tuchel-dupa-2-0-cu-panama-o-munca-foarte-grea-4344659",
-    "source": "digisport",
-    "source_name": "Digi Sport",
-    "source_lang": "ro",
-    "title": "Tuchel: \"Muncă grea\" după victoria Germaniei cu Panama",
-    "category": "sport",
-    "published": "2026-06-28T01:04:33+00:00",
-    "model": "B",
-    "teaser": "Selecționerul Germaniei, Thomas Tuchel, a declarat că victoria cu 2-0 împotriva Panamei a fost rezultatul unei \"munci foarte grele\", subliniind dificultatea meciului.",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://digisport.ro/fotbal/cm-2026/dr-congo-uzbekistan-0-1-acum-pe-digisport-ro-golul-africanilor-este-anulat-pentru-un-fault-4343475",
-    "original_link": "https://www.digisport.ro/fotbal/cm-2026/dr-congo-uzbekistan-0-1-acum-pe-digisport-ro-golul-africanilor-este-anulat-pentru-un-fault-4343475",
-    "source": "digisport",
-    "source_name": "Digi Sport",
-    "source_lang": "ro",
-    "title": "Uzbekistan conduce DR Congo cu 1-0 după un gol anulat",
-    "category": "sport",
-    "published": "2026-06-28T00:39:58+00:00",
-    "model": "B",
-    "teaser": "Meciul dintre DR Congo și Uzbekistan este în desfășurare, scorul fiind 1-0 pentru Uzbekistan. Un gol marcat de echipa africană a fost invalidat de arbitru din cauza unei faulturi în atac.",
-    "processed_by": "gemini",
-    "error": "HTTP Error 429: Too Many Requests",
-    "featured": false,
-    "prompt_version": "v2-esenta"
-  },
-  {
-    "url": "https://gsp.ro/international/campionatul-mondial-de-fotbal-2026/anglia-harry-kane-record-goluri-campionatul-mondial-gary-lineker-953952.html",
-    "original_link": "https://www.gsp.ro/international/campionatul-mondial-de-fotbal-2026/anglia-harry-kane-record-goluri-campionatul-mondial-gary-lineker-953952.html",
-    "source": "gsp",
-    "source_name": "GSP",
-    "source_lang": "ro",
-    "title": "Harry Kane, noul golgheter all-time al Angliei la Mondiale",
-    "category": "sport",
-    "published": "2026-06-28T00:38:53+00:00",
-    "model": "B",
-    "teaser": "Harry Kane a marcat al 11-lea gol pentru Anglia la Campionatul Mondial, depășind recordul lui Gary Lineker. Atacantul a contribuit decisiv la victoria împotriva Panama, consolidându-și poziția de lider.",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://digisport.ro/fotbal/cm-2026/live-blog-cupa-mondiala-2026-ziua-17-cristiano-ronaldo-a-intrat-in-scena-istvan-kovacs-la-iordania-argentina-4343201",
-    "original_link": "https://www.digisport.ro/fotbal/cm-2026/live-blog-cupa-mondiala-2026-ziua-17-cristiano-ronaldo-a-intrat-in-scena-istvan-kovacs-la-iordania-argentina-4343201",
-    "source": "digisport",
-    "source_name": "Digi Sport",
-    "source_lang": "ro",
-    "title": "Ronaldo debutează la Cupa Mondială 2026; Kovacs arbitrează Iordania - Argentina",
-    "category": "sport",
-    "published": "2026-06-28T00:35:52+00:00",
-    "model": "B",
-    "teaser": "Ziua 17 a Cupei Mondiale 2026 aduce pe teren starul portughez Cristiano Ronaldo. Între timp, arbitrajul meciului dintre Iordania și Argentina va fi condus de românul Istvan Kovacs.",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://gsp.ro/international/campionatul-mondial-de-fotbal-2026/scotia-steve-clarke-selectioner-demisie-953953.html",
-    "original_link": "https://www.gsp.ro/international/campionatul-mondial-de-fotbal-2026/scotia-steve-clarke-selectioner-demisie-953953.html",
-    "source": "gsp",
-    "source_name": "GSP",
-    "source_lang": "ro",
-    "title": "Selecționerul Scoției a demisionat după eliminarea de la Mondial",
-    "category": "sport",
-    "published": "2026-06-28T00:14:11+00:00",
-    "model": "B",
-    "teaser": "Steve Clarke, antrenorul naționalei Scoției, a renunțat la funcție imediat după ce echipa a fost eliminată de la Campionatul Mondial. Rezultatele grupei au confirmat ieșirea din competiție.",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
     "featured": false
   }
 ]
