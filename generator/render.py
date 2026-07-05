@@ -350,8 +350,8 @@ def build(articles: list, mod: dict | None = None) -> None:
             topics = [(slugify(e)[:60], e) for e in (a.get("entities") or [])
                       if slugify(e)[:60] in ents]
             og_image = None
-            if covers.generate(a, os.path.join(OUT_DIR, cat, a["slug"], "cover.png")):
-                og_image = f"{config.SITE['url']}/{cat}/{a['slug']}/cover.png"
+            if covers.generate(a, os.path.join(OUT_DIR, cat, a["slug"], "cover.jpg")):
+                og_image = f"{config.SITE['url']}/{cat}/{a['slug']}/cover.jpg"
             jsonld = _article_jsonld(a)
             if og_image:
                 jsonld["image"] = [og_image]

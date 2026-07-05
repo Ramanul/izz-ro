@@ -1,14 +1,16 @@
-"""Coperti generative per articol (og:image) — grafica proprie, zero surse externe.
+"""Coperti editoriale per articol (og:image) — v3 'dark editorial'.
 
-v2 'rafinata': supersampling 2x (linii netede), spirala de aur ca semnatura,
-motive supradimensionate taiate de margine (tensiune vizuala), transparente
-stratificate si o RAMA distincta per categorie — sport dinamic, tech precis,
-extern cu meridiane, politic solemn, economic ascendent, general broadsheet.
-Semnatura de ediție (hash-ul seed-ului) in colt, ca numerotarea unei serigrafii.
-
-Pictogramele raman alese determinist (categorie + entitati AI + cuvinte-cheie);
-fara potrivire clara -> fallback abstract seeded (niciodata o pictograma fortata
-gresit). Orice eroare -> False, articolul pastreaza og-image static.
+Fundatie profesionista, 100% legala si offline:
+- tipografie: Playfair Display 800 (OFL, fontul masthead-ului site-ului)
+- iconografie: Tabler Icons (MIT), 122 pictograme desenate de designeri,
+  pre-rasterizate in generator/assets/icons/ si colorate in auriu la compunere
+- compozitie: fond ink cu gradient, arta generativa din arce phi translucide
+  (stil distinct per categorie), 'bokeh' Fibonacci, icoana cu halo difuz --
+  TOATE variate din seed-ul articolului: doua stiri cu aceeasi icoana au
+  compozitii vizibil diferite
+- selectie: icoana aleasa de AI (campul 'icon', zero apeluri noi) sau, in lipsa,
+  harta de cuvinte-cheie; fallback estetic: monograma Playfair aurie
+- siguranta: orice eroare -> False, articolul pastreaza og-image static
 """
 import hashlib
 import math
@@ -16,42 +18,50 @@ import os
 import re
 
 try:
-    from PIL import Image, ImageDraw, ImageFont
-except ImportError:                      # Pillow lipsa -> fara coperti, build-ul merge
+    from PIL import Image, ImageDraw, ImageFilter, ImageFont
+except ImportError:
     Image = None
 
-PAPER2, INK, INK2 = "#ffffff", "#15171c", "#4d5562"
-GOLD, GOLD_STRONG, GOLD_WASH, LINE = "#c9a227", "#8b6918", "#faf5e6", "#e4e7ec"
-GOLD_A = (201, 162, 39)                   # gold ca tuplu, pentru straturi cu alpha
+INK_TOP, INK_BOT = (26, 28, 34), (13, 14, 19)
+PAPER = "#f6f7f9"
+GOLD = (201, 162, 39)
+GOLD_HEX, GOLD_STRONG = "#c9a227", "#8b6918"
+MUTED = "#8b8fa0"                          # text secundar pe fond inchis (AA)
 PHI = 1.618
-W, H = 1200, 630                          # standardul og:image
-SS = 2                                    # supersampling: desenam 2x, redimensionam LANCZOS
+W, H = 1200, 630
+SS = 2
 W2, H2 = W * SS, H * SS
 
-_FONT_DIRS = [
-    "/usr/share/fonts/truetype/dejavu",
-    "/usr/share/fonts/dejavu",
-    "C:/Windows/Fonts",
-]
+_ASSETS = os.path.join(os.path.dirname(os.path.abspath(__file__)), "assets")
 _FONT_CACHE: dict = {}
+_ICON_CACHE: dict = {}
 
 
-def _font(bold_serif: bool, size: int):
-    key = (bold_serif, size)
+def _font(kind: str, size: int):
+    key = (kind, size)
     if key in _FONT_CACHE:
         return _FONT_CACHE[key]
-    names = ["DejaVuSerif-Bold.ttf"] if bold_serif else ["DejaVuSansMono.ttf", "consola.ttf"]
+    paths = {
+        "display": [os.path.join(_ASSETS, "PlayfairDisplay_800ExtraBold.ttf")],
+        "mono": ["/usr/share/fonts/truetype/dejavu/DejaVuSansMono.ttf",
+                 "C:/Windows/Fonts/consola.ttf"],
+    }[kind]
     f = None
-    for d in _FONT_DIRS:
-        for n in names:
-            p = os.path.join(d, n)
-            if os.path.exists(p):
-                f = ImageFont.truetype(p, size)
-                break
-        if f:
+    for p in paths:
+        if os.path.exists(p):
+            f = ImageFont.truetype(p, size)
             break
     _FONT_CACHE[key] = f or ImageFont.load_default()
     return _FONT_CACHE[key]
+
+
+def _icon_img(name: str):
+    if name in _ICON_CACHE:
+        return _ICON_CACHE[name]
+    p = os.path.join(_ASSETS, "icons", f"{name}.png")
+    img = Image.open(p).convert("RGBA") if os.path.exists(p) else None
+    _ICON_CACHE[name] = img
+    return img
 
 
 _DIA = str.maketrans("ăâîșțĂÂÎȘȚşţŞŢ", "aaistAAISTstST")
@@ -61,194 +71,197 @@ def _norm(s: str) -> str:
     return (s or "").translate(_DIA).lower()
 
 
-# ---- motive (draw pe strat RGBA, coordonate 2x) ---------------------------
-def _m_persoana(d, cx, cy, r):
-    d.ellipse([cx - r * .42, cy - r, cx + r * .42, cy - r * .16],
-              outline=GOLD_STRONG, width=10 * SS)
-    d.arc([cx - r, cy - r * .1, cx + r, cy + r * 1.6], 200, 340,
-          fill=GOLD_STRONG, width=10 * SS)
-    d.ellipse([cx - r * .8, cy - r * 1.25, cx - r * .45, cy - r * .9],
-              fill=(*GOLD_A, 110))                       # aura discreta
-    d.ellipse([cx + r * .16, cy - r * .84, cx + r * .34, cy - r * .66], fill=GOLD)
-
-
-def _m_institutie(d, cx, cy, r):
-    d.polygon([(cx - r, cy - r * .42), (cx + r, cy - r * .42), (cx, cy - r)],
-              outline=GOLD_STRONG, width=10 * SS)
-    for i in range(4):
-        x = cx - r * .72 + i * (r * 1.44 / 3)
-        d.line([x, cy - r * .3, x, cy + r * .62], fill=GOLD_STRONG, width=10 * SS)
-    d.rectangle([cx - r * 1.06, cy + r * .74, cx + r * 1.06, cy + r * .86], fill=GOLD)
-    d.rectangle([cx - r * .8, cy - r * .55, cx + r * .8, cy - r * .42],
-                fill=(*GOLD_A, 90))
-
-
-def _m_fenomen(d, cx, cy, r):
-    d.ellipse([cx - r * .52, cy - r * .52, cx + r * .52, cy + r * .52],
-              fill=(*GOLD_A, 70))
-    d.ellipse([cx - r * .5, cy - r * .5, cx + r * .5, cy + r * .5],
-              outline=GOLD, width=11 * SS)
-    for i in range(8):
-        a = i * math.pi / 4
-        l = r * (.78 if i % 2 else 1.0)
-        d.line([cx + math.cos(a) * r * .64, cy + math.sin(a) * r * .64,
-                cx + math.cos(a) * l, cy + math.sin(a) * l],
-               fill=GOLD_STRONG, width=8 * SS)
-
-
-def _m_lege(d, cx, cy, r):
-    x0, y0, x1, y1 = cx - r * .62, cy - r, cx + r * .62, cy + r * .7
-    d.rectangle([x0 + r * .1, y0 + r * .1, x1 + r * .1, y1 + r * .1],
-                fill=(*GOLD_A, 55))                      # umbra aurie decalata
-    d.rectangle([x0, y0, x1, y1], fill=PAPER2, outline=GOLD_STRONG, width=10 * SS)
-    d.polygon([(x1 - r * .34, y0), (x1, y0 + r * .34), (x1 - r * .34, y0 + r * .34)],
-              fill=GOLD_WASH, outline=GOLD_STRONG, width=7 * SS)
-    for i in range(3):
-        d.line([x0 + r * .2, y0 + r * .5 + i * r * .28,
-                x1 - r * .36, y0 + r * .5 + i * r * .28], fill=LINE, width=10 * SS)
-    d.ellipse([cx - r * .16, y1 - r * .05, cx + r * .2, y1 + r * .31], fill=GOLD)
-
-
-def _m_economie(d, cx, cy, r):
-    for i, hf in enumerate([.35, .6, .95]):
-        x = cx - r + i * r * .75
-        d.rectangle([x, cy + r * .8 - 2 * r * hf * .8, x + r * .42, cy + r * .8],
-                    fill=GOLD if i == 2 else (*GOLD_A, 60))
-    d.line([cx - r * .9, cy + r * .3, cx + r * .62, cy - r * .75],
-           fill=GOLD_STRONG, width=10 * SS)
-    d.polygon([(cx + r * .68, cy - r * .82), (cx + r * .25, cy - r * .72),
-               (cx + r * .52, cy - r * .36)], fill=GOLD_STRONG)
-
-
-def _m_sport(d, cx, cy, r):
-    for k, al in ((1.28, 45), (1.14, 80)):               # arce de miscare
-        d.arc([cx - r * k, cy - r * k, cx + r * k, cy + r * k], 130, 240,
-              fill=(*GOLD_A, al), width=7 * SS)
-    d.ellipse([cx - r, cy - r, cx + r, cy + r], outline=GOLD_STRONG, width=10 * SS)
-    pts = [(cx + math.cos(a) * r * .38, cy + math.sin(a) * r * .38)
-           for a in [(-90 + i * 72) * math.pi / 180 for i in range(5)]]
-    d.polygon(pts, fill=GOLD)
-    for px, py in pts:
-        d.line([px, py, cx + (px - cx) * 2.4, cy + (py - cy) * 2.4],
-               fill=GOLD_STRONG, width=7 * SS)
-
-
-def _m_tech(d, cx, cy, r):
-    nodes = [(cx, cy - r), (cx - r, cy + r * .3), (cx + r, cy + r * .3),
-             (cx, cy + r * .9), (cx, cy)]
-    for a, b in [(0, 4), (1, 4), (2, 4), (3, 4), (0, 1), (0, 2)]:
-        d.line([nodes[a], nodes[b]], fill=GOLD_STRONG, width=7 * SS)
-    for i, (x, y) in enumerate(nodes):
-        rr = r * (.24 if i == 4 else .13)
-        d.ellipse([x - rr, y - rr, x + rr, y + rr],
-                  fill=GOLD if i == 4 else PAPER2, outline=GOLD_STRONG, width=7 * SS)
-
-
-def _m_monograma(d, cx, cy, r, letter="I"):
-    f = _font(True, int(r * 2.3))
-    d.text((cx + 6 * SS, cy + 6 * SS), letter.upper(), font=f,
-           fill=(*GOLD_A, 70), anchor="mm")              # umbra
-    d.text((cx, cy), letter.upper(), font=f, fill=GOLD, anchor="mm")
-
-
-def _m_orbite(d, cx, cy, r, seed=b""):
-    rr = int(r * .3)
-    for i in range(6):
-        w = (7 if i % 2 == 0 else 4) * SS
-        col = GOLD if i % 2 == 0 else (*GOLD_A, 70)
-        d.ellipse([cx - rr, cy - rr, cx + rr, cy + rr], outline=col, width=w)
-        f = .9 + (seed[i] / 255 * .4 if i < len(seed) else .2)
-        rr = int(rr * PHI ** 0.5 * f)
-
-
-# ---- rame per categorie (personalitatea domeniului) ------------------------
-def _fr_politic(d, gx):                                  # pinstripes solemne
-    for i, x in enumerate((gx + 14 * SS, gx + 26 * SS)):
-        d.line([x, 0, x, H2], fill=INK if i == 0 else GOLD, width=2 * SS)
-
-
-def _fr_economic(d, gx):                                 # gradatii de axa, ascendente
-    for i in range(9):
-        x = gx + int((W2 - gx) * i / 9)
-        h = (10 + i * 4) * SS
-        d.line([x, H2 - h, x, H2], fill=GOLD_STRONG, width=3 * SS)
-
-
-def _fr_extern(d, gx):                                   # meridiane
-    cx = W2 + 40 * SS
-    for k in (1.5, 1.1, .7):
-        r = int((W2 - gx) * k)
-        d.arc([cx - r, H2 // 2 - r, cx + r, H2 // 2 + r], 90, 270,
-              fill=(*GOLD_A, 60), width=3 * SS)
-
-
-def _fr_sport(d, gx):                                    # dungi de viteza
-    for i, al in enumerate((150, 90, 45)):
-        off = i * 26 * SS
-        d.line([gx - 60 * SS + off, H2, gx + 130 * SS + off, H2 - 190 * SS],
-               fill=(*GOLD_A, al), width=12 * SS)
-
-
-def _fr_tech(d, gx):                                     # grila de puncte
-    step = 42 * SS
-    for x in range(gx + step // 2, W2, step):
-        for y in range(step // 2, H2, step):
-            d.ellipse([x - 2 * SS, y - 2 * SS, x + 2 * SS, y + 2 * SS],
-                      fill=(*GOLD_A, 70))
-
-
-def _fr_general(d, gx):                                  # rigle duble broadsheet
-    for y in (18 * SS, H2 - 18 * SS):
-        d.line([gx + 12 * SS, y, W2 - 12 * SS, y], fill=GOLD_STRONG, width=2 * SS)
-        d.line([gx + 12 * SS, y + 5 * SS if y < H2 // 2 else y - 5 * SS,
-                W2 - 12 * SS, y + 5 * SS if y < H2 // 2 else y - 5 * SS],
-               fill=LINE, width=2 * SS)
-
-
-_FRAMES = {"politic": _fr_politic, "economic": _fr_economic, "extern": _fr_extern,
-           "sport": _fr_sport, "tech": _fr_tech, "general": _fr_general}
-
-
-def _spiral(d):
-    """Spirala de aur — semnatura casei, hairline, ancorata dreapta-jos."""
-    x, y = W2, H2
-    r = int(H2 / PHI)
-    quads = [(90, 180), (180, 270), (270, 360), (0, 90)]
-    cxy = [(x, y), (x - 0, y - 0)]
-    cx, cy = x, y
-    for i in range(5):
-        a0, a1 = quads[i % 4]
-        d.arc([cx - r, cy - r, cx + r, cy + r], a0, a1, fill=LINE, width=2 * SS)
-        if i % 4 == 0:
-            cy -= 0
-            cx -= 0
-        r = int(r / PHI)
-
-
-# ---- selectie determinista -------------------------------------------------
-_KW = [
-    (_m_fenomen,   r"canicul|cod rosu|cod portocaliu|furtun|inundat|cutremur|ninsor|meteo|incendi|seceta|grindin"),
-    (_m_lege,      r"\blege|ordonant|\boug\b|hotarar|\bvot|adopta|decret|motiun|referendum|amendament"),
-    (_m_institutie, r"parlament|guvern|senat|camera deputat|comisia europ|consiliul|minister|primari|anaf|\bbnr\b|\bccr\b|curtea constitut|\bnato\b|\bonu\b|\bue\b"),
-    (_m_economie,  r"inflat|doband|\bpret|buget|\btva\b|\bpib\b|salari|\beuro\b|\bleu\b|banc|invest|econom|bursa|export"),
+# ---- selectia icoanei ------------------------------------------------------
+_KW_ICON = [
+    (r"canicul|arsita|tempera", "sun"), (r"furtun|vijel|cod portocaliu|cod rosu", "cloud-storm"),
+    (r"inundat|viitur", "droplet"), (r"ninsor|zapad|\bger\b|viscol", "snowflake"),
+    (r"incendi", "flame"), (r"tornad", "tornado"), (r"cutremur|seism", "alert-triangle"),
+    (r"instanta|tribunal|judecat|proces|condamn|achitat", "gavel"),
+    (r"\blege\b|legea |ordonant|decret|amendament|hotarar", "certificate"),
+    (r"parlament|senat|camera deputat", "building-monument"),
+    (r"guvern|ministr|premier|cabinet", "podium"), (r"presedint", "podium"),
+    (r"alegeri|electoral|scrutin|referendum|urne", "writing"),
+    (r"inflat|scumpir", "percentage"), (r"buget|fiscal|\btva\b|taxe|impozit", "receipt-tax"),
+    (r"banc|\bbnr\b|credit|doband", "building-bank"), (r"\beuro\b|curs valutar", "currency-euro"),
+    (r"dolar", "currency-dollar"), (r"salari|pensi", "pig-money"),
+    (r"bursa|actiuni|investitor", "chart-line"), (r"fabric|industri|uzin", "building-factory"),
+    (r"energie|electric|curent", "bolt"), (r"\bgaz(?:e|ul|ului|elor)?\b|petrol|carburant|benzin|motorin", "gas-station"),
+    (r"comert|retail|magazin|consum", "shopping-cart"),
+    (r"agricult|fermier|recolt|cereale", "tractor"),
+    (r"razboi|militar|armata|front|ofensiv|trupe", "swords"), (r"drona|dronele", "helicopter"),
+    (r"rachet", "rocket"), (r"\bnato\b", "shield"), (r"sanctiun|embargo", "lock"),
+    (r"ambasad|diplomat|consulat", "flag"), (r"\bue\b|uniunea europ|bruxelles|comisia europ", "world"),
+    (r"avion|aeroport|zbor|aerian", "plane"), (r"tren|feroviar|\bcfr\b|metrou", "train"),
+    (r"camion|\btir\b", "truck"), (r"soferi|rutier|autoturism|masina|automobil", "car"),
+    (r"port maritim|naval|vapor|nava", "ship"),
+    (r"spital", "building-hospital"), (r"medic|doctor|sanatat", "stethoscope"),
+    (r"vaccin", "vaccine"), (r"virus|gripa|covid|epidemi", "virus"),
+    (r"medicament|farmaci", "pill"), (r"cancer|cardiac|diabet", "heartbeat"),
+    (r"cercetat|studiu|savant|stiint", "microscope"), (r"spatiu|nasa|astronaut|cosmic", "rocket"),
+    (r"satelit", "satellite"), (r"inteligenta artificial|\bai\b|chatbot", "robot"),
+    (r"\bcip\b|semiconduct|procesor", "cpu"), (r"telefon|smartphone|iphone|android", "device-mobile"),
+    (r"laptop|calculator|\bpc\b", "device-laptop"), (r"internet|retea|5g|fibra", "wifi"),
+    (r"hacker|cibernetic|phishing|ransomware", "shield-lock"), (r"baza de date|datele", "database"),
+    (r"fotbal|liga|gol\b|meci|echipa nationala|cupa mondial|\bcm \d{4}|optimi|sferturi|semifinal", "ball-football"),
+    (r"tenis|wimbledon|roland|us open", "ball-tennis"), (r"baschet", "ball-basketball"),
+    (r"volei", "ball-volleyball"), (r"inot|natatie", "swimming"), (r"ciclism|turul", "bike"),
+    (r"atletism|maraton|alergare", "run"), (r"olimpi", "medal"),
+    (r"campioan|trofeu|castiga titlul", "trophy"),
+    (r"film|cinema|regizor", "movie"), (r"muzic|concert|festival", "music"),
+    (r"teatru", "masks-theater"), (r"expozit|muzeu|pictur", "palette"),
+    (r"educat|scoal|elevi|bacalaureat|universitat|studenti", "school"),
+    (r"biseric|patriarh|manastir", "building-church"),
+    (r"politie|politist|jandarm", "shield"), (r"accident|raniti", "ambulance"),
+    (r"pompier", "firetruck"), (r"constructi|autostrad|santier|infrastructur", "crane"),
+    (r"imobiliar|locuint|chirii|apartament", "home"),
+    (r"turism|vacant|litoral|statiun", "umbrella"), (r"padur|mediu|polua|emisii|clima", "trees"),
+    (r"munte|alpin", "mountain"), (r"protest|miting|grev|mars", "speakerphone"),
+    (r"restaurant|aliment|mancare|gastronom", "tools-kitchen-2"),
 ]
-_PERSON_HINT = r"declara|critica|anunta|acuza|cere\b|demisio|numit|premier|presedint|ministrul|liderul|selectioner"
+_CAT_ICON = {"politic": "building-monument", "economic": "chart-line", "extern": "world",
+             "sport": "ball-football", "tech": "cpu"}
 
 
-def _pick(a: dict):
+def _pick_icon(a: dict) -> str | None:
+    ai = a.get("icon")
+    if ai and _icon_img(ai):
+        return ai
     text = _norm(a.get("title", "")) + " " + " ".join(_norm(e) for e in a.get("entities") or [])
-    cat = a.get("category", "")
-    if cat == "sport":
-        return _m_sport
-    if cat == "tech":
-        return _m_tech
-    for motif, pat in _KW:
-        if re.search(pat, text):
-            return motif
-    ents = a.get("entities") or []
-    if re.search(_PERSON_HINT, text) and any(len(e.split()) >= 2 for e in ents):
-        return _m_persoana
-    return None
+    for pat, icon in _KW_ICON:
+        if re.search(pat, text) and _icon_img(icon):
+            return icon
+    return _CAT_ICON.get(a.get("category", ""))
+
+
+# ---- straturi compozitionale (toate primesc seed) ---------------------------
+_BASE_GRADIENT = None
+
+
+def _gradient_base():
+    """Fundalul cu gradient e identic pentru toate copertile -> se deseneaza o
+    singura data (1260 de linii) si se copiaza; economiseste ~40% din randare."""
+    global _BASE_GRADIENT
+    if _BASE_GRADIENT is None:
+        img = Image.new("RGB", (W2, H2), tuple(INK_BOT))
+        d = ImageDraw.Draw(img)
+        for y in range(H2):
+            t = y / H2
+            col = tuple(int(INK_TOP[i] + (INK_BOT[i] - INK_TOP[i]) * t) for i in range(3))
+            d.line([(0, y), (W2, y)], fill=col)
+        _BASE_GRADIENT = img
+    return _BASE_GRADIENT.copy()
+
+
+def _bokeh(do, s):
+    """Discuri Fibonacci translucide — caldura si adancime, pozitii din seed."""
+    fib = [21, 34, 55, 89, 144]
+    for i in range(5):
+        r = fib[i] * SS * (0.8 + s[i] / 255 * 0.7)
+        x = W2 * (0.52 + (s[i + 5] / 255) * 0.45)
+        y = H2 * (0.08 + (s[i + 10] / 255) * 0.84)
+        a = 10 + int(s[i + 3] / 255 * 22)
+        do.ellipse([x - r, y - r, x + r, y + r], fill=(*GOLD, a))
+
+
+def _arcs_politic(do, s):
+    cx = W2 * (0.78 + s[0] / 255 * 0.08)
+    for i, (k, al, w) in enumerate([(1.15, 40, 20), (0.86, 66, 12), (0.6, 30, 26)]):
+        r = H2 * k / 2
+        cy = H2 * (0.5 + (s[i] / 255 - 0.5) * 0.2)
+        do.arc([cx - r, cy - r, cx + r, cy + r], 120, 420, fill=(*GOLD, al), width=w * SS)
+
+
+def _arcs_economic(do, s):
+    for i in range(3):
+        r = H2 * (0.34 + i * 0.16)
+        cx = W2 * (0.62 + i * 0.1) + (s[i] / 255 - 0.5) * 60 * SS
+        cy = H2 * (1.06 - i * 0.16)
+        do.arc([cx - r, cy - r, cx + r, cy + r], 180, 305, fill=(*GOLD, 62 - i * 14), width=(16 - i * 3) * SS)
+
+
+def _arcs_extern(do, s):
+    cx, cy = W2 * (0.82 + s[0] / 255 * 0.06), H2 * 0.5
+    for i, k in enumerate((0.95, 0.66, 0.4)):
+        r = H2 * k
+        do.ellipse([cx - r * 0.42, cy - r, cx + r * 0.42, cy + r],
+                   outline=(*GOLD, 46 + i * 14), width=(6 + i * 3) * SS)
+    do.ellipse([cx - H2 * 0.95 * 1.02, cy - H2 * 0.95, cx + H2 * 0.95 * 1.02, cy + H2 * 0.95],
+               outline=(*GOLD, 26), width=4 * SS)
+
+
+def _arcs_sport(do, s):
+    ang = -34 + (s[0] / 255 - 0.5) * 16
+    for i in range(3):
+        off = i * 46 * SS
+        x0 = W2 * 0.5 + off
+        y0 = H2 * 1.1
+        x1 = x0 + math.cos(math.radians(ang)) * H2 * 1.15
+        y1 = y0 + math.sin(math.radians(ang)) * H2 * 1.15
+        do.line([x0, y0, x1, y1], fill=(*GOLD, 78 - i * 24), width=(15 - i * 4) * SS)
+    r = H2 * 0.55
+    do.arc([W2 * 0.6 - r, H2 * 0.65 - r, W2 * 0.6 + r, H2 * 0.65 + r], 200, 320,
+           fill=(*GOLD, 40), width=10 * SS)
+
+
+def _arcs_tech(do, s):
+    step = 64 * SS
+    ox = int(s[0] / 255 * step)
+    for x in range(int(W2 * 0.55) + ox, W2, step):
+        for y in range(step // 2, H2, step):
+            do.ellipse([x - 2 * SS, y - 2 * SS, x + 2 * SS, y + 2 * SS], fill=(*GOLD, 46))
+    r = H2 * 0.52
+    cx, cy = W2 * 0.8, H2 * (0.42 + s[1] / 255 * 0.2)
+    do.ellipse([cx - r, cy - r, cx + r, cy + r], outline=(*GOLD, 44), width=5 * SS)
+
+
+def _arcs_general(do, s):
+    x, y = W2 * (0.98 + s[0] / 255 * 0.04), H2 * (0.96 + s[1] / 255 * 0.06)
+    r = H2 * 0.78
+    for i in range(4):
+        do.arc([x - r, y - r, x + r, y + r], 150, 300, fill=(*GOLD, 30 + i * 12),
+               width=(5 + i * 2) * SS)
+        r /= PHI
+
+
+_ARCS = {"politic": _arcs_politic, "economic": _arcs_economic, "extern": _arcs_extern,
+         "sport": _arcs_sport, "tech": _arcs_tech, "general": _arcs_general}
+
+
+def _place_icon(base, name: str, s):
+    src = _icon_img(name)
+    if src is None:
+        return False
+    size = int(W2 * (0.21 + s[15] / 255 * 0.05))
+    icon = src.resize((size, size), Image.LANCZOS)
+    alpha = icon.split()[3]
+    gold_layer = Image.new("RGBA", icon.size, (*GOLD, 255))
+    tinted = Image.new("RGBA", icon.size, (0, 0, 0, 0))
+    tinted.paste(gold_layer, (0, 0), alpha)
+    # halo difuz sub icoana
+    q = 4                                            # glow la 1/4 rezolutie: blur ~16x mai ieftin
+    gs = size * 2 // q
+    glow_small = Image.new("RGBA", (gs, gs), (0, 0, 0, 0))
+    ga = alpha.resize((gs // 2, gs // 2)).point(lambda v: int(v * 0.55))
+    glow_small.paste(Image.new("RGBA", (gs // 2, gs // 2), (*GOLD, 255)), (gs // 4, gs // 4), ga)
+    glow_small = glow_small.filter(ImageFilter.GaussianBlur(26 * SS // q))
+    glow = glow_small.resize((size * 2, size * 2), Image.BILINEAR)
+    x = int(W2 * (0.70 + (s[16] / 255 - 0.5) * 0.06))
+    y = int(H2 / PHI * (1.0 + (s[17] / 255 - 0.5) * 0.22))
+    base.paste(glow, (x - size, y - size), glow)
+    base.paste(tinted, (x - size // 2, y - size // 2), tinted)
+    return True
+
+
+def _monogram(base, letter: str, s):
+    f = _font("display", int(H2 * 0.62))
+    layer = Image.new("RGBA", (W2, H2), (0, 0, 0, 0))
+    d = ImageDraw.Draw(layer)
+    x = int(W2 * (0.72 + (s[16] / 255 - 0.5) * 0.05))
+    y = int(H2 / PHI)
+    d.text((x, y), letter.upper(), font=f, fill=(*GOLD, 235), anchor="mm")
+    glow = layer.filter(ImageFilter.GaussianBlur(30 * SS))
+    base.paste(glow, (0, 0), glow.point(lambda v: int(v * 0.5)))
+    base.paste(layer, (0, 0), layer)
 
 
 def _wrap(d, text, font, maxw):
@@ -263,61 +276,55 @@ def _wrap(d, text, font, maxw):
     lines.append(cur)
     if len(lines) > 4:
         lines = lines[:4]
-        lines[-1] += "…"
+        lines[-1] = lines[-1].rstrip(",;:") + "…"
     return lines
 
 
 def generate(a: dict, path: str) -> bool:
-    """Deseneaza coperta articolului la `path`. False la orice problema —
-    build-ul nu pica niciodata din cauza unei imagini."""
+    """Deseneaza coperta articolului la `path`. False la orice problema."""
     if Image is None:
         return False
     try:
-        base = Image.new("RGB", (W2, H2), PAPER2)
-        over = Image.new("RGBA", (W2, H2), (0, 0, 0, 0))
-        db, do = ImageDraw.Draw(base), ImageDraw.Draw(over)
-
-        gx = int(W2 / PHI)
-        db.rectangle([gx, 0, W2, H2], fill=GOLD_WASH)
-        _spiral(db)
-        _FRAMES.get(a.get("category", ""), _fr_general)(do, gx)
-        db.rectangle([0, 0, W2, 9 * SS], fill=GOLD)
-
-        # motiv supradimensionat, usor peste linia de aur (taiat de margine = tensiune)
         seed = hashlib.sha1((a.get("title") or "").encode()).digest()
-        panel = W2 - gx
-        cx = gx + int(panel * .58)
-        cy = int(H2 / PHI)
-        r = int(panel * .40)
-        motif = _pick(a)
-        if motif:
-            motif(do, cx, cy, r)
-        elif seed[0] % 2:
-            ents = a.get("entities") or []
-            _m_monograma(do, cx, cy, r, (ents[0] if ents else a.get("title") or "I")[0])
-        else:
-            _m_orbite(do, cx, cy, r, seed)
+        s = list(seed)
+        base = _gradient_base()
 
+        over = Image.new("RGBA", (W2, H2), (0, 0, 0, 0))
+        do = ImageDraw.Draw(over)
+        _bokeh(do, s)
+        _ARCS.get(a.get("category", ""), _arcs_general)(do, s)
         base.paste(over, (0, 0), over)
+
+        icon = _pick_icon(a)
+        if icon:
+            _place_icon(base, icon, s)
+        else:
+            ents = a.get("entities") or []
+            _monogram(base, (ents[0] if ents else a.get("title") or "I")[0], s)
+
         d = ImageDraw.Draw(base)
-        serif = _font(True, 58 * SS)
-        mono = _font(False, 27 * SS)
-        mono_s = _font(False, 21 * SS)
-        d.text((50 * SS, 44 * SS), (a.get("category") or "").upper(),
-               font=mono, fill=GOLD_STRONG)
-        y = 108 * SS
-        for ln in _wrap(d, a.get("title", ""), serif, gx - 88 * SS):
-            d.text((50 * SS, y), ln, font=serif, fill=INK)
-            y += 73 * SS
-        d.text((50 * SS, H2 - 62 * SS), "IZZ.ro — Informația Zero Zgomot",
-               font=mono, fill=INK2)
-        d.text((W2 - 30 * SS, H2 - 30 * SS), f"Nº {seed.hex()[:6]}",
-               font=mono_s, fill=GOLD_STRONG, anchor="rs")   # semnatura de editie
+        mono = _font("mono", 26 * SS)
+        mono_s = _font("mono", 20 * SS)
+        display = _font("display", 62 * SS)
+
+        d.text((56 * SS, 48 * SS), (a.get("category") or "știri").upper(),
+               font=mono, fill=GOLD_HEX)
+        rule_w = int((W2 / PHI - 112 * SS) / PHI)
+        d.line([56 * SS, 96 * SS, 56 * SS + rule_w, 96 * SS], fill=GOLD_HEX, width=2 * SS)
+
+        y = 128 * SS
+        for ln in _wrap(d, a.get("title", ""), display, int(W2 / PHI) - 88 * SS):
+            d.text((56 * SS, y), ln, font=display, fill=PAPER)
+            y += 82 * SS
+
+        d.text((56 * SS, H2 - 66 * SS), "IZZ.ro — Informația Zero Zgomot",
+               font=mono, fill=MUTED)
+        d.text((W2 - 34 * SS, H2 - 34 * SS), f"Nº {seed.hex()[:6]}",
+               font=mono_s, fill=GOLD_STRONG, anchor="rs")
 
         img = base.resize((W, H), Image.LANCZOS)
-        img = img.convert("P", palette=Image.ADAPTIVE, colors=128)
         os.makedirs(os.path.dirname(path), exist_ok=True)
-        img.save(path, "PNG", compress_level=4)
+        img.save(path, "JPEG", quality=84)  # gradientele comprima prost in PNG
         return True
     except Exception:
         return False
