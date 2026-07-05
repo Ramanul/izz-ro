@@ -22,7 +22,8 @@ Returneaza JSON:
 {{"title": "<esenta faptului: CINE face/pateste CE (si unde/cand daca e cheie); concret si clar; 6-16 cuvinte; fara clickbait, fara formulari vagi precum 'iata ce', 'ce a patit'>",
   "teaser": "<rezumat COMPRIMAT al faptelor de baza in 25-40 de cuvinte: cine, ce, cand, unde, cat/de ce; reformulat 100%, ZERO propozitii copiate din original; trebuie sa transmita esenta fara a citi articolul>",
   "category": "<una din: general|politic|economic|extern|tech|sport>",
-  "entities": ["<1-4 nume proprii cheie din stire (persoane, organizatii, locuri), forma scurta canonica, ex. 'Nicusor Dan', 'PSD', 'Timisoara'>"]}}
+  "entities": ["<1-4 nume proprii cheie din stire (persoane, organizatii, locuri), forma scurta canonica, ex. 'Nicusor Dan', 'PSD', 'Timisoara'>"],
+  "icon": "<pictograma care surprinde cel mai bine subiectul, UN slug din: {icons}; null daca niciuna nu se potriveste>"}}
 Reguli: titlul trebuie sa se inteleaga singur si sa contina faptul real, nu o intrebare/teaser; NU copia nicio propozitie din original; zero opinii; daca descrierea e saraca, extrage esenta din titlul original (tot reformulat)."""
 
 SYSTEM_C = ("Esti editor care sintetizeaza un eveniment din MAI MULTE surse, cu cuvintele tale. "
@@ -36,7 +37,8 @@ Returneaza JSON:
 {{"title": "<esenta evenimentului: ce s-a intamplat, concret; 6-16 cuvinte; fara clickbait>",
   "synthesis": "<sinteza COMPRIMATA in 40-80 de cuvinte: faptele confirmate de mai multe surse (cine, ce, cand, unde, cat), reformulate 100%; marcheaza daca sursele se contrazic>",
   "category": "<una din: general|politic|economic|extern|tech|sport>",
-  "entities": ["<1-4 nume proprii cheie din eveniment (persoane, organizatii, locuri), forma scurta canonica>"]}}
+  "entities": ["<1-4 nume proprii cheie din eveniment (persoane, organizatii, locuri), forma scurta canonica>"],
+  "icon": "<pictograma care surprinde cel mai bine evenimentul, UN slug din: {icons}; null daca niciuna nu se potriveste>"}}
 Reguli: trianguleaza faptele comune; ZERO propozitii copiate; titlul contine faptul real, nu un teaser; zero opinii."""
 
 
@@ -50,7 +52,8 @@ Stiri:
 {items_block}
 
 Returneaza EXCLUSIV un array JSON, cate UN obiect per stire, cu acelasi id primit:
-[{{"id": <id>, "title": "<esenta faptului: CINE face/pateste CE; concret; 6-16 cuvinte; fara clickbait, fara vag>", "teaser": "<rezumat comprimat 25-40 cuvinte: cine/ce/cand/unde/cat; reformulat 100%, ZERO propozitii copiate>", "category": "<general|politic|economic|extern|tech|sport>", "entities": ["<1-4 nume proprii cheie: persoane, organizatii, locuri>"]}}]
+[{{"id": <id>, "title": "<esenta faptului: CINE face/pateste CE; concret; 6-16 cuvinte; fara clickbait, fara vag>", "teaser": "<rezumat comprimat 25-40 cuvinte: cine/ce/cand/unde/cat; reformulat 100%, ZERO propozitii copiate>", "category": "<general|politic|economic|extern|tech|sport>", "entities": ["<1-4 nume proprii cheie: persoane, organizatii, locuri>"], "icon": "<UN slug din lista de la final sau null>"}}]
+Pictograme permise: {icons}
 Reguli: pastreaza id-ul EXACT (numar); un obiect per id; daca stirea e in alta limba, scrie in romana; titlul = faptul real, nu intrebare; zero opinii."""
 
 
@@ -82,6 +85,25 @@ def _parse_json(text: str) -> dict:
 
 def _valid_category(cat: str, fallback: str) -> str:
     return cat if cat in config.CATEGORIES else fallback
+
+
+_ICON_SLUGS = ("gavel certificate building-monument podium writing percentage receipt-tax "
+               "building-bank currency-euro pig-money chart-line building-factory shopping-cart "
+               "bolt gas-station tractor swords rocket shield flag world plane train car truck "
+               "ship helicopter building-hospital stethoscope vaccine virus pill microscope "
+               "satellite robot cpu device-mobile wifi shield-lock database ball-football "
+               "ball-tennis ball-basketball swimming bike run medal trophy movie music school "
+               "building-church ambulance firetruck crane home umbrella trees speakerphone sun "
+               "cloud-storm snowflake flame alert-triangle")
+_ICON_SET = set(_ICON_SLUGS.split())
+
+USER_B = USER_B.replace("{icons}", _ICON_SLUGS)
+USER_C = USER_C.replace("{icons}", _ICON_SLUGS)
+USER_BATCH = USER_BATCH.replace("{icons}", _ICON_SLUGS)
+
+
+def _clean_icon(raw) -> str | None:
+    return raw if isinstance(raw, str) and raw in _ICON_SET else None
 
 
 def _clean_entities(raw) -> list:
@@ -162,6 +184,7 @@ def process_batch(items: list, provider) -> list:
             it["teaser"] = truncate_words(teaser, config.TEASER_MAX_WORDS)
             it["category"] = _valid_category(obj.get("category", ""), it.get("category", "general"))
             it["entities"] = _clean_entities(obj.get("entities"))
+            it["icon"] = _clean_icon(obj.get("icon"))
             it["processed_by"] = provider.name
             it["prompt_version"] = config.PROMPT_VERSION
             done.append(it)
@@ -198,6 +221,7 @@ def process_single(item: dict, provider) -> dict | None:
                                     config.TEASER_MAX_WORDS)
     item["category"] = _valid_category(data.get("category", ""), item.get("category", "general"))
     item["entities"] = _clean_entities(data.get("entities"))
+    item["icon"] = _clean_icon(data.get("icon"))
     item["processed_by"] = provider.name
     item["prompt_version"] = config.PROMPT_VERSION
     return item
@@ -247,6 +271,7 @@ def process_cluster(group: list, provider) -> dict | None:
                                           config.SYNTHESIS_MAX_WORDS)
         rep["category"] = _valid_category(data.get("category", ""), rep.get("category", "general"))
         rep["entities"] = _clean_entities(data.get("entities"))
+        rep["icon"] = _clean_icon(data.get("icon"))
         rep["processed_by"] = provider.name
         rep["prompt_version"] = config.PROMPT_VERSION
     except Exception:
