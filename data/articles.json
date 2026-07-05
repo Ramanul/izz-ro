@@ -1,5 +1,102 @@
 [
   {
+    "url": "https://prosport.ro/fotbal-extern/radu-dragusin-transfer-tottenham-2-20477839",
+    "original_link": "https://www.prosport.ro/fotbal-extern/radu-dragusin-transfer-tottenham-2-20477839",
+    "source": "prosport",
+    "source_name": "ProSport",
+    "source_lang": "ro",
+    "title": "Radu Drăgușin se transferă de la Tottenham la Fiorentina",
+    "category": "sport",
+    "published": "2026-07-05T18:48:40+00:00",
+    "model": "C",
+    "sources": [
+      {
+        "name": "ProSport",
+        "url": "https://www.prosport.ro/fotbal-extern/radu-dragusin-transfer-tottenham-2-20477839"
+      },
+      {
+        "name": "Digi Sport",
+        "url": "https://www.digisport.ro/fotbal/serie-a/adio-tottenham-radu-dragusin-si-a-programat-vizita-medicala-la-fiorentina-cat-platesc-italienii-pentru-transfer-4360551"
+      }
+    ],
+    "first_source": "ProSport",
+    "synthesis": "Fundașul român Radu Drăgușin (24 de ani) va părăsi Tottenham pentru a reveni în Serie A, la Fiorentina. Mutarea se va realiza inițial sub formă de împrumut, cu o clauză de transfer obligatoriu la finalul sezonului. Jucătorul și-a programat deja vizita medicală.",
+    "entities": [
+      "Radu Drăgușin",
+      "Tottenham",
+      "Fiorentina"
+    ],
+    "icon": "ball-football",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://zf.ro/business-international/trump-multumeste-fifa-dupa-ce-cartonasul-rosu-acordat-unui-jucator-23188856",
+    "original_link": "https://www.zf.ro/business-international/trump-multumeste-fifa-dupa-ce-cartonasul-rosu-acordat-unui-jucator-23188856",
+    "source": "zf",
+    "source_name": "Ziarul Financiar",
+    "source_lang": "ro",
+    "title": "Trump laudă FIFA pentru anularea unui cartonaș roșu acordat unui jucător american",
+    "category": "sport",
+    "published": "2026-07-05T18:37:37+00:00",
+    "model": "C",
+    "sources": [
+      {
+        "name": "Ziarul Financiar",
+        "url": "https://www.zf.ro/business-international/trump-multumeste-fifa-dupa-ce-cartonasul-rosu-acordat-unui-jucator-23188856"
+      },
+      {
+        "name": "G4Media",
+        "url": "https://www.g4media.ro/trump-multumeste-fifa-dupa-ce-cartonasul-rosu-acordat-unui-jucator-american-a-fost-anulat-ati-facut-ceea-ce-trebuie-si-ati-inversat-o-mare-nedreptate.html"
+      }
+    ],
+    "first_source": "Ziarul Financiar",
+    "synthesis": "Președintele american Donald Trump a exprimat mulțumiri față de FIFA pentru decizia de a anula un cartonaș roșu primit de jucătorul american Folarin Balogun în timpul meciului dintre Statele Unite și Bosnia și Herțegovina. Trump a considerat această inversare a deciziei ca fiind corectarea unei mari nedreptăți.",
+    "entities": [
+      "Donald Trump",
+      "FIFA",
+      "Folarin Balogun",
+      "Statele Unite"
+    ],
+    "icon": "ball-football",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://zf.ro/business-international/germania-afirma-ca-ucraina-nu-mai-are-nevoie-de-rachetele-taurus-23188853",
+    "original_link": "https://www.zf.ro/business-international/germania-afirma-ca-ucraina-nu-mai-are-nevoie-de-rachetele-taurus-23188853",
+    "source": "zf",
+    "source_name": "Ziarul Financiar",
+    "source_lang": "ro",
+    "title": "Germania refuză livrarea rachetelor Taurus către Ucraina",
+    "category": "politic",
+    "published": "2026-07-05T18:04:08+00:00",
+    "model": "C",
+    "sources": [
+      {
+        "name": "Ziarul Financiar",
+        "url": "https://www.zf.ro/business-international/germania-afirma-ca-ucraina-nu-mai-are-nevoie-de-rachetele-taurus-23188853"
+      },
+      {
+        "name": "G4Media",
+        "url": "https://www.g4media.ro/germania-anu-mai-trimite-rachetele-taurus-in-ucraina-nu-cred-ca-ucraina-mai-are-nevoie-kievul-se-bazeaza-pe-drone.html"
+      }
+    ],
+    "first_source": "Ziarul Financiar",
+    "synthesis": "Germania a anunțat că nu va mai furniza Ucrainei rachete Taurus. Motivul invocat este că Ucraina dispune deja de drone cu rază lungă de acțiune și alte sisteme capabile să atingă ținte rusești, eliminând astfel necesitatea acestor rachete. Decizia a fost confirmată de ministrul Apărării german.",
+    "entities": [
+      "Germania",
+      "Ucraina",
+      "Taurus"
+    ],
+    "icon": "rocket",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
     "url": "https://hotnews.ro/trei-dintre-fiii-lui-ali-khamenei-prezenti-la-funeralii-a-lipsit-insa-chiar-succesorul-liderului-iranian-2292461",
     "original_link": "https://hotnews.ro/trei-dintre-fiii-lui-ali-khamenei-prezenti-la-funeralii-a-lipsit-insa-chiar-succesorul-liderului-iranian-2292461",
     "source": "hotnews",
@@ -10950,549 +11047,6 @@
     "published": "2026-06-28T20:06:02+00:00",
     "model": "B",
     "teaser": "Atacantul Denis Alibec a prelungit contractul cu Farul Constanța până în vara anului viitor și a declarat că intenționează să se retragă din activitate la clubul din Ovidiu.",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://prosport.ro/campionatul-mondial-2026/africa-de-sud-canada-0-1-in-16-imi-la-cupa-mondiala-un-fc-hermannstadt-unirea-slobozia-jucat-in-los-angeles-cronica-de-gabriel-berceanu-20472414",
-    "original_link": "https://www.prosport.ro/campionatul-mondial-2026/africa-de-sud-canada-0-1-in-16-imi-la-cupa-mondiala-un-fc-hermannstadt-unirea-slobozia-jucat-in-los-angeles-cronica-de-gabriel-berceanu-20472414",
-    "source": "prosport",
-    "source_name": "ProSport",
-    "source_lang": "ro",
-    "title": "Canada, calificată în premieră în optimile Campionatului Mondial",
-    "category": "sport",
-    "published": "2026-06-28T20:00:55+00:00",
-    "model": "C",
-    "sources": [
-      {
-        "name": "GSP",
-        "url": "https://www.gsp.ro/international/campionatul-mondial-de-fotbal-2026/live-africa-de-sud-canada-prima-saisprezecime-campionatul-mondial-954037.html"
-      },
-      {
-        "name": "Digi Sport",
-        "url": "https://www.digisport.ro/fotbal/cm-2026/dupa-momentul-fara-precedent-in-istoria-cupei-mondiale-canada-s-a-calificat-dramatic-pe-cine-intalneste-in-optimi-4346489"
-      },
-      {
-        "name": "ProSport",
-        "url": "https://www.prosport.ro/campionatul-mondial-2026/reactie-canadieni-calificare-optimi-cupa-mondiala-20472759"
-      }
-    ],
-    "synthesis": "Canada a învins Africa de Sud cu 1-0, printr-un gol marcat în prelungiri (min. 90+2), de Stephen Eustaquio. Partida, desfășurată pe SoFi Stadium din California, a contat pentru șaisprezecimile Campionatului Mondial 2026. Această victorie marchează prima calificare a Canadei în optimile de finală ale competiției.",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://digi24.ro/stiri/externe/mapamond/printesa-kate-a-escaladat-cele-mai-inalte-trei-varfuri-din-marea-britanie-in-24-de-ore-pentru-a-sprijini-bolnavii-de-cancer-3837483",
-    "original_link": "https://www.digi24.ro/stiri/externe/mapamond/printesa-kate-a-escaladat-cele-mai-inalte-trei-varfuri-din-marea-britanie-in-24-de-ore-pentru-a-sprijini-bolnavii-de-cancer-3837483",
-    "source": "extern",
-    "source_name": "Digi24 Extern",
-    "source_lang": "ro",
-    "title": "Prințesa Kate a cucerit trei vârfuri montane în 24 de ore",
-    "category": "general",
-    "published": "2026-06-28T19:59:23+00:00",
-    "model": "C",
-    "sources": [
-      {
-        "name": "Digi24 Extern",
-        "url": "https://www.digi24.ro/stiri/externe/mapamond/printesa-kate-a-escaladat-cele-mai-inalte-trei-varfuri-din-marea-britanie-in-24-de-ore-pentru-a-sprijini-bolnavii-de-cancer-3837483"
-      },
-      {
-        "name": "Digi24",
-        "url": "https://www.digi24.ro/stiri/externe/mapamond/printesa-kate-a-escaladat-cele-mai-inalte-trei-varfuri-din-marea-britanie-in-24-de-ore-pentru-a-sprijini-bolnavii-de-cancer-3837483"
-      }
-    ],
-    "synthesis": "Prințesa Kate de Wales a anunțat duminică finalizarea unei provocări montane, escaladând cele mai înalte trei vârfuri din Marea Britanie într-un interval de 24 de ore. Acțiunea a avut ca scop strângerea de fonduri pentru o organizație caritabilă ce luptă împotriva cancerului și a reprezentat o oportunitate de a explora viața după un diagnostic și de a contribui la cauze nobile.",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://hotnews.ro/un-lider-udmr-spune-ca-nicusor-dan-este-mahnit-de-criza-politica-daca-mergem-numai-cu-limbaj-dur-si-linii-rosii-nu-vom-avea-guvern-nici-anul-viitor-2286816",
-    "original_link": "https://hotnews.ro/un-lider-udmr-spune-ca-nicusor-dan-este-mahnit-de-criza-politica-daca-mergem-numai-cu-limbaj-dur-si-linii-rosii-nu-vom-avea-guvern-nici-anul-viitor-2286816",
-    "source": "hotnews",
-    "source_name": "HotNews",
-    "source_lang": "ro",
-    "title": "UDMR: PSD blochează formarea guvernului prin refuzul negocierilor pe măsuri și rotativă",
-    "category": "politic",
-    "published": "2026-06-28T19:58:42+00:00",
-    "model": "B",
-    "teaser": "Liderul UDMR, Csoma Botond, acuză PSD că împiedică formarea noului guvern prin refuzul de a agrea un acord pe măsuri comune cu PNL-USR-UDMR și o rotativă guvernamentală, avertizând că discuțiile dure pot prelungi criza.",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://g4media.ro/autoritatile-turce-denunta-decizia-politica-a-israelului-de-a-recunoaste-genocidul-armean-in-turcia-acuzand-ca-e-forma-prin-care-se-incearca-acoperirea-crimelor-din-gaza.html",
-    "original_link": "https://www.g4media.ro/autoritatile-turce-denunta-decizia-politica-a-israelului-de-a-recunoaste-genocidul-armean-in-turcia-acuzand-ca-e-forma-prin-care-se-incearca-acoperirea-crimelor-din-gaza.html",
-    "source": "g4media",
-    "source_name": "G4Media",
-    "source_lang": "ro",
-    "title": "Turcia denunță recunoașterea genocidului armean de către Israel",
-    "category": "politic",
-    "published": "2026-06-28T19:58:06+00:00",
-    "model": "B",
-    "teaser": "Turcia a condamnat decizia politică a Israelului de a recunoaște genocidul armean din 1915, acuzând că aceasta încearcă să acopere crimele comise în Gaza împotriva palestinienilor.",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://digi24.ro/stiri/externe/sua/jd-vance-sustine-ca-sua-castiga-oricum-in-relatia-cu-iranul-programul-lor-nuclear-este-distrus-noi-avem-cartile-3837461",
-    "original_link": "https://www.digi24.ro/stiri/externe/sua/jd-vance-sustine-ca-sua-castiga-oricum-in-relatia-cu-iranul-programul-lor-nuclear-este-distrus-noi-avem-cartile-3837461",
-    "source": "extern",
-    "source_name": "Digi24 Extern",
-    "source_lang": "ro",
-    "title": "SUA, victorie strategică asupra Iranului, susține JD Vance",
-    "category": "politic",
-    "published": "2026-06-28T19:55:03+00:00",
-    "model": "C",
-    "sources": [
-      {
-        "name": "Digi24 Extern",
-        "url": "https://www.digi24.ro/stiri/externe/sua/jd-vance-sustine-ca-sua-castiga-oricum-in-relatia-cu-iranul-programul-lor-nuclear-este-distrus-noi-avem-cartile-3837461"
-      },
-      {
-        "name": "Digi24",
-        "url": "https://www.digi24.ro/stiri/externe/sua/jd-vance-sustine-ca-sua-castiga-oricum-in-relatia-cu-iranul-programul-lor-nuclear-este-distrus-noi-avem-cartile-3837461"
-      }
-    ],
-    "synthesis": "Vicepreședintele SUA, JD Vance, afirmă că Statele Unite au deja o victorie strategică în relația cu Iranul, programul nuclear al acestuia fiind distrus. Vance a declarat că SUA sunt dispuse să-și modifice relația cu Teheranul dacă acesta renunță la ambițiile nucleare, dar consideră că America deține deja avantajul decisiv.",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://prosport.ro/fotbal-intern/superliga/el-este-noul-atacant-transferat-de-dinamo-pentru-titlu-prosport-va-prezinta-varful-pe-care-pariaza-nuno-campos-20472618",
-    "original_link": "https://www.prosport.ro/fotbal-intern/superliga/el-este-noul-atacant-transferat-de-dinamo-pentru-titlu-prosport-va-prezinta-varful-pe-care-pariaza-nuno-campos-20472618",
-    "source": "prosport",
-    "source_name": "ProSport",
-    "source_lang": "ro",
-    "title": "Dinamo București transferă atacantul Oliver Hintsa din Norvegia",
-    "category": "sport",
-    "published": "2026-06-28T19:54:52+00:00",
-    "model": "C",
-    "sources": [
-      {
-        "name": "GSP",
-        "url": "https://www.gsp.ro/fotbal/liga-1/oliver-hintsa-transfer-dinamo-atacant-954295.html"
-      },
-      {
-        "name": "ProSport",
-        "url": "https://www.prosport.ro/fotbal-intern/superliga/el-este-noul-atacant-transferat-de-dinamo-pentru-titlu-prosport-va-prezinta-varful-pe-care-pariaza-nuno-campos-20472618"
-      }
-    ],
-    "synthesis": "Clubul Dinamo București a ajuns la un acord pentru transferul atacantului Oliver Hintsa, în vârstă de 25 de ani. Jucătorul provine de la formația norvegiană Sogndal, unde a evoluat recent și a oferit o pasă de gol. Acesta este al doilea transfer anunțat de club în această perioadă.",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://libertatea.ro/stiri/marea-britanie-construieste-doua-centrale-nucleare-identice-cea-mai-mare-macara-lume-5797068",
-    "original_link": "https://www.libertatea.ro/stiri/marea-britanie-construieste-doua-centrale-nucleare-identice-cea-mai-mare-macara-lume-5797068",
-    "source": "libertatea",
-    "source_name": "Libertatea",
-    "source_lang": "ro",
-    "title": "Marea Britanie construiește două centrale nucleare cu cea mai mare macara",
-    "category": "extern",
-    "published": "2026-06-28T19:52:45+00:00",
-    "model": "B",
-    "teaser": "Marea Britanie instalează un reactor nuclear de 551 de tone cu ajutorul celei mai mari macarale terestre, în timp ce Franța pregătește componente pentru o centrală identică.",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://gsp.ro/sporturi/tenis/serena-williams-conferinta-wimbledon-954218.html",
-    "original_link": "https://www.gsp.ro/sporturi/tenis/serena-williams-conferinta-wimbledon-954218.html",
-    "source": "gsp",
-    "source_name": "GSP",
-    "source_lang": "ro",
-    "title": "Serena Williams, emoționată la revenirea la Wimbledon",
-    "category": "sport",
-    "published": "2026-06-28T19:43:49+00:00",
-    "model": "B",
-    "teaser": "Serena Williams, 44 de ani, se pregătește pentru revenirea în proba de simplu la Wimbledon după patru ani. Americanca a recunoscut că a ezitat inițial să accepte wild cardul, dar abia așteaptă să joace.",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://g4media.ro/pro-rusul-calin-georgescu-in-tensiuni-cu-fosta-lui-sustinatoare-anca-alexandrescu-in-emisiune-la-realitatea-ati-gresit-complet-moderatoarea-vreti-sa-sugerati-ca-n-am.html",
-    "original_link": "https://www.g4media.ro/pro-rusul-calin-georgescu-in-tensiuni-cu-fosta-lui-sustinatoare-anca-alexandrescu-in-emisiune-la-realitatea-ati-gresit-complet-moderatoarea-vreti-sa-sugerati-ca-n-am.html",
-    "source": "g4media",
-    "source_name": "G4Media",
-    "source_lang": "ro",
-    "title": "Tensiuni între Călin Georgescu și Anca Alexandrescu la Realitatea Plus",
-    "category": "politic",
-    "published": "2026-06-28T19:40:34+00:00",
-    "model": "C",
-    "sources": [
-      {
-        "name": "HotNews",
-        "url": "https://hotnews.ro/video-dialog-tensionat-intre-calin-georgescu-si-anca-alexandrescu-cu-acuzatii-de-cenzura-si-promovare-pentru-rating-cum-sa-traiasca-mai-bine-oamenii-cu-lozinci-2286830"
-      },
-      {
-        "name": "G4Media",
-        "url": "https://www.g4media.ro/pro-rusul-calin-georgescu-in-tensiuni-cu-fosta-lui-sustinatoare-anca-alexandrescu-in-emisiune-la-realitatea-ati-gresit-complet-moderatoarea-vreti-sa-sugerati-ca-n-am.html"
-      }
-    ],
-    "synthesis": "Călin Georgescu, fost candidat la prezidențiale, a avut o discuție tensionată cu realizatoarea Anca Alexandrescu la Realitatea Plus. Georgescu a acuzat postul de televiziune de cenzură și promovare bazată pe rating, în timp ce Alexandrescu a respins acuzațiile și l-a atacat pe George Simion. Schimbul de replici a evidențiat divergențe între cei doi, altădată aliați.",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://digi24.ro/stiri/externe/reactie-dura-a-turciei-dupa-ce-israelul-a-aprobat-recunoasterea-genocidului-armean-3837457",
-    "original_link": "https://www.digi24.ro/stiri/externe/reactie-dura-a-turciei-dupa-ce-israelul-a-aprobat-recunoasterea-genocidului-armean-3837457",
-    "source": "extern",
-    "source_name": "Digi24 Extern",
-    "source_lang": "ro",
-    "original_title": "Reacție dură a Turciei după ce Israelul a aprobat recunoașterea genocidului armean",
-    "title": "Reacție dură a Turciei după ce Israelul a aprobat recunoașterea genocidului armean",
-    "description": "Turcia a condamnat, duminică, recunoaşterea de către Israel a genocidului armean din 1915, calificând-o drept o „decizie politică” menită să acopere „crimele” comise de armata israeliană împotriva populaţiei palestiniene din Gaza, notează AFP, potrivit Agerpres.",
-    "category": "extern",
-    "published": "2026-06-28T19:39:54+00:00",
-    "model": "C",
-    "sources": [
-      {
-        "name": "Digi24 Extern",
-        "url": "https://www.digi24.ro/stiri/externe/reactie-dura-a-turciei-dupa-ce-israelul-a-aprobat-recunoasterea-genocidului-armean-3837457"
-      },
-      {
-        "name": "Digi24",
-        "url": "https://www.digi24.ro/stiri/externe/reactie-dura-a-turciei-dupa-ce-israelul-a-aprobat-recunoasterea-genocidului-armean-3837457"
-      }
-    ],
-    "synthesis": "Turcia a condamnat, duminică, recunoaşterea de către Israel a genocidului armean din 1915, calificând-o drept o „decizie politică” menită să acopere „crimele” comise de armata israeliană împotriva populaţiei palestiniene din Gaza, notează AFP, potrivit Agerpres.",
-    "processed_by": "fallback",
-    "error": "HTTP Error 429: Too Many Requests",
-    "featured": false
-  },
-  {
-    "url": "https://digi24.ro/stiri/actualitate/ambulanta-bucuresti-ilfov-asaltata-de-apeluri-in-timpul-caniculei-zeci-de-persoane-au-lesinat-pe-strada-3837451",
-    "original_link": "https://www.digi24.ro/stiri/actualitate/ambulanta-bucuresti-ilfov-asaltata-de-apeluri-in-timpul-caniculei-zeci-de-persoane-au-lesinat-pe-strada-3837451",
-    "source": "digi24",
-    "source_name": "Digi24",
-    "source_lang": "ro",
-    "title": "Ambulanța București-Ilfov, suprasolicitată din cauza caniculei",
-    "category": "general",
-    "published": "2026-06-28T19:39:07+00:00",
-    "model": "B",
-    "teaser": "Serviciul de Ambulanță București-Ilfov a înregistrat aproape 5.000 de apeluri în 84 de ore din cauza caniculei, peste 400 de persoane necesitând intervenții, multe suferind leșinuri.",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://digi24.ro/stiri/externe/rusia/putin-mesaj-inainte-de-alegerile-din-duma-de-stat-occidentul-vrea-sa-agite-situatia-interna-3837423",
-    "original_link": "https://www.digi24.ro/stiri/externe/rusia/putin-mesaj-inainte-de-alegerile-din-duma-de-stat-occidentul-vrea-sa-agite-situatia-interna-3837423",
-    "source": "extern",
-    "source_name": "Digi24 Extern",
-    "source_lang": "ro",
-    "title": "Putin acuză Occidentul de încercări de destabilizare internă a Rusiei",
-    "category": "politic",
-    "published": "2026-06-28T19:27:05+00:00",
-    "model": "C",
-    "sources": [
-      {
-        "name": "Digi24 Extern",
-        "url": "https://www.digi24.ro/stiri/externe/rusia/putin-mesaj-inainte-de-alegerile-din-duma-de-stat-occidentul-vrea-sa-agite-situatia-interna-3837423"
-      },
-      {
-        "name": "Digi24",
-        "url": "https://www.digi24.ro/stiri/externe/rusia/putin-mesaj-inainte-de-alegerile-din-duma-de-stat-occidentul-vrea-sa-agite-situatia-interna-3837423"
-      }
-    ],
-    "synthesis": "Președintele rus Vladimir Putin a afirmat că statele occidentale urmăresc să destabilizeze politic Rusia, inclusiv prin incitarea la tulburări interne. Aceste declarații au fost făcute în contextul pregătirilor pentru alegerile din Duma de Stat și în cadrul unui congres al partidului \"Rusia Unită\". Putin susține că eșecul Occidentului pe \"câmpul de luptă\" determină aceste acțiuni.",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://digi24.ro/stiri/actualitate/politica/csoma-botond-nicusor-dan-asteapta-un-acord-daca-mergem-cu-limbaj-dur-si-linii-rosii-nu-vom-avea-guvern-nici-anul-viitor-3837425",
-    "original_link": "https://www.digi24.ro/stiri/actualitate/politica/csoma-botond-nicusor-dan-asteapta-un-acord-daca-mergem-cu-limbaj-dur-si-linii-rosii-nu-vom-avea-guvern-nici-anul-viitor-3837425",
-    "source": "digi24",
-    "source_name": "Digi24",
-    "source_lang": "ro",
-    "original_title": "Csoma Botond: „Nicușor Dan așteaptă un acord. Dacă mergem cu limbaj dur și linii roșii, nu vom avea Guvern nici anul viitor”",
-    "title": "Csoma Botond: „Nicușor Dan așteaptă un acord. Dacă mergem cu limbaj dur și linii roșii, nu vom avea Guvern nici anul viitor”",
-    "description": "Liderul deputaților UDMR, Csoma Botond, a declarat duminică la Digi24 că alegerile anticipate nu ar schimba semnificativ raportul de forțe dintre partidele pro-europene și nu ar rezolva blocajul privind formarea noului guvern. În schimb, afirmă acesta, principalul beneficiar al unui astfel de scrutin ar fi AUR, în timp ce partidele care au format fosta coaliție ar fi nevoite să ajungă, în cele din urmă, tot la un compromis.",
-    "category": "general",
-    "published": "2026-06-28T19:18:40+00:00",
-    "model": "C",
-    "sources": [
-      {
-        "name": "Digi24",
-        "url": "https://www.digi24.ro/stiri/actualitate/politica/csoma-botond-nicusor-dan-asteapta-un-acord-daca-mergem-cu-limbaj-dur-si-linii-rosii-nu-vom-avea-guvern-nici-anul-viitor-3837425"
-      },
-      {
-        "name": "HotNews",
-        "url": "https://hotnews.ro/un-lider-udmr-spune-ca-nicusor-dan-este-mahnit-de-criza-politica-daca-mergem-numai-cu-limbaj-dur-si-linii-rosii-nu-vom-avea-guvern-nici-anul-viitor-2286816"
-      }
-    ],
-    "synthesis": "Liderul deputaților UDMR, Csoma Botond, a declarat duminică la Digi24 că alegerile anticipate nu ar schimba semnificativ raportul de forțe dintre partidele pro-europene și nu ar rezolva blocajul privind formarea noului guvern. În schimb, afirmă acesta, principalul beneficiar al unui astfel de scrutin ar fi AUR, în timp ce partidele care au format fosta coaliție ar fi nevoite să ajungă, în cele din urmă, tot la un compromis.",
-    "processed_by": "fallback",
-    "error": "HTTP Error 429: Too Many Requests",
-    "featured": false
-  },
-  {
-    "url": "https://gsp.ro/fotbal/liga-1/pe-ce-stadion-se-joaca-dinamo-universitatea-craiova-954282.html",
-    "original_link": "https://www.gsp.ro/fotbal/liga-1/pe-ce-stadion-se-joaca-dinamo-universitatea-craiova-954282.html",
-    "source": "gsp",
-    "source_name": "GSP",
-    "source_lang": "ro",
-    "original_title": "Pe ce stadion se joacă Dinamo - Universitatea Craiova, primul derby din noul sezon",
-    "title": "Pe ce stadion se joacă Dinamo - Universitatea Craiova, primul derby din noul sezon",
-    "description": "Startul noului sezon din Superligă se apropie, iar echipele și-au aflat programul după tragerea la sorți desfășurată vineri. Primul derby va fi Dinamo - Universitatea Craiova, în etapa a doua, în weekendul 25-26 iulie. Partida se va disputa la București, însă, cel mai probabil, nu pe Arena Națională. ...",
-    "category": "sport",
-    "published": "2026-06-28T19:18:30+00:00",
-    "model": "C",
-    "sources": [
-      {
-        "name": "GSP",
-        "url": "https://www.gsp.ro/fotbal/liga-1/pe-ce-stadion-se-joaca-dinamo-universitatea-craiova-954282.html"
-      },
-      {
-        "name": "Digi Sport",
-        "url": "https://www.digisport.ro/fotbal/liga-1/primarul-sectorului-2-a-dezvaluit-de-ce-s-au-oprit-lucrarile-la-noul-stadion-dinamo-fonduri-exista-4346389"
-      }
-    ],
-    "synthesis": "Startul noului sezon din Superligă se apropie, iar echipele și-au aflat programul după tragerea la sorți desfășurată vineri. Primul derby va fi Dinamo - Universitatea Craiova, în etapa a doua, în weekendul 25-26 iulie. Partida se va disputa la București, însă, cel mai probabil, nu pe Arena Națională. ...",
-    "processed_by": "fallback",
-    "error": "HTTP Error 429: Too Many Requests",
-    "featured": false
-  },
-  {
-    "url": "https://hotnews.ro/sefa-anm-despre-temperaturile-care-urmeaza-luni-si-marti-in-varful-acestui-episod-de-canicula-nu-vreau-sa-se-considere-ca-panicam-2286805",
-    "original_link": "https://hotnews.ro/sefa-anm-despre-temperaturile-care-urmeaza-luni-si-marti-in-varful-acestui-episod-de-canicula-nu-vreau-sa-se-considere-ca-panicam-2286805",
-    "source": "hotnews",
-    "source_name": "HotNews",
-    "source_lang": "ro",
-    "title": "ANM anunță vârf de caniculă luni și marți, cu temperaturi record",
-    "category": "general",
-    "published": "2026-06-28T19:16:18+00:00",
-    "model": "B",
-    "teaser": "Șefa ANM, Elena Mateescu, avertizează că luni și marți vor fi cele mai ridicate temperaturi din acest episod de caniculă, apropiindu-se de recordurile istorice pentru finalul lunii iunie, dar îndeamnă la calm.",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://g4media.ro/iranul-anunta-reluarea-luni-a-zborurilor-intre-teheran-si-dubai.html",
-    "original_link": "https://www.g4media.ro/iranul-anunta-reluarea-luni-a-zborurilor-intre-teheran-si-dubai.html",
-    "source": "g4media",
-    "source_name": "G4Media",
-    "source_lang": "ro",
-    "title": "Iranul anunță reluarea zborurilor Teheran-Dubai",
-    "category": "extern",
-    "published": "2026-06-28T19:14:10+00:00",
-    "model": "B",
-    "teaser": "Zborurile între Teheran și Dubai vor fi reluate începând de luni, după ce au fost suspendate săptămâni întregi din cauza conflictului din Orientul Mijlociu și a atacurilor din Golf.",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://g4media.ro/aproape-5-000-de-apeluri-primite-in-ultimele-84-de-ore-zeci-de-persoane-au-suferit-lipotimii.html",
-    "original_link": "https://www.g4media.ro/aproape-5-000-de-apeluri-primite-in-ultimele-84-de-ore-zeci-de-persoane-au-suferit-lipotimii.html",
-    "source": "g4media",
-    "source_name": "G4Media",
-    "source_lang": "ro",
-    "original_title": "Aproape 5.000 de apeluri primite în ultimele 84 de ore; zeci de persoane au suferit lipotimii",
-    "title": "Aproape 5.000 de apeluri primite în ultimele 84 de ore; zeci de persoane au suferit lipotimii",
-    "description": "Aproape 5.000 de apeluri au fost primite la nivelul Serviciului de Ambulanţă Bucureşti-Ilfov (SABIF) în ultimele 84 de ore, peste 400 de persoane care au avut nevoie de ambulanţă aflându-se în locuri publice, cea mai mare parte a acestora solicitând ajutor medical din cauza căldurii, transmite Agerpres. „În ultimele 84 de ore, au fost 4.992 © G4Media.ro .",
-    "category": "politic",
-    "published": "2026-06-28T19:08:44+00:00",
-    "model": "C",
-    "sources": [
-      {
-        "name": "Digi24",
-        "url": "https://www.digi24.ro/stiri/actualitate/ambulanta-bucuresti-ilfov-asaltata-de-apeluri-in-timpul-caniculei-zeci-de-persoane-au-lesinat-pe-strada-3837451"
-      },
-      {
-        "name": "G4Media",
-        "url": "https://www.g4media.ro/aproape-5-000-de-apeluri-primite-in-ultimele-84-de-ore-zeci-de-persoane-au-suferit-lipotimii.html"
-      }
-    ],
-    "synthesis": "Aproape 5.000 de apeluri au fost primite la nivelul Serviciului de Ambulanţă Bucureşti-Ilfov (SABIF) în ultimele 84 de ore, peste 400 de persoane care au avut nevoie de ambulanţă aflându-se în locuri publice, cea mai mare parte a acestora solicitând ajutor medical din cauza căldurii, transmite Agerpres. „În ultimele 84 de ore, au fost 4.992 © G4Media.ro .",
-    "processed_by": "fallback",
-    "error": "HTTP Error 429: Too Many Requests",
-    "featured": false
-  },
-  {
-    "url": "https://libertatea.ro/lifestyle/turisti-litoral-romanesc-weekend-27-28-iunie-2026-record-ocupare-preturi-5797069",
-    "original_link": "https://www.libertatea.ro/lifestyle/turisti-litoral-romanesc-weekend-27-28-iunie-2026-record-ocupare-preturi-5797069",
-    "source": "libertatea",
-    "source_name": "Libertatea",
-    "source_lang": "ro",
-    "title": "Canicula atrage un număr record de turiști pe litoralul românesc",
-    "category": "general",
-    "published": "2026-06-28T19:07:10+00:00",
-    "model": "B",
-    "teaser": "Peste 90.000 de turiști au ales litoralul românesc în acest weekend, canicula generând cel mai aglomerat moment al sezonului estival de la deschidere.",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://spotmedia.ro/stiri/politica/udmr-nu-a-discutat-votarea-unui-guvern-psd-blocajul-vine-de-la-psd-nu-au-acceptat-un-acord-reciproc",
-    "original_link": "https://spotmedia.ro/stiri/politica/udmr-nu-a-discutat-votarea-unui-guvern-psd-blocajul-vine-de-la-psd-nu-au-acceptat-un-acord-reciproc",
-    "source": "spotmedia",
-    "source_name": "Spotmedia",
-    "source_lang": "ro",
-    "title": "UDMR nu a discutat votarea unui guvern PSD, blocajul e la PSD",
-    "category": "politic",
-    "published": "2026-06-28T19:05:34+00:00",
-    "model": "B",
-    "teaser": "UDMR nu ia în considerare susținerea unui guvern PSD, purtătorul de cuvânt Csoma Botond afirmând că nu s-a discutat acest scenariu, iar formațiunea rămâne alături de PNL și USR.",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://digi24.ro/stiri/externe/uniunea-europeana-face-un-apel-catre-iran-dupa-atacurile-impotriva-bahrainului-3837409",
-    "original_link": "https://www.digi24.ro/stiri/externe/uniunea-europeana-face-un-apel-catre-iran-dupa-atacurile-impotriva-bahrainului-3837409",
-    "source": "extern",
-    "source_name": "Digi24 Extern",
-    "source_lang": "ro",
-    "title": "UE condamnă atacurile Iranului asupra Bahrainului și cere respectarea acordului de pace",
-    "category": "politic",
-    "published": "2026-06-28T19:01:07+00:00",
-    "model": "C",
-    "sources": [
-      {
-        "name": "Digi24 Extern",
-        "url": "https://www.digi24.ro/stiri/externe/uniunea-europeana-face-un-apel-catre-iran-dupa-atacurile-impotriva-bahrainului-3837409"
-      },
-      {
-        "name": "Digi24",
-        "url": "https://www.digi24.ro/stiri/externe/uniunea-europeana-face-un-apel-catre-iran-dupa-atacurile-impotriva-bahrainului-3837409"
-      }
-    ],
-    "synthesis": "Uniunea Europeană a condamnat ferm atacurile recente ale Iranului asupra Bahrainului. Blocul comunitar a lansat un apel către Teheran, solicitând respectarea integrală a memorandumului de înțelegere pentru încetarea conflictului, semnat recent cu Statele Unite. Aceste acțiuni subliniază tensiunile regionale și importanța respectării acordurilor internaționale.",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://prosport.ro/campionatul-mondial-2026/africa-de-sud-canada-live-la-cupa-mondiala-16-imi-20472414",
-    "original_link": "https://www.prosport.ro/campionatul-mondial-2026/africa-de-sud-canada-live-la-cupa-mondiala-16-imi-20472414",
-    "source": "prosport",
-    "source_name": "ProSport",
-    "source_lang": "ro",
-    "original_title": "LIVEBLOG Amical fricos la intrarea unei peșteri! Africa de Sud – Canada în 16-imi la Cupa Mondială. Cronică LIVE",
-    "title": "LIVEBLOG Amical fricos la intrarea unei peșteri! Africa de Sud – Canada în 16-imi la Cupa Mondială. Cronică LIVE",
-    "description": "Prima partidă din 16-imi la CM 2026 a adus africanii „renăscuți” după start dezastruos de grupă care apoi au trimis acasă Coreea de Sud a lui Son, și una din gazdele turneului, cu Larin și David impresionanți în atac: Africa de Sud – Canada live la Cupa Mondială! Câștigătoarea din această partidă joacă în optimile",
-    "category": "sport",
-    "published": "2026-06-28T19:00:55+00:00",
-    "model": "C",
-    "sources": [
-      {
-        "name": "Digi Sport",
-        "url": "https://www.digisport.ro/fotbal/cm-2026/africa-de-sud-canada-0-0-acum-pe-digisport-ro-nord-americanii-sunt-favoriti-la-calificarea-in-optimi-4345197"
-      },
-      {
-        "name": "ProSport",
-        "url": "https://www.prosport.ro/campionatul-mondial-2026/africa-de-sud-canada-live-la-cupa-mondiala-16-imi-20472414"
-      }
-    ],
-    "synthesis": "Prima partidă din 16-imi la CM 2026 a adus africanii „renăscuți” după start dezastruos de grupă care apoi au trimis acasă Coreea de Sud a lui Son, și una din gazdele turneului, cu Larin și David impresionanți în atac: Africa de Sud – Canada live la Cupa Mondială! Câștigătoarea din această partidă joacă în optimile",
-    "processed_by": "fallback",
-    "error": "HTTP Error 429: Too Many Requests",
-    "featured": false
-  },
-  {
-    "url": "https://g4media.ro/csoma-botond-udmr-blocajul-privind-desemnarea-premierului-vine-de-la-partidul-social-democrat.html",
-    "original_link": "https://www.g4media.ro/csoma-botond-udmr-blocajul-privind-desemnarea-premierului-vine-de-la-partidul-social-democrat.html",
-    "source": "g4media",
-    "source_name": "G4Media",
-    "source_lang": "ro",
-    "title": "UDMR acuză PSD de blocarea negocierilor pentru formarea guvernului",
-    "category": "politic",
-    "published": "2026-06-28T18:54:42+00:00",
-    "model": "C",
-    "sources": [
-      {
-        "name": "Digi24",
-        "url": "https://www.digi24.ro/stiri/actualitate/politica/csoma-botond-udmr-explica-de-ce-au-esuat-negocierile-pentru-formarea-guvernului-blocajul-vine-de-la-psd-3837407"
-      },
-      {
-        "name": "G4Media",
-        "url": "https://www.g4media.ro/csoma-botond-udmr-blocajul-privind-desemnarea-premierului-vine-de-la-partidul-social-democrat.html"
-      }
-    ],
-    "synthesis": "Liderul deputaților UDMR, Csoma Botond, a declarat că PSD este principalul responsabil pentru eșecul negocierilor privind formarea noului guvern. Potrivit acestuia, social-democrații au respins atât ideea rotativei guvernamentale, cât și un acord comun pe programul de guvernare, însă există încă speranțe pentru o înțelegere.",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://stirileprotv.ro/stiri/international/proteste-in-serbia-dupa-ce-presedintele-vucic-a-anutat-ca-va-demisiona-ce-ar-urmari-de-fapt-liderul-sarb.html",
-    "original_link": "https://stirileprotv.ro/stiri/international/proteste-in-serbia-dupa-ce-presedintele-vucic-a-anutat-ca-va-demisiona-ce-ar-urmari-de-fapt-liderul-sarb.html",
-    "source": "protv",
-    "source_name": "Știrile ProTV",
-    "source_lang": "ro",
-    "original_title": "Proteste în Serbia după ce președintele Vucic a anuțat că va demisiona. Ce ar urmări, de fapt, liderul sârb",
-    "title": "Proteste în Serbia după ce președintele Vucic a anuțat că va demisiona. Ce ar urmări, de fapt, liderul sârb",
-    "description": "Mii de protestatari urmau să se adune duminică în oraşul sârb Kraljevo, la o zi după ce preşedintele Aleksandar Vucic a anunţat că va demisiona deschizând astfel calea către alegeri prezidenţiale şi parlamentare anticipate, relatează Reuters.",
-    "category": "general",
-    "published": "2026-06-28T18:53:44+00:00",
-    "model": "C",
-    "sources": [
-      {
-        "name": "G4Media",
-        "url": "https://www.g4media.ro/protestele-continua-in-serbia-dupa-ce-presedintele-vucic-a-anuntat-ca-isi-va-da-demisia.html"
-      },
-      {
-        "name": "Știrile ProTV",
-        "url": "https://stirileprotv.ro/stiri/international/proteste-in-serbia-dupa-ce-presedintele-vucic-a-anutat-ca-va-demisiona-ce-ar-urmari-de-fapt-liderul-sarb.html"
-      }
-    ],
-    "synthesis": "Mii de protestatari urmau să se adune duminică în oraşul sârb Kraljevo, la o zi după ce preşedintele Aleksandar Vucic a anunţat că va demisiona deschizând astfel calea către alegeri prezidenţiale şi parlamentare anticipate, relatează Reuters.",
-    "processed_by": "fallback",
-    "error": "HTTP Error 429: Too Many Requests",
-    "featured": false
-  },
-  {
-    "url": "https://digi24.ro/stiri/externe/coreea-de-nord/de-ce-liderul-nord-coreean-kim-jong-un-nu-vorbeste-niciodata-despre-mama-sa-descendenta-controversata-a-lui-ko-yong-hui-3837287",
-    "original_link": "https://www.digi24.ro/stiri/externe/coreea-de-nord/de-ce-liderul-nord-coreean-kim-jong-un-nu-vorbeste-niciodata-despre-mama-sa-descendenta-controversata-a-lui-ko-yong-hui-3837287",
-    "source": "extern",
-    "source_name": "Digi24 Extern",
-    "source_lang": "ro",
-    "original_title": "De ce liderul nord-coreean Kim Jong Un nu vorbește despre mama sa. Ko Yong Hui venea din Japonia și a avut trei copii nelegitimi",
-    "title": "De ce liderul nord-coreean Kim Jong Un nu vorbește despre mama sa. Ko Yong Hui venea din Japonia și a avut trei copii nelegitimi",
-    "description": "Printre numeroasele mistere care îl înconjoară pe liderul nord-coreean Kim Jong Un, se cel care se remarcă în mod special este secretul care o înconjoară pe mama sa. În cei 15 ani de domnie, el nu a menționat-o niciodată public pe nume. Legitimitatea dictaturii lui Kim se bazează în mare măsură pe linia sa genealogică „Muntele Paektu” - o descendență legată de fondatorul mitic al poporului coreean. Iar într-o țară care se mândrește cu această puritate ereditară, identitatea mamei lui Kim nu mai reprezintă doar un secret, ci o amenințare la adresa regimului însuși.",
-    "category": "extern",
-    "published": "2026-06-28T18:52:30+00:00",
-    "model": "C",
-    "sources": [
-      {
-        "name": "Digi24 Extern",
-        "url": "https://www.digi24.ro/stiri/externe/coreea-de-nord/de-ce-liderul-nord-coreean-kim-jong-un-nu-vorbeste-niciodata-despre-mama-sa-descendenta-controversata-a-lui-ko-yong-hui-3837287"
-      },
-      {
-        "name": "Digi24",
-        "url": "https://www.digi24.ro/stiri/externe/coreea-de-nord/de-ce-liderul-nord-coreean-kim-jong-un-nu-vorbeste-niciodata-despre-mama-sa-descendenta-controversata-a-lui-ko-yong-hui-3837287"
-      }
-    ],
-    "synthesis": "Printre numeroasele mistere care îl înconjoară pe liderul nord-coreean Kim Jong Un, se cel care se remarcă în mod special este secretul care o înconjoară pe mama sa. În cei 15 ani de domnie, el nu a menționat-o niciodată public pe nume. Legitimitatea dictaturii lui Kim se bazează în mare măsură pe linia sa genealogică „Muntele Paektu” - o descendență legată de fondatorul mitic al poporului coreean. Iar într-o țară care se mândrește cu această puritate ereditară, identitatea mamei lui Kim nu mai reprezintă doar un secret, ci o amenințare...",
-    "processed_by": "fallback",
-    "error": "HTTP Error 429: Too Many Requests",
-    "featured": false
-  },
-  {
-    "url": "https://libertatea.ro/lifestyle/horoscop-azi-29-iunie-2026-5792471",
-    "original_link": "https://www.libertatea.ro/lifestyle/horoscop-azi-29-iunie-2026-5792471",
-    "source": "libertatea",
-    "source_name": "Libertatea",
-    "source_lang": "ro",
-    "title": "Horoscop 29 iunie 2026: Taurii au probleme cu deplasările și documentele",
-    "category": "general",
-    "published": "2026-06-28T18:50:00+00:00",
-    "model": "B",
-    "teaser": "Horoscopul pentru 29 iunie 2026 indică o perioadă dificilă pentru Tauri, cu încurcături în deplasări, discuții și acte, în timp ce Berbecii se confruntă cu provocări.",
     "processed_by": "gemini",
     "prompt_version": "v2-esenta",
     "featured": false
