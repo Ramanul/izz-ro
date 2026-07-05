@@ -57,6 +57,7 @@ def main() -> int:
     paths = [re.sub(r"^https?://[^/]+", "", u) for u in re.findall(r"<loc>([^<]+)</loc>", sitemap)]
     arts = [p for p in paths if p.count("/") >= 3 and "/legal/" not in p]
     random.shuffle(arts)
+    with_cover = 0
     for p in arts[:N_ARTICLES]:
         html = get(p)
         page = p[:60]
@@ -65,6 +66,24 @@ def main() -> int:
         check(re.search(r'sources-box.*?<a href="http', html, re.S) is not None,
               page, "sursele din box sunt linkuri externe")
         check("btn-source" not in html, page, "fara btn-source")
+        # coperta generata: og:image per articol + imaginea chiar exista pe live
+        m = re.search(r'property="og:image" content="([^"]+)"', html)
+        cover_url = m.group(1) if m else ""
+        if "/cover.jpg" in cover_url:
+            with_cover += 1
+            cpath = re.sub(r"^https?://[^/]+", "", cover_url)
+            try:
+                req = urllib.request.Request(BASE + cpath, headers=UA)
+                with urllib.request.urlopen(req, timeout=30) as r:
+                    ok_img = (r.headers.get("Content-Type", "").startswith("image/")
+                              and len(r.read()) > 5000)
+            except Exception:
+                ok_img = False
+            check(ok_img, page, "coperta og:image exista si e imagine reala (>5KB)")
+    # cateva articole pot cadea legitim pe og-image static (generate() a esuat izolat),
+    # dar majoritatea esantionului TREBUIE sa aiba coperta proprie
+    check(with_cover >= max(1, N_ARTICLES - 1), "articole",
+          f"coperti generate pe esantion: {with_cover}/{N_ARTICLES} (minim {N_ARTICLES - 1})")
 
     if fails:
         print(f"\nFAIL — {len(fails)} incalcari pe live:")
