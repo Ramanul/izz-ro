@@ -1,5 +1,405 @@
 [
   {
+    "url": "https://gsp.ro/fotbal/liga-1/el-este-alesul-uefa-pentru-debutul-craiovei-in-liga-campionilor-956896.html",
+    "original_link": "https://www.gsp.ro/fotbal/liga-1/el-este-alesul-uefa-pentru-debutul-craiovei-in-liga-campionilor-956896.html",
+    "source": "gsp",
+    "source_name": "GSP",
+    "source_lang": "ro",
+    "title": "Arbitrul desemnat de UEFA pentru debutul Craiovei in Liga Campionilor",
+    "category": "sport",
+    "published": "2026-07-05T07:39:41+00:00",
+    "model": "B",
+    "teaser": "UEFA l-a numit pe bosniacul Luka Bilbija sa conduca partida dintre Vitebsk si Universitatea Craiova, din prima etapa preliminara a Ligii Campionilor. Acesta este debutul echipei romane.",
+    "entities": [
+      "UEFA",
+      "Universitatea Craiova",
+      "Luka Bilbija"
+    ],
+    "icon": "ball-football",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://politico.com/news/2026/07/04/poll-politics-celebrities-athletes-partisan-divides-00986697",
+    "original_link": "https://www.politico.com/news/2026/07/04/poll-politics-celebrities-athletes-partisan-divides-00986697?utm_source=RSS_Feed&utm_medium=RSS&utm_campaign=RSS_Syndication",
+    "source": "politico_eu",
+    "source_name": "Politico EU",
+    "source_lang": "en",
+    "title": "Americanii sunt obosiți de politică, dar influențați de celebrități",
+    "category": "politic",
+    "published": "2026-07-05T07:30:15+00:00",
+    "model": "B",
+    "teaser": "Un sondaj relevă că majoritatea americanilor consideră că politica a pătruns prea mult în viața lor, însă recunosc că pot fi influențați de declarațiile vedetelor și ale companiilor.",
+    "entities": [
+      "SUA"
+    ],
+    "icon": "percentage",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://stirileprotv.ro/stiri/actualitate/un-barbat-de-45-de-ani-a-murit-dupa-ce-a-cazut-de-pe-o-trotineta-electrica-si-s-a-lovit-la-cap-in-constanta.html",
+    "original_link": "https://stirileprotv.ro/stiri/actualitate/un-barbat-de-45-de-ani-a-murit-dupa-ce-a-cazut-de-pe-o-trotineta-electrica-si-s-a-lovit-la-cap-in-constanta.html",
+    "source": "protv",
+    "source_name": "Știrile ProTV",
+    "source_lang": "ro",
+    "title": "Bărbat de 45 de ani, mort după o căzătură de pe trotinetă electrică",
+    "category": "general",
+    "published": "2026-07-05T07:00:44+00:00",
+    "model": "C",
+    "sources": [
+      {
+        "name": "Știrile ProTV",
+        "url": "https://stirileprotv.ro/stiri/actualitate/un-barbat-de-45-de-ani-a-murit-dupa-ce-a-cazut-de-pe-o-trotineta-electrica-si-s-a-lovit-la-cap-in-constanta.html"
+      },
+      {
+        "name": "G4Media",
+        "url": "https://www.g4media.ro/barbat-de-45-de-ani-gasit-mort-langa-o-trotineta-electrica-pe-pista-de-biciclete-din-navodari-ar-fi-cazut-de-pe-ea-si-s-ar-fi-lovit-la-cap.html"
+      },
+      {
+        "name": "Digi24",
+        "url": "https://www.digi24.ro/stiri/un-barbat-de-45-de-ani-a-murit-dupa-ce-a-cazut-de-pe-o-trotineta-electrica-3848069"
+      }
+    ],
+    "first_source": "Știrile ProTV",
+    "synthesis": "Un bărbat de 45 de ani a decedat duminică dimineață pe DJ 226, în zona Midia, județul Constanța. Potrivit informațiilor preliminare, acesta circula pe o pistă special amenajată cu o trotinetă electrică, a căzut și s-a lovit la cap. Poliția a deschis un dosar penal pentru a elucida circumstanțele exacte ale accidentului.",
+    "entities": [
+      "Constanța",
+      "Midia",
+      "DJ 226"
+    ],
+    "icon": "bike",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://digi24.ro/stiri/externe/descoperire-spectaculoasa-in-desertul-egiptului-arheologii-au-scos-la-lumina-un-vechi-oras-bizantin-3848027",
+    "original_link": "https://www.digi24.ro/stiri/externe/descoperire-spectaculoasa-in-desertul-egiptului-arheologii-au-scos-la-lumina-un-vechi-oras-bizantin-3848027",
+    "source": "digi24",
+    "source_name": "Digi24",
+    "source_lang": "ro",
+    "title": "Descoperit oras bizantin vechi de 1600 de ani in Egipt",
+    "category": "general",
+    "published": "2026-07-05T06:36:19+00:00",
+    "model": "B",
+    "teaser": "Arheologii egipteni au gasit un oras bizantin bine conservat, cu locuinte si o biserica, in deertul vestic. Descoperirea include si artefacte precum monede si ceramica.",
+    "entities": [
+      "Egipt",
+      "Dakhla"
+    ],
+    "icon": "building-church",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://dw.com/en/albania-pm-rama-protests-a-stage-for-anti-trump-forces/a-77833383?maca=en-rss-en-eu-2092-rdf",
+    "original_link": "https://www.dw.com/en/albania-pm-rama-protests-a-stage-for-anti-trump-forces/a-77833383?maca=en-rss-en-eu-2092-rdf",
+    "source": "dw_europe",
+    "source_name": "DW Europe",
+    "source_lang": "en",
+    "title": "Premierul albanez acuză protestele că sunt folosite de forțe anti-Trump",
+    "category": "politic",
+    "published": "2026-07-05T06:27:00+00:00",
+    "model": "B",
+    "teaser": "Premierul Edi Rama susține că manifestațiile din Albania, legate de vânzarea naturii către investitori, sunt manipulate de grupări anti-Trump.",
+    "entities": [
+      "Albania",
+      "Edi Rama",
+      "Trump"
+    ],
+    "icon": "flag",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://stirileprotv.ro/stiri/actualitate/ce-mesaj-a-transmis-de-ziua-justitiei-presedintele-inaltei-cur-i-de-casa-ie-si-justi-ie-judecatoarea-lia-savonea.html",
+    "original_link": "https://stirileprotv.ro/stiri/actualitate/ce-mesaj-a-transmis-de-ziua-justitiei-presedintele-inaltei-cur-i-de-casa-ie-si-justi-ie-judecatoarea-lia-savonea.html",
+    "source": "protv",
+    "source_name": "Știrile ProTV",
+    "source_lang": "ro",
+    "title": "Președintele ÎCCJ, Lia Savonea, subliniază importanța independenței judiciare",
+    "category": "general",
+    "published": "2026-07-05T06:26:41+00:00",
+    "model": "C",
+    "sources": [
+      {
+        "name": "Știrile ProTV",
+        "url": "https://stirileprotv.ro/stiri/actualitate/ce-mesaj-a-transmis-de-ziua-justitiei-presedintele-inaltei-cur-i-de-casa-ie-si-justi-ie-judecatoarea-lia-savonea.html"
+      },
+      {
+        "name": "Digi24",
+        "url": "https://www.digi24.ro/stiri/actualitate/lia-savonea-mesaj-de-ziua-justitiei-mai-mult-ca-oricand-avem-obligatia-de-a-apara-independenta-reala-a-judecatorului-3848031"
+      }
+    ],
+    "first_source": "Știrile ProTV",
+    "synthesis": "Cu ocazia Zilei Justiției, președintele Înaltei Curți de Casație și Justiție, Lia Savonea, a transmis un mesaj în care a subliniat necesitatea stringentă de a apăra independența reală a judecătorilor. Ea a precizat că succesul actului de justiție nu se măsoară doar prin volumul de activitate, ci și prin garantarea acestei independențe.",
+    "entities": [
+      "Lia Savonea",
+      "Înalta Curte de Casație și Justiție"
+    ],
+    "icon": "gavel",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://digi24.ro/stiri/actualitate/social/rezultate-loto-duminica-5-iulie-2026-reporturi-consistente-la-6-49-si-noroc-la-joker-sunt-in-joc-peste-23o-000-de-euro-3847131",
+    "original_link": "https://www.digi24.ro/stiri/actualitate/social/rezultate-loto-duminica-5-iulie-2026-reporturi-consistente-la-6-49-si-noroc-la-joker-sunt-in-joc-peste-23o-000-de-euro-3847131",
+    "source": "digi24",
+    "source_name": "Digi24",
+    "source_lang": "ro",
+    "title": "Reporturi consistente la Loto 6/49 și Noroc pe 5 iulie 2026",
+    "category": "economic",
+    "published": "2026-07-05T06:23:57+00:00",
+    "model": "C",
+    "sources": [
+      {
+        "name": "Digi24",
+        "url": "https://www.digi24.ro/stiri/actualitate/social/rezultate-loto-duminica-5-iulie-2026-reporturi-consistente-la-6-49-si-noroc-la-joker-sunt-in-joc-peste-23o-000-de-euro-3847131"
+      },
+      {
+        "name": "HotNews",
+        "url": "https://hotnews.ro/rezultatele-loto-6-din-49-din-5-iulie-2026-2292161"
+      }
+    ],
+    "first_source": "Digi24",
+    "synthesis": "Duminică, 5 iulie 2026, au loc trageri Loto cu reporturi semnificative. La Loto 6/49, categoria I, premiul depășește 7,02 milioane de euro. La Joker se joacă aproape 231.000 de euro, iar la Noroc, reportul cumulat a ajuns la peste 1,35 milioane de euro. Loteria Română a acordat anterior peste 18.600 de câștiguri.",
+    "entities": [
+      "Loto 6/49",
+      "Noroc",
+      "Joker"
+    ],
+    "icon": "percentage",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://digi24.ro/stiri/externe/mapamond/albania-nu-este-de-vanzare-protest-urias-la-tirana-impotriva-unui-proiect-imobiliar-in-care-este-implicata-fiica-lui-donald-trump-3848009",
+    "original_link": "https://www.digi24.ro/stiri/externe/mapamond/albania-nu-este-de-vanzare-protest-urias-la-tirana-impotriva-unui-proiect-imobiliar-in-care-este-implicata-fiica-lui-donald-trump-3848009",
+    "source": "extern",
+    "source_name": "Digi24 Extern",
+    "source_lang": "ro",
+    "title": "Protest masiv la Tirana impotriva proiectului imobiliar Trump",
+    "category": "politic",
+    "published": "2026-07-05T06:22:54+00:00",
+    "model": "B",
+    "teaser": "Zeci de mii de albanezi au protestat la Tirana impotriva unui proiect turistic legat de familia Trump. Sloganul principal a fost \"Albania nu este de vanzare\".",
+    "entities": [
+      "Albania",
+      "Tirana",
+      "Donald Trump"
+    ],
+    "icon": "flag",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://digi24.ro/stiri/externe/mapamond/albania-nu-este-de-vanzare-protest-urias-la-tirana-impotriva-unui-proiect-imobiliar-in-care-este-implicata-fiica-lui-donald-trump-3848009",
+    "original_link": "https://www.digi24.ro/stiri/externe/mapamond/albania-nu-este-de-vanzare-protest-urias-la-tirana-impotriva-unui-proiect-imobiliar-in-care-este-implicata-fiica-lui-donald-trump-3848009",
+    "source": "digi24",
+    "source_name": "Digi24",
+    "source_lang": "ro",
+    "title": "Protest masiv la Tirana impotriva proiectului imobiliar Trump",
+    "category": "politic",
+    "published": "2026-07-05T06:22:54+00:00",
+    "model": "B",
+    "teaser": "Zeci de mii de albanezi au protestat la Tirana impotriva unui proiect turistic legat de familia Trump. Sloganul principal a fost \"Albania nu este de vanzare\".",
+    "entities": [
+      "Albania",
+      "Tirana",
+      "Donald Trump"
+    ],
+    "icon": "flag",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://hotnews.ro/un-avion-care-ateriza-la-chicago-a-fost-lovit-de-un-foc-de-artificii-tocmai-am-auzit-o-bubuitura-2292136",
+    "original_link": "https://hotnews.ro/un-avion-care-ateriza-la-chicago-a-fost-lovit-de-un-foc-de-artificii-tocmai-am-auzit-o-bubuitura-2292136",
+    "source": "hotnews",
+    "source_name": "HotNews",
+    "source_lang": "ro",
+    "title": "Avion Delta Air Lines, lovit de artificii la aterizarea în Chicago",
+    "category": "extern",
+    "published": "2026-07-05T05:56:57+00:00",
+    "model": "C",
+    "sources": [
+      {
+        "name": "HotNews",
+        "url": "https://hotnews.ro/un-avion-care-ateriza-la-chicago-a-fost-lovit-de-un-foc-de-artificii-tocmai-am-auzit-o-bubuitura-2292136"
+      },
+      {
+        "name": "Digi24 Extern",
+        "url": "https://www.digi24.ro/stiri/externe/mapamond/tocmai-am-auzit-bubuitura-in-avion-un-avion-care-ateriza-la-chicago-a-intrat-in-contact-cu-un-foc-de-artificii-3847977"
+      }
+    ],
+    "first_source": "HotNews",
+    "synthesis": "Un avion al companiei Delta Air Lines, care venea de la Atlanta, a intrat în contact cu un foc de artificii în timp ce ateriza pe Aeroportul Internațional Midway din Chicago, sâmbătă seară. Incidentul a fost confirmat de compania aeriană, iar comunicarea radio a surprins momentul imediat după impact.",
+    "entities": [
+      "Delta Air Lines",
+      "Chicago Midway",
+      "Atlanta"
+    ],
+    "icon": "plane",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://economica.net/putin-a-vorbit-cu-trump-o-ora-si-jumatate-la-telefon-despre-ce-au-discutat_956512.html",
+    "original_link": "https://www.economica.net/putin-a-vorbit-cu-trump-o-ora-si-jumatate-la-telefon-despre-ce-au-discutat_956512.html",
+    "source": "economica",
+    "source_name": "Economica",
+    "source_lang": "ro",
+    "title": "Putin și Trump au discutat despre Ucraina la telefon",
+    "category": "politic",
+    "published": "2026-07-05T05:45:46+00:00",
+    "model": "C",
+    "sources": [
+      {
+        "name": "Economica",
+        "url": "https://www.economica.net/putin-a-vorbit-cu-trump-o-ora-si-jumatate-la-telefon-despre-ce-au-discutat_956512.html"
+      },
+      {
+        "name": "Digi24 Extern",
+        "url": "https://www.digi24.ro/stiri/externe/putin-l-a-sunat-pe-trump-de-ziua-americii-ce-au-vorbit-cei-doi-timp-de-o-ora-si-jumatate-3847997"
+      }
+    ],
+    "first_source": "Economica",
+    "synthesis": "Președintele rus Vladimir Putin a purtat o conversație telefonică de o oră și jumătate cu omologul său american Donald Trump, sâmbătă. Discuția a avut loc cu ocazia celebrării a 250 de ani de la înființarea Statelor Unite. Cei doi lideri au abordat, printre altele, situația din Ucraina, înaintea summitului NATO de la Ankara.",
+    "entities": [
+      "Vladimir Putin",
+      "Donald Trump",
+      "Ucraina",
+      "NATO"
+    ],
+    "icon": "flag",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://hotnews.ro/trump-saluta-epoca-de-aur-a-americii-in-discursul-de-ziua-independentei-critici-dure-la-adresa-comunismului-2292113",
+    "original_link": "https://hotnews.ro/trump-saluta-epoca-de-aur-a-americii-in-discursul-de-ziua-independentei-critici-dure-la-adresa-comunismului-2292113",
+    "source": "hotnews",
+    "source_name": "HotNews",
+    "source_lang": "ro",
+    "title": "Trump celebrează independența SUA și critică comunismul",
+    "category": "politic",
+    "published": "2026-07-05T05:31:25+00:00",
+    "model": "C",
+    "sources": [
+      {
+        "name": "HotNews",
+        "url": "https://hotnews.ro/trump-saluta-epoca-de-aur-a-americii-in-discursul-de-ziua-independentei-critici-dure-la-adresa-comunismului-2292113"
+      },
+      {
+        "name": "Digi24 Extern",
+        "url": "https://www.digi24.ro/stiri/externe/sua/trump-discurs-intarziat-de-ziua-independentei-sarbatorim-triumful-libertatii-asupra-tiraniei-victoria-libertatii-asupra-opresiunii-3847951"
+      }
+    ],
+    "first_source": "HotNews",
+    "synthesis": "Președintele american Donald Trump a susținut un discurs la National Mall din Washington D.C. de Ziua Independenței, lăudând realizările țării și potențialul său nelimitat. Evenimentul a fost întârziat de vreme rea, dar Trump a promis că nu va fi împiedicat. El a atacat din nou comunismul și a prezentat un steag istoric al SUA.",
+    "entities": [
+      "Donald Trump",
+      "National Mall",
+      "Washington D.C"
+    ],
+    "icon": "flag",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://politico.eu/article/frances-far-right-didnt-drop-its-grudge-against-les-bleus-it-recast-it",
+    "original_link": "https://www.politico.eu/article/frances-far-right-didnt-drop-its-grudge-against-les-bleus-it-recast-it/?utm_source=RSS_Feed&utm_medium=RSS&utm_campaign=RSS_Syndication",
+    "source": "politico_eu",
+    "source_name": "Politico EU",
+    "source_lang": "en",
+    "title": "Extrema dreaptă franceză și-a reorientat criticile la adresa echipei naționale",
+    "category": "politic",
+    "published": "2026-07-05T05:29:02+00:00",
+    "model": "B",
+    "teaser": "Criticile la adresa imigrației și identității s-au transformat într-o retorică anti-privilegiu și anti-elită, reflectând strategia partidului de a se apropia de președinție.",
+    "entities": [
+      "Franța"
+    ],
+    "icon": "flag",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://politico.eu/podcast/brussels-playbook-podcast/bonus-episode-ernstfall-what-if-russia-attacks-nato",
+    "original_link": "https://www.politico.eu/podcast/brussels-playbook-podcast/bonus-episode-ernstfall-what-if-russia-attacks-nato/?utm_source=RSS_Feed&utm_medium=RSS&utm_campaign=RSS_Syndication",
+    "source": "politico_eu",
+    "source_name": "Politico EU",
+    "source_lang": "en",
+    "title": "Simulare: Ce se întâmplă dacă Rusia atacă NATO?",
+    "category": "extern",
+    "published": "2026-07-05T05:00:00+00:00",
+    "model": "B",
+    "teaser": "O simulare de război, realizată de colegii de la WELT, explorează scenariul unui atac rusesc asupra flancului estic al NATO, analizând răspunsul Germaniei și vulnerabilitățile alianței.",
+    "entities": [
+      "Rusia",
+      "NATO",
+      "Germania"
+    ],
+    "icon": "swords",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://digi24.ro/stiri/externe/mapamond/cum-a-ajuns-capitala-europeana-a-crimelor-printre-cele-mai-sigure-locuri-din-lume-planul-care-a-salvat-scotia-de-boala-violentei-3842605",
+    "original_link": "https://www.digi24.ro/stiri/externe/mapamond/cum-a-ajuns-capitala-europeana-a-crimelor-printre-cele-mai-sigure-locuri-din-lume-planul-care-a-salvat-scotia-de-boala-violentei-3842605",
+    "source": "extern",
+    "source_name": "Digi24 Extern",
+    "source_lang": "ro",
+    "title": "Cum a devenit Scotia una dintre cele mai sigure tari din lume",
+    "category": "general",
+    "published": "2026-07-05T04:00:57+00:00",
+    "model": "B",
+    "teaser": "Autoritatile scotiene au tratat violenta ca pe o problema de sanatate publica, implementand un plan care a redus drastic criminalitatea. Astfel, Scotia a trecut de la \"capitala crimelor\" la un loc sigur.",
+    "entities": [
+      "Scotia",
+      "SUA"
+    ],
+    "icon": "shield",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://digi24.ro/stiri/externe/avertisment-de-calatorie-belarus-isi-sfatuieste-cetatenii-sa-nu-viziteze-rusia-3846529",
+    "original_link": "https://www.digi24.ro/stiri/externe/avertisment-de-calatorie-belarus-isi-sfatuieste-cetatenii-sa-nu-viziteze-rusia-3846529",
+    "source": "extern",
+    "source_name": "Digi24 Extern",
+    "source_lang": "ro",
+    "title": "Belarus recomanda cetatenilor sa evite calatoriile in Rusia",
+    "category": "extern",
+    "published": "2026-07-05T04:00:50+00:00",
+    "model": "B",
+    "teaser": "Secretarul de stat al Consiliului de Securitate din Belarus a sfatuit cetatenii sa nu calatoreasca in Rusia, mentionand riscuri de securitate, in special in zonele de frontiera.",
+    "entities": [
+      "Belarus",
+      "Rusia",
+      "Alexander Volfovich"
+    ],
+    "icon": "flag",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
     "url": "https://zf.ro/auxiliar/netanyahu-de-ziua-independentei-sua-dusmanii-nostri-striga-moarte-23188434",
     "original_link": "https://www.zf.ro/auxiliar/netanyahu-de-ziua-independentei-sua-dusmanii-nostri-striga-moarte-23188434",
     "source": "zf",
@@ -233,6 +633,27 @@
       "Independence Hall",
       "Statele Unite"
     ],
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://theguardian.com/world/2026/jul/04/ukrainian-drones-hit-st-petersburg-oil-terminal-and-nearby-port",
+    "original_link": "https://www.theguardian.com/world/2026/jul/04/ukrainian-drones-hit-st-petersburg-oil-terminal-and-nearby-port",
+    "source": "guardian_eu",
+    "source_name": "The Guardian",
+    "source_lang": "en",
+    "title": "Drone ucrainene au atacat un terminal petrolier și portul din Sankt Petersburg",
+    "category": "extern",
+    "published": "2026-07-04T19:09:06+00:00",
+    "model": "B",
+    "teaser": "Guvernatorul regiunii a raportat că atacul nocturn, descris ca fiind la scară largă, nu a provocat victime, dar a vizat infrastructura energetică și portuară din apropierea orașului.",
+    "entities": [
+      "Ucraina",
+      "Sankt Petersburg",
+      "Alexander Beglov"
+    ],
+    "icon": "bolt",
     "processed_by": "gemini",
     "prompt_version": "v2-esenta",
     "featured": false
@@ -689,6 +1110,48 @@
     "featured": false
   },
   {
+    "url": "https://theguardian.com/world/2026/jul/04/german-riot-police-clash-protesters-block-far-right-afd-conference",
+    "original_link": "https://www.theguardian.com/world/2026/jul/04/german-riot-police-clash-protesters-block-far-right-afd-conference",
+    "source": "guardian_eu",
+    "source_name": "The Guardian",
+    "source_lang": "en",
+    "title": "Poliția germană s-a confruntat cu protestatari anti-AfD în Erfurt",
+    "category": "politic",
+    "published": "2026-07-04T13:17:50+00:00",
+    "model": "B",
+    "teaser": "Mii de polițiști au fost mobilizați în orașul Erfurt, unde opozanții partidului de extremă-dreapta AfD au încercat să blocheze accesul delegaților la conferința națională a formațiunii.",
+    "entities": [
+      "Germania",
+      "AfD",
+      "Erfurt"
+    ],
+    "icon": "gavel",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://theguardian.com/world/video/2026/jul/04/german-riot-police-far-right-afd-conference-protest-video",
+    "original_link": "https://www.theguardian.com/world/video/2026/jul/04/german-riot-police-far-right-afd-conference-protest-video",
+    "source": "guardian_eu",
+    "source_name": "The Guardian",
+    "source_lang": "en",
+    "title": "Poliția germană a intervenit în confruntări cu protestatari anti-AfD",
+    "category": "politic",
+    "published": "2026-07-04T13:17:28+00:00",
+    "model": "B",
+    "teaser": "În Erfurt, mii de manifestanți au încercat să împiedice delegații partidului de extremă-dreapta AfD să ajungă la conferința națională. Poliția a raportat 20.000 de protestatari.",
+    "entities": [
+      "Germania",
+      "AfD",
+      "Erfurt"
+    ],
+    "icon": "gavel",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
     "url": "https://g4media.ro/zelenski-a-discutat-telefonic-cu-merz-despre-nevoile-de-aparare-aeriana-ale-ucrainei-rachetele-pentru-sistemele-patriot-sunt-in-prezent-principala-prioritate.html",
     "original_link": "https://www.g4media.ro/zelenski-a-discutat-telefonic-cu-merz-despre-nevoile-de-aparare-aeriana-ale-ucrainei-rachetele-pentru-sistemele-patriot-sunt-in-prezent-principala-prioritate.html",
     "source": "g4media",
@@ -721,6 +1184,26 @@
     "featured": false
   },
   {
+    "url": "https://politico.com/news/magazine/2026/07/04/america-250-round-up-00981023",
+    "original_link": "https://www.politico.com/news/magazine/2026/07/04/america-250-round-up-00981023?utm_source=RSS_Feed&utm_medium=RSS&utm_campaign=RSS_Syndication",
+    "source": "politico_eu",
+    "source_name": "Politico EU",
+    "source_lang": "en",
+    "title": "11 istorici analizează supraviețuirea Americii în următorii 250 de ani",
+    "category": "general",
+    "published": "2026-07-04T12:43:15+00:00",
+    "model": "B",
+    "teaser": "Experți în istoria SUA își îndreaptă atenția spre trecut și viitor pentru a evalua perspectivele de longevitate ale națiunii, bazându-se pe lecțiile istorice.",
+    "entities": [
+      "America",
+      "SUA"
+    ],
+    "icon": "globe",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
     "url": "https://bbc.co.uk/news/articles/c5yz83n7q5no?at_medium=RSS&at_campaign=rss",
     "original_link": "https://www.bbc.co.uk/news/articles/c5yz83n7q5no?at_medium=RSS&at_campaign=rss",
     "source": "bbc_europe",
@@ -736,6 +1219,27 @@
       "Europa",
       "Lampedusa"
     ],
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://politico.eu/article/thousands-of-protesters-in-germany-rally-against-far-right-afd",
+    "original_link": "https://www.politico.eu/article/thousands-of-protesters-in-germany-rally-against-far-right-afd/?utm_source=RSS_Feed&utm_medium=RSS&utm_campaign=RSS_Syndication",
+    "source": "politico_eu",
+    "source_name": "Politico EU",
+    "source_lang": "en",
+    "title": "Mii de germani protestează împotriva partidului de extremă dreapta AfD",
+    "category": "politic",
+    "published": "2026-07-04T11:09:58+00:00",
+    "model": "B",
+    "teaser": "Demonstrații masive au avut loc în Germania împotriva partidului AfD, însă acestea nu au oprit desfășurarea congresului anual al formațiunii politice în Erfurt.",
+    "entities": [
+      "Germania",
+      "AfD",
+      "Erfurt"
+    ],
+    "icon": "flag",
     "processed_by": "gemini",
     "prompt_version": "v2-esenta",
     "featured": false
@@ -952,6 +1456,67 @@
       }
     ],
     "synthesis": "Distrigaz Sud Rețele a oprit temporar alimentarea cu gaze naturale pentru 190 de clienți casnici din Sectorul 3 al Bucureștiului. Întreruperea a survenit în urma unui incident la instalația de utilizare a unui imobil de pe Șoseaua Industriilor. Furnizarea gazului va fi reluată după remedierea defecțiunii.",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://politico.eu/article/ukrainian-woman-wanted-after-monaco-attack",
+    "original_link": "https://www.politico.eu/article/ukrainian-woman-wanted-after-monaco-attack/?utm_source=RSS_Feed&utm_medium=RSS&utm_campaign=RSS_Syndication",
+    "source": "politico_eu",
+    "source_name": "Politico EU",
+    "source_lang": "en",
+    "title": "Ucraineancă, căutată după un atac în Monaco, s-a deghizat în bărbat",
+    "category": "extern",
+    "published": "2026-07-04T09:24:46+00:00",
+    "model": "B",
+    "teaser": "Femeia, identificată ca Anastasiia Berezovska, a efectuat recunoașteri înainte de atac, purtând haine bărbătești, conform procurorului.",
+    "entities": [
+      "Ucraina",
+      "Monaco",
+      "Anastasiia Berezovska"
+    ],
+    "icon": "gavel",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://politico.com/news/2026/07/04/ai-security-nato-access-00984758",
+    "original_link": "https://www.politico.com/news/2026/07/04/ai-security-nato-access-00984758?utm_source=RSS_Feed&utm_medium=RSS&utm_campaign=RSS_Syndication",
+    "source": "politico_eu",
+    "source_name": "Politico EU",
+    "source_lang": "en",
+    "title": "Securitatea cibernetică AI devine prioritară pentru NATO",
+    "category": "tech",
+    "published": "2026-07-04T09:23:09+00:00",
+    "model": "B",
+    "teaser": "Implementarea rapidă a inteligenței artificiale avansate ridică noi provocări de securitate globală, devenind o necesitate imperativă pentru organizația militară NATO.",
+    "entities": [
+      "AI",
+      "NATO"
+    ],
+    "icon": "shield-lock",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://politico.eu/podcast/berlin-playbook-podcast/ein-spaziergang-mit-ulf-poschardt",
+    "original_link": "https://www.politico.eu/podcast/berlin-playbook-podcast/ein-spaziergang-mit-ulf-poschardt/?utm_source=RSS_Feed&utm_medium=RSS&utm_campaign=RSS_Syndication",
+    "source": "politico_eu",
+    "source_name": "Politico EU",
+    "source_lang": "en",
+    "title": "O plimbare cu Ulf Poschardt",
+    "category": "general",
+    "published": "2026-07-04T09:10:01+00:00",
+    "model": "B",
+    "teaser": "Prezentat de Ørsted.",
+    "entities": [
+      "Ulf Poschardt",
+      "Ørsted"
+    ],
+    "icon": null,
     "processed_by": "gemini",
     "prompt_version": "v2-esenta",
     "featured": false
@@ -13067,703 +13632,6 @@
     "synthesis": "Lucrările pe lotul 3 (Afumați-Pantelimon) al Autostrăzii A0 Nord au atins 90%, însă CNAIR solicită accelerarea ritmului pentru respectarea termenelor. Pe lotul 1 (Joița-Corbeanca), stadiul fizic se apropie de 63%, cu o mobilizare de 650 de muncitori și 330 de utilaje.",
     "processed_by": "gemini",
     "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://digi24.ro/stiri/externe/mapamond/sua-ataca-iranul-pentru-a-doua-noapte-la-rand-trump-republica-islamica-iran-nu-va-mai-exista-3836719",
-    "original_link": "https://www.digi24.ro/stiri/externe/mapamond/sua-ataca-iranul-pentru-a-doua-noapte-la-rand-trump-republica-islamica-iran-nu-va-mai-exista-3836719",
-    "source": "extern",
-    "source_name": "Digi24 Extern",
-    "source_lang": "ro",
-    "title": "SUA și Iranul, noi atacuri reciproce în Strâmtoarea Ormuz",
-    "category": "extern",
-    "published": "2026-06-28T07:24:42+00:00",
-    "model": "C",
-    "sources": [
-      {
-        "name": "Digi24 Extern",
-        "url": "https://www.digi24.ro/stiri/externe/mapamond/sua-ataca-iranul-pentru-a-doua-noapte-la-rand-trump-republica-islamica-iran-nu-va-mai-exista-3836719"
-      },
-      {
-        "name": "Știrile ProTV",
-        "url": "https://stirileprotv.ro/stiri/international/nou-schimb-de-atacuri-intre-sua-si-iran-donald-trump-iranul-va-inceta-sa-existe-daca-reluam-razboiul.html"
-      }
-    ],
-    "synthesis": "Statele Unite au lansat atacuri asupra unor ținte militare iraniene pentru a doua noapte consecutiv, ca răspuns la atacurile asupra transportului comercial din Strâmtoarea Ormuz. Iranul acuză SUA de încălcarea armistițiului, în timp ce președintele american Donald Trump a avertizat Iranul cu privire la consecințe severe în cazul unei noi escaladări.",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://hotnews.ro/australia-dubleaza-amenzile-pentru-gigantii-tech-dupa-ce-interdictia-fara-precedent-privind-retelele-sociale-a-esuat-2286515",
-    "original_link": "https://hotnews.ro/australia-dubleaza-amenzile-pentru-gigantii-tech-dupa-ce-interdictia-fara-precedent-privind-retelele-sociale-a-esuat-2286515",
-    "source": "hotnews",
-    "source_name": "HotNews",
-    "source_lang": "ro",
-    "title": "Australia dublează amenzile pentru companiile tech pe rețele sociale",
-    "category": "tech",
-    "published": "2026-06-28T07:23:43+00:00",
-    "model": "C",
-    "sources": [
-      {
-        "name": "HotNews",
-        "url": "https://hotnews.ro/australia-dubleaza-amenzile-pentru-gigantii-tech-dupa-ce-interdictia-fara-precedent-privind-retelele-sociale-a-esuat-2286515"
-      },
-      {
-        "name": "G4Media",
-        "url": "https://www.g4media.ro/australia-inaspreste-interdictia-privind-accesul-copiilor-la-retelele-sociale-si-dubleaza-amenzile-maxime-pentru-companiile-din-tehnologie.html"
-      }
-    ],
-    "synthesis": "Australia a anunțat dublarea amenzilor maxime pentru companiile tech care nu respectă interdicția privind accesul copiilor la rețelele sociale. Măsura vine pe fondul dovezilor care indică un impact redus al reglementărilor existente asupra utilizării platformelor de către adolescenți.",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://digi24.ro/stiri/externe/mapamond/o-sursa-de-speranta-pentru-venezuela-povestea-unui-copil-gasit-viu-dupa-trei-zile-sub-daramaturi-3836769",
-    "original_link": "https://www.digi24.ro/stiri/externe/mapamond/o-sursa-de-speranta-pentru-venezuela-povestea-unui-copil-gasit-viu-dupa-trei-zile-sub-daramaturi-3836769",
-    "source": "extern",
-    "source_name": "Digi24 Extern",
-    "source_lang": "ro",
-    "original_title": "„O sursă de speranță pentru Venezuela”. Povestea unui copil găsit viu după trei zile sub dărâmături",
-    "title": "„O sursă de speranță pentru Venezuela”. Povestea unui copil găsit viu după trei zile sub dărâmături",
-    "description": "La trei zile după cele două cutremure devastatoare care au lovit Venezuela, un copil de 11 ani a fost găsit în viață sub dărâmături, într-o salvare pe care autoritățile o descriu drept un adevărat miracol. Anunțul a fost făcut de președinta interimară Delcy Rodríguez, care a spus că fiecare viață salvată este „o sursă de speranță” pentru o țară devastată de tragedie.",
-    "category": "extern",
-    "published": "2026-06-28T07:16:52+00:00",
-    "model": "C",
-    "sources": [
-      {
-        "name": "Digi24 Extern",
-        "url": "https://www.digi24.ro/stiri/externe/mapamond/o-sursa-de-speranta-pentru-venezuela-povestea-unui-copil-gasit-viu-dupa-trei-zile-sub-daramaturi-3836769"
-      },
-      {
-        "name": "Digi24",
-        "url": "https://www.digi24.ro/stiri/externe/mapamond/o-sursa-de-speranta-pentru-venezuela-povestea-unui-copil-gasit-viu-dupa-trei-zile-sub-daramaturi-3836769"
-      }
-    ],
-    "synthesis": "La trei zile după cele două cutremure devastatoare care au lovit Venezuela, un copil de 11 ani a fost găsit în viață sub dărâmături, într-o salvare pe care autoritățile o descriu drept un adevărat miracol. Anunțul a fost făcut de președinta interimară Delcy Rodríguez, care a spus că fiecare viață salvată este „o sursă de speranță” pentru o țară devastată de tragedie.",
-    "processed_by": "fallback",
-    "error": "HTTP Error 503: Service Unavailable",
-    "featured": false
-  },
-  {
-    "url": "https://digisport.ro/fotbal/cm-2026/lionel-scaloni-a-dezvaluit-de-ce-a-fost-leo-messi-doar-rezerva-la-meciul-iordania-argentina-4345261",
-    "original_link": "https://www.digisport.ro/fotbal/cm-2026/lionel-scaloni-a-dezvaluit-de-ce-a-fost-leo-messi-doar-rezerva-la-meciul-iordania-argentina-4345261",
-    "source": "digisport",
-    "source_name": "Digi Sport",
-    "source_lang": "ro",
-    "title": "Messi, rezervă în Argentina vs Iordania; Kovacs, arbitru controversat",
-    "category": "sport",
-    "published": "2026-06-28T07:09:47+00:00",
-    "model": "C",
-    "sources": [
-      {
-        "name": "Digi Sport",
-        "url": "https://www.digisport.ro/fotbal/cm-2026/lionel-scaloni-a-dezvaluit-de-ce-a-fost-leo-messi-doar-rezerva-la-meciul-iordania-argentina-4345261"
-      },
-      {
-        "name": "ProSport",
-        "url": "https://www.prosport.ro/campionatul-mondial-2026/the-sun-istvan-kovacs-iordania-argetina-1-3-leo-messi-20472203"
-      }
-    ],
-    "synthesis": "Lionel Messi a fost titular pe banca de rezerve în meciul Iordania - Argentina (scor 1-3), antrenorul Lionel Scaloni explicând decizia. Partida a fost arbitrată de românul Istvan Kovacs, a cărui prestație a fost criticată de publicațiile britanice. Messi a postat un mesaj pe Instagram după meci.",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://digi24.ro/stiri/economie/companii/restructurari-masive-la-volkswagen-grupul-ia-in-calcul-concedierea-a-pana-la-100-000-de-angajati-si-inchiderea-a-patru-fabrici-3836763",
-    "original_link": "https://www.digi24.ro/stiri/economie/companii/restructurari-masive-la-volkswagen-grupul-ia-in-calcul-concedierea-a-pana-la-100-000-de-angajati-si-inchiderea-a-patru-fabrici-3836763",
-    "source": "extern",
-    "source_name": "Digi24 Extern",
-    "source_lang": "ro",
-    "title": "Volkswagen ia în calcul concedierea a 100.000 de angajați și închiderea a patru fabrici",
-    "category": "economic",
-    "published": "2026-06-28T07:07:46+00:00",
-    "model": "C",
-    "sources": [
-      {
-        "name": "Digi24 Extern",
-        "url": "https://www.digi24.ro/stiri/economie/companii/restructurari-masive-la-volkswagen-grupul-ia-in-calcul-concedierea-a-pana-la-100-000-de-angajati-si-inchiderea-a-patru-fabrici-3836763"
-      },
-      {
-        "name": "Digi24",
-        "url": "https://www.digi24.ro/stiri/economie/companii/restructurari-masive-la-volkswagen-grupul-ia-in-calcul-concedierea-a-pana-la-100-000-de-angajati-si-inchiderea-a-patru-fabrici-3836763"
-      },
-      {
-        "name": "Curs de Guvernare",
-        "url": "https://cursdeguvernare.ro/volkswagen-inchide-4-fabrici-si-concediaza-100000-angajati.html"
-      }
-    ],
-    "synthesis": "Grupul auto german Volkswagen analizează un plan de restructurare major, care ar putea duce la eliminarea a până la 100.000 de locuri de muncă și închiderea a patru uzine din Germania. Această măsură ar reprezenta cea mai amplă restructurare din istoria companiei și a industriei auto, conform unor surse citate de Reuters.",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://economedia.ro/poluare-pacura-litoral-bulgaria-marea-neagra-flota-fantoma-rusia.html",
-    "original_link": "https://economedia.ro/poluare-pacura-litoral-bulgaria-marea-neagra-flota-fantoma-rusia.html",
-    "source": "economedia",
-    "source_name": "Economedia",
-    "source_lang": "ro",
-    "original_title": "FOTO | Poluare cu păcură pe coasta bulgară a Mării Negre: Reziduurile reapar zilnic pe plaje / Suspiciuni legate de „flota fantomă” a Rusiei",
-    "title": "FOTO | Poluare cu păcură pe coasta bulgară a Mării Negre: Reziduurile reapar zilnic pe plaje / Suspiciuni legate de „flota fantomă” a Rusiei",
-    "description": "În ultima vreme, pe coasta Mării Negre au fost semnalate mai multe cazuri de poluare cu păcură aproape zilnic în zone cuprinse între Rezovo, Sinemoreț, Lozeneț, Arkutino și Kamcia. În timp ce autoritățile susțin că cel mai probabil contaminarea provine din depuneri mai vechi, aduse de marea agitată, experții de mediu solicită o investigație detaliată",
-    "category": "economic",
-    "published": "2026-06-28T07:02:08+00:00",
-    "model": "C",
-    "sources": [
-      {
-        "name": "HotNews",
-        "url": "https://hotnews.ro/plajele-de-pe-litoralul-bulgaresc-poluate-cu-pacura-sunt-suspiciuni-ca-de-vina-este-flota-fantoma-a-rusiei-2286587"
-      },
-      {
-        "name": "Economedia",
-        "url": "https://economedia.ro/poluare-pacura-litoral-bulgaria-marea-neagra-flota-fantoma-rusia.html"
-      },
-      {
-        "name": "Știrile ProTV",
-        "url": "https://stirileprotv.ro/stiri/international/plajele-de-pe-litoralul-bulgaresc-poluate-cu-pacura-de-vina-ar-fi-flota-fantoma-a-rusiei.html"
-      }
-    ],
-    "synthesis": "În ultima vreme, pe coasta Mării Negre au fost semnalate mai multe cazuri de poluare cu păcură aproape zilnic în zone cuprinse între Rezovo, Sinemoreț, Lozeneț, Arkutino și Kamcia. În timp ce autoritățile susțin că cel mai probabil contaminarea provine din depuneri mai vechi, aduse de marea agitată, experții de mediu solicită o investigație detaliată",
-    "processed_by": "fallback",
-    "error": "HTTP Error 429: Too Many Requests",
-    "featured": false
-  },
-  {
-    "url": "https://hotnews.ro/orientul-mijlociu-din-nou-pe-un-butoi-de-pulbere-donald-trump-ameninta-cu-reluarea-totala-a-razboiului-2286501",
-    "original_link": "https://hotnews.ro/orientul-mijlociu-din-nou-pe-un-butoi-de-pulbere-donald-trump-ameninta-cu-reluarea-totala-a-razboiului-2286501",
-    "source": "hotnews",
-    "source_name": "HotNews",
-    "source_lang": "ro",
-    "title": "SUA atacă Iranul după atacuri asupra navelor comerciale în Strâmtoarea Ormuz",
-    "category": "extern",
-    "published": "2026-06-28T07:01:17+00:00",
-    "model": "C",
-    "sources": [
-      {
-        "name": "Digi24 Extern",
-        "url": "https://www.digi24.ro/stiri/externe/mapamond/sua-ataca-iranul-pentru-a-doua-noapte-la-rand-trump-republica-islamica-iran-nu-va-mai-exista-3836719"
-      },
-      {
-        "name": "HotNews",
-        "url": "https://hotnews.ro/orientul-mijlociu-din-nou-pe-un-butoi-de-pulbere-donald-trump-ameninta-cu-reluarea-totala-a-razboiului-2286501"
-      },
-      {
-        "name": "Curs de Guvernare",
-        "url": "https://cursdeguvernare.ro/sua-lovesc-tinte-iran-irgc-raspunde-atacand-baze-americane.html"
-      }
-    ],
-    "synthesis": "Statele Unite au lansat atacuri asupra unor ținte militare iraniene, ca răspuns la atacurile Iranului asupra navelor comerciale din Strâmtoarea Ormuz. Ambele țări se acuză reciproc de încălcarea armistițiului. Președintele american Donald Trump a amenințat cu o escaladare a conflictului.",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://digi24.ro/stiri/sci-tech/lumea-digitala/interdictia-accesului-minorilor-la-retele-sociale-in-australia-ocolita-cu-usurinta-amenzile-pentru-companiile-tech-vor-fi-dublate-3836749",
-    "original_link": "https://www.digi24.ro/stiri/sci-tech/lumea-digitala/interdictia-accesului-minorilor-la-retele-sociale-in-australia-ocolita-cu-usurinta-amenzile-pentru-companiile-tech-vor-fi-dublate-3836749",
-    "source": "extern",
-    "source_name": "Digi24 Extern",
-    "source_lang": "ro",
-    "title": "Australia dublează amenzile pentru companiile tech din cauza eșecului interdicției accesului minorilor la rețele sociale",
-    "category": "tech",
-    "published": "2026-06-28T06:56:27+00:00",
-    "model": "C",
-    "sources": [
-      {
-        "name": "Digi24 Extern",
-        "url": "https://www.digi24.ro/stiri/sci-tech/lumea-digitala/interdictia-accesului-minorilor-la-retele-sociale-in-australia-ocolita-cu-usurinta-amenzile-pentru-companiile-tech-vor-fi-dublate-3836749"
-      },
-      {
-        "name": "Digi24",
-        "url": "https://www.digi24.ro/stiri/sci-tech/lumea-digitala/interdictia-accesului-minorilor-la-retele-sociale-in-australia-ocolita-cu-usurinta-amenzile-pentru-companiile-tech-vor-fi-dublate-3836749"
-      },
-      {
-        "name": "HotNews",
-        "url": "https://hotnews.ro/australia-dubleaza-amenzile-pentru-gigantii-tech-dupa-ce-interdictia-fara-precedent-privind-retelele-sociale-a-esuat-2286515"
-      }
-    ],
-    "synthesis": "Guvernul australian va dubla amenzile maxime pentru companiile tech care nu respectă interdicția accesului minorilor sub 16 ani la rețelele sociale. Măsura survine după ce, la șase luni de la intrarea în vigoare, s-a constatat că mulți adolescenți continuă să acceseze platformele, ocolind sistemele de verificare a vârstei. Interdicția, una dintre cele mai stricte la nivel mondial, a avut un impact redus.",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://digi24.ro/stiri/externe/mapamond/imi-aud-fiul-plangand-sub-daramaturi-marturia-sfasietoare-a-unei-supravietuitoare-a-cutremurelor-din-venezuela-3836739",
-    "original_link": "https://www.digi24.ro/stiri/externe/mapamond/imi-aud-fiul-plangand-sub-daramaturi-marturia-sfasietoare-a-unei-supravietuitoare-a-cutremurelor-din-venezuela-3836739",
-    "source": "extern",
-    "source_name": "Digi24 Extern",
-    "source_lang": "ro",
-    "title": "Mamă aude fiul plângând sub dărâmături după cutremure în Venezuela",
-    "category": "extern",
-    "published": "2026-06-28T06:51:07+00:00",
-    "model": "C",
-    "sources": [
-      {
-        "name": "Digi24 Extern",
-        "url": "https://www.digi24.ro/stiri/externe/mapamond/imi-aud-fiul-plangand-sub-daramaturi-marturia-sfasietoare-a-unei-supravietuitoare-a-cutremurelor-din-venezuela-3836739"
-      },
-      {
-        "name": "Digi24",
-        "url": "https://www.digi24.ro/stiri/externe/mapamond/imi-aud-fiul-plangand-sub-daramaturi-marturia-sfasietoare-a-unei-supravietuitoare-a-cutremurelor-din-venezuela-3836739"
-      }
-    ],
-    "synthesis": "Cutremure devastatoare în Venezuela au provocat victime și distrugeri. În La Guaira, o zonă grav afectată, o mamă a declarat că încă aude fiul său de aproape doi ani plângând de sub ruine. Mii de persoane își caută rudele printre dărâmături, sperând să le găsească în viață.",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://prosport.ro/campionatul-mondial-2026/selectioner-austria-intrebare-blat-meci-algeria-cm-2026-20472169",
-    "original_link": "https://www.prosport.ro/campionatul-mondial-2026/selectioner-austria-intrebare-blat-meci-algeria-cm-2026-20472169",
-    "source": "prosport",
-    "source_name": "ProSport",
-    "source_lang": "ro",
-    "title": "Antrenorul Austriei neagă acuzațiile de blat după egalul cu Algeria",
-    "category": "sport",
-    "published": "2026-06-28T06:47:21+00:00",
-    "model": "C",
-    "sources": [
-      {
-        "name": "Digi Sport",
-        "url": "https://www.digisport.ro/fotbal/cm-2026/blat-la-cupa-mondiala-ralf-rangnick-a-raspuns-acuzatiilor-dupa-algeria-austria-3-3-4345309"
-      },
-      {
-        "name": "ProSport",
-        "url": "https://www.prosport.ro/campionatul-mondial-2026/selectioner-austria-intrebare-blat-meci-algeria-cm-2026-20472169"
-      }
-    ],
-    "synthesis": "Austria și Algeria au terminat la egalitate, 3-3, într-un meci din preliminariile CM 2026, rezultat care califică ambele echipe. Antrenorul Austriei, Ralf Rangnick, a respins ferm speculațiile privind un posibil blat, după ce a fost întrebat direct de jurnaliști despre acest scenariu.",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://g4media.ro/cutremurul-din-venezuela-un-baiat-de-11-ani-a-fost-gasit-in-viata-sub-daramaturi-la-trei-zile-de-la-dezastru.html",
-    "original_link": "https://www.g4media.ro/cutremurul-din-venezuela-un-baiat-de-11-ani-a-fost-gasit-in-viata-sub-daramaturi-la-trei-zile-de-la-dezastru.html",
-    "source": "g4media",
-    "source_name": "G4Media",
-    "source_lang": "ro",
-    "title": "Copil de 11 ani, salvat miraculos după trei zile sub dărâmături în Venezuela",
-    "category": "extern",
-    "published": "2026-06-28T06:36:00+00:00",
-    "model": "C",
-    "sources": [
-      {
-        "name": "Digi24 Extern",
-        "url": "https://www.digi24.ro/stiri/externe/mapamond/o-sursa-de-speranta-pentru-venezuela-povestea-unui-copil-gasit-viu-dupa-trei-zile-sub-daramaturi-3836769"
-      },
-      {
-        "name": "Digi24",
-        "url": "https://www.digi24.ro/stiri/externe/mapamond/o-sursa-de-speranta-pentru-venezuela-povestea-unui-copil-gasit-viu-dupa-trei-zile-sub-daramaturi-3836769"
-      },
-      {
-        "name": "G4Media",
-        "url": "https://www.g4media.ro/cutremurul-din-venezuela-un-baiat-de-11-ani-a-fost-gasit-in-viata-sub-daramaturi-la-trei-zile-de-la-dezastru.html"
-      },
-      {
-        "name": "Știrile ProTV",
-        "url": "https://stirileprotv.ro/stiri/international/miracol-printre-ruinele-din-venezuela-un-baiat-de-11-ani-gasit-in-viata-la-72-de-ore-dupa-cutremurele-devastatoare.html"
-      }
-    ],
-    "synthesis": "La 72 de ore de la două cutremure devastatoare în Venezuela, un copil de 11 ani a fost găsit în viață sub dărâmături. Autoritățile, inclusiv președinta interimară Delcy Rodríguez, au descris salvarea ca pe un miracol și o sursă de speranță pentru țară. Bilanțul victimelor continuă să crească, ajungând la 1.430 de morți.",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://digi24.ro/stiri/externe/irak-armata-efectueaza-un-raid-impotriva-unor-personalitati-politice-din-zona-verde-a-bagdadului-banuite-de-coruptie-3836741",
-    "original_link": "https://www.digi24.ro/stiri/externe/irak-armata-efectueaza-un-raid-impotriva-unor-personalitati-politice-din-zona-verde-a-bagdadului-banuite-de-coruptie-3836741",
-    "source": "extern",
-    "source_name": "Digi24 Extern",
-    "source_lang": "ro",
-    "title": "Armata irakiană a efectuat raiduri anticorupție în Zona Verde din Bagdad",
-    "category": "politic",
-    "published": "2026-06-28T06:34:34+00:00",
-    "model": "C",
-    "sources": [
-      {
-        "name": "Digi24 Extern",
-        "url": "https://www.digi24.ro/stiri/externe/irak-armata-efectueaza-un-raid-impotriva-unor-personalitati-politice-din-zona-verde-a-bagdadului-banuite-de-coruptie-3836741"
-      },
-      {
-        "name": "Digi24",
-        "url": "https://www.digi24.ro/stiri/externe/irak-armata-efectueaza-un-raid-impotriva-unor-personalitati-politice-din-zona-verde-a-bagdadului-banuite-de-coruptie-3836741"
-      }
-    ],
-    "synthesis": "Forțele de securitate irakiene au desfășurat duminică dimineața un raid în Zona Verde a Bagdadului, vizând personalități politice suspectate de corupție. Zona Verde este o enclavă securizată unde se află și ambasada SUA. Informația a fost confirmată de un oficial.",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://moldova.europalibera.org/a/de-ce-dispar-copacii-din-parcul-moskvoretki-rusia-isi-fortifica-apararea-antiaeriana-dupa-atacurile-ucrainene-cu-drone/33787065.html",
-    "original_link": "https://moldova.europalibera.org/a/de-ce-dispar-copacii-din-parcul-moskvoretki-rusia-isi-fortifica-apararea-antiaeriana-dupa-atacurile-ucrainene-cu-drone/33787065.html",
-    "source": "el_moldova",
-    "source_name": "Europa Liberă",
-    "source_lang": "ro",
-    "title": "Rusia fortifică Moscova cu sisteme antiaeriene în parcuri protejate",
-    "category": "politic",
-    "published": "2026-06-28T06:30:00+00:00",
-    "model": "B",
-    "teaser": "Autoritățile ruse au defrișat suprafețe extinse din parcuri protejate din Moscova pentru a instala sisteme antiaeriene S-400, generând proteste din partea locuitorilor îngrijorați de securitate și mediu.",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://spotmedia.ro/stiri/sport/david-popivici-isi-seteaza-un-obiectiv-dupa-cursa-fabuloasa-de-100-de-metri-de-la-settecolli-ma-gandesc-serios",
-    "original_link": "https://spotmedia.ro/stiri/sport/david-popivici-isi-seteaza-un-obiectiv-dupa-cursa-fabuloasa-de-100-de-metri-de-la-settecolli-ma-gandesc-serios",
-    "source": "spotmedia",
-    "source_name": "Spotmedia",
-    "source_lang": "ro",
-    "title": "David Popovici, aur la 100m liber și argint la 50m liber la Settecolli",
-    "category": "sport",
-    "published": "2026-06-28T06:10:54+00:00",
-    "model": "C",
-    "sources": [
-      {
-        "name": "GSP",
-        "url": "https://www.gsp.ro/sporturi/altele/david-popovici-inoata-duminica-in-ultima-sa-proba-de-la-settecolli-castiga-si-la-200-m-liber-954028.html"
-      },
-      {
-        "name": "Spotmedia",
-        "url": "https://spotmedia.ro/stiri/sport/david-popivici-isi-seteaza-un-obiectiv-dupa-cursa-fabuloasa-de-100-de-metri-de-la-settecolli-ma-gandesc-serios"
-      }
-    ],
-    "synthesis": "David Popovici a câștigat medalia de aur la 100m liber, stabilind un nou record al competiției la Trofeul Settecolli de la Roma. Anterior, a obținut medalia de argint la 50m liber, stabilind un nou record personal. Duminică, sportivul român va concura în proba de 200m liber.",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://hotnews.ro/criza-de-infrastructura-ia-franeaza-gigantii-tech-google-limiteaza-folosirea-gemini-de-catre-meta-2286479",
-    "original_link": "https://hotnews.ro/criza-de-infrastructura-ia-franeaza-gigantii-tech-google-limiteaza-folosirea-gemini-de-catre-meta-2286479",
-    "source": "hotnews",
-    "source_name": "HotNews",
-    "source_lang": "ro",
-    "title": "Google limitează accesul Meta la modelele AI Gemini din cauza capacității insuficiente",
-    "category": "tech",
-    "published": "2026-06-28T06:05:52+00:00",
-    "model": "C",
-    "sources": [
-      {
-        "name": "HotNews",
-        "url": "https://hotnews.ro/criza-de-infrastructura-ia-franeaza-gigantii-tech-google-limiteaza-folosirea-gemini-de-catre-meta-2286479"
-      },
-      {
-        "name": "Ziarul Financiar",
-        "url": "https://www.zf.ro/eveniment/frenezia-ai-ii-ajunge-din-urma-gigantii-din-tech-google-a-limitat-23183433"
-      }
-    ],
-    "synthesis": "Google a impus restricții asupra utilizării de către Meta a modelelor sale de inteligență artificială Gemini. Decizia a survenit după ce Meta a solicitat o capacitate de calcul mai mare decât cea pe care Google o putea oferi, conform informațiilor publicate de Financial Times și preluate de Reuters și Ziarul Financiar.",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://contributors.ro/matematica-bunului-simt-despre-o-criza-care-n-ar-fi-trebuit-sa-aiba-loc",
-    "original_link": "https://www.contributors.ro/matematica-bunului-simt-despre-o-criza-care-n-ar-fi-trebuit-sa-aiba-loc/",
-    "source": "contributors",
-    "source_name": "Contributors",
-    "source_lang": "ro",
-    "title": "Analiză: Criza din România putea fi evitată prin bun simț",
-    "category": "politic",
-    "published": "2026-06-28T06:00:26+00:00",
-    "model": "B",
-    "teaser": "Articolul analizează o criză care putea fi prevenită, subliniind dorința unui segment de populație pentru transparență, meritocrație, combaterea corupției și o justiție corectă.",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://moldova.europalibera.org/a/daca-nu-porti-valul-corect-iei-un-pat-de-pusca-in-cap-viata-femeilor-afgane-in-regimul-talibanilor/33788611.html",
-    "original_link": "https://moldova.europalibera.org/a/daca-nu-porti-valul-corect-iei-un-pat-de-pusca-in-cap-viata-femeilor-afgane-in-regimul-talibanilor/33788611.html",
-    "source": "el_moldova",
-    "source_name": "Europa Liberă",
-    "source_lang": "ro",
-    "title": "Talibanii impun vălul islamic cu forța în Afganistan",
-    "category": "extern",
-    "published": "2026-06-28T06:00:00+00:00",
-    "model": "B",
-    "teaser": "Poliția morală talibană intensifică aplicarea hijabului în Herat, Afganistan. Femeile sunt oprite și controlate pe stradă pentru a se conforma noilor reguli stricte impuse de regim.",
-    "processed_by": "gemini",
-    "error": "HTTP Error 429: Too Many Requests",
-    "featured": false,
-    "prompt_version": "v2-esenta"
-  },
-  {
-    "url": "https://economica.net/restrictii-de-circulatie-in-19-judete-afectate-de-canicula_954372.html",
-    "original_link": "https://www.economica.net/restrictii-de-circulatie-in-19-judete-afectate-de-canicula_954372.html",
-    "source": "economica",
-    "source_name": "Economica",
-    "source_lang": "ro",
-    "title": "Restricții de circulație pentru camioane din cauza caniculei",
-    "category": "general",
-    "published": "2026-06-28T05:51:00+00:00",
-    "model": "C",
-    "sources": [
-      {
-        "name": "Spotmedia",
-        "url": "https://spotmedia.ro/stiri/eveniment/restrictii-de-circulatie-pentru-camioane-duminica-in-16-judete-aflate-sub-cod-rosu-de-canicula"
-      },
-      {
-        "name": "Economica",
-        "url": "https://www.economica.net/restrictii-de-circulatie-in-19-judete-afectate-de-canicula_954372.html"
-      }
-    ],
-    "synthesis": "Duminică, între orele 12:00 și 20:00, camioanele cu masa maximă autorizată de peste 7,5 tone vor avea circulația restricționată pe drumurile naționale, expres și autostrăzile din mai multe județe afectate de caniculă. Măsura, anunțată de CNAIR și Centrul Infotrafic, vizează reducerea riscurilor cauzate de temperaturile extreme.",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://digi24.ro/stiri/economie/transporturi/infotrafic-canicula-impune-restrictii-de-circulatie-pentru-autovehiculele-de-peste-75-tone-drumuri-din-19-judete-3836713",
-    "original_link": "https://www.digi24.ro/stiri/economie/transporturi/infotrafic-canicula-impune-restrictii-de-circulatie-pentru-autovehiculele-de-peste-75-tone-drumuri-din-19-judete-3836713",
-    "source": "digi24",
-    "source_name": "Digi24",
-    "source_lang": "ro",
-    "original_title": "Infotrafic: Canicula impune restricții de circulație pentru autovehiculele de peste 7,5 tone drumuri din 19 județe",
-    "title": "Infotrafic: Canicula impune restricții de circulație pentru autovehiculele de peste 7,5 tone drumuri din 19 județe",
-    "description": "Circulaţia vehiculelor cu masa totală maximă autorizată mai mare de 7,5 tone pe mai multe sectoare de drum naţional va fi restricţionată duminică din cauza caniculei, pe drumuri expres şi autostrăzi din judeţele afectate de caniculă",
-    "category": "general",
-    "published": "2026-06-28T05:48:05+00:00",
-    "model": "C",
-    "sources": [
-      {
-        "name": "Spotmedia",
-        "url": "https://spotmedia.ro/stiri/eveniment/restrictii-de-circulatie-pentru-camioane-duminica-in-16-judete-aflate-sub-cod-rosu-de-canicula"
-      },
-      {
-        "name": "Digi24",
-        "url": "https://www.digi24.ro/stiri/economie/transporturi/infotrafic-canicula-impune-restrictii-de-circulatie-pentru-autovehiculele-de-peste-75-tone-drumuri-din-19-judete-3836713"
-      },
-      {
-        "name": "Economica",
-        "url": "https://www.economica.net/restrictii-de-circulatie-in-19-judete-afectate-de-canicula_954372.html"
-      }
-    ],
-    "synthesis": "Circulaţia vehiculelor cu masa totală maximă autorizată mai mare de 7,5 tone pe mai multe sectoare de drum naţional va fi restricţionată duminică din cauza caniculei, pe drumuri expres şi autostrăzi din judeţele afectate de caniculă",
-    "processed_by": "fallback",
-    "error": "HTTP Error 429: Too Many Requests",
-    "featured": false
-  },
-  {
-    "url": "https://digi24.ro/stiri/actualitate/evenimente/incendiu-puternic-in-portul-agigea-ro-alert-emis-din-cauza-fumului-dens-3836705",
-    "original_link": "https://www.digi24.ro/stiri/actualitate/evenimente/incendiu-puternic-in-portul-agigea-ro-alert-emis-din-cauza-fumului-dens-3836705",
-    "source": "digi24",
-    "source_name": "Digi24",
-    "source_lang": "ro",
-    "original_title": "Incendiu puternic în Portul Agigea. RO-ALERT emis din cauza fumului dens",
-    "title": "Incendiu puternic în Portul Agigea. RO-ALERT emis din cauza fumului dens",
-    "description": "Un incendiu puternic a izbucnit duminică dimineață, cu puțin înainte de ora 07:00, într-un centru de colectare a fierului vechi din zona Portului Agigea. Din cauza degajărilor masive de fum, autoritățile au emis un mesaj RO-ALERT pentru localnici și pentru persoanele aflate în zonă.",
-    "category": "general",
-    "published": "2026-06-28T05:38:45+00:00",
-    "model": "C",
-    "sources": [
-      {
-        "name": "Digi24",
-        "url": "https://www.digi24.ro/stiri/actualitate/evenimente/incendiu-puternic-in-portul-agigea-ro-alert-emis-din-cauza-fumului-dens-3836705"
-      },
-      {
-        "name": "Știrile ProTV",
-        "url": "https://stirileprotv.ro/stiri/actualitate/incendiu-la-un-depozit-de-fier-vechi-din-portul-agigea-a-fost-emis-ro-alert.html"
-      }
-    ],
-    "synthesis": "Un incendiu puternic a izbucnit duminică dimineață, cu puțin înainte de ora 07:00, într-un centru de colectare a fierului vechi din zona Portului Agigea. Din cauza degajărilor masive de fum, autoritățile au emis un mesaj RO-ALERT pentru localnici și pentru persoanele aflate în zonă.",
-    "processed_by": "fallback",
-    "error": "HTTP Error 429: Too Many Requests",
-    "featured": false
-  },
-  {
-    "url": "https://contributors.ro/nu-tehnologia-a-inventat-ai-ul-o-lectie-din-muzica",
-    "original_link": "https://www.contributors.ro/nu-tehnologia-a-inventat-ai-ul-o-lectie-din-muzica/",
-    "source": "contributors",
-    "source_name": "Contributors",
-    "source_lang": "ro",
-    "title": "AI-ul nu e o invenție nouă, ci o formalizare a proceselor artistice",
-    "category": "tech",
-    "published": "2026-06-28T05:32:08+00:00",
-    "model": "B",
-    "teaser": "Inteligența Artificială nu este o ruptură radicală, ci o recunoaștere instituțională a cercetărilor anterioare care vizau formalizarea proceselor artistice prin algoritmi.",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://politico.com/news/2026/06/27/trump-oklahoma-ice-00979135",
-    "original_link": "https://www.politico.com/news/2026/06/27/trump-oklahoma-ice-00979135?utm_source=RSS_Feed&utm_medium=RSS&utm_campaign=RSS_Syndication",
-    "source": "politico_eu",
-    "source_name": "Politico EU",
-    "source_lang": "en",
-    "title": "Trump numește un oficial din Oklahoma pentru a conduce ICE",
-    "category": "politic",
-    "published": "2026-06-28T05:28:31+00:00",
-    "model": "B",
-    "teaser": "Lance Schroyer, implicat în parteneriatele ICE, ar putea deveni primul director confirmat de Senat din 2017. Numirea sa ar consolida conducerea agenției.",
-    "processed_by": "gemini",
-    "error": "HTTP Error 429: Too Many Requests",
-    "featured": false,
-    "prompt_version": "v2-esenta"
-  },
-  {
-    "url": "https://moldova.europalibera.org/a/presedintia-irlandeza-a-ue-readuce-extinderea-in-centrul-atentiei/33787695.html",
-    "original_link": "https://moldova.europalibera.org/a/presedintia-irlandeza-a-ue-readuce-extinderea-in-centrul-atentiei/33787695.html",
-    "source": "el_moldova",
-    "source_name": "Europa Liberă",
-    "source_lang": "ro",
-    "title": "Irlanda preia președinția UE și pune extinderea pe agenda principală",
-    "category": "politic",
-    "published": "2026-06-28T05:00:00+00:00",
-    "model": "B",
-    "teaser": "Irlanda preia conducerea Consiliului UE la 1 iulie. Mandatul său de șase luni va fi crucial pentru extinderea blocului comunitar, cu discuții importante pe agenda.",
-    "processed_by": "gemini",
-    "error": "HTTP Error 429: Too Many Requests",
-    "featured": false,
-    "prompt_version": "v2-esenta"
-  },
-  {
-    "url": "https://economica.net/sua-au-lovit-din-nou-iranul-trump-ameninta-teheranul-republica-islamica-nu-va-mai-exista_954362.html",
-    "original_link": "https://www.economica.net/sua-au-lovit-din-nou-iranul-trump-ameninta-teheranul-republica-islamica-nu-va-mai-exista_954362.html",
-    "source": "economica",
-    "source_name": "Economica",
-    "source_lang": "ro",
-    "title": "SUA atacă Iranul pentru a doua noapte consecutiv în Strâmtoarea Ormuz",
-    "category": "extern",
-    "published": "2026-06-28T04:57:13+00:00",
-    "model": "C",
-    "sources": [
-      {
-        "name": "Digi24 Extern",
-        "url": "https://www.digi24.ro/stiri/externe/mapamond/sua-ataca-iranul-pentru-a-doua-noapte-la-rand-trump-republica-islamica-iran-nu-va-mai-exista-3836719"
-      },
-      {
-        "name": "Spotmedia",
-        "url": "https://spotmedia.ro/stiri/eveniment/sua-lovesc-din-nou-iranul-dupa-atacurile-din-ormuz-video-trump-republica-islamica-nu-va-mai-exista"
-      },
-      {
-        "name": "Digi24",
-        "url": "https://www.digi24.ro/stiri/externe/mapamond/sua-ataca-iranul-pentru-a-doua-noapte-la-rand-trump-republica-islamica-iran-nu-va-mai-exista-3836719"
-      },
-      {
-        "name": "Economica",
-        "url": "https://www.economica.net/trump-acuza-iranul-ca-incalca-acordul-de-incetare-a-focului-si-ameninta-ca-sua-isi-vor-intensifica-atacurile_954377.html"
-      }
-    ],
-    "synthesis": "Statele Unite au lansat atacuri asupra unor ținte militare iraniene pentru a doua noapte consecutiv, ca răspuns la lovirea unei nave comerciale în Strâmtoarea Ormuz. Președintele Trump a avertizat că Republica Islamică Iran nu va mai exista dacă atacurile continuă, în timp ce Teheranul ar fi anunțat represalii.",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://spotmedia.ro/stiri/sport/cum-arata-tabloul-complet-al-16-imilor-de-finala-de-la-cupa-mondiala-2026",
-    "original_link": "https://spotmedia.ro/stiri/sport/cum-arata-tabloul-complet-al-16-imilor-de-finala-de-la-cupa-mondiala-2026",
-    "source": "spotmedia",
-    "source_name": "Spotmedia",
-    "source_lang": "ro",
-    "title": "Luka Modric doboară un record la Cupa Mondială 2026",
-    "category": "sport",
-    "published": "2026-06-28T04:56:07+00:00",
-    "model": "C",
-    "sources": [
-      {
-        "name": "Digi Sport",
-        "url": "https://www.digisport.ro/fotbal/cm-2026/ar-fi-cel-mai-tare-meci-din-istoria-fotbalului-lionel-messi-versus-cristiano-ronaldo-la-cupa-mondiala-2026-4345241"
-      },
-      {
-        "name": "ProSport",
-        "url": "https://www.prosport.ro/campionatul-mondial-2026/record-fabulos-luka-modric-40-de-ani-cupa-mondiala-croatia-ghana-2-1-20472174"
-      },
-      {
-        "name": "Spotmedia",
-        "url": "https://spotmedia.ro/stiri/sport/cum-arata-tabloul-complet-al-16-imilor-de-finala-de-la-cupa-mondiala-2026"
-      }
-    ],
-    "synthesis": "La 40 de ani, Luka Modric a stabilit un nou record la Cupa Mondială 2026, în meciul Croația – Ghana (2-1). Victoria a calificat Croația în optimile de finală, unde va întâlni Portugalia. Faza grupelor s-a încheiat cu 32 de echipe calificate, peste 70 de meciuri și peste 180 de goluri marcate.",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://spotmedia.ro/stiri/meteo/sefa-anm-avertizeaza-temperaturile-resimtite-ar-putea-ajunge-la-45-de-grade-dupa-canicula-risc-de-furtuni-violente",
-    "original_link": "https://spotmedia.ro/stiri/meteo/sefa-anm-avertizeaza-temperaturile-resimtite-ar-putea-ajunge-la-45-de-grade-dupa-canicula-risc-de-furtuni-violente",
-    "source": "spotmedia",
-    "source_name": "Spotmedia",
-    "source_lang": "ro",
-    "title": "Caniculă extremă în România, cu temperaturi resimțite de până la 45 de grade",
-    "category": "general",
-    "published": "2026-06-28T04:47:49+00:00",
-    "model": "C",
-    "sources": [
-      {
-        "name": "Spotmedia",
-        "url": "https://spotmedia.ro/stiri/meteo/sefa-anm-avertizeaza-temperaturile-resimtite-ar-putea-ajunge-la-45-de-grade-dupa-canicula-risc-de-furtuni-violente"
-      },
-      {
-        "name": "HotNews",
-        "url": "https://hotnews.ro/cod-rosu-canicula-vreme-meteo-prognoza-furtuni-2286507"
-      }
-    ],
-    "synthesis": "România se confruntă cu un episod sever de caniculă, temperaturile resimțite atingând 45 de grade Celsius în anumite zone. Un cod roșu de căldură extremă este în vigoare pentru 16 județe. După zilele de caniculă, meteorologii avertizează asupra riscului de furtuni violente.",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://digi24.ro/stiri/sci-tech/lumea-digitala/razboiul-pentru-suprematie-in-lumea-ia-china-tocmai-a-facut-o-mutare-care-o-plaseaza-la-mai-putin-de-sase-luni-in-urma-sua-3833429",
-    "original_link": "https://www.digi24.ro/stiri/sci-tech/lumea-digitala/razboiul-pentru-suprematie-in-lumea-ia-china-tocmai-a-facut-o-mutare-care-o-plaseaza-la-mai-putin-de-sase-luni-in-urma-sua-3833429",
-    "source": "extern",
-    "source_name": "Digi24 Extern",
-    "source_lang": "ro",
-    "title": "China avansează rapid în cursa globală pentru inteligență artificială",
-    "category": "tech",
-    "published": "2026-06-28T04:42:00+00:00",
-    "model": "C",
-    "sources": [
-      {
-        "name": "Digi24 Extern",
-        "url": "https://www.digi24.ro/stiri/sci-tech/lumea-digitala/razboiul-pentru-suprematie-in-lumea-ia-china-tocmai-a-facut-o-mutare-care-o-plaseaza-la-mai-putin-de-sase-luni-in-urma-sua-3833429"
-      },
-      {
-        "name": "Digi24",
-        "url": "https://www.digi24.ro/stiri/sci-tech/lumea-digitala/razboiul-pentru-suprematie-in-lumea-ia-china-tocmai-a-facut-o-mutare-care-o-plaseaza-la-mai-putin-de-sase-luni-in-urma-sua-3833429"
-      }
-    ],
-    "synthesis": "O nouă tehnologie de inteligență artificială dezvoltată de compania chineză Z.ai a atras atenția inginerilor din Silicon Valley. Aceasta este comparabilă ca performanță cu produsele americane, dar semnificativ mai accesibilă ca preț. Această inovație plasează China la un nivel apropiat de SUA în competiția pentru supremația în domeniul IA, conform The New York Times.",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://spotmedia.ro/stiri/sport/cupa-mondiala-2026-leo-messi-face-inca-o-data-spectacol-pentru-argentina-algeria-si-austria-o-dau-la-pace",
-    "original_link": "https://spotmedia.ro/stiri/sport/cupa-mondiala-2026-leo-messi-face-inca-o-data-spectacol-pentru-argentina-algeria-si-austria-o-dau-la-pace",
-    "source": "spotmedia",
-    "source_name": "Spotmedia",
-    "source_lang": "ro",
-    "original_title": "Cupa Mondială 2026: Leo Messi face încă o dată spectacol pentru Argentina, Algeria și Austria o dau la pace",
-    "title": "Cupa Mondială 2026: Leo Messi face încă o dată spectacol pentru Argentina, Algeria și Austria o dau la pace",
-    "description": "În ultimele două partide ale fazei grupelor de la Campionatul Mondial de fotbal 2026, în dimineața zilei de duminică, în jocurile din grupa J, Argentina a făcut încă o dată spectacol cu Leo Messi la timonă. Argentina a învins Iordania cu scorul de 3-1, iar Messi, chiar dacă nu a început meciul ca titular, a …",
-    "category": "general",
-    "published": "2026-06-28T04:22:02+00:00",
-    "model": "C",
-    "sources": [
-      {
-        "name": "Digi Sport",
-        "url": "https://www.digisport.ro/fotbal/cm-2026/africa-de-sud-canada-live-text-2200-pe-digisport-ro-primul-meci-din-16-imile-cupei-mondiale-2026-4345197"
-      },
-      {
-        "name": "ProSport",
-        "url": "https://www.prosport.ro/campionatul-mondial-2026/record-fabulos-luka-modric-40-de-ani-cupa-mondiala-croatia-ghana-2-1-20472174"
-      },
-      {
-        "name": "Spotmedia",
-        "url": "https://spotmedia.ro/stiri/sport/cum-arata-tabloul-complet-al-16-imilor-de-finala-de-la-cupa-mondiala-2026"
-      }
-    ],
-    "synthesis": "În ultimele două partide ale fazei grupelor de la Campionatul Mondial de fotbal 2026, în dimineața zilei de duminică, în jocurile din grupa J, Argentina a făcut încă o dată spectacol cu Leo Messi la timonă. Argentina a învins Iordania cu scorul de 3-1, iar Messi, chiar dacă nu a început meciul ca titular, a …",
-    "processed_by": "fallback",
-    "error": "HTTP Error 503: Service Unavailable",
     "featured": false
   }
 ]
