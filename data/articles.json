@@ -1,5 +1,77 @@
 [
   {
+    "url": "https://digi24.ro/stiri/externe/sua/atac-armat-in-sua-de-ziua-independentei-8-oameni-dintre-care-4-sunt-copii-au-fost-impuscati-3848167",
+    "original_link": "https://www.digi24.ro/stiri/externe/sua/atac-armat-in-sua-de-ziua-independentei-8-oameni-dintre-care-4-sunt-copii-au-fost-impuscati-3848167",
+    "source": "extern",
+    "source_name": "Digi24 Extern",
+    "source_lang": "ro",
+    "title": "Atac armat în New York de Ziua Independenței, opt răniți, inclusiv copii",
+    "category": "extern",
+    "published": "2026-07-05T10:38:20+00:00",
+    "model": "C",
+    "sources": [
+      {
+        "name": "Digi24 Extern",
+        "url": "https://www.digi24.ro/stiri/externe/sua/atac-armat-in-sua-de-ziua-independentei-8-oameni-dintre-care-4-sunt-copii-au-fost-impuscati-3848167"
+      },
+      {
+        "name": "Ziarul Financiar",
+        "url": "https://www.zf.ro/business-international/atac-armat-de-ziua-independentei-in-new-york-opt-raniti-inclusiv-23188598"
+      },
+      {
+        "name": "Spotmedia",
+        "url": "https://spotmedia.ro/stiri/eveniment/atac-armat-in-sua-de-ziua-independentei-cel-putin-opt-persoane-inclusiv-patru-copii-au-fost-impuscate"
+      },
+      {
+        "name": "G4Media",
+        "url": "https://www.g4media.ro/atac-armat-de-ziua-independentei-in-new-york-opt-raniti-inclusiv-patru-copii.html"
+      }
+    ],
+    "first_source": "Digi24 Extern",
+    "synthesis": "Opt persoane, printre care patru copii, au fost rănite într-un atac armat în Coney Island, Brooklyn, New York, pe 4 iulie. Incidentul a avut loc seara, în timpul festivităților de Ziua Independenței. O femeie de 21 de ani este în stare critică. Poliția investighează pentru a identifica autorul.",
+    "entities": [
+      "Coney Island",
+      "Brooklyn",
+      "New York"
+    ],
+    "icon": "alert-triangle",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://spotmedia.ro/stiri/timp-liber/las-vegas-nasa-si-hollywood-cum-va-arata-parcul-prieteniei-romano-americane-donald-trump-propus-de-baluta-foto-video",
+    "original_link": "https://spotmedia.ro/stiri/timp-liber/las-vegas-nasa-si-hollywood-cum-va-arata-parcul-prieteniei-romano-americane-donald-trump-propus-de-baluta-foto-video",
+    "source": "spotmedia",
+    "source_name": "Spotmedia",
+    "source_lang": "ro",
+    "title": "Primarul Sectorului 4 a prezentat conceptul Parcului Prieteniei Româno-Americane „Donald Trump”",
+    "category": "politic",
+    "published": "2026-07-05T10:04:16+00:00",
+    "model": "C",
+    "sources": [
+      {
+        "name": "Spotmedia",
+        "url": "https://spotmedia.ro/stiri/timp-liber/las-vegas-nasa-si-hollywood-cum-va-arata-parcul-prieteniei-romano-americane-donald-trump-propus-de-baluta-foto-video"
+      },
+      {
+        "name": "Știrile ProTV",
+        "url": "https://stirileprotv.ro/stiri/actualitate/cum-va-arata-parcul-prieteniei-romano-americane-donald-trump-din-sectorul-4-baluta-a-prezentat-conceptul.html"
+      }
+    ],
+    "first_source": "Spotmedia",
+    "synthesis": "Primarul Sectorului 4, Daniel Băluță, a dezvăluit conceptul Parcului Prieteniei Româno-Americane „Donald Trump”. Proiectul, menit să simbolizeze prietenia și valorile comune între națiuni, va integra educația, recreerea și tehnologia, incluzând zone inspirate de Las Vegas, NASA și Hollywood.",
+    "entities": [
+      "Daniel Băluță",
+      "Sectorul 4",
+      "Parcul Prieteniei Româno-Americane „Donald Trump"
+    ],
+    "icon": "building-monument",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
     "url": "https://zf.ro/business-international/zeci-de-mii-de-oameni-la-funeraliile-lui-ali-khamenei-autoritatile-23188590",
     "original_link": "https://www.zf.ro/business-international/zeci-de-mii-de-oameni-la-funeraliile-lui-ali-khamenei-autoritatile-23188590",
     "source": "zf",
@@ -12930,478 +13002,5 @@
     "error": "HTTP Error 429: Too Many Requests",
     "featured": false,
     "prompt_version": "v2-esenta"
-  },
-  {
-    "url": "https://prosport.ro/campionatul-mondial-2026/atac-zlatan-ibrahimovic-fifa-meci-scandalos-iran-egipt-20472343",
-    "original_link": "https://www.prosport.ro/campionatul-mondial-2026/atac-zlatan-ibrahimovic-fifa-meci-scandalos-iran-egipt-20472343",
-    "source": "prosport",
-    "source_name": "ProSport",
-    "source_lang": "ro",
-    "original_title": "CM 2026 Nimicitor! Zlatan Ibrahimovic, atac devastator împotriva FIFA după cea mai scandaloasă decizie VAR de la Cupa Mondială: „Au furat visul unei națiuni”",
-    "title": "CM 2026 Nimicitor! Zlatan Ibrahimovic, atac devastator împotriva FIFA după cea mai scandaloasă decizie VAR de la Cupa Mondială: „Au furat visul unei națiuni”",
-    "description": "Zlatan Ibrahimovic a criticat dur cea mai controversată decizie VAR de la Cupa Mondială în urma căreia Iranul a fost eliminată. Fostul internațional suedez a lansat critici dure la adresa FIFA după meciul Iran – Egipt, scor 1-1. Ibrahimovic consideră că VAR-ul „a furat visul unei întregi națiuni”, mai ales în actualul context politic în",
-    "category": "sport",
-    "published": "2026-06-28T12:02:36+00:00",
-    "model": "C",
-    "sources": [
-      {
-        "name": "Digi Sport",
-        "url": "https://www.digisport.ro/fotbal/cm-2026/la-fel-ca-romania-fifa-a-ramas-fara-cuvinte-dupa-imaginile-de-la-cupa-mondiala-2026-4345743"
-      },
-      {
-        "name": "ProSport",
-        "url": "https://www.prosport.ro/campionatul-mondial-2026/atac-zlatan-ibrahimovic-fifa-meci-scandalos-iran-egipt-20472343"
-      },
-      {
-        "name": "Știrile ProTV",
-        "url": "https://stirileprotv.ro/stiri/sport/romania-a-castigat-medalia-de-argint-la-cupa-mondiala-de-canotaj-de-la-lucerna.html"
-      }
-    ],
-    "synthesis": "Zlatan Ibrahimovic a criticat dur cea mai controversată decizie VAR de la Cupa Mondială în urma căreia Iranul a fost eliminată. Fostul internațional suedez a lansat critici dure la adresa FIFA după meciul Iran – Egipt, scor 1-1. Ibrahimovic consideră că VAR-ul „a furat visul unei întregi națiuni”, mai ales în actualul context politic în",
-    "processed_by": "fallback",
-    "error": "HTTP Error 429: Too Many Requests",
-    "featured": false
-  },
-  {
-    "url": "https://prosport.ro/campionatul-mondial-2026/cosmar-cupa-mondiala-fotbalist-barcelona-transfer-80-000-000-euro-20472357",
-    "original_link": "https://www.prosport.ro/campionatul-mondial-2026/cosmar-cupa-mondiala-fotbalist-barcelona-transfer-80-000-000-euro-20472357",
-    "source": "prosport",
-    "source_name": "ProSport",
-    "source_lang": "ro",
-    "original_title": "CM 2026 Coșmarul de la Cupa Mondială pentru fotbalistul transferat de Barcelona cu 80.000.000 de euro! A fost pedepsit de selecționer",
-    "title": "CM 2026 Coșmarul de la Cupa Mondială pentru fotbalistul transferat de Barcelona cu 80.000.000 de euro! A fost pedepsit de selecționer",
-    "description": "Un superstar prezent la Cupa Mondială, transferat recent de către Barcelona de la Newcastle United contra sumei de 80.000.000 de euro, trece prin momente dificile. Este vorba despre Anthony Gordon (25 de ani). Extrema naționalei Angliei a prins minute în primele două meciuri de la CM 2026, cu Croația și cu Ghana. În schimb, în",
-    "category": "sport",
-    "published": "2026-06-28T12:00:43+00:00",
-    "model": "C",
-    "sources": [
-      {
-        "name": "Digi Sport",
-        "url": "https://www.digisport.ro/fotbal/cm-2026/de-55-de-ani-in-fotbal-e-gata-sa-spuna-adio-dupa-cupa-mondiala-2026-4345649"
-      },
-      {
-        "name": "ProSport",
-        "url": "https://www.prosport.ro/campionatul-mondial-2026/atac-zlatan-ibrahimovic-fifa-meci-scandalos-iran-egipt-20472343"
-      }
-    ],
-    "synthesis": "Un superstar prezent la Cupa Mondială, transferat recent de către Barcelona de la Newcastle United contra sumei de 80.000.000 de euro, trece prin momente dificile. Este vorba despre Anthony Gordon (25 de ani). Extrema naționalei Angliei a prins minute în primele două meciuri de la CM 2026, cu Croația și cu Ghana. În schimb, în",
-    "processed_by": "fallback",
-    "error": "HTTP Error 429: Too Many Requests",
-    "featured": false
-  },
-  {
-    "url": "https://digi24.ro/stiri/externe/curtea-penala-de-la-haga-sub-karim-khan-teama-urlete-presiuni-politice-fostul-sef-al-cpi-acuzat-de-comportament-sexual-nepotrivit-3836937",
-    "original_link": "https://www.digi24.ro/stiri/externe/curtea-penala-de-la-haga-sub-karim-khan-teama-urlete-presiuni-politice-fostul-sef-al-cpi-acuzat-de-comportament-sexual-nepotrivit-3836937",
-    "source": "extern",
-    "source_name": "Digi24 Extern",
-    "source_lang": "ro",
-    "title": "Șeful CPI, Karim Khan, acuzat de comportament sexual nepotrivit de foști angajați",
-    "category": "extern",
-    "published": "2026-06-28T11:56:18+00:00",
-    "model": "C",
-    "sources": [
-      {
-        "name": "Digi24 Extern",
-        "url": "https://www.digi24.ro/stiri/externe/curtea-penala-de-la-haga-sub-karim-khan-teama-urlete-presiuni-politice-fostul-sef-al-cpi-acuzat-de-comportament-sexual-nepotrivit-3836937"
-      },
-      {
-        "name": "Digi24",
-        "url": "https://www.digi24.ro/stiri/externe/curtea-penala-de-la-haga-sub-karim-khan-teama-urlete-presiuni-politice-fostul-sef-al-cpi-acuzat-de-comportament-sexual-nepotrivit-3836937"
-      }
-    ],
-    "synthesis": "Foști angajați ai Curții Penale Internaționale, sub conducerea lui Karim Khan, au dezvăluit în The Times acuzații de comportament sexual nepotrivit. Aceștia descriu un climat de teamă, urlete și presiuni politice în cadrul instituției. Informațiile provin din relatări ale unor surse anonime, publicate de publicația britanică.",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://gsp.ro/international/campionatul-mondial-de-fotbal-2026/croatia-portugalia-in-16-imile-de-la-mondial-se-joaca-fix-la-un-an-distanta-de-la-moartea-lui-diogo-jota-954119.html",
-    "original_link": "https://www.gsp.ro/international/campionatul-mondial-de-fotbal-2026/croatia-portugalia-in-16-imile-de-la-mondial-se-joaca-fix-la-un-an-distanta-de-la-moartea-lui-diogo-jota-954119.html",
-    "source": "gsp",
-    "source_name": "GSP",
-    "source_lang": "ro",
-    "title": "Meci Croația - Portugalia la CM, la un an de la moartea lui Diogo Jota",
-    "category": "sport",
-    "published": "2026-06-28T11:52:28+00:00",
-    "model": "B",
-    "teaser": "Lusitanii joacă în optimile Campionatului Mondial pe 3 iulie, exact la un an de la moartea tragică a lui Diogo Jota și a fratelui său într-un accident de mașină.",
-    "processed_by": "gemini",
-    "error": "HTTP Error 429: Too Many Requests",
-    "featured": false,
-    "prompt_version": "v2-esenta"
-  },
-  {
-    "url": "https://gsp.ro/fotbal/liga-1/andrei-nicolescu-pune-tunurile-pe-jucatorii-lui-dinamo-954124.html",
-    "original_link": "https://www.gsp.ro/fotbal/liga-1/andrei-nicolescu-pune-tunurile-pe-jucatorii-lui-dinamo-954124.html",
-    "source": "gsp",
-    "source_name": "GSP",
-    "source_lang": "ro",
-    "title": "Președintele Dinamo, nemulțumit de atitudinea jucătorilor după amicalul cu Motor Lublin",
-    "category": "sport",
-    "published": "2026-06-28T11:40:46+00:00",
-    "model": "B",
-    "teaser": "Andrei Nicolescu, șeful clubului Dinamo, a criticat vehement comportamentul fotbaliștilor după înfrângerea cu 1-3 în fața echipei Motor Lublin, în Polonia. Atitudinea lor a fost considerată inacceptabilă de către conducere.",
-    "processed_by": "gemini",
-    "error": "HTTP Error 429: Too Many Requests",
-    "featured": false,
-    "prompt_version": "v2-esenta"
-  },
-  {
-    "url": "https://gsp.ro/opinii/istvar-kovacs-nu-iese-din-grupele-cm-2026-penalty-senesi-argentina-954080.html",
-    "original_link": "https://www.gsp.ro/opinii/istvar-kovacs-nu-iese-din-grupele-cm-2026-penalty-senesi-argentina-954080.html",
-    "source": "gsp",
-    "source_name": "GSP",
-    "source_lang": "ro",
-    "title": "Arbitrul Istvan Kovacs, eliminat de la Mondial după greșeli",
-    "category": "sport",
-    "published": "2026-06-28T11:36:45+00:00",
-    "model": "B",
-    "teaser": "Arbitrul român Istvan Kovacs a fost suspendat de UEFA în primăvară, iar acum a confirmat prestația slabă la Mondial, în meciul Iordania - Argentina, fiind astfel scos din competiție.",
-    "processed_by": "gemini",
-    "error": "HTTP Error 503: Service Unavailable",
-    "featured": false,
-    "prompt_version": "v2-esenta"
-  },
-  {
-    "url": "https://gsp.ro/international/campionatul-mondial-de-fotbal-2026/mesaj-lionel-messi-argentina-campionatul-mondial-954115.html",
-    "original_link": "https://www.gsp.ro/international/campionatul-mondial-de-fotbal-2026/mesaj-lionel-messi-argentina-campionatul-mondial-954115.html",
-    "source": "gsp",
-    "source_name": "GSP",
-    "source_lang": "ro",
-    "title": "Messi, după ce a scris istorie la Mondial: \"Suntem încă împreună\"",
-    "category": "sport",
-    "published": "2026-06-28T11:32:22+00:00",
-    "model": "B",
-    "teaser": "Lionel Messi a condus Argentina spre un parcurs impecabil în grupele Campionatului Mondial. Jucătorul de 39 de ani a sărbătorit o nouă performanță istorică, subliniind unitatea echipei.",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://politico.com/news/magazine/2026/06/28/supreme-court-justices-security-police-00969784",
-    "original_link": "https://www.politico.com/news/magazine/2026/06/28/supreme-court-justices-security-police-00969784?utm_source=RSS_Feed&utm_medium=RSS&utm_campaign=RSS_Syndication",
-    "source": "politico_eu",
-    "source_name": "Politico EU",
-    "source_lang": "en",
-    "title": "Curtea Supremă americană își creează propria forță de poliție",
-    "category": "politic",
-    "published": "2026-06-28T11:24:32+00:00",
-    "model": "B",
-    "teaser": "Curtea Supremă a SUA investește milioane de dolari pentru a-și consolida securitatea, ridicând semne de întrebare cu privire la costurile și necesitatea acestei măsuri extinse.",
-    "processed_by": "gemini",
-    "error": "HTTP Error 429: Too Many Requests",
-    "featured": false,
-    "prompt_version": "v2-esenta"
-  },
-  {
-    "url": "https://economedia.ro/retrospectiva-saptamanii-prima-corectie-serioasa-a-deficitului-bugetar-ajuns-la-175-si-acord-final-pe-pnrr-pentru-136-miliarde-de-euro-fratii-paval-primesc-unda-verde-pentru-pre.html",
-    "original_link": "https://economedia.ro/retrospectiva-saptamanii-prima-corectie-serioasa-a-deficitului-bugetar-ajuns-la-175-si-acord-final-pe-pnrr-pentru-136-miliarde-de-euro-fratii-paval-primesc-unda-verde-pentru-pre.html",
-    "source": "economedia",
-    "source_name": "Economedia",
-    "source_lang": "ro",
-    "title": "Israel și Liban, acord istoric după negocieri la Washington",
-    "category": "extern",
-    "published": "2026-06-28T11:24:30+00:00",
-    "model": "C",
-    "sources": [
-      {
-        "name": "Digi24 Extern",
-        "url": "https://www.digi24.ro/stiri/externe/mapamond/cum-au-ajuns-israel-si-liban-la-cel-mai-important-acord-politic-din-ultimii-40-de-ani-culisele-negocierilor-de-la-washington-3837249"
-      },
-      {
-        "name": "Digi24",
-        "url": "https://www.digi24.ro/stiri/externe/mapamond/cum-au-ajuns-israel-si-liban-la-cel-mai-important-acord-politic-din-ultimii-40-de-ani-culisele-negocierilor-de-la-washington-3837249"
-      },
-      {
-        "name": "Economedia",
-        "url": "https://economedia.ro/retrospectiva-saptamanii-prima-corectie-serioasa-a-deficitului-bugetar-ajuns-la-175-si-acord-final-pe-pnrr-pentru-136-miliarde-de-euro-fratii-paval-primesc-unda-verde-pentru-pre.html"
-      }
-    ],
-    "synthesis": "După patru zile de discuții intense la Washington, Israel și Liban au semnat cel mai important acord politic din ultimele patru decenii. Potrivit surselor citate de Axios, preocuparea comună față de influența Iranului și a Hezbollah în Liban a fost un factor cheie în apropierea pozițiilor. Detaliile specifice ale acordului nu sunt menționate.",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://theguardian.com/environment/2026/jun/28/temperature-records-tumble-across-europe-as-heatwave-moves-east",
-    "original_link": "https://www.theguardian.com/environment/2026/jun/28/temperature-records-tumble-across-europe-as-heatwave-moves-east",
-    "source": "guardian_eu",
-    "source_name": "The Guardian",
-    "source_lang": "en",
-    "title": "Val de căldură extremă în Europa: Recorduri de temperatură doborâte",
-    "category": "extern",
-    "published": "2026-06-28T11:24:05+00:00",
-    "model": "B",
-    "teaser": "Peste 191 de milioane de europeni resimt temperaturi de peste 35°C. Polonia, Cehia și Slovacia se pregătesc pentru maxime de peste 40°C, în timp ce valul de căldură se extinde spre est.",
-    "processed_by": "gemini",
-    "error": "HTTP Error 503: Service Unavailable",
-    "featured": false,
-    "prompt_version": "v2-esenta"
-  },
-  {
-    "url": "https://gsp.ro/international/campionatul-mondial-de-fotbal-2026/inca-un-selectioner-se-gandeste-sa-demisioneze-dupa-campionatul-mondial-954114.html",
-    "original_link": "https://www.gsp.ro/international/campionatul-mondial-de-fotbal-2026/inca-un-selectioner-se-gandeste-sa-demisioneze-dupa-campionatul-mondial-954114.html",
-    "source": "gsp",
-    "source_name": "GSP",
-    "source_lang": "ro",
-    "title": "Selecționerul Panama: demisie după eliminarea de la Mondial",
-    "category": "sport",
-    "published": "2026-06-28T11:22:31+00:00",
-    "model": "B",
-    "teaser": "Thomas Christiansen, antrenorul naționalei Panama, ia în considerare plecarea de la echipă. Panama a fost eliminată de la Cupa Mondială fără a înscrie vreun gol, terminând pe ultimul loc în grupa sa.",
-    "processed_by": "gemini",
-    "error": "HTTP Error 429: Too Many Requests",
-    "featured": false,
-    "prompt_version": "v2-esenta"
-  },
-  {
-    "url": "https://digisport.ro/fotbal/liga-1/lovitura-de-teatru-anderson-ceara-in-drum-spre-cfr-ioan-varga-ridica-stacheta-il-vrem-4345585",
-    "original_link": "https://www.digisport.ro/fotbal/liga-1/lovitura-de-teatru-anderson-ceara-in-drum-spre-cfr-ioan-varga-ridica-stacheta-il-vrem-4345585",
-    "source": "digisport",
-    "source_name": "Digi Sport",
-    "source_lang": "ro",
-    "original_title": "Lovitură de teatru: Anderson Ceara, în drum spre CFR! Ioan Varga ridică ștacheta: \"Îl vrem\"",
-    "title": "Lovitură de teatru: Anderson Ceara, în drum spre CFR! Ioan Varga ridică ștacheta: \"Îl vrem\"",
-    "description": "Lovitură de teatru: Anderson Ceara, în drum spre CFR! Ioan Varga ridică ștacheta: \"Îl vrem\"",
-    "category": "sport",
-    "published": "2026-06-28T11:20:53+00:00",
-    "model": "C",
-    "sources": [
-      {
-        "name": "GSP",
-        "url": "https://www.gsp.ro/fotbal/liga-1/anderson-ceara-aproape-transfer-cfr-cluj-ioan-varga-954134.html"
-      },
-      {
-        "name": "Digi Sport",
-        "url": "https://www.digisport.ro/fotbal/liga-1/lovitura-de-teatru-anderson-ceara-in-drum-spre-cfr-ioan-varga-ridica-stacheta-il-vrem-4345585"
-      }
-    ],
-    "synthesis": "Lovitură de teatru: Anderson Ceara, în drum spre CFR! Ioan Varga ridică ștacheta: \"Îl vrem\"",
-    "processed_by": "fallback",
-    "error": "HTTP Error 429: Too Many Requests",
-    "featured": false
-  },
-  {
-    "url": "https://spotmedia.ro/stiri/sport/formula-1-george-russell-va-pleca-din-pole-position-in-marele-premiu-al-austriei",
-    "original_link": "https://spotmedia.ro/stiri/sport/formula-1-george-russell-va-pleca-din-pole-position-in-marele-premiu-al-austriei",
-    "source": "spotmedia",
-    "source_name": "Spotmedia",
-    "source_lang": "ro",
-    "original_title": "Formula 1: George Russell va pleca din pole position în Marele Premiu al Austriei",
-    "title": "Formula 1: George Russell va pleca din pole position în Marele Premiu al Austriei",
-    "description": "Pilotul britanic George Russell (Mercedes) va porni din pole position duminică în Marele Premiu de Formula 1 al Austriei, în fața monoposturilor Ferrari ale monegascului Charles Leclerc și britanicului Lewis Hamilton, informează AFP. Deși Russell a stabilit cel mai rapid timp în sesiunea de calificări care a determinat grila de start provizorie pentru Marele Premiu, …",
-    "category": "general",
-    "published": "2026-06-28T11:10:30+00:00",
-    "model": "C",
-    "sources": [
-      {
-        "name": "GSP",
-        "url": "https://www.gsp.ro/sporturi/formula-1/marele-premiu-al-austriei-formula-1-2026-954032.html"
-      },
-      {
-        "name": "Spotmedia",
-        "url": "https://spotmedia.ro/stiri/sport/formula-1-george-russell-va-pleca-din-pole-position-in-marele-premiu-al-austriei"
-      }
-    ],
-    "synthesis": "Pilotul britanic George Russell (Mercedes) va porni din pole position duminică în Marele Premiu de Formula 1 al Austriei, în fața monoposturilor Ferrari ale monegascului Charles Leclerc și britanicului Lewis Hamilton, informează AFP. Deși Russell a stabilit cel mai rapid timp în sesiunea de calificări care a determinat grila de start provizorie pentru Marele Premiu, …",
-    "processed_by": "fallback",
-    "error": "HTTP Error 429: Too Many Requests",
-    "featured": false
-  },
-  {
-    "url": "https://gsp.ro/international/campionatul-mondial-de-fotbal-2026/nagelsmann-jucatori-fizic-germania-954098.html",
-    "original_link": "https://www.gsp.ro/international/campionatul-mondial-de-fotbal-2026/nagelsmann-jucatori-fizic-germania-954098.html",
-    "source": "gsp",
-    "source_name": "GSP",
-    "source_lang": "ro",
-    "title": "Germania se confruntă cu probleme fizice majore la Cupa Mondială",
-    "category": "sport",
-    "published": "2026-06-28T11:03:58+00:00",
-    "model": "B",
-    "teaser": "Echipa națională a Germaniei întâmpină dificultăți fizice la Cupa Mondială. Jucătorii au fost dominați fizic în meciurile cu Coasta de Fildeș și Ecuador, epuizarea fiind evidentă.",
-    "processed_by": "gemini",
-    "error": "HTTP Error 503: Service Unavailable",
-    "featured": false,
-    "prompt_version": "v2-esenta"
-  },
-  {
-    "url": "https://gsp.ro/sporturi/tenis/programul-zilei-secunde-wimbledon-2026-954108.html",
-    "original_link": "https://www.gsp.ro/sporturi/tenis/programul-zilei-secunde-wimbledon-2026-954108.html",
-    "source": "gsp",
-    "source_name": "GSP",
-    "source_lang": "ro",
-    "title": "Sorana Cîrstea, Ruse și Begu, programate la Wimbledon; Serena Williams revine",
-    "category": "sport",
-    "published": "2026-06-28T11:01:14+00:00",
-    "model": "B",
-    "teaser": "Jucătoarele române Sorana Cîrstea, Gabriela Ruse și Irina Begu își cunosc programul pentru primul tur la Wimbledon. Totodată, s-a anunțat și data revenirii Serenei Williams pe terenul de tenis.",
-    "processed_by": "gemini",
-    "error": "HTTP Error 429: Too Many Requests",
-    "featured": false,
-    "prompt_version": "v2-esenta"
-  },
-  {
-    "url": "https://gsp.ro/international/campionatul-mondial-de-fotbal-2026/suma-uriasa-bilete-portugalia-croatia-campionatul-mondial-954088.html",
-    "original_link": "https://www.gsp.ro/international/campionatul-mondial-de-fotbal-2026/suma-uriasa-bilete-portugalia-croatia-campionatul-mondial-954088.html",
-    "source": "gsp",
-    "source_name": "GSP",
-    "source_lang": "ro",
-    "title": "Biletele la Portugalia - Croația s-au scumpit drastic pe piața secundară",
-    "category": "sport",
-    "published": "2026-06-28T10:56:09+00:00",
-    "model": "B",
-    "teaser": "Prețurile biletelor pentru meciul de fotbal dintre Portugalia și Croația, din optimile Campionatului Mondial, au explodat pe platformele de revânzare, ajungând să depășească 3.000 de dolari.",
-    "processed_by": "gemini",
-    "error": "HTTP Error 429: Too Many Requests",
-    "featured": false,
-    "prompt_version": "v2-esenta"
-  },
-  {
-    "url": "https://economica.net/bns-solicita-reforme-urgente-ale-legislatiei-muncii-protectiei-sociale-si-locuirii-in-romania_954443.html",
-    "original_link": "https://www.economica.net/bns-solicita-reforme-urgente-ale-legislatiei-muncii-protectiei-sociale-si-locuirii-in-romania_954443.html",
-    "source": "economica",
-    "source_name": "Economica",
-    "source_lang": "ro",
-    "original_title": "BNS solicită reforme urgente ale legislaţiei muncii, protecţiei sociale şi locuirii în România",
-    "title": "BNS solicită reforme urgente ale legislaţiei muncii, protecţiei sociale şi locuirii în România",
-    "description": "Blocul Naţional Sindical salută Strategia europeană de combatere a sărăciei şi solicită reforme urgente ale legislaţiei muncii, protecţiei sociale şi locuirii în România, conform unui comunicat al confederaţiei, scrie Agerpres.",
-    "category": "economic",
-    "published": "2026-06-28T10:55:05+00:00",
-    "model": "C",
-    "sources": [
-      {
-        "name": "Digi24",
-        "url": "https://www.digi24.ro/stiri/economie/bns-pune-presiune-pe-guvern-cere-reforme-urgente-in-legislatia-muncii-romania-nu-isi-mai-poate-permite-amanarea-acestor-schimbari-3836949"
-      },
-      {
-        "name": "Economica",
-        "url": "https://www.economica.net/bns-solicita-reforme-urgente-ale-legislatiei-muncii-protectiei-sociale-si-locuirii-in-romania_954443.html"
-      }
-    ],
-    "synthesis": "Blocul Naţional Sindical salută Strategia europeană de combatere a sărăciei şi solicită reforme urgente ale legislaţiei muncii, protecţiei sociale şi locuirii în România, conform unui comunicat al confederaţiei, scrie Agerpres.",
-    "processed_by": "fallback",
-    "error": "HTTP Error 429: Too Many Requests",
-    "featured": false
-  },
-  {
-    "url": "https://zf.ro/eveniment/atentie-cod-rosu-de-canicula-cnair-instituie-restrictii-pe-drumurile-23183521",
-    "original_link": "https://www.zf.ro/eveniment/atentie-cod-rosu-de-canicula-cnair-instituie-restrictii-pe-drumurile-23183521",
-    "source": "zf",
-    "source_name": "Ziarul Financiar",
-    "source_lang": "ro",
-    "original_title": "ATENŢIE! Cod roşu de caniculă. CNAIR instituie restricţii pe drumurile din 35 de judeţe",
-    "title": "ATENŢIE! Cod roşu de caniculă. CNAIR instituie restricţii pe drumurile din 35 de judeţe",
-    "description": "",
-    "category": "economic",
-    "published": "2026-06-28T10:41:20+00:00",
-    "model": "C",
-    "sources": [
-      {
-        "name": "HotNews",
-        "url": "https://hotnews.ro/cum-au-ajuns-chinezii-sa-aiba-in-romania-cele-mai-mari-cote-de-piata-din-toata-europa-2286671"
-      },
-      {
-        "name": "G4Media",
-        "url": "https://www.g4media.ro/cod-rosu-de-canicula-restrictii-pe-drumurile-din-35-de-judete-luni-si-marti.html"
-      },
-      {
-        "name": "Ziarul Financiar",
-        "url": "https://www.zf.ro/eveniment/valul-canicula-topeste-europa-temperaturi-sufocante-peste-40-grade-23183621"
-      },
-      {
-        "name": "Economica",
-        "url": "https://www.economica.net/pret-socant-la-energie-electrica-maine-in-romania-pe-fondul-caniculei-si-al-productiei-slabe-peste-4-200-de-lei-mwh-seara-suntem-cea-mai-scumpa-piata-din-europa_954467.html"
-      }
-    ],
-    "synthesis": "Detalii pe surse.",
-    "processed_by": "fallback",
-    "error": "HTTP Error 429: Too Many Requests",
-    "featured": false
-  },
-  {
-    "url": "https://gsp.ro/international/campionatul-mondial-de-fotbal-2026/veste-excelenta-germania-revenire-antrenamente-nathaniel-brown-campionatul-mondial-954013.html",
-    "original_link": "https://www.gsp.ro/international/campionatul-mondial-de-fotbal-2026/veste-excelenta-germania-revenire-antrenamente-nathaniel-brown-campionatul-mondial-954013.html",
-    "source": "gsp",
-    "source_name": "GSP",
-    "source_lang": "ro",
-    "title": "Fundașul Germaniei, Nathaniel Brown, reia antrenamentele înainte de meciul cu Paraguay",
-    "category": "sport",
-    "published": "2026-06-28T10:37:29+00:00",
-    "model": "B",
-    "teaser": "Nathaniel Brown, fundașul echipei naționale de fotbal a Germaniei, a revenit la antrenamente după o accidentare la adductori. El este apt pentru meciul din optimile Campionatului Mondial contra Paraguayului.",
-    "processed_by": "gemini",
-    "error": "HTTP Error 429: Too Many Requests",
-    "featured": false,
-    "prompt_version": "v2-esenta"
-  },
-  {
-    "url": "https://stirileprotv.ro/stiri/financiar/romania-a-incasat-peste-9-miliarde-de-euro-dupa-aproape-5-ani-de-pnrr-ce-fonduri-mai-poate-atrage.html",
-    "original_link": "https://stirileprotv.ro/stiri/financiar/romania-a-incasat-peste-9-miliarde-de-euro-dupa-aproape-5-ani-de-pnrr-ce-fonduri-mai-poate-atrage.html",
-    "source": "protv",
-    "source_name": "Știrile ProTV",
-    "source_lang": "ro",
-    "original_title": "România a încasat peste 9 miliarde de euro după aproape 5 ani de PNRR. Ce fonduri mai poate atrage",
-    "title": "România a încasat peste 9 miliarde de euro după aproape 5 ani de PNRR. Ce fonduri mai poate atrage",
-    "description": "România a ajuns la peste 9 miliarde de euro primite prin PNRR, după ce a patra cerere de plată a fost aprobată integral. Programul care se desfășoară de aproape 5 ani ar urma să se termine pe 31 august 2026.",
-    "category": "general",
-    "published": "2026-06-28T10:37:12+00:00",
-    "model": "C",
-    "sources": [
-      {
-        "name": "Economedia",
-        "url": "https://economedia.ro/retrospectiva-saptamanii-prima-corectie-serioasa-a-deficitului-bugetar-ajuns-la-175-si-acord-final-pe-pnrr-pentru-136-miliarde-de-euro-fratii-paval-primesc-unda-verde-pentru-pre.html"
-      },
-      {
-        "name": "Știrile ProTV",
-        "url": "https://stirileprotv.ro/stiri/financiar/romania-a-incasat-peste-9-miliarde-de-euro-dupa-aproape-5-ani-de-pnrr-ce-fonduri-mai-poate-atrage.html"
-      }
-    ],
-    "synthesis": "România a ajuns la peste 9 miliarde de euro primite prin PNRR, după ce a patra cerere de plată a fost aprobată integral. Programul care se desfășoară de aproape 5 ani ar urma să se termine pe 31 august 2026.",
-    "processed_by": "fallback",
-    "error": "HTTP Error 429: Too Many Requests",
-    "featured": false
-  },
-  {
-    "url": "https://gsp.ro/fotbal/liga-1/mirko-pigliacelli-catanzaro-transfer-avellino-serie-b-universitatea-craiova-953961.html",
-    "original_link": "https://www.gsp.ro/fotbal/liga-1/mirko-pigliacelli-catanzaro-transfer-avellino-serie-b-universitatea-craiova-953961.html",
-    "source": "gsp",
-    "source_name": "GSP",
-    "source_lang": "ro",
-    "title": "Mirko Pigliacelli a refuzat transferul la o rivală din Serie B",
-    "category": "sport",
-    "published": "2026-06-28T10:33:37+00:00",
-    "model": "B",
-    "teaser": "Portarul român Mirko Pigliacelli, jucător la Catanzaro, a refuzat o ofertă de transfer de la o echipă rivală din Serie B. Italianul a ales să rămână la formația sa actuală, unde este apreciat de fani.",
-    "processed_by": "gemini",
-    "error": "HTTP Error 429: Too Many Requests",
-    "featured": false,
-    "prompt_version": "v2-esenta"
-  },
-  {
-    "url": "https://hotnews.ro/plajele-de-pe-litoralul-bulgaresc-poluate-cu-pacura-sunt-suspiciuni-ca-de-vina-este-flota-fantoma-a-rusiei-2286587",
-    "original_link": "https://hotnews.ro/plajele-de-pe-litoralul-bulgaresc-poluate-cu-pacura-sunt-suspiciuni-ca-de-vina-este-flota-fantoma-a-rusiei-2286587",
-    "source": "hotnews",
-    "source_name": "HotNews",
-    "source_lang": "ro",
-    "original_title": "Plajele de pe litoralul bulgăresc, poluate cu păcură. Sunt suspiciuni că de vină este „flota-fantomă” a Rusiei",
-    "title": "Plajele de pe litoralul bulgăresc, poluate cu păcură. Sunt suspiciuni că de vină este „flota-fantomă” a Rusiei",
-    "description": "Poluare cu păcură a fost raportată pe plajele de-a lungul coastei bulgare a Mării Negre, aproape zilnic în zone aflate între Rezovo, Sinemorets, Lozenets, Arkutino și Kamchia, transmite Novinite. În timp ce autoritățile susțin că este vorba despre depuneri vechi, readuse la suprafață de marea agitată, experții de mediu cer o investigație mai amplă privind …",
-    "category": "general",
-    "published": "2026-06-28T10:29:31+00:00",
-    "model": "C",
-    "sources": [
-      {
-        "name": "HotNews",
-        "url": "https://hotnews.ro/plajele-de-pe-litoralul-bulgaresc-poluate-cu-pacura-sunt-suspiciuni-ca-de-vina-este-flota-fantoma-a-rusiei-2286587"
-      },
-      {
-        "name": "Economica",
-        "url": "https://www.economica.net/plajele-de-pe-litoralul-bulgaresc-poluate-cu-pacura-ce-statiuni-sunt-afectate_954452.html"
-      }
-    ],
-    "synthesis": "Poluare cu păcură a fost raportată pe plajele de-a lungul coastei bulgare a Mării Negre, aproape zilnic în zone aflate între Rezovo, Sinemorets, Lozenets, Arkutino și Kamchia, transmite Novinite. În timp ce autoritățile susțin că este vorba despre depuneri vechi, readuse la suprafață de marea agitată, experții de mediu cer o investigație mai amplă privind …",
-    "processed_by": "fallback",
-    "error": "HTTP Error 429: Too Many Requests",
-    "featured": false
   }
 ]
