@@ -1,5 +1,38 @@
 [
   {
+    "url": "https://gsp.ro/international/campionatul-mondial-de-fotbal-2026/live-mexic-anglia-in-optimile-de-finala-ale-campionatului-mondial-956918.html",
+    "original_link": "https://www.gsp.ro/international/campionatul-mondial-de-fotbal-2026/live-mexic-anglia-in-optimile-de-finala-ale-campionatului-mondial-956918.html",
+    "source": "gsp",
+    "source_name": "GSP",
+    "source_lang": "ro",
+    "title": "Meciul Mexic - Anglia, amânat cu o oră din cauza ploii",
+    "category": "sport",
+    "published": "2026-07-05T23:28:55+00:00",
+    "model": "C",
+    "sources": [
+      {
+        "name": "GSP",
+        "url": "https://www.gsp.ro/international/campionatul-mondial-de-fotbal-2026/live-mexic-anglia-in-optimile-de-finala-ale-campionatului-mondial-956918.html"
+      },
+      {
+        "name": "Digi Sport",
+        "url": "https://www.digisport.ro/fotbal/cm-2026/probleme-inainte-de-mexic-anglia-startul-partidei-a-fost-amanat-4361065"
+      }
+    ],
+    "first_source": "GSP",
+    "synthesis": "Partida dintre Mexic și Anglia, contând pentru optimile de finală ale Campionatului Mondial, programată pe stadionul Azteca din Ciudad de México, a fost amânată cu o oră. Decizia a fost luată din cauza condițiilor meteo nefavorabile, respectiv a ploii abundente. Meciul va fi transmis pe Antena 1 și Antena Play.",
+    "entities": [
+      "Mexic",
+      "Anglia",
+      "Campionatul Mondial",
+      "stadionul Azteca"
+    ],
+    "icon": "ball-football",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
     "url": "https://digisport.ro/fotbal/cm-2026/la-asta-nu-se-astepta-nimeni-ce-a-facut-ancelotti-dupa-ce-brazilia-a-fost-eliminata-de-la-cm-2026-4360989",
     "original_link": "https://www.digisport.ro/fotbal/cm-2026/la-asta-nu-se-astepta-nimeni-ce-a-facut-ancelotti-dupa-ce-brazilia-a-fost-eliminata-de-la-cm-2026-4360989",
     "source": "digisport",
@@ -261,10 +294,10 @@
     "source": "prosport",
     "source_name": "ProSport",
     "source_lang": "ro",
-    "title": "Adrian Mutu, despre transferul lui Drăgușin la Fiorentina",
+    "title": "Adrian Mutu vede pozitiv transferul lui Drăgușin la Fiorentina",
     "category": "sport",
     "published": "2026-07-05T20:09:35+00:00",
-    "model": "B",
+    "model": "C",
     "teaser": "Adrian Mutu și-a exprimat opinia despre revenirea lui Radu Drăgușin în Serie A, la Fiorentina, echipă la care a jucat și el. Mutu consideră mutarea benefică.",
     "entities": [
       "Adrian Mutu",
@@ -274,7 +307,19 @@
     "icon": "ball-football",
     "processed_by": "gemini",
     "prompt_version": "v2-esenta",
-    "featured": false
+    "featured": false,
+    "sources": [
+      {
+        "name": "ProSport",
+        "url": "https://www.prosport.ro/fotbal-extern/campionate-externe/italia/adrian-mutu-verdict-transfer-radu-dragusin-fiorentina-20477893"
+      },
+      {
+        "name": "Digi Sport",
+        "url": "https://www.digisport.ro/fotbal/serie-a/adrian-mutu-categoric-dupa-ce-a-vazut-transferul-lui-radu-dragusin-la-fiorentina-4360639"
+      }
+    ],
+    "first_source": "ProSport",
+    "synthesis": "Fostul internațional Adrian Mutu consideră că revenirea lui Radu Drăgușin în Serie A, la echipa Fiorentina, este o mutare benefică pentru tânărul fotbalist. Mutu, care a jucat și el pentru clubul italian, și-a exprimat opinia categorică în urma anunțului transferului."
   },
   {
     "url": "https://prosport.ro/campionatul-mondial-2026/decizia-fifa-istvan-kovacs-la-cupa-mondiala-20477885",
