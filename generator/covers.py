@@ -89,8 +89,8 @@ _KW_ICON = [
     (r"comert|retail|magazin|consum", "shopping-cart"),
     (r"agricult|fermier|recolt|cereale", "tractor"),
     (r"razboi|militar|armata|front|ofensiv|trupe", "swords"), (r"drona|dronele", "helicopter"),
-    (r"rachet", "rocket"), (r"\bnato\b", "shield"), (r"sanctiun|embargo", "lock"),
-    (r"ambasad|diplomat|consulat", "flag"), (r"\bue\b|uniunea europ|bruxelles|comisia europ", "world"),
+    (r"rachet", "rocket"), (r"\bnato\b", "shield"), (r"\bonu\b|natiunile unite", "globe"), (r"sanctiun|embargo", "lock"),
+    (r"ambasad|diplomat|consulat", "flag"), (r"\bue\b|uniunea europ|bruxelles|comisia europ", "globe"),
     (r"avion|aeroport|zbor|aerian", "plane"), (r"tren|feroviar|\bcfr\b|metrou", "train"),
     (r"camion|\btir\b", "truck"), (r"soferi|rutier|autoturism|masina|automobil", "car"),
     (r"port maritim|naval|vapor|nava", "ship"),
@@ -107,6 +107,8 @@ _KW_ICON = [
     (r"volei", "ball-volleyball"), (r"inot|natatie", "swimming"), (r"ciclism|turul", "bike"),
     (r"atletism|maraton|alergare", "run"), (r"olimpi", "medal"),
     (r"campioan|trofeu|castiga titlul", "trophy"),
+    (r"formula 1|raliu|motogp|automobilism|circuitul", "car"),
+    (r"handbal|rugby|polo\b", "trophy"), (r"\bbox\b|mma\b|kickbox|gimnast", "medal"),
     (r"film|cinema|regizor", "movie"), (r"muzic|concert|festival", "music"),
     (r"teatru", "masks-theater"), (r"expozit|muzeu|pictur", "palette"),
     (r"educat|scoal|elevi|bacalaureat|universitat|studenti", "school"),
@@ -118,8 +120,13 @@ _KW_ICON = [
     (r"munte|alpin", "mountain"), (r"protest|miting|grev|mars", "speakerphone"),
     (r"restaurant|aliment|mancare|gastronom", "tools-kitchen-2"),
 ]
-_CAT_ICON = {"politic": "building-monument", "economic": "chart-line", "extern": "world",
-             "sport": "ball-football", "tech": "cpu"}
+# rotatie seeded per categorie: cand niciun cuvant-cheie nu decide, default-ul
+# NU mai e mereu acelasi (feedback owner: "la sport aceeasi pictograma")
+_CAT_ICONS = {"politic": ["building-monument", "podium"],
+              "economic": ["chart-line", "coins", "trending-up"],
+              "extern": ["globe", "compass", "world-latitude"],
+              "sport": ["ball-football", "trophy", "medal"],
+              "tech": ["cpu", "device-laptop"]}
 
 
 def _pick_icon(a: dict) -> str | None:
@@ -130,7 +137,11 @@ def _pick_icon(a: dict) -> str | None:
     for pat, icon in _KW_ICON:
         if re.search(pat, text) and _icon_img(icon):
             return icon
-    return _CAT_ICON.get(a.get("category", ""))
+    pool = _CAT_ICONS.get(a.get("category", ""))
+    if not pool:
+        return None
+    seed = hashlib.sha1((a.get("title") or "").encode()).digest()
+    return pool[seed[2] % len(pool)]
 
 
 # ---- straturi compozitionale (toate primesc seed) ---------------------------

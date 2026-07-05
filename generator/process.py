@@ -89,8 +89,8 @@ def _valid_category(cat: str, fallback: str) -> str:
 
 _ICON_SLUGS = ("gavel certificate building-monument podium writing percentage receipt-tax "
                "building-bank currency-euro pig-money chart-line building-factory shopping-cart "
-               "bolt gas-station tractor swords rocket shield flag world plane train car truck "
-               "ship helicopter building-hospital stethoscope vaccine virus pill microscope "
+               "bolt gas-station tractor swords rocket shield flag plane train car truck "
+               "ship helicopter globe compass building-hospital stethoscope vaccine virus pill microscope "
                "satellite robot cpu device-mobile wifi shield-lock database ball-football "
                "ball-tennis ball-basketball swimming bike run medal trophy movie music school "
                "building-church ambulance firetruck crane home umbrella trees speakerphone sun "
