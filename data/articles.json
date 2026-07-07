@@ -43,28 +43,6 @@
     "featured": false
   },
   {
-    "url": "https://prosport.ro/campionatul-mondial-2026/portugalia-a-luat-decizia-imediat-cine-e-inlocuitorul-lui-roberto-martinez-dupa-eliminarea-in-fata-spaniei-20478647",
-    "original_link": "https://www.prosport.ro/campionatul-mondial-2026/portugalia-a-luat-decizia-imediat-cine-e-inlocuitorul-lui-roberto-martinez-dupa-eliminarea-in-fata-spaniei-20478647",
-    "source": "prosport",
-    "source_name": "ProSport",
-    "source_lang": "ro",
-    "title": "Portugalia îl înlocuiește pe Roberto Martinez după eliminarea de la CM 2026",
-    "category": "sport",
-    "published": "2026-07-06T22:40:31+00:00",
-    "model": "B",
-    "teaser": "Președintele federației portugheze a decis înlocuirea selecționerului Roberto Martinez imediat după eliminarea de la Cupa Mondială, contractul acestuia nefiind prelungit pentru a-i face loc lui Jorge Jesus.",
-    "entities": [
-      "Portugalia",
-      "Roberto Martinez",
-      "Jorge Jesus",
-      "CM 2026"
-    ],
-    "icon": "ball-football",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
     "url": "https://prosport.ro/campionatul-mondial-2026/luis-de-la-fuente-cristiano-ronaldo-seelctioner-spania-discurs-mare-campion-spania-portugalia-mandru-20478644",
     "original_link": "https://www.prosport.ro/campionatul-mondial-2026/luis-de-la-fuente-cristiano-ronaldo-seelctioner-spania-discurs-mare-campion-spania-portugalia-mandru-20478644",
     "source": "prosport",
@@ -101,6 +79,39 @@
       "Portugalia",
       "Roberto Martinez",
       "Spania",
+      "CM 2026"
+    ],
+    "icon": "ball-football",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://gsp.ro/international/campionatul-mondial-de-fotbal-2026/roberto-martinez-plecare-nationala-portugaliei-957642.html",
+    "original_link": "https://www.gsp.ro/international/campionatul-mondial-de-fotbal-2026/roberto-martinez-plecare-nationala-portugaliei-957642.html",
+    "source": "gsp",
+    "source_name": "GSP",
+    "source_lang": "ro",
+    "title": "Roberto Martinez pleacă de la naționala Portugaliei, Jorge Jesus favorit",
+    "category": "sport",
+    "published": "2026-07-06T22:13:31+00:00",
+    "model": "C",
+    "sources": [
+      {
+        "name": "GSP",
+        "url": "https://www.gsp.ro/international/campionatul-mondial-de-fotbal-2026/roberto-martinez-plecare-nationala-portugaliei-957642.html"
+      },
+      {
+        "name": "ProSport",
+        "url": "https://www.prosport.ro/campionatul-mondial-2026/portugalia-a-luat-decizia-imediat-cine-e-inlocuitorul-lui-roberto-martinez-dupa-eliminarea-in-fata-spaniei-20478647"
+      }
+    ],
+    "first_source": "GSP",
+    "synthesis": "Roberto Martinez nu va continua ca selecționer al Portugaliei, decizia fiind luată după eliminarea de la Campionatul Mondial din 2026. Federația Portugheză de Fotbal nu i-a prelungit contractul, iar Jorge Jesus este principalul candidat pentru a-i prelua postul.",
+    "entities": [
+      "Roberto Martinez",
+      "Portugalia",
+      "Jorge Jesus",
       "CM 2026"
     ],
     "icon": "ball-football",
@@ -222,6 +233,27 @@
       "Diogo Costa"
     ],
     "icon": "ball-football",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://hotnews.ro/donald-trump-afirma-ca-retailerul-walmart-va-reduce-preturile-la-numeroase-produse-2293506",
+    "original_link": "https://hotnews.ro/donald-trump-afirma-ca-retailerul-walmart-va-reduce-preturile-la-numeroase-produse-2293506",
+    "source": "hotnews",
+    "source_name": "HotNews",
+    "source_lang": "ro",
+    "title": "Trump anunță ieftiniri la Walmart pentru americani",
+    "category": "economic",
+    "published": "2026-07-06T21:51:59+00:00",
+    "model": "B",
+    "teaser": "Donald Trump susține că Walmart va reduce prețurile la numeroase produse, ca urmare a unei solicitări din partea administrației sale, pentru a marca cei 250 de ani de la fondarea SUA. Retailerul ar urma să ofere \"vești grozave\".",
+    "entities": [
+      "Donald Trump",
+      "Walmart",
+      "SUA"
+    ],
+    "icon": "shopping-cart",
     "processed_by": "gemini",
     "prompt_version": "v2-esenta",
     "featured": false
@@ -405,6 +437,27 @@
     "featured": false
   },
   {
+    "url": "https://hotnews.ro/o-actrita-creata-cu-ai-isi-va-face-debutul-pe-marile-ecrane-detalii-despre-misaligned-2293482",
+    "original_link": "https://hotnews.ro/o-actrita-creata-cu-ai-isi-va-face-debutul-pe-marile-ecrane-detalii-despre-misaligned-2293482",
+    "source": "hotnews",
+    "source_name": "HotNews",
+    "source_lang": "ro",
+    "title": "Prima actriță creată cu AI, Tilly Norwood, debutează în film",
+    "category": "tech",
+    "published": "2026-07-06T21:23:14+00:00",
+    "model": "B",
+    "teaser": "Actrița generată de inteligența artificială, Tilly Norwood, va apărea în lungmetrajul „Misaligned”, produs special pentru ea de studioul Particle 6. Filmul este deja în producție, marcând un nou pas în industria cinematografică.",
+    "entities": [
+      "Tilly Norwood",
+      "Misaligned",
+      "Particle 6"
+    ],
+    "icon": "robot",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
     "url": "https://digi24.ro/campionatul-mondal-de-fotbal-2026/cm-2026-spania-a-invins-greu-portugalia-si-merge-in-sferturi-a-fost-ultimul-meci-al-lui-ronaldo-la-un-campionat-mondial-3850055",
     "original_link": "https://www.digi24.ro/campionatul-mondal-de-fotbal-2026/cm-2026-spania-a-invins-greu-portugalia-si-merge-in-sferturi-a-fost-ultimul-meci-al-lui-ronaldo-la-un-campionat-mondial-3850055",
     "source": "digi24",
@@ -469,6 +522,80 @@
     "featured": false
   },
   {
+    "url": "https://digi24.ro/campionatul-mondal-de-fotbal-2026/campionatul-mondial-de-fotbal-2026-programul-complet-al-meciurilor-rezultate-si-clasamente-3794401",
+    "original_link": "https://www.digi24.ro/campionatul-mondal-de-fotbal-2026/campionatul-mondial-de-fotbal-2026-programul-complet-al-meciurilor-rezultate-si-clasamente-3794401",
+    "source": "digi24",
+    "source_name": "Digi24",
+    "source_lang": "ro",
+    "title": "Campionatul Mondial de Fotbal 2026 se desfășoară în America de Nord",
+    "category": "sport",
+    "published": "2026-07-06T21:10:48+00:00",
+    "model": "C",
+    "sources": [
+      {
+        "name": "Digi24",
+        "url": "https://www.digi24.ro/campionatul-mondal-de-fotbal-2026/campionatul-mondial-de-fotbal-2026-programul-complet-al-meciurilor-rezultate-si-clasamente-3794401"
+      },
+      {
+        "name": "Libertatea",
+        "url": "https://www.libertatea.ro/sport/program-meciuri-rezultate-campionatul-mondial-de-fotbal-2026-ore-televizare-antena-1-5760236"
+      }
+    ],
+    "first_source": "Digi24",
+    "synthesis": "Campionatul Mondial de Fotbal 2026, cea de-a 23-a ediție, va avea loc în SUA, Mexic și Canada între 11 iunie și 19 iulie. Acesta este primul turneu final cu 48 de echipe, cuprinzând 104 meciuri pe parcursul a 38 de zile, fiind cel mai lung Campionat Mondial din istorie. Finala este programată pentru 19 iulie.",
+    "entities": [
+      "SUA",
+      "Mexic",
+      "Canada",
+      "Campionatul Mondial de Fotbal 2026"
+    ],
+    "icon": "ball-football",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://hotnews.ro/spania-portugalia-duelul-de-foc-din-optimile-de-la-cupa-mondiala-2026-decis-de-golul-marcat-dupa-minutul-90-2293494",
+    "original_link": "https://hotnews.ro/spania-portugalia-duelul-de-foc-din-optimile-de-la-cupa-mondiala-2026-decis-de-golul-marcat-dupa-minutul-90-2293494",
+    "source": "hotnews",
+    "source_name": "HotNews",
+    "source_lang": "ro",
+    "title": "Spania elimină Portugalia în optimile Cupei Mondiale 2026",
+    "category": "sport",
+    "published": "2026-07-06T21:08:22+00:00",
+    "model": "B",
+    "teaser": "Spania s-a calificat în sferturile Cupei Mondiale 2026 după ce a învins Portugalia cu 1-0, golul victoriei fiind marcat în prelungiri. Este prima prezență a Spaniei în această fază a competiției din 2010.",
+    "entities": [
+      "Spania",
+      "Portugalia",
+      "Cupa Mondială 2026",
+      "Mikel Merino"
+    ],
+    "icon": "ball-football",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://zf.ro/banci-si-asigurari/cine-controleaza-bancile-din-romania-cat-are-romania-si-cat-mai-au-23189795",
+    "original_link": "https://www.zf.ro/banci-si-asigurari/cine-controleaza-bancile-din-romania-cat-are-romania-si-cat-mai-au-23189795",
+    "source": "zf",
+    "source_name": "Ziarul Financiar",
+    "source_lang": "ro",
+    "title": "Controlul băncilor din România: ponderea capitalului autohton vs. străin",
+    "category": "economic",
+    "published": "2026-07-06T21:08:00+00:00",
+    "model": "B",
+    "teaser": "Se analizează ponderea capitalului autohton comparativ cu cel străin în sistemul bancar românesc, o discuție importantă în contextul economic actual.",
+    "entities": [
+      "România"
+    ],
+    "icon": "building-bank",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
     "url": "https://digisport.ro/fotbal/liga-1/florin-prunea-n-are-niciun-dubiu-s-a-facut-transferul-anului-in-superliga-numarul-1-4362825",
     "original_link": "https://www.digisport.ro/fotbal/liga-1/florin-prunea-n-are-niciun-dubiu-s-a-facut-transferul-anului-in-superliga-numarul-1-4362825",
     "source": "digisport",
@@ -482,6 +609,28 @@
     "entities": [
       "Florin Prunea",
       "SuperLigă"
+    ],
+    "icon": "ball-football",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://libertatea.ro/sport/dramatism-total-la-campionatul-mondial-spania-da-lovitura-de-gratie-portugaliei-in-minutul-901-si-zboara-in-sferturi-5807150",
+    "original_link": "https://www.libertatea.ro/sport/dramatism-total-la-campionatul-mondial-spania-da-lovitura-de-gratie-portugaliei-in-minutul-901-si-zboara-in-sferturi-5807150",
+    "source": "libertatea",
+    "source_name": "Libertatea",
+    "source_lang": "ro",
+    "title": "Spania elimină Portugalia de la Mondial în minutul 90+1",
+    "category": "sport",
+    "published": "2026-07-06T21:04:55+00:00",
+    "model": "B",
+    "teaser": "Spania a învins dramatic Portugalia cu 1-0 în optimile Campionatului Mondial de Fotbal 2026, prin golul marcat în prelungiri, eliminând astfel echipa lui Cristiano Ronaldo.",
+    "entities": [
+      "Spania",
+      "Portugalia",
+      "Cristiano Ronaldo",
+      "Nuno Mendes"
     ],
     "icon": "ball-football",
     "processed_by": "gemini",
@@ -621,6 +770,47 @@
     "featured": false
   },
   {
+    "url": "https://hotnews.ro/singura-explicatie-pentru-problema-cu-rachetele-balistice-apelul-lui-zelenski-dupa-atacul-brutal-al-rusilor-care-a-strapuns-complet-antiaeriana-ucraineana-2293485",
+    "original_link": "https://hotnews.ro/singura-explicatie-pentru-problema-cu-rachetele-balistice-apelul-lui-zelenski-dupa-atacul-brutal-al-rusilor-care-a-strapuns-complet-antiaeriana-ucraineana-2293485",
+    "source": "hotnews",
+    "source_name": "HotNews",
+    "source_lang": "ro",
+    "title": "Zelenski cere mai mult sprijin NATO după atacul rusesc",
+    "category": "politic",
+    "published": "2026-07-06T20:50:39+00:00",
+    "model": "B",
+    "teaser": "Președintele ucrainean Volodimir Zelenski speră la rezultate concrete de la summitul NATO de la Ankara, după un atac rusesc devastator asupra Kievului. El a subliniat necesitatea unor acțiuni mai ferme din partea alianței.",
+    "entities": [
+      "Volodimir Zelenski",
+      "NATO",
+      "Ankara",
+      "Kiev"
+    ],
+    "icon": "rocket",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://libertatea.ro/lifestyle/politistii-au-oprit-o-masina-si-au-gasit-ceva-la-care-nu-se-asteptau-niciodata-doua-vaci-inghesuite-pe-bancheta-din-spate-5807133",
+    "original_link": "https://www.libertatea.ro/lifestyle/politistii-au-oprit-o-masina-si-au-gasit-ceva-la-care-nu-se-asteptau-niciodata-doua-vaci-inghesuite-pe-bancheta-din-spate-5807133",
+    "source": "libertatea",
+    "source_name": "Libertatea",
+    "source_lang": "ro",
+    "title": "Polițiștii au găsit două vaci pe bancheta din spate a unei mașini",
+    "category": "general",
+    "published": "2026-07-06T20:44:04+00:00",
+    "model": "B",
+    "teaser": "În Columbia, polițiștii au oprit un vehicul și au descoperit două vaci pe bancheta din spate, presupuse furate, ducând la arestarea a trei persoane.",
+    "entities": [
+      "Columbia"
+    ],
+    "icon": "pig-money",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
     "url": "https://gsp.ro/international/campionate/samir-handanovic-plecare-inter-957594.html",
     "original_link": "https://www.gsp.ro/international/campionate/samir-handanovic-plecare-inter-957594.html",
     "source": "gsp",
@@ -683,6 +873,28 @@
     "featured": false
   },
   {
+    "url": "https://hotnews.ro/scenariul-pe-care-i-l-indica-traian-basescu-lui-nicusor-dan-cine-a-devenit-inteleptul-politicii-romanesti-asa-ceva-n-am-crezut-ca-o-sa-vedem-vreodata-2293465",
+    "original_link": "https://hotnews.ro/scenariul-pe-care-i-l-indica-traian-basescu-lui-nicusor-dan-cine-a-devenit-inteleptul-politicii-romanesti-asa-ceva-n-am-crezut-ca-o-sa-vedem-vreodata-2293465",
+    "source": "hotnews",
+    "source_name": "HotNews",
+    "source_lang": "ro",
+    "title": "Băsescu îi cere lui Nicușor Dan să nominalizeze alt premier",
+    "category": "politic",
+    "published": "2026-07-06T20:30:28+00:00",
+    "model": "B",
+    "teaser": "Traian Băsescu consideră că Nicușor Dan trebuie să propună un alt candidat pentru funcția de premier, indiferent de susținerea actuală, pentru a crea noi soluții la criza politică.",
+    "entities": [
+      "Traian Băsescu",
+      "Nicușor Dan",
+      "Sorin Grindeanu",
+      "Siegfried Mureșan"
+    ],
+    "icon": "writing",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
     "url": "https://digi24.ro/stiri/dragos-pislaru-dupa-cazul-azilelor-din-bihor-statul-roman-este-in-multe-cazuri-incapabil-sa-ii-ajute-tocmai-pe-cei-vulnerabili-3850065",
     "original_link": "https://www.digi24.ro/stiri/dragos-pislaru-dupa-cazul-azilelor-din-bihor-statul-roman-este-in-multe-cazuri-incapabil-sa-ii-ajute-tocmai-pe-cei-vulnerabili-3850065",
     "source": "digi24",
@@ -719,6 +931,130 @@
       "Ankara"
     ],
     "icon": "shield",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://libertatea.ro/lifestyle/reteta-oua-jumari-ingrediente-secret-restaurante-greseala-tigaie-5807121",
+    "original_link": "https://www.libertatea.ro/lifestyle/reteta-oua-jumari-ingrediente-secret-restaurante-greseala-tigaie-5807121",
+    "source": "libertatea",
+    "source_name": "Libertatea",
+    "source_lang": "ro",
+    "title": "Secretul ouălor jumări pufoase: un ingredient simplu",
+    "category": "general",
+    "published": "2026-07-06T20:21:10+00:00",
+    "model": "B",
+    "teaser": "Un ingredient secret, folosit în restaurante, poate transforma ouăle jumări obișnuite în unele incredibil de pufoase. Descoperă cum să obții o textură perfectă la micul dejun.",
+    "entities": [
+      "ouă"
+    ],
+    "icon": null,
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://libertatea.ro/stiri/volodimir-zelenski-a-anuntat-care-va-fi-faza-decisiva-a-razboiului-ruso-ucrainean-va-castiga-cine-va-fi-mai-inteligent-5807087",
+    "original_link": "https://www.libertatea.ro/stiri/volodimir-zelenski-a-anuntat-care-va-fi-faza-decisiva-a-razboiului-ruso-ucrainean-va-castiga-cine-va-fi-mai-inteligent-5807087",
+    "source": "libertatea",
+    "source_name": "Libertatea",
+    "source_lang": "ro",
+    "title": "Zelenski anunță faza decisivă a războiului: lupta se mută pe cer",
+    "category": "politic",
+    "published": "2026-07-06T20:12:39+00:00",
+    "model": "B",
+    "teaser": "Președintele ucrainean Volodimir Zelenski consideră că faza decisivă a conflictului cu Rusia se va desfășura în aer, după eșecurile invadatorilor pe uscat și pe mare.",
+    "entities": [
+      "Volodimir Zelenski",
+      "Rusia",
+      "Ucraina"
+    ],
+    "icon": "rocket",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://libertatea.ro/stiri/funeraliile-lui-ali-khamenei-au-inceput-la-teheran-autoritatile-se-asteapta-la-30-de-milioane-de-participanti-in-cele-6-zile-5805178",
+    "original_link": "https://www.libertatea.ro/stiri/funeraliile-lui-ali-khamenei-au-inceput-la-teheran-autoritatile-se-asteapta-la-30-de-milioane-de-participanti-in-cele-6-zile-5805178",
+    "source": "libertatea",
+    "source_name": "Libertatea",
+    "source_lang": "ro",
+    "title": "Funeralii Khamenei: Portretul lui Trump, „lapidat” în Teheran",
+    "category": "politic",
+    "published": "2026-07-06T20:12:00+00:00",
+    "model": "B",
+    "teaser": "Mulțimi uriașe au participat la Teheran la funeraliile liderului suprem iranian Ali Khamenei, unde un portret al lui Donald Trump a fost supus unui ritual simbolic.",
+    "entities": [
+      "Ali Khamenei",
+      "Donald Trump",
+      "Iran",
+      "Teheran"
+    ],
+    "icon": "flag",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://libertatea.ro/stiri/carina-giorgiu-balerina-opera-nationala-paris-premiera-istorica-5807043",
+    "original_link": "https://www.libertatea.ro/stiri/carina-giorgiu-balerina-opera-nationala-paris-premiera-istorica-5807043",
+    "source": "libertatea",
+    "source_name": "Libertatea",
+    "source_lang": "ro",
+    "title": "Balerina româncă de 16 ani, admisă la Opera din Paris",
+    "category": "general",
+    "published": "2026-07-06T20:11:57+00:00",
+    "model": "B",
+    "teaser": "Carina Giorgiu, o balerină româncă de 16 ani, a devenit prima din țară admisă în corpul de balet al Operei Naționale din Paris, obținând un contract pe viață.",
+    "entities": [
+      "Carina Giorgiu",
+      "Opera din Paris",
+      "România",
+      "Franța"
+    ],
+    "icon": "podium",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://libertatea.ro/stiri/6-000-cladiri-centru-zona-mediana-bucuresti-verificate-gratuit-harta-reala-risc-seismic-5807104",
+    "original_link": "https://www.libertatea.ro/stiri/6-000-cladiri-centru-zona-mediana-bucuresti-verificate-gratuit-harta-reala-risc-seismic-5807104",
+    "source": "libertatea",
+    "source_name": "Libertatea",
+    "source_lang": "ro",
+    "title": "București: 6.000 de clădiri, verificate gratuit pentru risc seismic",
+    "category": "general",
+    "published": "2026-07-06T20:11:19+00:00",
+    "model": "B",
+    "teaser": "Peste 6.000 de clădiri din centrul și zona mediană a Bucureștiului vor fi evaluate gratuit începând din iulie, ca prim pas spre o hartă a riscului seismic.",
+    "entities": [
+      "București"
+    ],
+    "icon": "building-monument",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://hotnews.ro/infantino-prima-reactie-in-scandalul-anularii-cartonasului-rosu-de-la-cupa-mondiala-ce-sustine-ca-i-a-raspuns-lui-trump-cand-a-fost-sunat-2293466",
+    "original_link": "https://hotnews.ro/infantino-prima-reactie-in-scandalul-anularii-cartonasului-rosu-de-la-cupa-mondiala-ce-sustine-ca-i-a-raspuns-lui-trump-cand-a-fost-sunat-2293466",
+    "source": "hotnews",
+    "source_name": "HotNews",
+    "source_lang": "ro",
+    "title": "Infantino explică independența FIFA lui Donald Trump",
+    "category": "sport",
+    "published": "2026-07-06T20:11:00+00:00",
+    "model": "B",
+    "teaser": "Președintele FIFA, Gianni Infantino, a confirmat că Donald Trump l-a sunat despre un cartonaș roșu la Cupa Mondială, explicându-i că organismele disciplinare FIFA sunt independente.",
+    "entities": [
+      "Gianni Infantino",
+      "Donald Trump",
+      "Folarin Balogun"
+    ],
+    "icon": "ball-football",
     "processed_by": "gemini",
     "prompt_version": "v2-esenta",
     "featured": false
@@ -792,6 +1128,27 @@
       "Adunarea Națională"
     ],
     "icon": "gavel",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://hotnews.ro/val-de-concedieri-la-microsoft-pentru-a-face-fata-unei-industrii-in-schimbare-rapida-cea-mai-semnificativa-restructurare-din-istoria-xbox-2293449",
+    "original_link": "https://hotnews.ro/val-de-concedieri-la-microsoft-pentru-a-face-fata-unei-industrii-in-schimbare-rapida-cea-mai-semnificativa-restructurare-din-istoria-xbox-2293449",
+    "source": "hotnews",
+    "source_name": "HotNews",
+    "source_lang": "ro",
+    "title": "Microsoft concediază 4.800 de angajați, inclusiv din divizia Xbox",
+    "category": "tech",
+    "published": "2026-07-06T19:47:30+00:00",
+    "model": "B",
+    "teaser": "Microsoft a anunțat o restructurare majoră, cu 4.800 de concedieri, aproximativ 2,1% din forța de muncă, afectând în special divizia Xbox, pentru a se concentra pe domenii cheie.",
+    "entities": [
+      "Microsoft",
+      "Xbox",
+      "Amy Coleman"
+    ],
+    "icon": "cpu",
     "processed_by": "gemini",
     "prompt_version": "v2-esenta",
     "featured": false
@@ -871,6 +1228,28 @@
     "featured": false
   },
   {
+    "url": "https://hotnews.ro/dior-si-chanel-in-cursa-pentru-cea-mai-ravnita-rochie-de-mireasa-din-industria-modei-ce-a-ales-taylor-swift-2293410",
+    "original_link": "https://hotnews.ro/dior-si-chanel-in-cursa-pentru-cea-mai-ravnita-rochie-de-mireasa-din-industria-modei-ce-a-ales-taylor-swift-2293410",
+    "source": "hotnews",
+    "source_name": "HotNews",
+    "source_lang": "ro",
+    "title": "Dior și Chanel concurează pentru rochia de mireasă a lui Taylor Swift",
+    "category": "general",
+    "published": "2026-07-06T19:25:35+00:00",
+    "model": "B",
+    "teaser": "Taylor Swift și Travis Kelce au purtat creații Dior la nunta lor, oferind casei de modă un avantaj în competiția cu Chanel pentru a domina industria modei.",
+    "entities": [
+      "Dior",
+      "Chanel",
+      "Taylor Swift",
+      "Travis Kelce"
+    ],
+    "icon": "writing",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
     "url": "https://g4media.ro/etna-a-erupt-din-nou-a-fost-inchis-spatiul-aerian-de-deasupra-unei-baze-militare-americane.html",
     "original_link": "https://www.g4media.ro/etna-a-erupt-din-nou-a-fost-inchis-spatiul-aerian-de-deasupra-unei-baze-militare-americane.html",
     "source": "g4media",
@@ -935,6 +1314,26 @@
     "featured": false
   },
   {
+    "url": "https://spotmedia.ro/stiri/eveniment/blackout-in-cuba-10-milioane-de-oameni-nu-au-curent",
+    "original_link": "https://spotmedia.ro/stiri/eveniment/blackout-in-cuba-10-milioane-de-oameni-nu-au-curent",
+    "source": "spotmedia",
+    "source_name": "Spotmedia",
+    "source_lang": "ro",
+    "title": "Cuba, în beznă: 10 milioane de oameni fără curent electric",
+    "category": "extern",
+    "published": "2026-07-06T18:31:04+00:00",
+    "model": "B",
+    "teaser": "Rețeaua electrică națională a Cubei a cedat, lăsând aproximativ 10 milioane de locuitori fără energie. Cauza defecțiunii la nivel național este încă investigată, pe fondul penelor de curent frecvente din ultimele luni.",
+    "entities": [
+      "Cuba",
+      "Reuters"
+    ],
+    "icon": "bolt",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
     "url": "https://politico.eu/article/eu-members-split-over-serbia-membership-bid",
     "original_link": "https://www.politico.eu/article/eu-members-split-over-serbia-membership-bid/?utm_source=RSS_Feed&utm_medium=RSS&utm_campaign=RSS_Syndication",
     "source": "politico_eu",
@@ -950,6 +1349,28 @@
       "Serbia"
     ],
     "icon": "flag",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://spotmedia.ro/stiri/eveniment/dominic-fritz-regimul-incompatibilitatilor-si-al-conflictului-de-interese-a-scapat-de-sub-control",
+    "original_link": "https://spotmedia.ro/stiri/eveniment/dominic-fritz-regimul-incompatibilitatilor-si-al-conflictului-de-interese-a-scapat-de-sub-control",
+    "source": "spotmedia",
+    "source_name": "Spotmedia",
+    "source_lang": "ro",
+    "title": "Primarul Timișoarei: Conflictul de interese a scăpat de sub control",
+    "category": "politic",
+    "published": "2026-07-06T18:13:11+00:00",
+    "model": "B",
+    "teaser": "Dominic Fritz, primarul Timișoarei, consideră că regimul incompatibilităților și conflictului de interese din România a devenit scăpat de sub control, după ce viceprimarul Paula Romocean a pierdut în primă instanță un proces cu ANI.",
+    "entities": [
+      "Dominic Fritz",
+      "Timișoara",
+      "Paula Romocean",
+      "ANI"
+    ],
+    "icon": "gavel",
     "processed_by": "gemini",
     "prompt_version": "v2-esenta",
     "featured": false
@@ -1377,6 +1798,38 @@
       "INS"
     ],
     "icon": "building-factory",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://economedia.ro/romania-cea-mai-mare-scadere-anuala-din-ue-a-comertului-cu-amanuntul-vanzarile-de-retail-au-coborat-cu-4-in-mai-in-timp-ce-media-europeana-a-crescut.html",
+    "original_link": "https://economedia.ro/romania-cea-mai-mare-scadere-anuala-din-ue-a-comertului-cu-amanuntul-vanzarile-de-retail-au-coborat-cu-4-in-mai-in-timp-ce-media-europeana-a-crescut.html",
+    "source": "economedia",
+    "source_name": "Economedia",
+    "source_lang": "ro",
+    "title": "România, cea mai mare scădere anuală a vânzărilor de retail din UE",
+    "category": "economic",
+    "published": "2026-07-06T15:24:55+00:00",
+    "model": "C",
+    "sources": [
+      {
+        "name": "Economedia",
+        "url": "https://economedia.ro/romania-cea-mai-mare-scadere-anuala-din-ue-a-comertului-cu-amanuntul-vanzarile-de-retail-au-coborat-cu-4-in-mai-in-timp-ce-media-europeana-a-crescut.html"
+      },
+      {
+        "name": "Curs de Guvernare",
+        "url": "https://cursdeguvernare.ro/consumul-in-romania-in-context-european-retailul-se-contracta-la-noi-in-timp-ce-media-ue-isi-revine-in-ciuda-scaderii-increderii-consumatorilor.html"
+      }
+    ],
+    "first_source": "Economedia",
+    "synthesis": "În luna mai, România a înregistrat cea mai mare scădere anuală a volumului comerțului cu amănuntul din Uniunea Europeană, de 4%, în timp ce media UE a consemnat o creștere de 1,9%. Deși a existat o ușoară îmbunătățire față de luna aprilie, comerțul cu amănuntul din România rămâne în contracție anuală.",
+    "entities": [
+      "România",
+      "Uniunea Europeană",
+      "Eurostat"
+    ],
+    "icon": "receipt-tax",
     "processed_by": "gemini",
     "prompt_version": "v2-esenta",
     "featured": false
@@ -11432,136 +11885,6 @@
     "published": "2026-06-30T01:43:44+00:00",
     "model": "B",
     "teaser": "Julian Nagelsmann și-a anunțat decizia privind continuarea mandatului său la naționala Germaniei, în urma eliminării echipei de la Cupa Mondială 2026.",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://prosport.ro/campionatul-mondial-2026/fiesta-a-inceput-in-paraguay-dupa-eliminarea-germaniei-fundasul-gustavo-gomez-reactie-euforica-dedicam-victoria-poporului-20473570",
-    "original_link": "https://www.prosport.ro/campionatul-mondial-2026/fiesta-a-inceput-in-paraguay-dupa-eliminarea-germaniei-fundasul-gustavo-gomez-reactie-euforica-dedicam-victoria-poporului-20473570",
-    "source": "prosport",
-    "source_name": "ProSport",
-    "source_lang": "ro",
-    "title": "Paraguay sărbătorește eliminarea Germaniei de la CM 2026",
-    "category": "sport",
-    "published": "2026-06-30T01:15:36+00:00",
-    "model": "B",
-    "teaser": "Paraguayul este în sărbătoare după calificarea în optimile Cupei Mondiale 2026, fundașul Gustavo Gomez dedicând victoria poporului.",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://gsp.ro/sporturi/baschet/mutarea-verii-in-spania-real-madrid-fura-antrenorul-campioanei-954708.html",
-    "original_link": "https://www.gsp.ro/sporturi/baschet/mutarea-verii-in-spania-real-madrid-fura-antrenorul-campioanei-954708.html",
-    "source": "gsp",
-    "source_name": "GSP",
-    "source_lang": "ro",
-    "title": "Real Madrid schimbă antrenorul echipei de baschet",
-    "category": "sport",
-    "published": "2026-06-30T01:13:31+00:00",
-    "model": "B",
-    "teaser": "Pedro Martinez va antrena Real Madrid în sezonul următor, înlocuindu-l pe Sergio Scariolo. Decizia vine după instalarea unui nou conducător la secția de baschet a clubului.",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://digisport.ro/fotbal/cm-2026/i-a-anuntat-plecarea-lui-julian-nagelsmann-de-la-nationala-germaniei-dupa-eliminarea-de-la-cupa-mondiala-ultimul-meci-4348467",
-    "original_link": "https://www.digisport.ro/fotbal/cm-2026/i-a-anuntat-plecarea-lui-julian-nagelsmann-de-la-nationala-germaniei-dupa-eliminarea-de-la-cupa-mondiala-ultimul-meci-4348467",
-    "source": "digisport",
-    "source_name": "Digi Sport",
-    "source_lang": "ro",
-    "title": "Julian Nagelsmann pleacă de la naționala Germaniei după CM 2026",
-    "category": "sport",
-    "published": "2026-06-30T01:11:11+00:00",
-    "model": "B",
-    "teaser": "Julian Nagelsmann nu mai este antrenorul naționalei Germaniei, după ce a confirmat că partida de la Cupa Mondială 2026 a fost ultima sa la cârma echipei.",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://gsp.ro/international/campionatul-mondial-de-fotbal-2026/presedintele-paraguayului-a-decretat-sarbatoare-nationala-la-naiba-954728.html",
-    "original_link": "https://www.gsp.ro/international/campionatul-mondial-de-fotbal-2026/presedintele-paraguayului-a-decretat-sarbatoare-nationala-la-naiba-954728.html",
-    "source": "gsp",
-    "source_name": "GSP",
-    "source_lang": "ro",
-    "title": "Paraguay declară zi liberă națională după victoria la Cupa Mondială",
-    "category": "sport",
-    "published": "2026-06-30T00:46:59+00:00",
-    "model": "B",
-    "teaser": "Președintele Paraguayului a decretat zi liberă națională pe 30 iunie, ca urmare a calificării echipei de fotbal în optimile Cupei Mondiale 2026, după ce a eliminat Germania la lovituri de departajare.",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://digisport.ro/fotbal/cm-2026/nu-s-a-mai-intamplat-de-50-de-ani-germania-moment-dur-dupa-eliminarea-de-la-cm-2026-4348463",
-    "original_link": "https://www.digisport.ro/fotbal/cm-2026/nu-s-a-mai-intamplat-de-50-de-ani-germania-moment-dur-dupa-eliminarea-de-la-cm-2026-4348463",
-    "source": "digisport",
-    "source_name": "Digi Sport",
-    "source_lang": "ro",
-    "title": "Germania, eliminată de la CM 2026, trăiește un moment istoric negativ",
-    "category": "sport",
-    "published": "2026-06-30T00:45:05+00:00",
-    "model": "B",
-    "teaser": "Naționala Germaniei a înregistrat o performanță negativă la Cupa Mondială 2026, fiind eliminată într-un mod care nu s-a mai întâmplat în ultimii 50 de ani.",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://digisport.ro/fotbal/cm-2026/nu-s-au-ferit-de-cuvinte-dupa-eliminarea-germaniei-de-la-cupa-mondiala-dezamagirea-turneului-4348451",
-    "original_link": "https://www.digisport.ro/fotbal/cm-2026/nu-s-au-ferit-de-cuvinte-dupa-eliminarea-germaniei-de-la-cupa-mondiala-dezamagirea-turneului-4348451",
-    "source": "digisport",
-    "source_name": "Digi Sport",
-    "source_lang": "ro",
-    "title": "Eliminarea Germaniei de la CM 2026, numită \"dezamăgirea turneului\"",
-    "category": "sport",
-    "published": "2026-06-30T00:36:54+00:00",
-    "model": "B",
-    "teaser": "Jucătorii și staff-ul german nu s-au ferit de cuvinte după eliminarea de la Cupa Mondială 2026, catalogând parcursul echipei drept \"dezamăgirea turneului\".",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://gsp.ro/international/campionatul-mondial-de-fotbal-2026/decizia-luata-de-julian-nagelsmann-imediat-dupa-eliminarea-germaniei-de-la-campionatul-mondial-954726.html",
-    "original_link": "https://www.gsp.ro/international/campionatul-mondial-de-fotbal-2026/decizia-luata-de-julian-nagelsmann-imediat-dupa-eliminarea-germaniei-de-la-campionatul-mondial-954726.html",
-    "source": "gsp",
-    "source_name": "GSP",
-    "source_lang": "ro",
-    "title": "Julian Nagelsmann rămâne selecționerul Germaniei după eliminarea de la Mondial",
-    "category": "sport",
-    "published": "2026-06-30T00:29:31+00:00",
-    "model": "C",
-    "sources": [
-      {
-        "name": "GSP",
-        "url": "https://www.gsp.ro/international/campionatul-mondial-de-fotbal-2026/decizia-luata-de-julian-nagelsmann-imediat-dupa-eliminarea-germaniei-de-la-campionatul-mondial-954726.html"
-      },
-      {
-        "name": "Digi Sport",
-        "url": "https://www.digisport.ro/fotbal/cm-2026/i-a-anuntat-plecarea-lui-julian-nagelsmann-de-la-nationala-germaniei-dupa-eliminarea-de-la-cupa-mondiala-ultimul-meci-4348467"
-      }
-    ],
-    "synthesis": "Julian Nagelsmann, antrenorul naționalei Germaniei, a confirmat că nu va demisiona din funcție. Decizia vine după eliminarea neașteptată a echipei în optimile de finală ale Campionatului Mondial, în fața Paraguayului, la loviturile de departajare.",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://bbc.co.uk/news/videos/cdx7j0wn9lvo?at_medium=RSS&at_campaign=rss",
-    "original_link": "https://www.bbc.co.uk/news/videos/cdx7j0wn9lvo?at_medium=RSS&at_campaign=rss",
-    "source": "bbc_europe",
-    "source_name": "BBC Europe",
-    "source_lang": "en",
-    "title": "Șase morți într-un atac armat în nordul Germaniei",
-    "category": "general",
-    "published": "2026-06-30T00:17:27+00:00",
-    "model": "B",
-    "teaser": "Un atac armat soldat cu șase morți a avut loc în orașul Stade, din nordul Germaniei. Detaliile incidentului sunt încă în curs de investigare.",
     "processed_by": "gemini",
     "prompt_version": "v2-esenta",
     "featured": false
