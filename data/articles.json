@@ -1,5 +1,41 @@
 [
   {
+    "url": "https://spotmedia.ro/stiri/educatie/rezultate-bac-2026-notele-vor-fi-publicate-azi-cand-pot-fi-depuse-contestatiile",
+    "original_link": "https://spotmedia.ro/stiri/educatie/rezultate-bac-2026-notele-vor-fi-publicate-azi-cand-pot-fi-depuse-contestatiile",
+    "source": "spotmedia",
+    "source_name": "Spotmedia",
+    "source_lang": "ro",
+    "title": "Rezultatele examenului de Bacalaureat 2026, publicate astăzi",
+    "category": "general",
+    "published": "2026-07-07T03:36:12+00:00",
+    "model": "C",
+    "sources": [
+      {
+        "name": "Spotmedia",
+        "url": "https://spotmedia.ro/stiri/educatie/rezultate-bac-2026-notele-vor-fi-publicate-azi-cand-pot-fi-depuse-contestatiile"
+      },
+      {
+        "name": "G4Media",
+        "url": "https://www.g4media.ro/marti-vor-fi-afisate-rezultatele-de-la-bacalaureat-contestatiile-pot-fi-depuse-in-intervalul-1400-1800.html"
+      },
+      {
+        "name": "HotNews",
+        "url": "https://hotnews.ro/rezultate-bac-2026-notele-la-bacalaureat-publicate-in-curand-de-ministerul-educatiei-2293623"
+      }
+    ],
+    "first_source": "Spotmedia",
+    "synthesis": "Notele examenului de Bacalaureat 2026 vor fi afișate marți, 7 iulie, cel mai probabil până la ora 10:00, conform ministrului interimar al Educației, deși calendarul oficial menționează ora 12:00. Candidații își vor putea vizualiza rezultatele anonimizat, pe baza codurilor, pe site-ul bacalaureat.edu.ro și la centrele de examen. Contestațiile vor putea fi depuse între orele 14:00 și 18:00.",
+    "entities": [
+      "Bacalaureat 2026",
+      "Mihai Dimian",
+      "Ministerul Educației"
+    ],
+    "icon": "certificate",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
     "url": "https://politico.com/live-updates/2026/07/06/world-cup-2026/kylian-mbappe-paraguay-senator-racism-fifa-world-cup-2026-00988001",
     "original_link": "https://www.politico.com/live-updates/2026/07/06/world-cup-2026/kylian-mbappe-paraguay-senator-racism-fifa-world-cup-2026-00988001?utm_source=RSS_Feed&utm_medium=RSS&utm_campaign=RSS_Syndication",
     "source": "politico_eu",
@@ -1600,21 +1636,33 @@
     "source": "guardian_eu",
     "source_name": "The Guardian",
     "source_lang": "en",
-    "title": "Canada cumpără 12 submarine germane de înaltă tehnologie",
-    "category": "tech",
+    "title": "Canada achiziționează 12 submarine germane de înaltă tehnologie",
+    "category": "politic",
     "published": "2026-07-06T16:41:47+00:00",
-    "model": "B",
+    "model": "C",
     "teaser": "Consorțiul german TKMS a câștigat un contract de miliarde de dolari pentru 12 submarine, consolidând legăturile NATO ale Canadei și înlocuind flota existentă.",
     "entities": [
       "Canada",
       "Germania",
-      "TKMS",
-      "NATO"
+      "NATO",
+      "TKMS"
     ],
     "icon": "ship",
     "processed_by": "gemini",
     "prompt_version": "v2-esenta",
-    "featured": false
+    "featured": false,
+    "sources": [
+      {
+        "name": "The Guardian",
+        "url": "https://www.theguardian.com/world/2026/jul/06/canada-buys-12-tkms-german-norwegian-submarines-after-bidding-war"
+      },
+      {
+        "name": "Economica",
+        "url": "https://www.economica.net/canada-va-cumpara-12-submarine-germane-de-inalta-tehnologie_956975.html"
+      }
+    ],
+    "first_source": "The Guardian",
+    "synthesis": "Canada a selectat un consorțiu german pentru a construi 12 submarine de ultimă generație. Această achiziție, una dintre cele mai mari contracte de apărare ale Canadei, consolidează legăturile cu NATO și înlocuiește flota existentă."
   },
   {
     "url": "https://politico.eu/article/russian-largest-oil-refinery-first-time-hit-by-ukraine-drones",
@@ -11576,315 +11624,6 @@
     "published": "2026-06-30T06:00:40+00:00",
     "model": "B",
     "teaser": "Infecțiile cu transmitere sexuală rezistente la antibiotice se răspândesc rapid în comunitățile europene, indicând o problemă globală de rezistență la medicamente, nu doar în spitale.",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://moldova.europalibera.org/a/oligarh-ucrainean-ranit-de-un-colet-bomba-in-monaco/33791793.html",
-    "original_link": "https://moldova.europalibera.org/a/oligarh-ucrainean-ranit-de-un-colet-bomba-in-monaco/33791793.html",
-    "source": "el_moldova",
-    "source_name": "Europa Liberă",
-    "source_lang": "ro",
-    "title": "Oligarh ucrainean, rănit într-o explozie cu colet-bombă în Monaco",
-    "category": "extern",
-    "published": "2026-06-30T05:28:56+00:00",
-    "model": "C",
-    "sources": [
-      {
-        "name": "Europa Liberă",
-        "url": "https://moldova.europalibera.org/a/oligarh-ucrainean-ranit-de-un-colet-bomba-in-monaco/33791793.html"
-      },
-      {
-        "name": "Digi24 Extern",
-        "url": "https://www.digi24.ro/stiri/externe/cine-este-vadim-ermolaev-oligarhul-ucrainean-ranit-in-explozia-de-la-monaco-3839791"
-      },
-      {
-        "name": "Digi24",
-        "url": "https://www.digi24.ro/stiri/externe/cine-este-vadim-ermolaev-oligarhul-ucrainean-ranit-in-explozia-de-la-monaco-3839791"
-      }
-    ],
-    "synthesis": "Un oligarh ucrainean, Vadim Ermolaev, și alte două persoane de naționalitate ucraineană au fost rănite, două dintre ele grav, în urma detonării unui colet-bombă în Monaco, luni seara. Ermolaev, fost clasat pe locul 23 în topul celor mai bogați ucraineni, a fost rănit alături de partenera sa și un adolescent de 13 ani. Autoritățile investighează incidentul fără precedent în principat.",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://prosport.ro/campionatul-mondial-2026/fani-maroc-fiesta-strazi-olanda-artificii-cantece-20473646",
-    "original_link": "https://www.prosport.ro/campionatul-mondial-2026/fani-maroc-fiesta-strazi-olanda-artificii-cantece-20473646",
-    "source": "prosport",
-    "source_name": "ProSport",
-    "source_lang": "ro",
-    "title": "Fanii Marocului sărbătoresc în Olanda calificarea la CM 2026",
-    "category": "sport",
-    "published": "2026-06-30T05:17:24+00:00",
-    "model": "B",
-    "teaser": "Suporterii marocani au declanșat o petrecere pe străzile din Olanda, cu claxoane și artificii, după victoria echipei naționale împotriva Olandei la Cupa Mondială.",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://prosport.ro/campionatul-mondial-2026/istorie-neagra-pentru-germania-dupa-eliminarea-cu-paraguay-e-pentru-prima-oara-cand-pateste-asa-ceva-la-cupa-mondiala-20473647",
-    "original_link": "https://www.prosport.ro/campionatul-mondial-2026/istorie-neagra-pentru-germania-dupa-eliminarea-cu-paraguay-e-pentru-prima-oara-cand-pateste-asa-ceva-la-cupa-mondiala-20473647",
-    "source": "prosport",
-    "source_name": "ProSport",
-    "source_lang": "ro",
-    "title": "Germania, eliminată istoric de Paraguay la CM 2026",
-    "category": "sport",
-    "published": "2026-06-30T05:10:44+00:00",
-    "model": "B",
-    "teaser": "Naționala Germaniei a înregistrat o eliminare rușinoasă în fața Paraguayului la Cupa Mondială 2026, suferind prima înfrângere la lovituri de departajare din istoria sa.",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://digisport.ro/fotbal/cm-2026/surpriza-majora-cine-sunt-favoritii-la-castigarea-balonului-de-aur-dupa-ce-s-au-terminat-grupele-la-cupa-mondiala-4347463",
-    "original_link": "https://www.digisport.ro/fotbal/cm-2026/surpriza-majora-cine-sunt-favoritii-la-castigarea-balonului-de-aur-dupa-ce-s-au-terminat-grupele-la-cupa-mondiala-4347463",
-    "source": "digisport",
-    "source_name": "Digi Sport",
-    "source_lang": "ro",
-    "title": "Favoriții la Balonul de Aur, după terminarea grupelor la Mondial",
-    "category": "sport",
-    "published": "2026-06-30T04:56:41+00:00",
-    "model": "B",
-    "teaser": "După încheierea fazei grupelor la Cupa Mondială 2026, au apărut surprize în rândul favoriților la câștigarea Balonului de Aur.",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://digisport.ro/fotbal/cm-2026/jurgen-klopp-intrebat-direct-daca-merge-la-nationala-germaniei-dupa-rusinea-de-la-mondial-4348689",
-    "original_link": "https://www.digisport.ro/fotbal/cm-2026/jurgen-klopp-intrebat-direct-daca-merge-la-nationala-germaniei-dupa-rusinea-de-la-mondial-4348689",
-    "source": "digisport",
-    "source_name": "Digi Sport",
-    "source_lang": "ro",
-    "title": "Klopp evită să confirme un posibil rol la naționala Germaniei",
-    "category": "sport",
-    "published": "2026-06-30T04:53:25+00:00",
-    "model": "B",
-    "teaser": "Antrenorul Jurgen Klopp a fost întrebat despre posibilitatea de a prelua naționala Germaniei după dezamăgirea de la Mondial, dar a evitat să ofere un răspuns clar.",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://digisport.ro/fotbal/cm-2026/a-izbucnit-in-lacrimi-dupa-surpriza-produsa-la-mondial-m-am-intors-cu-spatele-catre-teren-4348665",
-    "original_link": "https://www.digisport.ro/fotbal/cm-2026/a-izbucnit-in-lacrimi-dupa-surpriza-produsa-la-mondial-m-am-intors-cu-spatele-catre-teren-4348665",
-    "source": "digisport",
-    "source_name": "Digi Sport",
-    "source_lang": "ro",
-    "title": "Jucător copleșit de emoție după surpriza de la Mondial",
-    "category": "sport",
-    "published": "2026-06-30T04:39:58+00:00",
-    "model": "B",
-    "teaser": "Un jucător a izbucnit în lacrimi după o surpriză neașteptată la Cupa Mondială, mărturisind că s-a întors cu spatele la teren în timpul unui moment tensionat.",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://digisport.ro/fotbal/cm-2026/primul-meci-din-optimile-cupei-mondiale-2026-a-fost-stabilit-tot-ce-trebuie-sa-stii-despre-confruntare-4348629",
-    "original_link": "https://www.digisport.ro/fotbal/cm-2026/primul-meci-din-optimile-cupei-mondiale-2026-a-fost-stabilit-tot-ce-trebuie-sa-stii-despre-confruntare-4348629",
-    "source": "digisport",
-    "source_name": "Digi Sport",
-    "source_lang": "ro",
-    "title": "Stabilit primul meci din optimile Cupei Mondiale 2026",
-    "category": "sport",
-    "published": "2026-06-30T04:38:54+00:00",
-    "model": "B",
-    "teaser": "A fost anunțat primul duel din faza optimilor de finală a Cupei Mondiale 2026. Informații esențiale despre această confruntare vor fi disponibile curând.",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://digi24.ro/stiri/externe/rusia-isi-croieste-drumul-spre-un-bastion-cheie-din-centura-de-fortarete-din-estul-ucrainei-reuseste-sa-si-continue-ofensivele-3837979",
-    "original_link": "https://www.digi24.ro/stiri/externe/rusia-isi-croieste-drumul-spre-un-bastion-cheie-din-centura-de-fortarete-din-estul-ucrainei-reuseste-sa-si-continue-ofensivele-3837979",
-    "source": "extern",
-    "source_name": "Digi24 Extern",
-    "source_lang": "ro",
-    "title": "Rusia avansează greu spre Kosteantînivka, un punct strategic din estul Ucrainei",
-    "category": "extern",
-    "published": "2026-06-30T04:00:59+00:00",
-    "model": "C",
-    "sources": [
-      {
-        "name": "Digi24 Extern",
-        "url": "https://www.digi24.ro/stiri/externe/rusia-isi-croieste-drumul-spre-un-bastion-cheie-din-centura-de-fortarete-din-estul-ucrainei-reuseste-sa-si-continue-ofensivele-3837979"
-      },
-      {
-        "name": "Digi24",
-        "url": "https://www.digi24.ro/stiri/externe/rusia-isi-croieste-drumul-spre-un-bastion-cheie-din-centura-de-fortarete-din-estul-ucrainei-reuseste-sa-si-continue-ofensivele-3837979"
-      }
-    ],
-    "synthesis": "Forțele rusești avansează cu dificultate spre Kosteantînivka, un oraș fortificat din estul Ucrainei, pe care Kremlinul îl vizează de mult timp. Luptele au ajuns în periferia orașului, unde grupuri mici de soldați ruși încearcă să se infiltreze, conform declarațiilor unor comandanți ucraineni. În restul frontului, înaintarea rusă este în mare parte blocată.",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://politico.eu/sponsored-content/turbulent-skies-the-stealth-erosion-of-ec261",
-    "original_link": "https://www.politico.eu/sponsored-content/turbulent-skies-the-stealth-erosion-of-ec261/?utm_source=RSS_Feed&utm_medium=RSS&utm_campaign=RSS_Syndication",
-    "source": "politico_eu",
-    "source_name": "Politico EU",
-    "source_lang": "en",
-    "title": "Compensațiile EC261, reduse la sume simbolice",
-    "category": "economic",
-    "published": "2026-06-30T03:00:00+00:00",
-    "model": "B",
-    "teaser": "Regulamentul european EC261, menit să protejeze consumatorii și să asigure responsabilitatea companiilor aeriene, își pierde scopul principal prin reducerea compensațiilor la sume nesemnificative.",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://politico.eu/sponsored-content/barcelonas-costly-gamble-on-its-future",
-    "original_link": "https://www.politico.eu/sponsored-content/barcelonas-costly-gamble-on-its-future/?utm_source=RSS_Feed&utm_medium=RSS&utm_campaign=RSS_Syndication",
-    "source": "politico_eu",
-    "source_name": "Politico EU",
-    "source_lang": "en",
-    "title": "Barcelona: Interdicția chiriilor turistice nu a redus prețurile",
-    "category": "economic",
-    "published": "2026-06-30T03:00:00+00:00",
-    "model": "B",
-    "teaser": "În ciuda interdicției impuse în 2014 de Consiliul Local din Barcelona pentru licențele de închiriere pe termen scurt, prețurile chiriilor au continuat să crească semnificativ, ridicând semne de întrebare despre cauzele reale ale neaccesibilității locuințelor.",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://politico.eu/sponsored-content/for-europe-to-lead-in-ai-sovereignty-must-mean-choice",
-    "original_link": "https://www.politico.eu/sponsored-content/for-europe-to-lead-in-ai-sovereignty-must-mean-choice/?utm_source=RSS_Feed&utm_medium=RSS&utm_campaign=RSS_Syndication",
-    "source": "politico_eu",
-    "source_name": "Politico EU",
-    "source_lang": "en",
-    "title": "Suficiența europeană în AI necesită libertate de alegere",
-    "category": "tech",
-    "published": "2026-06-30T03:00:00+00:00",
-    "model": "B",
-    "teaser": "Pentru ca Europa să devină un lider în domeniul inteligenței artificiale, conceptul de suveranitate trebuie să se traducă prin capacitatea de a alege liber tehnologiile și abordările, fără a fi constrânsă de factori externi.",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://gsp.ro/international/campionatul-mondial-de-fotbal-2026/live-olanda-maroc-saisprezecimi-campionatul-mondial-2026-954417.html",
-    "original_link": "https://www.gsp.ro/international/campionatul-mondial-de-fotbal-2026/live-olanda-maroc-saisprezecimi-campionatul-mondial-2026-954417.html",
-    "source": "gsp",
-    "source_name": "GSP",
-    "source_lang": "ro",
-    "title": "Olanda și Maroc se înfruntă în optimile Campionatului Mondial 2026",
-    "category": "sport",
-    "published": "2026-06-30T02:53:12+00:00",
-    "model": "B",
-    "teaser": "Olanda și Maroc joacă în optimile Campionatului Mondial de fotbal 2026. Meciul, transmis live, va decide echipa care va întâlni Canada în etapa următoare, după ce aceasta a învins Africa de Sud.",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://prosport.ro/campionatul-mondial-2026/ocazii-uriase-pentru-magrebieni-si-agresivitate-maxima-olanda-maroc-in-16-imi-la-cupa-mondiala-cronica-live-20472825",
-    "original_link": "https://www.prosport.ro/campionatul-mondial-2026/ocazii-uriase-pentru-magrebieni-si-agresivitate-maxima-olanda-maroc-in-16-imi-la-cupa-mondiala-cronica-live-20472825",
-    "source": "prosport",
-    "source_name": "ProSport",
-    "source_lang": "ro",
-    "title": "Olanda și Maroc merg în prelungiri la Cupa Mondială 2026",
-    "category": "sport",
-    "published": "2026-06-30T02:40:31+00:00",
-    "model": "B",
-    "teaser": "Meciul dintre Olanda și Maroc din optimile Cupei Mondiale 2026 a fost egalat dramatic în minutul 90+1, forțând prelungiri între cele două echipe.",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://bbc.co.uk/sport/football/articles/c992kzk00kzo?at_medium=RSS&at_campaign=rss",
-    "original_link": "https://www.bbc.co.uk/sport/football/articles/c992kzk00kzo?at_medium=RSS&at_campaign=rss",
-    "source": "bbc_europe",
-    "source_name": "BBC Europe",
-    "source_lang": "en",
-    "title": "Germania eliminată surprinzător de la Cupa Mondială",
-    "category": "sport",
-    "published": "2026-06-30T02:38:35+00:00",
-    "model": "B",
-    "teaser": "Echipa națională de fotbal a Germaniei a fost eliminată de Paraguay la Cupa Mondială, după un eșec la loviturile de departajare, punând presiune pe antrenorul Julian Nagelsmann.",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://gsp.ro/international/campionatul-mondial-de-fotbal-2026/germania-furata-in-prelungiri-paraguay-954710.html",
-    "original_link": "https://www.gsp.ro/international/campionatul-mondial-de-fotbal-2026/germania-furata-in-prelungiri-paraguay-954710.html",
-    "source": "gsp",
-    "source_name": "GSP",
-    "source_lang": "ro",
-    "title": "Germania, dezavantajată în prelungiri? Anularea golului lui Tah stârnește controverse",
-    "category": "sport",
-    "published": "2026-06-30T02:10:49+00:00",
-    "model": "B",
-    "teaser": "Anularea golului marcat de Jonathan Tah în minutul 102 al meciului cu Paraguay, la scorul de 1-1, a stârnit discuții aprinse. Germania a fost eliminată la penalty-uri, iar specialiștii dezbat dacă decizia VAR a fost corectă.",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://politico.eu/article/irish-eu-presidency-to-cost-triple-those-of-cyprus-denmark",
-    "original_link": "https://www.politico.eu/article/irish-eu-presidency-to-cost-triple-those-of-cyprus-denmark/?utm_source=RSS_Feed&utm_medium=RSS&utm_campaign=RSS_Syndication",
-    "source": "politico_eu",
-    "source_name": "Politico EU",
-    "source_lang": "en",
-    "title": "Președinția irlandeză a UE va costa triplu față de Cipru",
-    "category": "politic",
-    "published": "2026-06-30T02:02:00+00:00",
-    "model": "B",
-    "teaser": "Costurile estimate pentru președinția irlandeză a Uniunii Europene ajung la 293 de milioane de euro, o sumă triplă față de cea a președințiilor anterioare, mare parte din buget fiind alocată securității.",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://politico.eu/article/france-far-right-national-rally-marine-le-pen-jordan-bardella-pensions",
-    "original_link": "https://www.politico.eu/article/france-far-right-national-rally-marine-le-pen-jordan-bardella-pensions/?utm_source=RSS_Feed&utm_medium=RSS&utm_campaign=RSS_Syndication",
-    "source": "politico_eu",
-    "source_name": "Politico EU",
-    "source_lang": "en",
-    "title": "Aliații lui Bardella moderează promisiunea de pensie a lui Le Pen",
-    "category": "politic",
-    "published": "2026-06-30T02:00:00+00:00",
-    "model": "B",
-    "teaser": "Conducerea partidului Adunarea Națională se teme că relaxarea condițiilor de pensionare ar putea aliena baza electorală din clasa muncitoare, determinând aliații lui Jordan Bardella să propună o abordare mai nuanțată.",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://politico.eu/article/poland-ukraine-pis-party-volodymyr-zelenskyy-donald-tusk-karol-nawrocki-bloody-past",
-    "original_link": "https://www.politico.eu/article/poland-ukraine-pis-party-volodymyr-zelenskyy-donald-tusk-karol-nawrocki-bloody-past/?utm_source=RSS_Feed&utm_medium=RSS&utm_campaign=RSS_Syndication",
-    "source": "politico_eu",
-    "source_name": "Politico EU",
-    "source_lang": "en",
-    "title": "Trecutul sângeros reconfigurează politica în Polonia și Ucraina",
-    "category": "politic",
-    "published": "2026-06-30T02:00:00+00:00",
-    "model": "B",
-    "teaser": "Milioanele de ucraineni rezidenți în Polonia ar putea deveni un subiect electoral cheie în Polonia, pe fondul schimbării atitudinii politice a dreptei față de Kiev, influențată de evenimente istorice.",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://digisport.ro/fotbal/cm-2026/julian-nagelsmann-si-a-anuntat-decizia-dupa-eliminarea-cu-germania-de-la-cupa-mondiala-2026-4348529",
-    "original_link": "https://www.digisport.ro/fotbal/cm-2026/julian-nagelsmann-si-a-anuntat-decizia-dupa-eliminarea-cu-germania-de-la-cupa-mondiala-2026-4348529",
-    "source": "digisport",
-    "source_name": "Digi Sport",
-    "source_lang": "ro",
-    "title": "Nagelsmann a decis viitorul după eliminarea Germaniei de la CM 2026",
-    "category": "sport",
-    "published": "2026-06-30T01:43:44+00:00",
-    "model": "B",
-    "teaser": "Julian Nagelsmann și-a anunțat decizia privind continuarea mandatului său la naționala Germaniei, în urma eliminării echipei de la Cupa Mondială 2026.",
     "processed_by": "gemini",
     "prompt_version": "v2-esenta",
     "featured": false
