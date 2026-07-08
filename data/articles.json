@@ -1,5 +1,195 @@
 [
   {
+    "url": "https://theguardian.com/world/live/2026/jul/08/trump-nato-summit-greenland-us-turkey-rutte-marine-le-pen-europe-latest-news-updates",
+    "original_link": "https://www.theguardian.com/world/live/2026/jul/08/trump-nato-summit-greenland-us-turkey-rutte-marine-le-pen-europe-latest-news-updates",
+    "source": "guardian_eu",
+    "source_name": "The Guardian",
+    "source_lang": "en",
+    "title": "Trump consideră Groenlanda importantă pentru SUA, nu pentru Danemarca",
+    "category": "extern",
+    "published": "2026-07-08T09:21:33+00:00",
+    "model": "B",
+    "teaser": "Președintele american Donald Trump a declarat la o reuniune NATO că Groenlanda este crucială pentru Statele Unite, dar nu și pentru Danemarca, și a reiterat dorința ca SUA să preia controlul insulei.",
+    "entities": [
+      "Trump",
+      "Groenlanda",
+      "SUA",
+      "Danemarca",
+      "NATO"
+    ],
+    "icon": "globe",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://moldova.europalibera.org/a/ucraina-a-lovit-alte-petroliere-din-flota-fantoma-rusa-dupa-ce-a-atacat-cu-drone-la-omsk-dincolo-de-urali/33799230.html",
+    "original_link": "https://moldova.europalibera.org/a/ucraina-a-lovit-alte-petroliere-din-flota-fantoma-rusa-dupa-ce-a-atacat-cu-drone-la-omsk-dincolo-de-urali/33799230.html",
+    "source": "el_moldova",
+    "source_name": "Europa Liberă",
+    "source_lang": "ro",
+    "title": "Ucraina a lovit 19 nave-cisternă rusești în 72 de ore",
+    "category": "extern",
+    "published": "2026-07-08T08:55:00+00:00",
+    "model": "C",
+    "sources": [
+      {
+        "name": "Europa Liberă",
+        "url": "https://moldova.europalibera.org/a/ucraina-a-lovit-alte-petroliere-din-flota-fantoma-rusa-dupa-ce-a-atacat-cu-drone-la-omsk-dincolo-de-urali/33799230.html"
+      },
+      {
+        "name": "G4Media",
+        "url": "https://www.g4media.ro/drone-ucrainene-au-lovit-19-petroliere-din-asa-numita-flota-fantoma-a-rusiei-in-72-de-ore-potrivit-kievului.html"
+      }
+    ],
+    "first_source": "Europa Liberă",
+    "synthesis": "Ucraina a atacat cu drone 19 petroliere și un cargobot din \"flota fantomă\" a Rusiei în Marea Azov, în ultimele 72 de ore. Aceste nave sunt folosite de Rusia pentru a ocoli sancțiunile internaționale privind exporturile de hidrocarburi. Eforturile Ucrainei vizează izolarea Crimeei.",
+    "entities": [
+      "Ucraina",
+      "Rusia",
+      "Marea Azov",
+      "Crimeea"
+    ],
+    "icon": "ship",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://economedia.ro/bucurestiul-va-gazdui-biroul-regional-al-viitoarei-banci-pentru-aparare-securitate-si-rezilienta.html",
+    "original_link": "https://economedia.ro/bucurestiul-va-gazdui-biroul-regional-al-viitoarei-banci-pentru-aparare-securitate-si-rezilienta.html",
+    "source": "economedia",
+    "source_name": "Economedia",
+    "source_lang": "ro",
+    "title": "Bucureștiul va găzdui biroul regional al Băncii pentru Apărare, Securitate și Reziliență",
+    "category": "politic",
+    "published": "2026-07-08T08:52:17+00:00",
+    "model": "C",
+    "sources": [
+      {
+        "name": "Economedia",
+        "url": "https://economedia.ro/bucurestiul-va-gazdui-biroul-regional-al-viitoarei-banci-pentru-aparare-securitate-si-rezilienta.html"
+      },
+      {
+        "name": "Curs de Guvernare",
+        "url": "https://cursdeguvernare.ro/la-bucuresti-birou-pentru-flancul-sed-al-bancii-penrtu-aparare.html"
+      }
+    ],
+    "first_source": "Economedia",
+    "synthesis": "Bucureștiul a fost ales să găzduiască biroul regional pentru flancul de sud al Băncii pentru Apărare, Securitate și Reziliență (DSRB). Decizia a fost luată în urma negocierilor între statele fondatoare, România devenind astfel stat-fondator și căpătând o poziție importantă în arhitectura financiară a securității europene.",
+    "entities": [
+      "București",
+      "Banca pentru Apărare, Securitate și Reziliență",
+      "România"
+    ],
+    "icon": "building-bank",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://economica.net/romania-a-devenit-stat-fondator-al-bancii-pentru-aparare-securitate-si-rezilienta_957420.html",
+    "original_link": "https://www.economica.net/romania-a-devenit-stat-fondator-al-bancii-pentru-aparare-securitate-si-rezilienta_957420.html",
+    "source": "economica",
+    "source_name": "Economica",
+    "source_lang": "ro",
+    "title": "România, stat fondator și gazdă pentru Banca pentru Apărare, Securitate și Reziliență",
+    "category": "economic",
+    "published": "2026-07-08T08:22:44+00:00",
+    "model": "C",
+    "sources": [
+      {
+        "name": "Economica",
+        "url": "https://www.economica.net/romania-a-devenit-stat-fondator-al-bancii-pentru-aparare-securitate-si-rezilienta_957420.html"
+      },
+      {
+        "name": "Știrile ProTV",
+        "url": "https://stirileprotv.ro/stiri/actualitate/romania-va-gazdui-un-sediu-al-bancii-nato-ca-stat-fondator-ce-face-banca-pentru-aparare-securitate-si-rezilienta-dsrb.html"
+      }
+    ],
+    "first_source": "Economica",
+    "synthesis": "România devine stat fondator al Băncii pentru Apărare, Securitate şi Rezilienţă (DSRB), o instituție financiară internațională dedicată finanțării proiectelor din apărare și infrastructură critică. Bucureștiul va găzdui biroul regional al băncii pentru flancul sudic. Inițiativa este susținută de Canada, cu cel puțin 10 țări fondatoare.",
+    "entities": [
+      "Banca pentru Apărare, Securitate şi Rezilienţă",
+      "România",
+      "București",
+      "Canada"
+    ],
+    "icon": "building-bank",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://stirileprotv.ro/stiri/actualitate/mapn-romania-bulgaria-si-turcia-extind-misiunile-de-combatere-a-minelor-marine-din-marea-neagra.html",
+    "original_link": "https://stirileprotv.ro/stiri/actualitate/mapn-romania-bulgaria-si-turcia-extind-misiunile-de-combatere-a-minelor-marine-din-marea-neagra.html",
+    "source": "protv",
+    "source_name": "Știrile ProTV",
+    "source_lang": "ro",
+    "title": "România, Bulgaria și Turcia extind cooperarea antimină în Marea Neagră",
+    "category": "politic",
+    "published": "2026-07-08T08:17:35+00:00",
+    "model": "C",
+    "sources": [
+      {
+        "name": "Știrile ProTV",
+        "url": "https://stirileprotv.ro/stiri/actualitate/mapn-romania-bulgaria-si-turcia-extind-misiunile-de-combatere-a-minelor-marine-din-marea-neagra.html"
+      },
+      {
+        "name": "Digi24",
+        "url": "https://www.digi24.ro/stiri/romania-bulgaria-si-turcia-isi-extind-misiunile-de-combatere-a-minelor-marine-din-marea-neagra-anuntul-mapn-3852617"
+      },
+      {
+        "name": "HotNews",
+        "url": "https://hotnews.ro/romania-bulgaria-si-turcia-extind-operatiunile-de-deminare-din-marea-neagra-anuntul-bucurestiului-la-summitul-nato-2294982"
+      }
+    ],
+    "first_source": "Știrile ProTV",
+    "synthesis": "România, Bulgaria și Turcia au semnat un amendament pentru extinderea misiunilor Grupului operativ de combatere a minelor marine din Marea Neagră. Decizia, anunțată miercuri de MApN, a fost luată în marja Summitului NATO de la Ankara și include protecția infrastructurii critice.",
+    "entities": [
+      "România",
+      "Bulgaria",
+      "Turcia",
+      "NATO"
+    ],
+    "icon": "ship",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://zf.ro/business-hi-tech/bcr-seed-starter-investeste-500-000-euro-licenseware-startup-23191009",
+    "original_link": "https://www.zf.ro/business-hi-tech/bcr-seed-starter-investeste-500-000-euro-licenseware-startup-23191009",
+    "source": "zf",
+    "source_name": "Ziarul Financiar",
+    "source_lang": "ro",
+    "title": "BCR Seed Starter investește 500.000 euro în Licenseware",
+    "category": "economic",
+    "published": "2026-07-08T08:06:00+00:00",
+    "model": "C",
+    "sources": [
+      {
+        "name": "Ziarul Financiar",
+        "url": "https://www.zf.ro/business-hi-tech/bcr-seed-starter-investeste-500-000-euro-licenseware-startup-23191009"
+      },
+      {
+        "name": "Start-up.ro",
+        "url": "https://start-up.ro/startup-ul-romanesc-licenseware-a-primit-o-investitie-de-800-000-de-euro-bcr-seed-starter-conduce-runda-cu-500-000-euro/"
+      }
+    ],
+    "first_source": "Ziarul Financiar",
+    "synthesis": "BCR Seed Starter, fondul de capital de risc al băncii, a condus o rundă de investiții de aproximativ 800.000 de euro în startup-ul românesc Licenseware. Din suma totală, BCR Seed Starter a alocat 500.000 de euro pentru a sprijini dezvoltarea platformei SaaS de management al licențelor software. La rundă au participat și Inspire Capital, investitori de tip business angel și acționari existenți.",
+    "entities": [
+      "BCR Seed Starter",
+      "Licenseware",
+      "Inspire Capital"
+    ],
+    "icon": "building-bank",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
     "url": "https://gsp.ro/sporturi/tenis/punctul-turneului-de-la-wimbledon-tenis-958148.html",
     "original_link": "https://www.gsp.ro/sporturi/tenis/punctul-turneului-de-la-wimbledon-tenis-958148.html",
     "source": "gsp",
@@ -61,6 +251,43 @@
     "featured": false
   },
   {
+    "url": "https://spotmedia.ro/stiri/eveniment/nicusor-dan-la-summit-ul-nato-de-la-ankara-o-sa-insistam-pe-importanta-marii-negre-nu-vad-un-risc-de-retragere-a-trupelor-americane-de-pe-flancul-estic-video",
+    "original_link": "https://spotmedia.ro/stiri/eveniment/nicusor-dan-la-summit-ul-nato-de-la-ankara-o-sa-insistam-pe-importanta-marii-negre-nu-vad-un-risc-de-retragere-a-trupelor-americane-de-pe-flancul-estic-video",
+    "source": "spotmedia",
+    "source_name": "Spotmedia",
+    "source_lang": "ro",
+    "title": "România insistă pe importanța Mării Negre la Summitul NATO de la Ankara",
+    "category": "politic",
+    "published": "2026-07-08T06:43:33+00:00",
+    "model": "C",
+    "sources": [
+      {
+        "name": "Spotmedia",
+        "url": "https://spotmedia.ro/stiri/eveniment/nicusor-dan-la-summit-ul-nato-de-la-ankara-o-sa-insistam-pe-importanta-marii-negre-nu-vad-un-risc-de-retragere-a-trupelor-americane-de-pe-flancul-estic-video"
+      },
+      {
+        "name": "Digi24 Extern",
+        "url": "https://www.digi24.ro/stiri/externe/sua/summitul-nato-de-la-ankara-a-doua-zi-trump-se-intalneste-cu-zelenski-in-timp-ce-aliatii-incearca-sa-mentina-unitatea-aliantei-3851977"
+      },
+      {
+        "name": "Curs de Guvernare",
+        "url": "https://cursdeguvernare.ro/video-nicusor-dan-de-la-summitul-nato-nu-vad-un-risc-de-retragere-a-trupelor-americane-de-pe-flancul-estic-romania-semneaza-un-acord-cu-turcia-si-bulgaria-pe-deminare-si-insista-pe-sec.html"
+      }
+    ],
+    "first_source": "Spotmedia",
+    "synthesis": "La Summitul NATO de la Ankara, România, prin președintele Nicușor Dan, a subliniat importanța strategică a regiunii Mării Negre. S-a discutat despre amenințarea rusă și s-a făcut un bilanț al cheltuielilor militare. De asemenea, s-a semnat un acord de deminare cu Turcia și Bulgaria, iar președintele a exclus riscul retragerii trupelor americane de pe flancul estic.",
+    "entities": [
+      "NATO",
+      "Ankara",
+      "Nicușor Dan",
+      "Marea Neagră"
+    ],
+    "icon": "flag",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
     "url": "https://digi24.ro/stiri/externe/argentina-va-construi-un-nou-reactor-nuclear-de-12-miliarde-de-dolari-toti-banii-vor-veni-din-investitii-private-3852283",
     "original_link": "https://www.digi24.ro/stiri/externe/argentina-va-construi-un-nou-reactor-nuclear-de-12-miliarde-de-dolari-toti-banii-vor-veni-din-investitii-private-3852283",
     "source": "extern",
@@ -98,20 +325,33 @@
     "source": "extern",
     "source_name": "Digi24 Extern",
     "source_lang": "ro",
-    "title": "Egipt protestează la FIFA după meciul cu Argentina",
+    "title": "Egipt contestă arbitrajul meciului cu Argentina la Cupa Mondială",
     "category": "sport",
     "published": "2026-07-08T06:14:50+00:00",
-    "model": "B",
+    "model": "C",
     "teaser": "Confederația Africană de Fotbal a depus un protest oficial la FIFA în urma înfrângerii Egiptului împotriva Argentinei la Cupa Mondială, acuzând decizii de arbitraj incorecte în timpul partidei.",
     "entities": [
       "Egipt",
       "FIFA",
-      "Argentina"
+      "Argentina",
+      "François Letexier"
     ],
-    "icon": "gavel",
+    "icon": "ball-football",
     "processed_by": "gemini",
     "prompt_version": "v2-esenta",
-    "featured": false
+    "featured": false,
+    "sources": [
+      {
+        "name": "Digi24 Extern",
+        "url": "https://www.digi24.ro/campionatul-mondal-de-fotbal-2026/cm-2026-egiptenii-au-depus-un-protest-la-fifa-dupa-infrangerea-dramatica-de-la-cupa-mondiala-acuza-arbitrajul-3852173"
+      },
+      {
+        "name": "Spotmedia",
+        "url": "https://spotmedia.ro/stiri/sport/egipt-a-facut-plangere-oficiala-la-fifa-dupa-meciul-cu-argentina"
+      }
+    ],
+    "first_source": "Digi24 Extern",
+    "synthesis": "Federația Egipteană de Fotbal a depus o plângere oficială la FIFA, acuzând arbitraj incorect în partida pierdută cu Argentina la Cupa Mondială. Reprezentanții egipteni solicită o analiză a deciziilor arbitrului François Letexier, considerând că acestea au influențat rezultatul final al meciului."
   },
   {
     "url": "https://digi24.ro/stiri/externe/deja-in-calitate-de-candidata-marine-le-pen-efectueaza-prima-sa-vizita-in-cadrul-campaniei-electorale-alaturi-de-jordan-bardella-3852203",
@@ -234,6 +474,26 @@
     "featured": false
   },
   {
+    "url": "https://bbc.co.uk/news/articles/ckg4e3lwzqzo?at_medium=RSS&at_campaign=rss",
+    "original_link": "https://www.bbc.co.uk/news/articles/ckg4e3lwzqzo?at_medium=RSS&at_campaign=rss",
+    "source": "bbc_europe",
+    "source_name": "BBC Europe",
+    "source_lang": "en",
+    "title": "Aliații NATO anunță 37 miliarde lire sterline pentru un nou proiect de rachete",
+    "category": "extern",
+    "published": "2026-07-08T05:57:53+00:00",
+    "model": "B",
+    "teaser": "Prim-ministrul britanic va reuni lideri din aproximativ o duzină de țări la Ankara pentru a discuta despre un program comun de dezvoltare a unui nou sistem de rachete.",
+    "entities": [
+      "NATO",
+      "Ankara"
+    ],
+    "icon": "rocket",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
     "url": "https://moldova.europalibera.org/a/crimeea-in-bezna-dronele-ucrainene-lovesc-mereu-retelele-peninsulei-anexate-ilegal-de-rusia/33798657.html",
     "original_link": "https://moldova.europalibera.org/a/crimeea-in-bezna-dronele-ucrainene-lovesc-mereu-retelele-peninsulei-anexate-ilegal-de-rusia/33798657.html",
     "source": "el_moldova",
@@ -324,6 +584,27 @@
       "CCTV"
     ],
     "icon": "alert-triangle",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://bbc.co.uk/news/articles/cr7xk8j0j2do?at_medium=RSS&at_campaign=rss",
+    "original_link": "https://www.bbc.co.uk/news/articles/cr7xk8j0j2do?at_medium=RSS&at_campaign=rss",
+    "source": "bbc_europe",
+    "source_name": "BBC Europe",
+    "source_lang": "en",
+    "title": "Penuriile de combustibil din Rusia pun presiune pe Putin în războiul din Ucraina",
+    "category": "extern",
+    "published": "2026-07-08T05:05:31+00:00",
+    "model": "B",
+    "teaser": "Chiar și în Moscova, autoritățile se confruntă cu dificultăți în asigurarea aprovizionării cu combustibil, ridicând întrebarea dacă presiunea economică va duce la negocieri sau la escaladarea conflictului.",
+    "entities": [
+      "Rusia",
+      "Putin",
+      "Ucraina"
+    ],
+    "icon": "gas-station",
     "processed_by": "gemini",
     "prompt_version": "v2-esenta",
     "featured": false
@@ -563,6 +844,26 @@
     "teaser": "Un nou studiu a analizat viteza de deplasare a 258 de specii de păianjeni, identificând cel mai rapid exemplar, capabil să ajungă din urmă prada într-un timp foarte scurt.",
     "entities": [],
     "icon": null,
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://bbc.co.uk/news/articles/cvgdlprp1r3o?at_medium=RSS&at_campaign=rss",
+    "original_link": "https://www.bbc.co.uk/news/articles/cvgdlprp1r3o?at_medium=RSS&at_campaign=rss",
+    "source": "bbc_europe",
+    "source_name": "BBC Europe",
+    "source_lang": "en",
+    "title": "Marine Le Pen își lansează campania prezidențială după confirmarea verdictului",
+    "category": "politic",
+    "published": "2026-07-08T03:22:46+00:00",
+    "model": "B",
+    "teaser": "La scurt timp după ce o instanță de apel a confirmat o decizie de vinovăție, lidera naționalistă franceză Marine Le Pen a demarat oficial campania pentru alegerile prezidențiale.",
+    "entities": [
+      "Marine Le Pen",
+      "Franța"
+    ],
+    "icon": "podium",
     "processed_by": "gemini",
     "prompt_version": "v2-esenta",
     "featured": false
@@ -899,19 +1200,32 @@
     "source": "digisport",
     "source_name": "Digi Sport",
     "source_lang": "ro",
-    "title": "Novak Djokovic, calificat în semifinale la Wimbledon după un meci lung",
+    "title": "Djokovic, în semifinalele Wimbledon după un meci maraton",
     "category": "sport",
     "published": "2026-07-07T22:32:51+00:00",
-    "model": "B",
+    "model": "C",
     "teaser": "Novak Djokovic s-a calificat în semifinalele turneului de la Wimbledon după un meci de peste cinci ore. Victorie obținută cu efort susținut în fața adversarului său.",
     "entities": [
       "Novak Djokovic",
-      "Wimbledon"
+      "Wimbledon",
+      "Felix Auger-Aliassime"
     ],
     "icon": "ball-tennis",
     "processed_by": "gemini",
     "prompt_version": "v2-esenta",
-    "featured": false
+    "featured": false,
+    "sources": [
+      {
+        "name": "Digi Sport",
+        "url": "https://www.digisport.ro/tenis/ce-meci-ce-victorie-dupa-mai-mult-de-cinci-ore-novak-djokovic-e-in-semifinale-la-wimbledon-4365861"
+      },
+      {
+        "name": "Spotmedia",
+        "url": "https://spotmedia.ro/stiri/sport/novak-djokovic-se-califica-in-semifinale-la-wimbledon-dupa-un-meci-care-a-intrat-in-istorie"
+      }
+    ],
+    "first_source": "Digi Sport",
+    "synthesis": "Novak Djokovic s-a calificat în semifinalele turneului de la Wimbledon, după ce a învins pe Felix Auger-Aliassime într-un meci de peste cinci ore. Partida, considerată cea mai lungă din istoria sferturilor de finală ale competiției londoneze, s-a încheiat cu scorul de 3-2 la seturi pentru Djokovic."
   },
   {
     "url": "https://digisport.ro/fotbal/cm-2026/rivaldo-a-spus-sunt-brazilian-dar-nu-a-putut-sa-se-opreasca-atunci-cand-a-vorbit-de-leo-messi-recunosc-4365703",
@@ -1258,21 +1572,33 @@
     "source": "prosport",
     "source_name": "ProSport",
     "source_lang": "ro",
-    "title": "Selecționerul Egiptului acuză arbitrajul după meciul cu Argentina",
+    "title": "Antrenorul Egiptului acuză arbitrajul și scuipă după meciul cu Argentina",
     "category": "sport",
     "published": "2026-07-07T21:00:50+00:00",
-    "model": "B",
+    "model": "C",
     "teaser": "Hossam Hassan, antrenorul Egiptului, a criticat vehement arbitrul François Letexier și VAR-ul după înfrângerea cu Argentina. Acesta susține că arbitrajul a fost părtinitor în meciul de la CM 2026.",
     "entities": [
+      "Hossam Hassan",
       "Egipt",
       "Argentina",
-      "Hossam Hassan",
       "François Letexier"
     ],
     "icon": "ball-football",
     "processed_by": "gemini",
     "prompt_version": "v2-esenta",
-    "featured": false
+    "featured": false,
+    "sources": [
+      {
+        "name": "ProSport",
+        "url": "https://www.prosport.ro/campionatul-mondial-2026/selectioner-egipt-hossam-hassan-argentina-arbitru-francois-letexier-var-ascuns-calificare-20479425"
+      },
+      {
+        "name": "Digi Sport",
+        "url": "https://www.digisport.ro/fotbal/cm-2026/revoltator-selectionerului-egiptului-s-a-enervat-si-a-scuipat-imediat-dupa-meciul-cu-argentina-4366559"
+      }
+    ],
+    "first_source": "ProSport",
+    "synthesis": "Selecționerul Egiptului, Hossam Hassan, a criticat vehement arbitrajul și VAR-ul după înfrângerea cu Argentina la CM 2026, acuzând părtinire. Imediat după meci, antrenorul a avut un gest de nervozitate, scuipând."
   },
   {
     "url": "https://digisport.ro/fotbal/echipa-nationala/i-a-rostit-numele-romanului-in-direct-poate-sa-joace-la-oricare-dintre-echipele-mari-din-europa-4365009",
@@ -1773,6 +2099,27 @@
     "featured": false
   },
   {
+    "url": "https://bbc.co.uk/news/articles/c7vygl3zymjo?at_medium=RSS&at_campaign=rss",
+    "original_link": "https://www.bbc.co.uk/news/articles/c7vygl3zymjo?at_medium=RSS&at_campaign=rss",
+    "source": "bbc_europe",
+    "source_name": "BBC Europe",
+    "source_lang": "en",
+    "title": "Marine Le Pen candidează la prezidențiale și contestă o condamnare",
+    "category": "politic",
+    "published": "2026-07-07T19:55:59+00:00",
+    "model": "B",
+    "teaser": "Lidera extrema-dreaptă franceză își lansează campania prezidențială după ce o instanță a confirmat o condamnare, dar i-a permis să candideze cu condiția purtării unui dispozitiv de urmărire.",
+    "entities": [
+      "Marine Le Pen",
+      "Franța",
+      "National Rally"
+    ],
+    "icon": "gavel",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
     "url": "https://digi24.ro/stiri/externe/nicusor-dan-poza-de-grup-cu-liderii-nato-unde-au-stat-presedintele-si-partenera-sa-mirabela-gradinaru-3851945",
     "original_link": "https://www.digi24.ro/stiri/externe/nicusor-dan-poza-de-grup-cu-liderii-nato-unde-au-stat-presedintele-si-partenera-sa-mirabela-gradinaru-3851945",
     "source": "extern",
@@ -2132,6 +2479,26 @@
       "Europa"
     ],
     "icon": "globe",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://bbc.co.uk/news/articles/cgevwq1pndgo?at_medium=RSS&at_campaign=rss",
+    "original_link": "https://www.bbc.co.uk/news/articles/cgevwq1pndgo?at_medium=RSS&at_campaign=rss",
+    "source": "bbc_europe",
+    "source_name": "BBC Europe",
+    "source_lang": "en",
+    "title": "Ungaria oprește transmisiunile publice de știri pentru a elimina propaganda",
+    "category": "politic",
+    "published": "2026-07-07T18:34:45+00:00",
+    "model": "B",
+    "teaser": "Principalul canal TV de stat din Ungaria a afișat un mesaj de scuze pentru minciuni, marcând o mișcare de eliminare a propagandei din era Orban.",
+    "entities": [
+      "Ungaria",
+      "Orban"
+    ],
+    "icon": "writing",
     "processed_by": "gemini",
     "prompt_version": "v2-esenta",
     "featured": false
@@ -13629,196 +13996,6 @@
       }
     ],
     "synthesis": "Guvernul rus a decis suspendarea traficului feroviar de persoane, vehicule și mărfuri prin șapte puncte de trecere a frontierei cu Finlanda, Estonia și Letonia. Măsura a intrat în vigoare la 1 iulie, conform unui decret publicat de autoritățile de la Moscova. Sursele nu menționează motivele specifice ale acestei decizii.",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://dw.com/en/digital-euro-the-plan-to-trump-proof-the-eu-s-economies/a-77686564?maca=en-rss-en-eu-2092-rdf",
-    "original_link": "https://www.dw.com/en/digital-euro-the-plan-to-trump-proof-the-eu-s-economies/a-77686564?maca=en-rss-en-eu-2092-rdf",
-    "source": "dw_europe",
-    "source_name": "DW Europe",
-    "source_lang": "en",
-    "title": "UE pregătește un euro digital pentru a reduce dependența",
-    "category": "economic",
-    "published": "2026-07-01T09:11:00+00:00",
-    "model": "B",
-    "teaser": "Banca Centrală Europeană dezvoltă un euro digital pentru a diminua dependența de sistemele de plată private. Succesul depinde de ușurința în utilizare și de evitarea retragerii masive de economii din bănci.",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://digi24.ro/stiri/externe/controverse-la-teheran-dupa-ce-televiziunea-de-stat-a-scurtat-un-interviu-cu-negociatorul-iranian-in-tratativele-cu-sua-3842229",
-    "original_link": "https://www.digi24.ro/stiri/externe/controverse-la-teheran-dupa-ce-televiziunea-de-stat-a-scurtat-un-interviu-cu-negociatorul-iranian-in-tratativele-cu-sua-3842229",
-    "source": "extern",
-    "source_name": "Digi24 Extern",
-    "source_lang": "ro",
-    "title": "Televiziunea iraniană a întrerupt interviul negociatorului șef cu SUA",
-    "category": "politic",
-    "published": "2026-07-01T09:01:46+00:00",
-    "model": "C",
-    "sources": [
-      {
-        "name": "Digi24 Extern",
-        "url": "https://www.digi24.ro/stiri/externe/controverse-la-teheran-dupa-ce-televiziunea-de-stat-a-scurtat-un-interviu-cu-negociatorul-iranian-in-tratativele-cu-sua-3842229"
-      },
-      {
-        "name": "Digi24",
-        "url": "https://www.digi24.ro/stiri/externe/controverse-la-teheran-dupa-ce-televiziunea-de-stat-a-scurtat-un-interviu-cu-negociatorul-iranian-in-tratativele-cu-sua-3842229"
-      }
-    ],
-    "synthesis": "Televiziunea de stat din Iran a oprit marți un interviu filmat cu Mohammad Bagher Ghalibaf, președintele parlamentului și principalul negociator iranian în discuțiile cu SUA. Acest incident a generat critici din partea echipei sale, conform informațiilor transmise de AFP și preluate de Digi24.",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://digi24.ro/stiri/externe/polonia-avertizeaza-ca-rusia-incearca-sa-profite-de-tensiunile-dintre-varsovia-si-kiev-prin-operatiuni-de-sabotaj-sa-luam-in-calcul-3842195",
-    "original_link": "https://www.digi24.ro/stiri/externe/polonia-avertizeaza-ca-rusia-incearca-sa-profite-de-tensiunile-dintre-varsovia-si-kiev-prin-operatiuni-de-sabotaj-sa-luam-in-calcul-3842195",
-    "source": "extern",
-    "source_name": "Digi24 Extern",
-    "source_lang": "ro",
-    "title": "Polonia anticipează sabotaje rusești pe fondul tensiunilor cu Ucraina",
-    "category": "extern",
-    "published": "2026-07-01T08:52:24+00:00",
-    "model": "C",
-    "sources": [
-      {
-        "name": "Digi24 Extern",
-        "url": "https://www.digi24.ro/stiri/externe/polonia-avertizeaza-ca-rusia-incearca-sa-profite-de-tensiunile-dintre-varsovia-si-kiev-prin-operatiuni-de-sabotaj-sa-luam-in-calcul-3842195"
-      },
-      {
-        "name": "Digi24",
-        "url": "https://www.digi24.ro/stiri/externe/polonia-avertizeaza-ca-rusia-incearca-sa-profite-de-tensiunile-dintre-varsovia-si-kiev-prin-operatiuni-de-sabotaj-sa-luam-in-calcul-3842195"
-      }
-    ],
-    "synthesis": "Serviciile de securitate poloneze se pregătesc pentru posibile acțiuni de sabotaj din partea Rusiei. Scopul acestora ar fi exacerbarea neînțelegerilor dintre Polonia și Ucraina, a declarat ministrul responsabil cu serviciile speciale, Tomasz Siemoniak. Aceste avertismente vin în contextul unor tensiuni existente între cele două țări.",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://hotnews.ro/rares-bogdan-dat-jos-din-fruntea-delegatiei-romane-din-cel-mai-mare-grup-politic-al-parlamentului-european-2289208",
-    "original_link": "https://hotnews.ro/rares-bogdan-dat-jos-din-fruntea-delegatiei-romane-din-cel-mai-mare-grup-politic-al-parlamentului-european-2289208",
-    "source": "hotnews",
-    "source_name": "HotNews",
-    "source_lang": "ro",
-    "title": "Rareș Bogdan, înlocuit din fruntea delegației române PPE",
-    "category": "politic",
-    "published": "2026-07-01T08:34:53+00:00",
-    "model": "C",
-    "sources": [
-      {
-        "name": "HotNews",
-        "url": "https://hotnews.ro/rares-bogdan-dat-jos-din-fruntea-delegatiei-romane-din-cel-mai-mare-grup-politic-al-parlamentului-european-2289208"
-      },
-      {
-        "name": "G4Media",
-        "url": "https://www.g4media.ro/rares-bogdan-inlocuit-de-la-sefia-delegatiei-romane-in-grupul-popularilor-europeni-din-parlamentul-european-anunta-siegfried-muresan.html"
-      }
-    ],
-    "synthesis": "Eurodeputatul Rareș Bogdan a fost înlocuit din funcția de șef al delegației române din Grupul Partidului Popularilor Europeni (PPE) din Parlamentul European. Decizia a fost anunțată de Siegfried Mureșan, vicepreședinte PPE, și intră în vigoare imediat. Daniel Buda preia conducerea delegației.",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://economica.net/furtuna-romania-deer-anunta-ca-27-283-de-consumatori-din-65-de-localitati-erau-fara-energie-electrica-miercuri-la-ora-10_955466.html",
-    "original_link": "https://www.economica.net/furtuna-romania-deer-anunta-ca-27-283-de-consumatori-din-65-de-localitati-erau-fara-energie-electrica-miercuri-la-ora-10_955466.html",
-    "source": "economica",
-    "source_name": "Economica",
-    "source_lang": "ro",
-    "title": "Peste 27.000 de consumatori, afectați de furtuni",
-    "category": "general",
-    "published": "2026-07-01T08:33:35+00:00",
-    "model": "C",
-    "sources": [
-      {
-        "name": "Digi24",
-        "url": "https://www.digi24.ro/stiri/economie/energie/deer-peste-27-000-de-consumatori-din-reteaua-de-energie-nealimentati-din-cauza-furtunilor-sunt-afectate-65-de-localitati-3842231"
-      },
-      {
-        "name": "Economica",
-        "url": "https://www.economica.net/furtuna-romania-deer-anunta-ca-27-283-de-consumatori-din-65-de-localitati-erau-fara-energie-electrica-miercuri-la-ora-10_955466.html"
-      }
-    ],
-    "synthesis": "Distribuție Energie Electrică România (DEER) a anunțat miercuri dimineață că peste 27.000 de consumatori din 65 de localități au rămas fără electricitate din cauza furtunilor puternice. Echipele intervin pentru remedierea avariilor produse în rețeaua de distribuție.",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://moldova.europalibera.org/a/ai-luptat-in-armata-rusa-in-ucraina-nu-vei-mai-intra-in-ue-un-proiect-comunitar-greu-de-aplicat-pe-masa-de-discutii-la-bruxelles/33792031.html",
-    "original_link": "https://moldova.europalibera.org/a/ai-luptat-in-armata-rusa-in-ucraina-nu-vei-mai-intra-in-ue-un-proiect-comunitar-greu-de-aplicat-pe-masa-de-discutii-la-bruxelles/33792031.html",
-    "source": "el_moldova",
-    "source_name": "Europa Liberă",
-    "source_lang": "ro",
-    "title": "Rușii care au luptat în Ucraina, vizați pentru interdicție de intrare în UE",
-    "category": "politic",
-    "published": "2026-07-01T08:16:28+00:00",
-    "model": "B",
-    "teaser": "Comisia Europeană propune interzicerea intrării în spațiul Schengen pentru cetățenii ruși care au participat la luptele din Ucraina. Măsura face parte dintr-un nou pachet de sancțiuni.",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://theguardian.com/commentisfree/2026/jul/01/andy-burnham-crash-course-hardcore-geopolitics-foreign-policy",
-    "original_link": "https://www.theguardian.com/commentisfree/2026/jul/01/andy-burnham-crash-course-hardcore-geopolitics-foreign-policy",
-    "source": "guardian_eu",
-    "source_name": "The Guardian",
-    "source_lang": "en",
-    "title": "Andy Burnham, în fața unei crize geopolitice iminente",
-    "category": "politic",
-    "published": "2026-07-01T08:00:30+00:00",
-    "model": "B",
-    "teaser": "Posibilul viitor premier britanic, Andy Burnham, se va confrunta rapid cu provocări de politică externă, inclusiv cu instabilitatea generată de Donald Trump și conflictele din Orientul Mijlociu.",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://gsp.ro/international/campionate/program-oficial-sezon-nou-la-liga-barcelona-real-madrid-955217.html",
-    "original_link": "https://www.gsp.ro/international/campionate/program-oficial-sezon-nou-la-liga-barcelona-real-madrid-955217.html",
-    "source": "gsp",
-    "source_name": "GSP",
-    "source_lang": "ro",
-    "title": "La Liga 2026/2027: Start pe 15 august, El Clasico în aceleași etape",
-    "category": "sport",
-    "published": "2026-07-01T07:24:03+00:00",
-    "model": "B",
-    "teaser": "Noul sezon din La Liga începe pe 15-16 august 2026 și se încheie pe 29-30 mai 2027. Meciurile dintre Barcelona și Real Madrid vor avea loc în aceleași etape ca anul trecut.",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://gsp.ro/fotbal/liga-1/bursa-transferurilor-in-superliga-toate-mutarile-verii-2026-949986.html",
-    "original_link": "https://www.gsp.ro/fotbal/liga-1/bursa-transferurilor-in-superliga-toate-mutarile-verii-2026-949986.html",
-    "source": "gsp",
-    "source_name": "GSP",
-    "source_lang": "ro",
-    "title": "Superliga: Transferuri de vară, Dinamo și UTA active",
-    "category": "sport",
-    "published": "2026-07-01T07:22:11+00:00",
-    "model": "B",
-    "teaser": "Piața transferurilor din Superliga este în plină desfășurare, cu mutări noi anunțate. Sezonul începe pe 17 iulie, iar prima etapă se încheie pe 18 iulie.",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://gsp.ro/gsp-special/pariuri-sportive/breaking-bets-analizam-meciurile-zilei-de-la-mondial-anglia-congo-belgia-senegal-si-sua-bosnia-955213.html",
-    "original_link": "https://www.gsp.ro/gsp-special/pariuri-sportive/breaking-bets-analizam-meciurile-zilei-de-la-mondial-anglia-congo-belgia-senegal-si-sua-bosnia-955213.html",
-    "source": "gsp",
-    "source_name": "GSP",
-    "source_lang": "ro",
-    "title": "Breaking Bets analizează meciuri de la Mondial",
-    "category": "sport",
-    "published": "2026-07-01T07:18:20+00:00",
-    "model": "B",
-    "teaser": "Jurnalistul Dan Bâra și Sorin Murgu analizează meciurile Anglia - Congo, Belgia - Senegal și SUA - Bosnia în emisiunea Breaking Bets, difuzată zilnic.",
     "processed_by": "gemini",
     "prompt_version": "v2-esenta",
     "featured": false
