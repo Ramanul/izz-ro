@@ -1,5 +1,38 @@
 [
   {
+    "url": "https://stirileprotv.ro/stiri/actualitate/primul-oficial-concediat-dupa-scandalul-azilelor-din-bihor-dragos-pislaru-a-demis-o-pe-sefa-anpdpd-alexandra-zara.html",
+    "original_link": "https://stirileprotv.ro/stiri/actualitate/primul-oficial-concediat-dupa-scandalul-azilelor-din-bihor-dragos-pislaru-a-demis-o-pe-sefa-anpdpd-alexandra-zara.html",
+    "source": "protv",
+    "source_name": "Știrile ProTV",
+    "source_lang": "ro",
+    "title": "Șefa ANPDPD, Alexandra Zară, demisă după scandalul azilelor din Bihor",
+    "category": "politic",
+    "published": "2026-07-08T12:59:15+00:00",
+    "model": "C",
+    "sources": [
+      {
+        "name": "Știrile ProTV",
+        "url": "https://stirileprotv.ro/stiri/actualitate/primul-oficial-concediat-dupa-scandalul-azilelor-din-bihor-dragos-pislaru-a-demis-o-pe-sefa-anpdpd-alexandra-zara.html"
+      },
+      {
+        "name": "Digi24",
+        "url": "https://www.digi24.ro/stiri/actualitate/politica/ministrul-dragos-pislaru-a-demis-o-pe-alexandra-zara-dupa-interventia-diicot-de-la-azilele-ilegale-din-bihor-ce-motiv-ar-fi-invocat-3853231"
+      }
+    ],
+    "first_source": "Știrile ProTV",
+    "synthesis": "Ministrul interimar al Muncii, Dragoș Pîslaru, a dispus demiterea Alexandrei Zară din funcția de șefă a Autorității Naționale pentru Protecția Drepturilor Persoanelor cu Dizabilități. Decizia survine în urma intervenției DIICOT la azilele ilegale din Bihor, ministrul anunțând și alte măsuri pentru reprezentanți ai instituțiilor din județ.",
+    "entities": [
+      "Dragoș Pîslaru",
+      "Alexandra Zară",
+      "ANPDPD",
+      "Bihor"
+    ],
+    "icon": "gavel",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
     "url": "https://digi24.ro/campionatul-mondal-de-fotbal-2026/cm-2026-dialog-savuros-intre-premierul-britanic-si-cel-norvegian-despre-meciul-istoric-dintre-cele-doua-nationale-3852995",
     "original_link": "https://www.digi24.ro/campionatul-mondal-de-fotbal-2026/cm-2026-dialog-savuros-intre-premierul-britanic-si-cel-norvegian-despre-meciul-istoric-dintre-cele-doua-nationale-3852995",
     "source": "extern",
@@ -546,48 +579,6 @@
     ],
     "first_source": "Digi24 Extern",
     "synthesis": "Federația Egipteană de Fotbal a depus o plângere oficială la FIFA, acuzând arbitraj incorect în partida pierdută cu Argentina la Cupa Mondială. Reprezentanții egipteni solicită o analiză a deciziilor arbitrului François Letexier, considerând că acestea au influențat rezultatul final al meciului."
-  },
-  {
-    "url": "https://digi24.ro/stiri/externe/deja-in-calitate-de-candidata-marine-le-pen-efectueaza-prima-sa-vizita-in-cadrul-campaniei-electorale-alaturi-de-jordan-bardella-3852203",
-    "original_link": "https://www.digi24.ro/stiri/externe/deja-in-calitate-de-candidata-marine-le-pen-efectueaza-prima-sa-vizita-in-cadrul-campaniei-electorale-alaturi-de-jordan-bardella-3852203",
-    "source": "extern",
-    "source_name": "Digi24 Extern",
-    "source_lang": "ro",
-    "title": "Marine Le Pen lansează campania prezidențială după condamnare",
-    "category": "politic",
-    "published": "2026-07-08T06:08:09+00:00",
-    "model": "B",
-    "teaser": "Marine Le Pen, candidată la președinție, își lansează campania electorală alături de Jordan Bardella în Sarthe, după ce a fost condamnată în apel pentru deturnare de fonduri publice. Ea va face recurs.",
-    "entities": [
-      "Marine Le Pen",
-      "Jordan Bardella",
-      "Sarthe"
-    ],
-    "icon": "writing",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://digi24.ro/stiri/externe/deja-in-calitate-de-candidata-marine-le-pen-efectueaza-prima-sa-vizita-in-cadrul-campaniei-electorale-alaturi-de-jordan-bardella-3852203",
-    "original_link": "https://www.digi24.ro/stiri/externe/deja-in-calitate-de-candidata-marine-le-pen-efectueaza-prima-sa-vizita-in-cadrul-campaniei-electorale-alaturi-de-jordan-bardella-3852203",
-    "source": "digi24",
-    "source_name": "Digi24",
-    "source_lang": "ro",
-    "title": "Marine Le Pen lansează campania prezidențială după condamnare",
-    "category": "politic",
-    "published": "2026-07-08T06:08:09+00:00",
-    "model": "B",
-    "teaser": "Marine Le Pen, candidată la președinție, își lansează campania electorală alături de Jordan Bardella în Sarthe, după ce a fost condamnată în apel pentru deturnare de fonduri publice. Ea va face recurs.",
-    "entities": [
-      "Marine Le Pen",
-      "Jordan Bardella",
-      "Sarthe"
-    ],
-    "icon": "writing",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
   },
   {
     "url": "https://moldova.europalibera.org/a/rusia-ataca-kievul-a-treia-oara-intr-o-saptamana-tocmai-cand-liderii-nato-sunt-la-summit/33799177.html",
@@ -2298,20 +2289,36 @@
     "source": "bbc_europe",
     "source_name": "BBC Europe",
     "source_lang": "en",
-    "title": "Marine Le Pen candidează la prezidențiale și contestă o condamnare",
+    "title": "Marine Le Pen își lansează campania prezidențială după o condamnare",
     "category": "politic",
     "published": "2026-07-07T19:55:59+00:00",
-    "model": "B",
+    "model": "C",
     "teaser": "Lidera extrema-dreaptă franceză își lansează campania prezidențială după ce o instanță a confirmat o condamnare, dar i-a permis să candideze cu condiția purtării unui dispozitiv de urmărire.",
     "entities": [
       "Marine Le Pen",
       "Franța",
-      "National Rally"
+      "Sarthe"
     ],
     "icon": "gavel",
     "processed_by": "gemini",
     "prompt_version": "v2-esenta",
-    "featured": false
+    "featured": false,
+    "sources": [
+      {
+        "name": "BBC Europe",
+        "url": "https://www.bbc.co.uk/news/articles/c7vygl3zymjo?at_medium=RSS&at_campaign=rss"
+      },
+      {
+        "name": "Digi24 Extern",
+        "url": "https://www.digi24.ro/stiri/externe/deja-in-calitate-de-candidata-marine-le-pen-efectueaza-prima-sa-vizita-in-cadrul-campaniei-electorale-alaturi-de-jordan-bardella-3852203"
+      },
+      {
+        "name": "Europa Liberă",
+        "url": "https://moldova.europalibera.org/a/candidata-condamnata-nationalista-marine-le-pen-se-lanseaza-in-cursa-prezidentiala-franceza/33799363.html"
+      }
+    ],
+    "first_source": "BBC Europe",
+    "synthesis": "Lidera de extremă-dreapta franceză, Marine Le Pen, a lansat campania electorală pentru prezidențialele din 2027. Aceasta vine după ce o instanță a confirmat o condamnare pentru deturnare de fonduri publice, însă i-a permis să candideze sub condiția purtării unui dispozitiv de urmărire. Le Pen intenționează să facă recurs."
   },
   {
     "url": "https://digi24.ro/stiri/externe/nicusor-dan-poza-de-grup-cu-liderii-nato-unde-au-stat-presedintele-si-partenera-sa-mirabela-gradinaru-3851945",
@@ -13941,71 +13948,6 @@
       }
     ],
     "synthesis": "Canada va participa la concursul Eurovision începând cu anul 2027, devenind primul nou concurent după Australia în 2015. Decizia vine după ce țara a devenit membră a Uniunii Europene de Radiodifuziune (EBU). Participarea nu este restricționată geografic, ci deschisă tuturor membrilor EBU.",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://moldova.europalibera.org/a/muntenegru-este-deja-cu-un-picior-in-ue-pe-fiecare-european-aceasta-extindere-il-va-costa-un-euro/33793223.html",
-    "original_link": "https://moldova.europalibera.org/a/muntenegru-este-deja-cu-un-picior-in-ue-pe-fiecare-european-aceasta-extindere-il-va-costa-un-euro/33793223.html",
-    "source": "el_moldova",
-    "source_name": "Europa Liberă",
-    "source_lang": "ro",
-    "title": "Muntenegru se apropie de UE, extinderea costă 1 euro/cetățean",
-    "category": "politic",
-    "published": "2026-07-01T12:41:37+00:00",
-    "model": "B",
-    "teaser": "Aderarea Muntenegrului la UE va costa blocul european 3,2 miliarde de euro. Comisia Europeană estimează că fiecare cetățean UE va contribui cu mai puțin de 1 euro anual la această extindere.",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://digi24.ro/stiri/externe/ucraina-a-lovit-din-nou-o-rafinarie-din-rusia-la-peste-1-300-de-kilometri-de-front-zelenski-este-un-raspuns-pe-deplin-just-3842803",
-    "original_link": "https://www.digi24.ro/stiri/externe/ucraina-a-lovit-din-nou-o-rafinarie-din-rusia-la-peste-1-300-de-kilometri-de-front-zelenski-este-un-raspuns-pe-deplin-just-3842803",
-    "source": "extern",
-    "source_name": "Digi24 Extern",
-    "source_lang": "ro",
-    "title": "Ucraina a lovit o rafinărie rusă la peste 1.300 km de front",
-    "category": "extern",
-    "published": "2026-07-01T12:35:53+00:00",
-    "model": "C",
-    "sources": [
-      {
-        "name": "Digi24 Extern",
-        "url": "https://www.digi24.ro/stiri/externe/ucraina-a-lovit-din-nou-o-rafinarie-din-rusia-la-peste-1-300-de-kilometri-de-front-zelenski-este-un-raspuns-pe-deplin-just-3842803"
-      },
-      {
-        "name": "Digi24",
-        "url": "https://www.digi24.ro/stiri/externe/ucraina-a-lovit-din-nou-o-rafinarie-din-rusia-la-peste-1-300-de-kilometri-de-front-zelenski-este-un-raspuns-pe-deplin-just-3842803"
-      }
-    ],
-    "synthesis": "Ucraina a atacat o rafinărie de petrol din Ufa, Rusia, la peste 1.300 de kilometri de linia frontului. Acesta este al doilea atac asupra aceleiași ținte, conform declarațiilor președintelui ucrainean Volodimir Zelenski. Acțiunile marchează o intensificare a atacurilor ucrainene pe distanțe lungi în teritoriul rus.",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://bbc.co.uk/news/articles/c8x2y2vwqn1o?at_medium=RSS&at_campaign=rss",
-    "original_link": "https://www.bbc.co.uk/news/articles/c8x2y2vwqn1o?at_medium=RSS&at_campaign=rss",
-    "source": "bbc_europe",
-    "source_name": "BBC Europe",
-    "source_lang": "en",
-    "title": "Canada va debuta la Eurovision în 2027",
-    "category": "extern",
-    "published": "2026-07-01T12:30:56+00:00",
-    "model": "C",
-    "sources": [
-      {
-        "name": "BBC Europe",
-        "url": "https://www.bbc.co.uk/news/articles/c8x2y2vwqn1o?at_medium=RSS&at_campaign=rss"
-      },
-      {
-        "name": "The Guardian",
-        "url": "https://www.theguardian.com/tv-and-radio/2026/jul/01/canada-joins-eurovision-song-contest"
-      }
-    ],
-    "synthesis": "Canada va participa pentru prima dată la concursul Eurovision începând cu anul 2027. Aceasta marchează prima țară nouă acceptată în competiție după Australia, care s-a alăturat în 2015. Participarea este deschisă membrilor Uniunii Europene de Radiodifuziune (EBU), din care Canada a devenit recent membru.",
     "processed_by": "gemini",
     "prompt_version": "v2-esenta",
     "featured": false
