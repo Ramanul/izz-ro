@@ -50,6 +50,38 @@
     "featured": false
   },
   {
+    "url": "https://gsp.ro/international/campionatul-mondial-de-fotbal-2026/tabloul-complet-sferturi-de-finala-campionatul-mondial-2026-958106.html",
+    "original_link": "https://www.gsp.ro/international/campionatul-mondial-de-fotbal-2026/tabloul-complet-sferturi-de-finala-campionatul-mondial-2026-958106.html",
+    "source": "gsp",
+    "source_name": "GSP",
+    "source_lang": "ro",
+    "title": "CM 2026: S-au stabilit sferturile de finală, cu 6 echipe europene calificate",
+    "category": "sport",
+    "published": "2026-07-07T23:02:32+00:00",
+    "model": "C",
+    "sources": [
+      {
+        "name": "GSP",
+        "url": "https://www.gsp.ro/international/campionatul-mondial-de-fotbal-2026/tabloul-complet-sferturi-de-finala-campionatul-mondial-2026-958106.html"
+      },
+      {
+        "name": "ProSport",
+        "url": "https://www.prosport.ro/campionatul-mondial-2026/sferturi-cupa-mondiala-20479475"
+      }
+    ],
+    "first_source": "GSP",
+    "synthesis": "Campionatul Mondial de Fotbal 2026 a ajuns în faza sferturilor de finală, cu opt echipe rămase în competiție. Dintre acestea, șase sunt din Europa, una din Africa și una din America de Sud. Ultimul meci din optimi, Elveția - Columbia, s-a încheiat 0-0 și a fost decis la lovituri de departajare, cu victoria echipei elvețiene.",
+    "entities": [
+      "Campionatul Mondial 2026",
+      "Elveția",
+      "Columbia"
+    ],
+    "icon": "ball-football",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
     "url": "https://digisport.ro/fotbal/cm-2026/a-vrut-sa-se-abtina-dar-n-a-putut-mohamed-salah-dupa-argentina-egipt-3-2-e-pur-si-simplu-foarte-trist-4365807",
     "original_link": "https://www.digisport.ro/fotbal/cm-2026/a-vrut-sa-se-abtina-dar-n-a-putut-mohamed-salah-dupa-argentina-egipt-3-2-e-pur-si-simplu-foarte-trist-4365807",
     "source": "digisport",
@@ -187,6 +219,38 @@
       "Iran"
     ],
     "icon": "rocket",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://prosport.ro/campionatul-mondial-2026/elvetia-columbia-4-3-la-penalty-uri-in-optimi-la-cupa-mondiala-sa-vina-argentina-lui-messi-20478708",
+    "original_link": "https://www.prosport.ro/campionatul-mondial-2026/elvetia-columbia-4-3-la-penalty-uri-in-optimi-la-cupa-mondiala-sa-vina-argentina-lui-messi-20478708",
+    "source": "prosport",
+    "source_name": "ProSport",
+    "source_lang": "ro",
+    "title": "Elveția elimină Columbia la penalty-uri în optimile CM 2026",
+    "category": "sport",
+    "published": "2026-07-07T22:05:39+00:00",
+    "model": "C",
+    "sources": [
+      {
+        "name": "ProSport",
+        "url": "https://www.prosport.ro/campionatul-mondial-2026/elvetia-columbia-4-3-la-penalty-uri-in-optimi-la-cupa-mondiala-sa-vina-argentina-lui-messi-20478708"
+      },
+      {
+        "name": "Digi Sport",
+        "url": "https://www.digisport.ro/fotbal/cm-2026/de-necrezut-meciul-elvetia-columbia-a-fost-cel-mai-slab-de-la-cupa-mondiala-2026-4365871"
+      }
+    ],
+    "first_source": "ProSport",
+    "synthesis": "Elveția s-a calificat în sferturile de finală ale Cupei Mondiale 2026, după ce a învins Columbia cu 4-3 la loviturile de departajare, într-un meci din optimile competiției. Partida a fost considerată de o sursă drept cea mai slabă de până acum la acest turneu.",
+    "entities": [
+      "Elveția",
+      "Columbia",
+      "Cupa Mondială 2026"
+    ],
+    "icon": "ball-football",
     "processed_by": "gemini",
     "prompt_version": "v2-esenta",
     "featured": false
@@ -1635,6 +1699,70 @@
     "featured": false
   },
   {
+    "url": "https://cursdeguvernare.ro/armata-sua-inca-un-pas-istoric-pentru-a-sparge-dominatia-chinei-in-domeniul-pamanturilor-rare-washingtonul-isi-construieste-o-industrie.html",
+    "original_link": "https://cursdeguvernare.ro/armata-sua-inca-un-pas-istoric-pentru-a-sparge-dominatia-chinei-in-domeniul-pamanturilor-rare-washingtonul-isi-construieste-o-industrie.html",
+    "source": "cursdeguv",
+    "source_name": "Curs de Guvernare",
+    "source_lang": "ro",
+    "title": "SUA își construiește o industrie de pământuri rare, rivalizând cu China",
+    "category": "economic",
+    "published": "2026-07-07T15:52:25+00:00",
+    "model": "B",
+    "teaser": "Armata SUA sprijină compania Realloys pentru a reconstrui lanțul de aprovizionare cu pământuri rare. O nouă unitate de procesare va fi construită în Utah.",
+    "entities": [
+      "SUA",
+      "China",
+      "Realloys",
+      "Utah"
+    ],
+    "icon": "building-factory",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://economedia.ro/parlamentul-european-adopta-masuri-de-sprijin-pentru-fermierii-afectati-de-scumpirea-ingrasamintelor.html",
+    "original_link": "https://economedia.ro/parlamentul-european-adopta-masuri-de-sprijin-pentru-fermierii-afectati-de-scumpirea-ingrasamintelor.html",
+    "source": "economedia",
+    "source_name": "Economedia",
+    "source_lang": "ro",
+    "title": "UE sprijină fermierii cu lichidități pentru îngrășăminte",
+    "category": "economic",
+    "published": "2026-07-07T15:46:48+00:00",
+    "model": "B",
+    "teaser": "Parlamentul European a aprobat măsuri de sprijin pentru fermierii UE afectați de scumpirea îngrășămintelor. Aceștia pot primi până la 80% din costurile suplimentare pentru a asigura producția și prețuri stabile.",
+    "entities": [
+      "Parlamentul European",
+      "UE"
+    ],
+    "icon": "tractor",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://cursdeguvernare.ro/zelenski-kremlin-nato-aderare-merz-constructie-nato-europeana.html",
+    "original_link": "https://cursdeguvernare.ro/zelenski-kremlin-nato-aderare-merz-constructie-nato-europeana.html",
+    "source": "cursdeguv",
+    "source_name": "Curs de Guvernare",
+    "source_lang": "ro",
+    "title": "Zelenski cere aderarea Ucrainei la NATO la summitul Alianței",
+    "category": "politic",
+    "published": "2026-07-07T15:43:57+00:00",
+    "model": "B",
+    "teaser": "Președintele ucrainean Volodimir Zelenski a reiterat cererea de aderare la NATO, susținând că Ucraina ar consolida Alianța. Kremlinul urmărește reuniunea de la Ankara.",
+    "entities": [
+      "Volodimir Zelenski",
+      "NATO",
+      "Ucraina",
+      "Kremlinul"
+    ],
+    "icon": "shield",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
     "url": "https://cursdeguvernare.ro/presedintele-dan-intrevedere-cu-congresmani-americani-la-ankara.html",
     "original_link": "https://cursdeguvernare.ro/presedintele-dan-intrevedere-cu-congresmani-americani-la-ankara.html",
     "source": "cursdeguv",
@@ -1696,6 +1824,67 @@
       "Volodimir Zelenski"
     ],
     "icon": "swords",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://economedia.ro/banca-transilvania-ii-prelungeste-mandatul-lui-omer-tetik-pana-in-2030-ceo-ul-conduce-banca-din-2013-si-a-transformat-o-in-liderul-pietei.html",
+    "original_link": "https://economedia.ro/banca-transilvania-ii-prelungeste-mandatul-lui-omer-tetik-pana-in-2030-ceo-ul-conduce-banca-din-2013-si-a-transformat-o-in-liderul-pietei.html",
+    "source": "economedia",
+    "source_name": "Economedia",
+    "source_lang": "ro",
+    "title": "Ömer Tetik, reales CEO Banca Transilvania până în 2030",
+    "category": "economic",
+    "published": "2026-07-07T15:39:12+00:00",
+    "model": "B",
+    "teaser": "Consiliul de Administrație al Băncii Transilvania a prelungit mandatul CEO-ului Ömer Tetik până în 2030. Mandatele directorilor adjuncți au fost, de asemenea, reînnoite.",
+    "entities": [
+      "Banca Transilvania",
+      "Ömer Tetik"
+    ],
+    "icon": "building-bank",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://cursdeguvernare.ro/preturile-futures-pentru-cafeaua-arabica-inregistreaza-cel-mai-mare-salt-zilnic-de-la-dot-com-incoace.html",
+    "original_link": "https://cursdeguvernare.ro/preturile-futures-pentru-cafeaua-arabica-inregistreaza-cel-mai-mare-salt-zilnic-de-la-dot-com-incoace.html",
+    "source": "cursdeguv",
+    "source_name": "Curs de Guvernare",
+    "source_lang": "ro",
+    "title": "Prețurile futures la cafeaua Arabica, cel mai mare salt din era Dot-Com",
+    "category": "economic",
+    "published": "2026-07-07T15:37:57+00:00",
+    "model": "B",
+    "teaser": "Contractele futures pentru cafeaua Arabica au înregistrat creșteri record din cauza condițiilor meteo nefavorabile în Brazilia și a reducerii stocurilor, alimentând temeri privind oferta.",
+    "entities": [
+      "Arabica",
+      "Brazilia"
+    ],
+    "icon": "chart-line",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://economedia.ro/grf-plus-conducere-bursa-loredana-butacu-ianus-managing-partner.html",
+    "original_link": "https://economedia.ro/grf-plus-conducere-bursa-loredana-butacu-ianus-managing-partner.html",
+    "source": "economedia",
+    "source_name": "Economedia",
+    "source_lang": "ro",
+    "title": "GRF+ își schimbă conducerea executivă înainte de listarea la BVB",
+    "category": "economic",
+    "published": "2026-07-07T15:34:42+00:00",
+    "model": "B",
+    "teaser": "Loredana Butacu-Ianuș devine Managing Partner la agenția de consultanță GRF+. Promovarea face parte din pregătirile pentru listarea companiei la Bursa de Valori București.",
+    "entities": [
+      "GRF+",
+      "Loredana Butacu-Ianuș",
+      "BVB"
+    ],
+    "icon": "writing",
     "processed_by": "gemini",
     "prompt_version": "v2-esenta",
     "featured": false
@@ -13068,36 +13257,6 @@
     "published": "2026-07-01T02:00:00+00:00",
     "model": "B",
     "teaser": "Irlanda preia președinția UE timp de șase luni, chiar înainte ca alegerile franceze să blocheze procesul decizional european, punând sub semnul întrebării capacitatea sa de a livra.",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://digisport.ro/fotbal/cm-2026/selectionerul-suediei-a-spus-o-direct-dupa-0-3-cu-franta-nicio-rusine-4350847",
-    "original_link": "https://www.digisport.ro/fotbal/cm-2026/selectionerul-suediei-a-spus-o-direct-dupa-0-3-cu-franta-nicio-rusine-4350847",
-    "source": "digisport",
-    "source_name": "Digi Sport",
-    "source_lang": "ro",
-    "title": "Selecționerul Suediei, resemnat după înfrângerea cu Franța",
-    "category": "sport",
-    "published": "2026-07-01T00:21:44+00:00",
-    "model": "B",
-    "teaser": "Antrenorul naționalei Suediei a declarat că nu există nicio rușine în înfrângerea suferită în fața Franței, scor 0-3, subliniind spiritul de fair-play în ciuda rezultatului.",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://digisport.ro/fotbal/cm-2026/live-blog-cupa-mondiala-ziua-20-3-meciuri-din-16-imi-in-program-mbappe-a-facut-show-si-a-dus-franta-in-optimi-4348695",
-    "original_link": "https://www.digisport.ro/fotbal/cm-2026/live-blog-cupa-mondiala-ziua-20-3-meciuri-din-16-imi-in-program-mbappe-a-facut-show-si-a-dus-franta-in-optimi-4348695",
-    "source": "digisport",
-    "source_name": "Digi Sport",
-    "source_lang": "ro",
-    "title": "Mbappe, erou în ziua 20 a Cupei Mondiale 2026",
-    "category": "sport",
-    "published": "2026-07-01T00:20:50+00:00",
-    "model": "B",
-    "teaser": "Kylian Mbappe a strălucit în meciul Franței, contribuind decisiv la calificarea echipei în optimile Cupei Mondiale 2026, organizată în SUA, Mexic și Canada.",
     "processed_by": "gemini",
     "prompt_version": "v2-esenta",
     "featured": false
