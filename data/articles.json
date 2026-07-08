@@ -1,5 +1,103 @@
 [
   {
+    "url": "https://digi24.ro/stiri/sport/fotbal/champions-league-universitatea-craiova-a-invins-in-deplasare-ml-vitebsk-in-primul-tur-preliminar-3854023",
+    "original_link": "https://www.digi24.ro/stiri/sport/fotbal/champions-league-universitatea-craiova-a-invins-in-deplasare-ml-vitebsk-in-primul-tur-preliminar-3854023",
+    "source": "digi24",
+    "source_name": "Digi24",
+    "source_lang": "ro",
+    "title": "Universitatea Craiova, victorie categorică în preliminariile Champions League",
+    "category": "sport",
+    "published": "2026-07-08T19:14:28+00:00",
+    "model": "C",
+    "sources": [
+      {
+        "name": "Digi24",
+        "url": "https://www.digi24.ro/stiri/sport/fotbal/champions-league-universitatea-craiova-a-invins-in-deplasare-ml-vitebsk-in-primul-tur-preliminar-3854023"
+      },
+      {
+        "name": "Digi Sport",
+        "url": "https://www.digisport.ro/fotbal/champions-league/presa-din-belarus-fara-dubii-dupa-ml-vitebsk-universitatea-craiova-1-4-in-preliminariile-ucl-4367651"
+      }
+    ],
+    "first_source": "Digi24",
+    "synthesis": "Universitatea Craiova, campioana României, a obținut o victorie convingătoare în deplasare, scor 4-1, împotriva echipei bieloruse ML Vitebsk. Meciul a contat pentru manșa întâi a primului tur preliminar al Champions League. Rezultatul a fost bine primit și de presa din Belarus.",
+    "entities": [
+      "Universitatea Craiova",
+      "ML Vitebsk",
+      "Champions League"
+    ],
+    "icon": "ball-football",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://g4media.ro/premiile-emmy-2026-au-fost-anuntate-nominalizarile-in-principalele-categorii.html",
+    "original_link": "https://www.g4media.ro/premiile-emmy-2026-au-fost-anuntate-nominalizarile-in-principalele-categorii.html",
+    "source": "g4media",
+    "source_name": "G4Media",
+    "source_lang": "ro",
+    "title": "Anunțate nominalizările pentru Premiile Emmy 2026",
+    "category": "general",
+    "published": "2026-07-08T18:56:03+00:00",
+    "model": "C",
+    "sources": [
+      {
+        "name": "G4Media",
+        "url": "https://www.g4media.ro/premiile-emmy-2026-au-fost-anuntate-nominalizarile-in-principalele-categorii.html"
+      },
+      {
+        "name": "Știrile ProTV",
+        "url": "https://stirileprotv.ro/divers/premiile-emmy-2026-the-pitt-si-hacks-domina-nominalizarile-actrita-care-va-prezenta-gala.html"
+      }
+    ],
+    "first_source": "G4Media",
+    "synthesis": "Nominalizările pentru cea de-a 78-a ediție a Premiilor Primetime Emmy au fost dezvăluite miercuri la Los Angeles. Aceste premii sunt considerate echivalentul Oscarurilor în televiziunea americană. Printre serialele nominalizate la categoria \"Cel mai bun serial TV dramatic\" se numără \"The Diplomat\", \"The Gilded Age\" și \"The Pitt\".",
+    "entities": [
+      "Premiile Emmy",
+      "Los Angeles",
+      "The Diplomat",
+      "The Gilded Age"
+    ],
+    "icon": "movie",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://hotnews.ro/romania-data-in-judecata-de-catre-comisia-europeana-bruxelles-ul-reclama-intarzierea-platilor-catre-farmacii-2295630",
+    "original_link": "https://hotnews.ro/romania-data-in-judecata-de-catre-comisia-europeana-bruxelles-ul-reclama-intarzierea-platilor-catre-farmacii-2295630",
+    "source": "hotnews",
+    "source_name": "HotNews",
+    "source_lang": "ro",
+    "title": "România, acționată în judecată de Comisia Europeană pentru întârzieri la plata farmaciilor",
+    "category": "economic",
+    "published": "2026-07-08T17:50:22+00:00",
+    "model": "C",
+    "sources": [
+      {
+        "name": "HotNews",
+        "url": "https://hotnews.ro/romania-data-in-judecata-de-catre-comisia-europeana-bruxelles-ul-reclama-intarzierea-platilor-catre-farmacii-2295630"
+      },
+      {
+        "name": "G4Media",
+        "url": "https://www.g4media.ro/cnas-reactioneaza-dupa-ce-romania-a-fost-trimisa-de-comisia-europeana-in-fata-cjue-din-cauza-intarzierii-platilor-catre-farmacii.html"
+      }
+    ],
+    "first_source": "HotNews",
+    "synthesis": "Comisia Europeană a decis să trimită România în fața Curții de Justiție a UE din cauza întârzierilor sistemice și persistente în efectuarea plăților către farmacii. CNAS susține, însă, că plățile pentru medicamente sunt la zi, cu integral achitate cele aferente lunii martie.",
+    "entities": [
+      "Comisia Europeană",
+      "România",
+      "Curtea de Justiție a UE",
+      "CNAS"
+    ],
+    "icon": "gavel",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
     "url": "https://hotnews.ro/rusia-interzice-exporturile-de-motorina-2295639",
     "original_link": "https://hotnews.ro/rusia-interzice-exporturile-de-motorina-2295639",
     "source": "hotnews",
@@ -13901,141 +13999,6 @@
       }
     ],
     "synthesis": "Meciul dintre Belgia și Senegal, contând pentru optimile de finală ale Campionatului Mondial, s-a încheiat la scor egal, 2-2, după timpul regulamentar. Partida, disputată la Seattle, a necesitat prelungiri pentru a stabili câștigătoarea.",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://dw.com/en/explosion-in-monaco-who-is-vadym-yermolaiev/a-77792178?maca=en-rss-en-eu-2092-rdf",
-    "original_link": "https://www.dw.com/en/explosion-in-monaco-who-is-vadym-yermolaiev/a-77792178?maca=en-rss-en-eu-2092-rdf",
-    "source": "dw_europe",
-    "source_name": "DW Europe",
-    "source_lang": "en",
-    "title": "Om de afaceri ucrainean, rănit într-o explozie în Monaco",
-    "category": "extern",
-    "published": "2026-07-01T19:53:00+00:00",
-    "model": "B",
-    "teaser": "Omul de afaceri Vadym Yermolaiev, sancționat anterior de Kiev, a fost rănit într-un posibil atentat în Monaco. Autoritățile investighează circumstanțele incidentului.",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://digi24.ro/stiri/actualitate/ministra-de-externe-a-canadei-vine-in-romania-3843679",
-    "original_link": "https://www.digi24.ro/stiri/actualitate/ministra-de-externe-a-canadei-vine-in-romania-3843679",
-    "source": "extern",
-    "source_name": "Digi24 Extern",
-    "source_lang": "ro",
-    "title": "Ministra de Externe a Canadei, vizită oficială în România pe 6 iulie",
-    "category": "politic",
-    "published": "2026-07-01T19:46:03+00:00",
-    "model": "C",
-    "sources": [
-      {
-        "name": "Digi24 Extern",
-        "url": "https://www.digi24.ro/stiri/actualitate/ministra-de-externe-a-canadei-vine-in-romania-3843679"
-      },
-      {
-        "name": "Digi24",
-        "url": "https://www.digi24.ro/stiri/actualitate/ministra-de-externe-a-canadei-vine-in-romania-3843679"
-      }
-    ],
-    "synthesis": "Ministra canadiană a Afacerilor Externe, Anita Anand, va sosi în România pe 6 iulie, în cadrul unei vizite oficiale. Aceasta a fost invitată de omoloaga sa română, Oana Țoiu, șefa diplomației de la București. Evenimentul marchează consolidarea relațiilor bilaterale dintre cele două țări.",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://digi24.ro/stiri/externe/scandal-in-franta-ecologistii-sustin-ca-10-000-de-oameni-au-murit-din-cauza-caldurii-si-vor-sa-depuna-motiune-de-cenzura-3843645",
-    "original_link": "https://www.digi24.ro/stiri/externe/scandal-in-franta-ecologistii-sustin-ca-10-000-de-oameni-au-murit-din-cauza-caldurii-si-vor-sa-depuna-motiune-de-cenzura-3843645",
-    "source": "extern",
-    "source_name": "Digi24 Extern",
-    "source_lang": "ro",
-    "title": "Ecologiștii francezi cer moțiune de cenzură din cauza căldurii",
-    "category": "politic",
-    "published": "2026-07-01T19:35:05+00:00",
-    "model": "C",
-    "sources": [
-      {
-        "name": "Digi24 Extern",
-        "url": "https://www.digi24.ro/stiri/externe/scandal-in-franta-ecologistii-sustin-ca-10-000-de-oameni-au-murit-din-cauza-caldurii-si-vor-sa-depuna-motiune-de-cenzura-3843645"
-      },
-      {
-        "name": "Digi24",
-        "url": "https://www.digi24.ro/stiri/externe/scandal-in-franta-ecologistii-sustin-ca-10-000-de-oameni-au-murit-din-cauza-caldurii-si-vor-sa-depuna-motiune-de-cenzura-3843645"
-      }
-    ],
-    "synthesis": "Grupul ecologist din Adunarea Națională franceză a anunțat intenția de a depune o moțiune de cenzură împotriva guvernului. Aceasta vizează lipsa de pregătire în fața valurilor de căldură, ecologiștii susținând că 10.000 de persoane au decedat din această cauză. Moțiunea a fost anunțată marți, în urma unei ședințe agitate.",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://digi24.ro/stiri/externe/zaharova-acuza-nato-ca-avanseaza-spre-o-escaladare-mai-mare-care-e-pozitia-rusiei-3843655",
-    "original_link": "https://www.digi24.ro/stiri/externe/zaharova-acuza-nato-ca-avanseaza-spre-o-escaladare-mai-mare-care-e-pozitia-rusiei-3843655",
-    "source": "extern",
-    "source_name": "Digi24 Extern",
-    "source_lang": "ro",
-    "title": "Rusia: Nu există perspective de dialog cu NATO",
-    "category": "politic",
-    "published": "2026-07-01T19:12:13+00:00",
-    "model": "C",
-    "sources": [
-      {
-        "name": "Digi24 Extern",
-        "url": "https://www.digi24.ro/stiri/externe/zaharova-acuza-nato-ca-avanseaza-spre-o-escaladare-mai-mare-care-e-pozitia-rusiei-3843655"
-      },
-      {
-        "name": "Digi24",
-        "url": "https://www.digi24.ro/stiri/externe/zaharova-acuza-nato-ca-avanseaza-spre-o-escaladare-mai-mare-care-e-pozitia-rusiei-3843655"
-      }
-    ],
-    "synthesis": "Purtătoarea de cuvânt a Ministerului rus de Externe, Maria Zaharova, a declarat miercuri că nu există în prezent nicio perspectivă de reluare a dialogului sau de normalizare a relațiilor cu NATO. Ea a acuzat Alianța Nord-Atlantică că avansează spre o escaladare majoră.",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://digi24.ro/stiri/externe/sua/exporturile-americane-de-gnl-catre-europa-au-scazut-sub-50-pentru-prima-data-in-aproape-doi-ani-3843649",
-    "original_link": "https://www.digi24.ro/stiri/externe/sua/exporturile-americane-de-gnl-catre-europa-au-scazut-sub-50-pentru-prima-data-in-aproape-doi-ani-3843649",
-    "source": "extern",
-    "source_name": "Digi24 Extern",
-    "source_lang": "ro",
-    "title": "Exporturile americane de GNL către Europa au scăzut sub 50%",
-    "category": "economic",
-    "published": "2026-07-01T19:00:20+00:00",
-    "model": "B",
-    "teaser": "Transporturile de gaz natural lichefiat din SUA către Europa au înregistrat o scădere sub 50% în iunie. Prețurile mai mari din Asia au redirecționat livrările.",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://digi24.ro/stiri/externe/val-de-caldura-fara-precedent-in-marea-britanie-temperaturile-au-doborat-recorduri-vechi-de-peste-un-secol-3843617",
-    "original_link": "https://www.digi24.ro/stiri/externe/val-de-caldura-fara-precedent-in-marea-britanie-temperaturile-au-doborat-recorduri-vechi-de-peste-un-secol-3843617",
-    "source": "extern",
-    "source_name": "Digi24 Extern",
-    "source_lang": "ro",
-    "title": "Anglia înregistrează cea mai călduroasă lună iunie din istorie",
-    "category": "general",
-    "published": "2026-07-01T18:54:06+00:00",
-    "model": "B",
-    "teaser": "Anglia a avut parte de cea mai caldă lună iunie din istoria înregistrărilor meteorologice. Mai multe zile au atins temperaturi record, conform Met Office.",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://bbc.co.uk/news/articles/c3eywl0eq29o?at_medium=RSS&at_campaign=rss",
-    "original_link": "https://www.bbc.co.uk/news/articles/c3eywl0eq29o?at_medium=RSS&at_campaign=rss",
-    "source": "bbc_europe",
-    "source_name": "BBC Europe",
-    "source_lang": "en",
-    "title": "Mama unui politician grec, decedată după un atac incendiar",
-    "category": "politic",
-    "published": "2026-07-01T18:52:22+00:00",
-    "model": "B",
-    "teaser": "Mama unui politician grec a murit din cauza rănilor suferite în urma unui atac incendiar. Trei atacuri separate, implicând cocktailuri Molotov, au avut loc în Salonic.",
     "processed_by": "gemini",
     "prompt_version": "v2-esenta",
     "featured": false
