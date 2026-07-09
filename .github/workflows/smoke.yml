@@ -24,3 +24,36 @@ jobs:
       - run: python tools/smoke_live.py
         env:
           BASE_URL: https://izz.ro
+
+      # Diagnostic (doar la rulare manuala): descarca mostre art/cover de pe live
+      # ca artifact, pentru inspectie vizuala (apare pictograma in imagine?).
+      - name: Mostre live (diag)
+        if: github.event_name == 'workflow_dispatch'
+        run: |
+          python3 - <<'PY'
+          import re, os, urllib.request
+          BASE = "https://izz.ro"
+          sm = urllib.request.urlopen(BASE + "/sitemap.xml").read().decode("utf-8", "replace")
+          locs = [u for u in re.findall(r"<loc>([^<]+)</loc>", sm)
+                  if u.rstrip("/").count("/") >= 4 and "/legal/" not in u]
+          os.makedirs("out", exist_ok=True)
+          got = 0
+          for u in locs:
+              path = re.sub(r"^https?://[^/]+", "", u).rstrip("/")
+              try:
+                  for kind in ("art", "cover"):
+                      d = urllib.request.urlopen(f"{BASE}{path}/{kind}.jpg", timeout=30).read()
+                      open(f"out/{got}-{kind}.jpg", "wb").write(d)
+                      print(kind, path, len(d))
+                  got += 1
+              except Exception as e:
+                  print("skip", path, e)
+              if got >= 3:
+                  break
+          PY
+      - name: Urca mostrele
+        if: github.event_name == 'workflow_dispatch'
+        uses: actions/upload-artifact@v4
+        with:
+          name: live-art
+          path: out/
