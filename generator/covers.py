@@ -238,7 +238,7 @@ _ARCS = {"politic": _arcs_politic, "economic": _arcs_economic, "extern": _arcs_e
          "sport": _arcs_sport, "tech": _arcs_tech, "general": _arcs_general}
 
 
-def _place_icon(base, name: str, s):
+def _place_icon(base, name: str, s, cxf: float = 0.70):
     src = _icon_img(name)
     if src is None:
         return False
@@ -256,18 +256,18 @@ def _place_icon(base, name: str, s):
     glow_small.paste(Image.new("RGBA", (gs // 2, gs // 2), (*GOLD, 255)), (gs // 4, gs // 4), ga)
     glow_small = glow_small.filter(ImageFilter.GaussianBlur(26 * SS // q))
     glow = glow_small.resize((size * 2, size * 2), Image.BILINEAR)
-    x = int(W2 * (0.70 + (s[16] / 255 - 0.5) * 0.06))
+    x = int(W2 * (cxf + (s[16] / 255 - 0.5) * 0.06))
     y = int(H2 / PHI * (1.0 + (s[17] / 255 - 0.5) * 0.22))
     base.paste(glow, (x - size, y - size), glow)
     base.paste(tinted, (x - size // 2, y - size // 2), tinted)
     return True
 
 
-def _monogram(base, letter: str, s):
+def _monogram(base, letter: str, s, cxf: float = 0.72):
     f = _font("display", int(H2 * 0.62))
     layer = Image.new("RGBA", (W2, H2), (0, 0, 0, 0))
     d = ImageDraw.Draw(layer)
-    x = int(W2 * (0.72 + (s[16] / 255 - 0.5) * 0.05))
+    x = int(W2 * (cxf + (s[16] / 255 - 0.5) * 0.05))
     y = int(H2 / PHI)
     d.text((x, y), letter.upper(), font=f, fill=(*GOLD, 235), anchor="mm")
     glow = layer.filter(ImageFilter.GaussianBlur(30 * SS))
@@ -291,51 +291,74 @@ def _wrap(d, text, font, maxw):
     return lines
 
 
+def _compose(a: dict, s, with_text: bool):
+    base = _gradient_base()
+    over = Image.new("RGBA", (W2, H2), (0, 0, 0, 0))
+    do = ImageDraw.Draw(over)
+    _bokeh(do, s)
+    _ARCS.get(a.get("category", ""), _arcs_general)(do, s)
+    base.paste(over, (0, 0), over)
+
+    cxf = 0.70 if with_text else 0.5      # arta de site: icoana centrata (nu e text langa ea)
+    icon = _pick_icon(a)
+    if icon:
+        _place_icon(base, icon, s, cxf)
+    else:
+        ents = a.get("entities") or []
+        _monogram(base, (ents[0] if ents else a.get("title") or "I")[0], s, cxf + 0.02)
+
+    if not with_text:
+        return base
+
+    d = ImageDraw.Draw(base)
+    mono = _font("mono", 26 * SS)
+    mono_s = _font("mono", 20 * SS)
+    display = _font("display", 62 * SS)
+    d.text((56 * SS, 48 * SS), (a.get("category") or "știri").upper(),
+           font=mono, fill=GOLD_HEX)
+    rule_w = int((W2 / PHI - 112 * SS) / PHI)
+    d.line([56 * SS, 96 * SS, 56 * SS + rule_w, 96 * SS], fill=GOLD_HEX, width=2 * SS)
+    y = 128 * SS
+    for ln in _wrap(d, a.get("title", ""), display, int(W2 / PHI) - 88 * SS):
+        d.text((56 * SS, y), ln, font=display, fill=PAPER)
+        y += 82 * SS
+    d.text((56 * SS, H2 - 66 * SS), "IZZ.ro — Informația Zero Zgomot",
+           font=mono, fill=MUTED)
+    seed = hashlib.sha1((a.get("title") or "").encode()).digest()
+    d.text((W2 - 34 * SS, H2 - 34 * SS), f"Nº {seed.hex()[:6]}",
+           font=mono_s, fill=GOLD_STRONG, anchor="rs")
+    return base
+
+
+def _save(base, path: str, size) -> None:
+    img = base.resize(size, Image.LANCZOS)
+    os.makedirs(os.path.dirname(path), exist_ok=True)
+    img.save(path, "JPEG", quality=84)
+
+
 def generate(a: dict, path: str) -> bool:
-    """Deseneaza coperta articolului la `path`. False la orice problema."""
+    """Coperta de SHARE (og:image, cu titlu) la `path`. False la orice problema."""
     if Image is None:
         return False
     try:
         seed = hashlib.sha1((a.get("title") or "").encode()).digest()
-        s = list(seed)
-        base = _gradient_base()
+        _save(_compose(a, list(seed), True), path, (W, H))
+        return True
+    except Exception:
+        return False
 
-        over = Image.new("RGBA", (W2, H2), (0, 0, 0, 0))
-        do = ImageDraw.Draw(over)
-        _bokeh(do, s)
-        _ARCS.get(a.get("category", ""), _arcs_general)(do, s)
-        base.paste(over, (0, 0), over)
 
-        icon = _pick_icon(a)
-        if icon:
-            _place_icon(base, icon, s)
-        else:
-            ents = a.get("entities") or []
-            _monogram(base, (ents[0] if ents else a.get("title") or "I")[0], s)
+ART_W, ART_H = 960, 504
 
-        d = ImageDraw.Draw(base)
-        mono = _font("mono", 26 * SS)
-        mono_s = _font("mono", 20 * SS)
-        display = _font("display", 62 * SS)
 
-        d.text((56 * SS, 48 * SS), (a.get("category") or "știri").upper(),
-               font=mono, fill=GOLD_HEX)
-        rule_w = int((W2 / PHI - 112 * SS) / PHI)
-        d.line([56 * SS, 96 * SS, 56 * SS + rule_w, 96 * SS], fill=GOLD_HEX, width=2 * SS)
-
-        y = 128 * SS
-        for ln in _wrap(d, a.get("title", ""), display, int(W2 / PHI) - 88 * SS):
-            d.text((56 * SS, y), ln, font=display, fill=PAPER)
-            y += 82 * SS
-
-        d.text((56 * SS, H2 - 66 * SS), "IZZ.ro — Informația Zero Zgomot",
-               font=mono, fill=MUTED)
-        d.text((W2 - 34 * SS, H2 - 34 * SS), f"Nº {seed.hex()[:6]}",
-               font=mono_s, fill=GOLD_STRONG, anchor="rs")
-
-        img = base.resize((W, H), Image.LANCZOS)
-        os.makedirs(os.path.dirname(path), exist_ok=True)
-        img.save(path, "JPEG", quality=84)  # gradientele comprima prost in PNG
+def generate_art(a: dict, path: str) -> bool:
+    """Varianta de SITE (fara text -- titlul e deja pe pagina): aceeasi arta
+    generativa cu icoana centrata, 960x504. False la orice problema."""
+    if Image is None:
+        return False
+    try:
+        seed = hashlib.sha1((a.get("title") or "").encode()).digest()
+        _save(_compose(a, list(seed), False), path, (ART_W, ART_H))
         return True
     except Exception:
         return False

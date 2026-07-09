@@ -309,6 +309,8 @@ main { max-width: var(--maxw); margin: 0 auto; padding: var(--s-34) var(--s-34);
   box-shadow: 0 -2px 8px rgba(21, 23, 28, .06);
 }
 #izz-consent p { margin: 0; font-size: var(--fs-xs); color: var(--ink-2); max-width: var(--measure); }
+/* linkuri inline in proza: subliniate ca sa NU se distinga doar prin culoare (WCAG link-in-text-block) */
+#izz-consent p a, .topics a, .follow a, .page-intro a, .summary a { text-decoration: underline; }
 #izz-consent .consent-actions { display: flex; gap: var(--s-8); }
 #izz-consent button {
   font-family: var(--font-mono); font-size: var(--fs-xs); font-weight: 700;
@@ -332,3 +334,13 @@ main { max-width: var(--maxw); margin: 0 auto; padding: var(--s-34) var(--s-34);
 .stats-table { border-collapse: collapse; width: 100%; max-width: var(--measure); font-size: var(--fs-xs); }
 .stats-table th, .stats-table td { text-align: left; padding: var(--s-8) var(--s-13); border-bottom: 1px solid var(--line); }
 .stats-table th { font-family: var(--font-mono); font-size: var(--fs-eyebrow); text-transform: uppercase; letter-spacing: 1px; color: var(--ink-3); border-bottom: 2px solid var(--ink); }
+
+/* ---- arta generativa pe site (faza 2: articol + hero) ---- */
+.article-art {
+  display: block; width: 100%; max-width: var(--measure); height: auto;
+  border: 1px solid var(--line); margin: var(--s-8) 0 var(--s-21);
+}
+.lead-art {
+  display: block; width: 100%; height: auto;
+  border: 1px solid var(--line); margin-bottom: var(--s-5);
+}

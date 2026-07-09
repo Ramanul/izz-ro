@@ -4,14 +4,14 @@ name: pipeline
 # Commit-ul declanseaza Cloudflare Pages, care doar randeaza (vezi README).
 
 on:
+  # La fiecare 2 ore. Fiecare commit al starii declanseaza un build Cloudflare
+  # Pages, iar planul free are ~500 build-uri/luna: 12/zi = ~360/luna lasa
+  # rezerva pentru merge-uri de PR. NU folosim mai des pentru ca ar epuiza
+  # bugetul de build -> deploy-urile s-ar opri (exact bug-ul din 5-9 iul 2026,
+  # cand commit-urile purtau [skip ci], onorat SI de Cloudflare -> site inghetat).
   schedule:
-    # minut diferit de :00 (congestie GitHub) + DOUA triggere/ora: cron-urile
-    # schedule sunt best-effort si noaptea GitHub sare slot-uri intregi
-    # (masurat 2026-07-04: gol de 4.5h, 00:17-03:17 toate sarite). Cu doua
-    # triggere, un slot sarit inseamna gol de ~30min, nu de ore. Bugetul AI
-    # ramane per rulare; rularile fara items noi consuma doar upgrade-reserve.
-    - cron: "17,47 * * * *"
-  workflow_dispatch: {}          # buton „Run workflow" pentru rulare manuala
+    - cron: "13 */2 * * *"
+  workflow_dispatch: {}          # buton „Run workflow" pentru rulare manuala / deploy imediat
 
 permissions:
   contents: write                # ca sa comita data/articles.json
@@ -42,11 +42,14 @@ jobs:
         run: python -m generator.main
 
       - name: Comite starea (declanseaza deploy Cloudflare)
+        # FARA [skip ci]: niciun workflow nu se declanseaza pe push (doar cron),
+        # deci [skip ci] nu ne ajuta la Actions -- dar Cloudflare Pages IL onoreaza
+        # si ar sari deploy-ul, inghetand site-ul. Vezi comentariul de la 'on:'.
         run: |
           git config user.name "izz-bot"
           git config user.email "bot@izz.ro"
           git add data/articles.json data/feed_cache.json
-          git commit -m "update content [skip ci]" || echo "nimic de comis"
+          git commit -m "update content" || echo "nimic de comis"
           git push || echo "nimic de impins"
 
       - name: QA check (alerta daca scade calitatea publicabila)

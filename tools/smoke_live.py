@@ -13,11 +13,14 @@ Reguli verificate (CLAUDE.md sectiunea 7, decizia ownerului):
   articol: fara disclaimerul metodologic (traieste doar in /legal/method);
            exact un sources-box cu linkuri externe; fara btn-source
 """
+import datetime as dt
 import os
 import random
 import re
 import sys
 import urllib.request
+
+FRESH_MAX_HOURS = 48   # cel mai nou articol de pe live trebuie sa fie mai recent de-atat
 
 BASE = os.getenv("BASE_URL", "https://izz.ro").rstrip("/")
 N_ARTICLES = 5
@@ -52,12 +55,28 @@ def main() -> int:
           "/", "numele surselor sunt linkuri externe pe fiecare card")
     check(">Citește<" not in home and "read-more" not in home, "/", "fara CTA 'Citește' pe carduri")
 
-    print(f"articole (esantion {N_ARTICLES} din sitemap):")
+    print("prospetime:")
     sitemap = get("/sitemap.xml")
+    # cel mai nou lastmod de articol (data publicarii) -> deploy-ul chiar publica
+    # continut proaspat. Prinde site-ul INGHETAT (deploy sarit), pe care verificarile
+    # de format nu-l vad. (5-9 iul 2026: [skip ci] pe commit sarea build-ul Cloudflare.)
+    lastmods = re.findall(r"<lastmod>(\d{4}-\d{2}-\d{2})</lastmod>", sitemap)
+    newest = max(lastmods) if lastmods else "—"
+    fresh = False
+    try:
+        age_h = (dt.datetime.now(dt.timezone.utc).date() - dt.date.fromisoformat(newest)).days * 24
+        fresh = age_h <= FRESH_MAX_HOURS
+    except ValueError:
+        pass
+    check(fresh, "/sitemap.xml",
+          f"cel mai nou articol e recent (lastmod {newest}, prag {FRESH_MAX_HOURS}h)")
+
+    print(f"articole (esantion {N_ARTICLES} din sitemap):")
     paths = [re.sub(r"^https?://[^/]+", "", u) for u in re.findall(r"<loc>([^<]+)</loc>", sitemap)]
     arts = [p for p in paths if p.count("/") >= 3 and "/legal/" not in p]
     random.shuffle(arts)
     with_cover = 0
+    with_art = 0
     for p in arts[:N_ARTICLES]:
         html = get(p)
         page = p[:60]
@@ -80,6 +99,11 @@ def main() -> int:
             except Exception:
                 ok_img = False
             check(ok_img, page, "coperta og:image exista si e imagine reala (>5KB)")
+        # arta pe site (faza 2): banner fara text pe pagina articolului
+        if 'class="article-art"' in html:
+            with_art += 1
+    check(with_art >= max(1, N_ARTICLES - 1), "articole",
+          f"arta pe site pe esantion: {with_art}/{N_ARTICLES} (minim {N_ARTICLES - 1})")
     # cateva articole pot cadea legitim pe og-image static (generate() a esuat izolat),
     # dar majoritatea esantionului TREBUIE sa aiba coperta proprie
     check(with_cover >= max(1, N_ARTICLES - 1), "articole",
