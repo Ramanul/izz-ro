@@ -52,6 +52,7 @@ TEASER_MAX_WORDS = 40          # B: teaser scurt ("extras foarte scurt")
 SYNTHESIS_MAX_WORDS = 90       # C: sinteză multi-sursă (doar pentru clustere importante)
 CLUSTER_MIN_SOURCES = 2        # >=2 surse pe același eveniment -> candidat pentru C
 ARTICLE_TTL_DAYS = 7           # mai scurt -> volum mai mic -> incape in quota free Gemini
+ART_MAX_DAYS = 2               # art.jpg (banner pe site) doar pt articolele mai noi de-atat -> build Cloudflare mai usor
 MAX_PER_SOURCE = 8             # redus de la 12 ca sa scada apelurile AI/rulare
 
 AI_PROVIDER = os.getenv("AI_PROVIDER", "gemini")  # "gemini" | "anthropic"

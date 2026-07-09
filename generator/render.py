@@ -283,13 +283,22 @@ def build(articles: list, mod: dict | None = None) -> None:
 
     by_date = sorted(articles, key=lambda a: a.get("published") or "", reverse=True)
 
-    # coperti: share (og, cu titlu) + arta fara text pentru site -- generate O DATA,
-    # INAINTE de orice randare, ca hero-ul si paginile de articol sa le poata folosi
+    # coperti generate O DATA, INAINTE de orice randare (hero + articole le folosesc).
+    # cover.jpg (share/og) pentru TOATE -- orice link poate fi distribuit.
+    # art.jpg (banner pe site) DOAR pentru articolele recente: build-ul Cloudflare
+    # regenereaza tot la fiecare deploy, iar 2 imagini x tot setul (~1200) a dublat
+    # greutatea build-ului fata de baza care mergea. Articolele vechi (rar vizitate)
+    # raman fara banner, fallback pe restul paginii -- deploy robust, sub limite.
+    _now = datetime.now(timezone.utc)
     for a in by_date:
         cdir = os.path.join(OUT_DIR, a["category"], a["slug"])
         if covers.generate(a, os.path.join(cdir, "cover.jpg")):
             a["cover_url"] = f"{config.SITE['url']}/{a['category']}/{a['slug']}/cover.jpg"
-        if covers.generate_art(a, os.path.join(cdir, "art.jpg")):
+        try:
+            fresh = (_now - datetime.fromisoformat(a["published"])).days < config.ART_MAX_DAYS
+        except (ValueError, TypeError, KeyError):
+            fresh = False
+        if fresh and covers.generate_art(a, os.path.join(cdir, "art.jpg")):
             a["art_path"] = f"/{a['category']}/{a['slug']}/art.jpg"
 
     hero = _pick_hero(by_date)
