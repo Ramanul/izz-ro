@@ -1,0 +1,21 @@
+# Subagent de dependente (cu guard): deschide PR-uri de update; tu le aprobi.
+# Gratuit, nu atinge deploy-ul. Vezi CLAUDE.md sectiunea despre GitHub/Cloudflare.
+version: 2
+updates:
+  # dependentele Python din requirements.txt
+  - package-ecosystem: "pip"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    open-pull-requests-limit: 5
+    commit-message:
+      prefix: "deps"
+
+  # versiunile actiunilor din .github/workflows (actions/checkout etc.)
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    open-pull-requests-limit: 5
+    commit-message:
+      prefix: "ci"

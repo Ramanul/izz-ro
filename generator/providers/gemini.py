@@ -13,7 +13,14 @@ import urllib.request
 from .base import Provider
 
 MODEL = os.getenv("GEMINI_MODEL", "gemini-2.5-flash-lite")
-ENDPOINT = "https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent?key={key}"
+# Baza URL a API-ului. Poti ruta prin Cloudflare AI Gateway (cache, retry,
+# rate-limit, observabilitate) setand GEMINI_BASE_URL la URL-ul gateway-ului:
+#   https://gateway.ai.cloudflare.com/v1/<account_id>/<gateway>/google-ai-studio
+# Fara env -> direct la Google, comportament neschimbat. Calea si cheia raman la fel.
+# `or` (nu doar default-ul getenv): in GitHub Actions ${{ vars.X }} nesetat da "",
+# nu absenta -> tratam sirul gol tot ca "direct la Google".
+BASE_URL = (os.getenv("GEMINI_BASE_URL") or "https://generativelanguage.googleapis.com").rstrip("/")
+ENDPOINT = BASE_URL + "/v1beta/models/{model}:generateContent?key={key}"
 THROTTLE = float(os.getenv("GEMINI_THROTTLE", "4.0"))   # pauza intre apeluri: ~15 req/min, sub plafonul RPM free-tier (2s tripa 429 la mijloc de rulare)
 RETRIES_PER_KEY = 2
 
