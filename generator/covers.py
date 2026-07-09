@@ -1,24 +1,25 @@
-"""Coperti editoriale per articol (og:image) — v3 'dark editorial'.
+"""Coperti editoriale per articol (og:image) — v4 'scene'.
 
 Fundatie profesionista, 100% legala si offline:
 - tipografie: Playfair Display 800 (OFL, fontul masthead-ului site-ului)
-- iconografie: Tabler Icons (MIT), 122 pictograme desenate de designeri,
-  pre-rasterizate in generator/assets/icons/ si colorate in auriu la compunere
-- compozitie: fond ink cu gradient, arta generativa din arce phi translucide
-  (stil distinct per categorie), 'bokeh' Fibonacci, icoana cu halo difuz --
-  TOATE variate din seed-ul articolului: doua stiri cu aceeasi icoana au
-  compozitii vizibil diferite
-- selectie: icoana aleasa de AI (campul 'icon', zero apeluri noi) sau, in lipsa,
-  harta de cuvinte-cheie; fallback estetic: monograma Playfair aurie
+- iconografie: Tabler Icons (MIT), pictograme desenate de designeri, folosite ca
+  SILUETE tematice in prim-plan (nu icoane care plutesc)
+- compozitie: SCENA reala compusa din forme desenate -- cer + soare/luna, linie de
+  orizont, siluete pe planuri cu perspectiva atmosferica (departe cetos/deschis,
+  aproape inchis). Arhetipuri pe categorie: ORAS (skyline cu ferestre aprinse),
+  STADION (nocturne + teren), MARE (tarm + vapor + avion). Totul din seed-ul
+  titlului (rng) -> doua stiri din aceeasi categorie au scene vizibil diferite.
+- selectie: icoana tematica din AI ('icon') / cuvinte-cheie devine silueta focala
 - siguranta: orice eroare -> False, articolul pastreaza og-image static
 """
 import hashlib
 import math
 import os
+import random
 import re
 
 try:
-    from PIL import Image, ImageDraw, ImageFilter, ImageFont
+    from PIL import Image, ImageChops, ImageDraw, ImageFilter, ImageFont
 except ImportError:
     Image = None
 
@@ -31,6 +32,7 @@ PHI = 1.618
 W, H = 1200, 630
 SS = 2
 W2, H2 = W * SS, H * SS
+ART_W, ART_H = 960, 504
 
 _ASSETS = os.path.join(os.path.dirname(os.path.abspath(__file__)), "assets")
 _FONT_CACHE: dict = {}
@@ -71,7 +73,7 @@ def _norm(s: str) -> str:
     return (s or "").translate(_DIA).lower()
 
 
-# ---- selectia icoanei ------------------------------------------------------
+# ---- selectia icoanei tematice (silueta focala) ----------------------------
 _KW_ICON = [
     (r"canicul|arsita|tempera", "sun"), (r"furtun|vijel|cod portocaliu|cod rosu", "cloud-storm"),
     (r"inundat|viitur", "droplet"), (r"ninsor|zapad|\bger\b|viscol", "snowflake"),
@@ -120,8 +122,7 @@ _KW_ICON = [
     (r"munte|alpin", "mountain"), (r"protest|miting|grev|mars", "speakerphone"),
     (r"restaurant|aliment|mancare|gastronom", "tools-kitchen-2"),
 ]
-# rotatie seeded per categorie: cand niciun cuvant-cheie nu decide, default-ul
-# NU mai e mereu acelasi (feedback owner: "la sport aceeasi pictograma")
+# rotatie seeded per categorie cand niciun cuvant-cheie nu decide
 _CAT_ICONS = {"politic": ["building-monument", "podium"],
               "economic": ["chart-line", "coins", "trending-up"],
               "extern": ["globe", "compass", "world-latitude"],
@@ -144,137 +145,216 @@ def _pick_icon(a: dict) -> str | None:
     return pool[seed[2] % len(pool)]
 
 
-# ---- straturi compozitionale (toate primesc seed) ---------------------------
-_BASE_GRADIENT = None
+# ---- paleta de scena pe categorie ------------------------------------------
+# Luminos, saturat, apus/rasarit -- ton cald/auriu ca liant cu paleta site-ului
+# (aur #c9a227, crema #faf5e6). (cer sus saturat, orizont luminos, siluete
+# departe, siluete aproape, accent viu al luminii).
+PAL = {
+    "politic":  [(46, 78, 120), (236, 182, 96), (46, 66, 104), (28, 36, 58), (247, 208, 112)],
+    "economic": [(40, 122, 104), (242, 198, 106), (34, 84, 70), (22, 46, 38), (255, 216, 120)],
+    "extern":   [(48, 104, 158), (168, 212, 230), (46, 70, 118), (26, 38, 66), (128, 206, 228)],
+    "sport":    [(158, 58, 70), (252, 182, 100), (118, 50, 54), (40, 20, 24), (255, 176, 96)],
+    "tech":     [(84, 66, 158), (162, 206, 228), (66, 54, 124), (28, 24, 56), (120, 218, 230)],
+    "general":  [(92, 118, 150), (244, 200, 122), (78, 80, 84), (34, 30, 24), (252, 210, 124)],
+}
+CITY_AMBIENT = {"politic": ["flag"], "economic": ["coins"], "tech": ["antenna"], "general": ["trees"]}
 
 
-def _gradient_base():
-    """Fundalul cu gradient e identic pentru toate copertile -> se deseneaza o
-    singura data (1260 de linii) si se copiaza; economiseste ~40% din randare."""
-    global _BASE_GRADIENT
-    if _BASE_GRADIENT is None:
-        img = Image.new("RGB", (W2, H2), tuple(INK_BOT))
-        d = ImageDraw.Draw(img)
-        for y in range(H2):
-            t = y / H2
-            col = tuple(int(INK_TOP[i] + (INK_BOT[i] - INK_TOP[i]) * t) for i in range(3))
-            d.line([(0, y), (W2, y)], fill=col)
-        _BASE_GRADIENT = img
-    return _BASE_GRADIENT.copy()
+def _lerp(a, b, t):
+    return tuple(int(a[i] + (b[i] - a[i]) * t) for i in range(3))
 
 
-def _bokeh(do, s):
-    """Discuri Fibonacci translucide — caldura si adancime, pozitii din seed."""
-    fib = [21, 34, 55, 89, 144]
-    for i in range(5):
-        r = fib[i] * SS * (0.8 + s[i] / 255 * 0.7)
-        x = W2 * (0.52 + (s[i + 5] / 255) * 0.45)
-        y = H2 * (0.08 + (s[i + 10] / 255) * 0.84)
-        a = 10 + int(s[i + 3] / 255 * 22)
-        do.ellipse([x - r, y - r, x + r, y + r], fill=(*GOLD, a))
+# ---- straturi de scena -----------------------------------------------------
+def _sky(sky_top, sky_bot, horizon):
+    img = Image.new("RGB", (W2, H2), sky_top)
+    d = ImageDraw.Draw(img)
+    for y in range(horizon):
+        d.line([(0, y), (W2, y)], fill=_lerp(sky_top, sky_bot, y / max(1, horizon)))
+    return img
 
 
-def _arcs_politic(do, s):
-    cx = W2 * (0.78 + s[0] / 255 * 0.08)
-    for i, (k, al, w) in enumerate([(1.15, 40, 20), (0.86, 66, 12), (0.6, 30, 26)]):
-        r = H2 * k / 2
-        cy = H2 * (0.5 + (s[i] / 255 - 0.5) * 0.2)
-        do.arc([cx - r, cy - r, cx + r, cy + r], 120, 420, fill=(*GOLD, al), width=w * SS)
+def _sun(img, accent, rng, horizon):
+    cx = int(W2 * rng.uniform(0.15, 0.85))
+    cy = int(horizon * rng.uniform(0.45, 0.9))
+    r = int(W2 * rng.uniform(0.16, 0.26))
+    q = 3
+    sm = Image.new("L", (W2 // q, H2 // q), 0)
+    ImageDraw.Draw(sm).ellipse([cx // q - r // q, cy // q - r // q, cx // q + r // q, cy // q + r // q], fill=200)
+    sm = sm.filter(ImageFilter.GaussianBlur(r // q // 2))
+    glow = Image.new("RGB", (W2, H2), accent)
+    out = Image.new("RGB", (W2, H2), (0, 0, 0))
+    out.paste(glow, (0, 0), sm.resize((W2, H2), Image.BILINEAR))
+    disc = Image.new("RGB", (W2, H2), (0, 0, 0))
+    dm = Image.new("L", (W2, H2), 0)
+    dr = int(r * 0.5)
+    ImageDraw.Draw(dm).ellipse([cx - dr, cy - dr, cx + dr, cy + dr], fill=255)
+    disc.paste(Image.new("RGB", (W2, H2), _lerp(accent, (255, 255, 255), 0.4)), (0, 0),
+               dm.filter(ImageFilter.GaussianBlur(4 * SS)))
+    return ImageChops.add(ImageChops.add(img, out, scale=1.5), disc, scale=1.2)
 
 
-def _arcs_economic(do, s):
-    for i in range(3):
-        r = H2 * (0.34 + i * 0.16)
-        cx = W2 * (0.62 + i * 0.1) + (s[i] / 255 - 0.5) * 60 * SS
-        cy = H2 * (1.06 - i * 0.16)
-        do.arc([cx - r, cy - r, cx + r, cy + r], 180, 305, fill=(*GOLD, 62 - i * 14), width=(16 - i * 3) * SS)
+def _windows(d, x0, y0, x1, y1, col, rng):
+    wy = y0 + 12 * SS
+    while wy < y1 - 10 * SS:
+        wx = x0 + 10 * SS
+        while wx < x1 - 12 * SS:
+            if rng.random() > 0.35:
+                d.rectangle([wx, wy, wx + 5 * SS, wy + 8 * SS], fill=(*col, rng.randint(120, 230)))
+            wx += 14 * SS
+        wy += 20 * SS
 
 
-def _arcs_extern(do, s):
-    cx, cy = W2 * (0.82 + s[0] / 255 * 0.06), H2 * 0.5
-    for i, k in enumerate((0.95, 0.66, 0.4)):
-        r = H2 * k
-        do.ellipse([cx - r * 0.42, cy - r, cx + r * 0.42, cy + r],
-                   outline=(*GOLD, 46 + i * 14), width=(6 + i * 3) * SS)
-    do.ellipse([cx - H2 * 0.95 * 1.02, cy - H2 * 0.95, cx + H2 * 0.95 * 1.02, cy + H2 * 0.95],
-               outline=(*GOLD, 26), width=4 * SS)
-
-
-def _arcs_sport(do, s):
-    ang = -34 + (s[0] / 255 - 0.5) * 16
-    for i in range(3):
-        off = i * 46 * SS
-        x0 = W2 * 0.5 + off
-        y0 = H2 * 1.1
-        x1 = x0 + math.cos(math.radians(ang)) * H2 * 1.15
-        y1 = y0 + math.sin(math.radians(ang)) * H2 * 1.15
-        do.line([x0, y0, x1, y1], fill=(*GOLD, 78 - i * 24), width=(15 - i * 4) * SS)
-    r = H2 * 0.55
-    do.arc([W2 * 0.6 - r, H2 * 0.65 - r, W2 * 0.6 + r, H2 * 0.65 + r], 200, 320,
-           fill=(*GOLD, 40), width=10 * SS)
-
-
-def _arcs_tech(do, s):
-    step = 64 * SS
-    ox = int(s[0] / 255 * step)
-    for x in range(int(W2 * 0.55) + ox, W2, step):
-        for y in range(step // 2, H2, step):
-            do.ellipse([x - 2 * SS, y - 2 * SS, x + 2 * SS, y + 2 * SS], fill=(*GOLD, 46))
-    r = H2 * 0.52
-    cx, cy = W2 * 0.8, H2 * (0.42 + s[1] / 255 * 0.2)
-    do.ellipse([cx - r, cy - r, cx + r, cy + r], outline=(*GOLD, 44), width=5 * SS)
-
-
-def _arcs_general(do, s):
-    x, y = W2 * (0.98 + s[0] / 255 * 0.04), H2 * (0.96 + s[1] / 255 * 0.06)
-    r = H2 * 0.78
-    for i in range(4):
-        do.arc([x - r, y - r, x + r, y + r], 150, 300, fill=(*GOLD, 30 + i * 12),
-               width=(5 + i * 2) * SS)
-        r /= PHI
-
-
-_ARCS = {"politic": _arcs_politic, "economic": _arcs_economic, "extern": _arcs_extern,
-         "sport": _arcs_sport, "tech": _arcs_tech, "general": _arcs_general}
-
-
-def _place_icon(base, name: str, s, cxf: float = 0.70):
-    src = _icon_img(name)
-    if src is None:
-        return False
-    size = int(W2 * (0.21 + s[15] / 255 * 0.05))
-    icon = src.resize((size, size), Image.LANCZOS)
-    alpha = icon.split()[3]
-    gold_layer = Image.new("RGBA", icon.size, (*GOLD, 255))
-    tinted = Image.new("RGBA", icon.size, (0, 0, 0, 0))
-    tinted.paste(gold_layer, (0, 0), alpha)
-    # halo difuz sub icoana
-    q = 4                                            # glow la 1/4 rezolutie: blur ~16x mai ieftin
-    gs = size * 2 // q
-    glow_small = Image.new("RGBA", (gs, gs), (0, 0, 0, 0))
-    ga = alpha.resize((gs // 2, gs // 2)).point(lambda v: int(v * 0.55))
-    glow_small.paste(Image.new("RGBA", (gs // 2, gs // 2), (*GOLD, 255)), (gs // 4, gs // 4), ga)
-    glow_small = glow_small.filter(ImageFilter.GaussianBlur(26 * SS // q))
-    glow = glow_small.resize((size * 2, size * 2), Image.BILINEAR)
-    x = int(W2 * (cxf + (s[16] / 255 - 0.5) * 0.06))
-    y = int(H2 / PHI * (1.0 + (s[17] / 255 - 0.5) * 0.22))
-    base.paste(glow, (x - size, y - size), glow)
-    base.paste(tinted, (x - size // 2, y - size // 2), tinted)
-    return True
-
-
-def _monogram(base, letter: str, s, cxf: float = 0.72):
-    f = _font("display", int(H2 * 0.62))
+def _skyline(base, col, rng, horizon, ymin, ymax, near, accent):
     layer = Image.new("RGBA", (W2, H2), (0, 0, 0, 0))
     d = ImageDraw.Draw(layer)
-    x = int(W2 * (cxf + (s[16] / 255 - 0.5) * 0.05))
-    y = int(H2 / PHI)
-    d.text((x, y), letter.upper(), font=f, fill=(*GOLD, 235), anchor="mm")
-    glow = layer.filter(ImageFilter.GaussianBlur(30 * SS))
-    base.paste(glow, (0, 0), glow.point(lambda v: int(v * 0.5)))
-    base.paste(layer, (0, 0), layer)
+    x = -rng.randint(0, 40) * SS
+    while x < W2:
+        bw = int(W2 * rng.uniform(0.05, 0.11))
+        bh = int(H2 * rng.uniform(ymin, ymax))
+        top = horizon - bh
+        d.rectangle([x, top, x + bw - 3 * SS, horizon], fill=(*col, 255))
+        if rng.random() > 0.6:                         # antena / turnulet
+            d.rectangle([x + bw // 2 - SS, top - rng.randint(10, 40) * SS, x + bw // 2 + SS, top], fill=(*col, 255))
+        if near:
+            _windows(d, x, top, x + bw, horizon, accent, rng)
+        x += bw + rng.randint(2, 10) * SS
+    if not near:
+        layer = layer.filter(ImageFilter.GaussianBlur(2 * SS))   # ceata atmosferica
+    base.alpha_composite(layer)
 
 
+def _ground(base, col, horizon):
+    g = Image.new("RGBA", (W2, H2), (0, 0, 0, 0))
+    ImageDraw.Draw(g).rectangle([0, horizon, W2, H2], fill=(*col, 255))
+    base.alpha_composite(g)
+
+
+def _silhouette(base, name, h, cx, groundy, col, rng, glow=False, accent=None):
+    src = _icon_img(name)
+    if src is None:
+        return
+    a = src.split()[3].resize((h, h), Image.LANCZOS)
+    layer = Image.new("RGBA", (h, h), (*col, 255))
+    layer.putalpha(a)
+    if glow and accent:
+        gl = Image.new("RGBA", (h * 2, h * 2), (0, 0, 0, 0))
+        gl.paste(Image.new("RGBA", (h, h), (*accent, 255)), (h // 2, h // 2), a.point(lambda v: int(v * 0.7)))
+        gl = gl.filter(ImageFilter.GaussianBlur(16 * SS))
+        base.alpha_composite(gl, (cx - h, groundy - h - h // 2))
+    base.alpha_composite(layer, (cx - h // 2, groundy - h))
+
+
+def _scene_city(base, pal, rng, horizon, a):
+    sky_top, sky_bot, far, near, accent = pal
+    _skyline(base, _lerp(far, sky_bot, 0.4), rng, horizon, 0.10, 0.26, False, accent)
+    _ground(base, near, horizon)
+    _skyline(base, near, rng, horizon, 0.18, 0.42, True, accent)
+    for name in CITY_AMBIENT.get(a.get("category"), []):
+        _silhouette(base, name, int(H2 * 0.16), int(W2 * rng.uniform(0.12, 0.88)), horizon,
+                    _lerp(near, far, 0.4), rng)
+    focal = _pick_icon(a) or "building-community"
+    _silhouette(base, focal, int(H2 * 0.27), int(W2 * rng.uniform(0.42, 0.7)), horizon,
+                _lerp(accent, (255, 255, 255), 0.18), rng, glow=True, accent=accent)
+
+
+def _scene_stadium(base, pal, rng, horizon, a):
+    sky_top, sky_bot, far, near, accent = pal
+    d = ImageDraw.Draw(base)
+    cx = W2 // 2
+    rw, rh = int(W2 * 0.62), int(H2 * 0.5)
+    for i in range(4):                                  # tribune: arce concentrice
+        d.ellipse([cx - rw + i * 12 * SS, horizon - rh + i * 10 * SS, cx + rw - i * 12 * SS, horizon],
+                  outline=(*_lerp(far, near, i / 4), 255), width=10 * SS)
+    _ground(base, near, horizon)
+    for fx in (0.2, 0.8):                               # nocturne
+        px = int(W2 * fx)
+        d.line([px, horizon, px, int(H2 * 0.14)], fill=(*near, 255), width=5 * SS)
+        gl = Image.new("RGBA", (W2, H2), (0, 0, 0, 0))
+        ImageDraw.Draw(gl).ellipse([px - 40 * SS, int(H2 * 0.1) - 30 * SS, px + 40 * SS, int(H2 * 0.1) + 30 * SS],
+                                   fill=(*accent, 200))
+        base.alpha_composite(gl.filter(ImageFilter.GaussianBlur(30 * SS)))
+    d.arc([cx - 60 * SS, horizon - 8 * SS, cx + 60 * SS, horizon + 40 * SS], 180, 360,
+          fill=(*_lerp(near, accent, 0.3), 200), width=3 * SS)
+    focal = _pick_icon(a)
+    if focal not in ("trophy", "medal", "ball-football", "ball-basketball", "ball-tennis", "ball-volleyball"):
+        focal = "ball-football"
+    _silhouette(base, focal, int(H2 * 0.2), int(W2 * 0.6), horizon + int(H2 * 0.06),
+                _lerp(accent, (255, 255, 255), 0.2), rng, glow=True, accent=accent)
+
+
+def _scene_sea(base, pal, rng, horizon, a):
+    sky_top, sky_bot, far, near, accent = pal
+    pts = [(0, horizon)]
+    x = 0
+    while x < W2:                                        # tarm/munti departe
+        x += rng.randint(60, 140) * SS
+        pts.append((x, horizon - rng.randint(20, 90) * SS))
+    pts += [(W2, horizon), (0, horizon)]
+    land = Image.new("RGBA", (W2, H2), (0, 0, 0, 0))
+    ImageDraw.Draw(land).polygon(pts, fill=(*_lerp(far, sky_bot, 0.3), 255))
+    base.alpha_composite(land.filter(ImageFilter.GaussianBlur(2 * SS)))
+    sea = Image.new("RGBA", (W2, H2), (0, 0, 0, 0))
+    ImageDraw.Draw(sea).rectangle([0, horizon, W2, H2], fill=(*_lerp(near, accent, 0.12), 255))
+    base.alpha_composite(sea)
+    d = ImageDraw.Draw(base)
+    for i in range(14):                                  # reflexii pe apa
+        yy = horizon + int((i + 1) ** 1.5 * 3 * SS)
+        if yy > H2:
+            break
+        d.line([int(W2 * rng.uniform(0.2, 0.5)), yy, int(W2 * rng.uniform(0.5, 0.8)), yy],
+               fill=(*_lerp(accent, near, 0.4), 120), width=2 * SS)
+    _silhouette(base, "ship", int(H2 * 0.16), int(W2 * rng.uniform(0.35, 0.7)), horizon + int(H2 * 0.16), near, rng)
+    _silhouette(base, "plane", int(H2 * 0.1), int(W2 * rng.uniform(0.15, 0.4)), int(horizon * 0.5),
+                _lerp(far, near, 0.5), rng)
+
+
+_GRAIN = None
+def _grain():
+    global _GRAIN
+    if _GRAIN is None:
+        _GRAIN = Image.effect_noise((W2, H2), 20).convert("RGB")
+    return _GRAIN
+
+
+_VIGN = None
+def _vignette():
+    global _VIGN
+    if _VIGN is None:
+        m = Image.new("L", (W2 // 3, H2 // 3), 0)
+        ImageDraw.Draw(m).ellipse([-W2 // 12, -H2 // 12, W2 // 3 + W2 // 12, H2 // 3 + H2 // 12], fill=255)
+        _VIGN = m.filter(ImageFilter.GaussianBlur(80)).resize((W2, H2), Image.BILINEAR)
+    return _VIGN
+
+
+def _compose_scene(a: dict):
+    rng = random.Random(a.get("title") or "x")
+    cat = a.get("category", "general")
+    pal = PAL.get(cat, PAL["general"])
+    horizon = int(H2 * rng.uniform(0.6, 0.72))
+    img = _sun(_sky(pal[0], pal[1], horizon), pal[4], rng, horizon).convert("RGBA")
+    if cat == "sport":
+        _scene_stadium(img, pal, rng, horizon, a)
+    elif cat == "extern":
+        _scene_sea(img, pal, rng, horizon, a)
+    else:
+        _scene_city(img, pal, rng, horizon, a)
+    img = img.convert("RGB")
+    img = Image.blend(img, ImageChops.overlay(img, _grain()), 0.04)
+    # vigneta blanda (185, nu 140) -> margini usor mai calde, imagine luminoasa
+    return Image.composite(img, ImageChops.multiply(img, Image.new("RGB", img.size, (185, 185, 185))), _vignette())
+
+
+# scena e identica pentru cover.jpg si art.jpg -> o calculam O DATA per articol
+_SCENE_CACHE: dict = {}
+def _scene(a: dict):
+    key = a.get("title") or ""
+    if key not in _SCENE_CACHE:
+        _SCENE_CACHE.clear()                # pastreaza doar ultimul articol
+        _SCENE_CACHE[key] = _compose_scene(a)
+    return _SCENE_CACHE[key].copy()
+
+
+# ---- text pentru coperta de share ------------------------------------------
 def _wrap(d, text, font, maxw):
     words, lines, cur = text.split(), [], ""
     for w_ in words:
@@ -291,43 +371,42 @@ def _wrap(d, text, font, maxw):
     return lines
 
 
-def _compose(a: dict, s, with_text: bool):
-    base = _gradient_base()
-    over = Image.new("RGBA", (W2, H2), (0, 0, 0, 0))
-    do = ImageDraw.Draw(over)
-    _bokeh(do, s)
-    _ARCS.get(a.get("category", ""), _arcs_general)(do, s)
-    base.paste(over, (0, 0), over)
+_SCRIM = None
+def _scrim():
+    """Val intunecat stanga+jos -> titlul ramane lizibil peste scena (contrast)."""
+    global _SCRIM
+    if _SCRIM is None:
+        left = Image.new("RGBA", (W2, H2), (0, 0, 0, 0))
+        dl = ImageDraw.Draw(left)
+        span = int(W2 * 0.66)
+        for x in range(span):
+            dl.line([(x, 0), (x, H2)], fill=(6, 8, 12, int(210 * (1 - x / span) ** 1.2)))
+        bottom = Image.new("RGBA", (W2, H2), (0, 0, 0, 0))
+        db = ImageDraw.Draw(bottom)
+        y0 = int(H2 * 0.72)
+        for y in range(y0, H2):
+            db.line([(0, y), (W2, y)], fill=(6, 8, 12, int(160 * (y - y0) / (H2 - y0))))
+        _SCRIM = Image.alpha_composite(left, bottom)
+    return _SCRIM
 
-    cxf = 0.70 if with_text else 0.5      # arta de site: icoana centrata (nu e text langa ea)
-    icon = _pick_icon(a)
-    if icon:
-        _place_icon(base, icon, s, cxf)
-    else:
-        ents = a.get("entities") or []
-        _monogram(base, (ents[0] if ents else a.get("title") or "I")[0], s, cxf + 0.02)
 
-    if not with_text:
-        return base
-
-    d = ImageDraw.Draw(base)
+def _draw_text(img, a: dict):
+    img = Image.alpha_composite(img.convert("RGBA"), _scrim()).convert("RGB")
+    d = ImageDraw.Draw(img)
     mono = _font("mono", 26 * SS)
     mono_s = _font("mono", 20 * SS)
     display = _font("display", 62 * SS)
-    d.text((56 * SS, 48 * SS), (a.get("category") or "știri").upper(),
-           font=mono, fill=GOLD_HEX)
+    d.text((56 * SS, 48 * SS), (a.get("category") or "știri").upper(), font=mono, fill=GOLD_HEX)
     rule_w = int((W2 / PHI - 112 * SS) / PHI)
     d.line([56 * SS, 96 * SS, 56 * SS + rule_w, 96 * SS], fill=GOLD_HEX, width=2 * SS)
     y = 128 * SS
     for ln in _wrap(d, a.get("title", ""), display, int(W2 / PHI) - 88 * SS):
         d.text((56 * SS, y), ln, font=display, fill=PAPER)
         y += 82 * SS
-    d.text((56 * SS, H2 - 66 * SS), "IZZ.ro — Informația Zero Zgomot",
-           font=mono, fill=MUTED)
+    d.text((56 * SS, H2 - 66 * SS), "IZZ.ro — Informația Zero Zgomot", font=mono, fill=MUTED)
     seed = hashlib.sha1((a.get("title") or "").encode()).digest()
-    d.text((W2 - 34 * SS, H2 - 34 * SS), f"Nº {seed.hex()[:6]}",
-           font=mono_s, fill=GOLD_STRONG, anchor="rs")
-    return base
+    d.text((W2 - 34 * SS, H2 - 34 * SS), f"Nº {seed.hex()[:6]}", font=mono_s, fill=GOLD_STRONG, anchor="rs")
+    return img
 
 
 def _save(base, path: str, size) -> None:
@@ -341,24 +420,18 @@ def generate(a: dict, path: str) -> bool:
     if Image is None:
         return False
     try:
-        seed = hashlib.sha1((a.get("title") or "").encode()).digest()
-        _save(_compose(a, list(seed), True), path, (W, H))
+        _save(_draw_text(_scene(a), a), path, (W, H))
         return True
     except Exception:
         return False
 
 
-ART_W, ART_H = 960, 504
-
-
 def generate_art(a: dict, path: str) -> bool:
-    """Varianta de SITE (fara text -- titlul e deja pe pagina): aceeasi arta
-    generativa cu icoana centrata, 960x504. False la orice problema."""
+    """Varianta de SITE (fara text -- titlul e deja pe pagina): aceeasi scena, 960x504."""
     if Image is None:
         return False
     try:
-        seed = hashlib.sha1((a.get("title") or "").encode()).digest()
-        _save(_compose(a, list(seed), False), path, (ART_W, ART_H))
+        _save(_scene(a), path, (ART_W, ART_H))
         return True
     except Exception:
         return False
