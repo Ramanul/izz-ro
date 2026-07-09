@@ -23,11 +23,11 @@ try:
 except ImportError:
     Image = None
 
-INK_TOP, INK_BOT = (26, 28, 34), (13, 14, 19)
 PAPER = "#f6f7f9"
+INK, INK2 = "#15171c", "#4d5562"           # text pe fond deschis (ca pe site)
 GOLD = (201, 162, 39)
 GOLD_HEX, GOLD_STRONG = "#c9a227", "#8b6918"
-MUTED = "#8b8fa0"                          # text secundar pe fond inchis (AA)
+MUTED = "#8b8fa0"                          # text secundar
 PHI = 1.618
 W, H = 1200, 630
 SS = 2
@@ -146,16 +146,17 @@ def _pick_icon(a: dict) -> str | None:
 
 
 # ---- paleta de scena pe categorie ------------------------------------------
-# Luminos, saturat, apus/rasarit -- ton cald/auriu ca liant cu paleta site-ului
-# (aur #c9a227, crema #faf5e6). (cer sus saturat, orizont luminos, siluete
-# departe, siluete aproape, accent viu al luminii).
+# LUMINOS pe fond alb-crema (ca site-ul): cer aproape alb cu tenta, siluete in
+# tonuri MEDII (citibile pe deschis, nu negre), accent auriu viu + rama aurie.
+# (cer sus tenta, cer jos alb-crema, siluete departe deschise, aproape medii, accent).
+PAPER_RGB, CREAM = (246, 247, 249), (250, 247, 238)
 PAL = {
-    "politic":  [(70, 132, 202), (250, 202, 110), (96, 132, 186), (40, 56, 100), (255, 216, 122)],
-    "economic": [(42, 164, 140), (250, 208, 118), (70, 140, 116), (26, 66, 56), (255, 222, 130)],
-    "extern":   [(56, 146, 208), (190, 228, 240), (78, 138, 194), (30, 52, 96), (150, 222, 242)],
-    "sport":    [(206, 74, 84), (255, 192, 112), (176, 78, 76), (62, 28, 32), (255, 194, 112)],
-    "tech":     [(116, 84, 200), (188, 224, 240), (110, 86, 178), (38, 32, 78), (140, 228, 240)],
-    "general":  [(112, 146, 186), (250, 208, 126), (118, 132, 150), (44, 40, 32), (255, 216, 132)],
+    "politic":  [(210, 224, 242), CREAM, (188, 202, 224), (110, 132, 170), (201, 162, 39)],
+    "economic": [(206, 234, 224), CREAM, (176, 210, 196), (96, 150, 128), (201, 162, 39)],
+    "extern":   [(206, 230, 244), (244, 250, 252), (184, 214, 232), (104, 150, 186), (74, 150, 186)],
+    "sport":    [(250, 224, 206), CREAM, (240, 198, 182), (196, 118, 100), (201, 120, 52)],
+    "tech":     [(224, 218, 246), (248, 246, 252), (206, 198, 232), (140, 122, 190), (86, 168, 190)],
+    "general":  [(218, 226, 236), CREAM, (200, 204, 210), (124, 132, 144), (201, 162, 39)],
 }
 CITY_AMBIENT = {"politic": ["flag"], "economic": ["coins"], "tech": ["antenna"], "general": ["trees"]}
 
@@ -190,7 +191,8 @@ def _sun(img, accent, rng, horizon):
     ImageDraw.Draw(dm).ellipse([cx - dr, cy - dr, cx + dr, cy + dr], fill=255)
     disc.paste(Image.new("RGB", (W2, H2), _lerp(accent, (255, 255, 255), 0.4)), (0, 0),
                dm.filter(ImageFilter.GaussianBlur(4 * SS)))
-    return ImageChops.add(ImageChops.add(img, out, scale=1.5), disc, scale=1.2)
+    # aditiv pur (scale=1.0): soarele ADAUGA lumina, nu imparte/intuneca fundalul
+    return ImageChops.add(ImageChops.add(img, out), disc)
 
 
 def _windows(d, x0, y0, x1, y1, col, rng):
@@ -247,14 +249,14 @@ def _silhouette(base, name, h, cx, groundy, col, rng, glow=False, accent=None):
 def _scene_city(base, pal, rng, horizon, a):
     sky_top, sky_bot, far, near, accent = pal
     _skyline(base, _lerp(far, sky_bot, 0.4), rng, horizon, 0.10, 0.26, False, accent)
-    _ground(base, near, horizon)
+    _ground(base, _lerp(near, CREAM, 0.62), horizon)
     _skyline(base, near, rng, horizon, 0.18, 0.42, True, accent)
     for name in CITY_AMBIENT.get(a.get("category"), []):
         _silhouette(base, name, int(H2 * 0.16), int(W2 * rng.uniform(0.12, 0.88)), horizon,
                     _lerp(near, far, 0.4), rng)
     focal = _pick_icon(a) or "building-community"
     _silhouette(base, focal, int(H2 * 0.27), int(W2 * rng.uniform(0.42, 0.7)), horizon,
-                _lerp(accent, (255, 255, 255), 0.18), rng, glow=True, accent=accent)
+                accent, rng, glow=True, accent=accent)
 
 
 def _scene_stadium(base, pal, rng, horizon, a):
@@ -265,7 +267,7 @@ def _scene_stadium(base, pal, rng, horizon, a):
     for i in range(4):                                  # tribune: arce concentrice
         d.ellipse([cx - rw + i * 12 * SS, horizon - rh + i * 10 * SS, cx + rw - i * 12 * SS, horizon],
                   outline=(*_lerp(far, near, i / 4), 255), width=10 * SS)
-    _ground(base, near, horizon)
+    _ground(base, _lerp(near, CREAM, 0.62), horizon)
     for fx in (0.2, 0.8):                               # nocturne
         px = int(W2 * fx)
         d.line([px, horizon, px, int(H2 * 0.14)], fill=(*near, 255), width=5 * SS)
@@ -279,7 +281,7 @@ def _scene_stadium(base, pal, rng, horizon, a):
     if focal not in ("trophy", "medal", "ball-football", "ball-basketball", "ball-tennis", "ball-volleyball"):
         focal = "ball-football"
     _silhouette(base, focal, int(H2 * 0.2), int(W2 * 0.6), horizon + int(H2 * 0.06),
-                _lerp(accent, (255, 255, 255), 0.2), rng, glow=True, accent=accent)
+                accent, rng, glow=True, accent=accent)
 
 
 def _scene_sea(base, pal, rng, horizon, a):
@@ -339,9 +341,15 @@ def _compose_scene(a: dict):
     else:
         _scene_city(img, pal, rng, horizon, a)
     img = img.convert("RGB")
-    img = Image.blend(img, ImageChops.overlay(img, _grain()), 0.03)
-    # vigneta foarte discreta (205) -> imagine luminoasa, culori vii
-    return Image.composite(img, ImageChops.multiply(img, Image.new("RGB", img.size, (205, 205, 205))), _vignette())
+    return _frame(img)
+
+
+def _frame(img):
+    """Rama aurie subtire, inset -> delimiteaza scena luminoasa pe fundalul alb al site-ului."""
+    d = ImageDraw.Draw(img)
+    m = int(W2 * 0.02)
+    d.rectangle([m, m, W2 - m - 1, H2 - m - 1], outline=GOLD, width=3 * SS)
+    return img
 
 
 # scena e identica pentru cover.jpg si art.jpg -> o calculam O DATA per articol
@@ -373,20 +381,15 @@ def _wrap(d, text, font, maxw):
 
 _SCRIM = None
 def _scrim():
-    """Val intunecat stanga+jos -> titlul ramane lizibil peste scena (contrast)."""
+    """Val ALB stanga+jos -> titlul inchis ramane lizibil peste scena luminoasa."""
     global _SCRIM
     if _SCRIM is None:
         left = Image.new("RGBA", (W2, H2), (0, 0, 0, 0))
         dl = ImageDraw.Draw(left)
-        span = int(W2 * 0.66)
+        span = int(W2 * 0.6)
         for x in range(span):
-            dl.line([(x, 0), (x, H2)], fill=(6, 8, 12, int(210 * (1 - x / span) ** 1.2)))
-        bottom = Image.new("RGBA", (W2, H2), (0, 0, 0, 0))
-        db = ImageDraw.Draw(bottom)
-        y0 = int(H2 * 0.72)
-        for y in range(y0, H2):
-            db.line([(0, y), (W2, y)], fill=(6, 8, 12, int(160 * (y - y0) / (H2 - y0))))
-        _SCRIM = Image.alpha_composite(left, bottom)
+            dl.line([(x, 0), (x, H2)], fill=(250, 249, 245, int(220 * (1 - x / span) ** 1.3)))
+        _SCRIM = left
     return _SCRIM
 
 
@@ -396,14 +399,14 @@ def _draw_text(img, a: dict):
     mono = _font("mono", 26 * SS)
     mono_s = _font("mono", 20 * SS)
     display = _font("display", 62 * SS)
-    d.text((56 * SS, 48 * SS), (a.get("category") or "știri").upper(), font=mono, fill=GOLD_HEX)
+    d.text((56 * SS, 48 * SS), (a.get("category") or "știri").upper(), font=mono, fill=GOLD_STRONG)
     rule_w = int((W2 / PHI - 112 * SS) / PHI)
     d.line([56 * SS, 96 * SS, 56 * SS + rule_w, 96 * SS], fill=GOLD_HEX, width=2 * SS)
     y = 128 * SS
     for ln in _wrap(d, a.get("title", ""), display, int(W2 / PHI) - 88 * SS):
-        d.text((56 * SS, y), ln, font=display, fill=PAPER)
+        d.text((56 * SS, y), ln, font=display, fill=INK)
         y += 82 * SS
-    d.text((56 * SS, H2 - 66 * SS), "IZZ.ro — Informația Zero Zgomot", font=mono, fill=MUTED)
+    d.text((56 * SS, H2 - 66 * SS), "IZZ.ro — Informația Zero Zgomot", font=mono, fill=INK2)
     seed = hashlib.sha1((a.get("title") or "").encode()).digest()
     d.text((W2 - 34 * SS, H2 - 34 * SS), f"Nº {seed.hex()[:6]}", font=mono_s, fill=GOLD_STRONG, anchor="rs")
     return img
