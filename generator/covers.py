@@ -246,17 +246,46 @@ def _silhouette(base, name, h, cx, groundy, col, rng, glow=False, accent=None):
     base.alpha_composite(layer, (cx - h // 2, groundy - h))
 
 
+def _crowd(base, y, col, rng, n, h=None):
+    """Rand de oameni-silueta (cap + corp) pe o linie -> multime, scara umana."""
+    h = h or int(H2 * 0.07)
+    layer = Image.new("RGBA", (W2, H2), (0, 0, 0, 0))
+    d = ImageDraw.Draw(layer)
+    for _ in range(n):
+        x = rng.uniform(W2 * 0.02, W2 * 0.98)
+        ph = h * rng.uniform(0.8, 1.2)
+        bw, hr = ph * 0.42, ph * 0.2
+        d.rounded_rectangle([x - bw / 2, y - ph * 0.66, x + bw / 2, y], radius=bw * 0.45, fill=(*col, 255))
+        d.ellipse([x - hr, y - ph, x + hr, y - ph + 2 * hr], fill=(*col, 255))
+    base.alpha_composite(layer)
+
+
+def _stands_crowd(base, cx, horizon, rw, rh, col, rng):
+    """Puncte in tribune -> spectatori."""
+    layer = Image.new("RGBA", (W2, H2), (0, 0, 0, 0))
+    d = ImageDraw.Draw(layer)
+    for _ in range(460):
+        t = rng.uniform(0.08, math.pi - 0.08)
+        rr = rng.uniform(0.7, 0.99)
+        x = cx + math.cos(t) * rw * rr
+        yy = horizon - math.sin(t) * rh * rr
+        if yy < horizon - rh * 0.12:
+            d.ellipse([x - 2 * SS, yy - 2 * SS, x + 2 * SS, yy + 2 * SS], fill=(*col, rng.randint(110, 210)))
+    base.alpha_composite(layer)
+
+
 def _scene_city(base, pal, rng, horizon, a):
     sky_top, sky_bot, far, near, accent = pal
     _skyline(base, _lerp(far, sky_bot, 0.4), rng, horizon, 0.10, 0.26, False, accent)
     _ground(base, _lerp(near, CREAM, 0.62), horizon)
     _skyline(base, near, rng, horizon, 0.18, 0.42, True, accent)
-    for name in CITY_AMBIENT.get(a.get("category"), []):
-        _silhouette(base, name, int(H2 * 0.16), int(W2 * rng.uniform(0.12, 0.88)), horizon,
-                    _lerp(near, far, 0.4), rng)
     focal = _pick_icon(a) or "building-community"
     _silhouette(base, focal, int(H2 * 0.27), int(W2 * rng.uniform(0.42, 0.7)), horizon,
                 accent, rng, glow=True, accent=accent)
+    # oameni in prim-plan (miting mai dens la politic; oras animat la general)
+    dense = a.get("category") in ("politic", "general")
+    _crowd(base, horizon + int(H2 * 0.055), _lerp(near, (18, 16, 22), 0.25), rng,
+           n=34 if dense else 20)
 
 
 def _scene_stadium(base, pal, rng, horizon, a):
@@ -267,6 +296,7 @@ def _scene_stadium(base, pal, rng, horizon, a):
     for i in range(4):                                  # tribune: arce concentrice
         d.ellipse([cx - rw + i * 12 * SS, horizon - rh + i * 10 * SS, cx + rw - i * 12 * SS, horizon],
                   outline=(*_lerp(far, near, i / 4), 255), width=10 * SS)
+    _stands_crowd(base, cx, horizon, rw, rh, _lerp(near, accent, 0.35), rng)   # spectatori
     _ground(base, _lerp(near, CREAM, 0.62), horizon)
     for fx in (0.2, 0.8):                               # nocturne
         px = int(W2 * fx)
