@@ -150,12 +150,12 @@ def _pick_icon(a: dict) -> str | None:
 # (aur #c9a227, crema #faf5e6). (cer sus saturat, orizont luminos, siluete
 # departe, siluete aproape, accent viu al luminii).
 PAL = {
-    "politic":  [(46, 78, 120), (236, 182, 96), (46, 66, 104), (28, 36, 58), (247, 208, 112)],
-    "economic": [(40, 122, 104), (242, 198, 106), (34, 84, 70), (22, 46, 38), (255, 216, 120)],
-    "extern":   [(48, 104, 158), (168, 212, 230), (46, 70, 118), (26, 38, 66), (128, 206, 228)],
-    "sport":    [(158, 58, 70), (252, 182, 100), (118, 50, 54), (40, 20, 24), (255, 176, 96)],
-    "tech":     [(84, 66, 158), (162, 206, 228), (66, 54, 124), (28, 24, 56), (120, 218, 230)],
-    "general":  [(92, 118, 150), (244, 200, 122), (78, 80, 84), (34, 30, 24), (252, 210, 124)],
+    "politic":  [(70, 132, 202), (250, 202, 110), (96, 132, 186), (40, 56, 100), (255, 216, 122)],
+    "economic": [(42, 164, 140), (250, 208, 118), (70, 140, 116), (26, 66, 56), (255, 222, 130)],
+    "extern":   [(56, 146, 208), (190, 228, 240), (78, 138, 194), (30, 52, 96), (150, 222, 242)],
+    "sport":    [(206, 74, 84), (255, 192, 112), (176, 78, 76), (62, 28, 32), (255, 194, 112)],
+    "tech":     [(116, 84, 200), (188, 224, 240), (110, 86, 178), (38, 32, 78), (140, 228, 240)],
+    "general":  [(112, 146, 186), (250, 208, 126), (118, 132, 150), (44, 40, 32), (255, 216, 132)],
 }
 CITY_AMBIENT = {"politic": ["flag"], "economic": ["coins"], "tech": ["antenna"], "general": ["trees"]}
 
@@ -339,9 +339,9 @@ def _compose_scene(a: dict):
     else:
         _scene_city(img, pal, rng, horizon, a)
     img = img.convert("RGB")
-    img = Image.blend(img, ImageChops.overlay(img, _grain()), 0.04)
-    # vigneta blanda (185, nu 140) -> margini usor mai calde, imagine luminoasa
-    return Image.composite(img, ImageChops.multiply(img, Image.new("RGB", img.size, (185, 185, 185))), _vignette())
+    img = Image.blend(img, ImageChops.overlay(img, _grain()), 0.03)
+    # vigneta foarte discreta (205) -> imagine luminoasa, culori vii
+    return Image.composite(img, ImageChops.multiply(img, Image.new("RGB", img.size, (205, 205, 205))), _vignette())
 
 
 # scena e identica pentru cover.jpg si art.jpg -> o calculam O DATA per articol
