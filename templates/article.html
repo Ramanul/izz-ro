@@ -15,6 +15,10 @@
     <time datetime="{{ a.published }}">{{ a.published_human }}</time>
   </div>
 
+  {% if a.art_path %}
+  <img class="article-art" src="{{ base }}{{ a.art_path }}" alt="" width="960" height="504" fetchpriority="high">
+  {% endif %}
+
   <p class="body">{% if a.model == 'C' %}{{ a.synthesis }}{% else %}{{ a.teaser }}{% endif %}</p>
 
   {% set srcs = a.sources if (a.model == 'C' and a.sources) else [{'name': a.source_name, 'url': a.original_link}] %}

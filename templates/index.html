@@ -19,6 +19,9 @@
         <p class="lead-summary">{% if top.model == 'C' %}{{ top.synthesis }}{% else %}{{ top.teaser }}{% endif %}</p>
       </div>
       <aside class="lead-aside">
+        {% if top.art_path %}
+        <img class="lead-art" src="{{ base }}{{ top.art_path }}" alt="" width="960" height="504" fetchpriority="high">
+        {% endif %}
         <div>
           {% set top_srcs = top.sources[:6] if (top.model == 'C' and top.sources) else [{'name': top.source_name, 'url': top.original_link}] %}
           <h3>{{ 'Sursă' if top_srcs | length == 1 else 'Surse' }}</h3>

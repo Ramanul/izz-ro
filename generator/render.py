@@ -282,6 +282,16 @@ def build(articles: list, mod: dict | None = None) -> None:
     shutil.copytree(STATIC_DIR, os.path.join(OUT_DIR, "static"))
 
     by_date = sorted(articles, key=lambda a: a.get("published") or "", reverse=True)
+
+    # coperti: share (og, cu titlu) + arta fara text pentru site -- generate O DATA,
+    # INAINTE de orice randare, ca hero-ul si paginile de articol sa le poata folosi
+    for a in by_date:
+        cdir = os.path.join(OUT_DIR, a["category"], a["slug"])
+        if covers.generate(a, os.path.join(cdir, "cover.jpg")):
+            a["cover_url"] = f"{config.SITE['url']}/{a['category']}/{a['slug']}/cover.jpg"
+        if covers.generate_art(a, os.path.join(cdir, "art.jpg")):
+            a["art_path"] = f"/{a['category']}/{a['slug']}/art.jpg"
+
     hero = _pick_hero(by_date)
     hero_urls = {a["url"] for a in hero}
 
@@ -349,9 +359,7 @@ def build(articles: list, mod: dict | None = None) -> None:
         for a in items:
             topics = [(slugify(e)[:60], e) for e in (a.get("entities") or [])
                       if slugify(e)[:60] in ents]
-            og_image = None
-            if covers.generate(a, os.path.join(OUT_DIR, cat, a["slug"], "cover.jpg")):
-                og_image = f"{config.SITE['url']}/{cat}/{a['slug']}/cover.jpg"
+            og_image = a.get("cover_url")
             jsonld = _article_jsonld(a)
             if og_image:
                 jsonld["image"] = [og_image]

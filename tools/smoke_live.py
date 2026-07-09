@@ -58,6 +58,7 @@ def main() -> int:
     arts = [p for p in paths if p.count("/") >= 3 and "/legal/" not in p]
     random.shuffle(arts)
     with_cover = 0
+    with_art = 0
     for p in arts[:N_ARTICLES]:
         html = get(p)
         page = p[:60]
@@ -80,6 +81,11 @@ def main() -> int:
             except Exception:
                 ok_img = False
             check(ok_img, page, "coperta og:image exista si e imagine reala (>5KB)")
+        # arta pe site (faza 2): banner fara text pe pagina articolului
+        if 'class="article-art"' in html:
+            with_art += 1
+    check(with_art >= max(1, N_ARTICLES - 1), "articole",
+          f"arta pe site pe esantion: {with_art}/{N_ARTICLES} (minim {N_ARTICLES - 1})")
     # cateva articole pot cadea legitim pe og-image static (generate() a esuat izolat),
     # dar majoritatea esantionului TREBUIE sa aiba coperta proprie
     check(with_cover >= max(1, N_ARTICLES - 1), "articole",
