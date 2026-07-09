@@ -358,20 +358,304 @@ def _vignette():
     return _VIGN
 
 
+# ---- primitive de desen pentru scene tematice ------------------------------
+def _house(d, x, by, w, wall, roof):
+    h = w * 0.8
+    d.rectangle([x - w / 2, by - h, x + w / 2, by], fill=wall)
+    d.polygon([(x - w * .62, by - h), (x + w * .62, by - h), (x, by - h * 1.7)], fill=roof)
+    d.rectangle([x - w * .12, by - h * .45, x + w * .12, by], fill=roof)
+
+
+def _cloud(bs, cx, cy, w, col, a=235):
+    lay = Image.new("RGBA", (W2, H2), (0, 0, 0, 0))
+    dd = ImageDraw.Draw(lay)
+    for dx, dy, r in [(-.4, .1, .5), (0, -.1, .62), (.4, .08, .52), (0, .28, .7)]:
+        dd.ellipse([cx + dx * w - r * w / 2, cy + dy * w - r * w / 2,
+                    cx + dx * w + r * w / 2, cy + dy * w + r * w / 2], fill=(*col, a))
+    bs.alpha_composite(lay.filter(ImageFilter.GaussianBlur(2 * SS)))
+
+
+def _water(bs, y, col, rng):
+    lay = Image.new("RGBA", (W2, H2), (0, 0, 0, 0))
+    dd = ImageDraw.Draw(lay)
+    dd.rectangle([0, y, W2, H2], fill=(*col, 235))
+    for i in range(12):
+        yy = y + i * (H2 - y) / 12
+        dd.line([rng.uniform(0, W2 * .4), yy, rng.uniform(W2 * .5, W2), yy], fill=(255, 255, 255, 60), width=SS)
+    bs.alpha_composite(lay)
+
+
+def _streaks(d, col, rng, n, dx, dy, a=150):
+    for _ in range(n):
+        x, y = rng.uniform(0, W2), rng.uniform(0, H2)
+        d.line([x, y, x + dx, y + dy], fill=(*col, a), width=SS)
+
+
+def _mountains(bs, horizon, col, rng, amp=110):
+    pts = [(0, horizon)]
+    x = 0
+    while x < W2:
+        x += rng.randint(70, 150) * SS
+        pts.append((x, horizon - rng.randint(24, amp) * SS))
+    pts += [(W2, horizon), (0, horizon)]
+    lay = Image.new("RGBA", (W2, H2), (0, 0, 0, 0))
+    ImageDraw.Draw(lay).polygon(pts, fill=(*col, 255))
+    bs.alpha_composite(lay.filter(ImageFilter.GaussianBlur(2 * SS)))
+
+
+def _flag(d, x, by, h, cloth):
+    d.line([x, by, x, by - h], fill=(90, 82, 72), width=3 * SS)
+    d.polygon([(x, by - h), (x + h * .5, by - h * .86), (x, by - h * .72)], fill=cloth)
+
+
+def _chart(d, box, col, rng, up):
+    x0, y0, x1, y1 = box
+    n, v, pts = 6, (.2 if up else .85), []
+    for i in range(n + 1):
+        v = min(.95, max(.05, v + rng.uniform(-.12, .24) * (1 if up else -1)))
+        pts.append((x0 + (x1 - x0) * i / n, y1 - (y1 - y0) * v))
+    d.line(pts, fill=col, width=6 * SS, joint="curve")
+    d.line([x0, y1, x1, y1], fill=col, width=4 * SS)
+    ax, ay, s = pts[-1][0], pts[-1][1], 18 * SS
+    d.polygon([(ax, ay - s), (ax + s, ay), (ax, ay + s)] if up else [(ax - s, ay), (ax, ay - s), (ax, ay + s)], fill=col)
+
+
+def _columns(d, cx, by, w, h, col):
+    d.polygon([(cx - w / 2 - 8 * SS, by - h), (cx + w / 2 + 8 * SS, by - h), (cx, by - h * 1.32)], fill=col)
+    d.rectangle([cx - w / 2, by - h, cx + w / 2, by - h * .9], fill=col)
+    for i in range(5):
+        x = cx - w / 2 + w * (0.08 + i * 0.21)
+        d.rectangle([x, by - h * .9, x + w * .08, by], fill=col)
+    d.rectangle([cx - w / 2 - 10 * SS, by, cx + w / 2 + 10 * SS, by + 10 * SS], fill=col)
+
+
+# ---- scene tematice: fiecare reflecta subiectul articolului -----------------
+_MOODS = {
+    "light": ((206, 222, 238), (248, 246, 240), (255, 224, 150)),
+    "storm": ((150, 158, 172), (206, 210, 216), (210, 214, 220)),
+    "fire":  ((70, 46, 54), (226, 120, 60), (255, 180, 90)),
+    "heat":  ((250, 208, 150), (252, 240, 214), (255, 236, 170)),
+    "snow":  ((214, 224, 238), (246, 249, 252), (240, 246, 252)),
+    "night": ((36, 42, 66), (90, 96, 130), (240, 226, 180)),
+}
+
+
+def _mood_base(mood, rng):
+    top, bot, sun = _MOODS[mood]
+    horizon = int(H2 * 0.62)
+    return _sun(_sky(top, bot, horizon), sun, rng, horizon).convert("RGBA")
+
+
+def _t_flood(bs, rng, a):
+    hz = int(H2 * 0.6)
+    _cloud(bs, W2 * .3, H2 * .19, W2 * .3, (150, 158, 170))
+    _cloud(bs, W2 * .72, H2 * .16, W2 * .26, (168, 174, 186))
+    d = ImageDraw.Draw(bs)
+    _house(d, W2 * .3, hz + H2 * .12, W2 * .16, (152, 122, 96), (112, 72, 58))
+    _house(d, W2 * .6, hz + H2 * .06, W2 * .12, (142, 112, 90), (104, 66, 54))
+    _water(bs, hz + int(H2 * .05), (70, 120, 150), rng)
+    _silhouette(bs, "droplet", int(H2 * .19), int(W2 * .8), hz + int(H2 * .03), (60, 120, 156), rng, glow=True, accent=(120, 180, 210))
+    _streaks(ImageDraw.Draw(bs), (205, 214, 224), rng, 150, -8 * SS, 20 * SS)
+
+
+def _t_fire(bs, rng, a):
+    hz = int(H2 * .64)
+    _cloud(bs, W2 * .4, H2 * .2, W2 * .4, (60, 54, 60))
+    _cloud(bs, W2 * .7, H2 * .14, W2 * .3, (80, 70, 74))
+    _ground(bs, (60, 44, 40), hz)
+    _skyline(bs, (46, 36, 40), rng, hz, .16, .34, True, (255, 150, 60))
+    d = ImageDraw.Draw(bs)
+    for _ in range(50):
+        x, h = rng.uniform(0, W2), rng.uniform(30, 90) * SS
+        d.polygon([(x, hz), (x - 14 * SS, hz - h * .6), (x, hz - h), (x + 14 * SS, hz - h * .6)],
+                  fill=(rng.randint(230, 255), rng.randint(120, 180), 40))
+    _silhouette(bs, "firetruck", int(H2 * .18), int(W2 * .7), hz, (40, 34, 36), rng, glow=True, accent=(255, 150, 60))
+
+
+def _t_heat(bs, rng, a):
+    hz = int(H2 * .7)
+    _ground(bs, (222, 196, 150), hz)
+    d = ImageDraw.Draw(bs)
+    for _ in range(60):
+        x, y = rng.uniform(0, W2), rng.uniform(hz, H2)
+        d.line([x, y, x + rng.uniform(-40, 40) * SS, y + rng.uniform(-10, 20) * SS], fill=(196, 168, 120), width=SS)
+    _silhouette(bs, "sun", int(H2 * .26), int(W2 * .72), hz, (210, 140, 60), rng, glow=True, accent=(255, 190, 90))
+    _crowd(bs, hz + int(H2 * .06), (120, 100, 70), rng, n=10)
+
+
+def _t_snow(bs, rng, a):
+    hz = int(H2 * .66)
+    _ground(bs, (238, 242, 248), hz)
+    d = ImageDraw.Draw(bs)
+    for x in (W2 * .28, W2 * .6):
+        _house(d, x, hz + H2 * .02, W2 * .14, (150, 158, 176), (110, 120, 140))
+    d.ellipse([0, hz - 8 * SS, W2, hz + 30 * SS], fill=(248, 250, 253))
+    for _ in range(160):
+        x, y, r = rng.uniform(0, W2), rng.uniform(0, H2), rng.uniform(2, 4) * SS
+        d.ellipse([x - r, y - r, x + r, y + r], fill=(255, 255, 255, 220))
+    _silhouette(bs, "snowflake", int(H2 * .2), int(W2 * .78), hz, (120, 150, 190), rng, glow=True, accent=(200, 220, 240))
+
+
+def _t_military(bs, rng, a):
+    hz = int(H2 * .62)
+    _mountains(bs, hz, (150, 150, 168), rng)
+    _ground(bs, (120, 118, 110), hz)
+    d = ImageDraw.Draw(bs)
+    x, w = W2 * .68, W2 * .2
+    h, gy = w * .42, hz + H2 * .22
+    d.rounded_rectangle([x - w / 2, gy - h, x + w / 2, gy - h * .35], radius=h * .3, fill=(78, 84, 74))
+    d.rounded_rectangle([x - w * .22, gy - h * 1.5, x + w * .22, gy - h], radius=h * .2, fill=(78, 84, 74))
+    d.line([x + w * .1, gy - h * 1.3, x + w * .8, gy - h * 1.45], fill=(78, 84, 74), width=5 * SS)
+    d.rounded_rectangle([x - w / 2, gy - h * .4, x + w / 2, gy], radius=h * .3, fill=(78, 84, 74))
+    _flag(d, W2 * .16, hz + H2 * .05, H2 * .28, (60, 90, 170))
+    _flag(d, W2 * .23, hz + H2 * .05, H2 * .28, (196, 70, 60))
+    _crowd(bs, hz + int(H2 * .16), (54, 60, 66), rng, n=14, h=int(H2 * .12))
+    _silhouette(bs, "plane", int(H2 * .11), int(W2 * .84), int(hz * .5), (70, 76, 86), rng)
+
+
+def _t_diplomacy(bs, rng, a):
+    hz = int(H2 * .66)
+    _ground(bs, (208, 210, 216), hz)
+    d = ImageDraw.Draw(bs)
+    _columns(d, W2 * .5, hz, W2 * .34, H2 * .34, (196, 198, 206))
+    cols = [(60, 90, 170), (196, 70, 60), (70, 150, 96), (210, 180, 60)]
+    for i in range(6):
+        _flag(d, W2 * (.12 + i * .13), hz, H2 * .16, cols[i % 4])
+    _crowd(bs, hz + int(H2 * .05), (70, 74, 84), rng, n=16)
+    _silhouette(bs, "globe", int(H2 * .14), int(W2 * .8), hz, (90, 130, 170), rng, glow=True, accent=(150, 190, 220))
+
+
+def _t_economy(bs, rng, a, up):
+    hz = int(H2 * .66)
+    _skyline(bs, (150, 162, 150), rng, hz, .12, .3, False, GOLD)
+    _ground(bs, (210, 206, 196), hz)
+    _skyline(bs, (96, 128, 110), rng, hz, .16, .34, True, GOLD)
+    d = ImageDraw.Draw(bs)
+    _chart(d, (W2 * .12, H2 * .16, W2 * .6, hz - H2 * .04), (60, 150, 90) if up else (201, 100, 52), rng, up)
+    _silhouette(bs, "gas-station", int(H2 * .2), int(W2 * .8), hz, (150, 120, 80), rng, glow=True, accent=GOLD)
+    _crowd(bs, hz + int(H2 * .06), (60, 64, 60), rng, n=18)
+
+
+def _t_justice(bs, rng, a):
+    hz = int(H2 * .68)
+    _ground(bs, (212, 210, 204), hz)
+    d = ImageDraw.Draw(bs)
+    _columns(d, W2 * .42, hz, W2 * .4, H2 * .4, (200, 194, 182))
+    _silhouette(bs, "gavel", int(H2 * .24), int(W2 * .76), hz, (150, 110, 60), rng, glow=True, accent=GOLD)
+    _crowd(bs, hz + int(H2 * .05), (74, 70, 66), rng, n=14)
+
+
+def _t_politics(bs, rng, a, protest):
+    hz = int(H2 * .64)
+    _skyline(bs, (150, 160, 178), rng, hz, .12, .28, False, GOLD)
+    _ground(bs, (206, 208, 214), hz)
+    _silhouette(bs, "building-monument", int(H2 * .3), int(W2 * .5), hz, (110, 120, 150), rng, glow=True, accent=GOLD)
+    d = ImageDraw.Draw(bs)
+    if protest:
+        for i in range(6):
+            _flag(d, W2 * (.1 + i * .14), hz + H2 * .02, H2 * .14, (196, 70, 60) if i % 2 else (60, 90, 170))
+    _crowd(bs, hz + int(H2 * .05), (60, 62, 70), rng, n=36 if protest else 18)
+
+
+def _t_health(bs, rng, a, virus):
+    hz = int(H2 * .66)
+    _ground(bs, (224, 230, 234), hz)
+    d = ImageDraw.Draw(bs)
+    _skyline(bs, (170, 186, 196), rng, hz, .12, .26, False, (90, 170, 190))
+    d.rectangle([W2 * .36, hz - H2 * .34, W2 * .6, hz], fill=(226, 232, 236))
+    d.rectangle([W2 * .47, hz - H2 * .28, W2 * .49, hz - H2 * .16], fill=(210, 70, 70))
+    d.rectangle([W2 * .44, hz - H2 * .23, W2 * .52, hz - H2 * .21], fill=(210, 70, 70))
+    _silhouette(bs, "virus" if virus else "stethoscope", int(H2 * .2), int(W2 * .76), hz, (90, 150, 170), rng, glow=True, accent=(120, 190, 200))
+    _crowd(bs, hz + int(H2 * .05), (80, 90, 96), rng, n=14)
+
+
+def _t_transport(bs, rng, a, kind):
+    hz = int(H2 * .66)
+    _ground(bs, (200, 200, 204), hz)
+    d = ImageDraw.Draw(bs)
+    _skyline(bs, (176, 184, 176), rng, hz, .1, .24, False, GOLD)
+    if kind == "plane":
+        for i in range(6):
+            d.line([W2 * (.1 + i * .14), hz + H2 * .14, W2 * (.16 + i * .14), hz + H2 * .14], fill=(230, 230, 234), width=4 * SS)
+        _silhouette(bs, "plane", int(H2 * .22), int(W2 * .6), hz + int(H2 * .04), (90, 100, 120), rng, glow=True, accent=(150, 190, 220))
+    elif kind == "train":
+        d.line([0, hz + H2 * .16, W2, hz + H2 * .16], fill=(120, 120, 124), width=4 * SS)
+        _silhouette(bs, "train", int(H2 * .2), int(W2 * .55), hz + int(H2 * .16), (90, 110, 130), rng, glow=True, accent=GOLD)
+    else:
+        d.line([0, hz + H2 * .2, W2, hz + H2 * .2], fill=(150, 150, 154), width=10 * SS)
+        _silhouette(bs, "car", int(H2 * .16), int(W2 * .55), hz + int(H2 * .2), (90, 100, 120), rng, glow=True, accent=GOLD)
+    _crowd(bs, hz + int(H2 * .05), (70, 74, 82), rng, n=10)
+
+
+def _t_tech(bs, rng, a):
+    hz = int(H2 * .66)
+    _ground(bs, _lerp((28, 24, 56), (255, 255, 255), .82), hz)
+    d = ImageDraw.Draw(bs)
+    for gy in range(int(hz + H2 * .04), H2, 44 * SS):
+        d.line([0, gy, W2, gy], fill=(150, 160, 200), width=SS)
+    for gx in range(0, W2, 60 * SS):
+        d.line([gx, hz, gx, H2], fill=(160, 170, 205), width=SS)
+    _skyline(bs, (140, 130, 190), rng, hz, .14, .3, True, (120, 210, 225))
+    _silhouette(bs, "cpu", int(H2 * .24), int(W2 * .68), hz, (90, 80, 150), rng, glow=True, accent=(120, 210, 225))
+    _crowd(bs, hz + int(H2 * .05), (90, 84, 130), rng, n=12)
+
+
+def _t_environment(bs, rng, a):
+    hz = int(H2 * .64)
+    _mountains(bs, hz, (150, 178, 160), rng, 130)
+    _ground(bs, (150, 176, 120), hz)
+    d = ImageDraw.Draw(bs)
+    for _ in range(14):
+        x, th = rng.uniform(W2 * .05, W2 * .95), rng.uniform(.1, .18) * H2
+        d.rectangle([x - 4 * SS, hz - th * .4, x + 4 * SS, hz], fill=(90, 70, 50))
+        d.ellipse([x - th * .4, hz - th, x + th * .4, hz - th * .2], fill=(70, 140, 80))
+    _silhouette(bs, "trees", int(H2 * .22), int(W2 * .74), hz, (60, 120, 70), rng, glow=True, accent=(140, 200, 120))
+
+
+def _t_sport(bs, rng, a):
+    _scene_stadium(bs, PAL["sport"], rng, int(H2 * .62), a)
+
+
+# tema detectata din titlu -> (mood cer, builder). Ordinea conteaza (primul care se potriveste).
+_THEMES = [
+    (r"inundat|viitur|revars", "storm", _t_flood),
+    (r"incendi|flacar|arde|pojar|pompier", "fire", _t_fire),
+    (r"canicul|arsita|temperatur|seceta", "heat", _t_heat),
+    (r"ninso|zapad|viscol|\bger\b", "snow", _t_snow),
+    (r"nato|militar|armat|razboi|ofensiv|trupe|tanc|\bfront\b|frontier", "light", _t_military),
+    (r"diploma|summit|\bue\b|uniunea europ|bruxelles|ambasad|natiunile unite|\bonu\b", "light", _t_diplomacy),
+    (r"inflat|pret|scump|buget|bursa|econom|salari|pensi|\btva\b|impozit", "light",
+     lambda b, r, a: _t_economy(b, r, a, up=not re.search(r"scad|ieftin|incetin|scazu|reduce", _norm(a.get("title", ""))))),
+    (r"energie|\bgaz|petrol|carburant|benzin|curent electric", "light", lambda b, r, a: _t_economy(b, r, a, up=True)),
+    (r"instanta|tribunal|judecat|proces|condamn|\blege\b|justiti|dosar|procuror|achit", "light", _t_justice),
+    (r"protest|miting|grev|\bmars\b|manifestat", "light", lambda b, r, a: _t_politics(b, r, a, protest=True)),
+    (r"guvern|parlament|coalit|ministr|presedint|alegeri|senat|deputat|referendum", "light", lambda b, r, a: _t_politics(b, r, a, protest=False)),
+    (r"spital|medic|sanatat|vaccin|boala|cancer|gripa|epidemi|pacient", "light",
+     lambda b, r, a: _t_health(b, r, a, virus=bool(re.search(r"virus|covid|gripa|epidemi", _norm(a.get("title", "")))))),
+    (r"avion|aeroport|zbor|aerian", "light", lambda b, r, a: _t_transport(b, r, a, "plane")),
+    (r"tren|feroviar|\bcfr\b|metrou|cale ferata", "light", lambda b, r, a: _t_transport(b, r, a, "train")),
+    (r"masina|autoturism|rutier|sofer|autostrad|camion|accident", "light", lambda b, r, a: _t_transport(b, r, a, "car")),
+    (r"inteligenta artif|\bai\b|\bcip\b|tehnolog|internet|robot|aplicati|software|algoritm", "night", _t_tech),
+    (r"padur|mediu|clima|polua|emisii|reciclar|impadur", "light", _t_environment),
+    (r"fotbal|meci|\bgol\b|campion|\bliga\b|tenis|baschet|handbal|stadion|olimpi|antrenor", "light", _t_sport),
+]
+
+
 def _compose_scene(a: dict):
     rng = random.Random(a.get("title") or "x")
-    cat = a.get("category", "general")
-    pal = PAL.get(cat, PAL["general"])
-    horizon = int(H2 * rng.uniform(0.6, 0.72))
-    img = _sun(_sky(pal[0], pal[1], horizon), pal[4], rng, horizon).convert("RGBA")
-    if cat == "sport":
-        _scene_stadium(img, pal, rng, horizon, a)
-    elif cat == "extern":
-        _scene_sea(img, pal, rng, horizon, a)
-    else:
-        _scene_city(img, pal, rng, horizon, a)
-    img = img.convert("RGB")
-    return _frame(img)
+    title = _norm(a.get("title", ""))
+    hit = next(((m, f) for pat, m, f in _THEMES if re.search(pat, title)), None)
+    if hit:
+        mood, fn = hit
+        img = _mood_base(mood, rng)
+        fn(img, rng, a)
+    else:                                   # fara tema clara -> scena de categorie
+        cat = a.get("category", "general")
+        pal = PAL.get(cat, PAL["general"])
+        hz = int(H2 * rng.uniform(0.6, 0.72))
+        img = _sun(_sky(pal[0], pal[1], hz), pal[4], rng, hz).convert("RGBA")
+        (_scene_stadium if cat == "sport" else _scene_sea if cat == "extern" else _scene_city)(img, pal, rng, hz, a)
+    return _frame(img.convert("RGB"))
 
 
 def _frame(img):
