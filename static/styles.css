@@ -32,6 +32,7 @@
   --fs-3xl:     3.330rem;
 
   --s-5: 5px; --s-8: 8px; --s-13: 13px; --s-21: 21px; --s-34: 34px; --s-55: 55px; --s-89: 89px;
+  --radius: 6px;            /* colturi rotunjite pt. media (miniaturi carduri, banner) */
 
   --font-display: "Playfair Display", Georgia, serif;
   --font-text:    "Inter", system-ui, -apple-system, sans-serif;
@@ -143,6 +144,14 @@ main { max-width: var(--maxw); margin: 0 auto; padding: var(--s-34) var(--s-34);
   padding: var(--s-21) 0; display: flex; flex-direction: column; gap: var(--s-8);
 }
 .card:hover .card-title a { color: var(--gold-strong); }
+
+/* miniatura = arta generativa a articolului (aceeasi art.jpg ca bannerul de pe pagina) */
+.card-media {
+  display: block; order: -1; overflow: hidden; border-radius: var(--radius);
+  aspect-ratio: 960 / 504; background: var(--ink);
+}
+.card-media img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform .3s ease; }
+.card:hover .card-media img { transform: scale(1.03); }
 
 /* Eticheta = eyebrow auriu (nu pastila). C (sinteza) marcat cu bulina aurie. */
 .badge {
