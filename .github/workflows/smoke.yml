@@ -29,13 +29,16 @@ jobs:
       # cu PIL si tipareste statistici -- luminozitate + procent pixeli aurii
       # (icoana + arcele sunt aurii). Aur ~0 => arta e goala (doar gradient inchis).
       - name: Analiza mostre live (diag)
-        if: github.event_name == 'workflow_dispatch'
+        if: always() && github.event_name == 'workflow_dispatch'
         run: |
           pip install pillow >/dev/null
           python3 - <<'PY'
           import re, io, urllib.request
           from PIL import Image
           BASE = "https://izz.ro"
+          UA = {"User-Agent": "izz-smoke/1.0 (+https://izz.ro)"}
+          def _get(u):
+              return urllib.request.urlopen(urllib.request.Request(u, headers=UA), timeout=30).read()
           def gold_stats(d):
               im = Image.open(io.BytesIO(d)).convert("RGB")
               px = im.getdata(); n = len(px); gold = bright = 0
@@ -44,7 +47,7 @@ jobs:
                   if r > 120 and 90 < g < 210 and b < 110 and r >= g >= b:
                       gold += 1
               return im.size, round(bright / (n * 3), 1), round(gold * 100 / n, 2)
-          sm = urllib.request.urlopen(BASE + "/sitemap.xml").read().decode("utf-8", "replace")
+          sm = _get(BASE + "/sitemap.xml").decode("utf-8", "replace")
           locs = [u for u in re.findall(r"<loc>([^<]+)</loc>", sm)
                   if u.rstrip("/").count("/") >= 4 and "/legal/" not in u]
           got = 0
@@ -52,7 +55,7 @@ jobs:
               path = re.sub(r"^https?://[^/]+", "", u).rstrip("/")
               try:
                   for kind in ("art", "cover"):
-                      d = urllib.request.urlopen(f"{BASE}{path}/{kind}.jpg", timeout=30).read()
+                      d = _get(f"{BASE}{path}/{kind}.jpg")
                       size, bright, gold = gold_stats(d)
                       print(f"{kind:5} {size} bright={bright:5} gold%={gold:5}  {path}")
                   got += 1
