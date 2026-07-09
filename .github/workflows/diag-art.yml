@@ -1,0 +1,39 @@
+name: diag-art
+
+# Diagnostic temporar: descarca de pe LIVE cateva art.jpg + cover.jpg si le
+# urca drept artifact, ca sa inspectam vizual daca pictograma chiar apare in
+# imaginea generata pe Cloudflare (nu doar ca fisierul se incarca).
+on:
+  workflow_dispatch: {}
+
+jobs:
+  diag:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Descarca mostre live
+        run: |
+          python3 - <<'PY'
+          import re, os, urllib.request
+          BASE = "https://izz.ro"
+          sm = urllib.request.urlopen(BASE + "/sitemap.xml").read().decode("utf-8", "replace")
+          locs = [u for u in re.findall(r"<loc>([^<]+)</loc>", sm)
+                  if u.rstrip("/").count("/") >= 4 and "/legal/" not in u]
+          os.makedirs("out", exist_ok=True)
+          got = 0
+          for u in locs:
+              path = re.sub(r"^https?://[^/]+", "", u).rstrip("/")
+              try:
+                  for kind in ("art", "cover"):
+                      d = urllib.request.urlopen(f"{BASE}{path}/{kind}.jpg", timeout=30).read()
+                      open(f"out/{got}-{kind}.jpg", "wb").write(d)
+                      print(kind, path, len(d))
+                  got += 1
+              except Exception as e:
+                  print("skip", path, e)
+              if got >= 3:
+                  break
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: live-art
+          path: out/
