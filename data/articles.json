@@ -1,5 +1,300 @@
 [
   {
+    "url": "https://bbc.co.uk/news/articles/c70yd1g67z5o?at_medium=RSS&at_campaign=rss",
+    "original_link": "https://www.bbc.co.uk/news/articles/c70yd1g67z5o?at_medium=RSS&at_campaign=rss",
+    "source": "bbc_europe",
+    "source_name": "BBC Europe",
+    "source_lang": "en",
+    "title": "Ucraina atacă nave rusești în apropiere de Crimeea",
+    "category": "extern",
+    "published": "2026-07-09T15:21:17+00:00",
+    "model": "B",
+    "teaser": "Ucraina intensifică atacurile asupra navelor rusești și a rutelor de aprovizionare din Crimeea, ca parte a strategiei de a bloca accesul în peninsula ocupată.",
+    "entities": [
+      "Ucraina",
+      "Crimeea",
+      "Rusia"
+    ],
+    "icon": "ship",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://politico.eu/podcast/playbook-paris-podcast/bardella-retrograde-les-marinistes-galvanises",
+    "original_link": "https://www.politico.eu/podcast/playbook-paris-podcast/bardella-retrograde-les-marinistes-galvanises/?utm_source=RSS_Feed&utm_medium=RSS&utm_campaign=RSS_Syndication",
+    "source": "politico_eu",
+    "source_name": "Politico EU",
+    "source_lang": "en",
+    "title": "Bardella retrogradat, mariniștii încurajați în Franța",
+    "category": "politic",
+    "published": "2026-07-09T15:11:21+00:00",
+    "model": "B",
+    "teaser": "Marine Le Pen l-a promovat pe Jordan Bardella, dar acesta pare să-și fi amânat ambițiile prezidențiale, în timp ce partidul său este galvanizat.",
+    "entities": [
+      "Bardella",
+      "Marine Le Pen",
+      "RN",
+      "Franța"
+    ],
+    "icon": "flag",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://gsp.ro/fotbal/liga-1/assad-al-hamlawi-universitatea-craiova-superliga-transfer-vitebsk-958679.html",
+    "original_link": "https://www.gsp.ro/fotbal/liga-1/assad-al-hamlawi-universitatea-craiova-superliga-transfer-vitebsk-958679.html",
+    "source": "gsp",
+    "source_name": "GSP",
+    "source_lang": "ro",
+    "title": "Atacantul Al-Hamlawi rămâne la Craiova, deși e dorit de alte cluburi",
+    "category": "sport",
+    "published": "2026-07-09T15:10:34+00:00",
+    "model": "B",
+    "teaser": "Golgeterul Assad Al-Hamlawi a marcat o dublă în Champions League, dar a confirmat că nu pleacă de la Universitatea Craiova în această vară, deși există interes din partea altor formații.",
+    "entities": [
+      "Assad Al-Hamlawi",
+      "Universitatea Craiova",
+      "ML Vitebsk"
+    ],
+    "icon": "ball-football",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://gsp.ro/fotbal/liga-1/vlad-blanuta-transfer-dinamo-kiev-interviu-impresar-dinamo-958718.html",
+    "original_link": "https://www.gsp.ro/fotbal/liga-1/vlad-blanuta-transfer-dinamo-kiev-interviu-impresar-dinamo-958718.html",
+    "source": "gsp",
+    "source_name": "GSP",
+    "source_lang": "ro",
+    "title": "Impresarul lui Blănuță caută un nou club pentru atacant",
+    "category": "sport",
+    "published": "2026-07-09T15:04:40+00:00",
+    "model": "B",
+    "teaser": "Vladislav Blănuță, transferat la Dinamo Kiev pentru 2 milioane de euro, ar putea pleca de la ucraineni după un sezon complicat, cu doar 11 meciuri jucate.",
+    "entities": [
+      "Vladislav Blănuță",
+      "Dinamo Kiev"
+    ],
+    "icon": "ball-football",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://gsp.ro/fotbal/liga-1/cfr-cluj-datorie-2-milioane-euro-proces-licenta-958769.html",
+    "original_link": "https://www.gsp.ro/fotbal/liga-1/cfr-cluj-datorie-2-milioane-euro-proces-licenta-958769.html",
+    "source": "gsp",
+    "source_name": "GSP",
+    "source_lang": "ro",
+    "title": "CFR Cluj riscă depunctarea dacă nu achită 2 milioane euro până miercuri",
+    "category": "sport",
+    "published": "2026-07-09T14:59:20+00:00",
+    "model": "B",
+    "teaser": "Patronul Ioan Varga trebuie să plătească urgent două milioane de euro pentru a evita penalizări în noul sezon al Superligii, conform regulamentului de monitorizare a cluburilor.",
+    "entities": [
+      "CFR Cluj",
+      "Ioan Varga",
+      "Superliga"
+    ],
+    "icon": "receipt-tax",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://gsp.ro/international/europa-league/alex-chipciu-i-a-citit-pe-cei-de-la-dinamo-kiev-asta-iti-fac-ucrainenii-958659.html",
+    "original_link": "https://www.gsp.ro/international/europa-league/alex-chipciu-i-a-citit-pe-cei-de-la-dinamo-kiev-asta-iti-fac-ucrainenii-958659.html",
+    "source": "gsp",
+    "source_name": "GSP",
+    "source_lang": "ro",
+    "title": "Alex Chipciu anticipează tacticile ucrainenilor de la Dinamo Kiev",
+    "category": "sport",
+    "published": "2026-07-09T14:57:13+00:00",
+    "model": "B",
+    "teaser": "Liderul U Cluj, Alex Chipciu, consideră că un egal ar fi un rezultat bun în meciul cu Dinamo Kiev din preliminariile Europa League, detaliind cunoștințele sale despre adversari.",
+    "entities": [
+      "Alex Chipciu",
+      "U Cluj",
+      "Dinamo Kiev"
+    ],
+    "icon": "ball-football",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://bbc.co.uk/news/articles/czxqzyggzypo?at_medium=RSS&at_campaign=rss",
+    "original_link": "https://www.bbc.co.uk/news/articles/czxqzyggzypo?at_medium=RSS&at_campaign=rss",
+    "source": "bbc_europe",
+    "source_name": "BBC Europe",
+    "source_lang": "en",
+    "title": "Tricourile naționalei Norvegiei, epuizate înainte de meci",
+    "category": "sport",
+    "published": "2026-07-09T14:34:36+00:00",
+    "model": "B",
+    "teaser": "Cererea pentru tricourile echipei de fotbal a Norvegiei a crescut exponențial după performanțele recente, însă stocurile s-au epuizat rapid.",
+    "entities": [
+      "Norvegia",
+      "Three Lions"
+    ],
+    "icon": "ball-football",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://digi24.ro/stiri/externe/ue/parlamentul-european-prelungeste-temporar-autorizarea-monitorizarii-conversatiilor-private-de-net-de-catre-marile-companii-tech-3855487",
+    "original_link": "https://www.digi24.ro/stiri/externe/ue/parlamentul-european-prelungeste-temporar-autorizarea-monitorizarii-conversatiilor-private-de-net-de-catre-marile-companii-tech-3855487",
+    "source": "extern",
+    "source_name": "Digi24 Extern",
+    "source_lang": "ro",
+    "title": "UE extinde temporar monitorizarea conversațiilor online pentru protecția copiilor",
+    "category": "tech",
+    "published": "2026-07-09T14:31:10+00:00",
+    "model": "C",
+    "sources": [
+      {
+        "name": "Digi24 Extern",
+        "url": "https://www.digi24.ro/stiri/externe/ue/parlamentul-european-prelungeste-temporar-autorizarea-monitorizarii-conversatiilor-private-de-net-de-catre-marile-companii-tech-3855487"
+      },
+      {
+        "name": "HotNews",
+        "url": "https://hotnews.ro/parlamentul-european-voteaza-pentru-monitorizarea-in-continuarea-a-conversatiilor-private-online-2296507"
+      }
+    ],
+    "first_source": "Digi24 Extern",
+    "synthesis": "Parlamentul European a votat joi prelungirea autorizației pentru companii tech majore, precum Meta, Microsoft și Google, de a monitoriza conversațiile private online. Scopul este detectarea indiciilor de abuz sexual asupra copiilor. Acordul precedent, care excepta serviciile de mesagerie de la regulile de protecție a datelor, a expirat în aprilie.",
+    "entities": [
+      "Parlamentul European",
+      "Meta",
+      "Microsoft",
+      "Google"
+    ],
+    "icon": "shield-lock",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://gsp.ro/fotbal/liga-1/live-rapid-slovan-liberec-meci-amical-958663.html",
+    "original_link": "https://www.gsp.ro/fotbal/liga-1/live-rapid-slovan-liberec-meci-amical-958663.html",
+    "source": "gsp",
+    "source_name": "GSP",
+    "source_lang": "ro",
+    "title": "Rapid dispută ultimul amical din Austria contra Slovan Liberec",
+    "category": "sport",
+    "published": "2026-07-09T14:16:51+00:00",
+    "model": "B",
+    "teaser": "Giuleștenii joacă ultimul meci de pregătire din Austria împotriva echipei cehe Slovan Liberec, după ce anterior au remizat cu Kosice, Cătălin Vulturar marcând spectaculos.",
+    "entities": [
+      "Rapid",
+      "Slovan Liberec",
+      "Kosice"
+    ],
+    "icon": "ball-football",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://gsp.ro/international/campionatul-mondial-de-fotbal-2026/franta-maroc-campionatul-mondial-semifinale-958604.html",
+    "original_link": "https://www.gsp.ro/international/campionatul-mondial-de-fotbal-2026/franta-maroc-campionatul-mondial-semifinale-958604.html",
+    "source": "gsp",
+    "source_name": "GSP",
+    "source_lang": "ro",
+    "title": "Franța și Maroc se înfruntă în sferturile Campionatului Mondial",
+    "category": "sport",
+    "published": "2026-07-09T14:14:40+00:00",
+    "model": "B",
+    "teaser": "Franța, campioana mondială en titre, și Maroc se întâlnesc în primul sfert de finală al competiției, într-un meci ce se anunță spectaculos, cu absențe notabile.",
+    "entities": [
+      "Franța",
+      "Maroc"
+    ],
+    "icon": "ball-football",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://theguardian.com/world/2026/jul/09/licence-to-drill-trump-linked-texas-oil-company-elbowing-into-greenland",
+    "original_link": "https://www.theguardian.com/world/2026/jul/09/licence-to-drill-trump-linked-texas-oil-company-elbowing-into-greenland",
+    "source": "guardian_eu",
+    "source_name": "The Guardian",
+    "source_lang": "en",
+    "title": "Companie petrolieră legată de Trump, interesată de Groenlanda",
+    "category": "economic",
+    "published": "2026-07-09T13:52:19+00:00",
+    "model": "B",
+    "teaser": "O companie din Texas, cu legături spre Donald Trump, pretinde că deține permise de explorare pentru petrol în Groenlanda, afirmație negată de autoritățile locale.",
+    "entities": [
+      "Trump",
+      "Groenlanda",
+      "Greenland Energy",
+      "Robert Price"
+    ],
+    "icon": "gas-station",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://spotmedia.ro/stiri/eveniment/procurorii-au-pus-sechestru-pe-averea-lui-raed-arafat-in-dosarul-de-contrabanda-cu-elicopterul-smurd",
+    "original_link": "https://spotmedia.ro/stiri/eveniment/procurorii-au-pus-sechestru-pe-averea-lui-raed-arafat-in-dosarul-de-contrabanda-cu-elicopterul-smurd",
+    "source": "spotmedia",
+    "source_name": "Spotmedia",
+    "source_lang": "ro",
+    "title": "Sechestru pe averea lui Raed Arafat în dosarul elicopterului SMURD",
+    "category": "politic",
+    "published": "2026-07-09T13:09:08+00:00",
+    "model": "C",
+    "sources": [
+      {
+        "name": "Spotmedia",
+        "url": "https://spotmedia.ro/stiri/eveniment/procurorii-au-pus-sechestru-pe-averea-lui-raed-arafat-in-dosarul-de-contrabanda-cu-elicopterul-smurd"
+      },
+      {
+        "name": "Digi24",
+        "url": "https://www.digi24.ro/stiri/actualitate/justitie/raed-arafat-dupa-sechestrul-pus-de-procurori-in-dosarul-contrabandei-cu-elicopter-o-forma-de-schizofrenie-institutionala-3855493"
+      }
+    ],
+    "first_source": "Spotmedia",
+    "synthesis": "Procurorii militari au pus sechestru pe averea și conturile lui Raed Arafat, șeful DSU, și ale altor 16 persoane, precum și pe conturile unor companii, în legătură cu un dosar de contrabandă cu un elicopter SMURD. Arafat a confirmat informația și a anunțat că va contesta decizia în instanță, numind-o o „formă de schizofrenie instituțională”.",
+    "entities": [
+      "Raed Arafat",
+      "DSU",
+      "Parchetul Militar"
+    ],
+    "icon": "helicopter",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://theguardian.com/world/2026/jul/09/germany-set-to-make-rental-e-scooter-operators-liable-for-accidents",
+    "original_link": "https://www.theguardian.com/world/2026/jul/09/germany-set-to-make-rental-e-scooter-operators-liable-for-accidents",
+    "source": "guardian_eu",
+    "source_name": "The Guardian",
+    "source_lang": "en",
+    "title": "Germania: Operatorii de trotinete electrice, responsabili pentru accidente",
+    "category": "politic",
+    "published": "2026-07-09T13:06:32+00:00",
+    "model": "B",
+    "teaser": "Germania pregătește o lege prin care operatorii de trotinete electrice închiriate vor fi trași la răspundere pentru accidentele cauzate, facilitând despăgubirea victimelor.",
+    "entities": [
+      "Germania",
+      "Bolt",
+      "Lime"
+    ],
+    "icon": "bolt",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
     "url": "https://digisport.ro/fotbal/cm-2026/marocanii-se-tem-de-arbitrajul-de-la-meciul-cu-franta-din-sferturile-de-finala-ale-cm-2026-4368527",
     "original_link": "https://www.digisport.ro/fotbal/cm-2026/marocanii-se-tem-de-arbitrajul-de-la-meciul-cu-franta-din-sferturile-de-finala-ale-cm-2026-4368527",
     "source": "digisport",
@@ -20,6 +315,28 @@
     "featured": false
   },
   {
+    "url": "https://theguardian.com/world/2026/jul/09/lgbtq-cruise-ship-refused-entry-egypt-turkey",
+    "original_link": "https://www.theguardian.com/world/2026/jul/09/lgbtq-cruise-ship-refused-entry-egypt-turkey",
+    "source": "guardian_eu",
+    "source_name": "The Guardian",
+    "source_lang": "en",
+    "title": "Vas de croazieră LGBTQ+ refuzat de Egipt după Turcia",
+    "category": "extern",
+    "published": "2026-07-09T12:59:24+00:00",
+    "model": "B",
+    "teaser": "Nava de croazieră Scarlet Lady, destinată comunității LGBTQ+, a fost refuzată de Egipt, după ce anterior i s-a interzis accesul în apele Turciei.",
+    "entities": [
+      "Egipt",
+      "Turcia",
+      "Scarlet Lady",
+      "Patti LuPone"
+    ],
+    "icon": "ship",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
     "url": "https://digisport.ro/fotbal/fotbal-international/s-a-terminat-dupa-ce-s-a-retras-din-nationala-a-ramas-somer-4368645",
     "original_link": "https://www.digisport.ro/fotbal/fotbal-international/s-a-terminat-dupa-ce-s-a-retras-din-nationala-a-ramas-somer-4368645",
     "source": "digisport",
@@ -32,6 +349,36 @@
     "teaser": "După ce și-a anunțat retragerea din echipa națională, un fotbalist a rămas liber de contract și caută o nouă echipă pentru a-și continua cariera.",
     "entities": [],
     "icon": "ball-football",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://spotmedia.ro/stiri/educatie/ministerul-educatiei-si-cercetarii-a-publicat-un-ghid-pentru-admiterea-la-liceu-cand-se-completeaza-optiunile",
+    "original_link": "https://spotmedia.ro/stiri/educatie/ministerul-educatiei-si-cercetarii-a-publicat-un-ghid-pentru-admiterea-la-liceu-cand-se-completeaza-optiunile",
+    "source": "spotmedia",
+    "source_name": "Spotmedia",
+    "source_lang": "ro",
+    "title": "Ministerul Educației a publicat ghidul și ierarhia pentru admiterea la liceu",
+    "category": "general",
+    "published": "2026-07-09T12:44:01+00:00",
+    "model": "C",
+    "sources": [
+      {
+        "name": "Spotmedia",
+        "url": "https://spotmedia.ro/stiri/educatie/ministerul-educatiei-si-cercetarii-a-publicat-un-ghid-pentru-admiterea-la-liceu-cand-se-completeaza-optiunile"
+      },
+      {
+        "name": "HotNews",
+        "url": "https://hotnews.ro/ierarhia-pentru-admiterea-la-liceu-2026-a-fost-publicata-ghidul-pentru-completarea-optiunilor-2296331"
+      }
+    ],
+    "first_source": "Spotmedia",
+    "synthesis": "Ministerul Educației și Cercetării a publicat joi, 9 iulie, ierarhia județeană și a municipiului București pentru absolvenții de clasa a VIII-a care participă la admiterea la liceu în anul școlar 2026-2027. Totodată, a fost dat publicității și un ghid cu informații utile privind completarea opțiunilor și etapele admiterii.",
+    "entities": [
+      "Ministerul Educației și Cercetării"
+    ],
+    "icon": "writing",
     "processed_by": "gemini",
     "prompt_version": "v2-esenta",
     "featured": false
@@ -210,6 +557,37 @@
       "Premier League"
     ],
     "icon": "currency-euro",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://moldova.europalibera.org/a/europa-vestica-a-trecut-prin-cea-mai-fierbinte-luna-iunie-inregistrata-vreodata-acum-vine-al-treilea-val/33800023.html",
+    "original_link": "https://moldova.europalibera.org/a/europa-vestica-a-trecut-prin-cea-mai-fierbinte-luna-iunie-inregistrata-vreodata-acum-vine-al-treilea-val/33800023.html",
+    "source": "el_moldova",
+    "source_name": "Europa Liberă",
+    "source_lang": "ro",
+    "title": "Iunie 2026, cea mai fierbinte lună înregistrată în Europa de Vest",
+    "category": "extern",
+    "published": "2026-07-09T11:33:05+00:00",
+    "model": "C",
+    "sources": [
+      {
+        "name": "Europa Liberă",
+        "url": "https://moldova.europalibera.org/a/europa-vestica-a-trecut-prin-cea-mai-fierbinte-luna-iunie-inregistrata-vreodata-acum-vine-al-treilea-val/33800023.html"
+      },
+      {
+        "name": "Libertatea",
+        "url": "https://www.libertatea.ro/stiri/record-caldura-europa-cea-mai-fierbinte-luna-iunie-europa-vest-cand-vine-domul-de-caldura-iulie-5810163"
+      }
+    ],
+    "first_source": "Europa Liberă",
+    "synthesis": "Serviciul Copernicus pentru Schimbările Climatice a confirmat că iunie 2026 a fost cea mai călduroasă lună iunie din istoria măsurătorilor în Europa de Vest. La nivel global, luna a ocupat locul al doilea în topul celor mai calde luni iunie. Aceste date survin în contextul unui nou val de căldură resimțit în regiune.",
+    "entities": [
+      "Europa de Vest",
+      "Serviciul Copernicus pentru Schimbările Climatice"
+    ],
+    "icon": "sun",
     "processed_by": "gemini",
     "prompt_version": "v2-esenta",
     "featured": false
@@ -16454,46 +16832,6 @@
       }
     ],
     "synthesis": "Canada, susținută de aproximativ zece țări europene, intenționează să anunțe la summitul NATO din Turcia înființarea unei bănci globale de apărare. Propunerea vizează consolidarea capacităților de apărare ale statelor aliate.",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://theguardian.com/environment/2026/jul/03/donald-trump-strait-of-hormuz-climate-crisis-europe-heatwave",
-    "original_link": "https://www.theguardian.com/environment/2026/jul/03/donald-trump-strait-of-hormuz-climate-crisis-europe-heatwave",
-    "source": "guardian_eu",
-    "source_name": "The Guardian",
-    "source_lang": "en",
-    "title": "Ineficiența lui Trump, un \"erou accidental\" în lupta climatică, în ciuda crizei",
-    "category": "general",
-    "published": "2026-07-02T15:00:02+00:00",
-    "model": "B",
-    "teaser": "În paralel cu o caniculă severă în Europa, incompetența președintelui Trump creează neașteptat motive de optimism în criza climatică, contrastând cu o poveste de groază climatică globală.",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://theguardian.com/world/2026/jul/02/russia-attacks-kyiv-missiles-drones-ukraine",
-    "original_link": "https://www.theguardian.com/world/2026/jul/02/russia-attacks-kyiv-missiles-drones-ukraine",
-    "source": "guardian_eu",
-    "source_name": "The Guardian",
-    "source_lang": "en",
-    "title": "Atac masiv rus asupra Kievului, cel mai sângeros de la începutul războiului",
-    "category": "extern",
-    "published": "2026-07-02T14:57:35+00:00",
-    "model": "C",
-    "sources": [
-      {
-        "name": "BBC Europe",
-        "url": "https://www.bbc.co.uk/news/articles/c4gyv05gk4do?at_medium=RSS&at_campaign=rss"
-      },
-      {
-        "name": "The Guardian",
-        "url": "https://www.theguardian.com/world/2026/jul/02/russia-attacks-kyiv-missiles-drones-ukraine"
-      }
-    ],
-    "synthesis": "Cel puțin 27 de persoane au murit și zeci au fost rănite în urma celui mai amplu atac cu drone și rachete lansat de Rusia asupra Kievului. Atacul, care a implicat peste 70 de rachete și numeroase drone, a vizat capitala ucraineană și alte regiuni, provocând distrugeri extinse.",
     "processed_by": "gemini",
     "prompt_version": "v2-esenta",
     "featured": false
