@@ -99,11 +99,23 @@ def main() -> int:
             except Exception:
                 ok_img = False
             check(ok_img, page, "coperta og:image exista si e imagine reala (>5KB)")
-        # arta pe site (faza 2): banner fara text pe pagina articolului
-        if 'class="article-art"' in html:
-            with_art += 1
+        # arta pe site (faza 2): banner fara text -- verifica si ca FISIERUL art.jpg
+        # chiar se incarca (nu doar ca tag-ul <img> exista in HTML). Altfel un art.jpg
+        # lipsa/404 pe deploy trece neobservat: tag prezent, imagine goala pe ecran.
+        am = re.search(r'class="article-art"[^>]*\ssrc="([^"]+)"', html)
+        if am:
+            apath = re.sub(r"^https?://[^/]+", "", am.group(1))
+            try:
+                req = urllib.request.Request(BASE + apath, headers=UA)
+                with urllib.request.urlopen(req, timeout=30) as r:
+                    ok_art = (r.headers.get("Content-Type", "").startswith("image/")
+                              and len(r.read()) > 5000)
+            except Exception:
+                ok_art = False
+            if ok_art:
+                with_art += 1
     check(with_art >= max(1, N_ARTICLES - 1), "articole",
-          f"arta pe site pe esantion: {with_art}/{N_ARTICLES} (minim {N_ARTICLES - 1})")
+          f"arta pe site se incarca real pe esantion: {with_art}/{N_ARTICLES} (minim {N_ARTICLES - 1})")
     # cateva articole pot cadea legitim pe og-image static (generate() a esuat izolat),
     # dar majoritatea esantionului TREBUIE sa aiba coperta proprie
     check(with_cover >= max(1, N_ARTICLES - 1), "articole",
