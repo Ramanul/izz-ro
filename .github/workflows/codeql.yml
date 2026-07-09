@@ -1,0 +1,34 @@
+name: codeql
+
+# Subagent de securitate (cu guard): scaneaza codul Python si ridica alerte in
+# tab-ul Security; nu modifica nimic singur. Gratuit pe repo public.
+# Ruleaza pe PR + saptamanal -- NU pe fiecare commit de continut (la 2h), ca sa
+# nu iroseasca minute Actions (commit-urile bot ating doar data/*.json, nu cod).
+
+on:
+  pull_request:
+    branches: [main]
+  schedule:
+    - cron: "27 4 * * 1"   # luni, 04:27 UTC
+
+permissions:
+  contents: read
+  security-events: write
+
+concurrency:
+  group: codeql-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  analyze:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Init CodeQL
+        uses: github/codeql-action/init@v3
+        with:
+          languages: python
+
+      - name: Analyze
+        uses: github/codeql-action/analyze@v3
