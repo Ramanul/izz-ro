@@ -21,6 +21,7 @@ import sys
 import urllib.request
 
 FRESH_MAX_HOURS = 48   # cel mai nou articol de pe live trebuie sa fie mai recent de-atat
+ART_MAX_DAYS = 2       # art.jpg (banner pe site) exista doar pe articole mai noi de-atat (vezi config.ART_MAX_DAYS)
 
 BASE = os.getenv("BASE_URL", "https://izz.ro").rstrip("/")
 N_ARTICLES = 5
@@ -72,12 +73,26 @@ def main() -> int:
           f"cel mai nou articol e recent (lastmod {newest}, prag {FRESH_MAX_HOURS}h)")
 
     print(f"articole (esantion {N_ARTICLES} din sitemap):")
-    paths = [re.sub(r"^https?://[^/]+", "", u) for u in re.findall(r"<loc>([^<]+)</loc>", sitemap)]
-    arts = [p for p in paths if p.count("/") >= 3 and "/legal/" not in p]
+    # perechi (loc, lastmod) -> putem separa articolele RECENTE (care au art.jpg) de restul.
+    # art.jpg (banner pe site) se genereaza doar pentru articolele mai noi de ART_MAX_DAYS
+    # (build Cloudflare mai usor); coperta (cover.jpg/og) exista pentru TOATE.
+    entries = re.findall(r"<loc>([^<]+)</loc>(?:<lastmod>(\d{4}-\d{2}-\d{2})</lastmod>)?", sitemap)
+    arts = [(p, lm) for u, lm in entries
+            for p in [re.sub(r"^https?://[^/]+", "", u)]
+            if p.count("/") >= 3 and "/legal/" not in p]
+    today = dt.datetime.now(dt.timezone.utc).date()
+
+    def _recent(lm: str) -> bool:
+        try:
+            return (today - dt.date.fromisoformat(lm)).days < ART_MAX_DAYS
+        except ValueError:
+            return False
+
+    # esantionul general (orice articol) verifica formatul + coperta
     random.shuffle(arts)
+    sample = arts[:N_ARTICLES]
     with_cover = 0
-    with_art = 0
-    for p in arts[:N_ARTICLES]:
+    for p, _lm in sample:
         html = get(p)
         page = p[:60]
         check('class="notice"' not in html, page, "fara disclaimer metodologic pe articol")
@@ -99,15 +114,20 @@ def main() -> int:
             except Exception:
                 ok_img = False
             check(ok_img, page, "coperta og:image exista si e imagine reala (>5KB)")
-        # arta pe site (faza 2): banner fara text pe pagina articolului
-        if 'class="article-art"' in html:
-            with_art += 1
-    check(with_art >= max(1, N_ARTICLES - 1), "articole",
-          f"arta pe site pe esantion: {with_art}/{N_ARTICLES} (minim {N_ARTICLES - 1})")
     # cateva articole pot cadea legitim pe og-image static (generate() a esuat izolat),
     # dar majoritatea esantionului TREBUIE sa aiba coperta proprie
     check(with_cover >= max(1, N_ARTICLES - 1), "articole",
           f"coperti generate pe esantion: {with_cover}/{N_ARTICLES} (minim {N_ARTICLES - 1})")
+
+    # arta pe site (faza 2): banner fara text -- DOAR pe articolele recente (au art.jpg).
+    # esantionam separat printre cele recente ca sa nu picam pe articole vechi fara banner.
+    recent = [p for p, lm in arts if _recent(lm)]
+    random.shuffle(recent)
+    art_sample = recent[:N_ARTICLES]
+    with_art = sum('class="article-art"' in get(p) for p in art_sample)
+    n = len(art_sample)
+    check(n > 0 and with_art >= max(1, n - 1), "articole",
+          f"arta pe site pe esantion recent: {with_art}/{n} (minim {max(1, n - 1)})")
 
     if fails:
         print(f"\nFAIL — {len(fails)} incalcari pe live:")
