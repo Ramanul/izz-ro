@@ -1,5 +1,201 @@
 [
   {
+    "url": "https://prosport.ro/campionatul-mondial-2026/kylian-mbappe-rateaza-penalty-maroc-franta-20480564",
+    "original_link": "https://www.prosport.ro/campionatul-mondial-2026/kylian-mbappe-rateaza-penalty-maroc-franta-20480564",
+    "source": "prosport",
+    "source_name": "ProSport",
+    "source_lang": "ro",
+    "title": "Mbappé ratează penalty în Franța - Maroc, provocând discuții",
+    "category": "sport",
+    "published": "2026-07-09T20:39:26+00:00",
+    "model": "C",
+    "sources": [
+      {
+        "name": "ProSport",
+        "url": "https://www.prosport.ro/campionatul-mondial-2026/kylian-mbappe-rateaza-penalty-maroc-franta-20480564"
+      },
+      {
+        "name": "GSP",
+        "url": "https://www.gsp.ro/international/campionatul-mondial-de-fotbal-2026/kylian-mbappe-pentalty-controversa-franta-maroc-958870.html"
+      }
+    ],
+    "first_source": "ProSport",
+    "synthesis": "În timpul meciului Franța - Maroc, Kylian Mbappé a ratat o lovitură de la 11 metri în minutul 28. Execuția sa a fost considerată slabă, stârnind uimire și reacții variate, inclusiv speculații despre o posibilă trucare a competiției, deși faultul inițial a fost clar. Presa franceză a comentat imediat ratarea.",
+    "entities": [
+      "Kylian Mbappé",
+      "Franța",
+      "Maroc",
+      "Cupa Mondială"
+    ],
+    "icon": "ball-football",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://gsp.ro/fotbal/liga-2/gabi-tamas-prezentat-prezentat-a-doua-oara-asa-tg-mures-958860.html",
+    "original_link": "https://www.gsp.ro/fotbal/liga-2/gabi-tamas-prezentat-prezentat-a-doua-oara-asa-tg-mures-958860.html",
+    "source": "gsp",
+    "source_name": "GSP",
+    "source_lang": "ro",
+    "title": "Gabriel Tamaș, prezentat oficial de două ori în două luni la ASA Tg. Mureș",
+    "category": "sport",
+    "published": "2026-07-09T20:24:57+00:00",
+    "model": "C",
+    "sources": [
+      {
+        "name": "GSP",
+        "url": "https://www.gsp.ro/fotbal/liga-2/gabi-tamas-prezentat-prezentat-a-doua-oara-asa-tg-mures-958860.html"
+      },
+      {
+        "name": "Digi Sport",
+        "url": "https://www.digisport.ro/fotbal/liga-2/gabi-tamas-reloaded-a-fost-prezentat-iar-la-noua-echipa-dupa-doua-luni-a-semnat-4369503"
+      }
+    ],
+    "first_source": "GSP",
+    "synthesis": "Gabriel Tamaș a fost prezentat oficial pentru a doua oară în funcția de manager executiv la ASA Tg. Mureș, la aproximativ o lună și jumătate de la prima numire. Clubul din Liga 2 a anunțat reapariția sa în conducere, confirmând semnătura sa.",
+    "entities": [
+      "Gabriel Tamaș",
+      "ASA Tg. Mureș"
+    ],
+    "icon": "ball-football",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://digi24.ro/stiri/economie/energie/uniunea-europeana-pregateste-un-plan-amplu-de-electrificare-pentru-reducerea-consumului-de-petrol-si-gaze-3856013",
+    "original_link": "https://www.digi24.ro/stiri/economie/energie/uniunea-europeana-pregateste-un-plan-amplu-de-electrificare-pentru-reducerea-consumului-de-petrol-si-gaze-3856013",
+    "source": "extern",
+    "source_name": "Digi24 Extern",
+    "source_lang": "ro",
+    "title": "UE accelerează electrificarea pentru a reduce dependența de combustibili fosili",
+    "category": "economic",
+    "published": "2026-07-09T19:39:20+00:00",
+    "model": "C",
+    "sources": [
+      {
+        "name": "Digi24 Extern",
+        "url": "https://www.digi24.ro/stiri/economie/energie/uniunea-europeana-pregateste-un-plan-amplu-de-electrificare-pentru-reducerea-consumului-de-petrol-si-gaze-3856013"
+      },
+      {
+        "name": "Știrile ProTV",
+        "url": "https://stirileprotv.ro/stiri/financiar/ce-plan-are-uniunea-europeana-pentru-reducerea-consumului-de-petrol-si-gaze-obiectivele-prezentate-pas-cu-pas.html"
+      }
+    ],
+    "first_source": "Digi24 Extern",
+    "synthesis": "Comisia Europeană elaborează un plan extins pentru a stimula electrificarea economiei europene. Măsurile vizează diminuarea dependenței blocului comunitar de petrol și gaze naturale, conform unui proiect de document consultat de Reuters. Detaliile specifice ale pachetului de măsuri sunt în curs de elaborare.",
+    "entities": [
+      "Uniunea Europeană",
+      "Comisia Europeană"
+    ],
+    "icon": "bolt",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://spotmedia.ro/stiri/sport/live-europa-league-u-cluj-dinamo-kiev",
+    "original_link": "https://spotmedia.ro/stiri/sport/live-europa-league-u-cluj-dinamo-kiev",
+    "source": "spotmedia",
+    "source_name": "Spotmedia",
+    "source_lang": "ro",
+    "title": "U Cluj remizează cu Dinamo Kiev în Europa League",
+    "category": "sport",
+    "published": "2026-07-09T19:06:00+00:00",
+    "model": "C",
+    "sources": [
+      {
+        "name": "Spotmedia",
+        "url": "https://spotmedia.ro/stiri/sport/live-europa-league-u-cluj-dinamo-kiev"
+      },
+      {
+        "name": "GSP",
+        "url": "https://www.gsp.ro/international/europa-league/antrenorul-lui-dinamo-kiev-a-indicat-vinovatii-dupa-remiza-cu-u-cluj-958852.html"
+      },
+      {
+        "name": "Digi Sport",
+        "url": "https://www.digisport.ro/fotbal/europa-league/ce-a-spus-antrenorul-lui-dinamo-kiev-despre-u-cluj-dupa-remiza-din-primul-tur-preliminar-europa-league-4369459"
+      }
+    ],
+    "first_source": "Spotmedia",
+    "synthesis": "Universitatea Cluj a obținut o remiză albă, 0-0, în deplasarea din Polonia împotriva echipei Dinamo Kiev, în prima manșă a turului 1 preliminar din Europa League. Antrenorul echipei ucrainene, Igor Kostyuk, și-a criticat echipa pentru prestația ofensivă, lăudând în același timp apărarea clujeană.",
+    "entities": [
+      "U Cluj",
+      "Dinamo Kiev",
+      "Europa League"
+    ],
+    "icon": "ball-football",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://spotmedia.ro/stiri/sport/live-cupa-mondiala-2026-franta-maroc",
+    "original_link": "https://spotmedia.ro/stiri/sport/live-cupa-mondiala-2026-franta-maroc",
+    "source": "spotmedia",
+    "source_name": "Spotmedia",
+    "source_lang": "ro",
+    "title": "Franța și Maroc, meci strâns la Cupa Mondială 2026",
+    "category": "sport",
+    "published": "2026-07-09T19:00:00+00:00",
+    "model": "C",
+    "sources": [
+      {
+        "name": "Spotmedia",
+        "url": "https://spotmedia.ro/stiri/sport/live-cupa-mondiala-2026-franta-maroc"
+      },
+      {
+        "name": "Digi Sport",
+        "url": "https://www.digisport.ro/fotbal/cm-2026/ce-record-la-franta-maroc-doar-marele-pele-a-reusit-ceva-mai-spectaculos-la-cupa-mondiala-4369389"
+      }
+    ],
+    "first_source": "Spotmedia",
+    "synthesis": "Meciul dintre Franța și Maroc, contând pentru sferturile de finală ale Cupei Mondiale 2026, s-a încheiat cu scorul de 0-0 după prelungiri. Partida a fost una tensionată, cu ocazii de ambele părți, portarul marocan Bounou având intervenții notabile. Un record a fost stabilit în timpul acestui meci, comparabil cu performanțele lui Pele.",
+    "entities": [
+      "Franța",
+      "Maroc",
+      "Cupa Mondială 2026",
+      "Pele"
+    ],
+    "icon": "ball-football",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://spotmedia.ro/stiri/economie/reactia-omniasig-dupa-sechestrul-pus-de-procurori-in-dosarul-arafat",
+    "original_link": "https://spotmedia.ro/stiri/economie/reactia-omniasig-dupa-sechestrul-pus-de-procurori-in-dosarul-arafat",
+    "source": "spotmedia",
+    "source_name": "Spotmedia",
+    "source_lang": "ro",
+    "title": "Omniasig confirmă sechestrul pe un imobil în dosarul elicopterului SMURD",
+    "category": "economic",
+    "published": "2026-07-09T18:30:22+00:00",
+    "model": "C",
+    "sources": [
+      {
+        "name": "Spotmedia",
+        "url": "https://spotmedia.ro/stiri/economie/reactia-omniasig-dupa-sechestrul-pus-de-procurori-in-dosarul-arafat"
+      },
+      {
+        "name": "HotNews",
+        "url": "https://hotnews.ro/reactia-omniasig-la-sechestrul-pus-in-dosarul-achizitiei-elicopterului-smurd-compania-a-actionat-cu-buna-credinta-2296670"
+      }
+    ],
+    "first_source": "Spotmedia",
+    "synthesis": "Procurorii militari au instituit sechestru asigurător asupra unui imobil deținut de Omniasig, în cadrul anchetei privind achiziția unui elicopter SMURD. Compania a confirmat măsura, precizând că nu au fost blocate conturile bancare și cooperează cu autoritățile. Sechestrul vizează bunuri și bani legate de Raed Arafat.",
+    "entities": [
+      "Omniasig",
+      "SMURD",
+      "Raed Arafat"
+    ],
+    "icon": "building-bank",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
     "url": "https://gsp.ro/international/campionatul-mondial-de-fotbal-2026/fifa-lovitura-anglia-suspendare-jarell-quansah-958825.html",
     "original_link": "https://www.gsp.ro/international/campionatul-mondial-de-fotbal-2026/fifa-lovitura-anglia-suspendare-jarell-quansah-958825.html",
     "source": "gsp",
@@ -166,6 +362,39 @@
     "featured": false
   },
   {
+    "url": "https://cursdeguvernare.ro/problema-cea-mare-a-romaniei-78-din-media-ue-la-pib-locuitor-si-86-la-consumul-individual-efectiv-ne-salveaza-preturile-mici.html",
+    "original_link": "https://cursdeguvernare.ro/problema-cea-mare-a-romaniei-78-din-media-ue-la-pib-locuitor-si-86-la-consumul-individual-efectiv-ne-salveaza-preturile-mici.html",
+    "source": "cursdeguv",
+    "source_name": "Curs de Guvernare",
+    "source_lang": "ro",
+    "title": "România, sub media UE la PIB și consum, compensată de prețuri mici",
+    "category": "economic",
+    "published": "2026-07-09T17:25:02+00:00",
+    "model": "C",
+    "sources": [
+      {
+        "name": "Curs de Guvernare",
+        "url": "https://cursdeguvernare.ro/problema-cea-mare-a-romaniei-78-din-media-ue-la-pib-locuitor-si-86-la-consumul-individual-efectiv-ne-salveaza-preturile-mici.html"
+      },
+      {
+        "name": "Spotmedia",
+        "url": "https://spotmedia.ro/stiri/opinii-si-analize/problema-cea-mare-a-romaniei-78-din-media-ue-la-pib-locuitor-si-86-la-consumul-individual-efectiv-ne-salveaza-preturile-mici"
+      }
+    ],
+    "first_source": "Curs de Guvernare",
+    "synthesis": "România se confruntă cu un decalaj semnificativ față de media Uniunii Europene, atingând 78% din PIB-ul pe locuitor și 86% din consumul individual efectiv. Acești indicatori, calculați la paritatea puterii de cumpărare, arată că prețurile interne mai scăzute compensează parțial diferența față de țări precum Luxemburg și Irlanda, care au cele mai mari PIB-uri pe cap de locuitor.",
+    "entities": [
+      "România",
+      "Uniunea Europeană",
+      "Luxemburg",
+      "Irlanda"
+    ],
+    "icon": "percentage",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
     "url": "https://prosport.ro/diverse/prea-frumoasa-ca-sa-fie-adevarata-faimoasa-paige-spiranac-a-negat-vehement-ca-a-folosit-ai-e-reala-20480419",
     "original_link": "https://www.prosport.ro/diverse/prea-frumoasa-ca-sa-fie-adevarata-faimoasa-paige-spiranac-a-negat-vehement-ca-a-folosit-ai-e-reala-20480419",
     "source": "prosport",
@@ -219,6 +448,37 @@
     "teaser": "O echipă a fost eliminată din competiția CM 2026 după ce a pierdut două etape. Această înfrângere îi exclude din fazele superioare ale campionatului.",
     "entities": [],
     "icon": "ball-football",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://recorder.ro/outsider-politic-5-traian-basescu-nicusor-dan-e-un-presedinte-care-nu-poate-servi-tara",
+    "original_link": "https://recorder.ro/outsider-politic-5-traian-basescu-nicusor-dan-e-un-presedinte-care-nu-poate-servi-tara/",
+    "source": "recorder",
+    "source_name": "Recorder",
+    "source_lang": "ro",
+    "title": "Traian Băsescu critică deciziile lui Nicușor Dan în criza politică",
+    "category": "politic",
+    "published": "2026-07-09T17:10:54+00:00",
+    "model": "C",
+    "sources": [
+      {
+        "name": "Recorder",
+        "url": "https://recorder.ro/outsider-politic-5-traian-basescu-nicusor-dan-e-un-presedinte-care-nu-poate-servi-tara/"
+      },
+      {
+        "name": "HotNews",
+        "url": "https://hotnews.ro/traian-basescu-face-inventarul-greselilor-pe-care-le-ar-fi-facut-nicusor-dan-practic-nu-poate-servi-tara-2296645"
+      }
+    ],
+    "first_source": "Recorder",
+    "synthesis": "Fostul președinte Traian Băsescu a declarat într-un interviu că Nicușor Dan a greșit refuzând alegerile anticipate în soluționarea crizei politice. Băsescu consideră că actualul șef al statului nu poate servi țara din cauza acestor erori strategice, comparând situația cu dileme politice mai vechi din România.",
+    "entities": [
+      "Traian Băsescu",
+      "Nicușor Dan"
+    ],
+    "icon": "gavel",
     "processed_by": "gemini",
     "prompt_version": "v2-esenta",
     "featured": false
@@ -16996,85 +17256,6 @@
       }
     ],
     "synthesis": "Cristiano Ronaldo a stabilit un nou record, devenind primul fotbalist care participă la șase ediții ale Cupei Mondiale, începând cu cea din 2006. A bifat acest moment în partida dintre Portugalia și Croația, disputată în cadrul competiției. Există speculații, vehiculate de sora sa, privind o posibilă retragere după acest turneu final.",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://prosport.ro/campionatul-mondial-2026/portugalia-croatia-live-la-cupa-mondiala-cristiano-ronaldo-luka-modric-20474774",
-    "original_link": "https://www.prosport.ro/campionatul-mondial-2026/portugalia-croatia-live-la-cupa-mondiala-cristiano-ronaldo-luka-modric-20474774",
-    "source": "prosport",
-    "source_name": "ProSport",
-    "source_lang": "ro",
-    "title": "Portugalia și Croația se întâlnesc în optimile Cupei Mondiale",
-    "category": "sport",
-    "published": "2026-07-02T21:13:09+00:00",
-    "model": "C",
-    "sources": [
-      {
-        "name": "GSP",
-        "url": "https://www.gsp.ro/international/campionatul-mondial-de-fotbal-2026/live-portugalia-croatia-16-imi-cupa-mondiala-955743.html"
-      },
-      {
-        "name": "Digi Sport",
-        "url": "https://www.digisport.ro/fotbal/cm-2026/portugalia-croatia-live-text-0200-in-16-imi-la-cupa-mondiala-meci-de-foc-intre-ronaldo-si-modric-4352253"
-      },
-      {
-        "name": "ProSport",
-        "url": "https://www.prosport.ro/campionatul-mondial-2026/portugalia-croatia-live-la-cupa-mondiala-cristiano-ronaldo-luka-modric-20474774"
-      }
-    ],
-    "synthesis": "Portugalia și Croația se confruntă vineri dimineață, la ora 02:00, în șaisprezecimile Cupei Mondiale 2026, la Toronto. Meciul, transmis pe Antena 1 și Antena Play, va fi ultimul la un Campionat Mondial pentru Cristiano Ronaldo și Luka Modric, ambii titulari. Câștigătoarea va întâlni Spania în optimi.",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://spotmedia.ro/stiri/sport/cupa-mondiala-2026-spania-castiga-clar-cu-austria-si-se-califica-in-optimi",
-    "original_link": "https://spotmedia.ro/stiri/sport/cupa-mondiala-2026-spania-castiga-clar-cu-austria-si-se-califica-in-optimi",
-    "source": "spotmedia",
-    "source_name": "Spotmedia",
-    "source_lang": "ro",
-    "title": "Spania învinge Austria și avansează în optimile Cupei Mondiale",
-    "category": "sport",
-    "published": "2026-07-02T21:00:11+00:00",
-    "model": "C",
-    "sources": [
-      {
-        "name": "GSP",
-        "url": "https://www.gsp.ro/international/campionatul-mondial-de-fotbal-2026/live-spania-austria-saisprezecimile-campionatului-mondial-955691.html"
-      },
-      {
-        "name": "Spotmedia",
-        "url": "https://spotmedia.ro/stiri/sport/cupa-mondiala-2026-spania-castiga-clar-cu-austria-si-se-califica-in-optimi"
-      }
-    ],
-    "synthesis": "Naționala Spaniei s-a calificat în optimile de finală ale Cupei Mondiale după ce a învins Austria cu scorul de 3-0. Ibericii au dominat partida și au obținut victoria grație golurilor marcate. Următorul adversar al Spaniei în optimi ar putea fi Portugalia, în funcție de rezultatul meciului acesteia cu Croația.",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://digi24.ro/stiri/sport/tenis/sorana-cirstea-s-a-calificat-in-turul-al-treilea-la-wimbledon-cu-viitoarea-adversara-s-a-mai-intalnit-de-patru-ori-in-acest-an-3845649",
-    "original_link": "https://www.digi24.ro/stiri/sport/tenis/sorana-cirstea-s-a-calificat-in-turul-al-treilea-la-wimbledon-cu-viitoarea-adversara-s-a-mai-intalnit-de-patru-ori-in-acest-an-3845649",
-    "source": "digi24",
-    "source_name": "Digi24",
-    "source_lang": "ro",
-    "title": "Sorana Cîrstea avansează în turul 3 la Wimbledon",
-    "category": "sport",
-    "published": "2026-07-02T20:35:08+00:00",
-    "model": "C",
-    "sources": [
-      {
-        "name": "Digi Sport",
-        "url": "https://www.digisport.ro/tenis/sorana-cirstea-s-a-calificat-fara-emotii-in-turul-3-de-la-wimbledon-si-a-aflat-urmatoarea-adversara-4354543"
-      },
-      {
-        "name": "Digi24",
-        "url": "https://www.digi24.ro/stiri/sport/tenis/sorana-cirstea-s-a-calificat-in-turul-al-treilea-la-wimbledon-cu-viitoarea-adversara-s-a-mai-intalnit-de-patru-ori-in-acest-an-3845649"
-      }
-    ],
-    "synthesis": "Jucătoarea română de tenis Sorana Cîrstea s-a calificat în turul al treilea al turneului de la Wimbledon. Ea a învins-o pe australianca Kimberly Birrell cu scorul de 6-3, 6-4. Următoarea adversară a Soranei Cîrstea a fost deja stabilită, aceasta fiind o jucătoare cu care s-a mai întâlnit de patru ori în acest an.",
     "processed_by": "gemini",
     "prompt_version": "v2-esenta",
     "featured": false
