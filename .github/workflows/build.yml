@@ -39,6 +39,10 @@ jobs:
           AI_PROVIDER: gemini
           MAX_AI_CALLS_PER_RUN: "18"
           UPGRADE_RESERVE: "8"
+          # Optional: ruteaza Gemini prin Cloudflare AI Gateway (cache/retry/observabilitate).
+          # Activezi setand variabila de repo GEMINI_BASE_URL la URL-ul gateway-ului;
+          # gol -> direct la Google (comportament neschimbat).
+          GEMINI_BASE_URL: ${{ vars.GEMINI_BASE_URL }}
         run: python -m generator.main
 
       - name: Comite starea (declanseaza deploy Cloudflare)
