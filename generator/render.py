@@ -9,13 +9,26 @@ from xml.sax.saxutils import escape as xml_escape
 from jinja2 import Environment, FileSystemLoader, select_autoescape
 from slugify import slugify
 
-from . import config, covers
+from . import config, covers, htmlart
 from .util import title_tokens, domain_of
 
 ROOT = config.ROOT
 TPL_DIR = os.path.join(ROOT, "templates")
 STATIC_DIR = os.path.join(ROOT, "static")
 OUT_DIR = os.path.join(ROOT, "output")
+MEDIA_DIR = os.path.join(ROOT, "media")   # imagini HTML/Chromium comise (tools/gen_images.py)
+
+
+def _use_media(src: str, dst: str) -> bool:
+    """Copiaza imaginea comisa (HTML/Chromium) daca exista si e valida. False -> fallback Pillow."""
+    try:
+        if os.path.exists(src) and os.path.getsize(src) > 3000:
+            os.makedirs(os.path.dirname(dst), exist_ok=True)
+            shutil.copyfile(src, dst)
+            return True
+    except OSError:
+        pass
+    return False
 
 _RO_MONTHS = ["", "ianuarie", "februarie", "martie", "aprilie", "mai", "iunie",
               "iulie", "august", "septembrie", "octombrie", "noiembrie", "decembrie"]
@@ -287,9 +300,12 @@ def build(articles: list, mod: dict | None = None) -> None:
     # INAINTE de orice randare, ca hero-ul si paginile de articol sa le poata folosi
     for a in by_date:
         cdir = os.path.join(OUT_DIR, a["category"], a["slug"])
-        if covers.generate(a, os.path.join(cdir, "cover.jpg")):
+        aid = htmlart.art_id(a)
+        cover_dst, art_dst = os.path.join(cdir, "cover.jpg"), os.path.join(cdir, "art.jpg")
+        # preferam imaginea comisa (HTML/Chromium); daca lipseste -> generare Pillow (fallback sigur)
+        if _use_media(os.path.join(MEDIA_DIR, f"{aid}.c.jpg"), cover_dst) or covers.generate(a, cover_dst):
             a["cover_url"] = f"{config.SITE['url']}/{a['category']}/{a['slug']}/cover.jpg"
-        if covers.generate_art(a, os.path.join(cdir, "art.jpg")):
+        if _use_media(os.path.join(MEDIA_DIR, f"{aid}.jpg"), art_dst) or covers.generate_art(a, art_dst):
             a["art_path"] = f"/{a['category']}/{a['slug']}/art.jpg"
 
     hero = _pick_hero(by_date)
