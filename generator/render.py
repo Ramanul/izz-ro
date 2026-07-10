@@ -390,6 +390,7 @@ def build(articles: list, mod: dict | None = None) -> None:
                "/404.html", category="Pagina negăsită", articles=[])))
     _write_sitemap(by_date)
     _write_robots()
+    _write_headers()
     _write_feed(by_date)
 
 
@@ -446,6 +447,17 @@ def _write_sitemap(articles: list) -> None:
 def _write_robots() -> None:
     _write(os.path.join(OUT_DIR, "robots.txt"),
            f"User-agent: *\nAllow: /\nSitemap: {config.SITE['url']}/sitemap.xml\n")
+
+
+def _write_headers() -> None:
+    """Cache-Control pe Cloudflare Pages (fisierul _headers). Activele imutabile
+    tin mult; imaginile o zi; HTML-ul NU se cache-uieste agresiv (stiri proaspete)."""
+    _write(os.path.join(OUT_DIR, "_headers"),
+           "/static/*\n  Cache-Control: public, max-age=2592000, immutable\n"
+           "/favicon.svg\n  Cache-Control: public, max-age=2592000\n"
+           "*.jpg\n  Cache-Control: public, max-age=86400\n"
+           "*.png\n  Cache-Control: public, max-age=86400\n"
+           "/feed.xml\n  Cache-Control: public, max-age=1800\n")
 
 
 def _feed_xml(articles: list, title: str, link: str, description: str) -> str:
