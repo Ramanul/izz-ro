@@ -1,5 +1,101 @@
 [
   {
+    "url": "https://digisport.ro/tenis/novak-djokovic-dupa-ce-a-ratat-finala-de-la-wimbledon-sunt-binecuvantat-si-blestemat-4371089",
+    "original_link": "https://www.digisport.ro/tenis/novak-djokovic-dupa-ce-a-ratat-finala-de-la-wimbledon-sunt-binecuvantat-si-blestemat-4371089",
+    "source": "digisport",
+    "source_name": "Digi Sport",
+    "source_lang": "ro",
+    "title": "Djokovic, eliminat în semifinalele Wimbledon, își exprimă sentimentele mixte",
+    "category": "sport",
+    "published": "2026-07-10T19:12:51+00:00",
+    "model": "C",
+    "sources": [
+      {
+        "name": "Digi Sport",
+        "url": "https://www.digisport.ro/tenis/novak-djokovic-dupa-ce-a-ratat-finala-de-la-wimbledon-sunt-binecuvantat-si-blestemat-4371089"
+      },
+      {
+        "name": "GSP",
+        "url": "https://www.gsp.ro/sporturi/tenis/novak-djokovic-wimbledon-tenis-jannik-sinner-959160.html"
+      }
+    ],
+    "first_source": "Digi Sport",
+    "synthesis": "Novak Djokovic, în vârstă de 39 de ani, a fost învins de Jannik Sinner în semifinalele Wimbledon. Deși consideră că un astfel de rezultat este un succes pentru mulți, pentru el nu este suficient, descriind situația ca fiind \"binecuvântat și blestemat\".",
+    "entities": [
+      "Novak Djokovic",
+      "Jannik Sinner",
+      "Wimbledon"
+    ],
+    "icon": "ball-tennis",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://libertatea.ro/stiri/regele-charles-s-a-intalnit-cu-printul-harry-meghan-si-copiii-lor-pentru-prima-data-din-2022-5811979",
+    "original_link": "https://www.libertatea.ro/stiri/regele-charles-s-a-intalnit-cu-printul-harry-meghan-si-copiii-lor-pentru-prima-data-din-2022-5811979",
+    "source": "libertatea",
+    "source_name": "Libertatea",
+    "source_lang": "ro",
+    "title": "Regele Charles s-a întâlnit cu Harry, Meghan și copiii lor la Londra",
+    "category": "general",
+    "published": "2026-07-10T18:47:57+00:00",
+    "model": "C",
+    "sources": [
+      {
+        "name": "Libertatea",
+        "url": "https://www.libertatea.ro/stiri/regele-charles-s-a-intalnit-cu-printul-harry-meghan-si-copiii-lor-pentru-prima-data-din-2022-5811979"
+      },
+      {
+        "name": "Digi24 Extern",
+        "url": "https://www.digi24.ro/stiri/externe/ue/regele-charles-s-a-intalnit-cu-printul-harry-meghan-si-copiii-lor-pentru-prima-data-in-ultimii-patru-ani-3857569"
+      }
+    ],
+    "first_source": "Libertatea",
+    "synthesis": "Regele Charles al III-lea și regina Camilla l-au primit vineri la Highgrove House pe prințul Harry, soția sa Meghan și cei doi copii ai lor. Aceasta este prima întâlnire a familiei regale cu ducii de Sussex în ultimii patru ani, conform publicațiilor britanice citate de Palatul Buckingham. Cuplul regal a sosit din Europa pentru această vizită.",
+    "entities": [
+      "Regele Charles al III-lea",
+      "Prințul Harry",
+      "Meghan",
+      "Highgrove House"
+    ],
+    "icon": "building-monument",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://libertatea.ro/stiri/principalul-concurent-al-lui-putin-a-fost-inclus-in-lista-agentilor-straini-inainte-de-alegerile-din-rusia-5811865",
+    "original_link": "https://www.libertatea.ro/stiri/principalul-concurent-al-lui-putin-a-fost-inclus-in-lista-agentilor-straini-inainte-de-alegerile-din-rusia-5811865",
+    "source": "libertatea",
+    "source_name": "Libertatea",
+    "source_lang": "ro",
+    "title": "Politicianul rus Boris Nadejdin, declarat „agent străin” de Moscova",
+    "category": "politic",
+    "published": "2026-07-10T18:19:00+00:00",
+    "model": "C",
+    "sources": [
+      {
+        "name": "Libertatea",
+        "url": "https://www.libertatea.ro/stiri/principalul-concurent-al-lui-putin-a-fost-inclus-in-lista-agentilor-straini-inainte-de-alegerile-din-rusia-5811865"
+      },
+      {
+        "name": "Digi24 Extern",
+        "url": "https://www.digi24.ro/stiri/externe/rusia/boris-nadejdin-unul-dintre-opozantii-lui-vladimir-putin-a-fost-adaugat-pe-lista-agentilor-straini-inaintea-alegerilor-din-toamna-3857503"
+      }
+    ],
+    "first_source": "Libertatea",
+    "synthesis": "Politicianul rus de opoziție și activistul anti-război Boris Nadejdin a fost inclus pe lista oficială a „agenților străini” de către Ministerul rus al Justiției. Această decizie vine înaintea alegerilor parlamentare din septembrie, la două luni după ce a fost eliminat din cursa electorală pentru președinția Rusiei.",
+    "entities": [
+      "Boris Nadejdin",
+      "Ministerul rus al Justiției"
+    ],
+    "icon": "writing",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
     "url": "https://libertatea.ro/stiri/omul-de-afaceri-vasile-tofan-care-se-inspira-din-presedintele-argentinian-javier-milei-a-fost-propus-la-functia-de-prim-ministru-al-republicii-moldova-5811903",
     "original_link": "https://www.libertatea.ro/stiri/omul-de-afaceri-vasile-tofan-care-se-inspira-din-presedintele-argentinian-javier-milei-a-fost-propus-la-functia-de-prim-ministru-al-republicii-moldova-5811903",
     "source": "libertatea",
@@ -70,6 +166,38 @@
       "GlobalEye"
     ],
     "icon": "satellite",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://hotnews.ro/trump-spune-ca-a-lasat-instructiuni-ca-iranul-sa-fie-bombardat-cum-nu-s-a-mai-vazut-niciodata-daca-va-fi-asasinat-2297446",
+    "original_link": "https://hotnews.ro/trump-spune-ca-a-lasat-instructiuni-ca-iranul-sa-fie-bombardat-cum-nu-s-a-mai-vazut-niciodata-daca-va-fi-asasinat-2297446",
+    "source": "hotnews",
+    "source_name": "HotNews",
+    "source_lang": "ro",
+    "title": "Trump a ordonat atacuri masive asupra Iranului în caz de asasinat",
+    "category": "politic",
+    "published": "2026-07-10T17:26:54+00:00",
+    "model": "C",
+    "sources": [
+      {
+        "name": "HotNews",
+        "url": "https://hotnews.ro/trump-spune-ca-a-lasat-instructiuni-ca-iranul-sa-fie-bombardat-cum-nu-s-a-mai-vazut-niciodata-daca-va-fi-asasinat-2297446"
+      },
+      {
+        "name": "Libertatea",
+        "url": "https://www.libertatea.ro/stiri/donald-trump-spune-ca-iranul-vrea-sa-l-asasineze-si-a-lasat-instructiuni-sunt-de-mult-timp-pe-lista-lor-5811969"
+      }
+    ],
+    "first_source": "HotNews",
+    "synthesis": "Președintele american Donald Trump a declarat că a instruit Pentagonul să lanseze atacuri devastatoare asupra Iranului, în eventualitatea unui complot de asasinare din partea regimului iranian. Trump a afirmat că se află de mult timp pe \"lista\" Iranului, subliniind tensiunile existente între cele două țări.",
+    "entities": [
+      "Donald Trump",
+      "Iran",
+      "Pentagon"
+    ],
+    "icon": "swords",
     "processed_by": "gemini",
     "prompt_version": "v2-esenta",
     "featured": false
@@ -18594,125 +18722,6 @@
     "published": "2026-07-03T20:05:07+00:00",
     "model": "B",
     "teaser": "Un eveniment neobișnuit a avut loc la Cupa Mondială, nemaivăzut în ultimii 96 de ani. Un fotbalist s-a lovit la cap și a părut dezorientat, uitând pentru ce echipă joacă.",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://gsp.ro/sporturi/tenis/wimbledon-modifica-regulile-pentru-serena-williams-956405.html",
-    "original_link": "https://www.gsp.ro/sporturi/tenis/wimbledon-modifica-regulile-pentru-serena-williams-956405.html",
-    "source": "gsp",
-    "source_name": "GSP",
-    "source_lang": "ro",
-    "title": "Wimbledon modifică regulamentul pentru Serena Williams",
-    "category": "sport",
-    "published": "2026-07-03T19:42:29+00:00",
-    "model": "B",
-    "teaser": "Organizatorii Wimbledon au făcut o excepție pentru Serena Williams, permițându-i să joace la dublu alături de sora sa, Venus. Tenismena a revenit în circuit după o pauză, iar regulamentul a fost adaptat pentru a-i oferi timp suplimentar.",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://gsp.ro/international/campionatul-mondial-de-fotbal-2026/carlo-ancelotti-raphinha-revenire-antrenamente-brazilia-956398.html",
-    "original_link": "https://www.gsp.ro/international/campionatul-mondial-de-fotbal-2026/carlo-ancelotti-raphinha-revenire-antrenamente-brazilia-956398.html",
-    "source": "gsp",
-    "source_name": "GSP",
-    "source_lang": "ro",
-    "title": "Raphinha revine la antrenamentele Braziliei",
-    "category": "sport",
-    "published": "2026-07-03T19:27:03+00:00",
-    "model": "B",
-    "teaser": "Carlo Ancelotti a primit o veste bună: Raphinha, accidentat recent, s-a reintegrat la antrenamentele naționalei Braziliei. Echipa se pregătește pentru meciul din optimile Campionatului Mondial împotriva Norvegiei.",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://gsp.ro/international/campionatul-mondial-de-fotbal-2026/senegal-scandal-eliminare-cm-2026-956404.html",
-    "original_link": "https://www.gsp.ro/international/campionatul-mondial-de-fotbal-2026/senegal-scandal-eliminare-cm-2026-956404.html",
-    "source": "gsp",
-    "source_name": "GSP",
-    "source_lang": "ro",
-    "title": "Scandal în Senegal după eliminarea de la Mondial",
-    "category": "sport",
-    "published": "2026-07-03T19:26:56+00:00",
-    "model": "B",
-    "teaser": "Eliminarea Senegalului de la Cupa Mondială a scos la iveală probleme interne grave. Presa africană raportează petreceri, consum de alcool și cheltuieli nejustificate în cantonament, declanșând un scandal major.",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://theguardian.com/world/video/2026/jul/03/pope-leo-praises-us-history-of-welcoming-immigrants-at-250th-birthday-video",
-    "original_link": "https://www.theguardian.com/world/video/2026/jul/03/pope-leo-praises-us-history-of-welcoming-immigrants-at-250th-birthday-video",
-    "source": "guardian_eu",
-    "source_name": "The Guardian",
-    "source_lang": "en",
-    "title": "Papa Francisc laudă istoria SUA de primire a imigranților",
-    "category": "politic",
-    "published": "2026-07-03T18:42:18+00:00",
-    "model": "B",
-    "teaser": "Papa Francisc a felicitat SUA pentru istoria sa de primire a imigranților, îndemnând americanii să respecte idealurile fondatorilor la aniversarea a 250 de ani de la declararea independenței.",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://dw.com/en/maltese-tycoon-faces-trial-over-caruana-galizia-murder/a-77823553?maca=en-rss-en-eu-2092-rdf",
-    "original_link": "https://www.dw.com/en/maltese-tycoon-faces-trial-over-caruana-galizia-murder/a-77823553?maca=en-rss-en-eu-2092-rdf",
-    "source": "dw_europe",
-    "source_name": "DW Europe",
-    "source_lang": "en",
-    "title": "Magnat maltez, judecat pentru uciderea jurnalistei Caruana Galizia",
-    "category": "politic",
-    "published": "2026-07-03T18:20:00+00:00",
-    "model": "B",
-    "teaser": "Un om de afaceri din Malta, acuzat că a orchestrat uciderea jurnalistei Daphne Caruana Galizia în 2017, a ajuns în fața instanței. Acesta este judecat la șapte ani de la arestare, alți cinci inculpați fiind deja condamnați.",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://theguardian.com/artanddesign/gallery/2026/jul/03/the-week-around-the-world-in-20-pictures",
-    "original_link": "https://www.theguardian.com/artanddesign/gallery/2026/jul/03/the-week-around-the-world-in-20-pictures",
-    "source": "guardian_eu",
-    "source_name": "The Guardian",
-    "source_lang": "en",
-    "title": "Săptămâna în imagini: de la război la evenimente sportive",
-    "category": "general",
-    "published": "2026-07-03T18:17:49+00:00",
-    "model": "B",
-    "teaser": "Imagini din întreaga lume surprind atacuri aeriene rusești, efectele cutremurelor din Venezuela, canicula europeană și momente din Cupa Mondială.",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://g4media.ro/portugalia-activeaza-mecanismul-european-de-protectie-civila-incendii-forestiere-fac-ravagii-in-nordul-tarii.html",
-    "original_link": "https://www.g4media.ro/portugalia-activeaza-mecanismul-european-de-protectie-civila-incendii-forestiere-fac-ravagii-in-nordul-tarii.html",
-    "source": "g4media",
-    "source_name": "G4Media",
-    "source_lang": "ro",
-    "title": "Portugalia activează protecția civilă europeană din cauza incendiilor",
-    "category": "extern",
-    "published": "2026-07-03T18:15:35+00:00",
-    "model": "C",
-    "sources": [
-      {
-        "name": "Digi24 Extern",
-        "url": "https://www.digi24.ro/stiri/externe/portugalia-a-activat-mecanismul-european-de-protectie-civila-teritoriul-nostru-este-expus-unui-risc-foarte-ridicat-3847259"
-      },
-      {
-        "name": "HotNews",
-        "url": "https://hotnews.ro/incendii-forestiere-fac-ravagii-in-portugalia-tara-activeaza-mecanismul-european-de-protectie-civila-2291483"
-      },
-      {
-        "name": "G4Media",
-        "url": "https://www.g4media.ro/portugalia-activeaza-mecanismul-european-de-protectie-civila-incendii-forestiere-fac-ravagii-in-nordul-tarii.html"
-      }
-    ],
-    "synthesis": "Portugalia a activat mecanismul european de protecție civilă și acorduri bilaterale cu Spania și Maroc. Decizia vine în contextul unui val intens de caniculă și a multiplelor incendii forestiere care afectează teritoriul, generând un risc ridicat. Obiectivul este obținerea de întăriri pentru combaterea flăcărilor.",
     "processed_by": "gemini",
     "prompt_version": "v2-esenta",
     "featured": false
