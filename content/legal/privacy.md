@@ -1,11 +1,11 @@
 # Politica de confidențialitate
 
-**Ultima actualizare:** iunie 2026
+**Ultima actualizare:** iulie 2026
 
 IZZ.ro („noi") respectă confidențialitatea vizitatorilor. Această politică explică ce date prelucrăm, în ce scop și ce drepturi ai, în conformitate cu Regulamentul (UE) 2016/679 (**GDPR**) și **Legea nr. 190/2018**.
 
 ## Operator de date
-Site-ul IZZ.ro. Pentru orice solicitare privind datele tale: **contact@izz.ro**.
+Operatorul site-ului IZZ.ro este o **persoană fizică** din **România**, identificată prin inițialele **S.A.N.** Pentru orice solicitare privind datele tale — inclusiv datele complete de identificare ale operatorului, furnizate la cerere — scrie la **contact@izz.ro**.
 
 ## Ce date prelucrăm
 
