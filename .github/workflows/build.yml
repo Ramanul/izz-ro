@@ -33,6 +33,11 @@ jobs:
 
       - run: pip install -r requirements.txt
 
+      - name: Chromium pentru imagini (best-effort)
+        id: chrome
+        continue-on-error: true
+        uses: browser-actions/setup-chrome@v1
+
       - name: Ruleaza pipeline (fetch + AI, buget)
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
@@ -45,6 +50,15 @@ jobs:
           GEMINI_BASE_URL: ${{ vars.GEMINI_BASE_URL }}
         run: python -m generator.main
 
+      - name: Genereaza imagini per-articol (HTML/Chromium, best-effort)
+        # Chromium NU exista in build-ul Cloudflare -> generam aici, comitem in media/.
+        # non-fatal: daca pica, render.py cade pe Pillow -> site-ul nu se strica niciodata.
+        continue-on-error: true
+        env:
+          CHROME_BIN: ${{ steps.chrome.outputs.chrome-path }}
+          MAX_IMAGES_PER_RUN: "80"
+        run: python tools/gen_images.py
+
       - name: Comite starea (declanseaza deploy Cloudflare)
         # FARA [skip ci]: niciun workflow nu se declanseaza pe push (doar cron),
         # deci [skip ci] nu ne ajuta la Actions -- dar Cloudflare Pages IL onoreaza
@@ -53,6 +67,7 @@ jobs:
           git config user.name "izz-bot"
           git config user.email "bot@izz.ro"
           git add data/articles.json data/feed_cache.json
+          git add media 2>/dev/null || true
           git commit -m "update content" || echo "nimic de comis"
           git push || echo "nimic de impins"
 
