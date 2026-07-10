@@ -12,6 +12,7 @@ Fundatie profesionista, 100% legala si offline:
 - selectie: icoana tematica din AI ('icon') / cuvinte-cheie devine silueta focala
 - siguranta: orice eroare -> False, articolul pastreaza og-image static
 """
+import colorsys
 import hashlib
 import math
 import os
@@ -641,20 +642,167 @@ _THEMES = [
 ]
 
 
+# ============================================================================
+# Agent grafic: imagine UNICA per articol. Preanalizeaza titlul+entitatile ->
+# paleta cu nuanta continua (fiecare stire alta culoare), pictograme tematice
+# extrase din text, layout ales din mai multe scheme. Doua articole nu produc
+# imagini asemanatoare.
+# ============================================================================
+def _hsl(h, l, s):
+    r, g, b = colorsys.hls_to_rgb(h % 1, min(1, max(0, l)), min(1, max(0, s)))
+    return (int(r * 255), int(g * 255), int(b * 255))
+
+
+def _u_palette(seed):
+    h = seed[0] / 255
+    return {
+        "bg1": _hsl(h, 0.93, 0.30 + seed[1] / 255 * 0.2),
+        "bg2": _hsl(h + 0.05, 0.86, 0.28),
+        "mid": _hsl(h, 0.5, 0.5),
+        "dark": _hsl(h, 0.32, 0.52),
+        "accent": _hsl((h + (0.5 if seed[2] > 90 else 0.33)) % 1, 0.52, 0.72),
+        "gold": GOLD,
+    }
+
+
+def _u_elements(a):
+    text = _norm(a.get("title", "")) + " " + " ".join(_norm(e) for e in a.get("entities") or [])
+    out = []
+    for pat, icon in _KW_ICON:
+        if re.search(pat, text) and _icon_img(icon) and icon not in out:
+            out.append(icon)
+        if len(out) >= 5:
+            break
+    if a.get("icon") and a["icon"] not in out and _icon_img(a["icon"]):
+        out.insert(0, a["icon"])
+    for ic in _CAT_ICONS.get(a.get("category", ""), []):
+        if len(out) < 3 and ic not in out and _icon_img(ic):
+            out.append(ic)
+    return out[:5] or ["building-community"]
+
+
+def _u_grad(c0, c1, diag):
+    base = Image.new("RGB", (W2, H2), c0)
+    top = Image.new("RGB", (W2, H2), c1)
+    mask = Image.new("L", (W2, H2), 0)
+    d = ImageDraw.Draw(mask)
+    for i in range(0, W2 + H2, 6):
+        v = int(255 * i / (W2 + H2))
+        d.line([(i, 0), (i - H2, H2)] if diag else [(0, i), (W2, i - W2)], fill=v, width=8)
+    base.paste(top, (0, 0), mask)
+    return base.convert("RGBA")
+
+
+def _u_icon(base, name, size, cx, cy, col, op=1.0, glow=None, rot=0):
+    src = _icon_img(name)
+    if src is None:
+        return
+    a = src.split()[3].resize((size, size), Image.LANCZOS)
+    if rot:
+        a = a.rotate(rot, expand=False, resample=Image.BILINEAR)
+    if op < 1:
+        a = a.point(lambda v: int(v * op))
+    if glow:
+        gl = Image.new("RGBA", (size * 2, size * 2), (0, 0, 0, 0))
+        gl.paste(Image.new("RGBA", (size, size), (*glow, 255)), (size // 2, size // 2), a.point(lambda v: int(v * .7)))
+        base.alpha_composite(gl.filter(ImageFilter.GaussianBlur(18 * SS)), (cx - size, cy - size))
+    lay = Image.new("RGBA", (size, size), (*col, 255))
+    lay.putalpha(a)
+    base.alpha_composite(lay, (cx - size // 2, cy - size // 2))
+
+
+def _u_blobs(base, pal, rng):
+    lay = Image.new("RGBA", (W2, H2), (0, 0, 0, 0))
+    d = ImageDraw.Draw(lay)
+    for _ in range(3):
+        col = rng.choice([pal["mid"], pal["accent"]])
+        r = int(W2 * rng.uniform(.25, .5))
+        cx, cy = rng.uniform(0, W2), rng.uniform(0, H2)
+        d.ellipse([cx - r, cy - r, cx + r, cy + r], fill=(*col, 40))
+    base.alpha_composite(lay.filter(ImageFilter.GaussianBlur(110 * SS)))
+
+
+def _lay_hero(base, els, pal, rng):
+    _u_blobs(base, pal, rng)
+    d = ImageDraw.Draw(base)
+    cx, cy = int(W2 * rng.uniform(.42, .6)), int(H2 * .5)
+    for i in range(4):
+        r = H2 * (.2 + i * .12)
+        d.arc([cx - r, cy - r, cx + r, cy + r], 0, 360, fill=(*pal["accent"], 40), width=2 * SS)
+    _u_icon(base, els[0], int(H2 * .4), cx, cy, pal["dark"], glow=pal["accent"])
+    for e in els[1:4]:
+        ang = rng.uniform(0, 6.28)
+        _u_icon(base, e, int(H2 * .13), cx + int(math.cos(ang) * W2 * .3), cy + int(math.sin(ang) * H2 * .34),
+                pal["mid"], op=.85)
+
+
+def _lay_horizon(base, els, pal, rng):
+    hz = int(H2 * rng.uniform(.6, .72))
+    d = ImageDraw.Draw(base)
+    d.rectangle([0, hz, W2, H2], fill=pal["dark"])
+    sx, sy = int(W2 * rng.uniform(.2, .8)), int(hz * rng.uniform(.4, .8))
+    gl = Image.new("RGBA", (W2, H2), (0, 0, 0, 0))
+    ImageDraw.Draw(gl).ellipse([sx - H2 * .3, sy - H2 * .3, sx + H2 * .3, sy + H2 * .3], fill=(*pal["gold"], 220))
+    base.alpha_composite(gl.filter(ImageFilter.GaussianBlur(40 * SS)))
+    xs = [.24, .5, .76]
+    for i, e in enumerate(els[:3]):
+        _u_icon(base, e, int(H2 * (.26 - i * .03)), int(W2 * xs[i]), hz,
+                _lerp(pal["dark"], (255, 255, 255), .12) if i == 0 else pal["mid"],
+                glow=pal["gold"] if i == 0 else None)
+    _crowd(base, hz + int(H2 * .04), pal["dark"], rng, n=16)
+
+
+def _lay_diagonal(base, els, pal, rng):
+    d = ImageDraw.Draw(base)
+    for i, col in enumerate([pal["accent"], pal["mid"], pal["dark"]]):
+        off = i * W2 * .18
+        d.polygon([(off, H2), (off + W2 * .4, H2), (off + W2 * .7, 0), (off + W2 * .3, 0)], fill=(*col, 90))
+    for i, e in enumerate(els[:3]):
+        _u_icon(base, e, int(H2 * (.3 - i * .06)), int(W2 * (.28 + i * .26)), int(H2 * (.34 + i * .2)),
+                pal["dark"] if i else _lerp(pal["accent"], (0, 0, 0), .1), glow=pal["gold"] if i == 0 else None,
+                rot=rng.uniform(-8, 8))
+
+
+def _lay_constellation(base, els, pal, rng):
+    _u_blobs(base, pal, rng)
+    pts = [(int(W2 * rng.uniform(.12, .88)), int(H2 * rng.uniform(.18, .82))) for _ in els]
+    d = ImageDraw.Draw(base)
+    for i in range(len(pts) - 1):
+        d.line([pts[i], pts[i + 1]], fill=(*pal["accent"], 120), width=2 * SS)
+    for (x, y), e in zip(pts, els):
+        _u_icon(base, e, int(H2 * rng.uniform(.16, .28)), x, y, pal["dark"], glow=pal["accent"])
+
+
+def _lay_tiles(base, els, pal, rng):
+    n = max(2, min(4, len(els)))
+    tw = W2 // n
+    cols = [pal["accent"], pal["mid"], pal["dark"], pal["gold"]]
+    rng.shuffle(cols)
+    d = ImageDraw.Draw(base)
+    for i in range(n):
+        d.rectangle([i * tw, 0, (i + 1) * tw - 6 * SS, H2], fill=(*cols[i % 4], 210))
+        _u_icon(base, els[i % len(els)], int(H2 * .34), i * tw + tw // 2, H2 // 2,
+                _lerp(cols[i % 4], (255, 255, 255), .75))
+
+
+def _lay_bigduo(base, els, pal, rng):
+    _u_icon(base, els[0], int(H2 * 1.15), int(W2 * rng.uniform(.4, .62)), int(H2 * .52), pal["mid"], op=.5)
+    d = ImageDraw.Draw(base)
+    d.rectangle([0, int(H2 * .78), W2, H2], fill=(*pal["dark"], 255))
+    for i, e in enumerate(els[1:4]):
+        _u_icon(base, e, int(H2 * .16), int(W2 * (.2 + i * .3)), int(H2 * .82), _lerp(pal["accent"], (255, 255, 255), .3))
+
+
+_U_LAYOUTS = [_lay_hero, _lay_horizon, _lay_diagonal, _lay_constellation, _lay_tiles, _lay_bigduo]
+
+
 def _compose_scene(a: dict):
-    rng = random.Random(a.get("title") or "x")
-    title = _norm(a.get("title", ""))
-    hit = next(((m, f) for pat, m, f in _THEMES if re.search(pat, title)), None)
-    if hit:
-        mood, fn = hit
-        img = _mood_base(mood, rng)
-        fn(img, rng, a)
-    else:                                   # fara tema clara -> scena de categorie
-        cat = a.get("category", "general")
-        pal = PAL.get(cat, PAL["general"])
-        hz = int(H2 * rng.uniform(0.6, 0.72))
-        img = _sun(_sky(pal[0], pal[1], hz), pal[4], rng, hz).convert("RGBA")
-        (_scene_stadium if cat == "sport" else _scene_sea if cat == "extern" else _scene_city)(img, pal, rng, hz, a)
+    seed = hashlib.sha1((a.get("title") or "x").encode()).digest()
+    rng = random.Random(seed)
+    pal = _u_palette(seed)
+    els = _u_elements(a)
+    img = _u_grad(pal["bg1"], pal["bg2"], seed[3] % 2)
+    _U_LAYOUTS[seed[4] % len(_U_LAYOUTS)](img, els, pal, rng)
     return _frame(img.convert("RGB"))
 
 
