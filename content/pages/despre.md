@@ -7,7 +7,7 @@
 - **Reformulăm titlurile.** Fiecare titlu spune faptul complet, calm, fără cârlige emoționale.
 - **Sintetizăm, nu copiem.** Rezumatele sunt scrise cu cuvinte proprii; articolul complet se citește la sursă, către care ducem întotdeauna link direct.
 - **Eliminăm duplicatele.** Când mai multe publicații relatează același eveniment, îl vezi o singură dată, cu toate sursele enumerate — inclusiv cine a relatat primul.
-- **Ilustrăm original.** Imaginile de pe site sunt grafică generată de noi pentru fiecare articol — nu preluăm fotografii din surse.
+- **Ilustrăm original.** Imaginile de pe site sunt grafică generată de noi pentru fiecare articol — nu preluăm fotografii din surse. Portretele persoanelor publice provin din Wikimedia Commons, sub licențe libere, cu credit vizibil.
 
 ## Cum lucrăm
 

@@ -1,0 +1,160 @@
+#!/usr/bin/env python
+"""Portrete oficiale pentru persoanele publice din articole (pilot Wikidata).
+
+Ruleaza in GitHub Actions (are internet; sandbox-urile nu). Pentru entitatile AI
+din articolele publicate cauta pe Wikidata o potrivire STRICTA si, doar daca
+persoana e om (P31=Q5) CU functie publica detinuta (P39) si are portret oficial
+(P18) sub licenta libera, descarca o miniatura mica in media/portraits/ (auto-
+gazduita -> browserul cititorilor nu atinge servere terte) si scrie creditul in
+data/portraits.json (comis). Negativele se cacheaza ca sa nu re-interogam.
+
+  python tools/fetch_portraits.py          # incremental, plafonat
+
+Env: MAX_PORTRAIT_LOOKUPS (default 20)
+"""
+import json
+import os
+import re
+import sys
+import time
+import urllib.parse
+import urllib.request
+
+ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+sys.path.insert(0, ROOT)
+from generator import state  # noqa: E402
+from generator.util import strip_diacritics  # noqa: E402
+
+CACHE = os.path.join(ROOT, "data", "portraits.json")
+OUTDIR = os.path.join(ROOT, "media", "portraits")
+MAX_LOOKUPS = int(os.getenv("MAX_PORTRAIT_LOOKUPS", "20"))
+UA = {"User-Agent": "izz.ro-portraits/1.0 (contact@izz.ro)"}
+THUMB_W = 256
+
+# licente Commons acceptate pentru re-gazduire cu atribuire
+_LICENSE_OK = re.compile(r"^(cc[ -]|cc0|public domain|pd[ -]|attribution)", re.I)
+
+
+def norm(s: str) -> str:
+    return re.sub(r"\s+", " ", strip_diacritics((s or "").strip().lower()))
+
+
+def license_ok(short_name: str) -> bool:
+    return bool(_LICENSE_OK.match((short_name or "").strip()))
+
+
+def clean_html(s: str) -> str:
+    return re.sub(r"\s+", " ", re.sub(r"<[^>]+>", " ", s or "")).strip()
+
+
+def _get(url: str) -> dict:
+    req = urllib.request.Request(url, headers=UA)
+    with urllib.request.urlopen(req, timeout=30) as r:
+        return json.load(r)
+
+
+def wd_match(name: str) -> str | None:
+    """Cauta entitatea; accepta DOAR potrivire exacta (normalizata) pe label/alias."""
+    q = urllib.parse.quote(name)
+    d = _get(f"https://www.wikidata.org/w/api.php?action=wbsearchentities&search={q}"
+             f"&language=ro&uselang=ro&type=item&limit=5&format=json")
+    want = norm(name)
+    for hit in d.get("search", []):
+        labels = [hit.get("label", "")] + (hit.get("aliases") or [])
+        if any(norm(l) == want for l in labels):
+            return hit["id"]
+    return None
+
+
+def wd_claims(qid: str) -> dict:
+    d = _get(f"https://www.wikidata.org/wiki/Special:EntityData/{qid}.json")
+    return d["entities"][qid].get("claims", {})
+
+
+def is_public_figure(claims: dict) -> bool:
+    """Om (P31=Q5) care detine/a detinut o functie publica (P39 nevid)."""
+    human = any(c.get("mainsnak", {}).get("datavalue", {}).get("value", {}).get("id") == "Q5"
+                for c in claims.get("P31", []))
+    return human and bool(claims.get("P39"))
+
+
+def portrait_file(claims: dict) -> str | None:
+    for c in claims.get("P18", []):
+        v = c.get("mainsnak", {}).get("datavalue", {}).get("value")
+        if isinstance(v, str):
+            return v
+    return None
+
+
+def commons_info(filename: str) -> dict | None:
+    """thumburl + credit (artist, licenta, pagina fisierului) din extmetadata."""
+    t = urllib.parse.quote("File:" + filename)
+    d = _get(f"https://commons.wikimedia.org/w/api.php?action=query&titles={t}"
+             f"&prop=imageinfo&iiprop=url|extmetadata&iiurlwidth={THUMB_W}&format=json")
+    pages = d.get("query", {}).get("pages", {})
+    for p in pages.values():
+        for ii in p.get("imageinfo", []):
+            meta = ii.get("extmetadata", {})
+            lic = meta.get("LicenseShortName", {}).get("value", "")
+            if not license_ok(lic):
+                return None
+            return {"thumb": ii.get("thumburl"),
+                    "page": ii.get("descriptionurl"),
+                    "artist": clean_html(meta.get("Artist", {}).get("value", "")),
+                    "license": lic}
+    return None
+
+
+def slugish(name: str) -> str:
+    return re.sub(r"[^a-z0-9]+", "-", norm(name)).strip("-")[:60] or "persoana"
+
+
+def main() -> int:
+    arts = [a for a in state.load() if a.get("title")]
+    names: list = []
+    for a in arts:
+        for e in a.get("entities") or []:
+            if e and e not in names and len(e.split()) >= 2:   # doar nume de persoana plauzibile
+                names.append(e)
+    cache = json.load(open(CACHE)) if os.path.exists(CACHE) else {}
+    os.makedirs(OUTDIR, exist_ok=True)
+    done = 0
+    for name in names:
+        key = norm(name)
+        if key in cache:
+            continue
+        if done >= MAX_LOOKUPS:
+            break
+        done += 1
+        entry: dict = {"miss": True}
+        try:
+            qid = wd_match(name)
+            if qid:
+                claims = wd_claims(qid)
+                f = portrait_file(claims)
+                if is_public_figure(claims) and f:
+                    info = commons_info(f)
+                    if info and info.get("thumb"):
+                        fn = f"{slugish(name)}.jpg"
+                        req = urllib.request.Request(info["thumb"], headers=UA)
+                        data = urllib.request.urlopen(req, timeout=30).read()
+                        if len(data) > 2000:
+                            open(os.path.join(OUTDIR, fn), "wb").write(data)
+                            entry = {"name": name, "qid": qid, "img": f"portraits/{fn}",
+                                     "artist": info["artist"], "license": info["license"],
+                                     "page": info["page"]}
+        except Exception as exc:  # o entitate esuata nu opreste restul
+            print(f"  ! {name}: {exc}")
+            done -= 1              # eroare de retea -> nu consuma plafonul, reincearca alta data
+            continue
+        cache[key] = entry
+        print(f"  {'ok  ' if not entry.get('miss') else 'miss'} {name}")
+        time.sleep(1)              # politete API
+    json.dump(cache, open(CACHE, "w"), ensure_ascii=False, indent=0)
+    hits = sum(1 for v in cache.values() if not v.get("miss"))
+    print(f">> portraits: {done} interogari noi, {hits} portrete in cache, {len(cache)} total intrari")
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())
