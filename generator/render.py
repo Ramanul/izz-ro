@@ -405,10 +405,9 @@ def _newsletter_html() -> str:
     return ""
 
 
-def _render_legal(env: Environment) -> None:
-    """Randeaza content/legal/*.md la /legal/*.html daca exista (Faza 4)."""
-    legal_dir = os.path.join(ROOT, "content", "legal")
-    if not os.path.isdir(legal_dir):
+def _render_md_dir(env: Environment, src_dir: str, url_prefix: str) -> None:
+    """Randeaza toate .md dintr-un folder la <url_prefix>/<nume>/ cu template-ul legal."""
+    if not os.path.isdir(src_dir):
         return
     try:
         import markdown as md
@@ -417,17 +416,24 @@ def _render_legal(env: Environment) -> None:
     tpl = env.get_template("legal.html") if os.path.exists(os.path.join(TPL_DIR, "legal.html")) else None
     if not tpl:
         return
-    for fn in os.listdir(legal_dir):
+    for fn in os.listdir(src_dir):
         if not fn.endswith(".md"):
             continue
         name = fn[:-3]
-        with open(os.path.join(legal_dir, fn), "r", encoding="utf-8") as fh:
+        with open(os.path.join(src_dir, fn), "r", encoding="utf-8") as fh:
             raw = fh.read()
         title = raw.lstrip("# ").splitlines()[0].strip() if raw.startswith("#") else name
         html = md.markdown(raw, extensions=["extra"]) if md else "<pre>" + raw + "</pre>"
-        _write(os.path.join(OUT_DIR, "legal", name, "index.html"),
-               tpl.render(**_base_ctx(f"/legal/{name}/", page_title=title,
-                                      body_html=html, page_heading=title)))
+        out = os.path.join(OUT_DIR, *url_prefix.strip("/").split("/"), name, "index.html") \
+            if url_prefix.strip("/") else os.path.join(OUT_DIR, name, "index.html")
+        _write(out, tpl.render(**_base_ctx(f"{url_prefix}/{name}/".replace("//", "/"),
+                                           page_title=title, body_html=html, page_heading=title)))
+
+
+def _render_legal(env: Environment) -> None:
+    _render_md_dir(env, os.path.join(ROOT, "content", "legal"), "/legal")
+    # pagini generale (ex. content/pages/despre.md -> /despre/)
+    _render_md_dir(env, os.path.join(ROOT, "content", "pages"), "")
 
 
 def _write_sitemap(articles: list) -> None:
