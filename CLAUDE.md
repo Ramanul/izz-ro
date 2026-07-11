@@ -98,11 +98,8 @@ The owner delegated FULL delivery of the remaining website work to Claude acting
 - **On session start (any owner message, even just "continuă"):** re-arm the hourly autonomous loop (CronCreate, recurring, off-minute e.g. `:07`) if absent, then continue the backlog in small atomic slices without asking.
 - **Rules:** FREE-only; never break/freeze the live site (branch `claude/unde-am-ramas-149ilf` → PR → merge only on green Cloudflare preview); keep the Pillow image fallback in render.py intact; one verified slice = one commit. If rate-limited, skip the tick and retry next tick.
 - **Owner facts (never invent legal facts):** operator = natural person, initials **S.A.N.**, Romania — already in privacy.md.
-- **Backlog (strike items as they ship):**
-  1. ~~Chromium image engine (media/ + Actions + fallback)~~ ✅ 2. ~~Cache `_headers`~~ ✅ 3. ~~Accessibility statement (EAA)~~ ✅ PR #31
-  4. Legal wording pass: terms/takedown coherence with current features (images, personalization, newsletter).
-  5. A11y/SEO/perf polish per §13 (keep home Perf≥88 / A11y 100 / SEO 100, pa11y 0).
-  6. Minimal pytest suite (slugify/cluster/scrub/config) + free CI step.
-  7. Remove dead Pillow scene/theme code in generator/covers.py (keep the active unique-engine fallback).
-  8. Real bugs found along the way.
+- **Backlog: COMPLETE (2026-07-11).** All items shipped:
+  1. ~~Chromium image engine (media/ + Actions + fallback)~~ ✅ 2. ~~Cache `_headers`~~ ✅ 3. ~~Accessibility statement (EAA)~~ ✅
+  4. ~~Legal wording pass (terms/takedown: AI disclosure + original images)~~ ✅ 5. ~~A11y/SEO/perf thresholds verified (home 88/100/96/100, article 90/100/96/100, pa11y 0)~~ ✅
+  6. ~~pytest suite (19 tests: util/state/cluster/config) + tests.yml CI on PRs~~ ✅ 7. ~~covers.py dead-code removal (proven byte-identical output)~~ ✅
 - **Done criterion:** backlog empty + live smoke green → delete the cron job and notify the owner in Romanian with a final summary. After that, this section is HISTORICAL: revert to §5 confirmation workflow for any new feature work.
