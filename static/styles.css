@@ -145,6 +145,9 @@ main { max-width: var(--maxw); margin: 0 auto; padding: var(--s-34) var(--s-34);
 }
 .card:hover .card-title a { color: var(--gold-strong); }
 
+/* banda de top (stirile principale de sub lead): accent auriu -> ierarhie vizuala */
+.top-band .card { border-top: 3px solid var(--gold); }
+
 /* miniatura = arta generativa a articolului (aceeasi art.jpg ca bannerul de pe pagina) */
 .card-media {
   display: block; order: -1; overflow: hidden; border-radius: var(--radius);
