@@ -392,6 +392,7 @@ def build(articles: list, mod: dict | None = None) -> None:
     _write_robots()
     _write_headers()
     _write_feed(by_date)
+    _write_search(env, by_date)
 
 
 def _newsletter_html() -> str:
@@ -448,6 +449,16 @@ def _write_sitemap(articles: list) -> None:
            '<?xml version="1.0" encoding="UTF-8"?>\n'
            '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
            f"{items}\n</urlset>\n")
+
+
+def _write_search(env: Environment, articles: list) -> None:
+    """Pagina /cauta/ + index JSON mic (titluri) pentru cautarea client-side."""
+    import json as _json
+    idx = [{"t": a.get("title", ""), "u": f"/{a['category']}/{a['slug']}/",
+            "c": a.get("category", ""), "d": a.get("published_human", "")} for a in articles]
+    _write(os.path.join(OUT_DIR, "search-index.json"), _json.dumps(idx, ensure_ascii=False))
+    _write(os.path.join(OUT_DIR, "cauta", "index.html"),
+           env.get_template("search.html").render(**_base_ctx("/cauta/")))
 
 
 def _write_robots() -> None:

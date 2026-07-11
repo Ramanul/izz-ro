@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block title %}Caută — {{ site.name }}{% endblock %}
+{% block description %}Caută în știrile {{ site.name }} — {{ site.tagline }}.{% endblock %}
+{% block content %}
+<article class="static-page search-page">
+  <h1>Caută în știri</h1>
+  <p class="search-hint">Caută în titlurile știrilor din ultimele zile. Diacriticele nu contează.</p>
+  <form role="search" onsubmit="return false">
+    <label class="visually-hidden" for="q">Termen de căutare</label>
+    <input id="q" type="search" placeholder="ex.: buget, inundații, Wimbledon…" autocomplete="off" autofocus>
+  </form>
+  <p id="search-status" role="status" aria-live="polite"></p>
+  <ul id="search-results" class="search-results"></ul>
+</article>
+<script defer src="{{ base }}/static/search.js"></script>
+{% endblock %}

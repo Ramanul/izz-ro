@@ -357,3 +357,18 @@ main { max-width: var(--maxw); margin: 0 auto; padding: var(--s-34) var(--s-34);
   display: block; width: 100%; height: auto;
   border: 1px solid var(--line); margin-bottom: var(--s-5);
 }
+
+/* ------------------------------------------------------------- Cautare --- */
+.search-page input[type="search"] {
+  width: 100%; max-width: var(--measure); font: inherit; color: var(--ink);
+  padding: var(--s-13) var(--s-21); border: 1px solid var(--line-strong);
+  border-radius: var(--radius); background: var(--paper-2);
+}
+.search-page input[type="search"]:focus { outline: 2px solid var(--gold-strong); outline-offset: 2px; }
+.search-hint { color: var(--ink-3); font-size: var(--fs-xs); }
+#search-status { font-family: var(--font-mono); font-size: var(--fs-eyebrow); color: var(--ink-3); min-height: 1.2em; }
+.search-results { list-style: none; margin: var(--s-21) 0 0; padding: 0; max-width: var(--measure); }
+.search-results li { border-top: 1px solid var(--line); padding: var(--s-13) 0; }
+.search-results a { font-family: var(--font-display); font-weight: 700; font-size: var(--fs-md); color: var(--ink); }
+.search-results a:hover { color: var(--gold-strong); }
+.search-meta { color: var(--ink-3); font-size: var(--fs-eyebrow); font-family: var(--font-mono); }
