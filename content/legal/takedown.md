@@ -1,6 +1,6 @@
 # Drepturi de autor și solicitări de eliminare
 
-IZZ.ro afișează titluri reformulate și rezumate scurte scrise cu cuvinte proprii, cu link către sursă, în acord cu **Legea nr. 8/1996, modificată prin Legea nr. 69/2022**. Nu republicăm articole integrale și nu folosim imagini din surse.
+IZZ.ro afișează titluri reformulate și rezumate scurte scrise cu cuvinte proprii, cu link către sursă, în acord cu **Legea nr. 8/1996, modificată prin Legea nr. 69/2022**. Nu republicăm articole integrale și **nu preluăm imagini din surse** — ilustrațiile de pe site sunt grafică originală, generată de noi.
 
 ## Ești deținător de drepturi și vrei eliminarea unui conținut?
 Scrie-ne la **contact@izz.ro**, cu subiectul **„Drepturi de autor"**, și include:
