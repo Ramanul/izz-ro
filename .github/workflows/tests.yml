@@ -1,0 +1,27 @@
+name: tests
+
+# Suita minima pytest (functii pure: util/state/cluster/config). Ruleaza pe PR-uri
+# si manual -- NU pe commit-urile de continut la 2h (ating doar data/*.json).
+on:
+  pull_request:
+    branches: [main]
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+
+concurrency:
+  group: tests-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  pytest:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: "pip"
+      - run: pip install -r requirements.txt pytest
+      - run: python -m pytest tests/ -q
