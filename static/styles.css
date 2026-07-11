@@ -319,7 +319,7 @@ main { max-width: var(--maxw); margin: 0 auto; padding: var(--s-34) var(--s-34);
 }
 #izz-consent p { margin: 0; font-size: var(--fs-xs); color: var(--ink-2); max-width: var(--measure); }
 /* linkuri inline in proza: subliniate ca sa NU se distinga doar prin culoare (WCAG link-in-text-block) */
-#izz-consent p a, .topics a, .follow a, .page-intro a, .summary a { text-decoration: underline; }
+#izz-consent p a, .topics a, .share a, .follow a, .page-intro a, .summary a { text-decoration: underline; }
 #izz-consent .consent-actions { display: flex; gap: var(--s-8); }
 #izz-consent button {
   font-family: var(--font-mono); font-size: var(--fs-xs); font-weight: 700;
@@ -330,7 +330,8 @@ main { max-width: var(--maxw); margin: 0 auto; padding: var(--s-34) var(--s-34);
 
 /* ---- subiecte (graful cunoasterii v1) ---- */
 .topics { font-size: var(--fs-eyebrow); color: var(--ink-3); font-family: var(--font-mono); margin: var(--s-13) 0 0; }
-.topics a, .follow a { display: inline-block; padding: 6px 4px; margin: -4px -2px; }
+.share { font-size: var(--fs-eyebrow); color: var(--ink-3); font-family: var(--font-mono); margin: var(--s-13) 0 0; }
+.topics a, .share a, .follow a { display: inline-block; padding: 6px 4px; margin: -4px -2px; }
 .follow { font-size: var(--fs-xs); font-family: var(--font-mono); margin: 0 0 var(--s-21); }
 
 /* ---- /surse/ : originalitate + marcaj "primul" ---- */
