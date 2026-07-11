@@ -34,7 +34,8 @@
 
     {% if hero[1:] %}
     <h2 class="section-title">Ultimele știri</h2>
-    <section class="grid">
+    {# banda de top: ancora vizuala intre lead si sectiunile de categorie #}
+    <section class="grid top-band">
       {% for a in hero[1:] %}{{ card(a) }}{% endfor %}
     </section>
     {% endif %}

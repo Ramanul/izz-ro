@@ -32,5 +32,12 @@
   <p class="topics">Subiecte:
     {% for s, n in topics %}<a href="{{ base }}/subiect/{{ s }}/">{{ n }}</a>{{ ' · ' if not loop.last }}{% endfor %}</p>
   {% endif %}
+  {# share: linkuri simple, fara scripturi/trackere externe -> zero cost GDPR/perf #}
+  <p class="share">Distribuie:
+    <a href="https://www.facebook.com/sharer/sharer.php?u={{ canonical | urlencode }}" target="_blank" rel="noopener noreferrer">Facebook</a> ·
+    <a href="https://twitter.com/intent/tweet?url={{ canonical | urlencode }}&amp;text={{ a.title | urlencode }}" target="_blank" rel="noopener noreferrer">X</a> ·
+    <a href="https://wa.me/?text={{ (a.title ~ ' ' ~ canonical) | urlencode }}" target="_blank" rel="noopener noreferrer">WhatsApp</a> ·
+    <a href="https://www.linkedin.com/sharing/share-offsite/?url={{ canonical | urlencode }}" target="_blank" rel="noopener noreferrer">LinkedIn</a> ·
+    <a href="mailto:?subject={{ a.title | urlencode }}&amp;body={{ canonical | urlencode }}">E-mail</a></p>
 </article>
 {% endblock %}

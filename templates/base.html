@@ -41,6 +41,7 @@
     </a>
     <nav class="nav">
       {% for cat in categories %}<a href="{{ base }}/{{ cat }}/"{% if cat == active_cat %} class="active"{% endif %}>{{ cat }}</a>{% endfor %}
+      <a href="{{ base }}/cauta/">caută</a>
     </nav>
   </header>
 
@@ -51,6 +52,7 @@
   <footer class="site-footer">
     <span>&copy; {{ year }} {{ site.name }} &middot; {{ site.tagline }}</span>
     <nav>
+      <a href="{{ base }}/despre/">Despre</a>
       <a href="{{ base }}/legal/contact/">Contact</a>
       <a href="{{ base }}/legal/privacy/">Confidențialitate</a>
       <a href="{{ base }}/legal/terms/">Termeni</a>

@@ -145,6 +145,9 @@ main { max-width: var(--maxw); margin: 0 auto; padding: var(--s-34) var(--s-34);
 }
 .card:hover .card-title a { color: var(--gold-strong); }
 
+/* banda de top (stirile principale de sub lead): accent auriu -> ierarhie vizuala */
+.top-band .card { border-top: 3px solid var(--gold); }
+
 /* miniatura = arta generativa a articolului (aceeasi art.jpg ca bannerul de pe pagina) */
 .card-media {
   display: block; order: -1; overflow: hidden; border-radius: var(--radius);
@@ -319,7 +322,7 @@ main { max-width: var(--maxw); margin: 0 auto; padding: var(--s-34) var(--s-34);
 }
 #izz-consent p { margin: 0; font-size: var(--fs-xs); color: var(--ink-2); max-width: var(--measure); }
 /* linkuri inline in proza: subliniate ca sa NU se distinga doar prin culoare (WCAG link-in-text-block) */
-#izz-consent p a, .topics a, .follow a, .page-intro a, .summary a { text-decoration: underline; }
+#izz-consent p a, .topics a, .share a, .follow a, .page-intro a, .summary a { text-decoration: underline; }
 #izz-consent .consent-actions { display: flex; gap: var(--s-8); }
 #izz-consent button {
   font-family: var(--font-mono); font-size: var(--fs-xs); font-weight: 700;
@@ -330,7 +333,8 @@ main { max-width: var(--maxw); margin: 0 auto; padding: var(--s-34) var(--s-34);
 
 /* ---- subiecte (graful cunoasterii v1) ---- */
 .topics { font-size: var(--fs-eyebrow); color: var(--ink-3); font-family: var(--font-mono); margin: var(--s-13) 0 0; }
-.topics a, .follow a { display: inline-block; padding: 6px 4px; margin: -4px -2px; }
+.share { font-size: var(--fs-eyebrow); color: var(--ink-3); font-family: var(--font-mono); margin: var(--s-13) 0 0; }
+.topics a, .share a, .follow a { display: inline-block; padding: 6px 4px; margin: -4px -2px; }
 .follow { font-size: var(--fs-xs); font-family: var(--font-mono); margin: 0 0 var(--s-21); }
 
 /* ---- /surse/ : originalitate + marcaj "primul" ---- */
@@ -353,3 +357,18 @@ main { max-width: var(--maxw); margin: 0 auto; padding: var(--s-34) var(--s-34);
   display: block; width: 100%; height: auto;
   border: 1px solid var(--line); margin-bottom: var(--s-5);
 }
+
+/* ------------------------------------------------------------- Cautare --- */
+.search-page input[type="search"] {
+  width: 100%; max-width: var(--measure); font: inherit; color: var(--ink);
+  padding: var(--s-13) var(--s-21); border: 1px solid var(--line-strong);
+  border-radius: var(--radius); background: var(--paper-2);
+}
+.search-page input[type="search"]:focus { outline: 2px solid var(--gold-strong); outline-offset: 2px; }
+.search-hint { color: var(--ink-3); font-size: var(--fs-xs); }
+#search-status { font-family: var(--font-mono); font-size: var(--fs-eyebrow); color: var(--ink-3); min-height: 1.2em; }
+.search-results { list-style: none; margin: var(--s-21) 0 0; padding: 0; max-width: var(--measure); }
+.search-results li { border-top: 1px solid var(--line); padding: var(--s-13) 0; }
+.search-results a { font-family: var(--font-display); font-weight: 700; font-size: var(--fs-md); color: var(--ink); }
+.search-results a:hover { color: var(--gold-strong); }
+.search-meta { color: var(--ink-3); font-size: var(--fs-eyebrow); font-family: var(--font-mono); }
