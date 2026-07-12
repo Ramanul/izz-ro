@@ -17,6 +17,25 @@ TPL_DIR = os.path.join(ROOT, "templates")
 STATIC_DIR = os.path.join(ROOT, "static")
 OUT_DIR = os.path.join(ROOT, "output")
 MEDIA_DIR = os.path.join(ROOT, "media")   # imagini HTML/Chromium comise (tools/gen_images.py)
+PORTRAITS_JSON = os.path.join(ROOT, "data", "portraits.json")
+
+
+def _load_portraits() -> dict:
+    """Portretele Wikimedia comise de tools/fetch_portraits.py; copiaza thumbs in output."""
+    try:
+        import json as _json
+        cache = _json.load(open(PORTRAITS_JSON, encoding="utf-8"))
+    except (OSError, ValueError):
+        return {}
+    src = os.path.join(MEDIA_DIR, "portraits")
+    if os.path.isdir(src):
+        shutil.copytree(src, os.path.join(OUT_DIR, "portraits"), dirs_exist_ok=True)
+    return {k: v for k, v in cache.items() if not v.get("miss")}
+
+
+def _norm_name(s: str) -> str:
+    from .util import strip_diacritics
+    return re.sub(r"\s+", " ", strip_diacritics((s or "").strip().lower()))
 
 
 def _use_media(src: str, dst: str) -> bool:
@@ -365,6 +384,7 @@ def build(articles: list, mod: dict | None = None) -> None:
                              f"Știri despre {d['name']} pe {config.SITE['name']}"))
 
     # pagini de categorie + permalink articole
+    portraits = _load_portraits()
     article_tpl = env.get_template("article.html")
     cat_tpl = env.get_template("category.html")
     for cat in config.CATEGORIES:
@@ -375,6 +395,14 @@ def build(articles: list, mod: dict | None = None) -> None:
         for a in items:
             topics = [(slugify(e)[:60], e) for e in (a.get("entities") or [])
                       if slugify(e)[:60] in ents]
+            people = []
+            for e in (a.get("entities") or []):
+                p = portraits.get(_norm_name(e))
+                if p:
+                    s = slugify(e)[:60]
+                    people.append({**p, "slug": s if s in ents else None})
+                if len(people) >= 2:
+                    break
             og_image = a.get("cover_url")
             jsonld = _article_jsonld(a)
             if og_image:
@@ -382,7 +410,7 @@ def build(articles: list, mod: dict | None = None) -> None:
             _write(os.path.join(OUT_DIR, cat, a['slug'], "index.html"),
                    article_tpl.render(**_base_ctx(
                        f"/{cat}/{a['slug']}/", a=a, active_cat=cat, topics=topics,
-                       og_image=og_image, article_jsonld=jsonld)))
+                       people=people, og_image=og_image, article_jsonld=jsonld)))
 
     _render_legal(env)
     _write(os.path.join(OUT_DIR, "404.html"),

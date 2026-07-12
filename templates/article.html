@@ -32,6 +32,19 @@
   <p class="topics">Subiecte:
     {% for s, n in topics %}<a href="{{ base }}/subiect/{{ s }}/">{{ n }}</a>{{ ' · ' if not loop.last }}{% endfor %}</p>
   {% endif %}
+  {% if people %}
+  <div class="people">
+    {% for p in people %}
+    <figure class="person">
+      <img src="{{ base }}/{{ p.img }}" alt="{{ p.name }}" width="64" height="64" loading="lazy">
+      <figcaption>
+        {% if p.slug %}<a href="{{ base }}/subiect/{{ p.slug }}/">{{ p.name }}</a>{% else %}{{ p.name }}{% endif %}
+        <span class="credit">Foto: {% if p.artist %}{{ p.artist }} · {% endif %}<a href="{{ p.page }}" target="_blank" rel="noopener noreferrer">Wikimedia Commons</a> · {{ p.license }}</span>
+      </figcaption>
+    </figure>
+    {% endfor %}
+  </div>
+  {% endif %}
   {# share: linkuri simple, fara scripturi/trackere externe -> zero cost GDPR/perf #}
   <p class="share">Distribuie:
     <a href="https://www.facebook.com/sharer/sharer.php?u={{ canonical | urlencode }}" target="_blank" rel="noopener noreferrer">Facebook</a> ·

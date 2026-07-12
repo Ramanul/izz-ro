@@ -372,3 +372,15 @@ main { max-width: var(--maxw); margin: 0 auto; padding: var(--s-34) var(--s-34);
 .search-results a { font-family: var(--font-display); font-weight: 700; font-size: var(--fs-md); color: var(--ink); }
 .search-results a:hover { color: var(--gold-strong); }
 .search-meta { color: var(--ink-3); font-size: var(--fs-eyebrow); font-family: var(--font-mono); }
+
+/* ------------------------------------------- Persoane publice (portrete) --- */
+.people { display: flex; flex-wrap: wrap; gap: var(--s-21); margin: var(--s-21) 0 0; }
+.person { display: flex; align-items: center; gap: var(--s-13); margin: 0; }
+.person img {
+  width: 64px; height: 64px; object-fit: cover; border-radius: 50%;
+  border: 2px solid var(--gold); background: var(--paper-2);
+}
+.person figcaption { display: flex; flex-direction: column; gap: 2px; font-size: var(--fs-xs); }
+.person figcaption > a { font-weight: 600; }
+.person .credit { color: var(--ink-3); font-size: var(--fs-eyebrow); font-family: var(--font-mono); }
+.person .credit a { text-decoration: underline; }
