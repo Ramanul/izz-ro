@@ -12,13 +12,15 @@ Operatorul site-ului IZZ.ro este o **persoană fizică** din **România**, ident
 IZZ.ro este construit deliberat ca să colecteze cât mai puține date:
 
 - **Statistici de trafic fără cookie-uri.** Folosim Cloudflare Web Analytics, care măsoară numărul de vizite **fără** a seta cookie-uri de urmărire și **fără** a crea profiluri individuale. Nu te identificăm.
+- **Statistici de trafic cu consimțământ (Google Analytics 4).** Doar dacă accepți bara de consimțământ, activăm Google Analytics 4 pentru statistici agregate de audiență. Folosim „Consent Mode": fără acceptul tău, scriptul **nu se încarcă deloc** și nicio cerere nu pleacă spre Google. Funcțiile de publicitate și de personalizare a reclamelor rămân **dezactivate permanent**. Datele pot fi prelucrate de Google pe servere din afara UE, în baza clauzelor contractuale standard.
 - **Adresa de e-mail — doar dacă te abonezi la newsletter.** Înscrierea este voluntară și o gestionează **Brevo** (Sendinblue), cu confirmare dublă (double opt-in). Folosim adresa exclusiv pentru a-ți trimite buletinul informativ.
-- **Personalizare opțională, doar în browserul tău.** Dacă accepți întrebarea „Vrei recomandări personalizate?", preferințele tale de lectură (categorii, surse, cuvinte-cheie) se salvează în `localStorage`-ul browserului tău. Aceste date **nu ne sunt transmise** nouă sau altcuiva — rămân exclusiv pe dispozitivul tău. Fără acordul tău explicit, funcția rămâne complet dezactivată. Poți șterge profilul oricând din panoul „Profilul tău" (butonul ◎ → „Resetează preferințele") sau din setările browserului.
+- **Personalizare opțională, doar în browserul tău.** Dacă accepți întrebarea din bara de consimțământ, preferințele tale de lectură (categorii, surse, cuvinte-cheie) se salvează în `localStorage`-ul browserului tău. Aceste date **nu ne sunt transmise** nouă sau altcuiva — rămân exclusiv pe dispozitivul tău. Fără acordul tău explicit, funcția rămâne complet dezactivată. Poți șterge profilul oricând din panoul „Profilul tău" (butonul ◎ → „Resetează preferințele") sau din setările browserului.
 
 Nu vindem și nu închiriem date personale.
 
 ## Temeiul legal
 - Statisticile cookieless: interesul nostru legitim de a înțelege traficul (art. 6 alin. (1) lit. f GDPR), fără a-ți afecta drepturile, întrucât nu te identificăm.
+- Statisticile Google Analytics: **consimțământul tău** (art. 6 alin. (1) lit. a GDPR și art. 4 din Legea nr. 506/2004), exprimat prin butonul „Activează"; îl poți retrage ștergând datele site-ului din browser, iar refuzul înseamnă zero cereri către Google.
 - Newsletter: **consimțământul tău** (art. 6 alin. (1) lit. a GDPR), pe care îl poți retrage oricând.
 - Personalizarea în browser: **consimțământul tău** (art. 4 din Legea nr. 506/2004), exprimat prin butonul „Activează"; refuzul înseamnă zero stocare.
 
