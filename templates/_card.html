@@ -1,5 +1,7 @@
 {% macro card(a, lead=False) %}
-<article class="card{% if lead %} lead{% endif %}{% if a.model == 'C' %} card-c{% endif %}" data-cat="{{ a.category }}" data-src="{{ a.source_name }}" data-title="{{ a.title }}">
+{#- NOT "data-src": crawlers (Screaming Frog, Googlebot) treat data-src as a lazy-load
+    image URL, so a source name there becomes a fake internal 404 per card. -#}
+<article class="card{% if lead %} lead{% endif %}{% if a.model == 'C' %} card-c{% endif %}" data-cat="{{ a.category }}" data-source="{{ a.source_name }}" data-title="{{ a.title }}">
   {% if a.art_path %}<a class="card-media" href="{{ base }}/{{ a.category }}/{{ a.slug }}/" tabindex="-1" aria-hidden="true"><picture>{% if a.art_webp %}<source srcset="{{ base }}{{ a.art_webp }}" type="image/webp">{% endif %}<img src="{{ base }}{{ a.art_path }}" alt="" loading="lazy" width="960" height="504"></picture></a>{% endif %}
   <span class="badge{% if a.model == 'C' %} c{% endif %}">{{ a.category }}</span>
   <h2 class="card-title"><a href="{{ base }}/{{ a.category }}/{{ a.slug }}/">{{ a.title }}</a></h2>

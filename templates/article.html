@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 {% block title %}{{ a.title }} — {{ site.name }}{% endblock %}
-{% block description %}{% if a.model == 'C' %}{{ a.synthesis }}{% else %}{{ a.teaser }}{% endif %}{% endblock %}
+{# meta/og description taiata la limita SERP (~158c, la cuvant); corpul ramane intreg #}
+{% block description %}{{ (a.synthesis if a.model == 'C' else a.teaser) | truncate(154, False, '…', 0) }}{% endblock %}
 {% block og_type %}article{% endblock %}
 {% block body_attrs %} data-category="{{ a.category }}" data-source="{{ a.source_name }}" data-title="{{ a.title }}"{% endblock %}
 {% block head_extra %}
