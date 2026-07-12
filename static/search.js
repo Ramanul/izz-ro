@@ -7,6 +7,9 @@
   var status = document.getElementById("search-status");
   if (!q || !out) return;
 
+  var form = document.getElementById("search-form");
+  if (form) form.addEventListener("submit", function (e) { e.preventDefault(); });
+
   var index = null, loading = false;
   var MAP = { "ă": "a", "â": "a", "î": "i", "ș": "s", "ş": "s", "ț": "t", "ţ": "t" };
   function norm(s) {
