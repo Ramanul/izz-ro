@@ -242,10 +242,34 @@
     initArticlePage();
   }
 
-  /* ---- consimtamant (Legea 506/2004 art. 4 / ePrivacy): profilul se creeaza
-     DOAR dupa opt-in explicit. Stocarea alegerii in sine e strict necesara
-     pentru a o respecta, deci exceptata. Refuz = zero stocare, zero UI. ---- */
-  const CONSENT = 'izz_consent_v1';   // 'yes' | 'no'
+  /* ---- consimtamant (Legea 506/2004 art. 4 / ePrivacy + GDPR): profilul si
+     statisticile se activeaza DOAR dupa opt-in explicit. Stocarea alegerii in
+     sine e strict necesara pentru a o respecta, deci exceptata. Refuz = zero
+     stocare, zero cereri externe, zero UI. v2: textul acopera si statisticile
+     de trafic (GA4), deci utilizatorii v1 sunt intrebati din nou. ---- */
+  const CONSENT = 'izz_consent_v2';   // 'yes' | 'no'
+
+  /* ---- statistici de trafic (GA4), incarcate DOAR dupa opt-in: Consent Mode
+     v2 cu totul refuzat implicit; acordam exclusiv analytics_storage. Fara
+     opt-in nu se descarca niciun script si nu pleaca nicio cerere. ---- */
+  const GA_ID = 'G-6HZ8BYSFEL';
+
+  function loadAnalytics() {
+    if (window.dataLayer) return;                       // deja incarcat
+    window.dataLayer = [];
+    window.gtag = function () { window.dataLayer.push(arguments); };
+    window.gtag('consent', 'default', {
+      ad_storage: 'denied', ad_user_data: 'denied',
+      ad_personalization: 'denied', analytics_storage: 'denied'
+    });
+    window.gtag('consent', 'update', { analytics_storage: 'granted' });
+    window.gtag('js', new Date());
+    window.gtag('config', GA_ID);
+    const s = document.createElement('script');
+    s.async = true;
+    s.src = 'https://www.googletagmanager.com/gtag/js?id=' + GA_ID;
+    document.head.appendChild(s);
+  }
 
   function consentBar() {
     const bar = document.createElement('div');
@@ -253,8 +277,9 @@
     bar.setAttribute('role', 'region');
     bar.setAttribute('aria-label', 'Personalizare');
     bar.innerHTML = `
-      <p>Vrei recomandări personalizate? Profilul tău de lectură se salvează
-      <b>doar în browserul tău</b> — nu îl trimitem nicăieri.
+      <p>Vrei recomandări personalizate și ne ajuți cu statistici anonime de
+      trafic? Profilul tău de lectură rămâne <b>doar în browserul tău</b>;
+      statisticile folosesc Google Analytics fără reclame.
       <a href="/legal/privacy/">Detalii</a></p>
       <div class="consent-actions">
         <button type="button" class="consent-yes">Activează</button>
@@ -264,6 +289,7 @@
       try { localStorage.setItem(CONSENT, 'yes'); } catch {}
       bar.remove();
       init();
+      loadAnalytics();
     };
     bar.querySelector('.consent-no').onclick = () => {
       try { localStorage.setItem(CONSENT, 'no'); localStorage.removeItem(KEY); } catch {}
@@ -275,7 +301,7 @@
   function boot() {
     let c = null;
     try { c = localStorage.getItem(CONSENT); } catch {}
-    if (c === 'yes') { init(); return; }
+    if (c === 'yes') { init(); loadAnalytics(); return; }
     if (c === 'no') { return; }
     consentBar();
   }
