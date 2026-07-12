@@ -1,0 +1,25 @@
+name: fonts
+
+# One-off/on-demand: descarca woff2-urile Google Fonts in static/fonts/ si comite.
+# Ruleaza pe branch-ul ales (sandbox-urile de dev n-au acces la fonts.googleapis.com).
+on:
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - run: python tools/fetch_fonts.py
+      - run: |
+          git config user.name "izz-bot"
+          git config user.email "bot@izz.ro"
+          git add static/fonts static/fonts.css
+          git commit -m "chore(fonts): self-hosted woff2 (latin + latin-ext)" || echo "nimic de comis"
+          git push

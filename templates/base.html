@@ -22,9 +22,10 @@
 
   <link rel="icon" type="image/svg+xml" href="{{ base }}/static/favicon.svg">
   <link rel="alternate" type="application/rss+xml" title="{{ site.name }}" href="{{ base }}/feed.xml">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+  {# fonturi AUTO-GAZDUITE (tools/fetch_fonts.py): fara cereri externe -> fara
+     render-blocking cross-origin, fara IP-uri catre Google (consistent cu privacy) #}
+  <link rel="preload" href="{{ base }}/static/fonts/PlayfairDisplay-800.ro.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="{{ base }}/static/fonts.css">
   <link rel="stylesheet" href="{{ base }}/static/styles.css">
 
   <script type="application/ld+json">{{ org_jsonld | tojson }}</script>
