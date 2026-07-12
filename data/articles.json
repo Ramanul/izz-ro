@@ -1,5 +1,268 @@
 [
   {
+    "url": "https://digi24.ro/stiri/externe/romania-si-alte-13-tari-au-semnat-o-declaratie-comuna-privind-marea-chinei-de-sud-pretentiile-beijingului-nu-au-niciun-temei-3858703",
+    "original_link": "https://www.digi24.ro/stiri/externe/romania-si-alte-13-tari-au-semnat-o-declaratie-comuna-privind-marea-chinei-de-sud-pretentiile-beijingului-nu-au-niciun-temei-3858703",
+    "source": "extern",
+    "source_name": "Digi24 Extern",
+    "source_lang": "ro",
+    "title": "România, alături de 13 țări, respinge pretențiile Chinei în Marea Chinei de Sud",
+    "category": "extern",
+    "published": "2026-07-12T09:01:56+00:00",
+    "model": "C",
+    "sources": [
+      {
+        "name": "Digi24 Extern",
+        "url": "https://www.digi24.ro/stiri/externe/romania-si-alte-13-tari-au-semnat-o-declaratie-comuna-privind-marea-chinei-de-sud-pretentiile-beijingului-nu-au-niciun-temei-3858703"
+      },
+      {
+        "name": "Știrile ProTV",
+        "url": "https://stirileprotv.ro/stiri/international/romania-s-a-alaturat-sua-si-altor-13-state-intr-o-declaratie-care-respinge-pretentiile-beijingului-in-marea-chinei-de-sud.html"
+      },
+      {
+        "name": "Curs de Guvernare",
+        "url": "https://cursdeguvernare.ro/romania-declaratie-comuna-sua-pretentii-china-marea-chinei-sud-lipsa-temei-juridic.html"
+      }
+    ],
+    "first_source": "Digi24 Extern",
+    "synthesis": "România, alături de alte 13 state, inclusiv SUA și Japonia, a semnat o declarație comună prin care contestă pretențiile maritime extinse ale Chinei în Marea Chinei de Sud. Declarația, emisă duminică, marchează 10 ani de la o hotărâre internațională relevantă, afirmând că revendicările Beijingului nu au bază juridică.",
+    "entities": [
+      "România",
+      "SUA",
+      "China",
+      "Marea Chinei de Sud"
+    ],
+    "icon": "flag",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://g4media.ro/un-cotidian-iranian-publica-o-lista-cu-lideri-occidentali-prezentati-drept-tinte-pentru-razbunarea-mortii-lui-ali-khamenei-trump-si-netanyahu-in-frunte.html",
+    "original_link": "https://www.g4media.ro/un-cotidian-iranian-publica-o-lista-cu-lideri-occidentali-prezentati-drept-tinte-pentru-razbunarea-mortii-lui-ali-khamenei-trump-si-netanyahu-in-frunte.html",
+    "source": "g4media",
+    "source_name": "G4Media",
+    "source_lang": "ro",
+    "title": "Presa iraniană publică listă cu lideri occidentali ținte pentru răzbunare",
+    "category": "extern",
+    "published": "2026-07-12T08:57:57+00:00",
+    "model": "C",
+    "sources": [
+      {
+        "name": "G4Media",
+        "url": "https://www.g4media.ro/un-cotidian-iranian-publica-o-lista-cu-lideri-occidentali-prezentati-drept-tinte-pentru-razbunarea-mortii-lui-ali-khamenei-trump-si-netanyahu-in-frunte.html"
+      },
+      {
+        "name": "Digi24 Extern",
+        "url": "https://www.digi24.ro/stiri/externe/un-ziar-iranian-a-pus-lideri-europeni-alaturi-de-trump-pe-o-lista-cu-tinte-de-lichidat-ca-razbunare-pentru-moartea-lui-khamenei-3858725"
+      }
+    ],
+    "first_source": "G4Media",
+    "synthesis": "Un cotidian iranian ultraconservator, Hamshahri, a publicat un infografic cu lideri occidentali și israelieni, inclusiv Donald Trump, Benjamin Netanyahu, Emmanuel Macron, Friedrich Merz și Keir Starmer, prezentați ca ținte pentru răzbunarea morții fostului lider suprem Ali Khamenei. Publicația este afiliată administrației municipale din Teheran.",
+    "entities": [
+      "Hamshahri",
+      "Ali Khamenei",
+      "Donald Trump",
+      "Benjamin Netanyahu"
+    ],
+    "icon": "swords",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://gsp.ro/sporturi/tenis/live-jannik-sinner-alexander-zverev-marea-finala-de-la-wimbledon-959614.html",
+    "original_link": "https://www.gsp.ro/sporturi/tenis/live-jannik-sinner-alexander-zverev-marea-finala-de-la-wimbledon-959614.html",
+    "source": "gsp",
+    "source_name": "GSP",
+    "source_lang": "ro",
+    "title": "Sinner și Zverev, finala Wimbledon 2026",
+    "category": "sport",
+    "published": "2026-07-12T08:38:44+00:00",
+    "model": "C",
+    "sources": [
+      {
+        "name": "GSP",
+        "url": "https://www.gsp.ro/sporturi/tenis/live-jannik-sinner-alexander-zverev-marea-finala-de-la-wimbledon-959614.html"
+      },
+      {
+        "name": "HotNews",
+        "url": "https://hotnews.ro/wimbledon-2026-ora-de-start-finala-jannik-sinner-si-alexander-zverev-2298400"
+      }
+    ],
+    "first_source": "GSP",
+    "synthesis": "Jannik Sinner, locul 1 ATP, și Alexander Zverev, locul 3 ATP, se întâlnesc în finala masculină de la Wimbledon 2026. Meciul pentru titlu va avea loc duminică după-amiază, pe Terenul Central de la All England Club, începând cu ora 18:00, conform informațiilor transmise de GSP și HotNews.",
+    "entities": [
+      "Jannik Sinner",
+      "Alexander Zverev",
+      "Wimbledon"
+    ],
+    "icon": "ball-tennis",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://prosport.ro/alte-sporturi/tenis/simona-halep/cum-a-numit-o-fiul-lui-ion-tiriac-pe-simona-halep-dupa-aparitia-cu-dorin-mateiu-la-wimbledon-20482261",
+    "original_link": "https://www.prosport.ro/alte-sporturi/tenis/simona-halep/cum-a-numit-o-fiul-lui-ion-tiriac-pe-simona-halep-dupa-aparitia-cu-dorin-mateiu-la-wimbledon-20482261",
+    "source": "prosport",
+    "source_name": "ProSport",
+    "source_lang": "ro",
+    "title": "Alexandru Țiriac o felicită pe Simona Halep pentru apariția la Wimbledon",
+    "category": "sport",
+    "published": "2026-07-12T08:23:26+00:00",
+    "model": "C",
+    "sources": [
+      {
+        "name": "ProSport",
+        "url": "https://www.prosport.ro/alte-sporturi/tenis/simona-halep/cum-a-numit-o-fiul-lui-ion-tiriac-pe-simona-halep-dupa-aparitia-cu-dorin-mateiu-la-wimbledon-20482261"
+      },
+      {
+        "name": "GSP",
+        "url": "https://www.gsp.ro/sporturi/tenis/fiul-lui-ion-tiriac-a-vazut-imaginile-cu-simona-halep-in-loja-de-la-wimbledon-ai-reusit-959661.html"
+      }
+    ],
+    "first_source": "ProSport",
+    "synthesis": "Simona Halep a fost prezentă la finala Wimbledon, asistând din loja regală la meciul câștigat de Linda Noskova. Alexandru Țiriac, fiul lui Ion Țiriac, a văzut imaginile și a felicitat-o pe campioana română, spunând \"Ai reușit!\".",
+    "entities": [
+      "Simona Halep",
+      "Alexandru Țiriac",
+      "Wimbledon"
+    ],
+    "icon": "ball-tennis",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://digi24.ro/stiri/sport/pilotul-roman-adrian-rus-sinner-a-murit-intr-un-accident-in-cehia-anuntul-federatiei-romane-de-motociclism-3858673",
+    "original_link": "https://www.digi24.ro/stiri/sport/pilotul-roman-adrian-rus-sinner-a-murit-intr-un-accident-in-cehia-anuntul-federatiei-romane-de-motociclism-3858673",
+    "source": "digi24",
+    "source_name": "Digi24",
+    "source_lang": "ro",
+    "title": "Pilot român de motociclism, Adrian Rus, a decedat în Cehia",
+    "category": "sport",
+    "published": "2026-07-12T08:22:30+00:00",
+    "model": "C",
+    "sources": [
+      {
+        "name": "Digi24",
+        "url": "https://www.digi24.ro/stiri/sport/pilotul-roman-adrian-rus-sinner-a-murit-intr-un-accident-in-cehia-anuntul-federatiei-romane-de-motociclism-3858673"
+      },
+      {
+        "name": "Știrile ProTV",
+        "url": "https://stirileprotv.ro/stiri/sport/pilotul-roman-de-curse-moto-adrian-rus-sinner-a-murit-intr-o-competitie-din-cehia-etapa-de-la-brno-anulata.html"
+      }
+    ],
+    "first_source": "Digi24",
+    "synthesis": "Pilotul român de motociclism Adrian Rus, cunoscut ca \"Sinner\", a murit sâmbătă în timpul unei competiții desfășurate la Brno, Cehia. Evenimentul, parte a Alpe Adria International Motorcycle Championship, a fost ulterior anulat. Federația Română de Motociclism a confirmat decesul sportivului.",
+    "entities": [
+      "Adrian Rus",
+      "Brno",
+      "Alpe Adria International Motorcycle Championship",
+      "Federația Română de Motociclism"
+    ],
+    "icon": "car",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://gsp.ro/international/campionatul-mondial-de-fotbal-2026/erling-haaland-norvegia-anglia-declaratii-959653.html",
+    "original_link": "https://www.gsp.ro/international/campionatul-mondial-de-fotbal-2026/erling-haaland-norvegia-anglia-declaratii-959653.html",
+    "source": "gsp",
+    "source_name": "GSP",
+    "source_lang": "ro",
+    "title": "Haaland, nemulțumit după eliminarea Norvegiei de la Mondial",
+    "category": "sport",
+    "published": "2026-07-12T08:06:04+00:00",
+    "model": "C",
+    "sources": [
+      {
+        "name": "GSP",
+        "url": "https://www.gsp.ro/international/campionatul-mondial-de-fotbal-2026/erling-haaland-norvegia-anglia-declaratii-959653.html"
+      },
+      {
+        "name": "Digi Sport",
+        "url": "https://www.digisport.ro/fotbal/cm-2026/erling-haaland-nu-a-mai-putut-sa-taca-dupa-norvegia-anglia-1-2-o-porcarie-4373867"
+      }
+    ],
+    "first_source": "GSP",
+    "synthesis": "Atacantul norvegian Erling Haaland și-a exprimat frustrarea după înfrângerea echipei sale în fața Angliei, scor 1-2, în sferturile de finală ale Cupei Mondiale 2026. Deși recunoaște parcursul bun al naționalei și entuziasmul generat, Haaland a declarat că are un \"gust amar\" și a calificat situația drept \"o porcărie\".",
+    "entities": [
+      "Erling Haaland",
+      "Norvegia",
+      "Anglia",
+      "Cupa Mondială 2026"
+    ],
+    "icon": "ball-football",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://economica.net/ins-557-319-de-sosiri-ale-turistilor-in-capitala-in-primele-patru-luni-din-2026_958542.html",
+    "original_link": "https://www.economica.net/ins-557-319-de-sosiri-ale-turistilor-in-capitala-in-primele-patru-luni-din-2026_958542.html",
+    "source": "economica",
+    "source_name": "Economica",
+    "source_lang": "ro",
+    "title": "Bucureștiul a atras peste 557.000 de turiști în primele patru luni din 2026",
+    "category": "economic",
+    "published": "2026-07-12T07:07:16+00:00",
+    "model": "C",
+    "sources": [
+      {
+        "name": "Economica",
+        "url": "https://www.economica.net/ins-557-319-de-sosiri-ale-turistilor-in-capitala-in-primele-patru-luni-din-2026_958542.html"
+      },
+      {
+        "name": "Economedia",
+        "url": "https://economedia.ro/bucurestiul-a-inregistrat-peste-557-000-de-sosiri-turistice-in-primele-patru-luni-ale-anului-martie-luna-cea-mai-aglomerata.html"
+      }
+    ],
+    "first_source": "Economica",
+    "synthesis": "Institutul Național de Statistică a raportat 557.319 sosiri turistice în București în perioada ianuarie-aprilie 2026. Luna martie a înregistrat cel mai mare număr de vizitatori (155.794), în timp ce ianuarie a avut cel mai mic (124.020). Datele confirmă o tendință ascendentă a turismului în capitală.",
+    "entities": [
+      "Institutul Național de Statistică",
+      "București"
+    ],
+    "icon": "building-monument",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://digi24.ro/stiri/externe/senatorul-american-lindsay-graham-aliat-de-nadejde-al-presedintelui-trump-a-murit-in-urma-unei-boli-scurte-si-subite-3858577",
+    "original_link": "https://www.digi24.ro/stiri/externe/senatorul-american-lindsay-graham-aliat-de-nadejde-al-presedintelui-trump-a-murit-in-urma-unei-boli-scurte-si-subite-3858577",
+    "source": "extern",
+    "source_name": "Digi24 Extern",
+    "source_lang": "ro",
+    "title": "Senatorul american Lindsey Graham a decedat la 71 de ani",
+    "category": "politic",
+    "published": "2026-07-12T06:37:58+00:00",
+    "model": "C",
+    "sources": [
+      {
+        "name": "Digi24 Extern",
+        "url": "https://www.digi24.ro/stiri/externe/senatorul-american-lindsay-graham-aliat-de-nadejde-al-presedintelui-trump-a-murit-in-urma-unei-boli-scurte-si-subite-3858577"
+      },
+      {
+        "name": "Știrile ProTV",
+        "url": "https://stirileprotv.ro/stiri/international/senatorul-american-lindsey-graham-a-murit-la-71-de-ani-aliatul-lui-trump-victima-a-unei-boli-subite.html"
+      }
+    ],
+    "first_source": "Digi24 Extern",
+    "synthesis": "Senatorul republican american Lindsey Graham, în vârstă de 71 de ani, a murit sâmbătă seara. Biroul său a confirmat decesul, survenit în urma unei boli scurte și subite. Graham, originar din Carolina de Sud, era cunoscut ca un aliat apropiat al fostului președinte Donald Trump.",
+    "entities": [
+      "Lindsey Graham",
+      "Donald Trump",
+      "Carolina de Sud"
+    ],
+    "icon": null,
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
     "url": "https://moldova.europalibera.org/a/ramasitele-muzeului-eliberarii-din-ucraina-la-praga/33800997.html",
     "original_link": "https://moldova.europalibera.org/a/ramasitele-muzeului-eliberarii-din-ucraina-la-praga/33800997.html",
     "source": "el_moldova",
@@ -80,6 +343,40 @@
       "Norvegia"
     ],
     "icon": "ball-football",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://economica.net/presedintele-nicusor-dan-o-noua-intalnire-luni-cu-liderii-fostei-coalitii-de-guvernare_958539.html",
+    "original_link": "https://www.economica.net/presedintele-nicusor-dan-o-noua-intalnire-luni-cu-liderii-fostei-coalitii-de-guvernare_958539.html",
+    "source": "economica",
+    "source_name": "Economica",
+    "source_lang": "ro",
+    "title": "Nicușor Dan reia discuțiile cu liderii partidelor pentru formarea guvernului",
+    "category": "politic",
+    "published": "2026-07-12T06:08:01+00:00",
+    "model": "C",
+    "sources": [
+      {
+        "name": "Economica",
+        "url": "https://www.economica.net/presedintele-nicusor-dan-o-noua-intalnire-luni-cu-liderii-fostei-coalitii-de-guvernare_958539.html"
+      },
+      {
+        "name": "Spotmedia",
+        "url": "https://spotmedia.ro/stiri/politica/intalnire-luni-la-cotroceni-intre-nicusor-dan-si-liderii-fostei-coalitii-de-guvernare-ce-sanse-sunt-sa-apara-o-solutie"
+      }
+    ],
+    "first_source": "Economica",
+    "synthesis": "Președintele Nicușor Dan a convocat liderii PSD, PNL, USR și UDMR la Palatul Cotroceni, luni dimineața. Întâlnirea are ca scop deblocarea procesului de formare a unui nou guvern, deși președintele recunoaște dificultatea atingerii unei majorități parlamentare în prezent.",
+    "entities": [
+      "Nicușor Dan",
+      "PSD",
+      "PNL",
+      "USR",
+      "UDMR"
+    ],
+    "icon": "building-monument",
     "processed_by": "gemini",
     "prompt_version": "v2-esenta",
     "featured": false
@@ -1354,20 +1651,32 @@
     "source": "gsp",
     "source_name": "GSP",
     "source_lang": "ro",
-    "title": "Româncele Jaqueline Cristian și Gabriela Ruse și-au aflat adversarele la Iași Open",
+    "title": "Tragere la sorți pentru Iași Open: Cristian și Ruse și-au aflat adversarele",
     "category": "sport",
     "published": "2026-07-11T19:46:28+00:00",
-    "model": "B",
+    "model": "C",
     "teaser": "Jaqueline Cristian, favorită principală, și Gabriela Ruse și-au aflat adversarele la turneul WTA 250 UniCredit Iași Open, unde o posibilă confruntare este în sferturi.",
     "entities": [
       "Jaqueline Cristian",
       "Gabriela Ruse",
-      "Iași Open"
+      "UniCredit Iași Open"
     ],
     "icon": "ball-tennis",
     "processed_by": "gemini",
     "prompt_version": "v2-esenta",
-    "featured": false
+    "featured": false,
+    "sources": [
+      {
+        "name": "GSP",
+        "url": "https://www.gsp.ro/sporturi/tenis/romancele-si-au-aflat-adversarele-pe-tabloul-turneului-unicredit-iasi-open-jaqueline-cristian-si-gabriela-ruse-posibila-ciocnire-in-sferturi-959511.html"
+      },
+      {
+        "name": "Spotmedia",
+        "url": "https://spotmedia.ro/stiri/sport/romancele-si-au-aflat-adversarele-din-primul-tur-de-la-wta-open-iasi"
+      }
+    ],
+    "first_source": "GSP",
+    "synthesis": "Tragerea la sorți pentru turneul WTA 250 UniCredit Iași Open a stabilit adversarele din primul tur pentru tenismenele române. Jaqueline Cristian, cotată ca favorită principală, și Gabriela Ruse își cunosc acum oponentele, cu posibilitatea unei întâlniri între ele în sferturi."
   },
   {
     "url": "https://hotnews.ro/trump-se-lauda-cu-un-examen-medical-perfect-dupa-cartea-in-care-i-au-fost-puse-la-indoiala-rezistenta-si-conditia-fizica-2298079",
@@ -23006,296 +23315,6 @@
       "Parcul Prieteniei Româno-Americane „Donald Trump"
     ],
     "icon": "building-monument",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://zf.ro/business-international/zeci-de-mii-de-oameni-la-funeraliile-lui-ali-khamenei-autoritatile-23188590",
-    "original_link": "https://www.zf.ro/business-international/zeci-de-mii-de-oameni-la-funeraliile-lui-ali-khamenei-autoritatile-23188590",
-    "source": "zf",
-    "source_name": "Ziarul Financiar",
-    "source_lang": "ro",
-    "title": "Funeralii Ali Khamenei: Zeci de mii la Teheran, așteptări de 10 milioane",
-    "category": "politic",
-    "published": "2026-07-05T09:37:14+00:00",
-    "model": "C",
-    "sources": [
-      {
-        "name": "Ziarul Financiar",
-        "url": "https://www.zf.ro/business-international/zeci-de-mii-de-oameni-la-funeraliile-lui-ali-khamenei-autoritatile-23188590"
-      },
-      {
-        "name": "G4Media",
-        "url": "https://www.g4media.ro/zeci-de-mii-de-oameni-la-funeraliile-lui-ali-khamenei-autoritatile-se-asteapta-la-10-milioane.html"
-      }
-    ],
-    "first_source": "Ziarul Financiar",
-    "synthesis": "Zeci de mii de persoane au participat duminică la Teheran la ceremoniile funerare pentru fostul lider suprem al Iranului, Ali Khamenei. Autoritățile estimează că peste 10 milioane de oameni vor fi prezenți la evenimentele organizate în capitală. Ceremonia religioasă s-a desfășurat la complexul Grand Mosalla.",
-    "entities": [
-      "Ali Khamenei",
-      "Teheran",
-      "Iran"
-    ],
-    "icon": "building-monument",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://zf.ro/business-international/ft-uber-isi-amana-extinderea-serviciilor-de-livrare-a-mancarii-23188586",
-    "original_link": "https://www.zf.ro/business-international/ft-uber-isi-amana-extinderea-serviciilor-de-livrare-a-mancarii-23188586",
-    "source": "zf",
-    "source_name": "Ziarul Financiar",
-    "source_lang": "ro",
-    "title": "Uber amână extinderea serviciilor de livrare a mâncării în România",
-    "category": "economic",
-    "published": "2026-07-05T09:21:09+00:00",
-    "model": "C",
-    "sources": [
-      {
-        "name": "Ziarul Financiar",
-        "url": "https://www.zf.ro/business-international/ft-uber-isi-amana-extinderea-serviciilor-de-livrare-a-mancarii-23188586"
-      },
-      {
-        "name": "Economedia",
-        "url": "https://economedia.ro/financial-times-uber-isi-amana-extinderea-serviciilor-de-livrare-a-mancarii-romania-printre-tarile-afectate.html"
-      }
-    ],
-    "first_source": "Ziarul Financiar",
-    "synthesis": "Uber și-a suspendat majoritatea planurilor de extindere a serviciilor de livrare a mâncării în Europa, inclusiv în România. Decizia vine la scurt timp după anunțarea inițială a extinderii, afectând lansarea în cinci din cele șapte țări vizate.",
-    "entities": [
-      "Uber",
-      "România",
-      "Financial Times"
-    ],
-    "icon": "shopping-cart",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://economedia.ro/dumitru-chisalita-asociatia-energia-inteligenta-exploatarea-gazelor-din-marea-neagra-ofera-romaniei-o-oportunitate-istorica-insa-resursele-nu-creeaza-automat-prosperitate.html",
-    "original_link": "https://economedia.ro/dumitru-chisalita-asociatia-energia-inteligenta-exploatarea-gazelor-din-marea-neagra-ofera-romaniei-o-oportunitate-istorica-insa-resursele-nu-creeaza-automat-prosperitate.html",
-    "source": "economedia",
-    "source_name": "Economedia",
-    "source_lang": "ro",
-    "title": "Gazele din Marea Neagră: Oportunitate istorică pentru România, depinde de utilizarea veniturilor",
-    "category": "economic",
-    "published": "2026-07-05T08:37:47+00:00",
-    "model": "C",
-    "sources": [
-      {
-        "name": "Economedia",
-        "url": "https://economedia.ro/dumitru-chisalita-asociatia-energia-inteligenta-exploatarea-gazelor-din-marea-neagra-ofera-romaniei-o-oportunitate-istorica-insa-resursele-nu-creeaza-automat-prosperitate.html"
-      },
-      {
-        "name": "Digi24",
-        "url": "https://www.digi24.ro/stiri/economie/energie/seful-aei-dumitru-chisalita-exploatarea-gazelor-din-marea-neagra-ofera-romaniei-o-oportunitate-istorica-3848107"
-      },
-      {
-        "name": "Economica",
-        "url": "https://www.economica.net/exploatarea-gazelor-din-marea-neagra-ofera-romaniei-o-oportunitate-istorica-insa-resursele-nu-creeaza-automat-prosperitate-aei_956547.html"
-      }
-    ],
-    "first_source": "Economedia",
-    "synthesis": "Exploatarea gazelor din Marea Neagră reprezintă o șansă istorică pentru România, a declarat Dumitru Chisăliță, președintele Asociației Energia Inteligentă. Acesta subliniază că valoarea strategică reală nu constă în cantitatea de gaz extrasă, ci în modul în care veniturile generate vor fi gestionate și investite pentru prosperitatea țării.",
-    "entities": [
-      "Asociația Energia Inteligentă",
-      "Dumitru Chisăliță",
-      "Marea Neagră"
-    ],
-    "icon": "gas-station",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://stirileprotv.ro/divers/un-terminal-abandonat-al-aeroportului-jfk-transformat-intr-un-hotel-de-lux-investitie-de-265-de-milioane-de-dolari.html",
-    "original_link": "https://stirileprotv.ro/divers/un-terminal-abandonat-al-aeroportului-jfk-transformat-intr-un-hotel-de-lux-investitie-de-265-de-milioane-de-dolari.html",
-    "source": "protv",
-    "source_name": "Știrile ProTV",
-    "source_lang": "ro",
-    "title": "Terminal aeroport JFK transformat în hotel de lux",
-    "category": "general",
-    "published": "2026-07-05T08:37:42+00:00",
-    "model": "C",
-    "sources": [
-      {
-        "name": "Știrile ProTV",
-        "url": "https://stirileprotv.ro/divers/un-terminal-abandonat-al-aeroportului-jfk-transformat-intr-un-hotel-de-lux-investitie-de-265-de-milioane-de-dolari.html"
-      },
-      {
-        "name": "Spotmedia",
-        "url": "https://spotmedia.ro/stiri/timp-liber/un-terminal-de-aeroport-abandonat-transformat-intr-un-hotel-de-lux-investitie-de-265-de-milioane-de-dolari"
-      }
-    ],
-    "first_source": "Știrile ProTV",
-    "synthesis": "Un fost terminal al aeroportului John F. Kennedy din New York, nefolosit timp de aproape 20 de ani, a fost renovat și transformat într-un hotel de lux cu tematică aviatică. Proiectul, care a implicat o investiție de 265 de milioane de dolari, a redat viață clădirii istorice TWA, inaugurată în 2019.",
-    "entities": [
-      "Aeroportul JFK",
-      "TWA Hotel"
-    ],
-    "icon": "plane",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://economica.net/capitalizarea-bursei-de-la-bucuresti-a-crescut-cu-peste-36-de-miliarde-de-lei-intr-o-saptamana_956545.html",
-    "original_link": "https://www.economica.net/capitalizarea-bursei-de-la-bucuresti-a-crescut-cu-peste-36-de-miliarde-de-lei-intr-o-saptamana_956545.html",
-    "source": "economica",
-    "source_name": "Economica",
-    "source_lang": "ro",
-    "title": "Bursa de la București, creștere semnificativă în capitalizare într-o săptămână",
-    "category": "economic",
-    "published": "2026-07-05T08:32:06+00:00",
-    "model": "C",
-    "sources": [
-      {
-        "name": "Economica",
-        "url": "https://www.economica.net/capitalizarea-bursei-de-la-bucuresti-a-crescut-cu-peste-36-de-miliarde-de-lei-intr-o-saptamana_956545.html"
-      },
-      {
-        "name": "Știrile ProTV",
-        "url": "https://stirileprotv.ro/stiri/financiar/capitalizarea-bursei-de-la-bucuresti-a-crescut-cu-peste-36-de-miliarde-de-lei-intr-o-singura-saptamana.html"
-      }
-    ],
-    "first_source": "Economica",
-    "synthesis": "Capitalizarea Bursei de Valori București a înregistrat o creștere de peste 36 de miliarde de lei într-o singură săptămână. Această evoluție reprezintă un avans de 5,5% comparativ cu perioada anterioară, conform datelor oficiale ale BVB. Valoarea tranzacțiilor cu acțiuni a crescut, de asemenea, considerabil.",
-    "entities": [
-      "Bursa de Valori București",
-      "BVB"
-    ],
-    "icon": "chart-line",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://gsp.ro/fotbal/liga-1/el-este-alesul-uefa-pentru-debutul-craiovei-in-liga-campionilor-956896.html",
-    "original_link": "https://www.gsp.ro/fotbal/liga-1/el-este-alesul-uefa-pentru-debutul-craiovei-in-liga-campionilor-956896.html",
-    "source": "gsp",
-    "source_name": "GSP",
-    "source_lang": "ro",
-    "title": "Arbitrul desemnat de UEFA pentru debutul Craiovei in Liga Campionilor",
-    "category": "sport",
-    "published": "2026-07-05T07:39:41+00:00",
-    "model": "B",
-    "teaser": "UEFA l-a numit pe bosniacul Luka Bilbija sa conduca partida dintre Vitebsk si Universitatea Craiova, din prima etapa preliminara a Ligii Campionilor. Acesta este debutul echipei romane.",
-    "entities": [
-      "UEFA",
-      "Universitatea Craiova",
-      "Luka Bilbija"
-    ],
-    "icon": "ball-football",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://politico.com/news/2026/07/04/poll-politics-celebrities-athletes-partisan-divides-00986697",
-    "original_link": "https://www.politico.com/news/2026/07/04/poll-politics-celebrities-athletes-partisan-divides-00986697?utm_source=RSS_Feed&utm_medium=RSS&utm_campaign=RSS_Syndication",
-    "source": "politico_eu",
-    "source_name": "Politico EU",
-    "source_lang": "en",
-    "title": "Americanii sunt obosiți de politică, dar influențați de celebrități",
-    "category": "politic",
-    "published": "2026-07-05T07:30:15+00:00",
-    "model": "B",
-    "teaser": "Un sondaj relevă că majoritatea americanilor consideră că politica a pătruns prea mult în viața lor, însă recunosc că pot fi influențați de declarațiile vedetelor și ale companiilor.",
-    "entities": [
-      "SUA"
-    ],
-    "icon": "percentage",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://economedia.ro/unitatea-1-a-centralei-de-la-cernavoda-reconectata-la-sistemul-energetic-national-dupa-aproape-doua-luni.html",
-    "original_link": "https://economedia.ro/unitatea-1-a-centralei-de-la-cernavoda-reconectata-la-sistemul-energetic-national-dupa-aproape-doua-luni.html",
-    "source": "economedia",
-    "source_name": "Economedia",
-    "source_lang": "ro",
-    "title": "Unitatea 1 CNE Cernavodă, reconectată la rețeaua energetică națională",
-    "category": "economic",
-    "published": "2026-07-05T07:19:04+00:00",
-    "model": "C",
-    "sources": [
-      {
-        "name": "Economedia",
-        "url": "https://economedia.ro/unitatea-1-a-centralei-de-la-cernavoda-reconectata-la-sistemul-energetic-national-dupa-aproape-doua-luni.html"
-      },
-      {
-        "name": "Digi24",
-        "url": "https://www.digi24.ro/stiri/economie/energie/unitatea-1-cne-cernavoda-a-fost-reconectata-la-sistemul-energetic-national-anuntul-facut-de-nuclearelectrica-3848153"
-      }
-    ],
-    "first_source": "Economedia",
-    "synthesis": "Unitatea 1 a Centralei Nucleare de la Cernavodă a fost reconectată la Sistemul Energetic Național duminică dimineața. Această acțiune a avut loc după finalizarea programului de oprire planificată, care a inclus mentenanță preventivă și corectivă, inspecții și testări obligatorii, conform anunțului Nuclearelectrica.",
-    "entities": [
-      "CNE Cernavodă",
-      "Nuclearelectrica"
-    ],
-    "icon": "building-factory",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://stirileprotv.ro/stiri/actualitate/un-barbat-de-45-de-ani-a-murit-dupa-ce-a-cazut-de-pe-o-trotineta-electrica-si-s-a-lovit-la-cap-in-constanta.html",
-    "original_link": "https://stirileprotv.ro/stiri/actualitate/un-barbat-de-45-de-ani-a-murit-dupa-ce-a-cazut-de-pe-o-trotineta-electrica-si-s-a-lovit-la-cap-in-constanta.html",
-    "source": "protv",
-    "source_name": "Știrile ProTV",
-    "source_lang": "ro",
-    "title": "Bărbat de 45 de ani, mort după o căzătură de pe trotinetă electrică",
-    "category": "general",
-    "published": "2026-07-05T07:00:44+00:00",
-    "model": "C",
-    "sources": [
-      {
-        "name": "Știrile ProTV",
-        "url": "https://stirileprotv.ro/stiri/actualitate/un-barbat-de-45-de-ani-a-murit-dupa-ce-a-cazut-de-pe-o-trotineta-electrica-si-s-a-lovit-la-cap-in-constanta.html"
-      },
-      {
-        "name": "G4Media",
-        "url": "https://www.g4media.ro/barbat-de-45-de-ani-gasit-mort-langa-o-trotineta-electrica-pe-pista-de-biciclete-din-navodari-ar-fi-cazut-de-pe-ea-si-s-ar-fi-lovit-la-cap.html"
-      },
-      {
-        "name": "Digi24",
-        "url": "https://www.digi24.ro/stiri/un-barbat-de-45-de-ani-a-murit-dupa-ce-a-cazut-de-pe-o-trotineta-electrica-3848069"
-      }
-    ],
-    "first_source": "Știrile ProTV",
-    "synthesis": "Un bărbat de 45 de ani a decedat duminică dimineață pe DJ 226, în zona Midia, județul Constanța. Potrivit informațiilor preliminare, acesta circula pe o pistă special amenajată cu o trotinetă electrică, a căzut și s-a lovit la cap. Poliția a deschis un dosar penal pentru a elucida circumstanțele exacte ale accidentului.",
-    "entities": [
-      "Constanța",
-      "Midia",
-      "DJ 226"
-    ],
-    "icon": "bike",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://moldova.europalibera.org/a/cine-exporta-banane-in-rusia-si-cine-cocaina/33795576.html",
-    "original_link": "https://moldova.europalibera.org/a/cine-exporta-banane-in-rusia-si-cine-cocaina/33795576.html",
-    "source": "el_moldova",
-    "source_name": "Europa Liberă",
-    "source_lang": "ro",
-    "title": "Companii rusești, suspectate de trafic de cocaină prin transporturi de banane",
-    "category": "economic",
-    "published": "2026-07-05T06:50:28+00:00",
-    "model": "B",
-    "teaser": "Două companii rusești, controlate de persoane apropiate de Vladimir Putin, sunt investigate pentru implicarea în traficul de cocaină, ascunsă în transporturi de banane către Sankt Petersburg.",
-    "entities": [
-      "Rusia",
-      "Sankt Petersburg",
-      "Vladimir Putin"
-    ],
-    "icon": "receipt-tax",
     "processed_by": "gemini",
     "prompt_version": "v2-esenta",
     "featured": false
