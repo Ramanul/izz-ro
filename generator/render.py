@@ -561,6 +561,7 @@ def _write_headers() -> None:
     _write(os.path.join(OUT_DIR, "_headers"),
            "/*\n"
            f"  Content-Security-Policy: {csp}\n"
+           "  Strict-Transport-Security: max-age=31536000\n"
            "  X-Content-Type-Options: nosniff\n"
            "  X-Frame-Options: DENY\n"
            "  Referrer-Policy: strict-origin-when-cross-origin\n"
