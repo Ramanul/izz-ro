@@ -1,11 +1,13 @@
 #!/usr/bin/env python
-"""Portrete oficiale pentru persoanele publice din articole (pilot Wikidata).
+"""Fotografii oficiale pentru entitatile publice din articole (Wikidata P18).
 
 Ruleaza in GitHub Actions (are internet; sandbox-urile nu). Pentru entitatile AI
 din articolele publicate cauta pe Wikidata o potrivire STRICTA si, doar daca
-persoana e om (P31=Q5) CU functie publica detinuta (P39) si are portret oficial
-(P18) sub licenta libera, descarca o miniatura mica in media/portraits/ (auto-
-gazduita -> browserul cititorilor nu atinge servere terte) si scrie creditul in
+entitatea e "photo-worthy" -- fie persoana publica (om P31=Q5 cu functie P39 sau
+notorietate), fie o entitate notorie dintr-un tip sigur din SAFE_TYPES (institutie,
+oras, tara, club, universitate, cladire) -- si are imagine reprezentativa (P18) sub
+licenta libera, descarca o miniatura mica in media/portraits/ (auto-gazduita ->
+browserul cititorilor nu atinge servere terte) si scrie creditul in
 data/portraits.json (comis). Negativele se cacheaza ca sa nu re-interogam.
 
   python tools/fetch_portraits.py          # incremental, plafonat
@@ -73,14 +75,61 @@ def wd_entity(qid: str) -> dict:
 
 SITELINKS_MIN = 15   # prag de notorietate: prezenta in >=15 editii Wikipedia
 
+# Tipuri Wikidata (P31) de entitate NEUMANA pentru care P18 e o fotografie
+# reprezentativa si neambigua (sediu, skyline, stadion) -- nu un logo (acela e P154).
+# Restrangem strict la clase care apar frecvent in stirile RO si al caror portret
+# vizual e sugestiv. Orice altceva -> fallback pe coperta generata.
+SAFE_TYPES = frozenset({
+    "Q43229",    # organizatie
+    "Q4830453",  # afacere / business
+    "Q6881511",  # intreprindere
+    "Q783794",   # companie
+    "Q891723",   # companie publica listata
+    "Q7278",     # partid politic
+    "Q327333",   # agentie guvernamentala
+    "Q2659904",  # organizatie guvernamentala
+    "Q192350",   # minister
+    "Q476028",   # club de fotbal
+    "Q847017",   # club sportiv
+    "Q12973014", # echipa sportiva
+    "Q515",      # oras
+    "Q1549591",  # oras mare
+    "Q6256",     # tara
+    "Q3624078",  # stat suveran
+    "Q3918",     # universitate
+    "Q41176",    # cladire
+    "Q33506",    # muzeu
+    "Q1248784",  # aeroport
+    "Q4989906",  # monument
+})
+
+
+def entity_types(claims: dict) -> set:
+    """Toate QID-urile P31 (instance of) ale entitatii."""
+    out = set()
+    for c in claims.get("P31", []):
+        qid = c.get("mainsnak", {}).get("datavalue", {}).get("value", {}).get("id")
+        if qid:
+            out.add(qid)
+    return out
+
 
 def is_public_figure(claims: dict, sitelinks: int = 0) -> bool:
     """Om (P31=Q5) care fie detine functie publica (P39), fie e notoriu la nivel
     international (>=SITELINKS_MIN editii Wikipedia) -- sportivi/artisti celebri.
     Ambele cai exclud structural omonimii obscuri."""
-    human = any(c.get("mainsnak", {}).get("datavalue", {}).get("value", {}).get("id") == "Q5"
-                for c in claims.get("P31", []))
+    human = "Q5" in entity_types(claims)
     return human and (bool(claims.get("P39")) or sitelinks >= SITELINKS_MIN)
+
+
+def is_photo_worthy(claims: dict, sitelinks: int = 0) -> bool:
+    """Entitate careia i se poate atasa o fotografie reala, legala si neambigua:
+    fie persoana publica (regula existenta), fie o entitate dintr-un tip din
+    SAFE_TYPES suficient de notorie (>=SITELINKS_MIN editii Wikipedia). Notorietatea
+    + potrivirea exacta pe label previn atasarea unei poze gresite (omonime)."""
+    if is_public_figure(claims, sitelinks):
+        return True
+    return bool(entity_types(claims) & SAFE_TYPES) and sitelinks >= SITELINKS_MIN
 
 
 def portrait_file(claims: dict) -> str | None:
@@ -119,7 +168,7 @@ def main() -> int:
     names: list = []
     for a in arts:
         for e in a.get("entities") or []:
-            if e and e not in names and len(e.split()) >= 2:   # doar nume de persoana plauzibile
+            if e and e not in names and len(e.split()) >= 2:   # >=2 cuvinte: nume/denumiri specifice (evita omonime dintr-un cuvant)
                 names.append(e)
     cache = json.load(open(CACHE)) if os.path.exists(CACHE) else {}
     os.makedirs(OUTDIR, exist_ok=True)
@@ -139,7 +188,7 @@ def main() -> int:
                 claims = ent.get("claims", {})
                 sitelinks = len(ent.get("sitelinks", {}))
                 f = portrait_file(claims)
-                if is_public_figure(claims, sitelinks) and f:
+                if is_photo_worthy(claims, sitelinks) and f:
                     info = commons_info(f)
                     if info and info.get("thumb"):
                         fn = f"{slugish(name)}.jpg"
