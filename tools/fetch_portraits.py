@@ -66,16 +66,21 @@ def wd_match(name: str) -> str | None:
     return None
 
 
-def wd_claims(qid: str) -> dict:
+def wd_entity(qid: str) -> dict:
     d = _get(f"https://www.wikidata.org/wiki/Special:EntityData/{qid}.json")
-    return d["entities"][qid].get("claims", {})
+    return d["entities"][qid]
 
 
-def is_public_figure(claims: dict) -> bool:
-    """Om (P31=Q5) care detine/a detinut o functie publica (P39 nevid)."""
+SITELINKS_MIN = 15   # prag de notorietate: prezenta in >=15 editii Wikipedia
+
+
+def is_public_figure(claims: dict, sitelinks: int = 0) -> bool:
+    """Om (P31=Q5) care fie detine functie publica (P39), fie e notoriu la nivel
+    international (>=SITELINKS_MIN editii Wikipedia) -- sportivi/artisti celebri.
+    Ambele cai exclud structural omonimii obscuri."""
     human = any(c.get("mainsnak", {}).get("datavalue", {}).get("value", {}).get("id") == "Q5"
                 for c in claims.get("P31", []))
-    return human and bool(claims.get("P39"))
+    return human and (bool(claims.get("P39")) or sitelinks >= SITELINKS_MIN)
 
 
 def portrait_file(claims: dict) -> str | None:
@@ -130,9 +135,11 @@ def main() -> int:
         try:
             qid = wd_match(name)
             if qid:
-                claims = wd_claims(qid)
+                ent = wd_entity(qid)
+                claims = ent.get("claims", {})
+                sitelinks = len(ent.get("sitelinks", {}))
                 f = portrait_file(claims)
-                if is_public_figure(claims) and f:
+                if is_public_figure(claims, sitelinks) and f:
                     info = commons_info(f)
                     if info and info.get("thumb"):
                         fn = f"{slugish(name)}.jpg"
