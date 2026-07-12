@@ -76,7 +76,7 @@
   /* ---- score an article element ---- */
   function scoreArticle(el, p, now) {
     const cat  = el.dataset.cat   || '';
-    const src  = el.dataset.src   || '';
+    const src  = el.dataset.source || '';
     const kws  = keywords(el.dataset.title || '');
     const dCats = decayed(p.cats,     now);
     const dSrcs = decayed(p.sources,  now);
@@ -142,7 +142,7 @@
     (root || document).querySelectorAll('.card[data-cat] .read-more, .card[data-cat] .card-title a').forEach(a => {
       a.addEventListener('click', () => {
         const card = a.closest('[data-cat]');
-        if (card) trackClick(card.dataset.cat, card.dataset.src, card.dataset.title || '');
+        if (card) trackClick(card.dataset.cat, card.dataset.source, card.dataset.title || '');
       });
     });
   }
