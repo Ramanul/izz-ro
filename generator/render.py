@@ -390,6 +390,7 @@ def build(articles: list, mod: dict | None = None) -> None:
 
     # graful cunoasterii v1: pagini de subiect per entitate (+ feed de urmarire >=3)
     ents = _entity_index(by_date)
+    portraits = _load_portraits()   # fotografii reale P18 (auto-gazduite) cheie=nume normalizat
     # graf-lite: entitatile care apar IMPREUNA (co-ocurenta pe articole) -> "Conexiuni"
     art_slugs: dict = {}
     for s, d in ents.items():
@@ -411,6 +412,7 @@ def build(articles: list, mod: dict | None = None) -> None:
                                                               key=lambda a: a.get("published") or "",
                                                               reverse=True),
                                               connections=connections,
+                                              portrait=portraits.get(_norm_name(d["name"])),
                                               has_feed=has_feed)))
         if has_feed:
             _write(os.path.join(OUT_DIR, "subiect", s, "feed.xml"),
@@ -419,7 +421,6 @@ def build(articles: list, mod: dict | None = None) -> None:
                              f"Știri despre {d['name']} pe {config.SITE['name']}"))
 
     # pagini de categorie + permalink articole
-    portraits = _load_portraits()
     article_tpl = env.get_template("article.html")
     cat_tpl = env.get_template("category.html")
     for cat in config.CATEGORIES:

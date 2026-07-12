@@ -389,6 +389,18 @@ picture { display: contents; }
 .person .credit { color: var(--ink-3); font-size: var(--fs-eyebrow); font-family: var(--font-mono); }
 .person .credit a { text-decoration: underline; }
 
+/* fotografia reala a entitatii pe pagina de subiect (hero, auto-gazduita, cu credit) */
+.subject-photo { margin: var(--s-21) 0 var(--s-34); max-width: 160px; }
+.subject-photo img {
+  display: block; width: 160px; height: 160px; object-fit: cover;
+  border-radius: var(--radius); border: 1px solid var(--gold); background: var(--paper-2);
+}
+.subject-photo .credit {
+  margin-top: var(--s-5); color: var(--ink-3);
+  font-size: var(--fs-eyebrow); font-family: var(--font-mono);
+}
+.subject-photo .credit a { text-decoration: underline; }
+
 /* --------------------------------------------- Graf-lite: subiecte conectate --- */
 .connections { font-size: var(--fs-xs); color: var(--ink-2); font-family: var(--font-mono); margin: 0 0 var(--s-21); }
 .connections a { display: inline-block; padding: 6px 4px; margin: -4px -2px; text-decoration: underline; }
