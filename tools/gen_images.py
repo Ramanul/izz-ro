@@ -39,7 +39,7 @@ def chrome_bin() -> str:
 BIN = None
 
 
-def _render(html: str, w: int, h: int, out_jpg: str) -> bool:
+def _render(html: str, w: int, h: int, out_jpg: str, webp: bool = False) -> bool:
     global BIN
     BIN = BIN or chrome_bin()
     with tempfile.NamedTemporaryFile("w", suffix=".html", delete=False, encoding="utf-8") as f:
@@ -53,7 +53,11 @@ def _render(html: str, w: int, h: int, out_jpg: str) -> bool:
         if not os.path.exists(png) or os.path.getsize(png) < 1000:
             return False
         # randat 2x -> micsorat la dimensiunea logica: crisp (supersampling) + fisier mic
-        Image.open(png).convert("RGB").resize((w, h), Image.LANCZOS).save(out_jpg, "JPEG", quality=85)
+        img = Image.open(png).convert("RGB").resize((w, h), Image.LANCZOS)
+        img.save(out_jpg, "JPEG", quality=85)
+        if webp:
+            # varianta moderna din sursa PNG (nu re-comprimata din JPEG): ~70% mai mica
+            img.save(out_jpg[:-4] + ".webp", "WEBP", quality=80, method=6)
         return os.path.getsize(out_jpg) > 3000
     finally:
         for p in (hp, png):
@@ -71,18 +75,19 @@ def main() -> int:
         wanted.add(aid)
         art_jpg = os.path.join(MEDIA, f"{aid}.jpg")
         cov_jpg = os.path.join(MEDIA, f"{aid}.c.jpg")
-        if os.path.exists(art_jpg) and os.path.exists(cov_jpg):
+        if os.path.exists(art_jpg) and os.path.exists(cov_jpg) and os.path.exists(art_jpg[:-4] + ".webp"):
             continue
         if made >= MAX_PER_RUN:
             continue
-        ok_a = _render(htmlart.build_html(a, cover=False), htmlart.ART_W, htmlart.ART_H, art_jpg)
+        # webp doar pentru arta (cards/articol via <picture>); cover.jpg ramane doar og:image
+        ok_a = _render(htmlart.build_html(a, cover=False), htmlart.ART_W, htmlart.ART_H, art_jpg, webp=True)
         ok_c = _render(htmlart.build_html(a, cover=True), htmlart.COVER_W, htmlart.COVER_H, cov_jpg)
         if ok_a or ok_c:
             made += 1
             print(f"  img {aid}  {a['title'][:56]}")
     # curata imaginile articolelor care nu mai exista in stare (TTL)
     pruned = 0
-    for p in glob.glob(os.path.join(MEDIA, "*.jpg")):
+    for p in glob.glob(os.path.join(MEDIA, "*.jpg")) + glob.glob(os.path.join(MEDIA, "*.webp")):
         aid = os.path.basename(p).split(".")[0]
         if aid not in wanted:
             os.remove(p)

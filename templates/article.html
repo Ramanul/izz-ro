@@ -16,7 +16,10 @@
   </div>
 
   {% if a.art_path %}
-  <img class="article-art" src="{{ base }}{{ a.art_path }}" alt="" width="960" height="504" fetchpriority="high">
+  <picture>
+    {% if a.art_webp %}<source srcset="{{ base }}{{ a.art_webp }}" type="image/webp">{% endif %}
+    <img class="article-art" src="{{ base }}{{ a.art_path }}" alt="" width="960" height="504" fetchpriority="high">
+  </picture>
   {% endif %}
 
   <p class="body">{% if a.model == 'C' %}{{ a.synthesis }}{% else %}{{ a.teaser }}{% endif %}</p>

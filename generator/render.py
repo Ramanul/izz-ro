@@ -343,6 +343,9 @@ def build(articles: list, mod: dict | None = None) -> None:
             a["cover_url"] = f"{config.SITE['url']}/{a['category']}/{a['slug']}/cover.jpg"
         if _use_media(os.path.join(MEDIA_DIR, f"{aid}.jpg"), art_dst) or covers.generate_art(a, art_dst):
             a["art_path"] = f"/{a['category']}/{a['slug']}/art.jpg"
+            # varianta WebP (~70% mai mica) daca e comisa; <picture> cade pe JPEG altfel
+            if _use_media(os.path.join(MEDIA_DIR, f"{aid}.webp"), os.path.join(cdir, "art.webp")):
+                a["art_webp"] = f"/{a['category']}/{a['slug']}/art.webp"
 
     hero = _pick_hero(by_date)
     hero_urls = {a["url"] for a in hero}
