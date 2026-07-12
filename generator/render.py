@@ -542,13 +542,31 @@ def _write_robots() -> None:
 
 
 def _write_headers() -> None:
-    """Cache-Control pe Cloudflare Pages (fisierul _headers). Activele imutabile
-    tin mult; imaginile o zi; HTML-ul NU se cache-uieste agresiv (stiri proaspete)."""
+    """Cache-Control + headere de securitate pe Cloudflare Pages (fisierul _headers).
+    Activele imutabile tin mult; imaginile o zi; HTML-ul NU se cache-uieste agresiv
+    (stiri proaspete). Pattern-urile de cale TREBUIE sa inceapa cu '/' -- altfel
+    Pages le ignora si imaginile cad pe TTL-ul implicit de 4h."""
+    csp = ("default-src 'self'; "
+           "script-src 'self' https://static.cloudflareinsights.com https://www.googletagmanager.com; "
+           "style-src 'self' 'unsafe-inline'; "
+           "img-src 'self' data: https://*.google-analytics.com https://*.googletagmanager.com; "
+           "font-src 'self'; "
+           "connect-src 'self' https://cloudflareinsights.com https://*.google-analytics.com "
+           "https://*.analytics.google.com https://*.googletagmanager.com; "
+           "object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; "
+           "upgrade-insecure-requests")
     _write(os.path.join(OUT_DIR, "_headers"),
+           "/*\n"
+           f"  Content-Security-Policy: {csp}\n"
+           "  X-Content-Type-Options: nosniff\n"
+           "  X-Frame-Options: DENY\n"
+           "  Referrer-Policy: strict-origin-when-cross-origin\n"
+           "  Permissions-Policy: camera=(), microphone=(), geolocation=(), interest-cohort=()\n"
            "/static/*\n  Cache-Control: public, max-age=2592000, immutable\n"
            "/favicon.svg\n  Cache-Control: public, max-age=2592000\n"
-           "*.jpg\n  Cache-Control: public, max-age=86400\n"
-           "*.png\n  Cache-Control: public, max-age=86400\n"
+           "/*.jpg\n  Cache-Control: public, max-age=86400\n"
+           "/*.png\n  Cache-Control: public, max-age=86400\n"
+           "/*.webp\n  Cache-Control: public, max-age=86400\n"
            "/feed.xml\n  Cache-Control: public, max-age=1800\n")
 
 

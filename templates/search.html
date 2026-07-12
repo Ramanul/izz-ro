@@ -5,7 +5,8 @@
 <article class="static-page search-page">
   <h1>Caută în știri</h1>
   <p class="search-hint">Caută în titlurile știrilor din ultimele zile. Diacriticele nu contează.</p>
-  <form role="search" onsubmit="return false">
+  {# submit-ul e anulat in search.js (CSP fara 'unsafe-inline' pe scripturi) #}
+  <form id="search-form" role="search">
     <label class="visually-hidden" for="q">Termen de căutare</label>
     <input id="q" type="search" placeholder="ex.: buget, inundații, Wimbledon…" autocomplete="off" autofocus>
   </form>
