@@ -11,10 +11,20 @@
   {% if has_feed %}
   <p class="follow"><a href="{{ base }}/subiect/{{ slug }}/feed.xml">Urmărește acest subiect (RSS) &rarr;</a></p>
   {% endif %}
+  {% if connections %}
+  <p class="connections">Conexiuni:
+    {% for cs, cn, k in connections %}<a href="{{ base }}/subiect/{{ cs }}/">{{ cn }}</a>{{ ' · ' if not loop.last }}{% endfor %}</p>
+  {% endif %}
   {% if articles %}
-  <section class="grid">
-    {% for a in articles %}{{ card(a) }}{% endfor %}
-  </section>
+  {# cronologia subiectului: evolutia in timp, nu un simplu grid #}
+  <ol class="timeline">
+    {% for a in articles %}
+    <li>
+      <time datetime="{{ a.published }}">{{ a.published_human }}</time>
+      <a href="{{ base }}/{{ a.category }}/{{ a.slug }}/">{{ a.title }}</a>
+    </li>
+    {% endfor %}
+  </ol>
   {% else %}
   <p class="empty">Nicio știre pe acest subiect deocamdată.</p>
   {% endif %}
