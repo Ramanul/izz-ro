@@ -34,7 +34,7 @@ def _load_leadphotos() -> dict:
     src = os.path.join(MEDIA_DIR, "leads")
     if os.path.isdir(src):
         shutil.copytree(src, os.path.join(OUT_DIR, "leads"), dirs_exist_ok=True)
-    return cache
+    return {k: v for k, v in cache.items() if v and not v.get("miss")}
 
 
 def _load_portraits() -> dict:
