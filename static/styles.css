@@ -384,3 +384,22 @@ main { max-width: var(--maxw); margin: 0 auto; padding: var(--s-34) var(--s-34);
 .person figcaption > a { font-weight: 600; }
 .person .credit { color: var(--ink-3); font-size: var(--fs-eyebrow); font-family: var(--font-mono); }
 .person .credit a { text-decoration: underline; }
+
+/* --------------------------------------------- Graf-lite: subiecte conectate --- */
+.connections { font-size: var(--fs-xs); color: var(--ink-2); font-family: var(--font-mono); margin: 0 0 var(--s-21); }
+.connections a { display: inline-block; padding: 6px 4px; margin: -4px -2px; text-decoration: underline; }
+.timeline { list-style: none; margin: var(--s-21) 0 0; padding: 0 0 0 var(--s-21); border-left: 2px solid var(--gold); max-width: var(--measure); }
+.timeline li { position: relative; padding: 0 0 var(--s-21) var(--s-13); }
+.timeline li::before { content: ""; position: absolute; left: calc(-1 * var(--s-21) - 5px); top: .5em;
+  width: 8px; height: 8px; border-radius: 50%; background: var(--gold); }
+.timeline time { display: block; font-family: var(--font-mono); font-size: var(--fs-eyebrow); color: var(--ink-3); }
+.timeline a { font-family: var(--font-display); font-weight: 700; font-size: var(--fs-md); color: var(--ink); }
+.timeline a:hover { color: var(--gold-strong); }
+.related { margin: var(--s-34) 0 0; border-top: 1px solid var(--line-strong); padding-top: var(--s-13); }
+.related h2 { font-family: var(--font-mono); font-size: var(--fs-eyebrow); text-transform: uppercase;
+  letter-spacing: 1.5px; color: var(--ink-3); margin: 0 0 var(--s-8); font-weight: 700; }
+.related ul { list-style: none; margin: 0; padding: 0; }
+.related li { padding: var(--s-8) 0; }
+.related li a { font-family: var(--font-display); font-weight: 700; color: var(--ink); }
+.related li a:hover { color: var(--gold-strong); }
+.related-meta { display: block; font-family: var(--font-mono); font-size: var(--fs-eyebrow); color: var(--ink-3); }

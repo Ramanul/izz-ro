@@ -370,12 +370,27 @@ def build(articles: list, mod: dict | None = None) -> None:
 
     # graful cunoasterii v1: pagini de subiect per entitate (+ feed de urmarire >=3)
     ents = _entity_index(by_date)
+    # graf-lite: entitatile care apar IMPREUNA (co-ocurenta pe articole) -> "Conexiuni"
+    art_slugs: dict = {}
+    for s, d in ents.items():
+        for a in d["articles"]:
+            art_slugs.setdefault(a["url"], set()).add(s)
     subject_tpl = env.get_template("subject.html")
     for s, d in ents.items():
         has_feed = len(d["articles"]) >= 3
+        co: dict = {}
+        for a in d["articles"]:
+            for other in art_slugs.get(a["url"], ()):  
+                if other != s:
+                    co[other] = co.get(other, 0) + 1
+        connections = [(o, ents[o]["name"], n) for o, n in
+                       sorted(co.items(), key=lambda kv: -kv[1])[:6]]
         _write(os.path.join(OUT_DIR, "subiect", s, "index.html"),
                subject_tpl.render(**_base_ctx(f"/subiect/{s}/", name=d["name"], slug=s,
-                                              articles=_diversify(d["articles"]),
+                                              articles=sorted(d["articles"],
+                                                              key=lambda a: a.get("published") or "",
+                                                              reverse=True),
+                                              connections=connections,
                                               has_feed=has_feed)))
         if has_feed:
             _write(os.path.join(OUT_DIR, "subiect", s, "feed.xml"),
@@ -403,6 +418,21 @@ def build(articles: list, mod: dict | None = None) -> None:
                     people.append({**p, "slug": s if s in ents else None})
                 if len(people) >= 2:
                     break
+            # articole conectate: cele mai multe entitati comune, apoi recenta
+            mine = art_slugs.get(a["url"], set())
+            related = []
+            if mine:
+                seen_urls = {a["url"]}
+                scored = []
+                for s2 in mine:
+                    for other in ents[s2]["articles"]:
+                        if other["url"] in seen_urls:
+                            continue
+                        seen_urls.add(other["url"])
+                        shared = len(mine & art_slugs.get(other["url"], set()))
+                        scored.append((shared, other.get("published") or "", other))
+                scored.sort(key=lambda t: (t[0], t[1]), reverse=True)
+                related = [t[2] for t in scored[:3]]
             og_image = a.get("cover_url")
             jsonld = _article_jsonld(a)
             if og_image:
@@ -410,7 +440,7 @@ def build(articles: list, mod: dict | None = None) -> None:
             _write(os.path.join(OUT_DIR, cat, a['slug'], "index.html"),
                    article_tpl.render(**_base_ctx(
                        f"/{cat}/{a['slug']}/", a=a, active_cat=cat, topics=topics,
-                       people=people, og_image=og_image, article_jsonld=jsonld)))
+                       people=people, related=related, og_image=og_image, article_jsonld=jsonld)))
 
     _render_legal(env)
     _write(os.path.join(OUT_DIR, "404.html"),
