@@ -103,3 +103,12 @@ The owner delegated FULL delivery of the remaining website work to Claude acting
   4. ~~Legal wording pass (terms/takedown: AI disclosure + original images)~~ ✅ 5. ~~A11y/SEO/perf thresholds verified (home 88/100/96/100, article 90/100/96/100, pa11y 0)~~ ✅
   6. ~~pytest suite (19 tests: util/state/cluster/config) + tests.yml CI on PRs~~ ✅ 7. ~~covers.py dead-code removal (proven byte-identical output)~~ ✅
 - **Done criterion:** backlog empty + live smoke green → delete the cron job and notify the owner in Romanian with a final summary. After that, this section is HISTORICAL: revert to §5 confirmation workflow for any new feature work.
+
+## 15. Sub-agents & commands — delegate the verification rituals
+Project sub-agents live in `.claude/agents/` (versioned, see its README). Each isolates a noisy, bounded, summarizable job and returns a verdict — use them so the main thread stays on the decision, not the noise. Map task → agent:
+- Changing `generator/cluster.py` or its thresholds → **`clustering-tuner`** verifies over-merge AND under-merge on real samples (enforces §7). It reports; it does not edit.
+- Changing templates / `static/styles.css` / render.py HTML/JSON-LD → **`frontend-auditor`** runs `tools/audit.sh` and reports the Lighthouse/pa11y delta (enforces §13).
+- "Does it still build?" / verify by running → **`pipeline-runner`** runs `--dry-run` / `--render-only` / `qa_check.py` safely (enforces §5.4).
+- Reviewing any story-surface change → **`editorial-guard`** checks the attribution formula, Zero Zgomot, one-axis-one-home, and design tokens (enforces §7, §8). Read-only.
+
+Slash commands in `.claude/commands/`: **`/slice`** drives the mandatory §5 workflow for one vertical slice; **`/audit`** runs the front-end audit. Permission allowlist for the documented-safe commands lives in `.claude/settings.json` (this is §12 made enforceable — read-only and dev/build commands no longer prompt; push/commit/deletes still do). A web-only `SessionStart` hook (`.claude/hooks/session-start.sh`) installs the pipeline deps (with `SETUPTOOLS_USE_DISTUTILS=stdlib`, needed for feedparser/sgmllib3k) so Claude Code on the web can run the pipeline and these agents.
