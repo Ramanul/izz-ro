@@ -49,6 +49,18 @@ def _use_media(src: str, dst: str) -> bool:
         pass
     return False
 
+
+def _content_ver(path: str) -> str:
+    """Amprenta scurta a CONTINUTULUI imaginii, pentru ?v= in URL (cache-busting).
+    Hash de continut, nu mtime: mtime se schimba la fiecare copyfile/render, ceea
+    ce ar invalida cache-ul la fiecare deploy desi imaginea e identica."""
+    import hashlib
+    try:
+        with open(path, "rb") as fh:
+            return hashlib.md5(fh.read()).hexdigest()[:8]
+    except OSError:
+        return "0"
+
 _RO_MONTHS = ["", "ianuarie", "februarie", "martie", "aprilie", "mai", "iunie",
               "iulie", "august", "septembrie", "octombrie", "noiembrie", "decembrie"]
 
@@ -333,19 +345,26 @@ def build(articles: list, mod: dict | None = None) -> None:
     by_date = sorted(articles, key=lambda a: a.get("published") or "", reverse=True)
 
     # coperti: share (og, cu titlu) + arta fara text pentru site -- generate O DATA,
-    # INAINTE de orice randare, ca hero-ul si paginile de articol sa le poata folosi
+    # INAINTE de orice randare, ca hero-ul si paginile de articol sa le poata folosi.
+    # URL-urile poarta ?v=<hash-continut>: imaginile stau pe cai stabile cu TTL 24h,
+    # iar cand o coperta se schimba (fallback Pillow -> desen Chromium la urmatorul
+    # build) browserele ar servi pictograma veche din cache pana la o zi; versiunea
+    # in query schimba URL-ul doar cand se schimba imaginea, deci cache-ul ramane
+    # eficient dar nu mai poate fi vreodata stale.
     for a in by_date:
         cdir = os.path.join(OUT_DIR, a["category"], a["slug"])
         aid = htmlart.art_id(a)
         cover_dst, art_dst = os.path.join(cdir, "cover.jpg"), os.path.join(cdir, "art.jpg")
         # preferam imaginea comisa (HTML/Chromium); daca lipseste -> generare Pillow (fallback sigur)
         if _use_media(os.path.join(MEDIA_DIR, f"{aid}.c.jpg"), cover_dst) or covers.generate(a, cover_dst):
-            a["cover_url"] = f"{config.SITE['url']}/{a['category']}/{a['slug']}/cover.jpg"
+            a["cover_url"] = (f"{config.SITE['url']}/{a['category']}/{a['slug']}/cover.jpg"
+                              f"?v={_content_ver(cover_dst)}")
         if _use_media(os.path.join(MEDIA_DIR, f"{aid}.jpg"), art_dst) or covers.generate_art(a, art_dst):
-            a["art_path"] = f"/{a['category']}/{a['slug']}/art.jpg"
+            a["art_path"] = f"/{a['category']}/{a['slug']}/art.jpg?v={_content_ver(art_dst)}"
             # varianta WebP (~70% mai mica) daca e comisa; <picture> cade pe JPEG altfel
-            if _use_media(os.path.join(MEDIA_DIR, f"{aid}.webp"), os.path.join(cdir, "art.webp")):
-                a["art_webp"] = f"/{a['category']}/{a['slug']}/art.webp"
+            webp_dst = os.path.join(cdir, "art.webp")
+            if _use_media(os.path.join(MEDIA_DIR, f"{aid}.webp"), webp_dst):
+                a["art_webp"] = f"/{a['category']}/{a['slug']}/art.webp?v={_content_ver(webp_dst)}"
 
     hero = _pick_hero(by_date)
     hero_urls = {a["url"] for a in hero}
