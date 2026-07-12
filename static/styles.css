@@ -381,8 +381,8 @@ picture { display: contents; }
 .people { display: flex; flex-wrap: wrap; gap: var(--s-21); margin: var(--s-21) 0 0; }
 .person { display: flex; align-items: center; gap: var(--s-13); margin: 0; }
 .person img {
-  width: 64px; height: 64px; object-fit: cover; border-radius: 50%;
-  border: 2px solid var(--gold); background: var(--paper-2);
+  width: 96px; height: 96px; object-fit: cover; border-radius: var(--radius);
+  border: 1px solid var(--gold); background: var(--paper-2);
 }
 .person figcaption { display: flex; flex-direction: column; gap: 2px; font-size: var(--fs-xs); }
 .person figcaption > a { font-weight: 600; }

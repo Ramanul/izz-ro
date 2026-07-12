@@ -39,7 +39,7 @@
   <div class="people">
     {% for p in people %}
     <figure class="person">
-      <img src="{{ base }}/{{ p.img }}" alt="{{ p.name }}" width="64" height="64" loading="lazy">
+      <img src="{{ base }}/{{ p.img }}" alt="{{ p.name }}" width="96" height="96" loading="lazy">
       <figcaption>
         {% if p.slug %}<a href="{{ base }}/subiect/{{ p.slug }}/">{{ p.name }}</a>{% else %}{{ p.name }}{% endif %}
         <span class="credit">Foto: {% if p.artist %}{{ p.artist }} · {% endif %}<a href="{{ p.page }}" target="_blank" rel="noopener noreferrer">Wikimedia Commons</a> · {{ p.license }}</span>
