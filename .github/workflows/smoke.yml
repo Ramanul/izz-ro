@@ -24,26 +24,3 @@ jobs:
       - run: python tools/smoke_live.py
         env:
           BASE_URL: https://izz.ro
-
-      # temporar (doar dispatch): Lighthouse pe LIVE, mobile + desktop -- scoruri in log
-      - name: Lighthouse live (diag)
-        if: github.event_name == 'workflow_dispatch'
-        run: |
-          npm i -g lighthouse >/dev/null 2>&1
-          for preset in "" "--preset=desktop"; do
-            label=$([ -z "$preset" ] && echo MOBILE || echo DESKTOP)
-            lighthouse https://izz.ro --quiet $preset --chrome-flags="--headless --no-sandbox"               --output=json --output-path=/tmp/lh.json >/dev/null 2>&1 || true
-            python3 - "$label" <<'EOF'
-          import json,sys
-          d=json.load(open('/tmp/lh.json'))
-          c=d['categories']; a=d['audits']
-          print(f"== {sys.argv[1]} ==")
-          print("scores:", {k: round(v['score']*100) for k,v in c.items()})
-          for m in ('first-contentful-paint','largest-contentful-paint','total-blocking-time','cumulative-layout-shift','speed-index'):
-              print(f"  {m}: {a[m]['displayValue']}")
-          for k,v in a.items():
-              sc=v.get('score')
-              if sc is not None and sc < 0.9 and v.get('scoreDisplayMode') in ('numeric','binary'):
-                  print(f"  LOW [{sc}] {v['title']} {v.get('displayValue','')}")
-          EOF
-          done

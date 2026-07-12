@@ -133,6 +133,22 @@ def _article_jsonld(a: dict) -> dict:
     }
 
 
+_FONTS_CSS = None
+
+
+def _fonts_css() -> str:
+    """Continutul fonts.css, inline-uit in <head>: taie un hop blocant din lantul
+    document -> css -> font (FCP mai bun pe retea reala). Fisierul e minuscul."""
+    global _FONTS_CSS
+    if _FONTS_CSS is None:
+        p = os.path.join(STATIC_DIR, "fonts.css")
+        try:
+            _FONTS_CSS = re.sub(r"\s+", " ", open(p, encoding="utf-8").read()).strip()
+        except OSError:
+            _FONTS_CSS = ""
+    return _FONTS_CSS
+
+
 def _base_ctx(canonical_path: str, **extra) -> dict:
     ctx = {
         "site": config.SITE,
@@ -142,6 +158,7 @@ def _base_ctx(canonical_path: str, **extra) -> dict:
         "canonical": config.SITE["url"] + canonical_path,
         "org_jsonld": _org_jsonld(),
         "analytics_token": os.getenv("CF_ANALYTICS_TOKEN", "").strip() or None,
+        "fonts_css": _fonts_css(),
         "active_cat": None,
     }
     ctx.update(extra)
