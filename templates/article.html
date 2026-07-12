@@ -16,10 +16,15 @@
   </div>
 
   {% if a.art_path %}
-  <picture>
-    {% if a.art_webp %}<source srcset="{{ base }}{{ a.art_webp }}" type="image/webp">{% endif %}
-    <img class="article-art" src="{{ base }}{{ a.art_path }}" alt="" width="960" height="504" fetchpriority="high">
-  </picture>
+  <figure class="article-art-fig">
+    <picture>
+      {% if a.art_webp %}<source srcset="{{ base }}{{ a.art_webp }}" type="image/webp">{% endif %}
+      <img class="article-art" src="{{ base }}{{ a.art_path }}" alt="{% if a.lead_credit %}{{ a.lead_credit.name }}{% endif %}" width="960" height="504" fetchpriority="high">
+    </picture>
+    {% if a.lead_credit %}
+    <figcaption class="art-credit">Foto: {% if a.lead_credit.artist %}{{ a.lead_credit.artist }} · {% endif %}<a href="{{ a.lead_credit.page }}" target="_blank" rel="noopener noreferrer">Wikimedia Commons</a> · {{ a.lead_credit.license }}</figcaption>
+    {% endif %}
+  </figure>
   {% endif %}
 
   <p class="body">{% if a.model == 'C' %}{{ a.synthesis }}{% else %}{{ a.teaser }}{% endif %}</p>

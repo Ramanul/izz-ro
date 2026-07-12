@@ -18,6 +18,23 @@ STATIC_DIR = os.path.join(ROOT, "static")
 OUT_DIR = os.path.join(ROOT, "output")
 MEDIA_DIR = os.path.join(ROOT, "media")   # imagini HTML/Chromium comise (tools/gen_images.py)
 PORTRAITS_JSON = os.path.join(ROOT, "data", "portraits.json")
+LEADPHOTOS_JSON = os.path.join(ROOT, "data", "leadphotos.json")
+
+
+def _load_leadphotos() -> dict:
+    """Fotografii reale de tip LEAD per articol (tools/fetch_leadphotos.py), cheie=art_id.
+    INVARIANT: doar imagini landscape ATRIBUIRE-LIBERA (Public domain / CC0), fiindca
+    lead-ul apare si pe carduri/og unde regula sect. 7 interzice orice eticheta de credit.
+    Copiaza renditiile comise (media/leads/) in output/. Lipsa fisierului -> {} (fallback)."""
+    try:
+        import json as _json
+        cache = _json.load(open(LEADPHOTOS_JSON, encoding="utf-8"))
+    except (OSError, ValueError):
+        return {}
+    src = os.path.join(MEDIA_DIR, "leads")
+    if os.path.isdir(src):
+        shutil.copytree(src, os.path.join(OUT_DIR, "leads"), dirs_exist_ok=True)
+    return cache
 
 
 def _load_portraits() -> dict:
@@ -334,17 +351,30 @@ def build(articles: list, mod: dict | None = None) -> None:
 
     # coperti: share (og, cu titlu) + arta fara text pentru site -- generate O DATA,
     # INAINTE de orice randare, ca hero-ul si paginile de articol sa le poata folosi
+    leadphotos = _load_leadphotos()
     for a in by_date:
         cdir = os.path.join(OUT_DIR, a["category"], a["slug"])
         aid = htmlart.art_id(a)
         cover_dst, art_dst = os.path.join(cdir, "cover.jpg"), os.path.join(cdir, "art.jpg")
-        # preferam imaginea comisa (HTML/Chromium); daca lipseste -> generare Pillow (fallback sigur)
-        if _use_media(os.path.join(MEDIA_DIR, f"{aid}.c.jpg"), cover_dst) or covers.generate(a, cover_dst):
+        # prioritate: (1) fotografie reala LEAD (landscape, atribuire-libera) daca articolul
+        # are una -> imagine principala "foto"; (2) coperta HTML/Chromium comisa;
+        # (3) fallback Pillow. Fotografia reala inlocuieste pictograma pe carduri/hero/og.
+        lp = leadphotos.get(aid)
+        cover_ok = art_ok = False
+        if lp:
+            cover_ok = _use_media(os.path.join(MEDIA_DIR, lp["cover"]), cover_dst)
+            art_ok = _use_media(os.path.join(MEDIA_DIR, lp["art"]), art_dst)
+            if art_ok and lp.get("webp") and _use_media(os.path.join(MEDIA_DIR, lp["webp"]),
+                                                        os.path.join(cdir, "art.webp")):
+                a["art_webp"] = f"/{a['category']}/{a['slug']}/art.webp"
+            if cover_ok or art_ok:
+                a["lead_credit"] = lp   # afisat DOAR pe pagina de articol (curtoazie); PD/CC0 -> nu e obligatoriu
+        if cover_ok or _use_media(os.path.join(MEDIA_DIR, f"{aid}.c.jpg"), cover_dst) or covers.generate(a, cover_dst):
             a["cover_url"] = f"{config.SITE['url']}/{a['category']}/{a['slug']}/cover.jpg"
-        if _use_media(os.path.join(MEDIA_DIR, f"{aid}.jpg"), art_dst) or covers.generate_art(a, art_dst):
+        if art_ok or _use_media(os.path.join(MEDIA_DIR, f"{aid}.jpg"), art_dst) or covers.generate_art(a, art_dst):
             a["art_path"] = f"/{a['category']}/{a['slug']}/art.jpg"
             # varianta WebP (~70% mai mica) daca e comisa; <picture> cade pe JPEG altfel
-            if _use_media(os.path.join(MEDIA_DIR, f"{aid}.webp"), os.path.join(cdir, "art.webp")):
+            if not a.get("art_webp") and _use_media(os.path.join(MEDIA_DIR, f"{aid}.webp"), os.path.join(cdir, "art.webp")):
                 a["art_webp"] = f"/{a['category']}/{a['slug']}/art.webp"
 
     hero = _pick_hero(by_date)

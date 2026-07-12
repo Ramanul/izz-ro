@@ -357,6 +357,14 @@ picture { display: contents; }
   display: block; width: 100%; max-width: var(--measure); height: auto;
   border: 1px solid var(--line); margin: var(--s-8) 0 var(--s-21);
 }
+/* lead foto real cu credit: figura tine marginile, imaginea si creditul stau lipite */
+.article-art-fig { margin: 0; max-width: var(--measure); }
+.article-art-fig .article-art { margin: var(--s-8) 0 var(--s-5); }
+.art-credit {
+  margin: 0 0 var(--s-21); color: var(--ink-3);
+  font-size: var(--fs-eyebrow); font-family: var(--font-mono);
+}
+.art-credit a { text-decoration: underline; }
 .lead-art {
   display: block; width: 100%; height: auto;
   border: 1px solid var(--line); margin-bottom: var(--s-5);
