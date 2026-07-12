@@ -30,10 +30,13 @@ def _claims(human=True, position=True, img="Foto.jpg"):
     return c
 
 
-def test_public_figure_requires_human_AND_position():
+def test_public_figure_requires_human_AND_position_or_fame():
     assert fp.is_public_figure(_claims())
-    assert not fp.is_public_figure(_claims(human=False))       # organizatie cu acelasi nume
-    assert not fp.is_public_figure(_claims(position=False))    # om fara functie publica
+    assert not fp.is_public_figure(_claims(human=False))                 # organizatie omonima
+    assert not fp.is_public_figure(_claims(position=False))              # om obscur, fara functie
+    assert fp.is_public_figure(_claims(position=False), sitelinks=20)    # sportiv/artist celebru
+    assert not fp.is_public_figure(_claims(position=False), sitelinks=5) # omonim putin cunoscut
+    assert not fp.is_public_figure(_claims(human=False), sitelinks=99)   # faima nu ocoleste testul de om
 
 
 def test_portrait_file_extracts_p18():
