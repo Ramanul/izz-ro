@@ -35,6 +35,13 @@ def get(path: str) -> str:
         return r.read().decode("utf-8", "replace")
 
 
+def head(path: str):
+    """Returneaza headerele raspunsului (fara corp) pentru un path pe live."""
+    req = urllib.request.Request(BASE + path, headers=UA)
+    with urllib.request.urlopen(req, timeout=30) as r:
+        return r.headers, r
+
+
 def check(cond: bool, page: str, rule: str) -> None:
     print(f"  {'ok ' if cond else 'FAIL'} {rule}")
     if not cond:
@@ -120,6 +127,32 @@ def main() -> int:
     # dar majoritatea esantionului TREBUIE sa aiba coperta proprie
     check(with_cover >= max(1, N_ARTICLES - 1), "articole",
           f"coperti generate pe esantion: {with_cover}/{N_ARTICLES} (minim {N_ARTICLES - 1})")
+
+    # headere de securitate + cache (livrate 2026-07-12): verifica pe LIVE ca
+    # Cloudflare chiar le serveste din _headers, nu doar ca fisierul exista in repo.
+    print("headere (securitate + cache):")
+    try:
+        hd, _ = head("/")
+        check("Strict-Transport-Security" in hd, "/", "HSTS prezent pe live")
+        check("Content-Security-Policy" in hd, "/", "CSP prezent pe live")
+        check(hd.get("X-Content-Type-Options", "").lower() == "nosniff",
+              "/", "X-Content-Type-Options: nosniff pe live")
+    except Exception as e:
+        check(False, "/", f"headerele HTML se citesc pe live ({e})")
+
+    # cache pe o imagine reala de articol: trebuie sa fie lung (max-age >= 1 zi),
+    # nu TTL-ul implicit de 4h (regula ignorata daca pattern-ul n-are '/' -- fix 2026-07-12)
+    img = re.search(r'class="article-art"[^>]*\ssrc="([^"]+)"', get(arts[0]) if arts else "")
+    if img:
+        ipath = re.sub(r"^https?://[^/]+", "", img.group(1))
+        try:
+            hd, _ = head(ipath)
+            cc = hd.get("Cache-Control", "")
+            m = re.search(r"max-age=(\d+)", cc)
+            age = int(m.group(1)) if m else 0
+            check(age >= 86400, ipath[:60], f"cache imagine >= 1 zi (Cache-Control: {cc or 'lipsa'})")
+        except Exception as e:
+            check(False, ipath[:60], f"headerele imaginii se citesc pe live ({e})")
 
     if fails:
         print(f"\nFAIL — {len(fails)} incalcari pe live:")
