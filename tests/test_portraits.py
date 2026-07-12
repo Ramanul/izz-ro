@@ -19,10 +19,13 @@ def test_license_gate_accepts_free_rejects_rest():
         assert not fp.license_ok(bad), bad
 
 
-def _claims(human=True, position=True, img="Foto.jpg"):
+def _claims(human=True, position=True, img="Foto.jpg", types=None):
     c = {}
+    ids = list(types or [])
     if human:
-        c["P31"] = [{"mainsnak": {"datavalue": {"value": {"id": "Q5"}}}}]
+        ids.append("Q5")
+    if ids:
+        c["P31"] = [{"mainsnak": {"datavalue": {"value": {"id": q}}}} for q in ids]
     if position:
         c["P39"] = [{"mainsnak": {"datavalue": {"value": {"id": "Q30185"}}}}]
     if img:
@@ -37,6 +40,25 @@ def test_public_figure_requires_human_AND_position_or_fame():
     assert fp.is_public_figure(_claims(position=False), sitelinks=20)    # sportiv/artist celebru
     assert not fp.is_public_figure(_claims(position=False), sitelinks=5) # omonim putin cunoscut
     assert not fp.is_public_figure(_claims(human=False), sitelinks=99)   # faima nu ocoleste testul de om
+
+
+def test_entity_types_collects_all_p31():
+    c = _claims(human=False, position=False, types=["Q515", "Q1549591"])
+    assert fp.entity_types(c) == {"Q515", "Q1549591"}
+    assert fp.entity_types({}) == set()
+
+
+def test_photo_worthy_covers_people_and_safe_entities():
+    # persoana publica -> ca inainte
+    assert fp.is_photo_worthy(_claims())
+    # entitate din SAFE_TYPES, notorie -> acceptata
+    assert fp.is_photo_worthy(_claims(human=False, position=False, types=["Q476028"]), sitelinks=30)
+    # aceeasi entitate, dar obscura (putine sitelinks) -> respinsa (evita omonime)
+    assert not fp.is_photo_worthy(_claims(human=False, position=False, types=["Q476028"]), sitelinks=3)
+    # tip in AFARA whitelist-ului (ex. concept abstract), oricat de notoriu -> respins
+    assert not fp.is_photo_worthy(_claims(human=False, position=False, types=["Q12345678"]), sitelinks=99)
+    # persoana obscura fara functie ramane respinsa (regresie is_public_figure)
+    assert not fp.is_photo_worthy(_claims(position=False), sitelinks=5)
 
 
 def test_portrait_file_extracts_p18():

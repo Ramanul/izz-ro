@@ -65,6 +65,13 @@ jobs:
           MAX_PORTRAIT_LOOKUPS: "20"
         run: python tools/fetch_portraits.py
 
+      - name: Fotografii lead per articol (Wikidata P18 landscape+PD, best-effort)
+        # imaginea principala "foto" cand exista; non-fatal -> altfel coperta generata
+        continue-on-error: true
+        env:
+          MAX_LEAD_LOOKUPS: "20"
+        run: python tools/fetch_leadphotos.py
+
       - name: Comite starea (declanseaza deploy Cloudflare)
         # FARA [skip ci]: niciun workflow nu se declanseaza pe push (doar cron),
         # deci [skip ci] nu ne ajuta la Actions -- dar Cloudflare Pages IL onoreaza
@@ -74,6 +81,7 @@ jobs:
           git config user.email "bot@izz.ro"
           git add data/articles.json data/feed_cache.json
           git add data/portraits.json 2>/dev/null || true
+          git add data/leadphotos.json 2>/dev/null || true
           git add media 2>/dev/null || true
           git commit -m "update content" || echo "nimic de comis"
           git push || echo "nimic de impins"

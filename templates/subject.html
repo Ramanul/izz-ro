@@ -8,6 +8,12 @@
 {% endblock %}
 {% block content %}
   <h1 class="section-title">Subiect: {{ name }}</h1>
+  {% if portrait %}
+  <figure class="subject-photo">
+    <img src="{{ base }}/{{ portrait.img }}" alt="{{ name }}" width="160" height="160">
+    <figcaption class="credit">Foto: {% if portrait.artist %}{{ portrait.artist }} · {% endif %}<a href="{{ portrait.page }}" target="_blank" rel="noopener noreferrer">Wikimedia Commons</a> · {{ portrait.license }}</figcaption>
+  </figure>
+  {% endif %}
   {% if has_feed %}
   <p class="follow"><a href="{{ base }}/subiect/{{ slug }}/feed.xml">Urmărește acest subiect (RSS) &rarr;</a></p>
   {% endif %}

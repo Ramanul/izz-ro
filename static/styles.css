@@ -359,6 +359,14 @@ picture { display: contents; }
   display: block; width: 100%; max-width: var(--measure); height: auto;
   border: 1px solid var(--line); margin: var(--s-8) 0 var(--s-21);
 }
+/* lead foto real cu credit: figura tine marginile, imaginea si creditul stau lipite */
+.article-art-fig { margin: 0; max-width: var(--measure); }
+.article-art-fig .article-art { margin: var(--s-8) 0 var(--s-5); }
+.art-credit {
+  margin: 0 0 var(--s-21); color: var(--ink-3);
+  font-size: var(--fs-eyebrow); font-family: var(--font-mono);
+}
+.art-credit a { text-decoration: underline; }
 .lead-art {
   display: block; width: 100%; height: auto;
   border: 1px solid var(--line); margin-bottom: var(--s-5);
@@ -380,16 +388,33 @@ picture { display: contents; }
 .search-meta { color: var(--ink-3); font-size: var(--fs-eyebrow); font-family: var(--font-mono); }
 
 /* ------------------------------------------- Persoane publice (portrete) --- */
-.people { display: flex; flex-wrap: wrap; gap: var(--s-21); margin: var(--s-21) 0 0; }
+.people-title {
+  font-family: var(--font-mono); font-size: var(--fs-eyebrow); font-weight: 700;
+  color: var(--gold-strong); text-transform: uppercase; letter-spacing: 2px;
+  margin: var(--s-34) 0 0;
+}
+.people { display: flex; flex-wrap: wrap; gap: var(--s-21); margin: var(--s-13) 0 0; }
 .person { display: flex; align-items: center; gap: var(--s-13); margin: 0; }
 .person img {
-  width: 64px; height: 64px; object-fit: cover; border-radius: 50%;
-  border: 2px solid var(--gold); background: var(--paper-2);
+  width: 96px; height: 96px; object-fit: cover; border-radius: var(--radius);
+  border: 1px solid var(--gold); background: var(--paper-2);
 }
 .person figcaption { display: flex; flex-direction: column; gap: 2px; font-size: var(--fs-xs); }
 .person figcaption > a { font-weight: 600; }
 .person .credit { color: var(--ink-3); font-size: var(--fs-eyebrow); font-family: var(--font-mono); }
 .person .credit a { text-decoration: underline; }
+
+/* fotografia reala a entitatii pe pagina de subiect (hero, auto-gazduita, cu credit) */
+.subject-photo { margin: var(--s-21) 0 var(--s-34); max-width: 160px; }
+.subject-photo img {
+  display: block; width: 160px; height: 160px; object-fit: cover;
+  border-radius: var(--radius); border: 1px solid var(--gold); background: var(--paper-2);
+}
+.subject-photo .credit {
+  margin-top: var(--s-5); color: var(--ink-3);
+  font-size: var(--fs-eyebrow); font-family: var(--font-mono);
+}
+.subject-photo .credit a { text-decoration: underline; }
 
 /* --------------------------------------------- Graf-lite: subiecte conectate --- */
 .connections { font-size: var(--fs-xs); color: var(--ink-2); font-family: var(--font-mono); margin: 0 0 var(--s-21); }

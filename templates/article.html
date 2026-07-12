@@ -17,10 +17,15 @@
   </div>
 
   {% if a.art_path %}
-  <picture>
-    {% if a.art_webp %}<source srcset="{{ base }}{{ a.art_webp }}" type="image/webp">{% endif %}
-    <img class="article-art" src="{{ base }}{{ a.art_path }}" alt="" width="960" height="504" fetchpriority="high">
-  </picture>
+  <figure class="article-art-fig">
+    <picture>
+      {% if a.art_webp %}<source srcset="{{ base }}{{ a.art_webp }}" type="image/webp">{% endif %}
+      <img class="article-art" src="{{ base }}{{ a.art_path }}" alt="{% if a.lead_credit %}{{ a.lead_credit.name }}{% endif %}" width="960" height="504" fetchpriority="high">
+    </picture>
+    {% if a.lead_credit %}
+    <figcaption class="art-credit">Foto: {% if a.lead_credit.artist %}{{ a.lead_credit.artist }} · {% endif %}<a href="{{ a.lead_credit.page }}" target="_blank" rel="noopener noreferrer">Wikimedia Commons</a> · {{ a.lead_credit.license }}</figcaption>
+    {% endif %}
+  </figure>
   {% endif %}
 
   <p class="body">{% if a.model == 'C' %}{{ a.synthesis }}{% else %}{{ a.teaser }}{% endif %}</p>
@@ -37,10 +42,11 @@
     {% for s, n in topics %}<a href="{{ base }}/subiect/{{ s }}/">{{ n }}</a>{{ ' · ' if not loop.last }}{% endfor %}</p>
   {% endif %}
   {% if people %}
+  <h2 class="people-title">În imagini</h2>
   <div class="people">
     {% for p in people %}
     <figure class="person">
-      <img src="{{ base }}/{{ p.img }}" alt="{{ p.name }}" width="64" height="64" loading="lazy">
+      <img src="{{ base }}/{{ p.img }}" alt="{{ p.name }}" width="96" height="96" loading="lazy">
       <figcaption>
         {% if p.slug %}<a href="{{ base }}/subiect/{{ p.slug }}/">{{ p.name }}</a>{% else %}{{ p.name }}{% endif %}
         <span class="credit">Foto: {% if p.artist %}{{ p.artist }} · {% endif %}<a href="{{ p.page }}" target="_blank" rel="noopener noreferrer">Wikimedia Commons</a> · {{ p.license }}</span>

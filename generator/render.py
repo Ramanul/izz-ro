@@ -18,6 +18,23 @@ STATIC_DIR = os.path.join(ROOT, "static")
 OUT_DIR = os.path.join(ROOT, "output")
 MEDIA_DIR = os.path.join(ROOT, "media")   # imagini HTML/Chromium comise (tools/gen_images.py)
 PORTRAITS_JSON = os.path.join(ROOT, "data", "portraits.json")
+LEADPHOTOS_JSON = os.path.join(ROOT, "data", "leadphotos.json")
+
+
+def _load_leadphotos() -> dict:
+    """Fotografii reale de tip LEAD per articol (tools/fetch_leadphotos.py), cheie=art_id.
+    INVARIANT: doar imagini landscape ATRIBUIRE-LIBERA (Public domain / CC0), fiindca
+    lead-ul apare si pe carduri/og unde regula sect. 7 interzice orice eticheta de credit.
+    Copiaza renditiile comise (media/leads/) in output/. Lipsa fisierului -> {} (fallback)."""
+    try:
+        import json as _json
+        cache = _json.load(open(LEADPHOTOS_JSON, encoding="utf-8"))
+    except (OSError, ValueError):
+        return {}
+    src = os.path.join(MEDIA_DIR, "leads")
+    if os.path.isdir(src):
+        shutil.copytree(src, os.path.join(OUT_DIR, "leads"), dirs_exist_ok=True)
+    return {k: v for k, v in cache.items() if v and not v.get("miss")}
 
 
 def _load_portraits() -> dict:
@@ -351,19 +368,31 @@ def build(articles: list, mod: dict | None = None) -> None:
     # build) browserele ar servi pictograma veche din cache pana la o zi; versiunea
     # in query schimba URL-ul doar cand se schimba imaginea, deci cache-ul ramane
     # eficient dar nu mai poate fi vreodata stale.
+    leadphotos = _load_leadphotos()
     for a in by_date:
         cdir = os.path.join(OUT_DIR, a["category"], a["slug"])
         aid = htmlart.art_id(a)
         cover_dst, art_dst = os.path.join(cdir, "cover.jpg"), os.path.join(cdir, "art.jpg")
-        # preferam imaginea comisa (HTML/Chromium); daca lipseste -> generare Pillow (fallback sigur)
-        if _use_media(os.path.join(MEDIA_DIR, f"{aid}.c.jpg"), cover_dst) or covers.generate(a, cover_dst):
+        webp_dst = os.path.join(cdir, "art.webp")
+        # prioritate: (1) fotografie reala LEAD (landscape, atribuire-libera) daca articolul
+        # are una -> imagine principala "foto"; (2) coperta HTML/Chromium comisa;
+        # (3) fallback Pillow. Fotografia reala inlocuieste pictograma pe carduri/hero/og.
+        lp = leadphotos.get(aid)
+        cover_ok = art_ok = False
+        if lp:
+            cover_ok = _use_media(os.path.join(MEDIA_DIR, lp["cover"]), cover_dst)
+            art_ok = _use_media(os.path.join(MEDIA_DIR, lp["art"]), art_dst)
+            if art_ok and lp.get("webp") and _use_media(os.path.join(MEDIA_DIR, lp["webp"]), webp_dst):
+                a["art_webp"] = f"/{a['category']}/{a['slug']}/art.webp?v={_content_ver(webp_dst)}"
+            if cover_ok or art_ok:
+                a["lead_credit"] = lp   # afisat DOAR pe pagina de articol (curtoazie); PD/CC0 -> nu e obligatoriu
+        if cover_ok or _use_media(os.path.join(MEDIA_DIR, f"{aid}.c.jpg"), cover_dst) or covers.generate(a, cover_dst):
             a["cover_url"] = (f"{config.SITE['url']}/{a['category']}/{a['slug']}/cover.jpg"
                               f"?v={_content_ver(cover_dst)}")
-        if _use_media(os.path.join(MEDIA_DIR, f"{aid}.jpg"), art_dst) or covers.generate_art(a, art_dst):
+        if art_ok or _use_media(os.path.join(MEDIA_DIR, f"{aid}.jpg"), art_dst) or covers.generate_art(a, art_dst):
             a["art_path"] = f"/{a['category']}/{a['slug']}/art.jpg?v={_content_ver(art_dst)}"
             # varianta WebP (~70% mai mica) daca e comisa; <picture> cade pe JPEG altfel
-            webp_dst = os.path.join(cdir, "art.webp")
-            if _use_media(os.path.join(MEDIA_DIR, f"{aid}.webp"), webp_dst):
+            if not a.get("art_webp") and _use_media(os.path.join(MEDIA_DIR, f"{aid}.webp"), webp_dst):
                 a["art_webp"] = f"/{a['category']}/{a['slug']}/art.webp?v={_content_ver(webp_dst)}"
 
     hero = _pick_hero(by_date)
@@ -409,6 +438,7 @@ def build(articles: list, mod: dict | None = None) -> None:
 
     # graful cunoasterii v1: pagini de subiect per entitate (+ feed de urmarire >=3)
     ents = _entity_index(by_date)
+    portraits = _load_portraits()   # fotografii reale P18 (auto-gazduite) cheie=nume normalizat
     # graf-lite: entitatile care apar IMPREUNA (co-ocurenta pe articole) -> "Conexiuni"
     art_slugs: dict = {}
     for s, d in ents.items():
@@ -430,6 +460,7 @@ def build(articles: list, mod: dict | None = None) -> None:
                                                               key=lambda a: a.get("published") or "",
                                                               reverse=True),
                                               connections=connections,
+                                              portrait=portraits.get(_norm_name(d["name"])),
                                               has_feed=has_feed)))
         if has_feed:
             _write(os.path.join(OUT_DIR, "subiect", s, "feed.xml"),
@@ -438,7 +469,6 @@ def build(articles: list, mod: dict | None = None) -> None:
                              f"Știri despre {d['name']} pe {config.SITE['name']}"))
 
     # pagini de categorie + permalink articole
-    portraits = _load_portraits()
     article_tpl = env.get_template("article.html")
     cat_tpl = env.get_template("category.html")
     for cat in config.CATEGORIES:
