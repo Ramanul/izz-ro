@@ -11,7 +11,7 @@ on:
   workflow_dispatch: {}
 
 permissions:
-  contents: read
+  contents: write   # temporar: pasul de fonturi (dispatch-only) comite static/fonts
 
 jobs:
   smoke:
@@ -24,3 +24,14 @@ jobs:
       - run: python tools/smoke_live.py
         env:
           BASE_URL: https://izz.ro
+
+      # temporar (doar dispatch manual): descarca fonturile si comite-le pe branch
+      - name: Fonturi self-hosted (o data)
+        if: github.event_name == 'workflow_dispatch'
+        run: |
+          python tools/fetch_fonts.py
+          git config user.name "izz-bot"
+          git config user.email "bot@izz.ro"
+          git add static/fonts static/fonts.css
+          git commit -m "chore(fonts): self-hosted woff2 (latin + latin-ext)" || echo "nimic de comis"
+          git push || echo "nimic de impins"
