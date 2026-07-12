@@ -36,6 +36,7 @@
     {% for s, n in topics %}<a href="{{ base }}/subiect/{{ s }}/">{{ n }}</a>{{ ' · ' if not loop.last }}{% endfor %}</p>
   {% endif %}
   {% if people %}
+  <h2 class="people-title">În imagini</h2>
   <div class="people">
     {% for p in people %}
     <figure class="person">

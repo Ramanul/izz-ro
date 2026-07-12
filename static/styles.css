@@ -378,7 +378,12 @@ picture { display: contents; }
 .search-meta { color: var(--ink-3); font-size: var(--fs-eyebrow); font-family: var(--font-mono); }
 
 /* ------------------------------------------- Persoane publice (portrete) --- */
-.people { display: flex; flex-wrap: wrap; gap: var(--s-21); margin: var(--s-21) 0 0; }
+.people-title {
+  font-family: var(--font-mono); font-size: var(--fs-eyebrow); font-weight: 700;
+  color: var(--gold-strong); text-transform: uppercase; letter-spacing: 2px;
+  margin: var(--s-34) 0 0;
+}
+.people { display: flex; flex-wrap: wrap; gap: var(--s-21); margin: var(--s-13) 0 0; }
 .person { display: flex; align-items: center; gap: var(--s-13); margin: 0; }
 .person img {
   width: 96px; height: 96px; object-fit: cover; border-radius: var(--radius);
