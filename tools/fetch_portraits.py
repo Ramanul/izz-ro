@@ -31,7 +31,7 @@ CACHE = os.path.join(ROOT, "data", "portraits.json")
 OUTDIR = os.path.join(ROOT, "media", "portraits")
 MAX_LOOKUPS = int(os.getenv("MAX_PORTRAIT_LOOKUPS", "20"))
 UA = {"User-Agent": "izz.ro-portraits/1.0 (contact@izz.ro)"}
-THUMB_W = 256
+THUMB_W = 320   # sursa pt. hero-ul de subiect 160px CSS la 2x DPR (retina crisp); strip-ul 96px e acoperit din plin
 
 # licente Commons acceptate pentru re-gazduire cu atribuire
 _LICENSE_OK = re.compile(r"^(cc[ -]|cc0|public domain|pd[ -]|attribution)", re.I)
