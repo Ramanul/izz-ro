@@ -29,6 +29,7 @@ jobs:
       - name: Fonturi self-hosted (o data)
         if: github.event_name == 'workflow_dispatch'
         run: |
+          pip install fonttools brotli
           python tools/fetch_fonts.py
           git config user.name "izz-bot"
           git config user.email "bot@izz.ro"
