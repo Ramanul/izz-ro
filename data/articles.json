@@ -1,5 +1,243 @@
 [
   {
+    "url": "https://g4media.ro/armata-americana-anunta-ca-stramtoarea-ormuz-este-deschisa-si-navele-tranziteaza-calea-navigabila-iranul-sustine-contrariul.html",
+    "original_link": "https://www.g4media.ro/armata-americana-anunta-ca-stramtoarea-ormuz-este-deschisa-si-navele-tranziteaza-calea-navigabila-iranul-sustine-contrariul.html",
+    "source": "g4media",
+    "source_name": "G4Media",
+    "source_lang": "ro",
+    "title": "SUA: Strâmtoarea Ormuz rămâne deschisă, în ciuda anunțului Iranului",
+    "category": "extern",
+    "published": "2026-07-12T14:54:17+00:00",
+    "model": "C",
+    "sources": [
+      {
+        "name": "G4Media",
+        "url": "https://www.g4media.ro/armata-americana-anunta-ca-stramtoarea-ormuz-este-deschisa-si-navele-tranziteaza-calea-navigabila-iranul-sustine-contrariul.html"
+      },
+      {
+        "name": "Economica",
+        "url": "https://www.economica.net/armata-americana-anunta-ca-stramtoarea-ormuz-este-deschisa-si-navele-tranziteaza-calea-navigabila_958594.html"
+      }
+    ],
+    "first_source": "G4Media",
+    "synthesis": "Armata americană a confirmat duminică deschiderea Strâmtorii Ormuz pentru trafic maritim, contrazicând afirmațiile Iranului privind închiderea acestei rute strategice. Decizia vine pe fondul tensiunilor reînnoite dintre cele două țări, dar navele continuă să tranziteze zona.",
+    "entities": [
+      "SUA",
+      "Iran",
+      "Strâmtoarea Ormuz"
+    ],
+    "icon": "ship",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://theguardian.com/world/2026/jul/12/germany-drowning-deaths-heatwave-paris-france-spain",
+    "original_link": "https://www.theguardian.com/world/2026/jul/12/germany-drowning-deaths-heatwave-paris-france-spain",
+    "source": "guardian_eu",
+    "source_name": "The Guardian",
+    "source_lang": "en",
+    "title": "Germania: 99 decese prin înec în iunie din cauza caniculei",
+    "category": "general",
+    "published": "2026-07-12T14:54:06+00:00",
+    "model": "B",
+    "teaser": "Aproape 100 de persoane, majoritatea tineri, au murit prin înec în Germania luna trecută. Autoritățile confirmă cel mai mare număr de victime din ultimii 20 de ani, pe fondul temperaturilor extreme.",
+    "entities": [
+      "Germania"
+    ],
+    "icon": "sun",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://gsp.ro/fotbal/liga-1/gabi-muresan-inmormantare-959771.html",
+    "original_link": "https://www.gsp.ro/fotbal/liga-1/gabi-muresan-inmormantare-959771.html",
+    "source": "gsp",
+    "source_name": "GSP",
+    "source_lang": "ro",
+    "title": "Fostul fotbalist Gabi Mureșan, înmormântat la 44 de ani",
+    "category": "sport",
+    "published": "2026-07-12T14:34:32+00:00",
+    "model": "B",
+    "teaser": "Gabi Mureșan, fost internațional și primar, a murit subit la 44 de ani. A înotat într-un lac după saună, iar medicii suspectează un șoc termic fatal.",
+    "entities": [
+      "Gabi Mureșan",
+      "Apold",
+      "Mureș"
+    ],
+    "icon": "ball-football",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://theguardian.com/world/2026/jul/12/uk-couple-burned-semi-conscious-almeria-spanish-wildfires",
+    "original_link": "https://www.theguardian.com/world/2026/jul/12/uk-couple-burned-semi-conscious-almeria-spanish-wildfires",
+    "source": "guardian_eu",
+    "source_name": "The Guardian",
+    "source_lang": "en",
+    "title": "Cuplu britanic, găsit ars de viu în timpul incendiilor din Spania",
+    "category": "general",
+    "published": "2026-07-12T14:26:34+00:00",
+    "model": "B",
+    "teaser": "Un cuplu britanic a fost găsit ars și semi-conștient într-un canion din Almería, Spania, după ce a fost prins în incendiile de vegetație. Cei doi au fost evacuați cu elicopterul.",
+    "entities": [
+      "Almería",
+      "Spania",
+      "Marea Britanie"
+    ],
+    "icon": "flame",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://theguardian.com/world/2026/jul/12/ukrainian-drone-strikes-force-russia-to-suspend-shipping-in-sea-of-azov",
+    "original_link": "https://www.theguardian.com/world/2026/jul/12/ukrainian-drone-strikes-force-russia-to-suspend-shipping-in-sea-of-azov",
+    "source": "guardian_eu",
+    "source_name": "The Guardian",
+    "source_lang": "en",
+    "title": "Atacuri cu drone ucrainene, suspendă traficul maritim în Marea Azov",
+    "category": "extern",
+    "published": "2026-07-12T14:19:45+00:00",
+    "model": "B",
+    "teaser": "Rusia a suspendat transportul maritim în Marea Azov după ce 90 de nave, inclusiv petroliere, au fost atacate de drone ucrainene într-o săptămână. Coridorul maritim vital este închis.",
+    "entities": [
+      "Rusia",
+      "Ucraina",
+      "Marea Azov"
+    ],
+    "icon": "rocket",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://gsp.ro/international/campionatul-mondial-de-fotbal-2026/thomas-tuchel-discurs-jucatori-anglia-pauza-hidratare-cm-2026-959749.html",
+    "original_link": "https://www.gsp.ro/international/campionatul-mondial-de-fotbal-2026/thomas-tuchel-discurs-jucatori-anglia-pauza-hidratare-cm-2026-959749.html",
+    "source": "gsp",
+    "source_name": "GSP",
+    "source_lang": "ro",
+    "title": "Tuchel, critic vehement la pauza meciului Anglia-Norvegia",
+    "category": "sport",
+    "published": "2026-07-12T13:45:00+00:00",
+    "model": "B",
+    "teaser": "Selecționerul Angliei, Thomas Tuchel, a certat dur jucătorii la pauza meciului cu Norvegia. Un cititor pe buze a dezvăluit că le-a reproșat pierderea frecventă a mingii.",
+    "entities": [
+      "Thomas Tuchel",
+      "Anglia",
+      "Norvegia"
+    ],
+    "icon": "ball-football",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://politico.eu/article/european-leaders-mourn-us-senator-lindsey-graham",
+    "original_link": "https://www.politico.eu/article/european-leaders-mourn-us-senator-lindsey-graham/?utm_source=RSS_Feed&utm_medium=RSS&utm_campaign=RSS_Syndication",
+    "source": "politico_eu",
+    "source_name": "Politico EU",
+    "source_lang": "en",
+    "title": "Lideri europeni deplâng moartea senatorului american Lindsey Graham",
+    "category": "politic",
+    "published": "2026-07-12T13:44:25+00:00",
+    "model": "B",
+    "teaser": "Lideri europeni au transmis condoleanțe pentru moartea senatorului american Lindsey Graham, cunoscut pentru poziția sa fermă împotriva agresiunii rusești în Ucraina și pentru susținerea sancțiunilor.",
+    "entities": [
+      "Lindsey Graham",
+      "SUA",
+      "Ucraina"
+    ],
+    "icon": "flag",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://politico.com/news/2026/07/12/lindsey-graham-death-senate-agenda-00994116",
+    "original_link": "https://www.politico.com/news/2026/07/12/lindsey-graham-death-senate-agenda-00994116?utm_source=RSS_Feed&utm_medium=RSS&utm_campaign=RSS_Syndication",
+    "source": "politico_eu",
+    "source_name": "Politico EU",
+    "source_lang": "en",
+    "title": "Moartea lui Lindsey Graham lasă agenda Senatului SUA în impas",
+    "category": "politic",
+    "published": "2026-07-12T13:40:55+00:00",
+    "model": "B",
+    "teaser": "Decesul senatorului republican Lindsey Graham, un jucător cheie în Senatul SUA, lasă în suspans mai multe bătălii legislative importante. Graham era implicat în discuții cruciale pe diverse planuri politice.",
+    "entities": [
+      "Lindsey Graham",
+      "SUA"
+    ],
+    "icon": "gavel",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://theguardian.com/uk-news/2026/jul/12/france-uk-increase-staffing-border-controls-travel-chaos",
+    "original_link": "https://www.theguardian.com/uk-news/2026/jul/12/france-uk-increase-staffing-border-controls-travel-chaos",
+    "source": "guardian_eu",
+    "source_name": "The Guardian",
+    "source_lang": "en",
+    "title": "Franța și Marea Britanie măresc personalul la granițe pentru a evita haosul",
+    "category": "extern",
+    "published": "2026-07-12T13:33:37+00:00",
+    "model": "B",
+    "teaser": "Franța și Marea Britanie vor suplimenta personalul la controalele de frontieră pentru a preveni blocajele rutiere. Se anticipează perturbări majore la traversările Canalului Mânecii din cauza noilor verificări biometrice.",
+    "entities": [
+      "Franța",
+      "Marea Britanie",
+      "Canalul Mânecii"
+    ],
+    "icon": "globe",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://gsp.ro/fotbal/liga-1/semne-de-intrebare-nu-raspunsuri-7-detalii-despre-dinamo-inaintea-startului-campionatului-ce-transferuri-intra-in-primul-11-959694.html",
+    "original_link": "https://www.gsp.ro/fotbal/liga-1/semne-de-intrebare-nu-raspunsuri-7-detalii-despre-dinamo-inaintea-startului-campionatului-ce-transferuri-intra-in-primul-11-959694.html",
+    "source": "gsp",
+    "source_name": "GSP",
+    "source_lang": "ro",
+    "title": "Dinamo, incertitudini majore înainte de startul campionatului",
+    "category": "sport",
+    "published": "2026-07-12T13:27:35+00:00",
+    "model": "B",
+    "teaser": "Dinamo se află într-o situație delicată înainte de debutul campionatului, cu transferuri noi care ar putea intra în primul 11. Suporterii sunt îngrijorați de obiectivele echipei.",
+    "entities": [
+      "Dinamo",
+      "Petrolul"
+    ],
+    "icon": "ball-football",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://gsp.ro/opinii/opinie-raul-rusescu-whatever-si-soarta-angliei-959746.html",
+    "original_link": "https://www.gsp.ro/opinii/opinie-raul-rusescu-whatever-si-soarta-angliei-959746.html",
+    "source": "gsp",
+    "source_name": "GSP",
+    "source_lang": "ro",
+    "title": "Thomas Tuchel, critic vehement după calificarea Angliei",
+    "category": "sport",
+    "published": "2026-07-12T13:24:08+00:00",
+    "model": "B",
+    "teaser": "Thomas Tuchel și-a criticat dur echipa Angliei după victoria contra Norvegiei, în ciuda calificării în semifinalele Cupei Mondiale. Aceste momente nu apar în statistici, dar decid turnee.",
+    "entities": [
+      "Thomas Tuchel",
+      "Anglia",
+      "Norvegia"
+    ],
+    "icon": "ball-football",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
     "url": "https://g4media.ro/germania-finanteaza-50-000-de-drone-de-atac-pentru-ucraina-contract-de-90-de-milioane-de-euro-pentru-consolidarea-apararii-kievului.html",
     "original_link": "https://www.g4media.ro/germania-finanteaza-50-000-de-drone-de-atac-pentru-ucraina-contract-de-90-de-milioane-de-euro-pentru-consolidarea-apararii-kievului.html",
     "source": "g4media",
@@ -67,6 +305,26 @@
     "featured": false
   },
   {
+    "url": "https://gsp.ro/international/campionatul-mondial-de-fotbal-2026/partenera-lui-jayden-adams-rupe-tacerea-dupa-moartea-fulgeratoare-959727.html",
+    "original_link": "https://www.gsp.ro/international/campionatul-mondial-de-fotbal-2026/partenera-lui-jayden-adams-rupe-tacerea-dupa-moartea-fulgeratoare-959727.html",
+    "source": "gsp",
+    "source_name": "GSP",
+    "source_lang": "ro",
+    "title": "Partenera lui Jayden Adams, mesaj emoționant după moartea fotbalistului",
+    "category": "sport",
+    "published": "2026-07-12T12:47:33+00:00",
+    "model": "B",
+    "teaser": "Partenera mijlocașului sud-african Jayden Adams, decedat la 25 de ani, a transmis un mesaj emoționant. Fotbalul sud-african este în doliu, iar cauza morții rămâne neclară.",
+    "entities": [
+      "Jayden Adams",
+      "Africa de Sud"
+    ],
+    "icon": "ball-football",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
     "url": "https://economica.net/bursa-de-la-bucuresti-a-castigat-in-aceasta-saptamana-8574-milioane-de-lei-la-capitalizare_958585.html",
     "original_link": "https://www.economica.net/bursa-de-la-bucuresti-a-castigat-in-aceasta-saptamana-8574-milioane-de-lei-la-capitalizare_958585.html",
     "source": "economica",
@@ -92,6 +350,25 @@
       "Bursa de Valori București"
     ],
     "icon": "chart-line",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://gsp.ro/international/campionatul-mondial-de-fotbal-2026/premiu-bani-cupa-mondiala-anglia-959729.html",
+    "original_link": "https://www.gsp.ro/international/campionatul-mondial-de-fotbal-2026/premiu-bani-cupa-mondiala-anglia-959729.html",
+    "source": "gsp",
+    "source_name": "GSP",
+    "source_lang": "ro",
+    "title": "Bonusuri uriașe pentru Anglia la CM 2026",
+    "category": "sport",
+    "published": "2026-07-12T12:27:10+00:00",
+    "model": "B",
+    "teaser": "Federația Engleză de Fotbal va oferi jumătate din premiul în bani câștigat la CM 2026, indiferent de rezultat. Jucătorii și staff-ul ar putea primi bonusuri colosale.",
+    "entities": [
+      "Anglia"
+    ],
+    "icon": "ball-football",
     "processed_by": "gemini",
     "prompt_version": "v2-esenta",
     "featured": false
@@ -23877,147 +24154,6 @@
       "Washington"
     ],
     "icon": "podium",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://digi24.ro/stiri/externe/mapamond/zece-romani-arestati-in-spania-dupa-jafuri-ca-n-filme-hotii-atacau-din-mers-camioane-pentru-a-fura-electrocasnice-de-lux-3848331",
-    "original_link": "https://www.digi24.ro/stiri/externe/mapamond/zece-romani-arestati-in-spania-dupa-jafuri-ca-n-filme-hotii-atacau-din-mers-camioane-pentru-a-fura-electrocasnice-de-lux-3848331",
-    "source": "extern",
-    "source_name": "Digi24 Extern",
-    "source_lang": "ro",
-    "title": "Români arestați în Spania pentru jafuri de camioane în mers",
-    "category": "extern",
-    "published": "2026-07-05T15:06:04+00:00",
-    "model": "C",
-    "teaser": "Zece cetățeni români au fost arestați în Spania pentru furturi de electrocasnice de lux din camioane în mers, prejudiciul depășind 400.000 de euro.",
-    "entities": [
-      "Spania",
-      "Garda Civilă",
-      "Europol",
-      "România"
-    ],
-    "icon": "truck",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false,
-    "sources": [
-      {
-        "name": "Digi24 Extern",
-        "url": "https://www.digi24.ro/stiri/externe/mapamond/zece-romani-arestati-in-spania-dupa-jafuri-ca-n-filme-hotii-atacau-din-mers-camioane-pentru-a-fura-electrocasnice-de-lux-3848331"
-      },
-      {
-        "name": "Spotmedia",
-        "url": "https://spotmedia.ro/stiri/eveniment/zece-romani-arestati-in-spania-dupa-jafuri-ca-n-filme-sareau-pe-camioane-aflate-in-mers-si-furau-marfa-de-lux"
-      }
-    ],
-    "first_source": "Digi24 Extern",
-    "synthesis": "Zece cetățeni români au fost arestați în Spania de Garda Civilă, cu sprijinul Europol și autorităților române. Aceștia sunt suspectați că au jefuit camioane în mers, sustrăgând electrocasnice de lux. Prejudiciul estimat de anchetatori depășește 400.000 de euro, una dintre surse menționând 481.000 de euro."
-  },
-  {
-    "url": "https://gsp.ro/international/stranieri/razvan-lucescu-prezentat-oficial-la-al-sadd-957055.html",
-    "original_link": "https://www.gsp.ro/international/stranieri/razvan-lucescu-prezentat-oficial-la-al-sadd-957055.html",
-    "source": "gsp",
-    "source_name": "GSP",
-    "source_lang": "ro",
-    "title": "Răzvan Lucescu, prezentat oficial la Al-Sadd din Qatar",
-    "category": "sport",
-    "published": "2026-07-05T15:03:17+00:00",
-    "model": "C",
-    "sources": [
-      {
-        "name": "GSP",
-        "url": "https://www.gsp.ro/international/stranieri/razvan-lucescu-prezentat-oficial-la-al-sadd-957055.html"
-      },
-      {
-        "name": "ProSport",
-        "url": "https://www.prosport.ro/fotbal-extern/razvan-lucescu-prezentat-oficial-de-al-sadd-20477706"
-      }
-    ],
-    "first_source": "GSP",
-    "synthesis": "Antrenorul român Răzvan Lucescu, în vârstă de 57 de ani, a fost prezentat oficial de Al-Sadd, cea mai titrată echipă din Qatar. Tehnicianul a semnat un contract pe doi ani, cu posibilitatea de prelungire pentru încă un sezon, urmând să câștige un salariu anual de 3,5 milioane de dolari. Lucescu a părăsit recent formația grecească PAOK Salonic.",
-    "entities": [
-      "Răzvan Lucescu",
-      "Al-Sadd",
-      "Qatar",
-      "PAOK Salonic"
-    ],
-    "icon": "ball-football",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://digi24.ro/stiri/externe/funeraliile-lui-ali-khamenei-de-ce-nu-l-am-ucide-pe-criminalul-imamul-nostru-ar-fi-o-rusine-sa-nu-o-facem-3848301",
-    "original_link": "https://www.digi24.ro/stiri/externe/funeraliile-lui-ali-khamenei-de-ce-nu-l-am-ucide-pe-criminalul-imamul-nostru-ar-fi-o-rusine-sa-nu-o-facem-3848301",
-    "source": "extern",
-    "source_name": "Digi24 Extern",
-    "source_lang": "ro",
-    "title": "Apeluri la uciderea lui Donald Trump la funeraliile lui Ali Khamenei",
-    "category": "politic",
-    "published": "2026-07-05T14:24:34+00:00",
-    "model": "B",
-    "teaser": "La funeraliile liderului suprem iranian Ali Khamenei, în Teheran, s-au auzit îndemnuri la asasinarea lui Donald Trump, conform relatărilor.",
-    "entities": [
-      "Ali Khamenei",
-      "Donald Trump",
-      "Teheran"
-    ],
-    "icon": "gavel",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://digi24.ro/stiri/externe/rusia/optiunea-la-care-ar-putea-recurge-putin-pentru-a-evita-infrangerea-in-razboiul-din-ucraina-de-ce-ar-implica-masura-riscuri-enorme-3848305",
-    "original_link": "https://www.digi24.ro/stiri/externe/rusia/optiunea-la-care-ar-putea-recurge-putin-pentru-a-evita-infrangerea-in-razboiul-din-ucraina-de-ce-ar-implica-masura-riscuri-enorme-3848305",
-    "source": "extern",
-    "source_name": "Digi24 Extern",
-    "source_lang": "ro",
-    "title": "Putin ar putea recurge la mobilizare masivă în Ucraina",
-    "category": "politic",
-    "published": "2026-07-05T14:18:15+00:00",
-    "model": "B",
-    "teaser": "Președintele rus Vladimir Putin ar putea apela la mobilizare generală pentru a contracara pierderile din Ucraina, în ciuda riscurilor enorme, conform Atlantic Council.",
-    "entities": [
-      "Putin",
-      "Ucraina",
-      "Rusia",
-      "Atlantic Council"
-    ],
-    "icon": "rocket",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://cursdeguvernare.ro/unitatea-1-de-la-centrala-nucleara-cernavoda-a-fost-reconectata-la-sistemul-energetic-national.html",
-    "original_link": "https://cursdeguvernare.ro/unitatea-1-de-la-centrala-nucleara-cernavoda-a-fost-reconectata-la-sistemul-energetic-national.html",
-    "source": "cursdeguv",
-    "source_name": "Curs de Guvernare",
-    "source_lang": "ro",
-    "title": "Unitatea 1 CNE Cernavodă, reconectată la Sistemul Energetic Național",
-    "category": "economic",
-    "published": "2026-07-05T14:07:56+00:00",
-    "model": "C",
-    "sources": [
-      {
-        "name": "Curs de Guvernare",
-        "url": "https://cursdeguvernare.ro/unitatea-1-de-la-centrala-nucleara-cernavoda-a-fost-reconectata-la-sistemul-energetic-national.html"
-      },
-      {
-        "name": "G4Media",
-        "url": "https://www.g4media.ro/unitatea-1-a-centralei-nucleare-de-la-cernavoda-reconectata-la-sistemul-energetic-national-era-decuplata-din-10-mai.html"
-      }
-    ],
-    "first_source": "Curs de Guvernare",
-    "synthesis": "Unitatea 1 a Centralei Nucleare de la Cernavodă a fost reintegrată în Sistemul Energetic Național duminică dimineața. Reconectarea survine după finalizarea unei opriri planificate pentru mentenanță preventivă, inspecții și testări obligatorii, desfășurate în condiții de siguranță.",
-    "entities": [
-      "Nuclearelectrica",
-      "CNE Cernavodă"
-    ],
-    "icon": "building-factory",
     "processed_by": "gemini",
     "prompt_version": "v2-esenta",
     "featured": false
