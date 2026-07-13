@@ -1,5 +1,69 @@
 [
   {
+    "url": "https://prosport.ro/fotbal-intern/superliga/gigi-becali-direct-tv-transfer-roman-fcsb-sub-21-de-ani-20483237",
+    "original_link": "https://www.prosport.ro/fotbal-intern/superliga/gigi-becali-direct-tv-transfer-roman-fcsb-sub-21-de-ani-20483237",
+    "source": "prosport",
+    "source_name": "ProSport",
+    "source_lang": "ro",
+    "title": "FCSB a transferat un fundaș român sub 21 de ani",
+    "category": "sport",
+    "published": "2026-07-13T18:12:00+00:00",
+    "model": "C",
+    "sources": [
+      {
+        "name": "ProSport",
+        "url": "https://www.prosport.ro/fotbal-intern/superliga/gigi-becali-direct-tv-transfer-roman-fcsb-sub-21-de-ani-20483237"
+      },
+      {
+        "name": "Digi Sport",
+        "url": "https://www.digisport.ro/fotbal/liga-1/fcsb-a-mai-transferat-un-fundas-gigi-becali-azi-a-semnat-4376389"
+      }
+    ],
+    "first_source": "ProSport",
+    "synthesis": "Gigi Becali a anunțat oficial transferul unui nou jucător la FCSB. Acesta este un fundaș român, eligibil pentru regula U21, capabil să evolueze pe ambele flancuri ale apărării. Jucătorul a semnat contractul astăzi, conform declarațiilor patronului.",
+    "entities": [
+      "FCSB",
+      "Gigi Becali"
+    ],
+    "icon": "ball-football",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://stirileprotv.ro/stiri/international/parlamentul-ungar-a-adoptat-un-amendament-constitu-ional-pentru-destituirea-presedintelui-pro-orban.html",
+    "original_link": "https://stirileprotv.ro/stiri/international/parlamentul-ungar-a-adoptat-un-amendament-constitu-ional-pentru-destituirea-presedintelui-pro-orban.html",
+    "source": "protv",
+    "source_name": "Știrile ProTV",
+    "source_lang": "ro",
+    "title": "Parlamentul Ungar a Adoptat Amendament pentru Destituirea Președintelui",
+    "category": "politic",
+    "published": "2026-07-13T17:48:08+00:00",
+    "model": "C",
+    "sources": [
+      {
+        "name": "Știrile ProTV",
+        "url": "https://stirileprotv.ro/stiri/international/parlamentul-ungar-a-adoptat-un-amendament-constitu-ional-pentru-destituirea-presedintelui-pro-orban.html"
+      },
+      {
+        "name": "Economica",
+        "url": "https://www.economica.net/parlamentul-de-la-budapesta-a-adoptat-un-amendament-constitutional-prin-care-l-poate-destitui-pe-presedintele-tamas-sulyok-un-aliat-al-fostului-premier-viktor-orban_958960.html"
+      }
+    ],
+    "first_source": "Știrile ProTV",
+    "synthesis": "Parlamentul ungar a adoptat luni un amendament constituțional care permite destituirea președintelui Tamas Sulyok. Acesta a fost descris de premierul Peter Magyar drept o \"marionetă\" a lui Viktor Orban. Măsura vizează încheierea mandatului președintelui.",
+    "entities": [
+      "Parlamentul ungar",
+      "Tamas Sulyok",
+      "Viktor Orban",
+      "Peter Magyar"
+    ],
+    "icon": "gavel",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
     "url": "https://theguardian.com/commentisfree/2026/jul/13/the-guardian-view-on-volkswagens-crisis-another-wake-up-call-for-germany-and-the-eu",
     "original_link": "https://www.theguardian.com/commentisfree/2026/jul/13/the-guardian-view-on-volkswagens-crisis-another-wake-up-call-for-germany-and-the-eu",
     "source": "guardian_eu",
@@ -16,6 +80,39 @@
       "Germania"
     ],
     "icon": "building-factory",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://prosport.ro/fotbal-intern/superliga/gigi-becali-prima-reactie-dupa-anuntul-ca-denis-dragus-vine-la-fcsb-ma-bucur-20483227",
+    "original_link": "https://www.prosport.ro/fotbal-intern/superliga/gigi-becali-prima-reactie-dupa-anuntul-ca-denis-dragus-vine-la-fcsb-ma-bucur-20483227",
+    "source": "prosport",
+    "source_name": "ProSport",
+    "source_lang": "ro",
+    "title": "Becali confirmă interesul pentru Drăguș, după discuții cu Șumudică",
+    "category": "sport",
+    "published": "2026-07-13T17:42:25+00:00",
+    "model": "C",
+    "sources": [
+      {
+        "name": "ProSport",
+        "url": "https://www.prosport.ro/fotbal-intern/superliga/gigi-becali-prima-reactie-dupa-anuntul-ca-denis-dragus-vine-la-fcsb-ma-bucur-20483227"
+      },
+      {
+        "name": "GSP",
+        "url": "https://www.gsp.ro/fotbal/liga-1/gigi-becali-fcsb-denis-dragus-marius-sumudica-960190.html"
+      }
+    ],
+    "first_source": "ProSport",
+    "synthesis": "Gigi Becali, patronul FCSB, a declarat că Denis Drăguș are șanse mari să semneze cu echipa sa. Becali susține că a discutat cu Marius Șumudică, nașul jucătorului, care i-ar fi confirmat intenția lui Drăguș de a veni la FCSB, după ce acesta își va rezolva situația financiară cu Trabzonspor.",
+    "entities": [
+      "Gigi Becali",
+      "FCSB",
+      "Denis Drăguș",
+      "Marius Șumudică"
+    ],
+    "icon": "ball-football",
     "processed_by": "gemini",
     "prompt_version": "v2-esenta",
     "featured": false
@@ -1817,26 +1914,6 @@
     "featured": false
   },
   {
-    "url": "https://g4media.ro/universitatea-craiova-a-castigat-supercupa-romaniei-oltenii-au-invinsu-cluj-la-penaltiuri.html",
-    "original_link": "https://www.g4media.ro/universitatea-craiova-a-castigat-supercupa-romaniei-oltenii-au-invinsu-cluj-la-penaltiuri.html",
-    "source": "g4media",
-    "source_name": "G4Media",
-    "source_lang": "ro",
-    "title": "Universitatea Craiova a câștigat Supercupa României la penalty-uri",
-    "category": "sport",
-    "published": "2026-07-12T21:24:08+00:00",
-    "model": "B",
-    "teaser": "Universitatea Craiova a învins-o pe ”U” Cluj cu 5-3 la loviturile de departajare, după un 1-1 în timpul regulamentar, și a cucerit Supercupa României pe stadionul „Ion Oblemenco”.",
-    "entities": [
-      "Universitatea Craiova",
-      "U Cluj"
-    ],
-    "icon": "trophy",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
     "url": "https://prosport.ro/fotbal-intern/cristiano-bergodi-a-spus-o-clar-dupa-esecul-din-supercupa-romaniei-ar-fi-o-minune-20482760",
     "original_link": "https://www.prosport.ro/fotbal-intern/cristiano-bergodi-a-spus-o-clar-dupa-esecul-din-supercupa-romaniei-ar-fi-o-minune-20482760",
     "source": "prosport",
@@ -2416,20 +2493,36 @@
     "source": "gsp",
     "source_name": "GSP",
     "source_lang": "ro",
-    "title": "Universitatea Craiova câștigă Supercupa României împotriva U Cluj",
+    "title": "Universitatea Craiova câștigă Supercupa României la lovituri de departajare",
     "category": "sport",
     "published": "2026-07-12T20:10:10+00:00",
-    "model": "B",
+    "model": "C",
     "teaser": "Universitatea Craiova a cucerit Supercupa României, învingând U Cluj la lovituri de departajare după un meci terminat 1-1. Nsimba a marcat pentru olteni în minutul 40.",
     "entities": [
       "Universitatea Craiova",
       "U Cluj",
       "Nsimba"
     ],
-    "icon": "trophy",
+    "icon": "ball-football",
     "processed_by": "gemini",
     "prompt_version": "v2-esenta",
-    "featured": false
+    "featured": false,
+    "sources": [
+      {
+        "name": "GSP",
+        "url": "https://www.gsp.ro/fotbal/liga-1/universitatea-craiova-u-cluj-note-gsp-supercupa-romaniei-959842.html"
+      },
+      {
+        "name": "G4Media",
+        "url": "https://www.g4media.ro/universitatea-craiova-a-castigat-supercupa-romaniei-oltenii-au-invinsu-cluj-la-penaltiuri.html"
+      },
+      {
+        "name": "Digi Sport",
+        "url": "https://www.digisport.ro/fotbal/gol-valabil-anulat-un-penalty-si-un-rosu-neacordate-verdict-dupa-supercupa-romaniei-universitatea-craiova-u-cluj-4376381"
+      }
+    ],
+    "first_source": "GSP",
+    "synthesis": "Universitatea Craiova a cucerit Supercupa României, învingând U Cluj cu 5-3 la penalty-uri după un meci terminat 1-1. Golul pentru olteni a fost marcat de Nsimba în minutul 40. Partida s-a disputat pe stadionul \"Ion Oblemenco\"."
   },
   {
     "url": "https://hotnews.ro/foto-egiptul-vrea-sa-atraga-turisti-cu-o-noua-descoperire-un-mormant-vechi-de-3-000-de-ani-2298829",
@@ -2437,19 +2530,32 @@
     "source": "hotnews",
     "source_name": "HotNews",
     "source_lang": "ro",
-    "title": "Egiptul descoperă un mormânt vechi de 3.000 de ani",
-    "category": "general",
+    "title": "Descoperire arheologică majoră: Mormânt vechi de 3.000 de ani, găsit lângă Luxor",
+    "category": "extern",
     "published": "2026-07-12T20:02:08+00:00",
-    "model": "B",
+    "model": "C",
     "teaser": "Arheologii egipteni au descoperit un mormânt vechi de trei milenii lângă Luxor, sperând că această nouă atracție va stimula turismul în regiune.",
     "entities": [
-      "Egipt",
-      "Luxor"
+      "Luxor",
+      "Universitatea Leiden",
+      "Egipt"
     ],
     "icon": "building-monument",
     "processed_by": "gemini",
     "prompt_version": "v2-esenta",
-    "featured": false
+    "featured": false,
+    "sources": [
+      {
+        "name": "HotNews",
+        "url": "https://hotnews.ro/foto-egiptul-vrea-sa-atraga-turisti-cu-o-noua-descoperire-un-mormant-vechi-de-3-000-de-ani-2298829"
+      },
+      {
+        "name": "G4Media",
+        "url": "https://www.g4media.ro/mormant-vechi-de-aproximativ-3-000-de-ani-descoperit-la-luxor.html"
+      }
+    ],
+    "first_source": "HotNews",
+    "synthesis": "O echipă de arheologi olandezi, de la Universitatea Leiden, a descoperit un mormânt vechi de aproximativ 3.000 de ani în necropola tebană din Gourna, lângă Luxor, Egipt. Descoperirea, anunțată de Ministerul egiptean, vizează stimularea turismului în regiune."
   },
   {
     "url": "https://gsp.ro/fotbal/liga-1/craiova-u-cluj-supercupa-romaniei-959858.html",
@@ -25131,228 +25237,6 @@
       "Amy Coleman"
     ],
     "icon": "cpu",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://g4media.ro/topul-celor-mai-aglomerate-destinatii-turistice-din-lume-primele-trei-locuri-sunt-din-thailanda.html",
-    "original_link": "https://www.g4media.ro/topul-celor-mai-aglomerate-destinatii-turistice-din-lume-primele-trei-locuri-sunt-din-thailanda.html",
-    "source": "g4media",
-    "source_name": "G4Media",
-    "source_lang": "ro",
-    "title": "Thailanda domină topul celor mai aglomerate destinații turistice din lume",
-    "category": "general",
-    "published": "2026-07-06T19:40:43+00:00",
-    "model": "B",
-    "teaser": "Un studiu realizat de MoneyTransfers.com plasează trei orașe din Thailanda pe primele locuri în topul celor mai aglomerate destinații turistice globale, una dintre ele având peste 100 de turiști per locuitor.",
-    "entities": [
-      "Thailanda",
-      "MoneyTransfers.com"
-    ],
-    "icon": "globe",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://politico.com/news/2026/07/06/graham-platner-sexual-assault-allegation-00987737",
-    "original_link": "https://www.politico.com/news/2026/07/06/graham-platner-sexual-assault-allegation-00987737?utm_source=RSS_Feed&utm_medium=RSS&utm_campaign=RSS_Syndication",
-    "source": "politico_eu",
-    "source_name": "Politico EU",
-    "source_lang": "en",
-    "title": "Candidat la Senatul SUA acuzat de agresiune sexuală",
-    "category": "politic",
-    "published": "2026-07-06T19:40:11+00:00",
-    "model": "B",
-    "teaser": "O femeie susține că un candidat la Senatul SUA din Maine, Graham Platner, a agresat-o sexual acum aproape cinci ani. Acuzațiile sunt negate de candidatul politic.",
-    "entities": [
-      "SUA",
-      "Maine",
-      "Graham Platner",
-      "Jenny Racicot"
-    ],
-    "icon": "gavel",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://digi24.ro/stiri/actualitate/un-barbat-gasit-in-azilele-lui-pasca-a-murit-la-spital-niciun-apartinator-nu-a-vrut-sa-preia-vreuna-dintre-cele-409-persoane-3849989",
-    "original_link": "https://www.digi24.ro/stiri/actualitate/un-barbat-gasit-in-azilele-lui-pasca-a-murit-la-spital-niciun-apartinator-nu-a-vrut-sa-preia-vreuna-dintre-cele-409-persoane-3849989",
-    "source": "digi24",
-    "source_name": "Digi24",
-    "source_lang": "ro",
-    "title": "Un bărbat din azilele ilegale din Bihor a murit la spital",
-    "category": "general",
-    "published": "2026-07-06T19:25:56+00:00",
-    "model": "C",
-    "sources": [
-      {
-        "name": "Digi24",
-        "url": "https://www.digi24.ro/stiri/actualitate/un-barbat-gasit-in-azilele-lui-pasca-a-murit-la-spital-niciun-apartinator-nu-a-vrut-sa-preia-vreuna-dintre-cele-409-persoane-3849989"
-      },
-      {
-        "name": "Spotmedia",
-        "url": "https://spotmedia.ro/stiri/eveniment/un-barbat-de-la-azilele-din-bihor-a-murit-niciun-apartinator-nu-a-vrut-sa-preia-vreuna-dintre-cele-409-persoane"
-      }
-    ],
-    "first_source": "Digi24",
-    "synthesis": "Ministerul Muncii a anunțat că un bărbat găsit în azilele ilegale din Bihor, transferat în județul Mureș, a decedat. Cauza morții urmează să fie stabilită de legiști. Din cele 409 de persoane identificate, 149 au dizabilități, 212 sunt vârstnici, iar 11 nu au acte de identitate. Niciun aparținător nu a solicitat preluarea persoanelor.",
-    "entities": [
-      "Ministerul Muncii",
-      "Bihor",
-      "Mureș"
-    ],
-    "icon": "building-hospital",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://hotnews.ro/dior-si-chanel-in-cursa-pentru-cea-mai-ravnita-rochie-de-mireasa-din-industria-modei-ce-a-ales-taylor-swift-2293410",
-    "original_link": "https://hotnews.ro/dior-si-chanel-in-cursa-pentru-cea-mai-ravnita-rochie-de-mireasa-din-industria-modei-ce-a-ales-taylor-swift-2293410",
-    "source": "hotnews",
-    "source_name": "HotNews",
-    "source_lang": "ro",
-    "title": "Dior și Chanel concurează pentru rochia de mireasă a lui Taylor Swift",
-    "category": "general",
-    "published": "2026-07-06T19:25:35+00:00",
-    "model": "B",
-    "teaser": "Taylor Swift și Travis Kelce au purtat creații Dior la nunta lor, oferind casei de modă un avantaj în competiția cu Chanel pentru a domina industria modei.",
-    "entities": [
-      "Dior",
-      "Chanel",
-      "Taylor Swift",
-      "Travis Kelce"
-    ],
-    "icon": "writing",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://g4media.ro/etna-a-erupt-din-nou-a-fost-inchis-spatiul-aerian-de-deasupra-unei-baze-militare-americane.html",
-    "original_link": "https://www.g4media.ro/etna-a-erupt-din-nou-a-fost-inchis-spatiul-aerian-de-deasupra-unei-baze-militare-americane.html",
-    "source": "g4media",
-    "source_name": "G4Media",
-    "source_lang": "ro",
-    "title": "Erupția vulcanului Etna a dus la închiderea spațiului aerian deasupra unei baze militare americane",
-    "category": "general",
-    "published": "2026-07-06T19:24:11+00:00",
-    "model": "B",
-    "teaser": "O nouă erupție a vulcanului Etna a determinat închiderea spațiului aerian deasupra bazei militare americane de la Sigonella, Sicilia. Coloana de cenușă a afectat traficul aerian.",
-    "entities": [
-      "Etna",
-      "Sigonella",
-      "Sicilia"
-    ],
-    "icon": "flame",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://g4media.ro/zelenski-ucraina-a-interceptat-31-din-33-de-rachete-de-croaziera-rusesti-noaptea-trecuta-daca-ucrainei-i-ar-fi-acordate-licente-americane-pentru-producerea-patriot-urilor-productia-noastra-propr.html",
-    "original_link": "https://www.g4media.ro/zelenski-ucraina-a-interceptat-31-din-33-de-rachete-de-croaziera-rusesti-noaptea-trecuta-daca-ucrainei-i-ar-fi-acordate-licente-americane-pentru-producerea-patriot-urilor-productia-noastra-propr.html",
-    "source": "g4media",
-    "source_name": "G4Media",
-    "source_lang": "ro",
-    "title": "Zelenski: Ucraina a interceptat 31 din 33 de rachete rusești; solicită licențe pentru producția de Patriot",
-    "category": "extern",
-    "published": "2026-07-06T19:17:22+00:00",
-    "model": "B",
-    "teaser": "Președintele ucrainean Volodimir Zelenski afirmă că țara sa a doborât 31 din 33 de rachete de croazieră rusești și că licențele americane pentru producția de sisteme Patriot ar asigura apărarea Ucrainei și a partenerilor.",
-    "entities": [
-      "Volodimir Zelenski",
-      "Ucraina",
-      "Patriot"
-    ],
-    "icon": "rocket",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://dw.com/en/emmanuel-macron-visits-syria-18-months-after-assad-s-fall/a-77856791?maca=en-rss-en-eu-2092-rdf",
-    "original_link": "https://www.dw.com/en/emmanuel-macron-visits-syria-18-months-after-assad-s-fall/a-77856791?maca=en-rss-en-eu-2092-rdf",
-    "source": "dw_europe",
-    "source_name": "DW Europe",
-    "source_lang": "en",
-    "title": "Macron, vizită în Siria după 18 luni de la căderea lui Assad",
-    "category": "politic",
-    "published": "2026-07-06T19:03:00+00:00",
-    "model": "B",
-    "teaser": "Președintele francez Emmanuel Macron a aterizat la Damasc, devenind primul lider UE care vizitează țara după schimbarea regimului și ascensiunea lui Ahmed al-Sharaa.",
-    "entities": [
-      "Emmanuel Macron",
-      "Siria",
-      "Bashar al-Assad",
-      "Ahmed al-Sharaa"
-    ],
-    "icon": "flag",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://spotmedia.ro/stiri/eveniment/blackout-in-cuba-10-milioane-de-oameni-nu-au-curent",
-    "original_link": "https://spotmedia.ro/stiri/eveniment/blackout-in-cuba-10-milioane-de-oameni-nu-au-curent",
-    "source": "spotmedia",
-    "source_name": "Spotmedia",
-    "source_lang": "ro",
-    "title": "Cuba, în beznă: 10 milioane de oameni fără curent electric",
-    "category": "extern",
-    "published": "2026-07-06T18:31:04+00:00",
-    "model": "B",
-    "teaser": "Rețeaua electrică națională a Cubei a cedat, lăsând aproximativ 10 milioane de locuitori fără energie. Cauza defecțiunii la nivel național este încă investigată, pe fondul penelor de curent frecvente din ultimele luni.",
-    "entities": [
-      "Cuba",
-      "Reuters"
-    ],
-    "icon": "bolt",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://politico.eu/article/eu-members-split-over-serbia-membership-bid",
-    "original_link": "https://www.politico.eu/article/eu-members-split-over-serbia-membership-bid/?utm_source=RSS_Feed&utm_medium=RSS&utm_campaign=RSS_Syndication",
-    "source": "politico_eu",
-    "source_name": "Politico EU",
-    "source_lang": "en",
-    "title": "UE nu reușește să convingă statele membre pentru aderarea Serbiei",
-    "category": "politic",
-    "published": "2026-07-06T18:24:02+00:00",
-    "model": "B",
-    "teaser": "Propunerea executivului UE de a accelera aderarea Serbiei la blocul comunitar nu a obținut sprijinul necesar din partea capitalelor europene, în ciuda intenției de a preveni distanțarea Serbiei.",
-    "entities": [
-      "UE",
-      "Serbia"
-    ],
-    "icon": "flag",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://spotmedia.ro/stiri/eveniment/dominic-fritz-regimul-incompatibilitatilor-si-al-conflictului-de-interese-a-scapat-de-sub-control",
-    "original_link": "https://spotmedia.ro/stiri/eveniment/dominic-fritz-regimul-incompatibilitatilor-si-al-conflictului-de-interese-a-scapat-de-sub-control",
-    "source": "spotmedia",
-    "source_name": "Spotmedia",
-    "source_lang": "ro",
-    "title": "Primarul Timișoarei: Conflictul de interese a scăpat de sub control",
-    "category": "politic",
-    "published": "2026-07-06T18:13:11+00:00",
-    "model": "B",
-    "teaser": "Dominic Fritz, primarul Timișoarei, consideră că regimul incompatibilităților și conflictului de interese din România a devenit scăpat de sub control, după ce viceprimarul Paula Romocean a pierdut în primă instanță un proces cu ANI.",
-    "entities": [
-      "Dominic Fritz",
-      "Timișoara",
-      "Paula Romocean",
-      "ANI"
-    ],
-    "icon": "gavel",
     "processed_by": "gemini",
     "prompt_version": "v2-esenta",
     "featured": false
