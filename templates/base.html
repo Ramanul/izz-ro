@@ -29,13 +29,13 @@
   {# fonturi AUTO-GAZDUITE (tools/fetch_fonts.py): fara cereri externe -> fara
      render-blocking cross-origin, fara IP-uri catre Google (consistent cu privacy) #}
   <link rel="preload" href="{{ base }}/static/fonts/PlayfairDisplay-800.ro.woff2" as="font" type="font/woff2" crossorigin>
-  {% if fonts_css %}<style>{{ fonts_css | safe }}</style>{% else %}<link rel="stylesheet" href="{{ base }}/static/fonts.css">{% endif %}
-  <link rel="stylesheet" href="{{ base }}/static/styles.css">
+  {% if fonts_css %}<style>{{ fonts_css | safe }}</style>{% else %}<link rel="stylesheet" href="{{ base }}/static/fonts.css?v={{ asset_ver['fonts.css'] }}">{% endif %}
+  <link rel="stylesheet" href="{{ base }}/static/styles.css?v={{ asset_ver['styles.css'] }}">
 
   <script type="application/ld+json">{{ org_jsonld | tojson }}</script>
   {% block head_extra %}{% endblock %}
   {% if analytics_token %}<script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "{{ analytics_token }}"}'></script>{% endif %}
-  <script defer src="{{ base }}/static/personalize.js?v=4"></script>
+  <script defer src="{{ base }}/static/personalize.js?v={{ asset_ver['personalize.js'] }}"></script>
 </head>
 <body{% block body_attrs %}{% endblock %}>
   <header class="site-header">
