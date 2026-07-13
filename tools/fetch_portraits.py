@@ -76,9 +76,15 @@ def wd_entity(qid: str) -> dict:
 SITELINKS_MIN = 15   # prag de notorietate: prezenta in >=15 editii Wikipedia
 
 # Tipuri Wikidata (P31) de entitate NEUMANA pentru care P18 e o fotografie
-# reprezentativa si neambigua (sediu, skyline, stadion) -- nu un logo (acela e P154).
-# Restrangem strict la clase care apar frecvent in stirile RO si al caror portret
-# vizual e sugestiv. Orice altceva -> fallback pe coperta generata.
+# reprezentativa, STATICA si neambigua (sediu, skyline, cladire) -- nu un logo
+# (acela e P154). Restrangem strict la clase al caror portret vizual e sugestiv
+# FARA sa editorializeze un rezultat. Orice altceva -> fallback pe coperta generata.
+#
+# EXCLUSE deliberat: cluburile/echipele sportive. P18-ul lor e frecvent o poza de
+# SARBATOARE/meci (ex. "echipa X sarbatorind promovarea"), care pe o stire "Y a batut
+# X" sugereaza FALS ca X a castigat -- eroare editoriala grava. Persoanele (jucatori,
+# antrenori) raman eligibile prin regula de om public, deci sportul pastreaza fete
+# reale fara poza de echipa inselatoare.
 SAFE_TYPES = frozenset({
     "Q43229",    # organizatie
     "Q4830453",  # afacere / business
@@ -89,9 +95,6 @@ SAFE_TYPES = frozenset({
     "Q327333",   # agentie guvernamentala
     "Q2659904",  # organizatie guvernamentala
     "Q192350",   # minister
-    "Q476028",   # club de fotbal
-    "Q847017",   # club sportiv
-    "Q12973014", # echipa sportiva
     "Q515",      # oras
     "Q1549591",  # oras mare
     "Q6256",     # tara

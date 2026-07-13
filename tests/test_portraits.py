@@ -51,14 +51,23 @@ def test_entity_types_collects_all_p31():
 def test_photo_worthy_covers_people_and_safe_entities():
     # persoana publica -> ca inainte
     assert fp.is_photo_worthy(_claims())
-    # entitate din SAFE_TYPES, notorie -> acceptata
-    assert fp.is_photo_worthy(_claims(human=False, position=False, types=["Q476028"]), sitelinks=30)
+    # entitate din SAFE_TYPES (oras), notorie -> acceptata
+    assert fp.is_photo_worthy(_claims(human=False, position=False, types=["Q515"]), sitelinks=30)
     # aceeasi entitate, dar obscura (putine sitelinks) -> respinsa (evita omonime)
-    assert not fp.is_photo_worthy(_claims(human=False, position=False, types=["Q476028"]), sitelinks=3)
+    assert not fp.is_photo_worthy(_claims(human=False, position=False, types=["Q515"]), sitelinks=3)
     # tip in AFARA whitelist-ului (ex. concept abstract), oricat de notoriu -> respins
     assert not fp.is_photo_worthy(_claims(human=False, position=False, types=["Q12345678"]), sitelinks=99)
     # persoana obscura fara functie ramane respinsa (regresie is_public_figure)
     assert not fp.is_photo_worthy(_claims(position=False), sitelinks=5)
+
+
+def test_sports_teams_are_excluded_to_avoid_misleading_celebration_photos():
+    # cluburi/echipe sportive: P18 e frecvent o poza de sarbatoare -> inselatoare pe
+    # stirile "Y a batut X". Respinse chiar notorii (jucatorii raman eligibili ca oameni).
+    for team_type in ("Q476028", "Q847017", "Q12973014"):  # club fotbal / club sportiv / echipa
+        assert team_type not in fp.SAFE_TYPES, team_type
+        assert not fp.is_photo_worthy(
+            _claims(human=False, position=False, types=[team_type]), sitelinks=99), team_type
 
 
 def test_portrait_file_extracts_p18():
