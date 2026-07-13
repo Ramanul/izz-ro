@@ -12,6 +12,11 @@ Daca gaseste, descarca o rendite mare, o incadreaza cu Pillow in cover (1200x630
 art (960x504, JPEG+WebP), auto-gazduite in media/leads/, si scrie intrarea in
 data/leadphotos.json (cheie = art_id, comis). Negativele se cacheaza.
 
+Fiecare candidat trece printr-un ULTIM filtru: judecatorul AI (generator/photojudge)
+verifica potrivirea foto<->articol (respinge partea care a pierdut / subiectul gresit /
+un rezultat fals). Cu GEMINI_API_KEY activ e pornit; fara cheie ramane pe regulile
+deterministe. Fail-safe: apel esuat -> se sare candidatul.
+
 Fotografiile CC-BY (atribuire obligatorie) NU intra aici -- raman in strip-ul cu
 credit gestionat de fetch_portraits.py. Fara potrivire -> articolul pastreaza
 coperta generata (pictograma). Orice eroare pe o entitate nu opreste restul.
@@ -30,7 +35,8 @@ import urllib.request
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, ROOT)
-from generator import state, htmlart  # noqa: E402
+from generator import state, htmlart, photojudge  # noqa: E402
+from generator.process import get_provider  # noqa: E402
 
 # reutilizam pipeline-ul Wikidata deja validat (potrivire stricta, licenta, notorietate)
 _spec = importlib.util.spec_from_file_location(
@@ -117,9 +123,17 @@ def _save_renditions(data: bytes, slug: str) -> dict | None:
     return {"cover": f"leads/{slug}.c.jpg", "art": f"leads/{slug}.jpg", "webp": f"leads/{slug}.webp"}
 
 
-def lead_for_article(a: dict) -> dict | None:
-    """Prima entitate a articolului cu P18 landscape + atribuire-libera -> intrare LEAD.
-    Reintoarce None (miss) daca niciuna nu califica."""
+def _caption(filename: str) -> str:
+    """Numele fisierului Commons e cel mai puternic semnal semantic despre poza
+    (ex. 'Echipa U Cluj sarbatorind promovarea'). Il facem lizibil pt. judecatorul AI."""
+    base = re.sub(r"\.[A-Za-z0-9]+$", "", urllib.parse.unquote(filename or ""))
+    return re.sub(r"[_\s]+", " ", base).strip()
+
+
+def lead_for_article(a: dict, provider=None) -> dict | None:
+    """Prima entitate a articolului cu P18 landscape + atribuire-libera care trece SI
+    de judecatorul AI de potrivire (photojudge) -> intrare LEAD. None (miss) altfel."""
+    summary = a.get("synthesis") or a.get("teaser") or ""
     for name in a.get("entities") or []:
         if not name or len(name.split()) < 2:
             continue
@@ -135,6 +149,10 @@ def lead_for_article(a: dict) -> dict | None:
             continue
         info = commons_lead_info(f)
         if not info or not info.get("thumb") or not qualifies(info):
+            continue
+        # ultima poarta: AI verifica potrivirea foto<->articol (nu partea care a pierdut,
+        # nu un rezultat fals). provider None -> True; eroare -> False (fail-safe).
+        if not photojudge.photo_fits(provider, a.get("title", ""), summary, name, _caption(f)):
             continue
         data = urllib.request.urlopen(urllib.request.Request(info["thumb"], headers=UA), timeout=30).read()
         if len(data) < 3000:
@@ -154,6 +172,8 @@ def main() -> int:
     arts = [a for a in state.load() if a.get("title")]
     cache = json.load(open(CACHE)) if os.path.exists(CACHE) else {}
     os.makedirs(OUTDIR, exist_ok=True)
+    provider = get_provider()   # judecator AI foto<->articol; None fara cheie -> reguli deterministe
+    print(f">> photo judge: {'ON (' + provider.name + ')' if provider else 'OFF (fara cheie AI) -> reguli deterministe'}")
     done = 0
     for a in arts:
         aid = htmlart.art_id(a)
@@ -161,7 +181,7 @@ def main() -> int:
             continue
         done += 1
         try:
-            entry = lead_for_article(a)
+            entry = lead_for_article(a, provider)
         except Exception as exc:  # o entitate/retea esuata nu opreste restul
             print(f"  ! {aid}: {exc}")
             done -= 1              # eroare de retea -> nu consuma plafonul
