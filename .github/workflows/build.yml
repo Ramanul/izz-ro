@@ -66,10 +66,14 @@ jobs:
         run: python tools/fetch_portraits.py
 
       - name: Fotografii lead per articol (Wikidata P18 landscape+PD, best-effort)
-        # imaginea principala "foto" cand exista; non-fatal -> altfel coperta generata
+        # imaginea principala "foto" cand exista; non-fatal -> altfel coperta generata.
+        # GEMINI_API_KEY activeaza judecatorul AI foto<->articol (photojudge); fara cheie
+        # ramane pe regulile deterministe (echipe excluse). AI_PROVIDER=anthropic -> Claude.
         continue-on-error: true
         env:
           MAX_LEAD_LOOKUPS: "20"
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          AI_PROVIDER: gemini
         run: python tools/fetch_leadphotos.py
 
       - name: Comite starea (declanseaza deploy Cloudflare)
