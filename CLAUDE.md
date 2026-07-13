@@ -112,3 +112,18 @@ Project sub-agents live in `.claude/agents/` (versioned, see its README). Each i
 - Reviewing any story-surface change → **`editorial-guard`** checks the attribution formula, Zero Zgomot, one-axis-one-home, and design tokens (enforces §7, §8). Read-only.
 
 Slash commands in `.claude/commands/`: **`/slice`** drives the mandatory §5 workflow for one vertical slice; **`/audit`** runs the front-end audit. Permission allowlist for the documented-safe commands lives in `.claude/settings.json` (this is §12 made enforceable — read-only and dev/build commands no longer prompt; push/commit/deletes still do). A web-only `SessionStart` hook (`.claude/hooks/session-start.sh`) installs the pipeline deps (with `SETUPTOOLS_USE_DISTUTILS=stdlib`, needed for feedparser/sgmllib3k) so Claude Code on the web can run the pipeline and these agents.
+
+## 16. Two-role verification + honesty calibration — HARD RULE (owner decision 2026-07-12)
+Context: a correct CSS fix was reported "rezolvat" while the owner still saw the bug — because it was verified as *code* but never as the *live user experience*, and the fix was undeliverable (immutable-cached `styles.css` with no cache-bust). Never again. For ANY user-visible change:
+
+1. **Verify in BOTH roles before claiming anything.**
+   - *As a programmer:* run the code — render / `pytest` / `qa_check` — real output, not assertion.
+   - *As a user:* drive the actual built page in a real (headless Chromium) browser and observe the EXACT reported symptom. Reproduce it first, then confirm the fix removes it. Measure, don't infer: computed styles, real requests, real pixels. "It should work now" is not verification.
+2. **Verify DELIVERABILITY, not just correctness.** A fix that a cached/immutable asset, a service worker, a stale CDN copy, or a wrong URL prevents from reaching the user is NOT done. Static assets (`styles.css`, JS) MUST carry a content-hash `?v=` (see `render._asset_ver`) so a change actually reaches returning visitors; check the emitted URL changed.
+3. **Three distinct states — never conflate them, and use the exact words:**
+   - "**reparat în cod**" = the diff is written.
+   - "**verificat local**" = both roles above passed on the built site here.
+   - "**confirmat pe live**" = the deployed site shows it fixed. Only I (owner) or the live `smoke_live.py` can reach izz.ro — the sandbox cannot. So Claude MUST NOT say "rezolvat / gata / done" for a user-visible issue. The most it may claim on its own is **"reparat + verificat local; rămâne de confirmat pe live după deploy"**, and it states plainly what the owner should check. "Done" is reserved for after live confirmation.
+4. **When you cannot test something, say so explicitly** (which role, why) instead of implying it passed. Honesty about a gap beats a confident false "gata".
+
+This overrides any earlier phrasing that let "committed/rendered" stand in for "fixed for the user".
