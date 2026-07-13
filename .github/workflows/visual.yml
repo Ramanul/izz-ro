@@ -1,0 +1,42 @@
+name: visual-live
+
+# Verificare VIZUALA pe izz.ro cu browser real (Playwright/Chromium) -- complementul
+# "as a user" al smoke-live (care e doar urllib pe HTML). Masoara stiluri calculate +
+# pixeli reali dupa deploy: placeholder-ul cardurilor nu e negru, arta se randeaza,
+# fara erori CSP. La FAIL, GitHub anunta owner-ul. Ruleaza rar (job cu browser e greu)
+# + la cerere (workflow_dispatch, declansat dupa un deploy pentru confirmare "pe live").
+
+on:
+  schedule:
+    - cron: "25 */6 * * *"
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+
+concurrency:
+  group: visual-live
+  cancel-in-progress: true
+
+jobs:
+  visual:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - run: pip install playwright
+      - run: python -m playwright install --with-deps chromium
+      - name: Verificare vizuala pe live
+        env:
+          BASE_URL: https://izz.ro
+          SHOT_DIR: shots
+        run: python tools/visual_check.py
+      - name: Urca screenshot-urile (dovada vizuala, si la esec)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: visual-shots
+          path: shots/
+          if-no-files-found: ignore
