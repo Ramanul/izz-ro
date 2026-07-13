@@ -78,6 +78,23 @@ def _content_ver(path: str) -> str:
     except OSError:
         return "0"
 
+
+_ASSET_VER = None
+
+
+def _asset_ver() -> dict:
+    """?v=<hash-continut> pentru activele /static/ versionabile (CSS/JS). Ele stau pe
+    URL-uri stabile servite cu `max-age=2592000, immutable` -- deci o schimbare de cod
+    (ex. o culoare in styles.css) NU ajunge la vizitatorii cu cache pana la 30 de zile.
+    Hash de continut in query: URL-ul se schimba exact cand fisierul se schimba, deci
+    fix-ul ajunge la primul page-load de dupa deploy, fara hard-refresh."""
+    global _ASSET_VER
+    if _ASSET_VER is None:
+        _ASSET_VER = {name: _content_ver(os.path.join(STATIC_DIR, name))
+                      for name in ("styles.css", "personalize.js", "search.js", "fonts.css")}
+    return _ASSET_VER
+
+
 _RO_MONTHS = ["", "ianuarie", "februarie", "martie", "aprilie", "mai", "iunie",
               "iulie", "august", "septembrie", "octombrie", "noiembrie", "decembrie"]
 
@@ -188,6 +205,7 @@ def _base_ctx(canonical_path: str, **extra) -> dict:
         "org_jsonld": _org_jsonld(),
         "analytics_token": os.getenv("CF_ANALYTICS_TOKEN", "").strip() or None,
         "fonts_css": _fonts_css(),
+        "asset_ver": _asset_ver(),
         "active_cat": None,
     }
     ctx.update(extra)
