@@ -52,8 +52,10 @@ def main() -> int:
         pg = br.new_page(viewport={"width": 1280, "height": 900})
         pg.on("console", lambda m: csp_errors.append(m.text)
               if m.type == "error" and "Content Security Policy" in m.text else None)
+        # ignoram /cdn-cgi/* -- endpointuri injectate de Cloudflare (RUM/analytics),
+        # nu activele noastre; beacon-ul rum poate fi abandonat inofensiv la navigare
         pg.on("requestfailed", lambda r: failed_local.append(r.url)
-              if BASE in r.url else None)
+              if BASE in r.url and "/cdn-cgi/" not in r.url else None)
 
         # --- home ---
         pg.goto(BASE + "/", wait_until="networkidle")
