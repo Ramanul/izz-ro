@@ -154,6 +154,31 @@ def main() -> int:
         except Exception as e:
             check(False, ipath[:60], f"headerele imaginii se citesc pe live ({e})")
 
+    # LIVRABILITATE + regresie vizuala (2026-07-13): prinde clasa de bug in care un
+    # fix corect in cod NU ajunge la utilizator. /static/* se serveste immutable/30d;
+    # daca un CSS/JS n-are ?v= content-hash, o schimbare (ex. culoarea unui placeholder)
+    # ramane blocata in cache-ul vizitatorului pana la 30 de zile. Verificam pe LIVE.
+    print("livrabilitate (cache-busting + placeholder carduri):")
+    assets = re.findall(r'(?:href|src)="([^"]*/static/[^"]+)"', home)
+    code_assets = [a for a in assets if ".css" in a or ".js" in a]
+    unversioned = [a for a in code_assets if "?v=" not in a]
+    check(not unversioned, "/",
+          f"CSS/JS servite cu ?v= content-hash (neversionate: {unversioned or 'niciuna'})")
+    # placeholder-ul .card-media NU trebuie sa aiba fundal inchis (--ink) -> altfel la
+    # click pe o rubrica licarea dreptunghiuri negre pana se decodeaza coperta lazy
+    css_url = next((a for a in code_assets if ".css" in a), "")
+    if css_url:
+        cpath = re.sub(r"^https?://[^/]+", "", css_url)
+        try:
+            css = get(cpath)
+            m = re.search(r"\.card-media\s*\{([^}]*)\}", css)
+            bgm = re.search(r"background:\s*([^;]+)", m.group(1)) if m else None
+            bg = bgm.group(1).strip() if bgm else ""
+            check(bg != "" and "var(--ink)" not in bg, cpath[:50],
+                  f"placeholder .card-media nu e fundal inchis (background: {bg or 'negasit'})")
+        except Exception as e:
+            check(False, cpath[:50], f"styles.css se citeste pe live ({e})")
+
     if fails:
         print(f"\nFAIL — {len(fails)} incalcari pe live:")
         for f in fails:
