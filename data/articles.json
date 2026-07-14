@@ -1824,17 +1824,29 @@
     "title": "Președintele Braziliei critică naționala după eliminarea de la Cupa Mondială",
     "category": "sport",
     "published": "2026-07-14T05:30:34+00:00",
-    "model": "B",
+    "model": "C",
     "teaser": "Președintele brazilian Lula da Silva a criticat dur jucătorii echipei naționale pentru că nu s-au întors în țară după eliminarea de la Cupa Mondială 2026.",
     "entities": [
-      "Brazilia",
       "Lula da Silva",
+      "Brazilia",
       "Cupa Mondială 2026"
     ],
     "icon": "ball-football",
     "processed_by": "gemini",
     "prompt_version": "v2-esenta",
-    "featured": false
+    "featured": false,
+    "sources": [
+      {
+        "name": "GSP",
+        "url": "https://www.gsp.ro/international/campionatul-mondial-de-fotbal-2026/presedintele-tarii-desfiintat-nationala-braziliei-avionul-gol-rusine-daca-castigau-dansau-toti-960230.html"
+      },
+      {
+        "name": "Digi Sport",
+        "url": "https://www.digisport.ro/fotbal/cm-2026/presedintele-braziliei-a-vazut-ce-s-a-intamplat-la-nationala-dupa-cupa-mondiala-si-a-rabufnit-ce-rusine-4377135"
+      }
+    ],
+    "first_source": "GSP",
+    "synthesis": "Președintele brazilian Lula da Silva a criticat dur jucătorii echipei naționale de fotbal a Braziliei. Acesta s-a arătat dezamăgit de comportamentul lor după eliminarea de la Cupa Mondială 2026, catalogând situația drept \"o rușine\"."
   },
   {
     "url": "https://digisport.ro/fotbal/liga-1/s-a-aflat-atacantul-pentru-care-fcsb-plateste-800-000-e-4376671",
@@ -26036,335 +26048,6 @@
       "UE"
     ],
     "icon": "tractor",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://cursdeguvernare.ro/zelenski-kremlin-nato-aderare-merz-constructie-nato-europeana.html",
-    "original_link": "https://cursdeguvernare.ro/zelenski-kremlin-nato-aderare-merz-constructie-nato-europeana.html",
-    "source": "cursdeguv",
-    "source_name": "Curs de Guvernare",
-    "source_lang": "ro",
-    "title": "Zelenski cere aderarea Ucrainei la NATO la summitul Alianței",
-    "category": "politic",
-    "published": "2026-07-07T15:43:57+00:00",
-    "model": "B",
-    "teaser": "Președintele ucrainean Volodimir Zelenski a reiterat cererea de aderare la NATO, susținând că Ucraina ar consolida Alianța. Kremlinul urmărește reuniunea de la Ankara.",
-    "entities": [
-      "Volodimir Zelenski",
-      "NATO",
-      "Ucraina",
-      "Kremlinul"
-    ],
-    "icon": "shield",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://cursdeguvernare.ro/presedintele-dan-intrevedere-cu-congresmani-americani-la-ankara.html",
-    "original_link": "https://cursdeguvernare.ro/presedintele-dan-intrevedere-cu-congresmani-americani-la-ankara.html",
-    "source": "cursdeguv",
-    "source_name": "Curs de Guvernare",
-    "source_lang": "ro",
-    "title": "Președintele Dan, discuții cu congresmani americani la Summitul NATO",
-    "category": "politic",
-    "published": "2026-07-07T15:42:35+00:00",
-    "model": "C",
-    "sources": [
-      {
-        "name": "Curs de Guvernare",
-        "url": "https://cursdeguvernare.ro/presedintele-dan-intrevedere-cu-congresmani-americani-la-ankara.html"
-      },
-      {
-        "name": "Economica",
-        "url": "https://www.economica.net/nicusor-dan-s-a-intalnit-cu-delegatia-congresului-sua-la-summitul-nato-de-la-ankara_957286.html"
-      }
-    ],
-    "first_source": "Curs de Guvernare",
-    "synthesis": "La Summitul NATO de la Ankara, președintele Nicușor Dan s-a întâlnit marți cu o delegație bipartizană a Congresului SUA. Discuțiile s-au axat pe consolidarea relației transatlantice și pe prioritățile comune ale agendei bilaterale, conform informațiilor publicate de președinte pe rețelele sociale.",
-    "entities": [
-      "Nicușor Dan",
-      "Summitul NATO",
-      "Congresul SUA",
-      "Ankara"
-    ],
-    "icon": "flag",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://cursdeguvernare.ro/trump-erdogan-intalnire-summit-nato-2026-ankara-razboi-rusia-ucraina-razboi-iran-critici.html",
-    "original_link": "https://cursdeguvernare.ro/trump-erdogan-intalnire-summit-nato-2026-ankara-razboi-rusia-ucraina-razboi-iran-critici.html",
-    "source": "cursdeguv",
-    "source_name": "Curs de Guvernare",
-    "source_lang": "ro",
-    "title": "Trump: Liderii Rusiei și Ucrainei doresc încheierea conflictului",
-    "category": "politic",
-    "published": "2026-07-07T15:41:15+00:00",
-    "model": "C",
-    "sources": [
-      {
-        "name": "Curs de Guvernare",
-        "url": "https://cursdeguvernare.ro/trump-erdogan-intalnire-summit-nato-2026-ankara-razboi-rusia-ucraina-razboi-iran-critici.html"
-      },
-      {
-        "name": "Digi24 Extern",
-        "url": "https://www.digi24.ro/stiri/externe/sua/donald-trump-dupa-discutiile-cu-putin-si-zelenski-despre-razboiul-din-ucraina-amandoi-vor-sa-rezolve-problema-3851583"
-      }
-    ],
-    "first_source": "Curs de Guvernare",
-    "synthesis": "La summitul NATO de la Ankara, președintele american Donald Trump a declarat că atât Vladimir Putin, cât și Volodimir Zelenski își doresc încheierea războiului din Ucraina. Afirmațiile survin după discuții bilaterale și înaintea unei întâlniri programate cu Zelenski, în contextul unui nou val de atacuri rusești.",
-    "entities": [
-      "Donald Trump",
-      "NATO",
-      "Vladimir Putin",
-      "Volodimir Zelenski"
-    ],
-    "icon": "swords",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://economedia.ro/banca-transilvania-ii-prelungeste-mandatul-lui-omer-tetik-pana-in-2030-ceo-ul-conduce-banca-din-2013-si-a-transformat-o-in-liderul-pietei.html",
-    "original_link": "https://economedia.ro/banca-transilvania-ii-prelungeste-mandatul-lui-omer-tetik-pana-in-2030-ceo-ul-conduce-banca-din-2013-si-a-transformat-o-in-liderul-pietei.html",
-    "source": "economedia",
-    "source_name": "Economedia",
-    "source_lang": "ro",
-    "title": "Ömer Tetik, reales CEO Banca Transilvania până în 2030",
-    "category": "economic",
-    "published": "2026-07-07T15:39:12+00:00",
-    "model": "B",
-    "teaser": "Consiliul de Administrație al Băncii Transilvania a prelungit mandatul CEO-ului Ömer Tetik până în 2030. Mandatele directorilor adjuncți au fost, de asemenea, reînnoite.",
-    "entities": [
-      "Banca Transilvania",
-      "Ömer Tetik"
-    ],
-    "icon": "building-bank",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://cursdeguvernare.ro/preturile-futures-pentru-cafeaua-arabica-inregistreaza-cel-mai-mare-salt-zilnic-de-la-dot-com-incoace.html",
-    "original_link": "https://cursdeguvernare.ro/preturile-futures-pentru-cafeaua-arabica-inregistreaza-cel-mai-mare-salt-zilnic-de-la-dot-com-incoace.html",
-    "source": "cursdeguv",
-    "source_name": "Curs de Guvernare",
-    "source_lang": "ro",
-    "title": "Prețurile futures la cafeaua Arabica, cel mai mare salt din era Dot-Com",
-    "category": "economic",
-    "published": "2026-07-07T15:37:57+00:00",
-    "model": "B",
-    "teaser": "Contractele futures pentru cafeaua Arabica au înregistrat creșteri record din cauza condițiilor meteo nefavorabile în Brazilia și a reducerii stocurilor, alimentând temeri privind oferta.",
-    "entities": [
-      "Arabica",
-      "Brazilia"
-    ],
-    "icon": "chart-line",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://economedia.ro/grf-plus-conducere-bursa-loredana-butacu-ianus-managing-partner.html",
-    "original_link": "https://economedia.ro/grf-plus-conducere-bursa-loredana-butacu-ianus-managing-partner.html",
-    "source": "economedia",
-    "source_name": "Economedia",
-    "source_lang": "ro",
-    "title": "GRF+ își schimbă conducerea executivă înainte de listarea la BVB",
-    "category": "economic",
-    "published": "2026-07-07T15:34:42+00:00",
-    "model": "B",
-    "teaser": "Loredana Butacu-Ianuș devine Managing Partner la agenția de consultanță GRF+. Promovarea face parte din pregătirile pentru listarea companiei la Bursa de Valori București.",
-    "entities": [
-      "GRF+",
-      "Loredana Butacu-Ianuș",
-      "BVB"
-    ],
-    "icon": "writing",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://politico.com/news/2026/07/07/trump-rips-nato-allies-dashing-european-hopes-for-a-kumbaya-summit-00988547",
-    "original_link": "https://www.politico.com/news/2026/07/07/trump-rips-nato-allies-dashing-european-hopes-for-a-kumbaya-summit-00988547?utm_source=RSS_Feed&utm_medium=RSS&utm_campaign=RSS_Syndication",
-    "source": "politico_eu",
-    "source_name": "Politico EU",
-    "source_lang": "en",
-    "title": "Trump critică aliații NATO, anulând speranțele europene",
-    "category": "politic",
-    "published": "2026-07-07T15:33:47+00:00",
-    "model": "B",
-    "teaser": "Președintele american a criticat dur aliații NATO, dar a lăudat Turcia și a reluat discuțiile despre vânzarea de avioane, în timp ce a reiterat plângeri despre Groenlanda și Ucraina.",
-    "entities": [
-      "Trump",
-      "NATO",
-      "Turcia",
-      "Groenlanda",
-      "Ucraina"
-    ],
-    "icon": "shield",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://theguardian.com/world/live/2026/jul/07/nato-summit-zelenskyy-trump-ukraine-rutte-defence-eu-spending-turkey-france-macron-le-pen-europe-latest-news-updates",
-    "original_link": "https://www.theguardian.com/world/live/2026/jul/07/nato-summit-zelenskyy-trump-ukraine-rutte-defence-eu-spending-turkey-france-macron-le-pen-europe-latest-news-updates",
-    "source": "guardian_eu",
-    "source_name": "The Guardian",
-    "source_lang": "en",
-    "title": "Curtea din Paris permite candidaturii lui Le Pen cu condiții",
-    "category": "politic",
-    "published": "2026-07-07T15:19:49+00:00",
-    "model": "B",
-    "teaser": "Un tribunal din Paris a scurtat perioada de ineligibilitate pentru Marine Le Pen, dar a impus purtarea unei brățări electronice, condiție pe care aceasta a respins-o anterior.",
-    "entities": [
-      "Marine Le Pen",
-      "Paris"
-    ],
-    "icon": "gavel",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://theguardian.com/world/2026/jul/07/french-prosecutors-investigate-racist-abuse-mbappe",
-    "original_link": "https://www.theguardian.com/world/2026/jul/07/french-prosecutors-investigate-racist-abuse-mbappe",
-    "source": "guardian_eu",
-    "source_name": "The Guardian",
-    "source_lang": "en",
-    "title": "Ancheta în Franța pentru abuz rasist împotriva lui Mbappé",
-    "category": "sport",
-    "published": "2026-07-07T15:06:41+00:00",
-    "model": "B",
-    "teaser": "Procurorii francezi investighează acuzațiile de abuz rasist formulate de un senator paraguayan împotriva fotbalistului Kylian Mbappé, după plângerea Federației Franceze de Fotbal.",
-    "entities": [
-      "Franța",
-      "Kylian Mbappé",
-      "Celeste Amarilla",
-      "Federația Franceză de Fotbal"
-    ],
-    "icon": "gavel",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://theguardian.com/world/2026/jul/07/record-wildfires-europe-failure-to-adapt-mounting-cost-climate-crisis",
-    "original_link": "https://www.theguardian.com/world/2026/jul/07/record-wildfires-europe-failure-to-adapt-mounting-cost-climate-crisis",
-    "source": "guardian_eu",
-    "source_name": "The Guardian",
-    "source_lang": "en",
-    "title": "Incendiile din Europa, un cost al adaptării insuficiente",
-    "category": "extern",
-    "published": "2026-07-07T14:57:52+00:00",
-    "model": "B",
-    "teaser": "Oamenii de știință cer o mai bună gestionare a terenurilor și reducerea gazelor cu efect de seră, în contextul incendiilor devastatoare care au afectat Europa, distrugând mii de hectare.",
-    "entities": [
-      "Europa"
-    ],
-    "icon": "flame",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://theguardian.com/commentisfree/2026/jul/07/europe-andy-burnham-ally-defence-nato",
-    "original_link": "https://www.theguardian.com/commentisfree/2026/jul/07/europe-andy-burnham-ally-defence-nato",
-    "source": "guardian_eu",
-    "source_name": "The Guardian",
-    "source_lang": "en",
-    "title": "Andy Burnham, aliat potențial pentru NATO",
-    "category": "politic",
-    "published": "2026-07-07T14:54:49+00:00",
-    "model": "B",
-    "teaser": "Deși criticat pentru lipsa unei agende de apărare, Andy Burnham ar putea fi un aliat valoros pentru NATO datorită experienței sale în reziliența locală, o competență necesară alianței.",
-    "entities": [
-      "Andy Burnham",
-      "NATO"
-    ],
-    "icon": "shield",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://politico.eu/article/kemi-badenoch-nigel-farage-pressure-by-election",
-    "original_link": "https://www.politico.eu/article/kemi-badenoch-nigel-farage-pressure-by-election/?utm_source=RSS_Feed&utm_medium=RSS&utm_campaign=RSS_Syndication",
-    "source": "politico_eu",
-    "source_name": "Politico EU",
-    "source_lang": "en",
-    "title": "Badenoch afirmă că Farage cedează presiunii politice",
-    "category": "politic",
-    "published": "2026-07-07T14:52:53+00:00",
-    "model": "B",
-    "teaser": "Kemi Badenoch, lider conservator, a declarat că Nigel Farage este copleșit de presiune, ca răspuns la demisia acestuia din urmă pentru a declanșa o alegeri parțiale.",
-    "entities": [
-      "Badenoch",
-      "Farage",
-      "Reform UK"
-    ],
-    "icon": "writing",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://gsp.ro/international/campionatul-mondial-de-fotbal-2026/ultimul-meci-al-lui-cristiano-ronaldo-a-rupt-audientele-la-mondial-957927.html",
-    "original_link": "https://www.gsp.ro/international/campionatul-mondial-de-fotbal-2026/ultimul-meci-al-lui-cristiano-ronaldo-a-rupt-audientele-la-mondial-957927.html",
-    "source": "gsp",
-    "source_name": "GSP",
-    "source_lang": "ro",
-    "title": "Meciul Portugalia-Spania, record de audiență în România la CM 2026",
-    "category": "sport",
-    "published": "2026-07-07T14:51:30+00:00",
-    "model": "C",
-    "sources": [
-      {
-        "name": "GSP",
-        "url": "https://www.gsp.ro/international/campionatul-mondial-de-fotbal-2026/ultimul-meci-al-lui-cristiano-ronaldo-a-rupt-audientele-la-mondial-957927.html"
-      },
-      {
-        "name": "ProSport",
-        "url": "https://www.prosport.ro/campionatul-mondial-2026/ultimul-meci-al-lui-cristiano-ronaldo-la-cupa-mondiala-a-adus-o-audienta-record-cati-romani-s-au-uitat-la-portugalia-spania-20479081"
-      }
-    ],
-    "first_source": "GSP",
-    "synthesis": "Duelul dintre Portugalia și Spania, ultimul meci al lui Cristiano Ronaldo la Cupa Mondială 2026, a generat o audiență record în România. Peste două milioane de telespectatori au urmărit pe Antena 1 confruntarea, câștigată de Spania cu 1-0, stabilind un nou vârf de vizualizări pentru competiție.",
-    "entities": [
-      "Portugalia",
-      "Spania",
-      "Cristiano Ronaldo",
-      "CM 2026"
-    ],
-    "icon": "ball-football",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://politico.eu/article/mcc-brussels-think-tank-new-funding-hungary",
-    "original_link": "https://www.politico.eu/article/mcc-brussels-think-tank-new-funding-hungary/?utm_source=RSS_Feed&utm_medium=RSS&utm_campaign=RSS_Syndication",
-    "source": "politico_eu",
-    "source_name": "Politico EU",
-    "source_lang": "en",
-    "title": "Think tank-ul preferat al lui Orbán caută finanțare nouă",
-    "category": "politic",
-    "published": "2026-07-07T14:19:53+00:00",
-    "model": "B",
-    "teaser": "Organizația MCC din Ungaria, apropiată de Viktor Orbán, a primit ordin să se închidă până la sfârșitul lunii iulie, punând sub semnul întrebării viitorul operațiunilor sale din Bruxelles.",
-    "entities": [
-      "Orbán",
-      "MCC",
-      "Ungaria",
-      "Bruxelles"
-    ],
-    "icon": "building-monument",
     "processed_by": "gemini",
     "prompt_version": "v2-esenta",
     "featured": false
