@@ -1,5 +1,110 @@
 [
   {
+    "url": "https://politico.eu/article/andy-burnham-uk-prime-minister-keir-starmer-politics-style",
+    "original_link": "https://www.politico.eu/article/andy-burnham-uk-prime-minister-keir-starmer-politics-style/?utm_source=RSS_Feed&utm_medium=RSS&utm_campaign=RSS_Syndication",
+    "source": "politico_eu",
+    "source_name": "Politico EU",
+    "source_lang": "en",
+    "title": "Andy Burnham testează imaginea sa politică neconvențională",
+    "category": "politic",
+    "published": "2026-07-15T02:00:00+00:00",
+    "model": "B",
+    "teaser": "Premierul britanic Andy Burnham mizează pe stilul său informal și pe prezența în social media pentru a câștiga alegerile, dar experții avertizează asupra riscurilor acestei strategii politice.",
+    "entities": [
+      "Andy Burnham",
+      "Labour"
+    ],
+    "icon": "percentage",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://politico.eu/article/giorgia-meloni-italy-hunting-reform-pressure-brussels-clash",
+    "original_link": "https://www.politico.eu/article/giorgia-meloni-italy-hunting-reform-pressure-brussels-clash/?utm_source=RSS_Feed&utm_medium=RSS&utm_campaign=RSS_Syndication",
+    "source": "politico_eu",
+    "source_name": "Politico EU",
+    "source_lang": "en",
+    "title": "Reforma vânătorii a Meloni provoacă tensiuni interne și cu UE",
+    "category": "politic",
+    "published": "2026-07-15T02:00:00+00:00",
+    "model": "B",
+    "teaser": "Propunerea de liberalizare a drepturilor vânătorilor din Italia a devenit un nou punct de conflict cultural, generând presiuni interne și posibile dispute cu Bruxelles-ul.",
+    "entities": [
+      "Meloni",
+      "Italia",
+      "Brussels"
+    ],
+    "icon": "gavel",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://politico.eu/article/putins-next-move-baltic-incursion-warns-top-russian-dissident",
+    "original_link": "https://www.politico.eu/article/putins-next-move-baltic-incursion-warns-top-russian-dissident/?utm_source=RSS_Feed&utm_medium=RSS&utm_campaign=RSS_Syndication",
+    "source": "politico_eu",
+    "source_name": "Politico EU",
+    "source_lang": "en",
+    "title": "Dizident rus avertizează asupra unei noi incursiuni a Putin în Baltica",
+    "category": "extern",
+    "published": "2026-07-15T02:00:00+00:00",
+    "model": "B",
+    "teaser": "Ucraina vede atacurile sale ca pârghie de negociere, în timp ce Garry Kasparov susține că presiunea va împinge Moscova spre un nou test al Occidentului.",
+    "entities": [
+      "Putin",
+      "Garry Kasparov",
+      "Baltica",
+      "Moscova"
+    ],
+    "icon": "rocket",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://politico.eu/article/new-polling-shows-brits-arent-buying-nigel-farages-anti-establishment-crusade",
+    "original_link": "https://www.politico.eu/article/new-polling-shows-brits-arent-buying-nigel-farages-anti-establishment-crusade/?utm_source=RSS_Feed&utm_medium=RSS&utm_campaign=RSS_Syndication",
+    "source": "politico_eu",
+    "source_name": "Politico EU",
+    "source_lang": "en",
+    "title": "Sondajele arată scepticismul britanicilor față de Nigel Farage",
+    "category": "politic",
+    "published": "2026-07-15T02:00:00+00:00",
+    "model": "B",
+    "teaser": "Noi cercetări indică faptul că alegătorii britanici sunt sceptici cu privire la decizia liderului Reform UK, Nigel Farage, de a declanșa o alegeri parțiale.",
+    "entities": [
+      "Nigel Farage",
+      "Reform UK",
+      "Public First"
+    ],
+    "icon": "percentage",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://prosport.ro/campionatul-mondial-2026/reactie-emmanuel-macron-franta-spania-echipa-kylian-mbappe-20484019",
+    "original_link": "https://www.prosport.ro/campionatul-mondial-2026/reactie-emmanuel-macron-franta-spania-echipa-kylian-mbappe-20484019",
+    "source": "prosport",
+    "source_name": "ProSport",
+    "source_lang": "ro",
+    "title": "Emmanuel Macron comentează înfrângerea Franței în fața Spaniei la CM 2026",
+    "category": "sport",
+    "published": "2026-07-14T23:24:16+00:00",
+    "model": "B",
+    "teaser": "Președintele Franței, Emmanuel Macron, a reacționat pe platforma X după eșecul echipei naționale în fața Spaniei, scor 0-2, în semifinala Campionatului Mondial 2026, ratând finala.",
+    "entities": [
+      "Emmanuel Macron",
+      "Franța",
+      "Spania"
+    ],
+    "icon": "ball-football",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
     "url": "https://prosport.ro/campionatul-mondial-2026/mbappe-reactie-meci-franta-spania-20483991",
     "original_link": "https://www.prosport.ro/campionatul-mondial-2026/mbappe-reactie-meci-franta-spania-20483991",
     "source": "prosport",
@@ -12,6 +117,27 @@
     "teaser": "Kylian Mbappe a oferit prima reacție după eliminarea Franței de către Spania la CM 2026, subliniind că echipa nu a respectat planul de joc stabilit.",
     "entities": [
       "Kylian Mbappe",
+      "Franța",
+      "Spania"
+    ],
+    "icon": "ball-football",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://prosport.ro/campionatul-mondial-2026/ousmane-dembele-blestemul-balonului-de-aur-semifinala-cm-2026-franta-spania-0-2-20483983",
+    "original_link": "https://www.prosport.ro/campionatul-mondial-2026/ousmane-dembele-blestemul-balonului-de-aur-semifinala-cm-2026-franta-spania-0-2-20483983",
+    "source": "prosport",
+    "source_name": "ProSport",
+    "source_lang": "ro",
+    "title": "Ousmane Dembele, afectat de „Blestemul Balonului de Aur” după meciul cu Spania",
+    "category": "sport",
+    "published": "2026-07-14T22:56:28+00:00",
+    "model": "B",
+    "teaser": "Jurnaliștii francezi atribuie prestația slabă a lui Ousmane Dembele în semifinala CM 2026 împotriva Spaniei „Blestemului Balonului de Aur”, după ce Franța a pierdut calificarea în finală.",
+    "entities": [
+      "Ousmane Dembele",
       "Franța",
       "Spania"
     ],
@@ -106,6 +232,27 @@
     "featured": false
   },
   {
+    "url": "https://digisport.ro/fotbal/cm-2026/a-spus-da-pentru-transferul-la-psg-chiar-inainte-de-franta-spania-contract-pe-trei-ani-4377981",
+    "original_link": "https://www.digisport.ro/fotbal/cm-2026/a-spus-da-pentru-transferul-la-psg-chiar-inainte-de-franta-spania-contract-pe-trei-ani-4377981",
+    "source": "digisport",
+    "source_name": "Digi Sport",
+    "source_lang": "ro",
+    "title": "Jucător transferat la PSG înainte de meciul Franța - Spania",
+    "category": "sport",
+    "published": "2026-07-14T22:05:10+00:00",
+    "model": "B",
+    "teaser": "Un jucător a acceptat oferta de a se alătura echipei PSG, semnând un contract pe trei ani. Decizia a fost luată chiar înainte de desfășurarea partidei dintre Franța și Spania.",
+    "entities": [
+      "PSG",
+      "Franța",
+      "Spania"
+    ],
+    "icon": "ball-football",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
     "url": "https://gsp.ro/international/campionatul-mondial-de-fotbal-2026/rodri-a-numit-aspectul-care-a-facut-diferenta-in-franta-spani-960635.html",
     "original_link": "https://www.gsp.ro/international/campionatul-mondial-de-fotbal-2026/rodri-a-numit-aspectul-care-a-facut-diferenta-in-franta-spani-960635.html",
     "source": "gsp",
@@ -122,6 +269,26 @@
       "Franța"
     ],
     "icon": "ball-football",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://digisport.ro/fotbal/cm-2026/trei-arbitri-au-spus-acelasi-lucru-verdict-clar-dupa-penalty-ul-dictat-in-franta-spania-4378153",
+    "original_link": "https://www.digisport.ro/fotbal/cm-2026/trei-arbitri-au-spus-acelasi-lucru-verdict-clar-dupa-penalty-ul-dictat-in-franta-spania-4378153",
+    "source": "digisport",
+    "source_name": "Digi Sport",
+    "source_lang": "ro",
+    "title": "Arbitrii confirmă decizia penalty-ului în meciul Franța - Spania",
+    "category": "sport",
+    "published": "2026-07-14T21:56:11+00:00",
+    "model": "B",
+    "teaser": "Trei arbitri au analizat faza penalty-ului dictat în partida dintre Franța și Spania, ajungând la un verdict comun. Detaliile deciziei nu sunt specificate în rezumat.",
+    "entities": [
+      "Franța",
+      "Spania"
+    ],
+    "icon": "gavel",
     "processed_by": "gemini",
     "prompt_version": "v2-esenta",
     "featured": false
@@ -240,6 +407,27 @@
     "featured": false
   },
   {
+    "url": "https://gsp.ro/international/campionatul-mondial-de-fotbal-2026/henry-a-anuntat-inlocuitorul-lui-deschamps-in-direct-franta-cm-2026-960627.html",
+    "original_link": "https://www.gsp.ro/international/campionatul-mondial-de-fotbal-2026/henry-a-anuntat-inlocuitorul-lui-deschamps-in-direct-franta-cm-2026-960627.html",
+    "source": "gsp",
+    "source_name": "GSP",
+    "source_lang": "ro",
+    "title": "Thierry Henry anunță înlocuitorul lui Deschamps la naționala Franței",
+    "category": "sport",
+    "published": "2026-07-14T21:35:33+00:00",
+    "model": "B",
+    "teaser": "Fostul atacant Thierry Henry a sugerat cine va prelua postul de selecționer al Franței după eliminarea de la Mondial, urându-i succes noului antrenor.",
+    "entities": [
+      "Thierry Henry",
+      "Deschamps",
+      "Franța"
+    ],
+    "icon": "podium",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
     "url": "https://digisport.ro/fotbal/cm-2026/selectionerul-spaniei-a-spus-o-imediat-dupa-calificarea-in-semifinalele-cm-2026-cea-mai-buna-echipa-din-lume-4378377",
     "original_link": "https://www.digisport.ro/fotbal/cm-2026/selectionerul-spaniei-a-spus-o-imediat-dupa-calificarea-in-semifinalele-cm-2026-cea-mai-buna-echipa-din-lume-4378377",
     "source": "digisport",
@@ -254,6 +442,70 @@
       "Spania"
     ],
     "icon": "trophy",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://gsp.ro/fotbal/liga-1/didier-deschamps-pune-o-intrebare-arbitraj-960628.html",
+    "original_link": "https://www.gsp.ro/fotbal/liga-1/didier-deschamps-pune-o-intrebare-arbitraj-960628.html",
+    "source": "gsp",
+    "source_name": "GSP",
+    "source_lang": "ro",
+    "title": "Deschamps pune sub semnul întrebării arbitrajul în semifinala CM",
+    "category": "sport",
+    "published": "2026-07-14T21:34:07+00:00",
+    "model": "B",
+    "teaser": "Selecționerul Franței, Didier Deschamps, a recunoscut superioritatea Spaniei după înfrângerea din semifinala CM, dar a ridicat și semne de întrebare privind prestația arbitrului.",
+    "entities": [
+      "Deschamps",
+      "Franța",
+      "Spania"
+    ],
+    "icon": "gavel",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://gsp.ro/international/campionatul-mondial-de-fotbal-2026/dezastrul-de-la-dallas-ce-scrie-presa-din-franta-960624.html",
+    "original_link": "https://www.gsp.ro/international/campionatul-mondial-de-fotbal-2026/dezastrul-de-la-dallas-ce-scrie-presa-din-franta-960624.html",
+    "source": "gsp",
+    "source_name": "GSP",
+    "source_lang": "ro",
+    "title": "Presa franceză critică dur echipa națională după înfrângerea cu Spania",
+    "category": "sport",
+    "published": "2026-07-14T21:23:37+00:00",
+    "model": "B",
+    "teaser": "Jurnaliștii francezi au catalogat prestația echipei naționale împotriva Spaniei drept un dezastru, după ce au pierdut semifinala Campionatului Mondial cu scorul de 0-2.",
+    "entities": [
+      "Franța",
+      "Spania",
+      "Les Bleus"
+    ],
+    "icon": "ball-football",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://gsp.ro/international/campionatul-mondial-de-fotbal-2026/unica-in-istorie-spania-performante-colosale-dupa-calificarea-in-finala-mondialului-960619.html",
+    "original_link": "https://www.gsp.ro/international/campionatul-mondial-de-fotbal-2026/unica-in-istorie-spania-performante-colosale-dupa-calificarea-in-finala-mondialului-960619.html",
+    "source": "gsp",
+    "source_name": "GSP",
+    "source_lang": "ro",
+    "title": "Spania se califică în finala Mondialului, după o victorie categorică împotriva Franței",
+    "category": "sport",
+    "published": "2026-07-14T21:21:25+00:00",
+    "model": "B",
+    "teaser": "Naționala Spaniei a învins Franța cu 2-0 în semifinala Campionatului Mondial, ajungând la un pas de al doilea titlu mondial din istorie. Adversara din finală va fi decisă între Anglia și Argentina.",
+    "entities": [
+      "Spania",
+      "Franța",
+      "Anglia",
+      "Argentina"
+    ],
+    "icon": "ball-football",
     "processed_by": "gemini",
     "prompt_version": "v2-esenta",
     "featured": false
@@ -474,6 +726,49 @@
     "featured": false
   },
   {
+    "url": "https://g4media.ro/armata-americana-anunta-ca-a-lansat-o-noua-serie-de-atacuri-impotriva-iranului.html",
+    "original_link": "https://www.g4media.ro/armata-americana-anunta-ca-a-lansat-o-noua-serie-de-atacuri-impotriva-iranului.html",
+    "source": "g4media",
+    "source_name": "G4Media",
+    "source_lang": "ro",
+    "title": "SUA atacă Iranul pentru a proteja navele din Strâmtoarea Ormuz",
+    "category": "extern",
+    "published": "2026-07-14T20:06:43+00:00",
+    "model": "B",
+    "teaser": "Armata americană a lansat noi lovituri împotriva Iranului pentru a preveni atacurile asupra navelor din Strâmtoarea Ormuz. Aceste acțiuni survin în contextul pregătirilor pentru reluarea blocadei porturilor iraniene.",
+    "entities": [
+      "SUA",
+      "Iran",
+      "Strâmtoarea Ormuz"
+    ],
+    "icon": "shield",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://g4media.ro/noua-tari-din-ue-inclusiv-romania-cer-suspendarea-finantarii-jocurilor-olimpice-din-cauza-ridicarii-interdictiei-pentru-rusia.html",
+    "original_link": "https://www.g4media.ro/noua-tari-din-ue-inclusiv-romania-cer-suspendarea-finantarii-jocurilor-olimpice-din-cauza-ridicarii-interdictiei-pentru-rusia.html",
+    "source": "g4media",
+    "source_name": "G4Media",
+    "source_lang": "ro",
+    "title": "România și alte 8 țări UE cer suspendarea finanțării JO pentru Rusia",
+    "category": "politic",
+    "published": "2026-07-14T20:04:21+00:00",
+    "model": "B",
+    "teaser": "Nouă state membre UE, inclusiv România, solicită reducerea finanțării Comitetului Olimpic Internațional din cauza deciziei de a permite sportivilor ruși să participe la Jocurile Olimpice.",
+    "entities": [
+      "România",
+      "UE",
+      "Rusia",
+      "Comitetul Olimpic Internațional"
+    ],
+    "icon": "trophy",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
     "url": "https://gsp.ro/international/campionatul-mondial-de-fotbal-2026/didier-deschamps-a-intrat-in-istorie-record-semifinala-franta-spania-960597.html",
     "original_link": "https://www.gsp.ro/international/campionatul-mondial-de-fotbal-2026/didier-deschamps-a-intrat-in-istorie-record-semifinala-franta-spania-960597.html",
     "source": "gsp",
@@ -490,6 +785,59 @@
       "Helmut Schon",
       "Campionatul Mondial 2026",
       "Spania"
+    ],
+    "icon": "ball-football",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://g4media.ro/grecia-va-extinde-plaja-navagio-din-insula-zakynthos-pentru-a-proteja-epava-care-a-facut-o-celebra.html",
+    "original_link": "https://www.g4media.ro/grecia-va-extinde-plaja-navagio-din-insula-zakynthos-pentru-a-proteja-epava-care-a-facut-o-celebra.html",
+    "source": "g4media",
+    "source_name": "G4Media",
+    "source_lang": "ro",
+    "title": "Grecia extinde plaja Navagio pentru a proteja epava celebră",
+    "category": "general",
+    "published": "2026-07-14T19:58:42+00:00",
+    "model": "B",
+    "teaser": "Autoritățile elene vor extinde plaja Navagio din Zakynthos cu 30 de metri spre mare. Scopul este conservarea epavei care a transformat locul într-o atracție turistică majoră.",
+    "entities": [
+      "Grecia",
+      "Navagio",
+      "Zakynthos"
+    ],
+    "icon": "building-monument",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://libertatea.ro/sport/program-meciuri-rezultate-campionatul-mondial-de-fotbal-2026-ore-televizare-antena-1-5760236",
+    "original_link": "https://www.libertatea.ro/sport/program-meciuri-rezultate-campionatul-mondial-de-fotbal-2026-ore-televizare-antena-1-5760236",
+    "source": "libertatea",
+    "source_name": "Libertatea",
+    "source_lang": "ro",
+    "title": "Campionatul Mondial de Fotbal 2026: Noutăți despre program și echipe",
+    "category": "sport",
+    "published": "2026-07-14T19:50:00+00:00",
+    "model": "C",
+    "sources": [
+      {
+        "name": "Libertatea",
+        "url": "https://www.libertatea.ro/sport/program-meciuri-rezultate-campionatul-mondial-de-fotbal-2026-ore-televizare-antena-1-5760236"
+      },
+      {
+        "name": "Digi24",
+        "url": "https://www.digi24.ro/campionatul-mondal-de-fotbal-2026/campionatul-mondial-de-fotbal-2026-programul-complet-al-meciurilor-rezultate-si-clasamente-3794401"
+      }
+    ],
+    "first_source": "Libertatea",
+    "synthesis": "Campionatul Mondial de Fotbal 2026 se va desfășura în SUA, Mexic și Canada între 11 iunie și 19 iulie. Ediția din acest an este prima care include 48 de echipe, cu un total de 104 meciuri, fiind cel mai lung turneu final din istorie. Finala este programată pe 19 iulie.",
+    "entities": [
+      "SUA",
+      "Mexic",
+      "Canada"
     ],
     "icon": "ball-football",
     "processed_by": "gemini",
@@ -561,6 +909,26 @@
     ],
     "first_source": "Digi24 Extern",
     "synthesis": "Premierul irakian Ali al-Zaidi a anunțat retragerea totală a trupelor americane din Irak până pe 30 septembrie. Anunțul a fost făcut în urma discuțiilor cu președintele american Donald Trump, care a declarat că SUA nu mai consideră necesară prezența militară în regiune."
+  },
+  {
+    "url": "https://g4media.ro/meta-acuzata-ca-a-folosit-inteligenta-artificiala-pentru-a-selecta-angajati-la-concedieri.html",
+    "original_link": "https://www.g4media.ro/meta-acuzata-ca-a-folosit-inteligenta-artificiala-pentru-a-selecta-angajati-la-concedieri.html",
+    "source": "g4media",
+    "source_name": "G4Media",
+    "source_lang": "ro",
+    "title": "Meta, acuzată că a folosit AI pentru concedieri discriminatorii",
+    "category": "tech",
+    "published": "2026-07-14T19:35:54+00:00",
+    "model": "B",
+    "teaser": "26 de angajați Meta au dat în judecată compania, acuzând utilizarea inteligenței artificiale pentru selectarea personalului la concedieri, susținând că a afectat disproporționat persoanele cu dizabilități.",
+    "entities": [
+      "Meta",
+      "AI"
+    ],
+    "icon": "robot",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
   },
   {
     "url": "https://digi24.ro/stiri/externe/mapamond/canicula-extrema-loveste-sua-peste-100-de-milioane-de-oameni-sub-alerte-de-temperaturi-periculoase-3862541",
@@ -707,6 +1075,27 @@
     "featured": false
   },
   {
+    "url": "https://g4media.ro/spania-isi-cere-scuze-dupa-ce-un-fost-premier-a-declarat-ca-in-echipa-frantei-nu-exista-jucatori-francezi.html",
+    "original_link": "https://www.g4media.ro/spania-isi-cere-scuze-dupa-ce-un-fost-premier-a-declarat-ca-in-echipa-frantei-nu-exista-jucatori-francezi.html",
+    "source": "g4media",
+    "source_name": "G4Media",
+    "source_lang": "ro",
+    "title": "Spania își cere scuze Franței pentru declarații rasiste despre jucători",
+    "category": "politic",
+    "published": "2026-07-14T19:20:54+00:00",
+    "model": "B",
+    "teaser": "Guvernul spaniol și-a cerut scuze Franței după ce fostul premier Mariano Rajoy a pus la îndoială identitatea franceză a unor jucători din echipa națională.",
+    "entities": [
+      "Spania",
+      "Franța",
+      "Mariano Rajoy"
+    ],
+    "icon": "flag",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
     "url": "https://gsp.ro/international/liga-campionilor/campioana-ungariei-a-fost-eliminata-din-primul-tur-preliminar-de-liga-campionilor-960586.html",
     "original_link": "https://www.gsp.ro/international/liga-campionilor/campioana-ungariei-a-fost-eliminata-din-primul-tur-preliminar-de-liga-campionilor-960586.html",
     "source": "gsp",
@@ -723,6 +1112,27 @@
       "Vikingur Reykjavik"
     ],
     "icon": "ball-football",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://g4media.ro/rusia-a-lansat-doi-cosmonauti-rusi-si-un-astronaut-american-spre-statia-spatiala-internationala.html",
+    "original_link": "https://www.g4media.ro/rusia-a-lansat-doi-cosmonauti-rusi-si-un-astronaut-american-spre-statia-spatiala-internationala.html",
+    "source": "g4media",
+    "source_name": "G4Media",
+    "source_lang": "ro",
+    "title": "Rusia lansează doi cosmonauți și un astronaut spre ISS",
+    "category": "extern",
+    "published": "2026-07-14T19:14:45+00:00",
+    "model": "B",
+    "teaser": "Rusia a trimis doi cosmonauți ruși și un astronaut american către Stația Spațială Internațională (ISS) cu o capsulă Soiuz. Misiunea va dura aproximativ opt luni.",
+    "entities": [
+      "Rusia",
+      "ISS",
+      "Soiuz"
+    ],
+    "icon": "rocket",
     "processed_by": "gemini",
     "prompt_version": "v2-esenta",
     "featured": false
@@ -25371,185 +25781,6 @@
     "teaser": "Un nou studiu a analizat viteza de deplasare a 258 de specii de păianjeni, identificând cel mai rapid exemplar, capabil să ajungă din urmă prada într-un timp foarte scurt.",
     "entities": [],
     "icon": null,
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://bbc.co.uk/news/articles/cvgdlprp1r3o?at_medium=RSS&at_campaign=rss",
-    "original_link": "https://www.bbc.co.uk/news/articles/cvgdlprp1r3o?at_medium=RSS&at_campaign=rss",
-    "source": "bbc_europe",
-    "source_name": "BBC Europe",
-    "source_lang": "en",
-    "title": "Marine Le Pen își lansează campania prezidențială după confirmarea verdictului",
-    "category": "politic",
-    "published": "2026-07-08T03:22:46+00:00",
-    "model": "B",
-    "teaser": "La scurt timp după ce o instanță de apel a confirmat o decizie de vinovăție, lidera naționalistă franceză Marine Le Pen a demarat oficial campania pentru alegerile prezidențiale.",
-    "entities": [
-      "Marine Le Pen",
-      "Franța"
-    ],
-    "icon": "podium",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://politico.eu/sponsored-content/billionaire-companies-want-to-pull-up-the-ladder-behind-them",
-    "original_link": "https://www.politico.eu/sponsored-content/billionaire-companies-want-to-pull-up-the-ladder-behind-them/?utm_source=RSS_Feed&utm_medium=RSS&utm_campaign=RSS_Syndication",
-    "source": "politico_eu",
-    "source_name": "Politico EU",
-    "source_lang": "en",
-    "title": "Companii tech cer slăbirea securității magazinelor de aplicații",
-    "category": "economic",
-    "published": "2026-07-08T03:00:00+00:00",
-    "model": "B",
-    "teaser": "Marile companii tech doresc ca autoritățile de reglementare să relaxeze securitatea magazinelor de aplicații pentru a evita taxele. Aceasta ar putea afecta ecosistemul de care depind dezvoltatorii mici.",
-    "entities": [
-      "CMA"
-    ],
-    "icon": "device-mobile",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://politico.eu/article/the-politico-poll-the-south-doesnt-trust-king-of-the-north-andy-burnham",
-    "original_link": "https://www.politico.eu/article/the-politico-poll-the-south-doesnt-trust-king-of-the-north-andy-burnham/?utm_source=RSS_Feed&utm_medium=RSS&utm_campaign=RSS_Syndication",
-    "source": "politico_eu",
-    "source_name": "Politico EU",
-    "source_lang": "en",
-    "title": "Andy Burnham, neîncredere în Sudul Angliei",
-    "category": "politic",
-    "published": "2026-07-08T02:00:00+00:00",
-    "model": "B",
-    "teaser": "Un sondaj arată că alegătorii din nordul Angliei ar fi mulțumiți cu Andy Burnham ca premier, însă cei din sud au rețineri. Cercetarea a fost realizată de Public First.",
-    "entities": [
-      "Andy Burnham",
-      "Public First"
-    ],
-    "icon": "flag",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://politico.eu/article/marine-le-pen-2027-french-presidential-bid-brussels-eu-hopes-dashed-pragmatic-successor-far-right",
-    "original_link": "https://www.politico.eu/article/marine-le-pen-2027-french-presidential-bid-brussels-eu-hopes-dashed-pragmatic-successor-far-right/?utm_source=RSS_Feed&utm_medium=RSS&utm_campaign=RSS_Syndication",
-    "source": "politico_eu",
-    "source_name": "Politico EU",
-    "source_lang": "en",
-    "title": "Le Pen blochează speranțele UE pentru un succesor al lui Meloni",
-    "category": "politic",
-    "published": "2026-07-08T02:00:00+00:00",
-    "model": "B",
-    "teaser": "Intrarea lui Marine Le Pen în cursa prezidențială franceză anulează speranțele UE de a avea un succesor al Giorgiei Meloni în persoana lui Jordan Bardella, considerat mai puțin disruptiv.",
-    "entities": [
-      "Le Pen",
-      "UE",
-      "Meloni",
-      "Jordan Bardella"
-    ],
-    "icon": "flag",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://prosport.ro/campionatul-mondial-2026/imaginile-durerii-fotbalistii-columbiei-20479485",
-    "original_link": "https://www.prosport.ro/campionatul-mondial-2026/imaginile-durerii-fotbalistii-columbiei-20479485",
-    "source": "prosport",
-    "source_name": "ProSport",
-    "source_lang": "ro",
-    "title": "Columbia, învinsă de Elveția la penalty-uri, a părăsit CM 2026 în lacrimi",
-    "category": "sport",
-    "published": "2026-07-08T00:11:00+00:00",
-    "model": "B",
-    "teaser": "Fotbaliștii columbieni, inclusiv Luis Diaz, au plâns pe teren după eliminarea de la Cupa Mondială 2026. Elveția s-a calificat în sferturi după ce a câștigat la lovituri de departajare.",
-    "entities": [
-      "Columbia",
-      "Elveția",
-      "Luis Diaz",
-      "Cupa Mondială 2026"
-    ],
-    "icon": "ball-football",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://prosport.ro/campionatul-mondial-2026/erou-elvetia-reactie-20479479",
-    "original_link": "https://www.prosport.ro/campionatul-mondial-2026/erou-elvetia-reactie-20479479",
-    "source": "prosport",
-    "source_name": "ProSport",
-    "source_lang": "ro",
-    "title": "Eroul Elveției, Vargas, reacționează după calificarea la CM 2026",
-    "category": "sport",
-    "published": "2026-07-07T23:48:53+00:00",
-    "model": "B",
-    "teaser": "Ruben Vargas, marcatorul golului decisiv pentru Elveția împotriva Columbiei la Cupa Mondială 2026, a declarat că este fantastic să fi scris istorie. Elveția merge în sferturi.",
-    "entities": [
-      "Ruben Vargas",
-      "Elveția",
-      "Columbia",
-      "Cupa Mondială 2026"
-    ],
-    "icon": "ball-football",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://prosport.ro/campionatul-mondial-2026/sferturi-cupa-mondiala-20479475",
-    "original_link": "https://www.prosport.ro/campionatul-mondial-2026/sferturi-cupa-mondiala-20479475",
-    "source": "prosport",
-    "source_name": "ProSport",
-    "source_lang": "ro",
-    "title": "S-au stabilit sferturile de finală ale Cupei Mondiale 2026",
-    "category": "sport",
-    "published": "2026-07-07T23:26:41+00:00",
-    "model": "B",
-    "teaser": "Tabloul sferturilor de finală ale Cupei Mondiale 2026 este complet, cu opt echipe rămase în competiție. Elveția a obținut ultima calificare după victoria contra Columbiei.",
-    "entities": [
-      "Elveția",
-      "Columbia",
-      "Cupa Mondială 2026"
-    ],
-    "icon": "ball-football",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://digisport.ro/fotbal/cm-2026/tabloul-complet-al-sferturilor-de-finala-de-la-cupa-mondiala-2026-au-fost-48-de-echipe-au-mai-ramas-opt-cand-se-joaca-4365821",
-    "original_link": "https://www.digisport.ro/fotbal/cm-2026/tabloul-complet-al-sferturilor-de-finala-de-la-cupa-mondiala-2026-au-fost-48-de-echipe-au-mai-ramas-opt-cand-se-joaca-4365821",
-    "source": "digisport",
-    "source_name": "Digi Sport",
-    "source_lang": "ro",
-    "title": "Opt echipe calificate în sferturile de finală ale Cupei Mondiale 2026",
-    "category": "sport",
-    "published": "2026-07-07T23:20:21+00:00",
-    "model": "C",
-    "sources": [
-      {
-        "name": "Digi Sport",
-        "url": "https://www.digisport.ro/fotbal/cm-2026/tabloul-complet-al-sferturilor-de-finala-de-la-cupa-mondiala-2026-au-fost-48-de-echipe-au-mai-ramas-opt-cand-se-joaca-4365821"
-      },
-      {
-        "name": "ProSport",
-        "url": "https://www.prosport.ro/campionatul-mondial-2026/sferturi-cupa-mondiala-20479475"
-      }
-    ],
-    "first_source": "Digi Sport",
-    "synthesis": "Competiția de la Cupa Mondială 2026 a ajuns în faza sferturilor de finală, după ce s-au stabilit ultimele echipe calificate. Din cele 48 de națiuni participante la startul turneului, doar opt au mai rămas în cursa pentru trofeu. Turneul este găzduit de Statele Unite, Canada și Mexic.",
-    "entities": [
-      "Cupa Mondială 2026",
-      "Statele Unite",
-      "Canada",
-      "Mexic"
-    ],
-    "icon": "ball-football",
     "processed_by": "gemini",
     "prompt_version": "v2-esenta",
     "featured": false
