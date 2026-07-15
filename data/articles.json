@@ -1,5 +1,232 @@
 [
   {
+    "url": "https://theguardian.com/world/2026/jul/15/james-fergie-chambers-arrest-palestine-aid-trump",
+    "original_link": "https://www.theguardian.com/world/2026/jul/15/james-fergie-chambers-arrest-palestine-aid-trump",
+    "source": "guardian_eu",
+    "source_name": "The Guardian",
+    "source_lang": "en",
+    "title": "American, arestat în Spania după ce a donat 1 milion de dolari cauzelor palestiniene",
+    "category": "politic",
+    "published": "2026-07-15T10:00:52+00:00",
+    "model": "B",
+    "teaser": "James Chambers, un donator american, a fost arestat în Ibiza la cererea SUA, declanșând temeri privind represiunea și posibila confuzie între ajutor umanitar și terorism în contextul sprijinului pentru Palestina.",
+    "entities": [
+      "James Chambers",
+      "Spania",
+      "SUA",
+      "Hamas",
+      "Palestina"
+    ],
+    "icon": "gavel",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://theguardian.com/world/live/2026/jul/15/ursula-von-der-leyen-ukraine-russia-volodymyr-zelenskyy-vladimir-putin-europe-live-news",
+    "original_link": "https://www.theguardian.com/world/live/2026/jul/15/ursula-von-der-leyen-ukraine-russia-volodymyr-zelenskyy-vladimir-putin-europe-live-news",
+    "source": "guardian_eu",
+    "source_name": "The Guardian",
+    "source_lang": "en",
+    "title": "Lituania avertizează asupra unor posibile atacuri rusești asupra infrastructurii critice",
+    "category": "extern",
+    "published": "2026-07-15T09:59:12+00:00",
+    "model": "B",
+    "teaser": "Lituania avertizează asupra unor atacuri țintite din partea Rusiei asupra infrastructurii critice, în timp ce Kremlinul respinge acuzațiile, numindu-le povești de groază menite să justifice militarizarea NATO.",
+    "entities": [
+      "Lituania",
+      "Rusia",
+      "Kremlin",
+      "NATO"
+    ],
+    "icon": "alert-triangle",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://economica.net/rosu-pentru-romania-la-investitiile-straine-si-datoria-externa-date-bnr-pentru-primele-cinci-luni-din-2026-date-oficiale-bnr_959343.html",
+    "original_link": "https://www.economica.net/rosu-pentru-romania-la-investitiile-straine-si-datoria-externa-date-bnr-pentru-primele-cinci-luni-din-2026-date-oficiale-bnr_959343.html",
+    "source": "economica",
+    "source_name": "Economica",
+    "source_lang": "ro",
+    "title": "Investiții străine în scădere, datoria externă în creștere în România",
+    "category": "economic",
+    "published": "2026-07-15T09:56:21+00:00",
+    "model": "C",
+    "sources": [
+      {
+        "name": "Economica",
+        "url": "https://www.economica.net/rosu-pentru-romania-la-investitiile-straine-si-datoria-externa-date-bnr-pentru-primele-cinci-luni-din-2026-date-oficiale-bnr_959343.html"
+      },
+      {
+        "name": "Digi24",
+        "url": "https://www.digi24.ro/stiri/economie/deficitul-de-cont-curent-s-a-redus-in-primele-cinci-luni-din-2026-cum-au-evoluat-investitiile-straine-si-datoria-externa-3863233"
+      }
+    ],
+    "first_source": "Economica",
+    "synthesis": "În primele cinci luni din 2026, investițiile străine directe în România au scăzut la 2,195 miliarde euro, față de 2,913 miliarde euro în aceeași perioadă a anului precedent. Datoria externă totală a crescut la 230,914 miliarde euro. Deficitul de cont curent s-a redus ușor, ajungând la 11,425 miliarde euro.",
+    "entities": [
+      "BNR",
+      "România"
+    ],
+    "icon": "currency-euro",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://g4media.ro/grindeanu-parlamentarii-puterii-nu-au-depus-niciun-proiect-de-lege-privind-restantele-din-pnrr.html",
+    "original_link": "https://www.g4media.ro/grindeanu-parlamentarii-puterii-nu-au-depus-niciun-proiect-de-lege-privind-restantele-din-pnrr.html",
+    "source": "g4media",
+    "source_name": "G4Media",
+    "source_lang": "ro",
+    "title": "Grindeanu: Parlamentarii puterii nu au depus legi pentru restanțele PNRR",
+    "category": "politic",
+    "published": "2026-07-15T09:43:40+00:00",
+    "model": "C",
+    "sources": [
+      {
+        "name": "G4Media",
+        "url": "https://www.g4media.ro/grindeanu-parlamentarii-puterii-nu-au-depus-niciun-proiect-de-lege-privind-restantele-din-pnrr.html"
+      },
+      {
+        "name": "Digi24",
+        "url": "https://www.digi24.ro/stiri/actualitate/politica/grindeanu-parlamentarii-puterii-nu-au-depus-nicio-lege-pentru-restantele-din-pnrr-cine-blocheaza-miliardele-de-euro-3863171"
+      }
+    ],
+    "first_source": "G4Media",
+    "synthesis": "Ministrul Sorin Grindeanu afirmă că parlamentarii coaliției nu au depus nicio inițiativă legislativă la Camera Deputaților pentru a soluționa restanțele legate de Planul Național de Redresare și Reziliență. Acesta ridică întrebarea cine blochează astfel accesul la fondurile europene, în contextul discuțiilor despre o posibilă sesiune extraordinară a Parlamentului.",
+    "entities": [
+      "Sorin Grindeanu",
+      "PNRR",
+      "Camera Deputaților",
+      "PNL",
+      "USR"
+    ],
+    "icon": "writing",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://theguardian.com/world/2026/jul/15/spain-gibraltar-celebrate-deal-signed-border-controls-uk-territory",
+    "original_link": "https://www.theguardian.com/world/2026/jul/15/spain-gibraltar-celebrate-deal-signed-border-controls-uk-territory",
+    "source": "guardian_eu",
+    "source_name": "The Guardian",
+    "source_lang": "en",
+    "title": "Spania și Gibraltar elimină gardul de frontieră după un acord istoric",
+    "category": "politic",
+    "published": "2026-07-15T09:38:27+00:00",
+    "model": "B",
+    "teaser": "Spania și Gibraltar au sărbătorit eliminarea ultimului gard de frontieră din Europa de Vest, în urma unui acord post-Brexit care pune capăt controalelor pentru rezidenți, turiști și muncitori.",
+    "entities": [
+      "Spania",
+      "Gibraltar",
+      "Uniunea Europeană"
+    ],
+    "icon": "flag",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://zf.ro/zf-24/deficitul-cont-curent-s-redus-primele-cinci-luni-600-mil-euro-fata-23195978",
+    "original_link": "https://www.zf.ro/zf-24/deficitul-cont-curent-s-redus-primele-cinci-luni-600-mil-euro-fata-23195978",
+    "source": "zf",
+    "source_name": "Ziarul Financiar",
+    "source_lang": "ro",
+    "title": "Deficitul contului curent s-a redus în primele cinci luni",
+    "category": "economic",
+    "published": "2026-07-15T09:11:46+00:00",
+    "model": "C",
+    "sources": [
+      {
+        "name": "Ziarul Financiar",
+        "url": "https://www.zf.ro/zf-24/deficitul-cont-curent-s-redus-primele-cinci-luni-600-mil-euro-fata-23195978"
+      },
+      {
+        "name": "G4Media",
+        "url": "https://www.g4media.ro/contul-curent-al-balantei-de-plati-a-inregistrat-un-deficit-in-scadere-la-11425-miliarde-euro-in-primele-cinci-luni-potrivit-bancii-nationale-a-romaniei.html"
+      }
+    ],
+    "first_source": "Ziarul Financiar",
+    "synthesis": "Deficitul contului curent al balanței de plăți a scăzut la 11,4 miliarde euro în primele cinci luni ale anului, față de 12,075 miliarde euro în aceeași perioadă a anului trecut. Această îmbunătățire se datorează reducerii deficitului balanței bunurilor, în timp ce excedentul serviciilor a rămas stabil, conform datelor BNR.",
+    "entities": [
+      "Banca Națională a României",
+      "BNR"
+    ],
+    "icon": "chart-line",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://spotmedia.ro/stiri/sport/incidente-dupa-eliminarea-frantei-de-la-cupa-mondiala-peste-100-de-persoane-retinute",
+    "original_link": "https://spotmedia.ro/stiri/sport/incidente-dupa-eliminarea-frantei-de-la-cupa-mondiala-peste-100-de-persoane-retinute",
+    "source": "spotmedia",
+    "source_name": "Spotmedia",
+    "source_lang": "ro",
+    "title": "Incidente și rețineri după eliminarea Franței de la Cupa Mondială",
+    "category": "sport",
+    "published": "2026-07-15T08:57:39+00:00",
+    "model": "C",
+    "sources": [
+      {
+        "name": "Spotmedia",
+        "url": "https://spotmedia.ro/stiri/sport/incidente-dupa-eliminarea-frantei-de-la-cupa-mondiala-peste-100-de-persoane-retinute"
+      },
+      {
+        "name": "Digi Sport",
+        "url": "https://www.digisport.ro/fotbal/cm-2026/bucurie-in-corsica-dupa-eliminarea-frantei-de-la-cupa-mondiala-4378937"
+      }
+    ],
+    "first_source": "Spotmedia",
+    "synthesis": "Eliminarea Franței de la Cupa Mondială a generat incidente în orașe precum Paris și Lyon, unde peste 100 de persoane au fost reținute de forțele de ordine. Principalele motive ale intervențiilor au fost folosirea artificiilor și petardelor îndreptate împotriva polițiștilor. În Corsica, însă, au fost raportate manifestări de bucurie.",
+    "entities": [
+      "Franța",
+      "Paris",
+      "Lyon",
+      "Corsica"
+    ],
+    "icon": "ball-football",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://spotmedia.ro/stiri/eveniment/schema-prin-care-sute-de-oameni-si-ar-fi-cumparat-vechimea-in-munca-au-platit-intre-15-000-si-50-000-de-lei-diicot-a-descins-in-opt-judete-video",
+    "original_link": "https://spotmedia.ro/stiri/eveniment/schema-prin-care-sute-de-oameni-si-ar-fi-cumparat-vechimea-in-munca-au-platit-intre-15-000-si-50-000-de-lei-diicot-a-descins-in-opt-judete-video",
+    "source": "spotmedia",
+    "source_name": "Spotmedia",
+    "source_lang": "ro",
+    "title": "Sute de persoane, vizate de DIICOT pentru vechime fictivă în muncă",
+    "category": "economic",
+    "published": "2026-07-15T08:48:21+00:00",
+    "model": "C",
+    "sources": [
+      {
+        "name": "Spotmedia",
+        "url": "https://spotmedia.ro/stiri/eveniment/schema-prin-care-sute-de-oameni-si-ar-fi-cumparat-vechimea-in-munca-au-platit-intre-15-000-si-50-000-de-lei-diicot-a-descins-in-opt-judete-video"
+      },
+      {
+        "name": "Curs de Guvernare",
+        "url": "https://cursdeguvernare.ro/descinderi-diicot-case-judetene-pensii-grupare-vechime-fictiva-munca.html"
+      }
+    ],
+    "first_source": "Spotmedia",
+    "synthesis": "Procurorii DIICOT au efectuat 30 de percheziții în București și șapte județe, vizând o schemă prin care peste 860 de persoane ar fi obținut ilegal vechime în muncă. Aceștia ar fi plătit sume între 15.000 și 50.000 de lei pentru a ieși la pensie sau a primi pensii mai mari, cauzând un prejudiciu estimat caselor de pensii.",
+    "entities": [
+      "DIICOT",
+      "Casa de Pensii București",
+      "ANAF"
+    ],
+    "icon": "gavel",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
     "url": "https://prosport.ro/campionatul-mondial-2026/luis-de-la-fuente-selectionerul-spaniei-didier-deschamps-arbitraj-cupa-mondiala-20484035",
     "original_link": "https://www.prosport.ro/campionatul-mondial-2026/luis-de-la-fuente-selectionerul-spaniei-didier-deschamps-arbitraj-cupa-mondiala-20484035",
     "source": "prosport",
@@ -220,18 +447,31 @@
     "source": "digisport",
     "source_name": "Digi Sport",
     "source_lang": "ro",
-    "title": "Ionel Ganea revine în fotbal ca antrenor",
+    "title": "Ionel Ganea revine ca antrenor după o pauză de cinci ani",
     "category": "sport",
     "published": "2026-07-15T05:43:21+00:00",
-    "model": "B",
+    "model": "C",
     "teaser": "După o pauză de cinci ani, Ionel Ganea a revenit în lumea fotbalului, preluând postul de antrenor principal. Anunțul a fost făcut oficial, marcând o nouă etapă în cariera sa.",
     "entities": [
-      "Ionel Ganea"
+      "Ionel Ganea",
+      "Chimia Victoria"
     ],
     "icon": "ball-football",
     "processed_by": "gemini",
     "prompt_version": "v2-esenta",
-    "featured": false
+    "featured": false,
+    "sources": [
+      {
+        "name": "Digi Sport",
+        "url": "https://www.digisport.ro/fotbal/ionel-ganea-a-revenit-in-fotbal-dupa-5-ani-noul-nostru-antrenor-4378601"
+      },
+      {
+        "name": "ProSport",
+        "url": "https://www.prosport.ro/fotbal-intern/ionel-ganea-a-revenit-in-fotbal-noul-antrenor-20484068"
+      }
+    ],
+    "first_source": "Digi Sport",
+    "synthesis": "Fostul internațional Ionel Ganea, în vârstă de 52 de ani, a revenit în fotbal în calitate de antrenor principal. După o pauză de cinci ani, marcată de evenimente personale, Ganea preia echipa Chimia Victoria, din județul Brașov, care activează în eșalonul al patrulea."
   },
   {
     "url": "https://digi24.ro/stiri/externe/sua/administratia-trump-suspenda-majoritatea-controalelor-ice-in-trafic-dupa-ce-agentii-au-impuscat-mortal-doi-migranti-3862789",
@@ -292,6 +532,26 @@
       "Spania"
     ],
     "icon": "ball-football",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://bbc.co.uk/sport/football/articles/czx5x14v5w2o?at_medium=RSS&at_campaign=rss",
+    "original_link": "https://www.bbc.co.uk/sport/football/articles/czx5x14v5w2o?at_medium=RSS&at_campaign=rss",
+    "source": "bbc_europe",
+    "source_name": "BBC Europe",
+    "source_lang": "en",
+    "title": "Deschamps, un final neașteptat pentru cariera sa la naționala Franței",
+    "category": "sport",
+    "published": "2026-07-15T05:32:11+00:00",
+    "model": "B",
+    "teaser": "Didier Deschamps își încheie cariera lungă și de succes la echipa națională a Franței, nu așa cum și-ar fi dorit, ci în meciul pentru locul 3 la Cupa Mondială.",
+    "entities": [
+      "Didier Deschamps",
+      "Franța"
+    ],
+    "icon": "trophy",
     "processed_by": "gemini",
     "prompt_version": "v2-esenta",
     "featured": false
@@ -621,6 +881,26 @@
       "Public First"
     ],
     "icon": "percentage",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://bbc.co.uk/news/articles/cp8l87784ngo?at_medium=RSS&at_campaign=rss",
+    "original_link": "https://www.bbc.co.uk/news/articles/cp8l87784ngo?at_medium=RSS&at_campaign=rss",
+    "source": "bbc_europe",
+    "source_name": "BBC Europe",
+    "source_lang": "en",
+    "title": "Incendiile din Spania fac 7 victime britanice",
+    "category": "extern",
+    "published": "2026-07-15T01:03:07+00:00",
+    "model": "B",
+    "teaser": "Autoritățile spaniole au confirmat marți decesul a 12 cetățeni străini, dintre care șapte sunt cetățeni britanici, în urma incendiilor devastatoare care au afectat regiunea.",
+    "entities": [
+      "Spania",
+      "Marea Britanie"
+    ],
+    "icon": "flame",
     "processed_by": "gemini",
     "prompt_version": "v2-esenta",
     "featured": false
@@ -1559,6 +1839,28 @@
       "Congo"
     ],
     "icon": "plane",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://bbc.co.uk/news/articles/c33y3rxezxdo?at_medium=RSS&at_campaign=rss",
+    "original_link": "https://www.bbc.co.uk/news/articles/c33y3rxezxdo?at_medium=RSS&at_campaign=rss",
+    "source": "bbc_europe",
+    "source_name": "BBC Europe",
+    "source_lang": "en",
+    "title": "Keir Starmer, primul premier britanic distins cu o înaltă onoare franceză",
+    "category": "politic",
+    "published": "2026-07-14T19:27:49+00:00",
+    "model": "B",
+    "teaser": "Președintele francez Emmanuel Macron l-a lăudat pe Keir Starmer pentru decența sa și contribuția la securitatea Europei și sprijinul acordat Ucrainei, acordându-i cea mai înaltă distincție franceză.",
+    "entities": [
+      "Keir Starmer",
+      "Emmanuel Macron",
+      "Franța",
+      "Ucraina"
+    ],
+    "icon": "certificate",
     "processed_by": "gemini",
     "prompt_version": "v2-esenta",
     "featured": false
@@ -25396,458 +25698,6 @@
       "Ucraina"
     ],
     "icon": "gas-station",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://digi24.ro/stiri/externe/o-femeie-din-japonia-a-fost-arestata-dupa-ce-i-ar-fi-cusut-buzele-unei-alte-femei-cu-care-locuia-3852877",
-    "original_link": "https://www.digi24.ro/stiri/externe/o-femeie-din-japonia-a-fost-arestata-dupa-ce-i-ar-fi-cusut-buzele-unei-alte-femei-cu-care-locuia-3852877",
-    "source": "extern",
-    "source_name": "Digi24 Extern",
-    "source_lang": "ro",
-    "title": "Arestare în Japonia: Femeie acuzată că i-a cusut buzele colegei de apartament",
-    "category": "extern",
-    "published": "2026-07-08T10:15:33+00:00",
-    "model": "C",
-    "sources": [
-      {
-        "name": "Digi24 Extern",
-        "url": "https://www.digi24.ro/stiri/externe/o-femeie-din-japonia-a-fost-arestata-dupa-ce-i-ar-fi-cusut-buzele-unei-alte-femei-cu-care-locuia-3852877"
-      },
-      {
-        "name": "G4Media",
-        "url": "https://www.g4media.ro/femeie-arestata-in-japonia-pentru-ca-i-ar-fi-cusut-buzele-colegei-de-apartament.html"
-      }
-    ],
-    "first_source": "Digi24 Extern",
-    "synthesis": "O femeie de 49 de ani, angajată cu jumătate de normă din prefectura Ibaraki, Japonia, a fost arestată de poliție. Ea este acuzată că i-ar fi cusut buzele unei alte femei cu care locuia. Incidentul a fost raportat de agenția de presă Kyodo.",
-    "entities": [
-      "Japonia",
-      "Ibaraki"
-    ],
-    "icon": "gavel",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://start-up.ro/review-assassin-s-creed-black-flag-resynced-reintoarcere-triumfala",
-    "original_link": "https://start-up.ro/review-assassin-s-creed-black-flag-resynced-reintoarcere-triumfala/",
-    "source": "startup",
-    "source_name": "Start-up.ro",
-    "source_lang": "ro",
-    "title": "Assassin's Creed Black Flag: O revenire apreciată",
-    "category": "tech",
-    "published": "2026-07-08T10:00:01+00:00",
-    "model": "B",
-    "teaser": "Jocul Assassin's Creed IV: Black Flag, lansat în 2013, este considerat de mulți fani cel mai bun titlu al seriei. Recenzia explorează motivele acestei aprecieri.",
-    "entities": [
-      "Assassin's Creed Black Flag",
-      "Ubisoft"
-    ],
-    "icon": null,
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://theguardian.com/world/live/2026/jul/08/trump-nato-summit-greenland-us-turkey-rutte-marine-le-pen-europe-latest-news-updates",
-    "original_link": "https://www.theguardian.com/world/live/2026/jul/08/trump-nato-summit-greenland-us-turkey-rutte-marine-le-pen-europe-latest-news-updates",
-    "source": "guardian_eu",
-    "source_name": "The Guardian",
-    "source_lang": "en",
-    "title": "Trump consideră Groenlanda importantă pentru SUA, nu pentru Danemarca",
-    "category": "extern",
-    "published": "2026-07-08T09:21:33+00:00",
-    "model": "B",
-    "teaser": "Președintele american Donald Trump a declarat la o reuniune NATO că Groenlanda este crucială pentru Statele Unite, dar nu și pentru Danemarca, și a reiterat dorința ca SUA să preia controlul insulei.",
-    "entities": [
-      "Trump",
-      "Groenlanda",
-      "SUA",
-      "Danemarca",
-      "NATO"
-    ],
-    "icon": "globe",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://start-up.ro/startup-ul-romanesc-licenseware-a-primit-o-investitie-de-800-000-de-euro-bcr-seed-starter-conduce-runda-cu-500-000-euro",
-    "original_link": "https://start-up.ro/startup-ul-romanesc-licenseware-a-primit-o-investitie-de-800-000-de-euro-bcr-seed-starter-conduce-runda-cu-500-000-euro/",
-    "source": "startup",
-    "source_name": "Start-up.ro",
-    "source_lang": "ro",
-    "title": "Licenseware, startup românesc, atrage 800.000 euro investiție",
-    "category": "economic",
-    "published": "2026-07-08T09:21:28+00:00",
-    "model": "B",
-    "teaser": "BCR Seed Starter conduce o rundă de finanțare de 800.000 de euro pentru startup-ul românesc Licenseware, contribuind cu 500.000 de euro. Investiția vizează dezvoltarea companiei.",
-    "entities": [
-      "Licenseware",
-      "BCR Seed Starter"
-    ],
-    "icon": "currency-euro",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://autocritica.ro/live-news/suv-ul-electric-leapmotor-b03x-autonomie-de-pana-la-382-km-pret-de-la-24-900-de-euro",
-    "original_link": "https://www.autocritica.ro/live-news/suv-ul-electric-leapmotor-b03x-autonomie-de-pana-la-382-km-pret-de-la-24-900-de-euro/",
-    "source": "autocritica",
-    "source_name": "AutoCritica",
-    "source_lang": "ro",
-    "title": "Leapmotor B03X, SUV electric cu autonomie 382 km, disponibil în Europa",
-    "category": "tech",
-    "published": "2026-07-08T09:05:27+00:00",
-    "model": "B",
-    "teaser": "Leapmotor a deschis comenzile pentru SUV-ul electric B03X în Europa, cu autonomie de până la 382 km și prețuri începând de la 24.900 de euro. Modelul dispune de un motor de 197 CP.",
-    "entities": [
-      "Leapmotor",
-      "B03X"
-    ],
-    "icon": "car",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://moldova.europalibera.org/a/ucraina-a-lovit-alte-petroliere-din-flota-fantoma-rusa-dupa-ce-a-atacat-cu-drone-la-omsk-dincolo-de-urali/33799230.html",
-    "original_link": "https://moldova.europalibera.org/a/ucraina-a-lovit-alte-petroliere-din-flota-fantoma-rusa-dupa-ce-a-atacat-cu-drone-la-omsk-dincolo-de-urali/33799230.html",
-    "source": "el_moldova",
-    "source_name": "Europa Liberă",
-    "source_lang": "ro",
-    "title": "Ucraina a lovit 19 nave-cisternă rusești în 72 de ore",
-    "category": "extern",
-    "published": "2026-07-08T08:55:00+00:00",
-    "model": "C",
-    "sources": [
-      {
-        "name": "Europa Liberă",
-        "url": "https://moldova.europalibera.org/a/ucraina-a-lovit-alte-petroliere-din-flota-fantoma-rusa-dupa-ce-a-atacat-cu-drone-la-omsk-dincolo-de-urali/33799230.html"
-      },
-      {
-        "name": "G4Media",
-        "url": "https://www.g4media.ro/drone-ucrainene-au-lovit-19-petroliere-din-asa-numita-flota-fantoma-a-rusiei-in-72-de-ore-potrivit-kievului.html"
-      }
-    ],
-    "first_source": "Europa Liberă",
-    "synthesis": "Ucraina a atacat cu drone 19 petroliere și un cargobot din \"flota fantomă\" a Rusiei în Marea Azov, în ultimele 72 de ore. Aceste nave sunt folosite de Rusia pentru a ocoli sancțiunile internaționale privind exporturile de hidrocarburi. Eforturile Ucrainei vizează izolarea Crimeei.",
-    "entities": [
-      "Ucraina",
-      "Rusia",
-      "Marea Azov",
-      "Crimeea"
-    ],
-    "icon": "ship",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://economedia.ro/bucurestiul-va-gazdui-biroul-regional-al-viitoarei-banci-pentru-aparare-securitate-si-rezilienta.html",
-    "original_link": "https://economedia.ro/bucurestiul-va-gazdui-biroul-regional-al-viitoarei-banci-pentru-aparare-securitate-si-rezilienta.html",
-    "source": "economedia",
-    "source_name": "Economedia",
-    "source_lang": "ro",
-    "title": "Bucureștiul va găzdui biroul regional al Băncii pentru Apărare, Securitate și Reziliență",
-    "category": "politic",
-    "published": "2026-07-08T08:52:17+00:00",
-    "model": "C",
-    "sources": [
-      {
-        "name": "Economedia",
-        "url": "https://economedia.ro/bucurestiul-va-gazdui-biroul-regional-al-viitoarei-banci-pentru-aparare-securitate-si-rezilienta.html"
-      },
-      {
-        "name": "Curs de Guvernare",
-        "url": "https://cursdeguvernare.ro/la-bucuresti-birou-pentru-flancul-sed-al-bancii-penrtu-aparare.html"
-      }
-    ],
-    "first_source": "Economedia",
-    "synthesis": "Bucureștiul a fost ales să găzduiască biroul regional pentru flancul de sud al Băncii pentru Apărare, Securitate și Reziliență (DSRB). Decizia a fost luată în urma negocierilor între statele fondatoare, România devenind astfel stat-fondator și căpătând o poziție importantă în arhitectura financiară a securității europene.",
-    "entities": [
-      "București",
-      "Banca pentru Apărare, Securitate și Reziliență",
-      "România"
-    ],
-    "icon": "building-bank",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://economica.net/romania-a-devenit-stat-fondator-al-bancii-pentru-aparare-securitate-si-rezilienta_957420.html",
-    "original_link": "https://www.economica.net/romania-a-devenit-stat-fondator-al-bancii-pentru-aparare-securitate-si-rezilienta_957420.html",
-    "source": "economica",
-    "source_name": "Economica",
-    "source_lang": "ro",
-    "title": "România, stat fondator și gazdă pentru Banca pentru Apărare, Securitate și Reziliență",
-    "category": "economic",
-    "published": "2026-07-08T08:22:44+00:00",
-    "model": "C",
-    "sources": [
-      {
-        "name": "Economica",
-        "url": "https://www.economica.net/romania-a-devenit-stat-fondator-al-bancii-pentru-aparare-securitate-si-rezilienta_957420.html"
-      },
-      {
-        "name": "Știrile ProTV",
-        "url": "https://stirileprotv.ro/stiri/actualitate/romania-va-gazdui-un-sediu-al-bancii-nato-ca-stat-fondator-ce-face-banca-pentru-aparare-securitate-si-rezilienta-dsrb.html"
-      }
-    ],
-    "first_source": "Economica",
-    "synthesis": "România devine stat fondator al Băncii pentru Apărare, Securitate şi Rezilienţă (DSRB), o instituție financiară internațională dedicată finanțării proiectelor din apărare și infrastructură critică. Bucureștiul va găzdui biroul regional al băncii pentru flancul sudic. Inițiativa este susținută de Canada, cu cel puțin 10 țări fondatoare.",
-    "entities": [
-      "Banca pentru Apărare, Securitate şi Rezilienţă",
-      "România",
-      "București",
-      "Canada"
-    ],
-    "icon": "building-bank",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://stirileprotv.ro/stiri/actualitate/mapn-romania-bulgaria-si-turcia-extind-misiunile-de-combatere-a-minelor-marine-din-marea-neagra.html",
-    "original_link": "https://stirileprotv.ro/stiri/actualitate/mapn-romania-bulgaria-si-turcia-extind-misiunile-de-combatere-a-minelor-marine-din-marea-neagra.html",
-    "source": "protv",
-    "source_name": "Știrile ProTV",
-    "source_lang": "ro",
-    "title": "România, Bulgaria și Turcia extind cooperarea antimină în Marea Neagră",
-    "category": "politic",
-    "published": "2026-07-08T08:17:35+00:00",
-    "model": "C",
-    "sources": [
-      {
-        "name": "Știrile ProTV",
-        "url": "https://stirileprotv.ro/stiri/actualitate/mapn-romania-bulgaria-si-turcia-extind-misiunile-de-combatere-a-minelor-marine-din-marea-neagra.html"
-      },
-      {
-        "name": "Digi24",
-        "url": "https://www.digi24.ro/stiri/romania-bulgaria-si-turcia-isi-extind-misiunile-de-combatere-a-minelor-marine-din-marea-neagra-anuntul-mapn-3852617"
-      },
-      {
-        "name": "HotNews",
-        "url": "https://hotnews.ro/romania-bulgaria-si-turcia-extind-operatiunile-de-deminare-din-marea-neagra-anuntul-bucurestiului-la-summitul-nato-2294982"
-      }
-    ],
-    "first_source": "Știrile ProTV",
-    "synthesis": "România, Bulgaria și Turcia au semnat un amendament pentru extinderea misiunilor Grupului operativ de combatere a minelor marine din Marea Neagră. Decizia, anunțată miercuri de MApN, a fost luată în marja Summitului NATO de la Ankara și include protecția infrastructurii critice.",
-    "entities": [
-      "România",
-      "Bulgaria",
-      "Turcia",
-      "NATO"
-    ],
-    "icon": "ship",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://zf.ro/business-hi-tech/bcr-seed-starter-investeste-500-000-euro-licenseware-startup-23191009",
-    "original_link": "https://www.zf.ro/business-hi-tech/bcr-seed-starter-investeste-500-000-euro-licenseware-startup-23191009",
-    "source": "zf",
-    "source_name": "Ziarul Financiar",
-    "source_lang": "ro",
-    "title": "BCR Seed Starter investește 500.000 euro în Licenseware",
-    "category": "economic",
-    "published": "2026-07-08T08:06:00+00:00",
-    "model": "C",
-    "sources": [
-      {
-        "name": "Ziarul Financiar",
-        "url": "https://www.zf.ro/business-hi-tech/bcr-seed-starter-investeste-500-000-euro-licenseware-startup-23191009"
-      },
-      {
-        "name": "Start-up.ro",
-        "url": "https://start-up.ro/startup-ul-romanesc-licenseware-a-primit-o-investitie-de-800-000-de-euro-bcr-seed-starter-conduce-runda-cu-500-000-euro/"
-      }
-    ],
-    "first_source": "Ziarul Financiar",
-    "synthesis": "BCR Seed Starter, fondul de capital de risc al băncii, a condus o rundă de investiții de aproximativ 800.000 de euro în startup-ul românesc Licenseware. Din suma totală, BCR Seed Starter a alocat 500.000 de euro pentru a sprijini dezvoltarea platformei SaaS de management al licențelor software. La rundă au participat și Inspire Capital, investitori de tip business angel și acționari existenți.",
-    "entities": [
-      "BCR Seed Starter",
-      "Licenseware",
-      "Inspire Capital"
-    ],
-    "icon": "building-bank",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://start-up.ro/samsung-galaxy-fold8-samsung-galaxy-fold8-ultra-samsung-galaxy-flip8-tot-ce-stim-inainte-de-lansarea-oficiala",
-    "original_link": "https://start-up.ro/samsung-galaxy-fold8-samsung-galaxy-fold8-ultra-samsung-galaxy-flip8-tot-ce-stim-inainte-de-lansarea-oficiala/",
-    "source": "startup",
-    "source_name": "Start-up.ro",
-    "source_lang": "ro",
-    "title": "Samsung pregătește lansarea seriilor Galaxy Fold8 și Flip8",
-    "category": "tech",
-    "published": "2026-07-08T08:02:29+00:00",
-    "model": "B",
-    "teaser": "Noile modele Samsung Galaxy Fold8, Fold8 Ultra și Flip8 se apropie de lansarea oficială. Compania își consolidează poziția pe piața telefoanelor pliabile, unde a dominat timp de șapte ani.",
-    "entities": [
-      "Samsung",
-      "Galaxy Fold8",
-      "Galaxy Flip8"
-    ],
-    "icon": "device-mobile",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://autocritica.ro/live-news/omv-petrom-a-finalizat-proiectul-de-instalare-a-300-de-puncte-de-incarcare-in-romania",
-    "original_link": "https://www.autocritica.ro/live-news/omv-petrom-a-finalizat-proiectul-de-instalare-a-300-de-puncte-de-incarcare-in-romania/",
-    "source": "autocritica",
-    "source_name": "AutoCritica",
-    "source_lang": "ro",
-    "title": "OMV Petrom instalează 304 puncte de încărcare pentru mașini electrice în România",
-    "category": "tech",
-    "published": "2026-07-08T07:43:30+00:00",
-    "model": "B",
-    "teaser": "OMV Petrom a finalizat un proiect european, instalând 304 puncte de încărcare pentru vehicule electrice în România. Acestea sunt amplasate pe coridorul european TEN-T în 74 de locații.",
-    "entities": [
-      "OMV Petrom",
-      "România"
-    ],
-    "icon": "gas-station",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://gsp.ro/sporturi/tenis/punctul-turneului-de-la-wimbledon-tenis-958148.html",
-    "original_link": "https://www.gsp.ro/sporturi/tenis/punctul-turneului-de-la-wimbledon-tenis-958148.html",
-    "source": "gsp",
-    "source_name": "GSP",
-    "source_lang": "ro",
-    "title": "Punctul turneului la Wimbledon, aplaudat de spectatori",
-    "category": "sport",
-    "published": "2026-07-08T07:09:59+00:00",
-    "model": "B",
-    "teaser": "Felix Auger-Aliassime și Alejandro Davidovich Fokina au oferit un schimb spectaculos de mingi la Wimbledon, creând punctul turneului, moment aplaudat îndelung de publicul prezent pe terenul de iarbă.",
-    "entities": [
-      "Wimbledon",
-      "Felix Auger-Aliassime",
-      "Alejandro Davidovich Fokina"
-    ],
-    "icon": "ball-tennis",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://digi24.ro/stiri/externe/zgarie-nori-din-new-york-cu-37-de-etaje-evacuat-este-risc-de-prabusire-localizata-3852271",
-    "original_link": "https://www.digi24.ro/stiri/externe/zgarie-nori-din-new-york-cu-37-de-etaje-evacuat-este-risc-de-prabusire-localizata-3852271",
-    "source": "extern",
-    "source_name": "Digi24 Extern",
-    "source_lang": "ro",
-    "title": "Zgârie-nori din New York evacuat din cauza riscului de prăbușire",
-    "category": "general",
-    "published": "2026-07-08T07:04:07+00:00",
-    "model": "B",
-    "teaser": "Un zgârie-nori de 37 de etaje din Manhattan, New York, a fost evacuat din cauza cedării unor coloane de structură, existând risc de prăbușire parțială. Primarul a confirmat instabilitatea clădirii.",
-    "entities": [
-      "New York",
-      "Manhattan"
-    ],
-    "icon": "building-monument",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://digi24.ro/stiri/externe/zgarie-nori-din-new-york-cu-37-de-etaje-evacuat-este-risc-de-prabusire-localizata-3852271",
-    "original_link": "https://www.digi24.ro/stiri/externe/zgarie-nori-din-new-york-cu-37-de-etaje-evacuat-este-risc-de-prabusire-localizata-3852271",
-    "source": "digi24",
-    "source_name": "Digi24",
-    "source_lang": "ro",
-    "title": "Zgârie-nori din New York evacuat din cauza riscului de prăbușire",
-    "category": "general",
-    "published": "2026-07-08T07:04:07+00:00",
-    "model": "B",
-    "teaser": "Un zgârie-nori de 37 de etaje din Manhattan, New York, a fost evacuat din cauza cedării unor coloane de structură, existând risc de prăbușire parțială. Primarul a confirmat instabilitatea clădirii.",
-    "entities": [
-      "New York",
-      "Manhattan"
-    ],
-    "icon": "building-monument",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://spotmedia.ro/stiri/eveniment/nicusor-dan-la-summit-ul-nato-de-la-ankara-o-sa-insistam-pe-importanta-marii-negre-nu-vad-un-risc-de-retragere-a-trupelor-americane-de-pe-flancul-estic-video",
-    "original_link": "https://spotmedia.ro/stiri/eveniment/nicusor-dan-la-summit-ul-nato-de-la-ankara-o-sa-insistam-pe-importanta-marii-negre-nu-vad-un-risc-de-retragere-a-trupelor-americane-de-pe-flancul-estic-video",
-    "source": "spotmedia",
-    "source_name": "Spotmedia",
-    "source_lang": "ro",
-    "title": "România insistă pe importanța Mării Negre la Summitul NATO de la Ankara",
-    "category": "politic",
-    "published": "2026-07-08T06:43:33+00:00",
-    "model": "C",
-    "sources": [
-      {
-        "name": "Spotmedia",
-        "url": "https://spotmedia.ro/stiri/eveniment/nicusor-dan-la-summit-ul-nato-de-la-ankara-o-sa-insistam-pe-importanta-marii-negre-nu-vad-un-risc-de-retragere-a-trupelor-americane-de-pe-flancul-estic-video"
-      },
-      {
-        "name": "Digi24 Extern",
-        "url": "https://www.digi24.ro/stiri/externe/sua/summitul-nato-de-la-ankara-a-doua-zi-trump-se-intalneste-cu-zelenski-in-timp-ce-aliatii-incearca-sa-mentina-unitatea-aliantei-3851977"
-      },
-      {
-        "name": "Curs de Guvernare",
-        "url": "https://cursdeguvernare.ro/video-nicusor-dan-de-la-summitul-nato-nu-vad-un-risc-de-retragere-a-trupelor-americane-de-pe-flancul-estic-romania-semneaza-un-acord-cu-turcia-si-bulgaria-pe-deminare-si-insista-pe-sec.html"
-      }
-    ],
-    "first_source": "Spotmedia",
-    "synthesis": "La Summitul NATO de la Ankara, România, prin președintele Nicușor Dan, a subliniat importanța strategică a regiunii Mării Negre. S-a discutat despre amenințarea rusă și s-a făcut un bilanț al cheltuielilor militare. De asemenea, s-a semnat un acord de deminare cu Turcia și Bulgaria, iar președintele a exclus riscul retragerii trupelor americane de pe flancul estic.",
-    "entities": [
-      "NATO",
-      "Ankara",
-      "Nicușor Dan",
-      "Marea Neagră"
-    ],
-    "icon": "flag",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://digi24.ro/stiri/externe/argentina-va-construi-un-nou-reactor-nuclear-de-12-miliarde-de-dolari-toti-banii-vor-veni-din-investitii-private-3852283",
-    "original_link": "https://www.digi24.ro/stiri/externe/argentina-va-construi-un-nou-reactor-nuclear-de-12-miliarde-de-dolari-toti-banii-vor-veni-din-investitii-private-3852283",
-    "source": "extern",
-    "source_name": "Digi24 Extern",
-    "source_lang": "ro",
-    "title": "Argentina construiește reactor nuclear de 1,2 miliarde dolari din fonduri private",
-    "category": "economic",
-    "published": "2026-07-08T06:34:20+00:00",
-    "model": "C",
-    "sources": [
-      {
-        "name": "Digi24 Extern",
-        "url": "https://www.digi24.ro/stiri/externe/argentina-va-construi-un-nou-reactor-nuclear-de-12-miliarde-de-dolari-toti-banii-vor-veni-din-investitii-private-3852283"
-      },
-      {
-        "name": "Economica",
-        "url": "https://www.economica.net/argentina-va-construi-un-nou-reactor-nuclear-primul-finantat-integral-din-investitii-private_957377.html"
-      }
-    ],
-    "first_source": "Digi24 Extern",
-    "synthesis": "Argentina va construi un nou reactor nuclear lângă Buenos Aires, cu o investiție privată totală de 1,2 miliarde de dolari. Proiectul vine într-un context în care Comisia Națională pentru Energie Atomică (CNEA) se confruntă cu măsuri de austeritate. Acesta va fi primul reactor nuclear din țară finanțat integral din sectorul privat.",
-    "entities": [
-      "Argentina",
-      "Buenos Aires",
-      "CNEA"
-    ],
-    "icon": "building-factory",
     "processed_by": "gemini",
     "prompt_version": "v2-esenta",
     "featured": false
