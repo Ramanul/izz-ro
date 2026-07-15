@@ -1,5 +1,347 @@
 [
   {
+    "url": "https://politico.eu/article/rachel-reeves-isnt-gone-yet-but-the-city-already-misses-her",
+    "original_link": "https://www.politico.eu/article/rachel-reeves-isnt-gone-yet-but-the-city-already-misses-her/?utm_source=RSS_Feed&utm_medium=RSS&utm_campaign=RSS_Syndication",
+    "source": "politico_eu",
+    "source_name": "Politico EU",
+    "source_lang": "en",
+    "title": "Rachel Reeves, apreciată de sectorul financiar britanic",
+    "category": "economic",
+    "published": "2026-07-15T13:45:42+00:00",
+    "model": "B",
+    "teaser": "Rachel Reeves, ministrul de finanțe al Partidului Laburist, a implementat politici favorabile sectorului financiar, inclusiv simplificarea reglementărilor pentru bănci și asigurători.",
+    "entities": [
+      "Rachel Reeves",
+      "Partidul Laburist"
+    ],
+    "icon": "building-bank",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://economica.net/ucraina-porturile-de-la-marea-neagra-au-pierdut-o-treime-din-capacitatea-de-export-de-cereale_959450.html",
+    "original_link": "https://www.economica.net/ucraina-porturile-de-la-marea-neagra-au-pierdut-o-treime-din-capacitatea-de-export-de-cereale_959450.html",
+    "source": "economica",
+    "source_name": "Economica",
+    "source_lang": "ro",
+    "title": "Ucraina: Atacurile rusești au redus capacitatea de export de cereale cu o treime",
+    "category": "economic",
+    "published": "2026-07-15T13:18:23+00:00",
+    "model": "C",
+    "sources": [
+      {
+        "name": "Economica",
+        "url": "https://www.economica.net/ucraina-porturile-de-la-marea-neagra-au-pierdut-o-treime-din-capacitatea-de-export-de-cereale_959450.html"
+      },
+      {
+        "name": "G4Media",
+        "url": "https://www.g4media.ro/porturile-ucrainene-de-la-marea-neagra-au-pierdut-o-treime-din-capacitatea-de-export-de-cereale-in-urma-atacurilor-rusesti-cu-rachete-si-drone.html"
+      }
+    ],
+    "first_source": "Economica",
+    "synthesis": "Ucraina a pierdut aproximativ o treime din capacitatea sa de export de cereale prin porturile de la Marea Neagră. Sindicatul fermierilor ucraineni (UAC) a avertizat că intensificarea atacurilor rusești cu rachete și drone a cauzat această pierdere semnificativă, afectând exporturile vitale ale țării.",
+    "entities": [
+      "Ucraina",
+      "Marea Neagră",
+      "Rusia",
+      "UAC"
+    ],
+    "icon": "ship",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://theguardian.com/world/2026/jul/15/gaza-flotilla-activist-rape-complaint-israel-anna-liedtke",
+    "original_link": "https://www.theguardian.com/world/2026/jul/15/gaza-flotilla-activist-rape-complaint-israel-anna-liedtke",
+    "source": "guardian_eu",
+    "source_name": "The Guardian",
+    "source_lang": "en",
+    "title": "Activistă acuză viol în detenție israeliană",
+    "category": "extern",
+    "published": "2026-07-15T13:00:55+00:00",
+    "model": "B",
+    "teaser": "Anna Liedtke a depus o plângere penală în Israel, susținând că a fost violată de gardiene în timp ce era reținută, ca parte a unei tentative de a reduce la tăcere activiștii.",
+    "entities": [
+      "Anna Liedtke",
+      "Israel"
+    ],
+    "icon": "gavel",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://spotmedia.ro/stiri/eveniment/mae-un-roman-a-murit-si-altul-a-fost-grav-ranit-intr-un-incendiu-la-bruxelles",
+    "original_link": "https://spotmedia.ro/stiri/eveniment/mae-un-roman-a-murit-si-altul-a-fost-grav-ranit-intr-un-incendiu-la-bruxelles",
+    "source": "spotmedia",
+    "source_name": "Spotmedia",
+    "source_lang": "ro",
+    "title": "Român mort și altul rănit într-un incendiu la Bruxelles",
+    "category": "extern",
+    "published": "2026-07-15T12:51:08+00:00",
+    "model": "C",
+    "sources": [
+      {
+        "name": "Spotmedia",
+        "url": "https://spotmedia.ro/stiri/eveniment/mae-un-roman-a-murit-si-altul-a-fost-grav-ranit-intr-un-incendiu-la-bruxelles"
+      },
+      {
+        "name": "Digi24 Extern",
+        "url": "https://www.digi24.ro/stiri/externe/un-roman-a-murit-si-altul-a-fost-ranit-in-incendiul-izbucnit-la-o-cladire-din-bruxelles-anuntul-mae-3863429"
+      }
+    ],
+    "first_source": "Spotmedia",
+    "synthesis": "Un cetățean român și-a pierdut viața, iar un altul a fost grav rănit într-un incendiu izbucnit la o clădire în construcție din Bruxelles. Persoana rănită a fost transportată la spital pentru îngrijiri medicale. Informația a fost confirmată de Ministerul Afacerilor Externe al României, pe baza datelor primite de la autoritățile belgiene.",
+    "entities": [
+      "MAE",
+      "Bruxelles"
+    ],
+    "icon": "flame",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://dw.com/en/the-10-dark-days-of-evian/a-77966381?maca=en-rss-en-eu-2092-rdf",
+    "original_link": "https://www.dw.com/en/the-10-dark-days-of-evian/a-77966381?maca=en-rss-en-eu-2092-rdf",
+    "source": "dw_europe",
+    "source_name": "DW Europe",
+    "source_lang": "en",
+    "title": "Conferința de la Evian: Lumea a refuzat refugiații evrei",
+    "category": "extern",
+    "published": "2026-07-15T12:46:00+00:00",
+    "model": "B",
+    "teaser": "În iulie 1938, la Evian, Franța, o conferință internațională a decis soarta evreilor din Germania și Austria. Aproape nicio țară nu a fost dispusă să-i primească.",
+    "entities": [
+      "Evian",
+      "Franța",
+      "Germania",
+      "Austria"
+    ],
+    "icon": "gavel",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://politico.eu/article/eu-exclude-fighting-age-men-ukraine-refugee-scheme",
+    "original_link": "https://www.politico.eu/article/eu-exclude-fighting-age-men-ukraine-refugee-scheme/?utm_source=RSS_Feed&utm_medium=RSS&utm_campaign=RSS_Syndication",
+    "source": "politico_eu",
+    "source_name": "Politico EU",
+    "source_lang": "en",
+    "title": "UE restricționează refugiații ucraineni de vârstă militară",
+    "category": "politic",
+    "published": "2026-07-15T12:43:23+00:00",
+    "model": "B",
+    "teaser": "Uniunea Europeană va limita accesul bărbaților ucraineni apți de luptă la schemele de refugiu. Măsurile nu afectează persoanele deja protejate.",
+    "entities": [
+      "Uniunea Europeană",
+      "Ucraina"
+    ],
+    "icon": "flag",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://moldova.europalibera.org/a/senatul-sua-prezinta-o-versiune-revizuita-a-proiectului-de-lege-privind-sanctiunile-impotriva-rusiei/33804063.html",
+    "original_link": "https://moldova.europalibera.org/a/senatul-sua-prezinta-o-versiune-revizuita-a-proiectului-de-lege-privind-sanctiunile-impotriva-rusiei/33804063.html",
+    "source": "el_moldova",
+    "source_name": "Europa Liberă",
+    "source_lang": "ro",
+    "title": "Senatul SUA propune noi sancțiuni economice împotriva Rusiei",
+    "category": "economic",
+    "published": "2026-07-15T12:33:32+00:00",
+    "model": "B",
+    "teaser": "Un grup bipartizan de senatori americani a prezentat o versiune revizuită a legii privind sancțiunile împotriva Rusiei, vizând reducerea finanțării războiului de către Moscova.",
+    "entities": [
+      "SUA",
+      "Rusia",
+      "Moscova"
+    ],
+    "icon": "currency-euro",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://economedia.ro/romania-participa-la-proiecte-pilot-lansate-de-comisia-europeana-pentru-sprijinirea-lucratorilor-expusi-riscului-de-somaj-mai-ales-in-industria-autovehiculelor.html",
+    "original_link": "https://economedia.ro/romania-participa-la-proiecte-pilot-lansate-de-comisia-europeana-pentru-sprijinirea-lucratorilor-expusi-riscului-de-somaj-mai-ales-in-industria-autovehiculelor.html",
+    "source": "economedia",
+    "source_name": "Economedia",
+    "source_lang": "ro",
+    "title": "România participă la proiecte UE pentru recalificarea lucrătorilor din industria auto",
+    "category": "economic",
+    "published": "2026-07-15T12:08:30+00:00",
+    "model": "C",
+    "sources": [
+      {
+        "name": "Economedia",
+        "url": "https://economedia.ro/romania-participa-la-proiecte-pilot-lansate-de-comisia-europeana-pentru-sprijinirea-lucratorilor-expusi-riscului-de-somaj-mai-ales-in-industria-autovehiculelor.html"
+      },
+      {
+        "name": "Economica",
+        "url": "https://www.economica.net/ajutor-pentru-angajatii-din-industria-auto-expusi-riscului-de-somaj-inclusiv-in-romania-anunt-de-la-comisia-europeana_959418.html"
+      },
+      {
+        "name": "Curs de Guvernare",
+        "url": "https://cursdeguvernare.ro/sase-proiecte-pilot-europene-de-145-mil-e-pentru-recalificarea-lucratorilor-din-industria-auto-romania-este-printre-statele-participante.html"
+      }
+    ],
+    "first_source": "Economedia",
+    "synthesis": "Comisia Europeană a lansat șase proiecte-pilot, cu un buget de 14,5 milioane euro, pentru sprijinirea a 1.000 de lucrători din industria auto expuși riscului de șomaj. România este printre cele zece state membre participante la aceste inițiative, care vizează formarea profesională la locul de muncă.",
+    "entities": [
+      "Comisia Europeană",
+      "România",
+      "Uniunea competențelor"
+    ],
+    "icon": "building-factory",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://spotmedia.ro/stiri/eveniment/acord-ue-ucraina-pentru-productia-de-drone-o-combinatie-win-win",
+    "original_link": "https://spotmedia.ro/stiri/eveniment/acord-ue-ucraina-pentru-productia-de-drone-o-combinatie-win-win",
+    "source": "spotmedia",
+    "source_name": "Spotmedia",
+    "source_lang": "ro",
+    "title": "UE și Ucraina semnează acord pentru producția comună de drone",
+    "category": "extern",
+    "published": "2026-07-15T12:06:31+00:00",
+    "model": "C",
+    "sources": [
+      {
+        "name": "Spotmedia",
+        "url": "https://spotmedia.ro/stiri/eveniment/acord-ue-ucraina-pentru-productia-de-drone-o-combinatie-win-win"
+      },
+      {
+        "name": "Știrile ProTV",
+        "url": "https://stirileprotv.ro/stiri/international/europa-si-ucraina-isi-consolideaza-colaborarea-printr-un-acord-privind-productia-de-drone-mesajul-ursulei-von-der-leyen.html"
+      },
+      {
+        "name": "HotNews",
+        "url": "https://hotnews.ro/ue-si-ucraina-semneaza-un-acord-pentru-productia-comuna-de-drone-ce-ofera-europa-2301271"
+      }
+    ],
+    "first_source": "Spotmedia",
+    "synthesis": "Uniunea Europeană și Ucraina au încheiat un acord pentru producția comună de drone, combinând expertiza ucraineană cu capacitatea industrială europeană. Acordul vizează sporirea producției și proiecte comune, UE oferind expertiză tehnologică, industrială și locații de producție sigure. Anunțul a fost făcut de președinta Comisiei Europene, Ursula von der Leyen.",
+    "entities": [
+      "Uniunea Europeană",
+      "Ucraina",
+      "Ursula von der Leyen"
+    ],
+    "icon": "rocket",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://theguardian.com/commentisfree/2026/jul/15/air-conditioning-access-extreme-heat",
+    "original_link": "https://www.theguardian.com/commentisfree/2026/jul/15/air-conditioning-access-extreme-heat",
+    "source": "guardian_eu",
+    "source_name": "The Guardian",
+    "source_lang": "en",
+    "title": "Accesul la aer condiționat, esențial pentru supraviețuirea caniculei",
+    "category": "general",
+    "published": "2026-07-15T12:00:55+00:00",
+    "model": "B",
+    "teaser": "Supraviețuirea în fața temperaturilor extreme depinde tot mai mult de accesul la aer condiționat, creând o diviziune climatică între țările cu resurse și cele fără.",
+    "entities": [
+      "Europa",
+      "Statele Unite"
+    ],
+    "icon": "sun",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://bbc.co.uk/news/articles/c1kykx3vnyyo?at_medium=RSS&at_campaign=rss",
+    "original_link": "https://www.bbc.co.uk/news/articles/c1kykx3vnyyo?at_medium=RSS&at_campaign=rss",
+    "source": "bbc_europe",
+    "source_name": "BBC Europe",
+    "source_lang": "en",
+    "title": "Meloni suferă un eșec neașteptat la votul pentru reforma electorală",
+    "category": "politic",
+    "published": "2026-07-15T11:44:28+00:00",
+    "model": "B",
+    "teaser": "Premierul italian Giorgia Meloni a pierdut un vot crucial pentru reforma electorală, declanșând apeluri la demisia sa din partea opoziției înainte de alegerile generale de anul viitor.",
+    "entities": [
+      "Meloni",
+      "Italia"
+    ],
+    "icon": "gavel",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://bbc.co.uk/news/articles/c1dydw0r246o?at_medium=RSS&at_campaign=rss",
+    "original_link": "https://www.bbc.co.uk/news/articles/c1dydw0r246o?at_medium=RSS&at_campaign=rss",
+    "source": "bbc_europe",
+    "source_name": "BBC Europe",
+    "source_lang": "en",
+    "title": "Curierii din Italia intră în grevă din cauza caniculei",
+    "category": "general",
+    "published": "2026-07-15T11:38:37+00:00",
+    "model": "B",
+    "teaser": "Curierii din Milano, Bologna și Florența au declanșat o grevă pentru a cere protecție sporită a sănătății și salarii mai bune în contextul valului de căldură extremă.",
+    "entities": [
+      "Milano",
+      "Bologna",
+      "Florența"
+    ],
+    "icon": "sun",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://theguardian.com/football/2026/jul/15/france-world-cup-semi-final-media-reactions-spain",
+    "original_link": "https://www.theguardian.com/football/2026/jul/15/france-world-cup-semi-final-media-reactions-spain",
+    "source": "guardian_eu",
+    "source_name": "The Guardian",
+    "source_lang": "en",
+    "title": "Presa franceză deplânge înfrângerea echipei naționale la Cupa Mondială",
+    "category": "sport",
+    "published": "2026-07-15T11:28:20+00:00",
+    "model": "B",
+    "teaser": "Jurnaliștii francezi analizează eșecul echipei naționale în semifinala Cupei Mondiale, L'Équipe vorbind despre jucători 'sufocați mental', iar Ouest France despre 'sfârșitul visului american'.",
+    "entities": [
+      "L'Équipe",
+      "Ouest France",
+      "Kylian Mbappé"
+    ],
+    "icon": "ball-football",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://digi24.ro/stiri/externe/pana-totala-de-curent-intr-un-oras-cheie-din-crimeea-dupa-atacurile-ucrainei-traficul-pe-podul-kerci-a-fost-blocat-3863337",
+    "original_link": "https://www.digi24.ro/stiri/externe/pana-totala-de-curent-intr-un-oras-cheie-din-crimeea-dupa-atacurile-ucrainei-traficul-pe-podul-kerci-a-fost-blocat-3863337",
+    "source": "extern",
+    "source_name": "Digi24 Extern",
+    "source_lang": "ro",
+    "title": "Atac ucrainean provoacă pană de curent în Crimeea; Podul Kerci blocat",
+    "category": "extern",
+    "published": "2026-07-15T11:28:20+00:00",
+    "model": "B",
+    "teaser": "Orașul Kerci din Crimeea a rămas fără electricitate după un atac cu drone atribuit Ucrainei. Traficul pe Podul Kerci a fost oprit din cauza exploziilor.",
+    "entities": [
+      "Kerci",
+      "Crimeea",
+      "Ucraina"
+    ],
+    "icon": "bolt",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
     "url": "https://theguardian.com/world/2026/jul/15/james-fergie-chambers-arrest-palestine-aid-trump",
     "original_link": "https://www.theguardian.com/world/2026/jul/15/james-fergie-chambers-arrest-palestine-aid-trump",
     "source": "guardian_eu",
@@ -222,6 +564,27 @@
       "ANAF"
     ],
     "icon": "gavel",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://dw.com/en/volodymyr-zelenskyy-pushes-for-new-government-in-ukraine/a-77959640?maca=en-rss-en-eu-2092-rdf",
+    "original_link": "https://www.dw.com/en/volodymyr-zelenskyy-pushes-for-new-government-in-ukraine/a-77959640?maca=en-rss-en-eu-2092-rdf",
+    "source": "dw_europe",
+    "source_name": "DW Europe",
+    "source_lang": "en",
+    "title": "Zelenski vrea remaniere guvernamentală majoră în Ucraina",
+    "category": "politic",
+    "published": "2026-07-15T06:34:00+00:00",
+    "model": "B",
+    "teaser": "Premierul ucrainean Yulia Svyrydenko a demisionat după un an. Președintele Volodimir Zelenski caută noi candidați pentru funcții cheie în guvern.",
+    "entities": [
+      "Volodimir Zelenski",
+      "Yulia Svyrydenko",
+      "Ucraina"
+    ],
+    "icon": "flag",
     "processed_by": "gemini",
     "prompt_version": "v2-esenta",
     "featured": false
@@ -2051,6 +2414,26 @@
       "Erdogan"
     ],
     "icon": "swords",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://dw.com/en/how-the-2016-coup-attempt-changed-turkey-for-good/a-77955154?maca=en-rss-en-eu-2092-rdf",
+    "original_link": "https://www.dw.com/en/how-the-2016-coup-attempt-changed-turkey-for-good/a-77955154?maca=en-rss-en-eu-2092-rdf",
+    "source": "dw_europe",
+    "source_name": "DW Europe",
+    "source_lang": "en",
+    "title": "Lovitura de stat eșuată din 2016 continuă să influențeze Turcia",
+    "category": "politic",
+    "published": "2026-07-14T19:00:00+00:00",
+    "model": "B",
+    "teaser": "Acum zece ani, o parte a armatei turce a încercat să-l înlăture pe Erdogan. Consecințele puciului eșuat continuă să modeleze Turcia până astăzi.",
+    "entities": [
+      "Turcia",
+      "Recep Tayyip Erdogan"
+    ],
+    "icon": "shield",
     "processed_by": "gemini",
     "prompt_version": "v2-esenta",
     "featured": false
@@ -25275,429 +25658,6 @@
       "Germania"
     ],
     "icon": "gavel",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://cursdeguvernare.ro/dacia-a-lansat-oficial-noul-model-striker-va-fi-produs-in-turcia.html",
-    "original_link": "https://cursdeguvernare.ro/dacia-a-lansat-oficial-noul-model-striker-va-fi-produs-in-turcia.html",
-    "source": "cursdeguv",
-    "source_name": "Curs de Guvernare",
-    "source_lang": "ro",
-    "title": "Dacia a lansat noul model Striker, produs în Turcia",
-    "category": "economic",
-    "published": "2026-07-08T14:02:47+00:00",
-    "model": "C",
-    "sources": [
-      {
-        "name": "Curs de Guvernare",
-        "url": "https://cursdeguvernare.ro/dacia-a-lansat-oficial-noul-model-striker-va-fi-produs-in-turcia.html"
-      },
-      {
-        "name": "GSP",
-        "url": "https://www.gsp.ro/sporturi/noutati-auto/dacia-striker-lansare-turcia-hyundai-peugeot-suprematie-958342.html"
-      }
-    ],
-    "first_source": "Curs de Guvernare",
-    "synthesis": "Dacia a lansat oficial noul model Striker, un crossover de segment C, miercuri, la Milano. Vehiculul, cel mai lung din gama Dacia, va fi asamblat la uzina Renault din Bursa, Turcia. Vânzările pentru acest model, ce combină elemente de break, hatchback și SUV, vor începe din toamna acestui an.",
-    "entities": [
-      "Dacia",
-      "Striker",
-      "Milano",
-      "Turcia"
-    ],
-    "icon": "car",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://spotmedia.ro/stiri/eveniment/nicusor-dan-declaratii-dupa-summitul-nato-de-la-ankara-care-au-fost-obiectivele-romaniei-in-turcia",
-    "original_link": "https://spotmedia.ro/stiri/eveniment/nicusor-dan-declaratii-dupa-summitul-nato-de-la-ankara-care-au-fost-obiectivele-romaniei-in-turcia",
-    "source": "spotmedia",
-    "source_name": "Spotmedia",
-    "source_lang": "ro",
-    "title": "România, la Summitul NATO Ankara: Angajament militar și recunoașterea amenințării rusești",
-    "category": "extern",
-    "published": "2026-07-08T14:01:47+00:00",
-    "model": "C",
-    "sources": [
-      {
-        "name": "Spotmedia",
-        "url": "https://spotmedia.ro/stiri/eveniment/nicusor-dan-declaratii-dupa-summitul-nato-de-la-ankara-care-au-fost-obiectivele-romaniei-in-turcia"
-      },
-      {
-        "name": "Știrile ProTV",
-        "url": "https://stirileprotv.ro/stiri/politic/ce-a-obtinut-romania-la-summitul-nato-de-la-ankara-nicusor-dan-s-a-reafirmat-ca-rusia-este-principala-amenin-are.html"
-      },
-      {
-        "name": "Curs de Guvernare",
-        "url": "https://cursdeguvernare.ro/romania-summit-nato-bilant-decizii-initiative-achizitii-comune-productie.html"
-      }
-    ],
-    "first_source": "Spotmedia",
-    "synthesis": "La Summitul NATO de la Ankara, România și-a reafirmat angajamentele de apărare, urmând să atingă 3,7% din PIB pentru securitate. S-a subliniat recunoașterea Rusiei ca amenințare principală, iar țara noastră a fost integrată în acorduri de producție și achiziții militare comune.",
-    "entities": [
-      "NATO",
-      "România",
-      "Ankara",
-      "Rusia"
-    ],
-    "icon": "shield",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://economedia.ro/donald-trump-ucraina-ar-putea-primi-o-licenta-pentru-producerea-rachetelor-patriot.html",
-    "original_link": "https://economedia.ro/donald-trump-ucraina-ar-putea-primi-o-licenta-pentru-producerea-rachetelor-patriot.html",
-    "source": "economedia",
-    "source_name": "Economedia",
-    "source_lang": "ro",
-    "title": "Trump: Ucraina ar putea produce rachete Patriot",
-    "category": "politic",
-    "published": "2026-07-08T13:47:31+00:00",
-    "model": "C",
-    "sources": [
-      {
-        "name": "Economedia",
-        "url": "https://economedia.ro/donald-trump-ucraina-ar-putea-primi-o-licenta-pentru-producerea-rachetelor-patriot.html"
-      },
-      {
-        "name": "Digi24 Extern",
-        "url": "https://www.digi24.ro/stiri/externe/intalnire-donald-trump-volodimir-zelenski-liderul-sua-anunta-ca-ucraina-ar-putea-produce-rachete-patriot-le-vom-arata-cum-se-face-3853391"
-      }
-    ],
-    "first_source": "Economedia",
-    "synthesis": "Președintele SUA, Donald Trump, a declarat la Ankara, în marja summitului NATO, că Ucraina ar putea primi o licență pentru producerea sistemelor de apărare Patriot. Trump a menționat că, după explicarea procesului de producție, companiile ucrainene vor putea construi aceste arme. El a subliniat o relație bună dezvoltată cu președintele ucrainean Volodimir Zelenski.",
-    "entities": [
-      "Donald Trump",
-      "Ucraina",
-      "Volodimir Zelenski",
-      "NATO"
-    ],
-    "icon": "rocket",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://moldova.europalibera.org/a/trump-da-emotii-la-summitul-nato-dar-alianta-isi-reafirma-fara-echivoc-unitatea-si-sprijinul-pentru-ucraina/33799455.html",
-    "original_link": "https://moldova.europalibera.org/a/trump-da-emotii-la-summitul-nato-dar-alianta-isi-reafirma-fara-echivoc-unitatea-si-sprijinul-pentru-ucraina/33799455.html",
-    "source": "el_moldova",
-    "source_name": "Europa Liberă",
-    "source_lang": "ro",
-    "title": "Trump creează tensiuni la NATO, dar alianța își reafirmă unitatea",
-    "category": "politic",
-    "published": "2026-07-08T13:40:42+00:00",
-    "model": "B",
-    "teaser": "Liderii NATO, conduși de Mark Rutte, au calmat temerile după declarațiile lui Donald Trump despre Iran, Spania și Groenlanda, reafirmând sprijinul pentru Ucraina și unitatea alianței.",
-    "entities": [
-      "Trump",
-      "NATO",
-      "Mark Rutte",
-      "Ucraina"
-    ],
-    "icon": "shield",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://stirileprotv.ro/stiri/actualitate/primul-oficial-concediat-dupa-scandalul-azilelor-din-bihor-dragos-pislaru-a-demis-o-pe-sefa-anpdpd-alexandra-zara.html",
-    "original_link": "https://stirileprotv.ro/stiri/actualitate/primul-oficial-concediat-dupa-scandalul-azilelor-din-bihor-dragos-pislaru-a-demis-o-pe-sefa-anpdpd-alexandra-zara.html",
-    "source": "protv",
-    "source_name": "Știrile ProTV",
-    "source_lang": "ro",
-    "title": "Șefa ANPDPD, Alexandra Zară, demisă după scandalul azilelor din Bihor",
-    "category": "politic",
-    "published": "2026-07-08T12:59:15+00:00",
-    "model": "C",
-    "sources": [
-      {
-        "name": "Știrile ProTV",
-        "url": "https://stirileprotv.ro/stiri/actualitate/primul-oficial-concediat-dupa-scandalul-azilelor-din-bihor-dragos-pislaru-a-demis-o-pe-sefa-anpdpd-alexandra-zara.html"
-      },
-      {
-        "name": "Digi24",
-        "url": "https://www.digi24.ro/stiri/actualitate/politica/ministrul-dragos-pislaru-a-demis-o-pe-alexandra-zara-dupa-interventia-diicot-de-la-azilele-ilegale-din-bihor-ce-motiv-ar-fi-invocat-3853231"
-      }
-    ],
-    "first_source": "Știrile ProTV",
-    "synthesis": "Ministrul interimar al Muncii, Dragoș Pîslaru, a dispus demiterea Alexandrei Zară din funcția de șefă a Autorității Naționale pentru Protecția Drepturilor Persoanelor cu Dizabilități. Decizia survine în urma intervenției DIICOT la azilele ilegale din Bihor, ministrul anunțând și alte măsuri pentru reprezentanți ai instituțiilor din județ.",
-    "entities": [
-      "Dragoș Pîslaru",
-      "Alexandra Zară",
-      "ANPDPD",
-      "Bihor"
-    ],
-    "icon": "gavel",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://autocritica.ro/live-news/xpeng-anunta-lansarea-unui-nou-model-suv-ul-coupe-l03",
-    "original_link": "https://www.autocritica.ro/live-news/xpeng-anunta-lansarea-unui-nou-model-suv-ul-coupe-l03/",
-    "source": "autocritica",
-    "source_name": "AutoCritica",
-    "source_lang": "ro",
-    "title": "XPeng lansează SUV-ul coupe L03 în Europa",
-    "category": "tech",
-    "published": "2026-07-08T12:50:27+00:00",
-    "model": "B",
-    "teaser": "Constructorul chinez XPeng va prezenta SUV-ul coupe L03 pe 16 iulie la Munchen. Noul model va completa gama europeană a companiei, fiind disponibil în cinci nuanțe de caroserie.",
-    "entities": [
-      "XPeng",
-      "L03",
-      "Munchen"
-    ],
-    "icon": "car",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://moldova.europalibera.org/a/candidata-condamnata-nationalista-marine-le-pen-se-lanseaza-in-cursa-prezidentiala-franceza/33799363.html",
-    "original_link": "https://moldova.europalibera.org/a/candidata-condamnata-nationalista-marine-le-pen-se-lanseaza-in-cursa-prezidentiala-franceza/33799363.html",
-    "source": "el_moldova",
-    "source_name": "Europa Liberă",
-    "source_lang": "ro",
-    "title": "Marine Le Pen candidează la prezidențiale, huiduită de susținători",
-    "category": "politic",
-    "published": "2026-07-08T11:39:03+00:00",
-    "model": "B",
-    "teaser": "Naționalista Marine Le Pen și-a lansat oficial campania electorală pentru prezidențialele franceze din 2027, fiind întâmpinată cu strigăte de susținere, dar și cu apeluri la încarcerare.",
-    "entities": [
-      "Marine Le Pen",
-      "Franța"
-    ],
-    "icon": "gavel",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://start-up.ro/vestul-nu-se-lasa-si-vrea-sa-creeze-un-nou-unicorn-romanesc-care-sunt-cele-9-startup-uri-pe-drumul-ambitios-pavat-de-vest-ventures",
-    "original_link": "https://start-up.ro/vestul-nu-se-lasa-si-vrea-sa-creeze-un-nou-unicorn-romanesc-care-sunt-cele-9-startup-uri-pe-drumul-ambitios-pavat-de-vest-ventures/",
-    "source": "startup",
-    "source_name": "Start-up.ro",
-    "source_lang": "ro",
-    "title": "Vest Ventures vrea să creeze un nou unicorn românesc până în 2030",
-    "category": "economic",
-    "published": "2026-07-08T11:26:33+00:00",
-    "model": "B",
-    "teaser": "Regiunea Vest, prin Vest Ventures, își propune să lanseze un nou unicorn românesc până în 2030, cu ajutorul a nouă startup-uri selectate și a fondurilor lansate recent.",
-    "entities": [
-      "Vest Ventures"
-    ],
-    "icon": "chart-line",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://digi24.ro/campionatul-mondal-de-fotbal-2026/cm-2026-dialog-savuros-intre-premierul-britanic-si-cel-norvegian-despre-meciul-istoric-dintre-cele-doua-nationale-3852995",
-    "original_link": "https://www.digi24.ro/campionatul-mondal-de-fotbal-2026/cm-2026-dialog-savuros-intre-premierul-britanic-si-cel-norvegian-despre-meciul-istoric-dintre-cele-doua-nationale-3852995",
-    "source": "extern",
-    "source_name": "Digi24 Extern",
-    "source_lang": "ro",
-    "title": "Premierii Marii Britanii și Norvegiei, dialog savuros despre fotbal la Ankara",
-    "category": "politic",
-    "published": "2026-07-08T11:19:41+00:00",
-    "model": "B",
-    "teaser": "Liderii Marii Britanii și Norvegiei, Rishi Sunak și Jonas Gahr Støre, au purtat un schimb de replici amuzant, îmbrăcați în tricourile naționalelor, pe marginea unui meci istoric, în cadrul unei întâlniri NATO.",
-    "entities": [
-      "Marea Britanie",
-      "Norvegia",
-      "Ankara",
-      "NATO"
-    ],
-    "icon": "ball-football",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://digi24.ro/campionatul-mondal-de-fotbal-2026/cm-2026-dialog-savuros-intre-premierul-britanic-si-cel-norvegian-despre-meciul-istoric-dintre-cele-doua-nationale-3852995",
-    "original_link": "https://www.digi24.ro/campionatul-mondal-de-fotbal-2026/cm-2026-dialog-savuros-intre-premierul-britanic-si-cel-norvegian-despre-meciul-istoric-dintre-cele-doua-nationale-3852995",
-    "source": "digi24",
-    "source_name": "Digi24",
-    "source_lang": "ro",
-    "title": "Premierii Marii Britanii și Norvegiei, dialog savuros despre fotbal la Ankara",
-    "category": "politic",
-    "published": "2026-07-08T11:19:41+00:00",
-    "model": "B",
-    "teaser": "Liderii Marii Britanii și Norvegiei, Rishi Sunak și Jonas Gahr Støre, au purtat un schimb de replici amuzant, îmbrăcați în tricourile naționalelor, pe marginea unui meci istoric, în cadrul unei întâlniri NATO.",
-    "entities": [
-      "Marea Britanie",
-      "Norvegia",
-      "Ankara",
-      "NATO"
-    ],
-    "icon": "ball-football",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://digi24.ro/stiri/externe/ce-este-sistemul-de-conducte-al-nato-si-de-ce-e-crucial-pentru-romania-nicusor-dan-luat-pe-nepregatite-de-intrebarile-presei-3852855",
-    "original_link": "https://www.digi24.ro/stiri/externe/ce-este-sistemul-de-conducte-al-nato-si-de-ce-e-crucial-pentru-romania-nicusor-dan-luat-pe-nepregatite-de-intrebarile-presei-3852855",
-    "source": "extern",
-    "source_name": "Digi24 Extern",
-    "source_lang": "ro",
-    "title": "NATO extinde rețeaua de conducte de combustibil din epoca Războiului Rece",
-    "category": "politic",
-    "published": "2026-07-08T11:05:34+00:00",
-    "model": "B",
-    "teaser": "Alianța Nord-Atlantică se apropie de un acord pentru extinderea unei rețele de conducte de combustibil din Războiul Rece spre Europa de Est și Turcia, pentru a asigura aprovizionarea în caz de criză.",
-    "entities": [
-      "NATO",
-      "Turcia",
-      "România",
-      "Bloomberg"
-    ],
-    "icon": "gas-station",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://digi24.ro/stiri/externe/ce-este-sistemul-de-conducte-al-nato-si-de-ce-e-crucial-pentru-romania-nicusor-dan-luat-pe-nepregatite-de-intrebarile-presei-3852855",
-    "original_link": "https://www.digi24.ro/stiri/externe/ce-este-sistemul-de-conducte-al-nato-si-de-ce-e-crucial-pentru-romania-nicusor-dan-luat-pe-nepregatite-de-intrebarile-presei-3852855",
-    "source": "digi24",
-    "source_name": "Digi24",
-    "source_lang": "ro",
-    "title": "NATO extinde rețeaua de conducte de combustibil din epoca Războiului Rece",
-    "category": "politic",
-    "published": "2026-07-08T11:05:34+00:00",
-    "model": "B",
-    "teaser": "Alianța Nord-Atlantică se apropie de un acord pentru extinderea unei rețele de conducte de combustibil din Războiul Rece spre Europa de Est și Turcia, pentru a asigura aprovizionarea în caz de criză.",
-    "entities": [
-      "NATO",
-      "Turcia",
-      "România",
-      "Bloomberg"
-    ],
-    "icon": "gas-station",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://autocritica.ro/live-news/euro-ncap-bmw-ix3-si-zeekr-7gt-cinci-stele-la-debutul-noului-format-de-teste",
-    "original_link": "https://www.autocritica.ro/live-news/euro-ncap-bmw-ix3-si-zeekr-7gt-cinci-stele-la-debutul-noului-format-de-teste/",
-    "source": "autocritica",
-    "source_name": "AutoCritica",
-    "source_lang": "ro",
-    "title": "BMW iX3 și Zeekr 7GT obțin 5 stele la noile teste Euro NCAP",
-    "category": "tech",
-    "published": "2026-07-08T11:01:45+00:00",
-    "model": "B",
-    "teaser": "BMW iX3 și Zeekr 7GT au obținut calificativul maxim de 5 stele la debutul noului format de teste Euro NCAP. Rezultatele confirmă îmbunătățirea măsurilor de siguranță conform noilor cerințe.",
-    "entities": [
-      "BMW iX3",
-      "Zeekr 7GT",
-      "Euro NCAP"
-    ],
-    "icon": "shield",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://g4media.ro/pasaj-suprateran-finalizat-pe-centura-oradea-o-investitie-de-275-milioane-de-lei-prin-pnrr.html",
-    "original_link": "https://www.g4media.ro/pasaj-suprateran-finalizat-pe-centura-oradea-o-investitie-de-275-milioane-de-lei-prin-pnrr.html",
-    "source": "g4media",
-    "source_name": "G4Media",
-    "source_lang": "ro",
-    "title": "Pasaj suprateran finalizat pe Centura Oradea, investiție PNRR",
-    "category": "economic",
-    "published": "2026-07-08T11:00:57+00:00",
-    "model": "C",
-    "sources": [
-      {
-        "name": "G4Media",
-        "url": "https://www.g4media.ro/pasaj-suprateran-finalizat-pe-centura-oradea-o-investitie-de-275-milioane-de-lei-prin-pnrr.html"
-      },
-      {
-        "name": "Economedia",
-        "url": "https://economedia.ro/pasaj-suprateran-finalizat-pe-centura-oradea-la-intersectia-cu-centura-osorhei-investitie-prin-pnrr.html"
-      }
-    ],
-    "first_source": "G4Media",
-    "synthesis": "Un pasaj suprateran nou, situat la intersecția dintre Centura Oradea și Centura Oșorhei, a fost finalizat și deschis traficului. Investiția, în valoare de 27,5 milioane de lei, a fost realizată prin PNRR, în colaborare cu CNAIR și Primăria Oradea. Acesta este al doilea pasaj dintr-un proiect mai amplu al Consiliului Județean.",
-    "entities": [
-      "Centura Oradea",
-      "Centura Oșorhei",
-      "PNRR",
-      "CNAIR"
-    ],
-    "icon": "car",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://theguardian.com/commentisfree/2026/jul/08/german-politics-alternative-fur-deutschland-blockade-far-right",
-    "original_link": "https://www.theguardian.com/commentisfree/2026/jul/08/german-politics-alternative-fur-deutschland-blockade-far-right",
-    "source": "guardian_eu",
-    "source_name": "The Guardian",
-    "source_lang": "en",
-    "title": "Speranța revine în politica germană prin mișcări de protest anti-extremă dreaptă",
-    "category": "politic",
-    "published": "2026-07-08T11:00:52+00:00",
-    "model": "B",
-    "teaser": "Mii de protestatari au blocat accesul la conferința partidului AfD din Erfurt, demonstrând cum mișcarea de dezordine civilă poate învinge extrema dreaptă în Germania.",
-    "entities": [
-      "AfD",
-      "Erfurt",
-      "Germania"
-    ],
-    "icon": "alert-triangle",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://digi24.ro/stiri/externe/kremlinul-ii-cere-turciei-sa-convinga-ucraina-sa-nu-i-mai-bombardeze-gazoductele-sa-si-foloseasca-influenta-3852945",
-    "original_link": "https://www.digi24.ro/stiri/externe/kremlinul-ii-cere-turciei-sa-convinga-ucraina-sa-nu-i-mai-bombardeze-gazoductele-sa-si-foloseasca-influenta-3852945",
-    "source": "extern",
-    "source_name": "Digi24 Extern",
-    "source_lang": "ro",
-    "title": "Kremlinul cere Turciei să convingă Ucraina să nu atace gazoductele",
-    "category": "extern",
-    "published": "2026-07-08T10:45:27+00:00",
-    "model": "B",
-    "teaser": "Rusia speră că Turcia și alte state își vor folosi influența pentru a determina Ucraina să înceteze atacurile asupra infrastructurii energetice internaționale, a anunțat Kremlinul.",
-    "entities": [
-      "Kremlin",
-      "Turcia",
-      "Ucraina"
-    ],
-    "icon": "gas-station",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://digi24.ro/stiri/externe/kremlinul-ii-cere-turciei-sa-convinga-ucraina-sa-nu-i-mai-bombardeze-gazoductele-sa-si-foloseasca-influenta-3852945",
-    "original_link": "https://www.digi24.ro/stiri/externe/kremlinul-ii-cere-turciei-sa-convinga-ucraina-sa-nu-i-mai-bombardeze-gazoductele-sa-si-foloseasca-influenta-3852945",
-    "source": "digi24",
-    "source_name": "Digi24",
-    "source_lang": "ro",
-    "title": "Kremlinul cere Turciei să convingă Ucraina să nu atace gazoductele",
-    "category": "extern",
-    "published": "2026-07-08T10:45:27+00:00",
-    "model": "B",
-    "teaser": "Rusia speră că Turcia și alte state își vor folosi influența pentru a determina Ucraina să înceteze atacurile asupra infrastructurii energetice internaționale, a anunțat Kremlinul.",
-    "entities": [
-      "Kremlin",
-      "Turcia",
-      "Ucraina"
-    ],
-    "icon": "gas-station",
     "processed_by": "gemini",
     "prompt_version": "v2-esenta",
     "featured": false
