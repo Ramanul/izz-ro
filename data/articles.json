@@ -1,5 +1,648 @@
 [
   {
+    "url": "https://economica.net/finala-uefa-europa-league-la-bucuresti-sedinta-de-guvern-pe-agenda-aprobarea-candidaturii-romaniei-la-organizarea-finala-europa-league_959819.html",
+    "original_link": "https://www.economica.net/finala-uefa-europa-league-la-bucuresti-sedinta-de-guvern-pe-agenda-aprobarea-candidaturii-romaniei-la-organizarea-finala-europa-league_959819.html",
+    "source": "economica",
+    "source_name": "Economica",
+    "source_lang": "ro",
+    "title": "România candidează pentru organizarea finalei Europa League",
+    "category": "sport",
+    "published": "2026-07-16T10:19:00+00:00",
+    "model": "C",
+    "sources": [
+      {
+        "name": "Economica",
+        "url": "https://www.economica.net/finala-uefa-europa-league-la-bucuresti-sedinta-de-guvern-pe-agenda-aprobarea-candidaturii-romaniei-la-organizarea-finala-europa-league_959819.html"
+      },
+      {
+        "name": "Digi24",
+        "url": "https://www.digi24.ro/stiri/actualitate/politica/bucurestiul-ar-putea-gazdui-finala-uefa-europa-league-in-2028-sau-2029-guvernul-discuta-candidatura-romaniei-3864863"
+      }
+    ],
+    "first_source": "Economica",
+    "synthesis": "Guvernul României va discuta joi, într-o ședință, aprobarea candidaturii țării pentru a găzdui finala UEFA Europa League în 2028 sau 2029. Competiția ar urma să se desfășoare la București, care a mai organizat o finală europeană în 2012.",
+    "entities": [
+      "UEFA Europa League",
+      "România",
+      "București",
+      "Guvernul României"
+    ],
+    "icon": "ball-football",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://digi24.ro/stiri/externe/mapamond/de-ce-vrea-iranul-ca-razboiul-cu-sua-sa-continue-generalul-r-balaceanu-e-pregatit-sa-reziste-urmareste-un-obiectiv-strategic-3864869",
+    "original_link": "https://www.digi24.ro/stiri/externe/mapamond/de-ce-vrea-iranul-ca-razboiul-cu-sua-sa-continue-generalul-r-balaceanu-e-pregatit-sa-reziste-urmareste-un-obiectiv-strategic-3864869",
+    "source": "extern",
+    "source_name": "Digi24 Extern",
+    "source_lang": "ro",
+    "title": "Iranul amenință cu distrugerea infrastructurii din Orientul Mijlociu",
+    "category": "extern",
+    "published": "2026-07-16T10:14:12+00:00",
+    "model": "B",
+    "teaser": "Iranul avertizează că va ataca infrastructura din Orientul Mijlociu dacă SUA îi afectează podurile și centralele electrice, conform generalului (r) Virgil Bălăceanu.",
+    "entities": [
+      "Iran",
+      "SUA",
+      "Donald Trump",
+      "Virgil Bălăceanu"
+    ],
+    "icon": "rocket",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://digi24.ro/stiri/externe/mapamond/de-ce-vrea-iranul-ca-razboiul-cu-sua-sa-continue-generalul-r-balaceanu-e-pregatit-sa-reziste-urmareste-un-obiectiv-strategic-3864869",
+    "original_link": "https://www.digi24.ro/stiri/externe/mapamond/de-ce-vrea-iranul-ca-razboiul-cu-sua-sa-continue-generalul-r-balaceanu-e-pregatit-sa-reziste-urmareste-un-obiectiv-strategic-3864869",
+    "source": "digi24",
+    "source_name": "Digi24",
+    "source_lang": "ro",
+    "title": "Iranul amenință cu distrugerea infrastructurii din Orientul Mijlociu",
+    "category": "extern",
+    "published": "2026-07-16T10:14:12+00:00",
+    "model": "B",
+    "teaser": "Iranul avertizează că va ataca infrastructura din Orientul Mijlociu dacă SUA îi afectează podurile și centralele electrice, conform generalului (r) Virgil Bălăceanu.",
+    "entities": [
+      "Iran",
+      "SUA",
+      "Donald Trump",
+      "Virgil Bălăceanu"
+    ],
+    "icon": "rocket",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://gsp.ro/international/campionatul-mondial-de-fotbal-2026/printul-william-reactie-infrangere-anglia-argentina-campionatul-mondial-961119.html",
+    "original_link": "https://www.gsp.ro/international/campionatul-mondial-de-fotbal-2026/printul-william-reactie-infrangere-anglia-argentina-campionatul-mondial-961119.html",
+    "source": "gsp",
+    "source_name": "GSP",
+    "source_lang": "ro",
+    "title": "Prințul William încurajează echipa Angliei după înfrângerea la Mondial",
+    "category": "sport",
+    "published": "2026-07-16T10:10:14+00:00",
+    "model": "B",
+    "teaser": "Prințul William a transmis un mesaj de încurajare fotbaliștilor englezi după eliminarea din semifinalele Campionatului Mondial, în urma înfrângerii cu Argentina.",
+    "entities": [
+      "Prințul William",
+      "Anglia",
+      "Argentina"
+    ],
+    "icon": "ball-football",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://gsp.ro/international/campionatul-mondial-de-fotbal-2026/jude-bellingham-leo-messi-dialog-anglia-argentina-cm2026-961138.html",
+    "original_link": "https://www.gsp.ro/international/campionatul-mondial-de-fotbal-2026/jude-bellingham-leo-messi-dialog-anglia-argentina-cm2026-961138.html",
+    "source": "gsp",
+    "source_name": "GSP",
+    "source_lang": "ro",
+    "title": "Bellingham și Messi, dialog aprins după meciul Argentina-Anglia",
+    "category": "sport",
+    "published": "2026-07-16T10:08:28+00:00",
+    "model": "B",
+    "teaser": "Jucătorii Jude Bellingham și Lionel Messi au avut un schimb de replici tensionat la finalul semifinalei Campionatului Mondial dintre Argentina și Anglia, câștigată de sud-americani cu 2-1.",
+    "entities": [
+      "Jude Bellingham",
+      "Lionel Messi",
+      "Argentina",
+      "Anglia"
+    ],
+    "icon": "ball-football",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://theguardian.com/technology/2026/jul/16/uber-buy-germany-delivery-hero-148bn-global-deal",
+    "original_link": "https://www.theguardian.com/technology/2026/jul/16/uber-buy-germany-delivery-hero-148bn-global-deal",
+    "source": "guardian_eu",
+    "source_name": "The Guardian",
+    "source_lang": "en",
+    "title": "Uber cumpără Delivery Hero pentru 14,8 miliarde dolari",
+    "category": "economic",
+    "published": "2026-07-16T10:01:50+00:00",
+    "model": "B",
+    "teaser": "Uber va achiziționa compania germană de livrări alimentare Delivery Hero într-o tranzacție de 14,8 miliarde dolari, extinzându-și operațiunile globale.",
+    "entities": [
+      "Uber",
+      "Delivery Hero",
+      "Germania"
+    ],
+    "icon": "shopping-cart",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://gsp.ro/international/campionatul-mondial-de-fotbal-2026/dezvaluiri-cantonament-germania-kimmich-neuer-961128.html",
+    "original_link": "https://www.gsp.ro/international/campionatul-mondial-de-fotbal-2026/dezvaluiri-cantonament-germania-kimmich-neuer-961128.html",
+    "source": "gsp",
+    "source_name": "GSP",
+    "source_lang": "ro",
+    "title": "Dezvăluiri incendiare din vestiarul Germaniei după eliminarea de la Mondial",
+    "category": "sport",
+    "published": "2026-07-16T09:57:17+00:00",
+    "model": "B",
+    "teaser": "Jurnaliști de la Der Spiegel au publicat informații din interiorul lotului german, detaliind motivele eșecului de la Mondialul 2026, unde Germania a fost eliminată de Paraguay în optimi.",
+    "entities": [
+      "Der Spiegel",
+      "Germania",
+      "Paraguay"
+    ],
+    "icon": "ball-football",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://politico.eu/article/german-military-to-join-french-nuclear-exercise-for-first-time",
+    "original_link": "https://www.politico.eu/article/german-military-to-join-french-nuclear-exercise-for-first-time/?utm_source=RSS_Feed&utm_medium=RSS&utm_campaign=RSS_Syndication",
+    "source": "politico_eu",
+    "source_name": "Politico EU",
+    "source_lang": "en",
+    "title": "Germania participă la exercițiu nuclear francez pentru prima dată",
+    "category": "politic",
+    "published": "2026-07-16T09:56:08+00:00",
+    "model": "B",
+    "teaser": "În contextul incertitudinii privind securitatea europeană, Germania se alătură Franței într-un exercițiu nuclear comun, subliniind o posibilă reorientare strategică.",
+    "entities": [
+      "Germania",
+      "Franța"
+    ],
+    "icon": "swords",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://theguardian.com/world/live/2026/jul/16/europe-ukraine-russia-zelenskyy-starmer-macron-merz-latest-news-updates",
+    "original_link": "https://www.theguardian.com/world/live/2026/jul/16/europe-ukraine-russia-zelenskyy-starmer-macron-merz-latest-news-updates",
+    "source": "guardian_eu",
+    "source_name": "The Guardian",
+    "source_lang": "en",
+    "title": "Zelenski, huiduit pentru demiterea ministrului apărării; Starmer vizitează Ucraina",
+    "category": "politic",
+    "published": "2026-07-16T09:56:00+00:00",
+    "model": "B",
+    "teaser": "Președintele Zelenski se confruntă cu proteste după demiterea lui Mykhailo Fedorov, care a refuzat postul de consilier. Premierul britanic în plecare, Starmer, vizitează Kievul.",
+    "entities": [
+      "Zelenski",
+      "Mykhailo Fedorov",
+      "Starmer",
+      "Ucraina"
+    ],
+    "icon": "shield",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://gsp.ro/comercial/advertorial/primii-pasi-pe-hotspins-cum-functioneaza-bonusul-de-bun-venit-si-ce-avantaje-ofera-961148.html",
+    "original_link": "https://www.gsp.ro/comercial/advertorial/primii-pasi-pe-hotspins-cum-functioneaza-bonusul-de-bun-venit-si-ce-avantaje-ofera-961148.html",
+    "source": "gsp",
+    "source_name": "GSP",
+    "source_lang": "ro",
+    "title": "Ghid pentru bonusul de bun venit la cazinourile online HotSpins",
+    "category": "general",
+    "published": "2026-07-16T09:41:17+00:00",
+    "model": "B",
+    "teaser": "Platformele de cazino online oferă bonusuri de bun venit pentru utilizatorii noi. Este esențial să înțelegi condițiile de utilizare înainte de a activa aceste oferte pentru a descoperi jocurile și promoțiile.",
+    "entities": [
+      "HotSpins"
+    ],
+    "icon": "percentage",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://theguardian.com/world/2026/jul/16/timmy-the-whale-germany-new-satirical-play",
+    "original_link": "https://www.theguardian.com/world/2026/jul/16/timmy-the-whale-germany-new-satirical-play",
+    "source": "guardian_eu",
+    "source_name": "The Guardian",
+    "source_lang": "en",
+    "title": "Balena Timmy, subiect de piesă satirică despre identitatea germană",
+    "category": "general",
+    "published": "2026-07-16T09:40:27+00:00",
+    "model": "B",
+    "teaser": "O piesă de teatru satirică folosește povestea unei balene eșuate pe coasta baltică pentru a explora speranța și diviziunea în Germania, transformând animalul într-o figură mesianică.",
+    "entities": [
+      "Timmy",
+      "Germania"
+    ],
+    "icon": "writing",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://gsp.ro/comercial/comunicat/lidl-romania-extinde-formatul-de-promotii-superweekend-la-3-zile-acum-si-vinerea-pentru-a-raspunde-la-presiunile-pe-buget-resimtite-de-romani-in-ultima-perioada-961147.html",
+    "original_link": "https://www.gsp.ro/comercial/comunicat/lidl-romania-extinde-formatul-de-promotii-superweekend-la-3-zile-acum-si-vinerea-pentru-a-raspunde-la-presiunile-pe-buget-resimtite-de-romani-in-ultima-perioada-961147.html",
+    "source": "gsp",
+    "source_name": "GSP",
+    "source_lang": "ro",
+    "title": "Lidl extinde promoțiile „SuperWeekend” la 3 zile în România",
+    "category": "economic",
+    "published": "2026-07-16T09:37:22+00:00",
+    "model": "B",
+    "teaser": "Lidl România prelungește ofertele „SuperWeekend” de vineri până duminică, ca răspuns la presiunile bugetare ale clienților, susținând puterea de cumpărare prin reduceri extinse.",
+    "entities": [
+      "Lidl România"
+    ],
+    "icon": "shopping-cart",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://gsp.ro/international/campionatul-mondial-de-fotbal-2026/the-telegraph-anglia-argentina-31-de-trucuri-murdare-961126.html",
+    "original_link": "https://www.gsp.ro/international/campionatul-mondial-de-fotbal-2026/the-telegraph-anglia-argentina-31-de-trucuri-murdare-961126.html",
+    "source": "gsp",
+    "source_name": "GSP",
+    "source_lang": "ro",
+    "title": "The Telegraph: 31 de „trucuri murdare” ale Argentinei în meciul cu Anglia",
+    "category": "sport",
+    "published": "2026-07-16T09:37:21+00:00",
+    "model": "B",
+    "teaser": "Ziarul britanic The Telegraph a identificat 31 de faze controversate și tactici neortodoxe folosite de jucătorii Argentinei în semifinala Campionatului Mondial împotriva Angliei, câștigată de Argentina cu 2-1.",
+    "entities": [
+      "The Telegraph",
+      "Argentina",
+      "Anglia"
+    ],
+    "icon": "ball-football",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://dw.com/en/ukraine-lawmakers-to-elect-new-government-amid-defence-chief-row/live-77980338?maca=en-rss-en-eu-2092-rdf",
+    "original_link": "https://www.dw.com/en/ukraine-lawmakers-to-elect-new-government-amid-defence-chief-row/live-77980338?maca=en-rss-en-eu-2092-rdf",
+    "source": "dw_europe",
+    "source_name": "DW Europe",
+    "source_lang": "en",
+    "title": "Ucraina își alege guvern nou pe fondul disputei privind șeful apărării",
+    "category": "politic",
+    "published": "2026-07-16T09:36:00+00:00",
+    "model": "B",
+    "teaser": "Președintele ucrainean Volodimir Zelenski efectuează a doua remaniere guvernamentală din ultimul an, confruntându-se cu critici pentru demiterea ministrului apărării.",
+    "entities": [
+      "Ucraina",
+      "Volodimir Zelenski",
+      "Mykhailo Fedorov"
+    ],
+    "icon": "shield",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://gsp.ro/international/liga-campionilor/sorin-cartu-universitatea-craiova-levski-sofia-liga-campionilor-961145.html",
+    "original_link": "https://www.gsp.ro/international/liga-campionilor/sorin-cartu-universitatea-craiova-levski-sofia-liga-campionilor-961145.html",
+    "source": "gsp",
+    "source_name": "GSP",
+    "source_lang": "ro",
+    "title": "Sorin Cârțu: Universitatea Craiova va întâlni un adversar mai puternic",
+    "category": "sport",
+    "published": "2026-07-16T09:35:45+00:00",
+    "model": "B",
+    "teaser": "Președintele onorific al Universității Craiova, Sorin Cârțu, anticipează un duel dificil în fața Levski Sofia, după calificarea echipei în turul următor al Ligii Campionilor.",
+    "entities": [
+      "Sorin Cârțu",
+      "Universitatea Craiova",
+      "Levski Sofia"
+    ],
+    "icon": "ball-football",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://bbc.co.uk/news/articles/cdx76069n3do?at_medium=RSS&at_campaign=rss",
+    "original_link": "https://www.bbc.co.uk/news/articles/cdx76069n3do?at_medium=RSS&at_campaign=rss",
+    "source": "bbc_europe",
+    "source_name": "BBC Europe",
+    "source_lang": "en",
+    "title": "Proteste în Ucraina după demiterea ministrului apărării",
+    "category": "politic",
+    "published": "2026-07-16T09:29:28+00:00",
+    "model": "B",
+    "teaser": "Președintele ucrainean a demis ministrul apărării fără explicații, stârnind proteste în societatea civilă și în rândul militarilor. Decizia a cauzat nemulțumiri majore.",
+    "entities": [
+      "Ucraina",
+      "Zelensky",
+      "Mykhailo Fedorov"
+    ],
+    "icon": "shield",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://economedia.ro/guvernul-pregateste-depunerea-cererii-de-plata-nr-5-din-pnrr.html",
+    "original_link": "https://economedia.ro/guvernul-pregateste-depunerea-cererii-de-plata-nr-5-din-pnrr.html",
+    "source": "economedia",
+    "source_name": "Economedia",
+    "source_lang": "ro",
+    "title": "România solicită o nouă tranșă de fonduri europene prin PNRR",
+    "category": "economic",
+    "published": "2026-07-16T08:57:29+00:00",
+    "model": "C",
+    "sources": [
+      {
+        "name": "Economedia",
+        "url": "https://economedia.ro/guvernul-pregateste-depunerea-cererii-de-plata-nr-5-din-pnrr.html"
+      },
+      {
+        "name": "Digi24 Extern",
+        "url": "https://www.digi24.ro/stiri/economie/guvernul-pregateste-depunerea-cererii-de-plata-nr-5-din-pnrr-ce-suma-poate-incasa-romania-3864813"
+      }
+    ],
+    "first_source": "Economedia",
+    "synthesis": "Guvernul a discutat depunerea Cererii de plată nr. 5 din PNRR, un pas esențial pentru accesarea unei noi tranșe de finanțare europeană. Suma estimată pentru această cerere este de 2,66 miliarde de euro, urmând a fi transmisă Comisiei Europene în jurul datei de 7 august, după finalizarea revizuirii planului.",
+    "entities": [
+      "Guvernul României",
+      "PNRR",
+      "Comisia Europeană"
+    ],
+    "icon": "receipt-tax",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://digi24.ro/stiri/externe/mapamond/o-regiune-din-franta-lovita-de-grindina-uriasa-cat-palma-parbrize-sparte-cladiri-avariate-un-fenomen-de-o-violenta-exceptionala-3864733",
+    "original_link": "https://www.digi24.ro/stiri/externe/mapamond/o-regiune-din-franta-lovita-de-grindina-uriasa-cat-palma-parbrize-sparte-cladiri-avariate-un-fenomen-de-o-violenta-exceptionala-3864733",
+    "source": "extern",
+    "source_name": "Digi24 Extern",
+    "source_lang": "ro",
+    "title": "Grindină uriașă a devastat o regiune din Franța",
+    "category": "general",
+    "published": "2026-07-16T08:56:03+00:00",
+    "model": "B",
+    "teaser": "Furtuni violente cu grindină de mărimea palmei au lovit departamentul Ardèche din Franța, provocând pagube semnificative clădirilor și spărgând parbrize, în urma unei perioade de caniculă.",
+    "entities": [
+      "Franța",
+      "Ardèche"
+    ],
+    "icon": "cloud-storm",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://politico.eu/article/uk-calls-for-fifa-inquiry-into-falklands-are-argentine-banner",
+    "original_link": "https://www.politico.eu/article/uk-calls-for-fifa-inquiry-into-falklands-are-argentine-banner/?utm_source=RSS_Feed&utm_medium=RSS&utm_campaign=RSS_Syndication",
+    "source": "politico_eu",
+    "source_name": "Politico EU",
+    "source_lang": "en",
+    "title": "Marea Britanie cere anchetă FIFA pentru bannerul 'Falklands sunt argentiniene'",
+    "category": "sport",
+    "published": "2026-07-16T08:55:19+00:00",
+    "model": "B",
+    "teaser": "Regatul Unit solicită o investigație FIFA după ce un banner pro-argentinian a apărut la meciul Angliei, considerând gestul o lipsă de respect față de jucători.",
+    "entities": [
+      "Marea Britanie",
+      "FIFA",
+      "Anglia",
+      "Argentina"
+    ],
+    "icon": "flag",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://politico.com/news/2026/07/16/republicans-brace-trump-speech-election-fraud-00999640",
+    "original_link": "https://www.politico.com/news/2026/07/16/republicans-brace-trump-speech-election-fraud-00999640?utm_source=RSS_Feed&utm_medium=RSS&utm_campaign=RSS_Syndication",
+    "source": "politico_eu",
+    "source_name": "Politico EU",
+    "source_lang": "en",
+    "title": "Republicanii se tem de discursul lui Trump, așteptând acuzații electorale",
+    "category": "politic",
+    "published": "2026-07-16T08:52:01+00:00",
+    "model": "B",
+    "teaser": "Republicanii se pregătesc pentru un discurs televizat al lui Donald Trump, care ar putea reitera acuzațiile despre alegerile din 2020, mobilizând baza partidului.",
+    "entities": [
+      "Trump",
+      "Republicani"
+    ],
+    "icon": null,
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://digi24.ro/stiri/externe/sua/jd-vance-administratia-trump-a-dat-o-rau-de-tot-in-bara-cu-dosarele-epstein-ce-spune-despre-legaturile-cu-serviciile-secrete-3864659",
+    "original_link": "https://www.digi24.ro/stiri/externe/sua/jd-vance-administratia-trump-a-dat-o-rau-de-tot-in-bara-cu-dosarele-epstein-ce-spune-despre-legaturile-cu-serviciile-secrete-3864659",
+    "source": "extern",
+    "source_name": "Digi24 Extern",
+    "source_lang": "ro",
+    "title": "JD Vance recunoaște gestionarea greșită a cazului Epstein de către Trump",
+    "category": "politic",
+    "published": "2026-07-16T08:31:38+00:00",
+    "model": "B",
+    "teaser": "Vicepreședintele american JD Vance a admis că administrația Trump a gestionat defectuos comunicarea dosarelor Epstein, sugerând legături ale acestuia cu serviciile secrete americane și israeliene.",
+    "entities": [
+      "JD Vance",
+      "Trump",
+      "Jeffrey Epstein",
+      "Pam Bondi"
+    ],
+    "icon": "gavel",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://politico.eu/article/european-court-justice-spain-catalonia-pedro-sanchez-carles-puigdemont-amnesty-separatist",
+    "original_link": "https://www.politico.eu/article/european-court-justice-spain-catalonia-pedro-sanchez-carles-puigdemont-amnesty-separatist/?utm_source=RSS_Feed&utm_medium=RSS&utm_campaign=RSS_Syndication",
+    "source": "politico_eu",
+    "source_name": "Politico EU",
+    "source_lang": "en",
+    "title": "Curtea UE susține legea amnistiei catalane, victorie pentru Sánchez și Puigdemont",
+    "category": "politic",
+    "published": "2026-07-16T08:22:21+00:00",
+    "model": "B",
+    "teaser": "Înalta Curte a UE a confirmat legalitatea amnistiei pentru separatiștii catalani, o decizie favorabilă premierului spaniol și liderului catalan.",
+    "entities": [
+      "UE",
+      "Sánchez",
+      "Puigdemont",
+      "Catalonia"
+    ],
+    "icon": "gavel",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://bbc.co.uk/news/articles/cx2myl1erj8o?at_medium=RSS&at_campaign=rss",
+    "original_link": "https://www.bbc.co.uk/news/articles/cx2myl1erj8o?at_medium=RSS&at_campaign=rss",
+    "source": "bbc_europe",
+    "source_name": "BBC Europe",
+    "source_lang": "en",
+    "title": "Starmer promite sprijin Ucrainei în ultima vizită ca premier",
+    "category": "politic",
+    "published": "2026-07-16T08:20:51+00:00",
+    "model": "B",
+    "teaser": "Premierul britanic în exercițiu, Keir Starmer, va vizita Kievul și se va întâlni cu președintele ucrainean Volodimir Zelenski, promițând sprijin ferm.",
+    "entities": [
+      "Starmer",
+      "Ucraina",
+      "Zelensky"
+    ],
+    "icon": "flag",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://digi24.ro/stiri/externe/ue/ucrainenii-s-au-adunat-la-kiev-pentru-a-protesta-fata-de-demiterea-ministrului-apararii-mihailo-fedorov-3864633",
+    "original_link": "https://www.digi24.ro/stiri/externe/ue/ucrainenii-s-au-adunat-la-kiev-pentru-a-protesta-fata-de-demiterea-ministrului-apararii-mihailo-fedorov-3864633",
+    "source": "extern",
+    "source_name": "Digi24 Extern",
+    "source_lang": "ro",
+    "title": "Proteste în Ucraina pentru menținerea lui Mihailo Fedorov ca ministru al Apărării",
+    "category": "politic",
+    "published": "2026-07-16T08:13:25+00:00",
+    "model": "C",
+    "sources": [
+      {
+        "name": "Digi24 Extern",
+        "url": "https://www.digi24.ro/stiri/externe/ue/ucrainenii-s-au-adunat-la-kiev-pentru-a-protesta-fata-de-demiterea-ministrului-apararii-mihailo-fedorov-3864633"
+      },
+      {
+        "name": "HotNews",
+        "url": "https://hotnews.ro/rusii-sarbatoresc-mii-de-ucraineni-in-strada-dupa-demiterea-ministrului-apararii-fedorov-refuza-o-propunere-de-ultima-ora-a-lui-zelenski-2301878"
+      }
+    ],
+    "first_source": "Digi24 Extern",
+    "synthesis": "Mii de ucraineni au protestat în Kiev și alte orașe, cerând revocarea deciziei de demitere a ministrului Apărării, Mihailo Fedorov. Manifestanții au cerut parlamentului să-l mențină pe Fedorov în funcție, acesta refuzând o propunere de consilier prezidențial.",
+    "entities": [
+      "Mihailo Fedorov",
+      "Kiev",
+      "Ucraina",
+      "Volodimir Zelenski"
+    ],
+    "icon": "shield",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://moldova.europalibera.org/a/frana-balcanica-pentru-ucraina-serbia-si-bulgaria-insista-ca-nu-o-vor-ajuta-militar/33804819.html",
+    "original_link": "https://moldova.europalibera.org/a/frana-balcanica-pentru-ucraina-serbia-si-bulgaria-insista-ca-nu-o-vor-ajuta-militar/33804819.html",
+    "source": "el_moldova",
+    "source_name": "Europa Liberă",
+    "source_lang": "ro",
+    "title": "Serbia și Bulgaria refuză ajutor militar Ucrainei",
+    "category": "extern",
+    "published": "2026-07-16T07:55:17+00:00",
+    "model": "B",
+    "teaser": "În timp ce aliații europeni își reafirmă sprijinul pentru Ucraina, Serbia și Bulgaria, țări tradițional apropiate de Moscova, refuză să ofere asistență militară Kievului.",
+    "entities": [
+      "Serbia",
+      "Bulgaria",
+      "Ucraina",
+      "Rusia"
+    ],
+    "icon": "swords",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://digi24.ro/stiri/externe/moldova/mae-de-la-moscova-ii-indeamna-pe-rusi-sa-tina-cont-de-faptul-ca-r-moldova-nu-mai-este-o-destinatie-sigura-pentru-calatorii-3864505",
+    "original_link": "https://www.digi24.ro/stiri/externe/moldova/mae-de-la-moscova-ii-indeamna-pe-rusi-sa-tina-cont-de-faptul-ca-r-moldova-nu-mai-este-o-destinatie-sigura-pentru-calatorii-3864505",
+    "source": "extern",
+    "source_name": "Digi24 Extern",
+    "source_lang": "ro",
+    "title": "Rusia avertizează cetățenii să evite Republica Moldova",
+    "category": "politic",
+    "published": "2026-07-16T07:44:42+00:00",
+    "model": "B",
+    "teaser": "Ministerul rus de Externe consideră Republica Moldova nesigură pentru călătorii ruși, după incidentul în care curieri diplomatici ruși nu au fost lăsați să intre în țară.",
+    "entities": [
+      "Rusia",
+      "Republica Moldova",
+      "Maria Zaharova"
+    ],
+    "icon": "flag",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://politico.eu/podcast/politics-at-sam-and-annes/burnham-in-no-10-the-known-unknowns",
+    "original_link": "https://www.politico.eu/podcast/politics-at-sam-and-annes/burnham-in-no-10-the-known-unknowns/?utm_source=RSS_Feed&utm_medium=RSS&utm_campaign=RSS_Syndication",
+    "source": "politico_eu",
+    "source_name": "Politico EU",
+    "source_lang": "en",
+    "title": "Andy Burnham, noul lider laburist, își pregătește guvernul",
+    "category": "politic",
+    "published": "2026-07-16T07:33:03+00:00",
+    "model": "B",
+    "teaser": "Andy Burnham urmează să devină lider laburist. Acesta nu se grăbește cu numirile în cabinet, dar se anticipează un buget în luna octombrie.",
+    "entities": [
+      "Andy Burnham",
+      "Labour"
+    ],
+    "icon": "podium",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://digi24.ro/stiri/externe/sua/donald-trump-inclina-spre-extinderea-operatiunilor-militare-ale-sua-in-iran-variantele-de-escaladare-analizate-de-casa-alba-3864571",
+    "original_link": "https://www.digi24.ro/stiri/externe/sua/donald-trump-inclina-spre-extinderea-operatiunilor-militare-ale-sua-in-iran-variantele-de-escaladare-analizate-de-casa-alba-3864571",
+    "source": "extern",
+    "source_name": "Digi24 Extern",
+    "source_lang": "ro",
+    "title": "Trump ia în considerare extinderea operațiunilor militare SUA în Iran",
+    "category": "politic",
+    "published": "2026-07-16T07:30:23+00:00",
+    "model": "B",
+    "teaser": "Președintele american Donald Trump analizează intensificarea acțiunilor militare în Iran, inclusiv atacuri aeriene și posibila trimitere de trupe terestre, conform oficialilor americani.",
+    "entities": [
+      "Donald Trump",
+      "SUA",
+      "Iran"
+    ],
+    "icon": "swords",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://digi24.ro/stiri/externe/sua/avertismentul-unui-fost-secretar-al-apararii-al-lui-donald-trump-sua-nu-vor-castiga-razboiului-cu-iranul-prin-atacuri-aeriene-3864483",
+    "original_link": "https://www.digi24.ro/stiri/externe/sua/avertismentul-unui-fost-secretar-al-apararii-al-lui-donald-trump-sua-nu-vor-castiga-razboiului-cu-iranul-prin-atacuri-aeriene-3864483",
+    "source": "extern",
+    "source_name": "Digi24 Extern",
+    "source_lang": "ro",
+    "title": "Fost oficial Apărare Trump: SUA nu vor câștiga războiul cu Iranul prin atacuri aeriene",
+    "category": "politic",
+    "published": "2026-07-16T07:11:44+00:00",
+    "model": "B",
+    "teaser": "Un fost secretar al Apărării din administrația Trump avertizează că SUA nu vor învinge Iranul prin bombardamente, ci prin sufocarea economică a țării pentru a deschide Strâmtoarea Ormuz.",
+    "entities": [
+      "Trump",
+      "SUA",
+      "Iran"
+    ],
+    "icon": "swords",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
     "url": "https://g4media.ro/trafic-blocat-in-valcea-pe-valea-oltului-dupa-ce-un-tir-s-a-rasturnat-in-urma-unui-accident-cu-o-masina.html",
     "original_link": "https://www.g4media.ro/trafic-blocat-in-valcea-pe-valea-oltului-dupa-ce-un-tir-s-a-rasturnat-in-urma-unui-accident-cu-o-masina.html",
     "source": "g4media",
@@ -28,6 +671,47 @@
       "Valea Oltului"
     ],
     "icon": "truck",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://politico.eu/article/ofcom-investigates-tiktok-over-child-safety-measures",
+    "original_link": "https://www.politico.eu/article/ofcom-investigates-tiktok-over-child-safety-measures/?utm_source=RSS_Feed&utm_medium=RSS&utm_campaign=RSS_Syndication",
+    "source": "politico_eu",
+    "source_name": "Politico EU",
+    "source_lang": "en",
+    "title": "TikTok, investigat în Marea Britanie pentru siguranța copiilor",
+    "category": "tech",
+    "published": "2026-07-16T05:56:26+00:00",
+    "model": "B",
+    "teaser": "Autoritatea britanică de reglementare a siguranței online investighează TikTok din cauza modului în care platforma estimează vârsta utilizatorilor săi.",
+    "entities": [
+      "TikTok",
+      "Marea Britanie"
+    ],
+    "icon": "device-mobile",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://moldova.europalibera.org/a/ministrul-ucrainean-al-apararii-fedorov-demis-in-cadrul-remanierii-guvernului/33804774.html",
+    "original_link": "https://moldova.europalibera.org/a/ministrul-ucrainean-al-apararii-fedorov-demis-in-cadrul-remanierii-guvernului/33804774.html",
+    "source": "el_moldova",
+    "source_name": "Europa Liberă",
+    "source_lang": "ro",
+    "title": "Ucraina: Ministrul Apărării, Fedorov, demis în urma remanierii guvernamentale",
+    "category": "politic",
+    "published": "2026-07-16T05:24:00+00:00",
+    "model": "B",
+    "teaser": "Președintele ucrainean Volodimir Zelenski a decis demiterea ministrului apărării Mihailo Fedorov, în contextul unei remanieri guvernamentale ce vizează și funcția de prim-ministru.",
+    "entities": [
+      "Volodimir Zelenski",
+      "Mihailo Fedorov",
+      "Ucraina"
+    ],
+    "icon": "shield",
     "processed_by": "gemini",
     "prompt_version": "v2-esenta",
     "featured": false
@@ -130,6 +814,67 @@
       "Ucraina"
     ],
     "icon": "gavel",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://politico.eu/podcast/brussels-playbook-podcast/parliament-takes-a-break-the-plotting-begins",
+    "original_link": "https://www.politico.eu/podcast/brussels-playbook-podcast/parliament-takes-a-break-the-plotting-begins/?utm_source=RSS_Feed&utm_medium=RSS&utm_campaign=RSS_Syndication",
+    "source": "politico_eu",
+    "source_name": "Politico EU",
+    "source_lang": "en",
+    "title": "Parlamentul European intră în vacanță, negocierile politice continuă",
+    "category": "politic",
+    "published": "2026-07-16T04:05:00+00:00",
+    "model": "B",
+    "teaser": "Europarlamentarii intră în vacanța de vară, dar negocierile politice pentru realegerea conducerii Parlamentului European vor începe imediat la revenirea pe 31 august.",
+    "entities": [
+      "Parlamentul European"
+    ],
+    "icon": "writing",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://politico.eu/podcast/berlin-playbook-podcast/das-beraterproblem-der-katherina-reiche",
+    "original_link": "https://www.politico.eu/podcast/berlin-playbook-podcast/das-beraterproblem-der-katherina-reiche/?utm_source=RSS_Feed&utm_medium=RSS&utm_campaign=RSS_Syndication",
+    "source": "politico_eu",
+    "source_name": "Politico EU",
+    "source_lang": "en",
+    "title": "Ministrul german Reiche, criticat pentru contractarea de consultanți scumpi",
+    "category": "politic",
+    "published": "2026-07-16T04:00:27+00:00",
+    "model": "B",
+    "teaser": "Ministrul german al Economiei, Katherina Reiche (CDU), este criticată pentru contractarea de consultanți externi cu milioane de euro, acuzată că intervine în domeniul altor ministere.",
+    "entities": [
+      "Katherina Reiche",
+      "CDU",
+      "Carsten Schneider",
+      "Robert Habeck"
+    ],
+    "icon": "receipt-tax",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://theguardian.com/commentisfree/2026/jul/16/madrid-landlords-art-investment-fund-creativity",
+    "original_link": "https://www.theguardian.com/commentisfree/2026/jul/16/madrid-landlords-art-investment-fund-creativity",
+    "source": "guardian_eu",
+    "source_name": "The Guardian",
+    "source_lang": "en",
+    "title": "Chiriașii din Madrid luptă împotriva speculanților cu artă",
+    "category": "politic",
+    "published": "2026-07-16T04:00:14+00:00",
+    "model": "B",
+    "teaser": "Locatarii din Madrid, amenințați de fonduri de investiții, protestează împotriva creșterii chiriilor și a lucrărilor agresive prin creații artistice radicale.",
+    "entities": [
+      "Madrid",
+      "Tribulete 7"
+    ],
+    "icon": "building-monument",
     "processed_by": "gemini",
     "prompt_version": "v2-esenta",
     "featured": false
@@ -357,6 +1102,26 @@
       "Argentina"
     ],
     "icon": "ball-football",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://bbc.co.uk/news/articles/c20y00712ezo?at_medium=RSS&at_campaign=rss",
+    "original_link": "https://www.bbc.co.uk/news/articles/c20y00712ezo?at_medium=RSS&at_campaign=rss",
+    "source": "bbc_europe",
+    "source_name": "BBC Europe",
+    "source_lang": "en",
+    "title": "Verdict așteptat în cazul prăbușirii podului Morandi din Genova",
+    "category": "extern",
+    "published": "2026-07-15T23:02:37+00:00",
+    "model": "B",
+    "teaser": "Familiile a 43 de victime așteaptă verdictul în procesul legat de prăbușirea podului Morandi din Genova. O secțiune masivă a autostrăzii s-a prăbușit.",
+    "entities": [
+      "Genova",
+      "Morandi"
+    ],
+    "icon": "building-monument",
     "processed_by": "gemini",
     "prompt_version": "v2-esenta",
     "featured": false
@@ -637,6 +1402,27 @@
       "Spania"
     ],
     "icon": "ball-football",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://bbc.co.uk/news/articles/c8929jv8kdzo?at_medium=RSS&at_campaign=rss",
+    "original_link": "https://www.bbc.co.uk/news/articles/c8929jv8kdzo?at_medium=RSS&at_campaign=rss",
+    "source": "bbc_europe",
+    "source_name": "BBC Europe",
+    "source_lang": "en",
+    "title": "Atacuri rusești ucid 14 civili; Ucraina lovește petroliere în Marea Neagră",
+    "category": "extern",
+    "published": "2026-07-15T21:21:19+00:00",
+    "model": "B",
+    "teaser": "Cel puțin 14 civili au murit în urma atacurilor rusești în regiuni ucrainene. În același timp, forțele ucrainene au lovit 20 de nave rusești în Marea Neagră.",
+    "entities": [
+      "Rusia",
+      "Ucraina",
+      "Marea Neagră"
+    ],
+    "icon": "swords",
     "processed_by": "gemini",
     "prompt_version": "v2-esenta",
     "featured": false
@@ -2086,6 +2872,47 @@
     "featured": false
   },
   {
+    "url": "https://moldova.europalibera.org/a/mini-serie-pe-agenda-despre-plecarea-lui-munteanu-situatia-lui-tofan-si-dispozitia-lui-plahotniuc/33804317.html",
+    "original_link": "https://moldova.europalibera.org/a/mini-serie-pe-agenda-despre-plecarea-lui-munteanu-situatia-lui-tofan-si-dispozitia-lui-plahotniuc/33804317.html",
+    "source": "el_moldova",
+    "source_name": "Europa Liberă",
+    "source_lang": "ro",
+    "title": "Politician moldovean, Dumitru Diacov, analizează situația politică",
+    "category": "politic",
+    "published": "2026-07-15T15:00:00+00:00",
+    "model": "B",
+    "teaser": "Veteranul politic Dumitru Diacov a discutat despre șansele unui premier ca Vasile Tofan și relația cu puterea, într-un podcast difuzat înainte de Ziua Independenței.",
+    "entities": [
+      "Dumitru Diacov",
+      "Vasile Tofan"
+    ],
+    "icon": "writing",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://moldova.europalibera.org/a/dumitru-diacov-despre-situatia-lui-tofan-mostenirea-pd-si-ce-are-plahotniuc-cu-ce-face-guvernarea/33804304.html",
+    "original_link": "https://moldova.europalibera.org/a/dumitru-diacov-despre-situatia-lui-tofan-mostenirea-pd-si-ce-are-plahotniuc-cu-ce-face-guvernarea/33804304.html",
+    "source": "el_moldova",
+    "source_name": "Europa Liberă",
+    "source_lang": "ro",
+    "title": "Dumitru Diacov: Premierul moldovean va avea o misiune complicată",
+    "category": "politic",
+    "published": "2026-07-15T14:59:00+00:00",
+    "model": "B",
+    "teaser": "Fostul lider democrat Dumitru Diacov consideră că următorul premier al R. Moldova s-ar putea confrunta cu dificultăți, subliniind importanța relației cu Vasile Tofan.",
+    "entities": [
+      "Dumitru Diacov",
+      "Vasile Tofan",
+      "R. Moldova"
+    ],
+    "icon": "writing",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
     "url": "https://gsp.ro/international/campionatul-mondial-de-fotbal-2026/calcat-de-hoti-trimis-acasa-franta-cm2026-spargatori-mascati-atacat-vila-lamine-yamal-960841.html",
     "original_link": "https://www.gsp.ro/international/campionatul-mondial-de-fotbal-2026/calcat-de-hoti-trimis-acasa-franta-cm2026-spargatori-mascati-atacat-vila-lamine-yamal-960841.html",
     "source": "gsp",
@@ -2254,6 +3081,27 @@
       "UAC"
     ],
     "icon": "ship",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://moldova.europalibera.org/a/camionul-cu-arme-retinut-la-albita-soferul-moldovean-trimis-pe-banca-acuzatilor-in-romania-el-spune-ca-nu-stia-ce-transporta/33804218.html",
+    "original_link": "https://moldova.europalibera.org/a/camionul-cu-arme-retinut-la-albita-soferul-moldovean-trimis-pe-banca-acuzatilor-in-romania-el-spune-ca-nu-stia-ce-transporta/33804218.html",
+    "source": "el_moldova",
+    "source_name": "Europa Liberă",
+    "source_lang": "ro",
+    "title": "Șofer moldovean, trimis în judecată în România pentru contrabandă cu arme",
+    "category": "politic",
+    "published": "2026-07-15T13:16:31+00:00",
+    "model": "B",
+    "teaser": "Un șofer moldovean, prins în vama Albița cu muniție de război ascunsă într-un camion, a fost trimis pe banca acuzaților în România, în ciuda negării sale.",
+    "entities": [
+      "Albița",
+      "România",
+      "Moldova"
+    ],
+    "icon": "truck",
     "processed_by": "gemini",
     "prompt_version": "v2-esenta",
     "featured": false
@@ -25400,210 +26248,6 @@
       "Egipt"
     ],
     "icon": "ball-football",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://digi24.ro/stiri/externe/merz-anunta-ca-germania-a-ajuns-la-un-acord-cu-sua-privind-rachetele-tomahawk-umplem-o-lacuna-in-apararea-noastra-3854853",
-    "original_link": "https://www.digi24.ro/stiri/externe/merz-anunta-ca-germania-a-ajuns-la-un-acord-cu-sua-privind-rachetele-tomahawk-umplem-o-lacuna-in-apararea-noastra-3854853",
-    "source": "extern",
-    "source_name": "Digi24 Extern",
-    "source_lang": "ro",
-    "title": "Germania achiziționează rachete Tomahawk din SUA",
-    "category": "politic",
-    "published": "2026-07-09T10:01:30+00:00",
-    "model": "C",
-    "sources": [
-      {
-        "name": "Digi24 Extern",
-        "url": "https://www.digi24.ro/stiri/externe/merz-anunta-ca-germania-a-ajuns-la-un-acord-cu-sua-privind-rachetele-tomahawk-umplem-o-lacuna-in-apararea-noastra-3854853"
-      },
-      {
-        "name": "G4Media",
-        "url": "https://www.g4media.ro/germania-va-cumpara-rachete-tomahawk-din-sua-merz-acoperim-o-lacuna-strategica-in-apararea-noastra.html"
-      },
-      {
-        "name": "Curs de Guvernare",
-        "url": "https://cursdeguvernare.ro/germania-cumpara-de-la-sua-rachete-cu-raza-lunga-tomahawk-care-vor-fi-stationate-pe-teritoriul-german-merz-umplem-o-lacuna-strategica.html"
-      }
-    ],
-    "first_source": "Digi24 Extern",
-    "synthesis": "Cancelarul german Friedrich Merz a anunțat în parlamentul de la Berlin că Germania a ajuns la un acord cu Statele Unite pentru achiziționarea de rachete de croazieră Tomahawk. Acestea vor fi staționate pe teritoriul german, acoperind astfel o lacună strategică în apărarea țării. Anunțul a fost făcut după participarea lui Merz la un summit NATO.",
-    "entities": [
-      "Germania",
-      "SUA",
-      "Friedrich Merz",
-      "NATO"
-    ],
-    "icon": "rocket",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://spotmedia.ro/stiri/monden/bonnie-tyler-a-murit-vocea-inconfundabila-din-total-eclipse-of-the-heart-s-a-stins-in-portugalia",
-    "original_link": "https://spotmedia.ro/stiri/monden/bonnie-tyler-a-murit-vocea-inconfundabila-din-total-eclipse-of-the-heart-s-a-stins-in-portugalia",
-    "source": "spotmedia",
-    "source_name": "Spotmedia",
-    "source_lang": "ro",
-    "title": "A murit cântăreața Bonnie Tyler la 75 de ani",
-    "category": "general",
-    "published": "2026-07-09T09:25:33+00:00",
-    "model": "C",
-    "sources": [
-      {
-        "name": "Spotmedia",
-        "url": "https://spotmedia.ro/stiri/monden/bonnie-tyler-a-murit-vocea-inconfundabila-din-total-eclipse-of-the-heart-s-a-stins-in-portugalia"
-      },
-      {
-        "name": "Digi24 Extern",
-        "url": "https://www.digi24.ro/stiri/externe/a-murit-bonnie-tyler-cunoscuta-pentru-hiturile-total-eclipse-of-the-heart-si-holding-out-for-a-hero-artista-avea-75-de-ani-3854763"
-      }
-    ],
-    "first_source": "Spotmedia",
-    "synthesis": "Cântăreața galeză Bonnie Tyler, cunoscută pentru hituri precum „Total Eclipse of the Heart”, a decedat la vârsta de 75 de ani. Artista se afla internată într-un spital din Faro, Portugalia, unde fusese supusă unei intervenții chirurgicale de urgență în luna mai. Anunțul decesului a fost făcut de familia și echipa sa.",
-    "entities": [
-      "Bonnie Tyler",
-      "Faro",
-      "Portugalia"
-    ],
-    "icon": "music",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://theguardian.com/business/2026/jul/09/vw-protests-germany-proposed-job-cuts-factory-closures",
-    "original_link": "https://www.theguardian.com/business/2026/jul/09/vw-protests-germany-proposed-job-cuts-factory-closures",
-    "source": "guardian_eu",
-    "source_name": "The Guardian",
-    "source_lang": "en",
-    "title": "Proteste în Germania împotriva reducerilor de locuri de muncă la Volkswagen",
-    "category": "economic",
-    "published": "2026-07-09T09:19:26+00:00",
-    "model": "B",
-    "teaser": "Sindicatele germane organizează proteste la 18 uzine Volkswagen, inclusiv la sediul central, împotriva planurilor de restructurare ce vizează concedieri masive și închiderea unor fabrici.",
-    "entities": [
-      "Germania",
-      "Volkswagen",
-      "IG Metall"
-    ],
-    "icon": "building-factory",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://start-up.ro/de-la-primarie-la-hub-cultural-povestea-degalben-si-renasterea-sectorului-galben",
-    "original_link": "https://start-up.ro/de-la-primarie-la-hub-cultural-povestea-degalben-si-renasterea-sectorului-galben/",
-    "source": "startup",
-    "source_name": "Start-up.ro",
-    "source_lang": "ro",
-    "title": "Fosta primărie din Piața Amzei devine hub cultural",
-    "category": "general",
-    "published": "2026-07-09T09:04:20+00:00",
-    "model": "B",
-    "teaser": "Clădirea istorică din Piața Amzei nr. 13, fost sediu administrativ, a fost transformată într-un hub cultural numit deGalben, oferind spații pentru bibliotecă, teatru și evenimente.",
-    "entities": [
-      "Piața Amzei",
-      "deGalben"
-    ],
-    "icon": "building-monument",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://autocritica.ro/live-news/dacia-a-inaugurat-un-city-store-in-timisoara",
-    "original_link": "https://www.autocritica.ro/live-news/dacia-a-inaugurat-un-city-store-in-timisoara/",
-    "source": "autocritica",
-    "source_name": "AutoCritica",
-    "source_lang": "ro",
-    "title": "Dacia deschide un nou spațiu de prezentare în Timișoara",
-    "category": "economic",
-    "published": "2026-07-09T09:00:51+00:00",
-    "model": "C",
-    "sources": [
-      {
-        "name": "AutoCritica",
-        "url": "https://www.autocritica.ro/live-news/dacia-a-inaugurat-un-city-store-in-timisoara/"
-      },
-      {
-        "name": "Economedia",
-        "url": "https://economedia.ro/dacia-inaugureaza-primul-city-store-din-timisoara.html"
-      }
-    ],
-    "first_source": "AutoCritica",
-    "synthesis": "Dacia a inaugurat pe 9 iulie un nou concept de spațiu comercial, denumit City Store, în centrul comercial Iulius Town din Timișoara. Acest centru, deschis în parteneriat cu Auto Europa Timișoara, oferă informații despre modele, accesorii și servicii, completând activitatea centrului de vânzări și service existent.",
-    "entities": [
-      "Dacia",
-      "Timișoara",
-      "Iulius Town",
-      "Auto Europa Timișoara"
-    ],
-    "icon": "shopping-cart",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://moldova.europalibera.org/a/ucraina-si-ar-putea-fabrica-propriile-rachete-patriot-cum-ar-putea-schimba-asta-mersul-razboiului/33799991.html",
-    "original_link": "https://moldova.europalibera.org/a/ucraina-si-ar-putea-fabrica-propriile-rachete-patriot-cum-ar-putea-schimba-asta-mersul-razboiului/33799991.html",
-    "source": "el_moldova",
-    "source_name": "Europa Liberă",
-    "source_lang": "ro",
-    "title": "Ucraina ar putea produce rachete Patriot, schimbând cursul războiului",
-    "category": "extern",
-    "published": "2026-07-09T08:05:00+00:00",
-    "model": "B",
-    "teaser": "Posibila licență de producție a rachetelor Patriot pentru Ucraina, promisă de Donald Trump, ar reprezenta un avantaj strategic major. Implementarea rapidă este crucială pentru apărarea aeriană ucraineană.",
-    "entities": [
-      "Ucraina",
-      "Patriot",
-      "Donald Trump",
-      "Zelenski"
-    ],
-    "icon": "rocket",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://politico.eu/sponsored-content/europes-ai-moment-four-imperatives-for-business-leaders",
-    "original_link": "https://www.politico.eu/sponsored-content/europes-ai-moment-four-imperatives-for-business-leaders/?utm_source=RSS_Feed&utm_medium=RSS&utm_campaign=RSS_Syndication",
-    "source": "politico_eu",
-    "source_name": "Politico EU",
-    "source_lang": "en",
-    "title": "Liderii de afaceri trebuie să se adapteze rapid la era inteligenței artificiale",
-    "category": "tech",
-    "published": "2026-07-09T08:00:00+00:00",
-    "model": "B",
-    "teaser": "Afacerile se confruntă cu o evoluție rapidă a inteligenței artificiale, cu noi modele și aplicații apărând constant. Liderii sunt sfătuiți să fie proactivi în fața oportunităților și riscurilor.",
-    "entities": [
-      "AI"
-    ],
-    "icon": "robot",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://politico.eu/podcast/politics-at-sam-and-annes/burnham-shows-his-hand-should-we-believe-it",
-    "original_link": "https://www.politico.eu/podcast/politics-at-sam-and-annes/burnham-shows-his-hand-should-we-believe-it/?utm_source=RSS_Feed&utm_medium=RSS&utm_campaign=RSS_Syndication",
-    "source": "politico_eu",
-    "source_name": "Politico EU",
-    "source_lang": "en",
-    "title": "Andy Burnham își prezintă prioritățile politice pentru guvernare",
-    "category": "politic",
-    "published": "2026-07-09T07:10:18+00:00",
-    "model": "B",
-    "teaser": "Andy Burnham își consolidează poziția în politica britanică, prezentând obiectivele sale pentru o eventuală guvernare. Cursa pentru conducerea laburiștilor se apropie de final.",
-    "entities": [
-      "Andy Burnham",
-      "laburiști"
-    ],
-    "icon": "gavel",
     "processed_by": "gemini",
     "prompt_version": "v2-esenta",
     "featured": false
