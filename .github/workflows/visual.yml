@@ -35,7 +35,7 @@ jobs:
         run: python tools/visual_check.py
       - name: Urca screenshot-urile (dovada vizuala, si la esec)
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: visual-shots
           path: shots/
