@@ -1,5 +1,72 @@
 [
   {
+    "url": "https://hotnews.ro/sindicalistii-din-sanatate-anunta-o-greva-de-avertisment-si-data-la-care-intra-in-greva-generala-pe-termen-nelimitat-guvernul-ne-a-impins-spre-ea-2302139",
+    "original_link": "https://hotnews.ro/sindicalistii-din-sanatate-anunta-o-greva-de-avertisment-si-data-la-care-intra-in-greva-generala-pe-termen-nelimitat-guvernul-ne-a-impins-spre-ea-2302139",
+    "source": "hotnews",
+    "source_name": "HotNews",
+    "source_lang": "ro",
+    "title": "Sindicaliștii Sanitas anunță grevă generală pe termen nelimitat din 28 iulie",
+    "category": "politic",
+    "published": "2026-07-16T13:24:03+00:00",
+    "model": "C",
+    "sources": [
+      {
+        "name": "HotNews",
+        "url": "https://hotnews.ro/sindicalistii-din-sanatate-anunta-o-greva-de-avertisment-si-data-la-care-intra-in-greva-generala-pe-termen-nelimitat-guvernul-ne-a-impins-spre-ea-2302139"
+      },
+      {
+        "name": "Curs de Guvernare",
+        "url": "https://cursdeguvernare.ro/legea-salarizarii-sindicatul-sanitas-anunta-greva-de-avertisment-in-20-iulie-si-greva-generala-din-28-iulie-in-aproape-500-de-spitale.html"
+      }
+    ],
+    "first_source": "HotNews",
+    "synthesis": "Federația Sanitas a anunțat o grevă de avertisment pe 20 iulie, urmată de o grevă generală pe termen nelimitat începând cu 28 iulie. Aproximativ 489 de unități sanitare ar urma să participe la protest, care vizează politica economică și socială a Guvernului și revendicările salariale.",
+    "entities": [
+      "Sanitas",
+      "Guvern"
+    ],
+    "icon": "building-hospital",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://economica.net/finantare-uriasa-pentru-romania-bei-acorda-un-imprumut-de-800-de-milioane-de-euro-pentru-retehnologizarea-unitatii-1-a-centralei-de-la-cernavoda_959909.html",
+    "original_link": "https://www.economica.net/finantare-uriasa-pentru-romania-bei-acorda-un-imprumut-de-800-de-milioane-de-euro-pentru-retehnologizarea-unitatii-1-a-centralei-de-la-cernavoda_959909.html",
+    "source": "economica",
+    "source_name": "Economica",
+    "source_lang": "ro",
+    "title": "BEI acordă 800 de milioane de euro pentru retehnologizarea Cernavodă 1",
+    "category": "economic",
+    "published": "2026-07-16T12:57:20+00:00",
+    "model": "C",
+    "sources": [
+      {
+        "name": "Economica",
+        "url": "https://www.economica.net/finantare-uriasa-pentru-romania-bei-acorda-un-imprumut-de-800-de-milioane-de-euro-pentru-retehnologizarea-unitatii-1-a-centralei-de-la-cernavoda_959909.html"
+      },
+      {
+        "name": "Economedia",
+        "url": "https://economedia.ro/nuclearelectrica-primeste-un-imprumut-de-800-milioane-de-euro-de-la-bei-pentru-retehnologizarea-unitatii-1-de-la-cernavoda.html"
+      },
+      {
+        "name": "G4Media",
+        "url": "https://www.g4media.ro/unitatea-1-a-centralei-nucleare-de-la-cernavoda-retehnologizata-printr-un-imprumut-de-800-de-milioane-euro-al-bancii-europene-de-investitii.html"
+      }
+    ],
+    "first_source": "Economica",
+    "synthesis": "Banca Europeană de Investiții (BEI) a aprobat un împrumut de 800 de milioane de euro pentru retehnologizarea Unității 1 a Centralei Nucleare de la Cernavodă. Decizia a fost luată de Boardul BEI pe 15 iulie 2026. Nuclearelectrica va supune contractarea împrumutului aprobării acționarilor săi.",
+    "entities": [
+      "BEI",
+      "Nuclearelectrica",
+      "Cernavodă"
+    ],
+    "icon": "building-factory",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
     "url": "https://economica.net/finala-uefa-europa-league-la-bucuresti-sedinta-de-guvern-pe-agenda-aprobarea-candidaturii-romaniei-la-organizarea-finala-europa-league_959819.html",
     "original_link": "https://www.economica.net/finala-uefa-europa-league-la-bucuresti-sedinta-de-guvern-pe-agenda-aprobarea-candidaturii-romaniei-la-organizarea-finala-europa-league_959819.html",
     "source": "economica",
@@ -320,27 +387,6 @@
       "Levski Sofia"
     ],
     "icon": "ball-football",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://bbc.co.uk/news/articles/cdx76069n3do?at_medium=RSS&at_campaign=rss",
-    "original_link": "https://www.bbc.co.uk/news/articles/cdx76069n3do?at_medium=RSS&at_campaign=rss",
-    "source": "bbc_europe",
-    "source_name": "BBC Europe",
-    "source_lang": "en",
-    "title": "Proteste în Ucraina după demiterea ministrului apărării",
-    "category": "politic",
-    "published": "2026-07-16T09:29:28+00:00",
-    "model": "B",
-    "teaser": "Președintele ucrainean a demis ministrul apărării fără explicații, stârnind proteste în societatea civilă și în rândul militarilor. Decizia a cauzat nemulțumiri majore.",
-    "entities": [
-      "Ucraina",
-      "Zelensky",
-      "Mykhailo Fedorov"
-    ],
-    "icon": "shield",
     "processed_by": "gemini",
     "prompt_version": "v2-esenta",
     "featured": false
@@ -1581,20 +1627,36 @@
     "source": "guardian_eu",
     "source_name": "The Guardian",
     "source_lang": "en",
-    "title": "Zelenskyy demite ministrul Apărării ucrainean",
+    "title": "Zelenski demite ministrul Apărării, declanșând proteste în Ucraina",
     "category": "politic",
     "published": "2026-07-15T20:47:41+00:00",
-    "model": "B",
+    "model": "C",
     "teaser": "Președintele Ucrainei, Volodimir Zelenski, a înlocuit ministrul Apărării, Mykhailo Fedorov, în ciuda presiunilor interne și externe, ca parte a unei remanieri guvernamentale.",
     "entities": [
       "Volodimir Zelenski",
-      "Mykhailo Fedorov",
+      "Mihailo Fedorov",
       "Ucraina"
     ],
-    "icon": "flag",
+    "icon": "shield",
     "processed_by": "gemini",
     "prompt_version": "v2-esenta",
-    "featured": false
+    "featured": false,
+    "sources": [
+      {
+        "name": "The Guardian",
+        "url": "https://www.theguardian.com/world/2026/jul/15/volodymyr-zelenskyy-dismisses-ukraines-popular-defence-minister"
+      },
+      {
+        "name": "BBC Europe",
+        "url": "https://www.bbc.co.uk/news/articles/cdx76069n3do?at_medium=RSS&at_campaign=rss"
+      },
+      {
+        "name": "Europa Liberă",
+        "url": "https://moldova.europalibera.org/a/ucrainenii-protesteaza-fata-de-demiterea-popularului-ministru-al-apararii/33805069.html"
+      }
+    ],
+    "first_source": "The Guardian",
+    "synthesis": "Președintele ucrainean Volodimir Zelenski a înlocuit ministrul Apărării, Mihailo Fedorov, ca parte a unei remanieri guvernamentale. Decizia, lipsită de explicații oficiale, a generat proteste în societatea civilă și în rândul militarilor, stârnind nemulțumiri și întrebări privind coordonarea apărării țării."
   },
   {
     "url": "https://spotmedia.ro/stiri/eveniment/ziua-1603-20-de-nave-rusesti-lovite-in-marea-neagra-peste-340-de-drone-spre-moscova-in-cat-timp-ajunge-racheta-la-kiev",
@@ -25513,741 +25575,6 @@
       "UE"
     ],
     "icon": "bolt",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://gsp.ro/fotbal/liga-1/live-rapid-slovan-liberec-meci-amical-958663.html",
-    "original_link": "https://www.gsp.ro/fotbal/liga-1/live-rapid-slovan-liberec-meci-amical-958663.html",
-    "source": "gsp",
-    "source_name": "GSP",
-    "source_lang": "ro",
-    "title": "Rapid dispută ultimul amical din Austria contra Slovan Liberec",
-    "category": "sport",
-    "published": "2026-07-09T14:16:51+00:00",
-    "model": "B",
-    "teaser": "Giuleștenii joacă ultimul meci de pregătire din Austria împotriva echipei cehe Slovan Liberec, după ce anterior au remizat cu Kosice, Cătălin Vulturar marcând spectaculos.",
-    "entities": [
-      "Rapid",
-      "Slovan Liberec",
-      "Kosice"
-    ],
-    "icon": "ball-football",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://gsp.ro/international/campionatul-mondial-de-fotbal-2026/franta-maroc-campionatul-mondial-semifinale-958604.html",
-    "original_link": "https://www.gsp.ro/international/campionatul-mondial-de-fotbal-2026/franta-maroc-campionatul-mondial-semifinale-958604.html",
-    "source": "gsp",
-    "source_name": "GSP",
-    "source_lang": "ro",
-    "title": "Franța și Maroc se înfruntă în sferturile Campionatului Mondial",
-    "category": "sport",
-    "published": "2026-07-09T14:14:40+00:00",
-    "model": "B",
-    "teaser": "Franța, campioana mondială en titre, și Maroc se întâlnesc în primul sfert de finală al competiției, într-un meci ce se anunță spectaculos, cu absențe notabile.",
-    "entities": [
-      "Franța",
-      "Maroc"
-    ],
-    "icon": "ball-football",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://politico.eu/article/russia-activist-igor-rogov-spy-sentence-poland",
-    "original_link": "https://www.politico.eu/article/russia-activist-igor-rogov-spy-sentence-poland/?utm_source=RSS_Feed&utm_medium=RSS&utm_campaign=RSS_Syndication",
-    "source": "politico_eu",
-    "source_name": "Politico EU",
-    "source_lang": "en",
-    "title": "Activist rus, condamnat în Polonia pentru spionaj",
-    "category": "politic",
-    "published": "2026-07-09T14:13:43+00:00",
-    "model": "B",
-    "teaser": "Un activist rus, Igor Rogov, a fost condamnat în Polonia pentru spionaj, după ce a recunoscut că a furnizat informații Moscovei despre exilați ruși și europeni.",
-    "entities": [
-      "Igor Rogov",
-      "Polonia",
-      "Moscova"
-    ],
-    "icon": "gavel",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://autocritica.ro/live-news/guvernul-a-anuntat-cum-se-aplica-suspendarea-permisului-pentru-neplata-amenzilor",
-    "original_link": "https://www.autocritica.ro/live-news/guvernul-a-anuntat-cum-se-aplica-suspendarea-permisului-pentru-neplata-amenzilor/",
-    "source": "autocritica",
-    "source_name": "AutoCritica",
-    "source_lang": "ro",
-    "title": "Suspendarea permisului pentru amenzi neplătite: noi reguli",
-    "category": "politic",
-    "published": "2026-07-09T14:09:40+00:00",
-    "model": "B",
-    "teaser": "Guvernul a stabilit normele pentru suspendarea permisului auto dacă amenzile rutiere nu sunt achitate în 90 de zile, ANAF transmițând somații și calculând zile de suspendare proporțional cu valoarea.",
-    "entities": [
-      "ANAF"
-    ],
-    "icon": "gavel",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://theguardian.com/world/2026/jul/09/licence-to-drill-trump-linked-texas-oil-company-elbowing-into-greenland",
-    "original_link": "https://www.theguardian.com/world/2026/jul/09/licence-to-drill-trump-linked-texas-oil-company-elbowing-into-greenland",
-    "source": "guardian_eu",
-    "source_name": "The Guardian",
-    "source_lang": "en",
-    "title": "Companie petrolieră legată de Trump, interesată de Groenlanda",
-    "category": "economic",
-    "published": "2026-07-09T13:52:19+00:00",
-    "model": "B",
-    "teaser": "O companie din Texas, cu legături spre Donald Trump, pretinde că deține permise de explorare pentru petrol în Groenlanda, afirmație negată de autoritățile locale.",
-    "entities": [
-      "Trump",
-      "Groenlanda",
-      "Greenland Energy",
-      "Robert Price"
-    ],
-    "icon": "gas-station",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://spotmedia.ro/stiri/eveniment/procurorii-au-pus-sechestru-pe-averea-lui-raed-arafat-in-dosarul-de-contrabanda-cu-elicopterul-smurd",
-    "original_link": "https://spotmedia.ro/stiri/eveniment/procurorii-au-pus-sechestru-pe-averea-lui-raed-arafat-in-dosarul-de-contrabanda-cu-elicopterul-smurd",
-    "source": "spotmedia",
-    "source_name": "Spotmedia",
-    "source_lang": "ro",
-    "title": "Sechestru pe averea lui Raed Arafat în dosarul elicopterului SMURD",
-    "category": "politic",
-    "published": "2026-07-09T13:09:08+00:00",
-    "model": "C",
-    "sources": [
-      {
-        "name": "Spotmedia",
-        "url": "https://spotmedia.ro/stiri/eveniment/procurorii-au-pus-sechestru-pe-averea-lui-raed-arafat-in-dosarul-de-contrabanda-cu-elicopterul-smurd"
-      },
-      {
-        "name": "Digi24",
-        "url": "https://www.digi24.ro/stiri/actualitate/justitie/raed-arafat-dupa-sechestrul-pus-de-procurori-in-dosarul-contrabandei-cu-elicopter-o-forma-de-schizofrenie-institutionala-3855493"
-      }
-    ],
-    "first_source": "Spotmedia",
-    "synthesis": "Procurorii militari au pus sechestru pe averea și conturile lui Raed Arafat, șeful DSU, și ale altor 16 persoane, precum și pe conturile unor companii, în legătură cu un dosar de contrabandă cu un elicopter SMURD. Arafat a confirmat informația și a anunțat că va contesta decizia în instanță, numind-o o „formă de schizofrenie instituțională”.",
-    "entities": [
-      "Raed Arafat",
-      "DSU",
-      "Parchetul Militar"
-    ],
-    "icon": "helicopter",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://theguardian.com/world/2026/jul/09/germany-set-to-make-rental-e-scooter-operators-liable-for-accidents",
-    "original_link": "https://www.theguardian.com/world/2026/jul/09/germany-set-to-make-rental-e-scooter-operators-liable-for-accidents",
-    "source": "guardian_eu",
-    "source_name": "The Guardian",
-    "source_lang": "en",
-    "title": "Germania: Operatorii de trotinete electrice, responsabili pentru accidente",
-    "category": "politic",
-    "published": "2026-07-09T13:06:32+00:00",
-    "model": "B",
-    "teaser": "Germania pregătește o lege prin care operatorii de trotinete electrice închiriate vor fi trași la răspundere pentru accidentele cauzate, facilitând despăgubirea victimelor.",
-    "entities": [
-      "Germania",
-      "Bolt",
-      "Lime"
-    ],
-    "icon": "bolt",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://digisport.ro/fotbal/cm-2026/marocanii-se-tem-de-arbitrajul-de-la-meciul-cu-franta-din-sferturile-de-finala-ale-cm-2026-4368527",
-    "original_link": "https://www.digisport.ro/fotbal/cm-2026/marocanii-se-tem-de-arbitrajul-de-la-meciul-cu-franta-din-sferturile-de-finala-ale-cm-2026-4368527",
-    "source": "digisport",
-    "source_name": "Digi Sport",
-    "source_lang": "ro",
-    "title": "Marocanii se tem de arbitrajul în meciul cu Franța de la CM 2026",
-    "category": "sport",
-    "published": "2026-07-09T13:03:57+00:00",
-    "model": "B",
-    "teaser": "Naționala Marocului își exprimă îngrijorarea cu privire la posibila influență a arbitrajului în meciul din sferturile de finală ale Campionatului Mondial 2026, contra Franței.",
-    "entities": [
-      "Maroc",
-      "Franța"
-    ],
-    "icon": "flag",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://theguardian.com/world/2026/jul/09/lgbtq-cruise-ship-refused-entry-egypt-turkey",
-    "original_link": "https://www.theguardian.com/world/2026/jul/09/lgbtq-cruise-ship-refused-entry-egypt-turkey",
-    "source": "guardian_eu",
-    "source_name": "The Guardian",
-    "source_lang": "en",
-    "title": "Vas de croazieră LGBTQ+ refuzat de Egipt după Turcia",
-    "category": "extern",
-    "published": "2026-07-09T12:59:24+00:00",
-    "model": "B",
-    "teaser": "Nava de croazieră Scarlet Lady, destinată comunității LGBTQ+, a fost refuzată de Egipt, după ce anterior i s-a interzis accesul în apele Turciei.",
-    "entities": [
-      "Egipt",
-      "Turcia",
-      "Scarlet Lady",
-      "Patti LuPone"
-    ],
-    "icon": "ship",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://digisport.ro/fotbal/fotbal-international/s-a-terminat-dupa-ce-s-a-retras-din-nationala-a-ramas-somer-4368645",
-    "original_link": "https://www.digisport.ro/fotbal/fotbal-international/s-a-terminat-dupa-ce-s-a-retras-din-nationala-a-ramas-somer-4368645",
-    "source": "digisport",
-    "source_name": "Digi Sport",
-    "source_lang": "ro",
-    "title": "Jucător retras din națională a rămas fără echipă",
-    "category": "sport",
-    "published": "2026-07-09T12:57:47+00:00",
-    "model": "B",
-    "teaser": "După ce și-a anunțat retragerea din echipa națională, un fotbalist a rămas liber de contract și caută o nouă echipă pentru a-și continua cariera.",
-    "entities": [],
-    "icon": "ball-football",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://spotmedia.ro/stiri/educatie/ministerul-educatiei-si-cercetarii-a-publicat-un-ghid-pentru-admiterea-la-liceu-cand-se-completeaza-optiunile",
-    "original_link": "https://spotmedia.ro/stiri/educatie/ministerul-educatiei-si-cercetarii-a-publicat-un-ghid-pentru-admiterea-la-liceu-cand-se-completeaza-optiunile",
-    "source": "spotmedia",
-    "source_name": "Spotmedia",
-    "source_lang": "ro",
-    "title": "Ministerul Educației a publicat ghidul și ierarhia pentru admiterea la liceu",
-    "category": "general",
-    "published": "2026-07-09T12:44:01+00:00",
-    "model": "C",
-    "sources": [
-      {
-        "name": "Spotmedia",
-        "url": "https://spotmedia.ro/stiri/educatie/ministerul-educatiei-si-cercetarii-a-publicat-un-ghid-pentru-admiterea-la-liceu-cand-se-completeaza-optiunile"
-      },
-      {
-        "name": "HotNews",
-        "url": "https://hotnews.ro/ierarhia-pentru-admiterea-la-liceu-2026-a-fost-publicata-ghidul-pentru-completarea-optiunilor-2296331"
-      }
-    ],
-    "first_source": "Spotmedia",
-    "synthesis": "Ministerul Educației și Cercetării a publicat joi, 9 iulie, ierarhia județeană și a municipiului București pentru absolvenții de clasa a VIII-a care participă la admiterea la liceu în anul școlar 2026-2027. Totodată, a fost dat publicității și un ghid cu informații utile privind completarea opțiunilor și etapele admiterii.",
-    "entities": [
-      "Ministerul Educației și Cercetării"
-    ],
-    "icon": "writing",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://gsp.ro/international/campionatul-mondial-de-fotbal-2026/romario-critici-carlo-ancelotti-eliminare-brazilia-campionatul-mondial-2026-958714.html",
-    "original_link": "https://www.gsp.ro/international/campionatul-mondial-de-fotbal-2026/romario-critici-carlo-ancelotti-eliminare-brazilia-campionatul-mondial-2026-958714.html",
-    "source": "gsp",
-    "source_name": "GSP",
-    "source_lang": "ro",
-    "title": "Romario cere demiterea lui Ancelotti după eliminarea Braziliei de la CM 2026",
-    "category": "sport",
-    "published": "2026-07-09T12:32:01+00:00",
-    "model": "B",
-    "teaser": "Brazilianul Romario, fost campion mondial, cere înlocuirea selecționerului Carlo Ancelotti. Brazilia a fost eliminată de Norvegia în optimile Campionatului Mondial 2026.",
-    "entities": [
-      "Romario",
-      "Carlo Ancelotti",
-      "Brazilia",
-      "Norvegia"
-    ],
-    "icon": "ball-football",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://autocritica.ro/live-news/noul-mercedes-amg-cla-45-4matic-680-cp-si-autonomie-de-670-de-kilometri",
-    "original_link": "https://www.autocritica.ro/live-news/noul-mercedes-amg-cla-45-4matic-680-cp-si-autonomie-de-670-de-kilometri/",
-    "source": "autocritica",
-    "source_name": "AutoCritica",
-    "source_lang": "ro",
-    "title": "Noul Mercedes-AMG CLA 45: 680 CP și 670 km autonomie",
-    "category": "tech",
-    "published": "2026-07-09T12:29:32+00:00",
-    "model": "B",
-    "teaser": "Mercedes-AMG lansează noua generație CLA 45 4Matic+, prima compactă electrică AMG, cu 680 CP și o autonomie de până la 670 km, disponibilă în variante sedan și Shooting Brake.",
-    "entities": [
-      "Mercedes-AMG",
-      "Mercedes-Benz"
-    ],
-    "icon": "car",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://gsp.ro/sporturi/tenis/coco-vandeweghe-accidentare-grava-la-wimbledon-958716.html",
-    "original_link": "https://www.gsp.ro/sporturi/tenis/coco-vandeweghe-accidentare-grava-la-wimbledon-958716.html",
-    "source": "gsp",
-    "source_name": "GSP",
-    "source_lang": "ro",
-    "title": "Fostă jucătoare de top WTA, accidentată grav la Wimbledon, operată de urgență",
-    "category": "sport",
-    "published": "2026-07-09T12:29:14+00:00",
-    "model": "B",
-    "teaser": "Coco Vandeweghe, fostă jucătoare din top 10 WTA, a suferit o căzătură serioasă la Wimbledon. Incidentul a necesitat o intervenție chirurgicală de urgență, detaliile fiind publicate pe rețelele sociale.",
-    "entities": [
-      "Coco Vandeweghe",
-      "Wimbledon"
-    ],
-    "icon": "ball-tennis",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://gsp.ro/fotbal/liga-1/david-kiki-contract-transfer-fc-voluntari-fcsb-958715.html",
-    "original_link": "https://www.gsp.ro/fotbal/liga-1/david-kiki-contract-transfer-fc-voluntari-fcsb-958715.html",
-    "source": "gsp",
-    "source_name": "GSP",
-    "source_lang": "ro",
-    "title": "David Kiki a semnat cu FC Voluntari după plecarea de la FCSB",
-    "category": "sport",
-    "published": "2026-07-09T12:25:33+00:00",
-    "model": "B",
-    "teaser": "Fundașul David Kiki, liber de contract după despărțirea de FCSB, va continua în Superligă. Acesta a semnat cu nou-promovata FC Voluntari, unde își dorește să revină pe teren.",
-    "entities": [
-      "David Kiki",
-      "FCSB",
-      "FC Voluntari"
-    ],
-    "icon": "ball-football",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://g4media.ro/partidele-politice-subventii-de-peste-154-milioane-de-lei-in-luna-iulie-cei-mai-multi-bani-i-au-primit-psd-aur-si-pnl.html",
-    "original_link": "https://www.g4media.ro/partidele-politice-subventii-de-peste-154-milioane-de-lei-in-luna-iulie-cei-mai-multi-bani-i-au-primit-psd-aur-si-pnl.html",
-    "source": "g4media",
-    "source_name": "G4Media",
-    "source_lang": "ro",
-    "title": "Partidele politice au primit peste 15 milioane lei subvenții în iulie",
-    "category": "politic",
-    "published": "2026-07-09T12:23:07+00:00",
-    "model": "C",
-    "sources": [
-      {
-        "name": "G4Media",
-        "url": "https://www.g4media.ro/partidele-politice-subventii-de-peste-154-milioane-de-lei-in-luna-iulie-cei-mai-multi-bani-i-au-primit-psd-aur-si-pnl.html"
-      },
-      {
-        "name": "Digi24",
-        "url": "https://www.digi24.ro/stiri/actualitate/politica/aep-a-virat-peste-15-milioane-lei-catre-partide-in-iulie-cum-au-evoluat-subventiile-de-la-inceputul-anului-3855271"
-      }
-    ],
-    "first_source": "G4Media",
-    "synthesis": "Autoritatea Electorală Permanentă (AEP) a distribuit în luna iulie 15.470.004 lei către opt partide politice, reprezentând cea mai mare sumă lunară de la începutul anului. PSD a primit cea mai mare parte din fonduri, urmat de AUR și PNL.",
-    "entities": [
-      "AEP",
-      "PSD",
-      "AUR",
-      "PNL"
-    ],
-    "icon": "percentage",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://economedia.ro/breaking-selectia-directoratului-transelectrica-a-fost-anulata-curtea-de-apel-confirma-decizia-tribunalului-bucuresti-conducerea-numita-in-2024-isi-pierde-baza-legala-iar-compania-poate-ajunge-s.html",
-    "original_link": "https://economedia.ro/breaking-selectia-directoratului-transelectrica-a-fost-anulata-curtea-de-apel-confirma-decizia-tribunalului-bucuresti-conducerea-numita-in-2024-isi-pierde-baza-legala-iar-compania-poate-ajunge-s.html",
-    "source": "economedia",
-    "source_name": "Economedia",
-    "source_lang": "ro",
-    "title": "Anulare selecție directorat Transelectrica, decizie menținută de Curtea de Apel",
-    "category": "economic",
-    "published": "2026-07-09T12:09:06+00:00",
-    "model": "C",
-    "sources": [
-      {
-        "name": "Economedia",
-        "url": "https://economedia.ro/breaking-selectia-directoratului-transelectrica-a-fost-anulata-curtea-de-apel-confirma-decizia-tribunalului-bucuresti-conducerea-numita-in-2024-isi-pierde-baza-legala-iar-compania-poate-ajunge-s.html"
-      },
-      {
-        "name": "G4Media",
-        "url": "https://www.g4media.ro/selectia-directoratului-transelectrica-a-fost-anulata-conducerea-numita-in-2024-isi-pierde-baza-legala-iar-compania-poate-ajunge-sa-recupereze-indemnizatiile.html"
-      }
-    ],
-    "first_source": "Economedia",
-    "synthesis": "Curtea de Apel București a respins apelul Transelectrica, menținând decizia Tribunalului București din decembrie 2025 de anulare a procedurii de selecție a membrilor directoratului. Conducerea numită în 2024 își pierde astfel baza legală, iar compania ar putea recupera indemnizațiile plătite. Decizia nu este definitivă și poate fi atacată cu recurs.",
-    "entities": [
-      "Transelectrica",
-      "Curtea de Apel București",
-      "Tribunalul București"
-    ],
-    "icon": "gavel",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://stirileprotv.ro/stiri/international/aproximativ-5-100-de-persoane-au-murit-in-germania-din-cauze-asociate-caldurii-in-timpul-valului-de-canicula-din-iunie.html",
-    "original_link": "https://stirileprotv.ro/stiri/international/aproximativ-5-100-de-persoane-au-murit-in-germania-din-cauze-asociate-caldurii-in-timpul-valului-de-canicula-din-iunie.html",
-    "source": "protv",
-    "source_name": "Știrile ProTV",
-    "source_lang": "ro",
-    "title": "Caniculă în Germania: Peste 5.000 de decese asociate căldurii",
-    "category": "extern",
-    "published": "2026-07-09T12:02:02+00:00",
-    "model": "C",
-    "sources": [
-      {
-        "name": "Știrile ProTV",
-        "url": "https://stirileprotv.ro/stiri/international/aproximativ-5-100-de-persoane-au-murit-in-germania-din-cauze-asociate-caldurii-in-timpul-valului-de-canicula-din-iunie.html"
-      },
-      {
-        "name": "HotNews",
-        "url": "https://hotnews.ro/institutul-robert-koch-estimeaza-ca-mii-de-persoane-au-murit-in-germania-din-cauza-valului-de-caldura-2296319"
-      }
-    ],
-    "first_source": "Știrile ProTV",
-    "synthesis": "Institutul Robert Koch (RKI) din Germania estimează că aproximativ 5.100 de persoane au decedat din cauze legate de canicula din iunie. Majoritatea deceselor, peste 4.200, au fost înregistrate în rândul persoanelor în vârstă, în perioada în care temperaturile au depășit frecvent 30 de grade Celsius.",
-    "entities": [
-      "Institutul Robert Koch",
-      "Germania"
-    ],
-    "icon": "sun",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://gsp.ro/international/campionate/premier-league-bate-orice-record-peste-un-miliard-de-euro-investit-pentru-achizitii-9-zile-de-mercato-958696.html",
-    "original_link": "https://www.gsp.ro/international/campionate/premier-league-bate-orice-record-peste-un-miliard-de-euro-investit-pentru-achizitii-9-zile-de-mercato-958696.html",
-    "source": "gsp",
-    "source_name": "GSP",
-    "source_lang": "ro",
-    "title": "Premier League: Peste un miliard de euro cheltuiți pe transferuri în 9 zile",
-    "category": "sport",
-    "published": "2026-07-09T11:56:57+00:00",
-    "model": "B",
-    "teaser": "Cluburile din Premier League au depășit suma de un miliard de euro pentru achiziții în primele nouă zile ale perioadei de transferuri. S-au realizat 143 de transferuri până acum.",
-    "entities": [
-      "Premier League"
-    ],
-    "icon": "currency-euro",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://moldova.europalibera.org/a/europa-vestica-a-trecut-prin-cea-mai-fierbinte-luna-iunie-inregistrata-vreodata-acum-vine-al-treilea-val/33800023.html",
-    "original_link": "https://moldova.europalibera.org/a/europa-vestica-a-trecut-prin-cea-mai-fierbinte-luna-iunie-inregistrata-vreodata-acum-vine-al-treilea-val/33800023.html",
-    "source": "el_moldova",
-    "source_name": "Europa Liberă",
-    "source_lang": "ro",
-    "title": "Iunie 2026, cea mai fierbinte lună înregistrată în Europa de Vest",
-    "category": "extern",
-    "published": "2026-07-09T11:33:05+00:00",
-    "model": "C",
-    "sources": [
-      {
-        "name": "Europa Liberă",
-        "url": "https://moldova.europalibera.org/a/europa-vestica-a-trecut-prin-cea-mai-fierbinte-luna-iunie-inregistrata-vreodata-acum-vine-al-treilea-val/33800023.html"
-      },
-      {
-        "name": "Libertatea",
-        "url": "https://www.libertatea.ro/stiri/record-caldura-europa-cea-mai-fierbinte-luna-iunie-europa-vest-cand-vine-domul-de-caldura-iulie-5810163"
-      }
-    ],
-    "first_source": "Europa Liberă",
-    "synthesis": "Serviciul Copernicus pentru Schimbările Climatice a confirmat că iunie 2026 a fost cea mai călduroasă lună iunie din istoria măsurătorilor în Europa de Vest. La nivel global, luna a ocupat locul al doilea în topul celor mai calde luni iunie. Aceste date survin în contextul unui nou val de căldură resimțit în regiune.",
-    "entities": [
-      "Europa de Vest",
-      "Serviciul Copernicus pentru Schimbările Climatice"
-    ],
-    "icon": "sun",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://digi24.ro/stiri/externe/moldova/s-a-dat-o-sarcina-undeva-la-moscova-seful-serviciului-secret-de-la-chisinau-avertizeaza-privind-implicarea-rusiei-in-alegeri-3855045",
-    "original_link": "https://www.digi24.ro/stiri/externe/moldova/s-a-dat-o-sarcina-undeva-la-moscova-seful-serviciului-secret-de-la-chisinau-avertizeaza-privind-implicarea-rusiei-in-alegeri-3855045",
-    "source": "extern",
-    "source_name": "Digi24 Extern",
-    "source_lang": "ro",
-    "title": "Șeful serviciului secret din Chișinău avertizează asupra implicării Rusiei în alegeri",
-    "category": "politic",
-    "published": "2026-07-09T11:19:13+00:00",
-    "model": "B",
-    "teaser": "Rusia se pregătește să intervină în alegerile din Republica Moldova, intensificând campaniile de dezinformare și încercările de influențare a opiniei publice.",
-    "entities": [
-      "Rusia",
-      "Chișinău",
-      "Republica Moldova"
-    ],
-    "icon": "flag",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://digi24.ro/stiri/externe/moldova/s-a-dat-o-sarcina-undeva-la-moscova-seful-serviciului-secret-de-la-chisinau-avertizeaza-privind-implicarea-rusiei-in-alegeri-3855045",
-    "original_link": "https://www.digi24.ro/stiri/externe/moldova/s-a-dat-o-sarcina-undeva-la-moscova-seful-serviciului-secret-de-la-chisinau-avertizeaza-privind-implicarea-rusiei-in-alegeri-3855045",
-    "source": "digi24",
-    "source_name": "Digi24",
-    "source_lang": "ro",
-    "title": "Șeful serviciului secret din Chișinău avertizează asupra implicării Rusiei în alegeri",
-    "category": "politic",
-    "published": "2026-07-09T11:19:13+00:00",
-    "model": "B",
-    "teaser": "Rusia se pregătește să intervină în alegerile din Republica Moldova, intensificând campaniile de dezinformare și încercările de influențare a opiniei publice.",
-    "entities": [
-      "Rusia",
-      "Chișinău",
-      "Republica Moldova"
-    ],
-    "icon": "flag",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://theguardian.com/business/2026/jul/09/eu-unpleasant-and-dangerous-border-checks-need-overhaul-says-greek-airports-boss",
-    "original_link": "https://www.theguardian.com/business/2026/jul/09/eu-unpleasant-and-dangerous-border-checks-need-overhaul-says-greek-airports-boss",
-    "source": "guardian_eu",
-    "source_name": "The Guardian",
-    "source_lang": "en",
-    "title": "Șeful aeroporturilor din Grecia cere modernizarea controalelor la frontiera UE",
-    "category": "extern",
-    "published": "2026-07-09T11:02:31+00:00",
-    "model": "B",
-    "teaser": "Directorul aeroporturilor grecești, Alexander Zinell, solicită o revizuire a sistemului de control la frontierele UE, invocând probleme fundamentale și condiții precare pentru pasageri.",
-    "entities": [
-      "UE",
-      "Grecia",
-      "Alexander Zinell",
-      "Fraport Greece"
-    ],
-    "icon": "plane",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://theguardian.com/world/live/2026/jul/09/europe-heatwave-uk-spain-barcelona-france-italy-hungary-france-macron-orban-latest-news-updates",
-    "original_link": "https://www.theguardian.com/world/live/2026/jul/09/europe-heatwave-uk-spain-barcelona-france-italy-hungary-france-macron-orban-latest-news-updates",
-    "source": "guardian_eu",
-    "source_name": "The Guardian",
-    "source_lang": "en",
-    "title": "Barcelona înregistrează cea mai ridicată temperatură din ultimii 112 ani",
-    "category": "extern",
-    "published": "2026-07-09T11:00:51+00:00",
-    "model": "B",
-    "teaser": "Spania și Irlanda se confruntă cu temperaturi extreme, Barcelona atingând un record istoric. Autoritățile avertizează asupra riscurilor pentru sănătate, în special pentru grupurile vulnerabile.",
-    "entities": [
-      "Barcelona",
-      "Spania",
-      "Irlanda"
-    ],
-    "icon": "sun",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://digi24.ro/stiri/economie/soferii-care-nu-achita-amenzile-in-90-de-zile-pot-ramane-temporar-fara-permis-cum-se-calculeaza-perioada-de-suspendare-3854987",
-    "original_link": "https://www.digi24.ro/stiri/economie/soferii-care-nu-achita-amenzile-in-90-de-zile-pot-ramane-temporar-fara-permis-cum-se-calculeaza-perioada-de-suspendare-3854987",
-    "source": "digi24",
-    "source_name": "Digi24",
-    "source_lang": "ro",
-    "title": "Permisul de conducere, suspendat pentru amenzi neplătite în 90 de zile",
-    "category": "general",
-    "published": "2026-07-09T11:00:30+00:00",
-    "model": "C",
-    "sources": [
-      {
-        "name": "Digi24",
-        "url": "https://www.digi24.ro/stiri/economie/soferii-care-nu-achita-amenzile-in-90-de-zile-pot-ramane-temporar-fara-permis-cum-se-calculeaza-perioada-de-suspendare-3854987"
-      },
-      {
-        "name": "Știrile ProTV",
-        "url": "https://stirileprotv.ro/stiri/actualitate/soferii-care-nu-achita-in-90-de-zile-amenzile-rutiere-risca-suspendarea-permisului-noile-reguli-aprobate-de-guvern.html"
-      }
-    ],
-    "first_source": "Digi24",
-    "synthesis": "Guvernul a aprobat noi norme metodologice care stabilesc procedura de suspendare a permisului de conducere pentru șoferii care nu își achită amenzile rutiere în termen de 90 de zile. Aceste reglementări detaliază modul de calcul al perioadei de suspendare și situațiile în care măsura nu se aplică.",
-    "entities": [
-      "Guvern"
-    ],
-    "icon": "car",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://gsp.ro/fotbal/liga-1/programul-etapei-2-din-noul-sezon-al-superligii-958671.html",
-    "original_link": "https://www.gsp.ro/fotbal/liga-1/programul-etapei-2-din-noul-sezon-al-superligii-958671.html",
-    "source": "gsp",
-    "source_name": "GSP",
-    "source_lang": "ro",
-    "title": "LPF a anunțat programul etapei a 2-a din Superligă",
-    "category": "sport",
-    "published": "2026-07-09T10:55:10+00:00",
-    "model": "C",
-    "sources": [
-      {
-        "name": "GSP",
-        "url": "https://www.gsp.ro/fotbal/liga-1/programul-etapei-2-din-noul-sezon-al-superligii-958671.html"
-      },
-      {
-        "name": "Digi Sport",
-        "url": "https://www.digisport.ro/fotbal/liga-1/programul-etapei-a-2-a-din-superliga-cand-se-joaca-dinamo-universitatea-craiova-si-csikszereda-fcsb-4368479"
-      }
-    ],
-    "first_source": "GSP",
-    "synthesis": "Liga Profesionistă de Fotbal (LPF) a publicat programul celei de-a doua etape a noului sezon al Superligii, ediția 2026-2027. Etapa a doua va începe vineri, 24 iulie. Partidele vor fi transmise de Prima Sport 1 și Digi Sport 1, cu transmisiuni live text pe GSP.ro.",
-    "entities": [
-      "LPF",
-      "Superliga",
-      "GSP.ro",
-      "Digi Sport"
-    ],
-    "icon": "ball-football",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://gsp.ro/international/campionate/albion-rrahmani-transfer-serie-a-venezia-procent-rapid-958675.html",
-    "original_link": "https://www.gsp.ro/international/campionate/albion-rrahmani-transfer-serie-a-venezia-procent-rapid-958675.html",
-    "source": "gsp",
-    "source_name": "GSP",
-    "source_lang": "ro",
-    "title": "Albion Rrahmani, transferat de Rapid la Venezia pentru 1,2 milioane euro",
-    "category": "sport",
-    "published": "2026-07-09T10:46:46+00:00",
-    "model": "C",
-    "sources": [
-      {
-        "name": "GSP",
-        "url": "https://www.gsp.ro/international/campionate/albion-rrahmani-transfer-serie-a-venezia-procent-rapid-958675.html"
-      },
-      {
-        "name": "Digi Sport",
-        "url": "https://www.digisport.ro/fotbal/serie-a/albion-rrahmani-s-a-transferat-in-serie-a-cu-cati-bani-s-a-ales-rapid-in-total-4368463"
-      }
-    ],
-    "first_source": "GSP",
-    "synthesis": "Atacantul Albion Rrahmani a fost transferat oficial de la Rapid la Venezia, nou-promovată în Serie A. Tranzacția a generat pentru clubul giuleștean un profit estimat la 1,2 milioane de euro, conform informațiilor din presă. Rrahmani a jucat pentru Rapid între 2023 și 2024.",
-    "entities": [
-      "Albion Rrahmani",
-      "Rapid",
-      "Venezia"
-    ],
-    "icon": "ball-football",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://g4media.ro/nicusor-dan-a-primit-cadou-un-pistol-gumusay-de-la-presedintele-turciei-recep-tayyip-erdogan.html",
-    "original_link": "https://www.g4media.ro/nicusor-dan-a-primit-cadou-un-pistol-gumusay-de-la-presedintele-turciei-recep-tayyip-erdogan.html",
-    "source": "g4media",
-    "source_name": "G4Media",
-    "source_lang": "ro",
-    "title": "Președintele Nicușor Dan a primit un pistol cadou de la Erdogan",
-    "category": "politic",
-    "published": "2026-07-09T10:44:25+00:00",
-    "model": "C",
-    "sources": [
-      {
-        "name": "G4Media",
-        "url": "https://www.g4media.ro/nicusor-dan-a-primit-cadou-un-pistol-gumusay-de-la-presedintele-turciei-recep-tayyip-erdogan.html"
-      },
-      {
-        "name": "Digi24",
-        "url": "https://www.digi24.ro/stiri/actualitate/politica/nicusor-dan-anunta-ce-va-face-cu-pistolul-primit-cadou-de-la-erdogan-la-summitul-nato-de-la-ankara-3854967"
-      },
-      {
-        "name": "Știrile ProTV",
-        "url": "https://stirileprotv.ro/stiri/actualitate/nicusor-dan-a-primit-cadou-de-la-erdogan-un-pistol-gumusay-acesta-va-fi-pastrat-la-spp.html"
-      }
-    ],
-    "first_source": "G4Media",
-    "synthesis": "În cadrul Summitului NATO de la Ankara, președintele României, Nicușor Dan, a primit, alături de alți lideri, un pistol Gumusay și muniție cadou din partea președintelui Turciei, Recep Tayyip Erdogan. Arma a fost preluată de Serviciul de Protecție și Pază (SPP) pentru a fi păstrată conform procedurilor legale.",
-    "entities": [
-      "Nicușor Dan",
-      "Recep Tayyip Erdogan",
-      "NATO",
-      "Ankara"
-    ],
-    "icon": "gavel",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://digi24.ro/campionatul-mondal-de-fotbal-2026/cm-2026-seful-comisiei-de-arbitraj-a-cupei-mondiale-raspunde-criticilor-nu-suntem-influentati-de-nimeni-3854873",
-    "original_link": "https://www.digi24.ro/campionatul-mondal-de-fotbal-2026/cm-2026-seful-comisiei-de-arbitraj-a-cupei-mondiale-raspunde-criticilor-nu-suntem-influentati-de-nimeni-3854873",
-    "source": "extern",
-    "source_name": "Digi24 Extern",
-    "source_lang": "ro",
-    "title": "Șeful arbitrajului CM 2026 respinge acuzațiile de influență",
-    "category": "sport",
-    "published": "2026-07-09T10:39:19+00:00",
-    "model": "B",
-    "teaser": "Pierluigi Collina, șeful comisiei de arbitraj a Cupei Mondiale 2026, apără deciziile arbitrilor din meciul Argentina-Egipt, afirmând că nu sunt influențați de nimeni.",
-    "entities": [
-      "Pierluigi Collina",
-      "Cupa Mondială 2026",
-      "Argentina",
-      "Egipt"
-    ],
-    "icon": "ball-football",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://digi24.ro/campionatul-mondal-de-fotbal-2026/cm-2026-seful-comisiei-de-arbitraj-a-cupei-mondiale-raspunde-criticilor-nu-suntem-influentati-de-nimeni-3854873",
-    "original_link": "https://www.digi24.ro/campionatul-mondal-de-fotbal-2026/cm-2026-seful-comisiei-de-arbitraj-a-cupei-mondiale-raspunde-criticilor-nu-suntem-influentati-de-nimeni-3854873",
-    "source": "digi24",
-    "source_name": "Digi24",
-    "source_lang": "ro",
-    "title": "Șeful arbitrajului CM 2026 respinge acuzațiile de influență",
-    "category": "sport",
-    "published": "2026-07-09T10:39:19+00:00",
-    "model": "B",
-    "teaser": "Pierluigi Collina, șeful comisiei de arbitraj a Cupei Mondiale 2026, apără deciziile arbitrilor din meciul Argentina-Egipt, afirmând că nu sunt influențați de nimeni.",
-    "entities": [
-      "Pierluigi Collina",
-      "Cupa Mondială 2026",
-      "Argentina",
-      "Egipt"
-    ],
-    "icon": "ball-football",
     "processed_by": "gemini",
     "prompt_version": "v2-esenta",
     "featured": false
