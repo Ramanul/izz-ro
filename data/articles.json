@@ -1,5 +1,110 @@
 [
   {
+    "url": "https://urban.ro/peter-jackson-revine-cu-aventurile-lui-tintin",
+    "original_link": "https://www.urban.ro/peter-jackson-revine-cu-aventurile-lui-tintin/",
+    "source": "urban",
+    "source_name": "Urban.ro",
+    "source_lang": "ro",
+    "title": "Peter Jackson regizează \"Aventurile lui Tintin 2\", după succesul filmului lui Spielberg.",
+    "category": "lifestyle",
+    "published": "2026-07-16T23:03:14+00:00",
+    "model": "B",
+    "teaser": "Regizorul Peter Jackson va reveni la regia de lungmetraje de ficțiune cu \"Aventurile lui Tintin 2\", continuarea filmului din 2011 regizat de Steven Spielberg.",
+    "entities": [
+      "Peter Jackson",
+      "Tintin",
+      "Steven Spielberg"
+    ],
+    "icon": "movie",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://urban.ro/povestea-cuminteniei-pamantului",
+    "original_link": "https://www.urban.ro/povestea-cuminteniei-pamantului/",
+    "source": "urban",
+    "source_name": "Urban.ro",
+    "source_lang": "ro",
+    "title": "Anul Brâncuși celebrează \"Cumintenia pământului\" și moștenirea artistului.",
+    "category": "lifestyle",
+    "published": "2026-07-16T22:15:44+00:00",
+    "model": "B",
+    "teaser": "Anul Brâncuși aduce în prim-plan evenimente dedicate celebrării sculptorului, punând accent pe povestea piesei \"Cumintenia pământului\" și pe impactul său artistic.",
+    "entities": [
+      "Brâncuși"
+    ],
+    "icon": "building-monument",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://gsp.ro/international/europa-league/u-cluj-dinamo-kiev-europa-league-dan-nistor-961373.html",
+    "original_link": "https://www.gsp.ro/international/europa-league/u-cluj-dinamo-kiev-europa-league-dan-nistor-961373.html",
+    "source": "gsp",
+    "source_name": "GSP",
+    "source_lang": "ro",
+    "title": "U Cluj, eliminată la penalty-uri, Nistor sugerează rugăciunea",
+    "category": "sport",
+    "published": "2026-07-16T20:43:18+00:00",
+    "model": "C",
+    "sources": [
+      {
+        "name": "GSP",
+        "url": "https://www.gsp.ro/international/europa-league/u-cluj-dinamo-kiev-europa-league-dan-nistor-961373.html"
+      },
+      {
+        "name": "Digi Sport",
+        "url": "https://www.digisport.ro/fotbal/europa-league/dan-nistor-a-dat-declaratia-serii-dupa-ce-u-cluj-a-fost-eliminata-de-dinamo-kiev-sa-mai-mergem-pe-la-biserica-4382179"
+      }
+    ],
+    "first_source": "GSP",
+    "synthesis": "Universitatea Cluj a fost eliminată de Dinamo Kiev la loviturile de departajare, scor general 0-0, 2-4. Mijlocașul Dan Nistor și-a exprimat frustrarea după încă un eșec în fața echipei adverse la penalty-uri, sugerând ironic necesitatea unor rugăciuni pentru a depăși aceste momente dificile.",
+    "entities": [
+      "Universitatea Cluj",
+      "Dinamo Kiev",
+      "Dan Nistor"
+    ],
+    "icon": "ball-football",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://digi24.ro/stiri/sport/fotbal/u-cluj-a-pierdut-cu-dinamo-kiev-la-loviturile-de-departajare-si-paraseste-europa-league-3865625",
+    "original_link": "https://www.digi24.ro/stiri/sport/fotbal/u-cluj-a-pierdut-cu-dinamo-kiev-la-loviturile-de-departajare-si-paraseste-europa-league-3865625",
+    "source": "digi24",
+    "source_name": "Digi24",
+    "source_lang": "ro",
+    "title": "U Cluj, eliminată din Europa League la lovituri de departajare",
+    "category": "sport",
+    "published": "2026-07-16T20:31:01+00:00",
+    "model": "C",
+    "sources": [
+      {
+        "name": "Digi24",
+        "url": "https://www.digi24.ro/stiri/sport/fotbal/u-cluj-a-pierdut-cu-dinamo-kiev-la-loviturile-de-departajare-si-paraseste-europa-league-3865625"
+      },
+      {
+        "name": "GSP",
+        "url": "https://www.gsp.ro/international/europa-league/live-u-cluj-dinamo-kiev-europa-league-960550.html"
+      }
+    ],
+    "first_source": "Digi24",
+    "synthesis": "Universitatea Cluj a părăsit Europa League după ce a pierdut la lovituri de departajare (2-4) meciul retur cu Dinamo Kiev, disputat pe teren propriu. După 0-0 în ambele manșe, clujenii vor continua în Conference League, unde vor întâlni echipa norvegiană SK Brann.",
+    "entities": [
+      "Universitatea Cluj",
+      "Dinamo Kiev",
+      "SK Brann",
+      "Europa League"
+    ],
+    "icon": "ball-football",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
     "url": "https://gsp.ro/international/campionatul-mondial-de-fotbal-2026/donald-trump-spania-argentina-casa-961343.html",
     "original_link": "https://www.gsp.ro/international/campionatul-mondial-de-fotbal-2026/donald-trump-spania-argentina-casa-961343.html",
     "source": "gsp",
@@ -60,6 +165,38 @@
       "Transalpina"
     ],
     "icon": "car",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://stirileprotv.ro/stiri/sport/cfr-cluj-a-aflat-cu-cine-va-juca-in-turul-2-preliminar-al-conference-league-s-a-calificat-dupa-14-lovituri-de-departajare.html",
+    "original_link": "https://stirileprotv.ro/stiri/sport/cfr-cluj-a-aflat-cu-cine-va-juca-in-turul-2-preliminar-al-conference-league-s-a-calificat-dupa-14-lovituri-de-departajare.html",
+    "source": "protv",
+    "source_name": "Știrile ProTV",
+    "source_lang": "ro",
+    "title": "CFR Cluj își cunoaște adversara din Conference League",
+    "category": "sport",
+    "published": "2026-07-16T18:26:53+00:00",
+    "model": "C",
+    "sources": [
+      {
+        "name": "Știrile ProTV",
+        "url": "https://stirileprotv.ro/stiri/sport/cfr-cluj-a-aflat-cu-cine-va-juca-in-turul-2-preliminar-al-conference-league-s-a-calificat-dupa-14-lovituri-de-departajare.html"
+      },
+      {
+        "name": "Digi24",
+        "url": "https://www.digi24.ro/stiri/sport/fotbal/cfr-cluj-si-a-aflat-adversara-din-turul-doi-preliminar-al-conference-league-3865703"
+      }
+    ],
+    "first_source": "Știrile ProTV",
+    "synthesis": "Echipa armeană Alashkert s-a calificat dramatic în turul doi preliminar al Conference League, după un meci decis prin 14 lovituri de departajare. Formația din Armenia va întâlni în etapa următoare pe CFR Cluj, conform informațiilor confirmate de mai multe surse media.",
+    "entities": [
+      "CFR Cluj",
+      "Alashkert",
+      "Conference League"
+    ],
+    "icon": "ball-football",
     "processed_by": "gemini",
     "prompt_version": "v2-esenta",
     "featured": false
@@ -157,6 +294,38 @@
       "Poliție"
     ],
     "icon": "truck",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://bbc.co.uk/news/articles/cdx76069n3do?at_medium=RSS&at_campaign=rss",
+    "original_link": "https://www.bbc.co.uk/news/articles/cdx76069n3do?at_medium=RSS&at_campaign=rss",
+    "source": "bbc_europe",
+    "source_name": "BBC Europe",
+    "source_lang": "en",
+    "title": "Zelenskyy demite ministrul apărării, Fedorov, pe fondul tensiunilor cu armata",
+    "category": "politic",
+    "published": "2026-07-16T16:36:21+00:00",
+    "model": "C",
+    "sources": [
+      {
+        "name": "BBC Europe",
+        "url": "https://www.bbc.co.uk/news/articles/cdx76069n3do?at_medium=RSS&at_campaign=rss"
+      },
+      {
+        "name": "The Guardian",
+        "url": "https://www.theguardian.com/world/2026/jul/17/zelenskyy-defends-sacking-ukraine-defence-minister-mykhailo-fedorov"
+      }
+    ],
+    "first_source": "BBC Europe",
+    "synthesis": "Președintele ucrainean Volodimir Zelenski a demis ministrul apărării, Mihailo Fedorov, invocând un \"dialog dificil\" și o ruptură între minister și conducerea militară. Decizia a generat proteste în Ucraina, în ciuda explicațiilor președintelui privind necesitatea de a alege \"o parte sau alta\" în conflictul dintre Fedorov și Comandantul Suprem Oleksandr Sirski.",
+    "entities": [
+      "Volodimir Zelenski",
+      "Mihailo Fedorov",
+      "Oleksandr Sirski"
+    ],
+    "icon": "gavel",
     "processed_by": "gemini",
     "prompt_version": "v2-esenta",
     "featured": false
@@ -299,6 +468,25 @@
     "featured": false
   },
   {
+    "url": "https://unica.ro/vedete/pamela-anderson-imagini-spectaculoase-din-oaza-ei-de-liniste-vedeta-se-mandreste-cu-gradina-la-care-munceste-zilnic-nu-exista-leguma-pe-care-sa-nu-o-am-823435",
+    "original_link": "https://www.unica.ro/vedete/pamela-anderson-imagini-spectaculoase-din-oaza-ei-de-liniste-vedeta-se-mandreste-cu-gradina-la-care-munceste-zilnic-nu-exista-leguma-pe-care-sa-nu-o-am-823435",
+    "source": "unica",
+    "source_name": "Unica",
+    "source_lang": "ro",
+    "title": "Pamela Anderson își etalează grădina luxuriantă, creată cu ajutorul fiilor săi.",
+    "category": "lifestyle",
+    "published": "2026-07-16T13:43:53+00:00",
+    "model": "B",
+    "teaser": "Actrița Pamela Anderson a prezentat publicului grădina sa personală, un spațiu de relaxare pe care l-a amenajat împreună cu fiii săi și unde petrece mult timp.",
+    "entities": [
+      "Pamela Anderson"
+    ],
+    "icon": "trees",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
     "url": "https://hotnews.ro/sindicalistii-din-sanatate-anunta-o-greva-de-avertisment-si-data-la-care-intra-in-greva-generala-pe-termen-nelimitat-guvernul-ne-a-impins-spre-ea-2302139",
     "original_link": "https://hotnews.ro/sindicalistii-din-sanatate-anunta-o-greva-de-avertisment-si-data-la-care-intra-in-greva-generala-pe-termen-nelimitat-guvernul-ne-a-impins-spre-ea-2302139",
     "source": "hotnews",
@@ -425,6 +613,45 @@
       "Cernavodă"
     ],
     "icon": "building-factory",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://unica.ro/vedete/romanesti/cabral-mai-sincer-ca-niciodata-dupa-divort-da-m-a-afectat-singurul-om-pe-care-n-are-rost-sa-l-minti-e-cel-din-oglinda-823426",
+    "original_link": "https://www.unica.ro/vedete/romanesti/cabral-mai-sincer-ca-niciodata-dupa-divort-da-m-a-afectat-singurul-om-pe-care-n-are-rost-sa-l-minti-e-cel-din-oglinda-823426",
+    "source": "unica",
+    "source_name": "Unica",
+    "source_lang": "ro",
+    "title": "Cabral recunoaște că divorțul de Andreea Ibacka l-a afectat profund.",
+    "category": "lifestyle",
+    "published": "2026-07-16T12:45:30+00:00",
+    "model": "B",
+    "teaser": "După aproape două luni de la anunțul divorțului, Cabral a vorbit deschis despre suferința cauzată de separarea de Andreea Ibacka, recunoscând impactul emoțional.",
+    "entities": [
+      "Cabral",
+      "Andreea Ibacka"
+    ],
+    "icon": null,
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://urban.ro/intr-o-vara-orange-vacanta-turcia",
+    "original_link": "https://www.urban.ro/intr-o-vara-orange-vacanta-turcia/",
+    "source": "urban",
+    "source_name": "Urban.ro",
+    "source_lang": "ro",
+    "title": "Istanbul oferă experiențe culinare de la taverne tradiționale la restaurante Michelin.",
+    "category": "lifestyle",
+    "published": "2026-07-16T11:16:00+00:00",
+    "model": "B",
+    "teaser": "Orașul Istanbul combină istoria culinară, de la taverne vechi de un secol la restaurante cu stele Michelin, oferind o experiență gastronomică diversă.",
+    "entities": [
+      "Istanbul"
+    ],
+    "icon": null,
     "processed_by": "gemini",
     "prompt_version": "v2-esenta",
     "featured": false
@@ -750,6 +977,25 @@
       "Levski Sofia"
     ],
     "icon": "ball-football",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://urban.ro/nadia-un-mozart-al-gimnasticii-interviu-cu-stajerel-olaru-autorul-cartii-nadia-si-securitatea",
+    "original_link": "https://www.urban.ro/nadia-un-mozart-al-gimnasticii-interviu-cu-stajerel-olaru-autorul-cartii-nadia-si-securitatea/",
+    "source": "urban",
+    "source_name": "Urban.ro",
+    "source_lang": "ro",
+    "title": "Nadia Comăneci, subiectul unei cărți despre gimnastică și Securitate.",
+    "category": "sport",
+    "published": "2026-07-16T09:12:00+00:00",
+    "model": "B",
+    "teaser": "Cartea \"Nadia și Securitatea\" explorează impactul primului \"10\" olimpic al Nadiei Comăneci la Montreal, în 1976, și legăturile cu perioada respectivă.",
+    "entities": [
+      "Nadia Comăneci"
+    ],
+    "icon": "trophy",
     "processed_by": "gemini",
     "prompt_version": "v2-esenta",
     "featured": false
@@ -24375,295 +24621,6 @@
       "Franța",
       "Maroc",
       "Kylian Mbappe"
-    ],
-    "icon": "ball-football",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://digisport.ro/fotbal/cm-2026/reactia-lui-didier-deschamps-dupa-ce-franta-s-a-calificat-in-semifinalele-cupei-mondiale-2026-4369655",
-    "original_link": "https://www.digisport.ro/fotbal/cm-2026/reactia-lui-didier-deschamps-dupa-ce-franta-s-a-calificat-in-semifinalele-cupei-mondiale-2026-4369655",
-    "source": "digisport",
-    "source_name": "Digi Sport",
-    "source_lang": "ro",
-    "title": "Franța s-a calificat în semifinalele Cupei Mondiale 2026",
-    "category": "sport",
-    "published": "2026-07-09T22:43:22+00:00",
-    "model": "C",
-    "sources": [
-      {
-        "name": "Digi Sport",
-        "url": "https://www.digisport.ro/fotbal/cm-2026/reactia-lui-didier-deschamps-dupa-ce-franta-s-a-calificat-in-semifinalele-cupei-mondiale-2026-4369655"
-      },
-      {
-        "name": "G4Media",
-        "url": "https://www.g4media.ro/franta-isi-asteapta-adversara-din-semifinalele-cupei-mondiale-2026-programul-duelului-dintre-spania-si-belgia.html"
-      }
-    ],
-    "first_source": "Digi Sport",
-    "synthesis": "Echipa națională a Franței a obținut calificarea în semifinalele Cupei Mondiale 2026, după ce a învins Marocul în sferturi. Franța își așteaptă acum adversara, care va fi câștigătoarea duelului dintre Spania și Belgia, programat pentru ora 22:00.",
-    "entities": [
-      "Franța",
-      "Cupa Mondială 2026",
-      "Spania",
-      "Belgia"
-    ],
-    "icon": "ball-football",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://digisport.ro/fotbal/cm-2026/fifa-a-luat-decizia-in-cazul-lui-istvan-kovacs-sarit-de-16-zile-la-cupa-mondiala-4369041",
-    "original_link": "https://www.digisport.ro/fotbal/cm-2026/fifa-a-luat-decizia-in-cazul-lui-istvan-kovacs-sarit-de-16-zile-la-cupa-mondiala-4369041",
-    "source": "digisport",
-    "source_name": "Digi Sport",
-    "source_lang": "ro",
-    "title": "FIFA decide cazul arbitrului Istvan Kovacs",
-    "category": "sport",
-    "published": "2026-07-09T22:32:12+00:00",
-    "model": "B",
-    "teaser": "FIFA a analizat situația arbitrului român Istvan Kovacs, care nu a fost delegat la Cupa Mondială timp de 16 zile. Decizia a fost luată în urma unei analize detaliate a performanțelor sale.",
-    "entities": [
-      "FIFA",
-      "Istvan Kovacs"
-    ],
-    "icon": "gavel",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://digisport.ro/fotbal/conference-league/5-0-in-deplasare-calaul-fcsb-ului-s-a-distrat-in-preliminariile-uefa-conference-league-4369325",
-    "original_link": "https://www.digisport.ro/fotbal/conference-league/5-0-in-deplasare-calaul-fcsb-ului-s-a-distrat-in-preliminariile-uefa-conference-league-4369325",
-    "source": "digisport",
-    "source_name": "Digi Sport",
-    "source_lang": "ro",
-    "title": "Echipa \"călăului\" FCSB a câștigat cu 5-0 în Conference League",
-    "category": "sport",
-    "published": "2026-07-09T22:30:28+00:00",
-    "model": "B",
-    "teaser": "O echipă considerată \"călăul\" FCSB a obținut o victorie categorică de 5-0 în deplasare, în cadrul preliminariilor UEFA Conference League. Performanța a fost una impresionantă.",
-    "entities": [
-      "FCSB",
-      "UEFA Conference League"
-    ],
-    "icon": "podium",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://digisport.ro/fotbal/cm-2026/haaland-a-vazut-la-tv-scenele-din-franta-maroc-2-0-si-nu-s-a-mai-abtinut-e-mult-prea-mult-4369615",
-    "original_link": "https://www.digisport.ro/fotbal/cm-2026/haaland-a-vazut-la-tv-scenele-din-franta-maroc-2-0-si-nu-s-a-mai-abtinut-e-mult-prea-mult-4369615",
-    "source": "digisport",
-    "source_name": "Digi Sport",
-    "source_lang": "ro",
-    "title": "Haaland comentează victoria Franței cu Maroc",
-    "category": "sport",
-    "published": "2026-07-09T22:28:52+00:00",
-    "model": "B",
-    "teaser": "Erling Haaland a urmărit la televizor meciul Franța - Maroc (2-0) și a reacționat vehement la anumite aspecte ale partidei. Fotbalistul norvegian a considerat că \"e mult prea mult\".",
-    "entities": [
-      "Haaland",
-      "Franța",
-      "Maroc"
-    ],
-    "icon": "ball-football",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://digisport.ro/fotbal/cm-2026/scandal-la-cupa-mondiala-clubul-i-a-interzis-sa-joace-si-a-sunat-federatia-se-poate-ajunge-la-fifa-4369507",
-    "original_link": "https://www.digisport.ro/fotbal/cm-2026/scandal-la-cupa-mondiala-clubul-i-a-interzis-sa-joace-si-a-sunat-federatia-se-poate-ajunge-la-fifa-4369507",
-    "source": "digisport",
-    "source_name": "Digi Sport",
-    "source_lang": "ro",
-    "title": "Scandal la Cupa Mondială: clubul interzice jucătorului să participe",
-    "category": "sport",
-    "published": "2026-07-09T22:28:47+00:00",
-    "model": "B",
-    "teaser": "Un scandal a izbucnit la Cupa Mondială, unde un club a interzis unui jucător să participe, alertând federația. Situația ar putea ajunge la FIFA pentru rezolvare.",
-    "entities": [
-      "Cupa Mondială",
-      "FIFA"
-    ],
-    "icon": "alert-triangle",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://digi24.ro/campionatul-mondal-de-fotbal-2026/cm-2026-franta-prima-semifinalista-dupa-ce-a-invins-maroc-3856125",
-    "original_link": "https://www.digi24.ro/campionatul-mondal-de-fotbal-2026/cm-2026-franta-prima-semifinalista-dupa-ce-a-invins-maroc-3856125",
-    "source": "digi24",
-    "source_name": "Digi24",
-    "source_lang": "ro",
-    "title": "Franța, prima semifinalistă la CM 2026 după victoria cu Maroc",
-    "category": "sport",
-    "published": "2026-07-09T22:14:13+00:00",
-    "model": "C",
-    "sources": [
-      {
-        "name": "Digi24",
-        "url": "https://www.digi24.ro/campionatul-mondal-de-fotbal-2026/cm-2026-franta-prima-semifinalista-dupa-ce-a-invins-maroc-3856125"
-      },
-      {
-        "name": "HotNews",
-        "url": "https://hotnews.ro/cm-2026-se-cunoaste-prima-semifinalista-este-franta-care-invinge-marocul-pentru-a-doua-oara-consecutiv-la-un-campionat-mondial-2296745"
-      }
-    ],
-    "first_source": "Digi24",
-    "synthesis": "Echipa națională a Franței s-a calificat în semifinalele Campionatului Mondial de Fotbal 2026, devenind prima echipă care atinge această fază a competiției. Francezii au învins echipa Marocului cu scorul de 2-0 în primul meci din sferturile de finală. Victoria a fost obținută după o primă repriză în care apărarea marocană a fost depășită.",
-    "entities": [
-      "Franța",
-      "Maroc",
-      "CM 2026"
-    ],
-    "icon": "ball-football",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://digisport.ro/fotbal/cm-2026/franta-maroc-2-0-mbappe-si-dembele-si-au-calificat-nationala-in-semifinalele-cupei-mondiale-2026-4365359",
-    "original_link": "https://www.digisport.ro/fotbal/cm-2026/franta-maroc-2-0-mbappe-si-dembele-si-au-calificat-nationala-in-semifinalele-cupei-mondiale-2026-4365359",
-    "source": "digisport",
-    "source_name": "Digi Sport",
-    "source_lang": "ro",
-    "title": "Franța învinge Maroc și se califică în semifinalele CM 2026",
-    "category": "sport",
-    "published": "2026-07-09T22:02:38+00:00",
-    "model": "C",
-    "sources": [
-      {
-        "name": "Digi Sport",
-        "url": "https://www.digisport.ro/fotbal/cm-2026/franta-maroc-2-0-mbappe-si-dembele-si-au-calificat-nationala-in-semifinalele-cupei-mondiale-2026-4365359"
-      },
-      {
-        "name": "ProSport",
-        "url": "https://www.prosport.ro/campionatul-mondial-2026/didier-deschamps-anunt-accidentare-mbappe-20480669"
-      },
-      {
-        "name": "G4Media",
-        "url": "https://www.g4media.ro/franta-este-prima-nationala-calificata-in-careul-de-asi-al-cupei-mondiale-2026-victorie-2-0-cu-maroc.html"
-      }
-    ],
-    "first_source": "Digi Sport",
-    "synthesis": "Naționala Franței a învins Maroc cu scorul de 2-0 în sferturile de finală ale Cupei Mondiale 2026, desfășurată în SUA. Golurile au fost marcate de Mbappe și Dembele, asigurând calificarea echipei lui Didier Deschamps în careul de ași. Antrenorul a explicat decizia de a-l schimba pe Mbappe.",
-    "entities": [
-      "Franța",
-      "Maroc",
-      "Kylian Mbappe",
-      "Didier Deschamps"
-    ],
-    "icon": "ball-football",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://prosport.ro/campionatul-mondial-2026/kylian-mbappe-accidentare-franta-maroc-20480639",
-    "original_link": "https://www.prosport.ro/campionatul-mondial-2026/kylian-mbappe-accidentare-franta-maroc-20480639",
-    "source": "prosport",
-    "source_name": "ProSport",
-    "source_lang": "ro",
-    "title": "Kylian Mbappe s-a accidentat în timpul meciului Franța - Maroc",
-    "category": "sport",
-    "published": "2026-07-09T21:55:50+00:00",
-    "model": "C",
-    "sources": [
-      {
-        "name": "ProSport",
-        "url": "https://www.prosport.ro/campionatul-mondial-2026/kylian-mbappe-accidentare-franta-maroc-20480639"
-      },
-      {
-        "name": "Digi Sport",
-        "url": "https://www.digisport.ro/fotbal/cm-2026/lovitura-pentru-franta-kylian-mbappe-4369621"
-      }
-    ],
-    "first_source": "ProSport",
-    "synthesis": "Starul francez Kylian Mbappe a părăsit terenul accidentat în timpul partidei dintre Franța și Maroc. Jucătorul, considerat a fi în formă maximă, a ieșit șchiopătând după ce s-a prăbușit pe gazon, provocând îngrijorare în tabăra echipei naționale a Franței.",
-    "entities": [
-      "Kylian Mbappe",
-      "Franța",
-      "Maroc"
-    ],
-    "icon": "ball-football",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://gsp.ro/international/campionate/samir-nasri-retinut-paris-spalare-de-bani-958872.html",
-    "original_link": "https://www.gsp.ro/international/campionate/samir-nasri-retinut-paris-spalare-de-bani-958872.html",
-    "source": "gsp",
-    "source_name": "GSP",
-    "source_lang": "ro",
-    "title": "Fostul fotbalist Samir Nasri, reținut pentru spălare de bani",
-    "category": "sport",
-    "published": "2026-07-09T21:51:57+00:00",
-    "model": "B",
-    "teaser": "Samir Nasri, fost internațional francez, a fost interogat timp de 10 ore sub suspiciunea de spălare de bani și trafic de droguri, în cadrul unei investigații a poliției franceze.",
-    "entities": [
-      "Samir Nasri",
-      "Arsenal",
-      "City",
-      "Paris"
-    ],
-    "icon": "pig-money",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://digisport.ro/fotbal/liga-2/gabi-tamas-reloaded-a-fost-prezentat-iar-la-noua-echipa-dupa-doua-luni-a-semnat-4369503",
-    "original_link": "https://www.digisport.ro/fotbal/liga-2/gabi-tamas-reloaded-a-fost-prezentat-iar-la-noua-echipa-dupa-doua-luni-a-semnat-4369503",
-    "source": "digisport",
-    "source_name": "Digi Sport",
-    "source_lang": "ro",
-    "title": "Gabi Tamaș semnează cu o nouă echipă după două luni",
-    "category": "sport",
-    "published": "2026-07-09T21:31:05+00:00",
-    "model": "B",
-    "teaser": "Gabi Tamaș a fost prezentat oficial la o nouă echipă, la doar două luni după despărțirea de formația anterioară. Fotbalistul a semnat contractul și revine pe teren.",
-    "entities": [
-      "Gabi Tamaș"
-    ],
-    "icon": "ball-football",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://prosport.ro/campionatul-mondial-2026/reactia-francezilor-penalty-ratat-mbappe-maroc-20480610",
-    "original_link": "https://www.prosport.ro/campionatul-mondial-2026/reactia-francezilor-penalty-ratat-mbappe-maroc-20480610",
-    "source": "prosport",
-    "source_name": "ProSport",
-    "source_lang": "ro",
-    "title": "Mbappe ratează un penalty în meciul Franța - Maroc",
-    "category": "sport",
-    "published": "2026-07-09T21:19:29+00:00",
-    "model": "C",
-    "sources": [
-      {
-        "name": "ProSport",
-        "url": "https://www.prosport.ro/campionatul-mondial-2026/reactia-francezilor-penalty-ratat-mbappe-maroc-20480610"
-      },
-      {
-        "name": "Digi Sport",
-        "url": "https://www.digisport.ro/fotbal/cm-2026/lovitura-pentru-franta-kylian-mbappe-4369621"
-      }
-    ],
-    "first_source": "ProSport",
-    "synthesis": "Kylian Mbappe a ratat o lovitură de la 11 metri în timpul partidei dintre Franța și Maroc, un meci crucial pentru calificarea în semifinalele Campionatului Mondial. Acest moment a fost considerat o lovitură pentru echipa franceză, conform relatărilor presei.",
-    "entities": [
-      "Kylian Mbappe",
-      "Franța",
-      "Maroc",
-      "Campionatul Mondial"
     ],
     "icon": "ball-football",
     "processed_by": "gemini",
