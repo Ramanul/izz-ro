@@ -1,0 +1,23 @@
+name: feed-check
+
+# Sanatatea surselor RSS, per sursa (HTTP / numar intrari / prospetime) — rulat manual
+# inainte de a adauga/lasa o sursa in productie. Sandbox-urile de dev nu au internet;
+# runnerii da. Nu consuma AI quota si nu scrie nimic.
+
+on:
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+
+jobs:
+  feeds:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: "pip"
+      - run: pip install -r requirements.txt
+      - run: python tools/feed_check.py

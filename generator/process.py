@@ -21,7 +21,7 @@ Scrie un titlu si un rezumat care REDAU ESENTA, cu cuvintele tale.
 Returneaza JSON:
 {{"title": "<esenta faptului: CINE face/pateste CE (si unde/cand daca e cheie); concret si clar; 6-16 cuvinte; fara clickbait, fara formulari vagi precum 'iata ce', 'ce a patit'>",
   "teaser": "<rezumat COMPRIMAT al faptelor de baza in 25-40 de cuvinte: cine, ce, cand, unde, cat/de ce; reformulat 100%, ZERO propozitii copiate din original; trebuie sa transmita esenta fara a citi articolul>",
-  "category": "<una din: general|politic|economic|extern|tech|sport>",
+  "category": "<una din: {cats}>",
   "entities": ["<1-4 nume proprii cheie din stire (persoane, organizatii, locuri), forma scurta canonica, ex. 'Nicusor Dan', 'PSD', 'Timisoara'>"],
   "icon": "<pictograma care surprinde cel mai bine subiectul, UN slug din: {icons}; null daca niciuna nu se potriveste>"}}
 Reguli: titlul trebuie sa se inteleaga singur si sa contina faptul real, nu o intrebare/teaser; NU copia nicio propozitie din original; zero opinii; daca descrierea e saraca, extrage esenta din titlul original (tot reformulat)."""
@@ -36,7 +36,7 @@ Scrie titlu + sinteza care REDAU ESENTA evenimentului, cu cuvintele tale.
 Returneaza JSON:
 {{"title": "<esenta evenimentului: ce s-a intamplat, concret; 6-16 cuvinte; fara clickbait>",
   "synthesis": "<sinteza COMPRIMATA in 40-80 de cuvinte: faptele confirmate de mai multe surse (cine, ce, cand, unde, cat), reformulate 100%; marcheaza daca sursele se contrazic>",
-  "category": "<una din: general|politic|economic|extern|tech|sport>",
+  "category": "<una din: {cats}>",
   "entities": ["<1-4 nume proprii cheie din eveniment (persoane, organizatii, locuri), forma scurta canonica>"],
   "icon": "<pictograma care surprinde cel mai bine evenimentul, UN slug din: {icons}; null daca niciuna nu se potriveste>"}}
 Reguli: trianguleaza faptele comune; ZERO propozitii copiate; titlul contine faptul real, nu un teaser; zero opinii."""
@@ -52,7 +52,7 @@ Stiri:
 {items_block}
 
 Returneaza EXCLUSIV un array JSON, cate UN obiect per stire, cu acelasi id primit:
-[{{"id": <id>, "title": "<esenta faptului: CINE face/pateste CE; concret; 6-16 cuvinte; fara clickbait, fara vag>", "teaser": "<rezumat comprimat 25-40 cuvinte: cine/ce/cand/unde/cat; reformulat 100%, ZERO propozitii copiate>", "category": "<general|politic|economic|extern|tech|sport>", "entities": ["<1-4 nume proprii cheie: persoane, organizatii, locuri>"], "icon": "<UN slug din lista de la final sau null>"}}]
+[{{"id": <id>, "title": "<esenta faptului: CINE face/pateste CE; concret; 6-16 cuvinte; fara clickbait, fara vag>", "teaser": "<rezumat comprimat 25-40 cuvinte: cine/ce/cand/unde/cat; reformulat 100%, ZERO propozitii copiate>", "category": "<{cats}>", "entities": ["<1-4 nume proprii cheie: persoane, organizatii, locuri>"], "icon": "<UN slug din lista de la final sau null>"}}]
 Pictograme permise: {icons}
 Reguli: pastreaza id-ul EXACT (numar); un obiect per id; daca stirea e in alta limba, scrie in romana; titlul = faptul real, nu intrebare; zero opinii."""
 
@@ -97,9 +97,13 @@ _ICON_SLUGS = ("gavel certificate building-monument podium writing percentage re
                "cloud-storm snowflake flame alert-triangle")
 _ICON_SET = set(_ICON_SLUGS.split())
 
-USER_B = USER_B.replace("{icons}", _ICON_SLUGS)
-USER_C = USER_C.replace("{icons}", _ICON_SLUGS)
-USER_BATCH = USER_BATCH.replace("{icons}", _ICON_SLUGS)
+# lista de categorii vine din config (ca {icons}): o rubrica noua adaugata in
+# config.CATEGORIES intra automat si in prompturile AI, fara enumerari duplicate
+_CATS = "|".join(config.CATEGORIES)
+
+USER_B = USER_B.replace("{icons}", _ICON_SLUGS).replace("{cats}", _CATS)
+USER_C = USER_C.replace("{icons}", _ICON_SLUGS).replace("{cats}", _CATS)
+USER_BATCH = USER_BATCH.replace("{icons}", _ICON_SLUGS).replace("{cats}", _CATS)
 
 
 def _clean_icon(raw) -> str | None:

@@ -535,6 +535,8 @@ def build(articles: list, mod: dict | None = None) -> None:
                "/404.html", category="Pagina negăsită", articles=[])))
     _write_sitemap(by_date)
     _write_robots()
+    # dovada de domeniu pentru IndexNow: motorul citeste cheia de la radacina
+    _write(os.path.join(OUT_DIR, f"{config.INDEXNOW_KEY}.txt"), config.INDEXNOW_KEY + "\n")
     _write_headers()
     _write_feed(by_date)
     _write_search(env, by_date)
