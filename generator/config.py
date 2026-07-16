@@ -9,6 +9,15 @@ SITE = {"name": "IZZ.ro", "tagline": "Informația Zero Zgomot",
 # Surse = DOAR publicații cu RSS oficial. Agențiile de presă sunt EXCLUSE (conținut licențiat).
 SOURCES = {
             # Surse niche primele -> bugetul AI le proceseaza prioritar (altfel general le infometeaza)
+    # lifestyle / fashion / discounturi — rubrici noi (2026-07-16, cerute de owner).
+    # Feed-urile sunt candidati validati cu tools/feed_check.py in CI (sandbox-ul n-are internet);
+    # cele care nu raspund / nu-s RSS se taie inainte de merge.
+            "unica":      {"name": "Unica",            "url": "https://www.unica.ro/feed",             "category": "lifestyle"},
+            "csid":       {"name": "CSÎD",             "url": "https://www.csid.ro/feed",              "category": "lifestyle"},
+            "urban":      {"name": "Urban.ro",         "url": "https://urban.ro/feed",                 "category": "lifestyle"},
+            "elle":       {"name": "Elle România",     "url": "https://www.elle.ro/feed",              "category": "fashion"},
+            "avantaje":   {"name": "Avantaje",         "url": "https://www.avantaje.ro/feed",          "category": "fashion"},
+            "nwradu":       {"name": "NwRadu",         "url": "https://www.nwradu.ro/feed/",           "category": "discounturi"},
     # extern — Europa/UE/vecinatate (en, AI traduce) + surse ro
             "bbc_europe": {"name": "BBC Europe",    "url": "https://feeds.bbci.co.uk/news/world/europe/rss.xml", "category": "extern", "lang": "en"},
             "guardian_eu":{"name": "The Guardian",  "url": "https://www.theguardian.com/world/europe-news/rss",  "category": "extern", "lang": "en"},
@@ -42,7 +51,8 @@ SOURCES = {
 # Exclude orice URL/sursă de agenție (verificare suplimentară pe domeniul linkului)
 AGENCY_BLOCKLIST = ["agerpres", "mediafax", "reuters", "afp.com", "apnews", "ap.org"]
 
-CATEGORIES = ["general", "politic", "economic", "extern", "tech", "sport"]
+CATEGORIES = ["general", "politic", "economic", "extern", "tech", "sport",
+              "lifestyle", "fashion", "discounturi"]
 
 # Model B+C
 PROMPT_VERSION = "v2-esenta"  # versiunea regulilor AI; la schimbare, articolele vechi se reprocesează
@@ -55,3 +65,8 @@ ARTICLE_TTL_DAYS = 7           # mai scurt -> volum mai mic -> incape in quota f
 MAX_PER_SOURCE = 8             # redus de la 12 ca sa scada apelurile AI/rulare
 
 AI_PROVIDER = os.getenv("AI_PROVIDER", "gemini")  # "gemini" | "anthropic"
+
+# IndexNow (Bing/Seznam/Yandex): cheia e PUBLICA prin protocol (motorul o citeste de la
+# https://izz.ro/<cheie>.txt ca dovada ca detinem domeniul). render.py scrie fisierul,
+# tools/indexnow_submit.py anunta URL-urile noi la fiecare rulare a pipeline-ului.
+INDEXNOW_KEY = "f9b2f9cd7e5e9677f83454b525ad2c77"

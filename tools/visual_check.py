@@ -85,6 +85,19 @@ def main() -> int:
                 check(False, ".article-art exista pe pagina de articol")
             pg.screenshot(path=f"{SHOT_DIR}/articol.png")
 
+        # --- responsive (raport testare 2026-07-16): viewport de telefon, masurat real.
+        #     Regresia clasica e overflow-ul orizontal (pagina "se misca" lateral) --
+        #     scrollWidth trebuie sa incapa in viewport pe home + articol.
+        mob = br.new_page(viewport={"width": 390, "height": 844},
+                          user_agent="Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) "
+                                     "AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile Safari/604.1")
+        for label, url in [("home", BASE + "/")] + ([("articol", _abs(art))] if art else []):
+            mob.goto(url, wait_until="networkidle")
+            over = mob.evaluate("document.documentElement.scrollWidth - document.documentElement.clientWidth")
+            check(over <= 0, f"[mobil 390px] fara overflow orizontal pe {label} (depasire: {over}px)")
+            mob.screenshot(path=f"{SHOT_DIR}/mobil-{label}.png")
+        mob.close()
+
         br.close()
 
     check(not csp_errors, f"zero erori CSP in consola ({len(csp_errors)})")

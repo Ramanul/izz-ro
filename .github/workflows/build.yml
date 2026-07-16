@@ -11,7 +11,17 @@ on:
   # cand commit-urile purtau [skip ci], onorat SI de Cloudflare -> site inghetat).
   schedule:
     - cron: "13 */2 * * *"
-  workflow_dispatch: {}          # buton „Run workflow" pentru rulare manuala / deploy imediat
+  workflow_dispatch:          # buton „Run workflow" pentru rulare manuala / deploy imediat
+    inputs:
+      max_ai_calls:
+        description: >-
+          Buget de apeluri AI pentru aceasta rulare (gol = 18, ca la cron). Util
+          pentru populare initiala a unei categorii noi: clusterele C (sinteze
+          multi-sursa) au prioritate absoluta fata de loturile B in bugetul normal,
+          deci o sursa noua cu volum mic poate astepta multe cicluri pana ii vine
+          randul. NU schimba bugetul implicit al cron-ului.
+        required: false
+        default: ""
 
 permissions:
   contents: write                # ca sa comita data/articles.json
@@ -42,7 +52,7 @@ jobs:
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           AI_PROVIDER: gemini
-          MAX_AI_CALLS_PER_RUN: "18"
+          MAX_AI_CALLS_PER_RUN: ${{ github.event.inputs.max_ai_calls != '' && github.event.inputs.max_ai_calls || '18' }}
           UPGRADE_RESERVE: "8"
           # Optional: ruteaza Gemini prin Cloudflare AI Gateway (cache/retry/observabilitate).
           # Activezi setand variabila de repo GEMINI_BASE_URL la URL-ul gateway-ului;
@@ -93,3 +103,7 @@ jobs:
       - name: QA check (alerta daca scade calitatea publicabila)
         # ruleaza DUPA commit/deploy -> daca pica, owner-ul e anuntat de GitHub, dar site-ul nu ingheata
         run: python tools/qa_check.py
+
+      - name: IndexNow (anunta URL-urile noi la Bing & co., best-effort)
+        continue-on-error: true
+        run: python tools/indexnow_submit.py
