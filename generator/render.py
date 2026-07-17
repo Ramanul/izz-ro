@@ -495,10 +495,12 @@ def build(articles: list, mod: dict | None = None) -> None:
             page_items = _diversify(items[page:page+20])
             page_num = page // 20 + 1
             page_dir = os.path.join(OUT_DIR, cat) if page_num == 1 else os.path.join(OUT_DIR, cat, str(page_num))
+            show_pagination = (len(items) > 20 and page_num == 1)
             _write(os.path.join(page_dir, "index.html"),
                    cat_tpl.render(**_base_ctx(
                        f"/{cat}/" if page_num == 1 else f"/{cat}/{page_num}/",
-                       category=cat, articles=page_items, active_cat=cat)))
+                       category=cat, articles=page_items, active_cat=cat,
+                       show_pagination=show_pagination)))
         for a in items:
             topics = [(slugify(e)[:60], e) for e in (a.get("entities") or [])
                       if slugify(e)[:60] in ents]

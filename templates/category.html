@@ -11,13 +11,13 @@
   <h1 class="section-title">{{ category | capitalize }}</h1>
   {% if articles %}
   <section class="grid">
-    {% for a in articles[:20] %}{{ card(a) }}{% endfor %}
+    {% for a in articles %}{{ card(a) }}{% endfor %}
   </section>
-  {% if articles | length > 20 %}
+  {% if show_pagination %}
   <nav class="pagination" aria-label="Navigare pagini">
     <span class="current">1</span>
     <a href="{{ base }}/{{ category }}/2/">2</a>
-    {% if articles | length > 40 %}<a href="{{ base }}/{{ category }}/3/">3</a>{% endif %}
+    <a href="{{ base }}/{{ category }}/3/">3</a>
     <a href="{{ base }}/{{ category }}/2/" rel="next">›</a>
   </nav>
   {% endif %}
