@@ -155,11 +155,14 @@ picture { display: contents; }
 /* miniatura = arta generativa a articolului (aceeasi art.jpg ca bannerul de pe pagina) */
 .card-media {
   display: block; order: -1; overflow: hidden; border-radius: var(--radius);
-  /* placeholder-ul (pana se decodeaza coperta lazy) sta in tonul paginii;
-     cu var(--ink) fiecare click pe o rubrica licarea dreptunghiuri negre */
+  /* placeholder in tonul paginii pana se decodeaza coperta */
   aspect-ratio: 960 / 504; background: var(--line);
 }
-.card-media img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform .3s ease; }
+.card-media img { width: 100%; height: 100%; object-fit: cover; display: block;
+  transition: transform .3s ease, opacity .2s ease;
+  /* impiedica flash transparent in timpul decodarii JPEG */
+  background: var(--line);
+}
 .card:hover .card-media img { transform: scale(1.03); }
 
 /* Eticheta = eyebrow auriu (nu pastila). C (sinteza) marcat cu bulina aurie. */
@@ -316,6 +319,9 @@ picture { display: contents; }
   .section-title { font-size: var(--fs-lg); }
   .article h1 { font-size: var(--fs-xl); }
 }
+/* View Transitions: cross-page navigation fara flash alb (Chrome 111+, Safari 18.2+).
+   root = tot documentul; old page fades out, new page fades in inloc de flicker brut. */
+@view-transition { navigation: auto; }
 @media (prefers-reduced-motion: reduce) { * { transition: none !important; scroll-behavior: auto !important; } }
 
 /* ---- bara de consimtamant personalizare (opt-in ePrivacy) ---- */
