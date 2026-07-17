@@ -21,6 +21,7 @@
   --gold:        #c9a227;   /* aur viu: decor/fundaluri, NU text pe alb */
   --gold-strong: #8b6918;   /* aur inchis: text/linkuri (AA 4.7:1 pe --paper; #94701a trecea doar pe alb pur) */
   --gold-wash:   #faf5e6;
+  --ink-fixed:   #15171c;   /* NU se inverseaza in dark mode; pt. text pe fundal auriu (--gold ramane deschis in ambele teme) */
 
   --fs-eyebrow: 0.7rem;
   --fs-xs:      0.786rem;
@@ -429,7 +430,7 @@ picture { display: contents; }
   font-family: var(--font-mono); font-size: var(--fs-xs); font-weight: 700;
   padding: var(--s-8) var(--s-13); cursor: pointer; border-radius: 2px;
 }
-#izz-consent .consent-yes { background: var(--gold-strong); color: #fff; border: 1px solid var(--gold-strong); }
+#izz-consent .consent-yes { background: var(--gold); color: var(--ink-fixed); border: 1px solid var(--gold); }
 #izz-consent .consent-no { background: transparent; color: var(--ink-2); border: 1px solid var(--line-strong); }
 
 /* ---- subiecte (graful cunoasterii v1) ---- */
