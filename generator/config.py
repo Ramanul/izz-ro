@@ -36,20 +36,18 @@ SOURCES = {
             "cj_cluj":      {"name": "CJ Cluj",             "url": "https://www.cjcluj.ro/feed/",            "category": "local"},
             "cj_timis":     {"name": "CJ Timiș",            "url": "https://www.cjtimis.ro/feed",            "category": "local"},
     # local — ZIARE JUDETENE cu RSS (flux excelent, spre deosebire de paginile de primarie
-    # care sunt blocate/JS). Acopera "informatii de la judete" cerute de owner. CANDIDATI
-    # validati cu feedcheck.yml in CI; cei morti se taie inainte de merge. Categoria e PINNED
-    # (axa geografica): un articol de la ziarul judetean ramane 'local', nu e mutat pe tema.
-            "stiridecluj":  {"name": "Știri de Cluj",       "url": "https://www.stiridecluj.ro/feed",        "category": "local"},
+    # care sunt blocate/JS). Acopera "informatii de la judete" cerute de owner. Categoria e
+    # PINNED (axa geografica): un articol de la ziarul judetean ramane 'local', nu e mutat pe
+    # tema. Cei 7 de mai jos = feed VIU la feedcheck (run 29605677325, 2026-07-17). Cazuti la
+    # verificare (nu re-adauga fara re-test): stiridecluj.ro/feed=404, ziuaconstanta rss.html=
+    # 0 intrari, gds.ro=403, ebihoreanul=500. Acoperire: Cluj/Iasi/Timis/Brasov.
             "zcj":          {"name": "Ziua de Cluj",        "url": "https://zcj.ro/feed",                    "category": "local"},
             "bzi":          {"name": "BZI Iași",            "url": "https://www.bzi.ro/feed",                "category": "local"},
             "ziaruldeiasi": {"name": "Ziarul de Iași",      "url": "https://www.ziaruldeiasi.ro/rss",        "category": "local"},
             "pressalert":   {"name": "PressAlert Timișoara","url": "https://www.pressalert.ro/feed/",         "category": "local"},
             "tion":         {"name": "Timiș Online",        "url": "https://www.tion.ro/feed/",              "category": "local"},
-            "ziuaconstanta":{"name": "Ziua de Constanța",   "url": "https://www.ziuaconstanta.ro/rss.html",  "category": "local"},
             "bizbrasov":    {"name": "BizBrașov",           "url": "https://www.bizbrasov.ro/feed",          "category": "local"},
             "newsbv":       {"name": "News Brașov",         "url": "https://www.newsbv.ro/feed/",            "category": "local"},
-            "gds":          {"name": "Gazeta de Sud",       "url": "https://www.gds.ro/feed/",               "category": "local"},
-            "ebihoreanul":  {"name": "eBihoreanul",         "url": "https://www.ebihoreanul.ro/feed/",       "category": "local"},
     # extern — Europa/UE/vecinatate (en, AI traduce) + surse ro
             "bbc_europe": {"name": "BBC Europe",    "url": "https://feeds.bbci.co.uk/news/world/europe/rss.xml", "category": "extern", "lang": "en"},
             "guardian_eu":{"name": "The Guardian",  "url": "https://www.theguardian.com/world/europe-news/rss",  "category": "extern", "lang": "en"},
