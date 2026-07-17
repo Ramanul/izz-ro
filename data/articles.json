@@ -1,5 +1,175 @@
 [
   {
+    "url": "https://gsp.ro/fotbal/liga-1/live-fcsb-fc-arges-etapa-1-superliga-961370.html",
+    "original_link": "https://www.gsp.ro/fotbal/liga-1/live-fcsb-fc-arges-etapa-1-superliga-961370.html",
+    "source": "gsp",
+    "source_name": "GSP",
+    "source_lang": "ro",
+    "title": "FCSB debutează în noul sezon Superligă pe stadionul Ghencea",
+    "category": "sport",
+    "published": "2026-07-17T17:11:56+00:00",
+    "model": "C",
+    "sources": [
+      {
+        "name": "GSP",
+        "url": "https://www.gsp.ro/fotbal/liga-1/live-fcsb-fc-arges-etapa-1-superliga-961370.html"
+      },
+      {
+        "name": "Digi Sport",
+        "url": "https://www.digisport.ro/fotbal/liga-1/fcsb-fc-arges-live-video-2130-digi-sport-1-ros-albastrii-incep-noul-sezon-cu-cosmarul-editiei-trecute-4382483"
+      }
+    ],
+    "first_source": "GSP",
+    "synthesis": "FCSB și FC Argeș se întâlnesc în prima etapă a noului sezon din Superligă, pe stadionul din Ghencea. Meciul începe la ora 21:30 și este transmis de Prima Sport 1 și Digi Sport 1. FCSB își propune lupta pentru titlu, în timp ce FC Argeș speră să repete performanța din sezonul precedent.",
+    "entities": [
+      "FCSB",
+      "FC Argeș",
+      "Ghencea",
+      "Superligă"
+    ],
+    "icon": "ball-football",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://csid.ro/diete/retete-culinare/cum-faci-salata-de-vinete-fara-ulei-21253910",
+    "original_link": "https://www.csid.ro/diete/retete-culinare/cum-faci-salata-de-vinete-fara-ulei-21253910/",
+    "source": "csid",
+    "source_name": "CSÎD",
+    "source_lang": "ro",
+    "title": "Salata de vinete, reinventata fara ulei, pentru o varianta mai usoara",
+    "category": "lifestyle",
+    "published": "2026-07-17T16:30:55+00:00",
+    "model": "B",
+    "teaser": "Descoperă cum poți prepara salata de vinete într-o variantă dietetică, fără a folosi ulei, păstrând gustul delicios specific verii. O rețetă ușoară și sănătoasă.",
+    "entities": [],
+    "icon": null,
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://economica.net/noul-proiect-al-legii-salarizarii-mmftss-a-stabilit-cu-cat-cresc-gradatiile-pentru-vechime-in-munca-salariul-de-baza_960372.html",
+    "original_link": "https://www.economica.net/noul-proiect-al-legii-salarizarii-mmftss-a-stabilit-cu-cat-cresc-gradatiile-pentru-vechime-in-munca-salariul-de-baza_960372.html",
+    "source": "economica",
+    "source_name": "Economica",
+    "source_lang": "ro",
+    "title": "Legea salarizării: Gradații noi pentru vechimea în muncă",
+    "category": "economic",
+    "published": "2026-07-17T16:21:27+00:00",
+    "model": "C",
+    "sources": [
+      {
+        "name": "Economica",
+        "url": "https://www.economica.net/noul-proiect-al-legii-salarizarii-mmftss-a-stabilit-cu-cat-cresc-gradatiile-pentru-vechime-in-munca-salariul-de-baza_960372.html"
+      },
+      {
+        "name": "Știrile ProTV",
+        "url": "https://stirileprotv.ro/stiri/social/proiectul-noii-lege-a-salarizarii-cu-cat-majoreaza-salariul-gradatiile-pentru-vechimea-in-munca.html"
+      }
+    ],
+    "first_source": "Economica",
+    "synthesis": "Ministerul Muncii a publicat un proiect actualizat al Legii salarizării, care include șase gradații pentru vechimea în muncă. Majorările salariului de bază vor fi între 2,5% (peste 15 ani vechime) și 7,5% (3-5 ani vechime), conform documentului aflat în dezbatere publică.",
+    "entities": [
+      "Ministerul Muncii"
+    ],
+    "icon": "percentage",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://digi24.ro/stiri/actualitate/social/noi-sporuri-pentru-bugetari-in-proiectul-legii-salarizarii-vamesii-expusi-la-radiatii-pot-primi-pana-la-10-in-plus-la-salariu-3867031",
+    "original_link": "https://www.digi24.ro/stiri/actualitate/social/noi-sporuri-pentru-bugetari-in-proiectul-legii-salarizarii-vamesii-expusi-la-radiatii-pot-primi-pana-la-10-in-plus-la-salariu-3867031",
+    "source": "digi24",
+    "source_name": "Digi24",
+    "source_lang": "ro",
+    "title": "Sporuri de până la 10% pentru vameșii expuși la radiații",
+    "category": "economic",
+    "published": "2026-07-17T16:03:22+00:00",
+    "model": "C",
+    "sources": [
+      {
+        "name": "Digi24",
+        "url": "https://www.digi24.ro/stiri/actualitate/social/noi-sporuri-pentru-bugetari-in-proiectul-legii-salarizarii-vamesii-expusi-la-radiatii-pot-primi-pana-la-10-in-plus-la-salariu-3867031"
+      },
+      {
+        "name": "Economica",
+        "url": "https://www.economica.net/sporuri-de-10-pentru-vamesii-care-lucreaza-cu-surse-generatoare-de-radiatii-noul-proiect-al-legii-salarizarii_960368.html"
+      }
+    ],
+    "first_source": "Digi24",
+    "synthesis": "Proiectul actualizat al noii legi a salarizării, publicat de Ministerul Muncii, prevede acordarea unui spor de până la 10% din salariul de bază pentru funcționarii Autorității Vamale Române care lucrează cu surse de radiații. Acesta va fi diferențiat în funcție de nivelul riscului radiologic.",
+    "entities": [
+      "Autoritatea Vamală Română",
+      "Ministerul Muncii"
+    ],
+    "icon": "percentage",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://theguardian.com/environment/2026/jul/17/europe-emissions-trading-system-greenhouse-gas-risks-weakened",
+    "original_link": "https://www.theguardian.com/environment/2026/jul/17/europe-emissions-trading-system-greenhouse-gas-risks-weakened",
+    "source": "guardian_eu",
+    "source_name": "The Guardian",
+    "source_lang": "en",
+    "title": "Sistemul UE de comercializare a emisiilor, riscă să fie slăbit",
+    "category": "politic",
+    "published": "2026-07-17T16:01:02+00:00",
+    "model": "B",
+    "teaser": "Propunerea Comisiei Europene de a revizui sistemul de comercializare a certificatelor de emisii riscă să slăbească cel mai eficient instrument al UE pentru reducerea gazelor cu efect de seră, spun criticii.",
+    "entities": [
+      "Comisia Europeană",
+      "Uniunea Europeană"
+    ],
+    "icon": "certificate",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://csid.ro/lifestyle/familie-si-copii/ghid-gratuit-pentru-parintii-care-pleaca-in-vacanta-cu-copiii-ce-recomandari-ofera-medicii-pentru-situatiile-neprevazute-21253342",
+    "original_link": "https://www.csid.ro/lifestyle/familie-si-copii/ghid-gratuit-pentru-parintii-care-pleaca-in-vacanta-cu-copiii-ce-recomandari-ofera-medicii-pentru-situatiile-neprevazute-21253342/",
+    "source": "csid",
+    "source_name": "CSÎD",
+    "source_lang": "ro",
+    "title": "Ghid gratuit de vacanță pentru părinți, lansat de medic pediatru",
+    "category": "lifestyle",
+    "published": "2026-07-17T16:00:38+00:00",
+    "model": "B",
+    "teaser": "Un e-book gratuit, creat de medicul pediatru Irina Antonescu, oferă sfaturi esențiale părinților pentru a gestiona situații neprevăzute în vacanțele cu copiii.",
+    "entities": [
+      "Irina Antonescu"
+    ],
+    "icon": "writing",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://bbc.co.uk/news/articles/cq56ed827peo?at_medium=RSS&at_campaign=rss",
+    "original_link": "https://www.bbc.co.uk/news/articles/cq56ed827peo?at_medium=RSS&at_campaign=rss",
+    "source": "bbc_europe",
+    "source_name": "BBC Europe",
+    "source_lang": "en",
+    "title": "Politician german, cerut să demisioneze pentru copil născut prin surogat",
+    "category": "politic",
+    "published": "2026-07-17T15:08:37+00:00",
+    "model": "B",
+    "teaser": "Un politician german este sub presiune să demisioneze după ce a avut un copil prin surogat, practică interzisă în Germania. Partidul său, Uniunea Creștin-Democrată, susține interdicția.",
+    "entities": [
+      "Jens Spahn",
+      "Uniunea Creștin-Democrată"
+    ],
+    "icon": "gavel",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
     "url": "https://csid.ro/beauty/ingrijire-frumusete/cum-poti-scapa-de-matreata-in-mod-natural-obiceiurile-care-pot-reduce-exfolierea-scalpului-si-preveni-reaparitia-ei-21253029",
     "original_link": "https://www.csid.ro/beauty/ingrijire-frumusete/cum-poti-scapa-de-matreata-in-mod-natural-obiceiurile-care-pot-reduce-exfolierea-scalpului-si-preveni-reaparitia-ei-21253029/",
     "source": "csid",
@@ -43,6 +213,26 @@
       "Kader Keita"
     ],
     "icon": "ball-football",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://elle.ro/people/dana-rogoz-prima-reactie-dupa-ce-a-vazut-filmul-regizat-de-sotul-ei-in-care-apare-alaturi-de-copiii-lor-e-asa-de-personal-1079744",
+    "original_link": "https://www.elle.ro/people/dana-rogoz-prima-reactie-dupa-ce-a-vazut-filmul-regizat-de-sotul-ei-in-care-apare-alaturi-de-copiii-lor-e-asa-de-personal-1079744",
+    "source": "elle",
+    "source_name": "Elle România",
+    "source_lang": "ro",
+    "title": "Dana Rogoz, emoționată de filmul regizat de soțul ei cu participarea copiilor",
+    "category": "lifestyle",
+    "published": "2026-07-17T15:00:00+00:00",
+    "model": "B",
+    "teaser": "Dana Rogoz a împărtășit reacția sa emoționantă la vizionarea filmului regizat de soțul ei, Radu Dragomir, în care joacă întreaga familie.",
+    "entities": [
+      "Dana Rogoz",
+      "Radu Dragomir"
+    ],
+    "icon": "movie",
     "processed_by": "gemini",
     "prompt_version": "v2-esenta",
     "featured": false
@@ -107,6 +297,47 @@
       "e-Terra"
     ],
     "icon": "shield-lock",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://elle.ro/advertorial/un-produs-cosmetic-romanesc-ivapur-aknebiom-ser-premiat-international-trateaza-acneea-si-protejeaza-microbiomul-pielii-1079786",
+    "original_link": "https://www.elle.ro/advertorial/un-produs-cosmetic-romanesc-ivapur-aknebiom-ser-premiat-international-trateaza-acneea-si-protejeaza-microbiomul-pielii-1079786",
+    "source": "elle",
+    "source_name": "Elle România",
+    "source_lang": "ro",
+    "title": "Ser românesc pentru acnee, premiat la concurs internațional",
+    "category": "sanatate",
+    "published": "2026-07-17T14:55:03+00:00",
+    "model": "B",
+    "teaser": "Serul Ivapur Aknebiom de la Ivatherm, primul brand dermato-cosmetic românesc formulat de medici, a câștigat premiul C&T Allé Awards la categoria îngrijirii tenului acneic, confirmând o nouă abordare în tratamentul pielii.",
+    "entities": [
+      "Ivatherm",
+      "Ivapur Aknebiom Ser",
+      "C&T Allé Awards"
+    ],
+    "icon": "certificate",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://theguardian.com/film/2026/jul/17/brenda-fricker-oscar-winner-for-my-left-foot-dies",
+    "original_link": "https://www.theguardian.com/film/2026/jul/17/brenda-fricker-oscar-winner-for-my-left-foot-dies",
+    "source": "guardian_eu",
+    "source_name": "The Guardian",
+    "source_lang": "en",
+    "title": "Brenda Fricker, câștigătoarea premiului Oscar, a murit la 81 de ani",
+    "category": "cultura",
+    "published": "2026-07-17T14:48:53+00:00",
+    "model": "B",
+    "teaser": "Actrița irlandeză Brenda Fricker, laureată a premiului Oscar pentru rolul din \"My Left Foot\", a decedat la vârsta de 81 de ani. Cariera sa a inclus roluri în seriale britanice și filme de la Hollywood.",
+    "entities": [
+      "Brenda Fricker",
+      "My Left Foot"
+    ],
+    "icon": "movie",
     "processed_by": "gemini",
     "prompt_version": "v2-esenta",
     "featured": false
@@ -205,6 +436,46 @@
     "featured": false
   },
   {
+    "url": "https://elle.ro/people/andreea-banica-adevarul-despre-operatiile-ei-estetice-ce-interventii-si-a-facut-de-fapt-artista-imbunatatirile-astea-sunt-binevenite-1079701",
+    "original_link": "https://www.elle.ro/people/andreea-banica-adevarul-despre-operatiile-ei-estetice-ce-interventii-si-a-facut-de-fapt-artista-imbunatatirile-astea-sunt-binevenite-1079701",
+    "source": "elle",
+    "source_name": "Elle România",
+    "source_lang": "ro",
+    "title": "Andreea Bănică clarifică zvonurile despre operațiile estetice",
+    "category": "lifestyle",
+    "published": "2026-07-17T14:00:00+00:00",
+    "model": "B",
+    "teaser": "Artista Andreea Bănică a vorbit deschis despre intervențiile estetice la care a apelat, punând capăt speculațiilor. Ea consideră că aceste îmbunătățiri sunt binevenite pentru aspectul său.",
+    "entities": [
+      "Andreea Bănică"
+    ],
+    "icon": null,
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://politico.eu/article/energieintensive-industrie-unzufrieden-mit-ets-reform",
+    "original_link": "https://www.politico.eu/article/energieintensive-industrie-unzufrieden-mit-ets-reform/?utm_source=RSS_Feed&utm_medium=RSS&utm_campaign=RSS_Syndication",
+    "source": "politico_eu",
+    "source_name": "Politico EU",
+    "source_lang": "en",
+    "title": "Industria germană critică reforma ETS privind emisiile",
+    "category": "economic",
+    "published": "2026-07-17T13:31:12+00:00",
+    "model": "B",
+    "teaser": "Industria energointensivă din Germania consideră reforma ETS o diversiune periculoasă, nemulțumită că nu oferă soluții împotriva deindustrializării, în timp ce DIHK vede aspecte pozitive.",
+    "entities": [
+      "Germania",
+      "ETS",
+      "DIHK"
+    ],
+    "icon": "building-factory",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
     "url": "https://csid.ro/stiri/ce-vaccinuri-sunt-recomandate-inainte-de-o-vacanta-in-tari-exotice-cand-trebuie-facute-si-cat-poate-costa-schema-completa-21253189",
     "original_link": "https://www.csid.ro/stiri/ce-vaccinuri-sunt-recomandate-inainte-de-o-vacanta-in-tari-exotice-cand-trebuie-facute-si-cat-poate-costa-schema-completa-21253189/",
     "source": "csid",
@@ -248,6 +519,46 @@
       "Singur acasă 2"
     ],
     "icon": "movie",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://elle.ro/people/cristina-ciobanasu-veste-ingrijoratoare-despre-sanatatea-ei-ce-au-descoperit-medicii-exista-acest-risc-1079774",
+    "original_link": "https://www.elle.ro/people/cristina-ciobanasu-veste-ingrijoratoare-despre-sanatatea-ei-ce-au-descoperit-medicii-exista-acest-risc-1079774",
+    "source": "elle",
+    "source_name": "Elle România",
+    "source_lang": "ro",
+    "title": "Cristina Ciobănașu, risc cardiovascular sever descoperit la testare genetică",
+    "category": "sanatate",
+    "published": "2026-07-17T13:20:00+00:00",
+    "model": "B",
+    "teaser": "Actrița Cristina Ciobănașu a dezvăluit că investigațiile genetice au indicat o predispoziție crescută la o afecțiune cardiovasculară severă, impunând schimbări majore în stilul său de viață.",
+    "entities": [
+      "Cristina Ciobănașu"
+    ],
+    "icon": "virus",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://politico.eu/article/andy-burnhams-long-general-election-campaign-starts-now",
+    "original_link": "https://www.politico.eu/article/andy-burnhams-long-general-election-campaign-starts-now/?utm_source=RSS_Feed&utm_medium=RSS&utm_campaign=RSS_Syndication",
+    "source": "politico_eu",
+    "source_name": "Politico EU",
+    "source_lang": "en",
+    "title": "Andy Burnham își începe campania electorală pentru alegerile generale",
+    "category": "politic",
+    "published": "2026-07-17T13:19:17+00:00",
+    "model": "B",
+    "teaser": "Liderul laburist britanic, Andy Burnham, își lansează campania electorală, anticipând o bătălie pentru sufletul națiunii în 2029 sau chiar mai devreme.",
+    "entities": [
+      "Andy Burnham",
+      "Marea Britanie",
+      "Laburista"
+    ],
+    "icon": "flag",
     "processed_by": "gemini",
     "prompt_version": "v2-esenta",
     "featured": false
@@ -398,6 +709,50 @@
     "featured": false
   },
   {
+    "url": "https://elle.ro/people/fiica-lui-kim-kardashian-north-west-transformare-radicala-cum-a-fost-surprinsa-alaturi-de-bianca-censori-1079728",
+    "original_link": "https://www.elle.ro/people/fiica-lui-kim-kardashian-north-west-transformare-radicala-cum-a-fost-surprinsa-alaturi-de-bianca-censori-1079728",
+    "source": "elle",
+    "source_name": "Elle România",
+    "source_lang": "ro",
+    "title": "Fiica lui Kim Kardashian, North West, transformare radicală la 13 ani",
+    "category": "lifestyle",
+    "published": "2026-07-17T12:40:00+00:00",
+    "model": "B",
+    "teaser": "North West, fiica lui Kim Kardashian și Kanye West, a fost surprinsă într-o transformare spectaculoasă, aproape de nerecunoscut, alături de tatăl său și Bianca Censori în Los Angeles.",
+    "entities": [
+      "North West",
+      "Kim Kardashian",
+      "Kanye West",
+      "Bianca Censori",
+      "Los Angeles"
+    ],
+    "icon": null,
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://elle.ro/people/ce-destinatie-de-vacanta-a-impresionat-o-pe-catalina-grama-imagini-din-escapada-actritei-aici-m-as-intoarce-oricand-1079671",
+    "original_link": "https://www.elle.ro/people/ce-destinatie-de-vacanta-a-impresionat-o-pe-catalina-grama-imagini-din-escapada-actritei-aici-m-as-intoarce-oricand-1079671",
+    "source": "elle",
+    "source_name": "Elle România",
+    "source_lang": "ro",
+    "title": "Cătălina Grama, impresionată de vacanța în Evia, Grecia",
+    "category": "lifestyle",
+    "published": "2026-07-17T12:00:00+00:00",
+    "model": "B",
+    "teaser": "Actrița Cătălina Grama a petrecut o vacanță de vis alături de familie pe insula Evia din Grecia, a doua ca mărime, lăudând plajele, satele montane și gastronomia locală.",
+    "entities": [
+      "Cătălina Grama",
+      "Evia",
+      "Grecia"
+    ],
+    "icon": "sun",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
     "url": "https://cursdeguvernare.ro/raiffeisen-bank-este-romanias-best-bank-for-customer-experience-la-euromoney-awards-for-excellence-2026.html",
     "original_link": "https://cursdeguvernare.ro/raiffeisen-bank-este-romanias-best-bank-for-customer-experience-la-euromoney-awards-for-excellence-2026.html",
     "source": "cursdeguv",
@@ -482,6 +837,50 @@
     "teaser": "Valoarea nutritivă a roșiilor variază în funcție de culoare, mărime și gradul de coacere. Toate soiurile sunt bogate în antioxidanți, vitamine și minerale, dar anumite tipuri pot oferi beneficii suplimentare.",
     "entities": [],
     "icon": null,
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://elle.ro/people/george-si-amal-clooney-aparitie-eleganta-pe-un-iaht-in-capri-cuplul-a-atras-toate-privirile-1079717",
+    "original_link": "https://www.elle.ro/people/george-si-amal-clooney-aparitie-eleganta-pe-un-iaht-in-capri-cuplul-a-atras-toate-privirile-1079717",
+    "source": "elle",
+    "source_name": "Elle România",
+    "source_lang": "ro",
+    "title": "George și Amal Clooney, apariție elegantă pe un iaht în Capri",
+    "category": "lifestyle",
+    "published": "2026-07-17T11:20:00+00:00",
+    "model": "B",
+    "teaser": "George și Amal Clooney au atras atenția pe Coasta Amalfitană, fiind fotografiați pe un iaht de lux în Capri. Cuplul a afișat o imagine elegantă în timpul escapadei lor exclusiviste.",
+    "entities": [
+      "George Clooney",
+      "Amal Clooney",
+      "Capri",
+      "Coasta Amalfitană"
+    ],
+    "icon": "ship",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://politico.eu/article/taras-kachka-named-ukraines-new-ambassador-to-the-eu",
+    "original_link": "https://www.politico.eu/article/taras-kachka-named-ukraines-new-ambassador-to-the-eu/?utm_source=RSS_Feed&utm_medium=RSS&utm_campaign=RSS_Syndication",
+    "source": "politico_eu",
+    "source_name": "Politico EU",
+    "source_lang": "en",
+    "title": "Taras Kachka, noul ambasador al Ucrainei la UE",
+    "category": "politic",
+    "published": "2026-07-17T11:12:08+00:00",
+    "model": "B",
+    "teaser": "Taras Kachka preia funcția de ambasador al Ucrainei pe lângă Uniunea Europeană, înlocuindu-l pe Vsevolod Chentsov, care va deveni vicepremier.",
+    "entities": [
+      "Taras Kachka",
+      "Ucraina",
+      "UE",
+      "Vsevolod Chentsov"
+    ],
+    "icon": "flag",
     "processed_by": "gemini",
     "prompt_version": "v2-esenta",
     "featured": false
@@ -664,6 +1063,27 @@
     "featured": false
   },
   {
+    "url": "https://elle.ro/people/anunt-oficial-cand-incepe-asia-express-2026-ce-a-dezvaluit-irina-fodor-prezentatoarea-show-ului-este-un-sezon-al-sinceritatii-1079750",
+    "original_link": "https://www.elle.ro/people/anunt-oficial-cand-incepe-asia-express-2026-ce-a-dezvaluit-irina-fodor-prezentatoarea-show-ului-este-un-sezon-al-sinceritatii-1079750",
+    "source": "elle",
+    "source_name": "Elle România",
+    "source_lang": "ro",
+    "title": "Asia Express 2026 începe în toamnă, anunță Irina Fodor",
+    "category": "lifestyle",
+    "published": "2026-07-17T10:40:00+00:00",
+    "model": "B",
+    "teaser": "Irina Fodor a dezvăluit că noul sezon Asia Express va începe în toamnă la Antena 1. Prezentatoarea a descris sezonul ca fiind unul al sincerității, promițând emoție și captivare pentru telespectatori.",
+    "entities": [
+      "Asia Express",
+      "Irina Fodor",
+      "Antena 1"
+    ],
+    "icon": "flag",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
     "url": "https://unica.ro/vedete/straine/actorul-hal-williams-cunoscut-pentru-rolurile-sale-din-sanford-son-sau-227-a-murit-la-91-de-ani-823560",
     "original_link": "https://www.unica.ro/vedete/straine/actorul-hal-williams-cunoscut-pentru-rolurile-sale-din-sanford-son-sau-227-a-murit-la-91-de-ani-823560",
     "source": "unica",
@@ -736,6 +1156,26 @@
     "featured": false
   },
   {
+    "url": "https://politico.eu/article/eu-sets-46-electrification-target-in-push-to-slash-fossil-fuel-dependence",
+    "original_link": "https://www.politico.eu/article/eu-sets-46-electrification-target-in-push-to-slash-fossil-fuel-dependence/?utm_source=RSS_Feed&utm_medium=RSS&utm_campaign=RSS_Syndication",
+    "source": "politico_eu",
+    "source_name": "Politico EU",
+    "source_lang": "en",
+    "title": "UE vrea dublarea consumului de electricitate până în 2040",
+    "category": "economic",
+    "published": "2026-07-17T10:20:30+00:00",
+    "model": "B",
+    "teaser": "Uniunea Europeană intenționează să dubleze utilizarea energiei electrice până în 2040, eliminând treptat combustibilii fosili, dar evită stabilirea unui țel obligatoriu.",
+    "entities": [
+      "UE",
+      "Dan Jørgensen"
+    ],
+    "icon": "bolt",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
     "url": "https://sfatulparintilor.ro/horoscop-3/horoscop-zilnic-horoscop-3/etalare-zilnica-rune",
     "original_link": "https://sfatulparintilor.ro/horoscop-3/horoscop-zilnic-horoscop-3/etalare-zilnica-rune/",
     "source": "sfatulparintilor",
@@ -748,6 +1188,25 @@
     "teaser": "Runele, considerate simboluri sacre și alfabetul zeilor, transmit mesaje mistice pentru ziua de sâmbătă, 18 iulie 2026. Aceste pietre gravate oferă ghidare spirituală.",
     "entities": [],
     "icon": null,
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://politico.eu/article/eu-loosens-carbon-market-rules-to-allow-industry-to-pollute-for-longer",
+    "original_link": "https://www.politico.eu/article/eu-loosens-carbon-market-rules-to-allow-industry-to-pollute-for-longer/?utm_source=RSS_Feed&utm_medium=RSS&utm_campaign=RSS_Syndication",
+    "source": "politico_eu",
+    "source_name": "Politico EU",
+    "source_lang": "en",
+    "title": "UE relaxează regulile pieței de carbon pentru industrie",
+    "category": "economic",
+    "published": "2026-07-17T10:16:54+00:00",
+    "model": "B",
+    "teaser": "Producătorii de oțel, chimicale și energie vor putea emite poluanți în atmosferă până în 2040, conform unei noi legi propuse de UE, care relaxează normele pieței de carbon.",
+    "entities": [
+      "UE"
+    ],
+    "icon": "building-factory",
     "processed_by": "gemini",
     "prompt_version": "v2-esenta",
     "featured": false
@@ -768,6 +1227,28 @@
       "julietchat.com"
     ],
     "icon": "writing",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://politico.eu/article/ukraine-steps-up-attacks-on-russias-black-sea-fuel-network",
+    "original_link": "https://www.politico.eu/article/ukraine-steps-up-attacks-on-russias-black-sea-fuel-network/?utm_source=RSS_Feed&utm_medium=RSS&utm_campaign=RSS_Syndication",
+    "source": "politico_eu",
+    "source_name": "Politico EU",
+    "source_lang": "en",
+    "title": "Ucraina intensifică atacurile asupra rețelei energetice rusești",
+    "category": "extern",
+    "published": "2026-07-17T10:12:11+00:00",
+    "model": "B",
+    "teaser": "Ucraina își sporește atacurile asupra rețelei de combustibil din Marea Neagră a Rusiei, vizând întreruperea aprovizionării regiunilor ocupate și contracararea sancțiunilor.",
+    "entities": [
+      "Ucraina",
+      "Rusia",
+      "Marea Neagră",
+      "Crimeea"
+    ],
+    "icon": "ship",
     "processed_by": "gemini",
     "prompt_version": "v2-esenta",
     "featured": false
@@ -1848,6 +2329,27 @@
     "featured": false
   },
   {
+    "url": "https://urban.ro/lego-sarutul-klimt",
+    "original_link": "https://www.urban.ro/lego-sarutul-klimt/",
+    "source": "urban",
+    "source_name": "Urban.ro",
+    "source_lang": "ro",
+    "title": "LEGO lansează setul 'Sărutul' de Klimt, cel mai mare din seria Art Masterpiece",
+    "category": "cultura",
+    "published": "2026-07-16T23:01:24+00:00",
+    "model": "B",
+    "teaser": "LEGO recreează faimoasa pictură 'Sărutul' a lui Klimt într-un set impresionant de 4.000 de piese, realizat în colaborare cu Muzeul Belvedere din Viena.",
+    "entities": [
+      "LEGO",
+      "Klimt",
+      "Muzeul Belvedere"
+    ],
+    "icon": null,
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
     "url": "https://urban.ro/povestea-cuminteniei-pamantului",
     "original_link": "https://www.urban.ro/povestea-cuminteniei-pamantului/",
     "source": "urban",
@@ -1862,6 +2364,65 @@
       "Brâncuși"
     ],
     "icon": "building-monument",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://bbc.co.uk/news/articles/c86262j7j75o?at_medium=RSS&at_campaign=rss",
+    "original_link": "https://www.bbc.co.uk/news/articles/c86262j7j75o?at_medium=RSS&at_campaign=rss",
+    "source": "bbc_europe",
+    "source_name": "BBC Europe",
+    "source_lang": "en",
+    "title": "Europenii cumpără aer condiționat chinezesc din cauza caniculei",
+    "category": "economic",
+    "published": "2026-07-16T22:01:29+00:00",
+    "model": "B",
+    "teaser": "Pe fondul valurilor de căldură, europenii apelează la aparate de aer condiționat fabricate în China. Brandurile chinezești satisfac cererea în creștere într-o regiune cu rate scăzute de deținere a acestor aparate.",
+    "entities": [
+      "China",
+      "Europa"
+    ],
+    "icon": "shopping-cart",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://urban.ro/homer-instrumentele-reconstruite-special-pentru-coloana-sonora-a-filmului-the-odyssey-de-christopher-nolan",
+    "original_link": "https://www.urban.ro/homer-instrumentele-reconstruite-special-pentru-coloana-sonora-a-filmului-the-odyssey-de-christopher-nolan/",
+    "source": "urban",
+    "source_name": "Urban.ro",
+    "source_lang": "ro",
+    "title": "Christopher Nolan recreează sunetele lumii lui Homer pentru 'The Odyssey'",
+    "category": "cultura",
+    "published": "2026-07-16T21:24:00+00:00",
+    "model": "B",
+    "teaser": "Filmul 'The Odyssey' de Christopher Nolan prezintă o coloană sonoră unică, cu instrumente special reconstruite pentru a evoca lumea antică a lui Homer.",
+    "entities": [
+      "Christopher Nolan",
+      "Homer"
+    ],
+    "icon": "movie",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://urban.ro/lionel-messi-i-hoteluri-boutique",
+    "original_link": "https://www.urban.ro/lionel-messi-i-hoteluri-boutique/",
+    "source": "urban",
+    "source_name": "Urban.ro",
+    "source_lang": "ro",
+    "title": "Lionel Messi investește în hoteluri boutique, extinzându-și imperiul",
+    "category": "sport",
+    "published": "2026-07-16T21:12:00+00:00",
+    "model": "B",
+    "teaser": "Pe lângă cariera sportivă, Lionel Messi dezvoltă o rețea de hoteluri boutique sub brandul MiM Hotels, oferind oaspeților experiențe de lux.",
+    "entities": [
+      "Lionel Messi"
+    ],
+    "icon": "building-bank",
     "processed_by": "gemini",
     "prompt_version": "v2-esenta",
     "featured": false
@@ -2262,6 +2823,26 @@
       "Europa League"
     ],
     "icon": "ball-football",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://bbc.co.uk/news/articles/c36dnz1zez5o?at_medium=RSS&at_campaign=rss",
+    "original_link": "https://www.bbc.co.uk/news/articles/c36dnz1zez5o?at_medium=RSS&at_campaign=rss",
+    "source": "bbc_europe",
+    "source_name": "BBC Europe",
+    "source_lang": "en",
+    "title": "Oficiali italieni, condamnați la închisoare pentru prăbușirea podului din Genova",
+    "category": "politic",
+    "published": "2026-07-16T17:22:31+00:00",
+    "model": "B",
+    "teaser": "Fostul șef al operatorului de autostrăzi din Italia, Giovanni Castellucci, a fost condamnat la 12 ani de închisoare pentru prăbușirea podului din Genova din 2018, care a ucis 43 de persoane.",
+    "entities": [
+      "Giovanni Castellucci",
+      "Genova"
+    ],
+    "icon": "gavel",
     "processed_by": "gemini",
     "prompt_version": "v2-esenta",
     "featured": false
@@ -24392,325 +24973,6 @@
       "Pentagon"
     ],
     "icon": "swords",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://libertatea.ro/sport/spania-belgia-live-text-scor-cine-transmite-la-tv-sfert-finala-campinatul-mondial-fotbal-2026-5811643",
-    "original_link": "https://www.libertatea.ro/sport/spania-belgia-live-text-scor-cine-transmite-la-tv-sfert-finala-campinatul-mondial-fotbal-2026-5811643",
-    "source": "libertatea",
-    "source_name": "Libertatea",
-    "source_lang": "ro",
-    "title": "Spania și Belgia se confruntă în sferturile Campionatului Mondial",
-    "category": "sport",
-    "published": "2026-07-10T17:23:00+00:00",
-    "model": "C",
-    "sources": [
-      {
-        "name": "Libertatea",
-        "url": "https://www.libertatea.ro/sport/spania-belgia-live-text-scor-cine-transmite-la-tv-sfert-finala-campinatul-mondial-fotbal-2026-5811643"
-      },
-      {
-        "name": "GSP",
-        "url": "https://www.gsp.ro/international/campionatul-mondial-de-fotbal-2026/live-spania-belgia-sferturile-campionatului-mondial-958946.html"
-      }
-    ],
-    "first_source": "Libertatea",
-    "synthesis": "Spania și Belgia se întâlnesc astăzi, de la ora 22:00, pe SoFi Stadium din Los Angeles, în sferturile de finală ale Campionatului Mondial. Meciul va fi transmis de Antena 1 și AntenaPLAY. Câștigătoarea va juca împotriva Franței în semifinale, după ce aceasta a eliminat Marocul cu 2-0.",
-    "entities": [
-      "Spania",
-      "Belgia",
-      "Campionatul Mondial",
-      "Franța"
-    ],
-    "icon": "ball-football",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://dw.com/en/uk-police-arrest-murder-suspect-in-ann-widdecombe-s-death/a-77910345?maca=en-rss-en-eu-2092-rdf",
-    "original_link": "https://www.dw.com/en/uk-police-arrest-murder-suspect-in-ann-widdecombe-s-death/a-77910345?maca=en-rss-en-eu-2092-rdf",
-    "source": "dw_europe",
-    "source_name": "DW Europe",
-    "source_lang": "en",
-    "title": "Poliția britanică a arestat un suspect în cazul morții lui Ann Widdecombe",
-    "category": "politic",
-    "published": "2026-07-10T17:18:00+00:00",
-    "model": "B",
-    "teaser": "Un bărbat de 26 de ani a fost arestat în sud-vestul Angliei, suspectat de uciderea politicianului Ann Widdecombe. Autoritățile nu consideră cazul ca fiind terorist sau politic.",
-    "entities": [
-      "Ann Widdecombe",
-      "Anglia"
-    ],
-    "icon": "gavel",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://digi24.ro/stiri/externe/un-fost-oficial-al-energoatom-a-fost-desemnat-suspect-in-cel-mai-mare-caz-de-coruptie-din-ucraina-de-la-inceputul-razboiului-3857397",
-    "original_link": "https://www.digi24.ro/stiri/externe/un-fost-oficial-al-energoatom-a-fost-desemnat-suspect-in-cel-mai-mare-caz-de-coruptie-din-ucraina-de-la-inceputul-razboiului-3857397",
-    "source": "extern",
-    "source_name": "Digi24 Extern",
-    "source_lang": "ro",
-    "title": "Fost oficial Energoatom, suspectat în cel mai mare caz de corupție din Ucraina",
-    "category": "economic",
-    "published": "2026-07-10T17:15:30+00:00",
-    "model": "B",
-    "teaser": "Un fost angajat al companiei nucleare ucrainene Energoatom a fost pus sub acuzare în cea mai amplă anchetă de corupție din timpul războiului, desfășurată de Biroul Național Anticorupție din Kiev.",
-    "entities": [
-      "Energoatom",
-      "Ucraina",
-      "NABU"
-    ],
-    "icon": "gavel",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://digi24.ro/stiri/externe/un-fost-oficial-al-energoatom-a-fost-desemnat-suspect-in-cel-mai-mare-caz-de-coruptie-din-ucraina-de-la-inceputul-razboiului-3857397",
-    "original_link": "https://www.digi24.ro/stiri/externe/un-fost-oficial-al-energoatom-a-fost-desemnat-suspect-in-cel-mai-mare-caz-de-coruptie-din-ucraina-de-la-inceputul-razboiului-3857397",
-    "source": "digi24",
-    "source_name": "Digi24",
-    "source_lang": "ro",
-    "title": "Fost oficial Energoatom, suspectat în cel mai mare caz de corupție din Ucraina",
-    "category": "economic",
-    "published": "2026-07-10T17:15:30+00:00",
-    "model": "B",
-    "teaser": "Un fost angajat al companiei nucleare ucrainene Energoatom a fost pus sub acuzare în cea mai amplă anchetă de corupție din timpul războiului, desfășurată de Biroul Național Anticorupție din Kiev.",
-    "entities": [
-      "Energoatom",
-      "Ucraina",
-      "NABU"
-    ],
-    "icon": "gavel",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://theguardian.com/business/2026/jul/10/high-court-rejects-most-of-dieselgate-claims-brought-by-16m-uk-car-owners",
-    "original_link": "https://www.theguardian.com/business/2026/jul/10/high-court-rejects-most-of-dieselgate-claims-brought-by-16m-uk-car-owners",
-    "source": "guardian_eu",
-    "source_name": "The Guardian",
-    "source_lang": "en",
-    "title": "Curtea respinge majoritatea cazurilor „dieselgate” din Marea Britanie",
-    "category": "economic",
-    "published": "2026-07-10T16:54:57+00:00",
-    "model": "B",
-    "teaser": "Producătorii auto au salutat o decizie a Curții Supreme care a respins majoritatea acuzațiilor din procesul „dieselgate” intentat de 1,6 milioane de proprietari de mașini din Marea Britanie.",
-    "entities": [
-      "Curtea Supremă",
-      "Nissan",
-      "Ford",
-      "Peugeot"
-    ],
-    "icon": "gavel",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://politico.eu/article/senior-democrat-rahm-emanuel-backs-donald-trump-call-for-more-european-defense-spending",
-    "original_link": "https://www.politico.eu/article/senior-democrat-rahm-emanuel-backs-donald-trump-call-for-more-european-defense-spending/?utm_source=RSS_Feed&utm_medium=RSS&utm_campaign=RSS_Syndication",
-    "source": "politico_eu",
-    "source_name": "Politico EU",
-    "source_lang": "en",
-    "title": "Democrat american susține creșterea cheltuielilor europene pentru apărare",
-    "category": "politic",
-    "published": "2026-07-10T16:50:43+00:00",
-    "model": "B",
-    "teaser": "Fostul primar al Chicago, Rahm Emanuel, afirmă că Europa este responsabilă pentru dependența sa față de America în materie de securitate.",
-    "entities": [
-      "Rahm Emanuel",
-      "Europa",
-      "America"
-    ],
-    "icon": "shield",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://digi24.ro/stiri/externe/sua/trump-spune-ca-a-lasat-instructiuni-in-cazul-in-care-iranul-va-reusi-sa-l-asasineze-sa-i-bombardeze-la-o-intensitate-nemaivazuta-3857295",
-    "original_link": "https://www.digi24.ro/stiri/externe/sua/trump-spune-ca-a-lasat-instructiuni-in-cazul-in-care-iranul-va-reusi-sa-l-asasineze-sa-i-bombardeze-la-o-intensitate-nemaivazuta-3857295",
-    "source": "extern",
-    "source_name": "Digi24 Extern",
-    "source_lang": "ro",
-    "title": "Trump a ordonat bombardarea Iranului dacă va fi asasinat",
-    "category": "politic",
-    "published": "2026-07-10T16:31:01+00:00",
-    "model": "C",
-    "sources": [
-      {
-        "name": "Digi24 Extern",
-        "url": "https://www.digi24.ro/stiri/externe/sua/trump-spune-ca-a-lasat-instructiuni-in-cazul-in-care-iranul-va-reusi-sa-l-asasineze-sa-i-bombardeze-la-o-intensitate-nemaivazuta-3857295"
-      },
-      {
-        "name": "HotNews",
-        "url": "https://hotnews.ro/trump-spune-ca-a-lasat-instructiuni-ca-iranul-sa-fie-bombardat-cum-nu-s-a-mai-vazut-niciodata-daca-va-fi-asasinat-2297446"
-      }
-    ],
-    "first_source": "Digi24 Extern",
-    "synthesis": "Președintele american Donald Trump a declarat că a lăsat instrucțiuni Pentagonului să bombardeze Iranul la o intensitate nemaivăzută, în cazul în care ar fi asasinat în urma unui complot iranian. Trump a menționat că se confruntă de mult timp cu această amenințare din partea Iranului.",
-    "entities": [
-      "Donald Trump",
-      "Iran",
-      "Pentagon"
-    ],
-    "icon": "swords",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://theguardian.com/world/2026/jul/10/unprecedented-deadly-wildfire-southern-spain-almeria-analysis",
-    "original_link": "https://www.theguardian.com/world/2026/jul/10/unprecedented-deadly-wildfire-southern-spain-almeria-analysis",
-    "source": "guardian_eu",
-    "source_name": "The Guardian",
-    "source_lang": "en",
-    "title": "Spania se confruntă cu incendii de vegetație devastatoare",
-    "category": "general",
-    "published": "2026-07-10T16:20:40+00:00",
-    "model": "B",
-    "teaser": "O combinație periculoasă de căldură extremă, vânt puternic și vegetație uscată a amplificat incendiile de vegetație din sudul Spaniei, soldate cu cel puțin 12 morți.",
-    "entities": [
-      "Spania"
-    ],
-    "icon": "flame",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://theguardian.com/world/2026/jul/10/berlin-mayor-abandons-reelection-campaign-after-tennis-gate-outcry",
-    "original_link": "https://www.theguardian.com/world/2026/jul/10/berlin-mayor-abandons-reelection-campaign-after-tennis-gate-outcry",
-    "source": "guardian_eu",
-    "source_name": "The Guardian",
-    "source_lang": "en",
-    "title": "Primarul Berlinului renunță la campania electorală după scandalul „tennis-gate”",
-    "category": "politic",
-    "published": "2026-07-10T16:10:20+00:00",
-    "model": "B",
-    "teaser": "Kai Wegner a admis o comunicare defectuoasă în gestionarea unei pene de curent majore, renunțând la candidatura pentru realegere în urma presiunilor politice.",
-    "entities": [
-      "Kai Wegner",
-      "Berlin"
-    ],
-    "icon": "writing",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://g4media.ro/netflix-ar-putea-lansa-canale-permanente-pentru-filme-si-seriale.html",
-    "original_link": "https://www.g4media.ro/netflix-ar-putea-lansa-canale-permanente-pentru-filme-si-seriale.html",
-    "source": "g4media",
-    "source_name": "G4Media",
-    "source_lang": "ro",
-    "title": "Netflix testează canale TV cu difuzare continuă",
-    "category": "tech",
-    "published": "2026-07-10T16:07:48+00:00",
-    "model": "B",
-    "teaser": "Platforma de streaming Netflix ia în considerare lansarea unor canale TV cu program non-stop, similare cu Pluto TV și Tubi, pentru a difuza filme și seriale în mod continuu.",
-    "entities": [
-      "Netflix",
-      "The Wall Street Journal",
-      "The Verge",
-      "Pluto TV",
-      "Tubi"
-    ],
-    "icon": "device-mobile",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://dw.com/en/trump-signals-support-for-patriot-production-in-ukraine/a-77909681?maca=en-rss-en-eu-2092-rdf",
-    "original_link": "https://www.dw.com/en/trump-signals-support-for-patriot-production-in-ukraine/a-77909681?maca=en-rss-en-eu-2092-rdf",
-    "source": "dw_europe",
-    "source_name": "DW Europe",
-    "source_lang": "en",
-    "title": "Trump susține producția de rachete Patriot în Ucraina",
-    "category": "politic",
-    "published": "2026-07-10T16:04:00+00:00",
-    "model": "B",
-    "teaser": "Președintele american Donald Trump a sugerat posibilitatea ca Ucraina să producă rachete Patriot. Experții salută gestul, dar avertizează că producția ar putea dura ani.",
-    "entities": [
-      "Donald Trump",
-      "Ucraina",
-      "Patriot"
-    ],
-    "icon": "rocket",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://g4media.ro/clasamentul-worlds-50-best-restaurants-renunta-la-abu-dhabi-in-favoarea-orasului-lima.html",
-    "original_link": "https://www.g4media.ro/clasamentul-worlds-50-best-restaurants-renunta-la-abu-dhabi-in-favoarea-orasului-lima.html",
-    "source": "g4media",
-    "source_name": "G4Media",
-    "source_lang": "ro",
-    "title": "Lima înlocuiește Abu Dhabi ca gazdă pentru „World’s 50 Best Restaurants”",
-    "category": "general",
-    "published": "2026-07-10T16:01:25+00:00",
-    "model": "B",
-    "teaser": "Din cauza situației internaționale, Lima, Peru, va găzdui ceremonia din 2026 a clasamentului „World’s 50 Best Restaurants”, înlocuind Abu Dhabi, Emiratele Arabe Unite.",
-    "entities": [
-      "Lima",
-      "Abu Dhabi",
-      "World’s 50 Best Restaurants",
-      "Peru",
-      "Emiratele Arabe Unite"
-    ],
-    "icon": "podium",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://theguardian.com/world/2026/jul/10/test-runs-shock-absorbing-cage-how-bayeux-tapestry-transported-to-uk",
-    "original_link": "https://www.theguardian.com/world/2026/jul/10/test-runs-shock-absorbing-cage-how-bayeux-tapestry-transported-to-uk",
-    "source": "guardian_eu",
-    "source_name": "The Guardian",
-    "source_lang": "en",
-    "title": "Tapiseria Bayeux a fost mutată în Marea Britanie cu protecție specială",
-    "category": "general",
-    "published": "2026-07-10T15:59:55+00:00",
-    "model": "B",
-    "teaser": "Tapiseria medievală Bayeux a ajuns la British Museum, unde va fi expusă în condiții stricte de securitate, după ce a fost transportată peste Canalul Mânecii pe timp de noapte.",
-    "entities": [
-      "Bayeux",
-      "British Museum"
-    ],
-    "icon": "building-monument",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://g4media.ro/tim-merlier-victorie-la-sprint-in-etapa-a-7-a-din-turul-frantei-pogacar-ramane-in-galben-fara-emotii.html",
-    "original_link": "https://www.g4media.ro/tim-merlier-victorie-la-sprint-in-etapa-a-7-a-din-turul-frantei-pogacar-ramane-in-galben-fara-emotii.html",
-    "source": "g4media",
-    "source_name": "G4Media",
-    "source_lang": "ro",
-    "title": "Tim Merlier câștigă etapa a 7-a din Turul Franței",
-    "category": "sport",
-    "published": "2026-07-10T15:45:16+00:00",
-    "model": "B",
-    "teaser": "Ciclistul belgian Tim Merlier a triumfat la sprint în etapa a 7-a din Turul Franței, desfășurată pe ruta Hagetmau – Bourdeaux, consolidându-și poziția în competiție.",
-    "entities": [
-      "Tim Merlier",
-      "Turul Franței",
-      "Soudal Quick-Step",
-      "Soren Waerenskjold",
-      "Biniam Girmay"
-    ],
-    "icon": "ball-football",
     "processed_by": "gemini",
     "prompt_version": "v2-esenta",
     "featured": false
