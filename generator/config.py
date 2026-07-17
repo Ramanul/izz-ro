@@ -2,8 +2,8 @@ import os
 APP_DIR = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.dirname(APP_DIR)
 
-SITE = {"name": "IZZ.ro", "tagline": "Informația Zilei",
-                "descriptor": "Portalul știrilor tale",
+SITE = {"name": "IZZ.ro", "tagline": "Portalul știrilor tale",
+                "descriptor": "Informația Zilei",
                 "url": "https://izz.ro", "lang": "ro", "contact": "contact@izz.ro"}
 
 # Surse = DOAR publicații cu RSS oficial. Agențiile de presă sunt EXCLUSE (conținut licențiat).
