@@ -24,26 +24,17 @@ SOURCES = {
             "scena9":     {"name": "Scena 9",         "url": "https://www.scena9.ro/feed",              "category": "cultura"},
             "bookhub":    {"name": "Bookhub",         "url": "https://bookhub.ro/feed",                 "category": "cultura"},
             "nwradu":       {"name": "NwRadu",         "url": "https://www.nwradu.ro/feed/",           "category": "discounturi"},
-    # local — surse OFICIALE gratuite (primarii resedinta de judet + consilii judetene) cu RSS
-    # (cerinta owner 2026-07-17: informatii de la primarii si judete). CANDIDATI pana la
-    # validarea cu feedcheck.yml in CI (sandbox-ul n-are internet); cei morti se taie inainte
-    # de merge. Acoperire completa (toate primariile din tara) = faza "Monitor Local" din roadmap.
-            "pr_timisoara": {"name": "Primăria Timișoara",  "url": "https://www.primariatm.ro/feed/",        "category": "local"},
-            "pr_cluj":      {"name": "Primăria Cluj-Napoca","url": "https://primariaclujnapoca.ro/feed/",    "category": "local"},
-            "pr_albaiulia": {"name": "Primăria Alba Iulia", "url": "https://www.apulum.ro/feed/",            "category": "local"},
-            "pr_sibiu":     {"name": "Primăria Sibiu",      "url": "https://www.sibiu.ro/feed",              "category": "local"},
-            "pr_oradea":    {"name": "Primăria Oradea",     "url": "https://www.oradea.ro/rss",              "category": "local"},
-            "pr_craiova":   {"name": "Primăria Craiova",    "url": "https://www.primariacraiova.ro/feed/",   "category": "local"},
-            "pr_constanta": {"name": "Primăria Constanța",  "url": "https://www.primaria-constanta.ro/feed", "category": "local"},
+    # local — surse OFICIALE gratuite (primarii + consilii judetene) cu RSS
+    # (cerinta owner 2026-07-17: informatii de la primarii si judete). 16 candidati verificati
+    # cu feedcheck.yml in CI (run 29588587064, 2026-07-17): doar cei 3 de mai jos au feed VIU.
+    # Cazuti la verificare (nu re-adauga fara re-test): primariatm/apulum/sibiu/primariacraiova/
+    # baiamare/primariagalati/cjmaramures = 404, cjalba = 403, icc.ro = timeout, cjsuceava =
+    # unreachable, oradea/rss = 0 intrari; primariaclujnapoca (2024) si primaria-constanta (2022)
+    # raspund dar sunt inghetate. Majoritatea primariilor NU au RSS -> acoperirea "toate
+    # primariile din tara" cere faza "Monitor Local" (html_scraper pe paginile de anunturi).
             "pr_buzau":     {"name": "Primăria Buzău",      "url": "https://primariabuzau.ro/feed/",         "category": "local"},
-            "pr_baiamare":  {"name": "Primăria Baia Mare",  "url": "https://www.baiamare.ro/feed",           "category": "local"},
-            "pr_galati":    {"name": "Primăria Galați",     "url": "https://www.primariagalati.ro/feed",     "category": "local"},
             "cj_cluj":      {"name": "CJ Cluj",             "url": "https://www.cjcluj.ro/feed/",            "category": "local"},
             "cj_timis":     {"name": "CJ Timiș",            "url": "https://www.cjtimis.ro/feed",            "category": "local"},
-            "cj_alba":      {"name": "CJ Alba",             "url": "https://www.cjalba.ro/feed/",            "category": "local"},
-            "cj_iasi":      {"name": "CJ Iași",             "url": "https://www.icc.ro/feed/",               "category": "local"},
-            "cj_suceava":   {"name": "CJ Suceava",          "url": "https://www.cjsuceava.ro/feed",          "category": "local"},
-            "cj_maramures": {"name": "CJ Maramureș",        "url": "https://www.cjmaramures.ro/feed/",       "category": "local"},
     # extern — Europa/UE/vecinatate (en, AI traduce) + surse ro
             "bbc_europe": {"name": "BBC Europe",    "url": "https://feeds.bbci.co.uk/news/world/europe/rss.xml", "category": "extern", "lang": "en"},
             "guardian_eu":{"name": "The Guardian",  "url": "https://www.theguardian.com/world/europe-news/rss",  "category": "extern", "lang": "en"},
