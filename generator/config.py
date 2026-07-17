@@ -13,7 +13,9 @@ SOURCES = {
     # Feed-urile sunt candidati validati cu tools/feed_check.py in CI (sandbox-ul n-are internet);
     # cele care nu raspund / nu-s RSS se taie inainte de merge.
             "unica":      {"name": "Unica",            "url": "https://www.unica.ro/feed",             "category": "lifestyle"},
-            "csid":       {"name": "CSÎD",             "url": "https://www.csid.ro/feed",              "category": "lifestyle"},
+            "csid":       {"name": "CSÎD",             "url": "https://www.csid.ro/feed",              "category": "sanatate"},
+            # sanatate — surse dedicate (scindate din lifestyle 2026-07-17)
+            "sfatulparintilor": {"name": "Sfatul Părinților", "url": "https://www.sfatulparintilor.ro/feed", "category": "sanatate"},
             "urban":      {"name": "Urban.ro",         "url": "https://urban.ro/feed",                 "category": "lifestyle"},
             "elle":       {"name": "Elle România",     "url": "https://www.elle.ro/feed",              "category": "lifestyle"},
             "avantaje":   {"name": "Avantaje",         "url": "https://www.avantaje.ro/feed",          "category": "lifestyle"},
@@ -52,7 +54,7 @@ SOURCES = {
 AGENCY_BLOCKLIST = ["agerpres", "mediafax", "reuters", "afp.com", "apnews", "ap.org"]
 
 CATEGORIES = ["general", "politic", "economic", "extern", "tech", "sport",
-              "auto", "lifestyle", "fashion", "discounturi"]
+              "auto", "sanatate", "lifestyle", "discounturi"]
 
 # Model B+C
 PROMPT_VERSION = "v2-esenta"  # versiunea regulilor AI; la schimbare, articolele vechi se reprocesează
