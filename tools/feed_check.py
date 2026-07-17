@@ -28,8 +28,16 @@ def main() -> int:
     for key, src in config.SOURCES.items():
         if only and src["category"] not in only:
             continue
-        if src.get("type") == "html_scraper":
-            print(f"  SKIP {key:12s} [{src['category']}] html_scraper (verificat de fetch)")
+        if src.get("type") in ("html_scraper", "html_list"):
+            # sursele fara RSS: rulam scraper-ul real si raportam cate articole extrage
+            from generator.fetch import _fetch_one  # noqa: E402
+            arts, err = _fetch_one(key, src)
+            if err or not arts:
+                print(f"  DEAD {key:12s} [{src['category']}] {src['type']} -> {err or '0 articole'}")
+                bad += 1
+            else:
+                newest = max((a.get("published", "") for a in arts), default="")[:10]
+                print(f"  ok   {key:12s} [{src['category']}] {src['type']}, {len(arts)} articole, cea mai noua: {newest or '-'}")
             continue
         try:
             req = urllib.request.Request(src["url"], headers={"User-Agent": USER_AGENT})

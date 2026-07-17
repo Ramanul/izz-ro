@@ -1,0 +1,28 @@
+name: scrape-probe
+
+# Monitor Local: descopera selectoarele (tag.class) pentru o pagina de anunturi de
+# primarie, ca sa poata fi adaugata ca sursa html_list. Rulat manual, cu URL-ul ca input.
+# Runnerii au internet (sandbox-ul de dev nu). Nu scrie nimic, nu consuma AI quota.
+
+on:
+  workflow_dispatch:
+    inputs:
+      url:
+        description: "URL-ul paginii de anunturi (ex. https://primaria-x.ro/anunturi)"
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: "pip"
+      - run: pip install -r requirements.txt
+      - run: python tools/scrape_probe.py "${{ inputs.url }}"
