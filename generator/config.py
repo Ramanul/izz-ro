@@ -15,8 +15,8 @@ SOURCES = {
             "unica":      {"name": "Unica",            "url": "https://www.unica.ro/feed",             "category": "lifestyle"},
             "csid":       {"name": "CSÎD",             "url": "https://www.csid.ro/feed",              "category": "lifestyle"},
             "urban":      {"name": "Urban.ro",         "url": "https://urban.ro/feed",                 "category": "lifestyle"},
-            "elle":       {"name": "Elle România",     "url": "https://www.elle.ro/feed",              "category": "fashion"},
-            "avantaje":   {"name": "Avantaje",         "url": "https://www.avantaje.ro/feed",          "category": "fashion"},
+            "elle":       {"name": "Elle România",     "url": "https://www.elle.ro/feed",              "category": "lifestyle"},
+            "avantaje":   {"name": "Avantaje",         "url": "https://www.avantaje.ro/feed",          "category": "lifestyle"},
             "nwradu":       {"name": "NwRadu",         "url": "https://www.nwradu.ro/feed/",           "category": "discounturi"},
     # extern — Europa/UE/vecinatate (en, AI traduce) + surse ro
             "bbc_europe": {"name": "BBC Europe",    "url": "https://feeds.bbci.co.uk/news/world/europe/rss.xml", "category": "extern", "lang": "en"},

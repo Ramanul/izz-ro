@@ -18,6 +18,14 @@ _STOPWORDS_RO = {
     "se", "sa", "isi", "lui", "ei", "lor", "cel", "cea", "cei", "cele", "acest",
     "acesta", "aceasta", "acestei", "acestui", "dupa", "fara", "mai", "mult", "foarte",
     "care", "cand", "cum", "unde", "nu", "da", "the", "a", "an", "of", "to", "in",
+    # temporal: false-pozitive la _dedup (expresii de timp generice)
+    "pana", "sfarsitul", "inceputul", "luna", "lunii", "anul", "anului", "saptamana",
+    "saptamanii", "astazi", "maine", "ieri", "data", "ora", "orei", "zile", "zilei",
+    # luni (creeaza falsa similaritate intre stiri diferite)
+    "ianuarie", "februarie", "martie", "aprilie", "mai", "iunie", "iulie",
+    "august", "septembrie", "octombrie", "noiembrie", "decembrie",
+    # cantitati generice
+    "milioane", "miliarde", "mii", "sute", "aproximativ", "circa",
 }
 
 
