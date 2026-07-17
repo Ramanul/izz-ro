@@ -55,6 +55,7 @@
       <a href="{{ base }}/instrumente/">instrumente</a>
       <a href="{{ base }}/calendar/">calendar</a>
       <a href="{{ base }}/cauta/">caută</a>
+      <button id="izz-install-btn" class="izz-install-btn" type="button" hidden title="Instalează aplicația pe acest dispozitiv" aria-label="Instalează aplicația">Instalează aplicația</button>
       <button class="theme-toggle" title="Mod întunecat" aria-label="Comută tema" onclick="var h=document.documentElement,cur=h.getAttribute('data-theme'),next=cur==='dark'?'':'dark';if(next)h.setAttribute('data-theme',next);else h.removeAttribute('data-theme');localStorage.setItem('izz_theme',next||'');">☾</button>
     </nav>
   </header>
@@ -78,5 +79,23 @@
   </footer>
   <button class="back-to-top" title="Sus" aria-label="Înapoi sus" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
   <script>var bt=document.querySelector('.back-to-top');window.addEventListener('scroll',function(){bt.classList.toggle('visible',window.scrollY>300)});</script>
+  <script>
+    (function () {
+      var btn = document.getElementById('izz-install-btn');
+      if (!btn) return;
+      var deferredPrompt = null;
+      window.addEventListener('beforeinstallprompt', function (e) {
+        e.preventDefault();
+        deferredPrompt = e;
+        btn.hidden = false;
+      });
+      btn.addEventListener('click', function () {
+        if (!deferredPrompt) return;
+        deferredPrompt.prompt();
+        deferredPrompt.userChoice.finally(function () { deferredPrompt = null; btn.hidden = true; });
+      });
+      window.addEventListener('appinstalled', function () { btn.hidden = true; deferredPrompt = null; });
+    })();
+  </script>
 </body>
 </html>
