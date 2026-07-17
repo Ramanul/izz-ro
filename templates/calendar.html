@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% block title %}Calendar — {{ site.name }}{% endblock %}
+{% block description %}Termene importante extrase automat din ghiduri: salariu minim, pensii, ANAF, alocații. Intrări în vigoare, termene de depunere, date școlare.{% endblock %}
+{% block content %}
+<nav class="breadcrumbs" aria-label="Breadcrumb">
+  <a href="{{ base }}/">{{ site.name }}</a>
+  <span class="sep">/</span>
+  <span>Calendar</span>
+</nav>
+
+<h1 class="section-title">📅 Ce urmează</h1>
+<p class="utility-index-intro">Termene generate automat din ghiduri. Fără muncă editorială: când o entitate se actualizează, calendarul se regenerează singur.</p>
+
+{% set now_ts = now_timestamp %}
+
+{% set upcoming = termene | selectattr("timestamp", "ge", now_ts) | list | sort(attribute="timestamp") %}
+{% if upcoming %}
+  {% for t in upcoming %}
+    {% if loop.index == 1 or t.timestamp != upcoming[loop.index0 - 1].timestamp %}
+      {% if loop.index0 > 0 and upcoming[loop.index0 - 1].data[:7] != t.data[:7] %}
+      </ul></section>
+      {% endif %}
+      {% if loop.index0 == 0 or upcoming[loop.index0 - 1].data[:7] != t.data[:7] %}
+      <section class="utility-section">
+        <h2>{{ t.data[:7] | human_month }}</h2>
+        <ul class="timeline">
+      {% endif %}
+    {% endif %}
+    <li>
+      <time datetime="{{ t.data }}">{{ t.data }}</time>
+      <strong>{{ t.eveniment }}</strong>
+      {% if t.ent_nume %}<span class="related-meta">→ <a href="{{ base }}/ghiduri/{{ t.ent_id }}/">{{ t.ent_nume }}</a></span>{% endif %}
+    </li>
+  {% endfor %}
+  </ul></section>
+{% else %}
+  <p class="empty">Niciun termen programat momentan.</p>
+{% endif %}
+
+{% set past = termene | selectattr("timestamp", "lt", now_ts) | list | sort(attribute="timestamp", reverse=True) %}
+{% if past %}
+<section class="utility-section">
+  <h2>Termene recente</h2>
+  <ul class="timeline">
+    {% for t in past[:10] %}
+    <li>
+      <time datetime="{{ t.data }}">{{ t.data }}</time>
+      {{ t.eveniment }}
+      {% if t.ent_nume %}<span class="related-meta">→ <a href="{{ base }}/ghiduri/{{ t.ent_id }}/">{{ t.ent_nume }}</a></span>{% endif %}
+    </li>
+    {% endfor %}
+  </ul>
+</section>
+{% endif %}
+{% endblock %}

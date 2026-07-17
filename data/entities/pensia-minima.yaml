@@ -1,0 +1,46 @@
+# Entitate: Pensia minimă garantată (indemnizația socială)
+# ⚠️ Toate valorile de mai jos sunt placeholders — de verificat pe surse oficiale înainte de publicare.
+
+id: pensia-minima
+nume: "Pensia minimă garantată"
+tip: valoare_monetara
+categorie_ghid: bani
+categorie_stiri: economic
+
+valoare_curenta:
+  brut: 1281
+  moneda: RON
+  in_vigoare_de: "2026-01-01"
+  act_normativ: "Legea 360/2023, actualizată prin OUG 156/2024"
+  sursa_url: "https://cnpp.ro/"
+  descriere_lunga: "Indemnizația socială pentru pensionari — statul completează pensia calculată până la acest prag, cu condiția realizării stagiului minim de cotizare de 15 ani."
+
+istoric:
+  - brut: 1281
+    in_vigoare_de: "2026-01-01"
+    act_normativ: "Legea 360/2023"
+  - brut: 1106
+    in_vigoare_de: "2024-01-01"
+    act_normativ: "Legea 360/2023"
+  - brut: 1000
+    in_vigoare_de: "2023-01-01"
+    act_normativ: "OUG 168/2022"
+
+termene:
+  - data: "2026-09-01"
+    eveniment: "Termen recalculare pensii (Legea 360/2023)"
+
+faq:
+  - q: "Care e diferența între pensia minimă și indemnizația socială?"
+    a: "Sunt același lucru în practică. Statul completează pensia calculată până la pragul minim garantat."
+  - q: "Ce se întâmplă dacă nu am 15 ani de cotizare?"
+    a: "Nu beneficiezi de pensia minimă. Primești pensia calculată pe contributivitate, oricât de mică ar fi."
+
+relatii: {}
+
+ultima_verificare: "2026-01-01"
+
+monitorizare:
+  surse:
+    - url: "https://cnpp.ro/"
+      tip: html

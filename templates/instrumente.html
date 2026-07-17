@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block title %}Instrumente — {{ site.name }}{% endblock %}
+{% block description %}Instrumente și calculatoare: salariu net, TVA, dobândă. Datele se actualizează automat din ghiduri.{% endblock %}
+{% block content %}
+<nav class="breadcrumbs" aria-label="Breadcrumb">
+  <a href="{{ base }}/">{{ site.name }}</a>
+  <span class="sep">/</span>
+  <span>Instrumente</span>
+</nav>
+
+<h1 class="section-title">🧮 Instrumente</h1>
+<p class="utility-index-intro">Calculatoare și convertoare care folosesc datele actualizate automat din ghiduri. Nicio valoare nu e hardcodată — când se schimbă salariul minim, toate calculatoarele se actualizează singure.</p>
+
+<div class="utility-grid">
+  {% for tool in tools %}
+  <a class="utility-card" href="{{ base }}{{ tool.url }}">
+    <span class="utility-card-icon">{{ tool.icon }}</span>
+    <span class="utility-card-title">{{ tool.title }}</span>
+    <span class="utility-card-desc">{{ tool.desc }}</span>
+  </a>
+  {% endfor %}
+</div>
+{% endblock %}

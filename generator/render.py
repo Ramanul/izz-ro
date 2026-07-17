@@ -377,6 +377,14 @@ def build(articles: list, mod: dict | None = None) -> None:
         shutil.rmtree(p) if os.path.isdir(p) else os.remove(p)
     shutil.copytree(STATIC_DIR, os.path.join(OUT_DIR, "static"))
 
+    # Ruleaza build_entities.py inainte de randare (valideaza YAML -> entities.json)
+    try:
+        import subprocess
+        subprocess.run(["python", os.path.join(ROOT, "scripts", "build_entities.py")],
+                       cwd=ROOT, check=True)
+    except Exception as e:
+        logging.warning("build_entities a eșuat (non-fatal): %s", e)
+
     by_date = sorted(articles, key=lambda a: a.get("published") or "", reverse=True)
 
     # coperti: share (og, cu titlu) + arta fara text pentru site -- generate O DATA,
@@ -548,7 +556,7 @@ def build(articles: list, mod: dict | None = None) -> None:
                        article_jsonld=jsonld, breadcrumb_jsonld=breadcrumb_jsonld)))
 
     _render_legal(env)
-    _render_utilities(env, by_date)
+    _render_ghiduri(env, by_date)
     _write(os.path.join(OUT_DIR, "404.html"),
            env.get_template("category.html").render(**_base_ctx(
                "/404.html", category="Pagina negăsită", articles=[])))
@@ -595,6 +603,124 @@ def _render_md_dir(env: Environment, src_dir: str, url_prefix: str) -> None:
             if url_prefix.strip("/") else os.path.join(OUT_DIR, name, "index.html")
         _write(out, tpl.render(**_base_ctx(f"{url_prefix}/{name}/".replace("//", "/"),
                                            page_title=title, body_html=html, page_heading=title)))
+
+
+def _render_ghiduri(env: Environment, articles: list) -> None:
+    """Fazele 1-2: Ghiduri din entități YAML + instrumente + calendar.
+    Datele stau în data/entities/*.yaml — o singură sursă de adevăr.
+    build_entities.py: validează YAML → emite output/data/entities.json."""
+    import json as _json
+    from datetime import datetime as _dt
+
+    entities_json = os.path.join(OUT_DIR, "data", "entities.json")
+    if not os.path.exists(entities_json):
+        return
+    with open(entities_json, "r", encoding="utf-8") as fh:
+        edata = _json.load(fh)
+    entities = edata.get("entity_kwargs", {})
+    categorii = edata.get("categorii_ghid", {})
+    if not entities:
+        return
+
+    def _fmt_int(v):
+        if isinstance(v, (int, float)):
+            return f"{v:,}".replace(",", ".")
+        return v
+    def _domain(url):
+        return re.sub(r"^https?://(?:www\.)?", "", (url or "")).rstrip("/")
+    env.filters["format_int"] = _fmt_int
+    env.filters["domain_from_url"] = _domain
+
+    ghid_tpl = env.get_template("ghid.html")
+    ghiduri_tpl = env.get_template("ghiduri.html")
+
+    categorii_icon = {
+        "bani": "💰", "acte": "📄", "auto": "🚗",
+        "locuinte": "🏠", "educatie": "🎓", "sanatate": "🩺",
+    }
+
+    entities_by_cat = {}
+    for eid, ent in entities.items():
+        cat = ent.get("categorie_ghid", "")
+        entities_by_cat.setdefault(cat, []).append({"id": eid, **ent})
+
+    for eid, ent in entities.items():
+        cat_stiri = ent.get("categorie_stiri", "")
+        related = [a for a in articles if a.get("category") == cat_stiri][:5]
+        faq_jsonld = {
+            "@context": "https://schema.org", "@type": "FAQPage",
+            "mainEntity": [
+                {"@type": "Question", "name": item["q"],
+                 "acceptedAnswer": {"@type": "Answer", "text": item["a"]}}
+                for item in (ent.get("faq") or [])
+            ]
+        }
+        breadcrumb_jsonld = {
+            "@context": "https://schema.org", "@type": "BreadcrumbList",
+            "itemListElement": [
+                {"@type": "ListItem", "position": 1, "name": config.SITE["name"], "item": config.SITE["url"] + "/"},
+                {"@type": "ListItem", "position": 2, "name": "Ghiduri", "item": config.SITE["url"] + "/ghiduri/"},
+                {"@type": "ListItem", "position": 3, "name": ent.get("nume", eid)},
+            ]
+        }
+        calculator_html = ""
+        if ent.get("relatii", {}).get("calculator"):
+            calculator_html = _render_calc_salariu(ent)
+        _write(os.path.join(OUT_DIR, "ghiduri", eid, "index.html"),
+               ghid_tpl.render(**_base_ctx(
+                   f"/ghiduri/{eid}/", ent=ent, categorii=categorii,
+                   categorii_icon=categorii_icon, related_news=related,
+                   faq_jsonld=faq_jsonld, breadcrumb_jsonld=breadcrumb_jsonld,
+                   calculator_html=calculator_html, active_cat=None)))
+
+    _write(os.path.join(OUT_DIR, "ghiduri", "index.html"),
+           ghiduri_tpl.render(**_base_ctx(
+               "/ghiduri/", categorii=categorii, categorii_icon=categorii_icon,
+               entities_by_cat=entities_by_cat)))
+
+    # Instrumente
+    tools = [
+        {"url": "/instrumente/calculator-salariu/", "icon": "🧮",
+         "title": "Calculator salariu net", "desc": "Calculează salariul net în funcție de brut. Datele se actualizează automat."},
+    ]
+    instr_tpl = env.get_template("instrumente.html")
+    _write(os.path.join(OUT_DIR, "instrumente", "index.html"),
+           instr_tpl.render(**_base_ctx("/instrumente/", tools=tools)))
+    calc_tpl = env.get_template("calculator.html")
+    _write(os.path.join(OUT_DIR, "instrumente", "calculator-salariu", "index.html"),
+           calc_tpl.render(**_base_ctx("/instrumente/calculator-salariu/")))
+
+    # Calendar din termenele entităților
+    termene = []
+    for eid, ent in entities.items():
+        for t in (ent.get("termene") or []):
+            try:
+                ts = _dt.fromisoformat(t["data"]).timestamp()
+            except (ValueError, TypeError):
+                ts = 0
+            termene.append({
+                "data": t.get("data", ""), "eveniment": t.get("eveniment", ""),
+                "timestamp": ts, "ent_id": eid, "ent_nume": ent.get("nume", ""),
+            })
+    _RO_MONTHS_LONG = ["", "ianuarie", "februarie", "martie", "aprilie", "mai", "iunie",
+                       "iulie", "august", "septembrie", "octombrie", "noiembrie", "decembrie"]
+    def _human_month(ym: str) -> str:
+        try:
+            y, m = ym.split("-")
+            return f"{_RO_MONTHS_LONG[int(m)]} {y}"
+        except (ValueError, IndexError):
+            return ym
+    env.filters["human_month"] = _human_month
+    cal_tpl = env.get_template("calendar.html")
+    _write(os.path.join(OUT_DIR, "calendar", "index.html"),
+           cal_tpl.render(**_base_ctx(
+               "/calendar/", termene=termene,
+               now_timestamp=_dt.now().timestamp())))
+
+
+def _render_calc_salariu(ent: dict) -> str:
+    brut = ent.get("valoare_curenta", {}).get("brut", 4050)
+    return f"""\n    <h2>🧮 Calculator salariu net</h2>\n    <div class="calculator">\n      <div class="calc-row">\n        <label for="calc-brut">Salariu brut (lei)</label>\n        <div style="display:flex;gap:8px;align-items:center">\n          <input type="number" id="calc-brut" value="{brut}" min="0" step="100" oninput="calcSalariu()">\n          <button type="button" class="btn-preset" onclick="setBrut({brut})">Salariu minim</button>\n          <button type="button" class="btn-preset" onclick="setBrut(5000)">5.000</button>\n          <button type="button" class="btn-preset" onclick="setBrut(10000)">10.000</button>\n        </div>\n      </div>\n      <div class="calc-results" id="calc-results"></div>\n    </div>\n    <p class="calc-note">*Calcul estimativ pentru un angajat fără persoane în întreținere. Include deducerea personală de bază (20% × salariul minim brut). Nu include contribuția la Pilonul II de pensii (3,75% din CAS, opțional).</p>\n    <script>\n    var SM={brut};\n    function setBrut(v){{document.getElementById('calc-brut').value=v;calcSalariu()}}\n    function calcSalariu(){{\n      var b=parseFloat(document.getElementById('calc-brut').value)||0;\n      var cas=Math.round(b*.25),cass=Math.round(b*.1),ded=Math.round(SM*.2);\n      var baza=Math.max(0,b-cas-cass-ded),imp=Math.round(baza*.1),net=b-cas-cass-imp;\n      document.getElementById('calc-results').innerHTML=\n        '<div class="calc-item"><span class="calc-label">CAS (25%)</span><span class="calc-val">-'+cas+' lei</span></div>'\n        +'<div class="calc-item"><span class="calc-label">CASS (10%)</span><span class="calc-val">-'+cass+' lei</span></div>'\n        +'<div class="calc-item"><span class="calc-label">Deducere personală</span><span class="calc-val">'+ded+' lei</span></div>'\n        +'<div class="calc-item"><span class="calc-label">Bază impozabilă</span><span class="calc-val">'+baza+' lei</span></div>'\n        +'<div class="calc-item"><span class="calc-label">Impozit (10%)</span><span class="calc-val">-'+imp+' lei</span></div>'\n        +'<div class="calc-item calc-total"><span class="calc-label">SALARIU NET</span><span class="calc-val">'+net+' lei</span></div>'}}\n    calcSalariu();\n    </script>"""
 
 
 def _render_utilities(env: Environment, articles: list) -> None:

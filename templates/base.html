@@ -51,7 +51,9 @@
     </a>
     <nav class="nav">
       {% for cat in categories %}<a href="{{ base }}/{{ cat }}/"{% if cat == active_cat %} class="active"{% endif %}>{{ cat }}</a>{% endfor %}
-      <a href="{{ base }}/utile/">utile</a>
+      <a href="{{ base }}/ghiduri/">ghiduri</a>
+      <a href="{{ base }}/instrumente/">instrumente</a>
+      <a href="{{ base }}/calendar/">calendar</a>
       <a href="{{ base }}/cauta/">caută</a>
       <button class="theme-toggle" title="Mod întunecat" aria-label="Comută tema" onclick="var h=document.documentElement,cur=h.getAttribute('data-theme'),next=cur==='dark'?'':'dark';if(next)h.setAttribute('data-theme',next);else h.removeAttribute('data-theme');localStorage.setItem('izz_theme',next||'');">☾</button>
     </nav>

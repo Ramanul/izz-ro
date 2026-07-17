@@ -585,3 +585,7 @@ picture { display: contents; }
 .related-news-list li:first-child { border-top: none; }
 .related-news-list a { font-family: var(--font-display); font-weight: 700; color: var(--ink); font-size: var(--fs-base); }
 .related-news-list a:hover { color: var(--gold-strong); }
+.utility-value-sec { font-family: var(--font-display); font-size: var(--fs-lg); font-weight: 700; color: var(--ink); margin: var(--s-5) 0; }
+.utility-note { font-size: var(--fs-xs); color: var(--ink-2); margin: var(--s-5) 0 0; }
+.btn-preset { font-family: var(--font-mono); font-size: var(--fs-eyebrow); padding: 4px 10px; border: 1px solid var(--line-strong); border-radius: var(--radius); background: var(--paper); cursor: pointer; color: var(--ink-2); }
+.btn-preset:hover { background: var(--gold); color: #fff; border-color: var(--gold); }

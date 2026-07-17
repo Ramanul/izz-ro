@@ -1,0 +1,50 @@
+# Entitate: Alocația de stat pentru copii
+# ⚠️ Toate valorile de mai jos sunt placeholders — de verificat pe surse oficiale înainte de publicare.
+
+id: alocatia-copii
+nume: "Alocația de stat pentru copii"
+tip: valoare_monetara
+categorie_ghid: bani
+categorie_stiri: general
+
+valoare_curenta:
+  brut: 794
+  moneda: RON
+  in_vigoare_de: "2025-01-01"
+  act_normativ: "Legea 61/1993, actualizată prin OUG 126/2024"
+  sursa_url: "https://mmuncii.ro/"
+  descriere_lunga: "Alocația se acordă tuturor copiilor cu domiciliul în România, de la naștere până la 18 ani, fără condiții de venit. Valoarea pentru copiii 0-2 ani și cei cu handicap: 1.019 lei/lună."
+  valoare_secundara: 1019
+  valoare_secundara_label: "lei/lună pentru copii 0-2 ani sau cu handicap"
+
+istoric:
+  - brut: 794
+    in_vigoare_de: "2025-01-01"
+    act_normativ: "OUG 126/2024"
+  - brut: 600
+    in_vigoare_de: "2023-01-01"
+    act_normativ: "OUG 126/2024"
+  - brut: 243
+    in_vigoare_de: "2022-01-01"
+    act_normativ: "Legea 61/1993"
+
+termene:
+  - data: "2027-01-01"
+    eveniment: "Indexare anuală cu rata inflației"
+
+faq:
+  - q: "Se cumulează alocația cu alte ajutoare?"
+    a: "Da. Alocația este independentă de venitul minim de incluziune sau indemnizația de creștere a copilului."
+  - q: "Când se plătește alocația?"
+    a: "Lunar, de regulă între data de 8 și 15 a fiecărei luni, prin mandat poștal sau transfer bancar."
+  - q: "Ce se întâmplă dacă uit să depun cererea?"
+    a: "Alocația se acordă de la data depunerii cererii, nu retroactiv."
+
+relatii: {}
+
+ultima_verificare: "2025-01-01"
+
+monitorizare:
+  surse:
+    - url: "https://mmuncii.ro/"
+      tip: html

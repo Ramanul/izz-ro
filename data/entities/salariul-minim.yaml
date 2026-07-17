@@ -1,0 +1,60 @@
+# Entitate: Salariul minim brut pe economie
+# ⚠️ Toate valorile de mai jos sunt placeholders — de verificat pe surse oficiale înainte de publicare.
+
+id: salariul-minim
+nume: "Salariul minim brut pe economie"
+tip: valoare_monetara
+categorie_ghid: bani
+categorie_stiri: economic
+
+valoare_curenta:
+  brut: 4050
+  moneda: RON
+  in_vigoare_de: "2026-01-01"
+  act_normativ: "HG 1506/2025"
+  sursa_url: "https://mmuncii.ro/"
+  descriere_lunga: "Salariul de bază minim brut pe țară garantat în plată pentru un program normal de lucru de 165,333 ore/lună (8 ore/zi, 40 ore/săptămână)."
+  scutiri: "Construcții: 4.582 lei. Agricultură și industrie alimentară: 3.436 lei."
+
+istoric:
+  - brut: 4050
+    in_vigoare_de: "2026-01-01"
+    act_normativ: "HG 1506/2025"
+  - brut: 3700
+    in_vigoare_de: "2025-01-01"
+    act_normativ: "HG 1493/2024"
+  - brut: 3300
+    in_vigoare_de: "2023-10-01"
+    act_normativ: "HG 900/2023"
+  - brut: 3000
+    in_vigoare_de: "2023-01-01"
+    act_normativ: "HG 1447/2022"
+  - brut: 2550
+    in_vigoare_de: "2022-01-01"
+    act_normativ: "HG 1071/2021"
+
+termene:
+  - data: "2027-01-01"
+    eveniment: "Termen uzual pentru următoarea majorare a salariului minim"
+
+faq:
+  - q: "Când intră în vigoare noul salariu minim?"
+    a: "De regulă la 1 ianuarie a fiecărui an, după publicarea hotărârii de guvern în Monitorul Oficial."
+  - q: "Se aplică salariul minim și la normă parțială?"
+    a: "Da, proporțional cu timpul lucrat. Pentru 4 ore/zi, salariul minim este jumătate din valoarea pentru normă întreagă."
+  - q: "Ce amenzi riscă angajatorii care nu plătesc salariul minim?"
+    a: "Între 3.000 și 5.000 lei pentru fiecare angajat plătit sub salariul minim. Amenda se aplică de către Inspecția Muncii."
+  - q: "Salariul minim include și sporurile?"
+    a: "Nu. Sporurile (noapte, weekend, ore suplimentare) se adaugă peste salariul minim."
+
+relatii:
+  calculator: /instrumente/calculator-salariu/
+
+ultima_verificare: "2026-01-01"
+
+monitorizare:
+  surse:
+    - url: "https://mmuncii.ro/"
+      tip: html
+    - url: "https://monitoruloficial.ro/"
+      tip: html

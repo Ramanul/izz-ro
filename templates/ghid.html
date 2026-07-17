@@ -1,0 +1,114 @@
+{% extends "base.html" %}
+{% block title %}{{ ent.nume }} — {{ site.name }}{% endblock %}
+{% block description %}{{ ent.valoare_curenta.descriere_lunga | truncate(160, False, '…') }}{% endblock %}
+{% block og_type %}article{% endblock %}
+{% block head_extra %}
+<script type="application/ld+json">{{ faq_jsonld | tojson }}</script>
+<script type="application/ld+json">{{ breadcrumb_jsonld | tojson }}</script>
+{% endblock %}
+{% block content %}
+<nav class="breadcrumbs" aria-label="Breadcrumb">
+  <a href="{{ base }}/">{{ site.name }}</a>
+  <span class="sep">/</span>
+  <a href="{{ base }}/ghiduri/">Ghiduri</a>
+  <span class="sep">/</span>
+  <span>{{ ent.nume }}</span>
+</nav>
+
+<article class="utility-page">
+  <header class="utility-hero">
+    <span class="utility-icon">{{ categorii_icon.get(ent.categorie_ghid, '📌') }}</span>
+    <h1>{{ ent.nume }}</h1>
+    <p class="utility-subtitle">{{ ent.valoare_curenta.descriere_lunga }}</p>
+  </header>
+
+  <div class="utility-summary">
+    <h2>📌 Pe scurt</h2>
+    {% if ent.valoare_curenta.brut is defined %}
+    <div class="utility-value">{{ ent.valoare_curenta.brut | format_int }} {{ ent.valoare_curenta.moneda }}/lună</div>
+    <p class="utility-meta">
+      <span>🕐 În vigoare de la: {{ ent.valoare_curenta.in_vigoare_de }}</span>
+      <span>📜 {{ ent.valoare_curenta.act_normativ }}</span>
+    </p>
+    {% endif %}
+    {% if ent.valoare_curenta.valoare_secundara is defined %}
+    <div class="utility-value-sec">{{ ent.valoare_curenta.valoare_secundara | format_int }} {{ ent.valoare_curenta.valoare_secundara_label }}</div>
+    {% endif %}
+    {% if ent.valoare_curenta.scutiri %}
+    <p class="utility-note">ℹ️ {{ ent.valoare_curenta.scutiri }}</p>
+    {% endif %}
+    <p class="utility-meta">
+      <span>🔗 Sursă: <a href="{{ ent.valoare_curenta.sursa_url }}" target="_blank" rel="noopener noreferrer">{{ ent.valoare_curenta.sursa_url | domain_from_url }}</a></span>
+      <span>✅ Verificat: {{ ent.ultima_verificare }}</span>
+    </p>
+  </div>
+
+  {# Istoric #}
+  {% if ent.istoric %}
+  <section class="utility-section">
+    <h2>📊 Istoric</h2>
+    <div class="table-wrap">
+      <table class="stats-table">
+        <thead><tr><th>Valoare</th><th>În vigoare de la</th><th>Act normativ</th></tr></thead>
+        <tbody>
+        {% for row in ent.istoric %}
+          <tr>
+            <td><strong>{% if row.brut %}{{ row.brut | format_int }} {{ ent.valoare_curenta.moneda }}{% endif %}</strong></td>
+            <td>{{ row.in_vigoare_de }}</td>
+            <td>{{ row.act_normativ }}</td>
+          </tr>
+        {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </section>
+  {% endif %}
+
+  {# Calculator legat #}
+  {% if calculator_html %}
+  <section class="utility-section">
+    {{ calculator_html | safe }}
+  </section>
+  {% endif %}
+
+  {# FAQ #}
+  {% if ent.faq %}
+  <section class="utility-section">
+    <h2>❓ Întrebări frecvente</h2>
+    <div class="faq-list">
+      {% for item in ent.faq %}
+      <details class="faq-item">
+        <summary>{{ item.q }}</summary>
+        <p>{{ item.a }}</p>
+      </details>
+      {% endfor %}
+    </div>
+  </section>
+  {% endif %}
+
+  {# Știri legate #}
+  {% if related_news %}
+  <section class="utility-section">
+    <h2>📰 Știri despre acest subiect</h2>
+    <ul class="related-news-list">
+      {% for a in related_news %}
+      <li><a href="{{ base }}/{{ a.category }}/{{ a.slug }}/">{{ a.title }}</a>
+        <span class="related-meta">{{ a.category }} · {{ a.published_human }}</span></li>
+      {% endfor %}
+    </ul>
+  </section>
+  {% endif %}
+
+  {# Termene #}
+  {% if ent.termene %}
+  <section class="utility-section">
+    <h2>📅 Termene importante</h2>
+    <ul class="timeline">
+      {% for t in ent.termene %}
+      <li><time datetime="{{ t.data }}">{{ t.data }}</time>{{ t.eveniment }}</li>
+      {% endfor %}
+    </ul>
+  </section>
+  {% endif %}
+</article>
+{% endblock %}

@@ -1,0 +1,91 @@
+{% extends "base.html" %}
+{% block title %}Calculator salariu — {{ site.name }}{% endblock %}
+{% block description %}Calculează salariul net în funcție de brut, cu actualizare automată la salariul minim curent. CAS, CASS, impozit, deducere personală.{% endblock %}
+{% block og_type %}website{% endblock %}
+{% block content %}
+<nav class="breadcrumbs" aria-label="Breadcrumb">
+  <a href="{{ base }}/">{{ site.name }}</a>
+  <span class="sep">/</span>
+  <a href="{{ base }}/instrumente/">Instrumente</a>
+  <span class="sep">/</span>
+  <span>Calculator salariu</span>
+</nav>
+
+<article class="utility-page">
+  <header class="utility-hero">
+    <span class="utility-icon">🧮</span>
+    <h1>Calculator salariu net</h1>
+    <p class="utility-subtitle">Introdu salariul brut și află instant salariul net, defalcat pe contribuții.</p>
+  </header>
+
+  <section class="utility-section">
+    <div class="calculator">
+      <div class="calc-row">
+        <label for="calc-brut">Salariu brut (lei)</label>
+        <div style="display:flex;gap:8px;align-items:center">
+          <input type="number" id="calc-brut" value="4050" min="0" step="100" oninput="calcSalariu()">
+          <button type="button" class="btn-preset" onclick="setBrut(4050)">Salariu minim</button>
+          <button type="button" class="btn-preset" onclick="setBrut(5000)">5.000</button>
+          <button type="button" class="btn-preset" onclick="setBrut(10000)">10.000</button>
+        </div>
+      </div>
+      <div class="calc-results" id="calc-results"></div>
+    </div>
+    <p class="calc-note">*Calcul estimativ pentru un angajat fără persoane în întreținere. Include deducerea personală de bază (20% × salariul minim brut). Nu include contribuția la Pilonul II de pensii (3,75% din CAS, opțional).</p>
+  </section>
+
+  <section class="utility-section">
+    <h2>Cum se calculează?</h2>
+    <div class="utility-body">
+      <p>Din salariul brut se rețin următoarele:</p>
+      <ol>
+        <li><strong>CAS</strong> (Contribuția la Asigurări Sociale — pensii): <strong>25%</strong> din brut</li>
+        <li><strong>CASS</strong> (Contribuția la Asigurări Sociale de Sănătate): <strong>10%</strong> din brut</li>
+        <li><strong>Baza impozabilă</strong> = Brut − CAS − CASS − Deducere personală</li>
+        <li><strong>Impozit pe venit</strong>: <strong>10%</strong> din baza impozabilă</li>
+        <li><strong>Salariu net</strong> = Brut − CAS − CASS − Impozit</li>
+      </ol>
+      <p>Deducerea personală de bază este 20% × salariul minim brut și se acordă angajaților cu venit brut lunar de până la 1.950 lei peste salariul minim. Pentru venituri mai mari, deducerea se reduce progresiv.</p>
+      <p>Valorile sunt preluate automat din <a href="{{ base }}/ghiduri/salariul-minim/">ghidul salariului minim</a>.</p>
+    </div>
+  </section>
+</article>
+
+<script>
+  var SALARIU_MINIM_BRUT = 4050;
+  fetch('/data/entities.json')
+    .then(function(r){ return r.json(); })
+    .then(function(d){
+      var sm = d.entity_kwargs['salariul-minim'];
+      if (sm && sm.valoare_curenta && sm.valoare_curenta.brut) {
+        SALARIU_MINIM_BRUT = sm.valoare_curenta.brut;
+        document.getElementById('calc-brut').value = SALARIU_MINIM_BRUT;
+        calcSalariu();
+      }
+    }).catch(function(){});
+
+  function setBrut(v) {
+    document.getElementById('calc-brut').value = v;
+    calcSalariu();
+  }
+
+  function calcSalariu() {
+    var brut = parseFloat(document.getElementById('calc-brut').value) || 0;
+    var cas = Math.round(brut * 0.25);
+    var cass = Math.round(brut * 0.1);
+    var ded = Math.round(SALARIU_MINIM_BRUT * 0.2);
+    var baza = Math.max(0, brut - cas - cass - ded);
+    var impozit = Math.round(baza * 0.1);
+    var net = brut - cas - cass - impozit;
+    var html =
+      '<div class="calc-item"><span class="calc-label">CAS (25%)</span><span class="calc-val">-'+cas+' lei</span></div>' +
+      '<div class="calc-item"><span class="calc-label">CASS (10%)</span><span class="calc-val">-'+cass+' lei</span></div>' +
+      '<div class="calc-item"><span class="calc-label">Deducere personală</span><span class="calc-val">'+ded+' lei</span></div>' +
+      '<div class="calc-item"><span class="calc-label">Bază impozabilă</span><span class="calc-val">'+baza+' lei</span></div>' +
+      '<div class="calc-item"><span class="calc-label">Impozit (10%)</span><span class="calc-val">-'+impozit+' lei</span></div>' +
+      '<div class="calc-item calc-total"><span class="calc-label">SALARIU NET</span><span class="calc-val">'+net+' lei</span></div>';
+    document.getElementById('calc-results').innerHTML = html;
+  }
+  calcSalariu();
+</script>
+{% endblock %}

@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block title %}Ghiduri — {{ site.name }}{% endblock %}
+{% block description %}Ghiduri practice cu informații verificabile: salariul minim, pensia, alocații, acte, locuințe. Date actualizate și surse oficiale citate.{% endblock %}
+{% block content %}
+<nav class="breadcrumbs" aria-label="Breadcrumb">
+  <a href="{{ base }}/">{{ site.name }}</a>
+  <span class="sep">/</span>
+  <span>Ghiduri</span>
+</nav>
+
+<h1 class="section-title">📌 Ghiduri</h1>
+<p class="utility-index-intro">Informații practice, actualizate și verificate. Fiecare ghid citează sursa oficială și data ultimei verificări. Valorile se modifică într-un singur loc și se propagă automat în tot site-ul.</p>
+
+{% for cat_key, cat_name in categorii.items() %}
+  {% set cat_ents = entities_by_cat.get(cat_key, []) %}
+  {% if cat_ents %}
+  <h2 class="section-title">{{ cat_name }}</h2>
+  <div class="utility-grid">
+    {% for ent in cat_ents %}
+    <a class="utility-card" href="{{ base }}/ghiduri/{{ ent.id }}/">
+      <span class="utility-card-icon">{{ categorii_icon.get(cat_key, '📌') }}</span>
+      <span class="utility-card-title">{{ ent.nume }}</span>
+      <span class="utility-card-desc">{{ ent.valoare_curenta.descriere_lunga | truncate(100, False, '…') }}</span>
+      <span class="utility-card-updated">Verificat: {{ ent.ultima_verificare }}</span>
+    </a>
+    {% endfor %}
+  </div>
+  {% endif %}
+{% endfor %}
+{% endblock %}
