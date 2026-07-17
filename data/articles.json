@@ -40,6 +40,27 @@
     "featured": false
   },
   {
+    "url": "https://unica.ro/advertorial/caderea-parului-se-masoara-nu-se-promite-823491",
+    "original_link": "https://www.unica.ro/advertorial/caderea-parului-se-masoara-nu-se-promite-823491",
+    "source": "unica",
+    "source_name": "Unica",
+    "source_lang": "ro",
+    "title": "Studiu cuantifică eficiența serului Ivahair Strong Hair",
+    "category": "lifestyle",
+    "published": "2026-07-16T20:56:46+00:00",
+    "model": "B",
+    "teaser": "Un studiu clinic a măsurat efectele serului Ivahair Strong Hair asupra căderii părului la 90 și 180 de zile de utilizare continuă, oferind date concrete despre eficacitatea sa.",
+    "entities": [
+      "Ivahair Strong Hair",
+      "Dr. Rucsandra Hurezeanu",
+      "Ivatherm"
+    ],
+    "icon": "pill",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
     "url": "https://gsp.ro/international/europa-league/u-cluj-dinamo-kiev-europa-league-dan-nistor-961373.html",
     "original_link": "https://www.gsp.ro/international/europa-league/u-cluj-dinamo-kiev-europa-league-dan-nistor-961373.html",
     "source": "gsp",
@@ -100,6 +121,101 @@
       "Europa League"
     ],
     "icon": "ball-football",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://prosport.ro/fotbal-extern/europa-league/universitatea-cluj-dinamo-kiev-vicecampioana-romaniei-europa-league-retur-rezultat-echipele-probabile-u-cluj-20484883",
+    "original_link": "https://www.prosport.ro/fotbal-extern/europa-league/universitatea-cluj-dinamo-kiev-vicecampioana-romaniei-europa-league-retur-rezultat-echipele-probabile-u-cluj-20484883",
+    "source": "prosport",
+    "source_name": "ProSport",
+    "source_lang": "ro",
+    "title": "U Cluj, eliminată dramatic de Dinamo Kiev la lovituri de departajare în Europa League",
+    "category": "sport",
+    "published": "2026-07-16T20:24:24+00:00",
+    "model": "C",
+    "sources": [
+      {
+        "name": "ProSport",
+        "url": "https://www.prosport.ro/fotbal-extern/europa-league/universitatea-cluj-dinamo-kiev-vicecampioana-romaniei-europa-league-retur-rezultat-echipele-probabile-u-cluj-20484883"
+      },
+      {
+        "name": "Digi Sport",
+        "url": "https://www.digisport.ro/fotbal/europa-league/am-o-surpriza-pentru-voi-antrenorul-de-la-dinamo-kiev-a-dat-vestea-dupa-ce-a-eliminat-o-pe-u-cluj-din-europa-league-4382243"
+      }
+    ],
+    "first_source": "ProSport",
+    "synthesis": "Universitatea Cluj a fost eliminată din turul preliminar 1 al Europa League de Dinamo Kiev, după ce meciul retur s-a încheiat 0-0. Echipa din Cluj a pierdut la loviturile de departajare, scor 2-4, ratând calificarea în etapa următoare a competiției.",
+    "entities": [
+      "Universitatea Cluj",
+      "Dinamo Kiev",
+      "Europa League"
+    ],
+    "icon": "ball-football",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://digi24.ro/stiri/actualitate/politica/dragos-pislaru-promite-surprize-placute-in-proiectul-legii-salarizarii-unitare-ce-sidicatele-au-pus-ca-probleme-e-asigurat-3865731",
+    "original_link": "https://www.digi24.ro/stiri/actualitate/politica/dragos-pislaru-promite-surprize-placute-in-proiectul-legii-salarizarii-unitare-ce-sidicatele-au-pus-ca-probleme-e-asigurat-3865731",
+    "source": "digi24",
+    "source_name": "Digi24",
+    "source_lang": "ro",
+    "title": "Ministrul Muncii promite \"surprize plăcute\" la noua lege a salarizării",
+    "category": "politic",
+    "published": "2026-07-16T19:54:02+00:00",
+    "model": "C",
+    "sources": [
+      {
+        "name": "Digi24",
+        "url": "https://www.digi24.ro/stiri/actualitate/politica/dragos-pislaru-promite-surprize-placute-in-proiectul-legii-salarizarii-unitare-ce-sidicatele-au-pus-ca-probleme-e-asigurat-3865731"
+      },
+      {
+        "name": "Spotmedia",
+        "url": "https://spotmedia.ro/stiri/eveniment/pislaru-promite-surprize-placute-in-proiectul-legii-salarizarii-unitare"
+      }
+    ],
+    "first_source": "Digi24",
+    "synthesis": "Dragoș Pîslaru, ministrul interimar al Muncii, a declarat că protestele sindicatelor bugetare sunt cauzate de o versiune mai veche a legii salarizării. El a promis că proiectul final va conține \"o serie întreagă de surprize plăcute\", asigurând că problemele semnalate de sindicate au fost rezolvate.",
+    "entities": [
+      "Dragoș Pîslaru",
+      "Ministerul Muncii",
+      "sindicate"
+    ],
+    "icon": "receipt-tax",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://hotnews.ro/operatorul-de-teleprompter-al-lui-trump-e-acuzat-ca-a-castigat-100-000-de-dolari-din-pariuri-pe-discursurile-presedintelui-2302474",
+    "original_link": "https://hotnews.ro/operatorul-de-teleprompter-al-lui-trump-e-acuzat-ca-a-castigat-100-000-de-dolari-din-pariuri-pe-discursurile-presedintelui-2302474",
+    "source": "hotnews",
+    "source_name": "HotNews",
+    "source_lang": "ro",
+    "title": "Operator teleprompter Trump, acuzat de pariuri pe discursuri cu câștiguri de 100.000 dolari",
+    "category": "politic",
+    "published": "2026-07-16T19:30:05+00:00",
+    "model": "C",
+    "sources": [
+      {
+        "name": "HotNews",
+        "url": "https://hotnews.ro/operatorul-de-teleprompter-al-lui-trump-e-acuzat-ca-a-castigat-100-000-de-dolari-din-pariuri-pe-discursurile-presedintelui-2302474"
+      },
+      {
+        "name": "Digi24 Extern",
+        "url": "https://www.digi24.ro/stiri/externe/mapamond/operatorul-teleprompterului-de-la-casa-alba-acuzat-ca-a-pariat-pe-discursurile-lui-trump-cati-bani-ar-fi-castigat-3865675"
+      }
+    ],
+    "first_source": "HotNews",
+    "synthesis": "Un asistent tehnic al președintelui Trump, responsabil cu operarea teleprompterului, este investigat pentru utilizarea informațiilor interne în plasarea de pariuri pe discursurile acestuia. Potrivit surselor, ar fi obținut câștiguri de aproape 100.000 de dolari, însă contul i-a fost blocat înainte de retragerea banilor.",
+    "entities": [
+      "Donald Trump",
+      "Casa Albă"
+    ],
+    "icon": "writing",
     "processed_by": "gemini",
     "prompt_version": "v2-esenta",
     "featured": false
@@ -331,6 +447,45 @@
     "featured": false
   },
   {
+    "url": "https://csid.ro/stiri/ce-sa-nu-mananci-niciodata-la-all-inclusive-riscurile-la-care-te-expui-conform-nutritionistilor-21252276",
+    "original_link": "https://www.csid.ro/stiri/ce-sa-nu-mananci-niciodata-la-all-inclusive-riscurile-la-care-te-expui-conform-nutritionistilor-21252276/",
+    "source": "csid",
+    "source_name": "CSÎD",
+    "source_lang": "ro",
+    "title": "Nutriționiștii avertizează asupra alimentelor de evitat la all inclusive",
+    "category": "lifestyle",
+    "published": "2026-07-16T16:00:14+00:00",
+    "model": "B",
+    "teaser": "Specialiștii în nutriție recomandă prudență la mesele bogate din vacanțele all inclusive, subliniind riscurile digestive și de energie asociate anumitor alegeri alimentare.",
+    "entities": [
+      "nutriționiști"
+    ],
+    "icon": "certificate",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://unica.ro/stiri/stickerele-panini-pentru-cupa-mondiala-2026-au-dat-nastere-unui-fenomen-ce-trebuie-sa-stii-despre-colectia-de-abtibilduri-pe-care-toata-lumea-o-vrea-vara-aceasta-823475",
+    "original_link": "https://www.unica.ro/stiri/stickerele-panini-pentru-cupa-mondiala-2026-au-dat-nastere-unui-fenomen-ce-trebuie-sa-stii-despre-colectia-de-abtibilduri-pe-care-toata-lumea-o-vrea-vara-aceasta-823475",
+    "source": "unica",
+    "source_name": "Unica",
+    "source_lang": "ro",
+    "title": "Stickerele Panini pentru Cupa Mondială 2026 generează febră colecționară",
+    "category": "sport",
+    "published": "2026-07-16T15:33:50+00:00",
+    "model": "B",
+    "teaser": "Colecționarii de stickere Panini pentru Cupa Mondială 2026 caută intens abțibildurile, continuând tradiția începută în 1970 și reunind generații de pasionați.",
+    "entities": [
+      "Panini",
+      "Cupa Mondială 2026"
+    ],
+    "icon": "ball-football",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
     "url": "https://spotmedia.ro/stiri/eveniment/atac-cibernetic-la-ministerul-investitiilor-si-proiectelor-europene-aplicatia-achizitii-beneficiari-privati-nu-poate-fi-accesata",
     "original_link": "https://spotmedia.ro/stiri/eveniment/atac-cibernetic-la-ministerul-investitiilor-si-proiectelor-europene-aplicatia-achizitii-beneficiari-privati-nu-poate-fi-accesata",
     "source": "spotmedia",
@@ -362,6 +517,23 @@
       "PNRR"
     ],
     "icon": "shield-lock",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://csid.ro/lifestyle/horoscop/doua-zodii-intra-intr-o-perioada-de-transformare-intre-15-si-25-iulie-astrologii-vorbesc-despre-oportunitati-si-schimbari-importante-21252242",
+    "original_link": "https://www.csid.ro/lifestyle/horoscop/doua-zodii-intra-intr-o-perioada-de-transformare-intre-15-si-25-iulie-astrologii-vorbesc-despre-oportunitati-si-schimbari-importante-21252242/",
+    "source": "csid",
+    "source_name": "CSÎD",
+    "source_lang": "ro",
+    "title": "Două zodii intră în transformare între 15 și 25 iulie",
+    "category": "lifestyle",
+    "published": "2026-07-16T15:30:38+00:00",
+    "model": "B",
+    "teaser": "Astrologii anunță o perioadă de schimbări majore și oportunități pentru două zodii specifice, între 15 și 25 iulie, datorită influențelor astrale.",
+    "entities": [],
+    "icon": "certificate",
     "processed_by": "gemini",
     "prompt_version": "v2-esenta",
     "featured": false
@@ -437,6 +609,99 @@
     "featured": false
   },
   {
+    "url": "https://unica.ro/advertorial/dupa-covrig-si-cozonac-luca-ieftineste-si-cafeaua-823498",
+    "original_link": "https://www.unica.ro/advertorial/dupa-covrig-si-cozonac-luca-ieftineste-si-cafeaua-823498",
+    "source": "unica",
+    "source_name": "Unica",
+    "source_lang": "ro",
+    "title": "LUCA ieftinește și cafeaua ZMEU până la sfârșitul lunii septembrie",
+    "category": "discounturi",
+    "published": "2026-07-16T15:11:00+00:00",
+    "model": "B",
+    "teaser": "După covrig și cozonac, LUCA continuă seria reducerilor și scade prețul cafelei proprii, ZMEU, între 16 iulie și 30 septembrie 2026.",
+    "entities": [
+      "LUCA",
+      "ZMEU",
+      "Tinervis Group"
+    ],
+    "icon": "receipt-tax",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://csid.ro/stiri/21252216-21252216",
+    "original_link": "https://www.csid.ro/stiri/21252216-21252216/",
+    "source": "csid",
+    "source_name": "CSÎD",
+    "source_lang": "ro",
+    "title": "Truc pentru a îmbunătăți gustul castraveților amari",
+    "category": "lifestyle",
+    "published": "2026-07-16T15:00:21+00:00",
+    "model": "B",
+    "teaser": "Un simplu truc cu spumă albă poate salva salatele afectate de castraveți cu gust amar, chiar dacă legumele par proaspete, oferind o soluție rapidă.",
+    "entities": [],
+    "icon": "certificate",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://unica.ro/vedete/cum-a-raspuns-theo-rose-cand-a-fost-intrebata-direct-daca-este-insarcinata-din-nou-823454",
+    "original_link": "https://www.unica.ro/vedete/cum-a-raspuns-theo-rose-cand-a-fost-intrebata-direct-daca-este-insarcinata-din-nou-823454",
+    "source": "unica",
+    "source_name": "Unica",
+    "source_lang": "ro",
+    "title": "Theo Rose răspunde zvonurilor despre o nouă sarcină",
+    "category": "lifestyle",
+    "published": "2026-07-16T14:45:06+00:00",
+    "model": "B",
+    "teaser": "Theo Rose a clarificat speculațiile privind o posibilă a doua sarcină, după ce a apărut într-un videoclip cu abdomenul la vedere, alimentând discuțiile online.",
+    "entities": [
+      "Theo Rose"
+    ],
+    "icon": "music",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://unica.ro/vedete/romanesti/gabriela-cristea-despre-efectele-adverse-ale-metodei-sale-de-slabit-prin-ce-a-trecut-in-timpul-tratamentului-823450",
+    "original_link": "https://www.unica.ro/vedete/romanesti/gabriela-cristea-despre-efectele-adverse-ale-metodei-sale-de-slabit-prin-ce-a-trecut-in-timpul-tratamentului-823450",
+    "source": "unica",
+    "source_name": "Unica",
+    "source_lang": "ro",
+    "title": "Gabriela Cristea detaliază efectele adverse ale metodei sale de slăbit",
+    "category": "lifestyle",
+    "published": "2026-07-16T14:35:01+00:00",
+    "model": "B",
+    "teaser": "Gabriela Cristea a vorbit deschis despre experiența sa cu injecțiile pentru slăbit, dezvăluind efecte adverse apărute în două situații specifice, pentru a combate speculațiile.",
+    "entities": [
+      "Gabriela Cristea"
+    ],
+    "icon": "pill",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://csid.ro/stiri/cea-mai-rapida-metoda-de-curatare-a-vinetelor-coapte-21252240",
+    "original_link": "https://www.csid.ro/stiri/cea-mai-rapida-metoda-de-curatare-a-vinetelor-coapte-21252240/",
+    "source": "csid",
+    "source_name": "CSÎD",
+    "source_lang": "ro",
+    "title": "Metodă rapidă de curățare a vinetelor coapte",
+    "category": "lifestyle",
+    "published": "2026-07-16T14:30:24+00:00",
+    "model": "B",
+    "teaser": "O tehnică eficientă permite decojirea rapidă a vinetelor coapte în doar câteva secunde, simplificând prepararea salatelor sau zacuscăi.",
+    "entities": [],
+    "icon": "certificate",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
     "url": "https://digi24.ro/stiri/economie/absolventii-de-scoli-profesionale-vor-avea-in-premiera-acces-la-stagii-platite-la-comisia-europeana-ce-trebuie-sa-stie-candidatii-3865271",
     "original_link": "https://www.digi24.ro/stiri/economie/absolventii-de-scoli-profesionale-vor-avea-in-premiera-acces-la-stagii-platite-la-comisia-europeana-ce-trebuie-sa-stie-candidatii-3865271",
     "source": "extern",
@@ -468,6 +733,44 @@
     "featured": false
   },
   {
+    "url": "https://unica.ro/vedete/gina-pistol-dezvaluiri-despre-josephine-si-felul-in-care-isi-creste-fiica-e-competitiva-dar-o-invatam-si-sa-piarda-823446",
+    "original_link": "https://www.unica.ro/vedete/gina-pistol-dezvaluiri-despre-josephine-si-felul-in-care-isi-creste-fiica-e-competitiva-dar-o-invatam-si-sa-piarda-823446",
+    "source": "unica",
+    "source_name": "Unica",
+    "source_lang": "ro",
+    "title": "Gina Pistol explică modul de creștere a fiicei sale, Josephine",
+    "category": "lifestyle",
+    "published": "2026-07-16T14:14:05+00:00",
+    "model": "B",
+    "teaser": "Gina Pistol a dezvăluit detalii despre temperamentul fiicei sale, Josephine, și despre cum ea și Smiley o cresc, punând accent pe învățarea valorilor importante, inclusiv cum să piardă.",
+    "entities": [
+      "Gina Pistol",
+      "Josephine",
+      "Smiley"
+    ],
+    "icon": "home",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://csid.ro/diete/retete-culinare/reteta-exotica-din-caraibe-cum-sa-prepari-cel-mai-aromat-peste-cu-lapte-de-cocos-si-lamaie-verde-21251425",
+    "original_link": "https://www.csid.ro/diete/retete-culinare/reteta-exotica-din-caraibe-cum-sa-prepari-cel-mai-aromat-peste-cu-lapte-de-cocos-si-lamaie-verde-21251425/",
+    "source": "csid",
+    "source_name": "CSÎD",
+    "source_lang": "ro",
+    "title": "Rețetă exotică de pește cu lapte de cocos și lămâie verde",
+    "category": "lifestyle",
+    "published": "2026-07-16T14:00:34+00:00",
+    "model": "B",
+    "teaser": "Descoperă o rețetă caraibiană simplă pentru un pește aromat, combinând lapte de cocos, lămâie verde și coriandru pentru un preparat deosebit.",
+    "entities": [],
+    "icon": "certificate",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
     "url": "https://unica.ro/vedete/pamela-anderson-imagini-spectaculoase-din-oaza-ei-de-liniste-vedeta-se-mandreste-cu-gradina-la-care-munceste-zilnic-nu-exista-leguma-pe-care-sa-nu-o-am-823435",
     "original_link": "https://www.unica.ro/vedete/pamela-anderson-imagini-spectaculoase-din-oaza-ei-de-liniste-vedeta-se-mandreste-cu-gradina-la-care-munceste-zilnic-nu-exista-leguma-pe-care-sa-nu-o-am-823435",
     "source": "unica",
@@ -482,6 +785,26 @@
       "Pamela Anderson"
     ],
     "icon": "trees",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://csid.ro/lifestyle/vedete/imagine-rara-cu-fiul-madalinei-manole-la-17-ani-cum-arata-baiatul-regretatei-soliste-21252333",
+    "original_link": "https://www.csid.ro/lifestyle/vedete/imagine-rara-cu-fiul-madalinei-manole-la-17-ani-cum-arata-baiatul-regretatei-soliste-21252333/",
+    "source": "csid",
+    "source_name": "CSÎD",
+    "source_lang": "ro",
+    "title": "Imagine rară cu fiul Mădălinei Manole, la 17 ani",
+    "category": "lifestyle",
+    "published": "2026-07-16T13:30:11+00:00",
+    "model": "B",
+    "teaser": "Petru Mircea jr, fiul regretatei artiste Mădălina Manole, a fost surprins într-o fotografie rară, publicată cu ocazia zilei în care mama sa ar fi împlinit 59 de ani.",
+    "entities": [
+      "Mădălina Manole",
+      "Petru Mircea jr"
+    ],
+    "icon": "certificate",
     "processed_by": "gemini",
     "prompt_version": "v2-esenta",
     "featured": false
@@ -24497,132 +24820,6 @@
       "Nina Warken"
     ],
     "icon": "receipt-tax",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://politico.eu/podcast/brussels-playbook-podcast/week-ender-why-europe-cant-avoid-erdogan",
-    "original_link": "https://www.politico.eu/podcast/brussels-playbook-podcast/week-ender-why-europe-cant-avoid-erdogan/?utm_source=RSS_Feed&utm_medium=RSS&utm_campaign=RSS_Syndication",
-    "source": "politico_eu",
-    "source_name": "Politico EU",
-    "source_lang": "en",
-    "title": "Erdogan, în centrul atenției la summitul NATO",
-    "category": "politic",
-    "published": "2026-07-10T03:30:00+00:00",
-    "model": "B",
-    "teaser": "Liderii NATO s-au reunit la Ankara, oferindu-i președintelui turc Recep Tayyip Erdoğan o platformă importantă. Valoarea strategică a Turciei pentru Europa este în creștere, complicând relațiile bilaterale.",
-    "entities": [
-      "Erdogan",
-      "NATO",
-      "Ankara",
-      "Turcia"
-    ],
-    "icon": "flag",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://politico.eu/article/labour-mps-andy-burnham-uk-politics",
-    "original_link": "https://www.politico.eu/article/labour-mps-andy-burnham-uk-politics/?utm_source=RSS_Feed&utm_medium=RSS&utm_campaign=RSS_Syndication",
-    "source": "politico_eu",
-    "source_name": "Politico EU",
-    "source_lang": "en",
-    "title": "Deputați laburiști oferă sfaturi noului premier britanic",
-    "category": "politic",
-    "published": "2026-07-10T02:39:38+00:00",
-    "model": "B",
-    "teaser": "Parlamentari din Partidul Laburist din Marea Britanie au prezentat sugestii pentru noul prim-ministru, vizând consolidarea sprijinului în rândul membrilor partidului din parlament.",
-    "entities": [
-      "Marea Britanie",
-      "Andy Burnham"
-    ],
-    "icon": "gavel",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://politico.eu/article/friedrich-merz-casts-himself-as-reformer-stem-the-far-rights-rise",
-    "original_link": "https://www.politico.eu/article/friedrich-merz-casts-himself-as-reformer-stem-the-far-rights-rise/?utm_source=RSS_Feed&utm_medium=RSS&utm_campaign=RSS_Syndication",
-    "source": "politico_eu",
-    "source_name": "Politico EU",
-    "source_lang": "en",
-    "title": "Merz, reformator împotriva ascensiunii extremei drepte germane",
-    "category": "politic",
-    "published": "2026-07-10T02:00:00+00:00",
-    "model": "B",
-    "teaser": "Liderul german Friedrich Merz se poziționează ca reformator pentru a contracara ascensiunea AfD. Reformele propuse de guvern sunt considerate insuficiente pentru a schimba traiectoria politică.",
-    "entities": [
-      "Merz",
-      "Germania",
-      "AfD"
-    ],
-    "icon": "gavel",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://politico.eu/article/le-pen-and-farage-star-in-this-summers-must-see-blockbuster",
-    "original_link": "https://www.politico.eu/article/le-pen-and-farage-star-in-this-summers-must-see-blockbuster/?utm_source=RSS_Feed&utm_medium=RSS&utm_campaign=RSS_Syndication",
-    "source": "politico_eu",
-    "source_name": "Politico EU",
-    "source_lang": "en",
-    "title": "Le Pen și Farage, protagoniștii unui film de vară",
-    "category": "politic",
-    "published": "2026-07-10T02:00:00+00:00",
-    "model": "B",
-    "teaser": "Marine Le Pen și Nigel Farage sunt prezentati ca personaje centrale într-un film de vară, descris ca fiind unul pe care \"nimeni nu și-l dorește\", dar care va fi lansat oricum.",
-    "entities": [
-      "Le Pen",
-      "Farage"
-    ],
-    "icon": "movie",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://theguardian.com/world/2026/jul/10/wildfire-southern-spain-temperatures-almeria-los-gallardos-bedar",
-    "original_link": "https://www.theguardian.com/world/2026/jul/10/wildfire-southern-spain-temperatures-almeria-los-gallardos-bedar",
-    "source": "guardian_eu",
-    "source_name": "The Guardian",
-    "source_lang": "en",
-    "title": "Incendiu de vegetație în Spania: 12 morți din cauza temperaturilor ridicate",
-    "category": "general",
-    "published": "2026-07-10T01:35:09+00:00",
-    "model": "B",
-    "teaser": "Un incendiu de vegetație în sudul Spaniei, în Almeria, a cauzat moartea a 12 persoane. Peste 150 de pompieri luptă cu flăcările, în contextul unui val de căldură sever.",
-    "entities": [
-      "Spania",
-      "Almeria",
-      "Andaluzia"
-    ],
-    "icon": "flame",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://prosport.ro/campionatul-mondial-2026/haaland-reactie-penalty-mbappe-20480688",
-    "original_link": "https://www.prosport.ro/campionatul-mondial-2026/haaland-reactie-penalty-mbappe-20480688",
-    "source": "prosport",
-    "source_name": "ProSport",
-    "source_lang": "ro",
-    "title": "Haaland, surprins de decizia VAR la penalty-ul Franței",
-    "category": "sport",
-    "published": "2026-07-09T23:12:12+00:00",
-    "model": "B",
-    "teaser": "Erling Haaland și-a exprimat surprinderea față de durata mare de așteptare pentru validarea penalty-ului acordat Franței în meciul cu Maroc. Kylian Mbappe a transformat lovitura.",
-    "entities": [
-      "Haaland",
-      "Franța",
-      "Maroc",
-      "Kylian Mbappe"
-    ],
-    "icon": "ball-football",
     "processed_by": "gemini",
     "prompt_version": "v2-esenta",
     "featured": false
