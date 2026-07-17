@@ -1,5 +1,124 @@
 [
   {
+    "url": "https://tion.ro/azi-in-timisoara/ce-facem-astazi-18-iulie-2026-in-timisoara-2317473",
+    "original_link": "https://www.tion.ro/azi-in-timisoara/ce-facem-astazi-18-iulie-2026-in-timisoara-2317473/?utm_source=rss&utm_medium=referral&utm_campaign=hiraggregator",
+    "source": "tion",
+    "source_name": "Timiș Online",
+    "source_lang": "ro",
+    "title": "Timișoara găzduiește festivaluri și evenimente sportive în weekend",
+    "category": "local",
+    "published": "2026-07-17T21:00:10+00:00",
+    "model": "B",
+    "teaser": "Timișoara devine gazda Rebellion Strength Festival, Timișoara Triathlon și Festivalului Ceau, Cinema! în acest weekend, oferind vizitatorilor o varietate de activități culturale și sportive.",
+    "entities": [
+      "Timișoara",
+      "Rebellion Strength Festival",
+      "Muzeul Satului Bănățean",
+      "Timișoara Triathlon",
+      "Ceau, Cinema"
+    ],
+    "icon": "trees",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://sfatulparintilor.ro/familie-parinti/sanatate-fizica-si-mentala/ce-este-nevroza-cauze-simptome-cum-se-poate-trata",
+    "original_link": "https://sfatulparintilor.ro/familie-parinti/sanatate-fizica-si-mentala/ce-este-nevroza-cauze-simptome-cum-se-poate-trata/",
+    "source": "sfatulparintilor",
+    "source_name": "Sfatul Părinților",
+    "source_lang": "ro",
+    "title": "Nevroza: cauze, simptome și opțiuni de tratament",
+    "category": "sanatate",
+    "published": "2026-07-17T19:45:00+00:00",
+    "model": "B",
+    "teaser": "Nevroza este o tulburare mentală cauzată de conflicte psihogene acute sau cronice, afectând interrelațiile umane. Se manifestă prin suferință și necesită tratament specializat.",
+    "entities": [],
+    "icon": "virus",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://g4media.ro/circa-6-000-de-functionari-publici-suspendati-in-urma-unui-scandal-de-frauda-la-examene.html",
+    "original_link": "https://www.g4media.ro/circa-6-000-de-functionari-publici-suspendati-in-urma-unui-scandal-de-frauda-la-examene.html",
+    "source": "g4media",
+    "source_name": "G4Media",
+    "source_lang": "ro",
+    "title": "Thailanda: Aproape 6.000 de funcționari suspendați după fraudă la examene",
+    "category": "extern",
+    "published": "2026-07-17T19:43:29+00:00",
+    "model": "C",
+    "sources": [
+      {
+        "name": "G4Media",
+        "url": "https://www.g4media.ro/circa-6-000-de-functionari-publici-suspendati-in-urma-unui-scandal-de-frauda-la-examene.html"
+      },
+      {
+        "name": "Digi24 Extern",
+        "url": "https://www.digi24.ro/stiri/externe/6-000-de-functionari-publici-au-fost-suspendati-in-urma-unui-scandal-de-frauda-la-examene-in-thailanda-3867257"
+      }
+    ],
+    "first_source": "G4Media",
+    "synthesis": "Aproximativ 6.000 de funcționari publici din Thailanda au fost suspendați vineri în urma unei anchete de corupție. Descoperirea unor nereguli în rezultatele examenelor a dus la suspendarea masivă și la trei arestări. Fenomenul corupției este frecvent în Thailanda, dar acest caz implică un număr record de oficiali.",
+    "entities": [
+      "Thailanda"
+    ],
+    "icon": "gavel",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://gsp.ro/sporturi/tenis/paula-badosa-este-in-semifinale-la-unicredit-iasi-open-sunt-obosita-dar-fericita-961713.html",
+    "original_link": "https://www.gsp.ro/sporturi/tenis/paula-badosa-este-in-semifinale-la-unicredit-iasi-open-sunt-obosita-dar-fericita-961713.html",
+    "source": "gsp",
+    "source_name": "GSP",
+    "source_lang": "ro",
+    "title": "Paula Badosa, în semifinalele UniCredit Iași Open",
+    "category": "sport",
+    "published": "2026-07-17T19:39:28+00:00",
+    "model": "C",
+    "sources": [
+      {
+        "name": "GSP",
+        "url": "https://www.gsp.ro/sporturi/tenis/paula-badosa-este-in-semifinale-la-unicredit-iasi-open-sunt-obosita-dar-fericita-961713.html"
+      },
+      {
+        "name": "ProSport",
+        "url": "https://www.prosport.ro/alte-sporturi/tenis/paula-badosa-de-neoprit-la-iasi-jucatoarea-spaniola-s-a-calificat-in-semifinale-la-unicredit-iasi-open-dupa-ce-a-invins-favorita-5-20485696"
+      }
+    ],
+    "first_source": "GSP",
+    "synthesis": "Jucătoarea spaniolă Paula Badosa s-a calificat în semifinalele turneului WTA 250 UniCredit Iași Open, după ce a învins-o pe Panna Udvardy în sferturi. Aceasta este prima semifinală atinsă de Badosa la un turneu de la Australian Open 2025, conform surselor GSP și ProSport. Alte jucătoare calificate în semifinale sunt Mayar Sherif, Oleksandra Oliynykova și Tamara Zidansek.",
+    "entities": [
+      "Paula Badosa",
+      "UniCredit Iași Open",
+      "Panna Udvardy"
+    ],
+    "icon": "ball-tennis",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://sfatulparintilor.ro/fara-categorie/teste-de-personalitate-familie-parinti/alege-un-simbol-si-afla-care-este-cea-mai-mare-frica-subconstienta-ta-test-incredibil-de-exact",
+    "original_link": "https://sfatulparintilor.ro/fara-categorie/teste-de-personalitate-familie-parinti/alege-un-simbol-si-afla-care-este-cea-mai-mare-frica-subconstienta-ta-test-incredibil-de-exact/",
+    "source": "sfatulparintilor",
+    "source_name": "Sfatul Părinților",
+    "source_lang": "ro",
+    "title": "Test psihologic: Alege un simbol și descoperă-ți cea mai mare frică subconștientă",
+    "category": "lifestyle",
+    "published": "2026-07-17T19:29:00+00:00",
+    "model": "B",
+    "teaser": "Acest test te ajută să identifici cea mai profundă frică subconștientă, dintre cele care influențează semnificativ viața ta. Alege un simbol pentru a afla rezultatul.",
+    "entities": [],
+    "icon": null,
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
     "url": "https://digisport.ro/fotbal/liga-1/noul-transfer-al-fcsb-ului-este-prezent-la-partida-cu-fc-arges-4383691",
     "original_link": "https://www.digisport.ro/fotbal/liga-1/noul-transfer-al-fcsb-ului-este-prezent-la-partida-cu-fc-arges-4383691",
     "source": "digisport",
@@ -60,6 +179,28 @@
       "George Merloi"
     ],
     "icon": "ball-football",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://tion.ro/mapamond/a-murit-doamna-cu-porumbei-din-home-alone-brenda-fricker-castigatoare-de-oscar-avea-81-de-ani-2317953",
+    "original_link": "https://www.tion.ro/mapamond/a-murit-doamna-cu-porumbei-din-home-alone-brenda-fricker-castigatoare-de-oscar-avea-81-de-ani-2317953/?utm_source=rss&utm_medium=referral&utm_campaign=hiraggregator",
+    "source": "tion",
+    "source_name": "Timiș Online",
+    "source_lang": "ro",
+    "title": "A murit actrița Brenda Fricker, câștigătoare de Oscar, la 81 de ani",
+    "category": "local",
+    "published": "2026-07-17T17:14:39+00:00",
+    "model": "B",
+    "teaser": "Actrița irlandeză Brenda Fricker, cunoscută pentru rolurile din „My Left Foot” și „Home Alone 2”, a decedat la vârsta de 81 de ani. Fricker a fost laureată a premiului Oscar.",
+    "entities": [
+      "Brenda Fricker",
+      "Oscar",
+      "Home Alone 2",
+      "BBC"
+    ],
+    "icon": "movie",
     "processed_by": "gemini",
     "prompt_version": "v2-esenta",
     "featured": false
@@ -247,6 +388,27 @@
     "featured": false
   },
   {
+    "url": "https://tion.ro/stirile-judetului-timis/video-scandal-la-scoala-gimnaziala-sacalaz-dupa-schimbarea-directorului-2317929",
+    "original_link": "https://www.tion.ro/stirile-judetului-timis/video-scandal-la-scoala-gimnaziala-sacalaz-dupa-schimbarea-directorului-2317929/?utm_source=rss&utm_medium=referral&utm_campaign=hiraggregator",
+    "source": "tion",
+    "source_name": "Timiș Online",
+    "source_lang": "ro",
+    "title": "Scandal la Școala Gimnazială Săcălaz după schimbarea directoarei",
+    "category": "local",
+    "published": "2026-07-17T15:37:43+00:00",
+    "model": "B",
+    "teaser": "Decizia Inspectoratului Școlar Județean Timiș de a schimba conducerea Școlii Gimnaziale Săcălaz a generat controverse și proteste anunțate, pe fondul acuzațiilor de înlocuire nejustificată.",
+    "entities": [
+      "Școala Gimnazială Săcălaz",
+      "Timiș",
+      "Inspectoratul Școlar Județean Timiș"
+    ],
+    "icon": "school",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
     "url": "https://bbc.co.uk/news/articles/cq56ed827peo?at_medium=RSS&at_campaign=rss",
     "original_link": "https://www.bbc.co.uk/news/articles/cq56ed827peo?at_medium=RSS&at_campaign=rss",
     "source": "bbc_europe",
@@ -262,6 +424,25 @@
       "Uniunea Creștin-Democrată"
     ],
     "icon": "gavel",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://avantaje.ro/articol/accesorii-de-fixare-compatibile-cu-tabla-faltuita-de-la-bilmax-ce-alegi-si-de-ce-conteaza-compatibilitatea",
+    "original_link": "https://www.avantaje.ro/articol/accesorii-de-fixare-compatibile-cu-tabla-faltuita-de-la-bilmax-ce-alegi-si-de-ce-conteaza-compatibilitatea",
+    "source": "avantaje",
+    "source_name": "Avantaje",
+    "source_lang": "ro",
+    "title": "Importanța accesoriilor de fixare pentru acoperișuri din tablă fălțuită",
+    "category": "auto",
+    "published": "2026-07-17T15:01:30+00:00",
+    "model": "B",
+    "teaser": "Durabilitatea acoperișurilor din tablă fălțuită depinde de alegerea corectă a componentelor, inclusiv a accesoriilor de fixare. Acestea asigură stabilitatea și permit dilatarea panourilor.",
+    "entities": [
+      "Bilmax"
+    ],
+    "icon": "building-monument",
     "processed_by": "gemini",
     "prompt_version": "v2-esenta",
     "featured": false
@@ -800,6 +981,27 @@
     "featured": false
   },
   {
+    "url": "https://tion.ro/stirile-judetului-timis/prof-univ-dr-margit-serban-ar-putea-deveni-cetatean-de-onoare-al-judetului-timis-propunerea-in-dezbatere-publica-2317914",
+    "original_link": "https://www.tion.ro/stirile-judetului-timis/prof-univ-dr-margit-serban-ar-putea-deveni-cetatean-de-onoare-al-judetului-timis-propunerea-in-dezbatere-publica-2317914/?utm_source=rss&utm_medium=referral&utm_campaign=hiraggregator",
+    "source": "tion",
+    "source_name": "Timiș Online",
+    "source_lang": "ro",
+    "title": "Prof. univ. dr. Margit Șerban, propusă Cetățean de Onoare al Județului Timiș",
+    "category": "local",
+    "published": "2026-07-17T13:13:38+00:00",
+    "model": "B",
+    "teaser": "Consiliul Județean Timiș a lansat în dezbatere publică propunerea de acordare a titlului de „Cetățean de Onoare al Județului Timiș” profesorului universitar doctor Margit Șerban.",
+    "entities": [
+      "Margit Șerban",
+      "Consiliul Județean Timiș",
+      "Județului Timiș"
+    ],
+    "icon": "certificate",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
     "url": "https://economica.net/ce-spune-comisia-europeana-despre-romania-in-raportul-anual-privind-statul-de-drept-in-ue_960283.html",
     "original_link": "https://www.economica.net/ce-spune-comisia-europeana-despre-romania-in-raportul-anual-privind-statul-de-drept-in-ue_960283.html",
     "source": "economica",
@@ -826,6 +1028,26 @@
       "Uniunea Europeană"
     ],
     "icon": "gavel",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://avantaje.ro/articol/alina-si-ilan-laufer-nu-au-inchis-capitolul-copii-anuntul-blondinei-la-43-de-ani",
+    "original_link": "https://www.avantaje.ro/articol/alina-si-ilan-laufer-nu-au-inchis-capitolul-copii-anuntul-blondinei-la-43-de-ani",
+    "source": "avantaje",
+    "source_name": "Avantaje",
+    "source_lang": "ro",
+    "title": "Alina și Ilan Laufer își doresc încă un copil",
+    "category": "lifestyle",
+    "published": "2026-07-17T13:12:28+00:00",
+    "model": "B",
+    "teaser": "Alina Laufer, mama a patru copii, a dezvăluit că își dorește să mărească familia alături de soțul ei, Ilan Laufer. Vedeta se declară împlinită ca mamă.",
+    "entities": [
+      "Alina Laufer",
+      "Ilan Laufer"
+    ],
+    "icon": null,
     "processed_by": "gemini",
     "prompt_version": "v2-esenta",
     "featured": false
@@ -945,6 +1167,28 @@
     "featured": false
   },
   {
+    "url": "https://tion.ro/stirile-judetului-timis/barna-cu-barna-spre-o-noua-viata-o-casa-traditionala-din-garliste-a-ajuns-la-muzeul-satului-banatean-2317839",
+    "original_link": "https://www.tion.ro/stirile-judetului-timis/barna-cu-barna-spre-o-noua-viata-o-casa-traditionala-din-garliste-a-ajuns-la-muzeul-satului-banatean-2317839/?utm_source=rss&utm_medium=referral&utm_campaign=hiraggregator",
+    "source": "tion",
+    "source_name": "Timiș Online",
+    "source_lang": "ro",
+    "title": "Casă tradițională din Gârliște, salvată și relocată la Muzeul Satului Bănățean",
+    "category": "local",
+    "published": "2026-07-17T12:48:04+00:00",
+    "model": "B",
+    "teaser": "O gospodărie tradițională veche din Gârliște, județul Caraș-Severin, a fost demontată și transportată la Muzeul Satului Bănățean din Timișoara pentru restaurare și reconstrucție.",
+    "entities": [
+      "Gârliște",
+      "Muzeul Satului Bănățean",
+      "Timișoara",
+      "Caraș-Severin"
+    ],
+    "icon": "building-monument",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
     "url": "https://cjtimis.ro/comunicate-de-presa/transparenta-decizionala-conferirea-titlului-de-cetatean-de-onoare-al-judetului-timis-doamnei-prof-univ-dr-margit-serban",
     "original_link": "https://www.cjtimis.ro/comunicate-de-presa/transparenta-decizionala-conferirea-titlului-de-cetatean-de-onoare-al-judetului-timis-doamnei-prof-univ-dr-margit-serban/?utm_source=rss&utm_medium=rss&utm_campaign=transparenta-decizionala-conferirea-titlului-de-cetatean-de-onoare-al-judetului-timis-doamnei-prof-univ-dr-margit-serban",
     "source": "cj_timis",
@@ -1014,6 +1258,45 @@
       "Cluj-Napoca"
     ],
     "icon": "home",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://tion.ro/lugoj/se-inchide-circulatia-pe-splaiul-tineretii-din-lugoj-2317824",
+    "original_link": "https://www.tion.ro/lugoj/se-inchide-circulatia-pe-splaiul-tineretii-din-lugoj-2317824/?utm_source=rss&utm_medium=referral&utm_campaign=hiraggregator",
+    "source": "tion",
+    "source_name": "Timiș Online",
+    "source_lang": "ro",
+    "title": "Circulația, închisă pe Splaiul Tinereții din Lugoj pentru regenerare urbană",
+    "category": "local",
+    "published": "2026-07-17T12:17:40+00:00",
+    "model": "B",
+    "teaser": "Primăria Lugoj închide complet circulația pe Splaiul Tinereții începând de luni, 20 iulie, pentru a demara o amplă investiție de regenerare urbană, afectând atât șoferii, cât și pietonii.",
+    "entities": [
+      "Lugoj",
+      "Splaiul Tinereții"
+    ],
+    "icon": null,
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://avantaje.ro/articol/ce-mananca-anca-turcasiu-la-cina-pentru-a-se-mentine-in-forma",
+    "original_link": "https://www.avantaje.ro/articol/ce-mananca-anca-turcasiu-la-cina-pentru-a-se-mentine-in-forma",
+    "source": "avantaje",
+    "source_name": "Avantaje",
+    "source_lang": "ro",
+    "title": "Dieta Ancăi Țurcașiu pentru o siluetă perfectă la 56 de ani",
+    "category": "lifestyle",
+    "published": "2026-07-17T12:12:47+00:00",
+    "model": "B",
+    "teaser": "Anca Țurcașiu, la 56 de ani, își menține silueta printr-o cină simplă și disciplină de fier. Actrița a dezvăluit secretul alimentației sale pentru a rămâne în formă.",
+    "entities": [
+      "Anca Țurcașiu"
+    ],
+    "icon": null,
     "processed_by": "gemini",
     "prompt_version": "v2-esenta",
     "featured": false
@@ -1438,6 +1721,26 @@
       "Selly"
     ],
     "icon": "building-monument",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://avantaje.ro/articol/s-a-deschis-cea-mai-mare-statiune-de-entertainment-de-pe-litoral-nibiru-prima-zi-sold-out-cu-50-000-vizitatorii",
+    "original_link": "https://www.avantaje.ro/articol/s-a-deschis-cea-mai-mare-statiune-de-entertainment-de-pe-litoral-nibiru-prima-zi-sold-out-cu-50-000-vizitatorii",
+    "source": "avantaje",
+    "source_name": "Avantaje",
+    "source_lang": "ro",
+    "title": "Deschiderea stațiunii NIBIRU pe litoral, cu 50.000 de vizitatori în prima zi",
+    "category": "local",
+    "published": "2026-07-17T10:25:49+00:00",
+    "model": "B",
+    "teaser": "NIBIRU, cea mai mare stațiune de entertainment de pe litoral, s-a deschis oficial cu 50.000 de vizitatori. Evenimentul a inclus concerte, spectacole și un show aviatic.",
+    "entities": [
+      "NIBIRU",
+      "Andrei Șelaru"
+    ],
+    "icon": "plane",
     "processed_by": "gemini",
     "prompt_version": "v2-esenta",
     "featured": false
@@ -24036,803 +24339,6 @@
       "Uniunea Europeană"
     ],
     "icon": "ship",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://zf.ro/companii/retail-agrobusiness/interviu-zf-ales-gigantul-german-k-rcher-piata-locala-detrimentul-23192188",
-    "original_link": "https://www.zf.ro/companii/retail-agrobusiness/interviu-zf-ales-gigantul-german-k-rcher-piata-locala-detrimentul-23192188",
-    "source": "zf",
-    "source_name": "Ziarul Financiar",
-    "source_lang": "ro",
-    "title": "Kärcher investește peste 115 mil. euro în România, CEO-ul explică decizia",
-    "category": "economic",
-    "published": "2026-07-10T21:07:00+00:00",
-    "model": "B",
-    "teaser": "Gigantul german Kärcher a ales piața din România pentru o investiție de peste 115 milioane de euro, CEO-ul Hartmut Jenner afirmând că alegerea a fost inspirată, în ciuda lipsei altor investitori.",
-    "entities": [
-      "Kärcher",
-      "România",
-      "Polonia",
-      "Hartmut Jenner"
-    ],
-    "icon": "building-factory",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://zf.ro/companii/retail-agrobusiness/producatorul-de-cosmetice-farmec-din-cluj-merge-inainte-cu-noua-23192230",
-    "original_link": "https://www.zf.ro/companii/retail-agrobusiness/producatorul-de-cosmetice-farmec-din-cluj-merge-inainte-cu-noua-23192230",
-    "source": "zf",
-    "source_name": "Ziarul Financiar",
-    "source_lang": "ro",
-    "title": "Farmec Cluj demarează anul viitor o nouă fabrică de 70 mil. euro",
-    "category": "economic",
-    "published": "2026-07-10T21:07:00+00:00",
-    "model": "B",
-    "teaser": "Producătorul de cosmetice Farmec din Cluj va începe anul viitor construcția unei noi fabrici în comuna Apahida, o investiție totală estimată la 70 de milioane de euro.",
-    "entities": [
-      "Farmec",
-      "Cluj",
-      "Apahida"
-    ],
-    "icon": "building-factory",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://zf.ro/business-construct/achizitionarea-unor-jucatori-locali-constructii-noul-pariu-23192231",
-    "original_link": "https://www.zf.ro/business-construct/achizitionarea-unor-jucatori-locali-constructii-noul-pariu-23192231",
-    "source": "zf",
-    "source_name": "Ziarul Financiar",
-    "source_lang": "ro",
-    "title": "Strabag achiziționează companii locale din construcții pentru extindere",
-    "category": "economic",
-    "published": "2026-07-10T21:07:00+00:00",
-    "model": "B",
-    "teaser": "Compania austriacă Strabag își consolidează prezența pe piața locală prin achiziționarea unor jucători din construcții, recent preluând Daroconstruct și Bawi.",
-    "entities": [
-      "Strabag",
-      "Daroconstruct",
-      "Bawi"
-    ],
-    "icon": "building-factory",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://gsp.ro/international/campionatul-mondial-de-fotbal-2026/live-spania-belgia-sferturile-campionatului-mondial-958946.html",
-    "original_link": "https://www.gsp.ro/international/campionatul-mondial-de-fotbal-2026/live-spania-belgia-sferturile-campionatului-mondial-958946.html",
-    "source": "gsp",
-    "source_name": "GSP",
-    "source_lang": "ro",
-    "title": "Spania, în semifinalele Mondialului după victoria cu Belgia",
-    "category": "sport",
-    "published": "2026-07-10T21:05:42+00:00",
-    "model": "B",
-    "teaser": "Spania a învins Belgia cu 2-1 în sferturile de finală ale Campionatului Mondial. Golul decisiv a venit în urma unei gafe a portarului de rezervă belgian. Spania va întâlni Franța în semifinale.",
-    "entities": [
-      "Spania",
-      "Belgia",
-      "Franța"
-    ],
-    "icon": "ball-football",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://spotmedia.ro/stiri/timp-liber/cele-mai-bune-insule-din-europa-pentru-vacante-in-2026-clasificate-dupa-vreme-mancare-si-spatii-verzi",
-    "original_link": "https://spotmedia.ro/stiri/timp-liber/cele-mai-bune-insule-din-europa-pentru-vacante-in-2026-clasificate-dupa-vreme-mancare-si-spatii-verzi",
-    "source": "spotmedia",
-    "source_name": "Spotmedia",
-    "source_lang": "ro",
-    "title": "Studiu clasifică cele mai bune insule europene pentru vacanțe în 2026",
-    "category": "general",
-    "published": "2026-07-10T21:05:00+00:00",
-    "model": "B",
-    "teaser": "Un nou studiu realizat de Saga Holidays evaluează insulele europene pentru vacanțe în 2026, luând în considerare criterii precum vremea, gastronomia și spațiile verzi, pentru a ghida alegerile turiștilor.",
-    "entities": [
-      "Europa",
-      "Saga Holidays"
-    ],
-    "icon": "sun",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://spotmedia.ro/stiri/sanatate/ar-trebui-sa-mancam-la-fiecare-doua-trei-ore-pentru-a-ne-accelera-metabolismul",
-    "original_link": "https://spotmedia.ro/stiri/sanatate/ar-trebui-sa-mancam-la-fiecare-doua-trei-ore-pentru-a-ne-accelera-metabolismul",
-    "source": "spotmedia",
-    "source_name": "Spotmedia",
-    "source_lang": "ro",
-    "title": "Mâncatul frecvent nu accelerează metabolismul, susțin specialiștii",
-    "category": "general",
-    "published": "2026-07-10T21:03:00+00:00",
-    "model": "B",
-    "teaser": "Specialiștii contrazic ideea că mesele frecvente accelerează metabolismul. Digestia consumă puțină energie suplimentară, iar activitatea fizică este cheia controlului greutății.",
-    "entities": [],
-    "icon": null,
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://spotmedia.ro/stiri/sanatate/nu-trebuie-sa-astepti-anul-nou-ce-spun-psihologii-despre-momentul-ideal-pentru-schimbare",
-    "original_link": "https://spotmedia.ro/stiri/sanatate/nu-trebuie-sa-astepti-anul-nou-ce-spun-psihologii-despre-momentul-ideal-pentru-schimbare",
-    "source": "spotmedia",
-    "source_name": "Spotmedia",
-    "source_lang": "ro",
-    "title": "Psihologii: Orice moment poate fi ideal pentru schimbare, nu doar Anul Nou",
-    "category": "general",
-    "published": "2026-07-10T21:02:00+00:00",
-    "model": "B",
-    "teaser": "Psihologii susțin că nu este necesar să așteptăm Anul Nou pentru schimbări majore. Orice perioadă percepută ca un nou început, precum începutul săptămânii sau ziua de naștere, poate stimula adoptarea unor obiceiuri noi.",
-    "entities": [
-      "Psihologi"
-    ],
-    "icon": "writing",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://spotmedia.ro/stiri/opinii-si-analize/sistemul-de-mobilizare-al-ucrainei-a-dus-la-o-revolta-ce-s-a-intamplat-la-liov-e-un-avertisment-puternic-pentru-kiev",
-    "original_link": "https://spotmedia.ro/stiri/opinii-si-analize/sistemul-de-mobilizare-al-ucrainei-a-dus-la-o-revolta-ce-s-a-intamplat-la-liov-e-un-avertisment-puternic-pentru-kiev",
-    "source": "spotmedia",
-    "source_name": "Spotmedia",
-    "source_lang": "ro",
-    "title": "Revoltă la Liov: Confruntări violente între cetățeni și autorități pe tema mobilizării",
-    "category": "politic",
-    "published": "2026-07-10T21:00:00+00:00",
-    "model": "B",
-    "teaser": "Aproximativ 200 de persoane au intrat în conflict cu agenții de recrutare și poliția în Liov, Ucraina, în timpul unui control al documentelor de mobilizare. Incidentul reprezintă un avertisment pentru guvernul de la Kiev.",
-    "entities": [
-      "Liov",
-      "Ucraina",
-      "Kiev"
-    ],
-    "icon": "alert-triangle",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://hotnews.ro/apple-da-in-judecata-openai-intr-un-proces-cu-acuzatii-dure-ruptura-in-relatiile-dintre-fostii-parteneri-2297554",
-    "original_link": "https://hotnews.ro/apple-da-in-judecata-openai-intr-un-proces-cu-acuzatii-dure-ruptura-in-relatiile-dintre-fostii-parteneri-2297554",
-    "source": "hotnews",
-    "source_name": "HotNews",
-    "source_lang": "ro",
-    "title": "Apple acuză OpenAI de furt de proprietate intelectuală",
-    "category": "tech",
-    "published": "2026-07-10T20:58:07+00:00",
-    "model": "C",
-    "teaser": "Apple acuză OpenAI de furt de proprietate intelectuală pentru dezvoltarea de hardware. Procesul federal a fost intentat în Carolina de Nord, marcând o ruptură între parteneri.",
-    "entities": [
-      "Apple",
-      "OpenAI"
-    ],
-    "icon": "device-mobile",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false,
-    "sources": [
-      {
-        "name": "HotNews",
-        "url": "https://hotnews.ro/apple-da-in-judecata-openai-intr-un-proces-cu-acuzatii-dure-ruptura-in-relatiile-dintre-fostii-parteneri-2297554"
-      },
-      {
-        "name": "Economica",
-        "url": "https://www.economica.net/proces-intre-gigantii-din-industria-tech-apple-a-dat-in-judecata-openai-pentru-furt-de-secrete-comerciale_958447.html"
-      }
-    ],
-    "first_source": "HotNews",
-    "synthesis": "Apple a intentat un proces federal împotriva OpenAI în Carolina de Nord, acuzând compania de inteligență artificială că a utilizat secrete comerciale furate pentru a-și dezvolta propriile produse AI. Acest demers marchează o ruptură între cele două companii partenere."
-  },
-  {
-    "url": "https://hotnews.ro/un-senator-american-spune-ca-drumul-pentru-a-obtine-pacea-in-ucraina-trece-mai-degraba-prin-beijing-decat-prin-washington-kiev-sau-moscova-2297548",
-    "original_link": "https://hotnews.ro/un-senator-american-spune-ca-drumul-pentru-a-obtine-pacea-in-ucraina-trece-mai-degraba-prin-beijing-decat-prin-washington-kiev-sau-moscova-2297548",
-    "source": "hotnews",
-    "source_name": "HotNews",
-    "source_lang": "ro",
-    "title": "Senator american: Pace în Ucraina prin China, nu prin Washington",
-    "category": "politic",
-    "published": "2026-07-10T20:57:09+00:00",
-    "model": "B",
-    "teaser": "China poate convinge Rusia să negocieze pacea în Ucraina, a declarat senatorul Lindsey Graham. Următoarele luni sunt o fereastră de oportunitate diplomatică.",
-    "entities": [
-      "China",
-      "Rusia",
-      "Washington",
-      "Lindsey Graham"
-    ],
-    "icon": "flag",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://gsp.ro/international/stranieri/lisav-eissat-a-fost-anuntat-de-bristol-city-959205.html",
-    "original_link": "https://www.gsp.ro/international/stranieri/lisav-eissat-a-fost-anuntat-de-bristol-city-959205.html",
-    "source": "gsp",
-    "source_name": "GSP",
-    "source_lang": "ro",
-    "title": "Lisav Eissat, transferat la Bristol City din Championship",
-    "category": "sport",
-    "published": "2026-07-10T20:52:55+00:00",
-    "model": "B",
-    "teaser": "Internaționalul român Lisav Eissat (21 de ani) a fost oficial prezentat de clubul englez Bristol City, care evoluează în Championship. Transferul a fost anunțat pe rețelele sociale.",
-    "entities": [
-      "Lisav Eissat",
-      "Bristol City"
-    ],
-    "icon": "ball-football",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://digi24.ro/campionatul-mondal-de-fotbal-2026/cm-2026-decizii-de-arbitraj-corupte-argentina-nu-a-castigat-federatia-argentiniana-victima-a-unui-atac-cibernetic-3857655",
-    "original_link": "https://www.digi24.ro/campionatul-mondal-de-fotbal-2026/cm-2026-decizii-de-arbitraj-corupte-argentina-nu-a-castigat-federatia-argentiniana-victima-a-unui-atac-cibernetic-3857655",
-    "source": "digi24",
-    "source_name": "Digi24",
-    "source_lang": "ro",
-    "title": "Federația Argentiniană, victima unui atac cibernetic după acuzații de corupție la arbitraj",
-    "category": "sport",
-    "published": "2026-07-10T20:52:33+00:00",
-    "model": "B",
-    "teaser": "AFA a anunțat un atac cibernetic după scurgerea unui e-mail ce contesta arbitrajul în meciul cu Egiptul. Sursa infecției cibernetice nu a fost identificată.",
-    "entities": [
-      "Federația Argentiniană de Fotbal",
-      "AFA",
-      "François Letexier",
-      "Egipt"
-    ],
-    "icon": "ball-football",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://digi24.ro/stiri/actualitate/ancheta-epidemiologica-dupa-cazul-de-legioneloza-la-o-angajata-metrorex-insp-femeia-nu-a-fost-expusa-la-apa-din-piata-victoriei-2-3857653",
-    "original_link": "https://www.digi24.ro/stiri/actualitate/ancheta-epidemiologica-dupa-cazul-de-legioneloza-la-o-angajata-metrorex-insp-femeia-nu-a-fost-expusa-la-apa-din-piata-victoriei-2-3857653",
-    "source": "digi24",
-    "source_name": "Digi24",
-    "source_lang": "ro",
-    "title": "Anchetă epidemiologică pentru legioneloză la o angajată Metrorex",
-    "category": "general",
-    "published": "2026-07-10T20:51:53+00:00",
-    "model": "B",
-    "teaser": "INSP investighează un caz de legioneloză la o angajată Metrorex. Femeia nu a fost expusă la apa din stația Piața Victoriei 2, iar sursa infecției rămâne necunoscută.",
-    "entities": [
-      "Institutul Naţional de Sănătate Publică",
-      "INSP",
-      "Metrorex",
-      "Piaţa Victoriei 2"
-    ],
-    "icon": "building-hospital",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://digi24.ro/magazin/stil-de-viata/animale/cea-mai-batrana-ursoaica-polara-aflata-in-captivitate-a-murit-larissa-avea-36-de-ani-un-record-pentru-aceasta-specie-3857659",
-    "original_link": "https://www.digi24.ro/magazin/stil-de-viata/animale/cea-mai-batrana-ursoaica-polara-aflata-in-captivitate-a-murit-larissa-avea-36-de-ani-un-record-pentru-aceasta-specie-3857659",
-    "source": "extern",
-    "source_name": "Digi24 Extern",
-    "source_lang": "ro",
-    "title": "Cea mai bătrână ursoaică polară din captivitate a murit la 36 de ani",
-    "category": "general",
-    "published": "2026-07-10T20:50:39+00:00",
-    "model": "B",
-    "teaser": "Larissa, considerată cea mai în vârstă femelă de urs polar din captivitate din lume, a decedat la vârsta de 36 de ani. Anunțul a fost făcut de o grădină zoologică din nordul Germaniei.",
-    "entities": [
-      "Larissa",
-      "Germania"
-    ],
-    "icon": "trees",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://digi24.ro/magazin/stil-de-viata/animale/cea-mai-batrana-ursoaica-polara-aflata-in-captivitate-a-murit-larissa-avea-36-de-ani-un-record-pentru-aceasta-specie-3857659",
-    "original_link": "https://www.digi24.ro/magazin/stil-de-viata/animale/cea-mai-batrana-ursoaica-polara-aflata-in-captivitate-a-murit-larissa-avea-36-de-ani-un-record-pentru-aceasta-specie-3857659",
-    "source": "digi24",
-    "source_name": "Digi24",
-    "source_lang": "ro",
-    "title": "A murit cea mai bătrână ursoaică polară din captivitate, Larissa, la 36 de ani",
-    "category": "general",
-    "published": "2026-07-10T20:50:39+00:00",
-    "model": "B",
-    "teaser": "Larissa, considerată cea mai în vârstă ursoaică polară din captivitate la nivel mondial, a decedat la vârsta de 36 de ani. Anunțul a fost făcut de o grădină zoologică din nordul Germaniei.",
-    "entities": [
-      "Larissa",
-      "Germania"
-    ],
-    "icon": null,
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://digi24.ro/stiri/externe/moldova/moldova-va-primi-cel-mai-mare-pachet-de-sprijin-pentru-apararea-aeriana-din-istorie-din-partea-ue-3857665",
-    "original_link": "https://www.digi24.ro/stiri/externe/moldova/moldova-va-primi-cel-mai-mare-pachet-de-sprijin-pentru-apararea-aeriana-din-istorie-din-partea-ue-3857665",
-    "source": "digi24",
-    "source_name": "Digi24",
-    "source_lang": "ro",
-    "title": "UE oferă Moldovei cel mai mare sprijin militar aerian",
-    "category": "extern",
-    "published": "2026-07-10T20:49:14+00:00",
-    "model": "B",
-    "teaser": "Republica Moldova va primi 100 de milioane de euro de la Uniunea Europeană pentru a-și întări apărarea antiaeriană. Aceasta reprezintă cea mai mare sumă alocată vreodată de UE pentru acest scop în Moldova.",
-    "entities": [
-      "Moldova",
-      "UE"
-    ],
-    "icon": "shield",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://digisport.ro/fotbal/cm-2026/franta-a-primit-vestea-dupa-ce-kylian-mbappe-a-cerut-schimbare-la-meciul-cu-maroc-4371267",
-    "original_link": "https://www.digisport.ro/fotbal/cm-2026/franta-a-primit-vestea-dupa-ce-kylian-mbappe-a-cerut-schimbare-la-meciul-cu-maroc-4371267",
-    "source": "digisport",
-    "source_name": "Digi Sport",
-    "source_lang": "ro",
-    "title": "Mbappe a cerut schimbare în meciul Franței cu Maroc",
-    "category": "sport",
-    "published": "2026-07-10T20:46:49+00:00",
-    "model": "B",
-    "teaser": "Kylian Mbappe a solicitat înlocuirea în timpul partidei dintre Franța și Maroc, generând îngrijorare în tabăra franceză. Detaliile exacte ale motivului nu au fost comunicate imediat.",
-    "entities": [
-      "Franța",
-      "Kylian Mbappe",
-      "Maroc"
-    ],
-    "icon": "ball-football",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://digi24.ro/stiri/externe/ucraina-infiinteaza-un-comandament-special-pentru-atacuri-cu-raza-lunga-asupra-rusiei-ce-prevede-decretul-semnat-de-zelenski-3857663",
-    "original_link": "https://www.digi24.ro/stiri/externe/ucraina-infiinteaza-un-comandament-special-pentru-atacuri-cu-raza-lunga-asupra-rusiei-ce-prevede-decretul-semnat-de-zelenski-3857663",
-    "source": "extern",
-    "source_name": "Digi24 Extern",
-    "source_lang": "ro",
-    "title": "Ucraina creează Comandamentul de Atac cu Rază Lungă",
-    "category": "extern",
-    "published": "2026-07-10T20:46:40+00:00",
-    "model": "B",
-    "teaser": "Președintele Zelenski a semnat un decret pentru înființarea unui nou comandament militar, menit să slăbească capacitățile Rusiei prin atacuri țintite.",
-    "entities": [
-      "Ucraina",
-      "Volodimir Zelenski",
-      "Rusia"
-    ],
-    "icon": "rocket",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://digi24.ro/stiri/externe/ucraina-infiinteaza-un-comandament-special-pentru-atacuri-cu-raza-lunga-asupra-rusiei-ce-prevede-decretul-semnat-de-zelenski-3857663",
-    "original_link": "https://www.digi24.ro/stiri/externe/ucraina-infiinteaza-un-comandament-special-pentru-atacuri-cu-raza-lunga-asupra-rusiei-ce-prevede-decretul-semnat-de-zelenski-3857663",
-    "source": "digi24",
-    "source_name": "Digi24",
-    "source_lang": "ro",
-    "title": "Ucraina creează Comandamentul de Atac cu Rază Lungă",
-    "category": "extern",
-    "published": "2026-07-10T20:46:40+00:00",
-    "model": "B",
-    "teaser": "Președintele Zelenski a semnat un decret pentru înființarea unui nou comandament militar, menit să slăbească capacitățile Rusiei prin atacuri țintite.",
-    "entities": [
-      "Ucraina",
-      "Volodimir Zelenski",
-      "Rusia"
-    ],
-    "icon": "rocket",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://digisport.ro/fotbal/cm-2026/lovitura-de-teatru-a-picat-vizita-medicala-si-transferul-carierei-fix-dupa-cupa-mondiala-4371181",
-    "original_link": "https://www.digisport.ro/fotbal/cm-2026/lovitura-de-teatru-a-picat-vizita-medicala-si-transferul-carierei-fix-dupa-cupa-mondiala-4371181",
-    "source": "digisport",
-    "source_name": "Digi Sport",
-    "source_lang": "ro",
-    "title": "Transferul carierei a picat după vizita medicală",
-    "category": "sport",
-    "published": "2026-07-10T20:31:21+00:00",
-    "model": "B",
-    "teaser": "Un fotbalist important a ratat transferul carierei imediat după Cupa Mondială, deoarece vizita medicală a eșuat. Detaliile despre jucător și club nu au fost dezvăluite.",
-    "entities": [
-      "Cupa Mondială"
-    ],
-    "icon": "ball-football",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://digi24.ro/stiri/externe/ue/care-sunt-marile-rute-de-imigratie-ilegala-in-ue-frontex-anunta-o-scadere-cu-37-a-numarului-de-migranti-in-primele-6-luni-din-2026-3857633",
-    "original_link": "https://www.digi24.ro/stiri/externe/ue/care-sunt-marile-rute-de-imigratie-ilegala-in-ue-frontex-anunta-o-scadere-cu-37-a-numarului-de-migranti-in-primele-6-luni-din-2026-3857633",
-    "source": "extern",
-    "source_name": "Digi24 Extern",
-    "source_lang": "ro",
-    "title": "Frontex: Imigrația ilegală în UE a scăzut cu 37%",
-    "category": "extern",
-    "published": "2026-07-10T20:29:33+00:00",
-    "model": "B",
-    "teaser": "În primele șase luni din 2026, numărul migranților ilegali spre UE a scăzut semnificativ. Ruta principală rămâne Mediterana Centrală și de Est, unde peste 1.000 de persoane au murit.",
-    "entities": [
-      "Frontex",
-      "UE"
-    ],
-    "icon": "percentage",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://digi24.ro/stiri/externe/ue/care-sunt-marile-rute-de-imigratie-ilegala-in-ue-frontex-anunta-o-scadere-cu-37-a-numarului-de-migranti-in-primele-6-luni-din-2026-3857633",
-    "original_link": "https://www.digi24.ro/stiri/externe/ue/care-sunt-marile-rute-de-imigratie-ilegala-in-ue-frontex-anunta-o-scadere-cu-37-a-numarului-de-migranti-in-primele-6-luni-din-2026-3857633",
-    "source": "digi24",
-    "source_name": "Digi24",
-    "source_lang": "ro",
-    "title": "Frontex: Imigrația ilegală în UE a scăzut cu 37%",
-    "category": "extern",
-    "published": "2026-07-10T20:29:33+00:00",
-    "model": "B",
-    "teaser": "În primele șase luni din 2026, numărul migranților ilegali spre UE a scăzut semnificativ. Ruta principală rămâne Mediterana Centrală și de Est, unde peste 1.000 de persoane au murit.",
-    "entities": [
-      "Frontex",
-      "UE"
-    ],
-    "icon": "percentage",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://digisport.ro/fotbal/liga-1/a-dat-verdictul-dupa-ce-s-a-aflat-ca-nicolae-stanciu-isi-negociaza-revenirea-la-fcsb-4371053",
-    "original_link": "https://www.digisport.ro/fotbal/liga-1/a-dat-verdictul-dupa-ce-s-a-aflat-ca-nicolae-stanciu-isi-negociaza-revenirea-la-fcsb-4371053",
-    "source": "digisport",
-    "source_name": "Digi Sport",
-    "source_lang": "ro",
-    "title": "Verdict despre revenirea lui Stanciu la FCSB",
-    "category": "sport",
-    "published": "2026-07-10T20:27:36+00:00",
-    "model": "B",
-    "teaser": "S-a pronunțat un verdict oficial în privința posibilei reveniri a lui Nicolae Stanciu la clubul FCSB. Negocierile sunt în desfășurare, iar decizia finală este așteptată curând.",
-    "entities": [
-      "Nicolae Stanciu",
-      "FCSB"
-    ],
-    "icon": "ball-football",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://hotnews.ro/harry-si-meghan-s-au-intalnit-cu-regele-charles-pentru-prima-oara-in-patru-ani-unde-i-a-primit-suveranul-britanic-2297539",
-    "original_link": "https://hotnews.ro/harry-si-meghan-s-au-intalnit-cu-regele-charles-pentru-prima-oara-in-patru-ani-unde-i-a-primit-suveranul-britanic-2297539",
-    "source": "hotnews",
-    "source_name": "HotNews",
-    "source_lang": "ro",
-    "title": "Regele Charles s-a întâlnit cu Prințul Harry și familia sa",
-    "category": "general",
-    "published": "2026-07-10T20:27:25+00:00",
-    "model": "C",
-    "teaser": "Regele Charles al III-lea și Regina Camilla s-au întâlnit cu Prințul Harry, Meghan și copiii lor. Întâlnirea a avut loc după patru ani, familia regală venind din Europa.",
-    "entities": [
-      "Regele Charles",
-      "Prințul Harry",
-      "Meghan",
-      "Regina Camilla"
-    ],
-    "icon": "building-monument",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false,
-    "sources": [
-      {
-        "name": "HotNews",
-        "url": "https://hotnews.ro/harry-si-meghan-s-au-intalnit-cu-regele-charles-pentru-prima-oara-in-patru-ani-unde-i-a-primit-suveranul-britanic-2297539"
-      },
-      {
-        "name": "Știrile ProTV",
-        "url": "https://stirileprotv.ro/show-buzz/entertainment/regele-charles-si-a-vazut-nepotii-pentru-prima-data-dupa-patru-ani-printul-harry-meghan-si-copiii-lor-in-vizita-la-palat.html"
-      }
-    ],
-    "first_source": "HotNews",
-    "synthesis": "Regele Charles al III-lea și Regina Camilla au avut o întâlnire cu Prințul Harry, Meghan și cei doi copii ai lor, Archie și Lilibet. Aceasta este prima întâlnire a Regelui cu nepoții săi după o pauză de patru ani, vizita având loc la Palat, în timp ce familia regală se afla în Europa."
-  },
-  {
-    "url": "https://gsp.ro/fotbal/liga-1/otelul-si-a-lansat-noul-echipament-pentru-sezonul-2026-2027-959197.html",
-    "original_link": "https://www.gsp.ro/fotbal/liga-1/otelul-si-a-lansat-noul-echipament-pentru-sezonul-2026-2027-959197.html",
-    "source": "gsp",
-    "source_name": "GSP",
-    "source_lang": "ro",
-    "title": "Oțelul Galați, noul echipament dedicat aniversării Supercupei",
-    "category": "sport",
-    "published": "2026-07-10T20:25:29+00:00",
-    "model": "B",
-    "teaser": "Oțelul Galați și-a lansat echipamentul pentru sezonul 2026-2027. Noul tricou omagiază cei 15 ani de la câștigarea Supercupei României în 2011.",
-    "entities": [
-      "Oțelul Galați"
-    ],
-    "icon": null,
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://digi24.ro/stiri/externe/ue/trebuie-sa-fim-pregatiti-pentru-cel-mai-rau-scenariu-avertisment-pentru-europa-de-la-varful-agentiei-internationale-pentru-energie-3857631",
-    "original_link": "https://www.digi24.ro/stiri/externe/ue/trebuie-sa-fim-pregatiti-pentru-cel-mai-rau-scenariu-avertisment-pentru-europa-de-la-varful-agentiei-internationale-pentru-energie-3857631",
-    "source": "extern",
-    "source_name": "Digi24 Extern",
-    "source_lang": "ro",
-    "title": "AIE avertizează Europa asupra riscurilor închiderii Strâmtorii Ormuz",
-    "category": "extern",
-    "published": "2026-07-10T20:22:53+00:00",
-    "model": "B",
-    "teaser": "Șeful Agenției Internaționale pentru Energie, Fatih Birol, a avertizat că închiderea Strâmtorii Ormuz ar avea consecințe grave pentru Europa și întreaga lume.",
-    "entities": [
-      "Agenția Internațională pentru Energie",
-      "Fatih Birol",
-      "Strâmtoarea Ormuz"
-    ],
-    "icon": "alert-triangle",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://gsp.ro/international/campionatul-mondial-de-fotbal-2026/bastian-schweinsteiger-penalty-kylian-mbappe-franta-maroc-959177.html",
-    "original_link": "https://www.gsp.ro/international/campionatul-mondial-de-fotbal-2026/bastian-schweinsteiger-penalty-kylian-mbappe-franta-maroc-959177.html",
-    "source": "gsp",
-    "source_name": "GSP",
-    "source_lang": "ro",
-    "title": "Schweinsteiger critică arbitrajul la Mondial: \"Penalty controversat\"",
-    "category": "sport",
-    "published": "2026-07-10T20:18:40+00:00",
-    "model": "B",
-    "teaser": "Fostul internațional german Bastian Schweinsteiger a criticat decizia arbitrului de a acorda penalty Franței în meciul cu Maroc. El consideră faultul asupra lui Mbappé discutabil.",
-    "entities": [
-      "Bastian Schweinsteiger",
-      "Franța",
-      "Maroc",
-      "Mbappé"
-    ],
-    "icon": "ball-football",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://digisport.ro/fotbal/cm-2026/record-doborat-in-spania-belgia-a-fost-nevoie-de-6-meciuri-ca-sa-incaseze-primul-gol-de-la-cupa-mondiala-4371177",
-    "original_link": "https://www.digisport.ro/fotbal/cm-2026/record-doborat-in-spania-belgia-a-fost-nevoie-de-6-meciuri-ca-sa-incaseze-primul-gol-de-la-cupa-mondiala-4371177",
-    "source": "digisport",
-    "source_name": "Digi Sport",
-    "source_lang": "ro",
-    "title": "Record de goluri încasate în 6 meciuri la Cupa Mondială",
-    "category": "sport",
-    "published": "2026-07-10T20:04:04+00:00",
-    "model": "B",
-    "teaser": "Echipa Spaniei a stabilit un nou record negativ la Cupa Mondială, fiind prima formație care a încasat un gol abia în cel de-al șaselea meci disputat. Adversara a fost Belgia.",
-    "entities": [
-      "Spania",
-      "Belgia",
-      "Cupa Mondială"
-    ],
-    "icon": "ball-football",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://hotnews.ro/o-fosta-deputata-britanica-sustinatoare-a-brexitului-ann-widdecombe-a-fost-gasita-moarta-la-domiciliu-cu-rani-grave-pe-corp-autoritatile-au-arestat-un-tanar-de-26-de-ani-2297522",
-    "original_link": "https://hotnews.ro/o-fosta-deputata-britanica-sustinatoare-a-brexitului-ann-widdecombe-a-fost-gasita-moarta-la-domiciliu-cu-rani-grave-pe-corp-autoritatile-au-arestat-un-tanar-de-26-de-ani-2297522",
-    "source": "hotnews",
-    "source_name": "HotNews",
-    "source_lang": "ro",
-    "title": "Fostă deputată britanică pro-Brexit, găsită moartă; un tânăr de 26 de ani, arestat",
-    "category": "politic",
-    "published": "2026-07-10T20:02:41+00:00",
-    "model": "B",
-    "teaser": "Poliția britanică a arestat un suspect de 26 de ani după moartea fostei deputate Ann Widdecombe. Femeia a fost găsită cu răni grave la domiciliu.",
-    "entities": [
-      "Ann Widdecombe",
-      "Reform UK"
-    ],
-    "icon": "gavel",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://digisport.ro/fotbal/cm-2026/lamine-yamal-a-intrat-definitiv-in-istoria-cupei-mondiale-dupa-ce-a-pasit-pe-teren-in-spania-belgia-4371141",
-    "original_link": "https://www.digisport.ro/fotbal/cm-2026/lamine-yamal-a-intrat-definitiv-in-istoria-cupei-mondiale-dupa-ce-a-pasit-pe-teren-in-spania-belgia-4371141",
-    "source": "digisport",
-    "source_name": "Digi Sport",
-    "source_lang": "ro",
-    "title": "Lamine Yamal, cel mai tânăr debutant la Cupa Mondială",
-    "category": "sport",
-    "published": "2026-07-10T19:57:00+00:00",
-    "model": "B",
-    "teaser": "Lamine Yamal a intrat în istoria Cupei Mondiale devenind cel mai tânăr jucător care a pășit pe teren. Performanța sa a avut loc în timpul meciului Spania - Belgia.",
-    "entities": [
-      "Lamine Yamal",
-      "Cupa Mondială",
-      "Spania",
-      "Belgia"
-    ],
-    "icon": "ball-football",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://hotnews.ro/ucraina-face-inca-un-pas-pentru-a-inteti-presiunea-dupa-atacurile-care-au-fortat-rusia-sa-ia-decizii-complicate-decretul-lui-zelenski-2297523",
-    "original_link": "https://hotnews.ro/ucraina-face-inca-un-pas-pentru-a-inteti-presiunea-dupa-atacurile-care-au-fortat-rusia-sa-ia-decizii-complicate-decretul-lui-zelenski-2297523",
-    "source": "hotnews",
-    "source_name": "HotNews",
-    "source_lang": "ro",
-    "title": "Ucraina înființează comandament pentru atacuri cu rază lungă",
-    "category": "politic",
-    "published": "2026-07-10T19:50:55+00:00",
-    "model": "B",
-    "teaser": "Președintele Zelenski a anunțat crearea unui nou comandament militar pentru atacuri cu rază lungă, intensificând presiunea asupra Rusiei prin țintirea infrastructurii energetice și logistice.",
-    "entities": [
-      "Ucraina",
-      "Volodimir Zelenski",
-      "Rusia"
-    ],
-    "icon": "rocket",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://digi24.ro/stiri/externe/zelenski-anunta-reformarea-fortelor-ucrainene-de-asalt-dupa-ce-peste-20-de-recruti-au-murit-in-timpul-antrenamentului-de-baza-3857577",
-    "original_link": "https://www.digi24.ro/stiri/externe/zelenski-anunta-reformarea-fortelor-ucrainene-de-asalt-dupa-ce-peste-20-de-recruti-au-murit-in-timpul-antrenamentului-de-baza-3857577",
-    "source": "extern",
-    "source_name": "Digi24 Extern",
-    "source_lang": "ro",
-    "title": "Ucraina reformează forțele de asalt după decese în antrenamente",
-    "category": "politic",
-    "published": "2026-07-10T19:40:50+00:00",
-    "model": "B",
-    "teaser": "Președintele Zelenski a anunțat o reformă a unităților de asalt ucrainene, ca urmare a morții a peste 20 de recruți în timpul antrenamentelor de bază.",
-    "entities": [
-      "Ucraina",
-      "Volodimir Zelenski"
-    ],
-    "icon": "shield",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://digi24.ro/stiri/externe/ue/regele-charles-s-a-intalnit-cu-printul-harry-meghan-si-copiii-lor-pentru-prima-data-in-ultimii-patru-ani-3857569",
-    "original_link": "https://www.digi24.ro/stiri/externe/ue/regele-charles-s-a-intalnit-cu-printul-harry-meghan-si-copiii-lor-pentru-prima-data-in-ultimii-patru-ani-3857569",
-    "source": "extern",
-    "source_name": "Digi24 Extern",
-    "source_lang": "ro",
-    "title": "Regele Charles s-a întâlnit cu Prințul Harry și familia sa după patru ani",
-    "category": "general",
-    "published": "2026-07-10T19:37:38+00:00",
-    "model": "C",
-    "sources": [
-      {
-        "name": "Digi24 Extern",
-        "url": "https://www.digi24.ro/stiri/externe/ue/regele-charles-s-a-intalnit-cu-printul-harry-meghan-si-copiii-lor-pentru-prima-data-in-ultimii-patru-ani-3857569"
-      },
-      {
-        "name": "HotNews",
-        "url": "https://hotnews.ro/harry-si-meghan-s-au-intalnit-cu-regele-charles-pentru-prima-oara-in-patru-ani-unde-i-a-primit-suveranul-britanic-2297539"
-      }
-    ],
-    "first_source": "Digi24 Extern",
-    "synthesis": "Regele Charles al III-lea și Regina Camilla s-au întâlnit vineri cu Prințul Harry, Meghan și cei doi copii ai lor. Aceasta este prima întâlnire a familiei extinse în ultimii patru ani. Evenimentul a avut loc la Highgrove House, conform informațiilor raportate de presa britanică și agenția AFP.",
-    "entities": [
-      "Regele Charles",
-      "Prințul Harry",
-      "Meghan",
-      "Highgrove House"
-    ],
-    "icon": "certificate",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://spotmedia.ro/stiri/sanatate/insp-face-ancheta-epidemiologica-dupa-ce-o-angajata-metrorex-a-fost-diagnosticata-cu-legioneloza",
-    "original_link": "https://spotmedia.ro/stiri/sanatate/insp-face-ancheta-epidemiologica-dupa-ce-o-angajata-metrorex-a-fost-diagnosticata-cu-legioneloza",
-    "source": "spotmedia",
-    "source_name": "Spotmedia",
-    "source_lang": "ro",
-    "title": "Anchetă legioneloză la o angajată Metrorex, sursa infecției neidentificată",
-    "category": "general",
-    "published": "2026-07-10T19:34:56+00:00",
-    "model": "C",
-    "sources": [
-      {
-        "name": "Spotmedia",
-        "url": "https://spotmedia.ro/stiri/sanatate/insp-face-ancheta-epidemiologica-dupa-ce-o-angajata-metrorex-a-fost-diagnosticata-cu-legioneloza"
-      },
-      {
-        "name": "Digi24",
-        "url": "https://www.digi24.ro/stiri/actualitate/ancheta-epidemiologica-dupa-cazul-de-legioneloza-la-o-angajata-metrorex-insp-femeia-nu-a-fost-expusa-la-apa-din-piata-victoriei-2-3857653"
-      }
-    ],
-    "first_source": "Spotmedia",
-    "synthesis": "Institutul Național de Sănătate Publică investighează un caz de legioneloză confirmat la o angajată Metrorex. Autoritățile au precizat că femeia nu a fost expusă la apa care s-a revărsat recent în stația de metrou Piața Victoriei 2. Până în prezent, sursa infecției nu a fost identificată.",
-    "entities": [
-      "INSP",
-      "Metrorex",
-      "Piața Victoriei 2"
-    ],
-    "icon": "virus",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://digi24.ro/magazin/timp-liber/showbiz/patrick-bruel-vizat-de-o-noua-plangere-pentru-viol-victima-avea-16-ani-la-momentul-faptei-3857567",
-    "original_link": "https://www.digi24.ro/magazin/timp-liber/showbiz/patrick-bruel-vizat-de-o-noua-plangere-pentru-viol-victima-avea-16-ani-la-momentul-faptei-3857567",
-    "source": "extern",
-    "source_name": "Digi24 Extern",
-    "source_lang": "ro",
-    "title": "Patrick Bruel, acuzat de viol de o minoră de 16 ani",
-    "category": "general",
-    "published": "2026-07-10T19:32:28+00:00",
-    "model": "B",
-    "teaser": "Cântărețul francez Patrick Bruel este ținta unei noi plângeri pentru viol. Victima susține că agresiunea a avut loc în anii 2000, pe când ea avea doar 16 ani.",
-    "entities": [
-      "Patrick Bruel"
-    ],
-    "icon": "gavel",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://stirileprotv.ro/divers/cea-mai-batrana-femela-de-urs-polar-din-lume-aflata-in-captivitate-a-murit-la-36-de-ani.html",
-    "original_link": "https://stirileprotv.ro/divers/cea-mai-batrana-femela-de-urs-polar-din-lume-aflata-in-captivitate-a-murit-la-36-de-ani.html",
-    "source": "protv",
-    "source_name": "Știrile ProTV",
-    "source_lang": "ro",
-    "title": "A murit Larissa, cea mai bătrână ursoaică polară din captivitate",
-    "category": "general",
-    "published": "2026-07-10T19:27:46+00:00",
-    "model": "C",
-    "sources": [
-      {
-        "name": "Știrile ProTV",
-        "url": "https://stirileprotv.ro/divers/cea-mai-batrana-femela-de-urs-polar-din-lume-aflata-in-captivitate-a-murit-la-36-de-ani.html"
-      },
-      {
-        "name": "Digi24 Extern",
-        "url": "https://www.digi24.ro/magazin/stil-de-viata/animale/cea-mai-batrana-ursoaica-polara-aflata-in-captivitate-a-murit-larissa-avea-36-de-ani-un-record-pentru-aceasta-specie-3857659"
-      }
-    ],
-    "first_source": "Știrile ProTV",
-    "synthesis": "Larissa, considerată cea mai în vârstă femelă de urs polar din lume aflată în captivitate, a decedat la vârsta de 36 de ani. Anunțul a fost făcut vineri de o grădină zoologică din nordul Germaniei, conform informațiilor DPA.",
-    "entities": [
-      "Larissa",
-      "Germania"
-    ],
-    "icon": null,
     "processed_by": "gemini",
     "prompt_version": "v2-esenta",
     "featured": false
