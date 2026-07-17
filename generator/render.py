@@ -1,5 +1,6 @@
 """Randare SSG cu Jinja2 (autoescape ON) -> output/. Permalink-uri, sitemap, robots, feed, JSON-LD."""
 import logging
+import math
 import os
 import re
 import shutil
@@ -473,6 +474,10 @@ def build(articles: list, mod: dict | None = None) -> None:
     for s, d in ents.items():
         for a in d["articles"]:
             art_slugs.setdefault(a["url"], set()).add(s)
+    # pondere IDF/entitate pentru relevanta: o entitate rara conteaza mai mult decat una
+    # frecventa. Departajeaza candidatii "articole conectate" dupa raritatea entitatilor comune.
+    _n_docs = max(len(by_date), 1)
+    idf = {s: math.log(_n_docs / len(d["articles"])) for s, d in ents.items()}
     subject_tpl = env.get_template("subject.html")
     for s, d in ents.items():
         has_feed = len(d["articles"]) >= 3
@@ -524,7 +529,10 @@ def build(articles: list, mod: dict | None = None) -> None:
                     people.append({**p, "slug": s if s in ents else None})
                 if len(people) >= 2:
                     break
-            # articole conectate: cele mai multe entitati comune, apoi recenta
+            # articole conectate: minim RELATED_MIN_SHARED entitati comune (o singura
+            # entitate comuna — de regula o tara larga ca "Franța" — nu e relevanta reala,
+            # doar zgomot). Rang dupa numar de entitati comune, apoi raritatea lor (IDF),
+            # apoi recenta. Sub prag => lista goala, sablonul ascunde sectiunea.
             mine = art_slugs.get(a["url"], set())
             related = []
             if mine:
@@ -535,10 +543,14 @@ def build(articles: list, mod: dict | None = None) -> None:
                         if other["url"] in seen_urls:
                             continue
                         seen_urls.add(other["url"])
-                        shared = len(mine & art_slugs.get(other["url"], set()))
-                        scored.append((shared, other.get("published") or "", other))
-                scored.sort(key=lambda t: (t[0], t[1]), reverse=True)
-                related = [t[2] for t in scored[:3]]
+                        common = mine & art_slugs.get(other["url"], set())
+                        if len(common) < config.RELATED_MIN_SHARED:
+                            continue
+                        weight = sum(idf.get(s, 0.0) for s in common)
+                        scored.append((len(common), weight,
+                                       other.get("published") or "", other))
+                scored.sort(key=lambda t: (t[0], t[1], t[2]), reverse=True)
+                related = [t[3] for t in scored[:3]]
             og_image = a.get("cover_url")
             jsonld = _article_jsonld(a)
             if og_image:
