@@ -87,6 +87,19 @@ def _valid_category(cat: str, fallback: str) -> str:
     return cat if cat in config.CATEGORIES else fallback
 
 
+def _resolve_category(item: dict, ai_cat: str) -> str:
+    """Categoria finala a unui articol.
+
+    Rubricile GEOGRAFICE (config.PINNED_CATEGORIES, ex. 'local') sunt o axa proprie:
+    un articol de la un ziar judetean ramane in sectiunea lui geografica, nu e mutat
+    pe axa de TEMA (sport/politic) de catre AI -- altfel sectiunea locala s-ar goli.
+    La fetch, item['category'] = categoria sursei, inainte ca AI sa o suprascrie.
+    """
+    if item.get("category") in getattr(config, "PINNED_CATEGORIES", set()):
+        return item["category"]
+    return _valid_category(ai_cat, item.get("category", "general"))
+
+
 _ICON_SLUGS = ("gavel certificate building-monument podium writing percentage receipt-tax "
                "building-bank currency-euro pig-money chart-line building-factory shopping-cart "
                "bolt gas-station tractor swords rocket shield flag plane train car truck "
@@ -186,7 +199,7 @@ def process_batch(items: list, provider) -> list:
             it["model"] = "B"
             it["title"] = title
             it["teaser"] = truncate_words(teaser, config.TEASER_MAX_WORDS)
-            it["category"] = _valid_category(obj.get("category", ""), it.get("category", "general"))
+            it["category"] = _resolve_category(it, obj.get("category", ""))
             it["entities"] = _clean_entities(obj.get("entities"))
             it["icon"] = _clean_icon(obj.get("icon"))
             it["processed_by"] = provider.name
@@ -223,7 +236,7 @@ def process_single(item: dict, provider) -> dict | None:
     item["title"] = (data.get("title") or item.get("original_title", "")).strip()
     item["teaser"] = truncate_words(data.get("teaser", "") or "Detalii pe sursa.",
                                     config.TEASER_MAX_WORDS)
-    item["category"] = _valid_category(data.get("category", ""), item.get("category", "general"))
+    item["category"] = _resolve_category(item, data.get("category", ""))
     item["entities"] = _clean_entities(data.get("entities"))
     item["icon"] = _clean_icon(data.get("icon"))
     item["processed_by"] = provider.name
@@ -273,7 +286,7 @@ def process_cluster(group: list, provider) -> dict | None:
         rep["title"] = (data.get("title") or rep.get("original_title", "")).strip()
         rep["synthesis"] = truncate_words(data.get("synthesis", "") or "Detalii pe surse.",
                                           config.SYNTHESIS_MAX_WORDS)
-        rep["category"] = _valid_category(data.get("category", ""), rep.get("category", "general"))
+        rep["category"] = _resolve_category(rep, data.get("category", ""))
         rep["entities"] = _clean_entities(data.get("entities"))
         rep["icon"] = _clean_icon(data.get("icon"))
         rep["processed_by"] = provider.name
