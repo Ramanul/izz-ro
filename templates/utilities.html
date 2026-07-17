@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block title %}Utile — {{ site.name }}{% endblock %}
+{% block description %}Informații utile explicate simplu: salariul minim, pensia, acte, permise, locuințe. Ghiduri actualizate la zi cu răspunsuri la întrebările pe care le cauți.{% endblock %}
+{% block content %}
+<nav class="breadcrumbs" aria-label="Breadcrumb">
+  <a href="{{ base }}/">{{ site.name }}</a>
+  <span class="sep">/</span>
+  <span>Utile</span>
+</nav>
+
+<h1 class="section-title">📌 Ai nevoie să știi</h1>
+<p class="utility-index-intro">Informații utile, explicate simplu și actualizate la zi. Fiecare pagină răspunde la întrebările pe care le cauți: ce, cât, cum, unde, când.</p>
+
+{% set categories = {"bani": "💰 Bani", "acte": "📄 Acte", "auto": "🚗 Auto", "locuinte": "🏠 Locuințe"} %}
+
+{% for cat_key, cat_name in categories.items() %}
+  {% set cat_utils = utilities | selectattr("category", "equalto", cat_key) | list %}
+  {% if cat_utils %}
+  <h2 class="section-title">{{ cat_name }}</h2>
+  <div class="utility-grid">
+    {% for u in cat_utils %}
+    <a class="utility-card" href="{{ base }}/utile/{{ u.slug }}/">
+      <span class="utility-card-icon">{{ u.icon }}</span>
+      <span class="utility-card-title">{{ u.title }}</span>
+      <span class="utility-card-desc">{{ u.subtitle }}</span>
+      <span class="utility-card-updated">Actualizat: {{ u.last_updated }}</span>
+    </a>
+    {% endfor %}
+  </div>
+  {% endif %}
+{% endfor %}
+{% endblock %}

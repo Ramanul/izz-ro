@@ -1,0 +1,129 @@
+{% extends "base.html" %}
+{% block title %}{{ util.title }} — {{ site.name }}{% endblock %}
+{% block description %}{{ util.summary | striptags }}{% endblock %}
+{% block og_type %}article{% endblock %}
+{% block head_extra %}
+<script type="application/ld+json">{{ faq_jsonld | tojson }}</script>
+<script type="application/ld+json">{{ breadcrumb_jsonld | tojson }}</script>
+{% endblock %}
+{% block content %}
+<nav class="breadcrumbs" aria-label="Breadcrumb">
+  <a href="{{ base }}/">{{ site.name }}</a>
+  <span class="sep">/</span>
+  <a href="{{ base }}/utile/">Utile</a>
+  <span class="sep">/</span>
+  <span>{{ util.title }}</span>
+</nav>
+
+<article class="utility-page">
+  <header class="utility-hero">
+    <span class="utility-icon">{{ util.icon }}</span>
+    <h1>{{ util.title }}</h1>
+    <p class="utility-subtitle">{{ util.subtitle }}</p>
+  </header>
+
+  {# Rezumat 30 de secunde #}
+  <div class="utility-summary">
+    <h2>📌 Pe scurt</h2>
+    <p>{{ util.summary }}</p>
+    {% if util.value is defined %}
+    <div class="utility-value">
+      <span class="utility-value-num">{{ util.value_label }}</span>
+    </div>
+    {% endif %}
+    <div class="utility-meta">
+      <span>🕐 Actualizat: {{ util.last_updated }}</span>
+      {% if util.act_normativ %}<span>📜 {{ util.act_normativ }}</span>{% endif %}
+    </div>
+  </div>
+
+  {# Secțiuni #}
+  {% for s in util.sections %}
+  <section class="utility-section">
+    <h2>{{ s.heading }}</h2>
+    <div class="utility-body">{{ s.content_html | safe }}</div>
+  </section>
+  {% endfor %}
+
+  {# Calculator salariu (doar pentru salariul minim) #}
+  {% if util_id == 'salariul-minim' %}
+  <section class="utility-section">
+    <h2>🧮 Calculator salariu net</h2>
+    <div class="calculator">
+      <div class="calc-row">
+        <label for="calc-brut">Salariu brut (lei)</label>
+        <input type="number" id="calc-brut" value="{{ util.value }}" min="0" step="100" oninput="calcSalariu()">
+      </div>
+      <div class="calc-results">
+        <div class="calc-item">
+          <span class="calc-label">CAS (25%)</span>
+          <span class="calc-val" id="calc-cas">—</span>
+        </div>
+        <div class="calc-item">
+          <span class="calc-label">CASS (10%)</span>
+          <span class="calc-val" id="calc-cass">—</span>
+        </div>
+        <div class="calc-item">
+          <span class="calc-label">Bază impozabilă</span>
+          <span class="calc-val" id="calc-baza">—</span>
+        </div>
+        <div class="calc-item">
+          <span class="calc-label">Impozit (10%)</span>
+          <span class="calc-val" id="calc-impozit">—</span>
+        </div>
+        <div class="calc-item calc-total">
+          <span class="calc-label">SALARIU NET</span>
+          <span class="calc-val" id="calc-net">—</span>
+        </div>
+      </div>
+    </div>
+    <p class="calc-note">*Calcul estimativ pentru un angajat fără persoane în întreținere. Include deducerea personală de bază (20% × salariul minim brut). Nu include contribuția la Pilonul II de pensii (3,75% din CAS, opțional).</p>
+  </section>
+  <script>
+    function calcSalariu() {
+      var brut = parseFloat(document.getElementById('calc-brut').value) || 0;
+      var cas = Math.round(brut * 0.25);
+      var cass = Math.round(brut * 0.1);
+      var ded = Math.round({{ util.value }} * 0.2);
+      var baza = Math.max(0, brut - cas - cass - ded);
+      var impozit = Math.round(baza * 0.1);
+      var net = brut - cas - cass - impozit;
+      document.getElementById('calc-cas').textContent = cas + ' lei';
+      document.getElementById('calc-cass').textContent = cass + ' lei';
+      document.getElementById('calc-baza').textContent = baza + ' lei';
+      document.getElementById('calc-impozit').textContent = impozit + ' lei';
+      document.getElementById('calc-net').textContent = net + ' lei';
+    }
+    calcSalariu();
+  </script>
+  {% endif %}
+
+  {# Întrebări frecvente #}
+  {% if util.faq %}
+  <section class="utility-section">
+    <h2>❓ Întrebări frecvente</h2>
+    <div class="faq-list">
+      {% for item in util.faq %}
+      <details class="faq-item">
+        <summary>{{ item.question }}</summary>
+        <p>{{ item.answer }}</p>
+      </details>
+      {% endfor %}
+    </div>
+  </section>
+  {% endif %}
+
+  {# Știri legate #}
+  {% if related_news %}
+  <section class="utility-section">
+    <h2>📰 Știri despre acest subiect</h2>
+    <ul class="related-news-list">
+      {% for a in related_news %}
+      <li><a href="{{ base }}/{{ a.category }}/{{ a.slug }}/">{{ a.title }}</a>
+        <span class="related-meta">{{ a.category }} · {{ a.published_human }}</span></li>
+      {% endfor %}
+    </ul>
+  </section>
+  {% endif %}
+</article>
+{% endblock %}

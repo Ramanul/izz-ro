@@ -546,6 +546,7 @@ def build(articles: list, mod: dict | None = None) -> None:
                        article_jsonld=jsonld, breadcrumb_jsonld=breadcrumb_jsonld)))
 
     _render_legal(env)
+    _render_utilities(env, by_date)
     _write(os.path.join(OUT_DIR, "404.html"),
            env.get_template("category.html").render(**_base_ctx(
                "/404.html", category="Pagina negăsită", articles=[])))
@@ -592,6 +593,68 @@ def _render_md_dir(env: Environment, src_dir: str, url_prefix: str) -> None:
             if url_prefix.strip("/") else os.path.join(OUT_DIR, name, "index.html")
         _write(out, tpl.render(**_base_ctx(f"{url_prefix}/{name}/".replace("//", "/"),
                                            page_title=title, body_html=html, page_heading=title)))
+
+
+def _render_utilities(env: Environment, articles: list) -> None:
+    """Pagini-utilitate din data/utilities.json: ghiduri actualizate automat."""
+    import json as _json
+    utils_path = os.path.join(ROOT, "data", "utilities.json")
+    if not os.path.exists(utils_path):
+        return
+    with open(utils_path, "r", encoding="utf-8") as fh:
+        all_utils = _json.load(fh)
+    utility_tpl = env.get_template("utility.html")
+    utilities_tpl = env.get_template("utilities.html")
+    # Markdown -> HTML inainte de randare (Jinja2 nu are filtru custom simplu)
+    try:
+        import markdown as _md_lib
+    except ImportError:
+        _md_lib = None
+    def _render_md(s: str) -> str:
+        if _md_lib:
+            return _md_lib.markdown(s, extensions=["extra"])
+        return "<p>" + s.replace("\n\n", "</p><p>") + "</p>"
+    utils_list = []
+    for uid, util in all_utils.items():
+        util["slug"] = uid
+        # Pre-render markdown sections
+        for s in (util.get("sections") or []):
+            s["content_html"] = _render_md(s.get("content", ""))
+        utils_list.append(util)
+        # related news by tag match on title
+        tags = set((util.get("news_tags") or []))
+        related = []
+        for a in articles:
+            title = (a.get("title") or "").lower()
+            if any(t.lower() in title for t in tags):
+                related.append(a)
+            if len(related) >= 5:
+                break
+        # FAQPage JSON-LD
+        faq_jsonld = {
+            "@context": "https://schema.org", "@type": "FAQPage",
+            "mainEntity": [
+                {"@type": "Question", "name": item["question"],
+                 "acceptedAnswer": {"@type": "Answer", "text": item["answer"]}}
+                for item in util.get("faq", [])
+            ]
+        }
+        breadcrumb_jsonld = {
+            "@context": "https://schema.org", "@type": "BreadcrumbList",
+            "itemListElement": [
+                {"@type": "ListItem", "position": 1, "name": config.SITE["name"], "item": config.SITE["url"] + "/"},
+                {"@type": "ListItem", "position": 2, "name": "Utile", "item": config.SITE["url"] + "/utile/"},
+                {"@type": "ListItem", "position": 3, "name": util.get("title", uid)},
+            ]
+        }
+        _write(os.path.join(OUT_DIR, "utile", uid, "index.html"),
+               utility_tpl.render(**_base_ctx(
+                   f"/utile/{uid}/", util=util, util_id=uid, active_cat=None,
+                   related_news=related, faq_jsonld=faq_jsonld,
+                   breadcrumb_jsonld=breadcrumb_jsonld)))
+    # index page
+    _write(os.path.join(OUT_DIR, "utile", "index.html"),
+           utilities_tpl.render(**_base_ctx("/utile/", utilities=utils_list)))
 
 
 def _render_legal(env: Environment) -> None:
