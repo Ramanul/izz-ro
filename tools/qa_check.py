@@ -37,9 +37,12 @@ def main() -> int:
     incoherent = [a for a in C if not sources_coherent(a)]
     fallback = [a for a in pub if a.get("processed_by") == "fallback"]
 
-    # categorii goale (printre cele declarate)
+    # categorii goale (printre cele declarate); cele in insamantare doar avertizeaza
     cats = {a.get("category") for a in pub}
-    empty_cats = [c for c in config.CATEGORIES if c not in cats]
+    seed = getattr(config, "SEED_CATEGORIES", set())
+    empty_all = [c for c in config.CATEGORIES if c not in cats]
+    empty_cats = [c for c in empty_all if c not in seed]
+    empty_seed = [c for c in empty_all if c in seed]
 
     # duplicate de eveniment: titluri cu >=4 stem-uri comune
     stems = [({t[:6] for t in title_tokens(a.get("title", ""))}, a) for a in pub]
@@ -52,7 +55,8 @@ def main() -> int:
 
     print(f"=== QA izz.ro — {n} articole publicabile ({len(C)} C) ===")
     print(f"surse incoerente scapate de gate : {len(incoherent)}  (prag FAIL > {INCOHERENT_MAX})")
-    print(f"categorii goale                  : {empty_cats or 'niciuna'}")
+    print(f"categorii goale                  : {empty_cats or 'niciuna'}"
+          + (f"  (in insamantare, doar warn: {empty_seed})" if empty_seed else ""))
     print(f"fallback (fara AI)               : {len(fallback)} ({len(fallback)/n*100:.0f}%)")
     print(f"posibile duplicate de eveniment  : {dup} ({dup/n*100:.0f}%)  (warn > {DUP_WARN_RATE*100:.0f}%)")
 

@@ -502,7 +502,8 @@ def build(articles: list, mod: dict | None = None) -> None:
     cat_tpl = env.get_template("category.html")
     for cat in config.CATEGORIES:
         items = [a for a in by_date if a.get("category") == cat]
-        for page in range(0, len(items), 20):
+        # si categoriile inca goale (in insamantare) primesc pagina 1 — altfel nav-ul ar duce la 404
+        for page in range(0, max(len(items), 1), 20):
             page_items = _diversify(items[page:page+20])
             page_num = page // 20 + 1
             page_dir = os.path.join(OUT_DIR, cat) if page_num == 1 else os.path.join(OUT_DIR, cat, str(page_num))
