@@ -1,5 +1,27 @@
 [
   {
+    "url": "https://ziaruldeiasi.ro/stiri/video-petru-movila-la-zdi-tv-despre-relatia-cu-mihai-chirica-alianta-de-necesitate-cu-usr-la-alegeri-proiectele-si-restantele-iasului-sala-polivalenta-stadion-si-sed--1877210.html",
+    "original_link": "https://www.ziaruldeiasi.ro/stiri/video-petru-movila-la-zdi-tv-despre-relatia-cu-mihai-chirica-alianta-de-necesitate-cu-usr-la-alegeri-proiectele-si-restantele-iasului-sala-polivalenta-stadion-si-sed--1877210.html",
+    "source": "ziaruldeiasi",
+    "source_name": "Ziarul de Iași",
+    "source_lang": "ro",
+    "title": "Petru Movilă despre relația cu Mihai Chirica și proiectele Iașului",
+    "category": "local",
+    "published": "2026-07-17T23:04:43.996798+00:00",
+    "model": "B",
+    "teaser": "Petru Movilă explică la ZDI TV motivele colaborării cu Mihai Chirica și alianța politică, menționând proiecte precum sala polivalentă, stadionul și sediul Operei din Iași.",
+    "entities": [
+      "Petru Movilă",
+      "Mihai Chirica",
+      "Iași",
+      "ZDI TV"
+    ],
+    "icon": "writing",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
     "url": "https://tion.ro/azi-in-timisoara/ce-facem-astazi-18-iulie-2026-in-timisoara-2317473",
     "original_link": "https://www.tion.ro/azi-in-timisoara/ce-facem-astazi-18-iulie-2026-in-timisoara-2317473/?utm_source=rss&utm_medium=referral&utm_campaign=hiraggregator",
     "source": "tion",
@@ -18,6 +40,36 @@
       "Ceau, Cinema"
     ],
     "icon": "trees",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://libertatea.ro/stiri/nicusor-dan-atac-politicieni-alegeri-anticipate-imaturitate-5819200",
+    "original_link": "https://www.libertatea.ro/stiri/nicusor-dan-atac-politicieni-alegeri-anticipate-imaturitate-5819200",
+    "source": "libertatea",
+    "source_name": "Libertatea",
+    "source_lang": "ro",
+    "title": "Nicușor Dan respinge alegerile anticipate ca fiind un semn de imaturitate politică",
+    "category": "politic",
+    "published": "2026-07-17T19:46:01+00:00",
+    "model": "C",
+    "sources": [
+      {
+        "name": "Libertatea",
+        "url": "https://www.libertatea.ro/stiri/nicusor-dan-atac-politicieni-alegeri-anticipate-imaturitate-5819200"
+      },
+      {
+        "name": "Spotmedia",
+        "url": "https://spotmedia.ro/stiri/politica/nicusor-dan-romania-nu-este-un-dezastru-iar-anticipatele-ar-fi-un-semn-de-imaturitate-politica-ce-spune-despre-spp-si-serviciile-secrete"
+      }
+    ],
+    "first_source": "Libertatea",
+    "synthesis": "Președintele Nicușor Dan a criticat ferm ideea alegerilor anticipate, calificând-o drept neserioasă și un semn de imaturitate politică. El consideră că imaginea României este mai sumbră decât realitatea, iar partidele au răspuns parțial așteptărilor societății în ultimul an.",
+    "entities": [
+      "Nicușor Dan"
+    ],
+    "icon": "gavel",
     "processed_by": "gemini",
     "prompt_version": "v2-esenta",
     "featured": false
@@ -119,6 +171,25 @@
     "featured": false
   },
   {
+    "url": "https://sfatulparintilor.ro/horoscop-3/horoscop-saptamanal-3/zodiac-chinezesc",
+    "original_link": "https://sfatulparintilor.ro/horoscop-3/horoscop-saptamanal-3/zodiac-chinezesc/",
+    "source": "sfatulparintilor",
+    "source_name": "Sfatul Părinților",
+    "source_lang": "ro",
+    "title": "Zodiac chinezesc: Previziuni pentru săptămâna 20-26 iulie 2026",
+    "category": "lifestyle",
+    "published": "2026-07-17T19:10:00+00:00",
+    "model": "B",
+    "teaser": "Horoscopul chinezesc pentru perioada 20-26 iulie 2026 oferă perspective asupra norocului individual. Anul 2026 marchează Anul Calului de Foc, un eveniment rar.",
+    "entities": [
+      "Zodiac chinezesc"
+    ],
+    "icon": null,
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
     "url": "https://digisport.ro/fotbal/liga-1/noul-transfer-al-fcsb-ului-este-prezent-la-partida-cu-fc-arges-4383691",
     "original_link": "https://www.digisport.ro/fotbal/liga-1/noul-transfer-al-fcsb-ului-este-prezent-la-partida-cu-fc-arges-4383691",
     "source": "digisport",
@@ -179,6 +250,38 @@
       "George Merloi"
     ],
     "icon": "ball-football",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://stirileprotv.ro/stiri/actualitate/raport-ce-privind-statul-de-drept-in-romania-progrese-in-justi-ie-dar-persista-probleme-privind-corup-ia.html",
+    "original_link": "https://stirileprotv.ro/stiri/actualitate/raport-ce-privind-statul-de-drept-in-romania-progrese-in-justi-ie-dar-persista-probleme-privind-corup-ia.html",
+    "source": "protv",
+    "source_name": "Știrile ProTV",
+    "source_lang": "ro",
+    "title": "Comisia Europeană: Progrese în justiție, dar corupția persistă în România",
+    "category": "politic",
+    "published": "2026-07-17T17:40:53+00:00",
+    "model": "C",
+    "sources": [
+      {
+        "name": "Știrile ProTV",
+        "url": "https://stirileprotv.ro/stiri/actualitate/raport-ce-privind-statul-de-drept-in-romania-progrese-in-justi-ie-dar-persista-probleme-privind-corup-ia.html"
+      },
+      {
+        "name": "Digi24",
+        "url": "https://www.digi24.ro/stiri/actualitate/justitie/ministerul-justitiei-dupa-raportul-ce-privind-statul-de-drept-vom-depune-diligentele-necesare-pentru-indeplinirea-recomandarilor-3867255"
+      }
+    ],
+    "first_source": "Știrile ProTV",
+    "synthesis": "Comisia Europeană a publicat un raport privind statul de drept în România, evidențiind progrese în justiție, dar semnalând probleme continue legate de corupție, libertatea presei și predictibilitatea legislativă. Ministerul Justiției a promis eforturi pentru implementarea recomandărilor.",
+    "entities": [
+      "Comisia Europeană",
+      "România",
+      "Ministerul Justiției"
+    ],
+    "icon": "gavel",
     "processed_by": "gemini",
     "prompt_version": "v2-esenta",
     "featured": false
@@ -388,6 +491,28 @@
     "featured": false
   },
   {
+    "url": "https://unica.ro/stiri/leo-messi-si-lamine-yamal-motiv-de-negociere-in-curtea-muzeului-literaturii-romane-din-bucuresti-la-intalnirea-colectionarilor-de-stickere-panini-fifa-world-cup-823654",
+    "original_link": "https://www.unica.ro/stiri/leo-messi-si-lamine-yamal-motiv-de-negociere-in-curtea-muzeului-literaturii-romane-din-bucuresti-la-intalnirea-colectionarilor-de-stickere-panini-fifa-world-cup-823654",
+    "source": "unica",
+    "source_name": "Unica",
+    "source_lang": "ro",
+    "title": "Colecționari Panini se întâlnesc la Muzeul Literaturii Române",
+    "category": "cultura",
+    "published": "2026-07-17T15:53:33+00:00",
+    "model": "B",
+    "teaser": "Copiii din București au organizat un schimb de stickere Panini cu idoli precum Messi și Yamal la Muzeul Literaturii Române, înainte de finala Cupei Mondiale 2026, creând noi prietenii.",
+    "entities": [
+      "Leo Messi",
+      "Lamine Yamal",
+      "Muzeul Literaturii Române",
+      "Panini"
+    ],
+    "icon": "building-monument",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
     "url": "https://tion.ro/stirile-judetului-timis/video-scandal-la-scoala-gimnaziala-sacalaz-dupa-schimbarea-directorului-2317929",
     "original_link": "https://www.tion.ro/stirile-judetului-timis/video-scandal-la-scoala-gimnaziala-sacalaz-dupa-schimbarea-directorului-2317929/?utm_source=rss&utm_medium=referral&utm_campaign=hiraggregator",
     "source": "tion",
@@ -404,6 +529,25 @@
       "Inspectoratul Școlar Județean Timiș"
     ],
     "icon": "school",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://unica.ro/vedete/brenda-fricker-doamna-cu-porumbeii-din-singur-acasa-2-a-murit-la-81-de-ani-823599",
+    "original_link": "https://www.unica.ro/vedete/brenda-fricker-doamna-cu-porumbeii-din-singur-acasa-2-a-murit-la-81-de-ani-823599",
+    "source": "unica",
+    "source_name": "Unica",
+    "source_lang": "ro",
+    "title": "Actrița Brenda Fricker, „Doamna cu porumbeii”, a murit la 81 de ani",
+    "category": "cultura",
+    "published": "2026-07-17T15:15:19+00:00",
+    "model": "B",
+    "teaser": "Brenda Fricker, actrița irlandeză premiată cu Oscar și cunoscută din filmul „Singur acasă 2”, a decedat la vârsta de 81 de ani, lăsând în urmă o carieră remarcabilă în cinematografie.",
+    "entities": [
+      "Brenda Fricker"
+    ],
+    "icon": "movie",
     "processed_by": "gemini",
     "prompt_version": "v2-esenta",
     "featured": false
@@ -665,6 +809,26 @@
     "synthesis": "Brenda Fricker, actrița irlandeză premiată cu Oscar pentru rolul din \"My Left Foot\" și cunoscută din \"Home Alone 2\", a decedat la vârsta de 81 de ani. Cariera sa a cuprins producții de la Hollywood și seriale britanice. Anunțul decesului a fost confirmat de agentul său."
   },
   {
+    "url": "https://unica.ro/vedete/romanesti/patricia-vizitiu-rupe-tacerea-despre-momentele-tensionate-cu-gabi-tamas-de-la-survivor-ce-spune-despre-sotia-fostului-fotbalist-823643",
+    "original_link": "https://www.unica.ro/vedete/romanesti/patricia-vizitiu-rupe-tacerea-despre-momentele-tensionate-cu-gabi-tamas-de-la-survivor-ce-spune-despre-sotia-fostului-fotbalist-823643",
+    "source": "unica",
+    "source_name": "Unica",
+    "source_lang": "ro",
+    "title": "Patricia Vizitiu, despre tensiunile cu Gabi Tamaș la Survivor",
+    "category": "sport",
+    "published": "2026-07-17T14:34:37+00:00",
+    "model": "B",
+    "teaser": "Patricia Vizitiu a dezvăluit momente tensionate petrecute cu Gabi Tamaș în Republica Dominicană, explicând reacțiile diferite în fața presiunii și sacrificiile din sportul de performanță.",
+    "entities": [
+      "Patricia Vizitiu",
+      "Gabi Tamaș"
+    ],
+    "icon": "ball-basketball",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
     "url": "https://csid.ro/stiri/la-ce-folosesc-niturile-de-pe-blugi-nu-par-sa-aiba-nicio-utilitate-insa-au-un-rol-important-21253266",
     "original_link": "https://www.csid.ro/stiri/la-ce-folosesc-niturile-de-pe-blugi-nu-par-sa-aiba-nicio-utilitate-insa-au-un-rol-important-21253266/",
     "source": "csid",
@@ -798,6 +962,25 @@
     "featured": false
   },
   {
+    "url": "https://unica.ro/stiri/regula-celor-150-de-zile-cum-verifici-corect-valabilitatea-pasaportului-inainte-de-pleca-in-vacanta-823638",
+    "original_link": "https://www.unica.ro/stiri/regula-celor-150-de-zile-cum-verifici-corect-valabilitatea-pasaportului-inainte-de-pleca-in-vacanta-823638",
+    "source": "unica",
+    "source_name": "Unica",
+    "source_lang": "ro",
+    "title": "Verificarea pașaportului: Regula celor 150 de zile pentru vacanțe",
+    "category": "general",
+    "published": "2026-07-17T13:49:50+00:00",
+    "model": "B",
+    "teaser": "Poliția de Frontieră Română recomandă verificarea valabilității pașaportului cu cel puțin 150 de zile înainte de plecarea în vacanță, pentru a evita problemele la trecerea graniței în sezonul estival.",
+    "entities": [
+      "Poliția de Frontieră Română"
+    ],
+    "icon": "plane",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
     "url": "https://zcj.ro/eveniment/clujul-reprezentat-la-targul-de-fete-de-pe-muntele-gaina--298820.html",
     "original_link": "https://zcj.ro/eveniment/clujul-reprezentat-la-targul-de-fete-de-pe-muntele-gaina--298820.html",
     "source": "zcj",
@@ -814,6 +997,26 @@
       "Muntele Găina"
     ],
     "icon": "trees",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://unica.ro/vedete/oana-lis-dezvaluiri-despre-starea-lui-viorel-lis-fostul-edil-se-afla-intr-o-stare-critica-evolueaza-foarte-repede-823631",
+    "original_link": "https://www.unica.ro/vedete/oana-lis-dezvaluiri-despre-starea-lui-viorel-lis-fostul-edil-se-afla-intr-o-stare-critica-evolueaza-foarte-repede-823631",
+    "source": "unica",
+    "source_name": "Unica",
+    "source_lang": "ro",
+    "title": "Oana Lis, despre starea de sănătate a lui Viorel Lis",
+    "category": "lifestyle",
+    "published": "2026-07-17T13:37:52+00:00",
+    "model": "B",
+    "teaser": "Oana Lis a oferit clarificări despre starea de sănătate a fostului edil Viorel Lis, menționând că acesta trece printr-o perioadă dificilă, dar ea îi este alături și îl ajută constant.",
+    "entities": [
+      "Oana Lis",
+      "Viorel Lis"
+    ],
+    "icon": "building-hospital",
     "processed_by": "gemini",
     "prompt_version": "v2-esenta",
     "featured": false
@@ -883,6 +1086,25 @@
       "Singur acasă 2"
     ],
     "icon": "movie",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://unica.ro/vedete/cristina-ciobanasu-a-vorbit-despre-rezultatele-unei-analize-pe-care-a-facut-o-este-vorba-despre-un-test-genetic-care-a-relevat-mai-multe-informatii-despre-starea-lui-de-sanatate-ea-a-decis-sa-faca-i-823620",
+    "original_link": "https://www.unica.ro/vedete/cristina-ciobanasu-a-vorbit-despre-rezultatele-unei-analize-pe-care-a-facut-o-este-vorba-despre-un-test-genetic-care-a-relevat-mai-multe-informatii-despre-starea-lui-de-sanatate-ea-a-decis-sa-faca-i-823620",
+    "source": "unica",
+    "source_name": "Unica",
+    "source_lang": "ro",
+    "title": "Cristina Ciobănașu, predispusă la infarct la 29 de ani",
+    "category": "sanatate",
+    "published": "2026-07-17T13:21:01+00:00",
+    "model": "B",
+    "teaser": "Cristina Ciobănașu a aflat printr-un test genetic că este predispusă la infarct, la doar 29 de ani, după ce a discutat cu mama sa despre afecțiunile din familie.",
+    "entities": [
+      "Cristina Ciobănașu"
+    ],
+    "icon": "virus",
     "processed_by": "gemini",
     "prompt_version": "v2-esenta",
     "featured": false
@@ -1263,6 +1485,47 @@
     "featured": false
   },
   {
+    "url": "https://zcj.ro/sport/lista-posibilelor-adversare-pentru-u-si-cfr-in-turul-trei-preliminar-din-uefa-conference-league-peste-cine-ar-putea-da-clujenii--298817.html",
+    "original_link": "https://zcj.ro/sport/lista-posibilelor-adversare-pentru-u-si-cfr-in-turul-trei-preliminar-din-uefa-conference-league-peste-cine-ar-putea-da-clujenii--298817.html",
+    "source": "zcj",
+    "source_name": "Ziua de Cluj",
+    "source_lang": "ro",
+    "title": "Posibile adversare pentru \"U\" și CFR în Conference League",
+    "category": "local",
+    "published": "2026-07-17T12:30:00+00:00",
+    "model": "B",
+    "teaser": "Echipele \"U\" și CFR Cluj își pot afla potențialii adversari din turul trei preliminar al UEFA Conference League, dacă vor câștiga meciurile din turul secund.",
+    "entities": [
+      "U Cluj",
+      "CFR Cluj",
+      "UEFA Conference League"
+    ],
+    "icon": null,
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://zcj.ro/eveniment/sofer-surprins-in-timp-ce-conducea-relaxat-pe-contrasens-in-centrul-clujului-tot-el-a-dat-flash-uri--298816.html",
+    "original_link": "https://zcj.ro/eveniment/sofer-surprins-in-timp-ce-conducea-relaxat-pe-contrasens-in-centrul-clujului-tot-el-a-dat-flash-uri--298816.html",
+    "source": "zcj",
+    "source_name": "Ziua de Cluj",
+    "source_lang": "ro",
+    "title": "Șofer surprins pe contrasens în centrul Clujului",
+    "category": "local",
+    "published": "2026-07-17T12:23:00+00:00",
+    "model": "B",
+    "teaser": "Un incident rutier neobișnuit a avut loc în Cluj-Napoca, pe strada Cardinal Iuliu Hossu, unde un șofer a fost filmat circulând pe contrasens și a făcut flash-uri.",
+    "entities": [
+      "Cluj-Napoca",
+      "Cardinal Iuliu Hossu"
+    ],
+    "icon": "car",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
     "url": "https://tion.ro/lugoj/se-inchide-circulatia-pe-splaiul-tineretii-din-lugoj-2317824",
     "original_link": "https://www.tion.ro/lugoj/se-inchide-circulatia-pe-splaiul-tineretii-din-lugoj-2317824/?utm_source=rss&utm_medium=referral&utm_campaign=hiraggregator",
     "source": "tion",
@@ -1278,6 +1541,27 @@
       "Splaiul Tinereții"
     ],
     "icon": null,
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://zcj.ro/politica/ovidiu-cimpean-la-summitul-comunitatilor-locale-fiecare-euro-european-trebuie-sa-insemne-o-crestere-reala-a-calitatii-vietii--298815.html",
+    "original_link": "https://zcj.ro/politica/ovidiu-cimpean-la-summitul-comunitatilor-locale-fiecare-euro-european-trebuie-sa-insemne-o-crestere-reala-a-calitatii-vietii--298815.html",
+    "source": "zcj",
+    "source_name": "Ziua de Cluj",
+    "source_lang": "ro",
+    "title": "Ovidiu Cîmpean la Summitul Comunităților Locale",
+    "category": "local",
+    "published": "2026-07-17T12:14:00+00:00",
+    "model": "B",
+    "teaser": "Deputatul PNL Ovidiu Cîmpean a deschis Summitul Comunităților Locale la Palatul Parlamentului, subliniind necesitatea ca fondurile europene să contribuie la creșterea calității vieții.",
+    "entities": [
+      "Ovidiu Cîmpean",
+      "PNL",
+      "Palatul Parlamentului"
+    ],
+    "icon": "podium",
     "processed_by": "gemini",
     "prompt_version": "v2-esenta",
     "featured": false
@@ -1318,6 +1602,26 @@
       "Grecia"
     ],
     "icon": "sun",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://zcj.ro/economie/anat-pune-presiune-pe-guvern-si-cere-solutii-pentru-turism-si-horeca-scrisoare-pentru-bolojan--298814.html",
+    "original_link": "https://zcj.ro/economie/anat-pune-presiune-pe-guvern-si-cere-solutii-pentru-turism-si-horeca-scrisoare-pentru-bolojan--298814.html",
+    "source": "zcj",
+    "source_name": "Ziua de Cluj",
+    "source_lang": "ro",
+    "title": "ANAT cere Guvernului soluții pentru turism și HoReCa",
+    "category": "local",
+    "published": "2026-07-17T12:00:00+00:00",
+    "model": "B",
+    "teaser": "Asociația Națională a Agențiilor de Turism (ANAT) solicită Guvernului un mecanism de sprijin permanent pentru sectorul turismului și HoReCa, afectat de încetinirea economică.",
+    "entities": [
+      "ANAT",
+      "Guvern"
+    ],
+    "icon": "receipt-tax",
     "processed_by": "gemini",
     "prompt_version": "v2-esenta",
     "featured": false
@@ -2143,6 +2447,38 @@
       "Mădălina Manole"
     ],
     "icon": "gavel",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://pressalert.ro/2026/07/record-nedorit-in-ue-peste-75-din-cazurile-de-rujeola-provin-din-romania-salvati-copiii-lanseaza-campania-povesti-de-vaccinat-copiii",
+    "original_link": "https://www.pressalert.ro/2026/07/record-nedorit-in-ue-peste-75-din-cazurile-de-rujeola-provin-din-romania-salvati-copiii-lanseaza-campania-povesti-de-vaccinat-copiii/",
+    "source": "pressalert",
+    "source_name": "PressAlert Timișoara",
+    "source_lang": "ro",
+    "title": "România, lider european la cazurile de rujeolă",
+    "category": "local",
+    "published": "2026-07-17T09:00:28+00:00",
+    "model": "C",
+    "sources": [
+      {
+        "name": "PressAlert Timișoara",
+        "url": "https://www.pressalert.ro/2026/07/record-nedorit-in-ue-peste-75-din-cazurile-de-rujeola-provin-din-romania-salvati-copiii-lanseaza-campania-povesti-de-vaccinat-copiii/"
+      },
+      {
+        "name": "Știrile ProTV",
+        "url": "https://stirileprotv.ro/stiri/sanatate/salvati-copiii-peste-27-500-din-cei-32-000-de-copii-cu-rujeola-din-intreaga-europa-sunt-in-romania.html"
+      }
+    ],
+    "first_source": "PressAlert Timișoara",
+    "synthesis": "România înregistrează peste 75% din cazurile de rujeolă din Uniunea Europeană, conform datelor recente. Peste 27.500 de copii din UE au fost diagnosticați cu această boală, majoritatea în țara noastră. Organizația Salvați Copiii a lansat o campanie de conștientizare privind vaccinarea.",
+    "entities": [
+      "România",
+      "Uniunea Europeană",
+      "Salvați Copiii"
+    ],
+    "icon": "virus",
     "processed_by": "gemini",
     "prompt_version": "v2-esenta",
     "featured": false
@@ -23957,388 +24293,6 @@
       "Belgia"
     ],
     "icon": "ball-football",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://bbc.co.uk/news/articles/c3dyyln23v8o?at_medium=RSS&at_campaign=rss",
-    "original_link": "https://www.bbc.co.uk/news/articles/c3dyyln23v8o?at_medium=RSS&at_campaign=rss",
-    "source": "bbc_europe",
-    "source_name": "BBC Europe",
-    "source_lang": "en",
-    "title": "Rusia țintește școli și autobuze în oraș ucrainean",
-    "category": "extern",
-    "published": "2026-07-10T23:02:35+00:00",
-    "model": "B",
-    "teaser": "Situația de securitate se deteriorează în Zaporizhzhia, un oraș dens populat din Ucraina, apropiat de linia frontului. Rusia își concentrează atacurile asupra clădirilor civile.",
-    "entities": [
-      "Rusia",
-      "Ucraina",
-      "Zaporizhzhia"
-    ],
-    "icon": "swords",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://gsp.ro/international/campionatul-mondial-de-fotbal-2026/selectionerul-spaniei-admite-nedreptatea-de-la-mondial-959244.html",
-    "original_link": "https://www.gsp.ro/international/campionatul-mondial-de-fotbal-2026/selectionerul-spaniei-admite-nedreptatea-de-la-mondial-959244.html",
-    "source": "gsp",
-    "source_name": "GSP",
-    "source_lang": "ro",
-    "title": "Selecționerul Spaniei explică deciziile tactice din meciul cu Belgia",
-    "category": "sport",
-    "published": "2026-07-10T22:37:24+00:00",
-    "model": "B",
-    "teaser": "Luis de la Fuente, antrenorul Spaniei, a justificat alegerile tactice din partida câștigată cu Belgia, inclusiv titularizarea lui Fabian Ruiz, care a marcat golul de 1-0.",
-    "entities": [
-      "Luis de la Fuente",
-      "Spania",
-      "Belgia",
-      "Fabian Ruiz"
-    ],
-    "icon": "ball-football",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://prosport.ro/fotbal-intern/superliga/gnahore-transfer-fcsb-2-20481278",
-    "original_link": "https://www.prosport.ro/fotbal-intern/superliga/gnahore-transfer-fcsb-2-20481278",
-    "source": "prosport",
-    "source_name": "ProSport",
-    "source_lang": "ro",
-    "title": "FCSB transferă mijlocașul francez Eddy Gnahore",
-    "category": "sport",
-    "published": "2026-07-10T22:13:25+00:00",
-    "model": "B",
-    "teaser": "Eddy Gnahore, 32 de ani, a ajuns la București și va semna cu FCSB un contract pe doi ani. Mijlocașul vine liber de contract după despărțirea de Dinamo.",
-    "entities": [
-      "FCSB",
-      "Eddy Gnahore",
-      "Dinamo"
-    ],
-    "icon": "ball-football",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://prosport.ro/fotbal-intern/superliga/lixandru-negocieri-fcsb-20481315",
-    "original_link": "https://www.prosport.ro/fotbal-intern/superliga/lixandru-negocieri-fcsb-20481315",
-    "source": "prosport",
-    "source_name": "ProSport",
-    "source_lang": "ro",
-    "title": "Mihai Lixandru pleacă de la FCSB spre o echipă arabă",
-    "category": "sport",
-    "published": "2026-07-10T22:12:58+00:00",
-    "model": "B",
-    "teaser": "Mihai Lixandru, 25 de ani, părăsește FCSB pentru un club din zona arabă. Mihai Stoica a confirmat finalizarea negocierilor, transferul fiind în stadiu administrativ.",
-    "entities": [
-      "FCSB",
-      "Mihai Lixandru",
-      "Mihai Stoica"
-    ],
-    "icon": "ball-football",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://prosport.ro/fotbal-intern/superliga/nicolae-stanciu-ar-fi-negociat-cu-gigi-becali-20481201",
-    "original_link": "https://www.prosport.ro/fotbal-intern/superliga/nicolae-stanciu-ar-fi-negociat-cu-gigi-becali-20481201",
-    "source": "prosport",
-    "source_name": "ProSport",
-    "source_lang": "ro",
-    "title": "Nicolae Stanciu negociază revenirea la FCSB cu Gigi Becali",
-    "category": "sport",
-    "published": "2026-07-10T22:12:31+00:00",
-    "model": "B",
-    "teaser": "Fotbalistul Nicolae Stanciu ar fi purtat negocieri cu Gigi Becali pentru a reveni la FCSB. Internaționalul român și-ar dori să joace doar pentru echipa bucureșteană.",
-    "entities": [
-      "Nicolae Stanciu",
-      "Gigi Becali",
-      "FCSB"
-    ],
-    "icon": "ball-football",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://prosport.ro/campionatul-mondial-2026/vedete-meci-spania-belgia-20481405",
-    "original_link": "https://www.prosport.ro/campionatul-mondial-2026/vedete-meci-spania-belgia-20481405",
-    "source": "prosport",
-    "source_name": "ProSport",
-    "source_lang": "ro",
-    "title": "Brad Pitt, prezent la sfertul de finală Spania – Belgia la CM 2026",
-    "category": "sport",
-    "published": "2026-07-10T22:12:09+00:00",
-    "model": "B",
-    "teaser": "Sfertul de finală Spania – Belgia de la CM 2026, desfășurat în Los Angeles, a atras numeroase celebrități. Apariția actorului Brad Pitt a stârnit o reacție puternică în tribune.",
-    "entities": [
-      "Brad Pitt",
-      "Spania",
-      "Belgia",
-      "Los Angeles"
-    ],
-    "icon": "ball-football",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://gsp.ro/international/campionatul-mondial-de-fotbal-2026/thibaut-courtois-n-a-vrut-sa-fie-inlocuit-in-spania-belgia-959237.html",
-    "original_link": "https://www.gsp.ro/international/campionatul-mondial-de-fotbal-2026/thibaut-courtois-n-a-vrut-sa-fie-inlocuit-in-spania-belgia-959237.html",
-    "source": "gsp",
-    "source_name": "GSP",
-    "source_lang": "ro",
-    "title": "Courtois regretă înlocuirea în meciul Spania - Belgia",
-    "category": "sport",
-    "published": "2026-07-10T22:04:36+00:00",
-    "model": "B",
-    "teaser": "Portarul belgian Thibaut Courtois a afirmat că dorea să rămână pe teren în meciul pierdut cu Spania, considerând că problema nu era starea sa fizică.",
-    "entities": [
-      "Thibaut Courtois",
-      "Spania",
-      "Belgia"
-    ],
-    "icon": "ball-football",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://digisport.ro/fotbal/cm-2026/luis-de-la-fuente-a-descris-o-pe-franta-in-doua-cuvinte-dupa-ce-spania-s-a-calificat-in-semifinale-la-mondial-4371383",
-    "original_link": "https://www.digisport.ro/fotbal/cm-2026/luis-de-la-fuente-a-descris-o-pe-franta-in-doua-cuvinte-dupa-ce-spania-s-a-calificat-in-semifinale-la-mondial-4371383",
-    "source": "digisport",
-    "source_name": "Digi Sport",
-    "source_lang": "ro",
-    "title": "Selecționerul Spaniei, Luis de la Fuente, laudă Franța după calificarea în semifinale",
-    "category": "sport",
-    "published": "2026-07-10T21:52:10+00:00",
-    "model": "B",
-    "teaser": "Luis de la Fuente, antrenorul Spaniei, a descris echipa Franței în doar două cuvinte, după ce naționala sa s-a calificat în semifinalele Cupei Mondiale.",
-    "entities": [
-      "Luis de la Fuente",
-      "Spania",
-      "Franța"
-    ],
-    "icon": "ball-football",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://digisport.ro/fotbal/cm-2026/catastrofal-a-debutat-la-cupa-mondiala-in-spania-belgia-iar-peste-17-minute-si-a-ingropat-tara-4371391",
-    "original_link": "https://www.digisport.ro/fotbal/cm-2026/catastrofal-a-debutat-la-cupa-mondiala-in-spania-belgia-iar-peste-17-minute-si-a-ingropat-tara-4371391",
-    "source": "digisport",
-    "source_name": "Digi Sport",
-    "source_lang": "ro",
-    "title": "Jucător debutant a avut o prestație catastrofală la Cupa Mondială",
-    "category": "sport",
-    "published": "2026-07-10T21:49:46+00:00",
-    "model": "B",
-    "teaser": "Un jucător a avut un debut dezastruos la Cupa Mondială în meciul Spania - Belgia, provocând eliminarea țării sale în doar 17 minute de joc.",
-    "entities": [
-      "Spania",
-      "Belgia"
-    ],
-    "icon": "ball-football",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://digisport.ro/fotbal/cm-2026/rudi-garcia-dupa-eliminarea-belgiei-de-la-cupa-mondiala-2026-nu-am-fost-scutiti-de-ghinion-4371417",
-    "original_link": "https://www.digisport.ro/fotbal/cm-2026/rudi-garcia-dupa-eliminarea-belgiei-de-la-cupa-mondiala-2026-nu-am-fost-scutiti-de-ghinion-4371417",
-    "source": "digisport",
-    "source_name": "Digi Sport",
-    "source_lang": "ro",
-    "title": "Antrenorul Belgiei, Rudi Garcia, invocă ghinionul după eliminarea de la Mondial",
-    "category": "sport",
-    "published": "2026-07-10T21:44:14+00:00",
-    "model": "B",
-    "teaser": "Rudi Garcia, antrenorul echipei Belgiei, a declarat că formația sa nu a fost scutită de ghinion, după ce au fost eliminați de la Cupa Mondială 2026.",
-    "entities": [
-      "Rudi Garcia",
-      "Belgia"
-    ],
-    "icon": "ball-football",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://digisport.ro/fotbal/cm-2026/mikel-merino-si-a-stapanit-cu-greu-lacrimile-dupa-ce-a-lovit-decisiv-in-spania-belgia-nu-mi-vine-sa-cred-4371405",
-    "original_link": "https://www.digisport.ro/fotbal/cm-2026/mikel-merino-si-a-stapanit-cu-greu-lacrimile-dupa-ce-a-lovit-decisiv-in-spania-belgia-nu-mi-vine-sa-cred-4371405",
-    "source": "digisport",
-    "source_name": "Digi Sport",
-    "source_lang": "ro",
-    "title": "Mikel Merino, emoționat după golul decisiv pentru Spania în meciul cu Belgia",
-    "category": "sport",
-    "published": "2026-07-10T21:42:58+00:00",
-    "model": "B",
-    "teaser": "Mikel Merino a fost copleșit de emoție după ce a marcat golul decisiv pentru Spania împotriva Belgiei la Cupa Mondială, declarând că nu-și vine să creadă.",
-    "entities": [
-      "Mikel Merino",
-      "Spania",
-      "Belgia"
-    ],
-    "icon": "ball-football",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://gsp.ro/international/campionatul-mondial-de-fotbal-2026/franta-spania-cupa-mondiala-semifinala-959224.html",
-    "original_link": "https://www.gsp.ro/international/campionatul-mondial-de-fotbal-2026/franta-spania-cupa-mondiala-semifinala-959224.html",
-    "source": "gsp",
-    "source_name": "GSP",
-    "source_lang": "ro",
-    "title": "Franța - Spania, prima semifinală la Campionatul Mondial",
-    "category": "sport",
-    "published": "2026-07-10T21:23:37+00:00",
-    "model": "B",
-    "teaser": "Prima semifinală a Campionatului Mondial va fi Franța contra Spaniei, pe 14 iulie, ora 22:00. Spania s-a calificat după victoria cu Belgia, iar Franța a învins Maroc.",
-    "entities": [
-      "Franța",
-      "Spania",
-      "Belgia",
-      "Maroc"
-    ],
-    "icon": "ball-football",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://bbc.co.uk/news/articles/c75yp6r13wvo?at_medium=RSS&at_campaign=rss",
-    "original_link": "https://www.bbc.co.uk/news/articles/c75yp6r13wvo?at_medium=RSS&at_campaign=rss",
-    "source": "bbc_europe",
-    "source_name": "BBC Europe",
-    "source_lang": "en",
-    "title": "Adolescent britanic a murit în Grecia, familia este îndurerată",
-    "category": "general",
-    "published": "2026-07-10T21:18:04+00:00",
-    "model": "B",
-    "teaser": "Un adolescent britanic a decedat în Grecia, familia sa exprimându-și durerea profundă. Numele minorului nu a fost făcut public, dar pierderea este resimțită intens.",
-    "entities": [
-      "Grecia",
-      "Marea Britanie"
-    ],
-    "icon": "globe",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://prosport.ro/campionatul-mondial-2026/spanioli-reactie-mikel-merino-gol-spania-belgia-20481416",
-    "original_link": "https://www.prosport.ro/campionatul-mondial-2026/spanioli-reactie-mikel-merino-gol-spania-belgia-20481416",
-    "source": "prosport",
-    "source_name": "ProSport",
-    "source_lang": "ro",
-    "title": "Mikel Merino, eroul Spaniei în meciul cu Belgia",
-    "category": "sport",
-    "published": "2026-07-10T21:15:56+00:00",
-    "model": "B",
-    "teaser": "Mikel Merino a marcat golul decisiv pentru Spania în victoria cu 2-1 împotriva Belgiei, repetând o performanță similară din meciul cu Portugalia. A profitat de o gafă defensivă.",
-    "entities": [
-      "Mikel Merino",
-      "Spania",
-      "Belgia",
-      "Portugalia"
-    ],
-    "icon": "ball-football",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://gsp.ro/international/campionatul-mondial-de-fotbal-2026/sergiu-radu-verdict-dupa-spania-belgia-campionatul-mondial-959223.html",
-    "original_link": "https://www.gsp.ro/international/campionatul-mondial-de-fotbal-2026/sergiu-radu-verdict-dupa-spania-belgia-campionatul-mondial-959223.html",
-    "source": "gsp",
-    "source_name": "GSP",
-    "source_lang": "ro",
-    "title": "Mikel Merino, eroul Spaniei în meciul cu Belgia",
-    "category": "sport",
-    "published": "2026-07-10T21:14:04+00:00",
-    "model": "B",
-    "teaser": "Analistul sportiv Sergiu Radu consideră că Mikel Merino a fost eroul Spaniei în victoria dramatică cu Belgia, marcând golul decisiv care a calificat echipa în semifinale.",
-    "entities": [
-      "Mikel Merino",
-      "Spania",
-      "Belgia",
-      "Sergiu Radu"
-    ],
-    "icon": "ball-football",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://digi24.ro/campionatul-mondal-de-fotbal-2026/cm-2026-spania-a-eliminat-belgia-si-merge-mai-departe-s-a-stabilit-prima-semifinala-a-turneului-3857551",
-    "original_link": "https://www.digi24.ro/campionatul-mondal-de-fotbal-2026/cm-2026-spania-a-eliminat-belgia-si-merge-mai-departe-s-a-stabilit-prima-semifinala-a-turneului-3857551",
-    "source": "digi24",
-    "source_name": "Digi24",
-    "source_lang": "ro",
-    "title": "Spania elimină Belgia și avansează în semifinalele CM 2026",
-    "category": "sport",
-    "published": "2026-07-10T21:13:31+00:00",
-    "model": "B",
-    "teaser": "Naționala Spaniei a învins Belgia cu scorul de 2-1 în sferturile de finală ale Cupei Mondiale 2026, calificându-se astfel în semifinale unde va întâlni Franța.",
-    "entities": [
-      "Spania",
-      "Belgia",
-      "Franța"
-    ],
-    "icon": "ball-football",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://gsp.ro/international/campionatul-mondial-de-fotbal-2026/thibaut-courtois-accidentare-spania-belgia-gafa-senne-lammens-959219.html",
-    "original_link": "https://www.gsp.ro/international/campionatul-mondial-de-fotbal-2026/thibaut-courtois-accidentare-spania-belgia-gafa-senne-lammens-959219.html",
-    "source": "gsp",
-    "source_name": "GSP",
-    "source_lang": "ro",
-    "title": "Accidentarea lui Courtois, urmată de gafe decisive la Mondial",
-    "category": "sport",
-    "published": "2026-07-10T21:12:15+00:00",
-    "model": "B",
-    "teaser": "Portarul belgian Thibaut Courtois a părăsit terenul accidentat în lacrimi în timpul meciului cu Spania. Înlocuitorul său a comis o gafă majoră, contribuind la eliminarea Belgiei.",
-    "entities": [
-      "Courtois",
-      "Spania",
-      "Belgia"
-    ],
-    "icon": "ball-football",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://spotmedia.ro/stiri/opinii-si-analize/autoritatile-n-au-invatat-nimic-din-incidentul-cu-drone-de-la-constanta-petroliere-din-flota-fantoma-a-rusiei-continua-sa-transfere-titei-si-carburanti-in-romania-exclusiv",
-    "original_link": "https://spotmedia.ro/stiri/opinii-si-analize/autoritatile-n-au-invatat-nimic-din-incidentul-cu-drone-de-la-constanta-petroliere-din-flota-fantoma-a-rusiei-continua-sa-transfere-titei-si-carburanti-in-romania-exclusiv",
-    "source": "spotmedia",
-    "source_name": "Spotmedia",
-    "source_lang": "ro",
-    "title": "Petroliere rusești continuă transferul de țiței în România, sfidând sancțiunile",
-    "category": "economic",
-    "published": "2026-07-10T21:10:00+00:00",
-    "model": "B",
-    "teaser": "În ciuda incidentelor anterioare cu drone, petroliere din flota fantomă a Rusiei, sub sancțiuni internaționale, continuă operațiunile de transfer de țiței și carburanți în apele românești, demonstrând o lipsă de reacție autorizată.",
-    "entities": [
-      "România",
-      "Rusia",
-      "Constanța",
-      "Marea Britanie",
-      "Uniunea Europeană"
-    ],
-    "icon": "ship",
     "processed_by": "gemini",
     "prompt_version": "v2-esenta",
     "featured": false
