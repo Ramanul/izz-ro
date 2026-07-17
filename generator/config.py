@@ -19,6 +19,10 @@ SOURCES = {
             "urban":      {"name": "Urban.ro",         "url": "https://urban.ro/feed",                 "category": "lifestyle"},
             "elle":       {"name": "Elle România",     "url": "https://www.elle.ro/feed",              "category": "lifestyle"},
             "avantaje":   {"name": "Avantaje",         "url": "https://www.avantaje.ro/feed",          "category": "lifestyle"},
+    # cultura — literatură, film, arte (2026-07-17)
+            "liternet":   {"name": "Liternet",        "url": "https://www.liternet.ro/feed.php",       "category": "cultura"},
+            "scena9":     {"name": "Scena 9",         "url": "https://www.scena9.ro/feed",              "category": "cultura"},
+            "bookhub":    {"name": "Bookhub",         "url": "https://bookhub.ro/feed",                 "category": "cultura"},
             "nwradu":       {"name": "NwRadu",         "url": "https://www.nwradu.ro/feed/",           "category": "discounturi"},
     # extern — Europa/UE/vecinatate (en, AI traduce) + surse ro
             "bbc_europe": {"name": "BBC Europe",    "url": "https://feeds.bbci.co.uk/news/world/europe/rss.xml", "category": "extern", "lang": "en"},
@@ -54,7 +58,7 @@ SOURCES = {
 AGENCY_BLOCKLIST = ["agerpres", "mediafax", "reuters", "afp.com", "apnews", "ap.org"]
 
 CATEGORIES = ["general", "politic", "economic", "extern", "tech", "sport",
-              "auto", "sanatate", "lifestyle", "discounturi"]
+              "auto", "sanatate", "cultura", "lifestyle", "discounturi"]
 
 # Model B+C
 PROMPT_VERSION = "v2-esenta"  # versiunea regulilor AI; la schimbare, articolele vechi se reprocesează
