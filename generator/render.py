@@ -3,6 +3,7 @@ import logging
 import os
 import re
 import shutil
+import sys
 from datetime import datetime, timezone
 from xml.sax.saxutils import escape as xml_escape
 
@@ -377,13 +378,15 @@ def build(articles: list, mod: dict | None = None) -> None:
         shutil.rmtree(p) if os.path.isdir(p) else os.remove(p)
     shutil.copytree(STATIC_DIR, os.path.join(OUT_DIR, "static"))
 
-    # Ruleaza build_entities.py inainte de randare (valideaza YAML -> entities.json)
+    # Run build_entities in-process (validate YAML -> entities.json)
     try:
-        import subprocess
-        subprocess.run(["python", os.path.join(ROOT, "scripts", "build_entities.py")],
-                       cwd=ROOT, check=True)
+        sys.path.insert(0, os.path.join(ROOT, "scripts"))
+        from build_entities import load_all, write_json
+        ents = load_all()
+        if ents:
+            write_json(ents)
     except Exception as e:
-        logging.warning("build_entities a eșuat (non-fatal): %s", e)
+        logging.warning("build_entities a esuat (non-fatal): %s", e)
 
     by_date = sorted(articles, key=lambda a: a.get("published") or "", reverse=True)
 
