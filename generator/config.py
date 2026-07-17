@@ -31,8 +31,8 @@ SOURCES = {
             "startup":    {"name": "Start-up.ro",  "url": "https://start-up.ro/feed/",                 "category": "tech"},
             # "playtech": {"name": "Playtech",     "url": "https://playtech.ro/feed/",                 "category": "tech"},   # publica lifestyle/social, nu tech - dezactivat
                 # "iqool":    {"name": "iQool",        "url": "https://iqool.ro/feed/",                    "category": "tech"},   # DNS mort - dezactivat
-                    "piataauto": {"name": "Piata Auto MD", "url": "https://piataauto.md/Stiri/", "base_url": "https://piataauto.md", "category": "tech", "type": "html_scraper"},
-      "autocritica": {"name": "AutoCritica",  "url": "https://www.autocritica.ro/feed/",          "category": "tech"},
+            "piataauto": {"name": "Piata Auto MD", "url": "https://piataauto.md/Stiri/", "base_url": "https://piataauto.md", "category": "auto", "type": "html_scraper"},
+      "autocritica": {"name": "AutoCritica",  "url": "https://www.autocritica.ro/feed/",          "category": "auto"},
             # Surse cu volum mare
             "spotmedia":  {"name": "Spotmedia",    "url": "https://spotmedia.ro/rss",                  "category": "general"},
             "digi24":     {"name": "Digi24",       "url": "https://www.digi24.ro/rss",                 "category": "general"},
@@ -52,7 +52,7 @@ SOURCES = {
 AGENCY_BLOCKLIST = ["agerpres", "mediafax", "reuters", "afp.com", "apnews", "ap.org"]
 
 CATEGORIES = ["general", "politic", "economic", "extern", "tech", "sport",
-              "lifestyle", "fashion", "discounturi"]
+              "auto", "lifestyle", "fashion", "discounturi"]
 
 # Model B+C
 PROMPT_VERSION = "v2-esenta"  # versiunea regulilor AI; la schimbare, articolele vechi se reprocesează
