@@ -3,11 +3,24 @@
 {% block title %}{{ category | capitalize }} — {{ site.name }}{% endblock %}
 {% block description %}Știri din categoria {{ category }} pe {{ site.name }} — {{ site.tagline }}.{% endblock %}
 {% block content %}
+<nav class="breadcrumbs" aria-label="Breadcrumb">
+  <a href="{{ base }}/">{{ site.name }}</a>
+  <span class="sep">/</span>
+  <span>{{ category | capitalize }}</span>
+</nav>
   <h1 class="section-title">{{ category | capitalize }}</h1>
   {% if articles %}
   <section class="grid">
-    {% for a in articles %}{{ card(a) }}{% endfor %}
+    {% for a in articles[:20] %}{{ card(a) }}{% endfor %}
   </section>
+  {% if articles | length > 20 %}
+  <nav class="pagination" aria-label="Navigare pagini">
+    <span class="current">1</span>
+    <a href="{{ base }}/{{ category }}/2/">2</a>
+    {% if articles | length > 40 %}<a href="{{ base }}/{{ category }}/3/">3</a>{% endif %}
+    <a href="{{ base }}/{{ category }}/2/" rel="next">›</a>
+  </nav>
+  {% endif %}
   {% else %}
   <p class="empty">Nicio știre în această categorie deocamdată.</p>
   {% endif %}

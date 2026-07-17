@@ -491,9 +491,14 @@ def build(articles: list, mod: dict | None = None) -> None:
     cat_tpl = env.get_template("category.html")
     for cat in config.CATEGORIES:
         items = [a for a in by_date if a.get("category") == cat]
-        _write(os.path.join(OUT_DIR, cat, "index.html"),
-               cat_tpl.render(**_base_ctx(f"/{cat}/", category=cat,
-                                          articles=_diversify(items), active_cat=cat)))
+        for page in range(0, len(items), 20):
+            page_items = _diversify(items[page:page+20])
+            page_num = page // 20 + 1
+            page_dir = os.path.join(OUT_DIR, cat) if page_num == 1 else os.path.join(OUT_DIR, cat, str(page_num))
+            _write(os.path.join(page_dir, "index.html"),
+                   cat_tpl.render(**_base_ctx(
+                       f"/{cat}/" if page_num == 1 else f"/{cat}/{page_num}/",
+                       category=cat, articles=page_items, active_cat=cat)))
         for a in items:
             topics = [(slugify(e)[:60], e) for e in (a.get("entities") or [])
                       if slugify(e)[:60] in ents]
@@ -524,10 +529,21 @@ def build(articles: list, mod: dict | None = None) -> None:
             jsonld = _article_jsonld(a)
             if og_image:
                 jsonld["image"] = [og_image]
+            breadcrumb_jsonld = {
+                "@context": "https://schema.org", "@type": "BreadcrumbList",
+                "itemListElement": [
+                    {"@type": "ListItem", "position": 1, "name": config.SITE["name"],
+                     "item": config.SITE["url"] + "/"},
+                    {"@type": "ListItem", "position": 2, "name": cat,
+                     "item": f"{config.SITE['url']}/{cat}/"},
+                    {"@type": "ListItem", "position": 3, "name": a.get("title", "")},
+                ]
+            }
             _write(os.path.join(OUT_DIR, cat, a['slug'], "index.html"),
                    article_tpl.render(**_base_ctx(
                        f"/{cat}/{a['slug']}/", a=a, active_cat=cat, topics=topics,
-                       people=people, related=related, og_image=og_image, article_jsonld=jsonld)))
+                       people=people, related=related, og_image=og_image,
+                       article_jsonld=jsonld, breadcrumb_jsonld=breadcrumb_jsonld)))
 
     _render_legal(env)
     _write(os.path.join(OUT_DIR, "404.html"),
@@ -587,7 +603,14 @@ def _render_legal(env: Environment) -> None:
 def _write_sitemap(articles: list) -> None:
     url = config.SITE["url"]
     today = datetime.now(timezone.utc).strftime("%Y-%m-%d")
-    locs = [(f"{url}/", today), *[(f"{url}/{c}/", today) for c in config.CATEGORIES]]
+    cat_lastmod = {}
+    for a in articles:
+        c = a.get("category", "")
+        d = (a.get("published") or "")[:10]
+        if c and d and d > cat_lastmod.get(c, ""):
+            cat_lastmod[c] = d
+    locs = [(f"{url}/", today)]
+    locs += [(f"{url}/{c}/", cat_lastmod.get(c, today)) for c in config.CATEGORIES]
     locs += [(f"{url}/{a['category']}/{a['slug']}/", (a.get("published") or "")[:10]) for a in articles]
     items = "\n".join(
         f"  <url><loc>{xml_escape(l)}</loc>" + (f"<lastmod>{lm}</lastmod>" if lm else "") + "</url>"
@@ -596,6 +619,25 @@ def _write_sitemap(articles: list) -> None:
            '<?xml version="1.0" encoding="UTF-8"?>\n'
            '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
            f"{items}\n</urlset>\n")
+    # Image sitemap
+    img_locs = []
+    for a in articles:
+        if a.get("cover_url"):
+            img_locs.append((f"{url}/{a['category']}/{a['slug']}/",
+                              a.get("cover_url"),
+                              a.get("title") or a.get("original_title", "")))
+    if img_locs:
+        img_items = "\n".join(
+            "  <url><loc>" + xml_escape(l) + "</loc>\n"
+            "    <image:image>\n      <image:loc>" + xml_escape(il) + "</image:loc>\n"
+            "      <image:title>" + xml_escape(it) + "</image:title>\n"
+            "    </image:image>\n  </url>"
+            for l, il, it in img_locs[:1000])
+        _write(os.path.join(OUT_DIR, "sitemap-images.xml"),
+               '<?xml version="1.0" encoding="UTF-8"?>\n'
+               '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" '
+               'xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">\n'
+               f"{img_items}\n</urlset>\n")
 
 
 def _write_search(env: Environment, articles: list) -> None:
@@ -610,7 +652,8 @@ def _write_search(env: Environment, articles: list) -> None:
 
 def _write_robots() -> None:
     _write(os.path.join(OUT_DIR, "robots.txt"),
-           f"User-agent: *\nAllow: /\nSitemap: {config.SITE['url']}/sitemap.xml\n")
+           f"User-agent: *\nAllow: /\nSitemap: {config.SITE['url']}/sitemap.xml\n"
+           f"Sitemap: {config.SITE['url']}/sitemap-images.xml\n")
 
 
 def _write_headers() -> None:

@@ -14,6 +14,7 @@
   <meta property="og:description" content="{{ self.description() }}">
   <meta property="og:url" content="{{ canonical }}">
   <meta property="og:locale" content="ro_RO">
+  <link rel="alternate" hreflang="ro" href="{{ canonical }}">
   <meta property="og:image" content="{{ og_image or (site.url ~ '/static/og-image.png') }}">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
@@ -31,6 +32,10 @@
   <link rel="preload" href="{{ base }}/static/fonts/PlayfairDisplay-800.ro.woff2" as="font" type="font/woff2" crossorigin>
   {% if fonts_css %}<style>{{ fonts_css | safe }}</style>{% else %}<link rel="stylesheet" href="{{ base }}/static/fonts.css?v={{ asset_ver['fonts.css'] }}">{% endif %}
   <link rel="stylesheet" href="{{ base }}/static/styles.css?v={{ asset_ver['styles.css'] }}">
+  <script>
+    (function(){var t=localStorage.getItem('izz_theme');if(t==='dark')document.documentElement.setAttribute('data-theme','dark');else if(!t&&window.matchMedia('(prefers-color-scheme:dark)').matches)document.documentElement.setAttribute('data-theme','dark');})();
+    document.documentElement.style.setProperty('--html-bg','var(--paper)');
+  </script>
 
   <script type="application/ld+json">{{ org_jsonld | tojson }}</script>
   {% block head_extra %}{% endblock %}
@@ -47,6 +52,7 @@
     <nav class="nav">
       {% for cat in categories %}<a href="{{ base }}/{{ cat }}/"{% if cat == active_cat %} class="active"{% endif %}>{{ cat }}</a>{% endfor %}
       <a href="{{ base }}/cauta/">caută</a>
+      <button class="theme-toggle" title="Mod întunecat" aria-label="Comută tema" onclick="var h=document.documentElement,cur=h.getAttribute('data-theme'),next=cur==='dark'?'':'dark';if(next)h.setAttribute('data-theme',next);else h.removeAttribute('data-theme');localStorage.setItem('izz_theme',next||'');">☾</button>
     </nav>
   </header>
 
@@ -67,5 +73,7 @@
       <a href="{{ base }}/legal/takedown/">Drepturi de autor</a>
     </nav>
   </footer>
+  <button class="back-to-top" title="Sus" aria-label="Înapoi sus" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+  <script>var bt=document.querySelector('.back-to-top');window.addEventListener('scroll',function(){bt.classList.toggle('visible',window.scrollY>300)});</script>
 </body>
 </html>

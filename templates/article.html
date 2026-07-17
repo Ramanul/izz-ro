@@ -7,13 +7,25 @@
 {% block head_extra %}
   <script type="application/ld+json">{{ article_jsonld | tojson }}</script>
   <meta property="article:published_time" content="{{ a.published }}">
+  <script type="application/ld+json">{{ breadcrumb_jsonld | tojson }}</script>
 {% endblock %}
 {% block content %}
+<nav class="breadcrumbs" aria-label="Breadcrumb">
+  <a href="{{ base }}/">{{ site.name }}</a>
+  <span class="sep">/</span>
+  <a href="{{ base }}/{{ a.category }}/">{{ a.category }}</a>
+  <span class="sep">/</span>
+  <span>{{ a.title }}</span>
+</nav>
 <article class="article">
   <span class="badge{% if a.model == 'C' %} c{% endif %}">{{ a.category }}</span>
   <h1>{{ a.title }}</h1>
   <div class="meta">
     <time datetime="{{ a.published }}">{{ a.published_human }}</time>
+    {% set body = a.synthesis if a.model == 'C' else a.teaser %}
+    {% set word_count = (body or '').split() | length %}
+    {% set read_mins = [word_count // 200, 1] | max %}
+    <span class="reading-time">~{{ read_mins }} min citire</span>
   </div>
 
   {% if a.art_path %}
