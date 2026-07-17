@@ -5,6 +5,7 @@ import re
 import socket
 import urllib.error
 import urllib.request
+import xml.etree.ElementTree as ET
 from datetime import datetime, timezone
 from html.parser import HTMLParser
 
@@ -66,6 +67,77 @@ def _parse_date(entry) -> str:
             except (ValueError, TypeError):
                 pass
     return datetime.now(timezone.utc).isoformat()
+
+
+# ---- Sitemap Google News: fetch legal pentru surse fara RSS (ex. piataauto.md) ----
+# Multe publicatii NU expun RSS, dar publica un sitemap Google News (declarat in
+# robots.txt, destinat indexarii) cu exact ce ne trebuie: <loc> + news:title +
+# news:publication_date. Preferat fata de scraping HTML: XML curat si stabil, fara
+# JS/Cloudflare, si 100% legal (robots.txt Allow + doar titlu+link+data, link catre sursa).
+_SITEMAP_NS = {
+    "sm": "http://www.sitemaps.org/schemas/sitemap/0.9",
+    "news": "http://www.google.com/schemas/sitemap-news/0.9",
+}
+
+
+def _parse_w3c_date(raw: str) -> str:
+    """news:publication_date (W3C: 'YYYY-MM-DD' sau ISO 8601 datetime) -> ISO 8601 UTC."""
+    raw = (raw or "").strip()
+    if not raw:
+        return datetime.now(timezone.utc).isoformat()
+    try:
+        if re.fullmatch(r"\d{4}-\d{2}-\d{2}", raw):     # doar data -> miezul noptii UTC
+            d = datetime.strptime(raw, "%Y-%m-%d")
+            return d.replace(tzinfo=timezone.utc).isoformat()
+        dt = datetime.fromisoformat(raw.replace("Z", "+00:00"))
+        if dt.tzinfo is None:
+            dt = dt.replace(tzinfo=timezone.utc)
+        return dt.astimezone(timezone.utc).isoformat()
+    except ValueError:
+        return datetime.now(timezone.utc).isoformat()
+
+
+def _fetch_sitemap_news(key: str, source: dict) -> tuple[list, str | None]:
+    """Fetch dintr-un sitemap Google News: Title + URL + data. Legal (robots.txt: Allow /)."""
+    items: list = []
+    try:
+        req = urllib.request.Request(source["url"], headers={"User-Agent": USER_AGENT})
+        with urllib.request.urlopen(req, timeout=TIMEOUT) as resp:
+            raw = resp.read()
+    except (urllib.error.HTTPError, urllib.error.URLError, socket.timeout, ValueError) as exc:
+        return items, f"{key}: {exc}"
+
+    try:
+        root = ET.fromstring(raw)
+    except ET.ParseError as exc:
+        return items, f"{key}: XML invalid ({exc})"
+
+    urls = root.findall("sm:url", _SITEMAP_NS)
+    if not urls:
+        return items, f"{key}: 0 intrari in sitemap (posibil structura schimbata)"
+
+    for url_el in urls[: config.MAX_PER_SOURCE]:
+        loc = (url_el.findtext("sm:loc", default="", namespaces=_SITEMAP_NS) or "").strip()
+        title = clean_html(
+            url_el.findtext("news:news/news:title", default="", namespaces=_SITEMAP_NS) or "")
+        date_raw = url_el.findtext("news:news/news:publication_date", default="",
+                                   namespaces=_SITEMAP_NS)
+        if not loc or not title or _is_agency(loc, source["name"]):
+            continue
+        items.append({
+            "url": normalize_url(loc),
+            "original_link": loc,
+            "source": key,
+            "source_name": source["name"],
+            "source_lang": source.get("lang", "ro"),
+            "original_title": title,
+            "title": title,
+            "description": "",          # descrierea va fi generata de AI din titlu
+            "category": source["category"],
+            "published": _parse_w3c_date(date_raw),
+            "model": None,
+        })
+    return items, None
 
 
 # ---- Monitor Local: scraper generic config-driven pentru surse fara RSS ----
@@ -245,6 +317,8 @@ def _fetch_html_list(key: str, source: dict) -> tuple[list, str | None]:
 
 def _fetch_one(key: str, source: dict, cache: dict | None = None) -> tuple[list, str | None]:
     """Returneaza (articole, eroare). Alege metoda de fetch in functie de tipul sursei."""
+    if source.get("type") == "sitemap_news":
+        return _fetch_sitemap_news(key, source)
     if source.get("type") == "html_list":
         return _fetch_html_list(key, source)
 

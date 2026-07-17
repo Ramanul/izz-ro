@@ -61,6 +61,8 @@ SOURCES = {
             "startup":    {"name": "Start-up.ro",  "url": "https://start-up.ro/feed/",                 "category": "tech"},
             # "playtech": {"name": "Playtech",     "url": "https://playtech.ro/feed/",                 "category": "tech"},   # publica lifestyle/social, nu tech - dezactivat
                 # "iqool":    {"name": "iQool",        "url": "https://iqool.ro/feed/",                    "category": "tech"},   # DNS mort - dezactivat
+            # Fara RSS -> sitemap Google News (legal, robots.txt Allow, XML stabil fara Cloudflare).
+            "piataauto": {"name": "Piata Auto MD", "url": "https://piataauto.md/sitemap-news.xml", "category": "auto", "type": "sitemap_news"},
             "autocritica": {"name": "AutoCritica",  "url": "https://www.autocritica.ro/feed/",          "category": "auto"},
             # Surse cu volum mare
             "spotmedia":  {"name": "Spotmedia",    "url": "https://spotmedia.ro/rss",                  "category": "general"},
