@@ -100,6 +100,8 @@ TITLE_MAX_WORDS = 22           # titlu: soft-cap care transmite faptul complet (
 TEASER_MAX_WORDS = 40          # B: teaser scurt ("extras foarte scurt")
 SYNTHESIS_MAX_WORDS = 90       # C: sinteză multi-sursă (doar pentru clustere importante)
 CLUSTER_MIN_SOURCES = 2        # >=2 surse pe același eveniment -> candidat pentru C
+RELATED_MIN_SHARED = 2         # "Articole conectate": minim entitati comune. 1 singura entitate
+                               # comuna (de regula o tara larga: "Franța") = zgomot, nu relevanta.
 ARTICLE_TTL_DAYS = 7           # mai scurt -> volum mai mic -> incape in quota free Gemini
 MAX_PER_SOURCE = 8             # redus de la 12 ca sa scada apelurile AI/rulare
 
