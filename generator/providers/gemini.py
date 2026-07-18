@@ -12,7 +12,9 @@ import urllib.request
 
 from .base import Provider
 
-MODEL = os.getenv("GEMINI_MODEL", "gemini-2.5-flash-lite")
+# `-latest` alias (nu o versiune fixata): modelele fixate sunt retrase periodic de
+# Google (ex. gemini-2.5-flash-lite -> 404 "no longer available"), aliasul nu.
+MODEL = os.getenv("GEMINI_MODEL", "gemini-flash-lite-latest")
 # Baza URL a API-ului. Poti ruta prin Cloudflare AI Gateway (cache, retry,
 # rate-limit, observabilitate) setand GEMINI_BASE_URL la URL-ul gateway-ului:
 #   https://gateway.ai.cloudflare.com/v1/<account_id>/<gateway>/google-ai-studio
