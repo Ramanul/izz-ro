@@ -139,6 +139,11 @@ def run(dry_run: bool = False) -> dict:
     mod = moderation.load()
     visible = moderation.apply(combined, mod)
 
+    # Cadere AI SISTEMICA: providerul exista, s-au incercat apeluri si TOATE au esuat
+    # (model retras -> 404, cheie/quota moarta). Distinct de "n-a fost nimic nou"
+    # (calls == 0) si de un 429 tranzitoriu partial (failures < calls). Vezi providers/base.py.
+    ai_down = bool(provider) and provider.calls > 0 and provider.failures >= provider.calls
+
     stats = {
         "fetched": len(raw),
         "dead_sources": dead,
@@ -150,6 +155,9 @@ def run(dry_run: bool = False) -> dict:
         "provider": provider_name,
         "upgraded_fallbacks": upgraded,
         "hold_important": mod.get("hold_important", False),
+        "ai_down": ai_down,
+        "ai_calls": provider.calls if provider else 0,
+        "ai_last_error": provider.last_error if provider else None,
     }
     if upgraded:
         print(f">> Upgrade fallback -> AI: {upgraded} articole vechi reprocesate")
@@ -177,6 +185,14 @@ def _print_report(stats: dict, processed_new: list, dry_run: bool):
           f"vizibile dupa moderare: {stats['visible_after_moderation']}")
     if stats["hold_important"]:
         print("hold_important=true -> clusterele C asteapta aprobare (de tratat la randare).")
+    if stats.get("ai_down"):
+        print("\n" + "=" * 64)
+        print(f"!! AI DOWN — toate cele {stats.get('ai_calls', 0)} apeluri AI au esuat. "
+              "NIMIC nou publicat.")
+        print(f"   Ultima eroare: {stats.get('ai_last_error')}")
+        print("   Cauze probabile: model retras (404), cheie invalida sau quota epuizata.")
+        print("   Verifica GEMINI_MODEL / GEMINI_API_KEY. Site-ul ramane pe ultima stare buna.")
+        print("=" * 64)
     if stats["dead_sources"]:
         print("\n!! Surse RSS care NU au raspuns (de verificat URL-ul in config.py):")
         for d in stats["dead_sources"]:
@@ -201,7 +217,12 @@ def main():
     if args.render_only:
         render_only()
     else:
-        run(dry_run=args.dry_run)
+        stats = run(dry_run=args.dry_run)
+        # Cadere AI sistemica -> exit non-zero: in CI (build.yml) pasul pipeline nu e
+        # continue-on-error, deci jobul devine ROSU (owner notificat) si pasul de commit
+        # e sarit -> Cloudflare NU redeployeaza, site-ul ramane pe ultima stare buna.
+        if stats and stats.get("ai_down"):
+            sys.exit(1)
 
 
 if __name__ == "__main__":

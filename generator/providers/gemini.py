@@ -52,7 +52,7 @@ class GeminiProvider(Provider):
             },
         }).encode("utf-8")
 
-    def complete(self, system: str, user: str) -> str:
+    def _complete(self, system: str, user: str) -> str:
         if THROTTLE:
             time.sleep(THROTTLE)
         body = self._payload(system, user)

@@ -28,7 +28,7 @@ class AnthropicProvider(Provider):
             self._client = anthropic.Anthropic(api_key=self._key)
         return self._client
 
-    def complete(self, system: str, user: str) -> str:
+    def _complete(self, system: str, user: str) -> str:
         client = self._ensure()
         msg = client.messages.create(
             model=MODEL,
