@@ -124,12 +124,13 @@
     const p = load();
     if ((p.interactions || 0) < MIN_INTERACTIONS) return;
     const now = Date.now();
-    const nav = document.querySelector('.nav');
+    const nav = document.querySelector('.subnav');   // categoriile stau in randul secundar
     if (!nav) return;
     const links = Array.from(nav.querySelectorAll('a[href]'));
     links.sort((a, b) => {
-      const catA = a.textContent.trim().toLowerCase();
-      const catB = b.textContent.trim().toLowerCase();
+      // cheia = slug-ul (data-cat), nu textul afisat (care e acum eticheta localizata)
+      const catA = (a.dataset.cat || a.textContent.trim()).toLowerCase();
+      const catB = (b.dataset.cat || b.textContent.trim()).toLowerCase();
       const sA = (decayed(p.cats, now)[catA]?.score || 0);
       const sB = (decayed(p.cats, now)[catB]?.score || 0);
       return sB - sA;

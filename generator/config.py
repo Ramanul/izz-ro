@@ -31,7 +31,7 @@ SOURCES = {
     # baiamare/primariagalati/cjmaramures = 404, cjalba = 403, icc.ro = timeout, cjsuceava =
     # unreachable, oradea/rss = 0 intrari; primariaclujnapoca (2024) si primaria-constanta (2022)
     # raspund dar sunt inghetate. Majoritatea primariilor NU au RSS -> acoperirea "toate
-    # primariile din tara" cere faza "Monitor Local" (html_scraper pe paginile de anunturi).
+    # primariile din tara" cere faza "Monitor Local" (html_list pe paginile de anunturi).
             "pr_buzau":     {"name": "Primăria Buzău",      "url": "https://primariabuzau.ro/feed/",         "category": "local"},
             "cj_cluj":      {"name": "CJ Cluj",             "url": "https://www.cjcluj.ro/feed/",            "category": "local"},
             "cj_timis":     {"name": "CJ Timiș",            "url": "https://www.cjtimis.ro/feed",            "category": "local"},
@@ -61,8 +61,7 @@ SOURCES = {
             "startup":    {"name": "Start-up.ro",  "url": "https://start-up.ro/feed/",                 "category": "tech"},
             # "playtech": {"name": "Playtech",     "url": "https://playtech.ro/feed/",                 "category": "tech"},   # publica lifestyle/social, nu tech - dezactivat
                 # "iqool":    {"name": "iQool",        "url": "https://iqool.ro/feed/",                    "category": "tech"},   # DNS mort - dezactivat
-            "piataauto": {"name": "Piata Auto MD", "url": "https://piataauto.md/Stiri/", "base_url": "https://piataauto.md", "category": "auto", "type": "html_scraper"},
-      "autocritica": {"name": "AutoCritica",  "url": "https://www.autocritica.ro/feed/",          "category": "auto"},
+            "autocritica": {"name": "AutoCritica",  "url": "https://www.autocritica.ro/feed/",          "category": "auto"},
             # Surse cu volum mare
             "spotmedia":  {"name": "Spotmedia",    "url": "https://spotmedia.ro/rss",                  "category": "general"},
             "digi24":     {"name": "Digi24",       "url": "https://www.digi24.ro/rss",                 "category": "general"},
@@ -92,6 +91,15 @@ SEED_CATEGORIES = {"local"}
 # re-clasificate pe tema de catre AI (vezi process._resolve_category). Un ziar judetean
 # ramane in sectiunea 'local', nu ajunge pe sport/politic dupa continut.
 PINNED_CATEGORIES = {"local"}
+
+# Etichete AFISATE (owner 2026-07-17): slug-ul din URL ramane neschimbat (SEO), doar
+# textul din nav/titluri/carduri foloseste aceste nume. Fallback = slug capitalizat.
+CATEGORY_LABELS = {
+    "general": "Actualitate", "politic": "Politică", "economic": "Economie",
+    "extern": "Externe", "tech": "Tech", "sport": "Sport", "auto": "Auto",
+    "sanatate": "Sănătate", "cultura": "Cultură", "lifestyle": "Lifestyle",
+    "discounturi": "Discounturi", "local": "Local",
+}
 
 # Model B+C
 PROMPT_VERSION = "v2-esenta"  # versiunea regulilor AI; la schimbare, articolele vechi se reprocesează

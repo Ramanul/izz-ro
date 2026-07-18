@@ -49,15 +49,20 @@
       <span class="logo">IZZ<b>.ro</b></span>
       <span class="brand-descriptor">{{ site.descriptor }}</span>
     </a>
-    <nav class="nav">
-      {% for cat in categories %}<a href="{{ base }}/{{ cat }}/"{% if cat == active_cat %} class="active"{% endif %}>{{ cat }}</a>{% endfor %}
-      <a href="{{ base }}/ghiduri/">ghiduri</a>
-      <a href="{{ base }}/instrumente/">instrumente</a>
-      <a href="{{ base }}/calendar/">calendar</a>
+    {# nav principal: grupuri functionale (owner 2026-07-17) — "usor de inteles in 3 secunde".
+       Categoriile de tema stau in randul secundar .subnav de mai jos. #}
+    <nav class="nav" aria-label="Secțiuni principale">
+      <a href="{{ base }}/"{% if nav_section == 'stiri' %} class="active"{% endif %}>Știri</a>
+      <a href="{{ base }}/ghiduri/"{% if nav_section == 'ghiduri' %} class="active"{% endif %}>Ai nevoie să știi</a>
+      <a href="{{ base }}/calendar/"{% if nav_section == 'calendar' %} class="active"{% endif %}>Ce urmează</a>
+      <a href="{{ base }}/instrumente/"{% if nav_section == 'instrumente' %} class="active"{% endif %}>Instrumente</a>
       <a href="{{ base }}/cauta/">caută</a>
       <button class="theme-toggle" title="Mod întunecat" aria-label="Comută tema" onclick="var h=document.documentElement,cur=h.getAttribute('data-theme'),next=cur==='dark'?'':'dark';if(next)h.setAttribute('data-theme',next);else h.removeAttribute('data-theme');localStorage.setItem('izz_theme',next||'');">☾</button>
     </nav>
   </header>
+  <nav class="subnav" aria-label="Categorii de știri">
+    {% for cat in categories %}<a href="{{ base }}/{{ cat }}/" data-cat="{{ cat }}"{% if cat == active_cat %} class="active"{% endif %}>{{ cat | cat_label }}</a>{% endfor %}
+  </nav>
 
   <main>
     {% block content %}{% endblock %}
