@@ -467,6 +467,7 @@ picture { display: contents; }
 /* ---- arta generativa pe site (faza 2: articol + hero) ---- */
 .article-art {
   display: block; width: 100%; max-width: var(--measure); height: auto;
+  aspect-ratio: 960 / 504;
   border: 1px solid var(--line); margin: var(--s-8) 0 var(--s-21);
 }
 /* lead foto real cu credit: figura tine marginile, imaginea si creditul stau lipite */
