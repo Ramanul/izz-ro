@@ -1,5 +1,73 @@
 [
   {
+    "url": "https://stirileprotv.ro/stiri/actualitate/bolojan-anun-a-doua-forme-de-sprijin-pentru-reducerea-facturilor-la-energie-investi-ii-de-250-de-milioane-de-euro.html",
+    "original_link": "https://stirileprotv.ro/stiri/actualitate/bolojan-anun-a-doua-forme-de-sprijin-pentru-reducerea-facturilor-la-energie-investi-ii-de-250-de-milioane-de-euro.html",
+    "source": "protv",
+    "source_name": "Știrile ProTV",
+    "source_lang": "ro",
+    "title": "250 mil. euro pentru contoare inteligente și stocare energie",
+    "category": "economic",
+    "published": "2026-07-18T06:01:17+00:00",
+    "model": "C",
+    "sources": [
+      {
+        "name": "Știrile ProTV",
+        "url": "https://stirileprotv.ro/stiri/actualitate/bolojan-anun-a-doua-forme-de-sprijin-pentru-reducerea-facturilor-la-energie-investi-ii-de-250-de-milioane-de-euro.html"
+      },
+      {
+        "name": "Digi24",
+        "url": "https://www.digi24.ro/stiri/economie/energie/ilie-bolojan-anunta-doua-scheme-de-sprijin-pentru-reducerea-facturilor-la-energie-finantate-cu-250-de-milioane-de-euro-3867487"
+      }
+    ],
+    "first_source": "Știrile ProTV",
+    "synthesis": "Ilie Bolojan, ministrul interimar al Energiei, a aprobat investiții de 250 de milioane de euro din Fondul pentru Modernizare. Fondurile vor fi utilizate pentru instalarea contoarelor inteligente și dezvoltarea capacităților de stocare a energiei, cu scopul reducerii facturilor pentru consumatori.",
+    "entities": [
+      "Ilie Bolojan",
+      "Fondul pentru Modernizare"
+    ],
+    "icon": "bolt",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://gsp.ro/fotbal/liga-1/gigi-becali-l-a-facut-praf-dupa-fcsb-fc-arges-dennis-politic-961772.html",
+    "original_link": "https://www.gsp.ro/fotbal/liga-1/gigi-becali-l-a-facut-praf-dupa-fcsb-fc-arges-dennis-politic-961772.html",
+    "source": "gsp",
+    "source_name": "GSP",
+    "source_lang": "ro",
+    "title": "FCSB vinde un mijlocaș și transferă un atacant francez",
+    "category": "sport",
+    "published": "2026-07-18T04:17:34+00:00",
+    "model": "C",
+    "sources": [
+      {
+        "name": "GSP",
+        "url": "https://www.gsp.ro/fotbal/liga-1/gigi-becali-l-a-facut-praf-dupa-fcsb-fc-arges-dennis-politic-961772.html"
+      },
+      {
+        "name": "Spotmedia",
+        "url": "https://spotmedia.ro/stiri/sport/fcsb-acord-pentru-un-transfer-de-600-000-ros-albastrii-au-facut-anuntul"
+      },
+      {
+        "name": "ProSport",
+        "url": "https://www.prosport.ro/fotbal-intern/boutoutaou-transfer-fcsb-20485803"
+      }
+    ],
+    "first_source": "GSP",
+    "synthesis": "FCSB a anunțat plecarea mijlocașului Mihai Lixandru, pentru care clubul va primi 600.000 de euro. În același timp, Gigi Becali a confirmat transferul atacantului Aymen Boutoutaou, mutare care a costat aproximativ 1.350.000 de euro. Patronul FCSB a criticat și evoluția lui Dennis Politic.",
+    "entities": [
+      "FCSB",
+      "Mihai Lixandru",
+      "Aymen Boutoutaou",
+      "Gigi Becali"
+    ],
+    "icon": "ball-football",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
     "url": "https://ziaruldeiasi.ro/stiri/inventati-baieti-numai-inventati--1876807.html",
     "original_link": "https://www.ziaruldeiasi.ro/stiri/inventati-baieti-numai-inventati--1876807.html",
     "source": "ziaruldeiasi",
@@ -24201,635 +24269,6 @@
       "Cuba"
     ],
     "icon": "certificate",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://moldova.europalibera.org/a/un-refugiu-amenintat-cafeneaua-din-iran/33799997.html",
-    "original_link": "https://moldova.europalibera.org/a/un-refugiu-amenintat-cafeneaua-din-iran/33799997.html",
-    "source": "el_moldova",
-    "source_name": "Europa Liberă",
-    "source_lang": "ro",
-    "title": "Cafenelele din Iran, sub presiune economică și supraveghere strictă",
-    "category": "economic",
-    "published": "2026-07-11T06:15:00+00:00",
-    "model": "B",
-    "teaser": "Cafenelele iraniene se confruntă cu dificultăți financiare și o supraveghere sporită din partea autorităților, luptându-se pentru supraviețuire într-un climat economic și politic dificil.",
-    "entities": [
-      "Iran"
-    ],
-    "icon": "building-monument",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://digi24.ro/stiri/externe/indicii-ca-iranul-isi-reconstruieste-instalatiile-nucleare-investigatie-media-3857809",
-    "original_link": "https://www.digi24.ro/stiri/externe/indicii-ca-iranul-isi-reconstruieste-instalatiile-nucleare-investigatie-media-3857809",
-    "source": "extern",
-    "source_name": "Digi24 Extern",
-    "source_lang": "ro",
-    "title": "Iranul reconstruiește instalații nucleare, conform unei investigații media",
-    "category": "politic",
-    "published": "2026-07-11T06:14:54+00:00",
-    "model": "B",
-    "teaser": "O investigație media sugerează că Iranul ar fi început reconstrucția unor instalații nucleare. Aceste indicii ridică noi semne de întrebare privind programul nuclear al țării.",
-    "entities": [
-      "Iran"
-    ],
-    "icon": "rocket",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://digi24.ro/stiri/externe/indicii-ca-iranul-isi-reconstruieste-instalatiile-nucleare-investigatie-media-3857809",
-    "original_link": "https://www.digi24.ro/stiri/externe/indicii-ca-iranul-isi-reconstruieste-instalatiile-nucleare-investigatie-media-3857809",
-    "source": "digi24",
-    "source_name": "Digi24",
-    "source_lang": "ro",
-    "title": "Iranul reconstruiește instalații nucleare, conform investigației media",
-    "category": "extern",
-    "published": "2026-07-11T06:14:54+00:00",
-    "model": "B",
-    "teaser": "Investigația media indică faptul că Iranul ar reconstrui instalații nucleare. Detaliile sugerează o posibilă intensificare a programului nuclear iranian.",
-    "entities": [
-      "Iran"
-    ],
-    "icon": "building-factory",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://digi24.ro/stiri/externe/mapamond/arme-nucleare-pe-fundul-oceanului-si-o-misiune-secreta-cia-misterul-celor-patru-submarine-disparute-pe-timp-de-pace-in-acelasi-an-3856027",
-    "original_link": "https://www.digi24.ro/stiri/externe/mapamond/arme-nucleare-pe-fundul-oceanului-si-o-misiune-secreta-cia-misterul-celor-patru-submarine-disparute-pe-timp-de-pace-in-acelasi-an-3856027",
-    "source": "extern",
-    "source_name": "Digi24 Extern",
-    "source_lang": "ro",
-    "title": "Misterul a patru submarine dispărute în 1968, posibil legate de arme nucleare și CIA",
-    "category": "extern",
-    "published": "2026-07-11T06:14:15+00:00",
-    "model": "B",
-    "teaser": "Anul 1968 a fost marcat de dispariția a patru submarine în circumstanțe neclare, posibil legate de arme nucleare și misiuni secrete ale CIA, pe fondul tensiunilor globale.",
-    "entities": [
-      "CIA",
-      "SUA"
-    ],
-    "icon": "ship",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://digi24.ro/stiri/externe/mapamond/arme-nucleare-pe-fundul-oceanului-si-o-misiune-secreta-cia-misterul-celor-patru-submarine-disparute-pe-timp-de-pace-in-acelasi-an-3856027",
-    "original_link": "https://www.digi24.ro/stiri/externe/mapamond/arme-nucleare-pe-fundul-oceanului-si-o-misiune-secreta-cia-misterul-celor-patru-submarine-disparute-pe-timp-de-pace-in-acelasi-an-3856027",
-    "source": "digi24",
-    "source_name": "Digi24",
-    "source_lang": "ro",
-    "title": "Misterul a patru submarine dispărute în 1968, posibil legate de arme nucleare și CIA",
-    "category": "extern",
-    "published": "2026-07-11T06:14:15+00:00",
-    "model": "B",
-    "teaser": "Anul 1968 a fost marcat de dispariția a patru submarine în circumstanțe neclare, posibil legate de arme nucleare și misiuni secrete ale CIA, pe fondul tensiunilor globale.",
-    "entities": [
-      "CIA",
-      "SUA"
-    ],
-    "icon": "ship",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://digisport.ro/fotbal/liga-1/alex-chipciu-a-pus-paie-pe-foc-inainte-de-supercupa-iar-ne-asteapta-oltenii-sa-ne-intimideze-4370591",
-    "original_link": "https://www.digisport.ro/fotbal/liga-1/alex-chipciu-a-pus-paie-pe-foc-inainte-de-supercupa-iar-ne-asteapta-oltenii-sa-ne-intimideze-4370591",
-    "source": "digisport",
-    "source_name": "Digi Sport",
-    "source_lang": "ro",
-    "title": "Chipciu provoacă înainte de Supercupă",
-    "category": "sport",
-    "published": "2026-07-11T06:14:03+00:00",
-    "model": "B",
-    "teaser": "Alex Chipciu a lansat declarații provocatoare înaintea Supercupei, acuzând echipa adversă că încearcă să intimideze jucătorii săi, alimentând tensiunea.",
-    "entities": [
-      "Alex Chipciu"
-    ],
-    "icon": "ball-football",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://digi24.ro/stiri/externe/un-inalt-oficial-din-coreea-de-nord-a-fost-demis-pentru-ca-a-jefuit-fondurile-statului-si-le-a-risipit-intr-o-viata-desfranata-3857771",
-    "original_link": "https://www.digi24.ro/stiri/externe/un-inalt-oficial-din-coreea-de-nord-a-fost-demis-pentru-ca-a-jefuit-fondurile-statului-si-le-a-risipit-intr-o-viata-desfranata-3857771",
-    "source": "extern",
-    "source_name": "Digi24 Extern",
-    "source_lang": "ro",
-    "title": "Demis oficial nord-coreean pentru corupție și viață desfrânată",
-    "category": "politic",
-    "published": "2026-07-11T06:13:12+00:00",
-    "model": "B",
-    "teaser": "Un înalt oficial militar din Coreea de Nord a fost demis și exclus din partidul de guvernământ. Acuzațiile includ deturnarea fondurilor statului și risipirea lor într-un stil de viață luxos.",
-    "entities": [
-      "Coreea de Nord"
-    ],
-    "icon": "gavel",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://digi24.ro/stiri/externe/un-inalt-oficial-din-coreea-de-nord-a-fost-demis-pentru-ca-a-jefuit-fondurile-statului-si-le-a-risipit-intr-o-viata-desfranata-3857771",
-    "original_link": "https://www.digi24.ro/stiri/externe/un-inalt-oficial-din-coreea-de-nord-a-fost-demis-pentru-ca-a-jefuit-fondurile-statului-si-le-a-risipit-intr-o-viata-desfranata-3857771",
-    "source": "digi24",
-    "source_name": "Digi24",
-    "source_lang": "ro",
-    "title": "Demis oficial nord-coreean pentru corupție și viață desfrânată",
-    "category": "politic",
-    "published": "2026-07-11T06:13:12+00:00",
-    "model": "B",
-    "teaser": "Un înalt oficial militar din Coreea de Nord a fost demis și exclus din partidul de guvernământ. Acuzațiile includ deturnarea fondurilor statului și risipirea lor într-un stil de viață luxos.",
-    "entities": [
-      "Coreea de Nord"
-    ],
-    "icon": "gavel",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://prosport.ro/campionatul-mondial-2026/reactie-luis-de-la-fuente-fabian-ruiz-pedri-rezerva-spania-belgia-2-1-20481493",
-    "original_link": "https://www.prosport.ro/campionatul-mondial-2026/reactie-luis-de-la-fuente-fabian-ruiz-pedri-rezerva-spania-belgia-2-1-20481493",
-    "source": "prosport",
-    "source_name": "ProSport",
-    "source_lang": "ro",
-    "title": "Selecționerul Spaniei explică decizia privind pe Pedri",
-    "category": "sport",
-    "published": "2026-07-11T06:10:28+00:00",
-    "model": "B",
-    "teaser": "Luis de la Fuente a clarificat motivul pentru care Pedri a fost rezervă în meciul Spania-Belgia (2-1) de la CM 2026, afirmând că a fost o decizie tactică.",
-    "entities": [
-      "Luis de la Fuente",
-      "Pedri",
-      "Spania",
-      "Belgia"
-    ],
-    "icon": "ball-football",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://prosport.ro/campionatul-mondial-2026/harry-kane-erling-haaland-norvegia-anglia-cupa-mondiala-20481494",
-    "original_link": "https://www.prosport.ro/campionatul-mondial-2026/harry-kane-erling-haaland-norvegia-anglia-cupa-mondiala-20481494",
-    "source": "prosport",
-    "source_name": "ProSport",
-    "source_lang": "ro",
-    "title": "Harry Kane îl laudă pe Erling Haaland înaintea duelului de la CM 2026",
-    "category": "sport",
-    "published": "2026-07-11T06:06:57+00:00",
-    "model": "C",
-    "teaser": "Înaintea duelului Norvegia-Anglia de la CM 2026, Harry Kane a vorbit despre Erling Haaland, unul dintre golgheterii competiției, exprimându-și admirația.",
-    "entities": [
-      "Harry Kane",
-      "Erling Haaland",
-      "Anglia",
-      "Norvegia"
-    ],
-    "icon": "ball-football",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false,
-    "sources": [
-      {
-        "name": "ProSport",
-        "url": "https://www.prosport.ro/campionatul-mondial-2026/harry-kane-erling-haaland-norvegia-anglia-cupa-mondiala-20481494"
-      },
-      {
-        "name": "Spotmedia",
-        "url": "https://spotmedia.ro/stiri/sport/harry-kane-intrebat-despre-comparatia-cu-erling-haaland-raspunsul-englezului"
-      }
-    ],
-    "first_source": "ProSport",
-    "synthesis": "Înaintea meciului dintre Norvegia și Anglia de la Cupa Mondială 2026, Harry Kane a vorbit despre Erling Haaland. Atacantul englez a evitat comparațiile directe, descriindu-l pe Haaland ca fiind un jucător complet diferit, deși ambii sunt atacanți."
-  },
-  {
-    "url": "https://hotnews.ro/dezvaluiri-cnn-noi-imagini-din-satelit-arata-cum-iranul-isi-reconstruieste-in-secret-siturile-nucleare-bombardate-2297601",
-    "original_link": "https://hotnews.ro/dezvaluiri-cnn-noi-imagini-din-satelit-arata-cum-iranul-isi-reconstruieste-in-secret-siturile-nucleare-bombardate-2297601",
-    "source": "hotnews",
-    "source_name": "HotNews",
-    "source_lang": "ro",
-    "title": "Iran reconstruiește secret situri nucleare bombardate",
-    "category": "politic",
-    "published": "2026-07-11T06:01:31+00:00",
-    "model": "B",
-    "teaser": "Imagini noi din satelit arată că Iranul a încălcat acordul cu SUA, reconstruind situri nucleare și de rachete bombardate, conform unei analize CNN.",
-    "entities": [
-      "CNN",
-      "Iran",
-      "SUA",
-      "Donald Trump"
-    ],
-    "icon": "satellite",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://prosport.ro/campionatul-mondial-2026/courtois-schimbare-spania-belgia-gafa-lammens-20481481",
-    "original_link": "https://www.prosport.ro/campionatul-mondial-2026/courtois-schimbare-spania-belgia-gafa-lammens-20481481",
-    "source": "prosport",
-    "source_name": "ProSport",
-    "source_lang": "ro",
-    "title": "Courtois dezvăluie motivul schimbării sale",
-    "category": "sport",
-    "published": "2026-07-11T05:50:42+00:00",
-    "model": "B",
-    "teaser": "Thibaut Courtois a declarat că nu a dorit să fie schimbat în Spania-Belgia (2-1) de la CM 2026, dar problemele medicale au impus retragerea sa, înlocuitorul său greșind la gol.",
-    "entities": [
-      "Thibaut Courtois",
-      "Spania",
-      "Belgia"
-    ],
-    "icon": "ball-football",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://hotnews.ro/o-noua-noapte-de-cosmar-in-kiev-rusii-au-lansat-un-val-de-rachete-balistice-2297611",
-    "original_link": "https://hotnews.ro/o-noua-noapte-de-cosmar-in-kiev-rusii-au-lansat-un-val-de-rachete-balistice-2297611",
-    "source": "hotnews",
-    "source_name": "HotNews",
-    "source_lang": "ro",
-    "title": "Rusia a atacat Kiev cu rachete balistice",
-    "category": "politic",
-    "published": "2026-07-11T05:47:46+00:00",
-    "model": "B",
-    "teaser": "Cel puțin opt persoane au fost rănite în capitala Ucrainei, Kiev, în urma unui atac rusesc cu rachete balistice, care a provocat explozii în zorii zilei de sâmbătă.",
-    "entities": [
-      "Rusia",
-      "Kiev",
-      "Ucraina"
-    ],
-    "icon": "rocket",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://prosport.ro/campionatul-mondial-2026/rudi-garcia-selectioner-belgia-spania-faza-controversata-arbitru-var-rodri-hent-michael-oliver-20481482",
-    "original_link": "https://www.prosport.ro/campionatul-mondial-2026/rudi-garcia-selectioner-belgia-spania-faza-controversata-arbitru-var-rodri-hent-michael-oliver-20481482",
-    "source": "prosport",
-    "source_name": "ProSport",
-    "source_lang": "ro",
-    "title": "Selecționerul Belgiei critică arbitrajul în meciul cu Spania",
-    "category": "sport",
-    "published": "2026-07-11T05:39:07+00:00",
-    "model": "B",
-    "teaser": "Rudi Garcia, antrenorul Belgiei, s-a plâns după înfrângerea cu Spania (CM 2026) de o fază controversată de henț, nemulțumit că arbitrul nu a consultat VAR-ul.",
-    "entities": [
-      "Rudi Garcia",
-      "Spania",
-      "Belgia"
-    ],
-    "icon": "ball-football",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://digi24.ro/stiri/externe/patru-senatori-americani-au-ajuns-la-un-acord-cu-trump-pentru-extinderea-sanctiunilor-impotriva-masinii-de-razboi-a-lui-putin-3857801",
-    "original_link": "https://www.digi24.ro/stiri/externe/patru-senatori-americani-au-ajuns-la-un-acord-cu-trump-pentru-extinderea-sanctiunilor-impotriva-masinii-de-razboi-a-lui-putin-3857801",
-    "source": "extern",
-    "source_name": "Digi24 Extern",
-    "source_lang": "ro",
-    "title": "Senatori SUA și Trump, acord pentru extinderea sancțiunilor contra Rusiei",
-    "category": "politic",
-    "published": "2026-07-11T05:37:03+00:00",
-    "model": "B",
-    "teaser": "Patru senatori americani au ajuns la un acord cu administrația Trump pentru a avansa cu legislația ce vizează extinderea sancțiunilor împotriva Rusiei, descrisă ca o „mașină de război”.",
-    "entities": [
-      "Trump",
-      "Rusia",
-      "SUA"
-    ],
-    "icon": "gavel",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://digi24.ro/stiri/externe/patru-senatori-americani-au-ajuns-la-un-acord-cu-trump-pentru-extinderea-sanctiunilor-impotriva-masinii-de-razboi-a-lui-putin-3857801",
-    "original_link": "https://www.digi24.ro/stiri/externe/patru-senatori-americani-au-ajuns-la-un-acord-cu-trump-pentru-extinderea-sanctiunilor-impotriva-masinii-de-razboi-a-lui-putin-3857801",
-    "source": "digi24",
-    "source_name": "Digi24",
-    "source_lang": "ro",
-    "title": "Senatori SUA și Trump, acord pentru extinderea sancțiunilor contra Rusiei",
-    "category": "politic",
-    "published": "2026-07-11T05:37:03+00:00",
-    "model": "B",
-    "teaser": "Patru senatori americani au ajuns la un acord cu administrația Trump pentru a avansa cu legislația ce vizează extinderea sancțiunilor împotriva Rusiei, descrisă ca o „mașină de război”.",
-    "entities": [
-      "Trump",
-      "Rusia",
-      "SUA"
-    ],
-    "icon": "gavel",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://digisport.ro/fotbal/ligue-1/ce-lovitura-starul-de-la-barcelona-a-spus-da-pentru-transferul-la-psg-4371557",
-    "original_link": "https://www.digisport.ro/fotbal/ligue-1/ce-lovitura-starul-de-la-barcelona-a-spus-da-pentru-transferul-la-psg-4371557",
-    "source": "digisport",
-    "source_name": "Digi Sport",
-    "source_lang": "ro",
-    "title": "Fotbalist Barcelona acceptă transferul la PSG",
-    "category": "sport",
-    "published": "2026-07-11T05:34:31+00:00",
-    "model": "B",
-    "teaser": "Un jucător important de la FC Barcelona a primit o ofertă de la Paris Saint-Germain și a decis să o accepte, pregătindu-se pentru o nouă etapă în cariera sa.",
-    "entities": [
-      "Barcelona",
-      "PSG"
-    ],
-    "icon": "ball-football",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://moldova.europalibera.org/a/o-disputa-istorica-pune-la-incercare-relatiile-cruciale-dintre-ucraina-si-polonia-in-cel-mai-rau-moment-posibil/33800758.html",
-    "original_link": "https://moldova.europalibera.org/a/o-disputa-istorica-pune-la-incercare-relatiile-cruciale-dintre-ucraina-si-polonia-in-cel-mai-rau-moment-posibil/33800758.html",
-    "source": "el_moldova",
-    "source_name": "Europa Liberă",
-    "source_lang": "ro",
-    "title": "Dispută istorică amenință relațiile Ucraina-Polonia în momente critice",
-    "category": "politic",
-    "published": "2026-07-11T05:30:00+00:00",
-    "model": "B",
-    "teaser": "O dispută istorică legată de trecutul sângeros al Poloniei riscă să afecteze relațiile cruciale cu Ucraina, un aliat important în conflictul cu Rusia, având potențiale repercusiuni regionale.",
-    "entities": [
-      "Polonia",
-      "Ucraina",
-      "Rusia"
-    ],
-    "icon": "flag",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://hotnews.ro/diana-sosoaca-realeasa-la-sefia-s-o-s-romania-25-la-parlamentare-si-fotoliul-de-la-cotroceni-tintele-partidului-2297607",
-    "original_link": "https://hotnews.ro/diana-sosoaca-realeasa-la-sefia-s-o-s-romania-25-la-parlamentare-si-fotoliul-de-la-cotroceni-tintele-partidului-2297607",
-    "source": "hotnews",
-    "source_name": "HotNews",
-    "source_lang": "ro",
-    "title": "Diana Șoșoacă, realeasă președinte S.O.S România",
-    "category": "politic",
-    "published": "2026-07-11T05:26:58+00:00",
-    "model": "B",
-    "teaser": "Diana Șoșoacă a obținut al doilea mandat la conducerea partidului S.O.S România, în urma unui congres național, partidul vizând 25% la parlamentare și președinția.",
-    "entities": [
-      "Diana Șoșoacă",
-      "S.O.S România"
-    ],
-    "icon": "writing",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://digi24.ro/stiri/externe/explozii-puternice-la-kiev-rusia-a-atacat-capitala-ucrainei-cu-rachete-balistice-10-oameni-au-fost-raniti-3857791",
-    "original_link": "https://www.digi24.ro/stiri/externe/explozii-puternice-la-kiev-rusia-a-atacat-capitala-ucrainei-cu-rachete-balistice-10-oameni-au-fost-raniti-3857791",
-    "source": "extern",
-    "source_name": "Digi24 Extern",
-    "source_lang": "ro",
-    "title": "Rusia a atacat Kievul cu rachete balistice, 10 răniți",
-    "category": "extern",
-    "published": "2026-07-11T05:19:23+00:00",
-    "model": "B",
-    "teaser": "Capitala Ucrainei, Kiev, a fost atacată cu rachete balistice de către Rusia, provocând rănirea a zece persoane, inclusiv un copil de 11 ani, în al treilea bombardament din această săptămână.",
-    "entities": [
-      "Rusia",
-      "Kiev",
-      "Ucraina"
-    ],
-    "icon": "rocket",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://digi24.ro/stiri/externe/explozii-puternice-la-kiev-rusia-a-atacat-capitala-ucrainei-cu-rachete-balistice-10-oameni-au-fost-raniti-3857791",
-    "original_link": "https://www.digi24.ro/stiri/externe/explozii-puternice-la-kiev-rusia-a-atacat-capitala-ucrainei-cu-rachete-balistice-10-oameni-au-fost-raniti-3857791",
-    "source": "digi24",
-    "source_name": "Digi24",
-    "source_lang": "ro",
-    "title": "Rusia a atacat Kiev cu rachete balistice, 10 răniți",
-    "category": "extern",
-    "published": "2026-07-11T05:19:23+00:00",
-    "model": "B",
-    "teaser": "Capitala Ucrainei a fost lovită de rachete balistice rusești, provocând rănirea a 10 persoane, inclusiv un copil de 11 ani. Acesta este al treilea atac de săptămâna aceasta.",
-    "entities": [
-      "Kiev",
-      "Rusia",
-      "Ucraina"
-    ],
-    "icon": "rocket",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://dw.com/en/poland-could-cut-arms-aid-to-ukraine-as-wwii-spat-continues/a-77893170?maca=en-rss-en-eu-2092-rdf",
-    "original_link": "https://www.dw.com/en/poland-could-cut-arms-aid-to-ukraine-as-wwii-spat-continues/a-77893170?maca=en-rss-en-eu-2092-rdf",
-    "source": "dw_europe",
-    "source_name": "DW Europe",
-    "source_lang": "en",
-    "title": "Polonia ar putea reduce ajutorul militar pentru Ucraina din cauza disputei istorice",
-    "category": "politic",
-    "published": "2026-07-11T05:19:00+00:00",
-    "model": "B",
-    "teaser": "În contextul comemorării victimelor unei unități naționaliste ucrainene, Polonia ia în considerare reducerea sprijinului militar pentru Ucraina, în ciuda continuării războiului cu Rusia, afectând relațiile bilaterale.",
-    "entities": [
-      "Polonia",
-      "Ucraina",
-      "Rusia"
-    ],
-    "icon": "swords",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://hotnews.ro/coreea-de-nord-a-rabufnit-dupa-summitul-nato-o-organizatie-orientata-spre-razboi-si-confruntare-2297597",
-    "original_link": "https://hotnews.ro/coreea-de-nord-a-rabufnit-dupa-summitul-nato-o-organizatie-orientata-spre-razboi-si-confruntare-2297597",
-    "source": "hotnews",
-    "source_name": "HotNews",
-    "source_lang": "ro",
-    "title": "Coreea de Nord critică summitul NATO",
-    "category": "politic",
-    "published": "2026-07-11T05:12:20+00:00",
-    "model": "B",
-    "teaser": "Phenianul acuză NATO de consolidarea blocurilor militare și accelerarea înarmării, considerând acțiunile Coreei de Nord o amenințare falsă, după summitul Alianței.",
-    "entities": [
-      "Coreea de Nord",
-      "NATO",
-      "Statele Unite"
-    ],
-    "icon": "swords",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://theguardian.com/travel/2026/jul/11/ryanair-family-seating-policy-kids-fees-airfare-flight-airline-charges",
-    "original_link": "https://www.theguardian.com/travel/2026/jul/11/ryanair-family-seating-policy-kids-fees-airfare-flight-airline-charges",
-    "source": "guardian_eu",
-    "source_name": "The Guardian",
-    "source_lang": "en",
-    "title": "Ryanair elimină politica locurilor pentru familii, dar taxele pentru copii rămân",
-    "category": "economic",
-    "published": "2026-07-11T05:00:41+00:00",
-    "model": "B",
-    "teaser": "Ryanair a renunțat la politica de a taxa familiile pentru a sta împreună, însă costurile suplimentare pentru copii, inclusiv taxele de zbor și impozitele, pot fi substanțiale, uneori depășind prețul biletului de adult.",
-    "entities": [
-      "Ryanair"
-    ],
-    "icon": "receipt-tax",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://hotnews.ro/criza-volkswagen-taie-modele-reducere-productie-angajati-2297588",
-    "original_link": "https://hotnews.ro/criza-volkswagen-taie-modele-reducere-productie-angajati-2297588",
-    "source": "hotnews",
-    "source_name": "HotNews",
-    "source_lang": "ro",
-    "title": "Volkswagen reduce drastic producția și modelele",
-    "category": "economic",
-    "published": "2026-07-11T05:00:22+00:00",
-    "model": "B",
-    "teaser": "Volkswagen reorganizează profund, reducând jumătate din modele și capacitatea de producție anuală din cauza concurenței din China și pieței auto globale lente.",
-    "entities": [
-      "Volkswagen",
-      "China"
-    ],
-    "icon": "building-factory",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://digi24.ro/stiri/externe/dronele-ucrainene-au-lovit-nave-din-flota-fantoma-a-rusiei-si-substatii-electrice-intr-un-raid-nocturn-3857745",
-    "original_link": "https://www.digi24.ro/stiri/externe/dronele-ucrainene-au-lovit-nave-din-flota-fantoma-a-rusiei-si-substatii-electrice-intr-un-raid-nocturn-3857745",
-    "source": "extern",
-    "source_name": "Digi24 Extern",
-    "source_lang": "ro",
-    "title": "Drone ucrainene au lovit nave rusești și substații electrice",
-    "category": "extern",
-    "published": "2026-07-11T04:43:56+00:00",
-    "model": "B",
-    "teaser": "Ucraina a atacat cu drone 13 nave rusești în apropierea Crimeei, inclusiv 10 petroliere din flota fantomă. Au fost vizate și o navă de marfă, un feribot și un remorcher.",
-    "entities": [
-      "Ucraina",
-      "Rusia",
-      "Crimeea"
-    ],
-    "icon": null,
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://digi24.ro/stiri/externe/dronele-ucrainene-au-lovit-nave-din-flota-fantoma-a-rusiei-si-substatii-electrice-intr-un-raid-nocturn-3857745",
-    "original_link": "https://www.digi24.ro/stiri/externe/dronele-ucrainene-au-lovit-nave-din-flota-fantoma-a-rusiei-si-substatii-electrice-intr-un-raid-nocturn-3857745",
-    "source": "digi24",
-    "source_name": "Digi24",
-    "source_lang": "ro",
-    "title": "Drone ucrainene au lovit nave rusești și substații electrice",
-    "category": "extern",
-    "published": "2026-07-11T04:43:56+00:00",
-    "model": "B",
-    "teaser": "Ucraina a atacat cu drone 13 nave rusești în apropierea Crimeei, inclusiv 10 petroliere din flota fantomă. Au fost vizate și o navă de marfă, un feribot și un remorcher.",
-    "entities": [
-      "Ucraina",
-      "Rusia",
-      "Crimeea"
-    ],
-    "icon": null,
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://hotnews.ro/cupa-mondiala-2026-anglia-norvegia-argentina-elvetia-la-ce-se-joaca-2297592",
-    "original_link": "https://hotnews.ro/cupa-mondiala-2026-anglia-norvegia-argentina-elvetia-la-ce-se-joaca-2297592",
-    "source": "hotnews",
-    "source_name": "HotNews",
-    "source_lang": "ro",
-    "title": "Cupa Mondială 2026: Ultimele meciuri pentru semifinale",
-    "category": "sport",
-    "published": "2026-07-11T04:40:43+00:00",
-    "model": "B",
-    "teaser": "Spania a învins Belgia și va juca împotriva Franței. Ultimele două sferturi de finală ale Cupei Mondiale 2026 sunt Anglia – Norvegia și Argentina – Elveția.",
-    "entities": [
-      "Spania",
-      "Belgia",
-      "Franța",
-      "Anglia",
-      "Norvegia"
-    ],
-    "icon": "ball-football",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://theguardian.com/football/2026/jul/11/erling-haaland-hometown-bryne-norway-fans",
-    "original_link": "https://www.theguardian.com/football/2026/jul/11/erling-haaland-hometown-bryne-norway-fans",
-    "source": "guardian_eu",
-    "source_name": "The Guardian",
-    "source_lang": "en",
-    "title": "Orașul natal al lui Haaland îl celebrează pe \"băiatul care a devenit un Viking\"",
-    "category": "sport",
-    "published": "2026-07-11T04:00:39+00:00",
-    "model": "B",
-    "teaser": "Locuitorii din Bryne, Norvegia, sunt mândri de ascensiunea eroului local Erling Haaland în fotbalul mondial. Comunitatea îl susține cu entuziasm pe atacant, care a devenit o sursă de bucurie pentru oraș.",
-    "entities": [
-      "Erling Haaland",
-      "Bryne",
-      "Norvegia"
-    ],
-    "icon": "ball-football",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://digi24.ro/stiri/externe/tarile-europene-in-care-apare-cate-un-nou-milionar-la-fiecare-15-minute-unde-s-au-imbogatit-oamenii-cel-mai-mult-anul-trecut-3856877",
-    "original_link": "https://www.digi24.ro/stiri/externe/tarile-europene-in-care-apare-cate-un-nou-milionar-la-fiecare-15-minute-unde-s-au-imbogatit-oamenii-cel-mai-mult-anul-trecut-3856877",
-    "source": "extern",
-    "source_name": "Digi24 Extern",
-    "source_lang": "ro",
-    "title": "Europa de Est, creștere rapidă a numărului de milionari",
-    "category": "economic",
-    "published": "2026-07-11T04:00:15+00:00",
-    "model": "B",
-    "teaser": "Europa de Est a înregistrat cea mai mare creștere procentuală a numărului de milionari. Regatul Unit, Franța și Spania se numără printre țările cu cei mai mulți noi bogați.",
-    "entities": [
-      "Europa de Est",
-      "Regatul Unit",
-      "Franța",
-      "Spania"
-    ],
-    "icon": "percentage",
     "processed_by": "gemini",
     "prompt_version": "v2-esenta",
     "featured": false
