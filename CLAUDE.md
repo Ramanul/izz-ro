@@ -108,6 +108,15 @@ Project sub-agents live in `.claude/agents/` (versioned, see its README). Each i
 - "Does it still build?" / verify by running → **`pipeline-runner`** runs `--dry-run` / `--render-only` / `qa_check.py` safely (enforces §5.4).
 - Reviewing any story-surface change → **`editorial-guard`** checks the attribution formula, Zero Zgomot, one-axis-one-home, and design tokens (enforces §7, §8). Read-only.
 
+**Executor workflow (Devin, added 2026-07-18):** well-specified implementation tasks can be
+delegated to Devin (model swe-1-6-slow, free quota — costs zero Claude tokens). **`/delegate-devin`**
+writes a premise-verified spec to `specs/` and hands it off headlessly via
+`python tools/devin_headless.py -- -p "..." --permission-mode smart` (NEVER run devin.exe directly —
+an interactive startup nudge blocks piped runs; the wrapper's docstring explains). Devin works on a
+`devin/<task>` branch under the contract in `AGENTS.md`; **`/review-devin`** then reviews the branch
+text-only (git diff + tests) with verdict MERGE/FIX/REJECT. Manager reviews and merges; the executor
+never pushes or merges.
+
 Slash commands in `.claude/commands/`: **`/slice`** drives the mandatory §5 workflow for one vertical slice; **`/audit`** runs the front-end audit. Permission allowlist for the documented-safe commands lives in `.claude/settings.json` (this is §12 made enforceable — read-only and dev/build commands no longer prompt; push/commit/deletes still do). A web-only `SessionStart` hook (`.claude/hooks/session-start.sh`) installs the pipeline deps (with `SETUPTOOLS_USE_DISTUTILS=stdlib`, needed for feedparser/sgmllib3k) so Claude Code on the web can run the pipeline and these agents.
 
 ## 16. Two-role verification + honesty calibration — HARD RULE (owner decision 2026-07-12)
