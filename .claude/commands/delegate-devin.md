@@ -18,13 +18,14 @@ Protocol — every step is mandatory, in order:
    - goal, exact files authorized (nothing else), verification command with expected output,
    - branch name `devin/<task-slug>`, "commit then STOP — no push, no merge, no PR",
    - explicit list of user WIP files Devin must not touch, stage, or discard.
-4. **Hand off via CLI — zero screenshots.** Devin has a headless CLI bundled with Devin Desktop:
-   `$LOCALAPPDATA/Programs/Devin/resources/app/extensions/windsurf/devin/bin/devin.exe`
-   First check auth: `devin.exe auth status`. If "Not logged in", STOP and ask the user to run
-   `devin.exe auth login` in their own terminal (one-time browser OAuth) — do NOT fall back to
-   computer-use on the Devin window unless the user explicitly asks.
-   Then run in background (Bash run_in_background, from the repo root):
-   `"$DEVIN" -p "Read AGENTS.md, then execute specs/<task-slug>.md exactly. Report in Romanian." --permission-mode smart`
+4. **Hand off via CLI — zero screenshots.** Always go through the wrapper (never call devin.exe
+   directly: a git-provider nudge menu blocks every raw headless run — see tools/devin_headless.py
+   docstring). From the repo root, in background (Bash run_in_background):
+   `python tools/devin_headless.py --timeout 3600 -- -p "Read AGENTS.md, then execute specs/<task-slug>.md exactly. Report in Romanian." --permission-mode smart`
+   Needs `pywinpty` (verified installed 2026-07-18). Model on Free plan: swe-1-6-slow.
+   If the wrapper reports auth errors: user must run devin.exe `auth login` in their own terminal
+   (one-time browser OAuth; CLI credentials are separate from the Desktop app). Do NOT fall back
+   to computer-use on the Devin window unless the user explicitly asks.
    Modes: `smart` auto-runs edits + safe commands (pytest, git branch/commit); it blocks
    destructive ones — which is exactly the guardrail we want. Never use `dangerous`.
 5. **Do NOT babysit.** The CLI streams Devin's full transcript as text to the background log —
