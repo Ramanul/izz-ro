@@ -30,6 +30,7 @@
   {# fonturi AUTO-GAZDUITE (tools/fetch_fonts.py): fara cereri externe -> fara
      render-blocking cross-origin, fara IP-uri catre Google (consistent cu privacy) #}
   <link rel="preload" href="{{ base }}/static/fonts/PlayfairDisplay-800.ro.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="{{ base }}/static/fonts/JetBrainsMono-700.ro.woff2" as="font" type="font/woff2" crossorigin>
   {% if fonts_css %}<style>{{ fonts_css | safe }}</style>{% else %}<link rel="stylesheet" href="{{ base }}/static/fonts.css?v={{ asset_ver['fonts.css'] }}">{% endif %}
   <link rel="stylesheet" href="{{ base }}/static/styles.css?v={{ asset_ver['styles.css'] }}">
   <script>
@@ -57,6 +58,7 @@
       <a href="{{ base }}/calendar/"{% if nav_section == 'calendar' %} class="active"{% endif %}>Ce urmează</a>
       <a href="{{ base }}/instrumente/"{% if nav_section == 'instrumente' %} class="active"{% endif %}>Instrumente</a>
       <a href="{{ base }}/cauta/">caută</a>
+      <button id="izz-install-btn" class="izz-install-btn" type="button" hidden title="Instalează aplicația pe acest dispozitiv" aria-label="Instalează aplicația">Instalează aplicația</button>
       <button class="theme-toggle" title="Mod întunecat" aria-label="Comută tema" onclick="var h=document.documentElement,cur=h.getAttribute('data-theme'),next=cur==='dark'?'':'dark';if(next)h.setAttribute('data-theme',next);else h.removeAttribute('data-theme');localStorage.setItem('izz_theme',next||'');">☾</button>
     </nav>
   </header>
