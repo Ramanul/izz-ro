@@ -30,6 +30,7 @@
   {# fonturi AUTO-GAZDUITE (tools/fetch_fonts.py): fara cereri externe -> fara
      render-blocking cross-origin, fara IP-uri catre Google (consistent cu privacy) #}
   <link rel="preload" href="{{ base }}/static/fonts/PlayfairDisplay-800.ro.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="{{ base }}/static/fonts/JetBrainsMono-700.ro.woff2" as="font" type="font/woff2" crossorigin>
   {% if fonts_css %}<style>{{ fonts_css | safe }}</style>{% else %}<link rel="stylesheet" href="{{ base }}/static/fonts.css?v={{ asset_ver['fonts.css'] }}">{% endif %}
   <link rel="stylesheet" href="{{ base }}/static/styles.css?v={{ asset_ver['styles.css'] }}">
   <script>
@@ -79,23 +80,5 @@
   </footer>
   <button class="back-to-top" title="Sus" aria-label="Înapoi sus" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
   <script>var bt=document.querySelector('.back-to-top');window.addEventListener('scroll',function(){bt.classList.toggle('visible',window.scrollY>300)});</script>
-  <script>
-    (function () {
-      var btn = document.getElementById('izz-install-btn');
-      if (!btn) return;
-      var deferredPrompt = null;
-      window.addEventListener('beforeinstallprompt', function (e) {
-        e.preventDefault();
-        deferredPrompt = e;
-        btn.hidden = false;
-      });
-      btn.addEventListener('click', function () {
-        if (!deferredPrompt) return;
-        deferredPrompt.prompt();
-        deferredPrompt.userChoice.finally(function () { deferredPrompt = null; btn.hidden = true; });
-      });
-      window.addEventListener('appinstalled', function () { btn.hidden = true; deferredPrompt = null; });
-    })();
-  </script>
 </body>
 </html>

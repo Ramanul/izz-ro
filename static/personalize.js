@@ -233,6 +233,24 @@
     });
   }
 
+  /* ---- buton instalare PWA: independent de consimtamant, nu stocheaza nimic ---- */
+  function initInstallButton() {
+    const btn = document.getElementById('izz-install-btn');
+    if (!btn) return;
+    let deferredPrompt = null;
+    window.addEventListener('beforeinstallprompt', (e) => {
+      e.preventDefault();
+      deferredPrompt = e;
+      btn.hidden = false;
+    });
+    btn.addEventListener('click', () => {
+      if (!deferredPrompt) return;
+      deferredPrompt.prompt();
+      deferredPrompt.userChoice.finally(() => { deferredPrompt = null; btn.hidden = true; });
+    });
+    window.addEventListener('appinstalled', () => { btn.hidden = true; deferredPrompt = null; });
+  }
+
   /* ---- init ---- */
   function init() {
     rewireClicks();
@@ -299,6 +317,7 @@
   }
 
   function boot() {
+    initInstallButton();
     let c = null;
     try { c = localStorage.getItem(CONSENT); } catch {}
     if (c === 'yes') { init(); loadAnalytics(); return; }
