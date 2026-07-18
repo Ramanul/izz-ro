@@ -1,5 +1,561 @@
 [
   {
+    "url": "https://bzi.ro/conflictul-din-orientul-mijlociu-se-intensifica-sua-continua-bombardamentele-iar-iranul-ameninta-cu-o-ofensiva-totala-5572646",
+    "original_link": "https://www.bzi.ro/conflictul-din-orientul-mijlociu-se-intensifica-sua-continua-bombardamentele-iar-iranul-ameninta-cu-o-ofensiva-totala-5572646",
+    "source": "bzi",
+    "source_name": "BZI Iași",
+    "source_lang": "ro",
+    "title": "Escaladarea conflictului în Orientul Mijlociu: SUA bombardează, Iranul amenință",
+    "category": "local",
+    "published": "2026-07-18T19:00:25+00:00",
+    "model": "B",
+    "teaser": "Tensiunile din Orientul Mijlociu s-au intensificat. SUA continuă bombardamentele asupra unor obiective iraniene, în timp ce Teheranul amenință cu o „ofensivă totală”.",
+    "entities": [
+      "SUA",
+      "Iran",
+      "Teheran"
+    ],
+    "icon": "rocket",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://gsp.ro/fotbal/liga-1/fcsb-mm-stoica-transfer-fundas-inregistrare-aymen-boutoutaou-961999.html",
+    "original_link": "https://www.gsp.ro/fotbal/liga-1/fcsb-mm-stoica-transfer-fundas-inregistrare-aymen-boutoutaou-961999.html",
+    "source": "gsp",
+    "source_name": "GSP",
+    "source_lang": "ro",
+    "title": "MM Stoica anunță transfer iminent la FCSB",
+    "category": "sport",
+    "published": "2026-07-18T18:51:43+00:00",
+    "model": "B",
+    "teaser": "Mihai Stoica confirmă negocieri avansate pentru un fundaș central la FCSB. Noul jucător Aymen Boutoutaou a fost înregistrat pentru Conference League.",
+    "entities": [
+      "MM Stoica",
+      "FCSB",
+      "Aymen Boutoutaou",
+      "Vali Argăseală"
+    ],
+    "icon": "ball-football",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://gsp.ro/fotbal/liga-1/live-universitatea-craiova-uta-superliga-prima-etapa-961671.html",
+    "original_link": "https://www.gsp.ro/fotbal/liga-1/live-universitatea-craiova-uta-superliga-prima-etapa-961671.html",
+    "source": "gsp",
+    "source_name": "GSP",
+    "source_lang": "ro",
+    "title": "Universitatea Craiova - UTA, meci fără goluri în prima repriză",
+    "category": "sport",
+    "published": "2026-07-18T18:50:08+00:00",
+    "model": "B",
+    "teaser": "Partida dintre Universitatea Craiova și UTA, din prima etapă a Superligii, s-a încheiat cu scor alb la pauză. Meciul este transmis live.",
+    "entities": [
+      "Universitatea Craiova",
+      "UTA"
+    ],
+    "icon": "ball-football",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://stirileprotv.ro/stiri/international/primarul-new-yorkului-analizeaza-posibilitatea-arestarii-premierului-benjamin-netanyahu-la-adunarea-generala-a-onu.html",
+    "original_link": "https://stirileprotv.ro/stiri/international/primarul-new-yorkului-analizeaza-posibilitatea-arestarii-premierului-benjamin-netanyahu-la-adunarea-generala-a-onu.html",
+    "source": "protv",
+    "source_name": "Știrile ProTV",
+    "source_lang": "ro",
+    "title": "Primarul New Yorkului analizează arestarea lui Netanyahu la ONU",
+    "category": "politic",
+    "published": "2026-07-18T18:47:48+00:00",
+    "model": "C",
+    "sources": [
+      {
+        "name": "Știrile ProTV",
+        "url": "https://stirileprotv.ro/stiri/international/primarul-new-yorkului-analizeaza-posibilitatea-arestarii-premierului-benjamin-netanyahu-la-adunarea-generala-a-onu.html"
+      },
+      {
+        "name": "Digi24 Extern",
+        "url": "https://www.digi24.ro/stiri/externe/sua/primarul-new-yorkului-analizeaza-posibilitatea-arestarii-lui-netanyahu-cand-va-veni-la-adunarea-generala-a-onu-3868183"
+      },
+      {
+        "name": "G4Media",
+        "url": "https://www.g4media.ro/video-primarul-new-yorkului-analizeaza-posibilitatea-arestarii-lui-benjamin-netanyahu-la-adunarea-generala-a-onu.html"
+      }
+    ],
+    "first_source": "Știrile ProTV",
+    "synthesis": "Primarul New Yorkului, Zohran Mamdani, a declarat că analizează posibilitatea legală de a-l aresta pe premierul israelian Benjamin Netanyahu în timpul Adunării Generale a ONU din septembrie. Această perspectivă a generat o reacție fermă din partea ambasadorului Israelului la Națiunile Unite.",
+    "entities": [
+      "Zohran Mamdani",
+      "Benjamin Netanyahu",
+      "ONU"
+    ],
+    "icon": "gavel",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://bzi.ro/izolatia-care-poate-reduce-semnificativ-factura-la-energie-specialistii-recomanda-o-alternativa-mai-eficienta-decat-polistirenul-clasic-5572643",
+    "original_link": "https://www.bzi.ro/izolatia-care-poate-reduce-semnificativ-factura-la-energie-specialistii-recomanda-o-alternativa-mai-eficienta-decat-polistirenul-clasic-5572643",
+    "source": "bzi",
+    "source_name": "BZI Iași",
+    "source_lang": "ro",
+    "title": "Polistiren grafitat, alternativa eficienta pentru izolarea casei",
+    "category": "local",
+    "published": "2026-07-18T18:40:33+00:00",
+    "model": "B",
+    "teaser": "Polistirenul grafitat oferă o izolație termică superioară cu 20% față de cel alb clasic, la un cost ușor mai mare, contribuind la reducerea facturilor de energie.",
+    "entities": [
+      "polistiren grafitat"
+    ],
+    "icon": "bolt",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://gsp.ro/international/campionatul-mondial-de-fotbal-2026/alan-shearer-cere-desfiintarea-meciului-pentru-locul-3-961983.html",
+    "original_link": "https://www.gsp.ro/international/campionatul-mondial-de-fotbal-2026/alan-shearer-cere-desfiintarea-meciului-pentru-locul-3-961983.html",
+    "source": "gsp",
+    "source_name": "GSP",
+    "source_lang": "ro",
+    "title": "Alan Shearer cere desființarea meciului pentru locul 3 la CM",
+    "category": "sport",
+    "published": "2026-07-18T18:40:20+00:00",
+    "model": "B",
+    "teaser": "Fostul atacant englez Alan Shearer consideră absurd duelul pentru medalia de bronz la Cupa Mondială, acuzând FIFA de prioritizarea profitului în detrimentul jucătorilor.",
+    "entities": [
+      "Alan Shearer",
+      "FIFA",
+      "Anglia",
+      "Franța"
+    ],
+    "icon": "trophy",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://gsp.ro/international/campionate/chelsea-transfer-morgan-rogers-record-premier-league-961998.html",
+    "original_link": "https://www.gsp.ro/international/campionate/chelsea-transfer-morgan-rogers-record-premier-league-961998.html",
+    "source": "gsp",
+    "source_name": "GSP",
+    "source_lang": "ro",
+    "title": "Chelsea plătește 137 milioane euro pentru Morgan Rogers",
+    "category": "sport",
+    "published": "2026-07-18T18:31:05+00:00",
+    "model": "B",
+    "teaser": "Chelsea a finalizat transferul lui Morgan Rogers de la Aston Villa pentru 137 milioane euro, stabilind un nou record pentru cel mai scump jucător britanic, înainte de Franța - Anglia.",
+    "entities": [
+      "Chelsea",
+      "Aston Villa",
+      "Morgan Rogers",
+      "Arsenal"
+    ],
+    "icon": "ball-football",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://digi24.ro/stiri/externe/curtea-suprema-a-braziliei-ii-interzice-lui-javier-milei-sa-il-viziteze-pe-fostul-presedinte-jair-bolsonaro-3868169",
+    "original_link": "https://www.digi24.ro/stiri/externe/curtea-suprema-a-braziliei-ii-interzice-lui-javier-milei-sa-il-viziteze-pe-fostul-presedinte-jair-bolsonaro-3868169",
+    "source": "extern",
+    "source_name": "Digi24 Extern",
+    "source_lang": "ro",
+    "title": "Curtea Supremă a Braziliei interzice vizita lui Milei la Bolsonaro",
+    "category": "politic",
+    "published": "2026-07-18T18:28:03+00:00",
+    "model": "B",
+    "teaser": "Curtea Supremă a Braziliei a respins cererea președintelui Argentinei, Javier Milei, de a-l vizita pe fostul președinte brazilian Jair Bolsonaro, aflat în arest la domiciliu.",
+    "entities": [
+      "Brazilia",
+      "Milei",
+      "Bolsonaro"
+    ],
+    "icon": "gavel",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://digi24.ro/stiri/externe/curtea-suprema-a-braziliei-ii-interzice-lui-javier-milei-sa-il-viziteze-pe-fostul-presedinte-jair-bolsonaro-3868169",
+    "original_link": "https://www.digi24.ro/stiri/externe/curtea-suprema-a-braziliei-ii-interzice-lui-javier-milei-sa-il-viziteze-pe-fostul-presedinte-jair-bolsonaro-3868169",
+    "source": "digi24",
+    "source_name": "Digi24",
+    "source_lang": "ro",
+    "title": "Curtea Supremă a Braziliei interzice vizita lui Milei la Bolsonaro",
+    "category": "politic",
+    "published": "2026-07-18T18:28:03+00:00",
+    "model": "B",
+    "teaser": "Curtea Supremă a Braziliei a respins cererea președintelui Argentinei, Javier Milei, de a-l vizita pe fostul președinte brazilian Jair Bolsonaro, aflat în arest la domiciliu.",
+    "entities": [
+      "Brazilia",
+      "Milei",
+      "Bolsonaro"
+    ],
+    "icon": "gavel",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://gsp.ro/fotbal/liga-1/universitatea-craiova-oferta-cfr-cluj-meriton-korenica-961996.html",
+    "original_link": "https://www.gsp.ro/fotbal/liga-1/universitatea-craiova-oferta-cfr-cluj-meriton-korenica-961996.html",
+    "source": "gsp",
+    "source_name": "GSP",
+    "source_lang": "ro",
+    "title": "Rivala vrea să profite de problemele CFR Cluj, oferă pentru Korenica",
+    "category": "sport",
+    "published": "2026-07-18T18:23:29+00:00",
+    "model": "B",
+    "teaser": "Universitatea Craiova vizează transferul lui Ștefan Baiaram de la CFR Cluj, profitând de dificultățile financiare ale clubului ardelean pentru a obține un preț bun.",
+    "entities": [
+      "Universitatea Craiova",
+      "CFR Cluj",
+      "Ștefan Baiaram"
+    ],
+    "icon": "ball-football",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://gsp.ro/international/campionatul-mondial-de-fotbal-2026/joan-capdevila-refuzat-sua-donald-trump-961993.html",
+    "original_link": "https://www.gsp.ro/international/campionatul-mondial-de-fotbal-2026/joan-capdevila-refuzat-sua-donald-trump-961993.html",
+    "source": "gsp",
+    "source_name": "GSP",
+    "source_lang": "ro",
+    "title": "Campion mondial cu Spania, blocat la intrarea în SUA",
+    "category": "sport",
+    "published": "2026-07-18T18:21:09+00:00",
+    "model": "B",
+    "teaser": "Joan Capdevila, campion mondial cu Spania în 2010, a solicitat ajutorul lui Donald Trump după ce i-a fost refuzată intrarea în Statele Unite pentru a urmări finala Cupei Mondiale.",
+    "entities": [
+      "Joan Capdevila",
+      "SUA",
+      "Donald Trump",
+      "Spania"
+    ],
+    "icon": "flag",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://bzi.ro/alerta-in-hunedoara-o-femeie-de-64-de-ani-disparuta-de-acasa-este-cautata-de-politisti-5572641",
+    "original_link": "https://www.bzi.ro/alerta-in-hunedoara-o-femeie-de-64-de-ani-disparuta-de-acasa-este-cautata-de-politisti-5572641",
+    "source": "bzi",
+    "source_name": "BZI Iași",
+    "source_lang": "ro",
+    "title": "Femeie de 64 de ani, dispărută în Hunedoara",
+    "category": "local",
+    "published": "2026-07-18T18:20:17+00:00",
+    "model": "B",
+    "teaser": "Polițiștii din Călan, Hunedoara, caută o femeie de 64 de ani, dispărută voluntar de acasă din 16 iulie. Soțul a sesizat dispariția după ce nu a mai putut lua legătura cu ea.",
+    "entities": [
+      "Hunedoara",
+      "Călan"
+    ],
+    "icon": "alert-triangle",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://bzi.ro/doliu-in-biserica-ortodoxa-a-murit-protosinghelul-serafim-mihali-staretul-manastirii-bisericani-5572639",
+    "original_link": "https://www.bzi.ro/doliu-in-biserica-ortodoxa-a-murit-protosinghelul-serafim-mihali-staretul-manastirii-bisericani-5572639",
+    "source": "bzi",
+    "source_name": "BZI Iași",
+    "source_lang": "ro",
+    "title": "A murit protosinghelul Serafim Mihali, starețul Mănăstirii Bisericani",
+    "category": "local",
+    "published": "2026-07-18T18:05:09+00:00",
+    "model": "B",
+    "teaser": "Protosynghelul Serafim Mihali, starețul Mănăstirii Bisericani din Neamț, a decedat la vârsta de 63 de ani. Vestea a adus tristețe în comunitatea monahală și printre credincioși.",
+    "entities": [
+      "Serafim Mihali",
+      "Mănăstirii Bisericani",
+      "Neamț"
+    ],
+    "icon": "building-church",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://sfatulparintilor.ro/familie-parinti/actualitate/ce-nume-se-sarbatoresc-de-sfantul-ilie-cui-sa-spui-la-multi-ani-azi",
+    "original_link": "https://sfatulparintilor.ro/familie-parinti/actualitate/ce-nume-se-sarbatoresc-de-sfantul-ilie-cui-sa-spui-la-multi-ani-azi/",
+    "source": "sfatulparintilor",
+    "source_name": "Sfatul Părinților",
+    "source_lang": "ro",
+    "title": "Sărbătoarea Sfântului Ilie pe 20 iulie",
+    "category": "lifestyle",
+    "published": "2026-07-18T18:02:00+00:00",
+    "model": "B",
+    "teaser": "Ortodocșii sărbătoresc pe 20 iulie Sfântul Ilie. Articolul detaliază ce nume sunt onorate cu ocazia acestei zile, invitând cititorii să ureze „La mulți ani”.",
+    "entities": [
+      "Sfântul Ilie"
+    ],
+    "icon": "certificate",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://digi24.ro/stiri/externe/presedintele-ungariei-a-promulgat-amendamentul-constitutional-care-ii-incheie-mandatul-3868147",
+    "original_link": "https://www.digi24.ro/stiri/externe/presedintele-ungariei-a-promulgat-amendamentul-constitutional-care-ii-incheie-mandatul-3868147",
+    "source": "extern",
+    "source_name": "Digi24 Extern",
+    "source_lang": "ro",
+    "title": "Președintele Ungariei a promulgat legea care îi încheie mandatul",
+    "category": "politic",
+    "published": "2026-07-18T18:01:22+00:00",
+    "model": "C",
+    "sources": [
+      {
+        "name": "Digi24 Extern",
+        "url": "https://www.digi24.ro/stiri/externe/presedintele-ungariei-a-promulgat-amendamentul-constitutional-care-ii-incheie-mandatul-3868147"
+      },
+      {
+        "name": "Ziarul Financiar",
+        "url": "https://www.zf.ro/business-international/ungaria-presedintele-a-promulgat-legea-privind-incetarea-propriului-mandat-23197993"
+      },
+      {
+        "name": "HotNews",
+        "url": "https://hotnews.ro/presedintele-ungariei-promulga-amendamentul-constitutional-care-ii-incheie-mandatul-2303884"
+      }
+    ],
+    "first_source": "Digi24 Extern",
+    "synthesis": "Președintele Ungariei, Tamas Sulyok, a promulgat sâmbătă cel de-al 17-lea amendament constituțional. Această modificare legislativă prevede încetarea mandatului șefului statului în ziua următoare intrării în vigoare a legii. Amendamentul a fost adoptat de partidul de guvernământ Tisza.",
+    "entities": [
+      "Tamas Sulyok",
+      "Ungaria",
+      "Tisza"
+    ],
+    "icon": "gavel",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://politico.eu/article/hungarian-president-fires-himself-bowing-out-to-magyars-pressure",
+    "original_link": "https://www.politico.eu/article/hungarian-president-fires-himself-bowing-out-to-magyars-pressure/?utm_source=RSS_Feed&utm_medium=RSS&utm_campaign=RSS_Syndication",
+    "source": "politico_eu",
+    "source_name": "Politico EU",
+    "source_lang": "en",
+    "title": "Președintele Ungariei demisionează sub presiunea lui Magyar",
+    "category": "politic",
+    "published": "2026-07-18T17:52:15+00:00",
+    "model": "B",
+    "teaser": "Președintele Ungariei, numit de Orbán, a semnat o lege care îi permite să fie înlăturat din funcție, ca urmare a presiunilor exercitate de premierul Péter Magyar.",
+    "entities": [
+      "Ungaria",
+      "Orbán",
+      "Magyar"
+    ],
+    "icon": "gavel",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://politico.com/news/2026/07/17/canada-wildfires-smoke-trump-01002976",
+    "original_link": "https://www.politico.com/news/2026/07/17/canada-wildfires-smoke-trump-01002976?utm_source=RSS_Feed&utm_medium=RSS&utm_campaign=RSS_Syndication",
+    "source": "politico_eu",
+    "source_name": "Politico EU",
+    "source_lang": "en",
+    "title": "Trump amenință Canada din cauza fumului de la incendii",
+    "category": "extern",
+    "published": "2026-07-18T17:48:02+00:00",
+    "model": "B",
+    "teaser": "Fumul provenit de la incendiile de vegetație din Canada a acoperit mai multe state americane, iar autoritățile au avertizat milioane de oameni să rămână în interior.",
+    "entities": [
+      "Trump",
+      "Canada",
+      "SUA"
+    ],
+    "icon": "cloud-storm",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://bzi.ro/vesti-bune-pentru-romani-ministrul-energiei-anunta-masuri-care-ar-putea-reduce-facturile-la-electricitate-5572637",
+    "original_link": "https://www.bzi.ro/vesti-bune-pentru-romani-ministrul-energiei-anunta-masuri-care-ar-putea-reduce-facturile-la-electricitate-5572637",
+    "source": "bzi",
+    "source_name": "BZI Iași",
+    "source_lang": "ro",
+    "title": "Măsuri pentru reducerea facturilor la electricitate, anunțate de ministrul Energiei",
+    "category": "local",
+    "published": "2026-07-18T17:40:08+00:00",
+    "model": "B",
+    "teaser": "Ministrul Energiei, Ilie Bolojan, a anunțat două programe finanțate din Fondul pentru Modernizare, vizând instalarea de contoare inteligente și stocarea energiei, pentru a scădea costurile la electricitate.",
+    "entities": [
+      "Ilie Bolojan",
+      "Fondul pentru Modernizare"
+    ],
+    "icon": "receipt-tax",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://bbc.co.uk/news/articles/cpd7q7eev7po?at_medium=RSS&at_campaign=rss",
+    "original_link": "https://www.bbc.co.uk/news/articles/cpd7q7eev7po?at_medium=RSS&at_campaign=rss",
+    "source": "bbc_europe",
+    "source_name": "BBC Europe",
+    "source_lang": "en",
+    "title": "Președintele Ungariei acceptă să demisioneze",
+    "category": "politic",
+    "published": "2026-07-18T17:33:28+00:00",
+    "model": "B",
+    "teaser": "Președintele Ungariei, considerat loial lui Orbán, a acceptat să își încheie mandatul, după ce parlamentul a votat pentru înlăturarea sa din funcție.",
+    "entities": [
+      "Ungaria",
+      "Orbán"
+    ],
+    "icon": "gavel",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://zcj.ro/sport/cfr-cluj-debut-cu-stangul-in-noul-sezon-al-superligii-feroviarii-au-fost-invinsi-la-galati--298843.html",
+    "original_link": "https://zcj.ro/sport/cfr-cluj-debut-cu-stangul-in-noul-sezon-al-superligii-feroviarii-au-fost-invinsi-la-galati--298843.html",
+    "source": "zcj",
+    "source_name": "Ziua de Cluj",
+    "source_lang": "ro",
+    "title": "CFR Cluj pierde la debutul sezonului Superligii",
+    "category": "local",
+    "published": "2026-07-18T17:32:00+00:00",
+    "model": "B",
+    "teaser": "CFR Cluj a început noul sezon al Superligii cu o înfrângere în fața echipei din Galați, scor 2-1. Aceasta marchează debutul antrenorului Antonio Folha pe banca formației.",
+    "entities": [
+      "CFR Cluj",
+      "Galați",
+      "Antonio Folha"
+    ],
+    "icon": "ball-football",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://zf.ro/business-international/vreme-extrema-inaintea-finalei-cupei-mondiale-spania-si-a-intrerupt-antrenamentul-din-cauza-furtunii-23197973",
+    "original_link": "https://www.zf.ro/business-international/vreme-extrema-inaintea-finalei-cupei-mondiale-spania-si-a-intrerupt-antrenamentul-din-cauza-furtunii-23197973",
+    "source": "zf",
+    "source_name": "Ziarul Financiar",
+    "source_lang": "ro",
+    "title": "Furtuna a întrerupt antrenamentul Spaniei înaintea finalei Cupei Mondiale",
+    "category": "sport",
+    "published": "2026-07-18T17:31:19+00:00",
+    "model": "C",
+    "sources": [
+      {
+        "name": "Ziarul Financiar",
+        "url": "https://www.zf.ro/business-international/vreme-extrema-inaintea-finalei-cupei-mondiale-spania-si-a-intrerupt-antrenamentul-din-cauza-furtunii-23197973"
+      },
+      {
+        "name": "G4Media",
+        "url": "https://www.g4media.ro/furtuni-risipesc-fumul-incendiilor-canada-finala-cupei-mondiale-spania-argentina.html"
+      }
+    ],
+    "first_source": "Ziarul Financiar",
+    "synthesis": "Antrenamentul echipei naționale a Spaniei, programat sâmbătă înaintea finalei Cupei Mondiale împotriva Argentinei, a fost suspendat din cauza furtunilor și a descărcărilor electrice din New Jersey. Fenomenul meteo sever este însă așteptat să disperseze fumul incendiilor din Canada, îmbunătățind calitatea aerului pentru meci.",
+    "entities": [
+      "Spania",
+      "Argentina",
+      "New Jersey"
+    ],
+    "icon": "cloud-storm",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://zcj.ro/eveniment/le-am-mostenit-patru-maimute-descoperite-in-portbagajul-unei-masini-la-granita-romaniei--298840.html",
+    "original_link": "https://zcj.ro/eveniment/le-am-mostenit-patru-maimute-descoperite-in-portbagajul-unei-masini-la-granita-romaniei--298840.html",
+    "source": "zcj",
+    "source_name": "Ziua de Cluj",
+    "source_lang": "ro",
+    "title": "Patru maimuțe, descoperite ilegal la granița României",
+    "category": "local",
+    "published": "2026-07-18T17:30:00+00:00",
+    "model": "B",
+    "teaser": "Polițiștii de frontieră au descoperit patru maimuțe fără acte legale în portbagajul unei mașini ucrainene, la Punctul de Trecere a Frontierei Moravița, județul Timiș.",
+    "entities": [
+      "Ucraina",
+      "Moravița",
+      "Timiș"
+    ],
+    "icon": "car",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://bzi.ro/roman-gasit-mort-in-italia-la-scurt-timp-dupa-externarea-din-spital-familia-este-in-stare-de-soc-5572634",
+    "original_link": "https://www.bzi.ro/roman-gasit-mort-in-italia-la-scurt-timp-dupa-externarea-din-spital-familia-este-in-stare-de-soc-5572634",
+    "source": "bzi",
+    "source_name": "BZI Iași",
+    "source_lang": "ro",
+    "title": "Român găsit mort în Italia, la scurt timp după externare",
+    "category": "local",
+    "published": "2026-07-18T17:20:21+00:00",
+    "model": "B",
+    "teaser": "Un român din Arezzo, Italia, a fost găsit decedat la scurt timp după ce fusese externat din spital. Bărbatul dispăruse de câteva zile, iar familia alertase autoritățile.",
+    "entities": [
+      "Italia",
+      "Arezzo"
+    ],
+    "icon": "building-hospital",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://sfatulparintilor.ro/horoscop-3/horoscop-zilnic-horoscop-3/horoscop-zilnic",
+    "original_link": "https://sfatulparintilor.ro/horoscop-3/horoscop-zilnic-horoscop-3/horoscop-zilnic/",
+    "source": "sfatulparintilor",
+    "source_name": "Sfatul Părinților",
+    "source_lang": "ro",
+    "title": "Horoscop zilnic 19 iulie 2026: Marte și Saturn influențează planurile",
+    "category": "lifestyle",
+    "published": "2026-07-18T17:15:00+00:00",
+    "model": "B",
+    "teaser": "Horoscopul pentru 19 iulie 2026 indică o zi activă, influențată de Marte și Saturn. Configurația astrală favorizează deblocarea unor planuri și apariția unor oportunități.",
+    "entities": [
+      "Marte",
+      "Saturn"
+    ],
+    "icon": "globe",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://sfatulparintilor.ro/horoscop-3/horoscop-saptamanal-3/mesajele-arhanghelilor-pentru-zodii",
+    "original_link": "https://sfatulparintilor.ro/horoscop-3/horoscop-saptamanal-3/mesajele-arhanghelilor-pentru-zodii/",
+    "source": "sfatulparintilor",
+    "source_name": "Sfatul Părinților",
+    "source_lang": "ro",
+    "title": "Mesaje arhanghelice pentru zodia ta, 20-26 iulie 2026",
+    "category": "lifestyle",
+    "published": "2026-07-18T17:12:00+00:00",
+    "model": "B",
+    "teaser": "În perioada 20-26 iulie 2026, arhanghelii transmit mesaje specifice fiecărei zodii. Aceste ghidări celeste sunt prezentate ca indicatoare pentru a facilita drumul personal.",
+    "entities": [],
+    "icon": "certificate",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
     "url": "https://ziaruldeiasi.ro/stiri/inserate-latinesti-in-scrieri-ale-lui-eminescu-xliii--1877273.html",
     "original_link": "https://www.ziaruldeiasi.ro/stiri/inserate-latinesti-in-scrieri-ale-lui-eminescu-xliii--1877273.html",
     "source": "ziaruldeiasi",
@@ -62,6 +618,26 @@
     "featured": false
   },
   {
+    "url": "https://bzi.ro/razboiul-din-iran-a-schimbat-piata-energiei-china-profita-de-petrolul-ieftin-dar-apar-si-riscuri-economice-5572631",
+    "original_link": "https://www.bzi.ro/razboiul-din-iran-a-schimbat-piata-energiei-china-profita-de-petrolul-ieftin-dar-apar-si-riscuri-economice-5572631",
+    "source": "bzi",
+    "source_name": "BZI Iași",
+    "source_lang": "ro",
+    "title": "China profită de petrolul ieftin din cauza conflictului din Iran",
+    "category": "local",
+    "published": "2026-07-18T17:00:51+00:00",
+    "model": "B",
+    "teaser": "Conflictul din Orientul Mijlociu a dus la scăderea prețului petrolului, China cumpărând cantități mari pentru a-și consolida rezervele, deși strategia implică riscuri economice.",
+    "entities": [
+      "China",
+      "Iran"
+    ],
+    "icon": "currency-euro",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
     "url": "https://zcj.ro/eveniment/dosarul-mortii-madalinei-manole-ar-putea-fi-redeschis-un-detectiv-sustine-ca-are-noi-dovezi--298838.html",
     "original_link": "https://zcj.ro/eveniment/dosarul-mortii-madalinei-manole-ar-putea-fi-redeschis-un-detectiv-sustine-ca-are-noi-dovezi--298838.html",
     "source": "zcj",
@@ -76,6 +652,25 @@
       "Mădălina Manole"
     ],
     "icon": "gavel",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://bzi.ro/pensionarii-pot-beneficia-de-mai-multe-ajutoare-de-la-stat-in-2026-unele-se-acorda-doar-la-cerere-5572629",
+    "original_link": "https://www.bzi.ro/pensionarii-pot-beneficia-de-mai-multe-ajutoare-de-la-stat-in-2026-unele-se-acorda-doar-la-cerere-5572629",
+    "source": "bzi",
+    "source_name": "BZI Iași",
+    "source_lang": "ro",
+    "title": "Pensionarii primesc noi ajutoare de stat în 2026",
+    "category": "local",
+    "published": "2026-07-18T16:40:52+00:00",
+    "model": "B",
+    "teaser": "Persoanele pensionate vor beneficia în 2026 de noi ajutoare de la stat. Unele se acordă automat, altele necesită depunerea unei cereri, existând riscul ca mulți să le rateze.",
+    "entities": [
+      "stat"
+    ],
+    "icon": "receipt-tax",
     "processed_by": "gemini",
     "prompt_version": "v2-esenta",
     "featured": false
@@ -24220,589 +24815,6 @@
       "Londra"
     ],
     "icon": "music",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://prosport.ro/campionatul-mondial-2026/live-norvegia-anglia-cupa-mondiala-sferturi-de-finala-haaland-kane-20479795",
-    "original_link": "https://www.prosport.ro/campionatul-mondial-2026/live-norvegia-anglia-cupa-mondiala-sferturi-de-finala-haaland-kane-20479795",
-    "source": "prosport",
-    "source_name": "ProSport",
-    "source_lang": "ro",
-    "title": "Norvegia și Anglia se înfruntă în sferturile Cupei Mondiale 2026",
-    "category": "sport",
-    "published": "2026-07-11T19:22:34+00:00",
-    "model": "C",
-    "sources": [
-      {
-        "name": "ProSport",
-        "url": "https://www.prosport.ro/campionatul-mondial-2026/live-norvegia-anglia-cupa-mondiala-sferturi-de-finala-haaland-kane-20479795"
-      },
-      {
-        "name": "HotNews",
-        "url": "https://hotnews.ro/live-cupa-mondiala-2026-urmeaza-sfertul-dintre-norvegia-si-anglia-unul-dintre-cele-mai-asteptate-meciuri-de-la-aceasta-editie-2298088"
-      },
-      {
-        "name": "Digi Sport",
-        "url": "https://www.digisport.ro/fotbal/cm-2026/norvegia-anglia-0-0-acum-digisport-ro-in-sferturile-cupei-mondiale-2026-erling-haaland-vs-harry-kane-4371003"
-      }
-    ],
-    "first_source": "ProSport",
-    "synthesis": "Echipele naționale de fotbal ale Norvegiei și Angliei se întâlnesc în etapa sferturilor de finală ale Cupei Mondiale 2026, la Miami. Partida, care opune jucători precum Haaland și Kane, este primul meci al serii. Scor la momentul raportării: 0-0.",
-    "entities": [
-      "Norvegia",
-      "Anglia",
-      "Cupa Mondială 2026",
-      "Haaland",
-      "Kane"
-    ],
-    "icon": "ball-football",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://spotmedia.ro/stiri/eveniment/trenurile-pe-relatia-bucuresti-ploiesti-brasov-au-intarzieri-mari-din-cauza-unui-incident-feroviar",
-    "original_link": "https://spotmedia.ro/stiri/eveniment/trenurile-pe-relatia-bucuresti-ploiesti-brasov-au-intarzieri-mari-din-cauza-unui-incident-feroviar",
-    "source": "spotmedia",
-    "source_name": "Spotmedia",
-    "source_lang": "ro",
-    "title": "Întârzieri majore pe ruta București – Brașov din cauza problemelor feroviare",
-    "category": "general",
-    "published": "2026-07-11T19:21:07+00:00",
-    "model": "C",
-    "sources": [
-      {
-        "name": "Spotmedia",
-        "url": "https://spotmedia.ro/stiri/eveniment/trenurile-pe-relatia-bucuresti-ploiesti-brasov-au-intarzieri-mari-din-cauza-unui-incident-feroviar"
-      },
-      {
-        "name": "G4Media",
-        "url": "https://www.g4media.ro/intarzieri-de-pana-la-o-ora-pentru-trenurile-care-circula-intre-bucuresti-si-brasov-anunta-cfr.html"
-      }
-    ],
-    "first_source": "Spotmedia",
-    "synthesis": "Circulația trenurilor pe ruta București – Ploiești – Brașov înregistrează întârzieri de 30-60 de minute. Acestea sunt cauzate de un deranjament la infrastructura feroviară pe secțiunea Timișu de Sus – Predeal, care nu a fost încă remediat. CFR Călători a anunțat situația sâmbătă seara.",
-    "entities": [
-      "CFR Călători",
-      "București",
-      "Brașov",
-      "Timișu de Sus – Predeal"
-    ],
-    "icon": "train",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://gsp.ro/sporturi/rugby/doliu-si-la-rugby-al-doilea-international-sud-african-decedat-in-ultimele-24-de-ore-s-a-prabusit-la-antrenament-959499.html",
-    "original_link": "https://www.gsp.ro/sporturi/rugby/doliu-si-la-rugby-al-doilea-international-sud-african-decedat-in-ultimele-24-de-ore-s-a-prabusit-la-antrenament-959499.html",
-    "source": "gsp",
-    "source_name": "GSP",
-    "source_lang": "ro",
-    "title": "Doi rugbiști sud-africani au murit subit",
-    "category": "sport",
-    "published": "2026-07-11T19:20:18+00:00",
-    "model": "B",
-    "teaser": "Lumea rugbyului din Africa de Sud este în doliu. După ce Jayden Adams (25 ani) a decedat, internaționalul de tineret Luqobo Makwedini (20 ani) a suferit un infarct fatal la antrenament.",
-    "entities": [
-      "Jayden Adams",
-      "Luqobo Makwedini",
-      "Africa de Sud"
-    ],
-    "icon": "ball-football",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://gsp.ro/fotbal/liga-1/ioan-ovidiu-sabau-reactie-dinamo-farul-959497.html",
-    "original_link": "https://www.gsp.ro/fotbal/liga-1/ioan-ovidiu-sabau-reactie-dinamo-farul-959497.html",
-    "source": "gsp",
-    "source_name": "GSP",
-    "source_lang": "ro",
-    "title": "Antrenorul Farului Constanța, Ioan Ovidiu Sabău, refuză să-și asume obiective ambițioase",
-    "category": "sport",
-    "published": "2026-07-11T19:20:09+00:00",
-    "model": "B",
-    "teaser": "După victoria cu Dinamo, antrenorul Farului Constanța, Ioan Ovidiu Sabău, este mulțumit de progresul echipei, dar consideră că este prea devreme pentru a-și asuma obiective majore.",
-    "entities": [
-      "Farul Constanța",
-      "Ioan Ovidiu Sabău",
-      "Dinamo"
-    ],
-    "icon": "ball-football",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://digi24.ro/stiri/externe/ue/incendiile-fac-ravagii-in-sardinia-si-sicilia-o-autostrada-a-fost-inchisa-iar-zboruri-au-fost-redirectionate-din-olbia-3858341",
-    "original_link": "https://www.digi24.ro/stiri/externe/ue/incendiile-fac-ravagii-in-sardinia-si-sicilia-o-autostrada-a-fost-inchisa-iar-zboruri-au-fost-redirectionate-din-olbia-3858341",
-    "source": "extern",
-    "source_name": "Digi24 Extern",
-    "source_lang": "ro",
-    "title": "Incendii puternice în Sardinia și Sicilia",
-    "category": "general",
-    "published": "2026-07-11T19:19:34+00:00",
-    "model": "B",
-    "teaser": "Focare de vegetație afectează sudul Italiei, provocând închiderea unei autostrăzi în Sardinia și redirecționarea zborurilor din Olbia, în timp ce Sicilia luptă cu flăcările.",
-    "entities": [
-      "Sardinia",
-      "Sicilia",
-      "Olbia"
-    ],
-    "icon": "flame",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://digi24.ro/stiri/externe/ue/incendiile-fac-ravagii-in-sardinia-si-sicilia-o-autostrada-a-fost-inchisa-iar-zboruri-au-fost-redirectionate-din-olbia-3858341",
-    "original_link": "https://www.digi24.ro/stiri/externe/ue/incendiile-fac-ravagii-in-sardinia-si-sicilia-o-autostrada-a-fost-inchisa-iar-zboruri-au-fost-redirectionate-din-olbia-3858341",
-    "source": "digi24",
-    "source_name": "Digi24",
-    "source_lang": "ro",
-    "title": "Incendii puternice în Sardinia și Sicilia",
-    "category": "general",
-    "published": "2026-07-11T19:19:34+00:00",
-    "model": "B",
-    "teaser": "Focare de vegetație afectează sudul Italiei, provocând închiderea unei autostrăzi în Sardinia și redirecționarea zborurilor din Olbia, în timp ce Sicilia luptă cu flăcările.",
-    "entities": [
-      "Sardinia",
-      "Sicilia",
-      "Olbia"
-    ],
-    "icon": "flame",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://gsp.ro/international/campionatul-mondial-de-fotbal-2026/mm-stoica-siderat-spania-belgia-campionatul-mondial-959493.html",
-    "original_link": "https://www.gsp.ro/international/campionatul-mondial-de-fotbal-2026/mm-stoica-siderat-spania-belgia-campionatul-mondial-959493.html",
-    "source": "gsp",
-    "source_name": "GSP",
-    "source_lang": "ro",
-    "title": "Mihai Stoica critică decizia de a-l schimba pe Courtois în meciul Spania-Belgia",
-    "category": "sport",
-    "published": "2026-07-11T19:06:35+00:00",
-    "model": "B",
-    "teaser": "Președintele FCSB, Mihai Stoica, consideră ireală schimbarea portarului Thibaut Courtois în meciul Spania-Belgia, sugerând că Spania a avut noroc datorită accidentărilor adversarilor.",
-    "entities": [
-      "Mihai Stoica",
-      "FCSB",
-      "Thibaut Courtois",
-      "Spania",
-      "Belgia"
-    ],
-    "icon": "ball-football",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://spotmedia.ro/stiri/politica/avertisment-din-pnl-pentru-nicusor-dan-inainte-de-consultarile-de-luni-nu-ne-cereti-sa-salvam-psd-sunteti-intr-o-mare-eroare",
-    "original_link": "https://spotmedia.ro/stiri/politica/avertisment-din-pnl-pentru-nicusor-dan-inainte-de-consultarile-de-luni-nu-ne-cereti-sa-salvam-psd-sunteti-intr-o-mare-eroare",
-    "source": "spotmedia",
-    "source_name": "Spotmedia",
-    "source_lang": "ro",
-    "title": "PNL Iași avertizează pe Nicușor Dan să nu ceară sprijin pentru PSD",
-    "category": "politic",
-    "published": "2026-07-11T19:02:20+00:00",
-    "model": "C",
-    "sources": [
-      {
-        "name": "Spotmedia",
-        "url": "https://spotmedia.ro/stiri/politica/avertisment-din-pnl-pentru-nicusor-dan-inainte-de-consultarile-de-luni-nu-ne-cereti-sa-salvam-psd-sunteti-intr-o-mare-eroare"
-      },
-      {
-        "name": "HotNews",
-        "url": "https://hotnews.ro/lider-pnl-mesaj-pentru-nicusor-dan-inaintea-consultarilor-nu-ne-cereti-sa-salvam-psd-2298076"
-      },
-      {
-        "name": "Digi24",
-        "url": "https://www.digi24.ro/stiri/actualitate/politica/mesaj-al-unui-lider-pnl-pentru-nicusor-dan-inaintea-consultarilor-de-luni-alexandru-muraru-nu-ne-cereti-sa-salvam-psd-3858339"
-      }
-    ],
-    "first_source": "Spotmedia",
-    "synthesis": "Liderul PNL Iași, Alexandru Muraru, i-a transmis președintelui Nicușor Dan, înainte de consultările politice de luni, să nu solicite liberalilor să susțină PSD. Muraru a subliniat că PNL este complet separat de social-democrați și că o alianță cu aceștia pentru combaterea extremismului ar fi o greșeală majoră.",
-    "entities": [
-      "PNL",
-      "Nicușor Dan",
-      "PSD",
-      "Alexandru Muraru"
-    ],
-    "icon": "writing",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://digi24.ro/stiri/externe/mapamond/pragmatism-politic-sau-lipsa-de-mijloace-de-ce-nu-s-a-materializat-un-atac-iranian-pe-teritoriul-sua-in-ciuda-temerilor-majore-3858189",
-    "original_link": "https://www.digi24.ro/stiri/externe/mapamond/pragmatism-politic-sau-lipsa-de-mijloace-de-ce-nu-s-a-materializat-un-atac-iranian-pe-teritoriul-sua-in-ciuda-temerilor-majore-3858189",
-    "source": "extern",
-    "source_name": "Digi24 Extern",
-    "source_lang": "ro",
-    "title": "De ce Iranul nu a atacat teritoriul SUA, în ciuda avertismentelor",
-    "category": "politic",
-    "published": "2026-07-11T19:02:06+00:00",
-    "model": "B",
-    "teaser": "Serviciile secrete americane au avertizat despre atacuri iraniene pe teritoriul SUA, intensificate după acțiunile militare americane, dar acestea nu s-au materializat din motive de pragmatism politic sau lipsă de mijloace.",
-    "entities": [
-      "Iran",
-      "SUA"
-    ],
-    "icon": "shield",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://digi24.ro/stiri/externe/mapamond/pragmatism-politic-sau-lipsa-de-mijloace-de-ce-nu-s-a-materializat-un-atac-iranian-pe-teritoriul-sua-in-ciuda-temerilor-majore-3858189",
-    "original_link": "https://www.digi24.ro/stiri/externe/mapamond/pragmatism-politic-sau-lipsa-de-mijloace-de-ce-nu-s-a-materializat-un-atac-iranian-pe-teritoriul-sua-in-ciuda-temerilor-majore-3858189",
-    "source": "digi24",
-    "source_name": "Digi24",
-    "source_lang": "ro",
-    "title": "De ce Iranul nu a atacat teritoriul SUA, în ciuda avertismentelor",
-    "category": "politic",
-    "published": "2026-07-11T19:02:06+00:00",
-    "model": "B",
-    "teaser": "Serviciile secrete americane au avertizat despre atacuri iraniene pe teritoriul SUA, intensificate după acțiunile militare americane, dar acestea nu s-au materializat din motive de pragmatism politic sau lipsă de mijloace.",
-    "entities": [
-      "Iran",
-      "SUA"
-    ],
-    "icon": "shield",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://gsp.ro/international/campionatul-mondial-de-fotbal-2026/emmanuel-macron-decizie-franta-campionatul-mondial-959453.html",
-    "original_link": "https://www.gsp.ro/international/campionatul-mondial-de-fotbal-2026/emmanuel-macron-decizie-franta-campionatul-mondial-959453.html",
-    "source": "gsp",
-    "source_name": "GSP",
-    "source_lang": "ro",
-    "title": "Emmanuel Macron ar putea merge la finala Mondialului dacă Franța se califică",
-    "category": "sport",
-    "published": "2026-07-11T19:01:13+00:00",
-    "model": "B",
-    "teaser": "Președintele Franței, Emmanuel Macron, va rata semifinala cu Spania din cauza Zilei Naționale, dar ar putea călători la New York pentru finala Campionatului Mondial dacă echipa națională se califică.",
-    "entities": [
-      "Emmanuel Macron",
-      "Franța",
-      "Spania"
-    ],
-    "icon": "ball-football",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://hotnews.ro/wimbledon-are-o-noua-campioana-dupa-o-finala-plina-de-dramatism-performanta-impresionanta-pentru-tenisul-ceh-2298053",
-    "original_link": "https://hotnews.ro/wimbledon-are-o-noua-campioana-dupa-o-finala-plina-de-dramatism-performanta-impresionanta-pentru-tenisul-ceh-2298053",
-    "source": "hotnews",
-    "source_name": "HotNews",
-    "source_lang": "ro",
-    "title": "Linda Noskova, noua campioană la Wimbledon",
-    "category": "sport",
-    "published": "2026-07-11T18:54:14+00:00",
-    "model": "B",
-    "teaser": "Tenismena cehă Linda Noskova, 21 de ani, a câștigat primul titlu de Grand Slam din carieră la Wimbledon, învingând-o pe Karolina Muchova într-o finală dramatică.",
-    "entities": [
-      "Linda Noskova",
-      "Karolina Muchova",
-      "Wimbledon"
-    ],
-    "icon": "trophy",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://gsp.ro/fotbal/liga-1/gigi-becali-detalii-transfer-mihai-lixandru-fcsb-959488.html",
-    "original_link": "https://www.gsp.ro/fotbal/liga-1/gigi-becali-detalii-transfer-mihai-lixandru-fcsb-959488.html",
-    "source": "gsp",
-    "source_name": "GSP",
-    "source_lang": "ro",
-    "title": "Gigi Becali anunță că Mihai Lixandru rămâne la FCSB",
-    "category": "sport",
-    "published": "2026-07-11T18:54:06+00:00",
-    "model": "B",
-    "teaser": "Gigi Becali a declarat că mijlocașul Mihai Lixandru nu va mai fi transferat în această vară, contrar anunțurilor anterioare privind o posibilă plecare în zona Golfului.",
-    "entities": [
-      "Gigi Becali",
-      "Mihai Lixandru",
-      "FCSB"
-    ],
-    "icon": "ball-football",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://gsp.ro/sporturi/tenis/linda-noskova-discurs-wimbledon-mama-sa-959489.html",
-    "original_link": "https://www.gsp.ro/sporturi/tenis/linda-noskova-discurs-wimbledon-mama-sa-959489.html",
-    "source": "gsp",
-    "source_name": "GSP",
-    "source_lang": "ro",
-    "title": "Linda Noskova dedică titlul de la Wimbledon mamei sale decedate",
-    "category": "sport",
-    "published": "2026-07-11T18:49:22+00:00",
-    "model": "B",
-    "teaser": "Campioana de la Wimbledon, Linda Noskova, a dedicat primul său titlu de Grand Slam mamei sale, care a decedat acum doi ani din cauza cancerului, mulțumindu-i pentru sprijin.",
-    "entities": [
-      "Linda Noskova",
-      "Wimbledon",
-      "Karolina Muchova"
-    ],
-    "icon": "trophy",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://g4media.ro/un-experiment-realizat-pe-statia-spatiala-internationala-deschide-calea-spre-producerea-de-tesuturi-umane-in-laborator.html",
-    "original_link": "https://www.g4media.ro/un-experiment-realizat-pe-statia-spatiala-internationala-deschide-calea-spre-producerea-de-tesuturi-umane-in-laborator.html",
-    "source": "g4media",
-    "source_name": "G4Media",
-    "source_lang": "ro",
-    "title": "Experiment ISS: Producție de țesuturi umane",
-    "category": "tech",
-    "published": "2026-07-11T18:45:34+00:00",
-    "model": "B",
-    "teaser": "O companie americană a folosit cu succes o bioimprimantă 3D pe Stația Spațială Internațională pentru a crea structuri cu celule hepatice, renale și cartilaginoase umane.",
-    "entities": [
-      "ISS",
-      "Auxilium Biotechnologies"
-    ],
-    "icon": "satellite",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://digi24.ro/stiri/economie/transporturi/intarzieri-majore-pentru-circulatia-trenurilor-bucuresti-ploiesti-brasov-anuntul-cfr-calatori-3858321",
-    "original_link": "https://www.digi24.ro/stiri/economie/transporturi/intarzieri-majore-pentru-circulatia-trenurilor-bucuresti-ploiesti-brasov-anuntul-cfr-calatori-3858321",
-    "source": "digi24",
-    "source_name": "Digi24",
-    "source_lang": "ro",
-    "title": "Întârzieri trenuri București-Brașov din cauza defecțiunii la infrastructura feroviară",
-    "category": "general",
-    "published": "2026-07-11T18:44:25+00:00",
-    "model": "C",
-    "sources": [
-      {
-        "name": "Digi24",
-        "url": "https://www.digi24.ro/stiri/economie/transporturi/intarzieri-majore-pentru-circulatia-trenurilor-bucuresti-ploiesti-brasov-anuntul-cfr-calatori-3858321"
-      },
-      {
-        "name": "Spotmedia",
-        "url": "https://spotmedia.ro/stiri/eveniment/trenurile-pe-relatia-bucuresti-ploiesti-brasov-au-intarzieri-mari-din-cauza-unui-incident-feroviar"
-      }
-    ],
-    "first_source": "Digi24",
-    "synthesis": "Circulația trenurilor pe ruta București-Ploiești-Brașov înregistrează întârzieri între 30 și 60 de minute. Defecțiunea la infrastructura feroviară pe secțiunea Timișu de Sus – Predeal, semnalată de CFR Călători sâmbătă seara, nu a fost încă remediată, afectând traficul feroviar.",
-    "entities": [
-      "CFR Călători",
-      "București",
-      "Ploiești",
-      "Brașov"
-    ],
-    "icon": "train",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://stirileprotv.ro/stiri/ilikeit/meta-a-retras-functia-ai-care-folosea-fotografiile-de-pe-instagram-fara-acordul-utilizatorilor-nu-a-raspuns-asteptarilor.html",
-    "original_link": "https://stirileprotv.ro/stiri/ilikeit/meta-a-retras-functia-ai-care-folosea-fotografiile-de-pe-instagram-fara-acordul-utilizatorilor-nu-a-raspuns-asteptarilor.html",
-    "source": "protv",
-    "source_name": "Știrile ProTV",
-    "source_lang": "ro",
-    "title": "Meta retrage funcția AI de generare imagini de pe Instagram",
-    "category": "tech",
-    "published": "2026-07-11T18:38:44+00:00",
-    "model": "C",
-    "sources": [
-      {
-        "name": "Știrile ProTV",
-        "url": "https://stirileprotv.ro/stiri/ilikeit/meta-a-retras-functia-ai-care-folosea-fotografiile-de-pe-instagram-fara-acordul-utilizatorilor-nu-a-raspuns-asteptarilor.html"
-      },
-      {
-        "name": "G4Media",
-        "url": "https://www.g4media.ro/meta-retrage-o-functie-ai-controversata-de-pe-instagram-dupa-reactiile-utilizatorilor.html"
-      }
-    ],
-    "first_source": "Știrile ProTV",
-    "synthesis": "Meta a eliminat o funcție AI lansată recent pentru Instagram, care genera imagini pe baza fotografiilor publice ale utilizatorilor. Decizia vine după reacțiile negative primite de la utilizatori, legate de confidențialitate și utilizarea neautorizată a imaginilor. Compania a declarat că funcția nu a corespuns așteptărilor.",
-    "entities": [
-      "Meta",
-      "Instagram"
-    ],
-    "icon": "robot",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://bbc.co.uk/sport/tennis/articles/ce37x57gv49o?at_medium=RSS&at_campaign=rss",
-    "original_link": "https://www.bbc.co.uk/sport/tennis/articles/ce37x57gv49o?at_medium=RSS&at_campaign=rss",
-    "source": "bbc_europe",
-    "source_name": "BBC Europe",
-    "source_lang": "en",
-    "title": "Noskova învinge Muchova în finala de la Wimbledon",
-    "category": "sport",
-    "published": "2026-07-11T18:12:21+00:00",
-    "model": "B",
-    "teaser": "Linda Noskova a câștigat finala de la Wimbledon după ce a ratat cinci mingi de meci, demonstrând reziliență în fața reveniri spectaculoase a Karolinei Muchova.",
-    "entities": [
-      "Linda Noskova",
-      "Karolina Muchova",
-      "Wimbledon"
-    ],
-    "icon": "trophy",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://digi24.ro/stiri/externe/topul-celor-mai-frumoase-plaje-din-grecia-o-insula-preferata-de-romani-pentru-vacante-domina-clasamentul-3858281",
-    "original_link": "https://www.digi24.ro/stiri/externe/topul-celor-mai-frumoase-plaje-din-grecia-o-insula-preferata-de-romani-pentru-vacante-domina-clasamentul-3858281",
-    "source": "extern",
-    "source_name": "Digi24 Extern",
-    "source_lang": "ro",
-    "title": "Grecia: O insulă preferată de români domină topul celor mai frumoase plaje",
-    "category": "general",
-    "published": "2026-07-11T18:01:18+00:00",
-    "model": "B",
-    "teaser": "Grecia rămâne o destinație turistică populară pentru români. Un nou clasament prezintă cele mai frumoase plaje, oferind sugestii pentru vacanța pe litoralul elen.",
-    "entities": [
-      "Grecia",
-      "România"
-    ],
-    "icon": "sun",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://spotmedia.ro/stiri/eveniment/peter-magyar-il-pune-pe-presedintele-ungariei-sa-si-semneze-demiterea",
-    "original_link": "https://spotmedia.ro/stiri/eveniment/peter-magyar-il-pune-pe-presedintele-ungariei-sa-si-semneze-demiterea",
-    "source": "spotmedia",
-    "source_name": "Spotmedia",
-    "source_lang": "ro",
-    "title": "Parlamentul Ungariei, decizie pentru demiterea președintelui Tamas Sulyok",
-    "category": "politic",
-    "published": "2026-07-11T17:54:37+00:00",
-    "model": "C",
-    "sources": [
-      {
-        "name": "Spotmedia",
-        "url": "https://spotmedia.ro/stiri/eveniment/peter-magyar-il-pune-pe-presedintele-ungariei-sa-si-semneze-demiterea"
-      },
-      {
-        "name": "Știrile ProTV",
-        "url": "https://stirileprotv.ro/stiri/international/peter-magyar-ultimatum-pentru-presedintele-ungariei-isi-semneaza-propria-demitere-sau-va-fi-demis-de-parlament.html"
-      }
-    ],
-    "first_source": "Spotmedia",
-    "synthesis": "Premierul Peter Magyar a anunțat că parlamentul ungar va vota luni un amendament constituțional care va pune capăt mandatului președintelui Tamas Sulyok. Dacă președintele nu promulgă legea, va fi demis de parlament.",
-    "entities": [
-      "Peter Magyar",
-      "Tamas Sulyok",
-      "Parlamentul Ungariei"
-    ],
-    "icon": "gavel",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://digi24.ro/stiri/externe/ue/germania-investigheaza-un-posibil-sabotaj-feroviar-un-grup-de-extrema-stanga-a-revendicat-atacul-3858263",
-    "original_link": "https://www.digi24.ro/stiri/externe/ue/germania-investigheaza-un-posibil-sabotaj-feroviar-un-grup-de-extrema-stanga-a-revendicat-atacul-3858263",
-    "source": "extern",
-    "source_name": "Digi24 Extern",
-    "source_lang": "ro",
-    "title": "Germania investighează un posibil sabotaj feroviar",
-    "category": "extern",
-    "published": "2026-07-11T17:46:48+00:00",
-    "model": "C",
-    "sources": [
-      {
-        "name": "Digi24 Extern",
-        "url": "https://www.digi24.ro/stiri/externe/ue/germania-investigheaza-un-posibil-sabotaj-feroviar-un-grup-de-extrema-stanga-a-revendicat-atacul-3858263"
-      },
-      {
-        "name": "Știrile ProTV",
-        "url": "https://stirileprotv.ro/stiri/international/act-de-sabotaj-pe-o-linie-feroviara-din-germania-a-fost-revendicat-de-angry-birds.html"
-      }
-    ],
-    "first_source": "Digi24 Extern",
-    "synthesis": "Autoritățile germane investighează un posibil act de sabotaj asupra unei linii feroviare importante între Köln și Düsseldorf. Un incendiu la cabluri în apropierea gării Leverkusen a perturbat traficul. Un grup de extremă stânga, numit și „Angry Birds” de o sursă, a revendicat atacul.",
-    "entities": [
-      "Germania",
-      "Köln",
-      "Düsseldorf",
-      "Leverkusen"
-    ],
-    "icon": "train",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://stirileprotv.ro/stiri/bacalaureat/ministrul-educatiei-evaluarea-lucrarilor-contestate-la-examenul-de-bacalaureat-s-a-incheiat-ce-urmeaza.html",
-    "original_link": "https://stirileprotv.ro/stiri/bacalaureat/ministrul-educatiei-evaluarea-lucrarilor-contestate-la-examenul-de-bacalaureat-s-a-incheiat-ce-urmeaza.html",
-    "source": "protv",
-    "source_name": "Știrile ProTV",
-    "source_lang": "ro",
-    "title": "Finalizată evaluarea contestațiilor la Bacalaureat, urmează validarea rezultatelor",
-    "category": "general",
-    "published": "2026-07-11T17:34:03+00:00",
-    "model": "C",
-    "sources": [
-      {
-        "name": "Știrile ProTV",
-        "url": "https://stirileprotv.ro/stiri/bacalaureat/ministrul-educatiei-evaluarea-lucrarilor-contestate-la-examenul-de-bacalaureat-s-a-incheiat-ce-urmeaza.html"
-      },
-      {
-        "name": "Spotmedia",
-        "url": "https://spotmedia.ro/stiri/educatie/evaluarea-contestatiilor-la-bacalaureat-s-a-incheiat-ce-urmeaza-inainte-de-validarea-notelor"
-      }
-    ],
-    "first_source": "Știrile ProTV",
-    "synthesis": "Ministrul interimar al Educației, Mihai Dimian, a anunțat că procesul de reevaluare a lucrărilor contestate la examenul de Bacalaureat s-a încheiat. Urmează etape tehnice precum transferul și popularea datelor pentru validarea finală a rezultatelor, înainte de publicarea acestora.",
-    "entities": [
-      "Mihai Dimian",
-      "Bacalaureat"
-    ],
-    "icon": "writing",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://stirileprotv.ro/show-buzz/entertainment/regele-charles-si-a-vazut-nepotii-pentru-prima-data-dupa-patru-ani-printul-harry-meghan-si-copiii-lor-in-vizita-la-palat.html",
-    "original_link": "https://stirileprotv.ro/show-buzz/entertainment/regele-charles-si-a-vazut-nepotii-pentru-prima-data-dupa-patru-ani-printul-harry-meghan-si-copiii-lor-in-vizita-la-palat.html",
-    "source": "protv",
-    "source_name": "Știrile ProTV",
-    "source_lang": "ro",
-    "title": "Regele Charles și-a revăzut nepoții după patru ani",
-    "category": "general",
-    "published": "2026-07-11T17:13:23+00:00",
-    "model": "B",
-    "teaser": "Prințul Harry, Meghan și copiii lor, Archie și Lilibet, au vizitat Palatul Buckingham, marcând prima întâlnire a Regelui Charles cu nepoții săi în ultimii patru ani.",
-    "entities": [
-      "Regele Charles",
-      "Prințul Harry",
-      "Meghan",
-      "Archie",
-      "Lilibet"
-    ],
-    "icon": null,
     "processed_by": "gemini",
     "prompt_version": "v2-esenta",
     "featured": false
