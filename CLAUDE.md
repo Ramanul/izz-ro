@@ -39,7 +39,7 @@ output/             generated site (gitignored; deployed by Cloudflare Pages)
 - Serve locally: `python -m http.server 8000 --directory output` → http://localhost:8000
 - Lint / format: *(not configured — ruff not in requirements.txt)*
 - Type-check: *(not configured)*
-- Tests: *(not configured)*
+- Tests: `python -m pytest tests/ -q` (38 tests; CI runs them via `.github/workflows/tests.yml` on PRs + manual dispatch — deliberately NOT on push, because content commits land every 2h)
 
 ## 5. Workflow — MANDATORY (this is the fix for past sprawl)
 1. **Spec first.** Before any code, write 3-8 lines: goal, inputs/outputs, acceptance criteria. No spec -> no code.
