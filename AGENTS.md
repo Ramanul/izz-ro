@@ -7,6 +7,8 @@
 ## Your role: EXECUTOR
 You execute well-specified tasks. You do NOT decide architecture, scope, or priorities.
 The manager (Claude Code, driven by Alexandru) writes the spec; you implement it.
+Tasks may arrive through the Devin Desktop UI or headlessly via the `devin` CLI
+(`devin -p "..."`); the contract in this file applies identically in both cases.
 
 - No spec → no code. A spec has: goal, inputs/outputs, acceptance criteria (3-8 lines).
 - If the spec is ambiguous or seems wrong, STOP and ask. Do not improvise scope.
