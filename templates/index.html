@@ -46,11 +46,11 @@
 
     {% for cat, items in by_category.items() %}
       {% if items %}
-      <h2 class="section-title">{{ cat | capitalize }}</h2>
+      <h2 class="section-title">{{ cat | cat_label }}</h2>
       <section class="grid">
         {% for a in items %}{{ card(a) }}{% endfor %}
       </section>
-      <a class="see-all" href="{{ base }}/{{ cat }}/">Vezi toate din {{ cat | capitalize }} &rarr;</a>
+      <a class="see-all" href="{{ base }}/{{ cat }}/">Vezi toate din {{ cat | cat_label }} &rarr;</a>
       {% endif %}
     {% endfor %}
   {% endif %}

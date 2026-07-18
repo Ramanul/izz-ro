@@ -92,6 +92,20 @@ a:hover { color: var(--ink); }
 }
 .nav a:hover, .nav a.active { color: var(--gold-strong); border-bottom-color: var(--gold); }
 
+/* randul secundar: categoriile de tema, strip orizontal (scroll pe mobil) */
+.subnav {
+  display: flex; gap: var(--s-21); align-items: center;
+  padding: var(--s-8) var(--s-34);
+  background: var(--paper-2); border-bottom: 1px solid var(--line);
+  overflow-x: auto; -webkit-overflow-scrolling: touch;
+}
+.subnav a {
+  color: var(--ink-2); font-family: var(--font-mono); font-weight: 600;
+  font-size: var(--fs-xs); text-transform: uppercase; letter-spacing: 1px;
+  padding-bottom: 3px; border-bottom: 2px solid transparent; white-space: nowrap;
+}
+.subnav a:hover, .subnav a.active { color: var(--gold-strong); border-bottom-color: var(--gold); }
+
 /* ---------------------------------------------------------------- Layout --- */
 main { max-width: var(--maxw); margin: 0 auto; padding: var(--s-34) var(--s-34); }
 .section-title {

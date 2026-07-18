@@ -28,5 +28,8 @@ jobs:
       - name: Sanatatea surselor RSS (doar la rulare manuala; PR-urile raman hermetice)
         # per sursa: HTTP / numar intrari / prospetime — prinde si feed-uri care raspund
         # 200 dar nu-s RSS. Nu ruleaza pe PR ca sa nu faca testele dependente de retea.
+        # NON-BLOCANT: sanatatea feed-urilor (429 tranzitoriu, sursa moarta) NU trebuie sa
+        # pice check-ul de COD "pytest". Poarta autoritara pt. feed-uri e feedcheck.yml.
         if: github.event_name == 'workflow_dispatch'
+        continue-on-error: true
         run: python tools/feed_check.py

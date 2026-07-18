@@ -1,14 +1,14 @@
 {% extends "base.html" %}
 {% from "_card.html" import card with context %}
-{% block title %}{{ category | capitalize }} — {{ site.name }}{% endblock %}
+{% block title %}{{ category | cat_label }} — {{ site.name }}{% endblock %}
 {% block description %}Știri din categoria {{ category }} pe {{ site.name }} — {{ site.tagline }}.{% endblock %}
 {% block content %}
 <nav class="breadcrumbs" aria-label="Breadcrumb">
   <a href="{{ base }}/">{{ site.name }}</a>
   <span class="sep">/</span>
-  <span>{{ category | capitalize }}</span>
+  <span>{{ category | cat_label }}</span>
 </nav>
-  <h1 class="section-title">{{ category | capitalize }}</h1>
+  <h1 class="section-title">{{ category | cat_label }}</h1>
   {% if articles %}
   <section class="grid">
     {% for a in articles %}{{ card(a) }}{% endfor %}

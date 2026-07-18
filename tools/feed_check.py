@@ -28,7 +28,7 @@ def main() -> int:
     for key, src in config.SOURCES.items():
         if only and src["category"] not in only:
             continue
-        if src.get("type") in ("html_scraper", "html_list"):
+        if src.get("type") == "html_list":
             # sursele fara RSS: rulam scraper-ul real si raportam cate articole extrage
             from generator.fetch import _fetch_one  # noqa: E402
             arts, err = _fetch_one(key, src)

@@ -102,11 +102,14 @@ _RO_MONTHS = ["", "ianuarie", "februarie", "martie", "aprilie", "mai", "iunie",
 
 
 def _env() -> Environment:
-    return Environment(
+    env = Environment(
         loader=FileSystemLoader(TPL_DIR),
         autoescape=select_autoescape(["html", "xml"]),
         trim_blocks=True, lstrip_blocks=True,
     )
+    # eticheta afisata a unei categorii (slug URL neschimbat); fallback = capitalizat
+    env.filters["cat_label"] = lambda slug: config.CATEGORY_LABELS.get(slug, (slug or "").capitalize())
+    return env
 
 
 try:
@@ -445,7 +448,7 @@ def build(articles: list, mod: dict | None = None) -> None:
     }
     _write(os.path.join(OUT_DIR, "index.html"),
            env.get_template("index.html").render(**_base_ctx(
-               "/", articles=by_date, hero=hero, by_category=by_category,
+               "/", nav_section="stiri", articles=by_date, hero=hero, by_category=by_category,
                page_jsonld=item_list, newsletter_html=_newsletter_html())))
 
     # scor de originalitate: cine initiaza vs. cine preia (din sintezele C cu first_source)
@@ -691,7 +694,7 @@ def _render_ghiduri(env: Environment, articles: list) -> None:
 
     _write(os.path.join(OUT_DIR, "ghiduri", "index.html"),
            ghiduri_tpl.render(**_base_ctx(
-               "/ghiduri/", categorii=categorii, categorii_icon=categorii_icon,
+               "/ghiduri/", nav_section="ghiduri", categorii=categorii, categorii_icon=categorii_icon,
                entities_by_cat=entities_by_cat)))
 
     # Instrumente
@@ -701,7 +704,7 @@ def _render_ghiduri(env: Environment, articles: list) -> None:
     ]
     instr_tpl = env.get_template("instrumente.html")
     _write(os.path.join(OUT_DIR, "instrumente", "index.html"),
-           instr_tpl.render(**_base_ctx("/instrumente/", tools=tools)))
+           instr_tpl.render(**_base_ctx("/instrumente/", nav_section="instrumente", tools=tools)))
     calc_tpl = env.get_template("calculator.html")
     _write(os.path.join(OUT_DIR, "instrumente", "calculator-salariu", "index.html"),
            calc_tpl.render(**_base_ctx("/instrumente/calculator-salariu/")))
@@ -730,7 +733,7 @@ def _render_ghiduri(env: Environment, articles: list) -> None:
     cal_tpl = env.get_template("calendar.html")
     _write(os.path.join(OUT_DIR, "calendar", "index.html"),
            cal_tpl.render(**_base_ctx(
-               "/calendar/", termene=termene,
+               "/calendar/", nav_section="calendar", termene=termene,
                now_timestamp=_dt.now().timestamp())))
 
 
