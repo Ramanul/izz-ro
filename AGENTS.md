@@ -1,4 +1,4 @@
-# AGENTS.md — izz.ro (rules for Devin Local / Devin Cloud and any non-Claude agent)
+# AGENTS.md — izz.ro (rules for Devin, OpenCode, and any non-Claude executor agent)
 
 > Read `CLAUDE.md` in this repo root FIRST — it is the full operating contract
 > (stack, structure, commands, workflow, domain rules). Everything there applies to you.
@@ -16,7 +16,8 @@ Tasks may arrive through the Devin Desktop UI or headlessly via the `devin` CLI
 
 ## Branch discipline (non-negotiable)
 - NEVER commit directly to `main`.
-- Each task = one branch: `devin/<short-task-name>` branched from fresh `origin/main`.
+- Each task = one branch, prefixed by executor: `devin/<short-task-name>` (Devin),
+  `oc/<short-task-name>` (OpenCode) — branched from fresh `origin/main`.
 - One vertical slice per branch. Commit on green, push the branch, then stop.
 - Merging is done by the manager after review — never merge or push to `main` yourself.
 

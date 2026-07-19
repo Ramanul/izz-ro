@@ -5,16 +5,19 @@
 > Executors receive this file as read-only context. Overwrite sections in place — never let
 > this file grow past ~30 lines of content.
 
-**Updated:** 2026-07-19 (slice: local-government sources audit merged)
+**Updated:** 2026-07-19 (slice: OpenCode executor onboarded, smoke test merged)
 
 ## Current task
 None in flight. Devin (interactive, user-driven) is researching central public
 institutions' websites — coordinate before starting repo work.
 
 ## Last relevant commits
+- OpenCode (Zen, `deepseek-v4-flash-free`) onboarded as second executor: `opencode.json`
+  (pinned model + permission denylist), `/delegate-opencode`, generic `/review-executor`.
+  Smoke test MERGED: 7 edge-case tests, 56/56 pass. Executor noted (not fixed):
+  `normalize_url` on scheme-less URLs yields `https:///www...` — candidate future task.
 - Local-government audit: scanners + data + category lists + `data/RAPORT_SURSE_LOCALE.md`.
-  1274 GOLD primării (real + RSS + fresh) in `data/primarii_lists/gold_integrare.csv`.
-- `0435fca` delegate-devin fix: Devin CLI removed `smart` permission mode → use `normal`.
+  1274 GOLD primării in `data/primarii_lists/gold_integrare.csv`.
 - The CI bot commits every ~30 min — always `git pull --ff-only` before writing any spec.
 
 ## User WIP — UNTOUCHABLE
