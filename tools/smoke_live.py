@@ -54,7 +54,7 @@ def main() -> int:
     print("home:")
     home = get("/")
     cards = re.findall(r'<article class="card.*?</article>', home, re.S)
-    check("Raportul știrilor principale" in home, "/", "descriptorul brand prezent")
+    check("Portalul știrilor tale" in home, "/", "descriptorul brand prezent")
     check(len(cards) >= 10, "/", f"minim 10 carduri (gasite: {len(cards)})")
     check("Proveniență" not in home, "/", "eticheta 'Proveniență' nu exista (doar Sursă/Surse)")
     check(all('class="sources-inline"' in c for c in cards), "/", "fiecare card are linia de surse")
