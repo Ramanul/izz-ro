@@ -39,7 +39,10 @@ def normalize_url(url: str) -> str:
     if not url:
         return ""
     try:
-        parts = urlsplit(url.strip())
+        url_stripped = url.strip()
+        if url_stripped and "://" not in url_stripped and not url_stripped.startswith("//"):
+            url_stripped = "https://" + url_stripped
+        parts = urlsplit(url_stripped)
     except ValueError:
         return url.strip()
     scheme = (parts.scheme or "https").lower()
