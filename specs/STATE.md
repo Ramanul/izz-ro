@@ -5,26 +5,27 @@
 > Executors receive this file as read-only context. Overwrite sections in place — never let
 > this file grow past ~30 lines of content.
 
-**Updated:** 2026-07-19 (slice: STATE.md workflow wiring)
+**Updated:** 2026-07-19 (slice: local-government sources audit merged)
 
 ## Current task
-None in flight.
+None in flight. Devin (interactive, user-driven) is researching central public
+institutions' websites — coordinate before starting repo work.
 
 ## Last relevant commits
-- origin/main tip: `abaa8b7` (izz-bot content update — the CI bot commits every ~30 min,
-  so always `git pull --ff-only` before writing any spec).
-- Live since 2026-07-18: `c3b4b81` pipeline fail-loudly, `e2ff966` gemini-flash-lite-latest,
-  `18ce032` piataauto via Google News sitemap.
+- Local-government audit: scanners + data + category lists + `data/RAPORT_SURSE_LOCALE.md`.
+  1274 GOLD primării (real + RSS + fresh) in `data/primarii_lists/gold_integrare.csv`.
+- `0435fca` delegate-devin fix: Devin CLI removed `smart` permission mode → use `normal`.
+- The CI bot commits every ~30 min — always `git pull --ff-only` before writing any spec.
 
 ## User WIP — UNTOUCHABLE
 - `generator/render.py` (modified, uncommitted)
 - `data/entities/salariul-minim.yaml` (modified, uncommitted)
-- `data/primarii_domains_all.txt`, `data/raport_complet_primarii.csv`,
-  `specs/check-primarii.md` (untracked — primarii work in progress, owner: user)
 
 ## Blockers
-None.
+- MAI WAF blocks this IP (502 on `*.prefectura.mai.gov.ro` AND www.mai.gov.ro; external
+  nodes get 200). Do NOT probe MAI from this IP; retest in days or from GitHub Actions.
 
 ## Next steps
+- Phase 1 integration: wire GOLD primării feeds + 15 CJ feeds into `config.SOURCES` (batched).
 - `gsp` RSS source returns 404 — needs a new feed URL or removal.
 - SEO gaps: `og:type` on article pages, `dateModified` in JSON-LD, `lastmod` in sitemap.

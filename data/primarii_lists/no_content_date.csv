@@ -1,0 +1,792 @@
+﻿judet,localitate,url,dns_ok,http_status,final_url,https_ok,is_primarie,cms,rss_url,rss_ok,last_signal_date,copyright_year,error
+ALBA,INTREGALDE,http://primariaintregalde.ro,no,,,no,unclear,unknown,,no,,,dns_failed
+ALBA,ROSIA MONTANA,https://primariarosiamontana.ro,no,,,no,unclear,unknown,,no,,,dns_failed
+ALBA,BERGHIN,https://N/A,no,,,no,unclear,unknown,,no,,,dns_failed
+ALBA,BUCIUM,https://primariabucium.ro,no,,,no,unclear,unknown,,no,,,dns_failed
+ALBA,CUT,https://N/A,no,,,no,unclear,unknown,,no,,,dns_failed
+ALBA,CERU-BACAINTI,http://cerubacainti.ro,no,,,no,unclear,unknown,,no,,,dns_failed
+ALBA,ALBAC,https://N/A,no,,,no,unclear,unknown,,no,,,dns_failed
+ALBA,HOREA,http://primariahorea.ro,no,,,no,unclear,unknown,,no,,,dns_failed
+ALBA,LOPADEA NOUA,https://www.primarialopadeanoua.ro,no,,,no,unclear,unknown,,no,,,dns_failed
+ALBA,ORAS ABRUD,http://www.primaria-abrud.ro,no,,,no,unclear,unknown,,no,,,dns_failed
+ALBA,ORAS BAIA DE ARIES,http://www.baiadearies.ro,yes,,,no,unclear,unknown,,no,,,HTTP Error 410: Gone
+ALBA,SANTIMBRU,https://N/A,no,,,no,unclear,unknown,,no,,,dns_failed
+ALBA,RAMET,https://www.comunarimet.ro,yes,,,no,unclear,unknown,,no,,,"[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: Hostname mismatch, certificate is not valid for 'www.comunarimet.ro'. (_ssl.c:1016)"
+ALBA,ARIESENI,http://www.primariaarieseni.ro,yes,,,no,unclear,unknown,,no,,,HTTP Error 410: Gone
+ALBA,IGHIU,https://www.comunaighiu.ro,yes,,,no,unclear,unknown,,no,,,"[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: Hostname mismatch, certificate is not valid for 'www.comunaighiu.ro'. (_ssl.c:1016)"
+ALBA,ORAS CAMPENI,http://www.primariacimpeni.ro,yes,,,no,unclear,unknown,,no,,,HTTP Error 403: Forbidden
+ALBA,LUNCA MURESULUI,https://www.lunca-muresului.ro,yes,,,no,unclear,unknown,,no,,,"[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: Hostname mismatch, certificate is not valid for 'www.lunca-muresului.ro'. (_ssl.c:1016)"
+ALBA,PONOR,https://www.comunaponor.ro,yes,,,no,unclear,unknown,,no,,,"[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: Hostname mismatch, certificate is not valid for 'www.comunaponor.ro'. (_ssl.c:1016)"
+ALBA,BUCERDEA GRANOASA,https://bucerdea-granoasa.ro/site,yes,,,no,unclear,unknown,,no,,,HTTP Error 404: Not Found
+ALBA,RADESTI,http://www.primariaradesti.ro,yes,200,https://www.primariaradesti.ro,yes,yes,other,,no,,,
+ARAD,BRAZII,https://N/A,no,,,no,unclear,unknown,,no,,,dns_failed
+ARAD,BIRCHIS,https://N/A,no,,,no,unclear,unknown,,no,,,dns_failed
+ALBA,MUNICIPIUL BLAJ,http://primariablaj.ro,yes,200,https://municipiulblaj.ro/,yes,yes,other,,no,,,
+ARAD,GURAHONT,https://www.gurahont.ro,no,,,no,unclear,unknown,,no,,,dns_failed
+ARAD,PLESCUTA,http://www.plescuta.ro,no,,,no,unclear,unknown,,no,,,dns_failed
+ARAD,HALMAGIU,https://www.primariahalmagiu.ro,yes,,,no,unclear,unknown,,no,,,"[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: Hostname mismatch, certificate is not valid for 'www.primariahalmagiu.ro'. (_ssl.c:1016)"
+ARAD,GHIOROC,https://www.primariaghioroc.ro,yes,,,no,unclear,unknown,,no,,,"[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: Hostname mismatch, certificate is not valid for 'www.primariaghioroc.ro'. (_ssl.c:1016)"
+ARAD,CRAIVA,https://primariacraiva.ro/wp/contact,yes,,,no,unclear,unknown,,no,,,HTTP Error 404: Not Found
+ALBA,CRICAU,http://www.comunacricau.ro,yes,200,https://www.cricau.ro/,yes,yes,e-adm,,no,,,
+ARAD,PETRIS,https://www.comunapetris.ro,yes,,,no,unclear,unknown,,no,,,"[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: Hostname mismatch, certificate is not valid for 'www.comunapetris.ro'. (_ssl.c:1016)"
+ARAD,PAULIS,https://www.paulis.ro,yes,,,no,unclear,unknown,,no,,,"[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: Hostname mismatch, certificate is not valid for 'www.paulis.ro'. (_ssl.c:1016)"
+ARAD,SILINDIA,https://www.comunasilindia.ro,yes,,,no,unclear,unknown,,no,,,"[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: Hostname mismatch, certificate is not valid for 'www.comunasilindia.ro'. (_ssl.c:1016)"
+ARAD,TARNOVA,https://N/A,no,,,no,unclear,unknown,,no,,,dns_failed
+ARGES,ANINOASA,https://comuna-aninoasa.ro,no,,,no,unclear,unknown,,no,,,dns_failed
+ALBA,OHABA,https://www.primariaohaba.ro,yes,,,no,unclear,unknown,,no,,,timed out
+ARGES,BOGATI,https://comunabogati.ro,no,,,no,unclear,unknown,,no,,,dns_failed
+ARGES,BOTESTI,http://www.comunabotestiarges.ro/home,no,,,no,unclear,unknown,,no,,,dns_failed
+ARGES,CALINESTI,http://www.primariacalinesti.ro,no,,,no,unclear,unknown,,no,,,dns_failed
+ARGES,CATEASCA,http://primariacateasca.ro,no,,,no,unclear,unknown,,no,,,dns_failed
+ARGES,BUZOESTI,https://N/A,no,,,no,unclear,unknown,,no,,,dns_failed
+ARGES,CIOMAGESTI,http://primaria-ciomagesti.ro,no,,,no,unclear,unknown,,no,,,dns_failed
+ARGES,BRADU,http://www.comunabradu.ro,yes,,,no,unclear,unknown,,no,,,HTTP Error 410: Gone
+ARGES,MUNICIPIUL CURTEA DE ARGES,http://www.primariacurteadearges.ro/portal/arges/cda/portalcda.nsf,yes,,,no,unclear,unknown,,no,,,[WinError 10054] An existing connection was forcibly closed by the remote host
+ARGES,ALBESTII DE MUSCEL,https://www.cjarges.ro/en/web/albestii-de-muscel,yes,200,https://www.cjarges.ro/en/web/albestii-de-muscel,yes,yes,e-adm,,no,,,
+ARGES,MORARESTI,http://primariamoraresti.ro,no,,,no,unclear,unknown,,no,,,dns_failed
+ARAD,HASMAS,https://comunahasmas.ro,yes,,,no,unclear,unknown,,no,,,timed out
+ARGES,BASCOV,http://www.primariabascov.ro/portal/arges/bascov/beta/portal.nsf/Index/$First?OpenDocument,yes,,,no,unclear,unknown,,no,,,HTTP Error 404: Not Found
+ARGES,BEREVOESTI,https://primariaberevoesti.weebly.com,yes,200,https://primariaberevoesti.weebly.com,yes,yes,other,,no,,,
+ARGES,BUGHEA DE SUS,https://www.cjarges.ro/en/web/bughea-de-sus,yes,200,https://www.cjarges.ro/en/web/bughea-de-sus,yes,yes,e-adm,,no,,,
+ARGES,CEPARI,https://primariacepari.ro/acasa,yes,200,https://primariacepari.ro/acasa,yes,yes,other,,no,,,
+ARGES,COCU,https://www.cjarges.ro/en/web/cocu,yes,200,https://www.cjarges.ro/en/web/cocu,yes,yes,e-adm,,no,,,
+ARGES,MUSATESTI,https://primariamusatesti.ro/ro,yes,,,no,unclear,unknown,,no,,,HTTP Error 404: Page not found: /ro
+ARGES,UNGHENI,https://N/A,no,,,no,unclear,unknown,,no,,,dns_failed
+ARGES,IZVORU,https://www.cjarges.ro/en/web/izvoru,yes,200,https://www.cjarges.ro/en/web/izvoru,yes,yes,e-adm,,no,,,
+ARGES,DOBRESTI,https://www.cjarges.ro/en/web/dobresti,yes,200,https://www.cjarges.ro/en/web/dobresti,yes,yes,e-adm,,no,,,
+ARGES,LERESTI,https://www.cjarges.ro/en/web/leresti,yes,200,https://www.cjarges.ro/en/web/leresti,yes,yes,e-adm,,no,,,
+ARGES,DRAGANU,https://www.cjarges.ro/en/web/draganu,yes,200,https://www.cjarges.ro/en/web/draganu,yes,yes,e-adm,,no,,,
+ARGES,LEORDENI,https://www.cjarges.ro/en/web/leordeni,yes,200,https://www.cjarges.ro/en/web/leordeni,yes,yes,e-adm,,no,,,
+ARGES,COTMEANA,https://www.cjarges.ro/en/web/cotmeana,yes,200,https://www.cjarges.ro/en/web/cotmeana,yes,yes,e-adm,,no,,,
+ARGES,DAVIDESTI,https://www.cjarges.ro/en/web/davidesti,yes,200,https://www.cjarges.ro/en/web/davidesti,yes,yes,e-adm,,no,,,
+BACAU,BERESTI-TAZLAU,http://www.comunaberestitazlau.ro,no,,,no,unclear,unknown,,no,,,dns_failed
+ARGES,HARTIESTI,https://www.cjarges.ro/en/web/hartiesti,yes,200,https://www.cjarges.ro/en/web/hartiesti,yes,yes,e-adm,,no,,,
+ARGES,MERISANI,https://www.cjarges.ro/en/web/merisani,yes,200,https://www.cjarges.ro/en/web/merisani,yes,yes,e-adm,,no,,,
+BACAU,ASAU,https://comunaasau.ro/ro,yes,,,no,unclear,unknown,,no,,,HTTP Error 404: Page not found: /ro
+ARGES,ROCIU,https://www.cjarges.ro/en/web/rociu,yes,200,https://www.cjarges.ro/en/web/rociu,yes,yes,e-adm,,no,,,
+BACAU,DAMIENESTI,https://www.primariadamienesti.judetbacau.ro,yes,,,no,unclear,unknown,,no,,,HTTP Error 410: Gone
+ARGES,POIENARII DE ARGES,https://www.cjarges.ro/en/web/poienarii-de-arges,yes,200,https://www.cjarges.ro/en/web/poienarii-de-arges,yes,yes,e-adm,,no,,,
+BACAU,HORGESTI,http://www.comunahorgesti.ro,no,,,no,unclear,unknown,,no,,,dns_failed
+BACAU,ITESTI,http://www.primariaitestibacau.ro,no,,,no,unclear,unknown,,no,,,dns_failed
+ARGES,POPESTI,https://www.cjarges.ro/en/web/popesti,yes,200,https://www.cjarges.ro/en/web/popesti,yes,yes,e-adm,,no,,,
+ARGES,SUICI,https://www.cjarges.ro/en/web/suici,yes,200,https://www.cjarges.ro/en/web/suici,yes,yes,e-adm,,no,,,
+BACAU,NEGRI,http://www.comunanegri.ro,no,,,no,unclear,unknown,,no,,,dns_failed
+ARGES,RACA,https://www.cjarges.ro/en/web/raca,yes,200,https://www.cjarges.ro/en/web/raca,yes,yes,e-adm,,no,,,
+ARGES,RUCAR,https://www.cjarges.ro/en/web/rucar,yes,200,https://www.cjarges.ro/en/web/rucar,yes,yes,e-adm,,no,,,
+BACAU,GHIMES-FAGET,http://www.comunaghimes-faget.ro,yes,,,no,unclear,unknown,,no,,,"[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: Hostname mismatch, certificate is not valid for 'www.comunaghimes-faget.ro'. (_ssl.c:1016)"
+ARGES,NEGRASI,https://www.cjarges.ro/en/web/negrasi,yes,200,https://www.cjarges.ro/en/web/negrasi,yes,yes,e-adm,,no,,,
+ARGES,STOLNICI,https://comunastolnici.ro,yes,200,https://comunastolnici.ro,yes,yes,other,,no,,,
+BACAU,PODU TURCULUI,https://comunapoduturcului.ro,no,,,no,unclear,unknown,,no,,,dns_failed
+ARGES,TEIU,https://www.cjarges.ro/en/web/teiu,yes,200,https://www.cjarges.ro/en/web/teiu,yes,yes,e-adm,,no,,,
+ARGES,TITESTI,https://www.cjarges.ro/en/web/titesti,yes,200,https://www.cjarges.ro/en/web/titesti,yes,yes,e-adm,,no,,,
+ARGES,VULTURESTI,https://www.cjarges.ro/en/web/vulturesti,yes,200,https://www.cjarges.ro/en/web/vulturesti,yes,yes,e-adm,,no,,,
+BACAU,ROSIORI,http://www.comunarosiori.ro,yes,,,no,unclear,unknown,,no,,,"[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: Hostname mismatch, certificate is not valid for 'www.comunarosiori.ro'. (_ssl.c:1016)"
+BACAU,STANISESTI,https://primariastanisesti.ro,yes,,,no,unclear,unknown,,no,,,"[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: Hostname mismatch, certificate is not valid for 'primariastanisesti.ro'. (_ssl.c:1016)"
+BIHOR,ABRAMUT,http://comuna-abramut.ro,no,,,no,unclear,unknown,,no,,,dns_failed
+BIHOR,BATAR,https://www.primariabatar.ro,no,,,no,unclear,unknown,,no,,,dns_failed
+BIHOR,BIHARIA,https://e.comunabiharia.ro,no,,,no,unclear,unknown,,no,,,dns_failed
+BIHOR,BOROD,https://www.comunaborod.ro,no,,,no,unclear,unknown,,no,,,dns_failed
+BIHOR,MUNICIPIUL BEIUS,https://www.primariabeius.ro,yes,,,no,unclear,unknown,,no,,,HTTP Error 410: Gone
+BIHOR,BUNTESTI,https://e.comunabuntesti.ro,no,,,no,unclear,unknown,,no,,,dns_failed
+BIHOR,CABESTI,https://cabesti-bh.ro,no,,,no,unclear,unknown,,no,,,dns_failed
+BIHOR,CAMPANI,http://www.primariacomuneicimpani.ro,no,,,no,unclear,unknown,,no,,,dns_failed
+BIHOR,CEFA,https://e.cefa-bh.ro,no,,,no,unclear,unknown,,no,,,dns_failed
+BIHOR,COPACEL,http://www.copacel-bihor.ro,no,,,no,unclear,unknown,,no,,,dns_failed
+BIHOR,CURATELE,https://e.curatele.ro,no,,,no,unclear,unknown,,no,,,dns_failed
+BIHOR,CHISLAZ,http://chislaz.ro,yes,,,no,unclear,unknown,,no,,,HTTP Error 410: Gone
+BIHOR,DRAGESTI,https://e.primariadragesti.ro,no,,,no,unclear,unknown,,no,,,dns_failed
+BIHOR,FINIS,http://www.primariafinis.bihor.ro,no,,,no,unclear,unknown,,no,,,dns_failed
+BIHOR,HOLOD,https://e.holod.ro,no,,,no,unclear,unknown,,no,,,dns_failed
+BIHOR,INEU,https://e.ineu-bh.ro,no,,,no,unclear,unknown,,no,,,dns_failed
+BIHOR,HIDISELU DE SUS,http://www.primaria-hidiseludesus.ro,no,,,no,unclear,unknown,,no,,,dns_failed
+BIHOR,LUNCA,https://www.comunaluncabh.ro,no,,,no,unclear,unknown,,no,,,dns_failed
+BIHOR,LAZURI DE BEIUS,https://e.lazuridebeius.ro,no,,,no,unclear,unknown,,no,,,dns_failed
+BIHOR,MADARAS,https://e.madaras-bh.ro,no,,,no,unclear,unknown,,no,,,dns_failed
+BIHOR,PALEU,https://e.paleu.ro,no,,,no,unclear,unknown,,no,,,dns_failed
+BIHOR,CIUHOI,https://www.saniob.ro,yes,,,no,unclear,unknown,,no,,,"[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: Hostname mismatch, certificate is not valid for 'www.saniob.ro'. (_ssl.c:1016)"
+BIHOR,POPESTI,http://comunapopesti-bh.ro,no,,,no,unclear,unknown,,no,,,dns_failed
+BIHOR,POMEZEU,http://www.pomezeu.ro,no,,,no,unclear,unknown,,no,,,dns_failed
+BIHOR,ROSIA,https://e.comunarosiabihor.ro,no,,,no,unclear,unknown,,no,,,dns_failed
+BIHOR,ORAS NUCET,http://www.primarianucet.ro,yes,200,https://www.primarianucet.ro,yes,yes,other,,no,,,
+BIHOR,SANNICOLAU ROMAN,http://e.sinnicolauroman.ro,no,,,no,unclear,unknown,,no,,,dns_failed
+BIHOR,SARBI,http://www.primariasarbi.ro,no,,,no,unclear,unknown,,no,,,dns_failed
+BIHOR,SINTEU,https://www.primariasinteu.bihor.ro,no,,,no,unclear,unknown,,no,,,dns_failed
+BIHOR,SPINUS,http://www.primaria-spinus.ro,no,,,no,unclear,unknown,,no,,,dns_failed
+BIHOR,SUNCUIUS,http://suncuius-bihor.ro,no,,,no,unclear,unknown,,no,,,dns_failed
+BIHOR,TOBOLIU,https://e.toboliu.ro,no,,,no,unclear,unknown,,no,,,dns_failed
+BIHOR,TULCA,http://www.primariatulca.bihor.ro,no,,,no,unclear,unknown,,no,,,dns_failed
+BIHOR,VIISOARA,http://www.primariaviisoarabh.ro,no,,,no,unclear,unknown,,no,,,dns_failed
+BISTRITA-NASAUD,BUDESTI,https://comunabudesti.ro,no,,,no,unclear,unknown,,no,,,dns_failed
+BISTRITA-NASAUD,CHIOCHIS,https://www.chiochis.ro,no,,,no,unclear,unknown,,no,,,dns_failed
+BIHOR,TARCEA,https://www.tarcea.ro,yes,,,no,unclear,unknown,,no,,,"[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: Hostname mismatch, certificate is not valid for 'www.tarcea.ro'. (_ssl.c:1016)"
+BISTRITA-NASAUD,ILVA MARE,http://primariailvamare.ro,no,,,no,unclear,unknown,,no,,,dns_failed
+BIHOR,SUPLACU DE BARCAU,http://www.suplacudebarcau.ro,yes,200,https://www.suplacudebarcau.ro,yes,yes,other,,no,,,
+BISTRITA-NASAUD,PETRU RARES,https://www.primaria-petrurares.ro,no,,,no,unclear,unknown,,no,,,dns_failed
+BISTRITA-NASAUD,MILAS,http://comunamilas.ro/wp,yes,,,no,unclear,unknown,,no,,,HTTP Error 404: Not Found
+BIHOR,ORAS VASCAU,https://www.primaria-vascau.ro,yes,,,no,unclear,unknown,,no,,,timed out
+BISTRITA-NASAUD,ORAS SANGEORZ-BAI,http://www.singeorz-bai.ro,yes,,,no,unclear,unknown,,no,,,HTTP Error 404: Not Found
+BIHOR,BUDUSLAU,https://www.buduslau.ro,yes,,,no,unclear,unknown,,no,,,timed out
+BISTRITA-NASAUD,SANMIHAIU DE CIMPIE,https://www.sinmihaiudecimpie.ro,no,,,no,unclear,unknown,,no,,,dns_failed
+BIHOR,BUDUREASA,https://budureasa.ro,yes,,,no,unclear,unknown,,no,,,timed out
+BIHOR,BULZ,https://www.comunabulz.ro,yes,,,no,unclear,unknown,,no,,,timed out
+BIHOR,CAPALNA,http://www.primaria-capilnabh.ro,yes,,,no,unclear,unknown,,no,,,timed out
+BISTRITA-NASAUD,SIEU-MAGHERUS,http://www.sieu-magherus.ro,no,,,no,unclear,unknown,,no,,,dns_failed
+BISTRITA-NASAUD,BISTRITA BARGAULUI,http://www.primariabistritabirgaului.ro/ro,yes,200,https://www.primariabistritabirgaului.ro/ro,yes,yes,e-adm,,no,,,
+BIHOR,CHERECHIU,http://cherechiu.ro,yes,,,no,unclear,unknown,,no,,,timed out
+BISTRITA-NASAUD,SPERMEZEU,https://N/A,no,,,no,unclear,unknown,,no,,,dns_failed
+BISTRITA-NASAUD,SILIVASU DE CIMPIE,https://N/A,no,,,no,unclear,unknown,,no,,,dns_failed
+BIHOR,CIUMEGHIU,http://www.comunaciumeghiu.ro,yes,,,no,unclear,unknown,,no,,,timed out
+BISTRITA-NASAUD,FELDRU,https://feldru.ro,yes,200,https://feldru.ro,yes,unclear,other,,no,,,
+BIHOR,CURTUISENI,http://www.curtuiseni.ro,yes,,,no,unclear,unknown,,no,,,timed out
+BIHOR,DOBRESTI,https://primdobresti.ro,yes,,,no,unclear,unknown,,no,,,timed out
+BIHOR,DIOSIG,https://www.diosig.ro,yes,,,no,unclear,unknown,,no,,,timed out
+BISTRITA-NASAUD,TEACA,http://www.primariateaca.ro,yes,,,no,unclear,unknown,,no,,,"[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: Hostname mismatch, certificate is not valid for 'www.primariateaca.ro'. (_ssl.c:1016)"
+BISTRITA-NASAUD,MAGURA ILVEI,http://www.magurailvei.ro/ro,yes,,,no,unclear,unknown,,no,,,HTTP Error 404: Not Found
+BIHOR,OLCEA,https://comunaolcea.ro,yes,,,no,unclear,unknown,,no,,,timed out
+BIHOR,POCOLA,https://primariapocola.ro,yes,,,no,unclear,unknown,,no,,,timed out
+BIHOR,HUSASAU DE TINCA,https://primariahusasaudetinca.ro,yes,,,no,unclear,unknown,,no,,,timed out
+BOTOSANI,CORDARENI,http://cordareni.botosani.ro,no,,,no,unclear,unknown,,no,,,dns_failed
+BIHOR,REMETEA,https://remetea-bh.ro,yes,,,no,unclear,unknown,,no,,,timed out
+BOTOSANI,CRISTESTI,http://cristesti.botosani.ro,no,,,no,unclear,unknown,,no,,,dns_failed
+BOTOSANI,BALUSENI,https://www.primariabaluseni.ro,yes,,,no,unclear,unknown,,no,,,HTTP Error 409: Conflict
+BIHOR,SACADAT,https://sacadat.ro,yes,,,no,unclear,unknown,,no,,,timed out
+BIHOR,RABAGANI,http://rabagani.ro,yes,,,no,unclear,unknown,,no,,,The read operation timed out
+BISTRITA-NASAUD,MAIERU,http://www.primariamaieru.ro/ro,yes,200,https://www.primariamaieru.ro/ro,yes,yes,e-adm,,no,,,
+BOTOSANI,HUDESTI,https://primariahudesti.ro,no,,,no,unclear,unknown,,no,,,dns_failed
+BOTOSANI,MUNICIPIUL BOTOSANI,https://www.primariabt.ro,yes,,,no,unclear,unknown,,no,,,[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:1016)
+BISTRITA-NASAUD,MICESTII DE CAMPIE,https://micestiidecampie.ro,yes,200,https://micestiidecampie.ro,yes,yes,other,,no,,,
+BOTOSANI,MIHAI EMINESCU,http://mihaieminescu.botosani.ro,no,,,no,unclear,unknown,,no,,,dns_failed
+BISTRITA-NASAUD,ROMULI,https://primariaromuli.ro,yes,200,https://primariaromuli.ro,yes,yes,other,,no,,,
+BIHOR,VARCIOROG,https://comunavirciorog.ro,yes,,,no,unclear,unknown,,no,,,timed out
+BOTOSANI,HLIPICENI,http://hlipiceni.botosani.ro,yes,,,no,unclear,unknown,,no,,,HTTP Error 500: Internal Server Error
+BOTOSANI,MANOLEASA,https://N/A,no,,,no,unclear,unknown,,no,,,dns_failed
+BISTRITA-NASAUD,TELCIU,https://telciu.ro,yes,200,https://telciu.ro,yes,unclear,other,,no,,,
+BOTOSANI,RIPICENI,http://www.comunaripiceni.ro,no,,,no,unclear,unknown,,no,,,dns_failed
+BOTOSANI,RAUSENI,http://rauseni.botosani.ro,no,,,no,unclear,unknown,,no,,,dns_failed
+BOTOSANI,ROMA,https://roma.botosani.ro,no,,,no,unclear,unknown,,no,,,dns_failed
+BOTOSANI,TUDORA,http://tudora.botosani.ro,no,,,no,unclear,unknown,,no,,,dns_failed
+BOTOSANI,ORAS FLAMANZI,http://www.primariaflamanzi.ro,yes,,,no,unclear,unknown,,no,,,timed out
+BOTOSANI,CRISTINESTI,https://www.primariacristinesti.ro,yes,200,https://www.primariacristinesti.ro,yes,yes,other,,no,,,
+BRASOV,CRIZBAV,http://new.comunacrizbav.ro,no,,,no,unclear,unknown,,no,,,dns_failed
+BRASOV,APATA,https://www.primaria-apata.ro,yes,,,no,unclear,unknown,,no,,,"[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: Hostname mismatch, certificate is not valid for 'www.primaria-apata.ro'. (_ssl.c:1016)"
+BOTOSANI,CONCESTI,https://primariaconcesti.ro,yes,200,https://primariaconcesti.ro,yes,yes,wordpress,,no,,,
+BRASOV,MUNICIPIUL BRASOV,https://www.brasovcity.ro,yes,,,no,unclear,unknown,,no,,,[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: self-signed certificate in certificate chain (_ssl.c:1016)
+BRASOV,CATA,https://www.comunacata.ro,yes,,,no,unclear,unknown,,no,,,"[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: Hostname mismatch, certificate is not valid for 'www.comunacata.ro'. (_ssl.c:1016)"
+BRASOV,DRAGUS,https://www.comunadragus.ro,yes,,,no,unclear,unknown,,no,,,"[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: Hostname mismatch, certificate is not valid for 'www.comunadragus.ro'. (_ssl.c:1016)"
+BRASOV,UNGRA,https://www.comunaungra.ro,no,,,no,unclear,unknown,,no,,,dns_failed
+BRASOV,RACOS,https://www.comunaracos.ro,yes,,,no,unclear,unknown,,no,,,"[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: Hostname mismatch, certificate is not valid for 'www.comunaracos.ro'. (_ssl.c:1016)"
+BRASOV,TELIU,http://www.primariateliu.ro,yes,,,no,unclear,unknown,,no,,,[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: certificate has expired (_ssl.c:1016)
+BRAILA,FRECATEI,http://www.primariafrecatei-braila.ro,no,,,no,unclear,unknown,,no,,,dns_failed
+BRASOV,TICUS,http://www.primaria-ticus.ro,yes,,,no,unclear,unknown,,no,,,"[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: Hostname mismatch, certificate is not valid for 'www.primaria-ticus.ro'. (_ssl.c:1016)"
+BRAILA,CIRESU,https://cjbraila.ro/dm/portal.nsf/AllByUNID/Prim%C4%83ria-Cire%C5%9Fu-00019506?OpenDocument,yes,,,no,unclear,unknown,,no,,,HTTP Error 404: Not Found
+BRAILA,GEMENELE,https://cjbraila.ro/dm/portal.nsf/AllByUNID/Prim%C4%83ria-Gemenele-00019512?OpenDocument,yes,,,no,unclear,unknown,,no,,,HTTP Error 404: Not Found
+BRAILA,VISANI,http://primariavisani.ro,no,,,no,unclear,unknown,,no,,,dns_failed
+BUZAU,BALACEANU,http://www.comunabalaceanu.ro,no,,,no,unclear,unknown,,no,,,dns_failed
+BUZAU,BUDA,http://www.comuna-buda.ro/2019,no,,,no,unclear,unknown,,no,,,dns_failed
+BUZAU,MUNICIPIUL BUZAU,https://primariabuzau.ro,yes,,,no,unclear,unknown,,no,,,[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:1016)
+BRAILA,SALCIA TUDOR,https://www.salciatudor.ro,yes,,,no,unclear,unknown,,no,,,IncompleteRead(32643 bytes read)
+BUZAU,COLTI,http://primariacolti.ro,no,,,no,unclear,unknown,,no,,,dns_failed
+BRAILA,TUDOR VLADIMIRESCU,https://www.primariatudorvladimirescu-br.ro,no,,,no,unclear,unknown,,no,,,dns_failed
+BRASOV,SINCA NOUA,http://www.sincanoua.eu,yes,200,https://sincanoua.eu/go/4202,yes,unclear,other,,no,,,
+BRAILA,DUDESTI,http://www.comunadudesti.ro,yes,200,https://www.comunadudesti.ro,yes,yes,other,,no,,,
+BUZAU,MARGARITESTI,https://primariamargaritesti.ro,no,,,no,unclear,unknown,,no,,,dns_failed
+BUZAU,CATINA,http://www.primaria-catina.ro,yes,,,no,unclear,unknown,,no,,,HTTP Error 403: Forbidden
+BUZAU,PANATAU,http://primariapanatau.ro,no,,,no,unclear,unknown,,no,,,dns_failed
+BRAILA,VICTORIA,http://primariavictoria-br.ro,yes,200,https://primariavictoria-br.ro,yes,unclear,unknown,,no,,,
+BUZAU,PIETROASELE,https://N/A,no,,,no,unclear,unknown,,no,,,dns_failed
+BUZAU,SCORTOASA,https://primariascortoasa.ro,no,,,no,unclear,unknown,,no,,,dns_failed
+BUZAU,STALPU,https://primariastilpu.ro,no,,,no,unclear,unknown,,no,,,dns_failed
+BUZAU,SAHATENI,https://N/A,no,,,no,unclear,unknown,,no,,,dns_failed
+BUZAU,VERNESTI,https://primariavernesti.judet-buzau.ro,no,,,no,unclear,unknown,,no,,,dns_failed
+BUZAU,VINTILA VODA,https://vintila-voda.judet-buzau.ro,no,,,no,unclear,unknown,,no,,,dns_failed
+BUZAU,ZARNESTI,https://primariazarnesti.judet-buzau.ro,no,,,no,unclear,unknown,,no,,,dns_failed
+CARAS-SEVERIN,BREBU,https://www.comunabrebu.ro,no,,,no,unclear,unknown,,no,,,dns_failed
+CARAS-SEVERIN,BAUTAR,https://N/A,no,,,no,unclear,unknown,,no,,,dns_failed
+CARAS-SEVERIN,CICLOVA ROMANA,https://primariaciclovaromana.ro,no,,,no,unclear,unknown,,no,,,dns_failed
+CARAS-SEVERIN,CIUCHICI,http://www.primaria-ciuchici.ro,no,,,no,unclear,unknown,,no,,,dns_failed
+CARAS-SEVERIN,BREBU NOU,https://N/A,no,,,no,unclear,unknown,,no,,,dns_failed
+CARAS-SEVERIN,DOGNECEA,https://comunadognecea.ro,no,,,no,unclear,unknown,,no,,,dns_failed
+CARAS-SEVERIN,DALBOSET,https://N/A,no,,,no,unclear,unknown,,no,,,dns_failed
+CARAS-SEVERIN,GORUIA,https://N/A,no,,,no,unclear,unknown,,no,,,dns_failed
+BUZAU,SARULESTI,http://primariasarulesti.ro,yes,200,https://primariasarulesti.ro,yes,yes,wordpress,https://primariasarulesti.ro/feed/,yes,,2019,
+CARAS-SEVERIN,LAPUSNICEL,https://N/A,no,,,no,unclear,unknown,,no,,,dns_failed
+CARAS-SEVERIN,FARLIUG,https://www.comuna-firliug.ro,yes,,,no,unclear,unknown,,no,,,"[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: Hostname mismatch, certificate is not valid for 'www.comuna-firliug.ro'. (_ssl.c:1016)"
+CARAS-SEVERIN,LUNCAVITA,http://www.luncavita.com,yes,,,no,unclear,unknown,,no,,,HTTP Error 404: Not Found
+CARAS-SEVERIN,ORAS MOLDOVA NOUA,http://www.moldovanoua.com,yes,,,no,unclear,unknown,,no,,,timed out
+CARAS-SEVERIN,RUSCA MONTANA,https://N/A,no,,,no,unclear,unknown,,no,,,dns_failed
+CARAS-SEVERIN,ZAVOI,http://primariazavoi.ro,no,,,no,unclear,unknown,,no,,,dns_failed
+CARAS-SEVERIN,SASCA MONTANA,https://N/A,no,,,no,unclear,unknown,,no,,,dns_failed
+CARAS-SEVERIN,POJEJENA,https://www.primariapojejena.ro,yes,,,no,unclear,unknown,,no,,,"[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: Hostname mismatch, certificate is not valid for 'www.primariapojejena.ro'. (_ssl.c:1016)"
+CARAS-SEVERIN,SICHEVITA,https://www.comunasichevita.ro,yes,,,no,unclear,unknown,,no,,,"[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: Hostname mismatch, certificate is not valid for 'www.comunasichevita.ro'. (_ssl.c:1016)"
+CARAS-SEVERIN,SACU,https://www.comunasacu.ro,yes,,,no,unclear,unknown,,no,,,"[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: Hostname mismatch, certificate is not valid for 'www.comunasacu.ro'. (_ssl.c:1016)"
+CARAS-SEVERIN,VALIUG,https://www.primaria-valiug.ro,yes,,,no,unclear,unknown,,no,,,"[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: Hostname mismatch, certificate is not valid for 'www.primaria-valiug.ro'. (_ssl.c:1016)"
+CALARASI,MANASTIREA,http://primariamanastirea.ro,no,,,no,unclear,unknown,,no,,,dns_failed
+CALARASI,MUNICIPIUL OLTENITA,https://www.primariaoltenita.ro,yes,,,no,unclear,unknown,,no,,,[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:1016)
+CALARASI,TAMADAU MARE,http://www.primariatamadau.ro,no,,,no,unclear,unknown,,no,,,dns_failed
+CALARASI,NANA,http://www.primarianana.ro,yes,,,no,unclear,unknown,,no,,,HTTP Error 410: Gone
+CALARASI,ULMU,http://ulmu.infoprimarie.ro,no,,,no,unclear,unknown,,no,,,dns_failed
+CALARASI,VALEA ARGOVEI,http://comunavaleaargovei.ro,no,,,no,unclear,unknown,,no,,,dns_failed
+CALARASI,STEFAN VODA,https://N/A,no,,,no,unclear,unknown,,no,,,dns_failed
+CLUJ,MUNICIPIUL GHERLA,http://www.gherla.ro,yes,,,no,unclear,unknown,,no,,,"[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: Hostname mismatch, certificate is not valid for 'www.gherla.ro'. (_ssl.c:1016)"
+CLUJ,ASCHILEU,https://www.comunaaschileu.ro,yes,,,no,unclear,unknown,,no,,,"[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: Hostname mismatch, certificate is not valid for 'www.comunaaschileu.ro'. (_ssl.c:1016)"
+CLUJ,BELIS,https://primariabelis.ro,yes,,,no,unclear,unknown,,no,,,HTTP Error 410: Gone
+CLUJ,BOBALNA,https://www.primariabobilna.ro,yes,,,no,unclear,unknown,,no,,,"[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: Hostname mismatch, certificate is not valid for 'www.primariabobilna.ro'. (_ssl.c:1016)"
+CLUJ,BAISOARA,https://www.primariabaisoara.ro,yes,,,no,unclear,unknown,,no,,,"[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: Hostname mismatch, certificate is not valid for 'www.primariabaisoara.ro'. (_ssl.c:1016)"
+CLUJ,CATCAU,https://www.primariacatcau.ro,yes,,,no,unclear,unknown,,no,,,"[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: Hostname mismatch, certificate is not valid for 'www.primariacatcau.ro'. (_ssl.c:1016)"
+CLUJ,CATINA,https://www.primariacatina.ro,yes,,,no,unclear,unknown,,no,,,"[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: Hostname mismatch, certificate is not valid for 'www.primariacatina.ro'. (_ssl.c:1016)"
+CARAS-SEVERIN,GRADINARI,https://www.gradinari-cs.ro,yes,,,no,unclear,unknown,,no,,,timed out
+CLUJ,CORNESTI,http://primariacornesti.ro/ro,yes,,,no,unclear,unknown,,no,,,HTTP Error 404: Not Found
+CLUJ,JICHISU DE JOS,https://N/A,no,,,no,unclear,unknown,,no,,,dns_failed
+CLUJ,MARGAU,https://N/A,no,,,no,unclear,unknown,,no,,,dns_failed
+CLUJ,PLOSCOS,http://www.primariaploscos.ro,no,,,no,unclear,unknown,,no,,,dns_failed
+CLUJ,FRATA,https://www.primariafrata.ro,yes,,,no,unclear,unknown,,no,,,"[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: Hostname mismatch, certificate is not valid for 'www.primariafrata.ro'. (_ssl.c:1016)"
+CLUJ,SANPAUL,http://www.sinpaul.ro,no,,,no,unclear,unknown,,no,,,dns_failed
+CLUJ,MOCIU,https://www.primariamociu.ro,yes,,,no,unclear,unknown,,no,,,"[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: Hostname mismatch, certificate is not valid for 'www.primariamociu.ro'. (_ssl.c:1016)"
+CLUJ,VULTURENI,http://www.vultureni.ro,no,,,no,unclear,unknown,,no,,,dns_failed
+CLUJ,PANTICEU,https://www.primaria-panticeu.ro/c,yes,,,no,unclear,unknown,,no,,,"[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: Hostname mismatch, certificate is not valid for 'www.primaria-panticeu.ro'. (_ssl.c:1016)"
+CLUJ,SANMARTIN,https://www.primariasinmartin.ro,yes,,,no,unclear,unknown,,no,,,"[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: Hostname mismatch, certificate is not valid for 'www.primariasinmartin.ro'. (_ssl.c:1016)"
+CLUJ,TAGA,https://www.primariataga.ro,yes,,,no,unclear,unknown,,no,,,"[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: Hostname mismatch, certificate is not valid for 'www.primariataga.ro'. (_ssl.c:1016)"
+CLUJ,MUNICIPIUL TURDA,https://primariaturda.ro,yes,200,https://primariaturda.ro,yes,unclear,other,,no,,,
+CLUJ,UNGURAS,https://www.comunaunguras.ro,yes,,,no,unclear,unknown,,no,,,"[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: Hostname mismatch, certificate is not valid for 'www.comunaunguras.ro'. (_ssl.c:1016)"
+CLUJ,TRITENII DE JOS,https://www.primariatriteniidejos.ro,yes,,,no,unclear,unknown,,no,,,"[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: Hostname mismatch, certificate is not valid for 'www.primariatriteniidejos.ro'. (_ssl.c:1016)"
+CLUJ,VALEA IERII,https://www.primariavaleaierii.ro,yes,,,no,unclear,unknown,,no,,,"[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: Hostname mismatch, certificate is not valid for 'www.primariavaleaierii.ro'. (_ssl.c:1016)"
+CALARASI,GURBANESTI,http://www.gurbanesti.ro,yes,200,https://www.gurbanesti.ro/cgi-sys/suspendedpage.cgi,yes,unclear,other,,no,,,
+CLUJ,FIZESU GHERLII,https://www.fizesu-gherlii.ro,yes,200,https://www.fizesu-gherlii.ro,yes,yes,other,,no,,,
+CLUJ,CASEIU,https://www.caseiu.ro,yes,200,https://www.caseiu.ro,yes,yes,other,,no,,,
+CONSTANTA,CIOBANU,http://primaria-ciobanu.ro,no,,,no,unclear,unknown,,no,,,dns_failed
+CLUJ,CIURILA,http://primariaciurila.ro,yes,200,https://primariaciurila.ro,yes,yes,other,,no,,,
+CLUJ,CAPUSU MARE,https://www.primaria-capusumare.ro,yes,200,https://www.primaria-capusumare.ro,yes,yes,other,,no,,,
+CLUJ,SUATU,http://www.comunasuatu.ro,no,,,no,unclear,unknown,,no,,,dns_failed
+CONSTANTA,HORIA,https://www.primariahoriaconstanta.ro,no,,,no,unclear,unknown,,no,,,dns_failed
+CONSTANTA,CORBU,http://primariacorbu.ro,yes,,,no,unclear,unknown,,no,,,[Errno 11001] getaddrinfo failed
+CLUJ,SIC,http://www.szek-sic.ro,yes,,,no,unclear,unknown,,no,,,HTTP Error 404: Not Found
+CLUJ,BACIU,http://primaria-baciu.ro,yes,200,https://www.primariabaciu.ro/,yes,yes,e-adm,,no,,,
+COVASNA,BIXAD,http://www.primariabixad.ro,no,,,no,unclear,unknown,,no,,,dns_failed
+COVASNA,CATALINA,http://www.szentkatolna.info/ro/index.php?page=contact#2,no,,,no,unclear,unknown,,no,,,dns_failed
+COVASNA,CHICHIS,http://www.ro.chichis.ro,no,,,no,unclear,unknown,,no,,,dns_failed
+CONSTANTA,TOPALU,http://www.primariatopalu.ro,yes,,,no,unclear,unknown,,no,,,HTTP Error 410: Gone
+CONSTANTA,VALU LUI TRAIAN,https://www.valu-lui-traian.ro,yes,,,no,unclear,unknown,,no,,,[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: self-signed certificate (_ssl.c:1016)
+CONSTANTA,MIHAI VITEAZU,http://www.primaria-mihaiviteazu.ro/index.html,yes,,,no,unclear,unknown,,no,,,HTTP Error 404: Not Found
+COVASNA,ILIENI,https://ilieni.ro,yes,,,no,unclear,unknown,,no,,,Remote end closed connection without response
+COVASNA,VALEA MARE,https://valeamare.info/index.php/ro,no,,,no,unclear,unknown,,no,,,dns_failed
+COVASNA,LEMNIA,http://www.lemnia.ro/ro/index.php#1,yes,,,no,unclear,unknown,,no,,,HTTP Error 410: Gone
+CONSTANTA,POARTA ALBA,http://primariapoartaalba.ro,yes,200,https://primariapoartaalba.ro,yes,yes,other,,no,,,
+COVASNA,MERENI,https://kezdialmas.ro/index.php/hu,yes,,,no,unclear,unknown,,no,,,HTTP Error 503: Service Unavailable
+CONSTANTA,CASTELU,http://www.primariacastelu.ro,yes,,,no,unclear,unknown,,no,,,timed out
+DAMBOVITA,ORAS PUCIOASA,https://www.primpuc.ro,yes,,,no,unclear,unknown,,no,,,HTTP Error 403: Forbidden
+DAMBOVITA,BRANISTEA,http://primaria-branistea.ro,no,,,no,unclear,unknown,,no,,,dns_failed
+COVASNA,VALCELE,https://primariavalcele.ro/index.php/ro,yes,,,no,unclear,unknown,,no,,,HTTP Error 503: Service Unavailable
+DAMBOVITA,COSTESTII DIN VALE,http://primariacostestiidinvale.ro,no,,,no,unclear,unknown,,no,,,dns_failed
+DAMBOVITA,DRAGOMIRESTI,http://primaria-dragomiresti.ro,no,,,no,unclear,unknown,,no,,,dns_failed
+DAMBOVITA,GLODENI,http://www.primaria-glodeni.ro/p/acasa_48.html,no,,,no,unclear,unknown,,no,,,dns_failed
+DAMBOVITA,MALU CU FLORI,http://primariamalucuflori.ro,no,,,no,unclear,unknown,,no,,,dns_failed
+DAMBOVITA,MATASARU,http://www.primariamatasarudb.ro,no,,,no,unclear,unknown,,no,,,dns_failed
+DAMBOVITA,MANESTI,http://www.primariamanesti.ro,no,,,no,unclear,unknown,,no,,,dns_failed
+DAMBOVITA,PIETRARI,http://www.pietraridambovita.ro,no,,,no,unclear,unknown,,no,,,dns_failed
+DAMBOVITA,CREVEDIA,http://www.primariacrevedia.ro,yes,,,no,unclear,unknown,,no,,,"[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: Hostname mismatch, certificate is not valid for 'www.primariacrevedia.ro'. (_ssl.c:1016)"
+DAMBOVITA,SLOBOZIA MOARA,https://www.primariasloboziamoara.ro,no,,,no,unclear,unknown,,no,,,dns_failed
+DAMBOVITA,MORTENI,http://primaria-morteni.ro/morteni,yes,,,no,unclear,unknown,,no,,,HTTP Error 404: Not Found
+DAMBOVITA,RUNCU,https://N/A,no,,,no,unclear,unknown,,no,,,dns_failed
+DAMBOVITA,VALENI-DIMBOVITA,http://primaria-valeni-dambovita.ro,no,,,no,unclear,unknown,,no,,,dns_failed
+CONSTANTA,DOBROMIR,http://primariadobromir.yolasite.com,yes,200,https://primariadobromir.yolasite.com,yes,yes,other,,no,,,
+DAMBOVITA,VLADENI,http://primaria-vladeni.ro,no,,,no,unclear,unknown,,no,,,dns_failed
+DAMBOVITA,DRAGODANA,http://primariadragodana.ro/index.php,yes,200,https://primariadragodana.ro/index.php,yes,yes,other,,no,,,
+DAMBOVITA,CRANGURILE,http://www.primaria-crangurile.ro/crangurile/index.php,yes,200,https://www.primaria-crangurile.ro/crangurile/index.php,yes,yes,other,,no,,,
+DAMBOVITA,LUNGULETU,https://primarialunguletu.ro,yes,200,https://primarialunguletu.ro,yes,unclear,other,,no,,,
+DOLJ,BULZESTI,https://primariabulzesti.ro,no,,,no,unclear,unknown,,no,,,dns_failed
+DOLJ,BOTOSESTI-PAIA,https://N/A,no,,,no,unclear,unknown,,no,,,dns_failed
+DOLJ,CERAT,https://primariacerat.ro,no,,,no,unclear,unknown,,no,,,dns_failed
+DOLJ,CARPEN,https://N/A,no,,,no,unclear,unknown,,no,,,dns_failed
+DAMBOVITA,VULCANA-BAI,http://www.vulcanabai.ro/SiteNou,yes,,,no,unclear,unknown,,no,,,HTTP Error 404: Not Found
+DOLJ,DOBROTESTI,http://www.primariadobrotesti.ro,no,,,no,unclear,unknown,,no,,,dns_failed
+DOLJ,BUCOVAT,http://primaria-bucovat.ro/wp,yes,,,no,unclear,unknown,,no,,,HTTP Error 404: Not Found
+DOLJ,GHERCESTI,http://www.primaria.ghercesti.ro,no,,,no,unclear,unknown,,no,,,dns_failed
+DAMBOVITA,BUTIMANU,http://primaria-butimanu.ro,yes,,,no,unclear,unknown,,no,,,The read operation timed out
+DOLJ,DIOSTI,https://N/A,no,,,no,unclear,unknown,,no,,,dns_failed
+DOLJ,CETATE,http://www.primaria-cetate.ro/index.html,yes,,,no,unclear,unknown,,no,,,HTTP Error 404: Not Found
+DOLJ,GOICEA,http://www.primaria-goicea.ro,no,,,no,unclear,unknown,,no,,,dns_failed
+DOLJ,GRECESTI,https://comunagrecesti.ro,no,,,no,unclear,unknown,,no,,,dns_failed
+DOLJ,MAGLAVIT,http://maglavit.info.ro,no,,,no,unclear,unknown,,no,,,dns_failed
+DOLJ,MARSANI,http://www.primaria-mirsani.ro,no,,,no,unclear,unknown,,no,,,dns_failed
+DOLJ,MURGASI,http://www.primaria.murgasi.ro,no,,,no,unclear,unknown,,no,,,dns_failed
+DOLJ,OSTROVENI,https://comunaostroveni.ro,no,,,no,unclear,unknown,,no,,,dns_failed
+DOLJ,SCAESTI,https://scaesti.info,no,,,no,unclear,unknown,,no,,,dns_failed
+DOLJ,SEACA DE CAMP,http://www.seacadecamp-dolj.ro,no,,,no,unclear,unknown,,no,,,dns_failed
+DOLJ,DRAGOTESTI,http://www.comunadragotesti.ro,yes,,,no,unclear,unknown,,no,,,HTTP Error 500: Internal Server Error
+DOLJ,TEASC,https://www.primariateasc.ro,no,,,no,unclear,unknown,,no,,,dns_failed
+DOLJ,URZICUTA,http://www.primaria-urzicuta.ro,no,,,no,unclear,unknown,,no,,,dns_failed
+DOLJ,VARTOP,http://primaria-vartop.ro/wp,no,,,no,unclear,unknown,,no,,,dns_failed
+DOLJ,VELA,http://vela-dolj.ro,no,,,no,unclear,unknown,,no,,,dns_failed
+GALATI,BALASESTI,http://www.primariabalasesti.ro,no,,,no,unclear,unknown,,no,,,dns_failed
+GALATI,DRAGUSENI,http://www.dragusenigalati.ro,no,,,no,unclear,unknown,,no,,,dns_failed
+GALATI,MUNICIPIUL GALATI,https://www.primariagalati.ro/portal/index.php,yes,,,no,unclear,unknown,,no,,,HTTP Error 404: Not Found
+DOLJ,SOPOT,http://primaria-sopot.ro/wp,yes,,,no,unclear,unknown,,no,,,HTTP Error 404: Not Found
+GALATI,COSTACHE NEGRI,http://primariacostachenegri.ro/index.php,yes,,,no,unclear,unknown,,no,,,HTTP Error 404: Not Found
+GALATI,PECHEA,https://www.pecheagalati.ro,no,,,no,unclear,unknown,,no,,,dns_failed
+DOLJ,VERBITA,https://primariaverbita.ro,yes,200,https://primariaverbita.ro,yes,yes,wordpress,https://primariaverbita.ro/feed/,yes,,,
+GALATI,RADESTI,http://www.radestigl.ro,no,,,no,unclear,unknown,,no,,,dns_failed
+GALATI,SMULTI,http://www.primaria-smulti.ro,no,,,no,unclear,unknown,,no,,,dns_failed
+GALATI,SUCEVENI,http://www.primariasuceveni.ro,no,,,no,unclear,unknown,,no,,,dns_failed
+GALATI,SUHURLUI,http://www.primariasuhurlui.ro,no,,,no,unclear,unknown,,no,,,dns_failed
+GALATI,FOLTESTI,http://www.comunafoltesti.ro,yes,,,no,unclear,unknown,,no,,,HTTP Error 403: Forbidden
+GALATI,INDEPENDENTA,http://www.primaria-independenta.ro,yes,,,no,unclear,unknown,,no,,,HTTP Error 403: Forbidden
+DOLJ,TESLUI,http://primaria-teslui.ro,yes,200,http://primaria-teslui.ro/cgi-sys/suspendedpage.cgi,no,yes,other,,no,,,
+GALATI,VARLEZI,https://N/A,no,,,no,unclear,unknown,,no,,,dns_failed
+GIURGIU,COLIBASI,http://www.primariacolibasi.ro,no,,,no,unclear,unknown,,no,,,dns_failed
+GIURGIU,GHIMPATI,http://www.primariaghimpati.ro,no,,,no,unclear,unknown,,no,,,dns_failed
+GIURGIU,CLEJANI,https://N/A,no,,,no,unclear,unknown,,no,,,dns_failed
+GIURGIU,GRADINARI,https://primariagradinari-gr.ro,no,,,no,unclear,unknown,,no,,,dns_failed
+GIURGIU,IEPURESTI,http://www.primariaiepuresti.ro,no,,,no,unclear,unknown,,no,,,dns_failed
+GIURGIU,HOTARELE,https://primariahotarele.ro,no,,,no,unclear,unknown,,no,,,dns_failed
+GIURGIU,MARSA,http://primariamirsa.ro,no,,,no,unclear,unknown,,no,,,dns_failed
+GALATI,TUDOR VLADIMIRESCU,https://www.tudor-vladimirescu.ro,yes,,,no,unclear,unknown,,no,,,HTTP Error 403: Forbidden
+GIURGIU,ISVOARELE,https://N/A,no,,,no,unclear,unknown,,no,,,dns_failed
+GIURGIU,OGREZENI,https://N/A,no,,,no,unclear,unknown,,no,,,dns_failed
+GIURGIU,PRUNDU,https://N/A,no,,,no,unclear,unknown,,no,,,dns_failed
+GIURGIU,IZVOARELE,http://www.primariaizvoarelegiurgiu.ro,yes,,,no,unclear,unknown,,no,,,HTTP Error 410: Gone
+GALATI,CUZA VODA,https://cuzavoda-galati.ro,yes,200,https://cuzavoda-galati.ro,yes,yes,other,,no,,,
+GIURGIU,VANATORII MICI,http://www.primariavanatoriimici.ro,no,,,no,unclear,unknown,,no,,,dns_failed
+GIURGIU,ULMI,https://N/A,no,,,no,unclear,unknown,,no,,,dns_failed
+GIURGIU,VALEA DRAGULUI,https://N/A,no,,,no,unclear,unknown,,no,,,dns_failed
+GORJ,ORAS TURCENI,http://www.turceni.ro,no,,,no,unclear,unknown,,no,,,dns_failed
+GORJ,ALIMPESTI,http://www.primariaalimpesti.ro,no,,,no,unclear,unknown,,no,,,dns_failed
+GORJ,ALBENI,https://primariaalbeni.ro,no,,,no,unclear,unknown,,no,,,dns_failed
+GORJ,BENGESTI-CIOCADIA,http://www.primariabengesti.ro,no,,,no,unclear,unknown,,no,,,dns_failed
+GORJ,BRANESTI,http://www.branestigorj.ro,no,,,no,unclear,unknown,,no,,,dns_failed
+GORJ,BUMBESTI-PITIC,http://primariabumbestipitic.ro,no,,,no,unclear,unknown,,no,,,dns_failed
+GORJ,CALNIC,http://www.primariacilnic.ro/contact.php,no,,,no,unclear,unknown,,no,,,dns_failed
+GORJ,BERLESTI,https://N/A,no,,,no,unclear,unknown,,no,,,dns_failed
+GORJ,DRAGUTESTI,http://www.primariadragutesti.ro,no,,,no,unclear,unknown,,no,,,dns_failed
+GORJ,GODINESTI,http://www.primariagodinesti-gorj.ro,no,,,no,unclear,unknown,,no,,,dns_failed
+GORJ,FARCASESTI,http://www.primaria-farcasesti.ro,no,,,no,unclear,unknown,,no,,,dns_failed
+GORJ,IONESTI,http://www.primariaionesti-gorj.ro,no,,,no,unclear,unknown,,no,,,dns_failed
+GORJ,PADES,http://www.primaria-pades.ro,no,,,no,unclear,unknown,,no,,,dns_failed
+GORJ,PLOPSORU,http://www.primariaplopsoru.ro,no,,,no,unclear,unknown,,no,,,dns_failed
+GORJ,SLIVILESTI,http://www.primariaslivilesti.ro,no,,,no,unclear,unknown,,no,,,dns_failed
+GORJ,SACELU,https://N/A,no,,,no,unclear,unknown,,no,,,dns_failed
+GORJ,STOINA,https://primariastoina.ro,no,,,no,unclear,unknown,,no,,,dns_failed
+GORJ,SAMARINESTI,https://N/A,no,,,no,unclear,unknown,,no,,,dns_failed
+GORJ,BOLBOSI,https://primariacomuneibolbosi.com,yes,200,http://primariacomuneibolbosi.com,no,unclear,other,,no,,,
+GORJ,BAIA DE FIER,http://www.primariabaiadefier.ro,yes,,,no,unclear,unknown,,no,,,[Errno 11001] getaddrinfo failed
+HARGHITA,ORAS BAILE TUSNAD,https://tusnadfurdo.info/ro,no,,,no,unclear,unknown,,no,,,dns_failed
+HARGHITA,AVRAMESTI,http://www.szentabraham.ro,yes,,,no,unclear,unknown,,no,,,HTTP Error 410: Gone
+HARGHITA,DARJIU,https://www.comunadirjiu.ro,no,,,no,unclear,unknown,,no,,,dns_failed
+HARGHITA,CORUND,https://www.primariacorund.ro,yes,,,no,unclear,unknown,,no,,,HTTP Error 410: Gone
+HARGHITA,FELICENI,https://N/A,no,,,no,unclear,unknown,,no,,,dns_failed
+HARGHITA,SACEL,https://N/A,no,,,no,unclear,unknown,,no,,,dns_failed
+HARGHITA,SANCRAIENI,https://N/A,no,,,no,unclear,unknown,,no,,,dns_failed
+HARGHITA,BRADESTI,http://www.fenyedkozseg.ro,yes,200,https://www.fenyedkozseg.ro,yes,yes,other,,no,,,
+HARGHITA,CIUMANI,https://www.csomafalva.info,yes,,,no,unclear,unknown,,no,,,HTTP Error 500: Internal Server Error
+HARGHITA,LAZAREA,https://www.lazarea.ro,yes,,,no,unclear,unknown,,no,,,HTTP Error 503: Service Unavailable
+HARGHITA,REMETEA,https://gyergyoremete.ro/ro_RO,yes,,,no,unclear,unknown,,no,,,HTTP Error 404: Not Found
+HARGHITA,CICEU,https://www.csikcsicso.ro,yes,200,https://csikcsicso.ro/,yes,unclear,other,,no,,,
+HARGHITA,SANMARTIN,https://csikszentmarton.ro/ro/acasa,yes,,,no,unclear,unknown,,no,,,HTTP Error 404: Not Found
+HARGHITA,SUSENI,http://www.suseni.ro/ro,yes,,,no,unclear,unknown,,no,,,HTTP Error 404: Not Found
+HARGHITA,COZMENI,https://www.cozmeni.consloc.ro,yes,200,https://cozmeni.consloc.ro/,yes,unclear,wordpress,https://cozmeni.consloc.ro/feed/,yes,,2018,
+HARGHITA,VARSAG,http://www.comunavarsag.ro/main,yes,,,no,unclear,unknown,,no,,,HTTP Error 404: Not Found
+HARGHITA,FRUMOASA,http://www.szepviz.eu,yes,200,https://szepviz.eu/,yes,unclear,other,,no,,,
+HARGHITA,CIUCSANGEORGIU,https://www.csikszentgyorgy.eu,yes,200,https://www.csikszentgyorgy.eu,yes,unclear,other,,no,,,
+HARGHITA,SICULENI,https://www.madefalva.ro,yes,200,https://www.madefalva.ro,yes,unclear,other,,no,,,
+HARGHITA,MUNICIPIUL GHEORGHENI,https://www.gheorgheni.ro,yes,,,no,unclear,unknown,,no,,,timed out
+HARGHITA,OCLAND,https://www.okland.ro/index.php,yes,200,https://www.okland.ro/index.php,yes,unclear,other,,no,,,
+HUNEDOARA,CRISCIOR,http://www.comuna-criscior.ro,no,,,no,unclear,unknown,,no,,,dns_failed
+HARGHITA,PORUMBENI,http://www.primariaporumbeni.ro,yes,200,https://www.galambfalva.ro/index-ro.html,yes,unclear,other,,no,,,
+HUNEDOARA,LUNCOIU DE JOS,http://www.luncoi.ro/primaria/primaria.php,no,,,no,unclear,unknown,,no,,,dns_failed
+HUNEDOARA,RAU DE MORI,https://riu-de-mori.ro,no,,,no,unclear,unknown,,no,,,dns_failed
+HUNEDOARA,LUNCA CERNII DE JOS,http://www.comuna-luncacerniidejos.ro,yes,,,no,unclear,unknown,,no,,,HTTP Error 410: Gone
+HUNEDOARA,ORAS SIMERIA,http://www.primariasimeria.ro/default.aspx,yes,,,no,unclear,unknown,,no,,,HTTP Error 404: Not Found
+HUNEDOARA,HARAU,https://primariaharau.ro/harau/index.php/primariaharau,yes,,,no,unclear,unknown,,no,,,HTTP Error 404: Not Found
+HARGHITA,SECUIENI,http://www.comunasecuieni.ro,yes,200,https://ujszekely.tanacs.ro/,yes,yes,other,,no,,,
+IALOMITA,ALEXENI,https://www.primariaalexeni.ro,no,,,no,unclear,unknown,,no,,,dns_failed
+HUNEDOARA,ILIA,https://primariailia.ro/ro,yes,,,no,unclear,unknown,,no,,,HTTP Error 404: Not Found
+IALOMITA,BARCANESTI,http://www.primariabarcanestiialomita.ro,no,,,no,unclear,unknown,,no,,,dns_failed
+IALOMITA,CIOCHINA,http://www.primariaciochina.ro,no,,,no,unclear,unknown,,no,,,dns_failed
+IALOMITA,MUNICIPIUL FETESTI,https://www.primariafetesti.ro,yes,,,no,unclear,unknown,,no,,,[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:1016)
+IALOMITA,FACAENI,https://www.primariafacaeni.ro,no,,,no,unclear,unknown,,no,,,dns_failed
+IALOMITA,DRAGOESTI,http://www.comunadragoesti.ro,yes,,,no,unclear,unknown,,no,,,HTTP Error 403: Forbidden
+IALOMITA,JILAVELE,https://N/A,no,,,no,unclear,unknown,,no,,,dns_failed
+IALOMITA,REVIGA,http://www.primariareviga.ro,no,,,no,unclear,unknown,,no,,,dns_failed
+HUNEDOARA,MUNICIPIUL LUPENI,https://primarialupeni.ro,yes,,,no,unclear,unknown,,no,,,The read operation timed out
+IASI,ANDRIESENI,http://www.primariaandrieseni.ro,no,,,no,unclear,unknown,,no,,,dns_failed
+IASI,BELCESTI,https://primaria.belcesti.ro,yes,,,no,unclear,unknown,,no,,,HTTP Error 410: Gone
+IASI,COTNARI,http://www.primaria-cotnari.ro/contact.html,no,,,no,unclear,unknown,,no,,,dns_failed
+IASI,MUNICIPIUL PASCANI,http://primariapascani.ro/primarie,yes,,,no,unclear,unknown,,no,,,HTTP Error 404: Not Found
+IASI,DAGATA,http://www.primariadagita.ro,no,,,no,unclear,unknown,,no,,,dns_failed
+IALOMITA,MIHAIL KOGALNICEANU,http://www.primariamihailkogalniceanu.ro,yes,200,https://www.primariamihailkogalniceanu.ro,yes,yes,other,,no,,,
+IASI,CUCUTENI,http://primariacucuteni.ro,yes,,,no,unclear,unknown,,no,,,HTTP Error 500: Internal Server Error
+IASI,GOLAIESTI,https://N/A,no,,,no,unclear,unknown,,no,,,dns_failed
+IASI,SCHITU DUCA,http://www.primariaschituduca.ro,no,,,no,unclear,unknown,,no,,,dns_failed
+IASI,RUGINOASA,http://primaria-ruginoasa.ro,no,,,no,unclear,unknown,,no,,,dns_failed
+IASI,SCANTEIA,http://www.primariascinteia.ro,yes,,,no,unclear,unknown,,no,,,HTTP Error 410: Gone
+IASI,LESPEZI,https://www.primarialespezi.ro,yes,,,no,unclear,unknown,,no,,,HTTP Error 404: Not Found
+IASI,SIRETEL,https://N/A,no,,,no,unclear,unknown,,no,,,dns_failed
+IASI,VICTORIA,https://newsite.comunavictoria.ro,no,,,no,unclear,unknown,,no,,,dns_failed
+IASI,TUTORA,http://www.primariatutora.ro,yes,,,no,unclear,unknown,,no,,,HTTP Error 410: Gone
+IASI,VALEA SEACA,https://www.valeaseaca.ro,yes,,,no,unclear,unknown,,no,,,HTTP Error 404: Not Found
+IASI,GROPNITA,https://www.comuna-gropnita-iasi.ro,yes,200,https://www.comuna-gropnita-iasi.ro,yes,unclear,other,,no,,,
+IASI,VLADENI,https://N/A,no,,,no,unclear,unknown,,no,,,dns_failed
+IASI,TIBANESTI,https://www.primariatibanesti.ro,yes,,,no,unclear,unknown,,no,,,"[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: Hostname mismatch, certificate is not valid for 'www.primariatibanesti.ro'. (_ssl.c:1016)"
+ILFOV,DARASTI-ILFOV,https://N/A,no,,,no,unclear,unknown,,no,,,dns_failed
+ILFOV,CERNICA,http://www.cernica.ro,yes,200,http://www.cernica.ro,no,yes,other,,no,,,
+ILFOV,MOGOSOAIA,https://primaria.mogosoaia.ro,yes,,,no,unclear,unknown,,no,,,[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:1016)
+IASI,ERBICENI,http://primariaerbiceni.ro,yes,,,no,unclear,unknown,,no,,,timed out
+ILFOV,PERIS,http://www.primaria-peris.ro,yes,,,no,unclear,unknown,,no,,,"[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: Hostname mismatch, certificate is not valid for 'www.perisulmeu.ro'. (_ssl.c:1016)"
+MARAMURES,ORAS CAVNIC,https://www.cavnic.ro,yes,,,no,unclear,unknown,,no,,,"[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: Hostname mismatch, certificate is not valid for 'www.cavnic.ro'. (_ssl.c:1016)"
+MARAMURES,BISTRA,https://www.primariabistra.ro,no,,,no,unclear,unknown,,no,,,dns_failed
+MARAMURES,ORAS VISEU DE SUS,https://www.viseudesus.ro,yes,,,no,unclear,unknown,,no,,,HTTP Error 410: Gone
+MARAMURES,COAS,https://www.primariacoas.ro,no,,,no,unclear,unknown,,no,,,dns_failed
+MARAMURES,CAMPULUNG LA TISA,https://N/A,no,,,no,unclear,unknown,,no,,,dns_failed
+MARAMURES,CUPSENI,https://N/A,no,,,no,unclear,unknown,,no,,,dns_failed
+MARAMURES,CALINESTI,https://www.calinesti.ro,yes,,,no,unclear,unknown,,no,,,"[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: Hostname mismatch, certificate is not valid for 'www.calinesti.ro'. (_ssl.c:1016)"
+MARAMURES,COROIENI,https://www.comunacoroieni.ro,yes,,,no,unclear,unknown,,no,,,"[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: Hostname mismatch, certificate is not valid for 'www.comunacoroieni.ro'. (_ssl.c:1016)"
+MARAMURES,ASUAJU DE SUS,https://www.comunaasuajudesus.ro/index.php/ro,yes,,,no,unclear,unknown,,no,,,HTTP Error 404: Not Found
+MARAMURES,IEUD,https://N/A,no,,,no,unclear,unknown,,no,,,dns_failed
+MARAMURES,POIENILE DE SUB MUNTE,http://www.primariapoieniledesubmunte.ro,no,,,no,unclear,unknown,,no,,,dns_failed
+MARAMURES,CERNESTI,https://www.comunacernesti.ro,yes,,,no,unclear,unknown,,no,,,"[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: Hostname mismatch, certificate is not valid for 'www.comunacernesti.ro'. (_ssl.c:1016)"
+MARAMURES,DUMBRAVITA,https://www.primariadumbravitamm.ro,yes,,,no,unclear,unknown,,no,,,"[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: Hostname mismatch, certificate is not valid for 'www.primariadumbravitamm.ro'. (_ssl.c:1016)"
+MARAMURES,GROSII TIBLESULUI,https://www.grosiitiblesului.ro,yes,,,no,unclear,unknown,,no,,,"[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: Hostname mismatch, certificate is not valid for 'www.grosiitiblesului.ro'. (_ssl.c:1016)"
+MARAMURES,SACEL,http://www.primariasacel.ro,no,,,no,unclear,unknown,,no,,,dns_failed
+MARAMURES,REMETI,https://N/A,no,,,no,unclear,unknown,,no,,,dns_failed
+MARAMURES,SAPANTA,https://www.primaria-sapanta.com,no,,,no,unclear,unknown,,no,,,dns_failed
+MARAMURES,SIEU,http://primaria-sieu.ro,no,,,no,unclear,unknown,,no,,,dns_failed
+MARAMURES,RUSCOVA,https://N/A,no,,,no,unclear,unknown,,no,,,dns_failed
+MARAMURES,MIRESU MARE,https://www.miresu-mare.ro,yes,,,no,unclear,unknown,,no,,,"[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: Hostname mismatch, certificate is not valid for 'www.miresu-mare.ro'. (_ssl.c:1016)"
+MARAMURES,ONCESTI,https://www.primariaoncesti.ro,yes,,,no,unclear,unknown,,no,,,"[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: Hostname mismatch, certificate is not valid for 'www.primariaoncesti.ro'. (_ssl.c:1016)"
+MARAMURES,REPEDEA,https://www.comunarepedea.ro,yes,,,no,unclear,unknown,,no,,,"[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: Hostname mismatch, certificate is not valid for 'www.comunarepedea.ro'. (_ssl.c:1016)"
+MARAMURES,ORAS BORSA,https://www.primariaborsamm.ro,yes,200,https://www.primariaborsamm.ro,yes,yes,other,,no,,,
+MARAMURES,PETROVA,http://www.primaria-petrova.ro,yes,,,no,unclear,unknown,,no,,,"[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: Hostname mismatch, certificate is not valid for 'www.primaria-petrova.ro'. (_ssl.c:1016)"
+MARAMURES,BAIUT,https://www.comunabaiut.ro/ari2_364-contact.html,yes,,,no,unclear,unknown,,no,,,HTTP Error 404: Not Found
+MARAMURES,VADU IZEI,https://N/A,no,,,no,unclear,unknown,,no,,,dns_failed
+MARAMURES,MUNICIPIUL SIGHETU MARMATIEI,http://www.primaria-sighet.ro,yes,200,https://www.primaria-sighet.ro,yes,yes,other,,no,,,
+MARAMURES,STRAMTURA,https://www.primariastramtura.ro,yes,,,no,unclear,unknown,,no,,,HTTP Error 410: Gone
+MARAMURES,VIMA MICA,https://N/A,no,,,no,unclear,unknown,,no,,,dns_failed
+MARAMURES,BARSANA,http://barsana.clickglobal.ro,yes,200,https://barsana.clickglobal.ro,yes,unclear,other,,no,,,
+MEHEDINTI,BALACITA,https://N/A,no,,,no,unclear,unknown,,no,,,dns_failed
+MEHEDINTI,BALTA,https://N/A,no,,,no,unclear,unknown,,no,,,dns_failed
+MEHEDINTI,BREZNITA-MOTRU,https://N/A,no,,,no,unclear,unknown,,no,,,dns_failed
+MEHEDINTI,BROSTENI,https://N/A,no,,,no,unclear,unknown,,no,,,dns_failed
+MARAMURES,BUDESTI,https://www.comuna-budesti.ro,yes,200,https://www.comuna-budesti.ro,yes,yes,joomla,,no,,,
+MEHEDINTI,GODEANU,https://primaria-godeanu.ro,no,,,no,unclear,unknown,,no,,,dns_failed
+MARAMURES,VISEU DE JOS,https://www.primaria-viseudejos.ro,yes,,,no,unclear,unknown,,no,,,"[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: Hostname mismatch, certificate is not valid for 'www.primaria-viseudejos.ro'. (_ssl.c:1016)"
+MEHEDINTI,CAZANESTI,https://N/A,no,,,no,unclear,unknown,,no,,,dns_failed
+MEHEDINTI,BALA,http://www.primariacomuneibala.ro,yes,,,no,unclear,unknown,,no,,,HTTP Error 403: Forbidden
+MEHEDINTI,CIRESU,https://N/A,no,,,no,unclear,unknown,,no,,,dns_failed
+MEHEDINTI,JIANA,https://primaria-jiana.ro,no,,,no,unclear,unknown,,no,,,dns_failed
+MEHEDINTI,CUJMIR,https://N/A,no,,,no,unclear,unknown,,no,,,dns_failed
+MEHEDINTI,DARVARI,https://N/A,no,,,no,unclear,unknown,,no,,,dns_failed
+MEHEDINTI,MALOVAT,http://www.primariamalovat.ro,no,,,no,unclear,unknown,,no,,,dns_failed
+MARAMURES,SALSIG,http://www.salsig.ro,yes,200,http://www.salsig.ro,no,yes,other,,no,,,
+MEHEDINTI,MUNICIPIUL ORSOVA,https://www.primariaorsova.ro,yes,,,no,unclear,unknown,,no,,,[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:1016)
+MEHEDINTI,PODENI,http://comunapodenimh.ro,no,,,no,unclear,unknown,,no,,,dns_failed
+MEHEDINTI,DUMBRAVA,https://N/A,no,,,no,unclear,unknown,,no,,,dns_failed
+MEHEDINTI,ESELNITA,https://N/A,no,,,no,unclear,unknown,,no,,,dns_failed
+MEHEDINTI,FLORESTI,https://N/A,no,,,no,unclear,unknown,,no,,,dns_failed
+MEHEDINTI,GARLA MARE,https://N/A,no,,,no,unclear,unknown,,no,,,dns_failed
+MEHEDINTI,GRECI,https://N/A,no,,,no,unclear,unknown,,no,,,dns_failed
+MEHEDINTI,PRUNISOR,http://www.primariaprunisor.ro,no,,,no,unclear,unknown,,no,,,dns_failed
+MEHEDINTI,ROGOVA,http://www.cetateaseverinului.ro,no,,,no,unclear,unknown,,no,,,dns_failed
+MEHEDINTI,GROZESTI,https://N/A,no,,,no,unclear,unknown,,no,,,dns_failed
+MEHEDINTI,GRUIA,https://N/A,no,,,no,unclear,unknown,,no,,,dns_failed
+MEHEDINTI,HINOVA,https://N/A,no,,,no,unclear,unknown,,no,,,dns_failed
+MEHEDINTI,ILOVAT,https://N/A,no,,,no,unclear,unknown,,no,,,dns_failed
+MEHEDINTI,ISVERNA,https://N/A,no,,,no,unclear,unknown,,no,,,dns_failed
+MEHEDINTI,HUSNICIOARA,https://N/A,no,,,no,unclear,unknown,,no,,,dns_failed
+MARAMURES,LAPUS,https://www.primaria-lapus.ro,yes,200,https://www.primaria-lapus.ro,yes,yes,other,,no,,,
+MEHEDINTI,OBARSIA DE CAMP,https://N/A,no,,,no,unclear,unknown,,no,,,dns_failed
+MEHEDINTI,IZVORU BARZII,https://N/A,no,,,no,unclear,unknown,,no,,,dns_failed
+MEHEDINTI,OBARSIA-CLOSANI,https://N/A,no,,,no,unclear,unknown,,no,,,dns_failed
+MEHEDINTI,OPRISOR,https://N/A,no,,,no,unclear,unknown,,no,,,dns_failed
+MEHEDINTI,PADINA,https://N/A,no,,,no,unclear,unknown,,no,,,dns_failed
+MEHEDINTI,LIVEZILE,https://N/A,no,,,no,unclear,unknown,,no,,,dns_failed
+MEHEDINTI,POROINA MARE,https://N/A,no,,,no,unclear,unknown,,no,,,dns_failed
+MEHEDINTI,PRISTOL,https://N/A,no,,,no,unclear,unknown,,no,,,dns_failed
+MEHEDINTI,SISESTI,https://N/A,no,,,no,unclear,unknown,,no,,,dns_failed
+MEHEDINTI,SALCIA,https://N/A,no,,,no,unclear,unknown,,no,,,dns_failed
+MEHEDINTI,STANGACEAUA,https://N/A,no,,,no,unclear,unknown,,no,,,dns_failed
+MEHEDINTI,TAMNA,https://N/A,no,,,no,unclear,unknown,,no,,,dns_failed
+MEHEDINTI,VOLOIAC,https://N/A,no,,,no,unclear,unknown,,no,,,dns_failed
+MEHEDINTI,VRATA,https://N/A,no,,,no,unclear,unknown,,no,,,dns_failed
+MEHEDINTI,VLADAIA,https://N/A,no,,,no,unclear,unknown,,no,,,dns_failed
+MEHEDINTI,VANJULET,https://N/A,no,,,no,unclear,unknown,,no,,,dns_failed
+MARAMURES,ROZAVLEA,https://www.primaria-rozavlea.ro,yes,200,https://www.primaria-rozavlea.ro,yes,yes,other,,no,,,
+MURES,ORAS SANGEORGIU DE PADURE,https://sgpadure.ro,yes,,,no,unclear,unknown,,no,,,Remote end closed connection without response
+MEHEDINTI,ORAS BAIA DE ARAMA,https://www.primariabaiadearama.ro,yes,200,https://www.primariabaiadearama.ro,yes,yes,joomla,https://www.primariabaiadearama.ro/index.php?format=feed&type=rss,yes,,2018,
+MURES,ACATARI,https://www.acatari.ro,yes,,,no,unclear,unknown,,no,,,"[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: Hostname mismatch, certificate is not valid for 'www.acatari.ro'. (_ssl.c:1016)"
+MURES,BRANCOVENESTI,https://www.primariabrincovenesti.ro,yes,,,no,unclear,unknown,,no,,,"[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: Hostname mismatch, certificate is not valid for 'www.primariabrincovenesti.ro'. (_ssl.c:1016)"
+MURES,BALAUSERI,http://balauseri.ro,yes,,,no,unclear,unknown,,no,,,Remote end closed connection without response
+MURES,BERENI,https://www.bereni.ro,yes,,,no,unclear,unknown,,no,,,"[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: Hostname mismatch, certificate is not valid for 'www.bereni.ro'. (_ssl.c:1016)"
+MURES,BALA,https://www.primariabala.ro,yes,,,no,unclear,unknown,,no,,,"[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: Hostname mismatch, certificate is not valid for 'www.primariabala.ro'. (_ssl.c:1016)"
+MURES,BATOS,https://www.primariabatos.ro,yes,,,no,unclear,unknown,,no,,,"[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: Hostname mismatch, certificate is not valid for 'www.primariabatos.ro'. (_ssl.c:1016)"
+MURES,CRACIUNESTI,https://www.comunacraciunesti.ro,yes,,,no,unclear,unknown,,no,,,"[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: Hostname mismatch, certificate is not valid for 'www.comunacraciunesti.ro'. (_ssl.c:1016)"
+MURES,ORAS LUDUS,http://www.ludus.ro,no,,,no,unclear,unknown,,no,,,dns_failed
+MURES,FARAGAU,https://N/A,no,,,no,unclear,unknown,,no,,,dns_failed
+MURES,EREMITU,https://eremitu.ro,yes,,,no,unclear,unknown,,no,,,Remote end closed connection without response
+MURES,FANTANELE,https://www.fantanele-ms.ro,yes,,,no,unclear,unknown,,no,,,"[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: Hostname mismatch, certificate is not valid for 'www.fantanele-ms.ro'. (_ssl.c:1016)"
+MURES,GHINDARI,https://www.ghindari.ro/c,yes,,,no,unclear,unknown,,no,,,"[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: Hostname mismatch, certificate is not valid for 'www.ghindari.ro'. (_ssl.c:1016)"
+MURES,GALESTI,https://galesti.ro/ro,yes,,,no,unclear,unknown,,no,,,HTTP Error 404: Page not found: /ro
+MURES,MADARAS,https://N/A,no,,,no,unclear,unknown,,no,,,dns_failed
+MURES,GREBENISU DE CAMPIE,https://www.grebenisudecimpie.ro,yes,,,no,unclear,unknown,,no,,,"[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: Hostname mismatch, certificate is not valid for 'www.grebenisudecimpie.ro'. (_ssl.c:1016)"
+MURES,GHEORGHE DOJA,https://www.gheorghedoja.ro,yes,,,no,unclear,unknown,,no,,,"[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: Hostname mismatch, certificate is not valid for 'www.gheorghedoja.ro'. (_ssl.c:1016)"
+MURES,PAPIU ILARIAN,https://papiuilarian.ro,yes,,,no,unclear,unknown,,no,,,HTTP Error 410: Gone
+MURES,MAGHERANI,https://www.comunamagherani.ro,yes,,,no,unclear,unknown,,no,,,"[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: Hostname mismatch, certificate is not valid for 'www.comunamagherani.ro'. (_ssl.c:1016)"
+MURES,MICA,https://www.primaria-mica.ro,yes,,,no,unclear,unknown,,no,,,"[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: Hostname mismatch, certificate is not valid for 'www.primaria-mica.ro'. (_ssl.c:1016)"
+MURES,NEAUA,https://www.neaua.ro,yes,,,no,unclear,unknown,,no,,,"[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: Hostname mismatch, certificate is not valid for 'www.neaua.ro'. (_ssl.c:1016)"
+MURES,GURGHIU,https://www.comunagurghiu.ro,yes,,,no,unclear,unknown,,no,,,"[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: Hostname mismatch, certificate is not valid for 'www.comunagurghiu.ro'. (_ssl.c:1016)"
+MURES,MIHESU DE CAMPIE,https://www.mihesudecimpie.ro,yes,,,no,unclear,unknown,,no,,,"[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: Hostname mismatch, certificate is not valid for 'www.mihesudecimpie.ro'. (_ssl.c:1016)"
+MURES,ORAS SARMASU,https://orasulsarmasu.ro,yes,200,https://orasulsarmasu.ro,yes,yes,other,,no,,,
+MURES,PASARENI,https://www.pasareni.ro,yes,,,no,unclear,unknown,,no,,,"[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: Hostname mismatch, certificate is not valid for 'www.pasareni.ro'. (_ssl.c:1016)"
+MURES,VARGATA,http://ms.ovelo.ro/vargata,yes,,,no,unclear,unknown,,no,,,Remote end closed connection without response
+NEAMT,ALEXANDRU CEL BUN,http://www.pacb.ro,no,,,no,unclear,unknown,,no,,,dns_failed
+MURES,CORUNCA,http://www.primariacorunca.ro,yes,200,https://www.primariacorunca.ro,yes,yes,other,,no,,,
+NEAMT,BARGAUANI,http://www.comunabirgauani.ro,no,,,no,unclear,unknown,,no,,,dns_failed
+MURES,VOIVODENI,https://www.voivodeni.ro,yes,,,no,unclear,unknown,,no,,,"[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: Hostname mismatch, certificate is not valid for 'www.voivodeni.ro'. (_ssl.c:1016)"
+MURES,VATAVA,https://www.vatava.ro,yes,,,no,unclear,unknown,,no,,,"[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: Hostname mismatch, certificate is not valid for 'www.vatava.ro'. (_ssl.c:1016)"
+MURES,CHIBED,https://www.kibed.ro,yes,200,https://www.kibed.ro,yes,yes,other,,no,,,
+NEAMT,DOBRENI,https://primariadobreni.ro,no,,,no,unclear,unknown,,no,,,dns_failed
+NEAMT,GARCINA,http://www.primariagircina.ro,no,,,no,unclear,unknown,,no,,,dns_failed
+NEAMT,BIRA,https://bira.ro/prima-pagina,yes,,,no,unclear,unknown,,no,,,HTTP Error 404: Not Found
+MURES,MUNICIPIUL SIGHISOARA,http://www.sighisoara.org.ro,yes,,,no,unclear,unknown,,no,,,timed out
+MURES,NADES,https://nades.ro/ro,yes,200,https://nades.ro/ro,yes,yes,other,,no,,,
+MURES,VIISOARA,https://www.viisoarams.ro,yes,200,https://www.viisoarams.ro,yes,yes,other,,no,,,
+MURES,SANGEORGIU DE MURES,https://emol.ro/sangeorgiudemures-ms,yes,200,https://emol.ro/sangeorgiudemures-ms,yes,yes,other,,no,,,
+NEAMT,TIMISESTI,http://comunatimisesti.eu,no,,,no,unclear,unknown,,no,,,dns_failed
+NEAMT,URECHENI,http://urecheni.ro,no,,,no,unclear,unknown,,no,,,dns_failed
+NEAMT,VALENI,http://valeni-neamt.ro,no,,,no,unclear,unknown,,no,,,dns_failed
+OLT,BALDOVINESTI,https://baldovinesti.ro,no,,,no,unclear,unknown,,no,,,dns_failed
+OLT,BARZA,http://www.primariabirzaolt.ro,yes,,,no,unclear,unknown,,no,,,[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:1016)
+OLT,BARASTI,http://www.primariabarastiolt.ro,yes,,,no,unclear,unknown,,no,,,[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:1016)
+OLT,BREBENI,http://www.primariabrebeni.ro,yes,,,no,unclear,unknown,,no,,,[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:1016)
+OLT,GROJDIBODU,http://www.primariagrojdibodu.ro,no,,,no,unclear,unknown,,no,,,dns_failed
+OLT,CRAMPOIA,http://www.primariacrimpoia.ro,yes,,,no,unclear,unknown,,no,,,[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:1016)
+OLT,DOBROTEASA,http://www.primariadobroteasa.ro,yes,,,no,unclear,unknown,,no,,,[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:1016)
+OLT,GRADINILE,https://N/A,no,,,no,unclear,unknown,,no,,,dns_failed
+OLT,GURA PADINII,https://N/A,no,,,no,unclear,unknown,,no,,,dns_failed
+OLT,CURTISOARA,http://www.primariacurtisoara.ro,yes,,,no,unclear,unknown,,no,,,[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:1016)
+OLT,DOBROSLOVENI,http://www.dobrosloveni.ro,yes,,,no,unclear,unknown,,no,,,[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:1016)
+OLT,PLESOIU,http://www.primariaplesoiu.ro,no,,,no,unclear,unknown,,no,,,dns_failed
+OLT,MOVILENI,https://N/A,no,,,no,unclear,unknown,,no,,,dns_failed
+OLT,NICOLAE TITULESCU,https://N/A,no,,,no,unclear,unknown,,no,,,dns_failed
+OLT,GOSTAVATU,http://www.primariagostavatu.ro,yes,,,no,unclear,unknown,,no,,,[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:1016)
+OLT,IPOTESTI,http://www.primaria-ipotesti.ro,yes,,,no,unclear,unknown,,no,,,"[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: Hostname mismatch, certificate is not valid for 'www.primaria-ipotesti.ro'. (_ssl.c:1016)"
+OLT,LELEASCA,http://www.primarialeleasca.ro,yes,,,no,unclear,unknown,,no,,,[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:1016)
+OLT,ICOANA,http://www.primariaicoana.ro,yes,,,no,unclear,unknown,,no,,,[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:1016)
+OLT,PRISEACA,https://N/A,no,,,no,unclear,unknown,,no,,,dns_failed
+OLT,POBORU,http://www.primariapoboru.ro,yes,,,no,unclear,unknown,,no,,,[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:1016)
+OLT,STEFAN CEL MARE,https://N/A,no,,,no,unclear,unknown,,no,,,dns_failed
+OLT,VALENI,https://primariavaleniolt.ro,no,,,no,unclear,unknown,,no,,,dns_failed
+OLT,RADOMIRESTI,http://www.primariaradomiresti.ro,yes,,,no,unclear,unknown,,no,,,[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:1016)
+OLT,SEACA,https://www.primariaseaca.ro,yes,,,no,unclear,unknown,,no,,,[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:1016)
+OLT,STOICANESTI,http://www.primariastoicanesti.ro,yes,,,no,unclear,unknown,,no,,,[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: certificate has expired (_ssl.c:1016)
+OLT,SPRANCENATA,http://www.primariasprincenata.ro,yes,,,no,unclear,unknown,,no,,,"[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: Hostname mismatch, certificate is not valid for 'www.primariasprincenata.ro'. (_ssl.c:1016)"
+OLT,OPORELU,http://www.primariaoporelu.judetulolt.ro,yes,200,http://www.primariaoporelu.judetulolt.ro,no,unclear,unknown,,no,,,
+OLT,SERBANESTI,http://www.primariaserbanesti.ro,yes,,,no,unclear,unknown,,no,,,[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:1016)
+PRAHOVA,ORAS BOLDESTI-SCAENI,http://pbs.infoprimarie.ro,no,,,no,unclear,unknown,,no,,,dns_failed
+OLT,TIA MARE,http://www.primariatiamare.ro,yes,,,no,unclear,unknown,,no,,,[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:1016)
+OLT,VISINA,https://N/A,no,,,no,unclear,unknown,,no,,,dns_failed
+OLT,VALEA MARE,http://www.primaria-valeamare.ro,yes,,,no,unclear,unknown,,no,,,[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:1016)
+OLT,TRAIAN,https://traian.ghidulprimariilor.ro,yes,,,no,unclear,unknown,,no,,,"[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: Hostname mismatch, certificate is not valid for 'traian.ghidulprimariilor.ro'. (_ssl.c:1016)"
+OLT,TUFENI,http://www.primariatufeni.ro,yes,,,no,unclear,unknown,,no,,,[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:1016)
+OLT,VITOMIRESTI,https://www.primariavitomiresti.ro,yes,,,no,unclear,unknown,,no,,,[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:1016)
+PRAHOVA,BALTA DOAMNEI,https://baltadoamnei.europrahova.eu,no,,,no,unclear,unknown,,no,,,dns_failed
+PRAHOVA,BANESTI,http://www.banestiprahova.ro,yes,,,no,unclear,unknown,,no,,,HTTP Error 410: Gone
+PRAHOVA,CHIOJDEANCA,http://chiojdeanca.infoprimarie.ro,no,,,no,unclear,unknown,,no,,,dns_failed
+PRAHOVA,APOSTOLACHE,https://www.cjph.ro/judetul-prahova/localitatile-judetului/48-primaria-apostolache,yes,,,no,unclear,unknown,,no,,,[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:1016)
+PRAHOVA,COCORASTII COLT,https://cocorastiicolt.europrahova.eu,no,,,no,unclear,unknown,,no,,,dns_failed
+PRAHOVA,COLCEAG,http://colceag.infoprimarie.ro,no,,,no,unclear,unknown,,no,,,dns_failed
+PRAHOVA,DUMBRAVA,http://dumbrava.infoprimarie.ro,no,,,no,unclear,unknown,,no,,,dns_failed
+PRAHOVA,FANTANELE,http://fintinele.infoprimarie.ro,no,,,no,unclear,unknown,,no,,,dns_failed
+PRAHOVA,FLORESTI,https://www.cjph.ro/judetul-prahova/localitatile-judetului/106-primaria-floresti,yes,,,no,unclear,unknown,,no,,,[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:1016)
+PRAHOVA,PACURETI,http://comunapacureti.ro,no,,,no,unclear,unknown,,no,,,dns_failed
+PRAHOVA,PLOPU,http://primariaplopu.ro,no,,,no,unclear,unknown,,no,,,dns_failed
+PRAHOVA,SALCIILE,https://salciile.informare.ro,no,,,no,unclear,unknown,,no,,,dns_failed
+PRAHOVA,SCORTENI,http://www.primariascorteni.ro,no,,,no,unclear,unknown,,no,,,dns_failed
+PRAHOVA,LIPANESTI,https://www.lipanesti.ro,yes,,,no,unclear,unknown,,no,,,"[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: Hostname mismatch, certificate is not valid for 'www.lipanesti.ro'. (_ssl.c:1016)"
+PRAHOVA,PODENII NOI,https://www.cjph.ro/judetul-prahova/localitatile-judetului/128-primaria-podenii-noi,yes,,,no,unclear,unknown,,no,,,[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:1016)
+PRAHOVA,SECARIA,https://www.cjph.ro/judetul-prahova/localitatile-judetului/144-primaria-secaria,yes,,,no,unclear,unknown,,no,,,[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:1016)
+PRAHOVA,SOIMARI,https://www.comunasoimari.ro,yes,,,no,unclear,unknown,,no,,,"[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: Hostname mismatch, certificate is not valid for 'www.comunasoimari.ro'. (_ssl.c:1016)"
+SATU MARE,BERVENI,http://www.berveni.eu,no,,,no,unclear,unknown,,no,,,dns_failed
+SATU MARE,CAUAS,https://N/A,no,,,no,unclear,unknown,,no,,,dns_failed
+SATU MARE,BOTIZ,https://www.botiz.ro,yes,,,no,unclear,unknown,,no,,,"[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: Hostname mismatch, certificate is not valid for 'www.botiz.ro'. (_ssl.c:1016)"
+SATU MARE,CEHAL,https://N/A,no,,,no,unclear,unknown,,no,,,dns_failed
+SATU MARE,BELTIUG,https://www.comunabeltiug.ro,yes,,,no,unclear,unknown,,no,,,"[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: Hostname mismatch, certificate is not valid for 'www.comunabeltiug.ro'. (_ssl.c:1016)"
+SATU MARE,BATARCI,https://www.primariabatarci.ro,yes,,,no,unclear,unknown,,no,,,"[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: Hostname mismatch, certificate is not valid for 'www.primariabatarci.ro'. (_ssl.c:1016)"
+SATU MARE,DOBA,http://www.primariadoba.ro,yes,,,no,unclear,unknown,,no,,,HTTP Error 410: Gone
+SATU MARE,MUNICIPIUL SATU MARE,http://www.satu-mare.ro,yes,200,http://www.satu-mare.ro,no,unclear,other,,no,,,
+SATU MARE,SAUCA,https://N/A,no,,,no,unclear,unknown,,no,,,dns_failed
+SATU MARE,ORAS ARDUD,https://orasardud.ro,yes,200,https://orasardud.ro,yes,yes,e-adm,,no,,,
+SALAJ,AGRIJ,https://www.comunaagrij.ro,no,,,no,unclear,unknown,,no,,,dns_failed
+SALAJ,BABENI,http://comunababenisalaj.ro,no,,,no,unclear,unknown,,no,,,dns_failed
+SALAJ,CHIESD,http://www.primariachiesd.ro,no,,,no,unclear,unknown,,no,,,dns_failed
+SATU MARE,VAMA,https://vama-sm.ro,yes,,,no,unclear,unknown,,no,,,[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: self-signed certificate (_ssl.c:1016)
+SATU MARE,CRAIDOROLT,https://www.craidorolt.ro,yes,200,https://www.craidorolt.ro,yes,unclear,other,,no,,,
+SALAJ,BALAN,https://primariabalan.ro/site,yes,,,no,unclear,unknown,,no,,,HTTP Error 404: Not Found
+SALAJ,ORAS CEHU SILVANIEI,https://www.primaria-cehusilvaniei.ro,yes,,,no,unclear,unknown,,no,,,"[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: Hostname mismatch, certificate is not valid for 'www.primaria-cehusilvaniei.ro'. (_ssl.c:1016)"
+SALAJ,BANISOR,https://www.primariabanisor.ro,yes,,,no,unclear,unknown,,no,,,"[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: Hostname mismatch, certificate is not valid for 'www.primariabanisor.ro'. (_ssl.c:1016)"
+SATU MARE,TURULUNG,http://www.primariaturulung.ro,yes,,,no,unclear,unknown,,no,,,"[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: Hostname mismatch, certificate is not valid for 'www.primariaturulung.ro'. (_ssl.c:1016)"
+SALAJ,CUZAPLAC,https://N/A,no,,,no,unclear,unknown,,no,,,dns_failed
+SALAJ,LETCA,http://comuna-letca.ro,no,,,no,unclear,unknown,,no,,,dns_failed
+SALAJ,ALMASU,https://www.facebook.com/pages/category/Public-Service/Primaria-Almasu-113294830312763,yes,,,no,unclear,unknown,,no,,,HTTP Error 400: Bad Request
+SALAJ,CRISENI,https://www.primariacriseni.ro,yes,,,no,unclear,unknown,,no,,,"[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: Hostname mismatch, certificate is not valid for 'www.primariacriseni.ro'. (_ssl.c:1016)"
+SALAJ,PERICEI,http://comunapericei.ro,no,,,no,unclear,unknown,,no,,,dns_failed
+SATU MARE,MICULA,https://comunamicula.ro,yes,200,https://comunamicula.ro,yes,yes,other,,no,,,
+SALAJ,CRISTOLT,https://www.comunacristolt.ro,yes,,,no,unclear,unknown,,no,,,"[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: Hostname mismatch, certificate is not valid for 'www.comunacristolt.ro'. (_ssl.c:1016)"
+SATU MARE,CULCIU,https://www.primariaculciu.ro,yes,200,https://www.primariaculciu.ro,yes,yes,other,,no,,,
+SALAJ,FILDU DE JOS,https://www.primariafildudejos.ro,yes,,,no,unclear,unknown,,no,,,[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: self-signed certificate (_ssl.c:1016)
+SALAJ,GALGAU,https://www.primariagilgau.ro,yes,,,no,unclear,unknown,,no,,,"[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: Hostname mismatch, certificate is not valid for 'www.primariagilgau.ro'. (_ssl.c:1016)"
+SATU MARE,CERTEZE,https://www.primaria-certeze.ro,yes,200,https://www.primaria-certeze.ro,yes,yes,e-adm,,no,,,
+SALAJ,VARSOLT,http://virsolt.ro,no,,,no,unclear,unknown,,no,,,dns_failed
+SATU MARE,BARSAU,https://comunabarsau.ro,yes,,,no,unclear,unknown,,no,,,timed out
+SALAJ,MESESENII DE JOS,https://www.meseseniidejos.ro,yes,,,no,unclear,unknown,,no,,,"[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: Hostname mismatch, certificate is not valid for 'www.meseseniidejos.ro'. (_ssl.c:1016)"
+SALAJ,SAG,https://www.primariasig.ro,yes,,,no,unclear,unknown,,no,,,"[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: Hostname mismatch, certificate is not valid for 'www.primariasig.ro'. (_ssl.c:1016)"
+SALAJ,ZIMBOR,https://N/A,no,,,no,unclear,unknown,,no,,,dns_failed
+SALAJ,SOMES-ODORHEI,https://www.comunasomesodorhei.ro,yes,,,no,unclear,unknown,,no,,,"[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: Hostname mismatch, certificate is not valid for 'www.comunasomesodorhei.ro'. (_ssl.c:1016)"
+SATU MARE,SOCOND,https://primaria-socond.ro,yes,200,https://primaria-socond.ro,yes,yes,other,,no,,,
+SATU MARE,URZICENI,https://www.comunaurziceni.ro,yes,200,https://www.comunaurziceni.ro,yes,yes,other,,no,,,
+SALAJ,ZALHA,https://www.comunazalha.ro,yes,,,no,unclear,unknown,,no,,,"[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: Hostname mismatch, certificate is not valid for 'www.comunazalha.ro'. (_ssl.c:1016)"
+SALAJ,SARMASAG,https://www.sarmasag.ro/ro/home.html,yes,,,no,unclear,unknown,,no,,,HTTP Error 404: Not Found
+SIBIU,ORAS DUMBRAVENI,https://www.primariadumbraveni.ro,yes,,,no,unclear,unknown,,no,,,HTTP Error 403: Forbidden
+SALAJ,DRAGU,http://comunadragusalaj.ro,yes,200,https://comunadragusalaj.ro,yes,yes,other,,no,,,
+SALAJ,POIANA BLENCHII,https://www.poiana-blenchii.ro,yes,200,https://www.poiana-blenchii.ro,yes,yes,other,,no,,,
+SUCEAVA,ADANCATA,https://N/A,no,,,no,unclear,unknown,,no,,,dns_failed
+SUCEAVA,BREAZA,http://www.comunabreaza.eu,no,,,no,unclear,unknown,,no,,,dns_failed
+SUCEAVA,CALAFINDESTI,https://www.comunacalafindestisv.ro,no,,,no,unclear,unknown,,no,,,dns_failed
+SIBIU,LUDOS,https://civilizatiasecaselor.comunaludos.ro,yes,200,https://civilizatiasecaselor.comunaludos.ro,yes,unclear,other,,no,,,
+SUCEAVA,BOTOSANA,https://N/A,no,,,no,unclear,unknown,,no,,,dns_failed
+SUCEAVA,BUNESTI,https://N/A,no,,,no,unclear,unknown,,no,,,dns_failed
+SALAJ,DOBRIN,http://comunadobrin.ro,yes,200,https://comunadobrin.ro,yes,yes,wordpress,,no,,,
+SUCEAVA,CARLIBABA,http://www.primariacirlibaba.ro,yes,,,no,unclear,unknown,,no,,,HTTP Error 410: Gone
+SUCEAVA,DRAGOIESTI,https://N/A,no,,,no,unclear,unknown,,no,,,dns_failed
+SUCEAVA,GRAMESTI,http://www.comunagramesti.ro,no,,,no,unclear,unknown,,no,,,dns_failed
+SUCEAVA,HANTESTI,https://N/A,no,,,no,unclear,unknown,,no,,,dns_failed
+SUCEAVA,DUMBRAVENI,https://www.comuna-dumbraveni.ro,yes,,,no,unclear,unknown,,no,,,"[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: Hostname mismatch, certificate is not valid for 'www.comuna-dumbraveni.ro'. (_ssl.c:1016)"
+SUCEAVA,MUNICIPIUL VATRA DORNEI,http://www.vatra-dornei.ro,yes,200,https://www.vatra-dornei.ro,yes,unclear,other,,no,,,
+SUCEAVA,PALTINOASA,http://www.comunapaltinoasa.ro,no,,,no,unclear,unknown,,no,,,dns_failed
+SUCEAVA,MUNICIPIUL FALTICENI,http://www.falticeni.ro,yes,200,https://www.falticeni.ro,yes,unclear,other,,no,,,
+SUCEAVA,TODIRESTI,http://www.comunatodiresti.ro,no,,,no,unclear,unknown,,no,,,dns_failed
+SUCEAVA,UDESTI,https://www.primariaudesti.ro,no,,,no,unclear,unknown,,no,,,dns_failed
+SUCEAVA,SCHEIA,https://N/A,no,,,no,unclear,unknown,,no,,,dns_failed
+SUCEAVA,SERBAUTI,https://N/A,no,,,no,unclear,unknown,,no,,,dns_failed
+SUCEAVA,SIMINICEA,https://N/A,no,,,no,unclear,unknown,,no,,,dns_failed
+SUCEAVA,FRATAUTII VECHI,https://www.primariafratautiivechi.ro,yes,200,https://www.primariafratautiivechi.ro,yes,yes,other,,no,,,
+SUCEAVA,SATU MARE,https://www.primariasatumaresv.ro,yes,,,no,unclear,unknown,,no,,,"[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: Hostname mismatch, certificate is not valid for 'www.primariasatumaresv.ro'. (_ssl.c:1016)"
+TELEORMAN,BABAITA,http://www.primariababaitatr.ro,no,,,no,unclear,unknown,,no,,,dns_failed
+SUCEAVA,VERESTI,http://www.eprimarii.ro/veresti,yes,,,no,unclear,unknown,,no,,,HTTP Error 404: Not Found
+TELEORMAN,BRANCENI,http://www.primariabrinceni.ro,no,,,no,unclear,unknown,,no,,,dns_failed
+TELEORMAN,BUJORU,http://www.bujoru.ro,no,,,no,unclear,unknown,,no,,,dns_failed
+TELEORMAN,BUJORENI,http://www.comunabujoreni.ro,no,,,no,unclear,unknown,,no,,,dns_failed
+SUCEAVA,VATRA MOLDOVITEI,http://www.primariavatramoldovitei.ro,yes,,,no,unclear,unknown,,no,,,HTTP Error 410: Gone
+TELEORMAN,BEUCA,https://N/A,no,,,no,unclear,unknown,,no,,,dns_failed
+TELEORMAN,BRAGADIRU,https://N/A,no,,,no,unclear,unknown,,no,,,dns_failed
+TELEORMAN,MUNICIPIUL ALEXANDRIA,https://www.alexandria.ro,yes,,,no,unclear,unknown,,no,,,[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:1016)
+TELEORMAN,CRANGENI,http://www.comunacringeni.ro,no,,,no,unclear,unknown,,no,,,dns_failed
+TELEORMAN,CALMATUIU,https://N/A,no,,,no,unclear,unknown,,no,,,dns_failed
+TELEORMAN,DOBROTESTI,http://www.primaria-dobrotesti.ro,no,,,no,unclear,unknown,,no,,,dns_failed
+TELEORMAN,CERVENIA,https://N/A,no,,,no,unclear,unknown,,no,,,dns_failed
+TELEORMAN,CIOLANESTI,https://N/A,no,,,no,unclear,unknown,,no,,,dns_failed
+TELEORMAN,ISLAZ,http://islaztr.ro,no,,,no,unclear,unknown,,no,,,dns_failed
+TELEORMAN,COSMESTI,https://N/A,no,,,no,unclear,unknown,,no,,,dns_failed
+TELEORMAN,DIDESTI,https://N/A,no,,,no,unclear,unknown,,no,,,dns_failed
+TELEORMAN,CONTESTI,https://N/A,no,,,no,unclear,unknown,,no,,,dns_failed
+TELEORMAN,CREVENICU,https://N/A,no,,,no,unclear,unknown,,no,,,dns_failed
+TELEORMAN,MAGURA,http://www.primariemagura.ro,no,,,no,unclear,unknown,,no,,,dns_failed
+TELEORMAN,NASTURELU,http://www.primarianasturelu.ro,no,,,no,unclear,unknown,,no,,,dns_failed
+TELEORMAN,MARZANESTI,http://www.primariamarzanesti.ro,no,,,no,unclear,unknown,,no,,,dns_failed
+TELEORMAN,PERETU,https://primariaperetu.ro,no,,,no,unclear,unknown,,no,,,dns_failed
+SUCEAVA,IACOBENI,http://www.comunaiacobeni.ro,yes,200,https://www.comunaiacobeni.ro,yes,yes,other,,no,,,
+TELEORMAN,GALATENI,https://N/A,no,,,no,unclear,unknown,,no,,,dns_failed
+TELEORMAN,PIETROSANI,http://primariapietrosani.ro,no,,,no,unclear,unknown,,no,,,dns_failed
+TELEORMAN,POENI,http://primaria-poeni.ro,no,,,no,unclear,unknown,,no,,,dns_failed
+TELEORMAN,LISA,https://N/A,no,,,no,unclear,unknown,,no,,,dns_failed
+TELEORMAN,NECSESTI,https://N/A,no,,,no,unclear,unknown,,no,,,dns_failed
+TELEORMAN,OLTENI,https://N/A,no,,,no,unclear,unknown,,no,,,dns_failed
+TELEORMAN,SALCIA,http://www.primariasalciatr.ro,no,,,no,unclear,unknown,,no,,,dns_failed
+TELEORMAN,PLOSCA,https://N/A,no,,,no,unclear,unknown,,no,,,dns_failed
+TELEORMAN,ORBEASCA,http://primariaorbeasca.ro,yes,,,no,unclear,unknown,,no,,,HTTP Error 410: Gone
+TELEORMAN,SILISTEA,http://primariasilistea-tr.ro,no,,,no,unclear,unknown,,no,,,dns_failed
+TELEORMAN,RADOIESTI,https://N/A,no,,,no,unclear,unknown,,no,,,dns_failed
+TELEORMAN,LUNCA,http://www.primariaonline.ro/judet-Teleorman/primarie-LUNCA,yes,,,no,unclear,unknown,,no,,,HTTP Error 410: Gone
+TELEORMAN,RASMIRESTI,https://N/A,no,,,no,unclear,unknown,,no,,,dns_failed
+TELEORMAN,SARBENI,https://N/A,no,,,no,unclear,unknown,,no,,,dns_failed
+TELEORMAN,TATARASTII DE SUS,https://www.primariatatarastiidesus.ro,no,,,no,unclear,unknown,,no,,,dns_failed
+TELEORMAN,SCURTU MARE,https://N/A,no,,,no,unclear,unknown,,no,,,dns_failed
+TELEORMAN,DRACSENEI,https://primaria-comunei-dracsenei.webnode.ro,yes,200,https://primaria-comunei-dracsenei.webnode.ro,yes,yes,other,https://primaria-comunei-dracsenei.webnode.ro/rss/all.xml,yes,,2014,
+TELEORMAN,SEGARCEA-VALE,https://N/A,no,,,no,unclear,unknown,,no,,,dns_failed
+TELEORMAN,SFINTESTI,https://N/A,no,,,no,unclear,unknown,,no,,,dns_failed
+TELEORMAN,SLOBOZIA MANDRA,https://N/A,no,,,no,unclear,unknown,,no,,,dns_failed
+TELEORMAN,STOROBANEASA,https://N/A,no,,,no,unclear,unknown,,no,,,dns_failed
+SUCEAVA,VICOVU DE JOS,https://www.primariavicovudejos.ro,yes,200,https://www.primariavicovudejos.ro,yes,yes,other,,no,,,
+TELEORMAN,TALPA,https://N/A,no,,,no,unclear,unknown,,no,,,dns_failed
+TELEORMAN,TATARASTII DE JOS,https://N/A,no,,,no,unclear,unknown,,no,,,dns_failed
+TELEORMAN,VARTOAPE,https://N/A,no,,,no,unclear,unknown,,no,,,dns_failed
+TELEORMAN,UDA-CLOCOCIOV,https://N/A,no,,,no,unclear,unknown,,no,,,dns_failed
+TIMIS,BARNA,https://www.primariabirna.ro,no,,,no,unclear,unknown,,no,,,dns_failed
+TELEORMAN,ZAMBREASCA,https://N/A,no,,,no,unclear,unknown,,no,,,dns_failed
+SUCEAVA,ZAMOSTEA,http://www.eprimarii.ro/zamostea,yes,200,https://www.eprimarii.ro/zamostea/,yes,yes,other,,no,,,
+TIMIS,BRESTOVAT,http://www.brestovat.ro,no,,,no,unclear,unknown,,no,,,dns_failed
+TIMIS,BALINT,https://www.primariabalint.ro,yes,,,no,unclear,unknown,,no,,,"[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: Hostname mismatch, certificate is not valid for 'www.primariabalint.ro'. (_ssl.c:1016)"
+TIMIS,CARPINIS,http://primariacarpinis.ro,no,,,no,unclear,unknown,,no,,,dns_failed
+TIMIS,CHEVERESU MARE,http://primaria.cheveresumare.ro,no,,,no,unclear,unknown,,no,,,dns_failed
+TIMIS,BANLOC,https://www.primaria-banloc.ro,yes,,,no,unclear,unknown,,no,,,"[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: Hostname mismatch, certificate is not valid for 'www.primaria-banloc.ro'. (_ssl.c:1016)"
+TELEORMAN,BUZESCU,https://primariabuzescu.weebly.com,yes,200,https://primariabuzescu.weebly.com,yes,yes,other,,no,,,
+TIMIS,BARA,https://www.comunabara.ro,yes,,,no,unclear,unknown,,no,,,"[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: Hostname mismatch, certificate is not valid for 'www.comunabara.ro'. (_ssl.c:1016)"
+TIMIS,BETHAUSEN,https://www.primariabethausen.ro,yes,,,no,unclear,unknown,,no,,,"[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: Hostname mismatch, certificate is not valid for 'www.primariabethausen.ro'. (_ssl.c:1016)"
+TIMIS,FARDEA,https://www.primariafirdea.ro,no,,,no,unclear,unknown,,no,,,dns_failed
+TIMIS,BIRDA,https://www.birda.ro,yes,,,no,unclear,unknown,,no,,,"[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: Hostname mismatch, certificate is not valid for 'www.birda.ro'. (_ssl.c:1016)"
+TIMIS,BOGDA,https://www.primariabogda.ro,yes,,,no,unclear,unknown,,no,,,"[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: Hostname mismatch, certificate is not valid for 'www.primariabogda.ro'. (_ssl.c:1016)"
+TELEORMAN,TRAIAN,http://primariatraiantr.freewb.ro,yes,200,http://primariatraiantr.freewb.ro,no,yes,other,,no,,,
+TELEORMAN,NENCIULESTI,https://primaria-nenciulesti.weebly.com,yes,200,https://primaria-nenciulesti.weebly.com,yes,yes,other,,no,,,
+TIMIS,FOENI,https://www.primariafoenitm.ro,yes,,,no,unclear,unknown,,no,,,"[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: Hostname mismatch, certificate is not valid for 'www.primariafoenitm.ro'. (_ssl.c:1016)"
+TIMIS,IECEA MARE,https://www.primariaieceamare.ro,yes,,,no,unclear,unknown,,no,,,"[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: Hostname mismatch, certificate is not valid for 'www.primariaieceamare.ro'. (_ssl.c:1016)"
+TIMIS,GIULVAZ,https://www.primariagiulvaz.ro,yes,,,no,unclear,unknown,,no,,,"[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: Hostname mismatch, certificate is not valid for 'www.primariagiulvaz.ro'. (_ssl.c:1016)"
+TELEORMAN,TROIANUL,http://www.comunatroianul.ro,yes,200,https://www.comunatroianul.ro,yes,yes,joomla,,no,,,
+TIMIS,PADURENI,https://www.comunapadureni.ro,no,,,no,unclear,unknown,,no,,,dns_failed
+TIMIS,PARTA,http://www.comunaparta.ro,no,,,no,unclear,unknown,,no,,,dns_failed
+TIMIS,CRICIOVA,https://www.primariacriciova.ro,yes,,,no,unclear,unknown,,no,,,"[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: Hostname mismatch, certificate is not valid for 'www.primariacriciova.ro'. (_ssl.c:1016)"
+TIMIS,SANANDREI,https://www.primaria-sinandrei.ro,no,,,no,unclear,unknown,,no,,,dns_failed
+TIMIS,MANASTIUR,https://www.primariamanastiur.ro,yes,,,no,unclear,unknown,,no,,,"[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: Hostname mismatch, certificate is not valid for 'www.primariamanastiur.ro'. (_ssl.c:1016)"
+TIMIS,SECAS,https://www.primariasecas.ro,no,,,no,unclear,unknown,,no,,,dns_failed
+TIMIS,TOMNATIC,http://www.primariatomnatic.ro,no,,,no,unclear,unknown,,no,,,dns_failed
+TIMIS,TRAIAN VUIA,http://comunatraianvuia.ro,no,,,no,unclear,unknown,,no,,,dns_failed
+TIMIS,STIUCA,https://www.primariastiuca.ro,yes,,,no,unclear,unknown,,no,,,"[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: Hostname mismatch, certificate is not valid for 'www.primariastiuca.ro'. (_ssl.c:1016)"
+TIMIS,SANPETRU MARE,https://www.primariasanpetrumare.ro,yes,,,no,unclear,unknown,,no,,,"[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: Hostname mismatch, certificate is not valid for 'www.primariasanpetrumare.ro'. (_ssl.c:1016)"
+TIMIS,TEREMIA MARE,http://www.primariateremiamare.ro,yes,,,no,unclear,unknown,,no,,,HTTP Error 410: Gone
+TIMIS,PERIAM,https://primatimperiam.ro,yes,200,http://primatimperiam.ro,no,unclear,other,,no,,,
+TULCEA,CEATALCHIOI,https://www.primariaceatalchioi.ro,no,,,no,unclear,unknown,,no,,,dns_failed
+TIMIS,REMETEA MARE,https://www.remeteamaretimis.ro,yes,,,no,unclear,unknown,,no,,,"[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: Hostname mismatch, certificate is not valid for 'www.remeteamaretimis.ro'. (_ssl.c:1016)"
+TIMIS,MOSNITA NOUA,https://mosnita.ro,yes,200,https://mosnita.ro,yes,yes,other,,no,,,
+TIMIS,RACOVITA,https://www.primariaracovita.ro,yes,200,https://www.primariaracovita.ro,yes,yes,other,,no,,,
+TULCEA,SLAVA CERCHEZA,https://www.primariaslavacercheza.ro,no,,,no,unclear,unknown,,no,,,dns_failed
+TULCEA,SMARDAN,https://primariasmirdan.ro,no,,,no,unclear,unknown,,no,,,dns_failed
+TULCEA,SOMOVA,https://www.comunasomova.ro,no,,,no,unclear,unknown,,no,,,dns_failed
+VASLUI,MUNICIPIUL BARLAD,http://www.primariabarlad.ro,yes,,,no,unclear,unknown,,no,,,[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:1016)
+VASLUI,BLAGESTI,http://www.comuna-blagesti.ro,no,,,no,unclear,unknown,,no,,,dns_failed
+VASLUI,COSTESTI,http://www.comunacostestivs.ro,no,,,no,unclear,unknown,,no,,,dns_failed
+VASLUI,DRANCENI,https://primariadrinceni.ro,no,,,no,unclear,unknown,,no,,,dns_failed
+VASLUI,GARCENI,https://www.primariagirceni.ro,no,,,no,unclear,unknown,,no,,,dns_failed
+TULCEA,PECENEAGA,http://www.primariapeceneaga.paginadestart.com,yes,200,https://www.primariapeceneaga.paginadestart.com,yes,unclear,unknown,,no,,,
+VASLUI,PADURENI,https://www.comuna-padureni.ro,no,,,no,unclear,unknown,,no,,,dns_failed
+VASLUI,PUIESTI,https://www.comuna-puiesti-vaslui.ro,no,,,no,unclear,unknown,,no,,,dns_failed
+VASLUI,IBANESTI,http://ibanesti.3x.ro,yes,200,http://ibanesti.3x.ro,no,yes,other,,no,,,
+VASLUI,SULETEA,https://www.suletea.ro,yes,,,no,unclear,unknown,,no,,,HTTP Error 410: Gone
+VASLUI,STANILESTI,https://www.primariastanilesti.ro,yes,200,https://www.primariastanilesti.ro,yes,yes,joomla,https://www.primariastanilesti.ro/?format=feed&type=rss,yes,,,
+VALCEA,ORAS HOREZU,http://www.orasul-horezu.ro/home,yes,,,no,unclear,unknown,,no,,,HTTP Error 404: Not Found
+VALCEA,BARBATESTI,https://primariabarbatesti.ro/2018/primaria,yes,,,no,unclear,unknown,,no,,,HTTP Error 404: Not Found
+VALCEA,LUNGESTI,https://primaria-lungesti-vl.ro,no,,,no,unclear,unknown,,no,,,dns_failed
+VALCEA,LALOSU,https://N/A,no,,,no,unclear,unknown,,no,,,dns_failed
+VALCEA,OTESANI,http://www.primariaotesani.ro,no,,,no,unclear,unknown,,no,,,dns_failed
+VALCEA,OLANU,https://N/A,no,,,no,unclear,unknown,,no,,,dns_failed
+VALCEA,RUNCU,http://primariaruncu-vl.ro,no,,,no,unclear,unknown,,no,,,dns_failed
+VALCEA,SCUNDU,https://www.primariascundu.ro,no,,,no,unclear,unknown,,no,,,dns_failed
+VALCEA,SINESTI,https://N/A,no,,,no,unclear,unknown,,no,,,dns_failed
+VALCEA,STANESTI,https://N/A,no,,,no,unclear,unknown,,no,,,dns_failed
+VALCEA,VALEA MARE,http://www.primariavaleamare-valcea.ro,no,,,no,unclear,unknown,,no,,,dns_failed
+VRANCEA,BOGHESTI,http://www.boghesti.ro,no,,,no,unclear,unknown,,no,,,dns_failed
+VRANCEA,JITIA,http://jitia.infoprimarie.ro,no,,,no,unclear,unknown,,no,,,dns_failed
+VRANCEA,NARUJA,http://www.naruja.primarievn.ro,no,,,no,unclear,unknown,,no,,,dns_failed
+VRANCEA,NISTORESTI,http://primarianistoresti.ro,no,,,no,unclear,unknown,,no,,,dns_failed
+VRANCEA,PLOSCUTENI,http://primariaploscuteni.ro,no,,,no,unclear,unknown,,no,,,dns_failed
+VALCEA,VAIDEENI,http://primaria-vaideeni.ro,yes,200,https://primaria-vaideeni.ro,yes,yes,wordpress,,no,,,
+BUCURESTI,BUCURESTI SECTORUL 2,https://www.ps2.ro,yes,,,no,unclear,unknown,,no,,,[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:1016)
+VRANCEA,MAICANESTI,https://www.maicanesti.primarievn.ro,yes,200,https://softprimarii.ro/,yes,unclear,other,,no,,,
+VRANCEA,VRANCIOAIA,http://www.vrincioaia.ro,yes,,,no,unclear,unknown,,no,,,HTTP Error 403: Forbidden
+BUCURESTI,BUCURESTI,https://www.pmb.ro,yes,200,https://www.pmb.ro,yes,yes,other,,no,,,
