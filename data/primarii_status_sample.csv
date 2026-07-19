@@ -1,0 +1,41 @@
+judet,localitate,url,dns_ok,http_status,final_url,https_ok,is_primarie,cms,rss_url,rss_ok,last_signal_date,copyright_year,error
+ALBA,BUCIUM,https://primariabucium.ro,no,,,no,unclear,unknown,,no,,,dns_failed
+ALBA,CERU-BACAINTI,http://cerubacainti.ro,no,,,no,unclear,unknown,,no,,,dns_failed
+ALBA,ORAS ABRUD,http://www.primaria-abrud.ro,no,,,no,unclear,unknown,,no,,,dns_failed
+ALBA,ORAS CAMPENI,http://www.primariacimpeni.ro,yes,,,no,unclear,unknown,,no,,,HTTP Error 403: Forbidden
+ALBA,ARIESENI,http://www.primariaarieseni.ro,yes,,,no,unclear,unknown,,no,,,HTTP Error 410: Gone
+ALBA,ALBAC,https://N/A,no,,,no,unclear,unknown,,no,,,dns_failed
+ALBA,CUT,https://N/A,no,,,no,unclear,unknown,,no,,,dns_failed
+ALBA,BERGHIN,https://N/A,no,,,no,unclear,unknown,,no,,,dns_failed
+ALBA,HOREA,http://primariahorea.ro,no,,,no,unclear,unknown,,no,,,dns_failed
+ALBA,ORAS BAIA DE ARIES,http://www.baiadearies.ro,yes,,,no,unclear,unknown,,no,,,HTTP Error 410: Gone
+ALBA,INTREGALDE,http://primariaintregalde.ro,no,,,no,unclear,unknown,,no,,,dns_failed
+ALBA,FARAU,https://www.primariafarau.ro,yes,200,https://www.primariafarau.ro,yes,yes,wordpress,https://www.primariafarau.ro/feed/,yes,2026-01-01,2024,
+ALBA,DOSTAT,https://comuna-dostat.ro,yes,200,https://comuna-dostat.ro,yes,yes,wordpress,https://comuna-dostat.ro/feed/,yes,2026-01-01,2026,
+ALBA,CIURULEASA,https://primariaciuruleasa.ro,yes,200,https://primariaciuruleasa.ro,yes,yes,wordpress,https://primariaciuruleasa.ro/index.php/feed/,yes,2026-01-01,,
+ALBA,IGHIU,https://www.comunaighiu.ro,yes,,,no,unclear,unknown,,no,,,"[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: Hostname mismatch, certificate is not valid for 'www.comunaighiu.ro'. (_ssl.c:1016)"
+ALBA,CERGAU,https://www.primariacergau.ro,yes,200,https://www.primariacergau.ro,yes,yes,wordpress,https://www.primariacergau.ro/feed/,yes,2026-01-01,2026,
+ALBA,BUCERDEA GRANOASA,https://bucerdea-granoasa.ro/site,yes,,,no,unclear,unknown,,no,,,HTTP Error 404: Not Found
+ALBA,HOPARTA,https://www.primariahopirta.ro,yes,200,https://www.primariahopirta.ro,yes,yes,wordpress,https://www.primariahopirta.ro/feed/,yes,2026-01-01,2020,
+ALBA,DAIA ROMANA,https://primariadaiaromana.ro,yes,200,https://primariadaiaromana.ro,yes,yes,wordpress,https://primariadaiaromana.ro/feed/,yes,2025-01-01,,
+ALBA,MUNICIPIUL AIUD,http://www.aiud.ro,yes,200,https://www.aiud.ro,yes,yes,other,,no,2026-01-01,,
+ALBA,BLANDIANA,https://comuna-blandiana.ro,yes,200,https://comuna-blandiana.ro,yes,yes,wordpress,https://comuna-blandiana.ro/feed/,yes,2026-01-01,,
+ALBA,ORAS OCNA MURES,https://www.primariaocnamures.ro,yes,200,https://www.primariaocnamures.ro,yes,yes,wordpress,https://www.primariaocnamures.ro/feed/,yes,2028-01-01,,
+ALBA,ALMASU MARE,https://www.almasumare.ro,yes,200,https://almasumare.ro/,yes,unclear,wordpress,https://almasumare.ro/index.php/feed/,yes,2023-01-01,,
+ALBA,BISTRA,https://bistra.ro,yes,200,https://bistra.ro,yes,yes,wordpress,https://bistra.ro/feed/,yes,2026-01-01,,
+ALBA,GARBOVA,https://primaria-garbova.ro,yes,200,https://primaria-garbova.ro,yes,yes,wordpress,https://primaria-garbova.ro/feed/,yes,2026-01-01,,
+ALBA,CALNIC,https://www.primaria-calnic.ro,yes,200,https://primaria-calnic.ro/,yes,yes,wordpress,https://primaria-calnic.ro/feed/,yes,2026-01-01,2024,
+ALBA,MUNICIPIUL BLAJ,http://primariablaj.ro,yes,200,https://municipiulblaj.ro/,yes,yes,other,,no,,,
+ALBA,ORAS TEIUS,http://primariateius.ro,yes,200,https://primariateius.ro,yes,yes,wordpress,https://primariateius.ro/?feed=rss2,yes,2026-01-01,,
+ALBA,MUNICIPIUL ALBA IULIA,https://apulum.ro,yes,200,https://apulum.ro,yes,yes,other,,no,2026-01-01,,
+ALBA,CIUGUD,https://www.primariaciugud.ro,yes,200,https://www.primariaciugud.ro,yes,yes,e-adm,,no,2026-01-01,2026,
+ALBA,GARDA DE SUS,https://comunagardadesus.ro,yes,200,https://comunagardadesus.ro,yes,yes,wordpress,https://comunagardadesus.ro/feed/,yes,2024-01-01,,
+ALBA,CRICAU,http://www.comunacricau.ro,yes,200,https://www.cricau.ro/,yes,yes,e-adm,,no,,,
+ALBA,MUNICIPIUL SEBES,https://www.primariasebes.ro,yes,200,https://www.primariasebes.ro,yes,yes,wordpress,https://www.primariasebes.ro/feed/,yes,2026-01-01,,
+ALBA,ORAS CUGIR,http://www.primariacugir.ro,yes,200,https://primariacugir.ro/site,yes,yes,other,,no,2026-01-01,2026,
+ALBA,CENADE,http://www.primariacenade.ro,yes,200,https://comunacenade.ro/,yes,yes,wordpress,https://comunacenade.ro/feed/,yes,2026-01-01,2025,
+ALBA,CETATEA DE BALTA,https://cetateadebalta.ro,yes,200,https://cetateadebalta.ro,yes,yes,wordpress,https://cetateadebalta.ro/feed/,yes,2022-07-22,,
+ALBA,GALDA DE JOS,https://galda.ro,yes,200,https://galda.ro,yes,yes,wordpress,https://galda.ro/feed/,yes,2026-01-01,2026,
+ALBA,AVRAM IANCU,http://www.primariaavramiancu.ro,yes,200,https://primariaavramiancu.ro/,yes,yes,wordpress,https://primariaavramiancu.ro/feed/,yes,2025-01-01,2025,
+ALBA,ORAS ZLATNA,http://www.primaria-zlatna.ro/nou,yes,200,https://primaria-zlatna.ro/noua-primarie/,yes,yes,wordpress,https://primaria-zlatna.ro/feed/,yes,2026-07-03,2022,
+ALBA,CRACIUNELU DE JOS,https://www.craciuneludejos.ro,yes,200,https://craciuneludejos.ro/,yes,yes,e-adm,,no,2026-01-01,,
