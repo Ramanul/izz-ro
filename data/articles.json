@@ -1,5 +1,204 @@
 [
   {
+    "url": "https://stirileprotv.ro/stiri/vremea/ro-alert-de-cod-portocaliu-de-vreme-severa-in-capitala-sunt-asteptate-vijelii-grindina-si-ploi-torentiale.html",
+    "original_link": "https://stirileprotv.ro/stiri/vremea/ro-alert-de-cod-portocaliu-de-vreme-severa-in-capitala-sunt-asteptate-vijelii-grindina-si-ploi-torentiale.html",
+    "source": "protv",
+    "source_name": "Știrile ProTV",
+    "source_lang": "ro",
+    "title": "Bucureștiul a fost vizat de un Cod roșu de furtuni violente și grindină",
+    "category": "local",
+    "published": "2026-07-19T13:18:51+00:00",
+    "model": "C",
+    "sources": [
+      {
+        "name": "Știrile ProTV",
+        "url": "https://stirileprotv.ro/stiri/vremea/ro-alert-de-cod-portocaliu-de-vreme-severa-in-capitala-sunt-asteptate-vijelii-grindina-si-ploi-torentiale.html"
+      },
+      {
+        "name": "Economica",
+        "url": "https://www.economica.net/cod-rosu-de-vijelii-in-bucuresti_960641.html"
+      },
+      {
+        "name": "G4Media",
+        "url": "https://www.g4media.ro/grindina-bucuresti-imagini-furtuna-cod-rosu-video.html"
+      }
+    ],
+    "first_source": "Știrile ProTV",
+    "synthesis": "Administrația Națională de Meteorologie a emis duminică o avertizare de tip Cod roșu pentru București, semnalată și prin sistemul Ro-Alert. Fenomenele meteo extreme au inclus rafale de vânt ce au depășit 90 km/h, averse torențiale, descărcări electrice frecvente și căderi de grindină cu diametrul de până la 3 centimetri. Mai multe județe din țară au fost vizate simultan de avertizări Cod portocaliu, confirmând instabilitatea atmosferică accentuată din acea zi.",
+    "entities": [
+      "ANM",
+      "București",
+      "Ro-Alert"
+    ],
+    "icon": "cloud-storm",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://hotnews.ro/viitura-puternica-busteni-trafic-blocat-si-masini-luate-de-apa-2304322",
+    "original_link": "https://hotnews.ro/viitura-puternica-busteni-trafic-blocat-si-masini-luate-de-apa-2304322",
+    "source": "hotnews",
+    "source_name": "HotNews",
+    "source_lang": "ro",
+    "title": "Viitură puternică în Bușteni: DN 1 blocat și pagube materiale însemnate",
+    "category": "local",
+    "published": "2026-07-19T13:12:04+00:00",
+    "model": "C",
+    "sources": [
+      {
+        "name": "HotNews",
+        "url": "https://hotnews.ro/viitura-puternica-busteni-trafic-blocat-si-masini-luate-de-apa-2304322"
+      },
+      {
+        "name": "Digi24",
+        "url": "https://www.digi24.ro/stiri/actualitate/evenimente/viitura-in-busteni-dupa-o-rupere-de-nori-in-bucegi-dn1-si-mai-multe-strazi-inundate-3868719"
+      }
+    ],
+    "first_source": "HotNews",
+    "synthesis": "O rupere de nori în masivul Bucegi a provocat duminică o viitură violentă care a afectat stațiunea Bușteni. Aluviuni, pietre și bușteni au inundat străzile și au blocat circulația pe DN 1, antrenând mai multe autoturisme. Fenomenul a izolat un cartier al orașului, fiind raportate și victime. În paralel, regiunea București-Ilfov a fost vizată de un cod roșu de vijelie, confirmând instabilitatea atmosferică severă din zonă.",
+    "entities": [
+      "Bușteni",
+      "Bucegi",
+      "DN 1",
+      "București"
+    ],
+    "icon": "cloud-storm",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://economica.net/iranul-afirma-ca-sua-au-atacat-o-centrala-nucleara-in-constructie_960621.html",
+    "original_link": "https://www.economica.net/iranul-afirma-ca-sua-au-atacat-o-centrala-nucleara-in-constructie_960621.html",
+    "source": "economica",
+    "source_name": "Economica",
+    "source_lang": "ro",
+    "title": "Iranul acuză Statele Unite de atacarea unei centrale nucleare aflate în construcție",
+    "category": "extern",
+    "published": "2026-07-19T12:18:36+00:00",
+    "model": "C",
+    "sources": [
+      {
+        "name": "Economica",
+        "url": "https://www.economica.net/iranul-afirma-ca-sua-au-atacat-o-centrala-nucleara-in-constructie_960621.html"
+      },
+      {
+        "name": "HotNews",
+        "url": "https://hotnews.ro/iranul-acuza-sua-ca-au-atacat-o-centrala-nucleara-in-constructie-2304318"
+      }
+    ],
+    "first_source": "Economica",
+    "synthesis": "Autoritățile iraniene, prin intermediul Organizației pentru Energia Atomică, au reclamat un atac cu proiectile asupra sitului nuclear Darkhovin, situat în provincia Khuzestan. Teheranul susține că Statele Unite sunt responsabile pentru acest incident survenit la unitatea aflată în fază incipientă de construcție. Informația a fost preluată de agenția de stat IRNA și difuzată prin canale internaționale de presă. Până în prezent, nu există confirmări oficiale din partea Washingtonului privind implicarea în acest eveniment.",
+    "entities": [
+      "Iran",
+      "SUA",
+      "Darkhovin",
+      "IRNA"
+    ],
+    "icon": "alert-triangle",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://digi24.ro/stiri/actualitate/social/pana-de-curent-pe-litoral-mai-multe-statiuni-au-ramas-fara-energie-electrica-din-cauza-unor-avarii-la-retea-3868661",
+    "original_link": "https://www.digi24.ro/stiri/actualitate/social/pana-de-curent-pe-litoral-mai-multe-statiuni-au-ramas-fara-energie-electrica-din-cauza-unor-avarii-la-retea-3868661",
+    "source": "digi24",
+    "source_name": "Digi24",
+    "source_lang": "ro",
+    "title": "Avarii la rețeaua electrică au lăsat mai multe stațiuni de pe litoralul românesc fără curent",
+    "category": "local",
+    "published": "2026-07-19T12:06:07+00:00",
+    "model": "C",
+    "sources": [
+      {
+        "name": "Digi24",
+        "url": "https://www.digi24.ro/stiri/actualitate/social/pana-de-curent-pe-litoral-mai-multe-statiuni-au-ramas-fara-energie-electrica-din-cauza-unor-avarii-la-retea-3868661"
+      },
+      {
+        "name": "Economica",
+        "url": "https://www.economica.net/statiuni-din-sudul-litoralului-fara-electricitate-din-cauza-unor-avarii-la-retea_960618.html"
+      }
+    ],
+    "first_source": "Digi24",
+    "synthesis": "Începând de sâmbătă, mai multe stațiuni din sudul litoralului românesc, precum Venus, Saturn și Eforie, s-au confruntat cu întreruperi repetate ale furnizării energiei electrice. Defecțiunile au fost cauzate de avarii la rețeaua de distribuție, fiind accentuate de un consum excesiv care a depășit capacitatea contractată de unele unități hoteliere. Echipele tehnice au intervenit gradual pentru remedierea situației, finalizarea lucrărilor fiind estimată pentru duminică după-amiază.",
+    "entities": [
+      "Venus",
+      "Saturn",
+      "Eforie",
+      "Litoralul românesc"
+    ],
+    "icon": "bolt",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://spotmedia.ro/stiri/eveniment/cum-a-ajuns-noul-sistem-de-control-la-frontiere-al-ue-sa-confunde-doua-surori-gemene-in-romania",
+    "original_link": "https://spotmedia.ro/stiri/eveniment/cum-a-ajuns-noul-sistem-de-control-la-frontiere-al-ue-sa-confunde-doua-surori-gemene-in-romania",
+    "source": "spotmedia",
+    "source_name": "Spotmedia",
+    "source_lang": "ro",
+    "title": "Sistemul digital de control la frontiere al UE a confundat două surori gemene la Cluj",
+    "category": "tech",
+    "published": "2026-07-19T11:32:18+00:00",
+    "model": "C",
+    "sources": [
+      {
+        "name": "Spotmedia",
+        "url": "https://spotmedia.ro/stiri/eveniment/cum-a-ajuns-noul-sistem-de-control-la-frontiere-al-ue-sa-confunde-doua-surori-gemene-in-romania"
+      },
+      {
+        "name": "Digi24 Extern",
+        "url": "https://www.digi24.ro/stiri/externe/ue/sistemul-de-control-la-frontiera-al-ue-a-confundat-doua-surori-gemene-la-cluj-o-britanica-acuzata-ca-se-afla-ilegal-in-schengen-3868641"
+      }
+    ],
+    "first_source": "Spotmedia",
+    "synthesis": "Noul Sistem de Intrare-Ieșire al Uniunii Europene a generat o eroare pe aeroportul din Cluj-Napoca, confundând o cetățeană britanică cu sora sa geamănă. Autoritățile de frontieră au acuzat-o pe femeie de depășirea perioadei legale de ședere în spațiul Schengen, deși aceasta nu vizitase locația indicată de sistem. Incidentul, petrecut la sfârșitul lunii mai, subliniază vulnerabilitățile tehnologice ale noii platforme digitale de monitorizare a călătorilor.",
+    "entities": [
+      "Uniunea Europeană",
+      "Aeroportul Cluj-Napoca",
+      "EES"
+    ],
+    "icon": "cpu",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://hotnews.ro/incendiu-urias-la-nord-madrid-au-ars-deja-peste-13-000-de-hectare-2304278",
+    "original_link": "https://hotnews.ro/incendiu-urias-la-nord-madrid-au-ars-deja-peste-13-000-de-hectare-2304278",
+    "source": "hotnews",
+    "source_name": "HotNews",
+    "source_lang": "ro",
+    "title": "Incendiu forestier de amploare în regiunea Guadalajara, la nord de Madrid",
+    "category": "extern",
+    "published": "2026-07-19T11:24:37+00:00",
+    "model": "C",
+    "sources": [
+      {
+        "name": "HotNews",
+        "url": "https://hotnews.ro/incendiu-urias-la-nord-madrid-au-ars-deja-peste-13-000-de-hectare-2304278"
+      },
+      {
+        "name": "Economica",
+        "url": "https://www.economica.net/12-000-de-hectare-arse-intr-un-incendiu-la-100-km-de-madrid_960615.html"
+      }
+    ],
+    "first_source": "HotNews",
+    "synthesis": "Un incendiu de vegetație izbucnit joi, la aproximativ 100 de kilometri nord de Madrid, a provocat evacuarea a sute de persoane. Flăcările au mistuit o suprafață vastă de teren, estimările autorităților locale variind între 12.000 și 13.000 de hectare. Eforturile de stingere continuă în zona satului La Mierla, unde focul s-a extins rapid din cauza condițiilor meteorologice, afectând semnificativ mediul înconjurător din regiunea Guadalajara.",
+    "entities": [
+      "Madrid",
+      "Guadalajara",
+      "La Mierla"
+    ],
+    "icon": "flame",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
     "url": "https://economica.net/daniel-zamfir-ministrul-mediului-diana-buzoianu-s-a-pus-pe-demolat-terase-in-plin-sezon-estival_960613.html",
     "original_link": "https://www.economica.net/daniel-zamfir-ministrul-mediului-diana-buzoianu-s-a-pus-pe-demolat-terase-in-plin-sezon-estival_960613.html",
     "source": "economica",
@@ -66,6 +265,75 @@
     "featured": false
   },
   {
+    "url": "https://zcj.ro/eveniment/caz-incredibil-pe-aeroportul-cluj-cum-au-pus-doua-surori-gemene-identice-in-dificultate-noul-sistem-biometric-al-uniunii-europene--298854.html",
+    "original_link": "https://zcj.ro/eveniment/caz-incredibil-pe-aeroportul-cluj-cum-au-pus-doua-surori-gemene-identice-in-dificultate-noul-sistem-biometric-al-uniunii-europene--298854.html",
+    "source": "zcj",
+    "source_name": "Ziua de Cluj",
+    "source_lang": "ro",
+    "title": "Sistemul biometric european EES a confundat două surori gemene pe Aeroportul Cluj-Napoca",
+    "category": "local",
+    "published": "2026-07-19T10:30:00+00:00",
+    "model": "C",
+    "sources": [
+      {
+        "name": "Ziua de Cluj",
+        "url": "https://zcj.ro/eveniment/caz-incredibil-pe-aeroportul-cluj-cum-au-pus-doua-surori-gemene-identice-in-dificultate-noul-sistem-biometric-al-uniunii-europene--298854.html"
+      },
+      {
+        "name": "HotNews",
+        "url": "https://hotnews.ro/noul-sistem-de-frontiera-al-ue-este-derutat-de-gemenii-identici-cum-au-fost-confundate-doua-surori-pe-aeroportul-din-cluj-napoca-2304284"
+      }
+    ],
+    "first_source": "Ziua de Cluj",
+    "synthesis": "Noul Sistem de Intrare-Ieșire (EES) al Uniunii Europene a întâmpinat dificultăți tehnice pe Aeroportul Internațional Cluj-Napoca, eșuând în identificarea corectă a două surori gemene identice. Incidentul a atras atenția asupra limitărilor tehnologiei de recunoaștere biometrică implementată pentru controlul frontierelor externe, generând proceduri suplimentare de verificare din partea Poliției de Frontieră. Sursele confirmă eroarea de sistem în contextul digitalizării controalelor, fără a prezenta contradicții între relatări.",
+    "entities": [
+      "Aeroportul Cluj-Napoca",
+      "Uniunea Europeană",
+      "EES"
+    ],
+    "icon": "cpu",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://spotmedia.ro/stiri/eveniment/pana-majora-de-curent-in-sudul-litoralului-aproape-100-de-hoteluri-si-restaurante-afectate-in-plin-sezon-estival",
+    "original_link": "https://spotmedia.ro/stiri/eveniment/pana-majora-de-curent-in-sudul-litoralului-aproape-100-de-hoteluri-si-restaurante-afectate-in-plin-sezon-estival",
+    "source": "spotmedia",
+    "source_name": "Spotmedia",
+    "source_lang": "ro",
+    "title": "Avarie majoră la rețeaua electrică în stațiunile din sudul litoralului românesc",
+    "category": "local",
+    "published": "2026-07-19T10:22:41+00:00",
+    "model": "C",
+    "sources": [
+      {
+        "name": "Spotmedia",
+        "url": "https://spotmedia.ro/stiri/eveniment/pana-majora-de-curent-in-sudul-litoralului-aproape-100-de-hoteluri-si-restaurante-afectate-in-plin-sezon-estival"
+      },
+      {
+        "name": "Economedia",
+        "url": "https://economedia.ro/pana-de-curent-pe-litoral-in-plin-sezon-estival-aproape-100-de-hoteluri-si-localuri-din-sudul-litoralului-afectate.html"
+      },
+      {
+        "name": "Ziua de Cluj",
+        "url": "https://zcj.ro/eveniment/pana-majora-de-curent-pe-litoral-aproape-100-de-hoteluri-si-localuri-afectate-in-plin-sezon-estival--298856.html"
+      }
+    ],
+    "first_source": "Spotmedia",
+    "synthesis": "O defecțiune majoră la rețeaua de distribuție a energiei electrice a provocat întreruperi succesive în stațiunile din sudul litoralului românesc, începând de sâmbătă. Incidentul a afectat aproximativ 100 de unități, incluzând hoteluri, restaurante și beach baruri din zone precum Saturn, Venus și Cap Aurora. Deși sursele confirmă persistența problemelor pe parcursul weekendului, nu există contradicții privind amploarea avariei, care a perturbat activitatea turistică în plin sezon estival.",
+    "entities": [
+      "Saturn",
+      "Venus",
+      "Cap Aurora",
+      "Litoralul românesc"
+    ],
+    "icon": "bolt",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
     "url": "https://hotnews.ro/ion-ceban-ii-raspunde-lui-ciucu-dupa-ce-acesta-a-spus-ca-primarul-chisinaului-a-aflat-inaintea-pnl-despre-nominalizarea-lui-vestea-2304250",
     "original_link": "https://hotnews.ro/ion-ceban-ii-raspunde-lui-ciucu-dupa-ce-acesta-a-spus-ca-primarul-chisinaului-a-aflat-inaintea-pnl-despre-nominalizarea-lui-vestea-2304250",
     "source": "hotnews",
@@ -98,6 +366,38 @@
       "PNL"
     ],
     "icon": "alert-triangle",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://spotmedia.ro/stiri/eveniment/un-feribot-cu-116-oameni-la-bord-s-a-scufundat-in-largul-guyanei-ampla-operatiune-de-salvare",
+    "original_link": "https://spotmedia.ro/stiri/eveniment/un-feribot-cu-116-oameni-la-bord-s-a-scufundat-in-largul-guyanei-ampla-operatiune-de-salvare",
+    "source": "spotmedia",
+    "source_name": "Spotmedia",
+    "source_lang": "ro",
+    "title": "Operațiune de salvare în desfășurare după naufragiul unui feribot în largul coastelor Guyanei",
+    "category": "extern",
+    "published": "2026-07-19T10:07:43+00:00",
+    "model": "C",
+    "sources": [
+      {
+        "name": "Spotmedia",
+        "url": "https://spotmedia.ro/stiri/eveniment/un-feribot-cu-116-oameni-la-bord-s-a-scufundat-in-largul-guyanei-ampla-operatiune-de-salvare"
+      },
+      {
+        "name": "Digi24 Extern",
+        "url": "https://www.digi24.ro/stiri/externe/operatiune-ampla-de-cautare-in-largul-guyanei-un-feribot-cu-133-de-oameni-la-bord-s-a-scufundat-53-de-persoane-au-fost-salvate-3868749"
+      }
+    ],
+    "first_source": "Spotmedia",
+    "synthesis": "Un feribot s-a scufundat sâmbătă noaptea în largul Guyanei, declanșând o amplă misiune de căutare și salvare. Există discrepanțe între surse privind numărul total de pasageri, cifrele variind între 116 și 133 de persoane la bord. Autoritățile au confirmat salvarea a 53 de supraviețuitori, însă operațiunile continuă pentru localizarea celorlalți pasageri dispăruți în urma incidentului maritim petrecut în zona Iron Punt.",
+    "entities": [
+      "Guyana",
+      "Iron Punt",
+      "MV Barima"
+    ],
+    "icon": "ship",
     "processed_by": "gemini",
     "prompt_version": "v2-esenta",
     "featured": false
@@ -3785,19 +4085,33 @@
     "source": "ziaruldeiasi",
     "source_name": "Ziarul de Iași",
     "source_lang": "ro",
-    "title": "Bărbat dispărut, găsit mort într-un desiș din Ciurea",
+    "title": "Două cazuri distincte de persoane dispărute găsite decedate în județele Iași și Prahova",
     "category": "local",
     "published": "2026-07-18T17:10:45.255700+00:00",
-    "model": "B",
+    "model": "C",
     "teaser": "Un bărbat de 65 de ani, dat dispărut de familie, a fost găsit fără viață într-o zonă deasă din localitatea Ciurea, județul Iași. Polițiștii au făcut descoperirea în urma căutărilor.",
     "entities": [
+      "Iași",
+      "Ploiești",
       "Ciurea",
-      "Iași"
+      "Spitalul Județean de Urgență Ploiești"
     ],
     "icon": "alert-triangle",
     "processed_by": "gemini",
     "prompt_version": "v2-esenta",
-    "featured": false
+    "featured": false,
+    "sources": [
+      {
+        "name": "Ziarul de Iași",
+        "url": "https://www.ziaruldeiasi.ro/stiri/un-barbat-dat-disparut-de-familie-a-fost-gasit-mort-intr-un-desis-din-localitatea-ciurea--1877567.html"
+      },
+      {
+        "name": "Digi24",
+        "url": "https://www.digi24.ro/stiri/actualitate/evenimente/un-barbat-dat-disparut-de-sotie-dupa-ce-a-plecat-de-la-upu-ploiesti-a-fost-gasit-mort-intr-un-canal-3868699"
+      }
+    ],
+    "first_source": "Ziarul de Iași",
+    "synthesis": "Autoritățile au raportat două incidente separate în care bărbați dați dispăruți au fost găsiți fără suflare. În județul Iași, un bărbat de 65 de ani a fost descoperit decedat într-o zonă împădurită din localitatea Ciurea. Concomitent, în Ploiești, un alt bărbat, care părăsise anterior unitatea de primiri urgențe a spitalului județean, a fost găsit mort într-un canal din zona de nord a orașului. Poliția a deschis anchete pentru a stabili circumstanțele exacte ale ambelor decese."
   },
   {
     "url": "https://bzi.ro/razboiul-din-iran-a-schimbat-piata-energiei-china-profita-de-petrolul-ieftin-dar-apar-si-riscuri-economice-5572631",
@@ -25164,485 +25478,6 @@
       "Spania"
     ],
     "icon": "flame",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://spotmedia.ro/stiri/sport/pan-zhanle-a-numit-cele-trei-lucruri-care-l-au-impresionat-la-david-popovici-asta-am-invatat-de-la-el",
-    "original_link": "https://spotmedia.ro/stiri/sport/pan-zhanle-a-numit-cele-trei-lucruri-care-l-au-impresionat-la-david-popovici-asta-am-invatat-de-la-el",
-    "source": "spotmedia",
-    "source_name": "Spotmedia",
-    "source_lang": "ro",
-    "title": "Pan Zhanle, impresionat de David Popovici",
-    "category": "sport",
-    "published": "2026-07-12T13:45:18+00:00",
-    "model": "B",
-    "teaser": "Recordmenul mondial la 100m liber, Pan Zhanle, a împărtășit ce l-a impresionat la înotătorul român David Popovici, menționând ce a învățat de la acesta în timpul antrenamentelor comune.",
-    "entities": [
-      "Pan Zhanle",
-      "David Popovici",
-      "România"
-    ],
-    "icon": "swimming",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://gsp.ro/international/campionatul-mondial-de-fotbal-2026/thomas-tuchel-discurs-jucatori-anglia-pauza-hidratare-cm-2026-959749.html",
-    "original_link": "https://www.gsp.ro/international/campionatul-mondial-de-fotbal-2026/thomas-tuchel-discurs-jucatori-anglia-pauza-hidratare-cm-2026-959749.html",
-    "source": "gsp",
-    "source_name": "GSP",
-    "source_lang": "ro",
-    "title": "Tuchel, critic vehement la pauza meciului Anglia-Norvegia",
-    "category": "sport",
-    "published": "2026-07-12T13:45:00+00:00",
-    "model": "B",
-    "teaser": "Selecționerul Angliei, Thomas Tuchel, a certat dur jucătorii la pauza meciului cu Norvegia. Un cititor pe buze a dezvăluit că le-a reproșat pierderea frecventă a mingii.",
-    "entities": [
-      "Thomas Tuchel",
-      "Anglia",
-      "Norvegia"
-    ],
-    "icon": "ball-football",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://politico.eu/article/european-leaders-mourn-us-senator-lindsey-graham",
-    "original_link": "https://www.politico.eu/article/european-leaders-mourn-us-senator-lindsey-graham/?utm_source=RSS_Feed&utm_medium=RSS&utm_campaign=RSS_Syndication",
-    "source": "politico_eu",
-    "source_name": "Politico EU",
-    "source_lang": "en",
-    "title": "Lideri europeni deplâng moartea senatorului american Lindsey Graham",
-    "category": "politic",
-    "published": "2026-07-12T13:44:25+00:00",
-    "model": "B",
-    "teaser": "Lideri europeni au transmis condoleanțe pentru moartea senatorului american Lindsey Graham, cunoscut pentru poziția sa fermă împotriva agresiunii rusești în Ucraina și pentru susținerea sancțiunilor.",
-    "entities": [
-      "Lindsey Graham",
-      "SUA",
-      "Ucraina"
-    ],
-    "icon": "flag",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://politico.com/news/2026/07/12/lindsey-graham-death-senate-agenda-00994116",
-    "original_link": "https://www.politico.com/news/2026/07/12/lindsey-graham-death-senate-agenda-00994116?utm_source=RSS_Feed&utm_medium=RSS&utm_campaign=RSS_Syndication",
-    "source": "politico_eu",
-    "source_name": "Politico EU",
-    "source_lang": "en",
-    "title": "Moartea lui Lindsey Graham lasă agenda Senatului SUA în impas",
-    "category": "politic",
-    "published": "2026-07-12T13:40:55+00:00",
-    "model": "B",
-    "teaser": "Decesul senatorului republican Lindsey Graham, un jucător cheie în Senatul SUA, lasă în suspans mai multe bătălii legislative importante. Graham era implicat în discuții cruciale pe diverse planuri politice.",
-    "entities": [
-      "Lindsey Graham",
-      "SUA"
-    ],
-    "icon": "gavel",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://theguardian.com/uk-news/2026/jul/12/france-uk-increase-staffing-border-controls-travel-chaos",
-    "original_link": "https://www.theguardian.com/uk-news/2026/jul/12/france-uk-increase-staffing-border-controls-travel-chaos",
-    "source": "guardian_eu",
-    "source_name": "The Guardian",
-    "source_lang": "en",
-    "title": "Franța și Marea Britanie măresc personalul la granițe pentru a evita haosul",
-    "category": "extern",
-    "published": "2026-07-12T13:33:37+00:00",
-    "model": "B",
-    "teaser": "Franța și Marea Britanie vor suplimenta personalul la controalele de frontieră pentru a preveni blocajele rutiere. Se anticipează perturbări majore la traversările Canalului Mânecii din cauza noilor verificări biometrice.",
-    "entities": [
-      "Franța",
-      "Marea Britanie",
-      "Canalul Mânecii"
-    ],
-    "icon": "globe",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://gsp.ro/fotbal/liga-1/semne-de-intrebare-nu-raspunsuri-7-detalii-despre-dinamo-inaintea-startului-campionatului-ce-transferuri-intra-in-primul-11-959694.html",
-    "original_link": "https://www.gsp.ro/fotbal/liga-1/semne-de-intrebare-nu-raspunsuri-7-detalii-despre-dinamo-inaintea-startului-campionatului-ce-transferuri-intra-in-primul-11-959694.html",
-    "source": "gsp",
-    "source_name": "GSP",
-    "source_lang": "ro",
-    "title": "Dinamo, incertitudini majore înainte de startul campionatului",
-    "category": "sport",
-    "published": "2026-07-12T13:27:35+00:00",
-    "model": "B",
-    "teaser": "Dinamo se află într-o situație delicată înainte de debutul campionatului, cu transferuri noi care ar putea intra în primul 11. Suporterii sunt îngrijorați de obiectivele echipei.",
-    "entities": [
-      "Dinamo",
-      "Petrolul"
-    ],
-    "icon": "ball-football",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://gsp.ro/opinii/opinie-raul-rusescu-whatever-si-soarta-angliei-959746.html",
-    "original_link": "https://www.gsp.ro/opinii/opinie-raul-rusescu-whatever-si-soarta-angliei-959746.html",
-    "source": "gsp",
-    "source_name": "GSP",
-    "source_lang": "ro",
-    "title": "Thomas Tuchel, critic vehement după calificarea Angliei",
-    "category": "sport",
-    "published": "2026-07-12T13:24:08+00:00",
-    "model": "B",
-    "teaser": "Thomas Tuchel și-a criticat dur echipa Angliei după victoria contra Norvegiei, în ciuda calificării în semifinalele Cupei Mondiale. Aceste momente nu apar în statistici, dar decid turnee.",
-    "entities": [
-      "Thomas Tuchel",
-      "Anglia",
-      "Norvegia"
-    ],
-    "icon": "ball-football",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://g4media.ro/germania-finanteaza-50-000-de-drone-de-atac-pentru-ucraina-contract-de-90-de-milioane-de-euro-pentru-consolidarea-apararii-kievului.html",
-    "original_link": "https://www.g4media.ro/germania-finanteaza-50-000-de-drone-de-atac-pentru-ucraina-contract-de-90-de-milioane-de-euro-pentru-consolidarea-apararii-kievului.html",
-    "source": "g4media",
-    "source_name": "G4Media",
-    "source_lang": "ro",
-    "title": "Germania finanțează 50.000 de drone de atac pentru Ucraina",
-    "category": "extern",
-    "published": "2026-07-12T13:20:37+00:00",
-    "model": "C",
-    "sources": [
-      {
-        "name": "G4Media",
-        "url": "https://www.g4media.ro/germania-finanteaza-50-000-de-drone-de-atac-pentru-ucraina-contract-de-90-de-milioane-de-euro-pentru-consolidarea-apararii-kievului.html"
-      },
-      {
-        "name": "HotNews",
-        "url": "https://hotnews.ro/germania-finanteaza-zeci-de-mii-de-drone-de-atac-pentru-ucraina-detalii-din-contractul-de-90-de-milioane-de-euro-2298560"
-      }
-    ],
-    "first_source": "G4Media",
-    "synthesis": "Germania va finanța achiziția a 50.000 de drone de atac pentru Ucraina, printr-un contract estimat la 90 de milioane de euro. Aceasta reprezintă una dintre cele mai mari livrări de drone către Kiev din partea unui stat occidental. Contractul implică drone de tip Shrike, fabricate de o companie ucraineană.",
-    "entities": [
-      "Germania",
-      "Ucraina",
-      "Shrike"
-    ],
-    "icon": "rocket",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://hotnews.ro/rezultate-finale-la-bac-2026-notele-dupa-contestatii-se-afiseaza-astazi-anunt-de-ultima-ora-al-ministrului-educatiei-2298529",
-    "original_link": "https://hotnews.ro/rezultate-finale-la-bac-2026-notele-dupa-contestatii-se-afiseaza-astazi-anunt-de-ultima-ora-al-ministrului-educatiei-2298529",
-    "source": "hotnews",
-    "source_name": "HotNews",
-    "source_lang": "ro",
-    "title": "Rezultate finale BAC 2026 publicate duminică, 12 iulie",
-    "category": "general",
-    "published": "2026-07-12T13:13:17+00:00",
-    "model": "C",
-    "sources": [
-      {
-        "name": "HotNews",
-        "url": "https://hotnews.ro/rezultate-finale-la-bac-2026-notele-dupa-contestatii-se-afiseaza-astazi-anunt-de-ultima-ora-al-ministrului-educatiei-2298529"
-      },
-      {
-        "name": "Digi24",
-        "url": "https://www.digi24.ro/stiri/actualitate/educatie/rezultate-finale-bacalaureat-2026-notele-dupa-contestatii-se-afiseaza-astazi-3856759"
-      },
-      {
-        "name": "Știrile ProTV",
-        "url": "https://stirileprotv.ro/stiri/bacalaureat/rezultate-bac-2026-notele-dupa-contestatii-se-afiseaza-duminica-cu-o-zi-mai-devreme-anuntul-facut-de-ministrul-educatiei.html"
-      }
-    ],
-    "first_source": "HotNews",
-    "synthesis": "Ministrul Educației, Mihai Dimian, a anunțat publicarea rezultatelor finale la Bacalaureat 2026 pe 12 iulie, în jurul orei 17:00. Acestea vor fi disponibile atât în centrele de examen, cât și online, marcând finalizarea procesului de evaluare pentru sesiunea curentă.",
-    "entities": [
-      "Mihai Dimian",
-      "Ministerul Educației"
-    ],
-    "icon": "certificate",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://politico.eu/article/ukraine-volodymyr-zelenskyy-replace-prime-minister-government-reshuffle",
-    "original_link": "https://www.politico.eu/article/ukraine-volodymyr-zelenskyy-replace-prime-minister-government-reshuffle/?utm_source=RSS_Feed&utm_medium=RSS&utm_campaign=RSS_Syndication",
-    "source": "politico_eu",
-    "source_name": "Politico EU",
-    "source_lang": "en",
-    "title": "Premierul Ucrainei, Yulia Svyrydenko, demisionează în urma unei remanieri guvernamentale",
-    "category": "politic",
-    "published": "2026-07-12T13:05:50+00:00",
-    "model": "C",
-    "sources": [
-      {
-        "name": "Politico EU",
-        "url": "https://www.politico.eu/article/ukraine-volodymyr-zelenskyy-replace-prime-minister-government-reshuffle/?utm_source=RSS_Feed&utm_medium=RSS&utm_campaign=RSS_Syndication"
-      },
-      {
-        "name": "DW Europe",
-        "url": "https://www.dw.com/en/ukraine-s-zelenskyy-swaps-out-prime-minister-in-reshuffle/a-77924657?maca=en-rss-en-eu-2092-rdf"
-      }
-    ],
-    "first_source": "Politico EU",
-    "synthesis": "Președintele ucrainean Volodimir Zelenski a anunțat o remaniere guvernamentală majoră, în urma căreia premierul Iulia Sviridenko a demisionat după un an de mandat. Schimbarea survine pe fondul unei noi strategii politice anunțate de Kiev.",
-    "entities": [
-      "Yulia Svyrydenko",
-      "Volodimir Zelenski",
-      "Ucraina"
-    ],
-    "icon": "gavel",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://gsp.ro/international/campionatul-mondial-de-fotbal-2026/partenera-lui-jayden-adams-rupe-tacerea-dupa-moartea-fulgeratoare-959727.html",
-    "original_link": "https://www.gsp.ro/international/campionatul-mondial-de-fotbal-2026/partenera-lui-jayden-adams-rupe-tacerea-dupa-moartea-fulgeratoare-959727.html",
-    "source": "gsp",
-    "source_name": "GSP",
-    "source_lang": "ro",
-    "title": "Partenera lui Jayden Adams, mesaj emoționant după moartea fotbalistului",
-    "category": "sport",
-    "published": "2026-07-12T12:47:33+00:00",
-    "model": "B",
-    "teaser": "Partenera mijlocașului sud-african Jayden Adams, decedat la 25 de ani, a transmis un mesaj emoționant. Fotbalul sud-african este în doliu, iar cauza morții rămâne neclară.",
-    "entities": [
-      "Jayden Adams",
-      "Africa de Sud"
-    ],
-    "icon": "ball-football",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://economica.net/bursa-de-la-bucuresti-a-castigat-in-aceasta-saptamana-8574-milioane-de-lei-la-capitalizare_958585.html",
-    "original_link": "https://www.economica.net/bursa-de-la-bucuresti-a-castigat-in-aceasta-saptamana-8574-milioane-de-lei-la-capitalizare_958585.html",
-    "source": "economica",
-    "source_name": "Economica",
-    "source_lang": "ro",
-    "title": "Bursa București: Creștere de capitalizare și volum tranzacționat",
-    "category": "economic",
-    "published": "2026-07-12T12:42:00+00:00",
-    "model": "C",
-    "sources": [
-      {
-        "name": "Economica",
-        "url": "https://www.economica.net/bursa-de-la-bucuresti-a-castigat-in-aceasta-saptamana-8574-milioane-de-lei-la-capitalizare_958585.html"
-      },
-      {
-        "name": "Economedia",
-        "url": "https://economedia.ro/bursa-de-la-bucuresti-a-castigat-in-aceasta-saptamana-8574-milioane-de-lei-la-capitalizare.html"
-      }
-    ],
-    "first_source": "Economica",
-    "synthesis": "Bursa de Valori București a înregistrat o creștere a capitalizării bursiere cu 857,4 milioane de lei în această săptămână, reprezentând un avans de 0,12% față de perioada anterioară. De asemenea, valoarea tranzacțiilor cu acțiuni a sporit cu 197,8 milioane de lei. Capitalizarea totală a atins 695,3 miliarde de lei.",
-    "entities": [
-      "Bursa de Valori București"
-    ],
-    "icon": "chart-line",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://politico.com/news/2026/07/12/trump-doj-sullivan-cromwell-00993916",
-    "original_link": "https://www.politico.com/news/2026/07/12/trump-doj-sullivan-cromwell-00993916?utm_source=RSS_Feed&utm_medium=RSS&utm_campaign=RSS_Syndication",
-    "source": "politico_eu",
-    "source_name": "Politico EU",
-    "source_lang": "en",
-    "title": "Firma de avocatură a lui Trump are legături cu posturi de top la Departamentul de Justiție",
-    "category": "politic",
-    "published": "2026-07-12T12:38:31+00:00",
-    "model": "B",
-    "teaser": "Avocații care reprezintă interesele lui Donald Trump ajung frecvent în poziții cheie în cadrul Departamentului de Justiție al SUA, ridicând semne de întrebare privind influența.",
-    "entities": [
-      "Trump",
-      "Departamentul de Justiție"
-    ],
-    "icon": "gavel",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://gsp.ro/international/campionatul-mondial-de-fotbal-2026/premiu-bani-cupa-mondiala-anglia-959729.html",
-    "original_link": "https://www.gsp.ro/international/campionatul-mondial-de-fotbal-2026/premiu-bani-cupa-mondiala-anglia-959729.html",
-    "source": "gsp",
-    "source_name": "GSP",
-    "source_lang": "ro",
-    "title": "Bonusuri uriașe pentru Anglia la CM 2026",
-    "category": "sport",
-    "published": "2026-07-12T12:27:10+00:00",
-    "model": "B",
-    "teaser": "Federația Engleză de Fotbal va oferi jumătate din premiul în bani câștigat la CM 2026, indiferent de rezultat. Jucătorii și staff-ul ar putea primi bonusuri colosale.",
-    "entities": [
-      "Anglia"
-    ],
-    "icon": "ball-football",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://hotnews.ro/sorin-grindeanu-atac-la-adresa-pnl-inaintea-consultarilor-de-la-cotroceni-de-sapte-ani-sunteti-la-putere-desi-n-ati-castigat-niciodata-alegeri-2298483",
-    "original_link": "https://hotnews.ro/sorin-grindeanu-atac-la-adresa-pnl-inaintea-consultarilor-de-la-cotroceni-de-sapte-ani-sunteti-la-putere-desi-n-ati-castigat-niciodata-alegeri-2298483",
-    "source": "hotnews",
-    "source_name": "HotNews",
-    "source_lang": "ro",
-    "title": "Grindeanu (PSD) atacă PNL înaintea negocierilor politice de la Cotroceni",
-    "category": "politic",
-    "published": "2026-07-12T12:21:03+00:00",
-    "model": "C",
-    "sources": [
-      {
-        "name": "HotNews",
-        "url": "https://hotnews.ro/sorin-grindeanu-atac-la-adresa-pnl-inaintea-consultarilor-de-la-cotroceni-de-sapte-ani-sunteti-la-putere-desi-n-ati-castigat-niciodata-alegeri-2298483"
-      },
-      {
-        "name": "Știrile ProTV",
-        "url": "https://stirileprotv.ro/stiri/politic/sorin-grindeanu-inainte-de-negocierile-de-la-cotroceni-bratienii-second-hand-s-au-trezit-in-constiinta-si-lupta-cu-psd.html"
-      },
-      {
-        "name": "Spotmedia",
-        "url": "https://spotmedia.ro/stiri/politica/grindeanu-ataca-pnl-inaintea-intalnirii-de-la-cotroceni-bratienii-second-hand-ati-devenit-obositori-si-o-sursa-permanenta-de-blocaj"
-      }
-    ],
-    "first_source": "HotNews",
-    "synthesis": "Președintele PSD, Sorin Grindeanu, a criticat vehement PNL, numindu-i \"Brătieni second-hand\", înainte de consultările de la Cotroceni. El acuză liberalii că blochează soluționarea crizei politice pentru privilegii proprii și că se agață de funcții, în timp ce miniștrii demiși distribuie contracte.",
-    "entities": [
-      "Sorin Grindeanu",
-      "PSD",
-      "PNL",
-      "Cotroceni"
-    ],
-    "icon": "gavel",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://economica.net/mae-atentionare-de-calatorie-italia-cod-portocaliu-si-galben-de-incendii-de-vegetatie-pentru-regiunile-sardegna-si-sicilia_958583.html",
-    "original_link": "https://www.economica.net/mae-atentionare-de-calatorie-italia-cod-portocaliu-si-galben-de-incendii-de-vegetatie-pentru-regiunile-sardegna-si-sicilia_958583.html",
-    "source": "economica",
-    "source_name": "Economica",
-    "source_lang": "ro",
-    "title": "Avertisment MAE: Cod portocaliu și galben de incendii în Sardinia și Sicilia",
-    "category": "extern",
-    "published": "2026-07-12T12:20:24+00:00",
-    "model": "C",
-    "sources": [
-      {
-        "name": "Economica",
-        "url": "https://www.economica.net/mae-atentionare-de-calatorie-italia-cod-portocaliu-si-galben-de-incendii-de-vegetatie-pentru-regiunile-sardegna-si-sicilia_958583.html"
-      },
-      {
-        "name": "G4Media",
-        "url": "https://www.g4media.ro/atentionare-de-calatorie-a-ministerului-de-externe-italia-cod-portocaliu-si-galben-de-incendii-de-vegetatie.html"
-      },
-      {
-        "name": "Digi24",
-        "url": "https://www.digi24.ro/stiri/actualitate/social/mae-atentionare-de-calatorie-pentru-italia-cod-portocaliu-si-cod-galben-de-incendii-de-vegetatie-in-sardinia-si-sicilia-3858875"
-      },
-      {
-        "name": "Știrile ProTV",
-        "url": "https://stirileprotv.ro/stiri/international/incendii-de-vegetatie-in-sicilia-si-sardinia-mae-a-ameis-o-alertaa-de-calatorie-pentru-romanii-care-merg-in-italia.html"
-      },
-      {
-        "name": "HotNews",
-        "url": "https://hotnews.ro/atentionare-de-calatorie-pentru-romanii-care-merg-in-vacanta-in-italia-din-cauza-incendiilor-de-vegetatie-2298544"
-      }
-    ],
-    "first_source": "Economica",
-    "synthesis": "Ministerul Afacerilor Externe a emis o atenționare de călătorie pentru Italia, informând cetățenii români despre riscul ridicat de incendii de vegetație. Începând cu 11 iulie 2026, regiunea Sardinia se află sub cod portocaliu, iar Sicilia sub cod galben. MAE recomandă evitarea deplasărilor în zonele afectate.",
-    "entities": [
-      "MAE",
-      "Italia",
-      "Sardinia",
-      "Sicilia"
-    ],
-    "icon": "flame",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://digi24.ro/stiri/externe/presedintele-volodimir-zelenski-anunta-un-plan-de-inlocuire-a-premierului-iulia-sviridenko-3858801",
-    "original_link": "https://www.digi24.ro/stiri/externe/presedintele-volodimir-zelenski-anunta-un-plan-de-inlocuire-a-premierului-iulia-sviridenko-3858801",
-    "source": "extern",
-    "source_name": "Digi24 Extern",
-    "source_lang": "ro",
-    "title": "Zelenski anunță înlocuirea premierului ucrainean Iulia Sviridenko",
-    "category": "politic",
-    "published": "2026-07-12T12:14:28+00:00",
-    "model": "C",
-    "sources": [
-      {
-        "name": "Digi24 Extern",
-        "url": "https://www.digi24.ro/stiri/externe/presedintele-volodimir-zelenski-anunta-un-plan-de-inlocuire-a-premierului-iulia-sviridenko-3858801"
-      },
-      {
-        "name": "Spotmedia",
-        "url": "https://spotmedia.ro/stiri/eveniment/remaniere-de-guvern-la-kiev-zelenski-propune-inlocuirea-premierului-iulia-sviridenko"
-      }
-    ],
-    "first_source": "Digi24 Extern",
-    "synthesis": "Președintele ucrainean Volodimir Zelenski a declarat că a propus înlocuirea premierului Iulia Sviridenko, căreia i-a mulțumit pentru activitatea sa. Ea ar urma să preia conducerea unui nou domeniu important legat de relațiile cu un partener cheie.",
-    "entities": [
-      "Volodimir Zelenski",
-      "Iulia Sviridenko",
-      "Ucraina"
-    ],
-    "icon": "gavel",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://politico.eu/article/former-spanish-pms-racist-comment-about-french-team-sparks-backlash",
-    "original_link": "https://www.politico.eu/article/former-spanish-pms-racist-comment-about-french-team-sparks-backlash/?utm_source=RSS_Feed&utm_medium=RSS&utm_campaign=RSS_Syndication",
-    "source": "politico_eu",
-    "source_name": "Politico EU",
-    "source_lang": "en",
-    "title": "Fost premier spaniol, acuzat de rasism pentru comentarii despre echipa Franței",
-    "category": "politic",
-    "published": "2026-07-12T11:37:01+00:00",
-    "model": "C",
-    "sources": [
-      {
-        "name": "Politico EU",
-        "url": "https://www.politico.eu/article/former-spanish-pms-racist-comment-about-french-team-sparks-backlash/?utm_source=RSS_Feed&utm_medium=RSS&utm_campaign=RSS_Syndication"
-      },
-      {
-        "name": "The Guardian",
-        "url": "https://www.theguardian.com/world/2026/jul/12/spain-mariano-rajoy-accused-of-racism-french-football-team-world-cup"
-      }
-    ],
-    "first_source": "Politico EU",
-    "synthesis": "Fostul premier spaniol Mariano Rajoy a stârnit controverse după ce a scris într-un articol că echipa națională a Franței \"nu are niciun jucător francez\". Comentariul, făcut în contextul unui meci al Franței, a fost calificat drept o \"insultă gravă\" de oficiali francezi și a generat acuzații de rasism la adresa sa.",
-    "entities": [
-      "Mariano Rajoy",
-      "Franța",
-      "Spania"
-    ],
-    "icon": "ball-football",
     "processed_by": "gemini",
     "prompt_version": "v2-esenta",
     "featured": false
