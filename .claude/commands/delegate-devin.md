@@ -27,15 +27,16 @@ Protocol — every step is mandatory, in order:
 4. **Hand off via CLI — zero screenshots.** Always go through the wrapper (never call devin.exe
    directly: a git-provider nudge menu blocks every raw headless run — see tools/devin_headless.py
    docstring). From the repo root, in background (Bash run_in_background):
-   `python tools/devin_headless.py --timeout 3600 -- -p "Read AGENTS.md and specs/STATE.md (context, read-only), then execute specs/<task-slug>.md exactly. Report in Romanian." --permission-mode smart`
+   `python tools/devin_headless.py --timeout 3600 -- -p "Read AGENTS.md and specs/STATE.md (context, read-only), then execute specs/<task-slug>.md exactly. Report in Romanian." --permission-mode normal`
    After launching, update `specs/STATE.md` → Current task: `<task-slug>`, branch
    `devin/<task-slug>`, delegated <date>. STATE.md is manager-owned: Devin reads it, never writes it.
    Needs `pywinpty` (verified installed 2026-07-18). Model on Free plan: swe-1-6-slow.
    If the wrapper reports auth errors: user must run devin.exe `auth login` in their own terminal
    (one-time browser OAuth; CLI credentials are separate from the Desktop app). Do NOT fall back
    to computer-use on the Devin window unless the user explicitly asks.
-   Modes: `smart` auto-runs edits + safe commands (pytest, git branch/commit); it blocks
-   destructive ones — which is exactly the guardrail we want. Never use `dangerous`.
+   Modes (CLI update 2026-07-19 removed `smart` — it now exits 2): valid are
+   `normal` (auto — use this), `accept-edits`, `dangerous`, `autonomous` (needs `--sandbox`).
+   Never use `dangerous`.
 5. **Do NOT babysit.** The CLI streams Devin's full transcript as text to the background log —
    read it ONCE when the process exits, not in a poll loop. No screenshots at any point.
    When it finishes, run `/review-devin devin/<task-slug>`.
