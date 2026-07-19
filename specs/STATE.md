@@ -10,8 +10,11 @@
 ## Current task
 None in flight. Devin (interactive, user-driven) is researching central public
 institutions' websites — coordinate before starting repo work.
+Jules CLI onboarding blocked: 401 despite login OK + GitHub App installed — debugging.
 
 ## Last relevant commits
+- `fix-smoke-brand` MERGED (executor OpenCode, 2nd task): smoke_live.py:57 asserted the
+  pre-rebrand descriptor → CI smoke-live red since 771a5ed deploy; 1-line fix, live 36/36.
 - OpenCode (Zen, `deepseek-v4-flash-free`) onboarded as second executor: `opencode.json`
   (pinned model + permission denylist), `/delegate-opencode`, generic `/review-executor`.
   Smoke test MERGED: 7 edge-case tests, 56/56 pass. Executor noted (not fixed):
