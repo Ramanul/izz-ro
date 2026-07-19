@@ -1,5 +1,265 @@
 [
   {
+    "url": "https://ziaruldeiasi.ro/stiri/cod-rosu-de-vreme-severa-in-iasi-anm-avertizeaza-vijelii-de-peste-90-km-h-grindina-si-ploi-torentiale--1877782.html",
+    "original_link": "https://www.ziaruldeiasi.ro/stiri/cod-rosu-de-vreme-severa-in-iasi-anm-avertizeaza-vijelii-de-peste-90-km-h-grindina-si-ploi-torentiale--1877782.html",
+    "source": "ziaruldeiasi",
+    "source_name": "Ziarul de Iași",
+    "source_lang": "ro",
+    "title": "Cod roșu de vijelii și grindină emis pentru județul Iași",
+    "category": "local",
+    "published": "2026-07-19T17:12:45.567905+00:00",
+    "model": "B",
+    "teaser": "Administrația Națională de Meteorologie a emis o avertizare imediată de cod roșu pentru Iași, semnalând rafale de vânt ce depășesc 90 km/h, grindină și precipitații abundente, populația fiind notificată prin sistemul RO-Alert.",
+    "entities": [
+      "Iași",
+      "ANM"
+    ],
+    "icon": "cloud-storm",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://gsp.ro/gsp-special/media/spania-argentina-marea-finala-de-la-campionatul-mondial-messi-vs-yamal-cu-trofeul-pe-masa-concurs-castiga-mingea-trionda-962198.html",
+    "original_link": "https://www.gsp.ro/gsp-special/media/spania-argentina-marea-finala-de-la-campionatul-mondial-messi-vs-yamal-cu-trofeul-pe-masa-concurs-castiga-mingea-trionda-962198.html",
+    "source": "gsp",
+    "source_name": "GSP",
+    "source_lang": "ro",
+    "title": "Spania și Argentina se înfruntă în finala Campionatului Mondial de fotbal 2026",
+    "category": "sport",
+    "published": "2026-07-19T17:08:16+00:00",
+    "model": "C",
+    "sources": [
+      {
+        "name": "GSP",
+        "url": "https://www.gsp.ro/gsp-special/media/spania-argentina-marea-finala-de-la-campionatul-mondial-messi-vs-yamal-cu-trofeul-pe-masa-concurs-castiga-mingea-trionda-962198.html"
+      },
+      {
+        "name": "Ziarul de Iași",
+        "url": "https://www.ziaruldeiasi.ro/stiri/spania-lui-yamal-vs-argentina-lui-messi-totul-despre-marea-finala-a-cupei-mondiale--1877578.html"
+      }
+    ],
+    "first_source": "GSP",
+    "synthesis": "Spania și Argentina vor disputa finala Cupei Mondiale FIFA 2026, un duel de elită între campioana Europei și deținătoarea titlului mondial. Partida, care îi pune față în față pe Lamine Yamal și Lionel Messi, se va desfășura pe stadionul New York New Jersey. Meciul este programat duminică, 19 iulie, la ora 22:00, ora României, fiind precedat de o ediție specială a emisiunii GSP Live dedicată acestui eveniment sportiv major.",
+    "entities": [
+      "Spania",
+      "Argentina",
+      "Lionel Messi",
+      "Lamine Yamal"
+    ],
+    "icon": "trophy",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://hotnews.ro/sper-sa-raman-in-viata-si-liber-unul-dintre-opozantii-lui-putin-renunta-sa-mai-candideze-la-alegerile-parlamentare-2304468",
+    "original_link": "https://hotnews.ro/sper-sa-raman-in-viata-si-liber-unul-dintre-opozantii-lui-putin-renunta-sa-mai-candideze-la-alegerile-parlamentare-2304468",
+    "source": "hotnews",
+    "source_name": "HotNews",
+    "source_lang": "ro",
+    "title": "Opozantul rus Boris Nadejdin se retrage din cursa pentru alegerile parlamentare",
+    "category": "politic",
+    "published": "2026-07-19T16:55:11+00:00",
+    "model": "C",
+    "sources": [
+      {
+        "name": "HotNews",
+        "url": "https://hotnews.ro/sper-sa-raman-in-viata-si-liber-unul-dintre-opozantii-lui-putin-renunta-sa-mai-candideze-la-alegerile-parlamentare-2304468"
+      },
+      {
+        "name": "Digi24 Extern",
+        "url": "https://www.digi24.ro/stiri/externe/rusia/opozantul-rus-boris-nadejdin-a-anuntat-ca-nu-mai-candideaza-la-alegerile-parlamentare-sper-sa-raman-in-viata-si-liber-3869001"
+      }
+    ],
+    "first_source": "HotNews",
+    "synthesis": "Politicianul rus Boris Nadejdin a anunțat oficial retragerea candidaturii sale pentru alegerile parlamentare. Acesta a invocat presiunile politice și sancțiunile primite pentru utilizarea unor simboluri considerate extremiste drept motive principale ale deciziei sale. Nadejdin a declarat că a fost forțat să părăsească scena politică, exprimându-și totodată îngrijorarea cu privire la propria siguranță personală și libertate. Sursele consultate sunt unanime în privința acestor fapte, neexistând contradicții între relatările acestora.",
+    "entities": [
+      "Boris Nadejdin",
+      "Rusia"
+    ],
+    "icon": "podium",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://digi24.ro/stiri/externe/de-la-deseuri-electronice-la-sisteme-de-avertizare-timpurie-un-start-up-lituanian-transforma-telefoanele-vechi-in-detectoare-de-drone-3868995",
+    "original_link": "https://www.digi24.ro/stiri/externe/de-la-deseuri-electronice-la-sisteme-de-avertizare-timpurie-un-start-up-lituanian-transforma-telefoanele-vechi-in-detectoare-de-drone-3868995",
+    "source": "extern",
+    "source_name": "Digi24 Extern",
+    "source_lang": "ro",
+    "title": "Un start-up lituanian transformă telefoanele vechi în detectoare acustice de drone",
+    "category": "tech",
+    "published": "2026-07-19T16:49:17+00:00",
+    "model": "B",
+    "teaser": "Proiectul Drone Radar utilizează dispozitive Android scoase din uz pentru a identifica aeronavele care zboară la joasă altitudine. Această soluție inovatoare oferă o a doua viață deșeurilor electronice, contribuind la sistemele de avertizare timpurie.",
+    "entities": [
+      "Lituania",
+      "Drone Radar"
+    ],
+    "icon": "device-mobile",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://zcj.ro/life-and-style/trei-plante-care-rezista-la-seceta-si-nu-trebuie-udate-in-timpul-valurilor-de-caldura--298861.html",
+    "original_link": "https://zcj.ro/life-and-style/trei-plante-care-rezista-la-seceta-si-nu-trebuie-udate-in-timpul-valurilor-de-caldura--298861.html",
+    "source": "zcj",
+    "source_name": "Ziua de Cluj",
+    "source_lang": "ro",
+    "title": "Trei specii de plante rezistente la secetă ideale pentru grădini în perioade caniculare",
+    "category": "local",
+    "published": "2026-07-19T16:23:00+00:00",
+    "model": "B",
+    "teaser": "Proprietarii de grădini pot opta pentru plante cu necesar redus de apă, capabile să supraviețuiască valurilor de căldură prelungite fără a necesita irigare frecventă, reducând astfel efortul de întreținere în timpul verii.",
+    "entities": [],
+    "icon": "trees",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://politico.eu/article/us-iran-strikes-war-peace-deal",
+    "original_link": "https://www.politico.eu/article/us-iran-strikes-war-peace-deal/?utm_source=RSS_Feed&utm_medium=RSS&utm_campaign=RSS_Syndication",
+    "source": "politico_eu",
+    "source_name": "Politico EU",
+    "source_lang": "en",
+    "title": "SUA și Iranul schimbă lovituri militare după moartea a doi soldați americani",
+    "category": "extern",
+    "published": "2026-07-19T16:12:08+00:00",
+    "model": "B",
+    "teaser": "Washingtonul a lansat bombardamente de represalii împotriva Iranului, după ce forțele iraniene au atacat baze din statele din Golf care găzduiesc trupe americane, provocând decesul a doi militari din armata Statelor Unite.",
+    "entities": [
+      "SUA",
+      "Iran",
+      "Golf"
+    ],
+    "icon": "swords",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://zcj.ro/sport/start-greoi-pentru-u-in-superliga-clujenii-au-invins-greu-farul-pe-teren-propriu--298865.html",
+    "original_link": "https://zcj.ro/sport/start-greoi-pentru-u-in-superliga-clujenii-au-invins-greu-farul-pe-teren-propriu--298865.html",
+    "source": "zcj",
+    "source_name": "Ziua de Cluj",
+    "source_lang": "ro",
+    "title": "Universitatea Cluj a învins Farul Constanța cu scorul de 2-1 în Superligă",
+    "category": "local",
+    "published": "2026-07-19T16:03:00+00:00",
+    "model": "B",
+    "teaser": "Echipa antrenată de Cristiano Bergodi a obținut prima victorie în noul sezon al Superligii, impunându-se la limită pe teren propriu în fața formației constănțene, într-un meci disputat sâmbătă în cadrul etapei inaugurale.",
+    "entities": [
+      "Universitatea Cluj",
+      "Farul Constanța",
+      "Cristiano Bergodi"
+    ],
+    "icon": "ball-football",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://newsbv.ro/anm-canicula-vijelii-ploi",
+    "original_link": "https://newsbv.ro/anm-canicula-vijelii-ploi/",
+    "source": "newsbv",
+    "source_name": "News Brașov",
+    "source_lang": "ro",
+    "title": "ANM a emis avertizări de caniculă și fenomene meteo extreme",
+    "category": "local",
+    "published": "2026-07-19T15:49:08+00:00",
+    "model": "B",
+    "teaser": "Administrația Națională de Meteorologie a instituit coduri galbene și portocalii pentru majoritatea regiunilor țării. Populația este vizată de riscuri cauzate de temperaturile caniculare, ploile torențiale și vijeliile prognozate pentru perioada următoare.",
+    "entities": [
+      "ANM"
+    ],
+    "icon": "cloud-storm",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://politico.com/live-updates/2026/07/19/world-cup-2026",
+    "original_link": "https://www.politico.com/live-updates/2026/07/19/world-cup-2026?utm_source=RSS_Feed&utm_medium=RSS&utm_campaign=RSS_Syndication",
+    "source": "politico_eu",
+    "source_name": "Politico EU",
+    "source_lang": "en",
+    "title": "Spania și Argentina se înfruntă în finala Campionatului Mondial de fotbal",
+    "category": "sport",
+    "published": "2026-07-19T15:36:07+00:00",
+    "model": "B",
+    "teaser": "Selecționatele Spaniei și Argentinei dispută ultimul act al turneului final de fotbal, evenimentul fiind urmărit în direct de fanii din întreaga lume care așteaptă desemnarea noii campioane mondiale în acest meci decisiv.",
+    "entities": [
+      "Spania",
+      "Argentina"
+    ],
+    "icon": "ball-football",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://politico.com/news/2026/07/19/soccer-spain-basques-catalans-sport-eclipses-politics-01004240",
+    "original_link": "https://www.politico.com/news/2026/07/19/soccer-spain-basques-catalans-sport-eclipses-politics-01004240?utm_source=RSS_Feed&utm_medium=RSS&utm_campaign=RSS_Syndication",
+    "source": "politico_eu",
+    "source_name": "Politico EU",
+    "source_lang": "en",
+    "title": "Fotbaliștii basci și catalani devin pilonii principali ai naționalei Spaniei",
+    "category": "sport",
+    "published": "2026-07-19T15:34:48+00:00",
+    "model": "B",
+    "teaser": "Jucători din regiunile separatiste ale Spaniei au depășit tensiunile politice istorice, devenind nucleul echipei naționale de fotbal și exercitând o influență majoră asupra stilului de joc practicat la nivel mondial în prezent.",
+    "entities": [
+      "Spania",
+      "Basci",
+      "Catalani"
+    ],
+    "icon": "medal",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://zcj.ro/life-and-style/de-ce-nu-este-bine-sa-porti-haine-noi-fara-sa-le-speli-specialistii-explica-riscurile-ascunse--298862.html",
+    "original_link": "https://zcj.ro/life-and-style/de-ce-nu-este-bine-sa-porti-haine-noi-fara-sa-le-speli-specialistii-explica-riscurile-ascunse--298862.html",
+    "source": "zcj",
+    "source_name": "Ziua de Cluj",
+    "source_lang": "ro",
+    "title": "Specialiștii recomandă spălarea hainelor noi înainte de prima purtare pentru evitarea riscurilor",
+    "category": "local",
+    "published": "2026-07-19T15:30:00+00:00",
+    "model": "B",
+    "teaser": "Experții avertizează că îmbrăcămintea achiziționată din magazine poate conține substanțe chimice iritante sau bacterii acumulate în timpul procesului de producție și depozitare, fiind esențială igienizarea acestora pentru protejarea sănătății pielii.",
+    "entities": [],
+    "icon": "stethoscope",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://dw.com/en/spain-emergency-crews-battle-wildfire-north-of-madrid/a-78026297?maca=en-rss-en-eu-2092-rdf",
+    "original_link": "https://www.dw.com/en/spain-emergency-crews-battle-wildfire-north-of-madrid/a-78026297?maca=en-rss-en-eu-2092-rdf",
+    "source": "dw_europe",
+    "source_name": "DW Europe",
+    "source_lang": "en",
+    "title": "Echipele de intervenție luptă cu un incendiu de vegetație lângă Madrid",
+    "category": "extern",
+    "published": "2026-07-19T15:27:00+00:00",
+    "model": "B",
+    "teaser": "Peste 25 de aeronave specializate sunt implicate în stingerea unui incendiu forestier violent care afectează zona centrală a Spaniei de trei zile. Eforturile autorităților continuă pentru a limita extinderea flăcărilor în proximitatea capitalei.",
+    "entities": [
+      "Spania",
+      "Madrid"
+    ],
+    "icon": "flame",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
     "url": "https://ziaruldeiasi.ro/stiri/antrenorul-politehnicii-iasi-tibor-selymes-cere-din-nou-explicatii-despre-situatia-clubului-de-la-presedintele-cornel-sfaiter-managerul-florin-briaur-si-de-la-administratorul-capital-insol--1877759.html",
     "original_link": "https://www.ziaruldeiasi.ro/stiri/antrenorul-politehnicii-iasi-tibor-selymes-cere-din-nou-explicatii-despre-situatia-clubului-de-la-presedintele-cornel-sfaiter-managerul-florin-briaur-si-de-la-administratorul-capital-insol--1877759.html",
     "source": "ziaruldeiasi",
@@ -16,6 +276,103 @@
       "Cornel Șfaițer"
     ],
     "icon": "ball-football",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://newsbv.ro/debitul-dunarii-la-un-nou-minim-istoric-de-1650-mc-s",
+    "original_link": "https://newsbv.ro/debitul-dunarii-la-un-nou-minim-istoric-de-1650-mc-s/",
+    "source": "newsbv",
+    "source_name": "News Brașov",
+    "source_lang": "ro",
+    "title": "Debitul Dunării a scăzut la un nivel minim istoric",
+    "category": "local",
+    "published": "2026-07-19T15:07:53+00:00",
+    "model": "B",
+    "teaser": "Fluviul înregistrează un debit critic de 1650 metri cubi pe secundă, valoare ce reprezintă un record negativ. Autoritățile estimează o ușoară îmbunătățire a fluxului de apă în cursul zilelor ce urmează.",
+    "entities": [
+      "Dunărea"
+    ],
+    "icon": "chart-line",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://pressalert.ro/2026/07/accident-cumplit-langa-santana-un-tanar-de-33-de-ani-a-murit-pe-loc-dupa-un-impact-violent",
+    "original_link": "https://www.pressalert.ro/2026/07/accident-cumplit-langa-santana-un-tanar-de-33-de-ani-a-murit-pe-loc-dupa-un-impact-violent/",
+    "source": "pressalert",
+    "source_name": "PressAlert Timișoara",
+    "source_lang": "ro",
+    "title": "Un tânăr a decedat într-un accident rutier grav produs lângă Sântana",
+    "category": "local",
+    "published": "2026-07-19T14:59:56+00:00",
+    "model": "B",
+    "teaser": "Un șofer și-a pierdut viața duminică, 19 iulie 2026, după ce mașina pe care o conducea a fost implicată într-un impact violent în apropierea localității arădene Sântana, echipajele de intervenție neputând salva victima.",
+    "entities": [
+      "Sântana",
+      "Arad"
+    ],
+    "icon": "car",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://newsbv.ro/ro-alert-tulcea-granitei",
+    "original_link": "https://newsbv.ro/ro-alert-tulcea-granitei/",
+    "source": "newsbv",
+    "source_name": "News Brașov",
+    "source_lang": "ro",
+    "title": "Alertă aeriană emisă în județul Tulcea din cauza unor ținte aeriene",
+    "category": "local",
+    "published": "2026-07-19T14:59:35+00:00",
+    "model": "B",
+    "teaser": "Locuitorii din Tulcea au primit mesaje RO-ALERT privind prezența unor obiecte zburătoare în proximitatea frontierei de stat. Situația de urgență a fost declarată încheiată oficial în cursul după-amiezii, la ora 14:34.",
+    "entities": [
+      "Tulcea"
+    ],
+    "icon": "alert-triangle",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://politico.com/news/2026/07/19/chris-wright-strait-hormuz-iran-01004359",
+    "original_link": "https://www.politico.com/news/2026/07/19/chris-wright-strait-hormuz-iran-01004359?utm_source=RSS_Feed&utm_medium=RSS&utm_campaign=RSS_Syndication",
+    "source": "politico_eu",
+    "source_name": "Politico EU",
+    "source_lang": "en",
+    "title": "Traficul maritim prin Strâmtoarea Ormuz se menține la două treimi din capacitate",
+    "category": "economic",
+    "published": "2026-07-19T14:52:39+00:00",
+    "model": "B",
+    "teaser": "Secretarul american al Energiei, Chris Wright, a confirmat că navele comerciale continuă să traverseze Strâmtoarea Ormuz, în ciuda tensiunilor regionale, înregistrând un volum de trafic de aproximativ 66% față de nivelul obișnuit.",
+    "entities": [
+      "Chris Wright",
+      "Strâmtoarea Ormuz"
+    ],
+    "icon": "ship",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://newsbv.ro/isu-neamt-ro-alert",
+    "original_link": "https://newsbv.ro/isu-neamt-ro-alert/",
+    "source": "newsbv",
+    "source_name": "News Brașov",
+    "source_lang": "ro",
+    "title": "Furtuni violente și grindină au provocat inundații în județul Neamț",
+    "category": "local",
+    "published": "2026-07-19T14:51:04+00:00",
+    "model": "B",
+    "teaser": "Fenomenele meteorologice severe au afectat localități din județul Neamț, cauzând inundații în gospodării și întreruperea alimentării cu energie electrică pentru peste o mie de consumatori. Autoritățile au emis avertizări prin sistemul RO-Alert.",
+    "entities": [
+      "Neamț"
+    ],
+    "icon": "cloud-storm",
     "processed_by": "gemini",
     "prompt_version": "v2-esenta",
     "featured": false
@@ -48,6 +405,48 @@
       "EES"
     ],
     "icon": "plane",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://newsbv.ro/anglia-franta-finala-mica",
+    "original_link": "https://newsbv.ro/anglia-franta-finala-mica/",
+    "source": "newsbv",
+    "source_name": "News Brașov",
+    "source_lang": "ro",
+    "title": "Anglia a învins Franța în finala mică a CM 2026 cu scorul de 6-4",
+    "category": "local",
+    "published": "2026-07-19T14:41:07+00:00",
+    "model": "B",
+    "teaser": "Anglia a câștigat finala pentru locul al treilea la Campionatul Mondial de fotbal, după un meci spectaculos cu zece goluri. Această partidă a stabilit un nou record de eficacitate ofensivă pentru această fază a competiției.",
+    "entities": [
+      "Anglia",
+      "Franța",
+      "CM 2026"
+    ],
+    "icon": "ball-football",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://politico.com/news/2026/07/19/soccer-conquistadors-spain-world-cup-2026-imperialism-01004243",
+    "original_link": "https://www.politico.com/news/2026/07/19/soccer-conquistadors-spain-world-cup-2026-imperialism-01004243?utm_source=RSS_Feed&utm_medium=RSS&utm_campaign=RSS_Syndication",
+    "source": "politico_eu",
+    "source_name": "Politico EU",
+    "source_lang": "en",
+    "title": "Spania întâlnește Argentina în finala Cupei Mondiale cu conotații istorice imperiale",
+    "category": "sport",
+    "published": "2026-07-19T14:39:27+00:00",
+    "model": "B",
+    "teaser": "Finala Campionatului Mondial dintre Spania și Argentina capătă o semnificație simbolică aparte, având în vedere trecutul colonial al Madridului asupra multor state adverse întâlnite de spanioli pe parcursul competiției sportive actuale.",
+    "entities": [
+      "Spania",
+      "Argentina",
+      "Madrid"
+    ],
+    "icon": "trophy",
     "processed_by": "gemini",
     "prompt_version": "v2-esenta",
     "featured": false
@@ -168,6 +567,60 @@
     "featured": false
   },
   {
+    "url": "https://spotmedia.ro/stiri/eveniment/furtuna-a-lasat-gara-de-nord-fara-tensiune-circulatia-trenurilor-electrice-afectata-in-bucuresti",
+    "original_link": "https://spotmedia.ro/stiri/eveniment/furtuna-a-lasat-gara-de-nord-fara-tensiune-circulatia-trenurilor-electrice-afectata-in-bucuresti",
+    "source": "spotmedia",
+    "source_name": "Spotmedia",
+    "source_lang": "ro",
+    "title": "Furtuna puternică a provocat pagube materiale și perturbări feroviare majore în București și Ilfov",
+    "category": "local",
+    "published": "2026-07-19T14:16:58+00:00",
+    "model": "C",
+    "sources": [
+      {
+        "name": "Spotmedia",
+        "url": "https://spotmedia.ro/stiri/eveniment/furtuna-a-lasat-gara-de-nord-fara-tensiune-circulatia-trenurilor-electrice-afectata-in-bucuresti"
+      },
+      {
+        "name": "G4Media",
+        "url": "https://www.g4media.ro/update-primele-efecte-ale-furtunii-in-bucuresti-in-timpul-codului-rosu-trei-copaci-si-un-stalp-doborati-de-vant-un-autoturism-avariat.html"
+      }
+    ],
+    "first_source": "Spotmedia",
+    "synthesis": "O furtună violentă, marcată de avertizări de cod portocaliu și roșu, a lovit duminică Bucureștiul și județul Ilfov. Fenomenele meteo au generat peste 140 de intervenții ale pompierilor, soldate cu doborârea a 101 copaci și a cinci stâlpi, precum și inundarea a 22 de străzi. Totodată, alimentarea cu energie electrică a Complexului Feroviar București Nord a fost întreruptă, afectând circulația trenurilor electrice începând cu ora 16:04. Nu există contradicții între sursele consultate.",
+    "entities": [
+      "București",
+      "Ilfov",
+      "Gara de Nord",
+      "CFR SA"
+    ],
+    "icon": "cloud-storm",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://politico.eu/article/friedtich-merz-floats-government-reshuffle-after-top-conservatives-resignation",
+    "original_link": "https://www.politico.eu/article/friedtich-merz-floats-government-reshuffle-after-top-conservatives-resignation/?utm_source=RSS_Feed&utm_medium=RSS&utm_campaign=RSS_Syndication",
+    "source": "politico_eu",
+    "source_name": "Politico EU",
+    "source_lang": "en",
+    "title": "Cancelarul german analizează remanierea guvernului după demisia lui Jens Spahn",
+    "category": "politic",
+    "published": "2026-07-19T14:08:42+00:00",
+    "model": "B",
+    "teaser": "Friedrich Merz sugerează că plecarea conservatorului Jens Spahn, implicat într-un scandal privind maternitatea surogat, reprezintă o oportunitate pentru executivul de la Berlin de a-și restructura componența și prioritățile politice actuale.",
+    "entities": [
+      "Friedrich Merz",
+      "Jens Spahn",
+      "Germania"
+    ],
+    "icon": "building-bank",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
     "url": "https://csid.ro/lifestyle/casa-gradina-animale-de-companie/obiectul-banal-din-bucatarie-care-poate-salva-pasarile-pe-timp-de-canicula-gestul-simplu-pe-care-il-poti-face-in-iulie-21253525",
     "original_link": "https://www.csid.ro/lifestyle/casa-gradina-animale-de-companie/obiectul-banal-din-bucatarie-care-poate-salva-pasarile-pe-timp-de-canicula-gestul-simplu-pe-care-il-poti-face-in-iulie-21253525/",
     "source": "csid",
@@ -190,19 +643,33 @@
     "source": "zcj",
     "source_name": "Ziua de Cluj",
     "source_lang": "ro",
-    "title": "Viitură puternică în Bușteni după o rupere de nori în Munții Bucegi",
+    "title": "Inundații severe și viituri în Bușteni după o rupere de nori în Munții Bucegi",
     "category": "local",
     "published": "2026-07-19T13:40:00+00:00",
-    "model": "B",
+    "model": "C",
     "teaser": "O ploaie torențială a provocat inundații severe în stațiunea Bușteni, duminică. Torenții au transportat aluviuni, pietre și bușteni pe DN1, blocând străzile și antrenând un autoturism sub privirile martorilor, în urma fenomenelor meteo extreme din Bucegi.",
     "entities": [
       "Bușteni",
-      "Munții Bucegi"
+      "Munții Bucegi",
+      "DN1",
+      "SMURD"
     ],
     "icon": "cloud-storm",
     "processed_by": "gemini",
     "prompt_version": "v2-esenta",
-    "featured": false
+    "featured": false,
+    "sources": [
+      {
+        "name": "Ziua de Cluj",
+        "url": "https://zcj.ro/eveniment/viitura-devastatoare-la-busteni-strazile-au-devenit-rauri-iar-o-masina-a-fost-purtata-de-ape-sub-privirile-oamenilor--298864.html"
+      },
+      {
+        "name": "Ziarul de Iași",
+        "url": "https://www.ziaruldeiasi.ro/stiri/video-haos-in-busteni-dupa-o-rupere-de-nori-viiturile-au-inundat-orasul-iar-pompierii-au-intervenit-pentru-salvarea-oamenilor--1877777.html"
+      }
+    ],
+    "first_source": "Ziua de Cluj",
+    "synthesis": "Duminică, o rupere de nori în Munții Bucegi a provocat revărsarea pârâului Jepi, generând viituri violente care au inundat stațiunea Bușteni. Aluviunile, pietrele și buștenii au blocat DN1 și mai multe străzi, izolând un cartier. Echipele de intervenție au salvat mai multe persoane surprinse de ape, inclusiv o femeie și doi bărbați blocați într-un autoturism. Nu există contradicții între surse, evenimentul fiind confirmat ca o situație de urgență majoră cauzată de fenomene meteo extreme."
   },
   {
     "url": "https://spotmedia.ro/stiri/sport/legendarul-rafael-nadal-anticipeaza-o-victorie-cu-2-1-pentru-spania-in-finala-cupei-mondiale-cu-argentina",
@@ -253,6 +720,27 @@
       "Cluj"
     ],
     "icon": "bike",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://newsbv.ro/inundatii-busteni-dn1-masini-luate-ape",
+    "original_link": "https://newsbv.ro/inundatii-busteni-dn1-masini-luate-ape/",
+    "source": "newsbv",
+    "source_name": "News Brașov",
+    "source_lang": "ro",
+    "title": "Inundațiile severe din Bușteni au blocat traficul pe DN1 și au distrus mașini",
+    "category": "local",
+    "published": "2026-07-19T13:24:21+00:00",
+    "model": "B",
+    "teaser": "Ploile torențiale au provocat inundații masive în Bușteni, afectând infrastructura rutieră și autoturismele din zonă. Autoritățile din Prahova au emis avertizări oficiale, recomandând șoferilor să evite deplasările în regiunea afectată de fenomenele meteo extreme.",
+    "entities": [
+      "Bușteni",
+      "DN1",
+      "IPJ Prahova"
+    ],
+    "icon": "cloud-storm",
     "processed_by": "gemini",
     "prompt_version": "v2-esenta",
     "featured": false
@@ -377,6 +865,46 @@
     "featured": false
   },
   {
+    "url": "https://dw.com/en/eu-ban-on-destroying-unsold-clothes-takes-effect/a-78024888?maca=en-rss-en-eu-2092-rdf",
+    "original_link": "https://www.dw.com/en/eu-ban-on-destroying-unsold-clothes-takes-effect/a-78024888?maca=en-rss-en-eu-2092-rdf",
+    "source": "dw_europe",
+    "source_name": "DW Europe",
+    "source_lang": "en",
+    "title": "Uniunea Europeană interzice distrugerea stocurilor de haine nevândute",
+    "category": "economic",
+    "published": "2026-07-19T13:00:00+00:00",
+    "model": "B",
+    "teaser": "Companiile mari din statele membre UE nu mai au voie să arunce produsele textile, încălțămintea sau accesoriile rămase nevândute. Măsura face parte dintr-o strategie amplă de reducere a risipei și protejare a mediului înconjurător.",
+    "entities": [
+      "Uniunea Europeană"
+    ],
+    "icon": "shopping-cart",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://pressalert.ro/2026/07/brancusi-se-intoarce-acasa-capodoperele-expuse-la-timisoara-revin-simbolic-in-satul-natal-printr-o-donatie-de-exceptie-la-hobita",
+    "original_link": "https://www.pressalert.ro/2026/07/brancusi-se-intoarce-acasa-capodoperele-expuse-la-timisoara-revin-simbolic-in-satul-natal-printr-o-donatie-de-exceptie-la-hobita/",
+    "source": "pressalert",
+    "source_name": "PressAlert Timișoara",
+    "source_lang": "ro",
+    "title": "Expoziția fotografică despre Brâncuși a fost donată Muzeului Județean Gorj",
+    "category": "local",
+    "published": "2026-07-19T12:19:08+00:00",
+    "model": "B",
+    "teaser": "O colecție de fotografii expusă anterior la Timișoara a fost oferită oficial Muzeului Județean Gorj. Evenimentul a avut loc pe 17 iulie 2026, la casa memorială a artistului din localitatea Hobița.",
+    "entities": [
+      "Constantin Brâncuși",
+      "Hobița",
+      "Muzeul Județean Gorj"
+    ],
+    "icon": "building-monument",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
     "url": "https://zcj.ro/eveniment/descoperire-interesanta-intr-o-comuna-din-cluj-doua-proiectile-din-al-doilea-razboi-mondial-au-alertat-pirotehnistii-isu--298857.html",
     "original_link": "https://zcj.ro/eveniment/descoperire-interesanta-intr-o-comuna-din-cluj-doua-proiectile-din-al-doilea-razboi-mondial-au-alertat-pirotehnistii-isu--298857.html",
     "source": "zcj",
@@ -463,6 +991,25 @@
     "featured": false
   },
   {
+    "url": "https://zcj.ro/eveniment/pana-majora-de-curent-pe-litoral-aproape-100-de-hoteluri-si-localuri-afectate-in-plin-sezon-estival--298856.html",
+    "original_link": "https://zcj.ro/eveniment/pana-majora-de-curent-pe-litoral-aproape-100-de-hoteluri-si-localuri-afectate-in-plin-sezon-estival--298856.html",
+    "source": "zcj",
+    "source_name": "Ziua de Cluj",
+    "source_lang": "ro",
+    "title": "Aproape 100 de unități turistice de pe litoral au rămas fără curent electric",
+    "category": "local",
+    "published": "2026-07-19T12:01:00+00:00",
+    "model": "B",
+    "teaser": "O avarie majoră la rețeaua de distribuție a lăsat sâmbătă zeci de hoteluri și restaurante din sudul litoralului românesc în întuneric, perturbând activitatea operatorilor economici în plin sezon estival.",
+    "entities": [
+      "Litoralul românesc"
+    ],
+    "icon": "bolt",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
     "url": "https://csid.ro/stiri/obiectul-din-baie-care-iti-poate-imbolnavi-familia-greseala-pe-care-multi-o-fac-fara-sa-si-dea-seama-21254312",
     "original_link": "https://www.csid.ro/stiri/obiectul-din-baie-care-iti-poate-imbolnavi-familia-greseala-pe-care-multi-o-fac-fara-sa-si-dea-seama-21254312/",
     "source": "csid",
@@ -533,6 +1080,47 @@
     "featured": false
   },
   {
+    "url": "https://politico.eu/article/russia-hits-kyiv-largest-ballistic-barrages-putin-war",
+    "original_link": "https://www.politico.eu/article/russia-hits-kyiv-largest-ballistic-barrages-putin-war/?utm_source=RSS_Feed&utm_medium=RSS&utm_campaign=RSS_Syndication",
+    "source": "politico_eu",
+    "source_name": "Politico EU",
+    "source_lang": "en",
+    "title": "Rusia a lansat un atac masiv cu rachete balistice asupra Ucrainei",
+    "category": "extern",
+    "published": "2026-07-19T11:28:59+00:00",
+    "model": "B",
+    "teaser": "Forțele ruse au executat unul dintre cele mai ample bombardamente balistice din timpul conflictului, evidențiind deficitul critic de sisteme antiaeriene al Ucrainei. Kievul solicită urgent aliaților suplimentarea interceptoarelor și impunerea unor sancțiuni europene mai stricte.",
+    "entities": [
+      "Rusia",
+      "Ucraina",
+      "Kiev"
+    ],
+    "icon": "rocket",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://bbc.co.uk/news/articles/c2el7xpnzrpo?at_medium=RSS&at_campaign=rss",
+    "original_link": "https://www.bbc.co.uk/news/articles/c2el7xpnzrpo?at_medium=RSS&at_campaign=rss",
+    "source": "bbc_europe",
+    "source_name": "BBC Europe",
+    "source_lang": "en",
+    "title": "Rusia a lansat un atac masiv cu rachete balistice asupra orașelor ucrainene",
+    "category": "extern",
+    "published": "2026-07-19T11:28:24+00:00",
+    "model": "B",
+    "teaser": "Un atac rusesc de amploare asupra celor mai mari orașe din Ucraina a cauzat moartea a cinci persoane și rănirea a cel puțin 35. Conflictul continuă să escaladeze prin lovituri reciproce asupra infrastructurii critice din ambele state.",
+    "entities": [
+      "Rusia",
+      "Ucraina"
+    ],
+    "icon": "alert-triangle",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
     "url": "https://hotnews.ro/incendiu-urias-la-nord-madrid-au-ars-deja-peste-13-000-de-hectare-2304278",
     "original_link": "https://hotnews.ro/incendiu-urias-la-nord-madrid-au-ars-deja-peste-13-000-de-hectare-2304278",
     "source": "hotnews",
@@ -582,6 +1170,27 @@
     "featured": false
   },
   {
+    "url": "https://theguardian.com/environment/2026/jul/19/molten-salt-human-sweat-weird-batteries-store-renewable-energy",
+    "original_link": "https://www.theguardian.com/environment/2026/jul/19/molten-salt-human-sweat-weird-batteries-store-renewable-energy",
+    "source": "guardian_eu",
+    "source_name": "The Guardian",
+    "source_lang": "en",
+    "title": "Proiecte inovatoare de stocare a energiei solare sunt testate global",
+    "category": "tech",
+    "published": "2026-07-19T11:00:25+00:00",
+    "model": "B",
+    "teaser": "Dezvoltatorii testează soluții avansate de stocare a energiei regenerabile, inclusiv baterii pe bază de sare topită. Un proiect major din Emiratele Arabe Unite urmărește alimentarea a jumătate de milion de locuințe folosind capacități solare masive.",
+    "entities": [
+      "Emiratele Arabe Unite",
+      "Nevada",
+      "Manchester"
+    ],
+    "icon": "bolt",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
     "url": "https://economica.net/daniel-zamfir-ministrul-mediului-diana-buzoianu-s-a-pus-pe-demolat-terase-in-plin-sezon-estival_960613.html",
     "original_link": "https://www.economica.net/daniel-zamfir-ministrul-mediului-diana-buzoianu-s-a-pus-pe-demolat-terase-in-plin-sezon-estival_960613.html",
     "source": "economica",
@@ -610,6 +1219,27 @@
       "PSD"
     ],
     "icon": "alert-triangle",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://dw.com/en/china-firm-seeks-damages-over-state-control-of-british-steel/a-78024119?maca=en-rss-en-eu-2092-rdf",
+    "original_link": "https://www.dw.com/en/china-firm-seeks-damages-over-state-control-of-british-steel/a-78024119?maca=en-rss-en-eu-2092-rdf",
+    "source": "dw_europe",
+    "source_name": "DW Europe",
+    "source_lang": "en",
+    "title": "Grupul chinez Jingye cere despăgubiri pentru preluarea British Steel",
+    "category": "economic",
+    "published": "2026-07-19T10:45:00+00:00",
+    "model": "B",
+    "teaser": "Compania chineză Jingye Group solicită compensații financiare după ce guvernul britanic a naționalizat British Steel anul trecut. Statul a intervenit pentru a evita închiderea ultimei unități de producție primară de oțel din Marea Britanie.",
+    "entities": [
+      "Jingye Group",
+      "British Steel",
+      "Marea Britanie"
+    ],
+    "icon": "building-factory",
     "processed_by": "gemini",
     "prompt_version": "v2-esenta",
     "featured": false
@@ -868,6 +1498,47 @@
     "featured": false
   },
   {
+    "url": "https://dw.com/en/russian-army-deserters-in-germany-no-choice-but-to-run/a-78020377?maca=en-rss-en-eu-2092-rdf",
+    "original_link": "https://www.dw.com/en/russian-army-deserters-in-germany-no-choice-but-to-run/a-78020377?maca=en-rss-en-eu-2092-rdf",
+    "source": "dw_europe",
+    "source_name": "DW Europe",
+    "source_lang": "en",
+    "title": "Germania respinge majoritatea cererilor de azil ale dezertorilor ruși",
+    "category": "politic",
+    "published": "2026-07-19T10:05:00+00:00",
+    "model": "B",
+    "teaser": "Autoritățile germane refuză constant solicitările de protecție depuse de militarii ruși care au fugit de pe front. Tinerii dezertori se tem că, în cazul unei expulzări, vor fi trimiși forțat înapoi în zona de conflict.",
+    "entities": [
+      "Germania",
+      "Rusia"
+    ],
+    "icon": "swords",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://pressalert.ro/2026/07/trafic-infernal-pe-autostrada-a1-soferii-stau-la-coada-la-margina",
+    "original_link": "https://www.pressalert.ro/2026/07/trafic-infernal-pe-autostrada-a1-soferii-stau-la-coada-la-margina/",
+    "source": "pressalert",
+    "source_name": "PressAlert Timișoara",
+    "source_lang": "ro",
+    "title": "Trafic rutier aglomerat pe Autostrada A1 în zona nodului Margina",
+    "category": "local",
+    "published": "2026-07-19T10:04:34+00:00",
+    "model": "B",
+    "teaser": "Șoferii care circulă duminică pe sensul Nădlac-Deva întâmpină dificultăți majore din cauza unei coloane lungi de mașini. Centrul Infotrafic a raportat blocaje în dreptul localității Margina din județul Timiș, în jurul prânzului.",
+    "entities": [
+      "Autostrada A1",
+      "Margina",
+      "Timiș"
+    ],
+    "icon": "car",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
     "url": "https://stirileprotv.ro/stiri/actualitate/cod-portocaliu-de-inundatii-in-6-judete-si-cod-galben-in-22-de-judete-pana-luni-la-pranz-avertismentul-hidrologilor.html",
     "original_link": "https://stirileprotv.ro/stiri/actualitate/cod-portocaliu-de-inundatii-in-6-judete-si-cod-galben-in-22-de-judete-pana-luni-la-pranz-avertismentul-hidrologilor.html",
     "source": "protv",
@@ -1010,6 +1681,26 @@
     "teaser": "Nutriționiștii propun 12 idei de mic dejun bogate în proteine, menite să îmbunătățească nivelul de energie și să prevină senzația de foame până la prânz. Lista include alimente recomandate și sugestii despre ce ar trebui evitat în dietă.",
     "entities": [],
     "icon": "pill",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://theguardian.com/music/2026/jul/19/bad-bunny-milan-abandoned-hailstorm",
+    "original_link": "https://www.theguardian.com/music/2026/jul/19/bad-bunny-milan-abandoned-hailstorm",
+    "source": "guardian_eu",
+    "source_name": "The Guardian",
+    "source_lang": "en",
+    "title": "Concertul Bad Bunny din Milano a fost anulat din cauza unei furtuni cu grindină",
+    "category": "cultura",
+    "published": "2026-07-19T09:57:53+00:00",
+    "model": "B",
+    "teaser": "Organizatorii au suspendat spectacolul susținut de Bad Bunny la Milano după ce o furtună violentă cu grindină a pus în pericol publicul. Fanii prezenți la evenimentul sold-out vor primi rambursarea integrală a biletelor achiziționate.",
+    "entities": [
+      "Bad Bunny",
+      "Milano"
+    ],
+    "icon": "music",
     "processed_by": "gemini",
     "prompt_version": "v2-esenta",
     "featured": false
@@ -1721,6 +2412,27 @@
       "Călățele"
     ],
     "icon": "building-church",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://newsbv.ro/ziua-nationala-inot-19-iulie-brasov",
+    "original_link": "https://newsbv.ro/ziua-nationala-inot-19-iulie-brasov/",
+    "source": "newsbv",
+    "source_name": "News Brașov",
+    "source_lang": "ro",
+    "title": "Brașovul marchează Ziua Națională a Înotului prin mesaje de încurajare a sportului",
+    "category": "local",
+    "published": "2026-07-19T07:00:48+00:00",
+    "model": "B",
+    "teaser": "Cu ocazia Zilei Naționale a Înotului, oficiali și sportivi de performanță precum David Popovici și Norbert Trandafir promovează beneficiile acestui sport. Evenimentul subliniază importanța dezvoltării fizice prin înot în comunitatea locală și la nivel național.",
+    "entities": [
+      "Dan Ghiță",
+      "David Popovici",
+      "Norbert Trandafir"
+    ],
+    "icon": "swimming",
     "processed_by": "gemini",
     "prompt_version": "v2-esenta",
     "featured": false
@@ -4285,20 +4997,33 @@
     "source": "politico_eu",
     "source_name": "Politico EU",
     "source_lang": "en",
-    "title": "Trump amenință Canada din cauza fumului de la incendii",
+    "title": "Donald Trump critică gestionarea incendiilor din Canada după poluarea aerului în SUA",
     "category": "extern",
     "published": "2026-07-18T17:48:02+00:00",
-    "model": "B",
+    "model": "C",
     "teaser": "Fumul provenit de la incendiile de vegetație din Canada a acoperit mai multe state americane, iar autoritățile au avertizat milioane de oameni să rămână în interior.",
     "entities": [
-      "Trump",
+      "Donald Trump",
       "Canada",
-      "SUA"
+      "Ontario",
+      "Doug Ford"
     ],
-    "icon": "cloud-storm",
+    "icon": "flame",
     "processed_by": "gemini",
     "prompt_version": "v2-esenta",
-    "featured": false
+    "featured": false,
+    "sources": [
+      {
+        "name": "Politico EU",
+        "url": "https://www.politico.com/news/2026/07/17/canada-wildfires-smoke-trump-01002976?utm_source=RSS_Feed&utm_medium=RSS&utm_campaign=RSS_Syndication"
+      },
+      {
+        "name": "Digi24 Extern",
+        "url": "https://www.digi24.ro/stiri/externe/reactie-din-canada-la-amenintarile-lui-trump-furios-din-cauza-incendiilor-de-vegetatie-e-inacceptabil-3868981"
+      }
+    ],
+    "first_source": "Politico EU",
+    "synthesis": "Președintele american Donald Trump a criticat autoritățile canadiene pentru modul în care gestionează incendiile de vegetație, după ce fumul dens a afectat calitatea aerului în mai multe state americane. Premierul provinciei Ontario, Doug Ford, a respins ferm aceste acuzații, catalogându-le drept inacceptabile. În timp ce oficialii americani au emis avertizări de sănătate pentru populație, tensiunile diplomatice au escaladat ca urmare a disputei privind responsabilitatea pentru poluarea transfrontalieră cauzată de fenomenele naturale."
   },
   {
     "url": "https://bzi.ro/vesti-bune-pentru-romani-ministrul-energiei-anunta-masuri-care-ar-putea-reduce-facturile-la-electricitate-5572637",
@@ -25346,352 +26071,6 @@
       "CFR Călători"
     ],
     "icon": "train",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://digi24.ro/stiri/actualitate/mirela-nemtanu-despre-cazul-viorel-pasca-statul-a-participat-nu-ca-spectator-a-fost-activ-implicat-in-functionarea-acestui-centru-3859081",
-    "original_link": "https://www.digi24.ro/stiri/actualitate/mirela-nemtanu-despre-cazul-viorel-pasca-statul-a-participat-nu-ca-spectator-a-fost-activ-implicat-in-functionarea-acestui-centru-3859081",
-    "source": "digi24",
-    "source_name": "Digi24",
-    "source_lang": "ro",
-    "title": "Statul, implicat activ în cazul centrului Viorel Pașca",
-    "category": "politic",
-    "published": "2026-07-12T17:04:51+00:00",
-    "model": "B",
-    "teaser": "Mirela Nemțanu susține că statul român a fost implicat activ, nu doar ca spectator, în funcționarea centrului de la Dumbrava, inclusiv prin trimiterea de pacienți, contrazicând ideea unei simple dezbateri.",
-    "entities": [
-      "Mirela Nemțanu",
-      "Viorel Pașca",
-      "Dumbrava"
-    ],
-    "icon": "gavel",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://dw.com/en/ukraine-s-zelenskyy-swaps-out-prime-minister-in-reshuffle/a-77924657?maca=en-rss-en-eu-2092-rdf",
-    "original_link": "https://www.dw.com/en/ukraine-s-zelenskyy-swaps-out-prime-minister-in-reshuffle/a-77924657?maca=en-rss-en-eu-2092-rdf",
-    "source": "dw_europe",
-    "source_name": "DW Europe",
-    "source_lang": "en",
-    "title": "Zelenskyy remaniază guvernul ucrainean, înlocuind premierul",
-    "category": "politic",
-    "published": "2026-07-12T17:03:00+00:00",
-    "model": "C",
-    "teaser": "Președintele Ucrainei, Volodimir Zelenskyy, a anunțat o remaniere guvernamentală, înlocuind-o pe prim-ministrul Yuliia Svyrydenko, care a ocupat funcția timp de un an.",
-    "entities": [
-      "Volodimir Zelenskyy",
-      "Iulia Sviridenko"
-    ],
-    "icon": "gavel",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false,
-    "sources": [
-      {
-        "name": "DW Europe",
-        "url": "https://www.dw.com/en/ukraine-s-zelenskyy-swaps-out-prime-minister-in-reshuffle/a-77924657?maca=en-rss-en-eu-2092-rdf"
-      },
-      {
-        "name": "Europa Liberă",
-        "url": "https://moldova.europalibera.org/a/zelenski-anunta-schimbarea-premierului-si-remanieri-in-guvern/33802488.html"
-      }
-    ],
-    "first_source": "DW Europe",
-    "synthesis": "Președintele ucrainean Volodimir Zelenskyy a anunțat o remaniere guvernamentală, inclusiv înlocuirea prim-ministrului Iulia Sviridenko. Schimbările vizează implementarea unei noi strategii politice, conform declarațiilor liderului de la Kiev."
-  },
-  {
-    "url": "https://politico.eu/article/frances-edge-in-the-ai-race-is-cheap-energy-if-american-big-tech-doesnt-plug-in-first",
-    "original_link": "https://www.politico.eu/article/frances-edge-in-the-ai-race-is-cheap-energy-if-american-big-tech-doesnt-plug-in-first/?utm_source=RSS_Feed&utm_medium=RSS&utm_campaign=RSS_Syndication",
-    "source": "politico_eu",
-    "source_name": "Politico EU",
-    "source_lang": "en",
-    "title": "Franța riscă să piardă avantajul AI din cauza energiei ieftine",
-    "category": "economic",
-    "published": "2026-07-12T16:32:24+00:00",
-    "model": "B",
-    "teaser": "Liderii tehnologici și politicienii francezi se tem că marile companii americane de tehnologie ar putea acapara accesul la energia electrică ieftină a țării, esențială pentru dezvoltarea inteligenței artificiale.",
-    "entities": [
-      "Franța",
-      "SUA"
-    ],
-    "icon": "bolt",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://digi24.ro/stiri/externe/in-rusia-profesorii-sunt-trimisi-sa-supravegheze-cozile-de-la-benzinarii-pe-fondul-crizei-de-carburanti-cum-sunt-recompensati-3859015",
-    "original_link": "https://www.digi24.ro/stiri/externe/in-rusia-profesorii-sunt-trimisi-sa-supravegheze-cozile-de-la-benzinarii-pe-fondul-crizei-de-carburanti-cum-sunt-recompensati-3859015",
-    "source": "extern",
-    "source_name": "Digi24 Extern",
-    "source_lang": "ro",
-    "title": "Profesorii ruși supraveghează cozile la benzinării din cauza crizei",
-    "category": "extern",
-    "published": "2026-07-12T16:29:16+00:00",
-    "model": "B",
-    "teaser": "În regiunea Krasnodar din Rusia, profesorii sunt mobilizați să supravegheze cozile la benzinării și să gestioneze conflictele, din cauza deficitului de carburanți.",
-    "entities": [
-      "Rusia",
-      "Krasnodar"
-    ],
-    "icon": "gas-station",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://digi24.ro/stiri/externe/in-rusia-profesorii-sunt-trimisi-sa-supravegheze-cozile-de-la-benzinarii-pe-fondul-crizei-de-carburanti-cum-sunt-recompensati-3859015",
-    "original_link": "https://www.digi24.ro/stiri/externe/in-rusia-profesorii-sunt-trimisi-sa-supravegheze-cozile-de-la-benzinarii-pe-fondul-crizei-de-carburanti-cum-sunt-recompensati-3859015",
-    "source": "digi24",
-    "source_name": "Digi24",
-    "source_lang": "ro",
-    "title": "Profesorii ruși supraveghează cozile la benzinării din cauza crizei",
-    "category": "extern",
-    "published": "2026-07-12T16:29:16+00:00",
-    "model": "B",
-    "teaser": "În regiunea Krasnodar din Rusia, profesorii sunt mobilizați să supravegheze cozile la benzinării și să gestioneze conflictele, din cauza deficitului de carburanți.",
-    "entities": [
-      "Rusia",
-      "Krasnodar"
-    ],
-    "icon": "gas-station",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://digi24.ro/stiri/externe/mapamond/bratul-lung-al-lui-putin-ajunge-pana-in-tara-soarelui-rasare-cum-a-devenit-japonia-un-cuib-pentru-spionii-rusi-care-vaneaza-tehnologie-3858965",
-    "original_link": "https://www.digi24.ro/stiri/externe/mapamond/bratul-lung-al-lui-putin-ajunge-pana-in-tara-soarelui-rasare-cum-a-devenit-japonia-un-cuib-pentru-spionii-rusi-care-vaneaza-tehnologie-3858965",
-    "source": "extern",
-    "source_name": "Digi24 Extern",
-    "source_lang": "ro",
-    "title": "Japonia, țintă pentru spionii ruși în căutare de tehnologie avansată",
-    "category": "extern",
-    "published": "2026-07-12T16:26:49+00:00",
-    "model": "B",
-    "teaser": "După invazia Ucrainei, spioni ruși expulzați din Occident s-au refugiat în Japonia pentru a colecta informații și a achiziționa tehnologie militară, inclusiv microcipuri.",
-    "entities": [
-      "Rusia",
-      "Japonia",
-      "Ucraina"
-    ],
-    "icon": "globe",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://prosport.ro/fotbal-extern/mirel-radoi-gaziantep-antrenamente-20482461",
-    "original_link": "https://www.prosport.ro/fotbal-extern/mirel-radoi-gaziantep-antrenamente-20482461",
-    "source": "prosport",
-    "source_name": "ProSport",
-    "source_lang": "ro",
-    "title": "Mirel Rădoi, supravegheat constant de patronul de la Gaziantep",
-    "category": "sport",
-    "published": "2026-07-12T16:25:50+00:00",
-    "model": "B",
-    "teaser": "Antrenorul român Mirel Rădoi se confruntă cu o supraveghere atentă din partea patronului echipei Gaziantep, Memik Yilmaz, care participă frecvent la antrenamente.",
-    "entities": [
-      "Mirel Rădoi",
-      "Gaziantep",
-      "Memik Yilmaz"
-    ],
-    "icon": "ball-football",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://prosport.ro/alte-sporturi/auto-moto/reactie-tulburatoare-fosta-iubita-adrian-rus-sinner-deces-pilot-20482493",
-    "original_link": "https://www.prosport.ro/alte-sporturi/auto-moto/reactie-tulburatoare-fosta-iubita-adrian-rus-sinner-deces-pilot-20482493",
-    "source": "prosport",
-    "source_name": "ProSport",
-    "source_lang": "ro",
-    "title": "Fosta iubită a pilotului Adrian Rus, mesaj emoționant după moartea sa",
-    "category": "sport",
-    "published": "2026-07-12T16:24:53+00:00",
-    "model": "B",
-    "teaser": "Bianca Iosif, fosta parteneră a pilotului român Adrian Rus „Sinner”, a transmis un mesaj tulburător după decesul acestuia în urma unui accident pe circuitul de la Brno.",
-    "entities": [
-      "Bianca Iosif",
-      "Adrian Rus",
-      "Brno"
-    ],
-    "icon": "ball-football",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://prosport.ro/diverse/cum-l-a-rasfatat-simona-halep-pe-dorin-mateiu-la-wimbledon-ce-delicatese-au-mancat-in-saloanele-elegante-din-anglia-exclusiv-20482489",
-    "original_link": "https://www.prosport.ro/diverse/cum-l-a-rasfatat-simona-halep-pe-dorin-mateiu-la-wimbledon-ce-delicatese-au-mancat-in-saloanele-elegante-din-anglia-exclusiv-20482489",
-    "source": "prosport",
-    "source_name": "ProSport",
-    "source_lang": "ro",
-    "title": "Simona Halep și Dorin Mateiu, răsfăț culinar la Wimbledon",
-    "category": "sport",
-    "published": "2026-07-12T16:21:59+00:00",
-    "model": "B",
-    "teaser": "Simona Halep și iubitul ei, Dorin Mateiu, au savurat delicatese specifice bucătăriei britanice în saloanele elegante ale Royal Box de la Wimbledon.",
-    "entities": [
-      "Simona Halep",
-      "Dorin Mateiu",
-      "Wimbledon"
-    ],
-    "icon": "ball-tennis",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://prosport.ro/fotbal-intern/superliga/fcsb-gigi-becali-ordin-mihai-stoica-20482488",
-    "original_link": "https://www.prosport.ro/fotbal-intern/superliga/fcsb-gigi-becali-ordin-mihai-stoica-20482488",
-    "source": "prosport",
-    "source_name": "ProSport",
-    "source_lang": "ro",
-    "title": "Gigi Becali impune prag de 1 milion euro pentru transferuri la FCSB",
-    "category": "sport",
-    "published": "2026-07-12T16:19:43+00:00",
-    "model": "B",
-    "teaser": "Finanțatorul FCSB, Gigi Becali, a stabilit ca Mihai Stoica să intervină personal în cazul transferurilor de jucători care depășesc suma de un milion de euro.",
-    "entities": [
-      "Gigi Becali",
-      "FCSB",
-      "Mihai Stoica"
-    ],
-    "icon": "ball-football",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://prosport.ro/fotbal-intern/superliga/vali-cretu-a-spus-cu-sinceritate-ce-crede-despre-transferul-lui-gnahore-de-la-dinamo-nici-nu-ma-intereseaza-20482468",
-    "original_link": "https://www.prosport.ro/fotbal-intern/superliga/vali-cretu-a-spus-cu-sinceritate-ce-crede-despre-transferul-lui-gnahore-de-la-dinamo-nici-nu-ma-intereseaza-20482468",
-    "source": "prosport",
-    "source_name": "ProSport",
-    "source_lang": "ro",
-    "title": "Vali Crețu, indiferent la transferul lui Gnahore de la Dinamo",
-    "category": "sport",
-    "published": "2026-07-12T16:05:48+00:00",
-    "model": "B",
-    "teaser": "Valentin Crețu a declarat că nu este interesat de transferul lui Eddy Gnahore de la Dinamo și i-a cerut lui Gigi Becali să aducă întăriri pentru FCSB.",
-    "entities": [
-      "Valentin Crețu",
-      "Eddy Gnahore",
-      "Dinamo",
-      "Gigi Becali"
-    ],
-    "icon": "ball-football",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://digi24.ro/stiri/externe/premierul-irakian-ali-al-zaidi-merge-la-washington-pentru-o-intalnire-cu-trump-dupa-promisiunea-de-a-dezarma-gruparile-pro-iraniene-3859065",
-    "original_link": "https://www.digi24.ro/stiri/externe/premierul-irakian-ali-al-zaidi-merge-la-washington-pentru-o-intalnire-cu-trump-dupa-promisiunea-de-a-dezarma-gruparile-pro-iraniene-3859065",
-    "source": "extern",
-    "source_name": "Digi24 Extern",
-    "source_lang": "ro",
-    "title": "Premierul irakian vizitează Washingtonul pentru discuții cu Trump",
-    "category": "politic",
-    "published": "2026-07-12T16:03:41+00:00",
-    "model": "B",
-    "teaser": "Premierul Irakului, Ali al-Zaidi, efectuează prima sa vizită oficială în străinătate la Washington, unde va discuta cu președintele Trump despre dezarmarea grupărilor pro-iraniene din Irak.",
-    "entities": [
-      "Ali al-Zaidi",
-      "Washington",
-      "Donald Trump",
-      "Irak"
-    ],
-    "icon": "flag",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://digi24.ro/stiri/externe/premierul-irakian-ali-al-zaidi-merge-la-washington-pentru-o-intalnire-cu-trump-dupa-promisiunea-de-a-dezarma-gruparile-pro-iraniene-3859065",
-    "original_link": "https://www.digi24.ro/stiri/externe/premierul-irakian-ali-al-zaidi-merge-la-washington-pentru-o-intalnire-cu-trump-dupa-promisiunea-de-a-dezarma-gruparile-pro-iraniene-3859065",
-    "source": "digi24",
-    "source_name": "Digi24",
-    "source_lang": "ro",
-    "title": "Premierul irakian vizitează Washingtonul pentru discuții cu Trump",
-    "category": "politic",
-    "published": "2026-07-12T16:03:41+00:00",
-    "model": "B",
-    "teaser": "Premierul Irakului, Ali al-Zaidi, efectuează prima sa vizită oficială în străinătate la Washington, unde va discuta cu președintele Trump despre dezarmarea grupărilor pro-iraniene din Irak.",
-    "entities": [
-      "Ali al-Zaidi",
-      "Washington",
-      "Donald Trump",
-      "Irak"
-    ],
-    "icon": "flag",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://theguardian.com/commentisfree/2026/jul/12/britain-car-suv-big-large-vehicle-road-pedestrians",
-    "original_link": "https://www.theguardian.com/commentisfree/2026/jul/12/britain-car-suv-big-large-vehicle-road-pedestrians",
-    "source": "guardian_eu",
-    "source_name": "The Guardian",
-    "source_lang": "en",
-    "title": "Mașinile din Marea Britanie devin mai mari, punând în pericol pietonii",
-    "category": "general",
-    "published": "2026-07-12T15:30:12+00:00",
-    "model": "B",
-    "teaser": "Vehiculele din Marea Britanie cresc în dimensiuni, devenind mai periculoase pentru pietoni și ocupând mai mult spațiu. Se caută soluții pentru a opri această tendință dăunătoare.",
-    "entities": [
-      "Marea Britanie"
-    ],
-    "icon": "car",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://spotmedia.ro/stiri/sport/pep-guardiola-e-dorit-pe-banca-unei-nationale-de-top-discutiile-sunt-deschise",
-    "original_link": "https://spotmedia.ro/stiri/sport/pep-guardiola-e-dorit-pe-banca-unei-nationale-de-top-discutiile-sunt-deschise",
-    "source": "spotmedia",
-    "source_name": "Spotmedia",
-    "source_lang": "ro",
-    "title": "Pep Guardiola, vizat de o națională de top din Europa",
-    "category": "sport",
-    "published": "2026-07-12T15:23:39+00:00",
-    "model": "B",
-    "teaser": "Antrenorul spaniol Pep Guardiola, liber de contract după plecarea de la Manchester City, este pe lista scurtă a unei naționale europene de prestigiu.",
-    "entities": [
-      "Pep Guardiola",
-      "Manchester City"
-    ],
-    "icon": "ball-football",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://spotmedia.ro/stiri/eveniment/ziua-1600-ucraina-a-ramas-fara-rachete-patriot-kievul-loveste-din-nou-rafinariile-rusiei-peste-230-000-de-militari-rusi-morti-identificati",
-    "original_link": "https://spotmedia.ro/stiri/eveniment/ziua-1600-ucraina-a-ramas-fara-rachete-patriot-kievul-loveste-din-nou-rafinariile-rusiei-peste-230-000-de-militari-rusi-morti-identificati",
-    "source": "spotmedia",
-    "source_name": "Spotmedia",
-    "source_lang": "ro",
-    "title": "Ucraina rămâne fără rachete Patriot, Rusia atacă rafinării",
-    "category": "extern",
-    "published": "2026-07-12T15:14:00+00:00",
-    "model": "B",
-    "teaser": "În ziua 1600 de război, Kievul se confruntă cu lipsa rachetelor Patriot, în timp ce Rusia continuă atacurile, inclusiv asupra rafinăriei din Sîzran. Ucraina ripostează lovind petroliere rusești.",
-    "entities": [
-      "Kiev",
-      "Patriot",
-      "Sîzran",
-      "Ucraina",
-      "Rusia"
-    ],
-    "icon": "rocket",
     "processed_by": "gemini",
     "prompt_version": "v2-esenta",
     "featured": false
