@@ -7,6 +7,12 @@ You are the MANAGER delegating to Devin Local (executor, model SWE-1.6, Devin De
 
 Protocol — every step is mandatory, in order:
 
+0. **Sync + load state.** `git fetch origin && git pull --ff-only` on `main` — the CI bot
+   commits content every ~30 min, so a spec written on a stale main rests on expired premises
+   (this burned a delegation on 2026-07-18). If the pull refuses because of local WIP, STOP
+   and report — never stash or discard user files. Then read `specs/STATE.md`: current task,
+   user WIP, blockers.
+
 1. **Verify premises TWICE, in text.** Before writing any spec line, confirm every factual claim
    the spec will rest on by reading the actual files (`Read`, `Grep`, `git ls-tree`, `git show`).
    Lesson from 2026-07-18: a spec claimed "no CI exists" while `.github/workflows/tests.yml`
@@ -21,7 +27,9 @@ Protocol — every step is mandatory, in order:
 4. **Hand off via CLI — zero screenshots.** Always go through the wrapper (never call devin.exe
    directly: a git-provider nudge menu blocks every raw headless run — see tools/devin_headless.py
    docstring). From the repo root, in background (Bash run_in_background):
-   `python tools/devin_headless.py --timeout 3600 -- -p "Read AGENTS.md, then execute specs/<task-slug>.md exactly. Report in Romanian." --permission-mode smart`
+   `python tools/devin_headless.py --timeout 3600 -- -p "Read AGENTS.md and specs/STATE.md (context, read-only), then execute specs/<task-slug>.md exactly. Report in Romanian." --permission-mode smart`
+   After launching, update `specs/STATE.md` → Current task: `<task-slug>`, branch
+   `devin/<task-slug>`, delegated <date>. STATE.md is manager-owned: Devin reads it, never writes it.
    Needs `pywinpty` (verified installed 2026-07-18). Model on Free plan: swe-1-6-slow.
    If the wrapper reports auth errors: user must run devin.exe `auth login` in their own terminal
    (one-time browser OAuth; CLI credentials are separate from the Desktop app). Do NOT fall back

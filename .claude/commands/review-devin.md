@@ -23,5 +23,10 @@ Review in TEXT via git — no screenshots, no UI. Every step mandatory:
    - **MERGE** — all checks green: merge into main locally, delete the branch, report. Do not push unless the user has said to.
    - **FIX** — small correctable issues: list them precisely and hand back to Devin with a follow-up instruction; do not fix them yourself (the executor owns the branch).
    - **REJECT** — scope violation, WIP damage, or net regression: delete the branch after confirming nothing of value is lost, state the reason in one paragraph, and record the lesson in memory if it is a new failure mode.
-6. **Report** in Romanian: verdict first, then evidence (real command output), then what it cost
+6. **Write the state.** Update `specs/STATE.md`: verdict + merge commit (or FIX/REJECT reason)
+   under "Last relevant commits", clear/replace "Current task", refresh "Next steps". Overwrite
+   in place — the file must stay under ~30 lines. This is what lets the next session (manager or
+   executor) start without re-reading the project.
+
+7. **Report** in Romanian: verdict first, then evidence (real command output), then what it cost
    (files touched, lines, anything rejected).

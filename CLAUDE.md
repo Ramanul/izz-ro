@@ -117,6 +117,12 @@ an interactive startup nudge blocks piped runs; the wrapper's docstring explains
 text-only (git diff + tests) with verdict MERGE/FIX/REJECT. Manager reviews and merges; the executor
 never pushes or merges.
 
+**Execution state (`specs/STATE.md`, added 2026-07-19):** the single source of truth for "where we
+are" — current task, last relevant commits, user WIP, blockers, next steps. Manager-owned writes:
+update it at the end of every slice and inside `/review-devin`; executors receive it read-only.
+Overwrite in place, keep it under ~30 lines. Start every session by reading it (after
+`git pull --ff-only` — the CI bot commits every ~30 min, so local main is always stale).
+
 Slash commands in `.claude/commands/`: **`/slice`** drives the mandatory §5 workflow for one vertical slice; **`/audit`** runs the front-end audit. Permission allowlist for the documented-safe commands lives in `.claude/settings.json` (this is §12 made enforceable — read-only and dev/build commands no longer prompt; push/commit/deletes still do). A web-only `SessionStart` hook (`.claude/hooks/session-start.sh`) installs the pipeline deps (with `SETUPTOOLS_USE_DISTUTILS=stdlib`, needed for feedparser/sgmllib3k) so Claude Code on the web can run the pipeline and these agents.
 
 ## 16. Two-role verification + honesty calibration — HARD RULE (owner decision 2026-07-12)
