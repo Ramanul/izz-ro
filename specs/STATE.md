@@ -34,6 +34,9 @@ waiting on user (key #2 / Google↔GitHub link).
   probe MAI from this IP; retest in days or from GitHub Actions.
 
 ## Next steps
+- `specs/geo-categorii.md` REWRITTEN + re-verified against `c2fefcb` (config.py-only: add
+  `regional`/`zonal` categories, move 8 CJ + 7 county papers from `local`→`zonal`, GOLD loader
+  stays `local`). Ready for `oc/geo-categorii` executor. Supersedes the stale version on PR #66.
 - Read feedcheck run 29715730835 results; prune dead feeds if any; watch next build.yml
   cron run time (worst case +8 min: 48 new feeds × TIMEOUT=10s, fetch_all is SEQUENTIAL).
 - Phase 1 batch 2+: raise `LOCAL_GOLD_LIMIT` gradually; parallel fetch is a candidate
