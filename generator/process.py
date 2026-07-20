@@ -164,6 +164,20 @@ def _parse_json_array(text: str) -> list:
     return []
 
 
+OFFICIAL_PREFIXES = ("pl_", "cj_", "pr_")
+
+
+def process_official(items: list) -> list:
+    done = []
+    for it in items:
+        out = process_single(it, None)
+        if out is None or out.get("skip"):
+            continue
+        out["processed_by"] = "official"
+        done.append(out)
+    return done
+
+
 def process_batch(items: list, provider) -> list:
     """Model B in LOT: un singur apel AI pentru `items`. Mapeaza raspunsul pe id (= index).
     Returneaza DOAR articolele procesate corect; cele nemapate NU se publica brute
@@ -206,6 +220,23 @@ def process_batch(items: list, provider) -> list:
             it["prompt_version"] = config.PROMPT_VERSION
             done.append(it)
         # nemapat/invalid -> nu il adaugam (reluat la rularea urmatoare)
+    return done
+
+
+OFFICIAL_PREFIXES = ("pl_", "cj_", "pr_")
+
+
+def process_official(items: list) -> list:
+    """Surse oficiale (primarii/CJ): fara AI. Titlu original + teaser trunchiat
+    (fallback determinist), marcate 'official' ca sa nu fie reluate de
+    upgrade_fallbacks."""
+    done = []
+    for it in items:
+        out = process_single(it, None)
+        if out is None or out.get("skip"):
+            continue
+        out["processed_by"] = "official"
+        done.append(out)
     return done
 
 
