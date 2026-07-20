@@ -5,12 +5,15 @@
 > Executors receive this file as read-only context. Overwrite sections in place — never let
 > this file grow past ~30 lines of content.
 
-**Updated:** 2026-07-20 (slice: geo-categorii merged; parallel-fetch delegated)
+**Updated:** 2026-07-20 (slice: geo-categorii merged; parallel-fetch + track-cost-per-slice delegated)
 
 ## Current task
 `parallel-fetch` — spec `specs/parallel-fetch.md`, branch `oc/parallel-fetch`, delegated
 2026-07-20 (prereq for raising LOCAL_GOLD_LIMIT past ~100). In parallel, manager research
 agents are hunting REGIONAL publications; feedcheck cycle follows, then populate `regional`.
+`track-cost-per-slice` — spec `specs/track-cost-per-slice.md`, branch
+`devin/track-cost-per-slice`, delegated to Devin Local 2026-07-20 (metrics.log + helper CLI
+for solo-vs-executor cost accounting). Awaiting Devin report, then `/review-devin`.
 Jules CLI onboarding still blocked: 401 despite login OK + GitHub App installed —
 waiting on user (key #2 / Google↔GitHub link).
 
