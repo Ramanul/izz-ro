@@ -10,9 +10,11 @@ def test_strip_diacritics_empty_and_ascii():
 
 def test_normalize_url_no_scheme_and_port():
     result = normalize_url("www.Example.com/articol")
-    assert result.startswith("https://")
+    assert result == "https://example.com/articol"
     result_port = normalize_url("https://example.com:8080/path")
     assert ":8080" in result_port
+    result_bare = normalize_url("example.com/x")
+    assert result_bare == "https://example.com/x"
 
 
 def test_normalize_url_empty_and_query_stripping():
