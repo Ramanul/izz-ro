@@ -14,7 +14,7 @@ except ImportError:
     pass
 
 from . import fetch, state, cluster, moderation, config
-from .process import get_provider, process_single, process_cluster, process_batch
+from .process import get_provider, process_single, process_cluster, process_batch, process_official, OFFICIAL_PREFIXES
 
 
 def _utf8_stdout():
@@ -36,8 +36,12 @@ def process_new(new_items: list, provider, budget: int, existing: list | None = 
     distanta cad in rulari diferite si altfel ar aparea ca stiri duplicate separate.
     Doar clusterele atinse de items NOI consuma AI; stirea B absorbita e inlocuita de
     sinteza C (prin `folded` + inlocuirea pe URL in run()).
+
+    Sursele oficiale (pl_/cj_/pr_) sunt procesate determinist, fara AI budget.
     """
     used = 0
+    official = [i for i in new_items if str(i.get("source", "")).startswith(OFFICIAL_PREFIXES)]
+    new_items = [i for i in new_items if i not in official]
     new_urls = {i["url"] for i in new_items}
     recent_b = [a for a in (existing or [])
                 if a.get("model") == "B" and a.get("url") not in new_urls]
@@ -70,6 +74,9 @@ def process_new(new_items: list, provider, budget: int, existing: list | None = 
             break  # restul loturilor -> reluate la rularea urmatoare
         processed.extend(process_batch(singles[i:i + bs], provider))
         used += 1
+
+    if official:
+        processed.extend(process_official(official))
 
     return processed, folded, used
 
