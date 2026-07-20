@@ -24,8 +24,8 @@ SOURCES = {
             "scena9":     {"name": "Scena 9",         "url": "https://www.scena9.ro/feed",              "category": "cultura"},
             "bookhub":    {"name": "Bookhub",         "url": "https://bookhub.ro/feed",                 "category": "cultura"},
             "nwradu":       {"name": "NwRadu",         "url": "https://www.nwradu.ro/feed/",           "category": "discounturi"},
-    # local — surse OFICIALE gratuite (primarii + consilii judetene) cu RSS
-    # (cerinta owner 2026-07-17: informatii de la primarii si judete). 16 candidati verificati
+    # local — primărie (UAT); zonal/județean — consilii județene + ziare județene.
+    # Cerința owner 2026-07-17: informații de la primării și județe. 16 candidați verificați
     # cu feedcheck.yml in CI (run 29588587064, 2026-07-17): doar cei 3 de mai jos au feed VIU.
     # Cazuti la verificare (nu re-adauga fara re-test): primariatm/apulum/sibiu/primariacraiova/
     # baiamare/primariagalati/cjmaramures = 404, cjalba = 403, icc.ro = timeout, cjsuceava =
@@ -33,28 +33,28 @@ SOURCES = {
     # raspund dar sunt inghetate. Majoritatea primariilor NU au RSS -> acoperirea "toate
     # primariile din tara" cere faza "Monitor Local" (html_list pe paginile de anunturi).
             "pr_buzau":     {"name": "Primăria Buzău",      "url": "https://primariabuzau.ro/feed/",         "category": "local"},
-            "cj_cluj":      {"name": "CJ Cluj",             "url": "https://www.cjcluj.ro/feed/",            "category": "local"},
-            "cj_timis":     {"name": "CJ Timiș",            "url": "https://www.cjtimis.ro/feed",            "category": "local"},
+            "cj_cluj":      {"name": "CJ Cluj",             "url": "https://www.cjcluj.ro/feed/",            "category": "zonal"},
+            "cj_timis":     {"name": "CJ Timiș",            "url": "https://www.cjtimis.ro/feed",            "category": "zonal"},
             # CJ cazuti la feedcheck 2026-07-20 (nu re-adauga fara re-test): arad/bihor/ilfov/sibiu=GOL, buzau=502, iasi=timeout, calarasi=inghetat 2022
-            "cj_botosani":  {"name": "CJ Botoșani",         "url": "https://www.cjbotosani.ro/feed/",         "category": "local"},
-            "cj_galati":    {"name": "CJ Galați",           "url": "https://cjgalati.ro/feed/",               "category": "local"},
-            "cj_giurgiu":   {"name": "CJ Giurgiu",          "url": "https://cjgiurgiu.ro/feed/",              "category": "local"},
-            "cj_ialomita":  {"name": "CJ Ialomița",         "url": "https://cjialomita.ro/feed/",             "category": "local"},
-            "cj_vaslui":    {"name": "CJ Vaslui",           "url": "https://cjvs.eu/feed/",                   "category": "local"},
-            "cj_vrancea":   {"name": "CJ Vrancea",          "url": "https://cjvrancea.ro/feed/",              "category": "local"},
-    # local — ZIARE JUDETENE cu RSS (flux excelent, spre deosebire de paginile de primarie
-    # care sunt blocate/JS). Acopera "informatii de la judete" cerute de owner. Categoria e
-    # PINNED (axa geografica): un articol de la ziarul judetean ramane 'local', nu e mutat pe
-    # tema. Cei 7 de mai jos = feed VIU la feedcheck (run 29605677325, 2026-07-17). Cazuti la
+            "cj_botosani":  {"name": "CJ Botoșani",         "url": "https://www.cjbotosani.ro/feed/",         "category": "zonal"},
+            "cj_galati":    {"name": "CJ Galați",           "url": "https://cjgalati.ro/feed/",               "category": "zonal"},
+            "cj_giurgiu":   {"name": "CJ Giurgiu",          "url": "https://cjgiurgiu.ro/feed/",              "category": "zonal"},
+            "cj_ialomita":  {"name": "CJ Ialomița",         "url": "https://cjialomita.ro/feed/",             "category": "zonal"},
+            "cj_vaslui":    {"name": "CJ Vaslui",           "url": "https://cjvs.eu/feed/",                   "category": "zonal"},
+            "cj_vrancea":   {"name": "CJ Vrancea",          "url": "https://cjvrancea.ro/feed/",              "category": "zonal"},
+    # zonal — ZIARE JUDETENE cu RSS (flux excelent, spre deosebire de paginile de primărie
+    # care sunt blocate/JS). Acoperă "informații de la județe" cerute de owner. Categoria e
+    # PINNED (axă geografică): un articol de la ziarul județean rămâne 'zonal', nu e mutat pe
+    # temă. Cei 7 de mai jos = feed VIU la feedcheck (run 29605677325, 2026-07-17). Cazuti la
     # verificare (nu re-adauga fara re-test): stiridecluj.ro/feed=404, ziuaconstanta rss.html=
     # 0 intrari, gds.ro=403, ebihoreanul=500. Acoperire: Cluj/Iasi/Timis/Brasov.
-            "zcj":          {"name": "Ziua de Cluj",        "url": "https://zcj.ro/feed",                    "category": "local"},
-            "bzi":          {"name": "BZI Iași",            "url": "https://www.bzi.ro/feed",                "category": "local"},
-            "ziaruldeiasi": {"name": "Ziarul de Iași",      "url": "https://www.ziaruldeiasi.ro/rss",        "category": "local"},
-            "pressalert":   {"name": "PressAlert Timișoara","url": "https://www.pressalert.ro/feed/",         "category": "local"},
-            "tion":         {"name": "Timiș Online",        "url": "https://www.tion.ro/feed/",              "category": "local"},
-            "bizbrasov":    {"name": "BizBrașov",           "url": "https://www.bizbrasov.ro/feed",          "category": "local"},
-            "newsbv":       {"name": "News Brașov",         "url": "https://www.newsbv.ro/feed/",            "category": "local"},
+            "zcj":          {"name": "Ziua de Cluj",        "url": "https://zcj.ro/feed",                    "category": "zonal"},
+            "bzi":          {"name": "BZI Iași",            "url": "https://www.bzi.ro/feed",                "category": "zonal"},
+            "ziaruldeiasi": {"name": "Ziarul de Iași",      "url": "https://www.ziaruldeiasi.ro/rss",        "category": "zonal"},
+            "pressalert":   {"name": "PressAlert Timișoara","url": "https://www.pressalert.ro/feed/",         "category": "zonal"},
+            "tion":         {"name": "Timiș Online",        "url": "https://www.tion.ro/feed/",              "category": "zonal"},
+            "bizbrasov":    {"name": "BizBrașov",           "url": "https://www.bizbrasov.ro/feed",          "category": "zonal"},
+            "newsbv":       {"name": "News Brașov",         "url": "https://www.newsbv.ro/feed/",            "category": "zonal"},
     # extern — Europa/UE/vecinatate (en, AI traduce) + surse ro
             "bbc_europe": {"name": "BBC Europe",    "url": "https://feeds.bbci.co.uk/news/world/europe/rss.xml", "category": "extern", "lang": "en"},
             "guardian_eu":{"name": "The Guardian",  "url": "https://www.theguardian.com/world/europe-news/rss",  "category": "extern", "lang": "en"},
@@ -102,16 +102,17 @@ if _gold:
 AGENCY_BLOCKLIST = ["agerpres", "mediafax", "reuters", "afp.com", "apnews", "ap.org"]
 
 CATEGORIES = ["general", "politic", "economic", "extern", "tech", "sport",
-              "auto", "sanatate", "cultura", "lifestyle", "discounturi", "local"]
+              "auto", "sanatate", "cultura", "lifestyle", "discounturi",
+              "regional", "zonal", "local"]
 
 # Categorii in INSAMANTARE: nou-adaugate, cu surse de volum mic — pot fi goale fara sa pice
 # QA (warn, nu FAIL). Se scot de aici dupa ce categoria s-a populat stabil.
-SEED_CATEGORIES = {"local"}
+SEED_CATEGORIES = {"regional", "zonal", "local"}
 
 # Categorii GEOGRAFICE (axa proprie): articolele surselor cu aceste categorii NU sunt
 # re-clasificate pe tema de catre AI (vezi process._resolve_category). Un ziar judetean
 # ramane in sectiunea 'local', nu ajunge pe sport/politic dupa continut.
-PINNED_CATEGORIES = {"local"}
+PINNED_CATEGORIES = {"regional", "zonal", "local"}
 
 # Etichete AFISATE (owner 2026-07-17): slug-ul din URL ramane neschimbat (SEO), doar
 # textul din nav/titluri/carduri foloseste aceste nume. Fallback = slug capitalizat.
@@ -119,7 +120,7 @@ CATEGORY_LABELS = {
     "general": "Actualitate", "politic": "Politică", "economic": "Economie",
     "extern": "Externe", "tech": "Tech", "sport": "Sport", "auto": "Auto",
     "sanatate": "Sănătate", "cultura": "Cultură", "lifestyle": "Lifestyle",
-    "discounturi": "Discounturi", "local": "Local",
+    "discounturi": "Discounturi", "regional": "Regional", "zonal": "Zonal", "local": "Local",
 }
 
 # Model B+C
