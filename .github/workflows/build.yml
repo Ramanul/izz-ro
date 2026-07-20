@@ -46,7 +46,7 @@ jobs:
       - name: Chromium pentru imagini (best-effort)
         id: chrome
         continue-on-error: true
-        uses: browser-actions/setup-chrome@v1
+        uses: browser-actions/setup-chrome@v2
 
       - name: Ruleaza pipeline (fetch + AI, buget)
         env:
