@@ -8,10 +8,9 @@
 **Updated:** 2026-07-20 (slice: priority-order fix merged; local backlog draining)
 
 ## Current task
-None in flight. Manual build dispatched post-merge — verify pl_/cj_ articles land in
-`data/articles.json` as the AI budget drains the backlog (~40 items/run, cron 30 min).
-Jules CLI onboarding still blocked: 401 despite login OK + GitHub App installed —
-waiting on user (key #2 / Google↔GitHub link).
+`parallel-fetch` — spec `specs/parallel-fetch.md`, branch `oc/parallel-fetch`, delegated
+2026-07-20 (prereq for raising LOCAL_GOLD_LIMIT past ~100). In parallel, manager research
+agents are hunting REGIONAL publications; feedcheck cycle follows, then populate `regional`.
 
 ## Last relevant commits
 - `oc/local-sources-priority-order` MERGED (cfccbc8, OpenCode, 72/72): gold sources
