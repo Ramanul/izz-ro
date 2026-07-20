@@ -22,13 +22,16 @@ an append-only CSV log plus a tiny stdlib helper CLI.
 
 **Scope — authorized files ONLY:**
 1. `tools/log_slice.py` — CREATE — argparse CLI, stdlib only (argparse, csv, pathlib, datetime).
-   Flags: `--slice STR` (required), `--approach {solo,devin,oc}` (required),
+   Flags: `--slice STR` (required), `--approach {solo,devin,oc,jules}` (required),
    `--diff-lines INT` (required), `--executor-branch STR` (optional, default ""),
    `--duration-min INT` (optional, default ""), `--notes STR` (optional, default "").
    Behavior: if `specs/metrics.log` missing, create with header row
    `date,slice,approach,executor_branch,diff_lines,duration_min,notes` then append.
    If present, append only. `date` = today in `YYYY-MM-DD`. Use `csv.writer` with
    quoting=`csv.QUOTE_MINIMAL` so notes with commas are safe. Print the appended row to stdout.
+   Sanitize `notes` against CSV/formula injection: if it starts with `=`, `+`, `-`, `@`,
+   or a tab/CR, prefix it with a single `'` before writing (spreadsheet-safe escaping;
+   does not affect CSV parsing, only how spreadsheet apps render the cell).
    No side effects beyond writing `specs/metrics.log`. No network. Exit 0 on success.
 2. `specs/metrics.log` — DO NOT commit an empty file; will be created on first run of the helper.
    (Devin: do NOT `touch` this file — verification below creates it.)
