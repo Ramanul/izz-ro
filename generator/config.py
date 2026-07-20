@@ -35,6 +35,19 @@ SOURCES = {
             "pr_buzau":     {"name": "Primăria Buzău",      "url": "https://primariabuzau.ro/feed/",         "category": "local"},
             "cj_cluj":      {"name": "CJ Cluj",             "url": "https://www.cjcluj.ro/feed/",            "category": "local"},
             "cj_timis":     {"name": "CJ Timiș",            "url": "https://www.cjtimis.ro/feed",            "category": "local"},
+            "cj_arad":      {"name": "CJ Arad",             "url": "https://www.cjarad.ro/feed/",            "category": "local"},
+            "cj_bihor":     {"name": "CJ Bihor",            "url": "https://www.cjbihor.ro/feed/",            "category": "local"},
+            "cj_botosani":  {"name": "CJ Botoșani",         "url": "https://www.cjbotosani.ro/feed/",         "category": "local"},
+            "cj_buzau":     {"name": "CJ Buzău",            "url": "https://cjbuzau.ro/feed/",                "category": "local"},
+            "cj_calarasi":  {"name": "CJ Călărași",         "url": "https://www.calarasi.ro/feed/",           "category": "local"},
+            "cj_galati":    {"name": "CJ Galați",           "url": "https://cjgalati.ro/feed/",               "category": "local"},
+            "cj_giurgiu":   {"name": "CJ Giurgiu",          "url": "https://cjgiurgiu.ro/feed/",              "category": "local"},
+            "cj_ialomita":  {"name": "CJ Ialomița",         "url": "https://cjialomita.ro/feed/",             "category": "local"},
+            "cj_iasi":      {"name": "CJ Iași",             "url": "https://www.icc.ro/feed/",                "category": "local"},
+            "cj_ilfov":     {"name": "CJ Ilfov",            "url": "https://cjilfov.ro/feed/",                "category": "local"},
+            "cj_sibiu":     {"name": "CJ Sibiu",            "url": "https://www.cjsibiu.ro/feed/",            "category": "local"},
+            "cj_vaslui":    {"name": "CJ Vaslui",           "url": "https://cjvs.eu/feed/",                   "category": "local"},
+            "cj_vrancea":   {"name": "CJ Vrancea",          "url": "https://cjvrancea.ro/feed/",              "category": "local"},
     # local — ZIARE JUDETENE cu RSS (flux excelent, spre deosebire de paginile de primarie
     # care sunt blocate/JS). Acopera "informatii de la judete" cerute de owner. Categoria e
     # PINNED (axa geografica): un articol de la ziarul judetean ramane 'local', nu e mutat pe
@@ -79,6 +92,10 @@ SOURCES = {
             "cursdeguv":  {"name": "Curs de Guvernare", "url": "https://cursdeguvernare.ro/feed",       "category": "economic"},
             "protv":      {"name": "Știrile ProTV","url": "https://stirileprotv.ro/rss",               "category": "general"},
 }
+from generator.local_sources import load_gold_sources
+_GOLD_CSV = os.path.join(ROOT, "data", "primarii_lists", "gold_integrare.csv")
+SOURCES.update(load_gold_sources(_GOLD_CSV, int(os.environ.get("LOCAL_GOLD_LIMIT", "35"))))
+
 # Exclude orice URL/sursă de agenție (verificare suplimentară pe domeniul linkului)
 AGENCY_BLOCKLIST = ["agerpres", "mediafax", "reuters", "afp.com", "apnews", "ap.org"]
 
