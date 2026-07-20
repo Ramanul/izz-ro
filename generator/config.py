@@ -35,17 +35,11 @@ SOURCES = {
             "pr_buzau":     {"name": "Primăria Buzău",      "url": "https://primariabuzau.ro/feed/",         "category": "local"},
             "cj_cluj":      {"name": "CJ Cluj",             "url": "https://www.cjcluj.ro/feed/",            "category": "local"},
             "cj_timis":     {"name": "CJ Timiș",            "url": "https://www.cjtimis.ro/feed",            "category": "local"},
-            "cj_arad":      {"name": "CJ Arad",             "url": "https://www.cjarad.ro/feed/",            "category": "local"},
-            "cj_bihor":     {"name": "CJ Bihor",            "url": "https://www.cjbihor.ro/feed/",            "category": "local"},
+            # CJ cazuti la feedcheck 2026-07-20 (nu re-adauga fara re-test): arad/bihor/ilfov/sibiu=GOL, buzau=502, iasi=timeout, calarasi=inghetat 2022
             "cj_botosani":  {"name": "CJ Botoșani",         "url": "https://www.cjbotosani.ro/feed/",         "category": "local"},
-            "cj_buzau":     {"name": "CJ Buzău",            "url": "https://cjbuzau.ro/feed/",                "category": "local"},
-            "cj_calarasi":  {"name": "CJ Călărași",         "url": "https://www.calarasi.ro/feed/",           "category": "local"},
             "cj_galati":    {"name": "CJ Galați",           "url": "https://cjgalati.ro/feed/",               "category": "local"},
             "cj_giurgiu":   {"name": "CJ Giurgiu",          "url": "https://cjgiurgiu.ro/feed/",              "category": "local"},
             "cj_ialomita":  {"name": "CJ Ialomița",         "url": "https://cjialomita.ro/feed/",             "category": "local"},
-            "cj_iasi":      {"name": "CJ Iași",             "url": "https://www.icc.ro/feed/",                "category": "local"},
-            "cj_ilfov":     {"name": "CJ Ilfov",            "url": "https://cjilfov.ro/feed/",                "category": "local"},
-            "cj_sibiu":     {"name": "CJ Sibiu",            "url": "https://www.cjsibiu.ro/feed/",            "category": "local"},
             "cj_vaslui":    {"name": "CJ Vaslui",           "url": "https://cjvs.eu/feed/",                   "category": "local"},
             "cj_vrancea":   {"name": "CJ Vrancea",          "url": "https://cjvrancea.ro/feed/",              "category": "local"},
     # local — ZIARE JUDETENE cu RSS (flux excelent, spre deosebire de paginile de primarie

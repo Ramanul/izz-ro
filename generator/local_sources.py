@@ -11,7 +11,7 @@ def _make_slug(judet: str, localitate: str) -> str:
     return slug
 
 
-def load_gold_sources(csv_path: str, limit: int) -> dict:
+def load_gold_sources(csv_path: str, limit: int, min_date: str = "2026-01-01") -> dict:
     if limit <= 0:
         return {}
     if not os.path.isfile(csv_path):
@@ -23,9 +23,12 @@ def load_gold_sources(csv_path: str, limit: int) -> dict:
         for row in reader:
             rss_url = (row.get("rss_url") or "").strip()
             if row.get("rss_ok") == "yes" and rss_url:
-                rows.append(row)
+                last_date = (row.get("last_signal_date") or "").strip()
+                if last_date and last_date >= min_date:
+                    rows.append(row)
 
     rows.sort(key=lambda r: (r["judet"], r["localitate"]))
+    rows.sort(key=lambda r: r.get("last_signal_date") or "", reverse=True)
 
     result = {}
     for row in rows[:limit]:
