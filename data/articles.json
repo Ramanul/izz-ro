@@ -1,5 +1,297 @@
 [
   {
+    "url": "https://zf.ro/companii/energie/danezii-de-la-eurowind-incep-constructia-a-trei-parcuri-eoliene-in-galati-si-constanta-cu-o-capacitate-totala-de-138-mw-23198674",
+    "original_link": "https://www.zf.ro/companii/energie/danezii-de-la-eurowind-incep-constructia-a-trei-parcuri-eoliene-in-galati-si-constanta-cu-o-capacitate-totala-de-138-mw-23198674",
+    "source": "zf",
+    "source_name": "Ziarul Financiar",
+    "source_lang": "ro",
+    "title": "Eurowind Energy demarează construcția a trei parcuri eoliene în județele Galați și Constanța",
+    "category": "economic",
+    "published": "2026-07-20T07:16:03+00:00",
+    "model": "C",
+    "sources": [
+      {
+        "name": "Ziarul Financiar",
+        "url": "https://www.zf.ro/companii/energie/danezii-de-la-eurowind-incep-constructia-a-trei-parcuri-eoliene-in-galati-si-constanta-cu-o-capacitate-totala-de-138-mw-23198674"
+      },
+      {
+        "name": "Economica",
+        "url": "https://www.economica.net/noi-parcuri-eoliene-in-romania-danezii-de-la-eurowind-incep-constructia-a-trei-centrale-eoliene-138-mw-in-galati-si-constanta_960699.html"
+      }
+    ],
+    "first_source": "Ziarul Financiar",
+    "synthesis": "Compania daneză Eurowind Energy a primit autorizațiile necesare de la ANRE pentru a începe dezvoltarea a trei centrale eoliene în România. Proiectele, denumite Frumușița, Vector și Pecineaga Nord-Est, vor fi amplasate în județele Galați și Constanța. Aceste investiții vor adăuga o capacitate totală de 138 MW în sistemul energetic național, marcând o etapă importantă în extinderea infrastructurii de energie regenerabilă a dezvoltatorului pe piața locală.",
+    "entities": [
+      "Eurowind Energy",
+      "ANRE",
+      "Galați",
+      "Constanța"
+    ],
+    "icon": "bolt",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://digi24.ro/stiri/externe/ue/ancheta-in-italia-dupa-ce-un-barbat-de-43-de-ani-a-murit-in-timp-ce-era-imobilizat-de-politisti-3869603",
+    "original_link": "https://www.digi24.ro/stiri/externe/ue/ancheta-in-italia-dupa-ce-un-barbat-de-43-de-ani-a-murit-in-timp-ce-era-imobilizat-de-politisti-3869603",
+    "source": "extern",
+    "source_name": "Digi24 Extern",
+    "source_lang": "ro",
+    "title": "Anchetă în Bologna după decesul unui bărbat imobilizat de polițiști",
+    "category": "extern",
+    "published": "2026-07-20T07:12:59+00:00",
+    "model": "C",
+    "sources": [
+      {
+        "name": "Digi24 Extern",
+        "url": "https://www.digi24.ro/stiri/externe/ue/ancheta-in-italia-dupa-ce-un-barbat-de-43-de-ani-a-murit-in-timp-ce-era-imobilizat-de-politisti-3869603"
+      },
+      {
+        "name": "G4Media",
+        "url": "https://www.g4media.ro/ancheta-in-italia-dupa-ce-un-barbat-a-murit-in-timp-ce-era-imobilizat-de-politisti.html"
+      }
+    ],
+    "first_source": "Digi24 Extern",
+    "synthesis": "Un bărbat de 43 de ani a decedat duminică în Bologna, Italia, în timpul unei intervenții a forțelor de ordine. Imaginile video apărute în presă surprind momentul în care doi agenți îl mențin pe acesta la sol, cu fața în jos, timp de mai multe minute, până când victima încetează să mai dea semne de viață. Autoritățile italiene au demarat o anchetă oficială pentru a clarifica circumstanțele exacte ale acestui incident tragic.",
+    "entities": [
+      "Bologna",
+      "Italia"
+    ],
+    "icon": "alert-triangle",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://economica.net/gigantul-american-lockheed-martin-anunta-ca-va-produce-rachete-low-cost-pentru-sistemul-patriot_960692.html",
+    "original_link": "https://www.economica.net/gigantul-american-lockheed-martin-anunta-ca-va-produce-rachete-low-cost-pentru-sistemul-patriot_960692.html",
+    "source": "economica",
+    "source_name": "Economica",
+    "source_lang": "ro",
+    "title": "Lockheed Martin dezvoltă interceptoare Patriot mai accesibile pentru a contracara noile amenințări aeriene",
+    "category": "economic",
+    "published": "2026-07-20T07:12:04+00:00",
+    "model": "C",
+    "sources": [
+      {
+        "name": "Economica",
+        "url": "https://www.economica.net/gigantul-american-lockheed-martin-anunta-ca-va-produce-rachete-low-cost-pentru-sistemul-patriot_960692.html"
+      },
+      {
+        "name": "G4Media",
+        "url": "https://www.g4media.ro/compania-americana-lockheed-martin-va-produce-interceptoare-mai-ieftine-pentru-sistemul-patriot-pe-fondul-cresterii-costurilor-cu-apararea-aeriana.html"
+      }
+    ],
+    "first_source": "Economica",
+    "synthesis": "Gigantul american din industria apărării, Lockheed Martin, a anunțat oficial producția unei variante mai economice a rachetelor pentru sistemul Patriot. Această decizie strategică vine ca răspuns la cererea globală pentru soluții de apărare aeriană mai ieftine, capabile să neutralizeze dronele și rachetele inamice. Totodată, inițiativa urmărește menținerea competitivității companiei în fața startup-urilor tehnologice care produc armament accesibil și scalabil. Nu există contradicții între sursele consultate privind acest demers industrial.",
+    "entities": [
+      "Lockheed Martin",
+      "Patriot"
+    ],
+    "icon": "rocket",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://csid.ro/stiri/greva-de-avertisment-in-spitalele-din-romania-cadrele-medicale-ameninta-cu-blocarea-sistemului-din-28-iulie-21254455",
+    "original_link": "https://www.csid.ro/stiri/greva-de-avertisment-in-spitalele-din-romania-cadrele-medicale-ameninta-cu-blocarea-sistemului-din-28-iulie-21254455/",
+    "source": "csid",
+    "source_name": "CSÎD",
+    "source_lang": "ro",
+    "title": "Cadrele medicale din România protestează și amenință cu declanșarea grevei generale pe 28 iulie",
+    "category": "sanatate",
+    "published": "2026-07-20T07:04:08+00:00",
+    "model": "C",
+    "sources": [
+      {
+        "name": "CSÎD",
+        "url": "https://www.csid.ro/stiri/greva-de-avertisment-in-spitalele-din-romania-cadrele-medicale-ameninta-cu-blocarea-sistemului-din-28-iulie-21254455/"
+      },
+      {
+        "name": "Digi24",
+        "url": "https://www.digi24.ro/stiri/actualitate/sanatate/proteste-in-sute-de-spitale-din-romania-cadrele-medicale-ameninta-cu-greva-generala-din-28-iulie-3869571"
+      }
+    ],
+    "first_source": "CSÎD",
+    "synthesis": "Federația Sanitas a organizat luni, 20 iulie 2026, greve de avertisment în unități sanitare din întreaga țară. Personalul medical contestă noua lege a salarizării și politica de blocare a posturilor vacante. Sindicaliștii au anunțat că, în absența unor soluții concrete din partea autorităților, vor trece la greva generală începând cu data de 28 iulie, acțiune ce ar putea paraliza activitatea spitalicească la nivel național. Sursele sunt convergente cu privire la motivele și calendarul protestelor.",
+    "entities": [
+      "Federația Sanitas",
+      "România"
+    ],
+    "icon": "building-hospital",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://economica.net/gazoduct-intre-nigeria-si-maroc-sefii-de-stat-din-comunitatea-economica-a-statelor-africii-de-vest-cedeao-au-aprobat-constructia-conductei_960686.html",
+    "original_link": "https://www.economica.net/gazoduct-intre-nigeria-si-maroc-sefii-de-stat-din-comunitatea-economica-a-statelor-africii-de-vest-cedeao-au-aprobat-constructia-conductei_960686.html",
+    "source": "economica",
+    "source_name": "Economica",
+    "source_lang": "ro",
+    "title": "Liderii statelor din Africa de Vest au aprobat construcția gazoductului Nigeria-Maroc",
+    "category": "economic",
+    "published": "2026-07-20T06:44:30+00:00",
+    "model": "C",
+    "sources": [
+      {
+        "name": "Economica",
+        "url": "https://www.economica.net/gazoduct-intre-nigeria-si-maroc-sefii-de-stat-din-comunitatea-economica-a-statelor-africii-de-vest-cedeao-au-aprobat-constructia-conductei_960686.html"
+      },
+      {
+        "name": "Digi24 Extern",
+        "url": "https://www.digi24.ro/stiri/externe/mapamond/liderii-africii-de-vest-au-aprobat-gazoductul-nigeria-maroc-proiectul-de-23-de-miliarde-de-euro-va-alimenta-si-europa-3869577"
+      }
+    ],
+    "first_source": "Economica",
+    "synthesis": "Șefii de stat din cadrul Comunității Economice a Statelor Africii de Vest au semnat un acord interguvernamental pentru realizarea unui gazoduct strategic între Nigeria și Maroc. Proiectul, evaluat la 23 de miliarde de euro, vizează transportul resurselor energetice către statele africane și, ulterior, către piața europeană. Această decizie marchează un pas esențial în dezvoltarea infrastructurii energetice regionale, consolidând cooperarea economică între țările semnatare și facilitând exportul de gaze naturale către Europa.",
+    "entities": [
+      "CEDEAO",
+      "Nigeria",
+      "Maroc"
+    ],
+    "icon": "gas-station",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://economica.net/s-au-castigat-7-premii-mici-la-loto-6-49-report-de-84-milioane-de-euro-la-categoria-1_960680.html",
+    "original_link": "https://www.economica.net/s-au-castigat-7-premii-mici-la-loto-6-49-report-de-84-milioane-de-euro-la-categoria-1_960680.html",
+    "source": "economica",
+    "source_name": "Economica",
+    "source_lang": "ro",
+    "title": "Șapte jucători au câștigat premii de categoria a II-a la tragerea Loto 6/49",
+    "category": "economic",
+    "published": "2026-07-20T06:26:57+00:00",
+    "model": "C",
+    "sources": [
+      {
+        "name": "Economica",
+        "url": "https://www.economica.net/s-au-castigat-7-premii-mici-la-loto-6-49-report-de-84-milioane-de-euro-la-categoria-1_960680.html"
+      },
+      {
+        "name": "Știrile ProTV",
+        "url": "https://stirileprotv.ro/stiri/actualitate/sapte-jucatori-au-castigat-premii-de-peste-69-000-de-lei-la-tragerea-loto-6-49-de-duminica-unde-au-fost-jucate-biletele.html"
+      },
+      {
+        "name": "HotNews",
+        "url": "https://hotnews.ro/sapte-premii-s-au-castigat-duminica-la-loto-6-49-2304762"
+      }
+    ],
+    "first_source": "Economica",
+    "synthesis": "Loteria Română a anunțat că, în urma tragerii de duminică, șapte participanți au obținut premii de categoria a II-a, fiecare în valoare de 69.212,86 lei. Biletele norocoase au fost achiziționate din agenții din Oradea și Butea, județul Iași, dar și prin intermediul platformelor digitale oficiale. În prezent, categoria I a jocului Loto 6/49 înregistrează un report substanțial, estimat la 8,4 milioane de euro, care rămâne în joc pentru următoarea extragere.",
+    "entities": [
+      "Loteria Română",
+      "Loto 6/49",
+      "Oradea",
+      "Butea"
+    ],
+    "icon": "currency-euro",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://digi24.ro/stiri/actualitate/educatie/romania-a-obtinut-o-medalie-de-aur-doua-de-argint-si-una-de-bronz-la-olimpiada-internationala-de-chimie-3869525",
+    "original_link": "https://www.digi24.ro/stiri/actualitate/educatie/romania-a-obtinut-o-medalie-de-aur-doua-de-argint-si-una-de-bronz-la-olimpiada-internationala-de-chimie-3869525",
+    "source": "extern",
+    "source_name": "Digi24 Extern",
+    "source_lang": "ro",
+    "title": "Performanțe remarcabile ale elevilor români la olimpiadele internaționale de chimie și matematică",
+    "category": "general",
+    "published": "2026-07-20T06:02:53+00:00",
+    "model": "C",
+    "sources": [
+      {
+        "name": "Digi24 Extern",
+        "url": "https://www.digi24.ro/stiri/actualitate/educatie/romania-a-obtinut-o-medalie-de-aur-doua-de-argint-si-una-de-bronz-la-olimpiada-internationala-de-chimie-3869525"
+      },
+      {
+        "name": "G4Media",
+        "url": "https://www.g4media.ro/elevii-romani-au-obtinut-sase-medalii-la-olimpiada-internationala-de-matematica-din-china-o-medalie-de-aur-trei-medalii-de-argint-si-doua-de-bronz.html"
+      }
+    ],
+    "first_source": "Digi24 Extern",
+    "synthesis": "Loturile olimpice ale României au obținut rezultate de prestigiu la competițiile internaționale de profil desfășurate recent. La Olimpiada de Chimie din Uzbekistan, elevii români au cucerit o medalie de aur, două de argint și una de bronz. Simultan, la Olimpiada Internațională de Matematică din China, echipa țării noastre a fost premiată cu o medalie de aur, trei de argint și două de bronz, confirmând excelența academică a tinerilor români pe plan mondial.",
+    "entities": [
+      "România",
+      "Uzbekistan",
+      "China",
+      "Ministerul Educației"
+    ],
+    "icon": "medal",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://prosport.ro/campionatul-mondial-2026/otamendi-rodri-finala-cupei-mondiale-spania-argentina-20487333",
+    "original_link": "https://www.prosport.ro/campionatul-mondial-2026/otamendi-rodri-finala-cupei-mondiale-spania-argentina-20487333",
+    "source": "prosport",
+    "source_name": "ProSport",
+    "source_lang": "ro",
+    "title": "Spania a învins Argentina în finala Cupei Mondiale 2026 desfășurată la New Jersey",
+    "category": "sport",
+    "published": "2026-07-20T05:51:40+00:00",
+    "model": "C",
+    "sources": [
+      {
+        "name": "ProSport",
+        "url": "https://www.prosport.ro/campionatul-mondial-2026/otamendi-rodri-finala-cupei-mondiale-spania-argentina-20487333"
+      },
+      {
+        "name": "Digi Sport",
+        "url": "https://www.digisport.ro/fotbal/cm-2026/donald-trump-a-dat-verdictul-dupa-spania-argentina-1-0-finala-cupei-mondiale-2026-4388375"
+      }
+    ],
+    "first_source": "ProSport",
+    "synthesis": "Spania a câștigat titlul mondial după o victorie cu 1-0 împotriva Argentinei în finala disputată la New Jersey. Evenimentul a fost marcat de un conflict verbal pe teren între Nicolas Otamendi și Rodri, surprins de camerele de filmat imediat după fluierul final. Totodată, Donald Trump a comentat public rezultatul partidei, oferind propria sa perspectivă asupra desfășurării jocului. Sursele sunt convergente în privința scorului și a tensiunilor dintre jucători, neexistând contradicții între relatări.",
+    "entities": [
+      "Spania",
+      "Argentina",
+      "New Jersey",
+      "Donald Trump"
+    ],
+    "icon": "ball-football",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://economica.net/greva-de-avertisment-in-sanatate-principala-nemultumire-legea-salarizarii-urmeaza-greva-generala_960674.html",
+    "original_link": "https://www.economica.net/greva-de-avertisment-in-sanatate-principala-nemultumire-legea-salarizarii-urmeaza-greva-generala_960674.html",
+    "source": "economica",
+    "source_name": "Economica",
+    "source_lang": "ro",
+    "title": "Federația Sanitas organizează o grevă de avertisment de două ore în sistemul public de sănătate",
+    "category": "sanatate",
+    "published": "2026-07-20T05:47:35+00:00",
+    "model": "C",
+    "sources": [
+      {
+        "name": "Economica",
+        "url": "https://www.economica.net/greva-de-avertisment-in-sanatate-principala-nemultumire-legea-salarizarii-urmeaza-greva-generala_960674.html"
+      },
+      {
+        "name": "Economedia",
+        "url": "https://economedia.ro/federatia-sanitas-intra-astazi-20-iulie-in-greva-de-avertisment-legea-salarizarii-principala-nemultumire.html"
+      }
+    ],
+    "first_source": "Economica",
+    "synthesis": "Membrii Federației Sanitas au declanșat luni o grevă de avertisment în unitățile sanitare publice, protestul desfășurându-se în intervalul orar 09:00 - 11:00. Acțiunea vizează nemulțumirile legate de legea salarizării, sindicaliștii solicitând măsuri concrete pentru consolidarea sistemului medical și îmbunătățirea condițiilor de muncă pentru a preveni exodul personalului. Această manifestare reprezintă un semnal de alarmă premergător unei posibile greve generale, sursele fiind convergente în privința motivelor și a duratei protestului.",
+    "entities": [
+      "Sanitas",
+      "Sistemul public de sănătate"
+    ],
+    "icon": "building-hospital",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
     "url": "https://digisport.ro/fotbal/cm-2026/gica-hagi-a-spus-o-clar-argentina-zero-barat-cu-spania-ce-a-zis-despre-leo-messi-4388087",
     "original_link": "https://www.digisport.ro/fotbal/cm-2026/gica-hagi-a-spus-o-clar-argentina-zero-barat-cu-spania-ce-a-zis-despre-leo-messi-4388087",
     "source": "digisport",
@@ -4259,6 +4551,38 @@
     ],
     "first_source": "Ziua de Cluj",
     "synthesis": "Duminică, o rupere de nori în Munții Bucegi a provocat revărsarea pârâului Jepi, generând viituri violente care au inundat stațiunea Bușteni. Aluviunile, pietrele și buștenii au blocat DN1 și mai multe străzi, izolând un cartier. Echipele de intervenție au salvat mai multe persoane surprinse de ape, inclusiv o femeie și doi bărbați blocați într-un autoturism. Nu există contradicții între surse, evenimentul fiind confirmat ca o situație de urgență majoră cauzată de fenomene meteo extreme."
+  },
+  {
+    "url": "https://economedia.ro/video-viitura-in-busteni-dupa-ploile-torentiale-dn1-si-mai-multe-strazi-au-fost-inundate-12-persoane-au-fost-salvate-de-pompieri.html",
+    "original_link": "https://economedia.ro/video-viitura-in-busteni-dupa-ploile-torentiale-dn1-si-mai-multe-strazi-au-fost-inundate-12-persoane-au-fost-salvate-de-pompieri.html",
+    "source": "economedia",
+    "source_name": "Economedia",
+    "source_lang": "ro",
+    "title": "Inundații severe în Bușteni: 12 persoane salvate de pompieri după viituri puternice",
+    "category": "local",
+    "published": "2026-07-19T13:39:39+00:00",
+    "model": "C",
+    "sources": [
+      {
+        "name": "Economedia",
+        "url": "https://economedia.ro/video-viitura-in-busteni-dupa-ploile-torentiale-dn1-si-mai-multe-strazi-au-fost-inundate-12-persoane-au-fost-salvate-de-pompieri.html"
+      },
+      {
+        "name": "Ziua de Cluj",
+        "url": "https://zcj.ro/national/femeie-salvata-din-viitura-de-la-busteni-pompierii-au-evacuat-persoane-blocate-in-autoturisme--298870.html"
+      }
+    ],
+    "first_source": "Economedia",
+    "synthesis": "Duminică, 19 iulie, precipitațiile abundente au generat viituri violente în stațiunea Bușteni, județul Prahova. Apele au inundat artere principale, inclusiv DN1, și au antrenat mai multe autoturisme. Echipele de intervenție au acționat pentru salvarea a 12 persoane blocate în mașini sau zone inundate. Nu există contradicții între sursele consultate, ambele confirmând amploarea inundațiilor și succesul operațiunilor de salvare desfășurate de pompieri în centrul localității.",
+    "entities": [
+      "Bușteni",
+      "Prahova",
+      "DN1"
+    ],
+    "icon": "cloud-storm",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
   },
   {
     "url": "https://spotmedia.ro/stiri/sport/legendarul-rafael-nadal-anticipeaza-o-victorie-cu-2-1-pentru-spania-in-finala-cupei-mondiale-cu-argentina",
@@ -27798,424 +28122,6 @@
       "Stavropol"
     ],
     "icon": "rocket",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://gsp.ro/international/campionatul-mondial-de-fotbal-2026/rasturnare-de-situatie-aston-villa-deturneaza-johan-manzambi-cm2026-newcastle-out-959882.html",
-    "original_link": "https://www.gsp.ro/international/campionatul-mondial-de-fotbal-2026/rasturnare-de-situatie-aston-villa-deturneaza-johan-manzambi-cm2026-newcastle-out-959882.html",
-    "source": "gsp",
-    "source_name": "GSP",
-    "source_lang": "ro",
-    "title": "Aston Villa deturnează un star de la Mondial pentru 2026",
-    "category": "sport",
-    "published": "2026-07-13T07:25:32+00:00",
-    "model": "B",
-    "teaser": "Aston Villa este aproape să transfere mijlocașul Johan Manzambi de la Freiburg, depășind oferta lui Newcastle. Jucătorul elvețian a impresionat la Cupa Mondială din 2026.",
-    "entities": [
-      "Aston Villa",
-      "Johan Manzambi",
-      "Freiburg",
-      "Newcastle"
-    ],
-    "icon": "ball-football",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://digi24.ro/stiri/economie/ue-a-cumparat-o-cantitate-record-de-gaze-de-la-uzina-emblematica-a-rusiei-yamal-valoarea-este-estimata-la-6-miliarde-de-euro-3859477",
-    "original_link": "https://www.digi24.ro/stiri/economie/ue-a-cumparat-o-cantitate-record-de-gaze-de-la-uzina-emblematica-a-rusiei-yamal-valoarea-este-estimata-la-6-miliarde-de-euro-3859477",
-    "source": "extern",
-    "source_name": "Digi24 Extern",
-    "source_lang": "ro",
-    "title": "UE cumpără record de gaz rusesc înainte de interdicția din 2027",
-    "category": "economic",
-    "published": "2026-07-13T07:22:30+00:00",
-    "model": "C",
-    "teaser": "Europa a importat cantități record de gaz natural lichefiat din proiectul rusesc Yamal în prima jumătate a anului 2026. Achizițiile valorează 6 miliarde de euro.",
-    "entities": [
-      "Uniunea Europeană",
-      "Rusia",
-      "Yamal",
-      "Kpler"
-    ],
-    "icon": "gas-station",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false,
-    "sources": [
-      {
-        "name": "Digi24 Extern",
-        "url": "https://www.digi24.ro/stiri/economie/ue-a-cumparat-o-cantitate-record-de-gaze-de-la-uzina-emblematica-a-rusiei-yamal-valoarea-este-estimata-la-6-miliarde-de-euro-3859477"
-      },
-      {
-        "name": "HotNews",
-        "url": "https://hotnews.ro/uniunea-europeana-cumpara-cantitati-record-de-gnl-rusesc-chiar-inainte-de-intrarea-in-vigoare-a-interdictiilor-2299791"
-      }
-    ],
-    "first_source": "Digi24 Extern",
-    "synthesis": "În ciuda interdicției iminente privind importurile de GNL rusesc, programată pentru 1 ianuarie 2027, țările UE au achiziționat cantități record de gaz natural lichefiat din proiectul Yamal în prima jumătate a anului 2026. Valoarea acestor importuri se ridică la 6 miliarde de euro, conform datelor Kpler."
-  },
-  {
-    "url": "https://autocritica.ro/test-drive/test-drive-mazda-cx-5",
-    "original_link": "https://www.autocritica.ro/test-drive/test-drive-mazda-cx-5/",
-    "source": "autocritica",
-    "source_name": "AutoCritica",
-    "source_lang": "ro",
-    "title": "Test Drive: Mazda CX-5, un SUV compact onest și rafinat",
-    "category": "general",
-    "published": "2026-07-13T07:21:26+00:00",
-    "model": "B",
-    "teaser": "Mazda CX-5 este prezentat ca un SUV compact onest, care nu încearcă să epateze, dar oferă un salt semnificativ de calitate la capitolul ambianță interioară.",
-    "entities": [
-      "Mazda",
-      "CX-5",
-      "Dragoș Băltățeanu"
-    ],
-    "icon": "car",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://gsp.ro/comercial/advertorial/ce-apare-tot-mai-des-in-culisele-sportului-959946.html",
-    "original_link": "https://www.gsp.ro/comercial/advertorial/ce-apare-tot-mai-des-in-culisele-sportului-959946.html",
-    "source": "gsp",
-    "source_name": "GSP",
-    "source_lang": "ro",
-    "title": "Suplimentele nutritive, tot mai prezente în sportul de performanță",
-    "category": "sport",
-    "published": "2026-07-13T07:16:15+00:00",
-    "model": "B",
-    "teaser": "Performanța sportivă modernă se bazează pe planificare și disciplină, suplimentele nutritive devenind o componentă esențială în rutina sportivilor pentru susținerea eforturilor intense.",
-    "entities": [
-      "Sport"
-    ],
-    "icon": "pill",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://digi24.ro/stiri/externe/moldova/maia-sandu-participa-in-premiera-la-reuniunea-coalitiei-de-vointa-pentru-ucraina-de-la-paris-a-fost-invitata-de-emmanuel-macron-3859451",
-    "original_link": "https://www.digi24.ro/stiri/externe/moldova/maia-sandu-participa-in-premiera-la-reuniunea-coalitiei-de-vointa-pentru-ucraina-de-la-paris-a-fost-invitata-de-emmanuel-macron-3859451",
-    "source": "extern",
-    "source_name": "Digi24 Extern",
-    "source_lang": "ro",
-    "title": "Maia Sandu, premieră la Paris, la reuniunea Coaliției de Voință pentru Ucraina",
-    "category": "politic",
-    "published": "2026-07-13T07:01:15+00:00",
-    "model": "C",
-    "sources": [
-      {
-        "name": "Digi24 Extern",
-        "url": "https://www.digi24.ro/stiri/externe/moldova/maia-sandu-participa-in-premiera-la-reuniunea-coalitiei-de-vointa-pentru-ucraina-de-la-paris-a-fost-invitata-de-emmanuel-macron-3859451"
-      },
-      {
-        "name": "Știrile ProTV",
-        "url": "https://stirileprotv.ro/stiri/international/premiera-pentru-maia-sandu-presedinta-r-moldova-participa-la-reuniunea-coalitiei-de-vointa-la-invitatia-lui-macron.html"
-      },
-      {
-        "name": "Europa Liberă",
-        "url": "https://moldova.europalibera.org/a/sustinatorii-ucrainei-se-reunesc-la-paris-inaintea-zilei-frantei-maia-sandu-participa-in-premiera/33802513.html"
-      }
-    ],
-    "first_source": "Digi24 Extern",
-    "synthesis": "Președinta Republicii Moldova, Maia Sandu, participă în premieră, luni, la Paris, la reuniunea Coaliției de Voință pentru Ucraina. Evenimentul, organizat la invitația președintelui francez Emmanuel Macron, reunește aliații Ucrainei pentru a discuta despre noi ajutoare, în contextul atacurilor rusești.",
-    "entities": [
-      "Maia Sandu",
-      "Paris",
-      "Emmanuel Macron",
-      "Ucraina"
-    ],
-    "icon": "shield",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://digisport.ro/fotbal/liga-1/mihai-pintilii-a-ajuns-in-oras-si-urmeaza-sa-semneze-cu-noua-echipa-4375459",
-    "original_link": "https://www.digisport.ro/fotbal/liga-1/mihai-pintilii-a-ajuns-in-oras-si-urmeaza-sa-semneze-cu-noua-echipa-4375459",
-    "source": "digisport",
-    "source_name": "Digi Sport",
-    "source_lang": "ro",
-    "title": "Mihai Pintilii semnează cu Levadiakos în Grecia",
-    "category": "sport",
-    "published": "2026-07-13T06:58:41+00:00",
-    "model": "C",
-    "sources": [
-      {
-        "name": "Digi Sport",
-        "url": "https://www.digisport.ro/fotbal/liga-1/mihai-pintilii-a-ajuns-in-oras-si-urmeaza-sa-semneze-cu-noua-echipa-4375459"
-      },
-      {
-        "name": "GSP",
-        "url": "https://www.gsp.ro/international/campionate/mihai-pintilii-a-ajuns-in-grecia-si-semneaza-cu-levadiakos-959947.html"
-      }
-    ],
-    "first_source": "Digi Sport",
-    "synthesis": "Fostul secund al FCSB, Mihai Pintilii, a ajuns în Grecia pentru a semna primul său contract în străinătate. El se alătură echipei Levadiakos, unde antrenor principal a fost numit Elias Charalambous. Pintilii a confirmat sosirea sa în Grecia printr-o postare pe Instagram.",
-    "entities": [
-      "Mihai Pintilii",
-      "Levadiakos",
-      "FCSB",
-      "Grecia"
-    ],
-    "icon": "ball-football",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://dw.com/en/eu-set-to-approve-air-travel-passenger-rights-package/a-77927050?maca=en-rss-en-eu-2092-rdf",
-    "original_link": "https://www.dw.com/en/eu-set-to-approve-air-travel-passenger-rights-package/a-77927050?maca=en-rss-en-eu-2092-rdf",
-    "source": "dw_europe",
-    "source_name": "DW Europe",
-    "source_lang": "en",
-    "title": "UE aprobă noi drepturi pentru pasagerii aerieni",
-    "category": "politic",
-    "published": "2026-07-13T06:29:00+00:00",
-    "model": "B",
-    "teaser": "Miniștrii UE urmează să aprobe un pachet de reforme pentru pasagerii aerieni. Printre altele, se vor simplifica cererile de despăgubire.",
-    "entities": [
-      "UE"
-    ],
-    "icon": "plane",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://dw.com/en/eu-approves-new-passenger-rights-for-air-travel/a-77927050?maca=en-rss-en-eu-2092-rdf",
-    "original_link": "https://www.dw.com/en/eu-approves-new-passenger-rights-for-air-travel/a-77927050?maca=en-rss-en-eu-2092-rdf",
-    "source": "dw_europe",
-    "source_name": "DW Europe",
-    "source_lang": "en",
-    "title": "UE aprobă noi drepturi pentru pasagerii aerieni",
-    "category": "economic",
-    "published": "2026-07-13T06:29:00+00:00",
-    "model": "B",
-    "teaser": "Miniștrii UE au adoptat reforme ce extind drepturile pasagerilor aerieni, simplificând inclusiv procesul de solicitare a compensațiilor pentru zboruri.",
-    "entities": [
-      "UE"
-    ],
-    "icon": "plane",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://digi24.ro/stiri/externe/ue/lupta-pentru-putere-la-vedere-comertul-ue-cu-asezarile-ilegale-israeliene-provoaca-o-disputa-intre-ursula-von-der-leyen-si-kaja-kallas-3859403",
-    "original_link": "https://www.digi24.ro/stiri/externe/ue/lupta-pentru-putere-la-vedere-comertul-ue-cu-asezarile-ilegale-israeliene-provoaca-o-disputa-intre-ursula-von-der-leyen-si-kaja-kallas-3859403",
-    "source": "extern",
-    "source_name": "Digi24 Extern",
-    "source_lang": "ro",
-    "title": "UE, divizată pe comerțul cu așezări israeliene",
-    "category": "politic",
-    "published": "2026-07-13T06:28:16+00:00",
-    "model": "B",
-    "teaser": "Miniștrii de Externe din UE dezbat la Bruxelles interzicerea comerțului cu așezări ilegale israeliene, provocând o dispută între Ursula von der Leyen și Kaja Kallas, conform Euractiv.",
-    "entities": [
-      "Uniunea Europeană",
-      "Ursula von der Leyen",
-      "Kaja Kallas",
-      "Israel"
-    ],
-    "icon": "gavel",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://economedia.ro/ceo-ul-volkswagen-incearca-sa-calmeze-tensiunile-exista-solutii-mai-inteligente-decat-inchiderea-fabricilor.html",
-    "original_link": "https://economedia.ro/ceo-ul-volkswagen-incearca-sa-calmeze-tensiunile-exista-solutii-mai-inteligente-decat-inchiderea-fabricilor.html",
-    "source": "economedia",
-    "source_name": "Economedia",
-    "source_lang": "ro",
-    "title": "CEO Volkswagen: Soluții mai inteligente decât închiderea fabricilor",
-    "category": "economic",
-    "published": "2026-07-13T06:25:09+00:00",
-    "model": "C",
-    "sources": [
-      {
-        "name": "Economedia",
-        "url": "https://economedia.ro/ceo-ul-volkswagen-incearca-sa-calmeze-tensiunile-exista-solutii-mai-inteligente-decat-inchiderea-fabricilor.html"
-      },
-      {
-        "name": "Economica",
-        "url": "https://www.economica.net/criza-volkswagen-fabrici-inchise-aproape-100-000-de-concedieri-seful-gigantului-spune-ca-exista-solutii-mai-inteligente-decat-inchiderea-uzinelor-pentru-a-face-economii_958610.html"
-      }
-    ],
-    "first_source": "Economedia",
-    "synthesis": "Directorul general al Volkswagen, Oliver Blume, a afirmat că există alternative mai bune decât închiderea fabricilor pentru a reduce costurile, salutând progresele deja realizate. Declarațiile sale vin pe fondul tensiunilor cu sindicatele, care au acuzat anterior conducerea grupului.",
-    "entities": [
-      "Volkswagen",
-      "Oliver Blume"
-    ],
-    "icon": "building-factory",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://digi24.ro/stiri/externe/moldova/o-drona-de-tip-shahed-s-a-prabusit-si-a-explodat-in-raionul-causeni-din-republica-moldova-3859391",
-    "original_link": "https://www.digi24.ro/stiri/externe/moldova/o-drona-de-tip-shahed-s-a-prabusit-si-a-explodat-in-raionul-causeni-din-republica-moldova-3859391",
-    "source": "extern",
-    "source_name": "Digi24 Extern",
-    "source_lang": "ro",
-    "title": "Dronă Shahed s-a prăbușit în Republica Moldova",
-    "category": "extern",
-    "published": "2026-07-13T06:16:19+00:00",
-    "model": "C",
-    "sources": [
-      {
-        "name": "Digi24 Extern",
-        "url": "https://www.digi24.ro/stiri/externe/moldova/o-drona-de-tip-shahed-s-a-prabusit-si-a-explodat-in-raionul-causeni-din-republica-moldova-3859391"
-      },
-      {
-        "name": "G4Media",
-        "url": "https://www.g4media.ro/o-drona-shahed-a-explodat-luni-in-apropierea-localitatii-copanca-din-republica-moldova.html"
-      }
-    ],
-    "first_source": "Digi24 Extern",
-    "synthesis": "O dronă de tip Shahed a explodat în apropierea satului Copanca, raionul Căuşeni, Republica Moldova, luni dimineața, la ora 01:03. Obiectul a survolat spațiul aerian moldovenesc în contextul atacurilor rusești asupra regiunii Odesa, Ucraina. Incidentul s-a produs la mai puțin de 100 km de Chișinău.",
-    "entities": [
-      "Shahed",
-      "Copanca",
-      "Căuşeni",
-      "Republica Moldova"
-    ],
-    "icon": "plane",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://digi24.ro/stiri/externe/moscova-atacata-din-nou-de-drone-ucrainene-incendiu-la-baza-petroliera-din-stavropol-in-sud-vest-3859351",
-    "original_link": "https://www.digi24.ro/stiri/externe/moscova-atacata-din-nou-de-drone-ucrainene-incendiu-la-baza-petroliera-din-stavropol-in-sud-vest-3859351",
-    "source": "extern",
-    "source_name": "Digi24 Extern",
-    "source_lang": "ro",
-    "title": "Drone ucrainene au atacat Moscova, incendiu la o bază petrolieră",
-    "category": "extern",
-    "published": "2026-07-13T06:08:43+00:00",
-    "model": "B",
-    "teaser": "Capitala rusă Moscova a fost ținta unor noi atacuri cu drone ucrainene, primarul Serghei Sobianin anunțând doborârea a 11 aparate. Un incendiu a izbucnit la o bază petrolieră în Stavropol.",
-    "entities": [
-      "Ucraina",
-      "Moscova",
-      "Serghei Sobianin",
-      "Stavropol"
-    ],
-    "icon": "rocket",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://start-up.ro/diana-mocanu-printco-gama",
-    "original_link": "https://start-up.ro/diana-mocanu-printco-gama/",
-    "source": "startup",
-    "source_name": "Start-up.ro",
-    "source_lang": "ro",
-    "title": "Diana Mocanu: \"Dependența e cel mai mare risc al antreprenorilor\"",
-    "category": "economic",
-    "published": "2026-07-13T06:05:13+00:00",
-    "model": "B",
-    "teaser": "Diana Mocanu, crescută în antreprenoriat, consideră dependența cel mai mare risc pentru antreprenori. Ea a fondat Printco-Gama în 1994, aducând materiale educative noi.",
-    "entities": [
-      "Diana Mocanu",
-      "Printco-Gama"
-    ],
-    "icon": "building-factory",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://economedia.ro/breaking-rata-anuala-a-inflatiei-a-scazut-usor-in-iunie-la-104-cele-mai-mari-cresteri-de-preturi-s-au-inregistrat-la-servicii.html",
-    "original_link": "https://economedia.ro/breaking-rata-anuala-a-inflatiei-a-scazut-usor-in-iunie-la-104-cele-mai-mari-cresteri-de-preturi-s-au-inregistrat-la-servicii.html",
-    "source": "economedia",
-    "source_name": "Economedia",
-    "source_lang": "ro",
-    "title": "Inflația anuală a scăzut ușor în iunie la 10,4%",
-    "category": "economic",
-    "published": "2026-07-13T06:04:22+00:00",
-    "model": "C",
-    "sources": [
-      {
-        "name": "Economedia",
-        "url": "https://economedia.ro/breaking-rata-anuala-a-inflatiei-a-scazut-usor-in-iunie-la-104-cele-mai-mari-cresteri-de-preturi-s-au-inregistrat-la-servicii.html"
-      },
-      {
-        "name": "Ziarul Financiar",
-        "url": "https://www.zf.ro/zf-24/rata-anuala-a-inflatiei-a-scazut-usor-in-iunie-la-10-4-fata-de-10-9-23194294"
-      },
-      {
-        "name": "Economica",
-        "url": "https://www.economica.net/scumpirile-continua-inflatia-anuala-a-scazut-usor-pana-la-1042-in-iunie_958606.html"
-      }
-    ],
-    "first_source": "Economedia",
-    "synthesis": "Rata anuală a inflației a înregistrat o ușoară scădere în iunie, ajungând la 10,42%, față de 10,85%-10,9% în luna mai. Cele mai semnificative creșteri de prețuri au fost înregistrate la servicii, energie electrică și chirii, conform datelor Institutului Național de Statistică.",
-    "entities": [
-      "Institutul Național de Statistică"
-    ],
-    "icon": "percentage",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://start-up.ro/callio-agentul-vocal-ai-care-preia-telefonul-receptiei-din-clinicile-stomatologice",
-    "original_link": "https://start-up.ro/callio-agentul-vocal-ai-care-preia-telefonul-receptiei-din-clinicile-stomatologice/",
-    "source": "startup",
-    "source_name": "Start-up.ro",
-    "source_lang": "ro",
-    "title": "Callio preia apelurile recepției din clinicile stomatologice",
-    "category": "tech",
-    "published": "2026-07-13T05:05:01+00:00",
-    "model": "B",
-    "teaser": "Callio, un asistent vocal AI, preia apelurile recepției din clinici medicale și stomatologice, gestionând programări, reprogramări și anulări de vizite.",
-    "entities": [
-      "Callio"
-    ],
-    "icon": "speakerphone",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://spotmedia.ro/stiri/sport/wta-a-anuntat-noul-clasament-mondial-sorana-cirstea-pe-cel-mai-bun-loc-al-carierei",
-    "original_link": "https://spotmedia.ro/stiri/sport/wta-a-anuntat-noul-clasament-mondial-sorana-cirstea-pe-cel-mai-bun-loc-al-carierei",
-    "source": "spotmedia",
-    "source_name": "Spotmedia",
-    "source_lang": "ro",
-    "title": "Sorana Cîrstea atinge cel mai bun loc din carieră în clasamentul WTA",
-    "category": "sport",
-    "published": "2026-07-13T04:58:47+00:00",
-    "model": "C",
-    "sources": [
-      {
-        "name": "Spotmedia",
-        "url": "https://spotmedia.ro/stiri/sport/wta-a-anuntat-noul-clasament-mondial-sorana-cirstea-pe-cel-mai-bun-loc-al-carierei"
-      },
-      {
-        "name": "Digi Sport",
-        "url": "https://www.digisport.ro/tenis/sorana-cirstea-scrie-istorie-in-ultimul-an-al-carierei-4375505"
-      }
-    ],
-    "first_source": "Spotmedia",
-    "synthesis": "După turneul de la Wimbledon, Sorana Cîrstea a urcat pe locul 17 în clasamentul WTA, cea mai bună poziție din cariera sa. Jaqueline Cristian a urcat, de asemenea, un loc, ajungând pe 36. Gabriela Ruse a pierdut o poziție.",
-    "entities": [
-      "Sorana Cîrstea",
-      "WTA",
-      "Wimbledon",
-      "Jaqueline Cristian"
-    ],
-    "icon": "ball-tennis",
     "processed_by": "gemini",
     "prompt_version": "v2-esenta",
     "featured": false
