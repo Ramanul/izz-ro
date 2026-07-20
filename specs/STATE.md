@@ -5,20 +5,20 @@
 > Executors receive this file as read-only context. Overwrite sections in place — never let
 > this file grow past ~30 lines of content.
 
-**Updated:** 2026-07-20 (slice: normalize_url merged; Phase 1 local feeds delegated)
+**Updated:** 2026-07-20 (slice: local-gov-feeds-phase1 merged; feedcheck validation in CI)
 
 ## Current task
-`local-gov-feeds-phase1` — delegated to OpenCode 2026-07-20, branch
-`oc/local-gov-feeds-phase1`, spec `specs/local-gov-feeds-phase1.md` (13 CJ feeds +
-GOLD primării CSV loader capped by `LOCAL_GOLD_LIMIT`, default 35).
+None in flight. Feedcheck CI run 29715730835 (manual dispatch) validating the 48 new
+local-gov feeds — check results before scaling `LOCAL_GOLD_LIMIT` past 35.
 Jules CLI onboarding still blocked: 401 despite login OK + GitHub App installed —
 waiting on user (key #2 / Google↔GitHub link).
 
 ## Last relevant commits
-- `oc/fix-normalize-url` MERGED (a7396b3, executor OpenCode): scheme-less URLs no longer
-  yield `https:///...`; closes #67; 56/56 tests. Branch deleted after merge.
-- Merged-branch cleanup: local `devin/check-primarii`, `devin/institutii-si-liste`,
-  `oc/fix-normalize-url` deleted (all in main).
+- `oc/local-gov-feeds-phase1` MERGED (8ccedfb, executor OpenCode, manager-verified
+  68/68 tests + acceptance `35 15` + `LOCAL_GOLD_LIMIT=0` kill-switch): 13 CJ feeds +
+  `generator/local_sources.py` GOLD CSV loader. Branch deleted.
+- `oc/fix-normalize-url` MERGED (a7396b3, executor OpenCode): closes #67; branch deleted,
+  plus cleanup of merged `devin/*` branches.
 - `gsp` RSS source RECOVERED (200 + valid XML, verified 2026-07-20) — no action needed.
 - The CI bot commits every ~30 min — always `git pull --ff-only` before writing any spec.
 
@@ -32,8 +32,9 @@ waiting on user (key #2 / Google↔GitHub link).
   probe MAI from this IP; retest in days or from GitHub Actions.
 
 ## Next steps
-- Review + merge `oc/local-gov-feeds-phase1`; validate new feeds via feedcheck.yml in CI.
-- Phase 1 batch 2+: raise `LOCAL_GOLD_LIMIT` gradually (fetch_all is SEQUENTIAL — watch CI
-  run time before scaling; parallel fetch is a candidate task).
+- Read feedcheck run 29715730835 results; prune dead feeds if any; watch next build.yml
+  cron run time (worst case +8 min: 48 new feeds × TIMEOUT=10s, fetch_all is SEQUENTIAL).
+- Phase 1 batch 2+: raise `LOCAL_GOLD_LIMIT` gradually; parallel fetch is a candidate
+  executor task before scaling past ~100.
 - SEO gaps: `og:type` on article pages, `dateModified` in JSON-LD, `lastmod` in sitemap —
   BLOCKED while `generator/render.py` is user WIP.
