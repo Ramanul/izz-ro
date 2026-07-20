@@ -169,3 +169,14 @@ def test_integration_pl_sources_count():
     from generator import config
     count = sum(1 for k in config.SOURCES if k.startswith("pl_"))
     assert 0 < count <= 35
+
+
+def test_pl_sources_ordered_before_gsp():
+    from generator import config
+    keys = list(config.SOURCES)
+    pl_indices = [i for i, k in enumerate(keys) if k.startswith("pl_")]
+    gsp_idx = keys.index("gsp")
+    assert len(pl_indices) == 35
+    assert max(pl_indices) < gsp_idx
+    first_pl_idx = pl_indices[0]
+    assert config.SOURCES[keys[first_pl_idx - 1]]["category"] == "local"

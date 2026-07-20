@@ -88,7 +88,15 @@ SOURCES = {
 }
 from generator.local_sources import load_gold_sources
 _GOLD_CSV = os.path.join(ROOT, "data", "primarii_lists", "gold_integrare.csv")
-SOURCES.update(load_gold_sources(_GOLD_CSV, int(os.environ.get("LOCAL_GOLD_LIMIT", "35"))))
+_gold = load_gold_sources(_GOLD_CSV, int(os.environ.get("LOCAL_GOLD_LIMIT", "35")))
+# Bugetul AI proceseaza in ordinea dictului (niche-first) -> sursele locale intra
+# imediat dupa blocul 'local' literal, nu la coada (altfel sunt infometate de buget).
+if _gold:
+    _items = list(SOURCES.items())
+    _idx = max((i for i, (_k, _v) in enumerate(_items) if _v.get("category") == "local"),
+               default=len(_items) - 1)
+    _items[_idx + 1:_idx + 1] = list(_gold.items())
+    SOURCES = dict(_items)
 
 # Exclude orice URL/sursă de agenție (verificare suplimentară pe domeniul linkului)
 AGENCY_BLOCKLIST = ["agerpres", "mediafax", "reuters", "afp.com", "apnews", "ap.org"]
