@@ -223,23 +223,6 @@ def process_batch(items: list, provider) -> list:
     return done
 
 
-OFFICIAL_PREFIXES = ("pl_", "cj_", "pr_")
-
-
-def process_official(items: list) -> list:
-    """Surse oficiale (primarii/CJ): fara AI. Titlu original + teaser trunchiat
-    (fallback determinist), marcate 'official' ca sa nu fie reluate de
-    upgrade_fallbacks."""
-    done = []
-    for it in items:
-        out = process_single(it, None)
-        if out is None or out.get("skip"):
-            continue
-        out["processed_by"] = "official"
-        done.append(out)
-    return done
-
-
 def process_single(item: dict, provider) -> dict | None:
     """Model B. Modifica item-ul pe loc: title/teaser/category/model/processed_by.
 

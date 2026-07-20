@@ -78,7 +78,6 @@ def process_new(new_items: list, provider, budget: int, existing: list | None = 
     if official:
         processed.extend(process_official(official))
 
-    processed.extend(process_official(official))
     return processed, folded, used
 
 
