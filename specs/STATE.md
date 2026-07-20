@@ -5,22 +5,23 @@
 > Executors receive this file as read-only context. Overwrite sections in place — never let
 > this file grow past ~30 lines of content.
 
-**Updated:** 2026-07-20 (slice: local-gov-feeds-phase1 merged; feedcheck validation in CI)
+**Updated:** 2026-07-20 (slice: priority-order fix merged; local backlog draining)
 
 ## Current task
-None in flight. Second feedcheck dispatched (validating the date-filtered batch of 35
-primării + 8 CJ) — read its results before scaling `LOCAL_GOLD_LIMIT`.
+None in flight. Manual build dispatched post-merge — verify pl_/cj_ articles land in
+`data/articles.json` as the AI budget drains the backlog (~40 items/run, cron 30 min).
 Jules CLI onboarding still blocked: 401 despite login OK + GitHub App installed —
 waiting on user (key #2 / Google↔GitHub link).
 
 ## Last relevant commits
-- `oc/local-feeds-quality-filter` MERGED (7f9d138, executor OpenCode, manager-verified
-  71/71 tests, acceptance `35 8`, 20-county spread): loader filters
-  `last_signal_date >= 2026-01-01` + sorts desc by date; 7 dead CJ pruned. Feedcheck #1
-  (run 29715730835) had shown 44/48 pilot feeds dead/empty (alphabetical = all-Alba trap).
-- `oc/local-gov-feeds-phase1` MERGED (8ccedfb): 13 CJ feeds + GOLD CSV loader,
-  `LOCAL_GOLD_LIMIT` default 35, kill-switch =0.
-- `oc/fix-normalize-url` MERGED (a7396b3): closes #67. Merged branches deleted.
+- `oc/local-sources-priority-order` MERGED (cfccbc8, OpenCode, 72/72): gold sources
+  inserted after the literal `local` block — `SOURCES.update()` appended them at the tail
+  where the dict-order AI budget starved them (build 2026-07-20: 497 new, 0 pl_ processed).
+- `oc/local-feeds-quality-filter` MERGED (7f9d138, OpenCode, 71/71): loader filters
+  `last_signal_date >= 2026-01-01`, sorts desc; 7 dead CJ pruned. Feedcheck #2: 42/43 alive
+  (vs 44/48 dead in the alphabetical pilot). Only `pl_prahova_brazi` 403 (WAF).
+- `oc/local-gov-feeds-phase1` MERGED (8ccedfb): CJ feeds + GOLD CSV loader,
+  `LOCAL_GOLD_LIMIT` default 35, kill-switch =0. `oc/fix-normalize-url` MERGED (a7396b3, #67).
 - The CI bot commits every ~30 min — always `git pull --ff-only` before writing any spec.
 
 ## User WIP — UNTOUCHABLE
