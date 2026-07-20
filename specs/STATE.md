@@ -5,15 +5,19 @@
 > Executors receive this file as read-only context. Overwrite sections in place — never let
 > this file grow past ~30 lines of content.
 
-**Updated:** 2026-07-20 (slice: priority-order fix merged; local backlog draining)
+**Updated:** 2026-07-20 (slice: geo-categorii merged; parallel-fetch delegated)
 
 ## Current task
-None in flight. Manual build dispatched post-merge — verify pl_/cj_ articles land in
-`data/articles.json` as the AI budget drains the backlog (~40 items/run, cron 30 min).
+`parallel-fetch` — spec `specs/parallel-fetch.md`, branch `oc/parallel-fetch`, delegated
+2026-07-20 (prereq for raising LOCAL_GOLD_LIMIT past ~100). In parallel, manager research
+agents are hunting REGIONAL publications; feedcheck cycle follows, then populate `regional`.
 Jules CLI onboarding still blocked: 401 despite login OK + GitHub App installed —
 waiting on user (key #2 / Google↔GitHub link).
 
 ## Last relevant commits
+- `oc/geo-categorii` MERGED (6d90543, OpenCode, 76/76, manager-verified): `regional`/`zonal`/
+  `local` trio in CATEGORIES/SEED/PINNED/LABELS; 8 CJ + 7 county papers moved to `zonal`;
+  GOLD loader + `pr_buzau` stay `local`; `regional` is an empty seed (sources added later).
 - `oc/local-sources-priority-order` MERGED (cfccbc8, OpenCode, 72/72): gold sources
   inserted after the literal `local` block — `SOURCES.update()` appended them at the tail
   where the dict-order AI budget starved them (build 2026-07-20: 497 new, 0 pl_ processed).
@@ -34,12 +38,8 @@ waiting on user (key #2 / Google↔GitHub link).
   probe MAI from this IP; retest in days or from GitHub Actions.
 
 ## Next steps
-- `specs/geo-categorii.md` REWRITTEN + re-verified against `c2fefcb` (config.py-only: add
-  `regional`/`zonal` categories, move 8 CJ + 7 county papers from `local`→`zonal`, GOLD loader
-  stays `local`). Ready for `oc/geo-categorii` executor. Supersedes the stale version on PR #66.
 - Read feedcheck run 29715730835 results; prune dead feeds if any; watch next build.yml
   cron run time (worst case +8 min: 48 new feeds × TIMEOUT=10s, fetch_all is SEQUENTIAL).
-- Phase 1 batch 2+: raise `LOCAL_GOLD_LIMIT` gradually; parallel fetch is a candidate
-  executor task before scaling past ~100.
+- Phase 1 batch 2+: raise `LOCAL_GOLD_LIMIT` gradually once `oc/parallel-fetch` lands.
 - SEO gaps: `og:type` on article pages, `dateModified` in JSON-LD, `lastmod` in sitemap —
   BLOCKED while `generator/render.py` is user WIP.
