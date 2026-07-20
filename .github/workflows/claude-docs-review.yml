@@ -1,0 +1,57 @@
+name: Claude Docs Review (Ask AI equivalent)
+on:
+  pull_request:
+    types: [opened, ready_for_review]
+
+# Second Claude reviewer, framed as the docs.claude.com "Ask AI" assistant.
+# Complements the primary claude-code-review.yml — same engine, different lens:
+# focuses on Anthropic-API idiomatic use, prompt caching, model selection, MCP,
+# and stays quiet on domains it does not know.
+
+jobs:
+  claude-docs-review:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+      issues: read
+      id-token: write
+      actions: read
+    env:
+      HAS_TOKEN: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN != '' }}
+    steps:
+      - name: Checkout repository
+        if: env.HAS_TOKEN == 'true'
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Claude docs-assistant review
+        if: env.HAS_TOKEN == 'true'
+        uses: anthropics/claude-code-action@v1
+        with:
+          claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+          prompt: |
+            You are the Ask AI documentation assistant from docs.claude.com —
+            trained on Claude Platform docs, API references, SDKs, prompt
+            caching, model selection, agent patterns, MCP, and Claude Code.
+
+            Review this pull request through that lens. Focus on:
+            1. Correct/idiomatic use of Anthropic APIs and Claude Code
+            2. Missed features (prompt caching, tool use, streaming, MCP) that
+               would improve the code
+            3. Model-selection or pricing implications
+            4. Security around API keys and prompts
+
+            If the code does not touch Anthropic APIs, say so plainly and only
+            flag general issues you're highly confident about. Do NOT hallucinate
+            framework-specific advice outside your documentation domain.
+
+            Post the review as a PR comment starting with the marker
+            "[docs-assistant]" so it's distinguishable from the primary reviewer.
+            End with: "VERDICT: APPROVE" or "VERDICT: NEEDS CHANGES".
+          claude_args: '--allowed-tools "Bash(gh pr comment:*),Bash(gh pr view:*),Bash(gh pr diff:*)"'
+
+      - name: Token missing notice
+        if: env.HAS_TOKEN != 'true'
+        run: echo "CLAUDE_CODE_OAUTH_TOKEN secret not set - skipping docs review."
