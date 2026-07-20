@@ -8,8 +8,12 @@
 **Updated:** 2026-07-20 (slice: local-gov-feeds-phase1 merged; feedcheck validation in CI)
 
 ## Current task
-None in flight. Feedcheck CI run 29715730835 (manual dispatch) validating the 48 new
-local-gov feeds — check results before scaling `LOCAL_GOLD_LIMIT` past 35.
+`local-feeds-quality-filter` — delegated to OpenCode 2026-07-20, branch
+`oc/local-feeds-quality-filter`, spec `specs/local-feeds-quality-filter.md`.
+Feedcheck run 29715730835 verdict: 44 sources dead/empty — pilot picked alphabetically
+(all Alba, mostly GOL); fix = filter `last_signal_date >= 2026-01-01` + sort desc by
+date; prune 7 failed CJ (arad/bihor/ilfov/sibiu=GOL, buzau=502, iasi=timeout,
+calarasi=frozen). Keep 6 CJ with fresh content.
 Jules CLI onboarding still blocked: 401 despite login OK + GitHub App installed —
 waiting on user (key #2 / Google↔GitHub link).
 
