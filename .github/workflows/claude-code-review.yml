@@ -31,6 +31,9 @@ jobs:
             edge cases. Post your review as a PR comment ending with a single
             verdict line: "VERDICT: APPROVE" or "VERDICT: NEEDS CHANGES",
             followed by a short numbered list of issues (if any).
+            For every issue, include a concrete proposed fix (code snippet or
+            diff), so the author can apply it or reply "@claude apply your
+            fixes" to have you commit the changes on this branch.
           claude_args: '--allowed-tools "Bash(gh pr comment:*),Bash(gh pr view:*),Bash(gh pr diff:*)"'
 
       - name: Token missing notice
