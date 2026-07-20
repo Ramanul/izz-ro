@@ -55,6 +55,36 @@ SOURCES = {
             "tion":         {"name": "Timiș Online",        "url": "https://www.tion.ro/feed/",              "category": "zonal"},
             "bizbrasov":    {"name": "BizBrașov",           "url": "https://www.bizbrasov.ro/feed",          "category": "zonal"},
             "newsbv":       {"name": "News Brașov",         "url": "https://www.newsbv.ro/feed/",            "category": "zonal"},
+    # zonal — Maramures (nivel judet; regiunea istorica ≈ judetul, deci ziarele MM sunt zonale)
+            "actualmm":     {"name": "actualMM",            "url": "https://actualmm.ro/feed/",              "category": "zonal"},
+            "emaramures":   {"name": "eMaramureș",          "url": "https://www.emaramures.ro/feed/",        "category": "zonal"},
+    # regional — publicatii MULTI-JUDET pe regiuni istorice (cercetare agenti 2026-07-20).
+    # CANDIDATI pana la validarea cu feedcheck.yml in CI; cei morti se taie inainte de merge.
+    # Exclusi motivat (nu re-adauga fara re-evaluare): TransilvaniaON = tipar retea SEO
+    # (advertoriale identice pe zeci de domenii); pressalert = deja zonal (one axis, one home);
+    # gds.ro = 403 la feedcheck 2026-07-17; newsmoldova.ro = amesteca stiri Chisinau (zgomot);
+    # gazetademaramures = probabil fara RSS (non-WordPress).
+            "transilvaniareporter": {"name": "Transilvania Reporter", "url": "https://transilvaniareporter.ro/feed/",  "category": "regional"},
+            "ziarultransilvaniei":  {"name": "Ziarul Transilvaniei",  "url": "https://ziarultransilvaniei.ro/feed/",   "category": "regional"},
+            "gazetadetransilvania": {"name": "Gazeta de Transilvania","url": "https://gazetadetransilvania.ro/feed/",  "category": "regional"},
+            "expressdebanat":       {"name": "Express de Banat",      "url": "https://expressdebanat.ro/feed/",        "category": "regional"},
+            "ziuadevest":           {"name": "Ziua de Vest",          "url": "https://www.ziuadevest.ro/feed/",        "category": "regional"},
+            "banatnews":            {"name": "Banat-News",            "url": "https://banat-news.ro/feed/",            "category": "regional"},
+            "criticarad":           {"name": "Critic Arad",           "url": "https://www.criticarad.ro/feed/",        "category": "regional"},
+            "crisanaonline":        {"name": "Crisana Online",        "url": "https://crisanaonline.ro/feed/",         "category": "regional"},
+            "zch":                  {"name": "ZCH News",              "url": "https://zch.ro/feed/",                   "category": "regional"},
+            "stirilemoldovei":      {"name": "Știrile Moldovei",      "url": "https://stirilemoldovei.ro/feed/",       "category": "regional"},
+            "ziarulevenimentul":    {"name": "Ziarul Evenimentul",    "url": "https://www.ziarulevenimentul.ro/feed/", "category": "regional"},
+            "newsbucovina":         {"name": "NewsBucovina",          "url": "https://www.newsbucovina.ro/feed/",      "category": "regional"},
+            "bucovinamedia":        {"name": "Bucovina Media",        "url": "https://bucovinamedia.ro/feed/",         "category": "regional"},
+            "stirimuntenia":        {"name": "Știri din Muntenia",    "url": "https://stiri-muntenia.ro/feed/",        "category": "regional"},
+            "zdp":                  {"name": "Ziarul de Ploiești",    "url": "https://www.zdp.ro/feed/",               "category": "regional"},
+            "jurnalulolteniei":     {"name": "Jurnalul Olteniei",     "url": "https://jurnalulolteniei.ro/feed/",      "category": "regional"},
+            "cronicaolteniei":      {"name": "Cronica Olteniei",      "url": "https://cronicaolteniei.ro/feed/",       "category": "regional"},
+            "stirileolteniei":      {"name": "Știrile Olteniei",      "url": "https://stirileolteniei.ro/feed/",       "category": "regional"},
+            "dobrogeanews":         {"name": "DobrogeaNews",          "url": "https://www.dobrogeanews.ro/feed/",      "category": "regional"},
+            "dobrogeaonline":       {"name": "Dobrogea Online",       "url": "https://www.dobrogeaonline.ro/feed/",    "category": "regional"},
+            "dobrogeatv":           {"name": "Dobrogea TV",           "url": "https://dobrogea.tv/feed/",              "category": "regional"},
     # extern — Europa/UE/vecinatate (en, AI traduce) + surse ro
             "bbc_europe": {"name": "BBC Europe",    "url": "https://feeds.bbci.co.uk/news/world/europe/rss.xml", "category": "extern", "lang": "en"},
             "guardian_eu":{"name": "The Guardian",  "url": "https://www.theguardian.com/world/europe-news/rss",  "category": "extern", "lang": "en"},
