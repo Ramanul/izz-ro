@@ -8,22 +8,19 @@
 **Updated:** 2026-07-20 (slice: local-gov-feeds-phase1 merged; feedcheck validation in CI)
 
 ## Current task
-`local-feeds-quality-filter` — delegated to OpenCode 2026-07-20, branch
-`oc/local-feeds-quality-filter`, spec `specs/local-feeds-quality-filter.md`.
-Feedcheck run 29715730835 verdict: 44 sources dead/empty — pilot picked alphabetically
-(all Alba, mostly GOL); fix = filter `last_signal_date >= 2026-01-01` + sort desc by
-date; prune 7 failed CJ (arad/bihor/ilfov/sibiu=GOL, buzau=502, iasi=timeout,
-calarasi=frozen). Keep 6 CJ with fresh content.
+None in flight. Second feedcheck dispatched (validating the date-filtered batch of 35
+primării + 8 CJ) — read its results before scaling `LOCAL_GOLD_LIMIT`.
 Jules CLI onboarding still blocked: 401 despite login OK + GitHub App installed —
 waiting on user (key #2 / Google↔GitHub link).
 
 ## Last relevant commits
-- `oc/local-gov-feeds-phase1` MERGED (8ccedfb, executor OpenCode, manager-verified
-  68/68 tests + acceptance `35 15` + `LOCAL_GOLD_LIMIT=0` kill-switch): 13 CJ feeds +
-  `generator/local_sources.py` GOLD CSV loader. Branch deleted.
-- `oc/fix-normalize-url` MERGED (a7396b3, executor OpenCode): closes #67; branch deleted,
-  plus cleanup of merged `devin/*` branches.
-- `gsp` RSS source RECOVERED (200 + valid XML, verified 2026-07-20) — no action needed.
+- `oc/local-feeds-quality-filter` MERGED (7f9d138, executor OpenCode, manager-verified
+  71/71 tests, acceptance `35 8`, 20-county spread): loader filters
+  `last_signal_date >= 2026-01-01` + sorts desc by date; 7 dead CJ pruned. Feedcheck #1
+  (run 29715730835) had shown 44/48 pilot feeds dead/empty (alphabetical = all-Alba trap).
+- `oc/local-gov-feeds-phase1` MERGED (8ccedfb): 13 CJ feeds + GOLD CSV loader,
+  `LOCAL_GOLD_LIMIT` default 35, kill-switch =0.
+- `oc/fix-normalize-url` MERGED (a7396b3): closes #67. Merged branches deleted.
 - The CI bot commits every ~30 min — always `git pull --ff-only` before writing any spec.
 
 ## User WIP — UNTOUCHABLE
