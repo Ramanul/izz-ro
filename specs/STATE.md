@@ -45,19 +45,19 @@ a throwaway task.** The 8 merges of 2026-07-19/20 are no longer evidence the rou
 Tree clean, `git stash list` empty. The former WIP (`render.py`, `salariul-minim.yaml`) is
 gone, unrecoverable from git, cause unknown. `render.py` is no longer off-limits.
 
-## 429 retry — SHIPPED BUT DOES NOT FIX THE OBSERVED PROBLEM (measured 2026-07-24)
-`a644c31` added retry (2 attempts, 1s+3s, honours Retry-After). Feedcheck re-run after it
-(`30095060877`) still reports 429 on `libertatea`, `unica`, `bzi` — plus `elle`, which was
-FINE in the run 40 minutes earlier. So: the rate limit outlasts a 4-second backoff, and the
-affected set VARIES between runs. That points at per-IP throttling of GitHub runner ranges,
-not at a transient refusal these sources recover from in seconds.
-What DID improve: `piataauto` no longer reports as GOL (checker bug, fixed) — 7 findings
-before, 7 now, but a different, honest 7.
-Untested hypotheses, cheapest first: (a) `USER_AGENT = "IZZ.ro Bot/1.0"` is what draws the
-429 — note `monitor.yml` learned CF bot-fight blocks runner IPs *regardless* of UA, so this
-may fail the same way; (b) much longer backoff — rejected for now, it would stall pool
-workers; (c) accept that these sources are unreachable from Actions and fetch them elsewhere.
-Do NOT claim this is fixed until a feedcheck run comes back clean on those four.
+## The 429s: diagnosed, closed as external (2026-07-24)
+Chain: retry shipped (`a644c31`) → feedcheck still 429 → UA hypothesis tested and FALSIFIED
+(`tools/ua_probe.py`, run `30096569916`): at `libertatea` no User-Agent variant passes; at
+`unica`/`elle` the FIRST request passes and the next three, milliseconds apart, get 429.
+**These sources limit by frequency, per IP; runner ranges are already spent. Nothing in our
+code fixes it** — not UA, not a 4s backoff (rejected longer: it stalls pool workers).
+Resolution: feedcheck now reports 429/503 as **LIMIT — "unverifiable from here"**, not DEAD,
+and they no longer fail the run. Same reasoning `monitor.yml` uses for edge 403s: a checker
+that goes red for external reasons stops being read. Verified on run `30096781843`: 4 LIMIT
+(libertatea, unica, elle, bzi) + **3 genuine failures** — `liternet` (200 but empty feed),
+`pl_prahova_brazi` and `pl_vaslui_dragomiresti` (403 WAF). The signal is honest now: 3 real
+problems, not 7. Those 3 are the actual open work. Re-verify the 4 from a home IP, not CI.
+The retry itself stays — it is correct for genuinely transient refusals, just not for these.
 
 ## Blockers
 - MAI WAF blocks this IP (502 on `*.prefectura.mai.gov.ro` and www.mai.gov.ro). Retest later
