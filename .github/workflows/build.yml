@@ -34,7 +34,7 @@ jobs:
   pipeline:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       - uses: actions/setup-python@v6
         with:
@@ -118,7 +118,7 @@ jobs:
     needs: pipeline
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           ref: main          # tip-ul lui main DUPA push-ul lui pipeline -> continut proaspat
       - uses: actions/setup-python@v6
