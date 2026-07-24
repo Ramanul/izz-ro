@@ -68,6 +68,14 @@ class GeminiProvider(Provider):
                         data = json.load(resp)
                     return data["candidates"][0]["content"]["parts"][0]["text"].strip()
                 except urllib.error.HTTPError as exc:
+                    # corpul raspunsului contine motivul exact (ex. ce camp e refuzat
+                    # la 400 INVALID_ARGUMENT) — fara el diagnosticul e ghicit
+                    try:
+                        detail = exc.read(600).decode("utf-8", "replace").strip()
+                    except Exception:
+                        detail = ""
+                    if detail:
+                        exc.msg = f"{exc.msg} | {detail}"
                     last_exc = exc
                     if exc.code in (429, 500, 503):
                         if attempt < RETRIES_PER_KEY - 1:
