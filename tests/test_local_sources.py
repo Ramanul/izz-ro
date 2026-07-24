@@ -194,3 +194,16 @@ def test_impact_tier_orders_municipiu_before_oras_before_comuna(tmp_path):
     assert "Municipiul Mare" in names[0]
     assert "Oras Mijloc" in names[1]
     assert "Comuna Fresh" in names[2]
+
+
+def test_impact_tier_word_boundary_not_substring():
+    """Regresie (review cont A, 2026-07-24): potrivirea pe substring clasifica gresit.
+    'ORASTIOARA DE SUS' e o COMUNA dar contine 'ORAS'; forma 'MUNICIPIU' fara -L cadea la comuna."""
+    from generator.local_sources import _impact_tier
+    assert _impact_tier("ORASTIOARA DE SUS") == 2      # comuna, NU oras
+    assert _impact_tier("MUNICIPIU TEST") == 0         # fara -L, tot municipiu
+    assert _impact_tier("ORAS SOVATA") == 1
+    assert _impact_tier("ORASUL VICTORIA") == 1
+    assert _impact_tier("ORAȘ TEST") == 1              # cu diacritic
+    assert _impact_tier("MUNICIPIUL BRAILA") == 0
+    assert _impact_tier("VALEA LUNGA") == 2
