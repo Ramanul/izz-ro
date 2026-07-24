@@ -96,7 +96,17 @@ Prefer local CLI measurement tools over "testing websites": structured JSON outp
 ## 14. Autonomous delivery mandate — ENDED / HISTORICAL (owner decision 2026-07-13)
 The 2026-07-10 autonomous mandate is **OVER**. Its backlog shipped (2026-07-11) and the live site is green. It caused a concrete problem: multiple sessions each running an autonomous cron and auto-merging into `main` collided (2026-07-12/13 — GA + security-header work had to be rebuilt after parallel PRs landed). So, permanently now:
 - **Do NOT arm any autonomous loop / recurring CronCreate to self-drive the backlog.** No session should merge to `main` on its own schedule.
-- **ONE active session at a time writes to izz.ro.** If you are a new session and unsure whether another is active, ask the owner before starting parallel work — do not race `main`.
+- **Who merges to `main` — owner rule, 2026-07-24.** The account the owner is *currently working
+  from* merges. Not "whoever opened the PR", not "the account that always owns main" — the active
+  one. So: if you are the session the owner is talking to right now, you merge; do not park a green
+  PR waiting for the other account.
+- **After any merge, tell the other account.** Parallel work is allowed *because* the accounts stay
+  informed. Write the merge into the cross-account channel (`TASKS-B.md` in
+  `Ramanul/claude-desktop-workspace`, plus `specs/STATE.md` here) so the idle account never
+  re-does or re-reviews landed work. A merge nobody announced is what causes the collisions §14
+  was written about.
+- Still true: **do not race `main`.** Branch, keep the diff small, land it, announce it. The old
+  blanket "one writer, ask the owner first" is superseded by the two rules above.
 - **Revert to the §5 confirmation workflow + §16 verification** for all work. Spec → plan → verified slice → the owner (or the live smoke/visual jobs) confirms.
 - Historical record of the delivered backlog (do not re-do): Chromium image engine, cache `_headers`, EAA accessibility statement, legal wording pass, A11y/SEO/perf thresholds, pytest suite + tests.yml, covers.py cleanup — all ✅.
 - **Owner facts (never invent legal facts):** operator = natural person, initials **S.A.N.**, Romania — already in privacy.md.
