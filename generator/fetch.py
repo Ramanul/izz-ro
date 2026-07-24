@@ -3,6 +3,7 @@ import json
 import os
 import re
 import socket
+import time
 import urllib.error
 import urllib.request
 import xml.etree.ElementTree as ET
@@ -20,6 +21,14 @@ TIMEOUT = 10  # secunde per feed
 # Fetch-ul e I/O-bound: threadurile asteapta reteaua, nu CPU-ul. 8 e conservator
 # fata de ~40+ surse; FETCH_WORKERS=1 revine la secvential.
 MAX_WORKERS = int(os.environ.get("FETCH_WORKERS", "8"))
+
+# Retry pe refuzuri tranzitorii. Feedcheck-ul din 2026-07-24 (run 30093310671) a prins
+# 429 pe libertatea, unica si bzi de pe runnerii GitHub — iar build.yml ruleaza pe aceiasi
+# runneri, deci productia chiar pierdea sursele alea la prima incercare.
+RETRY_STATUSES = (429, 503)
+RETRY_ATTEMPTS = 2               # incercari SUPLIMENTARE, peste prima
+RETRY_BACKOFF = (1, 3)           # secunde, per incercare esuata
+RETRY_AFTER_CAP = 15             # peste atat nu asteptam: un host lent ar bloca un worker
 
 # Conditional GET (ETag / Last-Modified): nu re-descarcam feed-uri neschimbate.
 # Valabilitate limitata la 3h: mecanismul de defer (iteme amanate la 429 AI) se
@@ -319,6 +328,26 @@ def _fetch_html_list(key: str, source: dict) -> tuple[list, str | None]:
     return items, None
 
 
+def _retry_delay(exc: urllib.error.HTTPError, attempt: int) -> float | None:
+    """Cate secunde asteptam inainte de a reincerca, sau None daca renuntam.
+
+    Renuntam cand: statusul nu e tranzitoriu, am epuizat incercarile, sau serverul cere
+    prin `Retry-After` mai mult decat `RETRY_AFTER_CAP` — mai bine o sursa moarta la runda
+    asta decat un worker blocat, mai ales ca fetch-ul e paralel.
+    """
+    if exc.code not in RETRY_STATUSES or attempt >= RETRY_ATTEMPTS:
+        return None
+    after = exc.headers.get("Retry-After") if exc.headers else None
+    if after:
+        try:
+            secs = float(str(after).strip())
+        except (TypeError, ValueError):
+            secs = None          # forma HTTP-date: ignoram, cadem pe backoff-ul nostru
+        if secs is not None:
+            return None if secs > RETRY_AFTER_CAP else max(secs, 0.0)
+    return RETRY_BACKOFF[min(attempt, len(RETRY_BACKOFF) - 1)]
+
+
 def _fetch_one(key: str, source: dict, cache: dict | None = None) -> tuple[list, str | None]:
     """Returneaza (articole, eroare). Alege metoda de fetch in functie de tipul sursei."""
     if source.get("type") == "sitemap_news":
@@ -334,22 +363,31 @@ def _fetch_one(key: str, source: dict, cache: dict | None = None) -> tuple[list,
             headers["If-None-Match"] = ent["etag"]
         if ent.get("last_modified"):
             headers["If-Modified-Since"] = ent["last_modified"]
-    try:
-        req = urllib.request.Request(source["url"], headers=headers)
-        with urllib.request.urlopen(req, timeout=TIMEOUT) as resp:
-            raw = resp.read()
-            if cache is not None:
-                cache[key] = {
-                    "etag": resp.headers.get("ETag"),
-                    "last_modified": resp.headers.get("Last-Modified"),
-                    "fetched_at": datetime.now(timezone.utc).isoformat(),
-                }
-    except urllib.error.HTTPError as exc:
-        if exc.code == 304:
-            return items, None   # feed neschimbat -> nimic nou, sursa e sanatoasa
-        return items, f"{key}: {exc}"
-    except (urllib.error.URLError, socket.timeout, ValueError) as exc:
-        return items, f"{key}: {exc}"
+    raw = None
+    for attempt in range(RETRY_ATTEMPTS + 1):
+        try:
+            req = urllib.request.Request(source["url"], headers=headers)
+            with urllib.request.urlopen(req, timeout=TIMEOUT) as resp:
+                raw = resp.read()
+                if cache is not None:
+                    cache[key] = {
+                        "etag": resp.headers.get("ETag"),
+                        "last_modified": resp.headers.get("Last-Modified"),
+                        "fetched_at": datetime.now(timezone.utc).isoformat(),
+                    }
+            break
+        except urllib.error.HTTPError as exc:
+            if exc.code == 304:
+                return items, None   # feed neschimbat -> nimic nou, sursa e sanatoasa
+            delay = _retry_delay(exc, attempt)
+            if delay is None:
+                return items, f"{key}: {exc}"
+            time.sleep(delay)
+        except (urllib.error.URLError, socket.timeout, ValueError) as exc:
+            return items, f"{key}: {exc}"
+
+    if raw is None:   # garda: bucla iese doar prin break/return, dar RETRY_ATTEMPTS e tunabil
+        return items, f"{key}: fetch esuat dupa {RETRY_ATTEMPTS + 1} incercari"
 
     feed = feedparser.parse(raw)
     for entry in feed.entries[: config.MAX_PER_SOURCE]:
