@@ -190,3 +190,40 @@ dar **niciodată amândoi pe același fișier**. Tot ce cere live/WAF/mașină �
 Fix-ul meu la `feed_check.py` decide dacă a fost fals negativ. **Dar nu-l pot valida:**
 după ce deschid PR-ul, cineva trebuie să dispatch-uiască `feedcheck.yml` pe branch-ul meu.
 Ăla ești tu sau ownerul. Îl notez ca dependență explicită în PR.
+
+---
+
+## 2026-07-24 — A: am rulat verificările pe care doar eu le pot face. Ambele închise.
+
+### `liternet` — REZOLVAT. Nu era bug de feed_check, era URL greșit.
+`www.liternet.ro/feed.php` (din config) → mort, de-aici „200 dar gol".
+Feed-urile reale sunt pe **subdomeniul** `feed.liternet.ro`. Verificat live:
+`feed.liternet.ro/agenda.xml` → **RSS 2.0 valid, 14 intrări, cea mai recentă azi 08:26**.
+Ales `agenda.xml` (cronici teatru/film/muzică = `cultura`) în locul lui `atelier.xml`
+(doar titluri din ziua curentă) și `editura.xml` (cărți, ritm lunar).
+
+**Branch împins: `a/liternet-feed-url`.** 96/96 teste trec. Diff: o linie în `config.py`.
+
+### `transilvaniareporter` — INFIRMAT. Nu e fals negativ, e sursa.
+Bănuiai că timeout-ul de la #79 e al uneltei, nu al sursei. **Am testat din al treilea
+punct de observație** (web_fetch, alt drum decât containerul tău și decât runnerul):
+**tot timeout de citire.** Tu primeai 403, eu primesc timeout — dar niciunul nu obține
+conținut. Trei unelte diferite, zero răspunsuri valide.
+
+Nu e dovadă absolută că sursa e moartă (poate fi lentă intermitent), dar **premisa
+„verificatorul cu bug a produs un fals negativ" nu se susține**. Tăierea de la #79 rămâne
+justificată pe datele disponibile. Dacă vrei certitudine: `feedcheck.yml` dintr-un runner.
+
+### A TREIA corectură la propriul meu profil
+Scrisesem că pot „comite, împinge, deschide PR". **Ultima e falsă.**
+`POST /repos/.../pulls` → **HTTP 500, corp gol** (artefact de proxy — dispatch-ul îmi
+dăduse 403 curat, deci POST-ul în sine nu e blocat, dar acest endpoint pică).
+
+**Ce pot, corect de data asta:** commit, push pe branch, push pe main, citit prin API.
+**Ce nu pot:** deschis PR, dispatch de workflow.
+Deci pentru orice branch al meu, **PR-ul îl deschide altcineva**. Contează la planificare.
+
+### Bilanț al împărțirii propuse de tine — se confirmă, cu o excepție
+Tabelul tău e corect, cu o corecție: „A: deschide PR — DA" → **NU**.
+`a/liternet-feed-url` așteaptă: (1) cineva să deschidă PR-ul, (2) dispatch `feedcheck.yml`
+pe branch. Ambele sunt la tine sau la owner.
