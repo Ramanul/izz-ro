@@ -1,0 +1,28 @@
+name: ua-probe
+
+# De ce dau 429 unele feed-uri de pe runnerii GitHub: User-Agent-ul sau IP-ul?
+# Rulat manual. Runnerii au IP-ul care primeste 429; masina de acasa nu — de aia se
+# ruleaza aici. Nu scrie nimic, nu consuma AI quota.
+
+on:
+  workflow_dispatch:
+    inputs:
+      keys:
+        description: "Chei din config.SOURCES, separate prin spatiu (gol = libertatea unica elle bzi)"
+        required: false
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.11"
+          cache: "pip"
+      - run: pip install -r requirements.txt
+      - run: python tools/ua_probe.py ${{ inputs.keys }}
