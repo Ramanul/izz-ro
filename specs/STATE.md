@@ -5,7 +5,7 @@
 > Executors receive this file as read-only context. Overwrite sections in place — never let
 > this file grow past ~30 lines of content.
 
-**Updated:** 2026-07-24 (slice: Jules onboarding closed — CLI functional, /delegate-jules committed)
+**Updated:** 2026-07-24 (slice: redundant serving — GitHub Pages mirror + monitor live, failover Worker pending token)
 
 ## Current task
 `parallel-fetch` — spec `specs/parallel-fetch.md`, branch `oc/parallel-fetch`, delegated
@@ -39,6 +39,13 @@ executor route active. `JULES_API_KEY` in env is INVALID (401) — CLI is the ro
 ## Blockers
 - MAI WAF blocks this IP (502 on `*.prefectura.mai.gov.ro` AND www.mai.gov.ro) — do NOT
   probe MAI from this IP; retest in days or from GitHub Actions.
+
+## Redundancy (2026-07-24, live + CI-verified)
+- Mirror serving system #2 LIVE: GitHub Pages `ramanul.github.io`, synced by build.yml job
+  `mirror` (deploy key = secret `MIRROR_DEPLOY_KEY`). Monitor `monitor.yml` green (10-min cron).
+- PENDING (needs user): deploy the edge failover Worker `infra/failover-worker.js` —
+  requires a Cloudflare token with Workers Scripts:Edit + Workers Routes:Edit, then
+  `cd infra && wrangler deploy`. See infra/README-failover.md.
 
 ## Next steps
 - Read feedcheck run 29715730835 results; prune dead feeds if any; watch next build.yml
