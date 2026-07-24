@@ -76,9 +76,10 @@ integral.** O rescriere completă transformă orice scriere paralelă în pierde
 punctuală lasă git să vadă că sunt schimbări diferite. Rescrie tot fișierul doar când îl tai
 pentru că a depășit limita de mărime — și atunci fă `fetch` imediat înainte.
 
-Dacă ești o sesiune care NU face merge în `main` (contul B, sau o sesiune paralelă pe branch),
-**nu atinge deloc `STATE.md`.** Scrie doar în jurnalul tău din `sessions/` — acolo un fișier per
-sesiune face coliziunea imposibilă prin construcție.
+Cine scrie `STATE.md`: **sesiunea care face merge în `main`**, oricare cont ar fi (§14, 2026-07-24).
+Dacă tu nu integrezi nimic în `main` în sesiunea asta, **nu atinge deloc `STATE.md`** — scrie doar
+în jurnalul tău din `sessions/`, unde un fișier per sesiune face coliziunea imposibilă prin
+construcție, nu prin disciplină.
 
 ## 5. Predare explicită, dacă e cazul
 
@@ -86,8 +87,14 @@ Dacă rămâne ceva concret pentru celălalt cont, adaugă-l la „În așteptar
 (A → B) — un task per punct, cu ce anume e de făcut și unde e spec-ul. Fără asta, celălalt
 cont află ce s-a făcut, dar nu ce are de făcut.
 
-Reamintește regula de coliziune: `izz/CLAUDE.md` §14 — **o singură sesiune scrie la `main`**.
-Contul B lucrează pe branch propriu și nu face merge.
+**Anunță ce ai integrat.** `izz/CLAUDE.md` §14 (regulă din 2026-07-24): merge-ul îl face contul
+din care lucrează Alexandru **în acel moment** — nu „cine a deschis PR-ul", nu „contul care
+deține main". Un PR verde nu se parchează așteptând celălalt cont. În schimb, **orice merge se
+scrie în `TASKS-B.md`**, la „Anunțuri de merge", plus în `specs/STATE.md`. Munca paralelă e
+sigură pentru că ambele conturi știu ce a aterizat, nu pentru că doar unul are voie să miște.
+Un merge neanunțat e exact ce a cauzat coliziunile pentru care s-a scris §14.
+
+Regula veche „o singură sesiune scrie la `main`, întreabă înainte" e **depășită** — nu o repeta.
 
 ## 6. Commit + push
 
