@@ -3,6 +3,13 @@ import os
 import re
 
 
+# Potrivire pe CUVANT INTREG, nu substring: "ORASTIOARA DE SUS" e o COMUNA, dar contine
+# "ORAS" -- cu `in` era clasificata gresit ca oras (bug real, prins la review 2026-07-24).
+# `MUNICIPIUL?` accepta si forma fara -L, ca o scriere diferita in CSV sa nu cada tacut la comuna.
+_MUNICIPIU_RE = re.compile(r"\bMUNICIPIUL?\b")
+_ORAS_RE = re.compile(r"\bORA[SȘ](UL)?\b")
+
+
 def _impact_tier(localitate: str) -> int:
     """Prioritate de IMPACT, dedusa STATIC din numele localitatii (nu re-analiza la runtime):
     municipiu (oras mare) inaintea orasului, orasul inaintea comunei. Reper cheie: un primar
@@ -10,9 +17,9 @@ def _impact_tier(localitate: str) -> int:
     localitatile mari, apoi comunele pentru acoperire. Marile resedinte de judet (Cluj, Iasi...)
     lipsesc din lista GOLD -- site-urile lor n-au RSS -- deci municipiile sunt varful disponibil."""
     loc = localitate.upper()
-    if "MUNICIPIUL" in loc:
+    if _MUNICIPIU_RE.search(loc):
         return 0
-    if "ORAS" in loc or "ORAȘ" in loc:
+    if _ORAS_RE.search(loc):
         return 1
     return 2  # comuna
 
