@@ -39,6 +39,9 @@ gone, unrecoverable from git, cause unknown. `render.py` is no longer off-limits
   `0097cd84`, route `izz.ro/*` at 100%. No API token was needed — `wrangler login` (OAuth,
   account `andifreelancer2@gmail.com`, id `636085fa...`) grants workers_scripts+routes:write.
   Verified live: `curl -sI "https://izz.ro/?cb=$(date +%s)"` → `x-izz-origin: primary`.
+  **Failover itself tested end-to-end 2026-07-24**, not just assumed: PRIMARY temporarily
+  pointed at a nonexistent host → `x-izz-origin: mirror`, status 200 (site stayed up);
+  reverted and re-verified `primary`. The redundancy is proven, not theoretical.
   **Cache-bust is required** — a plain `curl -sI https://izz.ro/` hits a cached edge response
   with no header and looks like the Worker is not running. Redundancy is now complete:
   Pages primary + GitHub Pages mirror + edge failover + `monitor.yml`.
