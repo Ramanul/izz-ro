@@ -115,3 +115,41 @@ def test_fetch_workers_1_ramane_secvential(monkeypatch):
     fetch.fetch_all()
 
     assert order == list(sources)
+
+
+def _patch_raising(monkeypatch, sources, raise_keys):
+    """`_fetch_one` care ARUNCA pentru anumite chei (feed malformat, bug in parser)."""
+    monkeypatch.setattr(config, "SOURCES", sources)
+    monkeypatch.setattr(fetch, "_cache_load", lambda: {})
+    saved = {}
+    monkeypatch.setattr(fetch, "_cache_save", lambda cache: saved.update(cache))
+
+    def fake_fetch_one(key, source, cache=None):
+        if key in raise_keys:
+            raise ValueError(f"feed stricat: {key}")
+        if cache is not None:
+            cache[key] = {"etag": f"etag-{key}"}
+        return [{"src": key}], None
+
+    monkeypatch.setattr(fetch, "_fetch_one", fake_fetch_one)
+    return saved
+
+
+@pytest.mark.parametrize("workers", [8, 1])
+def test_o_sursa_care_arunca_nu_omoara_fetch_ul(monkeypatch, workers):
+    """O exceptie neprinsa dintr-o sursa = sursa moarta, NU build picat.
+
+    `_fetch_one` prinde doar erorile de retea; `feedparser.parse` si bucla de
+    entries pot arunca. Fara garda, `pool.map` re-ridica exceptia la iterare si
+    pierde si sursele sanatoase, si cache-ul.
+    """
+    sources = _fake_sources(6)
+    monkeypatch.setattr(fetch, "MAX_WORKERS", workers)
+    saved = _patch_raising(monkeypatch, sources, raise_keys={"src02"})
+
+    items, dead = fetch.fetch_all()
+
+    assert [i["src"] for i in items] == [k for k in sources if k != "src02"]
+    assert len(dead) == 1 and dead[0].startswith("src02: ")
+    assert "feed stricat" in dead[0]
+    assert "src02" not in saved and len(saved) == 5

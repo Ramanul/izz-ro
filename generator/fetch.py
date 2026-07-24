@@ -375,6 +375,21 @@ def _fetch_one(key: str, source: dict, cache: dict | None = None) -> tuple[list,
     return items, None
 
 
+def _fetch_one_guarded(key: str, source: dict, cache: dict | None = None) -> tuple[list, str | None]:
+    """`_fetch_one` care nu poate arunca: orice eroare devine sursa moarta.
+
+    `_fetch_one` prinde doar erorile de retea; `feedparser.parse` si bucla de
+    entries sunt in afara try-ului, deci un feed malformat poate arunca. In
+    paralel asta e mai grav decat in secvential: `pool.map` re-ridica exceptia
+    la iterarea rezultatelor, iar `_cache_save` nu se mai executa — tot fetch-ul
+    (inclusiv sursele sanatoase) se pierde din cauza uneia singure.
+    """
+    try:
+        return _fetch_one(key, source, cache)
+    except Exception as exc:  # orice: o sursa stricata nu pica build-ul
+        return [], f"{key}: {exc}"
+
+
 def fetch_all() -> tuple[list, list]:
     """Returneaza (toate_articolele_brute, surse_moarte).
 
@@ -397,10 +412,10 @@ def fetch_all() -> tuple[list, list]:
     sources = list(config.SOURCES.items())
 
     if MAX_WORKERS <= 1:
-        results = [_fetch_one(key, source, cache) for key, source in sources]
+        results = [_fetch_one_guarded(key, source, cache) for key, source in sources]
     else:
         with ThreadPoolExecutor(max_workers=min(MAX_WORKERS, len(sources) or 1)) as pool:
-            results = list(pool.map(lambda kv: _fetch_one(kv[0], kv[1], cache), sources))
+            results = list(pool.map(lambda kv: _fetch_one_guarded(kv[0], kv[1], cache), sources))
 
     for items, err in results:
         if err:
