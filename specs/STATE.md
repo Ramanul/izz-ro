@@ -5,15 +5,17 @@
 > Executors receive this file as read-only context. Overwrite sections in place — never let
 > this file grow past ~30 lines of content.
 
-**Updated:** 2026-07-24 (slice: redundant serving — GitHub Pages mirror + monitor live, failover Worker pending token)
+**Updated:** 2026-07-24 (state audit: parallel-fetch found DELIVERED, SEO/WIP entries were stale)
 
 ## Current task
-`parallel-fetch` — spec `specs/parallel-fetch.md`, branch `oc/parallel-fetch`, delegated
-2026-07-20 (prereq for raising LOCAL_GOLD_LIMIT past ~100). In parallel, manager research
-agents are hunting REGIONAL publications; feedcheck cycle follows, then populate `regional`.
-`track-cost-per-slice` — spec `specs/track-cost-per-slice.md`, branch
-`devin/track-cost-per-slice`, delegated to Devin Local 2026-07-20 (metrics.log + helper CLI
-for solo-vs-executor cost accounting). Awaiting Devin report, then `/review-devin`.
+`parallel-fetch` — **DELIVERED, AWAITING REVIEW**. Branch is `feat/parallel-fetch` (NOT
+`oc/parallel-fetch` — that name never existed; it is why this branch looked lost), commit
+`8d670b7`, on origin. `generator/fetch.py` +33 lines + new `tests/test_fetch_parallel.py`;
+claims 63s -> 11s on 86 sources. Manager ran `pytest tests/ -q` on the branch 2026-07-24:
+**86 passed**. Next: `/review-executor`, then merge — it unblocks raising `LOCAL_GOLD_LIMIT`.
+In parallel, REGIONAL publications still need hunting; feedcheck cycle, then populate `regional`.
+`track-cost-per-slice` — branch `devin/track-cost-per-slice`, delegated to Devin Local
+2026-07-20. NOT on origin and no local branch — treat as not started until proven otherwise.
 Jules UNBLOCKED 2026-07-24: CLI auth works (GitHub App connected), smoke session
 16571763303422774183 ran; `/delegate-jules` + `tools/jules_api.py` committed. Third
 executor route active. `JULES_API_KEY` in env is INVALID (401) — CLI is the route.
@@ -32,9 +34,10 @@ executor route active. `JULES_API_KEY` in env is INVALID (401) — CLI is the ro
   `LOCAL_GOLD_LIMIT` default 35, kill-switch =0. `oc/fix-normalize-url` MERGED (a7396b3, #67).
 - The CI bot commits every ~30 min — always `git pull --ff-only` before writing any spec.
 
-## User WIP — UNTOUCHABLE
-- `generator/render.py` (modified, uncommitted)
-- `data/entities/salariul-minim.yaml` (modified, uncommitted)
+## User WIP — NONE (cleared 2026-07-24)
+Working tree is clean; `git stash list` empty. The former WIP (`generator/render.py`,
+`data/entities/salariul-minim.yaml`) is gone and not recoverable from git — owner does not
+know what happened to it. `render.py` is no longer off-limits.
 
 ## Blockers
 - MAI WAF blocks this IP (502 on `*.prefectura.mai.gov.ro` AND www.mai.gov.ro) — do NOT
@@ -50,6 +53,9 @@ executor route active. `JULES_API_KEY` in env is INVALID (401) — CLI is the ro
 ## Next steps
 - Read feedcheck run 29715730835 results; prune dead feeds if any; watch next build.yml
   cron run time (worst case +8 min: 48 new feeds × TIMEOUT=10s, fetch_all is SEQUENTIAL).
-- Phase 1 batch 2+: raise `LOCAL_GOLD_LIMIT` gradually once `oc/parallel-fetch` lands.
-- SEO gaps: `og:type` on article pages, `dateModified` in JSON-LD, `lastmod` in sitemap —
-  BLOCKED while `generator/render.py` is user WIP.
+- Review + merge `feat/parallel-fetch`, then raise `LOCAL_GOLD_LIMIT` gradually (phase 1 batch 2+).
+- SEO: NO gaps. Verified in code 2026-07-24 — `og:type` override `templates/article.html:5`,
+  `dateModified` `render.py:177`, `lastmod` `render.py:826`; all landed 2026-06-21 (`82ea411`).
+  CLAUDE.md §11 was right; this file was stale. Do NOT re-audit.
+- Cross-account handoff: `/handoff` (`.claude/commands/handoff.md`) writes the session journal
+  and refreshes this file — run it at the 75% usage alert, before switching accounts.
