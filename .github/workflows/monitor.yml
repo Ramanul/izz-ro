@@ -1,10 +1,14 @@
 name: uptime-monitor
 
-# Detectie externa, independenta de infrastructura de servire: ruleaza pe GitHub,
-# verifica cele trei suprafete la 10 min. Alerteaza (job rosu -> email owner) DOAR
-# cand siteul public e jos SAU ambele host-uri sunt jos (redundanta pierduta complet).
-# Un singur host jos cat timp izz.ro public raspunde = degradare tolerata (Worker-ul de
-# failover o acopera) -> doar avertisment, job verde, fara spam.
+# Detectie externa, independenta de infrastructura de servire (ruleaza pe GitHub, la 10 min).
+#
+# Subtilitate: Cloudflare bot-fight-mode raspunde 403 IP-urilor de datacenter ale runnerului,
+# desi siteul e 200 pentru useri reali cu browser. Un 403/503 de la edge DOVEDESTE ca frontul
+# Cloudflare + DNS-ul sunt VII -> NU e outage. De aceea alertam (job rosu -> email owner) doar
+# la cele doua dezastre reale pentru useri:
+#   1) izz.ro nu raspunde DELOC (000) = DNS/edge/registrar cazut total;
+#   2) ambele origini (Pages + mirror) jos = nimic de servit, nici prin failover.
+# Restul (edge viu dar bot-block pe runner, o singura origine jos) = avertisment, job verde.
 
 on:
   schedule:
@@ -25,9 +29,7 @@ jobs:
       - name: Verifica public + primar + mirror
         shell: bash
         run: |
-          set +e   # fara -e: liniile conditionale nu trebuie sa avorteze scriptul
-          # UA de browser real: Cloudflare bot-fight-mode da 403 pe UA-uri evident de bot,
-          # desi siteul e 200 pentru useri. Retry x3 -> tolereaza un challenge tranzitoriu.
+          set +e
           UA="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0 Safari/537.36"
           probe() {
             local code
@@ -41,17 +43,19 @@ jobs:
           PUB=$(probe "https://izz.ro/")
           PRI=$(probe "https://izz-ro.pages.dev/")
           MIR=$(probe "https://ramanul.github.io/")
-          echo "public izz.ro     : $PUB"
+          echo "public izz.ro     : $PUB   (403 de la edge = bot-block pe runner, nu outage)"
           echo "primar pages.dev  : $PRI"
           echo "mirror github.io  : $MIR"
 
           crit=0
-          if [ "$PUB" != "200" ]; then
-            echo "::error::SITE PUBLIC JOS — izz.ro a raspuns $PUB"
+          if [ "$PUB" = "000" ]; then
+            echo "::error::izz.ro NU raspunde deloc — DNS/edge/registrar cazut, outage total"
             crit=1
+          elif [ "$PUB" != "200" ]; then
+            echo "::warning::izz.ro edge viu dar a raspuns $PUB runnerului (bot-block CF, benign pentru useri)"
           fi
           if [ "$PRI" != "200" ] && [ "$MIR" != "200" ]; then
-            echo "::error::REDUNDANTA PIERDUTA — ambele host-uri jos (primar $PRI, mirror $MIR)"
+            echo "::error::REDUNDANTA PIERDUTA — ambele origini jos (primar $PRI, mirror $MIR)"
             crit=1
           elif [ "$PRI" != "200" ]; then
             echo "::warning::primar Cloudflare jos ($PRI) — mirror-ul acopera"
