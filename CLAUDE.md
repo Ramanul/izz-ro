@@ -7,6 +7,7 @@
 - Talk to the user (Alexandru) in **Romanian**. Code, identifiers, commit messages, logs, and technical terms stay in **English**.
 - Be direct and concise. No flattery, no auto-agreement. If a request is wrong or there is a better path, say so with reasons.
 - State uncertainty explicitly. Never present a guess as fact.
+- **Be proactive (owner decision 2026-07-24).** In EVERY discussion — izz.ro or any other topic — anticipate the next problem and surface improvement / efficiency ideas unprompted, act with initiative. But proposals stay proposals the owner confirms: initiative never becomes autonomous action on `main` or an unattended loop (§5, §14 still bind).
 
 ## 1. What izz.ro is
 AI-powered Romanian news aggregator. Brand promise: **"Zero Zgomot"** (Zero Noise) — synthesized, de-duplicated, clean news. The site is **statically generated** from a content pipeline (scrape -> synthesize -> cluster -> categorize -> render).
@@ -123,6 +124,11 @@ update it at the end of every slice and inside `/review-devin`; executors receiv
 Overwrite in place, keep it under ~30 lines. Start every session by reading it (after
 `git pull --ff-only` — the CI bot commits every ~30 min, so local main is always stale).
 
+**Delegation-first execution (owner decision 2026-07-24).** Default posture: delegate execution work to agents, keep the main thread on decisions — in any discussion, not only izz.ro. Two agent tiers with DIFFERENT reach, never conflate them:
+- *In-session Claude subagents* (`Explore`, `general-purpose`, the verification agents) run in ANY environment, including Claude on the web. These are the default executor when working from a web/Linux session.
+- *Free code executors* (Devin, OpenCode) run ONLY from a local desktop session via the Windows wrapper — they are NOT reachable from a web/Linux container (verified 2026-07-24: no `devin.exe`, no `pywinpty`). From the web, do not pretend otherwise: use in-session subagents or do it directly, and say which.
+Delegation is not free: when a task's implementation is smaller than the spec+review overhead (≈<5k tokens, see `specs/metrics.md`), do it directly instead of delegating. Never delegate in a way that races `main` or arms an autonomous loop (§14 holds absolutely).
+
 Slash commands in `.claude/commands/`: **`/slice`** drives the mandatory §5 workflow for one vertical slice; **`/audit`** runs the front-end audit. Permission allowlist for the documented-safe commands lives in `.claude/settings.json` (this is §12 made enforceable — read-only and dev/build commands no longer prompt; push/commit/deletes still do). A web-only `SessionStart` hook (`.claude/hooks/session-start.sh`) installs the pipeline deps (with `SETUPTOOLS_USE_DISTUTILS=stdlib`, needed for feedparser/sgmllib3k) so Claude Code on the web can run the pipeline and these agents.
 
 ## 16. Two-role verification + honesty calibration — HARD RULE (owner decision 2026-07-12)
@@ -139,3 +145,12 @@ Context: a correct CSS fix was reported "rezolvat" while the owner still saw the
 4. **When you cannot test something, say so explicitly** (which role, why) instead of implying it passed. Honesty about a gap beats a confident false "gata".
 
 This overrides any earlier phrasing that let "committed/rendered" stand in for "fixed for the user".
+
+## 17. Local institution images — consent-gated (owner decision 2026-07-24)
+Taxpayer funding does NOT place a public institution's photos in the public domain, and "public on their site" ≠ free to reuse. Legea 8/1996 art. 9 frees the TEXT of official acts (laws, administrative notices) — NOT photographs. A photo taken by a municipal employee is the INSTITUTION's work: the institution is the rightsholder and must grant reuse; a photo by a contracted photographer or an agency (Agerpres/Mediafax) belongs to that third party. Being of an elected official reduces that person's *image right* (they may be shown) but does NOT touch the *photographer's copyright* in a specific image. These are not legal facts to improvise (§14) — for anything operational, the owner confirms with a lawyer.
+
+izz.ro may use a local institution's image ONLY when one of these holds, verified and RECORDED (link + quote):
+1. the institution publishes reuse terms / an open license (open-data / PSI reuse notice) covering images, OR
+2. a free-licensed portrait/photo exists on Wikidata / Wikimedia Commons (existing pipeline path — `fetch_leadphotos.py` PD/CC0, `fetch_portraits.py` CC-BY), OR
+3. the institution gave written reuse permission.
+NO blanket scraping of institution sites. Agents research and gather this evidence per institution into a whitelist; the owner (or legal) approves it before any image is pulled — human-in-the-loop, like `moderation.yaml`. Missing all three → the article keeps its generated cover.
