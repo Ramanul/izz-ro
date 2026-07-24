@@ -1,5 +1,476 @@
 [
   {
+    "url": "https://cjgalati.ro/nava-de-pasageri-27-02",
+    "original_link": "https://cjgalati.ro/nava-de-pasageri-27-02/",
+    "source": "cj_galati",
+    "source_name": "CJ Galați",
+    "source_lang": "ro",
+    "title": "ANUNT PRIVIND DESFĂSURAREA CURSELOR DE AGREMENT (27iulie – 2august 2026)",
+    "category": "zonal",
+    "published": "2026-07-24T10:24:17+00:00",
+    "model": "B",
+    "teaser": "ANUNT PRIVIND DESFĂȘURAREA CURSELOR DE AGREMENT Consiliul Județean Galați va desfășura curse de agrement pe fluviul Dunărea cu nava de pasageri „CAMELIA”, care se vor realiza conform următorului program: Consiliul Județean Galați va desfășura curse de agrement pe fluviul Dunărea...",
+    "processed_by": "official",
+    "featured": false
+  },
+  {
+    "url": "https://digi24.ro/stiri/actualitate/sanatate/ce-au-descoperit-politistii-in-vestiarele-medicilor-de-la-spitalului-judetean-piatra-neamt-dupa-ce-managerul-a-sunat-la-112-3877091",
+    "original_link": "https://www.digi24.ro/stiri/actualitate/sanatate/ce-au-descoperit-politistii-in-vestiarele-medicilor-de-la-spitalului-judetean-piatra-neamt-dupa-ce-managerul-a-sunat-la-112-3877091",
+    "source": "digi24",
+    "source_name": "Digi24",
+    "source_lang": "ro",
+    "title": "Dispozitive medicale de peste 200.000 de lei, descoperite în vestiarele medicilor din Piatra-Neamț",
+    "category": "sanatate",
+    "published": "2026-07-24T10:23:00+00:00",
+    "model": "C",
+    "sources": [
+      {
+        "name": "Digi24",
+        "url": "https://www.digi24.ro/stiri/actualitate/sanatate/ce-au-descoperit-politistii-in-vestiarele-medicilor-de-la-spitalului-judetean-piatra-neamt-dupa-ce-managerul-a-sunat-la-112-3877091"
+      },
+      {
+        "name": "Știrile ProTV",
+        "url": "https://stirileprotv.ro/stiri/actualitate/descoperire-uluitoare-in-spitalul-jude-ean-piatra-neam-dupa-ce-managerul-a-sunat-la-112.html"
+      }
+    ],
+    "first_source": "Digi24",
+    "synthesis": "Miercuri seara, în urma unui apel la 112 efectuat de managerul unității, polițiștii au percheziționat vestiarele secției de Ortopedie de la Spitalul Județean de Urgență Piatra-Neamț. Oamenii legii au descoperit dispozitive medicale nedeclarate în valoare de peste 200.000 de lei. Cazul este anchetat după ce conducerea spitalului a sesizat autoritățile competente. Sursele indică aceleași date, fără a exista contraziceri între relatări.",
+    "entities": [
+      "Spitalul Judetean de Urgenta Piatra-Neamt",
+      "Alexandru Patrascu"
+    ],
+    "icon": "building-hospital",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://digi24.ro/stiri/actualitate/primele-imagini-de-la-locul-in-care-s-a-prabusit-drona-doborata-de-un-avion-f-16-in-buzau-3877025",
+    "original_link": "https://www.digi24.ro/stiri/actualitate/primele-imagini-de-la-locul-in-care-s-a-prabusit-drona-doborata-de-un-avion-f-16-in-buzau-3877025",
+    "source": "digi24",
+    "source_name": "Digi24",
+    "source_lang": "ro",
+    "title": "O dronă a fost doborâtă de un avion F-16 și s-a prăbușit în Buzău",
+    "category": "general",
+    "published": "2026-07-24T10:17:36+00:00",
+    "model": "C",
+    "sources": [
+      {
+        "name": "Digi24",
+        "url": "https://www.digi24.ro/stiri/actualitate/primele-imagini-de-la-locul-in-care-s-a-prabusit-drona-doborata-de-un-avion-f-16-in-buzau-3877025"
+      },
+      {
+        "name": "News Brașov",
+        "url": "https://newsbv.ro/imagini-drona-doborata-buzau/"
+      }
+    ],
+    "first_source": "Digi24",
+    "synthesis": "O dronă aflată în spațiul aerian național a fost interceptată și doborâtă în jurul orei 11:00 de un aparat F-16 aparținând Forțelor Aeriene Române. Resturile acesteia au căzut pe un câmp situat la aproximativ trei kilometri de localitatea Padina din județul Buzău. Echipe mixte ale Ministerului Apărării Naționale, Ministerului Afacerilor Interne și Inspectoratului pentru Situații de Urgență s-au deplasat imediat la fața locului pentru cercetări și intervenție.",
+    "entities": [
+      "Buzău",
+      "Padina",
+      "Forțele Aeriene Române"
+    ],
+    "icon": "plane",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://hotnews.ro/reactia-sefului-statului-major-al-armatei-romane-dupa-doborarea-dronei-la-buzau-2308536",
+    "original_link": "https://hotnews.ro/reactia-sefului-statului-major-al-armatei-romane-dupa-doborarea-dronei-la-buzau-2308536",
+    "source": "hotnews",
+    "source_name": "HotNews",
+    "source_lang": "ro",
+    "title": "O dronă pătrunsă în spațiul aerian a fost doborâtă de un avion F-16 la Buzău",
+    "category": "general",
+    "published": "2026-07-24T10:13:22+00:00",
+    "model": "C",
+    "sources": [
+      {
+        "name": "HotNews",
+        "url": "https://hotnews.ro/reactia-sefului-statului-major-al-armatei-romane-dupa-doborarea-dronei-la-buzau-2308536"
+      },
+      {
+        "name": "Digi24",
+        "url": "https://www.digi24.ro/stiri/actualitate/politica/reactia-lui-marcel-ciolacu-dupa-doborarea-dronei-in-judetul-buzau-3877079"
+      }
+    ],
+    "first_source": "HotNews",
+    "synthesis": "O dronă neidentificată a pătruns în spațiul aerian național și a fost interceptată și doborâtă de un avion F-16 al Forțelor Aeriene Române în județul Buzău, în apropierea comunei Padina. Incidentul s-a soldat cu neutralizarea aparatului într-o zonă nelocuită, fără a exista riscuri pentru populație. Șeful Statului Major al Apărării, Gheorghiță Vlad, a confirmat că acțiunea s-a desfășurat conform procedurilor legale, iar autoritățile au lăudat promptitudinea intervenției. Nu există contraziceri între surse.",
+    "entities": [
+      "Buzău",
+      "Gheorghiță Vlad",
+      "Marcel Ciolacu",
+      "Forțele Aeriene Române"
+    ],
+    "icon": "plane",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://primariaroman.ro/24-07-2026-anunt-colectare-deseuri-de-echipamente-electrice-si-electronice-in-municipiul-roman-in-data-de-1-august-2026",
+    "original_link": "https://primariaroman.ro/24-07-2026-anunt-colectare-deseuri-de-echipamente-electrice-si-electronice-in-municipiul-roman-in-data-de-1-august-2026/",
+    "source": "pl_neamt_municipiul_roman",
+    "source_name": "Primăria Municipiul Roman",
+    "source_lang": "ro",
+    "title": "24.07.2026 – Anunț – colectare deșeuri de echipamente electrice și electronice în Municipiul Roman în data de 1 AUGUST 2026",
+    "category": "local",
+    "published": "2026-07-24T10:11:30+00:00",
+    "model": "B",
+    "teaser": "Detalii pe sursa.",
+    "processed_by": "official",
+    "featured": false
+  },
+  {
+    "url": "https://primariabuzau.ro/publicatii-casatorii-din-23-si-24-iulie-2026",
+    "original_link": "https://primariabuzau.ro/publicatii-casatorii-din-23-si-24-iulie-2026/",
+    "source": "pr_buzau",
+    "source_name": "Primăria Buzău",
+    "source_lang": "ro",
+    "title": "Primăria a publicat listele cu viitoarele căsătorii programate în iulie 2026",
+    "category": "local",
+    "published": "2026-07-24T10:06:00+00:00",
+    "model": "B",
+    "teaser": "Autoritățile locale au pus la dispoziția publicului documentele oficiale referitoare la oficierea stării civile pentru datele de 23 și 24 iulie 2026. Informațiile pot fi consultate online pe platforma instituției până la data de 24 august.",
+    "processed_by": "gemini",
+    "entities": [],
+    "icon": "certificate",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://vinatorineamt.ro/informare-apa-serv-sa-8",
+    "original_link": "https://www.vinatorineamt.ro/informare-apa-serv-sa-8/",
+    "source": "pl_neamt_vanatori_neamt",
+    "source_name": "Primăria Vanatori-Neamt",
+    "source_lang": "ro",
+    "title": "Informare APA SERV SA",
+    "category": "local",
+    "published": "2026-07-24T10:05:57+00:00",
+    "model": "B",
+    "teaser": "Având în vedere remedierea avariilor succesive identificate la rețeaua de aducțiune de transport apă, Compania Județeană APA SERV S.A. anunță întreruperea temporară a sistemului de alimentare cu apă potabilă, astăzi 24.07.2026, ora 12.30, până la data de 25.07.2026, ora 11.30...",
+    "processed_by": "official",
+    "featured": false
+  },
+  {
+    "url": "https://primariaroman.ro/24-07-2026-anunt-consultare-publica-proiectul-de-hotarare-privind-aprobarea-vanzarii-unor-imobile",
+    "original_link": "https://primariaroman.ro/24-07-2026-anunt-consultare-publica-proiectul-de-hotarare-privind-aprobarea-vanzarii-unor-imobile/",
+    "source": "pl_neamt_municipiul_roman",
+    "source_name": "Primăria Municipiul Roman",
+    "source_lang": "ro",
+    "title": "24.07.2026 – ANUNȚ CONSULTARE PUBLICĂ – Proiectul de Hotarăre privind aprobarea vânzării unor imobile",
+    "category": "local",
+    "published": "2026-07-24T10:05:25+00:00",
+    "model": "B",
+    "teaser": "Detalii pe sursa.",
+    "processed_by": "official",
+    "featured": false
+  },
+  {
+    "url": "https://primariaroman.ro/24-07-2026-anunt-comunicat-cu-privire-la-rezultatul-final-al-sesiunii-de-selectie-a-proiectelor-care-vor-beneficia-de-finantare-nerambursabila-de-la-bugetul-local-al-municipiului-roman-pe-anul-202",
+    "original_link": "https://primariaroman.ro/24-07-2026-anunt-comunicat-cu-privire-la-rezultatul-final-al-sesiunii-de-selectie-a-proiectelor-care-vor-beneficia-de-finantare-nerambursabila-de-la-bugetul-local-al-municipiului-roman-pe-anul-202/",
+    "source": "pl_neamt_municipiul_roman",
+    "source_name": "Primăria Municipiul Roman",
+    "source_lang": "ro",
+    "title": "24.07.2026 – ANUNȚ – COMUNICAT cu privire la rezultatul final al sesiunii de selecție a proiectelor care vor beneficia de finanțare nerambursabilă de la bugetul local al Municipiului Roman pe anul 2026, în baza Legii nr. 350/2005",
+    "category": "local",
+    "published": "2026-07-24T09:42:48+00:00",
+    "model": "B",
+    "teaser": "Detalii pe sursa.",
+    "processed_by": "official",
+    "featured": false
+  },
+  {
+    "url": "https://gsp.ro/international/campionate/jurgen-klopp-selectioner-germania-prezentare-963811.html",
+    "original_link": "https://www.gsp.ro/international/campionate/jurgen-klopp-selectioner-germania-prezentare-963811.html",
+    "source": "gsp",
+    "source_name": "GSP",
+    "source_lang": "ro",
+    "title": "Jurgen Klopp a fost numit oficial selecționerul Germaniei până în 2030",
+    "category": "sport",
+    "published": "2026-07-24T09:38:42+00:00",
+    "model": "C",
+    "sources": [
+      {
+        "name": "GSP",
+        "url": "https://www.gsp.ro/international/campionate/jurgen-klopp-selectioner-germania-prezentare-963811.html"
+      },
+      {
+        "name": "Digi Sport",
+        "url": "https://www.digisport.ro/fotbal/fotbal-international/jurgen-klopp-mesaj-categoric-la-prezentarea-oficiala-ca-selectioner-al-germaniei-daca-va-luati-de-familia-mea-plec-4396633"
+      }
+    ],
+    "first_source": "GSP",
+    "synthesis": "Federația Germană de Fotbal l-a numit oficial vineri pe Jurgen Klopp în funcția de selecționer al naționalei, în urma votului unanim al Consiliului de supraveghere și al acționarilor. Tehnicianul a semnat un contract valabil până în anul 2030, care va intra în vigoare după Campionatul Mondial organizat în Spania, Portugalia și Maroc. La prezentarea oficială, antrenorul a transmis un avertisment ferm privind protejarea vieții sale private.",
+    "entities": [
+      "Jurgen Klopp",
+      "Germania",
+      "Federatia Germana de Fotbal"
+    ],
+    "icon": "ball-football",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://tion.ro/eveniment/pasagera-ranita-dupa-ce-o-masina-s-a-rasturnat-la-iesire-din-timisoara-2322111",
+    "original_link": "https://www.tion.ro/eveniment/pasagera-ranita-dupa-ce-o-masina-s-a-rasturnat-la-iesire-din-timisoara-2322111/?utm_source=rss&utm_medium=referral&utm_campaign=hiraggregator",
+    "source": "tion",
+    "source_name": "Timiș Online",
+    "source_lang": "ro",
+    "title": "Accident rutier la ieșirea din Timișoara: o pasageră a fost rănită după ce mașina s-a răsturnat",
+    "category": "zonal",
+    "published": "2026-07-24T09:16:32+00:00",
+    "model": "C",
+    "sources": [
+      {
+        "name": "Timiș Online",
+        "url": "https://www.tion.ro/eveniment/pasagera-ranita-dupa-ce-o-masina-s-a-rasturnat-la-iesire-din-timisoara-2322111/?utm_source=rss&utm_medium=referral&utm_campaign=hiraggregator"
+      },
+      {
+        "name": "PressAlert Timișoara",
+        "url": "https://www.pressalert.ro/2026/07/un-sofer-a-pierdut-controlul-volanului-si-s-a-rasturnat-cu-masina-la-iesirea-din-timisoara-pe-dn-69-o-femeie-a-ajuns-la-spital/"
+      }
+    ],
+    "first_source": "Timiș Online",
+    "synthesis": "O pasageră a fost rănită și transportată la spital în urma unui accident rutier produs la ieșirea din Timișoara, după ce șoferul a pierdut controlul volanului și autoturismul s-a răsturnat în afara părții carosabile. Poliția a intervenit la fața locului pentru a stabili circumstanțele exact în care s-a produs evenimentul. Sursele locale indică ușoare neconcordanțe privind drumul național exact pe care a avut loc incidentul, fiind menționate DN 59 și DN 69.",
+    "entities": [
+      "Timișoara",
+      "Inspectoratul de Poliție Județean Timiș"
+    ],
+    "icon": "car",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://economica.net/drona-doborata-in-buzau-de-un-avion-f-16-al-romaniei-anuntul-presedintelui-nicusor-dan_962130.html",
+    "original_link": "https://www.economica.net/drona-doborata-in-buzau-de-un-avion-f-16-al-romaniei-anuntul-presedintelui-nicusor-dan_962130.html",
+    "source": "economica",
+    "source_name": "Economica",
+    "source_lang": "ro",
+    "title": "O dronă pătrunsă în spațiul aerian românesc a fost doborâtă în județul Buzău",
+    "category": "extern",
+    "published": "2026-07-24T08:41:42+00:00",
+    "model": "C",
+    "sources": [
+      {
+        "name": "Economica",
+        "url": "https://www.economica.net/drona-doborata-in-buzau-de-un-avion-f-16-al-romaniei-anuntul-presedintelui-nicusor-dan_962130.html"
+      },
+      {
+        "name": "News Brașov",
+        "url": "https://newsbv.ro/o-drona-a-fost-doborata-deasupra-romaniei/"
+      }
+    ],
+    "first_source": "Economica",
+    "synthesis": "În dimineața zilei de vineri, 24 iulie 2026, o aeronavă F-16 a Forțelor Aeriene Române a doborât o dronă care a violat spațiul aerian național. Intervenția a avut loc în jurul orei 11:00, deasupra unei zone nepopulate din județul Buzău, după cum a confirmat președintele Nicușor Dan. Aceasta este prima situație de la debutul conflictului din Ucraina în care un aparat de acest tip este interceptat și distrus pe teritoriul României.",
+    "entities": [
+      "Nicușor Dan",
+      "România",
+      "Buzău"
+    ],
+    "icon": "plane",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://spotmedia.ro/stiri/eveniment/nicusor-dan-o-drona-a-fost-doborata-in-spatiul-aerian-al-romaniei-de-un-pilot-de-f-16",
+    "original_link": "https://spotmedia.ro/stiri/eveniment/nicusor-dan-o-drona-a-fost-doborata-in-spatiul-aerian-al-romaniei-de-un-pilot-de-f-16",
+    "source": "spotmedia",
+    "source_name": "Spotmedia",
+    "source_lang": "ro",
+    "title": "Premieră în România: o dronă militară a fost doborâtă de un avion F-16",
+    "category": "general",
+    "published": "2026-07-24T08:21:00+00:00",
+    "model": "C",
+    "sources": [
+      {
+        "name": "Spotmedia",
+        "url": "https://spotmedia.ro/stiri/eveniment/nicusor-dan-o-drona-a-fost-doborata-in-spatiul-aerian-al-romaniei-de-un-pilot-de-f-16"
+      },
+      {
+        "name": "Ziarul Financiar",
+        "url": "https://www.zf.ro/eveniment/breaking-premiera-presedintele-nicusor-dan-confirma-drona-intrata-spatiul-aerian-romanesc-doborata-avion-f16-mapn-drona-distrusa-apropiere-localitatea-padina-judetul-buzau-distanta-fata-bucuresti-23202070"
+      },
+      {
+        "name": "PressAlert Timișoara",
+        "url": "https://www.pressalert.ro/2026/07/premiera-absoluta-de-la-inceputul-razboiului-din-ucraina-o-drona-intrata-in-spatiul-aerian-al-romaniei-a-fost-doborata-de-un-pilot-de-f-16/"
+      },
+      {
+        "name": "Europa Liberă",
+        "url": "https://moldova.europalibera.org/a/romania-a-doborat-in-premiera-cu-un-avion-f-35-o-drona-intrata-in-spatiul-ei-aerian/33811953.html"
+      },
+      {
+        "name": "Ziarul de Iași",
+        "url": "https://www.ziaruldeiasi.ro/stiri/nicusor-dan-o-drona-din-spatiul-aerian-a-fost-doborata-de-un-pilot-roman-de-pe-un-f-16--1879108.html"
+      }
+    ],
+    "first_source": "Spotmedia",
+    "synthesis": "Vineri, în jurul orei 11:00, un avion de vânătoare F-16 al Forțelor Aeriene Române a interceptat și doborât o dronă intrată ilegal în spațiul aerian național. Evenimentul, confirmat de președintele Nicușor Dan, reprezintă prima acțiune de acest tip de la debutul conflictului din Ucraina. Drona a fost distrusă deasupra județului Buzău, aproape de localitatea Padina. Ministerul Apărării Naționale a generat inițial confuzie în comunicarea publică privind data exactă a producerii incidentului.",
+    "entities": [
+      "Nicușor Dan",
+      "România",
+      "Buzău"
+    ],
+    "icon": "plane",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://primariacerasu.ro/2026/07/24/publicatie-de-casatorie-din-data-de-22-07-2026-sandru-daniel-si-stroe-adina-maria",
+    "original_link": "https://primariacerasu.ro/2026/07/24/publicatie-de-casatorie-din-data-de-22-07-2026-sandru-daniel-si-stroe-adina-maria/",
+    "source": "pl_prahova_cerasu",
+    "source_name": "Primăria Cerasu",
+    "source_lang": "ro",
+    "title": "Publicatie de casatorie din data de 22.07.2026 (Sandru Daniel si Stroe Adina-Maria)",
+    "category": "local",
+    "published": "2026-07-24T07:59:38+00:00",
+    "model": "B",
+    "teaser": "Publicatie de casatorie din data de 22.07.2026 (Sandru Daniel si Stroe Adina-Maria) Fisiere atasate publicatie casatorie b_260722_131024 (59 kB)",
+    "processed_by": "official",
+    "featured": false
+  },
+  {
+    "url": "https://cjcluj.ro/consiliul-judetean-deruleaza-lucrari-de-intretinere-pe-dj-103g-dn-75-cheia-platoul-cheile-turzii",
+    "original_link": "https://cjcluj.ro/consiliul-judetean-deruleaza-lucrari-de-intretinere-pe-dj-103g-dn-75-cheia-platoul-cheile-turzii/",
+    "source": "cj_cluj",
+    "source_name": "CJ Cluj",
+    "source_lang": "ro",
+    "title": "Consiliul Județean derulează lucrări de întreținere pe DJ 103G (DN 75) – Cheia – platoul Cheile Turzii",
+    "category": "zonal",
+    "published": "2026-07-24T07:49:56+00:00",
+    "model": "B",
+    "teaser": "Consiliul Județean derulează lucrări de întreținere pe DJ 103G (DN 75) – Cheia – platoul Cheile Turzii Consiliul Judeţean Cluj a demarat lucrări de întreţinere curentă şi periodică pe drumul județean DJ 103G, pe tronsonul situat între intersecția cu drumul...",
+    "processed_by": "official",
+    "featured": false
+  },
+  {
+    "url": "https://spotmedia.ro/stiri/eveniment/trei-directori-din-industria-romaneasca-de-armament-retinuti-de-dna-pentru-luare-de-mita",
+    "original_link": "https://spotmedia.ro/stiri/eveniment/trei-directori-din-industria-romaneasca-de-armament-retinuti-de-dna-pentru-luare-de-mita",
+    "source": "spotmedia",
+    "source_name": "Spotmedia",
+    "source_lang": "ro",
+    "title": "Trei directori din industria de armament, reținuți de DNA pentru luare de mită",
+    "category": "economic",
+    "published": "2026-07-24T07:36:49+00:00",
+    "model": "C",
+    "sources": [
+      {
+        "name": "Spotmedia",
+        "url": "https://spotmedia.ro/stiri/eveniment/trei-directori-din-industria-romaneasca-de-armament-retinuti-de-dna-pentru-luare-de-mita"
+      },
+      {
+        "name": "Digi24",
+        "url": "https://www.digi24.ro/stiri/actualitate/justitie/dna-a-retinut-trei-directori-din-industria-de-armament-acuzatii-de-luare-de-mita-surse-3876671"
+      }
+    ],
+    "first_source": "Spotmedia",
+    "synthesis": "Procurorii anticorupție au reținut trei șefi de companii de stat din sectorul de apărare, fiind acuzați de luare de mită. Printre aceștia se află directori de la Uzina Mecanică București și Uzina Mecanică Plopeni. La locuința unuia dintre bănuiți au fost descoperite sume importante de bani lichid. Suspecții urmează să fie puși sub acuzare în fața magistraților cu cerere de arestare preventivă.",
+    "entities": [
+      "DNA",
+      "Mihai Rafiu",
+      "Tiberiu Alexandru Pîrvu",
+      "Liliana Sorescu"
+    ],
+    "icon": "gavel",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://primariaroman.ro/cariera-09-07-2026-directia-municipal-locato-organizeaza-concurs-pentru-ocuparea-a-4-posturi-contractuale-de-executie-vacante",
+    "original_link": "https://primariaroman.ro/cariera-09-07-2026-directia-municipal-locato-organizeaza-concurs-pentru-ocuparea-a-4-posturi-contractuale-de-executie-vacante/",
+    "source": "pl_neamt_municipiul_roman",
+    "source_name": "Primăria Municipiul Roman",
+    "source_lang": "ro",
+    "title": "Carieră 09.07.2026 Direcţia Municipal Locato – organizează concurs pentru ocuparea a 4 posturi contractuale de executie vacante",
+    "category": "local",
+    "published": "2026-07-24T07:30:29+00:00",
+    "model": "B",
+    "teaser": "Detalii pe sursa.",
+    "processed_by": "official",
+    "featured": false
+  },
+  {
+    "url": "https://tion.ro/eveniment/amenzi-de-zeci-de-mii-de-lei-pentru-soferii-care-au-blocat-statiile-stpt-din-timisoara-de-unde-vin-cele-mai-multe-reclamatii-2321925",
+    "original_link": "https://www.tion.ro/eveniment/amenzi-de-zeci-de-mii-de-lei-pentru-soferii-care-au-blocat-statiile-stpt-din-timisoara-de-unde-vin-cele-mai-multe-reclamatii-2321925/?utm_source=rss&utm_medium=referral&utm_campaign=hiraggregator",
+    "source": "tion",
+    "source_name": "Timiș Online",
+    "source_lang": "ro",
+    "title": "Sute de șoferi din Timișoara au fost amendați pentru blocarea stațiilor STPT",
+    "category": "zonal",
+    "published": "2026-07-24T07:29:58+00:00",
+    "model": "C",
+    "sources": [
+      {
+        "name": "Timiș Online",
+        "url": "https://www.tion.ro/eveniment/amenzi-de-zeci-de-mii-de-lei-pentru-soferii-care-au-blocat-statiile-stpt-din-timisoara-de-unde-vin-cele-mai-multe-reclamatii-2321925/?utm_source=rss&utm_medium=referral&utm_campaign=hiraggregator"
+      },
+      {
+        "name": "PressAlert Timișoara",
+        "url": "https://www.pressalert.ro/2026/07/sute-de-soferi-amendati-la-timisoara-in-prima-jumatate-a-anului-pentru-ca-au-blocat-statiile-stpt/"
+      }
+    ],
+    "first_source": "Timiș Online",
+    "synthesis": "În prima jumătate a anului, Poliția Locală Timișoara a aplicat amenzi de zeci de mii de lei unor șoferi care au parcat neregulamentar în stațiile mijloacelor de transport în comun. Măsura a fost luată în urma sesizărilor venite din partea cetățenilor și a dispecerilor STPT, din cauza blocajelor frecvente în trafic și a pericolelor generate pentru călători.",
+    "entities": [
+      "Timișoara",
+      "STPT",
+      "Poliția Locală"
+    ],
+    "icon": "car",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://primariadomnesti.ro/anunt-concurs-de-recrutare",
+    "original_link": "https://primariadomnesti.ro/anunt-concurs-de-recrutare/",
+    "source": "pl_ilfov_domnesti",
+    "source_name": "Primăria Domnesti",
+    "source_lang": "ro",
+    "title": "Anunț concurs de recrutare",
+    "category": "local",
+    "published": "2026-07-24T07:18:24+00:00",
+    "model": "B",
+    "teaser": "Primăria Domnești Ilfov Inspector, clasa I, grad profesional Superior – Compartiment Urbanism, AmenajareTeritorială, Cadastru",
+    "processed_by": "official",
+    "featured": false
+  },
+  {
+    "url": "https://primariadomnesti.ro/rezultatul-selectiei-dosarelor-de-inscriere-laconcursul-de-recrutare-organizat-de-catre-primaria-domnesti-in-data-de-05-08-2026",
+    "original_link": "https://primariadomnesti.ro/rezultatul-selectiei-dosarelor-de-inscriere-laconcursul-de-recrutare-organizat-de-catre-primaria-domnesti-in-data-de-05-08-2026/",
+    "source": "pl_ilfov_domnesti",
+    "source_name": "Primăria Domnesti",
+    "source_lang": "ro",
+    "title": "Rezultatul SELECȚIEI DOSARELOR de înscriere laconcursul de recrutare organizat de către Primăria Domnești în data de 05.08.2026",
+    "category": "local",
+    "published": "2026-07-24T07:15:26+00:00",
+    "model": "B",
+    "teaser": "Primăria Domnești Ilfov Rezultatul SELECȚIEI DOSARELOR de înscriere la concursul de recrutare organizat de către Primăria Domnești în data de 05.08.2026",
+    "processed_by": "official",
+    "featured": false
+  },
+  {
+    "url": "https://primariahemeius.ro/in-perioada-01-31-08-2026-se-executa-trageri-cu-armament-si-munitie-de-razboi-dupa-urmatorul-program",
+    "original_link": "https://primariahemeius.ro/in-perioada-01-31-08-2026-se-executa-trageri-cu-armament-si-munitie-de-razboi-dupa-urmatorul-program/",
+    "source": "pl_bacau_hemeius",
+    "source_name": "Primăria Hemeius",
+    "source_lang": "ro",
+    "title": "În perioada 01 – 31.08.2026 se executa trageri cu armament și muniție de război după următorul program",
+    "category": "local",
+    "published": "2026-07-24T06:47:45+00:00",
+    "model": "B",
+    "teaser": "Detalii pe sursa.",
+    "processed_by": "official",
+    "featured": false
+  },
+  {
     "url": "https://bookhub.ro/lumina-de-la-tescani-intre-memoria-locului-si-curajul-viitorului",
     "original_link": "https://bookhub.ro/lumina-de-la-tescani-intre-memoria-locului-si-curajul-viitorului/?utm_source=rss&utm_medium=rss&utm_campaign=lumina-de-la-tescani-intre-memoria-locului-si-curajul-viitorului",
     "source": "bookhub",
@@ -198,6 +669,39 @@
       "Cluj Arena"
     ],
     "icon": "music",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://digi24.ro/stiri/externe/ucraina-a-atacat-inca-un-depozit-wildberries-in-sankt-petersburg-de-ce-vizeaza-kievul-compania-ruseasca-de-comert-online-3876559",
+    "original_link": "https://www.digi24.ro/stiri/externe/ucraina-a-atacat-inca-un-depozit-wildberries-in-sankt-petersburg-de-ce-vizeaza-kievul-compania-ruseasca-de-comert-online-3876559",
+    "source": "extern",
+    "source_name": "Digi24 Extern",
+    "source_lang": "ro",
+    "title": "Drone ucrainene au lovit depozite ale gigantului rus Wildberries, provocând incendii masive",
+    "category": "extern",
+    "published": "2026-07-24T05:35:21+00:00",
+    "model": "C",
+    "sources": [
+      {
+        "name": "Digi24 Extern",
+        "url": "https://www.digi24.ro/stiri/externe/ucraina-a-atacat-inca-un-depozit-wildberries-in-sankt-petersburg-de-ce-vizeaza-kievul-compania-ruseasca-de-comert-online-3876559"
+      },
+      {
+        "name": "Europa Liberă",
+        "url": "https://moldova.europalibera.org/a/ucraina-a-mai-lovit-un-depozit-rusesc-wildberries-in-regiunea-leningrad/33811829.html"
+      }
+    ],
+    "first_source": "Digi24 Extern",
+    "synthesis": "Vineri dimineață, atacuri cu drone atribuite Ucrainei au vizat facilități logistice aparținând companiei de comerț electronic Wildberries din Sankt Petersburg și Crimeea. Incidentele au generat incendii de proporții și nori densi de fum vizibili în regiune. Kievul motivează acțiunile susținând că aceste depozite sunt utilizate pentru manipularea de componente supuse sancțiunilor internaționale. Relatările inițiale ale presei diferă ușor privind numărul exact al locațiilor lovite simultan.",
+    "entities": [
+      "Ucraina",
+      "Sankt Petersburg",
+      "Crimeea",
+      "Wildberries"
+    ],
+    "icon": "flame",
     "processed_by": "gemini",
     "prompt_version": "v2-esenta",
     "featured": false
@@ -22169,1035 +22673,6 @@
     "model": "B",
     "teaser": "Detalii pe sursa.",
     "processed_by": "official",
-    "featured": false
-  },
-  {
-    "url": "https://unica.ro/vedete/straine/actorul-hal-williams-cunoscut-pentru-rolurile-sale-din-sanford-son-sau-227-a-murit-la-91-de-ani-823560",
-    "original_link": "https://www.unica.ro/vedete/straine/actorul-hal-williams-cunoscut-pentru-rolurile-sale-din-sanford-son-sau-227-a-murit-la-91-de-ani-823560",
-    "source": "unica",
-    "source_name": "Unica",
-    "source_lang": "ro",
-    "title": "A murit actorul Hal Williams, la 91 de ani",
-    "category": "cultura",
-    "published": "2026-07-17T10:31:50+00:00",
-    "model": "B",
-    "teaser": "Actorul american Hal Williams, cunoscut pentru rolurile din \"Sanford & Son\" și \"227\", a decedat pe 15 iulie, în California, la vârsta de 91 de ani.",
-    "entities": [
-      "Hal Williams",
-      "Sanford & Son",
-      "227"
-    ],
-    "icon": "movie",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://csid.ro/stiri/lista-completa-cu-plajele-de-pe-litoralul-romanesc-accesibile-persoanelor-cu-nevoi-speciale-21253075",
-    "original_link": "https://www.csid.ro/stiri/lista-completa-cu-plajele-de-pe-litoralul-romanesc-accesibile-persoanelor-cu-nevoi-speciale-21253075/",
-    "source": "csid",
-    "source_name": "CSÎD",
-    "source_lang": "ro",
-    "title": "18 plaje românești accesibile persoanelor cu dizabilități",
-    "category": "general",
-    "published": "2026-07-17T10:30:34+00:00",
-    "model": "B",
-    "teaser": "Litoralul românesc dispune de 18 plaje adaptate pentru persoanele cu nevoi speciale. Acestea oferă dotări specifice pentru acces facil pe nisip și în apă, facilitând bucuria de a merge la mare.",
-    "entities": [
-      "Marea Neagră"
-    ],
-    "icon": null,
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://cjgalati.ro/nava-de-pasageri-20-19-07",
-    "original_link": "https://cjgalati.ro/nava-de-pasageri-20-19-07/",
-    "source": "cj_galati",
-    "source_name": "CJ Galați",
-    "source_lang": "ro",
-    "title": "ANUNT PRIVIND DESFĂSURAREA CURSELOR DE AGREMENT (20 iulie – 26 iulie 2026)",
-    "category": "zonal",
-    "published": "2026-07-17T10:28:50+00:00",
-    "model": "B",
-    "teaser": "ANUNT PRIVIND DESFĂȘURAREA CURSELOR DE AGREMENT Consiliul Județean Galați va desfășura curse de agrement pe fluviul Dunărea cu nava de pasageri „CAMELIA”, care se vor realiza conform următorului program: Consiliul Județean Galați va desfășura curse de agrement pe fluviul Dunărea...",
-    "processed_by": "official",
-    "featured": false
-  },
-  {
-    "url": "https://elle.ro/advertorial/s-a-deschis-cea-mai-mare-statiune-de-entertainment-de-pe-litoral-nibiru-prima-zi-sold-out-cu-50-000-vizitatorii-1079779",
-    "original_link": "https://www.elle.ro/advertorial/s-a-deschis-cea-mai-mare-statiune-de-entertainment-de-pe-litoral-nibiru-prima-zi-sold-out-cu-50-000-vizitatorii-1079779",
-    "source": "elle",
-    "source_name": "Elle România",
-    "source_lang": "ro",
-    "title": "Stațiunea NIBIRU, cea mai mare de pe litoral, deschisă cu 50.000 vizitatori",
-    "category": "lifestyle",
-    "published": "2026-07-17T10:25:49+00:00",
-    "model": "C",
-    "sources": [
-      {
-        "name": "Elle România",
-        "url": "https://www.elle.ro/advertorial/s-a-deschis-cea-mai-mare-statiune-de-entertainment-de-pe-litoral-nibiru-prima-zi-sold-out-cu-50-000-vizitatorii-1079779"
-      },
-      {
-        "name": "Avantaje",
-        "url": "https://www.avantaje.ro/articol/s-a-deschis-cea-mai-mare-statiune-de-entertainment-de-pe-litoral-nibiru-prima-zi-sold-out-cu-50-000-vizitatorii"
-      }
-    ],
-    "first_source": "Elle România",
-    "synthesis": "NIBIRU, un nou proiect privat de divertisment, și-a deschis porțile pe litoral, atrăgând 50.000 de vizitatori în prima zi. Evenimentul de inaugurare a inclus concerte, un discurs al co-fondatorului Andrei Șelaru (Selly) și un spectacol aviatic, marcând debutul unui sezon axat pe experiențe live.",
-    "entities": [
-      "NIBIRU",
-      "Andrei Șelaru",
-      "Selly"
-    ],
-    "icon": "building-monument",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://avantaje.ro/articol/s-a-deschis-cea-mai-mare-statiune-de-entertainment-de-pe-litoral-nibiru-prima-zi-sold-out-cu-50-000-vizitatorii",
-    "original_link": "https://www.avantaje.ro/articol/s-a-deschis-cea-mai-mare-statiune-de-entertainment-de-pe-litoral-nibiru-prima-zi-sold-out-cu-50-000-vizitatorii",
-    "source": "avantaje",
-    "source_name": "Avantaje",
-    "source_lang": "ro",
-    "title": "Deschiderea stațiunii NIBIRU pe litoral, cu 50.000 de vizitatori în prima zi",
-    "category": "local",
-    "published": "2026-07-17T10:25:49+00:00",
-    "model": "B",
-    "teaser": "NIBIRU, cea mai mare stațiune de entertainment de pe litoral, s-a deschis oficial cu 50.000 de vizitatori. Evenimentul a inclus concerte, spectacole și un show aviatic.",
-    "entities": [
-      "NIBIRU",
-      "Andrei Șelaru"
-    ],
-    "icon": "plane",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://politico.eu/article/eu-sets-46-electrification-target-in-push-to-slash-fossil-fuel-dependence",
-    "original_link": "https://www.politico.eu/article/eu-sets-46-electrification-target-in-push-to-slash-fossil-fuel-dependence/?utm_source=RSS_Feed&utm_medium=RSS&utm_campaign=RSS_Syndication",
-    "source": "politico_eu",
-    "source_name": "Politico EU",
-    "source_lang": "en",
-    "title": "UE vrea dublarea consumului de electricitate până în 2040",
-    "category": "economic",
-    "published": "2026-07-17T10:20:30+00:00",
-    "model": "B",
-    "teaser": "Uniunea Europeană intenționează să dubleze utilizarea energiei electrice până în 2040, eliminând treptat combustibilii fosili, dar evită stabilirea unui țel obligatoriu.",
-    "entities": [
-      "UE",
-      "Dan Jørgensen"
-    ],
-    "icon": "bolt",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://sfatulparintilor.ro/horoscop-3/horoscop-zilnic-horoscop-3/etalare-zilnica-rune",
-    "original_link": "https://sfatulparintilor.ro/horoscop-3/horoscop-zilnic-horoscop-3/etalare-zilnica-rune/",
-    "source": "sfatulparintilor",
-    "source_name": "Sfatul Părinților",
-    "source_lang": "ro",
-    "title": "Runele prezic ziua de sâmbătă, 18 iulie 2026",
-    "category": "lifestyle",
-    "published": "2026-07-17T10:19:00+00:00",
-    "model": "B",
-    "teaser": "Runele, considerate simboluri sacre și alfabetul zeilor, transmit mesaje mistice pentru ziua de sâmbătă, 18 iulie 2026. Aceste pietre gravate oferă ghidare spirituală.",
-    "entities": [],
-    "icon": null,
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://politico.eu/article/eu-loosens-carbon-market-rules-to-allow-industry-to-pollute-for-longer",
-    "original_link": "https://www.politico.eu/article/eu-loosens-carbon-market-rules-to-allow-industry-to-pollute-for-longer/?utm_source=RSS_Feed&utm_medium=RSS&utm_campaign=RSS_Syndication",
-    "source": "politico_eu",
-    "source_name": "Politico EU",
-    "source_lang": "en",
-    "title": "UE relaxează regulile pieței de carbon pentru industrie",
-    "category": "economic",
-    "published": "2026-07-17T10:16:54+00:00",
-    "model": "B",
-    "teaser": "Producătorii de oțel, chimicale și energie vor putea emite poluanți în atmosferă până în 2040, conform unei noi legi propuse de UE, care relaxează normele pieței de carbon.",
-    "entities": [
-      "UE"
-    ],
-    "icon": "building-factory",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://unica.ro/advertorial/daca-i-ai-putea-scrie-julietei-o-scrisoare-ce-i-ai-spune-823557",
-    "original_link": "https://www.unica.ro/advertorial/daca-i-ai-putea-scrie-julietei-o-scrisoare-ce-i-ai-spune-823557",
-    "source": "unica",
-    "source_name": "Unica",
-    "source_lang": "ro",
-    "title": "Platforma julietchat.com permite conversații cu Julieta",
-    "category": "cultura",
-    "published": "2026-07-17T10:13:09+00:00",
-    "model": "B",
-    "teaser": "Site-ul julietchat.com oferă o experiență interactivă, permițând utilizatorilor să trimită scrisori Julietei și să primească răspunsuri, transformând povestea clasică într-o conversație.",
-    "entities": [
-      "Julieta",
-      "julietchat.com"
-    ],
-    "icon": "writing",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://politico.eu/article/ukraine-steps-up-attacks-on-russias-black-sea-fuel-network",
-    "original_link": "https://www.politico.eu/article/ukraine-steps-up-attacks-on-russias-black-sea-fuel-network/?utm_source=RSS_Feed&utm_medium=RSS&utm_campaign=RSS_Syndication",
-    "source": "politico_eu",
-    "source_name": "Politico EU",
-    "source_lang": "en",
-    "title": "Ucraina intensifică atacurile asupra rețelei energetice rusești",
-    "category": "extern",
-    "published": "2026-07-17T10:12:11+00:00",
-    "model": "B",
-    "teaser": "Ucraina își sporește atacurile asupra rețelei de combustibil din Marea Neagră a Rusiei, vizând întreruperea aprovizionării regiunilor ocupate și contracararea sancțiunilor.",
-    "entities": [
-      "Ucraina",
-      "Rusia",
-      "Marea Neagră",
-      "Crimeea"
-    ],
-    "icon": "ship",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://pressalert.ro/2026/07/premiera-tehnologica-in-europa-timisoara-devine-capitala-roboticii-internationale-prin-first-robotics-initiative-2026",
-    "original_link": "https://www.pressalert.ro/2026/07/premiera-tehnologica-in-europa-timisoara-devine-capitala-roboticii-internationale-prin-first-robotics-initiative-2026/",
-    "source": "pressalert",
-    "source_name": "PressAlert Timișoara",
-    "source_lang": "ro",
-    "title": "Timișoara, gazda roboticii internaționale în 2026",
-    "category": "local",
-    "published": "2026-07-17T10:10:15+00:00",
-    "model": "B",
-    "teaser": "Timișoara va găzdui FIRST Robotics Initiative (FRI) 2026, o competiție internațională de robotică, între 16 și 21 iulie. Evenimentul este organizat de echipa CyberMoon #19256.",
-    "entities": [
-      "Timișoara",
-      "FIRST Robotics Initiative",
-      "CyberMoon #19256"
-    ],
-    "icon": "robot",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://avantaje.ro/articol/secretul-unui-somn-bun-cum-iti-alegi-pijamaua-de-calitate-fabricata-in-romania",
-    "original_link": "https://www.avantaje.ro/articol/secretul-unui-somn-bun-cum-iti-alegi-pijamaua-de-calitate-fabricata-in-romania",
-    "source": "avantaje",
-    "source_name": "Avantaje",
-    "source_lang": "ro",
-    "title": "Alegerea pijamalei de calitate, secretul unui somn bun",
-    "category": "lifestyle",
-    "published": "2026-07-17T10:09:14+00:00",
-    "model": "B",
-    "teaser": "Calitatea pijamalei influențează direct somnul. Alegerea unei piese dintr-un material bun, fabricată în România, poate transforma rutina de culcare și calitatea odihnei.",
-    "entities": [
-      "România"
-    ],
-    "icon": "home",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://unica.ro/vedete/cum-se-simte-laura-cosoi-inainte-de-a-aduce-pe-lume-cea-de-a-cincea-fetita-va-rog-frumos-sa-ma-luati-de-mana-si-sa-ma-trimiteti-frumusel-acasa-823552",
-    "original_link": "https://www.unica.ro/vedete/cum-se-simte-laura-cosoi-inainte-de-a-aduce-pe-lume-cea-de-a-cincea-fetita-va-rog-frumos-sa-ma-luati-de-mana-si-sa-ma-trimiteti-frumusel-acasa-823552",
-    "source": "unica",
-    "source_name": "Unica",
-    "source_lang": "ro",
-    "title": "Laura Cosoi, aproape de a aduce pe lume al cincilea copil",
-    "category": "lifestyle",
-    "published": "2026-07-17T10:06:40+00:00",
-    "model": "B",
-    "teaser": "Actrița Laura Cosoi se pregătește să nască al cincilea copil. Cu toate că este în ultimele săptămâni de sarcină, vedeta pare plină de energie și le cere ajutorul fanilor să o \"trimită acasă\".",
-    "entities": [
-      "Laura Cosoi"
-    ],
-    "icon": null,
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://csid.ro/stiri/greseala-pe-care-aproape-toti-o-fac-cand-usuca-florile-de-tei-asa-isi-pierd-cele-mai-importante-proprietati-21252745",
-    "original_link": "https://www.csid.ro/stiri/greseala-pe-care-aproape-toti-o-fac-cand-usuca-florile-de-tei-asa-isi-pierd-cele-mai-importante-proprietati-21252745/",
-    "source": "csid",
-    "source_name": "CSÎD",
-    "source_lang": "ro",
-    "title": "Greșeala comună la uscarea florilor de tei le anulează proprietățile",
-    "category": "lifestyle",
-    "published": "2026-07-17T10:00:27+00:00",
-    "model": "B",
-    "teaser": "Modul în care sunt uscate florile de tei determină eficiența ceaiului. Mulți oameni fac o greșeală care le anulează proprietățile benefice, transformând un remediu valoros într-un produs ineficient.",
-    "entities": [],
-    "icon": "trees",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://unica.ro/astro-fun/horoscop-18-iulie-2026-intalnire-surpriza-o-zodie-cunoaste-o-persoana-speciala-de-care-se-indragosteste-iremediabil-822714",
-    "original_link": "https://www.unica.ro/astro-fun/horoscop-18-iulie-2026-intalnire-surpriza-o-zodie-cunoaste-o-persoana-speciala-de-care-se-indragosteste-iremediabil-822714",
-    "source": "unica",
-    "source_name": "Unica",
-    "source_lang": "ro",
-    "title": "Horoscop 18 iulie 2026: Balanța cunoaște o persoană specială",
-    "category": "lifestyle",
-    "published": "2026-07-17T10:00:00+00:00",
-    "model": "B",
-    "teaser": "Astrologii anunță o zi plină de emoții pentru nativii din Balanță pe 18 iulie 2026. Aceștia ar putea întâlni o persoană specială care le va schimba viața amoroasă.",
-    "entities": [
-      "Balanța"
-    ],
-    "icon": "sun",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://comunasirna.ro/2026/07/17/anunt-achizitie-directa-servicii-de-intretinere-sistem-de-iluminat-public",
-    "original_link": "https://comunasirna.ro/2026/07/17/anunt-achizitie-directa-servicii-de-intretinere-sistem-de-iluminat-public/",
-    "source": "pl_prahova_sirna",
-    "source_name": "Primăria Sirna",
-    "source_lang": "ro",
-    "title": "Anunt achizitie directa – Servicii de intretinere sistem de iluminat public",
-    "category": "local",
-    "published": "2026-07-17T09:58:18+00:00",
-    "model": "B",
-    "teaser": "Anunț achiziție directă – Servicii de întreținere sistem de iluminat public Caiet de sarcini Serviciu de iluminat public Contract privind folosirea infrastructurii sistem de distribuție pentru serviciu iluminat public Draft Contract delegare SIP Inventar Sistem iluminat public REGULAMENT SERVICIU ILUMINAT...",
-    "processed_by": "official",
-    "featured": false
-  },
-  {
-    "url": "https://avantaje.ro/articol/mai-aproape-de-casa-pe-care-o-visezi-noul-studio-de-planificare-si-comanda-ikea-grand-arena",
-    "original_link": "https://www.avantaje.ro/articol/mai-aproape-de-casa-pe-care-o-visezi-noul-studio-de-planificare-si-comanda-ikea-grand-arena",
-    "source": "avantaje",
-    "source_name": "Avantaje",
-    "source_lang": "ro",
-    "title": "IKEA Grand Arena lansează noul Studio de Planificare și Comandă",
-    "category": "lifestyle",
-    "published": "2026-07-17T09:55:20+00:00",
-    "model": "B",
-    "teaser": "Noul studio IKEA Grand Arena facilitează proiectele de amenajare interioară. Oferă soluții personalizate pentru bucătării, dressinguri și spații de depozitare.",
-    "entities": [
-      "IKEA Grand Arena"
-    ],
-    "icon": "building-monument",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://pcbrazi.ro/2026/07/17/oferta-de-vanzare-teren-nr-42-din-data-de-16-07-2026-ilie-vasile-ilie-nicusor-ilie-tudorel-si-lista-preemptorilor",
-    "original_link": "https://pcbrazi.ro/2026/07/17/oferta-de-vanzare-teren-nr-42-din-data-de-16-07-2026-ilie-vasile-ilie-nicusor-ilie-tudorel-si-lista-preemptorilor/",
-    "source": "pl_prahova_brazi",
-    "source_name": "Primăria Brazi",
-    "source_lang": "ro",
-    "title": "Oferta de vanzare teren nr. 42 din data de 16.07.2026 (Ilie Vasile, Ilie Nicusor, Ilie Tudorel) si lista preemptorilor",
-    "category": "local",
-    "published": "2026-07-17T09:49:26+00:00",
-    "model": "B",
-    "teaser": "Atasamente SKM_C22726071615430 (600 kB)",
-    "processed_by": "official",
-    "featured": false
-  },
-  {
-    "url": "https://unica.ro/advertorial/care-sunt-primele-semne-ale-incontinentei-urinare-823548",
-    "original_link": "https://www.unica.ro/advertorial/care-sunt-primele-semne-ale-incontinentei-urinare-823548",
-    "source": "unica",
-    "source_name": "Unica",
-    "source_lang": "ro",
-    "title": "Primele semne ale incontinenței urinare la femei și bărbați",
-    "category": "lifestyle",
-    "published": "2026-07-17T09:46:34+00:00",
-    "model": "B",
-    "teaser": "Incontinența urinară, frecventă la femei după naștere sau menopauză, nu este o consecință firească a vârstei, ci un simptom medical ce necesită atenție.",
-    "entities": [],
-    "icon": "stethoscope",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://unica.ro/stiri/surpriza-la-un-centru-feroviar-din-gara-de-nord-ministrul-radu-miruta-a-descoperit-un-atelier-de-ciocolata-improvizat-823545",
-    "original_link": "https://www.unica.ro/stiri/surpriza-la-un-centru-feroviar-din-gara-de-nord-ministrul-radu-miruta-a-descoperit-un-atelier-de-ciocolata-improvizat-823545",
-    "source": "unica",
-    "source_name": "Unica",
-    "source_lang": "ro",
-    "title": "Ministrul Transporturilor a descoperit atelier de ciocolată în Gara de Nord",
-    "category": "politic",
-    "published": "2026-07-17T09:42:39+00:00",
-    "model": "B",
-    "teaser": "Radu Miruță a găsit un atelier de ciocolată improvizat și spații de locuit în sediul Centrului Național de Calificare și Instruire Feroviară din Gara de Nord, în timpul unui control.",
-    "entities": [
-      "Radu Miruță",
-      "Gara de Nord"
-    ],
-    "icon": "train",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://primariaroman.ro/17-07-2026-anunt-consultare-publica-intentie-de-elaborare-plan-urbanistic-zonal-desfiintare-constructii-existente-c1-si-c2-construire-imobil-p1e-comsetica-coafor-si-imprejm",
-    "original_link": "https://primariaroman.ro/17-07-2026-anunt-consultare-publica-intentie-de-elaborare-plan-urbanistic-zonal-desfiintare-constructii-existente-c1-si-c2-construire-imobil-p1e-comsetica-coafor-si-imprejm/",
-    "source": "pl_neamt_municipiul_roman",
-    "source_name": "Primăria Municipiul Roman",
-    "source_lang": "ro",
-    "title": "17.07.2026 – ANUNȚ CONSULTARE PUBLICĂ – Intenţie de elaborare Plan Urbanistic Zonal – Desființare construcții existente C1 și C2, construire imobil P+1E (comsetică + coafor) și împrejmuire teren – str. Decebal, nr.13bis",
-    "category": "local",
-    "published": "2026-07-17T09:39:49+00:00",
-    "model": "B",
-    "teaser": "Detalii pe sursa.",
-    "processed_by": "official",
-    "featured": false
-  },
-  {
-    "url": "https://primariabuzau.ro/proiect-de-hotarare-nr-145-din-17-07-2026-privind-aprobarea-participarii-municipiului-buzau-in-calitate-de-partener-la-implementarea-programului-fondul-pentru-actiune-climatica-a-tinerilor-in",
-    "original_link": "https://primariabuzau.ro/proiect-de-hotarare-nr-145-din-17-07-2026-privind-aprobarea-participarii-municipiului-buzau-in-calitate-de-partener-la-implementarea-programului-fondul-pentru-actiune-climatica-a-tinerilor-in/",
-    "source": "pr_buzau",
-    "source_name": "Primăria Buzău",
-    "source_lang": "ro",
-    "title": "Municipiul Buzău participă la programul \"Fondul pentru acțiune climatică a tinerilor\"",
-    "category": "local",
-    "published": "2026-07-17T09:32:53+00:00",
-    "model": "B",
-    "teaser": "Primăria Buzău va fi partener în implementarea programului \"Fondul pentru acțiune climatică a tinerilor\", inițiat de Bloomberg Philantropies, conform proiectului de hotărâre nr. 145 din 17 iulie 2026.",
-    "entities": [
-      "Municipiul Buzău",
-      "Bloomberg Philantropies"
-    ],
-    "icon": "bolt",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://csid.ro/sanatate/sanatate-health/herpangina-la-copii-ce-este-cum-se-manifesta-si-cand-trebuie-sa-ajungi-cu-cel-mic-la-medic-21253139",
-    "original_link": "https://www.csid.ro/sanatate/sanatate-health/herpangina-la-copii-ce-este-cum-se-manifesta-si-cand-trebuie-sa-ajungi-cu-cel-mic-la-medic-21253139/",
-    "source": "csid",
-    "source_name": "CSÎD",
-    "source_lang": "ro",
-    "title": "Herpangina la copii: simptome și când este necesară vizita la medic",
-    "category": "lifestyle",
-    "published": "2026-07-17T09:30:54+00:00",
-    "model": "B",
-    "teaser": "Herpangina este o infecție virală frecventă la copiii sub 10 ani. Articolul detaliază simptomele specifice și indică situațiile în care părinții trebuie să consulte un medic pediatru.",
-    "entities": [],
-    "icon": "virus",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://unica.ro/advertorial/cadou-pentru-seniori-salteaua-de-acupresiune-ca-alegere-ideala-823540",
-    "original_link": "https://www.unica.ro/advertorial/cadou-pentru-seniori-salteaua-de-acupresiune-ca-alegere-ideala-823540",
-    "source": "unica",
-    "source_name": "Unica",
-    "source_lang": "ro",
-    "title": "Salteaua de acupresiune, cadou ideal pentru seniori",
-    "category": "lifestyle",
-    "published": "2026-07-17T09:27:50+00:00",
-    "model": "B",
-    "teaser": "Salteaua de acupresiune este recomandată ca un cadou practic și valoros pentru seniori, oferind relaxare și confort fizic pentru bunăstarea zilnică.",
-    "entities": [],
-    "icon": "home",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://pressalert.ro/2026/07/poli-timisoara-2-echipa-secunda-a-alb-violetilor-are-oficial-loc-in-liga-3-seniorii-joaca-azi-primul-amical-din-austria",
-    "original_link": "https://www.pressalert.ro/2026/07/poli-timisoara-2-echipa-secunda-a-alb-violetilor-are-oficial-loc-in-liga-3-seniorii-joaca-azi-primul-amical-din-austria/",
-    "source": "pressalert",
-    "source_name": "PressAlert Timișoara",
-    "source_lang": "ro",
-    "title": "Poli Timișoara 2, promovată oficial în Liga 3",
-    "category": "local",
-    "published": "2026-07-17T09:24:06+00:00",
-    "model": "B",
-    "teaser": "Echipa secundă a Politehnicii Timișoara, Poli Timișoara 2, va juca în Liga 3 în sezonul 2026-27. Federația Română de Fotbal a aprobat solicitarea clubului.",
-    "entities": [
-      "Poli Timișoara 2",
-      "Liga 3",
-      "Federația Română de Fotbal"
-    ],
-    "icon": "ball-football",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://avantaje.ro/articol/anisia-gafton-primele-declaratii-dupa-operatia-estetica-suferita-adevarul-din-spatele-transformarii-radicale-mi-se-pare-ca-asa-trebuia-sa-ma-nasc",
-    "original_link": "https://www.avantaje.ro/articol/anisia-gafton-primele-declaratii-dupa-operatia-estetica-suferita-adevarul-din-spatele-transformarii-radicale-mi-se-pare-ca-asa-trebuia-sa-ma-nasc",
-    "source": "avantaje",
-    "source_name": "Avantaje",
-    "source_lang": "ro",
-    "title": "Anisia Gafton explică operația estetică după transformarea fizică",
-    "category": "lifestyle",
-    "published": "2026-07-17T09:23:34+00:00",
-    "model": "B",
-    "teaser": "Actrița de comedie Anisia Gafton a vorbit despre singura operație estetică efectuată. Ea susține că transformarea fizică post-sarcină a fost necesară.",
-    "entities": [
-      "Anisia Gafton"
-    ],
-    "icon": "certificate",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://economedia.ro/controale-la-mapn-nereguli-la-contracte-de-zeci-de-milioane-pentru-containerele-armatei-miruta-anunta-sanctiuni-si-recuperarea-penalitatilor.html",
-    "original_link": "https://economedia.ro/controale-la-mapn-nereguli-la-contracte-de-zeci-de-milioane-pentru-containerele-armatei-miruta-anunta-sanctiuni-si-recuperarea-penalitatilor.html",
-    "source": "economedia",
-    "source_name": "Economedia",
-    "source_lang": "ro",
-    "title": "Nereguli la contracte MApN pentru containere, ministrul anunță sancțiuni",
-    "category": "politic",
-    "published": "2026-07-17T09:20:04+00:00",
-    "model": "C",
-    "sources": [
-      {
-        "name": "Economedia",
-        "url": "https://economedia.ro/controale-la-mapn-nereguli-la-contracte-de-zeci-de-milioane-pentru-containerele-armatei-miruta-anunta-sanctiuni-si-recuperarea-penalitatilor.html"
-      },
-      {
-        "name": "G4Media",
-        "url": "https://www.g4media.ro/nereguli-descoperite-la-contractele-pentru-containerele-de-campare-ale-armatei-in-urma-unor-controale-la-mapn-ministrul-apararii-anunta-cercetari-disciplinare.html"
-      }
-    ],
-    "first_source": "Economedia",
-    "synthesis": "Controale la Ministerul Apărării Naționale au relevat nereguli în contracte cu două firme din Slatina pentru containere de campare. Produse neconforme au fost acceptate la recepție, iar livrările au înregistrat întârzieri semnificative, fără aplicarea penalităților la timp. Ministrul Radu Miruță a anunțat sancțiuni și recuperarea penalităților.",
-    "entities": [
-      "MApN",
-      "Radu Miruță"
-    ],
-    "icon": "gavel",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://avantaje.ro/articol/febra-panini-world-cup-2026-a-cuprins-planeta-un-sofer-uber-accepta-stickere-in-loc-de-bani",
-    "original_link": "https://www.avantaje.ro/articol/febra-panini-world-cup-2026-a-cuprins-planeta-un-sofer-uber-accepta-stickere-in-loc-de-bani",
-    "source": "avantaje",
-    "source_name": "Avantaje",
-    "source_lang": "ro",
-    "title": "Șofer Uber acceptă stickere Panini World Cup 2026 ca plată pentru curse",
-    "category": "lifestyle",
-    "published": "2026-07-17T09:16:17+00:00",
-    "model": "C",
-    "sources": [
-      {
-        "name": "Avantaje",
-        "url": "https://www.avantaje.ro/articol/febra-panini-world-cup-2026-a-cuprins-planeta-un-sofer-uber-accepta-stickere-in-loc-de-bani"
-      },
-      {
-        "name": "Unica",
-        "url": "https://www.unica.ro/stiri/un-sofer-uber-accepta-sa-fie-platit-cu-abtibilduri-panini-world-cup-2026-823533"
-      }
-    ],
-    "first_source": "Avantaje",
-    "synthesis": "Un șofer Uber a devenit viral pe TikTok acceptând abțibilduri Panini World Cup 2026 în locul banilor pentru curse. Pasiunea globală pentru colecționarea acestor stickere, necesare pentru completarea albumului oficial, a determinat această metodă neconvențională de plată, subliniind febra colecționarilor înaintea competiției sportive.",
-    "entities": [
-      "Uber",
-      "Panini World Cup 2026"
-    ],
-    "icon": "ball-football",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://unica.ro/advertorial/pasi-lejeri-in-ritm-de-vara-papuci-si-sandale-deichmann-pentru-zile-insorite-823534",
-    "original_link": "https://www.unica.ro/advertorial/pasi-lejeri-in-ritm-de-vara-papuci-si-sandale-deichmann-pentru-zile-insorite-823534",
-    "source": "unica",
-    "source_name": "Unica",
-    "source_lang": "ro",
-    "title": "Deichmann lansează papuci și sandale de vară confortabile",
-    "category": "fashion",
-    "published": "2026-07-17T09:12:05+00:00",
-    "model": "B",
-    "teaser": "Deichmann România propune noi modele de papuci și sandale pentru vară, perfecte pentru zilele însorite, combinând confortul cu un stil feminin și actual.",
-    "entities": [
-      "Deichmann"
-    ],
-    "icon": "shopping-cart",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://avantaje.ro/articol/rasturnare-de-situatie-in-cazul-madalinei-manole-noi-dovezi-solide-ar-putea-redeschide-ancheta-mortii-artistei-la-16-ani-de-la-tragedie",
-    "original_link": "https://www.avantaje.ro/articol/rasturnare-de-situatie-in-cazul-madalinei-manole-noi-dovezi-solide-ar-putea-redeschide-ancheta-mortii-artistei-la-16-ani-de-la-tragedie",
-    "source": "avantaje",
-    "source_name": "Avantaje",
-    "source_lang": "ro",
-    "title": "Noi dovezi ar putea redeschide ancheta morții Mădălinei Manole",
-    "category": "lifestyle",
-    "published": "2026-07-17T09:08:04+00:00",
-    "model": "B",
-    "teaser": "Profilerul FBI Mihaela Brooks anunță noi dovezi științifice solide în cazul morții Mădălinei Manole. Acestea ar putea duce la redeschiderea anchetei după 16 ani.",
-    "entities": [
-      "Mihaela Brooks",
-      "Mădălina Manole"
-    ],
-    "icon": "gavel",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://pressalert.ro/2026/07/record-nedorit-in-ue-peste-75-din-cazurile-de-rujeola-provin-din-romania-salvati-copiii-lanseaza-campania-povesti-de-vaccinat-copiii",
-    "original_link": "https://www.pressalert.ro/2026/07/record-nedorit-in-ue-peste-75-din-cazurile-de-rujeola-provin-din-romania-salvati-copiii-lanseaza-campania-povesti-de-vaccinat-copiii/",
-    "source": "pressalert",
-    "source_name": "PressAlert Timișoara",
-    "source_lang": "ro",
-    "title": "România, lider european la cazurile de rujeolă",
-    "category": "local",
-    "published": "2026-07-17T09:00:28+00:00",
-    "model": "C",
-    "sources": [
-      {
-        "name": "PressAlert Timișoara",
-        "url": "https://www.pressalert.ro/2026/07/record-nedorit-in-ue-peste-75-din-cazurile-de-rujeola-provin-din-romania-salvati-copiii-lanseaza-campania-povesti-de-vaccinat-copiii/"
-      },
-      {
-        "name": "Știrile ProTV",
-        "url": "https://stirileprotv.ro/stiri/sanatate/salvati-copiii-peste-27-500-din-cei-32-000-de-copii-cu-rujeola-din-intreaga-europa-sunt-in-romania.html"
-      }
-    ],
-    "first_source": "PressAlert Timișoara",
-    "synthesis": "România înregistrează peste 75% din cazurile de rujeolă din Uniunea Europeană, conform datelor recente. Peste 27.500 de copii din UE au fost diagnosticați cu această boală, majoritatea în țara noastră. Organizația Salvați Copiii a lansat o campanie de conștientizare privind vaccinarea.",
-    "entities": [
-      "România",
-      "Uniunea Europeană",
-      "Salvați Copiii"
-    ],
-    "icon": "virus",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://csid.ro/stiri/toti-arunca-aceasta-parte-a-cireselor-dar-din-ea-se-face-unul-dintre-cele-mai-apreciate-ceaiuri-pentru-rinichi-cum-se-prepara-corect-21252838",
-    "original_link": "https://www.csid.ro/stiri/toti-arunca-aceasta-parte-a-cireselor-dar-din-ea-se-face-unul-dintre-cele-mai-apreciate-ceaiuri-pentru-rinichi-cum-se-prepara-corect-21252838/",
-    "source": "csid",
-    "source_name": "CSÎD",
-    "source_lang": "ro",
-    "title": "Coada cireșelor, folosită pentru ceai benefic rinichilor",
-    "category": "lifestyle",
-    "published": "2026-07-17T09:00:08+00:00",
-    "model": "B",
-    "teaser": "Partea cireșelor pe care majoritatea o aruncă este, de fapt, un ingredient valoros în medicina populară. Din aceasta se prepară un ceai recunoscut pentru beneficiile sale asupra rinichilor.",
-    "entities": [],
-    "icon": "trees",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://sfatulparintilor.ro/evenimente-astrologice/luna-neagra-lilith-in-sagetator-intalneste-luna-pe-25-iulie-2026-adevarurile-ascunse-pot-aprinde-pasiunile-cum-reactioneaza-zodiile",
-    "original_link": "https://sfatulparintilor.ro/evenimente-astrologice/luna-neagra-lilith-in-sagetator-intalneste-luna-pe-25-iulie-2026-adevarurile-ascunse-pot-aprinde-pasiunile-cum-reactioneaza-zodiile/",
-    "source": "sfatulparintilor",
-    "source_name": "Sfatul Părinților",
-    "source_lang": "ro",
-    "title": "Luna Neagră Lilith în Săgetător, conjuncție cu Luna pe 25 iulie 2026",
-    "category": "lifestyle",
-    "published": "2026-07-17T09:00:00+00:00",
-    "model": "B",
-    "teaser": "Pe 25 iulie 2026, Luna va intra în Săgetător și se va alătura Lunii Negre Lilith. Această configurație astrală poate scoate la iveală adevăruri ascunse și poate intensifica pasiunile.",
-    "entities": [
-      "Luna Neagră Lilith",
-      "Săgetător"
-    ],
-    "icon": "sun",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://pressalert.ro/2026/07/ce-trebuie-sa-stii-despre-cont-online-card-de-credit-si-optiunile-de-finantare-disponibile",
-    "original_link": "https://www.pressalert.ro/2026/07/ce-trebuie-sa-stii-despre-cont-online-card-de-credit-si-optiunile-de-finantare-disponibile/",
-    "source": "pressalert",
-    "source_name": "PressAlert Timișoara",
-    "source_lang": "ro",
-    "title": "Finanțarea zilnică: Conturi, carduri și credite, instrumente esențiale",
-    "category": "local",
-    "published": "2026-07-17T08:55:40+00:00",
-    "model": "B",
-    "teaser": "Conturile online, cardurile de credit și opțiunile de finanțare devin unelte uzuale pentru gestionarea banilor zilnici, de la salarii și plăți, la economii și cheltuieli neprevăzute.",
-    "entities": [
-      "PRESSALERT.ro"
-    ],
-    "icon": "receipt-tax",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://nwradu.ro/2026/07/am-vazut-cel-mai-frumos-volvo-epoca",
-    "original_link": "https://www.nwradu.ro/2026/07/am-vazut-cel-mai-frumos-volvo-epoca/",
-    "source": "nwradu",
-    "source_name": "NwRadu",
-    "source_lang": "ro",
-    "title": "Expoziție de mașini scandinave vechi în Piața Amzei",
-    "category": "auto",
-    "published": "2026-07-17T08:45:35+00:00",
-    "model": "B",
-    "teaser": "O expoziție organizată de Retromobil Club România a prezentat mașini scandinave vechi în Piața Amzei, evidențiind pasiunea pentru vehicule retro, în special modelele Volvo cu design angular.",
-    "entities": [
-      "Piața Amzei",
-      "Retromobil Club România",
-      "Volvo"
-    ],
-    "icon": "car",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://unica.ro/vedete/gabriela-cristea-in-bikini-la-51-de-ani-dupa-ce-a-slabit-30-de-kg-823519",
-    "original_link": "https://www.unica.ro/vedete/gabriela-cristea-in-bikini-la-51-de-ani-dupa-ce-a-slabit-30-de-kg-823519",
-    "source": "unica",
-    "source_name": "Unica",
-    "source_lang": "ro",
-    "title": "Gabriela Cristea, în bikini la 51 de ani, după ce a slăbit 30 kg",
-    "category": "lifestyle",
-    "published": "2026-07-17T08:41:42+00:00",
-    "model": "B",
-    "teaser": "Gabriela Cristea, la 51 de ani și după ce a pierdut 30 de kilograme, a postat o fotografie în costum de baie dintr-o vacanță în Italia.",
-    "entities": [
-      "Gabriela Cristea"
-    ],
-    "icon": "sun",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://economica.net/legea-salarizarii-negocieri-cruciale-la-cotroceni-pentru-pnnr-cu-pislaru-si-reprezentantii-partidelor_960128.html",
-    "original_link": "https://www.economica.net/legea-salarizarii-negocieri-cruciale-la-cotroceni-pentru-pnnr-cu-pislaru-si-reprezentantii-partidelor_960128.html",
-    "source": "economica",
-    "source_name": "Economica",
-    "source_lang": "ro",
-    "title": "Discuții la Cotroceni despre Legea salarizării, jalon PNRR",
-    "category": "politic",
-    "published": "2026-07-17T08:36:52+00:00",
-    "model": "C",
-    "sources": [
-      {
-        "name": "Economica",
-        "url": "https://www.economica.net/legea-salarizarii-negocieri-cruciale-la-cotroceni-pentru-pnnr-cu-pislaru-si-reprezentantii-partidelor_960128.html"
-      },
-      {
-        "name": "Spotmedia",
-        "url": "https://spotmedia.ro/stiri/social/discutii-pe-legea-salarizarii-liderii-partidelor-au-fost-chemati-la-cotroceni"
-      }
-    ],
-    "first_source": "Economica",
-    "synthesis": "Reprezentanți ai partidelor pro-occidentale și ministrul interimar al Muncii, Dragoș Pîslaru, au participat vineri la Palatul Cotroceni la discuții privind legea salarizării. Aceasta reprezintă un jalon esențial pentru Planul Național de Redresare și Reziliență (PNRR). Întâlnirea a fost coordonată de un consilier prezidențial.",
-    "entities": [
-      "Cotroceni",
-      "Dragoș Pîslaru",
-      "PNRR"
-    ],
-    "icon": "gavel",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://unica.ro/stiri/caz-socant-in-judetul-valcea-o-tanara-de-20-de-ani-agresata-sexual-in-grup-la-o-petrecere-823521",
-    "original_link": "https://www.unica.ro/stiri/caz-socant-in-judetul-valcea-o-tanara-de-20-de-ani-agresata-sexual-in-grup-la-o-petrecere-823521",
-    "source": "unica",
-    "source_name": "Unica",
-    "source_lang": "ro",
-    "title": "Tânără violată în grup în Vâlcea după ce a consumat o băutură suspectă",
-    "category": "general",
-    "published": "2026-07-17T08:34:48+00:00",
-    "model": "B",
-    "teaser": "O tânără de 20 de ani din județul Vâlcea a reclamat că a fost violată de șase bărbați în timp ce era inconștientă. Incidentul a avut loc în aprilie, iar o anchetă penală este în desfășurare.",
-    "entities": [
-      "Vâlcea"
-    ],
-    "icon": "gavel",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://csid.ro/stiri/peste-400-de-spitale-din-romania-intra-luni-in-greva-nu-vor-face-internari-si-operatii-timp-de-doua-ore-21252733",
-    "original_link": "https://www.csid.ro/stiri/peste-400-de-spitale-din-romania-intra-luni-in-greva-nu-vor-face-internari-si-operatii-timp-de-doua-ore-21252733/",
-    "source": "csid",
-    "source_name": "CSÎD",
-    "source_lang": "ro",
-    "title": "Peste 400 de spitale intră în grevă de avertisment luni",
-    "category": "general",
-    "published": "2026-07-17T08:30:22+00:00",
-    "model": "B",
-    "teaser": "Peste 400 de spitale din țară vor intra luni, 20 iulie, în grevă de avertisment. În timpul protestului de două ore, internările și operațiile programate vor fi suspendate.",
-    "entities": [
-      "SANITAs"
-    ],
-    "icon": "building-hospital",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://scena9.ro/article/odiseea-cronica-christopher-nolan-matt-damon-anne-hathaway",
-    "original_link": "https://www.scena9.ro/article/odiseea-cronica-christopher-nolan-matt-damon-anne-hathaway",
-    "source": "scena9",
-    "source_name": "Scena 9",
-    "source_lang": "ro",
-    "title": "Filmul \"Odiseea\" explorează viziunea lui Nolan",
-    "category": "cultura",
-    "published": "2026-07-17T08:20:14+00:00",
-    "model": "B",
-    "teaser": "Filmul \"Odiseea\" al lui Chris Nolan, cu o durată de trei ore, prezintă o adaptare complexă a materialului sursă, echilibrând dorințele regizorale cu povestea originală.",
-    "entities": [
-      "Chris Nolan"
-    ],
-    "icon": "movie",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://csid.ro/stiri/ce-au-descoperit-cercetatorii-despre-aceasta-rasina-naturala-si-efectele-ei-asupra-celulelor-canceroase-21252794",
-    "original_link": "https://www.csid.ro/stiri/ce-au-descoperit-cercetatorii-despre-aceasta-rasina-naturala-si-efectele-ei-asupra-celulelor-canceroase-21252794/",
-    "source": "csid",
-    "source_name": "CSÎD",
-    "source_lang": "ro",
-    "title": "Rășina de mastic, studiată pentru efectele sale asupra celulelor canceroase",
-    "category": "lifestyle",
-    "published": "2026-07-17T08:00:12+00:00",
-    "model": "B",
-    "teaser": "Guma de mastic, o rășină naturală cu utilizări tradiționale, este acum subiectul unor cercetări. Studiile de laborator analizează compușii săi și potențialele efecte pozitive asupra celulelor canceroase.",
-    "entities": [],
-    "icon": "microscope",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://sfatulparintilor.ro/familie-parinti/dezvoltare-personala/harta-durerilor-financiare-cum-pot-grijile-legate-de-bani-sa-amplifice-tensiunea-din-spate-umeri-si-gat",
-    "original_link": "https://sfatulparintilor.ro/familie-parinti/dezvoltare-personala/harta-durerilor-financiare-cum-pot-grijile-legate-de-bani-sa-amplifice-tensiunea-din-spate-umeri-si-gat/",
-    "source": "sfatulparintilor",
-    "source_name": "Sfatul Părinților",
-    "source_lang": "ro",
-    "title": "Grijile financiare afectează sănătatea fizică",
-    "category": "sanatate",
-    "published": "2026-07-17T08:00:00+00:00",
-    "model": "B",
-    "teaser": "Problemele financiare, precum ratele mari sau teama de a pierde locul de muncă, pot genera stres cronic. Acesta se poate manifesta prin tensiuni musculare în spate, umeri și gât, afectând somnul și concentrarea.",
-    "entities": [],
-    "icon": "pig-money",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://avantaje.ro/articol/horoscop-saptamanal-20-26-iulie-2026-ce-zodii-trebuie-sa-isi-amane-concediul",
-    "original_link": "https://www.avantaje.ro/articol/horoscop-saptamanal-20-26-iulie-2026-ce-zodii-trebuie-sa-isi-amane-concediul",
-    "source": "avantaje",
-    "source_name": "Avantaje",
-    "source_lang": "ro",
-    "title": "Horoscop săptămânal 20-26 iulie 2026: Anumite zodii își amână concediul",
-    "category": "lifestyle",
-    "published": "2026-07-17T08:00:00+00:00",
-    "model": "B",
-    "teaser": "Horoscopul săptămânal aduce lecții despre echilibru și răbdare. Unele zodii se pot bucura de vacanță, în timp ce altele trebuie să își amâne concediul din cauza unor evenimente.",
-    "entities": [],
-    "icon": "sun",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://primariaroman.ro/17-07-2026-sinteza-activitatilor-desfasurate-in-perioada-10-07-2026-16-07-2026",
-    "original_link": "https://primariaroman.ro/17-07-2026-sinteza-activitatilor-desfasurate-in-perioada-10-07-2026-16-07-2026/",
-    "source": "pl_neamt_municipiul_roman",
-    "source_name": "Primăria Municipiul Roman",
-    "source_lang": "ro",
-    "title": "17.07.2026 – SINTEZA activităţilor desfăşurate în perioada 10.07.2026 – 16.07.2026",
-    "category": "local",
-    "published": "2026-07-17T07:59:06+00:00",
-    "model": "B",
-    "teaser": ".",
-    "processed_by": "official",
-    "featured": false
-  },
-  {
-    "url": "https://prosport.ro/campionatul-mondial-2026/arbitrul-finalei-cupei-mondiale-20485211",
-    "original_link": "https://www.prosport.ro/campionatul-mondial-2026/arbitrul-finalei-cupei-mondiale-20485211",
-    "source": "prosport",
-    "source_name": "ProSport",
-    "source_lang": "ro",
-    "title": "Arbitrul finalei Cupei Mondiale 2026, desemnat de FIFA",
-    "category": "sport",
-    "published": "2026-07-17T07:55:09+00:00",
-    "model": "C",
-    "sources": [
-      {
-        "name": "ProSport",
-        "url": "https://www.prosport.ro/campionatul-mondial-2026/arbitrul-finalei-cupei-mondiale-20485211"
-      },
-      {
-        "name": "Spotmedia",
-        "url": "https://spotmedia.ro/stiri/sport/a-fost-stabilit-arbitrul-finalei-cupei-mondiale-2026"
-      }
-    ],
-    "first_source": "ProSport",
-    "synthesis": "FIFA l-a desemnat pe slovenul Slavko Vincic să arbitreze finala Cupei Mondiale 2026, care va avea loc pe 19 iulie, pe stadionul din East Rutherford, New Jersey. Meciul se va disputa între Spania și Argentina. Aceasta va fi a patra partidă arbitrată de Vincic la această ediție a competiției.",
-    "entities": [
-      "FIFA",
-      "Slavko Vincic",
-      "Spania",
-      "Argentina"
-    ],
-    "icon": "ball-football",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://avantaje.ro/articol/oana-tache-e-on-air-de-la-mare-la-tictalk-summer-party",
-    "original_link": "https://www.avantaje.ro/articol/oana-tache-e-on-air-de-la-mare-la-tictalk-summer-party",
-    "source": "avantaje",
-    "source_name": "Avantaje",
-    "source_lang": "ro",
-    "title": "Oana Tache emite \"TicTalk Summer Party\" live de pe litoral",
-    "category": "lifestyle",
-    "published": "2026-07-17T07:55:00+00:00",
-    "model": "B",
-    "teaser": "Virgin Radio Romania aduce \"TicTalk Summer Party\" pe litoral pentru al doilea an. Oana Tache va modera emisiunea direct de pe plajă, aducând vibe-ul estival ascultătorilor.",
-    "entities": [
-      "Oana Tache",
-      "Virgin Radio Romania"
-    ],
-    "icon": "speakerphone",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://primariacicarlau.ro/2026/07/17/anunt-lansare-procedura",
-    "original_link": "https://primariacicarlau.ro/2026/07/17/anunt-lansare-procedura/",
-    "source": "pl_maramures_cicarlau",
-    "source_name": "Primăria Cicarlau",
-    "source_lang": "ro",
-    "title": "📢ANUNȚ – Lansare procedură",
-    "category": "local",
-    "published": "2026-07-17T07:50:09+00:00",
-    "model": "B",
-    "teaser": "Primăria Comunei Cicârlău informează cetățenii și operatorii economici interesați că a fost lansată procedura de achiziție publică pentru execuția lucrărilor aferente obiectivului de investiții: 🏗️ „Construire Centru Social de tip Respiro pentru persoane adulte cu dizabilități”, în localitatea Cicârlău, județul...",
-    "processed_by": "official",
-    "featured": false
-  },
-  {
-    "url": "https://avantaje.ro/articol/zi-de-incarcatura-maxima-la-electric-castle-teddy-swims-si-twenty-one-pilots-ajung-la-bontida",
-    "original_link": "https://www.avantaje.ro/articol/zi-de-incarcatura-maxima-la-electric-castle-teddy-swims-si-twenty-one-pilots-ajung-la-bontida",
-    "source": "avantaje",
-    "source_name": "Avantaje",
-    "source_lang": "ro",
-    "title": "Teddy Swims și twenty one pilots, capete de afiș la Electric Castle",
-    "category": "lifestyle",
-    "published": "2026-07-17T07:40:33+00:00",
-    "model": "B",
-    "teaser": "Ziua a doua a festivalului Electric Castle 2026 la Bonțida va fi dominată de concertele lui Teddy Swims și twenty one pilots. Artiștii vor urca pe scena principală, promițând un spectacol de hituri.",
-    "entities": [
-      "Teddy Swims",
-      "twenty one pilots",
-      "Electric Castle"
-    ],
-    "icon": "music",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://csid.ro/stiri/doi-soti-din-bucuresti-disparuti-dupa-o-excursie-pe-transalpina-nu-au-mai-ajuns-la-o-pensiune-din-hunedoara-21253028",
-    "original_link": "https://www.csid.ro/stiri/doi-soti-din-bucuresti-disparuti-dupa-o-excursie-pe-transalpina-nu-au-mai-ajuns-la-o-pensiune-din-hunedoara-21253028/",
-    "source": "csid",
-    "source_name": "CSÎD",
-    "source_lang": "ro",
-    "title": "Soți dispăruți pe Transalpina, găsiți ulterior",
-    "category": "general",
-    "published": "2026-07-17T07:11:54+00:00",
-    "model": "C",
-    "sources": [
-      {
-        "name": "CSÎD",
-        "url": "https://www.csid.ro/stiri/doi-soti-din-bucuresti-disparuti-dupa-o-excursie-pe-transalpina-nu-au-mai-ajuns-la-o-pensiune-din-hunedoara-21253028/"
-      },
-      {
-        "name": "Știrile ProTV",
-        "url": "https://stirileprotv.ro/stiri/actualitate/tinerii-bucuresteni-dati-disparuti-dupa-ce-au-plecat-intr-o-excursie-pe-trnasalpina-au-fost-gasiti.html"
-      }
-    ],
-    "first_source": "CSÎD",
-    "synthesis": "Un cuplu din București a fost dat dispărut de familie după ce a plecat într-o excursie pe Transalpina și nu a mai ajuns la destinație. Ulterior, cei doi tineri au fost găsiți de autorități, conform informațiilor confirmate de mai multe surse.",
-    "entities": [
-      "București",
-      "Transalpina"
-    ],
-    "icon": "car",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://sfatulparintilor.ro/prescolari/rugaciuni-pentru-copii/rugaciune-cand-iti-este-dor",
-    "original_link": "https://sfatulparintilor.ro/prescolari/rugaciuni-pentru-copii/rugaciune-cand-iti-este-dor/",
-    "source": "sfatulparintilor",
-    "source_name": "Sfatul Părinților",
-    "source_lang": "ro",
-    "title": "Rugăciune pentru alinarea dorului",
-    "category": "lifestyle",
-    "published": "2026-07-17T07:00:00+00:00",
-    "model": "B",
-    "teaser": "Dorul este o emoție profundă ce leagă sufletele dincolo de spațiu și timp. O rugăciune poate oferi alinare și conexiune în momentele de nostalgie și dorință de revedere.",
-    "entities": [],
-    "icon": "writing",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://cjtimis.ro/anunturi-pentru-ocuparea-posturilor-publice-vacante/centralizator-final-privind-punctajele-acordate-de-comisia-de-examen-la-examenul-de-promovare-in-grad-profesional-imediat-superior-celui-detinut-a-unui-functionar-public-din-cadrul-compartimentului-in",
-    "original_link": "https://www.cjtimis.ro/anunturi-pentru-ocuparea-posturilor-publice-vacante/centralizator-final-privind-punctajele-acordate-de-comisia-de-examen-la-examenul-de-promovare-in-grad-profesional-imediat-superior-celui-detinut-a-unui-functionar-public-din-cadrul-compartimentului-in/?utm_source=rss&utm_medium=rss&utm_campaign=centralizator-final-privind-punctajele-acordate-de-comisia-de-examen-la-examenul-de-promovare-in-grad-profesional-imediat-superior-celui-detinut-a-unui-functionar-public-din-cadrul-compartimentului-in",
-    "source": "cj_timis",
-    "source_name": "CJ Timiș",
-    "source_lang": "ro",
-    "title": "Centralizator final examen promovare funcționar public",
-    "category": "local",
-    "published": "2026-07-17T06:53:06+00:00",
-    "model": "B",
-    "teaser": "Publicat centralizatorul final cu punctajele obținute la examenul de promovare în grad profesional, proba scrisă, desfășurat pe 15 iulie 2026 pentru un funcționar public din Compartimentul intern de prevenire și protecție.",
-    "entities": [
-      "Compartimentul intern de prevenire și protecție"
-    ],
-    "icon": "receipt-tax",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
     "featured": false
   }
 ]
