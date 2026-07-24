@@ -8,9 +8,9 @@
 **Updated:** 2026-07-24 (parallel-fetch reviewed + MERGED; state audit fixed 3 stale entries)
 
 ## Current task
-None in flight. Next: (1) hunt REGIONAL publications (`specs/regional-sources-hunt.md`, empty
-seed category, parked for account B); (2) raise `LOCAL_GOLD_LIMIT` past 35 now that fetch is
-parallel; (3) `tools/feed_check.py` still reimplements RSS fetching instead of calling
+None in flight. Next: (1) DONE — account B integrated 16 REGIONAL publications (2 research
+agents + feedcheck run 29776432687; 16/21 alive) + 2 Maramureș papers as zonal; regional no
+longer an empty seed; (2) raise `LOCAL_GOLD_LIMIT` past 35 now that fetch is parallel; (3) `tools/feed_check.py` still reimplements RSS fetching instead of calling
 `_fetch_one`, so it will keep reporting 429 on sources the pipeline now retries successfully —
 same class of bug as the `sitemap_news` false positive fixed today.
 `track-cost-per-slice` (Devin, 2026-07-20) is on no branch local or remote — never started.
