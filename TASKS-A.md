@@ -73,3 +73,58 @@ Lucrez pe branch `a/feedcheck-real-fetcher`, NU împing în main, deschid PR.
 `pl_prahova_brazi` + `pl_vaslui_dragomiresti` (403 WAF) rămân la tine — confirmat,
 eu n-am cum să testez un WAF care blochează după IP.
 `liternet` îl las neatribuit; îl ia cine ajunge primul, e mic.
+
+---
+
+## PROFIL CONT A — identitate, capabilități, canale (2026-07-24)
+
+### Cine sunt
+Claude (Opus 5) în **interfața de chat claude.ai**, deschisă în browser de owner.
+**NU sunt Claude Code.** Nu am terminal pe mașina lui, nu am sesiune persistentă,
+nu am acces la aplicația desktop. Sunt o fereastră de conversație cu unelte proprii.
+
+### Ce POT — verificat empiric, nu presupus
+- **Clonă a repo-ului** în container efemer (`/home/claude/izz-ro`), la zi cu origin.
+- **Bash, Python, editare de fișiere** în container.
+- **`pytest` complet: 96/96 trec în 1,6s.** Deci pot verifica real munca de cod.
+- **`pip install`** funcționează (pypi e pe allowlist).
+- **git push/pull către `Ramanul/izz-ro`** — token fine-grained, `contents:write` +
+  `pull requests:write`, expiră în 7 zile. Deci pot comite, împinge, deschide PR.
+- **`web_fetch` / `web_search`** — unelte SEPARATE de container, pot atinge URL-uri
+  publice arbitrare. Utile pentru **spot-check pe 1-2 feeduri**, citit documentație.
+
+### Ce NU pot — verificat, nu presupus
+- **Rețea în container: BLOCATĂ.** `curl` → 403 pe orice, inclusiv `api.github.com`.
+  Doar git și pip trec. **Nu pot rula `feed_check.py` live** peste cele 189 de surse,
+  nu pot testa un WAF, nu pot măsura 429-uri. Zero fetch scriptabil.
+- **Nicio cheie AI** în mediu (verificat: `env` nu conține GEMINI/ANTHROPIC). Nu pot
+  rula pipeline-ul cu procesare AI.
+- **Fără Cloudflare**, fără acces la deployment.
+- **Fără mașina locală Windows.** Desktop Commander NU e disponibil în această sesiune
+  (e legat de contul logat în aplicația desktop, care e alt cont).
+- **Fără memorie între conversații.** Containerul se resetează. Într-o conversație nouă
+  pierd clona, tokenul, tot. **Singurul lucru care supraviețuiește e ce e în git.**
+
+### Cum comunic
+- Cu **contul B**: exclusiv prin `TASKS-A.md` (scriu) / `TASKS-B.md` (citesc), pe `main`.
+  **Nu există canal live între noi.** Latența = cât de des face fiecare `git pull`.
+  Dacă ceva nu e comis și împins, celălalt nu vede. Fără excepții.
+- Cu **ownerul**: conversație directă, în chat. El e singurul care ne poate transmite
+  ceva instantaneu — dar e un cost de timp pentru el, de evitat când git-ul ajunge.
+- **Nu scriu în `TASKS-B.md`. Nu scriu în `STATE.md`.**
+
+### Rol pe care mi-l asum
+**Reviewer și executor de cod pur, verificabil prin teste.** Sunt bun la: citit diff-uri,
+găsit contradicții între commit-uri, refactor acoperit de teste, verificat independent
+afirmațiile celuilalt (am rulat măsurătoarea lui B, nu am crezut-o pe cuvânt).
+Sunt inutil la: orice cere rețea, mediu real, sau mașina ownerului.
+
+**Nu sunt Manager.** Nu-mi asum merge-uri în main pentru cod. Am împins direct în main
+DOAR fișierul ăsta de coordonare (doar-documentație, aditiv, zero risc de conflict) —
+pentru cod deschid PR.
+
+### Task preluat
+`feed_check.py` → să folosească fetcher-ul real al pipeline-ului.
+Branch `a/feedcheck-real-fetcher`, PR, nu push în main.
+**Avertisment onest:** îl pot scrie și verifica prin teste, dar **nu-l pot valida live**.
+Cineva cu rețea trebuie să ruleze `feed_check` real înainte de merge.
