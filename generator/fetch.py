@@ -6,6 +6,7 @@ import socket
 import urllib.error
 import urllib.request
 import xml.etree.ElementTree as ET
+from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime, timezone
 from html.parser import HTMLParser
 
@@ -16,6 +17,9 @@ from .util import normalize_url, domain_of, clean_html
 
 USER_AGENT = "IZZ.ro Bot/1.0 (+https://izz.ro)"
 TIMEOUT = 10  # secunde per feed
+# Fetch-ul e I/O-bound: threadurile asteapta reteaua, nu CPU-ul. 8 e conservator
+# fata de ~40+ surse; FETCH_WORKERS=1 revine la secvential.
+MAX_WORKERS = int(os.environ.get("FETCH_WORKERS", "8"))
 
 # Conditional GET (ETag / Last-Modified): nu re-descarcam feed-uri neschimbate.
 # Valabilitate limitata la 3h: mecanismul de defer (iteme amanate la 429 AI) se
@@ -372,13 +376,36 @@ def _fetch_one(key: str, source: dict, cache: dict | None = None) -> tuple[list,
 
 
 def fetch_all() -> tuple[list, list]:
-    """Returneaza (toate_articolele_brute, surse_moarte)."""
+    """Returneaza (toate_articolele_brute, surse_moarte).
+
+    Fetch-ul e paralel (I/O-bound: fiecare sursa asteapta reteaua).
+
+    Doua invariante pe care paralelizarea NU are voie sa le strice:
+
+    1. ORDINEA. Bugetul AI proceseaza articolele in ordinea din config.SOURCES;
+       ce ajunge la coada e infometat. `executor.map` returneaza rezultatele in
+       ordinea intrarii, indiferent de ordinea in care se termina taskurile, deci
+       ordinea finala e identica cu varianta secventiala.
+    2. CACHE-UL. Fiecare task citeste si scrie DOAR `cache[key]`-ul lui, iar
+       atribuirea pe dict e atomica sub GIL. Nu e nevoie de lock.
+
+    FETCH_WORKERS=1 forteaza modul secvential (depanare, sau daca o sursa se
+    supara pe cereri concurente).
+    """
     all_items, dead = [], []
     cache = _cache_load()
-    for key, source in config.SOURCES.items():
-        items, err = _fetch_one(key, source, cache)
+    sources = list(config.SOURCES.items())
+
+    if MAX_WORKERS <= 1:
+        results = [_fetch_one(key, source, cache) for key, source in sources]
+    else:
+        with ThreadPoolExecutor(max_workers=min(MAX_WORKERS, len(sources) or 1)) as pool:
+            results = list(pool.map(lambda kv: _fetch_one(kv[0], kv[1], cache), sources))
+
+    for items, err in results:
         if err:
             dead.append(err)
         all_items.extend(items)
+
     _cache_save(cache)
     return all_items, dead
