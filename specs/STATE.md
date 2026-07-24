@@ -8,10 +8,14 @@
 **Updated:** 2026-07-24 (parallel-fetch reviewed + MERGED; state audit fixed 3 stale entries)
 
 ## Current task
-None in flight. Next candidates, in order: (1) hunt REGIONAL publications — `regional` is an
-empty seed category — then feedcheck, then populate it; (2) raise `LOCAL_GOLD_LIMIT` past 35
-now that fetch is parallel. `track-cost-per-slice` (Devin, 2026-07-20) is on no branch local
-or remote — treat as never started. Jules route active via CLI (`JULES_API_KEY` env is 401).
+`fetch-429-retry` — spec `specs/fetch-429-retry.md`, branch `oc/fetch-429-retry`, delegated to
+OpenCode 2026-07-24 12:4x. Feedcheck run `30093310671` showed `libertatea`, `unica`, `bzi`
+returning 429 from GitHub runners — and `build.yml` runs on those same runners, so production
+loses them too. Awaiting the executor, then `/review-executor`.
+Next after it: (1) hunt REGIONAL publications (`specs/regional-sources-hunt.md`, empty seed
+category, parked for account B); (2) raise `LOCAL_GOLD_LIMIT` past 35 now that fetch is parallel.
+`track-cost-per-slice` (Devin, 2026-07-20) is on no branch local or remote — never started.
+Jules route active via CLI (`JULES_API_KEY` env is 401).
 
 ## Last relevant commits
 - `feat/parallel-fetch` MERGED (febabdd) — verdict was FIX, not clean MERGE. Executor's
