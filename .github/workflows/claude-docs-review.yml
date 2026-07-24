@@ -50,7 +50,8 @@ jobs:
             Post the review as a PR comment starting with the marker
             "[docs-assistant]" so it's distinguishable from the primary reviewer.
             End with: "VERDICT: APPROVE" or "VERDICT: NEEDS CHANGES".
-          claude_args: '--allowed-tools "Bash(gh pr comment:*),Bash(gh pr view:*),Bash(gh pr diff:*)"'
+          # Same fix as claude-code-review.yml — see the comment there.
+          claude_args: '--allowed-tools "Read,Grep,Glob,Bash(gh pr comment:*),Bash(gh pr view:*),Bash(gh pr diff:*)"'
 
       - name: Token missing notice
         if: env.HAS_TOKEN != 'true'

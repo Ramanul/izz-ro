@@ -34,7 +34,11 @@ jobs:
             For every issue, include a concrete proposed fix (code snippet or
             diff), so the author can apply it or reply "@claude apply your
             fixes" to have you commit the changes on this branch.
-          claude_args: '--allowed-tools "Bash(gh pr comment:*),Bash(gh pr view:*),Bash(gh pr diff:*)"'
+          # Read/Grep/Glob are required: a reviewer asked to judge correctness must open
+          # the files around the diff. Without them the run ends is_error:true after a
+          # handful of permission denials (measured on PR #85: 9 turns, 5 denials).
+          # Read-only by design — no Write/Edit, so the reviewer still cannot touch the branch.
+          claude_args: '--allowed-tools "Read,Grep,Glob,Bash(gh pr comment:*),Bash(gh pr view:*),Bash(gh pr diff:*)"'
 
       - name: Token missing notice
         if: env.HAS_TOKEN != 'true'
