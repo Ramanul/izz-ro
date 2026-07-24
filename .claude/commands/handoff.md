@@ -55,6 +55,31 @@ E sursa de adevăr pentru „unde am rămas" (`izz/CLAUDE.md` §15). Scrieri de�
 Înainte de orice scriere în izz: `git pull --ff-only` — botul CI comite la ~30 min, main-ul
 local e mereu în urmă.
 
+### Gardă anti-suprascriere — obligatorie
+
+`STATE.md` zice despre el însuși „one writer at a time", dar nimic nu impune asta: două sesiuni
+paralele care îl rescriu integral se calcă una pe alta **în tăcere**. S-a întâmplat pe 2026-07-24
+și a scăpat doar pentru că cele două scrieri au nimerit secțiuni diferite.
+
+Deci, înainte să atingi `STATE.md`:
+
+```bash
+git fetch -q origin && git diff --quiet HEAD origin/main -- specs/STATE.md; echo $?
+```
+
+- `0` → ești la zi, scrie liniștit.
+- `1` → **altcineva a scris între timp.** NU scrie peste. Fă `git pull --ff-only`, **recitește
+  fișierul**, și abia apoi aplică modificările.
+
+Și indiferent de rezultat: **modifică `STATE.md` prin editări de secțiune, nu rescriindu-l
+integral.** O rescriere completă transformă orice scriere paralelă în pierdere tăcută; o editare
+punctuală lasă git să vadă că sunt schimbări diferite. Rescrie tot fișierul doar când îl tai
+pentru că a depășit limita de mărime — și atunci fă `fetch` imediat înainte.
+
+Dacă ești o sesiune care NU face merge în `main` (contul B, sau o sesiune paralelă pe branch),
+**nu atinge deloc `STATE.md`.** Scrie doar în jurnalul tău din `sessions/` — acolo un fișier per
+sesiune face coliziunea imposibilă prin construcție.
+
 ## 5. Predare explicită, dacă e cazul
 
 Dacă rămâne ceva concret pentru celălalt cont, adaugă-l la „În așteptare" în `TASKS-B.md`
