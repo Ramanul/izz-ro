@@ -20,7 +20,7 @@ SOURCES = {
             "elle":       {"name": "Elle România",     "url": "https://www.elle.ro/feed",              "category": "lifestyle"},
             "avantaje":   {"name": "Avantaje",         "url": "https://www.avantaje.ro/feed",          "category": "lifestyle"},
     # cultura — literatură, film, arte (2026-07-17)
-            "liternet":   {"name": "Liternet",        "url": "https://www.liternet.ro/feed.php",       "category": "cultura"},
+            "liternet":   {"name": "Liternet",        "url": "https://feed.liternet.ro/agenda.xml",       "category": "cultura"},
             "scena9":     {"name": "Scena 9",         "url": "https://www.scena9.ro/feed",              "category": "cultura"},
             "bookhub":    {"name": "Bookhub",         "url": "https://bookhub.ro/feed",                 "category": "cultura"},
             "nwradu":       {"name": "NwRadu",         "url": "https://www.nwradu.ro/feed/",           "category": "discounturi"},
