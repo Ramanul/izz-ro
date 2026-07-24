@@ -5,7 +5,7 @@
 > Executors receive this file as read-only context. Overwrite sections in place — never let
 > this file grow past ~30 lines of content.
 
-**Updated:** 2026-07-20 (slice: geo-categorii merged; parallel-fetch + track-cost-per-slice delegated)
+**Updated:** 2026-07-24 (slice: Jules onboarding closed — CLI functional, /delegate-jules committed)
 
 ## Current task
 `parallel-fetch` — spec `specs/parallel-fetch.md`, branch `oc/parallel-fetch`, delegated
@@ -14,8 +14,9 @@ agents are hunting REGIONAL publications; feedcheck cycle follows, then populate
 `track-cost-per-slice` — spec `specs/track-cost-per-slice.md`, branch
 `devin/track-cost-per-slice`, delegated to Devin Local 2026-07-20 (metrics.log + helper CLI
 for solo-vs-executor cost accounting). Awaiting Devin report, then `/review-devin`.
-Jules CLI onboarding still blocked: 401 despite login OK + GitHub App installed —
-waiting on user (key #2 / Google↔GitHub link).
+Jules UNBLOCKED 2026-07-24: CLI auth works (GitHub App connected), smoke session
+16571763303422774183 ran; `/delegate-jules` + `tools/jules_api.py` committed. Third
+executor route active. `JULES_API_KEY` in env is INVALID (401) — CLI is the route.
 
 ## Last relevant commits
 - `oc/geo-categorii` MERGED (6d90543, OpenCode, 76/76, manager-verified): `regional`/`zonal`/
@@ -34,7 +35,6 @@ waiting on user (key #2 / Google↔GitHub link).
 ## User WIP — UNTOUCHABLE
 - `generator/render.py` (modified, uncommitted)
 - `data/entities/salariul-minim.yaml` (modified, uncommitted)
-- `.claude/commands/delegate-jules.md`, `tools/jules_api.py` (untracked, Jules onboarding WIP)
 
 ## Blockers
 - MAI WAF blocks this IP (502 on `*.prefectura.mai.gov.ro` AND www.mai.gov.ro) — do NOT
