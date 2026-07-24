@@ -45,6 +45,20 @@ a throwaway task.** The 8 merges of 2026-07-19/20 are no longer evidence the rou
 Tree clean, `git stash list` empty. The former WIP (`render.py`, `salariul-minim.yaml`) is
 gone, unrecoverable from git, cause unknown. `render.py` is no longer off-limits.
 
+## 429 retry — SHIPPED BUT DOES NOT FIX THE OBSERVED PROBLEM (measured 2026-07-24)
+`a644c31` added retry (2 attempts, 1s+3s, honours Retry-After). Feedcheck re-run after it
+(`30095060877`) still reports 429 on `libertatea`, `unica`, `bzi` — plus `elle`, which was
+FINE in the run 40 minutes earlier. So: the rate limit outlasts a 4-second backoff, and the
+affected set VARIES between runs. That points at per-IP throttling of GitHub runner ranges,
+not at a transient refusal these sources recover from in seconds.
+What DID improve: `piataauto` no longer reports as GOL (checker bug, fixed) — 7 findings
+before, 7 now, but a different, honest 7.
+Untested hypotheses, cheapest first: (a) `USER_AGENT = "IZZ.ro Bot/1.0"` is what draws the
+429 — note `monitor.yml` learned CF bot-fight blocks runner IPs *regardless* of UA, so this
+may fail the same way; (b) much longer backoff — rejected for now, it would stall pool
+workers; (c) accept that these sources are unreachable from Actions and fetch them elsewhere.
+Do NOT claim this is fixed until a feedcheck run comes back clean on those four.
+
 ## Blockers
 - MAI WAF blocks this IP (502 on `*.prefectura.mai.gov.ro` and www.mai.gov.ro). Retest later
   or from GitHub Actions / the cloud account — it is IP-bound, not permanent.
