@@ -1,0 +1,9 @@
+name = "izz-failover"
+main = "failover-worker.js"
+compatibility_date = "2026-07-01"
+
+# Worker-ul intercepteaza tot traficul catre apex-ul izz.ro inaintea servirii Pages.
+# Fetch-urile catre izz-ro.pages.dev / ramanul.github.io sunt host-uri diferite -> fara bucla.
+routes = [
+  { pattern = "izz.ro/*", zone_name = "izz.ro" }
+]

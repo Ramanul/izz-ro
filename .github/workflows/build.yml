@@ -107,3 +107,33 @@ jobs:
       - name: IndexNow (anunta URL-urile noi la Bing & co., best-effort)
         continue-on-error: true
         run: python tools/indexnow_submit.py
+
+  # Sistem de servire REDUNDANT #2: mirror pe GitHub Pages (ramanul.github.io),
+  # host complet independent de Cloudflare Pages. Ruleaza dupa ce 'pipeline' a comis
+  # continutul (needs), reia acelasi render rapid (fara AI) si publica output/ pe mirror.
+  # Daca acest job pica, deploy-ul primar (Cloudflare) e deja facut -> jobul rosu doar
+  # alerteaza, nu strica nimic. Failover-ul intre cele doua host-uri se face automat la edge
+  # (Cloudflare Worker, vezi infra/failover-worker.js).
+  mirror:
+    needs: pipeline
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main          # tip-ul lui main DUPA push-ul lui pipeline -> continut proaspat
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.11"
+          cache: "pip"
+      - run: pip install -r requirements.txt
+      - name: Render (rapid, fara fetch/AI)
+        run: python -m generator.main --render-only
+      - name: Publica pe mirror (host independent)
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          deploy_key: ${{ secrets.MIRROR_DEPLOY_KEY }}
+          external_repository: Ramanul/ramanul.github.io
+          publish_branch: gh-pages
+          publish_dir: ./output
+          force_orphan: true   # un singur commit -> mirror-ul nu creste la nesfarsit (122MB/rulare)
+          cname: ""            # fara custom domain pe mirror: Worker-ul face Host rewrite la failover

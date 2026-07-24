@@ -1,0 +1,44 @@
+name: uptime-monitor
+
+# Detectie externa, independenta de infrastructura de servire: ruleaza pe GitHub,
+# verifica cele trei suprafete la 10 min. Alerteaza (job rosu -> email owner) DOAR
+# cand siteul public e jos SAU ambele host-uri sunt jos (redundanta pierduta complet).
+# Un singur host jos cat timp izz.ro public raspunde = degradare tolerata (Worker-ul de
+# failover o acopera) -> doar avertisment, job verde, fara spam.
+
+on:
+  schedule:
+    - cron: "*/10 * * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: monitor
+  cancel-in-progress: true
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Verifica public + primar + mirror
+        run: |
+          probe() {
+            curl -s -o /dev/null -w "%{http_code}" --max-time 25 -A "izz-monitor/1.0" "$1" 2>/dev/null || echo "000"
+          }
+          PUB=$(probe "https://izz.ro/")
+          PRI=$(probe "https://izz-ro.pages.dev/")
+          MIR=$(probe "https://ramanul.github.io/")
+          echo "public izz.ro     : $PUB"
+          echo "primar pages.dev  : $PRI"
+          echo "mirror github.io  : $MIR"
+
+          crit=0
+          [ "$PUB" != "200" ] && { echo "::error::SITE PUBLIC JOS — izz.ro a raspuns $PUB"; crit=1; }
+          if [ "$PRI" != "200" ] && [ "$MIR" != "200" ]; then
+            echo "::error::REDUNDANTA PIERDUTA — ambele host-uri jos (primar $PRI, mirror $MIR)"; crit=1
+          fi
+          [ "$PRI" != "200" ] && [ "$MIR" = "200" ] && echo "::warning::primar Cloudflare jos ($PRI) — mirror-ul acopera"
+          [ "$MIR" != "200" ] && [ "$PRI" = "200" ] && echo "::warning::mirror jos ($MIR) — de reparat, redundanta degradata"
+          exit $crit
