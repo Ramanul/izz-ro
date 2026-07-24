@@ -8,14 +8,23 @@
 **Updated:** 2026-07-24 (parallel-fetch reviewed + MERGED; state audit fixed 3 stale entries)
 
 ## Current task
-`fetch-429-retry` — spec `specs/fetch-429-retry.md`, branch `oc/fetch-429-retry`, delegated to
-OpenCode 2026-07-24 12:4x. Feedcheck run `30093310671` showed `libertatea`, `unica`, `bzi`
-returning 429 from GitHub runners — and `build.yml` runs on those same runners, so production
-loses them too. Awaiting the executor, then `/review-executor`.
-Next after it: (1) hunt REGIONAL publications (`specs/regional-sources-hunt.md`, empty seed
-category, parked for account B); (2) raise `LOCAL_GOLD_LIMIT` past 35 now that fetch is parallel.
+None in flight. Next: (1) hunt REGIONAL publications (`specs/regional-sources-hunt.md`, empty
+seed category, parked for account B); (2) raise `LOCAL_GOLD_LIMIT` past 35 now that fetch is
+parallel; (3) `tools/feed_check.py` still reimplements RSS fetching instead of calling
+`_fetch_one`, so it will keep reporting 429 on sources the pipeline now retries successfully —
+same class of bug as the `sitemap_news` false positive fixed today.
 `track-cost-per-slice` (Devin, 2026-07-20) is on no branch local or remote — never started.
-Jules route active via CLI (`JULES_API_KEY` env is 401).
+
+## EXECUTOR ROUTE IS UNRELIABLE — measured 2026-07-24
+OpenCode was handed `specs/fetch-429-retry.md` (premise-verified spec, 4 test cases, explicit
+acceptance criteria). **Two models, two different silent failures, both exit code 0:**
+- `deepseek-v4-flash-free`: read AGENTS.md + the spec, wrote a todo list, stopped. No branch,
+  no code, no error message.
+- `north-mini-code-free`: invented an absolute path (`/workspace/izz/specs/...`) instead of
+  using `--dir .`; OpenCode correctly auto-rejected it as an external directory. Died there.
+Manager implemented it directly instead (`a644c31`) — cheaper than testing four more free
+models. **Before delegating anything to OpenCode again, verify the model actually delivers on
+a throwaway task.** The 8 merges of 2026-07-19/20 are no longer evidence the route works.
 
 ## Last relevant commits
 - `feat/parallel-fetch` MERGED (febabdd) — verdict was FIX, not clean MERGE. Executor's
