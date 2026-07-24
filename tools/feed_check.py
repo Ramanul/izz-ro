@@ -28,8 +28,11 @@ def main() -> int:
     for key, src in config.SOURCES.items():
         if only and src["category"] not in only:
             continue
-        if src.get("type") == "html_list":
-            # sursele fara RSS: rulam scraper-ul real si raportam cate articole extrage
+        if src.get("type"):
+            # Orice sursa care NU e RSS/Atom simplu (html_list, sitemap_news, ...): rulam
+            # fetcher-ul real si raportam cate articole extrage. feedparser pe continutul
+            # brut ar da 0 intrari si am raporta "GOL" o sursa perfect sanatoasa — exact ce
+            # s-a intamplat cu piataauto (sitemap_news) in feedcheck-ul din 2026-07-24.
             from generator.fetch import _fetch_one  # noqa: E402
             arts, err = _fetch_one(key, src)
             if err or not arts:
