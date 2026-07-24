@@ -69,18 +69,22 @@ def get_provider():
 
 
 def _parse_json(text: str) -> dict:
-    """Extrage primul obiect JSON din raspuns (tolerant la ```json fences)."""
+    """Extrage primul obiect JSON din raspuns (tolerant la ```json fences si la
+    wrapping in lista — Gemini 3.x intoarce uneori [{...}] in loc de {...})."""
     cleaned = re.sub(r"^```(?:json)?|```$", "", text.strip(), flags=re.MULTILINE).strip()
+    data = None
     try:
-        return json.loads(cleaned)
+        data = json.loads(cleaned)
     except json.JSONDecodeError:
         match = re.search(r"\{.*\}", cleaned, re.DOTALL)
         if match:
             try:
-                return json.loads(match.group(0))
+                data = json.loads(match.group(0))
             except json.JSONDecodeError:
                 pass
-    return {}
+    if isinstance(data, list):
+        data = next((x for x in data if isinstance(x, dict)), None)
+    return data if isinstance(data, dict) else {}
 
 
 def _valid_category(cat: str, fallback: str) -> str:
