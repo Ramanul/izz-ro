@@ -168,7 +168,7 @@ def test_tie_break_asc_judet_localitate(tmp_path):
 def test_integration_pl_sources_count():
     from generator import config
     count = sum(1 for k in config.SOURCES if k.startswith("pl_"))
-    assert 0 < count <= 35
+    assert 0 < count <= 120  # LOCAL_GOLD_LIMIT default (impact-first: municipii/orase intai)
 
 
 def test_pl_sources_ordered_before_gsp():
@@ -176,7 +176,21 @@ def test_pl_sources_ordered_before_gsp():
     keys = list(config.SOURCES)
     pl_indices = [i for i, k in enumerate(keys) if k.startswith("pl_")]
     gsp_idx = keys.index("gsp")
-    assert len(pl_indices) == 35
-    assert max(pl_indices) < gsp_idx
+    assert len(pl_indices) > 0            # loaded (exact count depends on LOCAL_GOLD_LIMIT)
+    assert max(pl_indices) < gsp_idx      # invariant: gold block stays before gsp
     first_pl_idx = pl_indices[0]
     assert config.SOURCES[keys[first_pl_idx - 1]]["category"] == "local"
+
+
+def test_impact_tier_orders_municipiu_before_oras_before_comuna(tmp_path):
+    # regula statica: municipiu > oras > comuna, chiar daca o comuna e mai proaspata
+    lines = [CSV_HEADER,
+             "ALBA,Comuna Fresh,http://a,yes,200,,,,,http://c.ro/feed/,yes,2026-07-20,,",
+             "ALBA,Oras Mijloc,http://b,yes,200,,,,,http://o.ro/feed/,yes,2026-05-01,,",
+             "ALBA,Municipiul Mare,http://c,yes,200,,,,,http://m.ro/feed/,yes,2026-01-15,,"]
+    path = _write_csv(tmp_path, lines)
+    names = [v["name"] for v in load_gold_sources(path, 10).values()]
+    # municipiul (cel mai vechi) trebuie sa fie PRIMUL, comuna proaspata ULTIMA
+    assert "Municipiul Mare" in names[0]
+    assert "Oras Mijloc" in names[1]
+    assert "Comuna Fresh" in names[2]
