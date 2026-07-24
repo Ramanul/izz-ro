@@ -23,9 +23,20 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Verifica public + primar + mirror
+        shell: bash
         run: |
+          set +e   # fara -e: liniile conditionale nu trebuie sa avorteze scriptul
+          # UA de browser real: Cloudflare bot-fight-mode da 403 pe UA-uri evident de bot,
+          # desi siteul e 200 pentru useri. Retry x3 -> tolereaza un challenge tranzitoriu.
+          UA="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0 Safari/537.36"
           probe() {
-            curl -s -o /dev/null -w "%{http_code}" --max-time 25 -A "izz-monitor/1.0" "$1" 2>/dev/null || echo "000"
+            local code
+            for _ in 1 2 3; do
+              code=$(curl -sL -o /dev/null -w "%{http_code}" --max-time 25 -A "$UA" "$1" 2>/dev/null)
+              [ "$code" = "200" ] && break
+              sleep 5
+            done
+            echo "${code:-000}"
           }
           PUB=$(probe "https://izz.ro/")
           PRI=$(probe "https://izz-ro.pages.dev/")
@@ -35,10 +46,16 @@ jobs:
           echo "mirror github.io  : $MIR"
 
           crit=0
-          [ "$PUB" != "200" ] && { echo "::error::SITE PUBLIC JOS — izz.ro a raspuns $PUB"; crit=1; }
-          if [ "$PRI" != "200" ] && [ "$MIR" != "200" ]; then
-            echo "::error::REDUNDANTA PIERDUTA — ambele host-uri jos (primar $PRI, mirror $MIR)"; crit=1
+          if [ "$PUB" != "200" ]; then
+            echo "::error::SITE PUBLIC JOS — izz.ro a raspuns $PUB"
+            crit=1
           fi
-          [ "$PRI" != "200" ] && [ "$MIR" = "200" ] && echo "::warning::primar Cloudflare jos ($PRI) — mirror-ul acopera"
-          [ "$MIR" != "200" ] && [ "$PRI" = "200" ] && echo "::warning::mirror jos ($MIR) — de reparat, redundanta degradata"
+          if [ "$PRI" != "200" ] && [ "$MIR" != "200" ]; then
+            echo "::error::REDUNDANTA PIERDUTA — ambele host-uri jos (primar $PRI, mirror $MIR)"
+            crit=1
+          elif [ "$PRI" != "200" ]; then
+            echo "::warning::primar Cloudflare jos ($PRI) — mirror-ul acopera"
+          elif [ "$MIR" != "200" ]; then
+            echo "::warning::mirror jos ($MIR) — de reparat, redundanta degradata"
+          fi
           exit $crit
