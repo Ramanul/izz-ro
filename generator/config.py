@@ -112,7 +112,7 @@ SOURCES = {
 }
 from generator.local_sources import load_gold_sources
 _GOLD_CSV = os.path.join(ROOT, "data", "primarii_lists", "gold_integrare.csv")
-_gold = load_gold_sources(_GOLD_CSV, int(os.environ.get("LOCAL_GOLD_LIMIT", "35")))
+_gold = load_gold_sources(_GOLD_CSV, int(os.environ.get("LOCAL_GOLD_LIMIT", "120")))
 # Bugetul AI proceseaza in ordinea dictului (niche-first) -> sursele locale intra
 # imediat dupa blocul 'local' literal, nu la coada (altfel sunt infometate de buget).
 if _gold:

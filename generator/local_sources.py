@@ -3,6 +3,20 @@ import os
 import re
 
 
+def _impact_tier(localitate: str) -> int:
+    """Prioritate de IMPACT, dedusa STATIC din numele localitatii (nu re-analiza la runtime):
+    municipiu (oras mare) inaintea orasului, orasul inaintea comunei. Reper cheie: un primar
+    de municipiu are zeci de mii de cititori vs. o comuna de cateva sute -> incarcam intai
+    localitatile mari, apoi comunele pentru acoperire. Marile resedinte de judet (Cluj, Iasi...)
+    lipsesc din lista GOLD -- site-urile lor n-au RSS -- deci municipiile sunt varful disponibil."""
+    loc = localitate.upper()
+    if "MUNICIPIUL" in loc:
+        return 0
+    if "ORAS" in loc or "ORAȘ" in loc:
+        return 1
+    return 2  # comuna
+
+
 def _make_slug(judet: str, localitate: str) -> str:
     raw = f"{judet}_{localitate}".lower()
     slug = re.sub(r"[^a-z0-9]", "_", raw)
@@ -27,8 +41,12 @@ def load_gold_sources(csv_path: str, limit: int, min_date: str = "2026-01-01") -
                 if last_date and last_date >= min_date:
                     rows.append(row)
 
+    # sortare STATICA in 2 pasi (sort stabil): intai prospetime desc, apoi nivel de impact asc.
+    # Rezultat: municipiile cele mai active primele, apoi orasele, apoi comunele -> primele
+    # `limit` sloturi merg la localitatile cu cel mai mare impact, nu la comune la intamplare.
     rows.sort(key=lambda r: (r["judet"], r["localitate"]))
     rows.sort(key=lambda r: r.get("last_signal_date") or "", reverse=True)
+    rows.sort(key=lambda r: _impact_tier(r["localitate"]))
 
     result = {}
     for row in rows[:limit]:
