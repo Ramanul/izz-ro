@@ -65,7 +65,7 @@ def main() -> int:
                     # Daca l-am numara ca esec, CI-ul ar fi rosu permanent din motive externe
                     # si am inceta sa ne mai uitam la el.
                     if exc.code in (429, 503):
-                        print(f"  LIMIT{key:12s} [{src['category']}] {exc} — rate-limit pe IP, "
+                        print(f"  LIMIT {key:12s} [{src['category']}] {exc} — rate-limit pe IP, "
                               f"NEVERIFICABIL de aici (nu inseamna sursa moarta)")
                         limited += 1
                     else:
