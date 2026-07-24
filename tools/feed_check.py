@@ -11,6 +11,7 @@ vizibil in CI inainte de a lasa o sursa noua in productie.
 """
 import socket
 import sys
+import time
 import urllib.error
 import urllib.request
 
@@ -18,7 +19,7 @@ import feedparser
 
 sys.path.insert(0, __import__("os").path.dirname(__import__("os").path.dirname(__import__("os").path.abspath(__file__))))
 from generator import config  # noqa: E402
-from generator.fetch import USER_AGENT, TIMEOUT  # noqa: E402
+from generator.fetch import USER_AGENT, TIMEOUT, RETRY_ATTEMPTS, _retry_delay  # noqa: E402
 
 
 def main() -> int:
@@ -42,14 +43,29 @@ def main() -> int:
                 newest = max((a.get("published", "") for a in arts), default="")[:10]
                 print(f"  ok   {key:12s} [{src['category']}] {src['type']}, {len(arts)} articole, cea mai noua: {newest or '-'}")
             continue
-        try:
-            req = urllib.request.Request(src["url"], headers={"User-Agent": USER_AGENT})
-            with urllib.request.urlopen(req, timeout=TIMEOUT) as resp:
-                raw = resp.read()
-                status = resp.status
-        except (urllib.error.URLError, socket.timeout, ValueError) as exc:
-            print(f"  DEAD {key:12s} [{src['category']}] {src['url']} -> {exc}")
-            bad += 1
+        # Fetch propriu, DELIBERAT independent de fetch.py: asa prindem cazul "200 dar nu e
+        # feed", pe care pipeline-ul il inghite tacit. Reutilizam doar POLITICA de retry
+        # (aceleasi constante), ca sa nu raportam DEAD o sursa pe care productia o recupereaza.
+        raw = status = None
+        for attempt in range(RETRY_ATTEMPTS + 1):
+            try:
+                req = urllib.request.Request(src["url"], headers={"User-Agent": USER_AGENT})
+                with urllib.request.urlopen(req, timeout=TIMEOUT) as resp:
+                    raw = resp.read()
+                    status = resp.status
+                break
+            except urllib.error.HTTPError as exc:
+                delay = _retry_delay(exc, attempt)
+                if delay is None:
+                    print(f"  DEAD {key:12s} [{src['category']}] {src['url']} -> {exc}")
+                    bad += 1
+                    break
+                time.sleep(delay)
+            except (urllib.error.URLError, socket.timeout, ValueError) as exc:
+                print(f"  DEAD {key:12s} [{src['category']}] {src['url']} -> {exc}")
+                bad += 1
+                break
+        if raw is None:
             continue
         feed = feedparser.parse(raw)
         n = len(feed.entries)
