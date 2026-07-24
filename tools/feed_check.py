@@ -25,6 +25,7 @@ from generator.fetch import USER_AGENT, TIMEOUT, RETRY_ATTEMPTS, _retry_delay  #
 def main() -> int:
     only = set(sys.argv[1:])
     bad = 0
+    limited = 0
     print(f"=== feed check ({len(config.SOURCES)} surse configurate) ===")
     for key, src in config.SOURCES.items():
         if only and src["category"] not in only:
@@ -57,8 +58,19 @@ def main() -> int:
             except urllib.error.HTTPError as exc:
                 delay = _retry_delay(exc, attempt)
                 if delay is None:
-                    print(f"  DEAD {key:12s} [{src['category']}] {src['url']} -> {exc}")
-                    bad += 1
+                    # 429 = "nu am putut verifica", NU "sursa e moarta". Masurat 2026-07-24
+                    # (ua-probe run 30096569916): aceste surse limiteaza dupa FRECVENTA, per IP
+                    # de runner — prima cerere trece, urmatoarele nu, indiferent de User-Agent.
+                    # Acelasi rationament ca la monitor.yml: un 403 de la edge = edge viu.
+                    # Daca l-am numara ca esec, CI-ul ar fi rosu permanent din motive externe
+                    # si am inceta sa ne mai uitam la el.
+                    if exc.code in (429, 503):
+                        print(f"  LIMIT{key:12s} [{src['category']}] {exc} — rate-limit pe IP, "
+                              f"NEVERIFICABIL de aici (nu inseamna sursa moarta)")
+                        limited += 1
+                    else:
+                        print(f"  DEAD {key:12s} [{src['category']}] {src['url']} -> {exc}")
+                        bad += 1
                     break
                 time.sleep(delay)
             except (urllib.error.URLError, socket.timeout, ValueError) as exc:
@@ -77,10 +89,13 @@ def main() -> int:
         if n == 0:
             bad += 1
         print(f"  {mark} {key:12s} [{src['category']}] HTTP {status}, {n} intrari, cea mai noua: {newest or '-'}")
+    if limited:
+        print(f"\nATENTIE: {limited} surse rate-limitate de aici — de reverificat de pe alt IP "
+              f"(local, sau alt moment). Nu sunt considerate esec.")
     if bad:
         print(f"\nFAIL: {bad} surse moarte sau fara intrari.")
         return 1
-    print("\nOK: toate sursele verificate raspund cu intrari.")
+    print("\nOK: toate sursele verificabile de aici raspund cu intrari.")
     return 0
 
 
