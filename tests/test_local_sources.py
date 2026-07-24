@@ -207,3 +207,26 @@ def test_impact_tier_word_boundary_not_substring():
     assert _impact_tier("ORAȘ TEST") == 1              # cu diacritic
     assert _impact_tier("MUNICIPIUL BRAILA") == 0
     assert _impact_tier("VALEA LUNGA") == 2
+
+
+def test_dead_slugs_excluded_and_slot_reused(tmp_path):
+    """Sursele moarte cunoscute (feedcheck 30121199000) nu ocupa sloturi: sunt scoase
+    INAINTE de taierea la limita, deci slotul se duce la urmatorul candidat viu."""
+    from generator.local_sources import _DEAD_SLUGS
+    dead = "dolj_oras_segarcea"
+    assert dead in _DEAD_SLUGS, "fixture-ul presupune ca acest slug e pe lista"
+    lines = [CSV_HEADER,
+             # cea moarta e prima ca prospetime, deci fara excludere ar lua slotul
+             "DOLJ,Oras Segarcea,http://d,yes,200,,,,,http://d.ro/feed/,yes,2026-07-24,,",
+             "ALBA,Oras Viu,http://a,yes,200,,,,,http://a.ro/feed/,yes,2026-07-01,,"]
+    path = _write_csv(tmp_path, lines)
+    result = load_gold_sources(path, 1)          # UN singur slot
+    assert "pl_dolj_oras_segarcea" not in result  # exclusa
+    assert "pl_alba_oras_viu" in result           # slotul a mers mai departe, nu s-a pierdut
+    assert len(result) == 1
+
+
+def test_dead_slugs_are_slugs_not_keys():
+    """Lista contine slug-uri fara prefixul pl_ — altfel filtrul n-ar potrivi nimic."""
+    from generator.local_sources import _DEAD_SLUGS
+    assert all(not s.startswith("pl_") for s in _DEAD_SLUGS)

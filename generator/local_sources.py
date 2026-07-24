@@ -10,6 +10,31 @@ _MUNICIPIU_RE = re.compile(r"\bMUNICIPIUL?\b")
 _ORAS_RE = re.compile(r"\bORA[SȘ](UL)?\b")
 
 
+# Primarii care erau GOLD la scanarea initiala dar sunt MOARTE sau GOALE acum, masurate pe
+# feedcheck run 30121199000 (2026-07-24), prima verificare completa dupa LOCAL_GOLD_LIMIT=120.
+# Scopul listei nu e igiena, ci CONTINUT: fara ea ocupa 10 din cele 120 de sloturi degeaba,
+# iar candidatii de pe pozitiile 121+ (probabil vii) raman pe dinafara. Se aplica INAINTE de
+# taierea la limita, deci fiecare slug scos elibereaza slotul pentru urmatorul candidat.
+# Daca o sursa isi revine, sterge-i linia si reruleaza feedcheck ca sa confirmi.
+_DEAD_SLUGS = frozenset({
+    "hunedoara_municipiul_brad",          # HTTP 406 Not Acceptable
+    "covasna_oras_intorsura_buzaului",    # network unreachable
+    "timis_oras_gataia",                  # DNS: name resolution failed
+    "dolj_oras_segarcea",                 # 200 dar 0 intrari
+    "galati_oras_beresti",                # 200 dar 0 intrari
+    "galati_oras_targu_bujor",            # 200 dar 0 intrari
+    "giurgiu_oras_mihailesti",            # 200 dar 0 intrari
+    "prahova_oras_plopeni",               # 200 dar 0 intrari
+    "suceava_oras_frasin",                # 200 dar 0 intrari
+    "valcea_oras_babeni",                 # 200 dar 0 intrari
+    # 403 WAF de pe runnerii GitHub (feedcheck 30096781843). Conteaza pentru ca build.yml
+    # ruleaza pe ACEIASI runneri: daca verificatorul nu trece de WAF, nici pipeline-ul nu trece.
+    # Nu inseamna „site mort" — inseamna „inaccesibil de acolo de unde tragem noi".
+    "prahova_brazi",
+    "vaslui_dragomiresti",
+})
+
+
 def _impact_tier(localitate: str) -> int:
     """Prioritate de IMPACT, dedusa STATIC din numele localitatii (nu re-analiza la runtime):
     municipiu (oras mare) inaintea orasului, orasul inaintea comunei. Reper cheie: un primar
@@ -46,6 +71,10 @@ def load_gold_sources(csv_path: str, limit: int, min_date: str = "2026-01-01") -
             if row.get("rss_ok") == "yes" and rss_url:
                 last_date = (row.get("last_signal_date") or "").strip()
                 if last_date and last_date >= min_date:
+                    # exclus INAINTE de taierea la limita: slotul eliberat se duce
+                    # automat la urmatorul candidat viu, nu se pierde
+                    if _make_slug(row["judet"], row["localitate"]) in _DEAD_SLUGS:
+                        continue
                     rows.append(row)
 
     # sortare STATICA in 2 pasi (sort stabil): intai prospetime desc, apoi nivel de impact asc.
