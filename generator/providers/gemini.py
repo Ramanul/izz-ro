@@ -45,10 +45,13 @@ class GeminiProvider(Provider):
         return json.dumps({
             "system_instruction": {"parts": [{"text": system}]},
             "contents": [{"parts": [{"text": user}]}],
+            # FARA thinkingConfig: gen. Gemini 3.x a inlocuit thinkingBudget si
+            # raspunde 400 INVALID_ARGUMENT la el (alias -latest repointat pe
+            # 3.5 Flash-Lite pe 2026-07-21 -> site inghetat 3 zile). Modelul nou
+            # are "minimal thinking" implicit — echivalentul lui budget 0.
             "generationConfig": {
                 "temperature": 0.2, "maxOutputTokens": 2048,
                 "responseMimeType": "application/json",
-                "thinkingConfig": {"thinkingBudget": 0},
             },
         }).encode("utf-8")
 
