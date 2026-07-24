@@ -1,5 +1,171 @@
 [
   {
+    "url": "https://focsani.info/stiri/convocarea-consiliului-local-al-municipiului-focsani-in-sedinta-ordinara-pentru-data-de-30-iulie-2026",
+    "original_link": "https://www.focsani.info/stiri/convocarea-consiliului-local-al-municipiului-focsani-in-sedinta-ordinara-pentru-data-de-30-iulie-2026",
+    "source": "pl_vrancea_municipiul_focsani",
+    "source_name": "Primăria Municipiul Focsani",
+    "source_lang": "ro",
+    "title": "Consiliul Local Focșani se reunește în ședință ordinară la sfârșitul lunii iulie 2026",
+    "category": "local",
+    "published": "2026-07-24T20:31:05+00:00",
+    "model": "B",
+    "teaser": "Aleșii locali din Focșani au fost convocați să participe la o nouă ședință ordinară a Consiliului Local, programată să se desfășoare în data de 30 iulie 2026, pentru a dezbate proiectele de pe ordinea de zi.",
+    "processed_by": "gemini",
+    "entities": [
+      "Focșani",
+      "Consiliul Local Focșani"
+    ],
+    "icon": "building-monument",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://prosport.ro/fotbal-intern/superliga/fc-arges-petrolul-ploiesti-live-20490274",
+    "original_link": "https://www.prosport.ro/fotbal-intern/superliga/fc-arges-petrolul-ploiesti-live-20490274",
+    "source": "prosport",
+    "source_name": "ProSport",
+    "source_lang": "ro",
+    "title": "FC Argeș și Petrolul Ploiești se întâlnesc în etapa a doua din Superliga",
+    "category": "sport",
+    "published": "2026-07-24T16:30:10+00:00",
+    "model": "C",
+    "sources": [
+      {
+        "name": "ProSport",
+        "url": "https://www.prosport.ro/fotbal-intern/superliga/fc-arges-petrolul-ploiesti-live-20490274"
+      },
+      {
+        "name": "GSP",
+        "url": "https://www.gsp.ro/fotbal/liga-1/fc-arges-petrolul-ploiesti-live-video-etapa-2-superliga-963612.html"
+      }
+    ],
+    "first_source": "ProSport",
+    "synthesis": "Formațiile FC Argeș și Petrolul Ploiești se dulează pe Stadionul Orășenesc din Mioveni, în runda a doua din Superliga. Partida este programată de la ora 21:30 și este transmisă la televizor pe posturile DigiSport 1 și PrimaSport 1. Gazdele caută să își revină după eșecul suferit în fața celor de la FCSB, în timp ce oaspeții vin după un succes obținut împotriva lui Dinamo.",
+    "entities": [
+      "FC Arges",
+      "Petrolul Ploiesti",
+      "Superliga",
+      "Mioveni"
+    ],
+    "icon": "ball-football",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://g4media.ro/activitatea-economica-in-zona-euro-a-revenit-pe-crestere-in-iulie-pentru-prima-data-in-ultimele-patru-luni.html",
+    "original_link": "https://www.g4media.ro/activitatea-economica-in-zona-euro-a-revenit-pe-crestere-in-iulie-pentru-prima-data-in-ultimele-patru-luni.html",
+    "source": "g4media",
+    "source_name": "G4Media",
+    "source_lang": "ro",
+    "title": "Activitatea economică din zona euro a înregistrat o creștere în iulie",
+    "category": "economic",
+    "published": "2026-07-24T16:02:26+00:00",
+    "model": "C",
+    "sources": [
+      {
+        "name": "G4Media",
+        "url": "https://www.g4media.ro/activitatea-economica-in-zona-euro-a-revenit-pe-crestere-in-iulie-pentru-prima-data-in-ultimele-patru-luni.html"
+      },
+      {
+        "name": "Economedia",
+        "url": "https://economedia.ro/activitatea-economica-in-zona-euro-a-revenit-pe-crestere-in-iulie-pentru-prima-data-in-ultimele-patru-luni.html"
+      }
+    ],
+    "first_source": "G4Media",
+    "synthesis": "Conform unui sondaj publicat vineri de S&P Global, activitatea economică din zona euro a revenit pe creștere în luna iulie, marcând prima expansiune din ultimele patru luni. Această redresare a fost susținută în principal de creșterea comenzilor noi, indicatorul PMI ajungând la valoarea de 51,9 puncte. Sursele analizate nu prezintă contraziceri în relatatarea acestor date economice.",
+    "entities": [
+      "S&P Global",
+      "zona euro"
+    ],
+    "icon": "chart-line",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://csid.ro/stiri/un-nou-studiu-ridica-semne-de-intrebare-sotii-persoanelor-cu-dementa-au-un-risc-mai-mare-de-a-dezvolta-boala-21260317",
+    "original_link": "https://www.csid.ro/stiri/un-nou-studiu-ridica-semne-de-intrebare-sotii-persoanelor-cu-dementa-au-un-risc-mai-mare-de-a-dezvolta-boala-21260317/",
+    "source": "csid",
+    "source_name": "CSÎD",
+    "source_lang": "ro",
+    "title": "Soții persoanelor cu demență au un risc crescut de a dezvolta boala",
+    "category": "sanatate",
+    "published": "2026-07-24T16:00:53+00:00",
+    "model": "B",
+    "teaser": "Un studiu efectuat pe aproape un milion de persoane căsătorite indică faptul că partenerii pacienților diagnosticați cu demență prezintă o probabilitate mai mare de a contracta aceeași afecțiune neurodegenerativă.",
+    "entities": [],
+    "icon": "stethoscope",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://hotnews.ro/cum-raspunde-rectorul-umf-iasi-la-discursul-critic-al-unei-absolvente-la-ceremonia-finalului-de-an-mesajul-ei-a-devenit-viral-2308910",
+    "original_link": "https://hotnews.ro/cum-raspunde-rectorul-umf-iasi-la-discursul-critic-al-unei-absolvente-la-ceremonia-finalului-de-an-mesajul-ei-a-devenit-viral-2308910",
+    "source": "hotnews",
+    "source_name": "HotNews",
+    "source_lang": "ro",
+    "title": "Rectorul UMF Iași a reacționat după discursul viral al unei absolvente",
+    "category": "sanatate",
+    "published": "2026-07-24T15:51:01+00:00",
+    "model": "C",
+    "sources": [
+      {
+        "name": "HotNews",
+        "url": "https://hotnews.ro/cum-raspunde-rectorul-umf-iasi-la-discursul-critic-al-unei-absolvente-la-ceremonia-finalului-de-an-mesajul-ei-a-devenit-viral-2308910"
+      },
+      {
+        "name": "Știrile ProTV",
+        "url": "https://stirileprotv.ro/educatie/discursul-unei-absolvente-a-umf-iasi-viral-asta-nu-este-medicina-reactia-rectorului.html"
+      }
+    ],
+    "first_source": "HotNews",
+    "synthesis": "Rectorul Universității de Medicină și Farmacie din Iași, Viorel Scripcariu, a declarat că instituția respectă dreptul la liberă critică, după ce un discurs critic rostit de o absolventă la ceremonia de absolvire a devenit viral pe internet. Absolventa a atras atenția asupra unor probleme din sistemul educațional medical, în timp ce conducerea universității susține că afirmațiile acesteia au generalizat experiențe strict individuale.",
+    "entities": [
+      "UMF Iași",
+      "Viorel Scripcariu",
+      "Claudia Ciobanu"
+    ],
+    "icon": "school",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://spotmedia.ro/stiri/eveniment/trump-si-zelenski-se-vor-intalni-marti-la-washington-ce-e-pe-masa-si-miza-discutiilor",
+    "original_link": "https://spotmedia.ro/stiri/eveniment/trump-si-zelenski-se-vor-intalni-marti-la-washington-ce-e-pe-masa-si-miza-discutiilor",
+    "source": "spotmedia",
+    "source_name": "Spotmedia",
+    "source_lang": "ro",
+    "title": "Donald Trump și Volodimir Zelenski se vor întâlni marți la Washington pentru discuții de pace",
+    "category": "extern",
+    "published": "2026-07-24T15:48:56+00:00",
+    "model": "C",
+    "sources": [
+      {
+        "name": "Spotmedia",
+        "url": "https://spotmedia.ro/stiri/eveniment/trump-si-zelenski-se-vor-intalni-marti-la-washington-ce-e-pe-masa-si-miza-discutiilor"
+      },
+      {
+        "name": "Timiș Online",
+        "url": "https://www.tion.ro/mapamond/trump-si-zelenski-ar-urma-sa-se-intalneasca-la-washington-pe-agenda-discutiilor-noi-propuneri-de-pace-2322474/?utm_source=rss&utm_medium=referral&utm_campaign=hiraggregator"
+      }
+    ],
+    "first_source": "Spotmedia",
+    "synthesis": "Președintele american Donald Trump și omologul său ucrainean Volodimir Zelenski se vor întâlni marți la Washington, conform confirmării transmise de un oficial al Casei Albe. Pe agenda discuțiilor se află reluarea negocierilor oficiale cu Rusia și posibila implementare a unui armistițiu aerian destinat opririi atacurilor cu drone și rachete. Sursele confirmă în totalitate detaliile vizitei, fără a prezenta contradicții între ele.",
+    "entities": [
+      "Donald Trump",
+      "Volodimir Zelenski",
+      "Washington",
+      "Casa Albă"
+    ],
+    "icon": "podium",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
     "url": "https://orasuluricani.ro/2026/07/24/elementor-15537",
     "original_link": "https://orasuluricani.ro/2026/07/24/elementor-15537/",
     "source": "pl_hunedoara_oras_uricani",
@@ -39,6 +205,65 @@
       "UMF Iași"
     ],
     "icon": "school",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://csid.ro/stiri/vrei-sa-te-muti-la-munte-un-sat-din-europa-plateste-pana-la-21-000-de-dolari-noilor-locuitori-si-ofera-ajutor-financiar-lunar-21260877",
+    "original_link": "https://www.csid.ro/stiri/vrei-sa-te-muti-la-munte-un-sat-din-europa-plateste-pana-la-21-000-de-dolari-noilor-locuitori-si-ofera-ajutor-financiar-lunar-21260877/",
+    "source": "csid",
+    "source_name": "CSÎD",
+    "source_lang": "ro",
+    "title": "Satul elvețian Albinen plătește mii de dolari noilor locuitori mutați la munte",
+    "category": "regional",
+    "published": "2026-07-24T15:30:17+00:00",
+    "model": "B",
+    "teaser": "Pentru a combate depopularea rurală, localitatea Albinen din Elveția oferă până la 21.000 de dolari și sprijin financiar lunar persoanelor care aleg să se stabilească în această zonă montană.",
+    "entities": [
+      "Albinen",
+      "Elveția"
+    ],
+    "icon": "home",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://zcj.ro/promo/top-banci-pentru-refinantarea-unui-credit-de-nevoi-personale-in-romania-cum-compari-corect-ofertele-in-2026--299118.html",
+    "original_link": "https://zcj.ro/promo/top-banci-pentru-refinantarea-unui-credit-de-nevoi-personale-in-romania-cum-compari-corect-ofertele-in-2026--299118.html",
+    "source": "zcj",
+    "source_name": "Ziua de Cluj",
+    "source_lang": "ro",
+    "title": "Ghid pentru refinanțarea creditelor de nevoi personale în România",
+    "category": "zonal",
+    "published": "2026-07-24T15:19:00+00:00",
+    "model": "B",
+    "teaser": "Consumatorii români pot compara ofertele bancare din 2026 pentru a înlocui împrumuturile vechi cu unele noi, obținând astfel dobânzi avantajoase, rate lunare reduse sau comasarea mai multor datorii într-una singură.",
+    "entities": [
+      "România"
+    ],
+    "icon": "building-bank",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://csid.ro/lifestyle/vedete/cine-este-antonela-roccuzzo-sotia-lui-lionel-messi-povestea-de-dragoste-inceputa-in-copilarie-si-familia-pe-care-au-construit-o-impreuna-foto-21258907",
+    "original_link": "https://www.csid.ro/lifestyle/vedete/cine-este-antonela-roccuzzo-sotia-lui-lionel-messi-povestea-de-dragoste-inceputa-in-copilarie-si-familia-pe-care-au-construit-o-impreuna-foto-21258907/",
+    "source": "csid",
+    "source_name": "CSÎD",
+    "source_lang": "ro",
+    "title": "Antonela Roccuzzo și Lionel Messi formând un cuplu încă din copilărie",
+    "category": "lifestyle",
+    "published": "2026-07-24T15:00:36+00:00",
+    "model": "B",
+    "teaser": "Cei doi parteneri au o relație de durată care a început în anii copilăriei în Argentina, construind împreună o familie solidă, în paralel cu parcursul legendar din fotbal al sportivului.",
+    "entities": [
+      "Antonela Roccuzzo",
+      "Lionel Messi"
+    ],
+    "icon": "home",
     "processed_by": "gemini",
     "prompt_version": "v2-esenta",
     "featured": false
@@ -109,6 +334,89 @@
     "featured": false
   },
   {
+    "url": "https://politico.eu/article/international-chess-federation-president-suspends-duties-eu-sanctions",
+    "original_link": "https://www.politico.eu/article/international-chess-federation-president-suspends-duties-eu-sanctions/?utm_source=RSS_Feed&utm_medium=RSS&utm_campaign=RSS_Syndication",
+    "source": "politico_eu",
+    "source_name": "Politico EU",
+    "source_lang": "en",
+    "title": "Șeful federației internaționale de șah s-a retras temporar în urma sancțiunilor UE",
+    "category": "extern",
+    "published": "2026-07-24T14:32:32+00:00",
+    "model": "C",
+    "sources": [
+      {
+        "name": "Politico EU",
+        "url": "https://www.politico.eu/article/international-chess-federation-president-suspends-duties-eu-sanctions/?utm_source=RSS_Feed&utm_medium=RSS&utm_campaign=RSS_Syndication"
+      },
+      {
+        "name": "BBC Europe",
+        "url": "https://www.bbc.co.uk/news/articles/cewrk58k2k4o?at_medium=RSS&at_campaign=rss"
+      }
+    ],
+    "first_source": "Politico EU",
+    "synthesis": "Arkady Dvorkovich, președintele Federației Internaționale de Șah și fost vicepremier rus, s-a retras temporar din funcție. Decizia vine ca urmare a sancțiunilor impuse de Uniunea Europeană, care includ o interdicție de călătorie și înghețarea activelor, în contextul acuzațiilor privind susținerea politicilor care amenință suveranitatea Ucrainei.",
+    "entities": [
+      "Arkady Dvorkovich",
+      "Uniunea Europeană",
+      "Ucraina"
+    ],
+    "icon": "swords",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://csid.ro/diete/retete-culinare/cum-prepari-porumb-copt-cu-unt-si-usturoi-reteta-simpla-care-ii-da-un-plus-de-savoare-21260338",
+    "original_link": "https://www.csid.ro/diete/retete-culinare/cum-prepari-porumb-copt-cu-unt-si-usturoi-reteta-simpla-care-ii-da-un-plus-de-savoare-21260338/",
+    "source": "csid",
+    "source_name": "CSÎD",
+    "source_lang": "ro",
+    "title": "Rețetă simplă de porumb copt cu unt și usturoi pentru vară",
+    "category": "lifestyle",
+    "published": "2026-07-24T14:30:14+00:00",
+    "model": "B",
+    "teaser": "Prepararea porumbului la cuptor devine o gustare savuroasă prin adăugarea de unt aromatizat, usturoi pisat și condimente alese, reprezentând o alternativă delicioasă la varianta fiartă.",
+    "entities": [],
+    "icon": "home",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://zcj.ro/life-and-style/horoscop-25-iulie-2026--299117.html",
+    "original_link": "https://zcj.ro/life-and-style/horoscop-25-iulie-2026--299117.html",
+    "source": "zcj",
+    "source_name": "Ziua de Cluj",
+    "source_lang": "ro",
+    "title": "Previziuni astrologice pentru toate zodiile pe 25 iulie 2026",
+    "category": "zonal",
+    "published": "2026-07-24T14:11:00+00:00",
+    "model": "B",
+    "teaser": "Astrele aduc influențe astrale distincte pentru fiecare semn zodiacal în parte în cursul zilei de sâmbătă, oferind indicii despre evoluția evenimentelor personale și profesionale pentru toți nativi.",
+    "entities": [],
+    "icon": "sun",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://csid.ro/stiri/21260126-21260126",
+    "original_link": "https://www.csid.ro/stiri/21260126-21260126/",
+    "source": "csid",
+    "source_name": "CSÎD",
+    "source_lang": "ro",
+    "title": "Metodă rapidă de remediere a dulceții zaharisite folosind un truc vechi",
+    "category": "lifestyle",
+    "published": "2026-07-24T14:00:10+00:00",
+    "model": "B",
+    "teaser": "Cristalele de zahăr apărute în borcanele cu dulceață după câteva luni pot fi eliminate rapid prin aplicarea unei tehnici tradiționale simple pe care o foloseau gospodinele în trecut.",
+    "entities": [],
+    "icon": "home",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
     "url": "https://pressalert.ro/2026/07/accident-in-lant-pe-autostrada-a1-la-margina-o-femeie-a-fost-descarcerata-si-transportata-la-spital-trafic-blocat-spre-deva",
     "original_link": "https://www.pressalert.ro/2026/07/accident-in-lant-pe-autostrada-a1-la-margina-o-femeie-a-fost-descarcerata-si-transportata-la-spital-trafic-blocat-spre-deva/",
     "source": "pressalert",
@@ -142,18 +450,79 @@
     "featured": false
   },
   {
+    "url": "https://primariabuzau.ro/sedinta-ordinara-30-iulie-2026",
+    "original_link": "https://primariabuzau.ro/sedinta-ordinara-30-iulie-2026/",
+    "source": "pr_buzau",
+    "source_name": "Primăria Buzău",
+    "source_lang": "ro",
+    "title": "Consiliul Local Buzău se întoarce în ședință ordinară pentru acordarea unui titlu onorific",
+    "category": "local",
+    "published": "2026-07-24T13:33:32+00:00",
+    "model": "B",
+    "teaser": "Primăria Buzău a programat o nouă reuniune ordinară a consilierilor locali, pe agenda de lucru figurând atribuirea unei distincții onorifice pentru un cetățean, conform dispoziției oficiale emise pentru finalul lunii iulie 2026.",
+    "processed_by": "gemini",
+    "entities": [
+      "Consiliul Local Buzău",
+      "Buzău"
+    ],
+    "icon": "gavel",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://csid.ro/lifestyle/vedete/liviu-varciu-despre-decizia-fiicei-sale-de-a-lucra-in-sua-stau-cu-inima-cat-un-purice-21260215",
+    "original_link": "https://www.csid.ro/lifestyle/vedete/liviu-varciu-despre-decizia-fiicei-sale-de-a-lucra-in-sua-stau-cu-inima-cat-un-purice-21260215/",
+    "source": "csid",
+    "source_name": "CSÎD",
+    "source_lang": "ro",
+    "title": "Liviu Vârciu este emoționat de plecarea fiicei sale Carmina la muncă în SUA",
+    "category": "lifestyle",
+    "published": "2026-07-24T13:30:56+00:00",
+    "model": "B",
+    "teaser": "Prezentatorul TV a dezvăluit că are mari emoții legate de experiența profesională pe care fiica sa o desfășoară în Statele Unite pe parcursul sezonului estival, manifestându-și totodată mândria.",
+    "entities": [
+      "Liviu Vârciu",
+      "Carmina",
+      "Statele Unite"
+    ],
+    "icon": "home",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
     "url": "https://cjcluj.ro/un-nou-capitol-pentru-cardiologia-din-transilvania",
     "original_link": "https://cjcluj.ro/un-nou-capitol-pentru-cardiologia-din-transilvania/",
     "source": "cj_cluj",
     "source_name": "CJ Cluj",
     "source_lang": "ro",
-    "title": "Un nou capitol pentru cardiologia din Transilvania",
+    "title": "Spitalul Clinic de Recuperare Cluj-Napoca, acreditat ca Centru de Expertiză pentru Boli Cardiovasculare Rare",
     "category": "zonal",
     "published": "2026-07-24T13:30:26+00:00",
-    "model": "B",
+    "model": "C",
     "teaser": "Un nou capitol pentru cardiologia din Transilvania Spitalul clujean de Recuperare, acreditat ca Centru de Expertiză pentru Boli Rare în Domeniul Bolilor Cardiovasculare Rare Spitalul Clinic de Recuperare Cluj-Napoca, unitate medicală subordonată Consiliului Județean Cluj, a fost acreditat oficial de...",
-    "processed_by": "official",
-    "featured": false
+    "processed_by": "gemini",
+    "featured": false,
+    "sources": [
+      {
+        "name": "CJ Cluj",
+        "url": "https://cjcluj.ro/un-nou-capitol-pentru-cardiologia-din-transilvania/"
+      },
+      {
+        "name": "Ziua de Cluj",
+        "url": "https://zcj.ro/sanatate/clujul-scrie-un-nou-capitol-pentru-cardiologia-din-transilvania--299114.html"
+      }
+    ],
+    "first_source": "CJ Cluj",
+    "synthesis": "Ministerul Sănătății a acreditat oficial Spitalul Clinic de Recuperare din Cluj-Napoca drept Centru de Expertiză pentru Boli Rare în Domeniul Bolilor Cardiovasculare Rare. Unitatea medicală se află în subordinea Consiliului Județean Cluj, iar recunoașterea marchează o etapă importantă pentru dezvoltarea cardiologiei în regiunea Transilvaniei.",
+    "entities": [
+      "Spitalul Clinic de Recuperare Cluj-Napoca",
+      "Consiliul Județean Cluj",
+      "Ministerul Sănătății",
+      "Transilvania"
+    ],
+    "icon": "building-hospital",
+    "prompt_version": "v2-esenta"
   },
   {
     "url": "https://primariateius.ro/?p=9476",
@@ -167,6 +536,40 @@
     "model": "B",
     "teaser": "Detalii pe sursa.",
     "processed_by": "official",
+    "featured": false
+  },
+  {
+    "url": "https://csid.ro/stiri/o-tanara-de-27-de-ani-credea-ca-este-un-efect-normal-al-sarcinii-dar-medicii-i-au-pus-un-diagnostic-grav-21260024",
+    "original_link": "https://www.csid.ro/stiri/o-tanara-de-27-de-ani-credea-ca-este-un-efect-normal-al-sarcinii-dar-medicii-i-au-pus-un-diagnostic-grav-21260024/",
+    "source": "csid",
+    "source_name": "CSÎD",
+    "source_lang": "ro",
+    "title": "O gravidă de 27 de ani a fost diagnosticată cu sarcom rar",
+    "category": "sanatate",
+    "published": "2026-07-24T13:00:45+00:00",
+    "model": "B",
+    "teaser": "Medicii au salvat viața unei tinere însărcinate în vârstă de 27 de ani și pe cea a fătului ei, după ce un nodul mamar ignorat, considerat specific sarcinii, s-a dovedit a fi o tumori malignă gravă.",
+    "entities": [],
+    "icon": "stethoscope",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://csid.ro/diete/retete-culinare/compot-de-ananas-cu-rom-reteta-simpla-pe-care-merita-sa-o-incerci-in-aceasta-vara-21260247",
+    "original_link": "https://www.csid.ro/diete/retete-culinare/compot-de-ananas-cu-rom-reteta-simpla-pe-care-merita-sa-o-incerci-in-aceasta-vara-21260247/",
+    "source": "csid",
+    "source_name": "CSÎD",
+    "source_lang": "ro",
+    "title": "Rețetă simplă de compot de ananas cu rom pentru vară",
+    "category": "lifestyle",
+    "published": "2026-07-24T12:30:16+00:00",
+    "model": "B",
+    "teaser": "Un desert răcoritor și exotic poate fi pregătit rapid acasă folosind ananas, rom și cuișoare, fiind ideal atât pentru consumul sezonier, cât și pentru a fi conservat în cămară pentru iarnă.",
+    "entities": [],
+    "icon": null,
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
     "featured": false
   },
   {
@@ -230,18 +633,69 @@
     "featured": false
   },
   {
+    "url": "https://newsbv.ro/drona-doborata-avionul-f-16",
+    "original_link": "https://newsbv.ro/drona-doborata-avionul-f-16/",
+    "source": "newsbv",
+    "source_name": "News Brașov",
+    "source_lang": "ro",
+    "title": "Avion F-16 a doborât în premieră o dronă militară în apropiere de București",
+    "category": "zonal",
+    "published": "2026-07-24T11:05:43+00:00",
+    "model": "C",
+    "sources": [
+      {
+        "name": "News Brașov",
+        "url": "https://newsbv.ro/drona-doborata-avionul-f-16/"
+      },
+      {
+        "name": "Știrile ProTV",
+        "url": "https://stirileprotv.ro/stiri/actualitate/animatie-traseul-dronei-militare-anihilate-de-un-f-16-in-romania-cum-a-ajuns-la-90-de-kilometri-de-bucuresti.html"
+      }
+    ],
+    "first_source": "News Brașov",
+    "synthesis": "O aeronavă militară de vânătoare F-16 a Forțelor Aeriene Române a interceptat și distrus o dronă care a pătruns în spațiul aerian național. Ținta a fost urmărită timp de zeci de minute și neutralizată la o distanță de aproximativ 80-90 de kilometri de București. Sursele converg asupra faptului că este vorba despre o premieră în materie de intervenție aeriană directă pe teritoriul României.",
+    "entities": [
+      "Romania",
+      "Bucuresti",
+      "F-16"
+    ],
+    "icon": "plane",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
     "url": "https://ploiesti.ro/stiri/pe-25-si-26-iulie-clasic-sub-castani-revine-in-republica-intr-o-editie-extinsa-summer-soft",
     "original_link": "https://ploiesti.ro/stiri/pe-25-si-26-iulie-clasic-sub-castani-revine-in-republica-intr-o-editie-extinsa-summer-soft/",
     "source": "pl_prahova_municipiul_ploiesti",
     "source_name": "Primăria Municipiul Ploiesti",
     "source_lang": "ro",
-    "title": "Pe 25 și 26 iulie, „Clasic sub Castani” revine în Republică, într-o ediție extinsă – Summer Soft!",
+    "title": "Festivalul „Clasic sub Castani” revine pe Bulevardul Independenței din Ploiești",
     "category": "local",
     "published": "2026-07-24T10:55:53+00:00",
-    "model": "B",
+    "model": "C",
     "teaser": "Bulevardul Independenței găzduiește, în perioada 25–26 iulie a.c., cea de-a treia ediție a evenimentului „Clasic sub Castani”, organizată alături de Asociația SYNC, într-un format extins, sub conceptul Summer Soft. Timp de două seri, publicul este invitat să descopere un program...",
-    "processed_by": "official",
-    "featured": false
+    "processed_by": "gemini",
+    "featured": false,
+    "sources": [
+      {
+        "name": "Primăria Municipiul Ploiesti",
+        "url": "https://ploiesti.ro/stiri/pe-25-si-26-iulie-clasic-sub-castani-revine-in-republica-intr-o-editie-extinsa-summer-soft/"
+      },
+      {
+        "name": "Ziarul de Ploiești",
+        "url": "https://www.zdp.ro/pe-25-si-26-iulie-clasic-sub-castani-revine-in-republica-intr-o-editie-extinsa-summer-soft.html"
+      }
+    ],
+    "first_source": "Primăria Municipiul Ploiesti",
+    "synthesis": "În perioada 25–26 iulie, Bulevardul Independenței din Ploiești găzduiește cea de-a treia ediție a evenimentului „Clasic sub Castani”. Organizat de Primăria Municipiului Ploiești în colaborare cu Asociația SYNC, festivalul se desfășoară într-un format extins numit Summer Soft. Timp de două seri, publicul se poate bucura de un program muzical divers, conceput pentru socializare și relaxare în spațiul public.",
+    "entities": [
+      "Ploiesti",
+      "Asociatia SYNC",
+      "Bulevardul Independentei"
+    ],
+    "icon": "music",
+    "prompt_version": "v2-esenta"
   },
   {
     "url": "https://primariasebes.ro/link-catre-platforma-e-consultare-gov-ro",
@@ -255,6 +709,27 @@
     "model": "B",
     "teaser": "Platforma E-consultare reprezintă platforma guvernamentală destinată publicării informațiilor și documentelor prevăzute de legislația în domeniul transparenței decizionale și al liberului acces la infornațiile de interes public, precum și gestionării proceselor aferente acestor domenii. Click pe text pentru acces la platformă...",
     "processed_by": "official",
+    "featured": false
+  },
+  {
+    "url": "https://scena9.ro/article/homer-odiseea-nolan",
+    "original_link": "https://www.scena9.ro/article/homer-odiseea-nolan",
+    "source": "scena9",
+    "source_name": "Scena 9",
+    "source_lang": "ro",
+    "title": "Evoluția operelor lui Homer prin interpretări moderne",
+    "category": "cultura",
+    "published": "2026-07-24T10:47:44+00:00",
+    "model": "B",
+    "teaser": "Operele clasice scrise de Homer continuă să inspire autori și regizori celebri, de la scriitorul James Joyce și până la cineastul Christopher Nolan, care reinterpretează constant celebra Odisee.",
+    "entities": [
+      "Homer",
+      "James Joyce",
+      "Christopher Nolan"
+    ],
+    "icon": "writing",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
     "featured": false
   },
   {
@@ -664,6 +1139,28 @@
     "model": "B",
     "teaser": "Detalii pe sursa.",
     "processed_by": "official",
+    "featured": false
+  },
+  {
+    "url": "https://nwradu.ro/2026/07/padina-buzau-este-jumatatea-distantei-dintre-granita-si-bucuresti",
+    "original_link": "https://www.nwradu.ro/2026/07/padina-buzau-este-jumatatea-distantei-dintre-granita-si-bucuresti/",
+    "source": "nwradu",
+    "source_name": "NwRadu",
+    "source_lang": "ro",
+    "title": "O dronă a zburat pe ruta Sulina-Padina înainte de a fi doborâtă",
+    "category": "politic",
+    "published": "2026-07-24T09:17:43+00:00",
+    "model": "B",
+    "teaser": "O dronă militară a traversat teritoriul românesc pe o traiectorie ce a inclus Sulina, Brăila, Fetești și Padina, generând costuri ridicate de interceptare pentru aviația militară și ridicând suspiciuni privind acțiunile Rusiei.",
+    "entities": [
+      "Padina",
+      "București",
+      "Sulina",
+      "NATO"
+    ],
+    "icon": "plane",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
     "featured": false
   },
   {
@@ -22403,343 +22900,6 @@
       "Brașov"
     ],
     "icon": "train",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://newsbv.ro/accidente-brasov-tarlungeni-codlea-masini",
-    "original_link": "https://newsbv.ro/accidente-brasov-tarlungeni-codlea-masini/",
-    "source": "newsbv",
-    "source_name": "News Brașov",
-    "source_lang": "ro",
-    "title": "Două accidente grave în județul Brașov: Coliziune și răsturnare",
-    "category": "local",
-    "published": "2026-07-17T17:41:15+00:00",
-    "model": "B",
-    "teaser": "Două evenimente rutiere grave au avut loc în județul Brașov: o coliziune puternică la Tărlungeni și un autoturism răsturnat la ieșirea din Codlea, solicitând intervenția echipajelor SMURD.",
-    "entities": [
-      "Brașov",
-      "Tărlungeni",
-      "Codlea"
-    ],
-    "icon": "car",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://stirileprotv.ro/stiri/actualitate/raport-ce-privind-statul-de-drept-in-romania-progrese-in-justi-ie-dar-persista-probleme-privind-corup-ia.html",
-    "original_link": "https://stirileprotv.ro/stiri/actualitate/raport-ce-privind-statul-de-drept-in-romania-progrese-in-justi-ie-dar-persista-probleme-privind-corup-ia.html",
-    "source": "protv",
-    "source_name": "Știrile ProTV",
-    "source_lang": "ro",
-    "title": "Comisia Europeană: Progrese în justiție, dar corupția persistă în România",
-    "category": "politic",
-    "published": "2026-07-17T17:40:53+00:00",
-    "model": "C",
-    "sources": [
-      {
-        "name": "Știrile ProTV",
-        "url": "https://stirileprotv.ro/stiri/actualitate/raport-ce-privind-statul-de-drept-in-romania-progrese-in-justi-ie-dar-persista-probleme-privind-corup-ia.html"
-      },
-      {
-        "name": "Digi24",
-        "url": "https://www.digi24.ro/stiri/actualitate/justitie/ministerul-justitiei-dupa-raportul-ce-privind-statul-de-drept-vom-depune-diligentele-necesare-pentru-indeplinirea-recomandarilor-3867255"
-      }
-    ],
-    "first_source": "Știrile ProTV",
-    "synthesis": "Comisia Europeană a publicat un raport privind statul de drept în România, evidențiind progrese în justiție, dar semnalând probleme continue legate de corupție, libertatea presei și predictibilitatea legislativă. Ministerul Justiției a promis eforturi pentru implementarea recomandărilor.",
-    "entities": [
-      "Comisia Europeană",
-      "România",
-      "Ministerul Justiției"
-    ],
-    "icon": "gavel",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://theguardian.com/artanddesign/gallery/2026/jul/17/the-week-around-the-world-in-20-pictures",
-    "original_link": "https://www.theguardian.com/artanddesign/gallery/2026/jul/17/the-week-around-the-world-in-20-pictures",
-    "source": "guardian_eu",
-    "source_name": "The Guardian",
-    "source_lang": "en",
-    "title": "Cele mai importante 20 de imagini ale săptămânii la nivel mondial",
-    "category": "general",
-    "published": "2026-07-17T17:34:30+00:00",
-    "model": "B",
-    "teaser": "Săptămâna a fost marcată de imagini din Gaza, incendii în Europa, evenimente sportive și altele, surprinse de fotoreporteri de renume internațional.",
-    "entities": [],
-    "icon": "globe",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://tion.ro/mapamond/a-murit-doamna-cu-porumbei-din-home-alone-brenda-fricker-castigatoare-de-oscar-avea-81-de-ani-2317953",
-    "original_link": "https://www.tion.ro/mapamond/a-murit-doamna-cu-porumbei-din-home-alone-brenda-fricker-castigatoare-de-oscar-avea-81-de-ani-2317953/?utm_source=rss&utm_medium=referral&utm_campaign=hiraggregator",
-    "source": "tion",
-    "source_name": "Timiș Online",
-    "source_lang": "ro",
-    "title": "A murit actrița Brenda Fricker, câștigătoare de Oscar, la 81 de ani",
-    "category": "local",
-    "published": "2026-07-17T17:14:39+00:00",
-    "model": "B",
-    "teaser": "Actrița irlandeză Brenda Fricker, cunoscută pentru rolurile din „My Left Foot” și „Home Alone 2”, a decedat la vârsta de 81 de ani. Fricker a fost laureată a premiului Oscar.",
-    "entities": [
-      "Brenda Fricker",
-      "Oscar",
-      "Home Alone 2",
-      "BBC"
-    ],
-    "icon": "movie",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://gsp.ro/fotbal/liga-1/live-fcsb-fc-arges-etapa-1-superliga-961370.html",
-    "original_link": "https://www.gsp.ro/fotbal/liga-1/live-fcsb-fc-arges-etapa-1-superliga-961370.html",
-    "source": "gsp",
-    "source_name": "GSP",
-    "source_lang": "ro",
-    "title": "FCSB debutează în noul sezon Superligă pe stadionul Ghencea",
-    "category": "sport",
-    "published": "2026-07-17T17:11:56+00:00",
-    "model": "C",
-    "sources": [
-      {
-        "name": "GSP",
-        "url": "https://www.gsp.ro/fotbal/liga-1/live-fcsb-fc-arges-etapa-1-superliga-961370.html"
-      },
-      {
-        "name": "Digi Sport",
-        "url": "https://www.digisport.ro/fotbal/liga-1/fcsb-fc-arges-live-video-2130-digi-sport-1-ros-albastrii-incep-noul-sezon-cu-cosmarul-editiei-trecute-4382483"
-      }
-    ],
-    "first_source": "GSP",
-    "synthesis": "FCSB și FC Argeș se întâlnesc în prima etapă a noului sezon din Superligă, pe stadionul din Ghencea. Meciul începe la ora 21:30 și este transmis de Prima Sport 1 și Digi Sport 1. FCSB își propune lupta pentru titlu, în timp ce FC Argeș speră să repete performanța din sezonul precedent.",
-    "entities": [
-      "FCSB",
-      "FC Argeș",
-      "Ghencea",
-      "Superligă"
-    ],
-    "icon": "ball-football",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://moldova.europalibera.org/a/cine-sunt-noii-si-vechii-ministri-propusi-de-premierul-desemnat-vasile-tofan/33805994.html",
-    "original_link": "https://moldova.europalibera.org/a/cine-sunt-noii-si-vechii-ministri-propusi-de-premierul-desemnat-vasile-tofan/33805994.html",
-    "source": "el_moldova",
-    "source_name": "Europa Liberă",
-    "source_lang": "ro",
-    "title": "Premierul desemnat Vasile Tofan propune un nou cabinet cu patru schimbări",
-    "category": "politic",
-    "published": "2026-07-17T16:58:30+00:00",
-    "model": "B",
-    "teaser": "Vasile Tofan, premierul desemnat al Republicii Moldova, a prezentat lista miniștrilor pentru noul guvern. Patru portofolii au fost atribuite unor noi nume, după negocieri cu formațiunea PAS.",
-    "entities": [
-      "Vasile Tofan",
-      "PAS"
-    ],
-    "icon": "podium",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://csid.ro/diete/retete-culinare/cum-faci-salata-de-vinete-fara-ulei-21253910",
-    "original_link": "https://www.csid.ro/diete/retete-culinare/cum-faci-salata-de-vinete-fara-ulei-21253910/",
-    "source": "csid",
-    "source_name": "CSÎD",
-    "source_lang": "ro",
-    "title": "Salata de vinete, reinventata fara ulei, pentru o varianta mai usoara",
-    "category": "lifestyle",
-    "published": "2026-07-17T16:30:55+00:00",
-    "model": "B",
-    "teaser": "Descoperă cum poți prepara salata de vinete într-o variantă dietetică, fără a folosi ulei, păstrând gustul delicios specific verii. O rețetă ușoară și sănătoasă.",
-    "entities": [],
-    "icon": null,
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://economica.net/noul-proiect-al-legii-salarizarii-mmftss-a-stabilit-cu-cat-cresc-gradatiile-pentru-vechime-in-munca-salariul-de-baza_960372.html",
-    "original_link": "https://www.economica.net/noul-proiect-al-legii-salarizarii-mmftss-a-stabilit-cu-cat-cresc-gradatiile-pentru-vechime-in-munca-salariul-de-baza_960372.html",
-    "source": "economica",
-    "source_name": "Economica",
-    "source_lang": "ro",
-    "title": "Legea salarizării: Gradații noi pentru vechimea în muncă",
-    "category": "economic",
-    "published": "2026-07-17T16:21:27+00:00",
-    "model": "C",
-    "sources": [
-      {
-        "name": "Economica",
-        "url": "https://www.economica.net/noul-proiect-al-legii-salarizarii-mmftss-a-stabilit-cu-cat-cresc-gradatiile-pentru-vechime-in-munca-salariul-de-baza_960372.html"
-      },
-      {
-        "name": "Știrile ProTV",
-        "url": "https://stirileprotv.ro/stiri/social/proiectul-noii-lege-a-salarizarii-cu-cat-majoreaza-salariul-gradatiile-pentru-vechimea-in-munca.html"
-      }
-    ],
-    "first_source": "Economica",
-    "synthesis": "Ministerul Muncii a publicat un proiect actualizat al Legii salarizării, care include șase gradații pentru vechimea în muncă. Majorările salariului de bază vor fi între 2,5% (peste 15 ani vechime) și 7,5% (3-5 ani vechime), conform documentului aflat în dezbatere publică.",
-    "entities": [
-      "Ministerul Muncii"
-    ],
-    "icon": "percentage",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://moldova.europalibera.org/a/efectul-moldatsa-sau-ce-trebuie-sa-declari-la-sis-daca-vrei-sa-fii-director-general-la-teleradio-moldova/33805958.html",
-    "original_link": "https://moldova.europalibera.org/a/efectul-moldatsa-sau-ce-trebuie-sa-declari-la-sis-daca-vrei-sa-fii-director-general-la-teleradio-moldova/33805958.html",
-    "source": "el_moldova",
-    "source_name": "Europa Liberă",
-    "source_lang": "ro",
-    "title": "Concursul pentru Teleradio Moldova, oprit de SIS pentru verificarea candidaților",
-    "category": "politic",
-    "published": "2026-07-17T16:08:44+00:00",
-    "model": "B",
-    "teaser": "Serviciul de Informații și Securitate a suspendat concursul pentru directorul Teleradio Moldova. Candidații vor fi verificați pentru a preveni riscuri la securitatea statului, conform cerințelor SIS.",
-    "entities": [
-      "SIS",
-      "Teleradio Moldova",
-      "Alexandru Musteața"
-    ],
-    "icon": "gavel",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://digi24.ro/stiri/actualitate/social/noi-sporuri-pentru-bugetari-in-proiectul-legii-salarizarii-vamesii-expusi-la-radiatii-pot-primi-pana-la-10-in-plus-la-salariu-3867031",
-    "original_link": "https://www.digi24.ro/stiri/actualitate/social/noi-sporuri-pentru-bugetari-in-proiectul-legii-salarizarii-vamesii-expusi-la-radiatii-pot-primi-pana-la-10-in-plus-la-salariu-3867031",
-    "source": "digi24",
-    "source_name": "Digi24",
-    "source_lang": "ro",
-    "title": "Sporuri de până la 10% pentru vameșii expuși la radiații",
-    "category": "economic",
-    "published": "2026-07-17T16:03:22+00:00",
-    "model": "C",
-    "sources": [
-      {
-        "name": "Digi24",
-        "url": "https://www.digi24.ro/stiri/actualitate/social/noi-sporuri-pentru-bugetari-in-proiectul-legii-salarizarii-vamesii-expusi-la-radiatii-pot-primi-pana-la-10-in-plus-la-salariu-3867031"
-      },
-      {
-        "name": "Economica",
-        "url": "https://www.economica.net/sporuri-de-10-pentru-vamesii-care-lucreaza-cu-surse-generatoare-de-radiatii-noul-proiect-al-legii-salarizarii_960368.html"
-      }
-    ],
-    "first_source": "Digi24",
-    "synthesis": "Proiectul actualizat al noii legi a salarizării, publicat de Ministerul Muncii, prevede acordarea unui spor de până la 10% din salariul de bază pentru funcționarii Autorității Vamale Române care lucrează cu surse de radiații. Acesta va fi diferențiat în funcție de nivelul riscului radiologic.",
-    "entities": [
-      "Autoritatea Vamală Română",
-      "Ministerul Muncii"
-    ],
-    "icon": "percentage",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://theguardian.com/environment/2026/jul/17/europe-emissions-trading-system-greenhouse-gas-risks-weakened",
-    "original_link": "https://www.theguardian.com/environment/2026/jul/17/europe-emissions-trading-system-greenhouse-gas-risks-weakened",
-    "source": "guardian_eu",
-    "source_name": "The Guardian",
-    "source_lang": "en",
-    "title": "Sistemul UE de comercializare a emisiilor, riscă să fie slăbit",
-    "category": "politic",
-    "published": "2026-07-17T16:01:02+00:00",
-    "model": "B",
-    "teaser": "Propunerea Comisiei Europene de a revizui sistemul de comercializare a certificatelor de emisii riscă să slăbească cel mai eficient instrument al UE pentru reducerea gazelor cu efect de seră, spun criticii.",
-    "entities": [
-      "Comisia Europeană",
-      "Uniunea Europeană"
-    ],
-    "icon": "certificate",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://csid.ro/lifestyle/familie-si-copii/ghid-gratuit-pentru-parintii-care-pleaca-in-vacanta-cu-copiii-ce-recomandari-ofera-medicii-pentru-situatiile-neprevazute-21253342",
-    "original_link": "https://www.csid.ro/lifestyle/familie-si-copii/ghid-gratuit-pentru-parintii-care-pleaca-in-vacanta-cu-copiii-ce-recomandari-ofera-medicii-pentru-situatiile-neprevazute-21253342/",
-    "source": "csid",
-    "source_name": "CSÎD",
-    "source_lang": "ro",
-    "title": "Ghid gratuit de vacanță pentru părinți, lansat de medic pediatru",
-    "category": "lifestyle",
-    "published": "2026-07-17T16:00:38+00:00",
-    "model": "B",
-    "teaser": "Un e-book gratuit, creat de medicul pediatru Irina Antonescu, oferă sfaturi esențiale părinților pentru a gestiona situații neprevăzute în vacanțele cu copiii.",
-    "entities": [
-      "Irina Antonescu"
-    ],
-    "icon": "writing",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://zf.ro/burse-fonduri-mutuale/simtel-team-vinde-etapizat-14-din-ant-power-energy-asociatului-adrian-nicolae-tita-pentru-aproape-4-milioane-de-lei-si-isi-va-reduce-participatia-de-la-51-la-37-pana-in-2030-23197504",
-    "original_link": "https://www.zf.ro/burse-fonduri-mutuale/simtel-team-vinde-etapizat-14-din-ant-power-energy-asociatului-adrian-nicolae-tita-pentru-aproape-4-milioane-de-lei-si-isi-va-reduce-participatia-de-la-51-la-37-pana-in-2030-23197504",
-    "source": "zf",
-    "source_name": "Ziarul Financiar",
-    "source_lang": "ro",
-    "title": "Simtel Team cedează 14% din ANT Power Energy lui Adrian-Nicolae Țiță",
-    "category": "economic",
-    "published": "2026-07-17T15:56:45+00:00",
-    "model": "C",
-    "sources": [
-      {
-        "name": "Ziarul Financiar",
-        "url": "https://www.zf.ro/burse-fonduri-mutuale/simtel-team-vinde-etapizat-14-din-ant-power-energy-asociatului-adrian-nicolae-tita-pentru-aproape-4-milioane-de-lei-si-isi-va-reduce-participatia-de-la-51-la-37-pana-in-2030-23197504"
-      },
-      {
-        "name": "Economica",
-        "url": "https://www.economica.net/simtel-team-renunta-la-controlul-companiei-ant-power-energy-si-vinde-etapizat-14-din-capitalul-social_960394.html"
-      }
-    ],
-    "first_source": "Ziarul Financiar",
-    "synthesis": "Simtel Team a semnat un contract pe 29 iunie 2026 pentru a vinde etapizat 14% din ANT Power Energy către Adrian-Nicolae Țiță, un asociat existent. Această tranzacție va reduce participația Simtel Team de la 51% la 37% până în 2030, implicând o valoare de aproape 4 milioane de lei și cedarea controlului companiei.",
-    "entities": [
-      "Simtel Team",
-      "ANT Power Energy",
-      "Adrian-Nicolae Țiță"
-    ],
-    "icon": "percentage",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://unica.ro/stiri/leo-messi-si-lamine-yamal-motiv-de-negociere-in-curtea-muzeului-literaturii-romane-din-bucuresti-la-intalnirea-colectionarilor-de-stickere-panini-fifa-world-cup-823654",
-    "original_link": "https://www.unica.ro/stiri/leo-messi-si-lamine-yamal-motiv-de-negociere-in-curtea-muzeului-literaturii-romane-din-bucuresti-la-intalnirea-colectionarilor-de-stickere-panini-fifa-world-cup-823654",
-    "source": "unica",
-    "source_name": "Unica",
-    "source_lang": "ro",
-    "title": "Colecționari Panini se întâlnesc la Muzeul Literaturii Române",
-    "category": "cultura",
-    "published": "2026-07-17T15:53:33+00:00",
-    "model": "B",
-    "teaser": "Copiii din București au organizat un schimb de stickere Panini cu idoli precum Messi și Yamal la Muzeul Literaturii Române, înainte de finala Cupei Mondiale 2026, creând noi prietenii.",
-    "entities": [
-      "Leo Messi",
-      "Lamine Yamal",
-      "Muzeul Literaturii Române",
-      "Panini"
-    ],
-    "icon": "building-monument",
     "processed_by": "gemini",
     "prompt_version": "v2-esenta",
     "featured": false
