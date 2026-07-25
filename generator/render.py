@@ -692,10 +692,14 @@ def _render_ghiduri(env: Environment, articles: list) -> None:
                    faq_jsonld=faq_jsonld, breadcrumb_jsonld=breadcrumb_jsonld,
                    calculator_html=calculator_html, active_cat=None)))
 
+    # Cate ghiduri au inca valori neconfirmate: pagina isi ajusteaza promisiunea dupa asta,
+    # ca sa nu scrie „verificate" cand nu sunt.
+    n_neverificate = sum(1 for ent in entities.values() if not ent.get("verificat"))
     _write(os.path.join(OUT_DIR, "ghiduri", "index.html"),
            ghiduri_tpl.render(**_base_ctx(
                "/ghiduri/", nav_section="ghiduri", categorii=categorii, categorii_icon=categorii_icon,
-               entities_by_cat=entities_by_cat)))
+               entities_by_cat=entities_by_cat, n_neverificate=n_neverificate,
+               n_ghiduri=len(entities))))
 
     # Instrumente
     tools = [
