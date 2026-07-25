@@ -17,7 +17,6 @@ _ORAS_RE = re.compile(r"\bORA[SȘ](UL)?\b")
 # taierea la limita, deci fiecare slug scos elibereaza slotul pentru urmatorul candidat.
 # Daca o sursa isi revine, sterge-i linia si reruleaza feedcheck ca sa confirmi.
 _DEAD_SLUGS = frozenset({
-    "hunedoara_municipiul_brad",          # HTTP 406 Not Acceptable
     "covasna_oras_intorsura_buzaului",    # network unreachable
     "timis_oras_gataia",                  # DNS: name resolution failed
     "dolj_oras_segarcea",                 # 200 dar 0 intrari
@@ -25,12 +24,10 @@ _DEAD_SLUGS = frozenset({
     "galati_oras_targu_bujor",            # 200 dar 0 intrari
     "giurgiu_oras_mihailesti",            # 200 dar 0 intrari
     "prahova_oras_plopeni",               # 200 dar 0 intrari
-    "suceava_oras_frasin",                # 200 dar 0 intrari
     "valcea_oras_babeni",                 # 200 dar 0 intrari
     # 403 WAF de pe runnerii GitHub (feedcheck 30096781843). Conteaza pentru ca build.yml
     # ruleaza pe ACEIASI runneri: daca verificatorul nu trece de WAF, nici pipeline-ul nu trece.
     # Nu inseamna „site mort" — inseamna „inaccesibil de acolo de unde tragem noi".
-    "prahova_brazi",
     "vaslui_dragomiresti",
     # Confirmata pe DOUA rulari feedcheck consecutive, la ~12h distanta si de pe runneri
     # diferiti: 30125482616 (24 iul) si 30152246525 (25 iul). In amandoua e SINGURA sursa
