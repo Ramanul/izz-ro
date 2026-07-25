@@ -22,7 +22,10 @@
   <meta name="twitter:image" content="{{ og_image or (site.url ~ '/static/og-image.png') }}">
 
   <link rel="icon" type="image/svg+xml" href="{{ base }}/static/favicon.svg">
-  <link rel="manifest" href="{{ base }}/static/site.webmanifest">
+  {# ?v= obligatoriu: /static/* e servit `immutable` 30 de zile, deci fara hash de continut
+     o schimbare in manifest (numele ferestrei aplicatiei instalate) nu ajunge la cine il are
+     deja in cache -- reparat in cod, dar nelivrat. Vezi CLAUDE.md §16.2. #}
+  <link rel="manifest" href="{{ base }}/static/site.webmanifest?v={{ asset_ver['site.webmanifest'] }}">
   <link rel="apple-touch-icon" href="{{ base }}/static/icon-192.png">
   {# auriu metalic (gradient in iconite); meta/manifest nu pot referi gradient, e o valoare plata reprezentativa #}
   <meta name="theme-color" content="#D6AD33">
