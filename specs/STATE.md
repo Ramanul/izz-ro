@@ -1,120 +1,64 @@
 # STATE — project execution state
 
-> Single source of truth for "where we are". Writes are owned by the MANAGER (Claude Code):
-> updated at the end of every slice and every `/review-executor`. One writer at a time.
-> Executors receive this file as read-only context. Overwrite sections in place — never let
-> this file grow past ~30 lines of content.
+> Single source of truth for "where we are". Manager-owned; updated at the end of every slice.
+> Executors get it read-only. Keep it tight — when it outgrows ~40 lines of content, cut the
+> settled history, not the open work. `git fetch` immediately before rewriting it.
 
-**Updated:** 2026-07-25 (PR #85 merged; single-account mode; piataauto settled)
+**Updated:** 2026-07-25 (seven PRs merged; the "few articles" mystery is solved)
 
-## OPERATING MODE — SINGLE ACCOUNT (owner, 2026-07-25)
-Account A is temporarily inactive. **This account is the only writer.** Until the owner says
-otherwise: no `/handoff`, no `TASKS-B.md` parking, no waiting for the other account to review
-or merge — that coordination is pure overhead with nobody on the far end. CLAUDE.md §14's
-"tell the other account after any merge" is suspended for the same reason; §14's *substance*
-(branch, small diff, land it) still holds. Owner wants sub-agents used (§15 mapping).
+## OPERATING MODE — SINGLE ACCOUNT
+Account A is inactive. **This account is the only writer.** No `/handoff`, no `TASKS-B.md`
+parking, no waiting for another account to review or merge. §14's substance still holds:
+branch, small diff, land it. Owner wants sub-agents used — but see the cost note below.
 
-## Current task
-None in flight. Open, in priority order:
-1. **Ghidurile publica cifre neverificate.** PR #85 removed the false "✅ Verificat" label, so
-   the pages are now honest, but salariul minim / pensia minima / alocatia copiilor still
-   carry placeholder values and `sursa_url` pointing at the mmuncii.ro homepage. NEEDS THE
-   OWNER: this sandbox cannot reach RO domains. Setting `verificat: true` now requires a
-   deep-link source URL, so the fix cannot be faked.
-2. **Geographic taxonomy may be leaking.** A Swiss village ("Satul elvețian Albinen") is filed
-   under `regional`, which means Romanian historical regions. Sub-agent auditing the mechanism
-   and the real misclassification rate 2026-07-25 — measure before touching anything.
-3. Raise `LOCAL_GOLD_LIMIT` past 35 now that fetch is parallel.
-4. `tools/feed_check.py` still reimplements RSS fetching instead of calling `_fetch_one`, so
-   it reports 429 on sources the pipeline now retries successfully.
+## Open
+1. **PR #93** — `feed_check.py` now calls the pipeline's `_fetch_one_guarded`. 143 tests pass.
+2. **`test/restore-3-primarii`** — a MEASUREMENT branch, not a proposal. Three slugs
+   (`hunedoara_municipiul_brad`, `prahova_brazi`, `suceava_oras_frasin`) read as alive from the
+   sandbox; `feedcheck` run from a runner decides whether they are reachable from where
+   `build.yml` actually pulls. Do not merge it on sandbox evidence.
+3. **Owner decision pending:** `BATCH_SIZE` 6→10 gives ~+67% articles per run but risks JSON
+   truncation unless `maxOutputTokens` (2048, hardcoded) rises with it.
+4. **Bug, found and NOT fixed:** ~129 official sources are re-fetched every run and expired by
+   `state.expire()` in the *same* run — 76% of their content is already past the 7-day TTL when
+   read. No AI cost, but wasted fetch and **falsified stats**: a log read "B: 437" when the real
+   commit diff was +14 URLs.
 
-## SETTLED — do not re-litigate
-- **`piataauto` STAYS (owner, 2026-07-25): "sub nicio formă nu îl scoți, e f ok".** History
-  that misleads: PR #63 (2026-07-18) removed it as dead, but `18ce032` had switched it to
-  Google News sitemap a day earlier, so #63 deleted an already-replaced line and the source
-  survived. It now produces (3 appearances as a source). The old "remove piataauto" instruction
-  is VOID — it was premised on the source being dead, and it no longer is.
+## Settled today — do NOT re-derive
+- **The "too few articles" cause was an outage, not the budget.** 30 consecutive `pipeline` runs
+  failed 21 Jul 17:40 → 24 Jul 03:37 UTC with `AI DOWN — HTTP 400`: Gemini's `-latest` alias
+  repointed to a 3.x model that rejects `thinkingConfig`. Fixed by `d56a8db` (#76); green since.
+  The 40- and 92-article days were outage days; 198 was the recovery day, with a TTL expiry spike.
+- **Real production budget:** `MAX_AI_CALLS_PER_RUN=18` and `UPGRADE_RESERVE=8` (both set in
+  `build.yml`, so the 12/3 defaults in `main.py` are dead in production) → **10 calls/run for new
+  articles**. Model B yields 6 articles/call, model C yields 1 (its value is de-duplication).
+  Measured against 741 new items available per run: the call budget is the real ceiling.
+- **Gemini's free tier is NOT saturated:** ~1000 requests/day per key against our max 216/day.
+  `GEMINI_API_KEY` already supports multiple keys with failover (`gemini.py:30-42`), so a second
+  key is free headroom. Full provider comparison in `specs/ai-provider-capacity.md`; Groq ranks
+  first as a *failure* backup, not a capacity multiplier.
+- **The sandbox CAN reach the live site and PR previews.** `https://izz.ro/` returns 200, and
+  `https://<branch>.izz-ro.pages.dev/` works. Used to prove before/after on real deploys. News
+  sites remain proxy-blocked — that limit is separate and still real. CLAUDE.md §16.3 rewritten.
+- **feedcheck's 74 "dead" sources were not a code bug.** Same code, 15 minutes apart, gave 1 vs
+  74; four of them fetched fine from here with both old and new implementations. Pattern points
+  at transient host-side limiting on shared GitHub runner IPs. Unproven mechanism — do not state
+  it as fact. #93 is justified anyway: checker and production could silently diverge.
+- **"Alive from the sandbox" says nothing about runner reachability.** `pl_vaslui_tacuta`:
+  200 with 10 entries here, 403 from runners twice. Dropped in #90 because `build.yml` pulls from
+  those runners. Judge every source from the vantage point production uses.
+- **Sub-agents cost ~5.6x per delivered line** (129 vs 23 tokens/100 lines, measured over 21
+  slices in `COORD-DASHBOARD.md`). Worth it for genuinely parallel or noisy measurement work.
+  CI is the cheapest executor — free minutes on a public repo, and the only one with real network.
 
-## EXECUTOR ROUTE IS UNRELIABLE — measured 2026-07-24
-OpenCode was handed `specs/fetch-429-retry.md` (premise-verified spec, 4 test cases, explicit
-acceptance criteria). **Two models, two different silent failures, both exit code 0:**
-- `deepseek-v4-flash-free`: read AGENTS.md + the spec, wrote a todo list, stopped. No branch,
-  no code, no error message.
-- `north-mini-code-free`: invented an absolute path (`/workspace/izz/specs/...`) instead of
-  using `--dir .`; OpenCode correctly auto-rejected it as an external directory. Died there.
-Manager implemented it directly instead (`a644c31`) — cheaper than testing four more free
-models. **Before delegating anything to OpenCode again, verify the model actually delivers on
-a throwaway task.** The 8 merges of 2026-07-19/20 are no longer evidence the route works.
-
-## Last relevant commits
-- **`c98624f` — PR #85 MERGED 2026-07-25.** The guides shipped "Verificat: 2026-01-01" over
-  placeholder figures because the warning lived in a YAML *comment*, invisible to the parser.
-  `verificat` is now a required bool; while false the label goes, a warning appears, the index
-  counts unconfirmed guides, cards read "Neconfirmat". `verificat: true` additionally demands a
-  source URL with a path — a ministry homepage proves an address was typed, not that a figure
-  was checked. Same PR: scroll affordance for the category menu (805px hidden at 390px, and the
-  invisible entries were Regional/Zonal/Local), the shared work/cost journal
-  (`specs/metrics.csv` + `tools/log_slice.py`), and a real contrast fix — breadcrumb separators
-  used a *line* token as text colour, 1.5:1 vs the required 4.5:1, on pages `tools/audit.sh`
-  never visits. 118 tests pass; pa11y 0 errors across six page types.
-- `feat/parallel-fetch` MERGED (febabdd) — verdict was FIX, not clean MERGE. Executor's
-  `8d670b7` parallelized `fetch_all` (ThreadPoolExecutor, `FETCH_WORKERS` default 8, `=1`
-  forces sequential; `pool.map` preserves SOURCES order, so the AI budget priority survives).
-  Two spec requirements were MISSING: the per-worker try/except and its test. Manager wrote
-  both (`24afef9`) rather than returning to the executor — a deliberate deviation from
-  `/review-executor` §5, for ~15 lines. `_fetch_one` only catches network errors; a malformed
-  feed raising inside `feedparser.parse` propagated through `pool.map`, skipping `_cache_save`
-  and losing every healthy source. Test proven to fail without the guard, pass with it.
-  Verified: 88 pass, `--dry-run` exit 0. Local branch NOT deleted (needs owner OK).
-- Earlier merges (all OpenCode, manager-verified): `geo-categorii` 6d90543 (regional/zonal/
-  local trio), `local-sources-priority-order` cfccbc8 (dict order = AI priority),
-  `local-feeds-quality-filter` 7f9d138 (42/43 alive), `local-gov-feeds-phase1` 8ccedfb.
-- The CI bot commits every ~30 min — always `git pull --ff-only` before writing anything.
-
-## User WIP — NONE (cleared 2026-07-24)
-Tree clean, `git stash list` empty. The former WIP (`render.py`, `salariul-minim.yaml`) is
-gone, unrecoverable from git, cause unknown. `render.py` is no longer off-limits.
-
-## The 429s: diagnosed, closed as external (2026-07-24)
-Chain: retry shipped (`a644c31`) → feedcheck still 429 → UA hypothesis tested and FALSIFIED
-(`tools/ua_probe.py`, run `30096569916`): at `libertatea` no User-Agent variant passes; at
-`unica`/`elle` the FIRST request passes and the next three, milliseconds apart, get 429.
-**These sources limit by frequency, per IP; runner ranges are already spent. Nothing in our
-code fixes it** — not UA, not a 4s backoff (rejected longer: it stalls pool workers).
-Resolution: feedcheck now reports 429/503 as **LIMIT — "unverifiable from here"**, not DEAD,
-and they no longer fail the run. Same reasoning `monitor.yml` uses for edge 403s: a checker
-that goes red for external reasons stops being read. Verified on run `30096781843`: 4 LIMIT
-(libertatea, unica, elle, bzi) + **3 genuine failures** — `liternet` (200 but empty feed),
-`pl_prahova_brazi` and `pl_vaslui_dragomiresti` (403 WAF). The signal is honest now: 3 real
-problems, not 7. Those 3 are the actual open work. Re-verify the 4 from a home IP, not CI.
-The retry itself stays — it is correct for genuinely transient refusals, just not for these.
+## Merged today
+#86 reviewers could not read code (failed on every PR) · #87 131 articles stranded on the old
+geographic category · #88 cadence docs + reviewers no longer gate on quota · #89 `/surse/` shows
+all 189 sources instead of 2 links · #90 freed the slot held by an unreachable source ·
+#91 dark-mode contrast (305 hidden pa11y errors), sticky subnav, PWA name + its cache-bust ·
+#92 agent runs quantified, report timestamped.
 
 ## Blockers
-- MAI WAF blocks this IP (502 on `*.prefectura.mai.gov.ro` and www.mai.gov.ro). Retest later
-  or from GitHub Actions / the cloud account — it is IP-bound, not permanent.
-- ~~PENDING: failover Worker~~ **DONE 2026-07-24 12:07 UTC.** `izz-failover` deployed, version
-  `0097cd84`, route `izz.ro/*` at 100%. No API token was needed — `wrangler login` (OAuth,
-  account `andifreelancer2@gmail.com`, id `636085fa...`) grants workers_scripts+routes:write.
-  Verified live: `curl -sI "https://izz.ro/?cb=$(date +%s)"` → `x-izz-origin: primary`.
-  **Failover itself tested end-to-end 2026-07-24**, not just assumed: PRIMARY temporarily
-  pointed at a nonexistent host → `x-izz-origin: mirror`, status 200 (site stayed up);
-  reverted and re-verified `primary`. The redundancy is proven, not theoretical.
-  **Cache-bust is required** — a plain `curl -sI https://izz.ro/` hits a cached edge response
-  with no header and looks like the Worker is not running. Redundancy is now complete:
-  Pages primary + GitHub Pages mirror + edge failover + `monitor.yml`.
-- **GOTCHA (this machine):** Application Control blocks MSYS/bash and anything it spawns from
-  reading `.js` files in user directories — `.md`/`.toml` in the same folder read fine, and
-  `.js` under `node_modules` is fine. `wrangler deploy` from Git Bash dies with
-  `Cannot read file "failover-worker.js": Access is denied`. **Run wrangler from PowerShell
-  instead** (`powershell -NoProfile -Command "Set-Location ...; wrangler deploy"`) — works.
-  Not content-based: a trivial `.js` is blocked too. Not Zone.Identifier: no ADS present.
-
-## Next steps
-- SEO: NO gaps. Verified in code 2026-07-24 (`article.html:5`, `render.py:177`, `render.py:826`,
-  landed 2026-06-21 `82ea411`). CLAUDE.md §11 was right, this file was stale. Do NOT re-audit.
-- Cross-account handoff is SUSPENDED while account A is inactive (see operating mode above).
-  When A returns: `/handoff` writes the session journal + refreshes this file, run at the 75%
-  usage alert BEFORE switching. `TASKS-B.md` in the workspace repo still holds parked tasks.
-- Cost, measured over 16 slices (`COORD-DASHBOARD.md`): solo 23 tokens/100 lines, sub-agents
-  238, CI 29. **Actions minutes are free on a public repo**, so CI is the cheapest executor,
-  not the most expensive — push verification that needs the network into a workflow.
+- MAI WAF blocks `*.prefectura.mai.gov.ro` from this IP (502). Retest from Actions.
+- Cloudflare free plan ~500 builds/month is why `build.yml` runs every 2h (`13 */2`). Do not
+  raise the frequency — see CLAUDE.md §17.
