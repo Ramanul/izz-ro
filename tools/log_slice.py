@@ -18,7 +18,7 @@ import argparse
 import csv
 import os
 from collections import defaultdict
-from datetime import date
+from datetime import date, datetime, timezone
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 LOG = os.path.join(ROOT, "specs", "metrics.csv")
@@ -120,6 +120,13 @@ def report() -> int:
     out.append("# Munca si consumul — jurnal comun A + B\n")
     out.append("> Generat din `specs/metrics.csv` cu `python tools/log_slice.py --report`.")
     out.append("> Ambele conturi scriu in el. Nu edita tabelele de mai jos manual — se suprascriu.")
+    # Marca de timp e obligatorie: fara ea, un raport de acum trei zile arata identic cu unul
+    # regenerat acum si nimeni nu poate spune care. Ultima data acoperita nu e acelasi lucru cu
+    # momentul generarii -- daca difera, jurnalul n-a mai fost completat, si asta se vede aici.
+    _last = max((r.get("date") or "") for r in rows)
+    out.append(f"> **Generat: {datetime.now(timezone.utc):%Y-%m-%d %H:%M} UTC** · "
+               f"ultimul slice raportat: {_last or 'necunoscut'}. Daca cele doua difera mult, "
+               "raportul e vechi pentru ca jurnalul n-a fost completat, nu pentru ca n-a fost munca.\n")
     out.append("> **Cine lucreaza acum si ce e blocat** nu sta aici (s-ar invechi intre rulari), "
                "ci pe canalul live: [issue #83](https://github.com/Ramanul/izz-ro/issues/83) — "
                "intentia se anunta acolo INAINTE de a atinge fisiere.\n")

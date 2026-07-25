@@ -2,28 +2,35 @@
 
 > Generat din `specs/metrics.csv` cu `python tools/log_slice.py --report`.
 > Ambele conturi scriu in el. Nu edita tabelele de mai jos manual — se suprascriu.
+> **Generat: 2026-07-25 09:29 UTC** · ultimul slice raportat: 2026-07-25. Daca cele doua difera mult, raportul e vechi pentru ca jurnalul n-a fost completat, nu pentru ca n-a fost munca.
+
 > **Cine lucreaza acum si ce e blocat** nu sta aici (s-ar invechi intre rulari), ci pe canalul live: [issue #83](https://github.com/Ramanul/izz-ro/issues/83) — intentia se anunta acolo INAINTE de a atinge fisiere.
 
-**16 slice-uri** · **1145 linii** de diff · **~315k tokeni** raportati
+**21 slice-uri** · **1461 linii** de diff · **~669k tokeni** raportati
 
 ## Pe cont
 
 | cont | slice-uri | linii diff | ~tokeni (k) |
 |---|---:|---:|---:|
-| B | 16 | 1145 | 315 |
+| B | 21 | 1461 | 669 |
 
 ## Pe mod de lucru
 
 | mod | slice-uri | linii diff | ~tokeni (k) | tokeni / 100 linii |
 |---|---:|---:|---:|---:|
-| solo | 14 | 1060 | 207 | 20 |
-| agent | 1 | 40 | 95 | 238 |
-| ci | 1 | 45 | 13 | 29 |
+| solo | 16 | 1106 | 251 | 23 |
+| agent | 3 | 306 | 394 | 129 |
+| ci | 2 | 49 | 24 | 49 |
 
 ## Slice-uri, cele mai recente primele
 
 | data | cont | slice | mod | linii | ~tok | note |
 |---|---|---|---|---:|---:|---|
+| 2026-07-25 | B | primarie-moarta-tacuta | ci | 4 | 11 | PR #90: feedcheck x2 confirma pl_vaslui_tacuta 403 WAF; slotul merge… |
+| 2026-07-25 | B | ui-dark-subnav-manifest | agent | 41 | 160 | PR #91: --ink-3 pica contrastul in dark, 305 erori pa11y ascunse;… |
+| 2026-07-25 | B | surse-catalog-complet | agent | 225 | 139 | PR #89: /surse/ arata 2 linkuri externe pe live; acum 189 surse, 121… |
+| 2026-07-25 | B | cadence-docs-si-ci-nonblocking | solo | 37 | 26 | PR #88: CLAUDE.md zicea cron 30min, real 13 */2; reviewerii nu mai… |
+| 2026-07-25 | B | ci-reviewer-read-access | solo | 9 | 18 | PR #86: reviewerii Claude picau pe ORICE PR - allowed-tools fara… |
 | 2026-07-25 | B | review-fixes-85 | solo | 90 | 14 | review CodeRabbit: test fail-open inchis, limita 70, gramatica;… |
 | 2026-07-25 | B | ghiduri-neverificate | solo | 150 | 32 | 3 ghiduri afisau ✅Verificat peste valori placeholder; steag… |
 | 2026-07-25 | B | subnav-scroll-hint | solo | 12 | 9 | meniul de categorii: 805px ascunsi pe mobil fara niciun indiciu;… |
