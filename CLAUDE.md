@@ -14,7 +14,7 @@ AI-powered Romanian news aggregator. Brand promise: **"Zero Zgomot"** (Zero Nois
 ## 2. Tech stack — VERIFIED 2026-06-26
 Python 3.11 (cloud) / 3.14 (local), Jinja2, feedparser, pyyaml, python-slugify, markdown, python-dotenv.
 AI: Gemini 2.5 Flash Lite via REST (no SDK), switchable to Claude API via `AI_PROVIDER=anthropic`.
-CI/CD: GitHub Actions (`build.yml`, cron 30 min). Hosting: Cloudflare Pages (render-only build).
+CI/CD: GitHub Actions (`build.yml`, cron `13 */2` — every 2h). Hosting: Cloudflare Pages (render-only build).
 Pipeline state: `data/articles.json` (committed to repo — no SQLite).
 
 ## 3. Repository structure
@@ -28,7 +28,7 @@ content/legal/      legal pages (markdown)
 data/articles.json  pipeline state (committed to repo, persists between runs)
 moderation.yaml     editorial control (human in the loop)
 output/             generated site (gitignored; deployed by Cloudflare Pages)
-.github/workflows/  build.yml (fetch+AI+commit, cron 30min)
+.github/workflows/  build.yml (fetch+AI+commit, cron every 2h — see §17)
 ```
 
 ## 4. Commands — use EXACT strings
@@ -131,7 +131,7 @@ never pushes or merges.
 are" — current task, last relevant commits, user WIP, blockers, next steps. Manager-owned writes:
 update it at the end of every slice and inside `/review-devin`; executors receive it read-only.
 Overwrite in place, keep it under ~30 lines. Start every session by reading it (after
-`git pull --ff-only` — the CI bot commits every ~30 min, so local main is always stale).
+`git pull --ff-only` — the CI bot commits every 2h, so local main is often stale).
 
 Slash commands in `.claude/commands/`: **`/slice`** drives the mandatory §5 workflow for one vertical slice; **`/audit`** runs the front-end audit. Permission allowlist for the documented-safe commands lives in `.claude/settings.json` (this is §12 made enforceable — read-only and dev/build commands no longer prompt; push/commit/deletes still do). A web-only `SessionStart` hook (`.claude/hooks/session-start.sh`) installs the pipeline deps (with `SETUPTOOLS_USE_DISTUTILS=stdlib`, needed for feedparser/sgmllib3k) so Claude Code on the web can run the pipeline and these agents.
 
@@ -149,3 +149,21 @@ Context: a correct CSS fix was reported "rezolvat" while the owner still saw the
 4. **When you cannot test something, say so explicitly** (which role, why) instead of implying it passed. Honesty about a gap beats a confident false "gata".
 
 This overrides any earlier phrasing that let "committed/rendered" stand in for "fixed for the user".
+
+## 17. Publication cadence & throughput — MEASURED 2026-07-25 (stop re-diagnosing this)
+Twice now a session has read "cron 30 min" in this file, seen runs 1.5–4.5h apart, and concluded
+the pipeline was broken. It is not. The docs were wrong; they are fixed above. The real numbers:
+
+- **`build.yml` cron is `13 */2` — every 2 hours, deliberately.** Each state commit triggers a
+  Cloudflare Pages build and the free plan allows ~500/month; 12/day ≈ 360/month leaves headroom
+  for PR previews. Running more often exhausts the build budget and deploys stop — that is
+  literally the 5–9 July 2026 outage. **Do not "fix" the cadence by making it more frequent.**
+- **The throughput cap is the AI budget, not the schedule:** `max_ai_calls` defaults to 18 per
+  run (≈216/day). `workflow_dispatch` accepts a one-off override for seeding a new category;
+  the comment in `build.yml` says explicitly not to change the cron default.
+- **Measured volume** (`data/articles.json`, 2026-07-25): 25 articles by midday, against 198 the
+  previous full day, 92, 40, 101, 229, 286 for the days before. Day-to-day variance is large and
+  normal; a low count at noon is not evidence of a stalled pipeline. **Check run history before
+  claiming the pipeline is down** — `gh run list --workflow=pipeline` or the Actions API.
+- If the owner wants more articles per day, the lever is the per-run AI budget (costs Gemini
+  quota) or clustering yield — **not** the cron. That is a cost decision, so it is the owner's.
