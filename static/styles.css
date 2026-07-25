@@ -62,11 +62,14 @@ a:hover { color: var(--ink); }
 :focus-visible { outline: 2px solid var(--gold-strong); outline-offset: 3px; }
 
 /* ---------------------------------------------------------------- Masthead --- */
+/* header + subnav sticky impreuna: inaltimea header-ului variaza (wrap pe mobil,
+   padding diferit sub 640px), deci stickyul sta pe container, nu pe .subnav cu un
+   `top` calculat din inaltimea lui .site-header (fragil, s-ar desincroniza). */
+.site-header-group { position: sticky; top: 0; z-index: 10; }
 .site-header {
   border-top: 4px solid var(--gold);              /* bara aurie de broadsheet */
   border-bottom: 1px solid var(--line);
   background: var(--paper-2);
-  position: sticky; top: 0; z-index: 10;
   display: flex; align-items: center; justify-content: space-between;
   gap: var(--s-21); flex-wrap: wrap;
   padding: var(--s-21) var(--s-34);
