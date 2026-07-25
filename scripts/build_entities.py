@@ -14,6 +14,7 @@ Reguli nenegociabile:
 """
 import json
 import os
+import re
 import sys
 
 import yaml
@@ -58,6 +59,15 @@ def validate(ent: dict) -> list[str]:
         errors.append(f"[{eid}] tip invalid: {ent.get('tip')}. Valid: {', '.join(sorted(VALID_TIPURI))}")
     if ent.get("categorie_ghid") not in CATEGORII_GHID:
         errors.append(f"[{eid}] categorie_ghid invalidă: {ent.get('categorie_ghid')}")
+    # Un link catre homepage-ul unui minister nu e o citare: cititorul trimis acolo nu
+    # gaseste cifra. Regula musca exact cand cineva DECLARA verificarea, deci nu blocheaza
+    # entitatile care isi recunosc cinstit starea de neverificate.
+    if ent.get("verificat") is True:
+        url = (ent.get("valoare_curenta") or {}).get("sursa_url") or ""
+        cale = re.sub(r"^https?://[^/]+", "", url).strip("/")
+        if not cale:
+            errors.append(f"[{eid}] verificat: true cere sursa_url catre pagina exacta cu "
+                          f"valoarea, nu catre homepage ({url})")
     if "verificat" in ent and not isinstance(ent.get("verificat"), bool):
         errors.append(f"[{eid}] verificat trebuie să fie true sau false, nu {ent.get('verificat')!r} "
                       "(un șir precum 'da' e adevărat în Python și ar publica date neverificate)")

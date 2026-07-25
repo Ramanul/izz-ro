@@ -104,7 +104,7 @@ def test_long_notes_are_cut_at_a_word_boundary(sandbox):
     nota = rand.split("|")[-2].strip()
     assert nota.endswith("…")
     assert not nota[:-1].rstrip().endswith("cuv"), "taiat prin mijlocul cuvantului"
-    assert len(nota) <= 71
+    assert len(nota) <= 70          # _scurt(..., n=70) — 71 ar lasa sa treaca o regresie
 
 
 def test_short_notes_are_left_alone(sandbox):
