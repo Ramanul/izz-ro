@@ -20,13 +20,22 @@ def _resync_pinned(articles: list) -> list:
     """
     pinned = getattr(config, "PINNED_CATEGORIES", set())
     for art in articles:
-        sursa = config.SOURCES.get(art.get("source") or "")
+        # `load()` accepta orice lista JSON, iar un `null` sau o valoare de tip lista in
+        # stare ar arunca AttributeError/TypeError de aici -- pe langa `except` din load(),
+        # care prinde doar erori de fisier si de parsare. Ar opri tot pipeline-ul in loc sa
+        # cada pe starea goala. Inainte de resync, load() returna orice forma neatinsa.
+        if not isinstance(art, dict):
+            continue
+        sid, cat = art.get("source"), art.get("category")
+        if not isinstance(sid, str) or not isinstance(cat, str):
+            continue
+        sursa = config.SOURCES.get(sid)
         if not sursa:
             continue
         actuala = sursa.get("category")
         # Doar in interiorul axei geografice: un articol pe care AI-ul l-a pus pe o tema
         # (sport, politic) de la o sursa netematica nu e treaba acestei functii.
-        if actuala in pinned and art.get("category") in pinned and art["category"] != actuala:
+        if actuala in pinned and cat in pinned and cat != actuala:
             art["category"] = actuala
     return articles
 

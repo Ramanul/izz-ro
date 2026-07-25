@@ -62,6 +62,31 @@ def test_articol_fara_camp_source_nu_arunca(stare):
     assert state.load()[0]["category"] == "local"
 
 
+@pytest.mark.parametrize("intrare", [
+    None,
+    "un sir, nu un articol",
+    123,
+    ["lista"],
+    {"source": "x", "category": ["lista"]},   # nehashabil -> `in set` arunca TypeError
+    {"source": 123, "category": "local"},
+    {"source": None, "category": None},
+])
+def test_intrarile_malformate_nu_opresc_pipeline_ul(stare, intrare):
+    """Inainte de resync, `load()` returna orice lista JSON neatinsa. Daca resyncul arunca
+    pe o intrare stricata, `except (JSONDecodeError, OSError)` din load() NU o prinde, deci
+    ar cadea tot pipeline-ul in loc sa se intoarca pe starea goala."""
+    stare([intrare])
+    assert state.load() == [intrare]
+
+
+def test_intrarea_valida_e_corectata_chiar_langa_una_stricata(stare):
+    """O intrare stricata nu trebuie sa opreasca resyncul celorlalte."""
+    sid, actuala = _sursa_geo()
+    veche = next(c for c in config.PINNED_CATEGORIES if c != actuala)
+    stare([None, {"source": sid, "category": veche, "title": "x", "url": "u"}])
+    assert state.load()[1]["category"] == actuala
+
+
 def _derapaje(articole):
     return [a for a in articole
             if (s := config.SOURCES.get(a.get("source") or ""))
@@ -85,6 +110,7 @@ def test_starea_reala_e_vindecata_la_load():
     Numarul brut e afisat, nu asertat: dupa o rulare completa `main.run()` salveaza starea
     deja vindecata, deci fisierul comis poate ajunge legitim la zero derapaje.
     """
-    brut = json.load(open(state.STATE_PATH, encoding="utf-8"))
+    with open(state.STATE_PATH, encoding="utf-8") as fh:
+        brut = json.load(fh)
     print(f"derapaje in fisierul comis: {len(_derapaje(brut))} din {len(brut)}")
     assert _derapaje(state.load()) == []
