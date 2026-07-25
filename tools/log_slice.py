@@ -49,7 +49,10 @@ def append(args) -> int:
         "notes": _safe(args.notes),
     }
     os.makedirs(os.path.dirname(LOG), exist_ok=True)
-    is_new = not os.path.isfile(LOG)
+    # Gol, nu inexistent: un `touch` sau un checkout care lasa fisierul vid ar primi altfel
+    # un rand fara antet, si atunci DictReader ia primul rand drept antet — jurnalul dispare
+    # tacit din raport, fara nicio eroare.
+    is_new = not os.path.isfile(LOG) or os.path.getsize(LOG) == 0
     with open(LOG, "a", encoding="utf-8", newline="") as fh:
         w = csv.DictWriter(fh, fieldnames=COLUMNS, quoting=csv.QUOTE_MINIMAL)
         if is_new:
@@ -66,6 +69,12 @@ def _rows() -> list:
         return list(csv.DictReader(fh))
 
 
+def _cell(v) -> str:
+    """Un camp de CSV pus intr-un tabel markdown: `|` inchide celula, iar o valoare
+    multilinie (CSV le accepta) creeaza randuri noi si sparge tabelul."""
+    return str(v or "").replace("\r", " ").replace("\n", " ").replace("|", "\\|")
+
+
 def _num(v) -> int:
     try:
         return int(float(v))
@@ -76,7 +85,13 @@ def _num(v) -> int:
 def report() -> int:
     rows = _rows()
     if not rows:
-        print("Jurnal gol — nimic de raportat.")
+        # Se SCRIE raportul gol, nu se lasa cel vechi: un dashboard de coordonare care arata
+        # 13 slice-uri dupa ce jurnalul a fost sters ar minti exact pe cine se bazeaza pe el.
+        with open(REPORT, "w", encoding="utf-8") as fh:
+            fh.write("# Munca si consumul — jurnal comun A + B\n\n"
+                     "> Generat din `specs/metrics.csv` cu `python tools/log_slice.py --report`.\n\n"
+                     "**Jurnalul e gol** — niciun slice raportat inca.\n")
+        print("Jurnal gol — raport gol scris, ca sa nu ramana date vechi.")
         return 0
 
     by_acct = defaultdict(lambda: {"n": 0, "lines": 0, "tok": 0})
@@ -120,11 +135,15 @@ def report() -> int:
     out.append("\n## Slice-uri, cele mai recente primele\n")
     out.append("| data | cont | slice | mod | linii | ~tok | note |")
     out.append("|---|---|---|---|---:|---:|---|")
-    for r in sorted(rows, key=lambda r: r.get("date", ""), reverse=True)[:40]:
-        note = (r.get("notes") or "").replace("|", "\\|")[:70]
-        out.append(f"| {r.get('date','')} | {r.get('account','')} | {r.get('slice','')} "
-                   f"| {r.get('approach','')} | {r.get('diff_lines','')} "
-                   f"| {r.get('tokens_k','')} | {note} |")
+    # Se logheaza doar ziua, deci randurile din aceeasi zi sunt la egalitate; sortarea stabila
+    # le-ar lasa in ordinea din CSV, adica cele mai VECHI primele — exact pe dos fata de titlu.
+    # Pozitia in fisier departajeaza.
+    recent = sorted(enumerate(rows), key=lambda t: (t[1].get("date", ""), t[0]), reverse=True)
+    for _, r in recent[:40]:
+        out.append(f"| {_cell(r.get('date'))} | {_cell(r.get('account'))} "
+                   f"| {_cell(r.get('slice'))} | {_cell(r.get('approach'))} "
+                   f"| {_cell(r.get('diff_lines'))} | {_cell(r.get('tokens_k'))} "
+                   f"| {_cell(r.get('notes'))[:70]} |")
 
     out.append("\n---\n")
     out.append("## Ce costa efectiv\n")

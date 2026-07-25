@@ -61,6 +61,50 @@ def test_report_on_empty_log_does_not_crash(sandbox, capsys):
     assert "gol" in capsys.readouterr().out
 
 
+def test_empty_report_overwrites_stale_dashboard(sandbox):
+    """Jurnal sters => raportul se rescrie gol. Altfel dashboard-ul de coordonare
+    arata slice-uri care nu mai exista si minte pe cine se bazeaza pe el."""
+    log_slice.append(_Args(slice="dispare"))
+    log_slice.report()
+    assert "dispare" in open(log_slice.REPORT, encoding="utf-8").read()
+    import os
+    os.remove(log_slice.LOG)
+    log_slice.report()
+    assert "dispare" not in open(log_slice.REPORT, encoding="utf-8").read()
+
+
+def test_header_written_for_precreated_empty_file(sandbox):
+    """Un `touch` sau un checkout care lasa fisierul vid nu trebuie sa produca un rand
+    fara antet — DictReader ar lua primul rand drept antet si jurnalul ar disparea tacit."""
+    import os
+    os.makedirs(os.path.dirname(log_slice.LOG), exist_ok=True)
+    open(log_slice.LOG, "w").close()          # fisier pre-creat, gol
+    log_slice.append(_Args(slice="primul"))
+    with open(log_slice.LOG, encoding="utf-8") as fh:
+        rows = list(csv.reader(fh))
+    assert rows[0] == log_slice.COLUMNS
+    assert len(list(csv.DictReader(open(log_slice.LOG, encoding="utf-8")))) == 1
+
+
+def test_same_day_rows_are_newest_first(sandbox):
+    """Se logheaza doar ziua, deci randurile din aceeasi zi sunt la egalitate; fara
+    departajare dupa pozitie, tabelul „cele mai recente primele" le da pe dos."""
+    for name in ("vechi", "mijloc", "nou"):
+        log_slice.append(_Args(slice=name))
+    log_slice.report()
+    text = open(log_slice.REPORT, encoding="utf-8").read()
+    assert text.index("| nou ") < text.index("| mijloc ") < text.index("| vechi ")
+
+
+def test_multiline_notes_do_not_break_the_table(sandbox):
+    log_slice.append(_Args(notes="prima linie\na doua linie"))
+    log_slice.report()
+    body = open(log_slice.REPORT, encoding="utf-8").read()
+    table = [ln for ln in body.splitlines() if ln.startswith("| 2")]
+    assert len(table) == 1, "o valoare multilinie a produs randuri suplimentare"
+    assert "prima linie a doua linie" in table[0]
+
+
 def test_pipe_in_notes_escaped_so_markdown_table_survives(sandbox):
     log_slice.append(_Args(notes="a | b"))
     log_slice.report()
