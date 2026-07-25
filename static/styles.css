@@ -22,6 +22,7 @@
   --gold-strong: #8b6918;   /* aur inchis: text/linkuri (AA 4.7:1 pe --paper; #94701a trecea doar pe alb pur) */
   --gold-wash:   #faf5e6;
   --ink-fixed:   #15171c;   /* NU se inverseaza in dark mode; pt. text pe fundal auriu (--gold ramane deschis in ambele teme) */
+  --danger:      #c0392b;   /* stare distructiva (reset stats hover); 5.07:1 pe --paper */
 
   --fs-eyebrow: 0.7rem;
   --fs-xs:      0.786rem;
@@ -61,11 +62,14 @@ a:hover { color: var(--ink); }
 :focus-visible { outline: 2px solid var(--gold-strong); outline-offset: 3px; }
 
 /* ---------------------------------------------------------------- Masthead --- */
+/* header + subnav sticky impreuna: inaltimea header-ului variaza (wrap pe mobil,
+   padding diferit sub 640px), deci stickyul sta pe container, nu pe .subnav cu un
+   `top` calculat din inaltimea lui .site-header (fragil, s-ar desincroniza). */
+.site-header-group { position: sticky; top: 0; z-index: 10; }
 .site-header {
   border-top: 4px solid var(--gold);              /* bara aurie de broadsheet */
   border-bottom: 1px solid var(--line);
   background: var(--paper-2);
-  position: sticky; top: 0; z-index: 10;
   display: flex; align-items: center; justify-content: space-between;
   gap: var(--s-21); flex-wrap: wrap;
   padding: var(--s-21) var(--s-34);
@@ -329,7 +333,7 @@ picture { display: contents; }
   background: none; border: 1px solid var(--line-strong); border-radius: 4px;
   color: var(--ink-3); font-size: var(--fs-xs); cursor: pointer; align-self: flex-start;
 }
-.stats-reset:hover { border-color: #c0392b; color: #c0392b; }
+.stats-reset:hover { border-color: var(--danger); color: var(--danger); }
 .stats-hint { font-size: var(--fs-xs); color: var(--ink-3); margin: 0; font-style: italic; }
 
 /* ---------------------------------------------------------- Responsive --- */
@@ -355,12 +359,13 @@ picture { display: contents; }
   --paper-2:     #141b22;
   --ink:         #e4e8ec;
   --ink-2:       #9ba3ae;
-  --ink-3:       #6b7483;
+  --ink-3:       #808b9c;   /* #6b7483 masurat 4.01:1 pe --paper / 3.68:1 pe --paper-2 (pa11y: 305 erori pe /) - eșua AA */
   --line:        #1e2a35;
   --line-strong: #2a3746;
   --gold:        #d6b25e;
   --gold-strong: #c9a227;
   --gold-wash:   #1a1d10;
+  --danger:      #e0574a;   /* 5.08:1 pe --paper dark; #c0392b (light) dadea 3.48:1 */
 }
 [data-theme="dark"] .lead-feature { background: var(--paper-2); }
 [data-theme="dark"] .card-media { background: var(--line); }

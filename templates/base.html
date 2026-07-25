@@ -22,7 +22,10 @@
   <meta name="twitter:image" content="{{ og_image or (site.url ~ '/static/og-image.png') }}">
 
   <link rel="icon" type="image/svg+xml" href="{{ base }}/static/favicon.svg">
-  <link rel="manifest" href="{{ base }}/static/site.webmanifest">
+  {# ?v= obligatoriu: /static/* e servit `immutable` 30 de zile, deci fara hash de continut
+     o schimbare in manifest (numele ferestrei aplicatiei instalate) nu ajunge la cine il are
+     deja in cache -- reparat in cod, dar nelivrat. Vezi CLAUDE.md §16.2. #}
+  <link rel="manifest" href="{{ base }}/static/site.webmanifest?v={{ asset_ver['site.webmanifest'] }}">
   <link rel="apple-touch-icon" href="{{ base }}/static/icon-192.png">
   {# auriu metalic (gradient in iconite); meta/manifest nu pot referi gradient, e o valoare plata reprezentativa #}
   <meta name="theme-color" content="#D6AD33">
@@ -44,6 +47,10 @@
   <script defer src="{{ base }}/static/personalize.js?v={{ asset_ver['personalize.js'] }}"></script>
 </head>
 <body{% block body_attrs %}{% endblock %}>
+  {# header + subnav sticky ca UN singur bloc (owner 2026-07-25): inaltimea header-ului
+     variaza (wrap pe mobil, padding diferit sub 640px), deci un `top` fix pe subnav ar fi
+     fragil. Un container comun sticky evita sa calculam acea inaltime. #}
+  <div class="site-header-group">
   <header class="site-header">
     <a class="brand" href="{{ base }}/">
       <span class="brand-eyebrow">{{ site.tagline }}</span>
@@ -65,6 +72,7 @@
   <nav class="subnav" aria-label="Categorii de știri">
     {% for cat in categories %}<a href="{{ base }}/{{ cat }}/" data-cat="{{ cat }}"{% if cat == active_cat %} class="active"{% endif %}>{{ cat | cat_label }}</a>{% endfor %}
   </nav>
+  </div>
 
   <main>
     {% block content %}{% endblock %}
