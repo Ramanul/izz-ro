@@ -32,6 +32,10 @@ _DEAD_SLUGS = frozenset({
     # Nu inseamna „site mort" — inseamna „inaccesibil de acolo de unde tragem noi".
     "prahova_brazi",
     "vaslui_dragomiresti",
+    # Confirmata pe DOUA rulari feedcheck consecutive, la ~12h distanta si de pe runneri
+    # diferiti: 30125482616 (24 iul) si 30152246525 (25 iul). In amandoua e SINGURA sursa
+    # moarta din cele 120, acelasi 403 pe primariatacuta.ro -- deci WAF stabil, nu o pana.
+    "vaslui_tacuta",
 })
 
 
