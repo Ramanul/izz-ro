@@ -285,6 +285,48 @@ def _pick_hero(articles: list) -> list:
     return (featured + rest_sorted)[:6]
 
 
+def _source_catalog(by_date: list) -> tuple[list, int, int]:
+    """Catalogul /surse/: TOATE sursele din config.SOURCES, nu doar cele cu statistici de
+    originalitate. O sursa (ex. o primarie) care publica un anunt unic nu intra niciodata
+    intr-un cluster multi-sursa, deci n-ar aparea NICIODATA daca am lista doar din sintezele
+    C -- exact bug-ul raportat (29 din 189 pe /surse/, lipseau toate primariile). Grupare pe
+    categoria deja existenta in config (axa unica, "one axis one home"); in fiecare grup,
+    sursele cu statistici raman intr-un tabel (nemodificat), restul intr-o lista simpla de
+    linkuri fara coloane goale/zerouri care ar sugera fals performanta slaba.
+    Returneaza (catalog, total_surse, surse_cu_statistici)."""
+    # scor de originalitate: cine initiaza vs. cine preia (din sintezele C cu first_source)
+    counts: dict = {}
+    for a in by_date:
+        if a.get("model") != "C" or not a.get("first_source"):
+            continue
+        for s in a.get("sources") or []:
+            d = counts.setdefault(s["name"], {"first": 0, "total": 0})
+            d["total"] += 1
+            if s["name"] == a["first_source"]:
+                d["first"] += 1
+    src_stats = {n: {"first": d["first"], "total": d["total"], "rate": round(d["first"] / d["total"] * 100)}
+                 for n, d in counts.items() if d["total"] >= 2}
+
+    catalog = []
+    for cat in config.CATEGORIES:
+        entries = sorted((v for v in config.SOURCES.values() if v["category"] == cat),
+                          key=lambda v: _norm_name(v["name"]))
+        if not entries:
+            continue
+        with_stats, without_stats = [], []
+        for v in entries:
+            site_url = f"https://{domain_of(v['url'])}/"
+            if v["name"] in src_stats:
+                with_stats.append({"name": v["name"], "url": site_url, **src_stats[v["name"]]})
+            else:
+                without_stats.append({"name": v["name"], "url": site_url})
+        catalog.append({
+            "key": cat, "label": config.CATEGORY_LABELS.get(cat, cat.capitalize()),
+            "count": len(entries), "with_stats": with_stats, "without_stats": without_stats,
+        })
+    return catalog, len(config.SOURCES), len(src_stats)
+
+
 def _dedup_sources(a: dict) -> None:
     """Surse unice dupa domeniu (evita 'Digi24' + 'Digi24 Extern' duplicate pe acelasi card,
     inclusiv pentru clustere C deja salvate in state inainte de acest fix)."""
@@ -452,23 +494,11 @@ def build(articles: list, mod: dict | None = None) -> None:
                "/", nav_section="stiri", articles=by_date, hero=hero, by_category=by_category,
                page_jsonld=item_list, newsletter_html=_newsletter_html())))
 
-    # scor de originalitate: cine initiaza vs. cine preia (din sintezele C cu first_source)
-    counts: dict = {}
-    for a in by_date:
-        if a.get("model") != "C" or not a.get("first_source"):
-            continue
-        for s in a.get("sources") or []:
-            d = counts.setdefault(s["name"], {"first": 0, "total": 0})
-            d["total"] += 1
-            if s["name"] == a["first_source"]:
-                d["first"] += 1
-    src_stats = sorted(
-        [{"name": n, "first": d["first"], "total": d["total"],
-          "rate": round(d["first"] / d["total"] * 100)} for n, d in counts.items() if d["total"] >= 2],
-        key=lambda x: (-x["first"], -x["rate"]))
+    src_catalog, total_sources, stats_sources = _source_catalog(by_date)
     _write(os.path.join(OUT_DIR, "surse", "index.html"),
            env.get_template("surse.html").render(**_base_ctx(
-               "/surse/", stats=src_stats, ttl_days=config.ARTICLE_TTL_DAYS)))
+               "/surse/", catalog=src_catalog, total_sources=total_sources,
+               stats_sources=stats_sources, ttl_days=config.ARTICLE_TTL_DAYS)))
 
     # graful cunoasterii v1: pagini de subiect per entitate (+ feed de urmarire >=3)
     ents = _entity_index(by_date)

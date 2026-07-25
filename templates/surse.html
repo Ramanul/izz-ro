@@ -1,24 +1,52 @@
 {% extends "base.html" %}
-{% block title %}Surse și originalitate — {{ site.name }}{% endblock %}
-{% block description %}Cine inițiază știrile și cine le preia: statistici de originalitate pe sursele {{ site.name }}.{% endblock %}
+{% block title %}Surse — {{ site.name }}{% endblock %}
+{% block description %}Catalogul complet al celor {{ total_sources }} surse din care sintetizăm știri — naționale, regionale, ziare de județ și primării — plus statisticile de originalitate acolo unde există.{% endblock %}
 {% block content %}
-  <h1 class="section-title">Surse și originalitate</h1>
-  <p class="page-intro">La evenimentele relatate de mai multe publicații, măsurăm cine a publicat
-  <b>primul</b> și cine a preluat. Statistica acoperă sintezele multi-sursă din ultimele
-  {{ ttl_days }} zile și se actualizează automat.</p>
-  {% if stats %}
-  <div class="table-wrap">
-  <table class="stats-table">
-    <thead><tr><th>Sursă</th><th>A publicat prima</th><th>Apariții în sinteze</th><th>Rată de inițiativă</th></tr></thead>
-    <tbody>
-      {% for s in stats %}
-      <tr><td>{{ s.name }}</td><td>{{ s.first }}</td><td>{{ s.total }}</td><td>{{ s.rate }}%</td></tr>
-      {% endfor %}
-    </tbody>
-  </table>
+  <h1 class="section-title">Surse</h1>
+  <p class="page-intro">Tragem din <b>{{ total_sources }} surse</b> cu RSS oficial: publicații
+  naționale, regionale, ziare de județ și primării. La evenimentele relatate de mai multe
+  publicații, măsurăm și cine a publicat <b>primul</b> și cine a preluat, pe sintezele
+  multi-sursă din ultimele {{ ttl_days }} zile: {{ stats_sources }} surse au strâns destule
+  apariții pentru statistica de mai jos. Restul apar doar cu numele și linkul — asta
+  <b>nu</b> înseamnă performanță slabă, ci doar că nu au intrat încă într-un cluster
+  multi-sursă (o primărie cu un anunț unic, de exemplu, n-o să intre niciodată).</p>
+
+  <div class="source-groups">
+    {% for group in catalog %}
+    <details class="source-group"{% if group.count <= 10 %} open{% endif %}>
+      <summary>{{ group.label }}
+        <span class="source-group-count">{{ group.count }} {{ "sursă" if group.count == 1 else "surse" }}</span>
+      </summary>
+      <div class="source-group-body">
+        {% if group.with_stats %}
+        <div class="table-wrap">
+        <table class="stats-table">
+          <caption class="visually-hidden">{{ group.label }} — surse cu statistici de originalitate</caption>
+          <thead><tr><th>Sursă</th><th>A publicat prima</th><th>Apariții în sinteze</th><th>Rată de inițiativă</th></tr></thead>
+          <tbody>
+            {% for s in group.with_stats %}
+            <tr>
+              <td><a href="{{ s.url }}" target="_blank" rel="noopener noreferrer">{{ s.name }}</a></td>
+              <td>{{ s.first }}</td><td>{{ s.total }}</td><td>{{ s.rate }}%</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+        </div>
+        {% endif %}
+
+        {% if group.without_stats %}
+        {% if group.with_stats %}
+        <p class="source-list-label">Fără statistici de originalitate încă</p>
+        {% endif %}
+        <ul class="source-list">
+          {% for s in group.without_stats %}
+          <li><a href="{{ s.url }}" target="_blank" rel="noopener noreferrer">{{ s.name }}</a></li>
+          {% endfor %}
+        </ul>
+        {% endif %}
+      </div>
+    </details>
+    {% endfor %}
   </div>
-  {% else %}
-  <p class="empty">Încă nu sunt destule sinteze multi-sursă cu date de inițiativă. Statistica se
-  populează automat pe măsură ce apar evenimente noi relatate de mai multe publicații.</p>
-  {% endif %}
 {% endblock %}
