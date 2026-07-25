@@ -12,3 +12,4 @@ date,account,slice,approach,executor_branch,diff_lines,duration_min,tokens_k,not
 2026-07-24,B,coord-live-channel,solo,,12,,11,issue #83 canal live; POST /pulls dă 500 pt ambele conturi
 2026-07-24,B,dead-primarii-denylist,ci,,45,,13,174617f 12 primării moarte scoase; sloturile eliberate merg la candidați vii
 2026-07-24,B,cost-dashboard,solo,,260,,28,"jurnal CSV + COORD-DASHBOARD.md; A cedeaza artefactul, da datele Actions (gratis pe repo public)"
+2026-07-25,B,subnav-scroll-hint,solo,,12,,9,meniul de categorii: 805px ascunsi pe mobil fara niciun indiciu; degrade la margine
