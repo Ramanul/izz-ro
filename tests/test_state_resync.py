@@ -62,12 +62,29 @@ def test_articol_fara_camp_source_nu_arunca(stare):
     assert state.load()[0]["category"] == "local"
 
 
-def test_starea_reala_nu_mai_are_derapaje():
-    """Pe starea chiar comisa in repo: dupa load, zero articole pe o rubrica geografica
-    diferita de cea a sursei lor."""
-    ramase = [a for a in state.load()
-              if (s := config.SOURCES.get(a.get("source") or ""))
-              and s.get("category") in config.PINNED_CATEGORIES
-              and a.get("category") in config.PINNED_CATEGORIES
-              and a["category"] != s["category"]]
-    assert ramase == [], f"{len(ramase)} articole inca pe rubrica veche"
+def _derapaje(articole):
+    return [a for a in articole
+            if (s := config.SOURCES.get(a.get("source") or ""))
+            and s.get("category") in config.PINNED_CATEGORIES
+            and a.get("category") in config.PINNED_CATEGORIES
+            and a["category"] != s["category"]]
+
+
+def test_starea_reala_e_vindecata_la_load():
+    """Canary pe starea chiar comisa in repo — 1100+ articole, config real.
+
+    Ce dovedeste: ca `_resync_pinned` e CABLATA in `load()` si ca rezista pe date reale.
+    Pica daca cineva scoate apelul din `load()` (verificat, nu presupus).
+
+    Ce NU dovedeste: cu fixul activ, `load()` produce prin constructie o stare fara
+    derapaje, deci asertiunea finala nu poate esua din cauza datelor. Testele unitare de
+    mai sus sunt cele care verifica logica. Asta ramane util pentru ca e singurul care
+    trece config-ul REAL peste starea REALA: o viitoare rearanjare de categorii care ar
+    sparge functia se vede aici, nu in fixture-uri fabricate.
+
+    Numarul brut e afisat, nu asertat: dupa o rulare completa `main.run()` salveaza starea
+    deja vindecata, deci fisierul comis poate ajunge legitim la zero derapaje.
+    """
+    brut = json.load(open(state.STATE_PATH, encoding="utf-8"))
+    print(f"derapaje in fisierul comis: {len(_derapaje(brut))} din {len(brut)}")
+    assert _derapaje(state.load()) == []
