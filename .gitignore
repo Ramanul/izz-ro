@@ -8,3 +8,6 @@ data/*.db
 
 # wrangler local cache (contine wrangler-account.json - date de cont)
 .wrangler/
+
+# worktrees efemere ale sub-agentilor (unealta, nu continut de proiect)
+.claude/worktrees/
