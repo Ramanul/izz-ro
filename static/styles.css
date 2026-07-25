@@ -494,6 +494,25 @@ picture { display: contents; }
 .stats-table th, .stats-table td { text-align: left; padding: var(--s-8) var(--s-13); border-bottom: 1px solid var(--line); }
 .stats-table th { font-family: var(--font-mono); font-size: var(--fs-eyebrow); text-transform: uppercase; letter-spacing: 1px; color: var(--ink-3); border-bottom: 2px solid var(--ink); }
 
+/* Catalog de surse (/surse/): un grup pliabil per categorie din config.CATEGORIES, ca 189
+   randuri sa nu fie o lista plata neutilizabila (mai ales pe mobil, unde "local" are >100). */
+.source-groups { display: flex; flex-direction: column; gap: var(--s-13); margin-top: var(--s-34); max-width: var(--measure); }
+.source-group { border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; }
+.source-group summary {
+  padding: var(--s-13) var(--s-21); cursor: pointer; font-weight: 700;
+  font-family: var(--font-display); font-size: var(--fs-md); color: var(--ink);
+  background: var(--paper-2); user-select: none;
+}
+.source-group summary:hover { color: var(--gold-strong); }
+.source-group[open] summary { border-bottom: 1px solid var(--line); color: var(--gold-strong); }
+.source-group-count { font-family: var(--font-mono); font-size: var(--fs-eyebrow); font-weight: 400; color: var(--ink-3); margin-left: var(--s-8); }
+.source-group-body { padding: var(--s-13) var(--s-21) var(--s-21); }
+.source-group-body .table-wrap { margin-bottom: var(--s-8); }
+.source-list-label { font-family: var(--font-mono); font-size: var(--fs-eyebrow); text-transform: uppercase; letter-spacing: 1.5px; color: var(--ink-3); margin: var(--s-21) 0 var(--s-8); font-weight: 700; }
+.source-list { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: var(--s-5) var(--s-21); }
+.source-list li { font-size: var(--fs-xs); }
+.source-list a { display: inline-block; padding: var(--s-5) 2px; text-decoration: underline; }
+
 /* ---- arta generativa pe site (faza 2: articol + hero) ---- */
 .article-art {
   display: block; width: 100%; max-width: var(--measure); height: auto;
