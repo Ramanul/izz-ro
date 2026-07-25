@@ -5,15 +5,35 @@
 > Executors receive this file as read-only context. Overwrite sections in place — never let
 > this file grow past ~30 lines of content.
 
-**Updated:** 2026-07-24 (parallel-fetch reviewed + MERGED; state audit fixed 3 stale entries)
+**Updated:** 2026-07-25 (PR #85 merged; single-account mode; piataauto settled)
+
+## OPERATING MODE — SINGLE ACCOUNT (owner, 2026-07-25)
+Account A is temporarily inactive. **This account is the only writer.** Until the owner says
+otherwise: no `/handoff`, no `TASKS-B.md` parking, no waiting for the other account to review
+or merge — that coordination is pure overhead with nobody on the far end. CLAUDE.md §14's
+"tell the other account after any merge" is suspended for the same reason; §14's *substance*
+(branch, small diff, land it) still holds. Owner wants sub-agents used (§15 mapping).
 
 ## Current task
-None in flight. Next: (1) DONE — account B integrated 16 REGIONAL publications (2 research
-agents + feedcheck run 29776432687; 16/21 alive) + 2 Maramureș papers as zonal; regional no
-longer an empty seed; (2) raise `LOCAL_GOLD_LIMIT` past 35 now that fetch is parallel; (3) `tools/feed_check.py` still reimplements RSS fetching instead of calling
-`_fetch_one`, so it will keep reporting 429 on sources the pipeline now retries successfully —
-same class of bug as the `sitemap_news` false positive fixed today.
-`track-cost-per-slice` (Devin, 2026-07-20) is on no branch local or remote — never started.
+None in flight. Open, in priority order:
+1. **Ghidurile publica cifre neverificate.** PR #85 removed the false "✅ Verificat" label, so
+   the pages are now honest, but salariul minim / pensia minima / alocatia copiilor still
+   carry placeholder values and `sursa_url` pointing at the mmuncii.ro homepage. NEEDS THE
+   OWNER: this sandbox cannot reach RO domains. Setting `verificat: true` now requires a
+   deep-link source URL, so the fix cannot be faked.
+2. **Geographic taxonomy may be leaking.** A Swiss village ("Satul elvețian Albinen") is filed
+   under `regional`, which means Romanian historical regions. Sub-agent auditing the mechanism
+   and the real misclassification rate 2026-07-25 — measure before touching anything.
+3. Raise `LOCAL_GOLD_LIMIT` past 35 now that fetch is parallel.
+4. `tools/feed_check.py` still reimplements RSS fetching instead of calling `_fetch_one`, so
+   it reports 429 on sources the pipeline now retries successfully.
+
+## SETTLED — do not re-litigate
+- **`piataauto` STAYS (owner, 2026-07-25): "sub nicio formă nu îl scoți, e f ok".** History
+  that misleads: PR #63 (2026-07-18) removed it as dead, but `18ce032` had switched it to
+  Google News sitemap a day earlier, so #63 deleted an already-replaced line and the source
+  survived. It now produces (3 appearances as a source). The old "remove piataauto" instruction
+  is VOID — it was premised on the source being dead, and it no longer is.
 
 ## EXECUTOR ROUTE IS UNRELIABLE — measured 2026-07-24
 OpenCode was handed `specs/fetch-429-retry.md` (premise-verified spec, 4 test cases, explicit
@@ -27,6 +47,16 @@ models. **Before delegating anything to OpenCode again, verify the model actuall
 a throwaway task.** The 8 merges of 2026-07-19/20 are no longer evidence the route works.
 
 ## Last relevant commits
+- **`c98624f` — PR #85 MERGED 2026-07-25.** The guides shipped "Verificat: 2026-01-01" over
+  placeholder figures because the warning lived in a YAML *comment*, invisible to the parser.
+  `verificat` is now a required bool; while false the label goes, a warning appears, the index
+  counts unconfirmed guides, cards read "Neconfirmat". `verificat: true` additionally demands a
+  source URL with a path — a ministry homepage proves an address was typed, not that a figure
+  was checked. Same PR: scroll affordance for the category menu (805px hidden at 390px, and the
+  invisible entries were Regional/Zonal/Local), the shared work/cost journal
+  (`specs/metrics.csv` + `tools/log_slice.py`), and a real contrast fix — breadcrumb separators
+  used a *line* token as text colour, 1.5:1 vs the required 4.5:1, on pages `tools/audit.sh`
+  never visits. 118 tests pass; pa11y 0 errors across six page types.
 - `feat/parallel-fetch` MERGED (febabdd) — verdict was FIX, not clean MERGE. Executor's
   `8d670b7` parallelized `fetch_all` (ThreadPoolExecutor, `FETCH_WORKERS` default 8, `=1`
   forces sequential; `pool.map` preserves SOURCES order, so the AI budget priority survives).
@@ -82,7 +112,9 @@ The retry itself stays — it is correct for genuinely transient refusals, just 
 ## Next steps
 - SEO: NO gaps. Verified in code 2026-07-24 (`article.html:5`, `render.py:177`, `render.py:826`,
   landed 2026-06-21 `82ea411`). CLAUDE.md §11 was right, this file was stale. Do NOT re-audit.
-- Cross-account: `/handoff` writes the session journal + refreshes this file. Run it at the
-  75% usage alert, BEFORE switching accounts. Account B works on `claude/*` branches, never
-  merges to main (CLAUDE.md §14: one writer on main).
-- Tasks parked for account B: see `TASKS-B.md` in the workspace repo.
+- Cross-account handoff is SUSPENDED while account A is inactive (see operating mode above).
+  When A returns: `/handoff` writes the session journal + refreshes this file, run at the 75%
+  usage alert BEFORE switching. `TASKS-B.md` in the workspace repo still holds parked tasks.
+- Cost, measured over 16 slices (`COORD-DASHBOARD.md`): solo 23 tokens/100 lines, sub-agents
+  238, CI 29. **Actions minutes are free on a public repo**, so CI is the cheapest executor,
+  not the most expensive — push verification that needs the network into a workflow.
