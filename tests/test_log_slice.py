@@ -127,3 +127,15 @@ def test_pipe_in_notes_escaped_so_markdown_table_survives(sandbox):
     log_slice.report()
     text = open(log_slice.REPORT, encoding="utf-8").read()
     assert "a \\| b" in text
+
+
+def test_report_carries_generation_timestamp(sandbox):
+    """Fara marca de timp, un raport de acum trei zile arata identic cu unul regenerat acum —
+    exact reclamatia proprietarului („nu e live, datele sunt de ieri"), imposibil de verificat."""
+    from datetime import datetime, timezone
+    log_slice.append(_Args())
+    log_slice.report()
+    text = open(log_slice.REPORT, encoding="utf-8").read()
+    assert "Generat:" in text and "UTC" in text
+    assert datetime.now(timezone.utc).strftime("%Y-%m-%d") in text
+    assert "ultimul slice raportat:" in text

@@ -15,3 +15,8 @@ date,account,slice,approach,executor_branch,diff_lines,duration_min,tokens_k,not
 2026-07-25,B,subnav-scroll-hint,solo,,12,,9,meniul de categorii: 805px ascunsi pe mobil fara niciun indiciu; degrade la margine
 2026-07-25,B,ghiduri-neverificate,solo,,150,,32,3 ghiduri afisau ✅Verificat peste valori placeholder; steag verificat + avertisment + breadcrumb 1.5:1
 2026-07-25,B,review-fixes-85,solo,,90,,14,"review CodeRabbit: test fail-open inchis, limita 70, gramatica; regula link exact la verificat true"
+2026-07-25,B,ci-reviewer-read-access,solo,,9,,18,PR #86: reviewerii Claude picau pe ORICE PR - allowed-tools fara Read/Grep; 5 refuzuri -> 0
+2026-07-25,B,cadence-docs-si-ci-nonblocking,solo,,37,,26,"PR #88: CLAUDE.md zicea cron 30min, real 13 */2; reviewerii nu mai blocheaza PR pe cota epuizata"
+2026-07-25,B,surse-catalog-complet,agent,claude/sources-catalog,225,,139,"PR #89: /surse/ arata 2 linkuri externe pe live; acum 189 surse, 121 primarii. Cost agent MASURAT"
+2026-07-25,B,ui-dark-subnav-manifest,agent,claude/ui-shell-fixes,41,,160,"PR #91: --ink-3 pica contrastul in dark, 305 erori pa11y ascunse; subnav sticky; manifest + cache-bust"
+2026-07-25,B,primarie-moarta-tacuta,ci,,4,,11,PR #90: feedcheck x2 confirma pl_vaslui_tacuta 403 WAF; slotul merge la pl_botosani_pomarla (viu)
