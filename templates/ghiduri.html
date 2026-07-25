@@ -9,7 +9,17 @@
 </nav>
 
 <h1 class="section-title">📌 Ghiduri</h1>
+{# Promisiunea se potriveste cu starea reala a datelor. Cat timp exista ghiduri neconfirmate,
+   pagina NU spune „verificate" — altfel eticheta ar contrazice continutul. #}
+{% if n_neverificate %}
+<p class="utility-index-intro">Informații practice, cu sursa oficială citată pentru fiecare valoare. Valorile se modifică într-un singur loc și se propagă automat în tot site-ul.</p>
+<p class="utility-unverified" role="note">
+  <strong>{{ n_neverificate }} din {{ n_ghiduri }} {{ 'ghid are valori neconfirmate' if n_neverificate == 1 else 'ghiduri au valori neconfirmate' }}.</strong>
+  Cifrele lor nu au fost încă verificate pe sursa oficială și sunt marcate ca atare. Confirmă-le la sursă înainte de a te baza pe ele.
+</p>
+{% else %}
 <p class="utility-index-intro">Informații practice, actualizate și verificate. Fiecare ghid citează sursa oficială și data ultimei verificări. Valorile se modifică într-un singur loc și se propagă automat în tot site-ul.</p>
+{% endif %}
 
 {% for cat_key, cat_name in categorii.items() %}
   {% set cat_ents = entities_by_cat.get(cat_key, []) %}
@@ -21,7 +31,11 @@
       <span class="utility-card-icon">{{ categorii_icon.get(cat_key, '📌') }}</span>
       <span class="utility-card-title">{{ ent.nume }}</span>
       <span class="utility-card-desc">{{ ent.valoare_curenta.descriere_lunga | truncate(100, False, '…') }}</span>
+      {% if ent.verificat %}
       <span class="utility-card-updated">Verificat: {{ ent.ultima_verificare }}</span>
+      {% else %}
+      <span class="utility-card-updated is-unverified">Neconfirmat</span>
+      {% endif %}
     </a>
     {% endfor %}
   </div>

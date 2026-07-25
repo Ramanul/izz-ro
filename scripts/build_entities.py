@@ -7,6 +7,10 @@ Reguli nenegociabile:
 - fără sursă → nu se publică
 - istoric e append-only
 - ultima_verificare e obligatoriu
+- `verificat` e obligatoriu ȘI explicit bool: prezența unui sursa_url dovedea doar că
+  cineva a scris o adresă, nu că cifrele au fost confruntate cu ea. Un câmp care lipsește
+  nu poate deveni „verificat" din omisiune — asta ținea trei ghiduri cu valori placeholder
+  publicate sub eticheta „✅ Verificat".
 """
 import json
 import os
@@ -25,6 +29,7 @@ REQUIRED = (
     "categorie_ghid",
     "valoare_curenta",
     "ultima_verificare",
+    "verificat",
 )
 REQUIRED_VAL: tuple[str, ...] = (
     "act_normativ",
@@ -53,6 +58,9 @@ def validate(ent: dict) -> list[str]:
         errors.append(f"[{eid}] tip invalid: {ent.get('tip')}. Valid: {', '.join(sorted(VALID_TIPURI))}")
     if ent.get("categorie_ghid") not in CATEGORII_GHID:
         errors.append(f"[{eid}] categorie_ghid invalidă: {ent.get('categorie_ghid')}")
+    if "verificat" in ent and not isinstance(ent.get("verificat"), bool):
+        errors.append(f"[{eid}] verificat trebuie să fie true sau false, nu {ent.get('verificat')!r} "
+                      "(un șir precum 'da' e adevărat în Python și ar publica date neverificate)")
     vc = ent.get("valoare_curenta") or {}
     for field in REQUIRED_VAL:
         if not vc.get(field):

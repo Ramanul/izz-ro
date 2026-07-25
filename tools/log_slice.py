@@ -69,6 +69,15 @@ def _rows() -> list:
         return list(csv.DictReader(fh))
 
 
+def _scurt(text: str, n: int = 70) -> str:
+    """Taie la ultima limita de cuvant, nu la mijloc: „...datele Actio" arata a fisier stricat."""
+    if len(text) <= n:
+        return text
+    taiat = text[:n - 1]
+    spatiu = taiat.rfind(" ")
+    return (taiat[:spatiu] if spatiu > n // 2 else taiat).rstrip() + "…"
+
+
 def _cell(v) -> str:
     """Un camp de CSV pus intr-un tabel markdown: `|` inchide celula, iar o valoare
     multilinie (CSV le accepta) creeaza randuri noi si sparge tabelul."""
@@ -143,7 +152,7 @@ def report() -> int:
         out.append(f"| {_cell(r.get('date'))} | {_cell(r.get('account'))} "
                    f"| {_cell(r.get('slice'))} | {_cell(r.get('approach'))} "
                    f"| {_cell(r.get('diff_lines'))} | {_cell(r.get('tokens_k'))} "
-                   f"| {_cell(r.get('notes'))[:70]} |")
+                   f"| {_scurt(_cell(r.get('notes')))} |")
 
     out.append("\n---\n")
     out.append("## Ce costa efectiv\n")

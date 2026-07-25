@@ -39,9 +39,21 @@
     {% endif %}
     <p class="utility-meta">
       <span>🔗 Sursă: <a href="{{ ent.valoare_curenta.sursa_url }}" target="_blank" rel="noopener noreferrer">{{ ent.valoare_curenta.sursa_url | domain_from_url }}</a></span>
+      {% if ent.verificat %}
       <span>✅ Verificat: {{ ent.ultima_verificare }}</span>
+      {% endif %}
     </p>
   </div>
+
+  {# Fara verificare reala, cifrele NU se dau drept confirmate: sunt sume si termene dupa care
+     cineva isi face un calcul. Avertismentul sta langa valoare, nu in subsol. #}
+  {% if not ent.verificat %}
+  <p class="utility-unverified" role="note">
+    <strong>Valori neconfirmate.</strong> Cifrele de mai sus nu au fost încă verificate pe sursa
+    oficială. Nu le folosi ca bază pentru o decizie — confirmă-le la
+    <a href="{{ ent.valoare_curenta.sursa_url }}" target="_blank" rel="noopener noreferrer">{{ ent.valoare_curenta.sursa_url | domain_from_url }}</a>.
+  </p>
+  {% endif %}
 
   {# Istoric #}
   {% if ent.istoric %}

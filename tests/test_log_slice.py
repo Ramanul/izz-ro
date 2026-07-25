@@ -96,6 +96,23 @@ def test_same_day_rows_are_newest_first(sandbox):
     assert text.index("| nou ") < text.index("| mijloc ") < text.index("| vechi ")
 
 
+def test_long_notes_are_cut_at_a_word_boundary(sandbox):
+    """Trunchierea oarba lasa cioburi de tip „datele Actio" si raportul pare stricat."""
+    log_slice.append(_Args(notes="cuvant " * 20 + "coada"))
+    log_slice.report()
+    rand = [ln for ln in open(log_slice.REPORT, encoding="utf-8") if ln.startswith("| 2")][0]
+    nota = rand.split("|")[-2].strip()
+    assert nota.endswith("…")
+    assert not nota[:-1].rstrip().endswith("cuv"), "taiat prin mijlocul cuvantului"
+    assert len(nota) <= 71
+
+
+def test_short_notes_are_left_alone(sandbox):
+    log_slice.append(_Args(notes="scurt si intreg"))
+    log_slice.report()
+    assert "| scurt si intreg |" in open(log_slice.REPORT, encoding="utf-8").read()
+
+
 def test_multiline_notes_do_not_break_the_table(sandbox):
     log_slice.append(_Args(notes="prima linie\na doua linie"))
     log_slice.report()

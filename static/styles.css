@@ -432,7 +432,11 @@ picture { display: contents; }
 }
 .breadcrumbs a { color: var(--ink-3); text-decoration: underline; }
 .breadcrumbs a:hover { color: var(--gold-strong); }
-.breadcrumbs .sep { color: var(--line-strong); user-select: none; }
+/* --line-strong e un token de HAIRLINE; folosit ca text dadea 1.5:1 (WCAG cere 4.5:1).
+   --ink-3 e tokenul de meta discret, deja calibrat pentru text. Gasit ruland pa11y pe
+   /ghiduri/ — auditul standard atinge doar home si un articol, deci breadcrumbs de aici
+   n-au fost masurate niciodata. */
+.breadcrumbs .sep { color: var(--ink-3); user-select: none; }
 
 /* ------------------------------------------------- Paginare --- */
 .pagination {
@@ -629,5 +633,15 @@ picture { display: contents; }
 .related-news-list a:hover { color: var(--gold-strong); }
 .utility-value-sec { font-family: var(--font-display); font-size: var(--fs-lg); font-weight: 700; color: var(--ink); margin: var(--s-5) 0; }
 .utility-note { font-size: var(--fs-xs); color: var(--ink-2); margin: var(--s-5) 0 0; }
+/* Valori inca neconfirmate pe sursa oficiala. Trebuie sa se vada langa cifra, nu in subsol —
+   sunt sume dupa care cineva isi face un calcul. Bara aurie in loc de rosu: e o rezerva
+   onesta, nu o eroare, si ramane in paleta. */
+.utility-unverified {
+  border-left: 3px solid var(--gold); background: var(--gold-wash);
+  padding: var(--s-13) var(--s-21); margin: var(--s-21) 0;
+  font-size: var(--fs-xs); color: var(--ink-2); max-width: var(--measure);
+}
+.utility-unverified strong { color: var(--ink); }
+.utility-card-updated.is-unverified { color: var(--gold-strong); font-weight: 700; }
 .btn-preset { font-family: var(--font-mono); font-size: var(--fs-eyebrow); padding: 4px 10px; border: 1px solid var(--line-strong); border-radius: var(--radius); background: var(--paper); cursor: pointer; color: var(--ink-2); }
 .btn-preset:hover { background: var(--gold); color: #fff; border-color: var(--gold); }
