@@ -8,13 +8,36 @@ from . import config
 STATE_PATH = os.path.join(config.ROOT, "data", "articles.json")
 
 
+def _resync_pinned(articles: list) -> list:
+    """Readuce articolele vechi pe rubrica geografica pe care o are ACUM sursa lor.
+
+    Axa geografica e decisa de sursa, nu de articol (vezi process._resolve_category).
+    Dar articolele deja procesate isi pastreaza categoria in stare, iar categoria se
+    recalculeaza doar la bump de PROMPT_VERSION. Deci o rearanjare de config -- mutarea
+    ziarelor judetene din 'local' in 'zonal' -- lasa in urma articole pe rubrica veche,
+    care nu se repara singure niciodata: 131 de articole stateau asa la 2026-07-25.
+    Sursele scoase din config isi pastreaza categoria; nu avem de unde sti alta.
+    """
+    pinned = getattr(config, "PINNED_CATEGORIES", set())
+    for art in articles:
+        sursa = config.SOURCES.get(art.get("source") or "")
+        if not sursa:
+            continue
+        actuala = sursa.get("category")
+        # Doar in interiorul axei geografice: un articol pe care AI-ul l-a pus pe o tema
+        # (sport, politic) de la o sursa netematica nu e treaba acestei functii.
+        if actuala in pinned and art.get("category") in pinned and art["category"] != actuala:
+            art["category"] = actuala
+    return articles
+
+
 def load() -> list:
     if not os.path.exists(STATE_PATH):
         return []
     try:
         with open(STATE_PATH, "r", encoding="utf-8") as fh:
             data = json.load(fh)
-        return data if isinstance(data, list) else []
+        return _resync_pinned(data) if isinstance(data, list) else []
     except (json.JSONDecodeError, OSError):
         return []
 
