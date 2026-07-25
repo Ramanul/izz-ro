@@ -24,11 +24,17 @@ def stare(tmp_path, monkeypatch):
 
 
 def _sursa_geo():
-    """O sursa reala aflata pe axa geografica, ca testul sa nu inventeze config."""
+    """O sursa reala aflata pe axa geografica, ca testul sa nu inventeze config.
+
+    Cade, nu sare: fara nicio sursa geografica in config, testele de resync s-ar
+    dezactiva tacit exact cand configuratia e stricata — adica fix cand contau.
+    """
     for sid, s in config.SOURCES.items():
         if s.get("category") in config.PINNED_CATEGORIES:
             return sid, s["category"]
-    pytest.skip("nicio sursa geografica in config")
+    raise AssertionError(
+        f"config.SOURCES nu are nicio sursa pe axa geografica "
+        f"({sorted(config.PINNED_CATEGORIES)}) — configuratie stricata, nu motiv de skip")
 
 
 def test_articolul_ramas_pe_rubrica_veche_e_readus(stare):
