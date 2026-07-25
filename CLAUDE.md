@@ -145,7 +145,20 @@ Context: a correct CSS fix was reported "rezolvat" while the owner still saw the
 3. **Three distinct states — never conflate them, and use the exact words:**
    - "**reparat în cod**" = the diff is written.
    - "**verificat local**" = both roles above passed on the built site here.
-   - "**confirmat pe live**" = the deployed site shows it fixed. Only I (owner) or the live `smoke_live.py` can reach izz.ro — the sandbox cannot. So Claude MUST NOT say "rezolvat / gata / done" for a user-visible issue. The most it may claim on its own is **"reparat + verificat local; rămâne de confirmat pe live după deploy"**, and it states plainly what the owner should check. "Done" is reserved for after live confirmation.
+   - "**confirmat pe live**" = the deployed site shows it fixed.
+     **MEASURED CORRECTION 2026-07-25 — the old "the sandbox cannot reach izz.ro" is FALSE here.**
+     From the Claude Code web sandbox: `https://izz.ro/` → HTTP 200 with real content, and every
+     PR gets a Cloudflare branch preview (`https://<branch>.izz-ro.pages.dev/`) that is also
+     reachable. Both were used to prove a before/after on the real deploy: live `/surse/` served
+     9,804 bytes with 2 external links and zero "Primăria", the preview served 39,262 bytes with
+     189 links and 121 primării; live manifest `name` was still `izz.ro — Zero Zgomot` while the
+     preview served `izz.ro`. News sites stay blocked by the proxy — that limit is real and
+     separate. **So Claude CAN reach the third state now**, and must actually do it before saying
+     "gata": fetch the deployed URL, assert the exact symptom is gone, quote the response.
+     Always cache-bust (`?cb=$(date +%s)`) — a plain request can hit a cached edge copy.
+     If a future sandbox genuinely cannot reach it, say so with the failing command, and fall back
+     to **"reparat + verificat local; rămâne de confirmat pe live după deploy"**. What has not
+     changed: never say "rezolvat / gata / done" for a user-visible issue on code evidence alone.
 4. **When you cannot test something, say so explicitly** (which role, why) instead of implying it passed. Honesty about a gap beats a confident false "gata".
 
 This overrides any earlier phrasing that let "committed/rendered" stand in for "fixed for the user".
