@@ -1,5 +1,288 @@
 [
   {
+    "url": "https://ziaruldeiasi.ro/stiri/nicusor-dan-o-noua-drona-a-fost-doborata-de-un-avion-f-16-in-zona-sulina-chilia-ancheta-confirma-ca-cea-de-vineri-era-de-tip-shahed--1879459.html",
+    "original_link": "https://www.ziaruldeiasi.ro/stiri/nicusor-dan-o-noua-drona-a-fost-doborata-de-un-avion-f-16-in-zona-sulina-chilia-ancheta-confirma-ca-cea-de-vineri-era-de-tip-shahed--1879459.html",
+    "source": "ziaruldeiasi",
+    "source_name": "Ziarul de Iași",
+    "source_lang": "ro",
+    "title": "Avion F-16 a doborât o dronă în zona Sulina–Chilia",
+    "category": "zonal",
+    "published": "2026-07-26T15:17:37.009928+00:00",
+    "model": "B",
+    "teaser": "Președintele Nicușor Dan a confirmat interceptarea și doborârea unei drone în zona Sulina-Chilia de către un aparat F-16, precizând că un dispozitiv similar căzut anterior era de fabricație rusă, de tip Shahed.",
+    "entities": [
+      "Nicușor Dan",
+      "Sulina",
+      "Chilia"
+    ],
+    "icon": "plane",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://ziaruldeiasi.ro/stiri/accident-in-pacurari-un-curier-glovo-a-fost-lovit-de-un-autoturism--1879532.html",
+    "original_link": "https://www.ziaruldeiasi.ro/stiri/accident-in-pacurari-un-curier-glovo-a-fost-lovit-de-un-autoturism--1879532.html",
+    "source": "ziaruldeiasi",
+    "source_name": "Ziarul de Iași",
+    "source_lang": "ro",
+    "title": "Curier Glovo lovit de o mașină în Păcurari",
+    "category": "zonal",
+    "published": "2026-07-26T15:17:37.009755+00:00",
+    "model": "B",
+    "teaser": "Un accident rutier a avut loc duminică în intersecția de la Lukoil din cartierul Păcurari, municipiul Iași, unde un autoturism a acroșat un curier pe bicicletă sau scooter care efectua livrări.",
+    "entities": [
+      "Păcurari",
+      "Iași",
+      "Glovo"
+    ],
+    "icon": "car",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://zcj.ro/eveniment/barbat-disparut-din-cluj-napoca-apelati-112-daca-l-ati-vazut--299167.html",
+    "original_link": "https://zcj.ro/eveniment/barbat-disparut-din-cluj-napoca-apelati-112-daca-l-ati-vazut--299167.html",
+    "source": "zcj",
+    "source_name": "Ziua de Cluj",
+    "source_lang": "ro",
+    "title": "Poliția din Cluj-Napoca caută un bărbat de 35 de ani dispărut",
+    "category": "zonal",
+    "published": "2026-07-26T15:14:00+00:00",
+    "model": "B",
+    "teaser": "Oamenii legii solicită sprijinul populației prin apel la numărul 112 pentru găsirea unui bărbat în vârstă de 35 de ani care a părăsit voluntar locuința și nu s-a mai întors.",
+    "entities": [
+      "Cluj-Napoca"
+    ],
+    "icon": "alert-triangle",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://gsp.ro/sporturi/tenis/tamara-korpatsch-titlu-hamburg-964476.html",
+    "original_link": "https://www.gsp.ro/sporturi/tenis/tamara-korpatsch-titlu-hamburg-964476.html",
+    "source": "gsp",
+    "source_name": "GSP",
+    "source_lang": "ro",
+    "title": "Tamara Korpatsch a cucerit trofeul la turneul WTA de la Hamburg",
+    "category": "sport",
+    "published": "2026-07-26T14:56:57+00:00",
+    "model": "C",
+    "sources": [
+      {
+        "name": "GSP",
+        "url": "https://www.gsp.ro/sporturi/tenis/tamara-korpatsch-titlu-hamburg-964476.html"
+      },
+      {
+        "name": "Digi Sport",
+        "url": "https://www.digisport.ro/tenis/tamara-korpatsch-a-castigat-wta-hamburg-4399833"
+      }
+    ],
+    "first_source": "GSP",
+    "synthesis": "Jucătoarea germană de tenis Tamara Korpatsch și-a adjudecat al doilea titlu din carieră, primul după cel obținut la Cluj-Napoca în 2023. Sportiva în vârstă de 31 de ani s-a impus în finala competiției din țara sa natală în fața Annei Bondar, scor 6-3, 6-3, aducând o mare bucurie suporterilor prezenți în tribune.",
+    "entities": [
+      "Tamara Korpatsch",
+      "Anna Bondar",
+      "Hamburg"
+    ],
+    "icon": "trophy",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://zcj.ro/politica/sondaj-curs-aur-favorit-in-intentia-de-vot-ce-scoruri-au-psd-pnl-si-usr-80-dintre-romani-sunt-nemultumiti-de-directia-tarii--299165.html",
+    "original_link": "https://zcj.ro/politica/sondaj-curs-aur-favorit-in-intentia-de-vot-ce-scoruri-au-psd-pnl-si-usr-80-dintre-romani-sunt-nemultumiti-de-directia-tarii--299165.html",
+    "source": "zcj",
+    "source_name": "Ziua de Cluj",
+    "source_lang": "ro",
+    "title": "AUR conduce în intențiile de vot, iar majoritatea românilor resping direcția țării",
+    "category": "zonal",
+    "published": "2026-07-26T14:52:00+00:00",
+    "model": "B",
+    "teaser": "Un sondaj CURS arată că partidul AUR este favorit în opțiunile electorale ale românilor, în timp ce opt din zece cetățeni se declară nemulțumiți de traiectoria actuală a statului.",
+    "entities": [
+      "AUR",
+      "CURS"
+    ],
+    "icon": "percentage",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://tion.ro/romania/tinerii-care-se-angajeaza-pentru-prima-data-pot-primi-pana-la-1-250-de-lei-pe-luna-guvernul-a-aprobat-normele-de-aplicare-2322837",
+    "original_link": "https://www.tion.ro/romania/tinerii-care-se-angajeaza-pentru-prima-data-pot-primi-pana-la-1-250-de-lei-pe-luna-guvernul-a-aprobat-normele-de-aplicare-2322837/?utm_source=rss&utm_medium=referral&utm_campaign=hiraggregator",
+    "source": "tion",
+    "source_name": "Timiș Online",
+    "source_lang": "ro",
+    "title": "Guvernul a aprobat normele pentru primele de angajare acordate tinerilor",
+    "category": "zonal",
+    "published": "2026-07-26T14:45:57+00:00",
+    "model": "B",
+    "teaser": "Tinerii care se angajează pentru prima dată și persoanele vulnerabile vor primi până la 1.250 de lei lunar, după ce Executivul a aprobat normele de aplicare ale OUG 11/2026 pentru sprijinirea ocupării forței de muncă.",
+    "entities": [
+      "Guvernul României"
+    ],
+    "icon": "percentage",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://tion.ro/stirile-judetului-timis/lucrarile-de-modernizare-de-pe-dn-59b-avanseaza-ce-se-face-acum-pe-tronsoanele-deta-livezile-si-livezile-cruceni-2322825",
+    "original_link": "https://www.tion.ro/stirile-judetului-timis/lucrarile-de-modernizare-de-pe-dn-59b-avanseaza-ce-se-face-acum-pe-tronsoanele-deta-livezile-si-livezile-cruceni-2322825/?utm_source=rss&utm_medium=referral&utm_campaign=hiraggregator",
+    "source": "tion",
+    "source_name": "Timiș Online",
+    "source_lang": "ro",
+    "title": "Continuă lucrările de modernizare pe drumul național DN 59B în Timiș",
+    "category": "zonal",
+    "published": "2026-07-26T14:43:44+00:00",
+    "model": "B",
+    "teaser": "Direcția Regională de Drumuri și Poduri Timișoara desfășoară lucrări de infrastructură rutieră pe sectoarele Deta - Livezile și Livezile - Cruceni, continuând modernizarea șoselei din județul Timiș.",
+    "entities": [
+      "DN 59B",
+      "Timiș",
+      "DRDP Timișoara"
+    ],
+    "icon": "car",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://pressalert.ro/2026/07/femeie-ranita-in-urma-unui-accident-intre-doua-masini-in-timisoara",
+    "original_link": "https://www.pressalert.ro/2026/07/femeie-ranita-in-urma-unui-accident-intre-doua-masini-in-timisoara/",
+    "source": "pressalert",
+    "source_name": "PressAlert Timișoara",
+    "source_lang": "ro",
+    "title": "Femeie rănită într-un accident rutier în Timișoara",
+    "category": "zonal",
+    "published": "2026-07-26T14:40:42+00:00",
+    "model": "B",
+    "teaser": "O persoană de sex feminin a fost transportată la spital după ce autoturismul în care se afla sau în care a fost proiectată a suferit un impact violent pe Calea Stan Vidrighin din Timișoara, implicând doi șoferi.",
+    "entities": [
+      "Timișoara",
+      "Calea Stan Vidrighin"
+    ],
+    "icon": "car",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://gsp.ro/sporturi/tenis/lilli-tagger-primul-titlu-cariera-praga-964473.html",
+    "original_link": "https://www.gsp.ro/sporturi/tenis/lilli-tagger-primul-titlu-cariera-praga-964473.html",
+    "source": "gsp",
+    "source_name": "GSP",
+    "source_lang": "ro",
+    "title": "Jucătoarea Lilli Tagger a cucerit primul său titlu WTA la turneul din Praga",
+    "category": "sport",
+    "published": "2026-07-26T14:36:20+00:00",
+    "model": "C",
+    "sources": [
+      {
+        "name": "GSP",
+        "url": "https://www.gsp.ro/sporturi/tenis/lilli-tagger-primul-titlu-cariera-praga-964473.html"
+      },
+      {
+        "name": "Digi Sport",
+        "url": "https://www.digisport.ro/tenis/a-castigat-primul-titlu-wta-al-carierei-la-doar-18-ani-lilli-tagger-e-noua-campioana-de-la-wta-praga-4399813"
+      }
+    ],
+    "first_source": "GSP",
+    "synthesis": "Sportiva austriacă Lilli Tagger, în vârstă de 18 ani, a obținut primul trofeu WTA din carieră. În finala competiției de categorie 250 desfășurată la Praga, aceasta a învins-o în două seturi, scor 7-6(3), 6-2, pe Daria Snigur. Meciul decisiv a durat o oră și jumătate, încununând un parcurs excelent al tinerei campionițe pe parcursul turneului.",
+    "entities": [
+      "Lilli Tagger",
+      "Praga",
+      "Daria Snigur"
+    ],
+    "icon": "trophy",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://sfatulparintilor.ro/familie-parinti/actualitate/sfantul-pantelimon-doctor-fara-arginti-traditii-obiceiuri-superstitii",
+    "original_link": "https://sfatulparintilor.ro/familie-parinti/actualitate/sfantul-pantelimon-doctor-fara-arginti-traditii-obiceiuri-superstitii/",
+    "source": "sfatulparintilor",
+    "source_name": "Sfatul Părinților",
+    "source_lang": "ro",
+    "title": "Românii îl prăznuiesc pe Sfântul Pantelimon pe 27 iulie",
+    "category": "cultura",
+    "published": "2026-07-26T14:23:00+00:00",
+    "model": "B",
+    "teaser": "Credincioșii îl cinstesc anual pe Sfântul Mucenic Pantelimon, cunoscut în traducerile populare și sub denumirea de Sfântul Ilie cel Mic sau ocrotitorul celor bolnavi.",
+    "entities": [
+      "Sfântul Pantelimon"
+    ],
+    "icon": "building-church",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://csid.ro/beauty/ingrijire-frumusete/ceramidele-si-rolul-lor-in-sanatatea-pielii-de-ce-sunt-considerate-unele-dintre-cele-mai-importante-ingrediente-din-produsele-de-ingrijire-21261489",
+    "original_link": "https://www.csid.ro/beauty/ingrijire-frumusete/ceramidele-si-rolul-lor-in-sanatatea-pielii-de-ce-sunt-considerate-unele-dintre-cele-mai-importante-ingrediente-din-produsele-de-ingrijire-21261489/",
+    "source": "csid",
+    "source_name": "CSÎD",
+    "source_lang": "ro",
+    "title": "Ceramidele sunt ingrediente esențiale în cremele hidratante pentru sănătatea pielii",
+    "category": "sanatate",
+    "published": "2026-07-26T14:00:45+00:00",
+    "model": "B",
+    "teaser": "Dermatologii recomandă frecvent utilizarea ceramidelor în produsele cosmetice datorită beneficiilor majore pentru hidratarea și protecția barierei cutanate, conform specialiștilor în îngrijirea tenului.",
+    "entities": [
+      "ceramide"
+    ],
+    "icon": "pill",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://zcj.ro/politica/boc-la-inaugurarea-fabricii-teraplast-din-spania-acum-este-momentul-adevaratei-integrari-europene--299163.html",
+    "original_link": "https://zcj.ro/politica/boc-la-inaugurarea-fabricii-teraplast-din-spania-acum-este-momentul-adevaratei-integrari-europene--299163.html",
+    "source": "zcj",
+    "source_name": "Ziua de Cluj",
+    "source_lang": "ro",
+    "title": "Emil Boc a participat la deschiderea fabricii TeraPlast din Spania",
+    "category": "zonal",
+    "published": "2026-07-26T13:56:00+00:00",
+    "model": "B",
+    "teaser": "Primarul Clujului a marcat inaugurarea noii unități de producție TeraPlast Iberia pe teritoriul spaniol, subliniind relevanța extinderii capitalului românesc pe piața comunitară.",
+    "entities": [
+      "Emil Boc",
+      "TeraPlast",
+      "Spania"
+    ],
+    "icon": "building-factory",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://csid.ro/stiri-sanatate-frumusete-dieta/ar-putea-oamenii-sa-traiasca-pana-la-200-de-ani-ce-sugereaza-un-nou-studiu-despre-limitele-longevitatii-21260172",
+    "original_link": "https://www.csid.ro/stiri-sanatate-frumusete-dieta/ar-putea-oamenii-sa-traiasca-pana-la-200-de-ani-ce-sugereaza-un-nou-studiu-despre-limitele-longevitatii-21260172/",
+    "source": "csid",
+    "source_name": "CSÎD",
+    "source_lang": "ro",
+    "title": "Un studiu recent arată că oamenii ar putea trăi până la 200 de ani",
+    "category": "sanatate",
+    "published": "2026-07-26T13:00:30+00:00",
+    "model": "B",
+    "teaser": "Cercetătorii au publicat în revista NPJ Ageing un model teoretic care indică o limită a vieții umane între 146 și 194 de ani, în cazul controlului procesului de îmbătrânire.",
+    "entities": [
+      "NPJ Ageing"
+    ],
+    "icon": null,
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
     "url": "https://digi24.ro/stiri/actualitate/social/avertismentul-hidrologilor-debitul-dunarii-continua-sa-scada-iar-pe-unele-rauri-sunt-posibile-inundatii-locale-3878937",
     "original_link": "https://www.digi24.ro/stiri/actualitate/social/avertismentul-hidrologilor-debitul-dunarii-continua-sa-scada-iar-pe-unele-rauri-sunt-posibile-inundatii-locale-3878937",
     "source": "digi24",
@@ -27,6 +310,149 @@
       "Baziaș"
     ],
     "icon": "chart-line",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://zcj.ro/politica/incidentele-cu-drone-din-romania-ajung-la-comisia-europeana-europarlamentarii-pnl-cer-masuri-urgente--299162.html",
+    "original_link": "https://zcj.ro/politica/incidentele-cu-drone-din-romania-ajung-la-comisia-europeana-europarlamentarii-pnl-cer-masuri-urgente--299162.html",
+    "source": "zcj",
+    "source_name": "Ziua de Cluj",
+    "source_lang": "ro",
+    "title": "Europarlamentarii PNL solicită Bruxelles-ului măsuri stricte pentru frontiera de est",
+    "category": "zonal",
+    "published": "2026-07-26T12:43:00+00:00",
+    "model": "B",
+    "teaser": "Ca urmare a repetatelor pătrunderi ale dronelor pe teritoriul național, delegația PNL din Parlamentul European cere Comisiei Europene acțiuni rapide de securizare a graniței estice.",
+    "entities": [
+      "PNL",
+      "Bruxelles",
+      "Comisia Europeană"
+    ],
+    "icon": "shield",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://zcj.ro/life-and-style/piata-unirii-in-anii-1920-un-automobil-de-epoca-surprins-in-centrul-clujului--299161.html",
+    "original_link": "https://zcj.ro/life-and-style/piata-unirii-in-anii-1920-un-automobil-de-epoca-surprins-in-centrul-clujului--299161.html",
+    "source": "zcj",
+    "source_name": "Ziua de Cluj",
+    "source_lang": "ro",
+    "title": "Fotografie de arhivă cu Piața Unirii din Cluj în anii 1920",
+    "category": "zonal",
+    "published": "2026-07-26T12:23:00+00:00",
+    "model": "B",
+    "teaser": "O imagine istorică păstrată din perioada interbelică ilustrează centrul orașului Cluj-Napoca, surprinzând rare prezențe automobilistice în zona Pieței Unirii.",
+    "entities": [
+      "Cluj",
+      "Piața Unirii"
+    ],
+    "icon": "building-monument",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://csid.ro/beauty/ingrijire-frumusete/cum-poti-estompa-vergeturile-ce-functioneaza-cu-adevarat-si-ce-este-doar-un-mit-21258312",
+    "original_link": "https://www.csid.ro/beauty/ingrijire-frumusete/cum-poti-estompa-vergeturile-ce-functioneaza-cu-adevarat-si-ce-este-doar-un-mit-21258312/",
+    "source": "csid",
+    "source_name": "CSÎD",
+    "source_lang": "ro",
+    "title": "Tratamentele dermatologice pot estompa vergeturile, deși nu le elimină complet",
+    "category": "sanatate",
+    "published": "2026-07-26T12:00:01+00:00",
+    "model": "B",
+    "teaser": "Specialiștii în dermatologie explică cauzele apariției vergeturilor și prezintă metodele reale prin care acestea pot deveni mai puțin vizibile, demontând miturile din domeniu.",
+    "entities": [],
+    "icon": "stethoscope",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://spotmedia.ro/stiri/sport/canotaj-romania-a-cucerit-o-medalie-de-aur-si-doua-medalii-de-argint-la-campionatele-mondiale-u-23",
+    "original_link": "https://spotmedia.ro/stiri/sport/canotaj-romania-a-cucerit-o-medalie-de-aur-si-doua-medalii-de-argint-la-campionatele-mondiale-u-23",
+    "source": "spotmedia",
+    "source_name": "Spotmedia",
+    "source_lang": "ro",
+    "title": "România a obținut o medalie de aur și medalii de argint la Mondiale",
+    "category": "sport",
+    "published": "2026-07-26T12:00:00+00:00",
+    "model": "C",
+    "sources": [
+      {
+        "name": "Spotmedia",
+        "url": "https://spotmedia.ro/stiri/sport/canotaj-romania-a-cucerit-o-medalie-de-aur-si-doua-medalii-de-argint-la-campionatele-mondiale-u-23"
+      },
+      {
+        "name": "Dobrogea Online",
+        "url": "https://www.dobrogeaonline.ro/canotorii-romaniei-au-castigat-medalii-de-argint-si-bronz-la-mondialele-u-23-inclusiv-sportivi-de-la-csm-constanta/"
+      }
+    ],
+    "first_source": "Spotmedia",
+    "synthesis": "Sportivii români au obținut rezultate remarcabile la Campionatele Mondiale de canotaj Under-23 desfășurate în Germania, la Duisburg. Delegația României a cucerit o medalie de aur prin Bianca Ifteni la proba de schif simplu feminin, alături de mai multe medalii de argint și bronz în alte probe, confirmând valoarea școlii românești de canotaj.",
+    "entities": [
+      "România",
+      "Duisburg",
+      "Bianca Ifteni",
+      "CSM Constanța"
+    ],
+    "icon": "medal",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://zcj.ro/eveniment/bataie-ca-in-filme-in-floresti-trei-barbati-retinuti-dupa-un-conflict-cu-bate-si-cutite--299160.html",
+    "original_link": "https://zcj.ro/eveniment/bataie-ca-in-filme-in-floresti-trei-barbati-retinuti-dupa-un-conflict-cu-bate-si-cutite--299160.html",
+    "source": "zcj",
+    "source_name": "Ziua de Cluj",
+    "source_lang": "ro",
+    "title": "Trei bărbați au fost reținuți în urma unui conflict violent în Florești",
+    "category": "zonal",
+    "published": "2026-07-26T11:51:00+00:00",
+    "model": "B",
+    "teaser": "O altercație izbucnită între mai multe persoane în localitatea clujeană Florești s-a soldat cu doi răniți transportați la spital și trei suspecți reținuți de autorități.",
+    "entities": [
+      "Florești"
+    ],
+    "icon": "swords",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://zch.ro/accident-la-gura-secului-o-persoana-a-fost-transportata-la-spital",
+    "original_link": "https://zch.ro/accident-la-gura-secului-o-persoana-a-fost-transportata-la-spital/?utm_medium=Feed&utm_source=Syndication",
+    "source": "zch",
+    "source_name": "ZCH News",
+    "source_lang": "ro",
+    "title": "Accidente rutiere soldate cu victime transportate la spital în Neamț și Cluj",
+    "category": "regional",
+    "published": "2026-07-26T11:48:22+00:00",
+    "model": "C",
+    "sources": [
+      {
+        "name": "ZCH News",
+        "url": "https://zch.ro/accident-la-gura-secului-o-persoana-a-fost-transportata-la-spital/?utm_medium=Feed&utm_source=Syndication"
+      },
+      {
+        "name": "Ziua de Cluj",
+        "url": "https://zcj.ro/eveniment/accident-in-cluj-intre-doua-masini-sase-persoane-inclusiv-doi-copii-transportate-la-spital--299164.html"
+      }
+    ],
+    "first_source": "ZCH News",
+    "synthesis": "Două evenimente rutiere distincte au avut loc în țară. În zona Gura Secului din județul Neamț, o persoană a fost rănită și dusă la spital în urma unui impact. Un al doilea accident, produs în localitatea Dâmbu Mare din județul Cluj, s-a soldat cu rănirea a șase persoane, printre care doi minori, care au necesitat de asemenea îngrijiri medicale de specialitate.",
+    "entities": [
+      "Gura Secului",
+      "Vânători-Neamț",
+      "Dâmbu Mare",
+      "Cluj"
+    ],
+    "icon": "car",
     "processed_by": "gemini",
     "prompt_version": "v2-esenta",
     "featured": false
@@ -89,6 +515,23 @@
       "România"
     ],
     "icon": "chart-line",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://zcj.ro/sanatate/bautura-verii-gata-in-5-minute-smoothie-ul-racoritor-care-iti-da-energie-si-te-hidrateaza-in-zilele-caniculare--299159.html",
+    "original_link": "https://zcj.ro/sanatate/bautura-verii-gata-in-5-minute-smoothie-ul-racoritor-care-iti-da-energie-si-te-hidrateaza-in-zilele-caniculare--299159.html",
+    "source": "zcj",
+    "source_name": "Ziua de Cluj",
+    "source_lang": "ro",
+    "title": "Rețetă rapidă de smoothie energizant pentru zilele caniculare",
+    "category": "zonal",
+    "published": "2026-07-26T11:12:00+00:00",
+    "model": "B",
+    "teaser": "Un preparat simplu din fructe proaspete oferă hidratarea necesară și un aport consistent de energie în perioadele cu temperaturi ridicate, fiind gata în doar câteva minute.",
+    "entities": [],
+    "icon": "sun",
     "processed_by": "gemini",
     "prompt_version": "v2-esenta",
     "featured": false
@@ -306,6 +749,26 @@
     "featured": false
   },
   {
+    "url": "https://tion.ro/stirile-judetului-timis/saptamana-viitoare-incepe-city-celebration-de-ziua-timisoarei-vor-fi-zeci-de-activitati-si-concerte-gratuite-in-tot-orasul-2322813",
+    "original_link": "https://www.tion.ro/stirile-judetului-timis/saptamana-viitoare-incepe-city-celebration-de-ziua-timisoarei-vor-fi-zeci-de-activitati-si-concerte-gratuite-in-tot-orasul-2322813/?utm_source=rss&utm_medium=referral&utm_campaign=hiraggregator",
+    "source": "tion",
+    "source_name": "Timiș Online",
+    "source_lang": "ro",
+    "title": "Timișoara organizează Zilele Orașului cu zeci de evenimente gratuite",
+    "category": "zonal",
+    "published": "2026-07-26T10:03:43+00:00",
+    "model": "B",
+    "teaser": "Primăria Timișoara pregătește între 31 iulie și 3 august ediția City Celebration, oferind publicului spectacole, tururi ghidate, proiecții de film și ateliere interactive în mai multe cartiere din municipiu.",
+    "entities": [
+      "Timișoara",
+      "Primăria Timișoara"
+    ],
+    "icon": "music",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
     "url": "https://spotmedia.ro/stiri/sport/cristi-chivu-transfera-din-premier-league-inter-gata-sa-platesca-40-de-milioane-de-euro",
     "original_link": "https://spotmedia.ro/stiri/sport/cristi-chivu-transfera-din-premier-league-inter-gata-sa-platesca-40-de-milioane-de-euro",
     "source": "spotmedia",
@@ -373,6 +836,25 @@
     "featured": false
   },
   {
+    "url": "https://sfatulparintilor.ro/prescolari/rugaciuni-pentru-copii/acatist-sfantul-pantelimon-de-ce-e-bine-sa-l-citesti",
+    "original_link": "https://sfatulparintilor.ro/prescolari/rugaciuni-pentru-copii/acatist-sfantul-pantelimon-de-ce-e-bine-sa-l-citesti/",
+    "source": "sfatulparintilor",
+    "source_name": "Sfatul Părinților",
+    "source_lang": "ro",
+    "title": "Acatistul Sfântului Pantelimon este citit de credincioși pentru vindecare",
+    "category": "cultura",
+    "published": "2026-07-26T09:51:00+00:00",
+    "model": "B",
+    "teaser": "Biserica Ortodoxă îl menționează pe Sfântul Pantelimon printre cei mai cunoscuți tămăduitori și doctori fără de arginți, ale cărui scrieri sacre sunt frecvent rostite în rugăciuni.",
+    "entities": [
+      "Sfântul Pantelimon"
+    ],
+    "icon": "building-church",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
     "url": "https://newsbucovina.ro/actualitate/444733/sase-persoane-intre-care-doi-minori-la-spital-dupa-un-accident-la-pojorata",
     "original_link": "https://www.newsbucovina.ro/actualitate/444733/sase-persoane-intre-care-doi-minori-la-spital-dupa-un-accident-la-pojorata",
     "source": "newsbucovina",
@@ -433,6 +915,39 @@
       "Oana Țoiu"
     ],
     "icon": "plane",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://dobrogeanews.ro/evacuare-istorica-a-peste-220-mii-de-oameni-din-fata-focului-care-mistuie-tot-in-zona-bordeaux-franta",
+    "original_link": "https://www.dobrogeanews.ro/evacuare-istorica-a-peste-220-mii-de-oameni-din-fata-focului-care-mistuie-tot-in-zona-bordeaux-franta/?utm_source=rss&utm_medium=rss&utm_campaign=evacuare-istorica-a-peste-220-mii-de-oameni-din-fata-focului-care-mistuie-tot-in-zona-bordeaux-franta",
+    "source": "dobrogeanews",
+    "source_name": "DobrogeaNews",
+    "source_lang": "ro",
+    "title": "Incendii de vegetație devastatoare în Franța și Spania: sute de mii de oameni evacuați",
+    "category": "regional",
+    "published": "2026-07-26T09:13:13+00:00",
+    "model": "C",
+    "sources": [
+      {
+        "name": "DobrogeaNews",
+        "url": "https://www.dobrogeanews.ro/evacuare-istorica-a-peste-220-mii-de-oameni-din-fata-focului-care-mistuie-tot-in-zona-bordeaux-franta/?utm_source=rss&utm_medium=rss&utm_campaign=evacuare-istorica-a-peste-220-mii-de-oameni-din-fata-focului-care-mistuie-tot-in-zona-bordeaux-franta"
+      },
+      {
+        "name": "Spotmedia",
+        "url": "https://spotmedia.ro/stiri/eveniment/incendiile-din-franta-si-spania-peste-300-000-de-oameni-evacuati-flacarile-au-ajuns-la-15-km-de-bordeaux-care-ia-in-calcul-evacuarea-totala"
+      }
+    ],
+    "first_source": "DobrogeaNews",
+    "synthesis": "Valul de incendii forestiere extreme din Franța și Spania a impus evacuarea a peste 300.000 de persoane, dintre care 220.000 în regiunea franceză Gironde. Focul necontrolat, amplificat de secetă și temperaturi ridicate, a afectat zeci de mii de hectare și a ajuns în apropierea orașului Bordeaux. În Spania, situația a generat și prima victimă a actualului crisis, flăcările extinzându-se în mai multe provincii.",
+    "entities": [
+      "Bordeaux",
+      "Gironde",
+      "Franța",
+      "Spania"
+    ],
+    "icon": "flame",
     "processed_by": "gemini",
     "prompt_version": "v2-esenta",
     "featured": false
@@ -895,6 +1410,26 @@
     "featured": false
   },
   {
+    "url": "https://tion.ro/eveniment/un-bulgar-a-incercat-sa-dea-mita-20-de-euro-pentru-a-trece-vama-foeni-cu-buletinul-expirat-2322783",
+    "original_link": "https://www.tion.ro/eveniment/un-bulgar-a-incercat-sa-dea-mita-20-de-euro-pentru-a-trece-vama-foeni-cu-buletinul-expirat-2322783/?utm_source=rss&utm_medium=referral&utm_campaign=hiraggregator",
+    "source": "tion",
+    "source_name": "Timiș Online",
+    "source_lang": "ro",
+    "title": "Un cetățean bulgar a fost prins după ce a oferit mită la Vama Foeni",
+    "category": "zonal",
+    "published": "2026-07-26T07:46:33+00:00",
+    "model": "B",
+    "teaser": "Un șofer din Bulgaria este cercetat penal pentru dare de mită, după ce a încercat să ofere 20 de euro unui polițist de frontieră din Punctul Foeni pentru a trece granița cu documente expirate.",
+    "entities": [
+      "Vama Foeni",
+      "Bulgaria"
+    ],
+    "icon": "gavel",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
     "url": "https://bizbrasov.ro/2026/07/26/cod-galben-vijelii",
     "original_link": "https://bizbrasov.ro/2026/07/26/cod-galben-vijelii/",
     "source": "bizbrasov",
@@ -921,6 +1456,49 @@
       "Brașov"
     ],
     "icon": "cloud-storm",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://pressalert.ro/2026/07/cod-galben-de-ploi-si-vijelii-in-jumatatea-de-vest-a-tarii",
+    "original_link": "https://www.pressalert.ro/2026/07/cod-galben-de-ploi-si-vijelii-in-jumatatea-de-vest-a-tarii/",
+    "source": "pressalert",
+    "source_name": "PressAlert Timișoara",
+    "source_lang": "ro",
+    "title": "Cod galben de ploi torențiale și vijelii în vestul țării",
+    "category": "zonal",
+    "published": "2026-07-26T07:45:10+00:00",
+    "model": "B",
+    "teaser": "Meteorologii au emis o avertizare de cod galben valabilă luni în jumătatea vestică a României, anunțând instabilitate atmosferică accentuată, rafale puternice de vânt, vijelii și cantități însemnate de apă în regiuni precum Crișana, Banat și Maramureș.",
+    "entities": [
+      "Administrația Națională de Meteorologie",
+      "Banat",
+      "Crișana",
+      "Maramureș"
+    ],
+    "icon": "cloud-storm",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://pressalert.ro/2026/07/scm-politehnica-merge-in-cantonament-in-ungaria-handbalistii-alb-violeti-isi-stiu-primul-adversar-din-oficiale",
+    "original_link": "https://www.pressalert.ro/2026/07/scm-politehnica-merge-in-cantonament-in-ungaria-handbalistii-alb-violeti-isi-stiu-primul-adversar-din-oficiale/",
+    "source": "pressalert",
+    "source_name": "PressAlert Timișoara",
+    "source_lang": "ro",
+    "title": "SCM Politehnica Timișoara joacă împotriva lui Dinamo în Supercupă",
+    "category": "zonal",
+    "published": "2026-07-26T07:25:33+00:00",
+    "model": "B",
+    "teaser": "Echipa de handbal masculin SCM Politehnica Timișoara efectuează un cantonament în Ungaria și se pregătește pentru semifinala Supercupei României, unde va întâlni formația Dinamo București, reeditând finala trecută a Cupei.",
+    "entities": [
+      "SCM Politehnica Timișoara",
+      "Dinamo București",
+      "Ungaria"
+    ],
+    "icon": "ball-football",
     "processed_by": "gemini",
     "prompt_version": "v2-esenta",
     "featured": false
@@ -957,6 +1535,46 @@
       "Brașov"
     ],
     "icon": "cloud-storm",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://tion.ro/sanatate/toxiinfectiile-alimentare-un-risc-in-vacante-cum-le-recunosti-si-cand-e-cazul-sa-mergi-la-spital-2322768",
+    "original_link": "https://www.tion.ro/sanatate/toxiinfectiile-alimentare-un-risc-in-vacante-cum-le-recunosti-si-cand-e-cazul-sa-mergi-la-spital-2322768/?utm_source=rss&utm_medium=referral&utm_campaign=hiraggregator",
+    "source": "tion",
+    "source_name": "Timiș Online",
+    "source_lang": "ro",
+    "title": "Medicii avertizează asupra riscului de toxiinfecții alimentare în vacanțe",
+    "category": "zonal",
+    "published": "2026-07-26T07:18:12+00:00",
+    "model": "B",
+    "teaser": "Specialistul de la Spitalul CFR Timișoara recomandă măsuri stricte de igienă alimentară în sezonul cald, explicând că infecțiile pot genera deshidratare severă și impun uneori internarea pacienților afectați.",
+    "entities": [
+      "Spitalul CFR Timișoara"
+    ],
+    "icon": "building-hospital",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://tion.ro/stirile-judetului-timis/foto-cum-ar-putea-arata-zona-de-agrement-de-la-surduc-cj-timis-pregateste-licitatia-pentru-lucrari-2322759",
+    "original_link": "https://www.tion.ro/stirile-judetului-timis/foto-cum-ar-putea-arata-zona-de-agrement-de-la-surduc-cj-timis-pregateste-licitatia-pentru-lucrari-2322759/?utm_source=rss&utm_medium=referral&utm_campaign=hiraggregator",
+    "source": "tion",
+    "source_name": "Timiș Online",
+    "source_lang": "ro",
+    "title": "Consiliul Județean Timiș scoate la licitație amenajarea lacului Surduc",
+    "category": "zonal",
+    "published": "2026-07-26T07:11:51+00:00",
+    "model": "B",
+    "teaser": "Administrația județeană finalizează studiul de fezabilitate și pregătește lansarea licitației publice pentru proiectarea și execuția zonei de agrement turistice de pe malul lacului Surduc, potrivit președintelui Alfred Simonis.",
+    "entities": [
+      "Consiliul Județean Timiș",
+      "Lacul Surduc",
+      "Alfred Simonis"
+    ],
+    "icon": "trees",
     "processed_by": "gemini",
     "prompt_version": "v2-esenta",
     "featured": false
@@ -1073,6 +1691,27 @@
       "Serghii Krîvoșeenko"
     ],
     "icon": "flame",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://pressalert.ro/2026/07/inceput-de-saptamana-fara-apa-calda-pentru-mai-multi-timisoreni-anuntul-colterm",
+    "original_link": "https://www.pressalert.ro/2026/07/inceput-de-saptamana-fara-apa-calda-pentru-mai-multi-timisoreni-anuntul-colterm/",
+    "source": "pressalert",
+    "source_name": "PressAlert Timișoara",
+    "source_lang": "ro",
+    "title": "Întrerupere temporară a apei calde în Timișoara",
+    "category": "zonal",
+    "published": "2026-07-26T06:17:57+00:00",
+    "model": "B",
+    "teaser": "Colterm a anunțat sistarea furnizării apei calde și reci pentru consumatorii arondați punctului termic PT 98, localizați pe mai multe străzi din Calea Șagului, în vederea remedierii unor defecțiuni tehnice la rețea.",
+    "entities": [
+      "Colterm",
+      "Timișoara",
+      "Calea Șagului"
+    ],
+    "icon": "home",
     "processed_by": "gemini",
     "prompt_version": "v2-esenta",
     "featured": false
@@ -1378,6 +2017,40 @@
     "featured": false
   },
   {
+    "url": "https://elle.ro/fashion/piesele-si-accesoriile-perfecte-pentru-o-tinuta-de-club-966336",
+    "original_link": "https://www.elle.ro/fashion/piesele-si-accesoriile-perfecte-pentru-o-tinuta-de-club-966336",
+    "source": "elle",
+    "source_name": "Elle România",
+    "source_lang": "ro",
+    "title": "Ținutele de club necesită accesorii potrivite și coafuri în tendințe",
+    "category": "lifestyle",
+    "published": "2026-07-26T04:58:00+00:00",
+    "model": "B",
+    "teaser": "Stiliștii recomandă adoptarea unui look fresh bazat pe o coafură simplă cu efect umed și accesorii strălucitoare pentru a obține o prezență remarcabilă în timpul nopților de dans.",
+    "entities": [],
+    "icon": "music",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://elle.ro/lifestyle/dependenta-de-telefonul-mobil-iti-poate-afecta-relatia-de-cuplu-cat-este-de-periculoasa-825021",
+    "original_link": "https://www.elle.ro/lifestyle/dependenta-de-telefonul-mobil-iti-poate-afecta-relatia-de-cuplu-cat-este-de-periculoasa-825021",
+    "source": "elle",
+    "source_name": "Elle România",
+    "source_lang": "ro",
+    "title": "Dependența excesivă de telefonul mobil afectează grav relațiile de cuplu",
+    "category": "sanatate",
+    "published": "2026-07-26T04:45:00+00:00",
+    "model": "B",
+    "teaser": "Folosirea obsesivă a telefoanelor inteligente provoacă probleme majore în cuplu, afectând comportamentul atât al tinerilor, cât și al adulților, care devin incapabili să se mai deconecteze de la ecrane.",
+    "entities": [],
+    "icon": "device-mobile",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
     "url": "https://hotnews.ro/o-masina-a-intrat-in-multime-la-gay-pride-de-la-berlin-2309548",
     "original_link": "https://hotnews.ro/o-masina-a-intrat-in-multime-la-gay-pride-de-la-berlin-2309548",
     "source": "hotnews",
@@ -1413,6 +2086,25 @@
       "Tiergarten"
     ],
     "icon": "car",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://elle.ro/astrologie/5-zodii-langa-care-vei-adora-sa-iti-petreci-tot-timpul-607982",
+    "original_link": "https://www.elle.ro/astrologie/5-zodii-langa-care-vei-adora-sa-iti-petreci-tot-timpul-607982",
+    "source": "elle",
+    "source_name": "Elle România",
+    "source_lang": "ro",
+    "title": "Cinci zodii recunoscute pentru optimism și lipsa conflictelor în relații",
+    "category": "lifestyle",
+    "published": "2026-07-26T04:25:00+00:00",
+    "model": "B",
+    "teaser": "Nativii din cinci semne zodiacale se remarcă prin calm, sinceritate și o atitudine pozitivă constantă, fiind companii extrem de plăcute datorită absenței dramelor și a tensiunilor emoționale.",
+    "entities": [
+      "Săgetător"
+    ],
+    "icon": "sun",
     "processed_by": "gemini",
     "prompt_version": "v2-esenta",
     "featured": false
@@ -1657,6 +2349,28 @@
     "featured": false
   },
   {
+    "url": "https://agenda.liternet.ro/articol/31576/Ingrid-Tofan/Ne-a-vorbit-ne-a-ars-si-a-plecat-Apus-de-soare-la-SI-festival-2026.html",
+    "original_link": "https://agenda.liternet.ro/articol/31576/Ingrid-Tofan/Ne-a-vorbit-ne-a-ars-si-a-plecat-Apus-de-soare-la-SI-festival-2026.html",
+    "source": "liternet",
+    "source_name": "Liternet",
+    "source_lang": "ro",
+    "title": "Ingrid Tofan descrie o călătorie inedită cu trenul spre București",
+    "category": "cultura",
+    "published": "2026-07-25T23:50:00+00:00",
+    "model": "B",
+    "teaser": "Autoarea povestește o călătorie plină de peripeții alături de jandarmi și personaje pitorești, încheiată cu o sosire matinală în Capitală și o nouă conexiune feroviară spre casă.",
+    "entities": [
+      "Ingrid Tofan",
+      "București",
+      "Buhuși",
+      "Mărășești"
+    ],
+    "icon": "train",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
     "url": "https://dobrogeaonline.ro/identitatea-tanarului-descoperit-decedat-in-padurea-din-babadag-a-fost-dezvaluita-se-suspecteaza-o-crima",
     "original_link": "https://www.dobrogeaonline.ro/identitatea-tanarului-descoperit-decedat-in-padurea-din-babadag-a-fost-dezvaluita-se-suspecteaza-o-crima/",
     "source": "dobrogeaonline",
@@ -1726,6 +2440,27 @@
     ],
     "first_source": "The Guardian",
     "synthesis": "În timpul paradei LGBTQ+ organizate sâmbătă în apropierea Porții Brandenburg din Berlin, un vehicul utilitar a intrat în mulțimea de participanți. În urma impactului, o persoană și-a pierdut viața, iar alte aproximativ 15 până la 16 au suferit răniri. Autoritățile germane au intervenit rapid și au dispus oprirea imediată a manifestației."
+  },
+  {
+    "url": "https://agenda.liternet.ro/articol/31574/Mara-Iulia/O-privire-poetica-asupra-maturizarii-My-Fathers-Shadow.html",
+    "original_link": "https://agenda.liternet.ro/articol/31574/Mara-Iulia/O-privire-poetica-asupra-maturizarii-My-Fathers-Shadow.html",
+    "source": "liternet",
+    "source_name": "Liternet",
+    "source_lang": "ro",
+    "title": "Akinola Davies Jr. regizează lungmetrajul My Father's Shadow despre maturizare",
+    "category": "cultura",
+    "published": "2026-07-25T22:44:00+00:00",
+    "model": "B",
+    "teaser": "Acțiunea filmului se desfășoară în Nigeria anului 1993, urmărind doi frați care călătoresc prin Lagos alături de tatăl lor pe fondul unei intense crize electorale naționale.",
+    "entities": [
+      "Akinola Davies Jr",
+      "Lagos",
+      "Nigeria"
+    ],
+    "icon": "movie",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
   },
   {
     "url": "https://prosport.ro/fotbal-intern/superliga/de-ce-e-istorica-rusinea-de-la-dinamo-craiova-20490997",
@@ -1864,6 +2599,28 @@
       "Universitatea Craiova"
     ],
     "icon": "ball-football",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://agenda.liternet.ro/articol/31575/Daria-Stan-Stefan-Amocanitei/Participanti-IV-Locul-meu-e-acolo-unde-sunt-oameni-la-care-tin-care-ma-iubesc-si-nu-ma-judeca-Ideo-Ideis-2026.html",
+    "original_link": "https://agenda.liternet.ro/articol/31575/Daria-Stan-Stefan-Amocanitei/Participanti-IV-Locul-meu-e-acolo-unde-sunt-oameni-la-care-tin-care-ma-iubesc-si-nu-ma-judeca-Ideo-Ideis-2026.html",
+    "source": "liternet",
+    "source_name": "Liternet",
+    "source_lang": "ro",
+    "title": "Interviu cu Ștefan Amocăniței despre primii pași în actorie",
+    "category": "cultura",
+    "published": "2026-07-25T21:14:00+00:00",
+    "model": "B",
+    "teaser": "Tânarul actor din trupa brașoveană Amprente povestește despre prima sa interacțiune cu teatrul din perioada grădiniței și despre importanța relațiilor bazate pe afecțiune și încredere.",
+    "entities": [
+      "Ștefan Amocăniței",
+      "Daria Stan",
+      "Brașov",
+      "Ideo Ideis"
+    ],
+    "icon": "writing",
     "processed_by": "gemini",
     "prompt_version": "v2-esenta",
     "featured": false
@@ -24451,417 +25208,6 @@
       "Madrid"
     ],
     "icon": "flame",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://ziaruldeiasi.ro/stiri/antrenorul-politehnicii-iasi-tibor-selymes-cere-din-nou-explicatii-despre-situatia-clubului-de-la-presedintele-cornel-sfaiter-managerul-florin-briaur-si-de-la-administratorul-capital-insol--1877759.html",
-    "original_link": "https://www.ziaruldeiasi.ro/stiri/antrenorul-politehnicii-iasi-tibor-selymes-cere-din-nou-explicatii-despre-situatia-clubului-de-la-presedintele-cornel-sfaiter-managerul-florin-briaur-si-de-la-administratorul-capital-insol--1877759.html",
-    "source": "ziaruldeiasi",
-    "source_name": "Ziarul de Iași",
-    "source_lang": "ro",
-    "title": "Tibor Selymes solicită transparență financiară conducerii clubului Politehnica Iași",
-    "category": "zonal",
-    "published": "2026-07-19T15:11:06.908387+00:00",
-    "model": "B",
-    "teaser": "Antrenorul principal al echipei Politehnica Iași a lansat un apel public către președintele Cornel Șfaițer și administratorul judiciar, cerând clarificări detaliate și documente oficiale privind situația economică precară a clubului de fotbal.",
-    "entities": [
-      "Politehnica Iași",
-      "Tibor Selymes",
-      "Cornel Șfaițer"
-    ],
-    "icon": "ball-football",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://newsbv.ro/debitul-dunarii-la-un-nou-minim-istoric-de-1650-mc-s",
-    "original_link": "https://newsbv.ro/debitul-dunarii-la-un-nou-minim-istoric-de-1650-mc-s/",
-    "source": "newsbv",
-    "source_name": "News Brașov",
-    "source_lang": "ro",
-    "title": "Debitul Dunării a scăzut la un nivel minim istoric",
-    "category": "zonal",
-    "published": "2026-07-19T15:07:53+00:00",
-    "model": "B",
-    "teaser": "Fluviul înregistrează un debit critic de 1650 metri cubi pe secundă, valoare ce reprezintă un record negativ. Autoritățile estimează o ușoară îmbunătățire a fluxului de apă în cursul zilelor ce urmează.",
-    "entities": [
-      "Dunărea"
-    ],
-    "icon": "chart-line",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://pressalert.ro/2026/07/accident-cumplit-langa-santana-un-tanar-de-33-de-ani-a-murit-pe-loc-dupa-un-impact-violent",
-    "original_link": "https://www.pressalert.ro/2026/07/accident-cumplit-langa-santana-un-tanar-de-33-de-ani-a-murit-pe-loc-dupa-un-impact-violent/",
-    "source": "pressalert",
-    "source_name": "PressAlert Timișoara",
-    "source_lang": "ro",
-    "title": "Un tânăr a decedat într-un accident rutier grav produs lângă Sântana",
-    "category": "zonal",
-    "published": "2026-07-19T14:59:56+00:00",
-    "model": "B",
-    "teaser": "Un șofer și-a pierdut viața duminică, 19 iulie 2026, după ce mașina pe care o conducea a fost implicată într-un impact violent în apropierea localității arădene Sântana, echipajele de intervenție neputând salva victima.",
-    "entities": [
-      "Sântana",
-      "Arad"
-    ],
-    "icon": "car",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://newsbv.ro/ro-alert-tulcea-granitei",
-    "original_link": "https://newsbv.ro/ro-alert-tulcea-granitei/",
-    "source": "newsbv",
-    "source_name": "News Brașov",
-    "source_lang": "ro",
-    "title": "Alertă aeriană emisă în județul Tulcea din cauza unor ținte aeriene",
-    "category": "zonal",
-    "published": "2026-07-19T14:59:35+00:00",
-    "model": "B",
-    "teaser": "Locuitorii din Tulcea au primit mesaje RO-ALERT privind prezența unor obiecte zburătoare în proximitatea frontierei de stat. Situația de urgență a fost declarată încheiată oficial în cursul după-amiezii, la ora 14:34.",
-    "entities": [
-      "Tulcea"
-    ],
-    "icon": "alert-triangle",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://bizbrasov.ro/2026/07/19/centrul-tarii-fagaras",
-    "original_link": "https://bizbrasov.ro/2026/07/19/centrul-tarii-fagaras/",
-    "source": "bizbrasov",
-    "source_name": "BizBrașov",
-    "source_lang": "ro",
-    "title": "Făgăraș va marca centrul geografic al României printr-un catarg de 30 de metri",
-    "category": "zonal",
-    "published": "2026-07-19T14:54:07+00:00",
-    "model": "B",
-    "teaser": "Municipiul Făgăraș va ridica un catarg de 30 de metri în mijlocul unui parc amenajat sub forma hărții țării, pentru a evidenția punctul central geografic al României și a arbora drapelul național.",
-    "entities": [
-      "Făgăraș",
-      "România"
-    ],
-    "icon": "flag",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://politico.com/news/2026/07/19/chris-wright-strait-hormuz-iran-01004359",
-    "original_link": "https://www.politico.com/news/2026/07/19/chris-wright-strait-hormuz-iran-01004359?utm_source=RSS_Feed&utm_medium=RSS&utm_campaign=RSS_Syndication",
-    "source": "politico_eu",
-    "source_name": "Politico EU",
-    "source_lang": "en",
-    "title": "Traficul maritim prin Strâmtoarea Ormuz se menține la două treimi din capacitate",
-    "category": "economic",
-    "published": "2026-07-19T14:52:39+00:00",
-    "model": "B",
-    "teaser": "Secretarul american al Energiei, Chris Wright, a confirmat că navele comerciale continuă să traverseze Strâmtoarea Ormuz, în ciuda tensiunilor regionale, înregistrând un volum de trafic de aproximativ 66% față de nivelul obișnuit.",
-    "entities": [
-      "Chris Wright",
-      "Strâmtoarea Ormuz"
-    ],
-    "icon": "ship",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://newsbv.ro/isu-neamt-ro-alert",
-    "original_link": "https://newsbv.ro/isu-neamt-ro-alert/",
-    "source": "newsbv",
-    "source_name": "News Brașov",
-    "source_lang": "ro",
-    "title": "Furtuni violente și grindină au provocat inundații în județul Neamț",
-    "category": "zonal",
-    "published": "2026-07-19T14:51:04+00:00",
-    "model": "B",
-    "teaser": "Fenomenele meteorologice severe au afectat localități din județul Neamț, cauzând inundații în gospodării și întreruperea alimentării cu energie electrică pentru peste o mie de consumatori. Autoritățile au emis avertizări prin sistemul RO-Alert.",
-    "entities": [
-      "Neamț"
-    ],
-    "icon": "cloud-storm",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://stirileprotv.ro/stiri/international/noul-sistem-de-control-la-frontiere-al-ue-tripleaza-timpul-de-trecere-prin-controlul-pasapoartelor-blocaje-in-aeroporturi.html",
-    "original_link": "https://stirileprotv.ro/stiri/international/noul-sistem-de-control-la-frontiere-al-ue-tripleaza-timpul-de-trecere-prin-controlul-pasapoartelor-blocaje-in-aeroporturi.html",
-    "source": "protv",
-    "source_name": "Știrile ProTV",
-    "source_lang": "ro",
-    "title": "Noul sistem digital de control la frontierele UE provoacă blocaje în aeroporturi",
-    "category": "extern",
-    "published": "2026-07-19T14:45:09+00:00",
-    "model": "C",
-    "sources": [
-      {
-        "name": "Știrile ProTV",
-        "url": "https://stirileprotv.ro/stiri/international/noul-sistem-de-control-la-frontiere-al-ue-tripleaza-timpul-de-trecere-prin-controlul-pasapoartelor-blocaje-in-aeroporturi.html"
-      },
-      {
-        "name": "Digi24 Extern",
-        "url": "https://www.digi24.ro/stiri/externe/noul-sistem-de-control-la-frontiere-al-ue-tripleaza-timpul-de-trecere-prin-controlul-pasapoartelor-avertizeaza-operatorii-aeroportuari-3868845"
-      }
-    ],
-    "first_source": "Știrile ProTV",
-    "synthesis": "Implementarea sistemului digital Entry Exit System (EES) la nivelul Uniunii Europene a generat dificultăți majore în fluxul de pasageri. Conducerea aeroportului Fiumicino din Roma a raportat că timpul necesar verificării pașapoartelor pentru cetățenii britanici s-a triplat, în ciuda eforturilor de optimizare a procedurilor. Această situație semnalează provocări logistice semnificative pentru operatorii aeroportuari în gestionarea noilor protocoale de securitate digitală impuse la granițele externe ale blocului comunitar.",
-    "entities": [
-      "Uniunea Europeană",
-      "Aeroportul Fiumicino",
-      "EES"
-    ],
-    "icon": "plane",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://newsbv.ro/anglia-franta-finala-mica",
-    "original_link": "https://newsbv.ro/anglia-franta-finala-mica/",
-    "source": "newsbv",
-    "source_name": "News Brașov",
-    "source_lang": "ro",
-    "title": "Anglia a învins Franța în finala mică a CM 2026 cu scorul de 6-4",
-    "category": "zonal",
-    "published": "2026-07-19T14:41:07+00:00",
-    "model": "B",
-    "teaser": "Anglia a câștigat finala pentru locul al treilea la Campionatul Mondial de fotbal, după un meci spectaculos cu zece goluri. Această partidă a stabilit un nou record de eficacitate ofensivă pentru această fază a competiției.",
-    "entities": [
-      "Anglia",
-      "Franța",
-      "CM 2026"
-    ],
-    "icon": "ball-football",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://politico.com/news/2026/07/19/soccer-conquistadors-spain-world-cup-2026-imperialism-01004243",
-    "original_link": "https://www.politico.com/news/2026/07/19/soccer-conquistadors-spain-world-cup-2026-imperialism-01004243?utm_source=RSS_Feed&utm_medium=RSS&utm_campaign=RSS_Syndication",
-    "source": "politico_eu",
-    "source_name": "Politico EU",
-    "source_lang": "en",
-    "title": "Spania întâlnește Argentina în finala Cupei Mondiale cu conotații istorice imperiale",
-    "category": "sport",
-    "published": "2026-07-19T14:39:27+00:00",
-    "model": "B",
-    "teaser": "Finala Campionatului Mondial dintre Spania și Argentina capătă o semnificație simbolică aparte, având în vedere trecutul colonial al Madridului asupra multor state adverse întâlnite de spanioli pe parcursul competiției sportive actuale.",
-    "entities": [
-      "Spania",
-      "Argentina",
-      "Madrid"
-    ],
-    "icon": "trophy",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://digisport.ro/fotbal/cm-2026/rafael-nadal-a-spus-clar-cu-ce-scor-se-va-termina-finala-cupei-mondiale-2026-spania-argentina-4386861",
-    "original_link": "https://www.digisport.ro/fotbal/cm-2026/rafael-nadal-a-spus-clar-cu-ce-scor-se-va-termina-finala-cupei-mondiale-2026-spania-argentina-4386861",
-    "source": "digisport",
-    "source_name": "Digi Sport",
-    "source_lang": "ro",
-    "title": "Spania și Argentina se înfruntă în finala Campionatului Mondial de fotbal 2026",
-    "category": "sport",
-    "published": "2026-07-19T14:39:17+00:00",
-    "model": "C",
-    "sources": [
-      {
-        "name": "Digi Sport",
-        "url": "https://www.digisport.ro/fotbal/cm-2026/rafael-nadal-a-spus-clar-cu-ce-scor-se-va-termina-finala-cupei-mondiale-2026-spania-argentina-4386861"
-      },
-      {
-        "name": "GSP",
-        "url": "https://www.gsp.ro/international/campionatul-mondial-de-fotbal-2026/live-spania-argentina-finala-campionatului-mondial-2026-962091.html"
-      }
-    ],
-    "first_source": "Digi Sport",
-    "synthesis": "Finala Campionatului Mondial de fotbal 2026, disputată între Spania și Argentina, are loc astăzi, de la ora 22:00, pe stadionul MetLife. Spania a ajuns în ultimul act după victoria cu Franța, în timp ce Argentina a învins Anglia în semifinale. Rafael Nadal și-a exprimat public pronosticul pentru acest duel istoric dintre campioana Europei și cea a Americii de Sud. Partida va fi transmisă în direct pe Antena 1 și Antena Play.",
-    "entities": [
-      "Spania",
-      "Argentina",
-      "Rafael Nadal",
-      "MetLife Stadium"
-    ],
-    "icon": "ball-football",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://g4media.ro/una-buna-una-rea-pentru-mercedes-in-marele-premiu-al-belgiei-kimi-antonelli-castiga-duelul-cu-leclerc-george-russell-abandoneaza.html",
-    "original_link": "https://www.g4media.ro/una-buna-una-rea-pentru-mercedes-in-marele-premiu-al-belgiei-kimi-antonelli-castiga-duelul-cu-leclerc-george-russell-abandoneaza.html",
-    "source": "g4media",
-    "source_name": "G4Media",
-    "source_lang": "ro",
-    "title": "Kimi Antonelli câștigă Marele Premiu al Belgiei după un duel cu Charles Leclerc",
-    "category": "sport",
-    "published": "2026-07-19T14:28:58+00:00",
-    "model": "C",
-    "sources": [
-      {
-        "name": "G4Media",
-        "url": "https://www.g4media.ro/una-buna-una-rea-pentru-mercedes-in-marele-premiu-al-belgiei-kimi-antonelli-castiga-duelul-cu-leclerc-george-russell-abandoneaza.html"
-      },
-      {
-        "name": "Digi Sport",
-        "url": "https://www.digisport.ro/f1/cursa-spectaculosa-antonelli-a-castigat-marele-premiu-al-belgiei-dupa-un-duel-electrizant-cu-leclerc-4386947"
-      }
-    ],
-    "first_source": "G4Media",
-    "synthesis": "Kimi Antonelli a obținut victoria în Marele Premiu al Belgiei de Formula 1, impunându-se la finalul unei lupte intense cu Charles Leclerc. Deși a fost o zi reușită pentru pilotul Mercedes, echipa a înregistrat și un rezultat negativ, George Russell fiind nevoit să abandoneze cursa. Evenimentul a fost marcat de spectacol pe circuitul de la Spa, sursele fiind unanime în confirmarea rezultatului final și a abandonului tehnic al celuilalt pilot Mercedes.",
-    "entities": [
-      "Kimi Antonelli",
-      "Charles Leclerc",
-      "Mercedes",
-      "Spa"
-    ],
-    "icon": "trophy",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://zcj.ro/life-and-style/horoscop-20-iulie-2026--298863.html",
-    "original_link": "https://zcj.ro/life-and-style/horoscop-20-iulie-2026--298863.html",
-    "source": "zcj",
-    "source_name": "Ziua de Cluj",
-    "source_lang": "ro",
-    "title": "Previziuni astrologice pentru toate zodiile în ziua de 20 iulie 2026",
-    "category": "zonal",
-    "published": "2026-07-19T14:23:00+00:00",
-    "model": "B",
-    "teaser": "Astrele oferă îndrumări și perspective pentru fiecare semn zodiacal în cursul zilei de luni, 20 iulie 2026, ajutând nativii să își planifice activitățile și să anticipeze evenimentele care le pot influența starea de spirit.",
-    "entities": [],
-    "icon": "sun",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://zf.ro/auto/furtuna-afecteaza-circulatia-trenurilor-in-bucuresti-alimentarea-liniilor-de-contact-intrerupta-23198288",
-    "original_link": "https://www.zf.ro/auto/furtuna-afecteaza-circulatia-trenurilor-in-bucuresti-alimentarea-liniilor-de-contact-intrerupta-23198288",
-    "source": "zf",
-    "source_name": "Ziarul Financiar",
-    "source_lang": "ro",
-    "title": "Furtuna puternică a blocat circulația trenurilor electrice în Gara de Nord din București",
-    "category": "local",
-    "published": "2026-07-19T14:19:34+00:00",
-    "model": "C",
-    "sources": [
-      {
-        "name": "Ziarul Financiar",
-        "url": "https://www.zf.ro/auto/furtuna-afecteaza-circulatia-trenurilor-in-bucuresti-alimentarea-liniilor-de-contact-intrerupta-23198288"
-      },
-      {
-        "name": "HotNews",
-        "url": "https://hotnews.ro/gara-de-nord-din-bucuresti-afectata-de-furtuna-liniile-electrice-au-ramas-fara-tensiune-ce-trenuri-nu-mai-circula-2304393"
-      }
-    ],
-    "first_source": "Ziarul Financiar",
-    "synthesis": "Duminică după-amiază, condițiile meteo severe au provocat întreruperea alimentării cu energie electrică a liniilor de contact din Gara de Nord. Din cauza acestei defecțiuni tehnice, traficul feroviar pentru trenurile electrice a fost suspendat începând cu ora 16:04. Compania Națională de Căi Ferate CFR a confirmat incidentul, precizând că furtuna a afectat infrastructura critică din zona Capitalei, generând perturbări semnificative în circulația garniturilor care depind de rețeaua electrică.",
-    "entities": [
-      "Gara de Nord",
-      "București",
-      "CFR"
-    ],
-    "icon": "cloud-storm",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://spotmedia.ro/stiri/eveniment/furtuna-a-lasat-gara-de-nord-fara-tensiune-circulatia-trenurilor-electrice-afectata-in-bucuresti",
-    "original_link": "https://spotmedia.ro/stiri/eveniment/furtuna-a-lasat-gara-de-nord-fara-tensiune-circulatia-trenurilor-electrice-afectata-in-bucuresti",
-    "source": "spotmedia",
-    "source_name": "Spotmedia",
-    "source_lang": "ro",
-    "title": "Furtuna puternică a provocat pagube materiale și perturbări feroviare majore în București și Ilfov",
-    "category": "local",
-    "published": "2026-07-19T14:16:58+00:00",
-    "model": "C",
-    "sources": [
-      {
-        "name": "Spotmedia",
-        "url": "https://spotmedia.ro/stiri/eveniment/furtuna-a-lasat-gara-de-nord-fara-tensiune-circulatia-trenurilor-electrice-afectata-in-bucuresti"
-      },
-      {
-        "name": "G4Media",
-        "url": "https://www.g4media.ro/update-primele-efecte-ale-furtunii-in-bucuresti-in-timpul-codului-rosu-trei-copaci-si-un-stalp-doborati-de-vant-un-autoturism-avariat.html"
-      }
-    ],
-    "first_source": "Spotmedia",
-    "synthesis": "O furtună violentă, marcată de avertizări de cod portocaliu și roșu, a lovit duminică Bucureștiul și județul Ilfov. Fenomenele meteo au generat peste 140 de intervenții ale pompierilor, soldate cu doborârea a 101 copaci și a cinci stâlpi, precum și inundarea a 22 de străzi. Totodată, alimentarea cu energie electrică a Complexului Feroviar București Nord a fost întreruptă, afectând circulația trenurilor electrice începând cu ora 16:04. Nu există contradicții între sursele consultate.",
-    "entities": [
-      "București",
-      "Ilfov",
-      "Gara de Nord",
-      "CFR SA"
-    ],
-    "icon": "cloud-storm",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://politico.eu/article/friedtich-merz-floats-government-reshuffle-after-top-conservatives-resignation",
-    "original_link": "https://www.politico.eu/article/friedtich-merz-floats-government-reshuffle-after-top-conservatives-resignation/?utm_source=RSS_Feed&utm_medium=RSS&utm_campaign=RSS_Syndication",
-    "source": "politico_eu",
-    "source_name": "Politico EU",
-    "source_lang": "en",
-    "title": "Demisia lui Jens Spahn din conducerea grupului parlamentar CDU/CSU declanșează discuții despre remanierea guvernului",
-    "category": "politic",
-    "published": "2026-07-19T14:08:42+00:00",
-    "model": "C",
-    "teaser": "Friedrich Merz sugerează că plecarea conservatorului Jens Spahn, implicat într-un scandal privind maternitatea surogat, reprezintă o oportunitate pentru executivul de la Berlin de a-și restructura componența și prioritățile politice actuale.",
-    "entities": [
-      "Jens Spahn",
-      "Friedrich Merz",
-      "CDU/CSU",
-      "Bundestag"
-    ],
-    "icon": "podium",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false,
-    "sources": [
-      {
-        "name": "Politico EU",
-        "url": "https://www.politico.eu/article/friedtich-merz-floats-government-reshuffle-after-top-conservatives-resignation/?utm_source=RSS_Feed&utm_medium=RSS&utm_campaign=RSS_Syndication"
-      },
-      {
-        "name": "Contributors",
-        "url": "https://www.contributors.ro/demisia-lui-jens-spahn-oportunitate-si-risc-pentru-cancelarul-friedrich-merz/"
-      }
-    ],
-    "first_source": "Politico EU",
-    "synthesis": "Jens Spahn a demisionat neașteptat din funcția de lider al grupului parlamentar CDU/CSU în Bundestag, pe fondul unui scandal personal. Această plecare forțează cancelarul Friedrich Merz să identifice rapid un succesor, precum Thorsten Frei sau Alexander Dobrindt. Evenimentul este analizat ca o oportunitate strategică pentru restructurarea cabinetului și redefinirea priorităților politice ale executivului german în perioada următoare, sursele fiind convergente asupra impactului major al acestei schimbări."
-  },
-  {
-    "url": "https://csid.ro/lifestyle/casa-gradina-animale-de-companie/obiectul-banal-din-bucatarie-care-poate-salva-pasarile-pe-timp-de-canicula-gestul-simplu-pe-care-il-poti-face-in-iulie-21253525",
-    "original_link": "https://www.csid.ro/lifestyle/casa-gradina-animale-de-companie/obiectul-banal-din-bucatarie-care-poate-salva-pasarile-pe-timp-de-canicula-gestul-simplu-pe-care-il-poti-face-in-iulie-21253525/",
-    "source": "csid",
-    "source_name": "CSÎD",
-    "source_lang": "ro",
-    "title": "Adăpătorile improvizate din farfurii ajută păsările să supraviețuiască caniculei din iulie",
-    "category": "lifestyle",
-    "published": "2026-07-19T14:00:41+00:00",
-    "model": "B",
-    "teaser": "În perioadele cu temperaturi extreme, poți proteja păsările din mediul urban oferindu-le surse de hidratare. Plasarea unui bol sau a unei farfurii cu apă proaspătă în grădină sau pe balcon reprezintă o metodă simplă și eficientă de salvare.",
-    "entities": [],
-    "icon": "sun",
     "processed_by": "gemini",
     "prompt_version": "v2-esenta",
     "featured": false
