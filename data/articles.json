@@ -1,5 +1,88 @@
 [
   {
+    "url": "https://urban.ro/experiente-imersive-van-gogh-si-klimt-la-mina",
+    "original_link": "https://www.urban.ro/experiente-imersive-van-gogh-si-klimt-la-mina/",
+    "source": "urban",
+    "source_name": "Urban.ro",
+    "source_lang": "ro",
+    "title": "Muzeul MINA organizează Noaptea Albă cu experiențe imersive pe 1 august",
+    "category": "cultura",
+    "published": "2026-07-28T21:46:18+00:00",
+    "model": "B",
+    "teaser": "Instituția culturală MINA pregătește un festival urban nocturn la București și Timișoara, incluzând proiecții vizuale Van Gogh și Klimt, zone de relaxare, bar și momente muzicale susținute de DJ.",
+    "entities": [
+      "MINA",
+      "București",
+      "Timișoara",
+      "Van Gogh",
+      "Klimt"
+    ],
+    "icon": "movie",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://urban.ro/ronaldo-productie-de-televiziune-day-1s",
+    "original_link": "https://www.urban.ro/ronaldo-productie-de-televiziune-day-1s/",
+    "source": "urban",
+    "source_name": "Urban.ro",
+    "source_lang": "ro",
+    "title": "Cristiano Ronaldo debutează ca actor în serialul de televiziune „Day 1s”",
+    "category": "sport",
+    "published": "2026-07-28T21:40:00+00:00",
+    "model": "B",
+    "teaser": "Fotbalistul portughez va juca într-o producție britanică despre culisele sportului rege, alături de actori cunoscuți și foști adversari din Premier League, interpretând un rol în acest serial fictiv.",
+    "entities": [
+      "Cristiano Ronaldo",
+      "Damian Lewis",
+      "Thierry Henry"
+    ],
+    "icon": "ball-football",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://urban.ro/muzeul-guggenheim-abu-dhabi-deschidere",
+    "original_link": "https://www.urban.ro/muzeul-guggenheim-abu-dhabi-deschidere/",
+    "source": "urban",
+    "source_name": "Urban.ro",
+    "source_lang": "ro",
+    "title": "Muzeul Guggenheim din Abu Dhabi se va deschide în decembrie 2026",
+    "category": "cultura",
+    "published": "2026-07-28T21:30:00+00:00",
+    "model": "B",
+    "teaser": "Proiectul arhitectural conceput de Frank Gehry va fi inaugurat la finalul anului 2026, după două decenii de la anunțarea oficială a planurilor și numeroase amânări înregistrate de-a lungul timpului.",
+    "entities": [
+      "Guggenheim Abu Dhabi",
+      "Frank Gehry"
+    ],
+    "icon": "building-monument",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://urban.ro/escroc-italian-amfiteatru-fals",
+    "original_link": "https://www.urban.ro/escroc-italian-amfiteatru-fals/",
+    "source": "urban",
+    "source_name": "Urban.ro",
+    "source_lang": "ro",
+    "title": "Un italian a fost arestat după ce a exploatat un amfiteatru roman fals",
+    "category": "extern",
+    "published": "2026-07-28T21:27:29+00:00",
+    "model": "B",
+    "teaser": "Un bărbat în vârstă de 69 de ani din Italia a fost reținut de polițiști, fiind acuzat că a construit singur o structură antică falsă și a perceput taxe de vizitare timp de aproape două decenii.",
+    "entities": [
+      "Italia"
+    ],
+    "icon": "gavel",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
     "url": "https://urban.ro/retete-pranz-rece",
     "original_link": "https://www.urban.ro/retete-pranz-rece/",
     "source": "urban",
@@ -316,6 +399,27 @@
     "featured": false
   },
   {
+    "url": "https://ziuadevest.ro/investitie-record-la-dumbravita-retelele-de-apa-si-canalizare-au-fost-extinse-printr-un-proiect-de-peste-7-milioane-de-euro",
+    "original_link": "https://www.ziuadevest.ro/investitie-record-la-dumbravita-retelele-de-apa-si-canalizare-au-fost-extinse-printr-un-proiect-de-peste-7-milioane-de-euro/",
+    "source": "ziuadevest",
+    "source_name": "Ziua de Vest",
+    "source_lang": "ro",
+    "title": "Primăria Dumbrăvița a finalizat extinderea rețelelor de apă și canalizare",
+    "category": "regional",
+    "published": "2026-07-28T19:30:58+00:00",
+    "model": "B",
+    "teaser": "Administrația locală din Dumbrăvița a încheiat cea mai amplă investiție din istoria sa, în valoare de peste 7 milioane de euro, fondurile fiind obținute prin intermediul PNRR.",
+    "entities": [
+      "Dumbrăvița",
+      "Ministerul Mediului",
+      "PNRR"
+    ],
+    "icon": "building-monument",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
     "url": "https://digi24.ro/stiri/externe/scandalul-pudrei-de-talc-55-miliarde-de-dolari-oferiti-de-producator-pentru-solutionarea-proceselor-3882827",
     "original_link": "https://www.digi24.ro/stiri/externe/scandalul-pudrei-de-talc-55-miliarde-de-dolari-oferiti-de-producator-pentru-solutionarea-proceselor-3882827",
     "source": "extern",
@@ -342,6 +446,27 @@
       "Statele Unite"
     ],
     "icon": "gavel",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://ziuadevest.ro/scm-timisoara-transforma-centrul-orasului-intr-o-arena-sportiva-de-ziua-timisoarei-trei-zile-de-competitii-demonstratii-si-activitati-pentru-toate-varstele",
+    "original_link": "https://www.ziuadevest.ro/scm-timisoara-transforma-centrul-orasului-intr-o-arena-sportiva-de-ziua-timisoarei-trei-zile-de-competitii-demonstratii-si-activitati-pentru-toate-varstele/",
+    "source": "ziuadevest",
+    "source_name": "Ziua de Vest",
+    "source_lang": "ro",
+    "title": "SCM Timișoara organizează competiții sportive urbane de Ziua Timișoarei",
+    "category": "regional",
+    "published": "2026-07-28T19:20:58+00:00",
+    "model": "B",
+    "teaser": "Bulevardul Nicolae Titulescu și baza Uszoda din Timișoara găzduiesc timp de trei zile întreceri și demonstrații sportive pentru toate vârstele, în perioada 31 iulie – 2 august.",
+    "entities": [
+      "SCM Timișoara",
+      "Timișoara",
+      "Bulevardul Nicolae Titulescu"
+    ],
+    "icon": "ball-football",
     "processed_by": "gemini",
     "prompt_version": "v2-esenta",
     "featured": false
@@ -379,6 +504,69 @@
     "featured": false
   },
   {
+    "url": "https://ziuadevest.ro/un-tricou-semnat-de-delia-smiley-zaz-si-tinie-tempah-la-flight-festival-poate-ajuta-copiii-bolnavi-de-cancer-din-timisoara",
+    "original_link": "https://www.ziuadevest.ro/un-tricou-semnat-de-delia-smiley-zaz-si-tinie-tempah-la-flight-festival-poate-ajuta-copiii-bolnavi-de-cancer-din-timisoara/",
+    "source": "ziuadevest",
+    "source_name": "Ziua de Vest",
+    "source_lang": "ro",
+    "title": "Tricou cu vedete de la Flight Festival scos la licitație pentru copii bolnavi",
+    "category": "regional",
+    "published": "2026-07-28T19:18:29+00:00",
+    "model": "B",
+    "teaser": "Un vlogger strânge fonduri pentru secția de oncologie a spitalului de copii din Timișoara printr-o campanie caritabilă bazată pe un tricou semnat de artiști prezenți la Flight Festival 2026.",
+    "entities": [
+      "Flight Festival",
+      "Spitalul de Copii Louis Țurcanu",
+      "Timișoara"
+    ],
+    "icon": null,
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://ziuadevest.ro/incendiu-la-deponeul-ghizela-pompierii-au-intervenit-cu-cinci-autospeciale-si-au-lichidat-rapid-focul",
+    "original_link": "https://www.ziuadevest.ro/incendiu-la-deponeul-ghizela-pompierii-au-intervenit-cu-cinci-autospeciale-si-au-lichidat-rapid-focul/",
+    "source": "ziuadevest",
+    "source_name": "Ziua de Vest",
+    "source_lang": "ro",
+    "title": "Incendiu izbucnit la Deponeul Ghizela stins rapid de pompieri",
+    "category": "regional",
+    "published": "2026-07-28T19:14:38+00:00",
+    "model": "B",
+    "teaser": "Un echipaj format din 14 pompieri militari a intervenit cu patru autospeciale pentru a lichida flăcările izbucnite marți seara la deponeul de deșeuri din localitatea Ghizela.",
+    "entities": [
+      "Deponeul Ghizela",
+      "ISU Timiș"
+    ],
+    "icon": "firetruck",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://ziuadevest.ro/douasprezece-zile-in-care-un-sat-din-caras-severin-devine-muntele-magic-al-teatrului-european",
+    "original_link": "https://www.ziuadevest.ro/douasprezece-zile-in-care-un-sat-din-caras-severin-devine-muntele-magic-al-teatrului-european/",
+    "source": "ziuadevest",
+    "source_name": "Ziua de Vest",
+    "source_lang": "ro",
+    "title": "Satul Socolari găzduiește Atelierele de Antropologie Teatrală",
+    "category": "regional",
+    "published": "2026-07-28T19:13:27+00:00",
+    "model": "B",
+    "teaser": "Localitatea Socolari din Caraș-Severin devine centrul teatrului european între 1 și 12 august 2026, găzduind a patra ediție a atelierelor organizate de Asociația No Sheep.",
+    "entities": [
+      "Socolari",
+      "Caraș-Severin",
+      "Asociația No Sheep",
+      "Ministerul Culturii"
+    ],
+    "icon": "movie",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
     "url": "https://agenda.liternet.ro/articol/31583/Vlad-Manolache/Victima-Monstru-Obsession.html",
     "original_link": "https://agenda.liternet.ro/articol/31583/Vlad-Manolache/Victima-Monstru-Obsession.html",
     "source": "liternet",
@@ -394,6 +582,37 @@
       "Victima Monstru - Obsession"
     ],
     "icon": "movie",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://spotmedia.ro/stiri/eveniment/guvernul-a-deblocat-aproape-6-900-de-posturi-in-sanatate-greva-din-spitale-continua-bolojan-isi-cere-scuze",
+    "original_link": "https://spotmedia.ro/stiri/eveniment/guvernul-a-deblocat-aproape-6-900-de-posturi-in-sanatate-greva-din-spitale-continua-bolojan-isi-cere-scuze",
+    "source": "spotmedia",
+    "source_name": "Spotmedia",
+    "source_lang": "ro",
+    "title": "Guvernul deblochează aproape 6.900 de posturi în sănătate, însă protestul spitalelor continuă",
+    "category": "sanatate",
+    "published": "2026-07-28T18:33:41+00:00",
+    "model": "C",
+    "sources": [
+      {
+        "name": "Spotmedia",
+        "url": "https://spotmedia.ro/stiri/eveniment/guvernul-a-deblocat-aproape-6-900-de-posturi-in-sanatate-greva-din-spitale-continua-bolojan-isi-cere-scuze"
+      },
+      {
+        "name": "Libertatea",
+        "url": "https://www.libertatea.ro/stiri/ilie-bolojan-a-vorbit-intr-o-sala-aproape-goala-dupa-sedinta-de-guvern-anuntata-din-scurt-in-care-a-aprobat-deblocarea-posturilor-din-sanatate-5831984"
+      }
+    ],
+    "first_source": "Spotmedia",
+    "synthesis": "În urma unei ședințe extraordinare convocate marți seară, Guvernul condus de premierul interimar Ilie Bolojan a aprobat memorandumul pentru organizarea concursurilor de ocupare a peste 6.850 de posturi vacante în sistemul sanitar public, majoritatea fiind destinate asistenților medicali și serviciilor de ambulanță. Măsura a fost luată la scurt timp după declanșarea grevei generale pe termen nelimitat în sute de unități sanitare din țară, protestul cadrelor medicale continuând în ciuda deciziei adoptate de Executiv.",
+    "entities": [
+      "Guvernul României",
+      "Ilie Bolojan"
+    ],
+    "icon": "building-hospital",
     "processed_by": "gemini",
     "prompt_version": "v2-esenta",
     "featured": false
@@ -459,6 +678,25 @@
       "ISU Timiș"
     ],
     "icon": "firetruck",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://emaramures.ro/ce-faci-in-august-muzeul-satului-din-baia-mare-te-invita-la-ateliere-creative-pentru-toate-varstele",
+    "original_link": "https://www.emaramures.ro/ce-faci-in-august-muzeul-satului-din-baia-mare-te-invita-la-ateliere-creative-pentru-toate-varstele/",
+    "source": "emaramures",
+    "source_name": "eMaramureș",
+    "source_lang": "ro",
+    "title": "Muzeul Satului din Baia Mare organizează ateliere creative în august",
+    "category": "zonal",
+    "published": "2026-07-28T18:00:46+00:00",
+    "model": "B",
+    "teaser": "Instituția culturală oferă publicului de toate vârstele activități practice de weekend în luna august, incluzând modelaj în lut, crearea de terarii și învățarea meșteșugurilor tradiționale.",
+    "entities": [
+      "Muzeul Satului din Baia Mare"
+    ],
+    "icon": "trees",
     "processed_by": "gemini",
     "prompt_version": "v2-esenta",
     "featured": false
@@ -546,6 +784,47 @@
     "featured": false
   },
   {
+    "url": "https://ziuadevest.ro/cartea-de-identitate-veche-dispare-de-la-1-august-documentul-va-mai-fi-eliberat-doar-in-cazuri-speciale",
+    "original_link": "https://www.ziuadevest.ro/cartea-de-identitate-veche-dispare-de-la-1-august-documentul-va-mai-fi-eliberat-doar-in-cazuri-speciale/",
+    "source": "ziuadevest",
+    "source_name": "Ziua de Vest",
+    "source_lang": "ro",
+    "title": "Vechea carte de identitate nu mai este eliberată în mod obișnuit",
+    "category": "regional",
+    "published": "2026-07-28T17:32:33+00:00",
+    "model": "B",
+    "teaser": "Începând cu data de 1 august, autoritățile opresc emiterea buletinelor în formatul vechi din 1997, acestea urmând să fie acordate exclusiv în situații excepționale.",
+    "entities": [
+      "Direcția Generală pentru Evidența Persoanelor"
+    ],
+    "icon": "certificate",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://expressdebanat.ro/incepe-ziua-timisoarei-203-de-evenimente-in-patru-zile-cu-beth-hart-the-script-si-marija-serifovic-pe-scena-principala",
+    "original_link": "https://expressdebanat.ro/incepe-ziua-timisoarei-203-de-evenimente-in-patru-zile-cu-beth-hart-the-script-si-marija-serifovic-pe-scena-principala/",
+    "source": "expressdebanat",
+    "source_name": "Express de Banat",
+    "source_lang": "ro",
+    "title": "Timișoara organizează peste 200 de evenimente gratuite de Ziua Orașului",
+    "category": "regional",
+    "published": "2026-07-28T17:13:20+00:00",
+    "model": "B",
+    "teaser": "Timp de patru zile, începând cu 31 iulie, orașul găzduiește 203 manifestări culturale și sportive, pe scenă urmând să urce artiști cunoscuți precum Beth Hart și The Script.",
+    "entities": [
+      "Timișoara",
+      "Beth Hart",
+      "The Script",
+      "Marija Šerifović"
+    ],
+    "icon": "flag",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
     "url": "https://tion.ro/stirile-judetului-timis/lucrari-pentru-tramvaiele-din-timisoara-se-frezeaza-30-km-de-sina-iar-hala-de-mentenanta-de-la-dambovita-intra-in-executie-2324379",
     "original_link": "https://www.tion.ro/stirile-judetului-timis/lucrari-pentru-tramvaiele-din-timisoara-se-frezeaza-30-km-de-sina-iar-hala-de-mentenanta-de-la-dambovita-intra-in-executie-2324379/?utm_source=rss&utm_medium=referral&utm_campaign=hiraggregator",
     "source": "tion",
@@ -561,6 +840,66 @@
       "STPT Dâmbovița"
     ],
     "icon": "train",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://emaramures.ro/muzeul-maramuresan-da-startul-unui-nou-atelier-de-arheologie-pentru-copii",
+    "original_link": "https://www.emaramures.ro/muzeul-maramuresan-da-startul-unui-nou-atelier-de-arheologie-pentru-copii/",
+    "source": "emaramures",
+    "source_name": "eMaramureș",
+    "source_lang": "ro",
+    "title": "Muzeul Maramureșan lansează atelierul de arheologie pentru copii",
+    "category": "zonal",
+    "published": "2026-07-28T17:00:54+00:00",
+    "model": "B",
+    "teaser": "Evenimentul educațional „De-a Arheologia” se va desfășura între 24 și 28 august, oferind tinerilor pasionați de istorie activități practice interactive menite să le dezvăluie tainele arheologiei.",
+    "entities": [
+      "Muzeul Maramureșan"
+    ],
+    "icon": "school",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://ziuadevest.ro/atac-cibernetic-la-universitatea-de-vest-vasile-goldis-din-arad",
+    "original_link": "https://www.ziuadevest.ro/atac-cibernetic-la-universitatea-de-vest-vasile-goldis-din-arad/",
+    "source": "ziuadevest",
+    "source_name": "Ziua de Vest",
+    "source_lang": "ro",
+    "title": "Atac cibernetic asupra infrastructurii digitale a Universității de Vest „Vasile Goldiș” din Arad",
+    "category": "regional",
+    "published": "2026-07-28T16:34:35+00:00",
+    "model": "B",
+    "teaser": "Sistemul informatic al Universității de Vest „Vasile Goldiș” din Arad a fost ținta unui atac cibernetic, care a perturbat grav activitățile academice și administrative derulate în mediul digital de instituția de învățământ superior.",
+    "entities": [
+      "Universitatea de Vest Vasile Goldiș din Arad"
+    ],
+    "icon": "shield-lock",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://ziuadevest.ro/sase-noi-cetateni-de-onoare-ai-timisoarei-consiliul-local-a-aprobat-acordarea-celei-mai-inalte-distinctii-a-municipiului",
+    "original_link": "https://www.ziuadevest.ro/sase-noi-cetateni-de-onoare-ai-timisoarei-consiliul-local-a-aprobat-acordarea-celei-mai-inalte-distinctii-a-municipiului/",
+    "source": "ziuadevest",
+    "source_name": "Ziua de Vest",
+    "source_lang": "ro",
+    "title": "Consiliul Local Timișoara a desemnat șase noi Cetățeni de Onoare ai municipiului",
+    "category": "regional",
+    "published": "2026-07-28T16:32:02+00:00",
+    "model": "B",
+    "teaser": "Administrația locală din Timișoara a conferit cea mai importantă distincție a orașului pentru șase personalități recunoscute pentru implicarea în comunitate, printre care se numără Elisabeta Moldovan, Brândușa Armanca și Virgil Ianțu.",
+    "entities": [
+      "Timișoara",
+      "Consiliul Local Timișoara",
+      "Elisabeta Moldovan",
+      "Virgil Ianțu"
+    ],
+    "icon": "certificate",
     "processed_by": "gemini",
     "prompt_version": "v2-esenta",
     "featured": false
@@ -601,6 +940,46 @@
       "Boala arterială periferică"
     ],
     "icon": "stethoscope",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://emaramures.ro/dupa-doua-luni-de-pauza-zimbrii-sunt-gata-de-lupta-primul-meci-al-verii-se-joaca-la-baia-mare",
+    "original_link": "https://www.emaramures.ro/dupa-doua-luni-de-pauza-zimbrii-sunt-gata-de-lupta-primul-meci-al-verii-se-joaca-la-baia-mare/",
+    "source": "emaramures",
+    "source_name": "eMaramureș",
+    "source_lang": "ro",
+    "title": "CSM Știința Baia Mare întâlnește SCM USV Timișoara în primul meci al verii",
+    "category": "zonal",
+    "published": "2026-07-28T16:00:45+00:00",
+    "model": "B",
+    "teaser": "După două luni de pauză competițională, echipa de rugby CSM Știința Baia Mare revine pe teren sâmbătă, 1 august, pentru a juca un meci restanță împotriva rivalei SCM USV Timișoara.",
+    "entities": [
+      "CSM Știința Baia Mare",
+      "SCM USV Timișoara",
+      "Baia Mare"
+    ],
+    "icon": "ball-football",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://expressdebanat.ro/schimbi-bani-luna-aceasta-bsg-amanet-exchange-te-premiaza-cu-1-000-de-euro-cash",
+    "original_link": "https://expressdebanat.ro/schimbi-bani-luna-aceasta-bsg-amanet-exchange-te-premiaza-cu-1-000-de-euro-cash/",
+    "source": "expressdebanat",
+    "source_name": "Express de Banat",
+    "source_lang": "ro",
+    "title": "BSG Amanet & Exchange oferă premii în bani prin campania de schimb valutar",
+    "category": "regional",
+    "published": "2026-07-28T16:00:29+00:00",
+    "model": "B",
+    "teaser": "Compania organizează a doua ediție a campaniei promoționale pentru clienții care efectuează operațiuni valutare, punând la bătaie zece premii în valoare de 1.000 de euro fiecare.",
+    "entities": [
+      "BSG Amanet & Exchange"
+    ],
+    "icon": "currency-euro",
     "processed_by": "gemini",
     "prompt_version": "v2-esenta",
     "featured": false
@@ -704,6 +1083,27 @@
     "featured": false
   },
   {
+    "url": "https://emaramures.ro/tot-mai-multa-atentie-pentru-sanatatea-mintala-a-copiilor-lectie-speciala-intr-o-tabara-din-maramures",
+    "original_link": "https://www.emaramures.ro/tot-mai-multa-atentie-pentru-sanatatea-mintala-a-copiilor-lectie-speciala-intr-o-tabara-din-maramures/",
+    "source": "emaramures",
+    "source_name": "eMaramureș",
+    "source_lang": "ro",
+    "title": "Copiii din Tabără de Vară Merișor au participat la ateliere de sănătate mintală",
+    "category": "zonal",
+    "published": "2026-07-28T15:00:59+00:00",
+    "model": "B",
+    "teaser": "Aproximativ 60 de copii cu vârste între 6 și 14 ani au învățat să își exprime emoțiile prin jocuri interactive, în cadrul unei activități susținute de psihologul Ioana-Lorena Popescu.",
+    "entities": [
+      "Tabără de Vară Merișor",
+      "Ioana-Lorena Popescu",
+      "Maramureș"
+    ],
+    "icon": "building-hospital",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
     "url": "https://csid.ro/stiri/boala-care-poate-distruge-ficatul-timp-de-30-de-ani-fara-niciun-simptom-21262626",
     "original_link": "https://www.csid.ro/stiri/boala-care-poate-distruge-ficatul-timp-de-30-de-ani-fara-niciun-simptom-21262626/",
     "source": "csid",
@@ -716,6 +1116,26 @@
     "teaser": "Infecțiile cronice cu virusurile hepatici B și C evoluează tăcut timp de până la treizeci de ani, pacienții descoperind adesea afecțiunea abia în stadiul de complicații majore.",
     "entities": [],
     "icon": "virus",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://elle.ro/people/stiri-vedete/anca-serea-dezvaluie-motivul-pentru-care-a-plecat-in-vacanta-fara-familie-sunt-impacata-cu-deciziile-mele-1081315",
+    "original_link": "https://www.elle.ro/people/stiri-vedete/anca-serea-dezvaluie-motivul-pentru-care-a-plecat-in-vacanta-fara-familie-sunt-impacata-cu-deciziile-mele-1081315",
+    "source": "elle",
+    "source_name": "Elle România",
+    "source_lang": "ro",
+    "title": "Anca Serea călătorește fără familie din cauza fricii de zbor",
+    "category": "lifestyle",
+    "published": "2026-07-28T15:00:00+00:00",
+    "model": "B",
+    "teaser": "Fosta prezentatoare TV Anca Serea evită de un deceniu deplasările cu avionul din cauza unei anxietăți severe, alegând trenul sau mașina în timp ce soțul și copiii ei zboară.",
+    "entities": [
+      "Anca Serea",
+      "Adi Sînă"
+    ],
+    "icon": "train",
     "processed_by": "gemini",
     "prompt_version": "v2-esenta",
     "featured": false
@@ -753,6 +1173,26 @@
     "featured": false
   },
   {
+    "url": "https://unica.ro/vedete/straine/lou-koller-solistul-si-cofondatorul-legendarei-trupe-sick-of-it-all-a-murit-la-59-de-ani-825629",
+    "original_link": "https://www.unica.ro/vedete/straine/lou-koller-solistul-si-cofondatorul-legendarei-trupe-sick-of-it-all-a-murit-la-59-de-ani-825629",
+    "source": "unica",
+    "source_name": "Unica",
+    "source_lang": "ro",
+    "title": "A murit Lou Koller, solistul trupei Sick of It All, la 59 de ani",
+    "category": "cultura",
+    "published": "2026-07-28T14:36:43+00:00",
+    "model": "B",
+    "teaser": "Lou Koller, cofondatorul și solistul trupei americane de hardcore Sick of It All, a decedat la vârsta de 59 de ani, în urma unei bătălii grele cu cancerul, potrivit anunțului făcut de colegii săi.",
+    "entities": [
+      "Lou Koller",
+      "Sick of It All"
+    ],
+    "icon": "music",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
     "url": "https://csid.ro/stiri/de-ce-primesti-desert-sau-bauturi-din-partea-casei-in-grecia-traditia-veche-de-mii-de-ani-care-inca-se-pastreaza-21263340",
     "original_link": "https://www.csid.ro/stiri/de-ce-primesti-desert-sau-bauturi-din-partea-casei-in-grecia-traditia-veche-de-mii-de-ani-care-inca-se-pastreaza-21263340/",
     "source": "csid",
@@ -772,6 +1212,23 @@
     "featured": false
   },
   {
+    "url": "https://zcj.ro/life-and-style/horoscop-29-iulie-2026--299257.html",
+    "original_link": "https://zcj.ro/life-and-style/horoscop-29-iulie-2026--299257.html",
+    "source": "zcj",
+    "source_name": "Ziua de Cluj",
+    "source_lang": "ro",
+    "title": "Previziunile astrale pentru toate zodiile în data de 29 iulie 2026",
+    "category": "zonal",
+    "published": "2026-07-28T14:04:00+00:00",
+    "model": "B",
+    "teaser": "Astrologii prezic evoluții importante pentru nativii fiecărei zodie în parte, oferind orientare pentru ziua de miercuri, 29 iulie 2026, în plan personal și profesional.",
+    "entities": [],
+    "icon": "sun",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
     "url": "https://csid.ro/lifestyle/horoscop/stres-tensiuni-si-decizii-dificile-cinci-zodii-sunt-puse-la-incercare-pe-final-de-iulie-21262451",
     "original_link": "https://www.csid.ro/lifestyle/horoscop/stres-tensiuni-si-decizii-dificile-cinci-zodii-sunt-puse-la-incercare-pe-final-de-iulie-21262451/",
     "source": "csid",
@@ -784,6 +1241,25 @@
     "teaser": "Astrologii avertizează că finalul lunii iulie 2026 aduce o perioadă plină de emoții intense și decizii dificile, punând la încercare reziliența a cinci nativi din zodiac.",
     "entities": [],
     "icon": "sun",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://elle.ro/people/mesajul-transmis-de-andreea-marin-dupa-ce-a-fost-victima-unei-fraude-online-imaginea-ei-folosita-intr-o-schema-cu-criptomonede-1081274",
+    "original_link": "https://www.elle.ro/people/mesajul-transmis-de-andreea-marin-dupa-ce-a-fost-victima-unei-fraude-online-imaginea-ei-folosita-intr-o-schema-cu-criptomonede-1081274",
+    "source": "elle",
+    "source_name": "Elle România",
+    "source_lang": "ro",
+    "title": "Andreea Marin avertizează fanii despre o fraudă online cu imaginea sa",
+    "category": "lifestyle",
+    "published": "2026-07-28T14:00:00+00:00",
+    "model": "B",
+    "teaser": "Vedeta TV Andreea Marin trage un semnal de alarmă după ce escrocii i-au folosit imaginea generată prin inteligență artificială pentru a promova investiții false în criptomonede.",
+    "entities": [
+      "Andreea Marin"
+    ],
+    "icon": "shield-lock",
     "processed_by": "gemini",
     "prompt_version": "v2-esenta",
     "featured": false
@@ -834,6 +1310,26 @@
       "Poliția"
     ],
     "icon": "shield",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://zcj.ro/eveniment/politistii-au-batut-la-usa-persoanelor-aflate-in-evidentele-pentru-conflicte-familiale-zeci-de-cazuri-verificate-la-cluj--299256.html",
+    "original_link": "https://zcj.ro/eveniment/politistii-au-batut-la-usa-persoanelor-aflate-in-evidentele-pentru-conflicte-familiale-zeci-de-cazuri-verificate-la-cluj--299256.html",
+    "source": "zcj",
+    "source_name": "Ziua de Cluj",
+    "source_lang": "ro",
+    "title": "Polițiștii din Cluj au verificat zeci de cazuri de conflicte familiale",
+    "category": "zonal",
+    "published": "2026-07-28T13:55:00+00:00",
+    "model": "B",
+    "teaser": "Oamenii legii din cadrul Secției 7 Poliție Cluj-Napoca au efectuat verificări directe la domiciliul persoanelor cunoscute cu riscuri de violență domestică, pentru prevenirea faptelor penale.",
+    "entities": [
+      "Cluj-Napoca",
+      "Secția 7 Poliție"
+    ],
+    "icon": "gavel",
     "processed_by": "gemini",
     "prompt_version": "v2-esenta",
     "featured": false
@@ -890,6 +1386,27 @@
     "featured": false
   },
   {
+    "url": "https://unica.ro/advertorial/vacanta-in-egipt-de-ce-sa-imbini-croaziera-pe-nil-cu-relaxarea-la-mare-825623",
+    "original_link": "https://www.unica.ro/advertorial/vacanta-in-egipt-de-ce-sa-imbini-croaziera-pe-nil-cu-relaxarea-la-mare-825623",
+    "source": "unica",
+    "source_name": "Unica",
+    "source_lang": "ro",
+    "title": "Ghid turistic: Combinarea croazierei pe Nil cu relaxarea în Hurghada",
+    "category": "lifestyle",
+    "published": "2026-07-28T13:52:00+00:00",
+    "model": "B",
+    "teaser": "Turiștii care vizitează Egiptul nu trebuie să aleagă exclusiv între o croazieră pe Nil și stațiunea Hurghada, cele două experiențe fiind ușor de combinat în cadrul aceleiași vacanțe pentru un sejur complet.",
+    "entities": [
+      "Egipt",
+      "Nil",
+      "Hurghada"
+    ],
+    "icon": "plane",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
     "url": "https://zcj.ro/economie/alerta-alimentara-produs-retras-de-la-vanzare-cei-care-l-au-cumparat-sa-nu-il-consume--299255.html",
     "original_link": "https://zcj.ro/economie/alerta-alimentara-produs-retras-de-la-vanzare-cei-care-l-au-cumparat-sa-nu-il-consume--299255.html",
     "source": "zcj",
@@ -940,6 +1457,46 @@
     "featured": false
   },
   {
+    "url": "https://expressdebanat.ro/nu-am-nevoie-de-asa-ceva-grindeanu-dupa-ce-a-fost-propus-cetatean-de-onoare-al-judetului-timis",
+    "original_link": "https://expressdebanat.ro/nu-am-nevoie-de-asa-ceva-grindeanu-dupa-ce-a-fost-propus-cetatean-de-onoare-al-judetului-timis/",
+    "source": "expressdebanat",
+    "source_name": "Express de Banat",
+    "source_lang": "ro",
+    "title": "Sorin Grindeanu refuză titlul de cetățean de onoare al județului Timiș",
+    "category": "regional",
+    "published": "2026-07-28T13:42:40+00:00",
+    "model": "B",
+    "teaser": "Liderul PSD Sorin Grindeanu a declarat că nu are nevoie de distincția de cetățean de onoare propusă de un consilier AUR, deși apreciază intenția gestului.",
+    "entities": [
+      "Sorin Grindeanu",
+      "Marcel Mihoc",
+      "Timiș"
+    ],
+    "icon": "certificate",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://newsbucovina.ro/social/444996/prefectul-sucevei-a-participat-la-prezentarea-proiectului-de-modernizare-a-instrumentelor-digitale-asociate-numarului-unic-119-pentru-protectia-copilului",
+    "original_link": "https://www.newsbucovina.ro/social/444996/prefectul-sucevei-a-participat-la-prezentarea-proiectului-de-modernizare-a-instrumentelor-digitale-asociate-numarului-unic-119-pentru-protectia-copilului",
+    "source": "newsbucovina",
+    "source_name": "NewsBucovina",
+    "source_lang": "ro",
+    "title": "Prefectul de Suceava a analizat modernizarea liniei telefonice 119",
+    "category": "regional",
+    "published": "2026-07-28T13:35:50+00:00",
+    "model": "B",
+    "teaser": "Reprezentantul Guvernului a participat la prezentarea noilor instrumente digitale destinate îmbunătățirii serviciului dedicat sesizării cazurilor de abuz asupra minorilor.",
+    "entities": [
+      "Suceava"
+    ],
+    "icon": "device-mobile",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
     "url": "https://csid.ro/diete/dieta-si-nutritie/bautura-virala-care-promite-sa-slabesti-4-kilograme-in-doar-doua-zile-medicii-avertizeaza-nu-este-pierdere-de-grasime-21263076",
     "original_link": "https://www.csid.ro/diete/dieta-si-nutritie/bautura-virala-care-promite-sa-slabesti-4-kilograme-in-doar-doua-zile-medicii-avertizeaza-nu-este-pierdere-de-grasime-21263076/",
     "source": "csid",
@@ -952,6 +1509,27 @@
     "teaser": "O rețetă virală care promite pierderea rapidă a patru kilograme în două zile este catalogată de medici drept un pericol, cauzând vărsături și diaree severă, nu ardere de grăsimi.",
     "entities": [],
     "icon": "alert-triangle",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://expressdebanat.ro/diana-buzoianu-peste-un-milion-de-romani-nu-au-acces-la-apa-si-canalizare",
+    "original_link": "https://expressdebanat.ro/diana-buzoianu-peste-un-milion-de-romani-nu-au-acces-la-apa-si-canalizare/",
+    "source": "expressdebanat",
+    "source_name": "Express de Banat",
+    "source_lang": "ro",
+    "title": "Peste un milion de români nu au acces la apă și canalizare",
+    "category": "regional",
+    "published": "2026-07-28T13:28:09+00:00",
+    "model": "B",
+    "teaser": "Ministra Mediului Diana Buzoianu anunță că România riscă sancțiuni de la Comisia Europeană din cauza lipsei rețelelor de apă și canalizare pentru un milion de cetățeni.",
+    "entities": [
+      "Diana Buzoianu",
+      "Comisia Europeană",
+      "Dumbrăvița"
+    ],
+    "icon": "building-bank",
     "processed_by": "gemini",
     "prompt_version": "v2-esenta",
     "featured": false
@@ -997,6 +1575,26 @@
       "Kumamoto"
     ],
     "icon": "cloud-storm",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://newsbucovina.ro/actualitate/444993/usv-organizeaza-a-doua-runda-de-inscrieri-in-zilele-de-29-si-30-iulie",
+    "original_link": "https://www.newsbucovina.ro/actualitate/444993/usv-organizeaza-a-doua-runda-de-inscrieri-in-zilele-de-29-si-30-iulie",
+    "source": "newsbucovina",
+    "source_name": "NewsBucovina",
+    "source_lang": "ro",
+    "title": "USV organizează o nouă seszon de înscrieri pentru admitere",
+    "category": "regional",
+    "published": "2026-07-28T13:26:35+00:00",
+    "model": "B",
+    "teaser": "Universitatea din Suceava pune la dispoziție aproximativ o mie de locuri la licență și masterat în cadrul celei de-a doua runde programate la finalul lunii iulie.",
+    "entities": [
+      "USV",
+      "Suceava"
+    ],
+    "icon": "school",
     "processed_by": "gemini",
     "prompt_version": "v2-esenta",
     "featured": false
@@ -1069,6 +1667,68 @@
     "featured": false
   },
   {
+    "url": "https://elle.ro/people/suri-cruise-si-a-schimbat-oficial-numele-cum-se-numeste-acum-fiica-lui-tom-cruise-1081288",
+    "original_link": "https://www.elle.ro/people/suri-cruise-si-a-schimbat-oficial-numele-cum-se-numeste-acum-fiica-lui-tom-cruise-1081288",
+    "source": "elle",
+    "source_name": "Elle România",
+    "source_lang": "ro",
+    "title": "Suri Cruise renunță oficial la numele celebrului său tată",
+    "category": "lifestyle",
+    "published": "2026-07-28T13:20:00+00:00",
+    "model": "B",
+    "teaser": "Suri Cruise, fiica actorilor Tom Cruise și Katie Holmes, și-a schimbat legal numele de familie la vârsta de 20 de ani, adoptând apelativul Suri Noelle.",
+    "entities": [
+      "Suri Cruise",
+      "Tom Cruise",
+      "Katie Holmes",
+      "Suri Noelle"
+    ],
+    "icon": "writing",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://unica.ro/vedete/gigi-becali-vrea-sa-se-calugareasca-latifundiarul-asteapta-acordul-sotiei-825576",
+    "original_link": "https://www.unica.ro/vedete/gigi-becali-vrea-sa-se-calugareasca-latifundiarul-asteapta-acordul-sotiei-825576",
+    "source": "unica",
+    "source_name": "Unica",
+    "source_lang": "ro",
+    "title": "Gigi Becali intenționează să se călugărească după acordul soției",
+    "category": "lifestyle",
+    "published": "2026-07-28T13:13:33+00:00",
+    "model": "B",
+    "teaser": "Gigi Becali, în vârstă de 68 de ani, a anunțat că dorește să se retragă la mănăstire ca să se călugărească, condiționând acest pas de aprobarea soției sale și de asigurarea financiară a fiicelor.",
+    "entities": [
+      "Gigi Becali",
+      "Luminița Becali"
+    ],
+    "icon": "building-church",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://unica.ro/advertorial/descopera-setul-de-inel-si-cercei-din-aur-alb-18k-cu-topaz-blue-london-blue-si-diamante-naturale-colectia-deruvo-de-la-sabrini-825610",
+    "original_link": "https://www.unica.ro/advertorial/descopera-setul-de-inel-si-cercei-din-aur-alb-18k-cu-topaz-blue-london-blue-si-diamante-naturale-colectia-deruvo-de-la-sabrini-825610",
+    "source": "unica",
+    "source_name": "Unica",
+    "source_lang": "ro",
+    "title": "Sabrini lansează colecția DeRuvo cu bijuterii din aur alb și topaz",
+    "category": "lifestyle",
+    "published": "2026-07-28T13:11:29+00:00",
+    "model": "B",
+    "teaser": "Brandul Sabrini a pus în vânzare un set de bijuterii din aur alb de 18 karate, care include inel și cercei încrustate cu diamante naturale și topaze în nuanțe profunde de albastru.",
+    "entities": [
+      "Sabrini",
+      "DeRuvo"
+    ],
+    "icon": "shopping-cart",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
     "url": "https://zcj.ro/eveniment/ambasadorii-folclorului-romanesc-ansamblul-romanasul-al-utcn-reprezinta-romania-la-un-festival-international-de-renume--299253.html",
     "original_link": "https://zcj.ro/eveniment/ambasadorii-folclorului-romanesc-ansamblul-romanasul-al-utcn-reprezinta-romania-la-un-festival-international-de-renume--299253.html",
     "source": "zcj",
@@ -1086,6 +1746,25 @@
       "Turcia"
     ],
     "icon": "music",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://unica.ro/stiri/cand-se-vireaza-banii-de-alocatii-pentru-copii-in-august-2026-825603",
+    "original_link": "https://www.unica.ro/stiri/cand-se-vireaza-banii-de-alocatii-pentru-copii-in-august-2026-825603",
+    "source": "unica",
+    "source_name": "Unica",
+    "source_lang": "ro",
+    "title": "Agenția Națională pentru Plăți virează alocațiile pentru copii în august",
+    "category": "lifestyle",
+    "published": "2026-07-28T13:08:07+00:00",
+    "model": "B",
+    "teaser": "Părinții din România își primesc alocațiile de stat pentru copii în luna august conform calendarului obișnuit stabilit de Agenția Națională pentru Plăți și Inspecție Socială, asigurând suportul financiar necesar familiilor.",
+    "entities": [
+      "Agenția Națională pentru Plăți și Inspecție Socială"
+    ],
+    "icon": "receipt-tax",
     "processed_by": "gemini",
     "prompt_version": "v2-esenta",
     "featured": false
@@ -1195,6 +1874,27 @@
     "featured": false
   },
   {
+    "url": "https://expressdebanat.ro/a-inceput-tabara-tanar-si-lider-la-brebu-nou-garana-o-noua-editie-dedicata-formarii-tinerilor-din-banatul-de-munte",
+    "original_link": "https://expressdebanat.ro/a-inceput-tabara-tanar-si-lider-la-brebu-nou-garana-o-noua-editie-dedicata-formarii-tinerilor-din-banatul-de-munte/",
+    "source": "expressdebanat",
+    "source_name": "Express de Banat",
+    "source_lang": "ro",
+    "title": "A debutat tabăra pentru tineret la Brebu Nou",
+    "category": "regional",
+    "published": "2026-07-28T12:56:04+00:00",
+    "model": "B",
+    "teaser": "Asociația Tinerilor Ortodocși din Banatul de Munte organizează la Gărâna noua ediție a programului de formare dedicat tinerilor, desfășurată în perioada 28 iulie – 3 august 2026.",
+    "entities": [
+      "Brebu Nou",
+      "Gărâna",
+      "Banatul de Munte"
+    ],
+    "icon": "school",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
     "url": "https://avantaje.ro/articol/andreea-popescu-a-reactioant-dur-dupa-ce-rares-cojoc-s-a-afisat-cu-noua-iubita",
     "original_link": "https://www.avantaje.ro/articol/andreea-popescu-a-reactioant-dur-dupa-ce-rares-cojoc-s-a-afisat-cu-noua-iubita",
     "source": "avantaje",
@@ -1210,6 +1910,68 @@
       "Rares Cojoc"
     ],
     "icon": null,
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://unica.ro/vedete/cum-a-ajuns-dima-trofim-la-spital-in-timp-ce-era-in-vacanta-in-bulgaria-cat-l-a-costat-o-perfuzie-825594",
+    "original_link": "https://www.unica.ro/vedete/cum-a-ajuns-dima-trofim-la-spital-in-timp-ce-era-in-vacanta-in-bulgaria-cat-l-a-costat-o-perfuzie-825594",
+    "source": "unica",
+    "source_name": "Unica",
+    "source_lang": "ro",
+    "title": "Dima Trofim a ajuns la spital în Bulgaria din cauza stărilor de rău",
+    "category": "lifestyle",
+    "published": "2026-07-28T12:51:59+00:00",
+    "model": "B",
+    "teaser": "Actorul Dima Trofim, cunoscut din trupa La La Band, a relatat despre o vizită neprevăzută la o clinică medicală din Bulgaria în timpul vacanței, unde a primit îngrijiri și o perfuzie.",
+    "entities": [
+      "Dima Trofim",
+      "Bulgaria"
+    ],
+    "icon": "building-hospital",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://zch.ro/neamt-accident-pe-dn15b-o-minora-cu-alcoolemie-de-081-mg-l-alcool-pur-in-aerul-expirat-a-intrat-cu-masina-intr-un-sant",
+    "original_link": "https://zch.ro/neamt-accident-pe-dn15b-o-minora-cu-alcoolemie-de-081-mg-l-alcool-pur-in-aerul-expirat-a-intrat-cu-masina-intr-un-sant/?utm_medium=Feed&utm_source=Syndication",
+    "source": "zch",
+    "source_name": "ZCH News",
+    "source_lang": "ro",
+    "title": "O minoră de 17 ani a provocat un accident rutier pe DN15B având o alcoolemie ridicată",
+    "category": "regional",
+    "published": "2026-07-28T12:42:06+00:00",
+    "model": "B",
+    "teaser": "O adolescentă din Neamț a pierdut controlul volanului pe DN15B, în satul Leghin, și a ajuns cu mașina în șanț. Testul etilotest a indicat o concentrație de 0,81 mg/l alcool pur în aerul expirat.",
+    "entities": [
+      "DN15B",
+      "Leghin",
+      "Pipirig",
+      "Neamț"
+    ],
+    "icon": "car",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://elle.ro/people/adela-popescu-vrea-sa-faca-o-schimbare-in-stilul-ei-de-viata-ce-o-nemultumeste-pe-actrita-eram-gata-sa-ma-las-1081259",
+    "original_link": "https://www.elle.ro/people/adela-popescu-vrea-sa-faca-o-schimbare-in-stilul-ei-de-viata-ce-o-nemultumeste-pe-actrita-eram-gata-sa-ma-las-1081259",
+    "source": "elle",
+    "source_name": "Elle România",
+    "source_lang": "ro",
+    "title": "Adela Popescu pregătim modificări majore în rutina sa zilnică",
+    "category": "lifestyle",
+    "published": "2026-07-28T12:40:00+00:00",
+    "model": "B",
+    "teaser": "Nemulțumită de rezultatele actuale ale eforturilor sale fizice, actrița Adela Popescu a decis să își schimbe stilul de viață, deși face sport regulat alături de soțul ei.",
+    "entities": [
+      "Adela Popescu",
+      "Radu Vâlcan"
+    ],
+    "icon": "run",
     "processed_by": "gemini",
     "prompt_version": "v2-esenta",
     "featured": false
@@ -1265,6 +2027,25 @@
     "featured": false
   },
   {
+    "url": "https://unica.ro/vedete/minodora-a-jurat-ca-nu-mai-calca-la-mare-in-romania-vedeta-a-fost-filmata-pe-ascuns-si-ironizata-cu-fundul-in-sus-825577",
+    "original_link": "https://www.unica.ro/vedete/minodora-a-jurat-ca-nu-mai-calca-la-mare-in-romania-vedeta-a-fost-filmata-pe-ascuns-si-ironizata-cu-fundul-in-sus-825577",
+    "source": "unica",
+    "source_name": "Unica",
+    "source_lang": "ro",
+    "title": "Minodora refuză definitiv litoralul românesc din cauza unei traume vechi",
+    "category": "lifestyle",
+    "published": "2026-07-28T12:33:17+00:00",
+    "model": "B",
+    "teaser": "Cântăreața Minodora explică de ce oagă permanent vacanțele pe plajele din România, invocând o experiență neplăcută suferită în urmă cu mai mulți ani, în ciuda faptului că a slăbit considerabil între timp.",
+    "entities": [
+      "Minodora"
+    ],
+    "icon": "umbrella",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
     "url": "https://moldova.europalibera.org/a/motorina-mai-scumpa-limite-la-pompa-si-patriotism-economic-cum-te-afecteaza-starea-de-alerta-din-sistemul-energetic/33816724.html",
     "original_link": "https://moldova.europalibera.org/a/motorina-mai-scumpa-limite-la-pompa-si-patriotism-economic-cum-te-afecteaza-starea-de-alerta-din-sistemul-energetic/33816724.html",
     "source": "el_moldova",
@@ -1291,6 +2072,26 @@
       "Comisia Națională de Management a Crizelor"
     ],
     "icon": "gas-station",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://unica.ro/vedete/romanesti/anamaria-prodan-aparitie-rara-in-costum-de-la-baie-la-53-de-ani-825558",
+    "original_link": "https://www.unica.ro/vedete/romanesti/anamaria-prodan-aparitie-rara-in-costum-de-la-baie-la-53-de-ani-825558",
+    "source": "unica",
+    "source_name": "Unica",
+    "source_lang": "ro",
+    "title": "Anamaria Prodan a atras admirația fanilor cu o apariție în bikini la 53 de ani",
+    "category": "lifestyle",
+    "published": "2026-07-28T12:32:36+00:00",
+    "model": "B",
+    "teaser": "Impresariată Anamaria Prodan și-a expus silueta tonifiată pe rețelele de socializare, fiind filmată într-un costum de baie negru în timpul vacanței sale recente petrecute în Italia.",
+    "entities": [
+      "Anamaria Prodan",
+      "Italia"
+    ],
+    "icon": "sun",
     "processed_by": "gemini",
     "prompt_version": "v2-esenta",
     "featured": false
@@ -1357,6 +2158,28 @@
     "featured": false
   },
   {
+    "url": "https://expressdebanat.ro/plujar-ironic-dupa-propunerea-aur-acel-sorin-grindeanu-artizanul-oug-13",
+    "original_link": "https://expressdebanat.ro/plujar-ironic-dupa-propunerea-aur-acel-sorin-grindeanu-artizanul-oug-13/",
+    "source": "expressdebanat",
+    "source_name": "Express de Banat",
+    "source_lang": "ro",
+    "title": "Andrei Plujar critică propunerea de acordare a titlului de onoare pentru Grindeanu",
+    "category": "regional",
+    "published": "2026-07-28T12:21:06+00:00",
+    "model": "B",
+    "teaser": "Deputatul USR Andrei Plujar a criticat ironic inițiativa consilierului AUR, amintind de perioada ordonanței 13 și de lipsa proiectelor finalizate de fostul ministru în regiune.",
+    "entities": [
+      "Andrei Plujar",
+      "Sorin Grindeanu",
+      "Caraș-Severin",
+      "Timiș"
+    ],
+    "icon": "gavel",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
     "url": "https://primariabucecea.ro/archives/4870",
     "original_link": "https://primariabucecea.ro/archives/4870",
     "source": "pl_botosani_oras_bucecea",
@@ -1385,6 +2208,47 @@
     "featured": false
   },
   {
+    "url": "https://expressdebanat.ro/desertul-verii-care-a-cucerit-romania-de-ce-toata-lumea-pune-in-cos-inghetata-gelatelli-de-la-lidl",
+    "original_link": "https://expressdebanat.ro/desertul-verii-care-a-cucerit-romania-de-ce-toata-lumea-pune-in-cos-inghetata-gelatelli-de-la-lidl/",
+    "source": "expressdebanat",
+    "source_name": "Express de Banat",
+    "source_lang": "ro",
+    "title": "Înghețata Gelatelli de la Lidl devine preferata verii în România",
+    "category": "regional",
+    "published": "2026-07-28T12:11:50+00:00",
+    "model": "B",
+    "teaser": "Clienții magazinelor Lidl aleg frecvent marca proprie de înghețată Gelatelli datorită raportului favorabil dintre preț și calitatea produsului disponibil pe piață.",
+    "entities": [
+      "Gelatelli",
+      "Lidl"
+    ],
+    "icon": "shopping-cart",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://newsbucovina.ro/actualitate/444985/foto-un-an-de-la-potopul-de-la-brosteni-gheorghe-soldan-am-demonstrat-ca-impreuna-putem-forma-cel-mai-puternic-baraj-in-fata-oricarei-nenorociri",
+    "original_link": "https://www.newsbucovina.ro/actualitate/444985/foto-un-an-de-la-potopul-de-la-brosteni-gheorghe-soldan-am-demonstrat-ca-impreuna-putem-forma-cel-mai-puternic-baraj-in-fata-oricarei-nenorociri",
+    "source": "newsbucovina",
+    "source_name": "NewsBucovina",
+    "source_lang": "ro",
+    "title": "Un an de la inundațiile devastatoare din localitatea Broșteni",
+    "category": "regional",
+    "published": "2026-07-28T12:05:21+00:00",
+    "model": "B",
+    "teaser": "Președintele Gheorghe Șoldan a subliniat solidaritatea comunității după dezastrul din zona Neagra, menționând că infrastructura grav afectată a fost deja refăcută complet.",
+    "entities": [
+      "Gheorghe Șoldan",
+      "Broșteni",
+      "Neagra"
+    ],
+    "icon": "cloud-storm",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
     "url": "https://csid.ro/stiri/de-ce-apare-pofta-de-mancare-in-perioadele-stresante-cum-recunosti-foamea-emotionala-21262014",
     "original_link": "https://www.csid.ro/stiri/de-ce-apare-pofta-de-mancare-in-perioadele-stresante-cum-recunosti-foamea-emotionala-21262014/",
     "source": "csid",
@@ -1397,6 +2261,25 @@
     "teaser": "Perioadele tensionate activează dorința de a consuma alimente chiar și în lipsa unei nevoi fiziologice. Află cum poți deosebi foamea reală de cea emoțională.",
     "entities": [],
     "icon": "pill",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://elle.ro/people/jessica-biel-revine-pe-marele-ecran-dupa-noua-ani-mi-s-a-parut-proiectul-potrivit-1081300",
+    "original_link": "https://www.elle.ro/people/jessica-biel-revine-pe-marele-ecran-dupa-noua-ani-mi-s-a-parut-proiectul-potrivit-1081300",
+    "source": "elle",
+    "source_name": "Elle România",
+    "source_lang": "ro",
+    "title": "Jessica Biel revine pe marile ecran după o absență de nouă ani",
+    "category": "cultura",
+    "published": "2026-07-28T12:00:00+00:00",
+    "model": "B",
+    "teaser": "Actrița Jessica Biel se întoarce în cinematografie cu rolul din producția „Matchbox the Movie”, explicând publicului motivele care au determinat-o să accepte acest nou proiect.",
+    "entities": [
+      "Jessica Biel"
+    ],
+    "icon": "movie",
     "processed_by": "gemini",
     "prompt_version": "v2-esenta",
     "featured": false
@@ -1547,6 +2430,46 @@
     "featured": false
   },
   {
+    "url": "https://expressdebanat.ro/margit-serban-a-devenit-cetatean-de-onoare-al-judetului-timis-distinctia-a-fost-ridicata-de-fiul-sau",
+    "original_link": "https://expressdebanat.ro/margit-serban-a-devenit-cetatean-de-onoare-al-judetului-timis-distinctia-a-fost-ridicata-de-fiul-sau/",
+    "source": "expressdebanat",
+    "source_name": "Express de Banat",
+    "source_lang": "ro",
+    "title": "Medicul pediatru Margit Șerban a primit titlul de Cetățean de Onoare al Timișului",
+    "category": "regional",
+    "published": "2026-07-28T11:24:55+00:00",
+    "model": "B",
+    "teaser": "Profesorul universitar Margit Șerban a fost omagiat cu titlul de cetățean de onoare în cadrul ședinței festive organizate la împlinirea a 107 ani de administrație românească.",
+    "entities": [
+      "Margit Șerban",
+      "Petre Șerban",
+      "Timișoara"
+    ],
+    "icon": "building-hospital",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://zch.ro/titularizare-2026-modelul-cand-si-unde-se-pot-depune-contestatiile-la-isj-neamt",
+    "original_link": "https://zch.ro/titularizare-2026-modelul-cand-si-unde-se-pot-depune-contestatiile-la-isj-neamt/?utm_medium=Feed&utm_source=Syndication",
+    "source": "zch",
+    "source_name": "ZCH News",
+    "source_lang": "ro",
+    "title": "Inspectoratul Școlar Neamț a stabilit modalitatea de depunere a contestațiilor pentru Titularizare 2026",
+    "category": "regional",
+    "published": "2026-07-28T11:20:17+00:00",
+    "model": "B",
+    "teaser": "Candidații nemulțumiți de notele obținute la proba scrisă a examenului de Titularizare 2026 în județul Neamț își pot trimite cererile exclusiv la adresa electronică dedicată a Inspectoratului Școlar.",
+    "entities": [
+      "ISJ Neamț"
+    ],
+    "icon": "writing",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
     "url": "https://elle.ro/people/dima-trofim-a-ajuns-pe-mana-medicilor-in-vacanta-cat-a-platit-pentru-o-perfuzie-in-bulgaria-1081305",
     "original_link": "https://www.elle.ro/people/dima-trofim-a-ajuns-pe-mana-medicilor-in-vacanta-cat-a-platit-pentru-o-perfuzie-in-bulgaria-1081305",
     "source": "elle",
@@ -1622,6 +2545,25 @@
     "model": "B",
     "teaser": "Detalii pe sursa.",
     "processed_by": "official",
+    "featured": false
+  },
+  {
+    "url": "https://emaramures.ro/ai-facut-vreodata-testul-pentru-hepatita-cas-maramures-explica-ce-investigatii-sunt-gratuite",
+    "original_link": "https://www.emaramures.ro/ai-facut-vreodata-testul-pentru-hepatita-cas-maramures-explica-ce-investigatii-sunt-gratuite/",
+    "source": "emaramures",
+    "source_name": "eMaramureș",
+    "source_lang": "ro",
+    "title": "CAS Maramureș informează cetățenii despre gratuitatea testărilor pentru hepatitele B și C",
+    "category": "zonal",
+    "published": "2026-07-28T11:00:27+00:00",
+    "model": "B",
+    "teaser": "Cu ocazia Zilei Mondiale a Hepatitei, Casa de Asigurări de Sănătate Maramureș reamintește populației că investigațiile medicale pentru depistarea timpurie a infecțiilor virale sunt complet gratuite.",
+    "entities": [
+      "CAS Maramureș"
+    ],
+    "icon": "certificate",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
     "featured": false
   },
   {
@@ -1746,6 +2688,27 @@
       "Buzău"
     ],
     "icon": "certificate",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://elle.ro/people/primul-sot-al-lui-jennifer-lopez-lanseaza-acuzatii-grave-la-adresa-artistei-si-face-dezvaluiri-despre-relatia-ei-cu-sean-diddy-combs-stiam-ca-ma-insela-1081248",
+    "original_link": "https://www.elle.ro/people/primul-sot-al-lui-jennifer-lopez-lanseaza-acuzatii-grave-la-adresa-artistei-si-face-dezvaluiri-despre-relatia-ei-cu-sean-diddy-combs-stiam-ca-ma-insela-1081248",
+    "source": "elle",
+    "source_name": "Elle România",
+    "source_lang": "ro",
+    "title": "Primul soț al Jennifer Lopez face acuzații despre relația ei cu Diddy",
+    "category": "lifestyle",
+    "published": "2026-07-28T10:40:00+00:00",
+    "model": "B",
+    "teaser": "Ojani Noa a relatat detalii tensionate despre căsnicia sa trecută cu artistă Jennifer Lopez și despre interacțiunile avute cu rapperul Sean Diddy Combs în acea perioadă.",
+    "entities": [
+      "Jennifer Lopez",
+      "Ojani Noa",
+      "Sean Diddy Combs"
+    ],
+    "icon": "music",
+    "processed_by": "gemini",
     "prompt_version": "v2-esenta",
     "featured": false
   },
@@ -1946,6 +2909,47 @@
     "featured": false
   },
   {
+    "url": "https://emaramures.ro/ti-ai-descoperit-talentul-scoala-populara-de-arta-baia-mare-da-startul-inscrierilor",
+    "original_link": "https://www.emaramures.ro/ti-ai-descoperit-talentul-scoala-populara-de-arta-baia-mare-da-startul-inscrierilor/",
+    "source": "emaramures",
+    "source_name": "eMaramureș",
+    "source_lang": "ro",
+    "title": "Școala Populară de Artă Baia Mare a deschis înscrierile pentru cursurile de artă",
+    "category": "zonal",
+    "published": "2026-07-28T10:00:15+00:00",
+    "model": "B",
+    "teaser": "Centrul Culturii Tradiționale Maramureș organizează noi cursuri destinate celor care vor să își dezvolte abilitățile creative sub îndrumarea unor profesori experimentați.",
+    "entities": [
+      "Școala Populară de Artă Baia Mare",
+      "Centrul Culturii Tradiționale Maramureș"
+    ],
+    "icon": "school",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://elle.ro/people/nadine-declaratii-emotionante-despre-fiul-ei-cu-ce-se-ocupa-noah-in-varsta-de-15-ani-unul-dintre-cele-mai-frumoase-lucruri-pe-care-un-tanar-le-poate-face-in-viata-1081191",
+    "original_link": "https://www.elle.ro/people/nadine-declaratii-emotionante-despre-fiul-ei-cu-ce-se-ocupa-noah-in-varsta-de-15-ani-unul-dintre-cele-mai-frumoase-lucruri-pe-care-un-tanar-le-poate-face-in-viata-1081191",
+    "source": "elle",
+    "source_name": "Elle România",
+    "source_lang": "ro",
+    "title": "Nadine a făcut dezvăluiri emoționante despre fiul său în vârstă de 15 ani",
+    "category": "lifestyle",
+    "published": "2026-07-28T10:00:00+00:00",
+    "model": "B",
+    "teaser": "Stabilită în Franța din anul 2021 alături de familie, fosta vedetă de televiziune Nadine a vorbit despre activitățile adolescentului Noah, lăudând implicarea tinerilor în acțiuni utile pentru comunitate.",
+    "entities": [
+      "Nadine",
+      "Noah",
+      "Franța"
+    ],
+    "icon": "home",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
     "url": "https://ploiesti.ro/stiri/ziua-imnului-national-sarbatorita-la-ploiesti",
     "original_link": "https://ploiesti.ro/stiri/ziua-imnului-national-sarbatorita-la-ploiesti/",
     "source": "pl_prahova_municipiul_ploiesti",
@@ -2015,6 +3019,26 @@
       "Andreea Marin"
     ],
     "icon": "alert-triangle",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://zch.ro/bacau-doi-tineri-arestati-preventiv-dupa-ce-ar-fi-talharit-si-agresat-un-barbat",
+    "original_link": "https://zch.ro/bacau-doi-tineri-arestati-preventiv-dupa-ce-ar-fi-talharit-si-agresat-un-barbat/?utm_medium=Feed&utm_source=Syndication",
+    "source": "zch",
+    "source_name": "ZCH News",
+    "source_lang": "ro",
+    "title": "Doi tineri din Onești, reținuți și arestați preventiv pentru tâlhărie și agresiune",
+    "category": "regional",
+    "published": "2026-07-28T09:29:22+00:00",
+    "model": "B",
+    "teaser": "Polițiștii din Onești au reținut doi tineri acuzați că au agresat fizic un bărbat și i-au furat portofelul care conținea bani și alte bunuri personale, instanța dispunând arestarea preventivă pentru 30 de zile.",
+    "entities": [
+      "Onești",
+      "IPJ Bacău"
+    ],
+    "icon": "gavel",
     "processed_by": "gemini",
     "prompt_version": "v2-esenta",
     "featured": false
@@ -2229,6 +3253,48 @@
     "featured": false
   },
   {
+    "url": "https://zch.ro/retinut-dupa-ce-si-ar-fi-agresat-sotia-si-fiica-vitrega-si-le-ar-fi-amenintat-cu-un-cutit",
+    "original_link": "https://zch.ro/retinut-dupa-ce-si-ar-fi-agresat-sotia-si-fiica-vitrega-si-le-ar-fi-amenintat-cu-un-cutit/?utm_medium=Feed&utm_source=Syndication",
+    "source": "zch",
+    "source_name": "ZCH News",
+    "source_lang": "ro",
+    "title": "Bărbat din Bălușești reținut după ce și-a agresat soția și fiica vitregă cu un cuțit",
+    "category": "regional",
+    "published": "2026-07-28T08:54:00+00:00",
+    "model": "B",
+    "teaser": "Un bărbat de 41 de ani din județul Neamț a fost reținut de polițiști după ce și-a atacat soția și fiica vitregă și le-a amenințat cu un cuțit în propria locuință, în cadrul unui conflict domestic.",
+    "entities": [
+      "Bălușești",
+      "IPJ Neamț"
+    ],
+    "icon": "gavel",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://zch.ro/greva-sanitas-in-neamt-doar-la-nivel-declarativ",
+    "original_link": "https://zch.ro/greva-sanitas-in-neamt-doar-la-nivel-declarativ/?utm_medium=Feed&utm_source=Syndication",
+    "source": "zch",
+    "source_name": "ZCH News",
+    "source_lang": "ro",
+    "title": "Greva generală Sanitas nu a fost aplicată în spitalele din Neamț",
+    "category": "regional",
+    "published": "2026-07-28T08:43:36+00:00",
+    "model": "B",
+    "teaser": "Anunțată pentru 28 iulie în trei unități medicale din județ, acțiunea de protest a sindicatului Sanitas a rămas doar la stadiul declarativ, nefiind pusă în practică.",
+    "entities": [
+      "Sanitas Neamț",
+      "Eva Ungureanu",
+      "Spitalul Târgu Neamț",
+      "Neamț"
+    ],
+    "icon": "building-hospital",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
     "url": "https://primariajilava.ro/angajare-asistent-personal-profesionist",
     "original_link": "https://primariajilava.ro/angajare-asistent-personal-profesionist/",
     "source": "pl_ilfov_jilava",
@@ -2434,6 +3500,27 @@
     "featured": false
   },
   {
+    "url": "https://zch.ro/doliu-printre-politistii-bacauani-un-fost-coleg-a-decedat-la-doar-52-de-ani",
+    "original_link": "https://zch.ro/doliu-printre-politistii-bacauani-un-fost-coleg-a-decedat-la-doar-52-de-ani/?utm_medium=Feed&utm_source=Syndication",
+    "source": "zch",
+    "source_name": "ZCH News",
+    "source_lang": "ro",
+    "title": "A încetat din viață polițistul băcăuan Sebi Morozan la 52 de ani",
+    "category": "regional",
+    "published": "2026-07-28T07:35:52+00:00",
+    "model": "B",
+    "teaser": "Fostul agent șef principal de la Biroul Rutier Bacău a decedat la doar doi ani după ce ieșise la pensie, lăsând în urmă un profund regret printre foștii colegi.",
+    "entities": [
+      "Sebi Morozan",
+      "Poliția Bacău",
+      "Bacău"
+    ],
+    "icon": "shield",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
     "url": "https://primariabechet.ro/2026/07/28/https-e-consultare-gov-ro",
     "original_link": "https://primariabechet.ro/2026/07/28/https-e-consultare-gov-ro/",
     "source": "pl_dolj_oras_bechet",
@@ -2631,6 +3718,27 @@
       "Cristina Demetrescu"
     ],
     "icon": "stethoscope",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://zch.ro/femeie-salvata-dintr-o-rapa-adanca-de-4-metri-la-garcina",
+    "original_link": "https://zch.ro/femeie-salvata-dintr-o-rapa-adanca-de-4-metri-la-garcina/?utm_medium=Feed&utm_source=Syndication",
+    "source": "zch",
+    "source_name": "ZCH News",
+    "source_lang": "ro",
+    "title": "O femeie de 55 de ani a fost salvată dintr-o râpă la Gârcina",
+    "category": "regional",
+    "published": "2026-07-28T06:14:35+00:00",
+    "model": "B",
+    "teaser": "Pompierii au intervenit luni seară pentru a recupera o persoană căzută într-o prăpastie adâncă de patru metri situată în satul Almaș din județul Neamț.",
+    "entities": [
+      "Gârcina",
+      "Almaș",
+      "Neamț"
+    ],
+    "icon": "ambulance",
     "processed_by": "gemini",
     "prompt_version": "v2-esenta",
     "featured": false
@@ -3129,6 +4237,28 @@
       "Maria Zaharova"
     ],
     "icon": "flag",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://nwradu.ro/2026/07/stirile-zilei-despre-tehnologie-28-iulie-2026",
+    "original_link": "https://www.nwradu.ro/2026/07/stirile-zilei-despre-tehnologie-28-iulie-2026/",
+    "source": "nwradu",
+    "source_name": "NwRadu",
+    "source_lang": "ro",
+    "title": "Știrile tehnologice și energetice ale zilei includ reactoare mici la Iernut și alianțe AI",
+    "category": "tech",
+    "published": "2026-07-28T03:44:25+00:00",
+    "model": "B",
+    "teaser": "România analizează instalarea de mini-reactoare nucleare la Iernut, în timp ce un reactor de la Cernavodă se oprește temporar din cauza Dunării. Pe plan extern, NVIDIA lansează o alianță pentru securitatea inteligenței artificiale.",
+    "entities": [
+      "NVIDIA",
+      "Iernut",
+      "Cernavodă",
+      "Dunărea"
+    ],
+    "icon": "cpu",
     "processed_by": "gemini",
     "prompt_version": "v2-esenta",
     "featured": false
