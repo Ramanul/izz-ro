@@ -112,6 +112,23 @@ The 2026-07-10 autonomous mandate is **OVER**. Its backlog shipped (2026-07-11) 
 - Historical record of the delivered backlog (do not re-do): Chromium image engine, cache `_headers`, EAA accessibility statement, legal wording pass, A11y/SEO/perf thresholds, pytest suite + tests.yml, covers.py cleanup — all ✅.
 - **Owner facts (never invent legal facts):** operator = natural person, initials **S.A.N.**, Romania — already in privacy.md.
 
+### 14b. Background work — REINSTATED, BOUNDED (owner decision 2026-08-01)
+§14 banned autonomous loops because *two accounts* each ran one and collided (12–13 Jul). That
+premise is gone: STATE.md records single-account mode. The owner is often away for days and wants
+progress meanwhile, so a background Routine is allowed again — under limits that keep the original
+failure impossible:
+- **It never merges to `main`.** It opens a **draft PR** and stops. Only the owner merges. This is
+  the whole safety property: nothing reaches the live site without human review.
+- **One task per firing**, taken from the `## Open` list in `specs/STATE.md`. It does not invent
+  work, does not touch anything marked "owner decision pending", and does not start a second task.
+- **It stops and reports instead of guessing.** Ambiguity, a failing premise, or a task needing a
+  cost/design call ends the run with a written note in the PR or STATE.md — not a best guess.
+- **It updates `specs/STATE.md`** so the next session (background or owner) starts informed.
+- Everything else still applies: §5 spec→verify→commit, §16 two-role verification, §7/§8 domain
+  and token rules. A background run gets no exemption from any of them.
+Anything wider than this — self-merging, self-directed backlog invention, a second concurrent
+loop — remains forbidden by §14 above.
+
 ## 15. Sub-agents & commands — delegate the verification rituals
 Project sub-agents live in `.claude/agents/` (versioned, see its README). Each isolates a noisy, bounded, summarizable job and returns a verdict — use them so the main thread stays on the decision, not the noise. Map task → agent:
 - Changing `generator/cluster.py` or its thresholds → **`clustering-tuner`** verifies over-merge AND under-merge on real samples (enforces §7). It reports; it does not edit.
@@ -195,3 +212,27 @@ izz.ro may use a local institution's image ONLY when one of these holds, verifie
 2. a free-licensed portrait/photo exists on Wikidata / Wikimedia Commons (existing pipeline path — `fetch_leadphotos.py` PD/CC0, `fetch_portraits.py` CC-BY), OR
 3. the institution gave written reuse permission.
 NO blanket scraping of institution sites. Agents research and gather this evidence per institution into a whitelist; the owner (or legal) approves it before any image is pulled — human-in-the-loop, like `moderation.yaml`. Missing all three → the article keeps its generated cover.
+
+## 19. Session hygiene & context economy — HARD RULE (owner decision 2026-08-01)
+Context: a session opened on 2026-07-25 was still being continued on 2026-08-01. Every turn
+re-sent a week of history, and two `actions_list` calls returned **340,000 characters each**.
+The 5-hour usage window hit 32% in roughly ten minutes of work. Nothing in that history was
+needed — `specs/STATE.md` already held every conclusion.
+
+- **One task, one session.** Do not continue a conversation across days. When a slice is done and
+  STATE.md is updated, the transcript has no residual value: STATE.md *is* the handoff, and §15
+  already requires reading it first. Say so to the owner rather than silently continuing a stale
+  session.
+- **Never pull a large payload into context.** GitHub Actions listings, full `data/articles.json`,
+  log files, `git log` without `--format` — filter at the source (`jq`, a `python -c` that prints
+  only the fields needed, `--per_page`, `grep -c`, `head`). A tool result costing more than the
+  slice it supports is a defect, not a detail. If a tool dumps to a file because it was too large,
+  that is the signal the call was wrong — narrow it, do not read the file.
+- **Model to match the work.** Routine single-slice edits do not need the most expensive model;
+  reserve it for planning and hard reasoning. §12's effort guidance is about depth, this is about
+  cost — they are different dials.
+- **Sub-agents cost ~5.6x per delivered line** (measured, `COORD-DASHBOARD.md`). Worth it for
+  genuinely parallel or noisy measurement work; wasteful for an edit you can make directly.
+- **Agents share the working tree.** A background agent that runs `git checkout` moves the branch
+  under everyone else — this happened on 2026-07-25 and cost a rebuild. Give every parallel agent
+  `isolation: "worktree"`, or a dedicated `git worktree`. Never let two agents write the same branch.
