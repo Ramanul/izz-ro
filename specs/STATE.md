@@ -27,19 +27,21 @@ comma decimals) + `tools/build_gazetteer.py`. **geo.py is UNCHANGED — still th
   clean win either. Reference features (Bucegi, Ceahlău, Dunărea) are a separate small curated list.
 
 ## Open
-1. **Owner decision pending:** `BATCH_SIZE` 6→10 gives ~+67% articles per run but risks JSON
-   truncation unless `maxOutputTokens` (2048, hardcoded) rises with it.
-2. **Bug, found and NOT fixed:** ~129 official sources are re-fetched every run and expired by
+1. **SIRUTA Slice 2 — county-aware village matching.** Groundwork merged (siruta_raw.csv +
+   build_gazetteer.py). Design is now clear: villages match ONLY when the source's county matches
+   the village's county. This kills the measured false positives — Saturn/horoscope/FCSB all come
+   from NATIONAL sources (no county), so village matching simply won't fire for them; a Vrancea
+   paper's "Poiana" → Poiana-Vrancea works. Needs: source→county map, `geo.clasifica(text, county)`,
+   plumb through `_resolve_category`. Plus a small curated FEATURES list (Bucegi, Ceahlău, Dunărea).
+2. **Interactive guides — NEEDS OWNER DESIGN + DATA.** Owner (2026-08-02): the static guides are
+   useless, must be interactive. Natural form = calculators (brut→net salariu, copii→alocație).
+   BLOCKED on two things, both the owner's: (a) which interactivity exactly; (b) the CORRECT
+   formulas/rates — these are legal/financial (§10), a wrong net-salary published is worse than a
+   static figure. Do NOT build calculators on guessed formulas. `data/entities/*.yaml` still
+   `verificat: false` (honest). Owner must supply figures + deep-link `sursa_url` (RO domains).
+3. **Bug, found and NOT fixed:** ~129 official sources are re-fetched every run and expired by
    `state.expire()` in the *same* run — 76% of their content is already past the 7-day TTL when
-   read. No AI cost, but wasted fetch and **falsified stats**: a log read "B: 437" when the real
-   commit diff was +14 URLs.
-3. **Guides still carry placeholder figures.** `data/entities/*.yaml` all have `verificat: false`
-   (correct — the pages honestly show "Neconfirmat"). Setting any to `true` needs a real figure +
-   a deep-link `sursa_url`; the sandbox cannot reach RO domains, so this is the OWNER's to fill.
-   NOTE: the 2 local test failures on this were a STALE `output/` from Jul 19, not a code bug —
-   `--render-only` clears them, main is green (177 tests). Do not "fix" the template; it is correct.
-4. **Owner-requested, not started:** primării organized on a MAP by historical region → county →
-   commune; pull news down to village/UAT level (SIRUTA). Big multi-slice project, needs the owner.
+   read. Wasted fetch + **falsified stats**. Fixable without owner — good next code slice.
 
 ## Settled today — do NOT re-derive
 - **The "too few articles" cause was an outage, not the budget.** 30 consecutive `pipeline` runs
