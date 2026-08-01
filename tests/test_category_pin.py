@@ -1,13 +1,13 @@
-"""Categoriile geografice (PINNED_CATEGORIES, ex. 'local') sunt o axa proprie:
-AI-ul nu le muta pe axa de tema. Vezi process._resolve_category."""
+"""Rubrica geografica se decide din TEXT, la orice sursa (owner 2026-08-02): LOCAL =
+unde se intampla, nu cine publica. Vezi process._resolve_category."""
 from generator import config
 from generator.process import _resolve_category
 
 
-def test_local_source_stays_local_despite_ai_topic():
-    # articol de la un ziar judetean: fetch pune category='local'; AI zice 'sport'
+def test_local_source_no_place_leaves_to_ai_topic():
+    # Ziar judetean, dar textul (gol aici) nu numeste niciun loc -> pleaca pe tema AI.
     item = {"category": "local", "source": "stiridecluj"}
-    assert _resolve_category(item, "sport") == "local"
+    assert _resolve_category(item, "sport") == "sport"
 
 
 def test_non_local_source_follows_ai_category():
