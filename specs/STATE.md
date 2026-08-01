@@ -4,25 +4,27 @@
 > Executors get it read-only. Keep it tight — when it outgrows ~40 lines of content, cut the
 > settled history, not the open work. `git fetch` immediately before rewriting it.
 
-**Updated:** 2026-07-25 (seven PRs merged; the "few articles" mystery is solved)
+**Updated:** 2026-08-02 (account A landed the three draft PRs B left when it hit the limit)
 
-## OPERATING MODE — SINGLE ACCOUNT
-Account A is inactive. **This account is the only writer.** No `/handoff`, no `TASKS-B.md`
-parking, no waiting for another account to review or merge. §14's substance still holds:
-branch, small diff, land it. Owner wants sub-agents used — but see the cost note below.
+## OPERATING MODE — owner active on ACCOUNT A (2026-08-02)
+Owner was on account B, hit the usage limit mid-work on three draft PRs, switched to account A
+(this local session) to continue. Per §14 (amended): **the account the owner is working from
+merges** — that is account A now. All three PRs landed here; see "Merged 2026-08-01/02".
 
 ## Open
-1. **PR #93** — `feed_check.py` now calls the pipeline's `_fetch_one_guarded`. 143 tests pass.
-2. **`test/restore-3-primarii`** — a MEASUREMENT branch, not a proposal. Three slugs
-   (`hunedoara_municipiul_brad`, `prahova_brazi`, `suceava_oras_frasin`) read as alive from the
-   sandbox; `feedcheck` run from a runner decides whether they are reachable from where
-   `build.yml` actually pulls. Do not merge it on sandbox evidence.
-3. **Owner decision pending:** `BATCH_SIZE` 6→10 gives ~+67% articles per run but risks JSON
+1. **Owner decision pending:** `BATCH_SIZE` 6→10 gives ~+67% articles per run but risks JSON
    truncation unless `maxOutputTokens` (2048, hardcoded) rises with it.
-4. **Bug, found and NOT fixed:** ~129 official sources are re-fetched every run and expired by
+2. **Bug, found and NOT fixed:** ~129 official sources are re-fetched every run and expired by
    `state.expire()` in the *same* run — 76% of their content is already past the 7-day TTL when
    read. No AI cost, but wasted fetch and **falsified stats**: a log read "B: 437" when the real
    commit diff was +14 URLs.
+3. **Guides still carry placeholder figures.** `data/entities/*.yaml` all have `verificat: false`
+   (correct — the pages honestly show "Neconfirmat"). Setting any to `true` needs a real figure +
+   a deep-link `sursa_url`; the sandbox cannot reach RO domains, so this is the OWNER's to fill.
+   NOTE: the 2 local test failures on this were a STALE `output/` from Jul 19, not a code bug —
+   `--render-only` clears them, main is green (177 tests). Do not "fix" the template; it is correct.
+4. **Owner-requested, not started:** primării organized on a MAP by historical region → county →
+   commune; pull news down to village/UAT level (SIRUTA). Big multi-slice project, needs the owner.
 
 ## Settled today — do NOT re-derive
 - **The "too few articles" cause was an outage, not the budget.** 30 consecutive `pipeline` runs
@@ -51,7 +53,18 @@ branch, small diff, land it. Owner wants sub-agents used — but see the cost no
   slices in `COORD-DASHBOARD.md`). Worth it for genuinely parallel or noisy measurement work.
   CI is the cheapest executor — free minutes on a public repo, and the only one with real network.
 
-## Merged today
+## Merged 2026-08-01/02 (account A, from B's draft PRs)
+- **#96** — dark-mode toggle was dead on live: CSP `script-src 'self'` (no `unsafe-inline`)
+  refused the inline `onclick` + `<script>`; worked locally only because `http.server` skips
+  `_headers`. Moved to external `static/theme.js` (event delegation, cache-busted). **Verified on
+  the branch preview with real CSP**: toggle flips `data-theme`, persists, zero console/CSP errors.
+- **#99** — geographic section decided from article TEXT, not an AI guess (`generator/geo.py`):
+  region→regional, county→zonal, locality→local, most-specific wins, no place name → stays on
+  topic. Fixes the "Swiss village under regional" leak. 28 geo tests incl. the real triggers.
+- **#97** — CLAUDE.md §19 session hygiene + §14b bounded background work. §18 numbering collided
+  with main's institution-images section; resolved (kept both, hygiene→§19), merged via main.
+
+## Merged 2026-07-25 (prior session)
 #86 reviewers could not read code (failed on every PR) · #87 131 articles stranded on the old
 geographic category · #88 cadence docs + reviewers no longer gate on quota · #89 `/surse/` shows
 all 189 sources instead of 2 links · #90 freed the slot held by an unreachable source ·
