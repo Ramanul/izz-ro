@@ -93,7 +93,7 @@ def _asset_ver() -> dict:
     global _ASSET_VER
     if _ASSET_VER is None:
         _ASSET_VER = {name: _content_ver(os.path.join(STATIC_DIR, name))
-                      for name in ("styles.css", "personalize.js", "search.js", "fonts.css",
+                      for name in ("styles.css", "personalize.js", "search.js", "theme.js", "fonts.css",
                                    "site.webmanifest")}
     return _ASSET_VER
 
