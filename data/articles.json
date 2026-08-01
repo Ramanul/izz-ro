@@ -1,5 +1,25 @@
 [
   {
+    "url": "https://newsbv.ro/furnizarea-apei-intrerupta-in-teliu",
+    "original_link": "https://newsbv.ro/furnizarea-apei-intrerupta-in-teliu/",
+    "source": "newsbv",
+    "source_name": "News Brașov",
+    "source_lang": "ro",
+    "title": "Compania Apa întrerupe furnizarea apei în Teliu pentru trei zile",
+    "category": "zonal",
+    "published": "2026-08-01T03:31:33+00:00",
+    "model": "B",
+    "teaser": "Locuitorii din Teliu vor rămâne fără apă la robinete timp de trei zile, ca urmare a unor lucrări anunțate oficial de către Compania Apa.",
+    "entities": [
+      "Teliu",
+      "Compania Apa"
+    ],
+    "icon": "umbrella",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
     "url": "https://sfatulparintilor.ro/evenimente-astrologice/eclipsa-totala-de-soare-din-12-august-se-apropie-5-zodii-care-simt-mai-intens-marea-schimbare",
     "original_link": "https://sfatulparintilor.ro/evenimente-astrologice/eclipsa-totala-de-soare-din-12-august-se-apropie-5-zodii-care-simt-mai-intens-marea-schimbare/",
     "source": "sfatulparintilor",
@@ -64,6 +84,41 @@
       "Superliga"
     ],
     "icon": "ball-football",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://libertatea.ro/stiri/romania-rating-fitch-bbb-negativ-evitare-retrogradare-junk-5836132",
+    "original_link": "https://www.libertatea.ro/stiri/romania-rating-fitch-bbb-negativ-evitare-retrogradare-junk-5836132",
+    "source": "libertatea",
+    "source_name": "Libertatea",
+    "source_lang": "ro",
+    "title": "România scapă de retrogradarea la „junk”, după ce Fitch a păstrat ratingul la BBB-",
+    "category": "economic",
+    "published": "2026-07-31T21:12:59+00:00",
+    "model": "C",
+    "sources": [
+      {
+        "name": "Libertatea",
+        "url": "https://www.libertatea.ro/stiri/romania-rating-fitch-bbb-negativ-evitare-retrogradare-junk-5836132"
+      },
+      {
+        "name": "Economedia",
+        "url": "https://economedia.ro/fitch-mentine-ratingul-romaniei-la-bbb-cu-perspectiva-negativa-nazare-stabilitatea-politica-si-continuarea-consolidarii-fiscale-sunt-decisiv.html"
+      },
+      {
+        "name": "News Brașov",
+        "url": "https://newsbv.ro/fitch-ratingul-romaniei-bbb-perspectiva-negativa/"
+      }
+    ],
+    "first_source": "Libertatea",
+    "synthesis": "Agenția internațională de evaluare financiară Fitch Ratings a decis să păstreze ratingul suveran al României la nivelul „BBB-”, menținând în același timp perspectiva negativă. Această hotărâre salvează țara de la o retrogradare în categoria nerecomandată investițiilor, cunoscută drept „junk”. Oficialii au subliniat că menținerea acestui calificativ depinde în continuare de stabilitatea politică și de eforturile constante pentru consolidarea fiscală și reducerea deficitului bugetar.",
+    "entities": [
+      "România",
+      "Fitch Ratings"
+    ],
+    "icon": "chart-line",
     "processed_by": "gemini",
     "prompt_version": "v2-esenta",
     "featured": false
@@ -728,26 +783,6 @@
     "featured": false
   },
   {
-    "url": "https://jurnalulolteniei.ro/2026/07/31/jurnalul-unui-interist-onoare-si-respect-rivalilor-de-legenda",
-    "original_link": "https://jurnalulolteniei.ro/2026/07/31/jurnalul-unui-interist-onoare-si-respect-rivalilor-de-legenda/",
-    "source": "jurnalulolteniei",
-    "source_name": "Jurnalul Olteniei",
-    "source_lang": "ro",
-    "title": "A murit Franco Baresi, fostul căpitan legendar al echipei AC Milan",
-    "category": "regional",
-    "published": "2026-07-31T18:10:46+00:00",
-    "model": "B",
-    "teaser": "Lumea fotbalului internațional este în doliu după decesul fostului mare fotbalist italian, care s-a stins la vârsta de 66 de ani. Anunțul trecerii sale în neființă a generat un puternic ecou în rândul fanilor și rivalilor deopotrivă.",
-    "entities": [
-      "Franco Baresi",
-      "AC Milan"
-    ],
-    "icon": "ball-football",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
     "url": "https://csid.ro/lifestyle/horoscop/zodia-care-ar-putea-avea-parte-de-cele-mai-multe-provocari-la-inceputul-lunii-august-21265538",
     "original_link": "https://www.csid.ro/lifestyle/horoscop/zodia-care-ar-putea-avea-parte-de-cele-mai-multe-provocari-la-inceputul-lunii-august-21265538/",
     "source": "csid",
@@ -762,6 +797,48 @@
       "Vărsător"
     ],
     "icon": "sun",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://theguardian.com/world/2026/jul/31/ceuta-spain-morocco-border-deaths",
+    "original_link": "https://www.theguardian.com/world/2026/jul/31/ceuta-spain-morocco-border-deaths",
+    "source": "guardian_eu",
+    "source_name": "The Guardian",
+    "source_lang": "en",
+    "title": "Cel puțin 57 de morți după traversarea masivă spre Ceuta",
+    "category": "extern",
+    "published": "2026-07-31T17:52:11+00:00",
+    "model": "B",
+    "teaser": "Zeci de mii de migranți au intrat din Maroc în enclava spaniolă Ceuta în decurs de 24 de ore. Premierul Pedro Sánchez a condamnat evenimentul, soldat cu cel puțin 57 de decese.",
+    "entities": [
+      "Ceuta",
+      "Maroc",
+      "Pedro Sánchez"
+    ],
+    "icon": "globe",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://theguardian.com/world/live/2026/jul/31/cueta-spain-morocco-italy-migration-schengen-europe-latest-news-updates",
+    "original_link": "https://www.theguardian.com/world/live/2026/jul/31/cueta-spain-morocco-italy-migration-schengen-europe-latest-news-updates",
+    "source": "guardian_eu",
+    "source_name": "The Guardian",
+    "source_lang": "en",
+    "title": "Italia suspendă temporar acordul Schengen pentru Spania",
+    "category": "extern",
+    "published": "2026-07-31T17:43:45+00:00",
+    "model": "B",
+    "teaser": "Guvernul italian a decis suspendarea temporară a reglementărilor Schengen privind Spania, ca urmare a afluxului masiv de zeci de mii de migranți înregistrat în enclava Ceuta.",
+    "entities": [
+      "Italia",
+      "Spania",
+      "Ceuta"
+    ],
+    "icon": "plane",
     "processed_by": "gemini",
     "prompt_version": "v2-esenta",
     "featured": false
@@ -853,6 +930,48 @@
     "featured": false
   },
   {
+    "url": "https://dobrogeanews.ro/alerta-extrema-trei-copii-au-disparut-de-la-un-centru-de-tip-familial-isaccea",
+    "original_link": "https://www.dobrogeanews.ro/alerta-extrema-trei-copii-au-disparut-de-la-un-centru-de-tip-familial-isaccea/?utm_source=rss&utm_medium=rss&utm_campaign=alerta-extrema-trei-copii-au-disparut-de-la-un-centru-de-tip-familial-isaccea",
+    "source": "dobrogeanews",
+    "source_name": "DobrogeaNews",
+    "source_lang": "ro",
+    "title": "Trei minori au fugit dintr-un centru de plasament din Isaccea",
+    "category": "regional",
+    "published": "2026-07-31T17:15:57+00:00",
+    "model": "B",
+    "teaser": "Autoritățile din județul Tulcea au emis o alertă majoră și au mobilizat echipe de căutare după ce trei copii au părăsit în mod voluntar centrul familial unde erau cazați.",
+    "entities": [
+      "Isaccea",
+      "Tulcea",
+      "Inspectoratul de Poliție Județean Tulcea"
+    ],
+    "icon": "alert-triangle",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://theguardian.com/business/2026/jul/31/bp-north-sea-oil-and-gas-business-up-for-sale",
+    "original_link": "https://www.theguardian.com/business/2026/jul/31/bp-north-sea-oil-and-gas-business-up-for-sale",
+    "source": "guardian_eu",
+    "source_name": "The Guardian",
+    "source_lang": "en",
+    "title": "Compania BP își scoate la vânzare activele petroliere din Marea Nordului",
+    "category": "economic",
+    "published": "2026-07-31T17:06:51+00:00",
+    "model": "B",
+    "teaser": "Grupul energetic BP a lansat un proces oficial pentru vânzarea operațiunilor petroliere din Marea Nordului. Măsura vizează încheierea a șase decenii de producție regională pentru reducerea datoriilor.",
+    "entities": [
+      "BP",
+      "Marea Nordului",
+      "Meg O’Neill"
+    ],
+    "icon": "gas-station",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
     "url": "https://csid.ro/stiri/adrian-ropotan-antrenorul-echipei-secunde-a-lui-dinamo-s-a-ales-cu-o-fractura-deschisa-la-mana-in-urma-accidentului-din-arges-a-fost-operat-de-urgenta-21268521",
     "original_link": "https://www.csid.ro/stiri/adrian-ropotan-antrenorul-echipei-secunde-a-lui-dinamo-s-a-ales-cu-o-fractura-deschisa-la-mana-in-urma-accidentului-din-arges-a-fost-operat-de-urgenta-21268521/",
     "source": "csid",
@@ -901,6 +1020,27 @@
       "Italia"
     ],
     "icon": "flag",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://dobrogeanews.ro/accident-rutier-produs-pe-dj-222-tulcea-agighiol-cu-o-victima",
+    "original_link": "https://www.dobrogeanews.ro/accident-rutier-produs-pe-dj-222-tulcea-agighiol-cu-o-victima/?utm_source=rss&utm_medium=rss&utm_campaign=accident-rutier-produs-pe-dj-222-tulcea-agighiol-cu-o-victima",
+    "source": "dobrogeanews",
+    "source_name": "DobrogeaNews",
+    "source_lang": "ro",
+    "title": "Mașină răsturnată pe DJ 222 în Tulcea, un tânăr rănit",
+    "category": "regional",
+    "published": "2026-07-31T17:01:01+00:00",
+    "model": "B",
+    "teaser": "Un autoturism s-a răsturnat în afara carosabilului pe DJ 222, între Tulcea și Agighiol. Un șofer de 22 de ani a fost scos din vehicul de un martor înainte de sosirea pompierilor.",
+    "entities": [
+      "Tulcea",
+      "Agighiol",
+      "ISU Tulcea"
+    ],
+    "icon": "car",
     "processed_by": "gemini",
     "prompt_version": "v2-esenta",
     "featured": false
@@ -956,6 +1096,26 @@
     "teaser": "Specialiștii în numerologie interpretează această secvență ca pe un semn al schimbărilor majore, în timp ce psihologii explică fenomenul prin atenția selectivă a creierului uman.",
     "entities": [],
     "icon": "sun",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://newsbv.ro/bolojan-stare-de-alerta-august",
+    "original_link": "https://newsbv.ro/bolojan-stare-de-alerta-august/",
+    "source": "newsbv",
+    "source_name": "News Brașov",
+    "source_lang": "ro",
+    "title": "Guvernul instituie starea de alertă energetică în august din cauza producției scăzute",
+    "category": "zonal",
+    "published": "2026-07-31T16:28:02+00:00",
+    "model": "B",
+    "teaser": "Premierul interimar Ilie Bolojan a anunțat instituirea stării de alertă la nivel național pe parcursul lunii august, urmare directă a declinului înregistrat în producția de energie electrică.",
+    "entities": [
+      "Ilie Bolojan",
+      "România"
+    ],
+    "icon": "bolt",
     "processed_by": "gemini",
     "prompt_version": "v2-esenta",
     "featured": false
@@ -1095,6 +1255,45 @@
     "featured": false
   },
   {
+    "url": "https://ziuadevest.ro/pentru-cei-care-lucreaza-si-vor-studii-superioare-universitatea-politehnica-timisoara-scoate-la-concurs-47-de-locuri-la-invatamant-la-distanta-id-si-cu-frecventa-redusa-ifr",
+    "original_link": "https://www.ziuadevest.ro/pentru-cei-care-lucreaza-si-vor-studii-superioare-universitatea-politehnica-timisoara-scoate-la-concurs-47-de-locuri-la-invatamant-la-distanta-id-si-cu-frecventa-redusa-ifr/",
+    "source": "ziuadevest",
+    "source_name": "Ziua de Vest",
+    "source_lang": "ro",
+    "title": "Universitatea Politehnica Timișoara oferă 47 de locuri la studii cu frecvență redusă",
+    "category": "regional",
+    "published": "2026-07-31T15:57:37+00:00",
+    "model": "B",
+    "teaser": "Instituția organizează în septembrie o sesiune de admitere pe bază de dosar pentru candidații care lucrează, vizând specializări precum Informatică, Comunicare și Relații Publice sau Tehnologia Construcțiilor de Mașini.",
+    "entities": [
+      "Universitatea Politehnica Timișoara"
+    ],
+    "icon": "school",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://ziuadevest.ro/dupa-ani-de-lucrari-si-schimbarea-constructorului-turnul-de-apa-din-iosefin-si-a-primit-primii-vizitatori",
+    "original_link": "https://www.ziuadevest.ro/dupa-ani-de-lucrari-si-schimbarea-constructorului-turnul-de-apa-din-iosefin-si-a-primit-primii-vizitatori/",
+    "source": "ziuadevest",
+    "source_name": "Ziua de Vest",
+    "source_lang": "ro",
+    "title": "Turnul de apă din Iosefin a fost inaugurat pentru public",
+    "category": "regional",
+    "published": "2026-07-31T15:55:28+00:00",
+    "model": "B",
+    "teaser": "După lucrări îndelungate de restaurare, monumentul istoric vechi de 112 ani din Timișoara și-a deschis porțile vizitatorilor de Ziua Orașului, urmând să găzduiască evenimente culturale.",
+    "entities": [
+      "Turnul de apă din Iosefin",
+      "Timișoara"
+    ],
+    "icon": "building-monument",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
     "url": "https://mangalia.ro/2026/07/oferta-vanzare-teren-extravilan-2",
     "original_link": "https://mangalia.ro/2026/07/oferta-vanzare-teren-extravilan-2/",
     "source": "pl_constanta_municipiul_mangalia",
@@ -1106,6 +1305,46 @@
     "model": "B",
     "teaser": "Articolul OFERTA VANZARE TEREN EXTRAVILAN",
     "processed_by": "official",
+    "featured": false
+  },
+  {
+    "url": "https://ziuadevest.ro/garda-de-mediu-timis-raspunde-criticilor-privind-gestionarea-deseurilor-din-sacalaz-nu-acceptam-presiuni-politice-si-ne-facem-datoria-cu-doar-12-comisari",
+    "original_link": "https://www.ziuadevest.ro/garda-de-mediu-timis-raspunde-criticilor-privind-gestionarea-deseurilor-din-sacalaz-nu-acceptam-presiuni-politice-si-ne-facem-datoria-cu-doar-12-comisari/",
+    "source": "ziuadevest",
+    "source_name": "Ziua de Vest",
+    "source_lang": "ro",
+    "title": "Garda de Mediu Timiș respinge criticile privind controlul de la Săcălaz",
+    "category": "regional",
+    "published": "2026-07-31T15:47:42+00:00",
+    "model": "B",
+    "teaser": "Comisariatul județean susține că își face datoria cu doar 12 angajați și că a luat măsuri împotriva proprietarului care a depozitat ilegal deșeuri din construcții în localitate.",
+    "entities": [
+      "Garda de Mediu Timiș",
+      "Săcălaz"
+    ],
+    "icon": "alert-triangle",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://ziuadevest.ro/focar-de-pesta-a-micilor-rumegatoare-in-comuna-giulvaz-au-fost-stabilite-zone-de-protectie-si-supraveghere",
+    "original_link": "https://www.ziuadevest.ro/focar-de-pesta-a-micilor-rumegatoare-in-comuna-giulvaz-au-fost-stabilite-zone-de-protectie-si-supraveghere/",
+    "source": "ziuadevest",
+    "source_name": "Ziua de Vest",
+    "source_lang": "ro",
+    "title": "Focar de pestă a micilor rumegătoare confirmat în comuna Giulvăz",
+    "category": "regional",
+    "published": "2026-07-31T15:43:41+00:00",
+    "model": "B",
+    "teaser": "Autoritățile sanitare-veterinare din județul Timiș au instituit zone de protecție și supraveghere după apariția bolii și au convocat Centrul Local de Combatere a Bolilor.",
+    "entities": [
+      "Giulvăz",
+      "Timiș"
+    ],
+    "icon": "virus",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
     "featured": false
   },
   {
@@ -1246,6 +1485,26 @@
       "Transelectrica"
     ],
     "icon": "bolt",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://tion.ro/stirile-judetului-timis/publicatii-independente-ceramica-si-viniluri-la-sitread-pop-up-fair-creatorii-locali-isi-dau-intalnire-la-bastion-2326302",
+    "original_link": "https://www.tion.ro/stirile-judetului-timis/publicatii-independente-ceramica-si-viniluri-la-sitread-pop-up-fair-creatorii-locali-isi-dau-intalnire-la-bastion-2326302/?utm_source=rss&utm_medium=referral&utm_campaign=hiraggregator",
+    "source": "tion",
+    "source_name": "Timiș Online",
+    "source_lang": "ro",
+    "title": "Creatorii independenți din Timișoara își expun lucrările la Bastion",
+    "category": "zonal",
+    "published": "2026-07-31T15:13:03+00:00",
+    "model": "B",
+    "teaser": "Prima ediție din august a târgului Sit+Read aduce la Bastionul Maria Theresia din Timișoara ceramică, viniluri, publicații independente, bijuterii și obiecte de design realizate de artiști locali.",
+    "entities": [
+      "Timișoara",
+      "Bastion"
+    ],
+    "icon": "shopping-cart",
     "processed_by": "gemini",
     "prompt_version": "v2-esenta",
     "featured": false
@@ -1456,6 +1715,28 @@
     "featured": false
   },
   {
+    "url": "https://criticarad.ro/tarom-confirma-mutarea-temporara-la-aeroportul-arad-a-zborurilor-sale-regulate-dintre-bucuresti-si-timisoara",
+    "original_link": "https://www.criticarad.ro/tarom-confirma-mutarea-temporara-la-aeroportul-arad-a-zborurilor-sale-regulate-dintre-bucuresti-si-timisoara/",
+    "source": "criticarad",
+    "source_name": "Critic Arad",
+    "source_lang": "ro",
+    "title": "TAROM mută temporar zborurile București-Timișoara pe aeroportul din Arad",
+    "category": "regional",
+    "published": "2026-07-31T14:05:09+00:00",
+    "model": "B",
+    "teaser": "Compania aeriană va opera cursele între capitală și Timișoara prin Aeroportul Arad, în intervalul 2-22 noiembrie 2026, din cauza lucrărilor de modernizare la pista aeroportului timișorean.",
+    "entities": [
+      "TAROM",
+      "Aeroportul Arad",
+      "Timișoara",
+      "București"
+    ],
+    "icon": "plane",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
     "url": "https://nwradu.ro/2026/07/xioami-lanseaza-suvurile-skynomad-autonomie-dezamagitoare-pentru-dimensiunea-lor",
     "original_link": "https://www.nwradu.ro/2026/07/xioami-lanseaza-suvurile-skynomad-autonomie-dezamagitoare-pentru-dimensiunea-lor/",
     "source": "nwradu",
@@ -1532,6 +1813,26 @@
       "Alexandru Chiriță"
     ],
     "icon": "bolt",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://tion.ro/stirile-judetului-timis/raiul-boemiei-si-al-artelor-in-enclava-culturala-socolari-2326305",
+    "original_link": "https://www.tion.ro/stirile-judetului-timis/raiul-boemiei-si-al-artelor-in-enclava-culturala-socolari-2326305/?utm_source=rss&utm_medium=referral&utm_campaign=hiraggregator",
+    "source": "tion",
+    "source_name": "Timiș Online",
+    "source_lang": "ro",
+    "title": "A patra ediție a atelierelor de la Socolari reunește artiști internaționali",
+    "category": "zonal",
+    "published": "2026-07-31T14:00:47+00:00",
+    "model": "B",
+    "teaser": "Localitatea Socolari găzduiește timp de 12 zile evenimente culturale complexe, incluzând piese de teatru, proiecții de film, ateliere antropologice și dezbateri între artiști celebri.",
+    "entities": [
+      "Socolari",
+      "Atelierele de Antropologie Teatrală Cătălina Buzoianu"
+    ],
+    "icon": "movie",
     "processed_by": "gemini",
     "prompt_version": "v2-esenta",
     "featured": false
@@ -1797,6 +2098,26 @@
     "featured": false
   },
   {
+    "url": "https://newsbv.ro/pui-de-urs-franta-zarnesti",
+    "original_link": "https://newsbv.ro/pui-de-urs-franta-zarnesti/",
+    "source": "newsbv",
+    "source_name": "News Brașov",
+    "source_lang": "ro",
+    "title": "Patru pui de urs de la Zărnești au fost transferați cu succes în Franța",
+    "category": "zonal",
+    "published": "2026-07-31T13:38:00+00:00",
+    "model": "B",
+    "teaser": "Urșii Alexandra, Anita, Chance și Thomas, proveniți de la Sanctuarul Libearty din Zărnești, au ajuns în siguranță pe teritoriul Franței pentru a-și continua viața într-un mediu nou.",
+    "entities": [
+      "Sanctuarul Libearty Zărnești",
+      "Franța"
+    ],
+    "icon": "trees",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
     "url": "https://csid.ro/stiri/de-ce-amortesc-mainile-in-timpul-noptii-cele-mai-frecvente-cauze-explicate-de-medici-21266113",
     "original_link": "https://www.csid.ro/stiri/de-ce-amortesc-mainile-in-timpul-noptii-cele-mai-frecvente-cauze-explicate-de-medici-21266113/",
     "source": "csid",
@@ -1826,6 +2147,27 @@
     "teaser": "Spațiile de joacă învechite, cu echipamente amplasate fără logică și materiale uzate, nu reușesc să mențină atenția copiilor, care se plictisesc foarte repede.",
     "entities": [],
     "icon": "home",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://dobrogeanews.ro/investitii-in-infrastructura-sportiva-sala-polivalenta-isi-deschide-portile-vezi-programul-complet-al-meciurilor-fiba-u18",
+    "original_link": "https://www.dobrogeanews.ro/investitii-in-infrastructura-sportiva-sala-polivalenta-isi-deschide-portile-vezi-programul-complet-al-meciurilor-fiba-u18/?utm_source=rss&utm_medium=rss&utm_campaign=investitii-in-infrastructura-sportiva-sala-polivalenta-isi-deschide-portile-vezi-programul-complet-al-meciurilor-fiba-u18",
+    "source": "dobrogeanews",
+    "source_name": "DobrogeaNews",
+    "source_lang": "ro",
+    "title": "Inaugurarea Sălii Polivalente Danubius Arena din Tulcea",
+    "category": "regional",
+    "published": "2026-07-31T13:25:30+00:00",
+    "model": "B",
+    "teaser": "Locuitorii din Tulcea au acces liber începând de astăzi în noua Sală Polivalentă Danubius Arena. Complexul găzduiește meciurile din cadrul campionatului FIBA U18 Women’s EuroBasket 2026.",
+    "entities": [
+      "Tulcea",
+      "Danubius Arena",
+      "FIBA U18"
+    ],
+    "icon": "ball-basketball",
     "processed_by": "gemini",
     "prompt_version": "v2-esenta",
     "featured": false
@@ -1956,6 +2298,44 @@
       "PNRR"
     ],
     "icon": "certificate",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://jurnalulolteniei.ro/2026/07/31/anunt-finalizare-proiect-digitalizarea-societatii-copy-center-i-c-s-r-l-2",
+    "original_link": "https://jurnalulolteniei.ro/2026/07/31/anunt-finalizare-proiect-digitalizarea-societatii-copy-center-i-c-s-r-l-2/",
+    "source": "jurnalulolteniei",
+    "source_name": "Jurnalul Olteniei",
+    "source_lang": "ro",
+    "title": "Firma Copy Center I & C a finalizat proiectul de digitalizare finanțat prin PNRR",
+    "category": "regional",
+    "published": "2026-07-31T13:18:28+00:00",
+    "model": "B",
+    "teaser": "Beneficiarul a încheiat implementarea proiectului de transformare digitală, obținând fonduri nerambursabile prin intermediul Planului Național de Redresare și Reziliență, Componenta de sprijin pentru mediul privat.",
+    "entities": [
+      "COPY CENTER I & C S.R.L"
+    ],
+    "icon": "cpu",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://bizbrasov.ro/2026/07/31/angajati-operei-brasov-salarii-suplimentar",
+    "original_link": "https://bizbrasov.ro/2026/07/31/angajati-operei-brasov-salarii-suplimentar/",
+    "source": "bizbrasov",
+    "source_name": "BizBrașov",
+    "source_lang": "ro",
+    "title": "Angajații Operei Brașov câștigă în instanță peste 10 milioane de lei",
+    "category": "zonal",
+    "published": "2026-07-31T13:18:19+00:00",
+    "model": "B",
+    "teaser": "Personalul Operei Brașov a obținut în justiție dreptul la suplimentări salariale majore, totalizând peste 10 milioane de lei. Sumele restante, stabilite prin hotărâri definitive, vor fi achitate direct din bugetul local al primăriei.",
+    "entities": [
+      "Opera Brașov"
+    ],
+    "icon": "gavel",
     "processed_by": "gemini",
     "prompt_version": "v2-esenta",
     "featured": false
@@ -2151,6 +2531,25 @@
     "featured": false
   },
   {
+    "url": "https://bizbrasov.ro/2026/07/31/brasov-crucea-rosie-lanseaza-proiectul",
+    "original_link": "https://bizbrasov.ro/2026/07/31/brasov-crucea-rosie-lanseaza-proiectul/",
+    "source": "bizbrasov",
+    "source_name": "BizBrașov",
+    "source_lang": "ro",
+    "title": "Crucea Roșie Brașov lansează proiectul de educație pentru urgențe",
+    "category": "zonal",
+    "published": "2026-07-31T13:02:47+00:00",
+    "model": "B",
+    "teaser": "Filiala Brașov a Crucii Roșii a inițiat programul \"Voluntari Pregătiți pentru Viață\". Zeci de tineri locali vor învăța tehnici de prim ajutor și metode de intervenție rapidă în situații critice.",
+    "entities": [
+      "Crucea Roșie Brașov"
+    ],
+    "icon": "ambulance",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
     "url": "https://economedia.ro/ion-stoica-vinde-anyscale-tranzactie-nscale-1-65-miliarde-dolari.html",
     "original_link": "https://economedia.ro/ion-stoica-vinde-anyscale-tranzactie-nscale-1-65-miliarde-dolari.html",
     "source": "economedia",
@@ -2284,6 +2683,25 @@
     "featured": false
   },
   {
+    "url": "https://newsbv.ro/consiliul-local-sal-de-jocuri-de-noroc",
+    "original_link": "https://newsbv.ro/consiliul-local-sal-de-jocuri-de-noroc/",
+    "source": "newsbv",
+    "source_name": "News Brașov",
+    "source_lang": "ro",
+    "title": "Consiliul Local Brașov a aprobat autorizații pentru șapte săli de jocuri",
+    "category": "zonal",
+    "published": "2026-07-31T12:46:05+00:00",
+    "model": "B",
+    "teaser": "Aleșii locali din Brașov au dat undă verde funcționării a șapte săli de jocuri de noroc, unități care respectă condiția unei suprafețe minime de 200 de metri pătrați.",
+    "entities": [
+      "Consiliul Local Brașov"
+    ],
+    "icon": "building-monument",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
     "url": "https://unica.ro/vedete/romanesti/cabiria-morgenstern-imagini-rare-cu-adrian-ciobanu-tatal-fiului-ei-826463",
     "original_link": "https://www.unica.ro/vedete/romanesti/cabiria-morgenstern-imagini-rare-cu-adrian-ciobanu-tatal-fiului-ei-826463",
     "source": "unica",
@@ -2306,6 +2724,26 @@
     "featured": false
   },
   {
+    "url": "https://actualmm.ro/veste-buna-de-la-primarul-dancus-baimarenii-nu-vor-mai-plati-pentru-apa-neconsumata-din-cauza-avariilor-la-retea",
+    "original_link": "https://actualmm.ro/veste-buna-de-la-primarul-dancus-baimarenii-nu-vor-mai-plati-pentru-apa-neconsumata-din-cauza-avariilor-la-retea/",
+    "source": "actualmm",
+    "source_name": "actualMM",
+    "source_lang": "ro",
+    "title": "Locuitorii din Baia Mare nu vor mai plăti pentru apa pierdută din cauza avariilor",
+    "category": "zonal",
+    "published": "2026-07-31T12:41:07+00:00",
+    "model": "B",
+    "teaser": "Primarul Doru Dăncuș a anunțat o nouă inițiativă destinată băimărenilor, prin care aceștia vor fi scutiți de la plata volumului de apă neutilizat ca urmare a defecțiunilor din rețeaua publică.",
+    "entities": [
+      "Baia Mare",
+      "Doru Dăncuș"
+    ],
+    "icon": "building-bank",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
     "url": "https://elle.ro/people/natalie-portman-imagine-rara-din-timpul-celei-de-a-treia-sarcini-cum-a-aparut-actrita-pe-internet-numar-zilele-pana-te-vom-cunoaste-1081787",
     "original_link": "https://www.elle.ro/people/natalie-portman-imagine-rara-din-timpul-celei-de-a-treia-sarcini-cum-a-aparut-actrita-pe-internet-numar-zilele-pana-te-vom-cunoaste-1081787",
     "source": "elle",
@@ -2320,6 +2758,86 @@
       "Natalie Portman"
     ],
     "icon": "movie",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://newsbv.ro/aeroportul-brasov-bate-record-dupa-record",
+    "original_link": "https://newsbv.ro/aeroportul-brasov-bate-record-dupa-record/",
+    "source": "newsbv",
+    "source_name": "News Brașov",
+    "source_lang": "ro",
+    "title": "Trafic record de pasageri pe Aeroportul Brașov în iulie 2026",
+    "category": "zonal",
+    "published": "2026-07-31T12:38:42+00:00",
+    "model": "B",
+    "teaser": "Aeroportul Internațional Brașov-Ghimbav a raportat cea mai aglomerată lună din istoria sa de la inaugurare, înregistrand un număr total de 64.750 de călători transportați pe parcursul lunii iulie.",
+    "entities": [
+      "Aeroportul Internațional Brașov-Ghimbav"
+    ],
+    "icon": "plane",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://bizbrasov.ro/2026/07/31/bulgaria-pretul-vinietei",
+    "original_link": "https://bizbrasov.ro/2026/07/31/bulgaria-pretul-vinietei/",
+    "source": "bizbrasov",
+    "source_name": "BizBrașov",
+    "source_lang": "ro",
+    "title": "Vinieta pentru Bulgaria se scumpește cu 30% începând din august",
+    "category": "zonal",
+    "published": "2026-07-31T12:37:43+00:00",
+    "model": "B",
+    "teaser": "Șoferii români care călătoresc în Bulgaria sau tranzitează țara spre Grecia și Turcia vor plăti prețuri cu 30% mai mari pentru utilizarea drumurilor, conform unei decizii recente a Guvernului de la Sofia.",
+    "entities": [
+      "Bulgaria",
+      "Grecia",
+      "Turcia"
+    ],
+    "icon": "car",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://jurnalulolteniei.ro/2026/07/31/uzina-mecanica-sadu-primeste-o-noua-sansa-cine-vrea-sa-investeasca-in-fabrica-de-armament-din-gorj",
+    "original_link": "https://jurnalulolteniei.ro/2026/07/31/uzina-mecanica-sadu-primeste-o-noua-sansa-cine-vrea-sa-investeasca-in-fabrica-de-armament-din-gorj/",
+    "source": "jurnalulolteniei",
+    "source_name": "Jurnalul Olteniei",
+    "source_lang": "ro",
+    "title": "Uzina Mecanică Sadu poate fi relansată după ridicarea sechestrului pe bunuri",
+    "category": "regional",
+    "published": "2026-07-31T12:34:37+00:00",
+    "model": "B",
+    "teaser": "Peste 2.000 de active ale fabricii de armament din Gorj au scăpat de sechestru, permițând conducerii să evalueze bunurile și să pregătească închirierea platformei industriale pentru investitori.",
+    "entities": [
+      "Uzina Mecanică Sadu",
+      "Ministerul Economiei",
+      "Gorj"
+    ],
+    "icon": "building-factory",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://bizbrasov.ro/2026/07/31/pacanele-brasov-sali-reautorizate",
+    "original_link": "https://bizbrasov.ro/2026/07/31/pacanele-brasov-sali-reautorizate/",
+    "source": "bizbrasov",
+    "source_name": "BizBrașov",
+    "source_lang": "ro",
+    "title": "Sălile de jocuri de noroc din Brașov sunt eliminate treptat",
+    "category": "zonal",
+    "published": "2026-07-31T12:31:46+00:00",
+    "model": "B",
+    "teaser": "Consiliul Local Brașov a reautorizat doar șase săli de jocuri care respectă noile norme locale. Primarul estimează că 90% dintre aceste locații vor fi complet închise până la finalul acestui an.",
+    "entities": [
+      "Consiliul Local Brașov"
+    ],
+    "icon": "building-monument",
     "processed_by": "gemini",
     "prompt_version": "v2-esenta",
     "featured": false
@@ -2434,6 +2952,49 @@
     "featured": false
   },
   {
+    "url": "https://jurnalulolteniei.ro/2026/07/31/grindeanu-discutii-cu-nicusor-dan-pentru-formarea-guvernului",
+    "original_link": "https://jurnalulolteniei.ro/2026/07/31/grindeanu-discutii-cu-nicusor-dan-pentru-formarea-guvernului/",
+    "source": "jurnalulolteniei",
+    "source_name": "Jurnalul Olteniei",
+    "source_lang": "ro",
+    "title": "Sorin Grindeanu poartă discuții politice cu Nicușor Dan privind noul Guvern",
+    "category": "regional",
+    "published": "2026-07-31T12:14:53+00:00",
+    "model": "B",
+    "teaser": "Liderii PSD negociază formarea viitorului Executiv, estimând că desemnarea oficială a unui prim-ministru va avea loc cel târziu la începutul lunii septembrie.",
+    "entities": [
+      "Sorin Grindeanu",
+      "Nicușor Dan",
+      "PSD"
+    ],
+    "icon": "building-monument",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://ziuadevest.ro/grindeanu-anunta-ca-psd-va-redepune-amendamentul-contestat-la-legea-integritatii-daca-ai-fost-condamnat-pentru-conflict-de-interese-parasesti-functia-pe-loc",
+    "original_link": "https://www.ziuadevest.ro/grindeanu-anunta-ca-psd-va-redepune-amendamentul-contestat-la-legea-integritatii-daca-ai-fost-condamnat-pentru-conflict-de-interese-parasesti-functia-pe-loc/",
+    "source": "ziuadevest",
+    "source_name": "Ziua de Vest",
+    "source_lang": "ro",
+    "title": "PSD va redepune amendamentul la Legea Integrității privind conflictul de interese",
+    "category": "regional",
+    "published": "2026-07-31T12:14:19+00:00",
+    "model": "B",
+    "teaser": "Liderul interimar Sorin Grindeanu anunță că social-democrații cer din nou demisia imediată din funcție a celor condamnați pentru conflict de interese, contrar variantei depuse de PNL și USR.",
+    "entities": [
+      "PSD",
+      "PNL",
+      "USR",
+      "Sorin Grindeanu"
+    ],
+    "icon": "gavel",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
     "url": "https://expressdebanat.ro/de-la-1-august-calatoria-cu-masina-in-bulgaria-devine-mai-scumpa-vinietele-se-majoreaza-cu-30",
     "original_link": "https://expressdebanat.ro/de-la-1-august-calatoria-cu-masina-in-bulgaria-devine-mai-scumpa-vinietele-se-majoreaza-cu-30/",
     "source": "expressdebanat",
@@ -2466,6 +3027,46 @@
     "featured": false
   },
   {
+    "url": "https://newsbv.ro/brasov-capitala-a-tineretului-din-romania",
+    "original_link": "https://newsbv.ro/brasov-capitala-a-tineretului-din-romania/",
+    "source": "newsbv",
+    "source_name": "News Brașov",
+    "source_lang": "ro",
+    "title": "Brașovul candidează la titlul de Capitală a Tineretului din România 2028",
+    "category": "zonal",
+    "published": "2026-07-31T12:13:49+00:00",
+    "model": "B",
+    "teaser": "Municipalitatea brașoveană intră oficial în cursa pentru obținerea titlului de Capitală a Tineretului în 2028, având sprijinul mai multor organizații neguvernamentale stabilite printr-un parteneriat aprobat de Consiliul Local.",
+    "entities": [
+      "Brașov",
+      "Consiliul Local Brașov"
+    ],
+    "icon": "building-monument",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://ziuadevest.ro/comunicat-de-presa-finalizare-proiect-dotarea-cu-mobilier-si-echipamente-digitale-a-unitatilor-de-invatamant-preuniversitar-de-pe-raza-comunei-saravale-judetul-timis",
+    "original_link": "https://www.ziuadevest.ro/comunicat-de-presa-finalizare-proiect-dotarea-cu-mobilier-si-echipamente-digitale-a-unitatilor-de-invatamant-preuniversitar-de-pe-raza-comunei-saravale-judetul-timis/",
+    "source": "ziuadevest",
+    "source_name": "Ziua de Vest",
+    "source_lang": "ro",
+    "title": "Finalizarea proiectului de dotare școlară în comuna Saravale",
+    "category": "regional",
+    "published": "2026-07-31T12:06:51+00:00",
+    "model": "B",
+    "teaser": "Primăria a finalizat implementarea proiectului prin care unitățile de învățământ preuniversitar din localitate au fost echipate cu mobilier nou și aparatură digitală performantă.",
+    "entities": [
+      "Saravale",
+      "Timiș"
+    ],
+    "icon": "school",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
     "url": "https://avantaje.ro/articol/4-retete-delicioase-de-dulceata-fara-zahar-pentru-un-stil-de-viata-sanatos",
     "original_link": "https://www.avantaje.ro/articol/4-retete-delicioase-de-dulceata-fara-zahar-pentru-un-stil-de-viata-sanatos",
     "source": "avantaje",
@@ -2478,6 +3079,26 @@
     "teaser": "Persoanele care doresc să își mențină glicemia stabilă sau să reducă aportul caloric pot prepara acasă sortimente de dulceață fără zahăr adăugat, ideale pentru o alimentație echilibrată.",
     "entities": [],
     "icon": null,
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://ziuadevest.ro/weekend-plin-de-experiente-la-iulius-town-filme-in-aer-liber-provocari-interactive-pentru-copii-si-summer-sale",
+    "original_link": "https://www.ziuadevest.ro/weekend-plin-de-experiente-la-iulius-town-filme-in-aer-liber-provocari-interactive-pentru-copii-si-summer-sale/",
+    "source": "ziuadevest",
+    "source_name": "Ziua de Vest",
+    "source_lang": "ro",
+    "title": "Iulius Town organizează evenimente și reduceri în acest weekend",
+    "category": "regional",
+    "published": "2026-07-31T12:04:57+00:00",
+    "model": "B",
+    "teaser": "Complexul din Timișoara își așteaptă vizitatorii cu proiecții cinematografice în aer liber, ateliere interactive dedicate copiilor și campanii de reduceri promoționale de sezon.",
+    "entities": [
+      "Iulius Town",
+      "Timișoara"
+    ],
+    "icon": "shopping-cart",
     "processed_by": "gemini",
     "prompt_version": "v2-esenta",
     "featured": false
@@ -2541,6 +3162,23 @@
     "featured": false
   },
   {
+    "url": "https://bizbrasov.ro/2026/07/31/consultant-verdictul-turisti-animale",
+    "original_link": "https://bizbrasov.ro/2026/07/31/consultant-verdictul-turisti-animale/",
+    "source": "bizbrasov",
+    "source_name": "BizBrașov",
+    "source_lang": "ro",
+    "title": "Reacții dure după risipa alimentară a unor turiști la all-inclusive",
+    "category": "zonal",
+    "published": "2026-07-31T11:58:41+00:00",
+    "model": "B",
+    "teaser": "Un consultant în turism critică dur atitudinea unor români care au fotografiat cantități masive de mâncare luate în cameră la un regim all-inclusive, calificând comportamentul drept lipsit de bun simț.",
+    "entities": [],
+    "icon": "alert-triangle",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
     "url": "https://avantaje.ro/articol/de-ce-apare-defectul-septal-ventricular-cauze-si-factori-de-risc",
     "original_link": "https://www.avantaje.ro/articol/de-ce-apare-defectul-septal-ventricular-cauze-si-factori-de-risc",
     "source": "avantaje",
@@ -2572,6 +3210,26 @@
     "featured": false
   },
   {
+    "url": "https://actualmm.ro/inca-doi-traficanti-de-droguri-din-maramures-au-picat-in-plasa-politistilor-doi-tineri-de-19-si-25-de-ani-sunt-cercetati-pentru-efectuarea-de-operatiuni-cu-psihoactive-si-trafic-de-droguri",
+    "original_link": "https://actualmm.ro/inca-doi-traficanti-de-droguri-din-maramures-au-picat-in-plasa-politistilor-doi-tineri-de-19-si-25-de-ani-sunt-cercetati-pentru-efectuarea-de-operatiuni-cu-psihoactive-si-trafic-de-droguri/",
+    "source": "actualmm",
+    "source_name": "actualMM",
+    "source_lang": "ro",
+    "title": "Doi tineri din Maramureș au fost reținuți pentru trafic de substanțe interzise",
+    "category": "zonal",
+    "published": "2026-07-31T11:55:29+00:00",
+    "model": "B",
+    "teaser": "Polițiștii și procurorii DIICOT au documentat activitatea infracțională a doi suspecți în vârstă de 19 și 25 de ani, acuzați de operațiuni ilegale cu substanțe psihoactive și trafic de droguri.",
+    "entities": [
+      "Maramureș",
+      "DIICOT"
+    ],
+    "icon": "shield-lock",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
     "url": "https://comunatodireni.ro/plan-de-interviu-la-concursul-pentru-ocuparea-postului-de-consilier-scolar-din-cadrul-proiectului-furnizare-de-servicii-integrate-in-comunitatile-rurale-facilitarea-accesului-persoanelor-v",
     "original_link": "https://www.comunatodireni.ro/plan-de-interviu-la-concursul-pentru-ocuparea-postului-de-consilier-scolar-din-cadrul-proiectului-furnizare-de-servicii-integrate-in-comunitatile-rurale-facilitarea-accesului-persoanelor-v/",
     "source": "pl_botosani_todireni",
@@ -2597,6 +3255,26 @@
     "model": "B",
     "teaser": "Având în vedere remedierea avariilor succesive identificate la rețeaua de aducțiune de transport apă, Compania Județeană APA SERV S.A. anunță întreruperea temporară a sistemului de alimentare cu apă potabilă, astăzi 31.07.2026, ora 14.00, până la data de 01.08.2026, ora 13.00...",
     "processed_by": "official",
+    "featured": false
+  },
+  {
+    "url": "https://bizbrasov.ro/2026/07/31/vot-pentru-afacerile-romanesti-deputatul",
+    "original_link": "https://bizbrasov.ro/2026/07/31/vot-pentru-afacerile-romanesti-deputatul/",
+    "source": "bizbrasov",
+    "source_name": "BizBrașov",
+    "source_lang": "ro",
+    "title": "Deputatul Sebastian Rusu anunță sprijin financiar pentru fermieri",
+    "category": "zonal",
+    "published": "2026-07-31T11:47:51+00:00",
+    "model": "B",
+    "teaser": "Parlamentarul brașovean Sebastian Rusu a votat adoptarea a două acte normative menite să ofere ajutoare de stat pentru crescătorii români de porcine și bovine, în contextul dificultăților din agricultură.",
+    "entities": [
+      "Sebastian Rusu",
+      "România"
+    ],
+    "icon": "tractor",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
     "featured": false
   },
   {
@@ -2674,6 +3352,26 @@
     "featured": false
   },
   {
+    "url": "https://tion.ro/stirile-judetului-timis/foto-turnul-de-apa-din-iosefin-s-a-deschis-oficial-timisorenii-il-vor-putea-vizita-in-weekenduri-2326104",
+    "original_link": "https://www.tion.ro/stirile-judetului-timis/foto-turnul-de-apa-din-iosefin-s-a-deschis-oficial-timisorenii-il-vor-putea-vizita-in-weekenduri-2326104/?utm_source=rss&utm_medium=referral&utm_campaign=hiraggregator",
+    "source": "tion",
+    "source_name": "Timiș Online",
+    "source_lang": "ro",
+    "title": "Turnul de Apă din Iosefin s-a redeschis oficial pentru vizitatori",
+    "category": "zonal",
+    "published": "2026-07-31T11:43:09+00:00",
+    "model": "B",
+    "teaser": "După ani de restaurare, monumentul istoric din Timișoara a fost inaugurat de Ziua Orașului și va putea fi vizitat publicului în fiecare sfârșit de săptămână.",
+    "entities": [
+      "Turnul de Apă din Iosefin",
+      "Timișoara"
+    ],
+    "icon": "building-monument",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
     "url": "https://comunatodireni.ro/rezultate-selectie-dosare-concurs-in-cadrul-proiectului-dezvoltarea-serviciilor-sociale-destinate-persoanelor-varstnice-din-comuna-todireni",
     "original_link": "https://www.comunatodireni.ro/rezultate-selectie-dosare-concurs-in-cadrul-proiectului-dezvoltarea-serviciilor-sociale-destinate-persoanelor-varstnice-din-comuna-todireni/",
     "source": "pl_botosani_todireni",
@@ -2719,6 +3417,27 @@
       "Alexandria"
     ],
     "icon": "movie",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://jurnalulolteniei.ro/2026/07/31/scandal-in-parc-un-barbat-din-gorj-a-ajuns-la-spital",
+    "original_link": "https://jurnalulolteniei.ro/2026/07/31/scandal-in-parc-un-barbat-din-gorj-a-ajuns-la-spital/",
+    "source": "jurnalulolteniei",
+    "source_name": "Jurnalul Olteniei",
+    "source_lang": "ro",
+    "title": "Un tânăr de 24 de ani din Gorj a fost reținut după un conflict stradal",
+    "category": "regional",
+    "published": "2026-07-31T11:34:06+00:00",
+    "model": "B",
+    "teaser": "Polițiștii județeni au arestat un agresor în urma unui scandal izbucnit într-un parc din comuna Mătăsari, eveniment în urma căruia o persoană rănită a necesitat îngrijiri medicale la spital.",
+    "entities": [
+      "Mătăsari",
+      "Gorj",
+      "Inspectoratul de Poliție Județean Gorj"
+    ],
+    "icon": "gavel",
     "processed_by": "gemini",
     "prompt_version": "v2-esenta",
     "featured": false
@@ -2791,6 +3510,68 @@
       "Sighetu Marmației"
     ],
     "icon": "car",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://newsbv.ro/grecia-misiune",
+    "original_link": "https://newsbv.ro/grecia-misiune/",
+    "source": "newsbv",
+    "source_name": "News Brașov",
+    "source_lang": "ro",
+    "title": "Doi pompieri din Brașov participă la misiuni de stingere a incendiilor în Grecia",
+    "category": "zonal",
+    "published": "2026-07-31T11:15:50+00:00",
+    "model": "B",
+    "teaser": "Doi salvatori de la Inspectoratul pentru Situații de Urgență Țara Bârsei fac parte din primul contingent format din 40 de pompieri români trimiși în misiune pe teritoriul Greciei.",
+    "entities": [
+      "ISU Țara Bârsei",
+      "Grecia",
+      "Brașov"
+    ],
+    "icon": "firetruck",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://actualmm.ro/38-de-sanctiuni-date-in-trafic-la-sighetu-marmatiei-in-doar-doua-ore-politistii-maramureseni-impreuna-cu-politistii-de-frontiera-si-jandarmii-au-desfasurat-activitati-in-cadrul-actiunii-blocada",
+    "original_link": "https://actualmm.ro/38-de-sanctiuni-date-in-trafic-la-sighetu-marmatiei-in-doar-doua-ore-politistii-maramureseni-impreuna-cu-politistii-de-frontiera-si-jandarmii-au-desfasurat-activitati-in-cadrul-actiunii-blocada/",
+    "source": "actualmm",
+    "source_name": "actualMM",
+    "source_lang": "ro",
+    "title": "38 de sancțiuni contravenționale aplicate în trafic la Sighetu Marmației",
+    "category": "zonal",
+    "published": "2026-07-31T11:12:56+00:00",
+    "model": "B",
+    "teaser": "Forțele de ordine au legitimat 63 de persoane în cadrul unei acțiuni de tip blocadă desfășurate timp de două ore, aplicând zeci de amenzi pentru menținerea ordinii publice și siguranței rutiere.",
+    "entities": [
+      "Sighetu Marmației"
+    ],
+    "icon": "car",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://cronicaolteniei.ro/spitalul-de-pneumoftiziologie-leamna-in-vizorul-ani-ilinca-adinel-ionel-in-incompatibilitate",
+    "original_link": "https://cronicaolteniei.ro/spitalul-de-pneumoftiziologie-leamna-in-vizorul-ani-ilinca-adinel-ionel-in-incompatibilitate/",
+    "source": "cronicaolteniei",
+    "source_name": "Cronica Olteniei",
+    "source_lang": "ro",
+    "title": "Ilinca Adinel Ionel de la Spitalul Leamna a fost declarat în incompatibilitate de ANI",
+    "category": "regional",
+    "published": "2026-07-31T11:06:41+00:00",
+    "model": "B",
+    "teaser": "Agenția Națională de Integritate a sancționat reprezentantul Consiliului Județean Dolj din conducerea unității medicale pentru exercitarea simultană a unor funcții interzise de lege timp de doi ani.",
+    "entities": [
+      "Spitalul de Pneumoftiziologie Leamna",
+      "Ilinca Adinel Ionel",
+      "Agenția Națională de Integritate",
+      "Consiliul Județean Dolj"
+    ],
+    "icon": "building-hospital",
     "processed_by": "gemini",
     "prompt_version": "v2-esenta",
     "featured": false
@@ -2910,6 +3691,25 @@
       "Violet"
     ],
     "icon": "movie",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://tion.ro/eveniment/trei-oameni-au-fost-batuti-pe-o-strada-din-giroc-unul-dintre-agresori-a-ajuns-la-psihiatrie-celalalt-este-cautat-de-politisti-2325930",
+    "original_link": "https://www.tion.ro/eveniment/trei-oameni-au-fost-batuti-pe-o-strada-din-giroc-unul-dintre-agresori-a-ajuns-la-psihiatrie-celalalt-este-cautat-de-politisti-2325930/?utm_source=rss&utm_medium=referral&utm_campaign=hiraggregator",
+    "source": "tion",
+    "source_name": "Timiș Online",
+    "source_lang": "ro",
+    "title": "Trei persoane agresate pe stradă în Giroc, un suspect internat la psihiatrie",
+    "category": "zonal",
+    "published": "2026-07-31T10:38:20+00:00",
+    "model": "B",
+    "teaser": "Un scandal violent izbucnit pe o stradă din localitatea Giroc s-a soldat cu trei victime. Unul dintre agresori a fost internat la psihiatrie, iar complicele său este căutat de forțele de ordine.",
+    "entities": [
+      "Giroc"
+    ],
+    "icon": "gavel",
     "processed_by": "gemini",
     "prompt_version": "v2-esenta",
     "featured": false
@@ -3381,6 +4181,26 @@
     "featured": false
   },
   {
+    "url": "https://criticarad.ro/interes-tot-mai-mare-pentru-studiile-ingineresti-universitatea-politehnica-timisoara-a-inregistrat-o-crestere-de-aproape-28-a-numarului-de-candidati-la-admitere",
+    "original_link": "https://www.criticarad.ro/interes-tot-mai-mare-pentru-studiile-ingineresti-universitatea-politehnica-timisoara-a-inregistrat-o-crestere-de-aproape-28-a-numarului-de-candidati-la-admitere/",
+    "source": "criticarad",
+    "source_name": "Critic Arad",
+    "source_lang": "ro",
+    "title": "Creștere de 28% a candidaților la Universitatea Politehnica Timișoara",
+    "category": "regional",
+    "published": "2026-07-31T09:39:56+00:00",
+    "model": "B",
+    "teaser": "Politehnica din Timișoara raportează un interes major pentru facultățile de inginerie, numărul tinerilor înscriși la admitere urcând cu aproape 28 la sută pe fondul cererii ridicate din piața muncii.",
+    "entities": [
+      "Universitatea Politehnica Timișoara",
+      "Florin Drăgan"
+    ],
+    "icon": "school",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
     "url": "https://csid.ro/stiri/adrian-ropotan-in-stare-grava-dupa-accidentul-din-arges-antrenorul-a-fost-resuscitat-la-fata-locului-21268058",
     "original_link": "https://www.csid.ro/stiri/adrian-ropotan-in-stare-grava-dupa-accidentul-din-arges-antrenorul-a-fost-resuscitat-la-fata-locului-21268058/",
     "source": "csid",
@@ -3487,6 +4307,25 @@
       "strada Constantin Brâncuși"
     ],
     "icon": "alert-triangle",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://tion.ro/stirile-judetului-timis/cine-sunt-timisenii-de-nota-10-au-inceput-nominalizarile-pentru-personalitati-si-elevi-din-judet-2326035",
+    "original_link": "https://www.tion.ro/stirile-judetului-timis/cine-sunt-timisenii-de-nota-10-au-inceput-nominalizarile-pentru-personalitati-si-elevi-din-judet-2326035/?utm_source=rss&utm_medium=referral&utm_campaign=hiraggregator",
+    "source": "tion",
+    "source_name": "Timiș Online",
+    "source_lang": "ro",
+    "title": "Au început înscrierile pentru campania Timișeni de Nota 10",
+    "category": "zonal",
+    "published": "2026-07-31T09:22:54+00:00",
+    "model": "B",
+    "teaser": "Organizatorii campaniei așteaptă până la sfârșitul lunii august propuneri pentru premierea a zece personalități remarcabile și a zece elevi cu rezultate deosebite din județul Timiș.",
+    "entities": [
+      "Timiș"
+    ],
+    "icon": "medal",
     "processed_by": "gemini",
     "prompt_version": "v2-esenta",
     "featured": false
@@ -3668,6 +4507,66 @@
     "teaser": "Estetica Afrohemian câștigă teren în amenajările interioare, combinând motive culturale africane, materiale naturale brute și elemente specifice stilului boem pentru crearea unor spații calde și autentice.",
     "entities": [],
     "icon": "home",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://criticarad.ro/moartea-lui-lucian-maris-din-siria",
+    "original_link": "https://www.criticarad.ro/moartea-lui-lucian-maris-din-siria/",
+    "source": "criticarad",
+    "source_name": "Critic Arad",
+    "source_lang": "ro",
+    "title": "Noi demersuri legale înancheta privind decesul lui Lucian Mariș",
+    "category": "regional",
+    "published": "2026-07-31T08:55:08+00:00",
+    "model": "B",
+    "teaser": "Avocatul Dumitru Goșa a depus o plângere detaliată împotriva soluției de clasare dispuse de procurori, cerând lămurirea circumstanțelor în care și-a pierdut viața Lucian Mariș din Șiria.",
+    "entities": [
+      "Dumitru Goșa",
+      "Lucian Mariș",
+      "Șiria"
+    ],
+    "icon": "gavel",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://criticarad.ro/notarii-cer-deblocarea-urgenta-a-serviciilor-de-cadastru-colegiul-geodezilor-din-romania-solicita-interventia-imediata-a-autoritatilor",
+    "original_link": "https://www.criticarad.ro/notarii-cer-deblocarea-urgenta-a-serviciilor-de-cadastru-colegiul-geodezilor-din-romania-solicita-interventia-imediata-a-autoritatilor/",
+    "source": "criticarad",
+    "source_name": "Critic Arad",
+    "source_lang": "ro",
+    "title": "Notarii solicită proceduri alternative din cauza blocajului informatic la Cadastru",
+    "category": "regional",
+    "published": "2026-07-31T08:50:24+00:00",
+    "model": "B",
+    "teaser": "Uniunea Notarilor cere autorităților măsuri urgente pentru continuarea activității juridice, după ce sistemul e-Terra al ANCPI a fost blocat în urma unui atac cibernetic produs mijlocul lunii iulie 2026.",
+    "entities": [
+      "Uniunea Națională a Notarilor Publici din România",
+      "ANCPI"
+    ],
+    "icon": "certificate",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://tion.ro/stirile-judetului-timis/incepe-a-doua-sesiune-de-bac-in-timis-aproximativ-1-300-de-candidati-sunt-asteptati-la-examen-2325987",
+    "original_link": "https://www.tion.ro/stirile-judetului-timis/incepe-a-doua-sesiune-de-bac-in-timis-aproximativ-1-300-de-candidati-sunt-asteptati-la-examen-2325987/?utm_source=rss&utm_medium=referral&utm_campaign=hiraggregator",
+    "source": "tion",
+    "source_name": "Timiș Online",
+    "source_lang": "ro",
+    "title": "Aproximativ 1.300 de candidați susțin a doua sesiune de bacalaureat în Timiș",
+    "category": "zonal",
+    "published": "2026-07-31T08:48:16+00:00",
+    "model": "B",
+    "teaser": "Sesiunea de toamnă a examenului de bacalaureat debutează luni cu probele de competențe, fiind organizate cinci centre de examinare pentru cei circa 1.300 de elevi înscriși în județ.",
+    "entities": [
+      "Timiș"
+    ],
+    "icon": "school",
     "processed_by": "gemini",
     "prompt_version": "v2-esenta",
     "featured": false
@@ -4025,6 +4924,25 @@
     "featured": false
   },
   {
+    "url": "https://criticarad.ro/firmele-trebuie-sa-opereze-actualizarea-codurilor-caen-conform-rev-3-pana-la-25-septembrie-2026",
+    "original_link": "https://www.criticarad.ro/firmele-trebuie-sa-opereze-actualizarea-codurilor-caen-conform-rev-3-pana-la-25-septembrie-2026/",
+    "source": "criticarad",
+    "source_name": "Critic Arad",
+    "source_lang": "ro",
+    "title": "Obligația firmelor de actualizare a codurilor CAEN până la toamna lui 2026",
+    "category": "regional",
+    "published": "2026-07-31T08:13:15+00:00",
+    "model": "B",
+    "teaser": "Societățile comerciale și PFA-urile înființate înainte de anul 2025 trebuie să își schimbe obligatoriu clasificarea activităților de la versiunea CAEN Rev. 2 la Rev. 3 până la data de 25 septembrie 2026.",
+    "entities": [
+      "Registrul Comerțului"
+    ],
+    "icon": "writing",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
     "url": "https://primaria-amara.ro/2026/07/31/lista-persoanelor-fizice-si-jurice-care-au-restanse-la-30-06-2026-si-neachitate-la-31-07-2026",
     "original_link": "https://primaria-amara.ro/2026/07/31/lista-persoanelor-fizice-si-jurice-care-au-restanse-la-30-06-2026-si-neachitate-la-31-07-2026/",
     "source": "pl_ialomita_oras_amara",
@@ -4078,6 +4996,25 @@
     "model": "B",
     "teaser": "Detalii pe sursa.",
     "processed_by": "official",
+    "featured": false
+  },
+  {
+    "url": "https://dobrogeanews.ro/zilele-armene-la-tulcea-ritm-traditie-si-cuvant-o-celebrare-a-culturii-armenesti",
+    "original_link": "https://www.dobrogeanews.ro/zilele-armene-la-tulcea-ritm-traditie-si-cuvant-o-celebrare-a-culturii-armenesti/?utm_source=rss&utm_medium=rss&utm_campaign=zilele-armene-la-tulcea-ritm-traditie-si-cuvant-o-celebrare-a-culturii-armenesti",
+    "source": "dobrogeanews",
+    "source_name": "DobrogeaNews",
+    "source_lang": "ro",
+    "title": "Festivalul Zilele Armene reunește comunitatea la Tulcea",
+    "category": "regional",
+    "published": "2026-07-31T07:34:23+00:00",
+    "model": "B",
+    "teaser": "A doua ediție a evenimentului Zilele Armene se desfășoară la Tulcea în perioada 31 iulie - 2 august 2026. Peste o sută de etnici armeni participă la lansări de carte și spectacole culturale.",
+    "entities": [
+      "Tulcea"
+    ],
+    "icon": "building-church",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
     "featured": false
   },
   {
@@ -4280,6 +5217,28 @@
     "featured": false
   },
   {
+    "url": "https://actualmm.ro/raport-de-santier-podul-de-la-catalina-prinde-forma-iar-asfaltul-inainteaza-pe-dj-182b-baia-mare-coas",
+    "original_link": "https://actualmm.ro/raport-de-santier-podul-de-la-catalina-prinde-forma-iar-asfaltul-inainteaza-pe-dj-182b-baia-mare-coas/",
+    "source": "actualmm",
+    "source_name": "actualMM",
+    "source_lang": "ro",
+    "title": "Lucrările pe DJ 182B avansează cu asfaltare și construcția podului de la Cătălina",
+    "category": "zonal",
+    "published": "2026-07-31T07:01:40+00:00",
+    "model": "B",
+    "teaser": "Președintele Consiliului Județean Maramureș, Gabriel Zetea, a prezentat stadiul șantierului pe ruta Baia Mare-Coaș, unde se lucrează concomitent la infrastructură, utilități și structura podului.",
+    "entities": [
+      "Gabriel Zetea",
+      "Consiliul Județean Maramureș",
+      "Baia Mare",
+      "Coaș"
+    ],
+    "icon": null,
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
     "url": "https://cjgalati.ro/hot204-300726",
     "original_link": "https://cjgalati.ro/hot204-300726/",
     "source": "cj_galati",
@@ -4352,6 +5311,37 @@
     "model": "B",
     "teaser": "privind: completarea Hotărârii Consiliului Județean Galați nr. 189/26.06.2024 privind actualizarea și completarea Strategiei de dezvoltare a județului Galați 2021-2028 Citeste",
     "processed_by": "official",
+    "featured": false
+  },
+  {
+    "url": "https://cronicaolteniei.ro/a-murit-legendarul-fundas-italian-franco-baresi",
+    "original_link": "https://cronicaolteniei.ro/a-murit-legendarul-fundas-italian-franco-baresi/",
+    "source": "cronicaolteniei",
+    "source_name": "Cronica Olteniei",
+    "source_lang": "ro",
+    "title": "Fostul fotbalist italian Franco Baresi, legendarul căpitan al echipei AC Milan, a încetat din viață la vârsta de 66 de ani",
+    "category": "regional",
+    "published": "2026-07-31T06:47:35+00:00",
+    "model": "C",
+    "sources": [
+      {
+        "name": "Cronica Olteniei",
+        "url": "https://cronicaolteniei.ro/a-murit-legendarul-fundas-italian-franco-baresi/"
+      },
+      {
+        "name": "Jurnalul Olteniei",
+        "url": "https://jurnalulolteniei.ro/2026/07/31/jurnalul-unui-interist-onoare-si-respect-rivalilor-de-legenda/"
+      }
+    ],
+    "first_source": "Cronica Olteniei",
+    "synthesis": "Lumea fotbalului internațional este în doliu după decesul lui Franco Baresi, considerat unul dintre cei mai mari fundași din istoria acestui sport. Fostul căpitan al echipei AC Milan s-a stins din viață la vârsta de 66 de ani, vestea fiind confirmată oficial de clubul italian. Decesul său a generat un profund ecou în rândul fanilor și al comunității sportive globale. Sursele consultate nu prezintă contradicții cu privire la aceste fapte.",
+    "entities": [
+      "Franco Baresi",
+      "AC Milan"
+    ],
+    "icon": "ball-football",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
     "featured": false
   },
   {
@@ -4510,6 +5500,28 @@
     "model": "B",
     "teaser": "privind: acordarea unei finanțări nerambursabile din bugetul Județului Galați pentru Fundația de Sprijin a Vârstnicilor Galați în vederea implementării proiectului „Servicii socio-medicale integrate pentru vârstnicii în risc de excluziune socială din județul Galați – SOS Vârstnicii” Citeste",
     "processed_by": "official",
+    "featured": false
+  },
+  {
+    "url": "https://cronicaolteniei.ro/canicula-pune-stapanire-pe-oltenia-doljul-oltul-si-mehedintiul-intra-sub-cod-galben-iar-valul-de-caldura-se-intensifica-pana-la-inceputul-saptamanii-viitoare",
+    "original_link": "https://cronicaolteniei.ro/canicula-pune-stapanire-pe-oltenia-doljul-oltul-si-mehedintiul-intra-sub-cod-galben-iar-valul-de-caldura-se-intensifica-pana-la-inceputul-saptamanii-viitoare/",
+    "source": "cronicaolteniei",
+    "source_name": "Cronica Olteniei",
+    "source_lang": "ro",
+    "title": "Cod galben de caniculă emis pentru județele Dolj, Olt și Mehedinți",
+    "category": "regional",
+    "published": "2026-07-31T06:29:33+00:00",
+    "model": "B",
+    "teaser": "Meteorologii anunță un episod sever de disconfort termic în regiunea Olteniei, temperaturile ridicate urmând să se mențină și să se intensifice până la începutul săptămânii viitoare.",
+    "entities": [
+      "Oltenia",
+      "Dolj",
+      "Olt",
+      "Mehedinți"
+    ],
+    "icon": "sun",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
     "featured": false
   },
   {
@@ -36942,207 +37954,6 @@
       "Evangelos Geroliolios"
     ],
     "icon": "building-monument",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://ziaruldeiasi.ro/stiri/cum-a-fost-la-concertul-savatage-de-la-arenele-romane--1878896.html",
-    "original_link": "https://www.ziaruldeiasi.ro/stiri/cum-a-fost-la-concertul-savatage-de-la-arenele-romane--1878896.html",
-    "source": "ziaruldeiasi",
-    "source_name": "Ziarul de Iași",
-    "source_lang": "ro",
-    "title": "Atmosfera de la concertul formației Savatage de la Arenele Romane",
-    "category": "zonal",
-    "published": "2026-07-25T03:34:06.061940+00:00",
-    "model": "B",
-    "teaser": "Spectacolul trupei rock a atras publicul numeros, în timp ce agenții de pază au menținut o atitudine complet neutră și indiferentă pe tot parcursul evenimentului muzical desfășurat în capitală.",
-    "entities": [
-      "Savatage",
-      "Arenele Romane"
-    ],
-    "icon": "music",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://ziaruldeiasi.ro/stiri/portretul-unui-rechin-de-buzau-care-iubeste-infractorii-si-apa-lacurilor-din-italia--1878942.html",
-    "original_link": "https://www.ziaruldeiasi.ro/stiri/portretul-unui-rechin-de-buzau-care-iubeste-infractorii-si-apa-lacurilor-din-italia--1878942.html",
-    "source": "ziaruldeiasi",
-    "source_name": "Ziarul de Iași",
-    "source_lang": "ro",
-    "title": "Critici dure la adresa liderului PSD Marcel Ciolacu privind vacanțele în Italia",
-    "category": "zonal",
-    "published": "2026-07-25T03:34:06.061719+00:00",
-    "model": "B",
-    "teaser": "Premierul este acuzat de legături cu mediul infracțional și de preferință pentru lux, în urma unei întâlniri recente cu o persoană controversată pe malul Lacului Garda, în Italia.",
-    "entities": [
-      "Marcel Ciolacu",
-      "Italia",
-      "Lacul Garda"
-    ],
-    "icon": "alert-triangle",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://ziaruldeiasi.ro/stiri/ce-reactii-a-provocat-discursul-acid-al-unei-absolvente-a-umf-iasi-din-ziua-juramantului-lui-hipocrate-asta-nu-este-medicina--1879297.html",
-    "original_link": "https://www.ziaruldeiasi.ro/stiri/ce-reactii-a-provocat-discursul-acid-al-unei-absolvente-a-umf-iasi-din-ziua-juramantului-lui-hipocrate-asta-nu-este-medicina--1879297.html",
-    "source": "ziaruldeiasi",
-    "source_name": "Ziarul de Iași",
-    "source_lang": "ro",
-    "title": "Discursul critic al unei absolvente UMF Iași provoacă reacții aprinse",
-    "category": "zonal",
-    "published": "2026-07-25T03:34:06.061482+00:00",
-    "model": "B",
-    "teaser": "O absolventă de la Asistență Medicală Generală a ținut un mesaj critic la ceremonia de absolvire. Rectorul Viorel Scripcariu a reacționat prompt, amintind despre respectul obligatoriu din cadrul universității.",
-    "entities": [
-      "UMF Iași",
-      "Claudia Ciobanu",
-      "Viorel Scripcariu"
-    ],
-    "icon": "building-monument",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://ziaruldeiasi.ro/stiri/ce-poti-face-in-acest-weekend-la-iasi-ghidul-complet-al-evenimentelor-realizat-de-ziarul-de-iasi-61--1878955.html",
-    "original_link": "https://www.ziaruldeiasi.ro/stiri/ce-poti-face-in-acest-weekend-la-iasi-ghidul-complet-al-evenimentelor-realizat-de-ziarul-de-iasi-61--1878955.html",
-    "source": "ziaruldeiasi",
-    "source_name": "Ziarul de Iași",
-    "source_lang": "ro",
-    "title": "Ziarul de Iași publică ghidul evenimentelor pentru ultimul weekend din iulie",
-    "category": "zonal",
-    "published": "2026-07-25T03:34:06.061164+00:00",
-    "model": "B",
-    "teaser": "Ieșenii au la dispoziție opțiuni variate de petrecere a timpului liber în perioada 24-26 iulie, incluzând ateliere creative, proiecții de film, festivaluri și concerte organizate în oraș.",
-    "entities": [
-      "Ziarul de Iași",
-      "Iași"
-    ],
-    "icon": "movie",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://ziaruldeiasi.ro/stiri/video-cancerul-nu-mai-inseamna-automat-o-condamnare-directorul-medical-al-iro-iasi-scopul-nostru-este-sa-vindecam-pacientul--1879202.html",
-    "original_link": "https://www.ziaruldeiasi.ro/stiri/video-cancerul-nu-mai-inseamna-automat-o-condamnare-directorul-medical-al-iro-iasi-scopul-nostru-este-sa-vindecam-pacientul--1879202.html",
-    "source": "ziaruldeiasi",
-    "source_name": "Ziarul de Iași",
-    "source_lang": "ro",
-    "title": "Directorul IRO Iași afirmă că diagnosticul de cancer nu mai este o condamnare",
-    "category": "zonal",
-    "published": "2026-07-25T03:34:06.060949+00:00",
-    "model": "B",
-    "teaser": "Tratamentele moderne și screeningul permit vindecarea multor forme de cancer depistate la timp. Medicii subliniază că analizele obișnuite de sânge nu exclud boala și recomandă teste specifice de prevenție.",
-    "entities": [
-      "IRO Iași"
-    ],
-    "icon": "building-hospital",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://ziaruldeiasi.ro/stiri/topul-celor-mai-cautate-specializari-din-iasi-stiinte-ale-naturii-domina-clasamentul-mediile-de-admitere-au-scazut-considerabil--1879191.html",
-    "original_link": "https://www.ziaruldeiasi.ro/stiri/topul-celor-mai-cautate-specializari-din-iasi-stiinte-ale-naturii-domina-clasamentul-mediile-de-admitere-au-scazut-considerabil--1879191.html",
-    "source": "ziaruldeiasi",
-    "source_name": "Ziarul de Iași",
-    "source_lang": "ro",
-    "title": "Științe ale naturii este cea mai căutată specializare în Iași",
-    "category": "zonal",
-    "published": "2026-07-25T03:34:06.060637+00:00",
-    "model": "B",
-    "teaser": "Absolvenții de gimnaziu din județul Iași au plasat specializarea Științe ale naturii pe primele poziții la admiterea la liceu. Toate profilele au înregistrat însă medii de admitere mai mici față de anul precedent.",
-    "entities": [
-      "Iași"
-    ],
-    "icon": "school",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://ziaruldeiasi.ro/stiri/proiectul-trenului-metropolitan-este-inca-in-evaluare-se-vor-gasi-bani-pentru-el--1879189.html",
-    "original_link": "https://www.ziaruldeiasi.ro/stiri/proiectul-trenului-metropolitan-este-inca-in-evaluare-se-vor-gasi-bani-pentru-el--1879189.html",
-    "source": "ziaruldeiasi",
-    "source_name": "Ziarul de Iași",
-    "source_lang": "ro",
-    "title": "Proiectul trenului metropolitan din Iași se află în evaluare la minister",
-    "category": "zonal",
-    "published": "2026-07-25T03:34:06.060379+00:00",
-    "model": "B",
-    "teaser": "Ministerul Transporturilor nu poate estima momentul unei decizii privind finanțarea sau alocarea de fonduri europene pentru infrastructura feroviară locală.",
-    "entities": [
-      "Ministerul Transporturilor",
-      "Iași"
-    ],
-    "icon": "train",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://ziaruldeiasi.ro/stiri/compania-care-va-incepe-construirea-unui-parc-fotovoltaic-urias-la-marginea-iasului-a-invartit-anul-trecut-160-de-milioane-de-euro-cine-este-fondatorul--1879183.html",
-    "original_link": "https://www.ziaruldeiasi.ro/stiri/compania-care-va-incepe-construirea-unui-parc-fotovoltaic-urias-la-marginea-iasului-a-invartit-anul-trecut-160-de-milioane-de-euro-cine-este-fondatorul--1879183.html",
-    "source": "ziaruldeiasi",
-    "source_name": "Ziarul de Iași",
-    "source_lang": "ro",
-    "title": "O firmă cu afaceri de 160 milioane euro va construi parcul fotovoltaic Iași",
-    "category": "zonal",
-    "published": "2026-07-25T03:34:06.060177+00:00",
-    "model": "B",
-    "teaser": "Compania care a câștigat licitația pentru proiectul energetic de la CET Holboca a înregistrat anul trecut o cifră de afaceri impresionantă pe piața de profil.",
-    "entities": [
-      "Iași",
-      "CET Holboca"
-    ],
-    "icon": "bolt",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://newsbv.ro/resturi-din-drona-si-din-racheta-buzau",
-    "original_link": "https://newsbv.ro/resturi-din-drona-si-din-racheta-buzau/",
-    "source": "newsbv",
-    "source_name": "News Brașov",
-    "source_lang": "ro",
-    "title": "Resturi de dronă și rachetă, identificate în Buzău și Brăila",
-    "category": "zonal",
-    "published": "2026-07-25T03:13:18+00:00",
-    "model": "B",
-    "teaser": "Ministerul Apărării a confirmat că echipele de intervenție au găsit bucăți dintr-o dronă doborâtă și dintr-o rachetă interceptoare în județul Buzău, în timp ce în Brăila a fost descoperit un crater cu resturi de rachetă. Nu s-au raportat victime sau...",
-    "entities": [
-      "Ministerul Apărării",
-      "Buzău",
-      "Brăila"
-    ],
-    "icon": "rocket",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://bbc.co.uk/news/articles/cj637zd1k1ko?at_medium=RSS&at_campaign=rss",
-    "original_link": "https://www.bbc.co.uk/news/articles/cj637zd1k1ko?at_medium=RSS&at_campaign=rss",
-    "source": "bbc_europe",
-    "source_name": "BBC Europe",
-    "source_lang": "en",
-    "title": "Zece persoane au murit în urma unui atac rusesc cu rachete balistice lângă Kiev",
-    "category": "extern",
-    "published": "2026-07-25T00:06:53+00:00",
-    "model": "B",
-    "teaser": "O expoziție dedicată industriei de apărare din Ucraina, frecventată de experți militari, a fost lovită în plină zi. Incidentul s-a soldat cu zece victime decedate în apropierea capitalei.",
-    "entities": [
-      "Kiev",
-      "Ucraina"
-    ],
-    "icon": "flame",
     "processed_by": "gemini",
     "prompt_version": "v2-esenta",
     "featured": false
