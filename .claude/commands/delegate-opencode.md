@@ -24,7 +24,16 @@ Protocol — every step is mandatory, in order (identical to /delegate-devin exc
    explicit list of user WIP files OpenCode must not touch, stage, or discard.
 
 4. **Hand off headless.** From the repo root, in background (Bash run_in_background):
-   `opencode run --dir . --title "<task-slug>" "Read AGENTS.md and specs/STATE.md (context, read-only), then execute specs/<task-slug>.md exactly. Work on branch oc/<task-slug>. Report in Romanian." 2>&1`
+   `bash tools/oc_run.sh --dir . --title "<task-slug>" "Read AGENTS.md and specs/STATE.md (context, read-only), then execute specs/<task-slug>.md exactly. Work on branch oc/<task-slug>. Report in Romanian." 2>&1`
+   - `tools/oc_run.sh` walks the free-route ladder below automatically: it skips routes whose
+     key is unset, runs the first eligible one, and falls through on INFRASTRUCTURE failure
+     only (non-zero exit, or an `Error:` line from opencode — auth / quota / rate limit /
+     "credit card"). A route that runs and reports the task went badly is NOT retried —
+     that is a task problem, and re-running it on four more providers only burns quota.
+     Exit 0 = one route completed; exit 1 = every eligible route failed.
+     `bash tools/oc_run.sh --list` shows which routes are live right now and why the others
+     are skipped. Override the ladder for one run with `OC_ROUTES="a,b"`.
+     Calling `opencode run` directly still works; you just lose the automatic fallback.
    - Permissions come from repo `opencode.json` (edits allowed; destructive git + rm denied).
      NEVER pass `--auto`.
    - Model: pinned in repo `opencode.json` (`opencode/deepseek-v4-flash-free`). TRAP
