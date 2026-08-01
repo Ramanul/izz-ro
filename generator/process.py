@@ -6,7 +6,7 @@ TEASER_MAX_WORDS / SYNTHESIS_MAX_WORDS si are fallback determinist (fara AI).
 import json
 import re
 
-from . import config
+from . import config, geo
 from .util import truncate_words, domain_of
 
 # ---- Prompturi calibrate juridic (zero propozitii copiate din original) ----
@@ -101,7 +101,21 @@ def _resolve_category(item: dict, ai_cat: str) -> str:
     """
     if item.get("category") in getattr(config, "PINNED_CATEGORIES", set()):
         return item["category"]
-    return _valid_category(ai_cat, item.get("category", "general"))
+
+    cat = _valid_category(ai_cat, item.get("category", "general"))
+
+    # Sursa NU e geografica, dar AI-ul a ales totusi o rubrica geografica. Nu are cum sa
+    # stie ce inseamna: primeste `regional|zonal|local` ca etichete goale, langa `sport`.
+    # Masurat 2026-07-25: 14 din 15 articole din `regional` erau gresite (un sat elvetian,
+    # Comisia Europeana, DNA). Deci nu-l credem — decidem din textul stirii, cu gazetteer.
+    if cat in getattr(config, "PINNED_CATEGORIES", set()):
+        # modelul B scrie 'teaser', modelul C scrie 'synthesis' — le luam pe amandoua,
+        # altfel clusterele s-ar clasifica doar dupa titlu.
+        nivel = geo.clasifica(" ".join(filter(None, (
+            item.get("title"), item.get("teaser"), item.get("synthesis")))))
+        # Niciun nume de loc -> stirea nu apartine axei geografice (regula owner 2026-08-01).
+        return nivel or "general"
+    return cat
 
 
 _ICON_SLUGS = ("gavel certificate building-monument podium writing percentage receipt-tax "
