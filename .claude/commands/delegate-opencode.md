@@ -56,8 +56,12 @@ Protocol — every step is mandatory, in order (identical to /delegate-devin exc
         `opencode.json`, DORMANT until the owner creates the key himself and sets
         `CEREBRAS_API_KEY` / `GROQ_API_KEY` / `OPENROUTER_API_KEY` / `MISTRAL_API_KEY`.
         The manager never creates accounts or handles keys.
-     4. `ollama/qwen3-coder:30b` — local, unlimited, offline, no data leaves the machine.
-        Requires `ollama pull qwen3-coder:30b` first; confirm the exact tag with `ollama list`.
+     4. `ollama/qwen2.5-coder:7b` — local, unlimited, offline. **Deliberately NOT in the
+        default ladder.** Measured 2026-08-02: this machine has a GTX 1060 with 3GB VRAM and
+        16GB RAM, so a 4.7GB 7B model runs half on CPU — far too slow to drive an agentic
+        loop with tool calls. Reachable on purpose with
+        `OC_ROUTES="ollama/qwen2.5-coder:7b" tools/oc_run.sh "..."` after
+        `ollama pull qwen2.5-coder:7b`. Offline last resort, not a replacement executor.
      NOT a fallback: `vercel/*` free models. Verified 2026-08-02 — the AI Gateway refuses
      with "requires a valid credit card on file" despite `AI_GATEWAY_API_KEY` being set.
    - `small_model` (session titles/metadata) is pinned to `google/gemini-3.1-flash-lite`

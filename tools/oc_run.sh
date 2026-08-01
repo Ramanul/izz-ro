@@ -34,8 +34,14 @@ google/gemini-3.1-flash-lite,\
 cerebras/gpt-oss-120b,\
 groq/openai/gpt-oss-120b,\
 openrouter-free/poolside/laguna-s-2.1:free,\
-mistral/codestral-25-08,\
-ollama/qwen3-coder:30b"
+mistral/codestral-25-08"
+# NOT in the default ladder: ollama/*. Measured 2026-08-02 on this machine —
+# GTX 1060 3GB VRAM / 16GB RAM. A 7B coder model (4.7GB) does not fit in 3GB of
+# VRAM, so it runs half on CPU and is far too slow to drive an agentic loop with
+# tool calls. Wired in opencode.json and reachable on purpose:
+#   OC_ROUTES="ollama/qwen2.5-coder:7b" tools/oc_run.sh "..."
+# after `ollama pull qwen2.5-coder:7b`. Treat it as an offline last resort for a
+# tiny task, not as a replacement executor.
 
 while [ $# -gt 0 ]; do
   case "$1" in

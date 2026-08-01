@@ -73,7 +73,8 @@
         "apiKey": "ollama"
       },
       "models": {
-        "qwen3-coder:30b": { "name": "Qwen3 Coder 30B (local)" }
+        "qwen2.5-coder:7b": { "name": "Qwen2.5 Coder 7B (local, 4.7GB)" },
+        "qwen2.5-coder:3b": { "name": "Qwen2.5 Coder 3B (local, 1.9GB)" }
       }
     }
   },
