@@ -110,16 +110,9 @@ def _parse_w3c_date(raw: str) -> str:
         return datetime.now(timezone.utc).isoformat()
 
 
-def _fetch_sitemap_news(key: str, source: dict) -> tuple[list, str | None]:
-    """Fetch dintr-un sitemap Google News: Title + URL + data. Legal (robots.txt: Allow /)."""
+def _parse_sitemap_news(raw: bytes, key: str, source: dict) -> tuple[list, str | None]:
+    """XML sitemap -> (articole, eroare). Pur (fara retea), ca sa fie testabil pe fixture."""
     items: list = []
-    try:
-        req = urllib.request.Request(source["url"], headers={"User-Agent": USER_AGENT})
-        with urllib.request.urlopen(req, timeout=TIMEOUT) as resp:
-            raw = resp.read()
-    except (urllib.error.HTTPError, urllib.error.URLError, socket.timeout, ValueError) as exc:
-        return items, f"{key}: {exc}"
-
     try:
         root = ET.fromstring(raw)
     except ET.ParseError as exc:
@@ -129,13 +122,21 @@ def _fetch_sitemap_news(key: str, source: dict) -> tuple[list, str | None]:
     if not urls:
         return items, f"{key}: 0 intrari in sitemap (posibil structura schimbata)"
 
-    for url_el in urls[: config.MAX_PER_SOURCE]:
+    # plafonul se aplica dupa filtrare (nu pe felia bruta): daca primele intrari sunt
+    # inutilizabile, sursa nu trebuie sa iasa goala cat timp exista intrari bune mai jos.
+    unusable = 0
+    for url_el in urls:
+        if len(items) >= config.MAX_PER_SOURCE:
+            break
         loc = (url_el.findtext("sm:loc", default="", namespaces=_SITEMAP_NS) or "").strip()
         title = clean_html(
             url_el.findtext("news:news/news:title", default="", namespaces=_SITEMAP_NS) or "")
         date_raw = url_el.findtext("news:news/news:publication_date", default="",
                                    namespaces=_SITEMAP_NS)
-        if not loc or not title or _is_agency(loc, source["name"]):
+        if not loc or not title:
+            unusable += 1
+            continue
+        if _is_agency(loc, source["name"]):
             continue
         items.append({
             "url": normalize_url(loc),
@@ -150,7 +151,24 @@ def _fetch_sitemap_news(key: str, source: dict) -> tuple[list, str | None]:
             "published": _parse_w3c_date(date_raw),
             "model": None,
         })
+
+    if not items:
+        # esec TACUT altfel: sursa raspunde 200 si are <url>-uri, dar nu produce nimic
+        # -> nu aparea in lista surselor moarte si degrada nevazut (piataauto, iulie 2026).
+        return items, (f"{key}: {len(urls)} intrari in sitemap, 0 utilizabile "
+                       f"({unusable} fara loc/news:title -> namespace sau structura schimbata)")
     return items, None
+
+
+def _fetch_sitemap_news(key: str, source: dict) -> tuple[list, str | None]:
+    """Fetch dintr-un sitemap Google News: Title + URL + data. Legal (robots.txt: Allow /)."""
+    try:
+        req = urllib.request.Request(source["url"], headers={"User-Agent": USER_AGENT})
+        with urllib.request.urlopen(req, timeout=TIMEOUT) as resp:
+            raw = resp.read()
+    except (urllib.error.HTTPError, urllib.error.URLError, socket.timeout, ValueError) as exc:
+        return [], f"{key}: {exc}"
+    return _parse_sitemap_news(raw, key, source)
 
 
 # ---- Monitor Local: scraper generic config-driven pentru surse fara RSS ----
