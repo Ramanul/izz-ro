@@ -111,6 +111,23 @@ The 2026-07-10 autonomous mandate is **OVER**. Its backlog shipped (2026-07-11) 
 - Historical record of the delivered backlog (do not re-do): Chromium image engine, cache `_headers`, EAA accessibility statement, legal wording pass, A11y/SEO/perf thresholds, pytest suite + tests.yml, covers.py cleanup — all ✅.
 - **Owner facts (never invent legal facts):** operator = natural person, initials **S.A.N.**, Romania — already in privacy.md.
 
+### 14b. Background work — REINSTATED, BOUNDED (owner decision 2026-08-01)
+§14 banned autonomous loops because *two accounts* each ran one and collided (12–13 Jul). That
+premise is gone: STATE.md records single-account mode. The owner is often away for days and wants
+progress meanwhile, so a background Routine is allowed again — under limits that keep the original
+failure impossible:
+- **It never merges to `main`.** It opens a **draft PR** and stops. Only the owner merges. This is
+  the whole safety property: nothing reaches the live site without human review.
+- **One task per firing**, taken from the `## Open` list in `specs/STATE.md`. It does not invent
+  work, does not touch anything marked "owner decision pending", and does not start a second task.
+- **It stops and reports instead of guessing.** Ambiguity, a failing premise, or a task needing a
+  cost/design call ends the run with a written note in the PR or STATE.md — not a best guess.
+- **It updates `specs/STATE.md`** so the next session (background or owner) starts informed.
+- Everything else still applies: §5 spec→verify→commit, §16 two-role verification, §7/§8 domain
+  and token rules. A background run gets no exemption from any of them.
+Anything wider than this — self-merging, self-directed backlog invention, a second concurrent
+loop — remains forbidden by §14 above.
+
 ## 15. Sub-agents & commands — delegate the verification rituals
 Project sub-agents live in `.claude/agents/` (versioned, see its README). Each isolates a noisy, bounded, summarizable job and returns a verdict — use them so the main thread stays on the decision, not the noise. Map task → agent:
 - Changing `generator/cluster.py` or its thresholds → **`clustering-tuner`** verifies over-merge AND under-merge on real samples (enforces §7). It reports; it does not edit.
