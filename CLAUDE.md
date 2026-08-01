@@ -195,3 +195,26 @@ izz.ro may use a local institution's image ONLY when one of these holds, verifie
 2. a free-licensed portrait/photo exists on Wikidata / Wikimedia Commons (existing pipeline path — `fetch_leadphotos.py` PD/CC0, `fetch_portraits.py` CC-BY), OR
 3. the institution gave written reuse permission.
 NO blanket scraping of institution sites. Agents research and gather this evidence per institution into a whitelist; the owner (or legal) approves it before any image is pulled — human-in-the-loop, like `moderation.yaml`. Missing all three → the article keeps its generated cover.
+## 19. Session hygiene & context economy — HARD RULE (owner decision 2026-08-01)
+Context: a session opened on 2026-07-25 was still being continued on 2026-08-01. Every turn
+re-sent a week of history, and two `actions_list` calls returned **340.000 characters each**.
+The 5-hour usage window hit 32% in roughly ten minutes of work. Nothing in that history was
+needed — `specs/STATE.md` already held every conclusion.
+
+- **One task, one session.** Do not continue a conversation across days. When a slice is done and
+  STATE.md is updated, the transcript has no residual value: STATE.md *is* the handoff, and §15
+  already requires reading it first. Say so to the owner rather than silently continuing a stale
+  session.
+- **Never pull a large payload into context.** GitHub Actions listings, full `data/articles.json`,
+  log files, `git log` without `--format` — filter at the source (`jq`, a `python -c` that prints
+  only the fields needed, `--per_page`, `grep -c`, `head`). A tool result costing more than the
+  slice it supports is a defect, not a detail. If a tool dumps to a file because it was too large,
+  that is the signal the call was wrong — narrow it, do not read the file.
+- **Model to match the work.** Routine single-slice edits do not need the most expensive model;
+  reserve it for planning and hard reasoning. §12's effort guidance is about depth, this is about
+  cost — they are different dials.
+- **Sub-agents cost ~5.6x per delivered line** (measured, `COORD-DASHBOARD.md`). Worth it for
+  genuinely parallel or noisy measurement work; wasteful for an edit you can make directly.
+- **Agents share the working tree.** A background agent that runs `git checkout` moves the branch
+  under everyone else — this happened on 2026-07-25 and cost a rebuild. Give every parallel agent
+  `isolation: "worktree"`, or a dedicated `git worktree`. Never let two agents write the same branch.
