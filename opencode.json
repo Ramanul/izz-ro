@@ -1,6 +1,82 @@
 {
   "$schema": "https://opencode.ai/config.json",
   "model": "opencode/deepseek-v4-flash-free",
+  "small_model": "google/gemini-3.1-flash-lite",
+  "provider": {
+    "google": {
+      "options": {
+        "apiKey": "{env:GEMINI_API_KEY}"
+      }
+    },
+    "cerebras": {
+      "npm": "@ai-sdk/openai-compatible",
+      "name": "Cerebras (free tier)",
+      "options": {
+        "baseURL": "https://api.cerebras.ai/v1",
+        "apiKey": "{env:CEREBRAS_API_KEY}"
+      },
+      "models": {
+        "gpt-oss-120b": { "name": "GPT-OSS 120B (Cerebras)" },
+        "zai-glm-4.7": { "name": "GLM 4.7 (Cerebras, preview)" }
+      }
+    },
+    "groq": {
+      "npm": "@ai-sdk/openai-compatible",
+      "name": "Groq (free tier)",
+      "options": {
+        "baseURL": "https://api.groq.com/openai/v1",
+        "apiKey": "{env:GROQ_API_KEY}"
+      },
+      "models": {
+        "openai/gpt-oss-120b": { "name": "GPT-OSS 120B (Groq)" },
+        "llama-3.3-70b-versatile": { "name": "Llama 3.3 70B (Groq)" }
+      }
+    },
+    "openrouter-free": {
+      "npm": "@ai-sdk/openai-compatible",
+      "name": "OpenRouter (:free models)",
+      "options": {
+        "baseURL": "https://openrouter.ai/api/v1",
+        "apiKey": "{env:OPENROUTER_API_KEY}"
+      },
+      "models": {
+        "poolside/laguna-s-2.1:free": {
+          "name": "Laguna S 2.1 (coding, free)",
+          "limit": { "context": 262144, "output": 32768 }
+        },
+        "cohere/north-mini-code:free": {
+          "name": "North Mini Code (free)",
+          "limit": { "context": 256000, "output": 32768 }
+        },
+        "nvidia/nemotron-3-ultra-550b-a55b:free": {
+          "name": "Nemotron 3 Ultra 550B (free, 1M ctx)",
+          "limit": { "context": 1000000, "output": 32768 }
+        }
+      }
+    },
+    "mistral": {
+      "npm": "@ai-sdk/openai-compatible",
+      "name": "Mistral (free tier)",
+      "options": {
+        "baseURL": "https://api.mistral.ai/v1",
+        "apiKey": "{env:MISTRAL_API_KEY}"
+      },
+      "models": {
+        "codestral-25-08": { "name": "Codestral 25.08" }
+      }
+    },
+    "ollama": {
+      "npm": "@ai-sdk/openai-compatible",
+      "name": "Ollama (local, offline)",
+      "options": {
+        "baseURL": "http://localhost:11434/v1",
+        "apiKey": "ollama"
+      },
+      "models": {
+        "qwen3-coder:30b": { "name": "Qwen3 Coder 30B (local)" }
+      }
+    }
+  },
   "permission": {
     "edit": "allow",
     "webfetch": "allow",

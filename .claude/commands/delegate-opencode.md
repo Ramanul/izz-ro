@@ -31,6 +31,28 @@ Protocol — every step is mandatory, in order (identical to /delegate-devin exc
      (2026-07-19): without a pinned model, opencode auto-picks a Gemini model from the
      user's `GEMINI_API_KEY` env var and dies on a missing Google key. Free Zen models:
      `opencode models | grep -E "free|pickle"`.
+   - **Free fallback ladder (verified 2026-08-02).** When the Zen quota (~100 req/day) is
+     spent, re-run the SAME command with `-m <route>`; no reconfiguration needed. In order:
+     1. `opencode/laguna-s-2.1-free` · `opencode/north-mini-code-free` — other Zen free
+        models (SMOKE-TESTED OK). Same quota pool, so this only helps if one model is
+        rate-limited, not if the daily budget is gone.
+     2. `google/gemini-3.1-flash-lite` — **separate quota**, key already in the env
+        (SMOKE-TESTED OK, returned a correct answer). This is the real first fallback.
+        TRAP (2026-08-02): opencode's `google` provider reads `GOOGLE_GENERATIVE_AI_API_KEY`,
+        NOT `GEMINI_API_KEY` — it lists the models fine and then fails at call time with
+        "API key is missing". Fixed in `opencode.json` via an explicit
+        `provider.google.options.apiKey = {env:GEMINI_API_KEY}`. Do not "fix" it by
+        setting a new env var.
+     3. `cerebras/*` (1M tok/day) · `groq/*` · `openrouter-free/*` · `mistral/*` — wired in
+        `opencode.json`, DORMANT until the owner creates the key himself and sets
+        `CEREBRAS_API_KEY` / `GROQ_API_KEY` / `OPENROUTER_API_KEY` / `MISTRAL_API_KEY`.
+        The manager never creates accounts or handles keys.
+     4. `ollama/qwen3-coder:30b` — local, unlimited, offline, no data leaves the machine.
+        Requires `ollama pull qwen3-coder:30b` first; confirm the exact tag with `ollama list`.
+     NOT a fallback: `vercel/*` free models. Verified 2026-08-02 — the AI Gateway refuses
+     with "requires a valid credit card on file" despite `AI_GATEWAY_API_KEY` being set.
+   - `small_model` (session titles/metadata) is pinned to `google/gemini-3.1-flash-lite`
+     so housekeeping calls burn Google's quota instead of the 100/day Zen budget.
    - If it errors with auth/credentials: the user must run `opencode auth login -p opencode`
      in their OWN terminal (API key from https://opencode.ai/auth) — the manager never
      handles the key.
