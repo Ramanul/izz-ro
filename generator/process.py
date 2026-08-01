@@ -94,28 +94,25 @@ def _valid_category(cat: str, fallback: str) -> str:
 def _resolve_category(item: dict, ai_cat: str) -> str:
     """Categoria finala a unui articol.
 
-    Rubricile GEOGRAFICE (config.PINNED_CATEGORIES, ex. 'local') sunt o axa proprie:
-    un articol de la un ziar judetean ramane in sectiunea lui geografica, nu e mutat
-    pe axa de TEMA (sport/politic) de catre AI -- altfel sectiunea locala s-ar goli.
-    La fetch, item['category'] = categoria sursei, inainte ca AI sa o suprascrie.
+    LOCAL inseamna UNDE se intampla, nu CINE publica (regula owner 2026-08-02). O rubrica
+    geografica (`regional|zonal|local`) se decide din TEXTUL stirii, cu gazetteer-ul, la orice
+    sursa -- inclusiv un ziar judetean. Un ziar de Cluj care scrie despre o comuna anume ajunge
+    `local`, unul care scrie cursul BNR pleaca de pe axa geografica pe tema lui. Nu ne mai luam
+    dupa categoria sursei: acopera si cazul in care AI-ul alege gresit o rubrica geografica
+    (masurat 2026-07-25: 14 din 15 din `regional` erau gresite -- un sat elvetian, CE, DNA)
+    SI cazul in care sursa e geografica dar stirea concreta nu e despre locul ei.
     """
-    if item.get("category") in getattr(config, "PINNED_CATEGORIES", set()):
-        return item["category"]
+    # Modelul B scrie 'teaser', modelul C scrie 'synthesis' -- le luam pe amandoua, altfel
+    # clusterele s-ar clasifica doar dupa titlu.
+    nivel = geo.clasifica(" ".join(filter(None, (
+        item.get("title"), item.get("teaser"), item.get("synthesis")))))
+    if nivel:
+        return nivel   # textul numeste un loc -> axa geografica, la nivelul detectat
 
+    # Niciun nume de loc -> stirea nu apartine axei geografice. Cade pe rubrica de TEMA aleasa
+    # de AI; daca si aceea e geografica (deci negasita in text), e nesigura -> `general`.
     cat = _valid_category(ai_cat, item.get("category", "general"))
-
-    # Sursa NU e geografica, dar AI-ul a ales totusi o rubrica geografica. Nu are cum sa
-    # stie ce inseamna: primeste `regional|zonal|local` ca etichete goale, langa `sport`.
-    # Masurat 2026-07-25: 14 din 15 articole din `regional` erau gresite (un sat elvetian,
-    # Comisia Europeana, DNA). Deci nu-l credem — decidem din textul stirii, cu gazetteer.
-    if cat in getattr(config, "PINNED_CATEGORIES", set()):
-        # modelul B scrie 'teaser', modelul C scrie 'synthesis' — le luam pe amandoua,
-        # altfel clusterele s-ar clasifica doar dupa titlu.
-        nivel = geo.clasifica(" ".join(filter(None, (
-            item.get("title"), item.get("teaser"), item.get("synthesis")))))
-        # Niciun nume de loc -> stirea nu apartine axei geografice (regula owner 2026-08-01).
-        return nivel or "general"
-    return cat
+    return cat if cat not in getattr(config, "PINNED_CATEGORIES", set()) else "general"
 
 
 _ICON_SLUGS = ("gavel certificate building-monument podium writing percentage receipt-tax "

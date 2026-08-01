@@ -126,12 +126,22 @@ def test_ai_ul_greseste_nivelul_iar_poarta_il_corecteaza():
     assert process._resolve_category(item, "regional") == "zonal"
 
 
-def test_sursa_geografica_ramane_neatinsa():
-    """Sursele pinned decid singure — poarta NU se aplica peste ele. Altfel 345 din 906
-    de articole ar iesi de pe axa geografica; masurat 2026-08-01, e decizia owner-ului."""
+def test_sursa_geografica_fara_loc_pleaca_pe_tema():
+    """LOCAL = unde se intampla, nu cine publica (owner 2026-08-02). Un horoscop de la un
+    ziar judetean nu are niciun loc in text -> pleaca de pe axa geografica pe tema aleasa de AI.
+    Masurat pe corpus: 324 din 940 de articole geografice pleaca asa, majoritatea corect
+    (horoscop, stiri nationale, externe filate gresit ca 'zonal' de sursa)."""
     geo_cat = sorted(config.PINNED_CATEGORIES)[0]
     item = {"category": geo_cat, "title": "Horoscopul zilei", "teaser": "Zodiile."}
-    assert process._resolve_category(item, "sport") == geo_cat
+    assert process._resolve_category(item, "sport") == "sport"
+
+
+def test_sursa_geografica_cu_loc_ia_nivelul_din_text():
+    """Un ziar judetean (sursa 'zonal') care scrie despre o comuna anume ajunge 'local' —
+    nivelul vine din TEXT, nu din sursa. Inima regulii owner 2026-08-02."""
+    item = {"category": "zonal", "title": "Restrictii de circulatie in Cluj-Napoca",
+            "teaser": "Primaria a anuntat restrictii pe perioada festivalului."}
+    assert process._resolve_category(item, "zonal") == "local"
 
 
 def test_categoria_tematica_nu_e_atinsa_de_poarta():
