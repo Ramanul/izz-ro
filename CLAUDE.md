@@ -197,7 +197,7 @@ izz.ro may use a local institution's image ONLY when one of these holds, verifie
 NO blanket scraping of institution sites. Agents research and gather this evidence per institution into a whitelist; the owner (or legal) approves it before any image is pulled — human-in-the-loop, like `moderation.yaml`. Missing all three → the article keeps its generated cover.
 ## 19. Session hygiene & context economy — HARD RULE (owner decision 2026-08-01)
 Context: a session opened on 2026-07-25 was still being continued on 2026-08-01. Every turn
-re-sent a week of history, and two `actions_list` calls returned **340.000 characters each**.
+re-sent a week of history, and two `actions_list` calls returned **340,000 characters each**.
 The 5-hour usage window hit 32% in roughly ten minutes of work. Nothing in that history was
 needed — `specs/STATE.md` already held every conclusion.
 
