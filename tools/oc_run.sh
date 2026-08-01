@@ -31,10 +31,20 @@ DEFAULT_ROUTES="opencode/deepseek-v4-flash-free,\
 opencode/laguna-s-2.1-free,\
 opencode/north-mini-code-free,\
 google/gemini-3.1-flash-lite,\
-cerebras/gpt-oss-120b,\
-groq/openai/gpt-oss-120b,\
-openrouter-free/poolside/laguna-s-2.1:free,\
-mistral/codestral-25-08"
+mistral/codestral-latest,\
+openrouter-free/poolside/laguna-s-2.1:free"
+# NOT in the default ladder: cerebras/* and groq/*. Keys were created and tested
+# 2026-08-02; both fail for structural reasons, not bad keys:
+#   groq     — key valid, but the free tier caps tokens-per-minute at 8k (gpt-oss-120b)
+#              / 12k (llama-3.3-70b). opencode's system prompt alone is 32–46k tokens,
+#              so EVERY agentic call is rejected as "Request too large". No model on the
+#              free tier has a high enough TPM; only a paid Dev Tier would fix it.
+#   cerebras — key valid (it lists models), but every chat call returns
+#              "payment_required". Cerebras is moving the free tier to a credit-based
+#              plan that needs a card on file (announced for 2026-08-17). Its free tier
+#              also caps context at 8k, which would fail the same way as groq anyway.
+# Left wired in opencode.json so they work immediately on a paid plan; re-add here
+# with OC_ROUTES if that ever happens. Do not re-diagnose them as "bad key".
 # NOT in the default ladder: ollama/*. Measured 2026-08-02 on this machine —
 # GTX 1060 3GB VRAM / 16GB RAM. A 7B coder model (4.7GB) does not fit in 3GB of
 # VRAM, so it runs half on CPU and is far too slow to drive an agentic loop with

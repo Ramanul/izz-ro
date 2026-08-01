@@ -52,10 +52,16 @@ Protocol — every step is mandatory, in order (identical to /delegate-devin exc
         "API key is missing". Fixed in `opencode.json` via an explicit
         `provider.google.options.apiKey = {env:GEMINI_API_KEY}`. Do not "fix" it by
         setting a new env var.
-     3. `cerebras/*` (1M tok/day) · `groq/*` · `openrouter-free/*` · `mistral/*` — wired in
-        `opencode.json`, DORMANT until the owner creates the key himself and sets
-        `CEREBRAS_API_KEY` / `GROQ_API_KEY` / `OPENROUTER_API_KEY` / `MISTRAL_API_KEY`.
-        The manager never creates accounts or handles keys.
+     3. `mistral/codestral-latest` — **separate quota, SMOKE-TESTED OK 2026-08-02** with the
+        owner's key. Third real fallback after the two above.
+        `openrouter-free/*` — still dormant, needs `OPENROUTER_API_KEY` (and a one-off $10
+        deposit on their side). The manager never creates accounts or handles keys.
+        **`cerebras/*` and `groq/*` are OUT of the ladder — keys exist and are valid, but
+        both free tiers are structurally unusable for an agentic harness. Do NOT re-diagnose
+        this as a bad key:** groq caps tokens-per-minute at 8k–12k while opencode's system
+        prompt alone is 32–46k tokens ("Request too large" on every call); cerebras returns
+        `payment_required` on every chat call and caps free context at 8k anyway. They stay
+        wired in `opencode.json` so a paid plan would work instantly.
      4. `ollama/qwen2.5-coder:7b` — local, unlimited, offline. **Deliberately NOT in the
         default ladder.** Measured 2026-08-02: this machine has a GTX 1060 with 3GB VRAM and
         16GB RAM, so a 4.7GB 7B model runs half on CPU — far too slow to drive an agentic

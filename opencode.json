@@ -16,8 +16,12 @@
         "apiKey": "{env:CEREBRAS_API_KEY}"
       },
       "models": {
-        "gpt-oss-120b": { "name": "GPT-OSS 120B (Cerebras)" },
-        "zai-glm-4.7": { "name": "GLM 4.7 (Cerebras, preview)" }
+        "gpt-oss-120b": {
+          "name": "GPT-OSS 120B (Cerebras)"
+        },
+        "zai-glm-4.7": {
+          "name": "GLM 4.7 (Cerebras, preview)"
+        }
       }
     },
     "groq": {
@@ -28,8 +32,12 @@
         "apiKey": "{env:GROQ_API_KEY}"
       },
       "models": {
-        "openai/gpt-oss-120b": { "name": "GPT-OSS 120B (Groq)" },
-        "llama-3.3-70b-versatile": { "name": "Llama 3.3 70B (Groq)" }
+        "openai/gpt-oss-120b": {
+          "name": "GPT-OSS 120B (Groq)"
+        },
+        "llama-3.3-70b-versatile": {
+          "name": "Llama 3.3 70B (Groq)"
+        }
       }
     },
     "openrouter-free": {
@@ -42,15 +50,24 @@
       "models": {
         "poolside/laguna-s-2.1:free": {
           "name": "Laguna S 2.1 (coding, free)",
-          "limit": { "context": 262144, "output": 32768 }
+          "limit": {
+            "context": 262144,
+            "output": 32768
+          }
         },
         "cohere/north-mini-code:free": {
           "name": "North Mini Code (free)",
-          "limit": { "context": 256000, "output": 32768 }
+          "limit": {
+            "context": 256000,
+            "output": 32768
+          }
         },
         "nvidia/nemotron-3-ultra-550b-a55b:free": {
           "name": "Nemotron 3 Ultra 550B (free, 1M ctx)",
-          "limit": { "context": 1000000, "output": 32768 }
+          "limit": {
+            "context": 1000000,
+            "output": 32768
+          }
         }
       }
     },
@@ -62,7 +79,9 @@
         "apiKey": "{env:MISTRAL_API_KEY}"
       },
       "models": {
-        "codestral-25-08": { "name": "Codestral 25.08" }
+        "codestral-latest": {
+          "name": "Codestral (latest) — VERIFIED working 2026-08-02"
+        }
       }
     },
     "ollama": {
@@ -73,8 +92,12 @@
         "apiKey": "ollama"
       },
       "models": {
-        "qwen2.5-coder:7b": { "name": "Qwen2.5 Coder 7B (local, 4.7GB)" },
-        "qwen2.5-coder:3b": { "name": "Qwen2.5 Coder 3B (local, 1.9GB)" }
+        "qwen2.5-coder:7b": {
+          "name": "Qwen2.5 Coder 7B (local, 4.7GB)"
+        },
+        "qwen2.5-coder:3b": {
+          "name": "Qwen2.5 Coder 3B (local, 1.9GB)"
+        }
       }
     }
   },
