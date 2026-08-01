@@ -36,10 +36,10 @@
   <link rel="preload" href="{{ base }}/static/fonts/JetBrainsMono-700.ro.woff2" as="font" type="font/woff2" crossorigin>
   {% if fonts_css %}<style>{{ fonts_css | safe }}</style>{% else %}<link rel="stylesheet" href="{{ base }}/static/fonts.css?v={{ asset_ver['fonts.css'] }}">{% endif %}
   <link rel="stylesheet" href="{{ base }}/static/styles.css?v={{ asset_ver['styles.css'] }}">
-  <script>
-    (function(){var t=localStorage.getItem('izz_theme');if(t==='dark')document.documentElement.setAttribute('data-theme','dark');else if(!t&&window.matchMedia('(prefers-color-scheme:dark)').matches)document.documentElement.setAttribute('data-theme','dark');})();
-    document.documentElement.style.setProperty('--html-bg','var(--paper)');
-  </script>
+  {# Sincron, in <head>: tema trebuie aplicata inainte de prima pictare, altfel un
+     vizitator pe dark vede un flash alb. Fisier EXTERN, nu inline: CSP-ul emis de
+     render._write_headers are `script-src 'self'` fara 'unsafe-inline'. #}
+  <script src="{{ base }}/static/theme.js?v={{ asset_ver['theme.js'] }}"></script>
 
   <script type="application/ld+json">{{ org_jsonld | tojson }}</script>
   {% block head_extra %}{% endblock %}
@@ -66,7 +66,7 @@
       <a href="{{ base }}/instrumente/"{% if nav_section == 'instrumente' %} class="active"{% endif %}>Instrumente</a>
       <a href="{{ base }}/cauta/">caută</a>
       <button id="izz-install-btn" class="izz-install-btn" type="button" hidden title="Instalează aplicația pe acest dispozitiv" aria-label="Instalează aplicația">Instalează aplicația</button>
-      <button class="theme-toggle" title="Mod întunecat" aria-label="Comută tema" onclick="var h=document.documentElement,cur=h.getAttribute('data-theme'),next=cur==='dark'?'':'dark';if(next)h.setAttribute('data-theme',next);else h.removeAttribute('data-theme');localStorage.setItem('izz_theme',next||'');">☾</button>
+      <button class="theme-toggle" type="button" title="Mod întunecat" aria-label="Comută tema" aria-pressed="false">☾</button>
     </nav>
   </header>
   <nav class="subnav" aria-label="Categorii de știri">
@@ -91,7 +91,6 @@
       <a href="{{ base }}/legal/takedown/">Drepturi de autor</a>
     </nav>
   </footer>
-  <button class="back-to-top" title="Sus" aria-label="Înapoi sus" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
-  <script>var bt=document.querySelector('.back-to-top');window.addEventListener('scroll',function(){bt.classList.toggle('visible',window.scrollY>300)});</script>
+  <button class="back-to-top" type="button" title="Sus" aria-label="Înapoi sus">↑</button>
 </body>
 </html>
