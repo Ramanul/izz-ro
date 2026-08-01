@@ -11,6 +11,21 @@ Owner was on account B, hit the usage limit mid-work on three draft PRs, switche
 (this local session) to continue. Per §14 (amended): **the account the owner is working from
 merges** — that is account A now. All three PRs landed here; see "Merged 2026-08-01/02".
 
+## SIRUTA — sourced, MEASURED, village-level BLOCKED on county-aware matching (2026-08-02)
+Groundwork committed (branch `claude/siruta-groundwork`, NOT merged): `data/siruta_raw.csv`
+(official SIRUTA via github.com/andrei-furnica/localitati-romania → data.gov.ro; cp1250, `;`,
+comma decimals) + `tools/build_gazetteer.py`. **geo.py is UNCHANGED — still the safe primării CSV.**
+- SIRUTA holds 42 counties + 3181 UATs + 13755 villages. Of villages, 8736 names are globally
+  unique, ~5019 collide (POIANA×38, "SATU NOU"×42 — hopeless without source county).
+- **Measured on the live corpus: adding even the unique villages REGRESSES the gate.** 49 articles
+  wrongly became `local`: "Saturn retrograd" (Saturn is a Black-Sea resort/village), the horoscope,
+  "Senatul... decarbonizarea", "FCSB vs FK Auda". A unique village name can still be a common word.
+- Conclusion: village-level geo needs **source-county disambiguation** (a Vrancea paper's "Poiana"
+  = Poiana-Vrancea), i.e. plumb the source's county into `geo.clasifica`. That is the real Slice 2.
+  Naive addition is a regression, so it was NOT shipped (owner methodology: measure, don't ship
+  below the bar). UAT-only switch also churned 155 classifications vs the primării CSV — not a
+  clean win either. Reference features (Bucegi, Ceahlău, Dunărea) are a separate small curated list.
+
 ## Open
 1. **Owner decision pending:** `BATCH_SIZE` 6→10 gives ~+67% articles per run but risks JSON
    truncation unless `maxOutputTokens` (2048, hardcoded) rises with it.
