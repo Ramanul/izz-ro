@@ -183,7 +183,7 @@ the pipeline was broken. It is not. The docs were wrong; they are fixed above. T
 
 ## 18. Session hygiene & context economy — HARD RULE (owner decision 2026-08-01)
 Context: a session opened on 2026-07-25 was still being continued on 2026-08-01. Every turn
-re-sent a week of history, and two `actions_list` calls returned **340.000 characters each**.
+re-sent a week of history, and two `actions_list` calls returned **340,000 characters each**.
 The 5-hour usage window hit 32% in roughly ten minutes of work. Nothing in that history was
 needed — `specs/STATE.md` already held every conclusion.
 
