@@ -11,7 +11,7 @@ Not a checker artifact, and no longer an estimate. `feedcheck.yml` run `30742957
 runners reported **75 sources with 0 articles**. All 75 were then re-probed from the owner's home
 IP with **the same production fetcher** (`_fetch_one_guarded`, script in PR #111):
 
-```
+```text
 total probate : 75
 VII local     : 73     goale pe runner, pline de acasa -> punct de observatie
 goale si local: 0
@@ -36,9 +36,9 @@ config, i.e. §10 — do not pick one unilaterally.
 or a truncated body. Neither `feed_check.py` nor `ua_probe.py` ever looks at the response body, so
 neither can tell those apart. **PR #111 adds `tools/silent_probe.py` + `silent-probe.yml`** for
 exactly this: status, final URL, headers, feedparser entry count/bozo, first 400 bytes of body.
-`workflow_dispatch` only finds workflows on the default branch, so **the probe cannot run until
-#111 lands** — merge it, then dispatch `silent-probe.yml` and read the output against the healthy
-local witness (`recorder` and `pl_sibiu_oras_agnita`: 200, valid RSS, 10 entries each).
+`workflow_dispatch` only finds workflows on the default branch, so **the probe cannot run
+until #111 lands** — merge it, then dispatch `silent-probe.yml` and read the output against the
+healthy local witness (`recorder` and `pl_sibiu_oras_agnita`: 200, valid RSS, 10 entries each).
 Do not assume it is HTTP 403 — `feed_check` reported these as `GOL`, not as errors, so the status
 was fine and only the parse yielded nothing.
 

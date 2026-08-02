@@ -18,14 +18,30 @@ on:
 permissions:
   contents: read
 
+# Doua probe in paralel ar lovi aceleasi surse in acelasi timp si ar putea declansa chiar
+# ele o limitare — adica ar strica masuratoarea pe care o fac. Se serializeaza. Rularea in
+# curs NU se anuleaza: dovada deja stransa e tot ce vrem din ea.
+concurrency:
+  group: silent-probe
+  cancel-in-progress: false
+
 jobs:
   probe:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
+        with:
+          # Job-ul nu impinge nimic; tokenul n-are ce cauta in .git/config dupa checkout.
+          persist-credentials: false
       - uses: actions/setup-python@v7
         with:
           python-version: "3.11"
           cache: "pip"
       - run: pip install -r requirements.txt
-      - run: python tools/silent_probe.py ${{ inputs.keys }}
+      # `inputs.keys` NU se interpoleaza direct in `run` — asta ar fi executie de shell din
+      # continutul inputului. Trece prin mediu si se sparge in argumente cu `read -ra`.
+      - env:
+          PROBE_KEYS: ${{ inputs.keys }}
+        run: |
+          read -ra probe_keys <<< "${PROBE_KEYS:-}"
+          python tools/silent_probe.py ${probe_keys[@]+"${probe_keys[@]}"}
