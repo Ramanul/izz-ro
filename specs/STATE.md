@@ -4,7 +4,7 @@
 > Executors get it read-only. Keep it tight — when it outgrows ~40 lines of content, cut the
 > settled history, not the open work. `git fetch` immediately before rewriting it.
 
-**Updated:** 2026-08-02 (locality lead photos — PR #101 ready for review; merged main in)
+**Updated:** 2026-08-02 (dark mode still broken after #96 — logged as Open 0; web session out of budget)
 
 ## OPERATING MODE — owner active on ACCOUNT A (2026-08-02)
 Owner was on account B, hit the usage limit mid-work on three draft PRs, switched to account A
@@ -45,7 +45,20 @@ different pages across runs); pin it with `ARTICLE_PATH=` for any before/after.
 reuse it rather than building a second county matcher.
 
 ## Open
-0. **PR #101 (locality lead photos) is out of draft, CI green, awaiting owner sign-off + live
+0. **DARK MODE STILL BROKEN FOR THE OWNER — after #96 merged. NOT investigated. Start here.**
+   (web session, 2026-08-02.) The owner merged #96, was asked to press ☾ and check the theme
+   survives a refresh, and replied plainly: **"nu merge"**. No further detail was gathered — that
+   session ran out of budget before reproducing it. Treat the toggle as UNFIXED regardless of what
+   #91 and #96 claim; two PRs have now claimed this and the user still sees it broken, which is the
+   §16 failure mode exactly (verified as code, never as the live experience).
+   What is known without re-deriving: the button is an **inline `onclick`** in `templates/base.html`
+   (sets/removes `data-theme` on `<html>`, writes `localStorage.izz_theme`), and #96 also touched
+   **CSP** — an inline handler is precisely what a `script-src` policy without `'unsafe-inline'`
+   blocks, silently, with only a console error. Check that first, on the DEPLOYED page, not locally.
+   Reproduce before fixing: real headless Chromium, click, read `document.documentElement.dataset`
+   and the console; then reload and re-read. Also confirm deliverability (§16.2) — `styles.css`
+   `?v=` hash must change, or returning visitors keep the cached old CSS.
+1. **PR #101 (locality lead photos) is out of draft, CI green, awaiting owner sign-off + live
    confirmation.** Per §16 the most that can be claimed is "verificat local"; only the owner or
    `smoke_live.py` can confirm on izz.ro.
 1. **SIRUTA Slice 2 — county-aware village matching.** Groundwork merged (siruta_raw.csv +
