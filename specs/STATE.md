@@ -4,7 +4,7 @@
 > Executors get it read-only. Keep it tight — when it outgrows ~40 lines of content, cut the
 > settled history, not the open work. `git fetch` immediately before rewriting it.
 
-**Updated:** 2026-08-02 16:40 (account A — #106–#113 merged; **#113 landed the fetch fix, owner approved**; #114 open with the render.py test net)
+**Updated:** 2026-08-02 17:20 (account A — #106–#114 merged; #112/#115 open; **owner answered 6 open questions, see below**)
 
 ## READ FIRST — a bot-challenge page served with HTTP 200, triggered by SWEEP VOLUME (2026-08-02)
 
@@ -107,6 +107,21 @@ across two revisions show a two-state CLS switch (~0.156 → home 83-84, 0.272 �
 spread. Run 3+ repetitions per revision and compare medians; one pair proves nothing under ~8 points.
 `data/localities.json` (3179 UAT, county labels + `localities.match`) overlaps SIRUTA Slice 2 —
 reuse it rather than building a second county matcher.
+
+## OWNER ANSWERS 2026-08-02 — treat as decided, do not re-ask
+- **Dark mode: "merge".** Open 0 is CLOSED. Do not spend another session on it.
+- **7 regions**, not 9. He says he answered this long ago. Feed it into SIRUTA Slice 2 / the map.
+- **Photos: "totul legal cu cat mai multe poze".** The policy is maximise coverage WITHIN the
+  consent rules of §18 — never relax the licence checks to get more photos.
+- **The salary calculator is BROKEN and he noticed:** "cand pun cifre nu face calculul". Measured
+  on live, https://izz.ro/ghiduri/salariul-minim/ : `calcSalariu` undefined, `#calc-results` empty.
+  `_render_calc_salariu` emits an inline <script> plus oninput=/onclick=, and CSP is
+  `script-src 'self'` with NO 'unsafe-inline'. **It has never worked in production.** Partial fix
+  in #115 (external static/calc-salariu.js); wiring listed in that commit message, including
+  adding it to `_asset_ver` or §16.2's immutable cache hides the fix.
+- **He did not understand items phrased as CLS / og:image / SHA pinning.** Explain consequences in
+  plain language before asking him to decide anything. That is a lesson about how to ask, not
+  about him.
 
 ## Open
 0. **DARK MODE — mechanics now CONFIRMED ON LIVE (#106). Still open only for the owner's own
