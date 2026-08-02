@@ -35,7 +35,7 @@ import urllib.request
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, ROOT)
-from generator import state, htmlart, photojudge  # noqa: E402
+from generator import state, htmlart, localities, photojudge  # noqa: E402
 from generator.process import get_provider  # noqa: E402
 
 # reutilizam pipeline-ul Wikidata deja validat (potrivire stricta, licenta, notorietate)
@@ -52,6 +52,10 @@ except ImportError:
 CACHE = os.path.join(ROOT, "data", "leadphotos.json")
 OUTDIR = os.path.join(ROOT, "media", "leads")
 MAX_LOOKUPS = int(os.getenv("MAX_LEAD_LOOKUPS", "20"))
+# Versiunea REGULILOR care produc un `miss`. Creste cand apare o ruta noua de cautare:
+# miss-urile scrise sub o versiune mai veche se reincearca o data (vezi `_needs_lookup`).
+# v2 = adaugarea rutei de localitate (2026-08-01).
+MISS_VERSION = 2
 UA = fp.UA
 LEAD_W = 1400                       # rendite sursa: acopera 1200x630 la calitate buna
 COVER_W, COVER_H = 1200, 630        # og / share (fara text: foto curata)
@@ -72,10 +76,16 @@ def is_landscape(w: int, h: int) -> bool:
     return bool(w) and bool(h) and w >= h * LANDSCAPE_RATIO
 
 
+def is_big_enough(w: int) -> bool:
+    """Coperta og e 1200x630; sub atat imaginea ar fi marita si vizibil interpolata."""
+    return bool(w) and w >= localities.MIN_WIDTH
+
+
 def qualifies(info: dict) -> bool:
     """info = {width,height,license,...}. Poate deveni LEAD (carduri/og) daca e
-    landscape SI atribuire-libera."""
-    return is_landscape(info.get("width", 0), info.get("height", 0)) and \
+    destul de mare, landscape SI atribuire-libera."""
+    return is_big_enough(info.get("width", 0)) and \
+        is_landscape(info.get("width", 0), info.get("height", 0)) and \
         is_public_domain(info.get("license", ""))
 
 
@@ -130,6 +140,61 @@ def _caption(filename: str) -> str:
     return re.sub(r"[_\s]+", " ", base).strip()
 
 
+def _needs_lookup(aid: str, a: dict, cache: dict) -> bool:
+    """Articolul trebuie interogat, sau cache-ul e definitiv?
+
+    Un `miss` nu e adevar etern: e rezultatul REGULILOR care existau cand a fost scris.
+    Cele 1684 de miss-uri din cache au fost produse cand exista doar ruta pe entitati;
+    fara invalidare, `aid in cache` ar bloca ruta de localitate pe tot continutul actual
+    si slice-ul n-ar avea niciun efect vizibil. Miss-urile mai vechi decat MISS_VERSION
+    se reincearca O SINGURA DATA, si doar pentru articolele eligibile pentru noua ruta
+    (`pl_*`) — restul raman cache-uite, ca sa nu se recheltuie plafonul degeaba.
+    """
+    entry = cache.get(aid)
+    if entry is None:
+        return True
+    if not entry.get("miss"):
+        return False                                  # hit: nu se reinterogheaza niciodata
+    if entry.get("v", 0) >= MISS_VERSION:
+        return False
+    return bool(localities.parse_source_slug(a.get("source") or ""))
+
+
+def lead_for_locality(a: dict, by_name: dict) -> dict | None:
+    """Fotografia LOCALITATII pentru o stire venita de la primaria acelei localitati.
+
+    Se incearca INAINTEA rutei pe entitati, fiindca e mult mai fiabila: cheia e slug-ul
+    determinist al sursei (`pl_<judet>_<localitate>`), nu entitatile extrase din text.
+
+    Poarta de licenta e `localities.usable` (accepta CC-BY / CC-BY-SA), nu
+    `is_public_domain`: atribuirea obligatorie se face pe pagina de articol, in
+    `figcaption.art-credit`, iar CC 4.0 §3(a)(2) / CC 3.0 §4(c) permit indeplinirea
+    obligatiei printr-un link — cardul linkuieste articolul, deci nu primeste nimic
+    in plus si formula din sect. 7 ramane neatinsa.
+
+    NU trece prin `photojudge`: acela intreaba daca poza e o ilustratie EXACTA a
+    subiectului, test potrivit pentru "poza persoanei X pe stirea despre X", dar gresit
+    aici — poza de localitate e declarat ILUSTRATIE (legenda spune "Ilustrație: <Loc>"),
+    nu document al evenimentului. Garantiile raman deterministe: localitatea corecta din
+    judetul corect, licenta libera, dimensiune suficienta.
+    """
+    rec = localities.locality_for_article(a, by_name)
+    if not rec:
+        return None
+    info = commons_lead_info(rec["img"])
+    if not info or not info.get("thumb") or not localities.usable(info):
+        return None
+    data = urllib.request.urlopen(
+        urllib.request.Request(info["thumb"], headers=UA), timeout=30).read()
+    if len(data) < 3000:
+        return None
+    rend = _save_renditions(data, "loc-" + fp.slugish(rec["display"]))
+    if not rend:
+        return None
+    return {**rend, "artist": info["artist"], "license": info["license"],
+            "page": info["page"], "name": rec["display"], "kind": "locality"}
+
+
 def lead_for_article(a: dict, provider=None) -> dict | None:
     """Prima entitate a articolului cu P18 landscape + atribuire-libera care trece SI
     de judecatorul AI de potrivire (photojudge) -> intrare LEAD. None (miss) altfel."""
@@ -174,20 +239,25 @@ def main() -> int:
     os.makedirs(OUTDIR, exist_ok=True)
     provider = get_provider()   # judecator AI foto<->articol; None fara cheie -> reguli deterministe
     print(f">> photo judge: {'ON (' + provider.name + ')' if provider else 'OFF (fara cheie AI) -> reguli deterministe'}")
+    by_name = localities.load_dataset()
+    print(f">> localitati: {len(by_name)} nume in dataset"
+          f"{' — LIPSA, ruta localitate inactiva' if not by_name else ''}")
     done = 0
     for a in arts:
         aid = htmlart.art_id(a)
-        if aid in cache or done >= MAX_LOOKUPS:
+        if not _needs_lookup(aid, a, cache) or done >= MAX_LOOKUPS:
             continue
         done += 1
         try:
-            entry = lead_for_article(a, provider)
+            # intai localitatea (determinista, acoperire mare), apoi entitatile din text
+            entry = lead_for_locality(a, by_name) or lead_for_article(a, provider)
         except Exception as exc:  # o entitate/retea esuata nu opreste restul
             print(f"  ! {aid}: {exc}")
             done -= 1              # eroare de retea -> nu consuma plafonul
             continue
-        cache[aid] = entry or {"miss": True}
-        print(f"  {'ok  ' if entry else 'miss'} {aid} {entry['name'] if entry else ''}")
+        cache[aid] = entry or {"miss": True, "v": MISS_VERSION}
+        print(f"  {'ok  ' if entry else 'miss'} {aid} "
+              f"{entry['name'] + ' [' + entry.get('kind', 'entity') + ']' if entry else ''}")
         time.sleep(1)             # politete API
     # scriem doar hit-urile in fisierul consumat de render (miss-urile raman doar in memorie/cache-disk)
     hits = {k: v for k, v in cache.items() if not (v or {}).get("miss")}
