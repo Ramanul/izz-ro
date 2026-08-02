@@ -5,6 +5,9 @@
 {% block head_extra %}
 <script type="application/ld+json">{{ faq_jsonld | tojson }}</script>
 <script type="application/ld+json">{{ breadcrumb_jsonld | tojson }}</script>
+{% if util_id == 'salariul-minim' %}
+<script defer src="{{ base }}/static/calc-salariu.js?v={{ asset_ver['calc-salariu.js'] }}"></script>
+{% endif %}
 {% endblock %}
 {% block content %}
 <nav class="breadcrumbs" aria-label="Breadcrumb">
@@ -45,57 +48,14 @@
   </section>
   {% endfor %}
 
-  {# Calculator salariu (doar pentru salariul minim) #}
+  {# Calculator salariu (doar pentru salariul minim). Acelasi partial ca /instrumente/ si ca
+     ghidurile: markup fara cod inline, logica in static/calc-salariu.js. #}
   {% if util_id == 'salariul-minim' %}
   <section class="utility-section">
-    <h2>🧮 Calculator salariu net</h2>
-    <div class="calculator">
-      <div class="calc-row">
-        <label for="calc-brut">Salariu brut (lei)</label>
-        <input type="number" id="calc-brut" value="{{ util.value }}" min="0" step="100" oninput="calcSalariu()">
-      </div>
-      <div class="calc-results">
-        <div class="calc-item">
-          <span class="calc-label">CAS (25%)</span>
-          <span class="calc-val" id="calc-cas">—</span>
-        </div>
-        <div class="calc-item">
-          <span class="calc-label">CASS (10%)</span>
-          <span class="calc-val" id="calc-cass">—</span>
-        </div>
-        <div class="calc-item">
-          <span class="calc-label">Bază impozabilă</span>
-          <span class="calc-val" id="calc-baza">—</span>
-        </div>
-        <div class="calc-item">
-          <span class="calc-label">Impozit (10%)</span>
-          <span class="calc-val" id="calc-impozit">—</span>
-        </div>
-        <div class="calc-item calc-total">
-          <span class="calc-label">SALARIU NET</span>
-          <span class="calc-val" id="calc-net">—</span>
-        </div>
-      </div>
-    </div>
-    <p class="calc-note">*Calcul estimativ pentru un angajat fără persoane în întreținere. Include deducerea personală de bază (20% × salariul minim brut). Nu include contribuția la Pilonul II de pensii (3,75% din CAS, opțional).</p>
+    {% set salariu_minim = util.value %}
+    {% set calc_heading = '🧮 Calculator salariu net' %}
+    {% include "_calc_salariu.html" %}
   </section>
-  <script>
-    function calcSalariu() {
-      var brut = parseFloat(document.getElementById('calc-brut').value) || 0;
-      var cas = Math.round(brut * 0.25);
-      var cass = Math.round(brut * 0.1);
-      var ded = Math.round({{ util.value }} * 0.2);
-      var baza = Math.max(0, brut - cas - cass - ded);
-      var impozit = Math.round(baza * 0.1);
-      var net = brut - cas - cass - impozit;
-      document.getElementById('calc-cas').textContent = cas + ' lei';
-      document.getElementById('calc-cass').textContent = cass + ' lei';
-      document.getElementById('calc-baza').textContent = baza + ' lei';
-      document.getElementById('calc-impozit').textContent = impozit + ' lei';
-      document.getElementById('calc-net').textContent = net + ' lei';
-    }
-    calcSalariu();
-  </script>
   {% endif %}
 
   {# Întrebări frecvente #}

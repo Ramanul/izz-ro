@@ -5,6 +5,10 @@
 {% block head_extra %}
 <script type="application/ld+json">{{ faq_jsonld | tojson }}</script>
 <script type="application/ld+json">{{ breadcrumb_jsonld | tojson }}</script>
+{# Doar ghidurile cu calculator platesc costul scriptului. #}
+{% if calculator_html %}
+<script defer src="{{ base }}/static/calc-salariu.js?v={{ asset_ver['calc-salariu.js'] }}"></script>
+{% endif %}
 {% endblock %}
 {% block content %}
 <nav class="breadcrumbs" aria-label="Breadcrumb">

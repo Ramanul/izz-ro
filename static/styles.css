@@ -645,6 +645,7 @@ picture { display: contents; }
 .calc-row label { display: block; font-family: var(--font-mono); font-size: var(--fs-xs); font-weight: 600; color: var(--ink-2); margin-bottom: var(--s-5); }
 .calc-row input { width: 100%; max-width: 240px; padding: var(--s-8) var(--s-13); border: 1px solid var(--line-strong); border-radius: var(--radius); font: inherit; font-size: var(--fs-md); background: var(--paper); }
 .calc-row input:focus { outline: 2px solid var(--gold-strong); outline-offset: 2px; }
+.calc-controls { display: flex; gap: var(--s-8); align-items: center; flex-wrap: wrap; }
 .calc-results { display: flex; flex-direction: column; gap: var(--s-5); margin-top: var(--s-13); }
 .calc-item { display: flex; justify-content: space-between; padding: var(--s-8) 0; border-bottom: 1px solid var(--line); font-size: var(--fs-xs); }
 .calc-total { border-bottom: 2px solid var(--gold); font-weight: 700; font-size: var(--fs-md); font-family: var(--font-display); padding-top: var(--s-13); }
