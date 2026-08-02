@@ -126,18 +126,12 @@ def run(dry_run: bool = False) -> dict:
     existing = state.load()
     known = {a.get("url") for a in existing}
     new_items = [i for i in raw if i["url"] not in known]
-    # Official feeds (primarii) carry months-old entries, so most "new" items are already
-    # past ARTICLE_TTL_DAYS the moment they are read — measured 2026-08-02 on a real fetch:
-    # 795 of 1096 (73%), from 126 sources. Without this filter each of them spends part of
-    # the scarce AI budget, lands in `combined`, is deleted by expire() at the end of the
-    # SAME run, and comes back as "new" on the next one, forever.
-    # Dropping them here does not change what gets published — expire() removed them anyway.
-    # It stops the waste, keeps stats["new"] from counting articles that cannot survive, and
-    # closes a data-loss path: a stale item could become a model-C representative, absorb a
-    # FRESH existing article (which is then dropped from `combined` as folded), and expire —
-    # taking the fresh article with it.
-    # Items with no usable date are NOT affected: _parse_iso falls back to now(), so they
-    # count as fresh here exactly as they do in expire().
+    # Official feeds carry months-old entries, so most "new" items are already past the TTL
+    # when read. Without this they burn AI budget and are deleted by the trailing expire()
+    # in the SAME run — and worse, process_cluster picks the OLDEST member as representative,
+    # so a stale item can absorb a FRESH article and take it down with it when it expires.
+    # Same expire() as below, so the two cutoffs cannot drift. Undated items stay: _parse_iso
+    # falls back to now(). Measurements are in the PR #108 description, not here — they age.
     fresh_items = state.expire(new_items)
     stale_skipped = len(new_items) - len(fresh_items)
     new_items = fresh_items
