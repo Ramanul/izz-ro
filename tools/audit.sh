@@ -6,6 +6,10 @@
 #   bash tools/audit.sh                 # audit home + one article page
 #   PORT=9000 bash tools/audit.sh       # custom port
 #   CHROME_PATH=/path/to/chrome bash tools/audit.sh   # override browser binary
+#   ARTICLE_PATH=/local/slug/ bash tools/audit.sh     # pin the article page (use for before/after)
+#
+# Tool versions + the article scored are written to .audit/versions.txt on every run: a
+# Lighthouse or Chromium upgrade moves the numbers, so a score without them is not comparable.
 #
 # Requires (once): npm i -g lighthouse pa11y
 set -eu   # no pipefail: `find | head` SIGPIPE is expected, not an error
@@ -33,8 +37,26 @@ SRV=$!
 trap 'kill $SRV 2>/dev/null || true' EXIT
 until curl -s -o /dev/null "http://localhost:$PORT/"; do sleep 0.3; done
 
-# Article page: first rendered article under any category.
-ART="$(cd "$ROOT/output" && find . -mindepth 3 -name index.html | head -1 | sed 's|^\.||;s|index.html$||')"
+# Article page. `find | head -1` returns whatever the filesystem hands back first, so the
+# page being scored changed between runs and the "article" number was not comparable across
+# a slice — measured: two runs on the same commit scored two different articles, 87 vs 88.
+# Sort makes the default deterministic for a given corpus; ARTICLE_PATH pins it outright,
+# which is what you want when comparing before/after (content shifts between renders).
+if [ -n "${ARTICLE_PATH:-}" ]; then
+  ART="$ARTICLE_PATH"
+else
+  ART="$(cd "$ROOT/output" && find . -mindepth 3 -name index.html | LC_ALL=C sort | head -1 \
+         | sed 's|^\.||;s|index.html$||')"
+fi
+echo ">> article page: ${ART:-none}${ARTICLE_PATH:+  (pinned via ARTICLE_PATH)}"
+
+# Versions decide the scores as much as the code does — record them next to the numbers.
+{ echo "date:       $(date -u +%Y-%m-%dT%H:%M:%SZ)"
+  echo "commit:     $(cd "$ROOT" && git rev-parse --short HEAD 2>/dev/null || echo '?')"
+  echo "lighthouse: $(lighthouse --version 2>/dev/null || echo '?')"
+  echo "pa11y:      $(pa11y --version 2>/dev/null || echo '?')"
+  echo "chromium:   $("$CHROME_PATH" --version 2>/dev/null || echo '?')"
+  echo "article:    ${ART:-none}"; } | tee "$OUT/versions.txt"
 
 lh () {  # $1=url  $2=label
   lighthouse "$1" --quiet --output=json --output-path="$OUT/lh-$2.json" \
