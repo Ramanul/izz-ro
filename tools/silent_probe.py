@@ -33,8 +33,10 @@ Pentru masuratoarea echivalenta cu productia exista deja `feed_check.py`, care c
 """
 import gzip
 import http.client
+import os
 import socket
 import sys
+import time
 import urllib.error
 import urllib.request
 import zlib
@@ -57,6 +59,14 @@ DEFAULT_KEYS = [
 
 BODY_HEAD = 400        # octeti din corp afisati; destul pentru <?xml ... <rss> sau <!DOCTYPE html>
 MAX_READ = 2_000_000   # plafon de citire; un corp mai mare decat atat e el insusi un rezultat
+
+# Semnatura interstitialului anti-bot masurat 2026-08-02 pe 72 din 74 de surse tacute de pe
+# runner (65 de pe openresty/1.31.1.1). Vine cu HTTP 200 si un corp HTTP valid, deci nici
+# statusul nici parserul nu-l semnaleaza; singurul lucru care il distinge e continutul.
+CHALLENGE_MARK = b"One moment, please"
+# Pagina isi cere singura reincarcarea dupa 5000 ms. Asteptam putin peste, o singura data.
+RETRY_AFTER_S = float(os.environ.get("IZZ_PROBE_RETRY_S", "6"))
+RETRY_ON_CHALLENGE = os.environ.get("IZZ_PROBE_RETRY", "") == "1"
 
 
 def _printable(raw: bytes, limit: int = BODY_HEAD) -> str:
@@ -109,7 +119,12 @@ def _decode_body(raw: bytes, cenc: str) -> tuple[bytes | None, str | None]:
     return None, f"Content-Encoding '{enc}' nesuportat aici — corpul de mai jos e brut"
 
 
-def probe(key: str, url: str) -> None:
+def _is_challenge(body: bytes) -> bool:
+    """True daca raspunsul e interstitialul anti-bot, nu continut."""
+    return CHALLENGE_MARK in body[:4000]
+
+
+def probe(key: str, url: str, _retried: bool = False) -> None:
     req = urllib.request.Request(url, headers={"User-Agent": USER_AGENT})
     try:
         with urllib.request.urlopen(req, timeout=TIMEOUT) as resp:
@@ -135,6 +150,15 @@ def probe(key: str, url: str) -> None:
 
     body, dec_note = _decode_body(raw, cenc)
     parsed = body if body is not None else raw
+
+    if _is_challenge(parsed):
+        if RETRY_ON_CHALLENGE and not _retried:
+            print(f"    CHALLENGE   interstitial anti-bot; reincerc o data dupa {RETRY_AFTER_S}s")
+            time.sleep(RETRY_AFTER_S)
+            return probe(key, url, _retried=True)
+        marca = " (si dupa reincercare)" if _retried else ""
+        print(f"    CHALLENGE   interstitial anti-bot servit cu {status}{marca}")
+
     feed = feedparser.parse(parsed)
     bozo = feed.get("bozo", 0)
     bozo_exc = type(feed.get("bozo_exception")).__name__ if feed.get("bozo_exception") else "-"
@@ -170,6 +194,7 @@ def main() -> int:
     print("  intrari 0 + corp <!DOCTYPE html> -> pagina HTML servita cu 200 (challenge/eroare deghizata)")
     print("  intrari 0 + corp XML valid       -> feed autentic gol; sursa n-are ce publica")
     print("  intrari 0 + REDIRECT             -> ne duce in alta parte; urmareste destinatia")
+    print("  linia CHALLENGE                  -> interstitial anti-bot, NU sursa moarta")
     print("  linia ANOMALIE                   -> raspuns taiat sau mai scurt decat Content-Length")
     print("\nRezultatul e diagnostic, o singura cerere fara retry (vezi docstring-ul).")
     print("Ce se face cu el (proxy, self-hosted runner, taierea corpusului) e decizie de")
