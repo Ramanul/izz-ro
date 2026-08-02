@@ -885,6 +885,45 @@ def _render_legal(env: Environment) -> None:
     _render_md_dir(env, os.path.join(ROOT, "content", "pages"), "")
 
 
+# Sectiunile editoriale care intra in sitemap, plus paginile de sine statatoare din
+# content/pages. NU e derivat din tot output/: `subiect/` are ~300 de pagini de agregare
+# subtiri (decizie de proprietar daca merita indexate), iar `cauta/`, `data/`, `static/`,
+# `leads/`, `portraits/` nu sunt continut de indexat.
+_SITEMAP_SECTIONS = ("ghiduri", "instrumente", "calendar", "surse", "legal")
+
+
+def _editorial_paths() -> list:
+    """Caile paginilor editoriale existente pe disc, ca `/ghiduri/permis-auto/`.
+
+    Pana la 2026-08-02 sitemap-ul continea DOAR `/`, categoriile si articolele: fiecare ghid,
+    instrumentul, calendarul, catalogul de surse si paginile legale lipseau cu totul, desi
+    sunt vii si linkate din navigatie. Se citeste de pe disc, nu dintr-o lista scrisa de mana,
+    ca un ghid nou sa nu ceara si o editare aici ca sa fie descoperit.
+
+    Fara `lastmod`: un „modificat azi" la fiecare rulare de doua ore ar fi neadevarat pentru
+    o pagina legala neatinsa de luni de zile. Mai bine niciun semnal decat unul fals."""
+    paths = []
+    for section in _SITEMAP_SECTIONS:
+        root = os.path.join(OUT_DIR, section)
+        if not os.path.isdir(root):
+            continue
+        for dirpath, _dirnames, filenames in os.walk(root):
+            if "index.html" not in filenames:
+                continue
+            rel = os.path.relpath(dirpath, OUT_DIR).replace(os.sep, "/")
+            paths.append(f"/{rel}/")
+    # pagini generale din content/pages (ex. /despre/) -- directoare de nivel 1 care nu sunt
+    # categorii, nu sectiuni deja parcurse si nu directoare de infrastructura
+    skip = set(config.CATEGORIES) | set(_SITEMAP_SECTIONS) | {
+        "static", "data", "subiect", "cauta", "leads", "portraits"}
+    for name in sorted(os.listdir(OUT_DIR)) if os.path.isdir(OUT_DIR) else []:
+        if name in skip or name.startswith("."):
+            continue
+        if os.path.isfile(os.path.join(OUT_DIR, name, "index.html")):
+            paths.append(f"/{name}/")
+    return sorted(set(paths))
+
+
 def _write_sitemap(articles: list) -> None:
     url = config.SITE["url"]
     today = datetime.now(timezone.utc).strftime("%Y-%m-%d")
@@ -897,6 +936,7 @@ def _write_sitemap(articles: list) -> None:
     locs = [(f"{url}/", today)]
     locs += [(f"{url}/{c}/", cat_lastmod.get(c, today)) for c in config.CATEGORIES]
     locs += [(f"{url}/{a['category']}/{a['slug']}/", (a.get("published") or "")[:10]) for a in articles]
+    locs += [(url + p, "") for p in _editorial_paths()]
     items = "\n".join(
         f"  <url><loc>{xml_escape(l)}</loc>" + (f"<lastmod>{lm}</lastmod>" if lm else "") + "</url>"
         for l, lm in locs)
