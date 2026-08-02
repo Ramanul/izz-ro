@@ -5,15 +5,34 @@
 > Executors receive this file as read-only context. Overwrite sections in place — never let
 > this file grow past ~30 lines of content.
 
-**Updated:** 2026-07-24 (parallel-fetch reviewed + MERGED; state audit fixed 3 stale entries)
+**Updated:** 2026-08-02 (locality lead photos implemented + pushed, PR #101 draft)
 
 ## Current task
-None in flight. Next: (1) DONE — account B integrated 16 REGIONAL publications (2 research
-agents + feedcheck run 29776432687; 16/21 alive) + 2 Maramureș papers as zonal; regional no
-longer an empty seed; (2) raise `LOCAL_GOLD_LIMIT` past 35 now that fetch is parallel; (3) `tools/feed_check.py` still reimplements RSS fetching instead of calling
-`_fetch_one`, so it will keep reporting 429 on sources the pipeline now retries successfully —
-same class of bug as the `sitemap_news` false positive fixed today.
+`claude/scraping-romanian-public-data-u63sqz` → **PR #101** (draft): locality lead photos.
+Spec `specs/locality-lead-photos.md`, implementation `891867d`. Pushed, awaiting front-end
+audit + owner confirmation on live. **0 → 113 real photos**; before, every article on the
+site carried a generated icon cover.
+Still open, unchanged: (1) raise `LOCAL_GOLD_LIMIT` past 35 now that fetch is parallel;
+(2) `tools/feed_check.py` still reimplements RSS fetching instead of calling `_fetch_one`,
+so it keeps reporting 429 on sources the pipeline now retries successfully.
 `track-cost-per-slice` (Devin, 2026-07-20) is on no branch local or remote — never started.
+
+## Photo pipeline — the facts, so they are not rediscovered (2026-08-02)
+- Lead photos resolve from the LOCALITY, keyed off the source slug `pl_<judet>_<localitate>`,
+  not from article entities. The old person-entity route returned 0 hits in 1684 attempts:
+  it required landscape AND PD/CC0 at once, and a mayor's portrait is vertical + CC-BY.
+- Wikidata classes that work: `Q659103` comună / `Q16858213` oraș / `Q640364` municipiu,
+  queried with a DIRECT `wdt:P31`. `P31/P279* Q15284` misses every *oraș*;
+  `P31/P279* Q486972` returns 504. Ask for XML — the ~2 MB JSON arrives truncated.
+- County match is MANDATORY with no fallback: 12 of 120 names have homonyms in other
+  counties (Zărnești/Buzău vs Zărnești/Brașov).
+- Licences: CC-BY and CC-BY-SA are accepted for this route. Attribution rides on the article
+  page (`figcaption.art-credit`), which CC 4.0 §3(a)(2) / CC 3.0 §4(c) permit via a link.
+  Cards stay clean — §7 untouched. Measured split on 81 usable: 60 BY-SA, 9 BY, 11 PD/CC0.
+- `data/localities.json` (3179 UAT) is committed so the build never needs Wikidata.
+  Rebuild rarely with `python tools/fetch_localities.py`.
+- A `miss` in `data/leadphotos.json` now carries `v` = MISS_VERSION. Bump it when adding a
+  search route, otherwise the cached misses block the new route on all existing content.
 
 ## EXECUTOR ROUTE IS UNRELIABLE — measured 2026-07-24
 OpenCode was handed `specs/fetch-429-retry.md` (premise-verified spec, 4 test cases, explicit
