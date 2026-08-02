@@ -2,7 +2,7 @@
 
 **Scop.** Bugetul AI e saturat la FIECARE rulare, iar ordinea in care itemele il consuma
 e ordinea din `config.SOURCES` (invariant declarat in `fetch.py:560`: „ce ajunge la coada
-e infometat"). Sub saturatie permanenta, ordinea aia functioneaza ca politica editoriala
+e infometat”). Sub saturatie permanenta, ordinea aia functioneaza ca politica editoriala
 nedeclarata. Inlocuim ordinea de configurare cu doua criterii neutre, calculabile INAINTE
 de orice apel AI: coroborare (nr. de domenii distincte dintr-un cluster) si prospetime.
 

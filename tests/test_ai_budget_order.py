@@ -111,6 +111,31 @@ def test_articolele_individuale_merg_dupa_prospetime_nu_dupa_ordinea_din_config(
     assert vazute == [("B", ("https://coada.ro/1",))]
 
 
+def test_la_scor_egal_selectia_nu_depinde_de_ordinea_de_intrare(monkeypatch):
+    """Egalitatile nu sunt teoretice: sursele cu data fara ora primesc toate miezul noptii
+    UTC. `sort` fiind stabil, fara departajare acele iteme ar cadea inapoi pe ordinea de
+    intrare — adica pe ordinea din config, exact ce elimina slice-ul asta."""
+    aceeasi_ora = _iso(60)
+    iteme = []
+    for n in range(1, 6):
+        it = _item(f"https://egal{n}.ro/1", f"titlu identic ca vechime numarul {n}", 60,
+                   sursa=f"sursa{n}")
+        it["published"] = aceeasi_ora
+        iteme.append(it)
+
+    def _selectie(ordine):
+        vazute: list = []
+        _fals_ai(monkeypatch, vazute)
+        monkeypatch.setattr(main.config, "BATCH_SIZE", 1)
+        monkeypatch.setattr(main.cluster, "cluster", lambda items: [[i] for i in items])
+        monkeypatch.setattr(main.cluster, "attach_recent", lambda groups, rec: groups)
+        main.process_new(list(ordine), _Provider(), budget=2)
+        return [urls for _, urls in vazute]
+
+    assert _selectie(iteme) == _selectie(list(reversed(iteme))), \
+        "cu timpi egali, selectia s-a schimbat odata cu ordinea de intrare"
+
+
 def test_ordinea_nu_schimba_ce_se_publica_la_buget_nelimitat(monkeypatch):
     """Sortarea e o politica de RATIONALIZARE. Cand nu se rationalizeaza nimic,
     multimea publicata trebuie sa fie identica — altfel am schimbat continutul, nu ordinea."""
