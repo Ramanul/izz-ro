@@ -30,8 +30,8 @@ LIST_ONLY=0
 DEFAULT_ROUTES="opencode/deepseek-v4-flash-free,\
 opencode/laguna-s-2.1-free,\
 opencode/north-mini-code-free,\
-google/gemini-3.1-flash-lite,\
 mistral/codestral-latest,\
+google/gemini-3.1-flash-lite,\
 openrouter-free/poolside/laguna-s-2.1:free"
 # NOT in the default ladder: cerebras/* and groq/*. Keys were created and tested
 # 2026-08-02; both fail for structural reasons, not bad keys:
@@ -71,7 +71,14 @@ fi
 # Which env var each provider needs. Empty = opencode's own stored auth, or local.
 key_var_for() {
   case "$1" in
-    google/*)          echo GEMINI_API_KEY ;;
+    # NOT GEMINI_API_KEY. Measured 2026-08-02: the free tier allows 15 requests
+    # per MINUTE, and generator/providers/gemini.py sits exactly on that ceiling
+    # (GEMINI_THROTTLE=4.0 -> 4s x 15 = 60s). An unthrottled opencode call on the
+    # same key during a pipeline run pushes production over the limit, and with a
+    # single key gemini.py has no second key to fail over to -> failed run.
+    # So opencode needs its OWN key, from a DIFFERENT Google account (a second key
+    # on the same account shares the quota and fixes nothing).
+    google/*)          echo GEMINI_API_KEY_OC ;;
     cerebras/*)        echo CEREBRAS_API_KEY ;;
     groq/*)            echo GROQ_API_KEY ;;
     openrouter-free/*) echo OPENROUTER_API_KEY ;;

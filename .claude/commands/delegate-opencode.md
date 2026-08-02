@@ -45,13 +45,19 @@ Protocol — every step is mandatory, in order (identical to /delegate-devin exc
      1. `opencode/laguna-s-2.1-free` · `opencode/north-mini-code-free` — other Zen free
         models (SMOKE-TESTED OK). Same quota pool, so this only helps if one model is
         rate-limited, not if the daily budget is gone.
-     2. `google/gemini-3.1-flash-lite` — **separate quota**, key already in the env
-        (SMOKE-TESTED OK, returned a correct answer). This is the real first fallback.
-        TRAP (2026-08-02): opencode's `google` provider reads `GOOGLE_GENERATIVE_AI_API_KEY`,
-        NOT `GEMINI_API_KEY` — it lists the models fine and then fails at call time with
-        "API key is missing". Fixed in `opencode.json` via an explicit
-        `provider.google.options.apiKey = {env:GEMINI_API_KEY}`. Do not "fix" it by
-        setting a new env var.
+     2. `google/gemini-3.1-flash-lite` — works, but **deliberately gated behind its own key,
+        `GEMINI_API_KEY_OC`, and dormant until the owner creates one.** MEASURED 2026-08-02:
+        the Gemini free tier allows **15 requests per MINUTE** (probed directly — request 16
+        returned 429 with `limit: 15`), and `generator/providers/gemini.py` sits exactly on
+        that ceiling by design (`GEMINI_THROTTLE=4.0` → 4s × 15 = 60s). An unthrottled
+        opencode call on the SAME key during a pipeline run pushes production over the limit,
+        and with a single key `gemini.py` has no second key to fail over to → failed run on
+        the live site. The second key must be on a **different Google account** — a second key
+        on the same account shares the quota and fixes nothing.
+        TRAP, still true: opencode's `google` provider reads `GOOGLE_GENERATIVE_AI_API_KEY`,
+        not a `GEMINI_*` name — it lists the models fine and fails only at call time with
+        "API key is missing". Handled by the explicit `provider.google.options.apiKey` in
+        `opencode.json`. Do not "fix" it by setting a new env var.
      3. `mistral/codestral-latest` — **separate quota, SMOKE-TESTED OK 2026-08-02** with the
         owner's key. Third real fallback after the two above.
         `openrouter-free/*` — still dormant, needs `OPENROUTER_API_KEY` (and a one-off $10
@@ -70,8 +76,8 @@ Protocol — every step is mandatory, in order (identical to /delegate-devin exc
         `ollama pull qwen2.5-coder:7b`. Offline last resort, not a replacement executor.
      NOT a fallback: `vercel/*` free models. Verified 2026-08-02 — the AI Gateway refuses
      with "requires a valid credit card on file" despite `AI_GATEWAY_API_KEY` being set.
-   - `small_model` (session titles/metadata) is pinned to `google/gemini-3.1-flash-lite`
-     so housekeeping calls burn Google's quota instead of the 100/day Zen budget.
+   - `small_model` (session titles/metadata) is pinned to `mistral/codestral-latest`
+     so housekeeping calls burn Mistral's separate quota instead of the 100/day Zen budget — and never touch the Gemini key the live pipeline depends on.
    - If it errors with auth/credentials: the user must run `opencode auth login -p opencode`
      in their OWN terminal (API key from https://opencode.ai/auth) — the manager never
      handles the key.
