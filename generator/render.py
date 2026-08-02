@@ -673,7 +673,14 @@ def _newsletter_html() -> str:
 def _md_to_html(text: str) -> str:
     """Markdown -> HTML pentru text din date (sectiunile ghidurilor). Fara `markdown`
     instalat, cade pe o impartire in paragrafe: mai bine text citibil decat o exceptie
-    la build pentru o dependenta optionala."""
+    la build pentru o dependenta optionala.
+
+    INVARIANT: intrarea e scrisa de OM, in `data/entities/*.yaml`, si iesirea se randeaza
+    cu `| safe`. `python-markdown` NU e un sanitizer — lasa HTML-ul brut din sursa sa treaca
+    intact. Cat timp textul vine dintr-un fisier comis in repo, asta e acelasi model ca
+    `/legal/*`. Daca vreodata `sectiuni` ajunge sa fie populat de un pas automat sau de AI
+    (restul pipeline-ului e plin de asa ceva), invariantul cade si aici trebuie sanitizare
+    inainte de `| safe` — nu exista alta poarta intre datele alea si cititor."""
     try:
         import markdown as md
     except ImportError:

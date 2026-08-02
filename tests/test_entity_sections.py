@@ -55,6 +55,11 @@ def test_sectiune_valida_trece():
     ([{"titlu": "Cum"}], "continut"),
     (["nu e dict"], "nu e un dict"),
     ("nu e lista", "trebuie să fie o listă"),
+    # `titlu: 5` in YAML e un int; `.strip()` pe el arunca AttributeError si opreste build-ul
+    # cu traceback brut in loc de mesajul de validare. Gasit de review, reprodus, apoi reparat.
+    ([{"titlu": 5, "continut": "text"}], "titlu"),
+    ([{"titlu": "Cum", "continut": ["a", "b"]}], "continut"),
+    ([{"titlu": None, "continut": "text"}], "titlu"),
 ])
 def test_sectiune_malformata_blocheaza_buildul(sectiuni, asteptat):
     """Un `<h2>` gol urmat de nimic e output degradat publicat tacit (§7 Zero Zgomot)."""

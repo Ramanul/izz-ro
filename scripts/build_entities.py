@@ -95,8 +95,12 @@ def _validate_sectiuni(ent: dict, eid: str) -> list[str]:
             errors.append(f"[{eid}] sectiuni[{i}] nu e un dict")
             continue
         for field in ("titlu", "continut"):
-            if not (s.get(field) or "").strip():
-                errors.append(f"[{eid}] sectiuni[{i}].{field} lipsă sau gol")
+            value = s.get(field)
+            # isinstance INAINTE de .strip(): `titlu: 5` in YAML da un int, iar `.strip()` pe el
+            # arunca AttributeError si opreste build-ul cu traceback brut — exact opusul
+            # validarii curate fail-fast pe care o promite modulul.
+            if not isinstance(value, str) or not value.strip():
+                errors.append(f"[{eid}] sectiuni[{i}].{field} lipsă, gol sau nu e text")
     return errors
 
 
