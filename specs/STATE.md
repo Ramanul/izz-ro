@@ -63,6 +63,22 @@ reuse it rather than building a second county matcher.
 3. **Bug, found and NOT fixed:** ~129 official sources are re-fetched every run and expired by
    `state.expire()` in the *same* run — 76% of their content is already past the 7-day TTL when
    read. Wasted fetch + **falsified stats**. Fixable without owner — good next code slice.
+4. **Local press expansion — 79 researched candidates, NONE verified** (web session, 2026-08-02).
+   A sub-agent mapped county press incl. weeklies. Only **CJ/IS/TM/BV/MM/AR/PH** have a dedicated
+   county source today; the candidates would give **34 counties + București** their first one.
+   Every RSS URL is a GUESS (the `<domain>/feed/` WordPress pattern) — the sandbox cannot fetch
+   them, so route the batch through `feedcheck.yml` BEFORE config and expect ~⅓ fallout.
+   Land in waves of ~15: 79 at once would starve the 10-call AI budget. Strongest first —
+   `cvlpress.ro` (DJ), `zi-de-zi.ro` (MS), `monitorulbt.ro` (BT), `monitorulsv.ro` (SV),
+   `turnulsfatului.ro` (SB), `alba24.ro` (AB), `bihon.ro` (BH), `b365.ro` (București).
+   Weeklies the owner asked for: `gazetadecluj.ro`, `dobrogeanoua.ro`, `saptamanagiurgiuveana.ro`,
+   `gazetademaramures.ro`. Two domains are INFERRED, not sourced — `mytex.ro`,
+   `monitorulexpres.ro` (BV) — do not type them into config unverified. CV/HR real local press is
+   mostly Hungarian-language, which breaks the `lang: ro` assumption.
+5. **Owner wants `/surse/` grouped by historical region → county** (2026-08-02), and eventually a
+   MAP to select news by region/zone. Region granularity (9 vs 7 regions) still unanswered.
+   Data is already there: `judet` is in `gold_integrare.csv` and encoded in every `pl_<judet>_*`
+   key. Depends on the geo axis, i.e. on SIRUTA Slice 2 above.
 
 ## Settled today — do NOT re-derive
 - **OpenCode no longer dies when the Zen quota runs out.** `tools/oc_run.sh` walks a free-route
@@ -118,6 +134,15 @@ reuse it rather than building a second county matcher.
 - **Sub-agents cost ~5.6x per delivered line** (129 vs 23 tokens/100 lines, measured over 21
   slices in `COORD-DASHBOARD.md`). Worth it for genuinely parallel or noisy measurement work.
   CI is the cheapest executor — free minutes on a public repo, and the only one with real network.
+
+## Merged 2026-08-02 (web session — announce, per §14)
+- **#98** — `_fetch_sitemap_news` returned `(items=[], None)`: a sitemap that answers 200 with
+  valid `<url>` entries but yields nothing looked HEALTHY and never reached the dead-source list.
+  `piataauto` (the only `sitemap_news` source) produced 0 articles from 19 Jul on, unnoticed.
+  Now it reports entry count + likely cause, and `MAX_PER_SOURCE` is applied AFTER filtering
+  (bad leading entries no longer starve a source). Parser extracted as `_parse_sitemap_news`
+  so it is testable without network; 6 new tests. **Why piataauto's entries are unusable is
+  still UNKNOWN** — the sandbox cannot reach piataauto.md (403 tunnel); the next run's log names it.
 
 ## Merged 2026-08-01/02 (account A, from B's draft PRs)
 - **#96** — dark-mode toggle was dead on live: CSP `script-src 'self'` (no `unsafe-inline`)
