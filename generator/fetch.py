@@ -3,6 +3,7 @@ import json
 import os
 import re
 import socket
+import threading
 import time
 import urllib.error
 import urllib.request
@@ -45,6 +46,15 @@ CACHE_MAX_AGE_H = 3
 # NU se rezolva prin reincercare: masurat pe 40 de surse, 40/40 au primit acelasi
 # interstitial si dupa o pauza de 6 s (pagina isi cere singura reload la 5 s).
 CHALLENGE_MARK = b"One moment, please"
+
+# Ritmul cu care lovim un singur furnizor de gazduire. Masurat 2026-08-02, matura de 189 de
+# surse de pe un runner GitHub: 66 din cele 68 servite de `openresty` au primit challenge,
+# fata de 0/24 LiteSpeed si 0/19 nginx. Cele 66 de domenii rezolva la IP-uri DIFERITE, deci
+# nu se poate distanta nici per hostname, nici per IP — singurul lucru care identifica
+# furnizorul e antetul `Server`, pe care il aflam abia din raspuns, deci din rularea trecuta.
+# Grupurile mici nu sunt problema si nu se incetinesc.
+PACE_INTERVAL_S = float(os.environ.get("FETCH_PACE_S", "2.0"))
+PACE_GROUP_MIN = int(os.environ.get("FETCH_PACE_GROUP_MIN", "10"))
 
 
 def _is_challenge(body: bytes | str) -> bool:
@@ -418,6 +428,10 @@ def _fetch_one(key: str, source: dict, cache: dict | None = None) -> tuple[list,
                         "etag": resp.headers.get("ETag"),
                         "last_modified": resp.headers.get("Last-Modified"),
                         "fetched_at": datetime.now(timezone.utc).isoformat(),
+                        # Cheia de grupare pentru `_HostPacer`. Se salveaza si cand
+                        # raspunsul a fost un challenge: antetul e tot al furnizorului,
+                        # deci sursa intra in grupul corect chiar din runda in care a picat.
+                        "server": resp.headers.get("Server"),
                     }
             break
         except urllib.error.HTTPError as exc:
@@ -473,7 +487,53 @@ def _fetch_one(key: str, source: dict, cache: dict | None = None) -> tuple[list,
     return items, None
 
 
-def _fetch_one_guarded(key: str, source: dict, cache: dict | None = None) -> tuple[list, str | None]:
+def _server_sig(entry: dict) -> str | None:
+    """Semnatura furnizorului dintr-o intrare de cache: `openresty/1.31.1.1` -> `openresty`.
+
+    Versiunea se taie intentionat: acelasi furnizor ruleaza build-uri diferite pe masini
+    diferite (masurat: `openresty/1.31.1.1` pe 67 de surse si `openresty/1.29.2.3` pe una),
+    iar cota e a furnizorului, nu a build-ului.
+    """
+    srv = (entry or {}).get("server")
+    return srv.split("/")[0].strip().lower() or None if srv else None
+
+
+class _HostPacer:
+    """Impune un interval minim intre cererile care impart acelasi furnizor.
+
+    Nu incetineste nimic pe prima rulare de dupa deploy: semnaturile se invata din antetul
+    `Server` salvat in cache, iar pana atunci fiecare sursa e in propriul grup de marime 1.
+    Se auto-corecteaza de la a doua rulare.
+    """
+
+    def __init__(self, cache: dict, interval: float = PACE_INTERVAL_S,
+                 group_min: int = PACE_GROUP_MIN):
+        self._interval = interval
+        self._lock = threading.Lock()
+        self._next_free: dict[str, float] = {}
+        sizes: dict[str, int] = {}
+        for ent in (cache or {}).values():
+            sig = _server_sig(ent)
+            if sig:
+                sizes[sig] = sizes.get(sig, 0) + 1
+        # Doar grupurile mari sunt cele care declanseaza limitarea; restul trec liber.
+        self._paced = {sig for sig, n in sizes.items() if n >= group_min}
+
+    def wait(self, key: str, cache: dict | None) -> None:
+        sig = _server_sig((cache or {}).get(key) or {})
+        if not sig or sig not in self._paced or self._interval <= 0:
+            return
+        with self._lock:
+            now = time.monotonic()
+            due = max(now, self._next_free.get(sig, 0.0))
+            self._next_free[sig] = due + self._interval
+        delay = due - now
+        if delay > 0:
+            time.sleep(delay)
+
+
+def _fetch_one_guarded(key: str, source: dict, cache: dict | None = None,
+                       pacer: "_HostPacer | None" = None) -> tuple[list, str | None]:
     """`_fetch_one` care nu poate arunca: orice eroare devine sursa moarta.
 
     `_fetch_one` prinde doar erorile de retea; `feedparser.parse` si bucla de
@@ -483,6 +543,8 @@ def _fetch_one_guarded(key: str, source: dict, cache: dict | None = None) -> tup
     (inclusiv sursele sanatoase) se pierde din cauza uneia singure.
     """
     try:
+        if pacer is not None:
+            pacer.wait(key, cache)
         return _fetch_one(key, source, cache)
     except Exception as exc:  # orice: o sursa stricata nu pica build-ul
         return [], f"{key}: {exc}"
@@ -508,12 +570,14 @@ def fetch_all() -> tuple[list, list]:
     all_items, dead = [], []
     cache = _cache_load()
     sources = list(config.SOURCES.items())
+    pacer = _HostPacer(cache)
 
     if MAX_WORKERS <= 1:
-        results = [_fetch_one_guarded(key, source, cache) for key, source in sources]
+        results = [_fetch_one_guarded(key, source, cache, pacer) for key, source in sources]
     else:
         with ThreadPoolExecutor(max_workers=min(MAX_WORKERS, len(sources) or 1)) as pool:
-            results = list(pool.map(lambda kv: _fetch_one_guarded(kv[0], kv[1], cache), sources))
+            results = list(pool.map(
+                lambda kv: _fetch_one_guarded(kv[0], kv[1], cache, pacer), sources))
 
     for items, err in results:
         if err:
