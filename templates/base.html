@@ -66,7 +66,10 @@
       <a href="{{ base }}/instrumente/"{% if nav_section == 'instrumente' %} class="active"{% endif %}>Instrumente</a>
       <a href="{{ base }}/cauta/">caută</a>
       <button id="izz-install-btn" class="izz-install-btn" type="button" hidden title="Instalează aplicația pe acest dispozitiv" aria-label="Instalează aplicația">Instalează aplicația</button>
-      <button class="theme-toggle" type="button" title="Mod întunecat" aria-label="Comută tema" aria-pressed="false">☾</button>
+      {# fara glifa in markup: o pune styles.css dupa `data-theme`, ca sa fie corecta de la
+         prima pictare. aria-label descrie butonul, `title` descrie actiunea si il sincronizeaza
+         theme.js. Vezi .theme-toggle::before in static/styles.css. #}
+      <button class="theme-toggle" type="button" title="Mod întunecat" aria-label="Comută tema" aria-pressed="false"></button>
     </nav>
   </header>
   <nav class="subnav" aria-label="Categorii de știri">

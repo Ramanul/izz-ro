@@ -38,10 +38,14 @@
   else if (saved === "light" || saved === "") apply(false);
   else apply(prefersDark());
 
+  /* Glifa (☾/☀) vine din CSS, ca sa fie corecta inca de la prima pictare. Aici raman doar
+     atributele pe care CSS-ul nu le poate scrie. `title` anunta ACTIUNEA, ca si glifa. */
   function syncToggle() {
     var btn = document.querySelector(".theme-toggle");
     if (!btn) return;
-    btn.setAttribute("aria-pressed", isDark() ? "true" : "false");
+    var dark = isDark();
+    btn.setAttribute("aria-pressed", dark ? "true" : "false");
+    btn.setAttribute("title", dark ? "Mod luminos" : "Mod întunecat");
   }
 
   /* Delegare pe document: scriptul ruleaza in <head>, butoanele inca nu exista. */
