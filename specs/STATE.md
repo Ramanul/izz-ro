@@ -4,7 +4,7 @@
 > Executors get it read-only. Keep it tight — when it outgrows ~40 lines of content, cut the
 > settled history, not the open work. `git fetch` immediately before rewriting it.
 
-**Updated:** 2026-08-02 (dark mode still broken after #96 — logged as Open 0; web session out of budget)
+**Updated:** 2026-08-02 09:20 (account A — #106 merged and CONFIRMED ON LIVE; #107 open; audit.sh was broken on Windows)
 
 ## OPERATING MODE — owner active on ACCOUNT A (2026-08-02)
 Owner was on account B, hit the usage limit mid-work on three draft PRs, switched to account A
@@ -37,27 +37,33 @@ Three rules that bite if forgotten:
 - **Bump `MISS_VERSION`** when adding a search route, or cached misses hide it on all content.
 CLAUDE.md §13's audit baseline was stale (home Perf 89, July) and is now **re-recorded from 5
 runs per page**: home 80, article 88, A11y/BP/SEO 100, pa11y 0, with the Lighthouse/pa11y/
-Chromium versions written to `.audit/versions.txt`. One extra run under different machine load
-read home 84 — one observation, not an error bar: re-run before calling a small delta a
-regression. `audit.sh` no longer picks the article page with `find | head -1` (it scored
-different pages across runs); pin it with `ARTICLE_PATH=` for any before/after.
+Chromium versions written to `.audit/versions.txt`. `audit.sh` no longer picks the article page
+with `find | head -1` (it scored different pages across runs); pin it with `ARTICLE_PATH=` for any
+before/after. **The "one extra run read home 84" note is superseded** — see CLAUDE.md §13: six runs
+across two revisions show a two-state CLS switch (~0.156 → home 83-84, 0.272 → home 76), not a
+spread. Run 3+ repetitions per revision and compare medians; one pair proves nothing under ~8 points.
 `data/localities.json` (3179 UAT, county labels + `localities.match`) overlaps SIRUTA Slice 2 —
 reuse it rather than building a second county matcher.
 
 ## Open
-0. **DARK MODE STILL BROKEN FOR THE OWNER — after #96 merged. NOT investigated. Start here.**
-   (web session, 2026-08-02.) The owner merged #96, was asked to press ☾ and check the theme
-   survives a refresh, and replied plainly: **"nu merge"**. No further detail was gathered — that
-   session ran out of budget before reproducing it. Treat the toggle as UNFIXED regardless of what
-   #91 and #96 claim; two PRs have now claimed this and the user still sees it broken, which is the
-   §16 failure mode exactly (verified as code, never as the live experience).
-   What is known without re-deriving: the button is an **inline `onclick`** in `templates/base.html`
-   (sets/removes `data-theme` on `<html>`, writes `localStorage.izz_theme`), and #96 also touched
-   **CSP** — an inline handler is precisely what a `script-src` policy without `'unsafe-inline'`
-   blocks, silently, with only a console error. Check that first, on the DEPLOYED page, not locally.
-   Reproduce before fixing: real headless Chromium, click, read `document.documentElement.dataset`
-   and the console; then reload and re-read. Also confirm deliverability (§16.2) — `styles.css`
-   `?v=` hash must change, or returning visitors keep the cached old CSS.
+0. **DARK MODE — mechanics now CONFIRMED ON LIVE (#106). Still open only for the owner's own
+   "nu merge" to be re-tested by him.** Do not spend another session reproducing it blind.
+   History: the owner merged #96, was asked to press ☾ and check the theme survives a refresh,
+   and replied **"nu merge"**; no detail was gathered before that session ran out of budget.
+   **Likely what he saw (INFERENCE, not established):** #96 did fix the mechanics, but the button
+   kept a hardcoded `☾` glyph plus `title="Mod întunecat"` and `aria-pressed="false"` in the
+   markup — so pressing it changed the page while the control itself looked and announced itself
+   unchanged. From the user's side that is indistinguishable from "nothing happened". #106 fixed
+   exactly that: the glyph now comes from CSS keyed on `data-theme` (correct at first paint), and
+   `title`/`aria-pressed` are set from the applied theme.
+   **Measured on `https://izz.ro/` 2026-08-02 09:18, real browser, not local:** fresh visit → ☾ /
+   "Mod întunecat" / `aria-pressed=false` / bg `rgb(246,247,249)`; after click → ☀︎ / "Mod luminos"
+   / `true` / `rgb(13,17,22)`, `localStorage.izz_theme=dark`; **after a full reload the dark theme
+   and all three attributes persist**; console clean, so CSP blocks nothing. Deliverability (§16.2)
+   holds — live serves `styles.css?v=44d15474` and `theme.js?v=318109e6`, both new hashes.
+   **What is NOT established:** that this was the owner's complaint, or that his device behaves the
+   same. Only he can close this — ask him to press it once and say what he sees. If he still says
+   "nu merge", the next step is his exact browser + a console screenshot, NOT another blind fix.
 1. **PR #101 (locality lead photos) is out of draft, CI green, awaiting owner sign-off + live
    confirmation.** Per §16 the most that can be claimed is "verificat local"; only the owner or
    `smoke_live.py` can confirm on izz.ro.
@@ -147,6 +153,26 @@ reuse it rather than building a second county matcher.
 - **Sub-agents cost ~5.6x per delivered line** (129 vs 23 tokens/100 lines, measured over 21
   slices in `COORD-DASHBOARD.md`). Worth it for genuinely parallel or noisy measurement work.
   CI is the cheapest executor — free minutes on a public repo, and the only one with real network.
+
+## Merged / open 2026-08-02 (account A — announce, per §14)
+- **#106 MERGED (`e558f3da`) — theme toggle shows the ACTION, not a fixed moon.** Glyph moved to
+  CSS (`.theme-toggle::before`, keyed on `data-theme`, `\FE0E` so Chrome/Windows draws ☀ as text
+  and not colour emoji); markup no longer asserts a state; `theme.js` sets `title` + `aria-pressed`
+  from the applied theme. Audit run before/after, article pinned, 3 reps each: no regression
+  (medians home 84→83, article 92→92, pa11y 0 both). Confirmed on live — see Open 0.
+  → CodeRabbit's residual point was **declined with a reason, not silently dropped**: between HTML
+  parse and `DOMContentLoaded` the two attributes are absent. `aria-label` is always present, so a
+  missing `aria-pressed` reads as "button" rather than a *false* "not pressed"; closing it needs
+  either a second render-blocking script after the button or an inline one the CSP refuses.
+- **#107 OPEN — `tools/audit.sh` never worked on Windows**, found while doing the above. Three
+  independent Linux-only assumptions: Chromium detection missed every Windows path; the version
+  line ran `chrome.exe --version`, which forwards to a running instance and logged
+  `Opening in existing browser session.` instead of a version (so #103's whole comparability
+  mechanism held nothing on Windows); and pa11y got the MSYS path `/c/Program Files/...`, which
+  node/puppeteer cannot resolve — it died with stderr to `/dev/null`, and `wc -l - 1` on the empty
+  CSV printed **"WCAG2AA errors on home: -1"**, a fabricated number where a failure belonged.
+  A lighthouse `EPERM` on temp-profile cleanup (raised *after* a successful audit) also aborted the
+  script under `set -e` before pa11y ever ran. All fixed; a missing report is now a hard failure.
 
 ## Merged 2026-08-02 (web session — announce, per §14)
 - **#98** — `_fetch_sitemap_news` returned `(items=[], None)`: a sitemap that answers 200 with
