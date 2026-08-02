@@ -44,6 +44,23 @@ comma decimals) + `tools/build_gazetteer.py`. **geo.py is UNCHANGED — still th
    read. Wasted fetch + **falsified stats**. Fixable without owner — good next code slice.
 
 ## Settled today — do NOT re-derive
+- **OpenCode no longer dies when the Zen quota runs out.** `tools/oc_run.sh` walks a free-route
+  ladder automatically (`--list` shows what is live); `/delegate-opencode` step 4 goes through it.
+  It falls through only on INFRASTRUCTURE failure (exit≠0 or an `Error:` line) — a route that runs
+  and reports a bad task result is deliberately not retried. Commits `4157e401`, `6243d96c`,
+  `48bc5c2a`, `1acae53b`. **5 live routes**, each smoke-tested by running: 3× Zen free
+  (`deepseek-v4-flash-free`, `laguna-s-2.1-free`, `north-mini-code-free`) + `google/gemini-3.1-flash-lite`
+  (separate quota) + `mistral/codestral-latest` (separate quota). `small_model` moved to Gemini
+  flash-lite so session titles stop burning the 100/day Zen budget.
+  **Four dead ends, measured — do NOT re-diagnose as "bad key":** (a) opencode's `google` provider
+  reads `GOOGLE_GENERATIVE_AI_API_KEY`, not `GEMINI_API_KEY` — it lists models fine and fails only
+  at call time; fixed in config, not with a new env var. (b) `vercel/*-free` needs a credit card on
+  file despite a valid `AI_GATEWAY_API_KEY`. (c) **groq**: key valid, free tier caps TPM at 8k–12k
+  while opencode's system prompt alone is 32–46k → "Request too large" on every agentic call; only
+  a paid Dev Tier fixes it. (d) **cerebras**: key valid (lists models) but every chat call returns
+  `payment_required`, and its free context cap is 8k anyway. Both stay wired for a future paid plan.
+  Local `ollama` is out too: measured hardware is a GTX 1060 3GB / 16GB RAM — too slow for an
+  agentic loop. `OPENROUTER_API_KEY` is the only unclaimed free-ish route (needs a one-off $10).
 - **The "too few articles" cause was an outage, not the budget.** 30 consecutive `pipeline` runs
   failed 21 Jul 17:40 → 24 Jul 03:37 UTC with `AI DOWN — HTTP 400`: Gemini's `-latest` alias
   repointed to a 3.x model that rejects `thinkingConfig`. Fixed by `d56a8db` (#76); green since.
