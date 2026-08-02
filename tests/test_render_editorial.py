@@ -1,15 +1,11 @@
 """Logica editoriala din render.py — cea care decide CE APARE PE SITE.
 
-De ce exista fisierul asta: din 39 de functii din `render.py`, doar `_dedup` si
-`_grupeaza_pe_regiuni` aveau teste. `_quality_gate`, `_diversify`, `_pick_hero` si
-`sources_coherent` decid ce se publica si ce se arunca — adica exact regula „Zero Zgomot"
-din CLAUDE.md §7 — si nu erau acoperite deloc. Orice refactor al modulului (1001 linii,
-52 de modificari) se facea fara plasa fix pe partea cu consecinte vizibile.
-
-Toate functiile testate aici sunt PURE: intra un dict/o lista, iese un bool/o lista. Zero
-disk, zero retea. Scopul e sa INGHETE comportamentul actual, nu sa-l judece — daca un test
-de aici pica dupa un refactor, comportamentul vizibil s-a schimbat, si asta e o decizie, nu
-un detaliu.
+Din 39 de functii, doar `_dedup` si `_grupeaza_pe_regiuni` aveau teste; `_quality_gate`,
+`_diversify`, `_pick_hero` si `sources_coherent` decid ce se publica si ce se arunca (regula
+„Zero Zgomot", CLAUDE.md §7) si nu erau acoperite deloc.
+Intrari/iesiri: functii pure — dict/lista in, bool/lista out. Zero disk, zero retea.
+Acceptare: testele INGHEATA comportamentul actual. Daca unul pica dupa un refactor,
+comportament vizibil s-a schimbat — asta e o decizie, nu un detaliu.
 """
 from generator import render
 
