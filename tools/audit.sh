@@ -72,7 +72,11 @@ chrome_version () {
   case "$v" in *[0-9].[0-9]*) printf '%s\n' "$v"; return;; esac
   if command -v powershell.exe >/dev/null 2>&1; then
     w="$(cygpath -w "$CHROME_PATH" 2>/dev/null || printf '%s' "$CHROME_PATH")"
-    v="$(powershell.exe -NoProfile -Command "(Get-Item '$w').VersionInfo.ProductVersion" 2>/dev/null | tr -d '\r')"
+    # A single quote in the path (C:\Users\O'Brien\...) would end PowerShell's literal
+    # string early and silently degrade the version to '?'. Doubling is the escape a
+    # single-quoted PowerShell string takes; -LiteralPath keeps [ ] from globbing.
+    w="$(printf '%s' "$w" | sed "s/'/''/g")"
+    v="$(powershell.exe -NoProfile -Command "(Get-Item -LiteralPath '$w').VersionInfo.ProductVersion" 2>/dev/null | tr -d '\r')"
     [ -n "$v" ] && { printf 'Chrome %s\n' "$v"; return; }
   fi
   printf '?\n'

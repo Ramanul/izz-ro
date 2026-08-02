@@ -59,7 +59,10 @@ reuse it rather than building a second county matcher.
    **Measured on `https://izz.ro/` 2026-08-02 09:18, real browser, not local:** fresh visit → ☾ /
    "Mod întunecat" / `aria-pressed=false` / bg `rgb(246,247,249)`; after click → ☀︎ / "Mod luminos"
    / `true` / `rgb(13,17,22)`, `localStorage.izz_theme=dark`; **after a full reload the dark theme
-   and all three attributes persist**; console clean, so CSP blocks nothing. Deliverability (§16.2)
+   and all three attributes persist**; no CSP or other console errors were observed during that
+   check — which is evidence the policy does not block this path, not proof it blocks nothing
+   (§16's own history: `script-src 'self'` silently killed the inline handler before #96).
+   Deliverability (§16.2)
    holds — live serves `styles.css?v=44d15474` and `theme.js?v=318109e6`, both new hashes.
    **What is NOT established:** that this was the owner's complaint, or that his device behaves the
    same. Only he can close this — ask him to press it once and say what he sees. If he still says
@@ -155,6 +158,7 @@ reuse it rather than building a second county matcher.
   CI is the cheapest executor — free minutes on a public repo, and the only one with real network.
 
 ## Merged / open 2026-08-02 (account A — announce, per §14)
+
 - **#106 MERGED (`e558f3da`) — theme toggle shows the ACTION, not a fixed moon.** Glyph moved to
   CSS (`.theme-toggle::before`, keyed on `data-theme`, `\FE0E` so Chrome/Windows draws ☀ as text
   and not colour emoji); markup no longer asserts a state; `theme.js` sets `title` + `aria-pressed`
