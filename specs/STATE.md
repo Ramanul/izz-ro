@@ -4,7 +4,7 @@
 > Executors get it read-only. Keep it tight — when it outgrows ~40 lines of content, cut the
 > settled history, not the open work. `git fetch` immediately before rewriting it.
 
-**Updated:** 2026-08-02 (account A landed the three draft PRs B left when it hit the limit)
+**Updated:** 2026-08-02 (locality lead photos — PR #101 ready for review; merged main in)
 
 ## OPERATING MODE — owner active on ACCOUNT A (2026-08-02)
 Owner was on account B, hit the usage limit mid-work on three draft PRs, switched to account A
@@ -26,7 +26,24 @@ comma decimals) + `tools/build_gazetteer.py`. **geo.py is UNCHANGED — still th
   below the bar). UAT-only switch also churned 155 classifications vs the primării CSV — not a
   clean win either. Reference features (Bucegi, Ceahlău, Dunărea) are a separate small curated list.
 
+## Lead photos now come from the LOCALITY — PR #101 (2026-08-02)
+Branch `claude/scraping-romanian-public-data-u63sqz`. **0 → 129 real photos**; before, every
+article carried a generated icon cover. Full rationale, measurements and the Wikidata/licence
+details live in `specs/locality-lead-photos.md` — read that, not this, before touching it.
+Three rules that bite if forgotten:
+- **County match is mandatory, no fallback**, and renditions are named by **QID, not name**:
+  4 distinct Costești / 3 Ungheni / 2 Zărnești exist, all with different photos.
+- **`license_free` must keep rejecting CC-BY-NC and CC-BY-ND** — we crop, so we make derivatives.
+- **Bump `MISS_VERSION`** when adding a search route, or cached misses hide it on all content.
+Also: CLAUDE.md §13's audit baseline (home Perf 89) is STALE — measured before *and* after on the
+same machine, home is 80 → 80, article 88 → 87. Re-record it before trusting a future "regression".
+`data/localities.json` (3179 UAT, county labels + `localities.match`) overlaps SIRUTA Slice 2 —
+reuse it rather than building a second county matcher.
+
 ## Open
+0. **PR #101 (locality lead photos) is out of draft, CI green, awaiting owner sign-off + live
+   confirmation.** Per §16 the most that can be claimed is "verificat local"; only the owner or
+   `smoke_live.py` can confirm on izz.ro.
 1. **SIRUTA Slice 2 — county-aware village matching.** Groundwork merged (siruta_raw.csv +
    build_gazetteer.py). Design is now clear: villages match ONLY when the source's county matches
    the village's county. This kills the measured false positives — Saturn/horoscope/FCSB all come
