@@ -4,7 +4,7 @@
 > Executors get it read-only. Keep it tight — when it outgrows ~40 lines of content, cut the
 > settled history, not the open work. `git fetch` immediately before rewriting it.
 
-**Updated:** 2026-08-02 22:40 (account A — #115/#116/#117 MERGED and confirmed on live; #118 open and green; #112 open)
+**Updated:** 2026-08-02 17:20 (account A — #106–#114 merged; #112/#115 open; **owner answered 6 open questions, see below**)
 
 ## READ FIRST — a bot-challenge page served with HTTP 200, triggered by SWEEP VOLUME (2026-08-02)
 
@@ -229,17 +229,8 @@ reuse it rather than building a second county matcher.
   The 40- and 92-article days were outage days; 198 was the recovery day, with a TTL expiry spike.
 - **Real production budget:** `MAX_AI_CALLS_PER_RUN=18` and `UPGRADE_RESERVE=8` (both set in
   `build.yml`, so the 12/3 defaults in `main.py` are dead in production) → **10 calls/run for new
-  articles**. Model B batches `BATCH_SIZE=10` per call, model C yields 1 (its value is
-  de-duplication).
-  → **RE-MEASURED 2026-08-02 from three consecutive `build.yml` logs: the budget is exhausted on
-  EVERY run, 10/10.** 13:49 → 261 new, B 0, C 10; 15:14 → 252 new, B 20, C 8; 17:11 → 244 new,
-  B 40, C 6. At 13:49 clusters ate the whole budget and not one single article was processed.
-  The "741 new items per run" figure above predates #108's stale-skipping; the real inflow is
-  ~250/run. Unprocessed items are never written to state, so they return as "new" next run.
-  → Consequence, and it is why #118 exists: under permanent saturation the CONSUMPTION ORDER is
-  the editorial policy, and that order was `config.SOURCES` order (`fetch.py:560` keeps it
-  deliberately: "ce ajunge la coada e infometat"). The head of that list is lifestyle
-  (`unica`, `csid`, `sfatulparintilor`, `elle`); hard news sits at the tail.
+  articles**. Model B yields 6 articles/call, model C yields 1 (its value is de-duplication).
+  Measured against 741 new items available per run: the call budget is the real ceiling.
 - **Gemini's free tier is NOT saturated:** ~1000 requests/day per key against our max 216/day.
   `GEMINI_API_KEY` already supports multiple keys with failover (`gemini.py:30-42`), so a second
   key is free headroom. Full provider comparison in `specs/ai-provider-capacity.md`; Groq ranks
@@ -257,41 +248,6 @@ reuse it rather than building a second county matcher.
 - **Sub-agents cost ~5.6x per delivered line** (129 vs 23 tokens/100 lines, measured over 21
   slices in `COORD-DASHBOARD.md`). Worth it for genuinely parallel or noisy measurement work.
   CI is the cheapest executor — free minutes on a public repo, and the only one with real network.
-
-## Merged / open 2026-08-02 EVENING (account A — announce, per §14)
-
-- **#115 MERGED (`e3803973`) — the salary calculator works on live, for the first time ever.**
-  External `static/calc-salariu.js` under CSP + `select.py` extraction + a guard test against
-  inline JS in any template. **CONFIRMED ON LIVE, driven as a user** (§16.3): on
-  `https://izz.ro/ghiduri/salariul-minim/`, typing 7000 brut recomputes to 4.176 lei net
-  (CAS 1.750 / CASS 700 / deducere 810 / impozit 374). `window.calcSalariu` is undefined by
-  design now — the fix uses listeners, not globals — so do NOT read that as the old symptom;
-  the old symptom was `#calc-results` EMPTY, and it is now populated. Asset served as
-  `/static/calc-salariu.js?v=516f4eba`, i.e. §16.2 deliverability holds.
-- **#116 MERGED (`32e01c72`) — three guides that had never reached a reader.** buletin-pasaport,
-  permis-auto, noua-casa ported from the dead `/utile/` path into `/ghiduri/`, plus an optional
-  `sectiuni` field in the entity schema. All three live and 200 on izz.ro.
-  → Merge conflict with #115 resolved locally: main's `_render_calc_salariu(env, ent)` signature
-  kept, this branch's `sectiuni` block kept. They sit on adjacent lines; nothing else overlapped.
-- **#117 MERGED (`d119b098`) — the sitemap listed only news.** Live sitemap now carries 1307 URLs
-  including all 6 guides, the calculator, `/calendar/`, `/surse/` and the legal pages — verified
-  by fetching `https://izz.ro/sitemap.xml` after deploy. Zero `/utile/` leakage.
-- **#118 OPEN, green, CodeRabbit APPROVED — budget ordering.** See the budget bullet above.
-  Corroboration (distinct domains) then freshness decide who consumes the AI budget, plus
-  `stats["deferred"]`. Reconstructed on the real corpus: `csid` took 9 of 19 slots before,
-  6 sources share them after; median age of selected items 619 → 140 min. 387 tests.
-  → CodeRabbit caught a real defect: Python's sort is stable, so equal keys fell back on input
-  order, i.e. the config order the slice removes — and ties are systematic for feeds that give a
-  date without a time (`_parse_w3c_date`, `_parse_ro_date` → midnight UTC). Fixed with an md5(url)
-  tie-break, uncorrelated with the source.
-- **STILL OPEN, in order: delete the dead `/utile/` path.** Unblocked now that #115 is in —
-  the modify/delete conflict on `templates/utility.html` is gone and #116 saved the content.
-  Targets: `render._render_utilities`, `templates/utility.html`, `templates/utilities.html`,
-  `data/utilities.json`.
-- **A test-design trap that cost time twice today, worth fixing:** the fixtures in
-  `test_entities_verified.py` and `test_sitemap_editorial.py` re-render ONLY when `output/` is
-  missing, so a stale `output/` from another branch makes them fail (or, worse, pass) against
-  code that is not the code under test. CI never sees it; a local run does.
 
 ## Merged / open 2026-08-02 (account A — announce, per §14)
 
