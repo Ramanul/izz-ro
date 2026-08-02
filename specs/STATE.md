@@ -4,7 +4,29 @@
 > Executors get it read-only. Keep it tight — when it outgrows ~40 lines of content, cut the
 > settled history, not the open work. `git fetch` immediately before rewriting it.
 
-**Updated:** 2026-08-02 09:20 (account A — #106 merged and CONFIRMED ON LIVE; #107 open; audit.sh was broken on Windows)
+**Updated:** 2026-08-02 10:30 (account A — #106/#107/#108/#109 all merged; **production is losing ~40% of its sources, see Open 1**)
+
+## READ FIRST — production reads 861 articles where a local run reads 1428 (2026-08-02)
+Not a checker artifact. `feedcheck.yml` run `30742957035` on GitHub runners reported **76 sources
+with 0 articles**. The same sources, fetched from the owner's home IP with a cold cache minutes
+later, each returned the full cap: `recorder`, `contributors`, `zch`, `stirilemoldovei`,
+`cronicaolteniei`, `stirimuntenia`, `stirileolteniei` — **8/8 articles, err=None, every one**.
+`build.yml` runs on those same runners: the 06:42 production run logged `Articole citite: 861`
+against 1428 locally. 1428 − 861 ≈ 567 ≈ 71 sources × the 8-item cap, which matches the 76.
+→ **The site has been quietly publishing from ~60% of its corpus.** Nothing reported it, because
+`fetch_all()` only puts a source in `dead` when it raised an ERROR; a source answering 200 with an
+unparseable or empty feed was invisible. #110 fixes the invisibility (RSS + html_list now report
+`200 dar 0 articole`, the way #98 already did for `sitemap_news`), so the next production run
+prints the real list instead of nothing.
+→ **The invisibility is fixed; the LOSS is not, and the fix is an owner decision.** Options, none
+of them free: fetch through a proxy with a different egress (a Cloudflare Worker already exists for
+failover), a self-hosted runner on the owner's machine (his IP demonstrably works, but the machine
+must be up), or accepting the loss and pruning the corpus honestly. This is production deploy
+config, i.e. §10 — do not pick one unilaterally.
+→ **What is NOT established:** whether the runners get a challenge page, an empty feed, or a
+different payload. Diagnosing that needs one run that captures a response body from a runner.
+Do not assume it is HTTP 403 — `feed_check` reported these as `GOL`, not as errors, so the status
+was fine and only the parse yielded nothing.
 
 ## OPERATING MODE — owner active on ACCOUNT A (2026-08-02)
 Owner was on account B, hit the usage limit mid-work on three draft PRs, switched to account A
@@ -82,9 +104,7 @@ reuse it rather than building a second county matcher.
    formulas/rates — these are legal/financial (§10), a wrong net-salary published is worse than a
    static figure. Do NOT build calculators on guessed formulas. `data/entities/*.yaml` still
    `verificat: false` (honest). Owner must supply figures + deep-link `sursa_url` (RO domains).
-3. **Bug, found and NOT fixed:** ~129 official sources are re-fetched every run and expired by
-   `state.expire()` in the *same* run — 76% of their content is already past the 7-day TTL when
-   read. Wasted fetch + **falsified stats**. Fixable without owner — good next code slice.
+3. ~~**Official sources re-fetched and expired in the same run**~~ — **FIXED, #108.** Do not re-open.
 4. **Local press expansion — 79 researched candidates, NONE verified** (web session, 2026-08-02).
    A sub-agent mapped county press incl. weeklies. Only **CJ/IS/TM/BV/MM/AR/PH** have a dedicated
    county source today; the candidates would give **34 counties + București** their first one.
@@ -97,8 +117,9 @@ reuse it rather than building a second county matcher.
    `gazetademaramures.ro`. Two domains are INFERRED, not sourced — `mytex.ro`,
    `monitorulexpres.ro` (BV) — do not type them into config unverified. CV/HR real local press is
    mostly Hungarian-language, which breaks the `lang: ro` assumption.
-5. **Owner wants `/surse/` grouped by historical region → county** (2026-08-02), and eventually a
-   MAP to select news by region/zone. Region granularity (9 vs 7 regions) still unanswered.
+5. **`/surse/` grouping — DONE by #105**, `templates/surse.html` renders `group.regions`. What is
+   still open is only the **MAP** to select news by region/zone, plus the unanswered granularity
+   question (9 vs 7 regions) — both owner decisions, not implementation work.
    Data is already there: `judet` is in `gold_integrare.csv` and encoded in every `pl_<judet>_*`
    key. Depends on the geo axis, i.e. on SIRUTA Slice 2 above.
 
@@ -168,7 +189,25 @@ reuse it rather than building a second county matcher.
   parse and `DOMContentLoaded` the two attributes are absent. `aria-label` is always present, so a
   missing `aria-pressed` reads as "button" rather than a *false* "not pressed"; closing it needs
   either a second render-blocking script after the button or an inline one the CSP refuses.
-- **#107 OPEN — `tools/audit.sh` never worked on Windows**, found while doing the above. Three
+- **#108 MERGED (`41658bf0`) — items already past TTL no longer enter the pipeline.** Closes the
+  old Open 3. Measured on a real cold fetch: **795 of 1096 "new" items (73%) from 126 sources**
+  were already older than the 7-day TTL when read, so they burned AI budget, were deleted by the
+  trailing `expire()` in the SAME run, and returned as "new" on the next one. Nothing about what
+  gets published changed. The reviewer confirmed a data-loss path I had only inferred:
+  `process_cluster` sorts a group ascending by `published` and takes `group[0]`, so **the oldest
+  member becomes the representative** — a stale item could absorb a FRESH article via `folded` and
+  take it down with it on expiry. `stats["stale_skipped"]` now reports the count.
+- **#109 MERGED (`6a4a6ad0`) — §13's CLS explanation was wrong twice over.** The shift is 100%
+  `body > main`, and it is **`#izz-install-btn`**: hidden in markup, revealed by `personalize.js`
+  on `beforeinstallprompt`, inside `.nav` in the sticky header. Measured at 412 px: hidden → `main`
+  at 236.3, shown → **285.3**, matching Lighthouse's `boundingRect.top: 285` exactly. 49 px of
+  content jump mid-read, and the event's nondeterministic timing is why the score is bimodal.
+  **Dead ends, do not re-investigate:** `#izz-consent` is `position:fixed` (out of flow, cannot
+  move `main`); the font swap measures **0 px** delta at 412 px and 1280 px.
+  → **Open, and it is the owner's call:** where the install button goes so it stops growing the
+  header. Reserving the row always costs 49 px of mobile header for a button most visitors never
+  see. Delaying the reveal past the CLS window is forbidden — that is chasing the number.
+- **#107 MERGED — `tools/audit.sh` never worked on Windows**, found while doing the above. Three
   independent Linux-only assumptions: Chromium detection missed every Windows path; the version
   line ran `chrome.exe --version`, which forwards to a running instance and logged
   `Opening in existing browser session.` instead of a version (so #103's whole comparability

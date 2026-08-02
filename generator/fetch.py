@@ -343,6 +343,9 @@ def _fetch_html_list(key: str, source: dict) -> tuple[list, str | None]:
             "published": _parse_ro_date(entry.get("date_raw", "")),
             "model": None,
         })
+    if not items:
+        # Acelasi esec tacut ca la RSS si la sitemap: 200, zero articole, invizibil in rapoarte.
+        return items, f"{key}: 200 dar 0 articole din lista HTML (selector schimbat sau pagina goala)"
     return items, None
 
 
@@ -428,6 +431,18 @@ def _fetch_one(key: str, source: dict, cache: dict | None = None) -> tuple[list,
             "published": _parse_date(entry),
             "model": None,
         })
+    if not items:
+        # Esec TACUT altfel, aceeasi clasa ca la sitemap mai sus: sursa raspunde 200, iar
+        # `dead` aduna DOAR erori, deci un feed care nu produce nimic nu aparea nicaieri.
+        # Masurat 2026-08-02: 76 de surse ies goale de pe IP-urile runnerilor GitHub, iar
+        # aceleasi surse dau 8 articole fiecare de pe IP de acasa — productia citeste ~861
+        # articole unde o rulare locala citeste ~1428, si nimic din diferenta asta nu se
+        # vedea in vreun raport.
+        # Un 304 NU trece pe aici: iese mai sus, pentru ca „feed neschimbat" e sanatos.
+        motiv = "feed gol" if not feed.entries else "intrari fara link/titlu, sau filtrate"
+        if getattr(feed, "bozo", 0):
+            motiv += f"; parser: {type(feed.get('bozo_exception')).__name__}"
+        return items, f"{key}: 200 dar 0 articole din {len(feed.entries)} intrari ({motiv})"
     return items, None
 
 
