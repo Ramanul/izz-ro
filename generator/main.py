@@ -4,6 +4,7 @@
   python -m generator.main --dry-run  # afiseaza rezultatul, NU salveaza, NU randeaza
 """
 import argparse
+import hashlib
 import os
 import sys
 
@@ -15,6 +16,7 @@ except ImportError:
 
 from . import fetch, state, cluster, moderation, config
 from .process import get_provider, process_single, process_cluster, process_batch, process_official, OFFICIAL_PREFIXES
+from .util import domain_of
 
 
 def _utf8_stdout():
@@ -22,6 +24,26 @@ def _utf8_stdout():
         sys.stdout.reconfigure(encoding="utf-8")
     except (AttributeError, ValueError):
         pass
+
+
+def _tie(url: str) -> str:
+    """Departajare la scor egal. Fara ea, `sort` fiind stabil, egalitatile ar cadea inapoi
+    pe ordinea de intrare — adica exact ordinea din config.SOURCES pe care o inlocuim aici.
+    Nu e o ipoteza teoretica: sursele cu data fara ora (`_parse_w3c_date` pe sitemap news,
+    `_parse_ro_date`) primesc toate miezul noptii UTC, deci egalitatile sunt sistematice
+    exact acolo. Amprenta URL-ului e stabila intre rulari si necorelata cu sursa."""
+    return hashlib.md5((url or "").encode("utf-8")).hexdigest()
+
+
+def _cluster_rank(group: list) -> tuple:
+    """Cheia de prioritate a unui cluster fata de bugetul AI: (domenii distincte, cel mai
+    proaspat membru, departajare). Doua surse independente care relateaza acelasi lucru
+    sunt un semnal de eveniment real, nu de sablon — de aia coroborarea vine inaintea
+    prospetimii. `published` e ISO 8601 UTC pentru toate caile de ingestie (fetch.py),
+    deci se compara ca sir fara conversie."""
+    domains = {domain_of(a.get("original_link", "")) for a in group}
+    newest = max((a.get("published") or "") for a in group)
+    return (len(domains), newest, _tie(min(a.get("url", "") for a in group)))
 
 
 def process_new(new_items: list, provider, budget: int, existing: list | None = None) -> tuple[list, set, int]:
@@ -55,6 +77,15 @@ def process_new(new_items: list, provider, budget: int, existing: list | None = 
            and any(a["url"] in new_urls for a in g)]
     singles = [it for g in groups if g not in syn for it in g if it["url"] in new_urls]
     singles += [it for it in new_items if it["url"] not in clustered]
+
+    # ORDINEA in care se consuma bugetul. Implicit era ordinea din config.SOURCES
+    # (fetch.py o pastreaza deliberat), dar bugetul se satureaza la fiecare rulare —
+    # ~250 de iteme noi pentru ~10 apeluri — deci pozitia in config decidea ce se
+    # publica: sursele din capul listei mereu, cele de la coada niciodata. Doua
+    # criterii neutre, calculabile fara AI: coroborarea (domenii distincte) si
+    # prospetimea. Vezi specs/ai-budget-ordering.md.
+    syn.sort(key=_cluster_rank, reverse=True)
+    singles.sort(key=lambda a: (a.get("published") or "", _tie(a.get("url", ""))), reverse=True)
 
     # clusterele C intai (1 apel fiecare)
     for g in syn:
@@ -144,6 +175,11 @@ def run(dry_run: bool = False) -> dict:
     # ca sa nu fie infometate cand exista mereu articole noi (umplerea initiala)
     reserve = min(int(os.getenv("UPGRADE_RESERVE", "3")), budget) if provider else 0
     processed_new, folded, used = process_new(new_items, provider, budget - reserve, existing=existing)
+    # Cate iteme noi n-au primit AI in rularea asta. Nu se salveaza in state, deci revin
+    # „noi” la rularea urmatoare — masura reala a presiunii pe buget, invizibila pana acum:
+    # raportul spunea cate articole au IESIT, niciodata cate au fost lasate afara.
+    handled = {a.get("url") for a in processed_new} | folded
+    deferred = sum(1 for i in new_items if i["url"] not in handled)
     processed_new = [a for a in processed_new if not a.get("skip")]
     # inlocuire pe URL: un rep C poate purta URL-ul unei stiri B existente pe care a absorbit-o
     rep_urls = {a.get("url") for a in processed_new}
@@ -165,6 +201,7 @@ def run(dry_run: bool = False) -> dict:
         "dead_sources": dead,
         "new": len(new_items),
         "stale_skipped": stale_skipped,
+        "deferred": deferred,
         "model_B": sum(1 for a in processed_new if a.get("model") == "B"),
         "model_C": sum(1 for a in processed_new if a.get("model") == "C"),
         "total_known": len(combined),
@@ -201,6 +238,9 @@ def _print_report(stats: dict, processed_new: list, dry_run: bool):
     if stats.get("stale_skipped"):
         print(f"Sarite ca deja expirate la citire: {stats['stale_skipped']} "
               f"(peste TTL de {config.ARTICLE_TTL_DAYS} zile — ar fi fost sterse in aceeasi rulare)")
+    if stats.get("deferred"):
+        print(f"Amanate (buget AI epuizat): {stats['deferred']} din {stats['new']} "
+              f"— revin la rularea urmatoare, apeluri folosite: {stats['ai_calls']}")
     print(f"Total cunoscute (dupa expirare): {stats['total_known']} | "
           f"vizibile dupa moderare: {stats['visible_after_moderation']}")
     if stats["hold_important"]:
