@@ -37,6 +37,27 @@ RETRY_AFTER_CAP = 15             # peste atat nu asteptam: un host lent ar bloca
 CACHE_PATH = os.path.join(config.ROOT, "data", "feed_cache.json")
 CACHE_MAX_AGE_H = 3
 
+# Interstitial anti-bot servit cu HTTP 200 de furnizorul de gazduire al multor primarii.
+# Masurat 2026-08-02 pe runnerii GitHub: dintr-o matura de 189 de surse, 66 din cele 68
+# servite de `openresty` l-au primit, fata de 0/24 LiteSpeed si 0/19 nginx. Are corp HTML
+# valid, deci nici statusul nici feedparser nu-l semnaleaza — fara marca asta ajunge in
+# `dead` etichetat "feed gol", ceea ce ar duce pe cineva sa scoata din config surse bune.
+# NU se rezolva prin reincercare: masurat pe 40 de surse, 40/40 au primit acelasi
+# interstitial si dupa o pauza de 6 s (pagina isi cere singura reload la 5 s).
+CHALLENGE_MARK = b"One moment, please"
+
+
+def _is_challenge(body: bytes | str) -> bool:
+    """True daca raspunsul e interstitialul anti-bot, nu continut.
+
+    Accepta si `str`, pentru ca `_fetch_html_list` decodeaza corpul inainte de a-l parsa.
+    Se uita doar in antetul corpului: un articol care citeaza fraza nu e un challenge.
+    """
+    head = body[:4000]
+    if isinstance(head, str):
+        head = head.encode("utf-8", errors="replace")
+    return CHALLENGE_MARK in head
+
 
 def _cache_load() -> dict:
     try:
@@ -323,6 +344,8 @@ def _fetch_html_list(key: str, source: dict) -> tuple[list, str | None]:
                                 source.get("title"), source.get("date"))
     parser.feed(raw)
     if not parser.items:
+        if _is_challenge(raw):
+            return items, f"{key}: challenge anti-bot servit cu 200 (sursa NU e moarta)"
         return items, f"{key}: 0 articole extrase (posibil structura HTML schimbata)"
 
     for entry in parser.items[: config.MAX_PER_SOURCE]:
@@ -439,6 +462,10 @@ def _fetch_one(key: str, source: dict, cache: dict | None = None) -> tuple[list,
         # articole unde o rulare locala citeste ~1428, si nimic din diferenta asta nu se
         # vedea in vreun raport.
         # Un 304 NU trece pe aici: iese mai sus, pentru ca „feed neschimbat" e sanatos.
+        if _is_challenge(raw):
+            # Sursa e vie; gazda ei ne-a servit un challenge in loc de feed. Eticheta
+            # separata conteaza: "feed gol" ar invita la stergerea sursei din config.
+            return items, f"{key}: challenge anti-bot servit cu 200 (sursa NU e moarta)"
         motiv = "feed gol" if not feed.entries else "intrari fara link/titlu, sau filtrate"
         if getattr(feed, "bozo", 0):
             motiv += f"; parser: {type(feed.get('bozo_exception')).__name__}"
