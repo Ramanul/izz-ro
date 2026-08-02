@@ -75,6 +75,32 @@ def validate(ent: dict) -> list[str]:
     for field in REQUIRED_VAL:
         if not vc.get(field):
             errors.append(f"[{eid}] valoare_curenta.{field} lipsă (regulă: fără sursă → nu se publică)")
+    errors += _validate_sectiuni(ent, eid)
+    return errors
+
+
+def _validate_sectiuni(ent: dict, eid: str) -> list[str]:
+    """`sectiuni` e OPTIONAL: ghidurile de valoare (salariu, pensie) n-au nevoie de el, cele
+    procedurale (acte, permis auto, Noua Casă) sunt facute din el. Dar daca exista, forma se
+    verifica — o sectiune fara titlu sau fara continut se randeaza ca un <h2> gol urmat de
+    nimic, adica exact „output degradat" din regula Zero Zgomot, publicat tacut."""
+    sectiuni = ent.get("sectiuni")
+    if sectiuni is None:
+        return []
+    if not isinstance(sectiuni, list):
+        return [f"[{eid}] sectiuni trebuie să fie o listă, nu {type(sectiuni).__name__}"]
+    errors = []
+    for i, s in enumerate(sectiuni):
+        if not isinstance(s, dict):
+            errors.append(f"[{eid}] sectiuni[{i}] nu e un dict")
+            continue
+        for field in ("titlu", "continut"):
+            value = s.get(field)
+            # isinstance INAINTE de .strip(): `titlu: 5` in YAML da un int, iar `.strip()` pe el
+            # arunca AttributeError si opreste build-ul cu traceback brut — exact opusul
+            # validarii curate fail-fast pe care o promite modulul.
+            if not isinstance(value, str) or not value.strip():
+                errors.append(f"[{eid}] sectiuni[{i}].{field} lipsă, gol sau nu e text")
     return errors
 
 
