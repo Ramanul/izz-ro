@@ -1,0 +1,47 @@
+name: silent-probe
+
+# Ce primesc EFECTIV runnerii GitHub de la sursele care raspund 200 si nu dau niciun articol.
+# Masurat 2026-08-02: 73 din 75 de surse raportate GOL de feedcheck (run 30742957035) intorc
+# articole reale de pe IP-ul de acasa, cu acelasi fetcher — deci diferenta e in punctul de
+# observatie, nu in sursa. Scriptul tipareste status, redirect, antete si primii octeti din
+# corp, ca sa se poata distinge intre challenge servit cu 200, feed autentic gol si raspuns
+# trunchiat. Rulat manual. Nu scrie nimic si nu consuma AI quota.
+
+on:
+  workflow_dispatch:
+    inputs:
+      keys:
+        description: "Chei din config.SOURCES, separate prin spatiu (gol = esantionul implicit din script)"
+        required: false
+        type: string
+
+permissions:
+  contents: read
+
+# Doua probe in paralel ar lovi aceleasi surse in acelasi timp si ar putea declansa chiar
+# ele o limitare — adica ar strica masuratoarea pe care o fac. Se serializeaza. Rularea in
+# curs NU se anuleaza: dovada deja stransa e tot ce vrem din ea.
+concurrency:
+  group: silent-probe
+  cancel-in-progress: false
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          # Job-ul nu impinge nimic; tokenul n-are ce cauta in .git/config dupa checkout.
+          persist-credentials: false
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.11"
+          cache: "pip"
+      - run: pip install -r requirements.txt
+      # `inputs.keys` NU se interpoleaza direct in `run` — asta ar fi executie de shell din
+      # continutul inputului. Trece prin mediu si se sparge in argumente cu `read -ra`.
+      - env:
+          PROBE_KEYS: ${{ inputs.keys }}
+        run: |
+          read -ra probe_keys <<< "${PROBE_KEYS:-}"
+          python tools/silent_probe.py ${probe_keys[@]+"${probe_keys[@]}"}

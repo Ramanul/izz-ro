@@ -4,15 +4,24 @@
 > Executors get it read-only. Keep it tight — when it outgrows ~40 lines of content, cut the
 > settled history, not the open work. `git fetch` immediately before rewriting it.
 
-**Updated:** 2026-08-02 10:30 (account A — #106/#107/#108/#109 all merged; **production is losing ~40% of its sources, see Open 1**)
+**Updated:** 2026-08-02 13:45 (account A — #106/#107/#108/#109/#110 merged, #111 open; **production is losing ~40% of its sources, see Open 1**)
 
 ## READ FIRST — production reads 861 articles where a local run reads 1428 (2026-08-02)
-Not a checker artifact. `feedcheck.yml` run `30742957035` on GitHub runners reported **76 sources
-with 0 articles**. The same sources, fetched from the owner's home IP with a cold cache minutes
-later, each returned the full cap: `recorder`, `contributors`, `zch`, `stirilemoldovei`,
-`cronicaolteniei`, `stirimuntenia`, `stirileolteniei` — **8/8 articles, err=None, every one**.
-`build.yml` runs on those same runners: the 06:42 production run logged `Articole citite: 861`
-against 1428 locally. 1428 − 861 ≈ 567 ≈ 71 sources × the 8-item cap, which matches the 76.
+Not a checker artifact, and no longer an estimate. `feedcheck.yml` run `30742957035` on GitHub
+runners reported **75 sources with 0 articles**. All 75 were then re-probed from the owner's home
+IP with **the same production fetcher** (`_fetch_one_guarded`, script in PR #111):
+
+```text
+total probate : 75
+VII local     : 73     goale pe runner, pline de acasa -> punct de observatie
+goale si local: 0
+eroare local  : 2      pl_suceava_oras_dolhasca, pl_arges_oras_costesti (real broken)
+articole recuperabile: 544
+```
+
+**544 measured**, against the production gap of 1428 − 861 = 567. The earlier "≈71 sources × the
+8-item cap" was arithmetic that happened to fit; this is the direct measurement, and it holds.
+The 2 genuinely broken ones now surface as errors instead of silently, thanks to #110.
 → **The site has been quietly publishing from ~60% of its corpus.** Nothing reported it, because
 `fetch_all()` only puts a source in `dead` when it raised an ERROR; a source answering 200 with an
 unparseable or empty feed was invisible. #110 fixes the invisibility (RSS + html_list now report
@@ -23,8 +32,13 @@ of them free: fetch through a proxy with a different egress (a Cloudflare Worker
 failover), a self-hosted runner on the owner's machine (his IP demonstrably works, but the machine
 must be up), or accepting the loss and pruning the corpus honestly. This is production deploy
 config, i.e. §10 — do not pick one unilaterally.
-→ **What is NOT established:** whether the runners get a challenge page, an empty feed, or a
-different payload. Diagnosing that needs one run that captures a response body from a runner.
+→ **What is NOT established:** whether the runners get a challenge page, an empty feed, a redirect,
+or a truncated body. Neither `feed_check.py` nor `ua_probe.py` ever looks at the response body, so
+neither can tell those apart. **PR #111 adds `tools/silent_probe.py` + `silent-probe.yml`** for
+exactly this: status, final URL, headers, feedparser entry count/bozo, first 400 bytes of body.
+`workflow_dispatch` only finds workflows on the default branch, so **the probe cannot run
+until #111 lands** — merge it, then dispatch `silent-probe.yml` and read the output against the
+healthy local witness (`recorder` and `pl_sibiu_oras_agnita`: 200, valid RSS, 10 entries each).
 Do not assume it is HTTP 403 — `feed_check` reported these as `GOL`, not as errors, so the status
 was fine and only the parse yielded nothing.
 
@@ -109,7 +123,22 @@ reuse it rather than building a second county matcher.
    A sub-agent mapped county press incl. weeklies. Only **CJ/IS/TM/BV/MM/AR/PH** have a dedicated
    county source today; the candidates would give **34 counties + București** their first one.
    Every RSS URL is a GUESS (the `<domain>/feed/` WordPress pattern) — the sandbox cannot fetch
-   them, so route the batch through `feedcheck.yml` BEFORE config and expect ~⅓ fallout.
+   them, so verify BEFORE config and expect ~⅓ fallout.
+   **DO NOT verify them with `feedcheck.yml`.** That runs on GitHub runners, i.e. the exact
+   observation point that returns 200-with-nothing for 73 live sources (READ FIRST above). A
+   candidate marked dead there tells you nothing. Verify from the owner's machine, or from the
+   web sandbox — a third IP — and say which one produced the verdict.
+   **The 14 candidates named here WERE verified from the owner's home IP, 2026-08-02 (read-only,
+   nothing added to config): 10 of 14 serve a real feed at `<domain>/feed/`.**
+   ✅ `cvlpress.ro` (50 intrări, "Cuvântul Libertăţii") · `alba24.ro` (20) · `zi-de-zi.ro` (12) ·
+   `monitorulbt.ro` (12) · `turnulsfatului.ro` (10) · `bihon.ro` (10) · `gazetadecluj.ro` (9) ·
+   `b365.ro` (4) — plus **both domains this file flagged as INFERRED are real**: `mytex.ro` (10)
+   and `monitorulexpres.ro` (10). Drop the warning on those two.
+   ❌ `monitorulsv.ro` — `/feed/` 301s to the homepage (458 KB of HTML, 0 entries); the WordPress
+   guess is wrong for it, needs a real feed path. `dobrogeanoua.ro` and `saptamanagiurgiuveana.ro`
+   — HTTP 404. `gazetademaramures.ro` — `SSL: CERTIFICATE_VERIFY_FAILED`.
+   4/14 fallout ≈ 29%, so the ~⅓ estimate was right. The other 65 candidates exist only in the web
+   session's transcript, not on disk — account B has to re-emit the list before they can be checked.
    Land in waves of ~15: 79 at once would starve the 10-call AI budget. Strongest first —
    `cvlpress.ro` (DJ), `zi-de-zi.ro` (MS), `monitorulbt.ro` (BT), `monitorulsv.ro` (SV),
    `turnulsfatului.ro` (SB), `alba24.ro` (AB), `bihon.ro` (BH), `b365.ro` (București).
