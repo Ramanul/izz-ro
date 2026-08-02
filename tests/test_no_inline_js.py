@@ -12,6 +12,15 @@ Testele de mai jos transforma regula din vigilenta in verificare: JS nou = fisie
 Blocurile `<script type="application/ld+json">` sunt date, nu cod: nu se executa, deci CSP
 nu le atinge. Sunt permise explicit.
 
+LIMITA CUNOSCUTA, ca sa nu fie citita ca acoperire mai larga decat e: garda se uita la
+SURSA template-urilor, deci prinde clasa de defect „cineva scrie JS direct in template".
+NU acopera HTML injectat la runtime printr-un filtru `| safe` (`content_html`,
+`newsletter_html`, `body_html`): daca valoarea aia ar contine ea insasi un script, nici
+scanul pe sursa, nici verificarile la nivel de randare de mai jos nu l-ar vedea. Azi acele
+valori vin din markdown controlat in repo, iar corpul articolelor (`a.synthesis`,
+`a.teaser`) nu are `| safe`, deci il protejeaza autoescape-ul Jinja -- dar daca vreodata
+ajunge text liber acolo, garda asta nu e plasa lui.
+
 De ce HTMLParser si nu o expresie regulata: prima versiune inchidea blocurile pe
 `</script\\s*>`, iar CodeQL a semnalat-o corect (`py/bad-tag-filter`) -- HTML accepta si
 `</script foo>`, pe care regexul nu-l prinde, deci un script inline scris asa ar fi trecut
