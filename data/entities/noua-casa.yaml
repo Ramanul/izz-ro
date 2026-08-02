@@ -1,0 +1,52 @@
+# Entitate: Programul Noua Casă 2026
+# Portat din data/utilities.json (calea /utile/ a fost inlocuita de /ghiduri/ pe 17 iul 2026).
+# ⚠️ Valori NEVERIFICATE. `verificat: false` e citit de build si de sabloane: cat timp e false,
+# ghidul NU afiseaza „Verificat" si arata explicit cititorului ca cifrele (taxe, termene) n-au
+# fost confruntate cu sursa oficiala. Se pune pe true DOAR dupa verificare reala.
+# act_normativ + sursa_url sunt verificate pe legislatie.just.ro, nu scrise din memorie.
+
+id: noua-casa
+nume: Programul Noua Casă 2026
+tip: locuinte
+categorie_ghid: locuinte
+categorie_stiri: economic
+valoare_curenta:
+  in_vigoare_de: '2009-06-17'
+  act_normativ: HG 717/2009 — norme de implementare a programului „Noua Casă”
+  sursa_url: https://legislatie.just.ro/Public/DetaliiDocument/107177
+  descriere_lunga: Programul Noua Casă permite achiziția unei locuințe cu avans de doar 5% (locuințe ≤
+    70.000 EUR) sau 15% (locuințe 70.001–140.000 EUR). Statul garantează până la 60% din credit. Dobânda
+    este cea a pieței, negociată cu băncile participante. Plafonul maxim al creditului este de 133.000
+    EUR (140.000 EUR prețul locuinței).
+sectiuni:
+- titlu: Cine poate aplica?
+  continut: 'Orice persoană fizică cu vârsta peste 18 ani, venituri din muncă (salariat, PFA, profesii
+    liberale), fără locuință în proprietate sau care deține o locuință mai mică de 50 mp. Venitul minim
+    necesar: să poată suporta rata lunară (maxim 40% din venitul net familial). Nu se acceptă persoane
+    cu credite restante la stat sau birou de credit cu scor negativ.'
+- titlu: Ce sume și avansuri se aplică?
+  continut: '**Locuințe ≤ 70.000 EUR**: avans minim **5%**, garanție de stat până la 60%. **Locuințe 70.001–140.000
+    EUR**: avans minim **15%**, garanție de stat până la 50%. Creditul maxim: **133.000 EUR** (adică 140.000
+    EUR preț minus avans). Plafonul include TVA (9% pentru locuințe sub 140.000 EUR). Dobânda: ROBOR la
+    3 luni + marja băncii (~2-2,5%), variabilă.'
+- titlu: Acte necesare și pași
+  continut: '**1. Acreditare** la Fondul de Garantare (prin bancă). **2. Documente**: carte de identitate,
+    certificat de căsătorie (dacă e cazul), adeverință de venit (ultimele 6 luni), extras de cont (3 luni),
+    declarație pe proprie răspundere că nu deții locuință, antecontract de vânzare-cumpărare al locuinței,
+    extras de carte funciară. **3. Aprobarea creditului** (2–4 săptămâni). **4. Semnarea contractului**
+    de credit și ipotecă la notar (costuri notariale: ~0,5–1% din prețul locuinței).'
+faq:
+- q: Pot aplica dacă am mai avut o locuință?
+  a: Da, dacă în ultimele 6 luni nu ai deținut o locuință mai mare de 50 mp. Vechiul apartament trebuie
+    vândut sau donat înainte de aplicare.
+- q: Care e diferența între Noua Casă și creditul ipotecar standard?
+  a: 'Avansul este mult mai mic (5% vs. 15–25% la creditul standard), iar statul garantează o parte din
+    credit, ceea ce reduce riscul pentru bancă. Dezavantajul: dobânda este ușor mai mare decât la un credit
+    ipotecar standard cu avans mare.'
+relatii: {}
+verificat: false
+ultima_verificare: '2026-01-01'
+monitorizare:
+  surse:
+  - url: https://www.fngcimm.ro/noua-casa
+    tip: html

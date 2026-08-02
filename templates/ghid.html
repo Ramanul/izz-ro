@@ -23,7 +23,11 @@
   </header>
 
   <div class="utility-summary">
+    {# „Pe scurt" promite o cifra. Ghidurile procedurale n-au una, iar titlul deasupra unei
+       simple linii de sursa e o promisiune neonorata — rezumatul lor e subtitlul de mai sus. #}
+    {% if ent.valoare_curenta.brut is defined or ent.valoare_curenta.valoare_secundara is defined %}
     <h2>📌 Pe scurt</h2>
+    {% endif %}
     {% if ent.valoare_curenta.brut is defined %}
     <div class="utility-value">{{ ent.valoare_curenta.brut | format_int }} {{ ent.valoare_curenta.moneda }}/lună</div>
     <p class="utility-meta">
@@ -75,6 +79,15 @@
     </div>
   </section>
   {% endif %}
+
+  {# Sectiuni de proza: ghidurile procedurale (acte, permis, programe) n-au o cifra-titlu
+     si un istoric de valori, ci pasi si conditii. Markdown-ul e deja convertit in render. #}
+  {% for s in sectiuni %}
+  <section class="utility-section">
+    <h2>{{ s.titlu }}</h2>
+    <div class="utility-body">{{ s.continut_html | safe }}</div>
+  </section>
+  {% endfor %}
 
   {# Calculator legat #}
   {% if calculator_html %}

@@ -670,6 +670,17 @@ def _newsletter_html() -> str:
     return ""
 
 
+def _md_to_html(text: str) -> str:
+    """Markdown -> HTML pentru text din date (sectiunile ghidurilor). Fara `markdown`
+    instalat, cade pe o impartire in paragrafe: mai bine text citibil decat o exceptie
+    la build pentru o dependenta optionala."""
+    try:
+        import markdown as md
+    except ImportError:
+        return "<p>" + (text or "").replace("\n\n", "</p><p>") + "</p>"
+    return md.markdown(text or "", extensions=["extra"])
+
+
 def _render_md_dir(env: Environment, src_dir: str, url_prefix: str) -> None:
     """Randeaza toate .md dintr-un folder la <url_prefix>/<nume>/ cu template-ul legal."""
     if not os.path.isdir(src_dir):
@@ -756,12 +767,17 @@ def _render_ghiduri(env: Environment, articles: list) -> None:
         calculator_html = ""
         if ent.get("relatii", {}).get("calculator"):
             calculator_html = _render_calc_salariu(ent)
+        # Ghidurile procedurale (acte, permis, programe) n-au o cifra-titlu, ci proza pe
+        # sectiuni. Markdown-ul se randeaza aici, nu in template: Jinja n-are filtru de
+        # markdown, iar `| safe` pe text neconvertit ar afisa `**bold**` literal.
+        sectiuni = [{"titlu": s.get("titlu", ""), "continut_html": _md_to_html(s.get("continut", ""))}
+                    for s in (ent.get("sectiuni") or [])]
         _write(os.path.join(OUT_DIR, "ghiduri", eid, "index.html"),
                ghid_tpl.render(**_base_ctx(
                    f"/ghiduri/{eid}/", ent=ent, categorii=categorii,
                    categorii_icon=categorii_icon, related_news=related,
                    faq_jsonld=faq_jsonld, breadcrumb_jsonld=breadcrumb_jsonld,
-                   calculator_html=calculator_html, active_cat=None)))
+                   calculator_html=calculator_html, sectiuni=sectiuni, active_cat=None)))
 
     # Cate ghiduri au inca valori neconfirmate: pagina isi ajusteaza promisiunea dupa asta,
     # ca sa nu scrie „verificate" cand nu sunt.
