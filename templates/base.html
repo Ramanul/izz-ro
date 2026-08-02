@@ -66,7 +66,12 @@
       <a href="{{ base }}/instrumente/"{% if nav_section == 'instrumente' %} class="active"{% endif %}>Instrumente</a>
       <a href="{{ base }}/cauta/">caută</a>
       <button id="izz-install-btn" class="izz-install-btn" type="button" hidden title="Instalează aplicația pe acest dispozitiv" aria-label="Instalează aplicația">Instalează aplicația</button>
-      <button class="theme-toggle" type="button" title="Mod întunecat" aria-label="Comută tema" aria-pressed="false">☾</button>
+      {# Markup-ul NU afirma o stare. Glifa vine din styles.css (dupa `data-theme`, deci corecta
+         de la prima pictare); `title` si `aria-pressed` depind tot de tema, dar CSS nu le poate
+         scrie, deci le pune theme.js la DOMContentLoaded. Hardcodate aici ar fi *gresite* pentru
+         un vizitator pe dark pana atunci -- absente e incomplet, `aria-pressed="false"` e fals.
+         Daca JS-ul nu ruleaza, butonul e oricum mort. Vezi syncToggle() in static/theme.js. #}
+      <button class="theme-toggle" type="button" aria-label="Comută tema"></button>
     </nav>
   </header>
   <nav class="subnav" aria-label="Categorii de știri">

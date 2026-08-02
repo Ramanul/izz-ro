@@ -395,6 +395,12 @@ picture { display: contents; }
   transition: background .15s, color .15s;
 }
 .theme-toggle:hover { background: var(--gold); color: #fff; border-color: var(--gold); }
+/* Glifa arata ACTIUNEA, nu starea curenta: pe tema luminoasa oferi intunericul, pe cea
+   intunecata oferi lumina. Din CSS, nu din JS: theme.js ruleaza in <head>, dar isi poate
+   atinge butonul abia la DOMContentLoaded -- un vizitator pe dark ar vedea intai ☾ si apoi ☀.
+   \FE0E = variation selector "text", altfel Chrome pe Windows deseneaza ☀ ca emoji color. */
+.theme-toggle::before { content: "\263E"; }
+[data-theme="dark"] .theme-toggle::before { content: "\2600\FE0E"; }
 
 /* ------------------------------------------------- Skeleton loader --- */
 @keyframes skeleton-pulse {
