@@ -518,6 +518,20 @@ picture { display: contents; }
 .source-list li { font-size: var(--fs-xs); }
 .source-list a { display: inline-block; padding: var(--s-5) 2px; text-decoration: underline; }
 
+/* /surse/ — arbore regiune istorica > judet pentru sursele institutionale (owner 2026-08-02).
+   Nivel imbricat: fara chenar propriu, doar o linie-ghid la stanga, ca ierarhia sa se
+   citeasca fara sa concureze vizual cu grupa de categorie care il contine. */
+.source-region { margin-top: var(--s-13); }
+.source-region summary {
+  cursor: pointer; font-family: var(--font-mono); font-size: var(--fs-eyebrow);
+  text-transform: uppercase; letter-spacing: 1.5px; font-weight: 700;
+  color: var(--ink-2); padding: var(--s-8) 0;
+}
+.source-region summary:hover { color: var(--gold-strong); }
+.source-region[open] summary { color: var(--gold-strong); }
+.source-county { border-left: 2px solid var(--line); padding-left: var(--s-13); margin: var(--s-13) 0 var(--s-21); }
+.source-county-name { font-size: var(--fs-xs); font-weight: 700; color: var(--ink-2); margin: 0 0 var(--s-8); }
+
 /* ---- arta generativa pe site (faza 2: articol + hero) ---- */
 .article-art {
   display: block; width: 100%; max-width: var(--measure); height: auto;

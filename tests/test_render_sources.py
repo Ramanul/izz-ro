@@ -5,15 +5,25 @@ apara daca pagina lista doar sintezele C cu first_source)."""
 from generator import config, render
 
 
+def _all_sources(group: dict) -> list:
+    """Toate sursele unui grup, ORIUNDE ar sta.
+
+    Din 2026-08-02 sursele institutionale nu mai stau in listele plate ale grupului, ci in
+    arborele `regions > counties`. Invariantele de mai jos raman aceleasi — doar parcurgerea
+    trebuie sa urmeze structura, altfel un test verde ar ascunde surse pierdute.
+    """
+    out = list(group["with_stats"]) + list(group["without_stats"])
+    for region in group.get("regions", []):
+        for county in region["counties"]:
+            out += list(county["with_stats"]) + list(county["without_stats"])
+    return out
+
+
 def test_catalog_covers_every_configured_source():
     catalog, total_sources, stats_sources = render._source_catalog([])
     assert total_sources == len(config.SOURCES)
 
-    listed_names = {
-        s["name"]
-        for group in catalog
-        for s in group["with_stats"] + group["without_stats"]
-    }
+    listed_names = {s["name"] for group in catalog for s in _all_sources(group)}
     configured_names = {v["name"] for v in config.SOURCES.values()}
     assert listed_names == configured_names
     assert sum(g["count"] for g in catalog) == total_sources
@@ -34,7 +44,11 @@ def test_sources_without_synthesis_are_not_shown_with_misleading_zero_stats():
     first=0/total=0/rate=0% (ar parea ca a participat si a performat prost)."""
     catalog, _, _ = render._source_catalog([])
     for group in catalog:
-        for s in group["without_stats"]:
+        without = list(group["without_stats"])
+        for region in group.get("regions", []):
+            for county in region["counties"]:
+                without += county["without_stats"]
+        for s in without:
             assert "first" not in s and "total" not in s and "rate" not in s
 
 
@@ -43,7 +57,7 @@ def test_catalog_respects_one_axis_one_home():
     catalog, _, _ = render._source_catalog([])
     seen = []
     for group in catalog:
-        for s in group["with_stats"] + group["without_stats"]:
+        for s in _all_sources(group):
             seen.append(s["name"])
     assert len(seen) == len(set(seen))
 
@@ -51,7 +65,7 @@ def test_catalog_respects_one_axis_one_home():
 def test_source_links_point_to_the_source_site_with_https():
     catalog, _, _ = render._source_catalog([])
     for group in catalog:
-        for s in group["with_stats"] + group["without_stats"]:
+        for s in _all_sources(group):
             assert s["url"].startswith("https://")
 
 
