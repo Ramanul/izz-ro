@@ -42,8 +42,6 @@ jobs:
       # continutul inputului. Trece prin mediu si se sparge in argumente cu `read -ra`.
       - env:
           PROBE_KEYS: ${{ inputs.keys }}
-          # Doar pe branch-ul de diagnostic: reincearca o data la interstitial anti-bot.
-          IZZ_PROBE_RETRY: "1"
         run: |
           read -ra probe_keys <<< "${PROBE_KEYS:-}"
           python tools/silent_probe.py ${probe_keys[@]+"${probe_keys[@]}"}
