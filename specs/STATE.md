@@ -36,8 +36,11 @@ Three rules that bite if forgotten:
 - **`license_free` must keep rejecting CC-BY-NC and CC-BY-ND** — we crop, so we make derivatives.
 - **Bump `MISS_VERSION`** when adding a search route, or cached misses hide it on all content.
 CLAUDE.md §13's audit baseline was stale (home Perf 89, July) and is now **re-recorded from 5
-runs per page on `3ae6862`**: home 80, article 88, A11y/BP/SEO 100, pa11y 0. Perf variance is
-~±4 with machine load, so a single-run delta under 5 points is noise, not a regression.
+runs per page**: home 80, article 88, A11y/BP/SEO 100, pa11y 0, with the Lighthouse/pa11y/
+Chromium versions written to `.audit/versions.txt`. One extra run under different machine load
+read home 84 — one observation, not an error bar: re-run before calling a small delta a
+regression. `audit.sh` no longer picks the article page with `find | head -1` (it scored
+different pages across runs); pin it with `ARTICLE_PATH=` for any before/after.
 `data/localities.json` (3179 UAT, county labels + `localities.match`) overlaps SIRUTA Slice 2 —
 reuse it rather than building a second county matcher.
 
