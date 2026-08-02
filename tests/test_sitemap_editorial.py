@@ -65,10 +65,32 @@ def test_paginile_de_infrastructura_raman_afara(sitemap_locs):
     assert not gasite, f"pagini care n-ar trebui indexate: {gasite[:5]}"
 
 
-def test_caile_editoriale_se_citesc_de_pe_disc():
-    """Direct pe functie: daca directorul exista pe disc, calea apare — nicio lista scrisa
-    de mana intre ghidul nou si sitemap."""
+def test_paginile_vin_din_ce_s_a_scris_nu_din_ce_e_pe_disc(tmp_path, monkeypatch):
+    """Gaura gasita la review: `output/` nu se curata intre randari, deci un director ramas
+    de la alta ramura — `/utile/`, calea moarta din 17 iulie — intra in sitemap ca pagina vie.
+    Reprodus inainte de reparare: `_editorial_paths()` chiar intorcea `/utile/`.
+    Acum lista vine din ce a scris rularea, deci un director orfan nu are cum sa apara."""
+    monkeypatch.setattr(render, "OUT_DIR", str(tmp_path))
+    monkeypatch.setattr(render, "_PAGES_WRITTEN", set())
+
+    # un director orfan pe disc, pe care nimic nu-l randeaza
+    orfan = tmp_path / "utile" / "salariul-minim"
+    orfan.mkdir(parents=True)
+    (orfan / "index.html").write_text("x", encoding="utf-8")
+    (tmp_path / "utile" / "index.html").write_text("x", encoding="utf-8")
+
+    assert render._editorial_paths() == [], "un director orfan a intrat in sitemap"
+
+    # ce scrie rularea chiar intra, fara nicio lista de editat
+    render._write(str(tmp_path / "ghiduri" / "ghid-nou" / "index.html"), "x")
+    render._write(str(tmp_path / "subiect" / "ceva" / "index.html"), "x")
     paths = render._editorial_paths()
-    assert "/ghiduri/" in paths
-    assert any(p.startswith("/ghiduri/") and p != "/ghiduri/" for p in paths)
+    assert "/ghiduri/ghid-nou/" in paths
     assert not any(p.startswith("/subiect/") for p in paths)
+    assert not any(p.startswith("/utile/") for p in paths)
+
+
+def test_paginile_de_sine_statatoare_vin_din_sursa_lor():
+    """`/despre/` e recunoscuta fiindca `content/pages/despre.md` exista — nu fiindca a
+    supravietuit unei liste de excluderi scrise de mana."""
+    assert "despre" in render._content_page_slugs()

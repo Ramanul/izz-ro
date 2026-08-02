@@ -146,10 +146,20 @@ def _assign_slugs(articles: list) -> None:
         a["published_human"] = _human_date(a.get("published", ""))
 
 
+_PAGES_WRITTEN: set = set()
+
+
 def _write(path: str, content: str) -> None:
     os.makedirs(os.path.dirname(path), exist_ok=True)
     with open(path, "w", encoding="utf-8") as fh:
         fh.write(content)
+    # Evidenta paginilor chiar emise in rularea ASTA, pentru sitemap (_editorial_paths).
+    # `output/` nu se curata intre randari, deci ce e pe disc nu e acelasi lucru cu ce a
+    # publicat rularea curenta -- un director ramas de la o alta ramura ar intra in sitemap
+    # ca pagina vie. Aici nu poate: daca nu s-a scris acum, nu exista.
+    if os.path.basename(path) == "index.html":
+        rel = os.path.relpath(path, OUT_DIR).replace(os.sep, "/")
+        _PAGES_WRITTEN.add("/" + rel[:-len("index.html")].lstrip("/"))
 
 
 def _logo_jsonld() -> dict:
@@ -885,43 +895,46 @@ def _render_legal(env: Environment) -> None:
     _render_md_dir(env, os.path.join(ROOT, "content", "pages"), "")
 
 
-# Sectiunile editoriale care intra in sitemap, plus paginile de sine statatoare din
-# content/pages. NU e derivat din tot output/: `subiect/` are ~300 de pagini de agregare
-# subtiri (decizie de proprietar daca merita indexate), iar `cauta/`, `data/`, `static/`,
-# `leads/`, `portraits/` nu sunt continut de indexat.
+# Sectiunile editoriale care intra in sitemap. NU tot ce se randeaza: `subiect/` are ~300 de
+# pagini de agregare subtiri (decizie de proprietar daca merita indexate), `cauta/` e o unealta,
+# iar `static/`, `data/`, `leads/`, `portraits/` nu sunt pagini.
 _SITEMAP_SECTIONS = ("ghiduri", "instrumente", "calendar", "surse", "legal")
 
 
+def _content_page_slugs() -> set:
+    """Paginile de sine statatoare (ex. /despre/), citite din SURSA lor: content/pages/*.md."""
+    src = os.path.join(ROOT, "content", "pages")
+    if not os.path.isdir(src):
+        return set()
+    return {fn[:-3] for fn in os.listdir(src) if fn.endswith(".md")}
+
+
 def _editorial_paths() -> list:
-    """Caile paginilor editoriale existente pe disc, ca `/ghiduri/permis-auto/`.
+    """Paginile editoriale publicate de rularea curenta, ca `/ghiduri/permis-auto/`.
 
     Pana la 2026-08-02 sitemap-ul continea DOAR `/`, categoriile si articolele: fiecare ghid,
-    instrumentul, calendarul, catalogul de surse si paginile legale lipseau cu totul, desi
-    sunt vii si linkate din navigatie. Se citeste de pe disc, nu dintr-o lista scrisa de mana,
-    ca un ghid nou sa nu ceara si o editare aici ca sa fie descoperit.
+    instrumentul, calendarul, catalogul de surse si paginile legale lipseau cu totul, desi sunt
+    vii si linkate din navigatie.
+
+    Sursa e `_PAGES_WRITTEN` — ce a scris rularea asta — NU un scan al lui `output/`. Prima
+    varianta scana discul si avea o gaura demonstrata: `output/` nu se curata intre randari,
+    deci un director ramas de la alta ramura (`/utile/`, calea moarta din 17 iulie) intra in
+    sitemap ca pagina vie, desi nimic n-o mai randeaza. Ce nu s-a scris acum nu exista.
+    Un ghid nou intra automat, fara sa fie nevoie de o editare aici — asta ramane.
 
     Fara `lastmod`: un „modificat azi" la fiecare rulare de doua ore ar fi neadevarat pentru
     o pagina legala neatinsa de luni de zile. Mai bine niciun semnal decat unul fals."""
-    paths = []
-    for section in _SITEMAP_SECTIONS:
-        root = os.path.join(OUT_DIR, section)
-        if not os.path.isdir(root):
-            continue
-        for dirpath, _dirnames, filenames in os.walk(root):
-            if "index.html" not in filenames:
-                continue
-            rel = os.path.relpath(dirpath, OUT_DIR).replace(os.sep, "/")
-            paths.append(f"/{rel}/")
-    # pagini generale din content/pages (ex. /despre/) -- directoare de nivel 1 care nu sunt
-    # categorii, nu sectiuni deja parcurse si nu directoare de infrastructura
-    skip = set(config.CATEGORIES) | set(_SITEMAP_SECTIONS) | {
-        "static", "data", "subiect", "cauta", "leads", "portraits"}
-    for name in sorted(os.listdir(OUT_DIR)) if os.path.isdir(OUT_DIR) else []:
-        if name in skip or name.startswith("."):
-            continue
-        if os.path.isfile(os.path.join(OUT_DIR, name, "index.html")):
-            paths.append(f"/{name}/")
-    return sorted(set(paths))
+    pages = _content_page_slugs()
+    paths = set()
+    for p in _PAGES_WRITTEN:
+        segments = p.strip("/").split("/") if p.strip("/") else []
+        if not segments:
+            continue  # radacina, deja in sitemap cu lastmod
+        if segments[0] in _SITEMAP_SECTIONS:
+            paths.add(p)
+        elif len(segments) == 1 and segments[0] in pages:
+            paths.add(p)
+    return sorted(paths)
 
 
 def _write_sitemap(articles: list) -> None:
