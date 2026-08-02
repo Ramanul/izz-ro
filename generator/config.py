@@ -149,7 +149,10 @@ CATEGORY_LABELS = {
 
 # Model B+C
 PROMPT_VERSION = "v2-esenta"  # versiunea regulilor AI; la schimbare, articolele vechi se reprocesează
-BATCH_SIZE = 6                 # articole model-B procesate intr-UN singur apel AI (economie quota)
+BATCH_SIZE = 10                # articole model-B procesate intr-UN singur apel AI (economie quota).
+                               # Ridicat 6->10 (owner 2026-08-02, "riscam, vedem ce iese"): ~+67%
+                               # articole/rulare. Cere maxOutputTokens marit (gemini.py, 4096) ca
+                               # lotul JSON sa nu se trunchieze -> altfel pierdere tacuta de lot.
 TITLE_MAX_WORDS = 22           # titlu: soft-cap care transmite faptul complet (nu mai taie la 12)
 TEASER_MAX_WORDS = 40          # B: teaser scurt ("extras foarte scurt")
 SYNTHESIS_MAX_WORDS = 90       # C: sinteză multi-sursă (doar pentru clustere importante)

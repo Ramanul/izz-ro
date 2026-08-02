@@ -22,6 +22,7 @@
   --gold-strong: #8b6918;   /* aur inchis: text/linkuri (AA 4.7:1 pe --paper; #94701a trecea doar pe alb pur) */
   --gold-wash:   #faf5e6;
   --ink-fixed:   #15171c;   /* NU se inverseaza in dark mode; pt. text pe fundal auriu (--gold ramane deschis in ambele teme) */
+  --danger:      #c0392b;   /* stare distructiva (reset stats hover); 5.07:1 pe --paper */
 
   --fs-eyebrow: 0.7rem;
   --fs-xs:      0.786rem;
@@ -61,11 +62,14 @@ a:hover { color: var(--ink); }
 :focus-visible { outline: 2px solid var(--gold-strong); outline-offset: 3px; }
 
 /* ---------------------------------------------------------------- Masthead --- */
+/* header + subnav sticky impreuna: inaltimea header-ului variaza (wrap pe mobil,
+   padding diferit sub 640px), deci stickyul sta pe container, nu pe .subnav cu un
+   `top` calculat din inaltimea lui .site-header (fragil, s-ar desincroniza). */
+.site-header-group { position: sticky; top: 0; z-index: 10; }
 .site-header {
   border-top: 4px solid var(--gold);              /* bara aurie de broadsheet */
   border-bottom: 1px solid var(--line);
   background: var(--paper-2);
-  position: sticky; top: 0; z-index: 10;
   display: flex; align-items: center; justify-content: space-between;
   gap: var(--s-21); flex-wrap: wrap;
   padding: var(--s-21) var(--s-34);
@@ -105,6 +109,18 @@ a:hover { color: var(--ink); }
   padding-bottom: 3px; border-bottom: 2px solid transparent; white-space: nowrap;
 }
 .subnav a:hover, .subnav a.active { color: var(--gold-strong); border-bottom-color: var(--gold); }
+/* Sub ~1200px banda depaseste ecranul (masurat: 805px ascunsi la 390px, 427px la 768px) si
+   nimic nu arata ca mai urmeaza ceva. Ultimele intrari sunt Regional / Zonal / Local, deci
+   exact categoriile geografice ramaneau nedescoperite pe telefon. Degradeul din dreapta e
+   indiciul; padding-ul de la capat il compenseaza, ca ultimul link sa nu ramana sub el cand
+   s-a derulat pana la final. Masca lucreaza pe alfa, nu pe culori — nu atinge paleta. */
+@media (max-width: 1200px) {
+  .subnav {
+    padding-right: var(--s-55);
+    -webkit-mask-image: linear-gradient(to right, #000 calc(100% - var(--s-34)), transparent);
+    mask-image: linear-gradient(to right, #000 calc(100% - var(--s-34)), transparent);
+  }
+}
 
 /* ---------------------------------------------------------------- Layout --- */
 main { max-width: var(--maxw); margin: 0 auto; padding: var(--s-34) var(--s-34); }
@@ -317,7 +333,7 @@ picture { display: contents; }
   background: none; border: 1px solid var(--line-strong); border-radius: 4px;
   color: var(--ink-3); font-size: var(--fs-xs); cursor: pointer; align-self: flex-start;
 }
-.stats-reset:hover { border-color: #c0392b; color: #c0392b; }
+.stats-reset:hover { border-color: var(--danger); color: var(--danger); }
 .stats-hint { font-size: var(--fs-xs); color: var(--ink-3); margin: 0; font-style: italic; }
 
 /* ---------------------------------------------------------- Responsive --- */
@@ -343,12 +359,13 @@ picture { display: contents; }
   --paper-2:     #141b22;
   --ink:         #e4e8ec;
   --ink-2:       #9ba3ae;
-  --ink-3:       #6b7483;
+  --ink-3:       #808b9c;   /* #6b7483 masurat 4.01:1 pe --paper / 3.68:1 pe --paper-2 (pa11y: 305 erori pe /) - eșua AA */
   --line:        #1e2a35;
   --line-strong: #2a3746;
   --gold:        #d6b25e;
   --gold-strong: #c9a227;
   --gold-wash:   #1a1d10;
+  --danger:      #e0574a;   /* 5.08:1 pe --paper dark; #c0392b (light) dadea 3.48:1 */
 }
 [data-theme="dark"] .lead-feature { background: var(--paper-2); }
 [data-theme="dark"] .card-media { background: var(--line); }
@@ -420,7 +437,11 @@ picture { display: contents; }
 }
 .breadcrumbs a { color: var(--ink-3); text-decoration: underline; }
 .breadcrumbs a:hover { color: var(--gold-strong); }
-.breadcrumbs .sep { color: var(--line-strong); user-select: none; }
+/* --line-strong e un token de HAIRLINE; folosit ca text dadea 1.5:1 (WCAG cere 4.5:1).
+   --ink-3 e tokenul de meta discret, deja calibrat pentru text. Gasit ruland pa11y pe
+   /ghiduri/ — auditul standard atinge doar home si un articol, deci breadcrumbs de aici
+   n-au fost masurate niciodata. */
+.breadcrumbs .sep { color: var(--ink-3); user-select: none; }
 
 /* ------------------------------------------------- Paginare --- */
 .pagination {
@@ -477,6 +498,25 @@ picture { display: contents; }
 .stats-table { border-collapse: collapse; width: 100%; max-width: var(--measure); font-size: var(--fs-xs); }
 .stats-table th, .stats-table td { text-align: left; padding: var(--s-8) var(--s-13); border-bottom: 1px solid var(--line); }
 .stats-table th { font-family: var(--font-mono); font-size: var(--fs-eyebrow); text-transform: uppercase; letter-spacing: 1px; color: var(--ink-3); border-bottom: 2px solid var(--ink); }
+
+/* Catalog de surse (/surse/): un grup pliabil per categorie din config.CATEGORIES, ca 189
+   randuri sa nu fie o lista plata neutilizabila (mai ales pe mobil, unde "local" are >100). */
+.source-groups { display: flex; flex-direction: column; gap: var(--s-13); margin-top: var(--s-34); max-width: var(--measure); }
+.source-group { border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; }
+.source-group summary {
+  padding: var(--s-13) var(--s-21); cursor: pointer; font-weight: 700;
+  font-family: var(--font-display); font-size: var(--fs-md); color: var(--ink);
+  background: var(--paper-2); user-select: none;
+}
+.source-group summary:hover { color: var(--gold-strong); }
+.source-group[open] summary { border-bottom: 1px solid var(--line); color: var(--gold-strong); }
+.source-group-count { font-family: var(--font-mono); font-size: var(--fs-eyebrow); font-weight: 400; color: var(--ink-3); margin-left: var(--s-8); }
+.source-group-body { padding: var(--s-13) var(--s-21) var(--s-21); }
+.source-group-body .table-wrap { margin-bottom: var(--s-8); }
+.source-list-label { font-family: var(--font-mono); font-size: var(--fs-eyebrow); text-transform: uppercase; letter-spacing: 1.5px; color: var(--ink-3); margin: var(--s-21) 0 var(--s-8); font-weight: 700; }
+.source-list { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: var(--s-5) var(--s-21); }
+.source-list li { font-size: var(--fs-xs); }
+.source-list a { display: inline-block; padding: var(--s-5) 2px; text-decoration: underline; }
 
 /* ---- arta generativa pe site (faza 2: articol + hero) ---- */
 .article-art {
@@ -617,5 +657,15 @@ picture { display: contents; }
 .related-news-list a:hover { color: var(--gold-strong); }
 .utility-value-sec { font-family: var(--font-display); font-size: var(--fs-lg); font-weight: 700; color: var(--ink); margin: var(--s-5) 0; }
 .utility-note { font-size: var(--fs-xs); color: var(--ink-2); margin: var(--s-5) 0 0; }
+/* Valori inca neconfirmate pe sursa oficiala. Trebuie sa se vada langa cifra, nu in subsol —
+   sunt sume dupa care cineva isi face un calcul. Bara aurie in loc de rosu: e o rezerva
+   onesta, nu o eroare, si ramane in paleta. */
+.utility-unverified {
+  border-left: 3px solid var(--gold); background: var(--gold-wash);
+  padding: var(--s-13) var(--s-21); margin: var(--s-21) 0;
+  font-size: var(--fs-xs); color: var(--ink-2); max-width: var(--measure);
+}
+.utility-unverified strong { color: var(--ink); }
+.utility-card-updated.is-unverified { color: var(--gold-strong); font-weight: 700; }
 .btn-preset { font-family: var(--font-mono); font-size: var(--fs-eyebrow); padding: 4px 10px; border: 1px solid var(--line-strong); border-radius: var(--radius); background: var(--paper); cursor: pointer; color: var(--ink-2); }
 .btn-preset:hover { background: var(--gold); color: #fff; border-color: var(--gold); }

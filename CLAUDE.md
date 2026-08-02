@@ -7,6 +7,7 @@
 - Talk to the user (Alexandru) in **Romanian**. Code, identifiers, commit messages, logs, and technical terms stay in **English**.
 - Be direct and concise. No flattery, no auto-agreement. If a request is wrong or there is a better path, say so with reasons.
 - State uncertainty explicitly. Never present a guess as fact.
+- **Be proactive (owner decision 2026-07-24).** In EVERY discussion — izz.ro or any other topic — anticipate the next problem and surface improvement / efficiency ideas unprompted, act with initiative. But proposals stay proposals the owner confirms: initiative never becomes autonomous action on `main` or an unattended loop (§5, §14 still bind).
 
 ## 1. What izz.ro is
 AI-powered Romanian news aggregator. Brand promise: **"Zero Zgomot"** (Zero Noise) — synthesized, de-duplicated, clean news. The site is **statically generated** from a content pipeline (scrape -> synthesize -> cluster -> categorize -> render).
@@ -14,7 +15,7 @@ AI-powered Romanian news aggregator. Brand promise: **"Zero Zgomot"** (Zero Nois
 ## 2. Tech stack — VERIFIED 2026-06-26
 Python 3.11 (cloud) / 3.14 (local), Jinja2, feedparser, pyyaml, python-slugify, markdown, python-dotenv.
 AI: Gemini 2.5 Flash Lite via REST (no SDK), switchable to Claude API via `AI_PROVIDER=anthropic`.
-CI/CD: GitHub Actions (`build.yml`, cron 30 min). Hosting: Cloudflare Pages (render-only build).
+CI/CD: GitHub Actions (`build.yml`, cron `13 */2` — every 2h). Hosting: Cloudflare Pages (render-only build).
 Pipeline state: `data/articles.json` (committed to repo — no SQLite).
 
 ## 3. Repository structure
@@ -28,7 +29,7 @@ content/legal/      legal pages (markdown)
 data/articles.json  pipeline state (committed to repo, persists between runs)
 moderation.yaml     editorial control (human in the loop)
 output/             generated site (gitignored; deployed by Cloudflare Pages)
-.github/workflows/  build.yml (fetch+AI+commit, cron 30min)
+.github/workflows/  build.yml (fetch+AI+commit, cron every 2h — see §17)
 ```
 
 ## 4. Commands — use EXACT strings
@@ -111,6 +112,23 @@ The 2026-07-10 autonomous mandate is **OVER**. Its backlog shipped (2026-07-11) 
 - Historical record of the delivered backlog (do not re-do): Chromium image engine, cache `_headers`, EAA accessibility statement, legal wording pass, A11y/SEO/perf thresholds, pytest suite + tests.yml, covers.py cleanup — all ✅.
 - **Owner facts (never invent legal facts):** operator = natural person, initials **S.A.N.**, Romania — already in privacy.md.
 
+### 14b. Background work — REINSTATED, BOUNDED (owner decision 2026-08-01)
+§14 banned autonomous loops because *two accounts* each ran one and collided (12–13 Jul). That
+premise is gone: STATE.md records single-account mode. The owner is often away for days and wants
+progress meanwhile, so a background Routine is allowed again — under limits that keep the original
+failure impossible:
+- **It never merges to `main`.** It opens a **draft PR** and stops. Only the owner merges. This is
+  the whole safety property: nothing reaches the live site without human review.
+- **One task per firing**, taken from the `## Open` list in `specs/STATE.md`. It does not invent
+  work, does not touch anything marked "owner decision pending", and does not start a second task.
+- **It stops and reports instead of guessing.** Ambiguity, a failing premise, or a task needing a
+  cost/design call ends the run with a written note in the PR or STATE.md — not a best guess.
+- **It updates `specs/STATE.md`** so the next session (background or owner) starts informed.
+- Everything else still applies: §5 spec→verify→commit, §16 two-role verification, §7/§8 domain
+  and token rules. A background run gets no exemption from any of them.
+Anything wider than this — self-merging, self-directed backlog invention, a second concurrent
+loop — remains forbidden by §14 above.
+
 ## 15. Sub-agents & commands — delegate the verification rituals
 Project sub-agents live in `.claude/agents/` (versioned, see its README). Each isolates a noisy, bounded, summarizable job and returns a verdict — use them so the main thread stays on the decision, not the noise. Map task → agent:
 - Changing `generator/cluster.py` or its thresholds → **`clustering-tuner`** verifies over-merge AND under-merge on real samples (enforces §7). It reports; it does not edit.
@@ -131,7 +149,12 @@ never pushes or merges.
 are" — current task, last relevant commits, user WIP, blockers, next steps. Manager-owned writes:
 update it at the end of every slice and inside `/review-devin`; executors receive it read-only.
 Overwrite in place, keep it under ~30 lines. Start every session by reading it (after
-`git pull --ff-only` — the CI bot commits every ~30 min, so local main is always stale).
+`git pull --ff-only` — the CI bot commits every 2h, so local main is often stale).
+
+**Delegation-first execution (owner decision 2026-07-24).** Default posture: delegate execution work to agents, keep the main thread on decisions — in any discussion, not only izz.ro. Two agent tiers with DIFFERENT reach, never conflate them:
+- *In-session Claude subagents* (`Explore`, `general-purpose`, the verification agents) run in ANY environment, including Claude on the web. These are the default executor when working from a web/Linux session.
+- *Free code executors* (Devin, OpenCode) run ONLY from a local desktop session via the Windows wrapper — they are NOT reachable from a web/Linux container (verified 2026-07-24: no `devin.exe`, no `pywinpty`). From the web, do not pretend otherwise: use in-session subagents or do it directly, and say which.
+Delegation is not free: when a task's implementation is smaller than the spec+review overhead (≈<5k tokens, see `specs/metrics.md`), do it directly instead of delegating. Never delegate in a way that races `main` or arms an autonomous loop (§14 holds absolutely).
 
 Slash commands in `.claude/commands/`: **`/slice`** drives the mandatory §5 workflow for one vertical slice; **`/audit`** runs the front-end audit. Permission allowlist for the documented-safe commands lives in `.claude/settings.json` (this is §12 made enforceable — read-only and dev/build commands no longer prompt; push/commit/deletes still do). A web-only `SessionStart` hook (`.claude/hooks/session-start.sh`) installs the pipeline deps (with `SETUPTOOLS_USE_DISTUTILS=stdlib`, needed for feedparser/sgmllib3k) so Claude Code on the web can run the pipeline and these agents.
 
@@ -145,7 +168,71 @@ Context: a correct CSS fix was reported "rezolvat" while the owner still saw the
 3. **Three distinct states — never conflate them, and use the exact words:**
    - "**reparat în cod**" = the diff is written.
    - "**verificat local**" = both roles above passed on the built site here.
-   - "**confirmat pe live**" = the deployed site shows it fixed. Only I (owner) or the live `smoke_live.py` can reach izz.ro — the sandbox cannot. So Claude MUST NOT say "rezolvat / gata / done" for a user-visible issue. The most it may claim on its own is **"reparat + verificat local; rămâne de confirmat pe live după deploy"**, and it states plainly what the owner should check. "Done" is reserved for after live confirmation.
+   - "**confirmat pe live**" = the deployed site shows it fixed.
+     **MEASURED CORRECTION 2026-07-25 — the old "the sandbox cannot reach izz.ro" is FALSE here.**
+     From the Claude Code web sandbox: `https://izz.ro/` → HTTP 200 with real content, and every
+     PR gets a Cloudflare branch preview (`https://<branch>.izz-ro.pages.dev/`) that is also
+     reachable. Both were used to prove a before/after on the real deploy: live `/surse/` served
+     9,804 bytes with 2 external links and zero "Primăria", the preview served 39,262 bytes with
+     189 links and 121 primării; live manifest `name` was still `izz.ro — Zero Zgomot` while the
+     preview served `izz.ro`. News sites stay blocked by the proxy — that limit is real and
+     separate. **So Claude CAN reach the third state now**, and must actually do it before saying
+     "gata": fetch the deployed URL, assert the exact symptom is gone, quote the response.
+     Always cache-bust (`?cb=$(date +%s)`) — a plain request can hit a cached edge copy.
+     If a future sandbox genuinely cannot reach it, say so with the failing command, and fall back
+     to **"reparat + verificat local; rămâne de confirmat pe live după deploy"**. What has not
+     changed: never say "rezolvat / gata / done" for a user-visible issue on code evidence alone.
 4. **When you cannot test something, say so explicitly** (which role, why) instead of implying it passed. Honesty about a gap beats a confident false "gata".
 
 This overrides any earlier phrasing that let "committed/rendered" stand in for "fixed for the user".
+
+## 17. Publication cadence & throughput — MEASURED 2026-07-25 (stop re-diagnosing this)
+Twice now a session has read "cron 30 min" in this file, seen runs 1.5–4.5h apart, and concluded
+the pipeline was broken. It is not. The docs were wrong; they are fixed above. The real numbers:
+
+- **`build.yml` cron is `13 */2` — every 2 hours, deliberately.** Each state commit triggers a
+  Cloudflare Pages build and the free plan allows ~500/month; 12/day ≈ 360/month leaves headroom
+  for PR previews. Running more often exhausts the build budget and deploys stop — that is
+  literally the 5–9 July 2026 outage. **Do not "fix" the cadence by making it more frequent.**
+- **The throughput cap is the AI budget, not the schedule:** `max_ai_calls` defaults to 18 per
+  run (≈216/day). `workflow_dispatch` accepts a one-off override for seeding a new category;
+  the comment in `build.yml` says explicitly not to change the cron default.
+- **Measured volume** (`data/articles.json`, 2026-07-25): 25 articles by midday, against 198 the
+  previous full day, 92, 40, 101, 229, 286 for the days before. Day-to-day variance is large and
+  normal; a low count at noon is not evidence of a stalled pipeline. **Check run history before
+  claiming the pipeline is down** — `gh run list --workflow=pipeline` or the Actions API.
+- If the owner wants more articles per day, the lever is the per-run AI budget (costs Gemini
+  quota) or clustering yield — **not** the cron. That is a cost decision, so it is the owner's.
+
+## 18. Local institution images — consent-gated (owner decision 2026-07-24)
+Taxpayer funding does NOT place a public institution's photos in the public domain, and "public on their site" ≠ free to reuse. Legea 8/1996 art. 9 frees the TEXT of official acts (laws, administrative notices) — NOT photographs. A photo taken by a municipal employee is the INSTITUTION's work: the institution is the rightsholder and must grant reuse; a photo by a contracted photographer or an agency (Agerpres/Mediafax) belongs to that third party. Being of an elected official reduces that person's *image right* (they may be shown) but does NOT touch the *photographer's copyright* in a specific image. These are not legal facts to improvise (§14) — for anything operational, the owner confirms with a lawyer.
+
+izz.ro may use a local institution's image ONLY when one of these holds, verified and RECORDED (link + quote):
+1. the institution publishes reuse terms / an open license (open-data / PSI reuse notice) covering images, OR
+2. a free-licensed portrait/photo exists on Wikidata / Wikimedia Commons (existing pipeline path — `fetch_leadphotos.py` PD/CC0, `fetch_portraits.py` CC-BY), OR
+3. the institution gave written reuse permission.
+NO blanket scraping of institution sites. Agents research and gather this evidence per institution into a whitelist; the owner (or legal) approves it before any image is pulled — human-in-the-loop, like `moderation.yaml`. Missing all three → the article keeps its generated cover.
+
+## 19. Session hygiene & context economy — HARD RULE (owner decision 2026-08-01)
+Context: a session opened on 2026-07-25 was still being continued on 2026-08-01. Every turn
+re-sent a week of history, and two `actions_list` calls returned **340,000 characters each**.
+The 5-hour usage window hit 32% in roughly ten minutes of work. Nothing in that history was
+needed — `specs/STATE.md` already held every conclusion.
+
+- **One task, one session.** Do not continue a conversation across days. When a slice is done and
+  STATE.md is updated, the transcript has no residual value: STATE.md *is* the handoff, and §15
+  already requires reading it first. Say so to the owner rather than silently continuing a stale
+  session.
+- **Never pull a large payload into context.** GitHub Actions listings, full `data/articles.json`,
+  log files, `git log` without `--format` — filter at the source (`jq`, a `python -c` that prints
+  only the fields needed, `--per_page`, `grep -c`, `head`). A tool result costing more than the
+  slice it supports is a defect, not a detail. If a tool dumps to a file because it was too large,
+  that is the signal the call was wrong — narrow it, do not read the file.
+- **Model to match the work.** Routine single-slice edits do not need the most expensive model;
+  reserve it for planning and hard reasoning. §12's effort guidance is about depth, this is about
+  cost — they are different dials.
+- **Sub-agents cost ~5.6x per delivered line** (measured, `COORD-DASHBOARD.md`). Worth it for
+  genuinely parallel or noisy measurement work; wasteful for an edit you can make directly.
+- **Agents share the working tree.** A background agent that runs `git checkout` moves the branch
+  under everyone else — this happened on 2026-07-25 and cost a rebuild. Give every parallel agent
+  `isolation: "worktree"`, or a dedicated `git worktree`. Never let two agents write the same branch.

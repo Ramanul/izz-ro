@@ -24,13 +24,54 @@ Protocol — every step is mandatory, in order (identical to /delegate-devin exc
    explicit list of user WIP files OpenCode must not touch, stage, or discard.
 
 4. **Hand off headless.** From the repo root, in background (Bash run_in_background):
-   `opencode run --dir . --title "<task-slug>" "Read AGENTS.md and specs/STATE.md (context, read-only), then execute specs/<task-slug>.md exactly. Work on branch oc/<task-slug>. Report in Romanian." 2>&1`
+   `bash tools/oc_run.sh --dir . --title "<task-slug>" "Read AGENTS.md and specs/STATE.md (context, read-only), then execute specs/<task-slug>.md exactly. Work on branch oc/<task-slug>. Report in Romanian." 2>&1`
+   - `tools/oc_run.sh` walks the free-route ladder below automatically: it skips routes whose
+     key is unset, runs the first eligible one, and falls through on INFRASTRUCTURE failure
+     only (non-zero exit, or an `Error:` line from opencode — auth / quota / rate limit /
+     "credit card"). A route that runs and reports the task went badly is NOT retried —
+     that is a task problem, and re-running it on four more providers only burns quota.
+     Exit 0 = one route completed; exit 1 = every eligible route failed.
+     `bash tools/oc_run.sh --list` shows which routes are live right now and why the others
+     are skipped. Override the ladder for one run with `OC_ROUTES="a,b"`.
+     Calling `opencode run` directly still works; you just lose the automatic fallback.
    - Permissions come from repo `opencode.json` (edits allowed; destructive git + rm denied).
      NEVER pass `--auto`.
    - Model: pinned in repo `opencode.json` (`opencode/deepseek-v4-flash-free`). TRAP
      (2026-07-19): without a pinned model, opencode auto-picks a Gemini model from the
      user's `GEMINI_API_KEY` env var and dies on a missing Google key. Free Zen models:
      `opencode models | grep -E "free|pickle"`.
+   - **Free fallback ladder (verified 2026-08-02).** When the Zen quota (~100 req/day) is
+     spent, re-run the SAME command with `-m <route>`; no reconfiguration needed. In order:
+     1. `opencode/laguna-s-2.1-free` · `opencode/north-mini-code-free` — other Zen free
+        models (SMOKE-TESTED OK). Same quota pool, so this only helps if one model is
+        rate-limited, not if the daily budget is gone.
+     2. `google/gemini-3.1-flash-lite` — **separate quota**, key already in the env
+        (SMOKE-TESTED OK, returned a correct answer). This is the real first fallback.
+        TRAP (2026-08-02): opencode's `google` provider reads `GOOGLE_GENERATIVE_AI_API_KEY`,
+        NOT `GEMINI_API_KEY` — it lists the models fine and then fails at call time with
+        "API key is missing". Fixed in `opencode.json` via an explicit
+        `provider.google.options.apiKey = {env:GEMINI_API_KEY}`. Do not "fix" it by
+        setting a new env var.
+     3. `mistral/codestral-latest` — **separate quota, SMOKE-TESTED OK 2026-08-02** with the
+        owner's key. Third real fallback after the two above.
+        `openrouter-free/*` — still dormant, needs `OPENROUTER_API_KEY` (and a one-off $10
+        deposit on their side). The manager never creates accounts or handles keys.
+        **`cerebras/*` and `groq/*` are OUT of the ladder — keys exist and are valid, but
+        both free tiers are structurally unusable for an agentic harness. Do NOT re-diagnose
+        this as a bad key:** groq caps tokens-per-minute at 8k–12k while opencode's system
+        prompt alone is 32–46k tokens ("Request too large" on every call); cerebras returns
+        `payment_required` on every chat call and caps free context at 8k anyway. They stay
+        wired in `opencode.json` so a paid plan would work instantly.
+     4. `ollama/qwen2.5-coder:7b` — local, unlimited, offline. **Deliberately NOT in the
+        default ladder.** Measured 2026-08-02: this machine has a GTX 1060 with 3GB VRAM and
+        16GB RAM, so a 4.7GB 7B model runs half on CPU — far too slow to drive an agentic
+        loop with tool calls. Reachable on purpose with
+        `OC_ROUTES="ollama/qwen2.5-coder:7b" tools/oc_run.sh "..."` after
+        `ollama pull qwen2.5-coder:7b`. Offline last resort, not a replacement executor.
+     NOT a fallback: `vercel/*` free models. Verified 2026-08-02 — the AI Gateway refuses
+     with "requires a valid credit card on file" despite `AI_GATEWAY_API_KEY` being set.
+   - `small_model` (session titles/metadata) is pinned to `google/gemini-3.1-flash-lite`
+     so housekeeping calls burn Google's quota instead of the 100/day Zen budget.
    - If it errors with auth/credentials: the user must run `opencode auth login -p opencode`
      in their OWN terminal (API key from https://opencode.ai/auth) — the manager never
      handles the key.

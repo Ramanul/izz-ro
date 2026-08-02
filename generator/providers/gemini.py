@@ -15,6 +15,10 @@ from .base import Provider
 # `-latest` alias (nu o versiune fixata): modelele fixate sunt retrase periodic de
 # Google (ex. gemini-2.5-flash-lite -> 404 "no longer available"), aliasul nu.
 MODEL = os.getenv("GEMINI_MODEL", "gemini-flash-lite-latest")
+# Plafonul de output. Trebuie sa creasca CU config.BATCH_SIZE: un lot model-B de 10 articole
+# produce ~2000 de tokeni de JSON, iar un array trunchiat e pierdut TACUT de _parse_json_array
+# (regex-ul nu gaseste `]` de inchidere -> []). 4096 da spatiu pentru 10 articole + model C.
+MAX_OUTPUT_TOKENS = int(os.getenv("GEMINI_MAX_OUTPUT_TOKENS", "4096"))
 # Baza URL a API-ului. Poti ruta prin Cloudflare AI Gateway (cache, retry,
 # rate-limit, observabilitate) setand GEMINI_BASE_URL la URL-ul gateway-ului:
 #   https://gateway.ai.cloudflare.com/v1/<account_id>/<gateway>/google-ai-studio
@@ -50,7 +54,7 @@ class GeminiProvider(Provider):
             # 3.5 Flash-Lite pe 2026-07-21 -> site inghetat 3 zile). Modelul nou
             # are "minimal thinking" implicit — echivalentul lui budget 0.
             "generationConfig": {
-                "temperature": 0.2, "maxOutputTokens": 2048,
+                "temperature": 0.2, "maxOutputTokens": MAX_OUTPUT_TOKENS,
                 "responseMimeType": "application/json",
             },
         }).encode("utf-8")

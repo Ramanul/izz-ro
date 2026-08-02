@@ -1,5 +1,7 @@
 # Entitate: Pensia minimă garantată (indemnizația socială)
-# ⚠️ Toate valorile de mai jos sunt placeholders — de verificat pe surse oficiale înainte de publicare.
+# ⚠️ Valori NEVERIFICATE. Steagul `verificat: false` de mai jos e citit de build si de sabloane:
+# cat timp e false, ghidul NU afiseaza „Verificat" si arata explicit cititorului ca datele
+# n-au fost confruntate cu sursa oficiala. Se pune pe true DOAR dupa verificare reala.
 
 id: pensia-minima
 nume: "Pensia minimă garantată"
@@ -38,6 +40,7 @@ faq:
 
 relatii: {}
 
+verificat: false
 ultima_verificare: "2026-01-01"
 
 monitorizare:

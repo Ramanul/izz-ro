@@ -23,6 +23,14 @@ jobs:
 
       - name: Claude review
         if: env.HAS_TOKEN == 'true'
+        # Non-blocking on purpose. The reviewer runs on the owner's Claude quota, and when that
+        # quota is spent the action fails before inference (measured on PR #88: duration 427ms,
+        # total_cost_usd 0, num_turns 1, zero permission denials — nothing was billed because
+        # nothing ran). That is an external condition no code change fixes, and a check that
+        # goes red for external reasons stops being read — the same reasoning feedcheck uses for
+        # 429s (LIMIT, not DEAD) and monitor.yml for edge 403s. The step still shows a warning,
+        # so a real reviewer failure is visible; it just no longer gates every PR in the repo.
+        continue-on-error: true
         uses: anthropics/claude-code-action@v1
         with:
           claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
@@ -34,7 +42,11 @@ jobs:
             For every issue, include a concrete proposed fix (code snippet or
             diff), so the author can apply it or reply "@claude apply your
             fixes" to have you commit the changes on this branch.
-          claude_args: '--allowed-tools "Bash(gh pr comment:*),Bash(gh pr view:*),Bash(gh pr diff:*)"'
+          # Read/Grep/Glob are required: a reviewer asked to judge correctness must open
+          # the files around the diff. Without them the run ends is_error:true after a
+          # handful of permission denials (measured on PR #85: 9 turns, 5 denials).
+          # Read-only by design — no Write/Edit, so the reviewer still cannot touch the branch.
+          claude_args: '--allowed-tools "Read,Grep,Glob,Bash(gh pr comment:*),Bash(gh pr view:*),Bash(gh pr diff:*)"'
 
       - name: Token missing notice
         if: env.HAS_TOKEN != 'true'
