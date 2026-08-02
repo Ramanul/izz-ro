@@ -45,6 +45,44 @@
           {% endfor %}
         </ul>
         {% endif %}
+
+        {% for region in group.regions %}
+        <details class="source-region">
+          <summary>{{ region.label }}
+            <span class="source-group-count">{{ region.count }} {{ "sursă" if region.count == 1 else "surse" }}</span>
+          </summary>
+          {% for county in region.counties %}
+          <div class="source-county">
+            <p class="source-county-name">{{ county.label }}
+              <span class="source-group-count">{{ county.count }}</span>
+            </p>
+            {% if county.with_stats %}
+            <div class="table-wrap">
+            <table class="stats-table">
+              <caption class="visually-hidden">{{ county.label }} — surse cu statistici de originalitate</caption>
+              <thead><tr><th>Sursă</th><th>A publicat prima</th><th>Apariții în sinteze</th><th>Rată de inițiativă</th></tr></thead>
+              <tbody>
+                {% for s in county.with_stats %}
+                <tr>
+                  <td><a href="{{ s.url }}" target="_blank" rel="noopener noreferrer">{{ s.name }}</a></td>
+                  <td>{{ s.first }}</td><td>{{ s.total }}</td><td>{{ s.rate }}%</td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+            </div>
+            {% endif %}
+            {% if county.without_stats %}
+            <ul class="source-list">
+              {% for s in county.without_stats %}
+              <li><a href="{{ s.url }}" target="_blank" rel="noopener noreferrer">{{ s.name }}</a></li>
+              {% endfor %}
+            </ul>
+            {% endif %}
+          </div>
+          {% endfor %}
+        </details>
+        {% endfor %}
       </div>
     </details>
     {% endfor %}

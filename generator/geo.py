@@ -16,6 +16,7 @@ Sursa datelor: `data/raport_complet_primarii.csv` (coloanele Judet, Localitate) 
 randuri, 42 de judete, deja in repo. Regiunile istorice sunt singura parte scrisa de mana.
 """
 import csv
+import json
 import os
 import re
 
@@ -41,6 +42,21 @@ REGIUNI = {
                  "ILFOV", "PRAHOVA", "TELEORMAN", "BUCURESTI"],
     "OLTENIA": ["DOLJ", "GORJ", "MEHEDINTI", "OLT", "VALCEA"],
     "DOBROGEA": ["CONSTANTA", "TULCEA"],
+}
+
+# Gruparea de AFISARE (owner, 2026-08-02): pe /surse/ vrem 7 regiuni, nu 9 — Crisana si
+# Maramuresul intra la Transilvania. E o decizie EDITORIALA de prezentare si sta separat
+# INTENTIONAT: `REGIUNI` de mai sus alimenteaza clasificarea articolelor, iar comasarea
+# acolo ar schimba ce ajunge pe `regional`. Listele de judete nu se dubleaza — se derive.
+_COMASARI_AFISARE = {"CRISANA": "TRANSILVANIA", "MARAMURES": "TRANSILVANIA"}
+
+ORDINE_REGIUNI_AFISARE = ("TRANSILVANIA", "BANAT", "BUCOVINA", "MOLDOVA",
+                          "MUNTENIA", "OLTENIA", "DOBROGEA")
+
+ETICHETE_REGIUNI = {
+    "TRANSILVANIA": "Transilvania", "BANAT": "Banat", "BUCOVINA": "Bucovina",
+    "MOLDOVA": "Moldova", "MUNTENIA": "Muntenia", "OLTENIA": "Oltenia",
+    "DOBROGEA": "Dobrogea",
 }
 
 # Sinonime uzuale in presa pentru regiuni.
@@ -187,3 +203,85 @@ def clasifica(text: str) -> str | None:
             if gasit == "local":
                 break        # nu exista nivel mai specific
     return gasit
+
+
+# ---- Gruparea surselor institutionale pe regiune -> judet (pentru /surse/) ----
+
+_JUD_DIN_CHEIE: dict | None = None
+
+
+def _judete_normalizate() -> dict:
+    """{'BISTRITA_NASAUD': 'BISTRITA-NASAUD', ...} — forma din cheia sursei -> numele din CSV.
+    Cheile sunt slug-uri (`pl_bistrita_nasaud_...`), deci cratima devine underscore."""
+    global _JUD_DIN_CHEIE
+    if _JUD_DIN_CHEIE is None:
+        _JUD_DIN_CHEIE = {}
+        for judete in REGIUNI.values():
+            for j in judete:
+                _JUD_DIN_CHEIE[j.replace("-", "_").replace(" ", "_")] = j
+    return _JUD_DIN_CHEIE
+
+
+def judet_din_cheie(cheie: str) -> str | None:
+    """Judetul unei surse institutionale, din cheia ei de config.
+
+    `pl_bistrita_nasaud_municipiul_bistrita` -> 'BISTRITA-NASAUD' · `cj_cluj` -> 'CLUJ'.
+    Potrivirea e pe cel mai LUNG nume: altfel `satu_mare` s-ar opri la un judet mai scurt.
+    Returneaza None pentru sursele care nu codeaza un judet (ziare, surse nationale).
+    """
+    if not cheie:
+        return None
+    rest = cheie.split("_", 1)[1] if "_" in cheie else ""
+    if not rest:
+        return None
+    rest = rest.upper()
+    judete = _judete_normalizate()
+    for slug in sorted(judete, key=len, reverse=True):
+        if rest == slug or rest.startswith(slug + "_"):
+            return judete[slug]
+    return None
+
+
+def regiune_afisare(judet: str | None) -> str | None:
+    """Regiunea de AFISARE a unui judet (7 regiuni), sau None daca judetul e necunoscut."""
+    if not judet:
+        return None
+    for regiune, judete in REGIUNI.items():
+        if judet in judete:
+            return _COMASARI_AFISARE.get(regiune, regiune)
+    return None
+
+
+_ETICHETE_JUDETE: dict | None = None
+
+
+def eticheta_judet(judet: str | None) -> str:
+    """Numele judetului CU diacritice, pentru afisare: 'BISTRITA-NASAUD' -> 'Bistrița-Năsăud'.
+
+    Sursa e `data/localities.json` (campul `judet`, deja cu diacritice, construit de
+    build_gazetteer) — CSV-ul primariilor le are doar in antet, nu si in valori.
+    """
+    global _ETICHETE_JUDETE
+    if _ETICHETE_JUDETE is None:
+        _ETICHETE_JUDETE = {}
+        try:
+            with open(os.path.join(config.ROOT, "data", "localities.json"),
+                      encoding="utf-8") as fh:
+                date = json.load(fh)
+            for intrari in (date.get("by_name") or {}).values():
+                for e in intrari:
+                    brut = (e.get("judet") or "").strip()
+                    if not brut:
+                        continue
+                    curat = re.sub(r"^Jude[tț]ul\s+", "", brut).strip()
+                    _ETICHETE_JUDETE.setdefault(
+                        strip_diacritics(curat).upper(), curat)
+        except (OSError, ValueError):
+            pass
+    if not judet:
+        return ""
+    # Cele doua pe care gazetteer-ul nu le acopera: Bucurestiul nu e judet acolo, iar
+    # Valcea apare doar fara diacritice. Verificate una cate una, nu ghicite.
+    return _ETICHETE_JUDETE.get(judet) or {
+        "BUCURESTI": "București", "VALCEA": "Vâlcea",
+    }.get(judet, judet.title())

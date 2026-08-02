@@ -11,7 +11,7 @@ from xml.sax.saxutils import escape as xml_escape
 from jinja2 import Environment, FileSystemLoader, select_autoescape
 from slugify import slugify
 
-from . import config, covers, htmlart
+from . import config, covers, geo, htmlart
 from .util import title_tokens, domain_of
 
 ROOT = config.ROOT
@@ -309,22 +309,62 @@ def _source_catalog(by_date: list) -> tuple[list, int, int]:
 
     catalog = []
     for cat in config.CATEGORIES:
-        entries = sorted((v for v in config.SOURCES.values() if v["category"] == cat),
-                          key=lambda v: _norm_name(v["name"]))
+        entries = sorted(((k, v) for k, v in config.SOURCES.items() if v["category"] == cat),
+                         key=lambda kv: _norm_name(kv[1]["name"]))
         if not entries:
             continue
         with_stats, without_stats = [], []
-        for v in entries:
+        pe_judet: dict = {}
+        for key, v in entries:
             site_url = f"https://{domain_of(v['url'])}/"
             if v["name"] in src_stats:
-                with_stats.append({"name": v["name"], "url": site_url, **src_stats[v["name"]]})
+                rec, camp = {"name": v["name"], "url": site_url, **src_stats[v["name"]]}, "with_stats"
             else:
-                without_stats.append({"name": v["name"], "url": site_url})
+                rec, camp = {"name": v["name"], "url": site_url}, "without_stats"
+            # Sursele institutionale isi codeaza judetul in cheie (`pl_<judet>_...`, `cj_<judet>`)
+            # -> intra in arborele regiune/judet. Ziarele nu il codeaza si raman in lista plata.
+            judet = geo.judet_din_cheie(key)
+            if judet:
+                pe_judet.setdefault(judet, {"with_stats": [], "without_stats": []})[camp].append(rec)
+            else:
+                (with_stats if camp == "with_stats" else without_stats).append(rec)
         catalog.append({
             "key": cat, "label": config.CATEGORY_LABELS.get(cat, cat.capitalize()),
             "count": len(entries), "with_stats": with_stats, "without_stats": without_stats,
+            "regions": _grupeaza_pe_regiuni(pe_judet),
         })
     return catalog, len(config.SOURCES), len(src_stats)
+
+
+def _grupeaza_pe_regiuni(pe_judet: dict) -> list:
+    """{judet: {with_stats, without_stats}} -> arbore regiune istorica > judet, pentru /surse/.
+
+    Sapte regiuni (decizia ownerului 2026-08-02), in ordinea din `geo`; judetele alfabetic
+    dupa eticheta afisata. Judetele fara regiune cunoscuta ar disparea tacut, asa ca merg
+    intr-o grupa proprie la final -- o sursa nu se pierde niciodata din catalog.
+    """
+    pe_regiune: dict = {}
+    for judet, buckets in pe_judet.items():
+        regiune = geo.regiune_afisare(judet) or "ALTELE"
+        pe_regiune.setdefault(regiune, []).append({
+            "label": geo.eticheta_judet(judet),
+            "count": len(buckets["with_stats"]) + len(buckets["without_stats"]),
+            **buckets,
+        })
+
+    ordine = list(geo.ORDINE_REGIUNI_AFISARE) + ["ALTELE"]
+    out = []
+    for regiune in ordine:
+        judete = pe_regiune.get(regiune)
+        if not judete:
+            continue
+        judete.sort(key=lambda j: _norm_name(j["label"]))
+        out.append({
+            "label": geo.ETICHETE_REGIUNI.get(regiune, "Alte județe"),
+            "count": sum(j["count"] for j in judete),
+            "counties": judete,
+        })
+    return out
 
 
 def _dedup_sources(a: dict) -> None:
