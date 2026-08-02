@@ -35,8 +35,9 @@ Three rules that bite if forgotten:
   4 distinct Costești / 3 Ungheni / 2 Zărnești exist, all with different photos.
 - **`license_free` must keep rejecting CC-BY-NC and CC-BY-ND** — we crop, so we make derivatives.
 - **Bump `MISS_VERSION`** when adding a search route, or cached misses hide it on all content.
-Also: CLAUDE.md §13's audit baseline (home Perf 89) is STALE — measured before *and* after on the
-same machine, home is 80 → 80, article 88 → 87. Re-record it before trusting a future "regression".
+CLAUDE.md §13's audit baseline was stale (home Perf 89, July) and is now **re-recorded from 5
+runs per page on `3ae6862`**: home 80, article 88, A11y/BP/SEO 100, pa11y 0. Perf variance is
+~±4 with machine load, so a single-run delta under 5 points is noise, not a regression.
 `data/localities.json` (3179 UAT, county labels + `localities.match`) overlaps SIRUTA Slice 2 —
 reuse it rather than building a second county matcher.
 
