@@ -17,6 +17,12 @@
     return Math.round(n).toLocaleString("ro-RO") + " lei";
   }
 
+  function scazut(n) {
+    // Minusul are sens doar cand chiar se scade ceva: cu campul golit, "-0 lei" pe cinci
+    // randuri arata a defect.
+    return (n > 0 ? "-" : "") + lei(n);
+  }
+
   function rand(eticheta, valoare, clasa) {
     var d = document.createElement("div");
     d.className = "calc-item" + (clasa ? " " + clasa : "");
@@ -39,7 +45,9 @@
     var salariuMinim = parseFloat(box.getAttribute("data-salariu-minim")) || 0;
 
     function calc() {
-      var brut = parseFloat(input.value) || 0;
+      // `min="0"` tine doar de validarea formularului, nu de valoarea citita aici: un brut
+      // negativ tastat manual dadea "- -1.250 lei" pe fiecare rand.
+      var brut = Math.max(0, parseFloat(input.value) || 0);
       var cas = Math.round(brut * 0.25);
       var cass = Math.round(brut * 0.1);
       var deducere = Math.round(salariuMinim * 0.2);
@@ -48,11 +56,11 @@
       var net = brut - cas - cass - impozit;
 
       out.textContent = "";
-      out.appendChild(rand("CAS (25%)", "-" + lei(cas)));
-      out.appendChild(rand("CASS (10%)", "-" + lei(cass)));
+      out.appendChild(rand("CAS (25%)", scazut(cas)));
+      out.appendChild(rand("CASS (10%)", scazut(cass)));
       out.appendChild(rand("Deducere personală", lei(deducere)));
       out.appendChild(rand("Bază impozabilă", lei(baza)));
-      out.appendChild(rand("Impozit (10%)", "-" + lei(impozit)));
+      out.appendChild(rand("Impozit (10%)", scazut(impozit)));
       out.appendChild(rand("SALARIU NET", lei(net), "calc-total"));
     }
 

@@ -116,6 +116,29 @@ def test_rendered_calculator_carries_no_inline_code():
     assert 'class="calc-brut"' in html
 
 
+def test_standalone_calculator_page_renders_wired():
+    """Pagina de sine statatoare, randata cap-coada. Testul de mai sus acopera doar partial-ul
+    prin `_render_calc_salariu` (calea ghidurilor) -- iar exact pagina asta a fost a doua
+    suprafata moarta pe live, deci lipsa ei din suita e fix golul care a lasat-o asa."""
+    html = render._env().get_template("calculator.html").render(
+        **render._base_ctx("/instrumente/calculator-salariu/", salariu_minim=4050))
+    scan = _scan(html)
+    assert not scan.inline_bodies
+    assert not scan.handlers
+    assert 'data-salariu-minim="4050"' in html
+    assert "/static/calc-salariu.js?v=" in html, "scriptul nu e inclus -> pagina nu calculeaza"
+
+
+def test_missing_entity_value_does_not_break_the_build():
+    """`valoare_curenta: null` in date facea `.get(...).get(...)` sa pice cu AttributeError
+    in mijlocul randarii. Pagina trebuie sa se randeze cu valoarea de rezerva, nu sa opreasca
+    build-ul pentru un camp gol."""
+    assert render._salariu_minim({"valoare_curenta": None}) == render._SALARIU_MINIM_FALLBACK
+    assert render._salariu_minim({}) == render._SALARIU_MINIM_FALLBACK
+    assert render._salariu_minim(None) == render._SALARIU_MINIM_FALLBACK
+    assert render._salariu_minim({"valoare_curenta": {"brut": 4582}}) == 4582
+
+
 def test_calculator_script_is_versioned():
     """§16.2: activele /static/ sunt servite `immutable` 30 de zile. Fara hash de continut
     in `?v=`, fixul nu ajunge la vizitatorii care revin -- exact capcana din 2026-07-12."""

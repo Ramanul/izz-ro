@@ -642,10 +642,9 @@ def _render_ghiduri(env: Environment, articles: list) -> None:
     # Salariul minim ajunge in pagina la randare, nu printr-un fetch() la runtime: situl se
     # regenereaza la 2h, deci valoarea e la fel de proaspata, iar pagina nu mai depinde de
     # cod inline (blocat de CSP) ca sa afiseze ceva.
-    salariu_minim = entities.get("salariul-minim", {}).get("valoare_curenta", {}).get("brut", 4050)
     _write(os.path.join(OUT_DIR, "instrumente", "calculator-salariu", "index.html"),
            calc_tpl.render(**_base_ctx("/instrumente/calculator-salariu/",
-                                       salariu_minim=salariu_minim)))
+                                       salariu_minim=_salariu_minim(entities.get("salariul-minim")))))
 
     # Calendar din termenele entităților
     termene = []
@@ -675,14 +674,25 @@ def _render_ghiduri(env: Environment, articles: list) -> None:
                now_timestamp=_dt.now().timestamp())))
 
 
+_SALARIU_MINIM_FALLBACK = 4050
+
+
+def _salariu_minim(ent: dict | None) -> int:
+    """Brutul minim al unei entitati, cu o singura valoare de rezerva in tot codul.
+    Tolereaza `valoare_curenta: null` in date -- acolo `.get("valoare_curenta", {})` intoarce
+    None, iar un `.get` inlantuit ar pica build-ul cu AttributeError."""
+    val = (ent or {}).get("valoare_curenta") or {}
+    brut = val.get("brut")
+    return brut if isinstance(brut, (int, float)) else _SALARIU_MINIM_FALLBACK
+
+
 def _render_calc_salariu(env: Environment, ent: dict) -> str:
     """Markup-ul calculatorului, dintr-un template -- NU dintr-un f-string cu JS in el.
     Varianta veche emitea <script> inline si oninput=/onclick=, pe care CSP-ul
     (`script-src 'self'`, _write_headers) le blocheaza tacut: pe live calculatorul afisa
     campul si butoanele si nu calcula nimic. Codul e acum in static/calc-salariu.js."""
-    brut = ent.get("valoare_curenta", {}).get("brut", 4050)
     return env.get_template("_calc_salariu.html").render(
-        salariu_minim=brut, calc_heading="🧮 Calculator salariu net")
+        salariu_minim=_salariu_minim(ent), calc_heading="🧮 Calculator salariu net")
 
 
 def _render_utilities(env: Environment, articles: list) -> None:
