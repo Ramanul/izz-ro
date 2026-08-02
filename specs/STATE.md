@@ -61,6 +61,17 @@ comma decimals) + `tools/build_gazetteer.py`. **geo.py is UNCHANGED — still th
   `payment_required`, and its free context cap is 8k anyway. Both stay wired for a future paid plan.
   Local `ollama` is out too: measured hardware is a GTX 1060 3GB / 16GB RAM — too slow for an
   agentic loop. `OPENROUTER_API_KEY` is the only unclaimed free-ish route (needs a one-off $10).
+- **Gemini free tier = 15 requests per MINUTE. MEASURED, not read** (`54581538`): probed the
+  production key directly — 15 calls returned 200, the 16th returned 429 with `limit: 15` for
+  `generate_content_free_tier_requests`. `gemini.py` sits exactly on that ceiling by design
+  (`GEMINI_THROTTLE=4.0` → 4s × 15 = 60s), which is why its comment says 2s tripped 429.
+  The daily cap is irrelevant: `MAX_AI_CALLS_PER_RUN=18` × 12 runs = 216/day, hardcoded.
+  → Consequence: opencode must NEVER share that key. Its google route now reads
+  `GEMINI_API_KEY_OC` (dormant until a key from a **different Google account** exists — same
+  account shares the quota), and `small_model` moved to `mistral/codestral-latest` because it
+  runs on every session and must not depend on a contended key.
+  → Also measured: **zero Gemini errors across the last 6 pipeline runs.** The 429s in those
+  logs are feed sources (elle, bzi, libertatea), not the AI provider. Do not re-diagnose.
 - **The "too few articles" cause was an outage, not the budget.** 30 consecutive `pipeline` runs
   failed 21 Jul 17:40 → 24 Jul 03:37 UTC with `AI DOWN — HTTP 400`: Gemini's `-latest` alias
   repointed to a 3.x model that rejects `thinkingConfig`. Fixed by `d56a8db` (#76); green since.
