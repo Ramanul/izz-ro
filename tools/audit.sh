@@ -23,14 +23,20 @@ mkdir -p "$OUT"
 if [ -z "${CHROME_PATH:-}" ]; then
   CHROME_PATH="$(ls -d /opt/pw-browsers/chromium-*/chrome-linux/chrome 2>/dev/null | head -1 || true)"
   [ -z "$CHROME_PATH" ] && CHROME_PATH="$(command -v google-chrome chromium chromium-browser chrome 2>/dev/null | head -1 || true)"
-  # Windows/Git-Bash: none of the above exist, so the script used to abort unless the
-  # caller exported CHROME_PATH by hand. These are the three default install locations.
-  [ -z "$CHROME_PATH" ] && CHROME_PATH="$(ls -d \
-      "/c/Program Files/Google/Chrome/Application/chrome.exe" \
-      "/c/Program Files (x86)/Google/Chrome/Application/chrome.exe" \
-      "$HOME/AppData/Local/Google/Chrome/Application/chrome.exe" 2>/dev/null | head -1 || true)"
+  # Windows/Git-Bash: none of the above exist, so the script used to abort unless the caller
+  # exported CHROME_PATH by hand. Only GOOGLE CHROME's default install locations are probed:
+  # Chromium ships no official Windows installer, so its path depends on the packager and
+  # there is nothing canonical to hard-code — a guessed path would be a fabricated one. For a
+  # Chromium or Edge build on Windows, pass CHROME_PATH; that route is unchanged and works.
+  if [ -z "$CHROME_PATH" ]; then
+    for p in "/c/Program Files/Google/Chrome/Application/chrome.exe" \
+             "/c/Program Files (x86)/Google/Chrome/Application/chrome.exe" \
+             "$HOME/AppData/Local/Google/Chrome/Application/chrome.exe"; do
+      if [ -x "$p" ]; then CHROME_PATH="$p"; break; fi
+    done
+  fi
 fi
-[ -z "$CHROME_PATH" ] && { echo "!! no Chrome/Chromium found — set CHROME_PATH"; exit 1; }
+[ -z "$CHROME_PATH" ] && { echo "!! no browser found — set CHROME_PATH (Chrome, Chromium or Edge)"; exit 1; }
 export CHROME_PATH
 FLAGS="--headless=new --no-sandbox --disable-gpu --disable-dev-shm-usage"
 
