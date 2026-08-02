@@ -4,15 +4,24 @@
 > Executors get it read-only. Keep it tight — when it outgrows ~40 lines of content, cut the
 > settled history, not the open work. `git fetch` immediately before rewriting it.
 
-**Updated:** 2026-08-02 10:30 (account A — #106/#107/#108/#109 all merged; **production is losing ~40% of its sources, see Open 1**)
+**Updated:** 2026-08-02 13:45 (account A — #106/#107/#108/#109/#110 merged, #111 open; **production is losing ~40% of its sources, see Open 1**)
 
 ## READ FIRST — production reads 861 articles where a local run reads 1428 (2026-08-02)
-Not a checker artifact. `feedcheck.yml` run `30742957035` on GitHub runners reported **76 sources
-with 0 articles**. The same sources, fetched from the owner's home IP with a cold cache minutes
-later, each returned the full cap: `recorder`, `contributors`, `zch`, `stirilemoldovei`,
-`cronicaolteniei`, `stirimuntenia`, `stirileolteniei` — **8/8 articles, err=None, every one**.
-`build.yml` runs on those same runners: the 06:42 production run logged `Articole citite: 861`
-against 1428 locally. 1428 − 861 ≈ 567 ≈ 71 sources × the 8-item cap, which matches the 76.
+Not a checker artifact, and no longer an estimate. `feedcheck.yml` run `30742957035` on GitHub
+runners reported **75 sources with 0 articles**. All 75 were then re-probed from the owner's home
+IP with **the same production fetcher** (`_fetch_one_guarded`, script in PR #111):
+
+```
+total probate : 75
+VII local     : 73     goale pe runner, pline de acasa -> punct de observatie
+goale si local: 0
+eroare local  : 2      pl_suceava_oras_dolhasca, pl_arges_oras_costesti (real broken)
+articole recuperabile: 544
+```
+
+**544 measured**, against the production gap of 1428 − 861 = 567. The earlier "≈71 sources × the
+8-item cap" was arithmetic that happened to fit; this is the direct measurement, and it holds.
+The 2 genuinely broken ones now surface as errors instead of silently, thanks to #110.
 → **The site has been quietly publishing from ~60% of its corpus.** Nothing reported it, because
 `fetch_all()` only puts a source in `dead` when it raised an ERROR; a source answering 200 with an
 unparseable or empty feed was invisible. #110 fixes the invisibility (RSS + html_list now report
@@ -23,8 +32,13 @@ of them free: fetch through a proxy with a different egress (a Cloudflare Worker
 failover), a self-hosted runner on the owner's machine (his IP demonstrably works, but the machine
 must be up), or accepting the loss and pruning the corpus honestly. This is production deploy
 config, i.e. §10 — do not pick one unilaterally.
-→ **What is NOT established:** whether the runners get a challenge page, an empty feed, or a
-different payload. Diagnosing that needs one run that captures a response body from a runner.
+→ **What is NOT established:** whether the runners get a challenge page, an empty feed, a redirect,
+or a truncated body. Neither `feed_check.py` nor `ua_probe.py` ever looks at the response body, so
+neither can tell those apart. **PR #111 adds `tools/silent_probe.py` + `silent-probe.yml`** for
+exactly this: status, final URL, headers, feedparser entry count/bozo, first 400 bytes of body.
+`workflow_dispatch` only finds workflows on the default branch, so **the probe cannot run until
+#111 lands** — merge it, then dispatch `silent-probe.yml` and read the output against the healthy
+local witness (`recorder` and `pl_sibiu_oras_agnita`: 200, valid RSS, 10 entries each).
 Do not assume it is HTTP 403 — `feed_check` reported these as `GOL`, not as errors, so the status
 was fine and only the parse yielded nothing.
 
