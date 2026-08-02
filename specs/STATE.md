@@ -123,7 +123,22 @@ reuse it rather than building a second county matcher.
    A sub-agent mapped county press incl. weeklies. Only **CJ/IS/TM/BV/MM/AR/PH** have a dedicated
    county source today; the candidates would give **34 counties + București** their first one.
    Every RSS URL is a GUESS (the `<domain>/feed/` WordPress pattern) — the sandbox cannot fetch
-   them, so route the batch through `feedcheck.yml` BEFORE config and expect ~⅓ fallout.
+   them, so verify BEFORE config and expect ~⅓ fallout.
+   **DO NOT verify them with `feedcheck.yml`.** That runs on GitHub runners, i.e. the exact
+   observation point that returns 200-with-nothing for 73 live sources (READ FIRST above). A
+   candidate marked dead there tells you nothing. Verify from the owner's machine, or from the
+   web sandbox — a third IP — and say which one produced the verdict.
+   **The 14 candidates named here WERE verified from the owner's home IP, 2026-08-02 (read-only,
+   nothing added to config): 10 of 14 serve a real feed at `<domain>/feed/`.**
+   ✅ `cvlpress.ro` (50 intrări, "Cuvântul Libertăţii") · `alba24.ro` (20) · `zi-de-zi.ro` (12) ·
+   `monitorulbt.ro` (12) · `turnulsfatului.ro` (10) · `bihon.ro` (10) · `gazetadecluj.ro` (9) ·
+   `b365.ro` (4) — plus **both domains this file flagged as INFERRED are real**: `mytex.ro` (10)
+   and `monitorulexpres.ro` (10). Drop the warning on those two.
+   ❌ `monitorulsv.ro` — `/feed/` 301s to the homepage (458 KB of HTML, 0 entries); the WordPress
+   guess is wrong for it, needs a real feed path. `dobrogeanoua.ro` and `saptamanagiurgiuveana.ro`
+   — HTTP 404. `gazetademaramures.ro` — `SSL: CERTIFICATE_VERIFY_FAILED`.
+   4/14 fallout ≈ 29%, so the ~⅓ estimate was right. The other 65 candidates exist only in the web
+   session's transcript, not on disk — account B has to re-emit the list before they can be checked.
    Land in waves of ~15: 79 at once would starve the 10-call AI budget. Strongest first —
    `cvlpress.ro` (DJ), `zi-de-zi.ro` (MS), `monitorulbt.ro` (BT), `monitorulsv.ro` (SV),
    `turnulsfatului.ro` (SB), `alba24.ro` (AB), `bihon.ro` (BH), `b365.ro` (București).
