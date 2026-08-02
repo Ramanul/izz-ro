@@ -1,5 +1,376 @@
 [
   {
+    "url": "https://csid.ro/stiri/gheata-reutilizabila-vs-cuburile-clasice-de-gheata-care-este-varianta-mai-sigura-si-cand-merita-sa-o-folosesti-21261114",
+    "original_link": "https://www.csid.ro/stiri/gheata-reutilizabila-vs-cuburile-clasice-de-gheata-care-este-varianta-mai-sigura-si-cand-merita-sa-o-folosesti-21261114/",
+    "source": "csid",
+    "source_name": "CSÎD",
+    "source_lang": "ro",
+    "title": "Gheața reutilizabilă răcește băuturile fără diluare, fiind o alternativă practică la cuburile clasice",
+    "category": "lifestyle",
+    "published": "2026-08-02T15:00:25+00:00",
+    "model": "B",
+    "teaser": "Cuburile reutilizabile devin populare datorită avantajului de a răci băuturile fără a le modifica textura prin topire, oferind multiple utilizări în gospodărie.",
+    "entities": [],
+    "icon": "snowflake",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://zcj.ro/eveniment/cine-era-motociclistul-care-a-murit-dupa-ce-un-tir-i-a-taiat-calea-pe-dn1-cluj-turda-avea-doar-36-de-ani--299445.html",
+    "original_link": "https://zcj.ro/eveniment/cine-era-motociclistul-care-a-murit-dupa-ce-un-tir-i-a-taiat-calea-pe-dn1-cluj-turda-avea-doar-36-de-ani--299445.html",
+    "source": "zcj",
+    "source_name": "Ziua de Cluj",
+    "source_lang": "ro",
+    "title": "Un motociclist de 36 de ani a decedat într-un accident rutier pe DN1",
+    "category": "local",
+    "published": "2026-08-02T14:44:00+00:00",
+    "model": "B",
+    "teaser": "Un șofer de TIR i-a tăiat calea unui motociclist în vârstă de 36 de ani, provocând un accident mortal pe Drumul Național 1, în zona localității Vâlcele.",
+    "entities": [
+      "DN1",
+      "Vâlcele",
+      "Cluj"
+    ],
+    "icon": "bike",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://cursdeguvernare.ro/tulcea-resturi-de-drona-au-cazut-in-zona-periprava-dupa-ce-un-aparat-a-fost-doborat-in-ucraina.html",
+    "original_link": "https://cursdeguvernare.ro/tulcea-resturi-de-drona-au-cazut-in-zona-periprava-dupa-ce-un-aparat-a-fost-doborat-in-ucraina.html",
+    "source": "cursdeguv",
+    "source_name": "Curs de Guvernare",
+    "source_lang": "ro",
+    "title": "Resturi de dronă prăbușite la Periprava după ce a zburat în România",
+    "category": "local",
+    "published": "2026-08-02T14:32:21+00:00",
+    "model": "C",
+    "sources": [
+      {
+        "name": "Curs de Guvernare",
+        "url": "https://cursdeguvernare.ro/tulcea-resturi-de-drona-au-cazut-in-zona-periprava-dupa-ce-un-aparat-a-fost-doborat-in-ucraina.html"
+      },
+      {
+        "name": "Libertatea",
+        "url": "https://www.libertatea.ro/stiri/ro-alert-tulcea-obiecte-spatiul-aerian-duminica-5837133"
+      }
+    ],
+    "first_source": "Curs de Guvernare",
+    "synthesis": "O dronă a pătruns în spațiul aerian al României, evoluând timp de aproximativ douăzeci de minute deasupra zonelor de frontieră și a brațului Sulina. Aparatul a trecut ulterior în Ucraina, unde a fost doborât de forțele ucrainene. Fragmente din aceasta au căzut pe teritoriul românesc, în zona localității Periprava din județul Tulcea. Autoritățile naționale au emis avertizări de tip RO-Alert pentru populația din regiune.",
+    "entities": [
+      "Periprava",
+      "Tulcea",
+      "Ucraina",
+      "Ministerul Apărării Naționale"
+    ],
+    "icon": "plane",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://hotnews.ro/arabia-saudita-rusia-si-alti-cinci-membri-ai-opec-au-decis-o-noua-majorare-a-productiei-de-petrol-2315418",
+    "original_link": "https://hotnews.ro/arabia-saudita-rusia-si-alti-cinci-membri-ai-opec-au-decis-o-noua-majorare-a-productiei-de-petrol-2315418",
+    "source": "hotnews",
+    "source_name": "HotNews",
+    "source_lang": "ro",
+    "title": "Arabia Saudită, Rusia și alți membri OPEC+ au majorat producția de petrol",
+    "category": "economic",
+    "published": "2026-08-02T14:32:08+00:00",
+    "model": "C",
+    "sources": [
+      {
+        "name": "HotNews",
+        "url": "https://hotnews.ro/arabia-saudita-rusia-si-alti-cinci-membri-ai-opec-au-decis-o-noua-majorare-a-productiei-de-petrol-2315418"
+      },
+      {
+        "name": "Economedia",
+        "url": "https://economedia.ro/opec-a-decis-o-noua-crestere-a-productiei-de-petrol.html"
+      }
+    ],
+    "first_source": "HotNews",
+    "synthesis": "În cadrul unei reuniuni virtuale desfășurate duminică, Arabia Saudită, Rusia și alți cinci membri ai alianței OPEC+ au stabilit o creștere a cotelor de producție de petrol cu 188.000 de barili pe zi începând din septembrie. Măsura marchează finalizarea planului de eliminare treptată a restricțiilor impuse în 2023 și este corelată de presiunile din Orientul Mijlociu. Sursele nu prezintă contraziceri în datele esențiale.",
+    "entities": [
+      "OPEC+",
+      "Arabia Saudită",
+      "Rusia",
+      "Orientul Mijlociu"
+    ],
+    "icon": "gas-station",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://digi24.ro/stiri/externe/visul-lui-faten-s-a-spulberat-chiar-inainte-de-a-incepe-o-fotbalista-marocana-a-murit-incercand-sa-inoate-pana-la-ceuta-3889725",
+    "original_link": "https://www.digi24.ro/stiri/externe/visul-lui-faten-s-a-spulberat-chiar-inainte-de-a-incepe-o-fotbalista-marocana-a-murit-incercand-sa-inoate-pana-la-ceuta-3889725",
+    "source": "extern",
+    "source_name": "Digi24 Extern",
+    "source_lang": "ro",
+    "title": "O fotbalistă marocană în vârstă de 20 de ani a murit înecată încercând să ajungă în Ceuta",
+    "category": "sport",
+    "published": "2026-08-02T14:28:41+00:00",
+    "model": "C",
+    "sources": [
+      {
+        "name": "Digi24 Extern",
+        "url": "https://www.digi24.ro/stiri/externe/visul-lui-faten-s-a-spulberat-chiar-inainte-de-a-incepe-o-fotbalista-marocana-a-murit-incercand-sa-inoate-pana-la-ceuta-3889725"
+      },
+      {
+        "name": "Știrile ProTV",
+        "url": "https://stirileprotv.ro/stiri/international/visul-lui-faten-s-a-spulberat-chiar-inainte-de-a-incepe-o-fotbalista-marocana-a-murit-incercand-sa-inoate-pana-la-ceuta.html"
+      }
+    ],
+    "first_source": "Digi24 Extern",
+    "synthesis": "Faten Ben Amar El Azizi, o sportivă în vârstă de 20 de ani din Maroc, și-a pierdut viața în încercarea de a înota până în teritoriul spaniol Ceuta. Tragedia a pus capăt prematur aspirațiilor sale profesionale, faptele fiind confirmate unitar de toate relatările din presă, fără a exista contraziceri între surse.",
+    "entities": [
+      "Faten Ben Amar El Azizi",
+      "Ceuta",
+      "Maroc"
+    ],
+    "icon": "swimming",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://bbc.co.uk/news/articles/c89ndd4g0gjo?at_medium=RSS&at_campaign=rss",
+    "original_link": "https://www.bbc.co.uk/news/articles/c89ndd4g0gjo?at_medium=RSS&at_campaign=rss",
+    "source": "bbc_europe",
+    "source_name": "BBC Europe",
+    "source_lang": "en",
+    "title": "Un bărbat a recunoscut uciderea unei femei din Scoția, găsită într-un geamantan la Atena",
+    "category": "extern",
+    "published": "2026-08-02T14:28:15+00:00",
+    "model": "C",
+    "sources": [
+      {
+        "name": "BBC Europe",
+        "url": "https://www.bbc.co.uk/news/articles/c89ndd4g0gjo?at_medium=RSS&at_campaign=rss"
+      },
+      {
+        "name": "The Guardian",
+        "url": "https://www.theguardian.com/world/2026/aug/02/man-arrested-scottish-woman-dead-suitcase-athens"
+      }
+    ],
+    "first_source": "BBC Europe",
+    "synthesis": "Poliția elenă a arestat un cetățean străin în vârstă de 26 de ani, suspectat de uciderea, tâlhăria și infracțiuni armate, după ce acesta și-ar fi recunoscut fapta. Victima, Elisabeth-Jane Ross, în vârstă de 38 de ani, a fost găsită decedată într-un geamantan pe 18 iulie, într-o clădire dezafectată din cartierul Kypseli din Atena, cadavrul fiind descoperit de o persoană fără adăpost.",
+    "entities": [
+      "Elisabeth-Jane Ross",
+      "Atena"
+    ],
+    "icon": "gavel",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://libertatea.ro/stiri/doua-elicoptere-s-au-ciocnit-in-timp-ce-stingeau-un-incendiu-in-grecia-5837170",
+    "original_link": "https://www.libertatea.ro/stiri/doua-elicoptere-s-au-ciocnit-in-timp-ce-stingeau-un-incendiu-in-grecia-5837170",
+    "source": "libertatea",
+    "source_name": "Libertatea",
+    "source_lang": "ro",
+    "title": "Coliziune între două elicoptere de stingere a incendiilor în Grecia",
+    "category": "extern",
+    "published": "2026-08-02T14:06:01+00:00",
+    "model": "C",
+    "sources": [
+      {
+        "name": "Libertatea",
+        "url": "https://www.libertatea.ro/stiri/doua-elicoptere-s-au-ciocnit-in-timp-ce-stingeau-un-incendiu-in-grecia-5837170"
+      },
+      {
+        "name": "HotNews",
+        "url": "https://hotnews.ro/doua-elicoptere-de-stingere-a-incendiilor-s-au-ciocnit-in-aer-in-grecia-imagini-socante-cu-momentul-accidentului-2315415"
+      },
+      {
+        "name": "Digi24 Extern",
+        "url": "https://www.digi24.ro/stiri/externe/doua-elicoptere-s-au-ciocnit-in-grecia-in-timp-ce-interveneau-la-un-incendiu-violent-3889733"
+      },
+      {
+        "name": "G4Media",
+        "url": "https://www.g4media.ro/doua-elicoptere-s-au-ciocnit-in-grecia-in-timp-ce-interveneau-la-un-incendiu-violent.html"
+      },
+      {
+        "name": "Știrile ProTV",
+        "url": "https://stirileprotv.ro/stiri/international/doua-elicoptere-s-au-ciocnit-in-grecia-in-timpul-interventiei-la-incendii-operatiune-de-salvare-pentru-echipaje.html"
+      }
+    ],
+    "first_source": "Libertatea",
+    "synthesis": "Duminică, două elicoptere implicate în operațiuni de stingere a unor incendii de vegetație s-au ciocnit în aer și s-au prăbușit în zona Psatha, situată la aproximativ 60 de kilometri vest de Atena. Autoritățile elene au declanșat o misiune de căutare și salvare pentru localizarea celor două echipaje, fiecare fiind format din câte două persoane. Există o mică neconcordanță între surse privind statutul curent al echipajelor, unele menționând că au fost găsite, în timp ce altele raportează că operațiunea este încă în desfășurare.",
+    "entities": [
+      "Grecia",
+      "Psatha",
+      "Atena"
+    ],
+    "icon": "helicopter",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://csid.ro/lifestyle/vedete/maria-popovici-despre-lupta-cu-kilogramele-si-atacurile-de-panica-credeam-ca-ma-sufoc-ca-nu-mai-am-aer-video-21265806",
+    "original_link": "https://www.csid.ro/lifestyle/vedete/maria-popovici-despre-lupta-cu-kilogramele-si-atacurile-de-panica-credeam-ca-ma-sufoc-ca-nu-mai-am-aer-video-21265806/",
+    "source": "csid",
+    "source_name": "CSÎD",
+    "source_lang": "ro",
+    "title": "Actrița Maria Popovici vorbește despre lupta cu kilogramele și atacurile de panică",
+    "category": "sanatate",
+    "published": "2026-08-02T14:00:41+00:00",
+    "model": "B",
+    "teaser": "Vedeta a detaliat dificultățile emoționale și fizice prin care a trecut din cauza obezității și a crizelor de panică, explicând pașii care i-au redat echilibrul.",
+    "entities": [
+      "Maria Popovici"
+    ],
+    "icon": "stethoscope",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://bizbrasov.ro/2026/08/02/candidati-aleg-unitbv-locuri-confirmate",
+    "original_link": "https://bizbrasov.ro/2026/08/02/candidati-aleg-unitbv-locuri-confirmate/",
+    "source": "bizbrasov",
+    "source_name": "BizBrașov",
+    "source_lang": "ro",
+    "title": "Admitere 2026: Universitatea Transilvania din Brașov raportează mai mulți studenți admiși",
+    "category": "local",
+    "published": "2026-08-02T13:59:36+00:00",
+    "model": "C",
+    "sources": [
+      {
+        "name": "BizBrașov",
+        "url": "https://bizbrasov.ro/2026/08/02/candidati-aleg-unitbv-locuri-confirmate/"
+      },
+      {
+        "name": "News Brașov",
+        "url": "https://newsbv.ro/universitatea-transilvania-brasov/"
+      }
+    ],
+    "first_source": "BizBrașov",
+    "synthesis": "Sesiunea de admitere din iulie 2026 a adus o creștere de 3% a candidaților care și-au confirmat locurile la cursurile de licență ale Universității Transilvania din Brașov. La încheierea etapei din 1 august, 4.156 de admiși au ocupat locuri la 14 dintre cele 18 facultăți ale instituției. O nouă sesiune de înscrieri pentru locurile rămase libere va fi anunțată la începutul lunii septembrie.",
+    "entities": [
+      "Universitatea Transilvania din Brașov",
+      "Brașov"
+    ],
+    "icon": "school",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://zcj.ro/sanatate/ambrozia-a-intrat-in-sezonul-de-varf-cum-recunosti-simptomele-alergiei-amenzi-uriase-pentru-cei-care-nu-si-curata-terenurile--299444.html",
+    "original_link": "https://zcj.ro/sanatate/ambrozia-a-intrat-in-sezonul-de-varf-cum-recunosti-simptomele-alergiei-amenzi-uriase-pentru-cei-care-nu-si-curata-terenurile--299444.html",
+    "source": "zcj",
+    "source_name": "Ziua de Cluj",
+    "source_lang": "ro",
+    "title": "A început sezonul de vârf pentru polenul de ambrozie în România",
+    "category": "sanatate",
+    "published": "2026-08-02T13:50:00+00:00",
+    "model": "B",
+    "teaser": "Autoritățile avertizează că luna august aduce un nivel ridicat de polen de ambrozie, plantă puternic alergică, iar proprietarii de terenuri care nu o combat riscă amenzi contravenționale mari.",
+    "entities": [
+      "România"
+    ],
+    "icon": "trees",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://prosport.ro/fotbal-intern/superliga/corvinul-sepsi-live-text-online-in-etapa-3-din-superliga-ora-1830-echipele-probabile-duel-tare-intre-doua-nou-promovate-20495495",
+    "original_link": "https://www.prosport.ro/fotbal-intern/superliga/corvinul-sepsi-live-text-online-in-etapa-3-din-superliga-ora-1830-echipele-probabile-duel-tare-intre-doua-nou-promovate-20495495",
+    "source": "prosport",
+    "source_name": "ProSport",
+    "source_lang": "ro",
+    "title": "Corvinul Hunedoara și Sepsi Sfântu Gheorghe se întâlnesc în Superligă",
+    "category": "local",
+    "published": "2026-08-02T13:30:03+00:00",
+    "model": "C",
+    "sources": [
+      {
+        "name": "ProSport",
+        "url": "https://www.prosport.ro/fotbal-intern/superliga/corvinul-sepsi-live-text-online-in-etapa-3-din-superliga-ora-1830-echipele-probabile-duel-tare-intre-doua-nou-promovate-20495495"
+      },
+      {
+        "name": "GSP",
+        "url": "https://www.gsp.ro/fotbal/liga-1/live-corvinul-sepsi-etapa-3-superliga-965574.html"
+      },
+      {
+        "name": "Digi Sport",
+        "url": "https://www.digisport.ro/fotbal/liga-1/corvinul-sepsi-live-video-1830-digi-sport-1-duelul-nou-promovatelor-in-superliga-romaniei-4410313"
+      }
+    ],
+    "first_source": "ProSport",
+    "synthesis": "Echipele Corvinul Hunedoara și Sepsi Sfântu Gheorghe, nou-promovate în Superligă, se duellează astăzi, de la ora 18:30, în cadrul etapei a treia a sezonului 2026-2027. Partida care marchează prima confruntare directă între cele două formații în elită are loc pe stadionul „Francisc Neuman” din Arad și este transmisă în direct la televiziunile Digi Sport 1 și Prima Sport 1.",
+    "entities": [
+      "Corvinul Hunedoara",
+      "Sepsi Sfântu Gheorghe",
+      "Superliga"
+    ],
+    "icon": "ball-football",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://zcj.ro/economie/criza-energetica-teofil-muresan-e-infra-romania-si-europa-au-ajuns-aici-pentru-ca-vocea-specialistilor-nu-a-mai-fost-ascultata-si-a-contat-doar-batalia-pentru-voturi--299442.html",
+    "original_link": "https://zcj.ro/economie/criza-energetica-teofil-muresan-e-infra-romania-si-europa-au-ajuns-aici-pentru-ca-vocea-specialistilor-nu-a-mai-fost-ascultata-si-a-contat-doar-batalia-pentru-voturi--299442.html",
+    "source": "zcj",
+    "source_name": "Ziua de Cluj",
+    "source_lang": "ro",
+    "title": "Teofil Mureșan avertizează că ignorarea specialiștilor a generat criza energetică",
+    "category": "economic",
+    "published": "2026-08-02T13:27:00+00:00",
+    "model": "B",
+    "teaser": "Președintele E-INFRA susține că actuala criză energetică din România și Europa a apărut din cauza deciziilor politice luate în detrimentul sfaturilor venite din partea experților din domeniu.",
+    "entities": [
+      "Teofil Mureșan",
+      "E-INFRA",
+      "România"
+    ],
+    "icon": "chart-line",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://zcj.ro/religie/calendar-ortodox-2026-cele-trei-zile-cu-semnificatie-deosebita-din-luna-august--299443.html",
+    "original_link": "https://zcj.ro/religie/calendar-ortodox-2026-cele-trei-zile-cu-semnificatie-deosebita-din-luna-august--299443.html",
+    "source": "zcj",
+    "source_name": "Ziua de Cluj",
+    "source_lang": "ro",
+    "title": "Trei mari sărbători religioase sunt programate în calendarul ortodox din august",
+    "category": "cultura",
+    "published": "2026-08-02T13:14:00+00:00",
+    "model": "B",
+    "teaser": "Credincioșii ortodocși cinstesc în luna august Schimbarea la Față a Domnului, Adormirea Maicii Domnului și Tăierea Capului Sfântului Ioan Botezătorul.",
+    "entities": [],
+    "icon": "building-church",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://csid.ro/stiri/de-ce-te-trezesti-obosit-chiar-daca-ai-dormit-8-ore-cele-mai-frecvente-cauze-explicate-de-medici-21264352",
+    "original_link": "https://www.csid.ro/stiri/de-ce-te-trezesti-obosit-chiar-daca-ai-dormit-8-ore-cele-mai-frecvente-cauze-explicate-de-medici-21264352/",
+    "source": "csid",
+    "source_name": "CSÎD",
+    "source_lang": "ro",
+    "title": "Medicii explică principalele cauze ale oboselii matinale după opt ore de somn",
+    "category": "sanatate",
+    "published": "2026-08-02T13:00:58+00:00",
+    "model": "B",
+    "teaser": "Specialiștii detaliază motivele pentru care organismul rămâne extenuat dimineața în ciuda unui program complet de odihnă și indică momentul consultului medical.",
+    "entities": [],
+    "icon": "stethoscope",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
     "url": "https://stirileprotv.ro/educatie/peste-33-000-de-candidati-la-a-doua-sesiune-de-bacalaureat-programul-complet.html",
     "original_link": "https://stirileprotv.ro/educatie/peste-33-000-de-candidati-la-a-doua-sesiune-de-bacalaureat-programul-complet.html",
     "source": "protv",
@@ -26,6 +397,27 @@
       "Bacalaureat"
     ],
     "icon": "certificate",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://zcj.ro/eveniment/accident-grav-cu-doi-motociclisti-pe-transalpina-a-fost-solicitat-elicopterul-smurd--299441.html",
+    "original_link": "https://zcj.ro/eveniment/accident-grav-cu-doi-motociclisti-pe-transalpina-a-fost-solicitat-elicopterul-smurd--299441.html",
+    "source": "zcj",
+    "source_name": "Ziua de Cluj",
+    "source_lang": "ro",
+    "title": "Un accident rutier grav cu doi motocicliști a avut loc pe Transalpina",
+    "category": "auto",
+    "published": "2026-08-02T12:30:00+00:00",
+    "model": "B",
+    "teaser": "Două persoane aflate pe motociclete au fost rănite grav în urma unui eveniment rutier produs pe DN 67C, fiind necesară intervenția unui elicopter SMURD pentru acordarea primului ajutor.",
+    "entities": [
+      "Transalpina",
+      "DN 67C",
+      "SMURD"
+    ],
+    "icon": "helicopter",
     "processed_by": "gemini",
     "prompt_version": "v2-esenta",
     "featured": false
@@ -130,13 +522,50 @@
     "featured": false
   },
   {
+    "url": "https://zcj.ro/eveniment/accident-cu-doua-masini-pe-un-drum-din-cluj-trei-tineri-transportati-la-spital--299439.html",
+    "original_link": "https://zcj.ro/eveniment/accident-cu-doua-masini-pe-un-drum-din-cluj-trei-tineri-transportati-la-spital--299439.html",
+    "source": "zcj",
+    "source_name": "Ziua de Cluj",
+    "source_lang": "ro",
+    "title": "Trei tineri au fost spitalizați în urma unei coliziuni rutiere în județul Cluj",
+    "category": "local",
+    "published": "2026-08-02T12:01:00+00:00",
+    "model": "B",
+    "teaser": "Un accident rutier în care au fost implicate două autoturisme s-a produs pe raza localității Cățcău, trei persoane tinere necesitând transportul la spital pentru investigații medicale.",
+    "entities": [
+      "Cățcău",
+      "Cluj"
+    ],
+    "icon": "car",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://csid.ro/sanatate/sanatate-health/cate-minute-de-somn-regenereaza-cu-adevarat-corpul-si-creierul-adevarul-despre-siesta-de-dupa-amiaza-21265783",
+    "original_link": "https://www.csid.ro/sanatate/sanatate-health/cate-minute-de-somn-regenereaza-cu-adevarat-corpul-si-creierul-adevarul-despre-siesta-de-dupa-amiaza-21265783/",
+    "source": "csid",
+    "source_name": "CSÎD",
+    "source_lang": "ro",
+    "title": "Specialiștii explică durata ideală a somnului de după-amiază pentru regenerare",
+    "category": "sanatate",
+    "published": "2026-08-02T12:00:31+00:00",
+    "model": "B",
+    "teaser": "Află cum influențează siesta de 20, 30, 60 sau 90 de minute capacitatea de refacere a creierului și a întregului organism uman.",
+    "entities": [],
+    "icon": "sun",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
     "url": "https://bzi.ro/interventie-de-urgenta-langa-cernavoda-armata-detoneaza-o-stanca-pentru-a-devia-cursul-dunarii-si-a-proteja-centrala-nucleara-5579889",
     "original_link": "https://www.bzi.ro/interventie-de-urgenta-langa-cernavoda-armata-detoneaza-o-stanca-pentru-a-devia-cursul-dunarii-si-a-proteja-centrala-nucleara-5579889",
     "source": "bzi",
     "source_name": "BZI Iași",
     "source_lang": "ro",
     "title": "Armata a intervenit cu explozibili la Cernavodă pentru a asigura răcirea reactoarelor",
-    "category": "local",
+    "category": "zonal",
     "published": "2026-08-02T11:40:39+00:00",
     "model": "C",
     "sources": [
@@ -161,6 +590,27 @@
       "Armata Română"
     ],
     "icon": "building-factory",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://agenda.liternet.ro/articol/31602/Daria-Stan/Mama-mi-am-gasit-mana-Ajunge-la-Ideo-Ideis-2026.html",
+    "original_link": "https://agenda.liternet.ro/articol/31602/Daria-Stan/Mama-mi-am-gasit-mana-Ajunge-la-Ideo-Ideis-2026.html",
+    "source": "liternet",
+    "source_name": "Liternet",
+    "source_lang": "ro",
+    "title": "Trupa Amprente din Brașov participă la Festivalul Ideo Ideis cu piesa Ajunge!",
+    "category": "local",
+    "published": "2026-08-02T11:25:00+00:00",
+    "model": "B",
+    "teaser": "Spectacolul adaptat după textul Mașei Kontorovici aduce pe scena din Alexandria un puternic semnal de alarmă în cadrul ediției din 2026 a festivalului de teatru tânăr.",
+    "entities": [
+      "Ideo Ideis",
+      "Amprente",
+      "Mașa Kontorovici"
+    ],
+    "icon": "movie",
     "processed_by": "gemini",
     "prompt_version": "v2-esenta",
     "featured": false
@@ -199,6 +649,42 @@
     "featured": false
   },
   {
+    "url": "https://csid.ro/lifestyle/vedete/kylie-minogue-marturisiri-despre-al-doilea-diagnostic-de-cancer-am-fost-devastata-emotional-21268105",
+    "original_link": "https://www.csid.ro/lifestyle/vedete/kylie-minogue-marturisiri-despre-al-doilea-diagnostic-de-cancer-am-fost-devastata-emotional-21268105/",
+    "source": "csid",
+    "source_name": "CSÎD",
+    "source_lang": "ro",
+    "title": "Kylie Minogue dezvăluie că a suferit în secret un al doilea diagnostic de cancer",
+    "category": "sanatate",
+    "published": "2026-08-02T11:00:06+00:00",
+    "model": "B",
+    "teaser": "Artista internațională amărturisit că a trecut printr-o traumă emoțională majoră în 2021 când a aflat de noua boală, subliniind importanța investigațiilor medicale.",
+    "entities": [
+      "Kylie Minogue"
+    ],
+    "icon": "stethoscope",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://csid.ro/beauty/ingrijire-frumusete/spf-ul-din-machiaj-este-suficient-21267019",
+    "original_link": "https://www.csid.ro/beauty/ingrijire-frumusete/spf-ul-din-machiaj-este-suficient-21267019/",
+    "source": "csid",
+    "source_name": "CSÎD",
+    "source_lang": "ro",
+    "title": "Specialiștii analizează dacă factorul de protecție din machiaj este suficient",
+    "category": "lifestyle",
+    "published": "2026-08-02T10:00:36+00:00",
+    "model": "B",
+    "teaser": "Tot mai multe produse cosmetice integrează SPF, însă dermatologii explică eficiența reală a acestor formule pentru protecția tenului.",
+    "entities": [],
+    "icon": "sun",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
     "url": "https://tion.ro/stirile-judetului-timis/video-a-doua-seara-a-zilei-timisoarei-a-adunat-peste-40-000-de-participanti-the-script-si-irina-rimes-duet-surpriza-pe-scena-2326938",
     "original_link": "https://www.tion.ro/stirile-judetului-timis/video-a-doua-seara-a-zilei-timisoarei-a-adunat-peste-40-000-de-participanti-the-script-si-irina-rimes-duet-surpriza-pe-scena-2326938/?utm_source=rss&utm_medium=referral&utm_campaign=hiraggregator",
     "source": "tion",
@@ -227,6 +713,73 @@
       "Beth Hart"
     ],
     "icon": "music",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://csid.ro/stiri/21269091-21269091",
+    "original_link": "https://www.csid.ro/stiri/21269091-21269091/",
+    "source": "csid",
+    "source_name": "CSÎD",
+    "source_lang": "ro",
+    "title": "Medicul Monica Pop a suferit un accident vascular cerebral și este internată",
+    "category": "sanatate",
+    "published": "2026-08-02T09:15:22+00:00",
+    "model": "B",
+    "teaser": "Cunoscutul oftalmolog a fost internat în Secția de Neurologie a Spitalului Universitar din cauza unui AVC survenit pe fondul unei supărări puternice.",
+    "entities": [
+      "Monica Pop"
+    ],
+    "icon": "building-hospital",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://csid.ro/stiri/ouale-bio-nu-sunt-intotdeauna-cea-mai-verde-alegere-studiul-care-schimba-tot-ce-credeam-despre-impactul-lor-asupra-mediului-21266693",
+    "original_link": "https://www.csid.ro/stiri/ouale-bio-nu-sunt-intotdeauna-cea-mai-verde-alegere-studiul-care-schimba-tot-ce-credeam-despre-impactul-lor-asupra-mediului-21266693/",
+    "source": "csid",
+    "source_name": "CSÎD",
+    "source_lang": "ro",
+    "title": "Un studiu demonstrează că ouăle bio au un impact ecologic semnificativ",
+    "category": "lifestyle",
+    "published": "2026-08-02T09:00:02+00:00",
+    "model": "B",
+    "teaser": "Deși sunt considerate o opțiune ideală pentru sănătate și mediu, un nou studiu contrazice percepția publică privind amprenta ecologică a producției de ouă bio.",
+    "entities": [],
+    "icon": "trees",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://tion.ro/eveniment/agent-de-paza-injunghiat-la-un-eveniment-din-timis-dupa-ce-a-refuzat-accesul-a-doi-barbati-2326899",
+    "original_link": "https://www.tion.ro/eveniment/agent-de-paza-injunghiat-la-un-eveniment-din-timis-dupa-ce-a-refuzat-accesul-a-doi-barbati-2326899/?utm_source=rss&utm_medium=referral&utm_campaign=hiraggregator",
+    "source": "tion",
+    "source_name": "Timiș Online",
+    "source_lang": "ro",
+    "title": "Agent de pază înjunghiat pe un stadion din Timiș după un conflict la intrare",
+    "category": "zonal",
+    "published": "2026-08-02T08:20:30+00:00",
+    "model": "C",
+    "sources": [
+      {
+        "name": "Timiș Online",
+        "url": "https://www.tion.ro/eveniment/agent-de-paza-injunghiat-la-un-eveniment-din-timis-dupa-ce-a-refuzat-accesul-a-doi-barbati-2326899/?utm_source=rss&utm_medium=referral&utm_campaign=hiraggregator"
+      },
+      {
+        "name": "Ziua de Vest",
+        "url": "https://www.ziuadevest.ro/agent-de-paza-injunghiat-la-un-eveniment-din-igris-dupa-ce-a-refuzat-accesul-a-doi-barbati/"
+      }
+    ],
+    "first_source": "Timiș Online",
+    "synthesis": "În noaptea de sâmbătă spre duminică, un agent de pază a fost atacat cu un cuțit pe stadionul din localitatea Igriș, județul Timiș. Agresiunea a survenit după ce victima le interzisese accesul în incintă a doi bărbați. Forțele de ordine i-au identificat operativ pe suspecți și i-au condus la sediul poliției pentru audieri.",
+    "entities": [
+      "Igriș",
+      "Timiș"
+    ],
+    "icon": "shield",
     "processed_by": "gemini",
     "prompt_version": "v2-esenta",
     "featured": false
@@ -277,7 +830,7 @@
     "source_name": "Express de Banat",
     "source_lang": "ro",
     "title": "Pompierii din Caraș-Severin intervin de trei zile pentru stingerea incendiilor de vegetație",
-    "category": "local",
+    "category": "regional",
     "published": "2026-08-02T08:12:43+00:00",
     "model": "C",
     "sources": [
@@ -309,7 +862,7 @@
     "source_name": "actualMM",
     "source_lang": "ro",
     "title": "Jandarmii montani din Cavnic au participat la competiția „Lupul Daco Spartan” din Breb",
-    "category": "local",
+    "category": "zonal",
     "published": "2026-08-02T06:28:37+00:00",
     "model": "C",
     "sources": [
@@ -603,6 +1156,89 @@
     "featured": false
   },
   {
+    "url": "https://nwradu.ro/2026/08/articole-interesante-de-citit-astazi-2-august-2026",
+    "original_link": "https://www.nwradu.ro/2026/08/articole-interesante-de-citit-astazi-2-august-2026/",
+    "source": "nwradu",
+    "source_name": "NwRadu",
+    "source_lang": "ro",
+    "title": "Parcursul dificil al fostului campion la șah Bobby Fischer și cazul actriței Emily Willis",
+    "category": "lifestyle",
+    "published": "2026-08-02T03:22:59+00:00",
+    "model": "B",
+    "teaser": "Un material de presă prezintă viața marcată de controverse a fostului campion mondial la șah Bobby Fischer, alături de situația medicală gravă în care se află fosta actriță de filme pentru adulți Emily Willis.",
+    "entities": [
+      "Bobby Fischer",
+      "Emily Willis"
+    ],
+    "icon": "alert-triangle",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://agenda.liternet.ro/articol/31599/Daria-Stan/Un-om-poate-vedea-cum-merge-lumea-asta-si-fara-ochi-Praf-de-rege-la-Ideo-Ideis-2026.html",
+    "original_link": "https://agenda.liternet.ro/articol/31599/Daria-Stan/Un-om-poate-vedea-cum-merge-lumea-asta-si-fara-ochi-Praf-de-rege-la-Ideo-Ideis-2026.html",
+    "source": "liternet",
+    "source_name": "Liternet",
+    "source_lang": "ro",
+    "title": "Trupa ArtWork din Iași a prezentat spectacolul Praf de rege la Ideo Ideis",
+    "category": "local",
+    "published": "2026-08-01T23:03:00+00:00",
+    "model": "B",
+    "teaser": "Adaptație după piesa Regele Lear de William Shakespeare, producția ieșeană a fost inclusă în programul celei de-a 21-a ediții a festivalului de teatru tânăr din Alexandria.",
+    "entities": [
+      "ArtWork",
+      "Ideo Ideis",
+      "William Shakespeare"
+    ],
+    "icon": "movie",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://agenda.liternet.ro/articol/31600/Oana-Balaci-Razvan-Ionescu/De-vorba-cu-II-Razvan-Ionescu-Gala-HOP-2025.html",
+    "original_link": "https://agenda.liternet.ro/articol/31600/Oana-Balaci-Razvan-Ionescu/De-vorba-cu-II-Razvan-Ionescu-Gala-HOP-2025.html",
+    "source": "liternet",
+    "source_name": "Liternet",
+    "source_lang": "ro",
+    "title": "Actorul Răzvan Ionescu participă la Gala HOP 2025 cu momentul Juan",
+    "category": "cultura",
+    "published": "2026-08-01T22:30:00+00:00",
+    "model": "B",
+    "teaser": "Absolventul UNATC Răzvan Ionescu, în vârstă de 27 de ani, concurează la secțiunea Individual din cadrul Galei HOP 2025 cu momentul artistic intitulat Juan.",
+    "entities": [
+      "Răzvan Ionescu",
+      "Gala HOP",
+      "UNATC"
+    ],
+    "icon": "podium",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://agenda.liternet.ro/articol/31598/Daria-Stan/A-fost-un-soc-mare-cand-am-vazut-atat-de-multi-oameni-care-se-bucura-de-muzica-noastra-Trupa-PECO-la-Ideo-Ideis-2026.html",
+    "original_link": "https://agenda.liternet.ro/articol/31598/Daria-Stan/A-fost-un-soc-mare-cand-am-vazut-atat-de-multi-oameni-care-se-bucura-de-muzica-noastra-Trupa-PECO-la-Ideo-Ideis-2026.html",
+    "source": "liternet",
+    "source_name": "Liternet",
+    "source_lang": "ro",
+    "title": "Trupa rock P.E.C.O din Alexandria a concertat la festivalul Ideo Ideis",
+    "category": "local",
+    "published": "2026-08-01T22:28:00+00:00",
+    "model": "B",
+    "teaser": "Fondată în urmă cu patru ani, formația P.E.C.O reprezintă singura trupă rock tânără din Alexandria și a debutat artistic pe scena festivalului Ideo Ideis.",
+    "entities": [
+      "Trupa P.E.C.O",
+      "Alexandria",
+      "Ideo Ideis"
+    ],
+    "icon": "music",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
     "url": "https://dw.com/en/homemade-bomb-goes-off-outside-upscale-moscow-restaurant-state-officials-say/a-78205022?maca=en-rss-en-eu-2092-rdf",
     "original_link": "https://www.dw.com/en/homemade-bomb-goes-off-outside-upscale-moscow-restaurant-state-officials-say/a-78205022?maca=en-rss-en-eu-2092-rdf",
     "source": "dw_europe",
@@ -766,6 +1402,26 @@
       "KuPS"
     ],
     "icon": "ball-football",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
+    "url": "https://agenda.liternet.ro/articol/31604/Comunicat-de-presa/Metamorfoze-artistice-la-Tabara-Pre-HOP-O-pregustare-a-efervescentei-de-la-Gala-HOP-Gala-Tanarului-Actor-2026.html",
+    "original_link": "https://agenda.liternet.ro/articol/31604/Comunicat-de-presa/Metamorfoze-artistice-la-Tabara-Pre-HOP-O-pregustare-a-efervescentei-de-la-Gala-HOP-Gala-Tanarului-Actor-2026.html",
+    "source": "liternet",
+    "source_name": "Liternet",
+    "source_lang": "ro",
+    "title": "Teatrul Tineretului din Piatra Neamț a găzduit Tabăra Pre-HOP",
+    "category": "local",
+    "published": "2026-08-01T21:06:00+00:00",
+    "model": "B",
+    "teaser": "Ediția din 2026 a Taberei Pre-HOP de la Piatra Neamț a reunit artiști în cadrul unor ateliere premergătoare Galei Tânărului Actor.",
+    "entities": [
+      "Teatrul Tineretului Piatra Neamț",
+      "Gala HOP"
+    ],
+    "icon": "writing",
     "processed_by": "gemini",
     "prompt_version": "v2-esenta",
     "featured": false
@@ -33923,556 +34579,5 @@
     ],
     "first_source": "The Guardian",
     "synthesis": "Muntele Olimp din Grecia a fost inclus oficial pe Lista Patrimoniului Mondial UNESCO, primind această distincție internațională datorită importanței sale excepționale atât sub aspect natural, cât și cultural. Cunoscut în mitologie drept lăcașul zeilor, cel mai înalt masiv montan din țară împarte această recunoaștere recentă alături de alte situri istorice mondiale."
-  },
-  {
-    "url": "https://ziaruldeiasi.ro/stiri/nicusor-dan-o-noua-drona-a-fost-doborata-de-un-avion-f-16-in-zona-sulina-chilia-ancheta-confirma-ca-cea-de-vineri-era-de-tip-shahed--1879459.html",
-    "original_link": "https://www.ziaruldeiasi.ro/stiri/nicusor-dan-o-noua-drona-a-fost-doborata-de-un-avion-f-16-in-zona-sulina-chilia-ancheta-confirma-ca-cea-de-vineri-era-de-tip-shahed--1879459.html",
-    "source": "ziaruldeiasi",
-    "source_name": "Ziarul de Iași",
-    "source_lang": "ro",
-    "title": "Avion F-16 a doborât o dronă în zona Sulina–Chilia",
-    "category": "zonal",
-    "published": "2026-07-26T15:17:37.009928+00:00",
-    "model": "B",
-    "teaser": "Președintele Nicușor Dan a confirmat interceptarea și doborârea unei drone în zona Sulina-Chilia de către un aparat F-16, precizând că un dispozitiv similar căzut anterior era de fabricație rusă, de tip Shahed.",
-    "entities": [
-      "Nicușor Dan",
-      "Sulina",
-      "Chilia"
-    ],
-    "icon": "plane",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://ziaruldeiasi.ro/stiri/accident-in-pacurari-un-curier-glovo-a-fost-lovit-de-un-autoturism--1879532.html",
-    "original_link": "https://www.ziaruldeiasi.ro/stiri/accident-in-pacurari-un-curier-glovo-a-fost-lovit-de-un-autoturism--1879532.html",
-    "source": "ziaruldeiasi",
-    "source_name": "Ziarul de Iași",
-    "source_lang": "ro",
-    "title": "Curier Glovo lovit de o mașină în Păcurari",
-    "category": "zonal",
-    "published": "2026-07-26T15:17:37.009755+00:00",
-    "model": "B",
-    "teaser": "Un accident rutier a avut loc duminică în intersecția de la Lukoil din cartierul Păcurari, municipiul Iași, unde un autoturism a acroșat un curier pe bicicletă sau scooter care efectua livrări.",
-    "entities": [
-      "Păcurari",
-      "Iași",
-      "Glovo"
-    ],
-    "icon": "car",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://zcj.ro/eveniment/barbat-disparut-din-cluj-napoca-apelati-112-daca-l-ati-vazut--299167.html",
-    "original_link": "https://zcj.ro/eveniment/barbat-disparut-din-cluj-napoca-apelati-112-daca-l-ati-vazut--299167.html",
-    "source": "zcj",
-    "source_name": "Ziua de Cluj",
-    "source_lang": "ro",
-    "title": "Poliția din Cluj-Napoca caută un bărbat de 35 de ani dispărut",
-    "category": "zonal",
-    "published": "2026-07-26T15:14:00+00:00",
-    "model": "B",
-    "teaser": "Oamenii legii solicită sprijinul populației prin apel la numărul 112 pentru găsirea unui bărbat în vârstă de 35 de ani care a părăsit voluntar locuința și nu s-a mai întors.",
-    "entities": [
-      "Cluj-Napoca"
-    ],
-    "icon": "alert-triangle",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://ziuadevest.ro/25-de-ani-de-infratire-lugoj-nisporeni",
-    "original_link": "https://www.ziuadevest.ro/25-de-ani-de-infratire-lugoj-nisporeni/",
-    "source": "ziuadevest",
-    "source_name": "Ziua de Vest",
-    "source_lang": "ro",
-    "title": "Lugojul și Nisporeni au marcat 25 de ani de înfrățire",
-    "category": "regional",
-    "published": "2026-07-26T15:00:10+00:00",
-    "model": "B",
-    "teaser": "Cu ocazia Zilei Lugojului, autoritățile au sărbătorit un sfert de secol de la semnarea acordului de înfrățire cu orașul Nisporeni din Republica Moldova, consolidând legăturile culturale și istorice.",
-    "entities": [
-      "Lugoj",
-      "Nisporeni"
-    ],
-    "icon": "flag",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://ziuadevest.ro/pericol-pe-bulevardul-cetatii-din-timisoara-un-sofer-fara-permis-si-baut-la-volan-retinut-de-politisti",
-    "original_link": "https://www.ziuadevest.ro/pericol-pe-bulevardul-cetatii-din-timisoara-un-sofer-fara-permis-si-baut-la-volan-retinut-de-politisti/",
-    "source": "ziuadevest",
-    "source_name": "Ziua de Vest",
-    "source_lang": "ro",
-    "title": "Șofer băut și fără permis, reținut pe bulevardul Cetății",
-    "category": "regional",
-    "published": "2026-07-26T14:57:01+00:00",
-    "model": "B",
-    "teaser": "Un bărbat de 39 de ani a fost reținut de polițiștii timișoreni pentru 24 de ore, după ce a fost depistat la volan pe bulevardul Cetății fără a deține permis de conducere și având o alcoolemie ridicată.",
-    "entities": [
-      "Timișoara",
-      "Biroul Rutier Timișoara"
-    ],
-    "icon": "car",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://gsp.ro/sporturi/tenis/tamara-korpatsch-titlu-hamburg-964476.html",
-    "original_link": "https://www.gsp.ro/sporturi/tenis/tamara-korpatsch-titlu-hamburg-964476.html",
-    "source": "gsp",
-    "source_name": "GSP",
-    "source_lang": "ro",
-    "title": "Tamara Korpatsch a cucerit trofeul la turneul WTA de la Hamburg",
-    "category": "sport",
-    "published": "2026-07-26T14:56:57+00:00",
-    "model": "C",
-    "sources": [
-      {
-        "name": "GSP",
-        "url": "https://www.gsp.ro/sporturi/tenis/tamara-korpatsch-titlu-hamburg-964476.html"
-      },
-      {
-        "name": "Digi Sport",
-        "url": "https://www.digisport.ro/tenis/tamara-korpatsch-a-castigat-wta-hamburg-4399833"
-      }
-    ],
-    "first_source": "GSP",
-    "synthesis": "Jucătoarea germană de tenis Tamara Korpatsch și-a adjudecat al doilea titlu din carieră, primul după cel obținut la Cluj-Napoca în 2023. Sportiva în vârstă de 31 de ani s-a impus în finala competiției din țara sa natală în fața Annei Bondar, scor 6-3, 6-3, aducând o mare bucurie suporterilor prezenți în tribune.",
-    "entities": [
-      "Tamara Korpatsch",
-      "Anna Bondar",
-      "Hamburg"
-    ],
-    "icon": "trophy",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://dobrogeaonline.ro/a-treia-drona-distrusa-de-fortele-aeriene-romane-in-regiunea-sulina-chilia",
-    "original_link": "https://www.dobrogeaonline.ro/a-treia-drona-distrusa-de-fortele-aeriene-romane-in-regiunea-sulina-chilia/",
-    "source": "dobrogeaonline",
-    "source_name": "Dobrogea Online",
-    "source_lang": "ro",
-    "title": "Forțele Aeriene au distrus a treia dronă lângă Sulina și Chilia",
-    "category": "regional",
-    "published": "2026-07-26T14:56:30+00:00",
-    "model": "B",
-    "teaser": "Armata română a intervenit prompt în zona de frontieră dintre Sulina și Chilia, reușind să doboare un nou aparat de zbor intrat ilegal pe teritoriul național.",
-    "entities": [
-      "Forțele Aeriene Române",
-      "Sulina",
-      "Chilia"
-    ],
-    "icon": "plane",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://zch.ro/clipe-dramatice-doi-copii-sunt-cautati-au-disparut-in-timp-ce-se-scaldau-in-raul-moldova",
-    "original_link": "https://zch.ro/clipe-dramatice-doi-copii-sunt-cautati-au-disparut-in-timp-ce-se-scaldau-in-raul-moldova/?utm_medium=Feed&utm_source=Syndication",
-    "source": "zch",
-    "source_name": "ZCH News",
-    "source_lang": "ro",
-    "title": "Doi frați minori au murit înecați în râul Moldova",
-    "category": "regional",
-    "published": "2026-07-26T14:55:27+00:00",
-    "model": "B",
-    "teaser": "Doi băieți în vârstă de 12 și 15 ani au decedat după ce s-au înecat în râul Moldova. Echipajele medicale SMURD sosite la fața locului nu au reușit să le mai salveze viața în ciuda manevrelor de resuscitare aplicate.",
-    "entities": [
-      "Râul Moldova",
-      "SMURD"
-    ],
-    "icon": "swimming",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://ziuadevest.ro/raza-de-amploare-in-centrul-timisoarei-sute-de-persoane-legitimate-zeci-de-amenzi-si-infractiuni-descoperite-intr-o-singura-noapte",
-    "original_link": "https://www.ziuadevest.ro/raza-de-amploare-in-centrul-timisoarei-sute-de-persoane-legitimate-zeci-de-amenzi-si-infractiuni-descoperite-intr-o-singura-noapte/",
-    "source": "ziuadevest",
-    "source_name": "Ziua de Vest",
-    "source_lang": "ro",
-    "title": "Poliția a organizat o razie de amploare în centrul Timișoarei",
-    "category": "regional",
-    "published": "2026-07-26T14:54:34+00:00",
-    "model": "B",
-    "teaser": "Polițiștii timișeni au efectuat controale masive în zona centrală din Timișoara în noaptea de 25 spre 26 iulie 2026, legitimând sute de persoane, aplicând amenzi și descoperind diverse fapte antisociale.",
-    "entities": [
-      "Timișoara",
-      "Adrian Dragostin"
-    ],
-    "icon": "gavel",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://theguardian.com/world/live/2026/jul/26/europe-wildfires-spain-france-bordeaux-madrid-evacuations",
-    "original_link": "https://www.theguardian.com/world/live/2026/jul/26/europe-wildfires-spain-france-bordeaux-madrid-evacuations",
-    "source": "guardian_eu",
-    "source_name": "The Guardian",
-    "source_lang": "en",
-    "title": "Incendiile devastatoare de vegetație din Franța și Spania impun evacuarea a sute de mii de persoane",
-    "category": "extern",
-    "published": "2026-07-26T14:52:13+00:00",
-    "model": "C",
-    "teaser": "Focurile de vegetație scăpate de sub control au forțat evacuarea a peste 300.000 de persoane, premierul spaniol avertizând asupra unor ore dificile din cauza condițiilor meteo extreme.",
-    "entities": [
-      "Franța",
-      "Spania",
-      "Emmanuel Macron",
-      "Pedro Sanchez"
-    ],
-    "icon": "flame",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false,
-    "sources": [
-      {
-        "name": "The Guardian",
-        "url": "https://www.theguardian.com/world/live/2026/jul/26/europe-wildfires-spain-france-bordeaux-madrid-evacuations"
-      },
-      {
-        "name": "Digi24 Extern",
-        "url": "https://www.digi24.ro/stiri/externe/ue/incendiile-de-vegetatie-fac-ravagii-in-franta-si-spania-375-000-de-evacuati-macron-convoaca-o-reuniune-de-criza-3879433"
-      }
-    ],
-    "first_source": "The Guardian",
-    "synthesis": "Valul extrem de căldură a generat incendii de vegetație scăpate de sub control în Franța și Spania, determinând evacuarea a între 300.000 și 375.000 de oameni. În timp ce autoritățile iberice avertizează asupra riscurilor climatice persistente, președintele francez Emmanuel Macron a convocat o reuniune de criză la Paris pentru gestionarea noilor focare."
-  },
-  {
-    "url": "https://zcj.ro/politica/sondaj-curs-aur-favorit-in-intentia-de-vot-ce-scoruri-au-psd-pnl-si-usr-80-dintre-romani-sunt-nemultumiti-de-directia-tarii--299165.html",
-    "original_link": "https://zcj.ro/politica/sondaj-curs-aur-favorit-in-intentia-de-vot-ce-scoruri-au-psd-pnl-si-usr-80-dintre-romani-sunt-nemultumiti-de-directia-tarii--299165.html",
-    "source": "zcj",
-    "source_name": "Ziua de Cluj",
-    "source_lang": "ro",
-    "title": "AUR conduce în intențiile de vot, iar majoritatea românilor resping direcția țării",
-    "category": "zonal",
-    "published": "2026-07-26T14:52:00+00:00",
-    "model": "B",
-    "teaser": "Un sondaj CURS arată că partidul AUR este favorit în opțiunile electorale ale românilor, în timp ce opt din zece cetățeni se declară nemulțumiți de traiectoria actuală a statului.",
-    "entities": [
-      "AUR",
-      "CURS"
-    ],
-    "icon": "percentage",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://ziuadevest.ro/concert-de-muzica-baroca-pe-domeniul-regal-savarsin-usvt-si-fundatia-regala-deschid-scoala-de-vara-patrimoniu-fara-frontiere",
-    "original_link": "https://www.ziuadevest.ro/concert-de-muzica-baroca-pe-domeniul-regal-savarsin-usvt-si-fundatia-regala-deschid-scoala-de-vara-patrimoniu-fara-frontiere/",
-    "source": "ziuadevest",
-    "source_name": "Ziua de Vest",
-    "source_lang": "ro",
-    "title": "Concert de muzică barocă pe Domeniul Regal Săvârșin",
-    "category": "regional",
-    "published": "2026-07-26T14:51:28+00:00",
-    "model": "B",
-    "teaser": "Domeniul Regal Săvârșin găzduiește în 28 iulie 2026 un concert de muzică barocă, marcând deschiderea ediției a XVII-a a Școlii Internaționale de Vară organizată de USVT și Fundația Regală.",
-    "entities": [
-      "Domeniul Regal Săvârșin",
-      "USVT",
-      "Fundația Regală"
-    ],
-    "icon": "building-monument",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://tion.ro/romania/tinerii-care-se-angajeaza-pentru-prima-data-pot-primi-pana-la-1-250-de-lei-pe-luna-guvernul-a-aprobat-normele-de-aplicare-2322837",
-    "original_link": "https://www.tion.ro/romania/tinerii-care-se-angajeaza-pentru-prima-data-pot-primi-pana-la-1-250-de-lei-pe-luna-guvernul-a-aprobat-normele-de-aplicare-2322837/?utm_source=rss&utm_medium=referral&utm_campaign=hiraggregator",
-    "source": "tion",
-    "source_name": "Timiș Online",
-    "source_lang": "ro",
-    "title": "Guvernul a aprobat normele pentru primele de angajare acordate tinerilor",
-    "category": "zonal",
-    "published": "2026-07-26T14:45:57+00:00",
-    "model": "B",
-    "teaser": "Tinerii care se angajează pentru prima dată și persoanele vulnerabile vor primi până la 1.250 de lei lunar, după ce Executivul a aprobat normele de aplicare ale OUG 11/2026 pentru sprijinirea ocupării forței de muncă.",
-    "entities": [
-      "Guvernul României"
-    ],
-    "icon": "percentage",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://tion.ro/stirile-judetului-timis/lucrarile-de-modernizare-de-pe-dn-59b-avanseaza-ce-se-face-acum-pe-tronsoanele-deta-livezile-si-livezile-cruceni-2322825",
-    "original_link": "https://www.tion.ro/stirile-judetului-timis/lucrarile-de-modernizare-de-pe-dn-59b-avanseaza-ce-se-face-acum-pe-tronsoanele-deta-livezile-si-livezile-cruceni-2322825/?utm_source=rss&utm_medium=referral&utm_campaign=hiraggregator",
-    "source": "tion",
-    "source_name": "Timiș Online",
-    "source_lang": "ro",
-    "title": "Continuă lucrările de modernizare pe drumul național DN 59B în Timiș",
-    "category": "zonal",
-    "published": "2026-07-26T14:43:44+00:00",
-    "model": "B",
-    "teaser": "Direcția Regională de Drumuri și Poduri Timișoara desfășoară lucrări de infrastructură rutieră pe sectoarele Deta - Livezile și Livezile - Cruceni, continuând modernizarea șoselei din județul Timiș.",
-    "entities": [
-      "DN 59B",
-      "Timiș",
-      "DRDP Timișoara"
-    ],
-    "icon": "car",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://pressalert.ro/2026/07/femeie-ranita-in-urma-unui-accident-intre-doua-masini-in-timisoara",
-    "original_link": "https://www.pressalert.ro/2026/07/femeie-ranita-in-urma-unui-accident-intre-doua-masini-in-timisoara/",
-    "source": "pressalert",
-    "source_name": "PressAlert Timișoara",
-    "source_lang": "ro",
-    "title": "Femeie rănită într-un accident rutier în Timișoara",
-    "category": "zonal",
-    "published": "2026-07-26T14:40:42+00:00",
-    "model": "B",
-    "teaser": "O persoană de sex feminin a fost transportată la spital după ce autoturismul în care se afla sau în care a fost proiectată a suferit un impact violent pe Calea Stan Vidrighin din Timișoara, implicând doi șoferi.",
-    "entities": [
-      "Timișoara",
-      "Calea Stan Vidrighin"
-    ],
-    "icon": "car",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://zcj.ro/eveniment/accident-in-cluj-intre-doua-masini-sase-persoane-inclusiv-doi-copii-transportate-la-spital--299164.html",
-    "original_link": "https://zcj.ro/eveniment/accident-in-cluj-intre-doua-masini-sase-persoane-inclusiv-doi-copii-transportate-la-spital--299164.html",
-    "source": "zcj",
-    "source_name": "Ziua de Cluj",
-    "source_lang": "ro",
-    "title": "Șase persoane au fost rănite grav într-o coliziune auto din județul Cluj",
-    "category": "zonal",
-    "published": "2026-07-26T14:39:00+00:00",
-    "model": "B",
-    "teaser": "Un eveniment rutier petrecut duminică în localitatea Dâmbu Mare din Cluj, implicând două autoturisme, s-a soldat cu rănirea a șase oameni, printre care și doi minori, transportați la spital.",
-    "entities": [
-      "Cluj",
-      "Dâmbu Mare",
-      "Mica"
-    ],
-    "icon": "ambulance",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://gsp.ro/sporturi/tenis/lilli-tagger-primul-titlu-cariera-praga-964473.html",
-    "original_link": "https://www.gsp.ro/sporturi/tenis/lilli-tagger-primul-titlu-cariera-praga-964473.html",
-    "source": "gsp",
-    "source_name": "GSP",
-    "source_lang": "ro",
-    "title": "Jucătoarea Lilli Tagger a cucerit primul său titlu WTA la turneul din Praga",
-    "category": "sport",
-    "published": "2026-07-26T14:36:20+00:00",
-    "model": "C",
-    "sources": [
-      {
-        "name": "GSP",
-        "url": "https://www.gsp.ro/sporturi/tenis/lilli-tagger-primul-titlu-cariera-praga-964473.html"
-      },
-      {
-        "name": "Digi Sport",
-        "url": "https://www.digisport.ro/tenis/a-castigat-primul-titlu-wta-al-carierei-la-doar-18-ani-lilli-tagger-e-noua-campioana-de-la-wta-praga-4399813"
-      }
-    ],
-    "first_source": "GSP",
-    "synthesis": "Sportiva austriacă Lilli Tagger, în vârstă de 18 ani, a obținut primul trofeu WTA din carieră. În finala competiției de categorie 250 desfășurată la Praga, aceasta a învins-o în două seturi, scor 7-6(3), 6-2, pe Daria Snigur. Meciul decisiv a durat o oră și jumătate, încununând un parcurs excelent al tinerei campionițe pe parcursul turneului.",
-    "entities": [
-      "Lilli Tagger",
-      "Praga",
-      "Daria Snigur"
-    ],
-    "icon": "trophy",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://spotmedia.ro/stiri/eveniment/atacul-de-la-gay-pride-berlin-este-considerat-atentat-terorist-islamist-suspectul-cunoscut-serviciilor-si-condamnat-anterior-inca-este-cautat",
-    "original_link": "https://spotmedia.ro/stiri/eveniment/atacul-de-la-gay-pride-berlin-este-considerat-atentat-terorist-islamist-suspectul-cunoscut-serviciilor-si-condamnat-anterior-inca-este-cautat",
-    "source": "spotmedia",
-    "source_name": "Spotmedia",
-    "source_lang": "ro",
-    "title": "Atac terorist islamist cu mașina la parada Gay Pride din Berlin: un mort și zeci de răniți",
-    "category": "extern",
-    "published": "2026-07-26T14:25:40+00:00",
-    "model": "C",
-    "sources": [
-      {
-        "name": "Spotmedia",
-        "url": "https://spotmedia.ro/stiri/eveniment/atacul-de-la-gay-pride-berlin-este-considerat-atentat-terorist-islamist-suspectul-cunoscut-serviciilor-si-condamnat-anterior-inca-este-cautat"
-      },
-      {
-        "name": "Digi24 Extern",
-        "url": "https://www.digi24.ro/stiri/externe/ue/un-mort-si-16-raniti-dupa-ce-o-masina-a-intrat-in-multime-la-parada-gay-pride-de-la-berlin-suspectul-este-cautat-3878685"
-      }
-    ],
-    "first_source": "Spotmedia",
-    "synthesis": "O mașină utilitară a intrat sâmbătă seară în mulțimea adunată la parada Gay Pride din Berlin, provocând decesul unei persoane și rănirea a cel puțin 16 oameni. Autoritățile germane au catalogat incidentul drept un atentat terorist islamist. Suspectul a fost identificat de poliție și este în prezent căutat de autorități.",
-    "entities": [
-      "Berlin",
-      "Gay Pride"
-    ],
-    "icon": "alert-triangle",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://sfatulparintilor.ro/familie-parinti/actualitate/sfantul-pantelimon-doctor-fara-arginti-traditii-obiceiuri-superstitii",
-    "original_link": "https://sfatulparintilor.ro/familie-parinti/actualitate/sfantul-pantelimon-doctor-fara-arginti-traditii-obiceiuri-superstitii/",
-    "source": "sfatulparintilor",
-    "source_name": "Sfatul Părinților",
-    "source_lang": "ro",
-    "title": "Românii îl prăznuiesc pe Sfântul Pantelimon pe 27 iulie",
-    "category": "cultura",
-    "published": "2026-07-26T14:23:00+00:00",
-    "model": "B",
-    "teaser": "Credincioșii îl cinstesc anual pe Sfântul Mucenic Pantelimon, cunoscut în traducerile populare și sub denumirea de Sfântul Ilie cel Mic sau ocrotitorul celor bolnavi.",
-    "entities": [
-      "Sfântul Pantelimon"
-    ],
-    "icon": "building-church",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://economedia.ro/companiile-se-confrunta-cu-o-noua-problema-tot-mai-putini-tineri-din-generatia-z-vor-functii-de-conducere.html",
-    "original_link": "https://economedia.ro/companiile-se-confrunta-cu-o-noua-problema-tot-mai-putini-tineri-din-generatia-z-vor-functii-de-conducere.html",
-    "source": "economedia",
-    "source_name": "Economedia",
-    "source_lang": "ro",
-    "title": "Generația Z refuză funcțiile de conducere în favoarea echilibrului profesional",
-    "category": "economic",
-    "published": "2026-07-26T14:09:45+00:00",
-    "model": "C",
-    "sources": [
-      {
-        "name": "Economedia",
-        "url": "https://economedia.ro/companiile-se-confrunta-cu-o-noua-problema-tot-mai-putini-tineri-din-generatia-z-vor-functii-de-conducere.html"
-      },
-      {
-        "name": "Digi24 Extern",
-        "url": "https://www.digi24.ro/stiri/externe/ue/tot-mai-putini-tineri-vor-sa-fie-sefi-de-ce-refuza-generatia-z-functiile-de-conducere-3873149"
-      }
-    ],
-    "first_source": "Economedia",
-    "synthesis": "Tinerii din Generația Z evită tot mai des ocuparea unor posturi de conducere, punând accent pe armonia dintre viața privată și cea profesională în detrimentul responsabilităților manageriale. Această tendință provoacă îngrijorare în rândul angajatorilor, care se confruntă deja cu un deficit de forță de muncă și se tem că lipsa viitorilor lideri va genera dificultăți majore pentru companii pe fondul provocărilor demografice actuale. Sursele sunt în deplină concordanță.",
-    "entities": [
-      "Generatia Z"
-    ],
-    "icon": "chart-line",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://politico.eu/article/germanys-interior-minister-calls-deadly-berlin-pride-assault-islamist-terrorist-attack",
-    "original_link": "https://www.politico.eu/article/germanys-interior-minister-calls-deadly-berlin-pride-assault-islamist-terrorist-attack/?utm_source=RSS_Feed&utm_medium=RSS&utm_campaign=RSS_Syndication",
-    "source": "politico_eu",
-    "source_name": "Politico EU",
-    "source_lang": "en",
-    "title": "Atacul de la Berlin Pride a fost clasificat drept act terorist islamist",
-    "category": "extern",
-    "published": "2026-07-26T14:05:25+00:00",
-    "model": "C",
-    "sources": [
-      {
-        "name": "Politico EU",
-        "url": "https://www.politico.eu/article/germanys-interior-minister-calls-deadly-berlin-pride-assault-islamist-terrorist-attack/?utm_source=RSS_Feed&utm_medium=RSS&utm_campaign=RSS_Syndication"
-      },
-      {
-        "name": "The Guardian",
-        "url": "https://www.theguardian.com/world/2026/jul/26/berlin-pride-van-knife-rampage-islamist-terrorist-attack-germany"
-      }
-    ],
-    "first_source": "Politico EU",
-    "synthesis": "Autoritățile germane au confirmat că incidentul armat și cu mașina din parcul Tiergarten din Berlin, desfășurat sâmbătă în apropierea festivalului Pride, reprezintă un atentat terorist islamist. Un individ a intrat cu un vehicul în mulțime și a rănit oameni cu o armă albă, provocând un deces și 29 de răniți. Poliția desfășoară o operațiune amplă pentru capturarea principalului suspect, identificat drept un tânăr de 21 de ani.",
-    "entities": [
-      "Berlin",
-      "Tiergarten",
-      "Berlin Pride"
-    ],
-    "icon": "alert-triangle",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://csid.ro/beauty/ingrijire-frumusete/ceramidele-si-rolul-lor-in-sanatatea-pielii-de-ce-sunt-considerate-unele-dintre-cele-mai-importante-ingrediente-din-produsele-de-ingrijire-21261489",
-    "original_link": "https://www.csid.ro/beauty/ingrijire-frumusete/ceramidele-si-rolul-lor-in-sanatatea-pielii-de-ce-sunt-considerate-unele-dintre-cele-mai-importante-ingrediente-din-produsele-de-ingrijire-21261489/",
-    "source": "csid",
-    "source_name": "CSÎD",
-    "source_lang": "ro",
-    "title": "Ceramidele sunt ingrediente esențiale în cremele hidratante pentru sănătatea pielii",
-    "category": "sanatate",
-    "published": "2026-07-26T14:00:45+00:00",
-    "model": "B",
-    "teaser": "Dermatologii recomandă frecvent utilizarea ceramidelor în produsele cosmetice datorită beneficiilor majore pentru hidratarea și protecția barierei cutanate, conform specialiștilor în îngrijirea tenului.",
-    "entities": [
-      "ceramide"
-    ],
-    "icon": "pill",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://unica.ro/divertisment/casa-si-gradina/ce-rol-are-gaura-din-lingura-pentru-paste-824791",
-    "original_link": "https://www.unica.ro/divertisment/casa-si-gradina/ce-rol-are-gaura-din-lingura-pentru-paste-824791",
-    "source": "unica",
-    "source_name": "Unica",
-    "source_lang": "ro",
-    "title": "Orificiul central din lingura pentru paste servește la măsurarea porțiilor",
-    "category": "lifestyle",
-    "published": "2026-07-26T14:00:00+00:00",
-    "model": "B",
-    "teaser": "Ustensila specială folosită în bucătărie pentru paste prezintă o gaură în mijloc cu un scop utilitar practic, ajutând gospodinele să dozeze cantitatea corectă de spaghete înainte de fierbere.",
-    "entities": [],
-    "icon": "home",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
-  },
-  {
-    "url": "https://zcj.ro/politica/boc-la-inaugurarea-fabricii-teraplast-din-spania-acum-este-momentul-adevaratei-integrari-europene--299163.html",
-    "original_link": "https://zcj.ro/politica/boc-la-inaugurarea-fabricii-teraplast-din-spania-acum-este-momentul-adevaratei-integrari-europene--299163.html",
-    "source": "zcj",
-    "source_name": "Ziua de Cluj",
-    "source_lang": "ro",
-    "title": "Emil Boc a participat la deschiderea fabricii TeraPlast din Spania",
-    "category": "zonal",
-    "published": "2026-07-26T13:56:00+00:00",
-    "model": "B",
-    "teaser": "Primarul Clujului a marcat inaugurarea noii unități de producție TeraPlast Iberia pe teritoriul spaniol, subliniind relevanța extinderii capitalului românesc pe piața comunitară.",
-    "entities": [
-      "Emil Boc",
-      "TeraPlast",
-      "Spania"
-    ],
-    "icon": "building-factory",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false
   }
 ]
