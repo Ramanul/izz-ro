@@ -4,43 +4,57 @@
 > Executors get it read-only. Keep it tight — when it outgrows ~40 lines of content, cut the
 > settled history, not the open work. `git fetch` immediately before rewriting it.
 
-**Updated:** 2026-08-02 13:45 (account A — #106/#107/#108/#109/#110 merged, #111 open; **production is losing ~40% of its sources, see Open 1**)
+**Updated:** 2026-08-02 14:10 (account A — #106–#111 merged; **the ~40% source loss is DIAGNOSED, cause below; the fix is code, not deploy topology**)
 
-## READ FIRST — production reads 861 articles where a local run reads 1428 (2026-08-02)
-Not a checker artifact, and no longer an estimate. `feedcheck.yml` run `30742957035` on GitHub
-runners reported **75 sources with 0 articles**. All 75 were then re-probed from the owner's home
-IP with **the same production fetcher** (`_fetch_one_guarded`, script in PR #111):
+## READ FIRST — a bot-challenge page served with HTTP 200, triggered by SWEEP VOLUME (2026-08-02)
+
+**The cause is established, with response bodies, not inferred.** Earlier versions of this section
+blamed the GitHub runner IP and recommended a proxy or a self-hosted runner. **That was wrong —
+do not act on it.** Two hypotheses were tested and killed before the real one held up:
+
+- ~~"runner IPs are blocked"~~ — `silent_probe` from a runner, 10 sources: **10/10 fine**. Same
+  runner infrastructure, 75 sources: **74/75 fine**. The IP is not blocked.
+- ~~"the conditional-request cache returns 304s"~~ — the 10:05 production run had a cache 3h23m
+  old, past `CACHE_MAX_AGE_H = 3`, so it sent unconditional requests, and still read 852.
+  `feed_check.py` never passes a cache at all (`_fetch_one_guarded(key, src)`, third arg omitted).
+
+**What actually happens.** Probe all 189 sources sequentially from a runner and it reproduces:
+**74 with 0 entries**, matching feedcheck's 75. Same infrastructure, same script, ~20 minutes after
+the 75-source run that produced 1. The variable is **sweep volume**, not IP and not time.
+
+72 of the 74 return a byte-identical page, HTTP **200**:
 
 ```text
-total probate : 75
-VII local     : 73     goale pe runner, pline de acasa -> punct de observatie
-goale si local: 0
-eroare local  : 2      pl_suceava_oras_dolhasca, pl_arges_oras_costesti (real broken)
-articole recuperabile: 544
+<!DOCTYPE html><html lang="en"><head>... <script>(function(){
+  setTimeout(function(){ window.location.reload(); }, 5000); }())</script>
+<title>One moment, please...</title> <style>.spinner{...
 ```
 
-**544 measured**, against the production gap of 1428 − 861 = 567. The earlier "≈71 sources × the
-8-item cap" was arithmetic that happened to fit; this is the direct measurement, and it holds.
-The 2 genuinely broken ones now surface as errors instead of silently, thanks to #110.
-→ **The site has been quietly publishing from ~60% of its corpus.** Nothing reported it, because
-`fetch_all()` only puts a source in `dead` when it raised an ERROR; a source answering 200 with an
-unparseable or empty feed was invisible. #110 fixes the invisibility (RSS + html_list now report
-`200 dar 0 articole`, the way #98 already did for `sitemap_news`), so the next production run
-prints the real list instead of nothing.
-→ **The invisibility is fixed; the LOSS is not, and the fix is an owner decision.** Options, none
-of them free: fetch through a proxy with a different egress (a Cloudflare Worker already exists for
-failover), a self-hosted runner on the owner's machine (his IP demonstrably works, but the machine
-must be up), or accepting the loss and pruning the corpus honestly. This is production deploy
-config, i.e. §10 — do not pick one unilaterally.
-→ **What is NOT established:** whether the runners get a challenge page, an empty feed, a redirect,
-or a truncated body. Neither `feed_check.py` nor `ua_probe.py` ever looks at the response body, so
-neither can tell those apart. **PR #111 adds `tools/silent_probe.py` + `silent-probe.yml`** for
-exactly this: status, final URL, headers, feedparser entry count/bozo, first 400 bytes of body.
-`workflow_dispatch` only finds workflows on the default branch, so **the probe cannot run
-until #111 lands** — merge it, then dispatch `silent-probe.yml` and read the output against the
-healthy local witness (`recorder` and `pl_sibiu_oras_agnita`: 200, valid RSS, 10 entries each).
-Do not assume it is HTTP 403 — `feed_check` reported these as `GOL`, not as errors, so the status
-was fine and only the parse yielded nothing.
+A JS bot-challenge interstitial that auto-reloads after 5 s. `feedparser` parses it as valid HTML
+with zero entries and **no error** — which is exactly why nothing ever reported it.
+**65 of the 74 are served by `openresty/1.31.1.1`**, one shared hosting stack; the rest are
+3× Apache, 3× cloudflare, 1× `openresty/1.29.2.3`. Affected set: 64 of the 120 `pl_*` municipal
+feeds (56 are fine) plus `bookhub bizbrasov ziarultransilvaniei zch stirilemoldovei stirimuntenia
+cronicaolteniei stirileolteniei piataauto contributors`.
+
+**The loss itself is real and measured with the production function**, `fetch_all()` — not a
+reimplementation, and not two different metrics compared by accident:
+
+```text
+local, cold cache : 1428 articles, 186/189 sources with >=1, 3 dead, 164 capped at 8
+production        :  860 (03:47) / 861 (06:42) / 852 (10:05)
+```
+
+The same 189-source sweep from the owner's residential IP loses 3 sources; from a runner it loses
+74. So IP reputation sets the *threshold*, but **volume is the trigger** — which makes this a
+fetch-pacing problem in `generator/fetch.py` (`MAX_WORKERS = 8` against 189 sources, 65 of them on
+one host), **not** the deploy-topology decision the previous version of this section claimed.
+→ **NOT YET TESTED, and the obvious next step:** the challenge page reloads itself after 5 s, which
+suggests a back-off-and-retry that detects `<title>One moment, please...</title>` may simply pass
+it. Do not write that into `fetch.py` on the strength of this paragraph — probe it first, from a
+runner, on a handful of the 74. Per-host serialization is the other candidate.
+→ #110 is what made any of this visible: before it, a source answering 200 with an unparseable
+body was dropped silently. The next production run prints the real list.
 
 ## OPERATING MODE — owner active on ACCOUNT A (2026-08-02)
 Owner was on account B, hit the usage limit mid-work on three draft PRs, switched to account A
