@@ -10,6 +10,10 @@ fără transcript, fără să fi fost de față. Nu e o comandă de „final de 
 mijloc, în special când alerta de consum (`usage-alert.ps1`, prag 75%) semnalează că mai ai buget
 cât să scrii, dar poate nu cât să termini.
 
+**Regula care le acoperă pe toate: pushează devreme și des.** Presupune că sesiunea se poate opri
+la orice pas — pentru că exact asta o declanșează. Nimic din ce ai scris nu are voie să stea doar
+pe disc cât timp mai ai de scris altceva (vezi pasul 3a și motivul din spate).
+
 ## 0. Determină pe ce cont rulezi
 
 - Ai acces la `C:\Users\cw_26\` sau `C:\claude desktop\` → **contul A** (aplicația desktop, local).
@@ -24,7 +28,7 @@ Rulează `git status --short` și `git log --oneline -5` în **fiecare** repo at
 
 Separă explicit trei categorii:
 - ce e **comis** (intră în jurnal ca hash + mesaj),
-- ce e **necomis și e al tău** (îl comiți la pasul 5),
+- ce e **necomis și e al tău** (îl comiți la pasul 6),
 - ce e **necomis și e WIP-ul utilizatorului** — vezi secțiunea „User WIP — UNTOUCHABLE" din
   `izz/specs/STATE.md`. **Nu-l comite, nu-l face stash, nu-l stage-ui.** Îl LISTEZI în jurnal,
   cu avertismentul că celălalt cont nu-l vede deloc pe remote.
@@ -34,12 +38,39 @@ Separă explicit trei categorii:
 `ls -t sessions/<A|B>/ | head -1`, apoi citește-l. Scrii **doar ce s-a întâmplat după el**.
 Nu rescrie istorie deja jurnalizată — trimite la ea cu numele fișierului.
 
-## 3. Scrie jurnalul
+## 3. Scrie jurnalul — schelet întâi, **pushat imediat**, abia apoi îmbogățit
 
-`sessions/<A|B>/YYYY-MM-DD-HHmm-slug-scurt.md`, după regulile din `sessions/README.md`:
+Ordinea contează mai mult decât conținutul, și e contraintuitivă: **push înainte de calitate.**
+
+Pe 2026-08-02 contul B a scris un jurnal de 198 de linii și a rămas fără credit **înainte de
+push**. Fișierul a existat doar în sandbox-ul cloud și s-a pierdut integral; `sessions/B/` avea
+în continuare doar `README.md` pe origin. Un jurnal scris și nepushat **nu e un jurnal parțial,
+e zero** — cu agravanta că cel care l-a scris crede că a predat. Iar momentul în care rulezi
+handoff-ul e fix momentul în care poți rămâne fără buget la jumătatea frazei.
+
+Deci în două treceri, nu într-una:
+
+**3a. Schelet minim, comis și pushat în aceeași trecere.**
+`sessions/<A|B>/YYYY-MM-DD-HHmm-slug-scurt.md`, cinci-zece linii brute care răspund la: ce s-a
+cerut, ce a aterizat (hash + mesaj), ce e necomis, ce a rămas deschis. Fără șlefuire, fără
+formatare, fără să recitești. Apoi, **imediat**, fără să te apuci de altceva între timp:
+
+```bash
+git add sessions/<A|B>/<fișier>.md && git commit -m "docs(sessions): handoff checkpoint" && git push
+```
+
+Din secunda în care push-ul trece, predarea e recuperabilă chiar dacă sesiunea moare pe loc.
+
+**3b. Abia acum scrii jurnalul adevărat**, peste schelet, după regulile din `sessions/README.md`:
 detaliat, nu rezumat — ce s-a cerut (în cuvintele utilizatorului), pași concreți și comenzi
 rulate, ieșiri verbatim când contează, **fundăturile și de ce n-au mers**, decizii cu
 raționamentul lor, starea la final, fișiere și branch-uri atinse.
+
+Pushează din nou **după fiecare bucată substanțială**, nu o singură dată la final. Comite pur
+și simplu peste checkpoint — mai multe commit-uri de jurnal nu deranjează pe nimeni. **Nu face
+`commit --amend` + force-push** ca să „cureți" istoricul: force-push-ul cere confirmare
+explicită de la Alexandru (regulă globală), iar aici n-ar cumpăra nimic — un istoric urât al
+unui fișier de jurnal e prețul corect pentru un handoff care nu se poate pierde.
 
 Fundăturile contează cel mai mult. Fără ele, celălalt cont reface aceleași greșeli.
 
@@ -96,14 +127,20 @@ Un merge neanunțat e exact ce a cauzat coliziunile pentru care s-a scris §14.
 
 Regula veche „o singură sesiune scrie la `main`, întreabă înainte" e **depășită** — nu o repeta.
 
-## 6. Commit + push
+## 6. Commit + push — și la pașii 4 și 5, nu doar aici
 
-Comite jurnalul și STATE.md (mesaje în engleză), apoi `push` explicit în fiecare repo atins.
-Workspace-ul are sync automat la 15 minute, dar handoff-ul nu are voie să depindă de el —
-dacă comuți contul în următoarele 15 minute, celălalt cont ar citi starea veche.
+Jurnalul e deja pe remote de la 3a. Aceeași regulă se aplică însă la tot ce ai scris după:
+**`STATE.md` (pasul 4) și `TASKS-B.md` (pasul 5) se comit și se pushează pe măsură ce le
+termini**, nu se adună pentru un push final. Nu există motiv să ții pe disc, în ultima parte a
+bugetului, un fișier deja terminat.
 
-Dacă push-ul eșuează, **spune-o clar și oprește-te acolo** — un handoff care n-a ajuns pe remote
-e mai rău decât niciunul, pentru că pare făcut.
+Push explicit în **fiecare** repo atins (mesaje în engleză). Workspace-ul are sync automat la
+15 minute, dar handoff-ul nu are voie să depindă de el — dacă comuți contul în următoarele
+15 minute, celălalt cont ar citi starea veche.
+
+Verifică, nu presupune: `git status -sb` trebuie să arate `## main...origin/main` **fără**
+`[ahead N]`. Dacă push-ul eșuează, **spune-o clar și oprește-te acolo** — un handoff care n-a
+ajuns pe remote e mai rău decât niciunul, pentru că pare făcut.
 
 ## 7. Raportează, scurt
 
