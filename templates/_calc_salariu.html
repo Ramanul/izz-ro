@@ -1,0 +1,21 @@
+{# Markup-ul calculatorului de salariu, folosit de /instrumente/calculator-salariu/ si de
+   ghidurile cu `relatii.calculator`. ZERO cod inline: CSP-ul sitului e `script-src 'self'`
+   fara 'unsafe-inline' (render._write_headers), deci un <script> in pagina sau un `oninput=`
+   nu ruleaza -- exact motivul pentru care calculatorul a fost mort pe live pana la 2026-08-02.
+   Logica sta in static/calc-salariu.js si citeste salariul minim din `data-salariu-minim`. #}
+{% if calc_heading %}
+<h2>{{ calc_heading }}</h2>
+{% endif %}
+<div class="calculator" data-salariu-minim="{{ salariu_minim }}">
+  <div class="calc-row">
+    <label for="calc-brut">Salariu brut (lei)</label>
+    <div style="display:flex;gap:8px;align-items:center">
+      <input type="number" id="calc-brut" class="calc-brut" value="{{ salariu_minim }}" min="0" step="100">
+      <button type="button" class="btn-preset" data-brut="{{ salariu_minim }}">Salariu minim</button>
+      <button type="button" class="btn-preset" data-brut="5000">5.000</button>
+      <button type="button" class="btn-preset" data-brut="10000">10.000</button>
+    </div>
+  </div>
+  <div class="calc-results" id="calc-results"></div>
+</div>
+<p class="calc-note">*Calcul estimativ pentru un angajat fără persoane în întreținere. Include deducerea personală de bază (20% × salariul minim brut). Nu include contribuția la Pilonul II de pensii (3,75% din CAS, opțional).</p>

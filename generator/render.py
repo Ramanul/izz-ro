@@ -97,7 +97,7 @@ def _asset_ver() -> dict:
     if _ASSET_VER is None:
         _ASSET_VER = {name: _content_ver(os.path.join(STATIC_DIR, name))
                       for name in ("styles.css", "personalize.js", "search.js", "theme.js", "fonts.css",
-                                   "site.webmanifest")}
+                                   "calc-salariu.js", "site.webmanifest")}
     return _ASSET_VER
 
 
@@ -613,7 +613,7 @@ def _render_ghiduri(env: Environment, articles: list) -> None:
         }
         calculator_html = ""
         if ent.get("relatii", {}).get("calculator"):
-            calculator_html = _render_calc_salariu(ent)
+            calculator_html = _render_calc_salariu(env, ent)
         _write(os.path.join(OUT_DIR, "ghiduri", eid, "index.html"),
                ghid_tpl.render(**_base_ctx(
                    f"/ghiduri/{eid}/", ent=ent, categorii=categorii,
@@ -639,8 +639,13 @@ def _render_ghiduri(env: Environment, articles: list) -> None:
     _write(os.path.join(OUT_DIR, "instrumente", "index.html"),
            instr_tpl.render(**_base_ctx("/instrumente/", nav_section="instrumente", tools=tools)))
     calc_tpl = env.get_template("calculator.html")
+    # Salariul minim ajunge in pagina la randare, nu printr-un fetch() la runtime: situl se
+    # regenereaza la 2h, deci valoarea e la fel de proaspata, iar pagina nu mai depinde de
+    # cod inline (blocat de CSP) ca sa afiseze ceva.
+    salariu_minim = entities.get("salariul-minim", {}).get("valoare_curenta", {}).get("brut", 4050)
     _write(os.path.join(OUT_DIR, "instrumente", "calculator-salariu", "index.html"),
-           calc_tpl.render(**_base_ctx("/instrumente/calculator-salariu/")))
+           calc_tpl.render(**_base_ctx("/instrumente/calculator-salariu/",
+                                       salariu_minim=salariu_minim)))
 
     # Calendar din termenele entităților
     termene = []
@@ -670,9 +675,14 @@ def _render_ghiduri(env: Environment, articles: list) -> None:
                now_timestamp=_dt.now().timestamp())))
 
 
-def _render_calc_salariu(ent: dict) -> str:
+def _render_calc_salariu(env: Environment, ent: dict) -> str:
+    """Markup-ul calculatorului, dintr-un template -- NU dintr-un f-string cu JS in el.
+    Varianta veche emitea <script> inline si oninput=/onclick=, pe care CSP-ul
+    (`script-src 'self'`, _write_headers) le blocheaza tacut: pe live calculatorul afisa
+    campul si butoanele si nu calcula nimic. Codul e acum in static/calc-salariu.js."""
     brut = ent.get("valoare_curenta", {}).get("brut", 4050)
-    return f"""\n    <h2>🧮 Calculator salariu net</h2>\n    <div class="calculator">\n      <div class="calc-row">\n        <label for="calc-brut">Salariu brut (lei)</label>\n        <div style="display:flex;gap:8px;align-items:center">\n          <input type="number" id="calc-brut" value="{brut}" min="0" step="100" oninput="calcSalariu()">\n          <button type="button" class="btn-preset" onclick="setBrut({brut})">Salariu minim</button>\n          <button type="button" class="btn-preset" onclick="setBrut(5000)">5.000</button>\n          <button type="button" class="btn-preset" onclick="setBrut(10000)">10.000</button>\n        </div>\n      </div>\n      <div class="calc-results" id="calc-results"></div>\n    </div>\n    <p class="calc-note">*Calcul estimativ pentru un angajat fără persoane în întreținere. Include deducerea personală de bază (20% × salariul minim brut). Nu include contribuția la Pilonul II de pensii (3,75% din CAS, opțional).</p>\n    <script>\n    var SM={brut};\n    function setBrut(v){{document.getElementById('calc-brut').value=v;calcSalariu()}}\n    function calcSalariu(){{\n      var b=parseFloat(document.getElementById('calc-brut').value)||0;\n      var cas=Math.round(b*.25),cass=Math.round(b*.1),ded=Math.round(SM*.2);\n      var baza=Math.max(0,b-cas-cass-ded),imp=Math.round(baza*.1),net=b-cas-cass-imp;\n      document.getElementById('calc-results').innerHTML=\n        '<div class="calc-item"><span class="calc-label">CAS (25%)</span><span class="calc-val">-'+cas+' lei</span></div>'\n        +'<div class="calc-item"><span class="calc-label">CASS (10%)</span><span class="calc-val">-'+cass+' lei</span></div>'\n        +'<div class="calc-item"><span class="calc-label">Deducere personală</span><span class="calc-val">'+ded+' lei</span></div>'\n        +'<div class="calc-item"><span class="calc-label">Bază impozabilă</span><span class="calc-val">'+baza+' lei</span></div>'\n        +'<div class="calc-item"><span class="calc-label">Impozit (10%)</span><span class="calc-val">-'+imp+' lei</span></div>'\n        +'<div class="calc-item calc-total"><span class="calc-label">SALARIU NET</span><span class="calc-val">'+net+' lei</span></div>'}}\n    calcSalariu();\n    </script>"""
+    return env.get_template("_calc_salariu.html").render(
+        salariu_minim=brut, calc_heading="🧮 Calculator salariu net")
 
 
 def _render_utilities(env: Environment, articles: list) -> None:
