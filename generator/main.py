@@ -126,6 +126,15 @@ def run(dry_run: bool = False) -> dict:
     existing = state.load()
     known = {a.get("url") for a in existing}
     new_items = [i for i in raw if i["url"] not in known]
+    # Official feeds carry months-old entries, so most "new" items are already past the TTL
+    # when read. Without this they burn AI budget and are deleted by the trailing expire()
+    # in the SAME run — and worse, process_cluster picks the OLDEST member as representative,
+    # so a stale item can absorb a FRESH article and take it down with it when it expires.
+    # Same expire() as below, so the two cutoffs cannot drift. Undated items stay: _parse_iso
+    # falls back to now(). Measurements are in the PR #108 description, not here — they age.
+    fresh_items = state.expire(new_items)
+    stale_skipped = len(new_items) - len(fresh_items)
+    new_items = fresh_items
 
     provider = get_provider()
     provider_name = provider.name if provider else "fallback (fara cheie/SDK AI)"
@@ -155,6 +164,7 @@ def run(dry_run: bool = False) -> dict:
         "fetched": len(raw),
         "dead_sources": dead,
         "new": len(new_items),
+        "stale_skipped": stale_skipped,
         "model_B": sum(1 for a in processed_new if a.get("model") == "B"),
         "model_C": sum(1 for a in processed_new if a.get("model") == "C"),
         "total_known": len(combined),
@@ -188,6 +198,9 @@ def _print_report(stats: dict, processed_new: list, dry_run: bool):
     print(f"Provider AI: {stats['provider']}")
     print(f"Articole citite: {stats['fetched']} | noi: {stats['new']} | "
           f"B: {stats['model_B']} | C: {stats['model_C']}")
+    if stats.get("stale_skipped"):
+        print(f"Sarite ca deja expirate la citire: {stats['stale_skipped']} "
+              f"(peste TTL de {config.ARTICLE_TTL_DAYS} zile — ar fi fost sterse in aceeasi rulare)")
     print(f"Total cunoscute (dupa expirare): {stats['total_known']} | "
           f"vizibile dupa moderare: {stats['visible_after_moderation']}")
     if stats["hold_important"]:
