@@ -104,3 +104,35 @@ def test_sursa_moarta_ajunge_in_lista_din_fetch_all(monkeypatch, raspunde):
     items, dead = fetch.fetch_all()
     assert items == []
     assert len(dead) == 1 and "exemplu" in dead[0]
+
+
+# --- challenge anti-bot (masurat 2026-08-02) ----------------------------------
+# O gazda care serveste interstitialul in loc de feed NU e o sursa moarta. Daca cele doua
+# cazuri arata la fel in raport, cineva va sterge din config surse perfect bune.
+
+def test_is_challenge_detects_the_measured_interstitial():
+    body = (b'<!DOCTYPE html><html lang="en"><head><meta charset="utf8">'
+            b'<script>(function(){setTimeout(function(){window.location.reload();},5000);}())</script>'
+            b'<title>One moment, please...</title>')
+    assert fetch._is_challenge(body)
+    assert fetch._is_challenge(body.decode("utf-8"))   # _fetch_html_list decodeaza corpul
+
+
+def test_is_challenge_does_not_fire_on_a_real_feed():
+    assert not fetch._is_challenge(b'<?xml version="1.0"?><rss version="2.0"><channel>')
+
+
+def test_is_challenge_ignores_the_marker_deep_in_a_long_body():
+    assert not fetch._is_challenge(b"x" * 5000 + b"One moment, please")
+
+
+def test_challenge_is_reported_distinctly_from_an_empty_feed(monkeypatch):
+    challenge = (b'<!DOCTYPE html><html><head><title>One moment, please...</title></head>'
+                 b'<body><div class="spinner"></div></body></html>')
+    monkeypatch.setattr(fetch.urllib.request, "urlopen",
+                        lambda req, timeout=None: _FakeResponse(challenge))
+    items, err = fetch._fetch_one("x", {"url": "https://ex.ro/feed/", "name": "X",
+                                        "category": "local"})
+    assert items == []
+    assert "challenge anti-bot" in err
+    assert "feed gol" not in err          # eticheta gresita ar invita la stergerea sursei

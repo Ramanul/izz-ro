@@ -4,7 +4,7 @@
 > Executors get it read-only. Keep it tight — when it outgrows ~40 lines of content, cut the
 > settled history, not the open work. `git fetch` immediately before rewriting it.
 
-**Updated:** 2026-08-02 16:05 (account A — #106–#111 merged; **the fix is in #113, OPEN, awaiting the owner, who is away from the machine**)
+**Updated:** 2026-08-02 16:40 (account A — #106–#113 merged; **#113 landed the fetch fix, owner approved**; #114 open with the render.py test net)
 
 ## READ FIRST — a bot-challenge page served with HTTP 200, triggered by SWEEP VOLUME (2026-08-02)
 
@@ -56,8 +56,7 @@ Do not re-open this.
 different addresses (checked 30: `37.143.163.59` x3, `89.39.83.125` x2, the rest distinct) — one
 Romanian hosting provider on many IPs behind one WAF. Only the `Server` header identifies it, and
 that is known only from a response, i.e. from the previous run.
-→ **THE FIX IS [PR #113](https://github.com/Ramanul/izz-ro/pull/113) — OPEN, CI green, waiting for
-the owner.** (a) reports these as `challenge anti-bot servit cu 200 (sursa NU e moarta)` instead of
+→ **THE FIX IS [PR #113](https://github.com/Ramanul/izz-ro/pull/113) — MERGED, owner approved.** (a) reports these as `challenge anti-bot servit cu 200 (sursa NU e moarta)` instead of
 the "feed gol" label #110 gave them, which invites deleting good sources from config; (b) adds
 `_HostPacer` — caches the `Server` header per source, spaces requests sharing a provider, only for
 groups >= `FETCH_PACE_GROUP_MIN` (10), default 2.0 s, `FETCH_PACE_S=0` disables it; (c) deletes
