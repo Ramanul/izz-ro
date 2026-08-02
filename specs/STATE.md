@@ -130,9 +130,9 @@ reuse it rather than building a second county matcher.
    **What is NOT established:** that this was the owner's complaint, or that his device behaves the
    same. Only he can close this — ask him to press it once and say what he sees. If he still says
    "nu merge", the next step is his exact browser + a console screenshot, NOT another blind fix.
-1. **PR #101 (locality lead photos) is out of draft, CI green, awaiting owner sign-off + live
-   confirmation.** Per §16 the most that can be claimed is "verificat local"; only the owner or
-   `smoke_live.py` can confirm on izz.ro.
+1. ~~**PR #101 (locality lead photos) awaiting owner sign-off**~~ — **MERGED 2026-08-02 03:19.**
+   This entry was stale. What is still open is only §16's third state: nobody has confirmed the
+   129 photos ON LIVE. `smoke_live.py` or a look at izz.ro closes it.
 1. **SIRUTA Slice 2 — county-aware village matching.** Groundwork merged (siruta_raw.csv +
    build_gazetteer.py). Design is now clear: villages match ONLY when the source's county matches
    the village's county. This kills the measured false positives — Saturn/horoscope/FCSB all come
