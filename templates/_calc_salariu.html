@@ -1,7 +1,7 @@
 {# Markup-ul calculatorului de salariu, folosit de /instrumente/calculator-salariu/ si de
    ghidurile cu `relatii.calculator`. ZERO cod inline: CSP-ul sitului e `script-src 'self'`
-   fara 'unsafe-inline' (render._write_headers), deci un <script> in pagina sau un `oninput=`
-   nu ruleaza -- exact motivul pentru care calculatorul a fost mort pe live pana la 2026-08-02.
+   fara 'unsafe-inline' (render._write_headers), deci un bloc de script scris in pagina sau un
+   `oninput=` nu ruleaza -- motivul pentru care calculatorul a fost mort pe live pana la 2026-08-02.
    Logica sta in static/calc-salariu.js si citeste salariul minim din `data-salariu-minim`. #}
 {% if calc_heading %}
 <h2>{{ calc_heading }}</h2>

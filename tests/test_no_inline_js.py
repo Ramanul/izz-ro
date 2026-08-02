@@ -10,9 +10,14 @@ Testele de mai jos transforma regula din vigilenta in verificare: JS nou = fisie
 `static/`, inclus cu `<script src=...>`.
 
 Blocurile `<script type="application/ld+json">` sunt date, nu cod: nu se executa, deci CSP
-nu le atinge. Sunt permise explicit."""
+nu le atinge. Sunt permise explicit.
+
+De ce HTMLParser si nu o expresie regulata: prima versiune inchidea blocurile pe
+`</script\\s*>`, iar CodeQL a semnalat-o corect (`py/bad-tag-filter`) -- HTML accepta si
+`</script foo>`, pe care regexul nu-l prinde, deci un script inline scris asa ar fi trecut
+neobservat. Un filtru de securitate care rateaza cazul ocolit e mai rau decat niciun filtru."""
 import os
-import re
+from html.parser import HTMLParser
 
 import pytest
 
@@ -20,13 +25,42 @@ from generator import render
 
 TPL_DIR = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "templates")
 
-# <script ...> ... </script> cu tot cu atribute, ca sa putem citi `src`/`type`.
-_SCRIPT = re.compile(r"<script\b([^>]*)>(.*?)</script\s*>", re.S | re.I)
-# `oninput="..."`, `onclick='...'` etc. Nu prinde `on` din cuvinte precum "button".
-_INLINE_HANDLER = re.compile(r"\son[a-z]+\s*=\s*[\"']", re.I)
-
 # Tipuri care NU se executa ca script, deci nu cad sub script-src.
 _DATA_TYPES = ("application/ld+json", "application/json", "text/template")
+
+
+class _ScriptScan(HTMLParser):
+    """Aduna (a) corpurile de <script> executabile si (b) atributele `on*=`."""
+
+    def __init__(self):
+        super().__init__(convert_charrefs=True)
+        self.inline_bodies = []
+        self.handlers = []
+        self._executable = False
+
+    def handle_starttag(self, tag, attrs):
+        a = {k.lower(): (v or "") for k, v in attrs}
+        self.handlers += [k for k in a if k.startswith("on") and len(k) > 2]
+        if tag == "script":
+            typ = a.get("type", "").lower()
+            self._executable = "src" not in a and not any(t in typ for t in _DATA_TYPES)
+
+    handle_startendtag = handle_starttag
+
+    def handle_data(self, data):
+        if self._executable and data.strip():
+            self.inline_bodies.append(data.strip())
+
+    def handle_endtag(self, tag):
+        if tag == "script":
+            self._executable = False
+
+
+def _scan(html: str) -> _ScriptScan:
+    p = _ScriptScan()
+    p.feed(html)
+    p.close()
+    return p
 
 
 def _templates() -> list:
@@ -38,28 +72,34 @@ def test_there_are_templates_to_check():
     assert len(_templates()) >= 10
 
 
+def test_the_scan_actually_catches_the_defect():
+    """Falsificare inainte de incredere: pe markup-ul VECHI al calculatorului, scanarea
+    trebuie sa gaseasca si scriptul, si handlerul -- inclusiv cu tag de inchidere ocolit."""
+    old = ('<input oninput="calcSalariu()">'
+           '<script>function calcSalariu(){}</script foo>'
+           '<script type="application/ld+json">{"a":1}</script>'
+           '<script src="/static/x.js"></script>')
+    scan = _scan(old)
+    assert scan.handlers == ["oninput"]
+    assert len(scan.inline_bodies) == 1 and "function calcSalariu" in scan.inline_bodies[0]
+
+
 @pytest.mark.parametrize("name", _templates())
 def test_template_has_no_executable_inline_script(name):
     with open(os.path.join(TPL_DIR, name), encoding="utf-8") as fh:
-        html = fh.read()
-    for attrs, body in _SCRIPT.findall(html):
-        if "src=" in attrs.lower():
-            continue  # fisier extern -- exact ce cerem
-        if any(t in attrs.lower() for t in _DATA_TYPES):
-            continue  # bloc de date, nu cod
-        assert not body.strip(), (
-            f"{name}: <script> inline cu cod. CSP-ul (`script-src 'self'`) il blocheaza "
-            f"tacut. Muta-l in static/ si include-l cu <script src=...>."
-        )
+        scan = _scan(fh.read())
+    assert not scan.inline_bodies, (
+        f"{name}: <script> inline cu cod. CSP-ul (`script-src 'self'`) il blocheaza tacut. "
+        f"Muta-l in static/ si include-l cu <script src=...>."
+    )
 
 
 @pytest.mark.parametrize("name", _templates())
 def test_template_has_no_inline_event_handler(name):
     with open(os.path.join(TPL_DIR, name), encoding="utf-8") as fh:
-        html = fh.read()
-    found = _INLINE_HANDLER.findall(html)
-    assert not found, (
-        f"{name}: atribut(e) {found} -- si astea sunt cod inline, blocate de CSP. "
+        scan = _scan(fh.read())
+    assert not scan.handlers, (
+        f"{name}: atribut(e) {scan.handlers} -- si astea sunt cod inline, blocate de CSP. "
         f"Leaga evenimentele cu addEventListener din fisierul extern."
     )
 
@@ -68,8 +108,9 @@ def test_rendered_calculator_carries_no_inline_code():
     """Randarea propriu-zisa, nu doar sursa template-ului: `_render_calc_salariu` returna
     pana la 2026-08-02 un f-string cu <script> si oninput= in el."""
     html = render._render_calc_salariu(render._env(), {"valoare_curenta": {"brut": 4050}})
-    assert "<script" not in html.lower()
-    assert not _INLINE_HANDLER.search(html)
+    scan = _scan(html)
+    assert not scan.inline_bodies
+    assert not scan.handlers
     # valoarea ajunge la JS ca date, nu interpolata in cod executabil
     assert 'data-salariu-minim="4050"' in html
     assert 'class="calc-brut"' in html
