@@ -4,7 +4,7 @@
 > Executors get it read-only. Keep it tight — when it outgrows ~40 lines of content, cut the
 > settled history, not the open work. `git fetch` immediately before rewriting it.
 
-**Updated:** 2026-08-02 14:10 (account A — #106–#111 merged; **the ~40% source loss is DIAGNOSED, cause below; the fix is code, not deploy topology**)
+**Updated:** 2026-08-02 16:40 (account A — #106–#113 merged; **#113 landed the fetch fix, owner approved**; #114 open with the render.py test net)
 
 ## READ FIRST — a bot-challenge page served with HTTP 200, triggered by SWEEP VOLUME (2026-08-02)
 
@@ -49,10 +49,23 @@ The same 189-source sweep from the owner's residential IP loses 3 sources; from 
 74. So IP reputation sets the *threshold*, but **volume is the trigger** — which makes this a
 fetch-pacing problem in `generator/fetch.py` (`MAX_WORKERS = 8` against 189 sources, 65 of them on
 one host), **not** the deploy-topology decision the previous version of this section claimed.
-→ **NOT YET TESTED, and the obvious next step:** the challenge page reloads itself after 5 s, which
-suggests a back-off-and-retry that detects `<title>One moment, please...</title>` may simply pass
-it. Do not write that into `fetch.py` on the strength of this paragraph — probe it first, from a
-runner, on a handful of the 74. Per-host serialization is the other candidate.
+→ ~~"a back-off-and-retry may pass it"~~ — **TESTED, AND FALSE.** With a 6 s wait, past the page's
+own reload timer, **40 of 40** sources got the same interstitial again. The quota is time-windowed.
+Do not re-open this.
+→ **The grouping key cannot be host name or IP.** The 66 challenged domains resolve to many
+different addresses (checked 30: `37.143.163.59` x3, `89.39.83.125` x2, the rest distinct) — one
+Romanian hosting provider on many IPs behind one WAF. Only the `Server` header identifies it, and
+that is known only from a response, i.e. from the previous run.
+→ **THE FIX IS [PR #113](https://github.com/Ramanul/izz-ro/pull/113) — MERGED, owner approved.** (a) reports these as `challenge anti-bot servit cu 200 (sursa NU e moarta)` instead of
+the "feed gol" label #110 gave them, which invites deleting good sources from config; (b) adds
+`_HostPacer` — caches the `Server` header per source, spaces requests sharing a provider, only for
+groups >= `FETCH_PACE_GROUP_MIN` (10), default 2.0 s, `FETCH_PACE_S=0` disables it; (c) deletes
+`claude-docs-review.yml` on the owner's call. 19 new tests, 281 pass.
+→ **WHAT #113 DOES NOT ESTABLISH:** 2.0 s is reasoned, not measured — today's probing consumed the
+provider's quota, so there was no clean window. Compare `Articole citite` across a few runs and
+tune `FETCH_PACE_S`.
+→ **CAVEAT when reading the next production runs:** today's probes spent that quota. A low
+`Articole citite` on the next `build.yml` may be my measurements, not a regression.
 → #110 is what made any of this visible: before it, a source answering 200 with an unparseable
 body was dropped silently. The next production run prints the real list.
 
