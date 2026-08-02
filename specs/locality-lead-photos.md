@@ -81,7 +81,8 @@ Nu se atinge: `generator/cluster.py`, logica de sinteza/atribuire (§10), `_card
 
 ## Acceptance criteria
 
-- [ ] `python -m pytest tests/ -q` — 38 existente + noile teste, toate verzi.
+- [x] `python -m pytest tests/ -q` — **226 verzi** (CLAUDE.md §4 spunea 38; suita crescuse
+      demult, iar dupa merge-ul cu `main` numarul real e cel de aici). 48 dintre ele sunt noi.
 - [ ] `python tools/fetch_localities.py` produce `data/localities.json` cu >= 3000 intrari.
 - [ ] `python tools/fetch_leadphotos.py` pe starea reala produce **>= 25 hit-uri** de tip
       `locality` (prag prudent fata de cele 67% masurate, pentru ca doar 57 de primarii

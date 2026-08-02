@@ -26,34 +26,19 @@ comma decimals) + `tools/build_gazetteer.py`. **geo.py is UNCHANGED — still th
   below the bar). UAT-only switch also churned 155 classifications vs the primării CSV — not a
   clean win either. Reference features (Bucegi, Ceahlău, Dunărea) are a separate small curated list.
 
-## Lead photos now come from the LOCALITY — PR #101, ready for review (2026-08-02)
-Branch `claude/scraping-romanian-public-data-u63sqz`, spec `specs/locality-lead-photos.md`.
-**0 → 113 real photos.** Before this, every article on the site carried a generated icon cover:
-`data/leadphotos.json` was 1684 entries, all `miss`. The old route looked up P18 on the article's
-PERSON entities and required landscape AND PD/CC0 at once — a mayor's portrait is vertical and
-almost always CC-BY, so the intersection was empty.
-- Resolution keys off the deterministic source slug `pl_<judet>_<localitate>`, not entity text.
-  Measured on the 120 GOLD primării: 120/120 resolve, 108 have P18, **81 usable (67%)**.
-- Wikidata classes that work: `Q659103` comună / `Q16858213` oraș / `Q640364` municipiu, with a
-  DIRECT `wdt:P31`. `P31/P279* Q15284` misses every *oraș*; `P31/P279* Q486972` returns 504.
-  Ask for XML — the ~2 MB JSON response arrives truncated intermittently.
-- **County match is mandatory, no fallback**: 12 of 120 names have homonyms elsewhere
-  (Zărnești/Buzău vs Zărnești/Brașov) — a wrong town's photo on a local story.
-- CC-BY and CC-BY-SA are accepted here. Attribution rides on the article page
-  (`figcaption.art-credit`); CC 4.0 §3(a)(2) / CC 3.0 §4(c) allow satisfying it via a link, and
-  the card links to the article. **Cards get no new element — §7 untouched.**
-- `data/localities.json` (3179 UAT) is committed so the build never needs Wikidata. Rebuild
-  rarely: `python tools/fetch_localities.py`.
-- A `miss` now carries `v` = MISS_VERSION. **Bump it when adding a search route**, or the cached
-  misses make the new route invisible on all existing content.
-- Front-end audit measured BEFORE and AFTER on the same machine: home Perf 80 → 80 (identical,
-  CLS 0.234 both), article 88 → 87 (LCP +0.3 s, +65 KiB). A11y 100, pa11y 0, BP 100, SEO 100
-  throughout. **CLAUDE.md §13's baseline (home Perf 89, 2026-07-02) is STALE** and will keep
-  producing false regression alarms until the owner re-records it.
-- **Overlap with SIRUTA, worth reconciling:** `data/localities.json` is a Wikidata gazetteer of
-  the same 3179 UATs, already carrying county labels and the county-matching helper
-  (`generator.localities.match`). SIRUTA Slice 2 needs exactly that disambiguation — reuse or
-  consolidate rather than building a second county matcher.
+## Lead photos now come from the LOCALITY — PR #101 (2026-08-02)
+Branch `claude/scraping-romanian-public-data-u63sqz`. **0 → 129 real photos**; before, every
+article carried a generated icon cover. Full rationale, measurements and the Wikidata/licence
+details live in `specs/locality-lead-photos.md` — read that, not this, before touching it.
+Three rules that bite if forgotten:
+- **County match is mandatory, no fallback**, and renditions are named by **QID, not name**:
+  4 distinct Costești / 3 Ungheni / 2 Zărnești exist, all with different photos.
+- **`license_free` must keep rejecting CC-BY-NC and CC-BY-ND** — we crop, so we make derivatives.
+- **Bump `MISS_VERSION`** when adding a search route, or cached misses hide it on all content.
+Also: CLAUDE.md §13's audit baseline (home Perf 89) is STALE — measured before *and* after on the
+same machine, home is 80 → 80, article 88 → 87. Re-record it before trusting a future "regression".
+`data/localities.json` (3179 UAT, county labels + `localities.match`) overlaps SIRUTA Slice 2 —
+reuse it rather than building a second county matcher.
 
 ## Open
 0. **PR #101 (locality lead photos) is out of draft, CI green, awaiting owner sign-off + live

@@ -105,6 +105,18 @@ def test_license_free_matches_measured_commons_strings():
         assert not L.license_free(bad), bad
 
 
+@pytest.mark.parametrize("lic", [
+    "CC BY-NC 4.0", "CC BY-ND 4.0", "CC BY-NC-SA 3.0", "CC BY-NC-ND 4.0",
+    "CC BY NC 2.0", "cc-by-nd-3.0",
+])
+def test_license_free_rejects_non_commercial_and_no_derivatives(lic):
+    """NC interzice folosirea comerciala, ND operele derivate -- iar pipeline-ul DECUPEAZA
+    fiecare imagine, deci produce un derivat. Regexul le accepta (bug real, prins la review):
+    `cc[ -]?by` fara granita se potrivea cu 'CC BY-NC 4.0'."""
+    assert not L.license_free(lic), lic
+    assert not L.usable({"width": 3840, "height": 2160, "license": lic}), lic
+
+
 # --- locality_for_article: cand se declanseaza ruta --------------------------------
 
 def test_locality_route_only_fires_for_primarie_sources():
@@ -116,9 +128,36 @@ def test_locality_route_only_fires_for_primarie_sources():
         assert L.locality_for_article(other, DATASET) is None
 
 
+@pytest.mark.parametrize("category", ["politic", "sport", "extern", None])
+def test_locality_route_requires_a_geographic_category(category):
+    """Poarta geografica decide unde se INTAMPLA stirea, nu cine o publica: o primarie
+    care scrie despre un subiect national iese din `local`, iar acolo poza localitatii
+    ar fi o ilustratie arbitrara."""
+    a = {"source": "pl_vrancea_municipiul_focsani", "category": category}
+    assert L.eligible(a) is None
+    assert L.locality_for_article(a, DATASET) is None
+
+
+def test_eligible_accepts_both_geographic_categories():
+    for cat in ("local", "zonal"):
+        assert L.eligible({"source": "pl_vrancea_municipiul_focsani", "category": cat}) \
+            == ("vrancea", "focsani")
+
+
 def test_locality_without_photo_is_not_a_hit():
     """Localitate rezolvata dar fara P18 -> articolul pastreaza coperta generata."""
-    assert L.locality_for_article({"source": "pl_brasov_oras_zarnesti"}, DATASET) is None
+    assert L.locality_for_article(
+        {"source": "pl_brasov_oras_zarnesti", "category": "local"}, DATASET) is None
+
+
+def test_homonym_localities_have_distinct_qids():
+    """Numele NU poate fi cheie de fisier: Zarnesti-Brasov si Zarnesti-Buzau sunt localitati
+    diferite, cu poze diferite. Renditiile se numesc dupa QID tocmai ca sa nu se suprascrie
+    (bug real: 4 comune Costesti scriau toate in `loc-costesti.jpg`)."""
+    qids = {c["qid"] for c in DATASET["zarnesti"]}
+    assert len(qids) == 2, "fixture-ul trebuie sa contina doua localitati omonime"
+    assert L.match("BRASOV", "Zarnesti", DATASET)["qid"] \
+        != L.match("BUZAU", "Zarnesti", DATASET)["qid"]
 
 
 def test_dataset_missing_file_is_fail_safe():

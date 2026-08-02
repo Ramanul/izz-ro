@@ -33,8 +33,13 @@ LANDSCAPE_RATIO = 1.2
 # printr-un link catre resursa cu informatiile, iar cardul linkuieste articolul -> cardurile
 # raman fara element de credit si formula de atribuire din sect. 7 ramane neatinsa.
 # Orice licenta necunoscuta, GPL sau "fair use" -> respinsa (fail-safe).
+#
+# `cc[ -]?by` TREBUIE sa refuze explicit NC si ND, altfel "CC BY-NC 4.0" si "CC BY-ND 4.0"
+# trec ca libere (masurat: treceau). NC interzice folosirea comerciala, ND interzice
+# operele derivate -- iar noi DECUPAM fiecare imagine, deci producem un derivat.
 _FREE_LICENSE = re.compile(
-    r"^(cc0|cc[ -]?zero|public domain|pd([ -]|$)|copyrighted free use|cc[ -]?by)", re.I)
+    r"^(cc0|cc[ -]?zero|public domain|pd([ -]|$)|copyrighted free use|"
+    r"cc[ -]?by(?![ -]?n[cd]))", re.I)
 
 # Prefixele administrative din CSV-ul de primarii, eliminate pe CUVANT INTREG.
 # `ORA[SS](UL)?` si nu `ORA[SS]UL?`: forma majoritara in CSV e "ORAS X" fara -UL, iar
@@ -42,6 +47,9 @@ _FREE_LICENSE = re.compile(
 _PREFIX = re.compile(r"^(MUNICIPIUL?|ORA[SȘ](UL)?|COMUNA)\b\s*", re.I)
 
 _SOURCE_PREFIX = "pl_"
+
+# Categoriile in care o fotografie a localitatii sursei e o ilustratie onesta.
+_GEO_CATEGORIES = frozenset({"local", "zonal"})
 
 # Singurele judete al caror nume are doua cuvinte. Multime INCHISA (cele 41 de judete +
 # Bucuresti sunt fixe), deci se poate enumera in loc sa se ghiceasca punctul de taiere:
@@ -142,14 +150,28 @@ def usable(info: dict | None) -> bool:
                 and license_free(info.get("license", "")))
 
 
+def eligible(a: dict) -> tuple[str, str] | None:
+    """(judet, localitate) daca articolul poate primi o fotografie de localitate, altfel None.
+
+    Predicat UNIC, ca poarta sa fie aceeasi si la alegerea fotografiei, si la decizia de
+    a reinterogha un `miss` vechi -- doua conditii scrise in doua locuri diverg tacut.
+    """
+    if a.get("category") not in _GEO_CATEGORIES:
+        return None
+    return parse_source_slug(a.get("source") or "")
+
+
 def locality_for_article(a: dict, by_name: dict) -> dict | None:
     """Inregistrarea localitatii unui articol local, sau None daca ruta nu se aplica.
 
-    Se declanseaza DOAR pentru articolele care vin de la o primarie (`source` = `pl_*`):
-    pentru o stire de sport sau pentru un ziar regional, localitatea sursei nu e subiectul,
-    deci o poza de localitate ar fi o ilustratie arbitrara.
+    Doua conditii, amandoua necesare: sursa e o primarie (`source` = `pl_*`) SI articolul
+    e clasificat `local`/`zonal`. Sursa singura nu ajunge: poarta geografica decide unde
+    se INTAMPLA stirea, nu cine o publica, deci o primarie care scrie despre un subiect
+    national ajunge in alta categorie -- si acolo poza localitatii ar fi o ilustratie
+    arbitrara. Azi toate cele 204 articole `pl_*` sunt `local`, deci conditia nu taie
+    nimic; e acolo ca sa nu se strecoare cand se schimba poarta.
     """
-    parsed = parse_source_slug(a.get("source") or "")
+    parsed = eligible(a)
     if not parsed:
         return None
     judet, name = parsed

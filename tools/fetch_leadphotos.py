@@ -157,7 +157,7 @@ def _needs_lookup(aid: str, a: dict, cache: dict) -> bool:
         return False                                  # hit: nu se reinterogheaza niciodata
     if entry.get("v", 0) >= MISS_VERSION:
         return False
-    return bool(localities.parse_source_slug(a.get("source") or ""))
+    return bool(localities.eligible(a))
 
 
 def lead_for_locality(a: dict, by_name: dict) -> dict | None:
@@ -188,7 +188,10 @@ def lead_for_locality(a: dict, by_name: dict) -> dict | None:
         urllib.request.Request(info["thumb"], headers=UA), timeout=30).read()
     if len(data) < 3000:
         return None
-    rend = _save_renditions(data, "loc-" + fp.slugish(rec["display"]))
+    # cheia de fisier e QID-ul, NU numele: 4 comune Costesti, 3 Ungheni, 2 Zarnesti si
+    # 2 Faurei distincte au poze diferite si ar scrie toate in acelasi `loc-costesti.jpg`,
+    # ultima descarcare suprascriind-o pe precedenta -> poza altui judet pe stirea locala.
+    rend = _save_renditions(data, f"loc-{rec['qid']}")
     if not rend:
         return None
     return {**rend, "artist": info["artist"], "license": info["license"],
