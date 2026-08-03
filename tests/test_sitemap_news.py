@@ -122,7 +122,7 @@ def test_publicat_nevalid_e_sarit_nu_arunca(out):
 
 def test_robots_anunta_doar_sitemapurile_scrise(out):
     """Regresia pe 404: fara coperti nu exista sitemap-images.xml, deci robots nu-l anunta."""
-    render._write_sitemap([_art(1, "stire")])
+    render._write_sitemap([_art(1, "stire")], now=NOW)
     render._write_robots()
     robots = (out / "robots.txt").read_text(encoding="utf-8")
     url = config.SITE["url"]
@@ -133,7 +133,7 @@ def test_robots_anunta_doar_sitemapurile_scrise(out):
 
 
 def test_robots_anunta_imaginile_cand_exista(out):
-    render._write_sitemap([_art(1, "stire", cover_url="https://izz.ro/media/x.webp")])
+    render._write_sitemap([_art(1, "stire", cover_url="https://izz.ro/media/x.webp")], now=NOW)
     render._write_robots()
     robots = (out / "robots.txt").read_text(encoding="utf-8")
     assert f"Sitemap: {config.SITE['url']}/sitemap-images.xml\n" in robots
@@ -143,7 +143,7 @@ def test_robots_anunta_imaginile_cand_exista(out):
 def test_sitemapul_principal_ramane_fara_namespace_news(out):
     """Protocolul cere doar stiri din 48h in fisierul news; `sitemap.xml` are ~1300 de
     URL-uri, inclusiv ghiduri si pagini legale. Sunt doua fisiere, nu unul."""
-    render._write_sitemap([_art(1, "stire"), _art(100, "vechi")])
+    render._write_sitemap([_art(1, "stire"), _art(100, "vechi")], now=NOW)
     raw = (out / "sitemap.xml").read_text(encoding="utf-8")
     assert "sitemap-news/0.9" not in raw
     assert "/vechi/" in raw, "articolele vechi raman in sitemap-ul standard"

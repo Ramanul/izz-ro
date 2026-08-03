@@ -858,9 +858,11 @@ def _write_news_sitemap(articles: list, now: datetime) -> None:
     _SITEMAPS_WRITTEN.append("sitemap-news.xml")
 
 
-def _write_sitemap(articles: list) -> None:
+def _write_sitemap(articles: list, now: datetime = None) -> None:
+    # `now` injectabil: fereastra de stiri se masoara fata de el, iar un test cu date
+    # fixe si ceas real ar trece azi si ar pica peste doua zile, fara nicio schimbare de cod.
     url = config.SITE["url"]
-    now = datetime.now(timezone.utc)
+    now = now or datetime.now(timezone.utc)
     today = now.strftime("%Y-%m-%d")
     _SITEMAPS_WRITTEN.clear()
     cat_lastmod = {}
