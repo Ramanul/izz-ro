@@ -4,7 +4,7 @@
 > Executors get it read-only. Keep it tight — when it outgrows ~40 lines of content, cut the
 > settled history, not the open work. `git fetch` immediately before rewriting it.
 
-**Updated:** 2026-08-03 20:45 (account A — #125 MERGED: SIRUTA Slice 2 shipped. #126 open: 49 articles were `local` because a commune is named Luna, Vladimir or Sâmbăta)
+**Updated:** 2026-08-03 21:05 (account A — #125 and #126 MERGED: villages match only their own county, and an ambiguous name must be marked as a place to count)
 
 ## READ FIRST — a bot-challenge page served with HTTP 200, triggered by SWEEP VOLUME (2026-08-02)
 
@@ -409,7 +409,7 @@ reuse it rather than building a second county matcher.
   `Review limit reached` at 12:21, Gemini is dead, Codex over quota, and the `claude` job was
   skipped. A 4-agent internal review was launched instead and all four were killed mid-run by the
   account session limit — their transcripts are the only reason one of the checks below exists.
-- **#126 OPEN — an ambiguous name counts as a place only when the text marks it as one.**
+- **#126 MERGED (`63128e7d`) — an ambiguous name counts as a place only when the text marks it as one.**
   Found while verifying #125, and it is **older and larger than #125**: it lives in the global UAT
   index, on `main`, independent of villages. Measured on 1733 articles, **49** were `local` on the
   strength of a name that is a real locality and something far more common in text: "Vladimir Putin
@@ -422,6 +422,16 @@ reuse it rather than building a second county matcher.
   Verified: 484 passed; corpus diff is exactly those 49, no correctly-local article lost.
   **Known and NOT fixed by it:** "Banca Transilvania" moves from `local` to `regional` — still
   wrong, but that is historical regions used as brand names, a separate slice.
+  CodeRabbit reviewed it (`CHANGES_REQUESTED`, 2 findings) and one was worth more than it asked:
+  it wanted a test for the ambiguity guard in the village loop, and that test cannot be written —
+  every `_AMBIGUE` name is also a UAT, so the loop's existing index check already skipped them all.
+  The guard was unreachable; it was removed (`45c16e9a`) after checking the corpus diff is 49 with
+  it and 49 without. Declined: a spec comment block above `_AMBIGUE` (§5.1 asks for a spec before
+  code, not in the source) and Ruff PT006 (not enabled here; string-form parametrize is the style
+  in 8 places across 5 test files).
+  **NOT yet confirmed on live.** The classification runs in `process.py`, not at render, so
+  `--render-only` cannot show it — the 49 articles move only on the next full pipeline run
+  (cron `13 */2`). Verified as code and on the corpus; the live check is still owed.
 - **#123 MERGED (`7d3fca94`) — the AI budget stopped reserving upgrades that cannot happen.**
   Details and the follow-up to watch are in Open 7 above.
 - **#124 MERGED (`4f335153`) — every listing page is reachable, no dead links.**
