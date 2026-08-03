@@ -48,16 +48,21 @@ SOURCES = {
     # temă. Cei 7 de mai jos = feed VIU la feedcheck (run 29605677325, 2026-07-17). Cazuti la
     # verificare (nu re-adauga fara re-test): stiridecluj.ro/feed=404, ziuaconstanta rss.html=
     # 0 intrari, gds.ro=403, ebihoreanul=500. Acoperire: Cluj/Iasi/Timis/Brasov.
-            "zcj":          {"name": "Ziua de Cluj",        "url": "https://zcj.ro/feed",                    "category": "zonal"},
-            "bzi":          {"name": "BZI Iași",            "url": "https://www.bzi.ro/feed",                "category": "zonal"},
-            "ziaruldeiasi": {"name": "Ziarul de Iași",      "url": "https://www.ziaruldeiasi.ro/rss",        "category": "zonal"},
-            "pressalert":   {"name": "PressAlert Timișoara","url": "https://www.pressalert.ro/feed/",         "category": "zonal"},
-            "tion":         {"name": "Timiș Online",        "url": "https://www.tion.ro/feed/",              "category": "zonal"},
-            "bizbrasov":    {"name": "BizBrașov",           "url": "https://www.bizbrasov.ro/feed",          "category": "zonal"},
-            "newsbv":       {"name": "News Brașov",         "url": "https://www.newsbv.ro/feed/",            "category": "zonal"},
+    # `judet` NU e decor: primariile isi codeaza judetul in cheie (`pl_cluj_...`), ziarele nu —
+    # `zcj` nu spune nimanui ca e Cluj. Campul asta deschide potrivirea pe SATE pentru sursa
+    # respectiva (`geo.clasifica(text, judet)`): fara el, „Dezmir" sau „Urseni" nu inseamna
+    # nimic pentru poarta si stirea ramane pe zonal. Se pune DOAR pe surse cu un singur judet;
+    # publicatiile regionale de mai jos acopera mai multe si de aceea nu-l au.
+            "zcj":          {"name": "Ziua de Cluj",        "url": "https://zcj.ro/feed",                    "category": "zonal", "judet": "CLUJ"},
+            "bzi":          {"name": "BZI Iași",            "url": "https://www.bzi.ro/feed",                "category": "zonal", "judet": "IASI"},
+            "ziaruldeiasi": {"name": "Ziarul de Iași",      "url": "https://www.ziaruldeiasi.ro/rss",        "category": "zonal", "judet": "IASI"},
+            "pressalert":   {"name": "PressAlert Timișoara","url": "https://www.pressalert.ro/feed/",         "category": "zonal", "judet": "TIMIS"},
+            "tion":         {"name": "Timiș Online",        "url": "https://www.tion.ro/feed/",              "category": "zonal", "judet": "TIMIS"},
+            "bizbrasov":    {"name": "BizBrașov",           "url": "https://www.bizbrasov.ro/feed",          "category": "zonal", "judet": "BRASOV"},
+            "newsbv":       {"name": "News Brașov",         "url": "https://www.newsbv.ro/feed/",            "category": "zonal", "judet": "BRASOV"},
     # zonal — Maramures (nivel judet; regiunea istorica ≈ judetul, deci ziarele MM sunt zonale)
-            "actualmm":     {"name": "actualMM",            "url": "https://actualmm.ro/feed/",              "category": "zonal"},
-            "emaramures":   {"name": "eMaramureș",          "url": "https://www.emaramures.ro/feed/",        "category": "zonal"},
+            "actualmm":     {"name": "actualMM",            "url": "https://actualmm.ro/feed/",              "category": "zonal", "judet": "MARAMURES"},
+            "emaramures":   {"name": "eMaramureș",          "url": "https://www.emaramures.ro/feed/",        "category": "zonal", "judet": "MARAMURES"},
     # regional — publicatii MULTI-JUDET pe regiuni istorice (cercetare agenti + feedcheck
     # run 29776432687, 2026-07-20). 16 cu feed VIU. Cazuti (nu re-adauga fara re-test):
     # transilvaniareporter=timeout (posibil lent, re-testabil), crisanaonline=301 loop,

@@ -156,3 +156,83 @@ def test_clusterul_C_e_clasificat_si_dupa_synthesis():
     item = {"category": _sursa_netematica(), "title": "Incident aviatic",
             "synthesis": "Evenimentul a avut loc în județul Tulcea, aproape de deltă."}
     assert process._resolve_category(item, "local") == "zonal"
+
+
+# --- Satele, deschise DOAR de judetul sursei (SIRUTA Slice 2) -------------------------
+#
+# De ce nu sunt in indexul global: numele de sat se repeta intre judete (POIANA x38,
+# "SATU NOU" x42), iar masurat pe corpus adaugarea chiar si a celor unice global a facut 49
+# de articole `local` gresit — „Saturn retrograd" (Saturn e sat in Constanta), horoscopul,
+# „FCSB vs FK Auda". Toate veneau de la surse NATIONALE, care n-au judet: de aici regula.
+
+def test_satul_nu_conteaza_fara_judetul_sursei():
+    """Exact articolul real de la Ziua de Cluj, fara sa stim ca sursa e din Cluj."""
+    assert geo.clasifica("Incendiu la o cabană din apropierea localității Nicula") is None
+
+
+def test_satul_face_stirea_locala_cand_judetul_se_potriveste():
+    assert geo.clasifica("Incendiu la o cabană din apropierea localității Nicula", "CLUJ") == "local"
+
+
+def test_satul_altui_judet_nu_deschide_poarta():
+    assert geo.clasifica("Incendiu la o cabană din apropierea localității Nicula", "TIMIS") is None
+
+
+@pytest.mark.parametrize("text", [
+    "Saturn retrograd aduce schimbări pentru toate zodiile",
+    "Horoscopul zilei de vineri pentru toate zodiile",
+    "FCSB a pierdut meciul cu FK Auda",
+])
+def test_falsurile_masurate_raman_afara_la_sursele_nationale(text):
+    """Sursa nationala -> judet None -> poarta satelor nu se deschide niciodata."""
+    assert geo.clasifica(text, geo.judet_sursa("protv")) is None
+
+
+def test_judetul_din_text_bate_satul_omonim():
+    """SIRUTA are sate cu numele judetului lor. Fara garda, „judetul Galati" devenea stire
+    LOCALA: masurat, 3 din 15 schimbari erau exact asta (Galati, Brasov, Vaslui)."""
+    assert geo.clasifica("Județul Galați a aprobat rectificarea bugetului", "GALATI") == "zonal"
+    assert geo.clasifica("Județul Brașov se află sub avertizare cod galben", "BRASOV") == "zonal"
+
+
+@pytest.mark.parametrize("cheie,astept", [
+    ("zcj", "CLUJ"),                                  # declarat in config (cheia nu-l spune)
+    ("emaramures", "MARAMURES"),
+    ("pl_cluj_municipiul_cluj_napoca", "CLUJ"),       # dedus din cheie
+    ("cj_vaslui", "VASLUI"),
+    ("protv", None),                                  # sursa nationala
+])
+def test_judet_sursa(cheie, astept):
+    assert geo.judet_sursa(cheie) == astept
+
+
+def test_toate_ziarele_judetene_declara_un_judet_cunoscut():
+    """Un `judet` scris gresit in config n-ar da eroare — poarta pur si simplu n-ar deschide
+    nimic, tacut. Asta il prinde."""
+    for cheie, sursa in config.SOURCES.items():
+        declarat = sursa.get("judet")
+        if not declarat:
+            continue
+        judet = geo.judet_sursa(cheie)
+        assert judet in geo._sate(), f"{cheie}: judetul '{declarat}' nu exista in sate_judet.csv"
+
+
+def test_gazetteerul_de_sate_acopera_toate_judetele():
+    sate = geo._sate()
+    assert len(sate) == 42, f"asteptam 42 de judete, avem {len(sate)}"
+    assert sum(len(v) for v in sate.values()) > 10000
+
+
+@pytest.mark.parametrize("nume", ["ADRIAN", "MARIUS", "IRINA", "SATURN", "VENUS", "ROMANA",
+                                  "NEAGRA", "DUNAREA", "DACIA", "GEORGE COSBUC"])
+def test_prenumele_si_omonimele_nu_sunt_sate_potrivibile(nume):
+    """Toate sunt sate reale in SIRUTA, si toate apar in corpus cu ALT sens — „Adrian
+    Codirlasu" (19 aparitii intr-o saptamana), „Politia Romana" (12), „Marea Neagra" (10),
+    „Saturn retrograd" (4). Un ziar judetean care scrie despre un om pe nume Adrian n-are
+    voie sa publice o stire locala din asta."""
+    assert not any(nume in sate for sate in geo._sate().values())
+
+
+def test_un_prenume_omonim_nu_face_stirea_locala():
+    text = "Adrian Ropotan a suferit o fractură deschisă după un accident rutier"
+    assert geo.clasifica(text, "MURES") is None      # ADRIAN e sat in Mures, dar aici e om
