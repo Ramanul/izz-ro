@@ -34,28 +34,6 @@ termene:
   - data: "2027-01-01"
     eveniment: "Indexare anuală cu rata inflației"
 
-# Portate din data/utilities.json (calea /utile/ a fost inlocuita de /ghiduri/ pe 17 iul 2026).
-sectiuni:
-  - titlu: "Cine beneficiază de alocație?"
-    continut: >-
-      Toți copiii cu domiciliul în România, de la naștere până la împlinirea vârstei de 18 ani. Nu
-      există condiții de venit — alocația este universală și se acordă indiferent de situația
-      financiară a familiei. Pentru tinerii peste 18 ani care urmează studii liceale sau
-      profesionale, alocația continuă până la finalizarea studiilor.
-  - titlu: "Cât este alocația?"
-    continut: >-
-      **1.019 lei/lună** — copii între 0–2 ani (până la împlinirea vârstei de 2 ani), precum și
-      copiii peste 2 ani cu handicap. **794 lei/lună** — copii între 2 și 18 ani, precum și tinerii
-      peste 18 ani care continuă studiile. Sumele sunt indexate anual cu rata inflației, prin
-      hotărâre de guvern.
-  - titlu: "Cum depui cererea?"
-    continut: >-
-      Cererea se depune la **primăria de domiciliu** (compartimentul de asistență socială). Acte
-      necesare: **cerere tip**, **certificat de naștere al copilului** (original + copie), **acte de
-      identitate ale părinților**, **certificat de încadrare în grad de handicap** (dacă e cazul),
-      **adeverință școlară** (pentru tinerii peste 18 ani). Plata se face lunar, prin mandat poștal
-      sau transfer bancar, în funcție de opțiunea declarată în cerere.
-
 faq:
   - q: "Se cumulează alocația cu alte ajutoare?"
     a: "Da. Alocația este independentă de venitul minim de incluziune sau indemnizația de creștere a copilului."

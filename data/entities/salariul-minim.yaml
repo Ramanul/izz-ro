@@ -39,32 +39,6 @@ termene:
   - data: "2027-01-01"
     eveniment: "Termen uzual pentru următoarea majorare a salariului minim"
 
-# Portate din data/utilities.json (calea /utile/ a fost inlocuita de /ghiduri/ pe 17 iul 2026).
-# Doua din cele cinci sectiuni ale sursei NU sunt portate, ca sa nu se dubleze cu ce randeaza
-# deja sablonul: „Cat este salariul minim in 2026?" repeta blocul „Pe scurt", iar „Istoric
-# 2019-2026" era un tabel Markdown peste tabelul generat din `istoric`.
-sectiuni:
-  - titlu: "Cine beneficiază de salariul minim?"
-    continut: >-
-      Salariul minim se aplică **tuturor angajaților** cu contract individual de muncă, indiferent
-      de domeniu sau vechime, cu excepția: angajaților din construcții (au salariu minim
-      diferențiat, 4.582 lei), angajaților din agricultură și industria alimentară (3.436 lei), și
-      angajaților cu timp parțial (se aplică proporțional). Angajatorii care nu respectă salariul
-      minim riscă amenzi între 3.000 și 5.000 lei per angajat.
-  - titlu: "Cum se calculează salariul net?"
-    continut: >-
-      Din salariul brut se rețin: **CAS** (contribuția la pensii, 25%), **CASS** (contribuția la
-      sănătate, 10%), și **impozitul pe venit** (10% aplicat la baza impozabilă: brut - CAS - CASS
-      - deduceri personale). Deducerea personală de bază este de 20% din salariul minim brut pentru
-      angajații fără persoane în întreținere. Folosește calculatorul de mai jos pentru un calcul
-      exact.
-  - titlu: "Diferențe pe sectoare"
-    continut: >-
-      **Construcții**: 4.582 lei brut (facilități fiscale: scutire de impozit și CASS redus).
-      **Agricultură și industrie alimentară**: 3.436 lei brut. **IT** (exceptați de impozit): nu
-      există salariu minim specific, dar pentru scutirea de impozit trebuie să aibă venit brut
-      ≥ 10.000 lei.
-
 faq:
   - q: "Când intră în vigoare noul salariu minim?"
     a: "De regulă la 1 ianuarie a fiecărui an, după publicarea hotărârii de guvern în Monitorul Oficial."

@@ -28,7 +28,11 @@ ENTITIES_DIR = os.path.join(ROOT, "data", "entities")
 PORTATE = ("buletin-pasaport", "permis-auto", "noua-casa")
 # A doua transa: ghidurile de valoare aveau deja cifra-titlu si istoricul in entitati, dar proza
 # lor pe sectiuni ramasese in utilities.json — 11 sectiuni care n-au ajuns niciodata pe live.
-PORTATE_VALOARE = ("salariul-minim", "pensia-minima", "alocatia-copii")
+# Doar pensia intra aici deocamdata. Proza pentru salariul minim si alocatie repeta cifre pe care
+# verificarea externa le-a gasit depasite (4.050 vs 4.325 lei de la 1 iul 2026; 1.019/794 vs
+# 719/292 lei, cu indexarea suspendata) — se porteaza in slice-ul care corecteaza cifrele, ca sa
+# nu publicam mai vizibil o valoare gresita. Sursa lor e recuperabila: `git show <sha>:data/utilities.json`.
+PORTATE_VALOARE = ("pensia-minima",)
 
 
 def _ent(**kw):
