@@ -193,6 +193,45 @@ reuse it rather than building a second county matcher.
    question (9 vs 7 regions) — both owner decisions, not implementation work.
    Data is already there: `judet` is in `gold_integrare.csv` and encoded in every `pl_<judet>_*`
    key. Depends on the geo axis, i.e. on SIRUTA Slice 2 above.
+6. **A 7-slice plan arrived from another session (2026-08-03). Four of its findings were checked
+   against this tree and hold; three of its framings do not.** Keep the findings, not the ordering.
+   ✅ **`sorted(key=lambda a: a.get("published") or "")` is a LEXICOGRAPHIC sort on a string**, in
+   three places — `state.py:100`, `render.py:346`, `render.py:436` (the plan said four, with line
+   numbers that no longer exist). Mixed `+03:00` and `Z` offsets order wrong. Smallest real bug on
+   the list, no gate, and everything about ranking sits downstream of it. Do this first.
+   ✅ **`significance` is a DEAD BRANCH ALREADY IN PRODUCTION**, and this is stronger than the plan
+   claimed. `templates/_card.html:13` and `templates/index.html:34` render `Relevanță X/10` behind
+   `{% if a.significance is defined %}`; no `.py` ever writes the key. The page is built to promise
+   a relevance score it has never once shown. Populating it from the AI schema is the follow-up —
+   **on top of #118, not instead of it.** #118 (merged last night) already ranks pre-AI on
+   corroboration + freshness with an md5 tie-break that review caught; `significance` is a post-AI
+   ordering. Anyone who rewrites the ordering from scratch will silently drop that tie-break.
+   ✅ **Model C is not batched** — `process_cluster(group, provider)` is one call per cluster while
+   B batches 10. But the plan's gate ("implement if `ai_calls` often hits 12") is calibrated on the
+   wrong number and is already answered: the default is 12 (`main.py:173`) yet **`build.yml:55`
+   overrides it to 18**, so production never runs on 12 — and #118's session already measured, from
+   `build.yml` logs, that the budget is consumed in full on every run. Read `stats["deferred"]`
+   (added by #118 for exactly this) over 2-3 runs and build it; do not re-litigate the gate.
+   ✅ **Untrusted RSS text is interpolated straight into the prompt** — `process.py:260`,
+   `USER_B.format(title=item.get("original_title"), description=...)`. Impact is bounded (text out,
+   human moderation, official `pl_/cj_/pr_` sources are processed deterministically with no AI at
+   all), so this is insurance, not growth. Whether it rides along with the `significance` prompt
+   edit is a real toss-up: same strings and one `PROMPT_VERSION` bump argue for merging, a mixed
+   review that hides an AI-quality regression behind a security change argues against.
+   ❌ **`content-visibility: auto` as a warm-up slice — do not run it.** §13 measured the CLS cause
+   (`#izz-install-btn`, 49 px, 100% Lighthouse attribution) and explicitly forbids chasing the
+   number with tricks; the fix is a placement decision the owner makes. The plan's own DoD admits
+   it can introduce shift on fast scroll. It is the one slice that walks into a written rule.
+   ❌ **The source-coverage loop, as written, would produce false metrics.** "Live sources over
+   time" is measured with a checker that reimplements its own fetch — the exact defect logged at
+   the top of this file, where 74 sources return an anti-bot interstitial with HTTP 200 and
+   `feedparser` reads it as a valid empty feed. Fix the measurement before building a metric on it.
+   ⏳ **News sitemap (`news:` namespace) — the finding is right**, `_write_sitemap` emits only the
+   standard `xmlns` plus `xmlns:image` (`render.py:859,877`). The plan gates it on Google Publisher
+   Center eligibility; that gate is misplaced — the sitemap is cheap, harms nothing if the
+   application is refused, and the eligibility question is the owner's to answer in parallel.
+   (Dropped by the plan itself, correctly: prompt caching — under the ~1024-token cache minimum and
+   irrelevant on the free Gemini path, where the cost is calls, not tokens.)
 
 ## Settled today — do NOT re-derive
 - **OpenCode no longer dies when the Zen quota runs out.** `tools/oc_run.sh` walks a free-route
