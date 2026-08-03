@@ -50,16 +50,25 @@ def _news_root(out):
     return ET.parse(path).getroot()
 
 
-def test_doar_articolele_din_ultimele_48h_intra(out):
+def test_doar_articolele_din_fereastra_intra(out):
     """Inima feliei. Un articol expirat nu doar ca e inutil — Google trateaza sitemap-ul
     ca pe unul cu intrari invalide."""
     render._write_news_sitemap(
-        [_art(1, "acum"), _art(47.5, "la-limita"), _art(49, "expirat"), _art(200, "vechi")],
+        [_art(1, "acum"), _art(45.5, "la-limita"), _art(47, "expirat"), _art(200, "vechi")],
         NOW)
     locs = [e.text for e in _news_root(out).iter(SM + "loc")]
     assert any(u.endswith("/acum/") for u in locs)
     assert any(u.endswith("/la-limita/") for u in locs)
     assert not any("expirat" in u or "vechi" in u for u in locs), locs
+
+
+def test_fereastra_lasa_loc_pentru_un_ciclu_de_cron():
+    """Fisierul se scrie o data pe rulare si sta pe live pana la urmatoarea. O fereastra de
+    fix 48h ar publica intrari care trec de limita *dupa* generare, fara ca nimic sa le mai
+    atinga. Observat pe preview-ul lui #122: valide la generare, invalide 20 de minute mai
+    tarziu. Deci fereastra + un interval de cron trebuie sa incapa in cele doua zile."""
+    assert render._NEWS_WINDOW_H + render._NEWS_CRON_MARGIN_H <= 48
+    assert render._NEWS_CRON_MARGIN_H >= 2, "build.yml ruleaza la 2h (`13 */2`, §17)"
 
 
 def test_ordinea_e_cronologica_descrescatoare(out):

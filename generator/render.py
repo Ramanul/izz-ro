@@ -781,13 +781,21 @@ def _editorial_paths() -> list:
     return sorted(paths)
 
 
-# Sitemap Google News. Fereastra de 48h NU e o alegere editoriala: protocolul cere ca
+# Sitemap Google News. Limita de doua zile NU e o alegere editoriala: protocolul cere ca
 # fisierul sa contina doar articole din ultimele doua zile, iar Google ignora restul. Un
 # sitemap plin de intrari ignorate nu e neutru, e un semnal prost. Plafonul de 1000 e tot
 # al protocolului. Masurat 2026-08-03 pe `data/articles.json`: 517 articole in fereastra,
 # din 1736 pastrate — deci plafonul nu musca azi, dar ramane ca sa nu emitem un fisier
 # invalid intr-o zi cu volum dublu.
-_NEWS_WINDOW_H = 48
+#
+# 46, nu 48, si asta e masurat, nu prudenta: fisierul se scrie o data pe rulare, iar
+# `build.yml` ruleaza la doua ore (`13 */2`, §17). O intrare la exact 48h in momentul
+# generarii sta pe live inca un ciclu intreg, deci **imbatraneste** dincolo de limita si
+# devine invalida fara ca nimic sa fie regenerat. Verificat pe preview-ul lui #122: la
+# generare toate cele 430 erau in fereastra, la o recitire 20 de minute mai tarziu — nu.
+# Marja = un interval de cron. Ridici fereastra doar daca ridici si cadenta.
+_NEWS_CRON_MARGIN_H = 2
+_NEWS_WINDOW_H = 48 - _NEWS_CRON_MARGIN_H
 _NEWS_MAX_URLS = 1000
 _NEWS_NS = "http://www.google.com/schemas/sitemap-news/0.9"
 
