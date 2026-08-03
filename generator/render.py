@@ -5,7 +5,7 @@ import os
 import re
 import shutil
 import sys
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 from xml.sax.saxutils import escape as xml_escape
 
 from jinja2 import Environment, FileSystemLoader, select_autoescape
@@ -781,9 +781,80 @@ def _editorial_paths() -> list:
     return sorted(paths)
 
 
+# Sitemap Google News. Fereastra de 48h NU e o alegere editoriala: protocolul cere ca
+# fisierul sa contina doar articole din ultimele doua zile, iar Google ignora restul. Un
+# sitemap plin de intrari ignorate nu e neutru, e un semnal prost. Plafonul de 1000 e tot
+# al protocolului. Masurat 2026-08-03 pe `data/articles.json`: 517 articole in fereastra,
+# din 1736 pastrate — deci plafonul nu musca azi, dar ramane ca sa nu emitem un fisier
+# invalid intr-o zi cu volum dublu.
+_NEWS_WINDOW_H = 48
+_NEWS_MAX_URLS = 1000
+_NEWS_NS = "http://www.google.com/schemas/sitemap-news/0.9"
+
+# Ce sitemap-uri a emis chiar rularea ASTA. `robots.txt` le anunta pe astea, nu o lista
+# scrisa de mana: `sitemap-images.xml` se scrie doar daca exista imagini, iar robots il
+# anunta neconditionat din iulie — adica trimite crawlerul intr-un 404 pe orice rulare
+# fara coperti. Acelasi mecanism ca `_PAGES_WRITTEN`: ce nu s-a scris acum nu exista.
+_SITEMAPS_WRITTEN: list = []
+
+
+def _news_articles(articles: list, now: datetime) -> list:
+    """Articolele din ultimele `_NEWS_WINDOW_H` ore, cele mai noi primele.
+
+    `published` e ISO UTC pentru toata baza (invariant masurat si aparat de
+    `tests/test_published_is_utc.py`), dar filtrarea se face pe `datetime`, nu pe sir:
+    o intrare cu offset local ar fi doar clasificata gresit cu cateva ore aici, nu ar
+    strica ordinea globala — deci parsarea e ieftina si nu ascunde nimic."""
+    cutoff = now - timedelta(hours=_NEWS_WINDOW_H)
+    recent = []
+    for a in articles:
+        raw = a.get("published") or ""
+        try:
+            ts = datetime.fromisoformat(raw)
+        except ValueError:
+            continue
+        if ts.tzinfo is None:
+            ts = ts.replace(tzinfo=timezone.utc)
+        if ts >= cutoff:
+            recent.append((ts, a))
+    recent.sort(key=lambda pair: pair[0], reverse=True)
+    return [a for _, a in recent[:_NEWS_MAX_URLS]]
+
+
+def _write_news_sitemap(articles: list, now: datetime) -> None:
+    """sitemap-news.xml — fisier separat, ca `sitemap-images.xml`.
+
+    Nu se adauga namespace-ul `news:` in `sitemap.xml`: acela are ~1300 de URL-uri, din
+    care ghiduri, pagini legale si articole de acum o saptamana. Protocolul cere exact
+    inversul — doar stiri, doar din ultimele 48h."""
+    url = config.SITE["url"]
+    recent = _news_articles(articles, now)
+    if not recent:
+        return
+    items = "\n".join(
+        "  <url><loc>" + xml_escape(f"{url}/{a['category']}/{a['slug']}/") + "</loc>\n"
+        "    <news:news>\n"
+        "      <news:publication>\n"
+        f"        <news:name>{xml_escape(config.SITE['name'])}</news:name>\n"
+        f"        <news:language>{xml_escape(config.SITE['lang'])}</news:language>\n"
+        "      </news:publication>\n"
+        f"      <news:publication_date>{xml_escape(a.get('published', ''))}</news:publication_date>\n"
+        f"      <news:title>{xml_escape(a.get('title') or a.get('original_title', ''))}</news:title>\n"
+        "    </news:news>\n  </url>"
+        for a in recent)
+    _write(os.path.join(OUT_DIR, "sitemap-news.xml"),
+           '<?xml version="1.0" encoding="UTF-8"?>\n'
+           '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" '
+           f'xmlns:news="{_NEWS_NS}">\n'
+           f"{items}\n</urlset>\n")
+    _SITEMAPS_WRITTEN.append("sitemap-news.xml")
+
+
 def _write_sitemap(articles: list) -> None:
     url = config.SITE["url"]
-    today = datetime.now(timezone.utc).strftime("%Y-%m-%d")
+    now = datetime.now(timezone.utc)
+    today = now.strftime("%Y-%m-%d")
+    _SITEMAPS_WRITTEN.clear()
     cat_lastmod = {}
     for a in articles:
         c = a.get("category", "")
@@ -801,6 +872,8 @@ def _write_sitemap(articles: list) -> None:
            '<?xml version="1.0" encoding="UTF-8"?>\n'
            '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
            f"{items}\n</urlset>\n")
+    _SITEMAPS_WRITTEN.append("sitemap.xml")
+    _write_news_sitemap(articles, now)
     # Image sitemap
     img_locs = []
     for a in articles:
@@ -820,6 +893,7 @@ def _write_sitemap(articles: list) -> None:
                '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" '
                'xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">\n'
                f"{img_items}\n</urlset>\n")
+        _SITEMAPS_WRITTEN.append("sitemap-images.xml")
 
 
 def _write_search(env: Environment, articles: list) -> None:
@@ -833,9 +907,9 @@ def _write_search(env: Environment, articles: list) -> None:
 
 
 def _write_robots() -> None:
-    _write(os.path.join(OUT_DIR, "robots.txt"),
-           f"User-agent: *\nAllow: /\nSitemap: {config.SITE['url']}/sitemap.xml\n"
-           f"Sitemap: {config.SITE['url']}/sitemap-images.xml\n")
+    """Anunta DOAR sitemap-urile scrise de rularea curenta (`_SITEMAPS_WRITTEN`)."""
+    lines = "".join(f"Sitemap: {config.SITE['url']}/{name}\n" for name in _SITEMAPS_WRITTEN)
+    _write(os.path.join(OUT_DIR, "robots.txt"), f"User-agent: *\nAllow: /\n{lines}")
 
 
 def _write_headers() -> None:
