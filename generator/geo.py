@@ -82,6 +82,39 @@ _CUVINTE_COMUNE = {
     "VULTURU", "ZORILE", "CENTRUL", "PIATRA", "DEALU", "PODU", "VADU", "IZVOARE",
 }
 
+# Nume care sunt SI localitate reala, SI altceva foarte frecvent: o zi, o luna, un prenume,
+# un nume de familie, o institutie. Nu pot intra in `_CUVINTE_COMUNE` — Romanul e municipiu
+# cu primarie care publica pe izz.ro, Voluntari e oras de 40.000 — deci nu se sterg din
+# index, ci li se cere o MARCA geografica in text (vezi `_MARCA_GEO`). Fara ea nu conteaza.
+#
+# Lista e MASURATA pe corpus (1733 de articole, 2026-08-03), nu ghicita: fiecare nume de aici
+# a produs cel putin o clasificare gresita, si sunt notate exact bucatile care le-au produs.
+# Se extinde la fel — prin masuratoare, nu prin intuitie; multe par inofensive pana le vezi
+# in text („Luna august", „INSCRIERI SAMBATA", „Aeroportul Avram Iancu").
+_AMBIGUE = {
+    "LUNA",          # „Luna august 2026" — comuna in Cluj, 17 potriviri gresite
+    "SAMBATA",       # „INSCRIERI -SAMBATA 22.08" — comuna in Brasov
+    "ROMAN",         # „Festivalul Roman Apulum", „Oana Roman", „Institutul Cultural Roman"
+    "BALA",          # „bratului Bala" — comuna in Mehedinti
+    "BANCA",         # „Banca Centrala Europeana" — comuna in Vaslui
+    "CURTEA",        # „Curtea de Apel", „Curtea de Casatie din Franta"
+    "VOLUNTARI",     # „programul Voluntari Pregatiti pentru Viata" — oras in Ilfov
+    "TRAIAN",        # „Traian Basescu", „Piata Traian"
+    "VLADIMIR",      # „Vladimir Putin" — comuna in Gorj
+    "OVIDIU",        # „Ovidiu Bojor" — oras in Constanta
+    "CRISTIAN",      # „Cristian Iliescu" — comune in Brasov si Sibiu
+    "BACIU",         # „antrenorul Marius Baciu" — comuna in Cluj
+    "DRAGUS",        # „Denis Dragus", fotbalistul — comuna in Brasov
+    "CIOBANU",       # „Adrian Ciobanu" — comuna in Constanta
+    "FLORICA",       # „Florica Bertzi" — comuna in Dambovita
+    "CATALINA",      # prenume — comune in Cluj, Covasna, Maramures
+    "MAIA",          # „Maia Morgenstern" — comuna in Ialomita
+    "AVRAM IANCU",   # „Aeroportul International Avram Iancu", nume de strada
+    "GEORGE ENESCU", # „Filarmonica George Enescu" — comuna in Botosani
+    "MIHAI BRAVU",   # nume de strada in mai multe orase
+    "GRADINARI",     # aparea intr-o insiruire de strazi
+}
+
 _INDEX = None
 
 # Satele, atarnate de judet. NU intra in indexul global de mai sus si nu pot: numele lor se
@@ -162,6 +195,16 @@ _NIVEL_CALIFICATIV = {
     "COMUNEI": "local", "COMUNA": "local", "SATULUI": "local", "SATUL": "local",
 }
 
+# Marca geografica ceruta numelor din `_AMBIGUE`: ori calificativul administrativ de mai sus,
+# ori o prepozitie locativa. Masurat pe corpus, prepozitiile sunt indispensabile — „la Roman"
+# si „din Roman" sunt de departe forma obisnuita in presa, iar „municipiul Roman" e rara.
+# Atentie ca asta NU e o gramatica: „a ajuns la Vladimir Putin" trece. E un filtru ieftin
+# calibrat pe ce produce greseli real, nu un analizor de limba.
+_MARCA_GEO = re.compile(
+    r"(JUDETULUI|JUDETELE|JUDETUL|JUDETE|JUDET|JUD\.|MUNICIPIULUI|MUNICIPIUL|ORASULUI|"
+    r"ORASUL|COMUNEI|COMUNA|SATULUI|SATUL|LOCALITATEA|LOCALITATII|"
+    r"\bLA|\bDIN|\bIN|\bSPRE|\bCATRE|\bLANGA)\s+$")
+
 # Articolul hotarat lipit de nume: Cluj -> Clujul, Brasov -> Brasovului. Fara asta,
 # "a vizitat Clujul" nu s-ar potrivi deloc.
 _ARTICOL = r"(?:ULUI|UL|UI)?"
@@ -224,6 +267,16 @@ def judet_sursa(cheie: str | None) -> str | None:
     return judet_din_cheie(cheie)
 
 
+def _ambiguu_fara_marca(m, plat: str) -> bool:
+    """Potrivirea e pe un nume din `_AMBIGUE` si textul nu-l marcheaza ca loc -> se ignora.
+
+    Fereastra de 16 caractere acopera cel mai lung marker („LOCALITATII " are 12). Numele
+    NEambigue nu platesc nimic: pentru ele functia iese la prima verificare.
+    """
+    return (m.group(1) in _AMBIGUE
+            and not _MARCA_GEO.search(plat[max(0, m.start() - 16):m.start()]))
+
+
 def clasifica(text: str, judet: str | None = None) -> str | None:
     """Rubrica geografica a textului, sau None daca nu contine niciun nume de loc.
 
@@ -250,6 +303,8 @@ def clasifica(text: str, judet: str | None = None) -> str | None:
     for m in rx.finditer(plat):
         if not original[m.start():m.start() + 1].isupper():
             continue
+        if _ambiguu_fara_marca(m, plat):
+            continue
         nivel = index[m.group(1)]
         calif = _CALIFICATIV.search(plat[max(0, m.start() - 12):m.start()])
         if calif:
@@ -269,6 +324,11 @@ def clasifica(text: str, judet: str | None = None) -> str | None:
     for m in rx_sate.finditer(plat):
         if not original[m.start():m.start() + 1].isupper():
             continue
+        # Aici NU se mai verifica `_AMBIGUE`: fiecare nume de acolo e si UAT (invariantul e
+        # testat), deci garda de mai jos il taie oricum. O a doua verificare ar fi cod care
+        # nu ruleaza niciodata — verificat, scoaterea ei nu misca niciun articol din corpus.
+        # Ambiguitatea specifica SATELOR e alta problema, netratata inca: un ziar de Iasi care
+        # scrie „Crucea Rosie" potriveste satul CRUCEA. Nu s-a produs in 1733 de articole.
         # Numele care exista SI in indexul de UAT-uri au fost deja judecate mai sus, la
         # nivelul lor corect. Fara garda asta, SIRUTA (care are sate omonime cu judetul lor)
         # transforma „judetul Galati" in stire locala: masurat, 3 din 15 schimbari erau exact

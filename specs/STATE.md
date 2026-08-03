@@ -4,7 +4,7 @@
 > Executors get it read-only. Keep it tight — when it outgrows ~40 lines of content, cut the
 > settled history, not the open work. `git fetch` immediately before rewriting it.
 
-**Updated:** 2026-08-03 12:30 (account A — #123 and #124 MERGED: the AI budget spends all 18 calls, and no listing page is orphaned any more)
+**Updated:** 2026-08-03 20:45 (account A — #125 MERGED: SIRUTA Slice 2 shipped. #126 open: 49 articles were `local` because a commune is named Luna, Vladimir or Sâmbăta)
 
 ## READ FIRST — a bot-challenge page served with HTTP 200, triggered by SWEEP VOLUME (2026-08-02)
 
@@ -74,7 +74,20 @@ Owner was on account B, hit the usage limit mid-work on three draft PRs, switche
 (this local session) to continue. Per §14 (amended): **the account the owner is working from
 merges** — that is account A now. All three PRs landed here; see "Merged 2026-08-01/02".
 
-## SIRUTA — sourced, MEASURED, village-level BLOCKED on county-aware matching (2026-08-02)
+## SIRUTA — Slice 2 SHIPPED, #125 MERGED `2ac3c399` (2026-08-03)
+**The blocker below is resolved; the section is kept because its measurements are still the reason
+the design looks like this.** `geo.clasifica(text, judet)` now takes the source's county and matches
+villages only within it. Verified independently on the live corpus before merge, not taken from the
+PR body: **10 reclassifications, 10 correct** (Nicula, Dezmir, Igriș, Urseni ×2, Bulgăruș, Merișor,
+Copalnic; the three that looked wrong — articles saying "județul Timiș" dropping to `local` — name
+the village explicitly in the teaser, so `local` is the more specific and correct answer).
+`data/sate_judet.csv` is byte-for-byte reproducible from `tools/build_gazetteer.py`: **12540**
+villages, 42 counties. (The PR body said 12.596 until merge day — a count from before the
+first-names filter `5329ecba` dropped 56 rows. Corrected in place.)
+Synthetic false positives DO exist and did not occur in 1733 articles: a Iași paper writing
+"Crucea Roșie" would match village CRUCEA. The general form of that problem is #126 below.
+
+### The measurements that produced the design (2026-08-02) — still valid
 Groundwork committed (branch `claude/siruta-groundwork`, NOT merged): `data/siruta_raw.csv`
 (official SIRUTA via github.com/andrei-furnica/localitati-romania → data.gov.ro; cp1250, `;`,
 comma decimals) + `tools/build_gazetteer.py`. **geo.py is UNCHANGED — still the safe primării CSV.**
@@ -390,6 +403,25 @@ reuse it rather than building a second county matcher.
 
 ## Merged 2026-08-03 (account A — announce, per §14)
 
+- **#125 MERGED (`2ac3c399`) — a village counts as local only when it is in the source's county.**
+  SIRUTA Slice 2. Full detail in the SIRUTA section above. Merged on a self-review plus an
+  independent corpus verification, because **no external reviewer ever ran**: CodeRabbit hit
+  `Review limit reached` at 12:21, Gemini is dead, Codex over quota, and the `claude` job was
+  skipped. A 4-agent internal review was launched instead and all four were killed mid-run by the
+  account session limit — their transcripts are the only reason one of the checks below exists.
+- **#126 OPEN — an ambiguous name counts as a place only when the text marks it as one.**
+  Found while verifying #125, and it is **older and larger than #125**: it lives in the global UAT
+  index, on `main`, independent of villages. Measured on 1733 articles, **49** were `local` on the
+  strength of a name that is a real locality and something far more common in text: "Vladimir Putin
+  în invazia Ucrainei" (commune in Gorj), "Curtea de Casație din Franța", "Banca Centrală
+  Europeană", "Filarmonica George Enescu", "Denis Drăguș", "Oana Roman", "ÎNSCRIERI SÂMBĂTA 22.08",
+  and eight horoscopes plus a SpaceX rocket crashing into **Luna** — a commune in Cluj.
+  Fix: names in `_AMBIGUE` stay in the index but require a geographic marker (administrative
+  qualifier or locative preposition). It cannot be a global rule — 890 of 1606 capitalized matches
+  in the corpus carry no marker and are legitimate ("Universitatea Cluj", "Primăria Giurgiu").
+  Verified: 484 passed; corpus diff is exactly those 49, no correctly-local article lost.
+  **Known and NOT fixed by it:** "Banca Transilvania" moves from `local` to `regional` — still
+  wrong, but that is historical regions used as brand names, a separate slice.
 - **#123 MERGED (`7d3fca94`) — the AI budget stopped reserving upgrades that cannot happen.**
   Details and the follow-up to watch are in Open 7 above.
 - **#124 MERGED (`4f335153`) — every listing page is reachable, no dead links.**
