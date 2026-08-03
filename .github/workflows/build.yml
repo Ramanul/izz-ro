@@ -34,9 +34,10 @@ jobs:
   pipeline:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v7
+      # Fara persist-credentials: false — jobul comite si face push (pasul "Comite starea").
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
 
-      - uses: actions/setup-python@v7
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7
         with:
           python-version: "3.11"
           cache: "pip"
@@ -46,7 +47,7 @@ jobs:
       - name: Chromium pentru imagini (best-effort)
         id: chrome
         continue-on-error: true
-        uses: browser-actions/setup-chrome@v2
+        uses: browser-actions/setup-chrome@2e1d749697dd1612b833dba4a722266286fbefcd # v2
 
       - name: Ruleaza pipeline (fetch + AI, buget)
         env:
@@ -118,10 +119,11 @@ jobs:
     needs: pipeline
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v7
+      # Fara persist-credentials: false — jobul publica pe mirror (peaceiris/actions-gh-pages).
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
         with:
           ref: main          # tip-ul lui main DUPA push-ul lui pipeline -> continut proaspat
-      - uses: actions/setup-python@v7
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7
         with:
           python-version: "3.11"
           cache: "pip"
@@ -129,7 +131,7 @@ jobs:
       - name: Render (rapid, fara fetch/AI)
         run: python -m generator.main --render-only
       - name: Publica pe mirror (host independent)
-        uses: peaceiris/actions-gh-pages@v4
+        uses: peaceiris/actions-gh-pages@84c30a85c19949d7eee79c4ff27748b70285e453 # v4
         with:
           deploy_key: ${{ secrets.MIRROR_DEPLOY_KEY }}
           external_repository: Ramanul/ramanul.github.io
