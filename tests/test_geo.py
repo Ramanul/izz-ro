@@ -287,7 +287,15 @@ def test_marca_geografica_nu_se_aplica_numelor_neambigue():
 
 
 def test_lista_ambigua_chiar_exista_in_index():
-    """Un nume scris gresit in `_AMBIGUE` n-ar da eroare — n-ar filtra nimic, tacut."""
+    """Doua lucruri deodata.
+
+    Unu: un nume scris gresit in `_AMBIGUE` n-ar da eroare — n-ar filtra nimic, tacut.
+
+    Doi, si mai important: invariantul asta e MOTIVUL pentru care bucla satelor din
+    `clasifica` nu verifica `_AMBIGUE`. Fiind toate si UAT-uri, garda `index.get()` de acolo
+    le taie oricum. Daca cineva adauga in `_AMBIGUE` un nume care e DOAR sat, testul pica
+    aici — si atunci bucla satelor chiar are nevoie de propria garda.
+    """
     index = geo._index()
     lipsa = sorted(n for n in geo._AMBIGUE if n not in index)
     assert not lipsa, f"nume din _AMBIGUE care nu sunt in indexul de UAT-uri: {lipsa}"

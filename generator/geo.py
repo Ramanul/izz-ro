@@ -324,8 +324,11 @@ def clasifica(text: str, judet: str | None = None) -> str | None:
     for m in rx_sate.finditer(plat):
         if not original[m.start():m.start() + 1].isupper():
             continue
-        if _ambiguu_fara_marca(m, plat):
-            continue
+        # Aici NU se mai verifica `_AMBIGUE`: fiecare nume de acolo e si UAT (invariantul e
+        # testat), deci garda de mai jos il taie oricum. O a doua verificare ar fi cod care
+        # nu ruleaza niciodata — verificat, scoaterea ei nu misca niciun articol din corpus.
+        # Ambiguitatea specifica SATELOR e alta problema, netratata inca: un ziar de Iasi care
+        # scrie „Crucea Rosie" potriveste satul CRUCEA. Nu s-a produs in 1733 de articole.
         # Numele care exista SI in indexul de UAT-uri au fost deja judecate mai sus, la
         # nivelul lor corect. Fara garda asta, SIRUTA (care are sate omonime cu judetul lor)
         # transforma „judetul Galati" in stire locala: masurat, 3 din 15 schimbari erau exact
