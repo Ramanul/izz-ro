@@ -4,7 +4,7 @@
 > Executors get it read-only. Keep it tight — when it outgrows ~40 lines of content, cut the
 > settled history, not the open work. `git fetch` immediately before rewriting it.
 
-**Updated:** 2026-08-02 22:40 (account A — #115/#116/#117 MERGED and confirmed on live; #118 open and green; #112 open)
+**Updated:** 2026-08-03 09:25 (account A — #112 MERGED: every action in `.github/workflows/` is now SHA-pinned)
 
 ## READ FIRST — a bot-challenge page served with HTTP 200, triggered by SWEEP VOLUME (2026-08-02)
 
@@ -323,6 +323,36 @@ reuse it rather than building a second county matcher.
 - **Sub-agents cost ~5.6x per delivered line** (129 vs 23 tokens/100 lines, measured over 21
   slices in `COORD-DASHBOARD.md`). Worth it for genuinely parallel or noisy measurement work.
   CI is the cheapest executor — free minutes on a public repo, and the only one with real network.
+
+## Merged 2026-08-03 (account A — announce, per §14)
+
+- **#112 MERGED (`5c631f7d`) — every action reference in `.github/workflows/` is pinned to a
+  commit SHA.** zizmor's `unpinned-uses`, raised by CodeRabbit on #111 and skipped there because
+  pinning one new workflow while 13 stayed on floating tags is an inconsistency, not a fix. 32
+  references, 13 workflows. Each SHA resolved with `gh api repos/<o>/<r>/git/ref/tags/<tag>` and
+  confirmed to exist with `.../commits/<sha>` — none guessed. **Four of the seven tags are
+  annotated** (`peaceiris`, `browser-actions`, `anthropics`, `github/codeql-action`), so the ref
+  had to be dereferenced through `/git/tags/<sha>`; taking `object.sha` directly there pins the
+  tag object, not a commit, and the run fails. Remember that when bumping by hand.
+  → The trailing `# vN` is load-bearing, not decoration: `.github/dependabot.yml` already has a
+  weekly `github-actions` entry and parses exactly that format, so **pinning does not freeze
+  versions** — bumps keep arriving as PRs. Do not "simplify" the comment away.
+  → `persist-credentials: false` added to the checkouts that never push (codeql, feedcheck, probe,
+  smoke, tests, ua-probe, visual, claude-code-review). **Deliberately NOT added, each with a
+  comment in the file so the asymmetry does not read as an oversight:** `build.yml/pipeline`
+  (pushes the state commit), `build.yml/mirror` (publishes via `peaceiris`, i.e. the §10 deploy
+  path — it pushes with `MIRROR_DEPLOY_KEY` not the checkout token, so it is *probably* safe to
+  add, but that is a separate slice), `fonts.yml` (commits fonts), `claude.yml` (`contents: write`,
+  "@claude apply your fixes" commits on the branch). `monitor.yml` uses no actions at all.
+  → **Proven by running, on the runners:** `pytest` and CodeQL `analyze` both green on the PR with
+  the pins in place, which exercises checkout, setup-python, codeql-action/init + /analyze and
+  claude-code-action. **NOT exercised by any PR-triggered workflow:** `upload-artifact` (visual),
+  `setup-chrome` and `actions-gh-pages` (build). First proof for those comes from the next
+  `pipeline` / `visual-live` cron run — if either goes red, look at the pin first.
+  → Merge conflict on the way in: main had **deleted** `claude-docs-review.yml` (`c5a3c3ef`,
+  "drop the duplicate reviewer") while the branch was modifying it. Resolved by accepting the
+  deletion. Local suite after merging main: **402 passed** — the "262 tests" figure in CLAUDE.md §4
+  is stale as of today.
 
 ## Merged / open 2026-08-02 EVENING (account A — announce, per §14)
 
