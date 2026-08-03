@@ -31,7 +31,6 @@
           <ul>{% for s in top_srcs %}<li><a href="{{ s.url }}" target="_blank" rel="noopener noreferrer">{{ s.name }}</a></li>{% endfor %}</ul>
         </div>
         <div><h3>Publicat</h3><time datetime="{{ top.published }}">{{ top.published_human }}</time></div>
-        {% if top.significance is defined %}<div><h3>Relevanță</h3><span class="sig"><b>{{ top.significance }}</b>/10</span></div>{% endif %}
       </aside>
     </article>
 

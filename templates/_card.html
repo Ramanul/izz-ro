@@ -10,7 +10,6 @@
     {% set body = a.synthesis if a.model == 'C' else a.teaser %}
     {% set wc = (body or '').split() | length %}
     <span class="reading-time">~{{ [wc // 200, 1] | max }} min</span>
-    {% if a.significance is defined %}<span class="sig"><b>{{ a.significance }}</b>/10</span>{% endif %}
   </div>
   <p class="summary">{% if a.model == 'C' %}{{ a.synthesis }}{% else %}{{ a.teaser }}{% endif %}</p>
   {% set card_srcs = a.sources if (a.model == 'C' and a.sources) else [{'name': a.source_name, 'url': a.original_link}] %}

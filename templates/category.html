@@ -13,12 +13,17 @@
   <section class="grid">
     {% for a in articles %}{{ card(a) }}{% endfor %}
   </section>
-  {% if show_pagination %}
+  {% if pagination %}
   <nav class="pagination" aria-label="Navigare pagini">
-    <span class="current">1</span>
-    <a href="{{ base }}/{{ category }}/2/">2</a>
-    <a href="{{ base }}/{{ category }}/3/">3</a>
-    <a href="{{ base }}/{{ category }}/2/" rel="next">›</a>
+    {% if pagination.prev %}<a href="{{ base }}{{ pagination.prev }}" rel="prev" aria-label="Pagina anterioară">‹</a>
+    {% else %}<span class="disabled" aria-hidden="true">‹</span>{% endif %}
+    {% for p in pagination.pages %}
+      {%- if p is none %}<span class="gap" aria-hidden="true">…</span>
+      {%- elif p.path %}<a href="{{ base }}{{ p.path }}" aria-label="Pagina {{ p.n }}">{{ p.n }}</a>
+      {%- else %}<span class="current" aria-current="page">{{ p.n }}</span>{% endif %}
+    {%- endfor %}
+    {% if pagination.next %}<a href="{{ base }}{{ pagination.next }}" rel="next" aria-label="Pagina următoare">›</a>
+    {% else %}<span class="disabled" aria-hidden="true">›</span>{% endif %}
   </nav>
   {% endif %}
   {% else %}
