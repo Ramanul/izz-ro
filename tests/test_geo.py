@@ -236,3 +236,58 @@ def test_prenumele_si_omonimele_nu_sunt_sate_potrivibile(nume):
 def test_un_prenume_omonim_nu_face_stirea_locala():
     text = "Adrian Ropotan a suferit o fractură deschisă după un accident rutier"
     assert geo.clasifica(text, "MURES") is None      # ADRIAN e sat in Mures, dar aici e om
+
+
+# ---------------------------------------------------------------- nume ambigue (UAT)
+# Aceleasi omonime, dar la nivelul indexului global de UAT-uri, unde stergerea numelui nu e
+# o optiune: Romanul e municipiu cu primarie care publica pe izz.ro, Voluntari e oras de
+# 40.000. Masurat pe corpus 2026-08-03: 49 de articole erau `local` din motive de genul asta.
+
+@pytest.mark.parametrize("text", [
+    "Analiză privind eșecul strategic al lui Vladimir Putin în invazia Ucrainei",
+    "Traian Băsescu critică gestionarea crizei energetice",
+    "Curtea de Casație din Franța a respins recursul",
+    "Românii pot vota designul viitoarelor bancnote euro emise de Banca Centrală Europeană",
+    "Oana Roman și-a expus noua siluetă într-un costum de baie",
+    "Filarmonica George Enescu a prezentat stagiunea 2026-2027",
+    "Denis Drăguș a bifat o nouă reușită la Trabzonspor",
+    "Marius Baciu refuză să demisioneze de la FCSB",
+    "O treaptă de rachetă SpaceX se va prăbuși pe Lună",
+    "Trei zodii au parte de succes major după Luna Plină",
+    "ÎNSCRIERI - SÂMBĂTA 22.08.2026, evaluare medicală gratuită",
+    "Actrița Maia Morgenstern participă la eveniment",
+])
+def test_numele_ambigue_fara_marca_geografica_nu_sunt_locuri(text):
+    """Toate numele astea sunt localitati reale in index, dar aici sunt o persoana, o zi, un
+    satelit natural sau o institutie. Fara marca geografica in text nu deschid axa."""
+    assert geo.clasifica(text) is None
+
+
+@pytest.mark.parametrize("text,nivel", [
+    ("Primăria Municipiului Roman organizează concurs de recrutare", "local"),
+    ("Incendiu la Roman, într-o hală de producție", "local"),
+    ("Lucrări de reabilitare în comuna Vladimir", "local"),
+    ("Autobuz nou din Voluntari către Otopeni", "local"),
+    ("Drum județean modernizat în localitatea Cristian", "local"),
+])
+def test_numele_ambigue_cu_marca_geografica_raman_locuri(text, nivel):
+    """Cealalta jumatate a regulii, si motivul pentru care numele NU se sterg din index:
+    marcate geografic, sunt exact ce par."""
+    assert geo.clasifica(text) == nivel
+
+
+def test_marca_geografica_nu_se_aplica_numelor_neambigue():
+    """Garda e strict pe `_AMBIGUE`. „Universitatea Cluj" n-are nicio prepozitie inainte si
+    trebuie sa ramana zonal — masurat, 890 din 1606 de potriviri din corpus n-au marca."""
+    assert geo.clasifica("Universitatea Cluj a pierdut meciul") == "zonal"
+    assert geo.clasifica("Salvamont Neamț a intervenit de patru ori") == "zonal"
+    # Suceava e SI judet SI municipiu, deci indexul da corect `local` — l-am pus aici din
+    # greseala prima data. Ramane ca exemplu: garda nu-l atinge, nivelul vine din index.
+    assert geo.clasifica("ISU Suceava a deschis un punct de prim ajutor") == "local"
+
+
+def test_lista_ambigua_chiar_exista_in_index():
+    """Un nume scris gresit in `_AMBIGUE` n-ar da eroare — n-ar filtra nimic, tacut."""
+    index = geo._index()
+    lipsa = sorted(n for n in geo._AMBIGUE if n not in index)
+    assert not lipsa, f"nume din _AMBIGUE care nu sunt in indexul de UAT-uri: {lipsa}"
