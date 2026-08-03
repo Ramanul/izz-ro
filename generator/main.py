@@ -112,6 +112,42 @@ def process_new(new_items: list, provider, budget: int, existing: list | None = 
     return processed, folded, used
 
 
+def upgradable(articles: list) -> list:
+    """Articolele pe care `upgrade_fallbacks` chiar le-ar reprocesa, in ordinea lor.
+
+    Predicat SINGUR, folosit si de `upgrade_fallbacks` si de `ai_reserve`. Scris o data
+    dinadins: rezerva de buget e utila doar daca numara exact ce va consuma upgrade-ul.
+    Doua copii ale conditiei ar putea sa se departeze fara ca nimic sa para stricat —
+    rezerva ar tine deoparte apeluri pentru o coada care nu exista, exact defectul reparat
+    aici, doar ca mai greu de vazut."""
+    return [a for a in articles
+            if a.get("model") == "B" and a.get("original_title") and (
+                a.get("processed_by") == "fallback"
+                or a.get("prompt_version") != config.PROMPT_VERSION)]
+
+
+def ai_reserve(existing: list, budget: int) -> int:
+    """Cate apeluri se tin deoparte din buget pentru `upgrade_fallbacks`.
+
+    MASURAT 2026-08-03, pe trei rulari `build.yml` consecutive: `MAX_AI_CALLS_PER_RUN=18`
+    si `UPGRADE_RESERVE=8` dadeau lui `process_new` doar 10 apeluri, iar rezerva de 8 nu se
+    cheltuia NICIODATA (`ai_calls 10` in toate trei) — pentru ca starea nu contine niciun
+    articol eligibil: 0 fallback-uri, 0 pe versiune veche de prompt, iar cele 233 de articole
+    oficiale n-au `original_title`, deci nu califica prin constructie. In acelasi timp
+    rularile amanau 20 / 27 / 127 de iteme noi din lipsa de buget. 44% din buget tinut pentru
+    o coada goala.
+
+    Rezerva NU e gresita prin design: un bump de `PROMPT_VERSION` face ~1100 de articole
+    eligibile deodata, si atunci exact ea impiedica infometarea upgrade-urilor de catre
+    fluxul continuu de stiri noi. Era gresita neconditionat. Acum e plafonata de cati sunt.
+
+    Se numara pe `existing`, adica starea DINAINTE de procesare. Un articol care cade pe
+    fallback chiar in rularea asta nu e numarat — dar daca a cazut, providerul tocmai a
+    esuat, deci upgrade-ul lui ar esua si el; se ridica la rularea urmatoare, cand e in stare."""
+    want = int(os.getenv("UPGRADE_RESERVE", "3"))
+    return max(0, min(want, budget, len(upgradable(existing))))
+
+
 def upgrade_fallbacks(articles: list, provider, remaining: int) -> int:
     """Reprocesează cu AI articolele B invechite, in limita bugetului ramas:
     - cele ramase pe fallback (quota), SI
@@ -122,16 +158,12 @@ def upgrade_fallbacks(articles: list, provider, remaining: int) -> int:
     if not provider or remaining <= 0:
         return 0
     used = 0
-    for a in articles:
+    for a in upgradable(articles):
         if used >= remaining:
             break
-        if a.get("model") == "B" and a.get("original_title") and (
-            a.get("processed_by") == "fallback"
-            or a.get("prompt_version") != config.PROMPT_VERSION
-        ):
-            if process_single(a, provider) is None:
-                break  # AI indisponibil -> oprim upgrade-ul; fallback-urile raman pentru data viitoare
-            used += 1
+        if process_single(a, provider) is None:
+            break  # AI indisponibil -> oprim upgrade-ul; fallback-urile raman pentru data viitoare
+        used += 1
     return used
 
 
@@ -171,9 +203,11 @@ def run(dry_run: bool = False) -> dict:
     provider_name = provider.name if provider else "fallback (fara cheie/SDK AI)"
 
     budget = int(os.getenv("MAX_AI_CALLS_PER_RUN", "12")) if provider else 10 ** 9
-    # rezerva cateva apeluri garantate pentru upgrade-ul fallback-urilor vechi,
-    # ca sa nu fie infometate cand exista mereu articole noi (umplerea initiala)
-    reserve = min(int(os.getenv("UPGRADE_RESERVE", "3")), budget) if provider else 0
+    # rezerva apeluri garantate pentru upgrade-ul fallback-urilor vechi, ca sa nu fie
+    # infometate cand exista mereu articole noi (umplerea initiala) -- dar DOAR cat exista
+    # de upgradat. Vezi `ai_reserve`: neplafonata, tinea 8 din 18 apeluri pentru o coada goala.
+    pending_upgrades = len(upgradable(existing)) if provider else 0
+    reserve = ai_reserve(existing, budget) if provider else 0
     processed_new, folded, used = process_new(new_items, provider, budget - reserve, existing=existing)
     # Cate iteme noi n-au primit AI in rularea asta. Nu se salveaza in state, deci revin
     # „noi” la rularea urmatoare — masura reala a presiunii pe buget, invizibila pana acum:
@@ -211,6 +245,12 @@ def run(dry_run: bool = False) -> dict:
         "hold_important": mod.get("hold_important", False),
         "ai_down": ai_down,
         "ai_calls": provider.calls if provider else 0,
+        "ai_budget": budget if provider else 0,
+        # Cat s-a tinut deoparte pentru upgrade-uri si cati candidati existau. Fara ele,
+        # „ai_calls 10" dintr-un log nu se poate citi fara sa incrucisezi doua variabile de
+        # mediu cu starea — a costat o sesiune intreaga sa se observe ca rezerva era moarta.
+        "upgrade_reserve": reserve,
+        "upgradable": pending_upgrades,
         "ai_last_error": provider.last_error if provider else None,
     }
     if upgraded:
@@ -238,6 +278,11 @@ def _print_report(stats: dict, processed_new: list, dry_run: bool):
     if stats.get("stale_skipped"):
         print(f"Sarite ca deja expirate la citire: {stats['stale_skipped']} "
               f"(peste TTL de {config.ARTICLE_TTL_DAYS} zile — ar fi fost sterse in aceeasi rulare)")
+    if stats.get("ai_budget"):
+        print(f"Buget AI: {stats['ai_budget']} apeluri | pentru iteme noi: "
+              f"{stats['ai_budget'] - stats['upgrade_reserve']} | rezervat upgrade: "
+              f"{stats['upgrade_reserve']} din {stats['upgradable']} eligibile | "
+              f"folosite: {stats['ai_calls']}")
     if stats.get("deferred"):
         print(f"Amanate (buget AI epuizat): {stats['deferred']} din {stats['new']} "
               f"— revin la rularea urmatoare, apeluri folosite: {stats['ai_calls']}")
