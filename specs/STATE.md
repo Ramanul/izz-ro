@@ -4,7 +4,7 @@
 > Executors get it read-only. Keep it tight — when it outgrows ~40 lines of content, cut the
 > settled history, not the open work. `git fetch` immediately before rewriting it.
 
-**Updated:** 2026-08-03 09:25 (account A — #112 MERGED: every action in `.github/workflows/` is now SHA-pinned)
+**Updated:** 2026-08-03 10:35 (account A — #122 MERGED: news sitemap live; and the AI budget is throttled to 10 of 18 calls by a reserve nothing uses)
 
 ## READ FIRST — a bot-challenge page served with HTTP 200, triggered by SWEEP VOLUME (2026-08-02)
 
@@ -253,12 +253,42 @@ reuse it rather than building a second county matcher.
    time" is measured with a checker that reimplements its own fetch — the exact defect logged at
    the top of this file, where 74 sources return an anti-bot interstitial with HTTP 200 and
    `feedparser` reads it as a valid empty feed. Fix the measurement before building a metric on it.
-   ⏳ **News sitemap (`news:` namespace) — the finding is right**, `_write_sitemap` emits only the
-   standard `xmlns` plus `xmlns:image` (`render.py:859,877`). The plan gates it on Google Publisher
-   Center eligibility; that gate is misplaced — the sitemap is cheap, harms nothing if the
-   application is refused, and the eligibility question is the owner's to answer in parallel.
+   ✅ **News sitemap — DONE, #122, CONFIRMED ON LIVE.** `https://izz.ro/sitemap-news.xml` served
+   404 before, serves **404 entries** now (the count, not the code), all inside the window, and
+   `robots.txt` announces it. Separate file, not a namespace on `sitemap.xml`: the protocol wants
+   only 48h of news, `sitemap.xml` carries 1413 URLs including guides and legal pages. The
+   eligibility gate the plan proposed was dropped as misplaced — it is the owner's question, in
+   parallel, and a refused application costs the sitemap nothing.
    (Dropped by the plan itself, correctly: prompt caching — under the ~1024-token cache minimum and
    irrelevant on the free Gemini path, where the cost is calls, not tokens.)
+7. **THE AI BUDGET IS 18 AND THE PIPELINE USES 10. Measured, not inferred — do this next.**
+   `build.yml` sets `MAX_AI_CALLS_PER_RUN: 18` and `UPGRADE_RESERVE: 8`, and `main.py:178` hands
+   `process_new` only `budget - reserve` = **10**. The reserve then goes to `upgrade_fallbacks`,
+   which upgrades articles that are `model == "B"` **and** have `original_title` **and** are either
+   `processed_by == "fallback"` or on a stale `PROMPT_VERSION`. Counted on today's state:
+
+   ```text
+   1117 (B, gemini, v2-esenta)   386 (C, gemini, v2-esenta)   233 (B, official, None)
+   fallback left in state: 0        eligible for upgrade: 0
+   ```
+
+   The 233 official items never qualify — they are processed deterministically and carry no
+   `original_title`. So **8 of 18 calls (44%) are reserved for an empty queue**, while three
+   consecutive runs deferred new items for lack of budget:
+
+   ```text
+   03:49  new 94   B 70  C 3   deferred  20   ai_calls 10
+   23:06  new 119  B 90  C 1   deferred  27   ai_calls 10
+   21:07  new 185  B 50  C 4   deferred 127   ai_calls 10
+   ```
+
+   `ai_calls 10` on every run is the proof the reserve is never spent, not a coincidence.
+   **The reserve is not wrong by design** — a `PROMPT_VERSION` bump makes ~1100 articles eligible
+   at once, which is what it exists for. It is wrong *unconditionally*: reserve
+   `min(UPGRADE_RESERVE, eligible_now)` and the calls go to new items on runs with no backlog.
+   Expected effect: 10 → 18 calls per run, ~+80% new-item throughput, +32 s of runtime at the 4 s
+   Gemini throttle. **This outranks batching model C** — batching makes each call carry more, this
+   makes 8 free calls exist at all, and it is one constant plus a count.
 
 ## Settled today — do NOT re-derive
 - **OpenCode no longer dies when the Zen quota runs out.** `tools/oc_run.sh` walks a free-route
