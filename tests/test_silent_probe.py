@@ -142,3 +142,21 @@ def test_decode_body_names_unsupported_encoding():
 def test_decode_body_is_case_and_space_insensitive():
     body, _ = silent_probe._decode_body(gzip.compress(b"ok"), "  GZip ")
     assert body == b"ok"
+
+
+# --- _is_challenge ------------------------------------------------------------
+
+def test_is_challenge_detects_the_measured_interstitial():
+    body = (b'<!DOCTYPE html><html lang="en"><head><meta charset="utf8">'
+            b'<script>(function(){setTimeout(function(){window.location.reload();},5000);}())</script>'
+            b'<title>One moment, please...</title>')
+    assert silent_probe._is_challenge(body)
+
+
+def test_is_challenge_does_not_fire_on_a_real_feed():
+    assert not silent_probe._is_challenge(b'<?xml version="1.0"?><rss version="2.0"><channel>')
+
+
+def test_is_challenge_ignores_the_marker_deep_in_a_long_body():
+    # Doar antetul paginii conteaza; un articol care contine fraza nu e un challenge.
+    assert not silent_probe._is_challenge(b"x" * 5000 + b"One moment, please")

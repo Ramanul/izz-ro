@@ -32,6 +32,29 @@ termene:
   - data: "2026-09-01"
     eveniment: "Termen recalculare pensii (Legea 360/2023)"
 
+# Portate din data/utilities.json (calea /utile/ a fost inlocuita de /ghiduri/ pe 17 iul 2026).
+sectiuni:
+  - titlu: "Cine primește pensia minimă?"
+    continut: >-
+      Pensia minimă se acordă pensionarilor din sistemul public de pensii al căror cuantum al
+      pensiei (calculat pe baza contributivității) este sub pragul de 1.281 lei. Condiția esențială
+      este **stagiul minim de cotizare realizat**: 15 ani. Cei care nu îndeplinesc acest stagiu
+      primesc doar pensia calculată, indiferent de valoare, sau indemnizația socială (dacă se
+      califică).
+  - titlu: "Cât este pensia minimă?"
+    continut: >-
+      **1.281 lei** reprezintă indemnizația socială pentru pensionari. Este diferită de pensia
+      calculată pe contributivitate. Dacă pensia ta calculată este de 900 lei, statul completează
+      diferența până la 1.281 lei. Dacă pensia calculată depășește 1.281 lei, primești pensia
+      calculată integral.
+  - titlu: "Ce acte ai nevoie?"
+    continut: >-
+      Pentru depunerea dosarului de pensie: **cerere tip** (de la Casa de Pensii), **carte de
+      identitate** (original + copie), **carnet de muncă** sau adeverințe de vechime, **adeverință
+      de salarizare** pentru ultimele 12 luni, **certificat de naștere** și **certificat de
+      căsătorie** (dacă e cazul), **livret militar** (pentru bărbați). Depunerea se face cu 30 de
+      zile înainte de data pensionării.
+
 faq:
   - q: "Care e diferența între pensia minimă și indemnizația socială?"
     a: "Sunt același lucru în practică. Statul completează pensia calculată până la pragul minim garantat."

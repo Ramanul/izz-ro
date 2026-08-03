@@ -4,43 +4,70 @@
 > Executors get it read-only. Keep it tight — when it outgrows ~40 lines of content, cut the
 > settled history, not the open work. `git fetch` immediately before rewriting it.
 
-**Updated:** 2026-08-02 13:45 (account A — #106/#107/#108/#109/#110 merged, #111 open; **production is losing ~40% of its sources, see Open 1**)
+**Updated:** 2026-08-02 22:40 (account A — #115/#116/#117 MERGED and confirmed on live; #118 open and green; #112 open)
 
-## READ FIRST — production reads 861 articles where a local run reads 1428 (2026-08-02)
-Not a checker artifact, and no longer an estimate. `feedcheck.yml` run `30742957035` on GitHub
-runners reported **75 sources with 0 articles**. All 75 were then re-probed from the owner's home
-IP with **the same production fetcher** (`_fetch_one_guarded`, script in PR #111):
+## READ FIRST — a bot-challenge page served with HTTP 200, triggered by SWEEP VOLUME (2026-08-02)
+
+**The cause is established, with response bodies, not inferred.** Earlier versions of this section
+blamed the GitHub runner IP and recommended a proxy or a self-hosted runner. **That was wrong —
+do not act on it.** Two hypotheses were tested and killed before the real one held up:
+
+- ~~"runner IPs are blocked"~~ — `silent_probe` from a runner, 10 sources: **10/10 fine**. Same
+  runner infrastructure, 75 sources: **74/75 fine**. The IP is not blocked.
+- ~~"the conditional-request cache returns 304s"~~ — the 10:05 production run had a cache 3h23m
+  old, past `CACHE_MAX_AGE_H = 3`, so it sent unconditional requests, and still read 852.
+  `feed_check.py` never passes a cache at all (`_fetch_one_guarded(key, src)`, third arg omitted).
+
+**What actually happens.** Probe all 189 sources sequentially from a runner and it reproduces:
+**74 with 0 entries**, matching feedcheck's 75. Same infrastructure, same script, ~20 minutes after
+the 75-source run that produced 1. The variable is **sweep volume**, not IP and not time.
+
+72 of the 74 return a byte-identical page, HTTP **200**:
 
 ```text
-total probate : 75
-VII local     : 73     goale pe runner, pline de acasa -> punct de observatie
-goale si local: 0
-eroare local  : 2      pl_suceava_oras_dolhasca, pl_arges_oras_costesti (real broken)
-articole recuperabile: 544
+<!DOCTYPE html><html lang="en"><head>... <script>(function(){
+  setTimeout(function(){ window.location.reload(); }, 5000); }())</script>
+<title>One moment, please...</title> <style>.spinner{...
 ```
 
-**544 measured**, against the production gap of 1428 − 861 = 567. The earlier "≈71 sources × the
-8-item cap" was arithmetic that happened to fit; this is the direct measurement, and it holds.
-The 2 genuinely broken ones now surface as errors instead of silently, thanks to #110.
-→ **The site has been quietly publishing from ~60% of its corpus.** Nothing reported it, because
-`fetch_all()` only puts a source in `dead` when it raised an ERROR; a source answering 200 with an
-unparseable or empty feed was invisible. #110 fixes the invisibility (RSS + html_list now report
-`200 dar 0 articole`, the way #98 already did for `sitemap_news`), so the next production run
-prints the real list instead of nothing.
-→ **The invisibility is fixed; the LOSS is not, and the fix is an owner decision.** Options, none
-of them free: fetch through a proxy with a different egress (a Cloudflare Worker already exists for
-failover), a self-hosted runner on the owner's machine (his IP demonstrably works, but the machine
-must be up), or accepting the loss and pruning the corpus honestly. This is production deploy
-config, i.e. §10 — do not pick one unilaterally.
-→ **What is NOT established:** whether the runners get a challenge page, an empty feed, a redirect,
-or a truncated body. Neither `feed_check.py` nor `ua_probe.py` ever looks at the response body, so
-neither can tell those apart. **PR #111 adds `tools/silent_probe.py` + `silent-probe.yml`** for
-exactly this: status, final URL, headers, feedparser entry count/bozo, first 400 bytes of body.
-`workflow_dispatch` only finds workflows on the default branch, so **the probe cannot run
-until #111 lands** — merge it, then dispatch `silent-probe.yml` and read the output against the
-healthy local witness (`recorder` and `pl_sibiu_oras_agnita`: 200, valid RSS, 10 entries each).
-Do not assume it is HTTP 403 — `feed_check` reported these as `GOL`, not as errors, so the status
-was fine and only the parse yielded nothing.
+A JS bot-challenge interstitial that auto-reloads after 5 s. `feedparser` parses it as valid HTML
+with zero entries and **no error** — which is exactly why nothing ever reported it.
+**65 of the 74 are served by `openresty/1.31.1.1`**, one shared hosting stack; the rest are
+3× Apache, 3× cloudflare, 1× `openresty/1.29.2.3`. Affected set: 64 of the 120 `pl_*` municipal
+feeds (56 are fine) plus `bookhub bizbrasov ziarultransilvaniei zch stirilemoldovei stirimuntenia
+cronicaolteniei stirileolteniei piataauto contributors`.
+
+**The loss itself is real and measured with the production function**, `fetch_all()` — not a
+reimplementation, and not two different metrics compared by accident:
+
+```text
+local, cold cache : 1428 articles, 186/189 sources with >=1, 3 dead, 164 capped at 8
+production        :  860 (03:47) / 861 (06:42) / 852 (10:05)
+```
+
+The same 189-source sweep from the owner's residential IP loses 3 sources; from a runner it loses
+74. So IP reputation sets the *threshold*, but **volume is the trigger** — which makes this a
+fetch-pacing problem in `generator/fetch.py` (`MAX_WORKERS = 8` against 189 sources, 65 of them on
+one host), **not** the deploy-topology decision the previous version of this section claimed.
+→ ~~"a back-off-and-retry may pass it"~~ — **TESTED, AND FALSE.** With a 6 s wait, past the page's
+own reload timer, **40 of 40** sources got the same interstitial again. The quota is time-windowed.
+Do not re-open this.
+→ **The grouping key cannot be host name or IP.** The 66 challenged domains resolve to many
+different addresses (checked 30: `37.143.163.59` x3, `89.39.83.125` x2, the rest distinct) — one
+Romanian hosting provider on many IPs behind one WAF. Only the `Server` header identifies it, and
+that is known only from a response, i.e. from the previous run.
+→ **THE FIX IS [PR #113](https://github.com/Ramanul/izz-ro/pull/113) — MERGED, owner approved.** (a) reports these as `challenge anti-bot servit cu 200 (sursa NU e moarta)` instead of
+the "feed gol" label #110 gave them, which invites deleting good sources from config; (b) adds
+`_HostPacer` — caches the `Server` header per source, spaces requests sharing a provider, only for
+groups >= `FETCH_PACE_GROUP_MIN` (10), default 2.0 s, `FETCH_PACE_S=0` disables it; (c) deletes
+`claude-docs-review.yml` on the owner's call. 19 new tests, 281 pass.
+→ **WHAT #113 DOES NOT ESTABLISH:** 2.0 s is reasoned, not measured — today's probing consumed the
+provider's quota, so there was no clean window. Compare `Articole citite` across a few runs and
+tune `FETCH_PACE_S`.
+→ **CAVEAT when reading the next production runs:** today's probes spent that quota. A low
+`Articole citite` on the next `build.yml` may be my measurements, not a regression.
+→ #110 is what made any of this visible: before it, a source answering 200 with an unparseable
+body was dropped silently. The next production run prints the real list.
 
 ## OPERATING MODE — owner active on ACCOUNT A (2026-08-02)
 Owner was on account B, hit the usage limit mid-work on three draft PRs, switched to account A
@@ -81,6 +108,48 @@ spread. Run 3+ repetitions per revision and compare medians; one pair proves not
 `data/localities.json` (3179 UAT, county labels + `localities.match`) overlaps SIRUTA Slice 2 —
 reuse it rather than building a second county matcher.
 
+## OWNER ANSWERS 2026-08-02 — treat as decided, do not re-ask
+- **Dark mode: "merge".** Open 0 is CLOSED. Do not spend another session on it.
+- **7 regions**, not 9. He says he answered this long ago. Feed it into SIRUTA Slice 2 / the map.
+- **Photos: "totul legal cu cat mai multe poze".** The policy is maximise coverage WITHIN the
+  consent rules of §18 — never relax the licence checks to get more photos.
+- **The salary calculator is BROKEN and he noticed:** "cand pun cifre nu face calculul". Measured
+  on live, https://izz.ro/ghiduri/salariul-minim/ : `calcSalariu` undefined, `#calc-results` empty.
+  `_render_calc_salariu` emits an inline <script> plus oninput=/onclick=, and CSP is
+  `script-src 'self'` with NO 'unsafe-inline'. **It has never worked in production.** Partial fix
+  in #115 (external static/calc-salariu.js); wiring listed in that commit message, including
+  adding it to `_asset_ver` or §16.2's immutable cache hides the fix.
+- **He did not understand items phrased as CLS / og:image / SHA pinning.** Explain consequences in
+  plain language before asking him to decide anything. That is a lesson about how to ask, not
+  about him.
+
+## 2026-08-03 — THE SITE WAS PUBLISHING A STALE MINIMUM WAGE. Do not re-derive this.
+#119, #120, #121 merged. What matters for the next session:
+- **Salariul minim is 4.325 lei from 1 July 2026** — [HG 146/2026](https://legislatie.just.ro/Public/DetaliiDocument/308231),
+  read on the portal, art. 1; art. 2 repeals HG **1.506/2024** (the entity had it as "1506/2025").
+  The site served 4.050 for a month. `verificat: true` now — the primary act was read.
+  **The calculator took the personal deduction as 20% of that stale figure**, so it computed wrong
+  net pay for the whole time it worked. `_SALARIU_MINIM_FALLBACK` and the entity are now tied by
+  `test_fallback_nu_diverge_de_entitate` — they drift with nothing visibly breaking.
+- **Alocatia: 719 / 292 lei, indexation suspended** (art. XXV, Law 141/2025) against 1.019 / 794
+  published. `verificat` STAYS false and the yaml says why: the primary act could not be read —
+  `legislatie.just.ro` serves Law 61/1993 in its 1999 republished form, art. 3 still "3.500 lei",
+  pre-denomination. Its history table was deleted, not corrected; it started from the same
+  contradicted numbers. **Do not set `verificat: true` here without reading the act.**
+- **OPEN, owner's call (§10):** at 4.325 brut the calculator returns **2.616**, sources say
+  **~2.699**. The flat 20% deduction understates art. 77 of the Fiscal Code at low incomes. The
+  guide text now says "ordin de mărime, nu suma exactă din fluturaș" — accurate, but the formula
+  is still approximate. Fixing it is a fiscal-rules decision, not a data one.
+- **`published` sort: the refactor was NOT needed and was not done.** Measured: 1736/1736 entries
+  are `+00:00`, because both parsers end in `astimezone(timezone.utc)`. `tests/test_published_is_utc.py`
+  guards the invariant instead. Rewriting the three sorts to `datetime` would have hidden the real
+  exposure — order would look right while mixed offsets leaked into `datePublished` and the feed.
+- **CodeRabbit was right twice and wrong twice on the same PR.** Right: the stale wage, the
+  allowance bands. Wrong: it asked to drop the 15-year contribution rule from `pensia-minima`
+  (real — no minimum stage, no pension right, so nothing to top up), and to make a test assert
+  `verificat: true` (a test asserting the editorial gate empties it of meaning). **Verify its legal
+  claims before applying them; it is confident in both directions.**
+
 ## Open
 0. **DARK MODE — mechanics now CONFIRMED ON LIVE (#106). Still open only for the owner's own
    "nu merge" to be re-tested by him.** Do not spend another session reproducing it blind.
@@ -103,9 +172,9 @@ reuse it rather than building a second county matcher.
    **What is NOT established:** that this was the owner's complaint, or that his device behaves the
    same. Only he can close this — ask him to press it once and say what he sees. If he still says
    "nu merge", the next step is his exact browser + a console screenshot, NOT another blind fix.
-1. **PR #101 (locality lead photos) is out of draft, CI green, awaiting owner sign-off + live
-   confirmation.** Per §16 the most that can be claimed is "verificat local"; only the owner or
-   `smoke_live.py` can confirm on izz.ro.
+1. ~~**PR #101 (locality lead photos) awaiting owner sign-off**~~ — **MERGED 2026-08-02 03:19.**
+   This entry was stale. What is still open is only §16's third state: nobody has confirmed the
+   129 photos ON LIVE. `smoke_live.py` or a look at izz.ro closes it.
 1. **SIRUTA Slice 2 — county-aware village matching.** Groundwork merged (siruta_raw.csv +
    build_gazetteer.py). Design is now clear: villages match ONLY when the source's county matches
    the village's county. This kills the measured false positives — Saturn/horoscope/FCSB all come
@@ -151,6 +220,45 @@ reuse it rather than building a second county matcher.
    question (9 vs 7 regions) — both owner decisions, not implementation work.
    Data is already there: `judet` is in `gold_integrare.csv` and encoded in every `pl_<judet>_*`
    key. Depends on the geo axis, i.e. on SIRUTA Slice 2 above.
+6. **A 7-slice plan arrived from another session (2026-08-03). Four of its findings were checked
+   against this tree and hold; three of its framings do not.** Keep the findings, not the ordering.
+   ✅ **`sorted(key=lambda a: a.get("published") or "")` is a LEXICOGRAPHIC sort on a string**, in
+   three places — `state.py:100`, `render.py:346`, `render.py:436` (the plan said four, with line
+   numbers that no longer exist). Mixed `+03:00` and `Z` offsets order wrong. Smallest real bug on
+   the list, no gate, and everything about ranking sits downstream of it. Do this first.
+   ✅ **`significance` is a DEAD BRANCH ALREADY IN PRODUCTION**, and this is stronger than the plan
+   claimed. `templates/_card.html:13` and `templates/index.html:34` render `Relevanță X/10` behind
+   `{% if a.significance is defined %}`; no `.py` ever writes the key. The page is built to promise
+   a relevance score it has never once shown. Populating it from the AI schema is the follow-up —
+   **on top of #118, not instead of it.** #118 (merged last night) already ranks pre-AI on
+   corroboration + freshness with an md5 tie-break that review caught; `significance` is a post-AI
+   ordering. Anyone who rewrites the ordering from scratch will silently drop that tie-break.
+   ✅ **Model C is not batched** — `process_cluster(group, provider)` is one call per cluster while
+   B batches 10. But the plan's gate ("implement if `ai_calls` often hits 12") is calibrated on the
+   wrong number and is already answered: the default is 12 (`main.py:173`) yet **`build.yml:55`
+   overrides it to 18**, so production never runs on 12 — and #118's session already measured, from
+   `build.yml` logs, that the budget is consumed in full on every run. Read `stats["deferred"]`
+   (added by #118 for exactly this) over 2-3 runs and build it; do not re-litigate the gate.
+   ✅ **Untrusted RSS text is interpolated straight into the prompt** — `process.py:260`,
+   `USER_B.format(title=item.get("original_title"), description=...)`. Impact is bounded (text out,
+   human moderation, official `pl_/cj_/pr_` sources are processed deterministically with no AI at
+   all), so this is insurance, not growth. Whether it rides along with the `significance` prompt
+   edit is a real toss-up: same strings and one `PROMPT_VERSION` bump argue for merging, a mixed
+   review that hides an AI-quality regression behind a security change argues against.
+   ❌ **`content-visibility: auto` as a warm-up slice — do not run it.** §13 measured the CLS cause
+   (`#izz-install-btn`, 49 px, 100% Lighthouse attribution) and explicitly forbids chasing the
+   number with tricks; the fix is a placement decision the owner makes. The plan's own DoD admits
+   it can introduce shift on fast scroll. It is the one slice that walks into a written rule.
+   ❌ **The source-coverage loop, as written, would produce false metrics.** "Live sources over
+   time" is measured with a checker that reimplements its own fetch — the exact defect logged at
+   the top of this file, where 74 sources return an anti-bot interstitial with HTTP 200 and
+   `feedparser` reads it as a valid empty feed. Fix the measurement before building a metric on it.
+   ⏳ **News sitemap (`news:` namespace) — the finding is right**, `_write_sitemap` emits only the
+   standard `xmlns` plus `xmlns:image` (`render.py:859,877`). The plan gates it on Google Publisher
+   Center eligibility; that gate is misplaced — the sitemap is cheap, harms nothing if the
+   application is refused, and the eligibility question is the owner's to answer in parallel.
+   (Dropped by the plan itself, correctly: prompt caching — under the ~1024-token cache minimum and
+   irrelevant on the free Gemini path, where the cost is calls, not tokens.)
 
 ## Settled today — do NOT re-derive
 - **OpenCode no longer dies when the Zen quota runs out.** `tools/oc_run.sh` walks a free-route
@@ -187,8 +295,17 @@ reuse it rather than building a second county matcher.
   The 40- and 92-article days were outage days; 198 was the recovery day, with a TTL expiry spike.
 - **Real production budget:** `MAX_AI_CALLS_PER_RUN=18` and `UPGRADE_RESERVE=8` (both set in
   `build.yml`, so the 12/3 defaults in `main.py` are dead in production) → **10 calls/run for new
-  articles**. Model B yields 6 articles/call, model C yields 1 (its value is de-duplication).
-  Measured against 741 new items available per run: the call budget is the real ceiling.
+  articles**. Model B batches `BATCH_SIZE=10` per call, model C yields 1 (its value is
+  de-duplication).
+  → **RE-MEASURED 2026-08-02 from three consecutive `build.yml` logs: the budget is exhausted on
+  EVERY run, 10/10.** 13:49 → 261 new, B 0, C 10; 15:14 → 252 new, B 20, C 8; 17:11 → 244 new,
+  B 40, C 6. At 13:49 clusters ate the whole budget and not one single article was processed.
+  The "741 new items per run" figure above predates #108's stale-skipping; the real inflow is
+  ~250/run. Unprocessed items are never written to state, so they return as "new" next run.
+  → Consequence, and it is why #118 exists: under permanent saturation the CONSUMPTION ORDER is
+  the editorial policy, and that order was `config.SOURCES` order (`fetch.py:560` keeps it
+  deliberately: "ce ajunge la coada e infometat"). The head of that list is lifestyle
+  (`unica`, `csid`, `sfatulparintilor`, `elle`); hard news sits at the tail.
 - **Gemini's free tier is NOT saturated:** ~1000 requests/day per key against our max 216/day.
   `GEMINI_API_KEY` already supports multiple keys with failover (`gemini.py:30-42`), so a second
   key is free headroom. Full provider comparison in `specs/ai-provider-capacity.md`; Groq ranks
@@ -206,6 +323,41 @@ reuse it rather than building a second county matcher.
 - **Sub-agents cost ~5.6x per delivered line** (129 vs 23 tokens/100 lines, measured over 21
   slices in `COORD-DASHBOARD.md`). Worth it for genuinely parallel or noisy measurement work.
   CI is the cheapest executor — free minutes on a public repo, and the only one with real network.
+
+## Merged / open 2026-08-02 EVENING (account A — announce, per §14)
+
+- **#115 MERGED (`e3803973`) — the salary calculator works on live, for the first time ever.**
+  External `static/calc-salariu.js` under CSP + `select.py` extraction + a guard test against
+  inline JS in any template. **CONFIRMED ON LIVE, driven as a user** (§16.3): on
+  `https://izz.ro/ghiduri/salariul-minim/`, typing 7000 brut recomputes to 4.176 lei net
+  (CAS 1.750 / CASS 700 / deducere 810 / impozit 374). `window.calcSalariu` is undefined by
+  design now — the fix uses listeners, not globals — so do NOT read that as the old symptom;
+  the old symptom was `#calc-results` EMPTY, and it is now populated. Asset served as
+  `/static/calc-salariu.js?v=516f4eba`, i.e. §16.2 deliverability holds.
+- **#116 MERGED (`32e01c72`) — three guides that had never reached a reader.** buletin-pasaport,
+  permis-auto, noua-casa ported from the dead `/utile/` path into `/ghiduri/`, plus an optional
+  `sectiuni` field in the entity schema. All three live and 200 on izz.ro.
+  → Merge conflict with #115 resolved locally: main's `_render_calc_salariu(env, ent)` signature
+  kept, this branch's `sectiuni` block kept. They sit on adjacent lines; nothing else overlapped.
+- **#117 MERGED (`d119b098`) — the sitemap listed only news.** Live sitemap now carries 1307 URLs
+  including all 6 guides, the calculator, `/calendar/`, `/surse/` and the legal pages — verified
+  by fetching `https://izz.ro/sitemap.xml` after deploy. Zero `/utile/` leakage.
+- **#118 OPEN, green, CodeRabbit APPROVED — budget ordering.** See the budget bullet above.
+  Corroboration (distinct domains) then freshness decide who consumes the AI budget, plus
+  `stats["deferred"]`. Reconstructed on the real corpus: `csid` took 9 of 19 slots before,
+  6 sources share them after; median age of selected items 619 → 140 min. 387 tests.
+  → CodeRabbit caught a real defect: Python's sort is stable, so equal keys fell back on input
+  order, i.e. the config order the slice removes — and ties are systematic for feeds that give a
+  date without a time (`_parse_w3c_date`, `_parse_ro_date` → midnight UTC). Fixed with an md5(url)
+  tie-break, uncorrelated with the source.
+- **STILL OPEN, in order: delete the dead `/utile/` path.** Unblocked now that #115 is in —
+  the modify/delete conflict on `templates/utility.html` is gone and #116 saved the content.
+  Targets: `render._render_utilities`, `templates/utility.html`, `templates/utilities.html`,
+  `data/utilities.json`.
+- **A test-design trap that cost time twice today, worth fixing:** the fixtures in
+  `test_entities_verified.py` and `test_sitemap_editorial.py` re-render ONLY when `output/` is
+  missing, so a stale `output/` from another branch makes them fail (or, worse, pass) against
+  code that is not the code under test. CI never sees it; a local run does.
 
 ## Merged / open 2026-08-02 (account A — announce, per §14)
 

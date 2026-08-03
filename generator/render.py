@@ -12,6 +12,9 @@ from jinja2 import Environment, FileSystemLoader, select_autoescape
 from slugify import slugify
 
 from . import config, covers, geo, htmlart
+from .select import (_BODY_PLACEHOLDERS, _dedup, _dedup_sources, _diversify,
+                     _entity_index, _pick_hero, _quality_gate, _slug_stems,
+                     sources_coherent)
 from .util import title_tokens, domain_of
 
 ROOT = config.ROOT
@@ -94,7 +97,7 @@ def _asset_ver() -> dict:
     if _ASSET_VER is None:
         _ASSET_VER = {name: _content_ver(os.path.join(STATIC_DIR, name))
                       for name in ("styles.css", "personalize.js", "search.js", "theme.js", "fonts.css",
-                                   "site.webmanifest")}
+                                   "calc-salariu.js", "site.webmanifest")}
     return _ASSET_VER
 
 
@@ -146,10 +149,20 @@ def _assign_slugs(articles: list) -> None:
         a["published_human"] = _human_date(a.get("published", ""))
 
 
+_PAGES_WRITTEN: set = set()
+
+
 def _write(path: str, content: str) -> None:
     os.makedirs(os.path.dirname(path), exist_ok=True)
     with open(path, "w", encoding="utf-8") as fh:
         fh.write(content)
+    # Evidenta paginilor chiar emise in rularea ASTA, pentru sitemap (_editorial_paths).
+    # `output/` nu se curata intre randari, deci ce e pe disc nu e acelasi lucru cu ce a
+    # publicat rularea curenta -- un director ramas de la o alta ramura ar intra in sitemap
+    # ca pagina vie. Aici nu poate: daca nu s-a scris acum, nu exista.
+    if os.path.basename(path) == "index.html":
+        rel = os.path.relpath(path, OUT_DIR).replace(os.sep, "/")
+        _PAGES_WRITTEN.add("/" + rel[:-len("index.html")].lstrip("/"))
 
 
 def _logo_jsonld() -> dict:
@@ -216,73 +229,6 @@ def _base_ctx(canonical_path: str, **extra) -> dict:
     }
     ctx.update(extra)
     return ctx
-
-
-def _dedup(articles: list) -> list:
-    """Elimina articolele despre acelasi eveniment (titluri foarte asemanatoare).
-
-    Pastreaza varianta cea mai bogata: C inaintea B, mai multe surse, mai recent.
-    """
-    ordered = sorted(articles, key=lambda a: a.get("published") or "", reverse=True)
-    ordered.sort(key=lambda a: (0 if a.get("model") == "C" else 1, -len(a.get("sources") or [])))
-    kept, kept_tok = [], []
-    for a in ordered:
-        tok = title_tokens(a.get("title") or a.get("original_title") or "")
-        is_dup = False
-        for kt in kept_tok:
-            if not tok or not kt:
-                continue
-            inter = len(tok & kt)
-            if inter >= 4 or inter / len(tok | kt) >= 0.55:
-                is_dup = True
-                break
-        if not is_dup:
-            kept.append(a)
-            kept_tok.append(tok)
-    return kept
-
-
-def _diversify(items: list, max_run: int = 2) -> list:
-    """Reordonare blanda anti-monotonie (regula 'source diversity'): pastreaza
-    ordinea cronologica, dar acelasi domeniu-sursa nu apare mai mult de `max_run`
-    ori consecutiv -- urmatorul articol de la alta sursa e tras in fata.
-    Nu elimina nimic; sursele vorbarete (ex. Digi24 Extern, 53% din extern) doar
-    se intretes cu restul in loc sa monopolizeze vizual sectiunea.
-    """
-    def dom(a: dict) -> str:
-        return domain_of(a.get("original_link") or "") or a.get("source_name", "")
-
-    pool, out = list(items), []
-    while pool:
-        tail = [dom(x) for x in out[-max_run:]]
-        idx = 0
-        if len(tail) == max_run and len(set(tail)) == 1:
-            idx = next((i for i, a in enumerate(pool) if dom(a) != tail[0]), 0)
-        out.append(pool.pop(idx))
-    return out
-
-
-def _entity_index(articles: list) -> dict:
-    """Slug -> {name, articles} pentru entitatile AI cu >=2 aparitii publicate.
-    Grauntele grafului cunoasterii: pagini statice /subiect/<slug>/."""
-    idx: dict = {}
-    for a in articles:
-        for e in a.get("entities") or []:
-            s = slugify(e)[:60]
-            if not s:
-                continue
-            d = idx.setdefault(s, {"name": e, "articles": []})
-            d["articles"].append(a)
-    return {s: d for s, d in idx.items() if len(d["articles"]) >= 2}
-
-
-def _pick_hero(articles: list) -> list:
-    featured = [a for a in articles if a.get("featured")]
-    rest = [a for a in articles if not a.get("featured")]
-    # prioritate: AI (gemini) inaintea fallback, apoi clustere C, apoi cele mai recente
-    rest_sorted = sorted(rest, key=lambda a: a.get("published") or "", reverse=True)
-    rest_sorted.sort(key=lambda a: (a.get("processed_by") != "gemini", a.get("model") != "C"))
-    return (featured + rest_sorted)[:6]
 
 
 def _source_catalog(by_date: list) -> tuple[list, int, int]:
@@ -367,84 +313,6 @@ def _grupeaza_pe_regiuni(pe_judet: dict) -> list:
     return out
 
 
-def _dedup_sources(a: dict) -> None:
-    """Surse unice dupa domeniu (evita 'Digi24' + 'Digi24 Extern' duplicate pe acelasi card,
-    inclusiv pentru clustere C deja salvate in state inainte de acest fix)."""
-    seen, out = set(), []
-    for s in a.get("sources") or []:
-        d = domain_of(s.get("url", ""))
-        if d in seen:
-            continue
-        seen.add(d)
-        out.append(s)
-    if out:
-        a["sources"] = out
-
-
-_BODY_PLACEHOLDERS = {"Detalii pe sursa.", "Detalii pe surse.", ""}
-
-
-def _slug_stems(url: str) -> set:
-    """Cuvinte-cheie (stem 6 litere) din ultima bucata a URL-ului = subiectul articolului-sursa."""
-    slug = re.sub(r"[?#].*$", "", url or "").rstrip("/").split("/")[-1]
-    return {t[:6] for t in title_tokens(slug.replace("-", " ").replace("_", " "))}
-
-
-def sources_coherent(a: dict) -> bool:
-    """False daca o sursa a unui cluster C nu imparte NICIUN cuvant cu restul (mis-clustering)."""
-    srcs = a.get("sources") or []
-    if len(srcs) < 2:
-        return True
-    toks = [_slug_stems(s.get("url", "")) for s in srcs]
-    for i, t in enumerate(toks):
-        if not t:
-            continue
-        others = set().union(*[toks[j] for j in range(len(toks)) if j != i]) if len(toks) > 1 else set()
-        if others and not (t & others):
-            return False
-    return True
-
-
-def _quality_gate(a: dict) -> bool:
-    """Contract de date: un articol trece gate-ul daca satisface toate conditiile.
-
-    Returneaza True = publicabil. False = exclus din feed (zero output degradat).
-    """
-    title = (a.get("title") or "").strip()
-    if not title:
-        return False
-
-    if a.get("model") == "C":
-        body = (a.get("synthesis") or "").strip()
-    else:
-        body = (a.get("teaser") or "").strip()
-
-    if not body or body in _BODY_PLACEHOLDERS:
-        return False
-    if body == title:
-        return False
-
-    # sursa minima
-    has_source = bool(a.get("sources")) or bool(a.get("original_link"))
-    if not has_source:
-        return False
-
-    # fallback = titlu/body brut din RSS, fara sinteza AI -> zgomot, NU se publica
-    # (indiferent de limba). Item-ul ramane in state si se reia/upgrade-eaza la AI.
-    if a.get("processed_by") == "fallback":
-        return False
-
-    # cluster C cu surse incoerente (linkuri spre articole fara legatura) -> nu se publica
-    if a.get("model") == "C" and not sources_coherent(a):
-        return False
-
-    # titlu brut trunchiat ("...") = output degradat
-    if title.endswith("...") or title.endswith("…"):
-        return False
-
-    return True
-
-
 def build(articles: list, mod: dict | None = None) -> None:
     env = _env()
     articles = _dedup(articles)
@@ -475,6 +343,7 @@ def build(articles: list, mod: dict | None = None) -> None:
     except Exception as e:
         logging.warning("build_entities a esuat (non-fatal): %s", e)
 
+    # Sortare pe sir; vezi nota din state.save si tests/test_published_is_utc.py.
     by_date = sorted(articles, key=lambda a: a.get("published") or "", reverse=True)
 
     # coperti: share (og, cu titlu) + arta fara text pentru site -- generate O DATA,
@@ -670,6 +539,24 @@ def _newsletter_html() -> str:
     return ""
 
 
+def _md_to_html(text: str) -> str:
+    """Markdown -> HTML pentru text din date (sectiunile ghidurilor). Fara `markdown`
+    instalat, cade pe o impartire in paragrafe: mai bine text citibil decat o exceptie
+    la build pentru o dependenta optionala.
+
+    INVARIANT: intrarea e scrisa de OM, in `data/entities/*.yaml`, si iesirea se randeaza
+    cu `| safe`. `python-markdown` NU e un sanitizer — lasa HTML-ul brut din sursa sa treaca
+    intact. Cat timp textul vine dintr-un fisier comis in repo, asta e acelasi model ca
+    `/legal/*`. Daca vreodata `sectiuni` ajunge sa fie populat de un pas automat sau de AI
+    (restul pipeline-ului e plin de asa ceva), invariantul cade si aici trebuie sanitizare
+    inainte de `| safe` — nu exista alta poarta intre datele alea si cititor."""
+    try:
+        import markdown as md
+    except ImportError:
+        return "<p>" + (text or "").replace("\n\n", "</p><p>") + "</p>"
+    return md.markdown(text or "", extensions=["extra"])
+
+
 def _render_md_dir(env: Environment, src_dir: str, url_prefix: str) -> None:
     """Randeaza toate .md dintr-un folder la <url_prefix>/<nume>/ cu template-ul legal."""
     if not os.path.isdir(src_dir):
@@ -755,13 +642,18 @@ def _render_ghiduri(env: Environment, articles: list) -> None:
         }
         calculator_html = ""
         if ent.get("relatii", {}).get("calculator"):
-            calculator_html = _render_calc_salariu(ent)
+            calculator_html = _render_calc_salariu(env, ent)
+        # Ghidurile procedurale (acte, permis, programe) n-au o cifra-titlu, ci proza pe
+        # sectiuni. Markdown-ul se randeaza aici, nu in template: Jinja n-are filtru de
+        # markdown, iar `| safe` pe text neconvertit ar afisa `**bold**` literal.
+        sectiuni = [{"titlu": s.get("titlu", ""), "continut_html": _md_to_html(s.get("continut", ""))}
+                    for s in (ent.get("sectiuni") or [])]
         _write(os.path.join(OUT_DIR, "ghiduri", eid, "index.html"),
                ghid_tpl.render(**_base_ctx(
                    f"/ghiduri/{eid}/", ent=ent, categorii=categorii,
                    categorii_icon=categorii_icon, related_news=related,
                    faq_jsonld=faq_jsonld, breadcrumb_jsonld=breadcrumb_jsonld,
-                   calculator_html=calculator_html, active_cat=None)))
+                   calculator_html=calculator_html, sectiuni=sectiuni, active_cat=None)))
 
     # Cate ghiduri au inca valori neconfirmate: pagina isi ajusteaza promisiunea dupa asta,
     # ca sa nu scrie „verificate" cand nu sunt.
@@ -781,8 +673,12 @@ def _render_ghiduri(env: Environment, articles: list) -> None:
     _write(os.path.join(OUT_DIR, "instrumente", "index.html"),
            instr_tpl.render(**_base_ctx("/instrumente/", nav_section="instrumente", tools=tools)))
     calc_tpl = env.get_template("calculator.html")
+    # Salariul minim ajunge in pagina la randare, nu printr-un fetch() la runtime: situl se
+    # regenereaza la 2h, deci valoarea e la fel de proaspata, iar pagina nu mai depinde de
+    # cod inline (blocat de CSP) ca sa afiseze ceva.
     _write(os.path.join(OUT_DIR, "instrumente", "calculator-salariu", "index.html"),
-           calc_tpl.render(**_base_ctx("/instrumente/calculator-salariu/")))
+           calc_tpl.render(**_base_ctx("/instrumente/calculator-salariu/",
+                                       salariu_minim=_salariu_minim(entities.get("salariul-minim")))))
 
     # Calendar din termenele entităților
     termene = []
@@ -812,77 +708,77 @@ def _render_ghiduri(env: Environment, articles: list) -> None:
                now_timestamp=_dt.now().timestamp())))
 
 
-def _render_calc_salariu(ent: dict) -> str:
-    brut = ent.get("valoare_curenta", {}).get("brut", 4050)
-    return f"""\n    <h2>🧮 Calculator salariu net</h2>\n    <div class="calculator">\n      <div class="calc-row">\n        <label for="calc-brut">Salariu brut (lei)</label>\n        <div style="display:flex;gap:8px;align-items:center">\n          <input type="number" id="calc-brut" value="{brut}" min="0" step="100" oninput="calcSalariu()">\n          <button type="button" class="btn-preset" onclick="setBrut({brut})">Salariu minim</button>\n          <button type="button" class="btn-preset" onclick="setBrut(5000)">5.000</button>\n          <button type="button" class="btn-preset" onclick="setBrut(10000)">10.000</button>\n        </div>\n      </div>\n      <div class="calc-results" id="calc-results"></div>\n    </div>\n    <p class="calc-note">*Calcul estimativ pentru un angajat fără persoane în întreținere. Include deducerea personală de bază (20% × salariul minim brut). Nu include contribuția la Pilonul II de pensii (3,75% din CAS, opțional).</p>\n    <script>\n    var SM={brut};\n    function setBrut(v){{document.getElementById('calc-brut').value=v;calcSalariu()}}\n    function calcSalariu(){{\n      var b=parseFloat(document.getElementById('calc-brut').value)||0;\n      var cas=Math.round(b*.25),cass=Math.round(b*.1),ded=Math.round(SM*.2);\n      var baza=Math.max(0,b-cas-cass-ded),imp=Math.round(baza*.1),net=b-cas-cass-imp;\n      document.getElementById('calc-results').innerHTML=\n        '<div class="calc-item"><span class="calc-label">CAS (25%)</span><span class="calc-val">-'+cas+' lei</span></div>'\n        +'<div class="calc-item"><span class="calc-label">CASS (10%)</span><span class="calc-val">-'+cass+' lei</span></div>'\n        +'<div class="calc-item"><span class="calc-label">Deducere personală</span><span class="calc-val">'+ded+' lei</span></div>'\n        +'<div class="calc-item"><span class="calc-label">Bază impozabilă</span><span class="calc-val">'+baza+' lei</span></div>'\n        +'<div class="calc-item"><span class="calc-label">Impozit (10%)</span><span class="calc-val">-'+imp+' lei</span></div>'\n        +'<div class="calc-item calc-total"><span class="calc-label">SALARIU NET</span><span class="calc-val">'+net+' lei</span></div>'}}\n    calcSalariu();\n    </script>"""
+# Rezerva pentru cazul in care entitatea lipseste sau n-are `brut`. HG 146/2026, in vigoare de la
+# 1 iul 2026. Se schimba odata cu data/entities/salariul-minim.yaml — un test leaga cele doua
+# valori, pentru ca o divergenta aici nu strica nimic vizibil: calculatorul continua sa afiseze
+# un net, doar ca gresit.
+_SALARIU_MINIM_FALLBACK = 4325
 
 
-def _render_utilities(env: Environment, articles: list) -> None:
-    """Pagini-utilitate din data/utilities.json: ghiduri actualizate automat."""
-    import json as _json
-    utils_path = os.path.join(ROOT, "data", "utilities.json")
-    if not os.path.exists(utils_path):
-        return
-    with open(utils_path, "r", encoding="utf-8") as fh:
-        all_utils = _json.load(fh)
-    utility_tpl = env.get_template("utility.html")
-    utilities_tpl = env.get_template("utilities.html")
-    # Markdown -> HTML inainte de randare (Jinja2 nu are filtru custom simplu)
-    try:
-        import markdown as _md_lib
-    except ImportError:
-        _md_lib = None
-    def _render_md(s: str) -> str:
-        if _md_lib:
-            return _md_lib.markdown(s, extensions=["extra"])
-        return "<p>" + s.replace("\n\n", "</p><p>") + "</p>"
-    utils_list = []
-    for uid, util in all_utils.items():
-        util["slug"] = uid
-        # Pre-render markdown sections
-        for s in (util.get("sections") or []):
-            s["content_html"] = _render_md(s.get("content", ""))
-        utils_list.append(util)
-        # related news by tag match on title
-        tags = set((util.get("news_tags") or []))
-        related = []
-        for a in articles:
-            title = (a.get("title") or "").lower()
-            if any(t.lower() in title for t in tags):
-                related.append(a)
-            if len(related) >= 5:
-                break
-        # FAQPage JSON-LD
-        faq_jsonld = {
-            "@context": "https://schema.org", "@type": "FAQPage",
-            "mainEntity": [
-                {"@type": "Question", "name": item["question"],
-                 "acceptedAnswer": {"@type": "Answer", "text": item["answer"]}}
-                for item in util.get("faq", [])
-            ]
-        }
-        breadcrumb_jsonld = {
-            "@context": "https://schema.org", "@type": "BreadcrumbList",
-            "itemListElement": [
-                {"@type": "ListItem", "position": 1, "name": config.SITE["name"], "item": config.SITE["url"] + "/"},
-                {"@type": "ListItem", "position": 2, "name": "Utile", "item": config.SITE["url"] + "/utile/"},
-                {"@type": "ListItem", "position": 3, "name": util.get("title", uid)},
-            ]
-        }
-        _write(os.path.join(OUT_DIR, "utile", uid, "index.html"),
-               utility_tpl.render(**_base_ctx(
-                   f"/utile/{uid}/", util=util, util_id=uid, active_cat=None,
-                   related_news=related, faq_jsonld=faq_jsonld,
-                   breadcrumb_jsonld=breadcrumb_jsonld)))
-    # index page
-    _write(os.path.join(OUT_DIR, "utile", "index.html"),
-           utilities_tpl.render(**_base_ctx("/utile/", utilities=utils_list)))
+def _salariu_minim(ent: dict | None) -> int:
+    """Brutul minim al unei entitati, cu o singura valoare de rezerva in tot codul.
+    Tolereaza `valoare_curenta: null` in date -- acolo `.get("valoare_curenta", {})` intoarce
+    None, iar un `.get` inlantuit ar pica build-ul cu AttributeError."""
+    val = (ent or {}).get("valoare_curenta") or {}
+    brut = val.get("brut")
+    return brut if isinstance(brut, (int, float)) else _SALARIU_MINIM_FALLBACK
+
+
+def _render_calc_salariu(env: Environment, ent: dict) -> str:
+    """Markup-ul calculatorului, dintr-un template -- NU dintr-un f-string cu JS in el.
+    Varianta veche emitea <script> inline si oninput=/onclick=, pe care CSP-ul
+    (`script-src 'self'`, _write_headers) le blocheaza tacut: pe live calculatorul afisa
+    campul si butoanele si nu calcula nimic. Codul e acum in static/calc-salariu.js."""
+    return env.get_template("_calc_salariu.html").render(
+        salariu_minim=_salariu_minim(ent), calc_heading="🧮 Calculator salariu net")
 
 
 def _render_legal(env: Environment) -> None:
     _render_md_dir(env, os.path.join(ROOT, "content", "legal"), "/legal")
     # pagini generale (ex. content/pages/despre.md -> /despre/)
     _render_md_dir(env, os.path.join(ROOT, "content", "pages"), "")
+
+
+# Sectiunile editoriale care intra in sitemap. NU tot ce se randeaza: `subiect/` are ~300 de
+# pagini de agregare subtiri (decizie de proprietar daca merita indexate), `cauta/` e o unealta,
+# iar `static/`, `data/`, `leads/`, `portraits/` nu sunt pagini.
+_SITEMAP_SECTIONS = ("ghiduri", "instrumente", "calendar", "surse", "legal")
+
+
+def _content_page_slugs() -> set:
+    """Paginile de sine statatoare (ex. /despre/), citite din SURSA lor: content/pages/*.md."""
+    src = os.path.join(ROOT, "content", "pages")
+    if not os.path.isdir(src):
+        return set()
+    return {fn[:-3] for fn in os.listdir(src) if fn.endswith(".md")}
+
+
+def _editorial_paths() -> list:
+    """Paginile editoriale publicate de rularea curenta, ca `/ghiduri/permis-auto/`.
+
+    Pana la 2026-08-02 sitemap-ul continea DOAR `/`, categoriile si articolele: fiecare ghid,
+    instrumentul, calendarul, catalogul de surse si paginile legale lipseau cu totul, desi sunt
+    vii si linkate din navigatie.
+
+    Sursa e `_PAGES_WRITTEN` — ce a scris rularea asta — NU un scan al lui `output/`. Prima
+    varianta scana discul si avea o gaura demonstrata: `output/` nu se curata intre randari,
+    deci un director ramas de la alta ramura (`/utile/`, calea moarta din 17 iulie) intra in
+    sitemap ca pagina vie, desi nimic n-o mai randeaza. Ce nu s-a scris acum nu exista.
+    Un ghid nou intra automat, fara sa fie nevoie de o editare aici — asta ramane.
+
+    Fara `lastmod`: un „modificat azi" la fiecare rulare de doua ore ar fi neadevarat pentru
+    o pagina legala neatinsa de luni de zile. Mai bine niciun semnal decat unul fals."""
+    pages = _content_page_slugs()
+    paths = set()
+    for p in _PAGES_WRITTEN:
+        segments = p.strip("/").split("/") if p.strip("/") else []
+        if not segments:
+            continue  # radacina, deja in sitemap cu lastmod
+        if segments[0] in _SITEMAP_SECTIONS:
+            paths.add(p)
+        elif len(segments) == 1 and segments[0] in pages:
+            paths.add(p)
+    return sorted(paths)
 
 
 def _write_sitemap(articles: list) -> None:
@@ -897,6 +793,7 @@ def _write_sitemap(articles: list) -> None:
     locs = [(f"{url}/", today)]
     locs += [(f"{url}/{c}/", cat_lastmod.get(c, today)) for c in config.CATEGORIES]
     locs += [(f"{url}/{a['category']}/{a['slug']}/", (a.get("published") or "")[:10]) for a in articles]
+    locs += [(url + p, "") for p in _editorial_paths()]
     items = "\n".join(
         f"  <url><loc>{xml_escape(l)}</loc>" + (f"<lastmod>{lm}</lastmod>" if lm else "") + "</url>"
         for l, lm in locs)
