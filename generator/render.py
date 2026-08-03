@@ -343,6 +343,7 @@ def build(articles: list, mod: dict | None = None) -> None:
     except Exception as e:
         logging.warning("build_entities a esuat (non-fatal): %s", e)
 
+    # Sortare pe sir; vezi nota din state.save si tests/test_published_is_utc.py.
     by_date = sorted(articles, key=lambda a: a.get("published") or "", reverse=True)
 
     # coperti: share (og, cu titlu) + arta fara text pentru site -- generate O DATA,
