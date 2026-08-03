@@ -4,7 +4,7 @@
 > Executors get it read-only. Keep it tight — when it outgrows ~40 lines of content, cut the
 > settled history, not the open work. `git fetch` immediately before rewriting it.
 
-**Updated:** 2026-08-03 12:10 (account A — #123 MERGED: the AI budget reserve is capped by real eligibility, 10 → 18 calls for new items. #124 OPEN: pagination reachability + `significance` deleted)
+**Updated:** 2026-08-03 12:30 (account A — #123 and #124 MERGED: the AI budget spends all 18 calls, and no listing page is orphaned any more)
 
 ## READ FIRST — a bot-challenge page served with HTTP 200, triggered by SWEEP VOLUME (2026-08-02)
 
@@ -371,7 +371,7 @@ reuse it rather than building a second county matcher.
 
 - **#123 MERGED (`7d3fca94`) — the AI budget stopped reserving upgrades that cannot happen.**
   Details and the follow-up to watch are in Open 7 above.
-- **#124 OPEN (`feat/pagination-reachable`) — every listing page is reachable, no dead links.**
+- **#124 MERGED (`4f335153`) — every listing page is reachable, no dead links.**
   Measured on the pre-fix render: `general/3`, `politic/3`, `tech/3` were dead links (2-page
   categories), and **44 of 79 rendered listing pages were linked from nowhere** — `zonal` rendered
   20 and stopped the nav at 3. The sitemap is not a second path: `_write_sitemap` emits no
@@ -384,7 +384,17 @@ reuse it rather than building a second county matcher.
   → **A defect the window introduced, caught by measuring:** at 375 px the 11 items overflowed and
   the whole page scrolled sideways (`scrollWidth` 392 vs `clientWidth` 375). `flex-wrap: wrap`
   on `.pagination`; re-measured 375/375. Verified in a real browser on the built site, pa11y
-  WCAG2AA 0 errors on `/tech/`, `/tech/2/`, `/zonal/10/`. 439 tests pass locally.
+  WCAG2AA 0 errors on `/tech/`, `/tech/2/`, `/zonal/10/`. 440 tests pass locally.
+  → **Three review points, all real, all taken:** (a) an article whose title slugifies to `2`
+  would land on `/cat/2/` and, since articles are written AFTER the listing pages, would
+  overwrite page 2 silently — 0 of 1733 titles do that today, but it is a property of the paths,
+  not of the corpus, so `_assign_slugs` prefixes numeric slugs; (b) the new fixture renders
+  **unconditionally** — the "render only if `output/` is missing" pattern in the two older
+  fixtures is what made this session debug two stale-output failures, and 30 s per run is cheaper
+  than a verdict about another branch's render; (c) `_numar_din_cale` strips `SITE_BASE`,
+  verified by running the file with `SITE_BASE=/preview`.
+  → **Still open, deliberately:** pagination pages are linked but NOT in `sitemap.xml`. Whether
+  pages 2+ should be indexed at all (or carry `noindex`) is an SEO decision, not implementation.
 - **#112 MERGED (`5c631f7d`) — every action reference in `.github/workflows/` is pinned to a
   commit SHA.** zizmor's `unpinned-uses`, raised by CodeRabbit on #111 and skipped there because
   pinning one new workflow while 13 stayed on floating tags is an inconsistency, not a fix. 32
