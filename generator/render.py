@@ -22,6 +22,8 @@ TPL_DIR = os.path.join(ROOT, "templates")
 STATIC_DIR = os.path.join(ROOT, "static")
 OUT_DIR = os.path.join(ROOT, "output")
 MEDIA_DIR = os.path.join(ROOT, "media")   # imagini HTML/Chromium comise (tools/gen_images.py)
+PAGE_SIZE = 20        # articole pe pagina de categorie
+PAGE_WINDOW = 2       # cate numere se arata de o parte si de alta a paginii curente
 PORTRAITS_JSON = os.path.join(ROOT, "data", "portraits.json")
 LEADPHOTOS_JSON = os.path.join(ROOT, "data", "leadphotos.json")
 
@@ -142,6 +144,12 @@ def _assign_slugs(articles: list) -> None:
     seen: dict = {}
     for a in articles:
         base = (slugify(a.get("title") or a.get("original_title") or "stire") or "stire")[:80]
+        # Un slug pur numeric ar ocupa /<cat>/2/, adica exact calea unei pagini de paginare —
+        # iar articolele se scriu DUPA paginile de listare, deci ar suprascrie-o tacut si
+        # linkul „2" din navigatie ar deschide un articol. Azi 0 din 1733 de titluri produc
+        # asa ceva, dar coliziunea e o proprietate a cailor, nu a corpusului de azi.
+        if base.isdigit():
+            base = f"stirea-{base}"
         key = (a.get("category", "general"), base)
         n = seen.get(key, 0) + 1
         seen[key] = n
@@ -229,6 +237,45 @@ def _base_ctx(canonical_path: str, **extra) -> dict:
     }
     ctx.update(extra)
     return ctx
+
+
+def _cat_page_path(cat: str, n: int) -> str:
+    """Calea unei pagini de categorie; pagina 1 sta pe /cat/, nu pe /cat/1/."""
+    return f"/{cat}/" if n <= 1 else f"/{cat}/{n}/"
+
+
+def _pagination(cat: str, page_num: int, total_pages: int) -> dict | None:
+    """Navigatia dintre paginile unei categorii. None cand nu e nimic de navigat.
+
+    Sablonul afisa 1-2-3 fix, pe pagina 1 si numai acolo. Doua consecinte masurate pe
+    randarea din 2026-08-03: la categoriile cu exact 2 pagini linkul spre /3/ era mort
+    (general, politic, tech), iar din cele 79 de pagini randate 44 nu erau linkate de
+    nicaieri — nici din sitemap, care nu contine paginare deloc. `zonal` randa 20 de
+    pagini si oprea navigatia la 3.
+
+    Fereastra de mai jos tine numarul de linkuri mic si garanteaza in acelasi timp ca
+    fiecare pagina e la un pas de vecinele ei: prima, ultima, si +/-PAGE_WINDOW in jurul
+    celei curente, deci orice pagina se atinge prin parcurgere.
+    """
+    if total_pages <= 1:
+        return None
+    shown = {1, total_pages, page_num}
+    shown |= {n for n in range(page_num - PAGE_WINDOW, page_num + PAGE_WINDOW + 1)
+              if 1 <= n <= total_pages}
+    pages: list = []
+    prev_n = 0
+    for n in sorted(shown):
+        if prev_n and n != prev_n + 1:
+            pages.append(None)                    # salt in numerotare; sablonul pune „…"
+        pages.append({"n": n, "path": None if n == page_num else _cat_page_path(cat, n)})
+        prev_n = n
+    return {
+        "current": page_num,
+        "total": total_pages,
+        "pages": pages,   # NU „items": in Jinja, dict.items e metoda, nu cheia
+        "prev": _cat_page_path(cat, page_num - 1) if page_num > 1 else None,
+        "next": _cat_page_path(cat, page_num + 1) if page_num < total_pages else None,
+    }
 
 
 def _source_catalog(by_date: list) -> tuple[list, int, int]:
@@ -450,17 +497,17 @@ def build(articles: list, mod: dict | None = None) -> None:
     cat_tpl = env.get_template("category.html")
     for cat in config.CATEGORIES:
         items = [a for a in by_date if a.get("category") == cat]
+        total_pages = max(1, math.ceil(len(items) / PAGE_SIZE))
         # si categoriile inca goale (in insamantare) primesc pagina 1 — altfel nav-ul ar duce la 404
-        for page in range(0, max(len(items), 1), 20):
-            page_items = _diversify(items[page:page+20])
-            page_num = page // 20 + 1
+        for page in range(0, max(len(items), 1), PAGE_SIZE):
+            page_items = _diversify(items[page:page + PAGE_SIZE])
+            page_num = page // PAGE_SIZE + 1
             page_dir = os.path.join(OUT_DIR, cat) if page_num == 1 else os.path.join(OUT_DIR, cat, str(page_num))
-            show_pagination = (len(items) > 20 and page_num == 1)
             _write(os.path.join(page_dir, "index.html"),
                    cat_tpl.render(**_base_ctx(
-                       f"/{cat}/" if page_num == 1 else f"/{cat}/{page_num}/",
+                       _cat_page_path(cat, page_num),
                        category=cat, articles=page_items, active_cat=cat,
-                       show_pagination=show_pagination)))
+                       pagination=_pagination(cat, page_num, total_pages))))
         for a in items:
             topics = [(slugify(e)[:60], e) for e in (a.get("entities") or [])
                       if slugify(e)[:60] in ents]
