@@ -26,6 +26,13 @@ ENTITIES_DIR = os.path.join(ROOT, "data", "entities")
 
 # Ghidurile portate din data/utilities.json.
 PORTATE = ("buletin-pasaport", "permis-auto", "noua-casa")
+# A doua transa: ghidurile de valoare aveau deja cifra-titlu si istoricul in entitati, dar proza
+# lor pe sectiuni ramasese in utilities.json — 11 sectiuni care n-au ajuns niciodata pe live.
+# Doar pensia intra aici deocamdata. Proza pentru salariul minim si alocatie repeta cifre pe care
+# verificarea externa le-a gasit depasite (4.050 vs 4.325 lei de la 1 iul 2026; 1.019/794 vs
+# 719/292 lei, cu indexarea suspendata) — se porteaza in slice-ul care corecteaza cifrele, ca sa
+# nu publicam mai vizibil o valoare gresita. Sursa lor e recuperabila: `git show <sha>:data/utilities.json`.
+PORTATE_VALOARE = ("pensia-minima",)
 
 
 def _ent(**kw):
@@ -95,6 +102,26 @@ def test_ghidul_portat_citeaza_o_sursa_reala(eid):
         vc = yaml.safe_load(fh)["valoare_curenta"]
     assert vc["sursa_url"].startswith("https://legislatie.just.ro/Public/DetaliiDocument/")
     assert vc["act_normativ"].strip()
+
+
+@pytest.mark.parametrize("eid", PORTATE_VALOARE)
+def test_ghidul_de_valoare_isi_poarta_proza(eid):
+    """Un ghid de valoare fara `sectiuni` se randeaza doar ca cifra + istoric + FAQ. Arata
+    complet, deci nimeni nu observa ca lipseste ceva — asa au stat 11 sectiuni de proza in
+    data/utilities.json din 17 iulie pana in 3 august, invizibile pentru cititor."""
+    with open(os.path.join(ENTITIES_DIR, f"{eid}.yaml"), encoding="utf-8") as fh:
+        ent = yaml.safe_load(fh)
+    assert build_entities.validate(ent) == []
+    assert len(ent.get("sectiuni") or []) >= 3, f"{eid}: proza s-a pierdut la portare"
+    assert ent["valoare_curenta"].get("brut"), f"{eid}: e ghid de valoare, trebuie sa aiba cifra"
+
+
+def test_nu_exista_un_al_doilea_sistem_de_ghiduri():
+    """`data/utilities.json` a fost al doilea sistem de ghiduri: randorul lui a fost sters pe
+    17 iulie, fisierul a ramas, si continutul lui a devenit invizibil fara ca nimic sa pice.
+    Daca reapare, cineva a reintrodus o cale de continut care nu trece prin data/entities/."""
+    assert not os.path.exists(os.path.join(ROOT, "data", "utilities.json"))
+    assert not hasattr(render, "_render_utilities")
 
 
 def test_pe_scurt_apare_doar_cand_exista_o_cifra():
