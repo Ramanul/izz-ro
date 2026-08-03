@@ -28,11 +28,11 @@ ENTITIES_DIR = os.path.join(ROOT, "data", "entities")
 PORTATE = ("buletin-pasaport", "permis-auto", "noua-casa")
 # A doua transa: ghidurile de valoare aveau deja cifra-titlu si istoricul in entitati, dar proza
 # lor pe sectiuni ramasese in utilities.json — 11 sectiuni care n-au ajuns niciodata pe live.
-# Doar pensia intra aici deocamdata. Proza pentru salariul minim si alocatie repeta cifre pe care
-# verificarea externa le-a gasit depasite (4.050 vs 4.325 lei de la 1 iul 2026; 1.019/794 vs
-# 719/292 lei, cu indexarea suspendata) — se porteaza in slice-ul care corecteaza cifrele, ca sa
-# nu publicam mai vizibil o valoare gresita. Sursa lor e recuperabila: `git show <sha>:data/utilities.json`.
-PORTATE_VALOARE = ("pensia-minima",)
+PORTATE_VALOARE = ("pensia-minima", "alocatia-copii", "salariul-minim")
+# Pragul e 2, nu 3: din cele cinci sectiuni ale salariului minim au trecut doua. Celelalte trei
+# ori repetau ce randeaza deja sablonul, ori purtau o cifra pe sector pe care actul in vigoare
+# dupa HG 146/2026 n-o mai sustine.
+MIN_SECTIUNI = 2
 
 
 def _ent(**kw):
@@ -112,7 +112,7 @@ def test_ghidul_de_valoare_isi_poarta_proza(eid):
     with open(os.path.join(ENTITIES_DIR, f"{eid}.yaml"), encoding="utf-8") as fh:
         ent = yaml.safe_load(fh)
     assert build_entities.validate(ent) == []
-    assert len(ent.get("sectiuni") or []) >= 3, f"{eid}: proza s-a pierdut la portare"
+    assert len(ent.get("sectiuni") or []) >= MIN_SECTIUNI, f"{eid}: proza s-a pierdut la portare"
     assert ent["valoare_curenta"].get("brut"), f"{eid}: e ghid de valoare, trebuie sa aiba cifra"
 
 
