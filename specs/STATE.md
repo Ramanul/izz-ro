@@ -123,6 +123,33 @@ reuse it rather than building a second county matcher.
   plain language before asking him to decide anything. That is a lesson about how to ask, not
   about him.
 
+## 2026-08-03 — THE SITE WAS PUBLISHING A STALE MINIMUM WAGE. Do not re-derive this.
+#119, #120, #121 merged. What matters for the next session:
+- **Salariul minim is 4.325 lei from 1 July 2026** — [HG 146/2026](https://legislatie.just.ro/Public/DetaliiDocument/308231),
+  read on the portal, art. 1; art. 2 repeals HG **1.506/2024** (the entity had it as "1506/2025").
+  The site served 4.050 for a month. `verificat: true` now — the primary act was read.
+  **The calculator took the personal deduction as 20% of that stale figure**, so it computed wrong
+  net pay for the whole time it worked. `_SALARIU_MINIM_FALLBACK` and the entity are now tied by
+  `test_fallback_nu_diverge_de_entitate` — they drift with nothing visibly breaking.
+- **Alocatia: 719 / 292 lei, indexation suspended** (art. XXV, Law 141/2025) against 1.019 / 794
+  published. `verificat` STAYS false and the yaml says why: the primary act could not be read —
+  `legislatie.just.ro` serves Law 61/1993 in its 1999 republished form, art. 3 still "3.500 lei",
+  pre-denomination. Its history table was deleted, not corrected; it started from the same
+  contradicted numbers. **Do not set `verificat: true` here without reading the act.**
+- **OPEN, owner's call (§10):** at 4.325 brut the calculator returns **2.616**, sources say
+  **~2.699**. The flat 20% deduction understates art. 77 of the Fiscal Code at low incomes. The
+  guide text now says "ordin de mărime, nu suma exactă din fluturaș" — accurate, but the formula
+  is still approximate. Fixing it is a fiscal-rules decision, not a data one.
+- **`published` sort: the refactor was NOT needed and was not done.** Measured: 1736/1736 entries
+  are `+00:00`, because both parsers end in `astimezone(timezone.utc)`. `tests/test_published_is_utc.py`
+  guards the invariant instead. Rewriting the three sorts to `datetime` would have hidden the real
+  exposure — order would look right while mixed offsets leaked into `datePublished` and the feed.
+- **CodeRabbit was right twice and wrong twice on the same PR.** Right: the stale wage, the
+  allowance bands. Wrong: it asked to drop the 15-year contribution rule from `pensia-minima`
+  (real — no minimum stage, no pension right, so nothing to top up), and to make a test assert
+  `verificat: true` (a test asserting the editorial gate empties it of meaning). **Verify its legal
+  claims before applying them; it is confident in both directions.**
+
 ## Open
 0. **DARK MODE — mechanics now CONFIRMED ON LIVE (#106). Still open only for the owner's own
    "nu merge" to be re-tested by him.** Do not spend another session reproducing it blind.
