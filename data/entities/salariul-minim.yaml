@@ -14,7 +14,7 @@ valoare_curenta:
   moneda: RON
   in_vigoare_de: "2026-07-01"
   act_normativ: "HG 146/2026"
-  sursa_url: "https://legislatie.just.ro/Public/DetaliiDocumentAfis/308231"
+  sursa_url: "https://legislatie.just.ro/Public/DetaliiDocument/308231"
   descriere_lunga: "Salariul de bază minim brut pe țară garantat în plată, fără sporuri și alte adaosuri, pentru un program normal de lucru de 166,667 ore/lună în medie, adică 25,949 lei/oră."
   scutiri: "Sectorul construcțiilor are un salariu minim propriu, stabilit prin act separat."
 
@@ -59,9 +59,10 @@ sectiuni:
     continut: >-
       Din salariul brut se rețin: **CAS** (contribuția la pensii, 25%), **CASS** (contribuția la
       sănătate, 10%), și **impozitul pe venit** (10% aplicat la baza impozabilă: brut - CAS - CASS
-      - deduceri personale). Deducerea personală de bază este de 20% din salariul minim brut pentru
-      angajații fără persoane în întreținere. Folosește calculatorul de mai jos pentru un calcul
-      exact.
+      - deduceri personale). Deducerea personală nu este o cotă fixă: se acordă la funcția de bază,
+      sub un plafon de venit brut, și scade pe măsură ce salariul crește. Calculatorul de mai jos
+      folosește o aproximare — 20% din salariul minim brut, pentru un angajat fără persoane în
+      întreținere — deci dă un **ordin de mărime, nu suma exactă din fluturaș**.
 
 faq:
   - q: "Când intră în vigoare noul salariu minim?"

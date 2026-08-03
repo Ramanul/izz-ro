@@ -22,9 +22,9 @@ valoare_curenta:
   in_vigoare_de: "2026-01-01"
   act_normativ: "Legea 61/1993; cuantum mentinut pentru 2026 prin art. XXV din Legea 141/2025"
   sursa_url: "https://legislatie.just.ro/Public/DetaliiDocument/300022"
-  descriere_lunga: "Alocația se acordă tuturor copiilor cu domiciliul în România, de la naștere până la 18 ani, fără condiții de venit. Valoarea pentru copiii sub 2 ani și pentru cei cu handicap: 719 lei/lună."
+  descriere_lunga: "Alocația se acordă tuturor copiilor cu domiciliul în România, de la naștere până la 18 ani, fără condiții de venit. Valoarea de 292 lei/lună este cea pentru copiii între 2 și 18 ani fără handicap; restul intră pe tranșa de 719 lei."
   valoare_secundara: 719
-  valoare_secundara_label: "lei/lună pentru copii sub 2 ani sau cu handicap"
+  valoare_secundara_label: "lei/lună pentru copii până la 2 ani și pentru copiii cu handicap"
 
 # Istoricul de aici pornea de la aceleasi cifre contrazise (794 / 600 / 243) si nu poate fi
 # reconstruit fara actele care au stabilit fiecare cuantum. Un tabel gol e mai onest decat unul
@@ -46,10 +46,11 @@ sectiuni:
       profesionale, alocația continuă până la finalizarea studiilor.
   - titlu: "Cât este alocația?"
     continut: >-
-      **719 lei/lună** pentru copiii sub 2 ani, precum și pentru copiii cu handicap. **292
-      lei/lună** pentru copiii între 2 și 18 ani și pentru tinerii peste 18 ani care continuă
-      studiile. Legea prevede indexarea anuală cu rata inflației, dar aceasta este **suspendată
-      pentru al doilea an consecutiv**, astfel că sumele rămân la nivelul plătit anterior.
+      **719 lei/lună** pentru copiii până la 2 ani, pentru copiii cu handicap până la 3 ani și
+      pentru copiii cu handicap între 3 și 18 ani. **292 lei/lună** pentru copiii între 2 și 18 ani
+      fără handicap și pentru tinerii peste 18 ani care continuă studiile. Legea prevede indexarea
+      anuală cu rata inflației, dar aceasta este **suspendată pentru al doilea an consecutiv**,
+      astfel că sumele rămân la nivelul plătit anterior.
   - titlu: "Cum depui cererea?"
     continut: >-
       Cererea se depune la **primăria de domiciliu** (compartimentul de asistență socială). Acte
