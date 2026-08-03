@@ -84,6 +84,17 @@ _CUVINTE_COMUNE = {
 
 _INDEX = None
 
+# Satele, atarnate de judet. NU intra in indexul global de mai sus si nu pot: numele lor se
+# repeta intre judete (POIANA x38, "SATU NOU" x42), iar masurat pe corpus adaugarea chiar si
+# a celor unice a facut 49 de articole `local` gresit — „Saturn retrograd" (Saturn e sat in
+# Constanta), horoscopul, „FCSB vs FK Auda". Un nume unic poate fi tot un cuvant obisnuit.
+# Aici se folosesc DOAR cand se stie judetul sursei; atunci „Poiana" dintr-un ziar de Vrancea
+# e Poiana din Vrancea, iar sursele nationale — de la care veneau toate falsurile — n-au judet,
+# deci pentru ele poarta asta nu se deschide niciodata.
+_SATE_CSV = os.path.join(config.ROOT, "data", "sate_judet.csv")
+_SATE: dict | None = None
+_REGEX_SATE: dict = {}
+
 
 def _adauga(index: dict, nume: str, nivel: str) -> None:
     """Cel mai specific nivel castiga la coliziune: Cluj e si judet, Cluj-Napoca e oras."""
@@ -171,11 +182,56 @@ def _regex():
     return _REGEX
 
 
-def clasifica(text: str) -> str | None:
+def _sate() -> dict:
+    """{JUDET: (nume,)}, din `data/sate_judet.csv` (generat de tools/build_gazetteer.py)."""
+    global _SATE
+    if _SATE is None:
+        _SATE = {}
+        try:
+            with open(_SATE_CSV, encoding="utf-8") as fh:
+                for rand in csv.DictReader(fh):
+                    judet = (rand.get("judet") or "").strip()
+                    nume = (rand.get("nume") or "").strip()
+                    if judet and nume:
+                        _SATE.setdefault(judet, []).append(nume)
+        except OSError:
+            pass          # fara fisier, poarta satelor pur si simplu nu se deschide
+    return _SATE
+
+
+def _regex_sate(judet: str):
+    """Alternanta satelor unui singur judet, compilata o data. Numele lungi primele, ca la
+    indexul global: altfel „SATU NOU" ar fi taiat de „SATU"."""
+    if judet not in _REGEX_SATE:
+        nume = _sate().get(judet) or []
+        _REGEX_SATE[judet] = re.compile(
+            r"\b(" + "|".join(re.escape(n) for n in sorted(nume, key=len, reverse=True)) +
+            r")" + _ARTICOL + r"\b") if nume else None
+    return _REGEX_SATE[judet]
+
+
+def judet_sursa(cheie: str | None) -> str | None:
+    """Judetul unei surse: campul `judet` din config daca exista, altfel dedus din cheie.
+
+    Primariile si consiliile judetene isi codeaza judetul in cheie (`pl_cluj_...`), ziarele
+    judetene nu — `zcj` nu spune nimanui ca e Cluj — deci alea il declara in `config.SOURCES`.
+    """
+    if not cheie:
+        return None
+    declarat = (config.SOURCES.get(cheie) or {}).get("judet")
+    if declarat:
+        return strip_diacritics(declarat).upper()
+    return judet_din_cheie(cheie)
+
+
+def clasifica(text: str, judet: str | None = None) -> str | None:
     """Rubrica geografica a textului, sau None daca nu contine niciun nume de loc.
 
     None NU inseamna esec: inseamna ca articolul nu apartine axei geografice si ramane pe
     tema lui. Asta e regula proprietarului si e cea care opreste scurgerile.
+
+    `judet` e judetul SURSEI, si deschide potrivirea pe sate (vezi `_SATE`). Fara el,
+    comportamentul e neschimbat, bit cu bit — o sursa nationala nu castiga si nu pierde nimic.
     """
     if not text:
         return None
@@ -202,6 +258,24 @@ def clasifica(text: str) -> str | None:
             gasit = nivel
             if gasit == "local":
                 break        # nu exista nivel mai specific
+    if gasit == "local" or not judet:
+        return gasit
+
+    # Nimic la nivel de UAT si stim judetul sursei -> incercam satele lui. Doar aici, si doar
+    # ale lui: un sat din alt judet nu spune nimic despre ce publica sursa asta.
+    rx_sate = _regex_sate(judet)
+    if rx_sate is None:
+        return gasit
+    for m in rx_sate.finditer(plat):
+        if not original[m.start():m.start() + 1].isupper():
+            continue
+        # Numele care exista SI in indexul de UAT-uri au fost deja judecate mai sus, la
+        # nivelul lor corect. Fara garda asta, SIRUTA (care are sate omonime cu judetul lor)
+        # transforma „judetul Galati" in stire locala: masurat, 3 din 15 schimbari erau exact
+        # asta — Galati, Brasov, Vaslui, toate articole judetene.
+        if index.get(m.group(1)):
+            continue
+        return "local"
     return gasit
 
 

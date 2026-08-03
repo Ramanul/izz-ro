@@ -104,8 +104,11 @@ def _resolve_category(item: dict, ai_cat: str) -> str:
     """
     # Modelul B scrie 'teaser', modelul C scrie 'synthesis' -- le luam pe amandoua, altfel
     # clusterele s-ar clasifica doar dupa titlu.
+    # Judetul sursei deschide potrivirea pe SATE, si numai pe ale lui. La sursele nationale e
+    # None, deci pentru ele nimic nu se schimba — vezi geo._SATE pentru de ce conteaza asta.
     nivel = geo.clasifica(" ".join(filter(None, (
-        item.get("title"), item.get("teaser"), item.get("synthesis")))))
+        item.get("title"), item.get("teaser"), item.get("synthesis")))),
+        geo.judet_sursa(item.get("source")))
     if nivel:
         return nivel   # textul numeste un loc -> axa geografica, la nivelul detectat
 

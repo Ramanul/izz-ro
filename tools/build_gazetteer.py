@@ -23,6 +23,7 @@ from generator.util import strip_diacritics  # noqa: E402
 
 RAW = os.path.join(ROOT, "data", "siruta_raw.csv")
 OUT = os.path.join(ROOT, "data", "gazetteer.csv")
+OUT_SATE = os.path.join(ROOT, "data", "sate_judet.csv")
 
 # Cuvinte care sunt si nume de sat, dar apar mult mai des cu sensul lor comun in stiri.
 # Un sat "Unirea" nu trebuie sa faca dintr-o stire despre Uniunea Europeana o stire locala.
@@ -79,6 +80,41 @@ def construieste() -> dict:
     return gaz, tinut
 
 
+def sate_pe_judet() -> dict:
+    """{JUDET: [nume de sat]} — TOATE satele, inclusiv cele cu nume repetat.
+
+    Perechea cu `construieste()` de mai sus, si complementul ei: acolo satele ambigue se
+    ARUNCA fiindca indexul global n-are cum sa aleaga intre cele 38 de Poiana; aici numele
+    se pastreaza pentru ca judetul SURSEI face alegerea. Un ziar de Vrancea care scrie
+    „Poiana" inseamna Poiana din Vrancea, si numai poarta care stie judetul poate spune asta.
+    Fara acel judet, indexul asta NU se foloseste — vezi `geo.clasifica(text, judet)`.
+    """
+    rows = list(_citeste_siruta())
+    # NIV=1 sunt judetele; codul lor (JUD) e cheia dupa care se atarna satele.
+    cod = {}
+    for r in rows:
+        if r.get("NIV") == "1":
+            nume = strip_diacritics(r["DENLOC"].strip()).upper()
+            cod[r["JUD"]] = nume[len("JUDETUL "):] if nume.startswith("JUDETUL ") else nume
+    out: dict[str, set] = {}
+    scoase = 0
+    for r in rows:
+        if r.get("NIV") != "3":
+            continue
+        judet = cod.get(r["JUD"])
+        nume = strip_diacritics(r["DENLOC"].strip()).upper()
+        if nume.startswith("SATUL "):
+            nume = nume[len("SATUL "):]
+        # Aceleasi doua garduri ca la indexul global: sub 5 litere numele se ciocnesc de
+        # cuvinte obisnuite, iar STOPWORDS sunt exact numele care apar mai des cu sensul lor
+        # comun decat ca localitate. Judetul sursei nu apara de „Unirea" dintr-o propozitie.
+        if not judet or len(nume) < 5 or nume in STOPWORDS:
+            scoase += 1
+            continue
+        out.setdefault(judet, set()).add(nume)
+    return {j: sorted(n) for j, n in sorted(out.items())}, scoase
+
+
 def main() -> int:
     gaz, tinut = construieste()
     with open(OUT, "w", encoding="utf-8", newline="") as fh:
@@ -89,6 +125,16 @@ def main() -> int:
     print(f"gazetteer.csv: {len(gaz)} nume")
     print(f"  judete: {tinut['judet']}  UAT-uri: {tinut['uat']}")
     print(f"  sate pastrate: {tinut['sat_ok']}  sate scoase (ambigue/scurte/comune): {tinut['sat_scos']}")
+
+    sate, scoase = sate_pe_judet()
+    with open(OUT_SATE, "w", encoding="utf-8", newline="") as fh:
+        w = csv.writer(fh)
+        w.writerow(["judet", "nume"])
+        for judet, nume in sate.items():
+            for n in nume:
+                w.writerow([judet, n])
+    print(f"sate_judet.csv: {sum(len(n) for n in sate.values())} sate pe {len(sate)} judete "
+          f"({scoase} scoase: scurte sau cuvinte comune)")
     return 0
 
 
