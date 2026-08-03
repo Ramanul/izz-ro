@@ -163,6 +163,48 @@ reuse it rather than building a second county matcher.
   `verificat: true` (a test asserting the editorial gate empties it of meaning). **Verify its legal
   claims before applying them; it is confident in both directions.**
 
+## DECIDED 2026-08-03 EVENING — owner handed the decisions over ("deblochează tot, decizia îți aparține")
+Each of these was decided on a measurement taken the same evening, not on judgement. The numbers
+are here so nobody re-derives them; the reasoning is here so anyone can overturn them with a
+better measurement.
+
+- **SIRUTA leftover (a), county lists for regional papers — CLOSED, not worth the mechanism.**
+  Measured on 1714 articles: giving a `judet` to the three "regional" papers that are really
+  single-county (`zdp`→Prahova, `criticarad`→Arad, `newsbucovina`→Suceava) would change **1**
+  article. Giving genuinely multi-county papers their region's whole village set would change
+  **3** more (Banat 2, Oltenia 1) — and one of those three is dubious ("Salcia" in a story about a
+  cruise ship grounded on the Danube). **4 articles total.** Against that, a Transylvania paper's
+  gate would grow from ~300 village names to **2817**, a quarter of the global 12540 set this file
+  already records as regressing the gate by 49 articles. Bad trade. Not doing it.
+- **SIRUTA leftover (b), curated geographic features (Bucegi, Ceahlău, Dunărea) — CLOSED, negative
+  expected value.** Measured with a 21-feature probe: **15** articles of 1714 would gain a level,
+  but the breakdown kills it — "Marea Neagră" accounts for 5 and **every one is Ukraine-war
+  coverage**, "Dunăre" for 8 and most are national infrastructure stories. The list would push war
+  reporting onto the Romanian geographic axis, which is the exact leak `geo.py` exists to stop.
+  Genuine wins were ~2 (turists stranded on Platoul Bucegi, a crash on Transalpina). Not doing it.
+- **`significance` (Open 6) — CLOSED, will not be populated.** #124 deleted the dead template
+  branch. Populating it means asking the AI for a 1-10 score and re-ordering by it, layered on top
+  of #118's measured pre-AI ranking (corroboration + freshness + md5 tie-break). It costs AI budget
+  per article, has no measured benefit, and anyone rewriting the ordering around it will silently
+  drop #118's tie-break — which review already had to catch once.
+- **`/surse/` granularity (Open 5) — SETTLED at 7 regions.** Already implemented
+  (`ORDINE_REGIUNI_AFISARE`, `_COMASARI_AFISARE`) and already an editorial decision from
+  2026-08-02. Reopening it churns the geo axis for a presentation preference. Closed.
+- **`/surse/` MAP (Open 5) — DEFERRED with an explicit bar, not rejected.** Every county is already
+  reachable by text link, so a map adds convenience, not reach. Home Perf is held at 80 by CLS
+  (§13) and pa11y is at 0 errors — an interactive SVG of 41 counties risks both for unmeasured
+  demand. If it comes back, the bar is: static SVG, text links inside it, no JS, no layout shift,
+  pa11y still 0.
+- **Interactive guides (Open 2) — the blocker was mis-stated and is now narrow.** The calculator
+  EXISTS and the dated-fact mechanism exists (#119/#120/#121: `verificat`, sourced yaml, a test
+  tying `_SALARIU_MINIM_FALLBACK` to the entity). What is actually open is one fiscal rule: the
+  personal deduction is taken as a flat 20%, which understates art. 77 Cod Fiscal at low incomes —
+  4.325 brut returns 2.616 where sources say ~2.699. **Decision: this is not something to invent,
+  it is something to READ** — same route that fixed the minimum wage (HG 146/2026 read on the
+  portal, article quoted). Fetch art. 77, quote the deduction table verbatim, then implement. If
+  the act cannot be read — the failure mode that keeps `alocatia` at `verificat: false` — nothing
+  is published and the guide keeps saying "ordin de mărime, nu suma exactă din fluturaș".
+
 ## Open
 0. **DARK MODE — mechanics now CONFIRMED ON LIVE (#106). Still open only for the owner's own
    "nu merge" to be re-tested by him.** Do not spend another session reproducing it blind.
