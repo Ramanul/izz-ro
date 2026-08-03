@@ -1,5 +1,9 @@
 .env
 output/
+# Doua fixturi (test_entities_verified, test_sitemap_editorial) re-randeaza doar cand output/
+# lipseste, deci un output/ de pe alta ramura le face sa pice pe cod care nu e cel testat.
+# Solutia e sa-l muti deoparte inainte de pytest — iar copia mutata nu are ce cauta in git.
+output.stale*/
 .audit/
 __pycache__/
 *.pyc
