@@ -188,7 +188,8 @@ reuse it rather than building a second county matcher.
 1. ~~**PR #101 (locality lead photos) awaiting owner sign-off**~~ — **MERGED 2026-08-02 03:19.**
    This entry was stale. What is still open is only §16's third state: nobody has confirmed the
    129 photos ON LIVE. `smoke_live.py` or a look at izz.ro closes it.
-1. **SIRUTA Slice 2 — BUILT, PR #125 OPEN (`feat/siruta-sate-pe-judet`).** Villages match only
+1. **SIRUTA Slice 2 — MERGED `2ac3c399`. Only the two leftovers at the end of this item are open.**
+   Villages match only
    against the county of the source that published. `geo.clasifica(text, judet=None)` is unchanged
    bit for bit without the second argument; `judet_sursa()` reads a new `judet` field in
    `config.SOURCES` for the 9 county papers (`zcj` does not tell anyone it is Cluj) and falls back
