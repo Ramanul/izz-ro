@@ -224,8 +224,14 @@ reuse it rather than building a second county matcher.
    against this tree and hold; three of its framings do not.** Keep the findings, not the ordering.
    ✅ **`sorted(key=lambda a: a.get("published") or "")` is a LEXICOGRAPHIC sort on a string**, in
    three places — `state.py:100`, `render.py:346`, `render.py:436` (the plan said four, with line
-   numbers that no longer exist). Mixed `+03:00` and `Z` offsets order wrong. Smallest real bug on
-   the list, no gate, and everything about ranking sits downstream of it. Do this first.
+   numbers that no longer exist). Mixed `+03:00` and `Z` offsets order wrong.
+   → **ANSWERED — do NOT "do this first", the refactor was rejected on purpose.** This bullet was
+   written at 07:51; the decision landed at 09:06 (`c6ca5254`) and is in the settled list above.
+   The three sorts stay on strings and `tests/test_published_is_utc.py` guards the invariant
+   instead (1736/1736 entries `+00:00`, both parsers end in `astimezone(timezone.utc)`, plus an
+   end-guard that compares string order against real chronological order on `data/articles.json`).
+   Rewriting them to `datetime` would hide the real exposure: order would look right while mixed
+   offsets kept leaking into `datePublished` and the feed.
    ✅ **`significance` was a DEAD BRANCH IN PRODUCTION — the branch is DELETED by #124.** What is
    still open is only the decision to populate it from the AI schema; if that happens, it comes
    back as a field the pipeline writes, not as a template `{% if %}` waiting for one.
