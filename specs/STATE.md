@@ -393,6 +393,10 @@ reuse it rather than building a second county matcher.
   fixtures is what made this session debug two stale-output failures, and 30 s per run is cheaper
   than a verdict about another branch's render; (c) `_numar_din_cale` strips `SITE_BASE`,
   verified by running the file with `SITE_BASE=/preview`.
+  → **CONFIRMED ON LIVE** (§16.3, cache-busted, 12:45): `https://izz.ro/tech/` serves `‹ 1 2 ›`
+  (the dead `/tech/3/` link is gone and that URL 404s, unlinked), `/tech/2/` now carries a nav of
+  its own instead of being a dead end, and `/zonal/10/` — one of the 44 orphans — is reachable
+  and shows `‹ 1 … 8 9 10 11 12 … 19 ›`. No "Relevanță" anywhere.
   → **Still open, deliberately:** pagination pages are linked but NOT in `sitemap.xml`. Whether
   pages 2+ should be indexed at all (or carry `noindex`) is an SEO decision, not implementation.
 - **#112 MERGED (`5c631f7d`) — every action reference in `.github/workflows/` is pinned to a
