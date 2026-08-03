@@ -97,6 +97,10 @@ def _scrub_processed(articles: list) -> None:
 
 def save(articles: list) -> None:
     _scrub_processed(articles)
+    # Sortare pe SIR, nu pe datetime: corecta doar cat timp `published` e uniform `+00:00`.
+    # Tine (masurat: 1736/1736 la 2026-08-03), fiindca `_parse_w3c_date` si `_parse_ro_date`
+    # inchid amandoua cu `astimezone(timezone.utc)`. Apucata de tests/test_published_is_utc.py —
+    # daca acela pica, aici si in cele doua locuri din render.py trebuie trecut pe datetime.
     articles_sorted = sorted(articles, key=lambda a: a.get("published") or "", reverse=True)
     os.makedirs(os.path.dirname(STATE_PATH), exist_ok=True)
     with open(STATE_PATH, "w", encoding="utf-8") as fh:
