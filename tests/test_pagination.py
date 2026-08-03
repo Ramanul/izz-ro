@@ -86,10 +86,13 @@ def test_orice_pagina_e_atinsa_prin_parcurgere():
 
 @pytest.fixture(scope="module")
 def randat():
-    if not os.path.isfile(os.path.join(OUT, "index.html")):
-        r = subprocess.run([sys.executable, "-m", "generator.main", "--render-only"],
-                           cwd=ROOT, capture_output=True, text=True)
-        assert r.returncode == 0, f"randarea a esuat:\n{r.stdout}\n{r.stderr}"
+    """Randeaza NECONDITIONAT. Fixturile vechi randeaza doar cand `output/` lipseste, iar un
+    `output/` ramas de pe alta ramura le face sa raporteze despre alt cod decat cel testat —
+    a picat exact asa de doua ori in ziua in care s-a scris fisierul asta. 30 de secunde in
+    plus per rulare sunt mai ieftine decat un verdict despre randarea altcuiva."""
+    r = subprocess.run([sys.executable, "-m", "generator.main", "--render-only"],
+                       cwd=ROOT, capture_output=True, text=True)
+    assert r.returncode == 0, f"randarea a esuat:\n{r.stdout}\n{r.stderr}"
     assert os.path.isdir(OUT), "output/ lipseste si dupa randare"
     return OUT
 
@@ -114,6 +117,12 @@ def _linkuri_paginare(cat: str, n: int) -> set:
 
 
 def _numar_din_cale(cat: str, href: str) -> int | None:
+    # Sablonul prefixeaza fiecare href cu `base` = SITE_BASE (gol implicit, dar setat cand
+    # site-ul e servit dintr-un subdirector). Fara taierea lui, testele ar raporta „link in
+    # afara categoriei" pentru linkuri perfect corecte.
+    baza = os.getenv("SITE_BASE", "").rstrip("/")
+    if baza and href.startswith(baza):
+        href = href[len(baza):]
     m = re.fullmatch(rf"/{re.escape(cat)}/(\d+)/", href)
     if m:
         return int(m.group(1))
@@ -164,6 +173,16 @@ def test_o_categorie_cu_o_singura_pagina_nu_arata_paginare(randat):
     for cat in config.CATEGORIES:
         if _pagini_randate(cat) == {1}:
             assert not _linkuri_paginare(cat, 1), f"{cat} are o pagina, dar afiseaza paginare"
+
+
+def test_un_slug_numeric_nu_fura_calea_unei_pagini_de_paginare():
+    """`/sport/2/` e pagina 2, nu un articol. Articolele se scriu dupa paginile de listare,
+    deci un slug „2" ar suprascrie pagina si linkul din navigatie ar duce la un articol."""
+    arts = [{"title": "2", "category": "sport", "published": "2026-08-03T10:00:00+00:00"},
+            {"title": "007", "category": "sport", "published": "2026-08-03T10:00:00+00:00"}]
+    render._assign_slugs(arts)
+    assert [a["slug"] for a in arts] == ["stirea-2", "stirea-007"]
+    assert not any(a["slug"].isdigit() for a in arts)
 
 
 def test_significance_a_disparut_din_sabloane():

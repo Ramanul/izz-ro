@@ -144,6 +144,12 @@ def _assign_slugs(articles: list) -> None:
     seen: dict = {}
     for a in articles:
         base = (slugify(a.get("title") or a.get("original_title") or "stire") or "stire")[:80]
+        # Un slug pur numeric ar ocupa /<cat>/2/, adica exact calea unei pagini de paginare —
+        # iar articolele se scriu DUPA paginile de listare, deci ar suprascrie-o tacut si
+        # linkul „2" din navigatie ar deschide un articol. Azi 0 din 1733 de titluri produc
+        # asa ceva, dar coliziunea e o proprietate a cailor, nu a corpusului de azi.
+        if base.isdigit():
+            base = f"stirea-{base}"
         key = (a.get("category", "general"), base)
         n = seen.get(key, 0) + 1
         seen[key] = n
