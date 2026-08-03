@@ -4,7 +4,7 @@
 > Executors get it read-only. Keep it tight — when it outgrows ~40 lines of content, cut the
 > settled history, not the open work. `git fetch` immediately before rewriting it.
 
-**Updated:** 2026-08-03 09:50 (account A — #122 MERGED: news sitemap live; and the AI budget is throttled to 10 of 18 calls by a reserve nothing uses)
+**Updated:** 2026-08-03 12:10 (account A — #123 MERGED: the AI budget reserve is capped by real eligibility, 10 → 18 calls for new items. #124 OPEN: pagination reachability + `significance` deleted)
 
 ## READ FIRST — a bot-challenge page served with HTTP 200, triggered by SWEEP VOLUME (2026-08-02)
 
@@ -226,11 +226,13 @@ reuse it rather than building a second county matcher.
    three places — `state.py:100`, `render.py:346`, `render.py:436` (the plan said four, with line
    numbers that no longer exist). Mixed `+03:00` and `Z` offsets order wrong. Smallest real bug on
    the list, no gate, and everything about ranking sits downstream of it. Do this first.
-   ✅ **`significance` is a DEAD BRANCH ALREADY IN PRODUCTION**, and this is stronger than the plan
-   claimed. `templates/_card.html:13` and `templates/index.html:34` render `Relevanță X/10` behind
-   `{% if a.significance is defined %}`; no `.py` ever writes the key. The page is built to promise
-   a relevance score it has never once shown. Populating it from the AI schema is the follow-up —
-   **on top of #118, not instead of it.** #118 (merged last night) already ranks pre-AI on
+   ✅ **`significance` was a DEAD BRANCH IN PRODUCTION — the branch is DELETED by #124.** What is
+   still open is only the decision to populate it from the AI schema; if that happens, it comes
+   back as a field the pipeline writes, not as a template `{% if %}` waiting for one.
+   (Was: `_card.html` and `index.html` rendered `Relevanță X/10` behind
+   `{% if a.significance is defined %}` while no `.py` ever wrote the key — a promise the page
+   never once kept.) If it is populated, it goes **on top of #118, not instead of it.**
+   #118 already ranks pre-AI on
    corroboration + freshness with an md5 tie-break that review caught; `significance` is a post-AI
    ordering. Anyone who rewrites the ordering from scratch will silently drop that tie-break.
    ✅ **Model C is not batched** — `process_cluster(group, provider)` is one call per cluster while
@@ -261,7 +263,18 @@ reuse it rather than building a second county matcher.
    parallel, and a refused application costs the sitemap nothing.
    (Dropped by the plan itself, correctly: prompt caching — under the ~1024-token cache minimum and
    irrelevant on the free Gemini path, where the cost is calls, not tokens.)
-7. **THE AI BUDGET IS 18 AND THE PIPELINE USES 10. Measured, not inferred — do this next.**
+7. ~~**THE AI BUDGET IS 18 AND THE PIPELINE USES 10.**~~ — **FIXED, #123 MERGED (`7d3fca94`).**
+   `ai_reserve()` caps the reserve at the real number of upgradable articles, so on today's state
+   all 18 calls go to new items instead of 10. The reserve is not abolished: a `PROMPT_VERSION`
+   bump makes ~1100 articles eligible at once and it protects them then — a test guards that.
+   The eligibility predicate moved into `upgradable()`, used by both callers, and `ai_budget` /
+   `upgrade_reserve` / `upgradable` are now in stats plus one line in the report, because the
+   symptom (`ai_calls 10`) was unreadable without crossing two env vars with state.
+   **Watch on the next runs, not blocking:** daily Gemini usage rises from ~120 to at most 216
+   calls (the number `MAX_AI_CALLS_PER_RUN=18` already intended; the 4 s throttle keeps 18 calls
+   ≈ 72 s, under the measured 15/min ceiling), and model-B throughput can double, so
+   `data/articles.json` (1.9 MB / 1736 articles today) may grow toward ~3.5 MB.
+   Kept below for the measurement that produced it — do not re-derive it:
    `build.yml` sets `MAX_AI_CALLS_PER_RUN: 18` and `UPGRADE_RESERVE: 8`, and `main.py:178` hands
    `process_new` only `budget - reserve` = **10**. The reserve then goes to `upgrade_fallbacks`,
    which upgrades articles that are `model == "B"` **and** have `original_title` **and** are either
@@ -356,6 +369,22 @@ reuse it rather than building a second county matcher.
 
 ## Merged 2026-08-03 (account A — announce, per §14)
 
+- **#123 MERGED (`7d3fca94`) — the AI budget stopped reserving upgrades that cannot happen.**
+  Details and the follow-up to watch are in Open 7 above.
+- **#124 OPEN (`feat/pagination-reachable`) — every listing page is reachable, no dead links.**
+  Measured on the pre-fix render: `general/3`, `politic/3`, `tech/3` were dead links (2-page
+  categories), and **44 of 79 rendered listing pages were linked from nowhere** — `zonal` rendered
+  20 and stopped the nav at 3. The sitemap is not a second path: `_write_sitemap` emits no
+  pagination at all, so an orphan had no way in. `_pagination()` now derives the nav from the real
+  page count (first, last, ±`PAGE_WINDOW`, prev/next), which keeps the link count small while
+  putting every page one hop from its neighbours; the tests assert reachability by walking the
+  rendered links, not the markup. The `20` hardcoded four times became `PAGE_SIZE`.
+  → **`significance` is deleted** here (two templates, two CSS rules, 0 of 1736 articles). If it
+  ever comes back it comes back as a written field, not as a template branch waiting for one.
+  → **A defect the window introduced, caught by measuring:** at 375 px the 11 items overflowed and
+  the whole page scrolled sideways (`scrollWidth` 392 vs `clientWidth` 375). `flex-wrap: wrap`
+  on `.pagination`; re-measured 375/375. Verified in a real browser on the built site, pa11y
+  WCAG2AA 0 errors on `/tech/`, `/tech/2/`, `/zonal/10/`. 439 tests pass locally.
 - **#112 MERGED (`5c631f7d`) — every action reference in `.github/workflows/` is pinned to a
   commit SHA.** zizmor's `unpinned-uses`, raised by CodeRabbit on #111 and skipped there because
   pinning one new workflow while 13 stayed on floating tags is an inconsistency, not a fix. 32
