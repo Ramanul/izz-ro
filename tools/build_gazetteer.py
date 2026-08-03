@@ -35,6 +35,20 @@ STOPWORDS = {
     "SATU", "SATUL", "SLOBOZIA", "RACOVITA", "COTU", "COASTA", "FRASIN", "FRUMOASA",
 }
 
+# Nume de sat care in presa apar aproape numai cu ALT sens: prenume de persoana, corpuri
+# ceresti, marci, formatiuni geografice mari. Lista NU e ghicita — e numarata pe corpusul de
+# 1733 de articole, capitalizate, cu cate aparitii avea fiecare intr-o singura saptamana:
+# ADRIAN 19 (sat in Mures si Satu Mare, dar in text e „Adrian Codirlasu"), ROMANA 12 („Politia
+# Romana"), NEAGRA 10 („Marea Neagra"), MARIUS 9, IULIA 8, VENUS 6, IRINA 6, MARIN 6, DUNAREA 5,
+# SATURN 4 (falsul deja documentat: „Saturn retrograd"), GEORGE COSBUC 4 (poetul), DACIA 2.
+# Fara ele, un ziar judetean care scrie despre un om pe nume Adrian ar publica o stire locala.
+PRENUME_SI_OMONIME = {
+    "ADRIAN", "MARIUS", "IULIA", "IRINA", "MARIN", "DAVID", "RARES", "GEORGE COSBUC",
+    "ROMANA", "NEAGRA", "DUNAREA", "SATURN", "VENUS", "DACIA",
+    "CETATEA", "PIATRA", "TABARA", "VATRA", "VECHI", "POSTA", "MUSCEL", "OTELU",
+    "SARBATOAREA", "BRADET",
+}
+
 # Nivelul din SIRUTA (NIV): 1=judet, 2=UAT (municipiu/oras/comuna), 3=sat component.
 NIVEL_SIRUTA = {"1": "zonal", "2": "local", "3": "local"}
 
@@ -108,7 +122,7 @@ def sate_pe_judet() -> dict:
         # Aceleasi doua garduri ca la indexul global: sub 5 litere numele se ciocnesc de
         # cuvinte obisnuite, iar STOPWORDS sunt exact numele care apar mai des cu sensul lor
         # comun decat ca localitate. Judetul sursei nu apara de „Unirea" dintr-o propozitie.
-        if not judet or len(nume) < 5 or nume in STOPWORDS:
+        if not judet or len(nume) < 5 or nume in STOPWORDS or nume in PRENUME_SI_OMONIME:
             scoase += 1
             continue
         out.setdefault(judet, set()).add(nume)

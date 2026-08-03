@@ -221,3 +221,18 @@ def test_gazetteerul_de_sate_acopera_toate_judetele():
     sate = geo._sate()
     assert len(sate) == 42, f"asteptam 42 de judete, avem {len(sate)}"
     assert sum(len(v) for v in sate.values()) > 10000
+
+
+@pytest.mark.parametrize("nume", ["ADRIAN", "MARIUS", "IRINA", "SATURN", "VENUS", "ROMANA",
+                                  "NEAGRA", "DUNAREA", "DACIA", "GEORGE COSBUC"])
+def test_prenumele_si_omonimele_nu_sunt_sate_potrivibile(nume):
+    """Toate sunt sate reale in SIRUTA, si toate apar in corpus cu ALT sens — „Adrian
+    Codirlasu" (19 aparitii intr-o saptamana), „Politia Romana" (12), „Marea Neagra" (10),
+    „Saturn retrograd" (4). Un ziar judetean care scrie despre un om pe nume Adrian n-are
+    voie sa publice o stire locala din asta."""
+    assert not any(nume in sate for sate in geo._sate().values())
+
+
+def test_un_prenume_omonim_nu_face_stirea_locala():
+    text = "Adrian Ropotan a suferit o fractură deschisă după un accident rutier"
+    assert geo.clasifica(text, "MURES") is None      # ADRIAN e sat in Mures, dar aici e om
