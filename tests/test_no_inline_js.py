@@ -148,6 +148,21 @@ def test_missing_entity_value_does_not_break_the_build():
     assert render._salariu_minim({"valoare_curenta": {"brut": 4582}}) == 4582
 
 
+def test_fallback_nu_diverge_de_entitate():
+    """Calculatorul isi ia deducerea personala din salariul minim (20% x brut), iar acesta vine
+    fie din entitate, fie din `_SALARIU_MINIM_FALLBACK`. Cand cele doua se despart, nimic nu se
+    strica vizibil — calculatorul afiseaza in continuare un net, doar ca gresit, si asta a durat
+    de la 1 iulie 2026 (HG 146/2026: 4.050 -> 4.325 lei) pana pe 3 august."""
+    import yaml
+    path = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
+                        "data", "entities", "salariul-minim.yaml")
+    with open(path, encoding="utf-8") as fh:
+        brut = yaml.safe_load(fh)["valoare_curenta"]["brut"]
+    assert brut == render._SALARIU_MINIM_FALLBACK, (
+        f"entitatea zice {brut}, rezerva din render.py zice {render._SALARIU_MINIM_FALLBACK}"
+    )
+
+
 def test_calculator_script_is_versioned():
     """§16.2: activele /static/ sunt servite `immutable` 30 de zile. Fara hash de continut
     in `?v=`, fixul nu ajunge la vizitatorii care revin -- exact capcana din 2026-07-12."""

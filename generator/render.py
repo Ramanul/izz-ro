@@ -707,7 +707,11 @@ def _render_ghiduri(env: Environment, articles: list) -> None:
                now_timestamp=_dt.now().timestamp())))
 
 
-_SALARIU_MINIM_FALLBACK = 4050
+# Rezerva pentru cazul in care entitatea lipseste sau n-are `brut`. HG 146/2026, in vigoare de la
+# 1 iul 2026. Se schimba odata cu data/entities/salariul-minim.yaml — un test leaga cele doua
+# valori, pentru ca o divergenta aici nu strica nimic vizibil: calculatorul continua sa afiseze
+# un net, doar ca gresit.
+_SALARIU_MINIM_FALLBACK = 4325
 
 
 def _salariu_minim(ent: dict | None) -> int:

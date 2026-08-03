@@ -9,30 +9,54 @@ tip: valoare_monetara
 categorie_ghid: bani
 categorie_stiri: general
 
+# NIVEL DE DOVADA MAI SLAB DECAT LA CELELALTE GHIDURI — de aceea `verificat` ramane false mai jos.
+# Cifrele vechi de aici (794 / 1.019) sunt contrazise concordant de mai multe surse secundare
+# (Digi24, avocatnet, portalinvatamant, lugera, playtech), care dau 292 si 719 lei, cu indexarea
+# suspendata pentru al doilea an prin art. XXV din Legea 141/2025. Actul primar NU a putut fi citit:
+# `legislatie.just.ro` serveste Legea 61/1993 in forma republicata din 1999, al carei art. 3 spune
+# inca „3.500 lei" — ROL, dinainte de denominare. Am pus cifrele mai probabile, nu pe cele
+# demonstrabil vechi, dar poarta `verificat` ramane inchisa pana cand cineva citeste actul.
 valoare_curenta:
-  brut: 794
+  brut: 292
   moneda: RON
-  in_vigoare_de: "2025-01-01"
-  act_normativ: "Legea 61/1993, actualizată prin OUG 126/2024"
-  sursa_url: "https://mmuncii.ro/"
-  descriere_lunga: "Alocația se acordă tuturor copiilor cu domiciliul în România, de la naștere până la 18 ani, fără condiții de venit. Valoarea pentru copiii 0-2 ani și cei cu handicap: 1.019 lei/lună."
-  valoare_secundara: 1019
-  valoare_secundara_label: "lei/lună pentru copii 0-2 ani sau cu handicap"
+  in_vigoare_de: "2026-01-01"
+  act_normativ: "Legea 61/1993; cuantum mentinut pentru 2026 prin art. XXV din Legea 141/2025"
+  sursa_url: "https://legislatie.just.ro/Public/DetaliiDocument/300022"
+  descriere_lunga: "Alocația se acordă tuturor copiilor cu domiciliul în România, de la naștere până la 18 ani, fără condiții de venit. Valoarea pentru copiii sub 2 ani și pentru cei cu handicap: 719 lei/lună."
+  valoare_secundara: 719
+  valoare_secundara_label: "lei/lună pentru copii sub 2 ani sau cu handicap"
 
-istoric:
-  - brut: 794
-    in_vigoare_de: "2025-01-01"
-    act_normativ: "OUG 126/2024"
-  - brut: 600
-    in_vigoare_de: "2023-01-01"
-    act_normativ: "OUG 126/2024"
-  - brut: 243
-    in_vigoare_de: "2022-01-01"
-    act_normativ: "Legea 61/1993"
+# Istoricul de aici pornea de la aceleasi cifre contrazise (794 / 600 / 243) si nu poate fi
+# reconstruit fara actele care au stabilit fiecare cuantum. Un tabel gol e mai onest decat unul
+# gresit: sablonul sare peste sectiunea „Istoric" cand lista lipseste.
 
 termene:
   - data: "2027-01-01"
-    eveniment: "Indexare anuală cu rata inflației"
+    eveniment: "Prima data la care indexarea cu inflația ar putea fi reluată, dacă suspendarea nu se prelungește"
+
+# Portate din data/utilities.json (calea /utile/, inlocuita de /ghiduri/ pe 17 iul 2026).
+# „Cat este alocatia?" e singura rescrisa: sursa dadea 1.019/794 lei si spunea ca sumele se
+# indexeaza anual — ambele contrazise de suspendarea din Legea 141/2025.
+sectiuni:
+  - titlu: "Cine beneficiază de alocație?"
+    continut: >-
+      Toți copiii cu domiciliul în România, de la naștere până la împlinirea vârstei de 18 ani. Nu
+      există condiții de venit — alocația este universală și se acordă indiferent de situația
+      financiară a familiei. Pentru tinerii peste 18 ani care urmează studii liceale sau
+      profesionale, alocația continuă până la finalizarea studiilor.
+  - titlu: "Cât este alocația?"
+    continut: >-
+      **719 lei/lună** pentru copiii sub 2 ani, precum și pentru copiii cu handicap. **292
+      lei/lună** pentru copiii între 2 și 18 ani și pentru tinerii peste 18 ani care continuă
+      studiile. Legea prevede indexarea anuală cu rata inflației, dar aceasta este **suspendată
+      pentru al doilea an consecutiv**, astfel că sumele rămân la nivelul plătit anterior.
+  - titlu: "Cum depui cererea?"
+    continut: >-
+      Cererea se depune la **primăria de domiciliu** (compartimentul de asistență socială). Acte
+      necesare: **cerere tip**, **certificat de naștere al copilului** (original + copie), **acte de
+      identitate ale părinților**, **certificat de încadrare în grad de handicap** (dacă e cazul),
+      **adeverință școlară** (pentru tinerii peste 18 ani). Plata se face lunar, prin mandat poștal
+      sau transfer bancar, în funcție de opțiunea declarată în cerere.
 
 faq:
   - q: "Se cumulează alocația cu alte ajutoare?"
