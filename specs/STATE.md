@@ -175,12 +175,27 @@ reuse it rather than building a second county matcher.
 1. ~~**PR #101 (locality lead photos) awaiting owner sign-off**~~ — **MERGED 2026-08-02 03:19.**
    This entry was stale. What is still open is only §16's third state: nobody has confirmed the
    129 photos ON LIVE. `smoke_live.py` or a look at izz.ro closes it.
-1. **SIRUTA Slice 2 — county-aware village matching.** Groundwork merged (siruta_raw.csv +
-   build_gazetteer.py). Design is now clear: villages match ONLY when the source's county matches
-   the village's county. This kills the measured false positives — Saturn/horoscope/FCSB all come
-   from NATIONAL sources (no county), so village matching simply won't fire for them; a Vrancea
-   paper's "Poiana" → Poiana-Vrancea works. Needs: source→county map, `geo.clasifica(text, county)`,
-   plumb through `_resolve_category`. Plus a small curated FEATURES list (Bucegi, Ceahlău, Dunărea).
+1. **SIRUTA Slice 2 — BUILT, PR #125 OPEN (`feat/siruta-sate-pe-judet`).** Villages match only
+   against the county of the source that published. `geo.clasifica(text, judet=None)` is unchanged
+   bit for bit without the second argument; `judet_sursa()` reads a new `judet` field in
+   `config.SOURCES` for the 9 county papers (`zcj` does not tell anyone it is Cluj) and falls back
+   to parsing the key for the 129 institutional sources. `build_gazetteer.py` emits
+   `data/sate_judet.csv` (12540 villages, 42 counties).
+   → **Measured on 1733 articles, 665 from sources with a county: 10 reclassifications, all
+   correct** — Nicula, Dezmir (Cluj), Igriș, Urseni ×3, Bulgăruș (Timiș), Merișor, Copalnic (MM).
+   Five had no geographic rubric at all before.
+   → **Two defects the measurement caught in the fix itself, both fixed:** (a) SIRUTA has villages
+   named after their own county, so "județul Galați" matched the village GALATI and turned a county
+   story local (3 of the first 15 changes — Galați, Brașov, Vaslui); names already in the UAT index
+   are now skipped, they were judged above at their correct level. (b) **Village names that are
+   really first names**: counted in one week of corpus, ADRIAN appears 19×, ROMANA 12× ("Poliția
+   Română"), NEAGRA 10× ("Marea Neagră"), MARIUS 9, IULIA 8, VENUS 6, IRINA 6, SATURN 4 — all real
+   villages, none of them meant as places. The county gate cannot catch this (ADRIAN *is* a village
+   in Mureș), so 24 names were dropped from the index.
+   → **No live effect until the next pipeline runs:** classification happens at processing time and
+   existing articles keep the category stored in state.
+   → Still open after it: regional papers cover several counties and therefore get no `judet` (they
+   would need a county list), and the curated FEATURES list (Bucegi, Ceahlău, Dunărea).
 2. **Interactive guides — NEEDS OWNER DESIGN + DATA.** Owner (2026-08-02): the static guides are
    useless, must be interactive. Natural form = calculators (brut→net salariu, copii→alocație).
    BLOCKED on two things, both the owner's: (a) which interactivity exactly; (b) the CORRECT
