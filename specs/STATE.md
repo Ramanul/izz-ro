@@ -4,7 +4,7 @@
 > Executors get it read-only. Keep it tight — when it outgrows ~40 lines of content, cut the
 > settled history, not the open work. `git fetch` immediately before rewriting it.
 
-**Updated:** 2026-08-03 10:35 (account A — #122 MERGED: news sitemap live; and the AI budget is throttled to 10 of 18 calls by a reserve nothing uses)
+**Updated:** 2026-08-03 09:50 (account A — #122 MERGED: news sitemap live; and the AI budget is throttled to 10 of 18 calls by a reserve nothing uses)
 
 ## READ FIRST — a bot-challenge page served with HTTP 200, triggered by SWEEP VOLUME (2026-08-02)
 
