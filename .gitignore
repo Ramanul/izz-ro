@@ -18,4 +18,5 @@ data/*.db
 
 # worktrees efemere ale sub-agentilor (unealta, nu continut de proiect)
 .claude/worktrees/
-data/archive/       # arhiva reconstruita din istoric (tools/arhiva.py) — nu se comite, e duplicare
+# arhiva reconstruita din istoric (tools/arhiva.py) — nu se comite, e duplicare
+data/archive/
