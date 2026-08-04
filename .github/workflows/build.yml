@@ -4,13 +4,24 @@ name: pipeline
 # Commit-ul declanseaza Cloudflare Pages, care doar randeaza (vezi README).
 
 on:
-  # La fiecare 2 ore. Fiecare commit al starii declanseaza un build Cloudflare
-  # Pages, iar planul free are ~500 build-uri/luna: 12/zi = ~360/luna lasa
-  # rezerva pentru merge-uri de PR. NU folosim mai des pentru ca ar epuiza
-  # bugetul de build -> deploy-urile s-ar opri (exact bug-ul din 5-9 iul 2026,
-  # cand commit-urile purtau [skip ci], onorat SI de Cloudflare -> site inghetat).
+  # Se INCEARCA din ora in ora, dar se PUBLICA tot la ~2 ore: jobul `cadenta` de mai jos
+  # taie rularea daca ultimul continut e mai proaspat de 105 minute.
+  #
+  # De ce nu mai e cron-ul la 2h, desi cadenta dorita ramane 2h: planificatorul GitHub
+  # intarzie si SARE firings de `schedule` cand platforma e incarcata, iar la izz se vede.
+  # Masurat 2026-08-04 pe ultimele 40 de rulari: 08-04 a avut 4 rulari (03:32, 06:37, 10:47,
+  # 14:35Z) in loc de 12, 08-03 a avut 8, 08-02 a avut 10 — toate pornite cu 20-35 min dupa
+  # minutul :13, cu gauri de 3-4h dimineata. Cu incercari orare, un firing pierdut se
+  # recupereaza in ora urmatoare in loc sa astepte inca doua ore.
+  #
+  # Bugetul de build ramane protejat de poarta, nu de cron: fiecare commit de stare
+  # declanseaza un build Cloudflare Pages, iar planul free are ~500/luna. Poarta la 105 min
+  # tine doua commituri de continut la >=2h distanta (105 + ~12 min cat dureaza rularea),
+  # deci maximum ~12/zi = ~360/luna, exact ca inainte. NU cobori pragul fara sa refaci
+  # socoteala: la 5-9 iul 2026 deploy-urile chiar s-au oprit (atunci din alta cauza —
+  # [skip ci] in commit, onorat SI de Cloudflare -> site inghetat).
   schedule:
-    - cron: "13 */2 * * *"
+    - cron: "13 * * * *"
   workflow_dispatch:          # buton „Run workflow" pentru rulare manuala / deploy imediat
     inputs:
       max_ai_calls:
@@ -31,7 +42,39 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
+  # Poarta de cadenta: transforma „de 12 ori pe zi, daca planificatorul GitHub binevoieste"
+  # in „de 12 ori pe zi, recuperand firing-urile pierdute". Nu face checkout — intreaba API-ul
+  # cand a fost ultimul commit care atinge data/articles.json, deci costa ~10 secunde de runner.
+  # Rularile manuale (workflow_dispatch) NU trec pe aici: vezi `if:` de la `pipeline`.
+  # Daca apelul de API pica, jobul pica ROSU si `pipeline` e sarit — deliberat inchis, nu deschis:
+  # o poarta stricata care lasa sa treaca tot ar produce 24 de build-uri Cloudflare pe zi.
+  # Costul unui esec e o ora de intarziere, vizibila in Actions.
+  cadenta:
+    runs-on: ubuntu-latest
+    outputs:
+      ruleaza: ${{ steps.g.outputs.ruleaza }}
+    steps:
+      - id: g
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PRAG_MIN: "105"
+        run: |
+          set -euo pipefail
+          ultim=$(gh api "repos/$GITHUB_REPOSITORY/commits?path=data/articles.json&per_page=1" \
+                    --jq '.[0].commit.committer.date')
+          varsta=$(( ( $(date +%s) - $(date -d "$ultim" +%s) ) / 60 ))
+          echo "ultimul commit de continut: $ultim (acum $varsta min, prag $PRAG_MIN)"
+          if [ "$varsta" -ge "$PRAG_MIN" ]; then
+            echo "ruleaza=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "ruleaza=false" >> "$GITHUB_OUTPUT"
+            echo "::notice::sar peste: continutul are $varsta min, sub pragul de $PRAG_MIN"
+          fi
+
   pipeline:
+    needs: cadenta
+    # Manualul trece intotdeauna — butonul „Run workflow" trebuie sa insemne „acum", nu „poate".
+    if: github.event_name != 'schedule' || needs.cadenta.outputs.ruleaza == 'true'
     runs-on: ubuntu-latest
     outputs:
       # sha-ul care contine EFECTIV continutul acestei rulari; jobul mirror randeaza exact
