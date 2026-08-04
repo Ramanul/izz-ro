@@ -4,7 +4,7 @@
 > Executors get it read-only. Keep it tight — when it outgrows ~40 lines of content, cut the
 > settled history, not the open work. `git fetch` immediately before rewriting it.
 
-**Updated:** 2026-08-04 11:50 (account A — #130 and #132 MERGED; #131 open, green on §13, held on an owner call about 7 empty titles)
+**Updated:** 2026-08-04 21:10 (account A — #133 MERGED, the CI push that failed silently; #131 open, its title predicate now written and measured, waiting on the owner's word)
 
 ## READ FIRST — a bot-challenge page served with HTTP 200, triggered by SWEEP VOLUME (2026-08-02)
 
@@ -204,6 +204,34 @@ better measurement.
   portal, article quoted). Fetch art. 77, quote the deduction table verbatim, then implement. If
   the act cannot be read — the failure mode that keeps `alocatia` at `verificat: false` — nothing
   is published and the guide keeps saying "ordin de mărime, nu suma exactă din fluturaș".
+
+## Merged 2026-08-04 EVENING (account A — announce, per §14)
+
+- **#133 `402731e1` — a rejected push made the run green and threw the content away.**
+  Measured over the last 30 `build.yml` runs: **6 (20%) hit `! [rejected] main -> main (fetch
+  first)` and all 6 reported SUCCESS**, dropping 200–500 content files each (runs 30902133131,
+  30810393072, 30745934913, 30743060578, 30731227441, 30718426381). Cause: a human pushes to main
+  during the ~11 minutes a run takes, so it fires exactly on working days. `git push || echo` made
+  the rejection exit 0.
+  → Push now retries 5× with `git fetch origin main` + `git rebase origin/main` between attempts and
+  **exits 1** when the content did not land. **No `-X theirs`**: history has 10 human commits on
+  `data/*.json` against 265 bot ones, so a conflict there can be a real manual edit — it goes red
+  instead of being overwritten. Zero cost on the measured cases: the human push that killed run
+  30902133131 was the #130 merge, touching only `generator/` and `tests/`, so it rebases cleanly.
+  → Second defect, same severity: `mirror` checked out `main` without checking main contained the
+  run's content. On 30902133131 it took `2dd5aa22` (the human #130 merge), rendered the **old
+  corpus** and published it to `ramanul.github.io`, green. It now checks out `content_sha`, the sha
+  `pipeline` actually committed. An empty `ref` silently falls back to the default branch, so it is
+  refused before checkout. Rejected as too expensive: `ref: main` + `fetch-depth: 0` +
+  `merge-base --is-ancestor` — `size-pack` is **356 MiB**, paid 12×/day for an invariant that
+  becomes true by construction.
+  → **Verified by running, not claimed.** `build.yml` does not run on PRs, so the step was extracted
+  verbatim from the YAML and driven against real repos: a local bare origin, a `--depth=1` clone
+  (same shape as `actions/checkout`), a third clone playing the human. **17/17** assertions across
+  five scenarios — normal push, the measured race, the conflicting race, nothing-to-commit, dead
+  remote. The riskiest assumption, "rebase works in a shallow clone", is what scenario B proves.
+  → Still uninvestigated: run `30884653008` (08-04 06:37Z) failed at the pipeline step with exit 1,
+  unrelated to the push race.
 
 ## Merged 2026-08-04 (account A — announce, per §14)
 Three PRs, all verified by running before merge. `main` after them: **ruff clean, 503 passed,
@@ -455,6 +483,21 @@ atâtor iterații. Și „feedul răspunde" ≠ „feedul are conținut": `monit
    (ex. ≥3), (b) listă de titluri-capcană (`Publicitate`, `Anunț`, `ANUNȚ PUBLIC`) plus respingerea
    titlurilor care arată a URL sau a nume de fișier, (c) se publică toate, cum sunt acum.
    **Nu am ales singur: pragul e editorial, nu tehnic.**
+   → **2026-08-04 seara: varianta (b+a) e SCRISĂ și măsurată pe branch-ul lui #131 (`7bed3f8c`),
+   dar NU merged — alegerea rămâne a proprietarului.** `select.titlu_fara_informatie` respinge URL,
+   nume de fișier (extensie sau ≥2 underscore), titlu format doar din cuvinte generice, și sub 3
+   cuvinte. Măsurat pe cele **69** de anunțuri fără corp de pe `main` (79 la ora auditului, corpusul
+   s-a rotit): respinge **5**, zero fals-pozitive — `ANUNȚ PUBLIC`, `Anunț PUZ` ×2, `Publicitate`,
+   `CP_Renta viagera_C2025_29.07.2026`. Cap-coadă prin poartă: **2025 → 2020** articole publicate,
+   exact acelea 5. `pytest`: 532 passed, 2 xfailed.
+   → Cuvântul se numără pe **secvențe de litere**, nu pe `.split()`: `41 mana+fainare+putregai` are
+   3 cuvinte reale în 2 bucăți, și e singurul fals-pozitiv pe care `.split()` îl produce azi.
+   Praguri respinse prin măsurare, nu prin gust: ≥4 cuvinte aruncă `Concurs Functii publice`;
+   ≥1 underscore aruncă `SITUATII FINANCIARE TRIM II_2026`; „titlul începe cu număr de ordine"
+   aruncă 4 buletine fitosanitare legitime din 5 prinse.
+   → Limita cunoscută, lăsată descoperită deliberat: `DEMETER JOZSEF NIMROD – 27.07.2026` trece.
+   Nicio regulă mecanică nu-l prinde fără să arunce și publicațiile de căsătorie, care au același
+   tipar nume+dată.
 
 0. **SINTEZA PRODUCE CLICKBAIT FLUENT CÂND SURSA NU TRIMITE FAPTE — raportat de proprietar
    2026-08-04, cu exemplu de pe live. Diagnostic complet în `specs/sinteza-fara-substanta.md`.**
