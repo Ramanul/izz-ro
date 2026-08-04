@@ -10,7 +10,6 @@ Ce NU se schimba: ce se publica. `expire()` le stergea oricum. Testul apara trei
 ca vechiturile sunt sarite, ca `stats["new"]` nu le mai numara, si ca itemele fara data
 NU sunt victime colaterale (fara data, `_parse_iso` cade pe `now()`, deci sunt proaspete).
 """
-import json
 from datetime import datetime, timedelta, timezone
 
 import pytest

@@ -12,10 +12,16 @@ from jinja2 import Environment, FileSystemLoader, select_autoescape
 from slugify import slugify
 
 from . import config, covers, geo, htmlart
-from .select import (_BODY_PLACEHOLDERS, _dedup, _dedup_sources, _diversify,
-                     _entity_index, _pick_hero, _quality_gate, _slug_stems,
-                     sources_coherent)
-from .util import title_tokens, domain_of
+from .select import (_dedup, _dedup_sources, _diversify, _entity_index,
+                     _pick_hero, _quality_gate)
+# Re-export DELIBERAT, nu import mort: `tests/test_render_editorial.py` le cheama ca
+# `render._slug_stems` / `render.sources_coherent` (9 apeluri), iar `tools/qa_check.py:18`
+# importa `sources_coherent` din `generator.render`, nu din `generator.select` — si scriptul
+# ala ruleaza in pipeline (`build.yml:106`). Un `ruff --fix` aici pica productia, nu doar
+# suita. Instructiune separata pentru ca o exceptie de lint pusa pe prima linie a unui import
+# in paranteze NU acopera numele de pe continuari — verificat, nu presupus.
+from .select import _slug_stems, sources_coherent  # noqa: F401
+from .util import domain_of
 
 ROOT = config.ROOT
 TPL_DIR = os.path.join(ROOT, "templates")
@@ -227,7 +233,10 @@ def _base_ctx(canonical_path: str, **extra) -> dict:
         "site": config.SITE,
         "base": os.getenv("SITE_BASE", "").rstrip("/"),
         "categories": config.CATEGORIES,
-        "year": datetime.now().year,
+        # UTC explicit: pipeline-ul randeaza pe runnere GitHub, care sunt oricum pe UTC, deci
+        # asta nu schimba anul din subsol in productie — face doar ca o randare locala
+        # (UTC+3) sa dea acelasi octet ca CI-ul, in loc sa depinda de ceasul masinii.
+        "year": datetime.now(timezone.utc).year,
         "canonical": config.SITE["url"] + canonical_path,
         "org_jsonld": _org_jsonld(),
         "analytics_token": os.getenv("CF_ANALYTICS_TOKEN", "").strip() or None,
@@ -752,7 +761,13 @@ def _render_ghiduri(env: Environment, articles: list) -> None:
     _write(os.path.join(OUT_DIR, "calendar", "index.html"),
            cal_tpl.render(**_base_ctx(
                "/calendar/", nav_section="calendar", termene=termene,
-               now_timestamp=_dt.now().timestamp())))
+               # `.timestamp()` da acelasi numar in ambele forme — un naiv e citit ca ora
+               # locala, si `_dt.now()` chiar e locala. Diferenta apare doar in ora ambigua
+               # de la trecerea la ora de iarna, cand naivul poate iesi cu 3600 s alaturi si
+               # ar muta un termen intre „urmatoarele" si „trecute". Ambele capete ale
+               # comparatiei din `calendar.html` sunt secunde absolute, deci schimbarea aici
+               # nu le desincronizeaza de `ts` de mai sus.
+               now_timestamp=_dt.now(timezone.utc).timestamp())))
 
 
 # Rezerva pentru cazul in care entitatea lipseste sau n-are `brut`. HG 146/2026, in vigoare de la

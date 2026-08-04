@@ -131,8 +131,12 @@ def _parse_w3c_date(raw: str) -> str:
         return datetime.now(timezone.utc).isoformat()
     try:
         if re.fullmatch(r"\d{4}-\d{2}-\d{2}", raw):     # doar data -> miezul noptii UTC
-            d = datetime.strptime(raw, "%Y-%m-%d")
-            return d.replace(tzinfo=timezone.utc).isoformat()
+            # Intr-o singura instructiune intentionat: despartita in doua, `ruff` raporteaza
+            # DTZ007 („strptime fara %z") fiindca nu vede `.replace(tzinfo=...)` de peste
+            # legatura `d`. Invariantul UTC era deja respectat — asta e o reformulare cu zero
+            # schimbare de comportament, care in plus face marcarea UTC vizibila la fata locului.
+            return datetime.strptime(raw, "%Y-%m-%d").replace(
+                tzinfo=timezone.utc).isoformat()
         dt = datetime.fromisoformat(raw.replace("Z", "+00:00"))
         if dt.tzinfo is None:
             dt = dt.replace(tzinfo=timezone.utc)

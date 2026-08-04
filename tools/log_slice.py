@@ -18,7 +18,7 @@ import argparse
 import csv
 import os
 from collections import defaultdict
-from datetime import date, datetime, timezone
+from datetime import datetime, timezone
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 LOG = os.path.join(ROOT, "specs", "metrics.csv")
@@ -38,7 +38,12 @@ def _safe(text: str) -> str:
 
 def append(args) -> int:
     row = {
-        "date": date.today().isoformat(),
+        # UTC, nu ora locala: acelasi CSV e scris si de masina asta (UTC+3) si de CI (UTC),
+        # iar coloana e sortata lexicografic mai jos (`max(...)`, `sorted(key=...)`) — exact
+        # tiparul de offseturi amestecate pe care `test_published_is_utc.py` il opreste
+        # pentru `published`. Consecinta reala e mica (un rand de partea gresita a miezului
+        # noptii intr-un jurnal de metrici), dar contrazicea conventia scrisa in acest fisier.
+        "date": datetime.now(timezone.utc).date().isoformat(),
         "account": args.account,
         "slice": _safe(args.slice),
         "approach": args.approach,
