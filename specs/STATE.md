@@ -345,46 +345,48 @@ Options compared on the same corpus (`kills_wrong` / `kills_right`):
   pattern and one source (`el_moldova`, 5 articles); the geographic/brand judgements are the
   probe's own reading of the text, not independent labelling.
 
+## ÎNCHISE DE PROPRIETAR 2026-08-04 — nu le mai ridica, nu le mai „verifica"
+Alexandru le-a spus explicit, iar pe una dintre ele a spus-o **a patra oară**. Dacă o sesiune
+viitoare simte nevoia să le re-deschidă, răspunsul e aici, nu la el.
+
+- **DARK MODE FUNCȚIONEAZĂ.** Punct. Fostul „Open 0" e șters mai jos. Nu-l mai testa, nu mai cere
+  browserul sau o poză din consolă, nu mai propune fixuri. A confirmat de patru ori și l-a
+  enervat, pe bună dreptate, că tot revine. **Orice sesiune care re-deschide subiectul din proprie
+  inițiativă face o greșeală de proces, nu una tehnică.**
+- **Știrile despre Republica Moldova NU merg pe o rubrică „extern".** Întrebarea de taxonomie
+  ridicată la #127 e închisă cu NU. Comportamentul de azi (cad pe `None` → rubrica de temă aleasă
+  de AI) rămâne.
+- **Vocabular, pentru că a fost jargon neexplicat:** „**copertă generată**" = desenul pe care
+  `covers.py`/`htmlart.py` îl pune pe articol când nu există fotografie reală (dreptunghiul colorat
+  cu pictograma rubricii). „45 de fotografii pe live" vs „1302 coperți generate" înseamnă: 45 de
+  articole au o poză adevărată, restul au desenul. **Nu folosi cuvântul fără să-l explici.**
+
 ## Open
-0. **DARK MODE — mechanics now CONFIRMED ON LIVE (#106). Still open only for the owner's own
-   "nu merge" to be re-tested by him.** Do not spend another session reproducing it blind.
-   History: the owner merged #96, was asked to press ☾ and check the theme survives a refresh,
-   and replied **"nu merge"**; no detail was gathered before that session ran out of budget.
-   **Likely what he saw (INFERENCE, not established):** #96 did fix the mechanics, but the button
-   kept a hardcoded `☾` glyph plus `title="Mod întunecat"` and `aria-pressed="false"` in the
-   markup — so pressing it changed the page while the control itself looked and announced itself
-   unchanged. From the user's side that is indistinguishable from "nothing happened". #106 fixed
-   exactly that: the glyph now comes from CSS keyed on `data-theme` (correct at first paint), and
-   `title`/`aria-pressed` are set from the applied theme.
-   **Measured on `https://izz.ro/` 2026-08-02 09:18, real browser, not local:** fresh visit → ☾ /
-   "Mod întunecat" / `aria-pressed=false` / bg `rgb(246,247,249)`; after click → ☀︎ / "Mod luminos"
-   / `true` / `rgb(13,17,22)`, `localStorage.izz_theme=dark`; **after a full reload the dark theme
-   and all three attributes persist**; no CSP or other console errors were observed during that
-   check — which is evidence the policy does not block this path, not proof it blocks nothing
-   (§16's own history: `script-src 'self'` silently killed the inline handler before #96).
-   Deliverability (§16.2)
-   holds — live serves `styles.css?v=ec9958b0` and `theme.js?v=318109e6`, both new hashes.
-   (The `styles.css?v=44d15474` recorded here until 2026-08-03 is stale; `theme.js` is unchanged.)
-   → **Re-proved on the served bytes 2026-08-03 evening, all five preconditions quoted verbatim
-   from response bodies/headers:** the markup ships the button EMPTY
-   (`<button class="theme-toggle" type="button" aria-label="Comută tema"></button>` — no
-   `aria-pressed`, no `title`, and none of ☾/☀/☉/☀︎, each tested individually); the glyph comes from
-   CSS keyed on `data-theme` (`.theme-toggle::before{content:"\263E"}` /
-   `[data-theme="dark"] .theme-toggle::before{content:"\2600\FE0E"}`), so it is correct at first
-   paint before any JS; all three served hashes equal `md5(file)[:8]` computed locally, i.e. live
-   serves the current committed files byte for byte; `theme.js` (2738 B) contains
-   `localStorage` get/set, `izz_theme`, `prefers-color-scheme`, `syncToggle`, `aria-pressed`; and
-   the live CSP `script-src 'self' …` permits it precisely because the file is external.
-   → **This is a DELIVERABILITY proof, NOT a rendering proof — do not upgrade it in your head.**
-   No JS was executed, no click fired, no computed style read, no pixel observed. Four things stay
-   unmeasurable from HTTP and any of them matches "nu merge": the ☾/☀︎ glyph could render as **tofu**
-   in his font stack (a 32 px round button that just looks EMPTY); `localStorage` may be blocked
-   (private mode falls into `theme.js`'s silent `catch`, so the choice would not persist);
-   an extension/service-worker/stale cached HTML on HIS device could serve different bytes; and the
-   dark palette's 11 `[data-theme]` rules were counted, not contrast-checked.
-   **What is NOT established:** that this was the owner's complaint, or that his device behaves the
-   same. Only he can close this — ask him to press it once and say what he sees. If he still says
-   "nu merge", the next step is his exact browser + a console screenshot, NOT another blind fix.
+0. **SINTEZA PRODUCE CLICKBAIT FLUENT CÂND SURSA NU TRIMITE FAPTE — raportat de proprietar
+   2026-08-04, cu exemplu de pe live. Diagnostic complet în `specs/sinteza-fara-substanta.md`.**
+   Pe scurt, fiindcă e cel mai important lucru deschis acum:
+   → **DATE:** `digisport` trimite `description` **identic** cu `title`. Măsurat pe `fetch_all()`:
+   **58 din 256 de iteme (23%) sosesc cu 0–4 cuvinte în plus față de titlu**, deci fără nimic de
+   sintetizat. Șase surse sunt 100% așa (`digisport`, `monitorulsv`, `piataauto` + 3 primării).
+   Pe corpusul publicat: **62 de articole din 2130**.
+   → **COD, prompt:** `process.py:27` cere explicit „*dacă descrierea e săracă, extrage esența din
+   titlul original*", în timp ce linia 22 interzice clickbait-ul. Când singura intrare e un titlu
+   clickbait, cele două se exclud și modelul nu are portiță de refuz.
+   → **COD, poartă:** `_quality_gate` verifică doar FORMA IEȘIRII (titlu nevid, corp ≠ titlu, nu
+   `fallback`, netrunchiat). O parafrază fluentă a unui clickbait trece toate verificările.
+   **De asta „atâtea iterații și fixuri" n-au prins-o: defectul nu e vizibil în cod, ci doar citind
+   textul publicat, iar niciun test nu citește textul publicat.**
+   → §7 conține deja regula corectă („SKIP the item, do not publish it broken"); nu e implementată
+   pentru cazul ăsta.
+   → **Autocritică ce trebuie păstrată:** `monitorulsv` a fost adăugat de mine în #129 după ce am
+   verificat că sursa *întoarce iteme* — nu că itemele *conțin ceva*. Intrând prin `sitemap_news`,
+   nu poate trece niciodată un prag de substanță. **„Feedul răspunde" ≠ „feedul are conținut".**
+   → **Blocat pe o decizie de proprietar** (în spec): pragul taie și anunțurile de primărie cu
+   descriere goală, care sunt exact motivul rubricii `local`. (a) nu se publică · (b) listă de
+   anunțuri fără teaser · (c) se citește pagina sursă.
+1. ~~**DARK MODE**~~ — **ÎNCHIS de proprietar 2026-08-04: funcționează.** Vezi secțiunea de mai sus.
+   Textul lung de aici a fost șters intenționat: cât timp rămânea scris ca „open", fiecare sesiune
+   îl relua și îl întreba din nou.
 1. ~~**PR #101 (locality lead photos) awaiting owner sign-off**~~ — **MERGED 2026-08-02 03:19.**
    §16's third state is now CLOSED, and it closed by **refuting the number this entry used to
    carry.** What stood here — "nobody has confirmed the 129 photos ON LIVE; `smoke_live.py` or a
