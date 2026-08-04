@@ -199,6 +199,16 @@ CATEGORY_LABELS = {
     "discounturi": "Discounturi", "regional": "Regional", "zonal": "Zonal", "local": "Local",
 }
 
+# Cate cuvinte trebuie sa aduca `description` PESTE titlu ca itemul sa merite sintetizat.
+# Sub prag nu exista nimic de sintetizat, iar un model caruia i se cere totusi un rezumat nu
+# poate produce decat o parafraza a titlului — daca titlul e clickbait, iese clickbait fluent,
+# care trece de orice verificare de FORMA. Vezi `specs/sinteza-fara-substanta.md`.
+# Pragul 5 e ales pe distributia masurata (2026-08-04, 256 de iteme): 56 de iteme au 0 cuvinte
+# noi, 2 au 1-4, 17 au 5-9, 181 au 10+. Deci taie exact grupul imposibil (23%) si lasa in pace
+# zona ambigua. E o manetă: ridicat la 10 ar taia 29%.
+# NU se aplica surselor oficiale (pl_/cj_/pr_) — alea nu trec prin AI deloc (`process_official`).
+MIN_SUBSTANTA_CUVINTE = 5
+
 # Model B+C
 PROMPT_VERSION = "v2-esenta"  # versiunea regulilor AI; la schimbare, articolele vechi se reprocesează
 BATCH_SIZE = 10                # articole model-B procesate intr-UN singur apel AI (economie quota).
