@@ -17,7 +17,7 @@ Acceptare — cele patru lucruri care se pot strica independent:
 """
 from generator import config, render
 from generator.process import process_official
-from generator.select import anunt_oficial_fara_corp
+from generator.select import anunt_oficial_fara_corp, titlu_fara_informatie
 
 LINK = ("https://primariaroman.ro/"
         "festivalul-international-de-folclor-ceahlaul-revine-la-roman/")
@@ -156,6 +156,56 @@ def test_cardul_obisnuit_isi_pastreaza_rezumatul():
     html = _card_html(a)
     assert 'class="summary"' in html and "reading-time" in html
     assert "Anunț oficial" not in html
+
+
+# --- 5. titlul e tot ce se publica, deci trebuie sa spuna ceva ---------------
+#
+# Toate sirurile de mai jos sunt titluri REALE, copiate din cele 69 de anunturi fara corp de pe
+# `main` la 2026-08-04. Impartirea in „respinse" / „publicabile" e verdictul masuratorii din
+# `sessions/A/2026-08-04-1655-audit-ci-titluri-imagini.md`, nu o intuitie.
+
+TITLURI_RESPINSE = [
+    "ANUNȚ PUBLIC",                        # doar cuvinte generice
+    "Publicitate",                         # generic + un singur cuvant
+    "Anunț PUZ",                           # 2 cuvinte; singurul discutabil din lot
+    "CP_Renta viagera_C2025_29.07.2026",   # nume de fisier, 3 underscore-uri
+    "https://primariax.ro/anunt-12.pdf",   # URL pus ca titlu
+    "raport_anual_2026.pdf",               # nume de fisier cu extensie
+]
+
+TITLURI_PUBLICABILE = [
+    "41 mana+fainare+putregai",            # 3 cuvinte reale, dar 2 bucati la `.split()`
+    "43 Afide la pomi",                    # buletin fitosanitar cu prefix numeric legitim
+    "44 Daunatori la varza",
+    "Concurs Functii publice",             # exact 3 cuvinte: pragul de 4 l-ar arunca
+    "SITUATII FINANCIARE TRIM II_2026",    # UN underscore, deci nu e nume de fisier
+    "Rezultat – consilier etica",
+    "SEDINTA CL 30.07.2026 HCL 33-36",
+    "PUBLICATIE CASATORIE PIRIU ALEXANDRU",
+    "DEMETER JOZSEF NIMROD – 27.07.2026",  # limita cunoscuta: trece, desi nu spune ce fel de act
+]
+
+
+def test_titlurile_fara_informatie_sunt_respinse():
+    for t in TITLURI_RESPINSE:
+        assert titlu_fara_informatie(t), f"ar trebui respins: {t!r}"
+
+
+def test_titlurile_cu_informatie_raman_publicabile():
+    for t in TITLURI_PUBLICABILE:
+        assert not titlu_fara_informatie(t), f"fals-pozitiv: {t!r}"
+
+
+def test_poarta_respinge_anuntul_cu_titlu_gol_de_informatie():
+    """Capatul lantului: predicatul chiar taie itemul, nu doar raspunde True."""
+    a = process_official([_item_oficial(title="ANUNȚ PUBLIC", original_title="ANUNȚ PUBLIC")])[0]
+    assert anunt_oficial_fara_corp(a), "premisa: e tot un anunt fara corp"
+    assert not render._quality_gate(a)
+
+
+def test_predicatul_de_titlu_nu_atinge_articolele_cu_corp():
+    """Un titlu scurt e legitim cand exista corp — regula se aplica DOAR anunturilor fara corp."""
+    assert render._quality_gate(_neoficial(title="Anunț PUZ", src_extra=None))
 
 
 def test_placeholderul_ramane_interzis_in_config():
