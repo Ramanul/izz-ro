@@ -410,6 +410,27 @@ def _retry_delay(exc: urllib.error.HTTPError, attempt: int) -> float | None:
     return RETRY_BACKOFF[min(attempt, len(RETRY_BACKOFF) - 1)]
 
 
+def _entry_body(entry) -> str:
+    """Textul cel mai bogat pe care il trimite feedul, curatat de HTML.
+
+    `feedparser` pune `<content:encoded>` in `entry.content[0].value`, NU in `summary`. Pana la
+    2026-08-04 se citea doar `summary`/`description`, deci corpul se pierdea la sursele care il
+    trimit acolo — un defect de FETCH raportat pana acum ca defect de SURSA. Masurat pe feeduri
+    live, DUPA curatare (14 surse x 8 iteme): 27 din 111 iteme trec pragul de substanta care
+    inainte le respingea, 84 raman fara corp. Castigul e concentrat: `pl_neamt_municipiul_roman`
+    sare de la `summary` gol la o mediana de 112 cuvinte peste titlu. Contra-verificat pe
+    `digisport`, unde `content` exista pe toate itemele dar nu adauga niciun caracter peste
+    `summary`: acolo sursa chiar nu trimite nimic, si asta ramane un defect de sursa, nu de fetch.
+
+    Cel mai lung candidat DUPA `clean_html`, nu inainte: un `content` plin de markup poate curata
+    mai scurt decat un `summary` de text simplu, iar comparatia pe HTML brut ar alege atunci
+    varianta mai saraca. `summary` ramane candidat, deci nicio sursa nu poate pierde ce avea.
+    """
+    raw = [c.get("value") or "" for c in (entry.get("content") or []) if isinstance(c, dict)]
+    raw += [entry.get("summary") or "", entry.get("description") or ""]
+    return max((clean_html(t) for t in raw), key=len, default="")
+
+
 def _fetch_one(key: str, source: dict, cache: dict | None = None) -> tuple[list, str | None]:
     """Returneaza (articole, eroare). Alege metoda de fetch in functie de tipul sursei."""
     if source.get("type") == "sitemap_news":
@@ -471,7 +492,7 @@ def _fetch_one(key: str, source: dict, cache: dict | None = None) -> tuple[list,
             "source_lang": source.get("lang", "ro"),
             "original_title": title,
             "title": title,
-            "description": clean_html(entry.get("summary") or entry.get("description") or ""),
+            "description": _entry_body(entry),
             "category": source["category"],
             "published": _parse_date(entry),
             "model": None,
