@@ -395,3 +395,33 @@ def test_capitala_de_moldova_supravietuieste_gardei():
     assert geo.clasifica(
         "Locomotivele circulă pe magistralele care conectează Capitala de Moldova "
         "și vestul țării") == "regional"
+
+
+# --- badge-ul de pe coperta: judetul in locul categoriei (decizie proprietar 2026-08-04) ---
+
+def test_badge_zonal_arata_judetul_cu_diacritice():
+    """Cheia sursei da judetul, iar afisarea trece prin `eticheta_judet` — deci „Maramureș",
+    nu „MARAMURES". Fara pasul asta badge-ul ar fi iesit fara diacritice pe coperta."""
+    assert geo.judet_copertei({"category": "zonal", "source": "emaramures"}) == "Maramureș"
+
+
+def test_badge_local_arata_judetul():
+    assert geo.judet_copertei({"category": "local", "source": "bzi"}) == "Iași"
+
+
+def test_badge_regional_ramane_pe_categorie_chiar_cu_judet_derivabil():
+    """`regional` acopera mai multe judete: un badge de judet ar fi FALS, nu doar lipsa.
+    Sursa de mai jos ARE judet derivabil — regula taie dupa categorie, nu dupa disponibilitate."""
+    assert geo.judet_sursa("emaramures") == "MARAMURES"
+    assert geo.judet_copertei({"category": "regional", "source": "emaramures"}) == ""
+
+
+def test_badge_categoriile_negeografice_nu_iau_judet():
+    """La `auto`/`sport`/`extern` locul nu e subiectul, desi sursa e un ziar judetean."""
+    assert geo.judet_copertei({"category": "auto", "source": "alba24"}) == ""
+
+
+def test_badge_fara_judet_derivabil_cade_pe_categorie():
+    """40 din 435 `zonal` si 161 din 398 `local` n-au judet — acolo badge-ul ramane cum era."""
+    assert geo.judet_copertei({"category": "local", "source": "sursa-inexistenta"}) == ""
+    assert geo.judet_copertei({"category": "zonal"}) == ""

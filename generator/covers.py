@@ -21,6 +21,8 @@ try:
 except ImportError:
     Image = None
 
+from . import geo
+
 PAPER = "#f6f7f9"
 INK, INK2 = "#15171c", "#4d5562"           # text pe fond deschis (ca pe site)
 GOLD = (201, 162, 39)
@@ -382,7 +384,8 @@ def _draw_text(img, a: dict):
     mono = _font("mono", 26 * SS)
     mono_s = _font("mono", 20 * SS)
     display = _font("display", 62 * SS)
-    d.text((56 * SS, 48 * SS), (a.get("category") or "știri").upper(), font=mono, fill=GOLD_STRONG)
+    eyebrow = geo.judet_copertei(a) or a.get("category") or "știri"
+    d.text((56 * SS, 48 * SS), eyebrow.upper(), font=mono, fill=GOLD_STRONG)
     rule_w = int((W2 / PHI - 112 * SS) / PHI)
     d.line([56 * SS, 96 * SS, 56 * SS + rule_w, 96 * SS], fill=GOLD_HEX, width=2 * SS)
     y = 128 * SS

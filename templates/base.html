@@ -5,6 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>{% block title %}{{ site.name }}{% endblock %}</title>
   <meta name="description" content="{% block description %}{{ site.tagline }}{% endblock %}">
+  {# Discover nu ia in considerare paginile fara max-image-preview:large — imaginea din feed
+     e limitata la un thumbnail, iar feedul nu serveste thumbnailuri. Bloc, nu valoare fixa,
+     ca paginile de subiect sa-si poata pune `noindex` fara sa iasa doua meta `robots`. #}
+  <meta name="robots" content="{% block robots %}max-image-preview:large{% endblock %}">
   <link rel="canonical" href="{{ canonical }}">
 
   <!-- Open Graph / Twitter -->

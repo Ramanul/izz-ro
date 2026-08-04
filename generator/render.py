@@ -145,11 +145,26 @@ def _human_date(iso: str) -> str:
     return f"{dt.day} {_RO_MONTHS[dt.month]} {dt.year}, {dt:%H:%M}"
 
 
+def _taie_slug(s: str, limita: int = 80, minim: int = 40) -> str:
+    """Taie la limita de cuvant, nu la mijloc: `...pentru-masuri-de-econom` citea ca output
+    de masina. Masurat pe arhiva de 7001 articole: 1254 (17.9%) erau taiate la mijloc.
+
+    `minim` e garda pentru cazul patologic — un titlu cu un cuvant foarte lung exact peste
+    limita ar fi retezat la nimic daca am da mereu inapoi pana la ultima cratima. Sub prag,
+    taietura brutala ramane preferabila unui slug de doua cuvinte.
+    """
+    if len(s) <= limita:
+        return s
+    taiat = s[:limita]
+    i = taiat.rfind("-")
+    return taiat[:i] if i >= minim else taiat
+
+
 def _assign_slugs(articles: list) -> None:
     """Slug unic per categorie din titlu (permalink stabil, indexabil)."""
     seen: dict = {}
     for a in articles:
-        base = (slugify(a.get("title") or a.get("original_title") or "stire") or "stire")[:80]
+        base = _taie_slug(slugify(a.get("title") or a.get("original_title") or "stire") or "stire")
         # Un slug pur numeric ar ocupa /<cat>/2/, adica exact calea unei pagini de paginare —
         # iar articolele se scriu DUPA paginile de listare, deci ar suprascrie-o tacut si
         # linkul „2" din navigatie ar deschide un articol. Azi 0 din 1733 de titluri produc
