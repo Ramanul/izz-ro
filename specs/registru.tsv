@@ -1,0 +1,144 @@
+id	data	zona	titlu	stare	decident	dovada	motiv	leaga
+IZZ-0001	2026-06-26	necunoscut	Add CLAUDE.md operating contract for Claude Code	implementat	Ramanul	#1 1ca0ffeb		
+IZZ-0002	2026-06-29	fix	fix: eliminate raw-RSS fallbacks from the published set (Zero Zgomot)	implementat	Ramanul	#2 a3290b21		
+IZZ-0003	2026-07-02	necunoscut	Fix duplicate Model C sources, offset cron congestion, surface dead scraper	implementat	Ramanul	#3 06871fcf		
+IZZ-0004	2026-07-02	gemini	perf(gemini): throttle 4s (RPM root cause) + local front-end audit loop	implementat	Ramanul	#4 c02e5fcf		
+IZZ-0005	2026-07-02	a11y	fix(a11y): darken --ink-3 and --gold-strong â€” WCAG2AA 249â†’0, Lighthouse A11y 92â†’100	implementat	Ramanul	#5 d98c0230		
+IZZ-0006	2026-07-03	ui	fix(ui): show brand descriptor ("Raportul È™tirilor principale") on mobile	implementat	Ramanul	#6 bde53797		
+IZZ-0007	2026-07-04	ui	fix(ui): one provenance line per card â€” same position for B and C models	implementat	Ramanul	#7 a5d45ce2		
+IZZ-0008	2026-07-04	ui	fix(ui): permanent attribution formula everywhere + methodology notice moved to legal only	implementat	Ramanul	#8 3997dbd4		
+IZZ-0009	2026-07-04	ui	feat(ui): clickable source links everywhere + drop redundant "CiteÈ™te" CTA	implementat	Ramanul	#9 d7b1b2aa		
+IZZ-0010	2026-07-04	qa	feat(qa): hourly smoke-test of the live site against the owner's format rules	implementat	Ramanul	#10 89d21a55		
+IZZ-0011	2026-07-04	render	feat(render): diversity-aware ordering â€” no source appears more than twice in a row	implementat	Ramanul	#11 2969624b		
+IZZ-0012	2026-07-04	freshness	fix(freshness): Romania-timezone display + resilient cron (why 6 AM showed yesterday's news)	implementat	Ramanul	#12 57fb6549		
+IZZ-0013	2026-07-04	feat	feat: legal compliance minimals + knowledge graph v1 (entities, originality, follow feeds)	implementat	Ramanul	#13 1badfcc7		
+IZZ-0014	2026-07-04	cluster	fix(cluster): cross-run clustering â€” same-event stories 20â€“30 min apart now merge	implementat	Ramanul	#14 68bd9a6f		
+IZZ-0015	2026-07-04	fetch	perf(fetch): conditional GET (ETag/If-Modified-Since) on feed fetches	implementat	Ramanul	#15 b81d5d2f		
+IZZ-0016	2026-07-04	ui	fix(ui): never render the newsletter setup placeholder publicly	implementat	Ramanul	#16 28d40d60		
+IZZ-0017	2026-07-04	covers	feat(covers): per-article generative og:image v2 â€” refined, per-category identity, edition mark	implementat	Ramanul	#17 bfb234b1		
+IZZ-0018	2026-07-05	covers	feat(covers): v3 dark editorial â€” professional typography, designer icons, generative art	implementat	Ramanul	#18 ef784ab4		
+IZZ-0019	2026-07-05	covers	fix(covers): seeded per-category icon rotation + cleaner globe for extern	implementat	Ramanul	#19 fb156055		
+IZZ-0020	2026-07-05	qa	feat(qa): smoke-test verifies generated covers on the live site	implementat	Ramanul	#20 5fe67e72		
+IZZ-0021	2026-07-12	claude	chore(claude): sub-agents setup + data-source rename + HSTS	implementat	Ramanul	#21 928bcfe1		
+IZZ-0022	2026-07-09	deploy	fix(deploy): unfreeze production + Phase 2 generative art on site	implementat	Ramanul	#22 d51a5bbe		
+IZZ-0023	2026-07-09	covers	perf(covers): generate on-site art only for recent articles	respins	Ramanul	#23		
+IZZ-0024	2026-07-09	infra	infra: subagenÈ›i cu guard â€” Dependabot + CodeQL + AI Gateway plumbing	implementat	Ramanul	#24 69fec0b4		
+IZZ-0025	2026-07-24	ci	ci: bump actions/checkout from 4 to 7	respins	app/dependabot	#25		
+IZZ-0026	2026-07-20	ci	ci: bump actions/setup-python from 5 to 6	implementat	app/dependabot	#26 72356a80		
+IZZ-0027	2026-07-20	ci	ci: bump github/codeql-action from 3 to 4	implementat	app/dependabot	#27 f0b0a22c		
+IZZ-0028	2026-07-09	cards	feat(cards): miniaturi cu arta generativÄƒ pe carduri	implementat	Ramanul	#28 0fccd7b0		
+IZZ-0029	2026-07-10	feat	feat: imagini unice per articol (HTML/CSS + Chromium, cu fallback Pillow) + operator legal	implementat	Ramanul	#29 f7e755c8		
+IZZ-0030	2026-07-10	cache	perf(cache): Cloudflare _headers (cache policy for assets & images)	implementat	Ramanul	#30 82565860		
+IZZ-0031	2026-07-11	a11y	legal(a11y): declaraÈ›ie de accesibilitate (EAA)	implementat	Ramanul	#31 4c73ccc5		
+IZZ-0032	2026-07-11	wording	legal(wording): terms/takedown aliniate cu funcÈ›iile actuale (AI + imagini proprii)	implementat	Ramanul	#32 7f669bf2		
+IZZ-0033	2026-07-11	chore	chore: Ã®nchiderea backlog-ului â€” teste + CI, curÄƒÈ›are covers.py, backlog complet	implementat	Ramanul	#33 21f60967		
+IZZ-0034	2026-07-11	growth	feat(growth): share, pagina Despre, ierarhie pe homepage, cÄƒutare	implementat	Ramanul	#34 fc8790d1		
+IZZ-0035	2026-07-12	portraits	feat(portraits): portrete oficiale Wikidata pentru persoane publice (pilot)	implementat	Ramanul	#35 dc7cd433		
+IZZ-0036	2026-07-12	portraits	feat(portraits): acceptÄƒ È™i persoane notorii internaÈ›ional (sportivi/artiÈ™ti)	implementat	Ramanul	#36 289d91ff		
+IZZ-0037	2026-07-12	fonts	perf(fonts): fonturi auto-gÄƒzduite, subsetate RO â€” articol 100/100/100/100	implementat	Ramanul	#37 fd424a19		
+IZZ-0038	2026-07-12	graph	feat(graph): Conexiuni + cronologie pe subiecte, Articole conectate	implementat	Ramanul	#38 c00cde4b		
+IZZ-0039	2026-07-12	fonts	perf(fonts): inline fonts.css to cut a render-blocking hop	implementat	Ramanul	#39 9ab76de1		
+IZZ-0040	2026-07-12	headers	fix(headers): real cache TTLs + security headers + PWA manifest	implementat	Ramanul	#40 3277d437		
+IZZ-0041	2026-07-12	images	perf(images): WebP variants for article art via picture element	implementat	Ramanul	#41 7ede46ae		
+IZZ-0042	2026-07-12	analytics	feat(analytics): GA4 loaded only after explicit consent (Consent Mode v2)	implementat	Ramanul	#42 88f521b6		
+IZZ-0043	2026-07-12	seo	seo: HSTS header + clamp article meta descriptions to SERP length	implementat	Ramanul	#43 219bcb1c		
+IZZ-0044	2026-07-12	necunoscut	Real entity photos: broaden coverage + present them well (legal, free, fast)	implementat	Ramanul	#44 ff19e541		
+IZZ-0045	2026-07-12	ui	fix(ui): light placeholder for lazy covers â€” no black flash on category pages	implementat	Ramanul	#45 45a3e4c1		
+IZZ-0046	2026-07-12	covers	fix(covers): content-hash cache-busting on article image URLs	implementat	Ramanul	#46 38b9386c		
+IZZ-0047	2026-07-12	smoke	test(smoke): guard security headers + image cache TTL on live	implementat	Ramanul	#47 5ad90850		
+IZZ-0048	2026-07-13	necunoscut	Fix misleading team photos + AI photoâ†”article fit judge	implementat	Ramanul	#48 9fe3a645		
+IZZ-0049	2026-07-13	cache	fix(cache): content-hash versioning on CSS/JS â€” the flicker fix actually reaches users; + Â§16 verification rule	implementat	Ramanul	#49 ea61ff2a		
+IZZ-0050	2026-07-13	smoke	test(smoke): automatic live checks â€” asset cache-busting + non-dark card placeholder	implementat	Ramanul	#50 1cfeaff6		
+IZZ-0051	2026-07-13	visual	test(visual): real-browser live check (Playwright) â€” automatic as-a-user verification	implementat	Ramanul	#51 faed9278		
+IZZ-0052	2026-07-13	visual	test(visual): ignore Cloudflare /cdn-cgi/ beacons (false-positive fix)	implementat	Ramanul	#52 bb83d16e		
+IZZ-0053	2026-07-13	claude	docs(claude): end Â§14 autonomous mandate â€” one active session, no self-merge	implementat	Ramanul	#53 3136156c		
+IZZ-0054	2026-07-20	ci	ci: bump browser-actions/setup-chrome from 1 to 2	implementat	app/dependabot	#54 577cab0e		
+IZZ-0055	2026-07-20	ci	ci: bump actions/upload-artifact from 4 to 7	implementat	app/dependabot	#55 297a95fa		
+IZZ-0056	2026-07-16	taxonomy	feat(taxonomy): lifestyle, fashion, discounturi categories + candidate sources	implementat	Ramanul	#56 7b6a2b3d		
+IZZ-0057	2026-07-17	brand	feat(brand): tagline "InformaÈ›ia Zilei" + descriptor "Portalul È™tirilor tale"	implementat	Ramanul	#57 771a5eda		
+IZZ-0058	2026-07-17	necunoscut	Swap tagline and descriptor in site slogan	implementat	Ramanul	#58 affcd58d		
+IZZ-0059	2026-07-17	taxonomy	feat(taxonomy): "local" category â€” official feeds from primÄƒrii + consilii judeÈ›ene	implementat	Ramanul	#59 dc5a7287		
+IZZ-0060	2026-07-17	local	feat(local): Monitor Local â€” generic HTML list scraper engine (city halls without RSS)	implementat	Ramanul	#60 60f4f482		
+IZZ-0061	2026-07-17	necunoscut	Replace gold app theme-color/icons with ink+gold scheme	implementat	Ramanul	#61 9a8914c9		
+IZZ-0062	2026-07-17	local	feat(local): county-newspaper RSS + geographic category pin (populates the Local section)	implementat	Ramanul	#62 39469ae7		
+IZZ-0063	2026-07-18	nav	feat(nav): two-tier menu + localized category labels + remove dead piataauto	implementat	Ramanul	#63 f2a00a47		
+IZZ-0064	2026-07-17	related	fix(related): require >=2 shared entities for "Articole conectate"	implementat	Ramanul	#64 e4d1c869		
+IZZ-0065	2026-07-18	necunoscut	Add PWA install button to header	implementat	Ramanul	#65 b1750992		
+IZZ-0066	2026-07-20	geo-categorii	specs(geo-categorii): verified spec (current main) â€” split local into regional/zonal/local	implementat	Ramanul	#66 6adff591		
+IZZ-0067	2026-07-20	chore	chore: enable AI reviewers (CodeRabbit + Gemini Code Assist)	implementat	Ramanul	#68 dffc1b0e		
+IZZ-0068	2026-07-20	feat	feat: Claude Code Actions workflows (reviewer #1)	implementat	Ramanul	#69 0be2cd51		
+IZZ-0069	2026-07-20	ci	test: Claude auto-review smoke test	implementat	Ramanul	#70 82460b39		
+IZZ-0070	2026-07-20	feat	feat: Ask AI (docs assistant) as second Claude reviewer	implementat	Ramanul	#71 e321115f		
+IZZ-0071	2026-07-20	metrics	spec(metrics): track cost per slice â€” log + helper CLI	implementat	Ramanul	#72 29f97383		
+IZZ-0072	2026-07-20	parallel-fetch	specs(parallel-fetch): executor spec â€” concurrent fetch_all (scaling prereq)	implementat	Ramanul	#73 644c1bce		
+IZZ-0073	2026-07-24	ci	ci: bump actions/setup-python from 6 to 7	implementat	app/dependabot	#74 dac3592a		
+IZZ-0074	2026-07-24	gemini	fix(gemini): surface HTTP error response body in provider errors	implementat	Ramanul	#75 40639e65		
+IZZ-0075	2026-07-24	gemini	fix(gemini): drop thinkingConfig rejected by Gemini 3.x models	implementat	Ramanul	#76 d56a8db9		
+IZZ-0076	2026-07-24	proces	fix(process): tolerate list-wrapped JSON objects from Gemini 3.x	implementat	Ramanul	#77 bcef9e4d		
+IZZ-0077	2026-07-24	fetch	perf(fetch): parallelize fetch_all â€” 6x faster, order preserved	implementat	Ramanul	#78 8d670b70		
+IZZ-0078	2026-07-24	regional	feat(regional): 16 CI-validated multi-county publications + 2 MaramureÈ™ zonal	implementat	Ramanul	#79 9595cb87		
+IZZ-0079	2026-07-24	local	feat(local): impact-first static rule + LOCAL_GOLD_LIMIT 35â†’120	implementat	Ramanul	#80 3dda89be		
+IZZ-0080	2026-07-24	local	fix(local): _impact_tier matches whole words, not substrings	implementat	Ramanul	#81 715a8880		
+IZZ-0081	2026-07-25	ghiduri	Ghiduri: gata cu â€žVerificat" peste valori placeholder + jurnal comun de munca si consum	implementat	Ramanul	#85 c98624f3		
+IZZ-0082	2026-07-24	ci	fix(ci): reviewerii Claude nu puteau citi codul â€” picau pe orice PR	implementat	Ramanul	#86 1168f278		
+IZZ-0083	2026-07-25	proces	fix(state): 131 de articole stateau pe rubrica geografica veche	implementat	Ramanul	#87 47b805f7		
+IZZ-0084	2026-07-25	necunoscut	docs+ci: cadenÈ›a realÄƒ de publicare, È™i reviewerii nu mai blocheazÄƒ PR-urile pe cotÄƒ	implementat	Ramanul	#88 3a69290e		
+IZZ-0085	2026-07-25	surse	fix(surse): pagina arÄƒta 29 din 189 de surse, zero primÄƒrii	implementat	Ramanul	#89 689e631b		
+IZZ-0086	2026-07-25	local	feat(local): scoate ultima primÄƒrie moartÄƒ, slotul merge la o sursÄƒ vie	implementat	Ramanul	#90 8d0b5ab2		
+IZZ-0087	2026-07-25	ui	fix(ui): dark mode ilizibil, bara de rubrici dispÄƒrea, numele greÈ™it Ã®n aplicaÈ›ie	implementat	Ramanul	#91 2c31098d		
+IZZ-0088	2026-07-25	coord	feat(coord): dashboard-ul zicea â€ž0 delegÄƒri" deÈ™i rulaserÄƒ trei agenÈ›i	implementat	Ramanul	#92 74d3ba49		
+IZZ-0089	2026-07-25	feedcheck	fix(feedcheck): verificatorul foloseÈ™te fetcher-ul real al pipeline-ului	implementat	Ramanul	#93 28e0bff2		
+IZZ-0090	2026-07-25	proces	docs(state): STATE.md lista ca deschise lucruri Ã®nchise azi	implementat	Ramanul	#94 af3319b4		
+IZZ-0091	2026-07-25	local	feat(local): repune 3 primÄƒrii pe care verificatorul vechi le declarase moarte	implementat	Ramanul	#95 d4f4507b		
+IZZ-0092	2026-08-01	ui	fix(ui): butonul de dark mode e mort pe live â€” CSP refuzÄƒ orice handler inline	implementat	Ramanul	#96 fa001ffd		
+IZZ-0093	2026-08-01	proces	docs: Â§18 igiena sesiunii â€” o sesiune veche de-o sÄƒptÄƒmÃ¢nÄƒ a ars 32% Ã®n zece minute	respins	Ramanul	#97		
+IZZ-0094	2026-08-01	fetch	fix(fetch): surface silent sitemap failures + cap after filtering	implementat	Ramanul	#98 4cc0e135		
+IZZ-0095	2026-08-01	geo	feat(geo): rubrica geograficÄƒ decisÄƒ din text, nu ghicitÄƒ de AI	implementat	Ramanul	#99 8fdce44f		
+IZZ-0096	2026-08-01	geo	feat(geo): local = unde se intampla, nu cine publica â€” poarta pe toate sursele	implementat	Ramanul	#100 5709adf0		
+IZZ-0097	2026-08-02	photos	feat(photos): locality lead photos for local news â€” 0 â†’ 129 real photos	implementat	Ramanul	#101 3ae6862f		
+IZZ-0098	2026-08-02	â§13	docs(Â§13): re-record the front-end baseline from measurement, with its variance	implementat	Ramanul	#102 34cc8d32		
+IZZ-0099	2026-08-02	ci	fix(audit): score a stable article page and record the tool versions	implementat	Ramanul	#103 229bcb7a		
+IZZ-0100	2026-08-02	proces	docs(state): SIRUTA adopted; two sessions active again; press research logged	implementat	Ramanul	#104 a56fdd7a		
+IZZ-0101	2026-08-02	surse	feat(surse): group institutional sources by historical region and county	implementat	Ramanul	#105 f493d96b		
+IZZ-0102	2026-08-02	ui	fix(ui): the theme toggle shows the action, not a fixed moon	implementat	Ramanul	#106 e558f3da		
+IZZ-0103	2026-08-02	ci	fix(audit): make audit.sh actually run on Windows, and record the measured variance	implementat	Ramanul	#107 12704913		
+IZZ-0104	2026-08-02	pipeline	fix(pipeline): skip items already past TTL instead of processing then deleting them	implementat	Ramanul	#108 41658bf0		
+IZZ-0105	2026-08-02	â§13	docs(Â§13): name the real CLS culprit, and retire two wrong ones	implementat	Ramanul	#109 6a4a6ad0		
+IZZ-0106	2026-08-02	fetch	fix(fetch): a source that answers 200 with zero articles is no longer silent	implementat	Ramanul	#110 54dd4426		
+IZZ-0107	2026-08-02	fetch	diag(fetch): capture what the runners actually receive from the silent sources	implementat	Ramanul	#111 291c8f9d		
+IZZ-0108	2026-08-03	security	ci(security): pin every action to a commit SHA + drop credentials on read-only checkouts	implementat	Ramanul	#112 5c631f7d		
+IZZ-0109	2026-08-02	fetch	fix(fetch): bot challenge is not a dead source, and pace requests per hosting provider	implementat	Ramanul	#113 1c02de59		
+IZZ-0110	2026-08-02	render	test(render): cover the editorial logic that decides what reaches the site	implementat	Ramanul	#114 2350b18c		
+IZZ-0111	2026-08-02	calc	fix(calc): the salary calculator works â€” external JS under CSP, plus select.py	implementat	Ramanul	#115 e3803973		
+IZZ-0112	2026-08-02	ghiduri	feat(ghiduri): trei ghiduri care n-au ajuns niciodatÄƒ la un cititor	implementat	Ramanul	#116 32e01c72		
+IZZ-0113	2026-08-02	seo	feat(seo): sitemap-ul conÈ›inea doar È™tiri â€” toate paginile editoriale lipseau	implementat	Ramanul	#117 d119b098		
+IZZ-0114	2026-08-02	pipeline	feat(pipeline): position in config.SOURCES decided what gets published	implementat	Ramanul	#118 0d137d33		
+IZZ-0115	2026-08-03	necunoscut	Three guides had prose that never reached a reader; then delete the dead /utile/ path	implementat	Ramanul	#119 31a8354a		
+IZZ-0116	2026-08-03	necunoscut	The minimum wage changed on 1 July; the site and its calculator never noticed	implementat	Ramanul	#120 4fdc6670		
+IZZ-0117	2026-08-03	necunoscut	The published-date sort is fine; the invariant under it was unguarded	implementat	Ramanul	#121 181ef331		
+IZZ-0118	2026-08-03	seo	feat(seo): news sitemap + robots announces only what the run wrote	implementat	Ramanul	#122 0b142a89		
+IZZ-0119	2026-08-03	ai	fix(ai): cap the upgrade reserve by how many articles can actually be upgraded	implementat	Ramanul	#123 7d3fca94		
+IZZ-0120	2026-08-03	render	fix(render): every listing page is reachable, and no pagination link is dead	implementat	Ramanul	#124 4f335153		
+IZZ-0121	2026-08-03	geo	feat(geo): a village counts as local only when it is in the source's county	implementat	Ramanul	#125 2ac3c399		
+IZZ-0122	2026-08-03	geo	fix(geo): an ambiguous name counts as a place only when the text marks it as one	implementat	Ramanul	#126 63128e7d		
+IZZ-0123	2026-08-04	geo	fix(geo): a region name after a capitalised word is a brand, not geography	implementat	Ramanul	#127 35ea00c0		
+IZZ-0124	2026-08-04	ci	ci(lint): add a narrow ruff gate (F + DTZ) and clear the 13 findings	implementat	Ramanul	#128 92072fbf		
+IZZ-0125	2026-08-04	surse	feat(sources): local press wave 1 â€” 11 county papers, every URL fetched first	implementat	Ramanul	#129 ba5b31ef		
+IZZ-0126	2026-08-04	render	fix(quality): do not synthesise an item whose source sent no facts beyond the title	implementat	Ramanul	#130 2dd5aa22		
+IZZ-0127	2026-08-04	render	feat(quality): publish a bare official announcement as title + link, no invented teaser	propus	Ramanul	#131		
+IZZ-0128	2026-08-04	fetch	fix(fetch): read the article body from content:encoded, not only from description	implementat	Ramanul	#132 cb5b1ff4		
+IZZ-0129	2026-08-02	surse	IP-urile runnerilor GitHub sunt blocate de surse	masurat-fals	claude	specs/STATE.md; PR #113	Fals. silent_probe de pe runner: 10/10 ok, apoi 74/75 ok. Variabila e VOLUMUL maturii, nu IP-ul. A dus la recomandari gresite de proxy/self-hosted runner.	
+IZZ-0130	2026-08-02	surse	Cache-ul conditional GET intoarce 304 si de aia lipsesc surse	masurat-fals	claude	specs/STATE.md	Fals. Rularea de la 10:05 avea cache de 3h23m, peste CACHE_MAX_AGE_H=3, deci cereri neconditionate; feed_check.py nici nu paseaza cache.	
+IZZ-0131	2026-08-02	surse	Un back-off si un retry trec de challenge-ul anti-bot	masurat-fals	claude	specs/STATE.md	Fals, testat: cu pauza de 6s, peste timerul de reload al paginii, 40 din 40 de surse au primit acelasi interstitial. Cota e pe fereastra de timp.	
+IZZ-0132	2026-08-02	ui	#izz-consent cauzeaza CLS pe home	masurat-fals	claude	izz/CLAUDE.md sectiunea 13	Fals. E position:fixed;bottom:0, deci in afara fluxului: nu poate muta <main>. Cauza reala e #izz-install-btn, 49px.	
+IZZ-0133	2026-08-02	ui	Swap-ul de web-font cauzeaza CLS	masurat-fals	claude	izz/CLAUDE.md sectiunea 13	Fals. Fortand stackurile de fallback si re-masurand: delta 0px pe grupul de header la 412px si la 1280px. Fonturile sunt self-hosted, subsetate, doua preincarcate.	
+IZZ-0134	2026-07-25	proces	Sandboxul Claude Code web nu poate ajunge la izz.ro	masurat-fals	claude	izz/CLAUDE.md sectiunea 16	Fals. https://izz.ro/ da 200 cu continut real, iar fiecare PR are preview Cloudflare accesibil. Deci starea 'confirmat pe live' E atingibila si trebuie chiar facuta.	
+IZZ-0135	2026-08-04	render	CodeRabbit: src_extra se pierde prin cele trei cai AI	masurat-fals	recenzor	#130; tests/test_substanta_sursa.py	Refutat pe cod: functiile sunt in process.py nu in main.py, si niciuna nu pierde campul. Gaura reala era lipsa unui test intre capete, acoperita acum.	
+IZZ-0136	2026-08-03	ui	Dark mode functioneaza — nu se mai re-testeaza	inchis-de-proprietar	proprietar	specs/STATE.md sectiunea INCHISE DE PROPRIETAR	Proprietarul a confirmat de patru ori. Data = cand a fost consemnat, nu cand s-a decis prima oara.	
+IZZ-0137	2026-08-03	geo	Republica Moldova nu se pune pe rubrica 'extern'	inchis-de-proprietar	proprietar	specs/STATE.md sectiunea INCHISE DE PROPRIETAR	Decizie editoriala a proprietarului. Data = cand a fost consemnat.	
+IZZ-0138	2026-08-03	ui	'Coperta generata' se explica, nu se arunca ca jargon	inchis-de-proprietar	proprietar	specs/STATE.md sectiunea INCHISE DE PROPRIETAR	45 de fotografii reale vs 1302 coperti generate: termenul induce in eroare daca nu e explicat. Data = cand a fost consemnat.	
+IZZ-0139	2026-07-25	cost	Marirea cadentei cron ca sa se publice mai des	respins	proprietar	izz/CLAUDE.md sectiunea 17	Fiecare commit de stare declanseaza un build Cloudflare; planul gratuit da ~500/luna. 12/zi = ~360. Mai des a produs exact pana de deploy din 5-9 iulie.	
+IZZ-0140	2026-07-13	proces	Mandatul de livrare autonoma cu auto-merge pe main	anulat	proprietar	izz/CLAUDE.md sectiunea 14	Doua sesiuni cu cron autonom au facut merge in paralel si munca pe GA + security headers a trebuit refacuta (12-13 iulie). Reinstaurat bounded in 14b: doar draft PR, niciodata merge.	
+IZZ-0141	2026-08-02	ui	Butonul de install creste headerul cu 49px si strica CLS	blocat	proprietar	izz/CLAUDE.md sectiunea 13; #109	Cauza e masurata si sigura (#izz-install-btn). Unde se muta butonul e decizie de plasare a proprietarului, nu tehnica; rezervarea permanenta a randului costa 49px de header mobil.	
+IZZ-0142	2026-08-04	render	7 din 79 de anunturi oficiale au titluri care nu spun nimic	blocat	proprietar	#131; specs/STATE.md punctul -1	La un anunt fara corp titlul e singura informatie; printre ele un URL brut si un nume de fisier. Pragul e editorial, nu tehnic — trei optiuni scrise, asteapta decizia.	
+IZZ-0143	2026-08-04	surse	Cele 62 de articole deja publicate din surse fara substanta	blocat	proprietar	specs/STATE.md punctul 3	Raman pana expira pe ARTICLE_TTL_DAYS. Poarta trateaza src_extra absent ca 'nu stiu', intentionat — altfel un singur deploy ar goli feedul. Un backfill e o decizie, nu o scapare.	
