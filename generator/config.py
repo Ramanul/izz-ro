@@ -63,6 +63,53 @@ SOURCES = {
     # zonal — Maramures (nivel judet; regiunea istorica ≈ judetul, deci ziarele MM sunt zonale)
             "actualmm":     {"name": "actualMM",            "url": "https://actualmm.ro/feed/",              "category": "zonal", "judet": "MARAMURES"},
             "emaramures":   {"name": "eMaramureș",          "url": "https://www.emaramures.ro/feed/",        "category": "zonal", "judet": "MARAMURES"},
+    # zonal — VALUL 1 al extinderii pe presa judeteana (2026-08-04). Fiecare URL de aici a fost
+    # cerut REAL de pe IP-ul de acasa pe 2026-08-03 si a intors un feed cu intrari proaspete —
+    # niciunul nu e ghicit dupa tiparul `<domeniu>/feed/`, care e exact felul in care valul
+    # anterior de 79 de candidati a produs ~30% caderi. NU verifica astea cu `feedcheck.yml`:
+    # ruleaza pe runnere GitHub, unde furnizorul serveste pagina de challenge (vezi READ FIRST
+    # din specs/STATE.md), deci un verdict „mort" de acolo nu inseamna nimic.
+    # Se intra in VALURI de ~15, nu toate odata: bugetul AI e ~10 apeluri de iteme noi pe rulare.
+    # Forma `www` unde apare mai jos NU e cosmetica — fara ea raspunsul e un 30x in plus.
+            "cvlpress":     {"name": "Cuvântul Libertății",  "url": "https://cvlpress.ro/feed/",              "category": "zonal", "judet": "DOLJ"},
+            "alba24":       {"name": "Alba24",               "url": "https://alba24.ro/feed",                 "category": "zonal", "judet": "ALBA"},
+            "zidezi":       {"name": "Zi de Zi",             "url": "https://www.zi-de-zi.ro/feed/",          "category": "zonal", "judet": "MURES"},
+            "monitorulbt":  {"name": "Monitorul de Botoșani","url": "https://www.monitorulbt.ro/feed/",       "category": "zonal", "judet": "BOTOSANI"},
+            "turnulsfatului": {"name": "Turnul Sfatului",    "url": "https://www.turnulsfatului.ro/feed/",    "category": "zonal", "judet": "SIBIU"},
+            "bihon":        {"name": "Bihon",                "url": "https://www.bihon.ro/feed/",             "category": "zonal", "judet": "BIHOR"},
+            "mytex":        {"name": "MyTex",                "url": "https://mytex.ro/feed/",                 "category": "zonal", "judet": "BRASOV"},
+    # `b365` e SINGURA sursa din val FARA `judet`, si nu din scapare. BUCURESTI e in geo.REGIUNI,
+    # dar are ZERO randuri in data/sate_judet.csv, deci campul n-ar deschide nicio potrivire pe
+    # sate — iar `test_toate_ziarele_judetene_declara_un_judet_cunoscut` interzice exact asta, pe
+    # buna dreptate: un `judet` care nu deschide nimic e o declaratie pe care datele n-o sustin,
+    # si tace in loc sa dea eroare. Nu-l „completa" ca sa arate ca celelalte; testul pica.
+            "b365":         {"name": "B365",                 "url": "https://b365.ro/feed/",                  "category": "zonal"},
+    # Saptamanale cerute explicit de owner. `gazetadecluj` e SINGURUL feed din val cu bozo=1
+    # (SAXParseException); feedparser recupereaza 9 intrari si fetch.py tolereaza asta, dar e la
+    # o modificare de XML distanta de zero. Daca apare vreodata ca „200 dar 0 articole ...
+    # SAXParseException" in `dead`, asta e — nu re-diagnostica reteaua.
+    # `saptamanagiurgiuveana` NU e la radacina: WordPress-ul lor sta sub /wp/, si de aia calea
+    # ghicita `<domeniu>/feed/` daduse 404 si sursa fusese declarata moarta pe nedrept.
+            "gazetadecluj": {"name": "Gazeta de Cluj",       "url": "https://gazetadecluj.ro/feed/",          "category": "zonal", "judet": "CLUJ"},
+            "sptgiurgiu":   {"name": "Săptămâna Giurgiuveană","url": "https://saptamanagiurgiuveana.ro/wp/feed/", "category": "zonal", "judet": "GIURGIU"},
+    # `monitorulsv` NU ARE RSS DELOC — /feed/, /rss, /rss/, /feed/rss/ si /?feed=rss2 intorc toate
+    # 200 si aterizeaza tacut pe homepage, /rss.xml e 404, iar HTML-ul homepage-ului nu contine
+    # niciun „rss"/„feed" si niciun <link rel=alternate>. Intra doar prin sitemap-ul de stiri, deci
+    # `"type": "sitemap_news"` e OBLIGATORIU: fara cheia aia fetch.py il trateaza ca RSS si
+    # feedparser da 0. robots.txt e „User-Agent: *" fara Disallow si declara chiar acest sitemap —
+    # aceeasi baza pe care sta deja `piataauto`.
+            "monitorulsv":  {"name": "Monitorul de Suceava", "url": "https://www.monitorulsv.ro/sitemap-news.xml", "category": "zonal", "judet": "SUCEAVA", "type": "sitemap_news"},
+    # NEadaugate DELIBERAT din acelasi lot verificat, ca sa nu fie re-cautate:
+    # · `monitorulexpres.ro` (BV) — feed viu, dar ar fi a PATRA sursa de Brasov si scrie curent
+    #   despre Covasna; a-i pune `judet: BRASOV` e exact nepotrivirea pe care campul o previne.
+    #   Daca se adauga, se adauga FARA `judet`.
+    # · `gazetademaramures.ro` — feedul e real si bogat (50 de intrari, la `/rss`, NU `/feed/`),
+    #   dar pe masina asta orice cerere catre el moare cu CERTIFICATE_VERIFY_FAILED: lantul e
+    #   complet, insa radacina „ISRG Root YR" lipseste SI din magazinul sistemului SI din certifi
+    #   2026.05.20 (testate separat, pica identic). http:// face 301 la https, deci nu exista
+    #   ocolire. Adaugat asa, ar fi permanent `dead`. De testat pe un runner inainte, nu aici.
+    # · `dobrogeanoua.ro` — mort definitiv, nu e o problema de cale: e o pagina statica index.php
+    #   cu 13 linkuri si ani 2010-2016, fara robots/sitemap. CONSTANTA e oricum acoperita.
     # regional — publicatii MULTI-JUDET pe regiuni istorice (cercetare agenti + feedcheck
     # run 29776432687, 2026-07-20). 16 cu feed VIU. Cazuti (nu re-adauga fara re-test):
     # transilvaniareporter=timeout (posibil lent, re-testabil), crisanaonline=301 loop,
