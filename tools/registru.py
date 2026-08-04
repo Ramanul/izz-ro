@@ -151,6 +151,59 @@ def cmd_add(args) -> int:
     return 0
 
 
+def _cheie(titlu: str) -> str:
+    """Titlul normalizat, pentru dedublare. Doi agenti care citesc jurnale diferite descriu acelasi
+    lucru cu punctuatie si majuscule diferite; fara asta registrul se umple de duplicate."""
+    return re.sub(r"[^a-z0-9]+", " ", titlu.lower()).strip()
+
+
+def cmd_import(args) -> int:
+    """Absoarbe linii TSV produse de agenti (backfill T2/T3), cu dedublare si validare.
+
+    Formatul asteptat, FARA coloana `id` (o atribuie registrul):
+        data	zona	titlu	stare	decident	dovada	motiv	leaga
+
+    Randurile invalide se RESPING cu motivul afisat, nu se corecteaza tacut: un backfill care
+    repara singur ce nu intelege produce exact genul de evidenta in care nu poti avea incredere.
+    """
+    rows = _read()
+    vazute = {_cheie(r["titlu"]) for r in rows}
+    with open(args.fisier, encoding="utf-8") as fh:
+        linii = [ln.rstrip("\n") for ln in fh]
+
+    adaugate = dubluri = respinse = 0
+    for nr, ln in enumerate(linii, 1):
+        if not ln.strip() or ln.strip().upper() == "NIMIC":
+            continue
+        p = ln.split("\t")
+        if len(p) < 7:
+            print(f"   respins linia {nr}: are {len(p)} coloane, trebuie 8"); respinse += 1
+            continue
+        p += [""] * (8 - len(p))
+        data, zona, titlu, stare, decident, dovada, motiv, leaga = [x.strip() for x in p[:8]]
+        if stare not in STARI:
+            print(f"   respins linia {nr}: stare '{stare}'"); respinse += 1
+            continue
+        if stare in NEEDS_MOTIV and not motiv and not titlu.startswith("[FARA MOTIV IN SURSA]"):
+            print(f"   respins linia {nr}: '{stare}' fara motiv"); respinse += 1
+            continue
+        if not re.fullmatch(r"\d{4}-\d{2}-\d{2}", data):
+            print(f"   respins linia {nr}: data '{data}'"); respinse += 1
+            continue
+        if _cheie(titlu) in vazute:
+            dubluri += 1
+            continue
+        rows.append({"id": _next_id(rows), "data": data, "zona": zona, "titlu": titlu,
+                     "stare": stare, "decident": decident, "dovada": dovada,
+                     "motiv": motiv, "leaga": leaga})
+        vazute.add(_cheie(titlu))
+        adaugate += 1
+
+    _write(rows)
+    print(f">> {adaugate} adaugate, {dubluri} dubluri sarite, {respinse} respinse; {len(rows)} in total")
+    return 0
+
+
 def _potrivit(r: dict, termeni: list[str], stare: str | None, zona: str | None) -> bool:
     if stare and r.get("stare") != stare:
         return False
@@ -203,6 +256,10 @@ def main() -> int:
     a.add_argument("--motiv", default="")
     a.add_argument("--leaga", default="")
     a.set_defaults(fn=cmd_add)
+
+    i = sub.add_parser("import", help="absoarbe linii TSV de la agenti, cu dedublare si validare")
+    i.add_argument("fisier")
+    i.set_defaults(fn=cmd_import)
 
     f = sub.add_parser("find", help="cauta pe cuvinte (SI logic) si/sau filtre")
     f.add_argument("termeni", nargs="*")
