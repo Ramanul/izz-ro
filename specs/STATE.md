@@ -4,7 +4,7 @@
 > Executors get it read-only. Keep it tight — when it outgrows ~40 lines of content, cut the
 > settled history, not the open work. `git fetch` immediately before rewriting it.
 
-**Updated:** 2026-08-04 21:10 (account A — #133 MERGED, the CI push that failed silently; #131 open, its title predicate now written and measured, waiting on the owner's word)
+**Updated:** 2026-08-04 21:35 (account A — #133 and #131 MERGED; #134 open: GitHub's scheduler drops cron firings, so we try hourly and gate publication at 105 minutes)
 
 ## READ FIRST — a bot-challenge page served with HTTP 200, triggered by SWEEP VOLUME (2026-08-02)
 
@@ -206,6 +206,38 @@ better measurement.
   is published and the guide keeps saying "ordin de mărime, nu suma exactă din fluturaș".
 
 ## Merged 2026-08-04 EVENING (account A — announce, per §14)
+
+- **#131 `7d41a2f2` — a bare official announcement is published as original title + link.**
+  The owner said "ai libertate totală", so the editorial threshold that had been parked for him was
+  taken: `select.titlu_fara_informatie` rejects a URL as title, a filename (extension or >=2
+  underscores), a title made only of generic announcement words, and fewer than 3 words. Measured
+  on the 69 bodyless announcements on main: **rejects 5, no false positives** (`ANUNȚ PUBLIC`,
+  `Anunț PUZ` x2, `Publicitate`, `CP_Renta viagera_C2025_29.07.2026`). End to end through the gate:
+  **2025 -> 2020** published. `pytest` 532 passed, 2 xfailed.
+  → Words are counted as **runs of letters**, not `.split()` pieces: `41 mana+fainare+putregai` is 3
+  real words in 2 pieces and is the only false positive `.split()` produces on today's corpus.
+  `util.title_tokens` is deliberately not reused — it strips stopwords and <=3-letter words.
+  → Thresholds are measured: >=4 words wrongly drops `Concurs Functii publice`; >=1 underscore
+  wrongly drops `SITUATII FINANCIARE TRIM II_2026`; "starts with an ordinal number" drops 4
+  legitimate Urlati phytosanitary bulletins out of the 5 it catches.
+  → Deliberate gap: `DEMETER JOZSEF NIMROD – 27.07.2026` passes. No mechanical rule catches it
+  without also dropping legitimate marriage publications, which share the name+date shape.
+
+- **OPEN — #134: GitHub's scheduler drops `schedule` firings, so the corpus ages.** Not a bug in
+  our code; measured over the last 40 runs. 08-04 got **4** runs (03:32, 06:37, 10:47, 14:35Z)
+  instead of 12, 08-03 got 8, 08-02 got 10 — all starting 20-35 min after the `:13` mark, with 3-4h
+  holes in the morning and near-normal cadence in the UTC evening. At 17:57Z the corpus was **192
+  minutes** old because the 16:13Z firing never happened.
+  → Fix in the PR: cron becomes **hourly**, and a new `cadenta` job asks the API when
+  `data/articles.json` was last committed, letting `pipeline` run only if that is **>=105 minutes**
+  ago. No checkout, ~10s of runner, and the repo is public so the minutes are free.
+  → **The publish cadence does not change** — that is the point, and §17 forbids raising it. 105 +
+  the ~12 minutes a run takes keeps two content commits >=2h apart, so the ceiling stays 12/day =
+  ~360 Cloudflare builds/month against a free ~500. Simulated over 30 days: 0% drops -> 12.0/day
+  (max gap 2.0h); 35% drops -> 9.4/day (6.0h) against 7.3/day (10.0h) for today's 2h cron.
+  → Manual dispatch bypasses the gate. If the API call fails the gate goes **red** and the pipeline
+  is skipped — fail-closed on purpose: a broken gate that let everything through would mean 24
+  builds/day, the failure class that stopped deploys on 5-9 July.
 
 - **#133 `402731e1` — a rejected push made the run green and threw the content away.**
   Measured over the last 30 `build.yml` runs: **6 (20%) hit `! [rejected] main -> main (fetch
@@ -483,8 +515,8 @@ atâtor iterații. Și „feedul răspunde" ≠ „feedul are conținut": `monit
    (ex. ≥3), (b) listă de titluri-capcană (`Publicitate`, `Anunț`, `ANUNȚ PUBLIC`) plus respingerea
    titlurilor care arată a URL sau a nume de fișier, (c) se publică toate, cum sunt acum.
    **Nu am ales singur: pragul e editorial, nu tehnic.**
-   → **2026-08-04 seara: varianta (b+a) e SCRISĂ și măsurată pe branch-ul lui #131 (`7bed3f8c`),
-   dar NU merged — alegerea rămâne a proprietarului.** `select.titlu_fara_informatie` respinge URL,
+   → **ÎNCHIS 2026-08-04 seara: proprietarul a spus „ai libertate totală", varianta (b+a) e MERGED
+   în #131 (`7d41a2f2`). Nu se redeschide.** `select.titlu_fara_informatie` respinge URL,
    nume de fișier (extensie sau ≥2 underscore), titlu format doar din cuvinte generice, și sub 3
    cuvinte. Măsurat pe cele **69** de anunțuri fără corp de pe `main` (79 la ora auditului, corpusul
    s-a rotit): respinge **5**, zero fals-pozitive — `ANUNȚ PUBLIC`, `Anunț PUZ` ×2, `Publicitate`,
