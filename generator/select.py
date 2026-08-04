@@ -97,6 +97,76 @@ def _dedup_sources(a: dict) -> None:
 
 _BODY_PLACEHOLDERS = {"Detalii pe sursa.", "Detalii pe surse.", ""}
 
+def anunt_oficial_fara_corp(a: dict) -> bool:
+    """True daca articolul e un anunt oficial (pl_/cj_/pr_) care nu are corp de text.
+
+    Decizie proprietar 2026-08-04 (specs/sinteza-fara-substanta.md): anunturile de primarie se
+    publica cu titlul original NEATINS + link, fara teaser inventat. Pana acum se pierdeau tacut:
+    `process_official` le punea "Detalii pe sursa.", care e in `_BODY_PLACEHOLDERS`, deci poarta
+    le respingea.
+
+    „Fara corp" acopera DOUA forme, pentru ca ambele inseamna acelasi lucru — sursa n-a trimis
+    nimic peste titlu: (1) placeholder-ul, cand feed-ul n-are `description`; (2) teaser identic cu
+    titlul, cand feed-ul repeta titlul in `description` (masurat 2026-08-04 pe `data/articles.json`:
+    69 din prima forma, 10 din a doua, 79 in total, toate `local`, toate cu link).
+
+    Predicat SINGUR, folosit si de poarta si de randare, ca cele doua sa nu se poata departa:
+    daca poarta publica un articol pe care randarea nu-l stie fara corp, iese cardul cu gaura.
+    """
+    if a.get("processed_by") != "official":
+        return False
+    body = (a.get("teaser") or "").strip()
+    return body in _BODY_PLACEHOLDERS or body == (a.get("title") or "").strip()
+
+_TITLU_URL = re.compile(r"^(https?://|www\.)\S*$", re.I)
+_TITLU_FISIER = re.compile(r"\.(pdf|docx?|xlsx?|pptx?|jpe?g|png|zip)$", re.I)
+# Cuvant = secventa de LITERE, nu ce da `.split()`: „41 mana+fainare+putregai" are 2 bucati
+# separate de spatiu, dar 3 cuvinte reale. Masurat: e singurul fals-pozitiv pe care il face
+# `.split()` pe corpusul de azi. NU se foloseste `util.title_tokens`, care taie stopwords si
+# cuvintele de ≤3 litere — ar respinge „43 Afide la pomi" si „Anunț PUZ" din motive gresite.
+_TITLU_CUVANT = re.compile(r"[a-zA-ZăâîșşțţĂÂÎȘŞȚŢ]{2,}")
+_TITLU_GENERIC = {
+    "anunt", "anunț", "anunturi", "anunțuri", "public", "publica", "publică",
+    "publicitate", "publicitar", "publicitara", "publicitară", "comunicat", "comunicare",
+    "informare", "publicatie", "publicație", "document", "documente", "fisier", "fișier",
+    "atasament", "atașament", "pdf", "doc", "docx", "stire", "știre",
+}
+
+def titlu_fara_informatie(title: str) -> bool:
+    """True daca titlul singur nu spune cititorului NIMIC despre subiect.
+
+    Se aplica DOAR anunturilor oficiale fara corp (vezi `anunt_oficial_fara_corp`): acolo titlul
+    e tot ce se publica, deci un titlu gol de informatie da un card care nu comunica nimic.
+    Restul articolelor au corp si nu trec pe aici.
+
+    Cele patru forme, in ordinea in care apar in feeduri (masurat 2026-08-04 pe cele 69 de
+    anunturi fara corp de pe `main`; respinge 5, zero fals-pozitive):
+      1. URL pus ca titlu;
+      2. nume de fisier — extensie, sau ≥2 underscore-uri (`CP_Renta viagera_C2025_29.07.2026`).
+         Pragul e ≥2, nu ≥1, tocmai ca `SITUATII FINANCIARE TRIM II_2026` sa ramana publicabil;
+      3. titlu format DOAR din cuvinte generice de anunt (`ANUNȚ PUBLIC`, `Publicitate`);
+      4. sub 3 cuvinte (`Anunț PUZ`). Pragul de 4 ar arunca gresit `Concurs Functii publice`.
+
+    Respinsa dupa masurare: regula „titlul incepe cu numar de ordine" (`^\\d{1,4}\\s`) — prinde 5
+    iteme, din care 4 sunt buletinele fitosanitare de la Urlati (`43 Afide la pomi`), care au
+    prefix numeric legitim.
+
+    Limita cunoscuta, neacoperita deliberat: `DEMETER JOZSEF NIMROD – 27.07.2026` trece — nu e URL,
+    nu e fisier, nu e generic, are 3 cuvinte. Nicio regula mecanica nu-l prinde fara sa arunce si
+    publicatiile de casatorie legitime, care au exact acelasi tipar nume+data.
+    """
+    t = (title or "").strip()
+    if not t:
+        return True
+    if _TITLU_URL.match(t):
+        return True
+    if _TITLU_FISIER.search(t) or t.count("_") >= 2:
+        return True
+    cuvinte = _TITLU_CUVANT.findall(t)
+    if len(cuvinte) < 3:
+        return True
+    return all(c.lower() in _TITLU_GENERIC for c in cuvinte)
+
 def _slug_stems(url: str) -> set:
     """Cuvinte-cheie (stem 6 litere) din ultima bucata a URL-ului = subiectul articolului-sursa."""
     slug = re.sub(r"[?#].*$", "", url or "").rstrip("/").split("/")[-1]
@@ -130,9 +200,19 @@ def _quality_gate(a: dict) -> bool:
     else:
         body = (a.get("teaser") or "").strip()
 
-    if not body or body in _BODY_PLACEHOLDERS:
-        return False
-    if body == title:
+    # Anuntul oficial fara corp e SINGURA forma publicabila fara body: titlu original + link.
+    # Exceptia e strict pe `processed_by == "official"`, adica pe itemele care nu trec prin AI
+    # deloc — nu exista text sintetizat care sa poata fi fabricat. Pentru orice alta sursa
+    # conditiile de mai jos raman intacte: slabirea lor ar readuce exact bug-ul reparat de #130.
+    if not anunt_oficial_fara_corp(a):
+        if not body or body in _BODY_PLACEHOLDERS:
+            return False
+        if body == title:
+            return False
+    elif titlu_fara_informatie(title):
+        # Fara corp SI fara informatie in titlu: n-a mai ramas nimic de comunicat, iar cardul ar
+        # spune doar „Anunț oficial". Aici se opreste exceptia de mai sus — publicam titlul
+        # original, dar numai cand titlul chiar e o informatie.
         return False
 
     # sursa minima
