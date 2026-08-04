@@ -205,6 +205,37 @@ _MARCA_GEO = re.compile(
     r"ORASUL|COMUNEI|COMUNA|SATULUI|SATUL|LOCALITATEA|LOCALITATII|"
     r"\bLA|\bDIN|\bIN|\bSPRE|\bCATRE|\bLANGA)\s+$")
 
+# Numele regiunilor istorice sunt SI nume comerciale sau de institutii („Banca Transilvania",
+# „Universitatea Transilvania", „Autostrada A3 Transilvania"), SI numele unui stat vecin
+# („Republica Moldova"). Masurat pe corpus (1714 articole): din 31 de potriviri de nume de
+# regiune, 24 sunt NEgeografice, iar 13 dintre ele sunt Republica/Republicii Moldova.
+#
+# Mecanismul `_AMBIGUE` de mai sus NU se poate refolosi aici, si asta e masurat, nu presupus:
+# cerandu-le o marca geografica se pierde un articol corect („magistralele care conecteaza
+# Capitala DE Moldova" — `de` nu e prepozitie locativa) si cade „in REGIUNEA Banatului",
+# fiindca REGIUNEA nu e in `_MARCA_GEO`. Regiunile apar legitim fara prepozitie: „Transilvania
+# a fost lovita de furtuna".
+#
+# Discriminatorul ales dintre sase variante comparate pe tot corpusul: un cuvant cu MAJUSCULA
+# lipit inaintea numelui (doar spatii intre ele, fara punctuatie). Repara 7 din 9 articole
+# `regional` gresite si nu pierde niciunul corect; la nivel de aparitie respinge 23, toate 23
+# negeografice. Varianta cu exceptie la inceput de fraza a fost respinsa tot pe cifre: strica
+# exact cazul-samanta, „Banca Transilvania ofera..." fiind la pozitia 0.
+#
+# Whitelist-ul e substantivele geo-relationale care preced legitim o regiune. Pe corpusul de
+# azi niciunul nu apare, deci nu schimba nicio clasificare — exista pentru „Toata Oltenia se
+# afla sub cod rosu" si „Regiunea Banatului a inregistrat...", verificate pe sonde sintetice.
+_GEO_RELATIONAL = {
+    "NORDUL", "SUDUL", "ESTUL", "VESTUL", "CENTRUL",
+    "REGIUNEA", "ZONA", "TOATA", "INTREAGA", "PROVINCIA",
+}
+# Fereastra de 32 de caractere e generoasa fata de cel mai lung cuvant plauzibil
+# („Inspectoratul", 13): daca ar taia cuvantul, prima litera ar parea mica si garda ar rata.
+# Cifrele sunt in clasa intentionat: „Autostrada A3 Transilvania" — fara ele bucata dinainte
+# se termina in „3 ", nu se potriveste nimic, si numele comercial ar trece drept geografie.
+# Un token pur numeric nu declanseaza nimic, fiindca „2026"[:1].isupper() e False.
+_CUVANT_INAINTE = re.compile(r"([A-Za-z0-9]+) +$")
+
 # Articolul hotarat lipit de nume: Cluj -> Clujul, Brasov -> Brasovului. Fara asta,
 # "a vizitat Clujul" nu s-ar potrivi deloc.
 _ARTICOL = r"(?:ULUI|UL|UI)?"
@@ -277,6 +308,25 @@ def _ambiguu_fara_marca(m, plat: str) -> bool:
             and not _MARCA_GEO.search(plat[max(0, m.start() - 16):m.start()]))
 
 
+def _regiune_ca_nume_propriu(m, original: str, plat: str) -> bool:
+    """Numele de regiune e a doua bucata dintr-un nume propriu compus -> nu e geografie.
+
+    Se cheama DOAR pentru potriviri de nivel `regional` (12 nume), deci restul indexului nu
+    plateste nimic. Cazul-samanta: „Banca Transilvania". Cel dominant: „Republica Moldova".
+    """
+    inainte = _CUVANT_INAINTE.search(original[max(0, m.start() - 32):m.start()])
+    if not inainte:
+        return False              # inceput de text, sau punctuatie intre cuvinte
+    cuvant = inainte.group(1)
+    if not cuvant[:1].isupper() or cuvant.upper() in _GEO_RELATIONAL:
+        return False
+    # O prepozitie locativa cu majuscula la inceput de fraza — „In Ardeal s-au inregistrat..."
+    # — arata exact ca un nume propriu compus pentru regula de mai sus. `_MARCA_GEO` o
+    # recunoaste deja; refolosita aici, nu duplicata, ca sa nu se desparta cele doua liste.
+    # Prins de un test care exista dinainte, nu de corpus: forma e rara in titluri si teasere.
+    return not _MARCA_GEO.search(plat[max(0, m.start() - 16):m.start()])
+
+
 def clasifica(text: str, judet: str | None = None) -> str | None:
     """Rubrica geografica a textului, sau None daca nu contine niciun nume de loc.
 
@@ -306,6 +356,8 @@ def clasifica(text: str, judet: str | None = None) -> str | None:
         if _ambiguu_fara_marca(m, plat):
             continue
         nivel = index[m.group(1)]
+        if nivel == "regional" and _regiune_ca_nume_propriu(m, original, plat):
+            continue
         calif = _CALIFICATIV.search(plat[max(0, m.start() - 12):m.start()])
         if calif:
             nivel = _NIVEL_CALIFICATIV[calif.group(1)]
