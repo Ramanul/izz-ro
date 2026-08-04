@@ -94,7 +94,23 @@ respinge sub prag; itemul rămâne în state (nu se pierde), doar nu se publică
 **Ce NU intră în felia asta:** aducerea textului integral de pe pagina sursă (schimbă profilul
 legal și de trafic — decizie separată, a proprietarului).
 
-## Întrebarea care rămâne a proprietarului
+## DECIS de proprietar, 2026-08-04: varianta (b) — listă de anunțuri, fără teaser
+
+Primăriile trec pe o cale separată: se publică **titlul original neatins + link**, fără teaser
+inventat. Cititorul vede „ANUNȚ PUBLIC — Primăria Focșani" și dă click. Nu minte, nu arde buget AI,
+păstrează acoperirea locală. Celelalte surse fără substanță (Digi Sport) **nu se publică deloc**.
+
+**Starea implementării, ca să nu se creadă că e gata:**
+- ✅ **Felia 1, PR #130** — oprită fabricarea. Itemele fără substanță nu mai ajung la AI și nu se
+  publică. Primăriile sunt lăsate NEATINSE (nu trec prin AI oricum).
+- ❌ **Felia 2, NEÎNCEPUTĂ** — publicarea anunțurilor de primărie ca listă fără teaser.
+  **Azi acele anunțuri se pierd tăcut:** `process_official` le pune teaserul `"Detalii pe sursa."`,
+  care e în `_BODY_PLACEHOLDERS`, deci `_quality_gate` le respinge. Comportamentul ăsta e
+  ANTERIOR feliei 1 și neschimbat de ea — dar nu e ce s-a decis. Ca să fie: poarta trebuie să
+  accepte un articol `official` fără corp, iar `_card.html` / `article.html` trebuie să randeze
+  forma fără teaser (altfel iese un card cu o gaură în el).
+
+## Întrebarea, acum ÎNCHISĂ (păstrată pentru raționament)
 
 Pragul taie și presa locală utilă: multe primării trimit „ANUNȚ PUBLIC" cu descriere goală, iar
 alea sunt exact anunțurile pentru care există rubrica `local`. Trei variante, cost crescător:
