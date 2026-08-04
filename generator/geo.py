@@ -471,3 +471,19 @@ def eticheta_judet(judet: str | None) -> str:
     return _ETICHETE_JUDETE.get(judet) or {
         "BUCURESTI": "București", "VALCEA": "Vâlcea",
     }.get(judet, judet.title())
+
+
+def judet_copertei(a: dict) -> str:
+    """Ce scrie pe badge-ul copertei in locul categoriei — judetul sursei, sau "" daca nu se poate.
+
+    Doar `zonal` si `local`: acolo locul E subiectul, iar „Brasov" spune cititorului care
+    vede cardul distribuit mai mult decat „ZONAL". La `regional` articolul acopera mai multe
+    judete, deci un badge de judet ar fi FALS, nu doar lipsa (badge-ul corect ar fi regiunea,
+    care nu se salveaza nicaieri). La restul categoriilor locul nu e subiectul.
+
+    Acoperire masurata 2026-08-04 pe 2128 articole: zonal 395/435 (91%), local 237/398 (60%).
+    Restul raman pe categorie — de-aia intoarce "" in loc sa ghiceasca.
+    """
+    if (a.get("category") or "") not in ("zonal", "local"):
+        return ""
+    return eticheta_judet(judet_sursa(a.get("source")))

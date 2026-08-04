@@ -13,6 +13,7 @@ import os
 import re
 
 from . import covers as _C   # reutilizam _KW_ICON, _CAT_ICONS, _norm
+from . import geo
 
 _ASSETS = os.path.join(os.path.dirname(os.path.abspath(__file__)), "assets")
 ART_W, ART_H = 960, 504
@@ -54,6 +55,11 @@ def _elements(a: dict) -> list:
     return [e for e in out if _icon_uri(e)][:5] or ["building-community"]
 
 
+def _eticheta(a: dict) -> str:
+    """Textul badge-ului: judetul la stirile de loc, altfel categoria (vezi geo.judet_copertei)."""
+    return geo.judet_copertei(a) or a.get("category", "stiri")
+
+
 def _mask(name: str, color: str, extra: str = "") -> str:
     u = _icon_uri(name)
     return (f'background:{color};-webkit-mask:url({u}) center/contain no-repeat;'
@@ -90,7 +96,7 @@ def _t_aurora(a, hue, els):
         f'<div class="blob" style="width:560px;height:560px;right:-120px;bottom:-160px;background:hsl({(hue+180)%360},75%,72%);opacity:.6"></div>'
         f'<div style="position:absolute;right:70px;bottom:40px;width:360px;height:360px;transform:rotate(-6deg);'
         f'filter:drop-shadow(0 22px 30px rgba(30,20,50,.35));{_mask(els[0], f"hsl({hue},46%,42%)")}"></div>'
-        f'{small}<div class="chip">{a.get("category","stiri")}</div><div class="frame"></div><div class="grain"></div></div>'
+        f'{small}<div class="chip">{_eticheta(a)}</div><div class="frame"></div><div class="grain"></div></div>'
     )
 
 
@@ -101,7 +107,7 @@ def _t_spotlight(a, hue, els):
         f'box-shadow:0 0 0 2px rgba(201,162,39,.25),0 0 0 60px rgba(201,162,39,.06),0 0 0 120px rgba(201,162,39,.05)"></div>'
         f'<div style="position:absolute;left:50%;top:44%;transform:translate(-50%,-50%);width:300px;height:300px;'
         f'filter:drop-shadow(0 0 34px hsla({hue},70%,55%,.7));{_mask(els[0], f"hsl({hue},52%,40%)")}"></div>'
-        f'<div class="chip">{a.get("category","stiri")}</div><div class="frame"></div><div class="grain"></div></div>'
+        f'<div class="chip">{_eticheta(a)}</div><div class="frame"></div><div class="grain"></div></div>'
     )
 
 
@@ -113,7 +119,7 @@ def _t_split(a, hue, els):
         f'<div style="background:hsl({hue},52%,46%);display:flex;align-items:center;justify-content:center">'
         f'<div style="width:230px;height:230px;filter:drop-shadow(0 14px 20px rgba(0,0,0,.25));{_mask(els[0], f"hsl({hue},40%,90%)")}"></div></div>'
         f'<div style="background:linear-gradient(120deg,hsl({hue},55%,92%),#fff);display:flex;gap:26px;align-items:center;padding-left:60px">{small}</div>'
-        f'<div class="chip" style="left:calc(38% + 34px)">{a.get("category","stiri")}</div><div class="frame"></div><div class="grain"></div></div>'
+        f'<div class="chip" style="left:calc(38% + 34px)">{_eticheta(a)}</div><div class="frame"></div><div class="grain"></div></div>'
     )
 
 
@@ -124,7 +130,7 @@ def _t_poster(a, hue, els):
         f'<div style="position:absolute;right:-60px;top:50%;transform:translateY(-50%) rotate(-10deg);width:620px;height:620px;'
         f'opacity:.12;{_mask(els[0], "#fff")}"></div>'
         f'<div style="position:absolute;top:40px;left:40px;font-family:PF;font-weight:800;color:#fff;font-size:64px;'
-        f'letter-spacing:1px;text-transform:uppercase;text-shadow:0 6px 20px rgba(0,0,0,.25)">{a.get("category","stiri")}</div>'
+        f'letter-spacing:1px;text-transform:uppercase;text-shadow:0 6px 20px rgba(0,0,0,.25)">{_eticheta(a)}</div>'
         f'<div style="position:absolute;bottom:56px;left:44px;display:flex;gap:28px">{row}</div>'
         f'<div class="frame" style="border-color:rgba(255,255,255,.85)"></div><div class="grain"></div></div>'
     )
