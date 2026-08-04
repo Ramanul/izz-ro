@@ -205,6 +205,94 @@ better measurement.
   the act cannot be read — the failure mode that keeps `alocatia` at `verificat: false` — nothing
   is published and the guide keeps saying "ordin de mărime, nu suma exactă din fluturaș".
 
+## MEASURED 2026-08-03 NIGHT — four parallel probes, recovered after one died on the session cap
+Four read-only agents (`wf_77838023-cf5`). Three returned; the fourth hit "session limit" **after**
+writing its answer, which was recovered from its transcript (its `StructuredOutput` call failed
+schema validation, so the journal recorded no result — the finding is in
+`feedback_agenti_omorati_de_plafon.md`: read the last transcript line before concluding an agent
+produced nothing). Photos → Open 1. Local press → Open 4. The other two are here.
+
+### `ruff --select F,DTZ` — triaged finding by finding, 12 findings, ZERO real bugs
+`ruff` 0.16.1 is available but **not** in `requirements.txt`, and **no workflow runs any linter**
+(grep for `ruff|flake8|pylint|lint` across `.github/workflows/`, `.coderabbit.yaml`, `AGENTS.md`
+returns nothing). There is also no `pyproject.toml`/`setup.cfg`/`ruff.toml` at the root — a
+`.ruff_cache/` exists, so it has been run ad hoc, never configured. Natural host for the gate is
+**`tests.yml`** (the only workflow that both triggers on `pull_request` and installs
+`requirements.txt`), one step before the slow pytest run.
+- **`render.py:15-18`, four F401 — do NOT run `ruff --fix` on this file.** Two of the four are
+  deliberate re-exports and deleting them breaks more than the suite: `sources_coherent` has **9**
+  call sites, seven in `tests/test_render_editorial.py` plus `tools/qa_check.py:18` importing it
+  *from `generator.render`* — and `build.yml:106` runs `qa_check.py`, so a `--fix` would break the
+  nightly pipeline with an ImportError, not just pytest. `_slug_stems` has 2 (`test_render_editorial.py:121-122`).
+  `_BODY_PLACEHOLDERS` and `title_tokens` are genuinely unused and can go.
+  **Mechanical trap, verified empirically:** a `# noqa: F401` on the first line of a parenthesized
+  multi-line import does NOT cover names on continuation lines — the statement has to be split so
+  the noqa sits on the physical line carrying the two re-exports.
+- **`fetch.py:134` DTZ007 is a FALSE POSITIVE — do not change the semantics.** `_parse_w3c_date`
+  parses date-only naive on 134 and does `.replace(tzinfo=timezone.utc)` on 135; ruff misses it
+  only because the `d` binding crosses a statement boundary. This is one of the two functions the
+  whole `published`-UTC invariant rests on (`test_published_is_utc.py` pins it). Chaining the two
+  statements into one clears the diagnostic with zero behaviour change.
+- **Both DTZ005 in `render.py` are benign.** `:230` is the footer copyright year (would show the new
+  year ~3h early on 31 Dec, nothing more). `:755` feeds `now_timestamp` into `calendar.html`, and
+  since `.timestamp()` on a naive datetime interprets it as local — and `_dt.now()` IS local — the
+  epoch is already correct today; the one genuine hole is the October DST fold, worth ~an hour a
+  year. Both sides of the comparison are absolute epochs, so fixing only `:755` does not
+  desynchronize it from `:735`.
+- Remainder is cosmetic and autofixable: 4× F541 (`print(f"\n=== Rezumat ===")` in four near-clone
+  `tools/` scripts), 1× F401 (`import json` in `tests/test_stale_new_items.py`), 1× DTZ011
+  (`tools/log_slice.py:41` `date.today()` — real inconsistency, negligible consequence: the CSV's
+  `date` column is written by this machine at UTC+3 and by CI at UTC, then sorted
+  lexicographically, which is the same mixed-offset string-sort `test_published_is_utc.py` exists
+  to prevent for `published`. Its fix must ALSO drop `date` from the line-21 import or it
+  introduces a fresh F401).
+
+### Regions used as brands — the task's premise was PARTLY FALSE, and the fix follows the data
+Measured over the whole 1714-article corpus. Only **9** articles are `regional`, and **commercial
+brands are not the dominant defect**: 6 of the 9 are **"Republica Moldova" — a sovereign state, not
+the historical region** — and exactly 1 is the seed case (Banca Transilvania). At occurrence level,
+**24 of 31** region-name matches in the corpus are non-geographic, 13 of those being
+Republica/Republicii Moldova; the rest are Universitatea Transilvania ×4, Banca Transilvania ×2,
+Piața Agro / Autostrada A3 / Festivalul de Film Transilvania, Gazeta de Transilvania, ISU Țara Bârsei.
+Options compared on the same corpus (`kills_wrong` / `kills_right`):
+| option | wrong fixed | right lost |
+|---|---|---|
+| (a) commercial-word blacklist | 1 | 0 |
+| (a2) blacklist + REPUBLICA/ISU/CAS/… | 7 | 0 |
+| (b) `_AMBIGUE`/`_MARCA_GEO` mechanism | 7 | **1** |
+| (c) reject if preceded by a capitalised word | **7** | **0** |
+| (c3) (c) with a sentence-start exception | 5 | 0 |
+| **(c+) = (c) + geo-relational whitelist** | **7** | **0** |
+- **Do NOT reuse the `_AMBIGUE` mechanism here (option b).** Measured, it is the only option that
+  kills a correct geographic article (`tion`, "Capitala **de** Moldova" — `de` is not a locative
+  preposition) and at occurrence level it rejects "în **regiunea** Banatului", because REGIUNEA is
+  not in `_MARCA_GEO`. This confirms the hypothesis the probe was sent to test: historical regions
+  appear legitimately without a locative preposition, so #126's gate does not transfer.
+- **Chosen: (c+)** — in `clasifica()`, only when `nivel == "regional"`, reject a match immediately
+  preceded (spaces only, no punctuation) by a capitalised word that is not in
+  {NORDUL, SUDUL, ESTUL, VESTUL, CENTRUL, REGIUNEA, ZONA, TOATA, INTREAGA, PROVINCIA}. ~6 lines,
+  cost zero for the rest of the index (the guard evaluates only on the 12 regional names). On the
+  corpus it is bit-identical to (c) — none of the 10 whitelist words precedes a region name in 1714
+  articles — but on synthetic probes it saves (c)'s only false-positive class ("Toată Oltenia se
+  află sub cod roșu", "Regiunea Banatului a înregistrat…"). (c3) was rejected by measurement: its
+  sentence-start exception destroys the seed case, since "Banca Transilvania oferă…" sits at
+  position 0.
+- **Known misses, stated up front:** lowercase-connector collocations survive ("Gazeta **de**
+  Transilvania", 1 occurrence, article already `local`), and "în Moldova" with no further marker
+  stays undecidable (1 article).
+- **Collateral finding that limits the whole rubric's recall, separate slice:** `_ARTICOL =
+  (?:ULUI|UL|UI)?` does not cover the feminine genitive. Verified directly — **"Transilvaniei",
+  "Olteniei", "Munteniei", "Moldovei", "Dobrogei", "Bucovinei", "Crișanei" do not match at all**
+  today, while "Banatului"/"Ardealului" do. Corpus impact is zero right now (the 2 affected
+  articles are already `zonal` by county name), but "nordul Transilvaniei" is a very common press
+  formulation and is invisible to the gate.
+- **[OPINIE] Taxonomy question for the owner, not code:** Republica Moldova stories should arguably
+  not touch the Romanian geographic axis at all. Today they fall to `None` and from there to an
+  AI-chosen topic rubric — better than `regional`, still not an "extern" rubric.
+- Confidence 8/10: 9 regional articles and 31 occurrences is a small sample dominated by one
+  pattern and one source (`el_moldova`, 5 articles); the geographic/brand judgements are the
+  probe's own reading of the text, not independent labelling.
+
 ## Open
 0. **DARK MODE — mechanics now CONFIRMED ON LIVE (#106). Still open only for the owner's own
    "nu merge" to be re-tested by him.** Do not spend another session reproducing it blind.
@@ -223,13 +311,58 @@ better measurement.
    check — which is evidence the policy does not block this path, not proof it blocks nothing
    (§16's own history: `script-src 'self'` silently killed the inline handler before #96).
    Deliverability (§16.2)
-   holds — live serves `styles.css?v=44d15474` and `theme.js?v=318109e6`, both new hashes.
+   holds — live serves `styles.css?v=ec9958b0` and `theme.js?v=318109e6`, both new hashes.
+   (The `styles.css?v=44d15474` recorded here until 2026-08-03 is stale; `theme.js` is unchanged.)
+   → **Re-proved on the served bytes 2026-08-03 evening, all five preconditions quoted verbatim
+   from response bodies/headers:** the markup ships the button EMPTY
+   (`<button class="theme-toggle" type="button" aria-label="Comută tema"></button>` — no
+   `aria-pressed`, no `title`, and none of ☾/☀/☉/☀︎, each tested individually); the glyph comes from
+   CSS keyed on `data-theme` (`.theme-toggle::before{content:"\263E"}` /
+   `[data-theme="dark"] .theme-toggle::before{content:"\2600\FE0E"}`), so it is correct at first
+   paint before any JS; all three served hashes equal `md5(file)[:8]` computed locally, i.e. live
+   serves the current committed files byte for byte; `theme.js` (2738 B) contains
+   `localStorage` get/set, `izz_theme`, `prefers-color-scheme`, `syncToggle`, `aria-pressed`; and
+   the live CSP `script-src 'self' …` permits it precisely because the file is external.
+   → **This is a DELIVERABILITY proof, NOT a rendering proof — do not upgrade it in your head.**
+   No JS was executed, no click fired, no computed style read, no pixel observed. Four things stay
+   unmeasurable from HTTP and any of them matches "nu merge": the ☾/☀︎ glyph could render as **tofu**
+   in his font stack (a 32 px round button that just looks EMPTY); `localStorage` may be blocked
+   (private mode falls into `theme.js`'s silent `catch`, so the choice would not persist);
+   an extension/service-worker/stale cached HTML on HIS device could serve different bytes; and the
+   dark palette's 11 `[data-theme]` rules were counted, not contrast-checked.
    **What is NOT established:** that this was the owner's complaint, or that his device behaves the
    same. Only he can close this — ask him to press it once and say what he sees. If he still says
    "nu merge", the next step is his exact browser + a console screenshot, NOT another blind fix.
 1. ~~**PR #101 (locality lead photos) awaiting owner sign-off**~~ — **MERGED 2026-08-02 03:19.**
-   This entry was stale. What is still open is only §16's third state: nobody has confirmed the
-   129 photos ON LIVE. `smoke_live.py` or a look at izz.ro closes it.
+   §16's third state is now CLOSED, and it closed by **refuting the number this entry used to
+   carry.** What stood here — "nobody has confirmed the 129 photos ON LIVE; `smoke_live.py` or a
+   look at izz.ro closes it" — was wrong in both halves (measured 2026-08-03 evening, full census).
+   → **Live serves 45 real photographs, not 129.** Every article URL in the live sitemap was
+   fetched with `?cb=<ts>`: 1380 `<loc>`, 1354 article-like, 0 HTTP errors → **PHOTO 45,
+   GENERATED 1302, NO-ART 7** (the 7 are the 6 `/ghiduri/*` plus `/instrumente/calculator-salariu/`,
+   evergreen pages that legitimately carry no article art). The 45 are 44 in `/local/` + 1 in
+   `/economic/`, over 20 distinct localities (Ploiești 7, Sebeș 5, Năvodari 4, Bistrița 3…),
+   licences CC BY-SA 3.0 ×16, CC BY-SA 3.0 ro ×11, CC BY-SA 4.0 ×10, PD ×6, CC0 ×2.
+   → **[INTERPRETARE] The 129→45 gap is corpus turnover, not a broken feature.**
+   `data/leadphotos.json` holds 141 non-miss entries, 107 of which match art_ids in the local
+   `data/articles.json` (1714 records) while the deployed corpus is 1354 — photo-bearing local
+   announcements age out under `ARTICLE_TTL_DAYS` faster than they are replaced. Not proven by
+   HTTP; the census only proves the count.
+   → **`smoke_live.py` CANNOT close this, and the old line saying it could was the actual defect.**
+   The script has no notion of a real photo: its two image checks assert only that `og:image` ends
+   in `/cover.jpg` and that the files are >5 KB. Both hold for a *generated* cover (measured:
+   generated `cover.jpg` = 42884 B, `art.jpg` = 35848 B). Its line "coperti generate pe esantion:
+   5/5" counts generated covers — **it would print all-ok on a site with zero photographs.**
+   → **Counting from the homepage is impossible by construction:** `_card.html:5` and
+   `index.html:22-27` emit an identical `<img src="/{cat}/{slug}/art.jpg?v=…" alt="">` for both
+   kinds. The discriminator is `<figcaption class="art-credit">`, which exists only on the ARTICLE
+   page (`article.html:37-39`, rendered only when `a.lead_credit` is truthy). Hence the census had
+   to fetch all 1354 pages.
+   → **Consequence for the reader of this file: zero of the 126 articles linked from
+   `https://izz.ro/` today carry a photo** (hero + 125 cards, each probed). A visitor landing on
+   the homepage sees 126 generated covers; the photos are reachable only by paging into `/local/`.
+   Whether that is acceptable is an editorial question, not a bug — but it is the honest state.
+   Confidence 9/10 on "45 exactly": point-in-time snapshot, `build.yml` cron `13 */2` can redeploy.
 1. **SIRUTA Slice 2 — MERGED `2ac3c399`. Only the two leftovers at the end of this item are open.**
    Villages match only
    against the county of the source that published. `geo.clasifica(text, judet=None)` is unchanged
@@ -277,7 +410,46 @@ better measurement.
    ❌ `monitorulsv.ro` — `/feed/` 301s to the homepage (458 KB of HTML, 0 entries); the WordPress
    guess is wrong for it, needs a real feed path. `dobrogeanoua.ro` and `saptamanagiurgiuveana.ro`
    — HTTP 404. `gazetademaramures.ro` — `SSL: CERTIFICATE_VERIFY_FAILED`.
-   4/14 fallout ≈ 29%, so the ~⅓ estimate was right. The other 65 candidates exist only in the web
+   4/14 fallout ≈ 29%, so the ~⅓ estimate was right.
+   **RE-CHECKED 2026-08-03 evening from the same home IP — the 4 failures are now 2 recoveries,
+   1 blocked, 1 dead, and the 10 successes were re-confirmed live with their exact config form:**
+   ✅ **`monitorulsv.ro` RECOVERED by a different path — it has NO RSS at all.** `/feed/`, `/rss`,
+   `/rss/`, `/feed/rss/`, `/?feed=rss2` all return 200 but silently land on the homepage; `/rss.xml`
+   is a real 404; the homepage HTML contains **zero** occurrences of "rss" or "feed" and no
+   `<link rel=alternate>` — feeds are absent, not moved. But
+   `https://www.monitorulsv.ro/sitemap-news.xml` serves 200 `application/xml`, 58 `<url>` with
+   `news:title` + `news:publication_date`, newest stamped today, and `robots.txt` is `User-Agent: *`
+   with no Disallow and declares that exact sitemap — the same legality basis already used for
+   `piataauto`. **It MUST carry `"type": "sitemap_news"`; without that key `fetch.py` treats it as
+   RSS and feedparser yields 0.**
+   ✅ **`saptamanagiurgiuveana.ro` was a WRONG PATH, not a dead site.** WordPress lives under
+   `/wp/`: the homepage 30x's to `/wp/` and declares `href="https://saptamanagiurgiuveana.ro/wp/feed/"`,
+   which returns 200 directly over HTTPS, 10 entries, bozo=0.
+   ⛔ **`gazetademaramures.ro` — the feed is real and excellent (50 entries at `/rss`, NOT `/feed/`),
+   but it is UNREACHABLE by `fetch.py` on this machine, and the cause is TLS trust, not anti-bot and
+   not IP.** The server sends a complete chain (leaf ← Let's Encrypt `YR1` ← ISRG `Root YR`); the
+   missing piece is the **root `ISRG Root YR`, absent from both this machine's store AND certifi
+   2026.05.20** — verified separately, both fail identically with `CERTIFICATE_VERIFY_FAILED`.
+   `http://` 301s to https, so there is no plain-HTTP workaround; browsers succeed because they do
+   AIA fetching, Python's OpenSSL does not. **Added as-is it becomes a permanently `dead` source.**
+   Whether a GitHub runner's ca-certificates carries that root is NOT verifiable from here — test it
+   in CI before merging, or wait for the trust stores to catch up.
+   ❌ **`dobrogeanoua.ro` — dead and NOT recoverable, stop spending time on it.** Every path 404s;
+   `/?feed=rss2` serves the homepage; `robots.txt`, `sitemap.xml` and `sitemap-news.xml` are all 404,
+   so the `sitemap_news` escape hatch that saved `monitorulsv` is unavailable. Root cause: it is not
+   a CMS site at all — a hand-written static `index.php` brochure page declaring
+   `charset=windows-1250`, 13 links total (mostly ads to local businesses), year strings 2010-2016.
+   There is no machine-readable output to consume. CONSTANTA is already covered by `dobrogeanews` +
+   `dobrogeaonline`.
+   **Two editorial cautions for the wave, both measured:** `monitorulexpres.ro` would be the FOURTH
+   BRASOV source (after `bizbrasov`, `newsbv`, `mytex`) and its newest item is about **Covasna** —
+   pinning `judet: BRASOV` on a paper that routinely covers the neighbouring county is exactly the
+   mismatch `judet` exists to avoid, so add it WITHOUT `judet`, or add `mytex` only (§7 diversity).
+   `b365.ro`: BUCURESTI is in `geo.REGIUNI` but has **0 rows** in `data/sate_judet.csv`, so `judet`
+   there buys no village matching — correct metadata, functionally inert. `gazetadecluj.ro` is the
+   only feed in the batch with `bozo=1` (SAXParseException, 9 usable entries recovered); `fetch.py`
+   tolerates it today but it is one XML tweak away from zero — if it ever shows as "200 dar 0
+   articole … SAXParseException" in `dead`, that is this. The other 65 candidates exist only in the web
    session's transcript, not on disk — account B has to re-emit the list before they can be checked.
    Land in waves of ~15: 79 at once would starve the 10-call AI budget. Strongest first —
    `cvlpress.ro` (DJ), `zi-de-zi.ro` (MS), `monitorulbt.ro` (BT), `monitorulsv.ro` (SV),
