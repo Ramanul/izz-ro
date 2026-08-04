@@ -359,6 +359,16 @@ def test_prepozitia_locativa_cu_majuscula_nu_declanseaza_garda(text):
     assert geo.clasifica(text) == "regional"
 
 
+@pytest.mark.xfail(reason="Conectorul cu litera mica trece de garda: garda cere un cuvant cu "
+                          "MAJUSCULA lipit inainte, iar „de\" nu e asa. Masurat, „Gazeta de "
+                          "Transilvania\" e singura aparitie de tipul asta din corpus, si "
+                          "articolul ei e oricum `local`, deci impactul de azi e zero. "
+                          "Pinuit ca sa nu treaca drept necunoscut.",
+                   strict=True)
+def test_conectorul_cu_litera_mica_trece_de_garda_INCA():
+    assert geo.clasifica("Gazeta de Transilvania a publicat un articol despre buget") is None
+
+
 @pytest.mark.xfail(reason="_ARTICOL nu acopera genitivul feminin: "
                           "„Transilvaniei\"/„Moldovei\"/„Olteniei\" nu se potrivesc deloc. "
                           "Impact zero pe corpusul de azi (cele 2 articole sunt deja `zonal` "
