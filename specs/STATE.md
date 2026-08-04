@@ -205,6 +205,58 @@ better measurement.
   the act cannot be read — the failure mode that keeps `alocatia` at `verificat: false` — nothing
   is published and the guide keeps saying "ordin de mărime, nu suma exactă din fluturaș".
 
+## Merged 2026-08-04 (account A — announce, per §14)
+Three PRs, all verified by running before merge. `main` after them: **ruff clean, 503 passed,
+2 xfailed.**
+
+- **#127 `35ea00c0` — a region name after a capitalised word is a brand, not geography.**
+  Corpus 2130: `regional` 12 → 5, **7 articles changed, all 7 wrong before**, `zonal` (149) and
+  `local` (729) bit-identical. The measurements and the six compared options are in the section
+  below; what belongs here is what the tests caught that the corpus could not. **Two defects in the
+  guard itself:** "Autostrada A3 Transilvania" escaped because the preceding token ends in a digit,
+  and **"În Ardeal" was rejected** — a sentence-initial locative preposition looks exactly like a
+  compound proper name. The second was caught by `test_clasificare`, which predates this work; the
+  1714-article corpus contains no "În Ardeal" at all. **A corpus measurement is evidence of
+  coverage, not of correctness.** Guard now consults `_MARCA_GEO` before rejecting, reusing that
+  list rather than duplicating it.
+  → **NOT confirmed on live**, same as #126: classification runs in `process.py`, not at render, so
+  the 7 move only at the next full pipeline run (cron `13 */2`).
+  → Two known misses are pinned as `xfail(strict=True)` rather than left as prose: the lowercase
+  connector ("Gazeta **de** Transilvania") and the feminine genitive — see below, it is a real
+  recall hole worth its own slice.
+- **#128 `92072fbf` — a narrow ruff gate (F + DTZ) in `tests.yml`, before pytest.** 13 findings,
+  **zero real bugs**, but two that `--fix` would have made worse; the triage is in the section
+  below. New `ruff.toml`; `ruff` is deliberately NOT in `requirements.txt`.
+  → **Proved on the runner, not only locally:** the `Lint (ruff …)` step in PR #128's `pytest` job
+  printed `All checks passed!`.
+  → **Trap for anyone touching `generator/render.py`:** two of its imports are deliberate
+  re-exports. `sources_coherent` is imported *from `generator.render`* by `tools/qa_check.py:18`,
+  which `build.yml:106` runs, so `ruff --fix` there breaks the nightly pipeline with an
+  ImportError, not just pytest.
+  → Second trap, cheap to hit: **ruff reads `# noqa` out of ordinary prose comments** and warns
+  about an invalid directive. A comment explaining the rule had to be reworded to avoid the string.
+- **#129 `ba5b31ef` — local press wave 1, 11 county papers.** Ten counties get their first
+  dedicated newspaper (DOLJ, ALBA, MURES, BOTOSANI, SIBIU, BIHOR, SUCEAVA, GIURGIU, plus BUCURESTI
+  and third Cluj/Brașov titles). Verified **through `generator.fetch._fetch_one_guarded`, not a
+  reimplementation** — the defect `feed_check.py` has had twice: **11/11 return items**.
+  `monitorulbt` timed out once and returned 8 on retry; recorded as transient.
+  → **`monitorulsv` carries `"type": "sitemap_news"` and MUST keep it** — that site has no RSS at
+  all, every candidate path returns 200 while silently serving the homepage.
+  → **`b365` is the only entry without `judet`, deliberately.** BUCURESTI has zero rows in
+  `data/sate_judet.csv`, so the field opens nothing — and
+  `test_toate_ziarele_judetene_declara_un_judet_cunoscut` forbids exactly that. It caught the field
+  when it was first added "for consistency". Do not fill it back in.
+  → **Watch, does not block:** `gazetadecluj` is the only feed in the wave with `bozo=1`
+  (SAXParseException, 9 entries recovered). If it ever shows as "200 dar 0 articole …
+  SAXParseException" in `dead`, that is this — not the network. And 11 new sources mean more new
+  items competing for ~10 AI calls per run; watch `stats["deferred"]`.
+- **Review reality on all three: there was effectively no second eye.** CodeRabbit reviewed #127
+  (2 comments, one taken, one declined with a reason) and returned `Review limit reached` on both
+  #128 and #129. `claude-review` completed green on #127 and #128 **with no observations at all**
+  (on #128 its step ran 46 minutes and posted nothing; `Token missing notice` was *skipped*, so the
+  token was present). Gemini is sunset, Codex over quota. **A green reviewer check in this repo is
+  currently not evidence that anything was reviewed.**
+
 ## MEASURED 2026-08-03 NIGHT — four parallel probes, recovered after one died on the session cap
 Four read-only agents (`wf_77838023-cf5`). Three returned; the fourth hit "session limit" **after**
 writing its answer, which was recovered from its transcript (its `StructuredOutput` call failed
