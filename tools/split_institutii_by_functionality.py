@@ -73,7 +73,7 @@ def main():
             print(f"Eroare la scriere {output_path}: {e}")
 
     # Summary
-    print(f"\n=== Rezumat categorii ===")
+    print("\n=== Rezumat categorii ===")
     for category in sorted(CATEGORIES.keys()):
         count = len(categorized[category])
         print(f"{category}: {count}")
