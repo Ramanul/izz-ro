@@ -4,7 +4,7 @@
 > Executors get it read-only. Keep it tight — when it outgrows ~40 lines of content, cut the
 > settled history, not the open work. `git fetch` immediately before rewriting it.
 
-**Updated:** 2026-08-03 21:05 (account A — #125 and #126 MERGED: villages match only their own county, and an ambiguous name must be marked as a place to count)
+**Updated:** 2026-08-04 09:40 (account A — #130 MERGED, slice 2 open as #131: a bare official announcement is published as title + link)
 
 ## READ FIRST — a bot-challenge page served with HTTP 200, triggered by SWEEP VOLUME (2026-08-02)
 
@@ -361,30 +361,34 @@ viitoare simte nevoia să le re-deschidă, răspunsul e aici, nu la el.
   cu pictograma rubricii). „45 de fotografii pe live" vs „1302 coperți generate" înseamnă: 45 de
   articole au o poză adevărată, restul au desenul. **Nu folosi cuvântul fără să-l explici.**
 
-## PREDARE 2026-08-04, buget epuizat pe contul A — CONTINUĂ DE AICI
-Sesiunea s-a oprit la 95% consum. Nimic nu e la jumătate pe disc: tot ce s-a scris e comis și
-pushat. Ordinea de mai jos e ordinea în care aș lua-o.
+## STAREA FELIILOR 2026-08-04 09:40 (contul A) — #130 ATERIZAT, #131 DESCHIS
 
-**1. PR #130 e DESCHIS și neevaluat — prima ta sarcină.** `fix/sinteza-fara-substanta`, commit
-`d2e36b27`. CI-ul rula când s-a terminat bugetul; **verifică-l înainte de orice**. Local era:
-ruff curat, 512 passed 2 xfailed, `--render-only` 2130 articole, `qa_check` „categorii goale:
-niciuna". Dacă e verde, se poate merge — regula §14, merge contul activ.
+**1. PR #130 — MERGED**, squash `2dd5aa22`. Toate check-urile verzi pe `5988da68`.
 → Ce face: itemele a căror `description` nu adaugă cel puțin `config.MIN_SUBSTANTA_CUVINTE` (5)
 cuvinte peste titlu nu mai ajung la AI și nu se mai publică. Plus scoaterea din prompt a regulii
 care cerea fabricarea. Detalii complete în `specs/sinteza-fara-substanta.md`.
 → **Consecință verificată, nu presupusă:** trei surse tac complet — `digisport`, `monitorulsv`,
 `piataauto`. Nicio rubrică nu rămâne goală (`sport` are gsp+prosport, `auto` are autocritica,
 `nwradu` 81-97 cuvinte noi, `startup` 19-30). Nu re-verifica asta.
+→ **Observația CodeRabbit („`src_extra` se pierde prin căile AI") a fost REFUTATĂ pe cod**, nu
+ignorată: cele trei funcții sunt în `process.py`, nu în `main.py`, și niciuna nu pierde câmpul.
+Gaura reală era că nimic nu lega cele două capete — acoperită acum de `tests/test_substanta_sursa.py`.
+Recenzia a rămas `CHANGES_REQUESTED` (stale, dinainte de commit-ul care îi răspunde); răspunsul e
+pe PR. **Nu redeschide subiectul.**
 
-**2. FELIA 2, NEÎNCEPUTĂ — și e o decizie a proprietarului deja luată, nu o întrebare.**
-Alexandru a ales (2026-08-04): anunțurile de primărie **se publică ca listă, cu titlul original
-neatins + link, fără teaser**. Azi NU se întâmplă asta: `process_official` le pune teaserul
-`"Detalii pe sursa."`, care e în `_BODY_PLACEHOLDERS`, deci `_quality_gate` le respinge **tăcut**.
-Comportamentul e ANTERIOR PR #130 și neschimbat de el.
-→ Ce trebuie atins: `_quality_gate` să accepte un articol `processed_by == "official"` fără corp,
-și `_card.html` / `article.html` să randeze forma fără teaser (altfel iese un card cu o gaură).
-→ **Nu extinde pragul de substanță la primării** — ele nu trec prin AI deloc
-(`process_official` cheamă providerul cu `None`), deci nu pot fabrica nimic.
+**2. FELIA 2 — implementată, PR #131 deschis**, `feat/anunturi-oficiale-fara-teaser`, rebazat pe
+main de după #130. Anunțurile de primărie fără corp se publică acum ca titlu original + link.
+→ `anunt_oficial_fara_corp()` în `select.py` e un **predicat unic** folosit și de poartă și de
+randare, ca cele două să nu se poată depărta. Acoperă ambele forme de „fără corp": placeholder-ul
+(69 iteme) și teaserul identic cu titlul (10) — 79 în total, măsurate pe `data/articles.json`.
+→ Poarta e slăbită STRICT pe `processed_by == "official"`. `tests/test_anunt_oficial_fara_teaser.py`
+(12 teste) pinează inclusiv regresia inversă: un item neoficial fără substanță tot NU se publică.
+→ Randarea nu emite elemente goale (`.card` e flex cu `gap`, un `<p>` gol lasă o gaură vizibilă);
+`meta description` spune cine a emis anunțul în loc să iasă goală.
+→ Local: `526 passed, 2 xfailed`. **Capcană de mediu, nu de cod:** fixturile din
+`test_entities_verified` și `test_sitemap_editorial` re-randează doar când `output/` lipsește, deci
+două rulări pytest în paralel în același working tree pică una pe alta (`WinError 145`). Rulează-le
+singure înainte să crezi că e o regresie.
 
 **3. Rămas deschis, decizie separată:** cele **62 de articole deja publicate** din sursele fără
 substanță (52 digisport + 10 piataauto) rămân până expiră pe `ARTICLE_TTL_DAYS`. Poarta tratează
@@ -407,6 +411,20 @@ atâtor iterații. Și „feedul răspunde" ≠ „feedul are conținut": `monit
 #129 după ce s-a verificat că sursa întoarce iteme, nu că itemele conțin ceva.
 
 ## Open
+-1. **DECIZIE DE PROPRIETAR, deschisă de #131: 7 din cele 79 de anunțuri au titluri care nu spun
+   nimic — iar la un anunț fără corp titlul e SINGURA informație.** Măsurat pe `data/articles.json`
+   2026-08-04, titluri de maximum 2 cuvinte: `Anunț PUZ` (x2), `Publicitate`, `ANUNȚ PUBLIC`,
+   `41 mana+fainare+putregai`, `CP_Renta viagera_C2025_29.07.2026` (un nume de fișier),
+   `https://e-consultare.gov.ro/` (un URL brut ca titlu). Mediana e 11 cuvinte, deci **72 din 79
+   sunt în regulă** — dar §7 spune „never publish raw, truncated headlines... SKIP the item", iar
+   un card al cărui întreg conținut e cuvântul „Publicitate" e exact zgomotul pe care îl promitem
+   că-l scoatem. Verificat pe preview-ul lui #131: cardul se randează corect, fără gaură — deci
+   nu e un bug de randare, e o limită a variantei (b).
+   → Opțiuni, nu recomandare unică: (a) prag de cuvinte în titlu pentru anunțurile fără corp
+   (ex. ≥3), (b) listă de titluri-capcană (`Publicitate`, `Anunț`, `ANUNȚ PUBLIC`) plus respingerea
+   titlurilor care arată a URL sau a nume de fișier, (c) se publică toate, cum sunt acum.
+   **Nu am ales singur: pragul e editorial, nu tehnic.**
+
 0. **SINTEZA PRODUCE CLICKBAIT FLUENT CÂND SURSA NU TRIMITE FAPTE — raportat de proprietar
    2026-08-04, cu exemplu de pe live. Diagnostic complet în `specs/sinteza-fara-substanta.md`.**
    Pe scurt, fiindcă e cel mai important lucru deschis acum:
