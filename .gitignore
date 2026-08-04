@@ -4,6 +4,9 @@ output/
 # lipseste, deci un output/ de pe alta ramura le face sa pice pe cod care nu e cel testat.
 # Solutia e sa-l muti deoparte inainte de pytest — iar copia mutata nu are ce cauta in git.
 output.stale*/
+# Orice alta copie de output/ pusa deoparte pentru comparatie (premerge-check, prev-branch,
+# ce mai inventeaza sesiunea urmatoare). Un `git add -A` neatent ar comite un site randat intreg.
+output.*/
 .audit/
 __pycache__/
 *.pyc

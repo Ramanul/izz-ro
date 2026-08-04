@@ -4,7 +4,7 @@
 > Executors get it read-only. Keep it tight — when it outgrows ~40 lines of content, cut the
 > settled history, not the open work. `git fetch` immediately before rewriting it.
 
-**Updated:** 2026-08-04 09:40 (account A — #130 MERGED, slice 2 open as #131: a bare official announcement is published as title + link)
+**Updated:** 2026-08-04 11:50 (account A — #130 and #132 MERGED; #131 open, green on §13, held on an owner call about 7 empty titles)
 
 ## READ FIRST — a bot-challenge page served with HTTP 200, triggered by SWEEP VOLUME (2026-08-02)
 
@@ -411,8 +411,11 @@ atâtor iterații. Și „feedul răspunde" ≠ „feedul are conținut": `monit
 #129 după ce s-a verificat că sursa întoarce iteme, nu că itemele conțin ceva.
 
 ## Open
--2. **`fetch.py` ARUNCĂ CORPUL ARTICOLULUI la sursele care îl trimit în `content:encoded` —
-   MĂSURAT 2026-08-04, și schimbă premisa feliei 2.** `fetch.py:474` citește
+-2. **REZOLVAT — PR #132 MERGED**, squash `cb5b1ff4`. Descrierea de mai jos rămâne ca istoric al
+   diagnosticului, fiindcă e ușor de re-făcut greșit. Ce a rămas de măsurat: efectul PE CORPUS
+   PUBLICAT se vede abia după o rulare completă de pipeline (cron `13 */2`) — până atunci
+   `data/articles.json` poartă tot descrierile vechi, deci nu compara cifrele înainte de asta.
+   `fetch.py:474` citea
    `entry.get("summary") or entry.get("description")` și atât. `feedparser` pune
    `<content:encoded>` în `entry.content[0].value`, deci corpul nu e citit niciodată.
    → **Măsurat pe feed-uri reale, nu presupus:** din 12 surse testate (dintre cele 32 care produc
@@ -428,6 +431,16 @@ atâtor iterații. Și „feedul răspunde" ≠ „feedul are conținut": `monit
    → Firul vine de la agentul „Audit surse fara substanta" omorât de plafon la 09:17: singura lui
    frază supraviețuitoare, recuperată din transcript, era exact ipoteza asta. Nu am testat toate
    cele 32 de surse — 12 din 32, deci proporția 9/12 e o estimare, nu un total.
+
+-1b. **§13 rulat pe #131 — fără regresie, cu cifre.** Lighthouse mobil, articol pinuit pe `/auto/2/`,
+   aceleași versiuni (LH 13.4.1, pa11y 9.1.1, Chrome 150.0.7871.187):
+   main `830276dc` → home **83**/100/100/100, articol **91**/100/100/100, pa11y home **0**;
+   #131 `9789a643` → home **83**/100/100/100, articol **91**/100/100/100, pa11y home **0**.
+   Identice. Pe suprafața NOUĂ (pagina de anunț `/local/publicitate/`, care nu există pe main,
+   deci n-are before): **Perf 91 · A11y 100 · BP 100 · SEO 100**, pa11y **0 erori**, iar auditul
+   `meta-description` trece cu scor 1 — adică fallback-ul „Anunț oficial publicat de …" chiar
+   previne regresia SEO pentru care a fost scris. **O rulare per revizie**, deci per §13 nu poate
+   rezolva un efect de Perf sub ~8 puncte; A11y/BP/SEO și pa11y sunt însă deterministe.
 
 -1. **DECIZIE DE PROPRIETAR, deschisă de #131: 7 din cele 79 de anunțuri au titluri care nu spun
    nimic — iar la un anunț fără corp titlul e SINGURA informație.** Măsurat pe `data/articles.json`
