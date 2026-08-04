@@ -25,7 +25,12 @@ jobs:
         with:
           python-version: "3.11"
           cache: "pip"
-      - run: pip install -r requirements.txt pytest
+      - run: pip install -r requirements.txt pytest ruff
+      - name: Lint (ruff — F + DTZ, configurat in ruff.toml)
+        # Inaintea suitei intentionat: un import mort sau un datetime naiv se vede in 2
+        # secunde, iar pytest dureaza ~90. `ruff` NU e in requirements.txt — alea sunt
+        # dependentele pipeline-ului de productie, si un linter n-are ce cauta acolo.
+        run: python -m ruff check .
       - run: python -m pytest tests/ -q
       - name: Sanatatea surselor RSS (doar la rulare manuala; PR-urile raman hermetice)
         # per sursa: HTTP / numar intrari / prospetime — prinde si feed-uri care raspund

@@ -314,7 +314,7 @@ def main():
     rss_working = sum(1 for r in results if r["rss_ok"] == "yes")
     recent = sum(1 for r in results if r["last_signal_date"] and r["last_signal_date"].startswith(("2025", "2026")))
 
-    print(f"\n=== Rezumat ===")
+    print("\n=== Rezumat ===")
     print(f"Total: {total}")
     print(f"Alive: {alive}")
     print(f"Dead: {dead}")

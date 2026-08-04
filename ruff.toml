@@ -1,0 +1,21 @@
+# Poarta de lint, deliberat INGUSTA. Ruleaza in `tests.yml` inaintea suitei pytest.
+#
+# De ce doar F si DTZ, si nu setul implicit al lui ruff (E/W/stil):
+#   F   = pyflakes — importuri si variabile nefolosite, nume nedefinite. Astea sunt defecte,
+#         nu preferinte: un `from X import y` ramas in urma unui refactor e cod mort care se
+#         citeste ca dependenta reala.
+#   DTZ = flake8-datetimez — `datetime` naiv. Repo-ul are un invariant explicit ca `published`
+#         e mereu UTC (`tests/test_published_is_utc.py`), iar un naiv strecurat undeva e exact
+#         felul in care se pierde: tacut, si vizibil abia cand doua offseturi se sorteaza
+#         lexicografic unul langa altul.
+# Regulile de stil sunt lasate afara intentionat. Nimic din ele n-a produs vreodata un bug in
+# repo-ul asta, iar o poarta care se plange de lungimea liniilor se invata sa fie ignorata.
+#
+# ATENTIE inainte sa rulezi `ruff --fix` pe `generator/render.py`: doua dintre importurile de
+# acolo sunt re-exporturi deliberate (`_slug_stems`, `sources_coherent`), marcate cu
+# `# noqa: F401` si explicate la fata locului. `tools/qa_check.py` le ia din `generator.render`
+# si ruleaza in `build.yml`, deci stergerea lor pica pipeline-ul, nu doar testele.
+line-length = 100
+
+[lint]
+select = ["F", "DTZ"]
