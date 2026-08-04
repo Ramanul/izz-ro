@@ -299,3 +299,99 @@ def test_lista_ambigua_chiar_exista_in_index():
     index = geo._index()
     lipsa = sorted(n for n in geo._AMBIGUE if n not in index)
     assert not lipsa, f"nume din _AMBIGUE care nu sunt in indexul de UAT-uri: {lipsa}"
+
+
+# ------------------------------------------------ regiuni folosite ca nume proprii compuse
+# Aceeasi clasa cu `_AMBIGUE`, dar mecanismul TREBUIE sa fie altul, si asta e masurat pe tot
+# corpusul (2026-08-03, 1714 articole): cerand o marca geografica se pierde un articol corect
+# („Capitala DE Moldova") si cade „in REGIUNEA Banatului". Regiunile apar legitim fara
+# prepozitie. Discriminatorul e cuvantul cu majuscula lipit inainte.
+#
+# Premisa cu care a pornit ancheta era doar pe jumatate adevarata si merita scris: din 9
+# articole `regional` gresite, UNUL era marca comerciala (cazul-samanta de mai jos) si SASE
+# erau statul vecin. Cine relaxeaza garda asta trebuie sa se uite intai la Republica Moldova.
+
+@pytest.mark.parametrize("text", [
+    "Banca Transilvania oferă reduceri la zborurile AnimaWings",
+    "Grupul Banca Transilvania a lansat un nou parteneriat strategic",
+    "Universitatea Transilvania a deschis înscrierile",
+    "Republica Moldova instituie restricții și scumpește motorina",
+    "Guvernul Republicii Moldova a instituit stare de alertă energetică",
+    "Piața Agro Transilvania a fost închisă temporar",
+    "Autostrada A3 Transilvania rămâne neterminată",
+    "Festivalul Internațional de Film Transilvania începe vineri",
+])
+def test_regiunea_ca_nume_propriu_compus_nu_e_geografie(text):
+    assert geo.clasifica(text) is None
+
+
+@pytest.mark.parametrize("text", [
+    "Prognoza meteo pentru Transilvania și zonele montane",
+    "Transilvania a fost lovită de o furtună puternică",
+    "Cod galben de caniculă emis pentru regiunea Oltenia",
+    "Turiștii au ajuns în Banat la sfârșitul săptămânii",
+])
+def test_folosirea_geografica_a_regiunii_ramane_regional(text):
+    assert geo.clasifica(text) == "regional"
+
+
+@pytest.mark.parametrize("text", [
+    "Toată Oltenia se află sub cod roșu de caniculă",
+    "Regiunea Banatului a înregistrat cele mai mari temperaturi",
+    "Nordul Banatului rămâne fără curent electric",
+])
+def test_substantivele_geo_relationale_nu_declanseaza_garda(text):
+    """Whitelist-ul `_GEO_RELATIONAL`. Pe corpusul de azi niciunul dintre cele 10 cuvinte nu
+    precede un nume de regiune, deci nu schimba nicio clasificare reala — exista ca sa nu se
+    strice tocmai forma cea mai geografica cu putinta cand apare."""
+    assert geo.clasifica(text) == "regional"
+
+
+@pytest.mark.parametrize("text", [
+    "În Ardeal s-au înregistrat cele mai mari precipitații",
+    "Turiștii au ajuns În Banat la sfârșitul săptămânii",
+])
+def test_prepozitia_locativa_cu_majuscula_nu_declanseaza_garda(text):
+    """La inceput de fraza, „In" arata pentru garda exact ca „Banca": cuvant cu majuscula
+    lipit inainte. De aceea garda intreaba si `_MARCA_GEO` inainte sa respinga. Regresia a
+    fost prinsa de `test_clasificare`, care exista dinainte — nu de corpus, unde forma e rara.
+    """
+    assert geo.clasifica(text) == "regional"
+
+
+@pytest.mark.xfail(reason="Conectorul cu litera mica trece de garda: garda cere un cuvant cu "
+                          "MAJUSCULA lipit inainte, iar „de\" nu e asa. Masurat, „Gazeta de "
+                          "Transilvania\" e singura aparitie de tipul asta din corpus, si "
+                          "articolul ei e oricum `local`, deci impactul de azi e zero. "
+                          "Pinuit ca sa nu treaca drept necunoscut.",
+                   strict=True)
+def test_conectorul_cu_litera_mica_trece_de_garda_INCA():
+    assert geo.clasifica("Gazeta de Transilvania a publicat un articol despre buget") is None
+
+
+@pytest.mark.xfail(reason="_ARTICOL nu acopera genitivul feminin: "
+                          "„Transilvaniei\"/„Moldovei\"/„Olteniei\" nu se potrivesc deloc. "
+                          "Impact zero pe corpusul de azi (cele 2 articole sunt deja `zonal` "
+                          "din nume de judet), dar „nordul Transilvaniei\" e o formulare "
+                          "frecventa in presa si e invizibila pentru poarta. Felie separata.",
+                   strict=True)
+def test_genitivul_feminin_al_regiunii_nu_se_potriveste_INCA():
+    assert geo.clasifica("Nordul Transilvaniei rămâne fără curent") == "regional"
+
+
+def test_garda_de_regiune_nu_atinge_celelalte_niveluri():
+    """Garda se evalueaza DOAR pe potriviri `regional`. „Primăria Giurgiu" si „Universitatea
+    Cluj" sunt exact tiparul pe care il respinge — cuvant cu majuscula inainte — si trebuie
+    sa treaca neatinse, altfel poarta ar pierde masiv la zonal si local (masurat: 890 din
+    1606 de potriviri din corpus n-au nicio marca)."""
+    assert geo.clasifica("Primăria Giurgiu a semnat contractul") == "local"
+    assert geo.clasifica("Universitatea Cluj a pierdut meciul") == "zonal"
+
+
+def test_capitala_de_moldova_supravietuieste_gardei():
+    """Regresia pe care mecanismul `_MARCA_GEO` ar fi produs-o daca era refolosit aici: „de"
+    nu e prepozitie locativa, deci acel filtru ar fi taiat singurul articol din corpus in care
+    `regional` era corect. Testul apara alegerea, nu doar rezultatul."""
+    assert geo.clasifica(
+        "Locomotivele circulă pe magistralele care conectează Capitala de Moldova "
+        "și vestul țării") == "regional"
