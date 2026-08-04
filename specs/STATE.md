@@ -361,6 +361,51 @@ viitoare simte nevoia să le re-deschidă, răspunsul e aici, nu la el.
   cu pictograma rubricii). „45 de fotografii pe live" vs „1302 coperți generate" înseamnă: 45 de
   articole au o poză adevărată, restul au desenul. **Nu folosi cuvântul fără să-l explici.**
 
+## PREDARE 2026-08-04, buget epuizat pe contul A — CONTINUĂ DE AICI
+Sesiunea s-a oprit la 95% consum. Nimic nu e la jumătate pe disc: tot ce s-a scris e comis și
+pushat. Ordinea de mai jos e ordinea în care aș lua-o.
+
+**1. PR #130 e DESCHIS și neevaluat — prima ta sarcină.** `fix/sinteza-fara-substanta`, commit
+`d2e36b27`. CI-ul rula când s-a terminat bugetul; **verifică-l înainte de orice**. Local era:
+ruff curat, 512 passed 2 xfailed, `--render-only` 2130 articole, `qa_check` „categorii goale:
+niciuna". Dacă e verde, se poate merge — regula §14, merge contul activ.
+→ Ce face: itemele a căror `description` nu adaugă cel puțin `config.MIN_SUBSTANTA_CUVINTE` (5)
+cuvinte peste titlu nu mai ajung la AI și nu se mai publică. Plus scoaterea din prompt a regulii
+care cerea fabricarea. Detalii complete în `specs/sinteza-fara-substanta.md`.
+→ **Consecință verificată, nu presupusă:** trei surse tac complet — `digisport`, `monitorulsv`,
+`piataauto`. Nicio rubrică nu rămâne goală (`sport` are gsp+prosport, `auto` are autocritica,
+`nwradu` 81-97 cuvinte noi, `startup` 19-30). Nu re-verifica asta.
+
+**2. FELIA 2, NEÎNCEPUTĂ — și e o decizie a proprietarului deja luată, nu o întrebare.**
+Alexandru a ales (2026-08-04): anunțurile de primărie **se publică ca listă, cu titlul original
+neatins + link, fără teaser**. Azi NU se întâmplă asta: `process_official` le pune teaserul
+`"Detalii pe sursa."`, care e în `_BODY_PLACEHOLDERS`, deci `_quality_gate` le respinge **tăcut**.
+Comportamentul e ANTERIOR PR #130 și neschimbat de el.
+→ Ce trebuie atins: `_quality_gate` să accepte un articol `processed_by == "official"` fără corp,
+și `_card.html` / `article.html` să randeze forma fără teaser (altfel iese un card cu o gaură).
+→ **Nu extinde pragul de substanță la primării** — ele nu trec prin AI deloc
+(`process_official` cheamă providerul cu `None`), deci nu pot fabrica nimic.
+
+**3. Rămas deschis, decizie separată:** cele **62 de articole deja publicate** din sursele fără
+substanță (52 digisport + 10 piataauto) rămân până expiră pe `ARTICLE_TTL_DAYS`. Poarta tratează
+un `src_extra` absent ca „nu știu", nu ca „fără substanță" — **intenționat**, altfel un singur
+deploy ar goli feedul. Un backfill e o decizie, nu o scăpare.
+
+**4. Cozi mai vechi, în ordinea din jurnalul de la 07:00:** genitivul feminin din `_ARTICOL`
+(xfail-ul e deja scris și va confirma singur ziua în care trece) · valul 2 de presă locală (cei
+~65 de candidați există doar în transcriptul sesiunii web, contul B trebuie să re-emită lista) ·
+art. 77 Cod Fiscal · confirmarea pe live a lui #126 și #127 (se mută abia la următoarea rulare
+completă de pipeline, cron `13 */2`).
+
+**Ce NU ridica, sub nicio formă** — vezi secțiunea „ÎNCHISE DE PROPRIETAR" de mai sus:
+dark mode funcționează (a spus-o de patru ori), Moldova nu merge pe „extern", iar „copertă
+generată" se explică, nu se aruncă ca jargon.
+
+**Lecția de metodă din sesiunea asta, mai valoroasă decât feliile:** un defect care se vede doar
+în TEXTUL PUBLICAT nu poate fi prins de teste care citesc doar cod — de asta a supraviețuit
+atâtor iterații. Și „feedul răspunde" ≠ „feedul are conținut": `monitorulsv` a fost adăugat în
+#129 după ce s-a verificat că sursa întoarce iteme, nu că itemele conțin ceva.
+
 ## Open
 0. **SINTEZA PRODUCE CLICKBAIT FLUENT CÂND SURSA NU TRIMITE FAPTE — raportat de proprietar
    2026-08-04, cu exemplu de pe live. Diagnostic complet în `specs/sinteza-fara-substanta.md`.**
