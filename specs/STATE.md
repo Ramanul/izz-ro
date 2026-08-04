@@ -4,7 +4,7 @@
 > Executors get it read-only. Keep it tight — when it outgrows ~40 lines of content, cut the
 > settled history, not the open work. `git fetch` immediately before rewriting it.
 
-**Updated:** 2026-08-04 21:35 (account A — #133 and #131 MERGED; #134 open: GitHub's scheduler drops cron firings, so we try hourly and gate publication at 105 minutes)
+**Updated:** 2026-08-04 21:25 (account A — #133, #131 and #134 all MERGED; the push fix was proven by a real race in production the same evening)
 
 ## READ FIRST — a bot-challenge page served with HTTP 200, triggered by SWEEP VOLUME (2026-08-02)
 
@@ -223,7 +223,7 @@ better measurement.
   → Deliberate gap: `DEMETER JOZSEF NIMROD – 27.07.2026` passes. No mechanical rule catches it
   without also dropping legitimate marriage publications, which share the name+date shape.
 
-- **OPEN — #134: GitHub's scheduler drops `schedule` firings, so the corpus ages.** Not a bug in
+- **#134 `9d382388` — GitHub's scheduler drops `schedule` firings, so the corpus ages.** Not a bug in
   our code; measured over the last 40 runs. 08-04 got **4** runs (03:32, 06:37, 10:47, 14:35Z)
   instead of 12, 08-03 got 8, 08-02 got 10 — all starting 20-35 min after the `:13` mark, with 3-4h
   holes in the morning and near-normal cadence in the UTC evening. At 17:57Z the corpus was **192
@@ -238,6 +238,17 @@ better measurement.
   → Manual dispatch bypasses the gate. If the API call fails the gate goes **red** and the pipeline
   is skipped — fail-closed on purpose: a broken gate that let everything through would mean 24
   builds/day, the failure class that stopped deploys on 5-9 July.
+  → **First thing to check tomorrow:** the 19:13Z firing must be SKIPPED by the gate (content was
+  committed 18:12Z, so 61 min < 105) and the 20:13Z one must RUN (121 min). If instead every hourly
+  firing runs, the gate is not working and the Cloudflare build budget is burning 2x.
+
+- **#133 PROVEN IN PRODUCTION the same evening, not just in simulation.** Run `30936585807` (started
+  18:00:42Z on `7d41a2f2`) hit the exact race, because a human push landed on main at 18:06Z while
+  it ran. Verbatim from the commit step: `! [rejected] main -> main (fetch first)` ->
+  `##[warning]push respins (incercarea 1) - reaplic peste origin/main` ->
+  `Successfully rebased and updated refs/heads/main.` -> `push OK la incercarea 2`. The content
+  commit `4a2e83f2` is on main and `mirror` rendered `content_sha`, green. Before #133 this run
+  would have reported SUCCESS with the content discarded.
 
 - **#133 `402731e1` — a rejected push made the run green and threw the content away.**
   Measured over the last 30 `build.yml` runs: **6 (20%) hit `! [rejected] main -> main (fetch
