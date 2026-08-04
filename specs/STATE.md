@@ -411,6 +411,24 @@ atâtor iterații. Și „feedul răspunde" ≠ „feedul are conținut": `monit
 #129 după ce s-a verificat că sursa întoarce iteme, nu că itemele conțin ceva.
 
 ## Open
+-2. **`fetch.py` ARUNCĂ CORPUL ARTICOLULUI la sursele care îl trimit în `content:encoded` —
+   MĂSURAT 2026-08-04, și schimbă premisa feliei 2.** `fetch.py:474` citește
+   `entry.get("summary") or entry.get("description")` și atât. `feedparser` pune
+   `<content:encoded>` în `entry.content[0].value`, deci corpul nu e citit niciodată.
+   → **Măsurat pe feed-uri reale, nu presupus:** din 12 surse testate (dintre cele 32 care produc
+   anunțuri „fără corp") **9 trimit un corp real în `content:encoded`**. Exemplu:
+   `pl_neamt_municipiul_roman` — 10/10 iteme cu `summary` de **0 caractere** și `content:encoded`
+   de **1677 / 2278** caractere. Anunțurile alea NU sunt fără corp; pipeline-ul le orbește.
+   → **Contra-verificat pe `digisport`:** are `content:encoded` pe toate cele 100 de iteme, dar
+   **max delta 0** față de `summary` — acolo chiar sursa nu trimite nimic peste titlu. #130 rămâne
+   corect pentru digisport. Cele două cazuri nu se confundă.
+   → **Consecință pentru #131:** „titlu + link" e răspunsul potrivit doar pentru cele ~3 surse din
+   12 care chiar n-au corp. Pentru restul, fixul e o linie în `fetch.py`, iar `process_official` ar
+   produce un teaser real în loc de „Detalii pe sursa.". **De rezolvat ÎNAINTE de merge pe #131.**
+   → Firul vine de la agentul „Audit surse fara substanta" omorât de plafon la 09:17: singura lui
+   frază supraviețuitoare, recuperată din transcript, era exact ipoteza asta. Nu am testat toate
+   cele 32 de surse — 12 din 32, deci proporția 9/12 e o estimare, nu un total.
+
 -1. **DECIZIE DE PROPRIETAR, deschisă de #131: 7 din cele 79 de anunțuri au titluri care nu spun
    nimic — iar la un anunț fără corp titlul e SINGURA informație.** Măsurat pe `data/articles.json`
    2026-08-04, titluri de maximum 2 cuvinte: `Anunț PUZ` (x2), `Publicitate`, `ANUNȚ PUBLIC`,
