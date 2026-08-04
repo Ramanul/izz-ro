@@ -14,9 +14,11 @@
     {% set top = hero[0] %}
     <article class="lead-feature">
       <div class="lead-main">
-        <span class="badge{% if top.model == 'C' %} c{% endif %}">{{ top.category }}</span>
+        <span class="badge{% if top.model == 'C' %} c{% endif %}">{{ top.category }}{% if top.anunt_fara_corp %} · Anunț oficial{% endif %}</span>
         <h2 class="lead-title"><a href="{{ base }}/{{ top.category }}/{{ top.slug }}/">{{ top.title }}</a></h2>
+        {% if not top.anunt_fara_corp %}
         <p class="lead-summary">{% if top.model == 'C' %}{{ top.synthesis }}{% else %}{{ top.teaser }}{% endif %}</p>
+        {% endif %}
       </div>
       <aside class="lead-aside">
         {% if top.art_path %}

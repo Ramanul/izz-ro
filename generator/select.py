@@ -97,6 +97,27 @@ def _dedup_sources(a: dict) -> None:
 
 _BODY_PLACEHOLDERS = {"Detalii pe sursa.", "Detalii pe surse.", ""}
 
+def anunt_oficial_fara_corp(a: dict) -> bool:
+    """True daca articolul e un anunt oficial (pl_/cj_/pr_) care nu are corp de text.
+
+    Decizie proprietar 2026-08-04 (specs/sinteza-fara-substanta.md): anunturile de primarie se
+    publica cu titlul original NEATINS + link, fara teaser inventat. Pana acum se pierdeau tacut:
+    `process_official` le punea "Detalii pe sursa.", care e in `_BODY_PLACEHOLDERS`, deci poarta
+    le respingea.
+
+    „Fara corp" acopera DOUA forme, pentru ca ambele inseamna acelasi lucru — sursa n-a trimis
+    nimic peste titlu: (1) placeholder-ul, cand feed-ul n-are `description`; (2) teaser identic cu
+    titlul, cand feed-ul repeta titlul in `description` (masurat 2026-08-04 pe `data/articles.json`:
+    69 din prima forma, 10 din a doua, 79 in total, toate `local`, toate cu link).
+
+    Predicat SINGUR, folosit si de poarta si de randare, ca cele doua sa nu se poata departa:
+    daca poarta publica un articol pe care randarea nu-l stie fara corp, iese cardul cu gaura.
+    """
+    if a.get("processed_by") != "official":
+        return False
+    body = (a.get("teaser") or "").strip()
+    return body in _BODY_PLACEHOLDERS or body == (a.get("title") or "").strip()
+
 def _slug_stems(url: str) -> set:
     """Cuvinte-cheie (stem 6 litere) din ultima bucata a URL-ului = subiectul articolului-sursa."""
     slug = re.sub(r"[?#].*$", "", url or "").rstrip("/").split("/")[-1]
@@ -130,10 +151,15 @@ def _quality_gate(a: dict) -> bool:
     else:
         body = (a.get("teaser") or "").strip()
 
-    if not body or body in _BODY_PLACEHOLDERS:
-        return False
-    if body == title:
-        return False
+    # Anuntul oficial fara corp e SINGURA forma publicabila fara body: titlu original + link.
+    # Exceptia e strict pe `processed_by == "official"`, adica pe itemele care nu trec prin AI
+    # deloc — nu exista text sintetizat care sa poata fi fabricat. Pentru orice alta sursa
+    # conditiile de mai jos raman intacte: slabirea lor ar readuce exact bug-ul reparat de #130.
+    if not anunt_oficial_fara_corp(a):
+        if not body or body in _BODY_PLACEHOLDERS:
+            return False
+        if body == title:
+            return False
 
     # sursa minima
     has_source = bool(a.get("sources")) or bool(a.get("original_link"))

@@ -1,7 +1,9 @@
 {% extends "base.html" %}
 {% block title %}{{ a.title }} — {{ site.name }}{% endblock %}
 {# meta/og description taiata la limita SERP (~158c, la cuvant); corpul ramane intreg #}
-{% block description %}{{ (a.synthesis if a.model == 'C' else a.teaser) | truncate(154, False, '…', 0) }}{% endblock %}
+{# anuntul oficial n-are corp: meta description ar iesi GOALA (regresie SEO masurabila), asa ca
+   spune faptul verificabil — cine a publicat anuntul — fara sa rezume ce nu s-a citit #}
+{% block description %}{% if a.anunt_fara_corp %}Anunț oficial publicat de {{ a.source_name }}.{% else %}{{ (a.synthesis if a.model == 'C' else a.teaser) | truncate(154, False, '…', 0) }}{% endif %}{% endblock %}
 {% block og_type %}article{% endblock %}
 {% block body_attrs %} data-category="{{ a.category }}" data-source="{{ a.source_name }}" data-title="{{ a.title }}"{% endblock %}
 {% block head_extra %}
@@ -18,14 +20,16 @@
   <span>{{ a.title }}</span>
 </nav>
 <article class="article">
-  <span class="badge{% if a.model == 'C' %} c{% endif %}">{{ a.category }}</span>
+  <span class="badge{% if a.model == 'C' %} c{% endif %}">{{ a.category }}{% if a.anunt_fara_corp %} · Anunț oficial{% endif %}</span>
   <h1>{{ a.title }}</h1>
   <div class="meta">
     <time datetime="{{ a.published }}">{{ a.published_human }}</time>
+    {% if not a.anunt_fara_corp %}
     {% set body = a.synthesis if a.model == 'C' else a.teaser %}
     {% set word_count = (body or '').split() | length %}
     {% set read_mins = [word_count // 200, 1] | max %}
     <span class="reading-time">~{{ read_mins }} min citire</span>
+    {% endif %}
   </div>
 
   {% if a.art_path %}
@@ -40,7 +44,13 @@
   </figure>
   {% endif %}
 
+  {% if a.anunt_fara_corp %}
+  {# fara <p class="body"> gol: nota spune de ce nu exista rezumat. Fara link aici — provenienta
+     ramane un singur element, `sources-box` de mai jos (CLAUDE.md §7). #}
+  <p class="official-note">Anunț oficial. Publicăm titlul exact, așa cum l-a emis instituția, fără rezumat — textul integral este la sursă.</p>
+  {% else %}
   <p class="body">{% if a.model == 'C' %}{{ a.synthesis }}{% else %}{{ a.teaser }}{% endif %}</p>
+  {% endif %}
 
   {% set srcs = a.sources if (a.model == 'C' and a.sources) else [{'name': a.source_name, 'url': a.original_link}] %}
   <div class="sources-box">

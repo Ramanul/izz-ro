@@ -233,6 +233,11 @@ picture { display: contents; }
   margin: var(--s-8) 0 var(--s-21); font-weight: 800; letter-spacing: -.5px;
 }
 .article .body { font-size: var(--fs-md); color: var(--ink); margin: var(--s-21) 0; line-height: 1.6; }
+/* anunt oficial fara corp: nota tine locul corpului, dar citeste ca metadata, nu ca text de
+   articol — altfel arata ca un rezumat, exact ce nu publicam pentru itemele astea */
+.official-note {
+  font-size: var(--fs-xs); color: var(--ink-2); margin: var(--s-21) 0; line-height: 1.55;
+}
 .notice {
   background: var(--gold-wash); border-left: 3px solid var(--gold);
   padding: var(--s-13) var(--s-21); font-size: var(--fs-xs); color: var(--ink-2); margin: var(--s-21) 0;

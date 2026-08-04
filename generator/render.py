@@ -13,7 +13,7 @@ from slugify import slugify
 
 from . import config, covers, geo, htmlart
 from .select import (_dedup, _dedup_sources, _diversify, _entity_index,
-                     _pick_hero, _quality_gate)
+                     _pick_hero, _quality_gate, anunt_oficial_fara_corp)
 # Re-export DELIBERAT, nu import mort: `tests/test_render_editorial.py` le cheama ca
 # `render._slug_stems` / `render.sources_coherent` (9 apeluri), iar `tools/qa_check.py:18`
 # importa `sources_coherent` din `generator.render`, nu din `generator.select` — si scriptul
@@ -379,6 +379,13 @@ def build(articles: list, mod: dict | None = None) -> None:
         logging.info("quality_gate: excluded %d/%d articles (no usable body or missing source)", skipped, before)
     for a in articles:
         _dedup_sources(a)
+        # Anunt oficial fara corp -> forma „titlu + link". Teaserul se goleste AICI, o data,
+        # in loc sa stie fiecare sablon ce e un placeholder: cele 69 de anunturi deja in state
+        # poarta literal "Detalii pe sursa.", deci un simplu `{% if a.teaser %}` in sablon
+        # l-ar tipari. Marcajul `anunt_fara_corp` e ce citesc sabloanele.
+        a["anunt_fara_corp"] = anunt_oficial_fara_corp(a)
+        if a["anunt_fara_corp"]:
+            a["teaser"] = ""
     _assign_slugs(articles)
 
     # reset output (golim CONTINUTUL, nu radacina — ca un server local care tine
