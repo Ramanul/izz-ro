@@ -106,3 +106,23 @@ def title_tokens(title: str) -> set:
     norm = strip_diacritics(title.lower())
     words = re.findall(r"[a-z0-9]+", norm)
     return {w for w in words if len(w) > 3 and w not in _STOPWORDS_RO}
+
+
+def cuvinte_adaugate(title: str, description: str) -> int:
+    """Cate cuvinte aduce descrierea PESTE cele din titlu.
+
+    Masura substantei unui item de RSS. Multe surse trimit `description` identica cu `title`
+    (masurat 2026-08-04: 58 din 256 de iteme au 0-4 cuvinte in plus, iar sase surse sunt 100%
+    asa) — pentru alea nu exista NIMIC de sintetizat, iar un model caruia i se cere totusi un
+    rezumat nu poate produce decat o parafraza a titlului. Daca titlul e clickbait, iese
+    clickbait fluent, care trece de orice verificare de forma. Vezi specs/sinteza-fara-substanta.md.
+
+    Se numara cuvinte, nu caractere, si se ignora ordinea: o descriere care REPETA titlul si
+    apoi adauga fapte trebuie sa treaca. Fara stopwords-uri scoase — la 25 de cuvinte,
+    prepozitiile chiar diferentiaza o propozitie noua de una repetata.
+    """
+    def _cuv(s: str) -> list:
+        return re.findall(r"[a-z0-9]+", strip_diacritics((s or "").lower()))
+
+    din_titlu = set(_cuv(title))
+    return sum(1 for w in _cuv(description) if w not in din_titlu)

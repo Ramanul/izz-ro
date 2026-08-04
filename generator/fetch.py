@@ -15,7 +15,7 @@ from html.parser import HTMLParser
 import feedparser
 
 from . import config
-from .util import normalize_url, domain_of, clean_html
+from .util import normalize_url, domain_of, clean_html, cuvinte_adaugate
 
 USER_AGENT = "IZZ.ro Bot/1.0 (+https://izz.ro)"
 TIMEOUT = 10  # secunde per feed
@@ -181,7 +181,9 @@ def _parse_sitemap_news(raw: bytes, key: str, source: dict) -> tuple[list, str |
             "source_lang": source.get("lang", "ro"),
             "original_title": title,
             "title": title,
-            "description": "",          # descrierea va fi generata de AI din titlu
+            "description": "",          # sitemap-ul nu poarta descriere: itemul ramane fara
+                                        # substanta si e oprit inainte de AI (config.
+                                        # MIN_SUBSTANTA_CUVINTE). NU se genereaza din titlu.
             "category": source["category"],
             "published": _parse_w3c_date(date_raw),
             "model": None,
@@ -375,7 +377,9 @@ def _fetch_html_list(key: str, source: dict) -> tuple[list, str | None]:
             "source_lang": source.get("lang", "ro"),
             "original_title": title,
             "title": title,
-            "description": "",          # descrierea o genereaza AI din titlu
+            "description": "",          # lista HTML nu poarta descriere: itemul ramane fara
+                                        # substanta si e oprit inainte de AI (config.
+                                        # MIN_SUBSTANTA_CUVINTE). NU se genereaza din titlu.
             "category": source["category"],
             "published": _parse_ro_date(entry.get("date_raw", "")),
             "model": None,
@@ -587,6 +591,12 @@ def fetch_all() -> tuple[list, list]:
         if err:
             dead.append(err)
         all_items.extend(items)
+
+    # Cat aduce descrierea peste titlu. Se pune AICI, intr-un singur loc, nu la fiecare din cele
+    # trei constructii de item: un tip nou de sursa l-ar uita, si tocmai tipurile care nu vin din
+    # RSS (`sitemap_news`, `html_list`) sunt cele care au descrierea goala prin constructie.
+    for it in all_items:
+        it["src_extra"] = cuvinte_adaugate(it.get("title"), it.get("description"))
 
     _cache_save(cache)
     return all_items, dead

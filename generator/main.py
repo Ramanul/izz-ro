@@ -64,6 +64,21 @@ def process_new(new_items: list, provider, budget: int, existing: list | None = 
     used = 0
     official = [i for i in new_items if str(i.get("source", "")).startswith(OFFICIAL_PREFIXES)]
     new_items = [i for i in new_items if i not in official]
+
+    # Itemele fara substanta nu ajung la AI. Se opresc AICI, inainte de clustering si inainte de
+    # buget, din doua motive: (1) nu exista nimic de sintetizat, deci apelul ar produce o
+    # parafraza a titlului — vezi `specs/sinteza-fara-substanta.md`; (2) bugetul e ~10 apeluri pe
+    # rulare si era ars pe ele. Sursele oficiale sunt deja scoase mai sus si nu sunt atinse.
+    # `src_extra` lipseste doar pe iteme construite in teste vechi; acolo nu presupunem nimic.
+    fara_substanta = [i for i in new_items
+                      if i.get("src_extra") is not None
+                      and i["src_extra"] < config.MIN_SUBSTANTA_CUVINTE]
+    if fara_substanta:
+        surse = sorted({str(i.get("source")) for i in fara_substanta})
+        print(f">> Fara substanta (sub {config.MIN_SUBSTANTA_CUVINTE} cuvinte peste titlu), "
+              f"NEtrimise la AI: {len(fara_substanta)} iteme din {len(surse)} surse: "
+              f"{', '.join(surse)}")
+        new_items = [i for i in new_items if i not in fara_substanta]
     new_urls = {i["url"] for i in new_items}
     recent_b = [a for a in (existing or [])
                 if a.get("model") == "B" and a.get("url") not in new_urls]

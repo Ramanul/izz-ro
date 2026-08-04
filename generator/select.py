@@ -16,6 +16,7 @@ import re
 
 from slugify import slugify
 
+from . import config
 from .util import title_tokens, domain_of
 
 def _dedup(articles: list) -> list:
@@ -142,6 +143,16 @@ def _quality_gate(a: dict) -> bool:
     # fallback = titlu/body brut din RSS, fara sinteza AI -> zgomot, NU se publica
     # (indiferent de limba). Item-ul ramane in state si se reia/upgrade-eaza la AI.
     if a.get("processed_by") == "fallback":
+        return False
+
+    # Sursa n-a trimis fapte peste titlu -> ce s-a sintetizat e o parafraza a titlului, oricat de
+    # fluent ar suna. Verificarile de mai sus se uita toate la FORMA IESIRII si nu pot vedea asta:
+    # teaserul E diferit de titlu, E nevid, NU e trunchiat. Asta e singura care se uita la INTRARE.
+    # `main.py` opreste itemele astea inainte de AI; garda de aici prinde ce e deja in state.
+    # Oficialele (pl_/cj_/pr_) nu trec pe aici cu sinteza AI si au propria cale.
+    if (a.get("processed_by") != "official"
+            and a.get("src_extra") is not None
+            and a["src_extra"] < config.MIN_SUBSTANTA_CUVINTE):
         return False
 
     # cluster C cu surse incoerente (linkuri spre articole fara legatura) -> nu se publica
