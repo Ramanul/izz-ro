@@ -84,6 +84,31 @@ de a redeschide.
 să lase urmă în git (cel mai vechi jurnal e `2026-07-24`, iar proiectul există din 26 iunie).
 T1 acoperă perioada aia doar cu ce a devenit cod.
 
+## Unde a ajuns recuperarea, și cum se rulează restul
+
+**T1 — GATA (2026-08-04).** 128 de rânduri generate din PR-uri + 15 adăugate de mână (cele
+`masurat-fals`, `inchis-de-proprietar`, `respins`, `anulat`, `blocat` pe care le știam din
+`STATE.md` și `CLAUDE.md`). Total 143. Un `find` gol NU înseamnă „nu s-a încercat" — înseamnă că
+T2/T3 n-au ajuns acolo.
+
+**T2 și T3 — pregătite mecanic, neexecutate.** Partea scumpă e citirea, deci se face pe agenți
+paraleli, nu în firul principal:
+
+1. Corpusul T2: 553 KB de jurnale în `sessions/A/`, `sessions/A/auto/`, `sessions/B/` din
+   workspace. Deja distilate — randament mare pe token. Acoperă **de la 24 iulie încoace**.
+2. Corpusul T3: `python tools/extrage_conversatii.py --max-kb 200` din workspace transformă cele
+   98.3 MB de transcripturi în **2.76 MB** de text de conversație (de 35 de ori mai puțin, fiindcă
+   97% erau payload-uri de unelte), împărțit în 13 bucăți. Singura cale către perioada
+   **26 iunie – 24 iulie**, unde nu există jurnale. Ieșirea e gitignorată intenționat.
+3. Un agent per bucată, cu aceeași instrucțiune: extrage DOAR ce nu are deja PR — propuneri
+   neimplementate, direcții abandonate, afirmații măsurate și dovedite false, decizii de proprietar
+   — și emite linii `tools/registru.py add` gata de rulat. Interzis să inventeze motive: dacă
+   motivul nu e scris în sursă, rândul iese cu motivul gol și se semnalează.
+4. Rândurile se dedublează față de cele 143 existente înainte de append (`find` pe titlu).
+
+**Ce rămâne irecuperabil, oricât s-ar cheltui:** discuțiile șterse de proprietar. Nu sunt nici în
+git, nici în transcripturi.
+
 ## Ce NU rezolvă asta
 
 Registrul e o evidență, nu o memorie semantică. Nu răspunde la „de ce arată prost pagina de
