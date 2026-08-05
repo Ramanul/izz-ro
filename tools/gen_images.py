@@ -75,7 +75,13 @@ def main() -> int:
         wanted.add(aid)
         art_jpg = os.path.join(MEDIA, f"{aid}.jpg")
         cov_jpg = os.path.join(MEDIA, f"{aid}.c.jpg")
-        if os.path.exists(art_jpg) and os.path.exists(cov_jpg) and os.path.exists(art_jpg[:-4] + ".webp"):
+        # FORCE_REGEN=1 rescrie imagini care exista deja. Necesar dupa o schimbare de DESIGN:
+        # altfel stilul nou se aplica doar articolelor noi, iar site-ul ramane luni de zile cu
+        # doua generatii de coperti amestecate (2201 imagini existente la 2026-08-05). Lasat
+        # explicit, nu implicit: o regenerare completa rescrie ~204 MB in repo si costa cate
+        # doua randari Chromium per articol, deci se face pe loturi (MAX_IMAGES_PER_RUN).
+        if not os.getenv("FORCE_REGEN") and os.path.exists(art_jpg) and \
+                os.path.exists(cov_jpg) and os.path.exists(art_jpg[:-4] + ".webp"):
             continue
         if made >= MAX_PER_RUN:
             continue
