@@ -28,8 +28,12 @@ jobs:
       - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7
         with:
           python-version: "3.11"
-      - run: pip install playwright
+      # Pinat: nepinnat, Chromium se schimba sub noi de la o rulare la alta, deci un
+      # esec nu mai e reproductibil. 1.62.0 e versiunea pe care CI o instala oricum
+      # pe 2026-08-05. Ridica-l deliberat, nu din intamplare.
+      - run: pip install playwright==1.62.0
       - run: python -m playwright install --with-deps chromium
+      - run: python -m playwright --version
       - name: Verificare vizuala pe live
         env:
           BASE_URL: https://izz.ro
