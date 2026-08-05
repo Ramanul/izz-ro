@@ -144,3 +144,5 @@ IZZ-0142	2026-08-04	render	7 din 79 de anunturi oficiale au titluri care nu spun
 IZZ-0143	2026-08-04	surse	Cele 62 de articole deja publicate din surse fara substanta	blocat	proprietar	specs/STATE.md punctul 3	Raman pana expira pe ARTICLE_TTL_DAYS. Poarta trateaza src_extra absent ca 'nu stiu', intentionat — altfel un singur deploy ar goli feedul. Un backfill e o decizie, nu o scapare.	
 IZZ-0144	2026-08-04	ci	fix(ci): pushul respins trebuie sa faca rularea rosie, iar mirror-ul sa randeze commitul rularii	implementat	Ramanul	#133 402731e1		
 IZZ-0145	2026-08-04	ci	fix(ci): se Ã®ncearcÄƒ orar, se publicÄƒ tot la 2h â€” planificatorul GitHub sare firings	propus	Ramanul	#134		
+IZZ-0146	2026-08-04	necunoscut	Badge de judet pe coperta + max-image-preview + unealta de arhiva	implementat	Ramanul	#135 c3f18d98		
+IZZ-0147	2026-08-05	necunoscut	Repara garda vizuala: roÈ™ie de 19 zile din cauza bot challenge-ului Cloudflare	implementat	Ramanul	#136 08816776		
