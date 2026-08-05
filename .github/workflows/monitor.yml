@@ -12,6 +12,13 @@ name: uptime-monitor
 
 on:
   schedule:
+    # ATENTIE la ce inseamna */10 aici: e o CERERE, nu o garantie. Masurat 2026-08-05, pe 6
+    # rulari consecutive, intervalele reale au fost 62-200 min -- adica ~5% din cadenta ceruta.
+    # Planificatorul GitHub sare firings de `schedule`, iar intervalele scurte sunt cele mai
+    # afectate. Fereastra reala de detectie a unui outage e deci de ordinul ORELOR, nu 10 min.
+    # NU rari cron-ul ca sa "fie sincer": cererea deasa maximizeaza ce livreaza GitHub, iar
+    # rarirea ar reduce si mai mult frecventa reala. Detectia sub-ora cere un serviciu extern
+    # (Cloudflare Health Checks / UptimeRobot) -- decizie de cont, nu de repo.
     - cron: "*/10 * * * *"
   workflow_dispatch:
 

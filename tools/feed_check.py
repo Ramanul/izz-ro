@@ -37,6 +37,14 @@ from generator.fetch import _fetch_one_guarded  # noqa: E402
 # limiteaza dupa frecventa, per IP" (masurat 2026-07-24, vezi specs/STATE.md).
 _RATE_LIMIT_RE = re.compile(r"HTTP Error (429|503):")
 
+# 403 NU inseamna sursa moarta: gazdele care ruleaza Cloudflare (sau orice bot-fight) resping
+# IP-urile de datacenter ale runnerului, desi feedul e viu pentru oricine altcineva. Masurat
+# 2026-08-05: ziaruldeiasi.ro/rss a fost raportat DEAD de 15 rulari consecutive, iar de pe o
+# retea obisnuita raspunde 200 cu 15 KB de continut -- inclusiv cu curl simplu, fara User-Agent.
+# Acelasi fenomen care tinea garda vizuala rosie 19 zile (PR #136). Clasificat gresit, semnalul
+# ar fi dus la scoaterea unei surse zonale VII.
+_BLOCKED_RE = re.compile(r"HTTP Error 403:")
+
 
 def main() -> int:
     only = set(sys.argv[1:])
@@ -56,6 +64,11 @@ def main() -> int:
             if _RATE_LIMIT_RE.search(detail):
                 print(f"  LIMIT {key:12s} [{src['category']}] {detail} — rate-limit pe IP, "
                       f"NEVERIFICABIL de aici (nu inseamna sursa moarta)")
+                limited += 1
+            elif _BLOCKED_RE.search(detail):
+                print(f"  BLOCAT {key:11s} [{src['category']}] {detail} — IP de datacenter "
+                      f"respins, NEVERIFICABIL de aici (reverifica de pe alt IP inainte "
+                      f"sa scoti sursa)")
                 limited += 1
             else:
                 print(f"  DEAD {key:12s} [{src['category']}] {src['url']} -> {detail}")
@@ -77,8 +90,8 @@ def main() -> int:
               f"(cap productie: {config.MAX_PER_SOURCE}), cea mai noua: {newest or '-'}")
 
     if limited:
-        print(f"\nATENTIE: {limited} surse rate-limitate de aici — de reverificat de pe alt IP "
-              f"(local, sau alt moment). Nu sunt considerate esec.")
+        print(f"\nATENTIE: {limited} surse rate-limitate sau blocate pe IP de aici — de "
+              f"reverificat de pe alt IP (local, sau alt moment). Nu sunt considerate esec.")
     if bad:
         print(f"\nFAIL: {bad} surse moarte sau fara articole.")
         return 1
