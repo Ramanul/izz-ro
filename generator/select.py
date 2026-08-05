@@ -9,7 +9,7 @@ CLAUDE.md §7), deci sunt cele care merita testate izolat. Acoperirea lor e in
 `tests/test_render_editorial.py`, scrisa INAINTE de mutare tocmai ca sa dovedeasca faptul
 ca mutarea n-a schimbat comportament.
 
-NU s-a mutat `_assign_slugs`, desi atribuie sloguri: cheama `_human_date`, deci amesteca
+NU s-a mutat `assign_slugs`, desi atribuie sloguri: cheama `_human_date`, deci amesteca
 identitatea articolului cu formatarea pentru afisare. Ar trage randarea dupa el aici.
 """
 import re
@@ -173,13 +173,26 @@ def _slug_stems(url: str) -> set:
     return {t[:6] for t in title_tokens(slug.replace("-", " ").replace("_", " "))}
 
 def sources_coherent(a: dict) -> bool:
-    """False daca o sursa a unui cluster C nu imparte NICIUN cuvant cu restul (mis-clustering)."""
+    """False daca o sursa a unui cluster C nu imparte NICIUN cuvant cu restul (mis-clustering).
+
+    O sursa al carei slug nu contine macar doua cuvinte nu poate dovedi NICI coerenta, nici
+    incoerenta: e un identificator opac, nu un subiect. Masurat pe arhiva (7443 articole,
+    2026-08-05): din 3511 surse de sinteza, 47 (1.3%) dau un singur token si TOATE sunt id-uri
+    — bbc.co.uk `c8j2vmzxezro` (30), dw.com `a-77798543` (16), un hotnews numeric. Niciun slug
+    cu cuvinte reale nu cade acolo; urmatoarea treapta, 2 tokeni, are 44 de surse normale.
+    Cat timp erau judecate, orice sinteza care citeaza BBC sau DW pica garda si NU se publica:
+    10 din cele 67 de sinteze respinse pe arhiva erau stiri corroborate real (BBC + Guardian +
+    Politico pe atacul asupra Kievului). Ramura `if not t` de dedesubt afirma deja principiul
+    — fara dovada nu condamn — dar 0 din 3511 slug-uri sunt complet goale, deci nu se activa
+    niciodata. Verificat ca varianta e strict mai permisiva: nicio sinteza acceptata inainte
+    nu e respinsa acum.
+    """
     srcs = a.get("sources") or []
     if len(srcs) < 2:
         return True
     toks = [_slug_stems(s.get("url", "")) for s in srcs]
     for i, t in enumerate(toks):
-        if not t:
+        if len(t) < 2:
             continue
         others = set().union(*[toks[j] for j in range(len(toks)) if j != i]) if len(toks) > 1 else set()
         if others and not (t & others):

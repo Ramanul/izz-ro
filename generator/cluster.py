@@ -83,7 +83,9 @@ def _entity_stems(a: dict) -> set:
 def attach_recent(groups: list, candidates: list) -> list:
     """Ataseaza stiri din rulari ANTERIOARE (deja procesate) la clusterele itemelor
     noi -- doua surse care relateaza acelasi eveniment la ~20-30 min distanta cad in
-    rulari diferite si altfel raman stiri duplicate separate. Praguri STRICTE, plus
+    rulari diferite si altfel raman stiri duplicate separate. Candidatii pot fi si
+    sinteze C, nu doar stiri B (IZZ-0151): o sinteza publicata absoarbe stirea noua si
+    se actualizeaza la acelasi permalink. Praguri STRICTE, plus
     garda pe entitati: cronici sportive-sablon ('X invinge Y si avanseaza in optimi')
     se potrivesc textual desi sunt meciuri diferite -- daca ambele parti au entitati
     AI si acestea sunt disjuncte, NU se unesc. (Itemele dinainte de extractia de

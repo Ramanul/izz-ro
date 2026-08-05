@@ -117,6 +117,31 @@ def test_coherence_ignores_a_source_whose_url_yields_no_tokens():
     ]})
 
 
+def test_coherence_ignores_opaque_ids_bbc_and_dw():
+    """URL-uri reale: BBC si DW pun un id in loc de slug, deci nu spun nimic despre subiect.
+    Cat timp erau judecate, ORICE sinteza care le citeaza era aruncata — 30 + 16 surse in
+    arhiva, si 10 sinteze corroborate real pierdute din cauza asta."""
+    assert render.sources_coherent({"sources": [
+        {"url": "https://www.bbc.co.uk/news/articles/c8j2vmzxezro"},
+        {"url": "https://www.dw.com/en/a-77798543"},
+    ]})
+    assert render.sources_coherent({"sources": [
+        {"url": "https://www.digi24.ro/stiri/atac-masiv-asupra-kievului"},
+        {"url": "https://www.bbc.co.uk/news/articles/c8j2vmzxezro"},
+        {"url": "https://www.theguardian.com/world/2026/atac-asupra-kievului-morti"},
+    ]})
+
+
+def test_coherence_still_rejects_a_wordy_but_unrelated_source():
+    """Contra-proba: relaxarea e strict pe slug-urile fara cuvinte. Un slug cu doua cuvinte
+    reale, dar despre altceva, trebuie sa taie clusterul ca inainte."""
+    assert not render.sources_coherent({"sources": [
+        {"url": "https://a.ro/atac-asupra-kievului"},
+        {"url": "https://b.ro/atac-kiev-victime"},
+        {"url": "https://c.ro/campionat-scrima"},
+    ]})
+
+
 def test_slug_stems_strips_query_and_fragment():
     assert render._slug_stems("https://a.ro/buget-local?utm=x#top") == \
            render._slug_stems("https://a.ro/buget-local")

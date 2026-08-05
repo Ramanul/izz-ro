@@ -180,7 +180,7 @@ def test_un_slug_numeric_nu_fura_calea_unei_pagini_de_paginare():
     deci un slug „2" ar suprascrie pagina si linkul din navigatie ar duce la un articol."""
     arts = [{"title": "2", "category": "sport", "published": "2026-08-03T10:00:00+00:00"},
             {"title": "007", "category": "sport", "published": "2026-08-03T10:00:00+00:00"}]
-    render._assign_slugs(arts)
+    render.assign_slugs(arts)
     assert [a["slug"] for a in arts] == ["stirea-2", "stirea-007"]
     assert not any(a["slug"].isdigit() for a in arts)
 
