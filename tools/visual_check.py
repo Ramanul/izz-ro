@@ -24,6 +24,7 @@ BASE = os.getenv("BASE_URL", "https://izz.ro").rstrip("/")
 SHOT_DIR = os.getenv("SHOT_DIR", "shots")
 INK = "rgb(21, 23, 28)"   # var(--ink) -- fundalul negru care dadea flicker
 fails: list = []
+inflight: set = set()     # requesturi pornite si neterminate -- dovada la esec de navigare
 
 
 def check(cond: bool, rule: str) -> None:
@@ -36,6 +37,41 @@ def _abs(href: str) -> str:
     if href.startswith("http"):
         return href
     return BASE + href
+
+
+def _track(pg) -> None:
+    """Urmareste requesturile in zbor, ca un esec de navigare sa spuna CE l-a tinut."""
+    pg.on("request", lambda r: inflight.add(r.url))
+    pg.on("requestfinished", lambda r: inflight.discard(r.url))
+    pg.on("requestfailed", lambda r: inflight.discard(r.url))
+
+
+def _goto(pg, url: str, label: str, wait: str = "load") -> None:
+    """Navigheaza si, la esec, lasa DOVEZI in SHOT_DIR in loc sa moara mut.
+
+    NU folosim wait_until="networkidle". Playwright insusi il descurajeaza, iar pe izz.ro
+    nu se atinge niciodata din runnerul de CI: jobul a fost rosu 77 de rulari consecutive
+    (17 iul - 5 aug 2026) cu exact acelasi `Page.goto: Timeout 30000ms exceeded`, fara
+    niciun commit de cod in fereastra. Cloudflare Speed Brain e activ pe site
+    (`Speculation-Rules: "/cdn-cgi/speculation"`), deci edge-ul mai lucreaza si dupa `load`.
+    `load` se termina la evenimentul ferestrei, deci nu depinde de ce prefetch-eaza edge-ul.
+
+    Vechea versiune murea la primul goto INAINTE de orice screenshot, asa ca artifactul a
+    fost gol la fiecare din cele 77 de esecuri -- 19 zile fara nicio dovada vizuala.
+    """
+    try:
+        pg.goto(url, wait_until=wait)
+    except Exception as exc:
+        print(f"  FAIL navigare {label} <{url}>: {type(exc).__name__}: {exc}")
+        print(f"  requesturi neterminate in acel moment ({len(inflight)}):")
+        for u in sorted(inflight)[:20]:
+            print("    -", u)
+        try:
+            pg.screenshot(path=f"{SHOT_DIR}/FAIL-{label}.png")
+            print(f"  screenshot de esec: {SHOT_DIR}/FAIL-{label}.png")
+        except Exception as shot_exc:                       # pagina poate fi inutilizabila
+            print(f"  (screenshot imposibil: {shot_exc})")
+        raise
 
 
 def main() -> int:
@@ -56,14 +92,30 @@ def main() -> int:
         # nu activele noastre; beacon-ul rum poate fi abandonat inofensiv la navigare
         pg.on("requestfailed", lambda r: failed_local.append(r.url)
               if BASE in r.url and "/cdn-cgi/" not in r.url else None)
+        _track(pg)
 
         # --- home ---
-        pg.goto(BASE + "/", wait_until="networkidle")
+        _goto(pg, BASE + "/", "home")
         pg.screenshot(path=f"{SHOT_DIR}/home.png")
+
+        # Cloudflare da bot challenge browserelor automate: pagina se incarca, dar e
+        # "Performing security verification", nu site-ul. Fara verificarea asta esecul
+        # apare abia mai jos, ca un selector lipsa, si trimite diagnosticul in directia
+        # gresita -- exact ce s-a intamplat pe 2026-08-05. Un curl NU o poate detecta:
+        # challenge-ul se declanseaza pe amprenta browserului, nu pe User-Agent, deci
+        # curl cu UA de HeadlessChrome primeste 200 cu HTML-ul real.
+        if pg.query_selector("#challenge-running, #cf-challenge-running") or \
+                "security verification" in (pg.title() or "").lower():
+            print(f"  FAIL Cloudflare bot challenge pe {BASE} — browserul automat nu "
+                  f"vede site-ul (titlu: {pg.title()!r})")
+            print(f"  dovada: {SHOT_DIR}/home.png")
+            fails.append(f"Cloudflare bot challenge blocheaza verificarea pe {BASE}")
+            br.close()
+            return 1
 
         # --- pagina de categorie: placeholder-ul cardurilor, masurat real ---
         cat = pg.get_attribute(".nav a", "href") or "/"
-        pg.goto(_abs(cat), wait_until="domcontentloaded")
+        _goto(pg, _abs(cat), "categorie", wait="domcontentloaded")
         media = pg.query_selector(".card-media")
         if media:
             bg = pg.eval_on_selector(".card-media", "el => getComputedStyle(el).backgroundColor")
@@ -75,9 +127,18 @@ def main() -> int:
         # --- un articol: arta chiar se randeaza (nu pictograma goala / 404) ---
         art = pg.get_attribute(".card-title a", "href")
         if art:
-            pg.goto(_abs(art), wait_until="networkidle")
+            _goto(pg, _abs(art), "articol")
             el = pg.query_selector(".article-art")
             if el:
+                # `networkidle` garanta implicit ca imaginea apucase sa se descarce; acum
+                # o asteptam explicit. Daca nu se completeaza, naturalWidth de mai jos
+                # raporteaza FAIL corect -- deci timeoutul aici nu trebuie sa opreasca runul.
+                try:
+                    pg.wait_for_function(
+                        "() => { const el = document.querySelector('.article-art');"
+                        " return !el || el.complete; }", timeout=15000)
+                except Exception as exc:
+                    print(f"  (arta nu s-a completat in 15s: {type(exc).__name__})")
                 nat = pg.eval_on_selector(".article-art",
                                           "el => el.naturalWidth || 0")
                 check(nat > 0, f"arta articolului se incarca real (naturalWidth={nat})")
@@ -91,8 +152,9 @@ def main() -> int:
         mob = br.new_page(viewport={"width": 390, "height": 844},
                           user_agent="Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) "
                                      "AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile Safari/604.1")
+        _track(mob)
         for label, url in [("home", BASE + "/")] + ([("articol", _abs(art))] if art else []):
-            mob.goto(url, wait_until="networkidle")
+            _goto(mob, url, f"mobil-{label}")
             over = mob.evaluate("document.documentElement.scrollWidth - document.documentElement.clientWidth")
             check(over <= 0, f"[mobil 390px] fara overflow orizontal pe {label} (depasire: {over}px)")
             mob.screenshot(path=f"{SHOT_DIR}/mobil-{label}.png")

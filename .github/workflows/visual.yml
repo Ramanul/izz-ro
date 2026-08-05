@@ -9,7 +9,12 @@ name: visual-live
 on:
   schedule:
     - cron: "25 */6 * * *"
-  workflow_dispatch: {}
+  workflow_dispatch:
+    inputs:
+      base_url:
+        description: "Originea verificata (implicit https://izz-ro.pages.dev)"
+        required: false
+        default: "https://izz-ro.pages.dev"
 
 permissions:
   contents: read
@@ -28,11 +33,24 @@ jobs:
       - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7
         with:
           python-version: "3.11"
-      - run: pip install playwright
+      # Pinat: nepinnat, Chromium se schimba sub noi de la o rulare la alta, deci un
+      # esec nu mai e reproductibil. 1.62.0 e versiunea pe care CI o instala oricum
+      # pe 2026-08-05. Ridica-l deliberat, nu din intamplare.
+      - run: pip install playwright==1.62.0
       - run: python -m playwright install --with-deps chromium
+      - run: python -m playwright --version
       - name: Verificare vizuala pe live
         env:
-          BASE_URL: https://izz.ro
+          # De ce pages.dev si nu izz.ro: zona izz.ro are bot challenge Cloudflare activ,
+          # asa ca un Chromium automat primeste "Performing security verification" in loc
+          # de site -- asta a tinut jobul rosu 77 de rulari (17 iul - 5 aug 2026). pages.dev
+          # serveste ACELASI build, fara regulile WAF ale zonei, si acopera tot ce masoara
+          # garda (stiluri calculate, randare imagini, overflow mobil, CSP, assets) -- toate
+          # vin din build, nu din WAF. Ce NU mai acopera: stratul Cloudflare al zonei
+          # publice. Solutia completa e o regula WAF "Skip" pe un header secret trimis de
+          # aici, dar aia cere dashboardul Cloudflare, deci e decizia proprietarului.
+          # Acoperirea pe originea publica ramane la smoke-live (urllib, netul nu-l blocheaza).
+          BASE_URL: ${{ inputs.base_url || 'https://izz-ro.pages.dev' }}
           SHOT_DIR: shots
         run: python tools/visual_check.py
       - name: Urca screenshot-urile (dovada vizuala, si la esec)
