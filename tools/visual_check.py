@@ -98,6 +98,21 @@ def main() -> int:
         _goto(pg, BASE + "/", "home")
         pg.screenshot(path=f"{SHOT_DIR}/home.png")
 
+        # Cloudflare da bot challenge browserelor automate: pagina se incarca, dar e
+        # "Performing security verification", nu site-ul. Fara verificarea asta esecul
+        # apare abia mai jos, ca un selector lipsa, si trimite diagnosticul in directia
+        # gresita -- exact ce s-a intamplat pe 2026-08-05. Un curl NU o poate detecta:
+        # challenge-ul se declanseaza pe amprenta browserului, nu pe User-Agent, deci
+        # curl cu UA de HeadlessChrome primeste 200 cu HTML-ul real.
+        if pg.query_selector("#challenge-running, #cf-challenge-running") or \
+                "security verification" in (pg.title() or "").lower():
+            print(f"  FAIL Cloudflare bot challenge pe {BASE} — browserul automat nu "
+                  f"vede site-ul (titlu: {pg.title()!r})")
+            print(f"  dovada: {SHOT_DIR}/home.png")
+            fails.append(f"Cloudflare bot challenge blocheaza verificarea pe {BASE}")
+            br.close()
+            return 1
+
         # --- pagina de categorie: placeholder-ul cardurilor, masurat real ---
         cat = pg.get_attribute(".nav a", "href") or "/"
         _goto(pg, _abs(cat), "categorie", wait="domcontentloaded")

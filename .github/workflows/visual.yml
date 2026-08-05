@@ -9,7 +9,12 @@ name: visual-live
 on:
   schedule:
     - cron: "25 */6 * * *"
-  workflow_dispatch: {}
+  workflow_dispatch:
+    inputs:
+      base_url:
+        description: "Originea verificata (implicit https://izz.ro)"
+        required: false
+        default: "https://izz.ro"
 
 permissions:
   contents: read
@@ -36,7 +41,7 @@ jobs:
       - run: python -m playwright --version
       - name: Verificare vizuala pe live
         env:
-          BASE_URL: https://izz.ro
+          BASE_URL: ${{ inputs.base_url || 'https://izz.ro' }}
           SHOT_DIR: shots
         run: python tools/visual_check.py
       - name: Urca screenshot-urile (dovada vizuala, si la esec)
