@@ -12,9 +12,9 @@ on:
   workflow_dispatch:
     inputs:
       base_url:
-        description: "Originea verificata (implicit https://izz.ro)"
+        description: "Originea verificata (implicit https://izz-ro.pages.dev)"
         required: false
-        default: "https://izz.ro"
+        default: "https://izz-ro.pages.dev"
 
 permissions:
   contents: read
@@ -41,7 +41,16 @@ jobs:
       - run: python -m playwright --version
       - name: Verificare vizuala pe live
         env:
-          BASE_URL: ${{ inputs.base_url || 'https://izz.ro' }}
+          # De ce pages.dev si nu izz.ro: zona izz.ro are bot challenge Cloudflare activ,
+          # asa ca un Chromium automat primeste "Performing security verification" in loc
+          # de site -- asta a tinut jobul rosu 77 de rulari (17 iul - 5 aug 2026). pages.dev
+          # serveste ACELASI build, fara regulile WAF ale zonei, si acopera tot ce masoara
+          # garda (stiluri calculate, randare imagini, overflow mobil, CSP, assets) -- toate
+          # vin din build, nu din WAF. Ce NU mai acopera: stratul Cloudflare al zonei
+          # publice. Solutia completa e o regula WAF "Skip" pe un header secret trimis de
+          # aici, dar aia cere dashboardul Cloudflare, deci e decizia proprietarului.
+          # Acoperirea pe originea publica ramane la smoke-live (urllib, netul nu-l blocheaza).
+          BASE_URL: ${{ inputs.base_url || 'https://izz-ro.pages.dev' }}
           SHOT_DIR: shots
         run: python tools/visual_check.py
       - name: Urca screenshot-urile (dovada vizuala, si la esec)
