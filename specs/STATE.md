@@ -37,6 +37,15 @@ them clears `_strict_match`. They stayed separate for one reason: `main.py:83` f
   domain still fails `is_synthesis_candidate` (1 distinct domain), so that duplicate survives.
   Counting a C's own `sources` there is a clustering change and needs its own §7 measurement.
 
+**MERGED as `9cdc29f5` (#142), registry row IZZ-0154.** It accidentally carried **#141** with it
+(`fix(htmlart): eticheta copertei nu mai poate fi None sau doar spatii`, `efe194c8`): a concurrent
+session had left the working tree on `fix/eticheta-copertei-none`, so `git checkout -b` for #142
+branched from there instead of `main` — **the §19 shared-working-tree hazard, in the flesh**.
+Verified byte-identical: `git diff main pr141 -- generator/htmlart.py tests/test_htmlart_eticheta.py`
+is empty, and CI ran over the combined diff. **#141 has nothing left to deliver; it is still open,
+with a comment saying so.** Lesson, cheap to apply: `git log -1` before `git checkout -b`, or use a
+worktree.
+
 
 ## READ FIRST — a bot-challenge page served with HTTP 200, triggered by SWEEP VOLUME (2026-08-02)
 
