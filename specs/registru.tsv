@@ -146,3 +146,5 @@ IZZ-0144	2026-08-04	ci	fix(ci): pushul respins trebuie sa faca rularea rosie, ia
 IZZ-0145	2026-08-04	ci	fix(ci): se Ã®ncearcÄƒ orar, se publicÄƒ tot la 2h â€” planificatorul GitHub sare firings	propus	Ramanul	#134		
 IZZ-0146	2026-08-04	necunoscut	Badge de judet pe coperta + max-image-preview + unealta de arhiva	implementat	Ramanul	#135 c3f18d98		
 IZZ-0147	2026-08-05	necunoscut	Repara garda vizuala: roÈ™ie de 19 zile din cauza bot challenge-ului Cloudflare	implementat	Ramanul	#136 08816776		
+IZZ-0148	2026-08-05	necunoscut	403 nu inseamna sursa moarta: feedcheck raporta fals de 15 rulari	implementat	Ramanul	#137 8046e5c4		
+IZZ-0149	2026-08-05	necunoscut	Aceeasi eticheta de judet pe toate template-urile de coperta	implementat	Ramanul	#138 d13974e9		
