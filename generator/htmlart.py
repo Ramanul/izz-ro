@@ -81,6 +81,11 @@ def _base_css(w: int, h: int) -> str:
         ".frame{position:absolute;inset:14px;border:2px solid rgba(201,162,39,.9)}"
         ".chip{position:absolute;top:32px;left:34px;font-family:PF;font-weight:800;font-size:26px;letter-spacing:2px;"
         "text-transform:uppercase;color:#8b6918;background:rgba(255,255,255,.55);padding:6px 16px;border-radius:4px;backdrop-filter:blur(4px)}"
+        # Varianta pentru fundalurile saturate (_t_poster): acelasi corp de litera si aceeasi
+        # asezare, doar contrastul se inverseaza. Pana pe 2026-08-05, _t_poster isi desena
+        # eticheta inline la 64px alb, deci acelasi site arata judetul de 2.5x mai mare pe
+        # un sfert din carduri -- inconsistenta vizibila una langa alta pe pagina de categorie.
+        ".chip.on-dark{color:#fff;background:rgba(0,0,0,.22);border:1px solid rgba(255,255,255,.45)}"
         ".blob{position:absolute;border-radius:50%;filter:blur(60px);mix-blend-mode:soft-light}"
     )
 
@@ -129,8 +134,7 @@ def _t_poster(a, hue, els):
         f'<div class="stage" style="background:linear-gradient(120deg,hsl({hue},60%,52%),hsl({(hue+35)%360},62%,44%))">'
         f'<div style="position:absolute;right:-60px;top:50%;transform:translateY(-50%) rotate(-10deg);width:620px;height:620px;'
         f'opacity:.12;{_mask(els[0], "#fff")}"></div>'
-        f'<div style="position:absolute;top:40px;left:40px;font-family:PF;font-weight:800;color:#fff;font-size:64px;'
-        f'letter-spacing:1px;text-transform:uppercase;text-shadow:0 6px 20px rgba(0,0,0,.25)">{_eticheta(a)}</div>'
+        f'<div class="chip on-dark">{_eticheta(a)}</div>'
         f'<div style="position:absolute;bottom:56px;left:44px;display:flex;gap:28px">{row}</div>'
         f'<div class="frame" style="border-color:rgba(255,255,255,.85)"></div><div class="grain"></div></div>'
     )
