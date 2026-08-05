@@ -4,7 +4,39 @@
 > Executors get it read-only. Keep it tight — when it outgrows ~40 lines of content, cut the
 > settled history, not the open work. `git fetch` immediately before rewriting it.
 
-**Updated:** 2026-08-04 21:25 (account A — #133, #131 and #134 all MERGED; the push fix was proven by a real race in production the same evening)
+**Updated:** 2026-08-05 (account A — duplicates slice implemented: a published synthesis now absorbs the new story instead of a second one appearing; slug persisted)
+
+## DUPLICATE — implemented 2026-08-05 (branch `feat/sinteza-actualizata-slug-stabil`)
+
+IZZ-0151 said *what* (the synthesis updates, the slug does not change); this is the *how*, with the
+§7 empirical numbers. **Measured on the rebuilt archive, 7443 articles.** Duplicate pairs (same
+rubric, ≤6h, Jaccard ≥ 0.5 — the 2026-08-04 metric): **623**, i.e. 706 articles = 9.5% of the corpus.
+Composition **B/B 295 · C/C 183 · B/C 145** — so **328 (53%) contain a synthesis**, and every one of
+them clears `_strict_match`. They stayed separate for one reason: `main.py:83` filtered candidates to
+`model == "B"`, so a published C was invisible to `attach_recent`.
+
+- **The matching threshold is NOT touched.** Only *who is eligible* changes, so the over-merge profile
+  stays the one already calibrated for B. Simulated over the 261 reconstructed runs: **470 new
+  attachments**, 288 of which promote a group to a synthesis → **+1.1 AI calls per run** (budget 12-18).
+- **The representative is now the already-published member** (`processed_by` is the marker), not the
+  chronologically oldest. Otherwise a new item one minute older would take over the permalink.
+  Its sources are UNIONed, so an absorbed synthesis does not lose its corroboration.
+- **Slug is persisted in state** and never recomputed (`render.assign_slugs`, called before
+  `state.save`). Proven on the 2507 live articles: **0 slugs differ** from the old algorithm, so no
+  permalink moves. `updated` feeds `dateModified` — the only honest signal for "same URL, new text".
+- **Found in passing, fixed here because this change made it worse:** `select.sources_coherent`
+  judged sources by their URL slug, and BBC/DW serve opaque ids (`c8j2vmzxezro`, `a-77798543`).
+  47 of 3511 synthesis sources yield a single token and **all 47 are ids** — no real slug lands
+  there. Any synthesis citing BBC or DW therefore failed the gate and was NOT published: **10 of the
+  67 rejected** on the archive were real corroborated stories (BBC+Guardian+Politico on the Kyiv
+  attack). Sources with fewer than 2 slug tokens are now skipped, same principle as the existing
+  `if not t` branch. Verified strictly more permissive: nothing accepted before is rejected now.
+- Real run against live feeds (fallback provider, no AI quota spent): **5 syntheses updated at the
+  same permalink instead of duplicating**, out of 18 C clusters.
+- **Known, deliberately left open:** a group whose only external domain equals the absorbed C's own
+  domain still fails `is_synthesis_candidate` (1 distinct domain), so that duplicate survives.
+  Counting a C's own `sources` there is a clustering change and needs its own §7 measurement.
+
 
 ## READ FIRST — a bot-challenge page served with HTTP 200, triggered by SWEEP VOLUME (2026-08-02)
 

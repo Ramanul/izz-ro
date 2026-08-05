@@ -160,10 +160,26 @@ def _taie_slug(s: str, limita: int = 80, minim: int = 40) -> str:
     return taiat[:i] if i >= minim else taiat
 
 
-def _assign_slugs(articles: list) -> None:
-    """Slug unic per categorie din titlu (permalink stabil, indexabil)."""
-    seen: dict = {}
+def assign_slugs(articles: list) -> None:
+    """Slug unic per categorie din titlu — atribuit O SINGURA DATA, la prima publicare.
+
+    Slug-ul e permalink-ul public, iar titlul se poate schimba DUPA publicare: un bump de
+    `PROMPT_VERSION` reprocesează articolele B, iar o sinteză C care absoarbe o știre nouă
+    își rescrie titlul (decizie IZZ-0151). Cat timp slug-ul se recalcula din titlu la fiecare
+    randare, fiecare astfel de rescriere muta URL-ul unei pagini deja indexate. De aceea
+    articolul care ARE deja `slug` il pastreaza neatins, iar `main.run` atribuie inainte de
+    `state.save` ca slug-ul sa intre in stare si sa supravietuiasca intre rulari.
+
+    Doua treceri: slug-urile deja publicate isi rezerva locul intai, ca un titlu nou identic
+    sa primeasca sufixul numeric, nu invers.
+    """
+    luate: set = set()
     for a in articles:
+        if a.get("slug"):
+            luate.add((a.get("category", "general"), a["slug"]))
+    for a in articles:
+        if a.get("slug"):
+            continue
         base = _taie_slug(slugify(a.get("title") or a.get("original_title") or "stire") or "stire")
         # Un slug pur numeric ar ocupa /<cat>/2/, adica exact calea unei pagini de paginare —
         # iar articolele se scriu DUPA paginile de listare, deci ar suprascrie-o tacut si
@@ -171,11 +187,13 @@ def _assign_slugs(articles: list) -> None:
         # asa ceva, dar coliziunea e o proprietate a cailor, nu a corpusului de azi.
         if base.isdigit():
             base = f"stirea-{base}"
-        key = (a.get("category", "general"), base)
-        n = seen.get(key, 0) + 1
-        seen[key] = n
-        a["slug"] = base if n == 1 else f"{base}-{n}"
-        a["published_human"] = _human_date(a.get("published", ""))
+        cat = a.get("category", "general")
+        slug, n = base, 1
+        while (cat, slug) in luate:
+            n += 1
+            slug = f"{base}-{n}"
+        luate.add((cat, slug))
+        a["slug"] = slug
 
 
 _PAGES_WRITTEN: set = set()
@@ -217,7 +235,9 @@ def _article_jsonld(a: dict) -> dict:
         "description": body or "",
         "image": [config.SITE["url"] + "/static/og-image.png"],
         "datePublished": a.get("published", ""),
-        "dateModified": a.get("published", ""),
+        # o sinteza care a absorbit o stire noua isi pastreaza slug-ul si `published`, dar are
+        # alt continut (IZZ-0151) -> `updated` e singurul semnal onest pentru motoarele de cautare
+        "dateModified": a.get("updated") or a.get("published", ""),
         "url": f"{config.SITE['url']}/{a['category']}/{a['slug']}/",
         "mainEntityOfPage": f"{config.SITE['url']}/{a['category']}/{a['slug']}/",
         "inLanguage": config.SITE["lang"],
@@ -401,7 +421,11 @@ def build(articles: list, mod: dict | None = None) -> None:
         a["anunt_fara_corp"] = anunt_oficial_fara_corp(a)
         if a["anunt_fara_corp"]:
             a["teaser"] = ""
-    _assign_slugs(articles)
+    assign_slugs(articles)
+    # data formatata e artefact de AFISARE, nu identitate: se recalculeaza la fiecare randare
+    # si nu are ce cauta in stare (`assign_slugs` ruleaza acum si inainte de `state.save`).
+    for a in articles:
+        a["published_human"] = _human_date(a.get("published", ""))
 
     # reset output (golim CONTINUTUL, nu radacina — ca un server local care tine
     # folderul deschis sa nu blocheze build-ul pe Windows), apoi copiem static

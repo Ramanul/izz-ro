@@ -80,11 +80,18 @@ def process_new(new_items: list, provider, budget: int, existing: list | None = 
               f"{', '.join(surse)}")
         new_items = [i for i in new_items if i not in fara_substanta]
     new_urls = {i["url"] for i in new_items}
-    recent_b = [a for a in (existing or [])
-                if a.get("model") == "B" and a.get("url") not in new_urls]
+    # Candidatii cross-run sunt TOATE stirile recente din stare, nu doar cele model B.
+    # Filtrul `model == "B"` de aici insemna ca o sinteza deja publicata nu putea absorbi o
+    # stire noua despre acelasi eveniment: se forma un cluster nou si se publica A DOUA sinteza
+    # langa prima. Masurat pe arhiva de 7443 articole (2026-08-05): din 623 de perechi duplicate
+    # (aceeasi rubrica, <=6h, Jaccard>=0.5), 328 — 53% — contin o sinteza C, si TOATE trec
+    # pragul `_strict_match`, deci s-ar fi unit daca ar fi fost eligibile. Decizia IZZ-0151:
+    # sinteza se ACTUALIZEAZA, la acelasi slug. Pragul de potrivire NU se atinge; se schimba
+    # doar cine e eligibil, deci profilul de over-merge ramane cel deja calibrat.
+    recent_publicate = [a for a in (existing or []) if a.get("url") not in new_urls]
 
     groups = cluster.cluster(new_items)
-    groups = cluster.attach_recent(groups, recent_b)
+    groups = cluster.attach_recent(groups, recent_publicate)
     clustered = {a["url"] for g in groups for a in g}
     processed, folded = [], set()
 
@@ -253,6 +260,10 @@ def run(dry_run: bool = False) -> dict:
         "deferred": deferred,
         "model_B": sum(1 for a in processed_new if a.get("model") == "B"),
         "model_C": sum(1 for a in processed_new if a.get("model") == "C"),
+        # Cate sinteze deja publicate s-au ACTUALIZAT in loc sa apara a doua oara (IZZ-0151).
+        # `updated` e pus de `process_cluster` doar cand rep-ul e un membru deja publicat, iar
+        # in `processed_new` nu intra decat ce s-a procesat ACUM — deci nu numara actualizari vechi.
+        "sinteze_actualizate": sum(1 for a in processed_new if a.get("updated")),
         "total_known": len(combined),
         "visible_after_moderation": len(visible),
         "provider": provider_name,
@@ -274,12 +285,21 @@ def run(dry_run: bool = False) -> dict:
     _print_report(stats, processed_new, dry_run)
 
     if not dry_run:
-        state.save(combined)
         try:
             from . import render
+        except ImportError:
+            render = None
+        if render is not None:
+            # INAINTE de save, dinadins: slug-ul e permalink-ul public si trebuie sa intre in
+            # stare, ca sa nu se recalculeze din titlu la fiecare randare. Titlul se schimba
+            # dupa publicare (upgrade de PROMPT_VERSION, sinteza care absoarbe o stire noua —
+            # IZZ-0151); slug-ul nu are voie. Vezi render.assign_slugs.
+            render.assign_slugs(visible)
+        state.save(combined)
+        if render is not None:
             render.build(visible, mod)
             print(">> Randare completa in output/")
-        except ImportError:
+        else:
             print(">> render.py inca neimplementat (Faza 3) — sar peste randare.")
     return stats
 
@@ -290,6 +310,9 @@ def _print_report(stats: dict, processed_new: list, dry_run: bool):
     print(f"Provider AI: {stats['provider']}")
     print(f"Articole citite: {stats['fetched']} | noi: {stats['new']} | "
           f"B: {stats['model_B']} | C: {stats['model_C']}")
+    if stats.get("sinteze_actualizate"):
+        print(f"Sinteze actualizate la acelasi permalink (in loc de duplicat): "
+              f"{stats['sinteze_actualizate']}")
     if stats.get("stale_skipped"):
         print(f"Sarite ca deja expirate la citire: {stats['stale_skipped']} "
               f"(peste TTL de {config.ARTICLE_TTL_DAYS} zile — ar fi fost sterse in aceeasi rulare)")

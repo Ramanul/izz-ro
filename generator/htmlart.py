@@ -59,7 +59,7 @@ def _font() -> str:
 
 def _eticheta(a: dict) -> str:
     """Textul etichetei: judetul la stirile de loc, altfel categoria (vezi geo.judet_copertei)."""
-    return geo.judet_copertei(a) or a.get("category", "stiri")
+    return geo.judet_copertei(a) or (a.get("category") or "").strip() or "stiri"
 
 
 def _subtitlu(a: dict) -> str:
