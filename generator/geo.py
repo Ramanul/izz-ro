@@ -327,6 +327,47 @@ def _regiune_ca_nume_propriu(m, original: str, plat: str) -> bool:
     return not _MARCA_GEO.search(plat[max(0, m.start() - 16):m.start()])
 
 
+def regiune_din_text(text: str) -> str | None:
+    """Numele regiunii pe care textul o NUMESTE, cu diacritice — sau None.
+
+    De ce exista separat de `clasifica`: aceea intoarce doar NIVELUL (`regional`), deci numele
+    regiunii potrivite se pierde, iar coperta ajungea sa scrie „REGIONAL" — o eticheta care nu
+    spune cititorului nimic. Regiunea nu se salveaza in `articles.json` (verificat 2026-08-05:
+    cheile unui articol sunt category/entities/.../title/url, niciuna geografica), deci se
+    recalculeaza aici din text.
+
+    NU modifica `clasifica`: aceea e poarta calibrata care a redus 14 din 15 clasificari gresite
+    (vezi antetul fisierului), are semnatura folosita in tot pipeline-ul si teste peste ea.
+    Functia asta doar CITESTE acelasi index si aceleasi garzi, deci nu poate muta niciun articol
+    dintr-o rubrica in alta.
+
+    Comaseaza la cele 7 regiuni de AFISARE (Crisana si Maramures -> Transilvania), ca eticheta
+    de pe coperta sa fie consecventa cu gruparea de pe /surse/ (decizie de proprietar 2026-08-02).
+    """
+    if not text:
+        return None
+    rx = _regex()
+    if rx is None:
+        return None
+    index = _index()
+    plat = strip_diacritics(text).upper()
+    original = text
+    for m in rx.finditer(plat):
+        nume = m.group(1)
+        if index.get(nume) != "regional":
+            continue
+        if not original[m.start():m.start() + 1].isupper():
+            continue
+        if _regiune_ca_nume_propriu(m, original, plat):
+            continue          # „Banca Transilvania", „Republica Moldova"
+        cheie = _ALIAS_REGIUNI.get(nume, nume)
+        cheie = _COMASARI_AFISARE.get(cheie, cheie)
+        eticheta = ETICHETE_REGIUNI.get(cheie)
+        if eticheta:
+            return eticheta
+    return None
+
+
 def clasifica(text: str, judet: str | None = None) -> str | None:
     """Rubrica geografica a textului, sau None daca nu contine niciun nume de loc.
 
@@ -476,14 +517,24 @@ def eticheta_judet(judet: str | None) -> str:
 def judet_copertei(a: dict) -> str:
     """Ce scrie pe badge-ul copertei in locul categoriei — judetul sursei, sau "" daca nu se poate.
 
-    Doar `zonal` si `local`: acolo locul E subiectul, iar „Brasov" spune cititorului care
-    vede cardul distribuit mai mult decat „ZONAL". La `regional` articolul acopera mai multe
-    judete, deci un badge de judet ar fi FALS, nu doar lipsa (badge-ul corect ar fi regiunea,
-    care nu se salveaza nicaieri). La restul categoriilor locul nu e subiectul.
+    La `zonal` si `local` locul E subiectul, iar „Brasov" spune cititorului care vede cardul
+    distribuit mult mai mult decat „ZONAL" — acolo se ia judetul SURSEI.
+
+    La `regional` judetul sursei ar fi FALS (articolul acopera mai multe judete), dar regiunea
+    e corecta si o numeste chiar articolul: poarta geografica il pune pe `regional` DOAR cand
+    textul numeste regiunea, nu prin deducere din judet. Pana pe 2026-08-05 se afisa „REGIONAL",
+    o eticheta care nu spune nimic; acum se recupereaza numele din titlu cu `regiune_din_text`.
+    Ramane "" cand titlul nu-l contine (regiunea putea fi in corp) — mai bine categoria decat
+    o regiune ghicita.
+
+    La restul categoriilor locul nu e subiectul.
 
     Acoperire masurata 2026-08-04 pe 2128 articole: zonal 395/435 (91%), local 237/398 (60%).
     Restul raman pe categorie — de-aia intoarce "" in loc sa ghiceasca.
     """
-    if (a.get("category") or "") not in ("zonal", "local"):
+    cat = a.get("category") or ""
+    if cat == "regional":
+        return regiune_din_text(a.get("title") or "") or ""
+    if cat not in ("zonal", "local"):
         return ""
     return eticheta_judet(judet_sursa(a.get("source")))
