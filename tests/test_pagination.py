@@ -15,8 +15,6 @@ undeva randat, si fiecare pagina randata se atinge din pagina 1 prin parcurgere.
 """
 import os
 import re
-import subprocess
-import sys
 
 import pytest
 
@@ -85,16 +83,15 @@ def test_orice_pagina_e_atinsa_prin_parcurgere():
 # ---------------------------------------------------------- pe randare ---
 
 @pytest.fixture(scope="module")
-def randat():
+def randat(output_randat):
     """Randeaza NECONDITIONAT. Fixturile vechi randeaza doar cand `output/` lipseste, iar un
     `output/` ramas de pe alta ramura le face sa raporteze despre alt cod decat cel testat —
     a picat exact asa de doua ori in ziua in care s-a scris fisierul asta. 30 de secunde in
-    plus per rulare sunt mai ieftine decat un verdict despre randarea altcuiva."""
-    r = subprocess.run([sys.executable, "-m", "generator.main", "--render-only"],
-                       cwd=ROOT, capture_output=True, text=True)
-    assert r.returncode == 0, f"randarea a esuat:\n{r.stdout}\n{r.stderr}"
-    assert os.path.isdir(OUT), "output/ lipseste si dupa randare"
-    return OUT
+    plus per rulare sunt mai ieftine decat un verdict despre randarea altcuiva.
+
+    Regula asta e acum a intregii suite: randarea s-a mutat in `output_randat`
+    (tests/conftest.py), care o face o singura data pentru toate fisierele care citesc disc."""
+    return output_randat
 
 
 def _pagini_randate(cat: str) -> set:

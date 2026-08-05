@@ -7,7 +7,6 @@ minciuna: validarea, sablonul de ghid si indexul.
 """
 import importlib
 import os
-import subprocess
 import sys
 
 import pytest
@@ -90,15 +89,15 @@ def _entitati():
 
 
 @pytest.fixture(scope="module")
-def site_randat():
-    """Randeaza site-ul daca lipseste, ca testul sa nu se poata ocoli sarind peste el:
-    un test care se auto-dezactiveaza cand nu gaseste output/ lasa suita verde exact
-    in cazul in care regresia ar fi trecut nedetectata."""
-    ghiduri = os.path.join(ROOT, "output", "ghiduri")
-    if not os.path.isdir(ghiduri):
-        r = subprocess.run([sys.executable, "-m", "generator.main", "--render-only"],
-                           cwd=ROOT, capture_output=True, text=True)
-        assert r.returncode == 0, f"randarea a esuat:\n{r.stdout}\n{r.stderr}"
+def site_randat(output_randat):
+    """Ghidurile randate de codul curent — `output_randat` (tests/conftest.py) randeaza
+    neconditionat, o data pe suita.
+
+    Ce apara asta a ramas la fel: un test care se auto-dezactiveaza cand nu gaseste `output/`
+    lasa suita verde exact in cazul in care regresia ar fi trecut nedetectata. Ce s-a schimbat:
+    varianta veche randa DOAR daca `output/ghiduri` lipsea, deci in rest valida ghiduri
+    ramase pe disc de la o randare anterioara — inclusiv de pe alt commit."""
+    ghiduri = os.path.join(output_randat, "ghiduri")
     assert os.path.isdir(ghiduri), "output/ghiduri lipseste si dupa randare"
     return ghiduri
 
