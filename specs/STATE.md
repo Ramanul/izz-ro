@@ -4,7 +4,40 @@
 > Executors get it read-only. Keep it tight — when it outgrows ~40 lines of content, cut the
 > settled history, not the open work. `git fetch` immediately before rewriting it.
 
-**Updated:** 2026-08-05 (account A — duplicates slice implemented: a published synthesis now absorbs the new story instead of a second one appearing; slug persisted)
+**Updated:** 2026-08-06 (account A — two free, previously-unrouted verifiers wired: semgrep + a Gemini PR reviewer on the free tier)
+
+## CI verifiers — landed 2026-08-06, `0315f745` (#150)
+
+Two "missing" capabilities in HANDOFF were resources that existed and were simply not routed
+(pattern recorded as LECTII L10). CodeQL was **not** broken — already fixed by `2acda681`; the two
+red runs were doomed dependabot branches, never `main`.
+
+- **`semgrep.yml`** — second static scanner beside CodeQL. Public rulesets `p/python` +
+  `p/security-audit` + `p/secrets`; SARIF to the Security tab. **Gate is a ratchet on a measured
+  baseline, not a zero threshold:** 67 findings repo-wide, **4 ERROR**, all pre-existing. A fifth
+  turns the job red. Three of the four are `use-defused-xml` and are **legitimate** — we parse XML
+  with the stdlib over external RSS, i.e. genuinely untrusted input. **Open slice: add `defusedxml`
+  to requirements, then drop `BASELINE_ERROR` to 1.**
+- **`gemini-review.yml` + `tools/pr_review_gemini.py`** — second AI reviewer on a *different*
+  provider so it does not compete for the Claude quota (the documented cause of the Claude reviewer
+  dying silently, PR #88). `GEMINI_API_KEY` had been a repo secret since 24 July, used only by the
+  pipeline; the free tier is 1500 req/day, one PR = one call. A finding without `file:line` + a
+  repro is **dropped mechanically** before it reaches a human, and the dropped count is published.
+- **Gotcha, measured live on #150:** the first run reported `review pass 10s` having reviewed
+  nothing — 503 on both models, swallowed by `continue-on-error`. That flag was copied from
+  `claude-code-review.yml` **without checking whether its justification transfers**: there it hides
+  an unfixable external quota, here it hid a transient 503 a retry repairs. Now retries on
+  429/5xx (4/12/30s) and posts a "did NOT run" comment on total failure. Suite 599 → **611**.
+- **`workflow_dispatch` added** because `opened`/`ready_for_review` alone means a fix to the
+  reviewer cannot be tested on the PR that introduces it. `synchronize` would also solve it but
+  would comment on every push — owner's call, not a CI side effect.
+
+**Do NOT conclude CodeRabbit is on the wrong plan.** It shows "review rate limited" on *some* runs
+of a PR and "Review approved" on others — on #150 it did both. It reviews once per PR and
+rate-limits the re-reviews triggered by later pushes. That is expected behaviour, not evidence of
+a plan problem. (An earlier read of this signal in HANDOFF treated "rate limited" as "reviewer
+unavailable"; it is not.) Whether the free OSS Pro plan is actually applied is still worth one
+look in their dashboard, but the rate-limit message is not the evidence for it.
 
 ## DUPLICATE — implemented 2026-08-05 (branch `feat/sinteza-actualizata-slug-stabil`)
 
