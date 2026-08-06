@@ -1,0 +1,120 @@
+name: semgrep
+
+# Al doilea scaner static, langa codeql. Motivul pentru care exista amandoua: CodeQL
+# e puternic pe fluxuri de date (taint) dar are un set de reguli Python relativ ingust,
+# iar Semgrep aduce reguli de tipar (pattern) plus setul `p/secrets` -- adica exact
+# regula scrisa in CLAUDE.md ("niciodata chei sau tokenuri in repo") pusa in executie
+# mecanic, nu doar in text.
+#
+# Diferenta fata de un recenzor AI: astea nu opineaza, ruleaza reguli. Fiecare
+# constatare vine cu fisier:linie prin constructie, deci nu are nevoie de arbitraj.
+# Gratuit pe repo public (registry-ul de reguli publice nu cere token).
+#
+# Cadenta: pe PR + saptamanal, ca la codeql -- NU pe fiecare commit, fiindca botul de
+# continut comite la 2h si atinge doar data/*.json.
+
+on:
+  pull_request:
+    branches: [main]
+  schedule:
+    - cron: "41 4 * * 1"   # luni, 04:41 UTC (decalat fata de codeql la :27)
+
+permissions:
+  contents: read
+  security-events: write
+
+concurrency:
+  group: semgrep-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  scan:
+    runs-on: ubuntu-latest
+    container:
+      # Imaginea oficiala are semgrep preinstalat -- fara pas de pip, fara cache de rezolvat.
+      image: semgrep/semgrep
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          persist-credentials: false
+
+      # Seturi PUBLICE din registry: nu cer SEMGREP_APP_TOKEN. `--config auto` l-ar cere,
+      # de-asta sunt enumerate explicit.
+      #   p/python          - bug-uri si tipare gresite specifice Python
+      #   p/security-audit  - clasa OWASP, injectii, deserializare, path traversal
+      #   p/secrets         - chei/tokenuri hardcodate
+      # `|| true`: pasul de scanare nu trebuie sa opreasca jobul inainte de upload --
+      # altfel o constatare ar ascunde raportul in loc sa-l publice. Poarta se pune
+      # mai jos, pe numarul de constatari, dupa ce SARIF-ul a ajuns in tab-ul Security.
+      - name: Scan
+        run: |
+          semgrep scan \
+            --config p/python \
+            --config p/security-audit \
+            --config p/secrets \
+            --sarif --output semgrep.sarif \
+            --metrics off \
+            --exclude output --exclude 'output.*' --exclude data \
+            . || true
+
+      - name: Upload SARIF
+        uses: github/codeql-action/upload-sarif@d1ba80a13dd99fba24a470575428917156a28b43 # v4.37.5
+        with:
+          sarif_file: semgrep.sarif
+          category: semgrep
+
+      # Poarta e un CLICHET, nu un prag la zero. Motivul e masurat, nu presupus: pe main la
+      # 2026-08-06 exista deja 39 de constatari (35 WARNING + 4 ERROR), toate anterioare
+      # acestui workflow. O poarta la zero ar fi facut rosu chiar PR-ul care o introduce si
+      # ar fi blocat tot repo-ul pana la reparatii nelegate de felia curenta -- exact tiparul
+      # "check rosu care inceteaza sa mai fie citit" documentat in claude-code-review.yml.
+      #
+      # Deci: cele 4 ERROR existente sunt tolerate si VIZIBILE in tab-ul Security; a cincea
+      # face jobul rosu. Datoria nu creste, iar cand cele 4 sunt reparate se coboara pragul.
+      #
+      # Baseline-ul, ca sa se stie ce se tolereaza (masurat cu semgrep 1.x, aceleasi 3 seturi):
+      #   generator/fetch.py:10          use-defused-xml
+      #   generator/render.py:10         use-defused-xml
+      #   tools/fetch_localities.py:25   use-defused-xml
+      #   tools/devin_headless.py:74     dangerous-subprocess-use-tainted-env-args
+      # Primele trei sunt LEGITIME, nu false pozitive: parsam XML din stdlib pe feed-uri RSS
+      # externe, adica exact pe input netrusted. De reparat intr-o felie separata (defusedxml
+      # in requirements.txt), nu aici.
+      - name: Poarta (clichet pe ERROR)
+        env:
+          BASELINE_ERROR: "4"
+        run: |
+          python3 - <<'PY'
+          import json, os, sys
+          with open("semgrep.sarif", encoding="utf-8") as f:
+              sarif = json.load(f)
+          rules = {}
+          for run in sarif.get("runs", []):
+              for rule in run.get("tool", {}).get("driver", {}).get("rules", []):
+                  rules[rule["id"]] = (rule.get("defaultConfiguration") or {}).get("level", "warning")
+          errors = []
+          for run in sarif.get("runs", []):
+              for res in run.get("results", []):
+                  if rules.get(res.get("ruleId"), "warning") != "error":
+                      continue
+                  loc = res["locations"][0]["physicalLocation"]
+                  errors.append("%s:%s  %s" % (
+                      loc["artifactLocation"]["uri"],
+                      loc.get("region", {}).get("startLine", "?"),
+                      res.get("ruleId"),
+                  ))
+          total = sum(len(r.get("results", [])) for r in sarif.get("runs", []))
+          baseline = int(os.environ["BASELINE_ERROR"])
+          print("Constatari totale: %d | ERROR: %d | baseline tolerat: %d"
+                % (total, len(errors), baseline))
+          for e in sorted(errors):
+              print("  " + e)
+          if len(errors) > baseline:
+              print("\nERROR-uri NOI fata de baseline. Repara-le sau, daca baseline-ul s-a "
+                    "mutat legitim, actualizeaza BASELINE_ERROR in acest workflow.")
+              sys.exit(1)
+          if len(errors) < baseline:
+              print("\nMai putine ERROR decat baseline-ul: coboara BASELINE_ERROR la %d, "
+                    "altfel clichetul se slabeste tacut." % len(errors))
+          sys.exit(0)
+          PY
