@@ -1,0 +1,49 @@
+name: gemini review
+
+# Al doilea recenzor AI, pe ALT furnizor decat Claude, ca sa nu concureze pe aceeasi cota.
+# Context: recenzorul Claude cade tacut cand se termina cota proprietarului (PR #88), iar
+# Gemini Code Assist (IZZ-0067) nu mai comenteaza de la PR #136. `GEMINI_API_KEY` era deja
+# secret in repo -- folosit doar de pipeline -- iar nivelul gratuit e 1500 cereri/zi.
+# Un PR = o cerere. Practic imposibil de epuizat la cadenta acestui repo.
+#
+# Logica de filtrare (constatarile fara fisier:linie+reproducere sunt aruncate) sta in
+# tools/pr_review_gemini.py, ca sa poata fi rulata si local pe un PR deschis.
+
+on:
+  pull_request:
+    types: [opened, ready_for_review]
+
+permissions:
+  contents: read
+  pull-requests: write
+
+concurrency:
+  group: gemini-review-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  review:
+    runs-on: ubuntu-latest
+    env:
+      HAS_KEY: ${{ secrets.GEMINI_API_KEY != '' }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        if: env.HAS_KEY == 'true'
+        with:
+          fetch-depth: 1
+          persist-credentials: false
+
+      - name: Review
+        if: env.HAS_KEY == 'true'
+        # Non-blocking, din acelasi motiv scris pe larg in claude-code-review.yml: un check
+        # care se face rosu din motive externe (cota, retea, model retras) inceteaza sa mai
+        # fie citit. Esecul ramane vizibil ca warning.
+        continue-on-error: true
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: python tools/pr_review_gemini.py ${{ github.event.pull_request.number }}
+
+      - name: Cheie lipsa
+        if: env.HAS_KEY != 'true'
+        run: echo "GEMINI_API_KEY nu e setat - sar peste review."
