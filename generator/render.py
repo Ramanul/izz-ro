@@ -6,6 +6,7 @@ import re
 import shutil
 import sys
 from datetime import datetime, timedelta, timezone
+from email.utils import format_datetime
 from xml.sax.saxutils import escape as xml_escape
 
 from jinja2 import Environment, FileSystemLoader, select_autoescape
@@ -545,7 +546,8 @@ def build(articles: list, mod: dict | None = None) -> None:
             _write(os.path.join(OUT_DIR, "subiect", s, "feed.xml"),
                    _feed_xml(d["articles"], f"{d['name']} — {config.SITE['name']}",
                              f"{config.SITE['url']}/subiect/{s}/",
-                             f"Știri despre {d['name']} pe {config.SITE['name']}"))
+                             f"Știri despre {d['name']} pe {config.SITE['name']}",
+                             feed_url=f"{config.SITE['url']}/subiect/{s}/feed.xml"))
 
     # pagini de categorie + permalink articole
     article_tpl = env.get_template("article.html")
@@ -1060,25 +1062,65 @@ def _write_headers() -> None:
            "/feed.xml\n  Cache-Control: public, max-age=1800\n")
 
 
-def _feed_xml(articles: list, title: str, link: str, description: str) -> str:
+def _rfc2822(value: str, url: str = "") -> str:
+    """ISO 8601 -> data RFC 2822 ceruta de RSS 2.0, sau "" daca nu se poate parsa.
+
+    `email.utils.format_datetime`, nu `strftime("%a, %d %b ...")`: `%a`/`%b` se traduc dupa
+    LC_TIME. Azi iese engleza fiindca nimeni nu cheama `setlocale` si Python porneste pe
+    locale-ul "C" (verificat: `locale.getlocale(LC_TIME)` -> `(None, None)`), deci
+    `lastBuildDate` NU e stricat acum. Dar corectitudinea lui depinde de o absenta — un
+    singur `setlocale` adaugat oriunde in proces ar emite "Joi, 06 Aug" in tot feedul, tacut.
+    Helper-ul din stdlib e independent de locale prin constructie.
+
+    Esecul se LOGHEAZA, nu se inghite: `published` e ISO valid pentru toate caile de ingestie
+    (fetch.py cade pe `now()` cand nu poate parsa), deci un "" de aici inseamna stare stricata
+    sau o cale de intrare noua care nu normalizeaza data. Fara linia asta, itemul ar iesi in
+    feed fara data si nimic n-ar arata unde s-a pierdut — feedul ar parea valid.
+    """
+    try:
+        dt = datetime.fromisoformat(value)
+    except (ValueError, TypeError):
+        logging.warning("feed: `published` neparsabil (%r) pe %s — item fara pubDate",
+                        value, url or "?")
+        return ""
+    if dt.tzinfo is None:
+        dt = dt.replace(tzinfo=timezone.utc)
+    return format_datetime(dt.astimezone(timezone.utc))
+
+
+def _feed_xml(articles: list, title: str, link: str, description: str,
+              feed_url: str | None = None) -> str:
     url = config.SITE["url"]
-    now = datetime.now(timezone.utc).strftime("%a, %d %b %Y %H:%M:%S +0000")
+    now = format_datetime(datetime.now(timezone.utc))
     entries = []
     for a in articles[:50]:
         body = a.get("synthesis") if a.get("model") == "C" else a.get("teaser")
         alink = f"{url}/{a['category']}/{a['slug']}/"
+        # Fara `pubDate` un cititor RSS nu poate nici data, nici ordona intrarile — le arata
+        # in ordinea din fisier si fara vechime, ceea ce pentru un flux de stiri il face
+        # inutilizabil. Se OMITE cand data nu se poate parsa (si se logheaza acolo): o data
+        # inventata ar urca un articol vechi in capul oricarui cititor care sorteaza pe ea.
+        pub = _rfc2822(a.get("published") or "", alink)
         entries.append(
             "    <item>\n"
             f"      <title>{xml_escape(a.get('title',''))}</title>\n"
             f"      <link>{xml_escape(alink)}</link>\n"
             f"      <guid>{xml_escape(alink)}</guid>\n"
-            f"      <description>{xml_escape(body or '')}</description>\n"
+            + (f"      <pubDate>{xml_escape(pub)}</pubDate>\n" if pub else "")
+            + f"      <description>{xml_escape(body or '')}</description>\n"
             "    </item>")
+    # `atom:link rel="self"` = adresa canonica a FEEDULUI (nu a paginii din `<link>`). O cer
+    # validatoarele RSS si o folosesc agregatoarele ca sa recunoasca acelasi flux mutat sau
+    # oglindit — iar noi chiar servim site-ul de pe doua origini (Cloudflare Pages + mirror
+    # GitHub Pages, build.yml), deci ambiguitatea e reala, nu teoretica.
+    self_link = (f'  <atom:link href="{xml_escape(feed_url)}" rel="self" '
+                 'type="application/rss+xml"/>\n') if feed_url else ""
     return ('<?xml version="1.0" encoding="UTF-8"?>\n'
-            '<rss version="2.0"><channel>\n'
+            '<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel>\n'
             f"  <title>{xml_escape(title)}</title>\n"
             f"  <link>{xml_escape(link)}</link>\n"
-            f"  <description>{xml_escape(description)}</description>\n"
+            + self_link
+            + f"  <description>{xml_escape(description)}</description>\n"
             f"  <language>{config.SITE['lang']}</language>\n"
             f"  <lastBuildDate>{now}</lastBuildDate>\n"
             + "\n".join(entries) +
@@ -1087,4 +1129,5 @@ def _feed_xml(articles: list, title: str, link: str, description: str) -> str:
 
 def _write_feed(articles: list) -> None:
     _write(os.path.join(OUT_DIR, "feed.xml"),
-           _feed_xml(articles, config.SITE["name"], config.SITE["url"], config.SITE["tagline"]))
+           _feed_xml(articles, config.SITE["name"], config.SITE["url"], config.SITE["tagline"],
+                     feed_url=f"{config.SITE['url']}/feed.xml"))
