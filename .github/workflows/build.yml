@@ -134,6 +134,14 @@ jobs:
           AI_PROVIDER: gemini
         run: python tools/fetch_leadphotos.py
 
+      - name: IndexNow — ce s-a schimbat (scrie manifestul, NU trimite inca)
+        # INAINTE de commit, dinadins: manifestul trebuie sa intre in commit-ul de continut
+        # care se face oricum, altfel runnerul stateless il pierde si fiecare rulare ar
+        # redescoperi acelasi corpus. Un commit separat ar declansa un build Cloudflare in
+        # plus (vezi bugetul de la 'on:'). Anuntul propriu-zis pleaca dupa deploy, mai jos.
+        continue-on-error: true
+        run: python tools/indexnow_submit.py --plan
+
       - name: Comite starea (declanseaza deploy Cloudflare)
         id: commit
         # FARA [skip ci]: niciun workflow nu se declanseaza pe push (doar cron),
@@ -150,6 +158,7 @@ jobs:
           git config user.name "izz-bot"
           git config user.email "bot@izz.ro"
           git add data/articles.json data/feed_cache.json
+          git add data/indexnow_seen.json 2>/dev/null || true
           git add data/portraits.json 2>/dev/null || true
           git add data/leadphotos.json 2>/dev/null || true
           git add media 2>/dev/null || true
@@ -186,9 +195,12 @@ jobs:
         # ruleaza DUPA commit/deploy -> daca pica, owner-ul e anuntat de GitHub, dar site-ul nu ingheata
         run: python tools/qa_check.py
 
-      - name: IndexNow (anunta URL-urile noi la Bing & co., best-effort)
+      - name: IndexNow — trimite coada (dupa deploy, best-effort)
+        # DUPA commit: nu anuntam un URL inainte ca el sa fie publicat. Coada e cea calculata
+        # de pasul `--plan` de mai sus; daca push-ul a esuat, jobul a iesit deja cu 1 si aici
+        # nu se mai ajunge — deci nici manifestul nu s-a comis, iar URL-urile revin data viitoare.
         continue-on-error: true
-        run: python tools/indexnow_submit.py
+        run: python tools/indexnow_submit.py --send
 
   # Sistem de servire REDUNDANT #2: mirror pe GitHub Pages (ramanul.github.io),
   # host complet independent de Cloudflare Pages. Ruleaza dupa ce 'pipeline' a comis

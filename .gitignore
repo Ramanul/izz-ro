@@ -20,3 +20,6 @@ data/*.db
 .claude/worktrees/
 # arhiva reconstruita din istoric (tools/arhiva.py) — nu se comite, e duplicare
 data/archive/
+
+# coada efemera IndexNow (scrisa de --plan, consumata de --send in aceeasi rulare)
+data/.indexnow_queue.json
