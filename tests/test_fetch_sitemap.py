@@ -121,3 +121,42 @@ def test_xml_chiar_stricat_ramane_eroare():
     """Filtrarea nu are voie sa mascheze un document genuin invalid."""
     items, err = _parse_sitemap_news(b"<urlset><url>", "piataauto", SRC)
     assert items == [] and err and "XML invalid" in err
+
+
+# --- intarire XML: defusedxml pe calea de sitemap (2026-08-06) ---
+# Masurat INAINTE de schimbare, pe stack-ul de atunci (Python 3.11.15, expat 2.7.4): billion
+# laughs pica deja cu `limit on input amplification factor breached`, iar entitatea externa
+# `file:///` pica cu `undefined entity`. Deci `defusedxml` NU repara o gaura deschisa — el scoate
+# apararea din mainile lui expat, care o are doar de la 2.4.0 si o poate pierde pe alt runner.
+#
+# Ce chiar era un defect: `DefusedXmlException` nu e subclasa de `ParseError` (mro-ul ei trece
+# prin ValueError), deci `except ParseError` singur ar fi lasat exceptia sa iasa din functie si
+# sa omoare ciclul de fetch — un mod de esec NOU, introdus chiar de intarire. Testele de mai jos
+# apara exact granita aia: se verifica ca functia INTOARCE, nu ca arunca frumos.
+
+def _bomba_entitati() -> bytes:
+    ent = "".join('<!ENTITY e%d "%s">' % (i, "&e%d;" % (i - 1) * 10) for i in range(1, 8))
+    return ('<?xml version="1.0"?><!DOCTYPE urlset [<!ENTITY e0 "AAAAAAAAAA">%s]>'
+            '<urlset %s><url><loc>&e7;</loc></url></urlset>' % (ent, NS)).encode()
+
+
+def test_bomba_de_entitati_nu_omoara_ciclul_de_fetch():
+    """Fara `DefusedXmlException` in `except`, apelul asta ARUNCA in loc sa intoarca."""
+    items, err = _parse_sitemap_news(_bomba_entitati(), "piataauto", SRC)
+    assert items == []
+    assert err and "piataauto" in err
+
+
+def test_documentul_respins_de_politica_se_distinge_de_cel_stricat():
+    """Doua diagnostice diferite: unul se repara la sursa, celalalt e regula noastra.
+    Daca ambele scriu „XML invalid", cine citeste raportul de surse nu poate sti care e care."""
+    _, err_respins = _parse_sitemap_news(_bomba_entitati(), "piataauto", SRC)
+    _, err_stricat = _parse_sitemap_news(b"<nu-e-xml", "piataauto", SRC)
+    assert "respins" in err_respins and "EntitiesForbidden" in err_respins
+    assert "invalid" in err_stricat and "respins" not in err_stricat
+
+
+def test_sitemapul_valid_trece_neatins_dupa_intarire():
+    """Control pozitiv: intarirea nu are voie sa strice cazul normal."""
+    items, err = _parse_sitemap_news(_doc(_entry("https://x.md/a", "Titlu")), "piataauto", SRC)
+    assert err is None and len(items) == 1

@@ -7,8 +7,9 @@ import threading
 import time
 import urllib.error
 import urllib.request
-import xml.etree.ElementTree as ET
+import defusedxml.ElementTree as ET
 from concurrent.futures import ThreadPoolExecutor
+from defusedxml.common import DefusedXmlException
 from datetime import datetime, timezone
 from html.parser import HTMLParser
 
@@ -189,8 +190,15 @@ def _parse_sitemap_news(raw: bytes, key: str, source: dict) -> tuple[list, str |
     items: list = []
     try:
         root = ET.fromstring(_curata_control(raw))
-    except ET.ParseError as exc:
-        return items, f"{key}: XML invalid ({exc})"
+    # `DefusedXmlException` NU e subclasa de `ParseError` (verificat: mro-ul ei trece prin
+    # ValueError, nu prin ParseError), deci un `except ParseError` singur ar lasa un sitemap
+    # cu entitati sa OMOARE procesul in loc sa marcheze sursa cu eroare — adica fix invers
+    # decat scopul intaririi. Se prind impreuna, dar mesajul le DISTINGE: „invalid" si
+    # „respins" sunt diagnostice diferite (unul e sursa stricata, celalalt e politica
+    # noastra), iar cine citeste raportul de surse trebuie sa stie pe care din ele o repara.
+    except (ET.ParseError, DefusedXmlException) as exc:
+        cum = "respins" if isinstance(exc, DefusedXmlException) else "invalid"
+        return items, f"{key}: XML {cum} ({type(exc).__name__}: {exc})"
 
     urls = root.findall("sm:url", _SITEMAP_NS)
     if not urls:
