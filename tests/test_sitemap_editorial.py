@@ -10,8 +10,6 @@ altfel un ghid nou ar cere si o editare de lista ca sa fie descoperit, iar exact
 de pas uitat a lasat golul de mai sus.
 """
 import os
-import subprocess
-import sys
 import xml.etree.ElementTree as ET
 
 import pytest
@@ -23,12 +21,11 @@ NS = "{http://www.sitemaps.org/schemas/sitemap/0.9}"
 
 
 @pytest.fixture(scope="module")
-def sitemap_locs():
-    path = os.path.join(ROOT, "output", "sitemap.xml")
-    if not os.path.isfile(path):
-        r = subprocess.run([sys.executable, "-m", "generator.main", "--render-only"],
-                           cwd=ROOT, capture_output=True, text=True)
-        assert r.returncode == 0, f"randarea a esuat:\n{r.stdout}\n{r.stderr}"
+def sitemap_locs(output_randat):
+    # Randarea vine din `output_randat` (tests/conftest.py), neconditionat. Varianta veche
+    # — „randeaza doar daca sitemap.xml lipseste" — valida artefactul gasit pe disc, deci
+    # raporta despre alt cod decat cel testat; masuratoarea e in docstring-ul lui conftest.
+    path = os.path.join(output_randat, "sitemap.xml")
     assert os.path.isfile(path), "sitemap.xml lipseste si dupa randare"
     return [e.text for e in ET.parse(path).getroot().iter(NS + "loc")]
 
