@@ -113,6 +113,22 @@ def test_peste_plafon_restul_revine_la_rularea_urmatoare(izolat, monkeypatch):
     assert len(_coada(izolat)) == 1, "ultimul ramas trebuie sa iasa, nu sa se piarda"
 
 
+def test_seed_peste_plafon_nu_pierde_proaspetele_care_nu_incap(izolat, monkeypatch):
+    """La insamantare, ce a intrat in coada dar n-a incaput in transa NU are voie sa fie
+    marcat ca vazut — altfel o prima rulare cu multe articole proaspete (recuperare cu buget
+    marit) le-ar anunta pe primele si le-ar ingropa tacut pe restul."""
+    monkeypatch.setattr(indexnow, "BATCH_MAX", 2)
+    _scrie(indexnow.STATE, [_art(f"p{i}", ore_in_urma=0.5) for i in range(5)])
+    indexnow.plan()
+    prima = _coada(izolat)
+    assert len(prima) == 2
+    indexnow.plan()
+    a_doua = _coada(izolat)
+    assert len(a_doua) == 2 and not set(prima) & set(a_doua)
+    indexnow.plan()
+    assert len(_coada(izolat)) == 1, "ultimul proaspat trebuie sa iasa, nu sa se piarda"
+
+
 def test_manifestul_nu_creste_la_nesfarsit(izolat):
     """Articolele expira la TTL; intrarile lor trebuie sa iasa din manifest."""
     _scrie(indexnow.STATE, [_art("a"), _art("b")])

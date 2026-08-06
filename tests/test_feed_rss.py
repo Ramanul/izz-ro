@@ -6,9 +6,12 @@ din fisier, fara vechime), si zero `atom:link rel=self`, pe care validatoarele o
 agregatoarele o folosesc ca sa recunoasca acelasi flux servit de pe doua origini — iar noi
 chiar servim de pe doua (Cloudflare Pages + mirror GitHub Pages).
 """
+import locale
 import xml.etree.ElementTree as ET
 from datetime import datetime, timezone
 from email.utils import parsedate_to_datetime
+
+import pytest
 
 from generator import render
 
@@ -39,18 +42,34 @@ def test_fiecare_item_are_pubdate_parsabil_si_corect():
 
 
 def test_pubdate_nu_depinde_de_locale():
-    """Ziua si luna trebuie sa fie in engleza indiferent de LC_TIME.
+    """Ziua si luna raman in engleza chiar SUB un locale non-englez.
 
-    `strftime("%a, %d %b")` le traduce dupa locale; `email.utils.format_datetime` nu. Azi
-    ambele dau engleza (Python porneste pe locale-ul "C"), deci un test pe iesirea de acum
-    n-ar distinge implementarile — de-aia se verifica APARTENENTA la setul englezesc, care
-    ramane falsificabila daca cineva revine la strftime si adauga un `setlocale` undeva.
+    Prima varianta a testului doar verifica apartenenta la setul englezesc, sub locale-ul
+    curent — si ar fi trecut identic cu `strftime("%a, %d %b")`, fiindca Python porneste pe
+    locale-ul "C". Adica un test care nu putea distinge cele doua implementari, deci nu era
+    dovada pentru nimic. Aici se SCHIMBA efectiv LC_TIME: sub `strftime` ar iesi „Joi"/„aug.",
+    sub `format_datetime` iese „Thu"/„Aug".
+
+    Skip explicit daca niciun locale non-englez nu e instalat (runnerele minimale au doar C):
+    un skip vizibil e onest, o trecere care nu masoara nimic nu e. `finally` restaureaza —
+    altfel, cu ordinea aleatoare a suitei, testul ar contamina pe oricine ruleaza dupa el.
     """
-    raw = render._rfc2822("2026-08-06T07:30:00+00:00")
-    zi, luna = raw.split()[0].rstrip(","), raw.split()[2]
-    assert zi in {"Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"}, raw
-    assert luna in {"Jan", "Feb", "Mar", "Apr", "May", "Jun",
-                    "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"}, raw
+    anterior = locale.setlocale(locale.LC_TIME)
+    for candidat in ("ro_RO.UTF-8", "Romanian_Romania.1250", "ro_RO",
+                     "de_DE.UTF-8", "German_Germany.1252", "fr_FR.UTF-8"):
+        try:
+            locale.setlocale(locale.LC_TIME, candidat)
+        except locale.Error:
+            continue
+        try:
+            raw = render._rfc2822("2026-08-06T07:30:00+00:00")
+        finally:
+            locale.setlocale(locale.LC_TIME, anterior)
+        zi, luna = raw.split()[0].rstrip(","), raw.split()[2]
+        assert zi == "Thu", f"sub locale {candidat}: {raw!r} — ziua s-a tradus"
+        assert luna == "Aug", f"sub locale {candidat}: {raw!r} — luna s-a tradus"
+        return
+    pytest.skip("niciun locale non-englez instalat: testul nu poate distinge nimic aici")
 
 
 def test_data_naiva_e_tratata_ca_utc():

@@ -114,10 +114,15 @@ def plan() -> int:
         print(f"   plafon {BATCH_MAX}/cerere: {len(de_trimis) - len(transa)} raman "
               f"pentru rularea urmatoare")
 
+    trimise = set(transa)
     if seed:
-        manifest = curent
+        # Se insamanteaza tot, MINUS ce a fost pus in coada dar n-a incaput in transa: alea
+        # trebuie sa ramana nevazute ca sa iasa la rularea urmatoare. Fara exceptia asta, o
+        # prima rulare cu peste `BATCH_MAX` articole proaspete (rulare de recuperare cu buget
+        # marit) le-ar marca pe toate ca anuntate si diferenta nu s-ar mai anunta niciodata.
+        amanate = set(de_trimis) - trimise
+        manifest = {u: h for u, h in curent.items() if u not in amanate}
     else:
-        trimise = set(transa)
         # Manifestul pastreaza DOAR URL-urile inca in stare (articolele expira la TTL), altfel
         # ar creste la nesfarsit. Cele netrimise isi pastreaza hash-ul VECHI ca sa recada in
         # coada; cele noi care n-au incaput raman fara intrare, deci tot in coada.
