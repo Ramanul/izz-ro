@@ -19,3 +19,11 @@ updates:
     open-pull-requests-limit: 5
     commit-message:
       prefix: "ci"
+    groups:
+      # codeql-action/init si /analyze sunt doua "dependente" pentru dependabot,
+      # dar UN SINGUR job in CI: daca ajung pe SHA-uri diferite, jobul pica cu
+      # "configuration error". Fara grup, fiecare release deschide doua PR-uri
+      # care NU POT trece niciunul (masurat 2026-08-06, PR #147 + #148).
+      codeql-action:
+        patterns:
+          - "github/codeql-action*"
