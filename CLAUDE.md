@@ -1,269 +1,235 @@
 # CLAUDE.md — izz.ro
 
-> Operating contract for Claude Code / Cowork in this repository.
-> Read fully before acting. These rules override default behavior.
+> Contract de operare pentru Claude Code / Cowork în acest repo. Citește-l înainte să acționezi;
+> aceste reguli înlocuiesc comportamentul implicit.
+>
+> **Slăbit pe 2026-08-06, de la 30,3 KB la ~11 KB.** Motivul: fișierul se încarcă în context la
+> FIECARE tură, iar jumătate din el era arhivă („COMPLETED", „ENDED / HISTORICAL", istoricul
+> măsurătorilor). Nimic n-a fost șters — a fost mutat, cu trimitere de aici:
+> · măsurători front-end și saga CLS → `specs/masuratori-frontend.md`
+> · istoric §9/§11/§14/§15/§17 → `specs/istoric-operational.md`
+> **Când adaugi aici, întreabă întâi: obligă la o acțiune?** Dacă e o cifră, un incident sau o
+> ipoteză picată, locul ei e în `specs/registru.tsv` (§20) sau într-un fișier din `specs/`.
 
-## 0. Communication
-- Talk to the user (Alexandru) in **Romanian**. Code, identifiers, commit messages, logs, and technical terms stay in **English**.
-- Be direct and concise. No flattery, no auto-agreement. If a request is wrong or there is a better path, say so with reasons.
-- State uncertainty explicitly. Never present a guess as fact.
-- **Be proactive (owner decision 2026-07-24).** In EVERY discussion — izz.ro or any other topic — anticipate the next problem and surface improvement / efficiency ideas unprompted, act with initiative. But proposals stay proposals the owner confirms: initiative never becomes autonomous action on `main` or an unattended loop (§5, §14 still bind).
+## 0. Comunicare
+- Vorbește-i proprietarului (Alexandru) în **română**. Cod, identificatori, commit-uri, loguri și
+  termeni tehnici rămân în **engleză**.
+- Direct și concis. Fără flatare, fără acord automat. Dacă o cerere e greșită sau pe premisă falsă,
+  spune-o cu argumente.
+- Incertitudinea se declară explicit. Niciodată o presupunere prezentată ca fapt.
+- **Fii proactiv** (decizie proprietar 2026-07-24): anticipează problema următoare și propune
+  nesolicitat idei de îmbunătățire. Dar propunerile rămân propuneri pe care el le confirmă —
+  inițiativa nu devine acțiune autonomă pe `main` (§5, §14 rămân valabile).
+- **Starea de completare ÎNAINTE de rezultat, ca fracție** („etapa 1 din 4", „46 din 49"), și
+  răspunde la întrebarea pusă, nu la cea vecină. Detaliu și precedente: `../LECTII.md` L8.
 
-## 1. What izz.ro is
-AI-powered Romanian news aggregator. Brand promise: **"Zero Zgomot"** (Zero Noise) — synthesized, de-duplicated, clean news. The site is **statically generated** from a content pipeline (scrape -> synthesize -> cluster -> categorize -> render).
+## 1. Ce e izz.ro
+Agregator de știri românesc cu AI. Promisiune de brand: **„Zero Zgomot"** — știri sintetizate,
+deduplicate, curate. Site **generat static** dintr-un pipeline de conținut
+(scrape → sintetizează → clusterizează → categorisește → randează).
 
-## 2. Tech stack — VERIFIED 2026-06-26
-Python 3.11 (cloud) / 3.14 (local), Jinja2, feedparser, pyyaml, python-slugify, markdown, python-dotenv.
-AI: Gemini 2.5 Flash Lite via REST (no SDK), switchable to Claude API via `AI_PROVIDER=anthropic`.
-CI/CD: GitHub Actions (`build.yml`, cron `13 */2` — every 2h). Hosting: Cloudflare Pages (render-only build).
-Pipeline state: `data/articles.json` (committed to repo — no SQLite).
+## 2. Stack — VERIFICAT 2026-06-26
+Python 3.11 (cloud) / 3.14 (local), Jinja2, feedparser, pyyaml, python-slugify, markdown,
+python-dotenv. AI: Gemini 2.5 Flash Lite prin REST (fără SDK), comutabil pe Claude API cu
+`AI_PROVIDER=anthropic`. CI/CD: GitHub Actions (`build.yml`, cron `13 */2`). Hosting: Cloudflare
+Pages (build doar de randare). Stare pipeline: `data/articles.json` (comis în repo — fără SQLite).
 
-## 3. Repository structure
+## 3. Structura repo-ului
 ```
 generator/          pipeline: main.py · fetch.py · cluster.py · process.py · render.py
                              state.py · moderation.py · config.py · util.py · providers/
-templates/          Jinja2 (autoescape ON): base.html · index.html · article.html
-                    category.html · legal.html · _card.html
-static/             styles.css · styles.dark.bak.css · logo.svg · favicon.svg
-content/legal/      legal pages (markdown)
-data/articles.json  pipeline state (committed to repo, persists between runs)
-moderation.yaml     editorial control (human in the loop)
-output/             generated site (gitignored; deployed by Cloudflare Pages)
-.github/workflows/  build.yml (fetch+AI+commit, cron every 2h — see §17)
+templates/          Jinja2 (autoescape ON)
+static/             styles.css · logo.svg · favicon.svg
+content/legal/      pagini legale (markdown)
+data/articles.json  starea pipeline-ului (comisă în repo, persistă între rulări)
+moderation.yaml     control editorial (om în buclă)
+output/             site generat (gitignored; deployat de Cloudflare Pages)
+.github/workflows/  build.yml (fetch+AI+commit, cron la 2h — vezi §17)
 ```
 
-## 4. Commands — use EXACT strings
-- Install deps: `pip install -r requirements.txt`
-- Run pipeline (full): `python -m generator.main`
-- Dry run (no save, no render): `python -m generator.main --dry-run`
-- Render only (no AI/fetch): `python -m generator.main --render-only`
-- Serve locally: `python -m http.server 8000 --directory output` → http://localhost:8000
-- Lint / format: *(not configured — ruff not in requirements.txt)*
-- Type-check: *(not configured)*
-- Tests: `python -m pytest tests/ -q` (**235 tests** as of 2026-08-02, counted from a real run after #106; CI runs them via `.github/workflows/tests.yml` on PRs + manual dispatch — deliberately NOT on push, because content commits land every 2h). The count is a rough marker, not a gate: check it against a real run before quoting it anywhere.
+## 4. Comenzi — folosește șirurile EXACTE
+- Dependențe: `pip install -r requirements.txt`
+- Pipeline complet: `python -m generator.main`
+- Dry run: `python -m generator.main --dry-run`
+- Doar randare: `python -m generator.main --render-only`
+- Servit local: `python -m http.server 8000 --directory output`
+- Teste: `python -m pytest tests/ -q` (CI le rulează prin `tests.yml` pe PR-uri + dispatch manual,
+  **deliberat nu pe push**, fiindcă commit-uri de conținut aterizează la 2h). Numărul de teste e un
+  reper aproximativ, nu o poartă — verifică-l pe o rulare reală înainte să-l citezi.
+- Lint / type-check: *neconfigurate* (ruff nu e în requirements.txt)
 
-## 5. Workflow — MANDATORY (this is the fix for past sprawl)
-1. **Spec first.** Before any code, write 3-8 lines: goal, inputs/outputs, acceptance criteria. No spec -> no code.
-2. **Plan before non-trivial work.** Use plan mode or an `ultrathink` planning turn: analyse, propose a step plan, name the files each step would touch, DO NOT edit yet. Wait for the user's go-ahead.
-3. **Vertical slices.** Implement ONE feature end-to-end, verify it, commit it — then the next. Never broad multi-area edits in one pass.
-4. **Verify by running, not by claiming.** After each slice, run the relevant command, capture the REAL output, and check it against the acceptance criteria. "It works" is valid only after you ran it and saw it pass. If you cannot run it, say so — do not assert success.
-5. **Commit on green.** Each verified slice = one commit with a clear message. Functional states are checkpoints. Never "improve" working code outside the current slice.
-6. **Minimal diffs.** Change the least necessary. No opportunistic refactors of adjacent code.
+## 5. Flux de lucru — OBLIGATORIU
+1. **Spec întâi.** 3-8 linii: scop, intrări/ieșiri, criterii de acceptare. Fără spec → fără cod.
+2. **Plan înainte de muncă netrivială.** Analizează, propune plan cu fișierele atinse, NU edita.
+   Așteaptă „go".
+3. **Felii verticale.** O funcție cap-coadă, verificată, comisă — apoi următoarea.
+4. **Verifică rulând, nu declarând.** „Merge" e valid doar după ce ai rulat și ai văzut că trece.
+5. **Commit pe verde.** Fiecare felie verificată = un commit.
+6. **Diff minim.** Fără refactorizări oportuniste în cod adiacent.
 
-## 6. Definition of Done (ALL must hold before a slice is "done")
-- [ ] Acceptance criteria from the spec are met.
-- [ ] The relevant command was run; real output confirms success.
-- [ ] Lint / format / type-check pass.
-- [ ] Site still builds (no regression).
-- [ ] Committed with a descriptive message.
+## 6. Definiția lui „gata" (TOATE trebuie să țină)
+Criteriile din spec sunt îndeplinite · comanda relevantă a fost rulată și ieșirea reală confirmă ·
+lint/format/type-check trec · site-ul încă se construiește · comis cu mesaj descriptiv.
 
-## 7. Domain rules (izz.ro-specific, non-negotiable)
-- **No mangled output.** The pipeline must never publish raw, truncated headlines. If a fallback path cannot meet the "Zero Zgomot" quality bar, SKIP the item — do not publish it broken.
-- **One axis, one home.** An article belongs to exactly one place per taxonomy axis. Do not cross-post the same item across geography and topic axes (this is what caused duplicates).
-- **Clustering changes are verified empirically.** Before committing any change to clustering, test it on real article samples covering BOTH over-merge and under-merge cases. State the results.
-- **Source diversity.** Be aware of overconcentration in the Digi / RCS-RDS family; do not introduce logic that worsens it.
-- **Attribution formula — PERMANENT (owner decision 2026-07-04).** Every story surface shows exactly ONE provenance element, labeled `Sursă` (1 source) / `Surse` (≥2), placed after the body text: plain names on cards (`sources-inline`), linked names on article pages (`sources-box`), the φ aside on the hero. No other label ("Proveniență", "N surse" counts), no per-article methodology notice — the methodology text lives ONLY in `/legal/method/` (footer "Cum sintetizăm"). Source names are ALWAYS links to the exact external article at that source (`target="_blank" rel="noopener noreferrer"`) — on cards, hero, and article pages alike. Cards end with the sources line — NO extra CTA ("Citește"); the title is the internal link. Any new surface (widget, feed, panel) must reuse this exact formula.
+## 7. Reguli de domeniu (specifice izz.ro, nenegociabile)
+- **Fără output stricat.** Pipeline-ul nu publică niciodată titluri brute sau trunchiate. Dacă o cale
+  de fallback nu poate atinge bara „Zero Zgomot", **SARE** itemul — nu-l publica stricat.
+- **O axă, o casă.** Un articol aparține exact unui loc per axă de taxonomie. Nu cross-posta același
+  item între axa geografică și cea tematică (asta a cauzat duplicatele).
+- **Schimbările de clustering se verifică empiric.** Înainte de orice commit pe clustering, testează
+  pe eșantioane reale acoperind AMBELE cazuri — over-merge ȘI under-merge. Declară rezultatele.
+- **Diversitatea surselor.** Atenție la supraconcentrarea pe familia Digi / RCS-RDS; nu introduce
+  logică ce o înrăutățește.
+- **Formula de atribuire — PERMANENTĂ (decizie proprietar 2026-07-04).** Fiecare suprafață de știre
+  arată exact UN element de proveniență, etichetat `Sursă` (1) / `Surse` (≥2), plasat după corpul
+  textului: nume simple pe carduri (`sources-inline`), nume linkuite pe paginile de articol
+  (`sources-box`), aside-ul φ pe hero. Nicio altă etichetă („Proveniență", „N surse"), niciun
+  aviz de metodologie per articol — textul de metodologie stă DOAR în `/legal/method/`. Numele de
+  surse sunt ÎNTOTDEAUNA linkuri către articolul extern exact
+  (`target="_blank" rel="noopener noreferrer"`). Cardurile se termină cu linia de surse — FĂRĂ CTA
+  suplimentar; titlul e linkul intern. Orice suprafață nouă reutilizează formula asta exact.
 
-## 8. Design tokens
-All visual styling derives from `static/styles.css` (golden-ratio φ=1.618 type scale, Fibonacci spacing, light-golden palette).
-- Never hardcode colors, font sizes, or spacing in templates — reference CSS custom properties from `static/styles.css`.
-- Value missing? Add a custom property; do not inline a one-off.
+## 8. Tokenuri de design
+Tot stilul vizual derivă din `static/styles.css` (scară tipografică φ=1.618, spațiere Fibonacci,
+paletă light-golden). Nu hardcoda culori, mărimi de font sau spațieri în template-uri — referă
+proprietăți CSS custom. Lipsește o valoare? Adaugă o proprietate; nu inline-a un one-off.
 
-## 9. Bootstrap — COMPLETED 2026-06-26
-Sections 3, 4, and 8 filled from real repo state. No placeholders remain.
+## 10. A NU se atinge fără instrucțiune explicită
+Logica de sinteză / atribuire („Model C" multi-sursă) și orice e legal/GDPR-relevant ·
+configurația de deploy în producție (Cloudflare Pages, secrete GitHub Actions).
 
-## 10. Do NOT touch without explicit instruction
-- Synthesis / attribution logic ("Model C" multi-source) and anything legal / GDPR-relevant.
-- Production deploy config (Cloudflare Pages, GitHub Actions secrets).
+## 11. SEO — REZOLVAT 2026-06-26
+`og:type`, `dateModified`, `lastmod` sunt implementate și verificate pe output real.
+**Nu re-audita fără o descoperire nouă, specifică.** Detaliu: `specs/istoric-operational.md`.
 
-## 11. SEO — RESOLVED 2026-06-26
-All previously listed gaps are implemented and verified against real render output:
-- `og:type: article` — present on all article pages (base.html block override in article.html)
-- `dateModified` — present in NewsArticle JSON-LD (render.py `_article_jsonld`)
-- `lastmod` — present on all sitemap URLs (render.py `_write_sitemap`)
-No remaining SEO gaps known. Do NOT re-audit or rebuild without a specific new finding.
+## 12. Unelte și efort
+PowerShell și Desktop Commander pot rula fără aprobare per comandă, în limitele blocklistei hook-ului
+de securitate. Citirea de fișiere și comenzile documentate de dev/build/lint/test nu cer confirmare.
+Acțiunile distructive sau ireversibile o cer în continuare.
+Pentru task-uri substanțiale, multi-fișier: `/effort ultracode`. Pentru editări de rutină:
+`/effort high` ajunge și consumă mai puțin.
 
-## 12. Tooling & effort
-- PowerShell and Desktop Commander may run without per-command approval, within the security hook's blocklist. Reading files and running the documented dev/build/lint/test commands needs no confirmation. Destructive or irreversible actions still require confirmation.
-- For substantive, multi-file tasks: enable `/effort ultracode` (session-wide xhigh + dynamic workflow orchestration). For routine single-slice edits: `/effort high` is enough and spends fewer tokens. Use an `ultrathink` turn specifically for planning before a hard slice.
+## 13. Verificare front-end — măsoară, nu te uita cu ochiul
+- **După orice felie care schimbă output-ul de front-end** (template-uri, `static/styles.css`,
+  HTML/JSON-LD din `render.py`): rulează `bash tools/audit.sh` și raportează scorurile Lighthouse
+  (Perf / A11y / Best-practices / SEO) și numărul de erori pa11y WCAG2AA **înainte vs după**.
+  „Arată bine" nu e un rezultat; un delta de scor e.
+- **Rulează 3+ repetări per revizie și compară medianele**, cu `ARTICLE_PATH=/cat/slug/` fixat.
+  Varianța e un comutator cu două stări, nu zgomot — o singură pereche înainte/după nu poate
+  rezolva un efect sub ~8 puncte pe home.
+- **Măsurătoarea e busolă, nu pilot automat.** Scorurile *informează* felia următoare, pe care tot
+  tu o propui și proprietarul o confirmă (§5). Niciodată un maraton autonom de „optimizare", și
+  niciodată vânătoare de scor cu trucuri care strică experiența reală.
+- **Baseline, cifre, ipoteze picate (CLS, fonturi, consent) → `specs/masuratori-frontend.md`.**
+  Citește-l ÎNAINTE de a re-investiga CLS: două explicații sunt deja măsurate și infirmate acolo.
 
-## 13. Front-end verification — measure, don't eyeball
-Prefer local CLI measurement tools over "testing websites": structured JSON output, runs on **localhost before deploy**, no rate limits. External APIs (PageSpeed Insights, W3C) are a *post-deploy* complement on the live site, not a substitute.
-- **After any slice that changes front-end output** (templates, `static/styles.css`, render.py HTML/JSON-LD): run `bash tools/audit.sh` and report Lighthouse scores (Perf / Accessibility / Best-practices / SEO) and pa11y WCAG2AA error count **before vs after**. "It looks fine" is not a result; a score delta is.
-- Setup once: `npm i -g lighthouse pa11y`. The script auto-detects Chromium (`CHROME_PATH` to override), renders, serves `output/`, and writes JSON to `.audit/` (gitignored). Auto-detection covers Linux/CI (Chrome *and* Chromium) **and, on Windows, Google Chrome's default install paths only** — Chromium has no official Windows installer, so there is no canonical path to probe; pass `CHROME_PATH` for a Chromium or Edge build there. Until 2026-08-02 the script was Linux-only in three separate ways on Windows (no browser found, a version line reading "Opening in existing browser session.", and pa11y dying on an MSYS path while the run still printed "-1 errors"). If you are reading a `.audit/` from before that date on a Windows machine, its pa11y count is not a measurement.
-- **Measure is a compass, not an autopilot.** Scores *inform* the next slice, which you still propose and I confirm (see §5). Never launch an autonomous "optimization" marathon, and never chase a Lighthouse number with tricks that degrade the real experience.
-- **Current baseline — re-measured 2026-08-02 on `main` @ `34cc8d3`:** home Perf **80** / A11y 100 / BP 100 / SEO 100; article Perf **88** / 100 / 100 / 100; pa11y WCAG2AA **0** errors. Measured with Lighthouse 13.4.1, pa11y 9.1.1, Chromium 141.0.7390.37 — an upgrade of any of the three moves the numbers, so `audit.sh` now writes them to `.audit/versions.txt` on every run. Compare like with like: the same corpus on the Windows desktop under **Chrome 150.0.7871.187** reads home **83-84** / article **92** in the low-CLS mode below, so 80 is not a number to reproduce there.
-- **Pin the article page when comparing.** `audit.sh` used to score `find | head -1`, i.e. whatever the filesystem returned first, so the "article" score silently referred to different pages across runs (measured: 87 vs 88 on the same commit). The default is sorted and therefore stable for a given corpus, but content shifts between renders — for a real before/after, pass `ARTICLE_PATH=/cat/slug/`.
-- **On variance — it is a two-state switch, not a spread (measured 2026-08-02, PR #106).** Six runs across two revisions, article pinned: home read 84·83·84 before and 76·83·83 after, and each score tracks CLS landing on exactly one of two values — ~0.156 (home 83-84) or 0.272 (home 76). Same bimodality on article pages: 92 at CLS 0.172, 85 at 0.272. Both modes occur on **both** revisions, so the switch is pre-existing, not something a slice introduced. Consequences: a single before/after pair **cannot** resolve an effect smaller than ~8 points on home, so run **3+ repetitions per revision and compare medians**, with `ARTICLE_PATH` pinned. This supersedes the earlier "5 identical runs, one outlier at 84" reading — that was the same switch seen from one side.
-- **A number in this file is a local-sandbox figure, not a promise about izz.ro.** It exists to compare *before vs after a slice on the same machine*. When a score looks like a regression, measure the pre-slice commit in a worktree and compare — that is what turned the "photos broke Perf" alarm of 2026-08-02 into a non-event (home was 80 both before and after; the whole cost of adding real photos was −1 point on an article page, +65 KiB, +0.3 s LCP — full before/after table in PR #101).
-- **Why home Perf is held down** (measured from the Lighthouse JSON, not guessed): CLS and FCP. CLS 0.272 in the bad mode scores 56 at weight 25, FCP 2.6 s scores 65 at weight 10, `styles.css` blocks render ~900 ms, TBT is a perfect 100. None of it is image-related.
-- **The CLS culprit is `#izz-install-btn`, and the two earlier explanations were wrong** (measured 2026-08-02, mobile emulation 412 px). Lighthouse attributes 100% of the shift to a single element, `body > main`, whose final `boundingRect.top` is **285**. Toggling the install button in a real browser: hidden → `main` starts at **236.3**; shown → **285.3**. Exact match. The button lives inside `.nav` in the sticky header group, `hidden` in the markup, and `personalize.js::initInstallButton` clears `hidden` when `beforeinstallprompt` fires — pushing every article down **49 px** mid-read. That event's timing is not deterministic, which is exactly why the score is bimodal rather than noisy.
-  - **NOT `#izz-consent`:** it is `position: fixed; bottom: 0`, i.e. out of flow — it cannot move `main`. Do not re-investigate it.
-  - **NOT the web-font swap:** forcing the declared fallback stacks and re-measuring gives a **0 px** delta on the header group at both 412 px and 1280 px. The fonts are self-hosted, subsetted (7–17 KB) and two are preloaded. Do not re-investigate this either.
-  - Fixing it is a **placement decision, not a technical one** — the button has to stop growing the header, and where it goes instead is the owner's call (§8). Reserving the row permanently would cost 49 px of mobile header for a button most visitors never see. Do not "fix" it by delaying the reveal past the CLS window; that is chasing the number, which this section forbids.
-- The 2026-07-02 fix that got A11y to 100 darkened two tokens (`--ink-3`, `--gold-strong`) — a cautionary tale worth keeping: the "footer links" finding was actually 249 site-wide errors; only measurement revealed the real scope. Contrast for new colors must clear 4.5:1 against `--paper` AND `--gold-wash`, not just white.
+## 14. Autonomie și cine face merge
+Mandatul autonom din iulie e **încheiat** (istoric: `specs/istoric-operational.md`). Rămân active:
+- **Nu arma nicio buclă autonomă / CronCreate recurent** care să se auto-conducă prin backlog.
+- **Cine face merge în `main`** (regulă proprietar 2026-07-24): contul de la care lucrează el
+  *în momentul ăla*. Nu „cine a deschis PR-ul". Dacă ești sesiunea cu care vorbește acum, tu faci
+  merge; nu parca un PR verde așteptând celălalt cont.
+- **După orice merge, anunță celălalt cont** — `TASKS-B.md` în `Ramanul/claude-desktop-workspace`
+  plus `specs/STATE.md` aici. Un merge neanunțat e exact ce cauzează ciocnirile.
+- **Nu face curse pe `main`.** Ramifică, ține diff-ul mic, aterizează, anunță.
 
-## 14. Autonomous delivery mandate — ENDED / HISTORICAL (owner decision 2026-07-13)
-The 2026-07-10 autonomous mandate is **OVER**. Its backlog shipped (2026-07-11) and the live site is green. It caused a concrete problem: multiple sessions each running an autonomous cron and auto-merging into `main` collided (2026-07-12/13 — GA + security-header work had to be rebuilt after parallel PRs landed). So, permanently now:
-- **Do NOT arm any autonomous loop / recurring CronCreate to self-drive the backlog.** No session should merge to `main` on its own schedule.
-- **Who merges to `main` — owner rule, 2026-07-24.** The account the owner is *currently working
-  from* merges. Not "whoever opened the PR", not "the account that always owns main" — the active
-  one. So: if you are the session the owner is talking to right now, you merge; do not park a green
-  PR waiting for the other account.
-- **After any merge, tell the other account.** Parallel work is allowed *because* the accounts stay
-  informed. Write the merge into the cross-account channel (`TASKS-B.md` in
-  `Ramanul/claude-desktop-workspace`, plus `specs/STATE.md` here) so the idle account never
-  re-does or re-reviews landed work. A merge nobody announced is what causes the collisions §14
-  was written about.
-- Still true: **do not race `main`.** Branch, keep the diff small, land it, announce it. The old
-  blanket "one writer, ask the owner first" is superseded by the two rules above.
-- **Revert to the §5 confirmation workflow + §16 verification** for all work. Spec → plan → verified slice → the owner (or the live smoke/visual jobs) confirms.
-- Historical record of the delivered backlog (do not re-do): Chromium image engine, cache `_headers`, EAA accessibility statement, legal wording pass, A11y/SEO/perf thresholds, pytest suite + tests.yml, covers.py cleanup — all ✅.
-- **Owner facts (never invent legal facts):** operator = natural person, initials **S.A.N.**, Romania — already in privacy.md.
+### 14b. Muncă în fundal — permisă, mărginită (decizie proprietar 2026-08-01)
+- **Nu face niciodată merge în `main`.** Deschide un **draft PR** și se oprește. Doar proprietarul
+  face merge. Asta e toată proprietatea de siguranță.
+- **Un task per declanșare**, luat din lista `## Open` din `specs/STATE.md`. Nu inventează muncă, nu
+  atinge ce e marcat „owner decision pending", nu începe al doilea task.
+- **Se oprește și raportează în loc să ghicească.** Ambiguitate, premisă picată sau un task care cere
+  o decizie de cost/design → încheie rularea cu o notă scrisă, nu cu cea mai bună presupunere.
+- **Actualizează `specs/STATE.md`** ca sesiunea următoare să pornească informată.
 
-### 14b. Background work — REINSTATED, BOUNDED (owner decision 2026-08-01)
-§14 banned autonomous loops because *two accounts* each ran one and collided (12–13 Jul). That
-premise is gone: STATE.md records single-account mode. The owner is often away for days and wants
-progress meanwhile, so a background Routine is allowed again — under limits that keep the original
-failure impossible:
-- **It never merges to `main`.** It opens a **draft PR** and stops. Only the owner merges. This is
-  the whole safety property: nothing reaches the live site without human review.
-- **One task per firing**, taken from the `## Open` list in `specs/STATE.md`. It does not invent
-  work, does not touch anything marked "owner decision pending", and does not start a second task.
-- **It stops and reports instead of guessing.** Ambiguity, a failing premise, or a task needing a
-  cost/design call ends the run with a written note in the PR or STATE.md — not a best guess.
-- **It updates `specs/STATE.md`** so the next session (background or owner) starts informed.
-- Everything else still applies: §5 spec→verify→commit, §16 two-role verification, §7/§8 domain
-  and token rules. A background run gets no exemption from any of them.
-Anything wider than this — self-merging, self-directed backlog invention, a second concurrent
-loop — remains forbidden by §14 above.
+## 15. Delegare
+Sub-agenții de proiect stau în `.claude/agents/`: `clustering-tuner` (§7), `frontend-auditor` (§13),
+`pipeline-runner` (§5.4), `editorial-guard` (§7, §8). Comenzi: `/slice`, `/audit`,
+`/delegate-devin`, `/review-devin`.
 
-## 15. Sub-agents & commands — delegate the verification rituals
-Project sub-agents live in `.claude/agents/` (versioned, see its README). Each isolates a noisy, bounded, summarizable job and returns a verdict — use them so the main thread stays on the decision, not the noise. Map task → agent:
-- Changing `generator/cluster.py` or its thresholds → **`clustering-tuner`** verifies over-merge AND under-merge on real samples (enforces §7). It reports; it does not edit.
-- Changing templates / `static/styles.css` / render.py HTML/JSON-LD → **`frontend-auditor`** runs `tools/audit.sh` and reports the Lighthouse/pa11y delta (enforces §13).
-- "Does it still build?" / verify by running → **`pipeline-runner`** runs `--dry-run` / `--render-only` / `qa_check.py` safely (enforces §5.4).
-- Reviewing any story-surface change → **`editorial-guard`** checks the attribution formula, Zero Zgomot, one-axis-one-home, and design tokens (enforces §7, §8). Read-only.
+**Postura implicită** (decizie proprietar 2026-07-24): deleagă execuția, ține firul principal pe
+decizii. **Dar delegarea nu e gratis:** când implementarea unui task e mai mică decât overhead-ul de
+spec+review (≈<5k tokeni), fă-o direct. Nu delega niciodată în fel care face curse pe `main` sau
+armează o buclă autonomă. Detaliu operațional (Devin headless, cele două niveluri de agenți, ce
+NU e accesibil de pe web): `specs/istoric-operational.md`.
 
-**Executor workflow (Devin, added 2026-07-18):** well-specified implementation tasks can be
-delegated to Devin (model swe-1-6-slow, free quota — costs zero Claude tokens). **`/delegate-devin`**
-writes a premise-verified spec to `specs/` and hands it off headlessly via
-`python tools/devin_headless.py -- -p "..." --permission-mode smart` (NEVER run devin.exe directly —
-an interactive startup nudge blocks piped runs; the wrapper's docstring explains). Devin works on a
-`devin/<task>` branch under the contract in `AGENTS.md`; **`/review-devin`** then reviews the branch
-text-only (git diff + tests) with verdict MERGE/FIX/REJECT. Manager reviews and merges; the executor
-never pushes or merges.
+**Starea de execuție** (`specs/STATE.md`): sursa unică de adevăr pentru „unde suntem". Scrieri
+deținute de manager: actualizeaz-o la finalul fiecărei felii. Sub ~30 de linii. Citește-o la
+începutul fiecărei sesiuni, după `git pull --ff-only` — botul de CI comite la 2h, deci `main` local
+e adesea vechi.
 
-**Execution state (`specs/STATE.md`, added 2026-07-19):** the single source of truth for "where we
-are" — current task, last relevant commits, user WIP, blockers, next steps. Manager-owned writes:
-update it at the end of every slice and inside `/review-devin`; executors receive it read-only.
-Overwrite in place, keep it under ~30 lines. Start every session by reading it (after
-`git pull --ff-only` — the CI bot commits every 2h, so local main is often stale).
+## 16. Verificare în două roluri + calibrare de onestitate — REGULĂ TARE
+Context: un fix CSS corect a fost raportat „rezolvat" în timp ce proprietarul vedea în continuare
+bug-ul — verificat ca *cod*, niciodată ca *experiență live*, și fix-ul era nelivrabil (`styles.css`
+cache-uit immutable, fără cache-bust). Pentru ORICE schimbare vizibilă utilizatorului:
 
-**Delegation-first execution (owner decision 2026-07-24).** Default posture: delegate execution work to agents, keep the main thread on decisions — in any discussion, not only izz.ro. Two agent tiers with DIFFERENT reach, never conflate them:
-- *In-session Claude subagents* (`Explore`, `general-purpose`, the verification agents) run in ANY environment, including Claude on the web. These are the default executor when working from a web/Linux session.
-- *Free code executors* (Devin, OpenCode) run ONLY from a local desktop session via the Windows wrapper — they are NOT reachable from a web/Linux container (verified 2026-07-24: no `devin.exe`, no `pywinpty`). From the web, do not pretend otherwise: use in-session subagents or do it directly, and say which.
-Delegation is not free: when a task's implementation is smaller than the spec+review overhead (≈<5k tokens, see `specs/metrics.md`), do it directly instead of delegating. Never delegate in a way that races `main` or arms an autonomous loop (§14 holds absolutely).
+1. **Verifică în AMBELE roluri.** *Ca programator:* rulează codul (randare / `pytest` / `qa_check`)
+   — ieșire reală. *Ca utilizator:* condu pagina construită într-un browser real (Chromium headless)
+   și observă simptomul EXACT raportat. Reproduce-l întâi, apoi confirmă că fix-ul îl elimină.
+2. **Verifică LIVRABILITATEA, nu doar corectitudinea.** Un fix pe care un asset cache-uit, un service
+   worker sau o copie CDN veche îl împiedică să ajungă la utilizator NU e gata. Activele statice
+   trebuie să poarte `?v=` cu hash de conținut (`render._asset_ver`); verifică că URL-ul emis
+   s-a schimbat.
+3. **Trei stări distincte — nu le confunda, folosește cuvintele exacte:**
+   - „**reparat în cod**" = diff-ul e scris.
+   - „**verificat local**" = ambele roluri au trecut pe site-ul construit aici.
+   - „**confirmat pe live**" = site-ul deployat arată reparat. **Sandbox-ul POATE ajunge la izz.ro**
+     (măsurat 2026-07-25: `https://izz.ro/` → 200 cu conținut real; fiecare PR are preview
+     Cloudflare la `https://<branch>.izz-ro.pages.dev/`). Deci fă-o efectiv înainte să zici „gata":
+     ia URL-ul deployat, afirmă că simptomul exact a dispărut, citează răspunsul. Mereu cu
+     cache-bust (`?cb=$(date +%s)`). Site-urile de știri rămân blocate de proxy — limita aia e reală
+     și separată. Dacă un sandbox chiar nu poate ajunge, spune-o cu comanda care a eșuat și cazi pe
+     „reparat + verificat local; rămâne de confirmat pe live după deploy".
+4. **Când nu poți testa ceva, spune explicit** (care rol, de ce) în loc să lași impresia că a trecut.
 
-Slash commands in `.claude/commands/`: **`/slice`** drives the mandatory §5 workflow for one vertical slice; **`/audit`** runs the front-end audit. Permission allowlist for the documented-safe commands lives in `.claude/settings.json` (this is §12 made enforceable — read-only and dev/build commands no longer prompt; push/commit/deletes still do). A web-only `SessionStart` hook (`.claude/hooks/session-start.sh`) installs the pipeline deps (with `SETUPTOOLS_USE_DISTUTILS=stdlib`, needed for feedparser/sgmllib3k) so Claude Code on the web can run the pipeline and these agents.
+## 17. Cadență de publicare — MĂSURAT, nu re-diagnostica
+`build.yml` are cron `13 */2` — la 2 ore, **deliberat**: fiecare commit declanșează un build
+Cloudflare, iar planul gratuit dă ~500/lună. **Nu „repara" cadența făcând-o mai deasă** — aia a
+cauzat pana din 5-9 iulie. Plafonul de debit e bugetul AI (`max_ai_calls`, implicit 18/rulare), nu
+programul. Varianța zilnică e mare și normală; verifică `gh run list` înainte să pretinzi că
+pipeline-ul e picat. Cifre și context: `specs/istoric-operational.md`.
 
-## 16. Two-role verification + honesty calibration — HARD RULE (owner decision 2026-07-12)
-Context: a correct CSS fix was reported "rezolvat" while the owner still saw the bug — because it was verified as *code* but never as the *live user experience*, and the fix was undeliverable (immutable-cached `styles.css` with no cache-bust). Never again. For ANY user-visible change:
+## 18. Imagini de instituții locale — condiționate de consimțământ (decizie proprietar 2026-07-24)
+Finanțarea din taxe NU pune fotografiile unei instituții publice în domeniul public, iar „public pe
+site-ul lor" ≠ liber de reutilizat. Legea 8/1996 art. 9 eliberează **TEXTUL** actelor oficiale — NU
+fotografiile. O poză făcută de un angajat al primăriei e opera INSTITUȚIEI: ea e titularul și ea
+trebuie să acorde reutilizarea; o poză de la un fotograf contractat sau o agenție (Agerpres/Mediafax)
+aparține terțului. Faptul că apare un ales reduce *dreptul lui la imagine*, dar NU atinge *dreptul
+de autor al fotografului*. Nu improviza fapte juridice — pentru orice operațional, proprietarul
+confirmă cu un avocat.
 
-1. **Verify in BOTH roles before claiming anything.**
-   - *As a programmer:* run the code — render / `pytest` / `qa_check` — real output, not assertion.
-   - *As a user:* drive the actual built page in a real (headless Chromium) browser and observe the EXACT reported symptom. Reproduce it first, then confirm the fix removes it. Measure, don't infer: computed styles, real requests, real pixels. "It should work now" is not verification.
-2. **Verify DELIVERABILITY, not just correctness.** A fix that a cached/immutable asset, a service worker, a stale CDN copy, or a wrong URL prevents from reaching the user is NOT done. Static assets (`styles.css`, JS) MUST carry a content-hash `?v=` (see `render._asset_ver`) so a change actually reaches returning visitors; check the emitted URL changed.
-3. **Three distinct states — never conflate them, and use the exact words:**
-   - "**reparat în cod**" = the diff is written.
-   - "**verificat local**" = both roles above passed on the built site here.
-   - "**confirmat pe live**" = the deployed site shows it fixed.
-     **MEASURED CORRECTION 2026-07-25 — the old "the sandbox cannot reach izz.ro" is FALSE here.**
-     From the Claude Code web sandbox: `https://izz.ro/` → HTTP 200 with real content, and every
-     PR gets a Cloudflare branch preview (`https://<branch>.izz-ro.pages.dev/`) that is also
-     reachable. Both were used to prove a before/after on the real deploy: live `/surse/` served
-     9,804 bytes with 2 external links and zero "Primăria", the preview served 39,262 bytes with
-     189 links and 121 primării; live manifest `name` was still `izz.ro — Zero Zgomot` while the
-     preview served `izz.ro`. News sites stay blocked by the proxy — that limit is real and
-     separate. **So Claude CAN reach the third state now**, and must actually do it before saying
-     "gata": fetch the deployed URL, assert the exact symptom is gone, quote the response.
-     Always cache-bust (`?cb=$(date +%s)`) — a plain request can hit a cached edge copy.
-     If a future sandbox genuinely cannot reach it, say so with the failing command, and fall back
-     to **"reparat + verificat local; rămâne de confirmat pe live după deploy"**. What has not
-     changed: never say "rezolvat / gata / done" for a user-visible issue on code evidence alone.
-4. **When you cannot test something, say so explicitly** (which role, why) instead of implying it passed. Honesty about a gap beats a confident false "gata".
+izz.ro poate folosi imaginea unei instituții locale DOAR dacă una din astea ține, verificată și
+CONSEMNATĂ (link + citat): (1) instituția publică termeni de reutilizare / licență deschisă care
+acoperă imaginile, SAU (2) există portret/poză liber-licențiată pe Wikidata / Wikimedia Commons
+(calea existentă — `fetch_leadphotos.py` PD/CC0, `fetch_portraits.py` CC-BY), SAU (3) instituția a
+dat permisiune scrisă de reutilizare. **Fără scraping în bloc pe site-uri de instituții.** Lipsesc
+toate trei → articolul își păstrează coperta generată.
 
-This overrides any earlier phrasing that let "committed/rendered" stand in for "fixed for the user".
+## 19. Igienă de sesiune și economie de context — REGULĂ TARE
+- **Un task, o sesiune.** Nu continua o conversație peste zile. Când o felie e gata și STATE.md e
+  actualizat, transcriptul n-are valoare reziduală.
+- **Nu trage niciodată un payload mare în context.** Listări de GitHub Actions, `data/articles.json`
+  întreg, fișiere de log, `git log` fără `--format` — filtrează la sursă (`jq`, un `python -c` care
+  tipărește doar câmpurile necesare, `--per_page`, `grep -c`, `head`). Un rezultat de unealtă mai
+  scump decât felia pe care o susține e un defect. Dacă o unealtă scrie într-un fișier fiindcă era
+  prea mare, ăla e semnalul că apelul a fost greșit — îngustează-l, nu citi fișierul.
+- **Model pe măsura muncii.** Editările de rutină nu au nevoie de cel mai scump model.
+- **Sub-agenții costă ~5.6× per linie livrată** (măsurat, `COORD-DASHBOARD.md`). Merită pentru muncă
+  genuin paralelă sau zgomotoasă; risipă pentru o editare pe care o poți face direct.
+- **Agenții împart working tree-ul.** Un agent care rulează `git checkout` mută ramura de sub toți —
+  s-a întâmplat pe 2026-07-25. Dă fiecărui agent paralel `isolation: "worktree"`.
+- **Fișierele de reguli se plătesc la fiecare tură.** Înainte să adaugi aici, întreabă dacă textul
+  obligă la o acțiune. Dacă e cifră, incident sau ipoteză picată → `specs/registru.tsv` sau `specs/`.
 
-## 17. Publication cadence & throughput — MEASURED 2026-07-25 (stop re-diagnosing this)
-Twice now a session has read "cron 30 min" in this file, seen runs 1.5–4.5h apart, and concluded
-the pipeline was broken. It is not. The docs were wrong; they are fixed above. The real numbers:
-
-- **`build.yml` cron is `13 */2` — every 2 hours, deliberately.** Each state commit triggers a
-  Cloudflare Pages build and the free plan allows ~500/month; 12/day ≈ 360/month leaves headroom
-  for PR previews. Running more often exhausts the build budget and deploys stop — that is
-  literally the 5–9 July 2026 outage. **Do not "fix" the cadence by making it more frequent.**
-- **The throughput cap is the AI budget, not the schedule:** `max_ai_calls` defaults to 18 per
-  run (≈216/day). `workflow_dispatch` accepts a one-off override for seeding a new category;
-  the comment in `build.yml` says explicitly not to change the cron default.
-- **Measured volume** (`data/articles.json`, 2026-07-25): 25 articles by midday, against 198 the
-  previous full day, 92, 40, 101, 229, 286 for the days before. Day-to-day variance is large and
-  normal; a low count at noon is not evidence of a stalled pipeline. **Check run history before
-  claiming the pipeline is down** — `gh run list --workflow=pipeline` or the Actions API.
-- If the owner wants more articles per day, the lever is the per-run AI budget (costs Gemini
-  quota) or clustering yield — **not** the cron. That is a cost decision, so it is the owner's.
-
-## 18. Local institution images — consent-gated (owner decision 2026-07-24)
-Taxpayer funding does NOT place a public institution's photos in the public domain, and "public on their site" ≠ free to reuse. Legea 8/1996 art. 9 frees the TEXT of official acts (laws, administrative notices) — NOT photographs. A photo taken by a municipal employee is the INSTITUTION's work: the institution is the rightsholder and must grant reuse; a photo by a contracted photographer or an agency (Agerpres/Mediafax) belongs to that third party. Being of an elected official reduces that person's *image right* (they may be shown) but does NOT touch the *photographer's copyright* in a specific image. These are not legal facts to improvise (§14) — for anything operational, the owner confirms with a lawyer.
-
-izz.ro may use a local institution's image ONLY when one of these holds, verified and RECORDED (link + quote):
-1. the institution publishes reuse terms / an open license (open-data / PSI reuse notice) covering images, OR
-2. a free-licensed portrait/photo exists on Wikidata / Wikimedia Commons (existing pipeline path — `fetch_leadphotos.py` PD/CC0, `fetch_portraits.py` CC-BY), OR
-3. the institution gave written reuse permission.
-NO blanket scraping of institution sites. Agents research and gather this evidence per institution into a whitelist; the owner (or legal) approves it before any image is pulled — human-in-the-loop, like `moderation.yaml`. Missing all three → the article keeps its generated cover.
-
-## 19. Session hygiene & context economy — HARD RULE (owner decision 2026-08-01)
-Context: a session opened on 2026-07-25 was still being continued on 2026-08-01. Every turn
-re-sent a week of history, and two `actions_list` calls returned **340,000 characters each**.
-The 5-hour usage window hit 32% in roughly ten minutes of work. Nothing in that history was
-needed — `specs/STATE.md` already held every conclusion.
-
-- **One task, one session.** Do not continue a conversation across days. When a slice is done and
-  STATE.md is updated, the transcript has no residual value: STATE.md *is* the handoff, and §15
-  already requires reading it first. Say so to the owner rather than silently continuing a stale
-  session.
-- **Never pull a large payload into context.** GitHub Actions listings, full `data/articles.json`,
-  log files, `git log` without `--format` — filter at the source (`jq`, a `python -c` that prints
-  only the fields needed, `--per_page`, `grep -c`, `head`). A tool result costing more than the
-  slice it supports is a defect, not a detail. If a tool dumps to a file because it was too large,
-  that is the signal the call was wrong — narrow it, do not read the file.
-- **Model to match the work.** Routine single-slice edits do not need the most expensive model;
-  reserve it for planning and hard reasoning. §12's effort guidance is about depth, this is about
-  cost — they are different dials.
-- **Sub-agents cost ~5.6x per delivered line** (measured, `COORD-DASHBOARD.md`). Worth it for
-  genuinely parallel or noisy measurement work; wasteful for an edit you can make directly.
-- **Agents share the working tree.** A background agent that runs `git checkout` moves the branch
-  under everyone else — this happened on 2026-07-25 and cost a rebuild. Give every parallel agent
-  `isolation: "worktree"`, or a dedicated `git worktree`. Never let two agents write the same branch.
-
-## 20. The decision registry — consult it BEFORE proposing, append to it AT the decision
-Owner problem, stated 2026-08-04: nothing about this site was quantified. Proposals recalled and
-never built, directions tried and abandoned, reversals, claims measured and found false — all of it
-lived scattered across sessions, so answering "was X ever tried?" meant reloading days of context,
-and several of those conversations have since been deleted. `specs/registru.tsv` fixes the *query*
-cost: one `find` returns a few lines instead of a few thousand. Spec: `specs/registru-decizii.md`.
-
-- **Before proposing anything, search it:** `python tools/registru.py find <subiect>`. A hit on
-  `respins`, `anulat`, `masurat-fals` or `inchis-de-proprietar` means read the reason before
-  re-opening. This is the whole anti-re-litigation mechanism; skipping it is how the same wrong
-  hypothesis gets investigated a third time.
-- **A decision that does NOT produce a PR gets a row in the same turn it is taken** —
-  `tools/registru.py add`. Proposals, refusals, dead ends, false measurements, owner calls. Rows
-  that DO have a PR are generated by `tools/registru.py sync` at zero model cost; never hand-write
-  those.
-- **`motiv` is mandatory** on `respins`, `abandonat`, `anulat`, `masurat-fals` — the CLI refuses
-  the row without it. A rejection without its reason does not prevent anything.
-- **Append-only.** What was rejected a month ago stays readable, with its reason. Never rewrite or
-  delete a row; supersede it with a new one and link them via `leaga`.
-- **An empty `find` result is not proof it was never tried** — the backfill may not have reached
-  that period. `specs/registru-decizii.md` records how far it got.
+## 20. Registrul de decizii — consultă ÎNAINTE de a propune, adaugă LA decizie
+- **Înainte să propui orice, caută:** `python tools/registru.py find <subiect>`. Un hit pe `respins`,
+  `anulat`, `masurat-fals` sau `inchis-de-proprietar` înseamnă citește motivul înainte să redeschizi.
+  Ăsta e tot mecanismul anti-re-litigare.
+- **O decizie care NU produce un PR primește un rând în aceeași tură** — `tools/registru.py add`.
+  Propuneri, refuzuri, fundături, măsurători false, decizii ale proprietarului. Rândurile CU PR sunt
+  generate de `tools/registru.py sync`; nu le scrie de mână.
+- **`motiv` e obligatoriu** pe `respins`, `abandonat`, `anulat`, `masurat-fals` — CLI-ul refuză
+  rândul fără el.
+- **Append-only.** Ce a fost respins acum o lună rămâne lizibil, cu motivul. Nu rescrie și nu șterge
+  un rând; înlocuiește-l cu unul nou și leagă-le prin `leaga`.
+- **Un `find` gol NU e dovadă că nu s-a încercat** — completarea e manuală. Spec: `specs/registru-decizii.md`.
