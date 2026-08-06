@@ -42,6 +42,17 @@ jobs:
         # dependentele pipeline-ului de productie, si un linter n-are ce cauta acolo.
         run: python -m ruff check .
       - run: python -m pytest tests/ -q
+
+      - name: Poarta HTML pe output-ul construit
+        # `qa_check.py` auditeaza DATELE; nimic nu se uita la HTML-ul rezultat, deci o regresie
+        # de sablon care sparge o legatura interna sau scoate un `alt` ajungea pe live si se
+        # vedea abia in Search Console. Randam explicit: pytest o face printr-o fixtura, dar a
+        # depinde de ea ar lega poarta asta de faptul ca un anume test a rulat.
+        # Praguri ZERO pe toate categoriile — nu sunt alese, sunt starea masurata a lui main la
+        # cablare: 2921 de pagini, 118791 de legaturi, 5116 imagini, 0 probleme.
+        run: |
+          python -m generator.main --render-only
+          python tools/html_check.py
       - name: Sanatatea surselor RSS (doar la rulare manuala; PR-urile raman hermetice)
         # per sursa: HTTP / numar intrari / prospetime — prinde si feed-uri care raspund
         # 200 dar nu-s RSS. Nu ruleaza pe PR ca sa nu faca testele dependente de retea.
