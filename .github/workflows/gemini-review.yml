@@ -12,6 +12,15 @@ name: gemini review
 on:
   pull_request:
     types: [opened, ready_for_review]
+  # Rulare la cerere pe un PR deschis. Motivul e concret: `opened`/`ready_for_review` inseamna
+  # ca un fix adus recenzorului NU poate fi testat pe PR-ul care il introduce -- un push nu
+  # re-declanseaza nimic. Masurat pe PR #150. `synchronize` ar rezolva si asta, dar ar comenta
+  # la fiecare push; alegerea aia e a proprietarului, nu un efect secundar al unei felii de CI.
+  workflow_dispatch:
+    inputs:
+      pr:
+        description: "Numarul PR-ului de revizuit"
+        required: true
 
 permissions:
   contents: read
