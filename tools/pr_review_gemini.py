@@ -20,6 +20,7 @@ import json
 import os
 import subprocess
 import sys
+import time
 import urllib.error
 import urllib.request
 
@@ -94,31 +95,53 @@ def filtreaza(findings, atinse: set) -> tuple[list, list]:
     return pastrate, aruncate
 
 
-def _ask(key: str, prompt: str) -> str:
-    """Cascada peste MODELS; 404 = model retras, se trece la urmatorul. Restul erorilor ies
-    cu corpul raspunsului vizibil -- IZZ-0074, un provider care ascunde corpul erorii face
-    diagnosticul imposibil."""
-    last = None
+# Coduri pe care API-ul insusi le declara temporare. 503 spune literal "Spikes in demand
+# are usually temporary. Please try again later." -- masurat pe prima rulare live (PR #150),
+# unde o versiune fara reincercare a tratat 503 ca fatal si a iesit in 10 secunde.
+TRANZITORII = {429, 500, 502, 503, 504}
+# Pauzele cresc; prima e >= 4s fiindca throttle-ul de 4s al pipeline-ului a fost cauza-radacina
+# masurata a limitarilor de RPM pe acelasi cont (IZZ-0004).
+PAUZE = [4, 12, 30]
+
+
+def _ask(key: str, prompt: str) -> str | None:
+    """Cascada peste MODELS, cu reincercare pe erorile pe care API-ul le declara temporare.
+    404 = model retras -> urmatorul model, fara reincercare (nu se repara asteptand).
+    Intoarce None daca nimic n-a mers -- apelantul TREBUIE sa faca esecul vizibil, nu sa
+    iasa tacut: un check verde fara recenzie e mai rau decat un check rosu.
+    Corpul erorii se tipareste mereu (IZZ-0074: un provider care il ascunde face
+    diagnosticul imposibil)."""
+    global ULTIMA_EROARE
     for model in MODELS:
-        body = json.dumps({
-            "contents": [{"parts": [{"text": prompt}]}],
-            # Fara `thinkingConfig`: respins de modelele Gemini 3.x (IZZ-0075).
-            "generationConfig": {"temperature": 0, "responseMimeType": "application/json"},
-        }).encode("utf-8")
-        req = urllib.request.Request(ENDPOINT.format(model=model, key=key), data=body,
-                                     headers={"Content-Type": "application/json"})
-        try:
-            with urllib.request.urlopen(req, timeout=180) as r:
-                data = json.load(r)
-            print(f">> model folosit: {model}")
-            return data["candidates"][0]["content"]["parts"][0]["text"]
-        except urllib.error.HTTPError as e:
-            detail = e.read().decode("utf-8", "replace")[:300]
-            last = f"{model} -> HTTP {e.code}: {detail}"
-            print(f">> {last}")
-            if e.code != 404:
-                raise SystemExit(f"Gemini a esuat: {last}")
-    raise SystemExit(f"Niciun model disponibil. Ultima eroare: {last}")
+        for incercare, pauza in enumerate([0] + PAUZE):
+            if pauza:
+                print(f">> astept {pauza}s si reincerc ({model}, incercarea {incercare + 1})")
+                time.sleep(pauza)
+            body = json.dumps({
+                "contents": [{"parts": [{"text": prompt}]}],
+                # Fara `thinkingConfig`: respins de modelele Gemini 3.x (IZZ-0075).
+                "generationConfig": {"temperature": 0, "responseMimeType": "application/json"},
+            }).encode("utf-8")
+            req = urllib.request.Request(ENDPOINT.format(model=model, key=key), data=body,
+                                         headers={"Content-Type": "application/json"})
+            try:
+                with urllib.request.urlopen(req, timeout=180) as r:
+                    data = json.load(r)
+                print(f">> model folosit: {model}")
+                return data["candidates"][0]["content"]["parts"][0]["text"]
+            except urllib.error.HTTPError as e:
+                detail = e.read().decode("utf-8", "replace")[:200].replace("\n", " ")
+                ULTIMA_EROARE = f"{model} -> HTTP {e.code}: {detail}"
+                print(f">> {ULTIMA_EROARE}")
+                if e.code not in TRANZITORII:
+                    break  # 400/403/404 nu se repara asteptand -> modelul urmator
+            except (urllib.error.URLError, TimeoutError, json.JSONDecodeError) as e:
+                ULTIMA_EROARE = f"{model} -> {type(e).__name__}: {e}"
+                print(f">> {ULTIMA_EROARE}")
+    return None
+
+
+ULTIMA_EROARE = "necunoscuta"
 
 
 def main() -> int:
@@ -142,6 +165,19 @@ def main() -> int:
     atinse = {ln[6:] for ln in diff.splitlines() if ln.startswith("+++ b/")}
 
     raw = _ask(key, PROMPT + diff)
+    if raw is None:
+        # Esecul se face VIZIBIL, nu tacut. Pasul e `continue-on-error` in workflow, deci
+        # jobul ramane verde -- iar un check verde care nu inseamna "revizuit" e fix modul
+        # de esec pe care recenzorul asta trebuia sa-l elimine, nu sa-l adauge.
+        subprocess.run(["gh", "pr", "comment", pr, "--body",
+                        "## Recenzie Gemini — **NU a rulat**\n\n"
+                        f"Toate modelele au esuat dupa reincercari. Ultima eroare:\n\n"
+                        f"```\n{ULTIMA_EROARE}\n```\n\n"
+                        "_Check-ul apare verde fiindca pasul e non-blocant; "
+                        "acest comentariu exista ca absenta recenziei sa nu treaca drept recenzie._"],
+                       check=False)
+        print("Recenzia nu a rulat; comentariu de esec publicat.")
+        return 0
     obiect = _obiect(raw)
     if not obiect:
         print("Raspuns non-JSON de la model; nimic de publicat.")
