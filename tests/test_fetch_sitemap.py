@@ -66,3 +66,58 @@ def test_empty_sitemap_reports_error():
 def test_invalid_xml_reports_error():
     items, err = _parse_sitemap_news(b"<nu-e-xml", "piataauto", SRC)
     assert items == [] and "XML invalid" in err
+
+
+# --- octeti de control ilegali in XML 1.0 (garda preventiva, 2026-08-06) ---
+# NU repara un defect observat: o descarcare a fiecareia din cele doua surse `sitemap_news`
+# a dat 0 octeti de control. Un esantion nu poate dovedi absenta, iar consecinta unui singur
+# `\x0c` e ca `ET.fromstring` respinge tot documentul si sursa VIE apare in `dead`.
+
+def test_octet_de_control_nu_mai_omoara_tot_documentul():
+    raw = _doc(_entry("https://piataauto.md/a", "Titlu\x0ccu control")
+               + _entry("https://piataauto.md/b", "Al doilea"))
+    items, err = _parse_sitemap_news(raw, "piataauto", SRC)
+    assert err is None, f"documentul ar fi trebuit sa treaca, dar: {err}"
+    # Octetul dispare; restul textului ramane lipit, nu se pierde niciun cuvant.
+    assert [i["title"] for i in items] == ["Titlucu control", "Al doilea"]
+
+
+def test_control_in_afara_textului_nu_pierde_intrari():
+    """Un `\x1f` intre taguri (unde nu e nici macar text) rupea la fel intregul sitemap."""
+    raw = _doc(_entry("https://piataauto.md/a") + "\x1f" + _entry("https://piataauto.md/b"))
+    items, err = _parse_sitemap_news(raw, "piataauto", SRC)
+    assert err is None and len(items) == 2
+
+
+def test_tab_newline_cr_raman_neatinse():
+    """#x9/#xA/#xD sunt LEGALE in XML 1.0 — filtrarea nu are voie sa le scoata.
+
+    Se verifica pe `_curata_control` direct, nu pe titlul parsat: `clean_html` normalizeaza
+    oricum spatiile, deci un test pe iesirea finala ar trece si daca filtrarea le-ar manca
+    pe toate trei — adica exact un test care nu poate distinge.
+    """
+    from generator.fetch import _curata_control
+    assert _curata_control(b"a\tb\nc\rd") == b"a\tb\nc\rd"
+    assert _curata_control(b"a\x0bb\x0cc") == b"abc"
+
+
+def test_diacriticele_utf8_supravietuiesc_filtrarii():
+    """Filtrarea lucreaza pe octeti: continuarile UTF-8 (>= #x80) nu au voie sa fie atinse."""
+    from generator.fetch import _curata_control
+    text = "Timișoara — știri".encode("utf-8")
+    assert _curata_control(text).decode("utf-8") == "Timișoara — știri"
+
+
+def test_documentul_utf16_ramane_neatins():
+    """In UTF-16 octetul #x00 face parte din fiecare caracter ASCII: a-l filtra ar distruge
+    un document VALID. Se recunoaste dupa BOM si se lasa in pace."""
+    from generator.fetch import _curata_control
+    doc = ('<?xml version="1.0" encoding="UTF-16"?><urlset/>').encode("utf-16")
+    assert doc[:2] in (b"\xff\xfe", b"\xfe\xff")
+    assert _curata_control(doc) == doc
+
+
+def test_xml_chiar_stricat_ramane_eroare():
+    """Filtrarea nu are voie sa mascheze un document genuin invalid."""
+    items, err = _parse_sitemap_news(b"<urlset><url>", "piataauto", SRC)
+    assert items == [] and err and "XML invalid" in err
