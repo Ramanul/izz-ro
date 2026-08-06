@@ -25,7 +25,17 @@ jobs:
         with:
           python-version: "3.11"
           cache: "pip"
-      - run: pip install -r requirements.txt pytest ruff
+      # `pytest-randomly` amesteca ordinea testelor la fiecare rulare (seed nou per rulare,
+      # tiparit in antetul pytest). Motivul e concret: pe 2026-08-05 suita a dat `0 failed`
+      # si `5 failed` pe acelasi cod, iar criteriul folosit atunci ca dovada de determinism —
+      # „doua rulari identice" — era satisfacut SI INAINTE de fix, deci nu putea distinge nimic.
+      # Ordinea aleatoare chiar poate: expune dependentele ascunse intre teste, care sunt cauza
+      # obisnuita a unui astfel de rezultat bimodal.
+      # Un esec se reproduce cu: python -m pytest tests/ -p randomly --randomly-seed=<seed>
+      # NU intra in requirements.txt — acolo stau dependentele pipeline-ului de productie.
+      # Verificat local pe seed-urile 1/2/3 inainte de a-l cabla: 570 passed de fiecare data,
+      # deci NU repara nimic azi, previne maine.
+      - run: pip install -r requirements.txt pytest ruff pytest-randomly
       - name: Lint (ruff — F + DTZ, configurat in ruff.toml)
         # Inaintea suitei intentionat: un import mort sau un datetime naiv se vede in 2
         # secunde, iar pytest dureaza ~90. `ruff` NU e in requirements.txt — alea sunt

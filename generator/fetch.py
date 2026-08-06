@@ -123,6 +123,9 @@ _SITEMAP_NS = {
     "news": "http://www.google.com/schemas/sitemap-news/0.9",
 }
 
+# Octetii pe care XML 1.0 ii interzice in continut (vezi `_curata_control`).
+_CONTROL_RE = re.compile(rb"[\x00-\x08\x0b\x0c\x0e-\x1f]")
+
 
 def _parse_w3c_date(raw: str) -> str:
     """news:publication_date (W3C: 'YYYY-MM-DD' sau ISO 8601 datetime) -> ISO 8601 UTC."""
@@ -145,11 +148,47 @@ def _parse_w3c_date(raw: str) -> str:
         return datetime.now(timezone.utc).isoformat()
 
 
+def _curata_control(raw: bytes) -> bytes:
+    """Scoate octetii de control pe care XML 1.0 ii interzice, ca un singur caracter stricat
+    sa nu transforme o sursa vie in „sursa moarta".
+
+    PREVENTIV, nu reparativ — spus explicit ca sa nu para masurat. Ce s-a masurat: la
+    2026-08-06, o descarcare a fiecareia din cele doua surse `sitemap_news` (`monitorulsv`,
+    `piataauto`) a dat 0 octeti de control si a parsat curat. Atat. UN esantion, la UN moment,
+    nu poate distinge „nu se intampla" de „se intampla rar" — un document stricat aparut o
+    data pe luna ar arata identic in verificarea aia. Deci nu se poate scrie ca sursele sunt
+    curate, doar ca nu am prins nimic.
+
+    Ce justifica cele cinci linii nu e frecventa, ci consecinta: `ET.fromstring` respinge TOT
+    documentul la primul `\\x0c` (verificat: `not well-formed (invalid token)`), iar sursa ar
+    aparea in `dead` — adica exact clasa de verdict fals care a tinut `ziaruldeiasi` marcat
+    DEAD de 15 ori si era cat pe ce sa-l scoata din config.
+
+    Calea RSS nu are problema asta: feedparser recupereaza si din XML bozo (vezi comentariul
+    `gazetadecluj` din config). Calea `sitemap_news` merge direct la stdlib, deci era singura
+    descoperita.
+
+    Valide in XML 1.0: #x9, #xA, #xD si tot ce e >= #x20. Se filtreaza deci exact
+    #x00-#x08, #x0B, #x0C, #x0E-#x1F.
+
+    Se lucreaza pe OCTETI, nu pe text decodat, ca sa nu pierdem declaratia de encoding pe care
+    `ET.fromstring` o citeste singur din prolog. E corect pentru orice encoding
+    ASCII-compatibil (UTF-8, ISO-8859-*, windows-1252): acolo octetii de continuare sunt
+    >= #x80, deci nu pot fi confundati cu un control. UTF-16 e exceptia — acolo #x00 e un
+    octet legitim din fiecare caracter ASCII — si de aceea documentele cu BOM UTF-16 se lasa
+    NEATINSE; sitemaps.org cere oricum UTF-8, dar a strica un document valid ar fi mai rau
+    decat a nu repara unul stricat.
+    """
+    if raw[:2] in (b"\xff\xfe", b"\xfe\xff"):
+        return raw
+    return _CONTROL_RE.sub(b"", raw)
+
+
 def _parse_sitemap_news(raw: bytes, key: str, source: dict) -> tuple[list, str | None]:
     """XML sitemap -> (articole, eroare). Pur (fara retea), ca sa fie testabil pe fixture."""
     items: list = []
     try:
-        root = ET.fromstring(raw)
+        root = ET.fromstring(_curata_control(raw))
     except ET.ParseError as exc:
         return items, f"{key}: XML invalid ({exc})"
 
