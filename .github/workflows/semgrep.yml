@@ -69,20 +69,36 @@ jobs:
       # ar fi blocat tot repo-ul pana la reparatii nelegate de felia curenta -- exact tiparul
       # "check rosu care inceteaza sa mai fie citit" documentat in claude-code-review.yml.
       #
-      # Deci: cele 4 ERROR existente sunt tolerate si VIZIBILE in tab-ul Security; a cincea
-      # face jobul rosu. Datoria nu creste, iar cand cele 4 sunt reparate se coboara pragul.
+      # Deci: ERROR-urile deja existente sunt tolerate si raportate in SARIF; unul in plus
+      # face jobul rosu. Datoria nu creste, iar cand se repara se coboara pragul — exact ce
+      # s-a intamplat aici, 4 -> 2. Clichetul se strange in ACEEASI felie care castiga
+      # reducerea; altfel ramane slabit tacut, si atunci nu mai e clichet.
       #
-      # Baseline-ul, ca sa se stie ce se tolereaza (masurat cu semgrep 1.x, aceleasi 3 seturi):
-      #   generator/fetch.py:10          use-defused-xml
-      #   generator/render.py:10         use-defused-xml
-      #   tools/fetch_localities.py:25   use-defused-xml
+      # Nota de asteptare: `semgrep` ruleaza pe PR si lunea, deci analizele stau pe
+      # `refs/pull/N/merge`. Pana la prima rulare programata pe `main` nu exista alerte
+      # pe ramura implicita — masurat 2026-08-07: `code-scanning/alerts` intoarce `[]`,
+      # desi `code-scanning/analyses` are 60 de rezultate pe PR-ul asta. Nu e defect.
+      #
+      # Baseline-ul, ca sa se stie ce se tolereaza. Coborat 4 -> 2 in aceeasi felie care a
+      # castigat reducerea (defusedxml pe calea de sitemap): `generator/fetch.py:10` si
+      # `tools/fetch_localities.py:25` au disparut din raport. Cifra NU e dedusa — vine din
+      # rularea de CI 31142963934 pe ramura asta, care a tiparit textual
+      # "Constatari totale: 60 | ERROR: 2" si a cerut ea insasi coborarea pragului.
+      #
+      # Ce ramane tolerat:
+      #   generator/render.py:16         use-defused-xml
       #   tools/devin_headless.py:74     dangerous-subprocess-use-tainted-env-args
-      # Primele trei sunt LEGITIME, nu false pozitive: parsam XML din stdlib pe feed-uri RSS
-      # externe, adica exact pe input netrusted. De reparat intr-o felie separata (defusedxml
-      # in requirements.txt), nu aici.
+      #
+      # ATENTIE la primul: `render.py:15` are un `# nosemgrep` cu ID-ul complet, iar
+      # comentariul de acolo sustine ca suprimarea a fost "verificata prin rulare". Rularea
+      # de mai sus o contrazice — constatarea e in continuare NUMARATA de poarta. Nu stim
+      # inca daca SARIF-ul include constatarile suprimate (poarta n-ar citi `suppressions`)
+      # sau daca suprimarea nu se potriveste deloc; nedistins prin masurare, fiindca repo-ul
+      # n-are alerte code-scanning de interogat si semgrep local e rupt. Pana se lamureste,
+      # `render.py` sta in baseline ca oricare alta constatare, nu ca exceptie suprimata.
       - name: Poarta (clichet pe ERROR)
         env:
-          BASELINE_ERROR: "4"
+          BASELINE_ERROR: "2"
         run: |
           python3 - <<'PY'
           import json, os, sys
