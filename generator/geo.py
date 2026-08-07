@@ -205,6 +205,37 @@ _MARCA_GEO = re.compile(
     r"ORASUL|COMUNEI|COMUNA|SATULUI|SATUL|LOCALITATEA|LOCALITATII|"
     r"\bLA|\bDIN|\bIN|\bSPRE|\bCATRE|\bLANGA)\s+$")
 
+# Nume proprii compuse care CONTIN un nume de UAT fara sa fie despre locul ala. Alta clasa
+# decat `_AMBIGUE`, si de-asta alt mecanism: acolo numele e ambiguu prin el insusi (Roman,
+# Banca, Luna) si i se cere o marca geografica; aici numele e cat se poate de neambiguu —
+# Alba e judet, Bucuresti e capitala — si doar UN prefix anume il deturneaza.
+#
+# De ce NU se refoloseste discriminatorul de la regiuni („cuvant cu majuscula lipit inainte"):
+# masurat pe corpus (2674 de articole, 2026-08-07), tiparul ala e DOMINANT LEGITIM la UAT-uri.
+# Perechile frecvente sunt „Primaria Brasov" (8), „Consiliul Judetean Cluj" (11), „Aeroportul
+# International Brasov" (4), „Politia Brasov" (4) — institutie plus locul ei, exact cazul in
+# care rubrica geografica e corecta. Transplantat aici, mecanismul de la regiuni ar fi taiat
+# fix stirile locale. La regiuni merge fiindca acolo institutia care poarta numele („Banca
+# Transilvania") NU e din regiunea aia in sensul relevant; la UAT-uri e.
+#
+# Deci lista e enumerativa deliberat, si asta e limitarea ei: nu e o plasa, e un filtru cu
+# trei gauri astupate. Fiecare membru e masurat prin ablatie pe corpus (mascare + reclasificare
+# cu functia reala), cu `kills_right = 0` cerut, nu presupus:
+#   „Casa Alba"              13 articole `zonal` -> None, toate Trump / Iran / FIFA / UFC
+#   „Curtea de Apel Bucuresti" 8 articole `local` -> None, toate decizii cu miza nationala
+#   „Bursa de Valori Bucuresti" 3 articole `local` -> None, toate despre piata de capital
+# Genitivul intra in tipar („raspunsul Curtii DE APEL Bucuresti", „evolutia Bursei DE VALORI
+# Bucuresti"), de-asta prefixele se opresc la bucata invariabila.
+#
+# RESPINS la aceeasi masuratoare, ca sa nu se reincerce: „Terapia Cluj" — doar 2 articole, iar
+# unul e discutabil („apelul directorului Terapia Cluj"), si mai ales deschide o clasa intreaga
+# (companii care poarta numele orasului: Goldterm Mangalia, Electrocentrale Bucuresti) unde
+# ablatia ar trebui facuta pe fiecare, nu pe un exemplu.
+_COMPUSE_NEGEO = {
+    "ALBA": re.compile(r"\bCASA $"),
+    "BUCURESTI": re.compile(r"\bDE (?:APEL|VALORI) $"),
+}
+
 # Numele regiunilor istorice sunt SI nume comerciale sau de institutii („Banca Transilvania",
 # „Universitatea Transilvania", „Autostrada A3 Transilvania"), SI numele unui stat vecin
 # („Republica Moldova"). Masurat pe corpus (1714 articole): din 31 de potriviri de nume de
@@ -337,6 +368,17 @@ def _ambiguu_fara_marca(m, plat: str) -> bool:
             and not _MARCA_GEO.search(plat[max(0, m.start() - 16):m.start()]))
 
 
+def _compus_negeo(m, plat: str) -> bool:
+    """Potrivirea e a doua bucata dintr-un nume propriu compus cunoscut -> nu e geografie.
+
+    Fereastra de 24 de caractere acopera cel mai lung prefix („DE VALORI " are 10). Numele
+    care nu sunt in `_COMPUSE_NEGEO` ies la prima cautare de dictionar, deci restul indexului
+    nu plateste regexul — aceeasi structura ca la `_tara_omonima`.
+    """
+    rx = _COMPUSE_NEGEO.get(m.group(1))
+    return bool(rx and rx.search(plat[max(0, m.start() - 24):m.start()]))
+
+
 def _regiune_ca_nume_propriu(m, original: str, plat: str) -> bool:
     """Numele de regiune e a doua bucata dintr-un nume propriu compus -> nu e geografie.
 
@@ -426,7 +468,7 @@ def _potriviri(original: str, plat: str):
     for m in rx.finditer(plat):
         if not original[m.start():m.start() + 1].isupper():
             continue
-        if _ambiguu_fara_marca(m, plat):
+        if _ambiguu_fara_marca(m, plat) or _compus_negeo(m, plat):
             continue
         nivel = index[m.group(1)]
         if nivel == "regional" and (_regiune_ca_nume_propriu(m, original, plat)
