@@ -4,7 +4,49 @@
 > Executors get it read-only. Keep it tight — when it outgrows ~40 lines of content, cut the
 > settled history, not the open work. `git fetch` immediately before rewriting it.
 
-**Updated:** 2026-08-07 (account A — five PRs landed: #151, #152, #153, #154, #155)
+**Updated:** 2026-08-07 (account A — seven PRs landed: #151–#157)
+
+## Merged 2026-08-07, second batch (account A — announce, per §14)
+
+- **#156 — a place named in the text only claims the geographic axis if the story is ABOUT it.**
+  "Fitch keeps Romania's rating", published by a Brașov paper, was landing on `zonal`. The
+  gazetteer sees that the text *contains* a place; it cannot see whether the story is *about* it.
+  Signal costs **no extra AI call and no prompt change**: the model already emits `entities`
+  ("1-4 KEY proper nouns"), and unlike its category choice, **entities ARE stored** — so the rule
+  was measurable retroactively.
+
+  Two tiers, and the second exists because the first measurement killed the simple version:
+  1. title names the place → keep, no further check (that compartment measures **10%** wrong);
+  2. otherwise the matched place must be among the story's entities (**53%** wrong otherwise).
+
+  Applying tier 2 over titles too was measured and rejected: it would cut **152** articles from
+  tier 1, nearly all **correct**, because the place is swallowed by an institution name
+  ("Muzeul de Artă Populară Constanța", "Salvamont Suceava"). `kills_wrong=13/18`,
+  `kills_right=2/12`; on corpus **188 of 1075 leave the axis (17.5%)**, removal precision 87%.
+  **Known miss, stated up front:** 5 of 18 survive — the model sometimes lists a place among key
+  entities on a national story ("Sameday…Cargus" → `['Sameday','Cargus','Muller','Bucuresti']`).
+
+  Required a contained refactor: `clasifica` and the new `locuri_numite` would otherwise have had
+  two loops over the same index, the second an **untested** reimplementation of the same guards.
+  Extracted `_potriviri()`, one scanner. Equivalence checked in a separate worktree on HEAD:
+  **2766 articles classified before and after, ZERO differences.**
+
+- **#157 — the 404 page stops lying.** It rendered from the category template with `articles=[]`,
+  so it said *"Nicio știre în această categorie deocamdată"* — the wrong answer for someone who
+  arrived from a dead article link. Now: an explanation plus the 12 most recent stories.
+
+### `WS-0028` — the expiry constraints, measured. Read before proposing "keep articles longer".
+| constraint | value | source |
+|---|---|---|
+| files per site, Cloudflare Pages Free | **20,000** | Cloudflare docs, read 2026-08-07 |
+| `output/` today | **10,997** (3,092 HTML, 7,557 images) | measured |
+| cost per article | **~3.5 files** | derived |
+| `_redirects` | 2,000 static + 100 dynamic | Cloudflare docs |
+
+So `ARTICLE_TTL_DAYS` **cannot realistically exceed ~14 days**. And the elegant idea — one splat
+rule redirecting expired articles to their category — is **dead, with a quote**: "Redirects are
+always followed, regardless of whether or not an asset matches the incoming request", so it would
+redirect **live** articles too. Only per-article redirects remain, capped at 2,000 (~6 days).
 
 ## Merged 2026-08-07 (account A — announce, per §14)
 
