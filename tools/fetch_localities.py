@@ -22,7 +22,7 @@ import sys
 import time
 import urllib.parse
 import urllib.request
-import xml.etree.ElementTree as ET
+import defusedxml.ElementTree as ET
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, ROOT)

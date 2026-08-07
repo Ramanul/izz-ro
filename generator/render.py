@@ -7,6 +7,12 @@ import shutil
 import sys
 from datetime import datetime, timedelta, timezone
 from email.utils import format_datetime
+# `saxutils.escape` NU parseaza nimic: primeste un str si intoarce un str cu &<> inlocuite.
+# Regula semgrep marcheaza modulul `xml.sax`, nu apelul, iar `defusedxml` nici macar nu ofera
+# un inlocuitor pentru functia asta. ID-ul e scris COMPLET intentionat: forma scurta
+# (`use-defused-xml`) nu se potriveste si suprimarea trece tacut pe langa constatare —
+# verificat prin rulare, dupa ce prima incercare a lasat-o in continuare rosie.
+# nosemgrep: python.lang.security.use-defused-xml.use-defused-xml
 from xml.sax.saxutils import escape as xml_escape
 
 from jinja2 import Environment, FileSystemLoader, select_autoescape
