@@ -300,7 +300,16 @@ def process_batch(items: list, provider) -> list:
             # daca locul numit in text e chiar subiectul stirii. Ordinea inversa le-ar fi dat
             # `None` si coroborarea ar fi cazut tacut pe fail-open.
             it["entities"] = _clean_entities(obj.get("entities"))
-            it["category"] = _resolve_category(it, obj.get("category", ""), it["entities"])
+            # `ai_cat` = tema BRUTA aleasa de model, pastrata langa categoria rezolvata.
+            # Fara ea, `_resolve_category` isi consuma intrarea si o arunca, deci nicio
+            # schimbare de clasificare nu se poate rejuca pe corpus fara apeluri AI noi —
+            # exact limitarea consemnata in registru la WS-0026 („nemasurabil retroactiv").
+            # `entities` se salva deja, si fix de-aia #156 a putut fi masurat pe 1075 de
+            # articole; asta e cealalta jumatate a intrarii lui `_resolve_category`.
+            # Se scrie NEATINSA (fara strip/normalizare): valoarea care ajunge in fisier
+            # trebuie sa fie identica cu cea primita de functie, altfel rejucarea minte.
+            it["ai_cat"] = obj.get("category", "")
+            it["category"] = _resolve_category(it, it["ai_cat"], it["entities"])
             it["icon"] = _clean_icon(obj.get("icon"))
             it["processed_by"] = provider.name
             it["prompt_version"] = config.PROMPT_VERSION
@@ -337,7 +346,8 @@ def process_single(item: dict, provider) -> dict | None:
     item["teaser"] = truncate_words(data.get("teaser", "") or "Detalii pe sursa.",
                                     config.TEASER_MAX_WORDS)
     item["entities"] = _clean_entities(data.get("entities"))   # inaintea categoriei, vezi mai sus
-    item["category"] = _resolve_category(item, data.get("category", ""), item["entities"])
+    item["ai_cat"] = data.get("category", "")                  # tema bruta, vezi process_batch
+    item["category"] = _resolve_category(item, item["ai_cat"], item["entities"])
     item["icon"] = _clean_icon(data.get("icon"))
     item["processed_by"] = provider.name
     item["prompt_version"] = config.PROMPT_VERSION
@@ -409,7 +419,8 @@ def process_cluster(group: list, provider) -> dict | None:
         rep["synthesis"] = truncate_words(data.get("synthesis", "") or "Detalii pe surse.",
                                           config.SYNTHESIS_MAX_WORDS)
         rep["entities"] = _clean_entities(data.get("entities"))   # inaintea categoriei, vezi mai sus
-        rep["category"] = _resolve_category(rep, data.get("category", ""), rep["entities"])
+        rep["ai_cat"] = data.get("category", "")                  # tema bruta, vezi process_batch
+        rep["category"] = _resolve_category(rep, rep["ai_cat"], rep["entities"])
         rep["icon"] = _clean_icon(data.get("icon"))
         rep["processed_by"] = provider.name
         rep["prompt_version"] = config.PROMPT_VERSION
