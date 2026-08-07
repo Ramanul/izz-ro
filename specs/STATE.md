@@ -4,7 +4,70 @@
 > Executors get it read-only. Keep it tight — when it outgrows ~40 lines of content, cut the
 > settled history, not the open work. `git fetch` immediately before rewriting it.
 
-**Updated:** 2026-08-07 (account A — seven PRs landed: #151–#157)
+**Updated:** 2026-08-07 (account A — eight PRs landed: #151–#158)
+
+## Merged 2026-08-07, third batch (account A — announce, per §14)
+
+- **#158 `8c7fcd9e` — the same story from two feeds no longer becomes two pages.**
+  **57 pairs of articles shared a `url`** in `data/articles.json` (2766 articles, 2.06%), all from
+  one combination: `digi24` (general RSS) × `extern` (`digi24.ro/rss/stiri/externe`, a subset of
+  the same site). **56 of 57 had different slugs** — two distinct pages, two AI-written titles for
+  one source article. 21 pairs confirmed with both pages present in `output/`. Per source: 57 of
+  104 `extern` articles (55%) and 57 of 109 `digi24` (52%) were the same story.
+
+  `main.py:212` filtered new items **only against existing state, never against each other**. Two
+  items sharing a url in one fetch both passed, each burned an AI call, and both entered `combined`
+  — a list concatenation, not a dict. **`state.merge()` promises exactly this dedup and is
+  dict-based, hence immune by construction — but is called nowhere in production**: its only caller
+  is `tests/test_state.py`. That is why its test stayed green while the real path did not dedup.
+  Read that as a warning about safety functions with green tests: check who calls them.
+
+  Excluded by measurement: `normalize_url` is not the cause — `normalize_url(original_link) == url`
+  for all 57. First-wins, so `config.SOURCES` order decides which copy survives (`extern` at 180,
+  `digi24` at 188); `fetch_all` preserves that order deliberately. New `exemplare_duplicate` stat
+  makes feed overlap visible in the run report. 4 new tests, all 4 red on the previous code.
+
+  **Not done:** the 57 pairs already in state stay until they expire (7-day TTL). Deleting them
+  would break 57 public permalinks, and **`_redirects` is not generated at all** — verified, the
+  file does not exist.
+
+### Owner raised two `/local/` articles on 2026-08-07. They are DIFFERENT bugs.
+
+- **(a) GSP football story on `local` — nothing to fix in code.** The gazetteer matches the city
+  inside club names ("CFR **Cluj**", "Universitatea **Craiova**"). Today's code stops it twice
+  over (#155 sport, #156 `_locul_e_subiectul=False`). It is live because it was ingested at
+  **10:48** and #155 landed at **11:37**. Categories are computed **once, at ingestion**
+  (`process.py:303/340/412`) and never recomputed → every classification fix has a blind window of
+  up to 7 days. **314 of 1301 geo-axis articles are in this state** (189 sport icon, 179 that #156
+  would remove, 54 both). They heal by expiry. Retroactive migration rejected: category is part of
+  the permalink, so moving 314 articles breaks 314 public links for a one-week benefit.
+
+- **(b) Cernavodă barge story on `local` — NOT fixed by anything, and it is the real gap.**
+  39 geo-axis articles name Cernavodă, 30 from national sources, 28 are `local`, and **all 39 pass
+  `_locul_e_subiectul`** — #156 removes zero. The rule works as written: the barges really are at
+  Cernavodă. But six national outlets cover the Danube's record-low flow and the nuclear plant at
+  once. The owner's 2026-08-02 rule ("LOCAL means WHERE it happens, not WHO publishes") has **no
+  notion of a local event with national stakes**. Owner authorised the AI route explicitly.
+  Design + dry test + acceptance criteria are written and ready to run, handed to account B:
+  `handoff/to-B/2026-08-07-raza-nationala-si-ce-a-ramas.md`. Cheap alternatives already killed by
+  measurement — see `WS-0029` (multi-source coverage: 453/1301 = 35% false positives) and the
+  entities route (national-institution list rots; `Administrația Națională de Meteorologie` appears
+  14× on the geo axis, almost all correct local weather warnings).
+
+  **A `PROMPT_VERSION` bump costs ZERO extra AI calls today** — verified, not assumed: `upgradable()`
+  requires `original_title`, `_scrub_processed` strips it from every AI-processed article, and the
+  field is absent from all 2766 stored articles. The comment in `ai_reserve` claiming "a bump makes
+  ~1100 articles" is stale.
+
+- **`ai_cat` is still not saved**, and that is what makes both of the above unmeasurable backwards.
+  Few-line diff at the three ingestion points; `_scrub_processed` does not strip it.
+
+- **`WS-0030` corrects `WS-0027`:** "no lexical collision to fix" was measured only on the frequent
+  names. **"Casa Albă" matches the county ALBA** — 11 articles about Trump/Iran/FIFA sit on `zonal`
+  right now. Ablation with `ALBA` in `_AMBIGUE`: `kills_wrong=14, kills_right=0`. **Do not ship it
+  in that form:** synthetic probes show it loses "Consiliul **Județean** Alba", "Prefectura Alba",
+  "Alba a fost lovită de furtună", because `_MARCA_GEO` lacks `JUDETEAN`. The 7-day corpus simply
+  had no Alba-county news, so `kills_right=0` is a sampling accident. Widen `_MARCA_GEO` first.
 
 ## Merged 2026-08-07, second batch (account A — announce, per §14)
 
