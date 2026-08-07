@@ -68,7 +68,7 @@ SOURCES = {
     # niciunul nu e ghicit dupa tiparul `<domeniu>/feed/`, care e exact felul in care valul
     # anterior de 79 de candidati a produs ~30% caderi. NU verifica astea cu `feedcheck.yml`:
     # ruleaza pe runnere GitHub, unde furnizorul serveste pagina de challenge (vezi READ FIRST
-    # din specs/STATE.md), deci un verdict „mort" de acolo nu inseamna nimic.
+    # din specs/istoric-executie.md), deci un verdict „mort" de acolo nu inseamna nimic.
     # Se intra in VALURI de ~15, nu toate odata: bugetul AI e ~10 apeluri de iteme noi pe rulare.
     # Forma `www` unde apare mai jos NU e cosmetica — fara ea raspunsul e un 30x in plus.
             "cvlpress":     {"name": "Cuvântul Libertății",  "url": "https://cvlpress.ro/feed/",              "category": "zonal", "judet": "DOLJ"},

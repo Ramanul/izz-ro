@@ -11,7 +11,7 @@ comune. UAT-urile (NIV=2: municipii/orase/comune) si judetele (NIV=1) intra toat
 granularitatea pe care poarta o foloseste deja, si sunt putine si distincte.
 
 Satele ambigue raman pentru un slice viitor: dezambiguizare pe judetul SURSEI (un ziar de
-Vrancea care scrie "Poiana" = Poiana din Vrancea). Vezi specs/STATE.md.
+Vrancea care scrie "Poiana" = Poiana din Vrancea). Vezi specs/istoric-executie.md.
 """
 import csv
 import os

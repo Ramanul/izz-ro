@@ -264,7 +264,7 @@ _GEO_RELATIONAL = {
 # forma compusa („Republica Moldova"), fiindca lucreaza pe cuvantul lipit inainte. Nu prinde
 # „Moldova" singur — nici la inceput de fraza („Moldova si Ucraina iau masuri..."), nici dupa
 # o prepozitie cu litera mica („delegatia talibana in Moldova"), amandoua consemnate ca ratari
-# cunoscute in specs/STATE.md inca de la #127.
+# cunoscute in specs/istoric-executie.md inca de la #127.
 #
 # Discriminatorul e ALT tip decat la celelalte doua garzi, si deliberat: nu contextul imediat
 # al potrivirii, ci o marca de tara ORIUNDE in text. Motivul e ca titlul si corpul se citesc
@@ -284,7 +284,7 @@ _GEO_RELATIONAL = {
 #
 # Ce NU face asta: nu muta articolele pe rubrica `extern`. Aia e inchisa de proprietar
 # (IZZ-0137, 2026-08-03). Ele cad pe `None` si de acolo pe rubrica lor tematica — exact
-# rezultatul numit „better than regional" in specs/STATE.md.
+# rezultatul numit „better than regional" in specs/istoric-executie.md.
 _TARA_OMONIMA = {
     "MOLDOVA": re.compile(r"CHISINAU|REPUBLIC(?:A|II) MOLDOVA|TRANSNISTRIA|TIRASPOL|GAGAUZIA"),
 }

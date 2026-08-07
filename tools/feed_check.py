@@ -34,7 +34,7 @@ from generator.fetch import _fetch_one_guarded  # noqa: E402
 # Eroarea finala a unui 429/503 (dupa epuizarea retry-ului din fetch.py) ramane formatata
 # de urllib ca "HTTP Error 429: Too Many Requests" -- acelasi text pe care _fetch_one l-ar
 # fi produs si pentru fetch.py in productie. Nu inseamna "sursa moarta", inseamna "gazda
-# limiteaza dupa frecventa, per IP" (masurat 2026-07-24, vezi specs/STATE.md).
+# limiteaza dupa frecventa, per IP" (masurat 2026-07-24, vezi specs/istoric-executie.md).
 _RATE_LIMIT_RE = re.compile(r"HTTP Error (429|503):")
 
 # 403 NU inseamna sursa moarta: gazdele care ruleaza Cloudflare (sau orice bot-fight) resping
