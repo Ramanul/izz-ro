@@ -4,7 +4,57 @@
 > Executors get it read-only. Keep it tight — when it outgrows ~40 lines of content, cut the
 > settled history, not the open work. `git fetch` immediately before rewriting it.
 
-**Updated:** 2026-08-06 (account A — two free, previously-unrouted verifiers wired: semgrep + a Gemini PR reviewer on the free tier)
+**Updated:** 2026-08-07 (account A — five PRs landed: #151, #152, #153, #154, #155)
+
+## Merged 2026-08-07 (account A — announce, per §14)
+
+Five PRs. The first three were written before the GitHub Actions outage of 2026-08-06 15:22 UTC
+and had **no CI at all**; the outage is over and they ran green before merging.
+
+- **#152 `4ebb03a8`** — JSON-LD consolidated into one `@graph` with stable `@id`s + `WebPage` node.
+- **#153 `842d2c49`** — town-hall names with diacritics, from `localities.json`. 2025 names change.
+- **#151 `00709ea5`** — `defusedxml` on the sitemap path. Carried a second change: **the semgrep
+  ratchet was tightened 4 → 2**, in the same slice that earned the reduction. The number came from
+  CI itself, which asked for it verbatim ("coboara BASELINE_ERROR la 2, altfel clichetul se
+  slabeste tacit"). A baseline left above reality silently absorbs the next regression.
+- **#154 `f58d9c26`** — **Moldova the country no longer lands on the Romanian `regional` rubric.**
+  Closes the known miss left by #127 and recorded in this file: the `_regiune_ca_nume_propriu`
+  guard reads the capitalised word glued before the name, so it catches "Republica Moldova" but
+  not bare "Moldova" (sentence start, or after a lowercase preposition). New guard is a *different
+  kind* of discriminator on purpose: a country marker **anywhere in the text**, because title and
+  teaser are classified together and "...în Moldova" in the title is disambiguated by "guvernul de
+  la Chișinău" in the teaser, ~80 chars away. `kills_wrong=3, kills_right=0` on 2704 articles,
+  verified by three independent mechanisms (text ablation, code mutation, corpus diff).
+  **Does NOT touch the `extern` route — that is owner-closed (IZZ-0137) and this does not reopen it.**
+- **#155 `ffae7a31`** — **sport no longer lands on the geographic axis, even when the text names the
+  city.** Owner instruction was literally "look at similar sites and do the same". Convention found
+  (2026-08-07), and it is **finer** than "sport isn't local": the match is Sport; it becomes local
+  when the SUBJECT is the local impact.
+
+  | site | local section | sports stories |
+  |---|---|---|
+  | `adevarul.ro/stiri-locale/constanta` | **0 of 33** | Farul entirely absent |
+  | `adevarul.ro/stiri-locale/cluj-napoca` | **1 of 33** | and that one is "the match reroutes the buses" |
+  | `digi24.ro/regional` | 0 in snapshot | — |
+  | `monitorulcj.ro` — a **local** Cluj paper | separate `Sport` section | "CFR pierde cu 0-5" is filed there |
+
+  Signal is the STORY's theme (`ai_cat`), **not the source's category** — the owner rejected the
+  source on 2026-08-02, and measured it would also be wrong: of 159 articles carrying a sport icon
+  on the geographic axis, **63 (40%) come from LOCAL papers**, so a source rule would miss them all.
+
+  **Not retro-measurable, stated up front:** `ai_cat` is not stored in `articles.json`, so no
+  migration is possible and the 159 figure is a **proxy on the model-chosen icon** (`medal`/`trophy`
+  excluded — they also catch music galas). No migration is needed either: the window is 8 days
+  (31 Jul – 7 Aug, TTL 7 days), so the stale ones roll out on their own.
+
+### Open debt from this batch
+- **`WS-0025`, blocked.** The `# nosemgrep` on `generator/render.py:15` **does not suppress** — the
+  finding is still counted by the gate, although the comment there claims it was verified by running.
+  Two hypotheses, undistinguished and undistinguishable today: SARIF includes suppressed results and
+  the gate ignores `suppressions`, or the suppression does not match at all. The repo has no
+  code-scanning alerts to query (measured: `[]`) and local semgrep is broken.
+- **Re-measure the geographic leak now that sport is gone.** The "23% of set B is wrong" figure
+  measured on 2026-08-07 **includes sport**, so it is stale as of #155.
 
 ## CI verifiers — landed 2026-08-06, `0315f745` (#150)
 
