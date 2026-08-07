@@ -4,7 +4,34 @@
 > Executors get it read-only. Keep it tight — when it outgrows ~40 lines of content, cut the
 > settled history, not the open work. `git fetch` immediately before rewriting it.
 
-**Updated:** 2026-08-07 (account A — eight PRs landed: #151–#158)
+**Updated:** 2026-08-07 (account A — nine PRs landed: #151–#159)
+
+## Merged 2026-08-07, fourth batch (account A — announce, per §14)
+
+- **#159 `3282a7a9` — the model's raw topic is now saved as `ai_cat`.**
+  `_resolve_category` took the AI category, used it, and threw it away: only the **result**
+  reached `data/articles.json`. Measured on the real corpus: **`ai_cat` in 0 of 2766**, while
+  `entities` was present in 2550 (the other 216 are `official` and never see the model).
+  Consequence: **no classification change could be replayed on the corpus** without paying for
+  the AI calls again — the limitation already recorded at **WS-0026**, where the sport figure
+  (159) had to be taken by proxy from the icon because the real topic was not in the data.
+
+  The contrast that justifies the diff: **`entities` IS saved, and that is exactly why #156
+  could be measured retroactively over 1075 articles** with no budget and no new prompt.
+  `ai_cat` is the other half of the same function's input. Before asking the model for a new
+  signal, inventory what is already persisted — that is the reusable lesson here.
+
+  Three lines, at the three AI paths (`process_batch`, `process_single`, `process_cluster`).
+  Written **untouched** (no strip/normalisation) and then **read back from the new field**
+  instead of being pulled a second time out of the response, so the two cannot drift: what
+  lands in the file is identical to what `_resolve_category` received. **No behaviour change**
+  (`_valid_category` is a plain membership test), **no extra AI calls**.
+
+  **Fixes nothing retroactively:** the 2766 articles in state stay without the field —
+  categories are computed once, at ingestion, and never recomputed. The corpus becomes
+  measurable as it rolls over (7-day TTL). 10 new tests, 7 red on the previous code; the 3
+  green-either-way are deliberate guards (the legal scrub still drops `original_title`/
+  `description`; old articles without the field stay valid). Suite: 669 passed, 2 xfailed.
 
 ## Merged 2026-08-07, third batch (account A — announce, per §14)
 
