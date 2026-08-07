@@ -347,6 +347,51 @@ def test_substantivele_geo_relationale_nu_declanseaza_garda(text):
     assert geo.clasifica(text) == "regional"
 
 
+# ------------------------------------------------------- „Moldova" statul vs „Moldova" regiunea
+# Ratarea pe care garda de mai sus o lasa in urma prin constructie: ea se uita la cuvantul lipit
+# inainte, deci prinde „Republica Moldova" dar nu „Moldova" singur. Cele trei texte de mai jos
+# sunt VERBATIM din corpus (2026-08-07) — erau singurele trei articole din 2704 a caror rubrica
+# depindea de potrivirea pe nume, si toate trei erau gresite.
+
+@pytest.mark.parametrize("text", [
+    # marca in TITLU
+    "Moldova și Ucraina iau măsuri pentru nivelul scăzut al Nistrului. "
+    "Guvernele de la Chișinău și Kiev colaborează pentru strategii de urgență.",
+    # marca abia in TEASER, la distanta — de-asta garda cauta in tot textul, nu intr-o fereastra
+    "Premierul Vasile Tofan explică venirea delegației talibane în Moldova. "
+    "Șeful guvernului de la Chișinău a declarat că instituțiile statului au tratat eronat cererile.",
+    # marca doar la GENITIV: forma nearticulata „Republica Moldova" nu apare deloc in text
+    "Maia Sandu avertizează asupra riscului unei crize de apă și energie în Moldova. "
+    "Președinta Republicii Moldova a solicitat cetățenilor un consum responsabil.",
+    "Alegerile parlamentare din Moldova au fost câștigate de partidul pro-european, "
+    "potrivit rezultatelor anunțate la Chișinău.",
+])
+def test_statul_moldova_nu_primeste_rubrica_geografica_romaneasca(text):
+    """Cad pe `None` si de acolo pe rubrica tematica. NU pe `extern` — ruta aia e inchisa de
+    proprietar (IZZ-0137), iar testul asta nu o redeschide."""
+    assert geo.clasifica(text) is None
+
+
+@pytest.mark.parametrize("text", [
+    "Cod galben de caniculă și disconfort termic în județele din Moldova",
+    "Moldova a fost lovită de o furtună puternică în cursul nopții",
+    "Prognoza meteo pentru Moldova și zonele montane din estul țării",
+])
+def test_regiunea_romaneasca_moldova_ramane_regional(text):
+    """Fara marca de tara, garda nu are voie sa se declanseze — altfel ar taia exact rubrica
+    pe care exista sa o apere. Astea sunt formele reale din corpus, nu sonde inventate."""
+    assert geo.clasifica(text) == "regional"
+
+
+def test_marca_de_tara_nu_fura_un_nivel_mai_specific_din_romania():
+    """Cazul care ar fi trecut neobservat: textul are marca de tara, dar stirea se intampla
+    intr-un loc din Romania. Garda respinge doar potrivirea pe „Moldova", nu clasificarea —
+    `CEAHLAU` castiga si articolul ramane `local`. Verbatim din corpus."""
+    text = ("Turist din Republica Moldova salvat de pe Ceahlău de către salvamontiști. "
+            "Bărbatul de 41 de ani a fost preluat de echipajul din Neamț.")
+    assert geo.clasifica(text) == "local"
+
+
 @pytest.mark.parametrize("text", [
     "În Ardeal s-au înregistrat cele mai mari precipitații",
     "Turiștii au ajuns În Banat la sfârșitul săptămânii",
