@@ -110,7 +110,28 @@ def _resolve_category(item: dict, ai_cat: str) -> str:
     nivel = geo.clasifica(" ".join(filter(None, (
         item.get("title"), item.get("teaser"), item.get("synthesis")))),
         geo.judet_sursa(item.get("source")))
-    if nivel:
+    # Sportul NU intra pe axa geografica, chiar cand textul numeste locul. Nu e o exceptie de
+    # la regula proprietarului, e regula lui aplicata corect: un meci se joaca undeva, dar
+    # stirea nu e DESPRE locul ala. Numele clubului poarta numele orasului („Farul Constanta",
+    # „Universitatea Cluj", „CFR Cluj"), iar gazetteer-ul nu are cum sa deosebeasca echipa de
+    # oras — asta e o judecata de TEMA, si singurul care o are e modelul.
+    #
+    # Conventia e verificata pe patru site-uri comparabile (2026-08-07), nu dedusa:
+    #   adevarul.ro/stiri-locale/constanta  0 stiri de sport din 33 — Farul lipseste complet
+    #   adevarul.ro/stiri-locale/cluj-napoca 1 din 33, si aia „meciul schimba traseul
+    #                                        autobuzelor", adica despre transport, nu meci
+    #   digi24.ro/regional                  0 in snapshot
+    #   monitorulcj.ro (ziar LOCAL din Cluj) sectiune `Sport` separata; „CFR pierde cu 0-5"
+    #                                        e acolo, nu la Administratie
+    # Linia lor e mai fina decat „sportul nu e local": meciul e Sport, dar devine local cand
+    # SUBIECTUL e impactul local. Cazul ala se rezolva singur aici — la o stire despre autobuze
+    # modelul nu alege `sport`, deci `nivel` ramane si articolul ramane local.
+    #
+    # Semnalul e tema POVESTII (`ai_cat`), nu categoria SURSEI — pe aia proprietarul a respins-o
+    # explicit pe 2026-08-02, si masurat ar fi si gresita: din 159 de articole cu iconita de
+    # sport aflate azi pe axa geografica, 63 (40%) vin din ziare locale, nu din presa sportiva.
+    # O regula pe sursa le-ar rata pe toate.
+    if nivel and ai_cat != "sport":
         return nivel   # textul numeste un loc -> axa geografica, la nivelul detectat
 
     # Niciun nume de loc -> stirea nu apartine axei geografice. Cade pe rubrica de TEMA aleasa
