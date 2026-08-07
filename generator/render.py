@@ -213,14 +213,30 @@ def _write(path: str, content: str) -> None:
         _PAGES_WRITTEN.add("/" + rel[:-len("index.html")].lstrip("/"))
 
 
+# --- JSON-LD: UN singur document per pagina, cu `@graph` --------------------------------
+# Inainte, fiecare `<script type="application/ld+json">` era un document independent, cu
+# `@context` propriu si fara niciun `@id`. Consecinta pe o pagina de articol: Organization
+# aparea de trei ori (nodul din base.html, `author`, `publisher`) ca trei entitati fara
+# legatura intre ele, iar nimic nu spunea ca articolul si pagina sunt acelasi lucru.
+# Cu `@graph`, entitatea se declara O DATA si se refera prin `{"@id": ...}`.
+
+
+def _abs_id(path: str, role: str) -> str:
+    """`@id` absolut si STABIL: URL-ul canonic al paginii + un fragment care spune ce rol are
+    nodul. Derivat din URL, NICIODATA dintr-un indice de pozitie — un `@id` care se schimba de
+    la o randare la alta descrie o entitate noua de fiecare data, adica exact ce evitam aici."""
+    return f"{config.SITE['url']}{path}#{role}"
+
+
 def _logo_jsonld() -> dict:
-    return {"@type": "ImageObject", "url": config.SITE["url"] + "/static/logo.png",
+    return {"@type": "ImageObject", "@id": _abs_id("/", "logo"),
+            "url": config.SITE["url"] + "/static/logo.png",
             "width": 512, "height": 512}
 
 
 def _org_jsonld() -> dict:
     return {
-        "@context": "https://schema.org", "@type": "Organization",
+        "@type": "Organization", "@id": _abs_id("/", "organization"),
         "name": config.SITE["name"], "url": config.SITE["url"],
         "logo": _logo_jsonld(),
         "email": config.SITE["contact"],
@@ -228,10 +244,51 @@ def _org_jsonld() -> dict:
     }
 
 
+def _website_jsonld() -> dict:
+    """Nodul WebSite — de acolo isi ia Google numele de site afisat in rezultate.
+    FARA `potentialAction`/`SearchAction`: sitelinks search box a fost depreciat si scos din
+    rezultate pe 21 noiembrie 2024, deci marcajul ala nu mai are consumator (WS-0019 respins,
+    cu sursa). Nodul in sine a ramas suportat — a disparut doar actiunea."""
+    return {
+        "@type": "WebSite", "@id": _abs_id("/", "website"),
+        "url": config.SITE["url"] + "/",
+        "name": config.SITE["name"],
+        "description": config.SITE["tagline"],
+        "inLanguage": config.SITE["lang"],
+        "publisher": {"@id": _abs_id("/", "organization")},
+    }
+
+
+def _graph_jsonld(canonical_path: str, nodes: list, page: dict | None = None) -> dict:
+    """Documentul JSON-LD al unei pagini: un singur `@context`, un singur `@graph`.
+
+    `nodes` = nodurile specifice paginii (NewsArticle, BreadcrumbList, ItemList).
+    `page`  = proprietati in plus pe nodul WebPage (`name`, un `@type` mai specific).
+
+    Legaturile WebPage -> `breadcrumb` / `mainEntity` se deduc AICI din tipul nodurilor, nu se
+    scriu la fiecare apel: un apel care le-ar uita ar produce noduri orfane in graf, si nimic
+    nu s-ar plange. `setdefault` ca sa nu calce peste ce a cerut explicit apelantul."""
+    wp = {
+        "@type": "WebPage", "@id": _abs_id(canonical_path, "webpage"),
+        "url": config.SITE["url"] + canonical_path,
+        "isPartOf": {"@id": _abs_id("/", "website")},
+        "inLanguage": config.SITE["lang"],
+    }
+    wp.update(page or {})
+    for n in nodes:
+        if n.get("@type") == "BreadcrumbList":
+            wp.setdefault("breadcrumb", {"@id": n["@id"]})
+        elif n.get("@type") in ("NewsArticle", "ItemList"):
+            wp.setdefault("mainEntity", {"@id": n["@id"]})
+    return {"@context": "https://schema.org",
+            "@graph": [_org_jsonld(), _website_jsonld(), wp, *nodes]}
+
+
 def _article_jsonld(a: dict) -> dict:
     body = a.get("synthesis") if a.get("model") == "C" else a.get("teaser")
+    path = f"/{a['category']}/{a['slug']}/"
     return {
-        "@context": "https://schema.org", "@type": "NewsArticle",
+        "@type": "NewsArticle", "@id": _abs_id(path, "article"),
         "headline": a.get("title", ""),
         "description": body or "",
         "image": [config.SITE["url"] + "/static/og-image.png"],
@@ -239,11 +296,12 @@ def _article_jsonld(a: dict) -> dict:
         # o sinteza care a absorbit o stire noua isi pastreaza slug-ul si `published`, dar are
         # alt continut (IZZ-0151) -> `updated` e singurul semnal onest pentru motoarele de cautare
         "dateModified": a.get("updated") or a.get("published", ""),
-        "url": f"{config.SITE['url']}/{a['category']}/{a['slug']}/",
-        "mainEntityOfPage": f"{config.SITE['url']}/{a['category']}/{a['slug']}/",
+        "url": config.SITE["url"] + path,
+        "mainEntityOfPage": {"@id": _abs_id(path, "webpage")},
         "inLanguage": config.SITE["lang"],
-        "author": {"@type": "Organization", "name": config.SITE["name"]},
-        "publisher": {"@type": "Organization", "name": config.SITE["name"], "logo": _logo_jsonld()},
+        # referinte, nu copii: Organization e declarata o singura data, in acelasi graf
+        "author": {"@id": _abs_id("/", "organization")},
+        "publisher": {"@id": _abs_id("/", "organization")},
         "isBasedOn": [s["url"] for s in a.get("sources", [])] or a.get("original_link", ""),
     }
 
@@ -264,7 +322,8 @@ def _fonts_css() -> str:
     return _FONTS_CSS
 
 
-def _base_ctx(canonical_path: str, **extra) -> dict:
+def _base_ctx(canonical_path: str, jsonld_nodes: list | None = None,
+              jsonld_page: dict | None = None, **extra) -> dict:
     ctx = {
         "site": config.SITE,
         "base": os.getenv("SITE_BASE", "").rstrip("/"),
@@ -274,7 +333,8 @@ def _base_ctx(canonical_path: str, **extra) -> dict:
         # (UTC+3) sa dea acelasi octet ca CI-ul, in loc sa depinda de ceasul masinii.
         "year": datetime.now(timezone.utc).year,
         "canonical": config.SITE["url"] + canonical_path,
-        "org_jsonld": _org_jsonld(),
+        # UN singur bloc `application/ld+json` per pagina, emis din base.html
+        "jsonld": _graph_jsonld(canonical_path, jsonld_nodes or [], jsonld_page),
         "analytics_token": os.getenv("CF_ANALYTICS_TOKEN", "").strip() or None,
         "fonts_css": _fonts_css(),
         "asset_ver": _asset_ver(),
@@ -494,7 +554,7 @@ def build(articles: list, mod: dict | None = None) -> None:
 
     # homepage
     item_list = {
-        "@context": "https://schema.org", "@type": "ItemList",
+        "@type": "ItemList", "@id": _abs_id("/", "itemlist"),
         "itemListElement": [
             {"@type": "ListItem", "position": i + 1,
              "url": f"{config.SITE['url']}/{a['category']}/{a['slug']}/"}
@@ -504,7 +564,7 @@ def build(articles: list, mod: dict | None = None) -> None:
     _write(os.path.join(OUT_DIR, "index.html"),
            env.get_template("index.html").render(**_base_ctx(
                "/", nav_section="stiri", articles=by_date, hero=hero, by_category=by_category,
-               page_jsonld=item_list, newsletter_html=_newsletter_html())))
+               jsonld_nodes=[item_list], newsletter_html=_newsletter_html())))
 
     src_catalog, total_sources, stats_sources = _source_catalog(by_date)
     _write(os.path.join(OUT_DIR, "surse", "index.html"),
@@ -603,7 +663,8 @@ def build(articles: list, mod: dict | None = None) -> None:
             if og_image:
                 jsonld["image"] = [og_image]
             breadcrumb_jsonld = {
-                "@context": "https://schema.org", "@type": "BreadcrumbList",
+                "@type": "BreadcrumbList",
+                "@id": _abs_id(f"/{cat}/{a['slug']}/", "breadcrumb"),
                 "itemListElement": [
                     {"@type": "ListItem", "position": 1, "name": config.SITE["name"],
                      "item": config.SITE["url"] + "/"},
@@ -616,7 +677,8 @@ def build(articles: list, mod: dict | None = None) -> None:
                    article_tpl.render(**_base_ctx(
                        f"/{cat}/{a['slug']}/", a=a, active_cat=cat, topics=topics,
                        people=people, related=related, og_image=og_image,
-                       article_jsonld=jsonld, breadcrumb_jsonld=breadcrumb_jsonld)))
+                       jsonld_nodes=[jsonld, breadcrumb_jsonld],
+                       jsonld_page={"name": a.get("title", "")})))
 
     _render_legal(env)
     _render_ghiduri(env, by_date)
@@ -728,16 +790,20 @@ def _render_ghiduri(env: Environment, articles: list) -> None:
     for eid, ent in entities.items():
         cat_stiri = ent.get("categorie_stiri", "")
         related = [a for a in articles if a.get("category") == cat_stiri][:5]
-        faq_jsonld = {
-            "@context": "https://schema.org", "@type": "FAQPage",
-            "mainEntity": [
-                {"@type": "Question", "name": item["q"],
-                 "acceptedAnswer": {"@type": "Answer", "text": item["a"]}}
-                for item in (ent.get("faq") or [])
-            ]
-        }
+        # FAQPage e un SUBTIP de WebPage: pagina de ghid *este* FAQ-ul. Deci intrebarile stau
+        # pe nodul paginii, nu pe un al doilea nod care ar pretinde acelasi URL cu alt `@id`.
+        # Fara intrebari nu se declara FAQPage deloc — un FAQPage cu `mainEntity` gol e o
+        # promisiune de rich result pe care pagina n-o poate onora.
+        faq = [{"@type": "Question", "name": item["q"],
+                "acceptedAnswer": {"@type": "Answer", "text": item["a"]}}
+               for item in (ent.get("faq") or [])]
+        jsonld_page = {"name": ent.get("nume", eid)}
+        if faq:
+            jsonld_page["@type"] = ["WebPage", "FAQPage"]
+            jsonld_page["mainEntity"] = faq
         breadcrumb_jsonld = {
-            "@context": "https://schema.org", "@type": "BreadcrumbList",
+            "@type": "BreadcrumbList",
+            "@id": _abs_id(f"/ghiduri/{eid}/", "breadcrumb"),
             "itemListElement": [
                 {"@type": "ListItem", "position": 1, "name": config.SITE["name"], "item": config.SITE["url"] + "/"},
                 {"@type": "ListItem", "position": 2, "name": "Ghiduri", "item": config.SITE["url"] + "/ghiduri/"},
@@ -756,7 +822,7 @@ def _render_ghiduri(env: Environment, articles: list) -> None:
                ghid_tpl.render(**_base_ctx(
                    f"/ghiduri/{eid}/", ent=ent, categorii=categorii,
                    categorii_icon=categorii_icon, related_news=related,
-                   faq_jsonld=faq_jsonld, breadcrumb_jsonld=breadcrumb_jsonld,
+                   jsonld_nodes=[breadcrumb_jsonld], jsonld_page=jsonld_page,
                    calculator_html=calculator_html, sectiuni=sectiuni, active_cat=None)))
 
     # Cate ghiduri au inca valori neconfirmate: pagina isi ajusteaza promisiunea dupa asta,

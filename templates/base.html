@@ -45,7 +45,10 @@
      render._write_headers are `script-src 'self'` fara 'unsafe-inline'. #}
   <script src="{{ base }}/static/theme.js?v={{ asset_ver['theme.js'] }}"></script>
 
-  <script type="application/ld+json">{{ org_jsonld | tojson }}</script>
+  {# UN singur bloc JSON-LD pe pagina: `@graph` construit in render._graph_jsonld, cu `@id`-uri
+     absolute. Sabloanele NU mai emit blocuri proprii — noduri separate insemnau entitati
+     necorelate (Organization aparea de trei ori pe o pagina de articol). #}
+  <script type="application/ld+json">{{ jsonld | tojson }}</script>
   {% block head_extra %}{% endblock %}
   {% if analytics_token %}<script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "{{ analytics_token }}"}'></script>{% endif %}
   <script defer src="{{ base }}/static/personalize.js?v={{ asset_ver['personalize.js'] }}"></script>
