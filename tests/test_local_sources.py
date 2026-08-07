@@ -189,11 +189,15 @@ def test_impact_tier_orders_municipiu_before_oras_before_comuna(tmp_path):
              "ALBA,Oras Mijloc,http://b,yes,200,,,,,http://o.ro/feed/,yes,2026-05-01,,",
              "ALBA,Municipiul Mare,http://c,yes,200,,,,,http://m.ro/feed/,yes,2026-01-15,,"]
     path = _write_csv(tmp_path, lines)
-    names = [v["name"] for v in load_gold_sources(path, 10).values()]
+    # Ordinea se citeste din SLUG, nu din numele afisat: `nume_primarie` scoate deliberat
+    # prefixul administrativ („Primăria Ploiești", nu „Primăria Municipiul Ploiesti"), deci
+    # numele nu mai poate distinge nivelurile. Slug-ul il pastreaza si e oricum identitatea
+    # stabila a sursei — testul verifica ORDINEA, iar acum o verifica pe campul potrivit.
+    slugs = list(load_gold_sources(path, 10))
     # municipiul (cel mai vechi) trebuie sa fie PRIMUL, comuna proaspata ULTIMA
-    assert "Municipiul Mare" in names[0]
-    assert "Oras Mijloc" in names[1]
-    assert "Comuna Fresh" in names[2]
+    assert "municipiul_mare" in slugs[0]
+    assert "oras_mijloc" in slugs[1]
+    assert "comuna_fresh" in slugs[2]
 
 
 def test_impact_tier_word_boundary_not_substring():

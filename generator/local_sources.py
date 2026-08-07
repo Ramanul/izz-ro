@@ -2,6 +2,12 @@ import csv
 import os
 import re
 
+from . import localities
+
+# Prefixul administrativ din CSV („MUNICIPIUL PLOIESTI"). Acelasi tipar ca `localities._PREFIX`,
+# scris aici ca sa nu depindem de un nume privat din alt modul.
+_PREFIX_ADMIN = re.compile(r"^(MUNICIPIUL?|ORA[SȘ](UL)?|COMUNA)\b\s*", re.I)
+
 
 # Potrivire pe CUVANT INTREG, nu substring: "ORASTIOARA DE SUS" e o COMUNA, dar contine
 # "ORAS" -- cu `in` era clasificata gresit ca oras (bug real, prins la review 2026-07-24).
@@ -34,6 +40,33 @@ _DEAD_SLUGS = frozenset({
     # moarta din cele 120, acelasi 403 pe primariatacuta.ro -- deci WAF stabil, nu o pana.
     "vaslui_tacuta",
 })
+
+
+def nume_primarie(judet: str, localitate: str, by_name: dict) -> str:
+    """Numele AFISAT al sursei, cu diacritice si fara prefixul administrativ.
+
+    De ce nu `"Primăria " + localitate.title()`, cum era: coloana `localitate` din
+    `primarii_status.csv` e in MAJUSCULE FARA DIACRITICE, iar `.title()` nu le poate inventa.
+    Masurat pe `data/articles.json` la 2026-08-06: **39 de nume distincte stricate, pe 143 de
+    articole** — „Primăria Municipiul Sebes" (corect: Sebeș), „Primăria Oras Navodari"
+    (Năvodari). Numele apare pe FIECARE card al sursei, deci e cea mai vizibila greseala de pe
+    site, si e in plus inconsistenta: „Primăria" avea diacritice, restul numelui nu.
+
+    Diacriticele se recupereaza din `data/localities.json` (3179 de UAT-uri de la Wikidata),
+    prin `localities.match`, care cere potrivire pe JUDET — obligatoriu, fiindca 12 din cele
+    120 de primarii GOLD au omonime in alte judete.
+
+    Prefixul administrativ se scoate deliberat: forma „Primăria Municipiul Ploiesti" e gresita
+    gramatical (ar cere genitivul, „Municipiului"), iar declinarea corecta ar adauga un caz de
+    intretinut fara ca cititorul sa castige ceva. „Primăria Ploiești" e scurt, corect si
+    identic ca forma cu intrarile scrise de mana din `config.py` („Primăria Buzău").
+
+    Fara potrivire in dataset -> comportamentul vechi, `.title()` pe numele din CSV. Sursa
+    ramane utilizabila; un nume imperfect e mai bun decat o sursa pierduta.
+    """
+    curat = _PREFIX_ADMIN.sub("", (localitate or "").strip())
+    rec = localities.match(judet, curat, by_name) if by_name else None
+    return "Primăria " + (rec["label"] if rec else curat.title())
 
 
 def _impact_tier(localitate: str) -> int:
@@ -85,13 +118,17 @@ def load_gold_sources(csv_path: str, limit: int, min_date: str = "2026-01-01") -
     rows.sort(key=lambda r: r.get("last_signal_date") or "", reverse=True)
     rows.sort(key=lambda r: _impact_tier(r["localitate"]))
 
+    # o singura incarcare pentru toate randurile (fisier de ~370 KB); `{}` daca lipseste,
+    # caz in care `nume_primarie` cade pe `.title()` si sursele raman utilizabile
+    _by_name = localities.load_dataset()
+
     result = {}
     for row in rows[:limit]:
         slug = _make_slug(row["judet"], row["localitate"])
         key = "pl_" + slug
         if key not in result:
             result[key] = {
-                "name": "Primăria " + row["localitate"].title(),
+                "name": nume_primarie(row["judet"], row["localitate"], _by_name),
                 "url": row["rss_url"].strip(),
                 "category": "local",
             }
