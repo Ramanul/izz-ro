@@ -9,6 +9,9 @@
   <span>{{ category | cat_label }}</span>
 </nav>
   <h1 class="section-title">{{ category | cat_label }}</h1>
+  {# `intro` e optional si e folosit azi DOAR de pagina 404, ca sa spuna de ce a ajuns
+     vizitatorul acolo. Fara el, categoriile arata exact ca inainte. #}
+  {% if intro %}<p class="empty">{{ intro }}</p>{% endif %}
   {% if articles %}
   <section class="grid">
     {% for a in articles %}{{ card(a) }}{% endfor %}

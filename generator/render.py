@@ -688,9 +688,27 @@ def build(articles: list, mod: dict | None = None) -> None:
 
     _render_legal(env)
     _render_ghiduri(env, by_date)
+    # Pagina 404 nu e o categorie goala, e capatul unui link mort — si cel mai frecvent motiv
+    # NU e o adresa gresita, ci un articol EXPIRAT. `config.ARTICLE_TTL_DAYS = 7`, iar
+    # `state.expire()` scoate articolul din stare, deci pagina lui nu se mai randeaza:
+    # orice permalink partajat moare intr-o saptamana. Masurat pe live 8/8, cu control pozitiv
+    # (articol viu -> 200) si negativ (articol expirat -> 404) — vezi
+    # handoff/arhiva/2026-08-06-handoff-integral.md.
+    #
+    # Pana acum pagina asta afisa „Nicio stire in aceasta categorie deocamdata", fiindca
+    # primea `articles=[]` si cadea pe starea goala a sablonului de categorie. Adica raspundea
+    # la alta intrebare decat cea pusa de vizitator.
+    #
+    # Asta NU repara expirarea — aia cere o decizie de proprietar, fiindca e marginita tare:
+    # planul gratuit Cloudflare Pages da 20.000 de fisiere pe site (documentatie, verificat
+    # 2026-08-07), iar `output/` are azi 10.997 la ~3,5 fisiere/articol, deci TTL-ul nu poate
+    # trece realist de ~14 zile. Aici se repara doar capatul: spune ce s-a intamplat si da
+    # vizitatorului stirile de acum, in loc sa-l lase intr-o fundatura.
     _write(os.path.join(OUT_DIR, "404.html"),
            env.get_template("category.html").render(**_base_ctx(
-               "/404.html", category="Pagina negăsită", articles=[])))
+               "/404.html", category="Pagina negăsită",
+               intro="Adresa nu există sau articolul a expirat. Între timp, ce e nou:",
+               articles=by_date[:12])))
     _write_sitemap(by_date)
     _write_robots()
     # dovada de domeniu pentru IndexNow: motorul citeste cheia de la radacina
