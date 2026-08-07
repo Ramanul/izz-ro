@@ -4,7 +4,35 @@
 > Executors get it read-only. Keep it tight — when it outgrows ~40 lines of content, cut the
 > settled history, not the open work. `git fetch` immediately before rewriting it.
 
-**Updated:** 2026-08-07 (account A — nine PRs landed: #151–#159)
+**Updated:** 2026-08-07 (account A — ten PRs landed: #151–#160)
+
+## Merged 2026-08-07, fifth batch (account A — announce, per §14)
+
+- **#160 `fadb0526` — a UAT swallowed by a compound proper noun no longer opens the geographic
+  axis.** „Casa Albă" matched the county **ALBA**; „Curtea de Apel București" and „Bursa de
+  Valori București" matched the municipality **BUCUREȘTI**. Measured on the corpus (2674
+  articles, real `generator.geo` functions): **26 articles sat on a wrong geographic section** —
+  13 `zonal` (Trump / Iran / FIFA / the UFC gala) and 13 `local` (national-stakes court rulings,
+  capital-market news). Ablation per member (mask the compound, reclassify): `kills_right = 0`
+  on all three, and **zero changes in the reverse direction**.
+
+  **Both existing mechanisms were measured and rejected**, which is the point worth keeping:
+  (a) the `_AMBIGUE` + geographic-mark route written into `WS-0030` — ALBA is not ambiguous by
+  itself, and demanding a mark loses „Consiliul **Județean** Alba", „**Prefectura** Alba" and
+  „Alba a fost lovită de furtună" (`_MARCA_GEO` has no `JUDETEAN`, and the last has nothing
+  before it). **Widening `_MARCA_GEO` is therefore no longer needed** — `IZZ-0155`.
+  (b) the region discriminator („capitalised word glued in front", the one that fixes „Banca
+  Transilvania") would have been **worse**: on UATs that pattern is dominantly *legitimate* —
+  „Primăria Brașov" (8), „Consiliul Județean Cluj" (11), „Poliția Brașov" (4). It would have cut
+  exactly the correct local news.
+
+  So the list is **enumerative on purpose** — not a net, a filter with three holes plugged; the
+  comment in `_COMPUSE_NEGEO` says so. **Rejected at the same measurement** so it is not retried:
+  „Terapia Cluj" (2 articles, one arguable, and it opens the whole class of companies named after
+  their city) — `IZZ-0156`. **Blind window as always:** the category is computed once, at
+  ingestion, so the 26 existing articles stay put; the fix works from the next run and heals by
+  expiry (~7 days). 10 new tests, the 7 compound ones red on the old code (verified by emptying
+  the dict); suite 684 passed.
 
 ## Merged 2026-08-07, fourth batch (account A — announce, per §14)
 
