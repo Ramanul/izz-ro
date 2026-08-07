@@ -210,7 +210,30 @@ def run(dry_run: bool = False) -> dict:
     raw, dead = fetch.fetch_all()
     existing = state.load()
     known = {a.get("url") for a in existing}
-    new_items = [i for i in raw if i["url"] not in known]
+    # Dedup si INTRE itemele proaspete, nu doar fata de stare. Doua feeduri ale aceluiasi site
+    # se suprapun — `digi24` (RSS general) le contine si pe cele din `extern`
+    # (`digi24.ro/rss/stiri/externe`) — iar o comparatie facuta doar cu `known` lasa ambele
+    # exemplare sa treaca: fiecare primeste un apel AI, un titlu propriu si un slug propriu,
+    # deci aceeasi stire ajunge de doua ori pe site. Masurat pe starea din 2026-08-07
+    # (2766 articole): 57 de perechi, 56 cu slug-uri diferite, adica doua pagini.
+    #
+    # `state.merge()` promite dedup pe URL si e pe dict, deci imuna prin constructie — dar nu e
+    # chemata nicaieri in productie (singurul apelant e tests/test_state.py). De aceea testul
+    # ei trecea in timp ce calea reala nu deduplica; a se citi ca avertisment, nu ca alternativa.
+    #
+    # Castiga PRIMUL, deci ordinea din `config.SOURCES` decide care exemplar supravietuieste:
+    # `fetch_all` pastreaza ordinea aia dinadins (vezi invariantul 1 din docstring-ul ei).
+    # Regula e controlabila de proprietar mutand sursa in config, nu un accident de dictionar.
+    new_items, vazute, exemplare_duplicate = [], set(), 0
+    for i in raw:
+        url = i["url"]
+        if url in known:
+            continue                      # deja in stare — garda veche, neatinsa
+        if url in vazute:
+            exemplare_duplicate += 1      # al doilea feed care aduce aceeasi stire
+            continue
+        vazute.add(url)
+        new_items.append(i)
     # Official feeds carry months-old entries, so most "new" items are already past the TTL
     # when read. Without this they burn AI budget and are deleted by the trailing expire()
     # in the SAME run — and worse, process_cluster picks the OLDEST member as representative,
@@ -257,6 +280,10 @@ def run(dry_run: bool = False) -> dict:
         "dead_sources": dead,
         "new": len(new_items),
         "stale_skipped": stale_skipped,
+        # Cate exemplare in plus ale unei stiri deja vazute IN ACEEASI rulare au fost sarite.
+        # Numarat separat de `stale_skipped` fiindca spune altceva: nu „feedul e vechi", ci
+        # „doua surse din config aduc acelasi lucru" — semnal pentru portofoliul de surse.
+        "exemplare_duplicate": exemplare_duplicate,
         "deferred": deferred,
         "model_B": sum(1 for a in processed_new if a.get("model") == "B"),
         "model_C": sum(1 for a in processed_new if a.get("model") == "C"),
@@ -316,6 +343,9 @@ def _print_report(stats: dict, processed_new: list, dry_run: bool):
     if stats.get("stale_skipped"):
         print(f"Sarite ca deja expirate la citire: {stats['stale_skipped']} "
               f"(peste TTL de {config.ARTICLE_TTL_DAYS} zile — ar fi fost sterse in aceeasi rulare)")
+    if stats.get("exemplare_duplicate"):
+        print(f"Exemplare duplicate sarite: {stats['exemplare_duplicate']} "
+              "(aceeasi stire adusa de doua surse in aceeasi rulare)")
     if stats.get("ai_budget"):
         print(f"Buget AI: {stats['ai_budget']} apeluri | pentru iteme noi: "
               f"{stats['ai_budget'] - stats['upgrade_reserve']} | rezervat upgrade: "
