@@ -229,6 +229,35 @@ _GEO_RELATIONAL = {
     "NORDUL", "SUDUL", "ESTUL", "VESTUL", "CENTRUL",
     "REGIUNEA", "ZONA", "TOATA", "INTREAGA", "PROVINCIA",
 }
+# Un nume de regiune care e SI numele unui stat suveran. Garda de mai sus il prinde doar in
+# forma compusa („Republica Moldova"), fiindca lucreaza pe cuvantul lipit inainte. Nu prinde
+# „Moldova" singur — nici la inceput de fraza („Moldova si Ucraina iau masuri..."), nici dupa
+# o prepozitie cu litera mica („delegatia talibana in Moldova"), amandoua consemnate ca ratari
+# cunoscute in specs/STATE.md inca de la #127.
+#
+# Discriminatorul e ALT tip decat la celelalte doua garzi, si deliberat: nu contextul imediat
+# al potrivirii, ci o marca de tara ORIUNDE in text. Motivul e ca titlul si corpul se citesc
+# impreuna — „...in Moldova" din titlu se dezambiguizeaza din „guvernul de la Chisinau" din
+# teaser, la 80 de caractere distanta. O fereastra ar fi ratat exact cazul dominant.
+#
+# Masurat pe corpusul de azi (2704 articole, 2026-08-07) prin ablatie — mascarea numelui si
+# reclasificare cu functia reala: DOAR 3 articole isi schimba rubrica daca „Moldova" nu s-ar
+# potrivi, si toate 3 sunt despre statul vecin. `kills_wrong=3`, `kills_right=0`.
+# Cele 23 de articole care contin numele si NU depind de el (Ceahlau, Vama Sculeni, „judetele
+# din Moldova") sunt neatinse: ori castiga un nivel mai specific, ori n-au marca de tara.
+#
+# Marcile sunt institutionale si geografice, NU nume de persoane: „Maia Sandu" ar fi acoperit
+# primul articol, dar un presedinte pleaca din functie si lista ar putrezi tacut. Acelasi
+# articol e prins oricum prin „Republicii Moldova" din corp — genitivul e in tipar tocmai
+# fiindca forma nearticulata nu-l acopera.
+#
+# Ce NU face asta: nu muta articolele pe rubrica `extern`. Aia e inchisa de proprietar
+# (IZZ-0137, 2026-08-03). Ele cad pe `None` si de acolo pe rubrica lor tematica — exact
+# rezultatul numit „better than regional" in specs/STATE.md.
+_TARA_OMONIMA = {
+    "MOLDOVA": re.compile(r"CHISINAU|REPUBLIC(?:A|II) MOLDOVA|TRANSNISTRIA|TIRASPOL|GAGAUZIA"),
+}
+
 # Fereastra de 32 de caractere e generoasa fata de cel mai lung cuvant plauzibil
 # („Inspectoratul", 13): daca ar taia cuvantul, prima litera ar parea mica si garda ar rata.
 # Cifrele sunt in clasa intentionat: „Autostrada A3 Transilvania" — fara ele bucata dinainte
@@ -327,6 +356,17 @@ def _regiune_ca_nume_propriu(m, original: str, plat: str) -> bool:
     return not _MARCA_GEO.search(plat[max(0, m.start() - 16):m.start()])
 
 
+def _tara_omonima(nume: str, plat: str) -> bool:
+    """Numele potrivit e si numele unui stat, iar textul vorbeste despre stat -> nu e geografie.
+
+    Se cheama DOAR pentru potriviri de nivel `regional`, ca sora ei de mai sus. Numele care nu
+    sunt in `_TARA_OMONIMA` (unsprezece din douasprezece) ies la prima cautare de dictionar,
+    deci nu platesc regexul.
+    """
+    rx = _TARA_OMONIMA.get(nume)
+    return bool(rx and rx.search(plat))
+
+
 def regiune_din_text(text: str) -> str | None:
     """Numele regiunii pe care textul o NUMESTE, cu diacritice — sau None.
 
@@ -397,7 +437,8 @@ def clasifica(text: str, judet: str | None = None) -> str | None:
         if _ambiguu_fara_marca(m, plat):
             continue
         nivel = index[m.group(1)]
-        if nivel == "regional" and _regiune_ca_nume_propriu(m, original, plat):
+        if nivel == "regional" and (_regiune_ca_nume_propriu(m, original, plat)
+                                    or _tara_omonima(m.group(1), plat)):
             continue
         calif = _CALIFICATIV.search(plat[max(0, m.start() - 12):m.start()])
         if calif:
