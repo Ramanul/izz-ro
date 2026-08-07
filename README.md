@@ -1,6 +1,6 @@
 # IZZ.ro — Informația Zero Zgomot
 
-Agregator de știri românești anti-clickbait. Site **static (SSG)**, model de conținut **B+C** (rezumat scurt + link / sinteză multi-sursă), publicat **serverless**: GitHub Actions construiește și deployează automat la fiecare 30 de minute. AI implicit **Gemini** (gratuit), comutabil pe **Claude API**.
+Agregator de știri românești anti-clickbait. Site **static (SSG)**, model de conținut **B+C** (rezumat scurt + link / sinteză multi-sursă), publicat **serverless**: GitHub Actions rulează pipeline-ul orar și publică la ~2 ore (vezi *Deploy*). AI implicit **Gemini** (gratuit), comutabil pe **Claude API**.
 
 ## Cum rulezi local
 
@@ -41,7 +41,8 @@ output/      site generat (gitignored; deployat de Actions)
 
 Arhitectura separă **munca grea** de **publicare**:
 
-1. **GitHub Actions** (`.github/workflows/build.yml`, cron 30 min): rulează pipeline-ul (fetch + AI, cu buget per rulare), apoi **comite** `data/articles.json` în repo. Secret necesar: `GEMINI_API_KEY` (repo → Settings → Secrets → Actions).
+1. **GitHub Actions** (`.github/workflows/build.yml`, cron `13 * * * *`): rulează pipeline-ul (fetch + AI, cu buget per rulare), apoi **comite** `data/articles.json` în repo. Secret necesar: `GEMINI_API_KEY` (repo → Settings → Secrets → Actions).
+   **Încearcă orar, publică la ~2h:** un job de poartă taie rularea dacă ultimul conținut e mai proaspăt de 105 minute. Cron-ul e des *ca să apere* cele 2h — planificatorul GitHub sare firings de `schedule` (măsurat 2026-08-04: 4 rulări în loc de 12), iar cu încercări orare un firing pierdut se recuperează în ora următoare. Bugetul de build Cloudflare (~500/lună pe planul free) e păzit de poartă, nu de cron — **nu coborî pragul fără să refaci socoteala**.
 2. **Cloudflare Pages** (conectat la repo, auto-deploy la fiecare commit): rulează doar **render-only** și publică `output/`. Setări în Cloudflare Pages → Settings:
    - **Build command:** `pip install -r requirements.txt && python -m generator.main --render-only`
    - **Build output directory:** `output`

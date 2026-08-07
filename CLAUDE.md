@@ -31,7 +31,8 @@ deduplicate, curate. Site **generat static** dintr-un pipeline de conținut
 ## 2. Stack — VERIFICAT 2026-06-26
 Python 3.11 (cloud) / 3.14 (local), Jinja2, feedparser, pyyaml, python-slugify, markdown,
 python-dotenv. AI: Gemini 2.5 Flash Lite prin REST (fără SDK), comutabil pe Claude API cu
-`AI_PROVIDER=anthropic`. CI/CD: GitHub Actions (`build.yml`, cron `13 */2`). Hosting: Cloudflare
+`AI_PROVIDER=anthropic`. CI/CD: GitHub Actions (`build.yml`, cron `13 * * * *` + poartă de
+cadență la 105 min → publicare ~2h, §17). Hosting: Cloudflare
 Pages (build doar de randare). Stare pipeline: `data/articles.json` (comis în repo — fără SQLite).
 
 ## 3. Structura repo-ului
@@ -44,7 +45,7 @@ content/legal/      pagini legale (markdown)
 data/articles.json  starea pipeline-ului (comisă în repo, persistă între rulări)
 moderation.yaml     control editorial (om în buclă)
 output/             site generat (gitignored; deployat de Cloudflare Pages)
-.github/workflows/  build.yml (fetch+AI+commit, cron la 2h — vezi §17)
+.github/workflows/  build.yml (fetch+AI+commit; cron orar + poartă → publicare ~2h, vezi §17)
 ```
 
 ## 4. Comenzi — folosește șirurile EXACTE
@@ -183,8 +184,13 @@ cache-uit immutable, fără cache-bust). Pentru ORICE schimbare vizibilă utiliz
 4. **Când nu poți testa ceva, spune explicit** (care rol, de ce) în loc să lași impresia că a trecut.
 
 ## 17. Cadență de publicare — MĂSURAT, nu re-diagnostica
-`build.yml` are cron `13 */2` — la 2 ore, **deliberat**: fiecare commit declanșează un build
-Cloudflare, iar planul gratuit dă ~500/lună. **Nu „repara" cadența făcând-o mai deasă** — aia a
+`build.yml` are cron `13 * * * *` — **încearcă orar, publică la ~2h**, deliberat. Cele două
+cifre nu se contrazic: un job de poartă taie rularea dacă ultimul conținut e mai proaspăt de
+105 minute, deci cadența efectivă rămâne 2h. Cron-ul a fost îndesit **tocmai ca să apere** cele
+2h — planificatorul GitHub sare firings de `schedule` (4 rulări în loc de 12 pe 2026-08-04), iar
+cu încercări orare un firing pierdut se recuperează în ora următoare în loc să aștepte încă două.
+Motivul e comentat pe larg în `build.yml`. Bugetul de build e păzit de **poartă**, nu de cron:
+fiecare commit declanșează un build Cloudflare, iar planul gratuit dă ~500/lună. **Nu „repara" cadența făcând-o mai deasă** — aia a
 cauzat pana din 5-9 iulie. Plafonul de debit e bugetul AI (`max_ai_calls`, implicit 18/rulare), nu
 programul. Varianța zilnică e mare și normală; verifică `gh run list` înainte să pretinzi că
 pipeline-ul e picat. Cifre și context: `specs/istoric-operational.md`.
