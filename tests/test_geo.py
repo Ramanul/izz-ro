@@ -301,6 +301,53 @@ def test_lista_ambigua_chiar_exista_in_index():
     assert not lipsa, f"nume din _AMBIGUE care nu sunt in indexul de UAT-uri: {lipsa}"
 
 
+# ------------------------------------- UAT-uri inghitite intr-un nume propriu compus cunoscut
+# A treia clasa, cu al treilea mecanism, si diferenta fata de cele doua de mai jos/sus e
+# MASURATA: la regiuni discriminatorul e „cuvant cu majuscula lipit inainte", si aici ar face
+# rau — pe corpus, tiparul ala la UAT-uri inseamna aproape mereu institutie plus locul ei
+# („Primaria Brasov", „Consiliul Judetean Cluj"), adica exact stirile locale corecte.
+# De-asta lista e enumerativa, cu ablatie per membru. Vezi `geo._COMPUSE_NEGEO`.
+
+@pytest.mark.parametrize("text", [
+    "Donald Trump anulează atacurile asupra Iranului, anunță Casa Albă",
+    "Casa Albă finalizează un cadru de supraveghere pentru inteligența artificială",
+    "Gala UFC organizată la Casa Albă de ziua lui Trump a generat pierderi",
+    "Curtea de Apel București a blocat suspendarea permiselor pentru amenzi neplătite",
+    "Fost judecător critică răspunsul Curții de Apel București în cazul Robert Negoiță",
+    "Bursa de Valori București a închis ședința de marți în scădere",
+    "Evoluția Bursei de Valori București, discutată de investitorul Marius Alexe",
+])
+def test_uat_in_compus_negeo_nu_e_geografie(text):
+    """Cele trei compuse masurate: 24 de articole plecau pe rubrica geografica gresita."""
+    assert geo.clasifica(text) is None
+
+
+@pytest.mark.parametrize("text,nivel", [
+    # Sondele din WS-0030: ruta prin `_AMBIGUE` le-ar fi pierdut pe toate patru, fiindca
+    # `_MARCA_GEO` n-are JUDETEAN si nici PREFECTURA, iar ultima n-are nimic inainte.
+    ("Consiliul Județean Alba a aprobat bugetul rectificat", "zonal"),
+    ("Prefectura Alba a convocat comitetul pentru situații de urgență", "zonal"),
+    ("Inspectoratul Școlar Județean Alba a publicat rezultatele", "zonal"),
+    ("Alba a fost lovită de o furtună puternică", "zonal"),
+    ("Un șofer din Alba a fost condamnat după ce a condus băut", "zonal"),
+    # Prefixul e specific: alte institutii cu acelasi nume de UAT raman geografie.
+    ("Primăria București a lansat licitația pentru modernizarea parcului", "local"),
+    ("Curtea de Conturi București a finalizat controlul la trei primării", "local"),
+])
+def test_uat_fara_compusul_cunoscut_ramane_geografie(text, nivel):
+    """Garda e strict pe prefixul masurat, nu pe nume. Altfel ar taia stirile reale din Alba
+    si din Bucuresti — motivul pentru care ruta „baga ALBA in `_AMBIGUE`" a fost respinsa."""
+    assert geo.clasifica(text) == nivel
+
+
+def test_compusele_negeo_chiar_exista_in_index():
+    """Un nume scris gresit in `_COMPUSE_NEGEO` n-ar da eroare — n-ar filtra nimic, tacut.
+    Acelasi invariant ca la `_AMBIGUE`, din acelasi motiv."""
+    index = geo._index()
+    lipsa = sorted(n for n in geo._COMPUSE_NEGEO if n not in index)
+    assert not lipsa, f"nume din _COMPUSE_NEGEO care nu sunt in indexul de UAT-uri: {lipsa}"
+
+
 # ------------------------------------------------ regiuni folosite ca nume proprii compuse
 # Aceeasi clasa cu `_AMBIGUE`, dar mecanismul TREBUIE sa fie altul, si asta e masurat pe tot
 # corpusul (2026-08-03, 1714 articole): cerand o marca geografica se pierde un articol corect
