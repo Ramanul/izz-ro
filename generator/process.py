@@ -8,7 +8,7 @@ import re
 from datetime import datetime, timezone
 
 from . import config, geo
-from .util import truncate_words, domain_of
+from .util import truncate_words, domain_of, strip_diacritics
 
 # ---- Prompturi calibrate juridic (zero propozitii copiate din original) ----
 
@@ -92,7 +92,49 @@ def _valid_category(cat: str, fallback: str) -> str:
     return cat if cat in config.CATEGORIES else fallback
 
 
-def _resolve_category(item: dict, ai_cat: str) -> str:
+def _text_clasificabil(item: dict) -> str:
+    """Modelul B scrie 'teaser', modelul C scrie 'synthesis' — le luam pe amandoua, altfel
+    clusterele s-ar clasifica doar dupa titlu."""
+    return " ".join(filter(None, (item.get("title"), item.get("teaser"), item.get("synthesis"))))
+
+
+def _locul_e_subiectul(item: dict, entities, judet) -> bool:
+    """Stirea e DESPRE locul pe care textul il numeste, sau doar il mentioneaza?
+
+    Doua trepte, si amandoua sunt masurate pe corpus (2704 articole, 2026-08-07), nu alese
+    din intuitie:
+
+    1. **Titlul numeste locul -> da, fara alta verificare.** Asa functioneaza titlurile: ele
+       numesc subiectul. Masurat, compartimentul asta are 3 din 30 gresite (10%), fata de
+       16 din 30 (53%) cand locul apare doar in corp — de 5 ori mai curat.
+
+    2. **Altfel, cerem coroborare din `entities`** — lista pe care modelul o produce ca
+       „1-4 nume proprii CHEIE din stire". Aia e judecata „despre ce e stirea", nu „ce
+       cuvinte contine". Pe cele 30 de articole judecate manual din compartimentul 2:
+       `kills_wrong = 13 din 18`, `kills_right = 2 din 12`. Raport 6,5:1.
+
+    De ce NU se aplica treapta 2 si peste titluri, desi ar parea mai simplu: masurat, ar taia
+    152 de articole din compartimentul 1, si aproape toate sunt CORECTE — locul e inghitit in
+    numele institutiei („Muzeul de Arta Populara Constanta", „Salvamont Suceava", „Jandarmeria
+    Maramures"), deci potrivirea exacta il rateaza. Compartimentul 1 are 10% eroare; nu-l
+    reparam cu o regula care ii strica 20%.
+
+    Varianta laxa (locul ca SUBSIR intr-o entitate) a fost incercata si e MAI PROASTA acolo
+    unde conteaza: `kills_wrong` scade de la 13 la 9, iar `kills_right` ramane 2 — recupereaza
+    „Curtea de Apel Bucuresti" (stire nationala) fara sa recupereze nimic corect.
+
+    Fara entitati -> `True`. Filtrul nu are cu ce corobora, iar un filtru fara date nu sterge.
+    """
+    if geo.clasifica(item.get("title") or "", judet):
+        return True
+    if not entities:
+        return True
+    numite = geo.locuri_numite(_text_clasificabil(item))
+    ent = {strip_diacritics(e).upper().strip() for e in entities if e}
+    return bool(numite & ent)
+
+
+def _resolve_category(item: dict, ai_cat: str, entities=None) -> str:
     """Categoria finala a unui articol.
 
     LOCAL inseamna UNDE se intampla, nu CINE publica (regula owner 2026-08-02). O rubrica
@@ -103,13 +145,10 @@ def _resolve_category(item: dict, ai_cat: str) -> str:
     (masurat 2026-07-25: 14 din 15 din `regional` erau gresite -- un sat elvetian, CE, DNA)
     SI cazul in care sursa e geografica dar stirea concreta nu e despre locul ei.
     """
-    # Modelul B scrie 'teaser', modelul C scrie 'synthesis' -- le luam pe amandoua, altfel
-    # clusterele s-ar clasifica doar dupa titlu.
     # Judetul sursei deschide potrivirea pe SATE, si numai pe ale lui. La sursele nationale e
     # None, deci pentru ele nimic nu se schimba — vezi geo._SATE pentru de ce conteaza asta.
-    nivel = geo.clasifica(" ".join(filter(None, (
-        item.get("title"), item.get("teaser"), item.get("synthesis")))),
-        geo.judet_sursa(item.get("source")))
+    judet = geo.judet_sursa(item.get("source"))
+    nivel = geo.clasifica(_text_clasificabil(item), judet)
     # Sportul NU intra pe axa geografica, chiar cand textul numeste locul. Nu e o exceptie de
     # la regula proprietarului, e regula lui aplicata corect: un meci se joaca undeva, dar
     # stirea nu e DESPRE locul ala. Numele clubului poarta numele orasului („Farul Constanta",
@@ -131,8 +170,12 @@ def _resolve_category(item: dict, ai_cat: str) -> str:
     # explicit pe 2026-08-02, si masurat ar fi si gresita: din 159 de articole cu iconita de
     # sport aflate azi pe axa geografica, 63 (40%) vin din ziare locale, nu din presa sportiva.
     # O regula pe sursa le-ar rata pe toate.
-    if nivel and ai_cat != "sport":
-        return nivel   # textul numeste un loc -> axa geografica, la nivelul detectat
+    #
+    # A treia conditie, `_locul_e_subiectul`: textul numeste locul, dar e stirea DESPRE el?
+    # „Fitch mentine ratingul Romaniei" publicat de un ziar din Brasov numeste Bucurestiul si
+    # nu e o stire brasoveana. Vezi acolo cifrele si de ce regula are doua trepte.
+    if nivel and ai_cat != "sport" and _locul_e_subiectul(item, entities, judet):
+        return nivel   # textul numeste un loc SI stirea e despre el -> axa geografica
 
     # Niciun nume de loc -> stirea nu apartine axei geografice. Cade pe rubrica de TEMA aleasa
     # de AI; daca si aceea e geografica (deci negasita in text), e nesigura -> `general`.
@@ -253,8 +296,11 @@ def process_batch(items: list, provider) -> list:
             it["model"] = "B"
             it["title"] = title
             it["teaser"] = truncate_words(teaser, config.TEASER_MAX_WORDS)
-            it["category"] = _resolve_category(it, obj.get("category", ""))
+            # entitatile INAINTEA categoriei: `_resolve_category` le foloseste ca sa verifice
+            # daca locul numit in text e chiar subiectul stirii. Ordinea inversa le-ar fi dat
+            # `None` si coroborarea ar fi cazut tacut pe fail-open.
             it["entities"] = _clean_entities(obj.get("entities"))
+            it["category"] = _resolve_category(it, obj.get("category", ""), it["entities"])
             it["icon"] = _clean_icon(obj.get("icon"))
             it["processed_by"] = provider.name
             it["prompt_version"] = config.PROMPT_VERSION
@@ -290,8 +336,8 @@ def process_single(item: dict, provider) -> dict | None:
     item["title"] = (data.get("title") or item.get("original_title", "")).strip()
     item["teaser"] = truncate_words(data.get("teaser", "") or "Detalii pe sursa.",
                                     config.TEASER_MAX_WORDS)
-    item["category"] = _resolve_category(item, data.get("category", ""))
-    item["entities"] = _clean_entities(data.get("entities"))
+    item["entities"] = _clean_entities(data.get("entities"))   # inaintea categoriei, vezi mai sus
+    item["category"] = _resolve_category(item, data.get("category", ""), item["entities"])
     item["icon"] = _clean_icon(data.get("icon"))
     item["processed_by"] = provider.name
     item["prompt_version"] = config.PROMPT_VERSION
@@ -362,8 +408,8 @@ def process_cluster(group: list, provider) -> dict | None:
                         or rep.get("title") or "").strip()
         rep["synthesis"] = truncate_words(data.get("synthesis", "") or "Detalii pe surse.",
                                           config.SYNTHESIS_MAX_WORDS)
-        rep["category"] = _resolve_category(rep, data.get("category", ""))
-        rep["entities"] = _clean_entities(data.get("entities"))
+        rep["entities"] = _clean_entities(data.get("entities"))   # inaintea categoriei, vezi mai sus
+        rep["category"] = _resolve_category(rep, data.get("category", ""), rep["entities"])
         rep["icon"] = _clean_icon(data.get("icon"))
         rep["processed_by"] = provider.name
         rep["prompt_version"] = config.PROMPT_VERSION

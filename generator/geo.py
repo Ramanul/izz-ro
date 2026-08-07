@@ -408,6 +408,49 @@ def regiune_din_text(text: str) -> str | None:
     return None
 
 
+def _potriviri(original: str, plat: str):
+    """Fiecare aparitie de nume de loc ACCEPTATA de garzi: `(nume, nivel)`.
+
+    Exista ca sa fie UN SINGUR scaner peste index. `clasifica` ia maximul din ce iese de
+    aici, iar `locuri_numite` ia numele — daca ar fi doua bucle, a doua ar fi o a doua
+    implementare NETESTATA a acelorasi garzi, si ar diverge tacut la prima schimbare.
+    (S-a intamplat pe 2026-08-07, intr-un script de masurare: replica dadea `None` pe
+    articole care aveau potrivire.)
+
+    Nu acopera ramura de SATE: aia depinde de judetul sursei si are propria garda.
+    """
+    rx = _regex()
+    if rx is None:
+        return
+    index = _index()
+    for m in rx.finditer(plat):
+        if not original[m.start():m.start() + 1].isupper():
+            continue
+        if _ambiguu_fara_marca(m, plat):
+            continue
+        nivel = index[m.group(1)]
+        if nivel == "regional" and (_regiune_ca_nume_propriu(m, original, plat)
+                                    or _tara_omonima(m.group(1), plat)):
+            continue
+        calif = _CALIFICATIV.search(plat[max(0, m.start() - 12):m.start()])
+        if calif:
+            nivel = _NIVEL_CALIFICATIV[calif.group(1)]
+        yield m.group(1), nivel
+
+
+def locuri_numite(text: str) -> set:
+    """Numele de loc pe care textul le NUMESTE, dupa aceleasi garzi ca `clasifica`.
+
+    De ce exista separat: `clasifica` intoarce doar NIVELUL, iar cine vrea sa verifice daca
+    locul ala e si subiectul stirii are nevoie de NUME. Formele sunt normalizate (fara
+    diacritice, majuscule), ca sa se poata compara cu entitatile fara alta conversie.
+    """
+    if not text:
+        return set()
+    original = strip_diacritics(text)
+    return {nume for nume, _ in _potriviri(original, original.upper())}
+
+
 def clasifica(text: str, judet: str | None = None) -> str | None:
     """Rubrica geografica a textului, sau None daca nu contine niciun nume de loc.
 
@@ -428,21 +471,10 @@ def clasifica(text: str, judet: str | None = None) -> str | None:
     # cerinta asta taie potrivirile accidentale pe cuvinte comune.
     original = strip_diacritics(text)
     plat = original.upper()
-    index = _index()
+    index = _index()          # folosit mai jos, la garda ramurii de SATE
 
     gasit = None
-    for m in rx.finditer(plat):
-        if not original[m.start():m.start() + 1].isupper():
-            continue
-        if _ambiguu_fara_marca(m, plat):
-            continue
-        nivel = index[m.group(1)]
-        if nivel == "regional" and (_regiune_ca_nume_propriu(m, original, plat)
-                                    or _tara_omonima(m.group(1), plat)):
-            continue
-        calif = _CALIFICATIV.search(plat[max(0, m.start() - 12):m.start()])
-        if calif:
-            nivel = _NIVEL_CALIFICATIV[calif.group(1)]
+    for _, nivel in _potriviri(original, plat):
         if gasit is None or _ORDINE[nivel] > _ORDINE[gasit]:
             gasit = nivel
             if gasit == "local":
