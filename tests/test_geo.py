@@ -494,26 +494,107 @@ def test_capitala_de_moldova_supravietuieste_gardei():
 def test_badge_zonal_arata_judetul_cu_diacritice():
     """Cheia sursei da judetul, iar afisarea trece prin `eticheta_judet` — deci „Maramureș",
     nu „MARAMURES". Fara pasul asta badge-ul ar fi iesit fara diacritice pe coperta."""
-    assert geo.judet_copertei({"category": "zonal", "source": "emaramures"}) == "Maramureș"
+    assert geo.eticheta_copertei({"category": "zonal", "source": "emaramures"}) == "Maramureș"
 
 
 def test_badge_local_arata_judetul():
-    assert geo.judet_copertei({"category": "local", "source": "bzi"}) == "Iași"
+    assert geo.eticheta_copertei({"category": "local", "source": "bzi"}) == "Iași"
 
 
 def test_badge_regional_ramane_pe_categorie_chiar_cu_judet_derivabil():
     """`regional` acopera mai multe judete: un badge de judet ar fi FALS, nu doar lipsa.
     Sursa de mai jos ARE judet derivabil — regula taie dupa categorie, nu dupa disponibilitate."""
     assert geo.judet_sursa("emaramures") == "MARAMURES"
-    assert geo.judet_copertei({"category": "regional", "source": "emaramures"}) == ""
+    assert geo.eticheta_copertei({"category": "regional", "source": "emaramures"}) == ""
 
 
 def test_badge_categoriile_negeografice_nu_iau_judet():
     """La `auto`/`sport`/`extern` locul nu e subiectul, desi sursa e un ziar judetean."""
-    assert geo.judet_copertei({"category": "auto", "source": "alba24"}) == ""
+    assert geo.eticheta_copertei({"category": "auto", "source": "alba24"}) == ""
 
 
 def test_badge_fara_judet_derivabil_cade_pe_categorie():
     """40 din 435 `zonal` si 161 din 398 `local` n-au judet — acolo badge-ul ramane cum era."""
-    assert geo.judet_copertei({"category": "local", "source": "sursa-inexistenta"}) == ""
-    assert geo.judet_copertei({"category": "zonal"}) == ""
+    assert geo.eticheta_copertei({"category": "local", "source": "sursa-inexistenta"}) == ""
+    assert geo.eticheta_copertei({"category": "zonal"}) == ""
+
+
+# --- badge-ul ia locul din TITLU inainte de judetul sursei (2026-08-08) ---
+# Motivul, masurat: sursele nationale n-au judet in `config.SOURCES`, deci 249 din 463 de
+# articole `local` (54%) si 71 din 475 `zonal` (15%) scriau pe coperta chiar cuvantul
+# „LOCAL" / „ZONAL" — inclusiv stiri al caror titlu numea locul, cu litere mari, pe loc.
+
+def test_badge_sursa_nationala_ia_localitatea_din_titlu():
+    """Cazul care a ridicat problema: ProTV n-are judet, dar titlul zice unde s-a intamplat."""
+    a = {"category": "local", "source": "protv",
+         "title": "Un bărbat a decedat într-un incendiu izbucnit într-un apartament din Alunu"}
+    assert geo.eticheta_copertei(a) == "Alunu"
+
+
+def test_badge_localitatea_din_titlu_bate_judetul_sursei():
+    """Sursa spune de UNDE se scrie, titlul spune DESPRE ce — pe badge conteaza al doilea.
+    `bzi` are judetul Iasi declarat, deci fara regula asta ar fi scris „Iași" pe o stire
+    despre Cernavoda."""
+    a = {"category": "local", "source": "bzi",
+         "title": "Nivelul scăzut al Dunării poate opri Reactorul 2 de la Cernavodă"}
+    assert geo.eticheta_copertei(a) == "Cernavodă"
+
+
+def test_badge_zonal_ia_judetul_numit_de_titlu():
+    a = {"category": "zonal", "source": "g4media",
+         "title": "Transporturi agabaritice tranzitează județul Constanța"}
+    assert geo.eticheta_copertei(a) == "Constanța"
+
+
+def test_badge_titlul_fara_loc_cade_pe_judetul_sursei():
+    """Pasul 2 ramane intact: „din Capitală" nu e in gazetteer, deci decide sursa."""
+    a = {"category": "local", "source": "bzi",
+         "title": "Trafic restricționat pe strada Witting din Capitală"}
+    assert geo.eticheta_copertei(a) == "Iași"
+
+
+def test_badge_din_titlu_respecta_garzile_clasificarii():
+    """Acelasi scaner ca la clasificare: „Casa Albă" nu deschide judetul Alba nici aici.
+    Fara `_potriviri`, o a doua implementare ar fi divergent tacit de poarta reala.
+
+    Cu control pozitiv in aceeasi functie, altfel testul ar trece si daca mecanismul ar
+    lipsi cu totul — "" e si rezultatul lui „nu s-a cautat nimic"."""
+    compus = {"category": "local", "source": "protv",
+              "title": "Casa Albă a anunțat noi sancțiuni împotriva Iranului"}
+    assert geo.eticheta_copertei(compus) == ""
+    simplu = {"category": "local", "source": "protv",
+              "title": "Consiliul Județean Alba a aprobat bugetul"}
+    assert geo.eticheta_copertei(simplu) == "Alba"
+
+
+def test_eticheta_localitate_are_diacritice():
+    assert geo.eticheta_localitate("CERNAVODA") == "Cernavodă"
+    assert geo.eticheta_localitate("TARGU MURES") == "Târgu Mureș"
+
+
+def test_eticheta_localitate_necunoscuta_nu_ghiceste():
+    """Fara diacritice pe coperta arata a defect — mai bine cade pe judet decat sa scrie
+    „Nueexista". 16 din 147 de potriviri din titluri sunt in situatia asta."""
+    assert geo.eticheta_localitate("NUEEXISTA") == ""
+
+
+def test_loc_din_titlu_prefera_localitatea_judetului():
+    """Titlul le numeste pe amandoua; badge-ul o ia pe cea specifica."""
+    assert geo.loc_din_titlu("Incendiu la Cernavodă, în județul Constanța") == "Cernavodă"
+
+
+def test_loc_din_titlu_departajeaza_pe_judetul_sursei():
+    """Doua locuri in acelasi titlu: castiga cel din judetul sursei, INDIFERENT de nivel.
+    Suceava e si municipiu, deci fara regula asta ar fi batut Maramuresul (doar judet) si
+    un ziar maramuresean ar fi scris „Suceava" pe propria lui stire."""
+    titlu = "Percheziții ample în Maramureș și Suceava pentru contrabandă cu arme"
+    assert geo.loc_din_titlu(titlu, "MARAMURES") == "Maramureș"
+    assert geo.loc_din_titlu(titlu, "SUCEAVA") == "Suceava"
+
+
+def test_loc_din_titlu_nu_forteaza_judetul_sursei_cand_nu_e_in_titlu():
+    """Departajatorul nu poate ADAUGA un candidat: o stire a unui ziar clujean despre
+    Cernavoda ramane „Cernavodă", nu devine „Cluj". Altfel regula ar readuce exact
+    bug-ul reparat — locul redactiei in locul locului stirii."""
+    titlu = "Măsuri de urgență la Centrala Cernavodă din cauza debitului scăzut al Dunării"
+    assert geo.loc_din_titlu(titlu, "CLUJ") == "Cernavodă"
