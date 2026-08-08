@@ -3,20 +3,49 @@ import json
 import os
 from datetime import datetime, timezone, timedelta
 
-from . import config
+from . import config, geo
 
 STATE_PATH = os.path.join(config.ROOT, "data", "articles.json")
 
 
-def _resync_pinned(articles: list) -> list:
-    """Readuce articolele vechi pe rubrica geografica pe care o are ACUM sursa lor.
+def _text_articol(art: dict) -> str:
+    """Textul pe care il vede clasificarea: titlu + teaser + synthesis.
 
-    Axa geografica e decisa de sursa, nu de articol (vezi process._resolve_category).
-    Dar articolele deja procesate isi pastreaza categoria in stare, iar categoria se
-    recalculeaza doar la bump de PROMPT_VERSION. Deci o rearanjare de config -- mutarea
-    ziarelor judetene din 'local' in 'zonal' -- lasa in urma articole pe rubrica veche,
-    care nu se repara singure niciodata: 131 de articole stateau asa la 2026-07-25.
+    Duplicat DELIBERAT fata de `process._text_clasificabil`, ca `state` sa nu importe
+    `process` (care isi construieste prompturile la import, doar ca sa incarcam starea).
+    `test_state_resync.py` le tine legate: daca una se schimba fara cealalta, pica.
+    """
+    return " ".join(filter(None, (art.get("title"), art.get("teaser"),
+                                  art.get("synthesis"))))
+
+
+def _resync_pinned(articles: list) -> list:
+    """Readuce pe rubrica sursei articolele vechi pe care TEXTUL lor nu le sustine.
+
+    Categoria unui articol deja procesat e inghetata in stare si se recalculeaza doar la
+    bump de PROMPT_VERSION. Deci o rearanjare de config -- mutarea ziarelor judetene din
+    'local' in 'zonal' -- lasa in urma articole pe rubrica veche, care nu se repara singure
+    niciodata: 131 de articole stateau asa la 2026-07-25.
     Sursele scoase din config isi pastreaza categoria; nu avem de unde sti alta.
+
+    **Garda din 2026-08-08, si de ce exista.** Pana atunci functia rescria categoria fara sa
+    se uite la articol, deci ANULA la fiecare `load()` clasificarea din text pe care
+    `process._resolve_category` o face la ingestie. Cele doua implementau reguli opuse:
+    aici „axa geografica e decisa de SURSA", acolo regula proprietarului din 2026-08-02,
+    „LOCAL inseamna UNDE se intampla, nu CINE publica". Functia asta e mai VECHE (2026-07-25)
+    si a ramas nerevizitata cand regula a aterizat; rula ultima, deci castiga ea.
+    Masurat pe corpus (2962 articole, 2026-08-08): **663 din 1247** de articole de la surse cu
+    rubrica geografica fixata erau impinse inapoi pe rubrica sursei -- 390 `local`->`zonal`,
+    229 `local`->`regional`, 36 `zonal`->`regional`. Efect secundar: articolul aparea un build
+    la `/local/<slug>/`, iar la urmatorul se muta definitiv la `/zonal/<slug>/`, fiindca
+    permalinkul contine categoria (`render.py:295`) -- verificat live pe un articol eMaramures,
+    `/local/` da 404 si `/zonal/` da 200.
+
+    Garda: daca textul articolului sustine EXACT categoria stocata, articolul nu se atinge.
+    Nu „orice nivel" -- exact ala: un articol pus pe `local` al carui text numeste doar judetul
+    trebuie in continuare readus pe `zonal`, care e chiar scenariul pentru care s-a scris
+    functia. Nu se face migrare retroactiva: cele 663 deja rescrise isi pastreaza categoria si
+    permalinkul, si expira in 7 zile.
     """
     pinned = getattr(config, "PINNED_CATEGORIES", set())
     for art in articles:
@@ -36,6 +65,10 @@ def _resync_pinned(articles: list) -> list:
         # Doar in interiorul axei geografice: un articol pe care AI-ul l-a pus pe o tema
         # (sport, politic) de la o sursa netematica nu e treaba acestei functii.
         if actuala in pinned and cat in pinned and cat != actuala:
+            # Textul bate sursa. `judet_sursa` e acelasi argument ca la ingestie: deschide
+            # potrivirea pe satele judetului respectiv, altfel „Dezmir" nu inseamna nimic.
+            if geo.clasifica(_text_articol(art), geo.judet_sursa(sid)) == cat:
+                continue
             art["category"] = actuala
     return articles
 
