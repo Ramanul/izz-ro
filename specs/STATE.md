@@ -12,9 +12,18 @@
 > wave (all 14 domains are in `config.SOURCES`). Everything below was **verified against the code
 > today**, not copied forward.
 
-**Updated:** 2026-08-07 (account A — eleven PRs landed today: #151–#161)
+**Updated:** 2026-08-08 (account A — #162 and #164 landed; #165 open, awaiting owner go)
 
-## Open — verified in code 2026-08-07, not carried over on trust
+## Open — verified in code 2026-08-07/08, not carried over on trust
+
+0. **#165 IS OPEN AND NEEDS A MERGE DECISION — read it before touching classification.**
+   `state._resync_pinned` ran on every `load()` and overwrote the ingestion-time classification
+   with the *source's* declared rubric. Two mechanisms, opposite rules; the older one ran last and
+   won. **663 of 1247** articles from geographically-pinned sources sat on a rubric their own text
+   contradicts (390 `local`→`zonal`, 229 `local`→`regional`, 36 `zonal`→`regional`). Practical
+   consequence: **a county paper could never publish a `local` story**, however explicitly the text
+   named the commune. Verified three independent ways, incl. live (`/local/` 404, `/zonal/` 200 for
+   the same slug). No retroactive migration — the 663 keep their permalinks and expire in ~7 days.
 
 1. **Cernavodă / national-stakes local events — the real classification gap, and the only one left
    that needs AI.** 39 geo-axis articles name Cernavodă, 30 from national sources, **all 39 pass
@@ -41,6 +50,18 @@
    at ingestion**, and never recomputed. Any geo/topic fix reaches only new articles; existing ones
    heal by expiry (~7 days). Retroactive migration is **rejected** — the category is part of the
    permalink. State this whenever reporting a classification fix; do not re-propose the migration.
+   **Corrected 2026-08-08:** "never recomputed" was wrong in one direction that mattered —
+   `_resync_pinned` *rewrote* it on every `load()` (item 0). The blind window is real; the claim
+   that nothing touches a stored category afterwards was not.
+
+## Merged 2026-08-08 (account A — announce to B, per §14)
+
+**#162** `STATE.md` cut 1330 → 69 lines, history moved not deleted · **#164** the cover badge takes
+the place named by the TITLE, not the source's county — 249/463 `local` and 71/475 `zonal` were
+printing the literal word "LOCAL" because national sources have no county in `config.SOURCES`;
+badge-on-category drops −52% on both, plus 230 labels refined from county to locality.
+Gemini's finding on `eticheta_judet` was checked by running the code and is **false**
+(`IZZ-0159`) — do not "fix" it.
 
 ## Merged 2026-08-07 (account A — announce to B, per §14)
 
