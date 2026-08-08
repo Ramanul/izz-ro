@@ -12,11 +12,28 @@
 > wave (all 14 domains are in `config.SOURCES`). Everything below was **verified against the code
 > today**, not copied forward.
 
-**Updated:** 2026-08-08 (account A — #162 and #164 landed; #165 open, awaiting owner go)
+**Updated:** 2026-08-08 evening (account A — #162/#164/#165 landed; attribution dossier + badge
+locality fix + image label manifest landed directly on `main` under an explicit owner mandate)
+
+## Attribution — read this before touching classification or covers
+**`specs/atribuire-cercetare-si-plan.md` is the dossier**: 7 external systems, 8 distinct causes,
+a 6-stage plan. Do not re-research it; it was paid for once. Landed today, on top of #164/#165:
+- `tools/eval_atribuire.py` — runs attribution against `specs/gold-geo-*.tsv` and prints two
+  fractions. **Run it before and after any change to `geo.py`.** Baseline 2026-08-08:
+  category 25/39 (64%), place-on-badge **31/32 (97%)**, up from 26/32 before `loc_din_sursa`.
+- `geo.loc_din_sursa()` — locality decoded from a town-hall source slug, between title and county.
+- `media/labels.json` — binds each cover to its visible text, so a changed label triggers a
+  targeted redraw. **First run only marks existing images, never redraws them**: the owner refused
+  regenerating old covers on 2026-08-06 (`IZZ-0163`). `FORCE_REGEN=1` remains the opt-in.
+- Still open from the plan, in order: **E1 permalink decoupled from category** (owner decision —
+  blocks all retroactive correction), E3 focus score instead of `max()`, E4 separate topic/place
+  axes (owner decision), E5 gold set grown to ~150 + CI gate.
+- `tests/test_sitemap_editorial.py` has **10 pre-existing errors** (verified with `git stash`,
+  unrelated to the above). Full suite: 676 passed, 2 xfailed, 27 errors.
 
 ## Open — verified in code 2026-08-07/08, not carried over on trust
 
-0. **#165 IS OPEN AND NEEDS A MERGE DECISION — read it before touching classification.**
+0. **#165 LANDED (`9ad5d287`) — kept here because the mechanism must not be reintroduced.**
    `state._resync_pinned` ran on every `load()` and overwrote the ingestion-time classification
    with the *source's* declared rubric. Two mechanisms, opposite rules; the older one ran last and
    won. **663 of 1247** articles from geographically-pinned sources sat on a rubric their own text
