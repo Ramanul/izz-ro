@@ -21,7 +21,7 @@ import logging
 import os
 import re
 
-from . import config
+from . import config, localities
 from .util import strip_diacritics
 
 _CSV = os.path.join(config.ROOT, "data", "raport_complet_primarii.csv")
@@ -713,13 +713,46 @@ def loc_din_titlu(titlu: str, judet: str | None = None) -> str:
     return eticheta_judet(judete[0]) if judete else ""
 
 
+def loc_din_sursa(sursa: str | None) -> str:
+    """Localitatea codata in slug-ul unei surse de primarie: `pl_vaslui_municipiul_husi` -> „Huși".
+
+    De ce e separata de `loc_din_titlu`: aici NU se ghiceste nimic din text. Slug-ul e construit
+    determinist de `local_sources._make_slug`, deci e reversibil fara euristici — exact motivul
+    pentru care `localities.py` il foloseste deja ca sa aleaga fotografia localitatii.
+
+    Masurat pe setul de aur (2026-08-08): 5 din cele 6 rateuri de loc erau anunturi administrative
+    al caror TITLU nu numeste localitatea („ANUNT – întrerupere furnizare apă", „Anunț Mediu"),
+    dar a caror sursa o codeaza exact. Badge-ul cadea pe judet — „Vaslui" in loc de „Huși".
+
+    Judetul din slug trebuie sa fie printre judetele in care gazetteer-ul chiar are localitatea:
+    fara garda asta un slug stricat ar produce o eticheta plauzibila si falsa, iar o eticheta
+    falsa pe coperta e mai rea decat una mai putin precisa (sect. 7, „Zero Zgomot").
+    """
+    parsed = localities.parse_source_slug(sursa or "")
+    if not parsed:
+        return ""
+    judet, nume = parsed
+    if _JUDETUL_LOCALITATII is None:
+        _incarca_etichete()
+    cheie = strip_diacritics(nume).upper()
+    if strip_diacritics(judet).upper() not in _JUDETUL_LOCALITATII.get(cheie, ()):
+        return ""
+    return eticheta_localitate(cheie)
+
+
 def eticheta_copertei(a: dict) -> str:
     """Ce scrie pe badge-ul copertei in locul categoriei, sau "" daca nu se poate.
 
     La `zonal` si `local` locul E subiectul, iar „Cernavodă" spune cititorului care vede cardul
     distribuit mult mai mult decat „LOCAL". Se incearca, in ordine:
       1. locul pe care il numeste TITLUL — localitatea daca exista, altfel judetul;
-      2. judetul SURSEI, pentru ziarele judetene al caror titlu nu repeta locul.
+      2. localitatea codata in slug-ul sursei, cand sursa e o primarie (`loc_din_sursa`);
+      3. judetul SURSEI, pentru ziarele judetene al caror titlu nu repeta locul.
+
+    Pasul 2 sta INTRE ele fiindca e determinist, nu euristic — dar tot SUB titlu: slug-ul spune
+    cine publica, titlul spune despre ce, iar o primarie poate scrie si despre alt loc decat al
+    ei. Adaugat 2026-08-08, dupa ce masuratoarea pe setul de aur a aratat ca 5 din cele 6 rateuri
+    de loc erau anunturi administrative fara localitate in titlu (`tools/eval_atribuire.py`).
 
     Ordinea asta, si nu inversa: sursa spune de unde se scrie, titlul spune despre ce se scrie.
     Pana pe 2026-08-08 exista doar pasul 2, deci **orice stire locala de la o sursa nationala
@@ -743,4 +776,6 @@ def eticheta_copertei(a: dict) -> str:
     if cat not in ("zonal", "local"):
         return ""
     judet = judet_sursa(a.get("source"))
-    return loc_din_titlu(a.get("title") or "", judet) or eticheta_judet(judet)
+    return (loc_din_titlu(a.get("title") or "", judet)
+            or loc_din_sursa(a.get("source"))
+            or eticheta_judet(judet))

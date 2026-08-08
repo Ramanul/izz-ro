@@ -598,3 +598,43 @@ def test_loc_din_titlu_nu_forteaza_judetul_sursei_cand_nu_e_in_titlu():
     bug-ul reparat — locul redactiei in locul locului stirii."""
     titlu = "Măsuri de urgență la Centrala Cernavodă din cauza debitului scăzut al Dunării"
     assert geo.loc_din_titlu(titlu, "CLUJ") == "Cernavodă"
+
+
+def test_loc_din_sursa_recupereaza_localitatea_din_slug():
+    """Anunturile de primarie nu-si numesc localitatea in titlu; slug-ul sursei o codeaza.
+    Masurat pe setul de aur 2026-08-08: 5 din 6 rateuri de loc erau exact cazul asta."""
+    assert geo.loc_din_sursa("pl_vaslui_municipiul_husi") == "Huși"
+    assert geo.loc_din_sursa("pl_alba_oras_zlatna") == "Zlatna"
+
+
+def test_loc_din_sursa_refuza_ce_nu_e_primarie():
+    """Ziarele nu codeaza localitatea in cheie, deci functia nu are ce recupera de la ele."""
+    assert geo.loc_din_sursa("zcj") == ""
+    assert geo.loc_din_sursa("protv") == ""
+    assert geo.loc_din_sursa(None) == ""
+
+
+def test_loc_din_sursa_cere_potrivirea_judetului():
+    """Garda impotriva unui slug stricat: localitatea trebuie sa existe in judetul declarat.
+    Fara ea, o eticheta plauzibila si FALSA ar ajunge pe coperta."""
+    assert geo.loc_din_sursa("pl_cluj_municipiul_husi") == ""
+
+
+def test_eticheta_copertei_cade_pe_localitatea_sursei_nu_pe_judet():
+    """Integrare: titlu fara loc + sursa de primarie -> localitatea, nu judetul.
+    Pana pe 2026-08-08 badge-ul scria „Vaslui" pe un anunt al primariei din Husi."""
+    a = {"category": "local", "title": "ANUNȚ – întrerupere furnizare apă",
+         "source": "pl_vaslui_municipiul_husi"}
+    assert geo.eticheta_copertei(a) == "Huși"
+
+
+def test_eticheta_copertei_titlul_bate_slugul_sursei():
+    """Ordinea nu se inverseaza: o primarie care scrie despre ALT loc pastreaza locul din titlu.
+
+    Un singur loc in titlu, deliberat: cu doua ar intra departajarea pe judetul sursei
+    (`test_loc_din_titlu_departajeaza_pe_judetul_sursei`), care e alta regula si ar masca-o
+    pe asta.
+    """
+    a = {"category": "local", "title": "Delegație în vizită la Cernavodă",
+         "source": "pl_vaslui_municipiul_husi"}
+    assert geo.eticheta_copertei(a) == "Cernavodă"
