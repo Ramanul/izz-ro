@@ -17,6 +17,7 @@ randuri, 42 de judete, deja in repo. Regiunile istorice sunt singura parte scris
 """
 import csv
 import json
+import logging
 import os
 import re
 
@@ -597,29 +598,66 @@ def regiune_afisare(judet: str | None) -> str | None:
 _ETICHETE_JUDETE: dict | None = None
 
 
+_ETICHETE_LOCALITATI: dict | None = None
+_JUDETUL_LOCALITATII: dict | None = None
+
+
+def _incarca_etichete() -> None:
+    """Umple AMBELE dictionare de afisare dintr-o singura citire a gazetteer-ului.
+
+    `data/localities.json` are si judetul (`judet`, „Județul Cluj") si numele localitatii
+    (`label`, „Cernavodă"), ambele deja cu diacritice. Cheile lui `by_name` sunt normalizate
+    (litere mici, fara diacritice), deci se aduc la forma indexului geografic — majuscule
+    fara diacritice — ca sa poata fi cautate cu numele intors de `_potriviri`.
+    """
+    global _ETICHETE_JUDETE, _ETICHETE_LOCALITATI, _JUDETUL_LOCALITATII
+    _ETICHETE_JUDETE, _ETICHETE_LOCALITATI, _JUDETUL_LOCALITATII = {}, {}, {}
+    try:
+        with open(os.path.join(config.ROOT, "data", "localities.json"),
+                  encoding="utf-8") as fh:
+            date = json.load(fh)
+        for nume, intrari in (date.get("by_name") or {}).items():
+            cheie = strip_diacritics(nume).upper()
+            for e in intrari:
+                brut = (e.get("judet") or "").strip()
+                if brut:
+                    curat = re.sub(r"^Jude[tț]ul\s+", "", brut).strip()
+                    normalizat = strip_diacritics(curat).upper()
+                    _ETICHETE_JUDETE.setdefault(normalizat, curat)
+                    # O MULTIME, nu o valoare: „Alunu" exista si in Valcea, si in Olt.
+                    _JUDETUL_LOCALITATII.setdefault(cheie, set()).add(normalizat)
+                eticheta = (e.get("label") or "").strip()
+                if eticheta:
+                    _ETICHETE_LOCALITATI.setdefault(cheie, eticheta)
+    except (OSError, ValueError) as e:
+        # Fara gazetteer nu inventam etichete — dar esecul trebuie sa lase o urma: altfel
+        # TOATE copertile cad tacut pe numele categoriei si arata exact ca o decizie de design.
+        logging.warning("etichetele de coperta nu s-au putut incarca din localities.json: %s", e)
+
+
+def eticheta_localitate(nume: str | None) -> str:
+    """Numele localitatii CU diacritice, pentru afisare: 'CERNAVODA' -> 'Cernavodă'.
+
+    Intoarce "" cand gazetteer-ul nu are numele — masurat 2026-08-08, 16 din 147 de potriviri
+    din titluri. Acolo apelantul cade mai departe (judetul din titlu, apoi judetul sursei):
+    mai bine o eticheta mai putin precisa decat un nume de localitate fara diacritice, care
+    pe coperta arata a defect.
+    """
+    if not nume:
+        return ""
+    if _ETICHETE_LOCALITATI is None:
+        _incarca_etichete()
+    return _ETICHETE_LOCALITATI.get(nume, "")
+
+
 def eticheta_judet(judet: str | None) -> str:
     """Numele judetului CU diacritice, pentru afisare: 'BISTRITA-NASAUD' -> 'Bistrița-Năsăud'.
 
     Sursa e `data/localities.json` (campul `judet`, deja cu diacritice, construit de
     build_gazetteer) — CSV-ul primariilor le are doar in antet, nu si in valori.
     """
-    global _ETICHETE_JUDETE
     if _ETICHETE_JUDETE is None:
-        _ETICHETE_JUDETE = {}
-        try:
-            with open(os.path.join(config.ROOT, "data", "localities.json"),
-                      encoding="utf-8") as fh:
-                date = json.load(fh)
-            for intrari in (date.get("by_name") or {}).values():
-                for e in intrari:
-                    brut = (e.get("judet") or "").strip()
-                    if not brut:
-                        continue
-                    curat = re.sub(r"^Jude[tț]ul\s+", "", brut).strip()
-                    _ETICHETE_JUDETE.setdefault(
-                        strip_diacritics(curat).upper(), curat)
-        except (OSError, ValueError):
-            pass
+        _incarca_etichete()
     if not judet:
         return ""
     # Cele doua pe care gazetteer-ul nu le acopera: Bucurestiul nu e judet acolo, iar
@@ -629,27 +667,80 @@ def eticheta_judet(judet: str | None) -> str:
     }.get(judet, judet.title())
 
 
-def judet_copertei(a: dict) -> str:
-    """Ce scrie pe badge-ul copertei in locul categoriei — judetul sursei, sau "" daca nu se poate.
+def loc_din_titlu(titlu: str, judet: str | None = None) -> str:
+    """Eticheta locului pe care TITLUL il numeste: localitatea, altfel judetul. "" daca niciunul.
 
-    La `zonal` si `local` locul E subiectul, iar „Brasov" spune cititorului care vede cardul
-    distribuit mult mai mult decat „ZONAL" — acolo se ia judetul SURSEI.
+    Acelasi scaner si aceleasi garzi ca la clasificare (`_potriviri`), deci functia nu poate
+    accepta un nume pe care poarta geografica l-ar fi respins — „Casa Albă" ramane in afara.
+
+    Localitatea bate judetul cand titlul le numeste pe amandoua: e mai specifica, si e fix ce
+    cauta cititorul pe un card distribuit. La un nume de localitate pe care gazetteer-ul nu-l
+    are cu diacritice se continua cautarea, in loc sa se intoarca o forma fara ele.
+
+    `judet` e judetul SURSEI si e doar DEPARTAJATOR intre candidati de acelasi nivel — nu
+    poate adauga si nu poate scoate niciun candidat. Fara el, un titlu cu doua locuri il ia pe
+    primul, ceea ce masurat dadea „Percheziții ample în Maramureș și Suceava" etichetat
+    „Suceava" desi sursa acopera Maramuresul. Cand niciun candidat nu e din judetul sursei,
+    ramane primul: o stire a unui ziar clujean despre Cernavoda scrie tot „Cernavodă".
+
+    DOAR titlul, deliberat, ca la `regiune_din_text`: un loc numit doar in corp e exact
+    semnalul slab pe care #156 l-a scos din clasificare. Masurat 2026-08-08, corpul ar mai
+    fi adus 99 de articole — nu merita riscul de a eticheta coperta cu un loc de decor.
+    """
+    if not titlu:
+        return ""
+    if _JUDETUL_LOCALITATII is None:
+        _incarca_etichete()
+    original = strip_diacritics(titlu)
+    localitati, judete = [], []
+    for nume, nivel in _potriviri(original, original.upper()):
+        if nivel == "local" and eticheta_localitate(nume):
+            localitati.append(nume)
+        elif nivel == "zonal":
+            judete.append(nume)
+    # Judetul sursei departajeaza INTRE nivele, nu doar in interiorul unuia: „Percheziții
+    # ample în Maramureș și Suceava" are Suceava ca localitate si Maramuresul doar ca judet,
+    # deci o preferinta care nu trece de nivelul „local" ar alege tot Suceava pentru un ziar
+    # maramuresean. Specificitatea decide abia cand niciun candidat nu e din judetul sursei.
+    if judet:
+        for nume in localitati:
+            if judet in _JUDETUL_LOCALITATII.get(nume, ()):
+                return eticheta_localitate(nume)
+        if judet in judete:
+            return eticheta_judet(judet)
+    if localitati:
+        return eticheta_localitate(localitati[0])
+    return eticheta_judet(judete[0]) if judete else ""
+
+
+def eticheta_copertei(a: dict) -> str:
+    """Ce scrie pe badge-ul copertei in locul categoriei, sau "" daca nu se poate.
+
+    La `zonal` si `local` locul E subiectul, iar „Cernavodă" spune cititorului care vede cardul
+    distribuit mult mai mult decat „LOCAL". Se incearca, in ordine:
+      1. locul pe care il numeste TITLUL — localitatea daca exista, altfel judetul;
+      2. judetul SURSEI, pentru ziarele judetene al caror titlu nu repeta locul.
+
+    Ordinea asta, si nu inversa: sursa spune de unde se scrie, titlul spune despre ce se scrie.
+    Pana pe 2026-08-08 exista doar pasul 2, deci **orice stire locala de la o sursa nationala
+    afisa „LOCAL"** — 249 din 463 de articole `local` (54%) si 71 din 475 `zonal` (15%), fiindcă
+    ProTV, G4Media sau HotNews n-au (si n-ar avea de ce sa aiba) un judet in `config.SOURCES`.
 
     La `regional` judetul sursei ar fi FALS (articolul acopera mai multe judete), dar regiunea
     e corecta si o numeste chiar articolul: poarta geografica il pune pe `regional` DOAR cand
     textul numeste regiunea, nu prin deducere din judet. Pana pe 2026-08-05 se afisa „REGIONAL",
     o eticheta care nu spune nimic; acum se recupereaza numele din titlu cu `regiune_din_text`.
     Ramane "" cand titlul nu-l contine (regiunea putea fi in corp) — mai bine categoria decat
-    o regiune ghicita.
+    o regiune ghicita. **Masurat 2026-08-08 si lasat asa: 272 din 291 de articole `regional`
+    nu numesc regiunea nici in titlu, nici in teaser, iar corpul ar recupera 6.** Nu construi
+    un mecanism pentru sase articole; daca se redeschide, semnalul lipseste din date, nu din cod.
 
     La restul categoriilor locul nu e subiectul.
-
-    Acoperire masurata 2026-08-04 pe 2128 articole: zonal 395/435 (91%), local 237/398 (60%).
-    Restul raman pe categorie — de-aia intoarce "" in loc sa ghiceasca.
     """
     cat = a.get("category") or ""
     if cat == "regional":
         return regiune_din_text(a.get("title") or "") or ""
     if cat not in ("zonal", "local"):
         return ""
-    return eticheta_judet(judet_sursa(a.get("source")))
+    judet = judet_sursa(a.get("source"))
+    return loc_din_titlu(a.get("title") or "", judet) or eticheta_judet(judet)

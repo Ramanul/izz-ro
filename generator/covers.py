@@ -384,7 +384,7 @@ def _draw_text(img, a: dict):
     mono = _font("mono", 26 * SS)
     mono_s = _font("mono", 20 * SS)
     display = _font("display", 62 * SS)
-    eyebrow = geo.judet_copertei(a) or a.get("category") or "știri"
+    eyebrow = geo.eticheta_copertei(a) or a.get("category") or "știri"
     d.text((56 * SS, 48 * SS), eyebrow.upper(), font=mono, fill=GOLD_STRONG)
     rule_w = int((W2 / PHI - 112 * SS) / PHI)
     d.line([56 * SS, 96 * SS, 56 * SS + rule_w, 96 * SS], fill=GOLD_HEX, width=2 * SS)
