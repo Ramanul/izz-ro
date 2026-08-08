@@ -80,6 +80,14 @@ badge-on-category drops −52% on both, plus 230 labels refined from county to l
 Gemini's finding on `eticheta_judet` was checked by running the code and is **false**
 (`IZZ-0159`) — do not "fix" it.
 
+**`2262249f`** legal pages now state that AI output is published automatically, with **no
+pre-publication human sign-off** — the old "cu supraveghere umană" could be read as approval before
+publishing, which is exactly the AI Act art. 50 exemption we do NOT qualify for (in force
+2026-08-02). Also states images are NOT AI-generated (programmatic covers + Wikimedia), where
+art. 50 is stricter. **No per-article label** — §7 forbids per-article methodology notices;
+that stays in `/legal/method/` only. Owner decision needed if a visible per-article label is ever
+wanted, since it would require revoking §7 (`IZZ-0164`).
+
 ## Merged 2026-08-07 (account A — announce to B, per §14)
 
 Eleven PRs: **#151** defusedxml + semgrep ratchet 4→2 · **#152** JSON-LD `@graph` · **#153**
