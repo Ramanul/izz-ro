@@ -12,7 +12,9 @@
    - **Sinteză** pentru un eveniment relatat de mai multe surse — triangulăm faptele confirmate și marcăm dacă sursele se contrazic.
 
 ## Rolul inteligenței artificiale
-Folosim un model AI pentru a reformula titlurile și a extrage faptele. **AI poate greși.** De aceea redacția verifică zilnic ce apare și corectează sau ascunde manual ce nu corespunde. Răspunderea editorială rămâne umană.
+Titlurile reformulate și rezumatele de pe acest site sunt **generate automat cu un model AI** (Google Gemini sau Anthropic Claude). Publicarea este automată: **niciun redactor nu aprobă fiecare text înainte să apară.** **AI poate greși.** De aceea redacția verifică zilnic ce a apărut și corectează sau ascunde manual ce nu corespunde, iar răspunderea editorială pentru tot ce rămâne publicat este umană.
+
+Imaginile **nu** sunt generate cu AI: coperțile sunt grafică proprie, desenată programatic pentru fiecare articol, iar fotografiile provin din Wikimedia Commons, sub licențe libere.
 
 ## De ce contează
 Selecția și formularea curată sunt produsul nostru. Dacă ceva ți se pare greșit sau manipulator, spune-ne la **contact@izz.ro**.
