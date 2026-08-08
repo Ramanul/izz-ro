@@ -2,10 +2,10 @@
   "version": "0.0.1",
   "configurations": [
     {
-      "name": "izz-static",
+      "name": "izz-output",
       "runtimeExecutable": "python",
-      "runtimeArgs": ["-m", "http.server", "8766", "--directory", "output"],
-      "port": 8766
+      "runtimeArgs": ["-m", "http.server", "8000", "--directory", "output"],
+      "port": 8000
     }
   ]
 }
