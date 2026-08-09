@@ -220,6 +220,10 @@ def _parse_sitemap_news(raw: bytes, key: str, source: dict) -> tuple[list, str |
             continue
         if _is_agency(loc, source["name"]):
             continue
+        motiv = guard.verdict(title)
+        if motiv:
+            print(f"   !! garda ingestie (sitemap): sar [{key}] {title[:60]!r} — {motiv}")
+            continue
         items.append({
             "url": normalize_url(loc),
             "original_link": loc,
@@ -415,6 +419,10 @@ def _fetch_html_list(key: str, source: dict) -> tuple[list, str | None]:
         link = entry["href"]
         title = clean_html(entry["title"])
         if not link or not title or _is_agency(link, source["name"]):
+            continue
+        motiv = guard.verdict(title)
+        if motiv:
+            print(f"   !! garda ingestie (lista HTML): sar [{key}] {title[:60]!r} — {motiv}")
             continue
         items.append({
             "url": normalize_url(link),
