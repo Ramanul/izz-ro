@@ -1,6 +1,7 @@
 """Randare SSG cu Jinja2 (autoescape ON) -> output/. Permalink-uri, sitemap, robots, feed, JSON-LD."""
 import logging
 import math
+import json
 import os
 import re
 import shutil
@@ -440,6 +441,55 @@ def _source_catalog(by_date: list) -> tuple[list, int, int]:
     return catalog, len(config.SOURCES), len(src_stats)
 
 
+_HARTA_CACHE: dict | None = None
+
+
+def _harta_judete(catalog: list) -> dict | None:
+    """Conturul SVG al judetelor + ancora catre sectiunea fiecaruia de pe /surse/.
+
+    Bara pusa de owner cand harta a fost amanata (`specs/istoric-executie.md`): SVG STATIC,
+    linkuri TEXT inauntru, ZERO JS, fara layout shift, pa11y sa ramana 0. De-aia harta e
+    inline (nicio cerere in plus), fiecare judet cu surse e un `<a>` cu `<title>` — deci are
+    nume accesibil si functioneaza fara JavaScript — iar judetele FARA surse raman desenate,
+    dar inerte: o tara intreaga, fara linkuri moarte.
+
+    Returneaza None daca fisierul de contur lipseste; pagina se randeaza atunci fara harta,
+    nu crapa. Datele vin din `tools/build_harta.py` (Natural Earth, domeniu public).
+    """
+    global _HARTA_CACHE
+    if _HARTA_CACHE is None:
+        try:
+            with open(os.path.join(config.ROOT, "data", "harta_judete.json"),
+                      encoding="utf-8") as fh:
+                _HARTA_CACHE = json.load(fh)
+        except (OSError, ValueError):
+            _HARTA_CACHE = {}
+    if not _HARTA_CACHE.get("judete"):
+        return None
+
+    # Ancorele exista doar pentru judetele care chiar au o sectiune in pagina.
+    ancore: dict = {}
+    for group in catalog:
+        for region in group.get("regions", []):
+            for county in region["counties"]:
+                if county.get("judet"):
+                    ancore[county["judet"]] = county
+
+    forme = []
+    for judet, d in _HARTA_CACHE["judete"].items():
+        county = ancore.get(judet)
+        forme.append({
+            "judet": judet,
+            "label": geo.eticheta_judet(judet),
+            "d": d,
+            "anchor": county["anchor"] if county else None,
+            "count": county["count"] if county else 0,
+        })
+    return {"viewbox": _HARTA_CACHE.get("viewbox", "0 0 1000 704"),
+            "forme": forme,
+            "cu_surse": sum(1 for f in forme if f["anchor"])}
+
+
 def _grupeaza_pe_regiuni(pe_judet: dict) -> list:
     """{judet: {with_stats, without_stats}} -> arbore regiune istorica > judet, pentru /surse/.
 
@@ -452,6 +502,8 @@ def _grupeaza_pe_regiuni(pe_judet: dict) -> list:
         regiune = geo.regiune_afisare(judet) or "ALTELE"
         pe_regiune.setdefault(regiune, []).append({
             "label": geo.eticheta_judet(judet),
+            "judet": judet,
+            "anchor": "jud-" + slugify(judet),
             "count": len(buckets["with_stats"]) + len(buckets["without_stats"]),
             **buckets,
         })
@@ -576,7 +628,8 @@ def build(articles: list, mod: dict | None = None) -> None:
     _write(os.path.join(OUT_DIR, "surse", "index.html"),
            env.get_template("surse.html").render(**_base_ctx(
                "/surse/", catalog=src_catalog, total_sources=total_sources,
-               stats_sources=stats_sources, ttl_days=config.ARTICLE_TTL_DAYS)))
+               stats_sources=stats_sources, ttl_days=config.ARTICLE_TTL_DAYS,
+               harta=_harta_judete(src_catalog))))
 
     # graful cunoasterii v1: pagini de subiect per entitate (+ feed de urmarire >=3)
     ents = _entity_index(by_date)
