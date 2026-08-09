@@ -88,6 +88,16 @@ art. 50 is stricter. **No per-article label** — §7 forbids per-article method
 that stays in `/legal/method/` only. Owner decision needed if a visible per-article label is ever
 wanted, since it would require revoking §7 (`IZZ-0164`).
 
+**`67e44e1e` corrects the above** (`IZZ-0165`). Art. 50's exemption reads "human review **or**
+editorial control" + "editorial responsibility for the publication" — it does **not** say "before
+publication"; the secondary source we worked from had added that. So the first wording ("no editor
+approves each text before it appears") was giving away the exemption's own conditions for free.
+Now the pages state automatic publication **and** continuous editorial control + responsibility.
+**Open, owner only:** the Commission requires *substantive* review — "an editor who reads, revises
+and takes responsibility" qualifies, a spell-check does not. Whether the daily pass clears that bar
+is a fact about our process, not something code can answer. If it does, no per-article label is
+owed at all and §7 stays untouched.
+
 ## Merged 2026-08-07 (account A — announce to B, per §14)
 
 Eleven PRs: **#151** defusedxml + semgrep ratchet 4→2 · **#152** JSON-LD `@graph` · **#153**
