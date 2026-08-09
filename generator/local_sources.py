@@ -39,6 +39,15 @@ _DEAD_SLUGS = frozenset({
     # diferiti: 30125482616 (24 iul) si 30152246525 (25 iul). In amandoua e SINGURA sursa
     # moarta din cele 120, acelasi 403 pe primariatacuta.ro -- deci WAF stabil, nu o pana.
     "vaslui_tacuta",
+    # COMPROMIS, nu mort (2026-08-09). primariarovinari.ro raspunde 200 si feed-ul merge --
+    # exact de-asta e periculos: `rss_ok=yes` in gold_integrare.csv, deci ar reintra la fiecare
+    # rulare. WordPress-ul lor e spart si publica pagini de warez la ~3h fix (03:51, 06:51,
+    # 09:51 ...), intercalate cu anunturi reale ale primariei. 8 astfel de pagini au ajuns pe
+    # izz.ro pe 8-9 aug. Verificat live de pe alta retea decat runnerii CI (curl direct pe
+    # /feed/, 9 aug 19:20): titlurile de warez sunt inca acolo, plus unul nou aparut intre timp.
+    # Excluderea aici opreste re-ingestia; `moderation.yaml` ascunde ce e deja in articles.json.
+    # Se scoate din lista DOAR dupa ce primaria curata site-ul si feed-ul e reverificat manual.
+    "gorj_oras_rovinari",
 })
 
 

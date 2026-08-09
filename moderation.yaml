@@ -2,8 +2,32 @@
 # După salvare, build-ul următor (sau Actions -> Run workflow) aplică modificările.
 
 blocklist_urls: []          # URL-uri de ascuns (lipești linkul exact al sursei)
-blocklist_keywords: []      # titluri care conțin aceste cuvinte -> ascunse
-suppress_sources: []        # o sursă pe care o oprești temporar (ex.: gsp)
+
+# titluri care conțin aceste cuvinte -> ascunse
+# 2026-08-09: adăugate după ce primariarovinari.ro (WordPress compromis) a împins 8 articole
+# de warez pe izz.ro. Lista NU e suficientă singură — atacatorul folosește homoglife
+# („To𝚛rent" cu „r" matematic, „Frее" cu „е" chirilic), deci vezi și `suppress_sources` de mai
+# jos și garda din `fetch.py` (_pare_spam_injectat). Aici stau doar cuvintele curate.
+blocklist_keywords:
+  - torrent
+  - crack fixed
+  - elamigos
+  - keygen
+  - kmspico
+  - repack
+  - nulled
+  - web-dl
+  - steam-rip
+  - full version
+
+# o sursă pe care o oprești temporar (ex.: gsp)
+# 2026-08-09 — pl_gorj_oras_rovinari: site-ul primăriei Rovinari e COMPROMIS. Feed-ul lui
+# publică pagini de software piratat la fiecare ~3h, printre anunțurile reale ale primăriei.
+# Suprimarea taie TOATE cele 11 articole de la ei, inclusiv cele 3 legitime — deliberat: cât
+# timp atacatorul are acces la CMS, nimic de la sursa asta nu e de încredere.
+# Se ridică DOAR după ce primăria curăță site-ul și se reverifică manual feed-ul.
+suppress_sources:
+  - pl_gorj_oras_rovinari
 corrections:                # corectezi un titlu/teaser greșit de AI, pe un URL anume
   # "https://sursa.ro/articol": { title: "Titlu corect", teaser: "Rezumat corect." }
 featured: []                # URL-uri pe care le forțezi în hero (sus de tot)
