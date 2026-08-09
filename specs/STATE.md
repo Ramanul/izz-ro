@@ -42,6 +42,21 @@ a 6-stage plan. Do not re-research it; it was paid for once. Landed today, on to
    named the commune. Verified three independent ways, incl. live (`/local/` 404, `/zonal/` 200 for
    the same slug). No retroactive migration — the 663 keep their permalinks and expire in ~7 days.
 
+0b. **`hold_important` is a promise the code does not keep — and it is now load-bearing for AI Act
+   art. 50.** `moderation.yaml` documents it as "true = clusterele C/importante așteaptă aprobare
+   înainte de publicare". All the flag actually does is `generator/main.py:359-360`: a `print`
+   saying "de tratat la randare". **Nothing gates anything.** Set it to `true` and C clusters
+   publish exactly as before, while the operator believes they are held. This is not a missing
+   feature, it is a lying one. It matters beyond hygiene because art. 50's exemption turns on
+   "human review or editorial control" + "editorial responsibility" (`IZZ-0165`), and this flag is
+   the only mechanism in the repo that could implement pre-publication review. **Plan written, not
+   executed, awaiting owner "go"** — 3 slices (make the flag gate; a review queue; an approval log
+   as the documented evidence the Commission asks for), in
+   `sessions/A/2026-08-09-0632-art50-corectie-si-hold-important-negasit.md`. Slice 1 alone is
+   legally sufficient if the owner actually reads before approving. **Do not automate the review
+   itself** — the exemption exists because a human reads and takes responsibility; automating it
+   destroys the thing it is meant to prove.
+
 1. **Cernavodă / national-stakes local events — the real classification gap, and the only one left
    that needs AI.** 39 geo-axis articles name Cernavodă, 30 from national sources, **all 39 pass
    `_locul_e_subiectul`**, so #156 removes zero. The owner's rule ("LOCAL = where it happens") has
