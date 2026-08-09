@@ -543,6 +543,24 @@ picture { display: contents; }
 .source-county { border-left: 2px solid var(--line); padding-left: var(--s-13); margin: var(--s-13) 0 var(--s-21); }
 .source-county-name { font-size: var(--fs-xs); font-weight: 700; color: var(--ink-2); margin: 0 0 var(--s-8); }
 
+/* Harta judetelor pe /surse/ — bara pusa de owner cand a fost amanata: SVG STATIC, linkuri
+   text inauntru, ZERO JS, fara layout shift. `aspect-ratio` rezerva inaltimea inainte ca
+   SVG-ul sa fie parsat, deci nu misca nimic sub el (home Perf e tinut de CLS, §13). */
+.harta-judete { margin: var(--s-34) 0 0; max-width: var(--measure); }
+.harta-judete svg { display: block; width: 100%; height: auto; aspect-ratio: 1000 / 704; }
+.harta-judete figcaption {
+  font-family: var(--font-mono); font-size: var(--fs-eyebrow); color: var(--ink-3);
+  margin-top: var(--s-8); line-height: 1.5;
+}
+/* Judet cu surse: umplut, cu contur de pagina ca sa se citeasca granita. */
+.harta-jud path { fill: var(--gold-wash); stroke: var(--paper); stroke-width: 1.5; }
+.harta-jud:hover path, .harta-jud:focus path { fill: var(--gold-strong); }
+/* Focus vizibil pe tastatura: conturul standard nu se vede pe forme SVG neregulate. */
+.harta-jud:focus { outline: none; }
+.harta-jud:focus-visible path { stroke: var(--ink); stroke-width: 3; }
+/* Judet fara surse: desenat, ca tara sa fie intreaga, dar inert — fara link mort. */
+.harta-jud-gol { fill: var(--line); stroke: var(--paper); stroke-width: 1.5; }
+
 /* ---- arta generativa pe site (faza 2: articol + hero) ---- */
 .article-art {
   display: block; width: 100%; max-width: var(--measure); height: auto;

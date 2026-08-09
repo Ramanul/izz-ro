@@ -11,6 +11,23 @@
   <b>nu</b> înseamnă performanță slabă, ci doar că nu au intrat încă într-un cluster
   multi-sursă (o primărie cu un anunț unic, de exemplu, n-o să intre niciodată).</p>
 
+  {% if harta %}
+  <figure class="harta-judete">
+    <svg viewBox="{{ harta.viewbox }}" xmlns="http://www.w3.org/2000/svg" aria-labelledby="harta-titlu">
+      <title id="harta-titlu">Harta județelor — {{ harta.cu_surse }} județe au surse pe izz.ro</title>
+      {%- for f in harta.forme %}
+      {%- if f.anchor %}
+      <a href="#{{ f.anchor }}" class="harta-jud"><title>{{ f.label }} — {{ f.count }} {{ "sursă" if f.count == 1 else "surse" }}</title><path d="{{ f.d }}"/></a>
+      {%- else %}
+      <path d="{{ f.d }}" class="harta-jud-gol"/>
+      {%- endif %}
+      {%- endfor %}
+    </svg>
+    <figcaption>Județele colorate au surse în catalog. Alege unul ca să sari la lista lui;
+    toate sunt accesibile și din listele de mai jos.</figcaption>
+  </figure>
+  {% endif %}
+
   <div class="source-groups">
     {% for group in catalog %}
     <details class="source-group"{% if group.count <= 10 %} open{% endif %}>
@@ -52,7 +69,7 @@
             <span class="source-group-count">{{ region.count }} {{ "sursă" if region.count == 1 else "surse" }}</span>
           </summary>
           {% for county in region.counties %}
-          <div class="source-county">
+          <div class="source-county" id="{{ county.anchor }}">
             <p class="source-county-name">{{ county.label }}
               <span class="source-group-count">{{ county.count }}</span>
             </p>
