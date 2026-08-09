@@ -6,7 +6,7 @@ import os
 
 import yaml
 
-from . import config
+from . import config, guard
 from .util import normalize_url
 
 MOD_PATH = os.path.join(config.ROOT, "moderation.yaml")
@@ -46,6 +46,15 @@ def apply(articles: list, mod: dict) -> list:
     for a in articles:
         url = a.get("url", "")
         if url in block_urls or a.get("source") in suppress:
+            continue
+        # Garda de continut, a doua oara. Nu e redundanta cu cea din `fetch.py`: aici trec si
+        # articolele DEJA din `articles.json`, ingerate inainte ca garda sa existe sau printr-o
+        # versiune mai slaba a ei. `render_only()` chema `apply()` la FIECARE build, deci asta
+        # e singurul punct prin care curatarea ajunge pe site fara sa astepte un fetch nou.
+        motiv = guard.verdict(a.get("title") or "",
+                              a.get("teaser") or a.get("synthesis") or a.get("description") or "")
+        if motiv:
+            print(f"   !! garda moderare: ascund {(a.get('title') or '')[:60]!r} — {motiv}")
             continue
         title_l = (a.get("title", "") + " " + a.get("original_title", "")).lower()
         if any(kw in title_l for kw in keywords):

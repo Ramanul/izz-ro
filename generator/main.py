@@ -14,7 +14,7 @@ try:
 except ImportError:
     pass
 
-from . import fetch, state, cluster, moderation, config
+from . import fetch, state, cluster, moderation, config, guard
 from .process import get_provider, process_single, process_cluster, process_batch, process_official, OFFICIAL_PREFIXES
 from .util import domain_of
 
@@ -387,6 +387,14 @@ def main():
     parser.add_argument("--render-only", action="store_true",
                         help="doar randeaza starea salvata (pentru Cloudflare: fara fetch/AI)")
     args = parser.parse_args()
+
+    # Dead man's switch pentru garda de continut (LECTII L5). O garda stricata nu se plange
+    # singura: ar lasa pur si simplu warez-ul sa treaca, exact ca pe 8-9 aug 2026. Autotestul
+    # ruleaza corpusul REAL de atac la fiecare pornire si arunca daca garda nu mai prinde,
+    # inainte de orice fetch sau randare. Exceptia iese cu cod non-zero -> pasul de CI devine
+    # rosu, commit-ul e sarit, Cloudflare NU redeployeaza (aceeasi proprietate ca mai jos).
+    print(f">> garda de continut: autotest OK ({guard.autotest()} cazuri)")
+
     if args.render_only:
         render_only()
     else:

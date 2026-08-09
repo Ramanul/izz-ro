@@ -73,8 +73,16 @@ def clean_html(text: str) -> str:
     """
     if not text:
         return ""
-    text = _TAG_RE.sub(" ", text)
-    text = _html.unescape(text)
+    # ORDINEA CONTEAZA, si a fost gresita pana pe 2026-08-09: se taiau tagurile si ABIA APOI
+    # se decodau entitatile, deci `&lt;img onload=...&gt;` trecea intreg de taiere (nu e tag
+    # inca) si REDEVENEA markup dupa decodare. Asa a ajuns un payload de script, ca text
+    # vizibil, in teaserele de pe izz.ro — evaziune clasica prin dubla codare.
+    # Se itereaza pana la punct fix fiindca si codarea poate fi dubla (`&amp;lt;img`).
+    for _ in range(3):
+        nou = _TAG_RE.sub(" ", _html.unescape(text))
+        if nou == text:
+            break
+        text = nou
     # taie footerele RSS boilerplate de la coada
     text = re.sub(r"\[\s*[….]+\s*\]", " ", text)               # [...] / […]
     text = re.sub(r"[\(\[]?\s*(?:\(c\)|©)[^.]*\.?\s*$", "", text, flags=re.IGNORECASE)
@@ -91,14 +99,44 @@ def clean_html(text: str) -> str:
     return _WS_RE.sub(" ", text).strip()
 
 
-def truncate_words(text: str, max_words: int) -> str:
-    """Taie la max_words cuvinte (apararea in adancime daca AI depaseste limita)."""
+#: Plafonul pe caractere se DERIVA din cel pe cuvinte, nu e o constanta fixa: un plafon fix
+#: ar fi taiat sintezele (SYNTHESIS_MAX_WORDS=90) sau ar fi lasat teaserele nepazite.
+#: Masurat pe 6714 campuri reale din corpusul de 3380 de articole (2026-08-09):
+#:   teaser    mediana 6.85, p99 8.67, MAXIM 11.60 car/cuvant
+#:   synthesis mediana 6.82, p99 8.18, MAXIM  8.64
+#:   title     mediana 6.64, p99 9.25, MAXIM 11.00
+#: Continutul otravit de pe feedul compromis: 32.4-47.8 car/cuvant.
+#: 16 sta la 38% peste maximul legitim observat si la jumatate din cel mai BLAND atac —
+#: margine in ambele directii, nu o cifra aleasa din intuitie.
+MAX_CHARS_PER_WORD = 16
+
+
+def truncate_words(text: str, max_words: int, max_chars: int | None = None) -> str:
+    """Taie la max_words cuvinte SI la un plafon de caractere (aparare in adancime).
+
+    Plafonul pe caractere a fost adaugat pe 2026-08-09, dupa ce feedul primariei Rovinari
+    (compromis) a livrat un teaser de 1913 caractere in doar 40 de cuvinte: JavaScript
+    comprimat nu are spatii, deci un singur „cuvant" avea 866 de caractere. Plafonul pe
+    cuvinte a tinut perfect — numara unitatea gresita. Un jeton pe care browserul nu-l poate
+    rupe in randuri umfla cardul si il suprapune peste vecin, deci a fost si un defect de
+    LAYOUT, nu doar de continut; partea de CSS e `overflow-wrap` in `static/styles.css`.
+    """
     if not text:
         return ""
+    if max_chars is None:
+        max_chars = max_words * MAX_CHARS_PER_WORD
     words = text.split()
-    if len(words) <= max_words:
-        return text.strip()
-    return " ".join(words[:max_words]).rstrip(",.;:") + "..."
+    if len(words) > max_words:
+        text = " ".join(words[:max_words]).rstrip(",.;:") + "..."
+    text = text.strip()
+    if len(text) > max_chars:
+        # taie pe ultima granita de cuvant dinainte de plafon; daca nu exista niciuna in
+        # jumatatea a doua (un singur jeton urias), taie brutal — un teaser stalcit e mai
+        # ieftin decat o pagina stricata
+        taiat = text[:max_chars]
+        spatiu = taiat.rfind(" ")
+        text = (taiat[:spatiu] if spatiu > max_chars // 2 else taiat).rstrip(",.;:") + "..."
+    return text
 
 
 def title_tokens(title: str) -> set:

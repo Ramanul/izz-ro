@@ -211,6 +211,16 @@ picture { display: contents; }
   display: flex; gap: var(--s-8); flex-wrap: wrap;
 }
 .meta .source { color: var(--ink-2); font-weight: 600; }
+/* Niciun continut nu are voie sa strice aranjamentul paginii — 2026-08-09.
+   Un feed compromis a livrat un teaser cu un singur jeton de 866 de caractere (JavaScript
+   comprimat, fara spatii). Browserul n-avea unde sa-l rupa in randuri, deci a umflat cardul
+   pe latime si l-a suprapus peste vecinul din grid. `anywhere`, nu `break-word`: doar
+   `anywhere` intra si in calculul de min-content, deci opreste si intinderea coloanei de
+   grid, nu doar revarsarea textului. Plafonul de caractere din `util.truncate_words` e
+   perechea de pe partea de date; asta e plasa de sub ea, si tine si pentru URL-uri lungi
+   sau nume compuse, care nu sunt un atac. */
+.summary, .lead-summary, .body, .card h2, .card h3, .card a { overflow-wrap: anywhere; }
+
 .summary { color: var(--ink-2); font-size: var(--fs-xs); margin: 0; line-height: 1.55; }
 .read-more { font-size: var(--fs-eyebrow); font-family: var(--font-mono); font-weight: 700; text-transform: uppercase; letter-spacing: 1px; margin-top: var(--s-5); }
 .read-more::after { content: " \2192"; }

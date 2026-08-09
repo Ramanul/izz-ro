@@ -15,7 +15,7 @@ from html.parser import HTMLParser
 
 import feedparser
 
-from . import config
+from . import config, guard
 from .util import normalize_url, domain_of, clean_html, cuvinte_adaugate
 
 USER_AGENT = "IZZ.ro Bot/1.0 (+https://izz.ro)"
@@ -531,6 +531,13 @@ def _fetch_one(key: str, source: dict, cache: dict | None = None) -> tuple[list,
             continue
         if _is_agency(link, source["name"]):
             continue
+        body = _entry_body(entry)
+        # Garda de continut ostil: o sursa poate fi compromisa fara sa stim (vezi guard.py).
+        # Se respinge itemul, nu se incearca reparatia — §7 „SARE itemul".
+        motiv = guard.verdict(title, body)
+        if motiv:
+            print(f"   !! garda ingestie: sar [{key}] {title[:60]!r} — {motiv}")
+            continue
         items.append({
             "url": normalize_url(link),
             "original_link": link,
@@ -539,7 +546,7 @@ def _fetch_one(key: str, source: dict, cache: dict | None = None) -> tuple[list,
             "source_lang": source.get("lang", "ro"),
             "original_title": title,
             "title": title,
-            "description": _entry_body(entry),
+            "description": body,
             "category": source["category"],
             "published": _parse_date(entry),
             "model": None,
