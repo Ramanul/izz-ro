@@ -33,6 +33,25 @@ a 6-stage plan. Do not re-research it; it was paid for once. Landed today, on to
 
 ## Open — verified in code 2026-08-07/08, not carried over on trust
 
+**A. County map — SHIPPED on `/surse/` (#166), but it is NOT what the owner asked for.**
+The deferred item said "`/surse/` map" and that is what was built, to its bar (static SVG,
+text links, no JS, `aspect-ratio` reserves height, 39 county links + 3 inert shapes).
+Geometry: `data/harta_judete.json` from **Natural Earth (public domain)** via
+`tools/build_harta.py` — GADM was rejected on purpose, same borders but it forbids
+redistribution and commercial use and this repo is public. Do not swap the source back.
+**The gap, owner's words (2026-08-09): "în surse apare, dar acolo să caute cititorii?"**
+He wants a map that selects **NEWS**, not sources. Verified in code why that cannot be built
+on what exists: articles carry **no county** — only `category` (`local|zonal|regional`;
+663/513/247 today). The place is computed at render time for the cover badge and thrown away.
+There are **no per-county pages** either, only the three category pages.
+So the real slice is: persist the county at ingestion → generate `/judet/<slug>/` →
+re-point the map. **Consequence to state up front, not discover later:** the category is
+computed once at ingestion (Open 6), so a county field populates only for NEW articles — the
+map would start sparse and fill over ~7 days as the current stock expires. Not a bug; it is
+how the pipeline is built. **The front-end audit for #166 was never run** (session ran out of
+budget): `/surse/` was Perf 81 / A11y 100 / pa11y 0 before, and the page grew 53 → 100 KB from
+inlining. If Perf dropped, raise `TOLERANTA` in `tools/build_harta.py` — no other code moves.
+
 0. **#165 LANDED (`9ad5d287`) — kept here because the mechanism must not be reintroduced.**
    `state._resync_pinned` ran on every `load()` and overwrote the ingestion-time classification
    with the *source's* declared rubric. Two mechanisms, opposite rules; the older one ran last and
