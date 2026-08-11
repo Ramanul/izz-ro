@@ -48,6 +48,18 @@ _DEAD_SLUGS = frozenset({
     # Excluderea aici opreste re-ingestia; `moderation.yaml` ascunde ce e deja in articles.json.
     # Se scoate din lista DOAR dupa ce primaria curata site-ul si feed-ul e reverificat manual.
     "gorj_oras_rovinari",
+    # COMPROMIS (2026-08-09, descoperit abia pe 11 aug). cajvana.ro a fost DEFACED: un articol
+    # intitulat „Hacked by Chinafans", cu corp „Hacked By Chinafans https://t.me/Hack_0xTeam
+    # https://t.me/Hello_root", link https://cajvana.ro/0x-htm-1906/. A ajuns pe izz.ro si a stat
+    # live doua zile, la https://izz.ro/local/hacked-by-chinafans/ (HTTP 200, verificat).
+    # DE CE A SCAPAT, si de-asta conteaza: nu are warez, nici markup, nici homoglife, nici titlu-
+    # gunoi — deci TOATE cele cinci straturi din `guard.verdict` l-au lasat sa treaca. E cazul care
+    # dovedeste ca apararea pe cuvinte nu e suficienta si ca ai nevoie de anomalie pe COMPORTAMENTUL
+    # sursei: o primarie romaneasca cu 100% titluri in romana care publica brusc unul in engleza.
+    # `guard.anomalie` il prinde din primul articol; l-am gasit tocmai masurand pentru garda aia.
+    # Site-ul nu raspundea la verificarea din 11 aug 20:2x (curl -> 000, conexiune esuata), deci
+    # nu s-a putut confirma daca e inca defaced sau a fost luat jos.
+    "suceava_oras_cajvana",
 })
 
 

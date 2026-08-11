@@ -28,6 +28,11 @@ blocklist_keywords:
 # Se ridică DOAR după ce primăria curăță site-ul și se reverifică manual feed-ul.
 suppress_sources:
   - pl_gorj_oras_rovinari
+  # Defaced 2026-08-09 („Hacked by Chinafans" + linkuri Telegram), descoperit 11 aug. A stat
+  # live pe izz.ro doua zile: niciunul din cele cinci straturi de continut nu-l prindea, fiindca
+  # titlul n-are niciun marker ostil — doar e in engleza pe o sursa 100% romaneasca. Vezi
+  # `guard.anomalie` si comentariul din `local_sources._DEAD_SLUGS`.
+  - pl_suceava_oras_cajvana
 corrections:                # corectezi un titlu/teaser greșit de AI, pe un URL anume
   # "https://sursa.ro/articol": { title: "Titlu corect", teaser: "Rezumat corect." }
 featured: []                # URL-uri pe care le forțezi în hero (sus de tot)
