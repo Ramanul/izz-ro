@@ -20,6 +20,29 @@ from .util import normalize_url, domain_of, clean_html, cuvinte_adaugate
 
 USER_AGENT = "IZZ.ro Bot/1.0 (+https://izz.ro)"
 TIMEOUT = 10  # secunde per feed
+
+# Plafon de raspuns. `resp.read()` fara argument citeste CAT TRIMITE serverul: o sursa
+# compromisa poate servi gigaocteti si omoara runnerul de CI prin memorie, nu prin continut.
+# Cifra e MASURATA, nu aleasa (R3 din specs/securitate-ingestie.md): pe un esantion de 7
+# feeduri reale, cel mai mare a fost 198 139 B (unica.ro), median ~25 kB. 8 MiB = ~40x peste
+# maximul observat, deci un feed legitim nu-l atinge nici daca isi dubleaza de cinci ori
+# volumul, iar memoria ramane marginita.
+MAX_RESPONSE_BYTES = 8 * 1024 * 1024
+
+
+def _read_limitat(resp) -> bytes:
+    """`resp.read()` cu plafon. Peste plafon ARUNCA, nu trunchiaza.
+
+    Trunchierea tacuta ar da un XML rupt pe care parserul l-ar raporta ca „sursa stricata",
+    adica exact diagnosticul gresit. `ValueError` e deja prins de toti apelantii si devine
+    o eroare normala de sursa, logata pe nume.
+    """
+    raw = resp.read(MAX_RESPONSE_BYTES + 1)
+    if len(raw) > MAX_RESPONSE_BYTES:
+        raise ValueError(f"raspuns peste plafonul de {MAX_RESPONSE_BYTES} B")
+    return raw
+
+
 # Fetch-ul e I/O-bound: threadurile asteapta reteaua, nu CPU-ul. 8 e conservator
 # fata de ~40+ surse; FETCH_WORKERS=1 revine la secvential.
 MAX_WORKERS = int(os.environ.get("FETCH_WORKERS", "8"))
@@ -220,7 +243,7 @@ def _parse_sitemap_news(raw: bytes, key: str, source: dict) -> tuple[list, str |
             continue
         if _is_agency(loc, source["name"]):
             continue
-        motiv = guard.verdict(title)
+        motiv = guard.verdict(title) or guard.url_ostil(loc)
         if motiv:
             print(f"   !! garda ingestie (sitemap): sar [{key}] {title[:60]!r} — {motiv}")
             continue
@@ -253,7 +276,7 @@ def _fetch_sitemap_news(key: str, source: dict) -> tuple[list, str | None]:
     try:
         req = urllib.request.Request(source["url"], headers={"User-Agent": USER_AGENT})
         with urllib.request.urlopen(req, timeout=TIMEOUT) as resp:
-            raw = resp.read()
+            raw = _read_limitat(resp)
     except (urllib.error.HTTPError, urllib.error.URLError, socket.timeout, ValueError) as exc:
         return [], f"{key}: {exc}"
     return _parse_sitemap_news(raw, key, source)
@@ -403,7 +426,7 @@ def _fetch_html_list(key: str, source: dict) -> tuple[list, str | None]:
     try:
         req = urllib.request.Request(source["url"], headers={"User-Agent": USER_AGENT})
         with urllib.request.urlopen(req, timeout=TIMEOUT) as resp:
-            raw = resp.read().decode("utf-8", errors="replace")
+            raw = _read_limitat(resp).decode("utf-8", errors="replace")
     except (urllib.error.HTTPError, urllib.error.URLError, socket.timeout, ValueError) as exc:
         return items, f"{key}: {exc}"
 
@@ -420,7 +443,7 @@ def _fetch_html_list(key: str, source: dict) -> tuple[list, str | None]:
         title = clean_html(entry["title"])
         if not link or not title or _is_agency(link, source["name"]):
             continue
-        motiv = guard.verdict(title)
+        motiv = guard.verdict(title) or guard.url_ostil(link)
         if motiv:
             print(f"   !! garda ingestie (lista HTML): sar [{key}] {title[:60]!r} — {motiv}")
             continue
@@ -506,7 +529,7 @@ def _fetch_one(key: str, source: dict, cache: dict | None = None) -> tuple[list,
         try:
             req = urllib.request.Request(source["url"], headers=headers)
             with urllib.request.urlopen(req, timeout=TIMEOUT) as resp:
-                raw = resp.read()
+                raw = _read_limitat(resp)
                 if cache is not None:
                     cache[key] = {
                         "etag": resp.headers.get("ETag"),
@@ -542,7 +565,7 @@ def _fetch_one(key: str, source: dict, cache: dict | None = None) -> tuple[list,
         body = _entry_body(entry)
         # Garda de continut ostil: o sursa poate fi compromisa fara sa stim (vezi guard.py).
         # Se respinge itemul, nu se incearca reparatia — §7 „SARE itemul".
-        motiv = guard.verdict(title, body)
+        motiv = guard.verdict(title, body) or guard.url_ostil(link)
         if motiv:
             print(f"   !! garda ingestie: sar [{key}] {title[:60]!r} — {motiv}")
             continue

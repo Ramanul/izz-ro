@@ -41,6 +41,26 @@ Jinja2 au `autoescape` pornit, deci codul a fost afișat ca text. Asta a fost si
 a ținut din construcție, și e motivul pentru care incidentul a costat reputație, nu vizitatori
 infectați. **Nu-l slăbi:** `| safe` pe orice conținut derivat dintr-un feed e interzis.
 
+## 2b. Auditul din 2026-08-11 — ce s-a mai găsit, fără incident
+
+Căutare deliberată de suprafețe pe care conținut din feed ajunge în contexte pe care escaparea
+NU le apără. Trei găuri reale, toate închise; două suprafețe verificate și găsite curate.
+
+| Găsit | Severitate | Stare |
+|---|---|---|
+| `link` din feed → `href`, fără validare de schemă (`javascript:` executabil la click) | **mare** — XSS stocat pe originea izz.ro | închis: `guard.url_ostil`, 4 puncte de cablare |
+| `resp.read()` fără plafon — o sursă poate servi gigaocteți | medie — build mort prin memorie | închis: `fetch._read_limitat`, 8 MiB |
+| Text din feed intră în promptul către Gemini, fără filtru de instrucțiuni | medie — AI-ul e strat de spălare, vezi §2 | închis parțial: strat 7 în `guard.verdict` |
+| JSON-LD (`{{ jsonld \| tojson }}`) | — | **curat**: `tojson` din Jinja2 e HTML-safe, escapează `<`, `>`, `&`, `'` |
+| `feed.xml` construit prin concatenare | — | **curat**: fiecare câmp trece prin `xml_escape` |
+
+Măsurători care au susținut deciziile (R3): **7823 de URL-uri** în corpus, 100% `https`, zero
+respinse de garda nouă → listă albă fără fals-pozitive. **3369 de articole** trecute prin stratul
+de prompt injection → zero potriviri, deci tiparele nu prind știrile despre AI. Plafonul de 8 MiB
+= ~40× cel mai mare feed real măsurat (198 139 B, unica.ro; median ~25 kB).
+
+Verificat pe output-ul construit: **3786 de pagini HTML**, zero `href` cu schemă periculoasă.
+
 ## 3. Regulile
 
 ### R1 — Straturi independente, nu unul singur bun
@@ -50,12 +70,24 @@ pentru că „oricum îl prinde altul": exact combinația asta de raționamente 
 | Strat | Fișier | Prinde | Slăbiciune |
 |-------|--------|--------|------------|
 | Curățare corectă de HTML | `util.clean_html` | markup, inclusiv dublu-codat | doar formatare |
-| Gardă pe conținut | `guard.py` | markup rezidual, payload, homoglife, warez, titluri-gunoi | necunoscutele |
-| Escapare la randare | Jinja2 `autoescape` | execuție în browser | nu curăță datele |
+| Gardă pe conținut | `guard.verdict` | markup rezidual, payload, homoglife, warez, titluri-gunoi, instrucțiuni către model | necunoscutele |
+| **Gardă pe URL** | `guard.url_ostil` | `javascript:`/`data:`/`file:` în `href`, evaziune prin caractere de control, `@` de mascare | nu judecă unde duce un http(s) valid |
+| **Plafon de răspuns** | `fetch._read_limitat` | epuizare de memorie la build | nu judecă conținutul |
+| Escapare la randare | Jinja2 `autoescape` | execuție în browser | **nu apără `href`** — de aceea există stratul de URL |
+| CSP | `render._write_headers` | execuția a orice a scăpat | doar browsere moderne |
 | Plafon de caractere | `util.truncate_words` | umflarea cardurilor | nu judecă sensul |
 | `overflow-wrap` | `styles.css` | ruperea aranjamentului | doar vizual |
 | Suprimare per-sursă | `moderation.yaml` | o sursă știută rea | reactivă |
 | Autotest | `guard.autotest()` | garda stricată în tăcere | doar ce e în corpus |
+
+### R1b — escaparea NU acoperă atributele de URL
+Cea mai ușoară eroare de raționament din tot fișierul, și e din familia celei care a produs
+incidentul: „Jinja2 escapează, deci suntem acoperiți". Escaparea transformă `<`, `>`, `"` în
+entități — dar `href="javascript:alert(1)"` **nu conține niciun caracter de escapat**. E HTML
+perfect valid și se execută la click. `link`-ul din feed ajunge direct în `href`
+(`templates/article.html`, `_card.html`), deci e conținut ostil într-un context pe care
+escaparea nu-l apără. CSP-ul (`script-src 'self'`) îl blochează în browserele moderne, dar
+**asta e al doilea strat, nu primul** — se taie la ingestie, în `guard.url_ostil`.
 
 ### R2 — Respinge, nu repara
 Un item suspect **se sare**, nu se cosmetizează. E §7 din `CLAUDE.md` („dacă nu poate atinge bara
@@ -121,12 +153,19 @@ Astea sunt găuri **cunoscute**, nereparate la data scrierii. Nu le trata ca rez
    folosește. O linie de bază per sursă (limbă așteptată, cadență, mix tematic) care pune sursa
    în carantină automat la deviație ar fi prins atacul ăsta **din primul articol**, nu din al
    optulea. **Ăsta e următorul lucru de construit, și e cel mai valoros.**
-2. **Antet CSP** (`Content-Security-Policy`) pe Cloudflare Pages, prin fișier `_headers`. Ar face
-   ca un eventual eșec al escapării să nu poată executa nimic. Apărare în adâncime pură — nu
-   repară nimic din ce s-a rupt, dar acoperă modul de eșec pe care nu-l vedem.
-3. **Audit de `| safe` în template-uri.** Nu a fost făcut. O singură apariție pe conținut derivat
-   din feed anulează stratul de escapare.
-4. **Corpusul de atac e mic** (10 mostre ostile, 6 curate) și acoperă un singur tip de campanie.
+2. **SSRF prin redirectare.** `urllib` urmează redirectările; o sursă compromisă ne poate trimite
+   către o adresă internă a runnerului, iar răspunsul ar putea ajunge publicat. `urllib` respinge
+   deja schemele non-http(s) la redirect, iar runnerii GitHub n-au un endpoint de metadate
+   interesant fără antet dedicat — deci exploatabilitatea e mică, dar nenulă. Fix corect: handler
+   de redirect propriu, cu verificare de IP privat. Nefăcut, cost mediu.
+3. **`| safe` — auditat 2026-08-11, cinci apariții, toate curate.** `fonts_css`, `calculator_html`,
+   `newsletter_html` sunt generate de noi; `body_html` vine din `content/legal/*.md`;
+   `s.continut_html` din `data/entities/*.yaml`, scris de om. **Invariantul e „textul vine dintr-un
+   fișier comis în repo".** Dacă vreodată secțiunile de ghid ajung populate de AI sau de un pas
+   automat, invariantul cade și trebuie sanitizare înainte de `| safe` — nu există altă poartă.
+   Comentariul stă la `render._md_to_html`.
+4. **Corpusul de atac e mic** (13 mostre ostile de text + 8 de URL, 6+4 curate) și acoperă un
+   singur tip de campanie.
    Un atac de altă natură — dezinformare bine scrisă, în română curată, fără markup — trece prin
    toate cele cinci straturi. Garda apără împotriva **conținutului tehnic ostil**, nu împotriva
    minciunii plauzibile; aia e o problemă editorială, nu de securitate, și nu are soluție de cod.

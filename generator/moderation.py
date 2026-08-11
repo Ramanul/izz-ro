@@ -51,8 +51,11 @@ def apply(articles: list, mod: dict) -> list:
         # articolele DEJA din `articles.json`, ingerate inainte ca garda sa existe sau printr-o
         # versiune mai slaba a ei. `render_only()` chema `apply()` la FIECARE build, deci asta
         # e singurul punct prin care curatarea ajunge pe site fara sa astepte un fetch nou.
-        motiv = guard.verdict(a.get("title") or "",
-                              a.get("teaser") or a.get("synthesis") or a.get("description") or "")
+        motiv = (guard.verdict(a.get("title") or "",
+                               a.get("teaser") or a.get("synthesis") or a.get("description") or "")
+                 or guard.url_ostil(a.get("original_link") or "")
+                 or next((m for s in (a.get("sources") or [])
+                          if (m := guard.url_ostil(s.get("url") or ""))), None))
         if motiv:
             print(f"   !! garda moderare: ascund {(a.get('title') or '')[:60]!r} — {motiv}")
             continue

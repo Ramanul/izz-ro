@@ -18,8 +18,10 @@ class _FakeResponse:
         self._body = body
         self.headers = {}
 
-    def read(self):
-        return self._body
+    def read(self, amt=None):
+        """`amt` exista fiindca `HTTPResponse.read` il are, si `fetch._read_limitat` il
+        foloseste ca sa plafoneze raspunsul. Un fake fara el ascundea plafonul."""
+        return self._body if amt is None else self._body[:amt]
 
     def __enter__(self):
         return self
