@@ -1,5 +1,6 @@
 name: harta-stiri-smoke
 
+# Smoke validation is also kept manually dispatchable for deploys created by Actions.
 on:
   push:
     branches: [main]
