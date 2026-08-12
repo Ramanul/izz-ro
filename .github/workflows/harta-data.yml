@@ -10,6 +10,7 @@ on:
       - "data/harta_judete.json"
       - "data/siruta_raw.csv"
       - "tools/build_harta_data.py"
+      - "tools/build_harta_localitati.py"
   workflow_dispatch:
 
 permissions:
@@ -31,18 +32,21 @@ jobs:
         with:
           python-version: "3.11"
 
+      - name: Descarca si precompileaza coordonatele localitatilor
+        run: python tools/build_harta_localitati.py
+
       - name: Genereaza datasetul hărții
         run: python tools/build_harta_data.py
 
-      - name: Publica datasetul dacă s-a schimbat
+      - name: Publica dataseturile dacă s-au schimbat
         run: |
           set -euo pipefail
           git config user.name "izz-bot"
           git config user.email "bot@izz.ro"
-          git add static/harta-stiri/data/map.json
+          git add data/harta_localitati.json static/harta-stiri/data/map.json
           if git diff --cached --quiet; then
-            echo "Datasetul hărții este deja sincronizat."
+            echo "Dataseturile hărții sunt deja sincronizate."
             exit 0
           fi
-          git commit -m "build(map): update news map dataset"
+          git commit -m "build(map): update locality-aware news map dataset"
           git push
