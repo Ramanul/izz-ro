@@ -1201,7 +1201,11 @@ def _write_headers() -> None:
            # harta-stiri lives under /static/ but is a live page + dataset, not a
            # versioned asset -- without this override a CSS/JS/dataset fix stays
            # invisible to any browser that already cached the page for 30 days.
-           "/static/harta-stiri/*\n  Cache-Control: public, max-age=300, must-revalidate\n"
+           # Cloudflare Pages JOINS same-named headers from multiple matching rules
+           # (Cache-Control ends up "immutable, must-revalidate" -- self-contradicting)
+           # instead of the more specific rule replacing the general one; "!" is the
+           # documented way to unset the inherited value before setting the real one.
+           "/static/harta-stiri/*\n  ! Cache-Control\n  Cache-Control: public, max-age=300, must-revalidate\n"
            "/favicon.svg\n  Cache-Control: public, max-age=2592000\n"
            "/*.jpg\n  Cache-Control: public, max-age=86400\n"
            "/*.png\n  Cache-Control: public, max-age=86400\n"
