@@ -28,7 +28,7 @@ jobs:
     steps:
       - uses: actions/checkout@v7
         with:
-          fetch-depth: 1
+          fetch-depth: 0
 
       - uses: actions/setup-python@v7
         with:
@@ -59,9 +59,19 @@ jobs:
           fi
           git commit -m "build(map): update locality-aware news map dataset"
           for attempt in 1 2 3 4 5; do
-            if git push; then
-              echo "Dataseturile hărții au fost publicate."
-              exit 0
+            git fetch origin main
+            if git merge-base --is-ancestor HEAD origin/main; then
+              if git push origin HEAD:main; then
+                echo "Dataseturile hărții au fost publicate."
+                exit 0
+              fi
+            else
+              echo "Remote-ul a avansat; rebasez peste origin/main înainte de push."
+              git rebase origin/main
+              if git push origin HEAD:main; then
+                echo "Dataseturile hărții au fost publicate după rebase."
+                exit 0
+              fi
             fi
             if [ "$attempt" -lt 5 ]; then
               echo "Push eșuat (încercarea $attempt/5); reîncerc în 10 secunde..."
