@@ -30,11 +30,23 @@ jobs:
           import json
           from pathlib import Path
           data = json.loads(Path('/tmp/map.json').read_text(encoding='utf-8'))
+          articles = data.get('articles') or []
+          categories = {}
+          for item in articles:
+              categories[item.get('category', '')] = categories.get(item.get('category', ''), 0) + 1
+          print('MAP_DIAGNOSTIC', {
+              'version': data.get('version'),
+              'counties': len(data.get('map', {}).get('judete', {})),
+              'articles': len(articles),
+              'stats': data.get('stats'),
+              'categories': categories,
+              'first': articles[0] if articles else None,
+          })
           assert data['map']['viewbox']
           assert len(data['map']['judete']) >= 40
-          assert data['articles'], 'datasetul public nu conține articole localizate'
-          assert all(a['county'] in data['map']['judete'] for a in data['articles'])
-          print('OK:', len(data['articles']), 'articole localizate,', len(data['map']['judete']), 'județe')
+          assert articles, 'datasetul public nu conține articole localizate'
+          assert all(a['county'] in data['map']['judete'] for a in articles)
+          print('OK: datasetul public al hărții este valid')
           PY
                 exit 0
               fi
