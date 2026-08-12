@@ -67,26 +67,38 @@ ulterioară publicării") that `IZZ-0165` corrected precisely because it gave th
 conditions away. A pop reverts the legal fix. `gen_images.py` is stale too (`_semnatura`,
 `_load_labels`, `media/labels.json` all landed). Dropping it is destructive — owner's call.
 
-## Open — verified in code 2026-08-07/08, not carried over on trust
+## Open — verified in code 2026-08-12, not carried over on trust
 
-**A. County map — SHIPPED on `/surse/` (#166), but it is NOT what the owner asked for.**
-The deferred item said "`/surse/` map" and that is what was built, to its bar (static SVG,
-text links, no JS, `aspect-ratio` reserves height, 39 county links + 3 inert shapes).
-Geometry: `data/harta_judete.json` from **Natural Earth (public domain)** via
-`tools/build_harta.py` — GADM was rejected on purpose, same borders but it forbids
-redistribution and commercial use and this repo is public. Do not swap the source back.
-**The gap, owner's words (2026-08-09): "în surse apare, dar acolo să caute cititorii?"**
-He wants a map that selects **NEWS**, not sources. Verified in code why that cannot be built
-on what exists: articles carry **no county** — only `category` (`local|zonal|regional`;
-663/513/247 today). The place is computed at render time for the cover badge and thrown away.
-There are **no per-county pages** either, only the three category pages.
-So the real slice is: persist the county at ingestion → generate `/judet/<slug>/` →
-re-point the map. **Consequence to state up front, not discover later:** the category is
-computed once at ingestion (Open 6), so a county field populates only for NEW articles — the
-map would start sparse and fill over ~7 days as the current stock expires. Not a bug; it is
-how the pipeline is built. **The front-end audit for #166 was never run** (session ran out of
-budget): `/surse/` was Perf 81 / A11y 100 / pa11y 0 before, and the page grew 53 → 100 KB from
-inlining. If Perf dropped, raise `TOLERANTA` in `tools/build_harta.py` — no other code moves.
+**A. News map — SHIPPED directly on `main` (2026-08-12, owner + GPT, outside any Claude
+session), closes the old gap below.** `/static/harta-stiri/` is a real news map: 473 articles
+placed in 37 counties, dataset built by `tools/build_harta_data.py` from `articles.json` +
+`geo.py` (`loc_din_titlu`, `loc_din_sursa`) + SIRUTA, county-level dot on the same Natural
+Earth SVG that `/surse/` already used. In primary nav (`templates/base.html`). Verified
+**live** on 2026-08-12: `map.json` → 200, 35 counties with markers, 473 items in the list.
+`tools/visual_check.py` (Playwright, real browser) now covers it, incl. a mobile pass —
+this closes what the paragraph below asked for.
+
+**A1. NEW, found 2026-08-12 running `tools/visual_check.py` against live — mobile tap
+targets are too small to use.** Measured on a 390px viewport: **24 of 42 county shapes are
+under 44px in at least one dimension** (WCAG/Apple/Material minimum), the smallest is
+**9×15px**. The 35 news-count bubbles are **~11.7×11.7px each** — smaller than any touch
+target guideline. This is the likely cause of "harta are mari probleme" reported on a real
+Android phone: tapping a specific județ or bubble is close to impossible by touch, even
+though the map renders and loads data correctly (confirmed: no data-load error, no marker
+duplication, no horizontal overflow). **Not fixed yet — owner decision on approach**
+(bigger bubbles vs. invisible larger hit-area vs. drop direct county-tap on mobile in favor
+of the existing search box + list). Also found running the same check: a one-time ~38px
+page-height settle after the first scroll (stable after, not progressive — reads like a
+font-load reflow, not the marker bug class) and 5 real CSP `script-src` console errors,
+site-wide (reproduced on `/` too, not map-specific) — root cause not yet found.
+
+0c. **Old gap this replaces, kept one cycle for the record:** as of 2026-08-08 the only map
+was the static SVG on `/surse/` (39 county links, no JS) — the owner said explicitly
+"în surse apare, dar acolo să caute cititorii? [...] vrea o hartă care selectează
+ȘTIRI, nu surse" — cannot delete the paragraph's substance without erasing why A above
+exists. Geometry source stays **Natural Earth (public domain)** via `tools/build_harta.py` —
+GADM was rejected on purpose (forbids redistribution/commercial use, repo is public); do not
+swap it back.
 
 0. **#165 LANDED (`9ad5d287`) — kept here because the mechanism must not be reintroduced.**
    `state._resync_pinned` ran on every `load()` and overwrote the ingestion-time classification
