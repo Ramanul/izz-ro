@@ -243,7 +243,8 @@ def _parse_sitemap_news(raw: bytes, key: str, source: dict) -> tuple[list, str |
             continue
         if _is_agency(loc, source["name"]):
             continue
-        motiv = guard.verdict(title) or guard.url_ostil(loc)
+        motiv = (guard.verdict(title) or guard.url_ostil(loc)
+                 or guard.anomalie(title, source.get("lang", "ro")))
         if motiv:
             print(f"   !! garda ingestie (sitemap): sar [{key}] {title[:60]!r} — {motiv}")
             continue
@@ -443,7 +444,8 @@ def _fetch_html_list(key: str, source: dict) -> tuple[list, str | None]:
         title = clean_html(entry["title"])
         if not link or not title or _is_agency(link, source["name"]):
             continue
-        motiv = guard.verdict(title) or guard.url_ostil(link)
+        motiv = (guard.verdict(title) or guard.url_ostil(link)
+                 or guard.anomalie(title, source.get("lang", "ro")))
         if motiv:
             print(f"   !! garda ingestie (lista HTML): sar [{key}] {title[:60]!r} — {motiv}")
             continue
@@ -565,7 +567,8 @@ def _fetch_one(key: str, source: dict, cache: dict | None = None) -> tuple[list,
         body = _entry_body(entry)
         # Garda de continut ostil: o sursa poate fi compromisa fara sa stim (vezi guard.py).
         # Se respinge itemul, nu se incearca reparatia — §7 „SARE itemul".
-        motiv = guard.verdict(title, body) or guard.url_ostil(link)
+        motiv = (guard.verdict(title, body) or guard.url_ostil(link)
+                 or guard.anomalie(title, source.get("lang", "ro")))
         if motiv:
             print(f"   !! garda ingestie: sar [{key}] {title[:60]!r} — {motiv}")
             continue

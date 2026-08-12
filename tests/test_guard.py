@@ -28,7 +28,8 @@ def test_autotest_trece_si_numara():
     """Dead man's switch-ul insusi: daca nu ruleaza cazuri, e dezactivat din greseala."""
     n = guard.autotest()
     assert n == (len(guard._CORPUS_OSTIL) + len(guard._CORPUS_CURAT)
-                 + len(guard._CORPUS_URL_OSTIL) + len(guard._CORPUS_URL_CURAT))
+                 + len(guard._CORPUS_URL_OSTIL) + len(guard._CORPUS_URL_CURAT)
+                 + len(guard._CORPUS_ANOMALIE_OSTIL) + len(guard._CORPUS_ANOMALIE_CURAT))
     assert n >= 10
 
 
@@ -169,3 +170,96 @@ def test_un_feed_de_dimensiune_normala_trece_intreg():
     from generator import fetch
     corp = b"<rss>" + b"y" * 200_000 + b"</rss>"
     assert fetch._read_limitat(_RaspunsFals(corp)) == corp
+
+
+# --- 8. anomalie fata de limba declarata a sursei (2026-08-12) ---------------------------
+# Stratul care a lipsit la Cajvana. Straturile 1-7 judeca CUVINTELE si l-au lasat sa treaca
+# corect — „Hacked by Chinafans" n-are nimic ostil in el. Anormal e CONTEXTUL.
+
+@pytest.mark.parametrize("titlu", guard._CORPUS_ANOMALIE_OSTIL)
+def test_corpusul_de_anomalie_e_respins(titlu):
+    assert guard.anomalie(titlu) is not None, f"NU mai prinde: {titlu!r}"
+
+
+@pytest.mark.parametrize("titlu", guard._CORPUS_ANOMALIE_CURAT)
+def test_titlurile_romanesti_de_primarie_trec(titlu):
+    assert guard.anomalie(titlu) is None, f"fals-pozitiv: {guard.anomalie(titlu)}"
+
+
+def test_sursele_declarate_en_sunt_scutite():
+    """BBC, DW, Guardian, Politico publica in engleza — acolo engleza NU e deviatia."""
+    assert guard.anomalie("The Brink of War 2026 Full Movie", "en") is None
+    assert guard.anomalie("Hacked by Chinafans", "en") is None
+
+
+def test_lang_absent_inseamna_ro():
+    """`source.get("lang", "ro")` e implicitul din catalog; garda nu are voie sa taca
+    fiindca cineva a uitat campul."""
+    assert guard.anomalie("Hacked by Chinafans", "") is not None
+    assert guard.anomalie("Hacked by Chinafans", None) is not None
+
+
+def test_un_nume_propriu_strain_nu_e_o_anomalie():
+    """Conditia e `en >= 1 and ro == 0`: un titlu romanesc care numeste o entitate straina
+    are markeri romanesti, deci nu ajunge la prag. Fara asta stratul ar taia /extern/."""
+    for titlu in ("Vladimir Putin a semnat decretul",
+                  "Donald Trump si Casa Alba au anuntat masuri noi",
+                  "Microsoft Windows 11 se actualizeaza in septembrie"):
+        assert guard.anomalie(titlu) is None, f"fals-pozitiv pe {titlu!r}"
+
+
+# --- garda CHIAR RULEAZA in pipeline ------------------------------------------------------
+# Modul de esec al feliei asteia nu e „stratul greseste", e „stratul exista si nu e chemat":
+# `guard.anomalie` a stat scris si nechemat de pe 9 pana pe 12 august, in timp ce doua
+# commit-uri deja aterizate il descriau la prezent ca si cum ar prinde Cajvana. Testele de
+# mai jos trec prin functiile de productie, nu prin `guard` direct.
+
+_SITEMAP_CAJVANA = b"""<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">
+  <url>
+    <loc>https://cajvana.ro/0x-htm-1906/</loc>
+    <news:news><news:title>Hacked by Chinafans</news:title>
+      <news:publication_date>2026-08-09T10:00:00+03:00</news:publication_date></news:news>
+  </url>
+  <url>
+    <loc>https://cajvana.ro/publicatie-casatorie/</loc>
+    <news:news><news:title>Publicatie casatorie 11.08.2026</news:title>
+      <news:publication_date>2026-08-11T10:00:00+03:00</news:publication_date></news:news>
+  </url>
+</urlset>"""
+
+
+def test_ingestia_din_sitemap_opreste_titlul_de_defacement():
+    from generator import fetch
+    sursa = {"name": "Primăria Cajvana", "category": "local", "lang": "ro"}
+    items, err = fetch._parse_sitemap_news(_SITEMAP_CAJVANA, "pl_suceava_oras_cajvana", sursa)
+    titluri = [i["title"] for i in items]
+    assert "Hacked by Chinafans" not in titluri, "garda de anomalie nu e legata la ingestie"
+    assert titluri == ["Publicatie casatorie 11.08.2026"], (
+        f"anuntul legitim trebuie sa treaca; a iesit {titluri!r}")
+
+
+def test_ingestia_nu_taie_o_sursa_declarata_en():
+    """Aceeasi intrare, sursa `en`: trece. Altfel am rupt BBC/DW/Guardian/Politico."""
+    from generator import fetch
+    sursa = {"name": "BBC", "category": "extern", "lang": "en"}
+    items, _ = fetch._parse_sitemap_news(_SITEMAP_CAJVANA, "bbc", sursa)
+    assert len(items) == 2, f"sursa `en` nu trebuie filtrata pe limba; au trecut {len(items)}"
+
+
+def test_moderarea_ascunde_un_articol_deja_stocat():
+    """Calea prin care curatarea ajunge pe site FARA un fetch nou. Fara ea, un defacement
+    deja intrat in `articles.json` sta live pana cand un om ii adauga slug-ul de mana —
+    exact cele doua zile pe care le-a stat Cajvana."""
+    from generator import moderation
+    articole = [
+        {"url": "https://cajvana.ro/0x-htm-1906/", "source": "pl_suceava_oras_cajvana",
+         "source_lang": "ro", "original_title": "Hacked by Chinafans",
+         "title": "Hacked by Chinafans", "teaser": "", "original_link": ""},
+        {"url": "https://cajvana.ro/publicatie/", "source": "pl_suceava_oras_cajvana",
+         "source_lang": "ro", "original_title": "Publicatie casatorie 11.08.2026",
+         "title": "Publicatie casatorie 11.08.2026", "teaser": "", "original_link": ""},
+    ]
+    ramase = moderation.apply(articole, dict(moderation.DEFAULTS))
+    assert [a["title"] for a in ramase] == ["Publicatie casatorie 11.08.2026"]

@@ -55,7 +55,15 @@ def apply(articles: list, mod: dict) -> list:
                                a.get("teaser") or a.get("synthesis") or a.get("description") or "")
                  or guard.url_ostil(a.get("original_link") or "")
                  or next((m for s in (a.get("sources") or [])
-                          if (m := guard.url_ostil(s.get("url") or ""))), None))
+                          if (m := guard.url_ostil(s.get("url") or ""))), None)
+                 # Anomalia de limba se judeca pe titlul ORIGINAL, nu pe cel de pe site: la
+                 # articolele trecute prin AI titlul e deja rescris in romana, deci ar scapa
+                 # mereu. Pentru alea `original_title` lipseste (`_scrub_processed` il sterge),
+                 # deci cade pe `title` si stratul tace — conservator, si exact ce trebuie:
+                 # anunturile de primarie, singurele care conteaza aici, NU trec prin AI si isi
+                 # pastreaza titlul brut. Masurat pe corpus: 3 din 3130, toate trei ostile.
+                 or guard.anomalie(a.get("original_title") or a.get("title") or "",
+                                   a.get("source_lang") or "ro"))
         if motiv:
             print(f"   !! garda moderare: ascund {(a.get('title') or '')[:60]!r} — {motiv}")
             continue

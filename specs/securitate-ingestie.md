@@ -148,11 +148,22 @@ compromisă, **zero fals-pozitive** pe celelalte 3373.
 
 Astea sunt găuri **cunoscute**, nereparate la data scrierii. Nu le trata ca rezolvate.
 
-1. **Detecție de anomalie pe comportamentul sursei.** O primărie care publică brusc 8 articole în
-   engleză despre software, la interval de exact 3 ore, e anormală indiferent ce cuvinte
-   folosește. O linie de bază per sursă (limbă așteptată, cadență, mix tematic) care pune sursa
-   în carantină automat la deviație ar fi prins atacul ăsta **din primul articol**, nu din al
-   optulea. **Ăsta e următorul lucru de construit, și e cel mai valoros.**
+1. **Detecție de anomalie pe comportamentul sursei — LIVRATĂ PE O SINGURĂ DIMENSIUNE din trei
+   (2026-08-12).** Linia de bază propusă avea trei axe: **limbă** așteptată, **cadență**, **mix
+   tematic**. Construită e doar prima, `guard.anomalie` (stratul 8), legată în `fetch.py` pe cele
+   trei căi de ingestie și în `moderation.apply`.
+   **Ce prinde:** un titlu cu markeri englezești și zero markeri românești, de la o sursă declarată
+   `ro` în catalog. Măsurat pe corpusul real (3130 de titluri de la surse `ro`): **3 semnalate,
+   toate trei ostile — Cajvana „Hacked by Chinafans" și două de la Rovinari; 0 fals-pozitive.**
+   Cele 4 surse declarate `en` (BBC, DW, Guardian, Politico) sunt scutite prin construcție.
+   **Ce NU prinde, deci nu declara gaura închisă:** un defacement scris **în română**; cadența
+   (8 articole la exact 3 ore — semnalul cel mai tare de la Rovinari, încă nemăsurat de nimic);
+   mixul tematic. Un atacator care citește fișierul ăsta trece stratul scriind românește.
+   **De ce limba DECLARATĂ, nu una învățată din istoric:** o linie de bază învățată se otrăvește
+   (atacatorul publică destul și baza se mută sub el), iar Cajvana avea **un singur** articol la
+   noi — chiar atacul — deci n-avea istoric din care să înveți. Catalogul de primării e construit
+   de noi din lista UAT-urilor românești, deci „e în română" e ceva ce **știm**, nu ghicim.
+   **Următoarea axă, în ordinea valorii: cadența.**
 2. **SSRF prin redirectare.** `urllib` urmează redirectările; o sursă compromisă ne poate trimite
    către o adresă internă a runnerului, iar răspunsul ar putea ajunge publicat. `urllib` respinge
    deja schemele non-http(s) la redirect, iar runnerii GitHub n-au un endpoint de metadate
@@ -164,10 +175,10 @@ Astea sunt găuri **cunoscute**, nereparate la data scrierii. Nu le trata ca rez
    fișier comis în repo".** Dacă vreodată secțiunile de ghid ajung populate de AI sau de un pas
    automat, invariantul cade și trebuie sanitizare înainte de `| safe` — nu există altă poartă.
    Comentariul stă la `render._md_to_html`.
-4. **Corpusul de atac e mic** (13 mostre ostile de text + 8 de URL, 6+4 curate) și acoperă un
-   singur tip de campanie.
+4. **Corpusul de atac e mic** (13 mostre ostile de text + 8 de URL + 3 de anomalie, 6+4+8 curate)
+   și acoperă un singur tip de campanie.
    Un atac de altă natură — dezinformare bine scrisă, în română curată, fără markup — trece prin
-   toate cele cinci straturi. Garda apără împotriva **conținutului tehnic ostil**, nu împotriva
+   toate cele opt straturi. Garda apără împotriva **conținutului tehnic ostil**, nu împotriva
    minciunii plauzibile; aia e o problemă editorială, nu de securitate, și nu are soluție de cod.
 5. **Notificarea părților afectate.** Primăria Rovinari probabil nu știe că e spartă, iar DNSC
    (Directoratul Național de Securitate Cibernetică) e autoritatea la care se raportează astfel de
