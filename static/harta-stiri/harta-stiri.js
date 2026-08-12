@@ -83,6 +83,11 @@
       paths.set(county, path);
     }
 
+    // Attach the SVG before measuring paths. getBBox() is only reliable once
+    // the SVG is connected to the document; otherwise headless Chromium can
+    // report zero-size boxes and all news markers disappear.
+    host.appendChild(svg);
+
     // Use the browser's parsed SVG geometry rather than parsing path strings.
     // Romanian county boundaries contain H/V/arc/relative commands for which
     // pairing every numeric token as X/Y produces incorrect marker positions.
@@ -110,8 +115,6 @@
       label.setAttribute("aria-hidden", "true");
       svg.append(bubble, label);
     }
-
-    host.appendChild(svg);
   }
 
   function renderList() {
