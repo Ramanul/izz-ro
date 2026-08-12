@@ -1,17 +1,5 @@
 #!/usr/bin/env python
-"""Genereaza datasetul static consumat de harta de stiri.
-
-Sursa de adevar ramane starea editoriala (`data/articles.json`) si infrastructura geografica
-existenta (`data/harta_judete.json`, SIRUTA). Browserul nu mai descarca fisiere interne din
-repo si nu mai face matching O(N*M) pe CSV-ul SIRUTA; build-ul produce un singur JSON compact
-in `static/harta-stiri/data/map.json`.
-
-SIRUTA este folosit determinist pentru identificarea localitatii si codului SIRUTA. Coordonatele
-localitatii sunt adaugate din `data/harta_localitati.json`, generat la build din stratul public
-geo-spatial.org. Daca nu exista coordonata, articolul ramane localizat la nivel de judet.
-
-Pipeline: SIRUTA -> localitate -> coordonata statica -> Canvas marker.
-"""
+"""Genereaza datasetul static consumat de harta de stiri."""
 from __future__ import annotations
 
 import csv
@@ -60,6 +48,14 @@ def clean_name(value: str) -> str:
     return name
 
 
+def siruta_key(value: str) -> str:
+    """Normalizeaza codul SIRUTA intre surse (ex. `32394,00` == `32394`)."""
+    raw = str(value or "").strip()
+    if not raw:
+        return ""
+    return raw.split(",", 1)[0].strip().lstrip("0") or "0"
+
+
 def read_siruta(county_alias: dict[str, str] | None = None) -> tuple[dict[str, str], dict[str, list[dict]]]:
     with open(SIRUTA, encoding="cp1250", newline="") as fh:
         rows = list(csv.DictReader(fh, delimiter=";"))
@@ -72,9 +68,6 @@ def read_siruta(county_alias: dict[str, str] | None = None) -> tuple[dict[str, s
         code = str(row.get("JUD") or "").strip()
         name = clean_name(row.get("DENLOC") or "")
         if code and name:
-            # SIRUTA may use spaces while the map geometry uses hyphens
-            # (e.g. BISTRITA NASAUD vs BISTRITA-NASAUD). Keep the map's
-            # canonical key so every downstream comparison uses one spelling.
             counties[code] = county_alias.get(norm(name), name)
 
     sat_names = [clean_name(r.get("DENLOC") or "") for r in rows if r.get("NIV") == "3"]
@@ -100,7 +93,7 @@ def read_siruta(county_alias: dict[str, str] | None = None) -> tuple[dict[str, s
             if row.get(key):
                 siruta = str(row[key]).strip()
                 break
-        rec = {"name": name, "county": county, "siruta": siruta, "level": niv}
+        rec = {"name": name, "county": county, "siruta": siruta_key(siruta), "level": niv}
         by_name.setdefault(name, []).append(rec)
     return counties, by_name
 
@@ -111,7 +104,7 @@ def load_json(path: str):
 
 
 def load_locality_points() -> dict[str, dict]:
-    if not os.path.exists(LOCALITIES):
+    if not os.path.exists(LOCALITIES) or os.path.getsize(LOCALITIES) == 0:
         return {}
     payload = load_json(LOCALITIES)
     return payload.get("localities") or {}
@@ -120,7 +113,7 @@ def load_locality_points() -> dict[str, dict]:
 def point_for(locality: dict | None, points: dict[str, dict]) -> dict | None:
     if not locality:
         return None
-    siruta = str(locality.get("siruta") or "").strip()
+    siruta = siruta_key(locality.get("siruta") or "")
     if siruta and siruta in points:
         return points[siruta]
     key = f"{norm(locality.get('name'))}|{norm(locality.get('county'))}"
@@ -180,7 +173,7 @@ def locate(article: dict, county_keys: list[str], by_name: dict[str, list[dict]]
         "source": article.get("source") or "",
         "county": county,
         "locality": locality["name"] if locality else "",
-        "siruta": locality["siruta"] if locality else "",
+        "siruta": siruta_key(locality["siruta"]) if locality else "",
         "x": point.get("x") if point else None,
         "y": point.get("y") if point else None,
         "confidence": "text" if tc else "source" if sc else "siruta",
@@ -197,6 +190,8 @@ def main() -> int:
     county_alias = {norm(key): key for key in county_keys}
     _, siruta = read_siruta(county_alias)
     points = load_locality_points()
+    if not points:
+        raise RuntimeError("harta_localitati.json nu contine puncte de localitati.")
 
     articles = sorted(articles, key=lambda a: str(a.get("published") or ""), reverse=True)
     located = []
@@ -222,7 +217,7 @@ def main() -> int:
     os.makedirs(os.path.dirname(OUT), exist_ok=True)
     with open(OUT, "w", encoding="utf-8") as fh:
         json.dump(payload, fh, ensure_ascii=False, separators=(",", ":"))
-    print(f"harta-stiri: {len(located)} articole localizate -> {OUT}")
+    print(f"harta-stiri: {len(located)} articole localizate; {payload['stats']['coordinates']} coordonate -> {OUT}")
     return 0
 
 
