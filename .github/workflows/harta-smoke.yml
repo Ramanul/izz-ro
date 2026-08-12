@@ -19,13 +19,13 @@ jobs:
       - name: Verifică pagina și datasetul hărții pe pages.dev
         run: |
           set -euo pipefail
-          for i in 1 2 3 4 5 6; do
+          for i in 1 2 3 4 5 6 7 8; do
             page=$(curl -A 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/151 Safari/537.36' --connect-timeout 5 --max-time 10 -fsSL -o /tmp/map.html -w '%{http_code}' https://izz-ro.pages.dev/static/harta-stiri/ || true)
             data=$(curl -A 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/151 Safari/537.36' --connect-timeout 5 --max-time 10 -fsSL -o /tmp/map.json -w '%{http_code}' https://izz-ro.pages.dev/static/harta-stiri/data/map.json || true)
             js=$(curl -A 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/151 Safari/537.36' --connect-timeout 5 --max-time 10 -fsSL -o /tmp/map.js -w '%{http_code}' https://izz-ro.pages.dev/static/harta-stiri/harta-stiri.js || true)
             echo "încercarea $i: page=$page data=$data js=$js"
             if [ "$page" = "200" ] && [ "$data" = "200" ] && [ "$js" = "200" ]; then
-              python - <<'PY'
+              if python - <<'PY'
           import json
           from pathlib import Path
           data = json.loads(Path('/tmp/map.json').read_text(encoding='utf-8'))
@@ -39,11 +39,17 @@ jobs:
           assert stats.get('total') == len(articles)
           assert stats.get('counties') == len({item['county'] for item in articles})
           assert stats.get('local', 0) + stats.get('zonal', 0) == len(articles)
+          assert stats.get('coordinates', 0) <= len(articles)
           print('OK:', len(articles), 'articole localizate în', len({item['county'] for item in articles}), 'județe')
           PY
-              exit 0
+              then
+                node --check /tmp/map.js
+                echo 'Smoke test public hartă: OK'
+                exit 0
+              fi
+              echo 'Răspunsul public este încă vechi/incoerent; reîncerc după propagare.'
             fi
             sleep 20
           done
-          echo 'Deploy-ul public nu a propagat harta în timpul smoke testului.'
+          echo 'Deploy-ul public nu a propagat o versiune coerentă a hărții în timpul smoke testului.'
           exit 1
