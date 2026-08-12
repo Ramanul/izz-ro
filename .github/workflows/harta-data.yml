@@ -47,6 +47,37 @@ jobs:
       - name: Genereaza datasetul hărții
         run: python tools/build_harta_data.py
 
+      - name: Valideaza datasetul și coordonatele hărții
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          data = json.loads(Path('static/harta-stiri/data/map.json').read_text(encoding='utf-8'))
+          points = json.loads(Path('data/harta_localitati.json').read_text(encoding='utf-8'))
+          counties = data['map']['judete']
+          articles = data['articles']
+          stats = data['stats']
+          assert len(counties) == 42, len(counties)
+          assert articles, 'Nu există articole localizate.'
+          assert stats['total'] == len(articles)
+          assert stats['local'] + stats['zonal'] == len(articles)
+          assert stats['counties'] == len({a['county'] for a in articles})
+          assert stats['coordinates'] == sum(a.get('x') is not None and a.get('y') is not None for a in articles)
+          assert points['localities'], 'Nu există puncte de localități.'
+          for key, p in points['localities'].items():
+              assert 0 <= float(p['x']) <= 1000, (key, p['x'])
+              assert 0 <= float(p['y']) <= 703.53, (key, p['y'])
+          for a in articles:
+              assert a['county'] in counties, a['county']
+              if a.get('x') is not None or a.get('y') is not None:
+                  assert a.get('x') is not None and a.get('y') is not None, a
+                  assert 0 <= float(a['x']) <= 1000, a
+                  assert 0 <= float(a['y']) <= 703.53, a
+              if a.get('siruta'):
+                  assert a.get('locality'), a
+          print(f"OK: {len(articles)} articole, {stats['localities']} localități cu SIRUTA, {stats['coordinates']} coordonate")
+          PY
+
       - name: Publica dataseturile dacă s-au schimbat
         run: |
           set -euo pipefail
@@ -79,4 +110,44 @@ jobs:
             fi
           done
           echo "Push-ul a eșuat după 5 încercări."
+          exit 1
+
+  public-smoke:
+    needs: generate
+    runs-on: ubuntu-latest
+    steps:
+      - name: Așteaptă propagarea deploy-ului Cloudflare
+        run: sleep 30
+      - name: Verifică versiunea publică a hărții
+        run: |
+          set -euo pipefail
+          for i in 1 2 3 4 5 6 7 8; do
+            page=$(curl -A 'Mozilla/5.0' --connect-timeout 5 --max-time 10 -fsSL -o /tmp/map.html -w '%{http_code}' https://izz-ro.pages.dev/static/harta-stiri/ || true)
+            data=$(curl -A 'Mozilla/5.0' --connect-timeout 5 --max-time 10 -fsSL -o /tmp/map.json -w '%{http_code}' https://izz-ro.pages.dev/static/harta-stiri/data/map.json || true)
+            js=$(curl -A 'Mozilla/5.0' --connect-timeout 5 --max-time 10 -fsSL -o /tmp/map.js -w '%{http_code}' https://izz-ro.pages.dev/static/harta-stiri/harta-stiri.js || true)
+            echo "încercarea $i: page=$page data=$data js=$js"
+            if [ "$page" = "200" ] && [ "$data" = "200" ] && [ "$js" = "200" ]; then
+              if python - <<'PY'
+          import json
+          from pathlib import Path
+          d=json.loads(Path('/tmp/map.json').read_text(encoding='utf-8'))
+          assert len(d['map']['judete']) == 42
+          assert d.get('articles')
+          assert d['stats']['total'] == len(d['articles'])
+          assert d['stats']['coordinates'] <= d['stats']['total']
+          for a in d['articles']:
+              if a.get('x') is not None:
+                  assert a.get('y') is not None
+                  assert 0 <= float(a['x']) <= 1000 and 0 <= float(a['y']) <= 703.53
+          print('Dataset public coerent:', d['stats'])
+          PY
+              then
+                node --check /tmp/map.js
+                echo 'Smoke test public hartă: OK'
+                exit 0
+              fi
+            fi
+            sleep 20
+          done
+          echo 'Deploy-ul public nu a propagat o versiune coerentă a hărții.'
           exit 1
