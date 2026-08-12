@@ -88,9 +88,10 @@
 
   function buildMap() {
     const host = $("#map");
-    // Un singur canvas exista la un moment dat. In plus, fiecare randare incepe dintr-o
-    // suprafata curata; asta elimina ghosting-ul Canvas la scroll/repaint/resize pe browserele
-    // mobile care pastreaza un layer compozitat.
+    if (!host || !state.map) return;
+
+    // Idempotent redraw: there is exactly one canvas in the host. A complete DOM replacement
+    // prevents old canvases/layers from surviving repeated search, resize or navigation events.
     host.replaceChildren();
 
     const canvas = document.createElement("canvas");
@@ -117,8 +118,11 @@
     if (!ctx) throw new Error("Canvas 2D nu este disponibil.");
     const palette = colors();
 
-    // Reset complet al starii grafice inainte de orice transformare.
+    // clearRect alone is not enough if a previous transform is active. Reset first, clear,
+    // then establish exactly one transform for this frame. This is the standard Canvas redraw
+    // pattern used by interactive maps to avoid retained/ghosted drawings during repaint.
     ctx.setTransform(1, 0, 0, 1, 0, 0);
+    ctx.globalAlpha = 1;
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     ctx.setTransform(canvas.width / view.width, 0, 0, canvas.height / view.height,
       -view.x * canvas.width / view.width, -view.y * canvas.height / view.height);
@@ -152,14 +156,18 @@
       ctx.strokeStyle = palette.stroke;
       ctx.lineWidth = 1.2;
       ctx.stroke(path);
-      paths.push({ county, path, count });
+      paths.push({ county, path, count, bounds: pathBounds(pathData) });
     }
 
     if (!state.selectedCounty) {
       for (const entry of paths) {
-        if (!entry.count) continue;
-        const p = centroidForPath(ctx, entry.path, view.x, view.y, view.width, view.height);
-        if (!p) continue;
+        if (!entry.count || !entry.bounds) continue;
+        // Use the county's actual geometry bounds, not the full-map center. This prevents all
+        // county markers from being drawn at one shared point and then appearing duplicated.
+        const p = {
+          x: (entry.bounds.minX + entry.bounds.maxX) / 2,
+          y: (entry.bounds.minY + entry.bounds.maxY) / 2,
+        };
         const radius = Math.max(7, Math.min(18, 6 + Math.sqrt(entry.count) * 1.8));
         ctx.beginPath();
         ctx.arc(p.x, p.y, radius, 0, Math.PI * 2);
@@ -186,8 +194,6 @@
         const y = Number(item.y);
         if (!Number.isFinite(x) || !Number.isFinite(y)) continue;
 
-        // SIRUTA ramane cheia principala. Coordonata devine cheia secundara: daca doua
-        // coduri SIRUTA ajung exact in acelasi punct, nu desenam doua cercuri suprapuse.
         const coordinateKey = `${x.toFixed(4)}|${y.toFixed(4)}`;
         const key = item.siruta || `${norm(item.locality)}|${norm(item.county)}`;
         const group = groups.get(key) || {
@@ -197,17 +203,15 @@
         groups.set(key, group);
       }
 
-      // Dedupliare finala la nivel de pixel geografic: un singur marker pentru un singur
-      // punct, indiferent daca sursa a livrat coduri SIRUTA diferite pentru aceeasi coordonata.
+      // Final spatial dedupe: one marker per exact geographic point, even if multiple SIRUTA
+      // records or article records resolve to that same point.
       const byCoordinate = new Map();
       for (const group of groups.values()) {
-        const key = group.coordinateKey;
-        const existing = byCoordinate.get(key);
+        const existing = byCoordinate.get(group.coordinateKey);
         if (existing) {
           existing.count += group.count;
-          if (group.locality && !existing.locality) existing.locality = group.locality;
         } else {
-          byCoordinate.set(key, group);
+          byCoordinate.set(group.coordinateKey, { ...group });
         }
       }
 
@@ -260,11 +264,6 @@
         }
       }
     });
-  }
-
-  function centroidForPath(ctx, path, x, y, width, height) {
-    // Path2D nu expune centroid; folosim centrul geometric al view-ului ca fallback stabil.
-    return { x: x + width / 2, y: y + height / 2 };
   }
 
   function renderList() {
