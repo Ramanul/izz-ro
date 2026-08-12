@@ -10,11 +10,13 @@ scriptul păstrează și cheia normalizată nume+județ pentru fallback.
 from __future__ import annotations
 
 import json
+import math
 import os
 import re
 import unicodedata
 import urllib.parse
 import urllib.request
+import xml.etree.ElementTree as ET
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 OUT = os.path.join(ROOT, "data", "harta_localitati.json")
@@ -28,7 +30,6 @@ LAT_MIN = 43.619254164890435
 LAT_MAX = 48.26486964515059
 WIDTH = 1000.0
 LAT_REF = (LAT_MIN + LAT_MAX) / 2.0
-import math
 K = math.cos(math.radians(LAT_REF))
 SCALE = WIDTH / ((LON_MAX - LON_MIN) * K)
 
@@ -54,22 +55,71 @@ def project(lon: float, lat: float) -> tuple[float, float]:
     return round(x, 1), round(y, 1)
 
 
-def main() -> int:
+def request_bytes(output_format: str) -> bytes:
     params = urllib.parse.urlencode({
         "service": "WFS", "version": "1.0.0", "request": "GetFeature",
-        "typeName": TYPE_NAME, "outputFormat": "application/json",
+        "typeName": TYPE_NAME, "outputFormat": output_format,
     })
-    request = urllib.request.Request(URL + "?" + params, headers={"User-Agent": "izz-ro-map-builder/1.0"})
-    with urllib.request.urlopen(request, timeout=90) as response:
-        payload = json.load(response)
+    request = urllib.request.Request(URL + "?" + params, headers={"User-Agent": "izz-ro-map-builder/1.1"})
+    with urllib.request.urlopen(request, timeout=120) as response:
+        return response.read()
 
-    features = payload.get("features") or []
+
+def parse_json(raw: bytes) -> list[dict]:
+    payload = json.loads(raw.decode("utf-8"))
+    return payload.get("features") or []
+
+
+def local_name(tag: str) -> str:
+    return tag.rsplit("}", 1)[-1]
+
+
+def parse_gml(raw: bytes) -> list[dict]:
+    root = ET.fromstring(raw)
+    features = []
+    for member in root.iter():
+        if local_name(member.tag) != "featureMember":
+            continue
+        feature = next((child for child in list(member) if isinstance(child.tag, str)), None)
+        if feature is None:
+            continue
+        props = {}
+        lon = lat = None
+        for child in feature.iter():
+            name = local_name(child.tag)
+            text = (child.text or "").strip()
+            if name in {"coordinates", "pos"} and text:
+                parts = re.split(r"[ ,]+", text)
+                if len(parts) >= 2:
+                    try:
+                        lon, lat = float(parts[0]), float(parts[1])
+                    except ValueError:
+                        pass
+            elif child is not feature and text and len(list(child)) == 0:
+                props[name] = text
+        if lon is not None and lat is not None:
+            features.append({"properties": props, "coordinates": [lon, lat]})
+    return features
+
+
+def load_features() -> list[dict]:
+    raw = request_bytes("application/json")
+    try:
+        return parse_json(raw)
+    except (UnicodeDecodeError, json.JSONDecodeError):
+        # Unele instalări GeoServer nu au writerul GeoJSON activ. GML2 este
+        # standard WFS și este suportat de serviciul geo-spatial.org.
+        return parse_gml(request_bytes("GML2"))
+
+
+def main() -> int:
+    features = load_features()
     out = {}
     for feature in features:
         props = feature.get("properties") or {}
         geom = feature.get("geometry") or {}
-        coords = geom.get("coordinates")
-        if geom.get("type") != "Point" or not isinstance(coords, list) or len(coords) < 2:
+        coords = geom.get("coordinates") if geom else feature.get("coordinates")
+        if not isinstance(coords, list) or len(coords) < 2:
             continue
         try:
             lon, lat = float(coords[0]), float(coords[1])
@@ -88,6 +138,9 @@ def main() -> int:
         record = {"name": norm(name), "siruta": siruta, "county": norm(county), "level": level, "x": x, "y": y}
         key = siruta or f"{norm(name)}|{norm(county)}"
         out[str(key)] = record
+
+    if not out:
+        raise RuntimeError("Sursa geospațială nu a returnat nicio localitate punctuală.")
 
     result = {
         "version": 1,
