@@ -33,10 +33,17 @@
     }).format(date);
   }
 
-  function bucket(count) {
-    if (count >= 20) return "high";
-    if (count >= 10) return "medium";
-    return "low";
+  function colors() {
+    const styles = getComputedStyle(document.documentElement);
+    return {
+      fill: styles.getPropertyValue("--map-fill").trim() || "#dfe6ee",
+      stroke: styles.getPropertyValue("--map-stroke").trim() || "#9aa8b8",
+      accentSoft: styles.getPropertyValue("--accent-soft").trim() || "#cfe4ff",
+      hot: styles.getPropertyValue("--map-hot").trim() || "#d94b4b",
+      surface: styles.getPropertyValue("--surface").trim() || "#fff",
+      text: styles.getPropertyValue("--text").trim() || "#fff",
+      locality: styles.getPropertyValue("--accent").trim() || "#1769aa",
+    };
   }
 
   function filtered() {
@@ -50,29 +57,14 @@
     });
   }
 
-  function colors() {
-    const styles = getComputedStyle(document.documentElement);
-    return {
-      fill: styles.getPropertyValue("--map-fill").trim() || "#dfe6ee",
-      stroke: styles.getPropertyValue("--map-stroke").trim() || "#9aa8b8",
-      accentSoft: styles.getPropertyValue("--accent-soft").trim() || "#cfe4ff",
-      hot: styles.getPropertyValue("--map-hot").trim() || "#d94b4b",
-      surface: styles.getPropertyValue("--surface").trim() || "#fff",
-      text: styles.getPropertyValue("--text").trim() || "#fff",
-    };
-  }
-
   function buildMap() {
     const host = $("#map");
     host.replaceChildren();
 
-    // Canvas keeps the map as one raster surface. It is deliberately opaque:
-    // transparent canvases can receive a separate compositor layer on Android,
-    // which is undesirable for a page that is being touch-scrolled.
     const canvas = document.createElement("canvas");
     canvas.className = "map-canvas";
     canvas.setAttribute("role", "img");
-    canvas.setAttribute("aria-label", "Harta României cu știri pe județe");
+    canvas.setAttribute("aria-label", "Harta României cu știri pe județe și localități");
     canvas.style.touchAction = "pan-y";
     host.appendChild(canvas);
 
@@ -144,6 +136,37 @@
       entry.marker = { x: p.x, y: p.y, radius };
     }
 
+    // La nivel de județ: agregare. După selectarea unui județ, afișăm punctele
+    // localităților care au coordonate SIRUTA. Nu cerem nimic de la un serviciu GIS
+    // în browser; toate coordonatele au fost precompilate în map.json.
+    const localityMarkers = [];
+    if (state.selectedCounty) {
+      const groups = new Map();
+      for (const item of state.visible) {
+        if (item.county !== state.selectedCounty || item.x == null || item.y == null) continue;
+        const key = item.siruta || `${item.locality}|${item.county}`;
+        const group = groups.get(key) || { x: item.x, y: item.y, locality: item.locality || item.county, count: 0 };
+        group.count += 1;
+        groups.set(key, group);
+      }
+      for (const group of groups.values()) {
+        const radius = Math.max(4, Math.min(13, 3.5 + Math.sqrt(group.count) * 1.5));
+        ctx.beginPath();
+        ctx.arc(group.x, group.y, radius, 0, Math.PI * 2);
+        ctx.fillStyle = palette.locality;
+        ctx.fill();
+        ctx.lineWidth = 1.5;
+        ctx.strokeStyle = palette.surface;
+        ctx.stroke();
+        ctx.fillStyle = palette.surface;
+        ctx.font = "800 9px sans-serif";
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
+        ctx.fillText(String(group.count), group.x, group.y);
+        localityMarkers.push({ ...group, radius });
+      }
+    }
+
     const pointForEvent = (event) => {
       const r = canvas.getBoundingClientRect();
       return {
@@ -154,6 +177,14 @@
 
     canvas.addEventListener("click", (event) => {
       const p = pointForEvent(event);
+      for (const marker of localityMarkers) {
+        if (Math.hypot(p.x - marker.x, p.y - marker.y) <= marker.radius + 4) {
+          state.search = marker.locality;
+          $("#map-search").value = marker.locality;
+          refresh();
+          return;
+        }
+      }
       for (const entry of paths) {
         if (ctx.isPointInPath(entry.path, p.x, p.y)) {
           selectCounty(entry.count ? entry.county : null);
@@ -229,6 +260,8 @@
 
   function selectCounty(county) {
     state.selectedCounty = county;
+    state.search = "";
+    $("#map-search").value = "";
     refresh();
   }
 
@@ -245,7 +278,7 @@
       state.articles = payload.articles;
       refresh();
       const stats = payload.stats || {};
-      $("#map-stats").innerHTML = `<strong>${Number(stats.total || state.articles.length).toLocaleString("ro-RO")}</strong><span>știri localizate în ${Number(stats.counties || new Set(state.articles.map((item) => item.county)).size).toLocaleString("ro-RO")} județe</span>`;
+      $("#map-stats").innerHTML = `<strong>${Number(stats.total || state.articles.length).toLocaleString("ro-RO")}</strong><span>știri localizate în ${Number(stats.counties || new Set(state.articles.map((item) => item.county)).size).toLocaleString("ro-RO")} județe${stats.localities ? ` și ${Number(stats.localities).toLocaleString("ro-RO")} localități` : ""}</span>`;
     } catch (error) {
       $("#map").innerHTML = `<p class="error">Harta nu a putut încărca datele: ${String(error.message || error)}</p>`;
       $("#news-list").innerHTML = `<p class="error">Datasetul hărții nu a fost publicat sau este invalid.</p>`;
