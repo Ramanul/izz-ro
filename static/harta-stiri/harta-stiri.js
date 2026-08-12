@@ -57,6 +57,35 @@
     });
   }
 
+  function pathBounds(pathData) {
+    const numbers = String(pathData).match(/-?\d+(?:\.\d+)?/g)?.map(Number) || [];
+    if (numbers.length < 4) return null;
+    let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
+    for (let i = 0; i + 1 < numbers.length; i += 2) {
+      const x = numbers[i];
+      const y = numbers[i + 1];
+      minX = Math.min(minX, x); minY = Math.min(minY, y);
+      maxX = Math.max(maxX, x); maxY = Math.max(maxY, y);
+    }
+    if (![minX, minY, maxX, maxY].every(Number.isFinite)) return null;
+    return { minX, minY, maxX, maxY };
+  }
+
+  function selectedView(vx, vy, vw, vh) {
+    if (!state.selectedCounty || !state.counties[state.selectedCounty]) {
+      return { x: vx, y: vy, width: vw, height: vh };
+    }
+    const bounds = pathBounds(state.counties[state.selectedCounty]);
+    if (!bounds) return { x: vx, y: vy, width: vw, height: vh };
+    const padX = Math.max(12, (bounds.maxX - bounds.minX) * 0.12);
+    const padY = Math.max(12, (bounds.maxY - bounds.minY) * 0.12);
+    const x = Math.max(vx, bounds.minX - padX);
+    const y = Math.max(vy, bounds.minY - padY);
+    const right = Math.min(vx + vw, bounds.maxX + padX);
+    const bottom = Math.min(vy + vh, bounds.maxY + padY);
+    return { x, y, width: Math.max(1, right - x), height: Math.max(1, bottom - y) };
+  }
+
   function buildMap() {
     const host = $("#map");
     host.replaceChildren();
@@ -66,13 +95,15 @@
     canvas.setAttribute("role", "img");
     canvas.setAttribute("aria-label", "Harta României cu știri pe județe și localități");
     canvas.style.touchAction = "pan-y";
+    canvas.style.cursor = "pointer";
     host.appendChild(canvas);
 
     const rect = host.getBoundingClientRect();
     const viewBox = String(state.map.viewbox).trim().split(/\s+/).map(Number);
     const [vx, vy, vw, vh] = viewBox.length === 4 ? viewBox : [0, 0, 1000, 700];
+    const view = selectedView(vx, vy, vw, vh);
     const cssWidth = Math.max(1, rect.width - 8);
-    const cssHeight = Math.max(1, Math.min(720, cssWidth * vh / vw));
+    const cssHeight = Math.max(1, Math.min(720, cssWidth * view.height / view.width));
     const dpr = Math.min(window.devicePixelRatio || 1, 2);
     canvas.style.width = `${cssWidth}px`;
     canvas.style.height = `${cssHeight}px`;
@@ -82,9 +113,10 @@
     const ctx = canvas.getContext("2d", { alpha: false });
     if (!ctx) throw new Error("Canvas 2D nu este disponibil.");
     const palette = colors();
-    ctx.setTransform(canvas.width / vw, 0, 0, canvas.height / vh, -vx * canvas.width / vw, -vy * canvas.height / vh);
+    ctx.setTransform(canvas.width / view.width, 0, 0, canvas.height / view.height,
+      -view.x * canvas.width / view.width, -view.y * canvas.height / view.height);
     ctx.fillStyle = palette.surface;
-    ctx.fillRect(vx, vy, vw, vh);
+    ctx.fillRect(view.x, view.y, view.width, view.height);
 
     const counts = new Map();
     for (const item of state.visible) counts.set(item.county, (counts.get(item.county) || 0) + 1);
@@ -116,41 +148,45 @@
       paths.push({ county, path, count });
     }
 
-    for (const entry of paths) {
-      if (!entry.count) continue;
-      const p = centroidForPath(ctx, entry.path, vx, vy, vw, vh);
-      if (!p) continue;
-      const radius = Math.max(7, Math.min(18, 6 + Math.sqrt(entry.count) * 1.8));
-      ctx.beginPath();
-      ctx.arc(p.x, p.y, radius, 0, Math.PI * 2);
-      ctx.fillStyle = palette.hot;
-      ctx.fill();
-      ctx.lineWidth = 1.5;
-      ctx.strokeStyle = palette.surface;
-      ctx.stroke();
-      ctx.fillStyle = palette.text;
-      ctx.font = "800 11px sans-serif";
-      ctx.textAlign = "center";
-      ctx.textBaseline = "middle";
-      ctx.fillText(String(entry.count), p.x, p.y);
-      entry.marker = { x: p.x, y: p.y, radius };
+    // La nivel național afișăm agregarea pe județe. Când un județ este selectat,
+    // harta face zoom pe geometria lui, iar markerii județului sunt înlocuiți de
+    // markerii localităților identificate prin SIRUTA + coordonate precompilate.
+    if (!state.selectedCounty) {
+      for (const entry of paths) {
+        if (!entry.count) continue;
+        const p = centroidForPath(ctx, entry.path, view.x, view.y, view.width, view.height);
+        if (!p) continue;
+        const radius = Math.max(7, Math.min(18, 6 + Math.sqrt(entry.count) * 1.8));
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, radius, 0, Math.PI * 2);
+        ctx.fillStyle = palette.hot;
+        ctx.fill();
+        ctx.lineWidth = 1.5;
+        ctx.strokeStyle = palette.surface;
+        ctx.stroke();
+        ctx.fillStyle = palette.text;
+        ctx.font = "800 11px sans-serif";
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
+        ctx.fillText(String(entry.count), p.x, p.y);
+        entry.marker = { x: p.x, y: p.y, radius };
+      }
     }
 
-    // La nivel de județ: agregare. După selectarea unui județ, afișăm punctele
-    // localităților care au coordonate SIRUTA. Nu cerem nimic de la un serviciu GIS
-    // în browser; toate coordonatele au fost precompilate în map.json.
     const localityMarkers = [];
     if (state.selectedCounty) {
       const groups = new Map();
       for (const item of state.visible) {
         if (item.county !== state.selectedCounty || item.x == null || item.y == null) continue;
         const key = item.siruta || `${item.locality}|${item.county}`;
-        const group = groups.get(key) || { x: item.x, y: item.y, locality: item.locality || item.county, count: 0 };
+        const group = groups.get(key) || {
+          x: Number(item.x), y: Number(item.y), locality: item.locality || item.county, count: 0,
+        };
         group.count += 1;
         groups.set(key, group);
       }
       for (const group of groups.values()) {
-        const radius = Math.max(4, Math.min(13, 3.5 + Math.sqrt(group.count) * 1.5));
+        const radius = Math.max(5, Math.min(14, 4 + Math.sqrt(group.count) * 1.7));
         ctx.beginPath();
         ctx.arc(group.x, group.y, radius, 0, Math.PI * 2);
         ctx.fillStyle = palette.locality;
@@ -170,20 +206,23 @@
     const pointForEvent = (event) => {
       const r = canvas.getBoundingClientRect();
       return {
-        x: vx + ((event.clientX - r.left) / r.width) * vw,
-        y: vy + ((event.clientY - r.top) / r.height) * vh,
+        x: view.x + ((event.clientX - r.left) / r.width) * view.width,
+        y: view.y + ((event.clientY - r.top) / r.height) * view.height,
       };
     };
 
     canvas.addEventListener("click", (event) => {
       const p = pointForEvent(event);
-      for (const marker of localityMarkers) {
-        if (Math.hypot(p.x - marker.x, p.y - marker.y) <= marker.radius + 4) {
-          state.search = marker.locality;
-          $("#map-search").value = marker.locality;
-          refresh();
-          return;
+      if (state.selectedCounty) {
+        for (const marker of localityMarkers) {
+          if (Math.hypot(p.x - marker.x, p.y - marker.y) <= marker.radius + 5) {
+            state.search = marker.locality;
+            $("#map-search").value = marker.locality;
+            refresh();
+            return;
+          }
         }
+        return;
       }
       for (const entry of paths) {
         if (ctx.isPointInPath(entry.path, p.x, p.y)) {
