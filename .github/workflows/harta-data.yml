@@ -11,6 +11,7 @@ on:
       - "data/siruta_raw.csv"
       - "tools/build_harta_data.py"
       - "tools/build_harta_localitati.py"
+      - "static/harta-stiri/harta-stiri.js"
       - ".github/workflows/harta-data.yml"
   workflow_dispatch:
 
@@ -32,6 +33,13 @@ jobs:
       - uses: actions/setup-python@v7
         with:
           python-version: "3.11"
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Verifica sintaxa frontend-ului hărții
+        run: node --check static/harta-stiri/harta-stiri.js
 
       - name: Descarca si precompileaza coordonatele localitatilor
         run: python tools/build_harta_localitati.py
