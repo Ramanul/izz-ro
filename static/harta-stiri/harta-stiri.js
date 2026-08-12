@@ -114,6 +114,20 @@
     host.appendChild(canvas);
     canvas.addEventListener("click", onCanvasClick);
     state.canvas = canvas;
+
+    // Butonul "Arata toate judetele" din bara de deasupra hartii iese din ecran pe mobil
+    // dupa ce utilizatorul deruleaza ca sa vada harta marita -- fara alta cale de intoarcere
+    // vizibila, harta pare "blocata" pe judetul selectat (raportat 2026-08-12). Ancora asta
+    // traieste LANGA harta, deci ramane la indemana indiferent cat s-a derulat.
+    const back = document.createElement("button");
+    back.type = "button";
+    back.className = "map-back";
+    back.textContent = "← Toate județele";
+    back.hidden = true;
+    back.addEventListener("click", resetSelection);
+    host.appendChild(back);
+    state.backButton = back;
+
     return canvas;
   }
 
@@ -256,6 +270,7 @@
     state.view = view;
     state.paths = paths;
     state.localityMarkers = localityMarkers;
+    if (state.backButton) state.backButton.hidden = !state.selectedCounty;
   }
 
   function pointForEvent(canvas, view, event) {
@@ -350,6 +365,18 @@
     });
   }
 
+  function resetSelection() {
+    state.search = "";
+    state.selectedCounty = null;
+    state.visible = filtered();
+    const search = $("#map-search");
+    if (search) search.value = "";
+    syncLevelButtons();
+    buildMap();
+    renderList();
+    updateStats();
+  }
+
   function bindControls() {
     const search = $("#map-search");
     const clear = $("#clear-selection");
@@ -368,16 +395,7 @@
       renderList();
       updateStats();
     }));
-    if (clear) clear.addEventListener("click", () => {
-      state.search = "";
-      state.selectedCounty = null;
-      state.visible = filtered();
-      if (search) search.value = "";
-      syncLevelButtons();
-      buildMap();
-      renderList();
-      updateStats();
-    });
+    if (clear) clear.addEventListener("click", resetSelection);
   }
 
   function bindResize() {
