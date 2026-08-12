@@ -60,10 +60,11 @@ def clean_name(value: str) -> str:
     return name
 
 
-def read_siruta() -> tuple[dict[str, str], dict[str, list[dict]]]:
+def read_siruta(county_alias: dict[str, str] | None = None) -> tuple[dict[str, str], dict[str, list[dict]]]:
     with open(SIRUTA, encoding="cp1250", newline="") as fh:
         rows = list(csv.DictReader(fh, delimiter=";"))
 
+    county_alias = county_alias or {}
     counties: dict[str, str] = {}
     for row in rows:
         if row.get("NIV") != "1":
@@ -71,7 +72,10 @@ def read_siruta() -> tuple[dict[str, str], dict[str, list[dict]]]:
         code = str(row.get("JUD") or "").strip()
         name = clean_name(row.get("DENLOC") or "")
         if code and name:
-            counties[code] = name
+            # SIRUTA may use spaces while the map geometry uses hyphens
+            # (e.g. BISTRITA NASAUD vs BISTRITA-NASAUD). Keep the map's
+            # canonical key so every downstream comparison uses one spelling.
+            counties[code] = county_alias.get(norm(name), name)
 
     sat_names = [clean_name(r.get("DENLOC") or "") for r in rows if r.get("NIV") == "3"]
     counts: dict[str, int] = {}
@@ -127,8 +131,8 @@ def explicit_county(text: str, county_keys: list[str]) -> str | None:
     t = norm(text)
     for county in sorted(county_keys, key=len, reverse=True):
         patterns = (
-            rf"(?:JUDETUL|JUDETULUI|JUDETELE|JUDET|JUD\.)\s+{re.escape(county)}\b",
-            rf"\b{re.escape(county)}\b",
+            rf"(?:JUDETUL|JUDETULUI|JUDETELE|JUDET|JUD\.)\s+{re.escape(norm(county))}\b",
+            rf"\b{re.escape(norm(county))}\b",
         )
         if any(re.search(p, t) for p in patterns):
             return county
@@ -137,7 +141,7 @@ def explicit_county(text: str, county_keys: list[str]) -> str | None:
 
 def source_county(source: str, county_keys: list[str]) -> str | None:
     t = norm(source)
-    return next((c for c in sorted(county_keys, key=len, reverse=True) if c in t), None)
+    return next((c for c in sorted(county_keys, key=len, reverse=True) if norm(c) in t), None)
 
 
 def locality_from_text(text: str, source_county: str | None, by_name: dict[str, list[dict]]) -> dict | None:
@@ -146,7 +150,7 @@ def locality_from_text(text: str, source_county: str | None, by_name: dict[str, 
     for name, records in by_name.items():
         if len(name) < 4 or f" {name} " not in padded:
             continue
-        same = [r for r in records if not source_county or r["county"] == source_county]
+        same = [r for r in records if not source_county or norm(r["county"]) == norm(source_county)]
         if len(same) == 1:
             candidates.append(same[0])
     candidates.sort(key=lambda r: len(r["name"]), reverse=True)
@@ -190,7 +194,8 @@ def main() -> int:
         articles = articles.get("articles") or articles.get("items") or []
     counties = map_data.get("judete") or {}
     county_keys = list(counties)
-    _, siruta = read_siruta()
+    county_alias = {norm(key): key for key in county_keys}
+    _, siruta = read_siruta(county_alias)
     points = load_locality_points()
 
     articles = sorted(articles, key=lambda a: str(a.get("published") or ""), reverse=True)
