@@ -117,6 +117,9 @@ def main() -> int:
         check(list_error == 0, "lista hartii nu afiseaza eroare de dataset")
         pg.screenshot(path=f"{SHOT_DIR}/harta-stiri.png", full_page=True)
 
+        # Reintoarcere la home: verificarile existente de categorie/articol pornesc de aici.
+        _goto(pg, BASE + "/", "home-after-map", wait="domcontentloaded")
+
         # --- pagina de categorie: placeholder-ul cardurilor, masurat real ---
         cat = pg.get_attribute(".nav a", "href") or "/"
         _goto(pg, _abs(cat), "categorie", wait="domcontentloaded")
@@ -151,7 +154,7 @@ def main() -> int:
                           user_agent="Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) "
                                      "AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile Safari/604.1")
         _track(mob)
-        for label, url in [("home", BASE + "/")] + ([ ("harta-stiri", BASE + "/static/harta-stiri/") ] if True else []) + \
+        for label, url in [("home", BASE + "/"), ("harta-stiri", BASE + "/static/harta-stiri/")] + \
                            ([("articol", _abs(art))] if art else []):
             _goto(mob, url, f"mobil-{label}")
             over = mob.evaluate("document.documentElement.scrollWidth - document.documentElement.clientWidth")
