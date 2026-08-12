@@ -78,19 +78,34 @@ Earth SVG that `/surse/` already used. In primary nav (`templates/base.html`). V
 `tools/visual_check.py` (Playwright, real browser) now covers it, incl. a mobile pass —
 this closes what the paragraph below asked for.
 
-**A1. NEW, found 2026-08-12 running `tools/visual_check.py` against live — mobile tap
-targets are too small to use.** Measured on a 390px viewport: **24 of 42 county shapes are
-under 44px in at least one dimension** (WCAG/Apple/Material minimum), the smallest is
-**9×15px**. The 35 news-count bubbles are **~11.7×11.7px each** — smaller than any touch
-target guideline. This is the likely cause of "harta are mari probleme" reported on a real
-Android phone: tapping a specific județ or bubble is close to impossible by touch, even
-though the map renders and loads data correctly (confirmed: no data-load error, no marker
-duplication, no horizontal overflow). **Not fixed yet — owner decision on approach**
-(bigger bubbles vs. invisible larger hit-area vs. drop direct county-tap on mobile in favor
-of the existing search box + list). Also found running the same check: a one-time ~38px
-page-height settle after the first scroll (stable after, not progressive — reads like a
-font-load reflow, not the marker bug class) and 5 real CSP `script-src` console errors,
-site-wide (reproduced on `/` too, not map-specific) — root cause not yet found.
+**A1. Tap targets too small — real, separate from A2, NOT the "mari probleme" bug.**
+24 of 42 county shapes are under 44px (WCAG/Apple/Material minimum) on a 390px viewport,
+smallest 9×15px; the 35 news-count bubbles are ~11.7×11.7px. Measured with
+`tools/visual_check.py`. Not fixed — owner decision on approach (bigger bubbles / invisible
+larger hit-area / drop direct county-tap on mobile for the existing search+list). `IZZ-0176`.
+
+**A2. NEW 2026-08-12, STILL UNRESOLVED — the map visually smears/duplicates dozens of times
+on real-device scroll.** Confirmed by the owner with a screenshot, then re-confirmed in an
+**incognito tab** (rules out client cache as the cause). Two fixes landed and are each
+independently correct, but **neither fixed A2**:
+- `3252aae0` removed `backdrop-filter:blur(10px)` from the sticky `.map-header` (a documented
+  GPU-compositing bug class on real Android under sticky+blur+scroll) — **hypothesis now
+  falsified by the incognito test**, keep the removal (it's harmless/good practice) but do
+  not re-explain A2 by it.
+- `42962285` fixed a genuinely separate bug found while investigating: `/static/harta-stiri/*`
+  fell under the site's generic `/static/* → Cache-Control immutable, 30 days` rule, so no fix
+  to this page could ever reach a phone that had loaded it once. Cloudflare Pages *joins*
+  same-named headers from overlapping `_headers` rules instead of the more specific one
+  replacing the general one — needs `! Cache-Control` to unset before redeclaring (verified
+  live via `curl -I` on both izz.ro and the pages.dev domain: now `max-age=300,
+  must-revalidate`, no `immutable`). Real bug, keep the fix, but it is not A2's cause either.
+- `tools/visual_check.py`'s synthetic `mouse.wheel()` scroll does **not** reproduce A2 at all
+  (passes 35/35 stable). Real touch-scroll on the phone triggers something synthetic wheel
+  events don't. `harta-stiri.js` read in full: `buildMap()` calls `host.replaceChildren()`
+  every run (no DOM accumulation in the code), and has no scroll/resize/Intersection/Resize
+  listeners at all — the mechanism is not yet found. Full writeup + next-step suggestions:
+  `sessions/A/2026-08-12-1445-harta-mobil-nerezolvat.md`. **Do not re-try backdrop-filter as
+  the explanation; that door is closed.**
 
 0c. **Old gap this replaces, kept one cycle for the record:** as of 2026-08-08 the only map
 was the static SVG on `/surse/` (39 county links, no JS) — the owner said explicitly
