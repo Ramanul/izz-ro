@@ -11,6 +11,7 @@ on:
       - "data/siruta_raw.csv"
       - "tools/build_harta_data.py"
       - "tools/build_harta_localitati.py"
+      - ".github/workflows/harta-data.yml"
   workflow_dispatch:
 
 permissions:
