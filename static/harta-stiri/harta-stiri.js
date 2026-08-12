@@ -66,11 +66,9 @@
     const host = $("#map");
     host.replaceChildren();
 
-    // Canvas is intentional here. The real-device Android failure is a visual
-    // repaint/compositing smear during touch scrolling, not DOM accumulation:
-    // the previous implementation used a large dynamically-created SVG. Canvas
-    // keeps the map as one raster drawing surface and removes SVG layer repaint
-    // state from the browser compositor.
+    // Canvas keeps the map as one raster surface. It is deliberately opaque:
+    // transparent canvases can receive a separate compositor layer on Android,
+    // which is undesirable for a page that is being touch-scrolled.
     const canvas = document.createElement("canvas");
     canvas.className = "map-canvas";
     canvas.setAttribute("role", "img");
@@ -89,12 +87,13 @@
     canvas.width = Math.max(1, Math.round(cssWidth * dpr));
     canvas.height = Math.max(1, Math.round(cssHeight * dpr));
 
-    const ctx = canvas.getContext("2d", { alpha: true });
+    const ctx = canvas.getContext("2d", { alpha: false });
     if (!ctx) throw new Error("Canvas 2D nu este disponibil.");
-    ctx.setTransform(canvas.width / vw, 0, 0, canvas.height / vh, -vx * canvas.width / vw, -vy * canvas.height / vh);
-    ctx.clearRect(vx, vy, vw, vh);
-
     const palette = colors();
+    ctx.setTransform(canvas.width / vw, 0, 0, canvas.height / vh, -vx * canvas.width / vw, -vy * canvas.height / vh);
+    ctx.fillStyle = palette.surface;
+    ctx.fillRect(vx, vy, vw, vh);
+
     const counts = new Map();
     for (const item of state.visible) counts.set(item.county, (counts.get(item.county) || 0) + 1);
 
@@ -125,17 +124,8 @@
       paths.push({ county, path, count });
     }
 
-    // Draw count markers in the same canvas, using the same deterministic
-    // centroid calculation previously used by the SVG implementation.
-    // Bounds are approximated from the path via a temporary hit region only
-    // where possible; the map JSON also carries the county geometry, so the
-    // visual marker remains one per county with news.
     for (const entry of paths) {
       if (!entry.count) continue;
-      // Use the path's visual center through an offscreen geometry-independent
-      // grid search. This is intentionally cheap because there are only 42
-      // counties; it avoids parsing SVG commands, which was a previous source
-      // of incorrect marker positions.
       const p = centroidForPath(ctx, entry.path, vx, vy, vw, vh);
       if (!p) continue;
       const radius = Math.max(7, Math.min(18, 6 + Math.sqrt(entry.count) * 1.8));
@@ -178,10 +168,6 @@
     });
   }
 
-  // Return the visual center of a Path2D without parsing SVG path syntax.
-  // We use a deterministic sampling grid and choose the mean of hit points.
-  // 42 counties make this inexpensive and it works with every SVG command that
-  // Path2D accepts in Chromium/Android Chrome.
   function centroidForPath(ctx, path, x, y, width, height) {
     const samples = [];
     const stepX = width / 80;
@@ -193,8 +179,7 @@
     }
     if (!samples.length) return null;
     const middle = samples.slice().sort((a, b) => (a.y - b.y) || (a.x - b.x));
-    const center = middle[Math.floor(middle.length / 2)];
-    return center || null;
+    return middle[Math.floor(middle.length / 2)] || null;
   }
 
   function renderList() {
