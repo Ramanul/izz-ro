@@ -93,9 +93,14 @@ once and every redraw resizes/repaints that same node. `backdrop-filter` stays c
 explanation (falsified earlier); ChatGPT's ~20-commit SVG→Canvas rewrite did NOT fix this —
 its own "regression tests" assert on identifiers that don't exist in the shipped file (8/12
 fail when run), so its "verified" fixes were never really verified (`IZZ-0177`).
-**A3. FIXED same session (`3d85a3a8`) — tapping felt "stuck on one county."** Click handler
-picked the FIRST marker within hit-radius, not the closest; overlapping bubbles (small/dense
-counties) kept resolving to whichever county came first in `map.json`'s key order. Now picks
+**A3. FIXED same session (`3d85a3a8`, `e8f9ddf0`) — tapping felt "stuck on one county."**
+Two separate causes, both real: click handler picked the FIRST marker within hit-radius, not
+the closest (overlapping bubbles in small/dense counties kept resolving to whichever county
+came first in `map.json`'s key order — verified with București/Ilfov, centers 4px apart on a
+375px viewport, each now resolves correctly). Second: the only way back to all counties was a
+toolbar button ABOVE the map card, which scrolls off-screen on mobile once zoomed in, with no
+affordance on the map itself — added a `.map-back` button anchored to the map card, shown only
+when a county is selected. Now picks
 the nearest. Verified: tapped into Sibiu, cross-checked the 28-item news list against the
 county stat — correlation between selection and the right-hand list is correct.
 **Taxonomy rename, owner decision 2026-08-12 (`b645e65c`) — category `zonal` → `judetean`,
