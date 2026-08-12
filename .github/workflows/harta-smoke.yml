@@ -1,6 +1,6 @@
 name: harta-stiri-smoke
 
-# Smoke validation is also kept manually dispatchable for deploys created by Actions.
+# Smoke validation for the public Cloudflare Pages build.
 on:
   push:
     branches: [main]
@@ -16,42 +16,33 @@ jobs:
     steps:
       - name: Așteaptă propagarea deploy-ului Cloudflare
         run: sleep 20
-      - name: Verifică pagina hărții și datasetul public
+      - name: Verifică pagina și datasetul hărții pe pages.dev
         run: |
           set -euo pipefail
           for i in 1 2 3 4 5 6; do
-            for base in "https://izz-ro.pages.dev" "https://izz.ro"; do
-              echo "verific $base"
-              page=$(curl -A 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/151 Safari/537.36' --connect-timeout 5 --max-time 10 -fsSL -o /tmp/map.html -w '%{http_code}' "$base/static/harta-stiri/" || true)
-              data=$(curl -A 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/151 Safari/537.36' --connect-timeout 5 --max-time 10 -fsSL -o /tmp/map.json -w '%{http_code}' "$base/static/harta-stiri/data/map.json" || true)
-              js=$(curl -A 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/151 Safari/537.36' --connect-timeout 5 --max-time 10 -fsSL -o /tmp/map.js -w '%{http_code}' "$base/static/harta-stiri/harta-stiri.js" || true)
-              echo "încercarea $i: $base page=$page data=$data js=$js"
-              if [ "$page" = "200" ] && [ "$data" = "200" ] && [ "$js" = "200" ]; then
-                python - <<'PY'
+            page=$(curl -A 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/151 Safari/537.36' --connect-timeout 5 --max-time 10 -fsSL -o /tmp/map.html -w '%{http_code}' https://izz-ro.pages.dev/static/harta-stiri/ || true)
+            data=$(curl -A 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/151 Safari/537.36' --connect-timeout 5 --max-time 10 -fsSL -o /tmp/map.json -w '%{http_code}' https://izz-ro.pages.dev/static/harta-stiri/data/map.json || true)
+            js=$(curl -A 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/151 Safari/537.36' --connect-timeout 5 --max-time 10 -fsSL -o /tmp/map.js -w '%{http_code}' https://izz-ro.pages.dev/static/harta-stiri/harta-stiri.js || true)
+            echo "încercarea $i: page=$page data=$data js=$js"
+            if [ "$page" = "200" ] && [ "$data" = "200" ] && [ "$js" = "200" ]; then
+              python - <<'PY'
           import json
           from pathlib import Path
           data = json.loads(Path('/tmp/map.json').read_text(encoding='utf-8'))
+          counties = data['map']['judete']
           articles = data.get('articles') or []
-          categories = {}
-          for item in articles:
-              categories[item.get('category', '')] = categories.get(item.get('category', ''), 0) + 1
-          print('MAP_DIAGNOSTIC', {
-              'version': data.get('version'),
-              'counties': len(data.get('map', {}).get('judete', {})),
-              'articles': len(articles),
-              'stats': data.get('stats'),
-              'categories': categories,
-              'first': articles[0] if articles else None,
-          })
+          stats = data.get('stats') or {}
           assert data['map']['viewbox']
-          assert len(data['map']['judete']) >= 40
+          assert len(counties) == 42
           assert articles, 'datasetul public nu conține articole localizate'
-          assert all(a['county'] in data['map']['judete'] for a in articles)
-          print('OK: datasetul public al hărții este valid')
+          assert all(item.get('county') in counties for item in articles)
+          assert stats.get('total') == len(articles)
+          assert stats.get('counties') == len({item['county'] for item in articles})
+          assert stats.get('local', 0) + stats.get('zonal', 0) == len(articles)
+          print('OK:', len(articles), 'articole localizate în', len({item['county'] for item in articles}), 'județe')
           PY
-                exit 0
-              fi
-            done
+              exit 0
+            fi
             sleep 20
           done
           echo 'Deploy-ul public nu a propagat harta în timpul smoke testului.'
