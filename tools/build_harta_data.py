@@ -16,6 +16,7 @@ import csv
 import json
 import os
 import re
+import unicodedata
 from datetime import datetime, timezone
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -41,8 +42,10 @@ PREFIXES = ("MUNICIPIUL ", "ORASUL ", "ORAS ", "COMUNA ", "JUDETUL ", "SATUL ")
 
 
 def norm(value: str) -> str:
-    value = (value or "").strip()
-    value = value.replace("Ț", "T").replace("ț", "t").replace("Ș", "S").replace("ș", "s")
+    """Normalizeaza inclusiv variantele istorice Ţ/Ş din CSV-urile SIRUTA."""
+    value = unicodedata.normalize("NFKD", (value or "").strip())
+    value = "".join(ch for ch in value if not unicodedata.combining(ch))
+    value = value.replace("Đ", "D").replace("đ", "d")
     value = re.sub(r"[^A-Za-z0-9]+", " ", value).upper().strip()
     return re.sub(r"\s+", " ", value)
 
