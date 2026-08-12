@@ -63,28 +63,26 @@ def _same_event(a: dict, b: dict) -> bool:
     """Dedup conservator intre doua pagini care descriu acelasi eveniment.
 
     URL identic = duplicat sigur. Pentru URL-uri diferite cerem aceeasi fereastra de timp,
-    cel putin 3 tokeni semnificativi + Jaccard strict si, daca ambele articole au entitati,
-    cel putin o entitate comuna. Nu unim doua articole doar fiindca au acelasi loc sau aceleasi
-    cuvinte generice. Regula este aceeasi familie de praguri calibrata in cluster.py.
+    cel putin 3 tokeni semnificativi + pragul strict din cluster.py si, daca ambele articole
+    au entitati, cel putin o entitate comuna. Nu unim doua articole doar fiindca au acelasi
+    loc sau aceleasi cuvinte generice.
     """
-    ua, ub = normalize_url(_article_url(a)), normalize_url(_article_url(b))
+    ua = normalize_url(_article_url(a))
+    ub = normalize_url(_article_url(b))
     if ua and ub and ua == ub:
         return True
-    da, db = domain_of(ua), domain_of(ub)
-    if da == db and da:
-        # Doua URL-uri distincte de pe acelasi domeniu pot fi articole diferite/actualizari.
-        # Le deduplicam numai pe dovada textuala, nu pe domeniu.
-        pass
+
     ta, tb = _event_stems(a), _event_stems(b)
     if not ta or not tb:
         return False
-    dt = abs(_article_time(a) - _article_time(b))
-    if dt > timedelta(hours=48):
+    if abs(_article_time(a) - _article_time(b)) > timedelta(hours=48):
         return False
+
     inter = len(ta & tb)
     union = len(ta | tb)
     if not cluster._strict_match(inter, union):
         return False
+
     ea, eb = _entity_stems(a), _entity_stems(b)
     if ea and eb and not (ea & eb):
         return False
@@ -92,28 +90,30 @@ def _same_event(a: dict, b: dict) -> bool:
 
 
 def _dedup_visible(articles: list) -> list:
-    """Elimina duplicatele la ULTIMUL punct inainte de publicare.
+    """Elimina duplicatele la ultimul punct inainte de publicare.
 
-    Este intentionat aici: dedup-ul din ingestie prinde duplicatele cu acelasi URL, iar
-    clustering-ul prinde multe duplicate noi. Dar un duplicat cu URL diferit poate exista
-    deja in state sau poate aparea dupa procesarea simultana a doua feeduri. Acest punct este
-    singurul comun si pentru `run()` si pentru `render_only()`, deci nu mai exista o cale prin
-    care doua pagini despre acelasi eveniment sa ajunga simultan pe site.
+    Ingestia elimina URL-uri identice, iar clustering-ul rezolva multe cazuri inainte de AI.
+    Garda aceasta este necesara pentru duplicatele cu URL diferit si pentru duplicatele deja
+    existente in state. Se aplica si la `render_only()`, deci curata si stocul vechi fara fetch.
+
+    Ordinea de pastrare este deliberata: sinteza C castiga fata de B, iar dintre doua sinteze
+    castiga cea cu mai multe surse. Pentru egalitate, articolul mai nou castiga. Asta face
+    rezultatul determinist si pastreaza varianta editorial mai bogata.
     """
-    ordered = sorted(articles, key=lambda a: (
-        0 if a.get("model") == "C" else 1,
-        -len(a.get("sources") or []),
-        -(a.get("published") or "" == "") if False else 0,
-    ))
-    # Sortare explicita separata pentru a evita comparatii datetime/string amestecate.
-    ordered.sort(key=lambda a: (a.get("model") == "C", len(a.get("sources") or []),
-                                a.get("published") or ""), reverse=True)
+    ordered = sorted(
+        articles,
+        key=lambda a: (
+            a.get("model") == "C",
+            len(a.get("sources") or []),
+            a.get("published") or "",
+        ),
+        reverse=True,
+    )
     kept = []
     for article in ordered:
         if any(_same_event(article, old) for old in kept):
             continue
         kept.append(article)
-    # Restabilim ordinea editoriala existenta (published desc), fara sa schimbam ce a fost pastrat.
     kept.sort(key=lambda a: a.get("published") or "", reverse=True)
     return kept
 
@@ -128,12 +128,8 @@ def apply(articles: list, mod: dict) -> list:
     out = []
     for a in articles:
         url = a.get("url", "")
-        if url in block_urls or a.get("source") in suppress:
+        if normalize_url(url) in block_urls or a.get("source") in suppress:
             continue
-        # Garda de continut, a doua oara. Nu e redundanta cu cea din `fetch.py`: aici trec si
-        # articolele DEJA din `articles.json`, ingerate inainte ca garda sa existe sau printr-o
-        # versiune mai slaba a ei. `render_only()` chema `apply()` la FIECARE build, deci asta
-        # e singurul punct prin care curatarea ajunge pe site fara sa astepte un fetch nou.
         motiv = (guard.verdict(a.get("title") or "",
                                a.get("teaser") or a.get("synthesis") or a.get("description") or "")
                  or guard.url_ostil(a.get("original_link") or "")
@@ -147,15 +143,16 @@ def apply(articles: list, mod: dict) -> list:
         title_l = (a.get("title", "") + " " + a.get("original_title", "")).lower()
         if any(kw in title_l for kw in keywords):
             continue
-        if normalize_url(url) in corrections:
+        norm_url = normalize_url(url)
+        if norm_url in corrections:
             for field in ("title", "teaser", "synthesis"):
-                if field in corrections[normalize_url(url)]:
-                    a[field] = corrections[normalize_url(url)][field]
-        a["featured"] = normalize_url(url) in featured
+                if field in corrections[norm_url]:
+                    a[field] = corrections[norm_url][field]
+        a["featured"] = norm_url in featured
         out.append(a)
 
     deduped = _dedup_visible(out)
     removed = len(out) - len(deduped)
     if removed:
-        print(f"   >> dedup editorial: eliminate {removed} duplicat(e) de eveniment inainte de publicare")
+        print(f"   >> dedup editorial: eliminate {removed} duplicate de eveniment inainte de publicare: {removed}")
     return deduped
