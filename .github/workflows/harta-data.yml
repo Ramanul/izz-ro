@@ -1,0 +1,48 @@
+name: harta-stiri-data
+
+on:
+  push:
+    branches:
+      - main
+      - feature/harta-stiri
+    paths:
+      - "data/articles.json"
+      - "data/harta_judete.json"
+      - "data/siruta_raw.csv"
+      - "tools/build_harta_data.py"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: harta-stiri-data-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 1
+
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.11"
+
+      - name: Genereaza datasetul hărții
+        run: python tools/build_harta_data.py
+
+      - name: Publica datasetul dacă s-a schimbat
+        run: |
+          set -euo pipefail
+          git config user.name "izz-bot"
+          git config user.email "bot@izz.ro"
+          git add static/harta-stiri/data/map.json
+          if git diff --cached --quiet; then
+            echo "Datasetul hărții este deja sincronizat."
+            exit 0
+          fi
+          git commit -m "build(map): update news map dataset"
+          git push

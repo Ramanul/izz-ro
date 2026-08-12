@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="ro">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Harta știrilor — IZZ.ro</title>
+  <meta name="description" content="Harta interactivă a știrilor locale și zonale din România, agregate pe județe și localități.">
+  <link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+  <link rel="stylesheet" href="harta-stiri.css">
+</head>
+<body>
+  <header class="map-header">
+    <a class="brand" href="../../" aria-label="Înapoi la IZZ.ro">
+      <span class="brand-small">IZZ.ro</span>
+      <span>Harta știrilor</span>
+    </a>
+    <a class="back" href="../../">← Înapoi la știri</a>
+  </header>
+
+  <main class="map-page">
+    <section class="map-intro">
+      <div>
+        <p class="eyebrow">GEOGRAFIE EDITORIALĂ</p>
+        <h1>Harta știrilor</h1>
+        <p>Știrile <strong>locale</strong> și <strong>zonale</strong> sunt localizate folosind infrastructura geografică existentă în IZZ.ro, inclusiv identificarea localităților și SIRUTA. Harta agregă afișarea la nivel de județ pentru a evita coordonate inventate.</p>
+      </div>
+      <div class="map-stats" id="map-stats" aria-live="polite">
+        <span>Se încarcă datele…</span>
+      </div>
+    </section>
+
+    <section class="map-toolbar" aria-label="Filtre hartă">
+      <div class="segmented" role="group" aria-label="Nivel geografic">
+        <button type="button" class="active" data-level="all">Toate</button>
+        <button type="button" data-level="local">Local</button>
+        <button type="button" data-level="zonal">Zonal</button>
+      </div>
+      <label class="search">
+        <span class="sr-only">Caută județ sau localitate</span>
+        <input id="map-search" type="search" placeholder="Caută județ / localitate…" autocomplete="off">
+      </label>
+      <button type="button" id="clear-selection" class="secondary">Arată toate județele</button>
+    </section>
+
+    <section class="map-layout">
+      <div class="map-card">
+        <div id="map" class="map" role="img" aria-label="Harta României cu știri pe județe"></div>
+        <p class="map-note">Poziționarea cercului reprezintă județul. Localitatea și codul SIRUTA sunt păstrate în lista de știri atunci când pot fi identificate determinist; nu se afișează coordonate presupuse.</p>
+      </div>
+      <aside class="news-panel" aria-label="Știri localizate">
+        <div class="panel-heading">
+          <h2 id="panel-title">Știri pe hartă</h2>
+          <span id="panel-count"></span>
+        </div>
+        <div id="news-list" class="news-list">
+          <p class="loading">Se încarcă…</p>
+        </div>
+      </aside>
+    </section>
+  </main>
+
+  <script src="harta-stiri.js" defer></script>
+</body>
+</html>
