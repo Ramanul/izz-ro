@@ -13,6 +13,7 @@ automat de GitHub. Screenshot-urile se scriu in SHOT_DIR (urcate ca artifact in 
 Verifica (CLAUDE.md §16 -- rol de utilizator, masurat nu presupus):
   - placeholder-ul .card-media NU e fundal inchis (regresia de flicker negru);
   - imaginea/arta articolului chiar se RANDEAZA (naturalWidth>0, nu pictograma goala);
+  - harta de stiri se randeaza, incarca datasetul si afiseaza articole;
   - zero erori CSP in consola; zero request-uri interne esuate (asset lipsa/404).
 """
 import os
@@ -50,14 +51,8 @@ def _goto(pg, url: str, label: str, wait: str = "load") -> None:
     """Navigheaza si, la esec, lasa DOVEZI in SHOT_DIR in loc sa moara mut.
 
     NU folosim wait_until="networkidle". Playwright insusi il descurajeaza, iar pe izz.ro
-    nu se atinge niciodata din runnerul de CI: jobul a fost rosu 77 de rulari consecutive
-    (17 iul - 5 aug 2026) cu exact acelasi `Page.goto: Timeout 30000ms exceeded`, fara
-    niciun commit de cod in fereastra. Cloudflare Speed Brain e activ pe site
-    (`Speculation-Rules: "/cdn-cgi/speculation"`), deci edge-ul mai lucreaza si dupa `load`.
+    nu se atinge niciodata din runnerul de CI: edge-ul mai lucreaza si dupa `load`.
     `load` se termina la evenimentul ferestrei, deci nu depinde de ce prefetch-eaza edge-ul.
-
-    Vechea versiune murea la primul goto INAINTE de orice screenshot, asa ca artifactul a
-    fost gol la fiecare din cele 77 de esecuri -- 19 zile fara nicio dovada vizuala.
     """
     try:
         pg.goto(url, wait_until=wait)
@@ -69,7 +64,7 @@ def _goto(pg, url: str, label: str, wait: str = "load") -> None:
         try:
             pg.screenshot(path=f"{SHOT_DIR}/FAIL-{label}.png")
             print(f"  screenshot de esec: {SHOT_DIR}/FAIL-{label}.png")
-        except Exception as shot_exc:                       # pagina poate fi inutilizabila
+        except Exception as shot_exc:
             print(f"  (screenshot imposibil: {shot_exc})")
         raise
 
@@ -80,7 +75,7 @@ def main() -> int:
     csp_errors: list = []
     failed_local: list = []
     launch = {"args": ["--no-sandbox", "--disable-dev-shm-usage"]}
-    if os.getenv("PW_CHROME"):                      # override pt. test local in sandbox
+    if os.getenv("PW_CHROME"):
         launch["executable_path"] = os.environ["PW_CHROME"]
 
     with sync_playwright() as pw:
@@ -88,8 +83,6 @@ def main() -> int:
         pg = br.new_page(viewport={"width": 1280, "height": 900})
         pg.on("console", lambda m: csp_errors.append(m.text)
               if m.type == "error" and "Content Security Policy" in m.text else None)
-        # ignoram /cdn-cgi/* -- endpointuri injectate de Cloudflare (RUM/analytics),
-        # nu activele noastre; beacon-ul rum poate fi abandonat inofensiv la navigare
         pg.on("requestfailed", lambda r: failed_local.append(r.url)
               if BASE in r.url and "/cdn-cgi/" not in r.url else None)
         _track(pg)
@@ -98,12 +91,6 @@ def main() -> int:
         _goto(pg, BASE + "/", "home")
         pg.screenshot(path=f"{SHOT_DIR}/home.png")
 
-        # Cloudflare da bot challenge browserelor automate: pagina se incarca, dar e
-        # "Performing security verification", nu site-ul. Fara verificarea asta esecul
-        # apare abia mai jos, ca un selector lipsa, si trimite diagnosticul in directia
-        # gresita -- exact ce s-a intamplat pe 2026-08-05. Un curl NU o poate detecta:
-        # challenge-ul se declanseaza pe amprenta browserului, nu pe User-Agent, deci
-        # curl cu UA de HeadlessChrome primeste 200 cu HTML-ul real.
         if pg.query_selector("#challenge-running, #cf-challenge-running") or \
                 "security verification" in (pg.title() or "").lower():
             print(f"  FAIL Cloudflare bot challenge pe {BASE} — browserul automat nu "
@@ -112,6 +99,23 @@ def main() -> int:
             fails.append(f"Cloudflare bot challenge blocheaza verificarea pe {BASE}")
             br.close()
             return 1
+
+        # --- harta stirilor: browser real, dataset public si randare SVG ---
+        _goto(pg, BASE + "/static/harta-stiri/", "harta-stiri", wait="domcontentloaded")
+        try:
+            pg.wait_for_selector("#map svg", timeout=15000)
+            pg.wait_for_selector("#news-list .news-item", timeout=15000)
+        except Exception as exc:
+            print(f"  FAIL harta nu a ajuns la starea functionala: {type(exc).__name__}: {exc}")
+        map_paths = pg.locator("#map svg .county").count()
+        news_items = pg.locator("#news-list .news-item").count()
+        map_error = pg.locator("#map .error").count()
+        list_error = pg.locator("#news-list .error").count()
+        check(map_paths >= 40, f"harta are cel putin 40 judete randate (gasite: {map_paths})")
+        check(news_items > 0, f"harta afiseaza articole localizate (gasite: {news_items})")
+        check(map_error == 0, "harta nu afiseaza eroare de incarcare a datasetului")
+        check(list_error == 0, "lista hartii nu afiseaza eroare de dataset")
+        pg.screenshot(path=f"{SHOT_DIR}/harta-stiri.png", full_page=True)
 
         # --- pagina de categorie: placeholder-ul cardurilor, masurat real ---
         cat = pg.get_attribute(".nav a", "href") or "/"
@@ -130,30 +134,25 @@ def main() -> int:
             _goto(pg, _abs(art), "articol")
             el = pg.query_selector(".article-art")
             if el:
-                # `networkidle` garanta implicit ca imaginea apucase sa se descarce; acum
-                # o asteptam explicit. Daca nu se completeaza, naturalWidth de mai jos
-                # raporteaza FAIL corect -- deci timeoutul aici nu trebuie sa opreasca runul.
                 try:
                     pg.wait_for_function(
                         "() => { const el = document.querySelector('.article-art');"
                         " return !el || el.complete; }", timeout=15000)
                 except Exception as exc:
                     print(f"  (arta nu s-a completat in 15s: {type(exc).__name__})")
-                nat = pg.eval_on_selector(".article-art",
-                                          "el => el.naturalWidth || 0")
+                nat = pg.eval_on_selector(".article-art", "el => el.naturalWidth || 0")
                 check(nat > 0, f"arta articolului se incarca real (naturalWidth={nat})")
             else:
                 check(False, ".article-art exista pe pagina de articol")
             pg.screenshot(path=f"{SHOT_DIR}/articol.png")
 
-        # --- responsive (raport testare 2026-07-16): viewport de telefon, masurat real.
-        #     Regresia clasica e overflow-ul orizontal (pagina "se misca" lateral) --
-        #     scrollWidth trebuie sa incapa in viewport pe home + articol.
+        # --- responsive ---
         mob = br.new_page(viewport={"width": 390, "height": 844},
                           user_agent="Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) "
                                      "AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile Safari/604.1")
         _track(mob)
-        for label, url in [("home", BASE + "/")] + ([("articol", _abs(art))] if art else []):
+        for label, url in [("home", BASE + "/")] + ([ ("harta-stiri", BASE + "/static/harta-stiri/") ] if True else []) + \
+                           ([("articol", _abs(art))] if art else []):
             _goto(mob, url, f"mobil-{label}")
             over = mob.evaluate("document.documentElement.scrollWidth - document.documentElement.clientWidth")
             check(over <= 0, f"[mobil 390px] fara overflow orizontal pe {label} (depasire: {over}px)")
