@@ -33,19 +33,6 @@
     }).format(date);
   }
 
-  function pathCenter(pathData) {
-    const numbers = (pathData.match(/-?\d+(?:\.\d+)?/g) || []).map(Number);
-    if (numbers.length < 4) return [0, 0];
-    let minX = Infinity, maxX = -Infinity, minY = Infinity, maxY = -Infinity;
-    for (let i = 0; i + 1 < numbers.length; i += 2) {
-      minX = Math.min(minX, numbers[i]);
-      maxX = Math.max(maxX, numbers[i]);
-      minY = Math.min(minY, numbers[i + 1]);
-      maxY = Math.max(maxY, numbers[i + 1]);
-    }
-    return [(minX + maxX) / 2, (minY + maxY) / 2];
-  }
-
   function bucket(count) {
     if (count >= 20) return "high";
     if (count >= 10) return "medium";
@@ -76,6 +63,7 @@
       counts.set(item.county, (counts.get(item.county) || 0) + 1);
     }
 
+    const paths = new Map();
     for (const [county, pathData] of Object.entries(state.counties)) {
       const count = counts.get(county) || 0;
       const path = document.createElementNS(svgNS, "path");
@@ -92,12 +80,21 @@
         }
       });
       svg.appendChild(path);
+      paths.set(county, path);
     }
 
-    for (const [county, pathData] of Object.entries(state.counties)) {
+    // Use the browser's parsed SVG geometry rather than parsing path strings.
+    // Romanian county boundaries contain H/V/arc/relative commands for which
+    // pairing every numeric token as X/Y produces incorrect marker positions.
+    for (const [county] of Object.entries(state.counties)) {
       const count = counts.get(county) || 0;
       if (!count) continue;
-      const [x, y] = pathCenter(pathData);
+      const path = paths.get(county);
+      const box = path.getBBox();
+      if (!Number.isFinite(box.x) || !Number.isFinite(box.y) || box.width <= 0 || box.height <= 0) continue;
+      const x = box.x + box.width / 2;
+      const y = box.y + box.height / 2;
+
       const bubble = document.createElementNS(svgNS, "circle");
       bubble.setAttribute("cx", x);
       bubble.setAttribute("cy", y);
