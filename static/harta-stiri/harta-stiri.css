@@ -70,8 +70,8 @@ h1 { margin: 0; font-size: clamp(2rem, 5vw, 3.7rem); letter-spacing: -.045em; }
 
 .map-layout { display: grid; grid-template-columns: minmax(0, 1.35fr) minmax(330px, .65fr); gap: 1rem; align-items: start; }
 .map-card, .news-panel { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; box-shadow: var(--shadow); overflow: hidden; }
-.map { min-height: 620px; padding: 1rem; }
-.map svg { display: block; width: 100%; height: auto; max-height: 720px; }
+.map { min-height: 620px; padding: 1rem; contain: layout paint; }
+.map svg { display: block; width: 100%; height: auto; max-height: 720px; touch-action: manipulation; }
 .county { fill: var(--map-fill); stroke: var(--map-stroke); stroke-width: 1.2; vector-effect: non-scaling-stroke; cursor: pointer; transition: fill .16s, opacity .16s; }
 .county:hover, .county.selected { fill: var(--accent-soft); }
 .county.dimmed { opacity: .32; }
@@ -83,7 +83,7 @@ h1 { margin: 0; font-size: clamp(2rem, 5vw, 3.7rem); letter-spacing: -.045em; }
 .panel-heading { padding: 1rem; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: baseline; gap: .5rem; }
 .panel-heading h2 { margin: 0; font-size: 1rem; }
 .panel-heading span { color: var(--muted); font-size: .8rem; }
-.news-list { overflow: auto; }
+.news-list { overflow: auto; -webkit-overflow-scrolling: touch; overscroll-behavior: contain; }
 .news-item { padding: .85rem 1rem; border-bottom: 1px solid var(--border); text-decoration: none; display: block; }
 .news-item:hover { background: var(--surface-2); }
 .news-meta { display: flex; gap: .45rem; flex-wrap: wrap; margin-bottom: .35rem; font-size: .68rem; color: var(--muted); }
@@ -105,7 +105,10 @@ h1 { margin: 0; font-size: clamp(2rem, 5vw, 3.7rem); letter-spacing: -.045em; }
 
 @media (max-width: 560px) {
   .map-page { width: min(100% - 1rem, 1500px); padding-top: 1.2rem; }
-  .map-header { padding-inline: .7rem; }
-  .map { padding: .4rem; min-height: 320px; }
+  .map-header { padding-inline: .7rem; backdrop-filter: none; background: var(--surface); }
+  .map { padding: .4rem; min-height: 320px; contain: layout paint style; }
+  .map-card, .news-panel { box-shadow: none; }
+  .map svg { max-height: none; }
+  .county { transition: none; }
   .back { font-size: .78rem; }
 }
