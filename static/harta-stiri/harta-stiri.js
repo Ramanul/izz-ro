@@ -8,6 +8,7 @@
     articles: [],
     visible: [],
     selectedCounty: null,
+    zoomCounty: null,
     level: "all",
     search: "",
     canvas: null,
@@ -77,10 +78,10 @@
   }
 
   function selectedView(vx, vy, vw, vh) {
-    if (!state.selectedCounty || !state.counties[state.selectedCounty]) {
+    if (!state.zoomCounty || !state.counties[state.zoomCounty]) {
       return { x: vx, y: vy, width: vw, height: vh };
     }
-    const bounds = pathBounds(state.counties[state.selectedCounty]);
+    const bounds = pathBounds(state.counties[state.zoomCounty]);
     if (!bounds) return { x: vx, y: vy, width: vw, height: vh };
     const padX = Math.max(12, (bounds.maxX - bounds.minX) * 0.12);
     const padY = Math.max(12, (bounds.maxY - bounds.minY) * 0.12);
@@ -186,7 +187,7 @@
       paths.push({ county, path, count, bounds: pathBounds(pathData) });
     }
 
-    if (!state.selectedCounty) {
+    if (!state.zoomCounty) {
       for (const entry of paths) {
         if (!entry.count || !entry.bounds) continue;
         const p = {
@@ -211,10 +212,10 @@
     }
 
     const localityMarkers = [];
-    if (state.selectedCounty) {
+    if (state.zoomCounty) {
       const groups = new Map();
       for (const item of state.visible) {
-        if (item.county !== state.selectedCounty || item.x == null || item.y == null) continue;
+        if (item.county !== state.zoomCounty || item.x == null || item.y == null) continue;
         const x = Number(item.x);
         const y = Number(item.y);
         if (!Number.isFinite(x) || !Number.isFinite(y)) continue;
@@ -304,7 +305,7 @@
     if (!canvas || !view) return;
     const p = pointForEvent(canvas, view, event);
     if (!p) return;
-    if (state.selectedCounty) {
+    if (state.zoomCounty) {
       const marker = closestHit(p, state.localityMarkers, (m) => m);
       if (marker) {
         const locality = marker.localities[0] || marker.locality;
@@ -318,7 +319,12 @@
     } else {
       const entry = closestHit(p, state.paths, (e) => e.marker);
       if (entry) {
+        // "Județean": lista se filtreaza la judet, harta ramane pe toata tara -- se poate
+        // trece direct la alt judet fara pas de "inapoi". "Local"/"Toate": zoom pe judet,
+        // ca sa se vada UAT-urile lui (cerut de owner, 2026-08-13, dupa ce zoom-ul mereu-pornit
+        // s-a dovedit neintuitiv la nivel Judetean).
         state.selectedCounty = entry.county;
+        if (state.level !== "judetean") state.zoomCounty = entry.county;
         state.visible = filtered();
         buildMap();
         renderList();
@@ -368,6 +374,7 @@
   function resetSelection() {
     state.search = "";
     state.selectedCounty = null;
+    state.zoomCounty = null;
     state.visible = filtered();
     const search = $("#map-search");
     if (search) search.value = "";
@@ -389,6 +396,14 @@
     });
     $$(".segmented [data-level]").forEach((button) => button.addEventListener("click", () => {
       state.level = button.dataset.level || "all";
+      // Schimbarea de nivel schimba INSASI regula de interactiune (zoom sau nu la click pe
+      // judet) -- o selectie ramasa de la nivelul anterior ar produce o stare incoerenta
+      // (ex. harta ramasa marita cand ai trecut pe Judetean, unde click-ul nu mai face zoom).
+      state.selectedCounty = null;
+      state.zoomCounty = null;
+      state.search = "";
+      const search = $("#map-search");
+      if (search) search.value = "";
       state.visible = filtered();
       syncLevelButtons();
       buildMap();
