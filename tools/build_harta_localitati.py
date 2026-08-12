@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Descarcă punctele localităților și le aliniază cu viewBox-ul hărții județelor.
+"""Descarcă punctele localităților și le aliniază exact cu viewBox-ul hărții județelor.
 
 Sursa este stratul public geo-spatial.org `romania_localitati`, care are geometrie punctuală
 și atribute provenite inclusiv din SIRUTA. Datasetul rezultat este static: browserul nu
@@ -21,15 +21,19 @@ WFS_URL = "https://services.geo-spatial.org/geoserver/wfs"
 CATALOG_URL = "https://geo-spatial.org/vechi/download/romania-seturi-vectoriale"
 TYPE_NAME = "geospatial:romania_localitati"
 
-# Aceasta este aceeași proiecție equirectangulară folosită de build_harta.py.
+# Aceleași limite geografice folosite la construirea contururilor județelor.
+# Înălțimea este preluată explicit din viewBox-ul COMIS al hărții; astfel markerii
+# nu pot fi decalați de o recalculare independentă a raportului de aspect.
 LON_MIN = 20.26240504971425
 LON_MAX = 29.720105921094994
 LAT_MIN = 43.619254164890435
 LAT_MAX = 48.26486964515059
 WIDTH = 1000.0
+HEIGHT = 703.53
 LAT_REF = (LAT_MIN + LAT_MAX) / 2.0
 K = math.cos(math.radians(LAT_REF))
-SCALE = WIDTH / ((LON_MAX - LON_MIN) * K)
+SCALE_X = WIDTH / ((LON_MAX - LON_MIN) * K)
+SCALE_Y = HEIGHT / (LAT_MAX - LAT_MIN)
 
 
 def norm(value: str) -> str:
@@ -48,14 +52,14 @@ def first(props: dict, *names: str) -> str:
 
 
 def project(lon: float, lat: float) -> tuple[float, float]:
-    x = (lon - LON_MIN) * K * SCALE
-    y = (LAT_MAX - lat) * SCALE
+    x = (lon - LON_MIN) * K * SCALE_X
+    y = (LAT_MAX - lat) * SCALE_Y
     return round(x, 1), round(y, 1)
 
 
 def request_json(url: str, params: dict) -> dict:
     query = urllib.parse.urlencode(params)
-    request = urllib.request.Request(url + "?" + query, headers={"User-Agent": "izz-ro-map-builder/2.0"})
+    request = urllib.request.Request(url + "?" + query, headers={"User-Agent": "izz-ro-map-builder/2.1"})
     with urllib.request.urlopen(request, timeout=120) as response:
         return json.loads(response.read().decode("utf-8"))
 
@@ -69,10 +73,7 @@ def load_wfs() -> list[dict]:
 
 
 def load_catalog_geojson() -> list[dict]:
-    # Pagina geo-spatial.org publică explicit stratul „Localități România punct”
-    # în GeoJSON. Extragem linkul din pagina oficială, deci nu hardcodăm un URL
-    # volatil al fișierului.
-    request = urllib.request.Request(CATALOG_URL, headers={"User-Agent": "izz-ro-map-builder/2.0"})
+    request = urllib.request.Request(CATALOG_URL, headers={"User-Agent": "izz-ro-map-builder/2.1"})
     with urllib.request.urlopen(request, timeout=60) as response:
         html = response.read().decode("utf-8", "replace")
 
@@ -85,15 +86,11 @@ def load_catalog_geojson() -> list[dict]:
     block = html[start:start + 12000]
     matches = re.findall(r'href=["\']([^"\']+)["\'][^>]*>\s*GeoJSON\s*<', block, flags=re.I | re.S)
     if not matches:
-        # Unele versiuni ale paginii pun textul GeoJSON înaintea atributului href.
-        matches = re.findall(r'>\s*GeoJSON\s*</a>[^<]*', block, flags=re.I | re.S)
-        if not matches:
-            raise RuntimeError("Catalogul geo-spatial.org nu expune linkul GeoJSON pentru localități.")
-        raise RuntimeError("Linkul GeoJSON pentru localități nu a putut fi extras din catalog.")
+        raise RuntimeError("Catalogul geo-spatial.org nu expune linkul GeoJSON pentru localități.")
 
     href = matches[0]
     url = urllib.parse.urljoin(CATALOG_URL, href)
-    request = urllib.request.Request(url, headers={"User-Agent": "izz-ro-map-builder/2.0"})
+    request = urllib.request.Request(url, headers={"User-Agent": "izz-ro-map-builder/2.1"})
     with urllib.request.urlopen(request, timeout=120) as response:
         payload = json.loads(response.read().decode("utf-8"))
     return payload.get("features") or []
@@ -113,6 +110,7 @@ def load_features() -> tuple[list[dict], str]:
 def main() -> int:
     features, source = load_features()
     out = {}
+    rejected = 0
     for feature in features:
         props = feature.get("properties") or {}
         geom = feature.get("geometry") or {}
@@ -132,7 +130,14 @@ def main() -> int:
         level = first(props, "NIV", "niv", "level")
         if not name:
             continue
+
         x, y = project(lon, lat)
+        # Un punct din stratul României trebuie să ajungă în viewBox-ul hărții.
+        # O toleranță foarte mică permite rotunjirea, dar nu ascunde o eroare de proiecție.
+        if not (-1 <= x <= WIDTH + 1 and -1 <= y <= HEIGHT + 1):
+            rejected += 1
+            continue
+
         record = {"name": norm(name), "siruta": siruta, "county": norm(county), "level": level, "x": x, "y": y}
         key = siruta or f"{norm(name)}|{norm(county)}"
         out[str(key)] = record
@@ -141,17 +146,22 @@ def main() -> int:
         raise RuntimeError("Sursa geospațială nu a returnat nicio localitate punctuală.")
 
     result = {
-        "version": 1,
+        "version": 2,
         "source": "geo-spatial.org — Localități România punct",
         "source_url": source,
         "source_crs": "EPSG:4326",
-        "projection": {"lon_min": LON_MIN, "lon_max": LON_MAX, "lat_min": LAT_MIN, "lat_max": LAT_MAX, "width": WIDTH},
+        "projection": {
+            "lon_min": LON_MIN, "lon_max": LON_MAX,
+            "lat_min": LAT_MIN, "lat_max": LAT_MAX,
+            "width": WIDTH, "height": HEIGHT,
+            "method": "equirectangular_cos_latitude_reference",
+        },
         "localities": out,
     }
     os.makedirs(os.path.dirname(OUT), exist_ok=True)
     with open(OUT, "w", encoding="utf-8") as fh:
         json.dump(result, fh, ensure_ascii=False, separators=(",", ":"))
-    print(f"harta-stiri: {len(out)} localități -> {OUT}")
+    print(f"harta-stiri: {len(out)} localități -> {OUT}; respinse în afara viewBox: {rejected}")
     return 0
 
 
