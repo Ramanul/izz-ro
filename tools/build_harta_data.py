@@ -9,6 +9,8 @@ in `static/harta-stiri/data/map.json`.
 SIRUTA este folosit determinist pentru identificarea localitatii si codului SIRUTA. Coordonatele
 localitatii sunt adaugate din `data/harta_localitati.json`, generat la build din stratul public
 geo-spatial.org. Daca nu exista coordonata, articolul ramane localizat la nivel de judet.
+
+Pipeline: SIRUTA -> localitate -> coordonata statica -> Canvas marker.
 """
 from __future__ import annotations
 
