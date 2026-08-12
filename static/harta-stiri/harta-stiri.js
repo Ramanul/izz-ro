@@ -10,7 +10,10 @@
     selectedCounty: null,
     level: "all",
     search: "",
-    renderToken: 0,
+    canvas: null,
+    view: null,
+    paths: [],
+    localityMarkers: [],
   };
 
   const $ = (selector) => document.querySelector(selector);
@@ -92,11 +95,15 @@
     return Math.hypot(point.x - marker.x, point.y - marker.y) <= marker.radius + extra;
   }
 
-  function buildMap() {
+  function ensureCanvas() {
     const host = $("#map");
-    if (!host || !state.map) return;
-
-    const token = ++state.renderToken;
+    if (!host) return null;
+    if (state.canvas && host.contains(state.canvas)) return state.canvas;
+    // Un singur element canvas traieste pe toata durata paginii. Recrearea lui la
+    // fiecare redesenare (host.replaceChildren() + createElement) lasa o fereastra in
+    // care browserul poate compune vizual elementul vechi si cel nou suprapuse, in
+    // timp ce pagina e in mijlocul unui scroll tactil real -- asta produce dedublarea
+    // verticala observata pe dispozitiv (confirmata pe video 2026-08-12).
     host.replaceChildren();
     const canvas = document.createElement("canvas");
     canvas.className = "map-canvas";
@@ -105,6 +112,16 @@
     canvas.style.touchAction = "pan-y";
     canvas.style.cursor = "pointer";
     host.appendChild(canvas);
+    canvas.addEventListener("click", onCanvasClick);
+    state.canvas = canvas;
+    return canvas;
+  }
+
+  function buildMap() {
+    const host = $("#map");
+    if (!host || !state.map) return;
+    const canvas = ensureCanvas();
+    if (!canvas) return;
 
     const rect = host.getBoundingClientRect();
     const viewBox = String(state.map.viewbox).trim().split(/\s+/).map(Number);
@@ -234,43 +251,51 @@
       }
     }
 
-    const pointForEvent = (event) => {
-      const r = canvas.getBoundingClientRect();
-      if (!r.width || !r.height) return null;
-      return {
-        x: view.x + ((event.clientX - r.left) / r.width) * view.width,
-        y: view.y + ((event.clientY - r.top) / r.height) * view.height,
-      };
-    };
+    // Salvate pe state, nu pe closure: handler-ul de click e legat o singura data pe
+    // canvas (in ensureCanvas), asa ca citeste mereu ultimul rezultat aici.
+    state.view = view;
+    state.paths = paths;
+    state.localityMarkers = localityMarkers;
+  }
 
-    canvas.addEventListener("click", (event) => {
-      if (token !== state.renderToken) return;
-      const p = pointForEvent(event);
-      if (!p) return;
-      if (state.selectedCounty) {
-        for (const marker of localityMarkers) {
-          if (!hitDistance(p, marker)) continue;
-          const locality = marker.localities[0] || marker.locality;
-          state.search = locality;
-          const search = $("#map-search");
-          if (search) search.value = locality;
-          state.visible = filtered();
-          renderList();
-          updateStats();
-          break;
-        }
-      } else {
-        for (const entry of paths) {
-          if (!entry.marker || !hitDistance(p, entry.marker)) continue;
-          state.selectedCounty = entry.county;
-          state.visible = filtered();
-          buildMap();
-          renderList();
-          updateStats();
-          break;
-        }
+  function pointForEvent(canvas, view, event) {
+    const r = canvas.getBoundingClientRect();
+    if (!r.width || !r.height) return null;
+    return {
+      x: view.x + ((event.clientX - r.left) / r.width) * view.width,
+      y: view.y + ((event.clientY - r.top) / r.height) * view.height,
+    };
+  }
+
+  function onCanvasClick(event) {
+    const canvas = state.canvas;
+    const view = state.view;
+    if (!canvas || !view) return;
+    const p = pointForEvent(canvas, view, event);
+    if (!p) return;
+    if (state.selectedCounty) {
+      for (const marker of state.localityMarkers) {
+        if (!hitDistance(p, marker)) continue;
+        const locality = marker.localities[0] || marker.locality;
+        state.search = locality;
+        const search = $("#map-search");
+        if (search) search.value = locality;
+        state.visible = filtered();
+        renderList();
+        updateStats();
+        break;
       }
-    });
+    } else {
+      for (const entry of state.paths) {
+        if (!entry.marker || !hitDistance(p, entry.marker)) continue;
+        state.selectedCounty = entry.county;
+        state.visible = filtered();
+        buildMap();
+        renderList();
+        updateStats();
+        break;
+      }
+    }
   }
 
   function renderList() {
@@ -345,7 +370,15 @@
     const host = $("#map");
     if (!host || typeof ResizeObserver === "undefined") return;
     let scheduled = false;
-    const observer = new ResizeObserver(() => {
+    let lastWidth = Math.round(host.getBoundingClientRect().width);
+    const observer = new ResizeObserver((entries) => {
+      const width = Math.round(entries[0]?.contentRect?.width ?? host.getBoundingClientRect().width);
+      // Doar latimea afecteaza layout-ul hartii (inaltimea e derivata din ea). Pe mobil,
+      // aparitia/disparitia barei de adrese la scroll schimba inaltimea ferestrei, nu
+      // latimea -- fara garda asta, fiecare din acele evenimente redeschide un canvas
+      // nou in mijlocul unui scroll, ceea ce e cauza dedublarii vizuale (vezi ensureCanvas).
+      if (width === lastWidth) return;
+      lastWidth = width;
       if (scheduled) return;
       scheduled = true;
       requestAnimationFrame(() => {
