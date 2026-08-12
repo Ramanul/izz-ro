@@ -84,33 +84,25 @@ smallest 9×15px; the 35 news-count bubbles are ~11.7×11.7px. Measured with
 `tools/visual_check.py`. Not fixed — owner decision on approach (bigger bubbles / invisible
 larger hit-area / drop direct county-tap on mobile for the existing search+list). `IZZ-0176`.
 
-**A2. STILL UNCONFIRMED ON DEVICE (fix landed 2026-08-12, `e3832692`) — the map visually
-smears into 6-7 stacked vertical copies during real touch scroll.** Between the last update
-here and this one, the owner worked with ChatGPT directly on `main` (~20 commits: full
-SVG→Canvas rewrite, marker dedup, resize/interaction hardening) — **none of it fixed A2**;
-its own "regression tests" (`tests/test_harta_playwright*.py`, `test_harta_interactions.py`)
-assert on identifiers (`markerMap`, `canvas.remove()`, single-quoted `createElement`) that
-don't exist in the shipped file — **8 of 12 fail when actually run**, so that verification
-never happened. `backdrop-filter` stays closed as an explanation (falsified 2026-08-12,
-incognito test); do not re-open it.
-What broke the case open: the owner sent a 20s **screen recording** of the live bug (first
-time a video, not a photo, was available). Frame extraction (OpenCV, 0.5s steps) shows the
-smear is a *sustained* multi-second artifact, not a one-frame flicker — the signature of
-repeated element churn, not a paint-content bug. `harta-stiri.js`'s `buildMap()` was calling
-`host.replaceChildren()` + `document.createElement("canvas")` on **every** redraw, tearing
-down and rebuilding the canvas node itself each time. Fix: `ensureCanvas()` now creates the
-element once (`state.canvas`) and every redraw resizes/repaints that same node; the click
-handler moved off the per-call closure onto one persistent listener reading
-`state.view/paths/localityMarkers`. Also hardened `bindResize()`'s `ResizeObserver` to ignore
-height-only changes (a phone's address bar hiding on scroll changes viewport height, not
-`#map`'s width — every one of those was a spurious rebuild trigger mid-scroll).
-**Verified locally** (real browser, mobile viewport, `MutationObserver` on `#map`): 4 search
-queries + 5 map clicks (one confirmed a county selection via `#map-stats`) → **zero new
-`<canvas>` elements**, interactions still work, zero console errors. **Confirmed live** the
-prior build's JS was already the current one on izz.ro (byte-identical, correct 5-min cache
-header) — rules out stale cache as an A2 explanation. **NOT yet confirmed on the owner's
-phone** — next step is one more scroll test after this deploys. Full writeup + frame evidence:
-`sessions/A/2026-08-12-2255-harta-canvas-reuse-fix.md`.
+**A2. FIXED, owner-confirmed on device 2026-08-12 (`e3832692`).** The map smeared into
+6-7 stacked copies on real touch scroll. Root cause found from a phone screen recording
+(OpenCV frame extraction, since headless/emulated scroll never reproduced it): `buildMap()`
+recreated the `<canvas>` DOM node on every redraw, which on real Android compositing let old
+and new elements paint over each other mid-scroll. Fix: `ensureCanvas()` creates the element
+once and every redraw resizes/repaints that same node. `backdrop-filter` stays closed as an
+explanation (falsified earlier); ChatGPT's ~20-commit SVG→Canvas rewrite did NOT fix this —
+its own "regression tests" assert on identifiers that don't exist in the shipped file (8/12
+fail when run), so its "verified" fixes were never really verified (`IZZ-0177`).
+**A3. FIXED same session (`3d85a3a8`) — tapping felt "stuck on one county."** Click handler
+picked the FIRST marker within hit-radius, not the closest; overlapping bubbles (small/dense
+counties) kept resolving to whichever county came first in `map.json`'s key order. Now picks
+the nearest. Verified: tapped into Sibiu, cross-checked the 28-item news list against the
+county stat — correlation between selection and the right-hand list is correct.
+**Taxonomy rename, owner decision 2026-08-12 (`b645e65c`) — category `zonal` → `judetean`,
+including the URL slug**, an explicit exception to the 2026-07-17 rule that slugs never
+change. 295 already-published `/zonal/` articles migrated to `judetean` in `articles.json`;
+`render.py` now writes a Cloudflare `_redirects` wildcard (`/zonal/* → /judetean/:splat`,
+301) so old indexed links don't 404. Full detail: `sessions/A/2026-08-12-2255-harta-canvas-reuse-fix.md`.
 
 0c. **Old gap this replaces, kept one cycle for the record:** as of 2026-08-08 the only map
 was the static SVG on `/surse/` (39 county links, no JS) — the owner said explicitly
