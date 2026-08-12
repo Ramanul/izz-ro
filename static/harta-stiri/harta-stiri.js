@@ -10,6 +10,7 @@
     selectedCounty: null,
     level: "all",
     search: "",
+    renderToken: 0,
   };
 
   const $ = (selector) => document.querySelector(selector);
@@ -87,10 +88,15 @@
     return { x, y, width: Math.max(1, right - x), height: Math.max(1, bottom - y) };
   }
 
+  function hitDistance(point, marker, extra = 5) {
+    return Math.hypot(point.x - marker.x, point.y - marker.y) <= marker.radius + extra;
+  }
+
   function buildMap() {
     const host = $("#map");
     if (!host || !state.map) return;
 
+    const token = ++state.renderToken;
     host.replaceChildren();
     const canvas = document.createElement("canvas");
     canvas.className = "map-canvas";
@@ -182,19 +188,32 @@
         const y = Number(item.y);
         if (!Number.isFinite(x) || !Number.isFinite(y)) continue;
         const coordinateKey = `${x.toFixed(4)}|${y.toFixed(4)}`;
-        const key = item.siruta || `${norm(item.locality)}|${norm(item.county)}`;
+        const siruta = item.siruta ? String(item.siruta) : "";
+        const locality = item.locality || item.county;
+        const key = siruta || `${norm(locality)}|${norm(item.county)}`;
         const group = groups.get(key) || {
-          x, y, locality: item.locality || item.county, count: 0, coordinateKey,
+          x, y, locality, county: item.county, siruta, count: 0, coordinateKey,
         };
         group.count += 1;
         groups.set(key, group);
       }
 
+      // Different SIRUTA records can legitimately share a point. Keep one visual
+      // marker, but preserve every locality identity so a click cannot select the wrong one.
       const byCoordinate = new Map();
       for (const group of groups.values()) {
         const existing = byCoordinate.get(group.coordinateKey);
-        if (existing) existing.count += group.count;
-        else byCoordinate.set(group.coordinateKey, { ...group });
+        if (existing) {
+          existing.count += group.count;
+          existing.localities.push(group.locality);
+          existing.sirutas.push(group.siruta);
+        } else {
+          byCoordinate.set(group.coordinateKey, {
+            ...group,
+            localities: [group.locality],
+            sirutas: [group.siruta],
+          });
+        }
       }
 
       for (const group of byCoordinate.values()) {
@@ -217,6 +236,7 @@
 
     const pointForEvent = (event) => {
       const r = canvas.getBoundingClientRect();
+      if (!r.width || !r.height) return null;
       return {
         x: view.x + ((event.clientX - r.left) / r.width) * view.width,
         y: view.y + ((event.clientY - r.top) / r.height) * view.height,
@@ -224,26 +244,30 @@
     };
 
     canvas.addEventListener("click", (event) => {
+      if (token !== state.renderToken) return;
       const p = pointForEvent(event);
+      if (!p) return;
       if (state.selectedCounty) {
         for (const marker of localityMarkers) {
-          if (Math.hypot(p.x - marker.x, p.y - marker.y) <= marker.radius + 5) {
-            state.search = marker.locality;
-            const search = $("#map-search");
-            if (search) search.value = marker.locality;
-            renderList();
-            break;
-          }
+          if (!hitDistance(p, marker)) continue;
+          const locality = marker.localities[0] || marker.locality;
+          state.search = locality;
+          const search = $("#map-search");
+          if (search) search.value = locality;
+          state.visible = filtered();
+          renderList();
+          updateStats();
+          break;
         }
       } else {
         for (const entry of paths) {
-          if (entry.marker && ctx.isPointInPath(entry.path, p.x, p.y)) {
-            state.selectedCounty = entry.county;
-            state.visible = filtered();
-            buildMap();
-            renderList();
-            break;
-          }
+          if (!entry.marker || !hitDistance(p, entry.marker)) continue;
+          state.selectedCounty = entry.county;
+          state.visible = filtered();
+          buildMap();
+          renderList();
+          updateStats();
+          break;
         }
       }
     });
@@ -317,6 +341,21 @@
     });
   }
 
+  function bindResize() {
+    const host = $("#map");
+    if (!host || typeof ResizeObserver === "undefined") return;
+    let scheduled = false;
+    const observer = new ResizeObserver(() => {
+      if (scheduled) return;
+      scheduled = true;
+      requestAnimationFrame(() => {
+        scheduled = false;
+        buildMap();
+      });
+    });
+    observer.observe(host);
+  }
+
   async function init() {
     bindControls();
     const response = await fetch(DATA_URL, { cache: "no-store" });
@@ -328,6 +367,7 @@
     state.visible = filtered();
     syncLevelButtons();
     buildMap();
+    bindResize();
     renderList();
     updateStats();
   }
