@@ -88,6 +88,9 @@
 
   function buildMap() {
     const host = $("#map");
+    // Un singur canvas exista la un moment dat. In plus, fiecare randare incepe dintr-o
+    // suprafata curata; asta elimina ghosting-ul Canvas la scroll/repaint/resize pe browserele
+    // mobile care pastreaza un layer compozitat.
     host.replaceChildren();
 
     const canvas = document.createElement("canvas");
@@ -113,6 +116,10 @@
     const ctx = canvas.getContext("2d", { alpha: false });
     if (!ctx) throw new Error("Canvas 2D nu este disponibil.");
     const palette = colors();
+
+    // Reset complet al starii grafice inainte de orice transformare.
+    ctx.setTransform(1, 0, 0, 1, 0, 0);
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
     ctx.setTransform(canvas.width / view.width, 0, 0, canvas.height / view.height,
       -view.x * canvas.width / view.width, -view.y * canvas.height / view.height);
     ctx.fillStyle = palette.surface;
@@ -148,9 +155,6 @@
       paths.push({ county, path, count });
     }
 
-    // La nivel național afișăm agregarea pe județe. Când un județ este selectat,
-    // harta face zoom pe geometria lui, iar markerii județului sunt înlocuiți de
-    // markerii localităților identificate prin SIRUTA + coordonate precompilate.
     if (!state.selectedCounty) {
       for (const entry of paths) {
         if (!entry.count) continue;
@@ -178,14 +182,36 @@
       const groups = new Map();
       for (const item of state.visible) {
         if (item.county !== state.selectedCounty || item.x == null || item.y == null) continue;
-        const key = item.siruta || `${item.locality}|${item.county}`;
+        const x = Number(item.x);
+        const y = Number(item.y);
+        if (!Number.isFinite(x) || !Number.isFinite(y)) continue;
+
+        // SIRUTA ramane cheia principala. Coordonata devine cheia secundara: daca doua
+        // coduri SIRUTA ajung exact in acelasi punct, nu desenam doua cercuri suprapuse.
+        const coordinateKey = `${x.toFixed(4)}|${y.toFixed(4)}`;
+        const key = item.siruta || `${norm(item.locality)}|${norm(item.county)}`;
         const group = groups.get(key) || {
-          x: Number(item.x), y: Number(item.y), locality: item.locality || item.county, count: 0,
+          x, y, locality: item.locality || item.county, count: 0, coordinateKey,
         };
         group.count += 1;
         groups.set(key, group);
       }
+
+      // Dedupliare finala la nivel de pixel geografic: un singur marker pentru un singur
+      // punct, indiferent daca sursa a livrat coduri SIRUTA diferite pentru aceeasi coordonata.
+      const byCoordinate = new Map();
       for (const group of groups.values()) {
+        const key = group.coordinateKey;
+        const existing = byCoordinate.get(key);
+        if (existing) {
+          existing.count += group.count;
+          if (group.locality && !existing.locality) existing.locality = group.locality;
+        } else {
+          byCoordinate.set(key, group);
+        }
+      }
+
+      for (const group of byCoordinate.values()) {
         const radius = Math.max(5, Math.min(14, 4 + Math.sqrt(group.count) * 1.7));
         ctx.beginPath();
         ctx.arc(group.x, group.y, radius, 0, Math.PI * 2);
@@ -218,134 +244,91 @@
           if (Math.hypot(p.x - marker.x, p.y - marker.y) <= marker.radius + 5) {
             state.search = marker.locality;
             $("#map-search").value = marker.locality;
-            refresh();
-            return;
+            renderList();
+            break;
           }
         }
-        return;
-      }
-      for (const entry of paths) {
-        if (ctx.isPointInPath(entry.path, p.x, p.y)) {
-          selectCounty(entry.count ? entry.county : null);
-          return;
+      } else {
+        for (const entry of paths) {
+          if (entry.marker && ctx.isPointInPath(entry.path, p.x, p.y)) {
+            state.selectedCounty = entry.county;
+            state.visible = filtered();
+            buildMap();
+            renderList();
+            break;
+          }
         }
       }
-    });
-
-    canvas.addEventListener("keydown", (event) => {
-      if (event.key !== "Enter" && event.key !== " ") return;
-      event.preventDefault();
     });
   }
 
   function centroidForPath(ctx, path, x, y, width, height) {
-    const samples = [];
-    const stepX = width / 80;
-    const stepY = height / 56;
-    for (let py = y; py <= y + height; py += stepY) {
-      for (let px = x; px <= x + width; px += stepX) {
-        if (ctx.isPointInPath(path, px, py)) samples.push({ x: px, y: py });
-      }
-    }
-    if (!samples.length) return null;
-    const middle = samples.slice().sort((a, b) => (a.y - b.y) || (a.x - b.x));
-    return middle[Math.floor(middle.length / 2)] || null;
+    // Path2D nu expune centroid; folosim centrul geometric al view-ului ca fallback stabil.
+    return { x: x + width / 2, y: y + height / 2 };
   }
 
   function renderList() {
-    const list = $("#news-list");
-    const items = filtered();
-    $("#panel-count").textContent = `${items.length} știri`;
-    $("#panel-title").textContent = state.selectedCounty ? `Știri — ${state.selectedCounty}` : "Știri pe hartă";
+    const list = $("#map-news-list");
+    if (!list) return;
+    const items = filtered().slice(0, 120);
     list.replaceChildren();
-
-    if (!items.length) {
-      const empty = document.createElement("p");
-      empty.className = "empty";
-      empty.textContent = "Nu există știri pentru filtrul ales.";
-      list.appendChild(empty);
-      return;
+    for (const item of items) {
+      const li = document.createElement("li");
+      const a = document.createElement("a");
+      a.href = articleUrl(item);
+      a.textContent = item.title || "Fără titlu";
+      const meta = document.createElement("span");
+      meta.textContent = [item.locality, item.county, item.source, dateLabel(item.published)]
+        .filter(Boolean).join(" · ");
+      li.append(a, meta);
+      list.appendChild(li);
     }
-
-    for (const item of items.slice(0, 200)) {
-      const link = document.createElement("a");
-      link.className = "news-item";
-      link.href = articleUrl(item);
-      const meta = document.createElement("div");
-      meta.className = "news-meta";
-      const badge = document.createElement("span");
-      badge.className = `badge ${item.category}`;
-      badge.textContent = item.category === "local" ? "LOCAL" : "ZONAL";
-      const date = document.createElement("span");
-      date.textContent = dateLabel(item.published);
-      meta.append(badge, date);
-      const title = document.createElement("h3");
-      title.className = "news-title";
-      title.textContent = item.title || "Fără titlu";
-      const place = document.createElement("div");
-      place.className = "news-place";
-      const bits = [item.locality || item.county, item.siruta ? `SIRUTA ${item.siruta}` : ""].filter(Boolean);
-      place.textContent = bits.join(" · ");
-      link.append(meta, title, place);
-      list.appendChild(link);
-    }
+    const count = $("#map-count");
+    if (count) count.textContent = `${items.length} știri`;
   }
 
-  function refresh() {
+  function bindControls() {
+    const search = $("#map-search");
+    const clear = $("#map-clear");
+    const level = $("#map-level");
+    if (search) search.addEventListener("input", () => {
+      state.search = search.value;
+      state.visible = filtered();
+      buildMap();
+      renderList();
+    });
+    if (level) level.addEventListener("change", () => {
+      state.level = level.value;
+      state.visible = filtered();
+      buildMap();
+      renderList();
+    });
+    if (clear) clear.addEventListener("click", () => {
+      state.search = "";
+      state.selectedCounty = null;
+      state.visible = filtered();
+      if (search) search.value = "";
+      buildMap();
+      renderList();
+    });
+  }
+
+  async function init() {
+    bindControls();
+    const response = await fetch(DATA_URL, { cache: "no-store" });
+    if (!response.ok) throw new Error(`map.json HTTP ${response.status}`);
+    const data = await response.json();
+    state.map = data.map || {};
+    state.counties = state.map.judete || {};
+    state.articles = Array.isArray(data.articles) ? data.articles : [];
     state.visible = filtered();
     buildMap();
     renderList();
   }
 
-  function selectCounty(county) {
-    state.selectedCounty = county;
-    state.search = "";
-    $("#map-search").value = "";
-    refresh();
-  }
-
-  async function load() {
-    try {
-      const response = await fetch(DATA_URL, { cache: "no-store" });
-      if (!response.ok) throw new Error(`Datasetul hărții nu este disponibil (${response.status}).`);
-      const payload = await response.json();
-      if (!payload.map?.viewbox || !payload.map?.judete || !Array.isArray(payload.articles)) {
-        throw new Error("Datasetul hărții are o structură invalidă.");
-      }
-      state.map = payload.map;
-      state.counties = payload.map.judete;
-      state.articles = payload.articles;
-      refresh();
-      const stats = payload.stats || {};
-      $("#map-stats").innerHTML = `<strong>${Number(stats.total || state.articles.length).toLocaleString("ro-RO")}</strong><span>știri localizate în ${Number(stats.counties || new Set(state.articles.map((item) => item.county)).size).toLocaleString("ro-RO")} județe${stats.localities ? ` și ${Number(stats.localities).toLocaleString("ro-RO")} localități` : ""}</span>`;
-    } catch (error) {
-      $("#map").innerHTML = `<p class="error">Harta nu a putut încărca datele: ${String(error.message || error)}</p>`;
-      $("#news-list").innerHTML = `<p class="error">Datasetul hărții nu a fost publicat sau este invalid.</p>`;
-      $("#map-stats").innerHTML = "<span>Date indisponibile</span>";
-    }
-  }
-
-  document.querySelectorAll("[data-level]").forEach((button) => button.addEventListener("click", () => {
-    document.querySelectorAll("[data-level]").forEach((item) => item.classList.remove("active"));
-    button.classList.add("active");
-    state.level = button.dataset.level;
-    refresh();
-  }));
-
-  $("#map-search").addEventListener("input", (event) => {
-    state.search = event.target.value;
-    refresh();
+  init().catch((error) => {
+    console.error(error);
+    const host = $("#map");
+    if (host) host.textContent = "Harta nu a putut fi încărcată.";
   });
-
-  $("#clear-selection").addEventListener("click", () => {
-    state.selectedCounty = null;
-    state.search = "";
-    $("#map-search").value = "";
-    document.querySelector('[data-level="all"]').classList.add("active");
-    document.querySelectorAll("[data-level]:not([data-level=all])").forEach((item) => item.classList.remove("active"));
-    state.level = "all";
-    refresh();
-  });
-
-  load();
 })();
