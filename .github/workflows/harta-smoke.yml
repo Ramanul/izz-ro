@@ -38,7 +38,7 @@ jobs:
           assert all(item.get('county') in counties for item in articles)
           assert stats.get('total') == len(articles)
           assert stats.get('counties') == len({item['county'] for item in articles})
-          assert stats.get('local', 0) + stats.get('zonal', 0) == len(articles)
+          assert stats.get('local', 0) + stats.get('judetean', 0) == len(articles)
           assert stats.get('coordinates', 0) <= len(articles)
           print('OK:', len(articles), 'articole localizate în', len({item['county'] for item in articles}), 'județe')
           PY

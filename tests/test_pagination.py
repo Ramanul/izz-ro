@@ -4,7 +4,7 @@ Context masurat pe randarea din 2026-08-03, inainte de fixul asta. Sablonul scri
 `1 2 3` si numai pe pagina 1:
 
 * trei linkuri MOARTE — `general/3`, `politic/3`, `tech/3` (categorii cu exact 2 pagini);
-* din 79 de pagini de listare randate, **35 accesibile si 44 orfane**; `zonal` randa 20 de
+* din 79 de pagini de listare randate, **35 accesibile si 44 orfane**; `judetean` randa 20 de
   pagini si oprea navigatia la 3;
 * orfanele nu erau nici in `sitemap.xml` (`_write_sitemap` nu pune paginare deloc), deci
   nu exista nicio a doua cale spre ele.
@@ -54,13 +54,13 @@ def test_ultima_pagina_nu_are_urmatoarea():
 
 
 def test_pagina_curenta_nu_e_link():
-    p = render._pagination("zonal", 5, 20)
+    p = render._pagination("judetean", 5, 20)
     curent = [i for i in p["pages"] if i and i["n"] == 5]
     assert curent and curent[0]["path"] is None
 
 
 def test_fereastra_arata_capetele_si_vecinii():
-    p = render._pagination("zonal", 10, 20)
+    p = render._pagination("judetean", 10, 20)
     numere = [i["n"] for i in p["pages"] if i]
     assert numere == [1, 8, 9, 10, 11, 12, 20]
     assert None in p["pages"]                  # saltul e marcat, nu ascuns
@@ -72,7 +72,7 @@ def test_orice_pagina_e_atinsa_prin_parcurgere():
     vazute, de_vizitat = {1}, [1]
     while de_vizitat:
         n = de_vizitat.pop()
-        p = render._pagination("zonal", n, total)
+        p = render._pagination("judetean", n, total)
         vecini = {i["n"] for i in p["pages"] if i}
         for v in vecini - vazute:
             vazute.add(v)

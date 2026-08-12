@@ -1,14 +1,14 @@
-"""Poarta geografica DETERMINISTA: decide `regional` / `zonal` / `local` din textul stirii.
+"""Poarta geografica DETERMINISTA: decide `regional` / `judetean` / `local` din textul stirii.
 
 De ce exista: prompturile trimit AI-ului rubricile geografice ca etichete goale
-(`regional|zonal|local`), la gramada cu `sport` si `auto`, fara nicio definitie. Modelul
+(`regional|judetean|local`), la gramada cu `sport` si `auto`, fara nicio definitie. Modelul
 n-are de unde sti ca Transilvania e regiune iar Vrancea e judet, deci ghiceste — masurat
 2026-07-25: 14 din 15 articole din `regional` erau gresite (un sat elvetian, Comisia
 Europeana, DNA), si 30 de articole intrasera pe axa geografica de la surse fara nicio
 legatura cu geografia.
 
 Regula proprietarului (2026-08-01):
-  regiune istorica -> regional · judet -> zonal · municipiu/oras/comuna/sat -> local
+  regiune istorica -> regional · judet -> judetean · municipiu/oras/comuna/sat -> local
   Mai multe nume in text  -> castiga cel mai SPECIFIC.
   Niciun nume de loc      -> articolul NU intra pe axa geografica; ramane pe tema.
 
@@ -136,10 +136,10 @@ def _adauga(index: dict, nume: str, nivel: str) -> None:
     # Judetele scurte ne trebuie (Olt are 3 litere). Localitatile scurte NU: exista comune
     # numite Leu, Apa, Pui, Rus — un curs valutar ("leu-euro") sau o stire despre Rusia ar
     # deveni stire locala. Comunele minuscule pierdute asa costa mult mai putin.
-    minim = 3 if nivel in ("zonal", "regional") else 4
+    minim = 3 if nivel in ("judetean", "regional") else 4
     if len(nume) < minim or nume in _CUVINTE_COMUNE:
         return
-    ordine = {"local": 3, "zonal": 2, "regional": 1}
+    ordine = {"local": 3, "judetean": 2, "regional": 1}
     if ordine[nivel] > ordine.get(index.get(nume), 0):
         index[nume] = nivel
 
@@ -157,7 +157,7 @@ def _construieste() -> dict:
             for rand in csv.DictReader(fh):
                 judet = strip_diacritics((rand.get("Județ") or "").strip()).upper()
                 if judet:
-                    _adauga(index, judet, "zonal")
+                    _adauga(index, judet, "judetean")
                 loc = strip_diacritics((rand.get("Localitate") or "").strip()).upper()
                 for pref in _PREFIXE:
                     if loc.startswith(pref):
@@ -179,7 +179,7 @@ def _index() -> dict:
     return _INDEX
 
 
-_ORDINE = {"local": 3, "zonal": 2, "regional": 1}
+_ORDINE = {"local": 3, "judetean": 2, "regional": 1}
 
 # Calificativul administrativ din text bate indexul: "judetul Tulcea" e judet, chiar daca
 # Tulcea e si municipiu. Fara asta, orice resedinta de judet ar trage stirea pe `local`.
@@ -190,8 +190,8 @@ _CALIFICATIV = re.compile(
     r"(JUDETULUI|JUDETELE|JUDETUL|JUDETE|JUDET|JUD\.|"
     r"MUNICIPIULUI|MUNICIPIUL|ORASULUI|ORASUL|COMUNEI|COMUNA|SATULUI|SATUL)\s*$")
 _NIVEL_CALIFICATIV = {
-    "JUDETULUI": "zonal", "JUDETELE": "zonal", "JUDETUL": "zonal", "JUDETE": "zonal",
-    "JUDET": "zonal", "JUD.": "zonal",
+    "JUDETULUI": "judetean", "JUDETELE": "judetean", "JUDETUL": "judetean", "JUDETE": "judetean",
+    "JUDET": "judetean", "JUD.": "judetean",
     "MUNICIPIULUI": "local", "MUNICIPIUL": "local", "ORASULUI": "local", "ORASUL": "local",
     "COMUNEI": "local", "COMUNA": "local", "SATULUI": "local", "SATUL": "local",
 }
@@ -222,7 +222,7 @@ _MARCA_GEO = re.compile(
 # Deci lista e enumerativa deliberat, si asta e limitarea ei: nu e o plasa, e un filtru cu
 # trei gauri astupate. Fiecare membru e masurat prin ablatie pe corpus (mascare + reclasificare
 # cu functia reala), cu `kills_right = 0` cerut, nu presupus:
-#   „Casa Alba"              13 articole `zonal` -> None, toate Trump / Iran / FIFA / UFC
+#   „Casa Alba"              13 articole `judetean` -> None, toate Trump / Iran / FIFA / UFC
 #   „Curtea de Apel Bucuresti" 8 articole `local` -> None, toate decizii cu miza nationala
 #   „Bursa de Valori Bucuresti" 3 articole `local` -> None, toate despre piata de capital
 # Genitivul intra in tipar („raspunsul Curtii DE APEL Bucuresti", „evolutia Bursei DE VALORI
@@ -696,7 +696,7 @@ def loc_din_titlu(titlu: str, judet: str | None = None) -> str:
     for nume, nivel in _potriviri(original, original.upper()):
         if nivel == "local" and eticheta_localitate(nume):
             localitati.append(nume)
-        elif nivel == "zonal":
+        elif nivel == "judetean":
             judete.append(nume)
     # Judetul sursei departajeaza INTRE nivele, nu doar in interiorul unuia: „Percheziții
     # ample în Maramureș și Suceava" are Suceava ca localitate si Maramuresul doar ca judet,
@@ -743,7 +743,7 @@ def loc_din_sursa(sursa: str | None) -> str:
 def eticheta_copertei(a: dict) -> str:
     """Ce scrie pe badge-ul copertei in locul categoriei, sau "" daca nu se poate.
 
-    La `zonal` si `local` locul E subiectul, iar „Cernavodă" spune cititorului care vede cardul
+    La `judetean` si `local` locul E subiectul, iar „Cernavodă" spune cititorului care vede cardul
     distribuit mult mai mult decat „LOCAL". Se incearca, in ordine:
       1. locul pe care il numeste TITLUL — localitatea daca exista, altfel judetul;
       2. localitatea codata in slug-ul sursei, cand sursa e o primarie (`loc_din_sursa`);
@@ -756,7 +756,7 @@ def eticheta_copertei(a: dict) -> str:
 
     Ordinea asta, si nu inversa: sursa spune de unde se scrie, titlul spune despre ce se scrie.
     Pana pe 2026-08-08 exista doar pasul 2, deci **orice stire locala de la o sursa nationala
-    afisa „LOCAL"** — 249 din 463 de articole `local` (54%) si 71 din 475 `zonal` (15%), fiindcă
+    afisa „LOCAL"** — 249 din 463 de articole `local` (54%) si 71 din 475 `judetean` (15%), fiindcă
     ProTV, G4Media sau HotNews n-au (si n-ar avea de ce sa aiba) un judet in `config.SOURCES`.
 
     La `regional` judetul sursei ar fi FALS (articolul acopera mai multe judete), dar regiunea
@@ -773,7 +773,7 @@ def eticheta_copertei(a: dict) -> str:
     cat = a.get("category") or ""
     if cat == "regional":
         return regiune_din_text(a.get("title") or "") or ""
-    if cat not in ("zonal", "local"):
+    if cat not in ("judetean", "local"):
         return ""
     judet = judet_sursa(a.get("source"))
     return (loc_din_titlu(a.get("title") or "", judet)

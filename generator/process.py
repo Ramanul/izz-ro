@@ -63,6 +63,9 @@ def get_provider():
     if config.AI_PROVIDER == "anthropic":
         from .providers.anthropic import AnthropicProvider
         p = AnthropicProvider()
+    elif config.AI_PROVIDER == "ollama":
+        from .providers.ollama import OllamaProvider
+        p = OllamaProvider()
     else:
         from .providers.gemini import GeminiProvider
         p = GeminiProvider()
@@ -138,7 +141,7 @@ def _resolve_category(item: dict, ai_cat: str, entities=None) -> str:
     """Categoria finala a unui articol.
 
     LOCAL inseamna UNDE se intampla, nu CINE publica (regula owner 2026-08-02). O rubrica
-    geografica (`regional|zonal|local`) se decide din TEXTUL stirii, cu gazetteer-ul, la orice
+    geografica (`regional|judetean|local`) se decide din TEXTUL stirii, cu gazetteer-ul, la orice
     sursa -- inclusiv un ziar judetean. Un ziar de Cluj care scrie despre o comuna anume ajunge
     `local`, unul care scrie cursul BNR pleaca de pe axa geografica pe tema lui. Nu ne mai luam
     dupa categoria sursei: acopera si cazul in care AI-ul alege gresit o rubrica geografica

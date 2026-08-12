@@ -151,7 +151,7 @@ def locality_from_text(text: str, source_county: str | None, by_name: dict[str, 
 
 
 def locate(article: dict, county_keys: list[str], by_name: dict[str, list[dict]], points: dict[str, dict]) -> dict | None:
-    if article.get("category") not in {"local", "zonal"}:
+    if article.get("category") not in {"local", "judetean"}:
         return None
     text = " ".join(str(article.get(k) or "") for k in ("title", "teaser", "synthesis"))
     sc = source_county(str(article.get("source") or ""), county_keys)
@@ -208,7 +208,7 @@ def main() -> int:
         "stats": {
             "total": len(located),
             "local": sum(a["category"] == "local" for a in located),
-            "zonal": sum(a["category"] == "zonal" for a in located),
+            "judetean": sum(a["category"] == "judetean" for a in located),
             "counties": len({a["county"] for a in located}),
             "localities": len({a["siruta"] for a in located if a.get("siruta")}),
             "coordinates": sum(a.get("x") is not None and a.get("y") is not None for a in located),

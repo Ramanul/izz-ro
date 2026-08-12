@@ -55,7 +55,7 @@ def test_impactul_local_al_unui_meci_ramane_local():
     item = {"category": "local", "source": "zcj",
             "title": "Meciul CFR Cluj - FC Alashkert schimbă traseul autobuzelor",
             "teaser": "Liniile 25 și 46 din Cluj-Napoca sunt deviate în seara meciului."}
-    assert _resolve_category(item, "social") in {"local", "zonal", "regional"}
+    assert _resolve_category(item, "social") in {"local", "judetean", "regional"}
 
 
 # --- locul e NUMIT in text, dar e stirea DESPRE el? --------------------------------------
@@ -90,7 +90,7 @@ def test_locul_confirmat_de_entitati_ramane_pe_axa_geografica():
             "title": "Polițiștii brașoveni au cumpărat limonadă de la un stand infantil",
             "teaser": "O patrulă de poliție din Brașov s-a oprit pentru a sprijini inițiativa "
                       "unor copii care deschiseseră un punct de vânzare a limonadei."}
-    assert _resolve_category(item, "social", ["Brasov"]) in {"local", "zonal", "regional"}
+    assert _resolve_category(item, "social", ["Brasov"]) in {"local", "judetean", "regional"}
 
 
 @pytest.mark.parametrize("titlu,teaser,ent", [
@@ -108,7 +108,7 @@ def test_locul_din_TITLU_nu_are_nevoie_de_coroborare(titlu, teaser, ent):
     corecte, fiindca locul sta in numele institutiei. Compartimentul are 10% eroare — nu-l
     reparam cu o regula care ii strica 20%."""
     item = {"category": "local", "source": "dobrogeaonline", "title": titlu, "teaser": teaser}
-    assert _resolve_category(item, "social", ent) in {"local", "zonal", "regional"}
+    assert _resolve_category(item, "social", ent) in {"local", "judetean", "regional"}
 
 
 def test_fara_entitati_filtrul_nu_sterge():
@@ -117,7 +117,7 @@ def test_fara_entitati_filtrul_nu_sterge():
     item = {"category": "local", "source": "bizbrasov",
             "title": "Incendiu într-o hală",
             "teaser": "Pompierii au intervenit la o hală din Brașov, fără victime."}
-    assert _resolve_category(item, "social", None) in {"local", "zonal", "regional"}
+    assert _resolve_category(item, "social", None) in {"local", "judetean", "regional"}
 
 
 def test_stirea_geografica_obisnuita_nu_e_atinsa_de_regula_de_sport():
@@ -125,4 +125,4 @@ def test_stirea_geografica_obisnuita_nu_e_atinsa_de_regula_de_sport():
     item = {"category": "local", "source": "bzi",
             "title": "Opt adolescenți au speriat localnicii din cartierul Galata",
             "teaser": "Un grup a creat panică pe Calea Galata din Iași în noaptea de 4 august."}
-    assert _resolve_category(item, "social") in {"local", "zonal", "regional"}
+    assert _resolve_category(item, "social") in {"local", "judetean", "regional"}

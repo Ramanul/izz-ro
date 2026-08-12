@@ -110,7 +110,7 @@ a:hover { color: var(--ink); }
 }
 .subnav a:hover, .subnav a.active { color: var(--gold-strong); border-bottom-color: var(--gold); }
 /* Sub ~1200px banda depaseste ecranul (masurat: 805px ascunsi la 390px, 427px la 768px) si
-   nimic nu arata ca mai urmeaza ceva. Ultimele intrari sunt Regional / Zonal / Local, deci
+   nimic nu arata ca mai urmeaza ceva. Ultimele intrari sunt Regional / Județean / Local, deci
    exact categoriile geografice ramaneau nedescoperite pe telefon. Degradeul din dreapta e
    indiciul; padding-ul de la capat il compenseaza, ca ultimul link sa nu ramana sub el cand
    s-a derulat pana la final. Masca lucreaza pe alfa, nu pe culori — nu atinge paleta. */

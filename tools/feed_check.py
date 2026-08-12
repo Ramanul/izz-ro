@@ -42,7 +42,7 @@ _RATE_LIMIT_RE = re.compile(r"HTTP Error (429|503):")
 # 2026-08-05: ziaruldeiasi.ro/rss a fost raportat DEAD de 15 rulari consecutive, iar de pe o
 # retea obisnuita raspunde 200 cu 15 KB de continut -- inclusiv cu curl simplu, fara User-Agent.
 # Acelasi fenomen care tinea garda vizuala rosie 19 zile (PR #136). Clasificat gresit, semnalul
-# ar fi dus la scoaterea unei surse zonale VII.
+# ar fi dus la scoaterea unei surse județene VII.
 _BLOCKED_RE = re.compile(r"HTTP Error 403:")
 
 

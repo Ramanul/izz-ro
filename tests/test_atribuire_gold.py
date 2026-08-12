@@ -28,7 +28,7 @@ from generator.process import OFFICIAL_PREFIXES
 from generator.util import strip_diacritics
 
 # Rubricile deciise de `geo.clasifica`. Restul (`sport`, `general`, teme) vin din `ai_cat`.
-NIVELURI = {"local", "zonal", "regional"}
+NIVELURI = {"local", "judetean", "regional"}
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -54,10 +54,10 @@ CUNOSCUTE = {
 # ca uneori judecata din setul de aur e cea de revizuit.
 CUNOSCUTE_NIVEL = {
     # Teaserul zice „Sublocotenentul Razvan BUDA"; BUDA e comuna (jud. Buzau), deci un nume de
-    # PERSOANA deschide axa locala. Verificat: pe titlul singur iese `zonal`, corect — teaserul
+    # PERSOANA deschide axa locala. Verificat: pe titlul singur iese `judetean`, corect — teaserul
     # e cel care strica. Clasa de defect: antroponim omonim cu UAT.
     "24": "numele de familie „Buda” din teaser potriveste comuna omonima -> `local` in loc de "
-          "`zonal`; pe titlul singur clasificarea e corecta",
+          "`judetean`; pe titlul singur clasificarea e corecta",
     # „Perchezitii ample in Maramures SI Suceava": SUCEAVA e si municipiu-resedinta, iar
     # potrivirea pe UAT bate potrivirea pe judet. Doua judete numite nu pot da o stire locala
     # prin nicio citire — asta e defectul cel mai clar din cele cinci.
@@ -120,7 +120,7 @@ def test_setul_de_aur_nu_si_a_pierdut_datele():
     # trece cu 1 singur asemenea caz (#34), deci pragul asta e minimul absolut, nu o tinta.
     discrimineaza = [r["idx"] for r in _cazuri_nivel()
                      if r["cat_corecta"].strip() != "local" and r["idx"] not in CUNOSCUTE_NIVEL]
-    assert discrimineaza, ("niciun caz `zonal`/`regional` evaluabil ramas — poarta de nivel ar "
+    assert discrimineaza, ("niciun caz `judetean`/`regional` evaluabil ramas — poarta de nivel ar "
                            "trece si pe un cod care raspunde „local” la orice")
 
 
@@ -171,10 +171,10 @@ def test_nivelul_geografic_nu_regreseaza(rand):
       `clasifica` -> `None`     : 15 din 15 pica. Prinde complet o clasificare moarta.
       `clasifica` -> mereu `local`: **1 din 15 pica.** Aproape oarba.
     Cauza nu e testul, e esantionul: 14 din cele 15 cazuri evaluabile au `cat_corecta == local`,
-    deci un cod care raspunde „local" la orice trece. Singurul caz `zonal` care ramane sa
+    deci un cod care raspunde „local" la orice trece. Singurul caz `judetean` care ramane sa
     discrimineze e #34 — restul de cinci sunt in `CUNOSCUTE_NIVEL`. Un fix care ar cobori totul
     la `local` (exact directia in care cele cinci greselile de azi merg deja) ar trece pe langa
-    poarta asta. **Ca sa aiba putere reala, setul de aur are nevoie de cazuri `zonal`/`regional`
+    poarta asta. **Ca sa aiba putere reala, setul de aur are nevoie de cazuri `judetean`/`regional`
     de la surse neoficiale** — E5 din `specs/atribuire-cercetare-si-plan.md`, cresterea la ~150.
     Pana atunci poarta e o plasa cu ochiuri mari intr-o singura directie, nu o dovada.
     """

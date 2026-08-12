@@ -49,7 +49,7 @@ _PREFIX = re.compile(r"^(MUNICIPIUL?|ORA[SȘ](UL)?|COMUNA)\b\s*", re.I)
 _SOURCE_PREFIX = "pl_"
 
 # Categoriile in care o fotografie a localitatii sursei e o ilustratie onesta.
-_GEO_CATEGORIES = frozenset({"local", "zonal"})
+_GEO_CATEGORIES = frozenset({"local", "judetean"})
 
 # Singurele judete al caror nume are doua cuvinte. Multime INCHISA (cele 41 de judete +
 # Bucuresti sunt fixe), deci se poate enumera in loc sa se ghiceasca punctul de taiere:
@@ -165,7 +165,7 @@ def locality_for_article(a: dict, by_name: dict) -> dict | None:
     """Inregistrarea localitatii unui articol local, sau None daca ruta nu se aplica.
 
     Doua conditii, amandoua necesare: sursa e o primarie (`source` = `pl_*`) SI articolul
-    e clasificat `local`/`zonal`. Sursa singura nu ajunge: poarta geografica decide unde
+    e clasificat `local`/`judetean`. Sursa singura nu ajunge: poarta geografica decide unde
     se INTAMPLA stirea, nu cine o publica, deci o primarie care scrie despre un subiect
     national ajunge in alta categorie -- si acolo poza localitatii ar fi o ilustratie
     arbitrara. Azi toate cele 204 articole `pl_*` sunt `local`, deci conditia nu taie

@@ -60,7 +60,7 @@ jobs:
           assert len(counties) == 42, len(counties)
           assert articles, 'Nu există articole localizate.'
           assert stats['total'] == len(articles)
-          assert stats['local'] + stats['zonal'] == len(articles)
+          assert stats['local'] + stats['judetean'] == len(articles)
           assert stats['counties'] == len({a['county'] for a in articles})
           assert stats['coordinates'] == sum(a.get('x') is not None and a.get('y') is not None for a in articles)
           assert points['localities'], 'Nu există puncte de localități.'

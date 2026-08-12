@@ -139,7 +139,7 @@ def test_locality_route_requires_a_geographic_category(category):
 
 
 def test_eligible_accepts_both_geographic_categories():
-    for cat in ("local", "zonal"):
+    for cat in ("local", "judetean"):
         assert L.eligible({"source": "pl_vrancea_municipiul_focsani", "category": cat}) \
             == ("vrancea", "focsani")
 

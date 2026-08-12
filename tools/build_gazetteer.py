@@ -50,7 +50,7 @@ PRENUME_SI_OMONIME = {
 }
 
 # Nivelul din SIRUTA (NIV): 1=judet, 2=UAT (municipiu/oras/comuna), 3=sat component.
-NIVEL_SIRUTA = {"1": "zonal", "2": "local", "3": "local"}
+NIVEL_SIRUTA = {"1": "judetean", "2": "local", "3": "local"}
 
 
 def _citeste_siruta():
@@ -88,7 +88,7 @@ def construieste() -> dict:
             tinut["uat"] += 1
         else:
             tinut["judet"] += 1
-        # local (mai specific) bate zonal daca doua niveluri au acelasi nume.
+        # local (mai specific) bate judetean daca doua niveluri au acelasi nume.
         if gaz.get(nume) != "local":
             gaz[nume] = nivel
     return gaz, tinut

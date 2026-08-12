@@ -55,7 +55,7 @@ from generator.util import strip_diacritics  # noqa: E402
 
 # Rubricile geografice: pentru ele `ai_cat` nu poate fi recuperat din judecata manuala, fiindca
 # `cat_corecta` e atunci rezultatul axei geografice, nu tema aleasa de model.
-_GEO = ("local", "zonal", "regional")
+_GEO = ("local", "judetean", "regional")
 
 
 def _norm(s: str) -> str:

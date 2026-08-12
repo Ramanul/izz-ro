@@ -24,7 +24,7 @@ SOURCES = {
             "scena9":     {"name": "Scena 9",         "url": "https://www.scena9.ro/feed",              "category": "cultura"},
             "bookhub":    {"name": "Bookhub",         "url": "https://bookhub.ro/feed",                 "category": "cultura"},
             "nwradu":       {"name": "NwRadu",         "url": "https://www.nwradu.ro/feed/",           "category": "discounturi"},
-    # local — primărie (UAT); zonal/județean — consilii județene + ziare județene.
+    # local — primărie (UAT); judetean — consilii județene + ziare județene.
     # Cerința owner 2026-07-17: informații de la primării și județe. 16 candidați verificați
     # cu feedcheck.yml in CI (run 29588587064, 2026-07-17): doar cei 3 de mai jos au feed VIU.
     # Cazuti la verificare (nu re-adauga fara re-test): primariatm/apulum/sibiu/primariacraiova/
@@ -33,37 +33,37 @@ SOURCES = {
     # raspund dar sunt inghetate. Majoritatea primariilor NU au RSS -> acoperirea "toate
     # primariile din tara" cere faza "Monitor Local" (html_list pe paginile de anunturi).
             "pr_buzau":     {"name": "Primăria Buzău",      "url": "https://primariabuzau.ro/feed/",         "category": "local"},
-            "cj_cluj":      {"name": "CJ Cluj",             "url": "https://www.cjcluj.ro/feed/",            "category": "zonal"},
-            "cj_timis":     {"name": "CJ Timiș",            "url": "https://www.cjtimis.ro/feed",            "category": "zonal"},
+            "cj_cluj":      {"name": "CJ Cluj",             "url": "https://www.cjcluj.ro/feed/",            "category": "judetean"},
+            "cj_timis":     {"name": "CJ Timiș",            "url": "https://www.cjtimis.ro/feed",            "category": "judetean"},
             # CJ cazuti la feedcheck 2026-07-20 (nu re-adauga fara re-test): arad/bihor/ilfov/sibiu=GOL, buzau=502, iasi=timeout, calarasi=inghetat 2022
-            "cj_botosani":  {"name": "CJ Botoșani",         "url": "https://www.cjbotosani.ro/feed/",         "category": "zonal"},
-            "cj_galati":    {"name": "CJ Galați",           "url": "https://cjgalati.ro/feed/",               "category": "zonal"},
-            "cj_giurgiu":   {"name": "CJ Giurgiu",          "url": "https://cjgiurgiu.ro/feed/",              "category": "zonal"},
-            "cj_ialomita":  {"name": "CJ Ialomița",         "url": "https://cjialomita.ro/feed/",             "category": "zonal"},
-            "cj_vaslui":    {"name": "CJ Vaslui",           "url": "https://cjvs.eu/feed/",                   "category": "zonal"},
-            "cj_vrancea":   {"name": "CJ Vrancea",          "url": "https://cjvrancea.ro/feed/",              "category": "zonal"},
-    # zonal — ZIARE JUDETENE cu RSS (flux excelent, spre deosebire de paginile de primărie
+            "cj_botosani":  {"name": "CJ Botoșani",         "url": "https://www.cjbotosani.ro/feed/",         "category": "judetean"},
+            "cj_galati":    {"name": "CJ Galați",           "url": "https://cjgalati.ro/feed/",               "category": "judetean"},
+            "cj_giurgiu":   {"name": "CJ Giurgiu",          "url": "https://cjgiurgiu.ro/feed/",              "category": "judetean"},
+            "cj_ialomita":  {"name": "CJ Ialomița",         "url": "https://cjialomita.ro/feed/",             "category": "judetean"},
+            "cj_vaslui":    {"name": "CJ Vaslui",           "url": "https://cjvs.eu/feed/",                   "category": "judetean"},
+            "cj_vrancea":   {"name": "CJ Vrancea",          "url": "https://cjvrancea.ro/feed/",              "category": "judetean"},
+    # judetean — ZIARE JUDETENE cu RSS (flux excelent, spre deosebire de paginile de primărie
     # care sunt blocate/JS). Acoperă "informații de la județe" cerute de owner. Categoria e
-    # PINNED (axă geografică): un articol de la ziarul județean rămâne 'zonal', nu e mutat pe
+    # PINNED (axă geografică): un articol de la ziarul județean rămâne 'judetean', nu e mutat pe
     # temă. Cei 7 de mai jos = feed VIU la feedcheck (run 29605677325, 2026-07-17). Cazuti la
     # verificare (nu re-adauga fara re-test): stiridecluj.ro/feed=404, ziuaconstanta rss.html=
     # 0 intrari, gds.ro=403, ebihoreanul=500. Acoperire: Cluj/Iasi/Timis/Brasov.
     # `judet` NU e decor: primariile isi codeaza judetul in cheie (`pl_cluj_...`), ziarele nu —
     # `zcj` nu spune nimanui ca e Cluj. Campul asta deschide potrivirea pe SATE pentru sursa
     # respectiva (`geo.clasifica(text, judet)`): fara el, „Dezmir" sau „Urseni" nu inseamna
-    # nimic pentru poarta si stirea ramane pe zonal. Se pune DOAR pe surse cu un singur judet;
+    # nimic pentru poarta si stirea ramane pe judetean. Se pune DOAR pe surse cu un singur judet;
     # publicatiile regionale de mai jos acopera mai multe si de aceea nu-l au.
-            "zcj":          {"name": "Ziua de Cluj",        "url": "https://zcj.ro/feed",                    "category": "zonal", "judet": "CLUJ"},
-            "bzi":          {"name": "BZI Iași",            "url": "https://www.bzi.ro/feed",                "category": "zonal", "judet": "IASI"},
-            "ziaruldeiasi": {"name": "Ziarul de Iași",      "url": "https://www.ziaruldeiasi.ro/rss",        "category": "zonal", "judet": "IASI"},
-            "pressalert":   {"name": "PressAlert Timișoara","url": "https://www.pressalert.ro/feed/",         "category": "zonal", "judet": "TIMIS"},
-            "tion":         {"name": "Timiș Online",        "url": "https://www.tion.ro/feed/",              "category": "zonal", "judet": "TIMIS"},
-            "bizbrasov":    {"name": "BizBrașov",           "url": "https://www.bizbrasov.ro/feed",          "category": "zonal", "judet": "BRASOV"},
-            "newsbv":       {"name": "News Brașov",         "url": "https://www.newsbv.ro/feed/",            "category": "zonal", "judet": "BRASOV"},
-    # zonal — Maramures (nivel judet; regiunea istorica ≈ judetul, deci ziarele MM sunt zonale)
-            "actualmm":     {"name": "actualMM",            "url": "https://actualmm.ro/feed/",              "category": "zonal", "judet": "MARAMURES"},
-            "emaramures":   {"name": "eMaramureș",          "url": "https://www.emaramures.ro/feed/",        "category": "zonal", "judet": "MARAMURES"},
-    # zonal — VALUL 1 al extinderii pe presa judeteana (2026-08-04). Fiecare URL de aici a fost
+            "zcj":          {"name": "Ziua de Cluj",        "url": "https://zcj.ro/feed",                    "category": "judetean", "judet": "CLUJ"},
+            "bzi":          {"name": "BZI Iași",            "url": "https://www.bzi.ro/feed",                "category": "judetean", "judet": "IASI"},
+            "ziaruldeiasi": {"name": "Ziarul de Iași",      "url": "https://www.ziaruldeiasi.ro/rss",        "category": "judetean", "judet": "IASI"},
+            "pressalert":   {"name": "PressAlert Timișoara","url": "https://www.pressalert.ro/feed/",         "category": "judetean", "judet": "TIMIS"},
+            "tion":         {"name": "Timiș Online",        "url": "https://www.tion.ro/feed/",              "category": "judetean", "judet": "TIMIS"},
+            "bizbrasov":    {"name": "BizBrașov",           "url": "https://www.bizbrasov.ro/feed",          "category": "judetean", "judet": "BRASOV"},
+            "newsbv":       {"name": "News Brașov",         "url": "https://www.newsbv.ro/feed/",            "category": "judetean", "judet": "BRASOV"},
+    # judetean — Maramures (nivel judet; regiunea istorica ≈ judetul, deci ziarele MM sunt județene)
+            "actualmm":     {"name": "actualMM",            "url": "https://actualmm.ro/feed/",              "category": "judetean", "judet": "MARAMURES"},
+            "emaramures":   {"name": "eMaramureș",          "url": "https://www.emaramures.ro/feed/",        "category": "judetean", "judet": "MARAMURES"},
+    # judetean — VALUL 1 al extinderii pe presa judeteana (2026-08-04). Fiecare URL de aici a fost
     # cerut REAL de pe IP-ul de acasa pe 2026-08-03 si a intors un feed cu intrari proaspete —
     # niciunul nu e ghicit dupa tiparul `<domeniu>/feed/`, care e exact felul in care valul
     # anterior de 79 de candidati a produs ~30% caderi. NU verifica astea cu `feedcheck.yml`:
@@ -71,34 +71,34 @@ SOURCES = {
     # din specs/istoric-executie.md), deci un verdict „mort" de acolo nu inseamna nimic.
     # Se intra in VALURI de ~15, nu toate odata: bugetul AI e ~10 apeluri de iteme noi pe rulare.
     # Forma `www` unde apare mai jos NU e cosmetica — fara ea raspunsul e un 30x in plus.
-            "cvlpress":     {"name": "Cuvântul Libertății",  "url": "https://cvlpress.ro/feed/",              "category": "zonal", "judet": "DOLJ"},
-            "alba24":       {"name": "Alba24",               "url": "https://alba24.ro/feed",                 "category": "zonal", "judet": "ALBA"},
-            "zidezi":       {"name": "Zi de Zi",             "url": "https://www.zi-de-zi.ro/feed/",          "category": "zonal", "judet": "MURES"},
-            "monitorulbt":  {"name": "Monitorul de Botoșani","url": "https://www.monitorulbt.ro/feed/",       "category": "zonal", "judet": "BOTOSANI"},
-            "turnulsfatului": {"name": "Turnul Sfatului",    "url": "https://www.turnulsfatului.ro/feed/",    "category": "zonal", "judet": "SIBIU"},
-            "bihon":        {"name": "Bihon",                "url": "https://www.bihon.ro/feed/",             "category": "zonal", "judet": "BIHOR"},
-            "mytex":        {"name": "MyTex",                "url": "https://mytex.ro/feed/",                 "category": "zonal", "judet": "BRASOV"},
+            "cvlpress":     {"name": "Cuvântul Libertății",  "url": "https://cvlpress.ro/feed/",              "category": "judetean", "judet": "DOLJ"},
+            "alba24":       {"name": "Alba24",               "url": "https://alba24.ro/feed",                 "category": "judetean", "judet": "ALBA"},
+            "zidezi":       {"name": "Zi de Zi",             "url": "https://www.zi-de-zi.ro/feed/",          "category": "judetean", "judet": "MURES"},
+            "monitorulbt":  {"name": "Monitorul de Botoșani","url": "https://www.monitorulbt.ro/feed/",       "category": "judetean", "judet": "BOTOSANI"},
+            "turnulsfatului": {"name": "Turnul Sfatului",    "url": "https://www.turnulsfatului.ro/feed/",    "category": "judetean", "judet": "SIBIU"},
+            "bihon":        {"name": "Bihon",                "url": "https://www.bihon.ro/feed/",             "category": "judetean", "judet": "BIHOR"},
+            "mytex":        {"name": "MyTex",                "url": "https://mytex.ro/feed/",                 "category": "judetean", "judet": "BRASOV"},
     # `b365` e SINGURA sursa din val FARA `judet`, si nu din scapare. BUCURESTI e in geo.REGIUNI,
     # dar are ZERO randuri in data/sate_judet.csv, deci campul n-ar deschide nicio potrivire pe
     # sate — iar `test_toate_ziarele_judetene_declara_un_judet_cunoscut` interzice exact asta, pe
     # buna dreptate: un `judet` care nu deschide nimic e o declaratie pe care datele n-o sustin,
     # si tace in loc sa dea eroare. Nu-l „completa" ca sa arate ca celelalte; testul pica.
-            "b365":         {"name": "B365",                 "url": "https://b365.ro/feed/",                  "category": "zonal"},
+            "b365":         {"name": "B365",                 "url": "https://b365.ro/feed/",                  "category": "judetean"},
     # Saptamanale cerute explicit de owner. `gazetadecluj` e SINGURUL feed din val cu bozo=1
     # (SAXParseException); feedparser recupereaza 9 intrari si fetch.py tolereaza asta, dar e la
     # o modificare de XML distanta de zero. Daca apare vreodata ca „200 dar 0 articole ...
     # SAXParseException" in `dead`, asta e — nu re-diagnostica reteaua.
     # `saptamanagiurgiuveana` NU e la radacina: WordPress-ul lor sta sub /wp/, si de aia calea
     # ghicita `<domeniu>/feed/` daduse 404 si sursa fusese declarata moarta pe nedrept.
-            "gazetadecluj": {"name": "Gazeta de Cluj",       "url": "https://gazetadecluj.ro/feed/",          "category": "zonal", "judet": "CLUJ"},
-            "sptgiurgiu":   {"name": "Săptămâna Giurgiuveană","url": "https://saptamanagiurgiuveana.ro/wp/feed/", "category": "zonal", "judet": "GIURGIU"},
+            "gazetadecluj": {"name": "Gazeta de Cluj",       "url": "https://gazetadecluj.ro/feed/",          "category": "judetean", "judet": "CLUJ"},
+            "sptgiurgiu":   {"name": "Săptămâna Giurgiuveană","url": "https://saptamanagiurgiuveana.ro/wp/feed/", "category": "judetean", "judet": "GIURGIU"},
     # `monitorulsv` NU ARE RSS DELOC — /feed/, /rss, /rss/, /feed/rss/ si /?feed=rss2 intorc toate
     # 200 si aterizeaza tacut pe homepage, /rss.xml e 404, iar HTML-ul homepage-ului nu contine
     # niciun „rss"/„feed" si niciun <link rel=alternate>. Intra doar prin sitemap-ul de stiri, deci
     # `"type": "sitemap_news"` e OBLIGATORIU: fara cheia aia fetch.py il trateaza ca RSS si
     # feedparser da 0. robots.txt e „User-Agent: *" fara Disallow si declara chiar acest sitemap —
     # aceeasi baza pe care sta deja `piataauto`.
-            "monitorulsv":  {"name": "Monitorul de Suceava", "url": "https://www.monitorulsv.ro/sitemap-news.xml", "category": "zonal", "judet": "SUCEAVA", "type": "sitemap_news"},
+            "monitorulsv":  {"name": "Monitorul de Suceava", "url": "https://www.monitorulsv.ro/sitemap-news.xml", "category": "judetean", "judet": "SUCEAVA", "type": "sitemap_news"},
     # NEadaugate DELIBERAT din acelasi lot verificat, ca sa nu fie re-cautate:
     # · `monitorulexpres.ro` (BV) — feed viu, dar ar fi a PATRA sursa de Brasov si scrie curent
     #   despre Covasna; a-i pune `judet: BRASOV` e exact nepotrivirea pe care campul o previne.
@@ -114,7 +114,7 @@ SOURCES = {
     # run 29776432687, 2026-07-20). 16 cu feed VIU. Cazuti (nu re-adauga fara re-test):
     # transilvaniareporter=timeout (posibil lent, re-testabil), crisanaonline=301 loop,
     # ziarulevenimentul=404, bucovinamedia/dobrogeatv=0 intrari. Exclusi motivat: TransilvaniaON
-    # (retea SEO), pressalert (deja zonal), gds.ro (403 recurent), newsmoldova (amesteca Chisinau).
+    # (retea SEO), pressalert (deja judetean), gds.ro (403 recurent), newsmoldova (amesteca Chisinau).
             "ziarultransilvaniei":  {"name": "Ziarul Transilvaniei",  "url": "https://ziarultransilvaniei.ro/feed/",   "category": "regional"},
             "gazetadetransilvania": {"name": "Gazeta de Transilvania","url": "https://gazetadetransilvania.ro/feed/",  "category": "regional"},
             "expressdebanat":       {"name": "Express de Banat",      "url": "https://expressdebanat.ro/feed/",        "category": "regional"},
@@ -179,24 +179,28 @@ AGENCY_BLOCKLIST = ["agerpres", "mediafax", "reuters", "afp.com", "apnews", "ap.
 
 CATEGORIES = ["general", "politic", "economic", "extern", "tech", "sport",
               "auto", "sanatate", "cultura", "lifestyle", "discounturi",
-              "regional", "zonal", "local"]
+              "regional", "judetean", "local"]
 
 # Categorii in INSAMANTARE: nou-adaugate, cu surse de volum mic — pot fi goale fara sa pice
 # QA (warn, nu FAIL). Se scot de aici dupa ce categoria s-a populat stabil.
-SEED_CATEGORIES = {"regional", "zonal", "local"}
+SEED_CATEGORIES = {"regional", "judetean", "local"}
 
 # Categorii GEOGRAFICE (axa proprie): articolele surselor cu aceste categorii NU sunt
 # re-clasificate pe tema de catre AI (vezi process._resolve_category). Un ziar judetean
 # ramane in sectiunea 'local', nu ajunge pe sport/politic dupa continut.
-PINNED_CATEGORIES = {"regional", "zonal", "local"}
+PINNED_CATEGORIES = {"regional", "judetean", "local"}
 
 # Etichete AFISATE (owner 2026-07-17): slug-ul din URL ramane neschimbat (SEO), doar
 # textul din nav/titluri/carduri foloseste aceste nume. Fallback = slug capitalizat.
+# EXCEPTIE explicita a owner-ului (2026-08-12): categoria 'zonal' a fost redenumita
+# 'judetean' inclusiv in slug/URL, cu redirect 301 de la /zonal/* -- vezi render.py
+# (_write_redirects) si tools/migrate_zonal_to_judetean.py pentru cele 295 de articole
+# deja publicate sub vechiul slug.
 CATEGORY_LABELS = {
     "general": "Actualitate", "politic": "Politică", "economic": "Economie",
     "extern": "Externe", "tech": "Tech", "sport": "Sport", "auto": "Auto",
     "sanatate": "Sănătate", "cultura": "Cultură", "lifestyle": "Lifestyle",
-    "discounturi": "Discounturi", "regional": "Regional", "zonal": "Zonal", "local": "Local",
+    "discounturi": "Discounturi", "regional": "Regional", "judetean": "Județean", "local": "Local",
 }
 
 # Cate cuvinte trebuie sa aduca `description` PESTE titlu ca itemul sa merite sintetizat.
@@ -224,7 +228,7 @@ RELATED_MIN_SHARED = 2         # "Articole conectate": minim entitati comune. 1 
 ARTICLE_TTL_DAYS = 7           # mai scurt -> volum mai mic -> incape in quota free Gemini
 MAX_PER_SOURCE = 8             # redus de la 12 ca sa scada apelurile AI/rulare
 
-AI_PROVIDER = os.getenv("AI_PROVIDER", "gemini")  # "gemini" | "anthropic"
+AI_PROVIDER = os.getenv("AI_PROVIDER", "gemini")  # "gemini" | "anthropic" | "ollama" (local, gratuit — vezi generator/providers/ollama.py)
 
 # IndexNow (Bing/Seznam/Yandex): cheia e PUBLICA prin protocol (motorul o citeste de la
 # https://izz.ro/<cheie>.txt ca dovada ca detinem domeniul). render.py scrie fisierul,

@@ -3,7 +3,7 @@
 Axa geografica e decisa de sursa. Dar categoria unui articol deja procesat e inghetata in
 `data/articles.json` si se recalculeaza doar la bump de PROMPT_VERSION, asa ca o rearanjare
 de config lasa in urma articole pe rubrica veche. Nu se repara singure niciodata: cand a
-fost scris testul, 131 de articole stateau in `local` desi sursele lor erau `zonal` de mult.
+fost scris testul, 131 de articole stateau in `local` desi sursele lor erau `judetean` de mult.
 """
 import json
 
@@ -37,8 +37,8 @@ def _sursa_geo():
         f"({sorted(config.PINNED_CATEGORIES)}) — configuratie stricata, nu motiv de skip")
 
 
-def _sursa_zonala_cu_localitate():
-    """O sursa `zonal` cu judet declarat + o localitate NEAMBIGUA din judetul ei.
+def _sursa_judeteana_cu_localitate():
+    """O sursa `judetean` cu judet declarat + o localitate NEAMBIGUA din judetul ei.
 
     Nu se hardcodeaza nici sursa, nici localitatea: prima rearanjare de config sau de
     gazetteer ar face testul sa treaca degeaba. Cade, nu sare — o configuratie fara nicio
@@ -47,7 +47,7 @@ def _sursa_zonala_cu_localitate():
     geo.eticheta_localitate("X")            # forteaza incarcarea dictionarelor de afisare
     for sid, s in config.SOURCES.items():
         judet = s.get("judet")
-        if s.get("category") != "zonal" or not judet:
+        if s.get("category") != "judetean" or not judet:
             continue
         for nume, judete in (geo._JUDETUL_LOCALITATII or {}).items():
             if judete != {judet} or nume == judet:
@@ -57,7 +57,7 @@ def _sursa_zonala_cu_localitate():
             if geo.clasifica(titlu, judet) == "local":
                 return sid, titlu, eticheta
     raise AssertionError(
-        "config.SOURCES nu are nicio sursa `zonal` cu judet care sa aiba o localitate "
+        "config.SOURCES nu are nicio sursa `judetean` cu judet care sa aiba o localitate "
         "neambigua in gazetteer — config sau data/localities.json e stricat, nu motiv de skip")
 
 
@@ -65,10 +65,10 @@ def test_textul_care_sustine_categoria_stocata_nu_e_tras_pe_rubrica_sursei(stare
     """Regula proprietarului (2026-08-02): LOCAL = UNDE se intampla, nu CINE publica.
 
     Pana pe 2026-08-08 functia asta o anula la fiecare `load()`: un articol despre o comuna,
-    publicat de un ziar judetean, era impins inapoi pe `zonal`. 663 din 1247 de articole de la
+    publicat de un ziar judetean, era impins inapoi pe `judetean`. 663 din 1247 de articole de la
     surse cu rubrica geografica fixata erau in situatia asta.
     """
-    sid, titlu, _ = _sursa_zonala_cu_localitate()
+    sid, titlu, _ = _sursa_judeteana_cu_localitate()
     stare([{"source": sid, "category": "local", "title": titlu, "url": "u"}])
     assert state.load()[0]["category"] == "local"
 
@@ -80,17 +80,17 @@ def test_textul_care_NU_sustine_categoria_stocata_e_readus(stare):
     pe rubrica sursei. Garda din 2026-08-08 cere potrivire EXACTA, nu „orice nivel geografic",
     tocmai ca sa nu inghete articolele astea pe rubrica gresita.
     """
-    sid, _, _ = _sursa_zonala_cu_localitate()
+    sid, _, _ = _sursa_judeteana_cu_localitate()
     judet = config.SOURCES[sid]["judet"]
     titlu = f"Politistii din {geo.eticheta_judet(judet)} au facut perchezitii"
-    assert geo.clasifica(titlu, judet) == "zonal", "premisa testului: titlul numeste judetul"
+    assert geo.clasifica(titlu, judet) == "judetean", "premisa testului: titlul numeste judetul"
     stare([{"source": sid, "category": "local", "title": titlu, "url": "u"}])
-    assert state.load()[0]["category"] == "zonal"
+    assert state.load()[0]["category"] == "judetean"
 
 
 def test_teaserul_conteaza_nu_doar_titlul(stare):
     """Aceeasi intrare ca la ingestie: `_text_clasificabil` ia titlu + teaser + synthesis."""
-    sid, titlu, _ = _sursa_zonala_cu_localitate()
+    sid, titlu, _ = _sursa_judeteana_cu_localitate()
     stare([{"source": sid, "category": "local", "title": "Anunt",
             "teaser": titlu, "url": "u"}])
     assert state.load()[0]["category"] == "local"

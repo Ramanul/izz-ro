@@ -45,7 +45,7 @@ class _Provider:
 _TITLU = "Polițiștii brașoveni au cumpărat limonadă de la un stand infantil"
 _TEASER = ("O patrulă de poliție din Brașov s-a oprit pentru a sprijini inițiativa unor copii "
            "care deschiseseră un punct de vânzare a limonadei.")
-_GEOGRAFICE = {"local", "zonal", "regional"}
+_GEOGRAFICE = {"local", "judetean", "regional"}
 
 
 def _item():

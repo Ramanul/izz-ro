@@ -767,6 +767,7 @@ def build(articles: list, mod: dict | None = None) -> None:
     # dovada de domeniu pentru IndexNow: motorul citeste cheia de la radacina
     _write(os.path.join(OUT_DIR, f"{config.INDEXNOW_KEY}.txt"), config.INDEXNOW_KEY + "\n")
     _write_headers()
+    _write_redirects()
     _write_feed(by_date)
     _write_search(env, by_date)
 
@@ -1211,6 +1212,18 @@ def _write_headers() -> None:
            "/*.png\n  Cache-Control: public, max-age=86400\n"
            "/*.webp\n  Cache-Control: public, max-age=86400\n"
            "/feed.xml\n  Cache-Control: public, max-age=1800\n")
+
+
+def _write_redirects() -> None:
+    """Cloudflare Pages redirects (fisierul _redirects).
+
+    Categoria `zonal` a fost redenumita `judetean` (decizie owner, 2026-08-12), inclusiv
+    in slug-ul din URL -- exceptie de la regula din CATEGORY_LABELS ("slug-ul nu se schimba
+    niciodata"). Fara linia de mai jos, cele 295 de articole deja publicate si indexate sub
+    `/zonal/<slug>/` ar da 404 permanent, iar orice link vechi distribuit (Google, retele
+    sociale) s-ar rupe. Wildcard, nu o linie per articol: acopera si pagina de categorie
+    (`/zonal/`, `/zonal/2/`) si orice viitor request catre calea veche, nu doar ce exista azi."""
+    _write(os.path.join(OUT_DIR, "_redirects"), "/zonal/* /judetean/:splat 301\n")
 
 
 def _rfc2822(value: str, url: str = "") -> str:

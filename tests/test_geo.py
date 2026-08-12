@@ -1,7 +1,7 @@
 """Poarta geografica determinista: regiune istorica / judet / localitate.
 
 Cazurile de mai jos nu sunt inventate — sunt exact articolele masurate pe 2026-07-25, cand
-`regional` era gresit in 14 din 15 cazuri pentru ca AI-ul primea `regional|zonal|local` ca
+`regional` era gresit in 14 din 15 cazuri pentru ca AI-ul primea `regional|judetean|local` ca
 etichete goale, fara nicio definitie, si ghicea.
 """
 import pytest
@@ -13,8 +13,8 @@ from generator import config, geo, process
     # --- ce trebuie SA INTRE pe axa geografica
     ("Cluj-Napoca a inaugurat primul centru integrat", "local"),
     ("Primăria Focșani a aprobat bugetul pe 2026", "local"),
-    ("Alertă aeriană în județul Tulcea", "zonal"),
-    ("Consiliul Județean Vrancea a votat proiectul", "zonal"),
+    ("Alertă aeriană în județul Tulcea", "judetean"),
+    ("Consiliul Județean Vrancea a votat proiectul", "judetean"),
     ("Seceta cumplită din Bărăgan afectează fermierii", "regional"),
     ("Transilvania are cel mai mare grad de împădurire", "regional"),
     ("În Ardeal s-au înregistrat cele mai mari precipitații", "regional"),
@@ -35,7 +35,7 @@ def test_clasificare(text, astept):
 def test_calificativul_bate_indexul():
     """Tulcea e SI judet SI municipiu. Textul spune care — fara asta, orice resedinta de
     judet ar trage stirea pe `local` chiar cand articolul zice explicit 'judetul'."""
-    assert geo.clasifica("Alertă în județul Tulcea") == "zonal"
+    assert geo.clasifica("Alertă în județul Tulcea") == "judetean"
     assert geo.clasifica("Incendiu la Tulcea, în zona portului") == "local"
 
 
@@ -43,8 +43,8 @@ def test_calificativul_flexionat_e_recunoscut():
     """"in nordul judetULUI Tulcea" e la fel de frecvent ca "in judetul Tulcea". Fara
     genitiv, calificativul se rata si stirea cadea pe `local`, fiindca Tulcea e si oras.
     Gasit pe un articol real, 2026-08-01."""
-    assert geo.clasifica("Locuitorii din nordul județului Tulcea au primit RO-Alert") == "zonal"
-    assert geo.clasifica("Autoritățile județelor Cluj și Alba au decis") == "zonal"
+    assert geo.clasifica("Locuitorii din nordul județului Tulcea au primit RO-Alert") == "judetean"
+    assert geo.clasifica("Autoritățile județelor Cluj și Alba au decis") == "judetean"
     assert geo.clasifica("În comuna Ciugud s-a inaugurat o școală") == "local"
 
 
@@ -83,15 +83,15 @@ def test_indexul_acopera_toate_judetele():
     judete.discard("")
     lipsa = [j for j in judete if j not in index]
     assert not lipsa, f"judete lipsa din gazetteer: {lipsa}"
-    assert all(geo.clasifica(f"în județul {j.title()}") == "zonal" for j in judete)
+    assert all(geo.clasifica(f"în județul {j.title()}") == "judetean" for j in judete)
     assert len(index) > 2000, f"doar {len(index)} nume — gazetteerul pare trunchiat"
 
 
 def test_toate_regiunile_sunt_recunoscute():
     """MARAMURES e exceptie asumata: e SI regiune istorica SI judet. Regula proprietarului
-    zice ca invinge cel mai specific, deci judetul — `zonal`, nu `regional`."""
+    zice ca invinge cel mai specific, deci judetul — `judetean`, nu `regional`."""
     for regiune in geo.REGIUNI:
-        astept = "zonal" if regiune == "MARAMURES" else "regional"
+        astept = "judetean" if regiune == "MARAMURES" else "regional"
         assert geo.clasifica(f"Situația din {regiune.title()} rămâne tensionată") == astept, regiune
 
 
@@ -123,25 +123,25 @@ def test_ai_ul_nu_mai_poate_pune_o_stire_externa_pe_axa_geo():
 def test_ai_ul_greseste_nivelul_iar_poarta_il_corecteaza():
     item = {"category": _sursa_netematica(), "title": "Alertă aeriană în județul Tulcea",
             "teaser": "Drona a intrat în spațiul aerian."}
-    assert process._resolve_category(item, "regional") == "zonal"
+    assert process._resolve_category(item, "regional") == "judetean"
 
 
 def test_sursa_geografica_fara_loc_pleaca_pe_tema():
     """LOCAL = unde se intampla, nu cine publica (owner 2026-08-02). Un horoscop de la un
     ziar judetean nu are niciun loc in text -> pleaca de pe axa geografica pe tema aleasa de AI.
     Masurat pe corpus: 324 din 940 de articole geografice pleaca asa, majoritatea corect
-    (horoscop, stiri nationale, externe filate gresit ca 'zonal' de sursa)."""
+    (horoscop, stiri nationale, externe filate gresit ca 'judetean' de sursa)."""
     geo_cat = sorted(config.PINNED_CATEGORIES)[0]
     item = {"category": geo_cat, "title": "Horoscopul zilei", "teaser": "Zodiile."}
     assert process._resolve_category(item, "sport") == "sport"
 
 
 def test_sursa_geografica_cu_loc_ia_nivelul_din_text():
-    """Un ziar judetean (sursa 'zonal') care scrie despre o comuna anume ajunge 'local' —
+    """Un ziar judetean (sursa 'judetean') care scrie despre o comuna anume ajunge 'local' —
     nivelul vine din TEXT, nu din sursa. Inima regulii owner 2026-08-02."""
-    item = {"category": "zonal", "title": "Restrictii de circulatie in Cluj-Napoca",
+    item = {"category": "judetean", "title": "Restrictii de circulatie in Cluj-Napoca",
             "teaser": "Primaria a anuntat restrictii pe perioada festivalului."}
-    assert process._resolve_category(item, "zonal") == "local"
+    assert process._resolve_category(item, "judetean") == "local"
 
 
 def test_categoria_tematica_nu_e_atinsa_de_poarta():
@@ -155,7 +155,7 @@ def test_clusterul_C_e_clasificat_si_dupa_synthesis():
     cluster s-ar fi clasificat doar dupa titlu."""
     item = {"category": _sursa_netematica(), "title": "Incident aviatic",
             "synthesis": "Evenimentul a avut loc în județul Tulcea, aproape de deltă."}
-    assert process._resolve_category(item, "local") == "zonal"
+    assert process._resolve_category(item, "local") == "judetean"
 
 
 # --- Satele, deschise DOAR de judetul sursei (SIRUTA Slice 2) -------------------------
@@ -191,8 +191,8 @@ def test_falsurile_masurate_raman_afara_la_sursele_nationale(text):
 def test_judetul_din_text_bate_satul_omonim():
     """SIRUTA are sate cu numele judetului lor. Fara garda, „judetul Galati" devenea stire
     LOCALA: masurat, 3 din 15 schimbari erau exact asta (Galati, Brasov, Vaslui)."""
-    assert geo.clasifica("Județul Galați a aprobat rectificarea bugetului", "GALATI") == "zonal"
-    assert geo.clasifica("Județul Brașov se află sub avertizare cod galben", "BRASOV") == "zonal"
+    assert geo.clasifica("Județul Galați a aprobat rectificarea bugetului", "GALATI") == "judetean"
+    assert geo.clasifica("Județul Brașov se află sub avertizare cod galben", "BRASOV") == "judetean"
 
 
 @pytest.mark.parametrize("cheie,astept", [
@@ -278,9 +278,9 @@ def test_numele_ambigue_cu_marca_geografica_raman_locuri(text, nivel):
 
 def test_marca_geografica_nu_se_aplica_numelor_neambigue():
     """Garda e strict pe `_AMBIGUE`. „Universitatea Cluj" n-are nicio prepozitie inainte si
-    trebuie sa ramana zonal — masurat, 890 din 1606 de potriviri din corpus n-au marca."""
-    assert geo.clasifica("Universitatea Cluj a pierdut meciul") == "zonal"
-    assert geo.clasifica("Salvamont Neamț a intervenit de patru ori") == "zonal"
+    trebuie sa ramana judetean — masurat, 890 din 1606 de potriviri din corpus n-au marca."""
+    assert geo.clasifica("Universitatea Cluj a pierdut meciul") == "judetean"
+    assert geo.clasifica("Salvamont Neamț a intervenit de patru ori") == "judetean"
     # Suceava e SI judet SI municipiu, deci indexul da corect `local` — l-am pus aici din
     # greseala prima data. Ramane ca exemplu: garda nu-l atinge, nivelul vine din index.
     assert geo.clasifica("ISU Suceava a deschis un punct de prim ajutor") == "local"
@@ -325,11 +325,11 @@ def test_uat_in_compus_negeo_nu_e_geografie(text):
 @pytest.mark.parametrize("text,nivel", [
     # Sondele din WS-0030: ruta prin `_AMBIGUE` le-ar fi pierdut pe toate patru, fiindca
     # `_MARCA_GEO` n-are JUDETEAN si nici PREFECTURA, iar ultima n-are nimic inainte.
-    ("Consiliul Județean Alba a aprobat bugetul rectificat", "zonal"),
-    ("Prefectura Alba a convocat comitetul pentru situații de urgență", "zonal"),
-    ("Inspectoratul Școlar Județean Alba a publicat rezultatele", "zonal"),
-    ("Alba a fost lovită de o furtună puternică", "zonal"),
-    ("Un șofer din Alba a fost condamnat după ce a condus băut", "zonal"),
+    ("Consiliul Județean Alba a aprobat bugetul rectificat", "judetean"),
+    ("Prefectura Alba a convocat comitetul pentru situații de urgență", "judetean"),
+    ("Inspectoratul Școlar Județean Alba a publicat rezultatele", "judetean"),
+    ("Alba a fost lovită de o furtună puternică", "judetean"),
+    ("Un șofer din Alba a fost condamnat după ce a condus băut", "judetean"),
     # Prefixul e specific: alte institutii cu acelasi nume de UAT raman geografie.
     ("Primăria București a lansat licitația pentru modernizarea parcului", "local"),
     ("Curtea de Conturi București a finalizat controlul la trei primării", "local"),
@@ -463,7 +463,7 @@ def test_conectorul_cu_litera_mica_trece_de_garda_INCA():
 
 @pytest.mark.xfail(reason="_ARTICOL nu acopera genitivul feminin: "
                           "„Transilvaniei\"/„Moldovei\"/„Olteniei\" nu se potrivesc deloc. "
-                          "Impact zero pe corpusul de azi (cele 2 articole sunt deja `zonal` "
+                          "Impact zero pe corpusul de azi (cele 2 articole sunt deja `judetean` "
                           "din nume de judet), dar „nordul Transilvaniei\" e o formulare "
                           "frecventa in presa si e invizibila pentru poarta. Felie separata.",
                    strict=True)
@@ -474,10 +474,10 @@ def test_genitivul_feminin_al_regiunii_nu_se_potriveste_INCA():
 def test_garda_de_regiune_nu_atinge_celelalte_niveluri():
     """Garda se evalueaza DOAR pe potriviri `regional`. „Primăria Giurgiu" si „Universitatea
     Cluj" sunt exact tiparul pe care il respinge — cuvant cu majuscula inainte — si trebuie
-    sa treaca neatinse, altfel poarta ar pierde masiv la zonal si local (masurat: 890 din
+    sa treaca neatinse, altfel poarta ar pierde masiv la judetean si local (masurat: 890 din
     1606 de potriviri din corpus n-au nicio marca)."""
     assert geo.clasifica("Primăria Giurgiu a semnat contractul") == "local"
-    assert geo.clasifica("Universitatea Cluj a pierdut meciul") == "zonal"
+    assert geo.clasifica("Universitatea Cluj a pierdut meciul") == "judetean"
 
 
 def test_capitala_de_moldova_supravietuieste_gardei():
@@ -491,10 +491,10 @@ def test_capitala_de_moldova_supravietuieste_gardei():
 
 # --- badge-ul de pe coperta: judetul in locul categoriei (decizie proprietar 2026-08-04) ---
 
-def test_badge_zonal_arata_judetul_cu_diacritice():
+def test_badge_judetean_arata_judetul_cu_diacritice():
     """Cheia sursei da judetul, iar afisarea trece prin `eticheta_judet` — deci „Maramureș",
     nu „MARAMURES". Fara pasul asta badge-ul ar fi iesit fara diacritice pe coperta."""
-    assert geo.eticheta_copertei({"category": "zonal", "source": "emaramures"}) == "Maramureș"
+    assert geo.eticheta_copertei({"category": "judetean", "source": "emaramures"}) == "Maramureș"
 
 
 def test_badge_local_arata_judetul():
@@ -514,15 +514,15 @@ def test_badge_categoriile_negeografice_nu_iau_judet():
 
 
 def test_badge_fara_judet_derivabil_cade_pe_categorie():
-    """40 din 435 `zonal` si 161 din 398 `local` n-au judet — acolo badge-ul ramane cum era."""
+    """40 din 435 `judetean` si 161 din 398 `local` n-au judet — acolo badge-ul ramane cum era."""
     assert geo.eticheta_copertei({"category": "local", "source": "sursa-inexistenta"}) == ""
-    assert geo.eticheta_copertei({"category": "zonal"}) == ""
+    assert geo.eticheta_copertei({"category": "judetean"}) == ""
 
 
 # --- badge-ul ia locul din TITLU inainte de judetul sursei (2026-08-08) ---
 # Motivul, masurat: sursele nationale n-au judet in `config.SOURCES`, deci 249 din 463 de
-# articole `local` (54%) si 71 din 475 `zonal` (15%) scriau pe coperta chiar cuvantul
-# „LOCAL" / „ZONAL" — inclusiv stiri al caror titlu numea locul, cu litere mari, pe loc.
+# articole `local` (54%) si 71 din 475 `judetean` (15%) scriau pe coperta chiar cuvantul
+# „LOCAL" / „JUDETEAN" — inclusiv stiri al caror titlu numea locul, cu litere mari, pe loc.
 
 def test_badge_sursa_nationala_ia_localitatea_din_titlu():
     """Cazul care a ridicat problema: ProTV n-are judet, dar titlul zice unde s-a intamplat."""
@@ -540,8 +540,8 @@ def test_badge_localitatea_din_titlu_bate_judetul_sursei():
     assert geo.eticheta_copertei(a) == "Cernavodă"
 
 
-def test_badge_zonal_ia_judetul_numit_de_titlu():
-    a = {"category": "zonal", "source": "g4media",
+def test_badge_judetean_ia_judetul_numit_de_titlu():
+    a = {"category": "judetean", "source": "g4media",
          "title": "Transporturi agabaritice tranzitează județul Constanța"}
     assert geo.eticheta_copertei(a) == "Constanța"
 
