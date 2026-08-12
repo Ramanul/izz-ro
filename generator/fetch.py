@@ -230,6 +230,7 @@ def _parse_sitemap_news(raw: bytes, key: str, source: dict) -> tuple[list, str |
     # plafonul se aplica dupa filtrare (nu pe felia bruta): daca primele intrari sunt
     # inutilizabile, sursa nu trebuie sa iasa goala cat timp exista intrari bune mai jos.
     unusable = 0
+    respinse = 0
     for url_el in urls:
         if len(items) >= config.MAX_PER_SOURCE:
             break
@@ -246,6 +247,7 @@ def _parse_sitemap_news(raw: bytes, key: str, source: dict) -> tuple[list, str |
         motiv = (guard.verdict(title) or guard.url_ostil(loc)
                  or guard.anomalie(title, source.get("lang", "ro")))
         if motiv:
+            respinse += 1
             print(f"   !! garda ingestie (sitemap): sar [{key}] {title[:60]!r} — {motiv}")
             continue
         items.append({
@@ -263,6 +265,10 @@ def _parse_sitemap_news(raw: bytes, key: str, source: dict) -> tuple[list, str |
             "published": _parse_w3c_date(date_raw),
             "model": None,
         })
+
+    if (motiv := guard.carantina(respinse, respinse + len(items), key)):
+        print(f"   !! {motiv}")
+        return [], motiv
 
     if not items:
         # esec TACUT altfel: sursa raspunde 200 si are <url>-uri, dar nu produce nimic
@@ -439,6 +445,7 @@ def _fetch_html_list(key: str, source: dict) -> tuple[list, str | None]:
             return items, f"{key}: challenge anti-bot servit cu 200 (sursa NU e moarta)"
         return items, f"{key}: 0 articole extrase (posibil structura HTML schimbata)"
 
+    respinse = 0
     for entry in parser.items[: config.MAX_PER_SOURCE]:
         link = entry["href"]
         title = clean_html(entry["title"])
@@ -447,6 +454,7 @@ def _fetch_html_list(key: str, source: dict) -> tuple[list, str | None]:
         motiv = (guard.verdict(title) or guard.url_ostil(link)
                  or guard.anomalie(title, source.get("lang", "ro")))
         if motiv:
+            respinse += 1
             print(f"   !! garda ingestie (lista HTML): sar [{key}] {title[:60]!r} — {motiv}")
             continue
         items.append({
@@ -464,6 +472,10 @@ def _fetch_html_list(key: str, source: dict) -> tuple[list, str | None]:
             "published": _parse_ro_date(entry.get("date_raw", "")),
             "model": None,
         })
+    if (motiv := guard.carantina(respinse, respinse + len(items), key)):
+        print(f"   !! {motiv}")
+        return [], motiv
+
     if not items:
         # Acelasi esec tacut ca la RSS si la sitemap: 200, zero articole, invizibil in rapoarte.
         return items, f"{key}: 200 dar 0 articole din lista HTML (selector schimbat sau pagina goala)"
@@ -557,6 +569,7 @@ def _fetch_one(key: str, source: dict, cache: dict | None = None) -> tuple[list,
         return items, f"{key}: fetch esuat dupa {RETRY_ATTEMPTS + 1} incercari"
 
     feed = feedparser.parse(raw)
+    respinse = 0
     for entry in feed.entries[: config.MAX_PER_SOURCE]:
         link = entry.get("link", "").strip()
         title = clean_html(entry.get("title") or "")
@@ -570,6 +583,7 @@ def _fetch_one(key: str, source: dict, cache: dict | None = None) -> tuple[list,
         motiv = (guard.verdict(title, body) or guard.url_ostil(link)
                  or guard.anomalie(title, source.get("lang", "ro")))
         if motiv:
+            respinse += 1
             print(f"   !! garda ingestie: sar [{key}] {title[:60]!r} — {motiv}")
             continue
         items.append({
@@ -585,6 +599,10 @@ def _fetch_one(key: str, source: dict, cache: dict | None = None) -> tuple[list,
             "published": _parse_date(entry),
             "model": None,
         })
+    if (motiv := guard.carantina(respinse, respinse + len(items), key)):
+        print(f"   !! {motiv}")
+        return [], motiv
+
     if not items:
         # Esec TACUT altfel, aceeasi clasa ca la sitemap mai sus: sursa raspunde 200, iar
         # `dead` aduna DOAR erori, deci un feed care nu produce nimic nu aparea nicaieri.

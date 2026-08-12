@@ -312,6 +312,44 @@ def anomalie(titlu: str, source_lang: str = "ro") -> str | None:
     return None
 
 
+# --- 9. carantina de sursa: de la ITEM la SURSA ------------------------------------------
+# Straturile 1-8 resping ITEME. Rovinari arata de ce nu ajunge: atacatorul a intercalat 8
+# pagini de warez cu anunturi REALE ale primariei, iar garda a respins warez-ul unul cate
+# unul si a lasat sa treaca anunturile — de la un site aflat sub controlul atacatorului.
+# R6 din `specs/securitate-ingestie.md` cere deja „o sursa compromisa se taie INTREAGA, nu
+# selectiv"; pana acum era o regula scrisa pe care codul n-o aplica.
+#
+# Nu are nevoie de niciun semnal nou: foloseste verdictul gardei, pe care il avem deja.
+#
+# PRAGUL E MASURAT, NU ALES (2026-08-12, corpus de 3246 de articole, 70 de surse oficiale):
+#   respingeri >= 1 -> 2 surse (Rovinari 8/10, Cajvana 1/1)
+#   respingeri >= 2 -> 1 sursa  (doar Rovinari). Zero fals-pozitive.
+# S-a ales 2, nu 1, fiindca §4 din spec accepta explicit un fals-pozitiv rar la stratul de
+# warez (o stire legitima DESPRE piraterie). La pragul 1 acel fals-pozitiv ar escalada de la
+# „pierdem un articol pe an" la „taiem o sursa intreaga", ceea ce e o pedeapsa disproportionata
+# fata de dovada. La 2 e nevoie de un TIPAR, nu de un accident.
+#
+# Ce NU face, ca sa nu fie citit ca mai mult: nu prinde un defacement de UN SINGUR articol mai
+# devreme decat il prinde garda de item. Cajvana are 1 respingere din 1 item, deci ramane sub
+# prag — corect: itemul e oprit oricum de stratul 8, iar o sursa cu un singur articol nu ofera
+# un tipar pe care sa se poata judeca sursa intreaga.
+PRAG_CARANTINA = 2
+
+
+def carantina(respinse: int, total: int, key: str) -> str | None:
+    """`None` daca sursa poate fi ingerata, altfel motivul carantinei pentru runda asta.
+
+    Carantina e per RULARE, nu persistenta: nu scrie nimic pe disc si nu blocheaza sursa la
+    fetch-ul urmator. Blocarea durabila ramane manuala (`suppress_sources` + `_DEAD_SLUGS`),
+    fiindcă e o decizie editoriala cu consecinta publica, nu una pe care o ia un prag.
+    """
+    if respinse >= PRAG_CARANTINA:
+        return (f"{key}: SURSA IN CARANTINA — garda a respins {respinse} din {total} iteme "
+                f"in aceeasi rulare; restul de {total - respinse} nu se ingereaza (R6: o sursa "
+                f"compromisa se taie intreaga). Verifica sursa manual.")
+    return None
+
+
 # --- corpus pentru garda de URL ---------------------------------------------------------
 # `href="javascript:..."` e valid ca HTML si trece intact de escaparea Jinja2 — de-aia are
 # nevoie de propriul corpus, `verdict()` nu-l vede (primeste titlu si corp, nu linkuri).

@@ -263,3 +263,122 @@ def test_moderarea_ascunde_un_articol_deja_stocat():
     ]
     ramase = moderation.apply(articole, dict(moderation.DEFAULTS))
     assert [a["title"] for a in ramase] == ["Publicatie casatorie 11.08.2026"]
+
+
+# --- garda pe celelalte doua cai de ingestie (2026-08-12) --------------------------------
+# Golul pe care il inchid: pana azi doar `_parse_sitemap_news` si `moderation.apply` aveau
+# test cap-coada. Celelalte doua cai erau legate identic, dar NECONFIRMATE prin rulare — si
+# fix golul asta (cod legat despre care nimeni n-a verificat ca ruleaza) a lasat stratul 8
+# nechemat trei zile.
+
+class _RaspunsFake:
+    """Minimul din `HTTPResponse` folosit de `_read_limitat` + cache-ul de etag."""
+
+    def __init__(self, body: bytes):
+        self._body = body
+        self.headers = {}
+
+    def read(self, amt=None):
+        return self._body if amt is None else self._body[:amt]
+
+    def __enter__(self):
+        return self
+
+    def __exit__(self, *exc):
+        return False
+
+
+@pytest.fixture
+def raspunde(monkeypatch):
+    from generator import fetch
+
+    def _set(body):
+        monkeypatch.setattr(fetch.urllib.request, "urlopen",
+                            lambda req, timeout=None: _RaspunsFake(body))
+    return _set
+
+
+_RSS_CAJVANA = b"""<?xml version="1.0"?><rss version="2.0"><channel>
+<item><title>Hacked by Chinafans</title><link>https://cajvana.ro/0x-htm-1906/</link>
+  <description>Hacked By Chinafans https://t.me/Hack_0xTeam</description></item>
+<item><title>Publicatie casatorie 11.08.2026</title><link>https://cajvana.ro/pc/</link>
+  <description>Anunt privind publicatia de casatorie.</description></item>
+</channel></rss>"""
+
+_HTML_CAJVANA = b"""<html><body>
+<div class="anunt"><a href="/0x-htm-1906/">Hacked by Chinafans</a></div>
+<div class="anunt"><a href="/pc/">Publicatie casatorie 11.08.2026</a></div>
+</body></html>"""
+
+
+def test_ingestia_RSS_opreste_titlul_de_defacement(raspunde):
+    from generator import fetch
+    raspunde(_RSS_CAJVANA)
+    sursa = {"url": "https://cajvana.ro/feed/", "name": "Primăria Cajvana",
+             "category": "local", "lang": "ro"}
+    items, _ = fetch._fetch_one("pl_suceava_oras_cajvana", sursa, cache={})
+    assert [i["title"] for i in items] == ["Publicatie casatorie 11.08.2026"]
+
+
+def test_ingestia_din_lista_HTML_opreste_titlul_de_defacement(raspunde):
+    from generator import fetch
+    raspunde(_HTML_CAJVANA)
+    sursa = {"url": "https://cajvana.ro/anunturi/", "base_url": "https://cajvana.ro",
+             "item": "div.anunt", "name": "Primăria Cajvana", "category": "local",
+             "type": "html_list", "lang": "ro"}
+    items, _ = fetch._fetch_html_list("pl_suceava_oras_cajvana", sursa)
+    assert [i["title"] for i in items] == ["Publicatie casatorie 11.08.2026"]
+
+
+# --- 9. carantina de sursa ----------------------------------------------------------------
+
+def test_pragul_de_carantina_e_cel_masurat():
+    """Pragul 2 nu e o preferinta: la 1 ar escalada fals-pozitivul admis de §4 (o stire
+    legitima DESPRE piraterie) de la „pierdem un articol" la „taiem o sursa intreaga"."""
+    assert guard.PRAG_CARANTINA == 2
+    assert guard.carantina(1, 8, "x") is None, "o singura respingere NU taie sursa"
+    assert guard.carantina(2, 8, "x") is not None
+    assert guard.carantina(0, 8, "x") is None
+
+
+def test_carantina_spune_cate_iteme_curate_pierde():
+    """Mesajul trebuie sa numeasca pretul, altfel cine citeste raportul nu poate judeca
+    daca pragul e prea agresiv."""
+    motiv = guard.carantina(2, 8, "pl_gorj_oras_rovinari")
+    assert "2 din 8" in motiv and "6" in motiv and "pl_gorj_oras_rovinari" in motiv
+
+
+_RSS_ROVINARI = b"""<?xml version="1.0"?><rss version="2.0"><channel>
+<item><title>Office 2021 Standard Free Download Torrent</title>
+  <link>https://primariarovinari.ro/w1/</link><description>download</description></item>
+<item><title>Stellar Blade Crack Fixed ElAmigos Release</title>
+  <link>https://primariarovinari.ro/w2/</link><description>crack</description></item>
+<item><title>Anunt privind colectarea separata a deseurilor</title>
+  <link>https://primariarovinari.ro/a1/</link><description>Anunt real al primariei.</description></item>
+<item><title>REZULTAT selectie dosar concurs</title>
+  <link>https://primariarovinari.ro/a2/</link><description>Anunt real al primariei.</description></item>
+</channel></rss>"""
+
+
+def test_o_sursa_cu_doua_respingeri_nu_mai_livreaza_nimic(raspunde):
+    """Tiparul Rovinari, cap-coada: warez intercalat cu anunturi REALE. Pana azi treceau
+    anunturile reale — de la un site aflat sub controlul atacatorului. R6 spune ca sursa se
+    taie intreaga; asta e testul care obliga codul s-o faca."""
+    from generator import fetch
+    raspunde(_RSS_ROVINARI)
+    sursa = {"url": "https://primariarovinari.ro/feed/", "name": "Primăria Rovinari",
+             "category": "local", "lang": "ro"}
+    items, err = fetch._fetch_one("pl_gorj_oras_rovinari", sursa, cache={})
+    assert items == [], f"sursa compromisa a livrat {len(items)} iteme"
+    assert err and "CARANTINA" in err, f"carantina trebuie sa apara in raportul rularii: {err!r}"
+
+
+def test_o_sursa_cu_o_singura_respingere_livreaza_restul(raspunde):
+    """Contrapartida obligatorie: garda care taie tot e la fel de stricata ca una care nu
+    taie nimic. Cajvana are exact 1 respingere din 2, deci ramane sub prag."""
+    from generator import fetch
+    raspunde(_RSS_CAJVANA)
+    sursa = {"url": "https://cajvana.ro/feed/", "name": "Primăria Cajvana",
+             "category": "local", "lang": "ro"}
+    items, err = fetch._fetch_one("pl_suceava_oras_cajvana", sursa, cache={})
+    assert len(items) == 1 and err is None

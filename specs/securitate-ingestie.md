@@ -130,6 +130,25 @@ Excluderea se face în **două** locuri, fiindcă fac lucruri diferite:
 - `local_sources._DEAD_SLUGS`: oprește **re-ingestia**. Obligatoriu, fiindcă sursa scorează
   `rss_ok=yes` în `gold_integrare.csv` și altfel reintră la următoarea rulare.
 
+### R6a — Tăierea întreagă se face și AUTOMAT, nu doar de mână (2026-08-12)
+Până azi R6 era o regulă pe care o aplica **un om, după ce vedea problema**. Codul respingea
+iteme unul câte unul și lăsa să treacă restul — inclusiv anunțurile reale de la un site aflat
+sub controlul atacatorului, care e fix scenariul descris mai sus. `guard.carantina` închide
+golul: dacă garda respinge **≥2 iteme de la aceeași sursă în aceeași rulare**, întregul lot al
+sursei e aruncat pentru runda aia, iar motivul intră în raportul de surse.
+
+**Pragul e măsurat, nu ales** (corpus 3246 de articole, 70 de surse oficiale):
+`≥1` → 2 surse (Rovinari 8/10, Cajvana 1/1) · `≥2` → **1 sursă, doar Rovinari, 0 fals-pozitive.**
+S-a ales 2 fiindcă §4 acceptă explicit un fals-pozitiv rar la stratul de warez (o știre
+legitimă *despre* piraterie); la pragul 1 acel accident ar escalada de la „pierdem un articol"
+la „tăiem o sursă întreagă". La 2 e nevoie de un **tipar**, nu de un accident.
+
+**Carantina e per RULARE, nu persistentă** — nu scrie nimic pe disc și nu blochează sursa la
+fetch-ul următor. Blocarea durabilă rămâne manuală (`suppress_sources` + `_DEAD_SLUGS`), fiindcă
+e o decizie editorială cu consecință publică, nu una pe care s-o ia un prag. Consecința de
+acceptat: o sursă compromisă și necurățată va fi pusă în carantină la fiecare rulare, zgomotos
+— ceea ce e comportamentul dorit, nu un defect.
+
 ### R7 — Conținutul nu are voie să strice aranjamentul
 Orice suprafață care afișează text din feed poartă `overflow-wrap: anywhere` și un plafon de
 caractere. Nu e o regulă de securitate în sens strict — ține și pentru URL-uri lungi sau nume
@@ -163,7 +182,23 @@ Astea sunt găuri **cunoscute**, nereparate la data scrierii. Nu le trata ca rez
    (atacatorul publică destul și baza se mută sub el), iar Cajvana avea **un singur** articol la
    noi — chiar atacul — deci n-avea istoric din care să înveți. Catalogul de primării e construit
    de noi din lista UAT-urilor românești, deci „e în română" e ceva ce **știm**, nu ghicim.
-   **Următoarea axă, în ordinea valorii: cadența.**
+   **Axa „cadență" a fost măsurată pe 2026-08-12 și e MOARTĂ pe datele pe care le avem.**
+   Nu o relua fără un semnal nou; iată de ce, în ordinea în care au picat ipotezele:
+   - **Intervale regulate** (coeficient de variație mic — un script publică la interval
+     constant): Rovinari iese pe **locul 17 din 21**, adică *mai neregulat* decât majoritatea
+     primăriilor legitime (cv 1,67 față de mediana 1,36). Cauza: warez-ul e intercalat cu
+     anunțuri reale, deci fluxul **combinat** nu e regulat. Cele 3 ore există doar în
+     submulțimea warez, pe care n-o poți izola fără să știi deja care sunt — circular.
+   - **Debit susținut** (maxim de articole într-o fereastră de 24h): Rovinari e 1/70 cu 9,
+     dar locurile 2-3 sunt primării legitime cu 8 (Ploiești, Țăndărei). Un prag la 9 prinde
+     exact singurul caz cunoscut și nimic altceva — asta nu e o măsurătoare, e o curbă trasă
+     prin n=1. La prag 6 → 5 surse, 4 legitime = 80% fals-pozitive.
+   - **Confound care omoară ambele:** `config.MAX_PER_SOURCE = 8` plafonează câte iteme luăm
+     per fetch, deci debitul observat e al **programului nostru de fetch**, nu al sursei.
+   - **Și, decisiv: Cajvana are max24h = 1.** Un defacement de un singur articol e invizibil
+     pentru orice măsură de cadență, prin construcție. Exact cazul pentru care s-a construit
+     stratul 8.
+   **Ce s-a construit în loc, fiindcă datele îl susțin: stratul 9, carantina de sursă (§R6a).**
 2. **SSRF prin redirectare.** `urllib` urmează redirectările; o sursă compromisă ne poate trimite
    către o adresă internă a runnerului, iar răspunsul ar putea ajunge publicat. `urllib` respinge
    deja schemele non-http(s) la redirect, iar runnerii GitHub n-au un endpoint de metadate
