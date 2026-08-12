@@ -32,6 +32,7 @@
 }
 
 * { box-sizing: border-box; }
+html { overflow-x: hidden; }
 body { margin: 0; background: var(--bg); color: var(--text); font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }
 a { color: inherit; }
 button, input { font: inherit; }
@@ -70,8 +71,8 @@ h1 { margin: 0; font-size: clamp(2rem, 5vw, 3.7rem); letter-spacing: -.045em; }
 
 .map-layout { display: grid; grid-template-columns: minmax(0, 1.35fr) minmax(330px, .65fr); gap: 1rem; align-items: start; }
 .map-card, .news-panel { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; box-shadow: var(--shadow); overflow: hidden; }
-.map { min-height: 620px; padding: 1rem; contain: layout paint; }
-.map svg { display: block; width: 100%; height: auto; max-height: 720px; touch-action: manipulation; }
+.map { min-height: 620px; padding: 1rem; contain: layout; }
+.map svg { display: block; width: 100%; height: auto; max-height: 720px; touch-action: pan-y; }
 .county { fill: var(--map-fill); stroke: var(--map-stroke); stroke-width: 1.2; vector-effect: non-scaling-stroke; cursor: pointer; transition: fill .16s, opacity .16s; }
 .county:hover, .county.selected { fill: var(--accent-soft); }
 .county.dimmed { opacity: .32; }
@@ -99,16 +100,17 @@ h1 { margin: 0; font-size: clamp(2rem, 5vw, 3.7rem); letter-spacing: -.045em; }
   .map-intro { align-items: start; flex-direction: column; }
   .map-stats { width: 100%; text-align: left; }
   .map-layout { grid-template-columns: 1fr; }
-  .news-panel { max-height: 520px; }
+  .news-panel { max-height: none; }
+  .news-list { overflow: visible; }
   .map { min-height: 420px; }
 }
 
 @media (max-width: 560px) {
   .map-page { width: min(100% - 1rem, 1500px); padding-top: 1.2rem; }
   .map-header { padding-inline: .7rem; backdrop-filter: none; background: var(--surface); }
-  .map { padding: .4rem; min-height: 320px; contain: layout paint style; }
+  .map { padding: .4rem; min-height: 320px; contain: layout; }
   .map-card, .news-panel { box-shadow: none; }
-  .map svg { max-height: none; }
+  .map svg { max-height: none; width: 100%; height: auto; touch-action: pan-y; }
   .county { transition: none; }
   .back { font-size: .78rem; }
 }
