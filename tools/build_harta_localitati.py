@@ -2,10 +2,7 @@
 """Descarcă punctele localităților și le aliniază cu viewBox-ul hărții județelor.
 
 Sursa este stratul public geo-spatial.org `geospatial:romania_localitati`.
-Datasetul rezultat este static: browserul nu contactează geo-spatial.org.
-
-Legătura semantică se face prin codul SIRUTA; dacă sursa geospațială nu expune codul,
-scriptul păstrează și cheia normalizată nume+județ pentru fallback.
+Datasetul rezultat este static: browserul nu contactează serviciul GIS.
 """
 from __future__ import annotations
 
@@ -20,7 +17,7 @@ import xml.etree.ElementTree as ET
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 OUT = os.path.join(ROOT, "data", "harta_localitati.json")
-URL = "https://www.geo-spatial.org/geoserver/ows"
+URL = "https://services.geo-spatial.org/geoserver/wfs"
 TYPE_NAME = "geospatial:romania_localitati"
 
 # Aceasta este aceeași proiecție equirectangulară folosită de build_harta.py.
@@ -57,10 +54,10 @@ def project(lon: float, lat: float) -> tuple[float, float]:
 
 def request_bytes(output_format: str) -> bytes:
     params = urllib.parse.urlencode({
-        "service": "WFS", "version": "1.0.0", "request": "GetFeature",
-        "typeName": TYPE_NAME, "outputFormat": output_format,
+        "service": "WFS", "version": "2.0.0", "request": "GetFeature",
+        "typeNames": TYPE_NAME, "outputFormat": output_format,
     })
-    request = urllib.request.Request(URL + "?" + params, headers={"User-Agent": "izz-ro-map-builder/1.1"})
+    request = urllib.request.Request(URL + "?" + params, headers={"User-Agent": "izz-ro-map-builder/1.2"})
     with urllib.request.urlopen(request, timeout=120) as response:
         return response.read()
 
@@ -77,8 +74,9 @@ def local_name(tag: str) -> str:
 def parse_gml(raw: bytes) -> list[dict]:
     root = ET.fromstring(raw)
     features = []
+    # GeoServer poate returna featureMember sau featureMembers, în funcție de versiunea WFS.
     for member in root.iter():
-        if local_name(member.tag) != "featureMember":
+        if local_name(member.tag) not in {"featureMember", "member"}:
             continue
         feature = next((child for child in list(member) if isinstance(child.tag, str)), None)
         if feature is None:
@@ -105,11 +103,12 @@ def parse_gml(raw: bytes) -> list[dict]:
 def load_features() -> list[dict]:
     raw = request_bytes("application/json")
     try:
-        return parse_json(raw)
+        features = parse_json(raw)
+        if features:
+            return features
     except (UnicodeDecodeError, json.JSONDecodeError):
-        # Unele instalări GeoServer nu au writerul GeoJSON activ. GML2 este
-        # standard WFS și este suportat de serviciul geo-spatial.org.
-        return parse_gml(request_bytes("GML2"))
+        pass
+    return parse_gml(request_bytes("application/gml+xml"))
 
 
 def main() -> int:
