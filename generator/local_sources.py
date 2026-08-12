@@ -47,6 +47,16 @@ _DEAD_SLUGS = frozenset({
     # /feed/, 9 aug 19:20): titlurile de warez sunt inca acolo, plus unul nou aparut intre timp.
     # Excluderea aici opreste re-ingestia; `moderation.yaml` ascunde ce e deja in articles.json.
     # Se scoate din lista DOAR dupa ce primaria curata site-ul si feed-ul e reverificat manual.
+    #
+    # REVERIFICAT 2026-08-12: feed-ul e CURAT. `curl -sSL https://www.primariarovinari.ro/feed/`
+    # -> 200, 53929 octeti, 12 titluri, **0 ostile** trecute prin `guard.verdict` + `anomalie`
+    # (toate anunturi reale: concursuri, colectare deseuri, ambrozie). Conditia din R6 pentru
+    # ridicarea suprimarii ESTE indeplinita.
+    # **Suprimarea ramane totusi, si nu din inertie:** un feed curat azi nu dovedeste ca CMS-ul
+    # a fost patch-uit — atacatorul poate avea inca acces. Reactivarea schimba ce apare PUBLIC
+    # pe izz.ro, deci e decizia proprietarului, nu a unei masuratori. E o linie de sters.
+    # Riscul reactivarii e acum materialmente mai mic decat pe 9 aug: `guard.carantina`
+    # (stratul 9) taie automat tot lotul sursei la >=2 respingeri intr-o rulare.
     "gorj_oras_rovinari",
     # COMPROMIS (2026-08-09, descoperit abia pe 11 aug). cajvana.ro a fost DEFACED: un articol
     # intitulat „Hacked by Chinafans", cu corp „Hacked By Chinafans https://t.me/Hack_0xTeam
@@ -59,6 +69,15 @@ _DEAD_SLUGS = frozenset({
     # `guard.anomalie` il prinde din primul articol; l-am gasit tocmai masurand pentru garda aia.
     # Site-ul nu raspundea la verificarea din 11 aug 20:2x (curl -> 000, conexiune esuata), deci
     # nu s-a putut confirma daca e inca defaced sau a fost luat jos.
+    #
+    # REVERIFICAT 2026-08-12 — raspunsul e mai tare decat „luat jos": **domeniul nu mai exista.**
+    # `nslookup cajvana.ro` da NXDOMAIN pe TREI resolvere independente (local, 1.1.1.1, 8.8.8.8),
+    # cu control pozitiv pe acelasi resolver (`primariarovinari.ro` -> 92.83.6.19), deci nu e o
+    # problema de retea la noi. Nici `www.cajvana.ro`, `primariacajvana.ro`,
+    # `www.primariacajvana.ro` nu raspund (curl -> 000).
+    # Consecinta: sursa e MOARTA, nu doar compromisa — n-are cum sa reintre. Suprimarea ramane
+    # ca document al incidentului. Daca domeniul reapare, e o entitate NOUA si se reverifica de
+    # la zero inainte de orice reactivare.
     "suceava_oras_cajvana",
 })
 

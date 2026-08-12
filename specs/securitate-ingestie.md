@@ -199,6 +199,16 @@ Astea sunt găuri **cunoscute**, nereparate la data scrierii. Nu le trata ca rez
      pentru orice măsură de cadență, prin construcție. Exact cazul pentru care s-a construit
      stratul 8.
    **Ce s-a construit în loc, fiindcă datele îl susțin: stratul 9, carantina de sursă (§R6a).**
+1b. **Cât din catalog a fost efectiv scanat — 54%, și restul e necunoscut, nu curat.**
+   Întrebarea lăsată deschisă pe 2026-08-09 („Rovinari e o primărie dintr-un catalog de sute;
+   câte altele sunt în aceeași situație și nu ne-am uitat?") are acum o cifră, pentru prima dată.
+   Garda completă (straturile 1-8) a fost rulată peste toate cele **3246** de articole din corpus:
+   **doar 2 surse au vreo respingere**, cele două deja știute (Rovinari 8/10, Cajvana 1/1).
+   **Dar denumitorul e partea importantă:** corpusul acoperă **70 din 129** de surse oficiale
+   (54,3%); **59 n-au produs niciun articol** în fereastra de 7 zile, deci **n-au fost măsurate
+   deloc.** „Zero respingeri" pentru ele înseamnă „n-am privit", nu „sunt curate".
+   O scanare completă ar cere interogarea a 129 de feeduri — fezabilă, dar e o felie separată, cu
+   trafic către site-uri de instituții, deci se face deliberat, nu în treacăt.
 2. **SSRF prin redirectare.** `urllib` urmează redirectările; o sursă compromisă ne poate trimite
    către o adresă internă a runnerului, iar răspunsul ar putea ajunge publicat. `urllib` respinge
    deja schemele non-http(s) la redirect, iar runnerii GitHub n-au un endpoint de metadate
