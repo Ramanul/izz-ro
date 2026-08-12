@@ -13,6 +13,7 @@
   };
 
   const $ = (selector) => document.querySelector(selector);
+  const $$ = (selector) => Array.from(document.querySelectorAll(selector));
   const norm = (value) => (value || "")
     .normalize("NFD")
     .replace(/[\u0300-\u036f]/g, "")
@@ -90,10 +91,7 @@
     const host = $("#map");
     if (!host || !state.map) return;
 
-    // Idempotent redraw: there is exactly one canvas in the host. A complete DOM replacement
-    // prevents old canvases/layers from surviving repeated search, resize or navigation events.
     host.replaceChildren();
-
     const canvas = document.createElement("canvas");
     canvas.className = "map-canvas";
     canvas.setAttribute("role", "img");
@@ -117,10 +115,6 @@
     const ctx = canvas.getContext("2d", { alpha: false });
     if (!ctx) throw new Error("Canvas 2D nu este disponibil.");
     const palette = colors();
-
-    // clearRect alone is not enough if a previous transform is active. Reset first, clear,
-    // then establish exactly one transform for this frame. This is the standard Canvas redraw
-    // pattern used by interactive maps to avoid retained/ghosted drawings during repaint.
     ctx.setTransform(1, 0, 0, 1, 0, 0);
     ctx.globalAlpha = 1;
     ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -136,11 +130,7 @@
     for (const [county, pathData] of Object.entries(state.counties)) {
       const count = counts.get(county) || 0;
       let path;
-      try {
-        path = new Path2D(pathData);
-      } catch {
-        continue;
-      }
+      try { path = new Path2D(pathData); } catch { continue; }
       const hasNews = count > 0;
       const query = norm(state.search);
       const matchesSearch = !query || state.visible.some((item) =>
@@ -162,8 +152,6 @@
     if (!state.selectedCounty) {
       for (const entry of paths) {
         if (!entry.count || !entry.bounds) continue;
-        // Use the county's actual geometry bounds, not the full-map center. This prevents all
-        // county markers from being drawn at one shared point and then appearing duplicated.
         const p = {
           x: (entry.bounds.minX + entry.bounds.maxX) / 2,
           y: (entry.bounds.minY + entry.bounds.maxY) / 2,
@@ -193,7 +181,6 @@
         const x = Number(item.x);
         const y = Number(item.y);
         if (!Number.isFinite(x) || !Number.isFinite(y)) continue;
-
         const coordinateKey = `${x.toFixed(4)}|${y.toFixed(4)}`;
         const key = item.siruta || `${norm(item.locality)}|${norm(item.county)}`;
         const group = groups.get(key) || {
@@ -203,16 +190,11 @@
         groups.set(key, group);
       }
 
-      // Final spatial dedupe: one marker per exact geographic point, even if multiple SIRUTA
-      // records or article records resolve to that same point.
       const byCoordinate = new Map();
       for (const group of groups.values()) {
         const existing = byCoordinate.get(group.coordinateKey);
-        if (existing) {
-          existing.count += group.count;
-        } else {
-          byCoordinate.set(group.coordinateKey, { ...group });
-        }
+        if (existing) existing.count += group.count;
+        else byCoordinate.set(group.coordinateKey, { ...group });
       }
 
       for (const group of byCoordinate.values()) {
@@ -247,7 +229,8 @@
         for (const marker of localityMarkers) {
           if (Math.hypot(p.x - marker.x, p.y - marker.y) <= marker.radius + 5) {
             state.search = marker.locality;
-            $("#map-search").value = marker.locality;
+            const search = $("#map-search");
+            if (search) search.value = marker.locality;
             renderList();
             break;
           }
@@ -267,7 +250,7 @@
   }
 
   function renderList() {
-    const list = $("#map-news-list");
+    const list = $("#news-list");
     if (!list) return;
     const items = filtered().slice(0, 120);
     list.replaceChildren();
@@ -282,33 +265,55 @@
       li.append(a, meta);
       list.appendChild(li);
     }
-    const count = $("#map-count");
+    const count = $("#panel-count");
     if (count) count.textContent = `${items.length} știri`;
+  }
+
+  function updateStats() {
+    const stats = $("#map-stats");
+    if (!stats) return;
+    const counties = new Set(state.visible.map((item) => item.county).filter(Boolean)).size;
+    const localities = new Set(state.visible.map((item) => item.siruta || `${norm(item.locality)}|${norm(item.county)}`).filter(Boolean)).size;
+    stats.replaceChildren();
+    const span = document.createElement("span");
+    span.textContent = `${state.visible.length} știri · ${counties} județe · ${localities} localități`;
+    stats.appendChild(span);
+  }
+
+  function syncLevelButtons() {
+    $$(".segmented [data-level]").forEach((button) => {
+      button.classList.toggle("active", button.dataset.level === state.level);
+      button.setAttribute("aria-pressed", button.dataset.level === state.level ? "true" : "false");
+    });
   }
 
   function bindControls() {
     const search = $("#map-search");
-    const clear = $("#map-clear");
-    const level = $("#map-level");
+    const clear = $("#clear-selection");
     if (search) search.addEventListener("input", () => {
       state.search = search.value;
       state.visible = filtered();
       buildMap();
       renderList();
+      updateStats();
     });
-    if (level) level.addEventListener("change", () => {
-      state.level = level.value;
+    $$(".segmented [data-level]").forEach((button) => button.addEventListener("click", () => {
+      state.level = button.dataset.level || "all";
       state.visible = filtered();
+      syncLevelButtons();
       buildMap();
       renderList();
-    });
+      updateStats();
+    }));
     if (clear) clear.addEventListener("click", () => {
       state.search = "";
       state.selectedCounty = null;
       state.visible = filtered();
       if (search) search.value = "";
+      syncLevelButtons();
       buildMap();
       renderList();
+      updateStats();
     });
   }
 
@@ -321,8 +326,10 @@
     state.counties = state.map.judete || {};
     state.articles = Array.isArray(data.articles) ? data.articles : [];
     state.visible = filtered();
+    syncLevelButtons();
     buildMap();
     renderList();
+    updateStats();
   }
 
   init().catch((error) => {
