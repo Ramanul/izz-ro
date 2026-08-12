@@ -267,6 +267,22 @@
     };
   }
 
+  function closestHit(point, candidates, markerOf) {
+    // Bulinele apropiate se pot suprapune (ex. judete mici, grupate). Alegerea primei
+    // care intra in raza de atingere, indiferent de distanta reala, face ca un tap langa
+    // o grupare sa "sara" mereu pe ACEEASI buline -- de-aia harta parea blocata pe un
+    // singur judet, oricat de aproape ai fi apasat de altul. Se alege cea mai apropiata.
+    let best = null;
+    let bestDist = Infinity;
+    for (const candidate of candidates) {
+      const marker = markerOf(candidate);
+      if (!marker || !hitDistance(point, marker)) continue;
+      const dist = Math.hypot(point.x - marker.x, point.y - marker.y);
+      if (dist < bestDist) { bestDist = dist; best = candidate; }
+    }
+    return best;
+  }
+
   function onCanvasClick(event) {
     const canvas = state.canvas;
     const view = state.view;
@@ -274,8 +290,8 @@
     const p = pointForEvent(canvas, view, event);
     if (!p) return;
     if (state.selectedCounty) {
-      for (const marker of state.localityMarkers) {
-        if (!hitDistance(p, marker)) continue;
+      const marker = closestHit(p, state.localityMarkers, (m) => m);
+      if (marker) {
         const locality = marker.localities[0] || marker.locality;
         state.search = locality;
         const search = $("#map-search");
@@ -283,17 +299,15 @@
         state.visible = filtered();
         renderList();
         updateStats();
-        break;
       }
     } else {
-      for (const entry of state.paths) {
-        if (!entry.marker || !hitDistance(p, entry.marker)) continue;
+      const entry = closestHit(p, state.paths, (e) => e.marker);
+      if (entry) {
         state.selectedCounty = entry.county;
         state.visible = filtered();
         buildMap();
         renderList();
         updateStats();
-        break;
       }
     }
   }
