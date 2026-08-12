@@ -16,7 +16,6 @@ import csv
 import json
 import os
 import re
-import sys
 from datetime import datetime, timezone
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -70,9 +69,12 @@ def read_siruta() -> tuple[dict[str, str], dict[str, list[dict]]]:
         if code and name:
             counties[code] = name
 
-    # Identifica satele duplicate global, ca sa nu folosim un nume ambiguu fara context.
     sat_names = [clean_name(r.get("DENLOC") or "") for r in rows if r.get("NIV") == "3"]
-    duplicate_sats = {n for n in sat_names if n and sat_names.count(n) > 1}
+    counts: dict[str, int] = {}
+    for name in sat_names:
+        if name:
+            counts[name] = counts.get(name, 0) + 1
+    duplicate_sats = {name for name, count in counts.items() if count > 1}
 
     by_name: dict[str, list[dict]] = {}
     for row in rows:
@@ -124,7 +126,6 @@ def locality_from_text(text: str, source_county: str | None, by_name: dict[str, 
         if len(name) < 4 or f" {name} " not in padded:
             continue
         same = [r for r in records if not source_county or r["county"] == source_county]
-        # Fara context, accepta doar un nume unic; cu contextul sursei, poate dezambigua.
         if len(same) == 1:
             candidates.append(same[0])
     candidates.sort(key=lambda r: len(r["name"]), reverse=True)
