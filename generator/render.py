@@ -1198,6 +1198,10 @@ def _write_headers() -> None:
            "  Referrer-Policy: strict-origin-when-cross-origin\n"
            "  Permissions-Policy: camera=(), microphone=(), geolocation=(), interest-cohort=()\n"
            "/static/*\n  Cache-Control: public, max-age=2592000, immutable\n"
+           # harta-stiri lives under /static/ but is a live page + dataset, not a
+           # versioned asset -- without this override a CSS/JS/dataset fix stays
+           # invisible to any browser that already cached the page for 30 days.
+           "/static/harta-stiri/*\n  Cache-Control: public, max-age=300, must-revalidate\n"
            "/favicon.svg\n  Cache-Control: public, max-age=2592000\n"
            "/*.jpg\n  Cache-Control: public, max-age=86400\n"
            "/*.png\n  Cache-Control: public, max-age=86400\n"
