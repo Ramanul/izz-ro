@@ -6,9 +6,9 @@ existenta (`data/harta_judete.json`, SIRUTA). Browserul nu mai descarca fisiere 
 repo si nu mai face matching O(N*M) pe CSV-ul SIRUTA; build-ul produce un singur JSON compact
 in `static/harta-stiri/data/map.json`.
 
-SIRUTA este folosit determinist pentru identificarea localitatii si codului SIRUTA. Cand
-localitatea este ambigua intre mai multe judete, judetul trebuie sa fie cunoscut din sursa
-sau din text; altfel articolul ramane localizat doar la nivel de judet.
+SIRUTA este folosit determinist pentru identificarea localitatii si codului SIRUTA. Coordonatele
+localitatii sunt adaugate din `data/harta_localitati.json`, generat la build din stratul public
+geo-spatial.org. Daca nu exista coordonata, articolul ramane localizat la nivel de judet.
 """
 from __future__ import annotations
 
@@ -23,6 +23,7 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 ARTICLES = os.path.join(ROOT, "data", "articles.json")
 MAP = os.path.join(ROOT, "data", "harta_judete.json")
 SIRUTA = os.path.join(ROOT, "data", "siruta_raw.csv")
+LOCALITIES = os.path.join(ROOT, "data", "harta_localitati.json")
 OUT = os.path.join(ROOT, "static", "harta-stiri", "data", "map.json")
 MAX_ARTICLES = 1500
 
@@ -42,7 +43,6 @@ PREFIXES = ("MUNICIPIUL ", "ORASUL ", "ORAS ", "COMUNA ", "JUDETUL ", "SATUL ")
 
 
 def norm(value: str) -> str:
-    """Normalizeaza inclusiv variantele istorice Ţ/Ş din CSV-urile SIRUTA."""
     value = unicodedata.normalize("NFKD", (value or "").strip())
     value = "".join(ch for ch in value if not unicodedata.combining(ch))
     value = value.replace("Đ", "D").replace("đ", "d")
@@ -59,7 +59,6 @@ def clean_name(value: str) -> str:
 
 
 def read_siruta() -> tuple[dict[str, str], dict[str, list[dict]]]:
-    """Returneaza maparea cod judet -> nume si indexul SIRUTA dupa localitate."""
     with open(SIRUTA, encoding="cp1250", newline="") as fh:
         rows = list(csv.DictReader(fh, delimiter=";"))
 
@@ -105,6 +104,23 @@ def load_json(path: str):
         return json.load(fh)
 
 
+def load_locality_points() -> dict[str, dict]:
+    if not os.path.exists(LOCALITIES):
+        return {}
+    payload = load_json(LOCALITIES)
+    return payload.get("localities") or {}
+
+
+def point_for(locality: dict | None, points: dict[str, dict]) -> dict | None:
+    if not locality:
+        return None
+    siruta = str(locality.get("siruta") or "").strip()
+    if siruta and siruta in points:
+        return points[siruta]
+    key = f"{norm(locality.get('name'))}|{norm(locality.get('county'))}"
+    return points.get(key)
+
+
 def explicit_county(text: str, county_keys: list[str]) -> str | None:
     t = norm(text)
     for county in sorted(county_keys, key=len, reverse=True):
@@ -135,7 +151,7 @@ def locality_from_text(text: str, source_county: str | None, by_name: dict[str, 
     return candidates[0] if candidates else None
 
 
-def locate(article: dict, county_keys: list[str], by_name: dict[str, list[dict]]) -> dict | None:
+def locate(article: dict, county_keys: list[str], by_name: dict[str, list[dict]], points: dict[str, dict]) -> dict | None:
     if article.get("category") not in {"local", "zonal"}:
         return None
     text = " ".join(str(article.get(k) or "") for k in ("title", "teaser", "synthesis"))
@@ -147,6 +163,7 @@ def locate(article: dict, county_keys: list[str], by_name: dict[str, list[dict]]
         county = locality["county"]
     if not county:
         return None
+    point = point_for(locality, points)
     return {
         "category": article.get("category", ""),
         "slug": article.get("slug", ""),
@@ -158,6 +175,8 @@ def locate(article: dict, county_keys: list[str], by_name: dict[str, list[dict]]
         "county": county,
         "locality": locality["name"] if locality else "",
         "siruta": locality["siruta"] if locality else "",
+        "x": point.get("x") if point else None,
+        "y": point.get("y") if point else None,
         "confidence": "text" if tc else "source" if sc else "siruta",
     }
 
@@ -170,16 +189,17 @@ def main() -> int:
     counties = map_data.get("judete") or {}
     county_keys = list(counties)
     _, siruta = read_siruta()
+    points = load_locality_points()
 
     articles = sorted(articles, key=lambda a: str(a.get("published") or ""), reverse=True)
     located = []
     for article in articles[:MAX_ARTICLES]:
-        item = locate(article, county_keys, siruta)
+        item = locate(article, county_keys, siruta, points)
         if item:
             located.append(item)
 
     payload = {
-        "version": 1,
+        "version": 2,
         "generated_at": datetime.now(timezone.utc).isoformat(),
         "map": {"viewbox": map_data.get("viewbox", ""), "judete": counties},
         "articles": located,
@@ -188,6 +208,8 @@ def main() -> int:
             "local": sum(a["category"] == "local" for a in located),
             "zonal": sum(a["category"] == "zonal" for a in located),
             "counties": len({a["county"] for a in located}),
+            "localities": len({a["siruta"] for a in located if a.get("siruta")}),
+            "coordinates": sum(a.get("x") is not None and a.get("y") is not None for a in located),
         },
     }
     os.makedirs(os.path.dirname(OUT), exist_ok=True)
