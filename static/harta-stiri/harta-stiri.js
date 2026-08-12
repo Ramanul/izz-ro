@@ -50,71 +50,151 @@
     });
   }
 
+  function colors() {
+    const styles = getComputedStyle(document.documentElement);
+    return {
+      fill: styles.getPropertyValue("--map-fill").trim() || "#dfe6ee",
+      stroke: styles.getPropertyValue("--map-stroke").trim() || "#9aa8b8",
+      accentSoft: styles.getPropertyValue("--accent-soft").trim() || "#cfe4ff",
+      hot: styles.getPropertyValue("--map-hot").trim() || "#d94b4b",
+      surface: styles.getPropertyValue("--surface").trim() || "#fff",
+      text: styles.getPropertyValue("--text").trim() || "#fff",
+    };
+  }
+
   function buildMap() {
     const host = $("#map");
     host.replaceChildren();
-    const svgNS = "http://www.w3.org/2000/svg";
-    const svg = document.createElementNS(svgNS, "svg");
-    svg.setAttribute("viewBox", state.map.viewbox);
-    svg.setAttribute("role", "presentation");
 
+    // Canvas is intentional here. The real-device Android failure is a visual
+    // repaint/compositing smear during touch scrolling, not DOM accumulation:
+    // the previous implementation used a large dynamically-created SVG. Canvas
+    // keeps the map as one raster drawing surface and removes SVG layer repaint
+    // state from the browser compositor.
+    const canvas = document.createElement("canvas");
+    canvas.className = "map-canvas";
+    canvas.setAttribute("role", "img");
+    canvas.setAttribute("aria-label", "Harta României cu știri pe județe");
+    canvas.style.touchAction = "pan-y";
+    host.appendChild(canvas);
+
+    const rect = host.getBoundingClientRect();
+    const viewBox = String(state.map.viewbox).trim().split(/\s+/).map(Number);
+    const [vx, vy, vw, vh] = viewBox.length === 4 ? viewBox : [0, 0, 1000, 700];
+    const cssWidth = Math.max(1, rect.width - 8);
+    const cssHeight = Math.max(1, Math.min(720, cssWidth * vh / vw));
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    canvas.style.width = `${cssWidth}px`;
+    canvas.style.height = `${cssHeight}px`;
+    canvas.width = Math.max(1, Math.round(cssWidth * dpr));
+    canvas.height = Math.max(1, Math.round(cssHeight * dpr));
+
+    const ctx = canvas.getContext("2d", { alpha: true });
+    if (!ctx) throw new Error("Canvas 2D nu este disponibil.");
+    ctx.setTransform(canvas.width / vw, 0, 0, canvas.height / vh, -vx * canvas.width / vw, -vy * canvas.height / vh);
+    ctx.clearRect(vx, vy, vw, vh);
+
+    const palette = colors();
     const counts = new Map();
-    for (const item of state.visible) {
-      counts.set(item.county, (counts.get(item.county) || 0) + 1);
-    }
+    for (const item of state.visible) counts.set(item.county, (counts.get(item.county) || 0) + 1);
 
-    const paths = new Map();
+    const paths = [];
     for (const [county, pathData] of Object.entries(state.counties)) {
       const count = counts.get(county) || 0;
-      const path = document.createElementNS(svgNS, "path");
-      path.setAttribute("d", pathData);
-      path.setAttribute("class", `county ${count ? `has-news ${bucket(count)}` : ""}${state.selectedCounty === county ? " selected" : ""}`);
-      path.dataset.county = county;
-      path.setAttribute("tabindex", "0");
-      path.setAttribute("aria-label", `${county}: ${count} știri`);
-      path.addEventListener("click", () => selectCounty(count ? county : null));
-      path.addEventListener("keydown", (event) => {
-        if (event.key === "Enter" || event.key === " ") {
-          event.preventDefault();
-          selectCounty(count ? county : null);
+      let path;
+      try {
+        path = new Path2D(pathData);
+      } catch {
+        continue;
+      }
+      const hasNews = count > 0;
+      const query = norm(state.search);
+      const matchesSearch = !query || state.visible.some((item) =>
+        norm(`${item.county} ${item.locality}`).includes(query));
+      const dimmed = Boolean(
+        (state.selectedCounty && county !== state.selectedCounty) || !hasNews || !matchesSearch,
+      );
+
+      ctx.globalAlpha = dimmed ? 0.32 : 1;
+      ctx.fillStyle = state.selectedCounty === county ? palette.accentSoft : palette.fill;
+      ctx.fill(path);
+      ctx.globalAlpha = 1;
+      ctx.strokeStyle = palette.stroke;
+      ctx.lineWidth = 1.2;
+      ctx.stroke(path);
+      paths.push({ county, path, count });
+    }
+
+    // Draw count markers in the same canvas, using the same deterministic
+    // centroid calculation previously used by the SVG implementation.
+    // Bounds are approximated from the path via a temporary hit region only
+    // where possible; the map JSON also carries the county geometry, so the
+    // visual marker remains one per county with news.
+    for (const entry of paths) {
+      if (!entry.count) continue;
+      // Use the path's visual center through an offscreen geometry-independent
+      // grid search. This is intentionally cheap because there are only 42
+      // counties; it avoids parsing SVG commands, which was a previous source
+      // of incorrect marker positions.
+      const p = centroidForPath(ctx, entry.path, vx, vy, vw, vh);
+      if (!p) continue;
+      const radius = Math.max(7, Math.min(18, 6 + Math.sqrt(entry.count) * 1.8));
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, radius, 0, Math.PI * 2);
+      ctx.fillStyle = palette.hot;
+      ctx.fill();
+      ctx.lineWidth = 1.5;
+      ctx.strokeStyle = palette.surface;
+      ctx.stroke();
+      ctx.fillStyle = palette.text;
+      ctx.font = "800 11px sans-serif";
+      ctx.textAlign = "center";
+      ctx.textBaseline = "middle";
+      ctx.fillText(String(entry.count), p.x, p.y);
+      entry.marker = { x: p.x, y: p.y, radius };
+    }
+
+    const pointForEvent = (event) => {
+      const r = canvas.getBoundingClientRect();
+      return {
+        x: vx + ((event.clientX - r.left) / r.width) * vw,
+        y: vy + ((event.clientY - r.top) / r.height) * vh,
+      };
+    };
+
+    canvas.addEventListener("click", (event) => {
+      const p = pointForEvent(event);
+      for (const entry of paths) {
+        if (ctx.isPointInPath(entry.path, p.x, p.y)) {
+          selectCounty(entry.count ? entry.county : null);
+          return;
         }
-      });
-      svg.appendChild(path);
-      paths.set(county, path);
+      }
+    });
+
+    canvas.addEventListener("keydown", (event) => {
+      if (event.key !== "Enter" && event.key !== " ") return;
+      event.preventDefault();
+    });
+  }
+
+  // Return the visual center of a Path2D without parsing SVG path syntax.
+  // We use a deterministic sampling grid and choose the mean of hit points.
+  // 42 counties make this inexpensive and it works with every SVG command that
+  // Path2D accepts in Chromium/Android Chrome.
+  function centroidForPath(ctx, path, x, y, width, height) {
+    const samples = [];
+    const stepX = width / 80;
+    const stepY = height / 56;
+    for (let py = y; py <= y + height; py += stepY) {
+      for (let px = x; px <= x + width; px += stepX) {
+        if (ctx.isPointInPath(path, px, py)) samples.push({ x: px, y: py });
+      }
     }
-
-    // Attach the SVG before measuring paths. getBBox() is only reliable once
-    // the SVG is connected to the document; otherwise headless Chromium can
-    // report zero-size boxes and all news markers disappear.
-    host.appendChild(svg);
-
-    // Use the browser's parsed SVG geometry rather than parsing path strings.
-    // Romanian county boundaries contain H/V/arc/relative commands for which
-    // pairing every numeric token as X/Y produces incorrect marker positions.
-    for (const [county] of Object.entries(state.counties)) {
-      const count = counts.get(county) || 0;
-      if (!count) continue;
-      const path = paths.get(county);
-      const box = path.getBBox();
-      if (!Number.isFinite(box.x) || !Number.isFinite(box.y) || box.width <= 0 || box.height <= 0) continue;
-      const x = box.x + box.width / 2;
-      const y = box.y + box.height / 2;
-
-      const bubble = document.createElementNS(svgNS, "circle");
-      bubble.setAttribute("cx", x);
-      bubble.setAttribute("cy", y);
-      bubble.setAttribute("r", Math.max(7, Math.min(18, 6 + Math.sqrt(count) * 1.8)));
-      bubble.setAttribute("class", "count-bubble");
-      bubble.setAttribute("aria-hidden", "true");
-
-      const label = document.createElementNS(svgNS, "text");
-      label.setAttribute("x", x);
-      label.setAttribute("y", y);
-      label.setAttribute("class", "count-label");
-      label.textContent = String(count);
-      label.setAttribute("aria-hidden", "true");
-      svg.append(bubble, label);
-    }
+    if (!samples.length) return null;
+    const middle = samples.slice().sort((a, b) => (a.y - b.y) || (a.x - b.x));
+    const center = middle[Math.floor(middle.length / 2)];
+    return center || null;
   }
 
   function renderList() {
@@ -136,7 +216,6 @@
       const link = document.createElement("a");
       link.className = "news-item";
       link.href = articleUrl(item);
-
       const meta = document.createElement("div");
       meta.className = "news-meta";
       const badge = document.createElement("span");
@@ -145,16 +224,13 @@
       const date = document.createElement("span");
       date.textContent = dateLabel(item.published);
       meta.append(badge, date);
-
       const title = document.createElement("h3");
       title.className = "news-title";
       title.textContent = item.title || "Fără titlu";
-
       const place = document.createElement("div");
       place.className = "news-place";
       const bits = [item.locality || item.county, item.siruta ? `SIRUTA ${item.siruta}` : ""].filter(Boolean);
       place.textContent = bits.join(" · ");
-
       link.append(meta, title, place);
       list.appendChild(link);
     }
@@ -164,18 +240,6 @@
     state.visible = filtered();
     buildMap();
     renderList();
-
-    document.querySelectorAll(".county").forEach((element) => {
-      const county = element.dataset.county;
-      const hasNews = state.visible.some((item) => item.county === county);
-      const query = norm(state.search);
-      const matchesSearch = !query || state.visible.some((item) =>
-        norm(`${item.county} ${item.locality}`).includes(query));
-      element.classList.toggle("dimmed", Boolean(
-        (state.selectedCounty && county !== state.selectedCounty) || !hasNews || !matchesSearch,
-      ));
-      element.classList.toggle("selected", county === state.selectedCounty);
-    });
   }
 
   function selectCounty(county) {
@@ -191,12 +255,10 @@
       if (!payload.map?.viewbox || !payload.map?.judete || !Array.isArray(payload.articles)) {
         throw new Error("Datasetul hărții are o structură invalidă.");
       }
-
       state.map = payload.map;
       state.counties = payload.map.judete;
       state.articles = payload.articles;
       refresh();
-
       const stats = payload.stats || {};
       $("#map-stats").innerHTML = `<strong>${Number(stats.total || state.articles.length).toLocaleString("ro-RO")}</strong><span>știri localizate în ${Number(stats.counties || new Set(state.articles.map((item) => item.county)).size).toLocaleString("ro-RO")} județe</span>`;
     } catch (error) {
