@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
 """Descarcă punctele localităților și le aliniază cu viewBox-ul hărții județelor.
 
-Sursa este stratul public geo-spatial.org `geospatial:romania_localitati`.
-Datasetul rezultat este static: browserul nu contactează serviciul GIS.
+Sursa este stratul public geo-spatial.org `romania_localitati`, care are geometrie punctuală
+și atribute provenite inclusiv din SIRUTA. Datasetul rezultat este static: browserul nu
+contactează serviciul GIS.
 """
 from __future__ import annotations
 
@@ -13,11 +14,11 @@ import re
 import unicodedata
 import urllib.parse
 import urllib.request
-import xml.etree.ElementTree as ET
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 OUT = os.path.join(ROOT, "data", "harta_localitati.json")
-URL = "https://services.geo-spatial.org/geoserver/wfs"
+WFS_URL = "https://services.geo-spatial.org/geoserver/wfs"
+CATALOG_URL = "https://geo-spatial.org/vechi/download/romania-seturi-vectoriale"
 TYPE_NAME = "geospatial:romania_localitati"
 
 # Aceasta este aceeași proiecție equirectangulară folosită de build_harta.py.
@@ -52,73 +53,71 @@ def project(lon: float, lat: float) -> tuple[float, float]:
     return round(x, 1), round(y, 1)
 
 
-def request_bytes(output_format: str) -> bytes:
-    params = urllib.parse.urlencode({
-        "service": "WFS", "version": "2.0.0", "request": "GetFeature",
-        "typeNames": TYPE_NAME, "outputFormat": output_format,
-    })
-    request = urllib.request.Request(URL + "?" + params, headers={"User-Agent": "izz-ro-map-builder/1.2"})
+def request_json(url: str, params: dict) -> dict:
+    query = urllib.parse.urlencode(params)
+    request = urllib.request.Request(url + "?" + query, headers={"User-Agent": "izz-ro-map-builder/2.0"})
     with urllib.request.urlopen(request, timeout=120) as response:
-        return response.read()
+        return json.loads(response.read().decode("utf-8"))
 
 
-def parse_json(raw: bytes) -> list[dict]:
-    payload = json.loads(raw.decode("utf-8"))
+def load_wfs() -> list[dict]:
+    payload = request_json(WFS_URL, {
+        "service": "WFS", "version": "2.0.0", "request": "GetFeature",
+        "typeNames": TYPE_NAME, "outputFormat": "application/json",
+    })
     return payload.get("features") or []
 
 
-def local_name(tag: str) -> str:
-    return tag.rsplit("}", 1)[-1]
+def load_catalog_geojson() -> list[dict]:
+    # Pagina geo-spatial.org publică explicit stratul „Localități România punct”
+    # în GeoJSON. Extragem linkul din pagina oficială, deci nu hardcodăm un URL
+    # volatil al fișierului.
+    request = urllib.request.Request(CATALOG_URL, headers={"User-Agent": "izz-ro-map-builder/2.0"})
+    with urllib.request.urlopen(request, timeout=60) as response:
+        html = response.read().decode("utf-8", "replace")
+
+    start = html.find("Localități România punct")
+    if start < 0:
+        start = html.find("Localitati Romania punct")
+    if start < 0:
+        raise RuntimeError("Nu am găsit stratul Localități România punct în catalogul geo-spatial.org.")
+
+    block = html[start:start + 12000]
+    matches = re.findall(r'href=["\']([^"\']+)["\'][^>]*>\s*GeoJSON\s*<', block, flags=re.I | re.S)
+    if not matches:
+        # Unele versiuni ale paginii pun textul GeoJSON înaintea atributului href.
+        matches = re.findall(r'>\s*GeoJSON\s*</a>[^<]*', block, flags=re.I | re.S)
+        if not matches:
+            raise RuntimeError("Catalogul geo-spatial.org nu expune linkul GeoJSON pentru localități.")
+        raise RuntimeError("Linkul GeoJSON pentru localități nu a putut fi extras din catalog.")
+
+    href = matches[0]
+    url = urllib.parse.urljoin(CATALOG_URL, href)
+    request = urllib.request.Request(url, headers={"User-Agent": "izz-ro-map-builder/2.0"})
+    with urllib.request.urlopen(request, timeout=120) as response:
+        payload = json.loads(response.read().decode("utf-8"))
+    return payload.get("features") or []
 
 
-def parse_gml(raw: bytes) -> list[dict]:
-    root = ET.fromstring(raw)
-    features = []
-    # GeoServer poate returna featureMember sau featureMembers, în funcție de versiunea WFS.
-    for member in root.iter():
-        if local_name(member.tag) not in {"featureMember", "member"}:
-            continue
-        feature = next((child for child in list(member) if isinstance(child.tag, str)), None)
-        if feature is None:
-            continue
-        props = {}
-        lon = lat = None
-        for child in feature.iter():
-            name = local_name(child.tag)
-            text = (child.text or "").strip()
-            if name in {"coordinates", "pos"} and text:
-                parts = re.split(r"[ ,]+", text)
-                if len(parts) >= 2:
-                    try:
-                        lon, lat = float(parts[0]), float(parts[1])
-                    except ValueError:
-                        pass
-            elif child is not feature and text and len(list(child)) == 0:
-                props[name] = text
-        if lon is not None and lat is not None:
-            features.append({"properties": props, "coordinates": [lon, lat]})
-    return features
-
-
-def load_features() -> list[dict]:
-    raw = request_bytes("application/json")
+def load_features() -> tuple[list[dict], str]:
     try:
-        features = parse_json(raw)
+        features = load_wfs()
         if features:
-            return features
-    except (UnicodeDecodeError, json.JSONDecodeError):
-        pass
-    return parse_gml(request_bytes("application/gml+xml"))
+            return features, WFS_URL
+    except Exception as exc:
+        print(f"WFS indisponibil ({exc}); folosesc GeoJSON-ul public din catalog.")
+    features = load_catalog_geojson()
+    return features, CATALOG_URL
 
 
 def main() -> int:
-    features = load_features()
+    features, source = load_features()
     out = {}
     for feature in features:
         props = feature.get("properties") or {}
         geom = feature.get("geometry") or {}
-        coords = geom.get("coordinates") if geom else feature.get("coordinates")
-        if not isinstance(coords, list) or len(coords) < 2:
+        coords = geom.get("coordinates")
+        if geom.get("type") != "Point" or not isinstance(coords, list) or len(coords) < 2:
             continue
         try:
             lon, lat = float(coords[0]), float(coords[1])
@@ -143,8 +142,8 @@ def main() -> int:
 
     result = {
         "version": 1,
-        "source": "geo-spatial.org — geospatial:romania_localitati",
-        "source_url": URL,
+        "source": "geo-spatial.org — Localități România punct",
+        "source_url": source,
         "source_crs": "EPSG:4326",
         "projection": {"lon_min": LON_MIN, "lon_max": LON_MAX, "lat_min": LAT_MIN, "lat_max": LAT_MAX, "width": WIDTH},
         "localities": out,
