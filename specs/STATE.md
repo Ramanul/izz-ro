@@ -12,8 +12,8 @@
 > wave (all 14 domains are in `config.SOURCES`). Everything below was **verified against the code
 > today**, not copied forward.
 
-**Updated:** 2026-08-08 evening (account A — #162/#164/#165 landed; attribution dossier + badge
-locality fix + image label manifest landed directly on `main` under an explicit owner mandate)
+**Updated:** 2026-08-12 (account A — layer 8 wired + gold level gate landed on `main`;
+see the section right below before reading anything older)
 
 ## Attribution — read this before touching classification or covers
 **`specs/atribuire-cercetare-si-plan.md` is the dossier**: 7 external systems, 8 distinct causes,
@@ -30,6 +30,42 @@ a 6-stage plan. Do not re-research it; it was paid for once. Landed today, on to
   axes (owner decision), E5 gold set grown to ~150 + CI gate.
 - `tests/test_sitemap_editorial.py` has **10 pre-existing errors** (verified with `git stash`,
   unrelated to the above). Full suite: 676 passed, 2 xfailed, 27 errors.
+
+## Landed 2026-08-12 directly on `main` (account A — announce to B, per §14)
+
+**`9f3e3ad2` — `guard.anomalie` (layer 8) was written and never called; now it runs.**
+It sat green and unreachable in the working tree from 08-09 to 08-12 while two commits
+already on `main` (`2585f467` and the Cajvana comment in `local_sources.py`) described it in
+the present tense as catching the defacement. Same defect class as `hold_important` below —
+a lying function, and the worse kind, because the incident report read as if the hole were
+closed. Wired at all four points where the guard actually runs: the three `fetch.py`
+ingestion paths and `moderation.apply`. The moderation one is what matters next time — it
+runs on every build, so a defacement already in `articles.json` disappears at the next
+rebuild instead of waiting for a human to hand-add the slug. That wait was Cajvana's two
+days live. **Measured before wiring: 3 flagged out of 3130 `ro`-source titles (0.10%), all
+three hostile, 0 false positives.** Tests target the WIRING, verified by mutation (stub the
+layer → "Hacked by Chinafans" passes both paths). `IZZ-0170`.
+**Scope, stated so nobody reads it as more:** the proposed anomaly baseline had three axes —
+language, cadence, topic mix. **This is one.** A defacement written in Romanian still passes,
+and cadence (8 articles at exact 3-hour intervals, the strongest tell at Rovinari) is still
+measured by nothing. `specs/securitate-ingestie.md` §5.1 now says so. **Cadence is next.**
+
+**`4f78c901` — the gold set gets a second gate: geographic level.** `geo.clasifica` had no
+frozen gate at all; it was measured only by `tools/eval_atribuire.py`, which reads
+`articles.json` and erodes with the TTL — **17 of the 40 gold rows have already expired**.
+The new test reads title+teaser from the TSV (new `teaser` column, because
+`process._text_clasificabil` feeds both). **Its weakness is measured, not assumed:**
+`clasifica`→`None` fails 15/15, but `clasifica`→always-`local` fails only **1/15**, because
+14 of 15 evaluable cases are `local`. It is a wide-meshed net in one direction, not proof,
+until E5 grows the set with `zonal`/`regional` cases from non-official sources. `IZZ-0171`.
+
+**`stash@{0}` in the izz clone is superseded in full — do NOT pop it (`IZZ-0172`).** The
+2026-08-11 journal says it holds the gold-geo work; it does not. It holds `method.md`,
+`terms.md` and `tools/gen_images.py` at a pre-`67e44e1e` state, i.e. the **old art. 50
+wording** ("niciun redactor nu aprobă fiecare text înainte să apară", "verificare umană
+ulterioară publicării") that `IZZ-0165` corrected precisely because it gave the exemption's
+conditions away. A pop reverts the legal fix. `gen_images.py` is stale too (`_semnatura`,
+`_load_labels`, `media/labels.json` all landed). Dropping it is destructive — owner's call.
 
 ## Open — verified in code 2026-08-07/08, not carried over on trust
 
