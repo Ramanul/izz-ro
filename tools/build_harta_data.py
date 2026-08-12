@@ -49,11 +49,17 @@ def clean_name(value: str) -> str:
 
 
 def siruta_key(value: str) -> str:
-    """Normalizeaza codul SIRUTA intre surse (ex. `32394,00` == `32394`)."""
+    """Normalizeaza codul SIRUTA intre surse (ex. `32394,00` == `32394` == `32394.0`).
+    `.0` e un artefact de float lasat de sursele GeoJSON/WFS (campuri numerice), nu parte
+    din cod -- fara pasul asta, "1026.0" din baza de puncte si "1026" dintr-un articol nu
+    se potrivesc niciodata, desi sunt acelasi SIRUTA (masurat 2026-08-13, vezi load_locality_points)."""
     raw = str(value or "").strip()
     if not raw:
         return ""
-    return raw.split(",", 1)[0].strip().lstrip("0") or "0"
+    raw = raw.split(",", 1)[0].strip()
+    if raw.endswith(".0"):
+        raw = raw[:-2]
+    return raw.lstrip("0") or "0"
 
 
 def read_siruta(county_alias: dict[str, str] | None = None) -> tuple[dict[str, str], dict[str, list[dict]]]:
@@ -104,10 +110,26 @@ def load_json(path: str):
 
 
 def load_locality_points() -> dict[str, dict]:
+    """{siruta_normalizat|nume|judet: punct}. `harta_localitati.json` e cheiat cu SIRUTA brut
+    din campul GeoJSON/WFS sursa (`tools/build_harta_localitati.py:141`), care vine ca float
+    ("1026.0", nu "1026") -- fara re-cheiere aici, `point_for()` cauta un SIRUTA normalizat
+    ("1026") intr-un dictionar cheiat cu string-uri de float, deci NU gaseste niciodata nimic:
+    masurat 2026-08-13, 0 din 497 articole din map.json aveau x/y, desi 13750 de puncte reale
+    existau in fisier si articolele aveau SIRUTA rezolvat corect (doar formatul de cheie nu
+    se potrivea). Efectul in UI: harta se marea pe judet dar nu aparea NICIUN punct de
+    localitate -- exact "se blocheaza" raportat, fiindca nu era nimic de dat click pe el."""
     if not os.path.exists(LOCALITIES) or os.path.getsize(LOCALITIES) == 0:
         return {}
     payload = load_json(LOCALITIES)
-    return payload.get("localities") or {}
+    raw = payload.get("localities") or {}
+    points: dict[str, dict] = {}
+    for entry in raw.values():
+        siruta = siruta_key(entry.get("siruta") or "")
+        if siruta:
+            points.setdefault(siruta, entry)
+        key = f"{norm(entry.get('name'))}|{norm(entry.get('county'))}"
+        points.setdefault(key, entry)
+    return points
 
 
 def point_for(locality: dict | None, points: dict[str, dict]) -> dict | None:
