@@ -54,9 +54,6 @@
   <script defer src="{{ base }}/static/personalize.js?v={{ asset_ver['personalize.js'] }}"></script>
 </head>
 <body{% block body_attrs %}{% endblock %}>
-  {# header + subnav sticky ca UN singur bloc (owner 2026-07-25): inaltimea header-ului
-     variaza (wrap pe mobil, padding diferit sub 640px), deci un `top` fix pe subnav ar fi
-     fragil. Un container comun sticky evita sa calculam acea inaltime. #}
   <div class="site-header-group">
   <header class="site-header">
     <a class="brand" href="{{ base }}/">
@@ -64,20 +61,14 @@
       <span class="logo">IZZ<b>.ro</b></span>
       <span class="brand-descriptor">{{ site.descriptor }}</span>
     </a>
-    {# nav principal: grupuri functionale (owner 2026-07-17) — "usor de inteles in 3 secunde".
-       Categoriile de tema stau in randul secundar .subnav de mai jos. #}
     <nav class="nav" aria-label="Secțiuni principale">
       <a href="{{ base }}/"{% if nav_section == 'stiri' %} class="active"{% endif %}>Știri</a>
+      <a href="{{ base }}/static/harta-stiri/"{% if nav_section == 'harta' %} class="active"{% endif %}>Harta știrilor</a>
       <a href="{{ base }}/ghiduri/"{% if nav_section == 'ghiduri' %} class="active"{% endif %}>Ai nevoie să știi</a>
       <a href="{{ base }}/calendar/"{% if nav_section == 'calendar' %} class="active"{% endif %}>Ce urmează</a>
       <a href="{{ base }}/instrumente/"{% if nav_section == 'instrumente' %} class="active"{% endif %}>Instrumente</a>
       <a href="{{ base }}/cauta/">caută</a>
       <button id="izz-install-btn" class="izz-install-btn" type="button" hidden title="Instalează aplicația pe acest dispozitiv" aria-label="Instalează aplicația">Instalează aplicația</button>
-      {# Markup-ul NU afirma o stare. Glifa vine din styles.css (dupa `data-theme`, deci corecta
-         de la prima pictare); `title` si `aria-pressed` depind tot de tema, dar CSS nu le poate
-         scrie, deci le pune theme.js la DOMContentLoaded. Hardcodate aici ar fi *gresite* pentru
-         un vizitator pe dark pana atunci -- absente e incomplet, `aria-pressed="false"` e fals.
-         Daca JS-ul nu ruleaza, butonul e oricum mort. Vezi syncToggle() in static/theme.js. #}
       <button class="theme-toggle" type="button" aria-label="Comută tema"></button>
     </nav>
   </header>
