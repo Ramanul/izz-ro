@@ -84,28 +84,33 @@ smallest 9×15px; the 35 news-count bubbles are ~11.7×11.7px. Measured with
 `tools/visual_check.py`. Not fixed — owner decision on approach (bigger bubbles / invisible
 larger hit-area / drop direct county-tap on mobile for the existing search+list). `IZZ-0176`.
 
-**A2. NEW 2026-08-12, STILL UNRESOLVED — the map visually smears/duplicates dozens of times
-on real-device scroll.** Confirmed by the owner with a screenshot, then re-confirmed in an
-**incognito tab** (rules out client cache as the cause). Two fixes landed and are each
-independently correct, but **neither fixed A2**:
-- `3252aae0` removed `backdrop-filter:blur(10px)` from the sticky `.map-header` (a documented
-  GPU-compositing bug class on real Android under sticky+blur+scroll) — **hypothesis now
-  falsified by the incognito test**, keep the removal (it's harmless/good practice) but do
-  not re-explain A2 by it.
-- `42962285` fixed a genuinely separate bug found while investigating: `/static/harta-stiri/*`
-  fell under the site's generic `/static/* → Cache-Control immutable, 30 days` rule, so no fix
-  to this page could ever reach a phone that had loaded it once. Cloudflare Pages *joins*
-  same-named headers from overlapping `_headers` rules instead of the more specific one
-  replacing the general one — needs `! Cache-Control` to unset before redeclaring (verified
-  live via `curl -I` on both izz.ro and the pages.dev domain: now `max-age=300,
-  must-revalidate`, no `immutable`). Real bug, keep the fix, but it is not A2's cause either.
-- `tools/visual_check.py`'s synthetic `mouse.wheel()` scroll does **not** reproduce A2 at all
-  (passes 35/35 stable). Real touch-scroll on the phone triggers something synthetic wheel
-  events don't. `harta-stiri.js` read in full: `buildMap()` calls `host.replaceChildren()`
-  every run (no DOM accumulation in the code), and has no scroll/resize/Intersection/Resize
-  listeners at all — the mechanism is not yet found. Full writeup + next-step suggestions:
-  `sessions/A/2026-08-12-1445-harta-mobil-nerezolvat.md`. **Do not re-try backdrop-filter as
-  the explanation; that door is closed.**
+**A2. STILL UNCONFIRMED ON DEVICE (fix landed 2026-08-12, `e3832692`) — the map visually
+smears into 6-7 stacked vertical copies during real touch scroll.** Between the last update
+here and this one, the owner worked with ChatGPT directly on `main` (~20 commits: full
+SVG→Canvas rewrite, marker dedup, resize/interaction hardening) — **none of it fixed A2**;
+its own "regression tests" (`tests/test_harta_playwright*.py`, `test_harta_interactions.py`)
+assert on identifiers (`markerMap`, `canvas.remove()`, single-quoted `createElement`) that
+don't exist in the shipped file — **8 of 12 fail when actually run**, so that verification
+never happened. `backdrop-filter` stays closed as an explanation (falsified 2026-08-12,
+incognito test); do not re-open it.
+What broke the case open: the owner sent a 20s **screen recording** of the live bug (first
+time a video, not a photo, was available). Frame extraction (OpenCV, 0.5s steps) shows the
+smear is a *sustained* multi-second artifact, not a one-frame flicker — the signature of
+repeated element churn, not a paint-content bug. `harta-stiri.js`'s `buildMap()` was calling
+`host.replaceChildren()` + `document.createElement("canvas")` on **every** redraw, tearing
+down and rebuilding the canvas node itself each time. Fix: `ensureCanvas()` now creates the
+element once (`state.canvas`) and every redraw resizes/repaints that same node; the click
+handler moved off the per-call closure onto one persistent listener reading
+`state.view/paths/localityMarkers`. Also hardened `bindResize()`'s `ResizeObserver` to ignore
+height-only changes (a phone's address bar hiding on scroll changes viewport height, not
+`#map`'s width — every one of those was a spurious rebuild trigger mid-scroll).
+**Verified locally** (real browser, mobile viewport, `MutationObserver` on `#map`): 4 search
+queries + 5 map clicks (one confirmed a county selection via `#map-stats`) → **zero new
+`<canvas>` elements**, interactions still work, zero console errors. **Confirmed live** the
+prior build's JS was already the current one on izz.ro (byte-identical, correct 5-min cache
+header) — rules out stale cache as an A2 explanation. **NOT yet confirmed on the owner's
+phone** — next step is one more scroll test after this deploys. Full writeup + frame evidence:
+`sessions/A/2026-08-12-2255-harta-canvas-reuse-fix.md`.
 
 0c. **Old gap this replaces, kept one cycle for the record:** as of 2026-08-08 the only map
 was the static SVG on `/surse/` (39 county links, no JS) — the owner said explicitly
