@@ -12,7 +12,7 @@
 > wave (all 14 domains are in `config.SOURCES`). Everything below was **verified against the code
 > today**, not copied forward.
 
-**Updated:** 2026-08-13 (account A — items W and X below landed; see this line before older ones)
+**Updated:** 2026-08-13 (account A — W, X and Microsoft Clarity landed; see this line before older ones)
 
 ## Landed 2026-08-13 directly on `main` (account A — announce to B, per §14)
 **`11c9a45a`** — item W below committed as-is (cascade Ollama fallback, JS-rendered town-hall
@@ -27,6 +27,20 @@ against a probe file with the identical import line but no suppression comment �
 same rule against `generator/render.py` (which has the full-ID suppression) → **0 findings**. The
 suppression works. Not committed (nothing to change in code — the finding was already correct);
 closing the line item here.
+
+**`657bf769` — Microsoft Clarity (`y1to63p42e`), owner request** (`IZZ-0185`, `IZZ-0186`). Loads
+only after opt-in, same gate as GA4 (`personalize.js:loadClarity`). **Three measured facts worth
+not re-deriving:** (a) the bootstrap tag fires `muidsync()` → `c.clarity.ms/c.gif`, the Microsoft
+**advertising** ID sync, and it triggers **only** on `ad_Storage:'granted'` — we pass `'denied'`,
+and `c.clarity.ms` is deliberately **out of `img-src`** so the browser blocks the pixel even if
+that flag regresses. **Do not "fix" that CSP omission.** (b) The tag config declares the upload
+host as `k.clarity.ms`; the **real run uploaded to `n.clarity.ms`** — hence the wildcard
+`*.clarity.ms`. Pinning exact hosts breaks Clarity silently in production. (c) Consent key bumped
+`v2` → `v3`: session recording is a new processing *purpose*, not a new vendor. Verified in a real
+browser both ways: refuse → **0 external requests**; accept → tag + lib + `n.clarity.ms/collect`,
+`c.gif` count **0**, cookies `_clck`/`_clsk` only (no `_uet*`). Consent bar +20px on mobile
+(157→177px). Suite **829 passed, 8 xfailed**. **Still open: CSP is not enforced by the local
+static server — confirm the live `Content-Security-Policy` header on izz.ro after deploy.**
 
 ## Attribution — read this before touching classification or covers
 **`specs/atribuire-cercetare-si-plan.md` is the dossier**: 7 external systems, 8 distinct causes,
