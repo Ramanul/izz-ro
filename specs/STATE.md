@@ -168,7 +168,7 @@ swap it back.
    `handoff/to-B/2026-08-07-raza-nationala-si-ce-a-ramas.md`. Cheap alternatives already killed by
    measurement: `WS-0029` (multi-source coverage, 453/1301 = 35% false positives) and the entities
    route (national-institution lists rot).
-2. **RESOLVED 2026-08-13 (not yet committed) — deducere personală is now degressive, per art. 77
+2. **LANDED 2026-08-13 (`5dc92ca7`) — deducere personală is now degressive, per art. 77
    Cod Fiscal (Legea 227/2015, modif. OG 16/2022), zero persoane în întreținere.** Formula quoted
    from two independent citations of the actual statutory text (agree on numbers, internally
    consistent: 20%→0% over 40 steps of 0,5pp = the stated 2.000 lei / 50-lei-per-step band):
