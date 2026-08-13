@@ -39,8 +39,23 @@ host as `k.clarity.ms`; the **real run uploaded to `n.clarity.ms`** — hence th
 `v2` → `v3`: session recording is a new processing *purpose*, not a new vendor. Verified in a real
 browser both ways: refuse → **0 external requests**; accept → tag + lib + `n.clarity.ms/collect`,
 `c.gif` count **0**, cookies `_clck`/`_clsk` only (no `_uet*`). Consent bar +20px on mobile
-(157→177px). Suite **829 passed, 8 xfailed**. **Still open: CSP is not enforced by the local
-static server — confirm the live `Content-Security-Policy` header on izz.ro after deploy.**
+(157→177px). Suite **829 passed, 8 xfailed**. **Confirmed on live**: CSP header carries
+`*.clarity.ms`, live run uploads to `k.clarity.ms` while the local run used `n.` — both hosts
+occur in the wild, so the wildcard was load-bearing, not caution.
+
+**`8c5464b9` — analytics only report from production hosts** (`IZZ-0187`). Neither GA4 nor Clarity
+distinguishes izz.ro from a local copy: the same tag on `http.server` sent **real sessions into the
+production accounts** (measured — localhost:8766 test sessions landed in the Clarity panel).
+`HOSTURI_PRODUCTIE = ['izz.ro','www.izz.ro']`, allowlist not blocklist. **Moving the site to a new
+domain means adding it there, or analytics goes silent.** Verified: consent accepted on
+localhost → `clarity`/`gtag` undefined, 0 external requests, personalization still working.
+
+**Noticed, not fixed (N4, pre-existing, out of this slice's scope):** Cloudflare injects its own
+inline script (`__CF$cv$params`) into every HTML response, and the site's own CSP — which has no
+`'unsafe-inline'` — blocks it on every page load. Verified it is not Clarity's doing: the console
+error appears with Clarity absent, and the hash differs per request because the injected script
+carries a per-request id. Cloudflare Web Analytics still works through the explicit
+`beacon.min.js` tag in `base.html`, which CSP allows.
 
 ## Attribution — read this before touching classification or covers
 **`specs/atribuire-cercetare-si-plan.md` is the dossier**: 7 external systems, 8 distinct causes,
