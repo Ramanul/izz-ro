@@ -276,7 +276,20 @@
      opt-in nu se descarca niciun script si nu pleaca nicio cerere. ---- */
   const GA_ID = 'G-6HZ8BYSFEL';
 
+  /* ---- Nici GA4 nici Clarity nu fac diferenta intre situl public si o copie
+     locala sau un preview: tagul e acelasi, deci un `http.server` pe output/
+     trimite sesiuni REALE in conturile de productie. Masurat 2026-08-13:
+     testele de pe localhost:8766 au ajuns in panoul Clarity cu URL localhost,
+     si tot asa in GA4. Allowlist, nu blocklist -- un host nou nu incepe sa
+     raporteze din greseala; daca muti situl pe alt domeniu, adauga-l aici. ---- */
+  const HOSTURI_PRODUCTIE = ['izz.ro', 'www.izz.ro'];
+
+  function eProductie() {
+    return HOSTURI_PRODUCTIE.indexOf(location.hostname) !== -1;
+  }
+
   function loadAnalytics() {
+    if (!eProductie()) return;                          // local/preview: nu poluam
     if (window.dataLayer) return;                       // deja incarcat
     window.dataLayer = [];
     window.gtag = function () { window.dataLayer.push(arguments); };
@@ -307,6 +320,7 @@
   const CLARITY_ID = 'y1to63p42e';
 
   function loadClarity() {
+    if (!eProductie()) return;                          // local/preview: nu poluam
     if (window.clarity) return;                         // deja incarcat
     window.clarity = function () {
       (window.clarity.q = window.clarity.q || []).push(arguments);
