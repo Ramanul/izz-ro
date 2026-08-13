@@ -91,3 +91,38 @@ def test_parse_ro_date_garbage_falls_back_to_now():
     # data ilizibila -> nu pica, foloseste momentul curent (an valid)
     out = _parse_ro_date("saptamana trecuta")
     assert out.startswith("20")  # ISO, an 20xx
+
+
+# O SINGURA ancora invaluie tot cardul (titlu + imagine + data), fara ancora separata de
+# titlu -- tiparul gasit real pe primariatm.ro/noutati (Next.js). Pana la fix-ul din
+# 2026-08-13, `_GenericListParser` cerea title_at deja setat INAINTE de <a href>, deci
+# href-ul unei ancore care invaluie titlul (nu invers) nu se prindea niciodata -> 0 itemi.
+FIXTURE_SINGLE_ANCHOR = """
+<html><body>
+<ul>
+  <li class="card">
+    <a href="/2026/08/12/anunt-unu">
+      <div class="thumb"><img src="/x.jpg"></div>
+      <div class="titlu-bold">Primaria anunta lucrari pe strada Lunga</div>
+      <div class="data-mica">12 august 2026</div>
+    </a>
+  </li>
+  <li class="card">
+    <a href="/2026/08/11/anunt-doi">
+      <div class="titlu-bold">Sedinta de consiliu local pe 20 august</div>
+      <div class="data-mica">11 august 2026</div>
+    </a>
+  </li>
+</ul>
+</body></html>
+"""
+
+
+def test_generic_parser_single_wrapping_anchor_captures_href():
+    p = _GenericListParser("https://primaria.ro", "li.card",
+                           title="div.titlu-bold", date="div.data-mica")
+    p.feed(FIXTURE_SINGLE_ANCHOR)
+    assert len(p.items) == 2
+    assert p.items[0]["href"] == "https://primaria.ro/2026/08/12/anunt-unu"
+    assert p.items[0]["title"] == "Primaria anunta lucrari pe strada Lunga"
+    assert p.items[1]["href"] == "https://primaria.ro/2026/08/11/anunt-doi"

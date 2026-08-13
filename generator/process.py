@@ -59,17 +59,39 @@ Reguli: pastreaza id-ul EXACT (numar); un obiect per id; daca stirea e in alta l
 
 
 def get_provider():
-    """Returneaza providerul cerut daca e disponibil, altfel None (-> fallback)."""
+    """Returneaza providerul cerut, cu Ollama local ca fallback AUTOMAT daca AI_PROVIDER e
+    gemini/anthropic (nu invers: Ollama ramane doar completare, cloud-ul e mereu incercat intai).
+
+    De ce: fara asta, un 429 (quota Gemini epuizata) sau o cheie lipsa amana articolul complet
+    (regula 'No mangled output') -- desi un model local, gratuit, sta pornit pe masina si ar
+    putea totusi sa-i scrie titlul. Cascada (`CascadeProvider`) incearca Ollama DOAR cand
+    cloud-ul esueaza propriu-zis, deci nu schimba nimic cand cloud-ul merge normal.
+    In CI (GitHub Actions) Ollama nu ruleaza -> `available()` cade rapid pe conexiune refuzata,
+    cascada devine efectiv providerul cloud singur, comportament neschimbat fata de inainte.
+    """
     if config.AI_PROVIDER == "anthropic":
         from .providers.anthropic import AnthropicProvider
-        p = AnthropicProvider()
+        primary = AnthropicProvider()
     elif config.AI_PROVIDER == "ollama":
         from .providers.ollama import OllamaProvider
         p = OllamaProvider()
+        return p if p.available() else None
     else:
         from .providers.gemini import GeminiProvider
-        p = GeminiProvider()
-    return p if p.available() else None
+        primary = GeminiProvider()
+
+    providers = [primary]
+    if config.AI_FALLBACK_OLLAMA:
+        from .providers.ollama import OllamaProvider
+        providers.append(OllamaProvider())
+
+    available = [p for p in providers if p.available()]
+    if not available:
+        return None
+    if len(available) == 1:
+        return available[0]
+    from .providers.cascade import CascadeProvider
+    return CascadeProvider(available)
 
 
 def _parse_json(text: str) -> dict:
