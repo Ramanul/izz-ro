@@ -12,8 +12,21 @@
 > wave (all 14 domains are in `config.SOURCES`). Everything below was **verified against the code
 > today**, not copied forward.
 
-**Updated:** 2026-08-12 (account A — layer 8 wired + gold level gate landed on `main`;
-see the section right below before reading anything older)
+**Updated:** 2026-08-13 (account A — items W and X below landed; see this line before older ones)
+
+## Landed 2026-08-13 directly on `main` (account A — announce to B, per §14)
+**`11c9a45a`** — item W below committed as-is (cascade Ollama fallback, JS-rendered town-hall
+scraper, `_fallback_href` fix, `tools/scan_surse.py`). **`8590537f`** — item X below: the 8
+permanently-red map tests fixed (rewritten against real identifiers) or deleted (2 files that
+asserted on inline-JS tokens inside `.github/workflows/visual.yml`, a premise dead since the real
+check moved into `tools/visual_check.py`). Suite: **829 passed, 8 xfailed, 0 failed** (was 8 failed).
+**Item 4 (`WS-0025`, `# nosemgrep` on `render.py:15-16`) resolved by direct measurement, not
+guessed:** installed semgrep locally (`pip install semgrep`, was "broken" only in the sense of
+"not installed"), ran the exact rule `r/python.lang.security.use-defused-xml.use-defused-xml`
+against a probe file with the identical import line but no suppression comment → **1 finding**;
+same rule against `generator/render.py` (which has the full-ID suppression) → **0 findings**. The
+suppression works. Not committed (nothing to change in code — the finding was already correct);
+closing the line item here.
 
 ## Attribution — read this before touching classification or covers
 **`specs/atribuire-cercetare-si-plan.md` is the dossier**: 7 external systems, 8 distinct causes,
@@ -67,7 +80,13 @@ ulterioară publicării") that `IZZ-0165` corrected precisely because it gave th
 conditions away. A pop reverts the legal fix. `gen_images.py` is stale too (`_semnatura`,
 `_load_labels`, `media/labels.json` all landed). Dropping it is destructive — owner's call.
 
-## Open — verified in code 2026-08-12, not carried over on trust
+## Open — verified in code 2026-08-12; W/X landed 2026-08-13 (see Landed section above), Y verified
+
+**Y. `state.merge()` is dead code but NOT a live bug — do not "fix" it.** Defined at
+`state.py:95`; the only caller is `tests/test_state.py:14`. Dedup between fresh items **does**
+happen, inline at `main.py:227-236` (#158), and the comment at `main.py:220-222` already says so.
+Re-verified 2026-08-13 because the standing "lying function" hunt keeps rediscovering it and
+reading it as a live duplicate bug. Touching it would be an opportunistic refactor (§5.6).
 
 **A. News map — SHIPPED directly on `main` (2026-08-12, owner + GPT, outside any Claude
 session), closes the old gap below.** `/static/harta-stiri/` is a real news map: 473 articles
@@ -149,15 +168,29 @@ swap it back.
    `handoff/to-B/2026-08-07-raza-nationala-si-ce-a-ramas.md`. Cheap alternatives already killed by
    measurement: `WS-0029` (multi-source coverage, 453/1301 = 35% false positives) and the entities
    route (national-institution lists rot).
-2. **Salary calculator takes the personal deduction as a flat 20%** (`static/calc-salariu.js:53`) —
-   understates art. 77 Cod Fiscal at low incomes: 4.325 brut returns 2.616 where sources say ~2.699.
-   **Not something to invent — something to READ**, same route that fixed the minimum wage. Quote
-   the deduction table from the act, then implement. If the act cannot be read, publish nothing.
+2. **RESOLVED 2026-08-13 (not yet committed) — deducere personală is now degressive, per art. 77
+   Cod Fiscal (Legea 227/2015, modif. OG 16/2022), zero persoane în întreținere.** Formula quoted
+   from two independent citations of the actual statutory text (agree on numbers, internally
+   consistent: 20%→0% over 40 steps of 0,5pp = the stated 2.000 lei / 50-lei-per-step band):
+   20% la salariul minim brut, scade 0,5pp la fiecare 50 lei peste minim, 0% peste minim+2.000 lei.
+   `static/calc-salariu.js` + `templates/calculator.html` (paragraful explicativ, care mai spunea
+   "1.950 lei" — greșit, plafonul real e 2.000) actualizate. **Verificat local, în browser**: la
+   brut=5.000 (minim 4.325) → deducere 584 lei (era 865 flat), la brut=7.000 (peste plafon) →
+   deducere 0. **Nerezolvat: cifra "~2.699" din nota veche de mai jos nu a putut fi reprodusă.** La
+   brut = salariul minim exact, formula corectă dă ACELAȘI rezultat ca varianta flat (20% e 20%
+   indiferent de metodă) — 2.616 lei, deci bug-ul degresivității nu explică acel număr. Fie sursa
+   citată folosea un salariu minim diferit de referință, fie o altă metodologie; nu invent o a doua
+   explicație fără sursă. Cine a scris nota inițială (dacă știe sursa exactă a cifrei 2.699) o poate
+   clarifica.
 3. **Model C is not batched** — `process_cluster` is one AI call per cluster while B batches 10.
    Gate is already instrumented: read `stats["deferred"]` over 2–3 real runs before building it.
    Do not re-litigate the threshold (`build.yml` overrides the budget to 18, not the default 12).
-4. **`WS-0025`, blocked.** The `# nosemgrep` on `generator/render.py:15` does not suppress; two
-   hypotheses, undistinguishable today (no code-scanning alerts to query, local semgrep broken).
+   **Still blocked 2026-08-13**: needs real `stats["deferred"]` numbers from GitHub Actions build
+   logs, and `gh` is not authenticated in this environment (`gh auth status` → not logged in) —
+   cannot fetch them. Not guessed.
+4. **`WS-0025` — RESOLVED 2026-08-13, see "Landed" above.** The suppression on
+   `generator/render.py:15-16` works (measured: `semgrep` installed locally, same import line
+   fires 1 finding without the comment, 0 with it, on the exact registry rule).
 5. **Owner decisions pending, do not decide these alone:** photos on cards (CC-BY attribution ·
    top-anchored crop, `WS-0022`) · `/surse/` map (deferred with an explicit bar: static SVG, text
    links, no JS, no layout shift, pa11y still 0) · interactive guides (which interactivity, and the
