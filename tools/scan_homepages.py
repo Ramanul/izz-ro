@@ -18,7 +18,6 @@ import urllib.error
 import urllib.request
 from collections import defaultdict
 from concurrent.futures import ThreadPoolExecutor, as_completed
-from urllib.parse import urlparse
 
 # Reconfigurează stdout pentru UTF-8 INAINTE de orice print.
 if hasattr(sys.stdout, "reconfigure"):
@@ -163,7 +162,7 @@ def scan_homepages(sample_limit: int | None = None) -> tuple[list, dict]:
                     })
 
     # Statistici
-    print(f"\n=== Rezumat ===")
+    print("\n=== Rezumat ===")
     print(f"Total scanat: {len(results)}")
     alive = sum(1 for r in results if r["status"])
     dead = len(results) - alive
@@ -171,7 +170,7 @@ def scan_homepages(sample_limit: int | None = None) -> tuple[list, dict]:
     print(f"HTTP error sau timeout: {dead}")
     print(f"\nDomenii cu UNEXPECTED_EOF (semnă Bitdefender): {len(unexpected_eof_domains)}")
 
-    print(f"\n=== Histogramă de erori ===")
+    print("\n=== Histogramă de erori ===")
     for err_type in sorted(errors_by_type.keys()):
         count = errors_by_type[err_type]
         print(f"  {err_type:30s}: {count}")
