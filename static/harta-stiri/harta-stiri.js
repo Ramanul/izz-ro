@@ -336,7 +336,8 @@
   function renderList() {
     const list = $("#news-list");
     if (!list) return;
-    const items = filtered().slice(0, 120);
+    const all = filtered();
+    const items = all.slice(0, 120);
     list.replaceChildren();
     for (const item of items) {
       const li = document.createElement("li");
@@ -350,7 +351,11 @@
       list.appendChild(li);
     }
     const count = $("#panel-count");
-    if (count) count.textContent = `${items.length} știri`;
+    if (count) {
+      count.textContent = all.length > items.length
+        ? `${items.length} din ${all.length} știri`
+        : `${items.length} știri`;
+    }
   }
 
   function updateStats() {
