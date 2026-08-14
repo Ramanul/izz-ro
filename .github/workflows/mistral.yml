@@ -159,18 +159,27 @@ jobs:
           vibe --trust --prompt "$(cat "$PROMPT_FILE")" --max-turns 30 --output text
 
       - name: Commit + push changes
+        # `exit 0` iese din PAS, nu din job: cand vibe nu schimba nimic, ramura nu ajunge
+        # niciodata pe remote, iar pasii urmatori ruleaza mai departe. De-aia se scrie un
+        # steag explicit -- `Open PR` de mai jos are nevoie de el, altfel cere GitHub-ului
+        # un PR pe o ramura inexistenta. Masurat pe rularea 31788232683 (14 aug, issue #175):
+        # "No commits between main and mistral/issue-175-1786699753, Head ref must be a
+        # branch" -> job rosu si "❌ @mistralai a eșuat" pe issue, desi vibe rulase curat si
+        # concluzia lui corecta era "n-am ce schimba".
         run: |
           set -euo pipefail
           git add -A
           if git diff --cached --quiet; then
             echo "::notice::vibe nu a schimbat niciun fișier"
+            echo "PUSHED=false" >> "$GITHUB_ENV"
             exit 0
           fi
           git commit -m "feat(@mistralai): changes from @mistralai trigger"
           git push origin HEAD
+          echo "PUSHED=true" >> "$GITHUB_ENV"
 
       - name: Open PR (from issue/comment)
-        if: env.BRANCH_NAME != ''
+        if: env.BRANCH_NAME != '' && env.PUSHED == 'true'
         env:
           GH_TOKEN: ${{ github.token }}
           ISSUE_NUMBER: ${{ github.event.issue.number }}
@@ -194,7 +203,9 @@ jobs:
             echo "nu pot determina issue/PR number — sar peste comentariul de status"
             exit 0
           fi
-          if [ "${{ job.status }}" = "success" ]; then
+          if [ "${{ job.status }}" = "success" ] && [ "${PUSHED:-}" != "true" ]; then
+            gh issue comment "$NUMBER" --body "ℹ️ @mistralai a rulat fără să schimbe niciun fișier — niciun commit, niciun PR. Vezi [logurile](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}) dacă te așteptai la o modificare."
+          elif [ "${{ job.status }}" = "success" ]; then
             gh issue comment "$NUMBER" --body "✅ @mistralai a terminat. Vezi commit-urile / PR-ul de mai sus."
           else
             gh issue comment "$NUMBER" --body "❌ @mistralai a eșuat. Verifică [logurile](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})."
