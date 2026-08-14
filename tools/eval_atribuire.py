@@ -50,7 +50,7 @@ import sys
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, ROOT)
 
-from generator import config, geo, htmlart, process  # noqa: E402
+from generator import config, htmlart, process  # noqa: E402
 from generator.util import strip_diacritics  # noqa: E402
 
 # Rubricile geografice: pentru ele `ai_cat` nu poate fi recuperat din judecata manuala, fiindca

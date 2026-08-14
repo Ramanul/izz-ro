@@ -8,7 +8,7 @@ from datetime import datetime, timezone, timedelta
 import yaml
 
 from . import config, guard, cluster
-from .util import normalize_url, title_tokens, domain_of
+from .util import normalize_url, title_tokens
 
 MOD_PATH = os.path.join(config.ROOT, "moderation.yaml")
 
