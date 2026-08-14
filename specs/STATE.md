@@ -16,6 +16,33 @@
 
 ## Landed 2026-08-14 directly on `main` (account A — announce to B, per §14)
 
+**`148b2c80` — harta știrilor, feliile 1-7 din `specs/harta-imbunatatiri-2026-08-14.md`
+(`IZZ-0193`, `IZZ-0194`).** Confirmat pe deployat, nu doar local: **26/26 verificări verzi**
+rulate contra preview-ului Cloudflare, plus 872 de teste Python. Garda e
+`tools/harta_dom_check.py` — rulează cu serverul pornit din **rădăcina repo-ului**
+(`index.html` are căi absolute; servit din `static/harta-stiri/` dă 404 la CSS/JS și pagina
+apare goală).
+
+Trei bug-uri care contează pentru oricine atinge harta mai departe:
+- **`isPointInPath` citește punctul în PIXELI DE CANVAS, nu în unități viewBox** — transformarea
+  se aplică CĂII, nu punctului. Există acum două funcții separate, `pointForEvent` (viewBox,
+  pentru buline) și `devicePointForEvent` (pixeli, pentru poligoane). **Nu le uni la loc.**
+  Greșeala se ascundea pe desktop (canvas ~820px ≈ viewBox 1000) și rupea telefonul (364px).
+- **Selectorul de județ de la tastatură se prăbușea la un buton** după prima selecție, fiindcă
+  se construia din `state.visible` (deja filtrat). De aceea `filtered()` are `ignorePlace`.
+- **Toleranțele de atins trebuie exprimate în pixeli CSS**, convertite la folosire. În unități
+  viewBox se evaporă exact pe ecran mic.
+
+**Neverificat, declarat ca atare:** localitățile suprapuse. Markerii se grupează pe cheie de
+coordonate exactă, iar datele curente au **0 puncte partajate**, deci calea de cod nu se poate
+declanșa. Garda o raportează `NEVERIFICAT` la fiecare rulare — nu o converti în verde.
+
+**Deschis, decizia proprietarului:** analiza GPT (44 de pagini, 14 aug) recomandă rescrierea
+stratului de randare pe **D3 + SVG**. Teza „am atins limita arhitecturii" se sprijinea pe faptul
+că mobilul e cel mai slab punct — cauza reală s-a dovedit conversia de coordonate de mai sus,
+șase linii. Argumentul rămâne valid doar pe accesibilitate (fiecare județ = element DOM real).
+De tratat ca proiect separat, nu ca reparație.
+
 **`b3bbf6d9` — the `@claude` workflow now checks WHO wrote the text, not just that it says
 `@claude` (`IZZ-0189`).** `.github/workflows/claude.yml` runs with `contents: write` and the
 owner's subscription token; its `if:` was a pure substring match, so on a public repo any
