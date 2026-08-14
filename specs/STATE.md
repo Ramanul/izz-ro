@@ -12,7 +12,37 @@
 > wave (all 14 domains are in `config.SOURCES`). Everything below was **verified against the code
 > today**, not copied forward.
 
-**Updated:** 2026-08-13 (account A — W, X and Microsoft Clarity landed; see this line before older ones)
+**Updated:** 2026-08-14 (account A — the @claude workflow gate; see this line before older ones)
+
+## Landed 2026-08-14 directly on `main` (account A — announce to B, per §14)
+
+**`b3bbf6d9` — the `@claude` workflow now checks WHO wrote the text, not just that it says
+`@claude` (`IZZ-0189`).** `.github/workflows/claude.yml` runs with `contents: write` and the
+owner's subscription token; its `if:` was a pure substring match, so on a public repo any
+account could have made an issue body the prompt for a job that can commit to `main`.
+**It was not exploitable** — read at the pinned SHA `be7b93b1`: `run.ts:190` calls
+`checkWritePermissions()` before the trigger check and throws, and `checkHumanActor()` runs in
+both tag and agent modes. **But do not restate that as "one check protects us":**
+`checkWritePermissions()` returns `true` unconditionally for any actor ending in `[bot]`, with
+no API lookup, so bots are stopped by `checkHumanActor()` alone — two functions in third-party
+pinned code, invisible in our diff. The gate now also requires `author_association` ∈
+{`OWNER`,`COLLABORATOR`}. **Measured on real payloads:** `Ramanul`→`OWNER` 94/94,
+`dependabot[bot]`→`CONTRIBUTOR`, every other bot→`NONE`. `MEMBER` is excluded on purpose (repo
+is User-owned; under an org it would admit members without write access here). Of 622 historical
+runs, 601 were already skipped here; of the 21 that executed, 10 were the owner and 11 were
+bot-triggered but never reached the agent (their step exited 0, while `checkHumanActor()` would
+have called `core.setFailed()`). **Net loss of function: zero**, except `issues: assigned` on
+someone else's issue — comment instead. `tests/test_workflow_claude_gate.py` (43 tests) mirrors
+the expression out of the YAML rather than restating it; verified by mutation (guard removed →
+7 fail, allowlist widened with `CONTRIBUTOR` → 4 fail). Suite **872 passed, 8 xfailed**.
+**Verified locally, not yet on live** — no `@claude` event has fired against the new file.
+**Residual risk this does NOT close, named so nobody reads it as closed:** the owner himself
+inviting the agent onto untrusted content (e.g. `@claude apply your fixes` on a stranger's fork
+PR) still feeds attacker-written text to a job with `contents: write`. That is inherent to the
+tool, documented in the action's own `docs/security.md`, and needs a design decision, not a flag.
+
+**Noticed, not fixed (out of scope):** `visual-live` failed at 2026-08-14T03:03 UTC; unrelated
+to the above, not investigated.
 
 ## Landed 2026-08-13 directly on `main` (account A — announce to B, per §14)
 **`11c9a45a`** — item W below committed as-is (cascade Ollama fallback, JS-rendered town-hall
