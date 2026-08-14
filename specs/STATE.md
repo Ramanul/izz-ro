@@ -12,8 +12,127 @@
 > wave (all 14 domains are in `config.SOURCES`). Everything below was **verified against the code
 > today**, not copied forward.
 
-**Updated:** 2026-08-12 (account A — layer 8 wired + gold level gate landed on `main`;
-see the section right below before reading anything older)
+**Updated:** 2026-08-14 (account A — the @claude workflow gate; see this line before older ones)
+
+## Landed 2026-08-14 directly on `main` (account A — announce to B, per §14)
+
+**`148b2c80` — harta știrilor, feliile 1-7 din `specs/harta-imbunatatiri-2026-08-14.md`
+(`IZZ-0193`, `IZZ-0194`).** Confirmat pe deployat, nu doar local: **26/26 verificări verzi**
+rulate contra preview-ului Cloudflare, plus 872 de teste Python. Garda e
+`tools/harta_dom_check.py` — rulează cu serverul pornit din **rădăcina repo-ului**
+(`index.html` are căi absolute; servit din `static/harta-stiri/` dă 404 la CSS/JS și pagina
+apare goală).
+
+Trei bug-uri care contează pentru oricine atinge harta mai departe:
+- **`isPointInPath` citește punctul în PIXELI DE CANVAS, nu în unități viewBox** — transformarea
+  se aplică CĂII, nu punctului. Există acum două funcții separate, `pointForEvent` (viewBox,
+  pentru buline) și `devicePointForEvent` (pixeli, pentru poligoane). **Nu le uni la loc.**
+  Greșeala se ascundea pe desktop (canvas ~820px ≈ viewBox 1000) și rupea telefonul (364px).
+- **Selectorul de județ de la tastatură se prăbușea la un buton** după prima selecție, fiindcă
+  se construia din `state.visible` (deja filtrat). De aceea `filtered()` are `ignorePlace`.
+- **Toleranțele de atins trebuie exprimate în pixeli CSS**, convertite la folosire. În unități
+  viewBox se evaporă exact pe ecran mic.
+
+**Neverificat, declarat ca atare:** localitățile suprapuse. Markerii se grupează pe cheie de
+coordonate exactă, iar datele curente au **0 puncte partajate**, deci calea de cod nu se poate
+declanșa. Garda o raportează `NEVERIFICAT` la fiecare rulare — nu o converti în verde.
+
+**Deschis, decizia proprietarului:** analiza GPT (44 de pagini, 14 aug) recomandă rescrierea
+stratului de randare pe **D3 + SVG**. Teza „am atins limita arhitecturii" se sprijinea pe faptul
+că mobilul e cel mai slab punct — cauza reală s-a dovedit conversia de coordonate de mai sus,
+șase linii. Argumentul rămâne valid doar pe accesibilitate (fiecare județ = element DOM real).
+De tratat ca proiect separat, nu ca reparație.
+
+**`b3bbf6d9` — the `@claude` workflow now checks WHO wrote the text, not just that it says
+`@claude` (`IZZ-0189`).** `.github/workflows/claude.yml` runs with `contents: write` and the
+owner's subscription token; its `if:` was a pure substring match, so on a public repo any
+account could have made an issue body the prompt for a job that can commit to `main`.
+**It was not exploitable** — read at the pinned SHA `be7b93b1`: `run.ts:190` calls
+`checkWritePermissions()` before the trigger check and throws, and `checkHumanActor()` runs in
+both tag and agent modes. **But do not restate that as "one check protects us":**
+`checkWritePermissions()` returns `true` unconditionally for any actor ending in `[bot]`, with
+no API lookup, so bots are stopped by `checkHumanActor()` alone — two functions in third-party
+pinned code, invisible in our diff. The gate now also requires `author_association` ∈
+{`OWNER`,`COLLABORATOR`}. **Measured on real payloads:** `Ramanul`→`OWNER` 94/94,
+`dependabot[bot]`→`CONTRIBUTOR`, every other bot→`NONE`. `MEMBER` is excluded on purpose (repo
+is User-owned; under an org it would admit members without write access here). Of 622 historical
+runs, 601 were already skipped here; of the 21 that executed, 10 were the owner and 11 were
+bot-triggered but never reached the agent (their step exited 0, while `checkHumanActor()` would
+have called `core.setFailed()`). **Net loss of function: zero**, except `issues: assigned` on
+someone else's issue — comment instead. `tests/test_workflow_claude_gate.py` (43 tests) mirrors
+the expression out of the YAML rather than restating it; verified by mutation (guard removed →
+7 fail, allowlist widened with `CONTRIBUTOR` → 4 fail). Suite **872 passed, 8 xfailed**.
+**Verified locally, not yet on live** — no `@claude` event has fired against the new file.
+**Residual risk this does NOT close, named so nobody reads it as closed:** the owner himself
+inviting the agent onto untrusted content (e.g. `@claude apply your fixes` on a stranger's fork
+PR) still feeds attacker-written text to a job with `contents: write`. That is inherent to the
+tool, documented in the action's own `docs/security.md`, and needs a design decision, not a flag.
+
+**`e6988406` — third-party comments no longer reach the `@claude` prompt (`IZZ-0191`).** The gate
+above stops a stranger *starting* the agent; it does nothing about the owner starting it **on top
+of** hostile content (`@claude apply your fixes` on someone else's fork PR). Uses the mitigation
+the action's own `docs/security.md` names for this — `include_comments_by_actor`, set to the owner
+plus `claude[bot]` so threads keep continuity. Verified in the pinned source that it filters only
+the comment history (`fetcher.ts filterCommentsByActor`); the triggering comment takes a separate
+path, so invoking still works. **Do not read this as closed:** PR title, body and diff still reach
+the model — sanitized (hidden HTML, invisible chars, image alt text) but present, and no input
+filters them. **The structural backstop is branch protection on `main`, which is unset** and would
+need a bypass actor for the ~2h content bot — owner decision, not a workflow edit.
+`claude-code-review.yml` untouched on purpose (`contents: read`, read-only tools, reading the diff
+is its job).
+
+**`41428e6e` — `visual-live` was red for a dead selector, not a defect (`IZZ-0192`).** Red on every
+run from 2026-08-13T03:05 to today. `renderList()` stopped emitting `.news-item` on 2026-08-12
+(`80b79b6a`) and now builds bare `<li><a>`; the guard still waited for `#news-list .news-item`.
+**Reproduced locally against `izz-ro.pages.dev` before touching anything:** `map.json` 200 (348KB),
+0 console errors, 0 failed requests, canvas present — only the list selector never matched. The
+site was fine throughout. Now asserts `#news-list li a` and prints the count. **Third instance of
+this pattern here** (see the 8 map tests below), so the reasoning is written into the file: assert
+on an id from `index.html` plus an HTML tag, never on a CSS class. Verified live, desktop + mobile:
+all green, "lista are articole (120)".
+
+## Landed 2026-08-13 directly on `main` (account A — announce to B, per §14)
+**`11c9a45a`** — item W below committed as-is (cascade Ollama fallback, JS-rendered town-hall
+scraper, `_fallback_href` fix, `tools/scan_surse.py`). **`8590537f`** — item X below: the 8
+permanently-red map tests fixed (rewritten against real identifiers) or deleted (2 files that
+asserted on inline-JS tokens inside `.github/workflows/visual.yml`, a premise dead since the real
+check moved into `tools/visual_check.py`). Suite: **829 passed, 8 xfailed, 0 failed** (was 8 failed).
+**Item 4 (`WS-0025`, `# nosemgrep` on `render.py:15-16`) resolved by direct measurement, not
+guessed:** installed semgrep locally (`pip install semgrep`, was "broken" only in the sense of
+"not installed"), ran the exact rule `r/python.lang.security.use-defused-xml.use-defused-xml`
+against a probe file with the identical import line but no suppression comment → **1 finding**;
+same rule against `generator/render.py` (which has the full-ID suppression) → **0 findings**. The
+suppression works. Not committed (nothing to change in code — the finding was already correct);
+closing the line item here.
+
+**`657bf769` — Microsoft Clarity (`y1to63p42e`), owner request** (`IZZ-0185`, `IZZ-0186`). Loads
+only after opt-in, same gate as GA4 (`personalize.js:loadClarity`). **Three measured facts worth
+not re-deriving:** (a) the bootstrap tag fires `muidsync()` → `c.clarity.ms/c.gif`, the Microsoft
+**advertising** ID sync, and it triggers **only** on `ad_Storage:'granted'` — we pass `'denied'`,
+and `c.clarity.ms` is deliberately **out of `img-src`** so the browser blocks the pixel even if
+that flag regresses. **Do not "fix" that CSP omission.** (b) The tag config declares the upload
+host as `k.clarity.ms`; the **real run uploaded to `n.clarity.ms`** — hence the wildcard
+`*.clarity.ms`. Pinning exact hosts breaks Clarity silently in production. (c) Consent key bumped
+`v2` → `v3`: session recording is a new processing *purpose*, not a new vendor. Verified in a real
+browser both ways: refuse → **0 external requests**; accept → tag + lib + `n.clarity.ms/collect`,
+`c.gif` count **0**, cookies `_clck`/`_clsk` only (no `_uet*`). Consent bar +20px on mobile
+(157→177px). Suite **829 passed, 8 xfailed**. **Confirmed on live**: CSP header carries
+`*.clarity.ms`, live run uploads to `k.clarity.ms` while the local run used `n.` — both hosts
+occur in the wild, so the wildcard was load-bearing, not caution.
+
+**`8c5464b9` — analytics only report from production hosts** (`IZZ-0187`). Neither GA4 nor Clarity
+distinguishes izz.ro from a local copy: the same tag on `http.server` sent **real sessions into the
+production accounts** (measured — localhost:8766 test sessions landed in the Clarity panel).
+`HOSTURI_PRODUCTIE = ['izz.ro','www.izz.ro']`, allowlist not blocklist. **Moving the site to a new
+domain means adding it there, or analytics goes silent.** Verified: consent accepted on
+localhost → `clarity`/`gtag` undefined, 0 external requests, personalization still working.
+
+**Noticed, not fixed (N4, pre-existing, out of this slice's scope):** Cloudflare injects its own
+inline script (`__CF$cv$params`) into every HTML response, and the site's own CSP — which has no
+`'unsafe-inline'` — blocks it on every page load. Verified it is not Clarity's doing: the console
+error appears with Clarity absent, and the hash differs per request because the injected script
+carries a per-request id. Cloudflare Web Analytics still works through the explicit
+`beacon.min.js` tag in `base.html`, which CSP allows.
 
 ## Attribution — read this before touching classification or covers
 **`specs/atribuire-cercetare-si-plan.md` is the dossier**: 7 external systems, 8 distinct causes,
@@ -67,7 +186,13 @@ ulterioară publicării") that `IZZ-0165` corrected precisely because it gave th
 conditions away. A pop reverts the legal fix. `gen_images.py` is stale too (`_semnatura`,
 `_load_labels`, `media/labels.json` all landed). Dropping it is destructive — owner's call.
 
-## Open — verified in code 2026-08-12, not carried over on trust
+## Open — verified in code 2026-08-12; W/X landed 2026-08-13 (see Landed section above), Y verified
+
+**Y. `state.merge()` is dead code but NOT a live bug — do not "fix" it.** Defined at
+`state.py:95`; the only caller is `tests/test_state.py:14`. Dedup between fresh items **does**
+happen, inline at `main.py:227-236` (#158), and the comment at `main.py:220-222` already says so.
+Re-verified 2026-08-13 because the standing "lying function" hunt keeps rediscovering it and
+reading it as a live duplicate bug. Touching it would be an opportunistic refactor (§5.6).
 
 **A. News map — SHIPPED directly on `main` (2026-08-12, owner + GPT, outside any Claude
 session), closes the old gap below.** `/static/harta-stiri/` is a real news map: 473 articles
@@ -149,15 +274,29 @@ swap it back.
    `handoff/to-B/2026-08-07-raza-nationala-si-ce-a-ramas.md`. Cheap alternatives already killed by
    measurement: `WS-0029` (multi-source coverage, 453/1301 = 35% false positives) and the entities
    route (national-institution lists rot).
-2. **Salary calculator takes the personal deduction as a flat 20%** (`static/calc-salariu.js:53`) —
-   understates art. 77 Cod Fiscal at low incomes: 4.325 brut returns 2.616 where sources say ~2.699.
-   **Not something to invent — something to READ**, same route that fixed the minimum wage. Quote
-   the deduction table from the act, then implement. If the act cannot be read, publish nothing.
+2. **LANDED 2026-08-13 (`5dc92ca7`) — deducere personală is now degressive, per art. 77
+   Cod Fiscal (Legea 227/2015, modif. OG 16/2022), zero persoane în întreținere.** Formula quoted
+   from two independent citations of the actual statutory text (agree on numbers, internally
+   consistent: 20%→0% over 40 steps of 0,5pp = the stated 2.000 lei / 50-lei-per-step band):
+   20% la salariul minim brut, scade 0,5pp la fiecare 50 lei peste minim, 0% peste minim+2.000 lei.
+   `static/calc-salariu.js` + `templates/calculator.html` (paragraful explicativ, care mai spunea
+   "1.950 lei" — greșit, plafonul real e 2.000) actualizate. **Verificat local, în browser**: la
+   brut=5.000 (minim 4.325) → deducere 584 lei (era 865 flat), la brut=7.000 (peste plafon) →
+   deducere 0. **Nerezolvat: cifra "~2.699" din nota veche de mai jos nu a putut fi reprodusă.** La
+   brut = salariul minim exact, formula corectă dă ACELAȘI rezultat ca varianta flat (20% e 20%
+   indiferent de metodă) — 2.616 lei, deci bug-ul degresivității nu explică acel număr. Fie sursa
+   citată folosea un salariu minim diferit de referință, fie o altă metodologie; nu invent o a doua
+   explicație fără sursă. Cine a scris nota inițială (dacă știe sursa exactă a cifrei 2.699) o poate
+   clarifica.
 3. **Model C is not batched** — `process_cluster` is one AI call per cluster while B batches 10.
    Gate is already instrumented: read `stats["deferred"]` over 2–3 real runs before building it.
    Do not re-litigate the threshold (`build.yml` overrides the budget to 18, not the default 12).
-4. **`WS-0025`, blocked.** The `# nosemgrep` on `generator/render.py:15` does not suppress; two
-   hypotheses, undistinguishable today (no code-scanning alerts to query, local semgrep broken).
+   **Still blocked 2026-08-13**: needs real `stats["deferred"]` numbers from GitHub Actions build
+   logs, and `gh` is not authenticated in this environment (`gh auth status` → not logged in) —
+   cannot fetch them. Not guessed.
+4. **`WS-0025` — RESOLVED 2026-08-13, see "Landed" above.** The suppression on
+   `generator/render.py:15-16` works (measured: `semgrep` installed locally, same import line
+   fires 1 finding without the comment, 0 with it, on the exact registry rule).
 5. **Owner decisions pending, do not decide these alone:** photos on cards (CC-BY attribution ·
    top-anchored crop, `WS-0022`) · `/surse/` map (deferred with an explicit bar: static SVG, text
    links, no JS, no layout shift, pa11y still 0) · interactive guides (which interactivity, and the

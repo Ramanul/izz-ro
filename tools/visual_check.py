@@ -16,13 +16,19 @@ def map_state(p):
     return p.evaluate("""() => {const c=document.querySelector('#map canvas.map-canvas');return {canvas:document.querySelectorAll('#map canvas.map-canvas').length,w:c?.width||0,h:c?.height||0,cssW:c?.clientWidth||0,cssH:c?.clientHeight||0};}""")
 def canvas_signature(p):
     return p.evaluate("""() => {const c=document.querySelector('#map canvas.map-canvas'); if(!c) return null; const x=c.getContext('2d'); const step=Math.max(1,Math.floor(Math.max(c.width,c.height)/80)); let h=2166136261; for(let y=0;y<c.height;y+=step) for(let xx=0;xx<c.width;xx+=step){const d=x.getImageData(xx,y,1,1).data; for(const v of d){h^=v; h=Math.imul(h,16777619);}} return h>>>0;}""")
+# Selectorii de aici tintesc STRUCTURA vizibila utilizatorului (`#news-list li a` = lista are
+# articole pe care se poate da click), nu clase CSS interne. Motivul e masurat, nu stilistic:
+# `.news-item` a disparut din `renderList()` pe 2026-08-12 (80b79b6a), iar garda a ramas rosie
+# pana pe 2026-08-14 fara ca site-ul sa aiba nimic. Al treilea caz din acelasi tipar in repo
+# (vezi STATE.md, cele 8 teste de harta care asertau pe identificatori inexistenti). Un id din
+# index.html si un tag HTML se schimba rar; o clasa se rescrie la orice refactorizare de stil.
 def check_map(p,mobile=False):
     p.wait_for_selector('#map canvas.map-canvas',timeout=15000)
-    p.wait_for_selector('#news-list .news-item',timeout=15000)
+    p.wait_for_selector('#news-list li a',timeout=15000)
     s0=map_state(p); sig0=canvas_signature(p)
     check(s0['canvas']==1,f"un singur Canvas initial ({s0['canvas']})")
     check(s0['w']>0 and s0['h']>0 and s0['cssW']>0 and s0['cssH']>0,"Canvas are dimensiuni valide")
-    check(p.locator('#news-list .news-item').count()>0,"lista are articole")
+    n_art=p.locator('#news-list li a').count(); check(n_art>0,f"lista are articole ({n_art})")
     # Reproduce bugul: scroll repetat. Canvasul si imaginea randata trebuie sa ramana stabile.
     for _ in range(12):
         p.mouse.wheel(0,900); p.wait_for_timeout(60); p.mouse.wheel(0,-900); p.wait_for_timeout(60)
@@ -45,7 +51,10 @@ def main():
         p=br.new_page(viewport={'width':1280,'height':900})
         goto(p,BASE+'/static/harta-stiri/','harta','domcontentloaded'); check_map(p); p.screenshot(path=f'{SHOT_DIR}/harta-regression.png',full_page=True)
         mob=br.new_page(viewport={'width':390,'height':844},is_mobile=True,has_touch=True)
-        goto(mob,BASE+'/static/harta-stiri/','mobile','domcontentloaded'); check_map(mob,True); mob.screenshot(path=f'{SHOT_DIR}/harta-mobile-regression.png',full_page=True)
+        goto(mob,BASE+'/static/harta-stiri/','mobile','domcontentloaded')
+        # screenshot must come BEFORE check_map(), which contains a resize loop that leaves viewport at 1024px
+        mob.screenshot(path=f'{SHOT_DIR}/harta-mobile-regression.png',full_page=True)
+        check_map(mob,True)
         mob.close(); br.close()
     if fails:
         print('\nFAIL'); [print(' -',x) for x in fails]; return 1

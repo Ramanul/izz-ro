@@ -11,11 +11,37 @@ on:
 
 jobs:
   claude:
+    # Security gate. Two conditions, BOTH required: the text contains @claude, AND whoever wrote
+    # it is the repo owner or a write-access collaborator. Without the second, anyone with a
+    # GitHub account can open an issue on this public repo whose body becomes the prompt for a
+    # job holding `contents: write` and the owner's Claude subscription token.
+    #
+    # The action enforces this too, but only if TWO of its checks both hold: checkWritePermissions()
+    # returns true unconditionally for any actor ending in "[bot]" (no API lookup), and it is
+    # checkHumanActor() alone that rejects bots afterwards. Read at the pinned SHA on 2026-08-14.
+    # This gate is deliberate redundancy that lives HERE, so it survives an action upgrade or a
+    # stray allowed_non_write_users, and it skips the job before a runner is even allocated.
+    #
+    # Values measured on this repo's real payloads (2026-08-14): Ramanul -> OWNER (94/94),
+    # dependabot[bot] -> CONTRIBUTOR, every other bot -> NONE. MEMBER is deliberately absent: the
+    # repo is owned by a User account, so the value is unreachable today, and under an org it would
+    # admit members with no write access here. Add it consciously if ownership ever moves.
+    #
+    # Known behaviour change: `issues: assigned` no longer fires on someone else's issue, because
+    # the association checked is the issue AUTHOR's. Comment "@claude ..." on it instead.
     if: |
-      (github.event_name == 'issue_comment' && contains(github.event.comment.body, '@claude')) ||
-      (github.event_name == 'pull_request_review_comment' && contains(github.event.comment.body, '@claude')) ||
-      (github.event_name == 'pull_request_review' && contains(github.event.review.body, '@claude')) ||
-      (github.event_name == 'issues' && (contains(github.event.issue.body, '@claude') || contains(github.event.issue.title, '@claude')))
+      (github.event_name == 'issue_comment'
+        && contains(github.event.comment.body, '@claude')
+        && contains(fromJSON('["OWNER","COLLABORATOR"]'), github.event.comment.author_association)) ||
+      (github.event_name == 'pull_request_review_comment'
+        && contains(github.event.comment.body, '@claude')
+        && contains(fromJSON('["OWNER","COLLABORATOR"]'), github.event.comment.author_association)) ||
+      (github.event_name == 'pull_request_review'
+        && contains(github.event.review.body, '@claude')
+        && contains(fromJSON('["OWNER","COLLABORATOR"]'), github.event.review.author_association)) ||
+      (github.event_name == 'issues'
+        && (contains(github.event.issue.body, '@claude') || contains(github.event.issue.title, '@claude'))
+        && contains(fromJSON('["OWNER","COLLABORATOR"]'), github.event.issue.author_association))
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -38,6 +64,24 @@ jobs:
         uses: anthropics/claude-code-action@be7b93b1907a4abad570368f3c74b6fe3807510b # v1
         with:
           claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+          # The gate above stops a STRANGER from starting the agent. It does not cover the owner
+          # starting it on top of hostile content -- "@claude apply your fixes" on a fork PR
+          # written by someone else feeds that person's text to a job with `contents: write`.
+          # This is the mitigation the action's own docs/security.md recommends for exactly that
+          # ("on public repos, use include_comments_by_actor to allowlist which users' comments
+          # are passed to Claude"). Comment history reaching the model is now the owner's plus
+          # Claude's own replies, so a thread keeps its continuity; every other commenter --
+          # including a fork PR author and every review bot -- is dropped from the prompt.
+          # The triggering comment travels a different path (create-prompt sanitizes it, the
+          # filter does not touch it), so invoking still works normally.
+          #
+          # What this does NOT cover, stated so it is not read as closed: the PR title, body and
+          # diff still reach the model. They are sanitized (hidden HTML, invisible characters,
+          # image alt text) but they are present, and no input filters them. Reviewing a fork
+          # PR's raw content before invoking Claude on it stays a human step. The structural
+          # backstop is branch protection on `main` -- unset today, and it needs a bypass for the
+          # content bot that commits every ~2h, so it is the owner's call, not a workflow edit.
+          include_comments_by_actor: "Ramanul,claude[bot]"
 
       - name: Token missing notice
         if: env.HAS_TOKEN != 'true'

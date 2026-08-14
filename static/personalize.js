@@ -265,15 +265,31 @@
      statisticile se activeaza DOAR dupa opt-in explicit. Stocarea alegerii in
      sine e strict necesara pentru a o respecta, deci exceptata. Refuz = zero
      stocare, zero cereri externe, zero UI. v2: textul acopera si statisticile
-     de trafic (GA4), deci utilizatorii v1 sunt intrebati din nou. ---- */
-  const CONSENT = 'izz_consent_v2';   // 'yes' | 'no'
+     de trafic (GA4), deci utilizatorii v1 sunt intrebati din nou. v3: intra si
+     inregistrarea navigarii (Clarity) -- domeniu nou de prelucrare, nu doar un
+     furnizor nou, deci consimtamantul dat pe v2 NU-l acopera; se cere din nou.
+     Acelasi motiv ca la v1->v2. ---- */
+  const CONSENT = 'izz_consent_v3';   // 'yes' | 'no'
 
   /* ---- statistici de trafic (GA4), incarcate DOAR dupa opt-in: Consent Mode
      v2 cu totul refuzat implicit; acordam exclusiv analytics_storage. Fara
      opt-in nu se descarca niciun script si nu pleaca nicio cerere. ---- */
   const GA_ID = 'G-6HZ8BYSFEL';
 
+  /* ---- Nici GA4 nici Clarity nu fac diferenta intre situl public si o copie
+     locala sau un preview: tagul e acelasi, deci un `http.server` pe output/
+     trimite sesiuni REALE in conturile de productie. Masurat 2026-08-13:
+     testele de pe localhost:8766 au ajuns in panoul Clarity cu URL localhost,
+     si tot asa in GA4. Allowlist, nu blocklist -- un host nou nu incepe sa
+     raporteze din greseala; daca muti situl pe alt domeniu, adauga-l aici. ---- */
+  const HOSTURI_PRODUCTIE = ['izz.ro', 'www.izz.ro'];
+
+  function eProductie() {
+    return HOSTURI_PRODUCTIE.indexOf(location.hostname) !== -1;
+  }
+
   function loadAnalytics() {
+    if (!eProductie()) return;                          // local/preview: nu poluam
     if (window.dataLayer) return;                       // deja incarcat
     window.dataLayer = [];
     window.gtag = function () { window.dataLayer.push(arguments); };
@@ -290,15 +306,42 @@
     document.head.appendChild(s);
   }
 
+  /* ---- harti de click si inregistrari de navigare (Microsoft Clarity),
+     pe aceeasi poarta ca GA4: fara opt-in nu se descarca nimic si nu pleaca
+     nicio cerere. Tag-ul contacteaza scripts.clarity.ms (biblioteca) si un host
+     de colectare care NU e fix: configul tagului declara k.clarity.ms, dar
+     rularea reala din 2026-08-13 a urcat pe n.clarity.ms. De-aia CSP-ul are
+     wildcard `*.clarity.ms`, nu hosturi exacte -- nu-l stramta.
+     MASURAT 2026-08-13 in tagul real: muidsync() -- pixelul c.clarity.ms/c.gif
+     care sincronizeaza MUID, identificatorul de publicitate Microsoft --
+     porneste DOAR pe ad_Storage:'granted'. Il refuzam explicit, ca la GA4,
+     deci c.clarity.ms NU e in CSP: daca flagul asta regreseaza vreodata,
+     browserul blocheaza pixelul oricum. ---- */
+  const CLARITY_ID = 'y1to63p42e';
+
+  function loadClarity() {
+    if (!eProductie()) return;                          // local/preview: nu poluam
+    if (window.clarity) return;                         // deja incarcat
+    window.clarity = function () {
+      (window.clarity.q = window.clarity.q || []).push(arguments);
+    };
+    window.clarity('consentv2', { ad_Storage: 'denied', analytics_Storage: 'granted' });
+    const s = document.createElement('script');
+    s.async = true;
+    s.src = 'https://www.clarity.ms/tag/' + CLARITY_ID;
+    document.head.appendChild(s);
+  }
+
   function consentBar() {
     const bar = document.createElement('div');
     bar.id = 'izz-consent';
     bar.setAttribute('role', 'region');
     bar.setAttribute('aria-label', 'Personalizare');
     bar.innerHTML = `
-      <p>Vrei recomandări personalizate și ne ajuți cu statistici anonime de
-      trafic? Profilul tău de lectură rămâne <b>doar în browserul tău</b>;
-      statisticile folosesc Google Analytics fără reclame.
+      <p>Vrei recomandări personalizate și ne ajuți cu statistici anonime?
+      Profilul tău de lectură rămâne <b>doar în browserul tău</b>. Google
+      Analytics și Microsoft Clarity înregistrează anonim cum navighezi
+      (click-uri, derulare), <b>fără urmărire publicitară</b>.
       <a href="/legal/privacy/">Detalii</a></p>
       <div class="consent-actions">
         <button type="button" class="consent-yes">Activează</button>
@@ -309,6 +352,7 @@
       bar.remove();
       init();
       loadAnalytics();
+      loadClarity();
     };
     bar.querySelector('.consent-no').onclick = () => {
       try { localStorage.setItem(CONSENT, 'no'); localStorage.removeItem(KEY); } catch {}
@@ -321,7 +365,7 @@
     initInstallButton();
     let c = null;
     try { c = localStorage.getItem(CONSENT); } catch {}
-    if (c === 'yes') { init(); loadAnalytics(); return; }
+    if (c === 'yes') { init(); loadAnalytics(); loadClarity(); return; }
     if (c === 'no') { return; }
     consentBar();
   }

@@ -358,6 +358,11 @@ class _GenericListParser(HTMLParser):
         self._date_at: int | None = None
         self._anchor_at: int | None = None
         self._cur: dict = {}
+        self._fallback_href: str | None = None  # primul href din item, folosit doar daca titlul
+                                                  # e imbricat in ACEEASI ancora (un singur <a>
+                                                  # care invaluie tot cardul) -- fara asta href-ul
+                                                  # nu se prinde niciodata, fiindca conditia de mai
+                                                  # jos cere title_at deja setat inainte de <a>.
 
     @staticmethod
     def _match(tag: str, classes: list, want: tuple) -> bool:
@@ -390,11 +395,13 @@ class _GenericListParser(HTMLParser):
             self._date_at = self._depth
 
         if tag == "a" and "href" in ad and "href" not in self._cur:
+            href = ad["href"].strip()
+            if href.startswith("/"):
+                href = self.base_url + href
+            if self._fallback_href is None:
+                self._fallback_href = href
             take = self._title_at is not None if self._title else True
             if take:
-                href = ad["href"].strip()
-                if href.startswith("/"):
-                    href = self.base_url + href
                 self._cur["href"] = href
                 self._anchor_at = self._depth
 
@@ -420,23 +427,67 @@ class _GenericListParser(HTMLParser):
         if self._date_at is not None and self._depth <= self._date_at:
             self._date_at = None
         if self._item_at is not None and self._depth <= self._item_at:
-            if self._cur.get("href") and self._cur.get("title"):
+            href = self._cur.get("href") or self._fallback_href
+            if href and self._cur.get("title"):
+                self._cur["href"] = href
                 self.items.append(dict(self._cur))
             self._item_at = None
             self._cur = {}
+            self._fallback_href = None
         self._depth -= 1
 
 
 def _fetch_html_list(key: str, source: dict) -> tuple[list, str | None]:
     """Scraper generic pentru o lista de anunturi HTML (surse fara RSS). Legal: pagina publica."""
-    items: list = []
     try:
         req = urllib.request.Request(source["url"], headers={"User-Agent": USER_AGENT})
         with urllib.request.urlopen(req, timeout=TIMEOUT) as resp:
             raw = _read_limitat(resp).decode("utf-8", errors="replace")
     except (urllib.error.HTTPError, urllib.error.URLError, socket.timeout, ValueError) as exc:
-        return items, f"{key}: {exc}"
+        return [], f"{key}: {exc}"
+    return _items_from_html(raw, key, source)
 
+
+def _fetch_html_list_js(key: str, source: dict) -> tuple[list, str | None]:
+    """Ca `_fetch_html_list`, dar randeaza pagina intr-un Chromium headless (crawl4ai/Playwright)
+    inainte de a o parsa cu acelasi `_GenericListParser`.
+
+    Exista pentru site-urile primariilor care isi construiesc lista de anunturi in JavaScript
+    (Next.js/React) — `urllib` primeste doar bundle-ul JS gol, 0 articole. Confirmat 2026-08-12
+    pe primariatm.ro/noutati: urllib -> 0 linkuri utile (raspunsul e un shell Next.js), crawl4ai
+    cu 3s de asteptare dupa incarcare -> 12 anunturi reale, cu titlu/link/data.
+
+    Optional: cere `crawl4ai` (si browserul Playwright descarcat de `crawl4ai-setup`), NEINCLUS
+    in requirements.txt ca sa nu impinga un download de ~200MB in fiecare build CI (vezi §17,
+    bugetul de build). Instalare LOCALA: `pip install crawl4ai && crawl4ai-setup`. Fara pachet,
+    orice sursa `html_list_js` esueaza curat (eroare de sursa, nu crash de pipeline).
+    """
+    try:
+        from crawl4ai import AsyncWebCrawler
+    except ImportError:
+        return [], f"{key}: crawl4ai neinstalat (optional, doar local — vezi docstring _fetch_html_list_js)"
+
+    import asyncio
+
+    async def _render():
+        async with AsyncWebCrawler() as crawler:
+            result = await crawler.arun(
+                url=source["url"], page_timeout=30000, delay_before_return_html=3.0)
+            return result
+
+    try:
+        result = asyncio.run(_render())
+    except Exception as exc:  # crawl4ai/Playwright pot arunca o gama larga (timeout, browser crash)
+        return [], f"{key}: crawl4ai {type(exc).__name__}: {exc}"
+    if not result.success:
+        return [], f"{key}: crawl4ai a esuat (status {result.status_code})"
+    return _items_from_html(result.html, key, source)
+
+
+def _items_from_html(raw: str, key: str, source: dict) -> tuple[list, str | None]:
+    """Parseaza HTML-ul (deja descarcat, deja randat daca era nevoie) cu `_GenericListParser`
+    si aplica garda de ingestie -- pas comun intre `_fetch_html_list` si `_fetch_html_list_js`."""
+    items: list = []
     parser = _GenericListParser(source["base_url"], source["item"],
                                 source.get("title"), source.get("date"))
     parser.feed(raw)
@@ -529,6 +580,8 @@ def _fetch_one(key: str, source: dict, cache: dict | None = None) -> tuple[list,
         return _fetch_sitemap_news(key, source)
     if source.get("type") == "html_list":
         return _fetch_html_list(key, source)
+    if source.get("type") == "html_list_js":
+        return _fetch_html_list_js(key, source)
 
     items = []
     headers = {"User-Agent": USER_AGENT}

@@ -5,16 +5,16 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Harta știrilor — IZZ.ro</title>
   <meta name="description" content="Harta interactivă a știrilor locale și județene din România, agregate pe județe și localități.">
-  <link rel="icon" type="image/svg+xml" href="../../favicon.svg">
-  <link rel="stylesheet" href="harta-stiri.css">
+  <link rel="icon" type="image/svg+xml" href="/static/favicon.svg">
+  <link rel="stylesheet" href="/static/harta-stiri/harta-stiri.css">
 </head>
 <body>
   <header class="map-header">
-    <a class="brand" href="../../" aria-label="Înapoi la IZZ.ro">
+    <a class="brand" href="/" aria-label="Înapoi la IZZ.ro">
       <span class="brand-small">IZZ.ro</span>
       <span>Harta știrilor</span>
     </a>
-    <a class="back" href="../../">← Înapoi la știri</a>
+    <a class="back" href="/">← Înapoi la știri</a>
   </header>
 
   <main class="map-page">
@@ -36,8 +36,8 @@
         <button type="button" data-level="judetean">Județean</button>
       </div>
       <label class="search">
-        <span class="sr-only">Caută județ sau localitate</span>
-        <input id="map-search" type="search" placeholder="Caută județ / localitate…" autocomplete="off">
+        <span class="sr-only">Caută loc, titlu sau sursă</span>
+        <input id="map-search" type="search" placeholder="Caută loc, titlu sau sursă…" autocomplete="off">
       </label>
       <button type="button" id="clear-selection" class="secondary">Arată toate județele</button>
     </section>
@@ -45,6 +45,7 @@
     <section class="map-layout">
       <div class="map-card">
         <div id="map" class="map" role="img" aria-label="Harta României cu știri pe județe"></div>
+        <div id="county-picker" class="county-picker" role="group" aria-label="Alege județul"></div>
         <p class="map-note">Poziționarea cercului reprezintă județul. Localitatea și codul SIRUTA sunt păstrate în lista de știri atunci când pot fi identificate determinist; nu se afișează coordonate presupuse.</p>
       </div>
       <aside class="news-panel" aria-label="Știri localizate">
@@ -52,13 +53,13 @@
           <h2 id="panel-title">Știri pe hartă</h2>
           <span id="panel-count"></span>
         </div>
-        <div id="news-list" class="news-list">
-          <p class="loading">Se încarcă…</p>
-        </div>
+        <ul id="news-list" class="news-list">
+          <li class="loading">Se încarcă…</li>
+        </ul>
       </aside>
     </section>
   </main>
 
-  <script src="harta-stiri.js" defer></script>
+  <script src="/static/harta-stiri/harta-stiri.js" defer></script>
 </body>
 </html>

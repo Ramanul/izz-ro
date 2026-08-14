@@ -229,6 +229,10 @@ ARTICLE_TTL_DAYS = 7           # mai scurt -> volum mai mic -> incape in quota f
 MAX_PER_SOURCE = 8             # redus de la 12 ca sa scada apelurile AI/rulare
 
 AI_PROVIDER = os.getenv("AI_PROVIDER", "gemini")  # "gemini" | "anthropic" | "ollama" (local, gratuit — vezi generator/providers/ollama.py)
+# Fallback AUTOMAT pe Qwen local cand providerul de mai sus (gemini/anthropic) esueaza (429,
+# quota, cheie lipsa) -- vezi process.get_provider(). Implicit ON: fara Ollama pornit local,
+# `available()` esueaza rapid si nu schimba nimic. Se dezactiveaza cu AI_FALLBACK_OLLAMA=0.
+AI_FALLBACK_OLLAMA = os.getenv("AI_FALLBACK_OLLAMA", "1") == "1"
 
 # IndexNow (Bing/Seznam/Yandex): cheia e PUBLICA prin protocol (motorul o citeste de la
 # https://izz.ro/<cheie>.txt ca dovada ca detinem domeniul). render.py scrie fisierul,

@@ -1181,13 +1181,22 @@ def _write_headers() -> None:
     Activele imutabile tin mult; imaginile o zi; HTML-ul NU se cache-uieste agresiv
     (stiri proaspete). Pattern-urile de cale TREBUIE sa inceapa cu '/' -- altfel
     Pages le ignora si imaginile cad pe TTL-ul implicit de 4h."""
+    # clarity.ms: wildcard, nu hosturi exacte -- hostul de colectare variaza
+    # (configul tagului declara k.clarity.ms, rularea reala din 2026-08-13 a
+    # urcat pe n.clarity.ms). Un CSP stramtat la hosturi exacte rupe Clarity in
+    # tacere. DELIBERAT absent din img-src: singura imagine pe care o cere
+    # Clarity e c.clarity.ms/c.gif, pixelul care sincronizeaza MUID (identificatorul
+    # de publicitate Microsoft). personalize.js il refuza deja prin
+    # ad_Storage:'denied'; lasandu-l in afara CSP, browserul il blocheaza si daca
+    # flagul ala regreseaza. NU-l adauga la img-src "ca sa nu mai dea eroare".
     csp = ("default-src 'self'; "
-           "script-src 'self' https://static.cloudflareinsights.com https://www.googletagmanager.com; "
+           "script-src 'self' https://static.cloudflareinsights.com https://www.googletagmanager.com "
+           "https://*.clarity.ms; "
            "style-src 'self' 'unsafe-inline'; "
            "img-src 'self' data: https://*.google-analytics.com https://*.googletagmanager.com; "
            "font-src 'self'; "
            "connect-src 'self' https://cloudflareinsights.com https://*.google-analytics.com "
-           "https://*.analytics.google.com https://*.googletagmanager.com; "
+           "https://*.analytics.google.com https://*.googletagmanager.com https://*.clarity.ms; "
            "object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; "
            "upgrade-insecure-requests")
     _write(os.path.join(OUT_DIR, "_headers"),

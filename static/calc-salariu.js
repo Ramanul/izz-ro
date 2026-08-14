@@ -50,7 +50,15 @@
       var brut = Math.max(0, parseFloat(input.value) || 0);
       var cas = Math.round(brut * 0.25);
       var cass = Math.round(brut * 0.1);
-      var deducere = Math.round(salariuMinim * 0.2);
+      // Deducere personala de baza, fara persoane in intretinere: art. 77^1 Cod Fiscal
+      // (Legea 227/2015, modificat OG 16/2022) NU e un procent fix -- e degresiva. La
+      // salariul minim brut: 20%. Peste minim, scade cu 0,5 puncte procentuale la fiecare
+      // transa de 50 lei, pana la 0% quand brutul trece de minim+2.000 lei (plafonul de
+      // acordare). Un flat `salariuMinim * 0.2` supraestima deducerea (deci subestima
+      // impozitul) pentru orice brut STRICT peste minim.
+      var trepte = Math.max(0, Math.floor((brut - salariuMinim) / 50));
+      var rataDeducere = Math.max(0, 20 - trepte * 0.5);
+      var deducere = brut > salariuMinim + 2000 ? 0 : Math.round(salariuMinim * rataDeducere / 100);
       var baza = Math.max(0, brut - cas - cass - deducere);
       var impozit = Math.round(baza * 0.1);
       var net = brut - cas - cass - impozit;
