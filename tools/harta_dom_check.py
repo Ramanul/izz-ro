@@ -322,6 +322,45 @@ def felia5_county_picker(p):
     pressed = p.evaluate("() => document.querySelectorAll('#county-picker button[aria-pressed=\"true\"]').length")
     check(pressed == 0, f"dupa reset niciun buton nu e selectat ({pressed} inca selectate)")
 
+def felia6_url(p):
+    """Starea in adresa. Se verifica in ambele sensuri -- stare -> adresa SI adresa -> stare --
+    fiindca o singura directie poate fi corecta izolat: un link care se scrie dar nu se citeste
+    arata bine in bara de adrese si duce pe harta nefiltrata cand il deschide altcineva."""
+    print("\nFELIA 6 -- starea in adresa paginii")
+    p.goto(BASE, wait_until="networkidle")
+    p.wait_for_selector("#county-picker button", timeout=15000)
+    p.wait_for_timeout(200)
+    start_count = panel_count(p)
+
+    # (a) stare -> adresa
+    p.click("#county-picker button")
+    p.wait_for_timeout(250)
+    search = p.evaluate("() => location.search")
+    check("judet=" in search, f"selectia de judet ajunge in adresa ('{search}')")
+    check(panel_count(p) != start_count, f"selectia chiar a filtrat lista ('{panel_count(p)}')")
+
+    # (b) Back anuleaza selectia in loc sa iasa de pe pagina
+    p.go_back()
+    p.wait_for_timeout(350)
+    check(not county_selected(p) and p.evaluate("() => location.search") != search,
+          f"Back anuleaza selectia, nu paraseste pagina (adresa: '{p.evaluate('() => location.search')}')")
+
+    # (c) adresa -> stare, fara niciun click. Fara asta un link partajat duce pe harta goala.
+    p.goto(BASE + "?judet=CLUJ&nivel=local", wait_until="networkidle")
+    p.wait_for_selector("#news-list li", timeout=15000)
+    p.wait_for_timeout(350)
+    direct = panel_count(p)
+    check(county_selected(p), "link direct cu ?judet= arata judetul deja selectat")
+    check(direct != start_count, f"link direct cu ?judet= arata lista filtrata ('{direct}')")
+    # Filtrat NU e acelasi lucru cu filtrat pe judetul CERUT: un cod care citeste parametrul si
+    # apoi aplica altceva ar trece un test care se uita doar la numarul de rezultate.
+    metas = p.evaluate("() => [...document.querySelectorAll('#news-list li span')].map(s => s.textContent.toUpperCase())")
+    off = [m for m in metas if "CLUJ" not in m]
+    check(bool(metas) and not off,
+          f"toate cele {len(metas)} rezultate sunt din CLUJ ({len(off)} din alt judet)")
+    p.goto(BASE, wait_until="networkidle")
+    p.wait_for_selector("#news-list li", timeout=15000)
+
 def mobil_390(p):
     """Android: harta e ~359x256px la 390 latime, deci ea e cazul greu pentru zona de atins.
     Aici se verifica si ca garda tap-vs-drag chiar tine cu EVENIMENTE TACTILE, nu doar cu mouse-ul
@@ -376,6 +415,7 @@ def main():
         felia4_hittest(p)
         felia2_localitate(p)
         felia5_county_picker(p)
+        felia6_url(p)
 
         mob = br.new_page(viewport={"width": 390, "height": 844}, is_mobile=True, has_touch=True)
         mob.goto(BASE, wait_until="networkidle")

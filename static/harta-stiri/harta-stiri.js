@@ -397,14 +397,65 @@
     }
   }
 
-  function selectCounty(county) {
-    state.selectedLocality = null;
-    state.selectedCounty = county;
-    if (state.level !== "judetean") state.zoomCounty = county;
+  // --- starea in adresa paginii ----------------------------------------------------------
+  // Toate schimbarile de stare trec prin `applyState`. Fara asta ar exista cai care muta harta
+  // fara sa mute adresa: un link partajat ar duce pe alta stare decat cea vazuta de cel care
+  // l-a trimis, iar Back ar sari de pe pagina in loc sa anuleze ultima selectie.
+
+  function urlForState() {
+    const params = new URLSearchParams();
+    if (state.level && state.level !== "all") params.set("nivel", state.level);
+    if (state.selectedCounty) params.set("judet", state.selectedCounty);
+    const loc = Array.isArray(state.selectedLocality)
+      ? state.selectedLocality
+      : (state.selectedLocality ? [state.selectedLocality] : []);
+    // Mai multe localitati pot cadea pe acelasi marker; toate intra in link, altfel cel care
+    // deschide adresa vede mai putine stiri decat cel care a trimis-o.
+    if (loc.length) params.set("loc", loc.join("|"));
+    if (state.search) params.set("q", state.search);
+    const query = params.toString();
+    return query ? `${location.pathname}?${query}` : location.pathname;
+  }
+
+  function stateFromUrl() {
+    const params = new URLSearchParams(location.search);
+    const loc = params.get("loc");
+    return {
+      level: params.get("nivel") || "all",
+      county: params.get("judet") || null,
+      locality: loc ? loc.split("|").filter(Boolean) : null,
+      query: params.get("q") || "",
+    };
+  }
+
+  function applyState(patch, { push = true, replace = false } = {}) {
+    if ("level" in patch) state.level = patch.level || "all";
+    if ("county" in patch) state.selectedCounty = patch.county || null;
+    if ("locality" in patch) state.selectedLocality = patch.locality || null;
+    if ("query" in patch) state.search = patch.query || "";
+    // `zoomCounty` nu e stare independenta, e derivata: la nivel Judetean click-ul filtreaza
+    // fara sa mareasca (decizie proprietar, 13 aug). Tinuta separat, se desincroniza.
+    state.zoomCounty = state.selectedCounty && state.level !== "judetean" ? state.selectedCounty : null;
     state.visible = filtered();
+
+    const search = $("#map-search");
+    if (search && search.value !== state.search) search.value = state.search;
+    syncLevelButtons();
     buildMap();
     renderList();
     updateStats();
+
+    if (!push && !replace) return;
+    const url = urlForState();
+    if (url === `${location.pathname}${location.search}`) return;
+    // `replaceState` la tastare: altfel fiecare litera ar lasa o intrare in istoric si Back ar
+    // trebui apasat de zece ori ca sa iasa dintr-o cautare de zece caractere.
+    if (replace) history.replaceState(null, "", url);
+    else history.pushState(null, "", url);
+  }
+
+  function selectCounty(county) {
+    applyState({ county, locality: null });
   }
 
   function updateCountyPicker() {
@@ -450,10 +501,7 @@
         // prin cautarea in titluri, articole din alte judete care doar o pomeneau.
         // Daca mai multe localitati cad exact pe acelasi punct (deduplicare vizuala), se
         // filtreaza pe TOATE, nu doar pe prima.
-        state.selectedLocality = marker.localities || [marker.locality];
-        state.visible = filtered();
-        renderList();
-        updateStats();
+        applyState({ locality: marker.localities || [marker.locality] });
       }
     } else {
       // Transformarea se reafirma explicit inainte de hit-test: buildMap() o lasa setata, dar
@@ -519,47 +567,23 @@
   }
 
   function resetSelection() {
-    state.search = "";
-    state.selectedCounty = null;
-    state.selectedLocality = null;
-    state.zoomCounty = null;
-    state.visible = filtered();
-    const search = $("#map-search");
-    if (search) search.value = "";
-    syncLevelButtons();
-    buildMap();
-    renderList();
-    updateStats();
+    applyState({ county: null, locality: null, query: "" });
   }
 
   function bindControls() {
     const search = $("#map-search");
     const clear = $("#clear-selection");
     if (search) search.addEventListener("input", () => {
-      state.search = search.value;
-      state.visible = filtered();
-      buildMap();
-      renderList();
-      updateStats();
+      applyState({ query: search.value }, { replace: true });
     });
     $$(".segmented [data-level]").forEach((button) => button.addEventListener("click", () => {
-      state.level = button.dataset.level || "all";
       // Schimbarea de nivel schimba INSASI regula de interactiune (zoom sau nu la click pe
       // judet) -- o selectie ramasa de la nivelul anterior ar produce o stare incoerenta
       // (ex. harta ramasa marita cand ai trecut pe Judetean, unde click-ul nu mai face zoom).
-      state.selectedCounty = null;
-      state.selectedLocality = null;
-      state.zoomCounty = null;
-      state.search = "";
-      const search = $("#map-search");
-      if (search) search.value = "";
-      state.visible = filtered();
-      syncLevelButtons();
-      buildMap();
-      renderList();
-      updateStats();
+      applyState({ level: button.dataset.level || "all", county: null, locality: null, query: "" });
     }));
     if (clear) clear.addEventListener("click", resetSelection);
+    window.addEventListener("popstate", () => applyState(stateFromUrl(), { push: false }));
   }
 
   function bindResize() {
@@ -593,12 +617,10 @@
     state.map = data.map || {};
     state.counties = state.map.judete || {};
     state.articles = Array.isArray(data.articles) ? data.articles : [];
-    state.visible = filtered();
-    syncLevelButtons();
-    buildMap();
+    // Starea din adresa se aplica INAINTE de prima desenare, altfel harta apare o clipa
+    // nefiltrata si abia apoi sare pe judetul din link.
+    applyState(stateFromUrl(), { push: false });
     bindResize();
-    renderList();
-    updateStats();
   }
 
   init().catch((error) => {
