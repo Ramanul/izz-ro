@@ -299,3 +299,17 @@ Sesiunile de hartă de azi și-au comis munca pe `main` (17:54–19:25), iar
 „No reachable agents"** — sesiunile de pe mașina proprietarului nu-mi sunt accesibile, deci
 dacă „Final cleanup and mobile map functionality" (activă la 19:45, după ultimul commit) are
 ceva necomis, de aici nu se vede. Un `git status` acolo e singurul mod.
+
+### Recensământ complet, la cererea proprietarului: `specs/predare-2026-08-14-recensamant.md`
+Citește-l o dată înainte să reiei ceva. Ce corectează față de ce ți-am scris mai sus:
+- **Angajamentul cu `feedcheck.yml` pe `claude/feedcheck-real-fetcher` e mort de drept** — munca
+  e deja pe `main` (`tools/feed_check.py:32` importă `generator.fetch._fetch_one_guarded`).
+  Nu-l reprograma; șterge ramura.
+- **`a/liternet-feed-url` la fel** — URL-ul corectat e pe `main` (`config.py:23`), ceea ce
+  închide și blocajul 1 din issue #83. Blocajul 2 (issue #82) era deja închis.
+- **Cele 57 de ramuri nu se pot clasifica ieftin**: `git merge-base origin/main <ramură>` e
+  **gol** (istoria lui `main` a fost rescrisă), deci orice `diff` în trei puncte dă
+  `fatal: no merge base`, iar squash-merge-ul face inutil și căutatul după subiect. Singura
+  metodă e per-ramură, după artefact. Nouă sunt deja verificate acolo și se pot șterge.
+- **Axa „cadență" din garda de ingestie NU e „următoarea"** — a fost măsurată pe 12 august și e
+  moartă pe datele actuale (`specs/securitate-ingestie.md:185`).

@@ -48,6 +48,19 @@ Compared line by line against `static/calc-salariu.js` on `main`: `main` uses
 base is from 8 August and overlaps today's code. **Do not close it as redundant** — it needs a
 small slice on current code, owner's call.
 
+**The inventory under this file: `specs/predare-2026-08-14-recensamant.md`.** Read it once
+before picking up anything below. It re-verified today, with evidence, what was open across
+sessions — and it names why a cheap verdict on the 57 unmerged branches is impossible:
+**`git merge-base origin/main <branch>` is EMPTY** (main's history was rewritten, so the
+branches sit on different roots and every three-dot diff answers `fatal: no merge base`), and
+`main` squash-merges, so branch commit subjects never appear in it. The only method that works
+is per-branch, by artifact. Nine branches are checked that way there and are safe to delete —
+including `claude/feedcheck-real-fetcher`, whose "unfulfilled commitment" from 24 July is moot
+(`tools/feed_check.py:32` already imports the pipeline fetcher) and `a/liternet-feed-url`
+(`config.py:23` already carries the corrected URL, which also clears blocker 1 of issue #83).
+**Also corrected there: the `cadence` axis of the ingestion guard is NOT "next" — it was
+measured on 2026-08-12 and is dead on the data we have (`specs/securitate-ingestie.md:185`).**
+
 **Blocked sessions, cause named:** `session_01LjwFA8QXtzFvBF5NZpLJDK` stalled on the 5-hour cap
 (reset 19:30 UTC), not on a defect; its work was fully pushed. The weekly cap sat at
 `allowed_warning` with ~10 sessions open on this repo in one day — that, not any single session,
