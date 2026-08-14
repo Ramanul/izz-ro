@@ -1,0 +1,84 @@
+name: Mistral
+
+# Analogul @claude pentru Mistral Vibe. Declansat de @mistralai intr-un PR/issue,
+# cu aceeasi poarta de securitate ca la .github/workflows/claude.yml: actorul
+# trebuie sa fie OWNER sau COLLABORATOR. Fara a doua conditie, oricine cu cont
+# GitHub poate declansa un job cu `contents: write` pe acest repo public.
+#
+# Action folosit: robin-afro/mistral-action (fork activ al obledev/mistral-action),
+# construit ca echivalent direct al anthropics/claude-code-action pentru Mistral.
+# La runtime, instaleaza vibe CLI si ruleaza `vibe --auto-approve --prompt ...`.
+#
+# Cheia API Mistral e citita din secretul MISTRAL_API_KEY (repo Settings -> Secrets).
+# Workflow-ul respecta AGENTS.md: niciodata commit pe main, branch-prefix `mistral/`.
+
+on:
+  issue_comment:
+    types: [created]
+  pull_request_review_comment:
+    types: [created]
+  issues:
+    types: [opened, edited, labeled, assigned]
+  pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
+  pull_request_review:
+    types: [submitted]
+
+permissions:
+  contents: write
+  pull-requests: write
+  issues: write
+  id-token: write
+  actions: read
+
+# O singura rulare @mistralai la un moment dat pe acelasi context; a doua anuleaza-o pe prima.
+concurrency:
+  group: mistral-${{ github.event.pull_request.number || github.event.issue.number || github.run_id }}
+  cancel-in-progress: true
+
+jobs:
+  mistral:
+    # Security gate (oglindeste claude.yml). Doua conditii, AMBELE necesare:
+    # 1) textul contine @mistralai (sau e un eveniment de PR/issue care nu necesita mention),
+    # 2) cine a scris e OWNER sau COLLABORATOR pe repo. Fara a doua conditie, un stranger
+    #    poate declansa API calls platite pe banii owner-ului.
+    #
+    # Pentru issue: assoc verificata pe autorul issue-ului (ca la claude.yml).
+    # Pentru label/assign: oricine poate aplica un label public? Nu - doar collaboratorii.
+    # GitHub garanteaza ca `labeled`/`assigned` vine de la cineva cu write access, deci e ok.
+    if: |
+      (github.event_name == 'issue_comment'
+        && contains(github.event.comment.body, '@mistralai')
+        && contains(fromJSON('["OWNER","COLLABORATOR"]'), github.event.comment.author_association)) ||
+      (github.event_name == 'pull_request_review_comment'
+        && contains(github.event.comment.body, '@mistralai')
+        && contains(fromJSON('["OWNER","COLLABORATOR"]'), github.event.comment.author_association)) ||
+      (github.event_name == 'pull_request_review'
+        && contains(github.event.review.body, '@mistralai')
+        && contains(fromJSON('["OWNER","COLLABORATOR"]'), github.event.review.author_association)) ||
+      (github.event_name == 'issues'
+        && contains(github.event.issue.body, '@mistralai')
+        && contains(fromJSON('["OWNER","COLLABORATOR"]'), github.event.issue.author_association)) ||
+      (github.event_name == 'pull_request'
+        && contains(fromJSON('["OWNER","COLLABORATOR"]'), github.event.pull_request.author_association))
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          fetch-depth: 1
+
+      - name: Run Mistral Action
+        uses: robin-afro/mistral-action@main
+        with:
+          mistral_api_key: ${{ secrets.MISTRAL_API_KEY }}
+          # Doar ownerul poate declansa. Ridica la "Ramanul,altcolaborator" daca adaugi oameni.
+          allowed_users: "Ramanul"
+          # Branch prefix, ca sa nu atinga main direct (regula AGENTS.md).
+          branch_prefix: "mistral/"
+          # Numele bot-ului care semneaza commit-urile.
+          bot_name: "mistral[bot]"
+          bot_email: "mistral[bot]@users.noreply.github.com"
+          # Limite de buget/cost. 30 min hard cap.
+          timeout_seconds: "1800"
+          # Citeste AGENTS.md si CLAUDE.md automat (compatibilitate Claude Code in action).
