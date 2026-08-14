@@ -5,9 +5,11 @@ name: Mistral
 # trebuie sa fie OWNER sau COLLABORATOR. Fara a doua conditie, oricine cu cont
 # GitHub poate declansa un job cu `contents: write` pe acest repo public.
 #
-# Action folosit: robin-afro/mistral-action (fork activ al obledev/mistral-action),
-# construit ca echivalent direct al anthropics/claude-code-action pentru Mistral.
-# La runtime, instaleaza vibe CLI si ruleaza `vibe --auto-approve --prompt ...`.
+# Action folosit: obledev/mistral-action, pinned la SHA 96326e7 (main, 2026-03-08).
+# Echivalent direct al anthropics/claude-code-action pentru Mistral. NU folosi @main:
+# repo-ul are 0 stars, asa ca @main ar fi o suprafata de atac daca autorul e compromis.
+# La runtime, action-ul instaleaza Python + uv + pachetul PyPI `mistral-vibe` (v2.24.1+)
+# si ruleaza `uv run python -m mistral_action.main` ca orchestrator peste `vibe --prompt`.
 #
 # Cheia API Mistral e citita din secretul MISTRAL_API_KEY (repo Settings -> Secrets).
 # Workflow-ul respecta AGENTS.md: niciodata commit pe main, branch-prefix `mistral/`.
@@ -69,7 +71,7 @@ jobs:
           fetch-depth: 1
 
       - name: Run Mistral Action
-        uses: robin-afro/mistral-action@main
+        uses: obledev/mistral-action@96326e7650413a50928ba0c52df4fb6921a27e16 # pinned 2026-03-08
         with:
           mistral_api_key: ${{ secrets.MISTRAL_API_KEY }}
           # Doar ownerul poate declansa. Ridica la "Ramanul,altcolaborator" daca adaugi oameni.
