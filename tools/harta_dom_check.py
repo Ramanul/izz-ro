@@ -5,7 +5,7 @@
 Asserteaza pe STRUCTURA VIZIBILA si pe COMPORTAMENT OBSERVAT (id-uri, taguri, pixeli, clickuri),
 nu pe clase CSS si nu pe identificatori din sursa -- de doua ori in repo-ul asta o garda a stat
 verde/rosie pe un identificator care nu mai exista in codul livrat (IZZ-0177, IZZ-0182)."""
-import os, sys, io, math
+import os, sys, io
 sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
 sys.stderr = io.TextIOWrapper(sys.stderr.buffer, encoding='utf-8')
 from playwright.sync_api import sync_playwright

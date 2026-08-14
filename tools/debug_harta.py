@@ -31,7 +31,7 @@ def main():
         print(f"[JS] errors in window: {errors}")
 
         br.close()
-        print(f"Screenshot saved to /tmp/harta-debug.png")
+        print("Screenshot saved to /tmp/harta-debug.png")
 
 if __name__ == "__main__":
     main()
