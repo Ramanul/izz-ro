@@ -66,12 +66,17 @@
     return norm(`${item.title} ${item.source}`).includes(query);
   }
 
-  function filtered() {
+  // `ignorePlace` sare peste filtrele de judet/localitate, pastrand nivelul si cautarea. E
+  // folosit de selectorul de judete: construit din `state.visible`, dupa o selectie ar ramane
+  // cu un singur buton -- cel al judetului curent -- si cine navigheaza din tastatura n-ar mai
+  // avea cum sa treaca la alt judet. Acelasi mod de esec ca harta "blocata" pe judet raportata
+  // pe 12 aug, pe alta cale (masurat: 38 de butoane -> 1).
+  function filtered(options = {}) {
     const query = norm(state.search);
     const base = state.articles.filter((item) => {
       if (state.level !== "all" && item.category !== state.level) return false;
-      if (state.selectedCounty && item.county !== state.selectedCounty) return false;
-      if (state.selectedLocality) {
+      if (!options.ignorePlace && state.selectedCounty && item.county !== state.selectedCounty) return false;
+      if (!options.ignorePlace && state.selectedLocality) {
         const localities = Array.isArray(state.selectedLocality) ? state.selectedLocality : [state.selectedLocality];
         const itemNorm = norm(item.locality);
         if (!localities.some((loc) => norm(loc) === itemNorm)) return false;
@@ -405,17 +410,29 @@
   function updateCountyPicker() {
     const picker = $("#county-picker");
     if (!picker) return;
-    const visibleCounties = new Set(state.visible.map((item) => item.county).filter(Boolean));
-    const counties = Array.from(visibleCounties).sort();
+    // Butoanele se reconstruiesc la fiecare redesenare, deci elementul care avea focusul dispare
+    // si focusul cade pe <body>. Pentru cineva care navigheaza din tastatura asta inseamna ca
+    // dupa fiecare Enter o ia de la capat cu Tab-ul. Retinem judetul focusat si il refocusam.
+    const active = document.activeElement;
+    const focusedCounty = active && active.closest && active.closest("#county-picker")
+      ? active.dataset.county : null;
+
+    const pool = filtered({ ignorePlace: true });
+    const counts = new Map();
+    for (const item of pool) {
+      if (!item.county) continue;
+      counts.set(item.county, (counts.get(item.county) || 0) + 1);
+    }
     picker.replaceChildren();
-    for (const county of counties) {
+    for (const county of Array.from(counts.keys()).sort()) {
       const button = document.createElement("button");
       button.type = "button";
       button.dataset.county = county;
-      button.textContent = `${county} · ${(state.visible.filter((item) => item.county === county) || []).length}`;
+      button.textContent = `${county} · ${counts.get(county)}`;
       button.setAttribute("aria-pressed", county === state.selectedCounty ? "true" : "false");
       button.addEventListener("click", () => selectCounty(county));
       picker.appendChild(button);
+      if (county === focusedCounty) button.focus();
     }
   }
 

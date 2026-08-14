@@ -58,6 +58,44 @@ def swipe_touch(p, x, y, dy, steps=8):
     send("touchEnd", [])
     cdp.detach()
 
+EDGE_SCAN = """(yCss) => {
+  const c = document.querySelector('#map canvas.map-canvas');
+  const rect = c.getBoundingClientRect();
+  const sx = c.width / rect.width, sy = c.height / rect.height;
+  const py = Math.round(yCss * sy);
+  if (py < 0 || py >= c.height) return null;
+  const row = c.getContext('2d').getImageData(0, py, c.width, 1).data;
+  for (let px = 0; px < c.width; px++) {
+    const i = px * 4;
+    const opaque = row[i + 3] > 8;
+    const white = row[i] > 248 && row[i + 1] > 248 && row[i + 2] > 248;
+    if (opaque && !white) return { edgeCss: px / sx, rectX: rect.x, rectY: rect.y };
+  }
+  return null;
+}"""
+
+def edge_tolerance_px(p, max_px=8):
+    """Cat de departe IN AFARA conturului tarii mai selecteaza o atingere, in pixeli CSS.
+    Cauta marginea din stanga a uscatului pe cateva linii orizontale, apoi se departeaza pas cu
+    pas si returneaza cea mai mare distanta la care inca s-a selectat un judet. None daca nu s-a
+    gasit nicio margine utilizabila -- se raporteaza ca NEVERIFICAT, nu ca reusita."""
+    r = canvas_rect(p)
+    best = None
+    for frac in (0.40, 0.50, 0.60):
+        hit = p.evaluate(EDGE_SCAN, r["h"] * frac)
+        if not hit or hit["edgeCss"] < max_px + 2:
+            continue
+        y = r["y"] + r["h"] * frac
+        for d in range(1, max_px + 1):
+            p.touchscreen.tap(r["x"] + hit["edgeCss"] - d, y)
+            p.wait_for_timeout(60)
+            if county_selected(p):
+                best = max(best or 0, d)
+                reset(p)
+            else:
+                break
+    return best
+
 def bright_fill_pixels(p):
     """Numara pixelii de umplere NEestompata (--map-fill #e8e6de). Judetele estompate sunt
     desenate cu globalAlpha .32 peste alb, deci ajung pe la #f7f6f4 -- distincte clar."""
@@ -207,34 +245,82 @@ def felia2_localitate(p):
           f"selectarea localitatii lasa campul de cautare gol (e '{search_value(p)}')")
     reset(p)
 
+    # Localitati suprapuse: mai multe inregistrari SIRUTA pot cadea pe exact acelasi punct si sunt
+    # unite intr-un singur marker. La click se filtreaza pe TOATE, nu doar pe prima (altfel stirile
+    # celorlalte dispar tacut). Gruparea se face pe cheie de coordonate EXACTA, deci daca setul de
+    # date curent nu contine niciun punct partajat, comportamentul nu se poate declansa -- si atunci
+    # se raporteaza NEVERIFICAT, nu verde. Cand apar grupuri, tinta se poate calcula din map.json
+    # (`map.viewbox` + dreptunghiul canvasului) si atunci verificarea devine: lista rezultata dintr-un
+    # singur tap contine >= 2 localitati distincte.
+    groups = p.evaluate("""async () => {
+      const d = await (await fetch('./data/map.json')).json();
+      const byPoint = new Map();
+      for (const a of d.articles || []) {
+        if (a.x == null || a.y == null) continue;
+        const k = a.x.toFixed(2) + ',' + a.y.toFixed(2);
+        if (!byPoint.has(k)) byPoint.set(k, new Set());
+        byPoint.get(k).add((a.locality || '').trim());
+      }
+      return [...byPoint.values()].filter((s) => s.size > 1).length;
+    }""")
+    if groups:
+        skip(f"localitati suprapuse: exista {groups} puncte partajate, dar tintirea lor nu e inca implementata")
+    else:
+        skip("localitati suprapuse: 0 puncte partajate in datele curente, comportamentul nu se poate declansa")
+
 def felia5_county_picker(p):
+    """Scopul feliei e ca harta sa fie folosibila FARA MOUSE. Deci verificarea trebuie sa treaca
+    prin tastatura de la cap la coada: daca butoanele ar fi <div>-uri nefocusabile, un test care
+    face `p.click()` ar ramane verde si ar rata exact defectul pentru care exista felia."""
     print("\nFELIA 5 -- selector de judet de la tastatura")
-    # Verifica ca #county-picker exista si contine butoane
     count = p.evaluate("() => document.querySelectorAll('#county-picker button').length")
     check(count > 0, f"#county-picker contine butoane de judet ({count})")
+    if not count:
+        skip("restul feliei 5: nu exista butoane de judet, nu am ce naviga")
+        return
 
-    # Tab pana la primul buton al county-picker-ului
-    p.keyboard.press("Tab")
-    p.wait_for_timeout(100)
-    focused = p.evaluate("() => document.activeElement.id || document.activeElement.textContent.slice(0, 20)")
-    # Nu e strict necesara pe focus, doar sa verific ca tab-ul ajunge
+    # Tab pana cand focusul CHIAR ajunge pe un buton din picker. Fara aserttia asta nu stim
+    # daca elementele sunt focusabile -- adica exact intrebarea feliei.
+    p.evaluate("() => document.body.focus()")
+    landed = None
+    for _ in range(60):
+        p.keyboard.press("Tab")
+        info = p.evaluate("""() => {
+          const a = document.activeElement;
+          return { inPicker: !!(a && a.closest && a.closest('#county-picker')),
+                   tag: a ? a.tagName : null, text: a ? (a.textContent || '').trim().slice(0, 24) : '' };
+        }""")
+        if info["inPicker"]:
+            landed = info
+            break
+    check(landed is not None,
+          f"focusul ajunge pe un buton de judet doar din Tab ({landed['tag'] + ' ' + landed['text'] if landed else 'niciodata'})")
+    if landed is None:
+        skip("selectarea cu Enter: focusul nu a ajuns niciodata pe picker")
+        return
 
-    # Click pe primul buton si verifica ca aria-pressed e "true"
-    first_btn = p.evaluate("() => { const b = document.querySelector('#county-picker button'); return { text: b.textContent.trim(), before: b.getAttribute('aria-pressed') }; }")
-    p.click("#county-picker button")
-    p.wait_for_timeout(150)
-    first_btn_after = p.evaluate("() => document.querySelector('#county-picker button').getAttribute('aria-pressed')")
-    check(first_btn_after == "true", f"button selectat primeste aria-pressed='true' (era '{first_btn['before']}')")
+    before = panel_count(p)
+    buttons_before = p.evaluate("() => document.querySelectorAll('#county-picker button').length")
+    # ENTER, nu click: click-ul ar testa mouse-ul, adica fix ce felia asta NU rezolva.
+    p.keyboard.press("Enter")
+    p.wait_for_timeout(200)
+    after = panel_count(p)
+    check(after != before, f"Enter pe buton filtreaza lista ('{before}' -> '{after}')")
+    check(p.evaluate("() => document.activeElement.getAttribute('aria-pressed')") == "true",
+          "butonul selectat primeste aria-pressed='true'")
 
-    # Verifica ca lista s-a filtratu (panel-count se schimba)
-    count_after = panel_count(p)
-    check(count_after != "497 știri", f"filtrarea pe judet schimba panel-count (era '120 din 497 știri', e '{count_after}')")
+    # Capcana de blocare: picker-ul se reconstruieste din stirile VIZIBILE, iar dupa selectie
+    # vizibile sunt doar ale judetului ales. Daca ar ramane un singur buton, utilizatorul de
+    # tastatura nu mai poate trece la alt judet -- acelasi mod de esec ca harta "blocata" pe
+    # judet raportata pe 12 aug, doar pe alta cale.
+    buttons_after = p.evaluate("() => document.querySelectorAll('#county-picker button').length")
+    check(buttons_after >= 2,
+          f"dupa selectie raman butoane pentru alte judete ({buttons_before} -> {buttons_after})")
+
     reset(p)
-
-    # Verifica ca dupa reset, niciun buton nu are aria-pressed="true"
     p.wait_for_timeout(150)
-    pressed_count = p.evaluate("() => document.querySelectorAll('#county-picker button[aria-pressed=\"true\"]').length")
-    check(pressed_count == 0, f"dupa reset niciun buton nu e selectat ({pressed_count} inca selectate)")
+    pressed = p.evaluate("() => document.querySelectorAll('#county-picker button[aria-pressed=\"true\"]').length")
+    check(pressed == 0, f"dupa reset niciun buton nu e selectat ({pressed} inca selectate)")
 
 def mobil_390(p):
     """Android: harta e ~359x256px la 390 latime, deci ea e cazul greu pentru zona de atins.
@@ -265,6 +351,17 @@ def mobil_390(p):
     swipe_touch(p, r["x"] + r["w"] / 2, r["y"] + r["h"] / 2, dy=-140)
     p.wait_for_timeout(200)
     check(not county_selected(p), "derularea cu degetul peste harta NU selecteaza un judet")
+    reset(p)
+
+    # Zona de atins pe langa contur, masurata in PIXELI CSS. Toleranta era exprimata in unitati
+    # viewBox, deci se evapora pe ecran mic: ~1.8px pe telefon fata de ~4px pe desktop, exact
+    # invers decat trebuie. Pragul de 3px e ales ca discriminator: sub vechea implementare e
+    # imposibil de atins, sub cea noua (10px CSS => +-5px) e comod.
+    tol = edge_tolerance_px(p)
+    if tol is None:
+        skip("toleranta de atins pe langa contur: nu am gasit o margine de judet utilizabila")
+    else:
+        check(tol >= 3, f"atingerea la {tol}px CSS in afara conturului inca selecteaza (prag 3px)")
     reset(p)
 
 
