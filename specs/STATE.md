@@ -41,8 +41,28 @@ inviting the agent onto untrusted content (e.g. `@claude apply your fixes` on a 
 PR) still feeds attacker-written text to a job with `contents: write`. That is inherent to the
 tool, documented in the action's own `docs/security.md`, and needs a design decision, not a flag.
 
-**Noticed, not fixed (out of scope):** `visual-live` failed at 2026-08-14T03:03 UTC; unrelated
-to the above, not investigated.
+**`e6988406` — third-party comments no longer reach the `@claude` prompt (`IZZ-0191`).** The gate
+above stops a stranger *starting* the agent; it does nothing about the owner starting it **on top
+of** hostile content (`@claude apply your fixes` on someone else's fork PR). Uses the mitigation
+the action's own `docs/security.md` names for this — `include_comments_by_actor`, set to the owner
+plus `claude[bot]` so threads keep continuity. Verified in the pinned source that it filters only
+the comment history (`fetcher.ts filterCommentsByActor`); the triggering comment takes a separate
+path, so invoking still works. **Do not read this as closed:** PR title, body and diff still reach
+the model — sanitized (hidden HTML, invisible chars, image alt text) but present, and no input
+filters them. **The structural backstop is branch protection on `main`, which is unset** and would
+need a bypass actor for the ~2h content bot — owner decision, not a workflow edit.
+`claude-code-review.yml` untouched on purpose (`contents: read`, read-only tools, reading the diff
+is its job).
+
+**`41428e6e` — `visual-live` was red for a dead selector, not a defect (`IZZ-0192`).** Red on every
+run from 2026-08-13T03:05 to today. `renderList()` stopped emitting `.news-item` on 2026-08-12
+(`80b79b6a`) and now builds bare `<li><a>`; the guard still waited for `#news-list .news-item`.
+**Reproduced locally against `izz-ro.pages.dev` before touching anything:** `map.json` 200 (348KB),
+0 console errors, 0 failed requests, canvas present — only the list selector never matched. The
+site was fine throughout. Now asserts `#news-list li a` and prints the count. **Third instance of
+this pattern here** (see the 8 map tests below), so the reasoning is written into the file: assert
+on an id from `index.html` plus an HTML tag, never on a CSS class. Verified live, desktop + mobile:
+all green, "lista are articole (120)".
 
 ## Landed 2026-08-13 directly on `main` (account A — announce to B, per §14)
 **`11c9a45a`** — item W below committed as-is (cascade Ollama fallback, JS-rendered town-hall
