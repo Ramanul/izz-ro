@@ -72,6 +72,13 @@ jobs:
           GH_TOKEN: ${{ github.token }}
           EVENT_NAME: ${{ github.event_name }}
           REPO: ${{ github.repository }}
+          # Body-urile prin ENV (nu interpolate in bash) -> previne injecție + syntax error
+          COMMENT_BODY: ${{ github.event.comment.body }}
+          COMMENT_USER: ${{ github.event.comment.user.login }}
+          COMMENT_URL: ${{ github.event.comment.html_url }}
+          ISSUE_TITLE: ${{ github.event.issue.title }}
+          ISSUE_URL: ${{ github.event.issue.html_url }}
+          ISSUE_BODY: ${{ github.event.issue.body }}
         run: |
           set -euo pipefail
           mkdir -p /tmp/mistral-prompt
@@ -98,24 +105,22 @@ jobs:
 
             # Contextul evenimentului: issue/PR + comentariul care a declanșat
             if [ "$EVENT_NAME" = "issue_comment" ] || [ "$EVENT_NAME" = "pull_request_review_comment" ]; then
-              COMMENT_URL="${{ github.event.comment.html_url }}"
-              COMMENT_BODY="${{ github.event.comment.body }}"
               echo "## Triggering comment"
               echo ""
-              echo "From: ${{ github.event.comment.user.login }}"
+              echo "From: $COMMENT_USER"
               echo "URL: $COMMENT_URL"
               echo ""
-              echo "$COMMENT_BODY"
+              printf '%s\n' "$COMMENT_BODY"
               echo ""
             fi
 
             if [ "$EVENT_NAME" = "issues" ]; then
               echo "## Issue"
               echo ""
-              echo "Title: ${{ github.event.issue.title }}"
-              echo "URL: ${{ github.event.issue.html_url }}"
+              echo "Title: $ISSUE_TITLE"
+              echo "URL: $ISSUE_URL"
               echo ""
-              echo "${{ github.event.issue.body }}"
+              printf '%s\n' "$ISSUE_BODY"
               echo ""
             fi
 
