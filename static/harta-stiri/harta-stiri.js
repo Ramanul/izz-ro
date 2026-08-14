@@ -8,6 +8,7 @@
     articles: [],
     visible: [],
     selectedCounty: null,
+    selectedLocality: null,
     zoomCounty: null,
     level: "all",
     search: "",
@@ -52,15 +53,41 @@
     };
   }
 
-  function filtered() {
+  // Cele doua predicate sunt separate deliberat. LISTA arata ambele feluri de potrivire --
+  // NN/g ("Scoped Search") arata ca restrangerea tacita a domeniului de cautare e modul de
+  // esec principal: cine scrie "accident" ar primi zero rezultate fara explicatie. HARTA, in
+  // schimb, aprinde doar potrivirile de LOC -- o harta care aprinde Maramuresul fiindca un
+  // titlu pomeneste Clujul minte prin constructie.
+  function matchesPlace(item, query) {
+    return norm(`${item.county} ${item.locality}`).includes(query);
+  }
+
+  function matchesText(item, query) {
+    return norm(`${item.title} ${item.source}`).includes(query);
+  }
+
+  // `ignorePlace` sare peste filtrele de judet/localitate, pastrand nivelul si cautarea. E
+  // folosit de selectorul de judete: construit din `state.visible`, dupa o selectie ar ramane
+  // cu un singur buton -- cel al judetului curent -- si cine navigheaza din tastatura n-ar mai
+  // avea cum sa treaca la alt judet. Acelasi mod de esec ca harta "blocata" pe judet raportata
+  // pe 12 aug, pe alta cale (masurat: 38 de butoane -> 1).
+  function filtered(options = {}) {
     const query = norm(state.search);
-    return state.articles.filter((item) => {
+    const base = state.articles.filter((item) => {
       if (state.level !== "all" && item.category !== state.level) return false;
-      if (state.selectedCounty && item.county !== state.selectedCounty) return false;
+      if (!options.ignorePlace && state.selectedCounty && item.county !== state.selectedCounty) return false;
+      if (!options.ignorePlace && state.selectedLocality) {
+        const localities = Array.isArray(state.selectedLocality) ? state.selectedLocality : [state.selectedLocality];
+        const itemNorm = norm(item.locality);
+        if (!localities.some((loc) => norm(loc) === itemNorm)) return false;
+      }
       if (!query) return true;
-      const haystack = norm([item.title, item.locality, item.county, item.source].join(" "));
-      return haystack.includes(query);
+      return matchesPlace(item, query) || matchesText(item, query);
     });
+    if (!query) return base;
+    // Sortare stabila: potrivirile de loc urca primele, ordinea originala se pastreaza in
+    // fiecare grup. Nimeni nu pierde rezultate; ordinea le explica.
+    return [...base].sort((a, b) => Number(matchesPlace(b, query)) - Number(matchesPlace(a, query)));
   }
 
   function pathBounds(pathData) {
@@ -92,8 +119,14 @@
     return { x, y, width: Math.max(1, right - x), height: Math.max(1, bottom - y) };
   }
 
-  function hitDistance(point, marker, extra = 5) {
-    return Math.hypot(point.x - marker.x, point.y - marker.y) <= marker.radius + extra;
+  function hitDistance(point, marker, extra = 10) {
+    // `extra` e in pixeli CSS. Se converteste in unitati viewBox ca sa insemne aceeasi distanta
+    // reala pe orice rezolutie de ecran.
+    if (!state.view || !state.canvas) return Math.hypot(point.x - marker.x, point.y - marker.y) <= marker.radius + extra;
+    const rect = state.canvas.getBoundingClientRect();
+    const scale = rect.width > 0 ? state.view.width / rect.width : 1;
+    const toleranceInViewBox = extra * scale;
+    return Math.hypot(point.x - marker.x, point.y - marker.y) <= marker.radius + toleranceInViewBox;
   }
 
   function ensureCanvas() {
@@ -113,7 +146,17 @@
     canvas.style.touchAction = "pan-y";
     canvas.style.cursor = "pointer";
     host.appendChild(canvas);
-    canvas.addEventListener("click", onCanvasClick);
+    // Garda tap-vs-drag. Cu hit-test pe tot poligonul judetului, o atingere din timpul unei
+    // derulari tactile ajunge la `click` si ar selecta un judet la intamplare -- adica am
+    // repara desktopul stricand telefonul. Pragul de 10px e ordinea de marime a `touch slop`-ului.
+    let downAt = null;
+    canvas.addEventListener("pointerdown", (e) => { downAt = { x: e.clientX, y: e.clientY }; });
+    canvas.addEventListener("pointercancel", () => { downAt = null; });
+    canvas.addEventListener("click", (event) => {
+      const moved = downAt && Math.hypot(event.clientX - downAt.x, event.clientY - downAt.y) > 10;
+      downAt = null;
+      if (!moved) onCanvasClick(event);
+    });
     state.canvas = canvas;
 
     // Butonul "Arata toate judetele" din bara de deasupra hartii iese din ecran pe mobil
@@ -130,6 +173,17 @@
     state.backButton = back;
 
     return canvas;
+  }
+
+  // isPointInPath/isPointInStroke citesc transformarea CURENTA a contextului, nu una salvata.
+  // buildMap() o lasa setata la final, dar asta e o coincidenta de ordine, nu o garantie: orice
+  // desen intercalat ar rupe hit-testul silentios -- nu crapa, doar nu mai nimereste. De-aia
+  // desenul si hit-testul trec amandoua prin functia asta.
+  function applyViewTransform(ctx, canvas, view) {
+    ctx.setTransform(
+      canvas.width / view.width, 0, 0, canvas.height / view.height,
+      -view.x * canvas.width / view.width, -view.y * canvas.height / view.height,
+    );
   }
 
   function buildMap() {
@@ -156,8 +210,7 @@
     ctx.setTransform(1, 0, 0, 1, 0, 0);
     ctx.globalAlpha = 1;
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    ctx.setTransform(canvas.width / view.width, 0, 0, canvas.height / view.height,
-      -view.x * canvas.width / view.width, -view.y * canvas.height / view.height);
+    applyViewTransform(ctx, canvas, view);
     ctx.fillStyle = palette.surface;
     ctx.fillRect(view.x, view.y, view.width, view.height);
 
@@ -170,11 +223,15 @@
       let path;
       try { path = new Path2D(pathData); } catch { continue; }
       const hasNews = count > 0;
-      const query = norm(state.search);
-      const matchesSearch = !query || state.visible.some((item) =>
-        norm(`${item.county} ${item.locality}`).includes(query));
+      // `matchesSearch` a fost STERS, nu reparat. Era o constanta recalculata de 42 de ori
+      // (nu continea `county`), deci o cautare potrivita doar pe titlu stingea toata harta.
+      // Dar nici versiunea per-judet nu era corecta: la o cautare care nu e un loc ("accident")
+      // ar fi stins tot, desi lista arata 15 rezultate -- harta si lista ar fi spus lucruri
+      // diferite. Regula corecta e mai simpla: harta arata geografia listei vizibile, atat.
+      // De ce e un articol in lista se explica in ORDINE (potrivirile de loc primele) si in
+      // eticheta din antet ("N potriviri de loc"), nu stingand harta.
       const dimmed = Boolean(
-        (state.selectedCounty && county !== state.selectedCounty) || !hasNews || !matchesSearch,
+        (state.selectedCounty && county !== state.selectedCounty) || !hasNews,
       );
 
       ctx.globalAlpha = dimmed ? 0.32 : 1;
@@ -283,6 +340,21 @@
     };
   }
 
+  // isPointInPath/isPointInStroke aplica transformarea CAII, nu PUNCTULUI: x,y se citesc in
+  // pixeli de canvas (verificat 2026-08-14 pe Chromium -- vezi IZZ-0193). Bulinele se compara in
+  // spatiul viewBox (`pointForEvent`), poligoanele in pixeli de canvas -- doua spatii, doua
+  // functii, ca sa nu se mai amestece. Greseala trecea neobservata pe desktop, unde canvasul are
+  // ~820px iar viewBox-ul ~1000 de unitati: punctul cadea alaturi, dar tot pe uscat. Pe telefon
+  // canvasul are 364px, deci un punct de 900 cadea in afara panzei si nu nimerea niciodata.
+  function devicePointForEvent(canvas, event) {
+    const r = canvas.getBoundingClientRect();
+    if (!r.width || !r.height) return null;
+    return {
+      x: ((event.clientX - r.left) / r.width) * canvas.width,
+      y: ((event.clientY - r.top) / r.height) * canvas.height,
+    };
+  }
+
   function closestHit(point, candidates, markerOf) {
     // Bulinele apropiate se pot suprapune (ex. judete mici, grupate). Alegerea primei
     // care intra in raza de atingere, indiferent de distanta reala, face ca un tap langa
@@ -299,6 +371,122 @@
     return best;
   }
 
+  // Cascada de hit-test, de la intentia cea mai precisa la cea mai iertatoare. WCAG 2.2 SC 2.5.8
+  // excepteaza explicit hartile digitale de la minimul de 24x24px ("Essential"): raza bulinei
+  // CODEAZA volumul de stiri, deci marirea ei uniforma ar sterge informatia. Calea corecta e
+  // zona de atins mai mare decat desenul -- exact ce recomanda si Apple HIG (44pt) si Material
+  // (48dp): pictograma ramane mica, zona din jurul ei creste.
+
+  function countyAtPoint(ctx, point) {
+    const inside = state.paths.find((e) => e.count > 0 && ctx.isPointInPath(e.path, point.x, point.y));
+    if (inside) return inside;
+    // Toleranta pe contur pentru judetele mici (Ilfov, Bucuresti): 10px CSS, transformata in
+    // unitati viewBox ca sa insemne aceeasi distanta reala pe orice ecran. `lineWidth` se umfla
+    // DOAR pentru interogare si se reseteaza imediat, deci desenul nu se schimba deloc.
+    const edgeToleranceCss = 10; // pixeli CSS
+    const scale = state.canvas && state.canvas.getBoundingClientRect().width > 0
+      ? state.view.width / state.canvas.getBoundingClientRect().width
+      : 1;
+    const edgeToleranceViewBox = edgeToleranceCss * scale;
+    const previous = ctx.lineWidth;
+    ctx.lineWidth = edgeToleranceViewBox;
+    try {
+      return state.paths.find((e) => e.count > 0 && ctx.isPointInStroke(e.path, point.x, point.y)) || null;
+    } finally {
+      ctx.lineWidth = previous;
+    }
+  }
+
+  // --- starea in adresa paginii ----------------------------------------------------------
+  // Toate schimbarile de stare trec prin `applyState`. Fara asta ar exista cai care muta harta
+  // fara sa mute adresa: un link partajat ar duce pe alta stare decat cea vazuta de cel care
+  // l-a trimis, iar Back ar sari de pe pagina in loc sa anuleze ultima selectie.
+
+  function urlForState() {
+    const params = new URLSearchParams();
+    if (state.level && state.level !== "all") params.set("nivel", state.level);
+    if (state.selectedCounty) params.set("judet", state.selectedCounty);
+    const loc = Array.isArray(state.selectedLocality)
+      ? state.selectedLocality
+      : (state.selectedLocality ? [state.selectedLocality] : []);
+    // Mai multe localitati pot cadea pe acelasi marker; toate intra in link, altfel cel care
+    // deschide adresa vede mai putine stiri decat cel care a trimis-o.
+    if (loc.length) params.set("loc", loc.join("|"));
+    if (state.search) params.set("q", state.search);
+    const query = params.toString();
+    return query ? `${location.pathname}?${query}` : location.pathname;
+  }
+
+  function stateFromUrl() {
+    const params = new URLSearchParams(location.search);
+    const loc = params.get("loc");
+    return {
+      level: params.get("nivel") || "all",
+      county: params.get("judet") || null,
+      locality: loc ? loc.split("|").filter(Boolean) : null,
+      query: params.get("q") || "",
+    };
+  }
+
+  function applyState(patch, { push = true, replace = false } = {}) {
+    if ("level" in patch) state.level = patch.level || "all";
+    if ("county" in patch) state.selectedCounty = patch.county || null;
+    if ("locality" in patch) state.selectedLocality = patch.locality || null;
+    if ("query" in patch) state.search = patch.query || "";
+    // `zoomCounty` nu e stare independenta, e derivata: la nivel Judetean click-ul filtreaza
+    // fara sa mareasca (decizie proprietar, 13 aug). Tinuta separat, se desincroniza.
+    state.zoomCounty = state.selectedCounty && state.level !== "judetean" ? state.selectedCounty : null;
+    state.visible = filtered();
+
+    const search = $("#map-search");
+    if (search && search.value !== state.search) search.value = state.search;
+    syncLevelButtons();
+    buildMap();
+    renderList();
+    updateStats();
+
+    if (!push && !replace) return;
+    const url = urlForState();
+    if (url === `${location.pathname}${location.search}`) return;
+    // `replaceState` la tastare: altfel fiecare litera ar lasa o intrare in istoric si Back ar
+    // trebui apasat de zece ori ca sa iasa dintr-o cautare de zece caractere.
+    if (replace) history.replaceState(null, "", url);
+    else history.pushState(null, "", url);
+  }
+
+  function selectCounty(county) {
+    applyState({ county, locality: null });
+  }
+
+  function updateCountyPicker() {
+    const picker = $("#county-picker");
+    if (!picker) return;
+    // Butoanele se reconstruiesc la fiecare redesenare, deci elementul care avea focusul dispare
+    // si focusul cade pe <body>. Pentru cineva care navigheaza din tastatura asta inseamna ca
+    // dupa fiecare Enter o ia de la capat cu Tab-ul. Retinem judetul focusat si il refocusam.
+    const active = document.activeElement;
+    const focusedCounty = active && active.closest && active.closest("#county-picker")
+      ? active.dataset.county : null;
+
+    const pool = filtered({ ignorePlace: true });
+    const counts = new Map();
+    for (const item of pool) {
+      if (!item.county) continue;
+      counts.set(item.county, (counts.get(item.county) || 0) + 1);
+    }
+    picker.replaceChildren();
+    for (const county of Array.from(counts.keys()).sort()) {
+      const button = document.createElement("button");
+      button.type = "button";
+      button.dataset.county = county;
+      button.textContent = `${county} · ${counts.get(county)}`;
+      button.setAttribute("aria-pressed", county === state.selectedCounty ? "true" : "false");
+      button.addEventListener("click", () => selectCounty(county));
+      picker.appendChild(button);
+      if (county === focusedCounty) button.focus();
+    }
+  }
+
   function onCanvasClick(event) {
     const canvas = state.canvas;
     const view = state.view;
@@ -308,27 +496,23 @@
     if (state.zoomCounty) {
       const marker = closestHit(p, state.localityMarkers, (m) => m);
       if (marker) {
-        const locality = marker.localities[0] || marker.locality;
-        state.search = locality;
-        const search = $("#map-search");
-        if (search) search.value = locality;
-        state.visible = filtered();
-        renderList();
-        updateStats();
+        // Filtrarea pe localitate are camp propriu de stare. Inainte se facea scriind
+        // localitatea in `#map-search`, ceea ce stergea ce tastase utilizatorul SI aducea,
+        // prin cautarea in titluri, articole din alte judete care doar o pomeneau.
+        // Daca mai multe localitati cad exact pe acelasi punct (deduplicare vizuala), se
+        // filtreaza pe TOATE, nu doar pe prima.
+        applyState({ locality: marker.localities || [marker.locality] });
       }
     } else {
-      const entry = closestHit(p, state.paths, (e) => e.marker);
+      // Transformarea se reafirma explicit inainte de hit-test: buildMap() o lasa setata, dar
+      // a te baza pe ordinea apelurilor face hit-testul sa cada silentios la prima schimbare.
+      const ctx = canvas.getContext("2d");
+      applyViewTransform(ctx, canvas, view);
+      const dp = devicePointForEvent(canvas, event);
+      const entry = closestHit(p, state.paths, (e) => e.marker)
+        || (dp && countyAtPoint(ctx, dp));
       if (entry) {
-        // "Județean": lista se filtreaza la judet, harta ramane pe toata tara -- se poate
-        // trece direct la alt judet fara pas de "inapoi". "Local"/"Toate": zoom pe judet,
-        // ca sa se vada UAT-urile lui (cerut de owner, 2026-08-13, dupa ce zoom-ul mereu-pornit
-        // s-a dovedit neintuitiv la nivel Judetean).
-        state.selectedCounty = entry.county;
-        if (state.level !== "judetean") state.zoomCounty = entry.county;
-        state.visible = filtered();
-        buildMap();
-        renderList();
-        updateStats();
+        selectCounty(entry.county);
       }
     }
   }
@@ -336,7 +520,8 @@
   function renderList() {
     const list = $("#news-list");
     if (!list) return;
-    const items = filtered().slice(0, 120);
+    const all = filtered();
+    const items = all.slice(0, 120);
     list.replaceChildren();
     for (const item of items) {
       const li = document.createElement("li");
@@ -350,7 +535,17 @@
       list.appendChild(li);
     }
     const count = $("#panel-count");
-    if (count) count.textContent = `${items.length} știri`;
+    if (count) {
+      const query = norm(state.search);
+      const shown = all.length > items.length
+        ? `${items.length} din ${all.length} știri`
+        : `${items.length} știri`;
+      // Cand exista o cautare, antetul spune DE CE e acolo fiecare rezultat: cate au potrivit
+      // pe loc (si stau primele in lista) si cate au intrat doar prin titlu sau sursa.
+      const places = query ? all.filter((item) => matchesPlace(item, query)).length : 0;
+      count.textContent = query ? `${shown} · ${places} potriviri de loc` : shown;
+    }
+    updateCountyPicker();
   }
 
   function updateStats() {
@@ -372,45 +567,23 @@
   }
 
   function resetSelection() {
-    state.search = "";
-    state.selectedCounty = null;
-    state.zoomCounty = null;
-    state.visible = filtered();
-    const search = $("#map-search");
-    if (search) search.value = "";
-    syncLevelButtons();
-    buildMap();
-    renderList();
-    updateStats();
+    applyState({ county: null, locality: null, query: "" });
   }
 
   function bindControls() {
     const search = $("#map-search");
     const clear = $("#clear-selection");
     if (search) search.addEventListener("input", () => {
-      state.search = search.value;
-      state.visible = filtered();
-      buildMap();
-      renderList();
-      updateStats();
+      applyState({ query: search.value }, { replace: true });
     });
     $$(".segmented [data-level]").forEach((button) => button.addEventListener("click", () => {
-      state.level = button.dataset.level || "all";
       // Schimbarea de nivel schimba INSASI regula de interactiune (zoom sau nu la click pe
       // judet) -- o selectie ramasa de la nivelul anterior ar produce o stare incoerenta
       // (ex. harta ramasa marita cand ai trecut pe Judetean, unde click-ul nu mai face zoom).
-      state.selectedCounty = null;
-      state.zoomCounty = null;
-      state.search = "";
-      const search = $("#map-search");
-      if (search) search.value = "";
-      state.visible = filtered();
-      syncLevelButtons();
-      buildMap();
-      renderList();
-      updateStats();
+      applyState({ level: button.dataset.level || "all", county: null, locality: null, query: "" });
     }));
     if (clear) clear.addEventListener("click", resetSelection);
+    window.addEventListener("popstate", () => applyState(stateFromUrl(), { push: false }));
   }
 
   function bindResize() {
@@ -444,12 +617,10 @@
     state.map = data.map || {};
     state.counties = state.map.judete || {};
     state.articles = Array.isArray(data.articles) ? data.articles : [];
-    state.visible = filtered();
-    syncLevelButtons();
-    buildMap();
+    // Starea din adresa se aplica INAINTE de prima desenare, altfel harta apare o clipa
+    // nefiltrata si abia apoi sare pe judetul din link.
+    applyState(stateFromUrl(), { push: false });
     bindResize();
-    renderList();
-    updateStats();
   }
 
   init().catch((error) => {

@@ -51,7 +51,10 @@ def main():
         p=br.new_page(viewport={'width':1280,'height':900})
         goto(p,BASE+'/static/harta-stiri/','harta','domcontentloaded'); check_map(p); p.screenshot(path=f'{SHOT_DIR}/harta-regression.png',full_page=True)
         mob=br.new_page(viewport={'width':390,'height':844},is_mobile=True,has_touch=True)
-        goto(mob,BASE+'/static/harta-stiri/','mobile','domcontentloaded'); check_map(mob,True); mob.screenshot(path=f'{SHOT_DIR}/harta-mobile-regression.png',full_page=True)
+        goto(mob,BASE+'/static/harta-stiri/','mobile','domcontentloaded')
+        # screenshot must come BEFORE check_map(), which contains a resize loop that leaves viewport at 1024px
+        mob.screenshot(path=f'{SHOT_DIR}/harta-mobile-regression.png',full_page=True)
+        check_map(mob,True)
         mob.close(); br.close()
     if fails:
         print('\nFAIL'); [print(' -',x) for x in fails]; return 1
