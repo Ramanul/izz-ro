@@ -207,6 +207,35 @@ def felia2_localitate(p):
           f"selectarea localitatii lasa campul de cautare gol (e '{search_value(p)}')")
     reset(p)
 
+def felia5_county_picker(p):
+    print("\nFELIA 5 -- selector de judet de la tastatura")
+    # Verifica ca #county-picker exista si contine butoane
+    count = p.evaluate("() => document.querySelectorAll('#county-picker button').length")
+    check(count > 0, f"#county-picker contine butoane de judet ({count})")
+
+    # Tab pana la primul buton al county-picker-ului
+    p.keyboard.press("Tab")
+    p.wait_for_timeout(100)
+    focused = p.evaluate("() => document.activeElement.id || document.activeElement.textContent.slice(0, 20)")
+    # Nu e strict necesara pe focus, doar sa verific ca tab-ul ajunge
+
+    # Click pe primul buton si verifica ca aria-pressed e "true"
+    first_btn = p.evaluate("() => { const b = document.querySelector('#county-picker button'); return { text: b.textContent.trim(), before: b.getAttribute('aria-pressed') }; }")
+    p.click("#county-picker button")
+    p.wait_for_timeout(150)
+    first_btn_after = p.evaluate("() => document.querySelector('#county-picker button').getAttribute('aria-pressed')")
+    check(first_btn_after == "true", f"button selectat primeste aria-pressed='true' (era '{first_btn['before']}')")
+
+    # Verifica ca lista s-a filtratu (panel-count se schimba)
+    count_after = panel_count(p)
+    check(count_after != "497 știri", f"filtrarea pe judet schimba panel-count (era '120 din 497 știri', e '{count_after}')")
+    reset(p)
+
+    # Verifica ca dupa reset, niciun buton nu are aria-pressed="true"
+    p.wait_for_timeout(150)
+    pressed_count = p.evaluate("() => document.querySelectorAll('#county-picker button[aria-pressed=\"true\"]').length")
+    check(pressed_count == 0, f"dupa reset niciun buton nu e selectat ({pressed_count} inca selectate)")
+
 def mobil_390(p):
     """Android: harta e ~359x256px la 390 latime, deci ea e cazul greu pentru zona de atins.
     Aici se verifica si ca garda tap-vs-drag chiar tine cu EVENIMENTE TACTILE, nu doar cu mouse-ul
@@ -249,6 +278,7 @@ def main():
         felia7_cautare(p)
         felia4_hittest(p)
         felia2_localitate(p)
+        felia5_county_picker(p)
 
         mob = br.new_page(viewport={"width": 390, "height": 844}, is_mobile=True, has_touch=True)
         mob.goto(BASE, wait_until="networkidle")

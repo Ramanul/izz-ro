@@ -71,7 +71,11 @@
     const base = state.articles.filter((item) => {
       if (state.level !== "all" && item.category !== state.level) return false;
       if (state.selectedCounty && item.county !== state.selectedCounty) return false;
-      if (state.selectedLocality && norm(item.locality) !== norm(state.selectedLocality)) return false;
+      if (state.selectedLocality) {
+        const localities = Array.isArray(state.selectedLocality) ? state.selectedLocality : [state.selectedLocality];
+        const itemNorm = norm(item.locality);
+        if (!localities.some((loc) => norm(loc) === itemNorm)) return false;
+      }
       if (!query) return true;
       return matchesPlace(item, query) || matchesText(item, query);
     });
@@ -110,8 +114,14 @@
     return { x, y, width: Math.max(1, right - x), height: Math.max(1, bottom - y) };
   }
 
-  function hitDistance(point, marker, extra = 5) {
-    return Math.hypot(point.x - marker.x, point.y - marker.y) <= marker.radius + extra;
+  function hitDistance(point, marker, extra = 10) {
+    // `extra` e in pixeli CSS. Se converteste in unitati viewBox ca sa insemne aceeasi distanta
+    // reala pe orice rezolutie de ecran.
+    if (!state.view || !state.canvas) return Math.hypot(point.x - marker.x, point.y - marker.y) <= marker.radius + extra;
+    const rect = state.canvas.getBoundingClientRect();
+    const scale = rect.width > 0 ? state.view.width / rect.width : 1;
+    const toleranceInViewBox = extra * scale;
+    return Math.hypot(point.x - marker.x, point.y - marker.y) <= marker.radius + toleranceInViewBox;
   }
 
   function ensureCanvas() {
@@ -361,19 +371,51 @@
   // CODEAZA volumul de stiri, deci marirea ei uniforma ar sterge informatia. Calea corecta e
   // zona de atins mai mare decat desenul -- exact ce recomanda si Apple HIG (44pt) si Material
   // (48dp): pictograma ramane mica, zona din jurul ei creste.
-  const EDGE_TOLERANCE = 10; // in spatiul viewBox-ului
 
   function countyAtPoint(ctx, point) {
     const inside = state.paths.find((e) => e.count > 0 && ctx.isPointInPath(e.path, point.x, point.y));
     if (inside) return inside;
-    // Toleranta pe contur pentru judetele mici (Ilfov, Bucuresti): `lineWidth` se umfla DOAR
-    // pentru interogare si se reseteaza imediat, deci desenul nu se schimba deloc.
+    // Toleranta pe contur pentru judetele mici (Ilfov, Bucuresti): 10px CSS, transformata in
+    // unitati viewBox ca sa insemne aceeasi distanta reala pe orice ecran. `lineWidth` se umfla
+    // DOAR pentru interogare si se reseteaza imediat, deci desenul nu se schimba deloc.
+    const edgeToleranceCss = 10; // pixeli CSS
+    const scale = state.canvas && state.canvas.getBoundingClientRect().width > 0
+      ? state.view.width / state.canvas.getBoundingClientRect().width
+      : 1;
+    const edgeToleranceViewBox = edgeToleranceCss * scale;
     const previous = ctx.lineWidth;
-    ctx.lineWidth = EDGE_TOLERANCE;
+    ctx.lineWidth = edgeToleranceViewBox;
     try {
       return state.paths.find((e) => e.count > 0 && ctx.isPointInStroke(e.path, point.x, point.y)) || null;
     } finally {
       ctx.lineWidth = previous;
+    }
+  }
+
+  function selectCounty(county) {
+    state.selectedLocality = null;
+    state.selectedCounty = county;
+    if (state.level !== "judetean") state.zoomCounty = county;
+    state.visible = filtered();
+    buildMap();
+    renderList();
+    updateStats();
+  }
+
+  function updateCountyPicker() {
+    const picker = $("#county-picker");
+    if (!picker) return;
+    const visibleCounties = new Set(state.visible.map((item) => item.county).filter(Boolean));
+    const counties = Array.from(visibleCounties).sort();
+    picker.replaceChildren();
+    for (const county of counties) {
+      const button = document.createElement("button");
+      button.type = "button";
+      button.dataset.county = county;
+      button.textContent = `${county} · ${(state.visible.filter((item) => item.county === county) || []).length}`;
+      button.setAttribute("aria-pressed", county === state.selectedCounty ? "true" : "false");
+      button.addEventListener("click", () => selectCounty(county));
+      picker.appendChild(button);
     }
   }
 
@@ -389,7 +431,9 @@
         // Filtrarea pe localitate are camp propriu de stare. Inainte se facea scriind
         // localitatea in `#map-search`, ceea ce stergea ce tastase utilizatorul SI aducea,
         // prin cautarea in titluri, articole din alte judete care doar o pomeneau.
-        state.selectedLocality = marker.localities[0] || marker.locality;
+        // Daca mai multe localitati cad exact pe acelasi punct (deduplicare vizuala), se
+        // filtreaza pe TOATE, nu doar pe prima.
+        state.selectedLocality = marker.localities || [marker.locality];
         state.visible = filtered();
         renderList();
         updateStats();
@@ -403,17 +447,7 @@
       const entry = closestHit(p, state.paths, (e) => e.marker)
         || (dp && countyAtPoint(ctx, dp));
       if (entry) {
-        state.selectedLocality = null;
-        // "Județean": lista se filtreaza la judet, harta ramane pe toata tara -- se poate
-        // trece direct la alt judet fara pas de "inapoi". "Local"/"Toate": zoom pe judet,
-        // ca sa se vada UAT-urile lui (cerut de owner, 2026-08-13, dupa ce zoom-ul mereu-pornit
-        // s-a dovedit neintuitiv la nivel Judetean).
-        state.selectedCounty = entry.county;
-        if (state.level !== "judetean") state.zoomCounty = entry.county;
-        state.visible = filtered();
-        buildMap();
-        renderList();
-        updateStats();
+        selectCounty(entry.county);
       }
     }
   }
@@ -446,6 +480,7 @@
       const places = query ? all.filter((item) => matchesPlace(item, query)).length : 0;
       count.textContent = query ? `${shown} · ${places} potriviri de loc` : shown;
     }
+    updateCountyPicker();
   }
 
   function updateStats() {
