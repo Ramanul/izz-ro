@@ -12,7 +12,47 @@
 > wave (all 14 domains are in `config.SOURCES`). Everything below was **verified against the code
 > today**, not copied forward.
 
-**Updated:** 2026-08-14 (account A — the @claude workflow gate; see this line before older ones)
+**Updated:** 2026-08-14 20:15 UTC (account B — CI gate + Mistral; see this line before older ones)
+
+## Landed 2026-08-14 evening via PR (account B — announced to A in `TASKS-B.md`)
+
+**`f5ec83b1` (#180) — `main` itself failed ruff, so the `pytest` check was red on EVERY open
+PR.** `tests.yml` runs `ruff` before the suite; since `cc16432` that step exited 1 on `main`
+(F401 ×2, F541 ×3 in `tools/`), so the job never reached the tests. A documentation-only PR
+(#179) showed red for it. **The first question on an unexplained red check is "does it fail on
+`main` too?"** — here it did, for 1h34m. Fixed; suite 871 passed, HTML gate green.
+
+**`a7d9f85e` (#181) — `@mistralai` went red whenever `vibe` had nothing to change.** Measured
+on run `31788232683`, not guessed: the commit step's `exit 0` exits the STEP, not the job, so
+the branch never reached the remote, while `Open PR` guarded only on `env.BRANCH_NAME != ''`
+— true either way, since the branch is created BEFORE `vibe` runs. GitHub answered "No commits
+between main and mistral/issue-175-…", and the issue got "❌ @mistralai a eșuat" for what was a
+successful no-op. Now gated on an explicit `PUSHED` flag written on both paths.
+`tests/test_workflow_mistral_pr_gate.py` **runs the step's real script** in a temp git repo
+rather than reading the `if:` text; mutation-verified (guard removed → 2 of 4 fail).
+**The security gate and the ENV-passing injection fix (#177) are untouched — do not rewrite
+them.** Also merged: **`003b5347` (#179)** account B's handoff journal, **`a104c020` (#169)**
+codeql-action v4.37.5→v4.37.6 (SHA-pinned).
+
+**Left open on purpose, with reasons — do not merge these on trust:** **#170**
+(claude-code-action → a new SHA) is the only PR that changes third-party code running with
+`contents: write` and the owner's token; the current SHA was read and verified at `IZZ-0189`,
+and a new one voids that review. **#171** (setup-node v4→v7, tag-pinned, not SHA) cannot be
+verified without running `harta-data.yml`, which has `contents: write` and writes map data.
+
+**`IZZ-0193`-adjacent correction — PR #163 is NOT redundant, contrary to the earlier handoff.**
+Compared line by line against `static/calc-salariu.js` on `main`: `main` uses
+`floor((brut-minim)/50)` where the art. 77 table needs `ceil` (at brut = minim+10 the law gives
+19,5%, `main` gives 20% — one tranche too generous, correct only on exact multiples of 50), and
+`main` lacks the alin. (2) cap ("în limita venitului impozabil lunar realizat"). Not merged: its
+base is from 8 August and overlaps today's code. **Do not close it as redundant** — it needs a
+small slice on current code, owner's call.
+
+**Blocked sessions, cause named:** `session_01LjwFA8QXtzFvBF5NZpLJDK` stalled on the 5-hour cap
+(reset 19:30 UTC), not on a defect; its work was fully pushed. The weekly cap sat at
+`allowed_warning` with ~10 sessions open on this repo in one day — that, not any single session,
+is the constraint. **A cloud session cannot reach bridge sessions**: `ListAgents` returns "No
+reachable agents", so unsaved WIP on the owner's machine is invisible from here.
 
 ## Landed 2026-08-14 directly on `main` (account A — announce to B, per §14)
 

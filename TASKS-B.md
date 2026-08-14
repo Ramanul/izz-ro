@@ -250,3 +250,52 @@ Două puncte concrete din grămadă:
   au muncă necomisă la ele, **nimeni nu o vede de aici**. Astea două sunt cele mai probabile
   purtătoare — sunt marcate review-ready și au rulat azi.
 - N-am rulat teste și n-am construit site-ul: sesiunea nu atinge cod.
+
+---
+
+## 2026-08-14 20:15 — B: continuarea sesiunii blocate. Trei corecții la ce ți-am predat mai sus.
+
+Sesiunea precedentă (`session_01LjwFA8QXtzFvBF5NZpLJDK`) s-a oprit în plafonul de 5 ore
+(`You've hit your session limit`, reset 19:30 UTC) cu PR #179 lăsat draft. Reluată de aici.
+Jurnal: `sessions/B/2026-08-14-2000-sesiunea-mistral-blocata-si-poarta-de-lint.md`.
+
+### 1. `main` pica lintul — de aia era CI roșu peste tot, nu din vina PR-urilor
+`tests.yml` rulează `ruff` **înaintea** suitei. Din `cc16432` pasul ăla ieșea cu 1 pe `main`
+însuși (5 constatări F401/F541 în `tools/`), deci jobul `pytest` nu ajungea niciodată la teste
+și **orice PR deschis apărea roșu** — inclusiv #179, care n-are nicio linie de cod.
+Reparat, `f5ec83b1`. **Dacă vezi un check roșu inexplicabil, prima întrebare e „pică și pe
+`main`?"** — aici răspunsul a fost da, timp de 1h34m.
+
+### 2. `@mistralai` avea un defect real, nu doar „e configurat"
+Din 28 de rulări, ultimele două reale au fost roșii. `vibe` a rulat curat și a decis corect că
+n-are ce schimba; pasul de commit a făcut `exit 0` — care iese din **pas**, nu din job — deci
+ramura n-a ajuns pe remote, iar `Open PR` a rulat oricum (`if: env.BRANCH_NAME != ''`, adevărat
+în ambele cazuri, fiindcă ramura se creează înainte de `vibe`). GitHub a răspuns
+„No commits between main and mistral/issue-N-…", job roșu și „❌ @mistralai a eșuat" pe issue,
+pentru un succes fără modificări. Reparat cu un steag `PUSHED` + `tests/test_workflow_mistral_pr_gate.py`,
+care rulează scriptul real al pasului, nu doar citește `if`-ul (PR #181).
+
+### 3. PR #163 NU e redundant — corectez ce ți-am scris mai sus
+Verificat linie cu linie față de `static/calc-salariu.js` de pe `main`:
+- `main` folosește `floor((brut-minim)/50)`, tabelul din art. 77 cere `ceil`. La brut = minim+10
+  legea dă 19,5%, `main` dă 20% — **o tranșă prea generos**, corect doar pe multiplii de 50.
+- `main` n-are plafonul de la alin. (2) („în limita venitului impozabil lunar realizat").
+
+Nu l-am făcut merge: baza lui e din 8 august și se suprapune peste codul de acum. **Nu-l închide
+ca redundant** — se rezolvă cu o felie mică pe codul actual (`floor`→`ceil` + plafonul alin. 2),
+păstrând citarea din #163. Decizia e a proprietarului.
+
+### Ce am făcut merge și ce am lăsat deschis, cu motiv
+- **merged:** #180 (lint), #179 (predarea ta), #169 (codeql-action pe SHA), #181 (fix Mistral).
+- **lăsat deschis #170** (claude-code-action → SHA nou): singurul PR care schimbă cod terț ce
+  rulează cu `contents: write` și tokenul proprietarului. SHA-ul actual a fost citit și verificat
+  la `IZZ-0189`; unul nou anulează verificarea. De reluat review-ul, nu de dat merge pe încredere.
+- **lăsat deschis #171** (setup-node v4→v7, pe tag, nu pe SHA): nu se poate verifica fără să
+  rulezi `harta-data.yml`, care are `contents: write` și scrie datele hărții.
+
+### Despre WIP-ul din celelalte sesiuni
+Sesiunile de hartă de azi și-au comis munca pe `main` (17:54–19:25), iar
+`fix/harta-lista-rezultate` e integrată complet. **Dar `ListAgents` din cloud întoarce
+„No reachable agents"** — sesiunile de pe mașina proprietarului nu-mi sunt accesibile, deci
+dacă „Final cleanup and mobile map functionality" (activă la 19:45, după ultimul commit) are
+ceva necomis, de aici nu se vede. Un `git status` acolo e singurul mod.
