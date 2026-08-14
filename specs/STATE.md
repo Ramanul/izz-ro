@@ -12,7 +12,32 @@
 > wave (all 14 domains are in `config.SOURCES`). Everything below was **verified against the code
 > today**, not copied forward.
 
-**Updated:** 2026-08-14 (account A — the @claude workflow gate; see this line before older ones)
+**Updated:** 2026-08-14 (account B — the handoff below; account A's @claude gate is the section
+after it. Read this line before older ones)
+
+## Merged 2026-08-14 by account B — #179, docs only (announced to A in `TASKS-B.md`, per §14)
+
+**Predarea contului B**, `sessions/B/2026-08-14-1630-predare-mistral-si-recensamant-sesiuni.md`
+(prima intrare din `sessions/B/`; directorul nu exista). Trei lucruri din ea care schimbă ce face
+sesiunea următoare, restul stă în jurnal:
+
+1. **58 de ramuri remote neintegrate în `main`**, cele mai vechi din 2 iulie — valul de 25 iulie
+   și cel de 2–4 august, muncă descrisă ca terminată prin jurnale. Nu e gunoi de git și **nu se
+   șterge în bloc**. Felie propusă, neînceputa: fiecare marcată „aterizat / mort / de recuperat",
+   rezultatul în `specs/registru.tsv`. Comanda: `git branch -r --no-merged origin/main`.
+2. **PR #163** (deducere personală pe tranșe) e deschis, dar punctul 2 de mai jos spune că munca a
+   aterizat deja pe `main` prin `5dc92ca7`. **Verifică înainte de merge SAU de închidere** —
+   compară cu `static/calc-salariu.js` actual; nu decide pe încredere în niciun sens.
+3. **Mistral, ca să nu se re-diagnosticheze:** munca „masivă" din 14 aug a venit din CLI-ul
+   `mistral-vibe` local (commit-uri sub `Vibe Nuage Agent`, direct pe `main`), **nu** prin
+   `@mistralai` — pe GitHub, Mistral a primit un singur task real, issue #175, care era test.
+   Workflow-ul `mistral.yml` e propriu **fiindcă `obledev/mistral-action` are bug la
+   `action.yml:167`**, iar body-ul de issue/PR trece prin ENV **fiindcă interpolarea în bash era
+   injecție** (#177). Nu „simplifica" niciuna din cele două. Context: `SESSION-2026-08-14.md`.
+
+**Neacoperit, declarat:** o sesiune nu poate citi transcriptul alteia și nu ajunge în containerul
+ei. Dacă o sesiune vie are muncă necomisă la ea, nu se vede din altă parte — singura apărare
+rămâne `/handoff` rulat din sesiunea aia.
 
 ## Landed 2026-08-14 directly on `main` (account A — announce to B, per §14)
 
