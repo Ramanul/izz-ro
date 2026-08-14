@@ -205,3 +205,48 @@ Din cele **3 probleme reale** rămase după feedcheck (`30096781843`):
   această cauză — de reverificat după fix.
 
 Dacă preferi altă împărțire, scrie în `TASKS-A.md` și mă aliniez.
+
+---
+
+## 2026-08-14 — B: predare după integrarea Mistral + inventarul WIP-ului
+
+Sesiune de inventar și predare, la cererea proprietarului („salvează tot în toate sesiunile și
+predă pentru celălalt cont inclusiv cu mistral"). Jurnalul complet, cu dovezi și cronologie:
+**`sessions/B/2026-08-14-1630-predare-mistral-si-recensamant-sesiuni.md`**. Aici doar ce ai TU de
+făcut sau de știut, A.
+
+### Ce e viu pe partea Mistral (nu re-diagnostica)
+- `.github/workflows/mistral.yml` e pe `main` și funcțional: `@mistralai` pe issue/PR → branch
+  `mistral/issue-N-<ts>` → PR cu label `mistral`. Poartă `author_association ∈ {OWNER, COLLABORATOR}`.
+- **Nu-l muta pe `obledev/mistral-action`** — bug la `action.yml:167`, de aia e workflow propriu.
+- **Nu reintroduce interpolarea body-ului în bash** — a fost injecție, reparată prin ENV (#177).
+- Munca „masivă" cu Mistral din 14 aug s-a făcut din CLI-ul `mistral-vibe` local (commit-uri sub
+  `Vibe Nuage Agent`, direct pe `main`), nu prin `@mistralai`. Pe GitHub, Mistral a primit un
+  singur task real: issue #175, care era test. Rezumatul acelei sesiuni: `SESSION-2026-08-14.md`.
+- `opencode.json` folosește `mistral/codestral-latest` ca `small_model` — deliberat, ca să nu
+  ardă cota Zen și să nu depindă de cheia Gemini contendată. Nu-l muta înapoi pe Gemini.
+
+### Ce am descoperit și e treaba cuiva, nu a mea singură
+**58 de ramuri remote neintegrate în `main`**, cele mai vechi din 2 iulie (`git branch -r
+--no-merged origin/main`). Nu e gunoi de git — includ munca din valul de 25 iulie și din 2–4
+august, descrisă ca terminată prin jurnale. Propun **o felie separată**: trecere prin toate,
+fiecare marcată „aterizat / mort / de recuperat", rezultatul în `specs/registru.tsv`. Fără asta,
+fiecare sesiune nouă redescoperă aceeași grămadă.
+
+Două puncte concrete din grămadă:
+1. **PR #163** (deducere personală pe tranșe) e încă deschis, dar `STATE.md` punctul 2 spune că
+   munca a aterizat deja pe `main` prin `5dc92ca7`. **Verifică înainte de merge sau de închidere** —
+   nu-l închide pe încredere, și nu-l merge fără să compari cu ce e deja în `static/calc-salariu.js`.
+2. **`claude/feedcheck-real-fetcher`** — în `TASKS-B.md`, 24 iulie, m-am angajat să rulez
+   `feedcheck.yml` pe ramura ta prin `workflow_dispatch` înainte de merge. **Angajamentul e
+   neonorat de trei săptămâni.** Dacă ramura mai contează, spune-mi și îl rulez; dacă a fost
+   depășită de altceva, marchează-o moartă și o scoatem din listă.
+
+### Ce NU am făcut, ca să nu pară acoperit
+- **N-am atins `specs/STATE.md`** — îl scrie sesiunea care integrează în `main` (§14 + `/handoff`
+  pasul 4). Sesiunea asta livrează o ramură + PR draft, deci n-are dreptul.
+- **N-am trezit celelalte sesiuni** ca să-și comită WIP-ul. Nu pot citi transcriptul altei sesiuni
+  și nu pot ajunge în containerul ei; dacă „Recensământ primării România" sau „Hartă cu text final"
+  au muncă necomisă la ele, **nimeni nu o vede de aici**. Astea două sunt cele mai probabile
+  purtătoare — sunt marcate review-ready și au rulat azi.
+- N-am rulat teste și n-am construit site-ul: sesiunea nu atinge cod.
