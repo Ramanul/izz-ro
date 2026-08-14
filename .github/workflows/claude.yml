@@ -64,6 +64,24 @@ jobs:
         uses: anthropics/claude-code-action@be7b93b1907a4abad570368f3c74b6fe3807510b # v1
         with:
           claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+          # The gate above stops a STRANGER from starting the agent. It does not cover the owner
+          # starting it on top of hostile content -- "@claude apply your fixes" on a fork PR
+          # written by someone else feeds that person's text to a job with `contents: write`.
+          # This is the mitigation the action's own docs/security.md recommends for exactly that
+          # ("on public repos, use include_comments_by_actor to allowlist which users' comments
+          # are passed to Claude"). Comment history reaching the model is now the owner's plus
+          # Claude's own replies, so a thread keeps its continuity; every other commenter --
+          # including a fork PR author and every review bot -- is dropped from the prompt.
+          # The triggering comment travels a different path (create-prompt sanitizes it, the
+          # filter does not touch it), so invoking still works normally.
+          #
+          # What this does NOT cover, stated so it is not read as closed: the PR title, body and
+          # diff still reach the model. They are sanitized (hidden HTML, invisible characters,
+          # image alt text) but they are present, and no input filters them. Reviewing a fork
+          # PR's raw content before invoking Claude on it stays a human step. The structural
+          # backstop is branch protection on `main` -- unset today, and it needs a bypass for the
+          # content bot that commits every ~2h, so it is the owner's call, not a workflow edit.
+          include_comments_by_actor: "Ramanul,claude[bot]"
 
       - name: Token missing notice
         if: env.HAS_TOKEN != 'true'
