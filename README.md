@@ -55,8 +55,6 @@ Astfel: Actions face fetch+AI și salvează starea → commit-ul declanșează C
 2. La registrar (ICI/ROTLD) setezi acele nameservere pentru izz.ro.
 3. În Pages → proiectul izz-ro → Custom domains → adaugi izz.ro.
 
-### Comutare pe Claude API
-Adaugă secret `ANTHROPIC_API_KEY` în GitHub și pune `AI_PROVIDER: anthropic` în `build.yml`.
 
 ### Comutare pe Claude API
 Adaugă secret `ANTHROPIC_API_KEY` și pune `AI_PROVIDER: anthropic` în `build.yml`. Restul rămâne identic.
