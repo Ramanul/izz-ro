@@ -8,6 +8,7 @@
     articles: [],
     visible: [],
     selectedCounty: null,
+    selectedLocality: null,
     zoomCounty: null,
     level: "all",
     search: "",
@@ -52,15 +53,32 @@
     };
   }
 
+  // Cele doua predicate sunt separate deliberat. LISTA arata ambele feluri de potrivire --
+  // NN/g ("Scoped Search") arata ca restrangerea tacita a domeniului de cautare e modul de
+  // esec principal: cine scrie "accident" ar primi zero rezultate fara explicatie. HARTA, in
+  // schimb, aprinde doar potrivirile de LOC -- o harta care aprinde Maramuresul fiindca un
+  // titlu pomeneste Clujul minte prin constructie.
+  function matchesPlace(item, query) {
+    return norm(`${item.county} ${item.locality}`).includes(query);
+  }
+
+  function matchesText(item, query) {
+    return norm(`${item.title} ${item.source}`).includes(query);
+  }
+
   function filtered() {
     const query = norm(state.search);
-    return state.articles.filter((item) => {
+    const base = state.articles.filter((item) => {
       if (state.level !== "all" && item.category !== state.level) return false;
       if (state.selectedCounty && item.county !== state.selectedCounty) return false;
+      if (state.selectedLocality && norm(item.locality) !== norm(state.selectedLocality)) return false;
       if (!query) return true;
-      const haystack = norm([item.title, item.locality, item.county, item.source].join(" "));
-      return haystack.includes(query);
+      return matchesPlace(item, query) || matchesText(item, query);
     });
+    if (!query) return base;
+    // Sortare stabila: potrivirile de loc urca primele, ordinea originala se pastreaza in
+    // fiecare grup. Nimeni nu pierde rezultate; ordinea le explica.
+    return [...base].sort((a, b) => Number(matchesPlace(b, query)) - Number(matchesPlace(a, query)));
   }
 
   function pathBounds(pathData) {
@@ -113,7 +131,17 @@
     canvas.style.touchAction = "pan-y";
     canvas.style.cursor = "pointer";
     host.appendChild(canvas);
-    canvas.addEventListener("click", onCanvasClick);
+    // Garda tap-vs-drag. Cu hit-test pe tot poligonul judetului, o atingere din timpul unei
+    // derulari tactile ajunge la `click` si ar selecta un judet la intamplare -- adica am
+    // repara desktopul stricand telefonul. Pragul de 10px e ordinea de marime a `touch slop`-ului.
+    let downAt = null;
+    canvas.addEventListener("pointerdown", (e) => { downAt = { x: e.clientX, y: e.clientY }; });
+    canvas.addEventListener("pointercancel", () => { downAt = null; });
+    canvas.addEventListener("click", (event) => {
+      const moved = downAt && Math.hypot(event.clientX - downAt.x, event.clientY - downAt.y) > 10;
+      downAt = null;
+      if (!moved) onCanvasClick(event);
+    });
     state.canvas = canvas;
 
     // Butonul "Arata toate judetele" din bara de deasupra hartii iese din ecran pe mobil
@@ -130,6 +158,17 @@
     state.backButton = back;
 
     return canvas;
+  }
+
+  // isPointInPath/isPointInStroke citesc transformarea CURENTA a contextului, nu una salvata.
+  // buildMap() o lasa setata la final, dar asta e o coincidenta de ordine, nu o garantie: orice
+  // desen intercalat ar rupe hit-testul silentios -- nu crapa, doar nu mai nimereste. De-aia
+  // desenul si hit-testul trec amandoua prin functia asta.
+  function applyViewTransform(ctx, canvas, view) {
+    ctx.setTransform(
+      canvas.width / view.width, 0, 0, canvas.height / view.height,
+      -view.x * canvas.width / view.width, -view.y * canvas.height / view.height,
+    );
   }
 
   function buildMap() {
@@ -156,8 +195,7 @@
     ctx.setTransform(1, 0, 0, 1, 0, 0);
     ctx.globalAlpha = 1;
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    ctx.setTransform(canvas.width / view.width, 0, 0, canvas.height / view.height,
-      -view.x * canvas.width / view.width, -view.y * canvas.height / view.height);
+    applyViewTransform(ctx, canvas, view);
     ctx.fillStyle = palette.surface;
     ctx.fillRect(view.x, view.y, view.width, view.height);
 
@@ -170,11 +208,15 @@
       let path;
       try { path = new Path2D(pathData); } catch { continue; }
       const hasNews = count > 0;
-      const query = norm(state.search);
-      const matchesSearch = !query || state.visible.some((item) =>
-        norm(`${item.county} ${item.locality}`).includes(query));
+      // `matchesSearch` a fost STERS, nu reparat. Era o constanta recalculata de 42 de ori
+      // (nu continea `county`), deci o cautare potrivita doar pe titlu stingea toata harta.
+      // Dar nici versiunea per-judet nu era corecta: la o cautare care nu e un loc ("accident")
+      // ar fi stins tot, desi lista arata 15 rezultate -- harta si lista ar fi spus lucruri
+      // diferite. Regula corecta e mai simpla: harta arata geografia listei vizibile, atat.
+      // De ce e un articol in lista se explica in ORDINE (potrivirile de loc primele) si in
+      // eticheta din antet ("N potriviri de loc"), nu stingand harta.
       const dimmed = Boolean(
-        (state.selectedCounty && county !== state.selectedCounty) || !hasNews || !matchesSearch,
+        (state.selectedCounty && county !== state.selectedCounty) || !hasNews,
       );
 
       ctx.globalAlpha = dimmed ? 0.32 : 1;
@@ -283,6 +325,21 @@
     };
   }
 
+  // isPointInPath/isPointInStroke aplica transformarea CAII, nu PUNCTULUI: x,y se citesc in
+  // pixeli de canvas (verificat 2026-08-14 pe Chromium -- vezi IZZ-0193). Bulinele se compara in
+  // spatiul viewBox (`pointForEvent`), poligoanele in pixeli de canvas -- doua spatii, doua
+  // functii, ca sa nu se mai amestece. Greseala trecea neobservata pe desktop, unde canvasul are
+  // ~820px iar viewBox-ul ~1000 de unitati: punctul cadea alaturi, dar tot pe uscat. Pe telefon
+  // canvasul are 364px, deci un punct de 900 cadea in afara panzei si nu nimerea niciodata.
+  function devicePointForEvent(canvas, event) {
+    const r = canvas.getBoundingClientRect();
+    if (!r.width || !r.height) return null;
+    return {
+      x: ((event.clientX - r.left) / r.width) * canvas.width,
+      y: ((event.clientY - r.top) / r.height) * canvas.height,
+    };
+  }
+
   function closestHit(point, candidates, markerOf) {
     // Bulinele apropiate se pot suprapune (ex. judete mici, grupate). Alegerea primei
     // care intra in raza de atingere, indiferent de distanta reala, face ca un tap langa
@@ -299,6 +356,27 @@
     return best;
   }
 
+  // Cascada de hit-test, de la intentia cea mai precisa la cea mai iertatoare. WCAG 2.2 SC 2.5.8
+  // excepteaza explicit hartile digitale de la minimul de 24x24px ("Essential"): raza bulinei
+  // CODEAZA volumul de stiri, deci marirea ei uniforma ar sterge informatia. Calea corecta e
+  // zona de atins mai mare decat desenul -- exact ce recomanda si Apple HIG (44pt) si Material
+  // (48dp): pictograma ramane mica, zona din jurul ei creste.
+  const EDGE_TOLERANCE = 10; // in spatiul viewBox-ului
+
+  function countyAtPoint(ctx, point) {
+    const inside = state.paths.find((e) => e.count > 0 && ctx.isPointInPath(e.path, point.x, point.y));
+    if (inside) return inside;
+    // Toleranta pe contur pentru judetele mici (Ilfov, Bucuresti): `lineWidth` se umfla DOAR
+    // pentru interogare si se reseteaza imediat, deci desenul nu se schimba deloc.
+    const previous = ctx.lineWidth;
+    ctx.lineWidth = EDGE_TOLERANCE;
+    try {
+      return state.paths.find((e) => e.count > 0 && ctx.isPointInStroke(e.path, point.x, point.y)) || null;
+    } finally {
+      ctx.lineWidth = previous;
+    }
+  }
+
   function onCanvasClick(event) {
     const canvas = state.canvas;
     const view = state.view;
@@ -308,17 +386,24 @@
     if (state.zoomCounty) {
       const marker = closestHit(p, state.localityMarkers, (m) => m);
       if (marker) {
-        const locality = marker.localities[0] || marker.locality;
-        state.search = locality;
-        const search = $("#map-search");
-        if (search) search.value = locality;
+        // Filtrarea pe localitate are camp propriu de stare. Inainte se facea scriind
+        // localitatea in `#map-search`, ceea ce stergea ce tastase utilizatorul SI aducea,
+        // prin cautarea in titluri, articole din alte judete care doar o pomeneau.
+        state.selectedLocality = marker.localities[0] || marker.locality;
         state.visible = filtered();
         renderList();
         updateStats();
       }
     } else {
-      const entry = closestHit(p, state.paths, (e) => e.marker);
+      // Transformarea se reafirma explicit inainte de hit-test: buildMap() o lasa setata, dar
+      // a te baza pe ordinea apelurilor face hit-testul sa cada silentios la prima schimbare.
+      const ctx = canvas.getContext("2d");
+      applyViewTransform(ctx, canvas, view);
+      const dp = devicePointForEvent(canvas, event);
+      const entry = closestHit(p, state.paths, (e) => e.marker)
+        || (dp && countyAtPoint(ctx, dp));
       if (entry) {
+        state.selectedLocality = null;
         // "Județean": lista se filtreaza la judet, harta ramane pe toata tara -- se poate
         // trece direct la alt judet fara pas de "inapoi". "Local"/"Toate": zoom pe judet,
         // ca sa se vada UAT-urile lui (cerut de owner, 2026-08-13, dupa ce zoom-ul mereu-pornit
@@ -352,9 +437,14 @@
     }
     const count = $("#panel-count");
     if (count) {
-      count.textContent = all.length > items.length
+      const query = norm(state.search);
+      const shown = all.length > items.length
         ? `${items.length} din ${all.length} știri`
         : `${items.length} știri`;
+      // Cand exista o cautare, antetul spune DE CE e acolo fiecare rezultat: cate au potrivit
+      // pe loc (si stau primele in lista) si cate au intrat doar prin titlu sau sursa.
+      const places = query ? all.filter((item) => matchesPlace(item, query)).length : 0;
+      count.textContent = query ? `${shown} · ${places} potriviri de loc` : shown;
     }
   }
 
@@ -379,6 +469,7 @@
   function resetSelection() {
     state.search = "";
     state.selectedCounty = null;
+    state.selectedLocality = null;
     state.zoomCounty = null;
     state.visible = filtered();
     const search = $("#map-search");
@@ -405,6 +496,7 @@
       // judet) -- o selectie ramasa de la nivelul anterior ar produce o stare incoerenta
       // (ex. harta ramasa marita cand ai trecut pe Judetean, unde click-ul nu mai face zoom).
       state.selectedCounty = null;
+      state.selectedLocality = null;
       state.zoomCounty = null;
       state.search = "";
       const search = $("#map-search");
