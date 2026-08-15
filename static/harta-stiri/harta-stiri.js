@@ -119,14 +119,30 @@
     return { x, y, width: Math.max(1, right - x), height: Math.max(1, bottom - y) };
   }
 
-  function hitDistance(point, marker, extra = 10) {
-    // `extra` e in pixeli CSS. Se converteste in unitati viewBox ca sa insemne aceeasi distanta
-    // reala pe orice rezolutie de ecran.
-    if (!state.view || !state.canvas) return Math.hypot(point.x - marker.x, point.y - marker.y) <= marker.radius + extra;
+  // Minimul zonei de atins, in pixeli CSS (Apple HIG 44pt, Material 48dp). WCAG 2.2 SC 2.5.8
+  // excepteaza explicit hartile digitale de la minimul de 24x24 ("Essential") -- dar exceptarea
+  // le face conforme, nu utilizabile. Masurat 2026-08-12 pe 390px latime: 24 din 42 de judete
+  // sub 44px (cel mai mic 9x15px), bulinele la ~11,7px. Raza bulinei CODEAZA numarul de stiri,
+  // deci nu poate creste uniform fara sa stearga informatia: creste ZONA DE ATINS, desenul nu.
+  const TINTA_MIN_CSS = 44;
+
+  function unitatiPerPixelCss() {
+    // Unitati viewBox per pixel CSS. `null` cand canvasul nu e inca masurabil.
+    if (!state.view || !state.canvas) return null;
     const rect = state.canvas.getBoundingClientRect();
-    const scale = rect.width > 0 ? state.view.width / rect.width : 1;
-    const toleranceInViewBox = extra * scale;
-    return Math.hypot(point.x - marker.x, point.y - marker.y) <= marker.radius + toleranceInViewBox;
+    return rect.width > 0 ? state.view.width / rect.width : null;
+  }
+
+  function hitDistance(point, marker, extra = 10) {
+    // `point` si `marker` sunt in unitati viewBox (vezi `pointForEvent`); `extra` e in pixeli
+    // CSS si se converteste, ca sa insemne aceeasi distanta reala pe orice rezolutie.
+    const scale = unitatiPerPixelCss();
+    if (scale === null) return Math.hypot(point.x - marker.x, point.y - marker.y) <= marker.radius + extra;
+    const razaCss = marker.radius / scale;
+    // Podeaua de 44px: o bulina desenata cu raza de ~5,8px CSS primea 15,8px de raza utila,
+    // adica 31,7px diametru -- sub minim. Acum primeste 22px, cu desenul neschimbat.
+    const razaUtilaCss = Math.max(razaCss + extra, TINTA_MIN_CSS / 2);
+    return Math.hypot(point.x - marker.x, point.y - marker.y) <= razaUtilaCss * scale;
   }
 
   function ensureCanvas() {
@@ -377,21 +393,57 @@
   // zona de atins mai mare decat desenul -- exact ce recomanda si Apple HIG (44pt) si Material
   // (48dp): pictograma ramane mica, zona din jurul ei creste.
 
+  function centruInPixeliDeCanvas(entry) {
+    // `bounds` e in unitati viewBox, dar hit-testul poligoanelor lucreaza in pixeli de canvas.
+    // Conversia se face AICI, o singura data, ca sa nu se amestece spatiile din nou (IZZ-0193).
+    if (!entry.bounds || !state.view || !state.canvas) return null;
+    const cx = (entry.bounds.minX + entry.bounds.maxX) / 2;
+    const cy = (entry.bounds.minY + entry.bounds.maxY) / 2;
+    return {
+      x: ((cx - state.view.x) / state.view.width) * state.canvas.width,
+      y: ((cy - state.view.y) / state.view.height) * state.canvas.height,
+    };
+  }
+
+  function celMaiApropiatJudet(candidati, point) {
+    let best = null;
+    let bestDist = Infinity;
+    for (const entry of candidati) {
+      const c = centruInPixeliDeCanvas(entry);
+      if (!c) continue;
+      const d = Math.hypot(point.x - c.x, point.y - c.y);
+      if (d < bestDist) { bestDist = d; best = entry; }
+    }
+    return best || candidati[0] || null;
+  }
+
   function countyAtPoint(ctx, point) {
     const inside = state.paths.find((e) => e.count > 0 && ctx.isPointInPath(e.path, point.x, point.y));
     if (inside) return inside;
-    // Toleranta pe contur pentru judetele mici (Ilfov, Bucuresti): 10px CSS, transformata in
-    // unitati viewBox ca sa insemne aceeasi distanta reala pe orice ecran. `lineWidth` se umfla
-    // DOAR pentru interogare si se reseteaza imediat, deci desenul nu se schimba deloc.
-    const edgeToleranceCss = 10; // pixeli CSS
-    const scale = state.canvas && state.canvas.getBoundingClientRect().width > 0
-      ? state.view.width / state.canvas.getBoundingClientRect().width
-      : 1;
-    const edgeToleranceViewBox = edgeToleranceCss * scale;
+    const scale = unitatiPerPixelCss();
+    if (scale === null) return null;
+    // Zona de atins invizibila pentru judetele mici (Ilfov, Bucuresti, Covasna...). Conturul se
+    // ingroasa DOAR pentru interogare -- `lineWidth` se reseteaza in `finally`, deci desenul nu
+    // se schimba cu nimic.
+    //
+    // Cresterea e in TREPTE, si se opreste la PRIMA treapta care prinde ceva. Motivul e concret:
+    // la 22px raza, zonele de atins ale judetelor mici chiar se suprapun, iar `find` intoarce
+    // primul din lista, nu pe cel mai apropiat -- exact bug-ul "harta pare blocata pe un judet"
+    // reparat pe 2026-08-12 pentru buline (`closestHit`). O toleranta mare aplicata dintr-un
+    // singur pas l-ar readuce, doar ca pe poligoane. Inelul care creste da judetul cel mai
+    // apropiat prin constructie; departajarea pe centru intra doar la egalitate de treapta.
     const previous = ctx.lineWidth;
-    ctx.lineWidth = edgeToleranceViewBox;
     try {
-      return state.paths.find((e) => e.count > 0 && ctx.isPointInStroke(e.path, point.x, point.y)) || null;
+      for (let razaCss = 5; razaCss <= TINTA_MIN_CSS / 2; razaCss += 3) {
+        // `isPointInStroke` intinde conturul cu lineWidth/2 in FIECARE parte, deci raza utila
+        // ceruta se dubleaza inainte de conversia in unitati viewBox.
+        ctx.lineWidth = razaCss * 2 * scale;
+        const hits = state.paths.filter(
+          (e) => e.count > 0 && ctx.isPointInStroke(e.path, point.x, point.y));
+        if (hits.length === 1) return hits[0];
+        if (hits.length > 1) return celMaiApropiatJudet(hits, point);
+      }
+      return null;
     } finally {
       ctx.lineWidth = previous;
     }

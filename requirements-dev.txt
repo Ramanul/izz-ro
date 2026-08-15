@@ -1,0 +1,7 @@
+# Unelte de dezvoltare și testare (nu de runtime).
+# Runtime-ul depinde de requirements.txt.
+# Instalare: pip install -r requirements.txt -r requirements-dev.txt
+
+pytest
+ruff
+pytest-randomly
