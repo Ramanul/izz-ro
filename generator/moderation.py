@@ -19,6 +19,7 @@ DEFAULTS = {
     "corrections": {},
     "featured": [],
     "hold_important": False,
+    "approved": [],
 }
 
 
@@ -124,8 +125,15 @@ def apply(articles: list, mod: dict) -> list:
     suppress = set(mod["suppress_sources"])
     corrections = {normalize_url(u): c for u, c in mod["corrections"].items()}
     featured = {normalize_url(u) for u in mod["featured"]}
+    # Poarta de aprobare (AI Act art. 50). Pana la 2026-08-15 `hold_important` era un steag
+    # mincinos: `main.py` tiparea "asteapta aprobare" si publica exact ca inainte. Acum retine
+    # efectiv sintezele C — singurul loc unde se poate face asta o data pentru toate caile,
+    # fiindca `apply()` ruleaza si pe build complet si pe `--render-only`.
+    hold = bool(mod.get("hold_important"))
+    approved = {normalize_url(u) for u in (mod.get("approved") or [])}
 
     out = []
+    held = []
     for a in articles:
         url = a.get("url", "")
         if normalize_url(url) in block_urls or a.get("source") in suppress:
@@ -149,7 +157,18 @@ def apply(articles: list, mod: dict) -> list:
                 if field in corrections[norm_url]:
                     a[field] = corrections[norm_url][field]
         a["featured"] = norm_url in featured
+        # Retinerea vine ULTIMA: un articol blocat, spam sau prins de garda nu e "in asteptare
+        # de aprobare", e respins. Altfel coada de revizuire s-ar umple cu gunoi.
+        if hold and a.get("model") == "C" and norm_url not in approved:
+            held.append(a)
+            continue
         out.append(a)
+
+    if held:
+        print(f"   >> hold_important: {len(held)} sinteze C RETINUTE, nepublicate. "
+              "Aproba adaugand URL-ul in lista `approved` din moderation.yaml:")
+        for a in held:
+            print(f"      - {(a.get('title') or '')[:70]!r} | {_article_url(a)}")
 
     deduped = _dedup_visible(out)
     removed = len(out) - len(deduped)

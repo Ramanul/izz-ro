@@ -36,4 +36,16 @@ suppress_sources:
 corrections:                # corectezi un titlu/teaser greșit de AI, pe un URL anume
   # "https://sursa.ro/articol": { title: "Titlu corect", teaser: "Rezumat corect." }
 featured: []                # URL-uri pe care le forțezi în hero (sus de tot)
-hold_important: false       # true = clusterele C/importante așteaptă aprobare înainte de publicare
+# true = sintezele C (multi-sursă) NU se publică până nu le aprobi tu, una câte una, punându-le
+# URL-ul în `approved` mai jos. Rularea tipărește lista celor reținute, cu titlu și link.
+# Până pe 2026-08-15 steagul ăsta nu bloca nimic — doar tipărea un mesaj, în timp ce articolele
+# se publicau normal. Acum reține efectiv.
+#
+# ATENȚIE, contează legal: exceptarea de la AI Act art. 50 se sprijină pe control editorial real.
+# Poarta asta o face POSIBILĂ, nu o dovedește — dacă aprobi fără să citești, exceptarea nu ține.
+# Aprobarea trebuie să fie a unui om care chiar a citit textul și își asumă răspunderea pentru el.
+hold_important: false
+
+# URL-urile sintezelor C pe care le-ai citit și le aprobi pentru publicare.
+# Contează doar când `hold_important: true`. Formatul e ca la `blocklist_urls` — linkul exact.
+approved: []

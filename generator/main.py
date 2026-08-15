@@ -357,7 +357,8 @@ def _print_report(stats: dict, processed_new: list, dry_run: bool):
     print(f"Total cunoscute (dupa expirare): {stats['total_known']} | "
           f"vizibile dupa moderare: {stats['visible_after_moderation']}")
     if stats["hold_important"]:
-        print("hold_important=true -> clusterele C asteapta aprobare (de tratat la randare).")
+        print("hold_important=true -> sintezele C sunt RETINUTE de moderation.apply pana le "
+              "aprobi in lista `approved` din moderation.yaml (lista celor retinute, mai sus).")
     if stats.get("ai_down"):
         print("\n" + "=" * 64)
         print(f"!! AI DOWN — toate cele {stats.get('ai_calls', 0)} apeluri AI au esuat. "
