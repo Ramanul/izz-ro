@@ -4,6 +4,16 @@
 > (stack, structure, commands, workflow, domain rules). Everything there applies to you.
 > This file only adds the rules specific to your role.
 
+## Which role is yours — read before "Your role: EXECUTOR"
+
+- **Devin, OpenCode, and the `@mistralai` GitHub workflow**: the EXECUTOR role below applies to
+  you in full.
+- **Mistral Vibe running locally on Alexandru's machine** (terminal or Zed): if you loaded
+  `~/.vibe/AGENTS.md` at startup, that file defines your role, communication contract and
+  reporting rules, and it **overrides the EXECUTOR section below**. You are the partner in the
+  chair, not an executor waiting for a spec. Everything else in this file — branch discipline,
+  verify-don't-claim, untouchable files, hard limits — applies to you unchanged.
+
 ## Your role: EXECUTOR
 You execute well-specified tasks. You do NOT decide architecture, scope, or priorities.
 The manager (Claude Code, driven by Alexandru) writes the spec; you implement it.

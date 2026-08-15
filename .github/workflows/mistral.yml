@@ -65,7 +65,8 @@ jobs:
         uses: astral-sh/setup-uv@d4b2f3b6ecc6e67c4457f6d3e41ec42d3d0fcb86 # v5
 
       - name: Install mistral-vibe CLI
-        run: uv tool install mistral-vibe
+        # Versiune fixata: se actualizeaza manual dupa review, nu odata cu fiecare rulare cu write.
+        run: uv tool install mistral-vibe==2.24.1
 
       - name: Assemble prompt from GitHub context
         env:
@@ -159,18 +160,41 @@ jobs:
           vibe --trust --prompt "$(cat "$PROMPT_FILE")" --max-turns 30 --output text
 
       - name: Commit + push changes
+        if: env.BRANCH_NAME != ''
         run: |
           set -euo pipefail
-          git add -A
-          if git diff --cached --quiet; then
+          CURRENT="$(git rev-parse --abbrev-ref HEAD)"
+          if [ "$CURRENT" = "main" ]; then
+            echo "::error::refuz push pe main din workflow"; exit 1
+          fi
+          # Indexul trebuie sa contina numai modificarile acestei rulari; Vibe nu decide
+          # niciodata sa comita starea editoriala sau configuratia pipeline-ului de productie.
+          git reset
+          mapfile -d '' -t changed < <(
+            {
+              git diff --name-only -z
+              git ls-files --others --exclude-standard -z
+            }
+          )
+          if [ "${#changed[@]}" -eq 0 ]; then
+            echo "HAS_CHANGES=false" >> "$GITHUB_ENV"
             echo "::notice::vibe nu a schimbat niciun fișier"
             exit 0
           fi
+          for path in "${changed[@]}"; do
+            case "$path" in
+              data/articles.json|moderation.yaml|.github/workflows/build.yml)
+                echo "::error::Mistral nu are voie sa comita $path"; exit 1
+                ;;
+            esac
+            git add -- "$path"
+          done
+          echo "HAS_CHANGES=true" >> "$GITHUB_ENV"
           git commit -m "feat(@mistralai): changes from @mistralai trigger"
           git push origin HEAD
 
       - name: Open PR (from issue/comment)
-        if: env.BRANCH_NAME != ''
+        if: env.BRANCH_NAME != '' && env.HAS_CHANGES == 'true'
         env:
           GH_TOKEN: ${{ github.token }}
           ISSUE_NUMBER: ${{ github.event.issue.number }}
@@ -195,7 +219,11 @@ jobs:
             exit 0
           fi
           if [ "${{ job.status }}" = "success" ]; then
-            gh issue comment "$NUMBER" --body "✅ @mistralai a terminat. Vezi commit-urile / PR-ul de mai sus."
+            if [ "${HAS_CHANGES:-}" = "false" ]; then
+              gh issue comment "$NUMBER" --body "✅ @mistralai a verificat task-ul; nu au fost necesare modificări."
+            else
+              gh issue comment "$NUMBER" --body "✅ @mistralai a terminat. Vezi commit-urile / PR-ul de mai sus."
+            fi
           else
             gh issue comment "$NUMBER" --body "❌ @mistralai a eșuat. Verifică [logurile](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})."
           fi
