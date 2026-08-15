@@ -50,15 +50,27 @@
       var brut = Math.max(0, parseFloat(input.value) || 0);
       var cas = Math.round(brut * 0.25);
       var cass = Math.round(brut * 0.1);
-      // Deducere personala de baza, fara persoane in intretinere: art. 77^1 Cod Fiscal
+      // Deducere personala de baza, fara persoane in intretinere: art. 77 Cod Fiscal
       // (Legea 227/2015, modificat OG 16/2022) NU e un procent fix -- e degresiva. La
       // salariul minim brut: 20%. Peste minim, scade cu 0,5 puncte procentuale la fiecare
-      // transa de 50 lei, pana la 0% quand brutul trece de minim+2.000 lei (plafonul de
+      // transa de 50 lei, pana la 0% cand brutul trece de minim+2.000 lei (plafonul de
       // acordare). Un flat `salariuMinim * 0.2` supraestima deducerea (deci subestima
       // impozitul) pentru orice brut STRICT peste minim.
-      var trepte = Math.max(0, Math.floor((brut - salariuMinim) / 50));
+      //
+      // `ceil`, NU `floor` (corectat 2026-08-15). Tabelul din art. 77 alin. (4) deschide
+      // fiecare transa la +1 leu, nu la +0: "salariul minim" = 20,00%, "minim + 1 leu ...
+      // minim + 50 lei" = 19,50%, "minim + 51 ... + 100 lei" = 19,00%. Cu `floor`, un brut
+      // de minim+1 leu primea 20% in loc de 19,50% -- adica deducere prea mare, impozit prea
+      // mic, net afisat prea mare. Cele doua formule coincid DOAR pe multiplii exacti de 50,
+      // deci greseala lovea 49 din 50 de valori posibile. `tests/test_calc_salariu.py`
+      // ruleaza fisierul asta in node si il compara rand cu rand cu tabelul din lege.
+      var trepte = Math.max(0, Math.ceil((brut - salariuMinim) / 50));
       var rataDeducere = Math.max(0, 20 - trepte * 0.5);
       var deducere = brut > salariuMinim + 2000 ? 0 : Math.round(salariuMinim * rataDeducere / 100);
+      // Art. 77 alin. (2): deducerea se acorda in limita venitului impozabil lunar realizat.
+      // Fara plafon, la un brut sub salariul minim se afisa "Deducere personala: 865 lei"
+      // peste un venit impozabil de 650 -- randul se contrazicea cu cel de deasupra lui.
+      deducere = Math.min(deducere, Math.max(0, brut - cas - cass));
       var baza = Math.max(0, brut - cas - cass - deducere);
       var impozit = Math.round(baza * 0.1);
       var net = brut - cas - cass - impozit;
