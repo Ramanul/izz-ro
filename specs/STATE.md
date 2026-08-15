@@ -61,17 +61,34 @@ bubbles (`closestHit`). The growing ring gives the nearest county by constructio
 Measured in a real browser at 375px, same points before and after, east of Constanța (open sea,
 inside no polygon): 0/4/8/12px → **nothing** before, **CONSTANȚA** after; 16-24px → nothing both.
 The old code caught nothing *even on the shape's own edge*.
-**A1 IS NOT CLOSED.** A small county *surrounded* by a large one (București inside Ilfov) is
-still hard to hit: `isPointInPath` wins and the tap lands legitimately in the neighbour.
-**Owner decided 2026-08-15 that small counties SHOULD take priority in their expanded zone.
-Attempted and REVERTED the same session** — a priority pass ahead of the marker cascade made
-Cluj's own centre resolve to Sălaj (reproduced on a freshly loaded page, not a harness artifact).
-Two facts worth keeping so the next attempt does not rediscover them: (a) **28 of 42 counties are
-under 44px** on a 344px canvas, so "small" selects most of the map and a naive priority pass
-hijacks everything; (b) the tie-break **cannot be centre distance** — București and Ilfov centres
-are ~4px apart (IZZ-0177) — and it cannot be smallest-shape either, which is what failed here.
-The marker cascade (`closestHit` on `e.marker`) runs **before** `countyAtPoint`, so any fix that
-sits inside `countyAtPoint` never executes for the very pair it was written for.
+**A1 part 2 landed separately as `ab4dd8b8`** — see its own entry below.
+
+**`ab4dd8b8` — small counties now take priority when tapped (A1 part 2, owner decision).**
+The first attempt the same day was reverted: it collected every match at a growing "ring" and
+tie-broke by size, so a *distant* small county could win over the one actually containing the
+point (Cluj's own interior resolved to Sălaj). The rewrite uses the standard mapping-library
+convention instead: **query in ASCENDING shape size, first match wins** — the equivalent of
+hit-testing top-down through the render stack with small shapes on top (OpenLayers
+`forEachFeatureAtPixel`, Leaflet with SVG). A distant county simply cannot match, so that whole
+failure mode is gone. **Polygons are now queried BEFORE the bubbles**: while `closestHit` ran
+first, the small-county step never executed for the very pair it was written for, because the
+București and Ilfov bubbles sit ~4px apart (IZZ-0177) and "nearest bubble" returned first.
+**The steal cap is measured, not guessed.** 44px is geometrically impossible for an 8.6px
+enclave without destroying its neighbours — București would need 17.7px per side while the
+surrounding counties are only 8-11px deep themselves. Swept 22/14/10/8/6/4/3px against each
+county's deepest interior point: 22px breaks 5 counties, 10px breaks 2, at 6px and below only
+Ilfov remains. On **usable area** (px² of a county that still selects itself) 6px wins there too:
+București **59 → 448px² (×7.6)**, Ilfov **323 → 549px² (×1.7)**, Călărași 1511 → 2010, Dâmbovița
+1057 → 1676, Ialomița 985 → 1083; Cluj 1502 → 1073 and Giurgiu 1361 → 1086 lose 20-29% but stay
+above 1000px². Even Ilfov — the county București steals from — comes out ahead.
+Verified in a real browser at 375px against **40 of 42** counties, using each county's true
+interior point (the point farthest from its own boundary). **Do not test with bbox centres**:
+Cluj's bbox centre lies 3.9px from the Sălaj border and manufactures regressions that do not
+exist. The two remaining: Ilfov at its single deepest point only (its overall area still grows),
+and Teleorman, which has **0 articles** and is correctly not selectable.
+**What this does NOT achieve:** București reaches ~448px² (a ~21px square), not 44px. For
+enclaves the standard cartographic answer is a separate inset box or dot beside the map
+(Datawrapper & co. do this for DC, Bremen, Hamburg) — **owner decision, not a constant to tune.**
 
 **Also closed by verification, no code needed** (checked in the tree, not taken on trust):
 `tools/feed_check.py` already imports the production fetcher (`generator.fetch._fetch_one_guarded`,
@@ -281,10 +298,11 @@ Earth SVG that `/surse/` already used. In primary nav (`templates/base.html`). V
 `tools/visual_check.py` (Playwright, real browser) now covers it, incl. a mobile pass —
 this closes what the paragraph below asked for.
 
-**A1. PARTIALLY FIXED 2026-08-15 (`bf55ae9f`) — bubbles and free-standing counties now reach
-44px; a small county surrounded by a large one still does not. The priority pass the owner
-approved was attempted and reverted the same session — read the Landed section above before
-retrying it, it records two dead ends. Original measurement kept below.**
+**A1. DONE 2026-08-15 (`bf55ae9f` + `ab4dd8b8`) — 40/42 counties resolve to themselves from
+their true interior point, and the small ones gained real area (București ×7.6, Ilfov ×1.7).
+The one thing still open is a DESIGN call, not a bug: an 8.6px enclave cannot reach 44px
+without eating its neighbours, so if you want a genuine 44px target for București it needs an
+inset box beside the map, the standard cartographic answer. Original measurement kept below.**
 ~~Tap targets too small — real, separate from A2, NOT the "mari probleme" bug.~~
 24 of 42 county shapes are under 44px (WCAG/Apple/Material minimum) on a 390px viewport,
 smallest 9×15px; the 35 news-count bubbles are ~11.7×11.7px. Measured with
