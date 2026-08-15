@@ -304,7 +304,11 @@ Both hit-test slices (`bf55ae9f`, `ab4dd8b8`) went live and the owner reported o
 confirmed on his phone then. `ensureCanvas` is intact, so the *original* cause did not return.
 But our two commits were the only code to touch `static/harta-stiri/*.js` since (bot commits
 only touch `data/map.json`), and live had them.
-**Mechanism, plausible and unverified:** the enlarged hit areas (22px bubbles, 10px base
+**CAUSATION CONFIRMED by the revert** (owner re-checked on device after `c6397735` reached live:
+smearing gone). One variable changed, symptom followed it both ways — so this is no longer a
+hypothesis about which commits are responsible. What remains unproven is the *mechanism* below;
+the responsibility of the hit-test enlargement is established.
+**Mechanism, plausible but still unobserved:** the enlarged hit areas (22px bubbles, 10px base
 tolerance, small-county priority) mean a stray touch during a scroll, which used to hit nothing,
 now selects a county → `applyState` → `buildMap()` recomputes `canvas.style.height` from the new
 view's aspect (`cssWidth * view.height / view.width`), so the canvas **changes height mid-scroll**.
