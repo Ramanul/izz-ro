@@ -298,11 +298,32 @@ Earth SVG that `/surse/` already used. In primary nav (`templates/base.html`). V
 `tools/visual_check.py` (Playwright, real browser) now covers it, incl. a mobile pass —
 this closes what the paragraph below asked for.
 
-**A1. DONE 2026-08-15 (`bf55ae9f` + `ab4dd8b8`) — 40/42 counties resolve to themselves from
-their true interior point, and the small ones gained real area (București ×7.6, Ilfov ×1.7).
-The one thing still open is a DESIGN call, not a bug: an 8.6px enclave cannot reach 44px
-without eating its neighbours, so if you want a genuine 44px target for București it needs an
-inset box beside the map, the standard cartographic answer. Original measurement kept below.**
+**A1. REVERTED 2026-08-15 (`c6397735`) — DO NOT RE-LAND WITHOUT A SCROLL GUARD.**
+Both hit-test slices (`bf55ae9f`, `ab4dd8b8`) went live and the owner reported on device that
+**the map started smearing into stacked copies again** — the A2 symptom, fixed on 2026-08-12 and
+confirmed on his phone then. `ensureCanvas` is intact, so the *original* cause did not return.
+But our two commits were the only code to touch `static/harta-stiri/*.js` since (bot commits
+only touch `data/map.json`), and live had them.
+**Mechanism, plausible and unverified:** the enlarged hit areas (22px bubbles, 10px base
+tolerance, small-county priority) mean a stray touch during a scroll, which used to hit nothing,
+now selects a county → `applyState` → `buildMap()` recomputes `canvas.style.height` from the new
+view's aspect (`cssWidth * view.height / view.width`), so the canvas **changes height mid-scroll**.
+The 10px tap-vs-drag guard does not cover it: the finger need not move past the threshold.
+**Reverted rather than patched because the artefact cannot be reproduced here** — it does not
+appear headless or under emulated scroll; the 2026-08-12 diagnosis needed a phone screen
+recording and OpenCV frame extraction. Shipping a targeted fix we cannot watch fail would be
+exactly the §16 violation of reporting "fixed" without observing the symptom disappear.
+**Before retrying, in this order:** (1) suppress re-selection while a scroll is in flight,
+(2) keep the canvas height stable across zoom so no reflow happens mid-gesture, (3) only then
+re-land the hit-test work, and (4) get owner confirmation **on device** — not from a desk test.
+The measurements are not lost: the sweep, the per-county usable-area numbers, and the two
+test-harness traps are in the Landed section above and in the two reverted commits.
+**What DID survive and is live: the county picker now meets the 44px target** (`min-height`,
+was 36px). That is pure CSS on DOM buttons below the map, cannot touch the canvas, and it
+already serves A1's actual need — București is untappable on the canvas at 8.6px, but has a
+real 123×44px button there. For a genuine 44px target *on the map*, the standard cartographic
+answer is an inset box beside it (Datawrapper & co. for DC, Bremen, Hamburg) — owner's call.
+Original measurement kept below.
 ~~Tap targets too small — real, separate from A2, NOT the "mari probleme" bug.~~
 24 of 42 county shapes are under 44px (WCAG/Apple/Material minimum) on a 390px viewport,
 smallest 9×15px; the 35 news-count bubbles are ~11.7×11.7px. Measured with
