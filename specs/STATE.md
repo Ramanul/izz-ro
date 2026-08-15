@@ -12,7 +12,85 @@
 > wave (all 14 domains are in `config.SOURCES`). Everything below was **verified against the code
 > today**, not copied forward.
 
-**Updated:** 2026-08-14 (account A — the @claude workflow gate; see this line before older ones)
+**Updated:** 2026-08-15 (account A — inventory sweep across sessions; see this line before older ones)
+
+## Landed 2026-08-15 on `main` (account A — announce to B, per §14)
+
+Three slices, `8fb9c148` → `bf55ae9f`, from an inventory of every unfinished task across all
+sessions. Suite **900 passed, 8 xfailed** (was 876 — the 24 new tests are all from these slices).
+
+**`8fb9c148` — `hold_important` now actually gates. Closes item 0b below.** The flag was a
+*lying* one: `moderation.yaml` documented it as "clusterele C/importante așteaptă aprobare
+înainte de publicare" and all it did was `print` at `main.py:359`. Set to `true`, C syntheses
+published exactly as before while the operator believed they were held. The gate lives in
+`moderation.apply` because that runs on **both** the full build and `--render-only`. Approval
+is the new `approved` list in `moderation.yaml`, same shape as `blocklist_urls`/`featured`, so
+it stays editable from the browser on GitHub. Holding is **last** in the cascade: a blocked or
+guard-caught article is *rejected*, not "awaiting approval", or the queue fills with garbage.
+Measured on real data: `true` → **451 C syntheses held**, output 2749 → 2427. Tests target the
+WIRING (mutation: gate removed → 4 fail), not the presence of a config key.
+**Scope, stated so nobody reads it as more:** when a C synthesis is held, the underlying B
+article surfaces in its place — that is why the drop is 322, not 451. The gate holds
+*syntheses*, not all AI-processed content. Owner chose slice 1 only; the review queue and the
+approval log (slices 2-3) remain unbuilt.
+
+**`0f9fe2d3` — the public salary calculator was computing the personal deduction wrong.**
+Not a refactor: `static/calc-salariu.js` used `Math.floor((brut - salariuMinim) / 50)`, but the
+table in **art. 77 alin. (4)** opens each band at **+1 leu**, not +0: `salariul minim` = 20,00%,
+`minim + 1 … + 50 lei` = 19,50%, `minim + 51 … + 100 lei` = 19,00%. With `floor`, a gross of
+minimum+1 leu got 20,00% instead of 19,50% — deduction too high, tax too low, **net displayed
+larger than the real one**. The two formulas agree only on exact multiples of 50 above the
+minimum, so the error hit **49 of every 50** possible salaries. Source:
+https://www.noulcodfiscal.ro/titlu-4/capitol-3/articol-77.html
+Also added the **alin. (2)** cap (deduction limited to taxable income), absent entirely: below
+minimum wage the page printed "Deducere personală: 865 lei" over a taxable income of 650.
+The 14 tests do **not** reimplement the formula (that would check a copy against a copy) — they
+**extract the calculation block from the shipped `.js` and run it in node**, row by row against
+the statutory table. Mutation (`ceil`→`floor`): 5 fail, exactly on the band openings.
+**Provenance: recovered from PR #163**, per the check `TASKS-B.md` asked for. **`STATE.md` item 2
+credited `5dc92ca7`, which is an ORPHAN commit — not on any branch.** The real one is
+`2d0df92f` (identical message, 4h later; a rejected push, redone). PR #163 can now be closed as
+recovered, **not** as superseded — it was right about the formula.
+
+**`bf55ae9f` — county tap targets reach the 44px minimum (item A1). PARTIAL, read the limit.**
+`hitDistance` puts a 22px CSS floor on bubble reach (was 15.8px); `countyAtPoint` grows the
+edge tolerance from 5px to 22px **in steps**, stopping at the first step that catches anything —
+because at 22px the small counties' zones genuinely overlap and `find` returns the *first* in
+array order, which is exactly the "map feels stuck on one county" bug fixed on 2026-08-12 for
+bubbles (`closestHit`). The growing ring gives the nearest county by construction.
+Measured in a real browser at 375px, same points before and after, east of Constanța (open sea,
+inside no polygon): 0/4/8/12px → **nothing** before, **CONSTANȚA** after; 16-24px → nothing both.
+The old code caught nothing *even on the shape's own edge*.
+**A1 IS NOT CLOSED.** A small county *surrounded* by a large one (București inside Ilfov) is
+still hard to hit: `isPointInPath` wins and the tap lands legitimately in the neighbour.
+**Owner decided 2026-08-15 that small counties SHOULD take priority in their expanded zone.
+Attempted and REVERTED the same session** — a priority pass ahead of the marker cascade made
+Cluj's own centre resolve to Sălaj (reproduced on a freshly loaded page, not a harness artifact).
+Two facts worth keeping so the next attempt does not rediscover them: (a) **28 of 42 counties are
+under 44px** on a 344px canvas, so "small" selects most of the map and a naive priority pass
+hijacks everything; (b) the tie-break **cannot be centre distance** — București and Ilfov centres
+are ~4px apart (IZZ-0177) — and it cannot be smallest-shape either, which is what failed here.
+The marker cascade (`closestHit` on `e.marker`) runs **before** `countyAtPoint`, so any fix that
+sits inside `countyAtPoint` never executes for the very pair it was written for.
+
+**Also closed by verification, no code needed** (checked in the tree, not taken on trust):
+`tools/feed_check.py` already imports the production fetcher (`generator.fetch._fetch_one_guarded`,
+line 32), so the 24 July commitment to validate `claude/feedcheck-real-fetcher` before merge is
+**moot**; `liternet` has a working URL in `config.py`. All four `TASKS-MISTRAL.md` tasks were
+already done — tasks 1-3 are in `.github/workflows/mistral.yml`, task 4 was the verification
+inventory, run today (suite green, `--render-only` 2749 articles). The old note about
+"`tests/test_sitemap_editorial.py` has 10 pre-existing errors" is **stale** — the suite is clean.
+`requirements-dev.txt` added: `pytest`/`ruff`/`pytest-randomly` existed nowhere in the repo, CI
+installed them ad-hoc, and on a fresh machine `pytest` failed with "No module named".
+
+**Branch backlog triaged — 67 remote branches unmerged (was 58 on 14 Aug).** Full table:
+account A's session scratch, summarised here. **55 LANDED** (content already in `main`, mostly
+rewritten rather than cherry-picked — `git cherry` alone called 29 of them unmerged and was wrong
+about 25), **8 DEAD**, **4 TO RECOVER**: `fix/deducere-personala-transe` (now recovered, above),
+`claude/mistral-session-blocked-kn73vk` (carries `tests/test_workflow_mistral_pr_gate.py`, absent
+from `main` — the workflow fix landed, its test did not), and two dependabot bumps
+(`claude-code-action` 1.0.190 — needs a security re-read, `main` is pinned to `be7b93b1`
+deliberately; `setup-node-7`, routine).
 
 ## Landed 2026-08-14 directly on `main` (account A — announce to B, per §14)
 
@@ -203,7 +281,11 @@ Earth SVG that `/surse/` already used. In primary nav (`templates/base.html`). V
 `tools/visual_check.py` (Playwright, real browser) now covers it, incl. a mobile pass —
 this closes what the paragraph below asked for.
 
-**A1. Tap targets too small — real, separate from A2, NOT the "mari probleme" bug.**
+**A1. PARTIALLY FIXED 2026-08-15 (`bf55ae9f`) — bubbles and free-standing counties now reach
+44px; a small county surrounded by a large one still does not. The priority pass the owner
+approved was attempted and reverted the same session — read the Landed section above before
+retrying it, it records two dead ends. Original measurement kept below.**
+~~Tap targets too small — real, separate from A2, NOT the "mari probleme" bug.~~
 24 of 42 county shapes are under 44px (WCAG/Apple/Material minimum) on a 390px viewport,
 smallest 9×15px; the 35 news-count bubbles are ~11.7×11.7px. Measured with
 `tools/visual_check.py`. Not fixed — owner decision on approach (bigger bubbles / invisible
@@ -251,8 +333,11 @@ swap it back.
    named the commune. Verified three independent ways, incl. live (`/local/` 404, `/zonal/` 200 for
    the same slug). No retroactive migration — the 663 keep their permalinks and expire in ~7 days.
 
-0b. **`hold_important` is a promise the code does not keep — and it is now load-bearing for AI Act
-   art. 50.** `moderation.yaml` documents it as "true = clusterele C/importante așteaptă aprobare
+0b. **RESOLVED 2026-08-15 (`8fb9c148`) — slice 1 only; see the Landed section above. Slices 2-3
+   (review queue, approval log) remain unbuilt, owner's call.** Kept below because the mechanism
+   must not be reintroduced, and because the legal reasoning is still the reason it exists.
+   ~~`hold_important` is a promise the code does not keep — and it is now load-bearing for AI Act
+   art. 50.~~ `moderation.yaml` documents it as "true = clusterele C/importante așteaptă aprobare
    înainte de publicare". All the flag actually does is `generator/main.py:359-360`: a `print`
    saying "de tratat la randare". **Nothing gates anything.** Set it to `true` and C clusters
    publish exactly as before, while the operator believes they are held. This is not a missing
@@ -274,7 +359,11 @@ swap it back.
    `handoff/to-B/2026-08-07-raza-nationala-si-ce-a-ramas.md`. Cheap alternatives already killed by
    measurement: `WS-0029` (multi-source coverage, 453/1301 = 35% false positives) and the entities
    route (national-institution lists rot).
-2. **LANDED 2026-08-13 (`5dc92ca7`) — deducere personală is now degressive, per art. 77
+2. **CORRECTED 2026-08-15 (`0f9fe2d3`) — the formula below was DEGRESSIVE BUT WRONG: it used
+   `floor` where art. 77 alin. (4) opens each band at +1 leu, so it over-credited 49 of every 50
+   salaries. See the Landed section above. Also: the SHA cited here, `5dc92ca7`, is an ORPHAN
+   commit and is not on `main`; the real one is `2d0df92f`.** Original note kept below.
+   ~~LANDED 2026-08-13 (`5dc92ca7`) — deducere personală is now degressive, per art. 77
    Cod Fiscal (Legea 227/2015, modif. OG 16/2022), zero persoane în întreținere.** Formula quoted
    from two independent citations of the actual statutory text (agree on numbers, internally
    consistent: 20%→0% over 40 steps of 0,5pp = the stated 2.000 lei / 50-lei-per-step band):
@@ -287,13 +376,16 @@ swap it back.
    indiferent de metodă) — 2.616 lei, deci bug-ul degresivității nu explică acel număr. Fie sursa
    citată folosea un salariu minim diferit de referință, fie o altă metodologie; nu invent o a doua
    explicație fără sursă. Cine a scris nota inițială (dacă știe sursa exactă a cifrei 2.699) o poate
-   clarifica.
+   clarifica.~~
 3. **Model C is not batched** — `process_cluster` is one AI call per cluster while B batches 10.
    Gate is already instrumented: read `stats["deferred"]` over 2–3 real runs before building it.
    Do not re-litigate the threshold (`build.yml` overrides the budget to 18, not the default 12).
-   **Still blocked 2026-08-13**: needs real `stats["deferred"]` numbers from GitHub Actions build
-   logs, and `gh` is not authenticated in this environment (`gh auth status` → not logged in) —
-   cannot fetch them. Not guessed.
+   **Still blocked 2026-08-15**: needs real `stats["deferred"]` numbers from GitHub Actions build
+   logs. The 08-13 note said `gh` was "not authenticated" — **re-checked today, it is not
+   installed at all** (`which gh`, `where.exe gh`, `C:\Program Files\GitHub CLI\` all empty).
+   Installing it needs an elevated shell (`winget install --id GitHub.cli -e` failed with MSI
+   1602, no admin rights in the agent session), and `gh auth login` is an interactive OAuth flow
+   only the owner can complete. **Owner action, then this unblocks.** Not guessed.
 4. **`WS-0025` — RESOLVED 2026-08-13, see "Landed" above.** The suppression on
    `generator/render.py:15-16` works (measured: `semgrep` installed locally, same import line
    fires 1 finding without the comment, 0 with it, on the exact registry rule).
