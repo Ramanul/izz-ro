@@ -393,55 +393,96 @@
   // zona de atins mai mare decat desenul -- exact ce recomanda si Apple HIG (44pt) si Material
   // (48dp): pictograma ramane mica, zona din jurul ei creste.
 
-  function centruInPixeliDeCanvas(entry) {
-    // `bounds` e in unitati viewBox, dar hit-testul poligoanelor lucreaza in pixeli de canvas.
-    // Conversia se face AICI, o singura data, ca sa nu se amestece spatiile din nou (IZZ-0193).
-    if (!entry.bounds || !state.view || !state.canvas) return null;
-    const cx = (entry.bounds.minX + entry.bounds.maxX) / 2;
-    const cy = (entry.bounds.minY + entry.bounds.maxY) / 2;
-    return {
-      x: ((cx - state.view.x) / state.view.width) * state.canvas.width,
-      y: ((cy - state.view.y) / state.view.height) * state.canvas.height,
-    };
+  // Toleranta de baza pe contur, in pixeli CSS, pentru ORICE judet. Exista ca sa prinda
+  // atingerile care cad in afara oricarui poligon (in mare, peste Dunare, in golurile dintre
+  // contururi). E ordinul de marime folosit de bibliotecile de harti pentru `hitTolerance`.
+  const TOLERANTA_BAZA_CSS = 10;
+
+  // Cat are voie sa "fure" un judet mic din vecinul lui, in pixeli CSS. Plafonul exista pentru
+  // ca tinta de 44px e GEOMETRIC IMPOSIBILA pentru o enclava de 8,6px fara sa-i distrugi vecinii:
+  // Bucurestiul ar avea nevoie de 17,7px de fiecare parte, iar judetele din jur au ele insele
+  // doar 8-11px adancime pana la propriul contur, deci le-ar inghiti punctul cel mai adanc.
+  //
+  // 6px e ales prin masurare, nu din intuitie. Baleiat 22/14/10/8/6/4/3 px pe punctul cel mai
+  // adanc al fiecarui judet: 22px strica 5 judete, 10px strica 2, iar de la 6px in jos ramane
+  // doar Ilfovul, si acolo doar acel unic punct. Masurat pe SUPRAFATA utila (cati px² dintr-un
+  // judet il mai selecteaza pe el insusi), 6px iese in castig peste tot unde conteaza:
+  //   Bucuresti  59px² -> 448px² (x7,6)      Ilfov     323px² -> 549px² (x1,7)
+  //   Calarasi 1511 -> 2010 · Dambovita 1057 -> 1676 · Ialomita 985 -> 1083
+  //   Cluj 1502 -> 1073 · Giurgiu 1361 -> 1086 (-20..29%, dar raman peste 1000px²)
+  // Adica pana si Ilfovul, vecinul de care Bucurestiul fura, iese in castig -- fiindca el
+  // castiga la randul lui de la judetele mai mari din jur.
+  //
+  // Bucurestiul NU ajunge la 44px asa (448px² ~ un patrat de 21px). Cine vrea cu adevarat 44px
+  // pentru enclave trebuie sa mute la solutia cartografica standard: caseta/bulina separata
+  // langa harta, cum fac Datawrapper & co. pentru DC, Bremen sau Hamburg.
+  const FURT_MAXIM_CSS = 6;
+
+  function dimensiuneDesenataCss(entry, scale) {
+    // Latura mica a formei desenate, in pixeli CSS. `bounds` e in unitati viewBox, iar `scale`
+    // spune cate unitati viewBox intra intr-un pixel CSS -- deci se imparte, nu se inmulteste.
+    if (!entry.bounds) return Infinity;
+    return Math.min(
+      (entry.bounds.maxX - entry.bounds.minX) / scale,
+      (entry.bounds.maxY - entry.bounds.minY) / scale,
+    );
   }
 
-  function celMaiApropiatJudet(candidati, point) {
-    let best = null;
-    let bestDist = Infinity;
-    for (const entry of candidati) {
-      const c = centruInPixeliDeCanvas(entry);
-      if (!c) continue;
-      const d = Math.hypot(point.x - c.x, point.y - c.y);
-      if (d < bestDist) { bestDist = d; best = entry; }
-    }
-    return best || candidati[0] || null;
+  function judeteDeLaMicLaMare(scale) {
+    return state.paths
+      .filter((e) => e.count > 0)
+      .map((e) => ({ entry: e, dim: dimensiuneDesenataCss(e, scale) }))
+      .sort((a, b) => a.dim - b.dim);
   }
 
+  function seteazaToleranta(ctx, ceruta, scale) {
+    // `isPointInStroke` intinde conturul cu lineWidth/2 in FIECARE parte, deci raza utila
+    // ceruta se dubleaza inainte de conversia in unitati viewBox.
+    ctx.lineWidth = ceruta * 2 * scale;
+  }
+
+  // Ordinea de interogare e ASCENDENTA dupa marimea formei, si castiga PRIMA potrivire.
+  //
+  // E conventia standard din bibliotecile de harti: se testeaza de sus in jos prin stiva de
+  // randare, iar formele mici stau deasupra celor mari (OpenLayers `forEachFeatureAtPixel`,
+  // Leaflet cu SVG unde ordinea din DOM decide). Fara ea, un judet mic care e o GAURA in altul
+  // -- Bucuresti in Ilfov -- nu poate fi atins prin toleranta niciodata, fiindca vecinul mare
+  // raspunde primul la orice punct din jurul lui.
+  //
+  // Prima incercare (2026-08-15, retrasa) a colectat toate potrivirile la un "inel" care creste
+  // si a departajat dupa marime. Nu merge: la acelasi pas poate potrivi si un judet departat,
+  // iar departajarea il alegea pe el in locul celui care chiar continea punctul -- centrul
+  // Clujului ajungea la Salaj. Prima-potrivire-in-ordine face modul asta de esec imposibil,
+  // fiindca un judet departat pur si simplu nu potriveste.
   function countyAtPoint(ctx, point) {
-    const inside = state.paths.find((e) => e.count > 0 && ctx.isPointInPath(e.path, point.x, point.y));
-    if (inside) return inside;
     const scale = unitatiPerPixelCss();
-    if (scale === null) return null;
-    // Zona de atins invizibila pentru judetele mici (Ilfov, Bucuresti, Covasna...). Conturul se
-    // ingroasa DOAR pentru interogare -- `lineWidth` se reseteaza in `finally`, deci desenul nu
-    // se schimba cu nimic.
-    //
-    // Cresterea e in TREPTE, si se opreste la PRIMA treapta care prinde ceva. Motivul e concret:
-    // la 22px raza, zonele de atins ale judetelor mici chiar se suprapun, iar `find` intoarce
-    // primul din lista, nu pe cel mai apropiat -- exact bug-ul "harta pare blocata pe un judet"
-    // reparat pe 2026-08-12 pentru buline (`closestHit`). O toleranta mare aplicata dintr-un
-    // singur pas l-ar readuce, doar ca pe poligoane. Inelul care creste da judetul cel mai
-    // apropiat prin constructie; departajarea pe centru intra doar la egalitate de treapta.
+    if (scale === null) {
+      return state.paths.find((e) => e.count > 0 && ctx.isPointInPath(e.path, point.x, point.y)) || null;
+    }
+    const candidati = judeteDeLaMicLaMare(scale);
     const previous = ctx.lineWidth;
     try {
-      for (let razaCss = 5; razaCss <= TINTA_MIN_CSS / 2; razaCss += 3) {
-        // `isPointInStroke` intinde conturul cu lineWidth/2 in FIECARE parte, deci raza utila
-        // ceruta se dubleaza inainte de conversia in unitati viewBox.
-        ctx.lineWidth = razaCss * 2 * scale;
-        const hits = state.paths.filter(
-          (e) => e.count > 0 && ctx.isPointInStroke(e.path, point.x, point.y));
-        if (hits.length === 1) return hits[0];
-        if (hits.length > 1) return celMaiApropiatJudet(hits, point);
+      // 1. Judetele prea mici pentru un deget, cu zona de atins invizibila. Doar ele au voie sa
+      //    ia puncte din interiorul unui vecin, si doar cat le trebuie ca sa ajunga la 44px --
+      //    nu o valoare fixa, altfel unul aproape suficient de mare ar fura cat unul minuscul.
+      //    Decizie de proprietar 2026-08-15; compromisul, spus pe fata: atingeri de la marginea
+      //    vecinului mare ajung la judetul mic.
+      for (const c of candidati) {
+        if (c.dim >= TINTA_MIN_CSS) continue;
+        const ceruta = Math.min(FURT_MAXIM_CSS, (TINTA_MIN_CSS - c.dim) / 2);
+        if (ceruta <= 0) continue;
+        seteazaToleranta(ctx, ceruta, scale);
+        if (ctx.isPointInPath(c.entry.path, point.x, point.y)
+            || ctx.isPointInStroke(c.entry.path, point.x, point.y)) return c.entry;
+      }
+      // 2. Formele propriu-zise, tot de la cel mai mic: cine chiar contine punctul.
+      for (const c of candidati) {
+        if (ctx.isPointInPath(c.entry.path, point.x, point.y)) return c.entry;
+      }
+      // 3. Toleranta de baza, pentru atingerile din afara oricarui poligon.
+      for (const c of candidati) {
+        seteazaToleranta(ctx, TOLERANTA_BAZA_CSS, scale);
+        if (ctx.isPointInStroke(c.entry.path, point.x, point.y)) return c.entry;
       }
       return null;
     } finally {
@@ -561,8 +602,15 @@
       const ctx = canvas.getContext("2d");
       applyViewTransform(ctx, canvas, view);
       const dp = devicePointForEvent(canvas, event);
-      const entry = closestHit(p, state.paths, (e) => e.marker)
-        || (dp && countyAtPoint(ctx, dp));
+      // Poligoanele se interogheaza INAINTEA bulinelor, nu dupa. Cat timp `closestHit` era
+      // primul, pasul pentru judetele mici din `countyAtPoint` nu se executa niciodata pentru
+      // exact perechea pentru care fusese scris: bulina Bucurestiului si cea a Ilfovului sunt
+      // la ~4px una de alta pe un ecran de 375px (IZZ-0177), deci "cea mai apropiata bulina"
+      // alegea practic arbitrar intre ele si returna inainte sa se ajunga la poligoane.
+      // Bulinele raman ca rezerva: pentru forme concave, centroidul (deci bulina) poate cadea
+      // in afara propriului judet, si atunci atingerea pe bulina trebuie sa functioneze oricum.
+      const entry = (dp && countyAtPoint(ctx, dp))
+        || closestHit(p, state.paths, (e) => e.marker);
       if (entry) {
         selectCounty(entry.county);
       }
