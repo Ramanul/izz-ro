@@ -46,6 +46,32 @@ def _cluster_rank(group: list) -> tuple:
     return (len(domains), newest, _tie(min(a.get("url", "") for a in group)))
 
 
+def itemele_fara_substanta(items: list) -> list:
+    """Itemele care nu ajung niciodata la AI fiindca n-au ce sintetiza.
+
+    Predicat UNIC, deliberat: il foloseste si `process_new` (care le scoate din drum) si
+    raportul de la finalul rularii (care nu are voie sa le numere ca „amanate"). Doua copii
+    ale conditiei ar fi doua adevaruri care se desincronizeaza la prima schimbare de prag.
+    """
+    return [i for i in items
+            if i.get("src_extra") is not None
+            and i["src_extra"] < config.MIN_SUBSTANTA_CUVINTE]
+
+
+def numara_amanate(new_items: list, handled: set) -> int:
+    """Cate iteme noi chiar se INTORC la rularea urmatoare.
+
+    Functie separata ca sa poata fi testata direct: cat timp contorul statea inline in `run()`,
+    orice test al lui trebuia sa-i reimplementeze formula, deci verifica o copie contra unei
+    copii si trecea si cu contorul stricat (masurat prin mutatie, 2026-08-16).
+
+    Itemele fara substanta NU intra la socoteala: sunt respinse inainte de clustering si de
+    buget, deci nu se amana — revin la fiecare rulare si sunt respinse din nou.
+    """
+    respinse = {i["url"] for i in itemele_fara_substanta(new_items)}
+    return sum(1 for i in new_items if i["url"] not in handled and i["url"] not in respinse)
+
+
 def process_new(new_items: list, provider, budget: int, existing: list | None = None) -> tuple[list, set, int]:
     """Returneaza (articole_procesate, url_uri_inglobate_in_cluster_C, apeluri_AI_folosite).
 
@@ -70,9 +96,7 @@ def process_new(new_items: list, provider, budget: int, existing: list | None = 
     # parafraza a titlului — vezi `specs/sinteza-fara-substanta.md`; (2) bugetul e ~10 apeluri pe
     # rulare si era ars pe ele. Sursele oficiale sunt deja scoase mai sus si nu sunt atinse.
     # `src_extra` lipseste doar pe iteme construite in teste vechi; acolo nu presupunem nimic.
-    fara_substanta = [i for i in new_items
-                      if i.get("src_extra") is not None
-                      and i["src_extra"] < config.MIN_SUBSTANTA_CUVINTE]
+    fara_substanta = itemele_fara_substanta(new_items)
     if fara_substanta:
         surse = sorted({str(i.get("source")) for i in fara_substanta})
         print(f">> Fara substanta (sub {config.MIN_SUBSTANTA_CUVINTE} cuvinte peste titlu), "
@@ -258,7 +282,18 @@ def run(dry_run: bool = False) -> dict:
     # „noi” la rularea urmatoare — masura reala a presiunii pe buget, invizibila pana acum:
     # raportul spunea cate articole au IESIT, niciodata cate au fost lasate afara.
     handled = {a.get("url") for a in processed_new} | folded
-    deferred = sum(1 for i in new_items if i["url"] not in handled)
+    # `deferred` numara doar ce se poate INTOARCE. Itemele fara substanta sunt respinse
+    # DEFINITIV, inainte de clustering si inainte de buget, deci nu se „amana": revin la
+    # fiecare rulare si sunt respinse din nou, la nesfarsit.
+    #
+    # Masurat pe 6 build-uri reale (2026-08-16, `gh run view --log`): in cele doua rulari in
+    # care bugetul NU s-a epuizat (11/18 si 15/18 apeluri folosite), `deferred` era EXACT
+    # numarul de iteme fara substanta — 27 din 27, 28 din 28. Zero presiune reala pe buget,
+    # raportata ca „buget AI epuizat". Pe rularile in care bugetul chiar s-a terminat,
+    # presiunea reala era 107-29=78 si 254-30=224. Cifra veche amesteca doua marimi opuse,
+    # iar decizia „merita batching pentru Model C?" se ia tocmai pe ea.
+    respinse_substanta = {i["url"] for i in itemele_fara_substanta(new_items)}
+    deferred = numara_amanate(new_items, handled)
     processed_new = [a for a in processed_new if not a.get("skip")]
     # inlocuire pe URL: un rep C poate purta URL-ul unei stiri B existente pe care a absorbit-o
     rep_urls = {a.get("url") for a in processed_new}
@@ -285,6 +320,7 @@ def run(dry_run: bool = False) -> dict:
         # „doua surse din config aduc acelasi lucru" — semnal pentru portofoliul de surse.
         "exemplare_duplicate": exemplare_duplicate,
         "deferred": deferred,
+        "respinse_substanta": len(respinse_substanta),
         "model_B": sum(1 for a in processed_new if a.get("model") == "B"),
         "model_C": sum(1 for a in processed_new if a.get("model") == "C"),
         # Cate sinteze deja publicate s-au ACTUALIZAT in loc sa apara a doua oara (IZZ-0151).
@@ -352,8 +388,15 @@ def _print_report(stats: dict, processed_new: list, dry_run: bool):
               f"{stats['upgrade_reserve']} din {stats['upgradable']} eligibile | "
               f"folosite: {stats['ai_calls']}")
     if stats.get("deferred"):
-        print(f"Amanate (buget AI epuizat): {stats['deferred']} din {stats['new']} "
+        # Cauza NU se mai afirma, se deduce din cifre: daca apelurile folosite ating bugetul,
+        # bugetul e cel care a taiat; altfel a taiat altceva si merita citit, nu presupus.
+        cauza = ("buget AI epuizat" if stats["ai_calls"] >= stats.get("ai_budget", 0)
+                 else f"buget NEepuizat ({stats['ai_calls']}/{stats.get('ai_budget', 0)}) — alta cauza")
+        print(f"Amanate ({cauza}): {stats['deferred']} din {stats['new']} "
               f"— revin la rularea urmatoare, apeluri folosite: {stats['ai_calls']}")
+    if stats.get("respinse_substanta"):
+        print(f"Respinse DEFINITIV (fara substanta): {stats['respinse_substanta']} "
+              "— nu revin, sunt respinse din nou la fiecare rulare; nu se numara ca amanate")
     print(f"Total cunoscute (dupa expirare): {stats['total_known']} | "
           f"vizibile dupa moderare: {stats['visible_after_moderation']}")
     if stats["hold_important"]:
