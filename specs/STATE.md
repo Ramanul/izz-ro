@@ -14,6 +14,57 @@
 
 **Updated:** 2026-08-15 (account A — inventory sweep across sessions; see this line before older ones)
 
+## Landed 2026-08-16 on `main` (account A — announce to B, per §14)
+
+Suite **926 passed, 8 xfailed** (was 900; +22 from the gold rows, +4 from the recovered Mistral
+test — the arithmetic closes exactly).
+
+**The most useful thing today was work NOT done.** `STATE.md` said "Cadence is next"; the cadence
+axis had been measured dead the same day it was written (`IZZ-0174`). The stale pointer cost a
+slice before `securitate-ingestie.md` §5.1 and `registru.tsv` caught it. Corrected in place, with
+all four reasons moved up here — the spec is not read at session start, this file is.
+**The axis still open is topic mix, not cadence.**
+
+**`03c73a46` — gold set +11 rows, level gate 12× tighter (E5).** The gate's own comment recorded
+its weakness: `clasifica`→always-`local` failed **1** test of 15, because 14 of 15 evaluable rows
+were `local`. Added `#41-#51`, all `judetean`, all from **non-official** sources — the only ones
+that reach `clasifica` in production (`_cazuri_nivel()` excludes `pl_`/`cj_`/`pr_` because
+`process_official` never touches `category`). Labels are hand-judged per article on title+teaser.
+**Measured by mutation: always-`local` now fails 12, was 1.** All 11 agree with today's code, so
+they are regression protection, not documented bugs — nothing new entered `CUNOSCUTE_NIVEL`.
+Guard threshold raised from "at least one" to **8**, verified both ways: with the new rows 69 pass;
+with the set cut back to 40 rows the guard fails by itself and asks to be refilled.
+**Four candidates deliberately NOT frozen, worth a look:** a solar eclipse classified `judetean`
+(looks like a false positive), Dobrogea wind output (subject is the national grid, not the region),
+"zona seismică Vrancea" (geological region, not the county), and **"Curtea de Apel București"** —
+exactly the compound-noun class #160 targets, so it may be a live miss.
+
+**`a89396bf` — the Mistral PR gate test, recovered from an abandoned branch.** The fix had landed
+on `main`; its test had not (one of the 4 "to recover" branches from yesterday's triage). Not a
+copy: the branch called the `$GITHUB_ENV` flag `PUSHED`, `main` shipped it as `HAS_CHANGES`, so the
+test was adapted to the real name without weakening it. It runs the **actual script** of the commit
+step rather than reading the YAML. Mutation: dropping `env.HAS_CHANGES == 'true'` from `Open PR`
+fails exactly 1 of 4. Added `/mingw64/bin` to the subprocess PATH — Git-Bash on Windows keeps `git`
+there; additive, inert on `ubuntu-latest`.
+
+**`18da4eae` — `harta-data.yml` was the last workflow on soft tags.** All three actions
+(`checkout`, `setup-python`, `setup-node`) pinned to SHA, matching every other workflow. It matters
+here specifically: the job has `contents: write` and commits the map dataset, and a tag can move
+under us without anything showing in a diff. `setup-node` also went v4 → v7, closing the dependabot
+proposal; its SHA was verified against **two** GitHub API endpoints, not taken from the agent that
+did the inventory. `grep "uses: .*@v[0-9]*$"` now returns nothing repo-wide.
+
+**`03df37c5` — a claim in `tests/conftest.py` was true in one run and false across two
+(`IZZ-0195`).** The docstring said no test can see half of someone else's render. `output/` is a
+fixed shared path and "reset output" empties it with no lock, so two `pytest` processes on the same
+clone — a session and a subagent each running the suite — do exactly that. **Measured: concurrent
+run → 899 passed / 27 errors** in `test_sitemap_editorial`, `test_pagination`, `test_pagina_404`;
+those same files run alone → 12 passed; the whole suite run alone afterwards → **926 passed, 0
+errors**. It reads exactly like a real regression and is none. Not fixed in code (a lock would
+complicate the fixture for a case CI never hits — each job has its own runner); documented instead,
+with the instruction to check for a concurrent run *before* investigating. Parallel agents need
+`isolation: "worktree"` (§19).
+
 ## Landed 2026-08-15 on `main` (account A — announce to B, per §14)
 
 Three slices, `8fb9c148` → `bf55ae9f`, from an inventory of every unfinished task across all
