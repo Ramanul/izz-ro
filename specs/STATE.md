@@ -261,8 +261,23 @@ three hostile, 0 false positives.** Tests target the WIRING, verified by mutatio
 layer → "Hacked by Chinafans" passes both paths). `IZZ-0170`.
 **Scope, stated so nobody reads it as more:** the proposed anomaly baseline had three axes —
 language, cadence, topic mix. **This is one.** A defacement written in Romanian still passes,
-and cadence (8 articles at exact 3-hour intervals, the strongest tell at Rovinari) is still
-measured by nothing. `specs/securitate-ingestie.md` §5.1 now says so. **Cadence is next.**
+and topic mix is measured by nothing.
+**CORRECTED 2026-08-16 — the line that used to end this paragraph said "Cadence is next". It was
+already false the day it was written, and it cost a slice today before `securitate-ingestie.md`
+§5.1 and `registru.tsv` caught it.** The cadence axis was measured **the same day** (2026-08-12)
+and is **dead on the data we have**: `IZZ-0174`, status `masurat-fals`. Four reasons, in the order
+the hypotheses fell: (a) **regular intervals** — Rovinari ranks **17th of 21**, i.e. *more*
+irregular than legitimate town halls (cv 1.67 vs median 1.36), because the warez is interleaved
+with real notices, so the *combined* stream is not regular; the 3-hour spacing exists only inside
+the warez subset, which cannot be isolated without already knowing which items are warez —
+circular; (b) **sustained throughput** — Rovinari is 1/70 at 9 items, but #2-#3 are legitimate town
+halls at 8, so a threshold of 9 is a curve through n=1, and at 6 it flags 5 sources of which 4 are
+legitimate; (c) **confound** — `config.MAX_PER_SOURCE = 8` caps items per fetch, so observed
+throughput measures **our fetch schedule**, not the source; (d) **decisive** — Cajvana has
+max24h = **1**, so a single-article defacement is invisible to any cadence measure by construction,
+which is exactly the case layer 8 exists for. **Do not reopen without a NEW signal.** What was
+built instead, because the data supported it, is layer 9 (source quarantine, §R6a) — already shipped.
+The open axis is **topic mix**, not cadence.
 
 **`4f78c901` — the gold set gets a second gate: geographic level.** `geo.clasifica` had no
 frozen gate at all; it was measured only by `tools/eval_atribuire.py`, which reads
