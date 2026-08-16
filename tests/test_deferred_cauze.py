@@ -88,6 +88,28 @@ def test_amanarea_reala_se_numara_in_continuare():
     assert _deferred(iteme) == 5, "itemele cu substanta, neprocesate, TREBUIE sa apara ca amanate"
 
 
+# --- eticheta cauzei ----------------------------------------------------------------------
+
+def test_cauza_e_epuizare_cand_apelurile_ating_plafonul():
+    assert main.cauza_amanarii(ai_calls=18, ai_budget=18, upgrade_reserve=0) == "buget AI epuizat"
+
+
+def test_cauza_nu_minte_cand_bugetul_a_ramas_neatins():
+    """Cazul masurat: 11 apeluri din 18, dar raportul zicea „buget AI epuizat"."""
+    cauza = main.cauza_amanarii(ai_calls=11, ai_budget=18, upgrade_reserve=0)
+    assert "NEepuizat" in cauza and "11/18" in cauza
+
+
+def test_plafonul_scade_rezerva_de_upgrade():
+    """Cu rezerva > 0, `process_new` primeste doar diferenta, deci apelurile NU pot atinge
+    totalul. O comparatie cu totalul ar da „NEepuizat" exact cand bugetul chiar s-a terminat —
+    aceeasi eticheta falsa, in cealalta directie. Rezerva era 0 in toate cele 6 build-uri
+    citite, deci cazul asta nu se putea vedea in date."""
+    assert main.cauza_amanarii(ai_calls=10, ai_budget=18, upgrade_reserve=8) == "buget AI epuizat"
+    cauza = main.cauza_amanarii(ai_calls=9, ai_budget=18, upgrade_reserve=8)
+    assert "NEepuizat" in cauza and "9/10" in cauza, "plafonul afisat trebuie sa fie 18-8, nu 18"
+
+
 def test_amestecul_se_separa_corect():
     prag = config.MIN_SUBSTANTA_CUVINTE
     iteme = ([_item(f"https://ex.ro/gol{n}", prag - 1) for n in range(29)]

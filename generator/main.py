@@ -58,6 +58,24 @@ def itemele_fara_substanta(items: list) -> list:
             and i["src_extra"] < config.MIN_SUBSTANTA_CUVINTE]
 
 
+def cauza_amanarii(ai_calls: int, ai_budget: int, upgrade_reserve: int) -> str:
+    """Eticheta cauzei, DEDUSA din cifre — raportul nu mai are voie s-o afirme.
+
+    Plafonul comparat e `ai_budget - upgrade_reserve`, NU `ai_budget`: `process_new` primeste
+    doar diferenta (`budget - reserve` la apel), deci cand rezerva e > 0 apelurile nu pot
+    atinge niciodata totalul. O comparatie cu totalul ar raporta „buget NEepuizat" exact cand
+    bugetul pentru iteme noi chiar s-a terminat — aceeasi eticheta falsa, in cealalta directie.
+
+    Prins la reverificare, nu la scriere: pe cele 6 build-uri citite pe 2026-08-16 rezerva era
+    0, deci greseala nu se vedea in date. Functie separata, nu conditie inline intr-un `print`,
+    tocmai ca sa poata fi testata — lectia contorului de alaturi, invatata a doua oara.
+    """
+    plafon = ai_budget - upgrade_reserve
+    if ai_calls >= plafon:
+        return "buget AI epuizat"
+    return f"buget NEepuizat ({ai_calls}/{plafon}) — alta cauza"
+
+
 def numara_amanate(new_items: list, handled: set) -> int:
     """Cate iteme noi chiar se INTORC la rularea urmatoare.
 
@@ -388,10 +406,8 @@ def _print_report(stats: dict, processed_new: list, dry_run: bool):
               f"{stats['upgrade_reserve']} din {stats['upgradable']} eligibile | "
               f"folosite: {stats['ai_calls']}")
     if stats.get("deferred"):
-        # Cauza NU se mai afirma, se deduce din cifre: daca apelurile folosite ating bugetul,
-        # bugetul e cel care a taiat; altfel a taiat altceva si merita citit, nu presupus.
-        cauza = ("buget AI epuizat" if stats["ai_calls"] >= stats.get("ai_budget", 0)
-                 else f"buget NEepuizat ({stats['ai_calls']}/{stats.get('ai_budget', 0)}) — alta cauza")
+        cauza = cauza_amanarii(stats["ai_calls"], stats.get("ai_budget", 0),
+                               stats.get("upgrade_reserve", 0))
         print(f"Amanate ({cauza}): {stats['deferred']} din {stats['new']} "
               f"— revin la rularea urmatoare, apeluri folosite: {stats['ai_calls']}")
     if stats.get("respinse_substanta"):
