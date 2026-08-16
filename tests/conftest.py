@@ -34,6 +34,19 @@ def output_randat() -> str:
     O singura randare ajunge fiindca `render.build()` goleste continutul lui `output/` la
     fiecare rulare (generator/render.py, „reset output"), deci artefactul e intreg si
     coerent — nu exista drum prin care un test sa vada jumatate din randarea altcuiva.
+
+    **Adevarat INTR-O rulare; fals intre DOUA rulari concurente** (masurat 2026-08-16).
+    `output/` e o cale fixa, partajata, iar „reset output" o goleste fara niciun lock. Doua
+    procese `pytest` pornite in paralel pe acelasi clone — tipic: o sesiune si un subagent
+    care isi ruleaza fiecare suita — se calca reciproc: unul citeste `output/` exact cand
+    celalalt tocmai l-a golit. Simptomul e o ploaie de ERRORS in testele care depind de
+    fixtura asta (`test_sitemap_editorial`, `test_pagination`, `test_pagina_404`), care arata
+    ca o regresie reala si nu e. Dovada: aceleasi fisiere, rulate SINGURE, dau 12 passed;
+    suita intreaga rulata singura dupa aceea, 926 passed / 0 errors.
+    **Deci: nu rula doua suite in paralel pe acelasi working tree.** Daca ai nevoie de
+    paralelism intre agenti, dă-le `isolation: "worktree"` (CLAUDE.md §19) — clone separate
+    inseamna `output/` separate. Inainte de a investiga ERRORS in testele astea, verifica
+    intai daca ruleaza altcineva: o suita concurenta e cauza mult mai probabila decat un bug.
     Scope „session", nu „module": inainte se randa de pana la doua ori per suita
     (`test_pagination` neconditionat + `test_entities_verified` cand lipsea `output/ghiduri`),
     acum o singura data pentru toti consumatorii.
