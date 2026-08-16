@@ -115,13 +115,25 @@ def test_setul_de_aur_nu_si_a_pierdut_datele():
     assert len(fara_teaser) <= 2, (
         f"{len(fara_teaser)} randuri fara teaser inghetat ({fara_teaser}) — clasificarea "
         f"citeste title+teaser, deci fara el poarta masoara altceva decat productia")
-    # Fara macar un caz ne-`local` care chiar se evalueaza, poarta de nivel nu poate deosebi
-    # clasificarea corecta de un cod care raspunde „local" la orice. Masurat prin mutatie: azi
-    # trece cu 1 singur asemenea caz (#34), deci pragul asta e minimul absolut, nu o tinta.
+    # Fara cazuri ne-`local` care chiar se evalueaza, poarta de nivel nu poate deosebi
+    # clasificarea corecta de un cod care raspunde „local" la orice.
+    #
+    # Istoricul pragului, fiindca e o MASURATOARE, nu o preferinta:
+    #   2026-08-12: 1 singur caz (#34). Comentariul de atunci spunea „minimul absolut, nu o tinta".
+    #   2026-08-16: 11 randuri noi (#41-#51), toate `judetean` de la surse NEOFICIALE — alea sunt
+    #               singurele care ajung la `clasifica` in productie (vezi `_cazuri_nivel`).
+    #               Verificat prin mutatie, `clasifica` -> mereu „local": pica 12, era 1.
+    # Pragul e 8, nu 12: lasa loc ca 3-4 randuri sa treaca in CUNOSCUTE_NIVEL daca o schimbare
+    # viitoare de clasificare le muta, fara sa devina o poarta care se rescrie la fiecare felie.
+    # Sub 8 inseamna ca setul s-a erodat destul cat sa merite completat, nu ca a picat ceva.
+    MINIM_DISCRIMINANTE = 8
     discrimineaza = [r["idx"] for r in _cazuri_nivel()
                      if r["cat_corecta"].strip() != "local" and r["idx"] not in CUNOSCUTE_NIVEL]
-    assert discrimineaza, ("niciun caz `judetean`/`regional` evaluabil ramas — poarta de nivel ar "
-                           "trece si pe un cod care raspunde „local” la orice")
+    assert len(discrimineaza) >= MINIM_DISCRIMINANTE, (
+        f"doar {len(discrimineaza)} cazuri `judetean`/`regional` evaluabile ({discrimineaza}) — "
+        f"sub pragul de {MINIM_DISCRIMINANTE}. Poarta de nivel se apropie de starea in care ar "
+        f"trece si pe un cod care raspunde „local” la orice; completeaza setul cu cazuri ne-locale "
+        f"de la surse neoficiale.")
 
 
 @pytest.mark.parametrize("rand", _cazuri(), ids=lambda r: f"gold{r['idx']}")
