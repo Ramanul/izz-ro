@@ -489,12 +489,25 @@ swap it back.
 3. **Model C is not batched** — `process_cluster` is one AI call per cluster while B batches 10.
    Gate is already instrumented: read `stats["deferred"]` over 2–3 real runs before building it.
    Do not re-litigate the threshold (`build.yml` overrides the budget to 18, not the default 12).
-   **Still blocked 2026-08-15**: needs real `stats["deferred"]` numbers from GitHub Actions build
-   logs. The 08-13 note said `gh` was "not authenticated" — **re-checked today, it is not
-   installed at all** (`which gh`, `where.exe gh`, `C:\Program Files\GitHub CLI\` all empty).
-   Installing it needs an elevated shell (`winget install --id GitHub.cli -e` failed with MSI
-   1602, no admin rights in the agent session), and `gh auth login` is an interactive OAuth flow
-   only the owner can complete. **Owner action, then this unblocks.** Not guessed.
+   **UNBLOCKED 2026-08-16 — owner installed and authenticated `gh` (2.97.0). The logs were read,
+   and the gate itself turned out to be wrong (`b6d856b7`).** Six real builds:
+
+       run             fara substanta   deferred   budget used
+       31920738670           27            27         11/18
+       31915086605           28            28         15/18
+       31909820457           29           107         18/18
+       31898707192           30           254         18/18
+
+   In the two runs where the budget was **not** exhausted, `deferred` equalled the
+   substance-reject count **exactly** — 27 of 27, 28 of 28. Real budget pressure: **zero**,
+   reported as "buget AI epuizat". The counter was adding two opposite quantities: items left out
+   because the budget ran out (they come back and get processed) and items rejected for lacking
+   substance (rejected before clustering and before the budget, so they come back and are rejected
+   again, forever). Fixed: the substance rejects are counted and reported separately, and the
+   message now *derives* the cause from the numbers instead of asserting it.
+   **True budget pressure, after the fix: 0, 0, 78, 224.** It is real but smaller than it looked.
+   **The batching decision is still NOT taken** — it needs 2-3 runs with the corrected number, per
+   this item's own rule. Do not decide it off the pre-fix figures.
 4. **`WS-0025` — RESOLVED 2026-08-13, see "Landed" above.** The suppression on
    `generator/render.py:15-16` works (measured: `semgrep` installed locally, same import line
    fires 1 finding without the comment, 0 with it, on the exact registry rule).
