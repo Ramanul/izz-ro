@@ -18,6 +18,10 @@ data/*.db
 
 # worktrees efemere ale sub-agentilor (unealta, nu continut de proiect)
 .claude/worktrees/
+# lock de sesiune (leagat de un PID anume) si permisiuni locale -- gasite netrackuite
+# 2026-08-16, niciodata continut de proiect, doar stare a masinii care ruleaza acum.
+.claude/scheduled_tasks.lock
+.claude/settings.local.json
 # arhiva reconstruita din istoric (tools/arhiva.py) — nu se comite, e duplicare
 data/archive/
 
