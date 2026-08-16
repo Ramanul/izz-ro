@@ -38,12 +38,19 @@ class _Provider:
 
 
 def _fals_ai(monkeypatch, vazute: list):
-    """Inlocuieste caile AI cu functii care doar inregistreaza si intorc un rezultat valid."""
-    def _cluster(group, provider):
-        vazute.append(("C", tuple(a["url"] for a in group)))
-        rep = dict(group[0])
-        rep.update(model="C", synthesis="sinteza", processed_by="fake")
-        return rep
+    """Inlocuieste caile AI cu functii care doar inregistreaza si intorc un rezultat valid.
+
+    `_cluster_batch` inlocuieste `process_clusters_batch` (2026-08-16, batching Model C):
+    UN apel poate acoperi mai multe clustere deodata, deci inregistreaza cate o intrare "C"
+    per APEL, cu tuplul de urluri per cluster din lot -- nu mai e 1:1 apel<->cluster."""
+    def _cluster_batch(groups, provider):
+        vazute.append(("C", tuple(tuple(a["url"] for a in g) for g in groups)))
+        out = []
+        for g in groups:
+            rep = dict(g[0])
+            rep.update(model="C", synthesis="sinteza", processed_by="fake")
+            out.append(rep)
+        return out
 
     def _batch(items, provider):
         vazute.append(("B", tuple(i["url"] for i in items)))
@@ -54,7 +61,7 @@ def _fals_ai(monkeypatch, vazute: list):
             out.append(a)
         return out
 
-    monkeypatch.setattr(main, "process_cluster", _cluster)
+    monkeypatch.setattr(main, "process_clusters_batch", _cluster_batch)
     monkeypatch.setattr(main, "process_batch", _batch)
 
 
@@ -63,6 +70,10 @@ def test_clusterul_cu_mai_multe_surse_intra_primul(monkeypatch):
     sunt semnal de eveniment real, unul singur poate fi doar un titlu care se repeta."""
     vazute: list = []
     _fals_ai(monkeypatch, vazute)
+    # CLUSTER_BATCH_SIZE=1: testul verifica ORDINEA de selectie, nu batching-ul (are testul lui
+    # separat, test_lotul_de_clustere_consuma_un_singur_apel) -- cu latimea implicita (3), un
+    # buget de 1 apel ar acoperi ambele clustere din exemplu si ordinea n-ar mai fi observabila.
+    monkeypatch.setattr(main.config, "CLUSTER_BATCH_SIZE", 1)
     slab = [_item("https://a.ro/1", "guvernul a aprobat ordonanta despre pensii", 10),
             _item("https://a.ro/2", "guvernul a aprobat ordonanta despre pensii azi", 11)]
     tare = [_item("https://b.ro/1", "incendiu puternic la depozitul din constanta", 30),
@@ -74,14 +85,15 @@ def test_clusterul_cu_mai_multe_surse_intra_primul(monkeypatch):
     main.process_new(slab + tare, _Provider(), budget=1)
 
     assert len(vazute) == 1, "bugetul de 1 apel a fost depasit"
-    tip, urls = vazute[0]
-    assert tip == "C" and urls == ("https://b.ro/1", "https://c.ro/1"), \
+    tip, loturi = vazute[0]
+    assert tip == "C" and loturi == (("https://b.ro/1", "https://c.ro/1"),), \
         "a intrat clusterul cu un singur domeniu, desi exista unul coroborat de doua"
 
 
 def test_la_egalitate_de_surse_intra_cel_mai_proaspat(monkeypatch):
     vazute: list = []
     _fals_ai(monkeypatch, vazute)
+    monkeypatch.setattr(main.config, "CLUSTER_BATCH_SIZE", 1)  # vezi nota din testul anterior
     vechi = [_item("https://a.ro/1", "sedinta de guvern amanata pentru saptamana viitoare", 300),
              _item("https://b.ro/1", "sedinta de guvern amanata pentru saptamana asta", 310)]
     proaspat = [_item("https://c.ro/1", "explozie la o conducta de gaz din prahova", 5),
@@ -92,7 +104,7 @@ def test_la_egalitate_de_surse_intra_cel_mai_proaspat(monkeypatch):
 
     main.process_new(vechi + proaspat, _Provider(), budget=1)
 
-    assert vazute[0][1] == ("https://c.ro/1", "https://d.ro/1")
+    assert vazute[0][1] == (("https://c.ro/1", "https://d.ro/1"),)
 
 
 def test_articolele_individuale_merg_dupa_prospetime_nu_dupa_ordinea_din_config(monkeypatch):
@@ -148,6 +160,30 @@ def test_ordinea_nu_schimba_ce_se_publica_la_buget_nelimitat(monkeypatch):
     procesate, _, _ = main.process_new(iteme, _Provider(), budget=999)
 
     assert {a["url"] for a in procesate} == {i["url"] for i in iteme}
+
+
+def test_lotul_de_clustere_consuma_un_singur_apel(monkeypatch):
+    """Fixul de batching (2026-08-16): CLUSTER_BATCH_SIZE clustere intra intr-UN apel, nu
+    unul per apel -- masurat pe build.yml, 17-18 clustere/rulare epuizau tot bugetul si
+    lasau 0 pentru model B. Cu latimea implicita (3) si 5 clustere, bugetul de 2 apeluri
+    trebuie sa acopere toate cinci (2 loturi: 3 + 2), nu doar 2 cate unul."""
+    vazute: list = []
+    _fals_ai(monkeypatch, vazute)
+    grupuri = [[_item(f"https://ev{n}a.ro/1", f"eveniment {n} sursa a", n),
+                _item(f"https://ev{n}b.ro/1", f"eveniment {n} sursa b", n)]
+               for n in range(1, 6)]
+    monkeypatch.setattr(main.cluster, "cluster", lambda items: grupuri)
+    monkeypatch.setattr(main.cluster, "attach_recent", lambda groups, rec: groups)
+    monkeypatch.setattr(main.cluster, "is_synthesis_candidate", lambda g: True)
+
+    procesate, _, folosite = main.process_new(
+        [it for g in grupuri for it in g], _Provider(), budget=2)
+
+    assert folosite == 2, "5 clustere la latime 3 trebuie sa incapa in 2 apeluri (3+2)"
+    assert len(procesate) == 5, "toate cele 5 clustere trebuiau procesate, niciunul amanat"
+    apeluri_c = [v for v in vazute if v[0] == "C"]
+    assert len(apeluri_c) == 2
+    assert [len(lot) for _, lot in apeluri_c] == [3, 2]
 
 
 @pytest.fixture

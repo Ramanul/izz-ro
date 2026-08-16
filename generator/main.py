@@ -15,7 +15,7 @@ except ImportError:
     pass
 
 from . import fetch, state, cluster, moderation, config, guard
-from .process import get_provider, process_single, process_cluster, process_batch, process_official, OFFICIAL_PREFIXES
+from .process import get_provider, process_single, process_cluster, process_clusters_batch, process_batch, process_official, OFFICIAL_PREFIXES
 from .util import domain_of
 
 
@@ -151,16 +151,22 @@ def process_new(new_items: list, provider, budget: int, existing: list | None = 
     syn.sort(key=_cluster_rank, reverse=True)
     singles.sort(key=lambda a: (a.get("published") or "", _tie(a.get("url", ""))), reverse=True)
 
-    # clusterele C intai (1 apel fiecare)
-    for g in syn:
+    # clusterele C intai, in LOTURI (1 apel per CLUSTER_BATCH_SIZE clustere, nu per cluster).
+    # MASURAT 2026-08-16: cate un apel per cluster epuiza bugetul la 17-18 clustere/rulare,
+    # lasand 0 apeluri pentru model B -- amanate a crescut monoton 0->84->152->220 in 8 ore.
+    # Vezi config.CLUSTER_BATCH_SIZE si process.py:process_clusters_batch.
+    cbs = config.CLUSTER_BATCH_SIZE if provider else (len(syn) or 1)
+    for i in range(0, len(syn), cbs):
         if used >= budget:
-            break
-        rep = process_cluster(g, provider)
+            break  # restul clusterelor -> reluate la rularea urmatoare
+        chunk = syn[i:i + cbs]
+        reps = process_clusters_batch(chunk, provider)
         used += 1
-        if rep is None:
-            continue  # esec AI -> cluster amanat; membrii raman nefolded si se reiau data viitoare
-        processed.append(rep)
-        folded.update(a["url"] for a in g if a["url"] != rep["url"])
+        for g, rep in zip(chunk, reps):
+            if rep is None:
+                continue  # esec/nemapat -> cluster amanat; membrii raman nefolded si se reiau data viitoare
+            processed.append(rep)
+            folded.update(a["url"] for a in g if a["url"] != rep["url"])
 
     # model B in LOTURI (1 apel per BATCH_SIZE articole)
     bs = config.BATCH_SIZE if provider else (len(singles) or 1)

@@ -43,6 +43,22 @@ Returneaza JSON:
 Reguli: trianguleaza faptele comune; ZERO propozitii copiate; titlul contine faptul real, nu un teaser; zero opinii."""
 
 
+SYSTEM_C_BATCH = ("Esti editor care sintetizeaza MAI MULTE evenimente, fiecare din mai multe surse, "
+                   "cu cuvintele tale. Titlul reda esenta evenimentului; sinteza comprima faptele "
+                   "confirmate. Raspunzi EXCLUSIV cu un array JSON valid.")
+
+USER_C_BATCH = """Ai mai multe evenimente (fiecare cu un id), fiecare relatat de mai multe surse.
+
+Evenimente:
+{events_block}
+
+Pentru FIECARE eveniment, scrie titlu + sinteza care REDAU ESENTA, cu cuvintele tale.
+Returneaza EXCLUSIV un array JSON, cate UN obiect per eveniment, cu acelasi id primit:
+[{{"id": <id>, "title": "<esenta evenimentului: ce s-a intamplat, concret; 6-16 cuvinte; fara clickbait>", "synthesis": "<sinteza COMPRIMATA in 40-80 de cuvinte: faptele confirmate de mai multe surse (cine, ce, cand, unde, cat), reformulate 100%; marcheaza daca sursele se contrazic>", "category": "<{cats}>", "entities": ["<1-4 nume proprii cheie din eveniment>"], "icon": "<UN slug din lista de la final sau null>"}}]
+Pictograme permise: {icons}
+Reguli: pastreaza id-ul EXACT (numar); un obiect per id; trianguleaza faptele comune DOAR din sursele evenimentului cu acelasi id -- NU amesteca fapte intre evenimente diferite, chiar daca par legate; ZERO propozitii copiate; titlul contine faptul real, nu un teaser; zero opinii."""
+
+
 SYSTEM_BATCH = ("Esti editor de stiri. Pentru FIECARE stire primita, titlul reda ESENTA faptului, "
                 "iar teaserul comprima faptele de baza, cu cuvintele tale. Concret, nu vag. "
                 "Raspunzi EXCLUSIV cu un array JSON valid.")
@@ -224,6 +240,7 @@ _CATS = "|".join(config.CATEGORIES)
 
 USER_B = USER_B.replace("{icons}", _ICON_SLUGS).replace("{cats}", _CATS)
 USER_C = USER_C.replace("{icons}", _ICON_SLUGS).replace("{cats}", _CATS)
+USER_C_BATCH = USER_C_BATCH.replace("{icons}", _ICON_SLUGS).replace("{cats}", _CATS)
 USER_BATCH = USER_BATCH.replace("{icons}", _ICON_SLUGS).replace("{cats}", _CATS)
 
 
@@ -452,3 +469,101 @@ def process_cluster(group: list, provider) -> dict | None:
     except Exception:
         return None                            # esec AI -> amanat, reluat data viitoare
     return rep
+
+
+def _prep_cluster_rep(group: list) -> tuple:
+    """Partea din process_cluster care NU cere AI: alege reprezentantul, aduna sursele,
+    marcheaza actualizarea. Extrasa ca sa fie identica intre calea single (process_cluster)
+    si cea in lot (process_clusters_batch) -- doua copii ale conditiei „cine e rep-ul" s-ar
+    putea departe fara sa para stricat nimic, acelasi risc numit la `upgradable()` mai sus."""
+    group = sorted(group, key=lambda a: (not a.get("processed_by"), a.get("published") or ""))
+    actualizare = bool(group[0].get("processed_by"))
+    rep = dict(group[0])
+    rep["model"] = "C"
+    _seen_domain = set()
+    surse = []
+    for a in group:
+        for s in (a.get("sources")
+                  or [{"name": a.get("source_name"), "url": a.get("original_link")}]):
+            dom = domain_of(s.get("url") or "")
+            if dom in _seen_domain:
+                continue
+            _seen_domain.add(dom)
+            surse.append({"name": s.get("name"), "url": s.get("url")})
+    rep["sources"] = surse
+    rep["first_source"] = group[0].get("source_name")
+    if actualizare:
+        rep["updated"] = datetime.now(timezone.utc).isoformat()
+    return group, rep
+
+
+def process_clusters_batch(groups: list, provider) -> list:
+    """Model C in LOT: UN apel AI pentru mai multe clustere deodata, in loc de unul per
+    cluster (vezi config.CLUSTER_BATCH_SIZE pentru motiv si cifre masurate).
+
+    Returneaza o lista ALINIATA cu `groups` (acelasi index): None acolo unde un cluster
+    n-a fost mapat in raspuns sau tot apelul a esuat -- la fel ca la `process_cluster`
+    singur, clusterul nemapat NU se publica brut, ramane neschimbat, reluat la rularea
+    urmatoare (regula 'No mangled output'). Esecul NU e tacut: fiecare None intra direct
+    in cifra "Amanate (buget AI epuizat)" din sumarul rularii (main.py) -- masurabil,
+    exact cifra urmarita in specs/STATE.md la decizia de batching.
+    """
+    if not groups:
+        return []
+    preps = [_prep_cluster_rep(g) for g in groups]
+
+    if provider is None:
+        out = []
+        for _, rep in preps:
+            if rep.get("source_lang") == "en":
+                rep["skip"] = True
+                out.append(rep)
+                continue
+            rep["title"] = rep.get("original_title") or rep.get("title") or ""
+            rep["synthesis"] = truncate_words(
+                rep.get("description") or rep.get("synthesis") or "Detalii pe surse.",
+                config.SYNTHESIS_MAX_WORDS)
+            rep["processed_by"] = "fallback"
+            out.append(rep)
+        return out
+
+    # membrii deja procesati (scrubbed) nu mai au textul original -> folosim versiunea AI,
+    # exact ca in process_cluster. Fiecare eveniment e un bloc separat, cu id -- gardat
+    # explicit in prompt ca sursele unui id sa nu se amestece cu alt id.
+    events_block = "\n\n".join(
+        f"[{i}] " + " | ".join(
+            f"{a['source_name']}: {a.get('original_title') or a.get('title') or ''}"
+            f" - {a.get('description') or a.get('teaser') or ''}"
+            for a in group)
+        for i, (group, _) in enumerate(preps))
+    try:
+        raw = provider.complete(SYSTEM_C_BATCH, USER_C_BATCH.format(events_block=events_block))
+        arr = _parse_json_array(raw)
+    except Exception:
+        return [None] * len(preps)             # tot lotul a esuat -> reluat data viitoare (vezi docstring)
+
+    by_id = {}
+    for obj in arr:
+        try:
+            by_id[int(obj.get("id"))] = obj
+        except (TypeError, ValueError, AttributeError):
+            continue
+
+    out = []
+    for i, (_, rep) in enumerate(preps):
+        obj = by_id.get(i)
+        title = (obj.get("title") or "").strip() if isinstance(obj, dict) else ""
+        synthesis = (obj.get("synthesis") or "").strip() if isinstance(obj, dict) else ""
+        if not (title and synthesis):
+            out.append(None)                   # nemapat -> amanat, ca la esecul unui apel singur
+            continue
+        rep["title"] = title
+        rep["synthesis"] = truncate_words(synthesis, config.SYNTHESIS_MAX_WORDS)
+        rep["entities"] = _clean_entities(obj.get("entities"))
+        rep["ai_cat"] = obj.get("category", "")
+        rep["category"] = _resolve_category(rep, rep["ai_cat"], rep["entities"])
+        rep["icon"] = _clean_icon(obj.get("icon"))
+        rep["processed_by"] = provider.name
+        rep["prompt_version"] = config.PROMPT_VERSION
+        out.append(rep)
+    return out

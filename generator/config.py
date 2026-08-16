@@ -216,6 +216,14 @@ MIN_SUBSTANTA_CUVINTE = 5
 # Model B+C
 PROMPT_VERSION = "v2-esenta"  # versiunea regulilor AI; la schimbare, articolele vechi se reprocesează
 BATCH_SIZE = 10                # articole model-B procesate intr-UN singur apel AI (economie quota).
+# clustere model-C procesate intr-UN singur apel AI. MASURAT 2026-08-16: cate un apel per
+# cluster epuiza bugetul la 17-18 clustere/rulare, lasand 0 apeluri pentru model B -- coada
+# de articole amanate a crescut monoton 0->84->152->220 in 8 ore (4 citiri din build.yml).
+# 3 e un compromis: destul de mic ca sursele evenimentelor sa nu se amestece in promptul AI
+# (fiecare cluster ramane un bloc separat, etichetat), destul de mare ca 17-18 clustere sa
+# incapa in ~6 apeluri in loc de 17-18. Vezi process.py:process_clusters_batch. Cautat in
+# registru inainte (`cluster batch`, `model c`, `buget AI`): niciun precedent respins.
+CLUSTER_BATCH_SIZE = 3
                                # Ridicat 6->10 (owner 2026-08-02, "riscam, vedem ce iese"): ~+67%
                                # articole/rulare. Cere maxOutputTokens marit (gemini.py, 4096) ca
                                # lotul JSON sa nu se trunchieze -> altfel pierdere tacuta de lot.

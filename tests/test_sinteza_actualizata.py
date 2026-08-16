@@ -23,16 +23,23 @@ def _iso(minutes_ago: float) -> str:
 
 
 class _Provider:
-    """Nu cheama nimic: intoarce un raspuns C minim valid."""
+    """Nu cheama nimic: intoarce un raspuns C minim valid.
+
+    Impachetat intr-o lista cu `id: 0` (2026-08-16, batching Model C): `process_cluster`
+    (calea singulara, folosita direct de restul testelor din fisier) accepta si lista --
+    `_parse_json` ia primul obiect din ea -- iar `process_clusters_batch` (calea prin
+    `main.process_new`, exercitata de testul de mai jos) cere exact formatul asta, cu id
+    per cluster. Un singur fake, ambele cai."""
     name = "fals"
     calls = 0
     failures = 0
     last_error = None
 
     def complete(self, system, user):
-        return json.dumps({"title": "Incendiul de la depozitul din Constanta, stins dupa opt ore",
-                           "synthesis": "Pompierii au stins incendiul dupa opt ore de interventie.",
-                           "category": "extern"})
+        return json.dumps([{"id": 0,
+                            "title": "Incendiul de la depozitul din Constanta, stins dupa opt ore",
+                            "synthesis": "Pompierii au stins incendiul dupa opt ore de interventie.",
+                            "category": "extern"}])
 
 
 def _sinteza_publicata(**kw) -> dict:
