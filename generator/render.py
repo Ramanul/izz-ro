@@ -561,7 +561,7 @@ def build(articles: list, mod: dict | None = None) -> None:
         ents = load_all()
         if ents:
             write_json(ents)
-    except Exception as e:
+    except (Exception, SystemExit) as e:
         logging.warning("build_entities a esuat (non-fatal): %s", e)
 
     # Sortare pe sir; vezi nota din state.save si tests/test_published_is_utc.py.
