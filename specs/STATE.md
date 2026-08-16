@@ -508,6 +508,26 @@ swap it back.
    **True budget pressure, after the fix: 0, 0, 78, 224.** It is real but smaller than it looked.
    **The batching decision is still NOT taken** — it needs 2-3 runs with the corrected number, per
    this item's own rule. Do not decide it off the pre-fix figures.
+   **First two clean readings (2026-08-16). They DISAGREE, so the third one decides:**
+
+       run           fetched  new   B   C   ai_calls  deferred  substanta
+       31927569381     386     68  44   5    10/18       0          19
+       31932736726    1387    152  11  17    18/18      84          24
+
+   `31927569381` closes arithmetically both ways — 5 C calls + ceil(44/10) B batches = 10 =
+   `ai_calls`; 19 + 44 + 5 = 68 = `new`. Zero budget pressure. **At `deferred: 0` NO line is
+   printed** (`if stats.get("deferred")` is falsy at 0) — read the absence as 0, do not mistake it
+   for a pre-fix build.
+   `31932736726` names the lever exactly: **17 C clusters × 1 call = 17 of the 18**, C processed
+   first (`main.py:155`; the 12-article sample is 12/12 C), so a single B batch of 10 ran and 84
+   items slipped to the next run. Batching C at 3 clusters/call takes 17 → 6 and zeroes the
+   deferral on this run's numbers.
+   **What reading 3 must settle: chronic or episodic.** The two runs differ 3.6× in `fetched`
+   (386 vs 1387) and the pressure appeared only in the big one, so it may be a catch-up spike
+   rather than the steady state.
+   **Blocked by §10 regardless of the numbers:** Model C synthesis logic is do-not-touch without
+   explicit owner instruction. The measurement can be finished autonomously; the change cannot be
+   started.
 4. **`WS-0025` — RESOLVED 2026-08-13, see "Landed" above.** The suppression on
    `generator/render.py:15-16` works (measured: `semgrep` installed locally, same import line
    fires 1 finding without the comment, 0 with it, on the exact registry rule).
