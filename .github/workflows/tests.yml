@@ -1,10 +1,23 @@
 name: tests
 
-# Suita minima pytest (functii pure: util/state/cluster/config). Ruleaza pe PR-uri
-# si manual -- NU pe commit-urile de continut la 2h (ating doar data/*.json).
+# Suita minima pytest (functii pure: util/state/cluster/config). Ruleaza pe PR-uri,
+# la push in main CAND SE ATINGE COD, si manual -- NU pe commit-urile de continut
+# la 2h (ating doar data/*.json), care raman filtrate prin `paths` de mai jos.
+#
+# `push` adaugat 2026-08-17. Motivul: fara el `main` nu era verificat NICIODATA, iar
+# doua importuri moarte au stat in main pana cand un PR fara legatura a iesit rosu si
+# autorul a crezut ca e vina lui. Filtrul pe cai pastreaza intentia originala (nu arde
+# minute pe conținut) fara sa lase main nepazit: lint-ul dureaza 2s, suita ~90s.
 on:
   pull_request:
     branches: [main]
+  push:
+    branches: [main]
+    paths:
+      - '**.py'
+      - 'requirements.txt'
+      - 'ruff.toml'
+      - '.github/workflows/tests.yml'
   workflow_dispatch: {}
 
 permissions:

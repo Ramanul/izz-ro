@@ -20,7 +20,6 @@ la Model C?", deci o cifra umflata ar fi decis o felie de lucru pe o premisa fal
 """
 from datetime import datetime, timedelta, timezone
 
-import pytest
 
 from generator import config, main
 
