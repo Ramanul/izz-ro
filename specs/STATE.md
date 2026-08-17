@@ -12,7 +12,24 @@
 > wave (all 14 domains are in `config.SOURCES`). Everything below was **verified against the code
 > today**, not copied forward.
 
-**Updated:** 2026-08-15 (account A — inventory sweep across sessions; see this line before older ones)
+**Updated:** 2026-08-17 (background session, §14b — one task, draft PR, no merge)
+
+## Open PR pending owner merge — 2026-08-17 (background session, §14b)
+
+**`9f87930c` on `claude/practical-brown-itrxi5` — `claude-code-action` bumped `be7b93b1` →
+`239e3a7` (v1.0.191), the exact SHA the stale dependabot branch proposed.** This was the one
+item in the 2026-08-15 branch triage marked "needs a security re-read" — done, not deferred.
+Verified the target SHA against the real tag with `git ls-remote --tags` (not the dependabot
+branch itself, which is stale: it also reverts `setup-node`/`actions` to unpinned tags and
+predates `mistral.yml`, so merging it wholesale would regress the SHA-pinning policy). v1.0.187,
+inside this range, adds credential redaction from published run output and checkout auth
+cleanup for commit-signing — a security improvement, not just a version bump. `git ls-remote`
+confirms `v1.0.191^{}` = `239e3a730883eeb5c53db12b0fc9573b3024b126` exactly. Suite: **935 passed,
+1 skipped, 8 xfailed** (was 926 — the delta is unrelated pre-existing drift, not this change; no
+test asserts on the pinned SHA). Two-line diff, `.github/workflows/claude.yml` +
+`claude-code-review.yml` only. Draft PR opened, **not merged** — owner merges per §14b.
+The other 2026-08-15 backlog item (`setup-node-7` dependabot bump) has no remaining branch —
+already resolved by `18da4eae` (Landed 2026-08-16, below), which pinned `setup-node` to SHA v7.
 
 ## Landed 2026-08-17 on `main` (account A — announce to B, per §14)
 
