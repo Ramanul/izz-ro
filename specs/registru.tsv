@@ -194,3 +194,43 @@ IZZ-0192	2026-08-14	ci	visual-live rosu de la 13 aug: selector mort (.news-item)
 IZZ-0193	2026-08-14	harta	hit-test pe judet cadea pe mobil: isPointInPath primea coordonate viewBox, nu pixeli de canvas	implementat	claude-A	harta_dom_check.py: tap-uri reusite mobil 390px 7/36 -> 28/36; desktop 33/64 -> 49/64; control pozitiv: tap selecteaza, swipe din acelasi punct nu		
 IZZ-0194	2026-08-14	harta	selectorul de judet de la tastatura se bloca: dupa selectie ramanea un singur buton	implementat	claude-A	harta_dom_check.py felia5: butoane dupa selectie 38 -> 1 (bug) -> 38 (reparat); focusul se pierdea la reconstruirea butoanelor, acum se reface pe acelasi judet		
 IZZ-0195	2026-08-16	testare	ERRORS in testele care depind de output/ randat: cauza e concurenta, nu un bug	masurat-fals	claude		output/ e cale fixa partajata, iar render.build() o goleste fara lock. Doua procese pytest in paralel pe acelasi clone (sesiune + subagent) se calca: 27 errors in sitemap/pagination/404. Aceleasi fisiere rulate singure: 12 passed; suita intreaga rulata singura: 926 passed, 0 errors. Nu e un fix de cod: nu rula doua suite pe acelasi working tree (isolation: worktree).	
+IZZ-0196	2026-08-06	ci	tests: fixturile nu mai valideazÄƒ discul â€” randare necondiÈ›ionatÄƒ, o datÄƒ pe suitÄƒ	implementat	Ramanul	#143 fdf6d225		
+IZZ-0197	2026-08-06	livrare	fix(livrare): feed RSS cu pubDate + IndexNow pe continut, nu pe fereastra de timp	implementat	Ramanul	#144 a7d94c84		
+IZZ-0198	2026-08-06	ingestie	fix(ingestie): un octet de control nu mai omoara tot sitemapul + ordine aleatoare in suita	implementat	Ramanul	#145 29032ae8		
+IZZ-0199	2026-08-06	ci	ci: poarta pe HTML-ul construit â€” legaturi interne, ancore, active, alt	implementat	Ramanul	#146 2d9e7b68		
+IZZ-0200	2026-08-06	ci	ci: bump github/codeql-action/analyze from 4.37.4 to 4.37.5	respins	app/dependabot	#147		
+IZZ-0201	2026-08-06	ci	ci: bump github/codeql-action/init from 4.37.4 to 4.37.5	respins	app/dependabot	#148		
+IZZ-0202	2026-08-06	ci	ci: codeql-action pe acelasi SHA + grup dependabot	implementat	Ramanul	#149 2acda681		
+IZZ-0203	2026-08-06	ci	ci: doi verificatori gratuiti neconectati â€” semgrep + recenzor Gemini pe cota libera	implementat	Ramanul	#150 0315f745		
+IZZ-0204	2026-08-07	xml	sec(xml): defusedxml pe calea de sitemap â€” si except-ul care impiedica intarirea sa devina un crash nou	implementat	Ramanul	#151 00709ea5		
+IZZ-0205	2026-08-07	seo	feat(seo): JSON-LD consolidat intr-un singur @graph cu @id-uri stabile + nod WebPage	implementat	Ramanul	#152 4ebb03a8		
+IZZ-0206	2026-08-07	surse	fix(surse): numele primariilor cu diacritice si fara prefix administrativ	implementat	Ramanul	#153 842d2c49		
+IZZ-0207	2026-08-07	geo	fix(geo): Moldova statul nu mai intra pe rubrica regionala romaneasca	implementat	Ramanul	#154 f58d9c26		
+IZZ-0208	2026-08-07	categorii	fix(categorii): sportul nu intra pe axa geografica, chiar cand textul numeste orasul	implementat	Ramanul	#155 ffae7a31		
+IZZ-0209	2026-08-07	geo	fix(geo): locul numit in text intra pe axa geografica doar daca e si subiectul stirii	implementat	Ramanul	#156 22e90f93		
+IZZ-0210	2026-08-07	404	fix(404): pagina de eroare spune ce s-a intamplat si duce mai departe, nu minte ca e o categorie goala	implementat	Ramanul	#157 23f4fa00		
+IZZ-0211	2026-08-07	ingest	fix(ingest): aceeasi stire din doua feeduri nu mai devine doua pagini	implementat	Ramanul	#158 8c7fcd9e		
+IZZ-0212	2026-08-07	proces	feat(process): salveaza tema bruta aleasa de model ca `ai_cat`	implementat	Ramanul	#159 3282a7a9		
+IZZ-0213	2026-08-07	geo	fix(geo): UAT Ã®nghiÈ›it Ã®ntr-un nume propriu compus nu mai deschide axa geograficÄƒ	implementat	Ramanul	#160 fadb0526		
+IZZ-0214	2026-08-07	proces	docs: cadenta reala de publicare (cron orar + poarta 105 min), nu 30 de minute	implementat	Ramanul	#161 4530e912		
+IZZ-0215	2026-08-07	proces	docs(state): STATE.md taiat la munca deschisa; istoricul mutat, nu sters	implementat	Ramanul	#162 faf52069		
+IZZ-0216	2026-08-08	calc	fix(calc): deducerea personala pe transe (art. 77), nu cota fixa de 20%	propus	Ramanul	#163		
+IZZ-0217	2026-08-08	coperta	fix(coperta): badge-ul ia locul din titlu, nu doar judetul sursei	implementat	Ramanul	#164 54d852bd		
+IZZ-0218	2026-08-09	surse	feat(surse): static county map as a visual index into the source catalog	implementat	Ramanul	#166 c0524269		
+IZZ-0219	2026-08-11	proces	docs(state): the /surse/ map shipped, but it is not the map the owner asked for	implementat	Ramanul	#167 880a05b3		
+IZZ-0220	2026-08-12	map	feat(map): implement interactive news map	implementat	Ramanul	#168 4c8b515a		
+IZZ-0221	2026-08-14	ci	ci: bump the codeql-action group with 3 updates	implementat	app/dependabot	#169 a104c020		
+IZZ-0222	2026-08-13	ci	ci: bump anthropics/claude-code-action from 1.0.183 to 1.0.191	propus	app/dependabot	#170		
+IZZ-0223	2026-08-16	ci	ci: bump actions/setup-node from 4 to 7	respins	app/dependabot	#171		
+IZZ-0224	2026-08-14	readme	docs(readme): remove duplicated 'Comutare pe Claude API' section	respins	Ramanul	#172		
+IZZ-0225	2026-08-14	mistral	ci(mistral): add @mistralai GitHub Action as Mistral analog to @claude	respins	Ramanul	#173		
+IZZ-0226	2026-08-14	mistral	ci(mistral): @mistralai workflow (proprie, fÄƒrÄƒ obledev) + fix ruff F401	implementat	Ramanul	#174 24441236		
+IZZ-0227	2026-08-14	mistral	fix(mistral): scot --label inexistent (test #175 a confirmat restul)	respins	Ramanul	#176		
+IZZ-0228	2026-08-14	mistral	fix(mistral): body prin ENV, nu interpolate Ã®n bash (injecÈ›ie + syntax error)	implementat	Ramanul	#177 b710c5d0		
+IZZ-0229	2026-08-14	necunoscut	Resolves issue #175 (@mistralai)	respins	app/github-actions	#178		
+IZZ-0230	2026-08-14	handoff	docs(handoff): predare cont B â€” starea Mistral, recensÄƒmÃ¢ntul sesiunilor, 58 de ramuri neintegrate	implementat	Ramanul	#179 003b5347		
+IZZ-0231	2026-08-14	ci	fix(lint): main pica ruff, deci checkul `pytest` era rosu pe TOATE PR-urile deschise	implementat	Ramanul	#180 f5ec83b1		
+IZZ-0232	2026-08-14	mistral	fix(mistral): jobul @mistralai ieÈ™ea roÈ™u cÃ¢nd vibe nu avea ce schimba + predarea sesiunii	propus	Ramanul	#181		
+IZZ-0233	2026-08-17	security	ci(security): pin claude-code-action to v1.0.191	propus	Ramanul	#182		
+IZZ-0234	2026-08-17	ci	fix(ci): main nu era verificat niciodata - doua importuri moarte + garda care lipsea	implementat	Ramanul	#183 9912ca65		
+IZZ-0235	2026-08-17	ci	ci(tests): lint+pytest ruleaza si la push in main, filtrat pe cai de cod -- cauza recidivei, nu simptomul	implementat	Ramanul	#183 9912ca65	IZZ-0231 (#180, 14 aug) a reparat aceleasi erori ruff curatand 3 fisiere din tools/; main a redevenit rosu in 3 zile cu ALTE fisiere (generator/main.py, tests/test_deferred_cauze.py), fiindca tests.yml rula doar on:pull_request si main nu era verificat niciodata. Filtrul paths pastreaza intentia deciziei 'deliberat nu pe push' (nu arde minute pe commiturile de continut la 2h, care ating doar data/*.json); lint 2s vs suita 90s. Verificat: garda s-a declansat singura la merge, rulare push in main = success.	IZZ-0231

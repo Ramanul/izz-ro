@@ -14,6 +14,30 @@
 
 **Updated:** 2026-08-15 (account A — inventory sweep across sessions; see this line before older ones)
 
+## Landed 2026-08-17 on `main` (account A — announce to B, per §14)
+
+**`main` was never verified. Fixed at the cause, not the symptom — #183 (`9912ca65`), `IZZ-0235`.**
+`tests.yml` ran on `pull_request` only, so `main` could sit broken indefinitely and **every new PR
+was born red**, with its author having every reason to blame their own change. That is exactly what
+happened: the red run this morning was on `ci(security): pin claude-code-action`, which touches no
+Python at all. Two dead imports were sitting in `main` — `process_cluster` in `generator/main.py:18`
+and `pytest` in `tests/test_deferred_cauze.py:23`.
+
+**This was the second occurrence in three days.** `IZZ-0231` (#180, 14 Aug) carries the same title —
+"main pică ruff, deci checkul `pytest` era roșu pe TOATE PR-urile deschise" — and fixed it by
+cleaning three files under `tools/`. The cause was untouched, so `main` broke again in 72 hours with
+different files. Do not fix this by cleaning files a third time.
+
+`push: branches:[main]` added with a `paths` filter (`**.py`, `requirements.txt`, `ruff.toml`,
+`tests.yml`). This does **not** reverse the documented "deliberat nu pe push" decision — that
+decision protected the 2-hourly content commits, which touch only `data/*.json` and stay filtered
+out. The registry holds no decision restricting *lint* on push; `IZZ-0124`/#128 added the gate, it
+did not narrow it. Lint is 2s, the suite ~90s — both numbers from the workflow's own comment.
+`tests.yml` sits inside its own `paths` filter, so the merge tripped the new guard itself: the
+`push` run on `main` came back **success**. `CLAUDE.md` §4 corrected in the same PR — it claimed
+"deliberat nu pe push" (now false) and "Lint / type-check: neconfigurate" (false since 4 Aug —
+`ruff.toml` exists and CI runs it).
+
 ## Landed 2026-08-16 on `main` (account A — announce to B, per §14)
 
 Suite **926 passed, 8 xfailed** (was 900; +22 from the gold rows, +4 from the recovered Mistral
