@@ -54,10 +54,14 @@ output/             site generat (gitignored; deployat de Cloudflare Pages)
 - Dry run: `python -m generator.main --dry-run`
 - Doar randare: `python -m generator.main --render-only`
 - Servit local: `python -m http.server 8000 --directory output`
-- Teste: `python -m pytest tests/ -q` (CI le rulează prin `tests.yml` pe PR-uri + dispatch manual,
-  **deliberat nu pe push**, fiindcă commit-uri de conținut aterizează la 2h). Numărul de teste e un
-  reper aproximativ, nu o poartă — verifică-l pe o rulare reală înainte să-l citezi.
-- Lint / type-check: *neconfigurate* (ruff nu e în requirements.txt)
+- Teste: `python -m pytest tests/ -q` (CI le rulează prin `tests.yml` pe PR-uri, la push în `main`
+  **când se atinge cod**, și pe dispatch manual). Commit-urile de conținut la 2h rămân excluse prin
+  filtrul `paths` — ating doar `data/*.json`. Numărul de teste e un reper aproximativ, nu o poartă
+  — verifică-l pe o rulare reală înainte să-l citezi.
+- Lint: **`python -m ruff check .`**, configurat în `ruff.toml` (regulile F + DTZ, `IZZ-0124`/#128).
+  Rulează în `tests.yml` înaintea suitei. `ruff` **nu** e în `requirements.txt` deliberat — acolo
+  stau dependențele pipeline-ului de producție, iar CI îl instalează separat. Type-check:
+  *neconfigurat*.
 
 ## 5. Flux de lucru — OBLIGATORIU
 1. **Spec întâi.** 3-8 linii: scop, intrări/ieșiri, criterii de acceptare. Fără spec → fără cod.
