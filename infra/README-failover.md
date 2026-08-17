@@ -7,7 +7,8 @@ Scop: site-ul public să nu pice la un incident de deploy sau la o cădere a hos
 ```
                     ┌─────────────── Cloudflare edge (izz.ro) ───────────────┐
    client ── TLS ──▶│  Worker izz-failover                                    │
-                    │    1) fetch primar  https://izz-ro.pages.dev  (timeout 4s)
+                    │    0) Cache API la edge — HIT ⇒ raspuns fara fetch       │
+                    │    1) fetch primar  https://izz-ro.pages.dev (timeout 1,5s)
                     │    2) la 5xx/eroare/timeout → https://ramanul.github.io  │
                     └────────────────────────────────────────────────────────┘
 ```
@@ -22,6 +23,27 @@ Scop: site-ul public să nu pice la un incident de deploy sau la o cădere a hos
 
 Punctul unic ireductibil rămas: DNS + edge Cloudflare și registrarul (ICI). Nicio redundanță
 tehnică nu acoperă expirarea domeniului — ține calendarul de plată.
+
+## Cache la edge (adăugat 2026-08-17)
+
+Măsurat înainte: **6 răspunsuri cache-uite din 34.419 în 7 zile = 0,02%**, iar `CF-Cache-Status`
+lipsea complet din răspunsurile de pe izz.ro. Cauza nu erau headerele originii — `output/_headers`
+dă `max-age=2592000, immutable` pe `/static/*` și `86400` pe imagini, corect — ci faptul că
+**răspunsul generat de un Worker nu intră în cache-ul de zonă**. Cât timp ruta `izz.ro/*` e prinsă
+de Worker, singura cale de a cache-ui la edge e Cache API, explicit, din Worker.
+
+- Se cache-uiește **doar ce vine de la primar**. În incident răspunsurile vin de la mirror și nu se
+  stochează: incidentul trece, cache-ul ar rămâne.
+- Assets păstrează headerul originii neatins. HTML (`max-age=0, must-revalidate`) primește
+  `s-maxage=120`, XML `s-maxage=300` — `s-maxage` se aplică DOAR cache-urilor partajate, browserul
+  revalidează în continuare. Publicarea e la ~2h, deci întârzierea maximă a unui articol nou e 2 min.
+- Nu se cache-uiesc: non-GET, `Range`, `Authorization`, status ≠ 200, răspunsuri cu `Set-Cookie`.
+
+Diagnostic din curl — headerul `x-izz-cache` ia `HIT` / `MISS` / `BYPASS`:
+
+```bash
+curl -sI https://izz.ro/static/styles.css | grep -i x-izz-cache   # a doua oara: HIT
+```
 
 ## Deploy Worker (o singură dată)
 
