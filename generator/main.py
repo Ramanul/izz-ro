@@ -15,7 +15,7 @@ except ImportError:
     pass
 
 from . import fetch, state, cluster, moderation, config, guard
-from .process import get_provider, process_single, process_cluster, process_clusters_batch, process_batch, process_official, OFFICIAL_PREFIXES
+from .process import get_provider, process_single, process_clusters_batch, process_batch, process_official, OFFICIAL_PREFIXES
 from .util import domain_of
 
 
