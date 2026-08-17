@@ -16,6 +16,9 @@
         {% if not top.anunt_fara_corp %}
         <p class="lead-summary">{% if top.model == 'C' %}{{ top.synthesis }}{% else %}{{ top.teaser }}{% endif %}</p>
         {% endif %}
+        {#- Dezvaluire AI Act art. 50(4): lead-ul e cel mai vizibil element de pe prima pagina,
+            deci nu poate fi singurul fara marcaj. Vezi _card.html pentru motivul plasarii. -#}
+        {% if top.ai_generat %}<p class="meta"><span class="ai-mark">Titlu generat automat</span></p>{% endif %}
       </div>
       <aside class="lead-aside">
         {% if top.art_path %}

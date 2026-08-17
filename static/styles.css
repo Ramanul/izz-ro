@@ -203,6 +203,15 @@ picture { display: contents; }
 }
 .badge.c::before { content: "\25CF\00A0"; color: var(--gold); }   /* bulina aurie pt. multi-sursa */
 
+/* Dezvaluire AI Act art. 50(4). Sta in `.meta` (cum e facut articolul), nu in `.badge` (despre
+   ce e): eticheta aurie e eyebrow de CATEGORIE, iar o dezvaluire pusa acolo s-ar citi ca tema.
+   Cercul GOL o separa de bulina plina a sintezei multi-sursa si de restul liniei meta; culoarea
+   e cu o treapta mai tare decat `--ink-3` al meta-ului, ca sa fie „clara si distincta" fara sa
+   tipe. Locul pictogramei oficiale UE („Fully AI-Generated") e inaintea textului, daca se adauga
+   fisierul in static/ — pictograma e OPTIONALA, dezvaluirea in sine nu. Vezi REGULI-SINTEZA.md §4. */
+.ai-mark { color: var(--ink-2); }
+.ai-mark::before { content: "\25CB\00A0"; }
+
 .card-title { font-family: var(--font-display); font-size: var(--fs-lg); line-height: 1.15; margin: 0; font-weight: 700; letter-spacing: -.2px; }
 .card-title a { color: var(--ink); transition: color .15s ease; }
 .card.lead .card-title { font-size: var(--fs-xl); }
@@ -247,6 +256,12 @@ picture { display: contents; }
    articol — altfel arata ca un rezumat, exact ce nu publicam pentru itemele astea */
 .official-note {
   font-size: var(--fs-xs); color: var(--ink-2); margin: var(--s-21) 0; line-height: 1.55;
+}
+/* pereche cu `.official-note`: si asta e metadata despre CUM e facut textul, nu text de articol.
+   Bara din stanga o scoate din fluxul de lectura, ca sa nu fie confundata cu rezumatul. */
+.ai-note {
+  font-size: var(--fs-xs); color: var(--ink-2); margin: var(--s-21) 0; line-height: 1.55;
+  padding-left: var(--s-8); border-left: 2px solid var(--line-strong);
 }
 .notice {
   background: var(--gold-wash); border-left: 3px solid var(--gold);

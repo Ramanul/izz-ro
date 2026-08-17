@@ -15,6 +15,15 @@
     {% set wc = (body or '').split() | length %}
     <span class="reading-time">~{{ [wc // 200, 1] | max }} min</span>
     {% endif %}
+    {#- Dezvaluire AI Act art. 50(4). Sta in `meta` (cum e facut articolul), NU in `badge`
+        (despre ce e articolul): eticheta aurie e eyebrow de categorie, o dezvaluire pusa
+        acolo s-ar citi ca tema. Cardul e prima expunere, deci marcajul e obligatoriu AICI,
+        nu doar pe pagina de articol sau in subsol. -#}
+    {#- „Titlu generat automat", nu „Generat automat" (decizie owner 17 aug): cardul e prima
+        expunere si NU are paragraful lamuritor de pe pagina de articol, deci eticheta scurta
+        e singurul context. §4.4 cere ca marcajul sa arate ca acopera FORMULAREA, nu faptele —
+        „Generat automat" langa un titlu de stire poate fi citit ca „stirea e fabricata". -#}
+    {% if a.ai_generat %}<span class="ai-mark">Titlu generat automat</span>{% endif %}
   </div>
   {% if not a.anunt_fara_corp %}
   <p class="summary">{% if a.model == 'C' %}{{ a.synthesis }}{% else %}{{ a.teaser }}{% endif %}</p>

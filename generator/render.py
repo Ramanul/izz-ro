@@ -540,6 +540,18 @@ def build(articles: list, mod: dict | None = None) -> None:
         a["anunt_fara_corp"] = anunt_oficial_fara_corp(a)
         if a["anunt_fara_corp"]:
             a["teaser"] = ""
+        # Marcaj AI Act art. 50(4), obligatoriu de la 2026-08-02: textul publicat pentru
+        # informarea publicului si generat de AI trebuie dezvaluit. Exceptia (verificare
+        # umana SI raspundere editoriala) cere ambele conditii; pipeline-ul publica fara ca
+        # un om sa citeasca fiecare titlu, deci nu se aplica. Vezi REGULI-SINTEZA.md §4.
+        #
+        # Doua fluxuri NU ating modelul si deci NU se marcheaza — un marcaj fals ar sugera
+        # ca stirea e fabricata, exact eroarea inversa:
+        #   "official" -> titlul emis de institutie, publicat exact (process.py:301)
+        #   "fallback" -> providerul lipseste, se copiaza original_title (process.py:378)
+        # Articolele vechi fara `processed_by` se marcheaza: toate au trecut prin model B/C,
+        # iar golul de conformitate e eroarea mai scumpa dintre cele doua.
+        a["ai_generat"] = a.get("processed_by") not in ("official", "fallback")
     assign_slugs(articles)
     # data formatata e artefact de AFISARE, nu identitate: se recalculeaza la fiecare randare
     # si nu are ce cauta in stare (`assign_slugs` ruleaza acum si inainte de `state.save`).

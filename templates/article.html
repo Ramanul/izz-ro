@@ -28,6 +28,7 @@
     {% set read_mins = [word_count // 200, 1] | max %}
     <span class="reading-time">~{{ read_mins }} min citire</span>
     {% endif %}
+    {% if a.ai_generat %}<span class="ai-mark">Titlu generat automat</span>{% endif %}
   </div>
 
   {% if a.art_path %}
@@ -48,6 +49,18 @@
   <p class="official-note">Anunț oficial. Publicăm titlul exact, așa cum l-a emis instituția, fără rezumat — textul integral este la sursă.</p>
   {% else %}
   <p class="body">{% if a.model == 'C' %}{{ a.synthesis }}{% else %}{{ a.teaser }}{% endif %}</p>
+  {% endif %}
+
+  {#- Dezvaluirea completa ceruta de AI Act art. 50(4). Marcajul scurt din `meta` acopera prima
+     expunere; asta explica CE anume e generat. Formularea separa deliberat faptele (ale sursei)
+     de formulare (a noastra) — vezi REGULI-SINTEZA.md §4.4: o eticheta care sugereaza ca stirea
+     insasi e fabricata ar fi neadevarata. Fara nume de sursa aici: provenienta ramane un singur
+     element, `sources-box` de mai jos (aceeasi regula ca la nota de anunt oficial). -#}
+  {% if a.ai_generat %}
+  <p class="ai-note">Titlul și rezumatul de mai sus au fost redactate automat de un model de
+    limbaj, pornind de la {{ 'articolele publicate de sursele' if a.model == 'C' else 'articolul publicat de sursa' }}
+    de mai jos. Faptele aparțin sursei; formularea ne aparține și nu a fost recitită de un editor
+    uman înainte de publicare.</p>
   {% endif %}
 
   {% set srcs = a.sources if (a.model == 'C' and a.sources) else [{'name': a.source_name, 'url': a.original_link}] %}
