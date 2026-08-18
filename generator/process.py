@@ -97,11 +97,22 @@ def get_provider():
         primary = GeminiProvider()
 
     providers = [primary]
+    if config.AI_ROUTER_MODE == "multi":
+        from .providers.openai_compat import configured_compatible_providers
+        providers.extend(configured_compatible_providers())
     if config.AI_FALLBACK_OLLAMA:
         from .providers.ollama import OllamaProvider
         providers.append(OllamaProvider())
 
-    available = [p for p in providers if p.available()]
+    # Pastreaza ordinea si elimina duplicatele de nume, pentru ca un provider
+    # configurat accidental de doua ori sa nu primeasca acelasi articol de doua ori.
+    unique = []
+    seen = set()
+    for provider in providers:
+        if provider.name not in seen:
+            unique.append(provider)
+            seen.add(provider.name)
+    available = [p for p in unique if p.available()]
     if not available:
         return None
     if len(available) == 1:
