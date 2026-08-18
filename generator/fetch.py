@@ -8,7 +8,7 @@ import time
 import urllib.error
 import urllib.request
 import defusedxml.ElementTree as ET
-from concurrent.futures import ThreadPoolExecutor
+from concurrent.futures import ThreadPoolExecutor, TimeoutError, as_completed
 from defusedxml.common import DefusedXmlException
 from datetime import datetime, timezone
 from html.parser import HTMLParser
@@ -46,6 +46,10 @@ def _read_limitat(resp) -> bytes:
 # Fetch-ul e I/O-bound: threadurile asteapta reteaua, nu CPU-ul. 8 e conservator
 # fata de ~40+ surse; FETCH_WORKERS=1 revine la secvential.
 MAX_WORKERS = int(os.environ.get("FETCH_WORKERS", "8"))
+# Plafon pentru fereastra paralela. Daca unele hosturi nu inchid conexiunea, nu lasam
+# executorul sa astepte la nesfarsit toate threadurile. Taskurile neterminate devin surse
+# moarte pentru aceasta rulare si pot fi reverificate ulterior.
+FETCH_BATCH_TIMEOUT_S = float(os.environ.get("FETCH_BATCH_TIMEOUT_S", "90"))
 
 # Retry pe refuzuri tranzitorii. Feedcheck-ul din 2026-07-24 (run 30093310671) a prins
 # 429 pe libertatea, unica si bzi de pe runnerii GitHub — iar build.yml ruleaza pe aceiasi
@@ -763,9 +767,32 @@ def fetch_all() -> tuple[list, list]:
     if MAX_WORKERS <= 1:
         results = [_fetch_one_guarded(key, source, cache, pacer) for key, source in sources]
     else:
-        with ThreadPoolExecutor(max_workers=min(MAX_WORKERS, len(sources) or 1)) as pool:
-            results = list(pool.map(
-                lambda kv: _fetch_one_guarded(kv[0], kv[1], cache, pacer), sources))
+        executor = ThreadPoolExecutor(max_workers=min(MAX_WORKERS, len(sources) or 1))
+        futures = {
+            executor.submit(_fetch_one_guarded, key, source, cache, pacer): (idx, key)
+            for idx, (key, source) in enumerate(sources)
+        }
+        ordered = [None] * len(sources)
+        try:
+            for future in as_completed(futures, timeout=FETCH_BATCH_TIMEOUT_S):
+                idx, _key = futures[future]
+                ordered[idx] = future.result()
+        except TimeoutError:
+            for future, (idx, key) in futures.items():
+                if ordered[idx] is None:
+                    future.cancel()
+                    ordered[idx] = ([], f"{key}: fetch batch timeout dupa {FETCH_BATCH_TIMEOUT_S:g}s")
+        except KeyboardInterrupt:
+            for future in futures:
+                future.cancel()
+            executor.shutdown(wait=False, cancel_futures=True)
+            raise
+        finally:
+            # Nu folosim context managerul: __exit__ ar astepta threadurile blocate,
+            # anuland tocmai protectia de timeout. Taskurile deja intrate in urllib
+            # se termina singure la TIMEOUT; rezultatul rularii ramane determinist.
+            executor.shutdown(wait=False, cancel_futures=True)
+        results = [item for item in ordered if item is not None]
 
     for items, err in results:
         if err:
