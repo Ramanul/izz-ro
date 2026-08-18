@@ -19,6 +19,15 @@ def test_compatible_provider_catalog_skips_missing_keys(monkeypatch):
     assert configured_compatible_providers() == []
 
 
+def test_scaleway_requires_explicit_endpoint_and_model(monkeypatch):
+    monkeypatch.setenv("AI_FALLBACK_PROVIDERS", "scaleway")
+    monkeypatch.setenv("SCALEWAY_API_KEY", "test-scaleway")
+    monkeypatch.delenv("SCALEWAY_BASE_URL", raising=False)
+    monkeypatch.delenv("SCALEWAY_MODEL", raising=False)
+    from generator.providers.openai_compat import configured_compatible_providers
+    assert configured_compatible_providers() == []
+
+
 def test_compatible_provider_order_and_models(monkeypatch):
     monkeypatch.setenv("AI_FALLBACK_PROVIDERS", "mistral,groq")
     monkeypatch.setenv("MISTRAL_API_KEY", "test-mistral")

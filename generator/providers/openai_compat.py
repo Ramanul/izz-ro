@@ -58,6 +58,9 @@ def configured_compatible_providers() -> list[Provider]:
         "openrouter": ("OPENROUTER_API_KEY", "OPENROUTER_BASE_URL", "https://openrouter.ai/api/v1", "OPENROUTER_MODEL", "openai/gpt-oss-20b:free"),
         "perplexity": ("PERPLEXITY_API_KEY", "PERPLEXITY_BASE_URL", "https://api.perplexity.ai", "PERPLEXITY_MODEL", "sonar"),
         "upstage": ("UPSTAGE_API_KEY", "UPSTAGE_BASE_URL", "https://api.upstage.ai/v1", "UPSTAGE_MODEL", "solar-pro"),
+        # Scaleway modelează endpointul și modelul prin configurație; nu presupunem
+        # un model implicit deoarece catalogul lor se poate schimba și trebuie opt-in.
+        "scaleway": ("SCALEWAY_API_KEY", "SCALEWAY_BASE_URL", "", "SCALEWAY_MODEL", ""),
     }
     requested = [x.strip().lower() for x in os.getenv("AI_FALLBACK_PROVIDERS", "").split(",") if x.strip()]
     providers = []
