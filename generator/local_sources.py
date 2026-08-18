@@ -79,6 +79,10 @@ _DEAD_SLUGS = frozenset({
     # ca document al incidentului. Daca domeniul reapare, e o entitate NOUA si se reverifica de
     # la zero inainte de orice reactivare.
     "suceava_oras_cajvana",
+    # Feed verificat 2026-08-18: comunaluncavita.ro/rss.xml raspunde 302 in bucla catre
+    # /#E403, iar itemele nu trec garda http/https. Se reactiveaza doar dupa repararea
+    # endpointului si o reverificare manuala a feedului.
+    "tulcea_luncavita",
 })
 
 
