@@ -17,6 +17,7 @@ except ImportError:
 from . import fetch, state, cluster, moderation, config, guard
 from .process import get_provider, process_single, process_clusters_batch, process_batch, process_official, OFFICIAL_PREFIXES
 from .util import domain_of
+from .claude_orchestrator import ClaudeCodeValidator
 
 
 def _utf8_stdout():
@@ -237,6 +238,47 @@ def upgrade_fallbacks(articles: list, provider, remaining: int) -> int:
     return used
 
 
+def _claude_validate(stats: dict, processed_new: list) -> dict | None:
+    """Optionally validate a batch with the locally authenticated Claude Code CLI.
+
+    Default is ``off`` so existing CI and legacy runs remain unchanged.  ``report`` records
+    the verdict without blocking publication; ``required`` blocks save/render unless Claude
+    Code returns an explicit approval.  The manifest contains only workflow metadata and a
+    bounded article sample, never environment variables or provider secrets.
+    """
+    mode = os.getenv("CLAUDE_CODE_VALIDATE", "off").strip().lower()
+    if mode in {"", "0", "false", "off", "no"}:
+        return None
+    if mode not in {"report", "required"}:
+        raise ValueError("CLAUDE_CODE_VALIDATE trebuie să fie off, report sau required")
+    manifest = {
+        "stats": stats,
+        "processed_sample": [
+            {"url": a.get("url"), "title": a.get("title"), "model": a.get("model")}
+            for a in processed_new[:12]
+        ],
+        "policy": {"read_only": True, "no_secrets": True, "publication_guard": True},
+    }
+    result = ClaudeCodeValidator().validate_batch(manifest)
+    verdict = {
+        "status": result.status,
+        "verdict": result.verdict,
+        "issues": list(result.issues),
+        "next_action": result.next_action,
+        "evidence": list(result.evidence),
+    }
+    stats["claude_validation"] = verdict
+    print(f">> Claude Code validator: {result.status}/{result.verdict}")
+    if result.issues:
+        print(f"   Probleme raportate: {len(result.issues)}")
+    if mode == "required" and not result.accepted:
+        raise RuntimeError(
+            "Claude Code nu a aprobat batchul; publicarea a fost blocată: "
+            + (result.next_action or result.status)
+        )
+    return verdict
+
+
 def render_only() -> dict:
     """Doar randeaza starea deja salvata (data/articles.json) -> output/.
 
@@ -369,6 +411,9 @@ def run(dry_run: bool = False) -> dict:
     if upgraded:
         print(f">> Upgrade fallback -> AI: {upgraded} articole vechi reprocesate")
 
+    # Poarta opțională Claude Code rulează înainte de save/render; în modul required,
+    # orice verdict diferit de approve oprește publicarea și păstrează ultima stare bună.
+    _claude_validate(stats, processed_new)
     _print_report(stats, processed_new, dry_run)
 
     if not dry_run:
