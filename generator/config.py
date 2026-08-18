@@ -241,6 +241,9 @@ AI_PROVIDER = os.getenv("AI_PROVIDER", "gemini")  # "gemini" | "anthropic" | "ol
 # quota, cheie lipsa) -- vezi process.get_provider(). Implicit ON: fara Ollama pornit local,
 # `available()` esueaza rapid si nu schimba nimic. Se dezactiveaza cu AI_FALLBACK_OLLAMA=0.
 AI_FALLBACK_OLLAMA = os.getenv("AI_FALLBACK_OLLAMA", "1") == "1"
+# Router multi-provider opt-in. Fluxul legacy Gemini + Ollama ramane implicit.
+AI_ROUTER_MODE = os.getenv("AI_ROUTER_MODE", "legacy").strip().lower()
+AI_FALLBACK_PROVIDERS = os.getenv("AI_FALLBACK_PROVIDERS", "").strip()
 
 # IndexNow (Bing/Seznam/Yandex): cheia e PUBLICA prin protocol (motorul o citeste de la
 # https://izz.ro/<cheie>.txt ca dovada ca detinem domeniul). render.py scrie fisierul,
