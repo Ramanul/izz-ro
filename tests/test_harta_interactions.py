@@ -39,3 +39,30 @@ def test_map_resize_observer_is_present():
 def test_map_has_no_duplicate_static_canvas():
     html = Path("static/harta-stiri/index.html").read_text(encoding="utf-8")
     assert html.count("<canvas") == 0
+
+
+def test_map_exposes_event_and_article_views_with_shareable_state():
+    html = Path("static/harta-stiri/index.html").read_text(encoding="utf-8")
+    js = Path("static/harta-stiri/harta-stiri.js").read_text(encoding="utf-8")
+    assert 'data-view="events"' in html
+    assert 'data-view="articles"' in html
+    assert 'params.set("mod", state.viewMode)' in js
+    assert 'viewMode: params.get("mod") === "articles" ? "articles" : "events"' in js
+    assert "function itemsForView(items)" in js
+
+
+def test_map_has_progressive_loading_and_accessible_status():
+    html = Path("static/harta-stiri/index.html").read_text(encoding="utf-8")
+    js = Path("static/harta-stiri/harta-stiri.js").read_text(encoding="utf-8")
+    assert 'id="show-more"' in html
+    assert 'id="map-status"' in html
+    assert 'aria-live="polite"' in html
+    assert "state.listLimit += 120" in js
+    assert "function announceState()" in js
+
+
+def test_map_stats_use_confirmed_localities_and_freshness_metadata():
+    js = Path("static/harta-stiri/harta-stiri.js").read_text(encoding="utf-8")
+    assert '.filter((item) => item.locality)' in js
+    assert "state.data?.latest_article_at" in js
+    assert "localități confirmate" in js

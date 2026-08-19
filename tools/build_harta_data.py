@@ -3,13 +3,20 @@
 from __future__ import annotations
 
 import csv
+import hashlib
 import json
 import os
 import re
+import sys
 import unicodedata
 from datetime import datetime, timezone
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+if ROOT not in sys.path:
+    sys.path.insert(0, ROOT)
+
+from generator.util import title_tokens
+
 ARTICLES = os.path.join(ROOT, "data", "articles.json")
 MAP = os.path.join(ROOT, "data", "harta_judete.json")
 SIRUTA = os.path.join(ROOT, "data", "siruta_raw.csv")
@@ -28,6 +35,13 @@ AMBIGUE = {
     "LUNA", "SAMBATA", "ROMAN", "BALA", "BANCA", "CURTEA", "VOLUNTARI", "TRAIAN",
     "VLADIMIR", "OVIDIU", "CRISTIAN", "BACIU", "DRAGUS", "CIOBANU", "FLORICA",
     "CATALINA", "MAIA", "AVRAM IANCU", "GEORGE ENESCU", "MIHAI BRAVU", "GRADINARI",
+}
+# Cuvinte care pot fi localități în SIRUTA, dar apar frecvent în textele jurnalistice.
+# Fără un județ deja confirmat prin titlu sau sursă, nu reprezintă o bază suficientă pentru
+# plasarea unei știri pe hartă.
+BARE_LOCALITY_BLOCKLIST = AMBIGUE | STOPWORDS | {
+    "VECHI", "VECHE", "VECHII", "LEGII", "ROMANI", "ROMANIA", "ROMANIEI", "LUMII",
+    "ZILEI", "DREPTULUI", "STATULUI", "PACII", "NOI", "NOU", "NOUA", "MARE", "MARI",
 }
 PREFIXES = ("MUNICIPIUL ", "ORASUL ", "ORAS ", "COMUNA ", "JUDETUL ", "SATUL ")
 
@@ -165,6 +179,11 @@ def locality_from_text(text: str, source_county: str | None, by_name: dict[str, 
     for name, records in by_name.items():
         if len(name) < 4 or f" {name} " not in padded:
             continue
+        # O localitate cu nume comun poate fi folosită numai după ce județul a fost confirmat
+        # separat. Altfel, expresii ca „stocuri vechi”, „respectarea legii” sau „Curtea” ar
+        # inventa puncte în județe fără nicio legătură cu articolul.
+        if not source_county and name in BARE_LOCALITY_BLOCKLIST:
+            continue
         same = [r for r in records if not source_county or norm(r["county"]) == norm(source_county)]
         if len(same) == 1:
             candidates.append(same[0])
@@ -193,6 +212,7 @@ def locate(article: dict, county_keys: list[str], by_name: dict[str, list[dict]]
         "synthesis": article.get("synthesis") or "",
         "published": article.get("published") or "",
         "source": article.get("source") or "",
+        "source_name": article.get("source_name") or article.get("source") or "",
         "county": county,
         "locality": locality["name"] if locality else "",
         "siruta": siruta_key(locality["siruta"]) if locality else "",
@@ -200,6 +220,71 @@ def locate(article: dict, county_keys: list[str], by_name: dict[str, list[dict]]
         "y": point.get("y") if point else None,
         "confidence": "text" if tc else "source" if sc else "siruta",
     }
+
+
+def _published_at(value: str) -> datetime | None:
+    try:
+        parsed = datetime.fromisoformat(str(value or "").replace("Z", "+00:00"))
+    except ValueError:
+        return None
+    return parsed if parsed.tzinfo else parsed.replace(tzinfo=timezone.utc)
+
+
+def _event_tokens(title: str) -> set[str]:
+    """Semnătură conservatoare pentru gruparea articolelor despre același eveniment.
+
+    Nu se încearcă o deducție semantică opacă: se cer cel puțin trei tokeni semnificativi
+    comuni și o suprapunere reală. Localități explicite diferite nu se combină.
+    """
+    return {token[:6] for token in title_tokens(title or "")}
+
+
+def _same_event(left: dict, right: dict, left_tokens: set[str], right_tokens: set[str]) -> bool:
+    if left["county"] != right["county"] or not left_tokens or not right_tokens:
+        return False
+    if left.get("locality") and right.get("locality") and left["locality"] != right["locality"]:
+        return False
+    left_time, right_time = _published_at(left.get("published", "")), _published_at(right.get("published", ""))
+    if left_time and right_time and abs((left_time - right_time).total_seconds()) > 48 * 3600:
+        return False
+    intersection = len(left_tokens & right_tokens)
+    union = len(left_tokens | right_tokens)
+    return intersection >= 3 and union > 0 and intersection / union >= 0.40
+
+
+def annotate_events(items: list[dict]) -> list[dict]:
+    """Atașează identificatori de eveniment și numărul de articole/surse asociate.
+
+    Identificatorul este un hash al URL-urilor deja normalizate în pipeline. Astfel, harta
+    poate afișa transparent „N relatări, M surse” fără a elimina articolele din dataset.
+    """
+    clusters: list[dict] = []
+    for item in items:
+        tokens = _event_tokens(item.get("title", ""))
+        for cluster in clusters:
+            if _same_event(item, cluster["leader"], tokens, cluster["tokens"]):
+                cluster["items"].append(item)
+                cluster["tokens"] |= tokens
+                break
+        else:
+            clusters.append({"leader": item, "items": [item], "tokens": set(tokens)})
+
+    for cluster in clusters:
+        members = cluster["items"]
+        # Slugul nu este suficient pentru unicitate în date sintetice sau când două surse
+        # publică același titlu. Domeniul geografic și ziua primei relatări separă grupurile
+        # care au aceeași formulare, dar sunt evenimente diferite.
+        first_day = min((str(member.get("published") or "")[:10] for member in members), default="")
+        localities = ",".join(sorted({str(member.get("locality") or "") for member in members}))
+        slugs = "|".join(sorted(str(member.get("slug") or member.get("title") or "") for member in members))
+        fingerprint = f"{cluster['leader'].get('county', '')}|{localities}|{first_day}|{slugs}"
+        event_id = hashlib.sha1(fingerprint.encode("utf-8")).hexdigest()[:16]
+        source_count = len({member.get("source") for member in members if member.get("source")})
+        for member in members:
+            member["event_id"] = event_id
+            member["event_article_count"] = len(members)
+            member["event_source_count"] = source_count
+    return items
 
 
 def main() -> int:
@@ -222,24 +307,34 @@ def main() -> int:
         if item:
             located.append(item)
 
+    located = annotate_events(located)
+    named_localities = {(a["siruta"] or f"{norm(a['locality'])}|{a['county']}") for a in located if a.get("locality")}
+    geocoded_articles = sum(a.get("x") is not None and a.get("y") is not None for a in located)
+    latest_article_at = max((a.get("published") or "" for a in located), default="")
+    event_count = len({a.get("event_id") for a in located if a.get("event_id")})
     payload = {
-        "version": 2,
+        "version": 3,
         "generated_at": datetime.now(timezone.utc).isoformat(),
+        "latest_article_at": latest_article_at,
         "map": {"viewbox": map_data.get("viewbox", ""), "judete": counties},
         "articles": located,
         "stats": {
             "total": len(located),
+            "events": event_count,
             "local": sum(a["category"] == "local" for a in located),
             "judetean": sum(a["category"] == "judetean" for a in located),
             "counties": len({a["county"] for a in located}),
-            "localities": len({a["siruta"] for a in located if a.get("siruta")}),
-            "coordinates": sum(a.get("x") is not None and a.get("y") is not None for a in located),
+            "localities": len(named_localities),
+            "county_only": sum(not a.get("locality") for a in located),
+            "coordinates": geocoded_articles,
+            "geocoded_localities": len({a["siruta"] or f"{norm(a['locality'])}|{a['county']}" for a in located if a.get("locality") and a.get("x") is not None and a.get("y") is not None}),
+            "sources": len({a.get("source") for a in located if a.get("source")}),
         },
     }
     os.makedirs(os.path.dirname(OUT), exist_ok=True)
     with open(OUT, "w", encoding="utf-8") as fh:
         json.dump(payload, fh, ensure_ascii=False, separators=(",", ":"))
-    print(f"harta-stiri: {len(located)} articole localizate; {payload['stats']['coordinates']} coordonate -> {OUT}")
+    print(f"harta-stiri: {len(located)} articole, {payload['stats']['events']} evenimente, {payload['stats']['localities']} localități confirmate, {payload['stats']['coordinates']} coordonate -> {OUT}")
     return 0
 
 

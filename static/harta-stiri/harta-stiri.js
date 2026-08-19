@@ -4,9 +4,13 @@
   const DATA_URL = "./data/map.json";
   const state = {
     map: null,
+    data: null,
     counties: {},
     articles: [],
+    rawVisible: [],
     visible: [],
+    viewMode: "events",
+    listLimit: 120,
     selectedCounty: null,
     selectedLocality: null,
     zoomCounty: null,
@@ -88,6 +92,26 @@
     // Sortare stabila: potrivirile de loc urca primele, ordinea originala se pastreaza in
     // fiecare grup. Nimeni nu pierde rezultate; ordinea le explica.
     return [...base].sort((a, b) => Number(matchesPlace(b, query)) - Number(matchesPlace(a, query)));
+  }
+
+  function itemsForView(items) {
+    if (state.viewMode === "articles") return items;
+    const events = new Map();
+    for (const item of items) {
+      const key = item.event_id || `${item.slug || item.title}|${item.county}|${item.published}`;
+      const group = events.get(key) || [];
+      group.push(item);
+      events.set(key, group);
+    }
+    return Array.from(events.values()).map((members) => {
+      const primary = members[0];
+      const sources = new Set(members.map((member) => member.source_name || member.source).filter(Boolean));
+      return {
+        ...primary,
+        eventArticleCount: members.length,
+        eventSourceCount: sources.size,
+      };
+    });
   }
 
   function pathBounds(pathData) {
@@ -405,6 +429,7 @@
   function urlForState() {
     const params = new URLSearchParams();
     if (state.level && state.level !== "all") params.set("nivel", state.level);
+    if (state.viewMode !== "events") params.set("mod", state.viewMode);
     if (state.selectedCounty) params.set("judet", state.selectedCounty);
     const loc = Array.isArray(state.selectedLocality)
       ? state.selectedLocality
@@ -422,6 +447,7 @@
     const loc = params.get("loc");
     return {
       level: params.get("nivel") || "all",
+      viewMode: params.get("mod") === "articles" ? "articles" : "events",
       county: params.get("judet") || null,
       locality: loc ? loc.split("|").filter(Boolean) : null,
       query: params.get("q") || "",
@@ -430,20 +456,25 @@
 
   function applyState(patch, { push = true, replace = false } = {}) {
     if ("level" in patch) state.level = patch.level || "all";
+    if ("viewMode" in patch) state.viewMode = patch.viewMode === "articles" ? "articles" : "events";
     if ("county" in patch) state.selectedCounty = patch.county || null;
     if ("locality" in patch) state.selectedLocality = patch.locality || null;
     if ("query" in patch) state.search = patch.query || "";
     // `zoomCounty` nu e stare independenta, e derivata: la nivel Judetean click-ul filtreaza
     // fara sa mareasca (decizie proprietar, 13 aug). Tinuta separat, se desincroniza.
     state.zoomCounty = state.selectedCounty && state.level !== "judetean" ? state.selectedCounty : null;
-    state.visible = filtered();
+    state.listLimit = 120;
+    state.rawVisible = filtered();
+    state.visible = itemsForView(state.rawVisible);
 
     const search = $("#map-search");
     if (search && search.value !== state.search) search.value = state.search;
     syncLevelButtons();
+    syncViewButtons();
     buildMap();
     renderList();
     updateStats();
+    announceState();
 
     if (!push && !replace) return;
     const url = urlForState();
@@ -468,7 +499,7 @@
     const focusedCounty = active && active.closest && active.closest("#county-picker")
       ? active.dataset.county : null;
 
-    const pool = filtered({ ignorePlace: true });
+    const pool = itemsForView(filtered({ ignorePlace: true }));
     const counts = new Map();
     for (const item of pool) {
       if (!item.county) continue;
@@ -520,30 +551,46 @@
   function renderList() {
     const list = $("#news-list");
     if (!list) return;
-    const all = filtered();
-    const items = all.slice(0, 120);
+    const all = state.visible;
+    const items = all.slice(0, state.listLimit);
     list.replaceChildren();
+    if (!items.length) {
+      const empty = document.createElement("li");
+      empty.className = "empty";
+      empty.textContent = "Nu există rezultate pentru filtrele selectate.";
+      list.appendChild(empty);
+    }
     for (const item of items) {
       const li = document.createElement("li");
       const a = document.createElement("a");
       a.href = articleUrl(item);
       a.textContent = item.title || "Fără titlu";
       const meta = document.createElement("span");
-      meta.textContent = [item.locality, item.county, item.source, dateLabel(item.published)]
+      const source = item.source_name || item.source;
+      meta.textContent = [item.locality, item.county, source, dateLabel(item.published)]
         .filter(Boolean).join(" · ");
       li.append(a, meta);
+      if (state.viewMode === "events" && item.eventArticleCount > 1) {
+        const context = document.createElement("span");
+        context.className = "event-context";
+        context.textContent = `${item.eventArticleCount} relatări · ${item.eventSourceCount} surse despre același eveniment`;
+        li.appendChild(context);
+      }
       list.appendChild(li);
     }
     const count = $("#panel-count");
     if (count) {
       const query = norm(state.search);
       const shown = all.length > items.length
-        ? `${items.length} din ${all.length} știri`
-        : `${items.length} știri`;
-      // Cand exista o cautare, antetul spune DE CE e acolo fiecare rezultat: cate au potrivit
-      // pe loc (si stau primele in lista) si cate au intrat doar prin titlu sau sursa.
-      const places = query ? all.filter((item) => matchesPlace(item, query)).length : 0;
+        ? `${items.length} din ${all.length} ${state.viewMode === "events" ? "evenimente" : "relatări"}`
+        : `${items.length} ${state.viewMode === "events" ? "evenimente" : "relatări"}`;
+      const places = query ? state.rawVisible.filter((item) => matchesPlace(item, query)).length : 0;
       count.textContent = query ? `${shown} · ${places} potriviri de loc` : shown;
+    }
+    const showMore = $("#show-more");
+    if (showMore) {
+      showMore.hidden = items.length >= all.length;
+      showMore.textContent = `Arată încă ${Math.min(120, Math.max(0, all.length - items.length))} rezultate`;
     }
     updateCountyPicker();
   }
@@ -551,12 +598,19 @@
   function updateStats() {
     const stats = $("#map-stats");
     if (!stats) return;
-    const counties = new Set(state.visible.map((item) => item.county).filter(Boolean)).size;
-    const localities = new Set(state.visible.map((item) => item.siruta || `${norm(item.locality)}|${norm(item.county)}`).filter(Boolean)).size;
+    const counties = new Set(state.rawVisible.map((item) => item.county).filter(Boolean)).size;
+    const localities = new Set(state.rawVisible
+      .filter((item) => item.locality)
+      .map((item) => item.siruta || `${norm(item.locality)}|${norm(item.county)}`)).size;
+    const latest = state.data?.latest_article_at ? dateLabel(state.data.latest_article_at) : "dată indisponibilă";
     stats.replaceChildren();
+    const strong = document.createElement("strong");
+    strong.textContent = state.viewMode === "events"
+      ? `${itemsForView(state.rawVisible).length} evenimente`
+      : `${state.rawVisible.length} relatări`;
     const span = document.createElement("span");
-    span.textContent = `${state.visible.length} știri · ${counties} județe · ${localities} localități`;
-    stats.appendChild(span);
+    span.textContent = `${state.rawVisible.length} relatări · ${counties} județe · ${localities} localități confirmate · actualizat ${latest}`;
+    stats.append(strong, span);
   }
 
   function syncLevelButtons() {
@@ -566,8 +620,23 @@
     });
   }
 
+  function syncViewButtons() {
+    $$(".segmented [data-view]").forEach((button) => {
+      button.classList.toggle("active", button.dataset.view === state.viewMode);
+      button.setAttribute("aria-pressed", button.dataset.view === state.viewMode ? "true" : "false");
+    });
+  }
+
+  function announceState() {
+    const status = $("#map-status");
+    if (!status) return;
+    const place = state.selectedLocality || state.selectedCounty || "toată România";
+    const itemLabel = state.viewMode === "events" ? "evenimente" : "relatări";
+    status.textContent = `${state.visible.length} ${itemLabel} afișate pentru ${place}.`;
+  }
+
   function resetSelection() {
-    applyState({ county: null, locality: null, query: "" });
+    applyState({ county: null, locality: null });
   }
 
   function bindControls() {
@@ -577,11 +646,19 @@
       applyState({ query: search.value }, { replace: true });
     });
     $$(".segmented [data-level]").forEach((button) => button.addEventListener("click", () => {
-      // Schimbarea de nivel schimba INSASI regula de interactiune (zoom sau nu la click pe
-      // judet) -- o selectie ramasa de la nivelul anterior ar produce o stare incoerenta
-      // (ex. harta ramasa marita cand ai trecut pe Judetean, unde click-ul nu mai face zoom).
-      applyState({ level: button.dataset.level || "all", county: null, locality: null, query: "" });
+      // Schimbarea de nivel schimba regula de interacțiune; selecția curentă este resetată,
+      // însă termenul de căutare rămâne pentru a nu pierde intenția utilizatorului.
+      applyState({ level: button.dataset.level || "all", county: null, locality: null });
     }));
+    $$(".segmented [data-view]").forEach((button) => button.addEventListener("click", () => {
+      applyState({ viewMode: button.dataset.view || "events" });
+    }));
+    const showMore = $("#show-more");
+    if (showMore) showMore.addEventListener("click", () => {
+      state.listLimit += 120;
+      renderList();
+      announceState();
+    });
     if (clear) clear.addEventListener("click", resetSelection);
     window.addEventListener("popstate", () => applyState(stateFromUrl(), { push: false }));
   }
@@ -614,6 +691,7 @@
     const response = await fetch(DATA_URL, { cache: "no-store" });
     if (!response.ok) throw new Error(`map.json HTTP ${response.status}`);
     const data = await response.json();
+    state.data = data;
     state.map = data.map || {};
     state.counties = state.map.judete || {};
     state.articles = Array.isArray(data.articles) ? data.articles : [];
