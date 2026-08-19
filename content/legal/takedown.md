@@ -1,6 +1,6 @@
 # Drepturi de autor și solicitări de eliminare
 
-IZZ.ro afișează titluri reformulate și rezumate scurte scrise cu cuvinte proprii, cu link către sursă, în acord cu **Legea nr. 8/1996, modificată prin Legea nr. 69/2022**. Nu republicăm articole integrale și **nu preluăm imagini din surse** — ilustrațiile de pe site sunt grafică originală, generată de noi; portretele persoanelor publice provin din **Wikimedia Commons**, sub licențe libere și cu atribuire vizibilă.
+IZZ.ro afișează titluri reformulate și rezumate scurte scrise cu cuvinte proprii, cu link către sursă, în acord cu **Legea nr. 8/1996, modificată prin Legea nr. 69/2022**. Nu republicăm articole integrale și **nu preluăm imagini din surse**. Ilustrațiile sunt, ca regulă, grafică originală realizată intern; o imagine de terț este publicată numai după verificarea temeiului de utilizare și, atunci când licența o cere, cu atribuire vizibilă. Detaliile sunt în [Politica privind imaginile](/legal/images/).
 
 ## Ești deținător de drepturi și vrei eliminarea unui conținut?
 Scrie-ne la **contact@izz.ro**, cu subiectul **„Drepturi de autor"**, și include:

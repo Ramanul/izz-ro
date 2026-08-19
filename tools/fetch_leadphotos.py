@@ -166,23 +166,23 @@ def lead_for_locality(a: dict, by_name: dict) -> dict | None:
     Se incearca INAINTEA rutei pe entitati, fiindca e mult mai fiabila: cheia e slug-ul
     determinist al sursei (`pl_<judet>_<localitate>`), nu entitatile extrase din text.
 
-    Poarta de licenta e `localities.usable` (accepta CC-BY / CC-BY-SA), nu
-    `is_public_domain`: atribuirea obligatorie se face pe pagina de articol, in
-    `figcaption.art-credit`, iar CC 4.0 §3(a)(2) / CC 3.0 §4(c) permit indeplinirea
-    obligatiei printr-un link — cardul linkuieste articolul, deci nu primeste nimic
-    in plus si formula din sect. 7 ramane neatinsa.
+    Poarta de licență este `qualifies`, nu `localities.usable`: o fotografie LEAD
+    ajunge și în carduri, hero și previzualizări sociale, unde creditul complet nu este
+    garantat. Din acest motiv acceptăm numai domeniul public sau CC0; CC-BY și CC-BY-SA
+    rămân excluse din fluxul de copertă, chiar dacă ar putea fi folosite într-un context
+    separat cu legendă completă.
 
-    NU trece prin `photojudge`: acela intreaba daca poza e o ilustratie EXACTA a
-    subiectului, test potrivit pentru "poza persoanei X pe stirea despre X", dar gresit
-    aici — poza de localitate e declarat ILUSTRATIE (legenda spune "Ilustrație: <Loc>"),
-    nu document al evenimentului. Garantiile raman deterministe: localitatea corecta din
-    judetul corect, licenta libera, dimensiune suficienta.
+    NU trece prin `photojudge`: acela întreabă dacă poza e o ilustrație EXACTĂ a
+    subiectului, test potrivit pentru „poza persoanei X pe știrea despre X”, dar greșit
+    aici — poza de localitate este declarată ILUSTRAȚIE, nu document al evenimentului.
+    Garanțiile rămân deterministe: localitatea corectă din județul corect, licență fără
+    obligație de atribuire și dimensiune suficientă.
     """
     rec = localities.locality_for_article(a, by_name)
     if not rec:
         return None
     info = commons_lead_info(rec["img"])
-    if not info or not info.get("thumb") or not localities.usable(info):
+    if not info or not info.get("thumb") or not qualifies(info):
         return None
     data = urllib.request.urlopen(
         urllib.request.Request(info["thumb"], headers=UA), timeout=30).read()

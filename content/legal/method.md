@@ -14,7 +14,7 @@
 ## Rolul inteligenței artificiale
 Titlurile reformulate și rezumatele de pe acest site sunt **generate automat cu un model AI** (Google Gemini sau Anthropic Claude) și publicate fără aprobare individuală prealabilă. **AI poate greși.** De aceea **controlul editorial se exercită continuu**: redacția verifică zilnic ce a apărut, corectează sau retrage manual ce nu corespunde, iar **răspunderea editorială pentru tot ce rămâne publicat aparține IZZ.ro**.
 
-Imaginile **nu** sunt generate cu AI: coperțile sunt grafică proprie, desenată programatic pentru fiecare articol, iar fotografiile provin din Wikimedia Commons, sub licențe libere.
+Imaginile **nu** sunt generate cu AI: coperțile sunt, ca regulă, grafică proprie desenată programatic pentru fiecare articol. O fotografie de terț poate fi folosită numai după verificarea individuală a licenței; în zonele de copertă acceptăm doar domeniul public sau CC0, iar imaginile cu atribuire obligatorie apar numai cu credit vizibil. Vezi [Politica privind imaginile](/legal/images/).
 
 ## De ce contează
 Selecția și formularea curată sunt produsul nostru. Dacă ceva ți se pare greșit sau manipulator, spune-ne la **contact@izz.ro**.

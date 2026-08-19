@@ -41,21 +41,49 @@ PAGE_WINDOW = 2       # cate numere se arata de o parte si de alta a paginii cur
 PORTRAITS_JSON = os.path.join(ROOT, "data", "portraits.json")
 LEADPHOTOS_JSON = os.path.join(ROOT, "data", "leadphotos.json")
 
+# Coperțile apar pe carduri, în hero și în previzualizări sociale, unde creditul complet
+# nu poate fi garantat. Prin urmare, acestea acceptă doar active fără obligație de atribuire.
+# Regex-ul este intenționat strict: orice licență necunoscută ori CC BY/CC BY-SA cade pe
+# coperta internă, nu pe fotografia terță.
+_CREDIT_FREE_LICENSE = re.compile(r"^(cc0|cc[ -]?zero|public domain|pd([ -]|$))", re.I)
+
+
+def _is_credit_free_license(license_name: str | None) -> bool:
+    return bool(_CREDIT_FREE_LICENSE.match((license_name or "").strip()))
+
+
+def _leadphoto_is_publication_safe(rec: dict) -> bool:
+    """Validează o intrare din cache înainte ca fotografia să ajungă în orice zonă publică.
+
+    `leadphotos.json` este un cache istoric; validarea aici protejează și intrările create
+    înainte de regula actuală. O fotografie cu credit obligatoriu rămâne permisă doar în
+    contexte cu legendă completă, nu ca imagine LEAD.
+    """
+    required = ("cover", "art", "webp", "license", "page", "name")
+    return bool(rec) and not rec.get("miss") and all(rec.get(key) for key in required) and \
+        _is_credit_free_license(rec.get("license"))
+
 
 def _load_leadphotos() -> dict:
-    """Fotografii reale de tip LEAD per articol (tools/fetch_leadphotos.py), cheie=art_id.
-    INVARIANT: doar imagini landscape ATRIBUIRE-LIBERA (Public domain / CC0), fiindca
-    lead-ul apare si pe carduri/og unde regula sect. 7 interzice orice eticheta de credit.
-    Copiaza renditiile comise (media/leads/) in output/. Lipsa fisierului -> {} (fallback)."""
+    """Fotografii LEAD per articol, admise numai dacă nu cer credit obligatoriu.
+
+    Imaginile neeligibile sunt ignorate la randare, inclusiv cele din cache-ul vechi; articolul
+    revine automat la coperta grafică internă. Lipsa fișierului ori a unei intrări conforme
+    nu blochează build-ul.
+    """
     try:
         import json as _json
         cache = _json.load(open(LEADPHOTOS_JSON, encoding="utf-8"))
     except (OSError, ValueError):
         return {}
-    src = os.path.join(MEDIA_DIR, "leads")
-    if os.path.isdir(src):
-        shutil.copytree(src, os.path.join(OUT_DIR, "leads"), dirs_exist_ok=True)
-    return {k: v for k, v in cache.items() if v and not v.get("miss")}
+    safe = {k: v for k, v in cache.items() if _leadphoto_is_publication_safe(v)}
+    # Nu copiem întregul cache istoric în output: un fișier cu licență neeligibilă nu trebuie
+    # să rămână public accesibil doar fiindcă nu mai este referit de HTML.
+    for rec in safe.values():
+        for field in ("cover", "art", "webp"):
+            rel = rec[field]
+            _use_media(os.path.join(MEDIA_DIR, rel), os.path.join(OUT_DIR, rel))
+    return safe
 
 
 def _load_portraits() -> dict:
