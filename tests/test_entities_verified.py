@@ -127,3 +127,20 @@ def test_indexul_numara_ghidurile_neconfirmate_si_nu_promite_verificat(site_rand
         assert html.count("Neconfirmat") >= neconfirmate, "cardurile nu arata starea"
     else:
         assert "actualizate și verificate" in html
+
+
+def test_indexul_pune_ghidurile_verificate_primele_in_fiecare_categorie(site_randat):
+    """Ordinea din index este o decizie de risc: datele confirmate trebuie să apară primele."""
+    html = open(os.path.join(site_randat, "index.html"), encoding="utf-8").read()
+    by_category = {}
+    for ent in _entitati():
+        by_category.setdefault(ent.get("categorie_ghid"), []).append(ent)
+
+    for category, ents in by_category.items():
+        verified = [ent for ent in ents if ent.get("verificat")]
+        unverified = [ent for ent in ents if not ent.get("verificat")]
+        if not verified or not unverified:
+            continue
+        verified_positions = [html.index(f'/ghiduri/{ent["id"]}/') for ent in verified]
+        unverified_positions = [html.index(f'/ghiduri/{ent["id"]}/') for ent in unverified]
+        assert max(verified_positions) < min(unverified_positions), category

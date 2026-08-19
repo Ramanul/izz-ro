@@ -927,6 +927,10 @@ def _render_ghiduri(env: Environment, articles: list) -> None:
     for eid, ent in entities.items():
         cat = ent.get("categorie_ghid", "")
         entities_by_cat.setdefault(cat, []).append({"id": eid, **ent})
+    # Informatiile confirmate apar primele in fiecare categorie. Ghidurile neconfirmate
+    # raman accesibile si marcate, dar nu concureaza vizual cu cele verificate.
+    for ents in entities_by_cat.values():
+        ents.sort(key=lambda ent: (not ent.get("verificat", False), ent.get("nume", "").casefold()))
 
     for eid, ent in entities.items():
         cat_stiri = ent.get("categorie_stiri", "")
