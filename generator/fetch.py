@@ -20,6 +20,37 @@ from .util import normalize_url, domain_of, clean_html, cuvinte_adaugate
 
 USER_AGENT = "IZZ.ro Bot/1.0 (+https://izz.ro)"
 TIMEOUT = 10  # secunde per feed
+SITEMAP_ARTICLE_TIMEOUT = float(os.environ.get("SITEMAP_ARTICLE_TIMEOUT", "6"))
+
+
+class _MetaDescriptionParser(HTMLParser):
+    """Extrage doar meta description dintr-o pagină editorială, fără scraping de navigație."""
+
+    def __init__(self):
+        super().__init__(convert_charrefs=True)
+        self.description = ""
+
+    def handle_starttag(self, tag, attrs):
+        if tag.lower() != "meta" or self.description:
+            return
+        fields = {str(key).lower(): str(value or "") for key, value in attrs}
+        name = fields.get("name", "").lower()
+        prop = fields.get("property", "").lower()
+        if name == "description" or prop == "og:description":
+            self.description = clean_html(fields.get("content", ""))
+
+
+def _fetch_meta_description(url: str) -> str:
+    """Fetch bounded metadata; failure means the item remains safely unprocessed."""
+    try:
+        request = urllib.request.Request(url, headers={"User-Agent": USER_AGENT})
+        with urllib.request.urlopen(request, timeout=SITEMAP_ARTICLE_TIMEOUT) as response:
+            raw = response.read(min(MAX_RESPONSE_BYTES, 512 * 1024))
+        parser = _MetaDescriptionParser()
+        parser.feed(raw.decode("utf-8", errors="replace"))
+        return parser.description
+    except (urllib.error.HTTPError, urllib.error.URLError, socket.timeout, ValueError, OSError):
+        return ""
 
 # Plafon de raspuns. `resp.read()` fara argument citeste CAT TRIMITE serverul: o sursa
 # compromisa poate servi gigaocteti si omoara runnerul de CI prin memorie, nu prin continut.
@@ -266,9 +297,7 @@ def _parse_sitemap_news(raw: bytes, key: str, source: dict) -> tuple[list, str |
             "source_lang": source.get("lang", "ro"),
             "original_title": title,
             "title": title,
-            "description": "",          # sitemap-ul nu poarta descriere: itemul ramane fara
-                                        # substanta si e oprit inainte de AI (config.
-                                        # MIN_SUBSTANTA_CUVINTE). NU se genereaza din titlu.
+            "description": "",
             "category": source["category"],
             "published": _parse_w3c_date(date_raw),
             "model": None,
@@ -294,7 +323,11 @@ def _fetch_sitemap_news(key: str, source: dict) -> tuple[list, str | None]:
             raw = _read_limitat(resp)
     except (urllib.error.HTTPError, urllib.error.URLError, socket.timeout, ValueError) as exc:
         return [], f"{key}: {exc}"
-    return _parse_sitemap_news(raw, key, source)
+    items, error = _parse_sitemap_news(raw, key, source)
+    if source.get("enrich_sitemap") and not error:
+        for item in items:
+            item["description"] = _fetch_meta_description(item["original_link"])
+    return items, error
 
 
 # ---- Monitor Local: scraper generic config-driven pentru surse fara RSS ----
