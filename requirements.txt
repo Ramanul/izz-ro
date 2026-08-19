@@ -1,8 +1,9 @@
-defusedxml
-feedparser
-jinja2
-pyyaml
-python-slugify
-markdown
-python-dotenv
-pillow
+# Versiuni fixate pentru randări reproductibile local, în GitHub Actions și în Cloudflare Pages.
+defusedxml==0.7.1
+feedparser==6.0.14
+Jinja2==3.1.6
+PyYAML==6.0.3
+python-slugify==8.0.4
+Markdown==3.10.3
+python-dotenv==1.2.3
+Pillow==12.3.0

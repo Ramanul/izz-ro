@@ -246,3 +246,23 @@ jobs:
           publish_dir: ./output
           force_orphan: true   # un singur commit -> mirror-ul nu creste la nesfarsit (122MB/rulare)
           cname: ""            # fara custom domain pe mirror: Worker-ul face Host rewrite la failover
+
+
+  # Contractul de release: pipeline-ul nu este considerat complet doar pentru ca a impins
+  # datele in Git. Asteapta pana cand Pages si domeniul public confirma acelasi release
+  # prin /build.json. Accepta un SHA mai nou (un commit ulterior pe main il contine pe cel
+  # de continut), dar nu un build vechi sau manifest fara metadate.
+  release-probe:
+    needs: [pipeline, mirror]
+    if: ${{ needs.pipeline.result == 'success' }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          ref: ${{ needs.pipeline.outputs.content_sha }}
+      - name: Verifica release-ul public din Pages si izz.ro
+        env:
+          EXPECTED_COMMIT: ${{ needs.pipeline.outputs.content_sha }}
+          RELEASE_TIMEOUT_SECONDS: "1500"
+          RELEASE_POLL_SECONDS: "30"
+        run: python tools/verify_release.py

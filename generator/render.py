@@ -646,9 +646,10 @@ def build(articles: list, mod: dict | None = None) -> None:
 
     by_category = {}
     for cat in config.CATEGORIES:
-        # plafon pe homepage (legea lui Hick): max 9/sectiune; restul pe pagina categoriei
+        # Homepage-ul ramane un tablou de bord: limita configurabila pastreaza orientarea
+        # rapida, iar arhiva completa ramane pe pagina categoriei.
         items = [a for a in by_date if a.get("category") == cat and a["url"] not in hero_urls]
-        by_category[cat] = _diversify(items)[:9]
+        by_category[cat] = _diversify(items)[:config.HOME_CARDS_PER_CATEGORY]
 
     # homepage
     item_list = {
@@ -803,6 +804,7 @@ def build(articles: list, mod: dict | None = None) -> None:
                intro="Adresa nu există sau articolul a expirat. Între timp, ce e nou:",
                articles=by_date[:12])))
     _write_sitemap(by_date)
+    _write_build_metadata(len(by_date))
     _write_robots()
     # dovada de domeniu pentru IndexNow: motorul citeste cheia de la radacina
     _write(os.path.join(OUT_DIR, f"{config.INDEXNOW_KEY}.txt"), config.INDEXNOW_KEY + "\n")
@@ -810,6 +812,27 @@ def build(articles: list, mod: dict | None = None) -> None:
     _write_redirects()
     _write_feed(by_date)
     _write_search(env, by_date)
+
+
+def _write_build_metadata(article_count: int) -> None:
+    """Emite amprenta necache-uită a release-ului pentru verificarea post-deploy.
+
+    Cloudflare Pages expune SHA-ul și ramura buildului prin variabile de mediu; GitHub
+    Actions expune `GITHUB_SHA` pentru randarea din pipeline. Local, manifestul rămâne
+    explicit ca neidentificat, în loc să pretindă un commit care nu există.
+    """
+    commit = (os.getenv("CF_PAGES_COMMIT_SHA") or os.getenv("GITHUB_SHA")
+              or os.getenv("BUILD_COMMIT_SHA") or "local")
+    branch = (os.getenv("CF_PAGES_BRANCH") or os.getenv("GITHUB_REF_NAME")
+              or os.getenv("BUILD_BRANCH") or "local")
+    payload = {
+        "commit": commit,
+        "branch": branch,
+        "generated_at": datetime.now(timezone.utc).isoformat(),
+        "article_count": article_count,
+    }
+    # Cheile JSON raman stabile pentru ca probele externe sa nu depinda de ordinea dict-ului Python.
+    _write(os.path.join(OUT_DIR, "build.json"), json.dumps(payload, ensure_ascii=False, sort_keys=True) + "\n")
 
 
 def _newsletter_html() -> str:
@@ -1260,7 +1283,8 @@ def _write_headers() -> None:
            "/*.jpg\n  Cache-Control: public, max-age=86400\n"
            "/*.png\n  Cache-Control: public, max-age=86400\n"
            "/*.webp\n  Cache-Control: public, max-age=86400\n"
-           "/feed.xml\n  Cache-Control: public, max-age=1800\n")
+           "/feed.xml\n  Cache-Control: public, max-age=1800\n"
+           "/build.json\n  Cache-Control: public, max-age=0, must-revalidate\n")
 
 
 def _write_redirects() -> None:
