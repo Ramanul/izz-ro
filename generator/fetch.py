@@ -50,6 +50,10 @@ MAX_WORKERS = int(os.environ.get("FETCH_WORKERS", "8"))
 # executorul sa astepte la nesfarsit toate threadurile. Taskurile neterminate devin surse
 # moarte pentru aceasta rulare si pot fi reverificate ulterior.
 FETCH_BATCH_TIMEOUT_S = float(os.environ.get("FETCH_BATCH_TIMEOUT_S", "90"))
+# Deadline pentru intreaga ingestie, nu doar pentru o fereastra paralela. Zero dezactiveaza
+# limita globala (util pentru depanare), dar valoarea implicita protejeaza rularea reala.
+FETCH_GLOBAL_DEADLINE_S = float(os.environ.get("FETCH_GLOBAL_DEADLINE_S", "300"))
+FETCH_PROGRESS_EVERY = max(1, int(os.environ.get("FETCH_PROGRESS_EVERY", "10")))
 
 # Retry pe refuzuri tranzitorii. Feedcheck-ul din 2026-07-24 (run 30093310671) a prins
 # 429 pe libertatea, unica si bzi de pe runnerii GitHub — iar build.yml ruleaza pe aceiasi
@@ -764,8 +768,26 @@ def fetch_all() -> tuple[list, list]:
     sources = list(config.SOURCES.items())
     pacer = _HostPacer(cache)
 
+    started = time.monotonic()
+
+    def remaining_deadline() -> float | None:
+        if FETCH_GLOBAL_DEADLINE_S <= 0:
+            return None
+        return max(0.0, FETCH_GLOBAL_DEADLINE_S - (time.monotonic() - started))
+
+    def timeout_result(key: str) -> tuple[list, str]:
+        return [], f"{key}: fetch global deadline dupa {FETCH_GLOBAL_DEADLINE_S:g}s"
+
     if MAX_WORKERS <= 1:
-        results = [_fetch_one_guarded(key, source, cache, pacer) for key, source in sources]
+        results = []
+        for idx, (key, source) in enumerate(sources, 1):
+            remaining = remaining_deadline()
+            if remaining is not None and remaining <= 0:
+                results.extend(timeout_result(k) for k, _ in sources[idx - 1:])
+                break
+            results.append(_fetch_one_guarded(key, source, cache, pacer))
+            if idx % FETCH_PROGRESS_EVERY == 0 or idx == len(sources):
+                print(f"   fetch RSS: {idx}/{len(sources)} surse")
     else:
         executor = ThreadPoolExecutor(max_workers=min(MAX_WORKERS, len(sources) or 1))
         futures = {
@@ -773,15 +795,27 @@ def fetch_all() -> tuple[list, list]:
             for idx, (key, source) in enumerate(sources)
         }
         ordered = [None] * len(sources)
+        completed = 0
         try:
-            for future in as_completed(futures, timeout=FETCH_BATCH_TIMEOUT_S):
+            batch_timeout = FETCH_BATCH_TIMEOUT_S
+            remaining = remaining_deadline()
+            if remaining is not None:
+                batch_timeout = min(batch_timeout, remaining)
+            for future in as_completed(futures, timeout=batch_timeout):
                 idx, _key = futures[future]
                 ordered[idx] = future.result()
+                completed += 1
+                if completed % FETCH_PROGRESS_EVERY == 0 or completed == len(sources):
+                    print(f"   fetch RSS: {completed}/{len(sources)} surse")
         except TimeoutError:
             for future, (idx, key) in futures.items():
                 if ordered[idx] is None:
                     future.cancel()
-                    ordered[idx] = ([], f"{key}: fetch batch timeout dupa {FETCH_BATCH_TIMEOUT_S:g}s")
+                    remaining = remaining_deadline()
+                    if remaining is not None and remaining <= 0:
+                        ordered[idx] = timeout_result(key)
+                    else:
+                        ordered[idx] = ([], f"{key}: fetch batch timeout dupa {FETCH_BATCH_TIMEOUT_S:g}s")
         except KeyboardInterrupt:
             for future in futures:
                 future.cancel()

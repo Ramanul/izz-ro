@@ -277,6 +277,52 @@ def _clean_entities(raw) -> list:
     return out[:5]
 
 
+def _lexical_tokens(text: str) -> set[str]:
+    """Return normalized content tokens for a conservative cross-item comparison."""
+    return {
+        strip_diacritics(token).lower()
+        for token in re.findall(r"[A-Za-zĂÂÎȘȚăâîșț0-9]{3,}", text or "")
+    }
+
+
+def _uppercase_anchors(text: str) -> set[str]:
+    """Return distinctive all-caps anchors such as PESA, not ordinary sentence words."""
+    return {
+        token.lower()
+        for token in re.findall(r"(?<![A-Za-zĂÂÎȘȚăâîșț])[A-ZĂÂÎȘȚ]{2,}(?![A-Za-zĂÂÎȘȚ])", text or "")
+        if len(token) >= 3
+    }
+
+
+def _cross_item_contamination(candidate: str, own_source: str, peer_sources: list[str]) -> bool:
+    """Reject a batch candidate whose distinctive facts belong to another item.
+
+    This is deliberately conservative: it requires both several shared lexical anchors
+    with a peer and a substantially better peer match than the candidate's own source.
+    The all-caps anchor check catches the observed ``PESA`` leak without asking another
+    model to judge its own output.
+    """
+    candidate_tokens = _lexical_tokens(candidate)
+    own_tokens = _lexical_tokens(own_source)
+    if len(candidate_tokens) < 5 or not peer_sources:
+        return False
+    own_overlap = len(candidate_tokens & own_tokens)
+    own_score = own_overlap / len(candidate_tokens)
+    candidate_anchors = _uppercase_anchors(candidate)
+    own_anchors = _uppercase_anchors(own_source)
+    for peer_source in peer_sources:
+        peer_tokens = _lexical_tokens(peer_source)
+        peer_overlap = candidate_tokens & peer_tokens
+        peer_score = len(peer_overlap) / len(candidate_tokens)
+        peer_anchors = _uppercase_anchors(peer_source)
+        foreign_anchor = (candidate_anchors - own_anchors) & peer_anchors
+        if foreign_anchor and len(peer_overlap) >= 3 and peer_score >= max(0.20, own_score + 0.08):
+            return True
+        if len(peer_overlap) >= 5 and peer_score >= 0.32 and peer_score >= own_score + 0.18:
+            return True
+    return False
+
+
 def _parse_json_array(text: str) -> list:
     """Extrage un array JSON din raspuns (tolerant la ```json fences si la wrapping)."""
     cleaned = re.sub(r"^```(?:json)?|```$", "", text.strip(), flags=re.MULTILINE).strip()
@@ -341,11 +387,21 @@ def process_batch(items: list, provider) -> list:
             continue
 
     done = []
+    source_texts = [
+        " ".join((it.get("original_title", ""), it.get("description", "")))
+        for it in items
+    ]
     for i, it in enumerate(items):
         obj = by_id.get(i)
         title = (obj.get("title") or "").strip() if isinstance(obj, dict) else ""
         teaser = (obj.get("teaser") or "").strip() if isinstance(obj, dict) else ""
         if title and teaser:
+            candidate = f"{title} {teaser}"
+            peers = source_texts[:i] + source_texts[i + 1:]
+            if _cross_item_contamination(candidate, source_texts[i], peers):
+                # Nu publicăm un candidat care pare să fi împrumutat fapte din alt
+                # articol al aceluiași lot; itemul va fi reluat la rularea următoare.
+                continue
             it["model"] = "B"
             it["title"] = title
             it["teaser"] = truncate_words(teaser, config.TEASER_MAX_WORDS)

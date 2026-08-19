@@ -1,7 +1,11 @@
 """Parsarea raspunsurilor JSON de la provider (regresie: Gemini 3.x poate
 impacheta obiectul intr-o lista -> AttributeError 'list' has no 'get',
 build-urile din 2026-07-24)."""
-from generator.process import _parse_json, _parse_json_array
+from generator.process import (
+    _cross_item_contamination,
+    _parse_json,
+    _parse_json_array,
+)
 
 
 def test_parse_json_plain_object():
@@ -23,3 +27,17 @@ def test_parse_json_garbage_returns_empty_dict():
 
 def test_parse_json_array_accepts_dict_wrapping():
     assert _parse_json_array('{"items": [{"a": 1}]}') == [{"a": 1}]
+
+
+def test_cross_item_contamination_rejects_foreign_fact_anchor():
+    own = "Apple schimbă regulile pentru dezvoltatorii din Uniunea Europeană."
+    peer = "PESA depune oferta pentru trenurile metropolitane din Cluj."
+    candidate = "Apple modifică regulile pentru aplicații, iar PESA depune oferta pentru trenurile din Cluj."
+    assert _cross_item_contamination(candidate, own, [peer]) is True
+
+
+def test_cross_item_contamination_allows_supported_summary():
+    own = "Apple schimbă regulile pentru aplicații și dezvoltatori în Uniunea Europeană."
+    peer = "PESA depune oferta pentru trenurile metropolitane din Cluj."
+    candidate = "Apple modifică regulile pentru aplicații și dezvoltatori în Uniunea Europeană."
+    assert _cross_item_contamination(candidate, own, [peer]) is False
