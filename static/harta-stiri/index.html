@@ -81,6 +81,21 @@
     </section>
   </main>
 
+  <div id="uat-dialog" class="uat-dialog" hidden>
+    <div class="uat-dialog-backdrop" data-uat-close></div>
+    <section class="uat-dialog-panel" role="dialog" aria-modal="true" aria-labelledby="uat-dialog-title" aria-describedby="uat-dialog-summary" tabindex="-1">
+      <div class="uat-dialog-heading">
+        <div>
+          <p id="uat-dialog-context" class="panel-context">UAT</p>
+          <h2 id="uat-dialog-title">Știri localizate</h2>
+          <p id="uat-dialog-summary" class="uat-dialog-summary"></p>
+        </div>
+        <button type="button" id="uat-dialog-close" class="uat-dialog-close" aria-label="Închide lista știrilor">×</button>
+      </div>
+      <ul id="uat-dialog-list" class="uat-dialog-list"></ul>
+    </section>
+  </div>
+
   <script src="/static/harta-stiri/harta-stiri.js" defer></script>
 </body>
 </html>

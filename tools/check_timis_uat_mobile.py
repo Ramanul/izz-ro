@@ -7,11 +7,13 @@ from pathlib import Path
 from playwright.sync_api import sync_playwright
 
 BASE = os.getenv("MAP_URL", "http://localhost:8766/static/harta-stiri/")
-OUT = Path("/tmp/harta-timis-uat-390px.png")
+WIDTH = int(os.getenv("MAP_VIEWPORT_WIDTH", "390"))
+HEIGHT = int(os.getenv("MAP_VIEWPORT_HEIGHT", "844"))
+OUT = Path(f"/tmp/harta-timis-uat-{WIDTH}px.png")
 
 with sync_playwright() as pw:
     browser = pw.chromium.launch(args=["--no-sandbox"])
-    page = browser.new_page(viewport={"width": 390, "height": 844}, is_mobile=True, has_touch=True)
+    page = browser.new_page(viewport={"width": WIDTH, "height": HEIGHT}, is_mobile=True, has_touch=True)
     page.goto(BASE + "?judet=TIMIS", wait_until="networkidle")
     page.wait_for_function("() => document.querySelector('#map canvas') && document.querySelectorAll('#news-list li a').length > 0")
     page.wait_for_timeout(1200)
@@ -27,13 +29,15 @@ with sync_playwright() as pw:
         viewportWidth: innerWidth,
         canvas: { width: canvas.width, height: canvas.height },
         badgePixels,
-        selected: document.querySelector('#county-picker [aria-pressed=\"true\"]')?.textContent || '',
+        uatButtons: [...document.querySelectorAll('#county-picker button')].map(button => button.textContent),
       };
     }""")
     if result["scrollWidth"] > result["viewportWidth"]:
         raise AssertionError(f"Overflow orizontal: {result}")
     if result["badgePixels"] < 20:
         raise AssertionError(f"Badge UAT absent: {result}")
+    if not result["uatButtons"] or any("TIMIS" in button for button in result["uatButtons"]):
+        raise AssertionError(f"Selectorul UAT nu este corect pe mobil: {result}")
     page.screenshot(path=str(OUT), full_page=True)
     print(result)
     print(f"screenshot={OUT}")

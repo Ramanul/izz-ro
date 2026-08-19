@@ -40,16 +40,29 @@ with sync_playwright() as pw:
         uatRequestVisible: canvas?.width > 0,
         selected: document.querySelector('#county-picker [aria-pressed=\"true\"]')?.textContent || '',
         count: document.querySelector('#panel-count')?.textContent || '',
-        markers: [...document.querySelectorAll('#county-picker button')].filter(b => b.textContent.includes('TIMIS')).map(b => b.textContent),
+        uatButtons: [...document.querySelectorAll('#county-picker button')].map(b => b.textContent),
         badge,
       };
     }""")
     if not result["badge"] or result["badge"]["pixels"] < 20:
         raise AssertionError(f"Nu a fost găsit un badge UAT vizibil: {result}")
+    if not result["uatButtons"] or any("TIMIS" in button for button in result["uatButtons"]):
+        raise AssertionError(f"Selectorul județului nu afișează UAT-urile corect: {result}")
     page.mouse.click(result["badge"]["x"], result["badge"]["y"])
-    page.wait_for_timeout(250)
-    result["url_after_uat_click"] = page.url
+    page.wait_for_function("() => !document.querySelector('#uat-dialog').hidden")
+    result["dialog"] = page.evaluate("""() => ({
+      role: document.querySelector('#uat-dialog [role=dialog]')?.getAttribute('role'),
+      title: document.querySelector('#uat-dialog-title')?.textContent || '',
+      summary: document.querySelector('#uat-dialog-summary')?.textContent || '',
+      items: document.querySelectorAll('#uat-dialog-list li').length,
+      focused: document.activeElement?.id || '',
+    })""")
+    if result["dialog"]["role"] != "dialog" or result["dialog"]["items"] < 1:
+        raise AssertionError(f"Dialogul UAT nu a expus lista știrilor: {result}")
     page.screenshot(path=str(OUT), full_page=True)
+    page.click('#uat-dialog-close')
+    page.wait_for_function("() => document.querySelector('#uat-dialog').hidden")
+    result["dialog_closed"] = True
     print(result)
     print(f"screenshot={OUT}")
 

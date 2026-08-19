@@ -37,6 +37,8 @@
     "Bucovina": "#cbd6f3",
   };
 
+  let dialogOpener = null;
+
   const $ = (selector) => document.querySelector(selector);
   const $$ = (selector) => Array.from(document.querySelectorAll(selector));
   const norm = (value) => (value || "")
@@ -167,6 +169,7 @@
           path2d: new Path2D(unit.path || ""),
           count: 0,
           localities: [],
+        items: [],
         })) : [];
         state.uatCache.set(county, uats);
         state.uats = uats;
@@ -178,6 +181,8 @@
         if (state.uatCounty === county) {
           state.uatLoading = false;
           buildMap();
+          renderList();
+          announceState();
         }
       });
   }
@@ -187,6 +192,7 @@
     for (const uat of state.uats) {
       uat.count = 0;
       uat.localities = [];
+      uat.items = [];
     }
     for (const item of state.visible) {
       if (item.county !== state.zoomCounty || item.x == null || item.y == null) continue;
@@ -195,8 +201,91 @@
       const uat = state.uats.find((unit) => ctx.isPointInPath(unit.path2d, point.x, point.y, "evenodd"));
       if (!uat) continue;
       uat.count += 1;
+      uat.items.push(item);
       if (item.locality && !uat.localities.includes(item.locality)) uat.localities.push(item.locality);
     }
+  }
+
+  function uatContainsMapPoint(ctx, canvas, view, uat, x, y) {
+    const point = devicePointFromMap(canvas, view, x, y);
+    return ctx.isPointInPath(uat.path2d, point.x, point.y, "evenodd");
+  }
+
+  function uatBadgePlacement(ctx, canvas, view, uat) {
+    const bounds = pathBounds(uat.path);
+    if (!bounds) return { x: uat.center?.[0] || 0, y: uat.center?.[1] || 0, clearance: 3 };
+    const candidates = [];
+    if (Array.isArray(uat.center)) candidates.push({ x: uat.center[0], y: uat.center[1] });
+    // Centroidul unui poligon concav poate ieși în exterior. Căutarea pe grilă oferă un
+    // punct interior verificat, preferându-l pe cel cu cea mai mare distanță până la contur.
+    for (let row = 1; row < 12; row += 1) {
+      for (let column = 1; column < 12; column += 1) {
+        candidates.push({
+          x: bounds.minX + (bounds.maxX - bounds.minX) * column / 12,
+          y: bounds.minY + (bounds.maxY - bounds.minY) * row / 12,
+        });
+      }
+    }
+    const limit = Math.max(3, Math.min(bounds.maxX - bounds.minX, bounds.maxY - bounds.minY) * 0.45);
+    let best = null;
+    for (const candidate of candidates) {
+      if (!uatContainsMapPoint(ctx, canvas, view, uat, candidate.x, candidate.y)) continue;
+      let clearance = limit;
+      for (let angle = 0; angle < Math.PI * 2; angle += Math.PI / 8) {
+        let distance = 0.8;
+        while (distance <= limit) {
+          const x = candidate.x + Math.cos(angle) * distance;
+          const y = candidate.y + Math.sin(angle) * distance;
+          if (!uatContainsMapPoint(ctx, canvas, view, uat, x, y)) {
+            clearance = Math.min(clearance, Math.max(0, distance - 0.8));
+            break;
+          }
+          distance += 0.8;
+        }
+      }
+      if (!best || clearance > best.clearance) best = { ...candidate, clearance };
+    }
+    return best || { x: uat.center?.[0] || bounds.minX, y: uat.center?.[1] || bounds.minY, clearance: 2.4 };
+  }
+
+  function closeUatDialog({ restoreFocus = true } = {}) {
+    const dialog = $("#uat-dialog");
+    if (!dialog || dialog.hidden) return;
+    dialog.hidden = true;
+    document.body.classList.remove("uat-dialog-open");
+    if (restoreFocus && dialogOpener && typeof dialogOpener.focus === "function") dialogOpener.focus();
+    dialogOpener = null;
+  }
+
+  function openUatDialog(uat, opener) {
+    const dialog = $("#uat-dialog");
+    const title = $("#uat-dialog-title");
+    const context = $("#uat-dialog-context");
+    const summary = $("#uat-dialog-summary");
+    const list = $("#uat-dialog-list");
+    const close = $("#uat-dialog-close");
+    if (!dialog || !title || !context || !summary || !list || !close || !uat?.items?.length) return;
+    dialogOpener = opener || null;
+    const label = uat.label || "UAT selectat";
+    const count = uat.items.length;
+    title.textContent = `Știri în ${label}`;
+    context.textContent = `${state.zoomCounty || "România"} · ${uat.kind || "UAT"}`;
+    summary.textContent = `${count} ${itemLabel()} localizat${count === 1 ? "" : "e"} în această unitate administrativ-teritorială.`;
+    list.replaceChildren();
+    for (const item of uat.items) {
+      const li = document.createElement("li");
+      const link = document.createElement("a");
+      link.href = articleUrl(item);
+      link.textContent = item.title || "Fără titlu";
+      const meta = document.createElement("span");
+      meta.textContent = [item.locality, item.source_name || item.source, dateLabel(item.published)]
+        .filter(Boolean).join(" · ");
+      li.append(link, meta);
+      list.appendChild(li);
+    }
+    dialog.hidden = false;
+    document.body.classList.add("uat-dialog-open");
+    close.focus();
   }
 
   function drawUats(ctx, palette, canvas, view) {
@@ -213,20 +302,25 @@
     }
     for (const uat of state.uats) {
       if (!uat.count || !Array.isArray(uat.center)) continue;
-      const [x, y] = uat.center;
-      const radius = Math.max(9, Math.min(17, 7 + Math.sqrt(uat.count) * 2));
+      const placement = uatBadgePlacement(ctx, canvas, view, uat);
+      const { x, y } = placement;
+      // 72% din distanța liberă până la contur lasă o gardă vizibilă și ține badge-ul
+      // în interior inclusiv pentru UAT-uri mici sau concave.
+      const radius = Math.max(2.2, Math.min(14, placement.clearance * 0.72, 7 + Math.sqrt(uat.count) * 2));
+      const fontSize = Math.max(4.5, Math.min(11, radius * 0.82));
       ctx.beginPath();
       ctx.arc(x, y, radius, 0, Math.PI * 2);
       ctx.fillStyle = palette.hot;
       ctx.fill();
-      ctx.lineWidth = 1.4;
+      ctx.lineWidth = Math.min(1.4, Math.max(0.55, radius * 0.22));
       ctx.strokeStyle = palette.surface;
       ctx.stroke();
       ctx.fillStyle = palette.text;
-      ctx.font = "800 11px sans-serif";
+      ctx.font = `800 ${fontSize}px sans-serif`;
       ctx.textAlign = "center";
       ctx.textBaseline = "middle";
       ctx.fillText(String(uat.count), x, y);
+      uat.marker = { x, y, radius };
     }
   }
 
@@ -665,11 +759,38 @@
   function updateCountyPicker() {
     const picker = $("#county-picker");
     if (!picker) return;
-    // Pickerul rămâne alternativa echivalentă pentru hartă: fiecare zonă poate fi aleasă
-    // prin tastatură sau atingere, fără precizie tactilă fină pe un marker.
     const active = document.activeElement;
     const focusedKey = active && active.closest && active.closest("#county-picker")
-      ? (active.dataset.region || active.dataset.county) : null;
+      ? (active.dataset.uat || active.dataset.region || active.dataset.county) : null;
+    picker.replaceChildren();
+
+    // După alegerea unui județ, selectorul devine lista UAT-urilor acelui județ care au
+    // știri în filtrul curent. Fiecare buton deschide aceeași listă de știri ca badge-ul de hartă.
+    if (state.zoomCounty && state.uats.length) {
+      const uats = state.uats.filter((uat) => uat.count > 0)
+        .sort((a, b) => String(a.label).localeCompare(String(b.label), "ro"));
+      picker.setAttribute("aria-label", `UAT-uri cu știri în ${state.zoomCounty}`);
+      if (!uats.length) {
+        const empty = document.createElement("p");
+        empty.className = "picker-empty";
+        empty.textContent = `Nu există știri localizate pe UAT-uri în ${state.zoomCounty} pentru filtrul curent.`;
+        picker.appendChild(empty);
+        return;
+      }
+      for (const uat of uats) {
+        const button = document.createElement("button");
+        button.type = "button";
+        button.dataset.uat = uat.id || uat.name;
+        button.setAttribute("aria-haspopup", "dialog");
+        button.textContent = `${uat.label || "UAT"} · ${uat.count}`;
+        button.addEventListener("click", () => openUatDialog(uat, button));
+        picker.appendChild(button);
+        if (button.dataset.uat === focusedKey) button.focus();
+      }
+      return;
+    }
+
+    // În România/regional rămâne alternativa echivalentă pentru alegerea unei zone fără tap precis.
     const isRegional = state.level === "regional";
     const pool = itemsForView(filtered({ ignorePlace: true }));
     const counts = new Map();
@@ -678,7 +799,6 @@
       if (!key) continue;
       counts.set(key, (counts.get(key) || 0) + 1);
     }
-    picker.replaceChildren();
     picker.setAttribute("aria-label", isRegional ? "Alege regiunea" : "Alege județul");
     for (const key of Array.from(counts.keys()).sort((a, b) => a.localeCompare(b, "ro"))) {
       const button = document.createElement("button");
@@ -717,9 +837,10 @@
       const dp = devicePointForEvent(canvas, event);
       if (!ctx || !dp) return;
       applyViewTransform(ctx, canvas, view);
-      const uat = state.uats.find((unit) => unit.count > 0
-        && ctx.isPointInPath(unit.path2d, dp.x, dp.y, "evenodd"));
-      if (uat?.localities?.length) applyState({ locality: uat.localities });
+      const uat = closestHit(p, state.uats.filter((unit) => unit.count > 0), (unit) => unit.marker)
+        || state.uats.find((unit) => unit.count > 0
+          && ctx.isPointInPath(unit.path2d, dp.x, dp.y, "evenodd"));
+      if (uat?.items?.length) openUatDialog(uat, canvas);
     } else {
       // Transformarea se reafirma explicit inainte de hit-test: buildMap() o lasa setata, dar
       // a te baza pe ordinea apelurilor face hit-testul sa cada silentios la prima schimbare.
@@ -902,6 +1023,15 @@
     });
     if (clear) clear.addEventListener("click", resetSelection);
     if (reset) reset.addEventListener("click", resetAll);
+    const dialog = $("#uat-dialog");
+    const closeDialog = $("#uat-dialog-close");
+    if (closeDialog) closeDialog.addEventListener("click", () => closeUatDialog());
+    if (dialog) dialog.addEventListener("click", (event) => {
+      if (event.target instanceof Element && event.target.closest("[data-uat-close]")) closeUatDialog();
+    });
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape") closeUatDialog();
+    });
     window.addEventListener("popstate", () => applyState(stateFromUrl(), { push: false }));
   }
 

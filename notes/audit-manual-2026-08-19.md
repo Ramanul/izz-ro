@@ -29,3 +29,14 @@ Pentru delimitările UAT a fost identificat stratul public WFS `geospatial:ro_ua
 În testul local pentru `?judet=TIMIS`, harta a afișat delimitările celor 99 UAT-uri și badge-ul numeric pentru UAT-ul cu știri localizate. Markerul de localitate redundant este suprimat atunci când harta UAT este disponibilă, astfel încât utilizatorul vede o singură cifră agregată per UAT.
 
 În modul regional, harta este acum colorată diferit pe regiunile editoriale și păstrează contururile județelor ca delimitări interne. Verificarea vizuală a confirmat contururi și culori distincte pentru regiunile afișate, precum și etichete cu numărul de rezultate pentru Transilvania și Oltenia. Următoarea ajustare: etichetele cu denumirea regiunii trebuie să rămână vizibile și când regiunea nu are rezultate în filtrul curent.
+
+## Cerințe suplimentare confirmate (imagine utilizator)
+
+1. Transformă fluxul de lucru într-un skill reutilizabil prin `skill-creator`.
+2. Extinde generarea poligoanelor UAT la toate județele României, nu numai Timiș.
+3. Verifică randarea regiunilor și județelor și la rezoluția mobilă iPhone SE, 375 px.
+4. Adaugă un tooltip sau o fereastră modală cu lista știrilor când utilizatorul apasă cifra unui UAT.
+
+## Verificare selector UAT și badge-uri adaptive
+
+La selectarea Timișului, selectorul de sub hartă afișează `Racovița · 1`, nu lista tuturor județelor. Badge-ul UAT rămâne în harta județului și deschide dialogul cu știrea localizată. Captura desktop confirmă dialogul și lista UAT de jos. Captura iPhone SE la 375 px confirmă lățime egală cu viewportul (fără overflow), canvas de 349×247 px, badge vizibil și selector UAT lizibil.

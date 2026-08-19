@@ -1,3 +1,4 @@
+import json
 from pathlib import Path
 
 
@@ -97,3 +98,32 @@ def test_timis_uat_geometry_is_published():
     assert '"county":"TIMIS"' in data
     assert '"uats":[' in data
     assert '"path":"M' in data
+
+
+def test_uat_geometry_is_published_for_every_map_county():
+    map_data = json.loads(Path("static/harta-stiri/data/map.json").read_text(encoding="utf-8"))
+    expected = set((map_data.get("map") or {}).get("judete") or {})
+    published = {path.stem for path in Path("static/harta-stiri/data/uat").glob("*.json")}
+    assert published == expected
+    for county in expected:
+        payload = json.loads(Path(f"static/harta-stiri/data/uat/{county}.json").read_text(encoding="utf-8"))
+        assert payload["county"] == county
+        assert payload["uats"]
+        assert all(unit["path"].startswith("M") for unit in payload["uats"])
+
+
+def test_uat_picker_and_dialog_are_exposed_after_county_selection():
+    html = Path("static/harta-stiri/index.html").read_text(encoding="utf-8")
+    js = Path("static/harta-stiri/harta-stiri.js").read_text(encoding="utf-8")
+    assert 'id="uat-dialog"' in html
+    assert 'role="dialog"' in html
+    assert "function openUatDialog" in js
+    assert "button.dataset.uat" in js
+    assert 'button.setAttribute("aria-haspopup", "dialog")' in js
+
+
+def test_uat_badge_radius_is_constrained_to_polygon_interior():
+    js = Path("static/harta-stiri/harta-stiri.js").read_text(encoding="utf-8")
+    assert "function uatBadgePlacement" in js
+    assert "uatContainsMapPoint" in js
+    assert "placement.clearance * 0.72" in js
