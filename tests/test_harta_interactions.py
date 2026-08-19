@@ -91,6 +91,13 @@ def test_map_clears_uat_loading_state_on_cache_hit():
     assert "if (cached) {\n      state.uatLoading = false;\n      state.uats = cached;" in js
 
 
+def test_map_ignores_stale_uat_requests_after_reselection():
+    js = Path("static/harta-stiri/harta-stiri.js").read_text(encoding="utf-8")
+    assert "uatRequestId" in js
+    assert "state.uatRequestId !== requestId" in js
+    assert "state.uatCounty === county && state.uatRequestId === requestId" in js
+
+
 def test_map_visually_delimits_editorial_regions():
     js = Path("static/harta-stiri/harta-stiri.js").read_text(encoding="utf-8")
     assert "const REGION_FILLS" in js

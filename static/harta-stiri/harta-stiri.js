@@ -24,6 +24,7 @@
     uatCounty: null,
     uats: [],
     uatLoading: false,
+    uatRequestId: 0,
     uatCache: new Map(),
   };
 
@@ -146,6 +147,7 @@
   function syncUats() {
     const county = state.zoomCounty;
     if (!county) {
+      state.uatRequestId += 1;
       state.uatCounty = null;
       state.uats = [];
       state.uatLoading = false;
@@ -154,6 +156,8 @@
     if (state.uatCounty === county && (state.uatLoading || state.uats.length)) return;
     state.uatCounty = county;
     state.uats = [];
+    const requestId = state.uatRequestId + 1;
+    state.uatRequestId = requestId;
     const cached = state.uatCache.get(county);
     if (cached) {
       state.uatLoading = false;
@@ -164,7 +168,7 @@
     fetch(`./data/uat/${encodeURIComponent(county)}.json`, { cache: "force-cache" })
       .then((response) => response.ok ? response.json() : null)
       .then((data) => {
-        if (state.uatCounty !== county) return;
+        if (state.uatCounty !== county || state.uatRequestId !== requestId) return;
         const uats = Array.isArray(data?.uats) ? data.uats.map((unit) => ({
           ...unit,
           path2d: new Path2D(unit.path || ""),
@@ -176,10 +180,10 @@
         state.uats = uats;
       })
       .catch(() => {
-        if (state.uatCounty === county) state.uats = [];
+        if (state.uatCounty === county && state.uatRequestId === requestId) state.uats = [];
       })
       .finally(() => {
-        if (state.uatCounty === county) {
+        if (state.uatCounty === county && state.uatRequestId === requestId) {
           state.uatLoading = false;
           buildMap();
           renderList();
