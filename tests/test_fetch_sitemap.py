@@ -68,6 +68,15 @@ def test_sitemap_enrichment_is_opt_in(monkeypatch):
     assert calls == ["https://piataauto.md/a"]
 
 
+def test_sitemap_resolves_relative_links_before_guards():
+    source = {**SRC, "url": "https://piataauto.md/sitemap-news.xml"}
+    raw = _doc(_entry("/auto/stire-noua", "Dacia lansează un model nou"))
+    items, err = _parse_sitemap_news(raw, "piataauto", source)
+    assert err is None
+    assert items[0]["original_link"] == "https://piataauto.md/auto/stire-noua"
+    assert items[0]["url"] == "https://piataauto.md/auto/stire-noua"
+
+
 def test_sitemap_enrichment_remains_disabled_by_default(monkeypatch):
     import generator.fetch as fetch
 
