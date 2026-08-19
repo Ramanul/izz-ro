@@ -21,3 +21,11 @@ Scriptul existent `tools/harta_dom_check.py` a fost rulat pe buildul local la 12
 Singurele verificări raportate ca neefectuate sunt ordinea între potriviri de loc și potriviri doar în titlu, deoarece datasetul curent nu conține ambele categorii pentru interogarea folosită, și cazul localităților suprapuse, deoarece datasetul curent nu are puncte partajate.
 
 Screenshoturile locale `/tmp/harta-1280px.png` și `/tmp/harta-390px.png` au fost generate cu succes. Vizual, desktopul prezintă harta, selectorul și panoul în două coloane; mobilul elimină overflow-ul orizontal și afișează conținutul într-o singură coloană.
+
+## Extindere UAT — Timiș
+
+Pentru delimitările UAT a fost identificat stratul public WFS `geospatial:ro_uat_poligon` al [geo-spatial.org](https://geo-spatial.org/ghiduri/procesari-etl/administrative-boundaries/ro-admin-lau-line/), care oferă poligoane UAT, denumirea și codul SIRUTA (`natcode`). Interogarea filtrată pentru `county='Timiș'` a furnizat 99 UAT-uri în EPSG:4326. Geometriile au fost proiectate în viewBox-ul hărții și simplificate în `static/harta-stiri/data/uat/TIMIS.json` (57 KB).
+
+În testul local pentru `?judet=TIMIS`, harta a afișat delimitările celor 99 UAT-uri și badge-ul numeric pentru UAT-ul cu știri localizate. Markerul de localitate redundant este suprimat atunci când harta UAT este disponibilă, astfel încât utilizatorul vede o singură cifră agregată per UAT.
+
+În modul regional, harta este acum colorată diferit pe regiunile editoriale și păstrează contururile județelor ca delimitări interne. Verificarea vizuală a confirmat contururi și culori distincte pentru regiunile afișate, precum și etichete cu numărul de rezultate pentru Transilvania și Oltenia. Următoarea ajustare: etichetele cu denumirea regiunii trebuie să rămână vizibile și când regiunea nu are rezultate în filtrul curent.

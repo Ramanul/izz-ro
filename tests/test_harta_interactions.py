@@ -74,3 +74,26 @@ def test_map_has_bounded_loading_and_retry_state():
     assert "controller.abort(), 12000" in js
     assert "Încearcă din nou" in js
     assert "Datele hărții nu sunt disponibile momentan" in js
+
+
+def test_map_can_load_uat_boundaries_and_render_count_badges():
+    js = Path("static/harta-stiri/harta-stiri.js").read_text(encoding="utf-8")
+    assert 'fetch(`./data/uat/${encodeURIComponent(county)}.json`' in js
+    assert "function drawUats(" in js
+    assert "ctx.isPointInPath(unit.path2d" in js
+    assert "ctx.fillText(String(uat.count)" in js
+    assert "state.zoomCounty && !state.uats.length" in js
+
+
+def test_map_visually_delimits_editorial_regions():
+    js = Path("static/harta-stiri/harta-stiri.js").read_text(encoding="utf-8")
+    assert "const REGION_FILLS" in js
+    assert 'state.level === "regional" ? regionFill' in js
+    assert "ctx.fillText(region" in js
+
+
+def test_timis_uat_geometry_is_published():
+    data = Path("static/harta-stiri/data/uat/TIMIS.json").read_text(encoding="utf-8")
+    assert '"county":"TIMIS"' in data
+    assert '"uats":[' in data
+    assert '"path":"M' in data

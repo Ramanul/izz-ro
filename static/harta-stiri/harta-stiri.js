@@ -21,6 +21,20 @@
     view: null,
     paths: [],
     localityMarkers: [],
+    uatCounty: null,
+    uats: [],
+    uatLoading: false,
+    uatCache: new Map(),
+  };
+
+  const REGION_FILLS = {
+    "Transilvania": "#bdd7ee",
+    "Muntenia": "#f6d6ad",
+    "Moldova": "#c9e6cf",
+    "Banat": "#e4c6e8",
+    "Dobrogea": "#f6df91",
+    "Oltenia": "#f3c1bd",
+    "Bucovina": "#cbd6f3",
   };
 
   const $ = (selector) => document.querySelector(selector);
@@ -114,6 +128,106 @@
         eventSourceCount: sources.size,
       };
     });
+  }
+
+  function regionFill(region, fallback) {
+    return REGION_FILLS[region] || fallback;
+  }
+
+  function devicePointFromMap(canvas, view, x, y) {
+    return {
+      x: (x - view.x) * canvas.width / view.width,
+      y: (y - view.y) * canvas.height / view.height,
+    };
+  }
+
+  function syncUats() {
+    const county = state.zoomCounty;
+    if (!county) {
+      state.uatCounty = null;
+      state.uats = [];
+      state.uatLoading = false;
+      return;
+    }
+    if (state.uatCounty === county && (state.uatLoading || state.uats.length)) return;
+    state.uatCounty = county;
+    state.uats = [];
+    const cached = state.uatCache.get(county);
+    if (cached) {
+      state.uats = cached;
+      return;
+    }
+    state.uatLoading = true;
+    fetch(`./data/uat/${encodeURIComponent(county)}.json`, { cache: "force-cache" })
+      .then((response) => response.ok ? response.json() : null)
+      .then((data) => {
+        if (state.uatCounty !== county) return;
+        const uats = Array.isArray(data?.uats) ? data.uats.map((unit) => ({
+          ...unit,
+          path2d: new Path2D(unit.path || ""),
+          count: 0,
+          localities: [],
+        })) : [];
+        state.uatCache.set(county, uats);
+        state.uats = uats;
+      })
+      .catch(() => {
+        if (state.uatCounty === county) state.uats = [];
+      })
+      .finally(() => {
+        if (state.uatCounty === county) {
+          state.uatLoading = false;
+          buildMap();
+        }
+      });
+  }
+
+  function countUatNews(ctx, canvas, view) {
+    if (!state.zoomCounty || !state.uats.length) return;
+    for (const uat of state.uats) {
+      uat.count = 0;
+      uat.localities = [];
+    }
+    for (const item of state.visible) {
+      if (item.county !== state.zoomCounty || item.x == null || item.y == null) continue;
+      const point = devicePointFromMap(canvas, view, Number(item.x), Number(item.y));
+      if (!Number.isFinite(point.x) || !Number.isFinite(point.y)) continue;
+      const uat = state.uats.find((unit) => ctx.isPointInPath(unit.path2d, point.x, point.y, "evenodd"));
+      if (!uat) continue;
+      uat.count += 1;
+      if (item.locality && !uat.localities.includes(item.locality)) uat.localities.push(item.locality);
+    }
+  }
+
+  function drawUats(ctx, palette, canvas, view) {
+    if (!state.zoomCounty || !state.uats.length) return;
+    countUatNews(ctx, canvas, view);
+    for (const uat of state.uats) {
+      ctx.globalAlpha = uat.count ? 0.24 : 0.08;
+      ctx.fillStyle = uat.count ? palette.accentSoft : palette.fill;
+      ctx.fill(uat.path2d, "evenodd");
+      ctx.globalAlpha = 1;
+      ctx.strokeStyle = uat.count ? palette.locality : palette.stroke;
+      ctx.lineWidth = uat.count ? 1.25 : 0.65;
+      ctx.stroke(uat.path2d);
+    }
+    for (const uat of state.uats) {
+      if (!uat.count || !Array.isArray(uat.center)) continue;
+      const [x, y] = uat.center;
+      const radius = Math.max(9, Math.min(17, 7 + Math.sqrt(uat.count) * 2));
+      ctx.beginPath();
+      ctx.arc(x, y, radius, 0, Math.PI * 2);
+      ctx.fillStyle = palette.hot;
+      ctx.fill();
+      ctx.lineWidth = 1.4;
+      ctx.strokeStyle = palette.surface;
+      ctx.stroke();
+      ctx.fillStyle = palette.text;
+      ctx.font = "800 11px sans-serif";
+      ctx.textAlign = "center";
+      ctx.textBaseline = "middle";
+      ctx.fillText(String(uat.count), x, y);
+    }
   }
 
   function pathBounds(pathData) {
@@ -270,7 +384,10 @@
       const dimmed = Boolean(outsideSelection || !hasNews);
 
       ctx.globalAlpha = dimmed ? 0.32 : 1;
-      ctx.fillStyle = selected ? palette.accentSoft : palette.fill;
+      // În modul regional, culorile distincte și etichetele fac vizibilă delimitarea
+      // regiunilor editoriale; în celelalte moduri se păstrează harta neutră actuală.
+      ctx.fillStyle = selected ? palette.accentSoft
+        : state.level === "regional" ? regionFill(region, palette.fill) : palette.fill;
       ctx.fill(path);
       ctx.globalAlpha = 1;
       ctx.strokeStyle = palette.stroke;
@@ -278,6 +395,35 @@
       ctx.stroke(path);
       paths.push({ county, region, path, count, bounds: pathBounds(pathData) });
     }
+
+    if (state.level === "regional") {
+      const labels = new Map();
+      for (const entry of paths) {
+        if (!entry.bounds || !entry.region) continue;
+        const current = labels.get(entry.region) || { x: 0, y: 0, n: 0, count: entry.count };
+        current.x += (entry.bounds.minX + entry.bounds.maxX) / 2;
+        current.y += (entry.bounds.minY + entry.bounds.maxY) / 2;
+        current.n += 1;
+        current.count = entry.count;
+        labels.set(entry.region, current);
+      }
+      for (const [region, label] of labels) {
+        if (!label.n) continue;
+        const x = label.x / label.n;
+        const y = label.y / label.n;
+        ctx.fillStyle = palette.text;
+        ctx.font = "800 13px sans-serif";
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
+        ctx.fillText(region, x, y - 10);
+        if (label.count) {
+          ctx.font = "800 11px sans-serif";
+          ctx.fillText(String(label.count), x, y + 8);
+        }
+      }
+    }
+
+    drawUats(ctx, palette, canvas, view);
 
     if (!state.zoomCounty && state.level !== "regional") {
       for (const entry of paths) {
@@ -304,7 +450,9 @@
     }
 
     const localityMarkers = [];
-    if (state.zoomCounty) {
+    // UAT-urile au prioritate vizuală: când geometria lor este disponibilă, cifra de pe
+    // poligon este informația relevantă; markerii de localitate ar dubla aceeași valoare.
+    if (state.zoomCounty && !state.uats.length) {
       const groups = new Map();
       for (const item of state.visible) {
         if (item.county !== state.zoomCounty || item.x == null || item.y == null) continue;
@@ -486,6 +634,7 @@
     state.listLimit = 120;
     state.rawVisible = filtered();
     state.visible = itemsForView(state.rawVisible);
+    syncUats();
 
     const search = $("#map-search");
     if (search && search.value !== state.search) search.value = state.search;
@@ -560,7 +709,17 @@
         // Daca mai multe localitati cad exact pe acelasi punct (deduplicare vizuala), se
         // filtreaza pe TOATE, nu doar pe prima.
         applyState({ locality: marker.localities || [marker.locality] });
+        return;
       }
+      // Un click pe poligonul UAT selectează localitățile care au generat cifra din acel UAT.
+      // Astfel cifra nu este doar decorativă: păstrează aceeași interacțiune ca markerii locali.
+      const ctx = canvas.getContext("2d");
+      const dp = devicePointForEvent(canvas, event);
+      if (!ctx || !dp) return;
+      applyViewTransform(ctx, canvas, view);
+      const uat = state.uats.find((unit) => unit.count > 0
+        && ctx.isPointInPath(unit.path2d, dp.x, dp.y, "evenodd"));
+      if (uat?.localities?.length) applyState({ locality: uat.localities });
     } else {
       // Transformarea se reafirma explicit inainte de hit-test: buildMap() o lasa setata, dar
       // a te baza pe ordinea apelurilor face hit-testul sa cada silentios la prima schimbare.
