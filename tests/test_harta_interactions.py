@@ -86,6 +86,11 @@ def test_map_can_load_uat_boundaries_and_render_count_badges():
     assert "state.zoomCounty && !state.uats.length" in js
 
 
+def test_map_clears_uat_loading_state_on_cache_hit():
+    js = Path("static/harta-stiri/harta-stiri.js").read_text(encoding="utf-8")
+    assert "if (cached) {\n      state.uatLoading = false;\n      state.uats = cached;" in js
+
+
 def test_map_visually_delimits_editorial_regions():
     js = Path("static/harta-stiri/harta-stiri.js").read_text(encoding="utf-8")
     assert "const REGION_FILLS" in js

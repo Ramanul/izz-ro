@@ -156,6 +156,7 @@
     state.uats = [];
     const cached = state.uatCache.get(county);
     if (cached) {
+      state.uatLoading = false;
       state.uats = cached;
       return;
     }
