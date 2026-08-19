@@ -12,6 +12,7 @@ from concurrent.futures import ThreadPoolExecutor, TimeoutError, as_completed
 from defusedxml.common import DefusedXmlException
 from datetime import datetime, timezone
 from html.parser import HTMLParser
+from urllib.parse import urljoin
 
 import feedparser
 
@@ -281,17 +282,18 @@ def _parse_sitemap_news(raw: bytes, key: str, source: dict) -> tuple[list, str |
         if not loc or not title:
             unusable += 1
             continue
-        if _is_agency(loc, source["name"]):
+        resolved_loc = urljoin(source.get("url", ""), loc)
+        if _is_agency(resolved_loc, source["name"]):
             continue
-        motiv = (guard.verdict(title) or guard.url_ostil(loc)
+        motiv = (guard.verdict(title) or guard.url_ostil(resolved_loc)
                  or guard.anomalie(title, source.get("lang", "ro")))
         if motiv:
             respinse += 1
             print(f"   !! garda ingestie (sitemap): sar [{key}] {title[:60]!r} — {motiv}")
             continue
         items.append({
-            "url": normalize_url(loc),
-            "original_link": loc,
+            "url": normalize_url(resolved_loc),
+            "original_link": resolved_loc,
             "source": key,
             "source_name": source["name"],
             "source_lang": source.get("lang", "ro"),
