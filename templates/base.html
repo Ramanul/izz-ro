@@ -73,7 +73,15 @@
     </nav>
   </header>
   <nav class="subnav" aria-label="Categorii de știri">
-    {% for cat in categories %}<a href="{{ base }}/{{ cat }}/" data-cat="{{ cat }}"{% if cat == active_cat %} class="active"{% endif %}>{{ cat | cat_label }}</a>{% endfor %}
+    {% for cat in categories[:7] %}<a href="{{ base }}/{{ cat }}/" data-cat="{{ cat }}"{% if cat == active_cat %} class="active"{% endif %}>{{ cat | cat_label }}</a>{% endfor %}
+    {% if categories | length > 7 %}
+    <details class="subnav-more"{% if active_cat in categories[7:] %} open{% endif %}>
+      <summary>Mai multe secțiuni</summary>
+      <div class="subnav-more-list">
+        {% for cat in categories[7:] %}<a href="{{ base }}/{{ cat }}/" data-cat="{{ cat }}"{% if cat == active_cat %} class="active"{% endif %}>{{ cat | cat_label }}</a>{% endfor %}
+      </div>
+    </details>
+    {% endif %}
   </nav>
   </div>
 
@@ -90,6 +98,8 @@
       <a href="{{ base }}/legal/terms/">Termeni</a>
       <a href="{{ base }}/legal/accessibility/">Accesibilitate</a>
       <a href="{{ base }}/legal/method/">Cum sintetizăm</a>
+      <a href="{{ base }}/legal/corrections/">Corecții</a>
+      <a href="{{ base }}/legal/security/">Securitate</a>
       <a href="{{ base }}/legal/images/">Politica imaginilor</a>
       <a href="{{ base }}/surse/">Surse &amp; originalitate</a>
       <a href="{{ base }}/legal/takedown/">Drepturi de autor</a>

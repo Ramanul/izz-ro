@@ -2,7 +2,7 @@
 {#- NOT "data-src": crawlers (Screaming Frog, Googlebot) treat data-src as a lazy-load
     image URL, so a source name there becomes a fake internal 404 per card. -#}
 <article class="card{% if lead %} lead{% endif %}{% if a.model == 'C' %} card-c{% endif %}" data-cat="{{ a.category }}" data-source="{{ a.source_name }}" data-title="{{ a.title }}">
-  {% if a.art_path %}<a class="card-media" href="{{ base }}/{{ a.category }}/{{ a.slug }}/" tabindex="-1" aria-hidden="true"><picture>{% if a.art_webp %}<source srcset="{{ base }}{{ a.art_webp }}" type="image/webp">{% endif %}<img src="{{ base }}{{ a.art_path }}" alt="" loading="lazy" width="960" height="504"></picture></a>{% endif %}
+  {% if a.art_path %}<a class="card-media" href="{{ base }}/{{ a.category }}/{{ a.slug }}/" tabindex="-1" aria-hidden="true"><picture>{% if a.art_card_webp %}<source srcset="{{ base }}{{ a.art_card_webp }}" type="image/webp">{% elif a.art_webp %}<source srcset="{{ base }}{{ a.art_webp }}" type="image/webp">{% endif %}<img src="{{ base }}{{ a.art_path }}" alt="" loading="lazy" decoding="async" width="960" height="504" sizes="(min-width: 1000px) 360px, (min-width: 640px) 45vw, 100vw"></picture></a>{% endif %}
   {#- `anunt_fara_corp` = anunt oficial publicat ca titlu + link, fara teaser (decizie proprietar
       2026-08-04, specs/sinteza-fara-substanta.md). Elementele fara continut NU se emit deloc:
       `.card` e flex cu `gap`, deci un `<p>` gol ar lasa exact o gaura in card. -#}
@@ -20,11 +20,9 @@
         (despre ce e articolul): eticheta aurie e eyebrow de categorie, o dezvaluire pusa
         acolo s-ar citi ca tema. Cardul e prima expunere, deci marcajul e obligatoriu AICI,
         nu doar pe pagina de articol sau in subsol. -#}
-    {#- „Titlu generat automat", nu „Generat automat" (decizie owner 17 aug): cardul e prima
-        expunere si NU are paragraful lamuritor de pe pagina de articol, deci eticheta scurta
-        e singurul context. §4.4 cere ca marcajul sa arate ca acopera FORMULAREA, nu faptele —
-        „Generat automat" langa un titlu de stire poate fi citit ca „stirea e fabricata". -#}
-    {% if a.ai_generat %}<span class="ai-mark">Titlu generat automat</span>{% endif %}
+    {#- Cardul e prima expunere: eticheta ramane explicita, dar spune ca se refera la
+        formularea titlului, nu la faptele publicate de sursele citate. -#}
+    {% if a.ai_generat %}<span class="ai-mark">Titlu sintetizat automat</span>{% endif %}
   </div>
   {% if not a.anunt_fara_corp %}
   <p class="summary">{% if a.model == 'C' %}{{ a.synthesis }}{% else %}{{ a.teaser }}{% endif %}</p>

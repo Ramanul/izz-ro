@@ -109,6 +109,21 @@ a:hover { color: var(--ink); }
   padding-bottom: 3px; border-bottom: 2px solid transparent; white-space: nowrap;
 }
 .subnav a:hover, .subnav a.active { color: var(--gold-strong); border-bottom-color: var(--gold); }
+.subnav-more { position: relative; flex: 0 0 auto; }
+.subnav-more summary {
+  cursor: pointer; list-style: none; color: var(--ink-2); font-family: var(--font-mono);
+  font-weight: 600; font-size: var(--fs-xs); text-transform: uppercase; letter-spacing: 1px;
+  white-space: nowrap;
+}
+.subnav-more summary::-webkit-details-marker { display: none; }
+.subnav-more summary::after { content: " ▾"; color: var(--gold-strong); }
+.subnav-more[open] summary::after { content: " ▴"; }
+.subnav-more-list {
+  position: absolute; right: 0; top: calc(100% + var(--s-8)); min-width: 220px;
+  display: grid; gap: var(--s-8); padding: var(--s-13); background: var(--paper-2);
+  border: 1px solid var(--line-strong); box-shadow: 0 8px 24px rgba(0,0,0,.12);
+}
+.subnav-more-list a { padding: var(--s-5) 0; }
 /* Sub ~1200px banda depaseste ecranul (masurat: 805px ascunsi la 390px, 427px la 768px) si
    nimic nu arata ca mai urmeaza ceva. Ultimele intrari sunt Regional / Județean / Local, deci
    exact categoriile geografice ramaneau nedescoperite pe telefon. Degradeul din dreapta e
@@ -163,6 +178,20 @@ main { max-width: var(--maxw); margin: 0 auto; padding: var(--s-34) var(--s-34);
 }
 .lead-feature .lead-aside ul { margin: 0; padding-left: var(--s-13); }
 .lead-feature .lead-aside .source { color: var(--gold-strong); }
+.reader-briefing {
+  display: flex; align-items: end; justify-content: space-between; gap: var(--s-21);
+  margin: var(--s-21) 0; padding: var(--s-21); border-left: 3px solid var(--gold);
+  background: var(--gold-wash);
+}
+.reader-briefing h2 { margin: var(--s-5) 0; font-family: var(--font-display); font-size: var(--fs-lg); }
+.reader-briefing p { margin: 0; color: var(--ink-2); font-size: var(--fs-xs); }
+.reader-briefing-actions { display: flex; flex-wrap: wrap; gap: var(--s-13); flex: 0 0 auto; }
+.reader-briefing-actions a, .article-report-link {
+  display: inline-block; padding: var(--s-8) var(--s-13); border: 1px solid var(--gold-strong);
+  font-family: var(--font-mono); font-weight: 700; font-size: var(--fs-eyebrow);
+  text-transform: uppercase; letter-spacing: .8px;
+}
+.reader-briefing-actions a:hover, .article-report-link:hover { background: var(--gold-strong); color: #fff; }
 
 /* ---- INDEX editorial: fara chenare, separator-linie, inaltime naturala ---- */
 /* Coloane de ziar: gap mare pe orizontala, fiecare stire = bloc tipografic. */
@@ -276,6 +305,21 @@ picture { display: contents; }
 .sources-box { border-top: 2px solid var(--ink); padding-top: var(--s-13); margin: var(--s-34) 0; }
 .sources-box h2 { margin: 0 0 var(--s-8); font-family: var(--font-mono); font-size: var(--fs-eyebrow); text-transform: uppercase; letter-spacing: 1.5px; color: var(--ink-3); font-weight: 700; }
 .sources-box ul { margin: 0; padding-left: var(--s-21); }
+.first-badge {
+  color: var(--ink-2); font-family: var(--font-mono); font-size: var(--fs-eyebrow);
+  border-bottom: 1px dotted var(--line-strong); white-space: nowrap;
+}
+.article-accountability {
+  margin: var(--s-34) 0; padding: var(--s-21); border-left: 3px solid var(--gold);
+  background: var(--gold-wash); color: var(--ink-2); font-size: var(--fs-xs); line-height: 1.55;
+}
+.article-accountability h2 {
+  margin: 0 0 var(--s-8); color: var(--ink); font-family: var(--font-mono);
+  font-size: var(--fs-eyebrow); text-transform: uppercase; letter-spacing: 1px;
+}
+.article-accountability p { margin: var(--s-8) 0; }
+.article-accountability a:not(.article-report-link) { margin-left: var(--s-13); text-decoration: underline; }
+.article-updated { color: var(--ink-2); }
 .btn-source {
   display: inline-block; margin-top: var(--s-21); padding: var(--s-13) var(--s-21);
   background: var(--ink); color: #fff; font-family: var(--font-mono); font-weight: 700;
@@ -378,6 +422,9 @@ picture { display: contents; }
 }
 @media (max-width: 640px) {
   main { padding: var(--s-21) var(--s-21); }
+  .reader-briefing { align-items: flex-start; flex-direction: column; }
+  .subnav-more-list { right: 0; left: auto; min-width: min(220px, calc(100vw - 2 * var(--s-21))); }
+  .article-accountability a:not(.article-report-link) { display: inline-block; margin: var(--s-13) 0 0; }
   .site-header { padding: var(--s-13) var(--s-21); }
   .lead-feature { padding: var(--s-21); }
   .lead-feature h2.lead-title { font-size: var(--fs-xl); }

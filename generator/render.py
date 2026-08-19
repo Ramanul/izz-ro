@@ -117,6 +117,32 @@ def _use_media(src: str, dst: str) -> bool:
     return False
 
 
+def _responsive_webp(src: str, dst: str, max_width: int = 480) -> bool:
+    """Scrie o varianta WebP mica numai cand aduce economie reala.
+
+    Nu generam derivata pentru fiecare articol: Pages Free are plafon de fisiere, iar
+    o copie pe toate permalinkurile ar apropia deploy-ul de limita. Este folosita doar
+    pentru cardurile de pe homepage, exact zona unde Lighthouse a masurat imagini prea
+    mari fata de suprafata afisata.
+    """
+    image = getattr(covers, "Image", None)
+    if image is None:
+        return False
+    try:
+        with image.open(src) as im:
+            if im.width <= max_width:
+                return False
+            ratio = max_width / im.width
+            size = (max_width, max(1, round(im.height * ratio)))
+            resampling = getattr(image, "Resampling", image).LANCZOS
+            out = im.convert("RGB").resize(size, resampling)
+            os.makedirs(os.path.dirname(dst), exist_ok=True)
+            out.save(dst, "WEBP", quality=72, method=4)
+            return os.path.getsize(dst) > 1000
+    except (OSError, ValueError):
+        return False
+
+
 def _content_ver(path: str) -> str:
     """Amprenta scurta a CONTINUTULUI imaginii, pentru ?v= in URL (cache-busting).
     Hash de continut, nu mtime: mtime se schimba la fiecare copyfile/render, ceea
@@ -587,6 +613,10 @@ def build(articles: list, mod: dict | None = None) -> None:
     # si nu are ce cauta in stare (`assign_slugs` ruleaza acum si inainte de `state.save`).
     for a in articles:
         a["published_human"] = _human_date(a.get("published", ""))
+        # `updated` exista numai cand un cluster deja publicat a absorbit informatie noua.
+        # Pastram lipsa lui distincta de data publicarii: un cititor trebuie sa poata vedea
+        # daca textul a fost revizuit, fara sa pretindem o verificare care nu a avut loc.
+        a["updated_human"] = _human_date(a.get("updated", ""))
 
     # reset output (golim CONTINUTUL, nu radacina — ca un server local care tine
     # folderul deschis sa nu blocheze build-ul pe Windows), apoi copiem static
@@ -652,6 +682,20 @@ def build(articles: list, mod: dict | None = None) -> None:
         # rapida, iar arhiva completa ramane pe pagina categoriei.
         items = [a for a in by_date if a.get("category") == cat and a["url"] not in hero_urls]
         by_category[cat] = _diversify(items)[:config.HOME_CARDS_PER_CATEGORY]
+
+    # Variantele mici se emit doar pentru cardurile homepage-ului (nu pentru toate
+    # permalinkurile) — economie in primul viewport, sub plafonul gratuit de fisiere Pages.
+    homepage_cards = {a["url"] for a in hero[1:]}
+    homepage_cards.update(a["url"] for items in by_category.values() for a in items)
+    for a in by_date:
+        if a["url"] not in homepage_cards or not a.get("art_path"):
+            continue
+        card_dst = os.path.join(OUT_DIR, a["category"], a["slug"], "art-card.webp")
+        source = os.path.join(OUT_DIR, a["category"], a["slug"], "art.webp")
+        if not os.path.isfile(source):
+            source = os.path.join(OUT_DIR, a["category"], a["slug"], "art.jpg")
+        if _responsive_webp(source, card_dst):
+            a["art_card_webp"] = f"/{a['category']}/{a['slug']}/art-card.webp?v={_content_ver(card_dst)}"
 
     # homepage
     item_list = {
@@ -808,6 +852,7 @@ def build(articles: list, mod: dict | None = None) -> None:
     _write_sitemap(by_date)
     _write_build_metadata(len(by_date))
     _write_robots()
+    _write_security_txt()
     # dovada de domeniu pentru IndexNow: motorul citeste cheia de la radacina
     _write(os.path.join(OUT_DIR, f"{config.INDEXNOW_KEY}.txt"), config.INDEXNOW_KEY + "\n")
     _write_headers()
@@ -1273,20 +1318,42 @@ def _write_sitemap(articles: list, now: datetime = None) -> None:
 
 
 def _write_search(env: Environment, articles: list) -> None:
-    """Pagina /cauta/ + index JSON mic (titluri) pentru cautarea client-side."""
+    """Pagina /cauta/ + index JSON mic (titluri) pentru cautarea client-side.
+
+    Limita indexului este aceeasi cu retentia editoriala, nu o promisiune vaga de
+    "arhiva completa". Valorile sunt randate in HTML, astfel incat functioneaza fara JS
+    si raman sincronizate cu datele pe care le poate interoga clientul.
+    """
     import json as _json
     idx = [{"t": a.get("display_title") or a.get("title", ""), "u": f"/{a['category']}/{a['slug']}/",
             "c": a.get("category", ""), "d": a.get("published_human", ""),
             "f": filtru_cautare_rapida(a)} for a in articles]
     _write(os.path.join(OUT_DIR, "search-index.json"), _json.dumps(idx, ensure_ascii=False))
     _write(os.path.join(OUT_DIR, "cauta", "index.html"),
-           env.get_template("search.html").render(**_base_ctx("/cauta/")))
+           env.get_template("search.html").render(**_base_ctx(
+               "/cauta/", search_count=len(idx), search_days=config.ARTICLE_TTL_DAYS)))
 
 
 def _write_robots() -> None:
     """Anunta DOAR sitemap-urile scrise de rularea curenta (`_SITEMAPS_WRITTEN`)."""
     lines = "".join(f"Sitemap: {config.SITE['url']}/{name}\n" for name in _SITEMAPS_WRITTEN)
     _write(os.path.join(OUT_DIR, "robots.txt"), f"User-agent: *\nAllow: /\n{lines}")
+
+
+def _write_security_txt() -> None:
+    """Publica un canal de raportare a vulnerabilitatilor la calea RFC 9116.
+
+    Fisierul este deliberat separat de pagina HTML `/legal/security/`: cercetatorii si
+    uneltele automate cauta formatul text la `/.well-known/security.txt`, iar cititorii
+    pot intelege politica in pagina legala randata din Markdown.
+    """
+    expires = (datetime.now(timezone.utc) + timedelta(days=365)).strftime("%Y-%m-%dT00:00:00Z")
+    _write(os.path.join(OUT_DIR, ".well-known", "security.txt"),
+           "Contact: mailto:contact@izz.ro?subject=Raport%20securitate%20IZZ.ro\n"
+           f"Policy: {config.SITE['url']}/legal/security/\n"
+           "Preferred-Languages: ro, en\n"
+           f"Canonical: {config.SITE['url']}/.well-known/security.txt\n"
+           f"Expires: {expires}\n")
 
 
 def _write_headers() -> None:
@@ -1302,8 +1369,13 @@ def _write_headers() -> None:
     # de publicitate Microsoft). personalize.js il refuza deja prin
     # ad_Storage:'denied'; lasandu-l in afara CSP, browserul il blocheaza si daca
     # flagul ala regreseaza. NU-l adauga la img-src "ca sa nu mai dea eroare".
+    # Cloudflare Bot Fight Mode injecteaza pe live un bootstrap inline `__CF$cv$params`.
+    # Nu folosim `unsafe-inline`: hash-ul observat permite exact acest payload si nimic altceva.
+    # Daca Cloudflare il schimba, Lighthouse va semnala din nou incidentul, ceea ce e preferabil
+    # deschiderii globale a CSP-ului.
     csp = ("default-src 'self'; "
-           "script-src 'self' https://static.cloudflareinsights.com https://www.googletagmanager.com "
+           "script-src 'self' 'sha256-DzqzfYrgtaakHyuPGKa5knFv5IoTaJszzL9Fca3521M=' "
+           "https://static.cloudflareinsights.com https://www.googletagmanager.com "
            "https://*.clarity.ms; "
            "style-src 'self' 'unsafe-inline'; "
            "img-src 'self' data: https://*.google-analytics.com https://*.googletagmanager.com; "
