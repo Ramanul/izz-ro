@@ -1180,6 +1180,48 @@ def _write_news_sitemap(articles: list, now: datetime) -> None:
     _SITEMAPS_WRITTEN.append("sitemap-news.xml")
 
 
+def _priority_articles(articles: list) -> list:
+    """Returneaza doar articolele cu semnal editorial mai puternic pentru sitemapul prioritar.
+
+    Sitemapul principal ramane inventarul complet de URL-uri canonice. Acest fisier separat nu
+    blocheaza si nu elimina niciun articol; face explicita o selectie restransa, formata din
+    sinteze multi-sursa cu corp propriu, astfel incat aceasta familie sa poata fi urmarita si
+    trimisa separat in Search Console. O simpla aparitie in sitemap nu garanteaza indexarea.
+    """
+    selected = []
+    for a in articles:
+        sources = a.get("sources") or []
+        if (a.get("model") == "C" and len(sources) >= 2
+                and (a.get("synthesis") or "").strip()):
+            selected.append(a)
+    return selected
+
+
+def _write_priority_sitemap(articles: list) -> None:
+    """Scrie sitemap-priority.xml pentru continutul editorial multi-sursa si pagini stabile.
+
+    Este un sitemap suplimentar, nu un inlocuitor al sitemapului principal: toate URL-urile
+    din el raman si in inventarul general. Scopul este observabilitatea si semnalarea clara a
+    paginilor pentru care IZZ.ro are cea mai mare contributie editoriala proprie.
+    """
+    url = config.SITE["url"]
+    locs = [
+        (f"{url}/{a['category']}/{a['slug']}/", (a.get("updated") or a.get("published") or "")[:10])
+        for a in _priority_articles(articles)
+    ]
+    locs += [(url + p, "") for p in _editorial_paths()]
+    if not locs:
+        return
+    items = "\n".join(
+        f"  <url><loc>{xml_escape(l)}</loc>" + (f"<lastmod>{lm}</lastmod>" if lm else "") + "</url>"
+        for l, lm in locs)
+    _write(os.path.join(OUT_DIR, "sitemap-priority.xml"),
+           '<?xml version="1.0" encoding="UTF-8"?>\n'
+           '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
+           f"{items}\n</urlset>\n")
+    _SITEMAPS_WRITTEN.append("sitemap-priority.xml")
+
+
 def _write_sitemap(articles: list, now: datetime = None) -> None:
     # `now` injectabil: fereastra de stiri se masoara fata de el, iar un test cu date
     # fixe si ceas real ar trece azi si ar pica peste doua zile, fara nicio schimbare de cod.
@@ -1205,6 +1247,7 @@ def _write_sitemap(articles: list, now: datetime = None) -> None:
            '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
            f"{items}\n</urlset>\n")
     _SITEMAPS_WRITTEN.append("sitemap.xml")
+    _write_priority_sitemap(articles)
     _write_news_sitemap(articles, now)
     # Image sitemap
     img_locs = []

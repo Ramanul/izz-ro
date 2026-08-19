@@ -147,3 +147,47 @@ def test_sitemapul_principal_ramane_fara_namespace_news(out):
     raw = (out / "sitemap.xml").read_text(encoding="utf-8")
     assert "sitemap-news/0.9" not in raw
     assert "/vechi/" in raw, "articolele vechi raman in sitemap-ul standard"
+
+
+def _priority_root(out):
+    path = os.path.join(str(out), "sitemap-priority.xml")
+    assert os.path.isfile(path), "sitemap-priority.xml nu s-a scris"
+    return ET.parse(path).getroot()
+
+
+def test_sitemapul_prioritar_include_doar_sinteze_multi_sursa(out):
+    """Sitemapul suplimentar nu trebuie sa pretinda ca un rezumat mono-sursa e editorial.
+
+    Sitemapul principal ramane complet; acest fisier este o selectie pentru monitorizare si
+    semnalarea URL-urilor unde contributia IZZ.ro trece de simpla reformulare.
+    """
+    render._write_priority_sitemap([
+        _art(1, "sinteza", model="C", synthesis="Context propriu si comparatie intre surse.",
+             sources=[{"name": "A", "url": "https://a.example/"},
+                      {"name": "B", "url": "https://b.example/"}]),
+        _art(1, "o-sursa", model="C", synthesis="Text", sources=[{"name": "A", "url": "https://a.example/"}]),
+        _art(1, "rezumat", model="B", teaser="Text"),
+        _art(1, "fara-corp", model="C", synthesis="", sources=[{"name": "A", "url": "https://a.example/"},
+                                                                    {"name": "B", "url": "https://b.example/"}]),
+    ])
+    locs = [e.text for e in _priority_root(out).iter(SM + "loc")]
+    assert any(u.endswith("/sinteza/") for u in locs)
+    assert not any(u.endswith("/o-sursa/") or u.endswith("/rezumat/") or u.endswith("/fara-corp/")
+                   for u in locs)
+
+
+def test_sitemapul_prioritar_pastreaza_lastmod_si_e_anuntat_in_robots(out):
+    article = _art(1, "sinteza", model="C", synthesis="Analiza editoriala.",
+                   sources=[{"name": "A", "url": "https://a.example/"},
+                            {"name": "B", "url": "https://b.example/"}],
+                   updated=(NOW - timedelta(minutes=30)).isoformat())
+    render._write_sitemap([article], now=NOW)
+    render._write_robots()
+    root = _priority_root(out)
+    url = config.SITE["url"]
+    node = root.find(f"{SM}url")
+    assert node is not None
+    assert node.findtext(f"{SM}loc") == f"{url}/general/sinteza/"
+    assert node.findtext(f"{SM}lastmod") == NOW.strftime("%Y-%m-%d")
+    robots = (out / "robots.txt").read_text(encoding="utf-8")
+    assert f"Sitemap: {url}/sitemap-priority.xml\n" in robots
