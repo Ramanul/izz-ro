@@ -23,6 +23,7 @@
         <p class="eyebrow">GEOGRAFIE EDITORIALĂ</p>
         <h1>Harta știrilor</h1>
         <p>Știrile <strong>locale</strong> și <strong>județene</strong> sunt localizate folosind infrastructura geografică existentă în IZZ.ro, inclusiv identificarea localităților și SIRUTA. Harta agregă afișarea la nivel de județ pentru a evita coordonate inventate.</p>
+        <p class="map-disclosure">Numărul de pe hartă reprezintă <strong>evenimentele afișate</strong>, nu o statistică oficială a incidentelor. Relatările despre același eveniment pot fi grupate, iar sursa și ora rămân disponibile în listă.</p>
       </div>
       <div class="map-stats" id="map-stats" aria-live="polite">
         <span>Se încarcă datele…</span>
@@ -35,6 +36,10 @@
         <button type="button" data-level="local">Local</button>
         <button type="button" data-level="judetean">Județean</button>
       </div>
+      <div class="segmented" role="group" aria-label="Mod de afișare">
+        <button type="button" class="active" data-view="events">Evenimente</button>
+        <button type="button" data-view="articles">Relatări</button>
+      </div>
       <label class="search">
         <span class="sr-only">Caută loc, titlu sau sursă</span>
         <input id="map-search" type="search" placeholder="Caută loc, titlu sau sursă…" autocomplete="off">
@@ -46,7 +51,8 @@
       <div class="map-card">
         <div id="map" class="map" role="img" aria-label="Harta României cu știri pe județe"></div>
         <div id="county-picker" class="county-picker" role="group" aria-label="Alege județul"></div>
-        <p class="map-note">Poziționarea cercului reprezintă județul. Localitatea și codul SIRUTA sunt păstrate în lista de știri atunci când pot fi identificate determinist; nu se afișează coordonate presupuse.</p>
+        <p class="map-note">Poziționarea cercului reprezintă județul. Selectează un județ din hartă sau din lista de butoane pentru detalii. Localitatea și codul SIRUTA sunt folosite numai când pot fi identificate determinist; nu se afișează coordonate presupuse.</p>
+        <p id="map-status" class="sr-only" aria-live="polite" aria-atomic="true"></p>
       </div>
       <aside class="news-panel" aria-label="Știri localizate">
         <div class="panel-heading">
@@ -56,6 +62,7 @@
         <ul id="news-list" class="news-list">
           <li class="loading">Se încarcă…</li>
         </ul>
+        <button type="button" id="show-more" class="show-more" hidden>Arată mai multe rezultate</button>
       </aside>
     </section>
   </main>

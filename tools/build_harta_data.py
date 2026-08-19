@@ -36,6 +36,13 @@ AMBIGUE = {
     "VLADIMIR", "OVIDIU", "CRISTIAN", "BACIU", "DRAGUS", "CIOBANU", "FLORICA",
     "CATALINA", "MAIA", "AVRAM IANCU", "GEORGE ENESCU", "MIHAI BRAVU", "GRADINARI",
 }
+# Cuvinte care pot fi localități în SIRUTA, dar apar frecvent în textele jurnalistice.
+# Fără un județ deja confirmat prin titlu sau sursă, nu reprezintă o bază suficientă pentru
+# plasarea unei știri pe hartă.
+BARE_LOCALITY_BLOCKLIST = AMBIGUE | STOPWORDS | {
+    "VECHI", "VECHE", "VECHII", "LEGII", "ROMANI", "ROMANIA", "ROMANIEI", "LUMII",
+    "ZILEI", "DREPTULUI", "STATULUI", "PACII", "NOI", "NOU", "NOUA", "MARE", "MARI",
+}
 PREFIXES = ("MUNICIPIUL ", "ORASUL ", "ORAS ", "COMUNA ", "JUDETUL ", "SATUL ")
 
 
@@ -171,6 +178,11 @@ def locality_from_text(text: str, source_county: str | None, by_name: dict[str, 
     candidates = []
     for name, records in by_name.items():
         if len(name) < 4 or f" {name} " not in padded:
+            continue
+        # O localitate cu nume comun poate fi folosită numai după ce județul a fost confirmat
+        # separat. Altfel, expresii ca „stocuri vechi”, „respectarea legii” sau „Curtea” ar
+        # inventa puncte în județe fără nicio legătură cu articolul.
+        if not source_county and name in BARE_LOCALITY_BLOCKLIST:
             continue
         same = [r for r in records if not source_county or norm(r["county"]) == norm(source_county)]
         if len(same) == 1:

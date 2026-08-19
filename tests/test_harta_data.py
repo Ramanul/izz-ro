@@ -71,3 +71,12 @@ def test_generated_dataset_has_coherent_quality_metrics():
     assert stats["county_only"] == sum(not article.get("locality") for article in articles)
     assert stats["coordinates"] == sum(article.get("x") is not None and article.get("y") is not None for article in articles)
     assert stats["geocoded_localities"] <= stats["localities"]
+
+
+def test_ambiguous_locality_requires_an_independent_county_confirmation():
+    by_name = {
+        "VECHI": [{"name": "VECHI", "county": "TELEORMAN", "siruta": "152859", "level": "3"}],
+    }
+    text = "Stocuri vechi de materiale nucleare au fost găsite în Siria"
+    assert harta_data.locality_from_text(text, None, by_name) is None
+    assert harta_data.locality_from_text(text, "TELEORMAN", by_name)["county"] == "TELEORMAN"
