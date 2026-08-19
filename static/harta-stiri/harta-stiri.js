@@ -11,6 +11,7 @@
     visible: [],
     viewMode: "events",
     listLimit: 120,
+    selectedRegion: null,
     selectedCounty: null,
     selectedLocality: null,
     zoomCounty: null,
@@ -78,7 +79,8 @@
   function filtered(options = {}) {
     const query = norm(state.search);
     const base = state.articles.filter((item) => {
-      if (state.level !== "all" && item.category !== state.level) return false;
+      if (state.level !== "all" && (item.geo_level || item.category) !== state.level) return false;
+      if (!options.ignorePlace && state.selectedRegion && item.region !== state.selectedRegion) return false;
       if (!options.ignorePlace && state.selectedCounty && item.county !== state.selectedCounty) return false;
       if (!options.ignorePlace && state.selectedLocality) {
         const localities = Array.isArray(state.selectedLocality) ? state.selectedLocality : [state.selectedLocality];
@@ -239,11 +241,18 @@
     ctx.fillRect(view.x, view.y, view.width, view.height);
 
     const counts = new Map();
-    for (const item of state.visible) counts.set(item.county, (counts.get(item.county) || 0) + 1);
+    for (const item of state.visible) {
+      const key = state.level === "regional" ? item.region : item.county;
+      if (key) counts.set(key, (counts.get(key) || 0) + 1);
+    }
+    const regions = state.map?.regiuni || {};
+    const regionForCounty = (county) => Object.entries(regions)
+      .find(([, counties]) => counties.includes(county))?.[0] || "";
 
     const paths = [];
     for (const [county, pathData] of Object.entries(state.counties)) {
-      const count = counts.get(county) || 0;
+      const region = regionForCounty(county);
+      const count = counts.get(state.level === "regional" ? region : county) || 0;
       let path;
       try { path = new Path2D(pathData); } catch { continue; }
       const hasNews = count > 0;
@@ -254,21 +263,23 @@
       // diferite. Regula corecta e mai simpla: harta arata geografia listei vizibile, atat.
       // De ce e un articol in lista se explica in ORDINE (potrivirile de loc primele) si in
       // eticheta din antet ("N potriviri de loc"), nu stingand harta.
-      const dimmed = Boolean(
-        (state.selectedCounty && county !== state.selectedCounty) || !hasNews,
-      );
+      const selected = state.selectedCounty === county
+        || (state.selectedRegion && state.selectedRegion === region);
+      const outsideSelection = (state.selectedCounty && county !== state.selectedCounty)
+        || (state.selectedRegion && region !== state.selectedRegion);
+      const dimmed = Boolean(outsideSelection || !hasNews);
 
       ctx.globalAlpha = dimmed ? 0.32 : 1;
-      ctx.fillStyle = state.selectedCounty === county ? palette.accentSoft : palette.fill;
+      ctx.fillStyle = selected ? palette.accentSoft : palette.fill;
       ctx.fill(path);
       ctx.globalAlpha = 1;
       ctx.strokeStyle = palette.stroke;
       ctx.lineWidth = 1.2;
       ctx.stroke(path);
-      paths.push({ county, path, count, bounds: pathBounds(pathData) });
+      paths.push({ county, region, path, count, bounds: pathBounds(pathData) });
     }
 
-    if (!state.zoomCounty) {
+    if (!state.zoomCounty && state.level !== "regional") {
       for (const entry of paths) {
         if (!entry.count || !entry.bounds) continue;
         const p = {
@@ -352,7 +363,12 @@
     state.view = view;
     state.paths = paths;
     state.localityMarkers = localityMarkers;
-    if (state.backButton) state.backButton.hidden = !state.selectedCounty;
+    if (state.backButton) {
+      const hasSelection = Boolean(state.selectedRegion || state.selectedCounty || state.selectedLocality);
+      state.backButton.hidden = !hasSelection;
+      state.backButton.textContent = state.selectedLocality ? "← Județul selectat"
+        : state.selectedCounty ? "← Toate județele" : "← Toate regiunile";
+    }
   }
 
   function pointForEvent(canvas, view, event) {
@@ -430,6 +446,7 @@
     const params = new URLSearchParams();
     if (state.level && state.level !== "all") params.set("nivel", state.level);
     if (state.viewMode !== "events") params.set("mod", state.viewMode);
+    if (state.selectedRegion) params.set("regiune", state.selectedRegion);
     if (state.selectedCounty) params.set("judet", state.selectedCounty);
     const loc = Array.isArray(state.selectedLocality)
       ? state.selectedLocality
@@ -448,6 +465,7 @@
     return {
       level: params.get("nivel") || "all",
       viewMode: params.get("mod") === "articles" ? "articles" : "events",
+      region: params.get("regiune") || null,
       county: params.get("judet") || null,
       locality: loc ? loc.split("|").filter(Boolean) : null,
       query: params.get("q") || "",
@@ -457,12 +475,14 @@
   function applyState(patch, { push = true, replace = false } = {}) {
     if ("level" in patch) state.level = patch.level || "all";
     if ("viewMode" in patch) state.viewMode = patch.viewMode === "articles" ? "articles" : "events";
+    if ("region" in patch) state.selectedRegion = patch.region || null;
     if ("county" in patch) state.selectedCounty = patch.county || null;
     if ("locality" in patch) state.selectedLocality = patch.locality || null;
     if ("query" in patch) state.search = patch.query || "";
     // `zoomCounty` nu e stare independenta, e derivata: la nivel Judetean click-ul filtreaza
     // fara sa mareasca (decizie proprietar, 13 aug). Tinuta separat, se desincroniza.
-    state.zoomCounty = state.selectedCounty && state.level !== "judetean" ? state.selectedCounty : null;
+    state.zoomCounty = state.selectedCounty && !["judetean", "regional"].includes(state.level)
+      ? state.selectedCounty : null;
     state.listLimit = 120;
     state.rawVisible = filtered();
     state.visible = itemsForView(state.rawVisible);
@@ -486,35 +506,42 @@
   }
 
   function selectCounty(county) {
-    applyState({ county, locality: null });
+    applyState({ region: null, county, locality: null });
+  }
+
+  function selectRegion(region) {
+    applyState({ region, county: null, locality: null });
   }
 
   function updateCountyPicker() {
     const picker = $("#county-picker");
     if (!picker) return;
-    // Butoanele se reconstruiesc la fiecare redesenare, deci elementul care avea focusul dispare
-    // si focusul cade pe <body>. Pentru cineva care navigheaza din tastatura asta inseamna ca
-    // dupa fiecare Enter o ia de la capat cu Tab-ul. Retinem judetul focusat si il refocusam.
+    // Pickerul rămâne alternativa echivalentă pentru hartă: fiecare zonă poate fi aleasă
+    // prin tastatură sau atingere, fără precizie tactilă fină pe un marker.
     const active = document.activeElement;
-    const focusedCounty = active && active.closest && active.closest("#county-picker")
-      ? active.dataset.county : null;
-
+    const focusedKey = active && active.closest && active.closest("#county-picker")
+      ? (active.dataset.region || active.dataset.county) : null;
+    const isRegional = state.level === "regional";
     const pool = itemsForView(filtered({ ignorePlace: true }));
     const counts = new Map();
     for (const item of pool) {
-      if (!item.county) continue;
-      counts.set(item.county, (counts.get(item.county) || 0) + 1);
+      const key = isRegional ? item.region : item.county;
+      if (!key) continue;
+      counts.set(key, (counts.get(key) || 0) + 1);
     }
     picker.replaceChildren();
-    for (const county of Array.from(counts.keys()).sort()) {
+    picker.setAttribute("aria-label", isRegional ? "Alege regiunea" : "Alege județul");
+    for (const key of Array.from(counts.keys()).sort((a, b) => a.localeCompare(b, "ro"))) {
       const button = document.createElement("button");
       button.type = "button";
-      button.dataset.county = county;
-      button.textContent = `${county} · ${counts.get(county)}`;
-      button.setAttribute("aria-pressed", county === state.selectedCounty ? "true" : "false");
-      button.addEventListener("click", () => selectCounty(county));
+      if (isRegional) button.dataset.region = key;
+      else button.dataset.county = key;
+      button.textContent = `${key} · ${counts.get(key)}`;
+      const selected = isRegional ? key === state.selectedRegion : key === state.selectedCounty;
+      button.setAttribute("aria-pressed", selected ? "true" : "false");
+      button.addEventListener("click", () => (isRegional ? selectRegion(key) : selectCounty(key)));
       picker.appendChild(button);
-      if (county === focusedCounty) button.focus();
+      if (key === focusedKey) button.focus();
     }
   }
 
@@ -543,9 +570,27 @@
       const entry = closestHit(p, state.paths, (e) => e.marker)
         || (dp && countyAtPoint(ctx, dp));
       if (entry) {
-        selectCounty(entry.county);
+        if (state.level === "regional") {
+          const regions = state.map?.regiuni || {};
+          const region = Object.entries(regions).find(([, counties]) => counties.includes(entry.county))?.[0];
+          if (region) selectRegion(region);
+        } else {
+          selectCounty(entry.county);
+        }
       }
     }
+  }
+
+  function contextName() {
+    if (state.selectedLocality) return Array.isArray(state.selectedLocality)
+      ? state.selectedLocality.join(", ") : state.selectedLocality;
+    if (state.selectedCounty) return state.selectedCounty;
+    if (state.selectedRegion) return state.selectedRegion;
+    return "România";
+  }
+
+  function itemLabel() {
+    return state.viewMode === "events" ? "evenimente" : "relatări";
   }
 
   function renderList() {
@@ -557,7 +602,9 @@
     if (!items.length) {
       const empty = document.createElement("li");
       empty.className = "empty";
-      empty.textContent = "Nu există rezultate pentru filtrele selectate.";
+      empty.textContent = state.search
+        ? `Nu am găsit rezultate pentru „${state.search}” în contextul ales. Elimină un filtru sau resetează harta.`
+        : "Nu există rezultate pentru filtrele selectate. Elimină un filtru sau resetează harta.";
       list.appendChild(empty);
     }
     for (const item of items) {
@@ -567,7 +614,7 @@
       a.textContent = item.title || "Fără titlu";
       const meta = document.createElement("span");
       const source = item.source_name || item.source;
-      meta.textContent = [item.locality, item.county, source, dateLabel(item.published)]
+      meta.textContent = [item.locality, item.county, item.region, source, dateLabel(item.published)]
         .filter(Boolean).join(" · ");
       li.append(a, meta);
       if (state.viewMode === "events" && item.eventArticleCount > 1) {
@@ -578,14 +625,20 @@
       }
       list.appendChild(li);
     }
+    const context = contextName();
+    const title = $("#panel-title");
+    const panelContext = $("#panel-context");
+    if (title) title.textContent = `${state.viewMode === "events" ? "Evenimente" : "Relatări"} în ${context}`;
+    if (panelContext) panelContext.textContent = state.level === "all" ? "Toate nivelurile" : `Nivel ${state.level}`;
     const count = $("#panel-count");
     if (count) {
       const query = norm(state.search);
       const shown = all.length > items.length
-        ? `${items.length} din ${all.length} ${state.viewMode === "events" ? "evenimente" : "relatări"}`
-        : `${items.length} ${state.viewMode === "events" ? "evenimente" : "relatări"}`;
+        ? `${items.length} din ${all.length} ${itemLabel()}`
+        : `${items.length} ${itemLabel()}`;
       const places = query ? state.rawVisible.filter((item) => matchesPlace(item, query)).length : 0;
-      count.textContent = query ? `${shown} · ${places} potriviri de loc` : shown;
+      const matchNote = places ? `${places} potriviri de loc` : "potriviri în titlu sau sursă";
+      count.textContent = query ? `${shown} · ${matchNote}` : shown;
     }
     const showMore = $("#show-more");
     if (showMore) {
@@ -599,6 +652,7 @@
     const stats = $("#map-stats");
     if (!stats) return;
     const counties = new Set(state.rawVisible.map((item) => item.county).filter(Boolean)).size;
+    const regions = new Set(state.rawVisible.map((item) => item.region).filter(Boolean)).size;
     const localities = new Set(state.rawVisible
       .filter((item) => item.locality)
       .map((item) => item.siruta || `${norm(item.locality)}|${norm(item.county)}`)).size;
@@ -609,50 +663,78 @@
       ? `${itemsForView(state.rawVisible).length} evenimente`
       : `${state.rawVisible.length} relatări`;
     const span = document.createElement("span");
-    span.textContent = `${state.rawVisible.length} relatări · ${counties} județe · ${localities} localități confirmate · actualizat ${latest}`;
+    span.textContent = `${state.rawVisible.length} relatări · ${regions} regiuni · ${counties} județe · ${localities} localități confirmate · actualizat ${latest}`;
     stats.append(strong, span);
   }
 
   function syncLevelButtons() {
     $$(".segmented [data-level]").forEach((button) => {
-      button.classList.toggle("active", button.dataset.level === state.level);
-      button.setAttribute("aria-pressed", button.dataset.level === state.level ? "true" : "false");
+      const active = button.dataset.level === state.level;
+      button.classList.toggle("active", active);
+      button.setAttribute("aria-checked", active ? "true" : "false");
     });
   }
 
   function syncViewButtons() {
     $$(".segmented [data-view]").forEach((button) => {
-      button.classList.toggle("active", button.dataset.view === state.viewMode);
-      button.setAttribute("aria-pressed", button.dataset.view === state.viewMode ? "true" : "false");
+      const active = button.dataset.view === state.viewMode;
+      button.classList.toggle("active", active);
+      button.setAttribute("aria-checked", active ? "true" : "false");
     });
   }
 
   function announceState() {
+    const place = contextName();
+    const levelLabel = { all: "toate nivelurile", regional: "nivel regional", judetean: "nivel județean", local: "nivel local" }[state.level] || "nivelul ales";
+    const message = `${state.visible.length} ${itemLabel()} afișate pentru ${place}, la ${levelLabel}.`;
     const status = $("#map-status");
-    if (!status) return;
-    const place = state.selectedLocality || state.selectedCounty || "toată România";
-    const itemLabel = state.viewMode === "events" ? "evenimente" : "relatări";
-    status.textContent = `${state.visible.length} ${itemLabel} afișate pentru ${place}.`;
+    if (status) status.textContent = message;
+    const context = $("#active-context");
+    if (context) context.textContent = `Afișezi ${itemLabel()} pentru ${place}, la ${levelLabel}.`;
+    const clear = $("#clear-selection");
+    if (clear) {
+      const hasSelection = Boolean(state.selectedRegion || state.selectedCounty || state.selectedLocality);
+      clear.disabled = !hasSelection;
+      clear.textContent = hasSelection ? "Înapoi la România" : "Ești în România";
+    }
   }
 
   function resetSelection() {
-    applyState({ county: null, locality: null });
+    applyState({ region: null, county: null, locality: null });
+  }
+
+  function resetAll() {
+    applyState({ level: "all", viewMode: "events", region: null, county: null, locality: null, query: "" });
   }
 
   function bindControls() {
     const search = $("#map-search");
     const clear = $("#clear-selection");
+    const reset = $("#reset-all");
     if (search) search.addEventListener("input", () => {
       applyState({ query: search.value }, { replace: true });
     });
-    $$(".segmented [data-level]").forEach((button) => button.addEventListener("click", () => {
-      // Schimbarea de nivel schimba regula de interacțiune; selecția curentă este resetată,
-      // însă termenul de căutare rămâne pentru a nu pierde intenția utilizatorului.
-      applyState({ level: button.dataset.level || "all", county: null, locality: null });
-    }));
-    $$(".segmented [data-view]").forEach((button) => button.addEventListener("click", () => {
+    const bindRadioGroup = (selector, apply) => {
+      const buttons = $$(selector);
+      buttons.forEach((button, index) => {
+        button.addEventListener("click", () => apply(button));
+        button.addEventListener("keydown", (event) => {
+          if (!["ArrowRight", "ArrowDown", "ArrowLeft", "ArrowUp"].includes(event.key)) return;
+          event.preventDefault();
+          const direction = ["ArrowRight", "ArrowDown"].includes(event.key) ? 1 : -1;
+          const next = buttons[(index + direction + buttons.length) % buttons.length];
+          next.focus();
+          next.click();
+        });
+      });
+    };
+    bindRadioGroup(".segmented [data-level]", (button) => {
+      // Schimbarea nivelului păstrează intenția de căutare, dar eliberează selecția incompatibilă.
+      applyState({ level: button.dataset.level || "all", region: null, county: null, locality: null });
+    });
+    bindRadioGroup(".segmented [data-view]", (button) => {
       applyState({ viewMode: button.dataset.view || "events" });
-    }));
+    });
     const showMore = $("#show-more");
     if (showMore) showMore.addEventListener("click", () => {
       state.listLimit += 120;
@@ -660,6 +742,7 @@
       announceState();
     });
     if (clear) clear.addEventListener("click", resetSelection);
+    if (reset) reset.addEventListener("click", resetAll);
     window.addEventListener("popstate", () => applyState(stateFromUrl(), { push: false }));
   }
 
