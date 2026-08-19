@@ -82,3 +82,13 @@ def test_corrections_and_security_sources_exist():
     root = Path(render.ROOT) / "content" / "legal"
     assert (root / "corrections.md").is_file()
     assert (root / "security.md").is_file()
+
+
+def test_csp_allows_only_observed_cloudflare_bootstrap_variants(tmp_path, monkeypatch):
+    monkeypatch.setattr(render, "OUT_DIR", str(tmp_path))
+    render._write_headers()
+    headers = (tmp_path / "_headers").read_text(encoding="utf-8")
+    assert "sha256-DzqzfYrgtaakHyuPGKa5knFv5IoTaJszzL9Fca3521M=" in headers
+    assert "sha256-LXd89R0ZNPfUJLyGqvxXmhTIA1mSPILGag0zh9noF7U=" in headers
+    script_policy = headers.split("script-src ", 1)[1].split(";", 1)[0]
+    assert "unsafe-inline" not in script_policy
