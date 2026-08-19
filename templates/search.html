@@ -15,7 +15,15 @@
       {% for cat in categories %}<option value="{{ cat }}">{{ cat | cat_label }}</option>{% endfor %}
     </select>
   </form>
-  <p class="search-scope">Rezultatele sunt căutate în titlurile știrilor recente și pot fi filtrate după categorie.</p>
+  <nav class="search-quick-filters" aria-label="Filtre rapide pentru anunțuri oficiale">
+    <span class="search-quick-label">Acces rapid:</span>
+    <button type="button" class="search-quick-filter" data-quick-filter="" aria-pressed="true">Toate</button>
+    <button type="button" class="search-quick-filter" data-quick-filter="concursuri" aria-pressed="false">Concursuri</button>
+    <button type="button" class="search-quick-filter" data-quick-filter="hotarari" aria-pressed="false">Hotărâri</button>
+    <button type="button" class="search-quick-filter" data-quick-filter="achizitii" aria-pressed="false">Achiziții</button>
+    <button type="button" class="search-quick-filter" data-quick-filter="oficiale" aria-pressed="false">Toate anunțurile oficiale</button>
+  </nav>
+  <p class="search-scope">Tastează un termen sau alege un filtru rapid. Categoria editorială poate fi combinată cu filtrele de mai sus.</p>
   <p id="search-status" role="status" aria-live="polite"></p>
   <ul id="search-results" class="search-results"></ul>
 </article>

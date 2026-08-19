@@ -17,6 +17,7 @@ sys.path.insert(0, ROOT)
 from generator import config                                   # noqa: E402
 from generator.render import _quality_gate, _dedup, sources_coherent  # noqa: E402
 from generator.util import title_tokens                        # noqa: E402
+from tools.title_quality_audit import audit as audit_title_quality  # noqa: E402
 
 STATE = os.path.join(ROOT, "data", "articles.json")
 INCOHERENT_MAX = 0          # niciun C incoerent NU trebuie sa scape de gate
@@ -32,6 +33,8 @@ def _published() -> list:
 def main() -> int:
     pub = _published()
     n = len(pub)
+    with open(STATE, encoding="utf-8") as fh:
+        title_report = audit_title_quality(json.load(fh))
     C = [a for a in pub if a.get("model") == "C"]
 
     incoherent = [a for a in C if not sources_coherent(a)]
@@ -59,12 +62,23 @@ def main() -> int:
           + (f"  (in insamantare, doar warn: {empty_seed})" if empty_seed else ""))
     print(f"fallback (fara AI)               : {len(fallback)} ({len(fallback)/n*100:.0f}%)")
     print(f"posibile duplicate de eveniment  : {dup} ({dup/n*100:.0f}%)  (warn > {DUP_WARN_RATE*100:.0f}%)")
+    print(
+        "titluri oficiale >110 la afișare : "
+        f"{title_report['display_titles_over_limit']}  (prag FAIL > 0)"
+    )
+    print(f"titluri oficiale afișate goale   : {title_report['empty_display_titles']}  (prag FAIL > 0)")
 
     fail = []
     if len(incoherent) > INCOHERENT_MAX:
         fail.append(f"{len(incoherent)} clustere C cu surse incoerente au scapat de gate")
     if empty_cats:
         fail.append(f"categorii goale: {', '.join(empty_cats)}")
+    if title_report["contract"]["status"] != "pass":
+        fail.append(
+            "contractul titlurilor oficiale a eșuat: "
+            f"{title_report['display_titles_over_limit']} peste limită, "
+            f"{title_report['empty_display_titles']} goale"
+        )
     if dup / n > DUP_WARN_RATE:
         print(f"!! AVERTISMENT: {dup/n*100:.0f}% duplicate (peste {DUP_WARN_RATE*100:.0f}%)")
 

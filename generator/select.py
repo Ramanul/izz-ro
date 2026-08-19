@@ -141,29 +141,50 @@ def titlu_afisare(a: dict) -> str:
             flags=re.I,
         )
         if job:
-            return f"Concurs pentru {_titlu_scurt(job.group(1).strip(), 76)} la {source}"
-        return f"Concurs de recrutare la {source}"
-
-    if "examenul de promovare" in low or "concursul de promovare" in low:
-        return f"Examen de promovare la {source}"
-
-    if "proiect de hotărâre" in low or "proiectului de act normativ" in low:
+            display = f"Concurs pentru {_titlu_scurt(job.group(1).strip(), 76)} la {source}"
+        else:
+            display = f"Concurs de recrutare la {source}"
+    elif "examenul de promovare" in low or "concursul de promovare" in low:
+        display = f"Examen de promovare la {source}"
+    elif "proiect de hotărâre" in low or "proiectului de act normativ" in low:
         number = _dupa_indicator(title, r"proiect\s+de\s+hotărâre\s*(?:nr\.?\s*)?([\d]+(?:/[\d]+)?)")
         subject = _dupa_indicator(title, r"\bprivind\s+(.+)") or _dupa_indicator(title, r"\bcu\s+scopul\s+(.+)")
         label = f"Proiect de hotărâre nr. {number}" if number else "Proiect de hotărâre"
-        return f"{label}: {_titlu_scurt(subject, 76)}" if subject else f"{label} la {source}"
-
-    if re.search(r"\bhotărâr|\bhotarar|\bhcl\b", low):
+        display = f"{label}: {_titlu_scurt(subject, 76)}" if subject else f"{label} la {source}"
+    elif re.search(r"\bhotărâr|\bhotarar|\bhcl\b", low):
         number = _dupa_indicator(title, r"(?:hotărârea|hotararea|hotărâre|hotarare)\s*(?:nr\.?\s*)?([\d]+(?:/[\d]+)?)")
         subject = _dupa_indicator(title, r"\bprivind\s+(.+)") or _dupa_indicator(title, r"\bpentru\s+(.+)")
         label = f"Hotărârea nr. {number}" if number else "Hotărâre de consiliu"
-        return f"{label}: {_titlu_scurt(subject, 78)}" if subject else f"{label} la {source}"
-
-    if any(marker in low for marker in ("achizi", "catalogul electronic", "ofertelor", "seap", "sicap")):
+        display = f"{label}: {_titlu_scurt(subject, 78)}" if subject else f"{label} la {source}"
+    elif any(marker in low for marker in ("achizi", "catalogul electronic", "ofertelor", "seap", "sicap")):
         subject = _dupa_indicator(title, r"\bpentru\s*:\s*(.+)") or _dupa_indicator(title, r"\bprivind\s+(.+)")
-        return f"Achiziție: {_titlu_scurt(subject, 78)}" if subject else f"Achiziție publică la {source}"
+        display = f"Achiziție: {_titlu_scurt(subject, 78)}" if subject else f"Achiziție publică la {source}"
+    else:
+        display = title
 
-    return _titlu_scurt(title, _OFFICIAL_DISPLAY_TITLE_MAX)
+    # Ultima barieră este intenționat comună tuturor regulilor. O denumire de instituție
+    # foarte lungă sau o expresie nouă nu poate depăși limita de citire pe mobil.
+    return _titlu_scurt(display, _OFFICIAL_DISPLAY_TITLE_MAX)
+
+
+def filtru_cautare_rapida(a: dict) -> str:
+    """Întoarce filtrul compact de căutare pentru un anunț oficial sau șirul gol.
+
+    Etichetele sunt deliberat puține și orientate pe intenția de căutare mobilă. Nu
+    înlocuiesc categoria editorială, care rămâne disponibilă în selectorul clasic.
+    """
+    if a.get("processed_by") != "official":
+        return ""
+    low = " ".join((a.get("title") or "").split()).casefold()
+    if "examenul de promovare" in low or "concursul de promovare" in low or \
+            re.search(r"\bconcurs(?:ul)?\b", low):
+        return "concursuri"
+    if "proiect de hotărâre" in low or "proiectului de act normativ" in low or \
+            re.search(r"\bhotărâr|\bhotarar|\bhcl\b", low):
+        return "hotarari"
+    if any(marker in low for marker in ("achizi", "catalogul electronic", "ofertelor", "seap", "sicap")):
+        return "achizitii"
+    return "oficiale"
 
 
 def anunt_oficial_fara_corp(a: dict) -> bool:

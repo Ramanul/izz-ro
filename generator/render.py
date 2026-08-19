@@ -21,7 +21,8 @@ from slugify import slugify
 
 from . import config, covers, geo, htmlart
 from .select import (_dedup, _dedup_sources, _diversify, _entity_index,
-                     _pick_hero, _quality_gate, anunt_oficial_fara_corp, titlu_afisare)
+                     _pick_hero, _quality_gate, anunt_oficial_fara_corp, filtru_cautare_rapida,
+                     titlu_afisare)
 # Re-export DELIBERAT, nu import mort: `tests/test_render_editorial.py` le cheama ca
 # `render._slug_stems` / `render.sources_coherent` (9 apeluri), iar `tools/qa_check.py:18`
 # importa `sources_coherent` din `generator.render`, nu din `generator.select` — si scriptul
@@ -1274,8 +1275,9 @@ def _write_sitemap(articles: list, now: datetime = None) -> None:
 def _write_search(env: Environment, articles: list) -> None:
     """Pagina /cauta/ + index JSON mic (titluri) pentru cautarea client-side."""
     import json as _json
-    idx = [{"t": a.get("title", ""), "u": f"/{a['category']}/{a['slug']}/",
-            "c": a.get("category", ""), "d": a.get("published_human", "")} for a in articles]
+    idx = [{"t": a.get("display_title") or a.get("title", ""), "u": f"/{a['category']}/{a['slug']}/",
+            "c": a.get("category", ""), "d": a.get("published_human", ""),
+            "f": filtru_cautare_rapida(a)} for a in articles]
     _write(os.path.join(OUT_DIR, "search-index.json"), _json.dumps(idx, ensure_ascii=False))
     _write(os.path.join(OUT_DIR, "cauta", "index.html"),
            env.get_template("search.html").render(**_base_ctx("/cauta/")))

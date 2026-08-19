@@ -18,6 +18,9 @@ on:
       - 'requirements.txt'
       - 'ruff.toml'
       - '.github/workflows/tests.yml'
+      - '.github/workflows/editorial-quality.yml'
+      - 'tools/title_quality_audit.py'
+      - 'tools/qa_check.py'
   workflow_dispatch: {}
 
 permissions:
@@ -55,6 +58,10 @@ jobs:
         # dependentele pipeline-ului de productie, si un linter n-are ce cauta acolo.
         run: python -m ruff check .
       - run: python -m pytest tests/ -q
+      - name: Contractul titlurilor oficiale
+        # Regula mobilă este testată separat de randare: orice titlu oficial afișat
+        # trebuie să fie nevid și să aibă cel mult 110 caractere.
+        run: python tools/title_quality_audit.py
 
       - name: Poarta HTML pe output-ul construit
         # `qa_check.py` auditeaza DATELE; nimic nu se uita la HTML-ul rezultat, deci o regresie

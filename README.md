@@ -73,3 +73,32 @@ AI_FALLBACK_PROVIDERS=groq,cerebras,mistral,openrouter
 ```
 
 Routerul este o cascadă: încearcă providerul principal configurat, apoi providerii compatibili configurați în ordinea declarată, apoi fallback-ul Ollama dacă este activ. Un provider configurat dar fără cheie nu este apelat. Pentru CI, adăugarea de provideri se face ulterior, prin secrete separate și un test controlat; nu se schimbă implicit `AI_PROVIDER=gemini`.
+
+## Controale autonome de calitate
+
+Calitatea editorială și disponibilitatea nu depind de intervenția manuală a unui agent. Repository-ul rulează controale deterministe direct în GitHub Actions, iar o execuție eșuată devine vizibilă administratorului în pagina Actions și prin notificările GitHub configurate pentru repository.
+
+| Control | Când rulează | Ce blochează sau semnalează |
+|---|---|---|
+| `tests.yml` | La orice pull request și la schimbări de cod pe `main` | Lint, teste Python, contractul titlurilor oficiale, randare și integritate HTML |
+| `build.yml` → `QA check` | După fiecare actualizare automată de conținut | Surse incoerente, categorii goale și orice titlu oficial afișat peste 110 caractere sau gol |
+| `editorial-quality.yml` | Zilnic la 06:37 UTC și la rulare manuală | Audit independent al titlurilor, raport JSON păstrat 30 de zile și verificarea corpusului publicabil |
+| `monitor.yml` | Periodic, independent de deploy | Lipsa răspunsului pentru domeniul public sau indisponibilitatea simultană a ambelor origini |
+| `build.yml` → `release-probe` | După publicarea unei actualizări | Nepotrivirea dintre commitul publicat și manifestul `/build.json` de pe Pages și `izz.ro` |
+
+### Contractul titlurilor oficiale
+
+`tools/title_quality_audit.py` este verificarea autonomă a regulii de lectură mobilă. Rulează fără apeluri AI și fără servicii externe:
+
+```bash
+python tools/title_quality_audit.py
+python tools/title_quality_audit.py --report title-quality-report.json
+```
+
+Un rezultat reușit garantează că titlul de afișare al fiecărui anunț oficial este nevid și are cel mult **110 caractere**. Titlul instituției rămâne neschimbat în `data/articles.json`; reducerea se aplică doar în câmpul de afișare calculat la randare. Dacă regula este încălcată, workflow-ul eșuează și administratorul are în raport exemplele concrete care necesită corectare.
+
+> Programarea GitHub este potrivită pentru controalele zilnice de consistență. Pentru detectare garantată la minut a indisponibilității externe ar fi necesar un serviciu de monitorizare dedicat, configurat separat la nivel de cont.
+
+### Răspuns operațional fără agent
+
+Nu este necesară nicio acțiune la fiecare rulare verde. Dacă un workflow devine roșu, administratorul deschide execuția din GitHub Actions, descarcă artefactul `title-quality-report` când este disponibil și corectează articolul sau regula indicată. După un commit, testele și verificarea release-ului rulează din nou automat.

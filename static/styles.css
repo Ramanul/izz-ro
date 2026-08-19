@@ -623,12 +623,36 @@ picture { display: contents; }
 .search-filter:focus { outline: 2px solid var(--gold-strong); outline-offset: 2px; }
 .search-hint, .search-scope { color: var(--ink-3); font-size: var(--fs-xs); }
 .search-scope { margin: var(--s-13) 0 0; }
+.search-quick-filters {
+  display: flex; flex-wrap: wrap; align-items: center; gap: var(--s-8);
+  max-width: var(--measure); margin-top: var(--s-13);
+}
+.search-quick-label {
+  color: var(--ink-3); font-family: var(--font-mono); font-size: var(--fs-eyebrow);
+  font-weight: 700; letter-spacing: .4px;
+}
+.search-quick-filter {
+  min-height: 36px; padding: var(--s-5) var(--s-8); cursor: pointer;
+  border: 1px solid var(--line-strong); border-radius: var(--radius);
+  background: var(--paper-2); color: var(--ink-2); font: inherit; font-size: var(--fs-xs);
+}
+.search-quick-filter[aria-pressed="true"] {
+  background: var(--ink); color: var(--paper); border-color: var(--ink); font-weight: 700;
+}
+.search-quick-filter:hover { border-color: var(--gold-strong); color: var(--gold-strong); }
+.search-quick-filter[aria-pressed="true"]:hover { color: var(--paper); }
+.search-quick-filter:focus { outline: 2px solid var(--gold-strong); outline-offset: 2px; }
 #search-status { font-family: var(--font-mono); font-size: var(--fs-eyebrow); color: var(--ink-3); min-height: 1.2em; }
 .search-results { list-style: none; margin: var(--s-21) 0 0; padding: 0; max-width: var(--measure); }
 .search-results li { border-top: 1px solid var(--line); padding: var(--s-13) 0; }
 .search-results a { font-family: var(--font-display); font-weight: 700; font-size: var(--fs-md); color: var(--ink); }
 .search-results a:hover { color: var(--gold-strong); }
 .search-meta { color: var(--ink-3); font-size: var(--fs-eyebrow); font-family: var(--font-mono); }
+@media (max-width: 520px) {
+  .search-quick-filters { gap: var(--s-5); }
+  .search-quick-label { width: 100%; }
+  .search-quick-filter { min-height: 40px; padding-left: var(--s-13); padding-right: var(--s-13); }
+}
 
 /* ------------------------------------------- Persoane publice (portrete) --- */
 .people-title {
