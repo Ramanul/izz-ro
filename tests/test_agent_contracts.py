@@ -68,10 +68,10 @@ def test_claude_validator_uses_read_only_contract(monkeypatch):
     result = ClaudeCodeValidator(timeout_seconds=7).validate_batch({"run_id": "test"})
 
     assert result.accepted is True
-    assert "--allowed-tools" in calls["command"]
-    allowed = calls["command"][calls["command"].index("--allowed-tools") + 1]
-    assert "Edit" not in allowed
-    assert "git push" not in allowed
+    assert "--safe-mode" in calls["command"]
+    assert "--system-prompt" in calls["command"]
+    assert calls["command"][calls["command"].index("--permission-mode") + 1] == "dontAsk"
+    assert "--allowed-tools" not in calls["command"]
     assert calls["kwargs"]["timeout"] == 7
 
 

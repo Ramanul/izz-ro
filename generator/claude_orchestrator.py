@@ -62,16 +62,26 @@ class ClaudeCodeValidator:
 
         prompt = self._prompt(manifest)
         schema = json.dumps(self._schema(), ensure_ascii=False, separators=(",", ":"))
+        # The validator receives a self-contained manifest and needs no repository
+        # access. ``--safe-mode`` keeps the user's Claude subscription login while
+        # skipping CLAUDE.md, MCP servers, hooks, plugins, skills, auto-memory and
+        # project settings. A small replacement prompt plus ``dontAsk`` makes this
+        # a deterministic JSON-only validation call rather than a coding session.
         command = [
             self.executable,
+            "--safe-mode",
+            "--system-prompt",
+            "Ești un validator JSON read-only. Analizezi exclusiv manifestul primit. "
+            "Nu folosi instrumente, nu edita fișiere, nu cere secrete și nu explica "
+            "în afara schemei JSON solicitate.",
+            "--permission-mode",
+            "dontAsk",
             "-p",
             prompt,
             "--output-format",
             "json",
             "--json-schema",
             schema,
-            "--allowed-tools",
-            "Read,Grep,Glob,Bash(git status --short),Bash(python -m pytest -q)",
         ]
         try:
             completed = subprocess.run(
