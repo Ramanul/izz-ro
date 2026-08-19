@@ -4,7 +4,7 @@
 {% block content %}
 <article class="static-page search-page">
   <h1>Caută în știri</h1>
-  <p class="search-hint">Caută în titlurile știrilor din ultimele zile. Diacriticele nu contează.</p>
+  <p class="search-hint">Caută în titlurile celor {{ search_count }} știri păstrate în ultimele {{ search_days }} zile. Diacriticele nu contează.</p>
   {# submit-ul e anulat in search.js (CSP fara 'unsafe-inline' pe scripturi) #}
   <form id="search-form" role="search">
     <label class="visually-hidden" for="q">Termen de căutare</label>
@@ -23,8 +23,8 @@
     <button type="button" class="search-quick-filter" data-quick-filter="achizitii" aria-pressed="false">Achiziții</button>
     <button type="button" class="search-quick-filter" data-quick-filter="oficiale" aria-pressed="false">Toate anunțurile oficiale</button>
   </nav>
-  <p class="search-scope">Tastează un termen sau alege un filtru rapid. Categoria editorială poate fi combinată cu filtrele de mai sus.</p>
-  <p id="search-status" role="status" aria-live="polite"></p>
+  <p class="search-scope">Indexul conține titluri și categorii, nu textul integral al surselor. Tastează un termen sau alege un filtru rapid; categoria editorială poate fi combinată cu filtrele de mai sus.</p>
+  <p id="search-status" role="status" aria-live="polite" data-result-limit="50"></p>
   <ul id="search-results" class="search-results"></ul>
 </article>
 <script defer src="{{ base }}/static/search.js?v={{ asset_ver['search.js'] }}"></script>

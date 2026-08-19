@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% from "_card.html" import card with context %}
 {% block title %}{{ site.name }} — {{ site.tagline }}{% endblock %}
-{% block description %}Cele mai importante știri din România și din lume, sintetizate din mai multe surse și verificate, fără duplicate și fără zgomot. Actualizat non-stop.{% endblock %}
+{% block description %}Cele mai importante știri din România și din lume, grupate din surse publice, cu proveniență afișată și fără duplicate. Actualizat automat, fără zgomot.{% endblock %}
 {% block content %}
   <h1 class="visually-hidden">{{ site.name }} — {{ site.tagline }}</h1>
   {% if not articles %}
@@ -19,6 +19,14 @@
         <span><b>Anunț oficial</b> — citește textul integral la instituția emitentă</span>
       </div>
     </section>
+    <aside class="reader-briefing" aria-labelledby="reader-briefing-title">
+      <div>
+        <p class="eyebrow">Urmărește fără zgomot</p>
+        <h2 id="reader-briefing-title">Alege propriul ritm de informare</h2>
+        <p>Folosește fluxul RSS pentru actualizări deschise sau verifică direct catalogul surselor monitorizate.</p>
+      </div>
+      <p class="reader-briefing-actions"><a href="{{ base }}/feed.xml">Abonează-te prin RSS</a><a href="{{ base }}/surse/">Vezi sursele monitorizate</a></p>
+    </aside>
     {% if hero %}
     {% set top = hero[0] %}
     <article class="lead-feature">
@@ -37,7 +45,7 @@
         {% if top.art_path %}
         <picture>
           {% if top.art_webp %}<source srcset="{{ base }}{{ top.art_webp }}" type="image/webp">{% endif %}
-          <img class="lead-art" src="{{ base }}{{ top.art_path }}" alt="" width="960" height="504" fetchpriority="high">
+          <img class="lead-art" src="{{ base }}{{ top.art_path }}" alt="" width="960" height="504" sizes="(min-width: 1000px) 430px, 100vw" fetchpriority="high">
         </picture>
         {% endif %}
         <div>
@@ -71,7 +79,7 @@
 
   {% if newsletter_html %}
   <section class="newsletter">
-    <h2 class="section-title">Newsletter</h2>
+    <h2 class="section-title">Briefing fără zgomot</h2>
     {{ newsletter_html | safe }}
   </section>
   {% endif %}

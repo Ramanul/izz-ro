@@ -29,14 +29,15 @@
     {% set read_mins = [word_count // 200, 1] | max %}
     <span class="reading-time">~{{ read_mins }} min citire</span>
     {% endif %}
-    {% if a.ai_generat %}<span class="ai-mark">Titlu generat automat</span>{% endif %}
+    {% if a.updated_human %}<span class="article-updated">Actualizat: {{ a.updated_human }}</span>{% endif %}
+    {% if a.ai_generat %}<span class="ai-mark">Titlu sintetizat automat</span>{% endif %}
   </div>
 
   {% if a.art_path %}
   <figure class="article-art-fig">
     <picture>
       {% if a.art_webp %}<source srcset="{{ base }}{{ a.art_webp }}" type="image/webp">{% endif %}
-      <img class="article-art" src="{{ base }}{{ a.art_path }}" alt="{% if a.lead_credit %}{{ a.lead_credit.name }}{% endif %}" width="960" height="504" fetchpriority="high">
+      <img class="article-art" src="{{ base }}{{ a.art_path }}" alt="{% if a.lead_credit %}{{ a.lead_credit.name }}{% endif %}" width="960" height="504" sizes="(min-width: 770px) 729px, calc(100vw - 42px)" fetchpriority="high">
     </picture>
     {% if a.lead_credit %}
     <figcaption class="art-credit">{% if a.lead_credit.kind == 'locality' %}Ilustrație: {{ a.lead_credit.name }}. {% endif %}Foto: {% if a.lead_credit.artist %}{{ a.lead_credit.artist }} · {% endif %}<a href="{{ a.lead_credit.page }}" target="_blank" rel="noopener noreferrer">Wikimedia Commons</a> · {{ a.lead_credit.license }}</figcaption>
@@ -76,9 +77,14 @@
   <div class="sources-box">
     <h2>{{ 'Sursă' if srcs | length == 1 else 'Surse' }}</h2>
     <ul>
-      {% for s in srcs %}<li><a href="{{ s.url }}" target="_blank" rel="noopener noreferrer">{{ s.name }} &rarr;</a>{% if a.first_source and s.name == a.first_source and srcs | length > 1 %} <span class="first-badge">primul</span>{% endif %}</li>{% endfor %}
+      {% for s in srcs %}<li><a href="{{ s.url }}" target="_blank" rel="noopener noreferrer">{{ s.name }} &rarr;</a>{% if a.first_source and s.name == a.first_source and srcs | length > 1 %} <span class="first-badge" title="Prima publicare observată în setul de surse monitorizate">publicată prima</span>{% endif %}</li>{% endfor %}
     </ul>
   </div>
+  <aside class="article-accountability" aria-labelledby="article-accountability-title">
+    <h2 id="article-accountability-title">Transparență și corecții</h2>
+    <p>Proveniența este afișată mai sus. Dacă observi o eroare factuală, o sursă lipsă sau o formulare neclară, trimite-ne pagina și contextul relevant.</p>
+    <p><a class="article-report-link" href="mailto:contact@izz.ro?subject={{ ('Raport eroare IZZ.ro: ' ~ (a.display_title or a.title)) | urlencode }}&amp;body={{ ('Pagina: ' ~ canonical ~ '\n\nCe trebuie corectat:\n\nSursa sau contextul relevant:') | urlencode }}">Raportează o eroare</a> <a href="{{ base }}/legal/corrections/">Vezi politica de corecții</a></p>
+  </aside>
   {% if topics %}
   <p class="topics">Subiecte:
     {% for s, n in topics %}<a href="{{ base }}/subiect/{{ s }}/">{{ n }}</a>{{ ' · ' if not loop.last }}{% endfor %}</p>

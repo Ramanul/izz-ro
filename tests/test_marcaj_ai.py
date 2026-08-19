@@ -37,13 +37,13 @@ def card():
 
 def test_marcajul_apare_cand_e_generat(card):
     html = str(card(_articol(ai_generat=True)))
-    assert "Titlu generat automat" in html
+    assert "Titlu sintetizat automat" in html
     assert 'class="ai-mark"' in html
 
 
 def test_marcajul_lipseste_cand_nu_e_generat(card):
     html = str(card(_articol(ai_generat=False)))
-    assert "Titlu generat automat" not in html
+    assert "Titlu sintetizat automat" not in html
     assert "ai-mark" not in html
 
 

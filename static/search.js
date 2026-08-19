@@ -7,6 +7,7 @@
   var out = document.getElementById("search-results");
   var status = document.getElementById("search-status");
   var quickButtons = document.querySelectorAll("[data-quick-filter]");
+  var resultLimit = Number(status && status.getAttribute("data-result-limit")) || 50;
   var quickFilter = "";
   var quickLabels = {
     concursuri: "concursuri",
@@ -80,7 +81,7 @@
     }
 
     var hits = [];
-    for (var i = 0; i < index.length && hits.length < 50; i++) {
+    for (var i = 0; i < index.length && hits.length < resultLimit; i++) {
       var article = index[i].a;
       var ok = (!selectedCategory || article.c === selectedCategory) && matchesQuickFilter(article);
       for (var j = 0; ok && j < words.length; j++) {
@@ -88,7 +89,11 @@
       }
       if (ok) hits.push(article);
     }
-    status.textContent = hits.length ? hits.length + " rezultate" + suffix : "Niciun rezultat" + suffix + ".";
+    if (hits.length) {
+      status.textContent = (hits.length === resultLimit ? "Primele " + resultLimit + " rezultate" : hits.length + " rezultate") + suffix + ".";
+    } else {
+      status.textContent = "Niciun rezultat" + suffix + ". Încearcă un termen mai general sau o altă categorie.";
+    }
     hits.forEach(function (article) {
       var li = document.createElement("li");
       var link = document.createElement("a");
