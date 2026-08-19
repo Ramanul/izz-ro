@@ -40,3 +40,7 @@ Pentru delimitările UAT a fost identificat stratul public WFS `geospatial:ro_ua
 ## Verificare selector UAT și badge-uri adaptive
 
 La selectarea Timișului, selectorul de sub hartă afișează `Racovița · 1`, nu lista tuturor județelor. Badge-ul UAT rămâne în harta județului și deschide dialogul cu știrea localizată. Captura desktop confirmă dialogul și lista UAT de jos. Captura iPhone SE la 375 px confirmă lățime egală cu viewportul (fără overflow), canvas de 349×247 px, badge vizibil și selector UAT lizibil.
+
+## Diagnostic flux local Timiș — 19 august 2026
+
+Pe pagina publică, selectarea Timișului în modul local a arătat contururile UAT, dar mesajul „Nu există știri localizate pe UAT-uri în TIMIS”; verificarea datasetului a confirmat 0 localități și 0 coordonate pentru articolele Timiș. Cauza a fost ambiguitatea SIRUTA a municipiilor care apar atât ca UAT (NIV 2), cât și ca localitate (NIV 3). După alegerea exactă a candidatului SIRUTA cu punct mapat, build-ul local a afișat 46 evenimente pentru Timiș, 10 localități confirmate, contururi UAT aliniate și badge-uri numerice în UAT-uri.

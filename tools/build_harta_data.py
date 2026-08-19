@@ -174,7 +174,12 @@ def source_county(source: str, county_keys: list[str]) -> str | None:
     return next((c for c in sorted(county_keys, key=len, reverse=True) if norm(c) in t), None)
 
 
-def locality_from_text(text: str, source_county: str | None, by_name: dict[str, list[dict]]) -> dict | None:
+def locality_from_text(
+    text: str,
+    source_county: str | None,
+    by_name: dict[str, list[dict]],
+    points: dict[str, dict] | None = None,
+) -> dict | None:
     padded = f" {norm(text)} "
     candidates = []
     for name, records in by_name.items():
@@ -188,6 +193,21 @@ def locality_from_text(text: str, source_county: str | None, by_name: dict[str, 
         same = [r for r in records if not source_county or norm(r["county"]) == norm(source_county)]
         if len(same) == 1:
             candidates.append(same[0])
+            continue
+        # Municipiile apar uneori de două ori în SIRUTA: ca UAT (NIV 2) și ca localitate
+        # (NIV 3). Se alege explicit intrarea unică ce are punct pe hartă. Este cea care poate
+        # fi agregată corect într-un UAT, de exemplu Timișoara, nu doar județul Timiș.
+        mapped = []
+        if points:
+            for record in same:
+                # Potrivirea trebuie să fie exactă pe SIRUTA: fallback-ul după nume ar găsi
+                # același punct și pentru UAT-ul părinte, anulând diferența NIV 2/NIV 3.
+                siruta = siruta_key(record.get("siruta") or "")
+                if siruta and siruta in points:
+                    mapped.append(record)
+        if len(mapped) == 1:
+            candidates.append(mapped[0])
+            continue
     candidates.sort(key=lambda r: len(r["name"]), reverse=True)
     return candidates[0] if candidates else None
 
@@ -227,7 +247,7 @@ def locate(article: dict, county_keys: list[str], by_name: dict[str, list[dict]]
     sc = source_county(str(article.get("source") or ""), county_keys)
     tc = explicit_county(text, county_keys)
     county = tc or sc
-    locality = locality_from_text(text, county, by_name)
+    locality = locality_from_text(text, county, by_name, points)
     if not county and locality:
         county = locality["county"]
     if not county:

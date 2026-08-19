@@ -91,3 +91,17 @@ def test_ambiguous_locality_requires_an_independent_county_confirmation():
     text = "Stocuri vechi de materiale nucleare au fost găsite în Siria"
     assert harta_data.locality_from_text(text, None, by_name) is None
     assert harta_data.locality_from_text(text, "TELEORMAN", by_name)["county"] == "TELEORMAN"
+
+
+def test_duplicate_municipality_uses_exact_siruta_with_map_point():
+    by_name = {
+        "TIMISOARA": [
+            {"name": "TIMISOARA", "county": "TIMIS", "siruta": "155243", "level": "2"},
+            {"name": "TIMISOARA", "county": "TIMIS", "siruta": "155252", "level": "3"},
+        ],
+    }
+    points = {
+        "155252": {"name": "TIMISOARA", "county": "TIMIS", "siruta": "155252", "x": 102.1, "y": 379.9},
+    }
+    resolved = harta_data.locality_from_text("Intervenție în Timișoara", "TIMIS", by_name, points)
+    assert resolved == by_name["TIMISOARA"][1]
