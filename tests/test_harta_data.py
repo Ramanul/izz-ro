@@ -43,6 +43,15 @@ def test_events_from_different_localities_or_counties_are_never_merged():
     assert len({article["event_id"] for article in result}) == 3
 
 
+def test_events_from_different_regions_are_never_merged():
+    articles = [
+        {**item("Avertizare meteo regională", county=""), "region": "Transilvania"},
+        {**item("Avertizare meteo regională", county=""), "region": "Oltenia"},
+    ]
+    result = harta_data.annotate_events(articles)
+    assert result[0]["event_id"] != result[1]["event_id"]
+
+
 def test_event_grouping_rejects_articles_far_apart_in_time():
     articles = [
         item("Accident rutier grav cu trei răniți pe DN1", locality="BRASOV"),
@@ -63,12 +72,14 @@ def test_generated_dataset_has_coherent_quality_metrics():
         for article in articles
         if article.get("locality")
     }
-    assert data["version"] >= 3
+    assert data["version"] >= 4
     assert data["latest_article_at"]
     assert stats["total"] == len(articles)
     assert stats["events"] == len({article["event_id"] for article in articles})
     assert stats["localities"] == len(named)
-    assert stats["county_only"] == sum(not article.get("locality") for article in articles)
+    assert stats["county_only"] == sum(bool(article.get("county")) and not article.get("locality") for article in articles)
+    assert stats["regional"] == sum(article.get("geo_level") == "regional" for article in articles)
+    assert all(article.get("geo_level") in {"local", "judetean", "regional"} for article in articles)
     assert stats["coordinates"] == sum(article.get("x") is not None and article.get("y") is not None for article in articles)
     assert stats["geocoded_localities"] <= stats["localities"]
 

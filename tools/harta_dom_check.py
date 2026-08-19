@@ -42,7 +42,9 @@ def search_value(p):
     return p.evaluate("() => document.querySelector('#map-search').value")
 
 def reset(p):
-    p.click("#clear-selection")
+    # Resetarea completă este intenționat disponibilă în orice stare. Comanda contextuală
+    # „Înapoi la România” este dezactivată corect atunci când nicio zonă nu este selectată.
+    p.click("#reset-all")
     p.wait_for_timeout(120)
 
 
@@ -370,6 +372,10 @@ def mobil_390(p):
     over = p.evaluate("document.documentElement.scrollWidth - document.documentElement.clientWidth")
     check(over <= 0, f"fara overflow orizontal la 390px ({over}px)")
 
+    # Pe ecranul Android harta începe sub introducere; o atingere cu y din afara viewportului
+    # nu testează produsul, ci doar o coordonată imposibilă. O aducem în viewport înainte de tap.
+    p.locator("#map canvas.map-canvas").scroll_into_view_if_needed()
+    p.wait_for_timeout(150)
     r = canvas_rect(p)
     print(f"   canvas real: {r['w']:.0f}x{r['h']:.0f}px")
     hits, tried = 0, 0

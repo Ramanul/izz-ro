@@ -63,15 +63,15 @@ jobs:
           stats = data['stats']
           assert len(counties) == 42, len(counties)
           assert articles, 'Nu există articole localizate.'
-          assert data.get('version', 0) >= 3
+          assert data.get('version', 0) >= 4
           assert data.get('generated_at')
           assert data.get('latest_article_at')
           assert stats['total'] == len(articles)
-          assert stats['local'] + stats['judetean'] == len(articles)
-          assert stats['counties'] == len({a['county'] for a in articles})
+          assert stats['local'] + stats['judetean'] + stats.get('regional', 0) == len(articles)
+          assert stats['counties'] == len({a['county'] for a in articles if a.get('county')})
           named_localities = {a.get('siruta') or f"{a.get('locality')}|{a.get('county')}" for a in articles if a.get('locality')}
           assert stats['localities'] == len(named_localities)
-          assert stats['county_only'] == sum(not a.get('locality') for a in articles)
+          assert stats['county_only'] == sum(bool(a.get('county')) and not a.get('locality') for a in articles)
           assert stats['coordinates'] == sum(a.get('x') is not None and a.get('y') is not None for a in articles)
           assert stats['geocoded_localities'] <= stats['localities']
           assert stats['events'] == len({a.get('event_id') for a in articles})
@@ -80,7 +80,11 @@ jobs:
               assert 0 <= float(p['x']) <= 1000, (key, p['x'])
               assert 0 <= float(p['y']) <= 703.53, (key, p['y'])
           for a in articles:
-              assert a['county'] in counties, a['county']
+              assert a.get('geo_level') in {'local', 'judetean', 'regional'}, a
+              if a.get('county'):
+                  assert a['county'] in counties, a['county']
+              else:
+                  assert a.get('geo_level') == 'regional' and a.get('region'), a
               if a.get('x') is not None or a.get('y') is not None:
                   assert a.get('x') is not None and a.get('y') is not None, a
                   assert 0 <= float(a['x']) <= 1000, a

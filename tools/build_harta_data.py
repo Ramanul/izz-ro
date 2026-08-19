@@ -15,6 +15,7 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 if ROOT not in sys.path:
     sys.path.insert(0, ROOT)
 
+from generator import geo
 from generator.util import title_tokens
 
 ARTICLES = os.path.join(ROOT, "data", "articles.json")
@@ -192,9 +193,37 @@ def locality_from_text(text: str, source_county: str | None, by_name: dict[str, 
 
 
 def locate(article: dict, county_keys: list[str], by_name: dict[str, list[dict]], points: dict[str, dict]) -> dict | None:
-    if article.get("category") not in {"local", "judetean"}:
+    category = article.get("category") or ""
+    if category not in {"local", "judetean", "regional"}:
         return None
     text = " ".join(str(article.get(k) or "") for k in ("title", "teaser", "synthesis"))
+    base = {
+        "category": category,
+        "geo_level": category,
+        "slug": article.get("slug", ""),
+        "title": article.get("title") or article.get("original_title") or "Fără titlu",
+        "teaser": article.get("teaser") or "",
+        "synthesis": article.get("synthesis") or "",
+        "published": article.get("published") or "",
+        "source": article.get("source") or "",
+        "source_name": article.get("source_name") or article.get("source") or "",
+    }
+    if category == "regional":
+        # O regiune ajunge pe hartă numai dacă este recunoscută de aceeași poartă
+        # deterministă care a clasificat articolul. Nu se deduce regiunea din sursă.
+        region = geo.regiune_din_text(text)
+        if not region:
+            return None
+        return {
+            **base,
+            "region": region,
+            "county": "",
+            "locality": "",
+            "siruta": "",
+            "x": None,
+            "y": None,
+            "confidence": "text",
+        }
     sc = source_county(str(article.get("source") or ""), county_keys)
     tc = explicit_county(text, county_keys)
     county = tc or sc
@@ -205,14 +234,8 @@ def locate(article: dict, county_keys: list[str], by_name: dict[str, list[dict]]
         return None
     point = point_for(locality, points)
     return {
-        "category": article.get("category", ""),
-        "slug": article.get("slug", ""),
-        "title": article.get("title") or article.get("original_title") or "Fără titlu",
-        "teaser": article.get("teaser") or "",
-        "synthesis": article.get("synthesis") or "",
-        "published": article.get("published") or "",
-        "source": article.get("source") or "",
-        "source_name": article.get("source_name") or article.get("source") or "",
+        **base,
+        "region": geo.ETICHETE_REGIUNI.get(geo.regiune_afisare(county), ""),
         "county": county,
         "locality": locality["name"] if locality else "",
         "siruta": siruta_key(locality["siruta"]) if locality else "",
@@ -240,7 +263,8 @@ def _event_tokens(title: str) -> set[str]:
 
 
 def _same_event(left: dict, right: dict, left_tokens: set[str], right_tokens: set[str]) -> bool:
-    if left["county"] != right["county"] or not left_tokens or not right_tokens:
+    if (left["county"] != right["county"] or left.get("region") != right.get("region")
+            or not left_tokens or not right_tokens):
         return False
     if left.get("locality") and right.get("locality") and left["locality"] != right["locality"]:
         return False
@@ -277,7 +301,7 @@ def annotate_events(items: list[dict]) -> list[dict]:
         first_day = min((str(member.get("published") or "")[:10] for member in members), default="")
         localities = ",".join(sorted({str(member.get("locality") or "") for member in members}))
         slugs = "|".join(sorted(str(member.get("slug") or member.get("title") or "") for member in members))
-        fingerprint = f"{cluster['leader'].get('county', '')}|{localities}|{first_day}|{slugs}"
+        fingerprint = f"{cluster['leader'].get('region', '')}|{cluster['leader'].get('county', '')}|{localities}|{first_day}|{slugs}"
         event_id = hashlib.sha1(fingerprint.encode("utf-8")).hexdigest()[:16]
         source_count = len({member.get("source") for member in members if member.get("source")})
         for member in members:
@@ -308,24 +332,32 @@ def main() -> int:
             located.append(item)
 
     located = annotate_events(located)
+    regions = {}
+    for county in counties:
+        key = geo.regiune_afisare(county)
+        label = geo.ETICHETE_REGIUNI.get(key, "")
+        if label:
+            regions.setdefault(label, []).append(county)
     named_localities = {(a["siruta"] or f"{norm(a['locality'])}|{a['county']}") for a in located if a.get("locality")}
     geocoded_articles = sum(a.get("x") is not None and a.get("y") is not None for a in located)
     latest_article_at = max((a.get("published") or "" for a in located), default="")
     event_count = len({a.get("event_id") for a in located if a.get("event_id")})
     payload = {
-        "version": 3,
+        "version": 4,
         "generated_at": datetime.now(timezone.utc).isoformat(),
         "latest_article_at": latest_article_at,
-        "map": {"viewbox": map_data.get("viewbox", ""), "judete": counties},
+        "map": {"viewbox": map_data.get("viewbox", ""), "judete": counties, "regiuni": regions},
         "articles": located,
         "stats": {
             "total": len(located),
             "events": event_count,
             "local": sum(a["category"] == "local" for a in located),
             "judetean": sum(a["category"] == "judetean" for a in located),
-            "counties": len({a["county"] for a in located}),
+            "regional": sum(a["category"] == "regional" for a in located),
+            "counties": len({a["county"] for a in located if a.get("county")}),
+            "regions": len({a["region"] for a in located if a.get("region")}),
             "localities": len(named_localities),
-            "county_only": sum(not a.get("locality") for a in located),
+            "county_only": sum(bool(a.get("county")) and not a.get("locality") for a in located),
             "coordinates": geocoded_articles,
             "geocoded_localities": len({a["siruta"] or f"{norm(a['locality'])}|{a['county']}" for a in located if a.get("locality") and a.get("x") is not None and a.get("y") is not None}),
             "sources": len({a.get("source") for a in located if a.get("source")}),
