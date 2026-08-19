@@ -63,10 +63,18 @@ jobs:
           stats = data['stats']
           assert len(counties) == 42, len(counties)
           assert articles, 'Nu există articole localizate.'
+          assert data.get('version', 0) >= 3
+          assert data.get('generated_at')
+          assert data.get('latest_article_at')
           assert stats['total'] == len(articles)
           assert stats['local'] + stats['judetean'] == len(articles)
           assert stats['counties'] == len({a['county'] for a in articles})
+          named_localities = {a.get('siruta') or f"{a.get('locality')}|{a.get('county')}" for a in articles if a.get('locality')}
+          assert stats['localities'] == len(named_localities)
+          assert stats['county_only'] == sum(not a.get('locality') for a in articles)
           assert stats['coordinates'] == sum(a.get('x') is not None and a.get('y') is not None for a in articles)
+          assert stats['geocoded_localities'] <= stats['localities']
+          assert stats['events'] == len({a.get('event_id') for a in articles})
           assert points['localities'], 'Nu există puncte de localități.'
           for key, p in points['localities'].items():
               assert 0 <= float(p['x']) <= 1000, (key, p['x'])
@@ -79,7 +87,7 @@ jobs:
                   assert 0 <= float(a['y']) <= 703.53, a
               if a.get('siruta'):
                   assert a.get('locality'), a
-          print(f"OK: {len(articles)} articole, {stats['localities']} localități cu SIRUTA, {stats['coordinates']} coordonate")
+          print(f"OK: {len(articles)} articole, {stats['events']} evenimente, {stats['localities']} localități confirmate, {stats['coordinates']} coordonate")
           PY
 
       - name: Publica dataseturile dacă s-au schimbat
@@ -137,7 +145,10 @@ jobs:
           d=json.loads(Path('/tmp/map.json').read_text(encoding='utf-8'))
           assert len(d['map']['judete']) == 42
           assert d.get('articles')
+          assert d.get('version', 0) >= 3
+          assert d.get('generated_at') and d.get('latest_article_at')
           assert d['stats']['total'] == len(d['articles'])
+          assert d['stats']['events'] == len({a.get('event_id') for a in d['articles']})
           assert d['stats']['coordinates'] <= d['stats']['total']
           for a in d['articles']:
               if a.get('x') is not None:
