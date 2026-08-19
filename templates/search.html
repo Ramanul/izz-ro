@@ -9,7 +9,13 @@
   <form id="search-form" role="search">
     <label class="visually-hidden" for="q">Termen de căutare</label>
     <input id="q" type="search" placeholder="ex.: buget, inundații, Wimbledon…" autocomplete="off" autofocus>
+    <label class="search-filter-label" for="search-category">Categorie</label>
+    <select id="search-category" class="search-filter">
+      <option value="">Toate categoriile</option>
+      {% for cat in categories %}<option value="{{ cat }}">{{ cat | cat_label }}</option>{% endfor %}
+    </select>
   </form>
+  <p class="search-scope">Rezultatele sunt căutate în titlurile știrilor recente și pot fi filtrate după categorie.</p>
   <p id="search-status" role="status" aria-live="polite"></p>
   <ul id="search-results" class="search-results"></ul>
 </article>

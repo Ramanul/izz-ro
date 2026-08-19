@@ -19,6 +19,7 @@
 </nav>
 <article class="article">
   <span class="badge{% if a.model == 'C' %} c{% endif %}">{{ a.category }}{% if a.anunt_fara_corp %} · Anunț oficial{% endif %}</span>
+  <p class="trust-label article-trust">{% if a.anunt_fara_corp %}Anunț oficial · verifică textul integral la instituția emitentă{% elif a.model == 'C' %}Sinteză multi-sursă · compară sursele de mai jos{% else %}Rezumat dintr-o sursă · verifică informația în articolul original{% endif %}</p>
   <h1>{{ a.title }}</h1>
   <div class="meta">
     <time datetime="{{ a.published }}">{{ a.published_human }}</time>
@@ -56,6 +57,8 @@
      de formulare (a noastra) — vezi REGULI-SINTEZA.md §4.4: o eticheta care sugereaza ca stirea
      insasi e fabricata ar fi neadevarata. Fara nume de sursa aici: provenienta ramane un singur
      element, `sources-box` de mai jos (aceeasi regula ca la nota de anunt oficial). -#}
+  <p class="verification-note"><strong>Notă pentru cititor:</strong> IZZ.ro te ajută să descoperi și să înțelegi rapid subiectul. Pentru decizii medicale, juridice sau financiare, consultă întotdeauna sursa originală și instituția competentă.</p>
+
   {% if a.ai_generat %}
   <p class="ai-note">Titlul și rezumatul de mai sus au fost redactate automat de un model de
     limbaj, pornind de la {{ 'articolele publicate de sursele' if a.model == 'C' else 'articolul publicat de sursa' }}
