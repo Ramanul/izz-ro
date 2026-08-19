@@ -257,6 +257,12 @@ picture { display: contents; }
 .official-note {
   font-size: var(--fs-xs); color: var(--ink-2); margin: var(--s-21) 0; line-height: 1.55;
 }
+.source-title {
+  margin: var(--s-13) 0 var(--s-21); color: var(--ink-2); font-size: var(--fs-xs); line-height: 1.55;
+  border-left: 2px solid var(--line-strong); padding-left: var(--s-13);
+}
+.source-title summary { cursor: pointer; color: var(--ink-2); font-family: var(--font-mono); font-size: var(--fs-eyebrow); font-weight: 700; text-transform: uppercase; letter-spacing: .7px; }
+.source-title p { margin: var(--s-8) 0 0; }
 /* pereche cu `.official-note`: si asta e metadata despre CUM e facut textul, nu text de articol.
    Bara din stanga o scoate din fluxul de lectura, ca sa nu fie confundata cu rezumatul. */
 .ai-note {

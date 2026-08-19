@@ -96,6 +96,37 @@ def _dedup_sources(a: dict) -> None:
         a["sources"] = out
 
 _BODY_PLACEHOLDERS = {"Detalii pe sursa.", "Detalii pe surse.", ""}
+_OFFICIAL_DISPLAY_TITLE_MAX = 110
+
+
+def titlu_afisare(a: dict) -> str:
+    """Întoarce titlul destinat citirii, fără a rescrie titlul sursei din date.
+
+    Anunțurile instituțiilor sunt adesea titluri juridice de sute de caractere. Pentru
+    recrutare, detaliul care ajută cititorul este postul și instituția; articolele,
+    actele normative și condițiile rămân la sursa originală. Alte titluri oficiale
+    excesive primesc doar o tăiere la limită de cuvânt, ca plasă de siguranță vizuală.
+    """
+    title = " ".join((a.get("title") or "").split())
+    if a.get("processed_by") != "official" or len(title) <= _OFFICIAL_DISPLAY_TITLE_MAX:
+        return title
+
+    source = " ".join((a.get("source_name") or "instituția emitentă").split())
+    if re.search(r"\bconcurs(?:ul)?\b", title, flags=re.I):
+        job = re.search(
+            r"post(?:\s+vacant)?(?:,\s*contractual\s+de\s+execuție)?"
+            r"(?:,\s*cu)?\s+normă\s+(?:întreagă|parțială)\s+de\s+(.+?)"
+            r"(?=\s+(?:la|în\s+cadrul)\b|,|$)",
+            title,
+            flags=re.I,
+        )
+        if job:
+            return f"Concurs pentru {job.group(1).strip()} la {source}"
+        return f"Concurs de recrutare la {source}"
+
+    cut = title[:_OFFICIAL_DISPLAY_TITLE_MAX + 1].rsplit(" ", 1)[0].rstrip(" ,;:–—-")
+    return f"{cut}…" if cut else title
+
 
 def anunt_oficial_fara_corp(a: dict) -> bool:
     """True daca articolul e un anunt oficial (pl_/cj_/pr_) care nu are corp de text.

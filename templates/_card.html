@@ -8,7 +8,7 @@
       `.card` e flex cu `gap`, deci un `<p>` gol ar lasa exact o gaura in card. -#}
   <span class="badge{% if a.model == 'C' %} c{% endif %}">{{ a.category | cat_label }}{% if a.anunt_fara_corp %} · Anunț oficial{% endif %}</span>
   <p class="trust-label" title="Cum este construită această informație">{% if a.anunt_fara_corp %}Anunț oficial · citește textul integral la sursă{% elif a.model == 'C' %}Sinteză multi-sursă{% else %}Rezumat dintr-o sursă{% endif %}</p>
-  <h2 class="card-title"><a href="{{ base }}/{{ a.category }}/{{ a.slug }}/">{{ a.title }}</a></h2>
+  <h2 class="card-title"><a href="{{ base }}/{{ a.category }}/{{ a.slug }}/">{{ a.display_title or a.title }}</a></h2>
   <div class="meta">
     <time datetime="{{ a.published }}">{{ a.published_human }}</time>
     {% if not a.anunt_fara_corp %}

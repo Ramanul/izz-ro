@@ -214,3 +214,46 @@ def test_placeholderul_ramane_interzis_in_config():
     from generator.select import _BODY_PLACEHOLDERS
     assert "Detalii pe sursa." in _BODY_PLACEHOLDERS
     assert config.MIN_SUBSTANTA_CUVINTE >= 1
+
+
+# --- 6. titluri administrative kilometrice -----------------------------------
+
+TITLU_CONCURS_LUNG = (
+    "Carieră 19.08.2026 – Primăria Municipiului Roman organizează concursul de recrutare "
+    "în vederea ocupării pe durată nedeterminată a unui post vacant, contractual de execuție, "
+    "cu normă întreagă de inspector de specialitate I la Compartimentul administrativ, "
+    "Serviciul administrativ din cadrul Direcției servicii edilitare și administrative, "
+    "în baza art. XXII, alin. (3), lit. a) din Legea nr. 141/2025"
+)
+
+
+def test_titlul_de_afisare_rezuma_un_concurs_administrativ_fara_sa_schimbe_sursa():
+    from generator.select import titlu_afisare
+
+    a = process_official([_item_oficial(
+        source_name="Primăria Roman", title=TITLU_CONCURS_LUNG,
+        original_title=TITLU_CONCURS_LUNG,
+    )])[0]
+
+    assert a["title"] == TITLU_CONCURS_LUNG, "titlul instituției rămâne intact în date"
+    assert titlu_afisare(a) == "Concurs pentru inspector de specialitate I la Primăria Roman"
+    assert len(titlu_afisare(a)) < 90
+
+
+def test_titlul_oficial_scurt_nu_este_rescris():
+    from generator.select import titlu_afisare
+
+    a = process_official([_item_oficial(title="Ședință de consiliu local", original_title="Ședință de consiliu local")])[0]
+    assert titlu_afisare(a) == "Ședință de consiliu local"
+
+
+def test_cardul_folosește_titlul_de_afisare():
+    from generator.select import titlu_afisare
+
+    a = _pregatit_pentru_randare(process_official([_item_oficial(
+        source_name="Primăria Roman", title=TITLU_CONCURS_LUNG,
+        original_title=TITLU_CONCURS_LUNG,
+    )])[0])
+    a["display_title"] = titlu_afisare(a)
+    html = _card_html(a)
+    assert ">Concurs pentru inspector de specialitate I la Primăria Roman<" in html

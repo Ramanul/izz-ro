@@ -21,7 +21,7 @@ from slugify import slugify
 
 from . import config, covers, geo, htmlart
 from .select import (_dedup, _dedup_sources, _diversify, _entity_index,
-                     _pick_hero, _quality_gate, anunt_oficial_fara_corp)
+                     _pick_hero, _quality_gate, anunt_oficial_fara_corp, titlu_afisare)
 # Re-export DELIBERAT, nu import mort: `tests/test_render_editorial.py` le cheama ca
 # `render._slug_stems` / `render.sources_coherent` (9 apeluri), iar `tools/qa_check.py:18`
 # importa `sources_coherent` din `generator.render`, nu din `generator.select` — si scriptul
@@ -566,6 +566,7 @@ def build(articles: list, mod: dict | None = None) -> None:
         # poarta literal "Detalii pe sursa.", deci un simplu `{% if a.teaser %}` in sablon
         # l-ar tipari. Marcajul `anunt_fara_corp` e ce citesc sabloanele.
         a["anunt_fara_corp"] = anunt_oficial_fara_corp(a)
+        a["display_title"] = titlu_afisare(a)
         if a["anunt_fara_corp"]:
             a["teaser"] = ""
         # Marcaj AI Act art. 50(4), obligatoriu de la 2026-08-02: textul publicat pentru

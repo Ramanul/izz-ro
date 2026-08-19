@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% block title %}{{ a.title }} — {{ site.name }}{% endblock %}
+{% block title %}{{ a.display_title or a.title }} — {{ site.name }}{% endblock %}
 {# meta/og description taiata la limita SERP (~158c, la cuvant); corpul ramane intreg #}
 {# anuntul oficial n-are corp: meta description ar iesi GOALA (regresie SEO masurabila), asa ca
    spune faptul verificabil — cine a publicat anuntul — fara sa rezume ce nu s-a citit #}
@@ -15,12 +15,12 @@
   <span class="sep">/</span>
   <a href="{{ base }}/{{ a.category }}/">{{ a.category }}</a>
   <span class="sep">/</span>
-  <span>{{ a.title }}</span>
+  <span>{{ a.display_title or a.title }}</span>
 </nav>
 <article class="article">
   <span class="badge{% if a.model == 'C' %} c{% endif %}">{{ a.category }}{% if a.anunt_fara_corp %} · Anunț oficial{% endif %}</span>
   <p class="trust-label article-trust">{% if a.anunt_fara_corp %}Anunț oficial · verifică textul integral la instituția emitentă{% elif a.model == 'C' %}Sinteză multi-sursă · compară sursele de mai jos{% else %}Rezumat dintr-o sursă · verifică informația în articolul original{% endif %}</p>
-  <h1>{{ a.title }}</h1>
+  <h1>{{ a.display_title or a.title }}</h1>
   <div class="meta">
     <time datetime="{{ a.published }}">{{ a.published_human }}</time>
     {% if not a.anunt_fara_corp %}
@@ -47,9 +47,15 @@
   {% if a.anunt_fara_corp %}
   {# fara <p class="body"> gol: nota spune de ce nu exista rezumat. Fara link aici — provenienta
      ramane un singur element, `sources-box` de mai jos (CLAUDE.md §7). #}
-  <p class="official-note">Anunț oficial. Publicăm titlul exact, așa cum l-a emis instituția, fără rezumat — textul integral este la sursă.</p>
+  <p class="official-note">Anunț oficial. Titlul a fost scurtat pentru orientare; textul integral și condițiile sunt la sursa instituției.</p>
   {% else %}
   <p class="body">{% if a.model == 'C' %}{{ a.synthesis }}{% else %}{{ a.teaser }}{% endif %}</p>
+  {% endif %}
+  {% if a.display_title and a.display_title != a.title %}
+  <details class="source-title">
+    <summary>Titlul integral al instituției</summary>
+    <p>{{ a.title }}</p>
+  </details>
   {% endif %}
 
   {#- Dezvaluirea completa ceruta de AI Act art. 50(4). Marcajul scurt din `meta` acopera prima
