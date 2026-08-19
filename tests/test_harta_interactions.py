@@ -66,3 +66,11 @@ def test_map_stats_use_confirmed_localities_and_freshness_metadata():
     assert '.filter((item) => item.locality)' in js
     assert "state.data?.latest_article_at" in js
     assert "localități confirmate" in js
+
+
+def test_map_has_bounded_loading_and_retry_state():
+    js = Path("static/harta-stiri/harta-stiri.js").read_text(encoding="utf-8")
+    assert "AbortController" in js
+    assert "controller.abort(), 12000" in js
+    assert "Încearcă din nou" in js
+    assert "Datele hărții nu sunt disponibile momentan" in js

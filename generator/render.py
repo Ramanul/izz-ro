@@ -1427,7 +1427,11 @@ def _write_redirects() -> None:
     `/zonal/<slug>/` ar da 404 permanent, iar orice link vechi distribuit (Google, retele
     sociale) s-ar rupe. Wildcard, nu o linie per articol: acopera si pagina de categorie
     (`/zonal/`, `/zonal/2/`) si orice viitor request catre calea veche, nu doar ce exista azi."""
-    _write(os.path.join(OUT_DIR, "_redirects"), "/zonal/* /judetean/:splat 301\n")
+    redirects = (
+        "/harta-stiri/ /static/harta-stiri/ 301\n"
+        "/zonal/* /judetean/:splat 301\n"
+    )
+    _write(os.path.join(OUT_DIR, "_redirects"), redirects)
 
 
 def _rfc2822(value: str, url: str = "") -> str:

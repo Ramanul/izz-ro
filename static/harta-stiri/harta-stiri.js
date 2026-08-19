@@ -769,9 +769,37 @@
     observer.observe(host);
   }
 
+  function showLoadError(error) {
+    console.error(error);
+    const host = $("#map");
+    if (host) {
+      host.replaceChildren();
+      const message = document.createElement("p");
+      message.className = "map-load-error";
+      message.textContent = "Harta nu a putut fi încărcată.";
+      const retry = document.createElement("button");
+      retry.type = "button";
+      retry.className = "secondary";
+      retry.textContent = "Încearcă din nou";
+      retry.addEventListener("click", () => window.location.reload());
+      host.append(message, retry);
+    }
+    const list = $("#news-list");
+    if (list) list.innerHTML = "<li class=\"loading\">Datele hărții nu sunt disponibile momentan. Încearcă din nou.</li>";
+    const stats = $("#map-stats");
+    if (stats) stats.textContent = "Datele hărții nu sunt disponibile momentan.";
+  }
+
   async function init() {
     bindControls();
-    const response = await fetch(DATA_URL, { cache: "no-store" });
+    const controller = new AbortController();
+    const timeout = window.setTimeout(() => controller.abort(), 12000);
+    let response;
+    try {
+      response = await fetch(DATA_URL, { cache: "no-store", signal: controller.signal });
+    } finally {
+      window.clearTimeout(timeout);
+    }
     if (!response.ok) throw new Error(`map.json HTTP ${response.status}`);
     const data = await response.json();
     state.data = data;
@@ -784,9 +812,5 @@
     bindResize();
   }
 
-  init().catch((error) => {
-    console.error(error);
-    const host = $("#map");
-    if (host) host.textContent = "Harta nu a putut fi încărcată.";
-  });
+  init().catch(showLoadError);
 })();
