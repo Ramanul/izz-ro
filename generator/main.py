@@ -254,7 +254,17 @@ def _claude_validate(stats: dict, processed_new: list) -> dict | None:
     manifest = {
         "stats": stats,
         "processed_sample": [
-            {"url": a.get("url"), "title": a.get("title"), "model": a.get("model")}
+            {
+                "url": a.get("url"),
+                "source": a.get("source"),
+                "source_name": a.get("source_name"),
+                "original_title": a.get("original_title"),
+                "title": a.get("title"),
+                "teaser": (a.get("teaser") or "")[:600],
+                "synthesis": (a.get("synthesis") or "")[:800],
+                "category": a.get("category"),
+                "model": a.get("model"),
+            }
             for a in processed_new[:12]
         ],
         "policy": {"read_only": True, "no_secrets": True, "publication_guard": True},
@@ -271,6 +281,12 @@ def _claude_validate(stats: dict, processed_new: list) -> dict | None:
     print(f">> Claude Code validator: {result.status}/{result.verdict}")
     if result.issues:
         print(f"   Probleme raportate: {len(result.issues)}")
+        for issue in result.issues:
+            print(f"      - {issue}")
+    if result.evidence:
+        print("   Dovezi:")
+        for evidence in result.evidence:
+            print(f"      - {evidence}")
     if mode == "required" and not result.accepted:
         raise RuntimeError(
             "Claude Code nu a aprobat batchul; publicarea a fost blocată: "

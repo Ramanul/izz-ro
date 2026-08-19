@@ -27,13 +27,32 @@ def test_claude_gate_is_off_by_default(monkeypatch):
     assert "claude_validation" not in stats
 
 
-def test_claude_gate_report_mode_records_but_does_not_block(monkeypatch):
+def test_claude_gate_report_mode_records_but_does_not_block(monkeypatch, capsys):
     monkeypatch.setenv("CLAUDE_CODE_VALIDATE", "report")
-    monkeypatch.setattr(main.ClaudeCodeValidator, "validate_batch", lambda self, manifest: _result("defer"))
+    seen = []
+
+    def fake_validate(self, manifest):
+        seen.append(manifest)
+        return _result("defer")
+
+    monkeypatch.setattr(main.ClaudeCodeValidator, "validate_batch", fake_validate)
     stats = {"new": 1}
-    verdict = main._claude_validate(stats, [{"url": "https://example.test/a", "title": "A", "model": "B"}])
+    verdict = main._claude_validate(stats, [{
+        "url": "https://example.test/a",
+        "source": "demo",
+        "source_name": "Demo",
+        "original_title": "Titlu original",
+        "title": "A",
+        "teaser": "Teaser verificabil",
+        "category": "local",
+        "model": "B",
+    }])
     assert verdict["verdict"] == "defer"
     assert stats["claude_validation"]["status"] == "success"
+    assert seen[0]["processed_sample"][0]["teaser"] == "Teaser verificabil"
+    output = capsys.readouterr().out
+    assert "candidate invalid" in output
+    assert "test evidence" in output
 
 
 def test_claude_gate_required_blocks_non_approval(monkeypatch):

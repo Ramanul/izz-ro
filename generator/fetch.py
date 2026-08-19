@@ -789,43 +789,59 @@ def fetch_all() -> tuple[list, list]:
             if idx % FETCH_PROGRESS_EVERY == 0 or idx == len(sources):
                 print(f"   fetch RSS: {idx}/{len(sources)} surse")
     else:
-        executor = ThreadPoolExecutor(max_workers=min(MAX_WORKERS, len(sources) or 1))
-        futures = {
-            executor.submit(_fetch_one_guarded, key, source, cache, pacer): (idx, key)
-            for idx, (key, source) in enumerate(sources)
-        }
         ordered = [None] * len(sources)
-        completed = 0
-        try:
-            batch_timeout = FETCH_BATCH_TIMEOUT_S
+        window_size = max(1, min(len(sources), MAX_WORKERS * 2))
+        finished = 0
+        for start in range(0, len(sources), window_size):
             remaining = remaining_deadline()
-            if remaining is not None:
-                batch_timeout = min(batch_timeout, remaining)
-            for future in as_completed(futures, timeout=batch_timeout):
-                idx, _key = futures[future]
-                ordered[idx] = future.result()
-                completed += 1
-                if completed % FETCH_PROGRESS_EVERY == 0 or completed == len(sources):
-                    print(f"   fetch RSS: {completed}/{len(sources)} surse")
-        except TimeoutError:
-            for future, (idx, key) in futures.items():
-                if ordered[idx] is None:
+            if remaining is not None and remaining <= 0:
+                for idx, (key, _source) in enumerate(sources[start:], start):
+                    ordered[idx] = timeout_result(key)
+                    finished += 1
+                break
+
+            window = sources[start:start + window_size]
+            executor = ThreadPoolExecutor(max_workers=min(MAX_WORKERS, len(window)))
+            futures = {
+                executor.submit(_fetch_one_guarded, key, source, cache, pacer): (idx, key)
+                for idx, (key, source) in enumerate(window, start)
+            }
+            try:
+                window_timeout = FETCH_BATCH_TIMEOUT_S
+                remaining = remaining_deadline()
+                if remaining is not None:
+                    window_timeout = min(window_timeout, remaining)
+                for future in as_completed(futures, timeout=window_timeout):
+                    idx, _key = futures[future]
+                    ordered[idx] = future.result()
+                    finished += 1
+                    if finished % FETCH_PROGRESS_EVERY == 0 or finished == len(sources):
+                        print(f"   fetch RSS: {finished}/{len(sources)} surse")
+            except TimeoutError:
+                for future, (idx, key) in futures.items():
+                    if ordered[idx] is None:
+                        future.cancel()
+                        remaining = remaining_deadline()
+                        if remaining is not None and remaining <= 0:
+                            ordered[idx] = timeout_result(key)
+                        else:
+                            ordered[idx] = (
+                                [], f"{key}: fetch batch timeout dupa {FETCH_BATCH_TIMEOUT_S:g}s"
+                            )
+                        finished += 1
+            except KeyboardInterrupt:
+                for future in futures:
                     future.cancel()
-                    remaining = remaining_deadline()
-                    if remaining is not None and remaining <= 0:
-                        ordered[idx] = timeout_result(key)
-                    else:
-                        ordered[idx] = ([], f"{key}: fetch batch timeout dupa {FETCH_BATCH_TIMEOUT_S:g}s")
-        except KeyboardInterrupt:
-            for future in futures:
-                future.cancel()
-            executor.shutdown(wait=False, cancel_futures=True)
-            raise
-        finally:
-            # Nu folosim context managerul: __exit__ ar astepta threadurile blocate,
-            # anuland tocmai protectia de timeout. Taskurile deja intrate in urllib
-            # se termina singure la TIMEOUT; rezultatul rularii ramane determinist.
-            executor.shutdown(wait=False, cancel_futures=True)
+                executor.shutdown(wait=False, cancel_futures=True)
+                raise
+            finally:
+                # Nu folosim context managerul: __exit__ ar astepta threadurile blocate,
+                # anuland tocmai protectia de timeout. Taskurile deja intrate in urllib
+                # se termina singure la TIMEOUT; rezultatul rularii ramane determinist.
+                executor.shutdown(wait=False, cancel_futures=True)
+
+            if finished % FETCH_PROGRESS_EVERY == 0 or finished == len(sources):
+                print(f"   fetch RSS: {finished}/{len(sources)} surse")
         results = [item for item in ordered if item is not None]
 
     for items, err in results:
