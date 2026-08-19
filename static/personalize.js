@@ -317,7 +317,7 @@
      porneste DOAR pe ad_Storage:'granted'. Il refuzam explicit, ca la GA4,
      deci c.clarity.ms NU e in CSP: daca flagul asta regreseaza vreodata,
      browserul blocheaza pixelul oricum. ---- */
-  const CLARITY_ID = 'y1to63p42e';
+  const CLARITY_ID = 'y4z4iwgx2n';
 
   function loadClarity() {
     if (!eProductie()) return;                          // local/preview: nu poluam
