@@ -111,10 +111,32 @@ def _dedup_visible(articles: list) -> list:
         reverse=True,
     )
     kept = []
+    # `_same_event` is intentionally conservative, but calling it against every previous
+    # article makes moderation O(n^2). In the Windows dry-run this became visible after
+    # 892 articles reached moderation. Every non-URL duplicate must share at least one
+    # six-character title stem, so use that as a lossless candidate index and keep the
+    # exact predicate below as the authority.
+    seen_urls = set()
+    by_stem: dict[str, list[dict]] = {}
     for article in ordered:
-        if any(_same_event(article, old) for old in kept):
+        norm_url = normalize_url(_article_url(article))
+        if norm_url and norm_url in seen_urls:
+            continue
+        candidates: list[dict] = []
+        candidate_ids = set()
+        for stem in _event_stems(article):
+            for old in by_stem.get(stem, ()):
+                marker = id(old)
+                if marker not in candidate_ids:
+                    candidate_ids.add(marker)
+                    candidates.append(old)
+        if any(_same_event(article, old) for old in candidates):
             continue
         kept.append(article)
+        if norm_url:
+            seen_urls.add(norm_url)
+        for stem in _event_stems(article):
+            by_stem.setdefault(stem, []).append(article)
     kept.sort(key=lambda a: a.get("published") or "", reverse=True)
     return kept
 
