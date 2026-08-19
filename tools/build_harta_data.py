@@ -15,7 +15,8 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 if ROOT not in sys.path:
     sys.path.insert(0, ROOT)
 
-from generator import geo
+from generator import geo, localities
+from generator.select import titlu_afisare
 from generator.util import title_tokens
 
 ARTICLES = os.path.join(ROOT, "data", "articles.json")
@@ -174,6 +175,28 @@ def source_county(source: str, county_keys: list[str]) -> str | None:
     return next((c for c in sorted(county_keys, key=len, reverse=True) if norm(c) in t), None)
 
 
+def _dedupe_locality_records(records: list[dict]) -> list[dict]:
+    """Unește duplicatele SIRUTA pentru aceeași localitate și același județ.
+
+    O reședință poate apărea atât ca NIV 2, cât și ca NIV 3. Nu sunt două locuri
+    ambigue pentru hartă; sunt aceeași localitate cu coduri administrative diferite.
+    Pentru punctul afișat preferăm NIV 2, apoi codul SIRUTA stabil, ca rezultatul să
+    rămână determinist.
+    """
+    deduped: dict[tuple[str, str], dict] = {}
+    for record in records:
+        key = (norm(record.get("name") or ""), norm(record.get("county") or ""))
+        current = deduped.get(key)
+        rank = (0 if record.get("level") == "2" else 1, str(record.get("siruta") or ""))
+        current_rank = (
+            0 if current and current.get("level") == "2" else 1,
+            str(current.get("siruta") or "") if current else "",
+        )
+        if current is None or rank < current_rank:
+            deduped[key] = record
+    return list(deduped.values())
+
+
 def locality_from_text(text: str, source_county: str | None, by_name: dict[str, list[dict]]) -> dict | None:
     padded = f" {norm(text)} "
     candidates = []
@@ -186,22 +209,42 @@ def locality_from_text(text: str, source_county: str | None, by_name: dict[str, 
         if not source_county and name in BARE_LOCALITY_BLOCKLIST:
             continue
         same = [r for r in records if not source_county or norm(r["county"]) == norm(source_county)]
+        same = _dedupe_locality_records(same)
         if len(same) == 1:
             candidates.append(same[0])
     candidates.sort(key=lambda r: len(r["name"]), reverse=True)
     return candidates[0] if candidates else None
 
 
+def locality_from_official_source(source: str, county: str | None,
+                                  by_name: dict[str, list[dict]]) -> dict | None:
+    """Întoarce localitatea codificată în slugul unei surse municipale.
+
+    Slugul `pl_*` este gestionat de pipeline și este mai sigur decât o localitate
+    menționată incidental în teaserul unui anunț oficial. Nu acceptăm o nepotrivire
+    între județul extras din slug și județul deja selectat.
+    """
+    parsed = localities.parse_source_slug(source or "")
+    if not parsed or not county:
+        return None
+    source_judet, source_locality = parsed
+    if norm(source_judet) != norm(county):
+        return None
+    return locality_from_text(source_locality, county, by_name)
+
+
 def locate(article: dict, county_keys: list[str], by_name: dict[str, list[dict]], points: dict[str, dict]) -> dict | None:
     category = article.get("category") or ""
     if category not in {"local", "judetean", "regional"}:
         return None
+    raw_title = article.get("title") or article.get("original_title") or "Fără titlu"
+    title = titlu_afisare(article) or raw_title
     text = " ".join(str(article.get(k) or "") for k in ("title", "teaser", "synthesis"))
     base = {
         "category": category,
         "geo_level": category,
         "slug": article.get("slug", ""),
-        "title": article.get("title") or article.get("original_title") or "Fără titlu",
+        "title": title,
         "teaser": article.get("teaser") or "",
         "synthesis": article.get("synthesis") or "",
         "published": article.get("published") or "",
@@ -224,10 +267,30 @@ def locate(article: dict, county_keys: list[str], by_name: dict[str, list[dict]]
             "y": None,
             "confidence": "text",
         }
-    sc = source_county(str(article.get("source") or ""), county_keys)
-    tc = explicit_county(text, county_keys)
-    county = tc or sc
-    locality = locality_from_text(text, county, by_name)
+    source = str(article.get("source") or "")
+    sc = source_county(source, county_keys)
+    # Titlul este semnalul editorial primar. Teaserul/sinteza pot menționa un loc
+    # contextual (de exemplu o echipă adversă), deci nu au voie să mute automat
+    # un anunț oficial în alt județ.
+    tc_title = explicit_county(raw_title, county_keys)
+    tc_context = None
+    is_official_source = source.startswith("pl_")
+
+    if is_official_source:
+        county = tc_title or sc
+        locality = locality_from_text(raw_title, county, by_name)
+        if not locality and not tc_title:
+            locality = locality_from_official_source(source, county, by_name)
+    else:
+        # Pentru presa nespecializată păstrăm fallback-ul pe context doar când titlul
+        # nu conține deja un județ explicit sau o localitate determinabilă.
+        county = tc_title or sc
+        locality = locality_from_text(raw_title, county, by_name)
+        if not locality:
+            tc_context = explicit_county(text, county_keys)
+            county = county or tc_context
+            locality = locality_from_text(text, county, by_name)
+
     if not county and locality:
         county = locality["county"]
     if not county:
@@ -241,7 +304,8 @@ def locate(article: dict, county_keys: list[str], by_name: dict[str, list[dict]]
         "siruta": siruta_key(locality["siruta"]) if locality else "",
         "x": point.get("x") if point else None,
         "y": point.get("y") if point else None,
-        "confidence": "text" if tc else "source" if sc else "siruta",
+        "confidence": "text" if (tc_title or tc_context) else "source" if sc else "siruta",
+
     }
 
 

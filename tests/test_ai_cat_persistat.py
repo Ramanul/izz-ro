@@ -153,3 +153,27 @@ def test_articolele_fara_camp_raman_valide(tmp_path, monkeypatch, vechi):
     state.save([dict(vechi, published="2026-08-01T00:00:00+00:00")])
     salvate = json.loads(p.read_text(encoding="utf-8"))
     assert salvate[0].get("ai_cat") is None
+
+
+def test_process_cluster_defers_semantically_unsupported_ai_title():
+    item = {
+        "source": "sursa-a",
+        "source_name": "Sursa A",
+        "category": "local",
+        "original_link": "https://exemplu.ro/a",
+        "url": "https://exemplu.ro/a",
+        "original_title": "Doi bărbați s-au dat drept polițiști antidrog",
+        "description": "Suspecții au pretins că sunt lucrători antidrog pentru a opri o autoutilitară.",
+        "published": "2026-08-19T09:00:00+00:00",
+    }
+    peer = dict(item, source="sursa-b", source_name="Sursa B", url="https://exemplu.ro/b",
+                original_link="https://exemplu.ro/b")
+    payload = {
+        "title": "Doi bărbați, arestați după ce au simțit polițiști antidrog",
+        "synthesis": "Suspecții au fost reținuți după ce au folosit o identitate falsă.",
+        "category": "local",
+        "entities": ["Timiș"],
+        "icon": "shield",
+    }
+
+    assert process.process_cluster([item, peer], _Provider(payload)) is None

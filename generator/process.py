@@ -121,25 +121,29 @@ def get_provider():
     return CascadeProvider(available)
 
 
-def _repair_synthesis_title(title: str, context: str) -> str:
-    """Repară o deformare semantică observată în titlurile sintetizate.
+_IDENTITY_CLAIM_MARKERS = (
+    "s-au dat drept", "s au dat drept", "au pretins ca sunt", "au pretins ca",
+    "pretindeau ca sunt", "falsificandu-si identitatea",
+)
 
-    Modelul confundă uneori „au pretins/s-au dat drept” cu „au simțit”. Regula este
-    intenționat îngustă: intervenim numai când contextul confirmă explicit identitatea
-    falsă și păstrăm restul titlului neschimbat.
+
+def _synthesis_title_is_supported(title: str, context: str) -> bool:
+    """Verifică o incompatibilitate semantică critică înainte de publicare.
+
+    Titlul AI nu se rescrie automat: când contextul descrie o identitate falsă, iar
+    modelul schimbă acțiunea în „au simțit”, candidatura este respinsă și clusterul
+    rămâne pentru o reîncercare. Astfel nu publicăm o formulare plauzibilă, dar falsă.
+
+    Garda este deliberat îngustă și deterministă. Nu pretinde să facă fact-checking
+    general; închide degradarea semantică confirmată fără să introducă o a doua
+    judecată AI în calea critică de publicare.
     """
-    if not isinstance(title, str):
-        return ""
+    if not isinstance(title, str) or not title.strip():
+        return False
     context_l = strip_diacritics(context or "").lower()
     title_l = strip_diacritics(title).lower()
-    identity_claim = any(marker in context_l for marker in (
-        "s-au dat drept", "s au dat drept", "au pretins ca sunt", "au pretins ca",
-        "pretindeau ca sunt", "falsificandu-si identitatea",
-    ))
-    if identity_claim and "au simtit politisti" in title_l:
-        return re.sub(r"au simțit polițiști", "s-au dat drept polițiști", title, flags=re.IGNORECASE)
-
-    return title.strip()
+    identity_claim = any(marker in context_l for marker in _IDENTITY_CLAIM_MARKERS)
+    return not (identity_claim and re.search(r"\bau\s+simtit\b", title_l))
 
 
 def _parse_json(text: str) -> dict:
@@ -549,10 +553,10 @@ def process_cluster(group: list, provider) -> dict | None:
             f"{a.get('description') or a.get('teaser') or a.get('synthesis') or ''}"
             for a in group
         )
-        rep["title"] = _repair_synthesis_title(
-            data.get("title") or rep.get("original_title") or rep.get("title") or "",
-            context,
-        )
+        candidate_title = data.get("title") or rep.get("original_title") or rep.get("title") or ""
+        if not _synthesis_title_is_supported(candidate_title, context):
+            return None
+        rep["title"] = candidate_title.strip()
         rep["synthesis"] = truncate_words(data.get("synthesis", "") or "Detalii pe surse.",
                                           config.SYNTHESIS_MAX_WORDS)
         rep["entities"] = _clean_entities(data.get("entities"))   # inaintea categoriei, vezi mai sus
@@ -657,7 +661,10 @@ def process_clusters_batch(groups: list, provider) -> list:
             f"{a.get('description') or a.get('teaser') or a.get('synthesis') or ''}"
             for a in preps[i][0]
         )
-        rep["title"] = _repair_synthesis_title(title, context)
+        if not _synthesis_title_is_supported(title, context):
+            out.append(None)
+            continue
+        rep["title"] = title
         rep["synthesis"] = truncate_words(synthesis, config.SYNTHESIS_MAX_WORDS)
         rep["entities"] = _clean_entities(obj.get("entities"))
         rep["ai_cat"] = obj.get("category", "")

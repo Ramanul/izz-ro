@@ -1,6 +1,6 @@
 from pathlib import Path
 
-from generator.process import _repair_synthesis_title
+from generator.process import _synthesis_title_is_supported
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -8,9 +8,7 @@ ROOT = Path(__file__).resolve().parents[1]
 def test_sinteza_nu_confunda_identitatea_falsa_cu_perceptia():
     title = "Doi bărbați arestați după ce au simțit polițiști antidrog"
     context = "Suspecții au pretins că sunt lucrători antidrog și s-au dat drept polițiști."
-    assert _repair_synthesis_title(title, context) == (
-        "Doi bărbați arestați după ce s-au dat drept polițiști antidrog"
-    )
+    assert _synthesis_title_is_supported(title, context) is False
 
 
 def test_mai_multe_sectiuni_are_destinatie_si_link():

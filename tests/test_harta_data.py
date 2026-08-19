@@ -91,3 +91,71 @@ def test_ambiguous_locality_requires_an_independent_county_confirmation():
     text = "Stocuri vechi de materiale nucleare au fost găsite în Siria"
     assert harta_data.locality_from_text(text, None, by_name) is None
     assert harta_data.locality_from_text(text, "TELEORMAN", by_name)["county"] == "TELEORMAN"
+
+
+def _map_article(**overrides) -> dict:
+    article = {
+        "category": "local",
+        "slug": "test-localizare",
+        "title": "Anunț local",
+        "teaser": "",
+        "synthesis": "",
+        "published": "2026-08-19T10:00:00+00:00",
+        "source": "sursa-test",
+        "source_name": "Sursa test",
+    }
+    article.update(overrides)
+    return article
+
+
+def test_locality_from_text_deduplicates_niv2_and_niv3_before_matching():
+    by_name = {
+        "OTELU": [{"name": "OTELU", "county": "ARGES", "siruta": "14441", "level": "3"}],
+        "OTELU ROSU": [
+            {"name": "OTELU ROSU", "county": "CARAS-SEVERIN", "siruta": "51216", "level": "3"},
+            {"name": "OTELU ROSU", "county": "CARAS-SEVERIN", "siruta": "51207", "level": "2"},
+        ],
+    }
+
+    located = harta_data.locality_from_text("Avarie la rețea în Oțelu Roșu", None, by_name)
+
+    assert located == {"name": "OTELU ROSU", "county": "CARAS-SEVERIN", "siruta": "51207", "level": "2"}
+
+
+def test_official_source_location_beats_contextual_county_in_teaser():
+    by_name = {
+        "PLOIESTI": [
+            {"name": "PLOIESTI", "county": "PRAHOVA", "siruta": "130534", "level": "2"},
+            {"name": "PLOIESTI", "county": "PRAHOVA", "siruta": "130543", "level": "3"},
+        ],
+    }
+    article = _map_article(
+        source="pl_prahova_municipiul_ploiesti",
+        source_name="Primăria Ploiești",
+        title="Restricții de circulație în zona Stadionului Ilie Oană",
+        teaser="Meciul dintre Petrolul Ploiești și Rapid București schimbă temporar circulația.",
+        processed_by="official",
+    )
+
+    located = harta_data.locate(article, ["PRAHOVA", "BUCURESTI"], by_name, {})
+
+    assert located["county"] == "PRAHOVA"
+    assert located["locality"] == "PLOIESTI"
+    assert located["confidence"] == "source"
+
+
+def test_map_uses_short_display_title_for_long_official_notice():
+    by_name = {
+        "TEST": [{"name": "TEST", "county": "PRAHOVA", "siruta": "1", "level": "2"}],
+    }
+    article = _map_article(
+        source="pl_prahova_municipiul_test",
+        source_name="Primăria Test",
+        processed_by="official",
+        title="Anunț " + "administrativ " * 20,
+    )
+
+    located = harta_data.locate(article, ["PRAHOVA"], by_name, {})
+
+    assert len(located["title"]) <= 110
+    assert located["title"] != article["title"]
