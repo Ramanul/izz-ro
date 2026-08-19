@@ -10,6 +10,7 @@ import json
 import os
 import shutil
 import subprocess
+from pathlib import Path
 from dataclasses import dataclass
 from typing import Any
 
@@ -42,6 +43,11 @@ class ClaudeCodeValidator:
         self.cwd = cwd
 
     def available(self) -> bool:
+        # ``shutil.which`` can fail for an explicitly supplied absolute Windows
+        # path even when the executable is present. Prefer an exact file check
+        # for paths, then fall back to PATH lookup for bare command names.
+        if Path(self.executable).is_file():
+            return True
         return shutil.which(self.executable) is not None
 
     def validate_batch(self, manifest: dict[str, Any]) -> ClaudeValidationResult:

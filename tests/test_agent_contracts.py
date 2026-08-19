@@ -25,6 +25,13 @@ def test_unknown_agent_fails_loudly():
         raise AssertionError("unknown agent must not be silently accepted")
 
 
+def test_claude_validator_accepts_existing_absolute_executable(tmp_path, monkeypatch):
+    executable = tmp_path / "claude.exe"
+    executable.write_text("stub", encoding="utf-8")
+    monkeypatch.setattr("generator.claude_orchestrator.shutil.which", lambda _: None)
+    assert ClaudeCodeValidator(executable=str(executable)).available() is True
+
+
 def test_claude_validator_degrades_safely_when_cli_is_missing(monkeypatch):
     validator = ClaudeCodeValidator(executable="definitely-not-installed-izz-claude")
     result = validator.validate_batch({"run_id": "test", "status": "success"})
