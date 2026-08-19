@@ -257,3 +257,69 @@ def test_cardul_folosește_titlul_de_afisare():
     a["display_title"] = titlu_afisare(a)
     html = _card_html(a)
     assert ">Concurs pentru inspector de specialitate I la Primăria Roman<" in html
+
+
+# --- 7. alte familii de anunțuri oficiale lungi ------------------------------
+
+
+def _official_title(title: str, source_name: str = "Primăria exemplu") -> dict:
+    return {"title": title, "processed_by": "official", "source_name": source_name}
+
+
+def test_titlul_de_promovare_lung_devine_orientat_pe_actiune_si_institutie():
+    from generator.select import titlu_afisare
+
+    title = (
+        "Carieră 17.08.2026 – Primăria Municipiului Roman organizează la sediul instituţiei "
+        "examenul de promovare în grad profesional imediat superior celui deținut a funcţiei "
+        "publice de execuţie de inspector, clasă I, grad profesional principal"
+    )
+    assert titlu_afisare(_official_title(title, "Primăria Roman")) == "Examen de promovare la Primăria Roman"
+
+
+def test_proiectul_de_hotarare_lung_isi_pastreaza_numarul_si_subiectul():
+    from generator.select import titlu_afisare
+
+    title = (
+        "Proiect de hotărâre nr. 161 din 12.08.2026 privind modificarea și completarea "
+        "Regulamentului pentru conferirea titlului de Cetățean de onoare al Municipiului Buzău, "
+        "aprobat prin Hotărârea Consiliului Local al Municipiului Buzău nr. 267 din 30.10.2008"
+    )
+    rendered = titlu_afisare(_official_title(title, "Primăria Buzău"))
+    assert rendered.startswith("Proiect de hotărâre nr. 161: modificarea și completarea")
+    assert len(rendered) <= 110
+
+
+def test_hotararea_lunga_isi_pastreaza_numarul_si_subiectul():
+    from generator.select import titlu_afisare
+
+    title = (
+        "HOTĂRÂREA Nr.210/2026 a Consiliului Local al Municipiului Sebeș privind alocarea din "
+        "bugetul local al Municipiului Sebeș a sumelor necesare pentru premierea cuplurilor care "
+        "împlinesc sau au împlinit 50 de ani de căsătorie în anul 2026."
+    )
+    rendered = titlu_afisare(_official_title(title, "Primăria Sebeș"))
+    assert rendered.startswith("Hotărârea nr. 210/2026: alocarea din bugetul local")
+    assert len(rendered) <= 110
+
+
+def test_achizitia_lunga_isi_pastreaza_obiectul_fara_capitalizare_agresiva():
+    from generator.select import titlu_afisare
+
+    title = (
+        "ANUNȚ INTENȚIE PRIVIND ÎNSCRIEREA ÎN CATALOGUL ELECTRONIC A OFERTELOR PENTRU ÎNCHEIEREA "
+        "UNUI CONTRACT DE PRESTĂRI SERVICII PENTRU: TRANSPORT ELEVI PRIN CURSE REGULATE PE TRASEUL "
+        "CHEȚ – MARGHITA, DUS – ÎNTORS."
+    )
+    rendered = titlu_afisare(_official_title(title, "Primăria Marghita"))
+    assert rendered.startswith("Achiziție: Transport elevi prin curse regulate")
+    assert len(rendered) <= 110
+
+
+def test_orice_anunt_oficial_lung_are_o_limita_de_siguranta():
+    from generator.select import titlu_afisare
+
+    title = "Anunț nr. 7505 privind " + "servicii administrative și tehnice " * 12
+    rendered = titlu_afisare(_official_title(title, "Primăria Șirna"))
+    assert len(rendered) <= 111
+    assert rendered.endswith("…")

@@ -99,19 +99,39 @@ _BODY_PLACEHOLDERS = {"Detalii pe sursa.", "Detalii pe surse.", ""}
 _OFFICIAL_DISPLAY_TITLE_MAX = 110
 
 
+def _titlu_scurt(text: str, limit: int = 84) -> str:
+    """Taie la cuvânt și normalizează titlurile scrise integral cu majuscule."""
+    text = " ".join(text.split()).strip(" ,;:–—-")
+    letters = [char for char in text if char.isalpha()]
+    if letters and sum(char.isupper() for char in letters) / len(letters) > .8:
+        text = text.lower().capitalize()
+    if len(text) <= limit:
+        return text
+    cut = text[:limit].rsplit(" ", 1)[0].rstrip(" ,;:–—-")
+    return f"{cut}…" if cut else text[:limit - 1].rstrip(" ,;:–—-") + "…"
+
+
+def _dupa_indicator(title: str, pattern: str) -> str:
+    match = re.search(pattern, title, flags=re.I)
+    return match.group(1).strip() if match else ""
+
+
 def titlu_afisare(a: dict) -> str:
     """Întoarce titlul destinat citirii, fără a rescrie titlul sursei din date.
 
     Anunțurile instituțiilor sunt adesea titluri juridice de sute de caractere. Pentru
-    recrutare, detaliul care ajută cititorul este postul și instituția; articolele,
-    actele normative și condițiile rămân la sursa originală. Alte titluri oficiale
-    excesive primesc doar o tăiere la limită de cuvânt, ca plasă de siguranță vizuală.
+    categoriile repetitive — recrutare, promovare, hotărâri, consultări și achiziții —
+    se extrage subiectul util pentru cititor. Titlul integral rămâne în date și este
+    disponibil ca detaliu secundar pe pagină. Orice alt titlu oficial foarte lung are
+    o limită de siguranță la cuvânt, ca să nu rupă ierarhia mobilă.
     """
     title = " ".join((a.get("title") or "").split())
     if a.get("processed_by") != "official" or len(title) <= _OFFICIAL_DISPLAY_TITLE_MAX:
         return title
 
     source = " ".join((a.get("source_name") or "instituția emitentă").split())
+    low = title.casefold()
+
     if re.search(r"\bconcurs(?:ul)?\b", title, flags=re.I):
         job = re.search(
             r"post(?:\s+vacant)?(?:,\s*contractual\s+de\s+execuție)?"
@@ -121,11 +141,29 @@ def titlu_afisare(a: dict) -> str:
             flags=re.I,
         )
         if job:
-            return f"Concurs pentru {job.group(1).strip()} la {source}"
+            return f"Concurs pentru {_titlu_scurt(job.group(1).strip(), 76)} la {source}"
         return f"Concurs de recrutare la {source}"
 
-    cut = title[:_OFFICIAL_DISPLAY_TITLE_MAX + 1].rsplit(" ", 1)[0].rstrip(" ,;:–—-")
-    return f"{cut}…" if cut else title
+    if "examenul de promovare" in low or "concursul de promovare" in low:
+        return f"Examen de promovare la {source}"
+
+    if "proiect de hotărâre" in low or "proiectului de act normativ" in low:
+        number = _dupa_indicator(title, r"proiect\s+de\s+hotărâre\s*(?:nr\.?\s*)?([\d]+(?:/[\d]+)?)")
+        subject = _dupa_indicator(title, r"\bprivind\s+(.+)") or _dupa_indicator(title, r"\bcu\s+scopul\s+(.+)")
+        label = f"Proiect de hotărâre nr. {number}" if number else "Proiect de hotărâre"
+        return f"{label}: {_titlu_scurt(subject, 76)}" if subject else f"{label} la {source}"
+
+    if re.search(r"\bhotărâr|\bhotarar|\bhcl\b", low):
+        number = _dupa_indicator(title, r"(?:hotărârea|hotararea|hotărâre|hotarare)\s*(?:nr\.?\s*)?([\d]+(?:/[\d]+)?)")
+        subject = _dupa_indicator(title, r"\bprivind\s+(.+)") or _dupa_indicator(title, r"\bpentru\s+(.+)")
+        label = f"Hotărârea nr. {number}" if number else "Hotărâre de consiliu"
+        return f"{label}: {_titlu_scurt(subject, 78)}" if subject else f"{label} la {source}"
+
+    if any(marker in low for marker in ("achizi", "catalogul electronic", "ofertelor", "seap", "sicap")):
+        subject = _dupa_indicator(title, r"\bpentru\s*:\s*(.+)") or _dupa_indicator(title, r"\bprivind\s+(.+)")
+        return f"Achiziție: {_titlu_scurt(subject, 78)}" if subject else f"Achiziție publică la {source}"
+
+    return _titlu_scurt(title, _OFFICIAL_DISPLAY_TITLE_MAX)
 
 
 def anunt_oficial_fara_corp(a: dict) -> bool:
