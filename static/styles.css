@@ -840,3 +840,14 @@ picture { display: contents; }
   .editorial-guide { grid-template-columns: 1fr; padding: var(--s-13); }
 }
 [data-theme="dark"] .editorial-guide, [data-theme="dark"] .verification-note { background: var(--paper-2); }
+
+/* Indexul tuturor rubricilor accesibil din „Mai multe secțiuni”. */
+.section-page-narrow { max-width: 960px; margin: 0 auto; padding: 3rem 1.25rem 5rem; }
+.section-page-narrow h1 { margin: .35rem 0 1rem; }
+.section-intro { max-width: 62ch; color: var(--ink-2); line-height: 1.6; }
+.section-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 1rem; margin-top: 2rem; }
+.section-tile { display: flex; flex-direction: column; gap: .55rem; padding: 1.25rem; border: 1px solid var(--line); color: inherit; text-decoration: none; transition: border-color .2s ease, transform .2s ease; }
+.section-tile:hover, .section-tile:focus-visible { border-color: var(--gold); transform: translateY(-2px); }
+.section-tile span { color: var(--ink-2); font-size: .85rem; }
+.subnav-more summary a { color: inherit; text-decoration: none; }
+.subnav-more summary a:hover, .subnav-more summary a:focus-visible { text-decoration: underline; }

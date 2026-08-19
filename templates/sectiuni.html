@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block title %}Mai multe secțiuni — {{ site.name }}{% endblock %}
+{% block description %}Toate rubricile IZZ.ro: sănătate, cultură, lifestyle, discounturi și informații locale.{% endblock %}
+{% block content %}
+<section class="section-page section-page-narrow">
+  <p class="eyebrow">Navigare</p>
+  <h1>Mai multe secțiuni</h1>
+  <p class="section-intro">Alege rubrica pe care vrei să o urmărești. Fiecare secțiune păstrează arhiva completă a articolelor din categoria respectivă.</p>
+  <div class="section-grid">
+    {% for cat in categories %}
+    <a class="section-tile" href="{{ base }}/{{ cat }}/">
+      <strong>{{ cat | cat_label }}</strong>
+      <span>Vezi articolele →</span>
+    </a>
+    {% endfor %}
+  </div>
+</section>
+{% endblock %}

@@ -76,7 +76,7 @@
     {% for cat in categories[:7] %}<a href="{{ base }}/{{ cat }}/" data-cat="{{ cat }}"{% if cat == active_cat %} class="active"{% endif %}>{{ cat | cat_label }}</a>{% endfor %}
     {% if categories | length > 7 %}
     <details class="subnav-more"{% if active_cat in categories[7:] %} open{% endif %}>
-      <summary>Mai multe secțiuni</summary>
+      <summary><a href="{{ base }}/sectiuni/">Mai multe secțiuni</a></summary>
       <div class="subnav-more-list">
         {% for cat in categories[7:] %}<a href="{{ base }}/{{ cat }}/" data-cat="{{ cat }}"{% if cat == active_cat %} class="active"{% endif %}>{{ cat | cat_label }}</a>{% endfor %}
       </div>

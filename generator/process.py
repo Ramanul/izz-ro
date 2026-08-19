@@ -40,7 +40,7 @@ Returneaza JSON:
   "category": "<una din: {cats}>",
   "entities": ["<1-4 nume proprii cheie din eveniment (persoane, organizatii, locuri), forma scurta canonica>"],
   "icon": "<pictograma care surprinde cel mai bine evenimentul, UN slug din: {icons}; null daca niciuna nu se potriveste>"}}
-Reguli: trianguleaza faptele comune; ZERO propozitii copiate; titlul contine faptul real, nu un teaser; zero opinii."""
+Reguli: trianguleaza faptele comune; ZERO propozitii copiate; titlul contine faptul real, nu un teaser; zero opinii. Verifica semantic fiecare verb: nu transforma „au pretins”, „s-au dat drept” sau „au oprit” într-un verb de percepție precum „au simțit”; dacă sursele spun că suspecții s-au dat drept polițiști, formulează explicit acest fapt."""
 
 
 SYSTEM_C_BATCH = ("Esti editor care sintetizeaza MAI MULTE evenimente, fiecare din mai multe surse, "
@@ -56,7 +56,7 @@ Pentru FIECARE eveniment, scrie titlu + sinteza care REDAU ESENTA, cu cuvintele 
 Returneaza EXCLUSIV un array JSON, cate UN obiect per eveniment, cu acelasi id primit:
 [{{"id": <id>, "title": "<esenta evenimentului: ce s-a intamplat, concret; 6-16 cuvinte; fara clickbait>", "synthesis": "<sinteza COMPRIMATA in 40-80 de cuvinte: faptele confirmate de mai multe surse (cine, ce, cand, unde, cat), reformulate 100%; marcheaza daca sursele se contrazic>", "category": "<{cats}>", "entities": ["<1-4 nume proprii cheie din eveniment>"], "icon": "<UN slug din lista de la final sau null>"}}]
 Pictograme permise: {icons}
-Reguli: pastreaza id-ul EXACT (numar); un obiect per id; trianguleaza faptele comune DOAR din sursele evenimentului cu acelasi id -- NU amesteca fapte intre evenimente diferite, chiar daca par legate; ZERO propozitii copiate; titlul contine faptul real, nu un teaser; zero opinii."""
+Reguli: pastreaza id-ul EXACT (numar); un obiect per id; trianguleaza faptele comune DOAR din sursele evenimentului cu acelasi id -- NU amesteca fapte intre evenimente diferite, chiar daca par legate; ZERO propozitii copiate; titlul contine faptul real, nu un teaser; zero opinii. Verifica semantic verbele: nu transforma „au pretins”, „s-au dat drept” sau „au oprit” în „au simțit”; când sursele descriu o identitate falsă, scrie explicit „s-au dat drept polițiști”."""
 
 
 SYSTEM_BATCH = ("Esti editor de stiri. Pentru FIECARE stire primita, titlul reda ESENTA faptului, "
@@ -119,6 +119,27 @@ def get_provider():
         return available[0]
     from .providers.cascade import CascadeProvider
     return CascadeProvider(available)
+
+
+def _repair_synthesis_title(title: str, context: str) -> str:
+    """Repară o deformare semantică observată în titlurile sintetizate.
+
+    Modelul confundă uneori „au pretins/s-au dat drept” cu „au simțit”. Regula este
+    intenționat îngustă: intervenim numai când contextul confirmă explicit identitatea
+    falsă și păstrăm restul titlului neschimbat.
+    """
+    if not isinstance(title, str):
+        return ""
+    context_l = strip_diacritics(context or "").lower()
+    title_l = strip_diacritics(title).lower()
+    identity_claim = any(marker in context_l for marker in (
+        "s-au dat drept", "s au dat drept", "au pretins ca sunt", "au pretins ca",
+        "pretindeau ca sunt", "falsificandu-si identitatea",
+    ))
+    if identity_claim and "au simtit politisti" in title_l:
+        return re.sub(r"au simțit polițiști", "s-au dat drept polițiști", title, flags=re.IGNORECASE)
+
+    return title.strip()
 
 
 def _parse_json(text: str) -> dict:
@@ -523,8 +544,15 @@ def process_cluster(group: list, provider) -> dict | None:
     try:
         raw = provider.complete(SYSTEM_C, USER_C.format(sources_block=block))
         data = _parse_json(raw)
-        rep["title"] = (data.get("title") or rep.get("original_title")
-                        or rep.get("title") or "").strip()
+        context = " ".join(
+            f"{a.get('original_title') or a.get('title') or ''} "
+            f"{a.get('description') or a.get('teaser') or a.get('synthesis') or ''}"
+            for a in group
+        )
+        rep["title"] = _repair_synthesis_title(
+            data.get("title") or rep.get("original_title") or rep.get("title") or "",
+            context,
+        )
         rep["synthesis"] = truncate_words(data.get("synthesis", "") or "Detalii pe surse.",
                                           config.SYNTHESIS_MAX_WORDS)
         rep["entities"] = _clean_entities(data.get("entities"))   # inaintea categoriei, vezi mai sus
@@ -624,7 +652,12 @@ def process_clusters_batch(groups: list, provider) -> list:
         if not (title and synthesis):
             out.append(None)                   # nemapat -> amanat, ca la esecul unui apel singur
             continue
-        rep["title"] = title
+        context = " ".join(
+            f"{a.get('original_title') or a.get('title') or ''} "
+            f"{a.get('description') or a.get('teaser') or a.get('synthesis') or ''}"
+            for a in preps[i][0]
+        )
+        rep["title"] = _repair_synthesis_title(title, context)
         rep["synthesis"] = truncate_words(synthesis, config.SYNTHESIS_MAX_WORDS)
         rep["entities"] = _clean_entities(obj.get("entities"))
         rep["ai_cat"] = obj.get("category", "")

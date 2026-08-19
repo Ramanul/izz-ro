@@ -827,6 +827,7 @@ def build(articles: list, mod: dict | None = None) -> None:
                        jsonld_page={"name": a.get("title", "")})))
 
     _render_legal(env)
+    _render_sections(env)
     _render_ghiduri(env, by_date)
     # Pagina 404 nu e o categorie goala, e capatul unui link mort — si cel mai frecvent motiv
     # NU e o adresa gresita, ci un articol EXPIRAT. `config.ARTICLE_TTL_DAYS = 7`, iar
@@ -934,6 +935,13 @@ def _render_md_dir(env: Environment, src_dir: str, url_prefix: str) -> None:
             if url_prefix.strip("/") else os.path.join(OUT_DIR, name, "index.html")
         _write(out, tpl.render(**_base_ctx(f"{url_prefix}/{name}/".replace("//", "/"),
                                            page_title=title, body_html=html, page_heading=title)))
+
+
+def _render_sections(env: Environment) -> None:
+    """Randează destinația explicită a linkului „Mai multe secțiuni”."""
+    tpl = env.get_template("sectiuni.html")
+    _write(os.path.join(OUT_DIR, "sectiuni", "index.html"),
+           tpl.render(**_base_ctx("/sectiuni/", nav_section="stiri")))
 
 
 def _render_ghiduri(env: Environment, articles: list) -> None:
@@ -1110,7 +1118,7 @@ def _render_legal(env: Environment) -> None:
 # Sectiunile editoriale care intra in sitemap. NU tot ce se randeaza: `subiect/` are ~300 de
 # pagini de agregare subtiri (decizie de proprietar daca merita indexate), `cauta/` e o unealta,
 # iar `static/`, `data/`, `leads/`, `portraits/` nu sunt pagini.
-_SITEMAP_SECTIONS = ("ghiduri", "instrumente", "calendar", "surse", "legal")
+_SITEMAP_SECTIONS = ("ghiduri", "instrumente", "calendar", "surse", "legal", "sectiuni")
 
 
 def _content_page_slugs() -> set:
