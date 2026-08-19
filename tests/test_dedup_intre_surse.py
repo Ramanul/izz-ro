@@ -19,7 +19,7 @@ from datetime import datetime, timedelta, timezone
 
 import pytest
 
-from generator import main, state
+from generator import main, moderation, state
 
 URL = "https://www.digi24.ro/stiri/externe/o-stire-oarecare-3896871"
 
@@ -86,6 +86,17 @@ def test_urluri_diferite_nu_sunt_atinse(ruleaza):
     ])
     assert stats["new"] == 2
     assert stats["exemplare_duplicate"] == 0
+
+
+def test_moderation_indexed_dedup_preserves_exact_event_rule():
+    a = _item("extern", "Digi24", "Guvernul aprobă bugetul apărării pentru 2027", URL + "-a")
+    b = _item("digi24", "Digi24", "Bugetul apărării pentru 2027 a fost aprobat de guvern", URL + "-b")
+    c = _item("extern", "Digi24", "Echipa națională începe pregătirea pentru turneu", URL + "-c")
+    out = moderation._dedup_visible([a, b, c])
+    urls = {item["url"] for item in out}
+    assert len(out) == 2
+    assert URL + "-c" in urls
+    assert urls & {URL + "-a", URL + "-b"}
 
 
 def test_duplicatul_fata_de_starea_existenta_ramane_prins(ruleaza):

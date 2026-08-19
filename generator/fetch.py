@@ -8,10 +8,11 @@ import time
 import urllib.error
 import urllib.request
 import defusedxml.ElementTree as ET
-from concurrent.futures import ThreadPoolExecutor
+from concurrent.futures import ThreadPoolExecutor, TimeoutError, as_completed
 from defusedxml.common import DefusedXmlException
 from datetime import datetime, timezone
 from html.parser import HTMLParser
+from urllib.parse import urljoin
 
 import feedparser
 
@@ -20,6 +21,37 @@ from .util import normalize_url, domain_of, clean_html, cuvinte_adaugate
 
 USER_AGENT = "IZZ.ro Bot/1.0 (+https://izz.ro)"
 TIMEOUT = 10  # secunde per feed
+SITEMAP_ARTICLE_TIMEOUT = float(os.environ.get("SITEMAP_ARTICLE_TIMEOUT", "6"))
+
+
+class _MetaDescriptionParser(HTMLParser):
+    """Extrage doar meta description dintr-o pagină editorială, fără scraping de navigație."""
+
+    def __init__(self):
+        super().__init__(convert_charrefs=True)
+        self.description = ""
+
+    def handle_starttag(self, tag, attrs):
+        if tag.lower() != "meta" or self.description:
+            return
+        fields = {str(key).lower(): str(value or "") for key, value in attrs}
+        name = fields.get("name", "").lower()
+        prop = fields.get("property", "").lower()
+        if name == "description" or prop == "og:description":
+            self.description = clean_html(fields.get("content", ""))
+
+
+def _fetch_meta_description(url: str) -> str:
+    """Fetch bounded metadata; failure means the item remains safely unprocessed."""
+    try:
+        request = urllib.request.Request(url, headers={"User-Agent": USER_AGENT})
+        with urllib.request.urlopen(request, timeout=SITEMAP_ARTICLE_TIMEOUT) as response:
+            raw = response.read(min(MAX_RESPONSE_BYTES, 512 * 1024))
+        parser = _MetaDescriptionParser()
+        parser.feed(raw.decode("utf-8", errors="replace"))
+        return parser.description
+    except (urllib.error.HTTPError, urllib.error.URLError, socket.timeout, ValueError, OSError):
+        return ""
 
 # Plafon de raspuns. `resp.read()` fara argument citeste CAT TRIMITE serverul: o sursa
 # compromisa poate servi gigaocteti si omoara runnerul de CI prin memorie, nu prin continut.
@@ -46,6 +78,14 @@ def _read_limitat(resp) -> bytes:
 # Fetch-ul e I/O-bound: threadurile asteapta reteaua, nu CPU-ul. 8 e conservator
 # fata de ~40+ surse; FETCH_WORKERS=1 revine la secvential.
 MAX_WORKERS = int(os.environ.get("FETCH_WORKERS", "8"))
+# Plafon pentru fereastra paralela. Daca unele hosturi nu inchid conexiunea, nu lasam
+# executorul sa astepte la nesfarsit toate threadurile. Taskurile neterminate devin surse
+# moarte pentru aceasta rulare si pot fi reverificate ulterior.
+FETCH_BATCH_TIMEOUT_S = float(os.environ.get("FETCH_BATCH_TIMEOUT_S", "90"))
+# Deadline pentru intreaga ingestie, nu doar pentru o fereastra paralela. Zero dezactiveaza
+# limita globala (util pentru depanare), dar valoarea implicita protejeaza rularea reala.
+FETCH_GLOBAL_DEADLINE_S = float(os.environ.get("FETCH_GLOBAL_DEADLINE_S", "300"))
+FETCH_PROGRESS_EVERY = max(1, int(os.environ.get("FETCH_PROGRESS_EVERY", "10")))
 
 # Retry pe refuzuri tranzitorii. Feedcheck-ul din 2026-07-24 (run 30093310671) a prins
 # 429 pe libertatea, unica si bzi de pe runnerii GitHub — iar build.yml ruleaza pe aceiasi
@@ -242,25 +282,24 @@ def _parse_sitemap_news(raw: bytes, key: str, source: dict) -> tuple[list, str |
         if not loc or not title:
             unusable += 1
             continue
-        if _is_agency(loc, source["name"]):
+        resolved_loc = urljoin(source.get("url", ""), loc)
+        if _is_agency(resolved_loc, source["name"]):
             continue
-        motiv = (guard.verdict(title) or guard.url_ostil(loc)
+        motiv = (guard.verdict(title) or guard.url_ostil(resolved_loc)
                  or guard.anomalie(title, source.get("lang", "ro")))
         if motiv:
             respinse += 1
             print(f"   !! garda ingestie (sitemap): sar [{key}] {title[:60]!r} — {motiv}")
             continue
         items.append({
-            "url": normalize_url(loc),
-            "original_link": loc,
+            "url": normalize_url(resolved_loc),
+            "original_link": resolved_loc,
             "source": key,
             "source_name": source["name"],
             "source_lang": source.get("lang", "ro"),
             "original_title": title,
             "title": title,
-            "description": "",          # sitemap-ul nu poarta descriere: itemul ramane fara
-                                        # substanta si e oprit inainte de AI (config.
-                                        # MIN_SUBSTANTA_CUVINTE). NU se genereaza din titlu.
+            "description": "",
             "category": source["category"],
             "published": _parse_w3c_date(date_raw),
             "model": None,
@@ -286,7 +325,11 @@ def _fetch_sitemap_news(key: str, source: dict) -> tuple[list, str | None]:
             raw = _read_limitat(resp)
     except (urllib.error.HTTPError, urllib.error.URLError, socket.timeout, ValueError) as exc:
         return [], f"{key}: {exc}"
-    return _parse_sitemap_news(raw, key, source)
+    items, error = _parse_sitemap_news(raw, key, source)
+    if source.get("enrich_sitemap") and not error:
+        for item in items:
+            item["description"] = _fetch_meta_description(item["original_link"])
+    return items, error
 
 
 # ---- Monitor Local: scraper generic config-driven pentru surse fara RSS ----
@@ -760,12 +803,81 @@ def fetch_all() -> tuple[list, list]:
     sources = list(config.SOURCES.items())
     pacer = _HostPacer(cache)
 
+    started = time.monotonic()
+
+    def remaining_deadline() -> float | None:
+        if FETCH_GLOBAL_DEADLINE_S <= 0:
+            return None
+        return max(0.0, FETCH_GLOBAL_DEADLINE_S - (time.monotonic() - started))
+
+    def timeout_result(key: str) -> tuple[list, str]:
+        return [], f"{key}: fetch global deadline dupa {FETCH_GLOBAL_DEADLINE_S:g}s"
+
     if MAX_WORKERS <= 1:
-        results = [_fetch_one_guarded(key, source, cache, pacer) for key, source in sources]
+        results = []
+        for idx, (key, source) in enumerate(sources, 1):
+            remaining = remaining_deadline()
+            if remaining is not None and remaining <= 0:
+                results.extend(timeout_result(k) for k, _ in sources[idx - 1:])
+                break
+            results.append(_fetch_one_guarded(key, source, cache, pacer))
+            if idx % FETCH_PROGRESS_EVERY == 0 or idx == len(sources):
+                print(f"   fetch RSS: {idx}/{len(sources)} surse")
     else:
-        with ThreadPoolExecutor(max_workers=min(MAX_WORKERS, len(sources) or 1)) as pool:
-            results = list(pool.map(
-                lambda kv: _fetch_one_guarded(kv[0], kv[1], cache, pacer), sources))
+        ordered = [None] * len(sources)
+        window_size = max(1, min(len(sources), MAX_WORKERS * 2))
+        finished = 0
+        for start in range(0, len(sources), window_size):
+            remaining = remaining_deadline()
+            if remaining is not None and remaining <= 0:
+                for idx, (key, _source) in enumerate(sources[start:], start):
+                    ordered[idx] = timeout_result(key)
+                    finished += 1
+                break
+
+            window = sources[start:start + window_size]
+            executor = ThreadPoolExecutor(max_workers=min(MAX_WORKERS, len(window)))
+            futures = {
+                executor.submit(_fetch_one_guarded, key, source, cache, pacer): (idx, key)
+                for idx, (key, source) in enumerate(window, start)
+            }
+            try:
+                window_timeout = FETCH_BATCH_TIMEOUT_S
+                remaining = remaining_deadline()
+                if remaining is not None:
+                    window_timeout = min(window_timeout, remaining)
+                for future in as_completed(futures, timeout=window_timeout):
+                    idx, _key = futures[future]
+                    ordered[idx] = future.result()
+                    finished += 1
+                    if finished % FETCH_PROGRESS_EVERY == 0 or finished == len(sources):
+                        print(f"   fetch RSS: {finished}/{len(sources)} surse")
+            except TimeoutError:
+                for future, (idx, key) in futures.items():
+                    if ordered[idx] is None:
+                        future.cancel()
+                        remaining = remaining_deadline()
+                        if remaining is not None and remaining <= 0:
+                            ordered[idx] = timeout_result(key)
+                        else:
+                            ordered[idx] = (
+                                [], f"{key}: fetch batch timeout dupa {FETCH_BATCH_TIMEOUT_S:g}s"
+                            )
+                        finished += 1
+            except KeyboardInterrupt:
+                for future in futures:
+                    future.cancel()
+                executor.shutdown(wait=False, cancel_futures=True)
+                raise
+            finally:
+                # Nu folosim context managerul: __exit__ ar astepta threadurile blocate,
+                # anuland tocmai protectia de timeout. Taskurile deja intrate in urllib
+                # se termina singure la TIMEOUT; rezultatul rularii ramane determinist.
+                executor.shutdown(wait=False, cancel_futures=True)
+
+            if finished % FETCH_PROGRESS_EVERY == 0 or finished == len(sources):
+                print(f"   fetch RSS: {finished}/{len(sources)} surse")
+        results = [item for item in ordered if item is not None]
 
     for items, err in results:
         if err:

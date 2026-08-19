@@ -60,3 +60,16 @@ Adaugă secret `ANTHROPIC_API_KEY` în GitHub și pune `AI_PROVIDER: anthropic` 
 
 ### Comutare pe Claude API
 Adaugă secret `ANTHROPIC_API_KEY` și pune `AI_PROVIDER: anthropic` în `build.yml`. Restul rămâne identic.
+
+## Router multi-provider (opțional)
+
+Fluxul implicit rămâne `Gemini -> Ollama local fallback`, compatibil cu configurația existentă. Routerul multi-provider se activează numai explicit, cu `AI_ROUTER_MODE=multi`, și folosește ordinea din `AI_FALLBACK_PROVIDERS`. Sunt suportate endpointuri OpenAI-compatible pentru `groq`, `cerebras`, `mistral`, `openrouter`, `perplexity` și `upstage`; fiecare provider este ignorat automat dacă nu are cheia proprie în mediu. Cheile nu se comit și nu sunt incluse în configurația GitHub.
+
+Exemplu local de activare, după validarea fluxului legacy:
+
+```shell
+AI_ROUTER_MODE=multi
+AI_FALLBACK_PROVIDERS=groq,cerebras,mistral,openrouter
+```
+
+Routerul este o cascadă: încearcă providerul principal configurat, apoi providerii compatibili configurați în ordinea declarată, apoi fallback-ul Ollama dacă este activ. Un provider configurat dar fără cheie nu este apelat. Pentru CI, adăugarea de provideri se face ulterior, prin secrete separate și un test controlat; nu se schimbă implicit `AI_PROVIDER=gemini`.

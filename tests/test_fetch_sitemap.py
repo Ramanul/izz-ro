@@ -5,7 +5,7 @@ Regresie (iulie 2026): sursa raspundea 200 cu <url>-uri valide, dar toate intrar
 erau sarite in tacere -> 0 articole SI 0 erori, deci nu aparea nici in lista surselor
 moarte. Un esec tacut e mai rau decat unul zgomotos: degradeaza nevazut."""
 from generator import config
-from generator.fetch import _parse_sitemap_news
+from generator.fetch import _MetaDescriptionParser, _fetch_sitemap_news, _parse_sitemap_news
 
 SRC = {"name": "Piata Auto MD", "category": "auto"}
 
@@ -22,6 +22,74 @@ def _entry(loc: str, title: str | None = "Titlu", date: str = "2026-07-24") -> s
 
 def _doc(entries: str) -> bytes:
     return f'<?xml version="1.0"?><urlset {NS}>{entries}</urlset>'.encode()
+
+
+def test_meta_description_parser_prefers_description_meta():
+    parser = _MetaDescriptionParser()
+    parser.feed(
+        '<meta property="og:description" content="OG descriere">'
+        '<meta name="description" content="Descriere principală">'
+    )
+    assert parser.description == "OG descriere"
+
+
+def test_meta_description_parser_accepts_name_description():
+    parser = _MetaDescriptionParser()
+    parser.feed('<meta name="description" content="Conținut editorial suficient">')
+    assert parser.description == "Conținut editorial suficient"
+
+
+def test_meta_description_parser_falls_back_empty():
+    parser = _MetaDescriptionParser()
+    parser.feed('<title>Doar titlu</title>')
+    assert parser.description == ""
+
+
+def test_sitemap_enrichment_is_opt_in(monkeypatch):
+    import generator.fetch as fetch
+
+    raw = _doc(_entry("https://piataauto.md/a", "Dacia lansează un model nou"))
+    source = {**SRC, "url": "https://piataauto.md/sitemap-news.xml", "enrich_sitemap": True}
+
+    class Response:
+        def __enter__(self):
+            return self
+        def __exit__(self, *args):
+            return False
+        def read(self, *args):
+            return raw
+
+    calls = []
+    monkeypatch.setattr(fetch.urllib.request, "urlopen", lambda *args, **kwargs: Response())
+    monkeypatch.setattr(fetch, "_fetch_meta_description", lambda url: calls.append(url) or "Descriere editorială")
+    items, err = _fetch_sitemap_news("piataauto", source)
+    assert err is None
+    assert items[0]["description"] == "Descriere editorială"
+    assert calls == ["https://piataauto.md/a"]
+
+
+def test_sitemap_resolves_relative_links_before_guards():
+    source = {**SRC, "url": "https://piataauto.md/sitemap-news.xml"}
+    raw = _doc(_entry("/auto/stire-noua", "Dacia lansează un model nou"))
+    items, err = _parse_sitemap_news(raw, "piataauto", source)
+    assert err is None
+    assert items[0]["original_link"] == "https://piataauto.md/auto/stire-noua"
+    assert items[0]["url"] == "https://piataauto.md/auto/stire-noua"
+
+
+def test_sitemap_enrichment_remains_disabled_by_default(monkeypatch):
+    import generator.fetch as fetch
+
+    raw = _doc(_entry("https://piataauto.md/a", "Dacia lansează un model nou"))
+    source = {**SRC, "url": "https://piataauto.md/sitemap-news.xml"}
+    class Response:
+        def __enter__(self): return self
+        def __exit__(self, *args): return False
+        def read(self, *args): return raw
+    monkeypatch.setattr(fetch.urllib.request, "urlopen", lambda *args, **kwargs: Response())
+    monkeypatch.setattr(fetch, "_fetch_meta_description", lambda url: (_ for _ in ()).throw(AssertionError("nu trebuie apelat")))
+    items, err = _fetch_sitemap_news("other", source)
+    assert err is None and items[0]["description"] == ""
 
 
 def test_parses_valid_entries():
