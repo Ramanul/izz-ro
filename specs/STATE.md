@@ -12,7 +12,23 @@
 > wave (all 14 domains are in `config.SOURCES`). Everything below was **verified against the code
 > today**, not copied forward.
 
-**Updated:** 2026-08-17 (background session, §14b — one task, draft PR, no merge)
+**Updated:** 2026-08-20 (map: UAT alignment + hover tooltip + live list, PR #196)
+
+## Open PR — 2026-08-20 · harta știrilor, cele trei probleme raportate de proprietar
+
+**PR #196, `fix/harta-uat-aliniere-hover-lista`.** (1) UAT-urile nu stăteau în conturul județului —
+cauza NU e proiecția: bbox-ul total al celor două straturi coincide (raport lățime 0.99950,
+înălțime 1.00028, offset 0.00px, măsurat pe datele comise). Diferă **granițele interne**, fiindcă
+Natural Earth la 1:10m le generalizează: abatere 3-10px, mediană 6.15px pe 42 de județe; la TIMIS
+latura de vest (granița țării) coincide la 0.00px exact, iar cele interne sar cu 9.7px. Reparat
+derivând conturul județului deschis din silueta UAT-urilor lui — se potrivesc prin construcție.
+Union geometric refuzat deliberat: ar cere `shapely` și oricum ar da contur zdrențuit (doar 45.9%
+muchii partajate pe SIBIU, UAT-urile fiind simplificate independent la toleranță 0.28).
+(2) Tooltip cu numele UAT pe Pointer Events (mouse + touch), refolosind hit-testul de click.
+(3) Lista de jos sincronizată bidirecțional cu harta, prin comutare de clasă, nu rebuild DOM.
+Verificat local: `ruff` curat, 31 teste de hartă, condus în browser real (9 UAT-uri la hover,
+acord gramatical reparat, `aria-current` corect). **Necaptură vizuală** — panoul de browser nu
+compozita; afirmația geometrică stă pe măsurători. Se confirmă pe preview-ul Cloudflare al PR-ului.
 
 ## Open PR pending owner merge — 2026-08-17 (background session, §14b)
 
