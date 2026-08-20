@@ -26,6 +26,9 @@
     uatLoading: false,
     uatRequestId: 0,
     uatCache: new Map(),
+    // Silueta judetului derivata din UAT-urile lui. Vezi buildCountyOutline().
+    uatOutlineCache: new Map(),
+    hoverUat: null,
   };
 
   const REGION_FILLS = {
@@ -158,6 +161,9 @@
     state.uats = [];
     const requestId = state.uatRequestId + 1;
     state.uatRequestId = requestId;
+    // Fara asta, un UAT ramas evidentiat din judetul anterior ar tine aprins un rand din
+    // lista noua care nu are nicio legatura cu el.
+    state.hoverUat = null;
     const cached = state.uatCache.get(county);
     if (cached) {
       state.uatLoading = false;
@@ -177,6 +183,7 @@
         items: [],
         })) : [];
         state.uatCache.set(county, uats);
+        state.uatOutlineCache.set(county, buildCountyOutline(uats, county));
         state.uats = uats;
       })
       .catch(() => {
@@ -293,16 +300,54 @@
     close.focus();
   }
 
+  // Conturul de judet vine din Natural Earth (`tools/build_harta.py`), UAT-urile din exportul
+  // oficial geo-spatial.org (`tools/build_harta_uat.py`). Proiectia e IDENTICA -- masurat pe
+  // datele comise, bbox-ul total al celor doua straturi coincide (raport latime 0.99950,
+  // inaltime 1.00028, offset 0.00px), deci NU e o problema de scara sau de viewBox.
+  // Ce difera sunt GRANITELE INTERNE: Natural Earth la 1:10m generalizeaza limitele
+  // administrative dintre judete, iar abaterea masurata e 3-10px (mediana 6.15px pe 42 de
+  // judete). Dovada ca sursa e generalizarea, nu proiectia: la TIMIS latura de vest --
+  // care e granita TARII, unde ambele surse sunt precise -- coincide la 0.00px exact, in
+  // timp ce laturile interne sar cu pana la 9.7px.
+  // De aceea, cand un judet e deschis si UAT-urile lui sunt vizibile, conturul se ia din
+  // silueta UAT-urilor: atunci cele doua straturi se potrivesc PRIN CONSTRUCTIE, nu prin
+  // ajustare, si conturul devine in plus mai precis (sursa oficiala in loc de generalizare).
+  // Un `union` geometric adevarat nu e posibil aici fara o dependinta noua: UAT-urile sunt
+  // simplificate fiecare separat (toleranta 0.28), deci muchiile vecinilor nu mai coincid --
+  // masurat pe SIBIU, doar 45.9% din segmente sunt partajate, restul ar da un contur zdrentuit.
+  // Nici nu e nevoie: subcaile concatenate desenate cu "evenodd" dau exact aria judetului, iar
+  // liniile interne pe care le-ar adauga `stroke` sunt exact granitele UAT desenate oricum
+  // deasupra, deci nu apare nimic in plus pe ecran.
+  function buildCountyOutline(uats, county) {
+    const d = uats.map((unit) => unit.path || "").filter(Boolean).join(" ");
+    if (!d) return null;
+    try {
+      return { d, path2d: new Path2D(d) };
+    } catch (err) {
+      // Cadem inapoi pe conturul Natural Earth, ceea ce e corect ca imagine, dar atunci
+      // nealinierea reapare. Fara linia asta esecul ar fi vizibil si cauza invizibila.
+      console.warn(`[harta] silueta UAT nereconstruita pentru ${county}:`, err);
+      return null;
+    }
+  }
+
+  function countyOutline(county) {
+    return county ? state.uatOutlineCache.get(county) || null : null;
+  }
+
   function drawUats(ctx, palette, canvas, view) {
     if (!state.zoomCounty || !state.uats.length) return;
     countUatNews(ctx, canvas, view);
     for (const uat of state.uats) {
-      ctx.globalAlpha = uat.count ? 0.24 : 0.08;
-      ctx.fillStyle = uat.count ? palette.accentSoft : palette.fill;
+      // UAT-ul de sub cursor/deget se ingroasa si se umple mai tare: fara asta, tooltipul
+      // spune un nume dar nu se vede CARE forma de pe harta il poarta.
+      const hovered = uat === state.hoverUat;
+      ctx.globalAlpha = hovered ? 0.42 : uat.count ? 0.24 : 0.08;
+      ctx.fillStyle = uat.count || hovered ? palette.accentSoft : palette.fill;
       ctx.fill(uat.path2d, "evenodd");
       ctx.globalAlpha = 1;
-      ctx.strokeStyle = uat.count ? palette.locality : palette.stroke;
-      ctx.lineWidth = uat.count ? 1.25 : 0.65;
+      ctx.strokeStyle = hovered ? palette.hot : uat.count ? palette.locality : palette.stroke;
+      ctx.lineWidth = hovered ? 2 : uat.count ? 1.25 : 0.65;
       ctx.stroke(uat.path2d);
     }
     for (const uat of state.uats) {
@@ -389,13 +434,34 @@
     // derulari tactile ajunge la `click` si ar selecta un judet la intamplare -- adica am
     // repara desktopul stricand telefonul. Pragul de 10px e ordinea de marime a `touch slop`-ului.
     let downAt = null;
-    canvas.addEventListener("pointerdown", (e) => { downAt = { x: e.clientX, y: e.clientY }; });
+    canvas.addEventListener("pointerdown", (e) => {
+      downAt = { x: e.clientX, y: e.clientY };
+      // Pe touch nu exista hover inainte de atingere: prima atingere trebuie sa spuna ea
+      // numele, altfel pe telefon tooltipul n-ar aparea niciodata la un tap simplu.
+      if (e.pointerType !== "mouse") onCanvasHover(e);
+    });
     canvas.addEventListener("pointercancel", () => { downAt = null; });
     canvas.addEventListener("click", (event) => {
       const moved = downAt && Math.hypot(event.clientX - downAt.x, event.clientY - downAt.y) > 10;
       downAt = null;
       if (!moved) onCanvasClick(event);
     });
+    // Tooltipul cu numele UAT-ului. `role=status` + `aria-live` il face sa fie citit si de
+    // cititoarele de ecran, care altfel n-ar avea de unde sti peste ce unitate esti.
+    const tip = document.createElement("div");
+    tip.className = "map-tip";
+    tip.hidden = true;
+    tip.setAttribute("role", "status");
+    tip.setAttribute("aria-live", "polite");
+    host.appendChild(tip);
+    state.tip = tip;
+
+    // Mouse pe desktop si deget pe Android trec amandoua prin Pointer Events, deci un singur
+    // set de handlere acopera ambele cazuri. Pe touch, `pointerdown` da raspunsul la prima
+    // atingere, iar `pointermove` il tine actualizat cat timp degetul aluneca pe harta.
+    canvas.addEventListener("pointermove", onCanvasHover);
+    canvas.addEventListener("pointerleave", clearCanvasHover);
+    canvas.addEventListener("pointercancel", clearCanvasHover);
     state.canvas = canvas;
 
     // Butonul "Arata toate judetele" din bara de deasupra hartii iese din ecran pe mobil
@@ -466,8 +532,16 @@
     for (const [county, pathData] of Object.entries(state.counties)) {
       const region = regionForCounty(county);
       const count = counts.get(state.level === "regional" ? region : county) || 0;
+      // Judetul deschis se deseneaza din silueta UAT-urilor lui, ca sa se potriveasca exact
+      // cu ele (vezi buildCountyOutline). Restul judetelor raman pe conturul Natural Earth:
+      // acolo nu se vede niciun UAT, deci nu exista cu ce sa nu se potriveasca.
+      const outline = county === state.zoomCounty ? countyOutline(county) : null;
       let path;
-      try { path = new Path2D(pathData); } catch { continue; }
+      if (outline) {
+        path = outline.path2d;
+      } else {
+        try { path = new Path2D(pathData); } catch { continue; }
+      }
       const hasNews = count > 0;
       // `matchesSearch` a fost STERS, nu reparat. Era o constanta recalculata de 42 de ori
       // (nu continea `county`), deci o cautare potrivita doar pe titlu stingea toata harta.
@@ -487,12 +561,14 @@
       // regiunilor editoriale; în celelalte moduri se păstrează harta neutră actuală.
       ctx.fillStyle = selected ? palette.accentSoft
         : state.level === "regional" ? regionFill(region, palette.fill) : palette.fill;
-      ctx.fill(path);
+      // Silueta e o reuniune de subcai (cate una per UAT), deci cere "evenodd" ca sa nu se
+      // umple gaurile dintre ele; conturul simplu de judet se umple la fel de bine asa.
+      ctx.fill(path, "evenodd");
       ctx.globalAlpha = 1;
       ctx.strokeStyle = palette.stroke;
       ctx.lineWidth = 1.2;
       ctx.stroke(path);
-      paths.push({ county, region, path, count, bounds: pathBounds(pathData) });
+      paths.push({ county, region, path, count, bounds: pathBounds(outline ? outline.d : pathData) });
     }
 
     if (state.level === "regional") {
@@ -761,6 +837,23 @@
     applyState({ region, county: null, locality: null });
   }
 
+  // Comuta doar clasa pe butoanele deja existente. Reconstruirea intregii liste la fiecare
+  // miscare de mouse ar reface zeci de noduri DOM de ~60 de ori pe secunda si ar fura si
+  // focusul de sub tastatura.
+  function syncUatHighlight() {
+    const picker = $("#county-picker");
+    if (!picker) return;
+    const hovered = state.hoverUat;
+    const key = hovered ? String(hovered.id || hovered.name) : null;
+    for (const button of picker.querySelectorAll("button[data-uat]")) {
+      const on = key !== null && button.dataset.uat === key;
+      button.classList.toggle("is-hovered", on);
+      button.setAttribute("aria-current", on ? "true" : "false");
+      // `nearest` nu face nimic daca randul e deja vizibil, deci lista nu sare degeaba.
+      if (on) button.scrollIntoView({ block: "nearest", inline: "nearest" });
+    }
+  }
+
   function updateCountyPicker() {
     const picker = $("#county-picker");
     if (!picker) return;
@@ -789,9 +882,23 @@
         button.setAttribute("aria-haspopup", "dialog");
         button.textContent = `${uat.label || "UAT"} · ${uat.count}`;
         button.addEventListener("click", () => openUatDialog(uat, button));
+        // Legatura merge in ambele sensuri: peste forma de pe harta se aprinde randul din
+        // lista, iar peste randul din lista se aprinde forma. Altfel lista si harta ar fi
+        // doua liste de nume care nu se stiu una pe alta.
+        const setHover = (value) => {
+          if (state.hoverUat === value) return;
+          state.hoverUat = value;
+          syncUatHighlight();
+          buildMap();
+        };
+        button.addEventListener("pointerenter", () => setHover(uat));
+        button.addEventListener("pointerleave", () => setHover(null));
+        button.addEventListener("focus", () => setHover(uat));
+        button.addEventListener("blur", () => setHover(null));
         picker.appendChild(button);
         if (button.dataset.uat === focusedKey) button.focus();
       }
+      syncUatHighlight();
       return;
     }
 
@@ -817,6 +924,71 @@
       picker.appendChild(button);
       if (key === focusedKey) button.focus();
     }
+  }
+
+  // Acelasi hit-test pe care il foloseste si clickul, scos separat ca hover-ul sa nu-l
+  // duplice: doua copii ale regulii ar putea ajunge sa arate un nume si sa deschida altul.
+  function uatAtPoint(event) {
+    const canvas = state.canvas;
+    const view = state.view;
+    if (!canvas || !view || !state.zoomCounty || !state.uats.length) return null;
+    const ctx = canvas.getContext("2d");
+    const dp = devicePointForEvent(canvas, event);
+    if (!ctx || !dp) return null;
+    applyViewTransform(ctx, canvas, view);
+    return state.uats.find((unit) => ctx.isPointInPath(unit.path2d, dp.x, dp.y, "evenodd")) || null;
+  }
+
+  // Numele UAT-ului sub cursor sau sub deget. Pana acum harta nu spunea nicaieri peste ce
+  // esti: aflai abia dupa ce dadeai click si se deschidea dialogul.
+  function onCanvasHover(event) {
+    const uat = uatAtPoint(event);
+    if (uat !== state.hoverUat) {
+      state.hoverUat = uat;
+      syncUatHighlight();
+      buildMap();
+    }
+    showMapTip(uat, event);
+  }
+
+  function clearCanvasHover() {
+    if (state.hoverUat) {
+      state.hoverUat = null;
+      syncUatHighlight();
+      buildMap();
+    }
+    showMapTip(null, null);
+  }
+
+  function showMapTip(uat, event) {
+    const tip = state.tip;
+    const canvas = state.canvas;
+    if (!tip) return;
+    if (!uat || !event || !canvas) {
+      tip.hidden = true;
+      tip.textContent = "";
+      return;
+    }
+    const count = uat.count || 0;
+    tip.textContent = count
+      ? `${uat.label || uat.name} · ${count} ${itemLabelFor(count)}`
+      : `${uat.label || uat.name}`;
+    tip.hidden = false;
+    // Pozitionare relativa la gazda hartii, tinuta in interiorul ei: langa marginea din
+    // dreapta un tooltip ancorat la cursor ar iesi din ecran, iar pe telefon exact acolo
+    // ajunge degetul cel mai des.
+    const host = canvas.parentElement;
+    if (!host) return;
+    const hostRect = host.getBoundingClientRect();
+    const x = event.clientX - hostRect.left;
+    const y = event.clientY - hostRect.top;
+    const w = tip.offsetWidth || 0;
+    const h = tip.offsetHeight || 0;
+    const left = Math.max(4, Math.min(hostRect.width - w - 4, x - w / 2));
+    // Deasupra punctului atins, ca degetul sa nu acopere exact ce trebuie citit.
+    const top = Math.max(4, y - h - 14);
+    tip.style.left = `${left}px`;
+    tip.style.top = `${top}px`;
   }
 
   function onCanvasClick(event) {
@@ -876,6 +1048,14 @@
 
   function itemLabel() {
     return state.viewMode === "events" ? "evenimente" : "relatări";
+  }
+
+  // `itemLabel()` da intotdeauna pluralul, iar apelantii lui de pana acum isi rezolvau
+  // acordul separat (".. localizat" + "e"). Tooltipul pune cifra lipita de cuvant, unde
+  // asta ar da "1 evenimente", deci are nevoie de forma acordata.
+  function itemLabelFor(count) {
+    if (count === 1) return state.viewMode === "events" ? "eveniment" : "relatare";
+    return itemLabel();
   }
 
   function renderList() {
