@@ -142,6 +142,27 @@ def _repair_synthesis_title(title: str, context: str) -> str:
     return title.strip()
 
 
+def _marcheaza_fallback(item: dict) -> None:
+    """Marcheaza itemul ca `fallback` DOAR daca textul pastrat vine de la sursa, nu de la model.
+
+    De ce nu e o simpla atribuire (audit 2026-08-20, [C1]): pe calea fara provider, apelantii
+    scriu `title = original_title or title` si `synthesis = description or synthesis`. Pe un item
+    PROASPAT ambele campuri originale exista, deci textul e al sursei si `fallback` e corect.
+    Pe un reprezentant DEJA PUBLICAT insa, `state._scrub_processed` a sters `original_title` si
+    `description` (drept de autor, L8/1996), deci expresiile de mai sus pastreaza titlul si
+    sinteza SCRISE DE MODEL — iar `render.py` calculeaza `ai_generat` ca
+    `processed_by not in ("official", "fallback")`. Degradarea la `fallback` ar sterge marcajul
+    de continut generat de AI, obligatoriu prin AI Act art. 50(4), de pe text scris de AI.
+
+    `original_title` e martorul: prezent -> textul e al sursei; absent -> a fost scrub-uit dupa o
+    procesare AI, deci fluxul anterior se pastreaza. Cand nu exista niciun flux anterior, campul
+    ramane nesetat si `ai_generat` iese True — directia sigura, aceeasi cu
+    `tests/test_marcaj_ai.py::test_articolele_vechi_fara_flux_se_marcheaza`.
+    """
+    if item.get("original_title"):
+        item["processed_by"] = "fallback"
+
+
 def _parse_json(text: str) -> dict:
     """Extrage primul obiect JSON din raspuns (tolerant la ```json fences si la
     wrapping in lista — Gemini 3.x intoarce uneori [{...}] in loc de {...})."""
@@ -533,7 +554,7 @@ def process_cluster(group: list, provider) -> dict | None:
         rep["synthesis"] = truncate_words(
             rep.get("description") or rep.get("synthesis") or "Detalii pe surse.",
             config.SYNTHESIS_MAX_WORDS)
-        rep["processed_by"] = "fallback"
+        _marcheaza_fallback(rep)
         return rep
 
     # membrii deja procesati (scrubbed) nu mai au textul original -> folosim versiunea AI
@@ -618,7 +639,7 @@ def process_clusters_batch(groups: list, provider) -> list:
             rep["synthesis"] = truncate_words(
                 rep.get("description") or rep.get("synthesis") or "Detalii pe surse.",
                 config.SYNTHESIS_MAX_WORDS)
-            rep["processed_by"] = "fallback"
+            _marcheaza_fallback(rep)
             out.append(rep)
         return out
 

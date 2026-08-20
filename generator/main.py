@@ -59,6 +59,29 @@ def itemele_fara_substanta(items: list) -> list:
             and i["src_extra"] < config.MIN_SUBSTANTA_CUVINTE]
 
 
+def cadere_ai(provider) -> bool:
+    """Rularea a fost lipsita de AI in mod SISTEMIC? Predicat separat, ca sa poata fi testat.
+
+    Doua forme, amandoua sistemice. Distinct de „n-a fost nimic nou" (`calls == 0`) si de un 429
+    tranzitoriu partial (`failures < calls`). Vezi providers/base.py.
+
+    (a) `provider is None` — providerul LIPSESTE cu totul. `get_provider()` intoarce None cand
+        niciun provider nu e `available()`: cheie stearsa, expirata sau invalida (in CI Ollama
+        nu ruleaza, deci cascada se reduce la cloud). **Pana la 2026-08-20 conditia incepea cu
+        `bool(provider)`, deci forma asta nu aprindea nimic** — rularea reusea, comitea si
+        publica, fara niciun semnal rosu. Esecul mai grav era singurul nedetectat.
+        Consecinta nu era doar „titluri de sursa in loc de sinteze": pe reprezentantii DEJA
+        PUBLICATI, `process.py` pastreaza titlul si sinteza scrise de model (textul original e
+        sters de `state._scrub_processed`), deci se republica text de AI. Vezi
+        `specs/audit-izz-20260820/11-conformitate-editoriala.md`, [C1] si [C3].
+    (b) providerul exista, s-au incercat apeluri si TOATE au esuat (model retras -> 404,
+        cheie/quota moarta).
+    """
+    if provider is None:
+        return True
+    return provider.calls > 0 and provider.failures >= provider.calls
+
+
 def cauza_amanarii(ai_calls: int, ai_budget: int, upgrade_reserve: int) -> str:
     """Eticheta cauzei, DEDUSA din cifre — raportul nu mai are voie s-o afirme.
 
@@ -387,10 +410,7 @@ def run(dry_run: bool = False) -> dict:
     mod = moderation.load()
     visible = moderation.apply(combined, mod)
 
-    # Cadere AI SISTEMICA: providerul exista, s-au incercat apeluri si TOATE au esuat
-    # (model retras -> 404, cheie/quota moarta). Distinct de "n-a fost nimic nou"
-    # (calls == 0) si de un 429 tranzitoriu partial (failures < calls). Vezi providers/base.py.
-    ai_down = bool(provider) and provider.calls > 0 and provider.failures >= provider.calls
+    ai_down = cadere_ai(provider)
 
     stats = {
         "fetched": len(raw),

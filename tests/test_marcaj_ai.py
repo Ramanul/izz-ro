@@ -79,3 +79,38 @@ def test_articolele_vechi_fara_flux_se_marcheaza():
 @pytest.mark.parametrize("sablon", ["_card.html", "article.html", "index.html"])
 def test_sabloanele_atinse_compileaza(sablon):
     render._env().get_template(sablon)
+
+
+# --- gaura inchisa 2026-08-20 (audit, [C1]) -------------------------------------------------
+# Testele de mai sus verifica MAPAREA `processed_by -> ai_generat`. Nu verificau de unde vine
+# textul pe care il descrie fluxul. Pe reprezentantii deja publicati, textul original e sters de
+# `state._scrub_processed`, deci calea fara provider pastra titlul si sinteza scrise de model si
+# le marca `fallback` -> `ai_generat=False` -> text de AI publicat fara marcajul art. 50(4).
+
+def test_fallback_pe_text_de_sursa_ramane_fallback():
+    """Item proaspat: `original_title` exista, deci textul e al sursei. Marcaj corect: fara."""
+    from generator.process import _marcheaza_fallback
+    it = {"original_title": "Primaria anunta lucrari pe strada Mare", "title": "Primaria anunta lucrari"}
+    _marcheaza_fallback(it)
+    assert it["processed_by"] == "fallback"
+    assert (it.get("processed_by") not in FLUXURI_NEMARCATE) is False
+
+
+def test_fallback_pe_text_de_model_NU_pierde_marcajul():
+    """Rep deja publicat: `original_title` a fost scrub-uit, deci titlul e scris de model.
+
+    Degradarea la `fallback` ar sterge marcajul AI de pe text scris de AI. Fluxul anterior
+    trebuie sa supravietuiasca."""
+    from generator.process import _marcheaza_fallback
+    rep = {"title": "Trei masini avariate intr-un accident pe DN1", "synthesis": "…", "processed_by": "gemini"}
+    _marcheaza_fallback(rep)
+    assert rep["processed_by"] == "gemini", "fluxul AI a fost sters -> marcajul art. 50(4) dispare"
+    assert (rep.get("processed_by") not in FLUXURI_NEMARCATE) is True
+
+
+def test_fara_flux_anterior_si_fara_text_original_se_marcheaza():
+    """Directia sigura ramane cea din `test_articolele_vechi_fara_flux_se_marcheaza`."""
+    from generator.process import _marcheaza_fallback
+    a = {"title": "ceva"}
+    _marcheaza_fallback(a)
+    assert (a.get("processed_by") not in FLUXURI_NEMARCATE) is True
