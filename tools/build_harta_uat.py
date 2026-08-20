@@ -1,4 +1,18 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python
+# RULARE MANUALA, deliberat necablata in CI (audit 2026-08-20).
+#
+# Scriptul descarca poligoanele UAT din stratul public WFS `geospatial:ro_uat_poligon` de la
+# geo-spatial.org si le proiecteaza in viewBox-ul hartii. Fisierele rezultate
+# (`static/harta-stiri/data/uat/<JUDET>.json`) sunt servite public si NU se regenereaza singure:
+# datele raman inghetate la momentul ultimei rulari manuale.
+#
+# De ce NU e pus pe un cron: granitele UAT se schimba la reorganizari administrative, adica la
+# ani distanta, iar un job periodic care ia geometrie de la un serviciu extern si o COMITE adauga
+# mai multa suprafata de esec decat economiseste — daca serviciul raspunde partial sau schimba
+# schema, ajunge in productie o harta stricata, tacut.
+#
+# CAND se re-ruleaza: dupa o reorganizare administrativa, dupa o schimbare de schema la sursa,
+# sau daca apar UAT-uri lipsa pe harta. Se ruleaza local, se verifica diff-ul, se comite explicit.3
 """Construiește poligoanele UAT pentru harta știrilor.
 
 Sursa este stratul public WFS ``geospatial:ro_uat_poligon`` oferit de
@@ -376,4 +390,13 @@ def main() -> int:
 
 
 if __name__ == "__main__":
+    import sys
+    # Windows: cp1252 nu are „ș"/„ț", deci un `print` cu diacritice arunca
+    # UnicodeEncodeError si scriptul iese cu 1 — indistingibil de un esec real de
+    # continut. Masurat 2026-08-20: `qa_check.py` iesea cu 1 pe date valide, iar cu
+    # PYTHONIOENCODING=utf-8 cu 0. In CI (Linux, UTF-8) nu se vede. Acelasi idiom ca
+    # in `scan_homepages.py`, extins la toate punctele de intrare cu diacritice.
+    for _stream in (sys.stdout, sys.stderr):
+        if hasattr(_stream, "reconfigure"):
+            _stream.reconfigure(encoding="utf-8", errors="replace")
     raise SystemExit(main())

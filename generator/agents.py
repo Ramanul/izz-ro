@@ -3,6 +3,17 @@
 Profiles are contracts, not decorative personas.  The deterministic Python pipeline
 remains the authority for ingestion and publication; these profiles describe which
 agent may propose, verify, orchestrate, or escalate work.
+
+**NECONECTAT LA PIPELINE — schelet declarativ, nu cod care rulează** (audit 2026-08-20, [A1]).
+Verificat: `grep -rn "agents" --include=*.py generator/ tools/ tests/` întoarce un singur
+importator, `tests/test_agent_contracts.py`. Nimic din `generator/` sau `tools/` nu cheamă
+`get_agent()` / `list_agents()` / `validate_profiles()`. Rutarea AI reală, cea care se execută
+la fiecare articol, e `CascadeProvider` din `process.get_provider()` — atât.
+
+Conta ca fie scris aici: o diagramă de arhitectură a proiectului arată cele opt profiluri ca
+fiind active. Nu sunt. Codul mort nu strică nimic, dar documentația care descrie un sistem
+inexistent duce la decizii pe o hartă greșită. Cele trei variante — se conectează, se șterge,
+sau rămâne schelet declarat ca atare — sunt decizia proprietarului; până atunci, asta e starea.
 """
 from __future__ import annotations
 

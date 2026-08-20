@@ -121,25 +121,82 @@ def get_provider():
     return CascadeProvider(available)
 
 
+# Contextul afirmă explicit o identitate falsă. Lista e deliberat scurtă și concretă: una vagă
+# ar potrivi și știri obișnuite despre declarații.
+_IDENTITY_CLAIM_MARKERS = (
+    "s-au dat drept", "s au dat drept", "au pretins ca sunt", "au pretins ca",
+    "pretindeau ca sunt", "falsificandu-si identitatea",
+)
+
+# Degradarea semantică observată: modelul transformă „s-au dat drept / au pretins” în „au simțit”.
+_DEGRADARE_RE = re.compile(r"\bau\s+simtit\b")
+
+
+def _revendica_identitate(context: str) -> bool:
+    return any(m in strip_diacritics(context or "").lower() for m in _IDENTITY_CLAIM_MARKERS)
+
+
 def _repair_synthesis_title(title: str, context: str) -> str:
-    """Repară o deformare semantică observată în titlurile sintetizate.
+    """Repară deformarea semantică observată în titlurile sintetizate.
 
     Modelul confundă uneori „au pretins/s-au dat drept” cu „au simțit”. Regula este
     intenționat îngustă: intervenim numai când contextul confirmă explicit identitatea
     falsă și păstrăm restul titlului neschimbat.
+
+    Reparația acoperă UN caz — „au simțit polițiști". Pentru restul clasei există garda
+    `_titlu_sustinut_de_context`, care rulează DUPĂ asta.
     """
     if not isinstance(title, str):
         return ""
-    context_l = strip_diacritics(context or "").lower()
-    title_l = strip_diacritics(title).lower()
-    identity_claim = any(marker in context_l for marker in (
-        "s-au dat drept", "s au dat drept", "au pretins ca sunt", "au pretins ca",
-        "pretindeau ca sunt", "falsificandu-si identitatea",
-    ))
-    if identity_claim and "au simtit politisti" in title_l:
+    if _revendica_identitate(context) and "au simtit politisti" in strip_diacritics(title).lower():
         return re.sub(r"au simțit polițiști", "s-au dat drept polițiști", title, flags=re.IGNORECASE)
 
     return title.strip()
+
+
+def _titlu_sustinut_de_context(title: str, context: str) -> bool:
+    """Titlul mai e compatibil cu ce spun sursele, DUPĂ ce s-a încercat reparația?
+
+    Recuperată din `7ee576db` (Manus AI, 2026-08-19), commit care nu a ajuns în `main`: acolo
+    exista garda, aici supraviețuise doar lista de markeri. Auditul din 2026-08-20 a semnalat
+    ([C4]) că reparația de mai sus tratează UN caz dintr-o CLASĂ — orice altă formulare a
+    aceleiași deformări trecea nereparată și nesemnalată.
+
+    Cele două sunt complementare, nu concurente, și de-aia rulează în ordinea asta:
+    reparația salvează titlul când poate (nu pierdem articolul), garda îl respinge când nu poate.
+    Un candidat respins NU se publică — clusterul rămâne pentru o reîncercare, conform regulii
+    „No mangled output". Costul e un apel AI în plus; alternativa e o formulare plauzibilă și
+    falsă pe site.
+
+    Deliberat îngustă și deterministă: nu pretinde fact-checking general și nu introduce o a
+    doua judecată AI în calea critică de publicare.
+    """
+    if not isinstance(title, str) or not title.strip():
+        return False
+    if not _revendica_identitate(context):
+        return True
+    return not _DEGRADARE_RE.search(strip_diacritics(title).lower())
+
+
+def _marcheaza_fallback(item: dict) -> None:
+    """Marcheaza itemul ca `fallback` DOAR daca textul pastrat vine de la sursa, nu de la model.
+
+    De ce nu e o simpla atribuire (audit 2026-08-20, [C1]): pe calea fara provider, apelantii
+    scriu `title = original_title or title` si `synthesis = description or synthesis`. Pe un item
+    PROASPAT ambele campuri originale exista, deci textul e al sursei si `fallback` e corect.
+    Pe un reprezentant DEJA PUBLICAT insa, `state._scrub_processed` a sters `original_title` si
+    `description` (drept de autor, L8/1996), deci expresiile de mai sus pastreaza titlul si
+    sinteza SCRISE DE MODEL — iar `render.py` calculeaza `ai_generat` ca
+    `processed_by not in ("official", "fallback")`. Degradarea la `fallback` ar sterge marcajul
+    de continut generat de AI, obligatoriu prin AI Act art. 50(4), de pe text scris de AI.
+
+    `original_title` e martorul: prezent -> textul e al sursei; absent -> a fost scrub-uit dupa o
+    procesare AI, deci fluxul anterior se pastreaza. Cand nu exista niciun flux anterior, campul
+    ramane nesetat si `ai_generat` iese True — directia sigura, aceeasi cu
+    `tests/test_marcaj_ai.py::test_articolele_vechi_fara_flux_se_marcheaza`.
+    """
+    if item.get("original_title"):
+        item["processed_by"] = "fallback"
 
 
 def _parse_json(text: str) -> dict:
@@ -539,7 +596,7 @@ def process_cluster(group: list, provider) -> dict | None:
         rep["synthesis"] = truncate_words(
             rep.get("description") or rep.get("synthesis") or "Detalii pe surse.",
             config.SYNTHESIS_MAX_WORDS)
-        rep["processed_by"] = "fallback"
+        _marcheaza_fallback(rep)
         return rep
 
     # membrii deja procesati (scrubbed) nu mai au textul original -> folosim versiunea AI
@@ -555,10 +612,13 @@ def process_cluster(group: list, provider) -> dict | None:
             f"{a.get('description') or a.get('teaser') or a.get('synthesis') or ''}"
             for a in group
         )
-        rep["title"] = _repair_synthesis_title(
+        candidat = _repair_synthesis_title(
             data.get("title") or rep.get("original_title") or rep.get("title") or "",
             context,
         )
+        if not _titlu_sustinut_de_context(candidat, context):
+            return None                        # deformare semantica -> amanat, ca la esecul AI
+        rep["title"] = candidat
         rep["synthesis"] = truncate_words(data.get("synthesis", "") or "Detalii pe surse.",
                                           config.SYNTHESIS_MAX_WORDS)
         rep["entities"] = _clean_entities(data.get("entities"))   # inaintea categoriei, vezi mai sus
@@ -626,7 +686,7 @@ def process_clusters_batch(groups: list, provider) -> list:
             rep["synthesis"] = truncate_words(
                 rep.get("description") or rep.get("synthesis") or "Detalii pe surse.",
                 config.SYNTHESIS_MAX_WORDS)
-            rep["processed_by"] = "fallback"
+            _marcheaza_fallback(rep)
             out.append(rep)
         return out
 
@@ -665,7 +725,11 @@ def process_clusters_batch(groups: list, provider) -> list:
             f"{a.get('description') or a.get('teaser') or a.get('synthesis') or ''}"
             for a in preps[i][0]
         )
-        rep["title"] = _repair_synthesis_title(title, context)
+        candidat = _repair_synthesis_title(title, context)
+        if not _titlu_sustinut_de_context(candidat, context):
+            out.append(None)                   # deformare semantica -> amanat, ca la nemapat
+            continue
+        rep["title"] = candidat
         rep["synthesis"] = truncate_words(synthesis, config.SYNTHESIS_MAX_WORDS)
         rep["entities"] = _clean_entities(obj.get("entities"))
         rep["ai_cat"] = obj.get("category", "")

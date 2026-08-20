@@ -51,8 +51,23 @@ def output_randat() -> str:
     (`test_pagination` neconditionat + `test_entities_verified` cand lipsea `output/ghiduri`),
     acum o singura data pentru toti consumatorii.
     """
-    r = subprocess.run([sys.executable, "-m", "generator.main", "--render-only"],
-                       cwd=ROOT, capture_output=True, text=True)
+    # `timeout` NU e optional (audit 2026-08-20, [T1]). Fara el, o randare care se blocheaza din
+    # ORICE motiv opreste suita la infinit, fara niciun mesaj: masurat 421 s si zero iesire, dupa
+    # care sesiunea a fost oprita manual. In CI ar arde pana la plafonul implicit de 6 ore si ar
+    # raporta „cancelled", nu cauza. Cazul concret care a produs masuratoarea: un checkout fara
+    # `media/`, unde `render.build()` regenereaza cu Pillow doua coperti pentru fiecare dintre
+    # cele ~3900 de articole in loc sa le copieze din `media/` (stiva prinsa cu `faulthandler`:
+    # PIL/Image.resize <- covers._save <- render.build). 600 s = ~7x randarea normala, deci nu
+    # se declanseaza pe o masina incarcata, dar taie bucla infinita.
+    try:
+        r = subprocess.run([sys.executable, "-m", "generator.main", "--render-only"],
+                           cwd=ROOT, capture_output=True, text=True, timeout=600)
+    except subprocess.TimeoutExpired:
+        raise AssertionError(
+            "randarea a depasit 600 s. Cauza obisnuita: `media/` lipseste din checkout, deci "
+            "copertile se regenereaza cu Pillow in loc sa fie copiate. Verifica "
+            "`git sparse-checkout list`."
+        ) from None
     assert r.returncode == 0, f"randarea a esuat:\n{r.stdout}\n{r.stderr}"
     assert os.path.isdir(OUT), "output/ lipseste si dupa randare"
     return OUT

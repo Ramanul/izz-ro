@@ -53,8 +53,14 @@ pipeline si **arunca exceptie**, oprind build-ul, daca garda nu mai prinde. Corp
 si exemple curate: o garda care respinge tot e la fel de moarta ca una care nu respinge nimic,
 doar ca esueaza in cealalta directie.
 """
+import ipaddress
 import re
 import unicodedata
+
+# Nume care nu ies niciodata din masina/retea. Lista e scurta si lexicala dinadins; vezi
+# `_gazda_interna` pentru de ce nu rezolvam DNS aici.
+_GAZDE_REZERVATE = {"localhost", "localhost.localdomain", "ip6-localhost", "ip6-loopback",
+                    "metadata", "metadata.google.internal", "instance-data"}
 
 # --- 1. markup care a supravietuit curatarii --------------------------------------------
 # `<a `, `</p>`, `<img/>` si varianta inca codata `&lt;img`. Deliberat NU prinde un `<`
@@ -167,6 +173,39 @@ def url_ostil(url: str) -> str | None:
     autoritate = curatat.split("//", 1)[1].split("/", 1)[0]
     if "@" in autoritate:
         return "credentiale in URL (mascare de domeniu)"
+    if (motiv := _gazda_interna(autoritate)):
+        return motiv
+    return None
+
+
+def _gazda_interna(autoritate: str) -> str | None:
+    """`None` daca gazda e publica; altfel motivul. Verificare LEXICALA, fara DNS.
+
+    De ce fara DNS (audit 2026-08-20, [G1]): `url_ostil` ruleaza pe fiecare link al fiecarui
+    articol, la ingestie SI la moderare — mii de apeluri per rulare. O rezolvare de nume aici
+    ar adauga o cerere de retea de fiecare data si ar lega testele de retea. Deci prindem doar
+    ce se vede din sir: adrese literale si nume rezervate. Un domeniu public care REZOLVA catre
+    o adresa interna trece de aici; ala e treaba lui `fetch._deschizator_sigur`, care verifica
+    fiecare salt de redirectare, acolo unde cererea chiar se face.
+
+    Ce apara concret: `fetch._fetch_meta_description` cere URL-uri luate din `<loc>`-urile unui
+    sitemap extern, deci alese de un tert. Inainte treceau `http://127.0.0.1:8080/admin`,
+    `http://169.254.169.254/latest/meta-data/`, `http://localhost/`, `http://10.0.0.5/`, `http://[::1]/`.
+    """
+    gazda = autoritate.split(":", 1)[0] if not autoritate.startswith("[") else \
+        autoritate.split("]", 1)[0].lstrip("[")
+    gazda = gazda.strip().rstrip(".").lower()
+    if not gazda:
+        return "URL fara gazda"
+    if gazda in _GAZDE_REZERVATE or gazda.endswith(".localhost") or gazda.endswith(".internal"):
+        return "gazda rezervata (adresa interna)"
+    try:
+        ip = ipaddress.ip_address(gazda)
+    except ValueError:
+        return None                            # nume de domeniu obisnuit
+    if (ip.is_private or ip.is_loopback or ip.is_link_local or ip.is_reserved
+            or ip.is_multicast or ip.is_unspecified):
+        return "adresa IP interna (loopback/privata/link-local)"
     return None
 
 
@@ -362,6 +401,17 @@ _CORPUS_URL_OSTIL = [
     "vbscript:msgbox(1)",
     "file:///etc/passwd",
     "https://izz.ro@evil.example/pagina",
+    # SSRF prin `<loc>` de sitemap (audit 2026-08-20, [G1]). Toate astea TRECEAU inainte:
+    # `fetch._fetch_meta_description` cere URL-ul, deci un tert alegea ce adresa interna
+    # atinge runnerul de CI.
+    "http://127.0.0.1:8080/admin",
+    "http://169.254.169.254/latest/meta-data/",
+    "http://localhost/",
+    "http://10.0.0.5/",
+    "http://192.168.1.1/",
+    "http://[::1]/",
+    "http://metadata.google.internal/computeMetadata/v1/",
+    "http://0.0.0.0/",
 ]
 
 _CORPUS_URL_CURAT = [
@@ -369,6 +419,12 @@ _CORPUS_URL_CURAT = [
     "http://primaria-exemplu.ro/anunturi/2026/colectare-deseuri",
     "https://adevarul.ro/stiri/articol?id=123&utm_source=rss",
     "https://ro.wikipedia.org/wiki/Rovinari#Istoric",
+    # Garda de gazda interna NU are voie sa atinga URL-uri publice obisnuite: port explicit,
+    # IPv6 public, IP public literal, si un domeniu care doar CONTINE „localhost".
+    "https://stiri.exemplu.ro:8443/articol",
+    "https://[2a00:1450:4001:80e::200e]/pagina",
+    "http://93.184.216.34/articol",
+    "https://localhost-hosting.ro/stiri/articol",
 ]
 
 # --- corpus pentru garda de anomalie -----------------------------------------------------
