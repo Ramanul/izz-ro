@@ -6,7 +6,7 @@ nevoie ca sa se aleaga un prag. NU decide nimic si nu modifica nimic.
 
     python tools/citeste_raport_copiere.py [cale.jsonl] [--exemple N]
 
-De ce exista separat de jurnal: pragul de respingere pentru §2.2 nu e stabilit — cautat
+De ce exista separat de jurnal: pragul de respingere pentru §2.2 nu e stabilit - cautat
 in `registru.py` si `HANDOFF.md` inainte de a scrie codul, zero randuri pe subiect. Se
 alege dupa ce se vad cifre de pe rulari reale, exact disciplina de la pragul de 16
 caractere/cuvant din garda de continut, derivat din 6714 campuri reale.
@@ -50,7 +50,7 @@ def main() -> int:
     while i < len(argv):
         if argv[i] == "--exemple" and i + 1 < len(argv):
             nr_exemple = int(argv[i + 1])
-            i += 2                     # sare si peste VALOAREA lui, altfel ajunge „cale"
+            i += 2                     # sare si peste VALOAREA lui, altfel ajunge "cale"
             continue
         if not argv[i].startswith("-"):
             pozitionale.append(argv[i])
@@ -104,7 +104,7 @@ def main() -> int:
     for r in sorted(randuri, key=lambda x: (-(x.get("text_max_cuvinte") or 0),
                                             -(x.get("text_procent") or 0)))[:nr_exemple]:
         print(f"  [{r.get('model')}] {r.get('text_max_cuvinte')} cuvinte, "
-              f"{r.get('text_procent')}% — {r.get('id', '')[:70]}")
+              f"{r.get('text_procent')}% - {r.get('id', '')[:70]}")
         if r.get("fragment"):
             print('       "' + _pentru_consola(r["fragment"]) + '"')
 
