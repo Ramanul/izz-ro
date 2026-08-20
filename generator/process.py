@@ -7,7 +7,7 @@ import json
 import re
 from datetime import datetime, timezone
 
-from . import config, geo
+from . import config, geo, raport_copiere
 from .util import truncate_words, domain_of, strip_diacritics
 
 # ---- Prompturi calibrate juridic (zero propozitii copiate din original) ----
@@ -443,6 +443,10 @@ def process_batch(items: list, provider) -> list:
             it["icon"] = _clean_icon(obj.get("icon"))
             it["processed_by"] = provider.name
             it["prompt_version"] = config.PROMPT_VERSION
+            # §2.2 (drept de autor): masoara cat din rezumat e copiat din sursa. Doar
+            # noteaza intr-un jurnal; nu respinge nimic si nu poate ridica exceptii.
+            raport_copiere.noteaza("B", it.get("original_link"), it["title"],
+                                   it["teaser"], source_texts[i])
             done.append(it)
         # nemapat/invalid -> nu il adaugam (reluat la rularea urmatoare)
     return done
@@ -481,6 +485,8 @@ def process_single(item: dict, provider) -> dict | None:
     item["icon"] = _clean_icon(data.get("icon"))
     item["processed_by"] = provider.name
     item["prompt_version"] = config.PROMPT_VERSION
+    raport_copiere.noteaza("B", item.get("original_link"), item["title"], item["teaser"],
+                           f"{item.get('original_title', '')} {item.get('description', '')}")
     return item
 
 
@@ -561,6 +567,8 @@ def process_cluster(group: list, provider) -> dict | None:
         rep["icon"] = _clean_icon(data.get("icon"))
         rep["processed_by"] = provider.name
         rep["prompt_version"] = config.PROMPT_VERSION
+        raport_copiere.noteaza("C", rep.get("original_link"), rep["title"],
+                               rep["synthesis"], block)
     except Exception:
         return None                            # esec AI -> amanat, reluat data viitoare
     return rep
@@ -665,5 +673,7 @@ def process_clusters_batch(groups: list, provider) -> list:
         rep["icon"] = _clean_icon(obj.get("icon"))
         rep["processed_by"] = provider.name
         rep["prompt_version"] = config.PROMPT_VERSION
+        raport_copiere.noteaza("C", rep.get("original_link"), rep["title"],
+                               rep["synthesis"], context)
         out.append(rep)
     return out

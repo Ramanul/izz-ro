@@ -31,3 +31,6 @@ data/.indexnow_queue.json
 # rezultate de scan cu nume de institutii compromise -- repo-ul e PUBLIC,
 # publicarea inainte de divulgare coordonata ar fi o harta pentru atacatori (decizie proprietar)
 data/local/
+
+# jurnal de masurare a suprapunerii; creste la fiecare rulare, nu se versioneaza
+data/raport_copiere.jsonl
