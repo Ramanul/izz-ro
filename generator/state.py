@@ -74,14 +74,62 @@ def _resync_pinned(articles: list) -> list:
 
 
 def load() -> list:
+    """Starea de pe disc. Lipsa fisierului = prima rulare; fisier NECITIBIL = eroare.
+
+    Distinctia e reparatia din auditul 2026-08-20, [P1]. Inainte, ambele cazuri intorceau `[]`
+    tacut, deci o stare corupta era indistingibila de o prima rulare: pipeline-ul pornea pe gol,
+    salva un corpus mic si `build.yml` il comitea — site-ul isi pierdea arhiva fara ca nimic sa
+    scartaie. `qa_check.py` ar fi prins-o („categorii goale"), dar ruleaza DUPA commit si deploy.
+    Nimic nu se pierde ridicand exceptia: pasul de CI devine rosu, commitul e sarit, Cloudflare
+    nu redeployeaza, site-ul ramane pe ultima stare buna — exact ce face si `ai_down`.
+    """
     if not os.path.exists(STATE_PATH):
         return []
     try:
         with open(STATE_PATH, "r", encoding="utf-8") as fh:
             data = json.load(fh)
-        return _resync_pinned(data) if isinstance(data, list) else []
-    except (json.JSONDecodeError, OSError):
-        return []
+    except (json.JSONDecodeError, OSError) as exc:
+        raise StareCorupta(
+            f"{STATE_PATH} exista ({os.path.getsize(STATE_PATH)} octeti) dar nu se poate citi: "
+            f"{type(exc).__name__}: {exc}. NU pornesc pe stare goala — as publica un site fara "
+            f"arhiva. Restaureaza fisierul din git (`git checkout -- data/articles.json`)."
+        ) from exc
+    if not isinstance(data, list):
+        raise StareCorupta(
+            f"{STATE_PATH} contine {type(data).__name__}, nu o lista de articole."
+        )
+    return _resync_pinned(data)
+
+
+def _refuza_colapsul(articles: list) -> None:
+    """Opreste salvarea cand corpusul se prabuseste fata de ce e deja pe disc.
+
+    A doua plasa sub `load()`: acopera si caile prin care starea ajunge goala FARA ca fisierul
+    sa fie corupt (un filtru gresit, un `expire()` cu ceas stricat, o rulare pe alt `ROOT`).
+    """
+    if os.environ.get("IZZ_PERMITE_COLAPS") == "1":
+        print("   !! garda de colaps SUSPENDATA prin IZZ_PERMITE_COLAPS=1")
+        return
+    if not os.path.exists(STATE_PATH):
+        return                                 # prima rulare
+    try:
+        with open(STATE_PATH, "r", encoding="utf-8") as fh:
+            pe_disc = json.load(fh)
+    except (json.JSONDecodeError, OSError) as exc:
+        # `load()` a semnalat deja cazul asta la inceputul rularii, deci aici nu mai oprim —
+        # dar nici nu tacem: o garda sarita fara urma e o garda pe care n-o mai verifica nimeni.
+        print(f"   !! garda de colaps SARITA: starea de pe disc nu se poate citi "
+              f"({type(exc).__name__}: {exc})")
+        return
+    if not isinstance(pe_disc, list) or len(pe_disc) <= 100:
+        return                                 # corpus prea mic ca fractia sa insemne ceva
+    if len(articles) < len(pe_disc) * PRAG_COLAPS:
+        raise StareCorupta(
+            f"refuz sa salvez {len(articles)} articole peste {len(pe_disc)} existente "
+            f"(sub pragul de {PRAG_COLAPS:.0%}). Cu TTL de {config.ARTICLE_TTL_DAYS} zile, o "
+            f"scadere asa mare nu poate veni din expirare normala. Daca e deliberat "
+            f"(repopulare, schimbare de TTL), ruleaza cu IZZ_PERMITE_COLAPS=1."
+        )
 
 
 def _parse_iso(value: str) -> datetime:
@@ -128,7 +176,20 @@ def _scrub_processed(articles: list) -> None:
             a.pop("description", None)
 
 
+class StareCorupta(RuntimeError):
+    """`data/articles.json` exista dar nu se poate citi. Rularea NU are voie sa continue."""
+
+
+# Sub ce fractie din corpusul de pe disc refuzam sa salvam. NU e ales din burta: `expire()`
+# taie la `ARTICLE_TTL_DAYS = 7`, iar pipeline-ul incearca din ora in ora, deci o rulare
+# normala pierde ~1,2% (1/84). Ca sa cada legitim sub 20% ar trebui o intrerupere de peste
+# 5,6 zile — moment in care un build ROSU e oricum raspunsul corect, nu o publicare tacuta.
+# Se poate ridica deliberat cu `IZZ_PERMITE_COLAPS=1` (repopulare, schimbare de TTL).
+PRAG_COLAPS = 0.20
+
+
 def save(articles: list) -> None:
+    _refuza_colapsul(articles)
     _scrub_processed(articles)
     # Sortare pe SIR, nu pe datetime: corecta doar cat timp `published` e uniform `+00:00`.
     # Tine (masurat: 1736/1736 la 2026-08-03), fiindca `_parse_w3c_date` si `_parse_ro_date`
@@ -136,5 +197,15 @@ def save(articles: list) -> None:
     # daca acela pica, aici si in cele doua locuri din render.py trebuie trecut pe datetime.
     articles_sorted = sorted(articles, key=lambda a: a.get("published") or "", reverse=True)
     os.makedirs(os.path.dirname(STATE_PATH), exist_ok=True)
-    with open(STATE_PATH, "w", encoding="utf-8") as fh:
+    # Scriere ATOMICA (audit 2026-08-20, [P1]). Inainte se scria direct peste `articles.json`,
+    # care are 5,6 MB si 4616 articole: o rulare oprita la jumatatea scrierii — plafon de runner,
+    # Ctrl+C local, disc plin — lasa un JSON trunchiat. Combinat cu `load()`, care inainte
+    # inghitea eroarea si intorcea `[]`, drumul complet era: stare corupta -> pipeline pe gol ->
+    # stare mica salvata -> commit -> site fara arhiva. `os.replace` e atomic si pe Windows si
+    # pe POSIX, deci fisierul final e ori cel vechi intreg, ori cel nou intreg. Niciodata pe jumatate.
+    tmp = STATE_PATH + ".tmp"
+    with open(tmp, "w", encoding="utf-8") as fh:
         json.dump(articles_sorted, fh, ensure_ascii=False, indent=2)
+        fh.flush()
+        os.fsync(fh.fileno())
+    os.replace(tmp, STATE_PATH)

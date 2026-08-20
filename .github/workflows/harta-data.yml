@@ -105,23 +105,31 @@ jobs:
             exit 0
           fi
           git commit -m "build(map): update locality-aware news map dataset"
+          # Bucla de push, rescrisă 2026-08-20 (audit, [W2] și [W3]). Ce era înainte:
+          #   if git merge-base --is-ancestor HEAD origin/main; then git push ...
+          # Întrebarea aia e „commitul meu e DEJA în origin/main?", care imediat după `git commit`
+          # e mereu FALSĂ. Verificat empiric într-un repo de test: ramura de push rapid nu se
+          # executa NICIODATĂ, iar logul tipărea „Remote-ul a avansat" la fiecare rulare, inclusiv
+          # când nu avansase — exact mesajul greșit pentru cine depanează o cursă de push.
+          # În plus, sub `set -euo pipefail` un `git rebase` eșuat termina pasul pe loc, deci
+          # bucla de 5 încercări nu se executa la conflict și mesajul final nu apărea niciodată.
+          # `build.yml:180-185` tratează același caz corect; aici se aliniază la el.
           for attempt in 1 2 3 4 5; do
             git fetch origin main
-            if git merge-base --is-ancestor HEAD origin/main; then
-              if git push origin HEAD:main; then
-                echo "Dataseturile hărții au fost publicate."
-                exit 0
-              fi
-            else
-              echo "Remote-ul a avansat; rebasez peste origin/main înainte de push."
-              git rebase origin/main
-              if git push origin HEAD:main; then
-                echo "Dataseturile hărții au fost publicate după rebase."
-                exit 0
-              fi
+            if git push origin HEAD:main; then
+              echo "Dataseturile hărții au fost publicate (încercarea $attempt)."
+              exit 0
+            fi
+            echo "Push respins; reaplic peste origin/main."
+            if ! git rebase origin/main; then
+              # NU rezolvăm automat în favoarea botului: un conflict pe datasetul hărții poate
+              # însemna o editare manuală, iar suprascrierea ei ar fi tăcută și ireversibilă.
+              git rebase --abort || true
+              echo "::error::conflict la rebase peste origin/main - datasetul NU a fost publicat"
+              exit 1
             fi
             if [ "$attempt" -lt 5 ]; then
-              echo "Push eșuat (încercarea $attempt/5); reîncerc în 10 secunde..."
+              echo "Reîncerc în 10 secunde..."
               sleep 10
             fi
           done

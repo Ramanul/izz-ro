@@ -1,6 +1,13 @@
 name: harta-stiri-smoke
 
 # Smoke validation for the public Cloudflare Pages build.
+
+# Zero drepturi: jobul face doar `curl` catre pages.dev si `node --check`, deci nu atinge
+# niciodata `GITHUB_TOKEN`. Fara blocul asta primea permisiunile IMPLICITE ale repo-ului —
+# posibil write pe cod, pentru un job care n-are ce scrie. Era singurul din cele 19 workflow-uri
+# fara `permissions` declarat (audit 2026-08-20, [W1]).
+permissions: {}
+
 on:
   push:
     branches: [main]

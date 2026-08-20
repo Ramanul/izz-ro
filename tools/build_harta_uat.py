@@ -1,4 +1,18 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python
+# RULARE MANUALA, deliberat necablata in CI (audit 2026-08-20).
+#
+# Scriptul descarca poligoanele UAT din stratul public WFS `geospatial:ro_uat_poligon` de la
+# geo-spatial.org si le proiecteaza in viewBox-ul hartii. Fisierele rezultate
+# (`static/harta-stiri/data/uat/<JUDET>.json`) sunt servite public si NU se regenereaza singure:
+# datele raman inghetate la momentul ultimei rulari manuale.
+#
+# De ce NU e pus pe un cron: granitele UAT se schimba la reorganizari administrative, adica la
+# ani distanta, iar un job periodic care ia geometrie de la un serviciu extern si o COMITE adauga
+# mai multa suprafata de esec decat economiseste — daca serviciul raspunde partial sau schimba
+# schema, ajunge in productie o harta stricata, tacut.
+#
+# CAND se re-ruleaza: dupa o reorganizare administrativa, dupa o schimbare de schema la sursa,
+# sau daca apar UAT-uri lipsa pe harta. Se ruleaza local, se verifica diff-ul, se comite explicit.3
 """Construiește poligoanele UAT pentru harta știrilor.
 
 Sursa este stratul public WFS ``geospatial:ro_uat_poligon`` oferit de
