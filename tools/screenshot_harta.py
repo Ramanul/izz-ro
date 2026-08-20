@@ -28,4 +28,13 @@ def main():
         br.close()
 
 if __name__ == "__main__":
+    import sys
+    # Windows: cp1252 nu are „ș"/„ț", deci un `print` cu diacritice arunca
+    # UnicodeEncodeError si scriptul iese cu 1 — indistingibil de un esec real de
+    # continut. Masurat 2026-08-20: `qa_check.py` iesea cu 1 pe date valide, iar cu
+    # PYTHONIOENCODING=utf-8 cu 0. In CI (Linux, UTF-8) nu se vede. Acelasi idiom ca
+    # in `scan_homepages.py`, extins la toate punctele de intrare cu diacritice.
+    for _stream in (sys.stdout, sys.stderr):
+        if hasattr(_stream, "reconfigure"):
+            _stream.reconfigure(encoding="utf-8", errors="replace")
     main()
