@@ -246,12 +246,39 @@ def locate(article: dict, county_keys: list[str], by_name: dict[str, list[dict]]
         }
     sc = source_county(str(article.get("source") or ""), county_keys)
     tc = explicit_county(text, county_keys)
-    county = tc or sc
+    # Cine castiga cand sursa si textul numesc judete DIFERITE depinde de ce fel de sursa e.
+    #
+    # Site de stiri: textul castiga. Un ziar regional relateaza in mod normal si din judetele
+    # vecine, iar judetul lui de resedinta nu spune nimic despre locul evenimentului.
+    #
+    # Anunt OFICIAL: sursa castiga. O primarie publica despre teritoriul ei; alt oras numit in
+    # text e context (echipa oaspete, firma contractanta), nu locul faptei.
+    #
+    # MASURAT pe corpusul din 2026-08-20, inainte de a schimba ceva (505 articole pe harta):
+    #   sursa si text DIVERG in 26 de cazuri
+    #     - 24 la site-uri de stiri (jurnalulolteniei 11, bizbrasov 6, alba24 2, cronicaolteniei 3,
+    #       emaramures 1, criticarad 1) -> verificate, TEXTUL e corect acolo; raman neatinse
+    #     -  2 la surse oficiale -> ambele GRESITE inainte de regula asta:
+    #        `pl_prahova_municipiul_ploiesti` „Restrictii ... Stadionului «Ilie Oana»" ajungea in
+    #        BUCURESTI fiindca teaserul zice „FC Petrolul Ploiesti si Rapid Bucuresti";
+    #        `pl_neamt_municipiul_roman` (pulverizare aeriana) ajungea in BACAU in loc de NEAMT.
+    # Regula inversa, „sursa castiga mereu", ar fi stricat 24 de atribuiri corecte ca sa repare 2.
+    # Gasita de `tools/integration_check.py`, recuperat din 7749e192 (Manus AI) in aceeasi trecere.
+    oficial = article.get("processed_by") == "official"
+    county = (sc or tc) if oficial else (tc or sc)
     locality = locality_from_text(text, county, by_name, points)
     if not county and locality:
         county = locality["county"]
     if not county:
         return None
+    # Eticheta se schimba DOAR cand sursa chiar a decis contra textului — adica exact in cazurile
+    # pe care regula de mai sus le repara. Cand cele doua sunt de acord (63 de articole in corpusul
+    # masurat), eticheta ramane cea dinainte: reeticheta lor ar muta 24 de articole din „text" in
+    # „source" fara ca atribuirea sa se fi schimbat, iar cifra din `stats` ar parea o regresie.
+    if oficial and sc and tc and sc != tc:
+        confidence = "source"
+    else:
+        confidence = "text" if tc else "source" if sc else "siruta"
     point = point_for(locality, points)
     return {
         **base,
@@ -261,7 +288,7 @@ def locate(article: dict, county_keys: list[str], by_name: dict[str, list[dict]]
         "siruta": siruta_key(locality["siruta"]) if locality else "",
         "x": point.get("x") if point else None,
         "y": point.get("y") if point else None,
-        "confidence": "text" if tc else "source" if sc else "siruta",
+        "confidence": confidence,
     }
 
 
