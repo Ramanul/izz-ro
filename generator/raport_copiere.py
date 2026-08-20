@@ -24,12 +24,25 @@ DOUA REGULI DE PROIECTARE, amandoua deliberate:
 from __future__ import annotations
 
 import json
+import os
 from datetime import datetime, timezone
 from pathlib import Path
 
 from .verifica_sinteza import suprapunere_sursa
 
 CALE = Path(__file__).resolve().parents[1] / "data" / "raport_copiere.jsonl"
+
+
+def _cale() -> Path:
+    """Calea jurnalului, cu `IZZ_RAPORT_COPIERE` ca redirectare.
+
+    De ce e nevoie: sase fisiere din `tests/` cheama functiile din `process.py`, deci
+    fiecare rulare a suitei scria randuri sintetice exact in jurnalul din care trebuie
+    ales pragul (masurat 2026-08-20: 17 randuri au devenit 33 dintr-o rulare de teste).
+    Datele de calibrare si datele de test nu au voie sa stea in acelasi fisier.
+    """
+    din_mediu = os.environ.get("IZZ_RAPORT_COPIERE")
+    return Path(din_mediu) if din_mediu else CALE
 
 _MAX_FRAGMENT = 120   # aceeasi taietura ca `Problema.detaliu` din `verifica_sinteza.py`
 
@@ -59,8 +72,9 @@ def noteaza(model: str, identificator: str, titlu: str, rezumat: str, sursa: str
             "text_max_cuvinte": s_text.max_cuvinte,
             "fragment": (s_text.fragment or s_titlu.fragment)[:_MAX_FRAGMENT],
         }
-        CALE.parent.mkdir(parents=True, exist_ok=True)
-        with CALE.open("a", encoding="utf-8") as f:
+        cale = _cale()
+        cale.parent.mkdir(parents=True, exist_ok=True)
+        with cale.open("a", encoding="utf-8") as f:
             f.write(json.dumps(rand, ensure_ascii=False) + "\n")
     except Exception:
         # Deliberat mut: vezi regula 2 din antetul modulului.

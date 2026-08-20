@@ -58,7 +58,9 @@ def main() -> int:
             neverificabile += 1
             continue
         verificate += 1
-        rezumat = a.get("synthesis") if a.get("model") == "C" else a.get("teaser")
+        # Fluxul C e deja exclus mai sus (nu-si pastreaza sursele per membru), deci aici
+        # raman doar articole de flux B - care au `teaser`. Ramura `synthesis` era moarta.
+        rezumat = a.get("teaser")
         probleme = verifica(a.get("title"), rezumat, sursa)
         if probleme:
             cu_probleme += 1
@@ -77,7 +79,12 @@ def main() -> int:
     print(f"  neverificabile (sursa lipsa) : {neverificabile}")
     print(f"  VERIFICATE                   : {verificate}")
     if not verificate:
-        print("\nnimic de masurat")
+        print()
+        print("nimic de masurat pe corpusul salvat, si asta e de asteptat:")
+        print("  process.py sterge textul sursei dupa procesare (scrub juridic),")
+        print("  deci articolele publicate nu mai au cu ce fi comparate. Masurarea")
+        print("  utila se face IN ZBOR - vezi generator/raport_copiere.py, iar")
+        print("  rezultatul se citeste cu tools/citeste_raport_copiere.py")
         return 0
     proc = 100 * cu_probleme / verificate
     print(f"\narticole cu cel putin o problema: {cu_probleme} din {verificate} ({proc:.1f}%)")
