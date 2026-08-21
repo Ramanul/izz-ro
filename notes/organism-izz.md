@@ -60,9 +60,17 @@ poartă la 105 min e pulsul. A fost deja „reparat" o dată prin accelerare —
 iulie (`IZZ-0139`, respins, cu motiv măsurat). Tahicardie iatrogenă.
 
 **b) Bugetul.** Orice organism e definit de constrângerea energetică, nu de ADN. Aici:
-18 apeluri AI/rulare, ~500 build-uri/lună (~360 consumate de commit-urile de conținut), și — conform
-`COORD-DASHBOARD.md`, măsurat prin API — **resursa cu adevărat limitată sunt tururile de
-conversație**, nu minutele Actions, care pe repo public sunt zero.
+18 apeluri AI/rulare, ~500 build-uri Cloudflare/lună, și — conform `COORD-DASHBOARD.md`, măsurat
+prin API — **resursa cu adevărat limitată sunt tururile de conversație**, nu minutele Actions, care
+pe repo public sunt zero.
+
+O primă versiune a rândului de mai sus scria „~360 din cele 500 consumate de commit-urile de
+conținut". E fals, și a fost măsurat fals în aceeași oră, de altă sesiune: pe `origin/main`, în 30
+de zile, **764 de commit-uri, din care 237 de conținut** — restul sunt commit-uri de dezvoltare,
+fiecare declanșând un build exact ca unul de conținut. Corroborat aici pe fereastra vizibilă dintr-o
+clonă shallow: 78 de commit-uri în 2,5 zile, din care 19 de conținut (24%). Deci **dezvoltarea, nu
+publicarea, e cea care consumă bugetul** — o inversiune care schimbă unde se caută economia.
+Dosarul cu cifra și comanda: `specs/resurse-gratuite.md` §3.1 (`IZZ-0238`).
 
 **c) Membrana selectiv permeabilă.** Măsurat azi: GitHub trece, `izz.ro` nu. Corpul remote e
 proiectat să nu-și poată vedea propria piele — de aceea §16.3 impune formularea „reparat +
@@ -125,6 +133,8 @@ agent trage masa asta.
 arată că store-ul de imagini e fragil — redenumirea în masă a fost respinsă fiindcă ar fi șters
 ~8.900 de imagini într-o rulare. Deci prima felie nu e mutarea, ci **măsurarea**: cât din timpul de
 build e checkout? Dacă e sub 10%, propunerea pică singură și nu se mai discută.
+Aceeași propunere apare, ajunsă pe altă cale, în `specs/resurse-gratuite.md` (felia 4, `media/` →
+Releases). Nu sunt două propuneri, ci una — dosarul ține cifrele de cotă, nota asta ține argumentul.
 
 **E3. Taxa de amnezie e reală și se plătește la fiecare tură.** `CLAUDE.md` 23,3 KB + `STATE.md`
 3,9 KB + `AGENTS.md` ≈ 7-8k tokeni înainte de primul lucru util. E o taxă corectă, dar plafonul e la
