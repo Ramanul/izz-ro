@@ -91,6 +91,26 @@
     return norm(`${item.title} ${item.source}`).includes(query);
   }
 
+  // Nivelurile sunt CUMULATIVE, nu trei cutii separate: "Regional" arata tot ce se afla in
+  // regiune, nu doar stirile care pomenesc exclusiv regiunea. Egalitatea stricta de dinainte
+  // filtra de fapt RUBRICA editoriala a articolului (/local/, /judetean/, /regional/), care
+  // poarta acelasi nume ca nivelul geografic dar nu promite acelasi lucru. Consecinta se vedea
+  // pe harta, masurat pe map.json v4 (488 de articole): doar 4 aveau geo_level "regional", deci
+  // 5 din 7 regiuni apareau goale -- Muntenia arata 0 cu 78 de stiri in ea, Oltenia arata 2 din
+  // 25. Un selector care se numeste "nivel geografic" promite continere, nu rubrici.
+  const LEVEL_RANK = { regional: 1, judetean: 2, local: 3 };
+
+  function matchesLevel(item, level) {
+    if (level === "all") return true;
+    const wanted = LEVEL_RANK[level];
+    if (!wanted) return true;
+    const own = LEVEL_RANK[item.geo_level || item.category];
+    // Rubricile fara nivel geografic (extern, politic, sport) n-au rank: raman in afara
+    // oricarui nivel, exact ca inainte. Se vad doar in "Toate".
+    if (!own) return false;
+    return own >= wanted;
+  }
+
   // `ignorePlace` sare peste filtrele de judet/localitate, pastrand nivelul si cautarea. E
   // folosit de selectorul de judete: construit din `state.visible`, dupa o selectie ar ramane
   // cu un singur buton -- cel al judetului curent -- si cine navigheaza din tastatura n-ar mai
@@ -99,7 +119,7 @@
   function filtered(options = {}) {
     const query = norm(state.search);
     const base = state.articles.filter((item) => {
-      if (state.level !== "all" && (item.geo_level || item.category) !== state.level) return false;
+      if (!matchesLevel(item, state.level)) return false;
       if (!options.ignorePlace && state.selectedRegion && item.region !== state.selectedRegion) return false;
       if (!options.ignorePlace && state.selectedCounty && item.county !== state.selectedCounty) return false;
       if (!options.ignorePlace && state.selectedLocality) {
