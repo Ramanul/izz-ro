@@ -13,24 +13,30 @@
 > history with two live rules buried in it. That is the same failure the 08-07 cut documented.
 > **A section is `Open` only if a PR is open or a decision is pending — check, don't assume.**
 
-**Updated:** 2026-08-21 (map county fix; rule files now verified by CI, not by trust)
+**Updated:** 2026-08-21 (PR #200 merged `0d8d49f`; announced to A in `handoff/to-A/`, per §14)
 
 ## Open
 
 - **PR #199 `fix/recuperare-404-pagini-indexate`** — targeted recovery of the pages Google has
   indexed. Open, not draft, awaiting owner merge.
-- **PR (draft) `claude/lumina-reguli-sesiuni-ypgdky`** — wrong-county fix on the map (measured
-  A/B: 12 articles moved, all 12 correct, 0 dropped), plus the rules work that produced this
-  file. The rules half is now WIRED: `tests/test_reguli.py` enforces the caps each rule file
-  declares about itself, that a cap is declared in exactly one place, that every cited
-  `ARTICLE_TTL_DAYS` matches config, and that every root `.md` has a role in CLAUDE.md §21.
-  Every guard has a negative test — a guard that cannot fail is worse than none (`IZZ-0177`).
+- **PR #201 `claude/surse-din-istoric-si-rubrica-ai`** — AI section, geographic scale in the bar,
+  translation. Draft, opened by another session; not reviewed here.
 - **Archive as a separate surface ("varianta 3")** — owner asked to be reminded on 08-21. Not
   started, still an owner decision. `ARTICLE_TTL_DAYS` went 7 → 30 (#197) as the cheap half of
   the same problem; `tools/arhiva.py` already reconstructs the full series from git history.
 - **From `specs/atribuire-cercetare-si-plan.md`, in order** — E1 permalink decoupled from
   category (**owner decision, blocks all retroactive correction**), E3 focus score instead of
   `max()`, E4 separate topic/place axes (**owner decision**), E5 gold set grown to ~150 + CI gate.
+
+## Landed 2026-08-21 — PR #200, merged `0d8d49f` (announced to account A, per §14)
+
+`source_county()` matched a county name as a bare substring, so the three OLTENIA papers pinned
+everything to Olt. A/B: 12 articles moved, all 12 correct, 0 dropped. And the rule files went from
+written to WIRED — `tests/test_reguli.py` enforces the cap each file declares about itself, that a
+cap is declared once, that every cited `ARTICLE_TTL_DAYS` matches config, and that every root
+`.md` has a role in CLAUDE.md §21. Every guard has a negative test and was mutation-tested on the
+real files. §7/§16 need judgement, not counting, and stay written. Root `.md`: 15 → 11.
+**Unverified, and impossible from a remote session: that the deployed map shows Craiova at Dolj.**
 
 ## Standing rules that keep being rediscovered — do not "fix" these
 
