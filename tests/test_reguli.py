@@ -53,6 +53,17 @@ TITLU_HARTA = "## 21. Harta fișierelor"
 # pipeline-ul nu s-a putut importa.
 TTL_DECLARAT = re.compile(r"^ARTICLE_TTL_DAYS\s*=\s*(\d+)", re.MULTILINE)
 
+# Fisierul asta e SINGURA exceptie de la garda de TTL, si e o exceptie de CATEGORIE, nu de
+# comoditate: fixturile lui contin dinadins cifre gresite, fiindca altfel testele negative n-ar
+# putea dovedi ca garda poate esua. Scanandu-se pe sine, garda si-ar raporta propriile momeli
+# drept drift.
+#
+# CUM S-A DESCOPERIT, 2026-08-21: local a trecut fiindca fisierul era inca NEURMARIT, deci
+# `git ls-files` nu-l vedea. Commit-ul insusi i-a schimbat intrarea, si CI a picat. O verificare
+# facuta inainte de commit nu acopera automat starea de dupa commit — pentru orice garda care
+# citeste din git, asta e o capcana permanenta, nu un accident.
+SCUTITE_TTL = frozenset({"tests/test_reguli.py"})
+
 
 def fisiere_urmarite(*sufixe: str) -> dict[str, str]:
     """Doar ce e in git — evita `output/`, `__pycache__` si copiile de lucru."""
@@ -134,8 +145,9 @@ def test_ttl_citat_in_text_e_cel_din_config():
     config_py = (ROOT / "generator" / "config.py").read_text(encoding="utf-8")
     declarat = TTL_DECLARAT.search(config_py)
     assert declarat, "generator/config.py nu declara ARTICLE_TTL_DAYS"
-    incalcari = incalcari_ttl(fisiere_urmarite("*.py", "*.md", "*.yml"),
-                              int(declarat.group(1)))
+    fisiere = {cale: text for cale, text in fisiere_urmarite("*.py", "*.md", "*.yml").items()
+               if cale not in SCUTITE_TTL}
+    incalcari = incalcari_ttl(fisiere, int(declarat.group(1)))
     assert not incalcari, "rationamentul a ramas in urma constantei:\n  " + "\n  ".join(incalcari)
 
 
@@ -223,3 +235,10 @@ def test_harta_nu_confunda_o_cale_cu_o_intrare():
     """`specs/STATE.md` sau `tools/log_slice.py` sunt trimiteri, nu intrari in harta."""
     text = TITLU_HARTA + "\n- `A.md` — rol\n- vezi `specs/STATE.md` si `tools/log_slice.py`\n"
     assert declarate_in_harta(text) == {"A.md"}
+
+
+def test_scutirea_ramane_o_exceptie_de_categorie_nu_o_lista_care_creste():
+    """O scutire e o gaura in garda. Una singura, numita, si care chiar exista."""
+    assert len(SCUTITE_TTL) == 1
+    for cale in SCUTITE_TTL:
+        assert (ROOT / cale).exists(), f"scutire pentru un fisier inexistent: {cale}"
