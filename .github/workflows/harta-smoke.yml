@@ -39,15 +39,43 @@ jobs:
           counties = data['map']['judete']
           articles = data.get('articles') or []
           stats = data.get('stats') or {}
-          assert data['map']['viewbox']
-          assert len(counties) == 42
-          assert articles, 'datasetul public nu conține articole localizate'
-          assert all(item.get('county') in counties for item in articles)
-          assert stats.get('total') == len(articles)
-          assert stats.get('counties') == len({item['county'] for item in articles})
-          assert stats.get('local', 0) + stats.get('judetean', 0) == len(articles)
-          assert stats.get('coordinates', 0) <= len(articles)
-          print('OK:', len(articles), 'articole localizate în', len({item['county'] for item in articles}), 'județe')
+          # Harta are TREI niveluri, nu doua. Un articol `regional` e ancorat de regiune si
+          # primeste deliberat `county: ""` (tools/build_harta_data.py, ramura `category ==
+          # "regional"`), fiindca regiunea nu e continuta intr-un singur judet. Versiunea
+          # anterioara a acestui bloc presupunea doar local+judetean, deci pica pe orice
+          # dataset cu macar un articol regional: pe 21 aug erau 2 din 548, si garda statea
+          # rosie din 20 aug 18:15. O garda rosie permanent nu mai semnaleaza nimic.
+          # Fiecare `assert` are mesaj: log-ul precedent nu spunea decat "linia 10".
+          niveluri = ('local', 'judetean', 'regional')
+          assert data['map']['viewbox'], 'harta publica nu are viewbox'
+          assert len(counties) == 42, f'{len(counties)} judete in dataset, asteptat 42'
+          assert articles, 'datasetul public nu contine articole localizate'
+          fara_judet = [a for a in articles
+                        if a.get('geo_level') != 'regional' and a.get('county') not in counties]
+          assert not fara_judet, (
+              f'{len(fara_judet)} articole ne-regionale au judet necunoscut; '
+              f'primul: {fara_judet[0].get("slug")!r} judet={fara_judet[0].get("county")!r}')
+          # Reversul: un articol regional TREBUIE sa aiba regiune si sa NU aiba judet. Fara
+          # asta, verificarea de mai sus s-ar putea ocoli punand `regional` pe orice.
+          regional_stricat = [a for a in articles if a.get('geo_level') == 'regional'
+                              and (a.get('county') or not a.get('region'))]
+          assert not regional_stricat, (
+              f'{len(regional_stricat)} articole regionale cu judet pus sau fara regiune; '
+              f'primul: {regional_stricat[0].get("slug")!r}')
+          assert stats.get('total') == len(articles), (
+              f'stats.total={stats.get("total")} dar datasetul are {len(articles)} articole')
+          judete_distincte = len({a['county'] for a in articles if a.get('county')})
+          assert stats.get('counties') == judete_distincte, (
+              f'stats.counties={stats.get("counties")} dar articolele acopera '
+              f'{judete_distincte} judete (judetul gol al regionalelor nu se numara)')
+          suma = sum(stats.get(n, 0) for n in niveluri)
+          assert suma == len(articles), (
+              f'nivelurile insumeaza {suma} dar sunt {len(articles)} articole: '
+              + ', '.join(f'{n}={stats.get(n, 0)}' for n in niveluri))
+          assert stats.get('coordinates', 0) <= len(articles), (
+              f'stats.coordinates={stats.get("coordinates")} > {len(articles)} articole')
+          print('OK:', len(articles), 'articole in', judete_distincte, 'judete —',
+                ', '.join(f'{n}={stats.get(n, 0)}' for n in niveluri))
           PY
               then
                 node --check /tmp/map.js
