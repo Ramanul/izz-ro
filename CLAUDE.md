@@ -3,9 +3,13 @@
 > Contract de operare pentru Claude Code / Cowork în acest repo. Citește-l înainte să acționezi;
 > aceste reguli înlocuiesc comportamentul implicit.
 >
-> **Slăbit pe 2026-08-06, de la 30,3 KB la ~11 KB; crescut înapoi la 20 KB până pe 2026-08-21,
-> iar sesiunea din 2026-08-21 l-a dus la 24 KB adăugând §5.0 și §12a — deci regula de mai jos
-> nu s-a ținut singură, nici măcar în tura care a scris-o.** Motivul slăbirii: fișierul se încarcă în
+> **Plafon: 24 KB.** Verificat mecanic de `tests/test_reguli.py`, care citește cifra chiar din
+> rândul ăsta — deci schimbi plafonul aici, într-un singur loc, sau nu-l schimbi deloc.
+> Măsura e mărimea în OCTEȚI (`stat -c %s`), nu `du`, care raportează blocuri de disc și a dus
+> deja de două ori la o cifră greșită scrisă aici.
+>
+> Istoric: slăbit pe 2026-08-06 de la 30,3 KB la ~11 KB, crescut înapoi la ~21 KB până pe
+> 2026-08-21 — deci regula de mai jos nu s-a ținut singură cât timp a fost doar scrisă. Motivul slăbirii: fișierul se încarcă în
 > context la FIECARE tură, iar jumătate din el era arhivă („COMPLETED", „ENDED / HISTORICAL",
 > istoricul măsurătorilor). Nimic n-a fost șters — a fost mutat, cu trimitere de aici:
 > · măsurători front-end și saga CLS → `specs/masuratori-frontend.md`
@@ -281,3 +285,25 @@ toate trei → articolul își păstrează coperta generată.
 - **Append-only.** Ce a fost respins acum o lună rămâne lizibil, cu motivul. Nu rescrie și nu șterge
   un rând; înlocuiește-l cu unul nou și leagă-le prin `leaga`.
 - **Un `find` gol NU e dovadă că nu s-a încercat** — completarea e manuală. Spec: `specs/registru-decizii.md`.
+
+## 21. Harta fișierelor de la rădăcină — CABLATĂ
+Lista asta e verificată de `tests/test_reguli.py`: un `.md` nou la rădăcină pică CI-ul până e
+trecut aici cu rolul lui. Mecanismul există fiindcă rădăcina ajunsese la 15 fișiere „de reguli",
+82 KB, treisprezece dintre ele înghețate în același commit — nimeni nu mai știa care e canonic.
+
+- `CLAUDE.md` — contractul canonic. Orice sesiune începe aici; restul sunt sateliți.
+- `AGENTS.md` — supliment pentru executorii non-Claude (Devin, OpenCode, Jules). Trimite explicit
+  la CLAUDE.md pentru tot ce e comun; adaugă doar regulile de rol.
+- `README.md` — descrierea publică a proiectului.
+- `REGULI-SINTEZA.md` — **normativ** pentru titluri și rezumate: prompturile din
+  `generator/process.py` trebuie să implementeze ce scrie acolo, nu invers.
+- `COORD-DASHBOARD.md` — metrici de coordonare. **Citit de `tools/log_slice.py`, deci nu se mută.**
+- `REVIEW.md` — protocolul de review; referit din README.
+- `TASKS-A.md` / `TASKS-B.md` — cozile celor două conturi. `TASKS-B.md` e canalul de anunț din §14.
+- `TASKS-MISTRAL.md` — coada executorului Mistral.
+- `SESSION-2026-08-14.md` / `mistral-analiza-workflow.md` — instantanee istorice, păstrate la
+  rădăcină doar fiindcă jurnalele din `sessions/` trimit la ele cu calea asta.
+
+Rapoartele și cercetările fără referință stau în `notes/`, nu aici (mutate acolo pe 2026-08-21:
+predarea din 08-17, raportul de progres, cele două note despre provideri — 60 KB, zero referințe).
+

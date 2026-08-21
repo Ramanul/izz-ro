@@ -1,7 +1,7 @@
 """Pagina 404 nu e o categorie goala, e capatul unui link mort.
 
 De ce merita test propriu: cel mai frecvent motiv pentru care cineva ajunge acolo NU e o
-adresa gresita, ci un articol EXPIRAT — `ARTICLE_TTL_DAYS = 7`, masurat pe live 8/8 cu
+adresa gresita, ci un articol EXPIRAT — `ARTICLE_TTL_DAYS = 30`, masurat pe live 8/8 cu
 control pozitiv si negativ (handoff/arhiva/2026-08-06-handoff-integral.md). Pana la
 2026-08-07 pagina primea `articles=[]` si cadea pe starea goala a sablonului de categorie,
 adica raspundea „Nicio stire in aceasta categorie deocamdata" — fals si derutant.
