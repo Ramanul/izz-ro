@@ -3,9 +3,10 @@
 > Contract de operare pentru Claude Code / Cowork în acest repo. Citește-l înainte să acționezi;
 > aceste reguli înlocuiesc comportamentul implicit.
 >
-> **Slăbit pe 2026-08-06, de la 30,3 KB la ~11 KB.** Motivul: fișierul se încarcă în context la
-> FIECARE tură, iar jumătate din el era arhivă („COMPLETED", „ENDED / HISTORICAL", istoricul
-> măsurătorilor). Nimic n-a fost șters — a fost mutat, cu trimitere de aici:
+> **Slăbit pe 2026-08-06, de la 30,3 KB la ~11 KB; crescut înapoi la 20 KB până pe 2026-08-21
+> — deci regula de mai jos nu s-a ținut singură.** Motivul slăbirii: fișierul se încarcă în
+> context la FIECARE tură, iar jumătate din el era arhivă („COMPLETED", „ENDED / HISTORICAL",
+> istoricul măsurătorilor). Nimic n-a fost șters — a fost mutat, cu trimitere de aici:
 > · măsurători front-end și saga CLS → `specs/masuratori-frontend.md`
 > · istoric §9/§11/§14/§15/§17 → `specs/istoric-operational.md`
 > **Când adaugi aici, întreabă întâi: obligă la o acțiune?** Dacă e o cifră, un incident sau o
@@ -159,9 +160,12 @@ armează o buclă autonomă. Detaliu operațional (Devin headless, cele două ni
 NU e accesibil de pe web): `specs/istoric-operational.md`.
 
 **Starea de execuție** (`specs/STATE.md`): sursa unică de adevăr pentru „unde suntem". Scrieri
-deținute de manager: actualizeaz-o la finalul fiecărei felii. Sub ~30 de linii. Citește-o la
-începutul fiecărei sesiuni, după `git pull --ff-only` — botul de CI comite la 2h, deci `main` local
-e adesea vechi.
+deținute de manager: actualizeaz-o la finalul fiecărei felii. **Plafonul de lungime e scris în
+antetul fișierului — nu-l repeta aici cu altă cifră.** Până pe 2026-08-21 erau două cifre diferite
+(~30 aici, ~40 acolo), iar fișierul avea 656 de linii. Citește-o la începutul fiecărei sesiuni,
+după `git pull --ff-only` — botul de CI comite la 2h, deci `main` local e adesea vechi.
+**O secțiune e Open doar dacă un PR chiar e deschis sau o decizie chiar e în așteptare** —
+verifică, nu presupune. De două ori a ajuns să scrie Open PR pentru PR-uri deja merged.
 
 ## 16. Verificare în două roluri + calibrare de onestitate — REGULĂ TARE
 Context: un fix CSS corect a fost raportat „rezolvat" în timp ce proprietarul vedea în continuare
