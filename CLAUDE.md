@@ -3,8 +3,9 @@
 > Contract de operare pentru Claude Code / Cowork în acest repo. Citește-l înainte să acționezi;
 > aceste reguli înlocuiesc comportamentul implicit.
 >
-> **Slăbit pe 2026-08-06, de la 30,3 KB la ~11 KB; crescut înapoi la 20 KB până pe 2026-08-21
-> — deci regula de mai jos nu s-a ținut singură.** Motivul slăbirii: fișierul se încarcă în
+> **Slăbit pe 2026-08-06, de la 30,3 KB la ~11 KB; crescut înapoi la 20 KB până pe 2026-08-21,
+> iar sesiunea din 2026-08-21 l-a dus la 24 KB adăugând §5.0 și §12a — deci regula de mai jos
+> nu s-a ținut singură, nici măcar în tura care a scris-o.** Motivul slăbirii: fișierul se încarcă în
 > context la FIECARE tură, iar jumătate din el era arhivă („COMPLETED", „ENDED / HISTORICAL",
 > istoricul măsurătorilor). Nimic n-a fost șters — a fost mutat, cu trimitere de aici:
 > · măsurători front-end și saga CLS → `specs/masuratori-frontend.md`
@@ -65,6 +66,8 @@ output/             site generat (gitignored; deployat de Cloudflare Pages)
   *neconfigurat*.
 
 ## 5. Flux de lucru — OBLIGATORIU
+0. **Inventarul uneltelor (§12a).** Câteva comenzi: ce am, ce nu am, ce lipsește dar se poate
+   obține. Orice limitare pe care o invoci mai târziu trebuie să vină de aici, cu ieșire reală.
 1. **Spec întâi.** 3-8 linii: scop, intrări/ieșiri, criterii de acceptare. Fără spec → fără cod.
 2. **Plan înainte de muncă netrivială.** Analizează, propune plan cu fișierele atinse, NU edita.
    Așteaptă „go".
@@ -109,6 +112,30 @@ configurația de deploy în producție (Cloudflare Pages, secrete GitHub Actions
 **Nu re-audita fără o descoperire nouă, specifică.** Detaliu: `specs/istoric-operational.md`.
 
 ## 12. Unelte și efort
+
+### 12a. Inventarul uneltelor se face ÎNAINTE de task — REGULĂ TARE
+Contextul de execuție diferă de la o sesiune la alta (local vs. remote, ce conectori sunt pornite,
+ce lasă proxy-ul să treacă). **Înainte să începi un task netrivial, verifică ce ai efectiv la
+îndemână — și abia apoi începe.**
+
+- **Nu confunda unealta cu capacitatea.** Lipsa unui binar NU dovedește lipsa accesului. Măsurat
+  2026-08-21: `gh` nu era instalat, și am dedus de acolo că nu pot interoga CI — fals, accesul la
+  GitHub exista tot timpul prin conector, cu care deschisesem chiar eu PR-ul. Întreabă „pot face
+  X?", nu „am unealta Y?".
+- **O limitare se declară cu comanda care a eșuat, nu din memorie.** Fără ieșire reală citată,
+  n-ai măsurat — ai presupus. Vezi §16.4.
+- **Verificările care merită, ieftine, la început:** binare (`which`), rețea către host-ul exact de
+  care ai nevoie (`curl` + `$HTTPS_PROXY/__agentproxy/status` pentru MOTIVUL refuzului, nu doar
+  pentru cod), ce conectori/MCP sunt active, ce unelte amânate se pot încărca (`ToolSearch`), ce
+  dependențe de dev lipsesc (`ruff`, `pytest` nu sunt mereu instalate — §4).
+- **Ce lipsește dar se poate obține → propune, nu ocoli tăcut.** Dacă un task ar merge mult mai
+  bine cu un conector nepornit, o dependență neinstalată sau o permisiune pe care proprietarul o
+  poate da, **spune-o la început**, cu ce anume deblochează. Rămâne propunere pe care el o
+  confirmă (§0, §5) — nu o instala și nu o activa singur dacă e ireversibilă sau costă bani.
+- **Ține-l scurt.** E un inventar de câteva comenzi, nu un audit. Dacă inventarul costă mai mult
+  decât felia pe care o susține, l-ai făcut prea mare (§19).
+
+### 12b. Aprobări și efort
 PowerShell și Desktop Commander pot rula fără aprobare per comandă, în limitele blocklistei hook-ului
 de securitate. Citirea de fișiere și comenzile documentate de dev/build/lint/test nu cer confirmare.
 Acțiunile distructive sau ireversibile o cer în continuare.
