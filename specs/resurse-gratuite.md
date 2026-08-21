@@ -29,7 +29,7 @@ subutilizată, iar cea tratată ca nelimitată e depășită.** Detaliu în §3.
 | `python3` | 3.11.15 | egal cu cloud-ul, nu cu localul (3.14) |
 | **`lighthouse`, `pa11y`** | **LIPSESC** | **`tools/audit.sh` (§13) NU rulează din sesiunea asta** |
 | `gh` | LIPSEȘTE | *nu* înseamnă lipsă de acces la GitHub — vezi 1.3 |
-| `pytest` | prezent, **izolat** | shebang `/root/.local/share/uv/tools/pytest/bin/python` — NU vede pachetele instalate cu `pip`. De aici 49 de erori de colectare care arată ca un repo stricat și nu sunt. Rulează `python3 -m pytest`, nu `pytest`. CI nu are problema: `tests.yml` instalează ambele în același interpretor |
+| `pytest` | prezent, **izolat** | shebang `/root/.local/share/uv/tools/pytest/bin/python` — NU vede pachetele instalate cu `pip`. De aici erorile de colectare (42 măsurate) care arată ca un repo stricat și nu sunt. **Dar nici `python3 -m pytest` nu merge din prima: `No module named pytest`.** Niciuna dintre cele două comenzi nu funcționează pe container curat; reparația e `python3 -m pip install pytest`, după care comanda documentată în §4 rulează suita întreagă (măsurat: 1132 passed, 1 skipped, 8 xfailed). CI nu are problema: `tests.yml` instalează ambele în același interpretor |
 
 ### 1.2 Rețea — politica de mediu, nu o pană
 `curl -sv` + `$HTTPS_PROXY/__agentproxy/status` → `connect_rejected`,
@@ -37,6 +37,11 @@ subutilizată, iar cea tratată ca nelimitată e depășită.** Detaliu în §3.
 
 - **Respinse:** `izz.ro`, `api.cloudflare.com`, `openrouter.ai`, `api.openrouter.ai`,
   `huggingface.co`, `api.groq.com`, `api.mistral.ai`, `r.jina.ai`
+- **Respinse și sursele de știri** — măsurat separat pe 2026-08-21: `digi24.ro`, `www.digi24.ro`,
+  `adevarul.ro`, `www.gsp.ro`, `fcinter1908.it` dau toate `curl: (56) CONNECT tunnel failed,
+  response 403`. Deci **nicio sursă RSS nu poate fi verificată din sesiunea asta** — de-aia
+  `feedcheck.yml` există ca workflow de dispatch, și de-aia PR #201 stă draft cu 21 de feed-uri
+  neverificate până rulează pe runner. Limita e a corpului, nu a proiectului: runnerul le vede.
 - **Accesibile:** `generativelanguage.googleapis.com` (404 pe root = host viu), `api.github.com`
   (doar prin conector — vezi 1.3)
 
