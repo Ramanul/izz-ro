@@ -233,7 +233,36 @@ SYNTHESIS_MAX_WORDS = 90       # C: sinteză multi-sursă (doar pentru clustere 
 CLUSTER_MIN_SOURCES = 2        # >=2 surse pe același eveniment -> candidat pentru C
 RELATED_MIN_SHARED = 2         # "Articole conectate": minim entitati comune. 1 singura entitate
                                # comuna (de regula o tara larga: "Franța") = zgomot, nu relevanta.
-ARTICLE_TTL_DAYS = 7           # mai scurt -> volum mai mic -> incape in quota free Gemini
+# Cat timp ramane un articol PUBLICAT. `state.expire()` sterge din stare tot ce trece de prag,
+# iar site-ul fiind generat static asta inseamna ca PAGINA DISPARE: Google ramane cu adresa in
+# index si serveste 404 cititorului.
+#
+# Ridicat 7 -> 30 (owner 2026-08-20), dupa ce Search Console a aratat 193 de pagini "Nu a fost
+# gasita". Verificat pe exportul lor: 186 din 186 nu mai erau in `articles.json`, iar unul
+# urmarit prin istoric (`seceta-extrema-...-albia-dunarii`) fusese adaugat pe 5 aug si sters pe
+# 10 aug, in commitul `897f180f` care a scos 107 articole intr-o singura rulare. Efectul se
+# vedea in trafic: "maria baetica" - pozitia 7,5 in Google, 18 afisari, ZERO clicuri, fiindca
+# pagina nu mai exista.
+#
+# Motivul vechi ("incape in quota free Gemini") NU se sustine: `state.merge()` pastreaza
+# articolele existente cu procesarea lor, deci un articol vechi nu mai consuma niciun apel AI,
+# iar consumul e plafonat separat prin `max_ai_calls`. Constrangerea reala e DIMENSIUNEA:
+# `data/articles.json` e comis in repo la fiecare rulare (~12/zi). Masurat la TTL 7: 5.062
+# articole = 5,9 MB (~1.186 octeti/articol, ~723 articole/zi). Proiectie: 30 zile ~ 21.700
+# articole ~ 25 MB; 90 de zile ar da ~77 MB - de aceea 30, nu mai mult.
+#
+# Doua efecte secundare cunoscute, cautate in registru inainte de schimbare:
+#   IZZ-0104 - pipeline-ul sare itemele din feed deja peste TTL (main.py:486). Cu pragul la 30,
+#     stiri de pana la 30 de zile din feeduri devin eligibile. Bugetul ramane plafonat de
+#     `max_ai_calls`, deci costul nu creste; se schimba doar CE intra in el.
+#   IZZ-0143 - cele 62 de articole din surse fara substanta erau lasate "sa expire pe TTL".
+#     Acum raman 30 de zile, nu 7. Daca deranjeaza, se curata explicit, nu prin scurtarea TTL.
+# Efect pozitiv colateral: setul de aur pentru masuratori nu mai erodeaza la fel de repede
+# (STATE.md nota 17 din 40 de randuri deja expirate).
+#
+# Plafonul se ridica definitiv doar prin arhiva separata de starea de lucru (paginile raman
+# publicate, articolele ies doar din procesare) - proiect separat, programat pe 21 aug.
+ARTICLE_TTL_DAYS = 30
 MAX_PER_SOURCE = 8             # redus de la 12 ca sa scada apelurile AI/rulare
 # Homepage-ul este un tablou de bord, nu arhiva zilei: patru carduri per categorie pastreaza
 # orientarea larga, iar restul raman accesibile prin pagina de categorie. Limita reduce DOM-ul
