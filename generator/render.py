@@ -1455,11 +1455,19 @@ def _redirects_migrare() -> str:
             linii = [ln.strip() for ln in f if ln.strip()]
     except OSError:
         return ""
-    out = []
+    out, invalide = [], []
     for ln in linii:
         parti = ln.split("\t")
         if len(parti) == 2 and parti[0].startswith("/") and parti[1].startswith("/"):
             out.append(f"{parti[0]} {parti[1]} 301")
+        else:
+            invalide.append(ln)
+    if invalide:
+        # Esecul tacut e exact bug-ul pe care fisierul asta exista sa-l previna: un rand sarit
+        # inseamna un articol fara 301, deci un URL deja indexat care da 404 permanent. Un
+        # TSV corupt (editare manuala, merge prost rezolvat) trebuie sa se VADA in log-ul de build.
+        print(f"[redirects_migrare] {len(invalide)} linii ignorate, format invalid: "
+              f"{invalide[:3]}", file=sys.stderr)
     return ("\n".join(out) + "\n") if out else ""
 
 

@@ -60,6 +60,20 @@ def test_cele_patru_trepte_geografice_sunt_vizibile_in_bara():
         assert cat in inline, f"{cat} nu apare in bara, ci sub „mai multe”"
 
 
+def test_nicio_rubrica_nu_a_fost_impinsa_afara_din_bara():
+    """Regresie prinsa la review pe PR #201, nu de mine.
+
+    Reordonarea a bagat 4 trepte geografice + `ai` in fata, dar cutoff-ul a crescut doar
+    7 -> 9. Rezultat: `tech` si `auto` — vizibile inainte, ~90 de articole fiecare — au
+    cazut tacut in dropdown. Nimeni n-a cerut asta, si nu scria nicaieri in PR.
+    Setul vizibil de dinainte e un contract cu cititorul: se poate ADAUGA la el, nu se
+    scoate din el fara o decizie explicita a owner-ului."""
+    vizibile_inainte = {"general", "politic", "economic", "extern", "tech", "sport", "auto"}
+    inline = set(_bara_inline())
+    lipsa = vizibile_inainte - inline
+    assert not lipsa, f"rubrici scoase din bara fara decizie explicita: {sorted(lipsa)}"
+
+
 def test_treptele_geografice_sunt_numite_explicit():
     assert config.CATEGORY_LABELS["general"] == "Național"
     assert config.CATEGORY_LABELS["regional"] == "Regional"
@@ -150,3 +164,19 @@ def test_fara_fisier_de_migrare_nu_se_arunca():
         assert render._redirects_migrare() == ""
     finally:
         render._MIGRARE_TSV = real
+
+
+def test_o_linie_tsv_malformata_nu_dispare_in_tacere(tmp_path, capsys):
+    """Un rand sarit = un articol fara 301 = un URL indexat care da 404. Trebuie sa se vada."""
+    f = tmp_path / "stricat.tsv"
+    f.write_text("/tech/bun/\t/ai/bun/\nrand-fara-taburi\n/tech/x/\tfara-slash\n",
+                 encoding="utf-8")
+    real = render._MIGRARE_TSV
+    try:
+        render._MIGRARE_TSV = str(f)
+        out = render._redirects_migrare()
+    finally:
+        render._MIGRARE_TSV = real
+    assert out.strip() == "/tech/bun/ /ai/bun/ 301"
+    err = capsys.readouterr().err
+    assert "2 linii ignorate" in err

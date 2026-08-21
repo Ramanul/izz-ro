@@ -167,12 +167,8 @@ SOURCES = {
     # in 89 de zile). E in ITALIANA: fara `lang` ar fi fost publicat brut. Vezi process.py,
     # garda `source_lang != "ro"`.
             "fcinter1908": {"name": "FC Inter 1908",   "url": "https://www.fcinter1908.it/feed/",       "category": "sport", "lang": "it"},
-            "gazzetta":   {"name": "La Gazzetta dello Sport", "url": "https://www.gazzetta.it/rss/home.xml", "category": "sport", "lang": "it"},
             "as_ro":      {"name": "Antena Sport",     "url": "https://www.as.ro/rss",                  "category": "sport"},
             "sportro":    {"name": "Sport.ro",         "url": "https://www.sport.ro/rss",               "category": "sport"},
-            "eurosportro": {"name": "Eurosport România", "url": "https://www.eurosport.ro/rss.xml",     "category": "sport"},
-    # cultura
-            "historia":   {"name": "Historia",         "url": "https://historia.ro/feed/",              "category": "cultura"},
     # auto
             "automarket": {"name": "AutoMarket",       "url": "https://www.automarket.ro/rss/",         "category": "auto"},
     # judetean — Timisoara; owner-ul e din Timis, iar `tion` si `pressalert` sunt deja acolo.
@@ -184,8 +180,20 @@ SOURCES = {
             "adevarul":   {"name": "Adevărul",         "url": "https://adevarul.ro/rss",                "category": "general"},
             "observator": {"name": "Observator",       "url": "https://observatornews.ro/rss",          "category": "general"},
             "stiripesurse": {"name": "Știri pe surse", "url": "https://www.stiripesurse.ro/rss",        "category": "general"},
-            "newsweekro": {"name": "Newsweek România",  "url": "https://newsweek.ro/feed/",             "category": "politic"},
             "evz":        {"name": "Evenimentul Zilei", "url": "https://evz.ro/feed",                   "category": "politic"},
+    # ----------------------------------------------------------------------------
+    # VERDICTUL `feedcheck` run 32455583095 (2026-08-21, runner GitHub, IP cu internet):
+    # 15 din 21 VII. Taiate, cu motivul masurat — NU re-adauga fara sa gasesti alta cale:
+    #   · eurosportro — `https://www.eurosport.ro/rss.xml` -> HTTP 404
+    #   · historia    — `https://historia.ro/feed/`        -> HTTP 404
+    #   · newsweekro  — `https://newsweek.ro/feed/`        -> HTTP 404
+    #   · gazzetta    — `https://www.gazzetta.it/rss/home.xml` raspunde 200 cu 8 intrari, dar
+    #     cea mai noua e din 2023-12-08. Feed INGHETAT de 2 ani si jumatate, adica mort in
+    #     practica; aceeasi regula sub care au cazut deja primariaclujnapoca si constanta.
+    # PASTRATE desi n-au putut fi verificate (nu inseamna vii, inseamna neverificabile de acolo):
+    #   · stiripesurse — HTTP 403, IP de datacenter respins (acelasi tipar ca ziaruldeiasi,
+    #     despre care s-a masurat pe 2026-08-05 ca raspunde 200 de pe o retea obisnuita)
+    #   · evz          — HTTP 429, rate-limit pe IP
     # ============================================================================
             "gsp":        {"name": "GSP",          "url": "https://www.gsp.ro/rss.xml",                "category": "sport"},
             "digisport":  {"name": "Digi Sport",   "url": "https://www.digisport.ro/rss",               "category": "sport"},
