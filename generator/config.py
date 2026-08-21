@@ -190,6 +190,13 @@ SEED_CATEGORIES = {"regional", "judetean", "local"}
 # ramane in sectiunea 'local', nu ajunge pe sport/politic dupa continut.
 PINNED_CATEGORIES = {"regional", "judetean", "local"}
 
+# Categorii care si-au schimbat NUMELE de-a lungul timpului. Istoricul lui
+# `data/articles.json` pastreaza articolele vechi sub numele de atunci, iar o categorie
+# moarta nu mai primeste pagina de articol la randare, dar tot produce linkuri catre ea
+# din listari -- adica exact legaturi interne rupte. Orice cod care scoate articole din
+# istoric trece prin harta asta (vezi tools/recupereaza_404.py).
+CATEGORII_REDENUMITE = {"zonal": "judetean"}
+
 # Etichete AFISATE (owner 2026-07-17): slug-ul din URL ramane neschimbat (SEO), doar
 # textul din nav/titluri/carduri foloseste aceste nume. Fallback = slug capitalizat.
 # EXCEPTIE explicita a owner-ului (2026-08-12): categoria 'zonal' a fost redenumita

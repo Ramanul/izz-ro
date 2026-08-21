@@ -31,6 +31,9 @@ import sys
 from datetime import datetime, timedelta, timezone
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+sys.path.insert(0, ROOT)
+from generator import config  # noqa: E402  (dupa sys.path, ca sa mearga rulat direct)
+
 STARE = os.path.join(ROOT, "data", "articles.json")
 ZILE_ISTORIC = 40          # cat de departe cautam in urma; peste TTL, ca sa prindem si marginea
 
@@ -55,6 +58,19 @@ def _data(a: dict):
     except (ValueError, TypeError):
         return None
     return x if x.tzinfo else x.replace(tzinfo=timezone.utc)
+
+
+def _normalizeaza(a: dict) -> dict:
+    """Aduce un articol scos din istoric la taxonomia de AZI.
+
+    Un articol salvat inainte de o redenumire de categorie pastreaza numele vechi. Randarea
+    nu mai scrie pagina sub numele mort, dar listarile inca emit linkul catre ea, deci
+    recuperarea "reusita" ar reintroduce legaturi interne rupte -- masurat pe 5 din cele 73
+    de articole recuperate: 9 legaturi moarte in `tools/html_check.py`."""
+    c = a.get("category")
+    if c in config.CATEGORII_REDENUMITE:
+        return dict(a, category=config.CATEGORII_REDENUMITE[c])
+    return a
 
 
 def sluguri_tinta(cale_csv: str) -> dict:
@@ -105,7 +121,7 @@ def main() -> int:
         for a in arts:
             s = a.get("slug")
             if s in lipsa and s not in gasit:
-                gasit[s] = a
+                gasit[s] = _normalizeaza(a)
 
     # Un articol peste TTL ar fi sters de prima rulare, deci recuperarea lui ar fi zgomot.
     prag = datetime.now(timezone.utc) - timedelta(days=_ttl())
@@ -145,8 +161,6 @@ def main() -> int:
 
 
 def _ttl() -> int:
-    sys.path.insert(0, ROOT)
-    from generator import config
     return config.ARTICLE_TTL_DAYS
 
 
