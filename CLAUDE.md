@@ -3,9 +3,15 @@
 > Contract de operare pentru Claude Code / Cowork în acest repo. Citește-l înainte să acționezi;
 > aceste reguli înlocuiesc comportamentul implicit.
 >
-> **Slăbit pe 2026-08-06, de la 30,3 KB la ~11 KB.** Motivul: fișierul se încarcă în context la
-> FIECARE tură, iar jumătate din el era arhivă („COMPLETED", „ENDED / HISTORICAL", istoricul
-> măsurătorilor). Nimic n-a fost șters — a fost mutat, cu trimitere de aici:
+> **Plafon: 24 KB.** Verificat mecanic de `tests/test_reguli.py`, care citește cifra chiar din
+> rândul ăsta — deci schimbi plafonul aici, într-un singur loc, sau nu-l schimbi deloc.
+> Măsura e mărimea în OCTEȚI (`stat -c %s`), nu `du`, care raportează blocuri de disc și a dus
+> deja de două ori la o cifră greșită scrisă aici.
+>
+> Istoric: slăbit pe 2026-08-06 de la 30,3 KB la ~11 KB, crescut înapoi la ~21 KB până pe
+> 2026-08-21 — deci regula de mai jos nu s-a ținut singură cât timp a fost doar scrisă. Motivul slăbirii: fișierul se încarcă în
+> context la FIECARE tură, iar jumătate din el era arhivă („COMPLETED", „ENDED / HISTORICAL",
+> istoricul măsurătorilor). Nimic n-a fost șters — a fost mutat, cu trimitere de aici:
 > · măsurători front-end și saga CLS → `specs/masuratori-frontend.md`
 > · istoric §9/§11/§14/§15/§17 → `specs/istoric-operational.md`
 > **Când adaugi aici, întreabă întâi: obligă la o acțiune?** Dacă e o cifră, un incident sau o
@@ -64,6 +70,8 @@ output/             site generat (gitignored; deployat de Cloudflare Pages)
   *neconfigurat*.
 
 ## 5. Flux de lucru — OBLIGATORIU
+0. **Inventarul uneltelor (§12a).** Câteva comenzi: ce am, ce nu am, ce lipsește dar se poate
+   obține. Orice limitare pe care o invoci mai târziu trebuie să vină de aici, cu ieșire reală.
 1. **Spec întâi.** 3-8 linii: scop, intrări/ieșiri, criterii de acceptare. Fără spec → fără cod.
 2. **Plan înainte de muncă netrivială.** Analizează, propune plan cu fișierele atinse, NU edita.
    Așteaptă „go".
@@ -108,6 +116,30 @@ configurația de deploy în producție (Cloudflare Pages, secrete GitHub Actions
 **Nu re-audita fără o descoperire nouă, specifică.** Detaliu: `specs/istoric-operational.md`.
 
 ## 12. Unelte și efort
+
+### 12a. Inventarul uneltelor se face ÎNAINTE de task — REGULĂ TARE
+Contextul de execuție diferă de la o sesiune la alta (local vs. remote, ce conectori sunt pornite,
+ce lasă proxy-ul să treacă). **Înainte să începi un task netrivial, verifică ce ai efectiv la
+îndemână — și abia apoi începe.**
+
+- **Nu confunda unealta cu capacitatea.** Lipsa unui binar NU dovedește lipsa accesului. Măsurat
+  2026-08-21: `gh` nu era instalat, și am dedus de acolo că nu pot interoga CI — fals, accesul la
+  GitHub exista tot timpul prin conector, cu care deschisesem chiar eu PR-ul. Întreabă „pot face
+  X?", nu „am unealta Y?".
+- **O limitare se declară cu comanda care a eșuat, nu din memorie.** Fără ieșire reală citată,
+  n-ai măsurat — ai presupus. Vezi §16.4.
+- **Verificările care merită, ieftine, la început:** binare (`which`), rețea către host-ul exact de
+  care ai nevoie (`curl` + `$HTTPS_PROXY/__agentproxy/status` pentru MOTIVUL refuzului, nu doar
+  pentru cod), ce conectori/MCP sunt active, ce unelte amânate se pot încărca (`ToolSearch`), ce
+  dependențe de dev lipsesc (`ruff`, `pytest` nu sunt mereu instalate — §4).
+- **Ce lipsește dar se poate obține → propune, nu ocoli tăcut.** Dacă un task ar merge mult mai
+  bine cu un conector nepornit, o dependență neinstalată sau o permisiune pe care proprietarul o
+  poate da, **spune-o la început**, cu ce anume deblochează. Rămâne propunere pe care el o
+  confirmă (§0, §5) — nu o instala și nu o activa singur dacă e ireversibilă sau costă bani.
+- **Ține-l scurt.** E un inventar de câteva comenzi, nu un audit. Dacă inventarul costă mai mult
+  decât felia pe care o susține, l-ai făcut prea mare (§19).
+
+### 12b. Aprobări și efort
 PowerShell și Desktop Commander pot rula fără aprobare per comandă, în limitele blocklistei hook-ului
 de securitate. Citirea de fișiere și comenzile documentate de dev/build/lint/test nu cer confirmare.
 Acțiunile distructive sau ireversibile o cer în continuare.
@@ -159,9 +191,12 @@ armează o buclă autonomă. Detaliu operațional (Devin headless, cele două ni
 NU e accesibil de pe web): `specs/istoric-operational.md`.
 
 **Starea de execuție** (`specs/STATE.md`): sursa unică de adevăr pentru „unde suntem". Scrieri
-deținute de manager: actualizeaz-o la finalul fiecărei felii. Sub ~30 de linii. Citește-o la
-începutul fiecărei sesiuni, după `git pull --ff-only` — botul de CI comite la 2h, deci `main` local
-e adesea vechi.
+deținute de manager: actualizeaz-o la finalul fiecărei felii. **Plafonul de lungime e scris în
+antetul fișierului — nu-l repeta aici cu altă cifră.** Până pe 2026-08-21 erau două cifre diferite
+(~30 aici, ~40 acolo), iar fișierul avea 656 de linii. Citește-o la începutul fiecărei sesiuni,
+după `git pull --ff-only` — botul de CI comite la 2h, deci `main` local e adesea vechi.
+**O secțiune e Open doar dacă un PR chiar e deschis sau o decizie chiar e în așteptare** —
+verifică, nu presupune. De două ori a ajuns să scrie Open PR pentru PR-uri deja merged.
 
 ## 16. Verificare în două roluri + calibrare de onestitate — REGULĂ TARE
 Context: un fix CSS corect a fost raportat „rezolvat" în timp ce proprietarul vedea în continuare
@@ -178,13 +213,20 @@ cache-uit immutable, fără cache-bust). Pentru ORICE schimbare vizibilă utiliz
 3. **Trei stări distincte — nu le confunda, folosește cuvintele exacte:**
    - „**reparat în cod**" = diff-ul e scris.
    - „**verificat local**" = ambele roluri au trecut pe site-ul construit aici.
-   - „**confirmat pe live**" = site-ul deployat arată reparat. **Sandbox-ul POATE ajunge la izz.ro**
-     (măsurat 2026-07-25: `https://izz.ro/` → 200 cu conținut real; fiecare PR are preview
-     Cloudflare la `https://<branch>.izz-ro.pages.dev/`). Deci fă-o efectiv înainte să zici „gata":
-     ia URL-ul deployat, afirmă că simptomul exact a dispărut, citează răspunsul. Mereu cu
-     cache-bust (`?cb=$(date +%s)`). Site-urile de știri rămân blocate de proxy — limita aia e reală
-     și separată. Dacă un sandbox chiar nu poate ajunge, spune-o cu comanda care a eșuat și cazi pe
-     „reparat + verificat local; rămâne de confirmat pe live după deploy".
+   - „**confirmat pe live**" = site-ul deployat arată reparat. Fiecare PR are preview Cloudflare
+     la `https://<branch>.izz-ro.pages.dev/`. Mereu cu cache-bust (`?cb=$(date +%s)`).
+     **Depinde de UNDE rulezi — verifică, nu presupune:**
+     · *sandbox local* — POATE ajunge (măsurat 2026-07-25: `https://izz.ro/` → 200 cu conținut
+       real). Acolo fă-o efectiv înainte să zici „gata": ia URL-ul deployat, afirmă că simptomul
+       exact a dispărut, citează răspunsul.
+     · *sesiune remote (Claude Code pe web)* — NU poate: politica de rețea a mediului respinge
+       `izz.ro`, `izz-ro.pages.dev` și preview-urile de ramură deopotrivă (măsurat 2026-08-21, PR
+       #200: `curl` → `CONNECT tunnel failed, response 403`, confirmat în
+       `$HTTPS_PROXY/__agentproxy/status` ca `connect_rejected` — deci nu e o pană trecătoare).
+     Site-urile de știri rămân blocate de proxy peste tot — limita aia e reală și separată.
+     Când nu poți ajunge, spune-o cu comanda care a eșuat și cazi pe „reparat + verificat local;
+     rămâne de confirmat pe live după deploy". NU declara „confirmat pe live" pe baza unui deploy
+     reușit: build-ul verde spune că s-a publicat ceva, nu că simptomul a dispărut.
 4. **Când nu poți testa ceva, spune explicit** (care rol, de ce) în loc să lași impresia că a trecut.
 
 ## 17. Cadență de publicare — MĂSURAT, nu re-diagnostica
@@ -243,3 +285,25 @@ toate trei → articolul își păstrează coperta generată.
 - **Append-only.** Ce a fost respins acum o lună rămâne lizibil, cu motivul. Nu rescrie și nu șterge
   un rând; înlocuiește-l cu unul nou și leagă-le prin `leaga`.
 - **Un `find` gol NU e dovadă că nu s-a încercat** — completarea e manuală. Spec: `specs/registru-decizii.md`.
+
+## 21. Harta fișierelor de la rădăcină — CABLATĂ
+Lista asta e verificată de `tests/test_reguli.py`: un `.md` nou la rădăcină pică CI-ul până e
+trecut aici cu rolul lui. Mecanismul există fiindcă rădăcina ajunsese la 15 fișiere „de reguli",
+82 KB, treisprezece dintre ele înghețate în același commit — nimeni nu mai știa care e canonic.
+
+- `CLAUDE.md` — contractul canonic. Orice sesiune începe aici; restul sunt sateliți.
+- `AGENTS.md` — supliment pentru executorii non-Claude (Devin, OpenCode, Jules). Trimite explicit
+  la CLAUDE.md pentru tot ce e comun; adaugă doar regulile de rol.
+- `README.md` — descrierea publică a proiectului.
+- `REGULI-SINTEZA.md` — **normativ** pentru titluri și rezumate: prompturile din
+  `generator/process.py` trebuie să implementeze ce scrie acolo, nu invers.
+- `COORD-DASHBOARD.md` — metrici de coordonare. **Citit de `tools/log_slice.py`, deci nu se mută.**
+- `REVIEW.md` — protocolul de review; referit din README.
+- `TASKS-A.md` / `TASKS-B.md` — cozile celor două conturi. `TASKS-B.md` e canalul de anunț din §14.
+- `TASKS-MISTRAL.md` — coada executorului Mistral.
+- `SESSION-2026-08-14.md` / `mistral-analiza-workflow.md` — instantanee istorice, păstrate la
+  rădăcină doar fiindcă jurnalele din `sessions/` trimit la ele cu calea asta.
+
+Rapoartele și cercetările fără referință stau în `notes/`, nu aici (mutate acolo pe 2026-08-21:
+predarea din 08-17, raportul de progres, cele două note despre provideri — 60 KB, zero referințe).
+
