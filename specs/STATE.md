@@ -13,18 +13,21 @@
 > history with two live rules buried in it. That is the same failure the 08-07 cut documented.
 > **A section is `Open` only if a PR is open or a decision is pending — check, don't assume.**
 
-**Updated:** 2026-08-21 (map county fix; rule files now verified by CI, not by trust)
+**Updated:** 2026-08-21 (image licensing: CC BY photos reach article pages; map county fix)
 
 ## Open
 
+- **PR #205 (draft) `claude/getty-images-licensing-d1kupt`** — CC BY / CC BY-SA lead photos now
+  illustrate the ARTICLE PAGE, under the credit line that was already there; PD/CC0 keeps cards,
+  hero and `og:image`. The gate was stricter than `content/legal/images.md`, which already
+  permitted it. Tier 2 uses `photo.jpg`/`photo_path`, separate from `art.jpg`/`art_path`, so a
+  leak onto a card is impossible by construction. Measured on built output: 22 → 56 articles
+  with a real photo, 0 leaks. **Getty rejected** (`IZZ-0237`).
 - **PR #199 `fix/recuperare-404-pagini-indexate`** — targeted recovery of the pages Google has
   indexed. Open, not draft, awaiting owner merge.
-- **PR (draft) `claude/lumina-reguli-sesiuni-ypgdky`** — wrong-county fix on the map (measured
-  A/B: 12 articles moved, all 12 correct, 0 dropped), plus the rules work that produced this
-  file. The rules half is now WIRED: `tests/test_reguli.py` enforces the caps each rule file
-  declares about itself, that a cap is declared in exactly one place, that every cited
-  `ARTICLE_TTL_DAYS` matches config, and that every root `.md` has a role in CLAUDE.md §21.
-  Every guard has a negative test — a guard that cannot fail is worse than none (`IZZ-0177`).
+- **PR #202 (draft) `claude/lumina-reguli-sesiuni-ypgdky`** — wrong-county map fix (A/B: 12
+  articles moved, all correct, 0 dropped) + the rules work that produced this file.
+  `tests/test_reguli.py` now enforces the caps; every guard has a negative test (`IZZ-0177`).
 - **Archive as a separate surface ("varianta 3")** — owner asked to be reminded on 08-21. Not
   started, still an owner decision. `ARTICLE_TTL_DAYS` went 7 → 30 (#197) as the cheap half of
   the same problem; `tools/arhiva.py` already reconstructs the full series from git history.
