@@ -17,17 +17,17 @@
 
 ## Open
 
-- **INCIDENT — output past the Cloudflare Pages file ceiling, so deploys fail.** Files per RENDERED
-  article (state is ~1.14x that): 4598 -> 18452, 5205 -> 20337, 5443 (`main`) -> 21075 — 3.10 each,
-  fitting all three within 1 file. Both ends observed on those commits: #199 shipped 18452 and
-  DEPLOYED, #205 shipped 20337 and FAILED, so the ceiling is ~20,000. Driver: `ARTICLE_TTL_DAYS`
-  7 -> 30 (#197); state 4466 -> 6195 in two days, no plateau ~4 weeks, `main` already over. `IZZ-0238`
+- **INCIDENT — output past the Cloudflare Pages file ceiling; `main` cannot deploy.** CONFIRMED, not
+  inferred: #206 is a docs-only diff (one `.md`, one `.tsv`) on top of `main` and its build FAILED.
+  Nothing in that diff can break a render, so the cause is the base's size, not any code. Files per
+  RENDERED article (state is ~1.14x): 4598 -> 18452 DEPLOYED, 5205 -> 20337 FAILED, 5443 (`main`) ->
+  21075; 3.10 each, fitting within 1 file; ceiling ~20,000. Driver: `ARTICLE_TTL_DAYS` 7 -> 30
+  (#197): state 4466 -> 6195 in two days, no plateau ~4 weeks. Owner call — `IZZ-0238`.
 - **PR #199 `fix/recuperare-404-pagini-indexate`** — was red: recovered articles kept the dead
   `zonal` category, which renders no page but still emits links (9 broken; `main` renders 0). Fixed
   at source (`config.CATEGORII_REDENUMITE`), 5 records migrated, 4 tests. Awaiting owner merge.
 - **PR #205 (draft) `claude/getty-images-licensing-d1kupt`** — CC BY / CC BY-SA photos on article
-  pages only. pytest green, renders exit 0; its Cloudflare failure is the ceiling above, not its
-  own diff. Getty rejected (`IZZ-0237`).
+  pages only. pytest green, renders exit 0; its red Cloudflare is the ceiling. Getty out (`IZZ-0237`).
 - **PR #201 (draft) `claude/surse-din-istoric-si-rubrica-ai`** — AI rubric, geographic scale. Green:
   all 17 new sources answer `ok`; the red `feeds` job is a manual probe whose dead sources predate it.
 - **PRs #202 / #203 / #204 (drafts)** — docs only, every check green, awaiting owner merge.
