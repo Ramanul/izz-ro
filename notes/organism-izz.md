@@ -9,7 +9,7 @@
 
 | Ce | Cât | Cum |
 |---|---:|---|
-| cod pipeline | 8.387 linii, 24 module | `wc -l generator/*.py` |
+| cod pipeline | 8.387 linii, 27 module | `find generator -name "*.py" \| xargs wc -l` (fără cele 2 `__init__.py`) |
 | unelte | 44 | `ls tools/` |
 | fișiere de test | 85 | `ls tests/test_*.py` |
 | workflow-uri CI | 19 | `ls .github/workflows/` |
@@ -70,7 +70,7 @@ de zile, **764 de commit-uri, din care 237 de conținut** — restul sunt commit
 fiecare declanșând un build exact ca unul de conținut. Corroborat aici pe fereastra vizibilă dintr-o
 clonă shallow: 78 de commit-uri în 2,5 zile, din care 19 de conținut (24%). Deci **dezvoltarea, nu
 publicarea, e cea care consumă bugetul** — o inversiune care schimbă unde se caută economia.
-Dosarul cu cifra și comanda: `specs/resurse-gratuite.md` §3.1 (`IZZ-0238`).
+Dosarul cu cifra și comanda: `specs/resurse-gratuite.md` §3.1 (`IZZ-0237`, în #204).
 
 **c) Membrana selectiv permeabilă.** Măsurat azi: GitHub trece, `izz.ro` nu. Corpul remote e
 proiectat să nu-și poată vedea propria piele — de aceea §16.3 impune formularea „reparat +
@@ -96,6 +96,21 @@ din 25 iulie: un agent a rulat `git checkout` și a mutat ramura de sub ceilalț
 suite pytest pe același tree se calcă (27 errors). Nu sunt bug-uri de tooling — sunt **crize
 motorii**. Regulile din §14/§19 (worktree, un singur decident, anunț după merge) sunt un corp calos:
 nu adaugă putere, adaugă arbitraj.
+
+*Addendum din aceeași zi, ora 15:51 — nota a produs un caz live în câteva ore.* Trei sesiuni au
+lucrat simultan: una a scris nota asta, alta dosarul `specs/resurse-gratuite.md` (#204), a treia
+închiderea buclei după #200 (#202). Consecințe măsurate, nu ipotetice:
+1. **Coliziune de ID în registru.** Ambele sesiuni au pornit de la 236 de rânduri și au alocat
+   `IZZ-0237` pentru decizii diferite. Într-un fișier append-only cheiat pe ID, ăsta e un dublu.
+   Rezolvat mutând rândul de aici pe `IZZ-0239` — al lor e citat din propriul dosar, al meu nu era
+   citat nicăieri, deci se mută cel ieftin.
+2. **Două sesiuni au editat același paragraf din `STATE.md`** din direcții opuse. Rezolvat prin
+   „un scriitor per fișier": #202 deține `STATE.md`, hunk-ul de aici a fost retras.
+3. **O cifră scrisă aici a fost măsurată falsă de o sesiune vecină în aceeași oră** (bugetul de
+   build-uri, §3b).
+Niciuna nu e o greșeală de neatenție. Sunt exact modul de eșec descris mai sus: nu lipsă de putere,
+lipsă de arbitraj. Iar `registru.py add` alocă ID-ul din starea LOCALĂ a fișierului, deci coliziunea
+e garantată de câte ori două sesiuni adaugă un rând în paralel — e mecanică, nu ghinion.
 
 **h) Executantul nu e un organ, e un simbiont închiriat pe tură.** Se naște, citește genomul ca să
 afle unde e, lucrează, moare. Continuitatea nu stă în el, ci în fișiere. De aceea `CLAUDE.md` e la
