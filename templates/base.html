@@ -73,12 +73,12 @@
     </nav>
   </header>
   <nav class="subnav" aria-label="Categorii de știri">
-    {% for cat in categories[:7] %}<a href="{{ base }}/{{ cat }}/" data-cat="{{ cat }}"{% if cat == active_cat %} class="active"{% endif %}>{{ cat | cat_label }}</a>{% endfor %}
-    {% if categories | length > 7 %}
-    <details class="subnav-more"{% if active_cat in categories[7:] %} open{% endif %}>
+    {% for cat in categories[:9] %}<a href="{{ base }}/{{ cat }}/" data-cat="{{ cat }}"{% if cat == active_cat %} class="active"{% endif %}>{{ cat | cat_label }}</a>{% endfor %}
+    {% if categories | length > 9 %}
+    <details class="subnav-more"{% if active_cat in categories[9:] %} open{% endif %}>
       <summary><a href="{{ base }}/sectiuni/">Mai multe secțiuni</a></summary>
       <div class="subnav-more-list">
-        {% for cat in categories[7:] %}<a href="{{ base }}/{{ cat }}/" data-cat="{{ cat }}"{% if cat == active_cat %} class="active"{% endif %}>{{ cat | cat_label }}</a>{% endfor %}
+        {% for cat in categories[9:] %}<a href="{{ base }}/{{ cat }}/" data-cat="{{ cat }}"{% if cat == active_cat %} class="active"{% endif %}>{{ cat | cat_label }}</a>{% endfor %}
       </div>
     </details>
     {% endif %}
