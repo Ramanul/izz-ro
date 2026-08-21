@@ -77,7 +77,8 @@ verificat local; rămâne de confirmat pe live".
 Consecință: **ce nu e comis, n-a existat.**
 
 **e) Îmbătrânirea.** Feed-uri care mor, modele care se depreciază, 8 dependențe fixate care
-putrezesc încet. Fixarea cumpără reproductibilitate acum cu o datorie plătibilă dintr-o dată.
+putrezesc încet. Fixarea cumpără reproductibilitate acum cu o datorie plătibilă dintr-o dată — iar
+singurul lucru NEfixat din sistem e chiar modelul AI (§7 A3).
 
 **f) Nișa și presiunea de selecție.** Google, supraconcentrarea Digi/RCS (§7), GDPR, Legea 8/1996
 (§18), AI Act art. 50 — intrat în vigoare 2026-08-02 și a cerut deja o adaptare (`IZZ-0164`).
@@ -164,8 +165,25 @@ Disciplina se erodează; scriptul nu.
 *Propunere:* măsoară dacă ești **citat**, nu doar dacă ești indexat (Brand Radar există în unelte).
 Nu e o schimbare de produs — e o schimbare de metrică.
 
-**A3. Dependențele îmbătrânesc în tăcere.** *Propunere:* un job lunar care **doar raportează**
-diferența față de ultimele versiuni. Fără auto-update (§14: nicio buclă autonomă). Doar semnal.
+**A3. Îmbătrânirea e deja acoperită pe doi din trei vectori — al treilea e cel care contează.**
+- *dependențe*: `.github/dependabot.yml` rulează **săptămânal** pe pip și pe actions, cu grup pe
+  `codeql-action` (fără el, fiecare release deschidea două PR-uri care nu puteau trece niciunul —
+  măsurat 2026-08-06, #147/#148). **Acoperit.**
+- *feed-uri moarte*: `feedcheck.yml` + `tools/feed_check.py`. **Acoperit.**
+- *modelul AI*: **neacoperit — și e singura dependență nefixată din tot sistemul.**
+  `generator/providers/gemini.py:17` → `GEMINI_MODEL` implicit `gemini-flash-lite-latest`, un
+  **alias flotant**. Cele 8 dependențe runtime sunt fixate la versiune exactă „pentru randări
+  reproductibile", în timp ce dependența care determină cel mai mult comportamentul se poate
+  schimba peste noapte: fără PR, fără notificare, fără test care s-o prindă — calitatea unei
+  sinteze nu e diff-abilă în CI.
+
+  Nu susțin că trebuie fixat: un model fixat e retras la un moment dat și pică pipeline-ul brusc,
+  pe când `-latest` degradează lin. Susțin că **compromisul e asimetric și neconsemnat**, iar
+  singura apărare reală e verificarea editorială (`verifica_sinteza.py`, `masoara_sinteza.py`,
+  `editorial-quality.yml`).
+  *Propunere ieftină:* un **canar** — același set fix de ~10 articole trecut prin sinteză periodic,
+  cu scorul comparat față de o linie de bază comisă. E test de regresie pentru un organ care nu e
+  cod. Fără el, driftul de model e invizibil până îl vede un cititor.
 
 **A4. Presiunea legală se mișcă cel mai repede și nu e opțională.** AI Act art. 50 a cerut deja o
 adaptare de conținut (`IZZ-0164`). Ăsta e singurul cadran unde întârzierea nu e o economie.
