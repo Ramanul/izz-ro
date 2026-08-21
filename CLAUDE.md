@@ -182,13 +182,20 @@ cache-uit immutable, fără cache-bust). Pentru ORICE schimbare vizibilă utiliz
 3. **Trei stări distincte — nu le confunda, folosește cuvintele exacte:**
    - „**reparat în cod**" = diff-ul e scris.
    - „**verificat local**" = ambele roluri au trecut pe site-ul construit aici.
-   - „**confirmat pe live**" = site-ul deployat arată reparat. **Sandbox-ul POATE ajunge la izz.ro**
-     (măsurat 2026-07-25: `https://izz.ro/` → 200 cu conținut real; fiecare PR are preview
-     Cloudflare la `https://<branch>.izz-ro.pages.dev/`). Deci fă-o efectiv înainte să zici „gata":
-     ia URL-ul deployat, afirmă că simptomul exact a dispărut, citează răspunsul. Mereu cu
-     cache-bust (`?cb=$(date +%s)`). Site-urile de știri rămân blocate de proxy — limita aia e reală
-     și separată. Dacă un sandbox chiar nu poate ajunge, spune-o cu comanda care a eșuat și cazi pe
-     „reparat + verificat local; rămâne de confirmat pe live după deploy".
+   - „**confirmat pe live**" = site-ul deployat arată reparat. Fiecare PR are preview Cloudflare
+     la `https://<branch>.izz-ro.pages.dev/`. Mereu cu cache-bust (`?cb=$(date +%s)`).
+     **Depinde de UNDE rulezi — verifică, nu presupune:**
+     · *sandbox local* — POATE ajunge (măsurat 2026-07-25: `https://izz.ro/` → 200 cu conținut
+       real). Acolo fă-o efectiv înainte să zici „gata": ia URL-ul deployat, afirmă că simptomul
+       exact a dispărut, citează răspunsul.
+     · *sesiune remote (Claude Code pe web)* — NU poate: politica de rețea a mediului respinge
+       `izz.ro`, `izz-ro.pages.dev` și preview-urile de ramură deopotrivă (măsurat 2026-08-21, PR
+       #200: `curl` → `CONNECT tunnel failed, response 403`, confirmat în
+       `$HTTPS_PROXY/__agentproxy/status` ca `connect_rejected` — deci nu e o pană trecătoare).
+     Site-urile de știri rămân blocate de proxy peste tot — limita aia e reală și separată.
+     Când nu poți ajunge, spune-o cu comanda care a eșuat și cazi pe „reparat + verificat local;
+     rămâne de confirmat pe live după deploy". NU declara „confirmat pe live" pe baza unui deploy
+     reușit: build-ul verde spune că s-a publicat ceva, nu că simptomul a dispărut.
 4. **Când nu poți testa ceva, spune explicit** (care rol, de ce) în loc să lași impresia că a trecut.
 
 ## 17. Cadență de publicare — MĂSURAT, nu re-diagnostica
