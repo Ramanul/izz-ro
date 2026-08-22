@@ -28,10 +28,10 @@
 - **Archive as a separate surface ("varianta 3")** — owner asked to be reminded on 08-21. Not
   started, still an owner decision. `ARTICLE_TTL_DAYS` went 7 → 30 (#197) as the cheap half of
   the same problem; `tools/arhiva.py` already reconstructs the full series from git history.
-- **Cloudflare ceiling: the 20,000 premise is FALSE — `IZZ-0242`.** Docs, read 2026-08-22: 20,000
-  is the **Free** limit; **paid gets 100,000** since 2026-01-23, not automatic — needs
-  `PAGES_WRANGLER_MAJOR_VERSION=4` in the Pages project. ~78k at TTL=30 equilibrium, so it fits:
-  **R2, image cuts and a lower TTL are all unnecessary — test the variable before merging #209.**
+- **Cloudflare ceiling — MEASURED (`IZZ-0243`).** Build log: `Error: Pages only supports up to
+  20,000 files in a deployment`. Not a timeout (render finished in 7m30s, 5591 articles), and still
+  20,000 with `PAGES_WRANGLER_MAJOR_VERSION=4` set. **#209 deploys green three times while main and
+  every other branch fail — it is the working fix, merge it.**
 - **Strategy: national admin-data pivot — OWNER DECISION PENDING.** `notes/plan-national-2026-08-22.*`; gate = felia 0.
 
 - **From `specs/atribuire-cercetare-si-plan.md`, in order** — E1 permalink decoupled from
