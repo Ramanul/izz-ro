@@ -28,9 +28,11 @@
 - **Archive as a separate surface ("varianta 3")** — owner asked to be reminded on 08-21. Not
   started, still an owner decision. `ARTICLE_TTL_DAYS` went 7 → 30 (#197) as the cheap half of
   the same problem; `tools/arhiva.py` already reconstructs the full series from git history.
-- **Strategy: national administrative-data pivot — OWNER DECISION PENDING.** Detail:
-  `notes/plan-national-2026-08-22.{html,pdf}` — ~30 of the deck's 37 ideas are already occupied;
-  one gap is not. **Build nothing until felia 0**: HCL→SEAP lag on 50 contracts, gate >=50% / >=60d.
+- **Cloudflare ceiling: the 20,000 premise is FALSE — `IZZ-0242`.** Docs, read 2026-08-22: 20,000
+  is the **Free** limit; **paid gets 100,000** since 2026-01-23, not automatic — needs
+  `PAGES_WRANGLER_MAJOR_VERSION=4` in the Pages project. ~78k at TTL=30 equilibrium, so it fits:
+  **R2, image cuts and a lower TTL are all unnecessary — test the variable before merging #209.**
+- **Strategy: national admin-data pivot — OWNER DECISION PENDING.** `notes/plan-national-2026-08-22.*`; gate = felia 0.
 
 - **From `specs/atribuire-cercetare-si-plan.md`, in order** — E1 permalink decoupled from
   category (**owner decision, blocks all retroactive correction**), E3 focus score instead of
