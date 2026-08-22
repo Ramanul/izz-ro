@@ -18,9 +18,9 @@
 ## Open
 
 - **INCIDENT — output past the Cloudflare Pages file ceiling; `main` cannot deploy.** CONFIRMED:
-  #206 is a docs-only diff on `main` and its build FAILED — nothing in a `.md` plus a `.tsv` can
-  break a render, so the cause is the base's size. 3.10 files per rendered article; 18452 deployed,
-  20337 failed. Driver: `ARTICLE_TTL_DAYS` 7 -> 30 (#197). Owner call — figures in `IZZ-0240`.
+  #206 is docs-only on `main` and its build FAILED, so the cause is the base's size, not code.
+  NOT `ARTICLE_TTL_DAYS` (#197): at TTL=7 it is still ~20651 files, and 20,000 caps you at ~21
+  days of ingest with NO images at all — architectural, not a setting. Owner call — `IZZ-0240`.
 - **PR #199 `fix/recuperare-404-pagini-indexate`** — was red: recovered articles kept the dead
   `zonal` category, which renders no page but still emits links (9 broken; `main` renders 0). Fixed
   at source (`config.CATEGORII_REDENUMITE`), 5 records migrated, 4 tests. Awaiting owner merge.
