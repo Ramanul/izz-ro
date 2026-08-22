@@ -1,6 +1,6 @@
 // Failover router + cache la edge pentru izz.ro.
 //
-// Serveste din Cloudflare Pages (primar). La 5xx, eroare de retea sau timeout,
+// Serveste din Worker-ul de static assets izz-ro (primar). La 5xx, eroare de retea sau timeout,
 // serveste TRANSPARENT din mirror-ul GitHub Pages (ramanul.github.io). Comutarea e
 // per-request, instant, fara propagare DNS. Clientul vede mereu certificatul de edge
 // al Cloudflare pentru izz.ro; originile sunt fetch-uite server-side de Worker, deci
@@ -8,7 +8,8 @@
 //
 // CACHE (adaugat 2026-08-17). Masurat inainte: 6 raspunsuri cache-uite din 34.419 in 7
 // zile = 0,02%. Cauza NU erau headerele originii — alea sunt corecte (`_headers` da
-// `max-age=2592000, immutable` pe /static/*, `86400` pe imagini) — ci faptul ca raspunsul
+// `max-age=2592000, immutable` pe /static/*, `86400` pe imagini; Workers static assets le
+// serveste identic) — ci faptul ca raspunsul
 // generat de un Worker nu intra in cache-ul de zona: `CF-Cache-Status` lipsea complet din
 // raspunsurile de pe izz.ro, desi era prezent pe originea servita direct. Cat timp ruta
 // `izz.ro/*` e prinsa de Worker, singura cale de a cache-ui la edge e Cache API, explicit,
@@ -18,7 +19,13 @@
 // Deploy: vezi infra/README-failover.md. Necesita un token Cloudflare cu
 // Workers Scripts:Edit + Workers Routes:Edit pe zona izz.ro.
 
-const PRIMARY = "https://izz-ro.pages.dev";
+// Primarul e Worker-ul de static assets, NU Pages. Mutat pe 2026-08-22: output-ul a
+// trecut plafonul de 20.000 de fisiere al Pages, deploy-urile au inceput sa fie refuzate
+// tacut, iar failover-ul continua sa fetch-uiasca o origine inghetata — site-ul a servit
+// continut din 21 august timp de 34 de ore, cu totul verde in aval. Workers Paid da
+// 100.000 de fisiere; aceeasi randare deployeaza acolo.
+// Host DIFERIT de izz.ro, deci ruta izz.ro/* nu se auto-apeleaza (vezi wrangler.toml).
+const PRIMARY = "https://izz-ro.andifreelancer2.workers.dev";
 const MIRROR = "https://ramanul.github.io";
 
 // 1500ms, coborat de la 4000. Masurat 2026-08-17, 10 cereri catre primar: median 147ms,
