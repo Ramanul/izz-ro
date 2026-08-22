@@ -17,12 +17,10 @@
 
 ## Open
 
-- **INCIDENT — output past the Cloudflare Pages file ceiling; `main` cannot deploy.** CONFIRMED, not
-  inferred: #206 is a docs-only diff (one `.md`, one `.tsv`) on top of `main` and its build FAILED.
-  Nothing in that diff can break a render, so the cause is the base's size, not any code. Files per
-  RENDERED article (state is ~1.14x): 4598 -> 18452 DEPLOYED, 5205 -> 20337 FAILED, 5443 (`main`) ->
-  21075; 3.10 each, fitting within 1 file; ceiling ~20,000. Driver: `ARTICLE_TTL_DAYS` 7 -> 30
-  (#197): state 4466 -> 6195 in two days, no plateau ~4 weeks. Owner call — `IZZ-0238`.
+- **INCIDENT — output past the Cloudflare Pages file ceiling; `main` cannot deploy.** CONFIRMED:
+  #206 is a docs-only diff on `main` and its build FAILED — nothing in a `.md` plus a `.tsv` can
+  break a render, so the cause is the base's size. 3.10 files per rendered article; 18452 deployed,
+  20337 failed. Driver: `ARTICLE_TTL_DAYS` 7 -> 30 (#197). Owner call — figures in `IZZ-0240`.
 - **PR #199 `fix/recuperare-404-pagini-indexate`** — was red: recovered articles kept the dead
   `zonal` category, which renders no page but still emits links (9 broken; `main` renders 0). Fixed
   at source (`config.CATEGORII_REDENUMITE`), 5 records migrated, 4 tests. Awaiting owner merge.
@@ -31,10 +29,13 @@
 - **PR #201 (draft) `claude/surse-din-istoric-si-rubrica-ai`** — AI rubric, geographic scale. Green:
   all 17 new sources answer `ok`; the red `feeds` job is a manual probe whose dead sources predate it.
 - **PRs #202 / #203 / #204 (drafts)** — docs only, every check green, awaiting owner merge.
+  #202 also fixes CLAUDE.md §14: the announce channel points at `TASKS-B.md`, frozen since
+  08-04 — live defect on `main` until it lands. **Merge hazards, measured:** four branches add
+  registry rows and `IZZ-0237`/`IZZ-0238` are each claimed twice (`IZZ-0241`); three branches
+  rewrite this file, and only #202 carries the `Landed` record for #200 — keep it.
 - **Archive as a separate surface ("varianta 3")** — owner decision; `tools/arhiva.py` rebuilds it.
 - **From `specs/atribuire-cercetare-si-plan.md`** — E1 permalink decoupled from category (**owner
-  decision, blocks retroactive correction**), E3 focus score not `max()`, E4 separate topic/place
-  axes (**owner decision**), E5 gold set ~150 + CI gate.
+  decision, blocks retroactive correction**), E3 focus score not `max()`, E4 axes, E5 gold ~150.
 
 ## Standing rules that keep being rediscovered — do not "fix" these
 
