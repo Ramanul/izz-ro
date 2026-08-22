@@ -1,7 +1,17 @@
 {
+  // Workers Static Assets — izz.ro este 100% static, deci NU exista "main":
+  // fara script de Worker, assets-only (docs Cloudflare: binding ASSETS e valid
+  // doar impreuna cu "main").
   "name": "izz-ro",
   "compatibility_date": "2026-06-18",
   "assets": {
-    "directory": "./output"
-  }
+    "directory": "./output",
+    // Pages DEDUCEA singur 404.html; Workers NU o face — fara linia asta,
+    // orice URL inexistent intoarce un 404 gol si pagina noastra 404.html
+    // (output/404.html) nu mai e servita niciodata.
+    "not_found_handling": "404-page"
+  },
+  // Preview per ramura (echivalentul <branch>.izz-ro.pages.dev de la Pages).
+  // CLAUDE.md §16.3 se bazeaza pe el ca sa poata confirma "pe live" un fix.
+  "preview_urls": true
 }
