@@ -166,8 +166,11 @@ Mandatul autonom din iulie e **încheiat** (istoric: `specs/istoric-operational.
 - **Cine face merge în `main`** (regulă proprietar 2026-07-24): contul de la care lucrează el
   *în momentul ăla*. Nu „cine a deschis PR-ul". Dacă ești sesiunea cu care vorbește acum, tu faci
   merge; nu parca un PR verde așteptând celălalt cont.
-- **După orice merge, anunță celălalt cont** — `TASKS-B.md` în `Ramanul/claude-desktop-workspace`
-  plus `specs/STATE.md` aici. Un merge neanunțat e exact ce cauzează ciocnirile.
+- **După orice merge, anunță celălalt cont** — un fișier în `handoff/to-A/` (sau `to-B/`) din
+  `Ramanul/claude-desktop-workspace`, plus `specs/STATE.md` aici. Un merge neanunțat e exact ce
+  cauzează ciocnirile. **NU în `TASKS-B.md`**: e înghețat din 2026-08-04 și redirectează el însuși
+  la `handoff/`, care ține un fișier per element tocmai ca două sesiuni simultane să nu se
+  ciocnească la rebase. Regula asta trimitea la fișierul înghețat până pe 2026-08-21.
 - **Nu face curse pe `main`.** Ramifică, ține diff-ul mic, aterizează, anunță.
 
 ### 14b. Muncă în fundal — permisă, mărginită (decizie proprietar 2026-08-01)
@@ -299,7 +302,8 @@ trecut aici cu rolul lui. Mecanismul există fiindcă rădăcina ajunsese la 15 
   `generator/process.py` trebuie să implementeze ce scrie acolo, nu invers.
 - `COORD-DASHBOARD.md` — metrici de coordonare. **Citit de `tools/log_slice.py`, deci nu se mută.**
 - `REVIEW.md` — protocolul de review; referit din README.
-- `TASKS-A.md` / `TASKS-B.md` — cozile celor două conturi. `TASKS-B.md` e canalul de anunț din §14.
+- `TASKS-A.md` / `TASKS-B.md` — cozile celor două conturi, ambele istorice (canalul viu e
+  `handoff/` din repo-ul de workspace, §14).
 - `TASKS-MISTRAL.md` — coada executorului Mistral.
 - `SESSION-2026-08-14.md` / `mistral-analiza-workflow.md` — instantanee istorice, păstrate la
   rădăcină doar fiindcă jurnalele din `sessions/` trimit la ele cu calea asta.
