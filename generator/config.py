@@ -283,6 +283,13 @@ ARTICLE_TTL_DAYS = 30
 # se pot prezice inainte de scriere. Ridica-l doar impreuna cu o masuratoare noua a
 # plafonului gazdei -- nu "ca sa incapa".
 OUTPUT_FILE_BUDGET = int(os.getenv("OUTPUT_FILE_BUDGET", "19500"))
+# Plafonul GAZDEI, separat de bugetul de mai sus. Bugetul e tinta la care randarea imparte
+# imaginile (depasirea lui inseamna ca rezerva a derivat -> avertisment); plafonul e punctul
+# de la care Cloudflare REFUZA deploy-ul. Peste el randarea trebuie sa moara zgomotos: altfel
+# iese cu cod 0, jobul de continut ramane verde si esecul reapare 25 de minute mai tarziu in
+# `release-probe` -- exact bucla tacuta din 2026-08-21. Bracket masurat: 19.987 verde /
+# 20.337 rosu; cifra nu e citita din documentatie (proxy-ul respinge developers.cloudflare.com).
+OUTPUT_FILE_CEILING = int(os.getenv("OUTPUT_FILE_CEILING", "20000"))
 # Fisierele care NU stau in directoarele de articol: static, categorii cu paginare,
 # subiecte + feedurile lor, ghiduri, instrumente, harta, sitemapuri, feed, cautare.
 # MASURAT pe o randare reala din 2026-08-22: 3.483 de fisiere care nu sunt nici pagina de

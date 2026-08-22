@@ -99,3 +99,54 @@ def test_podeaua_absoluta_ramane_deasupra_starii_curente():
     assert n <= maxim_pagini, (
         f"{n} articole, dar sub buget incap doar {maxim_pagini} pagini. Aici nicio "
         f"optimizare de imagini nu mai ajuta: trebuie TTL mai mic sau alta gazda.")
+
+
+# --- plafonul dur al gazdei -------------------------------------------------------
+# Bugetul e tinta la care randarea imparte imaginile; plafonul e punctul de la care
+# Cloudflare refuza deploy-ul. Un `logging.error` NU opreste nimic: randarea iese cu cod
+# 0, jobul de continut ramane verde si esecul reapare in `release-probe` 25 de minute mai
+# tarziu. Peste plafon randarea trebuie sa moara zgomotos.
+
+def test_bugetul_sta_sub_plafonul_dur():
+    assert config.OUTPUT_FILE_BUDGET < config.OUTPUT_FILE_CEILING
+    assert config.OUTPUT_FILE_CEILING <= PLAFON_GAZDA_MASURAT
+
+
+def _scrie_fisiere(d, cate):
+    for i in range(cate):
+        (d / f"f{i}.html").write_text("x", encoding="utf-8")
+
+
+def test_NEGATIV_peste_plafonul_gazdei_randarea_moare_zgomotos(tmp_path, monkeypatch):
+    """Cazul negativ care conteaza: peste plafon NU se iese cu cod 0."""
+    from generator import render
+    monkeypatch.setattr(render, "OUT_DIR", str(tmp_path))
+    monkeypatch.setattr(config, "OUTPUT_FILE_CEILING", 3)
+    monkeypatch.setattr(config, "OUTPUT_FILE_BUDGET", 2)
+    _scrie_fisiere(tmp_path, 5)
+    with pytest.raises(RuntimeError, match="peste plafonul gazdei"):
+        render._write_build_metadata(0)
+
+
+def test_diagnosticul_supravietuieste_esecului(tmp_path, monkeypatch):
+    """build.json se scrie INAINTE de verdict, altfel esecul isi ascunde propria dovada."""
+    from generator import render
+    monkeypatch.setattr(render, "OUT_DIR", str(tmp_path))
+    monkeypatch.setattr(config, "OUTPUT_FILE_CEILING", 3)
+    monkeypatch.setattr(config, "OUTPUT_FILE_BUDGET", 2)
+    _scrie_fisiere(tmp_path, 5)
+    with pytest.raises(RuntimeError):
+        render._write_build_metadata(0)
+    scris = json.loads((tmp_path / "build.json").read_text(encoding="utf-8"))
+    assert scris["file_count"] == 6, "numarul care a declansat esecul trebuie sa ramana citibil"
+
+
+def test_intre_buget_si_plafon_publicarea_merge_mai_departe(tmp_path, monkeypatch):
+    """Marja stramta nu trebuie sa doboare publicarea cand deploy-ul ar trece oricum."""
+    from generator import render
+    monkeypatch.setattr(render, "OUT_DIR", str(tmp_path))
+    monkeypatch.setattr(config, "OUTPUT_FILE_BUDGET", 3)
+    monkeypatch.setattr(config, "OUTPUT_FILE_CEILING", 50)
+    _scrie_fisiere(tmp_path, 5)
+    render._write_build_metadata(0)   # avertizeaza, dar nu ridica
+    assert (tmp_path / "build.json").exists()

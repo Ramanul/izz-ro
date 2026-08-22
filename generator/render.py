@@ -262,7 +262,8 @@ def assign_slugs(articles: list) -> None:
 _PAGES_WRITTEN: set = set()
 
 
-def _image_budget(n: int, budget: int = None, reserve: int = None) -> tuple[int, int, int]:
+def _image_budget(n: int, budget: int | None = None,
+                  reserve: int | None = None) -> tuple[int, int, int]:
     """Cate fisiere de imagine incap, si cum se impart pe cele `n` articole.
 
     Intoarce `(img_budget, n_art, n_cover)`: cate fisiere de imagine sunt disponibile,
@@ -983,16 +984,31 @@ def _write_build_metadata(article_count: int) -> None:
         "article_count": article_count,
         "file_count": file_count,
     }
+    # Cheile JSON raman stabile pentru ca probele externe sa nu depinda de ordinea dict-ului Python.
+    _write(os.path.join(OUT_DIR, "build.json"), json.dumps(payload, ensure_ascii=False, sort_keys=True) + "\n")
+
+    if file_count > config.OUTPUT_FILE_CEILING:
+        # Zgomotos, nu doar logat. Un `logging.error` lasa randarea sa iasa cu cod 0: jobul de
+        # continut ramane verde, Cloudflare refuza deploy-ul supradimensionat fara sa raporteze
+        # inapoi, si esecul reapare abia in `release-probe`, 25 de minute mai tarziu. Acela e
+        # incidentul din 2026-08-21, si un rand de log in plus nu l-ar fi oprit. Exceptia se
+        # ridica DUPA scrierea lui build.json, ca diagnosticul sa supravietuiasca esecului.
+        raise RuntimeError(
+            f"output/ are {file_count} fisiere, peste plafonul gazdei "
+            f"({config.OUTPUT_FILE_CEILING}): Cloudflare Pages ar refuza deploy-ul TACUT. "
+            f"Remasoara cu tools/count_output.py si corecteaza OUTPUT_NON_ARTICLE_RESERVE, "
+            f"sau coboara ARTICLE_TTL_DAYS.")
     if file_count > config.OUTPUT_FILE_BUDGET:
-        logging.error("!! output-ul are %d fisiere, peste bugetul de %d. Rezerva pentru "
-                      "fisierele din afara articolelor (%d) e prea mica -- remasoara cu "
+        # Intre buget si plafon: inca se deployeaza, dar rezerva a derivat. Avertisment, nu
+        # moarte -- o marja stramta nu trebuie sa doboare publicarea cand deploy-ul ar trece.
+        logging.error("!! output-ul are %d fisiere, peste bugetul de %d (plafon %d). Rezerva "
+                      "pentru fisierele din afara articolelor (%d) e prea mica -- remasoara cu "
                       "tools/count_output.py si corecteaza OUTPUT_NON_ARTICLE_RESERVE.",
-                      file_count, config.OUTPUT_FILE_BUDGET, config.OUTPUT_NON_ARTICLE_RESERVE)
+                      file_count, config.OUTPUT_FILE_BUDGET, config.OUTPUT_FILE_CEILING,
+                      config.OUTPUT_NON_ARTICLE_RESERVE)
     else:
         print(f">> output: {file_count} fisiere "
               f"(buget {config.OUTPUT_FILE_BUDGET}, marja {config.OUTPUT_FILE_BUDGET - file_count})")
-    # Cheile JSON raman stabile pentru ca probele externe sa nu depinda de ordinea dict-ului Python.
-    _write(os.path.join(OUT_DIR, "build.json"), json.dumps(payload, ensure_ascii=False, sort_keys=True) + "\n")
 
 
 def _newsletter_html() -> str:
