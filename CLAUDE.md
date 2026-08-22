@@ -236,8 +236,10 @@ cifre nu se contrazic: un job de poartă taie rularea dacă ultimul conținut e 
 2h — planificatorul GitHub sare firings de `schedule` (4 rulări în loc de 12 pe 2026-08-04), iar
 cu încercări orare un firing pierdut se recuperează în ora următoare în loc să aștepte încă două.
 Motivul e comentat pe larg în `build.yml`. Bugetul de build e păzit de **poartă**, nu de cron:
-fiecare commit declanșează un build Cloudflare, iar planul gratuit dă ~500/lună. **Nu „repara" cadența făcând-o mai deasă** — aia a
-cauzat pana din 5-9 iulie. Plafonul de debit e bugetul AI (`max_ai_calls`, implicit 18/rulare), nu
+fiecare commit declanșează un build Cloudflare. **Cifrele depind de plan, verifică-l** — gratuit:
+~500 build-uri/lună și 20.000 de fișiere/site; plătit: 5.000 și 100.000, dar plafonul mărit NU e
+automat, cere `PAGES_WRANGLER_MAJOR_VERSION=4` în setările proiectului Pages (`IZZ-0242`).
+**Nu „repara" cadența făcând-o mai deasă** — aia a cauzat pana din 5-9 iulie. Plafonul de debit e bugetul AI (`max_ai_calls`, implicit 18/rulare), nu
 programul. Varianța zilnică e mare și normală; verifică `gh run list` înainte să pretinzi că
 pipeline-ul e picat. Cifre și context: `specs/istoric-operational.md`.
 

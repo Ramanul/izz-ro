@@ -1,0 +1,581 @@
+<!doctype html>
+<html lang="ro">
+<head>
+<meta charset="utf-8">
+<title>IZZ.ro — Plan național: infrastructură de date administrative</title>
+<style>
+  :root{
+    --paper:#ffffff; --paper-2:#faf9f6; --ink:#15171c; --ink-2:#40464f; --ink-3:#6d6d7f;
+    --line:#e4e7ec; --line-strong:#c9ccd3; --gold:#c9a227; --gold-strong:#8b6918;
+    --gold-wash:#faf5e6; --danger:#a3372b; --ok:#2f6b46;
+    --font-display:"DejaVu Sans", sans-serif;
+    --font-text:"DejaVu Serif", Georgia, serif;
+    --font-mono:"DejaVu Sans Mono", monospace;
+  }
+  @page{
+    size:A4; margin:19mm 17mm 17mm 17mm;
+    @bottom-center{ content:counter(page); font-family:"DejaVu Sans"; font-size:8pt; color:#6d6d7f; }
+  }
+  @page:first{ margin-top:24mm; }
+  *{ box-sizing:border-box; }
+  html{ font-size:10.2pt; }
+  body{
+    margin:0; font-family:var(--font-text); color:var(--ink); background:var(--paper);
+    line-height:1.52; text-align:left; hyphens:auto;
+  }
+  h1,h2,h3,h4,.eyebrow,table,.box-title,.tag,figcaption,.kpi{ font-family:var(--font-display); }
+
+  /* ---------- coperta ---------- */
+  .cover{ page-break-after:always; padding-top:6mm; }
+  .cover .rule{ height:3px; background:var(--gold); width:64px; margin-bottom:9mm; }
+  .cover .eyebrow{ font-size:8.5pt; letter-spacing:.16em; text-transform:uppercase; color:var(--gold-strong); font-weight:bold; }
+  .cover h1{ font-size:25pt; line-height:1.14; margin:5mm 0 3mm; letter-spacing:-.015em; }
+  .cover .sub{ font-size:12.5pt; color:var(--ink-2); line-height:1.42; max-width:150mm; margin:0 0 9mm; font-family:var(--font-text); font-style:italic; }
+  .cover .meta{ font-family:var(--font-display); font-size:8.6pt; color:var(--ink-3); line-height:1.7; border-top:1px solid var(--line); padding-top:4mm; }
+  .cover .meta b{ color:var(--ink-2); }
+  .thesis{ background:var(--gold-wash); border-left:3px solid var(--gold); padding:6mm 7mm; margin:9mm 0; }
+  .thesis p{ margin:0 0 3mm; font-size:11pt; line-height:1.5; }
+  .thesis p:last-child{ margin-bottom:0; }
+  .thesis .lead{ font-family:var(--font-display); font-weight:bold; font-size:11.5pt; }
+
+  /* ---------- structura ---------- */
+  h2{
+    font-size:15pt; margin:11mm 0 3.5mm; padding-bottom:2mm; letter-spacing:-.01em;
+    border-bottom:2px solid var(--ink); page-break-after:avoid; line-height:1.2;
+  }
+  h2 .num{ color:var(--gold-strong); }
+  h3{ font-size:11.2pt; margin:6.5mm 0 2mm; page-break-after:avoid; line-height:1.3; }
+  h4{ font-size:9.8pt; margin:4.5mm 0 1.5mm; page-break-after:avoid; color:var(--ink-2); }
+  p{ margin:0 0 3mm; }
+  ul,ol{ margin:0 0 3.5mm; padding-left:5.5mm; }
+  li{ margin-bottom:1.6mm; }
+  li::marker{ color:var(--gold-strong); }
+  strong{ font-weight:bold; }
+  em{ font-style:italic; }
+  a{ color:var(--gold-strong); text-decoration:none; }
+  code{ font-family:var(--font-mono); font-size:.86em; background:var(--paper-2); padding:.5mm 1mm; border-radius:2px; }
+
+  /* ---------- tabele ---------- */
+  table{ width:100%; border-collapse:collapse; font-size:8.4pt; margin:3mm 0 5mm; page-break-inside:auto; }
+  thead{ display:table-header-group; }
+  tr{ page-break-inside:avoid; }
+  th{
+    text-align:left; font-size:7.4pt; letter-spacing:.07em; text-transform:uppercase; color:var(--ink-2);
+    border-bottom:1.5px solid var(--ink); padding:1.8mm 2mm; vertical-align:bottom; font-weight:bold;
+  }
+  td{ border-bottom:.5px solid var(--line); padding:1.8mm 2mm; vertical-align:top; line-height:1.4; }
+  tbody tr:nth-child(even){ background:var(--paper-2); }
+  td.num, th.num{ text-align:right; font-variant-numeric:tabular-nums; white-space:nowrap; }
+  .verdict{ font-family:var(--font-display); font-weight:bold; font-size:7.4pt; letter-spacing:.05em; white-space:nowrap; }
+  .v-kill{ color:var(--danger); } .v-keep{ color:var(--ok); } .v-wait{ color:var(--ink-3); }
+
+  /* ---------- casete ---------- */
+  .box{ border:1px solid var(--line-strong); padding:4.5mm 5mm; margin:4mm 0 5mm; page-break-inside:avoid; background:var(--paper-2); }
+  .box.accent{ border-color:var(--gold); background:var(--gold-wash); }
+  .box.warn{ border-color:#d9b3ad; background:#fdf6f5; }
+  .box-title{ font-size:8pt; letter-spacing:.12em; text-transform:uppercase; color:var(--gold-strong); font-weight:bold; margin:0 0 2.5mm; }
+  .box.warn .box-title{ color:var(--danger); }
+  .box p:last-child, .box ul:last-child, .box ol:last-child{ margin-bottom:0; }
+
+  .callout{ border-left:3px solid var(--gold); padding:1mm 0 1mm 5mm; margin:4mm 0; font-size:10.6pt; line-height:1.45; }
+  .callout strong{ font-family:var(--font-display); }
+
+  /* ---------- diagrame ---------- */
+  .chain{ margin:4mm 0 5mm; page-break-inside:avoid; }
+  .chain-row{ display:flex; align-items:stretch; gap:0; }
+  .chain-step{ flex:1; border:1px solid var(--line-strong); border-right:none; padding:2.5mm 2mm; text-align:center; font-family:var(--font-display); font-size:7.3pt; line-height:1.3; background:#fff; }
+  .chain-step:last-child{ border-right:1px solid var(--line-strong); }
+  .chain-step.hot{ background:var(--gold-wash); border-color:var(--gold); }
+  .chain-step.cold{ background:#f1f2f4; color:var(--ink-3); }
+  .chain-step b{ display:block; font-size:8pt; margin-bottom:1mm; color:var(--ink); }
+  .chain-step.cold b{ color:var(--ink-2); }
+  .chain-axis{ display:flex; margin-top:1.5mm; font-family:var(--font-display); font-size:7pt; color:var(--ink-3); }
+  .chain-axis span:first-child{ flex:1; text-align:left; color:var(--gold-strong); font-weight:bold; }
+  .chain-axis span:last-child{ flex:1; text-align:right; }
+
+  .layers{ margin:4mm 0 5mm; }
+  .layer{ display:flex; border:1px solid var(--line-strong); border-bottom:none; page-break-inside:avoid; }
+  .layer:last-child{ border-bottom:1px solid var(--line-strong); }
+  .layer-n{ width:22mm; flex:none; background:var(--ink); color:#fff; font-family:var(--font-display); font-size:7.4pt; font-weight:bold; padding:3mm 2mm; text-align:center; letter-spacing:.04em; }
+  .layer.paid .layer-n{ background:var(--gold-strong); }
+  .layer-b{ padding:3mm 4mm; font-size:8.6pt; }
+  .layer-b b{ font-family:var(--font-display); display:block; margin-bottom:.8mm; font-size:9.2pt; }
+  .layer-b .role{ color:var(--ink-2); }
+
+  .steps{ counter-reset:st; margin:3mm 0 5mm; padding:0; list-style:none; }
+  .steps li{ counter-increment:st; position:relative; padding-left:9mm; margin-bottom:3mm; page-break-inside:avoid; }
+  .steps li::before{
+    content:counter(st); position:absolute; left:0; top:0; width:6mm; height:6mm; line-height:6mm;
+    background:var(--ink); color:#fff; font-family:var(--font-display); font-size:7.6pt; font-weight:bold; text-align:center; border-radius:50%;
+  }
+  .steps li b{ font-family:var(--font-display); }
+
+  .gate{ font-family:var(--font-display); font-size:8pt; background:#fff; border:1px dashed var(--line-strong); padding:2mm 3mm; margin-top:1.5mm; display:block; }
+  .gate b{ color:var(--gold-strong); letter-spacing:.06em; text-transform:uppercase; font-size:7.2pt; }
+
+  .sources{ font-size:7.6pt; color:var(--ink-2); line-height:1.5; column-count:2; column-gap:7mm; }
+  .sources li{ margin-bottom:1.6mm; break-inside:avoid; }
+  .footnote{ font-size:8.2pt; color:var(--ink-3); font-style:italic; }
+  .pb{ page-break-before:always; }
+</style>
+</head>
+<body>
+
+<!-- ============ COPERTĂ ============ -->
+<section class="cover">
+  <div class="rule"></div>
+  <div class="eyebrow">Analiză critică &amp; plan de execuție · 22 august 2026</div>
+  <h1>IZZ.ro — plan național:<br>licitația înainte de licitație</h1>
+  <p class="sub">De ce cele 37 de idei din „Pivot strategic B2B Timiș” sunt, în cea mai mare parte, teritoriu deja ocupat — și care este singura zonă din România pe care nu o acoperă nimeni la scară.</p>
+
+  <div class="thesis">
+    <p class="lead">Teza acestui document, în cinci rânduri:</p>
+    <p>Intuiția centrală a documentului analizat este corectă — IZZ nu trebuie să monetizeze articolul, ci datele structurate și intenția. Dar 30 din cele 37 de idei propuse sunt piețe ocupate de firme care dețin date pe care IZZ nu le are și nu le poate obține prin scraping RSS: <em>termene.ro</em> (25 de ani de date financiare), <em>DataDriven</em> și încă patru monitoare SEAP (alerte de la 14,99 lei/lună), <em>Salariometru</em> (peste 400.000 de salarii declarate).</p>
+    <p>Rămâne o singură zonă neocupată, iar ea este chiar sub nasul proiectului: <strong>lanțul de decizii administrative locale care precede o licitație publică</strong> — hotărâri de consiliu, aprobări de indicatori, rectificări bugetare, documentații de urbanism. Toți competitorii pornesc din momentul publicării în SEAP, unde informația e deja o marfă. Nimeni nu acoperă, la scară națională, cele câteva luni dinainte.</p>
+    <p>Acesta e produsul. Restul planului e ori decor, ori consecință.</p>
+  </div>
+
+  <div class="meta">
+    <b>Documente citite integral:</b> „Pivot strategic B2B Timiș” (26 de pagini, 37 de idei numerotate, arhitectura pe 3 straturi, „cele 7 idei de testat primele”) · discuția anterioară privind pivotul pe Timiș (24 de secțiuni)<br>
+    <b>Verificat împotriva pieței:</b> 6 interogări, 14 surse citate la final, toate din august 2026<br>
+    <b>Verificat împotriva repo-ului izz.ro:</b> 6.372 de articole în stare, 83 de fluxuri naționale + 5 locale, 5.553 de articole cu entități extrase, hartă cu delimitări UAT/SIRUTA<br>
+    <b>NU am putut verifica:</b> traficul real al izz.ro (vezi §1)
+  </div>
+</section>
+
+<!-- ============ 1 ============ -->
+<h2><span class="num">1.</span> Ce am verificat și ce nu — declarat înainte de orice concluzie</h2>
+
+<p>Fiecare afirmație din documentul analizat despre „potențial”, „piață” și „preț” a fost scrisă fără să se fi verificat cine e deja acolo. Am făcut verificarea. Înainte de rezultate, limitele acestei analize, ca să știi exact cât cântărește:</p>
+
+<table>
+  <thead><tr><th style="width:31%">Ce</th><th style="width:19%">Stare</th><th>Detaliu</th></tr></thead>
+  <tbody>
+    <tr><td>Conținutul PDF-ului</td><td class="verdict v-keep">CITIT INTEGRAL</td><td>26 de pagini, randate și citite pagină cu pagină (PDF-ul nu are strat de text — literele sunt vectorizate, deci extragerea automată returnează 485 de caractere din 26 de pagini)</td></tr>
+    <tr><td>Concurența pe fiecare idee</td><td class="verdict v-keep">VERIFICAT</td><td>6 interogări, surse citate la final</td></tr>
+    <tr><td>Starea tehnică a izz.ro</td><td class="verdict v-keep">MĂSURAT ÎN REPO</td><td>Cifrele din coperta acestui document sunt citite din <code>data/articles.json</code> și din <code>generator/</code>, nu din memorie</td></tr>
+    <tr><td>Traficul real al izz.ro</td><td class="verdict v-kill">NEVERIFICAT</td><td>Ahrefs e conectat în sesiune, dar planul nu acoperă Site Explorer: <code>site-explorer-metrics</code> → <code>{"error":"Insufficient plan"}</code>. Iar izz.ro e blocat de proxy-ul sesiunii remote: <code>curl: (56) CONNECT tunnel failed, response 403</code>. <b>Toate afirmațiile despre audiență de mai jos sunt ipoteze, nu fapte.</b></td></tr>
+    <tr><td>Decalajul HCL → SEAP</td><td class="verdict v-kill">NEMĂSURAT</td><td>Este ipoteza pe care stă tot planul. §6 conține protocolul exact de măsurare, în 2 zile. Nu construi nimic înainte de el.</td></tr>
+    <tr><td>Indexul național al Monitoarelor Oficiale Locale</td><td class="verdict v-wait">EXISTĂ, NEVERIFICAT DIRECT</td><td><code>dpfbl.mdrap.ro/monitorul_oficial_local.html</code> apare în rezultate ca hartă/index oficial pe județe, dar e blocat de proxy: <code>EGRESS_BLOCKED</code>. De deschis local, e prima verificare din §8.</td></tr>
+  </tbody>
+</table>
+
+<div class="box warn">
+  <div class="box-title">Prima acțiune, înainte de orice decizie strategică</div>
+  <p>Cloudflare Web Analytics e deja instalat pe site (<code>templates/base.html</code>, linia 53). Deschide-l și notează trei cifre: vizitatori unici pe 30 de zile, primele 10 pagini, sursele de trafic. Documentul analizat construiește șase motoare de venit peste un strat de audiență pe care nimeni — nici el, nici eu — nu l-a măsurat. Dacă cifra e sub ~2.000 de vizitatori unici/lună, atunci fiecare idee din PDF care începe cu „utilizatorul introduce…” e moartă la naștere, iar planul din §7 e singurul care mai stă în picioare, pentru că nu depinde de audiență.</p>
+</div>
+
+<!-- ============ 2 ============ -->
+<h2><span class="num">2.</span> Verdictul, în formă scurtă</h2>
+
+<h3>Ce e corect în documentul analizat</h3>
+<ul>
+  <li><strong>Mutarea de la „monetizăm articolul” la „monetizăm datele + intenția”.</strong> Este cea mai valoroasă propoziție din tot documentul și schimbă corect natura proiectului.</li>
+  <li><strong>Arhitectura pe trei straturi</strong> (media → intelligence → tranzacție). Structural corectă; rolurile straturilor sunt însă greșit atribuite (§7).</li>
+  <li><strong>Refuzul AdSense-ului</strong> și insistența pe trasabilitatea sursei. Corecte și în acord cu regulile deja scrise ale proiectului.</li>
+  <li><strong>Ideea #16, „Dosarele IZZ”</strong> — pagini permanente care agregă cronologie + documente + modificări. Singura idee din cele 37 care nu e ocupată de nimeni, și e îngropată la mijlocul listei.</li>
+  <li><strong>Ideea #26, white-label</strong> pentru asociații și camere de comerț. Cea mai bună cale de intrare pe piață din tot documentul — și e a 26-a.</li>
+</ul>
+
+<h3>Ce e greșit</h3>
+<ul>
+  <li><strong>37 de idei nu sunt o strategie, sunt un inventar de opțiuni.</strong> Dovada e chiar ultima frază a documentului: „Pe care îl luăm primul: A, B sau C?”. Un document strategic răspunde la întrebarea asta; acesta o pune.</li>
+  <li><strong>Nicio idee nu a fost verificată împotriva concurenței.</strong> Prețurile propuse (500–2.000 €/lună white-label, 199–799 lei/lună monitorizare) sunt inventate într-o piață unde alertele pe exact același material public pornesc de la 14,99 lei/lună.</li>
+  <li><strong>Toate cele șase motoare de venit sunt în aval de o audiență nedemonstrată</strong> — iar stratul care ar produce-o e exact cel expus riscului de platformă documentat deja în registrul proiectului (<code>IZZ-0188</code>: politica Google de <em>scaled content abuse</em> se aplică „no matter how it is created”).</li>
+  <li><strong>Confundă „date publice” cu „date accesibile”.</strong> SEAP are API public. Monitorul Oficial Local nu are niciunul. Diferența dintre cele două propoziții este, literalmente, tot business-ul.</li>
+</ul>
+
+<div class="callout">
+  <strong>Verdict:</strong> documentul merită păstrat pentru o singură idee și un singur canal de vânzare. Restul — 33 de idei — trebuie tăiat, nu amânat. Amânarea e felul politicos în care un om singur își păstrează 37 de proiecte deschise și nu termină niciunul.
+</div>
+
+<!-- ============ 3 ============ -->
+<h2 class="pb"><span class="num">3.</span> Cine ocupă deja fiecare idee</h2>
+
+<p>Tabelul de mai jos este rezultatul verificării. Coloana „cine e deja acolo” conține firme reale, cu produsul deja pe piață, în august 2026.</p>
+
+<table>
+  <thead>
+    <tr><th style="width:22%">Ideea din PDF</th><th style="width:33%">Cine e deja acolo</th><th style="width:11%">Verdict</th><th style="width:34%">De ce</th></tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><b>#3, #4, #12, #13, #28</b><br>Radar pentru compania mea · Monitorizează concurentul · IZZ Verified · Company Pages · Reputation Monitor</td>
+      <td><b>termene.ro</b> — scoring antrenat pe 25 de ani de date reale despre firme românești, alerte SMS/email la modificări juridice și financiare · <b>risco.ro</b> — rating financiar, limite de plată, insolvențe, dosare · <b>topchecks.ro</b> — abonamente de monitorizare</td>
+      <td class="verdict v-kill">ELIMINĂ</td>
+      <td>Activul lor e istoricul financiar și juridic, nu software-ul. Nu-l poți obține din fluxuri RSS. Intri ca al patrulea, fără date.</td>
+    </tr>
+    <tr>
+      <td><b>#23, #24</b><br>Harta banilor publici · Market Intelligence</td>
+      <td><b>DataDriven</b>, <b>licitatia.ro</b>, <b>monitorseap.ro</b>, <b>licitatii-publice.ro</b>, <b>licitatii.app</b> (de la 14,99 lei/lună, 30 de coduri CPV) · <b>SICAP.ai</b> — API REST public documentat OpenAPI, plus server MCP</td>
+      <td class="verdict v-kill">ELIMINĂ ca produs</td>
+      <td>Datele SEAP sunt deja deschise (Open Governance License), deja indexate și deja vândute la preț de marfă. <b>Păstrează-le însă ca material</b> — în §6 devin jumătatea de jos a produsului real.</td>
+    </tr>
+    <tr>
+      <td><b>#21</b> Salary Intelligence</td>
+      <td><b>Salariometru</b> / undelucram.ro — peste 400.000 de salarii declarate voluntar · <b>Salario by eJobs</b> — peste 50.000 de intrări într-un an, ghid salarial anual</td>
+      <td class="verdict v-kill">ELIMINĂ</td>
+      <td>Activul e volumul de declarații voluntare. Se construiește în ani, cu audiență de milioane.</td>
+    </tr>
+    <tr>
+      <td><b>#20</b> Job Radar</td><td><b>eJobs</b>, <b>BestJobs</b> — și ambele publică deja analize proprii de tendințe</td>
+      <td class="verdict v-kill">ELIMINĂ</td><td>„Job intelligence” fără fluxul de joburi înseamnă comentariu pe datele altcuiva.</td>
+    </tr>
+    <tr>
+      <td><b>#9, #10</b><br>Lead marketplace · „Cere 3 oferte”</td>
+      <td><b>ConstructBid.ro</b> (peste 500 de constructori verificați), <b>MeșteriLocali</b>, <b>ConstructorLocal.ro</b>, <b>LaMeșteri.eu</b>, <b>bursa-de-servicii.ro</b></td>
+      <td class="verdict v-kill">ELIMINĂ (anul 1)</td>
+      <td>Partea grea a unui marketplace nu e formularul, e latura de ofertă: rețeaua de furnizori verificați. IZZ are zero. Cu zero furnizori, primul lead livrat prost arde și clientul, și brandul.</td>
+    </tr>
+    <tr>
+      <td><b>#34</b> Membership / abonament B2C</td>
+      <td><b>HotNews Premium</b> — cel mai mare publisher generalist din România: peste 2.400 de abonați la 2 luni și jumătate de la lansare, 35 lei/lună (28 lei la plata anuală), proiectat ~100.000 € venit din abonamente pe 2026, dintr-o cifră totală de 3,5 mil. € în care <b>94% rămâne publicitate</b></td>
+      <td class="verdict v-kill">ELIMINĂ</td>
+      <td>Ăsta e plafonul pieței, atins de cineva cu brand național, redacție și audiență de masă. Vezi aritmetica din §9.</td>
+    </tr>
+    <tr>
+      <td><b>#18, #19</b> Comparatorul de România · calculator → afiliere</td>
+      <td>comparatoare de credite/RCA/energie deja consolidate, plus agregatoarele de utilități</td>
+      <td class="verdict v-wait">AMÂNĂ</td>
+      <td>Nu e ocupat complet și are potențial SEO real, dar cere trafic pe care nu-l ai. Reevaluează după ce §1 îți dă cifra.</td>
+    </tr>
+    <tr>
+      <td><b>#32, #33</b> Evenimente · Premii</td>
+      <td>modelul Semafor citat în document funcționează pe o audiență B2B construită în ani</td>
+      <td class="verdict v-wait">AMÂNĂ</td>
+      <td>Evenimentul vinde accesul la o audiență. Fără audiență, vinzi o sală goală. Documentul recunoaște singur asta la #33.</td>
+    </tr>
+    <tr>
+      <td><b>#1, #2, #36</b> „Ce înseamnă pentru mine?” · Radar profesie · IZZ Actions</td>
+      <td>nimeni direct — dar toate cer AI care <em>interpretează</em> efectul unei decizii asupra unui om</td>
+      <td class="verdict v-wait">AMÂNĂ / periculos</td>
+      <td>„Te afectează dacă…” e consultanță fiscală și juridică automatizată. Prima eroare într-un caz real e un risc pe care un proiect de un om nu și-l poate asuma. Vezi regula din §7.3.</td>
+    </tr>
+    <tr>
+      <td><b>#16</b> Dosarele IZZ</td>
+      <td><b>nimeni</b></td>
+      <td class="verdict v-keep">PĂSTREAZĂ</td>
+      <td>Singura idee din cele 37 care nu e ocupată. Devine nucleul planului din §7.</td>
+    </tr>
+    <tr>
+      <td><b>#26</b> White-label</td>
+      <td>nimeni în România, pe date administrative</td>
+      <td class="verdict v-keep">PĂSTREAZĂ</td>
+      <td>Rezolvă exact problema pe care o are IZZ: distribuție fără audiență proprie. Vezi §7, stratul 4.</td>
+    </tr>
+    <tr>
+      <td><b>#25</b> Licențiere date / API</td>
+      <td>SICAP.ai are deja API public + MCP pentru partea de achiziții</td>
+      <td class="verdict v-keep">PĂSTREAZĂ, restrâns</td>
+      <td>Nu pe achiziții — acolo ai pierdut deja. Pe decizii administrative locale, unde nu există niciun API, e o poziție reală.</td>
+    </tr>
+  </tbody>
+</table>
+
+<p class="footnote">Ideile #5–#8, #11, #14, #15, #17, #22, #27, #29–#31, #35 nu sunt listate separat pentru că sunt variații de prezentare peste aceleași două materiale (achiziții publice și profil de firmă) și moștenesc verdictul rândurilor de mai sus.</p>
+
+<!-- ============ 4 ============ -->
+<h2><span class="num">4.</span> Cele patru greșeli de logică ale planului</h2>
+
+<h3>4.1 — Numărul de idei este invers proporțional cu probabilitatea de execuție</h3>
+<p>Documentul propune 37 de direcții și trei „straturi”, iar discuția anterioară propunea simultan Radar, Briefing, hartă economică, newsletter, Plus, Pro, sponsorizări, SEO pe localități, alerte și exporturi. Pentru un singur om cu o slujbă, fiecare direcție deschisă în plus scade șansa ca vreuna să ajungă la un client care plătește. Documentul își recunoaște singur nedecizia în ultima frază: <em>„Pe care îl luăm primul: A, B sau C?”</em></p>
+
+<h3>4.2 — Prețurile sunt inventate, într-o piață cu preț cunoscut</h3>
+<p>Propunerea de 199–799 lei/lună pentru monitorizare, respectiv 500–2.000 €/lună pentru white-label, nu e ancorată în nimic. Pe materialul pe care documentul îl propune drept produs — achiziții publice — piața are deja preț public: <b>14,99 lei/lună</b>. Un preț de 20–50× peste marfă are nevoie de o justificare pe care documentul nu o formulează. §6 o formulează.</p>
+
+<h3>4.3 — Totul depinde de un strat pe care nu-l controlezi</h3>
+<p>Cele șase motoare de venit sunt, fără excepție, în aval de trafic. Traficul vine, în planul acesta, din SEO pe conținut sintetizat automat — exact categoria pe care registrul proiectului o are deja marcată ca risc măsurat (<code>IZZ-0188</code>). Un plan de business care are ca prim pas „obține trafic din Google pe pagini generate cu AI” își pune fundația pe singura variabilă pe care o poate pierde peste noapte, printr-o schimbare de politică la care nu are drept de apel.</p>
+
+<h3>4.4 — Confuzia care contează cel mai mult</h3>
+<p>„Datele sunt publice” nu înseamnă „datele sunt accesibile”. Este singura distincție din care se poate construi un avantaj în România:</p>
+
+<table>
+  <thead><tr><th style="width:26%">Sursă</th><th style="width:30%">Formă de acces</th><th style="width:13%">Efort</th><th>Cine o are deja</th></tr></thead>
+  <tbody>
+    <tr><td>SEAP / SICAP</td><td>API REST public documentat (SICAP.ai), plus seturi pe data.gov.ro sub Open Governance License</td><td>mic</td><td>toată lumea</td></tr>
+    <tr><td>Firme (CUI, financiar, juridic)</td><td>ONRC / ANAF / date deschise, agregate comercial</td><td>mediu</td><td>termene.ro, risco.ro — nu intra</td></tr>
+    <tr><td>Salarii, joburi</td><td>declarații voluntare pe platforme cu audiență mare</td><td>imposibil fără audiență</td><td>undelucram, eJobs</td></tr>
+    <tr><td><b>Monitorul Oficial Local</b><br>(HCL, dispoziții, buget, proiecte de hotărâre)</td><td><b>niciun API.</b> Index oficial național pe județe la <code>dpfbl.mdrap.ro</code>; o parte semnificativă a UAT-urilor stau pe platforme comune — <b>Regista</b> declară peste 1.140 de instituții publice și private, 65.000 de utilizatori, 31 de milioane de documente</td><td><b>mare</b></td><td><b>nimeni, la scară națională</b></td></tr>
+    <tr><td><b>Urbanism</b> (PUZ, PUD, autorizații)</td><td>eterogen, pe site-uri proprii, frecvent PDF scanat</td><td>mare</td><td><b>nimeni</b></td></tr>
+  </tbody>
+</table>
+
+<div class="callout">
+  Cele două rânduri îngroșate sunt tot planul. Sunt singurele unde efortul e mare <em>și</em> nimeni nu l-a făcut. Efortul mare e bariera de intrare — nu obstacolul.
+</div>
+
+<!-- ============ 5 ============ -->
+<h2 class="pb"><span class="num">5.</span> Unde greșește și contrapropunerea „Timiș”</h2>
+
+<p>Discuția anterioară — restrângerea la Timiș, briefing săptămânal, pilot B2B manual, scara de KPI 100 → 10 → 5 → 3 → 1 — este net mai disciplinată decât PDF-ul și are dreptate în trei puncte: că unitatea de bază trebuie să fie subiectul monitorizat și nu articolul, că legătura dintre documente e valoarea reală, și că prețul e instrument de cercetare, nu doar de încasare.</p>
+<p>Are însă un defect care o anulează practic:</p>
+
+<div class="box warn">
+  <div class="box-title">Un județ nu e un laborator, e un eșantion prea mic pentru a decide ceva</div>
+  <p>Timișul are ~99 de UAT-uri și un număr limitat de firme dintr-un domeniu dat care vând la stat. Dacă testezi „achiziții publice pentru furnizori” pe un singur județ și obții 1 client plătitor, nu știi dacă produsul funcționează sau dacă ai avut noroc cu un om. Dacă obții 0, nu știi dacă produsul e greșit sau eșantionul e prea mic. <b>În ambele cazuri ai cheltuit 90 de zile ca să rămâi fără răspuns.</b></p>
+  <p>Costul marginal al acoperirii naționale, în arhitectura propusă în §8, e aproape zero: același colector, aceeași schemă, doar mai multe adrese în listă. Restrângerea geografică economisește puțină muncă și distruge validitatea statistică a testului. <b>Restrânge pe domeniu, nu pe geografie.</b></p>
+</div>
+
+<p>Formularea corectă a experimentului nu este „monitorizare administrativă în Timiș”, ci: <b>un singur tip de semnal, pe două domenii economice, în toată țara.</b> Așa ai 300 de firme de contactat în loc de 30, aceeași muncă de construcție, și un răspuns interpretabil la final.</p>
+
+<!-- ============ 6 ============ -->
+<h2><span class="num">6.</span> Ideea centrală: licitația înainte de licitație</h2>
+
+<p>Toți competitorii verificați în §3 pornesc din același moment: publicarea anunțului în SEAP. În acel moment informația e cunoscută simultan de toată lumea, deci valoarea ei comercială e minimă — de aceea prețul de piață a ajuns la 14,99 lei/lună. Dar anunțul SEAP nu e începutul unui proiect public. E pasul cinci.</p>
+
+<div class="chain">
+  <div class="chain-row">
+    <div class="chain-step hot"><b>1. Nevoie / proiect</b>studiu de fezabilitate, notă de fundamentare</div>
+    <div class="chain-step hot"><b>2. HCL</b>aprobarea indicatorilor tehnico-economici</div>
+    <div class="chain-step hot"><b>3. Buget</b>HCL de buget sau rectificare</div>
+    <div class="chain-step hot"><b>4. Program anual</b>al achizițiilor publice</div>
+    <div class="chain-step cold"><b>5. SEAP</b>anunț de participare</div>
+    <div class="chain-step cold"><b>6. Contract</b>atribuire, execuție</div>
+  </div>
+  <div class="chain-axis"><span>← valoare comercială mare, acoperire zero</span><span>valoare comercială ~0, cinci firme deja acolo →</span></div>
+</div>
+
+<p>Pașii 1–4 sunt publici prin lege — se publică în Monitorul Oficial Local al fiecărui UAT. Dar sunt împrăștiați pe ordinul a 3.200 de site-uri de primării, în HTML inconsistent și PDF-uri scanate. De aceea nu-i are nimeni. <b>Nu pentru că sunt secrete, ci pentru că sunt obositori.</b></p>
+
+<h3>Produsul, formulat exact</h3>
+<div class="box accent">
+  <div class="box-title">Nu „monitorizare”. Un singur mesaj, repetat:</div>
+  <p style="font-size:11pt;">„Consiliul Local <b>X</b> a aprobat marți indicatorii tehnico-economici pentru <b>[proiect]</b>, valoare estimată <b>[sumă]</b>, domeniul <b>[al tău]</b>. Documentul e aici. Pe baza a <b>N</b> cazuri similare măsurate, licitația apare în SEAP peste aproximativ <b>[interval]</b>. Ai atât timp să te pregătești.”</p>
+</div>
+
+<p>Asta nu se poate cumpăra cu 14,99 lei/lună de nicăieri, pentru că nu există. Iar valoarea pentru client nu e „informație”, ci <b>avansul</b>: timpul de a-și pregăti dosarul, de a-și găsi partenerii, de a discuta cu autoritatea contractantă în faza legală de consultare a pieței. Pentru o firmă care vânează contracte de sute de mii de lei, două luni de avans valorează mult mai mult de 500 de lei pe lună.</p>
+
+<div class="box warn">
+  <div class="box-title">Această frază este o ipoteză, nu un fapt — și e ipoteza pe care stă tot planul</div>
+  <p><b>Ipoteza:</b> între hotărârea de consiliu care aprobă un proiect și anunțul SEAP corespunzător există un decalaj median suficient de mare (ordinul lunilor) încât informația timpurie să aibă valoare comercială, iar hotărârea antecedentă e regăsibilă pentru o fracție utilă din contracte.</p>
+  <p><b>Nu e verificată. Este ieftină de verificat: două zile de muncă, zero infrastructură.</b> Protocolul e în §11, felia 0. Dacă pică, tot documentul de față se reduce la „păstrează site-ul, oprește-te”. Dacă ține, ai un produs pe care nu-l vinde nimeni în România.</p>
+</div>
+
+<h3>Al doilea principiu: arhiva e activul, alerta e marfa</h3>
+<p>O alertă se copiază în trei luni și prețul ei tinde spre costul marginal — dovada e chiar prețul din piață. Un istoric nu se copiază: cine începe colectarea în 2029 nu poate avea documentele din 2026. Timpul nu se cumpără înapoi.</p>
+<p>Consecința operațională e contraintuitivă și e cea mai importantă recomandare din acest document:</p>
+
+<div class="callout">
+  <strong>Pornește colectarea națională înainte să știi cine cumpără.</strong> Costă aproape nimic (un job programat plus stocare), nu are nevoie de audiență, de design sau de decizii de produs — și e singura activitate din tot planul a cărei valoare crește liniar cu timpul, în orice scenariu. Dacă vinzi peste 18 luni, vinzi 18 luni de istoric pe care nu-l are nimeni. Dacă nu vinzi niciodată, ai pierdut costul unui job pe GitHub Actions.
+</div>
+
+<h3>Al treilea principiu: niciodată AI între document și cifră</h3>
+<p>Regulă tare, care e simultan apărare juridică, apărare de platformă și avantaj de produs:</p>
+<ul>
+  <li><b>AI-ul are voie</b> să clasifice, să grupeze, să identifice domeniul, să scrie un rezumat în limbaj natural, să propună legături între documente.</li>
+  <li><b>AI-ul nu are voie</b> să producă o cifră, o dată, un nume de firmă, o valoare de contract sau un termen. Acestea se extrag din document, cu offset în text și link către sursa oficială.</li>
+  <li>Fiecare fapt publicat poartă o etichetă de proveniență: <code>official</code> (extras, cu offset), <code>derived</code> (calculat din fapte oficiale, cu formula vizibilă), <code>editorial</code> (afirmație IZZ, asumată). <b>Nu există „inferred” și nu există „unverified”</b> — dacă nu se poate verifica, nu se publică; e aceeași regulă ca §7 din contractul proiectului, „fără output stricat”.</li>
+</ul>
+<p>Trei motive, în ordinea importanței: un client B2B care ia o decizie de 4 milioane de lei pe o cifră halucinată nu revine niciodată și le spune tuturor; paginile devin baze de date cu documente, nu proză generată, ceea ce le scoate din categoria vizată de politica Google de <em>scaled content abuse</em>; iar „sursă citabilă” e singura poziție din care un site mic poate fi luat în serios de un jurnalist, un avocat sau o bancă.</p>
+
+<!-- ============ 7 ============ -->
+<h2 class="pb"><span class="num">7.</span> Planul național — arhitectura, cu rolurile reașezate</h2>
+
+<p>Documentul analizat propune trei straturi. Păstrez structura, adaug stratul care lipsește și, mai important, schimb <em>rolul</em> fiecăruia. Diferența nu e cosmetică: rolul greșit atribuit stratului 1 e cauza tuturor celorlalte erori.</p>
+
+<div class="layers">
+  <div class="layer">
+    <div class="layer-n">STRAT 0<br>CORPUS</div>
+    <div class="layer-b"><b>Colectare, normalizare, graf de documente</b>
+    <span class="role">Nu e vizibil pentru nimeni. Nu are interfață. Nu are nevoie de audiență. <b>Este singurul activ al companiei</b> și singurul lucru care crește în valoare fără să vinzi nimic. Lipsește complet din documentul analizat.</span></div>
+  </div>
+  <div class="layer">
+    <div class="layer-n">STRAT 1<br>MEDIA</div>
+    <div class="layer-b"><b>Știri România + internaționale, sport, economic, hartă</b>
+    <span class="role">Rolul <em>real</em>: credibilitate când suni o firmă, prezență publică, harta ca demonstrație vizuală. <b>NU e motor de trafic monetizabil</b> și nu trebuie bugetat ca atare. Se menține la cost constant; nu se extinde. Știrile internaționale rămân — costul lor marginal e aproape zero (același pipeline) și lărgesc publicul — dar dacă bugetul lor de AI ajunge să concureze cu al colectorului, ele se taie primele.</span></div>
+  </div>
+  <div class="layer">
+    <div class="layer-n">STRAT 2<br>SUPRAFEȚE</div>
+    <div class="layer-b"><b>Dosare, pagini de instituție, pagini de proiect — publice și gratuite</b>
+    <span class="role">Rolul: SEO durabil (pagini care se actualizează, nu se multiplică) plus dovada publică că datele există și sunt corecte. Aici trăiește ideea #16 din PDF. Fiecare pagină e un argument de vânzare care lucrează singur.</span></div>
+  </div>
+  <div class="layer paid">
+    <div class="layer-n">STRAT 3<br>PRODUS</div>
+    <div class="layer-b"><b>Semnalul pre-licitație, filtrat pe domeniu și județ</b>
+    <span class="role">Rolul: banii. Un singur produs, un singur mesaj, un singur preț. Livrat inițial manual, pe e-mail, de mână.</span></div>
+  </div>
+  <div class="layer paid">
+    <div class="layer-n">STRAT 4<br>CANALE</div>
+    <div class="layer-b"><b>White-label pentru asociații și camere de comerț · date gratuite pentru jurnaliști · API</b>
+    <span class="role">Rolul: distribuție <em>fără</em> audiență proprie. O asociație patronală are deja 400 de membri care sunt exact clientul tău. Jurnaliștii care îți citează datele îți aduc linkuri și autoritate pe care SEO-ul nu ți le dă.</span></div>
+  </div>
+</div>
+
+<h3>Ce se schimbă practic față de documentul analizat</h3>
+<table>
+  <thead><tr><th style="width:33%">Element</th><th style="width:33%">În documentul analizat</th><th>În planul acesta</th></tr></thead>
+  <tbody>
+    <tr><td>Motorul de trafic</td><td>stratul media, monetizat prin cele 6 motoare</td><td>stratul media <b>nu</b> se monetizează; suprafețele de date (stratul 2) sunt motorul SEO, pentru că sunt pagini permanente, nu efemere</td></tr>
+    <tr><td>Numărul de produse plătite</td><td>6 motoare + 37 de idei</td><td><b>unul</b>, până când e vândut de 10 ori</td></tr>
+    <tr><td>Ordinea</td><td>construiește → atrage audiență → monetizează</td><td>colectează (ieftin, în paralel) → vinde manual → automatizează <em>exact ce a fost plătit</em></td></tr>
+    <tr><td>Geografie</td><td>Timiș, apoi extindere</td><td><b>național de la început</b>, restrâns pe domeniu (§5)</td></tr>
+    <tr><td>Rolul AI-ului</td><td>motor de sinteză și de scor</td><td>clasificare și rezumat; niciodată sursă de cifre (§6.3)</td></tr>
+  </tbody>
+</table>
+
+<!-- ============ 8 ============ -->
+<h2><span class="num">8.</span> Cum devine fezabilă acoperirea națională</h2>
+
+<p>Obiecția evidentă la „național” e că România are peste 3.200 de UAT-uri. Răspunsul are trei părți, toate verificabile în două zile:</p>
+
+<ol class="steps">
+  <li><b>Nu ținti site-uri, ținti platforme.</b> O parte semnificativă a primăriilor nu-și scrie singură site-ul; folosește platforme comune. Regista, cea mai mare, declară peste 1.140 de instituții. Un singur adaptor scris pentru structura Regista acoperă sute de UAT-uri deodată. Verifică întâi acoperirea reală, apoi scrie adaptoare pentru primele 3–5 platforme.
+    <span class="gate"><b>De verificat local, ziua 1:</b> deschide <code>dpfbl.mdrap.ro/monitorul_oficial_local.html</code> (blocat din sesiunea remote) și lista publică de clienți Regista. Numără câte UAT-uri sunt acoperite de primele 5 platforme. Dacă cifra e sub 40%, pasul 2 devine principal.</span>
+  </li>
+  <li><b>Nu toate UAT-urile contează la fel.</b> Cele 41 de consilii județene, Primăria Capitalei și cele circa 103 de municipii concentrează majoritatea covârșitoare a banilor publici locali. Sunt <b>în jur de 145 de adrese</b>, adică sub 5% din UAT-uri. Începe cu ele: sunt puține, au site-uri mai bune și acolo sunt contractele care merită urmărite. Coada lungă de comune se adaugă mai târziu, sau niciodată.</li>
+  <li><b>Nu colecta tot, colectează două tipuri de document.</b> Hotărâri de consiliu și documente bugetare. Nu dispoziții, nu procese-verbale, nu anunțuri. Domeniul îngust e ce face diferența dintre „3 luni de muncă” și „proiect fără capăt”.</li>
+</ol>
+
+<h3>Modelul de date</h3>
+<p>Discuția anterioară propunea o schemă plată pe eveniment. E insuficientă: dacă valoarea e legătura dintre documente, atunci legătura trebuie să fie o entitate de sine stătătoare, nu un câmp.</p>
+
+<table>
+  <thead><tr><th style="width:20%">Tabel</th><th style="width:44%">Câmpuri esențiale</th><th>De ce există</th></tr></thead>
+  <tbody>
+    <tr><td><code>entitate</code></td><td>id, tip (uat · instituție · firmă · proiect), nume, cod (SIRUTA / CUI), județ</td><td>nodurile grafului; SIRUTA-ul îl ai deja din hartă</td></tr>
+    <tr><td><code>document</code></td><td>id, tip (hcl · buget · puz · anunț_seap · contract), emitent, număr, dată, url_sursă, hash_conținut, text_extras</td><td>sursa oricărei afirmații; hash-ul dovedește că nu s-a modificat</td></tr>
+    <tr><td><code>fapt</code></td><td>id, document_id, tip (valoare · termen · obiect · câștigător), valoare, unitate, offset_start, offset_end, <b>provenance</b></td><td>aici trăiește regula din §6.3: fiecare cifră arată de unde vine, la nivel de caracter</td></tr>
+    <tr><td><b><code>muchie</code></b></td><td>de_la, către, tip (<code>aprobă</code> · <code>finanțează</code> · <code>atribuie</code> · <code>execută</code> · <code>modifică</code> · <code>înlocuiește</code>), document_justificativ, încredere</td><td><b>produsul e aici.</b> Muchia HCL → anunț SEAP este exact ce nu are nimeni</td></tr>
+    <tr><td><code>proiect</code></td><td>id, titlu, uat, domeniu, valoare_curentă, stadiu, documente[]</td><td>nodul agregat = „dosarul” din ideea #16</td></tr>
+  </tbody>
+</table>
+
+<p>Formatul rămâne JSON comis în repo, ca <code>data/articles.json</code> astăzi — nu introduce bază de date până nu te doare lipsa ei. Un fișier per județ, sub <code>data/admin/</code>.</p>
+
+<!-- ============ 9 ============ -->
+<h2><span class="num">9.</span> Aritmetica: aceiași bani, de 20 de ori mai puțini clienți</h2>
+
+<p>Estimările din tabel sunt marcate ca atare; singurele cifre <b>măsurate</b> sunt cele din coloana „ancoră reală”. Fiecare rând se verifică prin înmulțire — preț × clienți = venit — pentru că exact asta îi reproșez documentului analizat.</p>
+
+<table>
+  <thead><tr><th style="width:20%">Model</th><th class="num" style="width:11%">Preț/lună</th><th class="num" style="width:13%">Clienți realiști<br>în 12 luni, un om</th><th class="num" style="width:14%">Venit lunar<br>la final de an 1</th><th>Ancoră reală</th></tr></thead>
+  <tbody>
+    <tr><td>Abonament B2C (planul vechi)</td><td class="num">19 lei<br><span style="font-size:7pt;color:#6d6d7f">35 lei = prețul HotNews</span></td><td class="num">150–400<br><span style="font-size:7pt;color:#6d6d7f">optimist</span></td><td class="num">2.850–7.600 lei<br><span style="font-size:7pt;color:#6d6d7f">brut, la 19 lei</span></td><td>HotNews: 2.400 de abonați la 2,5 luni, cu brand național și redacție; ~100.000 €/an proiectat, adică ~3% din cifra lor de afaceri. La 35 lei ai cere prețul HotNews fără brandul HotNews.</td></tr>
+    <tr style="background:#faf5e6;"><td><b>Semnal pre-licitație B2B</b></td><td class="num"><b>300–800 lei</b></td><td class="num"><b>10–25</b></td><td class="num"><b>3.000–20.000 lei</b></td><td>marfa de referință (alerte SEAP) costă 15–150 lei/lună; semnalul timpuriu nu există în piață, deci prețul se testează, nu se deduce</td></tr>
+    <tr><td>White-label asociații / camere</td><td class="num">2.000–5.000 lei</td><td class="num">1–3</td><td class="num">2.000–15.000 lei</td><td>ideea #26 din PDF, la prețuri ancorate în lei, nu în intervalul inventat de 500–2.000 €</td></tr>
+    <tr><td>Rapoarte / licențiere corpus</td><td class="num">500–3.000 lei<br><span style="font-size:7pt;color:#6d6d7f">per raport</span></td><td class="num">5–15/an</td><td class="num">ocazional</td><td>vine gratuit din corpus odată construit; cost marginal aproape zero</td></tr>
+  </tbody>
+</table>
+
+<div class="callout">
+  Modelul B2C are cel mai <em>mare</em> număr de clienți necesari și cea mai <em>mică</em> sumă per client — cel mai greu drum către aceiași bani. Un om singur poate purta 25 de conversații comerciale reale într-un an. Nu poate purta 400. <strong>Alege modelul în care numărul de clienți încape în numărul de conversații pe care le poți avea.</strong>
+</div>
+
+<p>A doua observație aritmetică, la fel de importantă: chiar scenariul optimist al planului vechi (500 de abonați × 19 lei ≈ 9.500 lei/lună brut, minus procesare, minus churn) e comparabil cu 15 clienți B2B la 500 lei. Cu diferența că cei 500 de abonați cer o audiență de ordinul zecilor de mii de vizitatori lunari, iar cei 15 clienți cer 15 telefoane reușite din ~150 date.</p>
+
+<!-- ============ 10 ============ -->
+<h2><span class="num">10.</span> Ce NU se face — lista de tăiat, cu motiv</h2>
+
+<table>
+  <thead><tr><th style="width:34%">Ce se oprește</th><th>Motivul, în formă scurtă</th></tr></thead>
+  <tbody>
+    <tr><td>Abonament B2C / IZZ Plus / IZZ Club</td><td>plafonul pieței e demonstrat de HotNews; îți cere o audiență pe care nu o ai și un efort de retenție permanent</td></tr>
+    <tr><td>AdSense și publicitate programatică</td><td>corect refuzat și în documentul analizat; nu redeschide</td></tr>
+    <tr><td>Marketplace de lead-uri, „cere 3 oferte”</td><td>cinci platforme deja au latura de ofertă; un lead livrat prost arde clientul și brandul deodată</td></tr>
+    <tr><td>Profil de firmă, scoring, verificare, reputație</td><td>termene.ro și risco.ro dețin datele; intri fără activ</td></tr>
+    <tr><td>Salarii, joburi</td><td>activul e volumul de declarații voluntare, imposibil fără audiență de masă</td></tr>
+    <tr><td>Evenimente, premii, Top 100</td><td>vând acces la o audiență care încă nu există; documentul recunoaște singur asta</td></tr>
+    <tr><td>Conturi de utilizator, dashboard, aplicație, API public, plăți automate</td><td>toate se construiesc <em>după</em> primul client plătitor, și doar în forma pe care a plătit-o el</td></tr>
+    <tr><td>„Te afectează dacă…” aplicat la situația fiscală a unui om</td><td>e consultanță automatizată; prima eroare într-un caz real e un risc disproporționat pentru un proiect de un om</td></tr>
+    <tr><td>Extinderea numărului de fluxuri de știri</td><td>stratul 1 se menține, nu se dezvoltă; fiecare oră investită acolo e o oră luată colectorului</td></tr>
+  </tbody>
+</table>
+
+<!-- ============ 11 ============ -->
+<h2 class="pb"><span class="num">11.</span> Planul pe 12 luni, în felii verticale</h2>
+
+<p>Fiecare felie are o poartă numerică decisă <em>înainte</em> de a începe. O felie care nu trece poarta nu se „ajustează” — se oprește.</p>
+
+<ol class="steps">
+  <li><b>Felia 0 — testul care decide tot (2 zile).</b> Ia 50 de contracte atribuite în 2025–2026, din 3 județe, peste 500.000 lei, din API-ul SEAP/SICAP sau din data.gov.ro. Pentru fiecare, caută în Monitorul Oficial Local al UAT-ului contractant hotărârea antecedentă (aprobare de indicatori, aprobare de proiect, rectificare bugetară). Măsoară două lucruri: în câte cazuri din 50 o găsești, și distribuția decalajului în zile.
+    <span class="gate"><b>Poartă:</b> regăsire ≥ 50% <b>ȘI</b> decalaj median ≥ 60 de zile → continuă. Altfel → ipoteza e moartă; scrie rezultatul în <code>specs/registru.tsv</code> ca <code>masurat-fals</code>, păstrează site-ul așa cum e și oprește-te. Ai economisit 12 luni.</span>
+  </li>
+  <li><b>Felia 1 — colectorul, pe 5 UAT-uri (1 săptămână).</b> Cinci, nu 145. Cap-coadă: descarcă, extrage, normalizează, scrie în <code>data/admin/</code>. Fără nicio pagină publică.
+    <span class="gate"><b>Poartă:</b> cele 5 rulează 7 zile la rând fără intervenție manuală.</span>
+  </li>
+  <li><b>Felia 2 — scalare la ~145 (3–4 săptămâni).</b> Consiliile județene și municipiile, prin adaptoare de platformă acolo unde există.
+    <span class="gate"><b>Poartă:</b> ≥ 70% din cele ~145 colectate zilnic, automat. Și: întreținerea sub 4 ore/săptămână. Dacă depășește, restrânge lista — nu adăuga ore.</span>
+  </li>
+  <li><b>Felia 3 — muchiile și 20 de dosare (3 săptămâni).</b> Leagă HCL-urile de anunțurile SEAP corespunzătoare. Construiește 20 de dosare complete, cu mâna dacă e nevoie, ca material de vânzare.
+    <span class="gate"><b>Poartă:</b> un om care nu e tu înțelege un dosar în 60 de secunde și găsește singur documentul-sursă.</span>
+  </li>
+  <li><b>Felia 4 — prima vânzare, manuală (4 săptămâni).</b> Două domenii (de exemplu construcții și IT), toată țara, 30 de firme contactate individual — nu newsletter, nu formular, nu campanie. Mesaj scurt, cu un dosar real atașat, relevant pentru ele.
+    <span class="gate"><b>Poartă la 90 de zile de la start:</b> ≥ 3 conversații care ajung la „trimite-mi o ofertă”. Zero → nu automatiza nimic, oprește vânzarea, păstrează colectorul pornit.</span>
+  </li>
+  <li><b>Felia 5 — automatizezi exact ce s-a plătit (luna 5–7).</b> Nu ce ai vrea să existe. Ce a cerut clientul care a plătit.</li>
+  <li><b>Felia 6 — al doilea canal (luna 8–12).</b> O asociație patronală sau o cameră de comerț, în regim white-label. Un singur partener, nu trei.</li>
+</ol>
+
+<h3>Criteriile de oprire, scrise înainte</h3>
+<table>
+  <thead><tr><th style="width:16%">Moment</th><th style="width:42%">Dacă asta nu s-a întâmplat</th><th>Atunci</th></tr></thead>
+  <tbody>
+    <tr><td><b>Ziua 5</b></td><td>testul de decalaj nu trece poarta</td><td>nu construi colectorul; documentul acesta se închide aici</td></tr>
+    <tr><td><b>Ziua 90</b></td><td>zero conversații B2B ajunse la cererea unei oferte</td><td>oprește vânzarea și dezvoltarea; colectorul rămâne pornit (cost ~0, valoare crescătoare)</td></tr>
+    <tr><td><b>Ziua 180</b></td><td>zero lei încasați</td><td>tot ce nu e colectorul se oprește. Nu e eșec — e o opțiune păstrată ieftin, cu 6 luni de arhivă pe care nimeni n-o are</td></tr>
+    <tr><td><b>Oricând</b></td><td>întreținerea colectorului trece de 4 ore/săptămână</td><td>restrânge numărul de UAT-uri până scade sub prag. Nu adăuga ore de muncă la un proiect care încă nu produce bani</td></tr>
+  </tbody>
+</table>
+
+<!-- ============ 12 ============ -->
+<h2><span class="num">12.</span> Riscuri</h2>
+
+<table>
+  <thead><tr><th style="width:20%">Risc</th><th style="width:11%">Gravitate</th><th>Ce faci concret</th></tr></thead>
+  <tbody>
+    <tr><td>Date cu caracter personal în documente administrative</td><td><b>mare</b></td><td>HCL-urile și contractele conțin nume de persoane fizice. Regulă: publici nume doar în calitate oficială (primar, consilier, reprezentant legal al unei firme). Numele persoanelor fizice în calitate privată — beneficiari, petenți, proprietari — se elimină la extragere, nu la publicare. Regula se scrie în cod, nu în cap.</td></tr>
+    <tr><td>Drepturi asupra documentelor</td><td>mică</td><td>Textul actelor oficiale nu e protejat de dreptul de autor (L8/1996 art. 9). Atenție însă: asta acoperă <em>textul</em>, nu anexele grafice, planșele de urbanism sau fotografiile — exact distincția deja consemnată în contractul proiectului la §18.</td></tr>
+    <tr><td>Sarcină pe serverele primăriilor</td><td>medie</td><td>Un crawler agresiv pe site-uri de instituții publice e o problemă reputațională și potențial una juridică. Ritm de 1 cerere / 2 secunde per gazdă, <code>User-Agent</code> identificabil cu o adresă de contact, respectă <code>robots.txt</code>, colectează o dată pe zi. Nu negocia asta.</td></tr>
+    <tr><td>Copierea de către un concurent</td><td>medie</td><td>Dacă ipoteza se validează, DataDriven o poate implementa. Apărarea nu e ideea — e arhiva și acoperirea UAT. De aceea colectarea începe înainte de vânzare, nu după.</td></tr>
+    <tr><td>Platformă (Google)</td><td>scade</td><td>Planul acesta reduce dependența de Google în loc s-o crească: paginile devin baze de date cu documente, iar veniturile nu mai trec prin trafic.</td></tr>
+    <tr><td><b>Capacitatea unui singur om</b></td><td><b>cel mai mare</b></td><td>Riscul real nu e tehnic. Un om nu poate face simultan colectare, vânzare, editorial și întreținerea site-ului. De aceea planul are <b>două</b> piste (una ieftină și automată — colectorul; una scumpă în atenție — vânzarea), nu șase motoare. Dacă apare a treia pistă, ceva trebuie oprit.</td></tr>
+  </tbody>
+</table>
+
+<!-- ============ 13 ============ -->
+<h2><span class="num">13.</span> Răspunsul la întrebarea cu care se închide documentul analizat</h2>
+
+<p>PDF-ul se termină cu: <em>„A. IZZ Leads &amp; marketplace · B. IZZ Business Intelligence · C. IZZ Action Engine + Tools + afiliere. Pe care îl luăm primul: A, B sau C?”</em></p>
+
+<div class="box accent">
+  <div class="box-title">Răspuns</div>
+  <p><b>Niciuna dintre cele trei, în forma în care sunt scrise.</b></p>
+  <p><b>A</b> intră într-o piață cu cel puțin cinci platforme care au deja rețeaua de furnizori — partea grea, pe care IZZ nu o are.</p>
+  <p><b>C</b> e a doua ca valoare și are potențial SEO real, dar depinde integral de trafic, adică de singura variabilă nemăsurată și cu risc de platformă.</p>
+  <p><b>B este direcția corectă — dar nu în forma din document.</b> „Business intelligence” înțeles ca profil de firmă e teritoriul termene.ro și e pierdut înainte de a începe. Îngustat la <b>semnalul administrativ timpuriu</b> — un singur tip de informație, care nu există în altă parte, vândută firmelor care vând la stat — devine singurul produs din tot documentul care are simultan: material neocupat, cumpărător identificabil, preț justificabil și barieră de intrare care crește cu timpul.</p>
+  <p style="margin-top:3mm;"><b>Deci: B, restrâns la un singur produs, testat național pe două domenii, după ce trece felia 0.</b></p>
+</div>
+
+<!-- ============ 14 ============ -->
+<h2><span class="num">14.</span> Ce faci în următoarele 14 zile</h2>
+
+<ol class="steps">
+  <li><b>Ziua 1 — trei cifre.</b> Deschide Cloudflare Web Analytics și notează: vizitatori unici pe 30 de zile, primele 10 pagini, sursele de trafic. Scrie-le într-un fișier, nu le ține în cap. Fără ele, orice discuție despre stratul media e ficțiune.</li>
+  <li><b>Ziua 1 — două verificări de acces.</b> Deschide <code>dpfbl.mdrap.ro/monitorul_oficial_local.html</code> și lista publică de clienți Regista. Răspunde la o singură întrebare: câte UAT-uri sunt acoperite de primele cinci platforme?</li>
+  <li><b>Ziua 2–5 — felia 0.</b> Testul de decalaj pe 50 de contracte. Rezultatul se scrie în <code>specs/</code>, cu cele două cifre (regăsire %, decalaj median) și cu eșantionul, ca să poată fi recitit peste șase luni.</li>
+  <li><b>Ziua 6 — decizia, în scris.</b> GO sau NO-GO, într-un rând în <code>specs/registru.tsv</code>, cu motivul. Dacă e NO-GO, documentul acesta și-a plătit costul: te-a oprit din 12 luni de muncă pe o ipoteză falsă.</li>
+  <li><b>Ziua 7–14 — felia 1, dacă e GO.</b> Colectorul pentru <b>cinci</b> UAT-uri. Nu 145. Dacă funcționează pentru cinci, funcționează pentru 145; dacă nu funcționează pentru cinci, ai aflat asta cu 140 de adrese mai devreme.</li>
+  <li><b>Tot intervalul — nu atinge site-ul public.</b> Nicio pagină nouă, niciun CTA, niciun formular de newsletter, nicio secțiune „Radar”. Suprafețele publice se construiesc în felia 3, din date care există deja. Orice pagină construită înainte de date e o pagină goală care trebuie întreținută.</li>
+</ol>
+
+<div class="callout">
+  Dacă din tot documentul reții o singură propoziție: <strong>măsoară decalajul dintre hotărârea de consiliu și anunțul SEAP înainte de a scrie o linie de cod.</strong> Două zile de muncă decid dacă restul are sens sau nu, și e singura măsurătoare din acest plan pe care nu o poate face nimeni altcineva în locul tău.
+</div>
+
+<!-- ============ SURSE ============ -->
+<h2><span class="num">15.</span> Surse verificate</h2>
+<p class="footnote">Toate consultate pe 22 august 2026. Cifrele din repo sunt măsurate direct în arborele de lucru la aceeași dată.</p>
+<ol class="sources">
+  <li>Monitorizare achiziții publice: <a href="https://www.datadriven.ro/">datadriven.ro</a> · <a href="https://www.licitatia.ro/abonamente.html">licitatia.ro/abonamente</a> · <a href="https://www.monitorseap.ro/">monitorseap.ro</a> · <a href="https://www.licitatii-publice.ro/">licitatii-publice.ro</a> · <a href="https://licitatii.app/abonamente/">licitatii.app/abonamente</a> (preț de la 14,99 lei/lună)</li>
+  <li>API public pe date SEAP/SICAP: <a href="https://sicap.ai/despre">sicap.ai/despre</a> · <a href="https://api.sicap.ai/">api.sicap.ai</a></li>
+  <li>Monitorizare firme: <a href="https://solutii.termene.ro/monitorizare-firma">termene.ro</a> · <a href="https://www.risco.ro/en/produse/monitorizare">risco.ro</a> · <a href="https://topchecks.ro/abonamente-monitorizare-firme">topchecks.ro</a></li>
+  <li>Platforme pentru administrația locală: <a href="https://regista.ro/monitorul-oficial-local/">regista.ro/monitorul-oficial-local</a> · <a href="https://regista.ro/">regista.ro</a> (peste 1.140 de instituții, 65.000 de utilizatori, 31 mil. documente)</li>
+  <li>Index oficial al Monitoarelor Oficiale Locale pe județe: <a href="http://www.dpfbl.mdrap.ro/monitorul_oficial_local.html">dpfbl.mdrap.ro</a> (blocat din sesiunea remote — de verificat local)</li>
+  <li>Reader revenue în România: <a href="https://www.paginademedia.ro/stiri-media/cati-abonati-are-hotnews-premium-22576413">paginademedia.ro — abonați HotNews Premium</a> · <a href="https://www.funds4media.org/p/1500-paying-subscribers-in-a-month">funds4media.org — 1.500 de abonați plătitori într-o lună</a></li>
+  <li>Date salariale: <a href="https://www.salariometru.ro/">salariometru.ro</a> · <a href="https://www.undelucram.ro/ro/angajatori/raport-salarial">undelucram.ro — raport salarial</a> · ghidul salarial eJobs / Salario</li>
+  <li>Lead generation în construcții: <a href="https://www.constructbid.ro/">constructbid.ro</a> · <a href="https://mesterilocali.ro/firme-de-constructii">mesterilocali.ro</a> · <a href="https://constructorlocal.ro/despre-noi/">constructorlocal.ro</a> · <a href="https://bursa-de-servicii.ro/">bursa-de-servicii.ro</a></li>
+  <li>Risc de platformă: politica Google privind <em>scaled content abuse</em> — consemnată deja în registrul proiectului la <code>IZZ-0188</code>, cu sursele acolo</li>
+</ol>
+
+</body>
+</html>
