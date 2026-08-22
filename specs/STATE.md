@@ -21,9 +21,8 @@
   #206 is docs-only on `main` and its build FAILED, so the cause is the base's size, not code.
   NOT `ARTICLE_TTL_DAYS` (#197): at TTL=7 it is still ~20651 files, and 20,000 caps you at ~21
   days of ingest with NO images at all — architectural, not a setting. Owner call — `IZZ-0240`.
-- **PR #199 `fix/recuperare-404-pagini-indexate`** — was red: recovered articles kept the dead
-  `zonal` category, which renders no page but still emits links (9 broken; `main` renders 0). Fixed
-  at source (`config.CATEGORII_REDENUMITE`), 5 records migrated, 4 tests. Awaiting owner merge.
+- **MERGED — PR #199 `31f2b02`** (recovered pages Google has indexed; the dead-`zonal` fix and the
+  union-on-`url` conflict resolution are in the merge commit). **Announce to A still owed (§14).**
 - **PR #205 (draft) `claude/getty-images-licensing-d1kupt`** — CC BY / CC BY-SA photos on article
   pages only. pytest green, renders exit 0; its red Cloudflare is the ceiling. Getty out (`IZZ-0237`).
 - **PR #201 (draft) `claude/surse-din-istoric-si-rubrica-ai`** — AI rubric, geographic scale. Green:
