@@ -270,6 +270,26 @@ RELATED_MIN_SHARED = 2         # "Articole conectate": minim entitati comune. 1 
 # Plafonul se ridica definitiv doar prin arhiva separata de starea de lucru (paginile raman
 # publicate, articolele ies doar din procesare) - proiect separat, programat pe 21 aug.
 ARTICLE_TTL_DAYS = 30
+
+# Plafonul de fisiere al gazdei. Cloudflare Pages Free refuza deploy-ul peste 20.000 de
+# fisiere si NU raporteaza inapoi in pipeline: jobul de continut trece verde, iar esecul
+# apare 25 de minute mai tarziu in `release-probe`, ca "izz.ro serveste <sha vechi>".
+# Asa a stat site-ul inghetat 21 de ore pe 63bcc9bd (2026-08-21 10:25 -> 08-22 07:00),
+# cu sase rulari complete picate una dupa alta. Bracket masurat: 19.987 fisiere = deploy
+# verde, 20.337 = build picat.
+#
+# Randarea nu mai are voie sa lase marimea output-ului pe seama ingestului. Bugetul de
+# mai jos e ce respecta EA, sub plafonul real, iar marja acopera derivatele webp care nu
+# se pot prezice inainte de scriere. Ridica-l doar impreuna cu o masuratoare noua a
+# plafonului gazdei -- nu "ca sa incapa".
+OUTPUT_FILE_BUDGET = int(os.getenv("OUTPUT_FILE_BUDGET", "19500"))
+# Fisierele care NU stau in directoarele de articol: static, categorii cu paginare,
+# subiecte + feedurile lor, ghiduri, instrumente, harta, sitemapuri, feed, cautare.
+# MASURAT pe o randare reala din 2026-08-22: 3.230 de fisiere la 5.799 de articole
+# (`python tools/count_output.py`). Cifra de aici e rotunjita in sus, ca marja.
+# Se scade din buget INAINTE de imparteala pe articole: paginile de articol au prioritate
+# absoluta, imaginile se dau din ce ramane. Remasoara dupa orice rubrica sau sectiune noua.
+OUTPUT_NON_ARTICLE_RESERVE = int(os.getenv("OUTPUT_NON_ARTICLE_RESERVE", "3300"))
 MAX_PER_SOURCE = 8             # redus de la 12 ca sa scada apelurile AI/rulare
 # Homepage-ul este un tablou de bord, nu arhiva zilei: patru carduri per categorie pastreaza
 # orientarea larga, iar restul raman accesibile prin pagina de categorie. Limita reduce DOM-ul

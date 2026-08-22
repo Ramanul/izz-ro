@@ -17,8 +17,6 @@
 
 ## Open
 
-- **PR #199 `fix/recuperare-404-pagini-indexate`** — targeted recovery of the pages Google has
-  indexed. Open, not draft, awaiting owner merge.
 - **PR (draft) `claude/lumina-reguli-sesiuni-ypgdky`** — wrong-county fix on the map (measured
   A/B: 12 articles moved, all 12 correct, 0 dropped), plus the rules work that produced this
   file. The rules half is now WIRED: `tests/test_reguli.py` enforces the caps each rule file
@@ -31,6 +29,14 @@
 - **From `specs/atribuire-cercetare-si-plan.md`, in order** — E1 permalink decoupled from
   category (**owner decision, blocks all retroactive correction**), E3 focus score instead of
   `max()`, E4 separate topic/place axes (**owner decision**), E5 gold set grown to ~150 + CI gate.
+
+- **DEPLOY-URILE PICAU — reparat in cod, de confirmat pe live.** Output-ul a trecut plafonul de
+  fisiere Pages, iar Pages refuza deploy-ul **fara sa raporteze inapoi**: continutul trece verde,
+  `release-probe` pica 25 min mai tarziu. Sase rulari picate la rand, site inghetat ~21h pe
+  continut din 08-21 10:25. Masurat azi: 22.355 fisiere / 5.799 articole / 3.230 in afara lor.
+  Randarea respecta acum `config.OUTPUT_FILE_BUDGET`, cedand copertele dinspre cele mai vechi.
+  **Limita dura:** ~16.200 pagini fara imagini = ~18 zile de ingest → `ARTICLE_TTL_DAYS` 30 e
+  imposibil pe Pages. **Decizie de proprietar:** TTL mai mic, imagini pe R2/CDN, sau alta gazda.
 
 ## Standing rules that keep being rediscovered — do not "fix" these
 
