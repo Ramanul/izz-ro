@@ -1432,7 +1432,44 @@ def _write_redirects() -> None:
         "/harta-stiri/ /static/harta-stiri/ 301\n"
         "/zonal/* /judetean/:splat 301\n"
     )
+    redirects += _redirects_migrare()
     _write(os.path.join(OUT_DIR, "_redirects"), redirects)
+
+
+_MIGRARE_TSV = os.path.join(ROOT, "data", "redirects_migrare.tsv")
+
+
+def _redirects_migrare() -> str:
+    """Redirecturi 301 per ARTICOL, pentru mutarile de rubrica facute retroactiv.
+
+    Wildcardul de mai sus merge cand se muta o categorie intreaga (`zonal` -> `judetean`).
+    Nu merge la rubrica `ai` (owner 2026-08-21): articolele vin din `tech`, `economic`,
+    `extern`, `sanatate`, `lifestyle` — surse diferite, aceeasi destinatie. Deci perechile
+    se scriu una cate una de `tools/migrate_categorie_ai.py` si se citesc de aici la build.
+
+    Permalinkul contine categoria (`/{category}/{slug}/`), deci fara liniile astea fiecare
+    articol mutat ar da 404 pe URL-ul deja indexat.
+
+    Fisierul lipsa nu e o eroare: pe o clona fara migrari nu exista nimic de redirectat."""
+    try:
+        with open(_MIGRARE_TSV, encoding="utf-8") as f:
+            linii = [ln.strip() for ln in f if ln.strip()]
+    except OSError:
+        return ""
+    out, invalide = [], []
+    for ln in linii:
+        parti = ln.split("\t")
+        if len(parti) == 2 and parti[0].startswith("/") and parti[1].startswith("/"):
+            out.append(f"{parti[0]} {parti[1]} 301")
+        else:
+            invalide.append(ln)
+    if invalide:
+        # Esecul tacut e exact bug-ul pe care fisierul asta exista sa-l previna: un rand sarit
+        # inseamna un articol fara 301, deci un URL deja indexat care da 404 permanent. Un
+        # TSV corupt (editare manuala, merge prost rezolvat) trebuie sa se VADA in log-ul de build.
+        print(f"[redirects_migrare] {len(invalide)} linii ignorate, format invalid: "
+              f"{invalide[:3]}", file=sys.stderr)
+    return ("\n".join(out) + "\n") if out else ""
 
 
 def _rfc2822(value: str, url: str = "") -> str:
