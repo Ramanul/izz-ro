@@ -687,6 +687,10 @@ def build(articles: list, mod: dict | None = None) -> None:
     # mereu pe arhiva, iar plafonul e respectat exact, nu estimat.
     n = len(by_date)
     img_budget, n_art, n_cover = _image_budget(n)
+    # Variantele mici pentru cardurile de pe homepage se finanteaza INAINTEA copertelor de
+    # share: sunt putine si sunt exact zona unde Lighthouse a masurat imagini prea mari.
+    # Fara rezerva, pasa 2 golea bugetul si homepage-ul ramanea fara ele (masurat: 0 din 61).
+    card_reserve = len(config.CATEGORIES) * config.HOME_CARDS_PER_CATEGORY + 16
     spent = 0
 
     def _spend(ok: bool) -> bool:
@@ -727,7 +731,7 @@ def build(articles: list, mod: dict | None = None) -> None:
 
     # PASA 2 -- coperta de share, din ce a ramas, tot dinspre cel mai nou.
     for idx, a in enumerate(by_date):
-        if idx >= n_cover or spent >= img_budget:
+        if idx >= n_cover or spent >= img_budget - card_reserve:
             break
         cdir = os.path.join(OUT_DIR, a["category"], a["slug"])
         aid = htmlart.art_id(a)
@@ -753,9 +757,11 @@ def build(articles: list, mod: dict | None = None) -> None:
             a["cover_url"] = f"{config.SITE['url']}{a['art_path']}"
             fara_coperta += 1
 
-    logging.info(">> buget imagini: %d fisiere disponibile pentru %d articole -> %d pe arta, "
-                 "%d pe coperti (%d articole cad pe og:image din arta)",
-                 img_budget, n, spent_art, spent - spent_art, fara_coperta)
+    # print, nu logging.info: radacina sta pe WARNING, deci INFO nu se vede in rulare --
+    # masurat 2026-08-22, linia asta a lipsit cu totul din log. Restul progresului din
+    # pipeline foloseste tot print.
+    print(f">> buget imagini: {img_budget} fisiere pentru {n} articole -> {spent_art} pe arta, "
+          f"{spent - spent_art} pe coperti ({fara_coperta} cad pe og:image din arta)")
     if n_art < n:
         logging.warning("!! bugetul nu acopera o imagine per articol: %d din %d articole raman "
                         "fara. Se ridica doar prin ARTICLE_TTL_DAYS mai mic sau imagini in "
@@ -983,8 +989,8 @@ def _write_build_metadata(article_count: int) -> None:
                       "tools/count_output.py si corecteaza OUTPUT_NON_ARTICLE_RESERVE.",
                       file_count, config.OUTPUT_FILE_BUDGET, config.OUTPUT_NON_ARTICLE_RESERVE)
     else:
-        logging.info(">> output: %d fisiere (buget %d, marja %d)", file_count,
-                     config.OUTPUT_FILE_BUDGET, config.OUTPUT_FILE_BUDGET - file_count)
+        print(f">> output: {file_count} fisiere "
+              f"(buget {config.OUTPUT_FILE_BUDGET}, marja {config.OUTPUT_FILE_BUDGET - file_count})")
     # Cheile JSON raman stabile pentru ca probele externe sa nu depinda de ordinea dict-ului Python.
     _write(os.path.join(OUT_DIR, "build.json"), json.dumps(payload, ensure_ascii=False, sort_keys=True) + "\n")
 

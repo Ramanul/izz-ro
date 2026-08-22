@@ -285,11 +285,14 @@ ARTICLE_TTL_DAYS = 30
 OUTPUT_FILE_BUDGET = int(os.getenv("OUTPUT_FILE_BUDGET", "19500"))
 # Fisierele care NU stau in directoarele de articol: static, categorii cu paginare,
 # subiecte + feedurile lor, ghiduri, instrumente, harta, sitemapuri, feed, cautare.
-# MASURAT pe o randare reala din 2026-08-22: 3.230 de fisiere la 5.799 de articole
-# (`python tools/count_output.py`). Cifra de aici e rotunjita in sus, ca marja.
+# MASURAT pe o randare reala din 2026-08-22: 3.483 de fisiere care nu sunt nici pagina de
+# articol, nici imagine de articol (`python tools/count_output.py`). Include paginile de
+# paginare si de subiect, care stau INAUNTRUL directoarelor de categorie -- o prima
+# masuratoare le-a numarat gresit ca pagini de articol si bugetul a iesit cu 183 de fisiere
+# peste. Cifra de aici e rotunjita in sus, ca marja.
 # Se scade din buget INAINTE de imparteala pe articole: paginile de articol au prioritate
 # absoluta, imaginile se dau din ce ramane. Remasoara dupa orice rubrica sau sectiune noua.
-OUTPUT_NON_ARTICLE_RESERVE = int(os.getenv("OUTPUT_NON_ARTICLE_RESERVE", "3300"))
+OUTPUT_NON_ARTICLE_RESERVE = int(os.getenv("OUTPUT_NON_ARTICLE_RESERVE", "3600"))
 MAX_PER_SOURCE = 8             # redus de la 12 ca sa scada apelurile AI/rulare
 # Homepage-ul este un tablou de bord, nu arhiva zilei: patru carduri per categorie pastreaza
 # orientarea larga, iar restul raman accesibile prin pagina de categorie. Limita reduce DOM-ul
