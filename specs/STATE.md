@@ -13,24 +13,28 @@
 > history with two live rules buried in it. That is the same failure the 08-07 cut documented.
 > **A section is `Open` only if a PR is open or a decision is pending — check, don't assume.**
 
-**Updated:** 2026-08-21 (map county fix; rule files now verified by CI, not by trust)
+**Updated:** 2026-08-21 (deploy ceiling hit; six open PRs, inventory verified against GitHub)
 
 ## Open
 
-- **PR #199 `fix/recuperare-404-pagini-indexate`** — targeted recovery of the pages Google has
-  indexed. Open, not draft, awaiting owner merge.
-- **PR (draft) `claude/lumina-reguli-sesiuni-ypgdky`** — wrong-county fix on the map (measured
-  A/B: 12 articles moved, all 12 correct, 0 dropped), plus the rules work that produced this
-  file. The rules half is now WIRED: `tests/test_reguli.py` enforces the caps each rule file
-  declares about itself, that a cap is declared in exactly one place, that every cited
-  `ARTICLE_TTL_DAYS` matches config, and that every root `.md` has a role in CLAUDE.md §21.
-  Every guard has a negative test — a guard that cannot fail is worse than none (`IZZ-0177`).
-- **Archive as a separate surface ("varianta 3")** — owner asked to be reminded on 08-21. Not
-  started, still an owner decision. `ARTICLE_TTL_DAYS` went 7 → 30 (#197) as the cheap half of
-  the same problem; `tools/arhiva.py` already reconstructs the full series from git history.
-- **From `specs/atribuire-cercetare-si-plan.md`, in order** — E1 permalink decoupled from
-  category (**owner decision, blocks all retroactive correction**), E3 focus score instead of
-  `max()`, E4 separate topic/place axes (**owner decision**), E5 gold set grown to ~150 + CI gate.
+- **INCIDENT — output past the Cloudflare Pages file ceiling; `main` cannot deploy.** CONFIRMED:
+  #206 is docs-only on `main` and its build FAILED, so the cause is the base's size, not code.
+  The 20,000 limit was already written in `render.py:844` (docs, verified 08-07) together with
+  "TTL cannot realistically pass ~14 days"; #197 set it to 30 without re-reading that. Owner call.
+- **MERGED — PR #199 `31f2b02`** (recovered pages Google has indexed; the dead-`zonal` fix and the
+  union-on-`url` conflict resolution are in the merge commit). **Announce to A still owed (§14).**
+- **PR #205 (draft) `claude/getty-images-licensing-d1kupt`** — CC BY / CC BY-SA photos on article
+  pages only. pytest green, renders exit 0; its red Cloudflare is the ceiling. Getty out (`IZZ-0237`).
+- **PR #201 (draft) `claude/surse-din-istoric-si-rubrica-ai`** — AI rubric, geographic scale. Green:
+  all 17 new sources answer `ok`; the red `feeds` job is a manual probe whose dead sources predate it.
+- **PRs #202 / #203 / #204 / #207 (drafts)** — docs only, awaiting owner merge. #202 also fixes
+  CLAUDE.md §14: the announce channel points at `TASKS-B.md`, frozen since 08-04 — a live defect
+  on `main` until it lands. **Merge hazards, measured:** `IZZ-0237` is claimed by both #204 and
+  #205 (`IZZ-0241`); FOUR branches rewrite this file (#202, #205, #206, #207) and only #202
+  carries the `Landed` record for #200 — keep it. None of the four touches `output/`.
+- **Archive as a separate surface ("varianta 3")** — owner decision; `tools/arhiva.py` rebuilds it.
+- **From `specs/atribuire-cercetare-si-plan.md`** — E1 permalink decoupled from category (**owner
+  decision, blocks retroactive correction**), E3 focus score not `max()`, E4 axes, E5 gold ~150.
 
 ## Standing rules that keep being rediscovered — do not "fix" these
 
