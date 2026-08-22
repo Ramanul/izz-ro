@@ -7,3 +7,11 @@ compatibility_date = "2026-07-01"
 routes = [
   { pattern = "izz.ro/*", zone_name = "izz.ro" }
 ]
+
+# Worker-ul deployat manual pe 2026-08-22 (nu din repo) a introdus o clasa Durable Object
+# `RateLimiter` si un Workflow, prin dashboard. Versiunea din repo nu le exporta, iar
+# Cloudflare refuza un deploy care lasa in urma o clasa DO fara migrare explicita.
+# Migrarea de mai jos o sterge o singura data; ramane inerta la deploy-urile urmatoare.
+[[migrations]]
+tag = "v1"
+deleted_classes = ["RateLimiter"]
