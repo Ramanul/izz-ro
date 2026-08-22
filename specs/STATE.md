@@ -28,11 +28,9 @@
 - **Archive as a separate surface ("varianta 3")** — owner asked to be reminded on 08-21. Not
   started, still an owner decision. `ARTICLE_TTL_DAYS` went 7 → 30 (#197) as the cheap half of
   the same problem; `tools/arhiva.py` already reconstructs the full series from git history.
-- **Strategy: national administrative-data pivot — OWNER DECISION PENDING.**
-  `notes/plan-national-2026-08-22.{html,pdf}`: the 26-page "Pivot strategic B2B Timiș" deck checked
-  against the live market — ~30 of its 37 ideas are occupied (termene.ro, 5 SEAP monitors from
-  14.99 lei/mo, Salariometru, ConstructBid); one gap is not. **Build nothing until felia 0 runs**:
-  measure the HCL→SEAP lag on 50 contracts, gate = recall >=50% AND median >=60 days.
+- **Strategy: national administrative-data pivot — OWNER DECISION PENDING.** Detail:
+  `notes/plan-national-2026-08-22.{html,pdf}` — ~30 of the deck's 37 ideas are already occupied;
+  one gap is not. **Build nothing until felia 0**: HCL→SEAP lag on 50 contracts, gate >=50% / >=60d.
 
 - **From `specs/atribuire-cercetare-si-plan.md`, in order** — E1 permalink decoupled from
   category (**owner decision, blocks all retroactive correction**), E3 focus score instead of
