@@ -26,7 +26,6 @@
   leave **zero** at steady state (`19500-3600-21847 < 0`), failing its own `test_podeaua`. Keep
   the guard, raise the two numbers to ~90,000 / 100,000. Measured 08-22: 23,674 files, 3.64 per
   article, 930 articles/day, 0.783 rendered/state → steady state **~83,000, 17% of headroom**.
-
 - **PR #202 (draft) `claude/lumina-reguli-sesiuni-ypgdky`** — wrong-county map fix (A/B: 12
   articles moved, all correct). Its rules half already landed: `tests/test_reguli.py` enforces
   the caps, and it caught a 45-line edit to this file today. Only the map half is still open.
