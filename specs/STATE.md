@@ -13,7 +13,7 @@
 > history with two live rules buried in it. That is the same failure the 08-07 cut documented.
 > **A section is `Open` only if a PR is open or a decision is pending — check, don't assume.**
 
-**Updated:** 2026-08-21 (map county fix; rule files now verified by CI, not by trust)
+**Updated:** 2026-08-22 (national admin-data strategy proposal; owner decision pending)
 
 ## Open
 
@@ -28,6 +28,12 @@
 - **Archive as a separate surface ("varianta 3")** — owner asked to be reminded on 08-21. Not
   started, still an owner decision. `ARTICLE_TTL_DAYS` went 7 → 30 (#197) as the cheap half of
   the same problem; `tools/arhiva.py` already reconstructs the full series from git history.
+- **Strategy: national administrative-data pivot — OWNER DECISION PENDING.**
+  `notes/plan-national-2026-08-22.{html,pdf}`: the 26-page "Pivot strategic B2B Timiș" deck checked
+  against the live market — ~30 of its 37 ideas are occupied (termene.ro, 5 SEAP monitors from
+  14.99 lei/mo, Salariometru, ConstructBid); one gap is not. **Build nothing until felia 0 runs**:
+  measure the HCL→SEAP lag on 50 contracts, gate = recall >=50% AND median >=60 days.
+
 - **From `specs/atribuire-cercetare-si-plan.md`, in order** — E1 permalink decoupled from
   category (**owner decision, blocks all retroactive correction**), E3 focus score instead of
   `max()`, E4 separate topic/place axes (**owner decision**), E5 gold set grown to ~150 + CI gate.
