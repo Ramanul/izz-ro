@@ -8,12 +8,17 @@ Scop: site-ul public să nu pice la un incident de deploy sau la o cădere a hos
                     ┌─────────────── Cloudflare edge (izz.ro) ───────────────┐
    client ── TLS ──▶│  Worker izz-failover                                    │
                     │    0) Cache API la edge — HIT ⇒ raspuns fara fetch       │
-                    │    1) fetch primar  https://izz-ro.pages.dev (timeout 1,5s)
+                    │    1) fetch primar  https://izz-ro.andifreelancer2.workers.dev (1,5s)
                     │    2) la 5xx/eroare/timeout → https://ramanul.github.io  │
                     └────────────────────────────────────────────────────────┘
 ```
 
-- **Sistem #1 (primar):** Cloudflare Pages — `izz-ro.pages.dev`, deploy la commit-ul de conținut.
+- **Sistem #1 (primar):** Worker de static assets — `izz-ro.andifreelancer2.workers.dev`, build
+  la commit-ul de conținut. **Mutat de pe Pages pe 2026-08-22**: output-ul a depășit plafonul de
+  20.000 de fișiere al Pages, deploy-urile erau refuzate tăcut, iar failover-ul continua să
+  fetch-uiască o origine înghețată — 34 de ore de conținut vechi, cu tot lanțul verde în aval.
+  Lecția e a arhitecturii, nu a gazdei: **failover-ul acoperă o origine CĂZUTĂ, nu una VECHE.**
+  O origine care răspunde 200 cu conținut de ieri arată identic cu una sănătoasă.
 - **Sistem #2 (mirror):** GitHub Pages — `ramanul.github.io`, host complet independent, sincronizat
   de jobul `mirror` din `.github/workflows/build.yml` la fiecare rulare a pipeline-ului (2h).
 - **Failover:** Worker la edge, per-request, instant, fără propagare DNS. Clientul vede mereu
