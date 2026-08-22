@@ -61,7 +61,31 @@ def _read() -> list[dict]:
     return out
 
 
+def id_duplicate(rows: list[dict]) -> list[str]:
+    """ID-urile revendicate de mai mult de un rand. Garda pura: intoarce incalcarile, nu ridica.
+
+    DE CE (`IZZ-0241`, masurat 2026-08-21): `_next_id` calculeaza `max+1` pe vederea PROPRIE
+    despre registru, deci doua sesiuni paralele pornite din acelasi `main` nimeresc aceeasi cifra.
+    S-a intamplat de doua ori intr-o singura zi -- IZZ-0237 revendicat si de #204 si de #205,
+    IZZ-0238 si de #204 si de #206 -- si nimic nu a semnalat-o, fiindca `registru.py` avea garda
+    pe TITLU duplicat (`_cheie`) si niciuna pe ID.
+
+    Alocarea nu poate fi facuta sigura INTRE ramuri fara un lacat partajat, pe care nu-l avem:
+    fiecare ramura e consistenta cu ea insasi. Ce se poate face, si face garda asta, e ca
+    ciocnirea sa nu ATERIZEZE tacut -- `tests.yml` ruleaza pe starea MERGED a fiecarui PR, deci
+    a doua ramura iese rosie in loc sa suprascrie linistit evidenta primei.
+    """
+    vazute: dict[str, int] = {}
+    for r in rows:
+        vazute[r.get("id", "")] = vazute.get(r.get("id", ""), 0) + 1
+    return [f"{i or '(gol)'} apare de {n} ori" for i, n in sorted(vazute.items()) if n > 1]
+
+
 def _write(rows: list[dict]) -> None:
+    if dubluri := id_duplicate(rows):
+        raise SystemExit("!! ID duplicat in registru, nu am scris nimic: " + "; ".join(dubluri)
+                         + "\n   registrul e append-only (§20): renumeroteaza randul nou,"
+                           " nu-l suprascrie pe cel existent.")
     os.makedirs(os.path.dirname(PATH), exist_ok=True)
     with open(PATH, "w", encoding="utf-8", newline="\n") as fh:
         fh.write("\t".join(COLS) + "\n")
