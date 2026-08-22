@@ -13,5 +13,11 @@
   },
   // Preview per ramura (echivalentul <branch>.izz-ro.pages.dev de la Pages).
   // CLAUDE.md §16.3 se bazeaza pe el ca sa poata confirma "pe live" un fix.
-  "preview_urls": true
+  "preview_urls": true,
+  // Origine fara bot challenge, inlocuitorul lui izz-ro.pages.dev. NU e comoditate:
+  // zona izz.ro are challenge activ, iar sondele care il primesc citesc pagina de
+  // interstitiu ca pe continut -- asta a tinut visual.yml rosu 77 de rulari
+  // (17 iul - 5 aug 2026). visual/monitor/harta-smoke/harta-data au nevoie de o
+  // origine curata; pe Workers, aceea e subdomeniul workers.dev.
+  "workers_dev": true
 }

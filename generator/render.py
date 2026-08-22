@@ -866,14 +866,20 @@ def build(articles: list, mod: dict | None = None) -> None:
 def _write_build_metadata(article_count: int) -> None:
     """Emite amprenta necache-uită a release-ului pentru verificarea post-deploy.
 
-    Cloudflare Pages expune SHA-ul și ramura buildului prin variabile de mediu; GitHub
-    Actions expune `GITHUB_SHA` pentru randarea din pipeline. Local, manifestul rămâne
-    explicit ca neidentificat, în loc să pretindă un commit care nu există.
+    Fiecare gazdă expune SHA-ul și ramura sub ALT nume: Workers Builds injectează
+    `WORKERS_CI_COMMIT_SHA` / `WORKERS_CI_BRANCH`, Pages injectează `CF_PAGES_*`, iar
+    GitHub Actions `GITHUB_SHA` pentru randarea din pipeline. Ambele familii Cloudflare
+    sunt citite, nu doar cea curentă: la migrarea Pages -> Workers, o listă cu una
+    singură ar lăsa `commit` pe "local" la fiecare build de producție, iar
+    `tools/verify_release.py` ar compara la nesfârșit SHA-ul așteptat cu literalul
+    "local" — sondă verde-pe-nimic, exact eșecul tăcut din 2026-08-21.
+    Local, manifestul rămâne explicit ca neidentificat, în loc să pretindă un commit
+    care nu există.
     """
-    commit = (os.getenv("CF_PAGES_COMMIT_SHA") or os.getenv("GITHUB_SHA")
-              or os.getenv("BUILD_COMMIT_SHA") or "local")
-    branch = (os.getenv("CF_PAGES_BRANCH") or os.getenv("GITHUB_REF_NAME")
-              or os.getenv("BUILD_BRANCH") or "local")
+    commit = (os.getenv("WORKERS_CI_COMMIT_SHA") or os.getenv("CF_PAGES_COMMIT_SHA")
+              or os.getenv("GITHUB_SHA") or os.getenv("BUILD_COMMIT_SHA") or "local")
+    branch = (os.getenv("WORKERS_CI_BRANCH") or os.getenv("CF_PAGES_BRANCH")
+              or os.getenv("GITHUB_REF_NAME") or os.getenv("BUILD_BRANCH") or "local")
     payload = {
         "commit": commit,
         "branch": branch,

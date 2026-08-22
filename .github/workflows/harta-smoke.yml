@@ -23,13 +23,18 @@ jobs:
     steps:
       - name: Așteaptă propagarea deploy-ului Cloudflare
         run: sleep 20
-      - name: Verifică pagina și datasetul hărții pe pages.dev
+      - name: Verifică pagina și datasetul hărții pe originea de build
+        env:
+          # Originea de build, fara bot challenge: `izz-ro.pages.dev` cat timp gazda e
+          # Pages, subdomeniul workers.dev dupa migrare. Variabila de repo ALT_ORIGIN o
+          # schimba dintr-un singur loc, in loc de cinci workflow-uri.
+          ALT_ORIGIN: ${{ vars.ALT_ORIGIN || 'https://izz-ro.pages.dev' }}
         run: |
           set -euo pipefail
           for i in 1 2 3 4 5 6 7 8; do
-            page=$(curl -A 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/151 Safari/537.36' --connect-timeout 5 --max-time 10 -fsSL -o /tmp/map.html -w '%{http_code}' https://izz-ro.pages.dev/static/harta-stiri/ || true)
-            data=$(curl -A 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/151 Safari/537.36' --connect-timeout 5 --max-time 10 -fsSL -o /tmp/map.json -w '%{http_code}' https://izz-ro.pages.dev/static/harta-stiri/data/map.json || true)
-            js=$(curl -A 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/151 Safari/537.36' --connect-timeout 5 --max-time 10 -fsSL -o /tmp/map.js -w '%{http_code}' https://izz-ro.pages.dev/static/harta-stiri/harta-stiri.js || true)
+            page=$(curl -A 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/151 Safari/537.36' --connect-timeout 5 --max-time 10 -fsSL -o /tmp/map.html -w '%{http_code}' "$ALT_ORIGIN/static/harta-stiri/" || true)
+            data=$(curl -A 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/151 Safari/537.36' --connect-timeout 5 --max-time 10 -fsSL -o /tmp/map.json -w '%{http_code}' "$ALT_ORIGIN/static/harta-stiri/data/map.json" || true)
+            js=$(curl -A 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/151 Safari/537.36' --connect-timeout 5 --max-time 10 -fsSL -o /tmp/map.js -w '%{http_code}' "$ALT_ORIGIN/static/harta-stiri/harta-stiri.js" || true)
             echo "încercarea $i: page=$page data=$data js=$js"
             if [ "$page" = "200" ] && [ "$data" = "200" ] && [ "$js" = "200" ]; then
               if python - <<'PY'
