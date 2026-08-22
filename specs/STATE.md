@@ -19,8 +19,8 @@
 
 - **INCIDENT — output past the Cloudflare Pages file ceiling; `main` cannot deploy.** CONFIRMED:
   #206 is docs-only on `main` and its build FAILED, so the cause is the base's size, not code.
-  NOT `ARTICLE_TTL_DAYS` (#197): at TTL=7 it is still ~20651 files, and 20,000 caps you at ~21
-  days of ingest with NO images at all — architectural, not a setting. Owner call — `IZZ-0240`.
+  The 20,000 limit was already written in `render.py:844` (docs, verified 08-07) together with
+  "TTL cannot realistically pass ~14 days"; #197 set it to 30 without re-reading that. Owner call.
 - **MERGED — PR #199 `31f2b02`** (recovered pages Google has indexed; the dead-`zonal` fix and the
   union-on-`url` conflict resolution are in the merge commit). **Announce to A still owed (§14).**
 - **PR #205 (draft) `claude/getty-images-licensing-d1kupt`** — CC BY / CC BY-SA photos on article
