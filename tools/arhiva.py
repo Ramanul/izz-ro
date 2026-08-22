@@ -1,10 +1,10 @@
 """Reconstruieste arhiva completa din istoricul git al lui data/articles.json.
 
 DE CE EXISTA: `state.expire()` scoate articolele din starea curenta dupa
-ARTICLE_TTL_DAYS (7), si asta a fost citit de mai multe ori ca „pipeline-ul isi
+ARTICLE_TTL_DAYS (30), si asta a fost citit de mai multe ori ca „pipeline-ul isi
 sterge arhiva zilnic, ireversibil". Nu e adevarat in repo-ul asta: `articles.json`
-e COMIS la fiecare rulare (~2h), iar un articol traieste 7 zile — deci apuca sa fie
-comis de zeci de ori inainte sa expire. Masurat 2026-08-04 pe 265 de commituri:
+e COMIS la fiecare rulare (~2h), iar un articol traieste 30 de zile — deci apuca sa
+fie comis de sute de ori inainte sa expire. Masurat 2026-08-04 pe 265 de commituri:
 7001 articole distincte recuperabile, acoperire continua 2026-06-27 -> 2026-08-04,
 fata de 2128 in starea curenta. Nimic nu s-a pierdut.
 

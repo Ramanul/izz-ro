@@ -47,7 +47,13 @@ def test_anunt_oficial_ramane_in_judetul_institutiei():
 
 
 def test_site_de_stiri_urmeaza_TEXTUL_nu_judetul_redactiei():
-    """Un ziar din Olt care scrie despre Dolj ramane atribuit corect la Dolj."""
+    """Un ziar de OLTENIA care scrie despre Dolj ramane atribuit corect la Dolj.
+
+    „Jurnalul Olteniei" acopera o REGIUNE de cinci judete, nu judetul Olt. Pana la
+    auditul din 2026-08-21 `source_county()` ii scotea OLT din numele sursei, ca subsir;
+    vezi `test_harta_judet_din_sursa.py`. Aici asertiunea tine si azi, dar din alt motiv:
+    textul numeste explicit Dolj, iar `tc` bate `sc` la presa.
+    """
     a = {
         "source": "jurnalulolteniei",
         "processed_by": "gemini",

@@ -169,8 +169,26 @@ def explicit_county(text: str, county_keys: list[str]) -> str | None:
     return None
 
 
+# Un nume de REGIUNE din id-ul sursei nu este un judet. Cautarea de mai jos e pe subsir, iar
+# „jurnalulOLTeniei", „cronicaOLTeniei" si „stirileOLTeniei" contin literele OLT — asa incat tot
+# ce publicau cele trei ziare regionale de Oltenia ajungea in judetul Olt. MASURAT pe map.json
+# generat 2026-08-21 (509 articole): 8 articole gresite, intre care Craiova de 3 ori (e in Dolj),
+# „Spitalul Regional Craiova", Rovinari si Termocentrala Turceni (ambele in Gorj). Singurul OLT
+# corect era Caracal, care chiar e in Olt — si ramane corect si dupa fix, prin localitate.
+#
+# Se mascheaza DOAR regiunile care nu sunt totodata judete: MARAMURES este si regiune, si judet,
+# iar mascarea lui ar rupe „emaramures" -> MARAMURES (17 articole corecte in acelasi corpus).
+# Stem-ul plus [A-Z]* acopera flexiunea: „OLTENIA" si „OLTENIEI" deopotriva.
+_JUDETE_DIN_REGIUNI = {norm(j) for judete in geo.REGIUNI.values() for j in judete}
+_REGIUNI_NEJUDET = [r for r in geo.REGIUNI if norm(r) not in _JUDETE_DIN_REGIUNI]
+_RE_REGIUNI = re.compile("|".join(
+    rf"{re.escape(norm(r).rstrip('A'))}[A-Z]*"
+    for r in sorted(_REGIUNI_NEJUDET, key=len, reverse=True)
+))
+
+
 def source_county(source: str, county_keys: list[str]) -> str | None:
-    t = norm(source)
+    t = _RE_REGIUNI.sub(" ", norm(source))
     return next((c for c in sorted(county_keys, key=len, reverse=True) if norm(c) in t), None)
 
 
@@ -267,6 +285,23 @@ def locate(article: dict, county_keys: list[str], by_name: dict[str, list[dict]]
     oficial = article.get("processed_by") == "official"
     county = (sc or tc) if oficial else (tc or sc)
     locality = locality_from_text(text, county, by_name, points)
+    # Judetul dedus DOAR din numele sursei este cea mai slaba dovada disponibila: spune unde e
+    # redactia, nu unde s-a intamplat fapta. Cand textul nu numeste niciun judet SI nicio
+    # localitate din judetul sursei, dar numeste una neambigua din alt judet, aceea decide.
+    # MASURAT pe corpusul din 2026-08-21: muta 4 articole, toate patru corecte — Medias -> SIBIU
+    # (era ALBA, prin alba24), Ortisoara -> TIMIS (criticarad), Sinaia -> PRAHOVA (bizbrasov),
+    # Oradea -> BIHOR (alba24). Zero mutari gresite. Cele 11 articole care gasesc o localitate
+    # chiar in judetul sursei raman neatinse.
+    #
+    # Sursele OFICIALE sunt excluse deliberat: o primarie scrie despre teritoriul ei, iar alt
+    # oras numit in text e context (echipa oaspete, firma contractanta) — exact regula de mai sus.
+    if not oficial and sc and not tc and not locality:
+        alta = locality_from_text(text, None, by_name, points)
+        if alta and norm(alta["county"]) != norm(sc):
+            county, locality = alta["county"], alta
+            # Judetul nu mai vine de la sursa, ci de la localitatea din text: si eticheta de
+            # incredere trebuie sa spuna asta, altfel `stats` raporteaza o certitudine falsa.
+            sc = None
     if not county and locality:
         county = locality["county"]
     if not county:
