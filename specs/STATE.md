@@ -27,11 +27,11 @@
   pages only. pytest green, renders exit 0; its red Cloudflare is the ceiling. Getty out (`IZZ-0237`).
 - **PR #201 (draft) `claude/surse-din-istoric-si-rubrica-ai`** — AI rubric, geographic scale. Green:
   all 17 new sources answer `ok`; the red `feeds` job is a manual probe whose dead sources predate it.
-- **PRs #202 / #203 / #204 (drafts)** — docs only, every check green, awaiting owner merge.
-  #202 also fixes CLAUDE.md §14: the announce channel points at `TASKS-B.md`, frozen since
-  08-04 — live defect on `main` until it lands. **Merge hazards, measured:** four branches add
-  registry rows and `IZZ-0237`/`IZZ-0238` are each claimed twice (`IZZ-0241`); three branches
-  rewrite this file, and only #202 carries the `Landed` record for #200 — keep it.
+- **PRs #202 / #203 / #204 / #207 (drafts)** — docs only, awaiting owner merge. #202 also fixes
+  CLAUDE.md §14: the announce channel points at `TASKS-B.md`, frozen since 08-04 — a live defect
+  on `main` until it lands. **Merge hazards, measured:** `IZZ-0237` is claimed by both #204 and
+  #205 (`IZZ-0241`); FOUR branches rewrite this file (#202, #205, #206, #207) and only #202
+  carries the `Landed` record for #200 — keep it. None of the four touches `output/`.
 - **Archive as a separate surface ("varianta 3")** — owner decision; `tools/arhiva.py` rebuilds it.
 - **From `specs/atribuire-cercetare-si-plan.md`** — E1 permalink decoupled from category (**owner
   decision, blocks retroactive correction**), E3 focus score not `max()`, E4 axes, E5 gold ~150.
