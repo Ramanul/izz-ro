@@ -111,12 +111,12 @@ câmpul; `annotations.workers/triggered_by: version_upload` e cel care spune ade
   `external_repository`, `publish_branch: gh-pages`, `cname: ""`), deci **user page servit la
   rădăcină**. Măsurat: `https://ramanul.github.io/` → **200**, `.../izz-ro/` → **404**. Cu
   „reparația" aplicată, fiecare failover ar fi servit 404 — și doar în timpul unui incident
-  real, adică exact când conta. Vezi IZZ-0241.
+  real, adică exact când conta. Vezi IZZ-0244.
 - **„Worker-ul `izz-ro` nu e deloc în repo."** FALS — `wrangler.jsonc` îl declară, iar
   `has_assets: true` / `has_modules: false` citite din API se potrivesc exact cu un assets-only
-  fără `main`. Lipsea mecanismul de deploy, nu configurația. Vezi IZZ-0242.
+  fără `main`. Lipsea mecanismul de deploy, nu configurația. Vezi IZZ-0245.
 - **„Redirect-ul www→apex nu funcționează, ruta Worker suprascrie Page rule-ul."** FALS.
-  Măsurat: `curl -sI https://www.izz.ro/` → **301**, `Location: https://izz.ro/`. Vezi IZZ-0243.
+  Măsurat: `curl -sI https://www.izz.ro/` → **301**, `Location: https://izz.ro/`. Vezi IZZ-0246.
 
 Starea sănătoasă, măsurată în aceeași zi: `https://izz.ro/` → 200 cu `x-izz-origin: primary`;
 originea primară servea `sitemap.xml` cu `lastmod` la zi și `404.html` propriu.
