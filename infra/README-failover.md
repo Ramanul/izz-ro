@@ -71,6 +71,56 @@ curl -sI https://izz.ro/ | grep -i x-izz-origin      # asteptat: primary
 Test failover fără să strici primarul: schimbă temporar `PRIMARY` într-un host inexistent,
 `wrangler deploy`, `curl -sI https://izz.ro/ | grep x-izz-origin` → `mirror`, apoi revert-deploy.
 
+## Ce deployează fiecare Worker — măsurat 2026-08-23
+
+Auditul a pornit de la teza „starea Cloudflare a divergat de repo". **Codul nu a divergat.**
+Sursa deployată a lui `izz-failover`, extrasă prin API și normalizată (bundle-ul e esbuild),
+e identică semantic cu `infra/failover-worker.js`: singurele diferențe sunt `const`→`var`, o
+virgulă finală și o redenumire de variabilă din destructurare. `PRIMARY`, `MIRROR`, `1500`,
+`120`, `300` — toate la fel.
+
+Ce lipsea era răspunsul la „**cine deployează originea primară**". E Workers Builds — integrare
+Git configurată din dashboard pe 2026-08-22T20:12:58Z, invizibilă din repo. Config brut:
+
+```
+git_repository:  Ramanul/izz-ro (github, repo_id 1272998428), branch main
+build_command:   pip install -r requirements.txt && python -m generator.main --render-only
+deploy_command:  npx wrangler deploy          # trigger pe main -> productie
+                 npx wrangler versions upload # trigger pe orice alta ramura -> preview
+root_directory:  /        PYTHON_VERSION: 3.11        build_caching_enabled: false
+deploy_hooks:    []       declansarea e exclusiv push_event pe GitHub
+```
+
+Deci lanțul complet: `push pe main` → Workers Builds rulează `--render-only` → `wrangler deploy`
+publică `output/` în Worker-ul `izz-ro` → `izz-failover` îl fetch-uiește ca `PRIMARY`. Măsurat pe
+build-ul de pe 2026-08-23: commit `03d700f2` la 15:54, deploy terminat 16:06:59 — **~12 minute**
+de la commit la publicare. `last_deployed_from` rămâne gol fiindcă Workers Builds nu populează
+câmpul; `annotations.workers/triggered_by: version_upload` e cel care spune adevărul.
+
+| Componentă | Unde trăiește | Reconstruibil din git? |
+|---|---|---|
+| Cod + config `izz-failover` | `infra/failover-worker.js`, `infra/wrangler.toml` | **Da** — verificat prin diff |
+| Config `izz-ro` | `wrangler.jsonc` în rădăcină (assets-only, fără `main`) | **Da** |
+| **Conexiunea Workers Builds** | doar dashboard | **NU** — comenzile sunt mai sus |
+| DNS, Page rule www→apex, SSL, challenge de zonă | doar dashboard | **NU** |
+
+### Ipoteze picate — nu le redeschide
+
+- **„`MIRROR` e greșit, ar trebui `ramanul.github.io/izz-ro`."** FALS, și ar fi rupt producția.
+  Mirror-ul e un repo **separat**, `Ramanul/ramanul.github.io` (jobul `mirror` din `build.yml`:
+  `external_repository`, `publish_branch: gh-pages`, `cname: ""`), deci **user page servit la
+  rădăcină**. Măsurat: `https://ramanul.github.io/` → **200**, `.../izz-ro/` → **404**. Cu
+  „reparația" aplicată, fiecare failover ar fi servit 404 — și doar în timpul unui incident
+  real, adică exact când conta. Vezi IZZ-0241.
+- **„Worker-ul `izz-ro` nu e deloc în repo."** FALS — `wrangler.jsonc` îl declară, iar
+  `has_assets: true` / `has_modules: false` citite din API se potrivesc exact cu un assets-only
+  fără `main`. Lipsea mecanismul de deploy, nu configurația. Vezi IZZ-0242.
+- **„Redirect-ul www→apex nu funcționează, ruta Worker suprascrie Page rule-ul."** FALS.
+  Măsurat: `curl -sI https://www.izz.ro/` → **301**, `Location: https://izz.ro/`. Vezi IZZ-0243.
+
+Starea sănătoasă, măsurată în aceeași zi: `https://izz.ro/` → 200 cu `x-izz-origin: primary`;
+originea primară servea `sitemap.xml` cu `lastmod` la zi și `404.html` propriu.
+
 ## De reținut
 
 - Ruta Worker are prioritate peste custom domain-ul Pages — nu șterge custom domain-ul izz.ro
