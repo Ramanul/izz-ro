@@ -13,15 +13,16 @@
 > history with two live rules buried in it. That is the same failure the 08-07 cut documented.
 > **A section is `Open` only if a PR is open or a decision is pending — check, don't assume.**
 
-**Updated:** 2026-08-23 (`ALT_ORIGIN` set; #209 recalibrated — Pages now safe to remove)
+**Updated:** 2026-08-23 (#217 merged — the Worker deploy chain is now written down)
 
 ## Open
 
-- **HOST CHANGED: izz.ro deploys from a Worker, not Pages** (#211 merged `40ac007`). Workers
-  Paid is **active** → asset ceiling 100,000, not 20,000. `ALT_ORIGIN` is **set** (08-23 04:06
-  UTC), so all five workflows reading it (`build`, `monitor`, `visual`, `harta-smoke`,
-  `harta-data`) probe the Worker, not `pages.dev` — **Pages is now safe to pause/delete**.
-  Domain confirmed on the Worker 08-23, measured off-session (§16.3): same commit as workers.dev.
+- **HOST CHANGED: izz.ro deploys from a Worker, not Pages** (#211 `40ac007`). Workers Paid
+  **active** → ceiling 100,000. `ALT_ORIGIN` is **set**, so all five workflows reading it probe
+  the Worker, not `pages.dev` — **Pages is safe to pause/delete**. **What deploys it: Workers
+  Builds**, a dashboard Git integration — push to `main` → `--render-only` → `wrangler deploy`,
+  ~12 min commit-to-publish; commands in `infra/README-failover.md` (#217 `cafb6581`). Proxy
+  allowlist is **per-host** — only the production workers.dev host, PR previews are not.
 - **#209 recalibrated for Workers Paid** (`27b1abb`), draft, ready to review. Budget/ceiling
   19,500/20,000 → 90,000/100,000; the ceiling is now read from the Cloudflare docs, not
   bracketed. The guard stays — the silent deploy-refusal it defends against is host-independent.
