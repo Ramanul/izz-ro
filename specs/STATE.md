@@ -13,30 +13,28 @@
 > history with two live rules buried in it. That is the same failure the 08-07 cut documented.
 > **A section is `Open` only if a PR is open or a decision is pending — check, don't assume.**
 
-**Updated:** 2026-08-21 (map county fix; rule files now verified by CI, not by trust)
+**Updated:** 2026-08-22 (host moved to Workers; #209 needs recalibration before merge)
 
 ## Open
 
-- **PR (draft) `claude/lumina-reguli-sesiuni-ypgdky`** — wrong-county fix on the map (measured
-  A/B: 12 articles moved, all 12 correct, 0 dropped), plus the rules work that produced this
-  file. The rules half is now WIRED: `tests/test_reguli.py` enforces the caps each rule file
-  declares about itself, that a cap is declared in exactly one place, that every cited
-  `ARTICLE_TTL_DAYS` matches config, and that every root `.md` has a role in CLAUDE.md §21.
-  Every guard has a negative test — a guard that cannot fail is worse than none (`IZZ-0177`).
+- **HOST CHANGED: izz.ro deploys from a Worker, not Pages** (#211 merged `40ac007`). Workers
+  Paid is **active** → asset ceiling 100,000, not 20,000. Owner still to do in the dashboard:
+  repo var `ALT_ORIGIN` = `https://izz-ro.andifreelancer2.workers.dev`, custom domain `izz.ro`,
+  then pause/delete Pages **last** — four probe workflows still fall back to `pages.dev`.
+- **#209 IS NOW MIS-CALIBRATED — do not merge as written.** Its `OUTPUT_FILE_BUDGET=19500` /
+  `CEILING=20000` are Pages-Free numbers; under Workers Paid they strip ~4,800 images today and
+  leave **zero** at steady state (`19500-3600-21847 < 0`), failing its own `test_podeaua`. Keep
+  the guard, raise the two numbers to ~90,000 / 100,000. Measured 08-22: 23,674 files, 3.64 per
+  article, 930 articles/day, 0.783 rendered/state → steady state **~83,000, 17% of headroom**.
+- **PR #202 (draft) `claude/lumina-reguli-sesiuni-ypgdky`** — wrong-county map fix (A/B: 12
+  articles moved, all correct). Its rules half already landed: `tests/test_reguli.py` enforces
+  the caps, and it caught a 45-line edit to this file today. Only the map half is still open.
 - **Archive as a separate surface ("varianta 3")** — owner asked to be reminded on 08-21. Not
   started, still an owner decision. `ARTICLE_TTL_DAYS` went 7 → 30 (#197) as the cheap half of
   the same problem; `tools/arhiva.py` already reconstructs the full series from git history.
 - **From `specs/atribuire-cercetare-si-plan.md`, in order** — E1 permalink decoupled from
   category (**owner decision, blocks all retroactive correction**), E3 focus score instead of
   `max()`, E4 separate topic/place axes (**owner decision**), E5 gold set grown to ~150 + CI gate.
-
-- **DEPLOY-URILE PICAU — reparat in cod, de confirmat pe live.** Output-ul a trecut plafonul de
-  fisiere Pages, iar Pages refuza deploy-ul **fara sa raporteze inapoi**: continutul trece verde,
-  `release-probe` pica 25 min mai tarziu. Sase rulari picate la rand, site inghetat ~21h pe
-  continut din 08-21 10:25. Masurat azi: 22.355 fisiere / 5.799 articole / 3.230 in afara lor.
-  Randarea respecta acum `config.OUTPUT_FILE_BUDGET`, cedand copertele dinspre cele mai vechi.
-  **Limita dura:** ~16.200 pagini fara imagini = ~18 zile de ingest → `ARTICLE_TTL_DAYS` 30 e
-  imposibil pe Pages. **Decizie de proprietar:** TTL mai mic, imagini pe R2/CDN, sau alta gazda.
 
 ## Standing rules that keep being rediscovered — do not "fix" these
 
