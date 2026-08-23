@@ -33,11 +33,19 @@ ALT_ORIGIN="${ALT_ORIGIN:-https://izz-ro.andifreelancer2.workers.dev}"
 esecuri=0
 
 check() {
-  local url="$1" host code rc err errfile
+  local url="$1" host nume code rc err errfile
   host=${url#*://}; host=${host%%/*}
+  # Numele pentru DNS nu e acelasi lucru cu hostul din URL: `exemplu.ro:8443` nu se
+  # rezolva, si l-ar fi declarat inexistent. Portul se taie, IPv6 se descojeste.
+  nume=$host
+  case $nume in
+    \[*\]*) nume=${nume%%\]*}; nume=${nume#\[} ;;
+    *:*)    nume=${nume%:*} ;;
+  esac
 
   errfile=$(mktemp)
-  code=$(curl -sS -o /dev/null -w '%{http_code}' --max-time "$TIMEOUT" "$url" 2>"$errfile")
+  # `--`: fara el, un argument care incepe cu `-` ajunge OPTIUNE de curl, nu URL.
+  code=$(curl -sS -o /dev/null -w '%{http_code}' --max-time "$TIMEOUT" -- "$url" 2>"$errfile")
   rc=$?
   err=$(cat "$errfile"); rm -f "$errfile"
 
@@ -54,7 +62,12 @@ check() {
     # Gateway-ul raspunde 403 la CONNECT si pentru refuz de politica, SI pentru un
     # upstream inexistent — masurat 2026-08-23, un nume .invalid da exact acelasi
     # mesaj. DNS-ul le separa: daca numele se rezolva, refuzul e al politicii.
-    if getent hosts "$host" >/dev/null 2>&1; then
+    # `getent` e din glibc si LIPSESTE pe macOS. Fara garda, exit 127 se citea ca
+    # "nu se rezolva" si iesea un verdict FALS -- exact greseala pe care scriptul
+    # exista ca s-o previna. Unealta lipsa trebuie sa dea "nu stiu", nu o concluzie.
+    if ! command -v getent >/dev/null 2>&1; then
+      printf '[NECUNOSCUT]      %-42s CONNECT refuzat, dar `getent` lipseste aici -> nu pot spune daca numele se rezolva\n' "$host"
+    elif getent hosts "$nume" >/dev/null 2>&1; then
       printf '[BLOCAT DE PROXY] %-42s CONNECT refuzat, dar numele se rezolva in DNS -> nu e in allowlist\n' "$host"
     else
       printf '[NUME INEXISTENT] %-42s CONNECT refuzat SI numele nu se rezolva -> verifica scrierea; NU e verdict de allowlist\n' "$host"
