@@ -4,8 +4,15 @@ compatibility_date = "2026-07-01"
 
 # Worker-ul intercepteaza tot traficul catre apex-ul izz.ro inaintea servirii Pages.
 # Fetch-urile catre izz-ro.pages.dev / ramanul.github.io sunt host-uri diferite -> fara bucla.
+# `www` e in lista din 2026-08-23. NU e o extindere de scop: `www.izz.ro` are CNAME proxied
+# din 20 iunie si a servit dintotdeauna continut (intai prin Pages, apoi prin ruta pusa manual
+# pe `izz-ro`). Lipsa lui de aici era exact gaura prin care ruta a ramas pe alt Worker dupa un
+# `wrangler deploy`: configul repara doar ce declara. Daca `www` ar trebui sa faca 301 catre
+# apex in loc sa serveasca, aia e o decizie separata a proprietarului — `output/_redirects` nu
+# are azi nicio regula www, deci comportamentul de azi e continut duplicat pe ambele host-uri.
 routes = [
-  { pattern = "izz.ro/*", zone_name = "izz.ro" }
+  { pattern = "izz.ro/*", zone_name = "izz.ro" },
+  { pattern = "www.izz.ro/*", zone_name = "izz.ro" }
 ]
 
 # Worker-ul deployat manual pe 2026-08-22 (nu din repo) a introdus o clasa Durable Object

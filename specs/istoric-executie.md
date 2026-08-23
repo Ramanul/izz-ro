@@ -1975,3 +1975,13 @@ all 189 sources instead of 2 links · #90 freed the slot held by an unreachable 
 - MAI WAF blocks `*.prefectura.mai.gov.ro` from this IP (502). Retest from Actions.
 - Cloudflare free plan ~500 builds/month is why `build.yml` runs every 2h (`13 */2`). Do not
   raise the frequency — see CLAUDE.md §17.
+
+## 2026-08-23 — migrarea Pages → Workers, cifrele așezate
+
+Tăiate din `specs/STATE.md` la actualizarea de pe 08-23, ca să încapă sub plafonul de 40 de linii.
+
+- `ALT_ORIGIN` setat 08-23 04:06 UTC. Cele cinci workflow-uri care îl citesc — `build`, `monitor`,
+  `visual`, `harta-smoke`, `harta-data` — sondează de atunci Worker-ul, nu `pages.dev`.
+- Domeniul confirmat pe Worker 08-23, măsurat off-session (§16.3): același commit ca workers.dev.
+- #209, măsurat 08-23 pe o randare completă: 23.961 de fișiere = 24% din plafon; regim stabil
+  ~83.000 (17%). Plafonul Pages era 20.000 — de asta deploy-urile erau refuzate tăcut.

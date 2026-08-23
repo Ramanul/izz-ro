@@ -13,25 +13,27 @@
 > history with two live rules buried in it. That is the same failure the 08-07 cut documented.
 > **A section is `Open` only if a PR is open or a decision is pending — check, don't assume.**
 
-**Updated:** 2026-08-23 (`ALT_ORIGIN` set; #209 recalibrated — Pages now safe to remove)
+**Updated:** 2026-08-23 (route regression on `izz.ro/*` found — restore before touching Pages)
 
 ## Open
 
-- **HOST CHANGED: izz.ro deploys from a Worker, not Pages** (#211 merged `40ac007`). Workers
-  Paid is **active** → asset ceiling 100,000, not 20,000. `ALT_ORIGIN` is **set** (08-23 04:06
-  UTC), so all five workflows reading it (`build`, `monitor`, `visual`, `harta-smoke`,
-  `harta-data`) probe the Worker, not `pages.dev` — **Pages is now safe to pause/delete**.
-  Domain confirmed on the Worker 08-23, measured off-session (§16.3): same commit as workers.dev.
-- **#209 recalibrated for Workers Paid** (`27b1abb`), draft, ready to review. Budget/ceiling
-  19,500/20,000 → 90,000/100,000; the ceiling is now read from the Cloudflare docs, not
-  bracketed. The guard stays — the silent deploy-refusal it defends against is host-independent.
-  Measured 08-23 on a full render: 23,961 files = 24% of ceiling; steady state ~83,000 (17%).
+- **Routes restored and confirmed live 08-23.** The `izz.ro/*` route had been moved off
+  `izz-failover` onto `izz-ro` off-session and called done on an HTTP 200 (`IZZ-0237`). Both it
+  and `www.izz.ro/*` are back on `izz-failover`; `izz-ro` holds no route, correctly — it is the
+  primary origin fetched over workers.dev. Confirmed from the owner's machine, not just the API:
+  `x-izz-origin: primary`, `/build.json` identical on domain and primary (`ac07ebd`, `main`).
+  Edge cache still unverified — the first probe used `curl -I`, and HEAD is BYPASS by design
+  (`IZZ-0240`); re-run `bash infra/verifica-live.sh`, now fixed to GET. **Pages can go once that
+  is green**, but a Worker route needs a proxied DNS record — check who owns the apex CNAME first.
+- **Host is a Worker, not Pages** (#211 `40ac007`); Workers Paid active → ceiling 100,000;
+  `ALT_ORIGIN` set 08-23, all five workflows probe the Worker. **#209** (`27b1abb`, draft, ready
+  to review) recalibrates budget/ceiling to 90,000/100,000, reading the ceiling from the
+  Cloudflare docs; the guard stays — the silent deploy-refusal is host-independent.
 - **PR #202 (draft) `claude/lumina-reguli-sesiuni-ypgdky`** — wrong-county map fix (A/B: 12
-  articles moved, all correct). Its rules half already landed: `tests/test_reguli.py` enforces
-  the caps, and it caught a 45-line edit to this file today. Only the map half is still open.
-- **Archive as a separate surface ("varianta 3")** — owner asked to be reminded on 08-21. Not
-  started, still an owner decision. `ARTICLE_TTL_DAYS` went 7 → 30 (#197) as the cheap half of
-  the same problem; `tools/arhiva.py` already reconstructs the full series from git history.
+  articles moved, all correct). Rules half already landed; only the map half is still open.
+- **Archive as a separate surface ("varianta 3")** — owner asked to be reminded 08-21; not
+  started, still an owner decision. `ARTICLE_TTL_DAYS` went 7 → 30 (#197) as the cheap half;
+  `tools/arhiva.py` already reconstructs the full series from git history.
 - **From `specs/atribuire-cercetare-si-plan.md`, in order** — E1 permalink decoupled from
   category (**owner decision, blocks all retroactive correction**), E3 focus score instead of
   `max()`, E4 separate topic/place axes (**owner decision**), E5 gold set grown to ~150 + CI gate.
@@ -43,8 +45,7 @@
   The recurring "lying function" hunt keeps rereading it as a duplicate bug; touching it is an
   opportunistic refactor (§5.6).
 - **Map: do not re-land the enlarged hit areas without a scroll guard.** Reverted 2026-08-15
-  (`c6397735`), causation confirmed on device by the owner. Before retrying: suppress
-  re-selection while a scroll is in flight. Full mechanism in the archive.
+  (`c6397735`), owner-confirmed on device. Before retrying: suppress re-selection mid-scroll.
 - **Attribution: `specs/atribuire-cercetare-si-plan.md` is the dossier — do not re-research it.**
   7 external systems, 8 causes, a 6-stage plan, paid for once. Run `tools/eval_atribuire.py`
   before and after **any** change to `geo.py`. Baseline 2026-08-08: category 25/39 (64%),
@@ -54,7 +55,7 @@
 ## Where the rest lives
 
 `specs/istoric-executie.md` (everything cut from here, verbatim — measurements, killed
-hypotheses, the bot-challenge diagnosis, owner answers) · `specs/registru.tsv` +
-`python tools/registru.py find` (decisions, incl. what was rejected and why) ·
-`specs/masuratori-frontend.md` (Lighthouse/CLS) · `specs/istoric-operational.md` (cadence,
-delegation, autonomy history) · `../HANDOFF.md` (the cross-account state, ~30 lines).
+hypotheses, the bot-challenge diagnosis, owner answers) · `specs/registru.tsv` + `python
+tools/registru.py find` (decisions, incl. what was rejected and why) · `infra/README-failover.md`
+(the canonical serving architecture) · `specs/masuratori-frontend.md` (Lighthouse/CLS) ·
+`specs/istoric-operational.md` (cadence, delegation) · `../HANDOFF.md` (cross-account state).
