@@ -17,7 +17,7 @@ import pytest
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from generator import config          # noqa: E402
-from generator.render import _image_budget  # noqa: E402
+from generator.render import _image_budget, _o_singura_pasa  # noqa: E402
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -153,3 +153,41 @@ def test_intre_buget_si_plafon_publicarea_merge_mai_departe(tmp_path, monkeypatc
     _scrie_fisiere(tmp_path, 5)
     render._write_build_metadata(0)   # avertizeaza, dar nu ridica
     assert (tmp_path / "build.json").exists()
+
+
+# --- calea rapida: o singura pasa cand bugetul nu poate lega ------------------------
+# `covers._scene()` tine un singur articol, iar scena e identica pentru art.jpg si
+# cover.jpg. Doua pase peste toate articolele pun cele doua apeluri la `n` iteratii
+# distanta si rateaza cache-ul de fiecare data. Masurat 2026-08-23, output identic:
+# 729s cu doua pase vs 508s cu bucla unica. Comutatorul e legal DOAR cand cele doua
+# forme sunt echivalente -- adica atunci cand bugetul nu poate lega in timpul buclei.
+
+def test_la_bugetul_real_de_azi_se_merge_intr_o_singura_pasa():
+    """Nu e o formalitate: daca pica, randarea a redevenit lenta fara sa spuna nimeni."""
+    with open(os.path.join(ROOT, "data", "articles.json"), encoding="utf-8") as fh:
+        n = len(json.load(fh))
+    img_budget, n_art, n_cover = _image_budget(n)
+    card_reserve = 16 + 61
+    assert _o_singura_pasa(n, n_art, n_cover, img_budget, card_reserve), (
+        f"bugetul de azi ({img_budget} pentru {n} articole) nu mai permite bucla unica; "
+        f"randarea plateste din nou ~220s pe scene desenate de doua ori.")
+
+
+def test_NEGATIV_bugetul_strans_cade_inapoi_pe_doua_pase():
+    """Cand bugetul chiar poate lega, prioritatea 'arta inaintea copertei' trebuie pastrata."""
+    n = 1000
+    img_budget, n_art, n_cover = _image_budget(n, budget=2600, reserve=1000)
+    assert not _o_singura_pasa(n, n_art, n_cover, img_budget, card_reserve=77)
+
+
+def test_NEGATIV_daca_nu_toti_primesc_coperta_nu_se_impleteste():
+    """n_cover < n: unele articole raman fara coperta, deci ordinea pastreaza prioritatea."""
+    assert not _o_singura_pasa(n=100, n_art=100, n_cover=40,
+                               img_budget=10_000, card_reserve=77)
+
+
+def test_NEGATIV_pragul_de_3n_e_strict():
+    """Exact la prag trece; cu un fisier mai putin, nu. O granita care nu taie nu e granita."""
+    n, reserve = 100, 77
+    assert _o_singura_pasa(n, n, n, img_budget=3 * n + reserve, card_reserve=reserve)
+    assert not _o_singura_pasa(n, n, n, img_budget=3 * n + reserve - 1, card_reserve=reserve)

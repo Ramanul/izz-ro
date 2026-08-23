@@ -282,6 +282,29 @@ def _image_budget(n: int, budget: int | None = None,
     return img_budget, n_art, n_cover
 
 
+def _o_singura_pasa(n: int, n_art: int, n_cover: int,
+                    img_budget: int, card_reserve: int) -> bool:
+    """Poate scrie arta si coperta in ACEEASI iteratie, fara sa schimbe ce se publica?
+
+    `covers._scene()` cache-uieste EXACT un articol ("pastreaza doar ultimul articol",
+    covers.py:345), iar scena e identica pentru `art.jpg` si `cover.jpg`. Doua apeluri
+    lipite o calculeaza o data; despartite in doua pase peste toate articolele sunt la `n`
+    iteratii distanta si rateaza cache-ul de FIECARE data -- se deseneaza de doua ori.
+    Masurat 2026-08-23, output identic (23.961 fisiere, 5.550 coperti): 729s cu doua pase,
+    508s cu bucla unica. ~220s aruncati la fiecare randare, adica la fiecare 2 ore in
+    productie plus la fiecare rulare de CI.
+
+    Cele doua pase NU sunt insa un moft: ele garanteaza ca, la buget strans, se sacrifica
+    o coperta inaintea unei imagini de pe pagina. Garantia aia conteaza doar daca bugetul
+    chiar poate lega. Conditia de aici e SUFICIENTA ca sa nu poata: fiecare articol scrie
+    cel mult 3 fisiere de imagine (art + webp + cover), deci daca bugetul acopera 3n peste
+    rezerva de carduri, `spent` nu atinge plafonul in timpul buclei si prioritatea nu e
+    niciodata pusa la incercare. Sub conditie, cele doua forme dau acelasi output; peste
+    ea se cade inapoi pe doua pase.
+    """
+    return n_cover >= n_art >= n and img_budget - card_reserve >= 3 * n
+
+
 def _write(path: str, content: str) -> None:
     os.makedirs(os.path.dirname(path), exist_ok=True)
     with open(path, "w", encoding="utf-8") as fh:
@@ -693,6 +716,10 @@ def build(articles: list, mod: dict | None = None) -> None:
     # Fara rezerva, pasa 2 golea bugetul si homepage-ul ramanea fara ele (masurat: 0 din 61).
     card_reserve = len(config.CATEGORIES) * config.HOME_CARDS_PER_CATEGORY + 16
     spent = 0
+    # Contorizat separat: sub `_o_singura_pasa` coperta se scrie IN pasa 1, deci `spent`
+    # de la finalul ei nu mai e "cat s-a dus pe arta". Fara asta linia de raport ar spune
+    # ca s-au scris 0 coperti exact cand s-au scris toate.
+    spent_cover = 0
 
     def _spend(ok: bool) -> bool:
         """Contorizeaza un fisier de imagine chiar scris. Returneaza `ok` neschimbat."""
@@ -700,6 +727,26 @@ def build(articles: list, mod: dict | None = None) -> None:
         if ok:
             spent += 1
         return ok
+
+    def _scrie_coperta(a: dict, cdir: str, aid: str, lp) -> None:
+        """Coperta 1200x630 pentru `a`. Aceeasi in ambele pase -- o singura definitie."""
+        nonlocal spent_cover
+        inainte = spent
+        cover_dst = os.path.join(cdir, "cover.jpg")
+        ok = bool(lp) and _spend(_use_media(os.path.join(MEDIA_DIR, lp["cover"]), cover_dst))
+        if not ok:
+            ok = _spend(_use_media(os.path.join(MEDIA_DIR, f"{aid}.c.jpg"), cover_dst)
+                        or covers.generate(a, cover_dst))
+        if ok:
+            a["cover_url"] = (f"{config.SITE['url']}/{a['category']}/{a['slug']}/cover.jpg"
+                              f"?v={_content_ver(cover_dst)}")
+            if lp and not a.get("lead_credit"):
+                a["lead_credit"] = lp
+        spent_cover += spent - inainte
+
+    # Vezi `_o_singura_pasa`: cand bugetul nu poate lega, coperta se scrie in ACEEASI
+    # iteratie cu arta, cat timp scena e in cache-ul de un element din covers.py.
+    intr_o_pasa = _o_singura_pasa(n, n_art, n_cover, img_budget, card_reserve)
 
     # PASA 1 -- arta afisata. Fiecare articol care incape primeste imaginea de pe pagina.
     for idx, a in enumerate(by_date):
@@ -727,26 +774,24 @@ def build(articles: list, mod: dict | None = None) -> None:
             if (not a.get("art_webp") and spent < img_budget
                     and _spend(_use_media(os.path.join(MEDIA_DIR, f"{aid}.webp"), webp_dst))):
                 a["art_webp"] = f"/{a['category']}/{a['slug']}/art.webp?v={_content_ver(webp_dst)}"
+        # Coperta ACUM, nu peste `n` iteratii: `covers._scene()` tine un singur articol, iar
+        # `generate_art` de mai sus tocmai l-a pus acolo. Despartite, ambele apeluri rateaza.
+        if intr_o_pasa and idx < n_cover:
+            _scrie_coperta(a, cdir, aid, lp)
 
-    spent_art = spent
+    spent_art = spent - spent_cover
 
     # PASA 2 -- coperta de share, din ce a ramas, tot dinspre cel mai nou.
+    # Sub `_o_singura_pasa` pasa 1 le-a scris deja, cat timp scena era in cache; aici raman
+    # doar cele pe care nu le-a putut finanta. La bugetul de azi bucla asta nu face nimic.
     for idx, a in enumerate(by_date):
         if idx >= n_cover or spent >= img_budget - card_reserve:
             break
+        if a.get("cover_url"):
+            continue
         cdir = os.path.join(OUT_DIR, a["category"], a["slug"])
         aid = htmlart.art_id(a)
-        cover_dst = os.path.join(cdir, "cover.jpg")
-        lp = leadphotos.get(aid)
-        ok = bool(lp) and _spend(_use_media(os.path.join(MEDIA_DIR, lp["cover"]), cover_dst))
-        if not ok:
-            ok = _spend(_use_media(os.path.join(MEDIA_DIR, f"{aid}.c.jpg"), cover_dst)
-                        or covers.generate(a, cover_dst))
-        if ok:
-            a["cover_url"] = (f"{config.SITE['url']}/{a['category']}/{a['slug']}/cover.jpg"
-                              f"?v={_content_ver(cover_dst)}")
-            if lp and not a.get("lead_credit"):
-                a["lead_credit"] = lp
+        _scrie_coperta(a, cdir, aid, leadphotos.get(aid))
 
     # Articolele ramase fara coperta proprie isi pastreaza og:image: aceeasi scena, 960x504.
     # Raportul e identic (1,905:1) si trece minimul de 600x315 al retelelor sociale -- se
