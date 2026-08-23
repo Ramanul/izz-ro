@@ -995,7 +995,7 @@ def _write_build_metadata(article_count: int) -> None:
         # ridica DUPA scrierea lui build.json, ca diagnosticul sa supravietuiasca esecului.
         raise RuntimeError(
             f"output/ are {file_count} fisiere, peste plafonul gazdei "
-            f"({config.OUTPUT_FILE_CEILING}): Cloudflare Pages ar refuza deploy-ul TACUT. "
+            f"({config.OUTPUT_FILE_CEILING}): Cloudflare ar refuza deploy-ul TACUT. "
             f"Remasoara cu tools/count_output.py si corecteaza OUTPUT_NON_ARTICLE_RESERVE, "
             f"sau coboara ARTICLE_TTL_DAYS.")
     if file_count > config.OUTPUT_FILE_BUDGET:

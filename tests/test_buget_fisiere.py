@@ -21,17 +21,20 @@ from generator.render import _image_budget  # noqa: E402
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-# Plafonul real al gazdei, masurat prin bracket pe 2026-08-21/22: 19.987 fisiere =
-# deploy verde, 20.337 = build picat. NU e citit din documentatia Cloudflare -- proxy-ul
-# sesiunii respinge developers.cloudflare.com (CLAUDE.md §16.3).
-PLAFON_GAZDA_MASURAT = 20000
+# Plafonul real al gazdei. Gazda e un Worker cu Static Assets pe plan PAID de pe 2026-08-22
+# (#211), unde plafonul e 100.000 de fisiere per versiune de Worker. Citit din documentatia
+# Cloudflare pe 2026-08-23, prin conectorul Cloudflare al sesiunii:
+# developers.cloudflare.com/workers/platform/limits/#static-assets
+# Bracket-ul vechi (19.987 verde / 20.337 rosu) masura Pages Free si nu mai descrie gazda --
+# de-aia nici numele constantei nu mai zice "MASURAT".
+PLAFON_GAZDA = 100000
 
 
 def test_bugetul_configurat_sta_sub_plafonul_masurat():
     """Bugetul trebuie sa lase marja sub plafonul gazdei."""
-    assert config.OUTPUT_FILE_BUDGET < PLAFON_GAZDA_MASURAT, (
+    assert config.OUTPUT_FILE_BUDGET < PLAFON_GAZDA, (
         f"OUTPUT_FILE_BUDGET={config.OUTPUT_FILE_BUDGET} nu lasa marja sub plafonul "
-        f"masurat de {PLAFON_GAZDA_MASURAT}. Ridica-l doar cu o masuratoare noua.")
+        f"gazdei ({PLAFON_GAZDA}). Ridica-l doar odata cu plafonul, nu ca sa incapa.")
 
 
 def test_cand_incape_tot_fiecare_articol_primeste_si_arta_si_coperta():
@@ -80,7 +83,7 @@ def test_starea_actuala_incape_cu_o_imagine_per_articol():
 
     Nu e o formalitate — pica singur pe masura ce starea creste, cu cateva zile inainte
     ca degradarea sa fie vizibila pe site. Cand pica: coboara ARTICLE_TTL_DAYS sau mută
-    imaginile in afara Pages. NU ridica bugetul fara o masuratoare noua a plafonului.
+    imaginile in afara gazdei. NU ridica bugetul fara o cifra noua a plafonului gazdei.
     """
     with open(os.path.join(ROOT, "data", "articles.json"), encoding="utf-8") as fh:
         n = len(json.load(fh))
@@ -109,7 +112,7 @@ def test_podeaua_absoluta_ramane_deasupra_starii_curente():
 
 def test_bugetul_sta_sub_plafonul_dur():
     assert config.OUTPUT_FILE_BUDGET < config.OUTPUT_FILE_CEILING
-    assert config.OUTPUT_FILE_CEILING <= PLAFON_GAZDA_MASURAT
+    assert config.OUTPUT_FILE_CEILING <= PLAFON_GAZDA
 
 
 def _scrie_fisiere(d, cate):

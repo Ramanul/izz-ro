@@ -271,25 +271,35 @@ RELATED_MIN_SHARED = 2         # "Articole conectate": minim entitati comune. 1 
 # publicate, articolele ies doar din procesare) - proiect separat, programat pe 21 aug.
 ARTICLE_TTL_DAYS = 30
 
-# Plafonul de fisiere al gazdei. Cloudflare Pages Free refuza deploy-ul peste 20.000 de
-# fisiere si NU raporteaza inapoi in pipeline: jobul de continut trece verde, iar esecul
-# apare 25 de minute mai tarziu in `release-probe`, ca "izz.ro serveste <sha vechi>".
-# Asa a stat site-ul inghetat 21 de ore pe 63bcc9bd (2026-08-21 10:25 -> 08-22 07:00),
-# cu sase rulari complete picate una dupa alta. Bracket masurat: 19.987 fisiere = deploy
-# verde, 20.337 = build picat.
+# Plafonul de fisiere al gazdei. Gazda NU mai e Pages: izz.ro se serveste dintr-un Worker
+# cu Static Assets de pe 2026-08-22 (#211, 40ac007), pe plan Workers PAID. Acolo plafonul e
+# 100.000 de fisiere per versiune de Worker (25 MiB per fisier), nu 20.000 ca pe planul
+# gratuit. Citit din documentatie pe 2026-08-23, nu dedus prin bracket:
+# developers.cloudflare.com/workers/platform/limits/#static-assets
 #
-# Randarea nu mai are voie sa lase marimea output-ului pe seama ingestului. Bugetul de
-# mai jos e ce respecta EA, sub plafonul real, iar marja acopera derivatele webp care nu
-# se pot prezice inainte de scriere. Ridica-l doar impreuna cu o masuratoare noua a
-# plafonului gazdei -- nu "ca sa incapa".
-OUTPUT_FILE_BUDGET = int(os.getenv("OUTPUT_FILE_BUDGET", "19500"))
+# Cifrele dinainte (19.500 / 20.000) erau ale lui Pages Free si au ramas in acest PR dupa
+# migrare. Lasate asa, ar fi taiat ~4.800 de imagini la prima randare si toate la regim
+# stabilizat: garda ar fi degradat site-ul aparandu-l de un plafon care nu mai exista.
+#
+# Incidentul pe care garda il apara ramane real, si de-aia NU o stergem: gazda refuza
+# deploy-ul supradimensionat si NU raporteaza inapoi in pipeline (jobul de continut trece
+# verde, esecul apare 25 de minute mai tarziu in `release-probe`, ca "izz.ro serveste <sha
+# vechi>"). Asa a stat site-ul inghetat 21 de ore pe 63bcc9bd (2026-08-21 10:25 -> 08-22
+# 07:00), cu sase rulari complete picate una dupa alta.
+#
+# Randarea nu lasa marimea output-ului pe seama ingestului. Bugetul de mai jos e ce respecta
+# EA, sub plafonul real, iar marja acopera derivatele webp care nu se pot prezice inainte de
+# scriere. Masurat 2026-08-23 pe o randare completa: 23.961 de fisiere = 24% din plafon.
+# Regim stabilizat estimat in specs/STATE.md: ~83.000, cu 17% marja.
+OUTPUT_FILE_BUDGET = int(os.getenv("OUTPUT_FILE_BUDGET", "90000"))
 # Plafonul GAZDEI, separat de bugetul de mai sus. Bugetul e tinta la care randarea imparte
 # imaginile (depasirea lui inseamna ca rezerva a derivat -> avertisment); plafonul e punctul
 # de la care Cloudflare REFUZA deploy-ul. Peste el randarea trebuie sa moara zgomotos: altfel
 # iese cu cod 0, jobul de continut ramane verde si esecul reapare 25 de minute mai tarziu in
-# `release-probe` -- exact bucla tacuta din 2026-08-21. Bracket masurat: 19.987 verde /
-# 20.337 rosu; cifra nu e citita din documentatie (proxy-ul respinge developers.cloudflare.com).
-OUTPUT_FILE_CEILING = int(os.getenv("OUTPUT_FILE_CEILING", "20000"))
+# `release-probe` -- exact bucla tacuta din 2026-08-21.
+# ATENTIE: 100.000 e plafonul planului PAID. Daca abonamentul cade inapoi pe Workers Free,
+# plafonul redevine 20.000 si cifra de aici trebuie coborata odata cu el.
+OUTPUT_FILE_CEILING = int(os.getenv("OUTPUT_FILE_CEILING", "100000"))
 # Fisierele care NU stau in directoarele de articol: static, categorii cu paginare,
 # subiecte + feedurile lor, ghiduri, instrumente, harta, sitemapuri, feed, cautare.
 # MASURAT pe o randare reala din 2026-08-22: 3.483 de fisiere care nu sunt nici pagina de
