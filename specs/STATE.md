@@ -21,7 +21,7 @@
   Paid is **active** → asset ceiling 100,000, not 20,000. `ALT_ORIGIN` is **set** (08-23 04:06
   UTC), so all five workflows reading it (`build`, `monitor`, `visual`, `harta-smoke`,
   `harta-data`) probe the Worker, not `pages.dev` — **Pages is now safe to pause/delete**.
-  Owner still to confirm the `izz.ro` custom domain sits on the Worker.
+  Domain confirmed on the Worker 08-23, measured off-session (§16.3): same commit as workers.dev.
 - **#209 recalibrated for Workers Paid** (`27b1abb`), draft, ready to review. Budget/ceiling
   19,500/20,000 → 90,000/100,000; the ceiling is now read from the Cloudflare docs, not
   bracketed. The guard stays — the silent deploy-refusal it defends against is host-independent.
