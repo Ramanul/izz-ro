@@ -20,6 +20,11 @@ Un singur fișier tabular, append-only, `specs/registru.tsv`, plus `tools/regist
   Un director cere `ls` + citit fișiere, deci două runde.
 - **de ce append-only:** ce s-a respins acum o lună trebuie să rămână citibil, cu motivul. Un
   registru care se rescrie pierde exact informația pentru care există.
+- **de ce ID-urile nu sunt mereu contigue:** `add` alocă `max+1` din copia locală, iar fiecare
+  ramură pornește de la același `main` — deci ramurile paralele primesc aceleași numere. Când
+  se întâmplă, una își rezervă un interval mai sus (#217 a sărit la IZZ-0244 ca să lase
+  0237-0243 altor șapte ramuri). **Un gol în secvență nu e o eroare de scriere**, și ordinea
+  ID-urilor nu mai e cronologică după un astfel de salt. Alocatorul e reparat în #208.
 
 ### Coloane
 

@@ -13,6 +13,17 @@
 > Se citeste la nevoie, NU la fiecare sesiune: cauta aici cand vrei sa stii **de ce** o decizie
 > arata asa, sau ca sa nu re-derivezi o masuratoare. `grep` peste el, nu citit cap-coada.
 
+## Taiat din STATE.md pe 2026-08-23 — detaliile intrarii HOST CHANGED
+
+> Condensata in #218 ca sa incapa lantul de deploy in plafonul de 40 de linii. Antetul lui
+> STATE.md cere MUTARE, nu stergere, deci ce a iesit de acolo sta aici.
+
+- **`ALT_ORIGIN` a fost setat pe 2026-08-23 la 04:06 UTC.** Cele cinci workflow-uri care il
+  citesc: `build.yml`, `monitor.yml`, `visual.yml`, `harta-smoke.yml`, `harta-data.yml`
+  (re-derivabil: `grep -rl ALT_ORIGIN .github/workflows/`).
+- **Domeniul confirmat pe Worker pe 2026-08-23**, masurat off-session (§16.3): acelasi commit
+  ca pe workers.dev. Verificarea echivalenta de drift cod/domeniu e in `infra/README-failover.md`.
+
 ## Taiat din STATE.md pe 2026-08-21 — sectiunile 2026-08-07 -> 2026-08-20, verbatim
 
 > STATE.md ajunsese la 656 de linii, cu plafonul de ~40 scris in propriul lui antet. Doua
