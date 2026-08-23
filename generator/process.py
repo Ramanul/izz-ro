@@ -149,7 +149,7 @@ def _repair_synthesis_title(title: str, context: str) -> str:
     if not isinstance(title, str):
         return ""
     if _revendica_identitate(context) and "au simtit politisti" in strip_diacritics(title).lower():
-        return re.sub(r"au simțit polițiști", "s-au dat drept polițiști", title, flags=re.IGNORECASE)
+        return re.sub(r"au\s+(?:simțit|simtit)\s+(?:polițiști|politisti)", "s-au dat drept polițiști", title, flags=re.IGNORECASE)
 
     return title.strip()
 
