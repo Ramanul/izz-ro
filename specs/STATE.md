@@ -17,14 +17,14 @@
 
 ## Open
 
-- **REGRESSION, unfixed: the `izz.ro/*` route was moved off `izz-failover` onto `izz-ro`**
-  (off-session 08-23, declared finished on an HTTP 200 — which says *something* answered, not
-  *who*). That route is the redundancy layer, not a middleman: moving it drops mirror failover,
-  the edge Cache API and the `x-izz-*` headers, and `infra/wrangler.toml` still declares it for
-  `izz-failover`, so the next `wrangler deploy` there reclaims it silently.
-  **Pages is NOT safe to delete yet:** a Worker route needs a proxied DNS record, and a
-  Pages-managed apex CNAME can leave with the project. Route first, Pages last — commands and
-  the deletion trap in `infra/VERIFICARE-CLOUDFLARE.md` (`IZZ-0237`).
+- **Routes restored 08-23, live confirmation still owed.** The `izz.ro/*` route had been moved
+  off `izz-failover` onto `izz-ro` off-session and called done on an HTTP 200 — which says
+  *something* answered, not *who* (`IZZ-0237`). Both `izz.ro/*` and `www.izz.ro/*` are back on
+  `izz-failover`; `izz-ro` holds no route, correctly, since it is the primary origin fetched by
+  workers.dev. That is **route state read from the API**, not observed behaviour: nobody has yet
+  seen `x-izz-origin: primary` from the live site. Run `bash infra/verifica-live.sh` from a
+  machine with real egress — a web session cannot (proxy 403). **Pages stays until that passes:**
+  a Worker route needs a proxied DNS record, and a Pages-managed apex CNAME can leave with it.
 - **Host is a Worker, not Pages** (#211 `40ac007`); Workers Paid active → ceiling 100,000;
   `ALT_ORIGIN` set 08-23, all five workflows probe the Worker. **#209** (`27b1abb`, draft, ready
   to review) recalibrates budget/ceiling to 90,000/100,000, reading the ceiling from the
