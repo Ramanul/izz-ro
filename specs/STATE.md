@@ -13,19 +13,19 @@
 > history with two live rules buried in it. That is the same failure the 08-07 cut documented.
 > **A section is `Open` only if a PR is open or a decision is pending — check, don't assume.**
 
-**Updated:** 2026-08-22 (host moved to Workers; #209 needs recalibration before merge)
+**Updated:** 2026-08-23 (`ALT_ORIGIN` set; #209 recalibrated — Pages now safe to remove)
 
 ## Open
 
 - **HOST CHANGED: izz.ro deploys from a Worker, not Pages** (#211 merged `40ac007`). Workers
-  Paid is **active** → asset ceiling 100,000, not 20,000. Owner still to do in the dashboard:
-  repo var `ALT_ORIGIN` = `https://izz-ro.andifreelancer2.workers.dev`, custom domain `izz.ro`,
-  then pause/delete Pages **last** — four probe workflows still fall back to `pages.dev`.
-- **#209 IS NOW MIS-CALIBRATED — do not merge as written.** Its `OUTPUT_FILE_BUDGET=19500` /
-  `CEILING=20000` are Pages-Free numbers; under Workers Paid they strip ~4,800 images today and
-  leave **zero** at steady state (`19500-3600-21847 < 0`), failing its own `test_podeaua`. Keep
-  the guard, raise the two numbers to ~90,000 / 100,000. Measured 08-22: 23,674 files, 3.64 per
-  article, 930 articles/day, 0.783 rendered/state → steady state **~83,000, 17% of headroom**.
+  Paid is **active** → asset ceiling 100,000, not 20,000. `ALT_ORIGIN` is **set** (08-23 04:06
+  UTC), so all five workflows reading it (`build`, `monitor`, `visual`, `harta-smoke`,
+  `harta-data`) probe the Worker, not `pages.dev` — **Pages is now safe to pause/delete**.
+  Owner still to confirm the `izz.ro` custom domain sits on the Worker.
+- **#209 recalibrated for Workers Paid** (`27b1abb`), draft, ready to review. Budget/ceiling
+  19,500/20,000 → 90,000/100,000; the ceiling is now read from the Cloudflare docs, not
+  bracketed. The guard stays — the silent deploy-refusal it defends against is host-independent.
+  Measured 08-23 on a full render: 23,961 files = 24% of ceiling; steady state ~83,000 (17%).
 - **PR #202 (draft) `claude/lumina-reguli-sesiuni-ypgdky`** — wrong-county map fix (A/B: 12
   articles moved, all correct). Its rules half already landed: `tests/test_reguli.py` enforces
   the caps, and it caught a 45-line edit to this file today. Only the map half is still open.
