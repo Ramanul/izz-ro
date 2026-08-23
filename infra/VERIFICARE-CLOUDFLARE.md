@@ -94,6 +94,34 @@ curl -sI "https://izz.ro/static/styles.css"      | grep -i x-izz-cache   # rulea
 | `build.json` pe izz.ro mai vechi | ❌ altcineva servește (Pages) sau cache blocat |
 | `commit: "local"` | ❌ build fără metadate de CI — sondă verde-pe-nimic (eșecul din 08-21) |
 
+## 3b. Ce s-a CONFIRMAT deja (2026-08-23, măsurat — nu re-verifica)
+
+Verificările din §2 au fost rulate de un asistent cu acces la API, iar codul deployat a fost
+citit prin conectorul MCP. Rezultatul, ca fapt stabilit:
+
+| Ce | Măsurat | Verdict |
+|---|---|---|
+| `izz.ro/*` | → `izz-ro` (rută `4d10b675…`) | ❌ regresia, confirmată |
+| `www.izz.ro/*` | → `izz-ro` (rută `20b10eda…`) | ❌ la fel |
+| `izz-failover` | **fără nicio rută**, zero trafic | ❌ scos complet din lanț |
+| Workers custom domains | niciunul în cont | traficul merge exclusiv prin rute |
+| Zona `izz.ro` | activă (`5c27cb1e…`) | ✅ |
+
+**Codul deployat pe `izz-failover` e cel din repo, curent și corect** — deci rebind-ul e sigur,
+nu pui site-ul pe un Worker vechi:
+
+| Verificat în codul deployat | Valoare | |
+|---|---|---|
+| `PRIMARY` | `https://izz-ro.andifreelancer2.workers.dev` | ✅ pe Worker, nu pe Pages (`df56e62`) |
+| `MIRROR` | `https://ramanul.github.io` | ✅ |
+| Cache API | prezent, `s-maxage` 120s HTML / 300s XML | ✅ |
+| `x-izz-origin` / `x-izz-cache` | prezente | ✅ |
+| Clasa DO `RateLimiter` | **absentă** | ✅ migrarea `cleanup-2026-08-22` a reușit |
+
+Ce rămâne nemăsurat: nimeni n-a rulat încă testele HTTP din §3 — nici sesiunea web, nici
+asistentul cu API nu pot ieși spre `izz.ro` sau `*.workers.dev`. **Trebuie rulate de pe mașina
+proprietarului**, după reparație.
+
 ## 4. Reparația, în ordinea asta (ordinea contează)
 
 **R1 — restaurează ruta pe `izz-failover`.** Calea curată e din repo, nu din API, fiindcă
@@ -106,8 +134,12 @@ cd infra && CLOUDFLARE_API_TOKEN="<token nou>" wrangler deploy
 Tokenul are nevoie de **Workers Scripts:Edit** + **Workers Routes:Edit** pe zona izz.ro.
 O rută e unică per zonă → mai întâi se șterge `izz.ro/* -> izz-ro`, altfel deploy-ul se lovește de ea.
 
-**R2 — decide ce faci cu `www.izz.ro/*`.** Nu e în niciun config din repo. Ori o ștergi și lași
-CNAME-ul `www` + o regulă de redirect la apex, ori o muți tot pe `izz-failover`. Nu o lăsa pe `izz-ro`.
+**R2 — `www.izz.ro/*` e acum în config, deci R1 o rezolvă odată cu apexul.** A fost adăugată în
+`infra/wrangler.toml` pe 08-23: `www` are CNAME proxied din 20 iunie și a servit dintotdeauna
+conținut, iar absența lui din config era exact gaura prin care ruta a rămas pe alt Worker.
+**Deschis, decizie de proprietar:** azi `www` servește conținut duplicat, nu face 301 către apex
+(`output/_redirects` n-are nicio regulă `www`). Dacă vrei 301, calea ieftină e o Redirect Rule
+pe zonă — verifică întâi dacă nu există deja una, înainte s-o adaugi.
 
 **R3 — abia apoi atinge Pages, și în ordinea asta.** Capcana: dacă `izz.ro` e înregistrat ca
 *custom domain* al proiectului Pages, CNAME-ul e gestionat de Pages, iar ștergerea proiectului
