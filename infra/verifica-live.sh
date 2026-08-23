@@ -36,7 +36,7 @@ case "$cod" in
 esac
 
 hdr "1. Cine serveste izz.ro (header x-izz-origin)"
-origini="$(curl -fsSI "$DOMENIU/?cb=$CB" 2>/dev/null | tr -d '\r' | grep -i '^x-izz-' || true)"
+origini="$(curl -fsS -o /dev/null -D - "$DOMENIU/?cb=$CB" 2>/dev/null | tr -d '\r' | grep -i '^x-izz-' || true)"
 if [ -z "$origini" ]; then
   verdict nok "headerele x-izz-* LIPSESC — izz-failover nu e in lant (ruta nu a prins?)"
 else
@@ -49,14 +49,18 @@ else
 fi
 
 hdr "2. Cache la edge (a doua cerere pe acelasi asset trebuie sa dea HIT)"
-curl -fsSI "$DOMENIU/static/styles.css" >/dev/null 2>&1
-c2="$(curl -fsSI "$DOMENIU/static/styles.css" 2>/dev/null | tr -d '\r' | grep -i '^x-izz-cache' || true)"
+# GET, nu HEAD. `curl -I` trimite HEAD, iar isCacheableRequest() din failover-worker.js
+# respinge orice metoda != GET -> raspunsul e BYPASS PRIN PROIECTARE. Masurat 2026-08-23:
+# un test cu -I raporta BYPASS si parea cache picat, cu Worker-ul functionand perfect.
+# `-o /dev/null -D -` face GET real si tipareste doar headerele.
+curl -fsS -o /dev/null "$DOMENIU/static/styles.css" >/dev/null 2>&1
+c2="$(curl -fsS -o /dev/null -D - "$DOMENIU/static/styles.css" 2>/dev/null | tr -d '\r' | grep -i '^x-izz-cache' || true)"
 if [ -n "$c2" ]; then
   echo "     $c2"
   case "$c2" in
     *HIT*)    verdict ok "Cache API activ" ;;
     *MISS*)   verdict nok "inca MISS — mai incearca odata; daca persista, cache-ul nu prinde" ;;
-    *BYPASS*) verdict nok "BYPASS pe un asset static — nu ar trebui" ;;
+    *BYPASS*) verdict nok "BYPASS pe GET catre un asset static — nu ar trebui" ;;
   esac
 else
   verdict nok "x-izz-cache lipseste pe /static/styles.css"

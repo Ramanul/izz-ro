@@ -17,14 +17,14 @@
 
 ## Open
 
-- **Routes restored 08-23, live confirmation still owed.** The `izz.ro/*` route had been moved
-  off `izz-failover` onto `izz-ro` off-session and called done on an HTTP 200 — which says
-  *something* answered, not *who* (`IZZ-0237`). Both `izz.ro/*` and `www.izz.ro/*` are back on
-  `izz-failover`; `izz-ro` holds no route, correctly, since it is the primary origin fetched by
-  workers.dev. That is **route state read from the API**, not observed behaviour: nobody has yet
-  seen `x-izz-origin: primary` from the live site. Run `bash infra/verifica-live.sh` from a
-  machine with real egress — a web session cannot (proxy 403). **Pages stays until that passes:**
-  a Worker route needs a proxied DNS record, and a Pages-managed apex CNAME can leave with it.
+- **Routes restored and confirmed live 08-23.** The `izz.ro/*` route had been moved off
+  `izz-failover` onto `izz-ro` off-session and called done on an HTTP 200 (`IZZ-0237`). Both it
+  and `www.izz.ro/*` are back on `izz-failover`; `izz-ro` holds no route, correctly — it is the
+  primary origin fetched over workers.dev. Confirmed from the owner's machine, not just the API:
+  `x-izz-origin: primary`, `/build.json` identical on domain and primary (`ac07ebd`, `main`).
+  Edge cache still unverified — the first probe used `curl -I`, and HEAD is BYPASS by design
+  (`IZZ-0240`); re-run `bash infra/verifica-live.sh`, now fixed to GET. **Pages can go once that
+  is green**, but a Worker route needs a proxied DNS record — check who owns the apex CNAME first.
 - **Host is a Worker, not Pages** (#211 `40ac007`); Workers Paid active → ceiling 100,000;
   `ALT_ORIGIN` set 08-23, all five workflows probe the Worker. **#209** (`27b1abb`, draft, ready
   to review) recalibrates budget/ceiling to 90,000/100,000, reading the ceiling from the
