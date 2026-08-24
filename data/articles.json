@@ -1,5 +1,592 @@
 [
   {
+    "url": "https://politico.eu/article/germany-afd-saxony-anhalt-ulrich-siegmund-government",
+    "original_link": "https://www.politico.eu/article/germany-afd-saxony-anhalt-ulrich-siegmund-government/?utm_source=RSS_Feed&utm_medium=RSS&utm_campaign=RSS_Syndication",
+    "source": "politico_eu",
+    "source_name": "Politico EU",
+    "source_lang": "en",
+    "title": "Ascensiunea partidului extremist AfD în Germania",
+    "category": "extern",
+    "published": "2026-08-24T02:00:00+00:00",
+    "model": "B",
+    "src_extra": 1650,
+    "teaser": "Partidul de extremă dreaptă Alternative pentru Germania este creditat cu șanse mari la o victorie categorică în landul Saxonia-Anhalt, punând presiune pe cancelarul Friedrich Merz.",
+    "entities": [
+      "Friedrich Merz",
+      "Ulrich Siegmund",
+      "Saxonia-Anhalt",
+      "AfD"
+    ],
+    "ai_cat": "extern",
+    "icon": "flag",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "ascensiunea-partidului-extremist-afd-in-germania"
+  },
+  {
+    "url": "https://bizbrasov.ro/2026/08/24/soare-atentie-plimbare-alergie-severa",
+    "original_link": "https://bizbrasov.ro/2026/08/24/soare-atentie-plimbare-alergie-severa/",
+    "source": "bizbrasov",
+    "source_name": "BizBrașov",
+    "source_lang": "ro",
+    "title": "Avertismentul medicilor privind alergiile solare",
+    "category": "sanatate",
+    "published": "2026-08-24T01:47:00+00:00",
+    "model": "B",
+    "src_extra": 28,
+    "teaser": "Medicii alergologi atrag atenția că o simplă plimbare în aer liber poate provoca erupții cutanate severe și alergii solare, chiar și în absența unor înțepături de insecte sau a altor factori alimentari.",
+    "entities": [
+      "Teodora Fodor"
+    ],
+    "ai_cat": "sanatate",
+    "icon": "sun",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "avertismentul-medicilor-privind-alergiile-solare"
+  },
+  {
+    "url": "https://bizbrasov.ro/2026/08/24/regalina-brasov-gaina-coroana-agentia",
+    "original_link": "https://bizbrasov.ro/2026/08/24/regalina-brasov-gaina-coroana-agentia/",
+    "source": "bizbrasov",
+    "source_name": "BizBrașov",
+    "source_lang": "ro",
+    "title": "Producătorul Regalina își schimbă identitatea vizuală",
+    "category": "economic",
+    "published": "2026-08-24T01:38:00+00:00",
+    "model": "B",
+    "src_extra": 28,
+    "teaser": "Compania producătoare de ouă Regalina a renunțat la celebrul simbol al găinii cu coroană, adoptând o nouă imagine de brand creată de o agenție din Brașov pentru modernizarea ambalajelor.",
+    "entities": [
+      "Regalina",
+      "Grin"
+    ],
+    "ai_cat": "economic",
+    "icon": "shopping-cart",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "producatorul-regalina-isi-schimba-identitatea-vizuala"
+  },
+  {
+    "url": "https://dobrogeaonline.ro/sase-actiuni-legale-privind-exproprierile-de-la-spitalul-judetean-cj-constanta-aproba-42-000-de-lei-pentru-onorariile-avocatilor",
+    "original_link": "https://www.dobrogeaonline.ro/sase-actiuni-legale-privind-exproprierile-de-la-spitalul-judetean-cj-constanta-aproba-42-000-de-lei-pentru-onorariile-avocatilor/",
+    "source": "dobrogeaonline",
+    "source_name": "Dobrogea Online",
+    "source_lang": "ro",
+    "title": "Consiliul Județean Constanța alocă fonduri pentru exproprieri",
+    "category": "local",
+    "published": "2026-08-24T01:33:35+00:00",
+    "model": "B",
+    "src_extra": 341,
+    "teaser": "Autoritățile județene din Constanța vor discuta alocarea a 42.000 de lei pentru servicii juridice destinate proceselor de expropriere necesare extinderii Spitalului Clinic Județean de Urgență.",
+    "entities": [
+      "Consiliul Județean Constanța",
+      "Spitalul Clinic Județean de Urgență Constanța"
+    ],
+    "ai_cat": "judetean",
+    "icon": "gavel",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "consiliul-judetean-constanta-aloca-fonduri-pentru-exproprieri"
+  },
+  {
+    "url": "https://bizbrasov.ro/2026/08/24/povestea-dacia-1309",
+    "original_link": "https://bizbrasov.ro/2026/08/24/povestea-dacia-1309/",
+    "source": "bizbrasov",
+    "source_name": "BizBrașov",
+    "source_lang": "ro",
+    "title": "Istoria modelului Dacia 1309 produs pentru China",
+    "category": "local",
+    "published": "2026-08-24T01:28:00+00:00",
+    "model": "B",
+    "src_extra": 26,
+    "teaser": "În anii '90, uzina de la Mioveni a exportat în China modelul Dacia 1309, o versiune pick-up cu patru uși derivată din varianta break, reprezentând un flux invers al pieței auto de astăzi.",
+    "entities": [
+      "Dacia",
+      "Mioveni"
+    ],
+    "ai_cat": "auto",
+    "icon": "car",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "istoria-modelului-dacia-1309-produs-pentru-china"
+  },
+  {
+    "url": "https://b365.ro/casa-cu-fereastra-fermecata-magie-fara-varsta-cel-mai-instagramabil-monument-din-bucuresti-a-fost-resedinta-unui-domn-special-protectorul-copiilor-sarmani-616420",
+    "original_link": "https://b365.ro/casa-cu-fereastra-fermecata-magie-fara-varsta-cel-mai-instagramabil-monument-din-bucuresti-a-fost-resedinta-unui-domn-special-protectorul-copiilor-sarmani-616420/",
+    "source": "b365",
+    "source_name": "B365",
+    "source_lang": "ro",
+    "title": "Casa cu Fereastra Fermecată din București",
+    "category": "local",
+    "published": "2026-08-24T01:00:33+00:00",
+    "model": "B",
+    "src_extra": 31,
+    "teaser": "Monumentul istoric din vechea mahala Negustori, fosta locuință a moșierului Romulus Porescu, rămâne una dintre cele mai spectaculoase și apreciate clădiri cu valoare arhitecturală din capitală.",
+    "entities": [
+      "Romulus Porescu",
+      "București"
+    ],
+    "ai_cat": "cultura",
+    "icon": "building-monument",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "casa-cu-fereastra-fermecata-din-bucuresti"
+  },
+  {
+    "url": "https://contributors.ro/o-data-n-viata",
+    "original_link": "https://www.contributors.ro/o-data-n-viata/",
+    "source": "contributors",
+    "source_name": "Contributors",
+    "source_lang": "ro",
+    "title": "Matei Vișniec debutează ca regizor la Suceava",
+    "category": "local",
+    "published": "2026-08-24T00:39:01+00:00",
+    "model": "B",
+    "src_extra": 721,
+    "teaser": "Dramaturgul Matei Vișniec regizează în premieră propria sa piesă, Cabaretul cuvintelor, pe scena teatrului din Suceava care îi poartă numele, sprijinit de o echipă artistică de renume.",
+    "entities": [
+      "Matei Vișniec",
+      "Suceava",
+      "Cabaretul cuvintelor"
+    ],
+    "ai_cat": "cultura",
+    "icon": "movie",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "matei-visniec-debuteaza-ca-regizor-la-suceava"
+  },
+  {
+    "url": "https://dobrogeaonline.ro/dupa-preocuparile-exprimate-de-pnl-incepand-cu-2018-senatorul-usr-remus-negoi-isi-exprima-regretul-pentru-situatia-dobrogenilor-afectati-de-taxele-pentru-traversarea-podului",
+    "original_link": "https://www.dobrogeaonline.ro/dupa-preocuparile-exprimate-de-pnl-incepand-cu-2018-senatorul-usr-remus-negoi-isi-exprima-regretul-pentru-situatia-dobrogenilor-afectati-de-taxele-pentru-traversarea-podului/",
+    "source": "dobrogeaonline",
+    "source_name": "Dobrogea Online",
+    "source_lang": "ro",
+    "title": "Reacții politice privind taxele de pe podul nou",
+    "category": "local",
+    "published": "2026-08-23T23:33:30+00:00",
+    "model": "B",
+    "src_extra": 410,
+    "teaser": "Senatorul USR Remus Negoi critică menținerea taxelor de trecere a podului pentru locuitorii din Dobrogea, readucând în discuție o temă electorală vehiculată anterior și de reprezentanții PNL.",
+    "entities": [
+      "Remus Negoi",
+      "PNL",
+      "USR",
+      "Dobrogea"
+    ],
+    "ai_cat": "politic",
+    "icon": "receipt-tax",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "reactii-politice-privind-taxele-de-pe-podul-nou"
+  },
+  {
+    "url": "https://bzi.ro/a-dat-bine-premarul-misu-5590800",
+    "original_link": "https://www.bzi.ro/a-dat-bine-premarul-misu-5590800",
+    "source": "bzi",
+    "source_name": "BZI Iași",
+    "source_lang": "ro",
+    "title": "Incident monden la o nuntă locală",
+    "category": "general",
+    "published": "2026-08-23T23:01:50+00:00",
+    "model": "B",
+    "src_extra": 50,
+    "teaser": "Primarul unei localități a participat la petrecerea organizată de șeful poliției locale, unde a atras atenția participanților prin comportamentul său din timpul evenimentului festiv.",
+    "entities": [],
+    "ai_cat": "local",
+    "icon": "home",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "incident-monden-la-o-nunta-locala"
+  },
+  {
+    "url": "https://theguardian.com/politics/2026/aug/24/andy-burnham-ukraine-long-range-missile-technology-kyiv-visit",
+    "original_link": "https://www.theguardian.com/politics/2026/aug/24/andy-burnham-ukraine-long-range-missile-technology-kyiv-visit",
+    "source": "guardian_eu",
+    "source_name": "The Guardian",
+    "source_lang": "en",
+    "title": "Sprijin britanic pentru rachetele cu rază lungă din Ucraina",
+    "category": "extern",
+    "published": "2026-08-23T23:01:45+00:00",
+    "model": "B",
+    "src_extra": 75,
+    "teaser": "Premierul britanic Andy Burnham efectuează o vizită la Kiev de Ziua Independenței Ucrainei, urmând să anunțe transferul de date clasificate pentru fabricarea de rachete locale Storm Shadow.",
+    "entities": [
+      "Andy Burnham",
+      "Kiev",
+      "Ucraina",
+      "Storm Shadow"
+    ],
+    "ai_cat": "extern",
+    "icon": "rocket",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "sprijin-britanic-pentru-rachetele-cu-raza-lunga-din-ucraina"
+  },
+  {
+    "url": "https://bzi.ro/amenzi-pe-banda-rulanta-primite-de-trei-barbati-din-iasi-au-inceput-un-scandal-la-ora-2100-si-au-continuat-pana-dupa-miezul-noptii-5590829",
+    "original_link": "https://www.bzi.ro/amenzi-pe-banda-rulanta-primite-de-trei-barbati-din-iasi-au-inceput-un-scandal-la-ora-2100-si-au-continuat-pana-dupa-miezul-noptii-5590829",
+    "source": "bzi",
+    "source_name": "BZI Iași",
+    "source_lang": "ro",
+    "title": "Trei bărbați din Iași, amendați repetat pentru un scandal prelungit în Nicolina",
+    "category": "local",
+    "published": "2026-08-23T23:00:52+00:00",
+    "model": "B",
+    "src_extra": 34,
+    "teaser": "Polițiștii din Iași au aplicat mai multe amenzi în noaptea de 21 august 2026, după ce trei indivizi au provocat o altercație violentă în cartierul Nicolina, care a durat de la ora 21:00 până după miezul nopții.",
+    "entities": [
+      "Iași",
+      "Nicolina"
+    ],
+    "ai_cat": "regional",
+    "icon": "gavel",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "trei-barbati-din-iasi-amendati-repetat-pentru-un-scandal-prelungit-in-nicolina"
+  },
+  {
+    "url": "https://bzi.ro/de-la-media-10-la-bacalaureat-la-propria-carte-de-eseuri-povestea-biancai-balan-eleva-din-pascani-care-vrea-sa-faca-romana-mai-usor-de-inteles-5590755",
+    "original_link": "https://www.bzi.ro/de-la-media-10-la-bacalaureat-la-propria-carte-de-eseuri-povestea-biancai-balan-eleva-din-pascani-care-vrea-sa-faca-romana-mai-usor-de-inteles-5590755",
+    "source": "bzi",
+    "source_name": "BZI Iași",
+    "source_lang": "ro",
+    "title": "O absolventă din Pașcani cu media 10 la Bacalaureat pregătește o carte de eseuri",
+    "category": "local",
+    "published": "2026-08-23T23:00:48+00:00",
+    "model": "B",
+    "src_extra": 36,
+    "teaser": "Bianca Andreia Bălan, fostă elevă la Colegiul Național „Mihail Sadoveanu” din Pașcani, scrie un volum de eseuri pentru examenul maturității, dorind să simplifice înțelegerea materiei de Limba română pentru generațiile viitoare.",
+    "entities": [
+      "Bianca Andreia Bălan",
+      "Pașcani",
+      "Colegiul Național Mihail Sadoveanu"
+    ],
+    "ai_cat": "cultura",
+    "icon": "writing",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "o-absolventa-din-pascani-cu-media-10-la-bacalaureat-pregateste-o-carte-de-eseuri"
+  },
+  {
+    "url": "https://bzi.ro/gica-neamtu-fondator-pofta-focului-si-a-dublat-vanzarile-fata-de-anul-trecut-abia-facem-fata-cerintelor-clientilor-5590745",
+    "original_link": "https://www.bzi.ro/gica-neamtu-fondator-pofta-focului-si-a-dublat-vanzarile-fata-de-anul-trecut-abia-facem-fata-cerintelor-clientilor-5590745",
+    "source": "bzi",
+    "source_name": "BZI Iași",
+    "source_lang": "ro",
+    "title": "Producătorul ieșean Gica Neamțu și-a dublat vânzările la brandul Pofta Focului",
+    "category": "economic",
+    "published": "2026-08-23T23:00:41+00:00",
+    "model": "B",
+    "src_extra": 61,
+    "teaser": "Afacerea locală cu zacuscă și dulcețuri condusă de inginerul constructor Gica Neamțu a înregistrat o dublare a cifrei de afaceri față de anul anterior, extinzându-și portofoliul cu un nou produs de succes pe piață.",
+    "entities": [
+      "Gica Neamțu",
+      "Pofta Focului",
+      "Iași"
+    ],
+    "ai_cat": "economic",
+    "icon": "shopping-cart",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "producatorul-iesean-gica-neamtu-si-a-dublat-vanzarile-la-brandul-pofta-focului"
+  },
+  {
+    "url": "https://bzi.ro/mai-multe-posturi-pentru-ingrijitor-de-persoane-sunt-disponibile-in-irlanda-iesenii-interesati-pot-castiga-29-000-de-euro-anual-5590821",
+    "original_link": "https://www.bzi.ro/mai-multe-posturi-pentru-ingrijitor-de-persoane-sunt-disponibile-in-irlanda-iesenii-interesati-pot-castiga-29-000-de-euro-anual-5590821",
+    "source": "bzi",
+    "source_name": "BZI Iași",
+    "source_lang": "ro",
+    "title": "Locuri de muncă în Irlanda pentru îngrijitori de persoane cu 29.000 euro anual",
+    "category": "local",
+    "published": "2026-08-23T23:00:32+00:00",
+    "model": "B",
+    "src_extra": 31,
+    "teaser": "Cetățenii din Iași interesați de o carieră în domeniul îngrijirii vârstnicilor pot aplica pentru posturi în Irlanda, beneficiind de un salariu anual de 29.000 de euro, cu condiția să cunoască limba engleză la nivel mediu.",
+    "entities": [
+      "Irlanda",
+      "Iași"
+    ],
+    "ai_cat": "economic",
+    "icon": "building-bank",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "locuri-de-munca-in-irlanda-pentru-ingrijitori-de-persoane-cu-29-000-euro-anual"
+  },
+  {
+    "url": "https://bzi.ro/licitatia-de-la-trifesti-pentru-construirea-unui-centru-multifunctional-pentru-copiii-din-localitate-a-intrat-in-linie-dreapta-5590812",
+    "original_link": "https://www.bzi.ro/licitatia-de-la-trifesti-pentru-construirea-unui-centru-multifunctional-pentru-copiii-din-localitate-a-intrat-in-linie-dreapta-5590812",
+    "source": "bzi",
+    "source_name": "BZI Iași",
+    "source_lang": "ro",
+    "title": "Primăria Trifești avansează cu licitația pentru un centru multifuncțional pentru copii",
+    "category": "local",
+    "published": "2026-08-23T23:00:32+00:00",
+    "model": "B",
+    "src_extra": 35,
+    "teaser": "Procedura de atribuire pentru construirea unui centru destinat minorilor din comuna ieșeană Trifești a intrat în faza finală, o asociere de firme depunând oferta financiară pentru contractul estimat la peste patru milioane de lei.",
+    "entities": [
+      "Trifești",
+      "Iași"
+    ],
+    "ai_cat": "regional",
+    "icon": "building-monument",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "primaria-trifesti-avanseaza-cu-licitatia-pentru-un-centru-multifunctional"
+  },
+  {
+    "url": "https://bzi.ro/doua-comune-vor-primi-bunuri-gratis-de-la-primaria-municipiului-iasi-materialele-vor-fi-folosite-pentru-infrastructura-rutiera-5590779",
+    "original_link": "https://www.bzi.ro/doua-comune-vor-primi-bunuri-gratis-de-la-primaria-municipiului-iasi-materialele-vor-fi-folosite-pentru-infrastructura-rutiera-5590779",
+    "source": "bzi",
+    "source_name": "BZI Iași",
+    "source_lang": "ro",
+    "title": "Primăria Iași donează materiale de infrastructură comunelor Răducăneni și Dumești",
+    "category": "local",
+    "published": "2026-08-23T23:00:30+00:00",
+    "model": "B",
+    "src_extra": 37,
+    "teaser": "Administrația locală din Iași oferă gratuit materiale recuperate din modernizarea rețelei de tramvai către primăriile din Răducăneni și Dumești, în vederea îmbunătățirii drumurilor și infrastructurii rutiere locale.",
+    "entities": [
+      "Iași",
+      "Răducăneni",
+      "Dumești"
+    ],
+    "ai_cat": "regional",
+    "icon": "truck",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "primaria-iasi-doneaza-materiale-de-infrastructura-comunelor-raducaneni-si"
+  },
+  {
+    "url": "https://urban.ro/sa-imbatranesti-gratios",
+    "original_link": "https://www.urban.ro/sa-imbatranesti-gratios/",
+    "source": "urban",
+    "source_name": "Urban.ro",
+    "source_lang": "ro",
+    "title": "Specialiștii în sănătate și estetică oferă reguli pentru o îmbătrânire frumoasă",
+    "category": "sanatate",
+    "published": "2026-08-23T22:10:00+00:00",
+    "model": "B",
+    "src_extra": 29,
+    "teaser": "Medicii și experții în nutriție explică modul în care presiunea socială și standardele de frumusețe influențează percepția asupra îmbătrânirii, oferind recomandări practice pentru menținerea vitalității și a unui stil de viață sănătos.",
+    "entities": [],
+    "ai_cat": "sanatate",
+    "icon": "stethoscope",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "specialistii-in-sanatate-si-estetica-ofera-reguli-pentru-o-imbatranire-frumoasa"
+  },
+  {
+    "url": "https://prosport.ro/fotbal-intern/superliga/juri-cisotti-analiza-esec-fcsb-cu-cfr-20509139",
+    "original_link": "https://www.prosport.ro/fotbal-intern/superliga/juri-cisotti-analiza-esec-fcsb-cu-cfr-20509139",
+    "source": "prosport",
+    "source_name": "ProSport",
+    "source_lang": "ro",
+    "title": "Juri Cisotti a analizat înfrângerea suferită de FCSB în meciul cu CFR Cluj",
+    "category": "sport",
+    "published": "2026-08-23T22:05:20+00:00",
+    "model": "B",
+    "src_extra": 46,
+    "teaser": "Mijlocașul italian Juri Cisotti a oferit propria perspectivă după eșecul la limită al echipei roș-albastre, scor 0-1, în deplasarea din etapa a șasea a Superligii, decisă de penalty-ul transformat de Andrei Cordea.",
+    "entities": [
+      "Juri Cisotti",
+      "FCSB",
+      "CFR Cluj",
+      "Andrei Cordea"
+    ],
+    "ai_cat": "sport",
+    "icon": "ball-football",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "juri-cisotti-a-analizat-infrangerea-suferita-de-fcsb-in-meciul-cu-cfr-cluj"
+  },
+  {
+    "url": "https://prosport.ro/fotbal-intern/superliga/andrei-cordea-prima-reactie-plecare-imediata-cfr-cluj-fcsb-1-0-marian-copilu-20509142",
+    "original_link": "https://www.prosport.ro/fotbal-intern/superliga/andrei-cordea-prima-reactie-plecare-imediata-cfr-cluj-fcsb-1-0-marian-copilu-20509142",
+    "source": "prosport",
+    "source_name": "ProSport",
+    "source_lang": "ro",
+    "title": "Andrei Cordea a comentat despre o posibilă plecare de la CFR Cluj",
+    "category": "sport",
+    "published": "2026-08-23T21:56:18+00:00",
+    "model": "B",
+    "src_extra": 43,
+    "teaser": "Autorul singurului gol din partida CFR Cluj - FCSB 1-0, marcat din lovitură de la 11 metri, a confirmat purtarea unor discuții cu oficialul Marian Copilu referitoare la un eventual transfer imediat din Gruia.",
+    "entities": [
+      "Andrei Cordea",
+      "CFR Cluj",
+      "FCSB",
+      "Marian Copilu"
+    ],
+    "ai_cat": "sport",
+    "icon": "ball-football",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "andrei-cordea-a-comentat-despre-o-posibila-plecare-de-la-cfr-cluj"
+  },
+  {
+    "url": "https://sfatulparintilor.ro/totul-despre-zodii/ingerul-pazitor-asociat-lunii-in-care-te-ai-nascut-ce-dar-aduce-in-viata-ta",
+    "original_link": "https://sfatulparintilor.ro/totul-despre-zodii/ingerul-pazitor-asociat-lunii-in-care-te-ai-nascut-ce-dar-aduce-in-viata-ta/",
+    "source": "sfatulparintilor",
+    "source_name": "Sfatul Părinților",
+    "source_lang": "ro",
+    "title": "Legătura dintre îngerul păzitor și luna nașterii conform tradițiilor populare",
+    "category": "lifestyle",
+    "published": "2026-08-23T21:54:06+00:00",
+    "model": "B",
+    "src_extra": 25,
+    "teaser": "Universul vast și lumea spirituală ascund numeroase mistere legate de influența entităților celeste asupra destinului uman, în funcție de perioada calendaristică în care fiecare persoană a venit pe lume.",
+    "entities": [],
+    "ai_cat": "lifestyle",
+    "icon": "sun",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "legatura-dintre-ingerul-pazitor-si-luna-nasterii-conform-traditiilor-populare"
+  },
+  {
+    "url": "https://prosport.ro/fotbal-intern/superliga/gigi-becali-boutoutaou-cfr-cluj-fcsb-20509125",
+    "original_link": "https://www.prosport.ro/fotbal-intern/superliga/gigi-becali-boutoutaou-cfr-cluj-fcsb-20509125",
+    "source": "prosport",
+    "source_name": "ProSport",
+    "source_lang": "ro",
+    "title": "Gigi Becali îl critică pe Aymen Boutoutaou după înfrângerea FCSB cu CFR Cluj",
+    "category": "sport",
+    "published": "2026-08-23T21:49:56+00:00",
+    "model": "B",
+    "src_extra": 42,
+    "teaser": "Patronul FCSB i-a reproșat lui Aymen Boutoutaou evoluția slabă din meciul pierdut împotriva CFR Cluj, amintind că a plătit 1,3 milioane de euro pentru transferul său de la Sochaux.",
+    "entities": [
+      "Gigi Becali",
+      "Aymen Boutoutaou",
+      "FCSB",
+      "CFR Cluj"
+    ],
+    "ai_cat": "sport",
+    "icon": "ball-football",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "gigi-becali-il-critica-pe-aymen-boutoutaou-dupa-infrangerea-fcsb-cu-cfr-cluj"
+  },
+  {
+    "url": "https://gsp.ro/international/campionate/newcastle-liverpool-alexander-isak-suporteri-972735.html",
+    "original_link": "https://www.gsp.ro/international/campionate/newcastle-liverpool-alexander-isak-suporteri-972735.html",
+    "source": "gsp",
+    "source_name": "GSP",
+    "source_lang": "ro",
+    "title": "Alexander Isak a fost primit ostil de fanii lui Newcastle în meciul cu Liverpool",
+    "category": "sport",
+    "published": "2026-08-23T21:46:21+00:00",
+    "model": "B",
+    "src_extra": 38,
+    "teaser": "Atacantul Alexander Isak a fost huiduit copios de suporterii lui Newcastle în partida cu Liverpool, scor 2-2, din cauza modului în care a forțat transferul la gruparea campionă în vara trecută.",
+    "entities": [
+      "Alexander Isak",
+      "Newcastle",
+      "Liverpool"
+    ],
+    "ai_cat": "sport",
+    "icon": "ball-football",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "alexander-isak-a-fost-primit-ostil-de-fanii-lui-newcastle-in-meciul-cu-liverpool"
+  },
+  {
+    "url": "https://gsp.ro/fotbal/liga-1/note-gsp-cfr-cluj-fcsb-1-0-972595.html",
+    "original_link": "https://www.gsp.ro/fotbal/liga-1/note-gsp-cfr-cluj-fcsb-1-0-972595.html",
+    "source": "gsp",
+    "source_name": "GSP",
+    "source_lang": "ro",
+    "title": "CFR Cluj a învins-o pe FCSB cu scorul de 1-0 în Superligă",
+    "category": "sport",
+    "published": "2026-08-23T21:45:43+00:00",
+    "model": "B",
+    "src_extra": 57,
+    "teaser": "Formația ardeleană aflată în insolvență s-a impus surprinzător în fața celor de la FCSB prin unicul gol marcat din penalty de Cordea, în etapa a șasea din campionatul intern.",
+    "entities": [
+      "CFR Cluj",
+      "FCSB",
+      "Cordea"
+    ],
+    "ai_cat": "sport",
+    "icon": "ball-football",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "cfr-cluj-a-invins-o-pe-fcsb-cu-scorul-de-1-0-in-superliga"
+  },
+  {
+    "url": "https://prosport.ro/fotbal-intern/superliga/marius-baciu-tavi-popescu-infrangere-fcsb-cfr-cluj-teren-uscat-vina-20509131",
+    "original_link": "https://www.prosport.ro/fotbal-intern/superliga/marius-baciu-tavi-popescu-infrangere-fcsb-cfr-cluj-teren-uscat-vina-20509131",
+    "source": "prosport",
+    "source_name": "ProSport",
+    "source_lang": "ro",
+    "title": "Marius Baciu îl acuză pe Tavi Popescu pentru eșecul FCSB de la Cluj",
+    "category": "sport",
+    "published": "2026-08-23T21:42:17+00:00",
+    "model": "B",
+    "src_extra": 38,
+    "teaser": "Antrenorul Marius Baciu a declarat că Tavi Popescu i-a dat vina pe starea uscată a terenului din Gruia pentru prestația slabă și înfrângerea suferită de FCSB în fața CFR-ului.",
+    "entities": [
+      "Marius Baciu",
+      "Tavi Popescu",
+      "FCSB",
+      "CFR Cluj"
+    ],
+    "ai_cat": "sport",
+    "icon": "ball-football",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "marius-baciu-il-acuza-pe-tavi-popescu-pentru-esecul-fcsb-de-la-cluj"
+  },
+  {
+    "url": "https://cvlpress.ro/24.08.2026/barcelona-manita-atletico-doar-remiza",
+    "original_link": "https://cvlpress.ro/24.08.2026/barcelona-manita-atletico-doar-remiza/",
+    "source": "cvlpress",
+    "source_name": "Cuvântul Libertății",
+    "source_lang": "ro",
+    "title": "FC Barcelona s-a impus categoric cu Elche, în timp ce Atletico a remizat cu Villarreal",
+    "category": "extern",
+    "published": "2026-08-23T21:37:11+00:00",
+    "model": "B",
+    "src_extra": 55,
+    "teaser": "Campioana Spaniei a debutat în noul sezon cu o victorie zdrobitoare, scor 5-0, pe terenul celor de la Elche, prin reușitele semnate de Raphinha, Fermin Lopez și Karim Adeyemi. În același timp, Atletico Madrid a obținut doar o remiză acasă.",
+    "entities": [
+      "FC Barcelona",
+      "Atletico Madrid",
+      "Elche",
+      "Villarreal"
+    ],
+    "ai_cat": "extern",
+    "icon": "ball-football",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "fc-barcelona-s-a-impus-categoric-cu-elche-in-timp-ce-atletico-a-remizat-cu"
+  },
+  {
     "url": "https://spotmedia.ro/stiri/eveniment/o-combinatie-de-factori-distructivi-ameninta-granarele-lumii-putine-lucruri-au-o-greutate-politica-la-fel-de-mare-precum-pretul-painii",
     "original_link": "https://spotmedia.ro/stiri/eveniment/o-combinatie-de-factori-distructivi-ameninta-granarele-lumii-putine-lucruri-au-o-greutate-politica-la-fel-de-mare-precum-pretul-painii",
     "source": "spotmedia",
@@ -18,6 +605,30 @@
     "prompt_version": "v2-esenta",
     "featured": false,
     "slug": "pretul-mondial-al-painii-creste-din-cauza-secetei-si-a-conflictelor"
+  },
+  {
+    "url": "https://tion.ro/azi-in-timisoara/ce-facem-astazi-24-august-2026-in-timisoara-2336340",
+    "original_link": "https://www.tion.ro/azi-in-timisoara/ce-facem-astazi-24-august-2026-in-timisoara-2336340/?utm_source=rss&utm_medium=referral&utm_campaign=hiraggregator",
+    "source": "tion",
+    "source_name": "Timiș Online",
+    "source_lang": "ro",
+    "title": "Evenimentele culturale și expozițiile programate în Timișoara pe 24 august 2026",
+    "category": "local",
+    "published": "2026-08-23T21:31:38+00:00",
+    "model": "B",
+    "src_extra": 115,
+    "teaser": "Agenda culturală a orașului Timișoara include spectacole de dans tradițional japonez, ateliere tematice, vernisaje și vizite la expozițiile permanente organizate în cadrul Memorialului Revoluției.",
+    "entities": [
+      "Timișoara",
+      "Memorialul Revoluției",
+      "Centrul de Proiecte"
+    ],
+    "ai_cat": "cultura",
+    "icon": "building-monument",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "evenimentele-culturale-si-expozitiile-programate-in-timisoara-pe-24-august-2026"
   },
   {
     "url": "https://g4media.ro/social-democratul-raphael-glucksmann-intra-in-cursa-pentru-alegerile-prezidentiale-din-franta-din-2027-intr-o-competitie-foarte-aglomerata.html",
@@ -117,23 +728,37 @@
     "source": "gsp",
     "source_name": "GSP",
     "source_lang": "ro",
-    "title": "Marius Șumudică a dedicat victoria cu FCSB ofițerului de presă",
+    "title": "Marius Șumudică a dedicat ofițerului de presă victoria împotriva FCSB",
     "category": "sport",
     "published": "2026-08-23T21:15:19+00:00",
-    "model": "B",
+    "model": "C",
     "src_extra": 69,
     "teaser": "Antrenorul CFR Cluj, Marius Șumudică, a declarat după succesul cu 1-0 împotriva FCSB că victoria reprezintă un cadou de nuntă pentru Oana Sabău, după ce echipa a depășit startul slab de campionat.",
     "entities": [
-      "Marius Sumudica",
+      "Marius Șumudică",
       "CFR Cluj",
-      "FCSB"
+      "FCSB",
+      "Oana Sabău"
     ],
     "ai_cat": "sport",
     "icon": "ball-football",
     "processed_by": "gemini",
     "prompt_version": "v2-esenta",
     "featured": false,
-    "slug": "marius-sumudica-a-dedicat-victoria-cu-fcsb-ofiterului-de-presa"
+    "slug": "marius-sumudica-a-dedicat-victoria-cu-fcsb-ofiterului-de-presa",
+    "sources": [
+      {
+        "name": "GSP",
+        "url": "https://www.gsp.ro/fotbal/liga-1/marius-sumudica-cfr-cluj-fcsb-972726.html"
+      },
+      {
+        "name": "ProSport",
+        "url": "https://www.prosport.ro/fotbal-intern/superliga/marius-sumudica-dedicatie-dupa-cfr-fcsb-1-0-20509130"
+      }
+    ],
+    "first_source": "GSP",
+    "updated": "2026-08-24T02:01:11.000797+00:00",
+    "synthesis": "Antrenorul echipei CFR Cluj, Marius Șumudică, a oferit declarații după victoria cu 1-0 obținută împotriva celor de la FCSB în etapa a șasea a Superligii. Tehnicianul a dedicat succesul obținut în Gruia drept un cadou de nuntă pentru Oana Sabău, ofițerul de presă al clubului, după un start dificil de campionat."
   },
   {
     "url": "https://prosport.ro/fotbal-intern/superliga/gigi-becali-tanase-decizie-20509093",
@@ -389,6 +1014,76 @@
     "slug": "specialistii-din-turism-cer-strategii-coerente-pentru-promovarea-romaniei"
   },
   {
+    "url": "https://zf.ro/burse-fonduri-mutuale/bursa-urmeaza-zf-piata-capital-editia-cincea-25-septembrie-pot-companiile-romanesti-transforma-maximele-bursa-finantare-crestere-testati-abilitatile-investitor-exercitiul-investitii-il-organizam-iar-23222697",
+    "original_link": "https://www.zf.ro/burse-fonduri-mutuale/bursa-urmeaza-zf-piata-capital-editia-cincea-25-septembrie-pot-companiile-romanesti-transforma-maximele-bursa-finantare-crestere-testati-abilitatile-investitor-exercitiul-investitii-il-organizam-iar-23222697",
+    "source": "zf",
+    "source_name": "Ziarul Financiar",
+    "source_lang": "ro",
+    "title": "A cincea ediție a conferinței ZF Piața de capital va avea loc pe 25 septembrie",
+    "category": "economic",
+    "published": "2026-08-23T21:07:00+00:00",
+    "model": "B",
+    "src_extra": 32,
+    "teaser": "Publicul și companiile locale sunt invitate să discute despre transformarea recordurilor de la bursă în oportunități reale de finanțare pentru expansiunea economică, în cadrul unui eveniment organizat de Ziarul Financiar.",
+    "entities": [
+      "Ziarul Financiar",
+      "Estinvest"
+    ],
+    "ai_cat": "economic",
+    "icon": "chart-line",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "a-cincea-editie-a-conferintei-zf-piata-de-capital-va-avea-loc-pe-25-septembrie"
+  },
+  {
+    "url": "https://zf.ro/media-advertising/zf-cota-7-000-editii-an-dupa-criza-economica-2008-2009-romania-era-ametita-editia-2-999-ziarului-octombrie-2010-investitorii-straini-propuneau-iesirea-criza-organizarea-europenelor-fotbal-spitalele-23222766",
+    "original_link": "https://www.zf.ro/media-advertising/zf-cota-7-000-editii-an-dupa-criza-economica-2008-2009-romania-era-ametita-editia-2-999-ziarului-octombrie-2010-investitorii-straini-propuneau-iesirea-criza-organizarea-europenelor-fotbal-spitalele-23222766",
+    "source": "zf",
+    "source_name": "Ziarul Financiar",
+    "source_lang": "ro",
+    "title": "Ziarul Financiar marchează publicarea celei de-a 7.000-a ediții",
+    "category": "economic",
+    "published": "2026-08-23T21:07:00+00:00",
+    "model": "B",
+    "src_extra": 27,
+    "teaser": "Publicația a atins pragul de 7.000 de ediții, trecând în revistă momentele economice cheie din istoria recentă a României, de la criza din 2008-2009 până la evoluția sectorului privat și a fondurilor europene.",
+    "entities": [
+      "Ziarul Financiar",
+      "România"
+    ],
+    "ai_cat": "economic",
+    "icon": "writing",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "ziarul-financiar-marcheaza-publicarea-celei-de-a-7-000-a-editii"
+  },
+  {
+    "url": "https://spotmedia.ro/stiri/eveniment/senatul-se-reuneste-in-sesiune-extraordinara-pentru-pentru-un-nou-jalon-pnrr-legea-hidrogenului",
+    "original_link": "https://spotmedia.ro/stiri/eveniment/senatul-se-reuneste-in-sesiune-extraordinara-pentru-pentru-un-nou-jalon-pnrr-legea-hidrogenului",
+    "source": "spotmedia",
+    "source_name": "Spotmedia",
+    "source_lang": "ro",
+    "title": "Parlamentul României s-a reunit în sesiune extraordinară pentru dezbaterea unor legi cheie",
+    "category": "politic",
+    "published": "2026-08-23T21:07:00+00:00",
+    "model": "B",
+    "src_extra": 335,
+    "teaser": "Senatul și Camera Deputaților analizează în primele zile ale săptămânii proiecte legislative majore, printre care se numără și legea privind integrarea hidrogenului în industrie și transporturi, asumată prin PNRR.",
+    "entities": [
+      "Senatul României",
+      "Camera Deputaților",
+      "Mircea Abrudean"
+    ],
+    "ai_cat": "politic",
+    "icon": "gavel",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "parlamentul-romaniei-s-a-reunit-in-sesiune-extraordinara-pentru-dezbaterea-unor"
+  },
+  {
     "url": "https://spotmedia.ro/stiri/economie/lucian-rotar-romani-in-diaspora",
     "original_link": "https://spotmedia.ro/stiri/economie/lucian-rotar-romani-in-diaspora",
     "source": "spotmedia",
@@ -412,6 +1107,182 @@
     "prompt_version": "v2-esenta",
     "featured": false,
     "slug": "antreprenorul-lucian-rotar-dezvolta-afaceri-intre-franta-si-romania"
+  },
+  {
+    "url": "https://urban.ro/9-alimente-de-sezon-piele-sanatoasa",
+    "original_link": "https://www.urban.ro/9-alimente-de-sezon-piele-sanatoasa/",
+    "source": "urban",
+    "source_name": "Urban.ro",
+    "source_lang": "ro",
+    "title": "Nouă alimente de sezon ajută la menținerea unui ten sănătos și hidratat",
+    "category": "sanatate",
+    "published": "2026-08-23T21:04:00+00:00",
+    "model": "B",
+    "src_extra": 24,
+    "teaser": "Consumul anumitor fructe și legume specifice sezonului cald oferă protecție împotriva deshidratării pielii, previne arsurile solare și contribuie la încetinirea procesului de îmbătrânire celulară.",
+    "entities": [],
+    "ai_cat": "sanatate",
+    "icon": "sun",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "noua-alimente-de-sezon-ajuta-la-mentinerea-unui-ten-sanatos-si-hidratat"
+  },
+  {
+    "url": "https://spotmedia.ro/stiri/sanatate/ce-efect-are-nicotina-asupra-vaselor-de-sange",
+    "original_link": "https://spotmedia.ro/stiri/sanatate/ce-efect-are-nicotina-asupra-vaselor-de-sange",
+    "source": "spotmedia",
+    "source_name": "Spotmedia",
+    "source_lang": "ro",
+    "title": "Nicotina declanșează procese vasculare care pot provoca infarct",
+    "category": "sanatate",
+    "published": "2026-08-23T21:00:00+00:00",
+    "model": "B",
+    "src_extra": 411,
+    "teaser": "Un nou studiu detaliază mecanismul prin care nicotina se leagă de vasele de sânge și rupe plăcile de aterom, favorizând apariția infarctului și a accidentului vascular cerebral.",
+    "entities": [],
+    "ai_cat": "sanatate",
+    "icon": "stethoscope",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "nicotina-declanseaza-procese-vasculare-care-pot-provoca-infarct"
+  },
+  {
+    "url": "https://spotmedia.ro/stiri/sanatate/un-compus-din-citrice-efect-neasteptat-asupra-ficatului-studiu",
+    "original_link": "https://spotmedia.ro/stiri/sanatate/un-compus-din-citrice-efect-neasteptat-asupra-ficatului-studiu",
+    "source": "spotmedia",
+    "source_name": "Spotmedia",
+    "source_lang": "ro",
+    "title": "Un compus din citrice încetinește îmbătrânirea ficatului",
+    "category": "sanatate",
+    "published": "2026-08-23T21:00:00+00:00",
+    "model": "B",
+    "src_extra": 503,
+    "teaser": "Cercetătorii au descoperit că hesperetina, o flavonoidă din portocale, reactivează mecanismele de protecție hepatică și combate efectele înaintării în vârstă la șoareci.",
+    "entities": [],
+    "ai_cat": "sanatate",
+    "icon": "pill",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "un-compus-din-citrice-incetineste-imbatranirea-ficatului"
+  },
+  {
+    "url": "https://gsp.ro/fotbal/liga-1/gigi-becali-cfr-cluj-fcsb-arbitru-george-gaman-972742.html",
+    "original_link": "https://www.gsp.ro/fotbal/liga-1/gigi-becali-cfr-cluj-fcsb-arbitru-george-gaman-972742.html",
+    "source": "gsp",
+    "source_name": "GSP",
+    "source_lang": "ro",
+    "title": "Gigi Becali critică arbitrajul după eșecul FCSB cu CFR Cluj",
+    "category": "sport",
+    "published": "2026-08-23T20:59:38+00:00",
+    "model": "B",
+    "src_extra": 61,
+    "teaser": "Patronul FCSB s-a plâns de durata prelungirilor și de arbitraj după înfrângerea cu 0-1 în fața celor de la CFR Cluj, primul eșec din noul sezon competițional.",
+    "entities": [
+      "Gigi Becali",
+      "FCSB",
+      "CFR Cluj",
+      "Andrei Cordea"
+    ],
+    "ai_cat": "sport",
+    "icon": "ball-football",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "gigi-becali-critica-arbitrajul-dupa-esecul-fcsb-cu-cfr-cluj"
+  },
+  {
+    "url": "https://gsp.ro/international/campionate/rennes-psg-etapa-1-ligue-1-972728.html",
+    "original_link": "https://www.gsp.ro/international/campionate/rennes-psg-etapa-1-ligue-1-972728.html",
+    "source": "gsp",
+    "source_name": "GSP",
+    "source_lang": "ro",
+    "title": "PSG a remizat cu Rennes după golurile marcate de Ferran Torres",
+    "category": "sport",
+    "published": "2026-08-23T20:51:43+00:00",
+    "model": "B",
+    "src_extra": 49,
+    "teaser": "Campioana Franței a revenit de la 0-2 și a scos un egal pe terenul celor de la Rennes în prima etapă din Ligue 1, grație dublei reușite de spaniolul Ferran Torres.",
+    "entities": [
+      "PSG",
+      "Rennes",
+      "Ferran Torres"
+    ],
+    "ai_cat": "sport",
+    "icon": "ball-football",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "psg-a-remizat-cu-rennes-dupa-golurile-marcate-de-ferran-torres"
+  },
+  {
+    "url": "https://libertatea.ro/stiri/cristian-tudor-popescu-da-un-verdict-sec-in-disputa-merdenelelor-tampitopole-insi-iremediabil-imbecili-5860853",
+    "original_link": "https://www.libertatea.ro/stiri/cristian-tudor-popescu-da-un-verdict-sec-in-disputa-merdenelelor-tampitopole-insi-iremediabil-imbecili-5860853",
+    "source": "libertatea",
+    "source_name": "Libertatea",
+    "source_lang": "ro",
+    "title": "Cristian Tudor Popescu cere statistici privind imbecilitatea națională",
+    "category": "cultura",
+    "published": "2026-08-23T20:51:18+00:00",
+    "model": "B",
+    "src_extra": 333,
+    "teaser": "Comentând un incident recent, gazetarul critică societatea românească și solicită un recensământ oficial al persoanelor lipsite de inteligență din țară.",
+    "entities": [
+      "Cristian Tudor Popescu",
+      "București"
+    ],
+    "ai_cat": "cultura",
+    "icon": "writing",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "cristian-tudor-popescu-cere-statistici-privind-imbecilitatea-nationala"
+  },
+  {
+    "url": "https://turnulsfatului.ro/2026/08/23/zeci-de-strazi-din-sibiu-fara-curent-electric-duminica-seara",
+    "original_link": "https://www.turnulsfatului.ro/2026/08/23/zeci-de-strazi-din-sibiu-fara-curent-electric-duminica-seara/",
+    "source": "turnulsfatului",
+    "source_name": "Turnul Sfatului",
+    "source_lang": "ro",
+    "title": "Zeci de străzi din Sibiu au rămas fără energie electrică",
+    "category": "local",
+    "published": "2026-08-23T20:47:50+00:00",
+    "model": "B",
+    "src_extra": 47,
+    "teaser": "O avanie neprevăzută produsă duminică seară a lăsat în întuneric mai multe cartiere și zone din centrul istoric al municipiului Sibiu, fără un termen cert de remediere.",
+    "entities": [
+      "Sibiu"
+    ],
+    "ai_cat": "local",
+    "icon": "bolt",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "zeci-de-strazi-din-sibiu-au-ramas-fara-energie-electrica"
+  },
+  {
+    "url": "https://digi24.ro/stiri/sci-tech/descoperiri/cate-galaxii-a-inghitit-calea-lactee-pana-sa-ajunga-la-dimensiunea-ei-actuala-astronomii-au-facut-o-descoperire-fara-echivoc-3910865",
+    "original_link": "https://www.digi24.ro/stiri/sci-tech/descoperiri/cate-galaxii-a-inghitit-calea-lactee-pana-sa-ajunga-la-dimensiunea-ei-actuala-astronomii-au-facut-o-descoperire-fara-echivoc-3910865",
+    "source": "digi24",
+    "source_name": "Digi24",
+    "source_lang": "ro",
+    "title": "Astronomii au descoperit prima fuziune din istoria Căii Lactee",
+    "category": "tech",
+    "published": "2026-08-23T20:45:51+00:00",
+    "model": "B",
+    "src_extra": 57,
+    "teaser": "O cercetare recentă detaliază procesul prin care galaxia noastră s-a format și a crescut în dimensiuni după ce a înghițit o altă galaxie mai mică în etapele incipiente.",
+    "entities": [
+      "Calea Lactee"
+    ],
+    "ai_cat": "tech",
+    "icon": "globe",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "astronomii-au-descoperit-prima-fuziune-din-istoria-caii-lactee"
   },
   {
     "url": "https://digi24.ro/stiri/actualitate/evenimente/accident-grav-in-cluj-un-barbat-a-murit-iar-alte-patru-persoane-au-fost-ranite-3918043",
@@ -458,6 +1329,53 @@
     "prompt_version": "v2-esenta",
     "featured": false,
     "slug": "luptatoarea-de-taekwondo-isabelle-sava-a-decedat-la-19-ani"
+  },
+  {
+    "url": "https://libertatea.ro/stiri/termocentrala-turceni-revine-in-sistemul-energetic-dupa-avarie-grupul-5-va-livra-din-nou-energie-de-luni-5860846",
+    "original_link": "https://www.libertatea.ro/stiri/termocentrala-turceni-revine-in-sistemul-energetic-dupa-avarie-grupul-5-va-livra-din-nou-energie-de-luni-5860846",
+    "source": "libertatea",
+    "source_name": "Libertatea",
+    "source_lang": "ro",
+    "title": "Termocentrala Turceni repornește Grupul 5 după o avarie",
+    "category": "local",
+    "published": "2026-08-23T20:32:42+00:00",
+    "model": "B",
+    "src_extra": 146,
+    "teaser": "Fostul ministru Bogdan Ivan anunță că Unitatea 5 a Termocentralei Turceni va fi reintroducă în Sistemul Energetic Național începând de luni, după remedierea unei defecțiuni tehnice.",
+    "entities": [
+      "Bogdan Ivan",
+      "Termocentrala Turceni"
+    ],
+    "ai_cat": "economic",
+    "icon": "building-factory",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "termocentrala-turceni-reporneste-grupul-5-dupa-o-avarie"
+  },
+  {
+    "url": "https://zcj.ro/sport/cfr-victorie-de-moral-dupa-intrarea-in-insolventa-clujenii-au-castigat-duelul-cu-fcsb--300401.html",
+    "original_link": "https://zcj.ro/sport/cfr-victorie-de-moral-dupa-intrarea-in-insolventa-clujenii-au-castigat-duelul-cu-fcsb--300401.html",
+    "source": "zcj",
+    "source_name": "Ziua de Cluj",
+    "source_lang": "ro",
+    "title": "CFR Cluj a învins-o pe FCSB în campionat",
+    "category": "sport",
+    "published": "2026-08-23T20:27:00+00:00",
+    "model": "B",
+    "src_extra": 14,
+    "teaser": "Gruparea ardeleană a obținut un succes important, scor 1-0, în partida disputată împotriva campioanei FCSB, la scurt timp după intrarea clubului în procedură de insolvență.",
+    "entities": [
+      "CFR Cluj",
+      "FCSB",
+      "Marius Șumudică"
+    ],
+    "ai_cat": "sport",
+    "icon": "ball-football",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "cfr-cluj-a-invins-o-pe-fcsb-in-campionat"
   },
   {
     "url": "https://g4media.ro/europarlamentarul-de-centru-stanga-glucksmann-candidat-la-alegerile-prezidentiale-din-franta.html",
@@ -596,6 +1514,28 @@
     "prompt_version": "v2-esenta",
     "featured": false,
     "slug": "noua-lege-a-integritatii-respecta-cerintele-comisiei-europene"
+  },
+  {
+    "url": "https://libertatea.ro/lifestyle/sofer-primit-amenda-160-euro-parcat-propriul-loc-persoane-dizabilitati-5860835",
+    "original_link": "https://www.libertatea.ro/lifestyle/sofer-primit-amenda-160-euro-parcat-propriul-loc-persoane-dizabilitati-5860835",
+    "source": "libertatea",
+    "source_name": "Libertatea",
+    "source_lang": "ro",
+    "title": "Un șofer din Viena amendat pentru că a parcat pe locul propriu",
+    "category": "extern",
+    "published": "2026-08-23T20:05:05+00:00",
+    "model": "B",
+    "src_extra": 370,
+    "teaser": "Un cetățean vienez a primit o sancțiune de 160 de euro deoarece nu a afișat pe parbriz permisul de parcare, deși staționase regulamentar pe locul său rezervat pentru persoane cu dizabilități.",
+    "entities": [
+      "Viena"
+    ],
+    "ai_cat": "extern",
+    "icon": "car",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "un-sofer-din-viena-amendat-pentru-ca-a-parcat-pe-locul-propriu"
   },
   {
     "url": "https://digi24.ro/stiri/externe/ue/starea-celui-mai-varstnic-monarh-din-europa-s-a-agravat-in-spital-regele-este-tratat-pentru-o-infectie-bacteriana-in-sange-3918033",
@@ -1159,6 +2099,30 @@
     "slug": "specialistii-clarifica-efectele-consumului-de-slanina-si-continutul-de"
   },
   {
+    "url": "https://libertatea.ro/stiri/se-mai-poate-trai-cu-1-500-de-euro-pe-luna-in-spania-ce-spun-economistii-si-romanii-din-peninsula-iberica-5860797",
+    "original_link": "https://www.libertatea.ro/stiri/se-mai-poate-trai-cu-1-500-de-euro-pe-luna-in-spania-ce-spun-economistii-si-romanii-din-peninsula-iberica-5860797",
+    "source": "libertatea",
+    "source_name": "Libertatea",
+    "source_lang": "ro",
+    "title": "Românii din Spania se confruntă cu dificultăți financiare din cauza veniturilor reduse",
+    "category": "economic",
+    "published": "2026-08-23T19:00:47+00:00",
+    "model": "B",
+    "src_extra": 1111,
+    "teaser": "Presa spaniolă a inițiat o dezbatere privind sustenabilitatea unui buget lunar de 1.500 de euro, în timp ce mulți muncitori români aleg să migreze către alte state din Europa Occidentală pentru salarii mai mari.",
+    "entities": [
+      "Spania",
+      "El Economista",
+      "Libertatea"
+    ],
+    "ai_cat": "economic",
+    "icon": "currency-euro",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "romanii-din-spania-se-confrunta-cu-dificultati-financiare-din-cauza-veniturilor"
+  },
+  {
     "url": "https://g4media.ro/bogdan-ivan-grupul-de-la-turceni-va-fi-repornit-luni-situatia-de-la-cernavoda-gestionata-cu-foarte-mare-amatorism.html",
     "original_link": "https://www.g4media.ro/bogdan-ivan-grupul-de-la-turceni-va-fi-repornit-luni-situatia-de-la-cernavoda-gestionata-cu-foarte-mare-amatorism.html",
     "source": "g4media",
@@ -1181,6 +2145,30 @@
     "prompt_version": "v2-esenta",
     "featured": false,
     "slug": "termocentrala-turceni-isi-reia-activitatea-dupa-o-pana-tehnica"
+  },
+  {
+    "url": "https://libertatea.ro/lifestyle/horoscop-azi-24-august-2026-5859920",
+    "original_link": "https://www.libertatea.ro/lifestyle/horoscop-azi-24-august-2026-5859920",
+    "source": "libertatea",
+    "source_name": "Libertatea",
+    "source_lang": "ro",
+    "title": "Previziuni astrologice pentru toate zodiile în data de 24 august 2026",
+    "category": "lifestyle",
+    "published": "2026-08-23T18:50:00+00:00",
+    "model": "B",
+    "src_extra": 269,
+    "teaser": "Horoscopul zilei de 24 august 2026 aduce atenționări pentru nativi, Fecioarele oscilând între stări anxioase și rezolvarea problemelor, în timp ce Berbecii se confruntă cu tensiuni în familie.",
+    "entities": [
+      "Fecioară",
+      "Berbec",
+      "Taur"
+    ],
+    "ai_cat": "lifestyle",
+    "icon": null,
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "previziuni-astrologice-pentru-toate-zodiile-in-data-de-24-august-2026"
   },
   {
     "url": "https://dobrogeaonline.ro/florin-mitroi-festivalul-mamaia-face-parte-din-patrimoniul-cultural-al-romaniei",
@@ -1351,6 +2339,31 @@
     "slug": "adrian-rus-s-a-accidentat-grav-in-meciul-universitatii-craiova-cu-fc-voluntari"
   },
   {
+    "url": "https://hotnews.ro/corp-de-drona-de-tip-gerbera-depistat-in-apa-in-zona-costinesti-anuntul-mapn-2331349",
+    "original_link": "https://hotnews.ro/corp-de-drona-de-tip-gerbera-depistat-in-apa-in-zona-costinesti-anuntul-mapn-2331349",
+    "source": "hotnews",
+    "source_name": "HotNews",
+    "source_lang": "ro",
+    "title": "Scafandrii militari au neutralizat a doua dronă găsită în zona Gura Portiței",
+    "category": "general",
+    "published": "2026-08-23T18:40:38+00:00",
+    "model": "B",
+    "src_extra": 44,
+    "teaser": "Ministerul Apărării Naționale a confirmat descoperirea unui fragment de dronă model Gerbera la Gura Portiței, care a fost neutralizat de o echipă de scafandri ai Forțelor Navale.",
+    "entities": [
+      "Gura Portiței",
+      "Costinești",
+      "Ministerul Apărării Naționale",
+      "Forțele Navale Române"
+    ],
+    "ai_cat": "general",
+    "icon": "shield",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "scafandrii-militari-au-neutralizat-a-doua-drona-gasita-in-zona-gura-portitei"
+  },
+  {
     "url": "https://bbc.co.uk/news/articles/cwyqy29jn74o?at_medium=RSS&at_campaign=rss",
     "original_link": "https://www.bbc.co.uk/news/articles/cwyqy29jn74o?at_medium=RSS&at_campaign=rss",
     "source": "bbc_europe",
@@ -1470,6 +2483,31 @@
     "slug": "grecia-a-amplasat-o-baterie-de-rachete-patriot-in-insula-creta"
   },
   {
+    "url": "https://libertatea.ro/lifestyle/taxa-turistica-amsterdam-scumpiri-hoteluri-2027-2031-5860777",
+    "original_link": "https://www.libertatea.ro/lifestyle/taxa-turistica-amsterdam-scumpiri-hoteluri-2027-2031-5860777",
+    "source": "libertatea",
+    "source_name": "Libertatea",
+    "source_lang": "ro",
+    "title": "Amsterdam va implementa o taxă turistică de 41% pentru a limita turismul excesiv",
+    "category": "extern",
+    "published": "2026-08-23T18:23:57+00:00",
+    "model": "B",
+    "src_extra": 393,
+    "teaser": "Capitala Olandei intenționează să introducă cea mai mare taxă turistică la nivel mondial până în 2031, majorând costurile cazărilor pentru a reduce impactul turismului de masă asupra bugetului local.",
+    "entities": [
+      "Amsterdam",
+      "Olanda",
+      "PRO Amsterdam",
+      "D66"
+    ],
+    "ai_cat": "extern",
+    "icon": "receipt-tax",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "amsterdam-va-implementa-o-taxa-turistica-de-41-pentru-a-limita-turismul-excesiv"
+  },
+  {
     "url": "https://g4media.ro/fragment-de-drona-aeriana-cu-incarcatura-exploziva-interceptat-si-distrus-de-militarii-romani-la-gura-portitei.html",
     "original_link": "https://www.g4media.ro/fragment-de-drona-aeriana-cu-incarcatura-exploziva-interceptat-si-distrus-de-militarii-romani-la-gura-portitei.html",
     "source": "g4media",
@@ -1490,7 +2528,8 @@
     "icon": "alert-triangle",
     "processed_by": "gemini",
     "prompt_version": "v2-esenta",
-    "featured": false
+    "featured": false,
+    "slug": "armata-romana-a-distrus-un-fragment-de-drona-exploziva-la-gura-portitei"
   },
   {
     "url": "https://digi24.ro/stiri/externe/ucraina-pregateste-schimbari-radicale-privind-mobilizarea-in-armata-varsta-de-recrutare-ar-putea-fi-modificata-3917957",
@@ -1544,8 +2583,8 @@
     "source": "dobrogeaonline",
     "source_name": "Dobrogea Online",
     "source_lang": "ro",
-    "title": "Fragment de dronă cu exploziv neutralizat de scafandrii militari la Gura Portiței",
-    "category": "general",
+    "title": "Fragmente de dronă și obiecte suspecte descoperite în Marea Neagră",
+    "category": "local",
     "published": "2026-08-23T18:18:29+00:00",
     "model": "C",
     "src_extra": 73,
@@ -1557,23 +2596,31 @@
       {
         "name": "HotNews",
         "url": "https://hotnews.ro/corp-de-drona-de-tip-gerbera-depistat-in-apa-in-zona-costinesti-anuntul-mapn-2331349"
+      },
+      {
+        "name": "Libertatea",
+        "url": "https://www.libertatea.ro/stiri/fragment-drona-gerbera-incarcatura-exploziva-descoperit-gura-portitei-au-intervenit-scafandrii-de-lupta-5860786"
+      },
+      {
+        "name": "DobrogeaNews",
+        "url": "https://www.dobrogeanews.ro/fragment-de-drona-aeriana-model-gerbera-cu-incarcatura-exploziva-neutralizata-la-gura-portitei/?utm_source=rss&utm_medium=rss&utm_campaign=fragment-de-drona-aeriana-model-gerbera-cu-incarcatura-exploziva-neutralizata-la-gura-portitei"
       }
     ],
     "first_source": "Dobrogea Online",
-    "synthesis": "O echipă de scafandri de luptă EOD din cadrul Forțelor Navale Române a intervenit duminică, 23 august, în zona Gura Portiței, după semnalarea unui obiect plutitor suspect. În urma investigațiilor efectuate la fața locului de la bordul unei nave a Gărzii de Coastă, specialiștii au identificat un fragment de dronă aeriană de tip Gerbera care conținea o încărcătură explozivă. Obiectul a fost neutralizat în condiții de siguranță de către armată, aceasta fiind a doua situație de acest gen raportată în aceeași zi, după incidentul similar de la Costinești.",
+    "synthesis": "În cursul zilei de duminică, autoritățile române au intervenit în urma unor sesizări privind obiecte plutitoare suspecte în Marea Neagră. O echipă de scafandri de luptă EOD a neutralizat la Gura Portiței un fragment de dronă de tip Gerbera încărcat cu exploziv. Un alt obiect similar, fără încărcătură, a fost semnalat în zona Costinești și preluat de Garda de Coastă, iar un alt caz a avut loc recent la Portul Midia.",
     "entities": [
+      "Forțele Navale Române",
+      "Garda de Coastă",
       "Gura Portiței",
-      "Marea Neagră",
-      "Ministerul Apărării Naționale",
-      "Forțele Navale Române"
+      "Costinești"
     ],
     "ai_cat": "regional",
-    "icon": "shield",
+    "icon": "ship",
     "processed_by": "gemini",
     "prompt_version": "v2-esenta",
     "featured": false,
     "slug": "fragment-de-drona-cu-exploziv-neutralizat-de-scafandrii-militari-la-gura",
-    "updated": "2026-08-23T21:38:38.719184+00:00"
+    "updated": "2026-08-24T02:01:11.000774+00:00"
   },
   {
     "url": "https://gsp.ro/fotbal/liga-1/note-gsp-s-a-lasat-cu-2-dupa-universitatea-craiova-fc-voluntari-972687.html",
@@ -1641,6 +2688,31 @@
     "prompt_version": "v2-esenta",
     "featured": false,
     "slug": "serviciul-salvamont-alba-a-asistat-peste-4-000-de-oameni-in-25-de-ani"
+  },
+  {
+    "url": "https://libertatea.ro/stiri/romanca-adoptata-italia-cauta-mama-biologica-buzau-5860726",
+    "original_link": "https://www.libertatea.ro/stiri/romanca-adoptata-italia-cauta-mama-biologica-buzau-5860726",
+    "source": "libertatea",
+    "source_name": "Libertatea",
+    "source_lang": "ro",
+    "title": "O tânără adoptată în Italia își caută mama biologică din județul Buzău",
+    "category": "local",
+    "published": "2026-08-23T18:12:19+00:00",
+    "model": "B",
+    "src_extra": 243,
+    "teaser": "Florica Georgica, o româncă născută în 1997 în localitatea Beceni și adoptată în Italia, a lansat un apel public pe internet pentru a-și găsi mama biologică pe care nu a cunoscut-o niciodată.",
+    "entities": [
+      "Italia",
+      "Buzău",
+      "Beceni",
+      "Florica Georgica"
+    ],
+    "ai_cat": "regional",
+    "icon": null,
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "o-tanara-adoptata-in-italia-isi-cauta-mama-biologica-din-judetul-buzau"
   },
   {
     "url": "https://stirileprotv.ro/stiri/international/scut-antiracheta-in-creta-manevra-militara-a-greciei-pentru-a-proteja-instalatiile-americane-de-iran.html",
@@ -5266,6 +6338,40 @@
     "slug": "presedintele-iranian-recunoaste-criza-economica-severa-din-tara"
   },
   {
+    "url": "https://economedia.ro/datoria-externa-a-administratiei-publice-a-urcat-in-luna-mai-la-308-din-pib.html",
+    "original_link": "https://economedia.ro/datoria-externa-a-administratiei-publice-a-urcat-in-luna-mai-la-308-din-pib.html",
+    "source": "economedia",
+    "source_name": "Economedia",
+    "source_lang": "ro",
+    "title": "Datoria guvernamentală a României a crescut la 61,4% din PIB în mai 2026",
+    "category": "economic",
+    "published": "2026-08-23T13:20:36+00:00",
+    "model": "C",
+    "src_extra": 34,
+    "sources": [
+      {
+        "name": "Economedia",
+        "url": "https://economedia.ro/datoria-externa-a-administratiei-publice-a-urcat-in-luna-mai-la-308-din-pib.html"
+      },
+      {
+        "name": "News Brașov",
+        "url": "https://newsbv.ro/datoria-externa-administratiei/"
+      }
+    ],
+    "first_source": "Economedia",
+    "synthesis": "Conform datelor Ministerului Finanțelor, datoria externă a administrației publice a urcat în luna mai 2026 la 599,946 miliarde de lei, reprezentând 30,8% din PIB, în creștere față de luna aprilie. De asemenea, datoria guvernamentală totală a ajuns la 1.194 miliarde de lei, echivalentul a 61,4% din PIB. Cea mai mare parte a acestei datorii este compusă din titluri de stat și împrumuturi pe termen mediu și lung, contractate atât în moneda națională, cât și în euro.",
+    "entities": [
+      "Ministerul Finanțelor",
+      "Agerpres"
+    ],
+    "ai_cat": "economic",
+    "icon": "percentage",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "datoria-guvernamentala-a-romaniei-a-crescut-la-614-din-pib-in-mai-2026"
+  },
+  {
     "url": "https://dobrogeaonline.ro/festivalul-mamaia-2026-anunta-astazi-castigatorii-alessandro-safina-si-bobby-solo-la-o-gala-de-la-mamaia-la-sanremo",
     "original_link": "https://www.dobrogeaonline.ro/festivalul-mamaia-2026-anunta-astazi-castigatorii-alessandro-safina-si-bobby-solo-la-o-gala-de-la-mamaia-la-sanremo/",
     "source": "dobrogeaonline",
@@ -5798,7 +6904,7 @@
     "source": "bizbrasov",
     "source_name": "BizBrașov",
     "source_lang": "ro",
-    "title": "Polițiștii brașoveni au verificat peste 50 de mașini în Hărman",
+    "title": "Peste 50 de autovehicule verificate de polițiști în localitatea Hărman",
     "category": "local",
     "published": "2026-08-23T12:52:12+00:00",
     "model": "C",
@@ -5826,8 +6932,8 @@
       }
     ],
     "first_source": "BizBrașov",
-    "updated": "2026-08-23T18:52:32.499222+00:00",
-    "synthesis": "Polițiștii din Feldioara, sprijiniți de criminaliști, au organizat pe 22 august o acțiune preventivă în localitatea Hărman din județul Brașov. Oamenii legii au legitimat mai multe persoane și au controlat peste 50 de autovehicule, șoferii fiind testați pentru consumul de alcool și substanțe interzise. În urma neregulilor constatate, au fost aplicate sancțiuni contravenționale, autoritățile anunțând că astfel de controale vor continua."
+    "updated": "2026-08-24T02:01:11.000808+00:00",
+    "synthesis": "Polițiștii din cadrul Secției de Poliție Rurală Feldioara, sprijiniți de criminaliști, au organizat sâmbătă o acțiune preventivă în localitatea Hărman din județul Brașov. Oamenii legii au legitimat mai multe persoane, au verificat peste 50 de mașini și au testat șoferii pentru consumul de alcool și substanțe interzise, aplicând sancțiuni pentru neregulile descoperite."
   },
   {
     "url": "https://hotnews.ro/zelenski-fereastra-pentru-incheierea-razboiului-din-ucraina-de-la-sfarsitul-acestui-an-pana-la-sfarsitul-verii-lui-2027-aceasta-este-etapa-cea-mai-propice-2331242",
@@ -9183,9 +10289,9 @@
     "src_extra": 215,
     "teaser": "Hidrologii estimează că debitul fluviului la intrarea în țară va urca până la 1.550 metri cubi pe secundă. Nivelul se menține totuși considerabil mai mic comparativ cu media multianuală specifică lunii august.",
     "entities": [
-      "Dunărea",
       "INHGA",
-      "Baziaș"
+      "Baziaș",
+      "Dunărea"
     ],
     "ai_cat": "economic",
     "icon": "chart-line",
@@ -9208,8 +10314,8 @@
       }
     ],
     "first_source": "Economica",
-    "updated": "2026-08-23T21:38:45.255478+00:00",
-    "synthesis": "Conform prognozei INHGA valabilă pentru perioada 22-29 august 2026, debitul Dunării la Baziaș va urca până la 1.550 mc/s. Chiar și cu această creștere ușoară estimată pentru sfârșitul săptămânii, nivelul fluviului se va menține considerabil mai mic comparativ cu media multianuală a lunii august, care atinge 3.900 mc/s."
+    "updated": "2026-08-24T02:01:17.204347+00:00",
+    "synthesis": "Institutul Național de Hidrologie și Gospodărire a Apelor prognozează o creștere a debitului Dunării la intrarea în țară, prin secțiunea Baziaș, până la valoarea de 1.550 metri cubi pe secundă, în intervalul 22-29 august 2026. Cu toate acestea, nivelul rămâne considerabil mai mic comparativ cu media multianuală specifică lunii august, care este de 3.900 mc/s."
   },
   {
     "url": "https://prosport.ro/fotbal-intern/nationala/gica-hagi-sua-louis-munteanu-gol-20508620",
@@ -44007,7 +45113,8 @@
     "ai_cat": "local",
     "icon": "certificate",
     "prompt_version": "v2-esenta",
-    "featured": false
+    "featured": false,
+    "slug": "primaria-a-afisat-lista-oficiala-cu-viitoarele-casatorii-programate-pentru-data"
   },
   {
     "url": "https://bihon.ro/stiri-internationale/romania/amenda-pentru-soferii-care-circula-prea-incet-in-ce-situatii-se-aplica-si-la-cat-poate-ajunge-valoarea-sanctiunii-5377659",
@@ -47843,7 +48950,8 @@
     "ai_cat": "local",
     "icon": "writing",
     "prompt_version": "v2-esenta",
-    "featured": false
+    "featured": false,
+    "slug": "consiliul-local-navodari-publica-procesele-verbale-pentru-sedintele-ordinare"
   },
   {
     "url": "https://primariaroman.ro/bilant-la-31-12-2025",
