@@ -1,5 +1,918 @@
 [
   {
+    "url": "https://politico.eu/podcast/brussels-playbook-podcast/costa-tours-the-capitals-while-merz-rallies-the-penny-pinchers",
+    "original_link": "https://www.politico.eu/podcast/brussels-playbook-podcast/costa-tours-the-capitals-while-merz-rallies-the-penny-pinchers/?utm_source=RSS_Feed&utm_medium=RSS&utm_campaign=RSS_Syndication",
+    "source": "politico_eu",
+    "source_name": "Politico EU",
+    "source_lang": "en",
+    "title": "António Costa începe turneul european pentru viitorul buget al UE",
+    "category": "politic",
+    "published": "2026-08-25T04:05:00+00:00",
+    "model": "B",
+    "src_extra": 218,
+    "teaser": "Șeful Consiliului European, António Costa, a demarat vizite în capitalele statelor membre pentru a negocia viitorul buget pe șapte ani. În paralel, cancelarul german Friedrich Merz pregătește o coaliție nordică pentru reduceri drastice de cheltuieli.",
+    "entities": [
+      "António Costa",
+      "Friedrich Merz",
+      "Bratislava",
+      "Berlin"
+    ],
+    "ai_cat": "politic",
+    "icon": "currency-euro",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "antonio-costa-incepe-turneul-european-pentru-viitorul-buget-al-ue"
+  },
+  {
+    "url": "https://hotnews.ro/a-ajuns-in-sua-la-14-ani-cu-buzunarele-goale-si-a-convins-o-tara-intreaga-ca-banii-nasc-bani-2332170",
+    "original_link": "https://hotnews.ro/a-ajuns-in-sua-la-14-ani-cu-buzunarele-goale-si-a-convins-o-tara-intreaga-ca-banii-nasc-bani-2332170",
+    "source": "hotnews",
+    "source_name": "HotNews",
+    "source_lang": "ro",
+    "title": "Povestea lui Carlo Ponzi, imigrantul care a inventat schema financiară mondială",
+    "category": "economic",
+    "published": "2026-08-25T04:02:16+00:00",
+    "model": "B",
+    "src_extra": 41,
+    "teaser": "Ajuns în Statele Unite la doar 14 ani fără niciun ban, Carlo Ponzi a construit una dintre cele mai celebre escrocherii din istorie, convingându-i pe investitori că banii pot produce rapid averi uriașe prin scheme piramidale.",
+    "entities": [
+      "Carlo Ponzi",
+      "Statele Unite"
+    ],
+    "ai_cat": "economic",
+    "icon": "pig-money",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "povestea-lui-carlo-ponzi-imigrantul-care-a-inventat-schema-financiara-mondiala"
+  },
+  {
+    "url": "https://digi24.ro/stiri/externe/in-cativa-ani-vom-trai-ca-in-filmul-terminatorul-cum-isi-aleg-tinta-dronele-autonome-cu-care-rusia-ataca-ucraina-3919943",
+    "original_link": "https://www.digi24.ro/stiri/externe/in-cativa-ani-vom-trai-ca-in-filmul-terminatorul-cum-isi-aleg-tinta-dronele-autonome-cu-care-rusia-ataca-ucraina-3919943",
+    "source": "extern",
+    "source_name": "Digi24 Extern",
+    "source_lang": "ro",
+    "title": "Rusia folosește drone cu inteligență artificială în atacurile asupra Ucrainei",
+    "category": "tech",
+    "published": "2026-08-25T04:00:58+00:00",
+    "model": "B",
+    "src_extra": 51,
+    "teaser": "Forțele ruse au început să utilizeze în Ucraina drone ghidate de sisteme experimentale de inteligență artificială, capabile să își aleagă singure țintele de pe câmpul de luptă, stârnind îngrijorări majore privind un viitor dominat de arme autonome.",
+    "entities": [
+      "Rusia",
+      "Ucraina",
+      "New York Times",
+      "Zaporojie"
+    ],
+    "ai_cat": "tech",
+    "icon": "robot",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "rusia-foloseste-drone-cu-inteligenta-artificiala-in-atacurile-asupra-ucrainei"
+  },
+  {
+    "url": "https://digi24.ro/stiri/externe/sua/trump-propune-o-taxa-de-peste-100-000-de-dolari-pentru-vizele-de-munca-ale-strainilor-calificati-3919739",
+    "original_link": "https://www.digi24.ro/stiri/externe/sua/trump-propune-o-taxa-de-peste-100-000-de-dolari-pentru-vizele-de-munca-ale-strainilor-calificati-3919739",
+    "source": "extern",
+    "source_name": "Digi24 Extern",
+    "source_lang": "ro",
+    "title": "Administrația Trump propune o taxă de peste 100.000 de dolari pentru vizele de muncă H-1B",
+    "category": "extern",
+    "published": "2026-08-25T04:00:53+00:00",
+    "model": "B",
+    "src_extra": 28,
+    "teaser": "Casa Albă a reluat propunerea de a impune o taxă de peste 103.000 de dolari pentru cererile noi de vize destinate muncitorilor străini cu înaltă calificare, o măsură similară fiind blocată anterior în instanță.",
+    "entities": [
+      "Administrația Trump",
+      "Politico"
+    ],
+    "ai_cat": "extern",
+    "icon": "receipt-tax",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "administratia-trump-propune-o-taxa-de-peste-100-000-de-dolari-pentru-vizele-de"
+  },
+  {
+    "url": "https://digi24.ro/stiri/externe/mapamond/cum-se-pregateste-de-razboi-singura-tara-nato-fara-armata-proprie-submarinele-rusesti-provoaca-neliniste-in-nordul-indepartat-3918727",
+    "original_link": "https://www.digi24.ro/stiri/externe/mapamond/cum-se-pregateste-de-razboi-singura-tara-nato-fara-armata-proprie-submarinele-rusesti-provoaca-neliniste-in-nordul-indepartat-3918727",
+    "source": "extern",
+    "source_name": "Digi24 Extern",
+    "source_lang": "ro",
+    "title": "Islanda menține exercițiile militare NATO în lipsa unei armate naționale proprii",
+    "category": "extern",
+    "published": "2026-08-25T04:00:52+00:00",
+    "model": "B",
+    "src_extra": 57,
+    "teaser": "Deși nu are trupe militare proprii, Islanda găzduiește exerciții de apărare ale alianței NATO, pe fondul intensificării îngrijorărilor provocate de activitatea submarinelor rusești în regiunea Nordului Îndepărtat.",
+    "entities": [
+      "Islanda",
+      "NATO",
+      "Keflavik"
+    ],
+    "ai_cat": "extern",
+    "icon": "shield",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "islanda-mentine-exercitiile-militare-nato-in-lipsa-unei-armate-nationale-proprii"
+  },
+  {
+    "url": "https://digi24.ro/stiri/externe/mapamond/cerealele-tot-mai-greu-de-transportat-razboiul-din-ucraina-si-criza-din-ormuz-pun-presiune-pe-preturile-alimentelor-3919243",
+    "original_link": "https://www.digi24.ro/stiri/externe/mapamond/cerealele-tot-mai-greu-de-transportat-razboiul-din-ucraina-si-criza-din-ormuz-pun-presiune-pe-preturile-alimentelor-3919243",
+    "source": "extern",
+    "source_name": "Digi24 Extern",
+    "source_lang": "ro",
+    "title": "Costurile crescute ale transportului de cereale amenință prețurile globale ale alimentelor",
+    "category": "economic",
+    "published": "2026-08-25T04:00:50+00:00",
+    "model": "B",
+    "src_extra": 20,
+    "teaser": "Perturbările din Marea Neagră, recoltele slabe și prețurile ridicate la energie pun presiune suplimentară pe lanțurile de aprovizionare alimentară, avertizează economiștii citați de presa internațională.",
+    "entities": [
+      "Marea Neagră",
+      "Euractiv"
+    ],
+    "ai_cat": "economic",
+    "icon": "chart-line",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "costurile-crescute-ale-transportului-de-cereale-ameninta-preturile-globale-ale"
+  },
+  {
+    "url": "https://prosport.ro/diverse/giovanni-becali-bani-mitica-dragomir-20509812",
+    "original_link": "https://www.prosport.ro/diverse/giovanni-becali-bani-mitica-dragomir-20509812",
+    "source": "prosport",
+    "source_name": "ProSport",
+    "source_lang": "ro",
+    "title": "Giovanni Becali a dezvăluit detalii despre o afacere secretă cu Mitică Dragomir",
+    "category": "lifestyle",
+    "published": "2026-08-25T04:00:48+00:00",
+    "model": "B",
+    "src_extra": 36,
+    "teaser": "Impresarul Giovanni Becali a povestit cum i-a dat o sumă importantă de bani cash lui Dumitru Dragomir, în perioada în care cei doi erau certați, în urma unei tranzacții financiare de succes care a generat milioane de euro.",
+    "entities": [
+      "Giovanni Becali",
+      "Mitică Dragomir",
+      "LPF"
+    ],
+    "ai_cat": "lifestyle",
+    "icon": "pig-money",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "giovanni-becali-a-dezvaluit-detalii-despre-o-afacere-secreta-cu-mitica-dragomir"
+  },
+  {
+    "url": "https://digi24.ro/stiri/actualitate/semnal-de-alarma-pe-piata-muncii-mai-putine-joburi-mai-multi-someri-cu-cat-a-scazut-numarul-locurilor-de-munca-fata-de-2025-3919853",
+    "original_link": "https://www.digi24.ro/stiri/actualitate/semnal-de-alarma-pe-piata-muncii-mai-putine-joburi-mai-multi-someri-cu-cat-a-scazut-numarul-locurilor-de-munca-fata-de-2025-3919853",
+    "source": "digi24",
+    "source_name": "Digi24",
+    "source_lang": "ro",
+    "title": "Scădere a numărului de locuri de muncă disponibile pe piața muncii românească",
+    "category": "economic",
+    "published": "2026-08-25T04:00:46+00:00",
+    "model": "B",
+    "src_extra": 61,
+    "teaser": "Numărul posturilor vacante la nivel național s-a redus semnificativ în al doilea trimestru comparativ cu anul anterior, ajungând la 26.500 de oferte, în timp ce autoritățile raportează în continuare persoane înregistrate doar pentru șomaj.",
+    "entities": [
+      "România"
+    ],
+    "ai_cat": "economic",
+    "icon": "percentage",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "scadere-a-numarului-de-locuri-de-munca-disponibile-pe-piata-muncii-romaneasca"
+  },
+  {
+    "url": "https://digi24.ro/stiri/actualitate/educatie/ce-acte-medicale-trebuie-sa-duca-elevii-la-scoala-in-septembrie-2026-cine-are-nevoie-de-adeverinta-si-aviz-epidemiologic-3918547",
+    "original_link": "https://www.digi24.ro/stiri/actualitate/educatie/ce-acte-medicale-trebuie-sa-duca-elevii-la-scoala-in-septembrie-2026-cine-are-nevoie-de-adeverinta-si-aviz-epidemiologic-3918547",
+    "source": "digi24",
+    "source_name": "Digi24",
+    "source_lang": "ro",
+    "title": "Reguli privind actele medicale necesare elevilor la începerea școlii în 2026",
+    "category": "sanatate",
+    "published": "2026-08-25T04:00:43+00:00",
+    "model": "B",
+    "src_extra": 26,
+    "teaser": "Ministerul stabilește că reluarea cursurilor școlare nu va necesita un dosar medical complet nou pentru toți elevii, documentele cerute variind în funcție de nivelul de studiu și istoricul medical al fiecărui copil.",
+    "entities": [
+      "școală"
+    ],
+    "ai_cat": "sanatate",
+    "icon": "certificate",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "reguli-privind-actele-medicale-necesare-elevilor-la-inceperea-scolii-in-2026"
+  },
+  {
+    "url": "https://digi24.ro/stiri/externe/rusia/cum-incearca-rusia-sa-testeze-vulnerabilitatile-tarilor-nato-si-ce-scop-ar-avea-tactica-spargerea-unitatii-a-devenit-o-necesitate-3918297",
+    "original_link": "https://www.digi24.ro/stiri/externe/rusia/cum-incearca-rusia-sa-testeze-vulnerabilitatile-tarilor-nato-si-ce-scop-ar-avea-tactica-spargerea-unitatii-a-devenit-o-necesitate-3918297",
+    "source": "extern",
+    "source_name": "Digi24 Extern",
+    "source_lang": "ro",
+    "title": "Rusia testează spațiul aerian al statelor NATO prin incursiuni cu drone",
+    "category": "extern",
+    "published": "2026-08-25T04:00:42+00:00",
+    "model": "B",
+    "src_extra": 61,
+    "teaser": "Mai multe drone au pătruns în spațiul aerian al Letoniei, Estoniei, Lituaniei și Finlandei, oficialii baltici avertizând că Moscova încearcă să submineze unitatea europeană și să testeze apărarea Alianței Nord-Atlantice.",
+    "entities": [
+      "Rusia",
+      "NATO",
+      "Letonia",
+      "Estonia"
+    ],
+    "ai_cat": "extern",
+    "icon": "alert-triangle",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "rusia-testeaza-spatiul-aerian-al-statelor-nato-prin-incursiuni-cu-drone"
+  },
+  {
+    "url": "https://digi24.ro/stiri/se-aud-noaptea-in-fiecare-noapte-haitele-de-sacali-pun-stapanire-pe-satele-de-pe-dunare-animale-atacate-oameni-disperati-3919377",
+    "original_link": "https://www.digi24.ro/stiri/se-aud-noaptea-in-fiecare-noapte-haitele-de-sacali-pun-stapanire-pe-satele-de-pe-dunare-animale-atacate-oameni-disperati-3919377",
+    "source": "digi24",
+    "source_name": "Digi24",
+    "source_lang": "ro",
+    "title": "Șacalii invadează satele dunărene, atacând gospodăriile și animalele oamenilor",
+    "category": "judetean",
+    "published": "2026-08-25T04:00:39+00:00",
+    "model": "B",
+    "src_extra": 42,
+    "teaser": "Populația de șacali a crescut masiv în localitățile de pe malul Dunării din Dolj. Sătenii sunt terorizați noaptea de urletele animalelor, care au început să intre în gospodării și să omoare zeci de păsări.",
+    "entities": [
+      "Dunărea",
+      "Dolj"
+    ],
+    "ai_cat": "regional",
+    "icon": "alert-triangle",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "sacalii-invadeaza-satele-dunarene-atacand-gospodariile-si-animalele-oamenilor"
+  },
+  {
+    "url": "https://digi24.ro/stiri/externe/ue/campania-surpriza-a-lui-raphael-glucksmann-cum-ar-putea-un-outsider-cu-radacini-controversate-sa-zguduie-alegerile-din-franta-3918211",
+    "original_link": "https://www.digi24.ro/stiri/externe/ue/campania-surpriza-a-lui-raphael-glucksmann-cum-ar-putea-un-outsider-cu-radacini-controversate-sa-zguduie-alegerile-din-franta-3918211",
+    "source": "extern",
+    "source_name": "Digi24 Extern",
+    "source_lang": "ro",
+    "title": "Raphael Glucksmann își lansează candidatura surpriză la președinția Franței",
+    "category": "politic",
+    "published": "2026-08-25T04:00:36+00:00",
+    "model": "B",
+    "src_extra": 51,
+    "teaser": "Politicianul de stânga Raphael Glucksmann, un outsider cu origini familiale controversate și puternic conectat la establishment, intenționează să candideze pentru funcția supremă de președinte al Franței.",
+    "entities": [
+      "Raphael Glucksmann",
+      "Franța",
+      "The Times"
+    ],
+    "ai_cat": "politic",
+    "icon": "flag",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "raphael-glucksmann-isi-lanseaza-candidatura-surpriza-la-presedintia-frantei"
+  },
+  {
+    "url": "https://digi24.ro/stiri/externe/cum-a-aratat-prima-parada-a-dronelor-militare-organizata-la-kiev-de-ziua-independentei-ucrainei-3919843",
+    "original_link": "https://www.digi24.ro/stiri/externe/cum-a-aratat-prima-parada-a-dronelor-militare-organizata-la-kiev-de-ziua-independentei-ucrainei-3919843",
+    "source": "extern",
+    "source_name": "Digi24 Extern",
+    "source_lang": "ro",
+    "title": "Kievul a organizat prima paradă militară dedicată exclusiv dronelor",
+    "category": "extern",
+    "published": "2026-08-25T04:00:25+00:00",
+    "model": "B",
+    "src_extra": 40,
+    "teaser": "Autoritățile din Ucraina au prezentat la Kiev, de Ziua Independenței, aproximativ o sută de sisteme de luptă fără pilot, terestre, aeriene și maritime, marcând o premieră în dotarea armatei.",
+    "entities": [
+      "Kiev",
+      "Ucraina"
+    ],
+    "ai_cat": "extern",
+    "icon": "rocket",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "kievul-a-organizat-prima-parada-militara-dedicata-exclusiv-dronelor"
+  },
+  {
+    "url": "https://digi24.ro/stiri/externe/rusia/cernobil-zburator-armata-rusa-incepe-testele-vestitorului-de-furtuna-putin-a-anuntat-exploatarea-rachetei-miraculoase-in-viitor-3919423",
+    "original_link": "https://www.digi24.ro/stiri/externe/rusia/cernobil-zburator-armata-rusa-incepe-testele-vestitorului-de-furtuna-putin-a-anuntat-exploatarea-rachetei-miraculoase-in-viitor-3919423",
+    "source": "extern",
+    "source_name": "Digi24 Extern",
+    "source_lang": "ro",
+    "title": "Armata rusă pregătește noi teste pentru racheta nucleară Burevestnik",
+    "category": "extern",
+    "published": "2026-08-25T04:00:24+00:00",
+    "model": "B",
+    "src_extra": 31,
+    "teaser": "Ministerul Apărării de la Moscova reia testele cu arma cu propulsie nucleară cunoscută sub denumirea de „Vestitorul de furtună”, proiect prezentat inițial de Vladimir Putin în anul 2018.",
+    "entities": [
+      "Burevestnik",
+      "Vladimir Putin",
+      "Rusia"
+    ],
+    "ai_cat": "extern",
+    "icon": "rocket",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "armata-rusa-pregateste-noi-teste-pentru-racheta-nucleara-burevestnik"
+  },
+  {
+    "url": "https://bihon.ro/stirile-judetului-bihor/economic/vesti-proaste-pentru-romani-bnr-se-asteapta-la-o-inflatie-de-61-la-finalul-anului-5374401",
+    "original_link": "https://www.bihon.ro/stirile-judetului-bihor/economic/vesti-proaste-pentru-romani-bnr-se-asteapta-la-o-inflatie-de-61-la-finalul-anului-5374401/?utm_source=rss&utm_medium=referral&utm_campaign=hiraggregator",
+    "source": "bihon",
+    "source_name": "Bihon",
+    "source_lang": "ro",
+    "title": "BNR prognozează o inflație de 6,1% la sfârșitul anului în curs",
+    "category": "economic",
+    "published": "2026-08-25T04:00:24+00:00",
+    "model": "B",
+    "src_extra": 565,
+    "teaser": "Banca Națională a României estimează că rata anuală a inflației va ajunge la 6,1% până în decembrie, revizuind în sus estimările anterioare și indicând o temperare mai lentă a creșterii prețurilor.",
+    "entities": [
+      "BNR",
+      "România"
+    ],
+    "ai_cat": "economic",
+    "icon": "chart-line",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "bnr-prognozeaza-o-inflatie-de-61-la-sfarsitul-anului-in-curs"
+  },
+  {
+    "url": "https://csid.ro/diete/dieta-si-nutritie/unt-vs-margarina-care-este-mai-sanatos-de-fapt-potrivit-mihaelei-bilic-21291576",
+    "original_link": "https://www.csid.ro/diete/dieta-si-nutritie/unt-vs-margarina-care-este-mai-sanatos-de-fapt-potrivit-mihaelei-bilic-21291576/",
+    "source": "csid",
+    "source_name": "CSÎD",
+    "source_lang": "ro",
+    "title": "Mihaela Bilic analizează diferențele nutriționale dintre unt și margarină",
+    "category": "sanatate",
+    "published": "2026-08-25T04:00:10+00:00",
+    "model": "B",
+    "src_extra": 31,
+    "teaser": "Specialiștii în alimentație au pus în balanță timp de decenii grăsimile saturate din unt și alternativele vegetale oferite de margarină, dezbătând care dintre cele două produse este mai benefic pentru organism.",
+    "entities": [
+      "Mihaela Bilic"
+    ],
+    "ai_cat": "sanatate",
+    "icon": "stethoscope",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "mihaela-bilic-analizeaza-diferentele-nutritionale-dintre-unt-si-margarina"
+  },
+  {
+    "url": "https://newsbv.ro/isu-brasov-peste-460-de-misiuni-intr-o-saptamana",
+    "original_link": "https://newsbv.ro/isu-brasov-peste-460-de-misiuni-intr-o-saptamana/",
+    "source": "newsbv",
+    "source_name": "News Brașov",
+    "source_lang": "ro",
+    "title": "Pompierii brașoveni au intervenit la peste 460 de solicitări într-o săptămână",
+    "category": "general",
+    "published": "2026-08-25T04:00:01+00:00",
+    "model": "B",
+    "src_extra": 181,
+    "teaser": "Inspectoratul pentru Situații de Urgență Brașov a gestionat 462 de misiuni în perioada 17-23 august, majoritatea fiind intervenții ale echipajelor SMURD pentru acordarea primului ajutor medical.",
+    "entities": [
+      "ISU Brașov",
+      "SMURD"
+    ],
+    "ai_cat": "regional",
+    "icon": "ambulance",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "pompierii-brasoveni-au-intervenit-la-peste-460-de-solicitari-intr-o-saptamana"
+  },
+  {
+    "url": "https://gazetadecluj.ro/sergiu-mihut-de-la-microhidrocentrale-ilegale-la-un-proces-cu-agentia-de-mediu",
+    "original_link": "https://gazetadecluj.ro/sergiu-mihut-de-la-microhidrocentrale-ilegale-la-un-proces-cu-agentia-de-mediu/",
+    "source": "gazetadecluj",
+    "source_name": "Gazeta de Cluj",
+    "source_lang": "ro",
+    "title": "O firmă din Cluj se judecă cu Agenția de Mediu într-un dosar legat de microhidrocentrale",
+    "category": "judetean",
+    "published": "2026-08-25T04:00:00+00:00",
+    "model": "B",
+    "src_extra": 1450,
+    "teaser": "Un proces juridic desfășurat de doi ani scoate la iveală implicarea unui biolog condamnat penal, ale cărui avize controversate au generat microhidrocentrale ilegale și o procedură de infringement împotriva României.",
+    "entities": [
+      "Cluj",
+      "Agenția de Mediu",
+      "România",
+      "Bruxelles"
+    ],
+    "ai_cat": "regional",
+    "icon": "gavel",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "o-firma-din-cluj-se-judeca-cu-agentia-de-mediu-intr-un-dosar-legat-de"
+  },
+  {
+    "url": "https://g4media.ro/cutremur-de-44-in-zona-vrancea-la-ora-4-56-dimineata.html",
+    "original_link": "https://www.g4media.ro/cutremur-de-44-in-zona-vrancea-la-ora-4-56-dimineata.html",
+    "source": "g4media",
+    "source_name": "G4Media",
+    "source_lang": "ro",
+    "title": "Un cutremur cu magnitudinea 4,4 s-a produs în zona seismică Vrancea",
+    "category": "judetean",
+    "published": "2026-08-25T03:59:46+00:00",
+    "model": "B",
+    "src_extra": 49,
+    "teaser": "Un seism de medie intensitate, cu magnitudinea de 4,4 pe scara Richter, s-a înregistrat marți dimineață, la ora 4:56, în județul Buzău, conform datelor transmise de Institutul de Fizică a Pământului.",
+    "entities": [
+      "Vrancea",
+      "Buzău",
+      "INCDFP"
+    ],
+    "ai_cat": "general",
+    "icon": "alert-triangle",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "un-cutremur-cu-magnitudinea-44-s-a-produs-in-zona-seismica-vrancea"
+  },
+  {
+    "url": "https://hotnews.ro/a-jignit-dar-a-si-facut-a-creat-edmond-niculusca-suficiente-lucruri-frumoase-si-utile-in-bucuresti-ca-sa-i-fie-iertat-acest-derapaj-2332180",
+    "original_link": "https://hotnews.ro/a-jignit-dar-a-si-facut-a-creat-edmond-niculusca-suficiente-lucruri-frumoase-si-utile-in-bucuresti-ca-sa-i-fie-iertat-acest-derapaj-2332180",
+    "source": "hotnews",
+    "source_name": "HotNews",
+    "source_lang": "ro",
+    "title": "Activitatea lui Edmond Niculușcă în București, pusă sub semnul întrebării după un derapaj",
+    "category": "local",
+    "published": "2026-08-25T03:57:52+00:00",
+    "model": "B",
+    "src_extra": 46,
+    "teaser": "Contribuția adusă de Edmond Niculușcă la dezvoltarea unor proiecte în Capitală este intens dezbătută în spațiul public, susținătorii și criticii având opinii împărțite privind comportamentul său recent.",
+    "entities": [
+      "Edmond Niculușcă",
+      "București"
+    ],
+    "ai_cat": "local",
+    "icon": "building-monument",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "activitatea-lui-edmond-niculusca-in-bucuresti-pusa-sub-semnul-intrebarii-dupa"
+  },
+  {
+    "url": "https://newsbv.ro/cutremur-marti-dimineata-la-65-km-de-brasov",
+    "original_link": "https://newsbv.ro/cutremur-marti-dimineata-la-65-km-de-brasov/",
+    "source": "newsbv",
+    "source_name": "News Brașov",
+    "source_lang": "ro",
+    "title": "Cutremur cu magnitudinea 4,4 în zona seismică Vrancea-Buzău",
+    "category": "local",
+    "published": "2026-08-25T03:30:13+00:00",
+    "model": "C",
+    "src_extra": 154,
+    "sources": [
+      {
+        "name": "News Brașov",
+        "url": "https://newsbv.ro/cutremur-marti-dimineata-la-65-km-de-brasov/"
+      },
+      {
+        "name": "Știrile ProTV",
+        "url": "https://stirileprotv.ro/stiri/actualitate/cutremur-mediu-la-primele-ore-ale-diminetii-marti-in-romania-ce-magnitudine-a-avut-si-unde-a-lovit.html"
+      }
+    ],
+    "first_source": "News Brașov",
+    "synthesis": "Un seism moderat cu magnitudinea de 4,4 pe scara Richter s-a produs marți dimineață, la ora 4:56, în zona seismică Vrancea, județul Buzău. Potrivit Institutului Național de Cercetare-Dezvoltare pentru Fizica Pământului, cutremurul a avut loc la o adâncime de 145,2 kilometri și a fost resimțit în mai multe orașe din regiune, aflându-se la o distanță de 65 de kilometri față de Brașov.",
+    "entities": [
+      "INCDFP",
+      "Vrancea",
+      "Buzău",
+      "Brașov"
+    ],
+    "ai_cat": "regional",
+    "icon": "cloud-storm",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "cutremur-cu-magnitudinea-44-in-zona-seismica-vrancea-buzau"
+  },
+  {
+    "url": "https://gazetadecluj.ro/romsilva-a-dat-peste-10-milioane-de-euro-firmei-unei-foste-presedinte-pdl",
+    "original_link": "https://gazetadecluj.ro/romsilva-a-dat-peste-10-milioane-de-euro-firmei-unei-foste-presedinte-pdl/",
+    "source": "gazetadecluj",
+    "source_name": "Gazeta de Cluj",
+    "source_lang": "ro",
+    "title": "Romsilva a atribuit contracte de peste 10 milioane de euro firmei unei foste lidere PDL",
+    "category": "economic",
+    "published": "2026-08-25T03:30:00+00:00",
+    "model": "B",
+    "src_extra": 536,
+    "teaser": "Între 2018 și 2026, compania controlată de Mihaela Kostin a obținut 79 de licitații de la Regia Națională a Pădurilor, încasând din fonduri publice aproximativ 57 de milioane de lei.",
+    "entities": [
+      "Romsilva",
+      "SILV KOSTIN 2015 SRL",
+      "Mihaela Kostin"
+    ],
+    "ai_cat": "economic",
+    "icon": "currency-euro",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "romsilva-a-atribuit-contracte-de-peste-10-milioane-de-euro-firmei-unei-foste"
+  },
+  {
+    "url": "https://politico.eu/podcast/berlin-playbook-podcast/kabinettsklausur-altes-ritual-neue-probleme",
+    "original_link": "https://www.politico.eu/podcast/berlin-playbook-podcast/kabinettsklausur-altes-ritual-neue-probleme/?utm_source=RSS_Feed&utm_medium=RSS&utm_campaign=RSS_Syndication",
+    "source": "politico_eu",
+    "source_name": "Politico EU",
+    "source_lang": "en",
+    "title": "Guvernul german s-a reunit în prima ședință de după remaniere",
+    "category": "extern",
+    "published": "2026-08-25T03:30:00+00:00",
+    "model": "B",
+    "src_extra": 252,
+    "teaser": "Executivul de la Berlin a organizat o reuniune la Schloss Neuhardenberg pentru a discuta prioritățile politice, în timp ce tensiunile interne persistă în interiorul coaliției.",
+    "entities": [
+      "Guvernul german",
+      "Schloss Neuhardenberg",
+      "Matthias Miersch"
+    ],
+    "ai_cat": "extern",
+    "icon": "building-monument",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "guvernul-german-s-a-reunit-in-prima-sedinta-de-dupa-remaniere"
+  },
+  {
+    "url": "https://hotnews.ro/razboiul-comercial-dintre-sua-si-canada-se-intensifica-trump-ameninta-cu-o-crestere-a-tarifelor-la-automobile-2332407",
+    "original_link": "https://hotnews.ro/razboiul-comercial-dintre-sua-si-canada-se-intensifica-trump-ameninta-cu-o-crestere-a-tarifelor-la-automobile-2332407",
+    "source": "hotnews",
+    "source_name": "HotNews",
+    "source_lang": "ro",
+    "title": "Donald Trump amenință cu dublarea tarifelor vamale pentru autovehiculele din Canada",
+    "category": "extern",
+    "published": "2026-08-25T03:29:18+00:00",
+    "model": "B",
+    "src_extra": 43,
+    "teaser": "Președintele Statelor Unite a anunțat majorarea de la 25% la 50% a taxelor aplicate mașinilor, camioanelor și pieselor auto provenite din Canada, intensificând disputa comercială.",
+    "entities": [
+      "Donald Trump",
+      "SUA",
+      "Canada"
+    ],
+    "ai_cat": "extern",
+    "icon": "car",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "donald-trump-ameninta-cu-dublarea-tarifelor-vamale-pentru-autovehiculele-din"
+  },
+  {
+    "url": "https://economica.net/bitcoin-frige-criptomoneda-sare-pragul-de-80-000-de-dolari-si-atinge-cea-mai-mare-valoare-din-ultimele-trei-luni-ce-ar-putea-urma_970737.html",
+    "original_link": "https://www.economica.net/bitcoin-frige-criptomoneda-sare-pragul-de-80-000-de-dolari-si-atinge-cea-mai-mare-valoare-din-ultimele-trei-luni-ce-ar-putea-urma_970737.html",
+    "source": "economica",
+    "source_name": "Economica",
+    "source_lang": "ro",
+    "title": "Prețul criptomonedei Bitcoin a depășit pragul de 80.000 de dolari",
+    "category": "economic",
+    "published": "2026-08-25T03:23:52+00:00",
+    "model": "B",
+    "src_extra": 376,
+    "teaser": "Cea mai populară monedă digitală a atins cel mai înalt nivel din ultimele trei luni, impulsionată atât de interesul investitorilor instituționali, cât și de fondurile tranzacționate la bursă.",
+    "entities": [
+      "Bitcoin"
+    ],
+    "ai_cat": "economic",
+    "icon": "chart-line",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "pretul-criptomonedei-bitcoin-a-depasit-pragul-de-80-000-de-dolari"
+  },
+  {
+    "url": "https://nwradu.ro/2026/08/review-garmin-cirqa-bratara-fara-ecran",
+    "original_link": "https://www.nwradu.ro/2026/08/review-garmin-cirqa-bratara-fara-ecran/",
+    "source": "nwradu",
+    "source_name": "NwRadu",
+    "source_lang": "ro",
+    "title": "Garmin a lansat brățara de fitness fără ecran CIRQA",
+    "category": "tech",
+    "published": "2026-08-25T03:22:18+00:00",
+    "model": "B",
+    "src_extra": 1590,
+    "teaser": "Noul dispozitiv pentru monitorizarea sănătății cântărește sub 15 grame, folosește o curea textilă cu sistem velcro și intră în competiție directă cu branduri precum Whoop sau Fitbit.",
+    "entities": [
+      "Garmin",
+      "CIRQA"
+    ],
+    "ai_cat": "tech",
+    "icon": "device-mobile",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "garmin-a-lansat-bratara-de-fitness-fara-ecran-cirqa"
+  },
+  {
+    "url": "https://hotnews.ro/taxa-pe-burlacie-cea-mai-veche-politica-noua-din-istoria-declinului-demografic-care-nu-functioneaza-2332200",
+    "original_link": "https://hotnews.ro/taxa-pe-burlacie-cea-mai-veche-politica-noua-din-istoria-declinului-demografic-care-nu-functioneaza-2332200",
+    "source": "hotnews",
+    "source_name": "HotNews",
+    "source_lang": "ro",
+    "title": "Istoria eșecurilor înregistrate de taxa pe celibat",
+    "category": "general",
+    "published": "2026-08-25T03:21:10+00:00",
+    "model": "B",
+    "src_extra": 54,
+    "teaser": "Măsurile financiare punitive aplicate celibatarilor și persoanelor fără copii, utilizate din Antichitate până în secolul XX pentru stimularea natalității, au eșuat în mod repetat.",
+    "entities": [],
+    "ai_cat": "social",
+    "icon": "receipt-tax",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "istoria-esecurilor-inregistrate-de-taxa-pe-celibat"
+  },
+  {
+    "url": "https://economica.net/noile-sanctiuni-impuse-de-sua-impotriva-iranului-ce-domenii-vizeaza_970733.html",
+    "original_link": "https://www.economica.net/noile-sanctiuni-impuse-de-sua-impotriva-iranului-ce-domenii-vizeaza_970733.html",
+    "source": "economica",
+    "source_name": "Economica",
+    "source_lang": "ro",
+    "title": "Statele Unite au impus noi sancțiuni economice împotriva Iranului",
+    "category": "extern",
+    "published": "2026-08-25T03:10:37+00:00",
+    "model": "B",
+    "src_extra": 471,
+    "teaser": "Secretarul Trezoreriei SUA a anunțat măsuri sectoriale vizând activele digitale, tehnologia, tranzacțiile cu aur, aviația și transportul maritim ale statului iranian.",
+    "entities": [
+      "SUA",
+      "Iran"
+    ],
+    "ai_cat": "extern",
+    "icon": "shield",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "statele-unite-au-impus-noi-sanctiuni-economice-impotriva-iranului"
+  },
+  {
+    "url": "https://moldova.europalibera.org/a/coalitia-de-vointa-ajutor-ucraina-maia-sandu-moldova/33837378.html",
+    "original_link": "https://moldova.europalibera.org/a/coalitia-de-vointa-ajutor-ucraina-maia-sandu-moldova/33837378.html",
+    "source": "el_moldova",
+    "source_name": "Europa Liberă",
+    "source_lang": "ro",
+    "title": "Liderii europeni au promis sprijin militar suplimentar pentru Ucraina",
+    "category": "extern",
+    "published": "2026-08-25T03:10:00+00:00",
+    "model": "B",
+    "src_extra": 30,
+    "teaser": "În cadrul reuniunii de la Kiev, oficialii din «Coaliția de Voință» s-au angajat să întărească apărarea antiaeriană ucraineană, prim-ministrul Republicii Moldova subliniind importanța stabilității regionale.",
+    "entities": [
+      "Kiev",
+      "Maia Sandu"
+    ],
+    "ai_cat": "extern",
+    "icon": "flag",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "liderii-europeni-au-promis-sprijin-militar-suplimentar-pentru-ucraina"
+  },
+  {
+    "url": "https://economica.net/un-petrolier-lovit-de-un-proiectil-necunoscut-in-stramtoarea-ormuz-langa-oman-agentie-maritima-britanica_970728.html",
+    "original_link": "https://www.economica.net/un-petrolier-lovit-de-un-proiectil-necunoscut-in-stramtoarea-ormuz-langa-oman-agentie-maritima-britanica_970728.html",
+    "source": "economica",
+    "source_name": "Economica",
+    "source_lang": "ro",
+    "title": "Un petrolier a fost avariat de un proiectil în Strâmtoarea Ormuz",
+    "category": "extern",
+    "published": "2026-08-25T03:05:02+00:00",
+    "model": "B",
+    "src_extra": 111,
+    "teaser": "O navă aflată în largul coastelor Omanului a fost lovită de un obiect neidentificat, incidentul provocând pagube în sala mașinilor, fără a înregistra victime în rândul echipajului.",
+    "entities": [
+      "Strâmtoarea Ormuz",
+      "Oman"
+    ],
+    "ai_cat": "extern",
+    "icon": "ship",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "un-petrolier-a-fost-avariat-de-un-proiectil-in-stramtoarea-ormuz"
+  },
+  {
+    "url": "https://economedia.ro/perspective-din-piata-constructiilor-adrian-garofeanu-general-manager-knauf-insulation-cu-fabrica-noua-in-romania-piata-va-creste-dar-in-ritm-moderat-costurile-ridicate-de-constructie-energia.html",
+    "original_link": "https://economedia.ro/perspective-din-piata-constructiilor-adrian-garofeanu-general-manager-knauf-insulation-cu-fabrica-noua-in-romania-piata-va-creste-dar-in-ritm-moderat-costurile-ridicate-de-constructie-energia.html",
+    "source": "economedia",
+    "source_name": "Economedia",
+    "source_lang": "ro",
+    "title": "Piața construcțiilor din România va înregistra o creștere moderată",
+    "category": "economic",
+    "published": "2026-08-25T03:00:41+00:00",
+    "model": "B",
+    "src_extra": 26,
+    "teaser": "Reprezentanții Knauf Insulation estimează că investițiile vor fi influențate de costurile ridicate și inflație, însă cererea se va menține datorită proiectelor de infrastructură și eficiență energetică.",
+    "entities": [
+      "Knauf Insulation",
+      "România"
+    ],
+    "ai_cat": "economic",
+    "icon": "building-factory",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "piata-constructiilor-din-romania-va-inregistra-o-crestere-moderata"
+  },
+  {
+    "url": "https://gazetadecluj.ro/cate-vizite-presupune-o-reabilitare-totala-pe-implanturi",
+    "original_link": "https://gazetadecluj.ro/cate-vizite-presupune-o-reabilitare-totala-pe-implanturi/",
+    "source": "gazetadecluj",
+    "source_name": "Gazeta de Cluj",
+    "source_lang": "ro",
+    "title": "Reabilitarea totală pe implanturi dentare necesită mai multe vizite medicale",
+    "category": "sanatate",
+    "published": "2026-08-25T02:59:11+00:00",
+    "model": "B",
+    "src_extra": 965,
+    "teaser": "Dintele fix obținut în prima zi reprezintă doar debutul etapei secunde a tratamentului. Numărul exact al consultațiilor necesare depinde de investigațiile clinice realizate ulterior de medicul specialist.",
+    "entities": [],
+    "ai_cat": "sanatate",
+    "icon": "stethoscope",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "reabilitarea-totala-pe-implanturi-dentare-necesita-mai-multe-vizite-medicale"
+  },
+  {
+    "url": "https://bizbrasov.ro/2026/08/25/sali-jocuri-noroc-brasov-autorizatie",
+    "original_link": "https://bizbrasov.ro/2026/08/25/sali-jocuri-noroc-brasov-autorizatie/",
+    "source": "bizbrasov",
+    "source_name": "BizBrașov",
+    "source_lang": "ro",
+    "title": "Alte patru săli de jocuri de noroc din Brașov rămân fără autorizații",
+    "category": "local",
+    "published": "2026-08-25T02:43:00+00:00",
+    "model": "B",
+    "src_extra": 43,
+    "teaser": "Primăria Brașov continuă aplicarea noului regulament adoptat în aprilie. De la începutul anului, 17 săli de păcănele au fost închise, iar un operator va plăti o taxă anuală de peste 344.000 lei.",
+    "entities": [
+      "Brașov"
+    ],
+    "ai_cat": "regional",
+    "icon": "building-bank",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "alte-patru-sali-de-jocuri-de-noroc-din-brasov-raman-fara-autorizatii"
+  },
+  {
+    "url": "https://bizbrasov.ro/2026/08/25/proiecte-brasov-exproprieri-tractoru-stupini",
+    "original_link": "https://bizbrasov.ro/2026/08/25/proiecte-brasov-exproprieri-tractoru-stupini/",
+    "source": "bizbrasov",
+    "source_name": "BizBrașov",
+    "source_lang": "ro",
+    "title": "Primăria Brașov inițiază exproprieri pentru trei proiecte majore de infrastructură",
+    "category": "local",
+    "published": "2026-08-25T02:40:00+00:00",
+    "model": "B",
+    "src_extra": 49,
+    "teaser": "Municipalitatea demarează procedurile legale pentru terenurile necesare construirii unui colector de ape pluviale în Tractorul, a unui sens giratoriu pe Calea Feldioarei și a unei parcări tip Park&Ride.",
+    "entities": [
+      "Brașov",
+      "Tractorul",
+      "Stupini",
+      "Bartolomeu"
+    ],
+    "ai_cat": "regional",
+    "icon": "building-monument",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "primaria-brasov-initiaza-exproprieri-pentru-trei-proiecte-majore-de"
+  },
+  {
+    "url": "https://bizbrasov.ro/2026/08/25/investitori-valley-vama-buzaului-bungalow",
+    "original_link": "https://bizbrasov.ro/2026/08/25/investitori-valley-vama-buzaului-bungalow/",
+    "source": "bizbrasov",
+    "source_name": "BizBrașov",
+    "source_lang": "ro",
+    "title": "Investitori olandezi construiesc un nou sat de vacanță în Vama Buzăului",
+    "category": "local",
+    "published": "2026-08-25T02:38:00+00:00",
+    "model": "B",
+    "src_extra": 39,
+    "teaser": "Proiectul turistic din zona Dălghiaș presupune o investiție de 2,25 milioane de lei pentru ridicarea a 14 bungalow-uri prefabricate adresate familiilor și grupurilor mici de turiști.",
+    "entities": [
+      "Vama Buzăului",
+      "Dălghiu"
+    ],
+    "ai_cat": "regional",
+    "icon": "home",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "investitori-olandezi-construiesc-un-nou-sat-de-vacanta-in-vama-buzaului"
+  },
+  {
+    "url": "https://bizbrasov.ro/2026/08/25/energie-electrica-fara-sa-renunti-confort",
+    "original_link": "https://bizbrasov.ro/2026/08/25/energie-electrica-fara-sa-renunti-confort/",
+    "source": "bizbrasov",
+    "source_name": "BizBrașov",
+    "source_lang": "ro",
+    "title": "Zece modalități eficiente de reducere a consumului casnic de energie electrică",
+    "category": "lifestyle",
+    "published": "2026-08-25T02:11:00+00:00",
+    "model": "B",
+    "src_extra": 32,
+    "teaser": "Creșterea numărului de electrocasnice și dispozitive inteligente a majorat facturile. Specialiștii recomandă zece măsuri practice pentru a micșora consumul casnic fără a diminua confortul zilnic.",
+    "entities": [],
+    "ai_cat": "lifestyle",
+    "icon": "bolt",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "zece-modalitati-eficiente-de-reducere-a-consumului-casnic-de-energie-electrica"
+  },
+  {
+    "url": "https://politico.eu/article/greece-seeks-to-cash-in-on-odyssey-hype",
+    "original_link": "https://www.politico.eu/article/greece-seeks-to-cash-in-on-odyssey-hype/?utm_source=RSS_Feed&utm_medium=RSS&utm_campaign=RSS_Syndication",
+    "source": "politico_eu",
+    "source_name": "Politico EU",
+    "source_lang": "en",
+    "title": "Grecia vrea să profite turistic de succesul noului film al regizorului Christopher Nolan",
+    "category": "extern",
+    "published": "2026-08-25T02:02:00+00:00",
+    "model": "B",
+    "src_extra": 594,
+    "teaser": "Autoritățile de la Atena și premierul Kyriakos Mitsotakis încearcă să capitalizeze interesul mondial stârnit pentru cultura elenă de ecranizarea epopeii Odiseea, regizată de Christopher Nolan.",
+    "entities": [
+      "Grecia",
+      "Kyriakos Mitsotakis",
+      "Christopher Nolan"
+    ],
+    "ai_cat": "extern",
+    "icon": "movie",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "grecia-vrea-sa-profite-turistic-de-succesul-noului-film-al-regizorului"
+  },
+  {
+    "url": "https://politico.eu/article/donald-trump-iceland-eu-referendum",
+    "original_link": "https://www.politico.eu/article/donald-trump-iceland-eu-referendum/?utm_source=RSS_Feed&utm_medium=RSS&utm_campaign=RSS_Syndication",
+    "source": "politico_eu",
+    "source_name": "Politico EU",
+    "source_lang": "en",
+    "title": "Amenințările lui Donald Trump impulsionează campania pro-UE din Islanda",
+    "category": "extern",
+    "published": "2026-08-25T02:00:00+00:00",
+    "model": "B",
+    "src_extra": 1189,
+    "teaser": "Declanșarea dezbaterilor privind reluarea negocierilor de aderare la Uniunea Europeană este impulsionată de riscurile geopolitice și de propunerile liderului american Donald Trump referitoare la Groenlanda.",
+    "entities": [
+      "Islanda",
+      "Donald Trump",
+      "Uniunea Europeană"
+    ],
+    "ai_cat": "extern",
+    "icon": "flag",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "amenintarile-lui-donald-trump-impulsioneaza-campania-pro-ue-din-islanda"
+  },
+  {
+    "url": "https://bizbrasov.ro/2026/08/25/vitamina-d-cu-toate-ca-stam-la-soare",
+    "original_link": "https://bizbrasov.ro/2026/08/25/vitamina-d-cu-toate-ca-stam-la-soare/",
+    "source": "bizbrasov",
+    "source_name": "BizBrașov",
+    "source_lang": "ro",
+    "title": "Deficitul de vitamina D poate apărea vara din cauza protecției solare",
+    "category": "sanatate",
+    "published": "2026-08-25T01:58:00+00:00",
+    "model": "B",
+    "src_extra": 33,
+    "teaser": "Medicii explică faptul că utilizarea zilnică a cremelor cu factor de protecție solară blochează sinteza cutanată a vitaminei D, generând carențe chiar și în sezonul cald.",
+    "entities": [],
+    "ai_cat": "sanatate",
+    "icon": "sun",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "deficitul-de-vitamina-d-poate-aparea-vara-din-cauza-protectiei-solare"
+  },
+  {
     "url": "https://dobrogeaonline.ro/fara-beton-si-piscine-permanente-cu-reguli-stricte-pentru-beach-baruri-modificarile-aduse-de-noul-puz-din-mamaia-nord",
     "original_link": "https://www.dobrogeaonline.ro/fara-beton-si-piscine-permanente-cu-reguli-stricte-pentru-beach-baruri-modificarile-aduse-de-noul-puz-din-mamaia-nord/",
     "source": "dobrogeaonline",
@@ -463,6 +1376,30 @@
     "prompt_version": "v2-esenta",
     "featured": false,
     "slug": "seful-armatei-pakistaneze-a-discutat-la-teheran-dupa-un-apel-din-sua"
+  },
+  {
+    "url": "https://prosport.ro/fotbal-extern/campionate-externe/italia/cel-mai-slab-nota-radu-dragusin-as-roma-desfiintare-fiorentina-etapa-1-serie-a-20510054",
+    "original_link": "https://www.prosport.ro/fotbal-extern/campionate-externe/italia/cel-mai-slab-nota-radu-dragusin-as-roma-desfiintare-fiorentina-etapa-1-serie-a-20510054",
+    "source": "prosport",
+    "source_name": "ProSport",
+    "source_lang": "ro",
+    "title": "Radu Drăgușin, notat modest după înfrângerea suferită de Fiorentina cu AS Roma",
+    "category": "sport",
+    "published": "2026-08-24T21:21:42+00:00",
+    "model": "B",
+    "src_extra": 29,
+    "teaser": "Fundașul român a fost integralist în partida în care AS Roma a învins categoric formația Fiorentina în prima etapă din noul sezon al campionatului italian de fotbal Serie A.",
+    "entities": [
+      "Radu Drăgușin",
+      "Fiorentina",
+      "AS Roma"
+    ],
+    "ai_cat": "sport",
+    "icon": "ball-football",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "radu-dragusin-notat-modest-dupa-infrangerea-suferita-de-fiorentina-cu-as-roma"
   },
   {
     "url": "https://gsp.ro/fotbal/liga-1/otelul-fc-arges-stjepan-tomas-joao-lameira-973043.html",
@@ -1557,6 +2494,28 @@
     "prompt_version": "v2-esenta",
     "featured": false,
     "slug": "ucraina-a-marcat-ziua-independentei-printr-o-parada-cu-roboti-si-drone"
+  },
+  {
+    "url": "https://spotmedia.ro/stiri/eveniment/ucraina-nu-a-avut-soldati-pentru-parada-de-ziua-independentei-asa-ca-au-defilat-robotii-video",
+    "original_link": "https://spotmedia.ro/stiri/eveniment/ucraina-nu-a-avut-soldati-pentru-parada-de-ziua-independentei-asa-ca-au-defilat-robotii-video",
+    "source": "spotmedia",
+    "source_name": "Spotmedia",
+    "source_lang": "ro",
+    "title": "Ucraina a marcat Ziua Independenței printr-o defilare a sistemelor robotice",
+    "category": "extern",
+    "published": "2026-08-24T20:13:00+00:00",
+    "model": "B",
+    "src_extra": 474,
+    "teaser": "Din cauza conflictului armat, autoritățile de la Kiev au renunțat la parada militară clasică, utilizând în schimb drone navale, aeriene și vehicule terestre robotizate pe bulevardul Hreșciatik.",
+    "entities": [
+      "Ucraina",
+      "Kiev"
+    ],
+    "ai_cat": "extern",
+    "icon": "robot",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
   },
   {
     "url": "https://prosport.ro/fotbal-extern/campionate-externe/anglia/cody-gakpo-transfer-bomba-maresca-manchester-city-liverpool-60-000-000-de-euro-20510001",
@@ -2742,6 +3701,29 @@
     "prompt_version": "v2-esenta",
     "featured": false,
     "slug": "ministrul-dragos-pislaru-sustine-ca-legea-salarizarii-nu-a-fost-abandonata"
+  },
+  {
+    "url": "https://politico.eu/article/17th-century-ireland-law-shielding-big-tech-class-actions-europe",
+    "original_link": "https://www.politico.eu/article/17th-century-ireland-law-shielding-big-tech-class-actions-europe/?utm_source=RSS_Feed&utm_medium=RSS&utm_campaign=RSS_Syndication",
+    "source": "politico_eu",
+    "source_name": "Politico EU",
+    "source_lang": "en",
+    "title": "O lege irlandeză veche blochează acțiunile colective împotriva marilor corporații tech în Europa",
+    "category": "extern",
+    "published": "2026-08-24T18:45:47+00:00",
+    "model": "B",
+    "src_extra": 949,
+    "teaser": "O legislație obscură din Irlanda, veche de 400 de ani, împiedică procesele colective intentate de consumatorii europeni împotriva marilor giganți din tehnologie, limitând drepturile similare celor din Statele Unite.",
+    "entities": [
+      "Irlanda",
+      "Big Tech"
+    ],
+    "ai_cat": "extern",
+    "icon": "shield-lock",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "o-lege-irlandeza-veche-blocheaza-actiunile-colective-impotriva-marilor"
   },
   {
     "url": "https://hotnews.ro/avertisment-fara-precedent-de-la-varful-bnr-masina-in-care-ne-aflam-cu-totii-se-indreapta-cu-toata-viteza-spre-zid-replica-dura-din-psd-2332303",
@@ -5243,6 +6225,28 @@
     "prompt_version": "v2-esenta",
     "featured": false,
     "slug": "asociatia-druckeria-sprijina-familiile-sinistrate-din-sacalaz-dupa-un-incendiu"
+  },
+  {
+    "url": "https://monitorulbt.ro/local/2026/08/24/pretul-neatentiei-animale-mistuite-de-flacari-din-cauza-arderii-resturilor-vegetale",
+    "original_link": "https://www.monitorulbt.ro/local/2026/08/24/pretul-neatentiei-animale-mistuite-de-flacari-din-cauza-arderii-resturilor-vegetale/",
+    "source": "monitorulbt",
+    "source_name": "Monitorul de Botoșani",
+    "source_lang": "ro",
+    "title": "Opt animale au murit într-un incendiu izbucnit de la o ardere de vegetație în Sulița",
+    "category": "local",
+    "published": "2026-08-24T16:06:54+00:00",
+    "model": "B",
+    "src_extra": 50,
+    "teaser": "O gospodărie din localitatea Sulița a fost cuprinsă de flăcări după ce un localnic a lăsat nesupravegheat un foc pentru igienizarea terenului. Opt animale au pierit, iar pompierii militari au intervenit pentru a stinge incendiul.",
+    "entities": [
+      "Sulița"
+    ],
+    "ai_cat": "judetean",
+    "icon": "flame",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "opt-animale-au-murit-intr-un-incendiu-izbucnit-de-la-o-ardere-de-vegetatie-in"
   },
   {
     "url": "https://pressalert.ro/2026/08/aproape-17-tone-de-droguri-transportate-cu-tir-uri-din-spania-reteaua-era-coordonata-din-romania-foto",
@@ -7890,6 +8894,28 @@
     "slug": "politia-din-pitesti-cauta-o-femeie-de-58-de-ani-disparuta-de-acasa"
   },
   {
+    "url": "https://avantaje.ro/articol/reteta-de-merdenele-a-lui-nicolai-tand-pe-care-o-poti-prepara-acasa",
+    "original_link": "https://www.avantaje.ro/articol/reteta-de-merdenele-a-lui-nicolai-tand-pe-care-o-poti-prepara-acasa",
+    "source": "avantaje",
+    "source_name": "Avantaje",
+    "source_lang": "ro",
+    "title": "Chef Nicolai Tand a prezentat rețeta casnică pentru merdenele cu foi subțiri",
+    "category": "lifestyle",
+    "published": "2026-08-24T14:32:02+00:00",
+    "model": "B",
+    "src_extra": 403,
+    "teaser": "În contextul dezbaterilor online despre produsele de patiserie, bucătarul Nicolai Tand a împărtășit la televizor pașii necesari pentru prepararea acasă a unor merdenele tradiționale, cu foietaj fin și umplutură gustoasă.",
+    "entities": [
+      "Nicolai Tand"
+    ],
+    "ai_cat": "lifestyle",
+    "icon": "home",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "chef-nicolai-tand-a-prezentat-reteta-casnica-pentru-merdenele-cu-foi-subtiri"
+  },
+  {
     "url": "https://transilvaniaon.ro/gradinita-de-pe-strada-podului-din-sibiu-este-aproape-gata-in-curand-aici-isi-vor-gasi-locul-60-de-copii",
     "original_link": "https://transilvaniaon.ro/gradinita-de-pe-strada-podului-din-sibiu-este-aproape-gata-in-curand-aici-isi-vor-gasi-locul-60-de-copii/",
     "source": "ziarultransilvaniei",
@@ -8164,7 +9190,7 @@
     "source": "spotmedia",
     "source_name": "Spotmedia",
     "source_lang": "ro",
-    "title": "Senatul a aprobat constituirea unei comisii de anchetă privind întâlnirea Bolojan-Tănăsescu",
+    "title": "Senatul a aprobat înființarea unei comisii de anchetă privind întâlnirea Bolojan-Tănăsescu",
     "category": "politic",
     "published": "2026-08-24T14:24:45+00:00",
     "model": "C",
@@ -8180,11 +9206,12 @@
       }
     ],
     "first_source": "Spotmedia",
-    "synthesis": "Plenul Senatului a aprobat constituirea unei comisii de anchetă pentru a investiga circumstanțele întâlnirii dintre președintele CCR, Simina Tănăsescu, și premierul interimar Ilie Bolojan, care a avut loc în biroul președintelui Senatului. Demersul a trecut cu 67 de voturi pentru și 41 împotrivă, urmând să stabilească dacă întrevederea neoficială în spațiul parlamentar a afectat normele instituționale.",
+    "synthesis": "Plenul Senatului a votat favorabil constituirea unei comisii de anchetă parlamentară menită să investigheze circumstanțele întâlnirii dintre președintele CCR, Simina Tănăsescu, și premierul interimar Ilie Bolojan, desfășurate în biroul președintelui Senatului. Decizia a fost adoptată cu 67 de voturi pentru și 41 împotrivă, urmând să stabilească dacă întrevederea neoficială a afectat normele instituționale.",
     "entities": [
-      "Senatul",
+      "Senat",
       "Simina Tănăsescu",
-      "Ilie Bolojan"
+      "Ilie Bolojan",
+      "CCR"
     ],
     "ai_cat": "politic",
     "icon": "gavel",
@@ -8192,7 +9219,7 @@
     "prompt_version": "v2-esenta",
     "featured": false,
     "slug": "senatul-a-aprobat-o-comisie-de-ancheta-privind-intalnirea-dintre-ilie-bolojan",
-    "updated": "2026-08-25T01:56:37.893531+00:00"
+    "updated": "2026-08-25T04:07:59.066461+00:00"
   },
   {
     "url": "https://b365.ro/un-barbat-de-28-de-ani-a-fost-gasit-inconstient-intr-o-locuinta-din-sectorul-3-medicii-n-au-mai-putut-sa-l-salveze-si-au-declarat-decesul-616874",
@@ -8833,6 +9860,28 @@
     "slug": "transport-public-navodari-informare-privind-mentinerea-facilitatilor-acordate"
   },
   {
+    "url": "https://monitorulbt.ro/local/2026/08/24/tentative-absurde-de-mita-la-botosani-doi-soferi-au-incercat-sa-cumpere-clementa-politistilor-in-aceeasi-ora",
+    "original_link": "https://www.monitorulbt.ro/local/2026/08/24/tentative-absurde-de-mita-la-botosani-doi-soferi-au-incercat-sa-cumpere-clementa-politistilor-in-aceeasi-ora/",
+    "source": "monitorulbt",
+    "source_name": "Monitorul de Botoșani",
+    "source_lang": "ro",
+    "title": "Doi șoferi din Botoșani au încercat să mituiască aceeași patrulă de poliție într-o oră",
+    "category": "local",
+    "published": "2026-08-24T13:51:05+00:00",
+    "model": "B",
+    "src_extra": 46,
+    "teaser": "Polițiștii rutieri din Botoșani s-au confruntat cu două tentative de mituire în doar 35 de minute, a doua ofertă ilicită fiind făcută chiar în timp ce ofițerii anticorupție instrumentau primul caz.",
+    "entities": [
+      "Botoșani"
+    ],
+    "ai_cat": "judetean",
+    "icon": "gavel",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "doi-soferi-din-botosani-au-incercat-sa-mituiasca-aceeasi-patrula-de-politie"
+  },
+  {
     "url": "https://moldova.europalibera.org/a/o-drona-a-cazut-la-50-km-in-interiorul-romaniei-la-cinci-metri-de-o-casa-probabil-trecuse-prin-sudul-r-moldova/33837209.html",
     "original_link": "https://moldova.europalibera.org/a/o-drona-a-cazut-la-50-km-in-interiorul-romaniei-la-cinci-metri-de-o-casa-probabil-trecuse-prin-sudul-r-moldova/33837209.html",
     "source": "el_moldova",
@@ -9086,6 +10135,51 @@
     "slug": "casa-nationala-de-pensii-publice-modifica-calendarul-platilor-pentru-septembrie"
   },
   {
+    "url": "https://avantaje.ro/articol/cum-te-refaci-dupa-o-viroza-odihna-hidratare-si-produse-utile-pentru-simptome-persistente",
+    "original_link": "https://www.avantaje.ro/articol/cum-te-refaci-dupa-o-viroza-odihna-hidratare-si-produse-utile-pentru-simptome-persistente",
+    "source": "avantaje",
+    "source_name": "Avantaje",
+    "source_lang": "ro",
+    "title": "Recuperarea după o viroză respiratorie necesită odihnă treptată și hidratare",
+    "category": "sanatate",
+    "published": "2026-08-24T13:27:15+00:00",
+    "model": "B",
+    "src_extra": 464,
+    "teaser": "După depășirea fazei critice a unei infecții respiratorii, organismul are nevoie de timp pentru a-și recăpăta energia. Specialiștii recomandă reluarea treptată a activităților, cu accent pe odihnă și consumul de lichide.",
+    "entities": [],
+    "ai_cat": "sanatate",
+    "icon": "stethoscope",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "recuperarea-dupa-o-viroza-respiratorie-necesita-odihna-treptata-si-hidratare"
+  },
+  {
+    "url": "https://avantaje.ro/articol/ringier-romania-isi-extinde-activitatea-in-republica-moldova-si-lanseaza-colectia-disney-editia-de-platina",
+    "original_link": "https://www.avantaje.ro/articol/ringier-romania-isi-extinde-activitatea-in-republica-moldova-si-lanseaza-colectia-disney-editia-de-platina",
+    "source": "avantaje",
+    "source_name": "Avantaje",
+    "source_lang": "ro",
+    "title": "Ringier România va distribui colecția Disney Ediția de Platină în Republica Moldova",
+    "category": "economic",
+    "published": "2026-08-24T13:25:50+00:00",
+    "model": "B",
+    "src_extra": 371,
+    "teaser": "Compania Ringier România își extinde operațiunile pe piața din Republica Moldova, devenind distribuitorul oficial al editurii Hachette. Primul proiect majore inclus în această colaborare este lansarea colecției Disney în format de platină.",
+    "entities": [
+      "Ringier România",
+      "Republica Moldova",
+      "Disney",
+      "Hachette"
+    ],
+    "ai_cat": "economic",
+    "icon": "shopping-cart",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "ringier-romania-va-distribui-colectia-disney-editia-de-platina-in-republica"
+  },
+  {
     "url": "https://zcj.ro/eveniment/accident-grav-in-cluj-napoca-un-stalp-s-ar-fi-prabusit-peste-un-pieton--300440.html",
     "original_link": "https://zcj.ro/eveniment/accident-grav-in-cluj-napoca-un-stalp-s-ar-fi-prabusit-peste-un-pieton--300440.html",
     "source": "zcj",
@@ -9176,7 +10270,8 @@
     "icon": "certificate",
     "processed_by": "gemini",
     "prompt_version": "v2-esenta",
-    "featured": false
+    "featured": false,
+    "slug": "camera-de-comert-industrie-si-agricultura-arad-lanseaza-cursul-de-formator"
   },
   {
     "url": "https://mytex.ro/sport/bent-dahl-analiza-pertinenta-gloria-bistrita",
@@ -10270,7 +11365,8 @@
     "ai_cat": "economic",
     "icon": "building-factory",
     "prompt_version": "v2-esenta",
-    "featured": false
+    "featured": false,
+    "slug": "carpatec-recycling-investeste-peste-600-000-de-euro-in-parcul-industrial"
   },
   {
     "url": "https://politico.eu/article/france-2027-presidential-election-jean-luc-melenchon-marine-le-pen-poll",
@@ -10384,6 +11480,26 @@
     "synthesis": "Compania Carpatec Recycling, specializată în procesarea și recuperarea materialelor reciclabile și a cablurilor electrice, s-a alăturat parcului industrial Tetarom III din comuna Jucu. Parcul este administrat de Tetarom SA, o societate aflată în subordinea Consiliului Județean Cluj."
   },
   {
+    "url": "https://monitorulbt.ro/local/2026/08/24/ajutor-de-500-de-lei-pentru-elevi-si-prescolari-cine-poate-obtine-banii-si-pana-cand-trebuie-depuse-cererile",
+    "original_link": "https://www.monitorulbt.ro/local/2026/08/24/ajutor-de-500-de-lei-pentru-elevi-si-prescolari-cine-poate-obtine-banii-si-pana-cand-trebuie-depuse-cererile/",
+    "source": "monitorulbt",
+    "source_name": "Monitorul de Botoșani",
+    "source_lang": "ro",
+    "title": "Părinții elevilor defavorizați trebuie să depună cereri pentru ajutorul școlar de 500 de lei",
+    "category": "general",
+    "published": "2026-08-24T12:51:32+00:00",
+    "model": "B",
+    "src_extra": 49,
+    "teaser": "Familiile cu venituri reduse din România pot obține sprijinul educațional guvernamental în valoare de 500 de lei pentru copii, fiind necesară completarea unei noi solicitări la unitățile de învățământ.",
+    "entities": [],
+    "ai_cat": "social",
+    "icon": "receipt-tax",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "parintii-elevilor-defavorizati-trebuie-sa-depuna-cereri-pentru-ajutorul-scolar"
+  },
+  {
     "url": "https://bbc.co.uk/news/articles/cy8zxqn57z3o?at_medium=RSS&at_campaign=rss",
     "original_link": "https://www.bbc.co.uk/news/articles/cy8zxqn57z3o?at_medium=RSS&at_campaign=rss",
     "source": "bbc_europe",
@@ -10406,6 +11522,26 @@
     "prompt_version": "v2-esenta",
     "featured": false,
     "slug": "marea-britanie-sprijina-ucraina-oferind-planuri-pentru-rachete"
+  },
+  {
+    "url": "https://avantaje.ro/articol/singura-zodie-care-renaste-ca-pasarea-phoenix-se-ridica-si-mai-puternica-dupa-fiecare-incercare",
+    "original_link": "https://www.avantaje.ro/articol/singura-zodie-care-renaste-ca-pasarea-phoenix-se-ridica-si-mai-puternica-dupa-fiecare-incercare",
+    "source": "avantaje",
+    "source_name": "Avantaje",
+    "source_lang": "ro",
+    "title": "O singură zodie din zodiac renaște asemenea păsării Phoenix după orice eșec",
+    "category": "lifestyle",
+    "published": "2026-08-24T12:51:10+00:00",
+    "model": "B",
+    "src_extra": 477,
+    "teaser": "Astrologii scot în evidență un semn zodiacal care demonstrează o reziliență ieșită din comun, fiind capabil să depășească obstacole majore și să se reinventeze complet după momentele dificile din viață.",
+    "entities": [],
+    "ai_cat": "lifestyle",
+    "icon": "sun",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "o-singura-zodie-din-zodiac-renaste-asemenea-pasarii-phoenix-dupa-orice-esec"
   },
   {
     "url": "https://g4media.ro/gigantii-europeni-ai-luxului-vad-primele-semne-de-revenire-pe-piata-cheie-din-china.html",
@@ -10823,7 +11959,7 @@
     "source": "g4media",
     "source_name": "G4Media",
     "source_lang": "ro",
-    "title": "Punerea în vânzare a biletelor pentru meciul de fotbal Suedia - România",
+    "title": "Biletele pentru meciul Suedia-România din Liga Națiunilor se pun în vânzare",
     "category": "sport",
     "published": "2026-08-24T12:35:35+00:00",
     "model": "C",
@@ -10833,7 +11969,7 @@
       "România",
       "Suedia",
       "FRF",
-      "Solna"
+      "Strawberry Arena"
     ],
     "ai_cat": "sport",
     "icon": "ball-football",
@@ -10852,8 +11988,8 @@
       }
     ],
     "first_source": "G4Media",
-    "updated": "2026-08-25T01:56:31.187797+00:00",
-    "synthesis": "Biletele pentru partida dintre Suedia și România din Liga Națiunilor, programată pe 25 septembrie la Solna, au fost puse în vânzare pentru suporteri. Suporterii români au la dispoziție 2200 de tichete nominale la prețul de 130 de lei fiecare, achiziția putând fi făcută online pe platforma FRF până cel târziu la mijlocul lunii septembrie."
+    "updated": "2026-08-25T04:07:59.066422+00:00",
+    "synthesis": "Federația Română de Fotbal a pus în vânzare biletele pentru partida din deplasare împotriva Suediei, programată pe 25 septembrie pe Strawberry Arena din Solna. Suporterii români au la dispoziție 2200 de tichete nominale în Peluza Nord, la prețul de 130 de lei fiecare. Achiziția se face online, iar comanda este limitată la maximum patru bilete per persoană, pe baza datelor de identificare."
   },
   {
     "url": "https://digi24.ro/magazin/timp-liber/destiny-park-aniverseaza-patru-ani-de-actvitate-urmeaza-o-luna-plina-de-surprize-invitati-speciali-si-evenimente-pentru-copii-3919269",
@@ -12317,7 +13453,7 @@
     "source": "bizbrasov",
     "source_name": "BizBrașov",
     "source_lang": "ro",
-    "title": "Câștigătorii competiției de film documentar de la Festivalul de Film și Istorii Râșnov 2026",
+    "title": "Câștigătorii competiției de film documentar de la Festivalul Râșnov 2026",
     "category": "local",
     "published": "2026-08-24T11:37:15+00:00",
     "model": "C",
@@ -12333,12 +13469,12 @@
       }
     ],
     "first_source": "BizBrașov",
-    "synthesis": "Cea de-a 18-a ediție a Festivalului de Film și Istorii Râșnov și-a desemnat câștigătorii competiției internaționale de documentar. Juriul a acordat premiul principal producției „Spionii dintre noi”, regizată de Jamie Coughlin Silverman și Gabriel Silverman, în timp ce mențiunea specială a revenit filmului „Adaptare la Întuneric”, regizat de Shay Fogelman. Premiul Publicului a fost adjudecat de documentarul „Viaţa secretă a mamei mele”, realizat de Marisa Fox.",
+    "synthesis": "Cea de-a 18-a ediție a Festivalului de Film şi Istorii Râşnov și-a desemnat câștigătorii secțiunii internaționale de documentar. Premiul principal „Pierre Henri Deleau” a revenit producției „Spionii dintre noi”, regizată de Jamie Coughlin Silverman şi Gabriel Silverman. Mențiunea specială a juriului a fost obținută de „Adaptare la Întuneric”, în timp ce Premiul Publicului a fost atribuit filmului „Viaţa secretă a mamei mele”, regizat de Marisa Fox.",
     "entities": [
       "Festivalul de Film şi Istorii Râşnov",
-      "Spionii dintre noi",
-      "Adaptare la Întuneric",
-      "Viaţa secretă a mamei mele"
+      "Jamie Coughlin Silverman",
+      "Gabriel Silverman",
+      "Marisa Fox"
     ],
     "ai_cat": "cultura",
     "icon": "movie",
@@ -12346,7 +13482,7 @@
     "prompt_version": "v2-esenta",
     "featured": false,
     "slug": "au-fost-anuntati-castigatorii-competitiei-de-documentar-de-la-festivalul-de",
-    "updated": "2026-08-25T01:56:37.893516+00:00"
+    "updated": "2026-08-25T04:07:59.066449+00:00"
   },
   {
     "url": "https://jurnalulolteniei.ro/2026/08/24/efectul-david-popovici-inotul-din-olt-a-revenit-spectaculos",
@@ -12369,6 +13505,28 @@
     "prompt_version": "v2-esenta",
     "featured": false,
     "slug": "inotul-din-judetul-olt-a-revenit-spectaculos-in-competitii"
+  },
+  {
+    "url": "https://monitorulbt.ro/local/2026/08/24/tragedie-prevenita-de-un-politist-in-timpul-liber-o-masina-a-luat-foc-in-trafic",
+    "original_link": "https://www.monitorulbt.ro/local/2026/08/24/tragedie-prevenita-de-un-politist-in-timpul-liber-o-masina-a-luat-foc-in-trafic/",
+    "source": "monitorulbt",
+    "source_name": "Monitorul de Botoșani",
+    "source_lang": "ro",
+    "title": "Un polițist aflat în timpul liber a salvat ocupanții unei mașini cuprinse de fum",
+    "category": "general",
+    "published": "2026-08-24T11:36:52+00:00",
+    "model": "B",
+    "src_extra": 44,
+    "teaser": "Un cadru al IPJ Botoșani a oprit o mașină care emana fum pe un drum spre Măgura, alertând șoferul la timp. Ocupanții au evacuat autovehiculul înainte ca acesta să fie mistuit de un incendiu violent.",
+    "entities": [
+      "Măgura"
+    ],
+    "ai_cat": "judetean",
+    "icon": "car",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "un-politist-aflat-in-timpul-liber-a-salvat-ocupantii-unei-masini-cuprinse-de-fum"
   },
   {
     "url": "https://cvlpress.ro/24.08.2026/o-noua-reuniune-a-coalitiei-celor-dispusi",
@@ -12577,7 +13735,7 @@
       }
     ],
     "first_source": "Economica",
-    "synthesis": "Primăria Craiova și compania Electrica au semnat un contract pentru construirea unei noi centrale de cogenerare de înaltă eficiență, alimentată cu gaze naturale și pregătită pentru hidrogen. Investiția estimată la 235 de milioane de euro va asigura energia electrică și termică a orașului, înlocuind treptat vechea sursă pe bază de cărbune.",
+    "synthesis": "Compania Electrica și Primăria Craiova au semnat un contract pentru construcția unei centrale de cogenerare pe gaze, de înaltă eficiență, destinată alimentării sistemului de termoficare al orașului. Investiția este estimată la 235 de milioane de euro fără TVA. Unitatea va avea o putere electrică de 82 MW și o capacitate termică de 208 MW, urmând să înlocuiască treptat sursa actuală pe bază de cărbune și să asigure căldură pentru circa 53.000 de locuințe și instituții.",
     "entities": [
       "Electrica",
       "Craiova",
@@ -12590,7 +13748,7 @@
     "prompt_version": "v2-esenta",
     "featured": false,
     "slug": "electrica-a-semnat-contractul-pentru-noua-centrala-de-cogenerare-din-craiova",
-    "updated": "2026-08-25T01:56:12.023012+00:00"
+    "updated": "2026-08-25T04:07:08.191672+00:00"
   },
   {
     "url": "https://vinatorineamt.ro/informare-apa-serv-sa-27",
@@ -12789,6 +13947,28 @@
     "prompt_version": "v2-esenta",
     "featured": false,
     "slug": "suporteri-rniti-de-artificii-la-un-meci-in-olanda"
+  },
+  {
+    "url": "https://monitorulbt.ro/national/2026/08/24/parlamentarii-revin-la-lucru-pentru-jaloanele-pnrr-legea-salarizarii-ramane-insa-blocata",
+    "original_link": "https://www.monitorulbt.ro/national/2026/08/24/parlamentarii-revin-la-lucru-pentru-jaloanele-pnrr-legea-salarizarii-ramane-insa-blocata/",
+    "source": "monitorulbt",
+    "source_name": "Monitorul de Botoșani",
+    "source_lang": "ro",
+    "title": "Parlamentul s-a reunit în sesiune extraordinară pentru PNRR, dar legea salarizării rămâne blocată",
+    "category": "politic",
+    "published": "2026-08-24T11:10:49+00:00",
+    "model": "B",
+    "src_extra": 48,
+    "teaser": "Aleșii au revenit la lucru pentru a vota jaloanele din PNRR scadente la finalul lunii august, însă Legea salarizării unitare stagnează în continuare din cauza neînțelegerilor politice dintre foștii parteneri de guvernare.",
+    "entities": [
+      "Parlamentul României"
+    ],
+    "ai_cat": "politic",
+    "icon": "building-monument",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "parlamentul-s-a-reunit-in-sesiune-extraordinara-pentru-pnrr-dar-legea"
   },
   {
     "url": "https://stirileolteniei.ro/festivalul-folk-printre-nori-la-ranca-pachet-de-800-de-lei-cu-doua-nopti-de-cazare-si-voucher-de-550-de-lei",
@@ -13052,7 +14232,7 @@
     "source": "economedia",
     "source_name": "Economedia",
     "source_lang": "ro",
-    "title": "Peste 60% dintre români nu își permit o vacanță anuală, avertizează ANAT",
+    "title": "Peste 60% dintre români nu își permit o vacanță anuală",
     "category": "economic",
     "published": "2026-08-24T10:41:37+00:00",
     "model": "C",
@@ -13065,21 +14245,26 @@
       {
         "name": "Timiș Online",
         "url": "https://www.tion.ro/turism/peste-60-dintre-romani-nu-isi-permit-o-vacanta-anat-un-semnal-de-alarma-major-pentru-economie-si-societate-2339760/?utm_source=rss&utm_medium=referral&utm_campaign=hiraggregator"
+      },
+      {
+        "name": "Alba24",
+        "url": "https://alba24.ro/peste-60-dintre-romani-nu-isi-permit-o-saptamana-de-vacanta-ce-masuri-solicita-anat-1154652.html"
       }
     ],
     "first_source": "Economedia",
-    "synthesis": "Asociația Națională a Agențiilor de Turism semnalează că 61,4% dintre români nu își permit o săptămână de concediu pe an, conform datelor Eurostat. Scăderea puterii de cumpărare determină populația să aleagă sejururi mai scurte, rezervări timpurii și destinații externe precum Bulgaria, Grecia sau Turcia, considerate mai avantajoase ca raport preț-calitate.",
+    "synthesis": "Asociația Națională a Agențiilor de Turism avertizează că 61,4% dintre românii cu vârsta de cel puțin 16 ani nu și-au permis financiar o săptămână de concediu în afara locuinței pe parcursul anului 2025. Această pondere reprezintă cel mai ridicat procent înregistrat la nivelul Uniunii Europene, conform datelor publicate de Eurostat.",
     "entities": [
       "ANAT",
       "Eurostat",
-      "Cristian Bărhălescu"
+      "România"
     ],
     "ai_cat": "economic",
     "icon": "percentage",
     "processed_by": "gemini",
     "prompt_version": "v2-esenta",
     "featured": false,
-    "slug": "peste-60-dintre-romani-nu-isi-permit-o-vacanta-anuala-avertizeaza-anat"
+    "slug": "peste-60-dintre-romani-nu-isi-permit-o-vacanta-anuala-avertizeaza-anat",
+    "updated": "2026-08-25T04:07:08.191704+00:00"
   },
   {
     "url": "https://bbc.co.uk/news/articles/cg598yvrzpro?at_medium=RSS&at_campaign=rss",
@@ -15746,8 +16931,8 @@
     "teaser": "Ministerul Educației anunță cel mai ridicat procent de promovare din ultimii 13 ani la sesiunea de toamnă a examenului de maturitate, după ce alți 887 de candidați au promovat în urma contestațiilor.",
     "entities": [
       "Dolj",
-      "Inspectoratul Școlar Județean Dolj",
-      "Ministerul Educației"
+      "Ministerul Educației",
+      "Inspectoratul Școlar Județean Dolj"
     ],
     "ai_cat": "judetean",
     "icon": "certificate",
@@ -15778,8 +16963,8 @@
       }
     ],
     "first_source": "Gazeta de Cluj",
-    "updated": "2026-08-25T01:56:44.904458+00:00",
-    "synthesis": "Inspectoratul Școlar Județean Dolj a anunțat că rata finală de promovare a examenului de Bacalaureat, sesiunea iulie-august 2026, a ajuns la 37,7% după soluționarea contestațiilor, în creștere față de 34,34% cât era inițial. Din totalul candidaților înscriși, 275 au promovat examenul, în urma reevaluării a 280 de contestații depuse, dintre care 152 s-au soldat cu majorarea notelor. De asemenea, 12 licee din județ au depășit o rată de promovare de 50%."
+    "updated": "2026-08-25T04:08:05.899753+00:00",
+    "synthesis": "În județul Dolj, rata finală de promovare la sesiunea de toamnă a examenului de Bacalaureat a crescut la 37,7% după soluționarea contestațiilor. Din totalul candidaților înscriși, un număr suplimentar de elevi au promovat în urma reevaluării lucrărilor, Ministerul Educației consemnând cel mai ridicat procent din ultimii 13 ani pentru această sesiune. De asemenea, mai multe unități de învățământ au depășit pragul de 50% promovare."
   },
   {
     "url": "https://bizbrasov.ro/2026/08/24/profesor-sport-milionar-imobiliare-primar",
