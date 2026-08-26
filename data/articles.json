@@ -1,5 +1,951 @@
 [
   {
+    "url": "https://stirileprotv.ro/stiri/actualitate/oceanele-fierb-atingand-temperaturi-record-urmarile-sunt-dezastruoase.html",
+    "original_link": "https://stirileprotv.ro/stiri/actualitate/oceanele-fierb-atingand-temperaturi-record-urmarile-sunt-dezastruoase.html",
+    "source": "protv",
+    "source_name": "Știrile ProTV",
+    "source_lang": "ro",
+    "title": "Oceanele înregistrează temperaturi record, provocând fenomene meteo extreme și distrugerea ecosistemelor marine",
+    "category": "extern",
+    "published": "2026-08-26T04:46:38+00:00",
+    "model": "B",
+    "src_extra": 26,
+    "teaser": "Oamenii de știință europeni avertizează asupra consecințelor grave ale încălzirii excesive a mărilor, materializate prin furtuni violente, ploi torențiale, proliferarea algelor toxice și mortalitate masivă în rândul peștilor și coralilor.",
+    "entities": [
+      "Europa"
+    ],
+    "ai_cat": "extern",
+    "icon": "sun",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "oceanele-inregistreaza-temperaturi-record-provocand-fenomene-meteo-extreme-si"
+  },
+  {
+    "url": "https://bihon.ro/stiri-internationale/romania/averile-demnitarilor-din-nou-la-vedere-deputatii-au-stabilit-noua-forma-a-declaratiilor-dupa-deciziile-ccr-5380899",
+    "original_link": "https://www.bihon.ro/stiri-internationale/romania/averile-demnitarilor-din-nou-la-vedere-deputatii-au-stabilit-noua-forma-a-declaratiilor-dupa-deciziile-ccr-5380899/?utm_source=rss&utm_medium=referral&utm_campaign=hiraggregator",
+    "source": "bihon",
+    "source_name": "Bihon",
+    "source_lang": "ro",
+    "title": "Deputații au adoptat noile reguli pentru declarațiile de avere, conform deciziilor Curții Constituționale",
+    "category": "politic",
+    "published": "2026-08-26T04:45:59+00:00",
+    "model": "B",
+    "src_extra": 529,
+    "teaser": "În urma unor dezbateri prelungite, comisiile parlamentare au stabilit o formă revizuită a legii, introducând amendamente recomandate de Agenția Națională de Integritate pentru alinierea la hotărârile CCR referitoare la averile demnitarilor.",
+    "entities": [
+      "Curtea Constituțională",
+      "Parlamentul României",
+      "Agenția Națională de Integritate"
+    ],
+    "ai_cat": "politic",
+    "icon": "gavel",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "deputatii-au-adoptat-noile-reguli-pentru-declaratiile-de-avere-conform"
+  },
+  {
+    "url": "https://g4media.ro/echipaj-de-politie-atacat-in-centrul-brasovului-sapte-covasneni-au-fost-retinuti-dupa-o-noua-interventie-a-mascatilor-si-jandarmilor.html",
+    "original_link": "https://www.g4media.ro/echipaj-de-politie-atacat-in-centrul-brasovului-sapte-covasneni-au-fost-retinuti-dupa-o-noua-interventie-a-mascatilor-si-jandarmilor.html",
+    "source": "g4media",
+    "source_name": "G4Media",
+    "source_lang": "ro",
+    "title": "Șapte persoane din Covasna au fost reținute după ce au atacat un echipaj de poliție în Brașov",
+    "category": "local",
+    "published": "2026-08-26T04:45:39+00:00",
+    "model": "B",
+    "src_extra": 41,
+    "teaser": "Forțele speciale ale poliției și jandarmeriei au intervenit în centrul istoric din Brașov pentru aplanarea unui conflict violent provocat de șapte indivizi care au agresat agenții aflați în misiune.",
+    "entities": [
+      "Brașov",
+      "Covasna"
+    ],
+    "ai_cat": "regional",
+    "icon": "shield",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "sapte-persoane-din-covasna-au-fost-retinute-dupa-ce-au-atacat-un-echipaj-de"
+  },
+  {
+    "url": "https://prosport.ro/fotbal-intern/superliga/dinamo-lovitura-mihai-stoica-andrei-nicolescu-20510672",
+    "original_link": "https://www.prosport.ro/fotbal-intern/superliga/dinamo-lovitura-mihai-stoica-andrei-nicolescu-20510672",
+    "source": "prosport",
+    "source_name": "ProSport",
+    "source_lang": "ro",
+    "title": "Dinamo București ocupă primul loc în Superligă după numirea antrenorului Nuno Campos",
+    "category": "sport",
+    "published": "2026-08-26T04:45:38+00:00",
+    "model": "B",
+    "src_extra": 44,
+    "teaser": "Parcursul excelent al echipei sub conducerea tehnicianului portughez l-a impresionat până și pe oficialul stelist Mihai Stoica, care a lăudat inspirația conducerii dinamoviste în alegerea băncii tehnice.",
+    "entities": [
+      "Dinamo București",
+      "Nuno Campos",
+      "Mihai Stoica",
+      "Superliga"
+    ],
+    "ai_cat": "sport",
+    "icon": "ball-football",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "dinamo-bucuresti-ocupa-primul-loc-in-superliga-dupa-numirea-antrenorului-nuno"
+  },
+  {
+    "url": "https://monitorulbt.ro/sarbatoarea-zilei/2026/08/26/sfintii-adrian-si-natalia-sot-si-sotie-5",
+    "original_link": "https://www.monitorulbt.ro/sarbatoarea-zilei/2026/08/26/sfintii-adrian-si-natalia-sot-si-sotie-5/",
+    "source": "monitorulbt",
+    "source_name": "Monitorul de Botoșani",
+    "source_lang": "ro",
+    "title": "Biserica Ortodoxă i-a prăznuit pe Sfinții Mucenici Adrian și Natalia din Nicomidia",
+    "category": "cultura",
+    "published": "2026-08-26T04:43:27+00:00",
+    "model": "B",
+    "src_extra": 52,
+    "teaser": "Calendarul creștin amintește viața soților din Nicomidia, în care pretorul pagan Adrian s-a convertit la creștinism în timpul persecuțiilor împăratului Maximian, fiind susținut de soția sa, Natalia.",
+    "entities": [
+      "Sfinții Adrian și Natalia",
+      "Nicomidia",
+      "Maximian"
+    ],
+    "ai_cat": "cultura",
+    "icon": "building-church",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "biserica-ortodoxa-i-a-praznuit-pe-sfintii-mucenici-adrian-si-natalia-din"
+  },
+  {
+    "url": "https://stirileprotv.ro/stiri/international/ucraina-a-atacat-puternic-rusia-ce-arde-pe-teritoriul-rus-dupa-atacurile-kievului-video.html",
+    "original_link": "https://stirileprotv.ro/stiri/international/ucraina-a-atacat-puternic-rusia-ce-arde-pe-teritoriul-rus-dupa-atacurile-kievului-video.html",
+    "source": "protv",
+    "source_name": "Știrile ProTV",
+    "source_lang": "ro",
+    "title": "Forțele ucrainene au lansat atacuri cu drone asupra unor obiective economice din Rusia",
+    "category": "extern",
+    "published": "2026-08-26T04:42:27+00:00",
+    "model": "B",
+    "src_extra": 31,
+    "teaser": "Canalele de monitorizare au raportat lovituri repetate vizând cel mai mare retailer online rus, Wildberries, în timp ce mai multe explozii puternice au fost înregistrate și în regiunea Tambov.",
+    "entities": [
+      "Ucraina",
+      "Rusia",
+      "Wildberries",
+      "Tambov"
+    ],
+    "ai_cat": "extern",
+    "icon": "flame",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "fortele-ucrainene-au-lansat-atacuri-cu-drone-asupra-unor-obiective-economice"
+  },
+  {
+    "url": "https://stirileprotv.ro/stiri/stiinta/100-de-miliarde-de-dolari-in-louisiana-noul-vis-spatial-al-lui-elon-musk-sub-forma-unui-port-aerospatial.html",
+    "original_link": "https://stirileprotv.ro/stiri/stiinta/100-de-miliarde-de-dolari-in-louisiana-noul-vis-spatial-al-lui-elon-musk-sub-forma-unui-port-aerospatial.html",
+    "source": "protv",
+    "source_name": "Știrile ProTV",
+    "source_lang": "ro",
+    "title": "SpaceX intenționează să investească 100 de miliarde de dolari într-un complex spațial în Louisiana",
+    "category": "tech",
+    "published": "2026-08-26T04:41:30+00:00",
+    "model": "B",
+    "src_extra": 26,
+    "teaser": "Compania condusă de Elon Musk pregătește construcția unui port aerospațial de amploare în Statele Unite, reprezentând unul dintre cele mai costisitoare proiecte de infrastructură din domeniul explorării spațiale.",
+    "entities": [
+      "SpaceX",
+      "Elon Musk",
+      "Louisiana",
+      "SUA"
+    ],
+    "ai_cat": "tech",
+    "icon": "rocket",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "spacex-intentioneaza-sa-investeasca-100-de-miliarde-de-dolari-intr-un-complex"
+  },
+  {
+    "url": "https://g4media.ro/770-de-milioane-de-euro-sau-un-principiu-cade-ilie-bolojan-in-capcana-psd.html",
+    "original_link": "https://www.g4media.ro/770-de-milioane-de-euro-sau-un-principiu-cade-ilie-bolojan-in-capcana-psd.html",
+    "source": "g4media",
+    "source_name": "G4Media",
+    "source_lang": "ro",
+    "title": "Dilemă politică pentru PNL și Ilie Bolojan privind legea integrității și fondurile europene",
+    "category": "politic",
+    "published": "2026-08-26T04:38:12+00:00",
+    "model": "B",
+    "src_extra": 41,
+    "teaser": "Liberalii sunt nevoiți să aleagă între votarea unei legi modificate de PSD pentru deblocarea a 770 de milioane de euro din PNRR și apărarea principiilor constituționale legate de neretroactivitatea actelor normative.",
+    "entities": [
+      "Ilie Bolojan",
+      "PNL",
+      "PSD",
+      "PNRR"
+    ],
+    "ai_cat": "politic",
+    "icon": "receipt-tax",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "dilema-politica-pentru-pnl-si-ilie-bolojan-privind-legea-integritatii-si"
+  },
+  {
+    "url": "https://hotnews.ro/cauza-mortii-cantaretei-dolly-parton-dezvaluita-2333409",
+    "original_link": "https://hotnews.ro/cauza-mortii-cantaretei-dolly-parton-dezvaluita-2333409",
+    "source": "hotnews",
+    "source_name": "HotNews",
+    "source_lang": "ro",
+    "title": "Cântăreața de muzică country Dolly Parton a încetat din viață la vârsta de 80 de ani",
+    "category": "cultura",
+    "published": "2026-08-26T04:37:27+00:00",
+    "model": "B",
+    "src_extra": 53,
+    "teaser": "Reprezentanții celebrei artiste americane au anunțat că aceasta s-a stins din viață la un centru oncologic din Statele Unite, în urma unei scurte bătălii cu cancerul, înconjurată de familie.",
+    "entities": [
+      "Dolly Parton",
+      "Vanderbilt-Ingram Cancer Center"
+    ],
+    "ai_cat": "cultura",
+    "icon": "music",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "cantareata-de-muzica-country-dolly-parton-a-incetat-din-viata-la-varsta-de-80"
+  },
+  {
+    "url": "https://gsp.ro/international/campionate/olanda-pep-guardiola-arne-slot-xavi-hernandez-973375.html",
+    "original_link": "https://www.gsp.ro/international/campionate/olanda-pep-guardiola-arne-slot-xavi-hernandez-973375.html",
+    "source": "gsp",
+    "source_name": "GSP",
+    "source_lang": "ro",
+    "title": "Federația Olandeză de Fotbal l-a ofertat pe Pep Guardiola înainte de a-l numi pe Xavi Hernandez",
+    "category": "sport",
+    "published": "2026-08-26T04:35:49+00:00",
+    "model": "B",
+    "src_extra": 50,
+    "teaser": "Directorul sportiv Nigel de Jong a dezvăluit că tehnicianul spaniol și Arne Slot s-au aflat pe lista scurtă a federației batave înainte ca Xavi să preia funcția de selecționer al naționalei Olandei.",
+    "entities": [
+      "Xavi Hernandez",
+      "Pep Guardiola",
+      "Nigel de Jong",
+      "Arne Slot",
+      "Olanda"
+    ],
+    "ai_cat": "sport",
+    "icon": "ball-football",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "federatia-olandeza-de-fotbal-l-a-ofertat-pe-pep-guardiola-inainte-de-a-l-numi"
+  },
+  {
+    "url": "https://g4media.ro/referendum-in-islanda-cetatenii-decid-daca-redeschid-negocierile-de-aderare-la-ue.html",
+    "original_link": "https://www.g4media.ro/referendum-in-islanda-cetatenii-decid-daca-redeschid-negocierile-de-aderare-la-ue.html",
+    "source": "g4media",
+    "source_name": "G4Media",
+    "source_lang": "ro",
+    "title": "Islanda organizează un referendum privind reluarea negocierilor de aderare la Uniunea Europeană",
+    "category": "extern",
+    "published": "2026-08-26T04:35:31+00:00",
+    "model": "B",
+    "src_extra": 51,
+    "teaser": "Cetățenii islandezi sunt chemați la urne pentru a decide dacă Reykjavik va relua discuțiile de integrare comunitară, la mai bine de zece ani de la blocarea procesului.",
+    "entities": [
+      "Islanda",
+      "Uniunea Europeană",
+      "Bruxelles",
+      "Reykjavik"
+    ],
+    "ai_cat": "extern",
+    "icon": "globe",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "islanda-organizeaza-un-referendum-privind-reluarea-negocierilor-de-aderare-la-2"
+  },
+  {
+    "url": "https://stirileprotv.ro/show-buzz/entertainment/decizia-lui-donald-trump-dupa-moartea-legendarei-cantarete-dolly-parton-o-adevarata-pierdere.html",
+    "original_link": "https://stirileprotv.ro/show-buzz/entertainment/decizia-lui-donald-trump-dupa-moartea-legendarei-cantarete-dolly-parton-o-adevarata-pierdere.html",
+    "source": "protv",
+    "source_name": "Știrile ProTV",
+    "source_lang": "ro",
+    "title": "Donald Trump a dispus coborârea drapelelor în bernă în SUA după decesul lui Dolly Parton",
+    "category": "extern",
+    "published": "2026-08-26T04:34:12+00:00",
+    "model": "B",
+    "src_extra": 18,
+    "teaser": "Președintele american a ordonat ca steagul național să fie menținut în bernă timp de o săptămână pe toate clădirile publice, în semn de omagiu pentru celebra cântăreață.",
+    "entities": [
+      "Donald Trump",
+      "Dolly Parton",
+      "Statele Unite"
+    ],
+    "ai_cat": "extern",
+    "icon": "flag",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "donald-trump-a-dispus-coborarea-drapelelor-in-berna-in-sua-dupa-decesul-lui"
+  },
+  {
+    "url": "https://monitorulbt.ro/editorial/2026/08/26/suntem-in-aceeasi-barca-dar-nu-toti-ciprian-mitoceanu",
+    "original_link": "https://www.monitorulbt.ro/editorial/2026/08/26/suntem-in-aceeasi-barca-dar-nu-toti-ciprian-mitoceanu/",
+    "source": "monitorulbt",
+    "source_name": "Monitorul de Botoșani",
+    "source_lang": "ro",
+    "title": "Statul român mută povara deficitului bugetar asupra contribuabililor corecți",
+    "category": "economic",
+    "published": "2026-08-26T04:33:48+00:00",
+    "model": "B",
+    "src_extra": 51,
+    "teaser": "Analiza fiscală arată că autoritățile din România aleg constant să acopere lipsurile bugetare prin penalizarea cetățenilor care își achită taxele la zi, invocând crize financiare.",
+    "entities": [
+      "România",
+      "Ciprian Mitoceanu"
+    ],
+    "ai_cat": "economic",
+    "icon": "receipt-tax",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "statul-roman-muta-povara-deficitului-bugetar-asupra-contribuabililor-corecti"
+  },
+  {
+    "url": "https://bihon.ro/stiri-internationale/romania/filmarile-din-trafic-intre-proba-pentru-politie-si-riscul-de-a-incalca-dreptul-la-imagine-ce-trebuie-sa-stie-soferii-5380860",
+    "original_link": "https://www.bihon.ro/stiri-internationale/romania/filmarile-din-trafic-intre-proba-pentru-politie-si-riscul-de-a-incalca-dreptul-la-imagine-ce-trebuie-sa-stie-soferii-5380860/?utm_source=rss&utm_medium=referral&utm_campaign=hiraggregator",
+    "source": "bihon",
+    "source_name": "Bihon",
+    "source_lang": "ro",
+    "title": "Filmările din trafic pot constitui probe pentru Poliție, dar ridică riscuri privind protecția datelor",
+    "category": "auto",
+    "published": "2026-08-26T04:30:52+00:00",
+    "model": "B",
+    "src_extra": 1560,
+    "teaser": "Înregistrările video realizate de șoferi pot fi folosite de autorități pentru sancțiuni, însă publicarea lor pe rețelele sociale poate încălca dreptul la imagine și legislația privind datele personale.",
+    "entities": [
+      "Poliția Română",
+      "Facebook",
+      "TikTok",
+      "YouTube"
+    ],
+    "ai_cat": "auto",
+    "icon": "car",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "filmarile-din-trafic-pot-constitui-probe-pentru-politie-dar-ridica-riscuri"
+  },
+  {
+    "url": "https://alba24.ro/haos-si-confuzie-dupa-modificarea-codului-administrativ-un-consilier-local-din-zlatna-si-anuntat-demisie-din-cauza-noii-legi-1154924.html",
+    "original_link": "https://alba24.ro/haos-si-confuzie-dupa-modificarea-codului-administrativ-un-consilier-local-din-zlatna-si-anuntat-demisie-din-cauza-noii-legi-1154924.html",
+    "source": "alba24",
+    "source_name": "Alba24",
+    "source_lang": "ro",
+    "title": "Modificările aduse Codului administrativ generează confuzie și demisii în administrația locală",
+    "category": "local",
+    "published": "2026-08-26T04:30:52+00:00",
+    "model": "B",
+    "src_extra": 46,
+    "teaser": "Un consilier local din Zlatna a demisionat în urma neclarităților legislative care sugerează că angajații din instituții publice trebuie să renunțe la mandatul din consiliu.",
+    "entities": [
+      "Zlatna",
+      "Adrian"
+    ],
+    "ai_cat": "politic",
+    "icon": "building-monument",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "modificarile-aduse-codului-administrativ-genereaza-confuzie-si-demisii-in"
+  },
+  {
+    "url": "https://prosport.ro/fotbal-intern/superliga/gigi-becali-a-primit-o-veste-uriasa-despre-dan-petrescu-de-la-giovanni-becali-sansele-sa-l-aduca-la-fcsb-sunt-tot-mai-mari-asta-e-oful-lui-20510705",
+    "original_link": "https://www.prosport.ro/fotbal-intern/superliga/gigi-becali-a-primit-o-veste-uriasa-despre-dan-petrescu-de-la-giovanni-becali-sansele-sa-l-aduca-la-fcsb-sunt-tot-mai-mari-asta-e-oful-lui-20510705",
+    "source": "prosport",
+    "source_name": "ProSport",
+    "source_lang": "ro",
+    "title": "Giovanni Becali susține că Dan Petrescu are șanse mari să preia banca tehnică a FCSB",
+    "category": "sport",
+    "published": "2026-08-26T04:30:49+00:00",
+    "model": "B",
+    "src_extra": 25,
+    "teaser": "Impresarul dezvăluie că antrenorul este aproape de o revenire în activitate, negocierile cu patronul Gigi Becali indicând o posibilă numire pe ortele echipei FCSB.",
+    "entities": [
+      "Gigi Becali",
+      "Dan Petrescu",
+      "Giovanni Becali",
+      "FCSB"
+    ],
+    "ai_cat": "sport",
+    "icon": "ball-football",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "giovanni-becali-sustine-ca-dan-petrescu-are-sanse-mari-sa-preia-banca-tehnica-a"
+  },
+  {
+    "url": "https://hotnews.ro/capitalul-privat-a-contribuit-la-crearea-noi-generatii-de-italieni-bogati-acum-bancile-sunt-intr-un-razboi-pentru-ei-2333405",
+    "original_link": "https://hotnews.ro/capitalul-privat-a-contribuit-la-crearea-noi-generatii-de-italieni-bogati-acum-bancile-sunt-intr-un-razboi-pentru-ei-2333405",
+    "source": "hotnews",
+    "source_name": "HotNews",
+    "source_lang": "ro",
+    "title": "Băncile private din Italia concurează aprig pentru a atrage noua generație de clienți bogați",
+    "category": "economic",
+    "published": "2026-08-26T04:30:03+00:00",
+    "model": "B",
+    "src_extra": 41,
+    "teaser": "Instituțiile financiare din Peninsulă își dispute portofoliile clienților cu averi nete ridicate, formate recent prin contribuția capitalului privat și gestionate de bancheri specializați.",
+    "entities": [
+      "Alberica Brivio Sforza",
+      "Lombard Odier",
+      "Mediobanca",
+      "Italia"
+    ],
+    "ai_cat": "economic",
+    "icon": "building-bank",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "bancile-private-din-italia-concureaza-aprig-pentru-a-atrage-noua-generatie-de"
+  },
+  {
+    "url": "https://digi24.ro/stiri/externe/avertismentul-fostului-emisar-al-lui-trump-putin-seamana-intr-un-fel-cu-hitler-si-nu-se-va-opri-la-donbas-3921761",
+    "original_link": "https://www.digi24.ro/stiri/externe/avertismentul-fostului-emisar-al-lui-trump-putin-seamana-intr-un-fel-cu-hitler-si-nu-se-va-opri-la-donbas-3921761",
+    "source": "extern",
+    "source_name": "Digi24 Extern",
+    "source_lang": "ro",
+    "title": "Keith Kellogg avertizează că Vladimir Putin nu se va opri după cucerirea regiunii Donbas",
+    "category": "extern",
+    "published": "2026-08-26T04:26:51+00:00",
+    "model": "B",
+    "src_extra": 32,
+    "teaser": "Fostul emisar special al SUA pentru Ucraina susține că liderul rus are ambiții similare regimului hitlerist și va continua agresiunea militară dincolo de teritoriile estice.",
+    "entities": [
+      "Keith Kellogg",
+      "Vladimir Putin",
+      "Ucraina",
+      "Donbas"
+    ],
+    "ai_cat": "extern",
+    "icon": "swords",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "keith-kellogg-avertizeaza-ca-vladimir-putin-nu-se-va-opri-dupa-cucerirea"
+  },
+  {
+    "url": "https://stirileprotv.ro/stiri/international/ce-s-a-intamplat-dupa-ce-australia-a-interzis-retelele-sociale-pentru-copiii-sub-16-ani-datele-sunt-ingrijoratoare.html",
+    "original_link": "https://stirileprotv.ro/stiri/international/ce-s-a-intamplat-dupa-ce-australia-a-interzis-retelele-sociale-pentru-copiii-sub-16-ani-datele-sunt-ingrijoratoare.html",
+    "source": "protv",
+    "source_name": "Știrile ProTV",
+    "source_lang": "ro",
+    "title": "Utilizarea rețelelor sociale de către minorii din Australia a crescut în ciuda interdicției legale",
+    "category": "tech",
+    "published": "2026-08-26T04:25:28+00:00",
+    "model": "B",
+    "src_extra": 26,
+    "teaser": "Datele furnizate de aplicațiile de control parental arată că tinerii sub 16 ani din Australia au revenit pe platformele social media, deși acestea au fost interzise oficial.",
+    "entities": [
+      "Australia"
+    ],
+    "ai_cat": "tech",
+    "icon": "device-mobile",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "utilizarea-retelelor-sociale-de-catre-minorii-din-australia-a-crescut-in-ciuda"
+  },
+  {
+    "url": "https://expressdebanat.ro/primarul-iablanitei-a-iesit-curat-ca-lacrima",
+    "original_link": "https://expressdebanat.ro/primarul-iablanitei-a-iesit-curat-ca-lacrima/",
+    "source": "expressdebanat",
+    "source_name": "Express de Banat",
+    "source_lang": "ro",
+    "title": "Primarul din Iablanița a fost exonerat de acuzații în urma controalelor Gărzii Forestiere",
+    "category": "local",
+    "published": "2026-08-26T04:19:06+00:00",
+    "model": "B",
+    "src_extra": 301,
+    "teaser": "Edilul Victor Terteleacă a prezentat documente oficiale care demonstrează legalitatea lucrărilor din comună, infirmând sesizările formulate de un consilier local la organele penale.",
+    "entities": [
+      "Victor Terteleacă",
+      "Iablanița",
+      "Garda Forestieră",
+      "ABA Banat"
+    ],
+    "ai_cat": "local",
+    "icon": "home",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "primarul-din-iablanita-a-fost-exonerat-de-acuzatii-in-urma-controalelor-garzii"
+  },
+  {
+    "url": "https://stirileprotv.ro/stiri/financiar/cum-explica-ministerul-energiei-demisia-sefului-de-la-nuclearelectrica-motivul-pentru-care-a-parasit-functia-dupa-noua-ani.html",
+    "original_link": "https://stirileprotv.ro/stiri/financiar/cum-explica-ministerul-energiei-demisia-sefului-de-la-nuclearelectrica-motivul-pentru-care-a-parasit-functia-dupa-noua-ani.html",
+    "source": "protv",
+    "source_name": "Știrile ProTV",
+    "source_lang": "ro",
+    "title": "Ministerul Energiei explică demisia șefului Nuclearelectrica prin oportunități profesionale",
+    "category": "economic",
+    "published": "2026-08-26T04:15:45+00:00",
+    "model": "B",
+    "src_extra": 21,
+    "teaser": "Cosmin Ghiță a renunțat la conducerea producătorului de energie SN Nuclearelectrica pentru a urma o nouă direcție profesională, conform precizărilor transmise de reprezentanții Ministerului Energiei în plină criză energetică.",
+    "entities": [
+      "Ministerul Energiei",
+      "Nuclearelectrica",
+      "Cosmin Ghiță"
+    ],
+    "ai_cat": "economic",
+    "icon": "building-factory",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "ministerul-energiei-explica-demisia-sefului-nuclearelectrica-prin-oportunitati"
+  },
+  {
+    "url": "https://csid.ro/sanatate/sanatate-health/cea-mai-frecventa-greseala-dupa-chirurgia-bariatrica-nu-are-legatura-cu-operatia-21291213",
+    "original_link": "https://www.csid.ro/sanatate/sanatate-health/cea-mai-frecventa-greseala-dupa-chirurgia-bariatrica-nu-are-legatura-cu-operatia-21291213/",
+    "source": "csid",
+    "source_name": "CSÎD",
+    "source_lang": "ro",
+    "title": "Schimbarea stilului de viață este esențială după operația bariatrică",
+    "category": "sanatate",
+    "published": "2026-08-26T04:15:12+00:00",
+    "model": "B",
+    "src_extra": 18,
+    "teaser": "Pacienții care trec prin intervenții de chirurgie bariatrică trebuie să își modifice obiceiurile alimentare, nivelul de mișcare, regimul de odihnă și starea psihologică pentru a asigura succesul pe termen lung al procedurii medicale.",
+    "entities": [],
+    "ai_cat": "sanatate",
+    "icon": "stethoscope",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "schimbarea-stilului-de-viata-este-esentiala-dupa-operatia-bariatrica"
+  },
+  {
+    "url": "https://newsbv.ro/cj-brasov-fonduri-nerambursabile-proiecte-sociale",
+    "original_link": "https://newsbv.ro/cj-brasov-fonduri-nerambursabile-proiecte-sociale/",
+    "source": "newsbv",
+    "source_name": "News Brașov",
+    "source_lang": "ro",
+    "title": "Consiliul Județean Brașov finanțează două proiecte sociale nerambursabile",
+    "category": "local",
+    "published": "2026-08-26T04:11:33+00:00",
+    "model": "B",
+    "src_extra": 326,
+    "teaser": "Autoritățile județene din Brașov acordă fonduri nerambursabile din bugetul propriu pentru implementarea a două inițiative sociale propuse de organizații neguvernamentale acreditate în domeniul asistenței.",
+    "entities": [
+      "Consiliul Județean Brașov"
+    ],
+    "ai_cat": "regional",
+    "icon": "receipt-tax",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "consiliul-judetean-brasov-finanteaza-doua-proiecte-sociale-nerambursabile"
+  },
+  {
+    "url": "https://ziuadevest.ro/ilie-sirbu-consilier-local-aur-raportul-de-control-privind-teatrul-maghiar-trebuie-adus-la-cunostinta-publicului",
+    "original_link": "https://www.ziuadevest.ro/ilie-sirbu-consilier-local-aur-raportul-de-control-privind-teatrul-maghiar-trebuie-adus-la-cunostinta-publicului/",
+    "source": "ziuadevest",
+    "source_name": "Ziua de Vest",
+    "source_lang": "ro",
+    "title": "Consilierul local AUR Ilie Sîrbu cere publicarea raportului de control la Teatrul Maghiar",
+    "category": "local",
+    "published": "2026-08-26T04:11:05+00:00",
+    "model": "B",
+    "src_extra": 232,
+    "teaser": "Un control intern efectuat la Teatrul Maghiar de Stat din Timișoara a scos la iveală nereguli majore privind achizițiile și gestionarea fondurilor publice, determinând un reprezentant local să solicite transparența totală a documentului.",
+    "entities": [
+      "Ilie Sîrbu",
+      "Teatrul Maghiar de Stat Csiky Gergely",
+      "Timișoara"
+    ],
+    "ai_cat": "local",
+    "icon": "gavel",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "consilierul-local-aur-ilie-sirbu-cere-publicarea-raportului-de-control-la"
+  },
+  {
+    "url": "https://g4media.ro/mai-multi-bani-pentru-targul-de-craciun-din-craiova-primaria-suplimenteaza-bugetul-tema-aleasa-pentru-editia-din-acest-an-e-taramul-elfilor.html",
+    "original_link": "https://www.g4media.ro/mai-multi-bani-pentru-targul-de-craciun-din-craiova-primaria-suplimenteaza-bugetul-tema-aleasa-pentru-editia-din-acest-an-e-taramul-elfilor.html",
+    "source": "g4media",
+    "source_name": "G4Media",
+    "source_lang": "ro",
+    "title": "Primăria Craiova mărește bugetul pentru Târgul de Crăciun sub tematica Tărâmul elfilor",
+    "category": "local",
+    "published": "2026-08-26T04:10:34+00:00",
+    "model": "B",
+    "src_extra": 47,
+    "teaser": "Aleșii locali din Craiova vor vota o rectificare bugetară pentru a suplimenta fondurile alocate organizării ediției din acest an a Târgului de Crăciun, eveniment ce se va desfășura sub genericul Tărâmul elfilor.",
+    "entities": [
+      "Primăria Craiova",
+      "Craiova"
+    ],
+    "ai_cat": "local",
+    "icon": "shopping-cart",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "primaria-craiova-mareste-bugetul-pentru-targul-de-craciun-sub-tematica-taramul"
+  },
+  {
+    "url": "https://hotnews.ro/inteligenta-artificiala-tine-economia-pe-linia-de-plutire-datoriile-si-petrolul-incearca-sa-o-scufunde-spune-sefa-fmi-2333399",
+    "original_link": "https://hotnews.ro/inteligenta-artificiala-tine-economia-pe-linia-de-plutire-datoriile-si-petrolul-incearca-sa-o-scufunde-spune-sefa-fmi-2333399",
+    "source": "hotnews",
+    "source_name": "HotNews",
+    "source_lang": "ro",
+    "title": "FMI avertizează că inteligența artificială susține economia globală în fața datoriilor",
+    "category": "economic",
+    "published": "2026-08-26T04:09:06+00:00",
+    "model": "B",
+    "src_extra": 46,
+    "teaser": "Șefa Fondului Monetar Internațional, Kristalina Georgieva, subliniază că adoptarea tehnologiilor avansate menține economia pe linia de plutire, în timp ce presiunile fiscale și costurile petrolului amență stabilitatea financiară mondială.",
+    "entities": [
+      "FMI",
+      "Kristalina Georgieva"
+    ],
+    "ai_cat": "economic",
+    "icon": "chart-line",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "fmi-avertizeaza-ca-inteligenta-artificiala-sustine-economia-globala-in-fata"
+  },
+  {
+    "url": "https://hotnews.ro/restrictii-si-sau-taxe-pentru-masinile-poluante-primariile-obligate-ca-in-maximum-12-luni-sa-stabileasca-zonele-cu-emisii-zero-sau-scazute-2333400",
+    "original_link": "https://hotnews.ro/restrictii-si-sau-taxe-pentru-masinile-poluante-primariile-obligate-ca-in-maximum-12-luni-sa-stabileasca-zonele-cu-emisii-zero-sau-scazute-2333400",
+    "source": "hotnews",
+    "source_name": "HotNews",
+    "source_lang": "ro",
+    "title": "Primăriile din România sunt obligate să delimiteze zonele cu emisii reduse în 12 luni",
+    "category": "auto",
+    "published": "2026-08-26T04:07:16+00:00",
+    "model": "B",
+    "src_extra": 33,
+    "teaser": "Noul Cod al Urbanismului impune consiliilor locale ca, în termen de un an, să stabilească prin hotărâri oficiale zonele urbane cu emisii zero sau scăzute, vizând direct vehiculele poluante.",
+    "entities": [],
+    "ai_cat": "auto",
+    "icon": "car",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "primariile-din-romania-sunt-obligate-sa-delimiteze-zonele-cu-emisii-reduse-in"
+  },
+  {
+    "url": "https://politico.eu/podcast/brussels-playbook-podcast/france-and-germany-collide-over-europes-industrial-future",
+    "original_link": "https://www.politico.eu/podcast/brussels-playbook-podcast/france-and-germany-collide-over-europes-industrial-future/?utm_source=RSS_Feed&utm_medium=RSS&utm_campaign=RSS_Syndication",
+    "source": "politico_eu",
+    "source_name": "Politico EU",
+    "source_lang": "en",
+    "title": "Franța și Germania intră în conflict privind viitorul industrial al Uniunii Europene",
+    "category": "extern",
+    "published": "2026-08-26T04:05:00+00:00",
+    "model": "B",
+    "src_extra": 185,
+    "teaser": "Parisul și Berlinul au opinii divergente legate de protejarea industriei europene, prima susținând reguli stricte de tipul Fabricat în Europa, în timp ce a doua se teme de declanșarea unor noi conflicte comerciale internaționale.",
+    "entities": [
+      "Franța",
+      "Germania",
+      "Uniunea Europenă"
+    ],
+    "ai_cat": "extern",
+    "icon": "globe",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "franta-si-germania-intra-in-conflict-privind-viitorul-industrial-al-uniunii"
+  },
+  {
+    "url": "https://g4media.ro/gamescom-2026-cel-mai-mare-eveniment-european-dedicat-jocurilor-video-a-debutat-cu-un-numar-record-de-expozanti-noutati-despre-the-witcher-si-un-mare-absent-gta-vi.html",
+    "original_link": "https://www.g4media.ro/gamescom-2026-cel-mai-mare-eveniment-european-dedicat-jocurilor-video-a-debutat-cu-un-numar-record-de-expozanti-noutati-despre-the-witcher-si-un-mare-absent-gta-vi.html",
+    "source": "g4media",
+    "source_name": "G4Media",
+    "source_lang": "ro",
+    "title": "Târgul Gamescom 2026 s-a deschis la Köln cu anunțuri majore pentru industria jocurilor",
+    "category": "tech",
+    "published": "2026-08-26T04:01:40+00:00",
+    "model": "B",
+    "src_extra": 38,
+    "teaser": "Cel mai important eveniment european dedicat jocurilor video a debutat în Germania cu un număr record de expozanți, prezentând noutăți despre francize celebre precum The Witcher, în lipsa mult așteptatului titlu GTA VI.",
+    "entities": [
+      "Gamescom",
+      "Köln"
+    ],
+    "ai_cat": "tech",
+    "icon": "device-mobile",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "targul-gamescom-2026-s-a-deschis-la-koln-cu-anunturi-majore-pentru-industria"
+  },
+  {
+    "url": "https://digi24.ro/stiri/actualitate/evenimente/sarbatoare-in-calendarul-ortodox-doi-sfinti-importanti-sunt-cinstiti-pe-26-august-cui-ii-poti-spune-la-multi-ani-3915809",
+    "original_link": "https://www.digi24.ro/stiri/actualitate/evenimente/sarbatoare-in-calendarul-ortodox-doi-sfinti-importanti-sunt-cinstiti-pe-26-august-cui-ii-poti-spune-la-multi-ani-3915809",
+    "source": "digi24",
+    "source_name": "Digi24",
+    "source_lang": "ro",
+    "title": "Biserica Ortodoxă îi prăznuiește pe Sfinții Mucenici Adrian și Natalia pe 26 august",
+    "category": "lifestyle",
+    "published": "2026-08-26T04:00:57+00:00",
+    "model": "B",
+    "src_extra": 39,
+    "teaser": "Calendarul ortodox de la 26 august consemnează cinstirea Sfinților Mucenici Adrian și Natalia, un cuplu recunoscut în tradiția bisericească pentru curajul de care a dat dovadă în timpul persecuțiilor anticreștine.",
+    "entities": [
+      "Sfinții Mucenici Adrian și Natalia"
+    ],
+    "ai_cat": "lifestyle",
+    "icon": "building-church",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "biserica-ortodoxa-ii-praznuieste-pe-sfintii-mucenici-adrian-si-natalia-pe-26"
+  },
+  {
+    "url": "https://nwradu.ro/2026/08/am-fost-mintit-filme-laserele-nu-se-pot-vedea",
+    "original_link": "https://www.nwradu.ro/2026/08/am-fost-mintit-filme-laserele-nu-se-pot-vedea/",
+    "source": "nwradu",
+    "source_name": "NwRadu",
+    "source_lang": "ro",
+    "title": "Fizica demonstrează că laserele din filmele SF nu pot fi văzute în realitate",
+    "category": "tech",
+    "published": "2026-08-26T03:22:03+00:00",
+    "model": "B",
+    "src_extra": 601,
+    "teaser": "Producțiile cinematografice de la Hollywood induc în eroare publicul prezentând fascicule de lumină colorate și lente, în timp ce fizica arată că acestea sunt complet invizibile și se propagă instantaneu.",
+    "entities": [
+      "Star Wars",
+      "Star Trek"
+    ],
+    "ai_cat": "tech",
+    "icon": "rocket",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "fizica-demonstreaza-ca-laserele-din-filmele-sf-nu-pot-fi-vazute-in-realitate"
+  },
+  {
+    "url": "https://newsbv.ro/tineri-brasov-recuperati-elicopterul-muntii-bucegi",
+    "original_link": "https://newsbv.ro/tineri-brasov-recuperati-elicopterul-muntii-bucegi/",
+    "source": "newsbv",
+    "source_name": "News Brașov",
+    "source_lang": "ro",
+    "title": "Trei tineri din Brașov, salvați cu elicopterul din Munții Bucegi",
+    "category": "local",
+    "published": "2026-08-26T03:12:53+00:00",
+    "model": "B",
+    "src_extra": 355,
+    "teaser": "Salvamontiștii au intervenit cu un elicopter SMURD pentru a recupera trei turiști din Brașov blocați pe un traseu nemarcat de pe Valea Gălbinele din Munții Bucegi.",
+    "entities": [
+      "Munții Bucegi",
+      "Brașov",
+      "SMURD"
+    ],
+    "ai_cat": "regional",
+    "icon": "helicopter",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "trei-tineri-din-brasov-salvati-cu-elicopterul-din-muntii-bucegi"
+  },
+  {
+    "url": "https://politico.eu/podcast/berlin-playbook-podcast/drohnen-drohungen-deutschland",
+    "original_link": "https://www.politico.eu/podcast/berlin-playbook-podcast/drohnen-drohungen-deutschland/?utm_source=RSS_Feed&utm_medium=RSS&utm_campaign=RSS_Syndication",
+    "source": "politico_eu",
+    "source_name": "Politico EU",
+    "source_lang": "en",
+    "title": "Un atac cibernetic dejucat scoate la iveală vulnerabilitățile aeroporturilor germane",
+    "category": "extern",
+    "published": "2026-08-26T03:10:27+00:00",
+    "model": "B",
+    "src_extra": 210,
+    "teaser": "Tentativa eșuată de atac cu drone la un aeroport din Germania evidențiază carențe majore în sistemul de securitate, determinând politicienii să ceară o reformă rapidă.",
+    "entities": [
+      "Germania",
+      "Friedrich Merz",
+      "Marc Henrichmann"
+    ],
+    "ai_cat": "extern",
+    "icon": "alert-triangle",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "un-atac-cibernetic-dejucat-scoate-la-iveala-vulnerabilitatile-aeroporturilor"
+  },
+  {
+    "url": "https://moldova.europalibera.org/a/calatoria-surpriza-la-moscova-a-directorului-cia-ratcliffe-rusia-ucraina-iran/33839350.html",
+    "original_link": "https://moldova.europalibera.org/a/calatoria-surpriza-la-moscova-a-directorului-cia-ratcliffe-rusia-ucraina-iran/33839350.html",
+    "source": "el_moldova",
+    "source_name": "Europa Liberă",
+    "source_lang": "ro",
+    "title": "Directorul CIA a efectuat o vizită secretă la Moscova",
+    "category": "extern",
+    "published": "2026-08-26T03:05:06+00:00",
+    "model": "B",
+    "src_extra": 48,
+    "teaser": "John Ratcliffe s-a deplasat la Moscova într-o vizită neanunțată, în contextul blocajului privind conflictul din Ucraina și al îngrijorărilor legate de cooperarea ruso-iraniană.",
+    "entities": [
+      "CIA",
+      "John Ratcliffe",
+      "Moscova",
+      "Rusia"
+    ],
+    "ai_cat": "extern",
+    "icon": "globe",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "directorul-cia-a-efectuat-o-vizita-secreta-la-moscova"
+  },
+  {
+    "url": "https://dobrogeaonline.ro/de-la-disparuti-la-cei-cu-experienta-in-lumea-drogurilor-identitatea-barbatilor-retinuti-de-diicot-in-tulcea",
+    "original_link": "https://www.dobrogeaonline.ro/de-la-disparuti-la-cei-cu-experienta-in-lumea-drogurilor-identitatea-barbatilor-retinuti-de-diicot-in-tulcea/",
+    "source": "dobrogeaonline",
+    "source_name": "Dobrogea Online",
+    "source_lang": "ro",
+    "title": "DIICOT a reținut mai mulți suspecți de trafic de droguri în Tulcea",
+    "category": "local",
+    "published": "2026-08-26T03:03:36+00:00",
+    "model": "B",
+    "src_extra": 524,
+    "teaser": "Tribunalul a emis mandate de arestare preventivă pentru 30 de zile pe numele mai multor bărbați din Tulcea, unii dintre aceștia fiind cunoscuți în mediul infracțional sau figuri anterior dispărute.",
+    "entities": [
+      "DIICOT",
+      "Tulcea",
+      "Curtea de Apel Constanța"
+    ],
+    "ai_cat": "regional",
+    "icon": "gavel",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "diicot-a-retinut-mai-multi-suspecti-de-trafic-de-droguri-in-tulcea"
+  },
+  {
+    "url": "https://bihon.ro/anunturi-de-interes-public/anunturi-mediu-ape/anunt-mediu-bitis-traian-gabriel-2-5378829",
+    "original_link": "https://www.bihon.ro/anunturi-de-interes-public/anunturi-mediu-ape/anunt-mediu-bitis-traian-gabriel-2-5378829/?utm_source=rss&utm_medium=referral&utm_campaign=hiraggregator",
+    "source": "bihon",
+    "source_name": "Bihon",
+    "source_lang": "ro",
+    "title": "Bițîș Traian Gabriel și Delia Denisa solicită aviz de mediu în Oradea",
+    "category": "local",
+    "published": "2026-08-26T03:00:55+00:00",
+    "model": "B",
+    "src_extra": 145,
+    "teaser": "Cei doi titularizează demersurile legale pentru obținerea aprobării de mediu necesare unui proiect imobiliar de lotizare a unui teren în vederea construirii de locuințe.",
+    "entities": [
+      "Oradea",
+      "Bihor"
+    ],
+    "ai_cat": "local",
+    "icon": "building-monument",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "bitis-traian-gabriel-si-delia-denisa-solicita-aviz-de-mediu-in-oradea"
+  },
+  {
+    "url": "https://economedia.ro/harta-marilor-angajatori-din-romania-care-sunt-cele-mai-mari-companii-dupa-numarul-de-salariati-judet-cu-judet.html",
+    "original_link": "https://economedia.ro/harta-marilor-angajatori-din-romania-care-sunt-cele-mai-mari-companii-dupa-numarul-de-salariati-judet-cu-judet.html",
+    "source": "economedia",
+    "source_name": "Economedia",
+    "source_lang": "ro",
+    "title": "O analiză detaliază cele mai mari companii angajatoare din fiecare județ",
+    "category": "economic",
+    "published": "2026-08-26T03:00:25+00:00",
+    "model": "B",
+    "src_extra": 40,
+    "teaser": "Companii de renume precum Automobile Dacia, CFR, Dedeman sau Romgaz conduc clasamentul angajatorilor din România, generând mii de locuri de muncă și afaceri masive.",
+    "entities": [
+      "România",
+      "CFR",
+      "Automobile Dacia",
+      "Dedeman"
+    ],
+    "ai_cat": "economic",
+    "icon": "building-factory",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "o-analiza-detaliaza-cele-mai-mari-companii-angajatoare-din-fiecare-judet"
+  },
+  {
+    "url": "https://alba24.ro/26-august-ziua-internationala-a-cainelui-semnificatia-acestei-zile-curiozitati-si-filme-de-vazut-1154719.html",
+    "original_link": "https://alba24.ro/26-august-ziua-internationala-a-cainelui-semnificatia-acestei-zile-curiozitati-si-filme-de-vazut-1154719.html",
+    "source": "alba24",
+    "source_name": "Alba24",
+    "source_lang": "ro",
+    "title": "România și lumea marchează Ziua Internațională a Câinelui",
+    "category": "lifestyle",
+    "published": "2026-08-26T03:00:24+00:00",
+    "model": "B",
+    "src_extra": 47,
+    "teaser": "Sărbătorită anual la 26 august, această zi atrage atenția asupra importanței adopției responsabile, a protecției animalelor fără stăpân și a rolului esențial pe care câinii îl au în societate.",
+    "entities": [
+      "Colleen Paige"
+    ],
+    "ai_cat": "lifestyle",
+    "icon": "medal",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "romania-si-lumea-marcheaza-ziua-internationala-a-cainelui"
+  },
+  {
+    "url": "https://bihon.ro/stirile-judetului-bihor/ce-facem-astazi-26-august-in-oradea-5380821",
+    "original_link": "https://www.bihon.ro/stirile-judetului-bihor/ce-facem-astazi-26-august-in-oradea-5380821/?utm_source=rss&utm_medium=referral&utm_campaign=hiraggregator",
+    "source": "bihon",
+    "source_name": "Bihon",
+    "source_lang": "ro",
+    "title": "Agenda evenimentelor culturale și recreative din Oradea",
+    "category": "local",
+    "published": "2026-08-26T03:00:18+00:00",
+    "model": "B",
+    "src_extra": 463,
+    "teaser": "Municipiul Oradeagăzduiește o serie de activități publice pe 26 august, incluzând seri de stand-up comedy, cluburi de conversație, expoziții de artă și spectacole muzicale.",
+    "entities": [
+      "Oradea",
+      "Muzeul Țării Crișurilor"
+    ],
+    "ai_cat": "local",
+    "icon": "music",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "agenda-evenimentelor-culturale-si-recreative-din-oradea-2"
+  },
+  {
+    "url": "https://bihon.ro/anunturi-de-interes-public/anunturi-mediu-ape/anunt-ape-comuna-borod-2-5374728",
+    "original_link": "https://www.bihon.ro/anunturi-de-interes-public/anunturi-mediu-ape/anunt-ape-comuna-borod-2-5374728/?utm_source=rss&utm_medium=referral&utm_campaign=hiraggregator",
+    "source": "bihon",
+    "source_name": "Bihon",
+    "source_lang": "ro",
+    "title": "Comuna Borod vizează investiții pentru utilizarea resurselor geotermale",
+    "category": "local",
+    "published": "2026-08-26T03:00:16+00:00",
+    "model": "B",
+    "src_extra": 144,
+    "teaser": "Primăria Borod a inițiat demersurile legale pentru obținerea avizului de gospodărire a apelor necesar unui proiect nou de producere și distribuție a energiei termice.",
+    "entities": [
+      "Comuna Borod",
+      "Bihor",
+      "Administrația Bazinală de Apă Crișuri"
+    ],
+    "ai_cat": "local",
+    "icon": "flame",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "comuna-borod-vizeaza-investitii-pentru-utilizarea-resurselor-geotermale"
+  },
+  {
     "url": "https://g4media.ro/fake-uri-rostogolite-pe-retele-in-loc-sa-se-invete-adevarata-istorie-a-noastra-copiilor-li-se-baga-pe-gat-istoria-strainilor-sau-asa-zisa-istorie-a-holocaustului-cercetator.html",
     "original_link": "https://www.g4media.ro/fake-uri-rostogolite-pe-retele-in-loc-sa-se-invete-adevarata-istorie-a-noastra-copiilor-li-se-baga-pe-gat-istoria-strainilor-sau-asa-zisa-istorie-a-holocaustului-cercetator.html",
     "source": "g4media",
@@ -129,28 +1075,6 @@
     "prompt_version": "v2-esenta",
     "featured": false,
     "slug": "muzicologul-valentina-sandu-dediu-lanseaza-volumul-muzici-in-tonuri-nationaliste"
-  },
-  {
-    "url": "https://dobrogeaonline.ro/dolly-parton-a-decedat",
-    "original_link": "https://www.dobrogeaonline.ro/dolly-parton-a-decedat/",
-    "source": "dobrogeaonline",
-    "source_name": "Dobrogea Online",
-    "source_lang": "ro",
-    "title": "Cântăreața americană Dolly Parton a murit la vârsta de 80 de ani",
-    "category": "cultura",
-    "published": "2026-08-25T23:18:24+00:00",
-    "model": "B",
-    "src_extra": 83,
-    "teaser": "Regina muzicii country, Dolly Parton, s-a stins din viață la 80 de ani, după ce problemele de sănătate o obligaseră recent să anuleze concerte importante.",
-    "entities": [
-      "Dolly Parton"
-    ],
-    "ai_cat": "cultura",
-    "icon": "music",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false,
-    "slug": "cantareata-americana-dolly-parton-a-murit-la-varsta-de-80-de-ani"
   },
   {
     "url": "https://hotnews.ro/esecurile-lui-putin-si-o-a-doua-mobilizare-in-masa-tentatia-unui-nou-front-la-kaliningrad-2333362",
@@ -3178,7 +4102,7 @@
     "source": "spotmedia",
     "source_name": "Spotmedia",
     "source_lang": "ro",
-    "title": "Legendarul artist de muzică country Dolly Parton a murit la vârsta de 80 de ani",
+    "title": "Cântăreața și actrița americană Dolly Parton a murit la vârsta de 80 de ani",
     "category": "cultura",
     "published": "2026-08-25T18:12:00+00:00",
     "model": "C",
@@ -3215,10 +4139,22 @@
       {
         "name": "Digi24 Extern",
         "url": "https://www.digi24.ro/magazin/timp-liber/showbiz/celebra-cantareata-de-muzica-country-dolly-parton-a-murit-la-varsta-de-80-de-ani-3921549"
+      },
+      {
+        "name": "Dobrogea Online",
+        "url": "https://www.dobrogeaonline.ro/dolly-parton-a-decedat/"
+      },
+      {
+        "name": "Jurnalul Olteniei",
+        "url": "https://jurnalulolteniei.ro/a-murit-dolly-parton-legenda-muzicii-avea-80-de-ani/"
+      },
+      {
+        "name": "B365",
+        "url": "https://b365.ro/video-dolly-parton-a-murit-avea-80-de-ani-si-a-fost-negresit-regina-muzicii-country-617074/"
       }
     ],
     "first_source": "Spotmedia",
-    "synthesis": "Dolly Parton, celebra cântăreață, compozitoare și actriță americană, a încetat din viață la vârsta de 80 de ani. Anunțul decesului a fost făcut public pe 25 august de familia acesteia, prin intermediul unui mesaj video distribuit pe rețelele de socializare de un nepot al artistei. Cunoscută pentru o carieră de peste șase decenii și numeroase hituri internaționale, artista se confruntase cu probleme de sănătate în ultima perioadă.",
+    "synthesis": "Legendara artistă de muzică country Dolly Parton s-a stins din viață la vârsta de 80 de ani, după ce problemele de sănătate o determinaseră recent să anuleze mai multe concerte. Vestea decesului a fost confirmată oficial de familia acesteia, printr-un mesaj video publicat de nepotul artistei pe platformele de social media.",
     "entities": [
       "Dolly Parton"
     ],
@@ -3228,7 +4164,7 @@
     "prompt_version": "v2-esenta",
     "featured": false,
     "slug": "legendarul-artist-de-muzica-country-dolly-parton-a-murit-la-80-de-ani",
-    "updated": "2026-08-26T02:01:48.933916+00:00"
+    "updated": "2026-08-26T04:59:06.856060+00:00"
   },
   {
     "url": "https://mangalia.ro/2026/08/formular-cererea-privind-emiterea-abonamentului-pentru-transportul-gratuit-al-elevilor",
@@ -6079,15 +7015,14 @@
     "source_name": "Economica",
     "source_lang": "ro",
     "title": "Cosmin Ghiță a demisionat din funcția de director general al Nuclearelectrica",
-    "category": "local",
+    "category": "economic",
     "published": "2026-08-25T15:28:11+00:00",
     "model": "C",
     "src_extra": 181,
     "teaser": "Conducerea companiei energetice a fost notificată în 25 august 2026 privind încetarea contractului de mandat al directorului general Cosmin Ghiță. Consiliul de administrație urmează să stabilească data la care decizia va produce efecte.",
     "entities": [
       "Cosmin Ghiță",
-      "Nuclearelectrica",
-      "Cernavodă"
+      "Nuclearelectrica"
     ],
     "ai_cat": "economic",
     "icon": "building-factory",
@@ -6122,8 +7057,8 @@
       }
     ],
     "first_source": "Economica",
-    "updated": "2026-08-26T02:01:48.933867+00:00",
-    "synthesis": "Cosmin Ghiță a înaintat o notificare oficială privind încetarea contractului său de mandat de la conducerea SN Nuclearelectrica, înregistrată în 25 august 2026. Consiliul de administrație urmează să stabilească data exactă la care decizia va produce efecte. Plecarea sa survine în contextul unor controverse legate de proiectul reactoarelor mici, dar și al problemelor de operare de la Cernavodă provocate de scăderea nivelului Dunării."
+    "updated": "2026-08-26T04:59:57.023409+00:00",
+    "synthesis": "Conducerea companiei energetice Nuclearelectrica a fost notificată în 25 august 2026 privind încetarea contractului de mandat al directorului general Cosmin Ghiță. Consiliul de administrație urmează să stabilească data exactă la care decizia va produce efecte. Ghiță conducea compania din septembrie 2017, actualul său mandat fiind valabil până în februarie 2027."
   },
   {
     "url": "https://economica.net/269-de-primarii-nu-s-au-inrolat-in-ghiseul-ro-azi-a-fost-ultima-zi-sanctiunile-pe-care-le-risca-li-se-taie-o-parte-din-bani_971046.html",
@@ -6841,7 +7776,7 @@
     "source": "tion",
     "source_name": "Timiș Online",
     "source_lang": "ro",
-    "title": "Consiliul Local Timișoara a aprobat interzicerea sălilor de jocuri de noroc pe raza orașului",
+    "title": "Consiliul Local Timișoara a interzis sălile de jocuri de noroc în oraș",
     "category": "local",
     "published": "2026-08-25T15:05:29+00:00",
     "model": "C",
@@ -6873,11 +7808,11 @@
       }
     ],
     "first_source": "Timiș Online",
-    "synthesis": "Aleșii locali din Timișoara au votat interzicerea activităților de jocuri de noroc în municipiu, cu excepția agențiilor Loteriei Române. Sălile cu păcănele nu vor fi închise imediat, ci pe măsură ce autorizațiile de funcționare actuale vor expira. Decizia vine după ce municipalitatea a renunțat la planul de a reloca aceste săli într-o zonă periferică din cauza opoziției cetățenilor.",
+    "synthesis": "Consiliul Local Timișoara a aprobat un proiect care interzice activitățile de jocuri de noroc pe raza municipiului. Agențiile Loteriei Române au fost exceptate printr-un amendament. Sălile cu aparate de tip „păcănele” nu vor fi închise imediat, ci treptat, pe măsură ce autorizațiile actuale vor expira. Măsura vine după renunțarea la planul de a muta aceste activități într-o zonă periferică.",
     "entities": [
       "Timișoara",
       "Dominic Fritz",
-      "Paula Romocean"
+      "Loteria Română"
     ],
     "ai_cat": "local",
     "icon": "building-monument",
@@ -6885,7 +7820,7 @@
     "prompt_version": "v2-esenta",
     "featured": false,
     "slug": "timisoara-interzice-total-salile-de-jocuri-de-noroc-in-oras",
-    "updated": "2026-08-26T02:01:55.307015+00:00"
+    "updated": "2026-08-26T04:59:57.023465+00:00"
   },
   {
     "url": "https://stirileprotv.ro/stiri/international/presa-americana-a-dezvaluit-cine-s-ar-fi-aflat-la-bordul-avionului-militar-american-care-a-aterizat-in-secret-la-moscova.html",
@@ -13471,22 +14406,35 @@
     "source": "mytex",
     "source_name": "MyTex",
     "source_lang": "ro",
-    "title": "Cisternele cu apă amplasate pentru locuitorii din Teliu au fost vandalizate",
+    "title": "Două cisterne de apă amplasate temporar în comuna Teliu au fost vandalizate",
     "category": "local",
     "published": "2026-08-25T09:33:18+00:00",
-    "model": "B",
+    "model": "C",
     "src_extra": 126,
     "teaser": "Două dintre cele trei cisterne de apă potrivite temporar pe străzile din comuna Teliu, în timpul unor lucrări de reparație la rețea, au fost deteriorate de persoane necunoscute.",
     "entities": [
       "Teliu",
-      "Brașov"
+      "Compania Apa Brașov"
     ],
-    "ai_cat": "regional",
+    "ai_cat": "local",
     "icon": "alert-triangle",
     "processed_by": "gemini",
     "prompt_version": "v2-esenta",
     "featured": false,
-    "slug": "cisternele-cu-apa-amplasate-pentru-locuitorii-din-teliu-au-fost-vandalizate"
+    "slug": "cisternele-cu-apa-amplasate-pentru-locuitorii-din-teliu-au-fost-vandalizate",
+    "sources": [
+      {
+        "name": "MyTex",
+        "url": "https://mytex.ro/delicte/brasov-cisternele-de-apa-puse-la-dispozitia-localnicilor-din-teliu-au-fost-vandalizate/"
+      },
+      {
+        "name": "News Brașov",
+        "url": "https://newsbv.ro/2-cisterne-cu-apa-teliu-vandalizate/"
+      }
+    ],
+    "first_source": "MyTex",
+    "updated": "2026-08-26T04:59:06.856150+00:00",
+    "synthesis": "În timpul unor lucrări de reparație la rețea care au oprit furnizarea apei în comuna Teliu din județul Brașov, Compania Apa Brașov a pus la dispoziția locuitorilor trei cisterne de rezervă. Două dintre acestea au fost deteriorate de persoane necunoscute, înregistrându-se pagube precum cauciucuri tăiate, un robinet rupt, stopuri sparte și roți directoare deformate."
   },
   {
     "url": "https://criticarad.ro/clementa-si-abuz-in-romania-2",
@@ -14072,7 +15020,7 @@
       "Fănel Bogos"
     ],
     "ai_cat": "politic",
-    "icon": "building-bank",
+    "icon": "gavel",
     "processed_by": "gemini",
     "prompt_version": "v2-esenta",
     "featured": false,
@@ -14108,8 +15056,8 @@
       }
     ],
     "first_source": "Știrile ProTV",
-    "updated": "2026-08-26T02:02:01.501538+00:00",
-    "synthesis": "Cristina Trăilă, secretarul general adjunct al Guvernului și fost deputat, a fost pusă sub urmărire penală de procurorii DNA Iași. Aceasta este suspectată de complicitate la folosirea influenței ori autorității, fiind vizată în dosarul în care este implicat omul de afaceri Fănel Bogos, administratorul unei companii din sectorul avicol din Vaslui."
+    "updated": "2026-08-26T04:59:57.023505+00:00",
+    "synthesis": "Cristina Trăilă, secretarul general adjunct al Guvernului, a fost pusă sub acuzare de procurorii DNA în calitate de suspect. Aceasta este cercetată pentru complicitate la folosirea influenței ori autorității, în cadrul unui dosar în care este vizat și omul de afaceri Fănel Bogos, administratorul unei companii din Vaslui."
   },
   {
     "url": "https://dobrogeaonline.ro/un-cetatean-ucrainean-cautat-pentru-o-infractiune-grava-a-fost-gasit-la-nadlac",
@@ -15208,7 +16156,7 @@
     "source": "el_moldova",
     "source_name": "Europa Liberă",
     "source_lang": "ro",
-    "title": "Claudiu Năsui a fost propus pentru funcția de ministru al Economiei în Republica Moldova",
+    "title": "Claudiu Năsui a fost propus pentru funcția de ministru al Economiei în Guvernul Republicii Moldova",
     "category": "politic",
     "published": "2026-08-25T08:36:23+00:00",
     "model": "C",
@@ -15264,11 +16212,10 @@
       }
     ],
     "first_source": "Europa Liberă",
-    "synthesis": "Deputatul USR Claudiu Năsui a acceptat propunerea premierului Vasile Tofan de a prelua portofoliul Ministerului Economiei în Guvernul Republicii Moldova. Această decizie implică renunțarea la mandatul său din Parlamentul României, Năsui declarând că își va concentra experiența pe agenda de reforme economice și parcursul european al statului vecin.",
+    "synthesis": "Deputatul USR și fostul ministru român Claudiu Năsui a acceptat propunerea premierului Republicii Moldova, Vasile Tofan, de a prelua portofoliul Economiei. Această decizie implică renunțarea la mandatul său în Parlamentul României pentru a se dedica măsurilor de reformă și liberalizare economică de la Chișinău.",
     "entities": [
       "Claudiu Năsui",
-      "Vasile Tofan",
-      "Republica Moldova"
+      "Vasile Tofan"
     ],
     "ai_cat": "politic",
     "icon": "building-bank",
@@ -15276,7 +16223,7 @@
     "prompt_version": "v2-esenta",
     "featured": false,
     "slug": "claudiu-nasui-este-propus-ministru-al-economiei-in-republica-moldova",
-    "updated": "2026-08-26T02:01:48.933981+00:00"
+    "updated": "2026-08-26T04:59:06.856141+00:00"
   },
   {
     "url": "https://gazetadecluj.ro/vanzatorii-de-lubenite-de-pe-strada-nu-platesc-taxe-dar-nici-nu-sunt-controlati",
@@ -15360,6 +16307,42 @@
     "processed_by": "official",
     "featured": false,
     "slug": "25-08-2026-anunt-activitatea-privind-actele-de-urbanism-suspendata-temporar"
+  },
+  {
+    "url": "https://gazetadecluj.ro/romania-risca-sa-piarda-770-de-milioane-de-euro-din-pnrr-din-cauza-amendamentului-fritz",
+    "original_link": "https://gazetadecluj.ro/romania-risca-sa-piarda-770-de-milioane-de-euro-din-pnrr-din-cauza-amendamentului-fritz/",
+    "source": "gazetadecluj",
+    "source_name": "Gazeta de Cluj",
+    "source_lang": "ro",
+    "title": "Liderii PPE și Renew cer blocarea banilor din PNRR pentru România din cauza „amendamentului Fritz”",
+    "category": "politic",
+    "published": "2026-08-25T08:16:52+00:00",
+    "model": "C",
+    "src_extra": 175,
+    "sources": [
+      {
+        "name": "Gazeta de Cluj",
+        "url": "https://gazetadecluj.ro/romania-risca-sa-piarda-770-de-milioane-de-euro-din-pnrr-din-cauza-amendamentului-fritz/"
+      },
+      {
+        "name": "Express de Banat",
+        "url": "https://expressdebanat.ro/fondurile-pnrr-pentru-romania-blocate-din-cauza-amendamentului-fritz/"
+      }
+    ],
+    "first_source": "Gazeta de Cluj",
+    "synthesis": "Manfred Weber și Valérie Hayer au trimis o scrisoare Comisiei Europene prin care solicită blocarea tranșei de 770 de milioane de euro din PNRR. Aceștia susțin că modificările aduse Legii integrității, cunoscute drept „amendamentul Fritz”, încalcă legislația UE și drepturile electorale ale cetățenilor, fiind concepute retroactiv pentru a-l elimina din funcție pe primarul Timișoarei, Dominic Fritz.",
+    "entities": [
+      "Manfred Weber",
+      "Valérie Hayer",
+      "Dominic Fritz",
+      "Ursula von der Leyen"
+    ],
+    "ai_cat": "politic",
+    "icon": "currency-euro",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "liderii-ppe-si-renew-cer-blocarea-banilor-din-pnrr-pentru-romania-din-cauza"
   },
   {
     "url": "https://primariabuzau.ro/anunt-individual-si-proces-verbal-nr-133631-24-08-2026",
