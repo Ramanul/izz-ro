@@ -190,12 +190,13 @@ PRAG_COLAPS = 0.20
 
 def save(articles: list) -> None:
     _refuza_colapsul(articles)
-    _scrub_processed(articles)
+    articles_to_save = [dict(a) for a in articles]
+    _scrub_processed(articles_to_save)
     # Sortare pe SIR, nu pe datetime: corecta doar cat timp `published` e uniform `+00:00`.
     # Tine (masurat: 1736/1736 la 2026-08-03), fiindca `_parse_w3c_date` si `_parse_ro_date`
     # inchid amandoua cu `astimezone(timezone.utc)`. Apucata de tests/test_published_is_utc.py —
     # daca acela pica, aici si in cele doua locuri din render.py trebuie trecut pe datetime.
-    articles_sorted = sorted(articles, key=lambda a: a.get("published") or "", reverse=True)
+    articles_sorted = sorted(articles_to_save, key=lambda a: a.get("published") or "", reverse=True)
     os.makedirs(os.path.dirname(STATE_PATH), exist_ok=True)
     # Scriere ATOMICA (audit 2026-08-20, [P1]). Inainte se scria direct peste `articles.json`,
     # care are 5,6 MB si 4616 articole: o rulare oprita la jumatatea scrierii — plafon de runner,

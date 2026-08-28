@@ -190,7 +190,8 @@ def process_new(new_items: list, provider, budget: int, existing: list | None = 
             if rep is None:
                 continue  # esec/nemapat -> cluster amanat; membrii raman nefolded si se reiau data viitoare
             processed.append(rep)
-            folded.update(a["url"] for a in g if a["url"] != rep["url"])
+            if not rep.get("skip"):
+                folded.update(a["url"] for a in g if a["url"] != rep["url"])
 
     # model B in LOTURI (1 apel per BATCH_SIZE articole)
     bs = config.BATCH_SIZE if provider else (len(singles) or 1)

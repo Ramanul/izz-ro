@@ -430,7 +430,12 @@ class _GenericListParser(HTMLParser):
             if self._match(tag, classes, self._item):
                 self._item_at = self._depth
                 self._cur = {}
-            return
+                # containerul e chiar ancora <a>: nu mai iesim, ca sa se extraga href-ul
+                # in blocul de mai jos (altfel link-ul e pierdut definitiv pentru acest item)
+                if tag != "a":
+                    return
+            else:
+                return
 
         if self._title and self._title_at is None and self._match(tag, classes, self._title):
             self._title_at = self._depth
