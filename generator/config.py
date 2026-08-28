@@ -138,6 +138,63 @@ SOURCES = {
             "dw_europe":  {"name": "DW Europe",     "url": "https://rss.dw.com/rdf/rss-en-eu",                   "category": "extern", "lang": "en"},
             "el_moldova": {"name": "Europa Liberă", "url": "https://moldova.europalibera.org/api/epiqq",          "category": "extern"},
             "extern":     {"name": "Digi24 Extern", "url": "https://www.digi24.ro/rss/stiri/externe",            "category": "extern"},
+    # ============================================================================
+    # VAL 2026-08-21 — candidati extrasi din istoricul de navigare al owner-ului
+    # (Google Takeout / Chrome, 27.205 vizite intre 2026-05-23 si 2026-08-21). Criteriul de
+    # triaj: publicatie de stiri cu site propriu, vizitata de cel putin 10 ori. Excluse
+    # explicit din acelasi set, ca sa nu fie re-cautate:
+    #   · mediafax.ro (243 vizite, a doua cea mai citita) — AGENTIE, cade pe AGENCY_BLOCKLIST
+    #   · ziare.com (50) — agregator, republica continut licentiat de la terti
+    #   · interfans.org (48), forzainterforums.com (20) — forumuri, nu publicatii
+    #   · inter.it (19) — site oficial de club, comunicate, nu presa
+    #   · fifa.com (314) — comunicate de federatie, aceeasi problema
+    #
+    # ATENTIE — NICIUNUL dintre URL-urile de mai jos nu a fost cerut din sandbox: acolo
+    # proxy-ul intoarce 403 la orice host extern. Sunt cai probabile, exact tiparul care a
+    # produs ~30% caderi la valul de 79 din iulie. Se verifica cu `feedcheck.yml` (dispatch,
+    # runnerii au internet) INAINTE de merge, si se taie ce nu raspunde.
+    # ----------------------------------------------------------------------------
+    # AI — rubrica noua (owner 2026-08-21). Prima in bloc: e categoria cea mai infometata
+    # (0 surse dedicate azi), iar ordinea dictului decide ordinea bugetului AI.
+            "marktechpost": {"name": "MarkTechPost",   "url": "https://www.marktechpost.com/feed/",     "category": "ai", "lang": "en"},
+    # tech
+            "thenewstack": {"name": "The New Stack",   "url": "https://thenewstack.io/feed/",           "category": "tech", "lang": "en"},
+            "xda":        {"name": "XDA Developers",   "url": "https://www.xda-developers.com/feed/",   "category": "tech", "lang": "en"},
+            "kitguru":    {"name": "KitGuru",          "url": "https://www.kitguru.net/feed/",          "category": "tech", "lang": "en"},
+            "connect":    {"name": "Connect.ro",       "url": "https://www.connect.ro/feed/",           "category": "tech"},
+            "zonait":     {"name": "ZonaIT",           "url": "https://zonait.ro/feed/",                "category": "tech"},
+    # sport — `fcinter1908` e, dupa Google, cel mai vizitat site real din istoric (763 vizite
+    # in 89 de zile). E in ITALIANA: fara `lang` ar fi fost publicat brut. Vezi process.py,
+    # garda `source_lang != "ro"`.
+            "fcinter1908": {"name": "FC Inter 1908",   "url": "https://www.fcinter1908.it/feed/",       "category": "sport", "lang": "it"},
+            "as_ro":      {"name": "Antena Sport",     "url": "https://www.as.ro/rss",                  "category": "sport"},
+            "sportro":    {"name": "Sport.ro",         "url": "https://www.sport.ro/rss",               "category": "sport"},
+    # auto
+            "automarket": {"name": "AutoMarket",       "url": "https://www.automarket.ro/rss/",         "category": "auto"},
+    # judetean — Timisoara; owner-ul e din Timis, iar `tion` si `pressalert` sunt deja acolo.
+            "opiniatm":   {"name": "Opinia Timișoarei", "url": "https://www.opiniatimisoarei.ro/feed/", "category": "judetean", "judet": "TIMIS"},
+    # economic
+            "profit":     {"name": "Profit.ro",        "url": "https://www.profit.ro/rss",              "category": "economic"},
+    # general / politic — volum mare, deci la coada blocului
+            "antena3":    {"name": "Antena 3 CNN",     "url": "https://www.antena3.ro/rss",             "category": "general"},
+            "adevarul":   {"name": "Adevărul",         "url": "https://adevarul.ro/rss",                "category": "general"},
+            "observator": {"name": "Observator",       "url": "https://observatornews.ro/rss",          "category": "general"},
+            "stiripesurse": {"name": "Știri pe surse", "url": "https://www.stiripesurse.ro/rss",        "category": "general"},
+            "evz":        {"name": "Evenimentul Zilei", "url": "https://evz.ro/feed",                   "category": "politic"},
+    # ----------------------------------------------------------------------------
+    # VERDICTUL `feedcheck` run 32455583095 (2026-08-21, runner GitHub, IP cu internet):
+    # 15 din 21 VII. Taiate, cu motivul masurat — NU re-adauga fara sa gasesti alta cale:
+    #   · eurosportro — `https://www.eurosport.ro/rss.xml` -> HTTP 404
+    #   · historia    — `https://historia.ro/feed/`        -> HTTP 404
+    #   · newsweekro  — `https://newsweek.ro/feed/`        -> HTTP 404
+    #   · gazzetta    — `https://www.gazzetta.it/rss/home.xml` raspunde 200 cu 8 intrari, dar
+    #     cea mai noua e din 2023-12-08. Feed INGHETAT de 2 ani si jumatate, adica mort in
+    #     practica; aceeasi regula sub care au cazut deja primariaclujnapoca si constanta.
+    # PASTRATE desi n-au putut fi verificate (nu inseamna vii, inseamna neverificabile de acolo):
+    #   · stiripesurse — HTTP 403, IP de datacenter respins (acelasi tipar ca ziaruldeiasi,
+    #     despre care s-a masurat pe 2026-08-05 ca raspunde 200 de pe o retea obisnuita)
+    #   · evz          — HTTP 429, rate-limit pe IP
+    # ============================================================================
             "gsp":        {"name": "GSP",          "url": "https://www.gsp.ro/rss.xml",                "category": "sport"},
             "digisport":  {"name": "Digi Sport",   "url": "https://www.digisport.ro/rss",               "category": "sport"},
             "prosport":   {"name": "ProSport",     "url": "https://www.prosport.ro/feed/",              "category": "sport"},
@@ -177,13 +234,21 @@ if _gold:
 # Exclude orice URL/sursă de agenție (verificare suplimentară pe domeniul linkului)
 AGENCY_BLOCKLIST = ["agerpres", "mediafax", "reuters", "afp.com", "apnews", "ap.org"]
 
-CATEGORIES = ["general", "politic", "economic", "extern", "tech", "sport",
-              "auto", "sanatate", "cultura", "lifestyle", "discounturi",
-              "regional", "judetean", "local"]
+# ORDINEA E BARA DE NAVIGARE, nu o listă alfabetică: `templates/base.html` afișează
+# primele 9 inline si restul sub „mai multe". Cerinta owner 2026-08-21: cele patru trepte
+# geografice — national, regional, judetean, local — trebuie sa fie VIZIBILE si numite
+# explicit, nu ascunse in dropdown. Inainte stateau pe pozitiile 12-14, deci pe telefon nu
+# le vedea nimeni (vezi si comentariul de la `.subnav` din static/styles.css, care masurase
+# deja ca „exact categoriile geografice ramaneau nedescoperite").
+# `general` isi PASTREAZA slug-ul (SEO: /general/ e indexat) si primeste doar eticheta
+# „National" — treapta de sus a scarii. Slug-ul nu se schimba, doar textul afisat.
+CATEGORIES = ["general", "regional", "judetean", "local",
+              "politic", "economic", "extern", "sport", "ai",
+              "tech", "auto", "sanatate", "cultura", "lifestyle", "discounturi"]
 
 # Categorii in INSAMANTARE: nou-adaugate, cu surse de volum mic — pot fi goale fara sa pice
 # QA (warn, nu FAIL). Se scot de aici dupa ce categoria s-a populat stabil.
-SEED_CATEGORIES = {"regional", "judetean", "local"}
+SEED_CATEGORIES = {"regional", "judetean", "local", "ai"}
 
 # Categorii GEOGRAFICE (axa proprie): articolele surselor cu aceste categorii NU sunt
 # re-clasificate pe tema de catre AI (vezi process._resolve_category). Un ziar judetean
@@ -204,10 +269,14 @@ CATEGORII_REDENUMITE = {"zonal": "judetean"}
 # (_write_redirects) si tools/migrate_zonal_to_judetean.py pentru cele 295 de articole
 # deja publicate sub vechiul slug.
 CATEGORY_LABELS = {
-    "general": "Actualitate", "politic": "Politică", "economic": "Economie",
+    "general": "Național", "politic": "Politică", "economic": "Economie",
     "extern": "Externe", "tech": "Tech", "sport": "Sport", "auto": "Auto",
     "sanatate": "Sănătate", "cultura": "Cultură", "lifestyle": "Lifestyle",
     "discounturi": "Discounturi", "regional": "Regional", "judetean": "Județean", "local": "Local",
+    # Rubrica AI (owner 2026-08-21). Slug scurt `ai` — respecta conventia celorlalte slug-uri
+    # (un cuvant: general/politic/tech) si da un URL curat, /ai/. Eticheta afisata e intreaga,
+    # ca cititorul sa nu ghiceasca ce inseamna doua litere in bara.
+    "ai": "Inteligență artificială",
 }
 
 # Cate cuvinte trebuie sa aduca `description` PESTE titlu ca itemul sa merite sintetizat.
