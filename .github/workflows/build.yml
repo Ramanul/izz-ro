@@ -260,9 +260,13 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
         with:
           ref: ${{ needs.pipeline.outputs.content_sha }}
-      - name: Verifica release-ul public din Pages si izz.ro
+      - name: Verifica release-ul public pe originea de build si pe izz.ro
         env:
           EXPECTED_COMMIT: ${{ needs.pipeline.outputs.content_sha }}
           RELEASE_TIMEOUT_SECONDS: "1500"
           RELEASE_POLL_SECONDS: "30"
+          # Originea fara bot challenge. Cat timp gazda e Pages, `izz-ro.pages.dev`;
+          # dupa migrarea pe Workers, subdomeniul workers.dev al contului. Se schimba
+          # dintr-un SINGUR loc, variabila de repo `ALT_ORIGIN`, nu din cinci fisiere.
+          RELEASE_ALT_ORIGIN: ${{ vars.ALT_ORIGIN || 'https://izz-ro.pages.dev' }}
         run: python tools/verify_release.py

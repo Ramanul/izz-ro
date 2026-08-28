@@ -13,24 +13,27 @@
 > history with two live rules buried in it. That is the same failure the 08-07 cut documented.
 > **A section is `Open` only if a PR is open or a decision is pending — check, don't assume.**
 
-**Updated:** 2026-08-21 (map county fix; rule files now verified by CI, not by trust)
+**Updated:** 2026-08-28 (coordonare: 6 PR-uri fuzionate, 2 cauze structurale reparate)
 
 ## Open
 
-- **PR #199 `fix/recuperare-404-pagini-indexate`** — targeted recovery of the pages Google has
-  indexed. Open, not draft, awaiting owner merge.
-- **PR (draft) `claude/lumina-reguli-sesiuni-ypgdky`** — wrong-county fix on the map (measured
-  A/B: 12 articles moved, all 12 correct, 0 dropped), plus the rules work that produced this
-  file. The rules half is now WIRED: `tests/test_reguli.py` enforces the caps each rule file
-  declares about itself, that a cap is declared in exactly one place, that every cited
-  `ARTICLE_TTL_DAYS` matches config, and that every root `.md` has a role in CLAUDE.md §21.
-  Every guard has a negative test — a guard that cannot fail is worse than none (`IZZ-0177`).
-- **Archive as a separate surface ("varianta 3")** — owner asked to be reminded on 08-21. Not
-  started, still an owner decision. `ARTICLE_TTL_DAYS` went 7 → 30 (#197) as the cheap half of
-  the same problem; `tools/arhiva.py` already reconstructs the full series from git history.
-- **From `specs/atribuire-cercetare-si-plan.md`, in order** — E1 permalink decoupled from
-  category (**owner decision, blocks all retroactive correction**), E3 focus score instead of
-  `max()`, E4 separate topic/place axes (**owner decision**), E5 gold set grown to ~150 + CI gate.
+- **PR #222 (draft) `claude/verify-resolve-issues-pqwlkj`** — doua mecanisme ale repo-ului care
+  blocau tacit tot backlogul, ambele constante rotite, nu regresii. (a) Fixtura de randare taia
+  la 600 s fix, randarea ia **638 s** → 5 fisiere ieseau ERROR pe `main`; cauza e TTL 7→30 (#197),
+  corpus ~4.600 → 10.742. Acum scaleaza cu corpusul; verificat **45 passed in 629 s**. (b)
+  `registru.tsv merge=union` — **9 din 17** PR-uri aveau conflict, TOATE in registru/STATE,
+  **zero in cod**; perechea obligatorie e #208 (garda de ID, fuzionata inainte).
+- **Decizii de proprietar, NEATINSE deliberat:** **#205** (poze CC BY — §10+§18); **#216**
+  (publicare pe Worker — §10, plus `CLOUDFLARE_API_TOKEN` nefolosit nicaieri altundeva).
+- **#201** (rubrica AI + traducere) — verificat, NEfuzionat: 37 redirecturi valide, `_redirects`
+  confirmat pe originea live. Contine un fix real de §7 (testul de sarire era cablat pe `"en"`,
+  deci `it`/`de`/`fr` treceau BRUTE). Ramane decizie de PRODUS.
+- **Doar documente, dupa #222** (union le rezolva): #202 #203 #204 #206 #207 #210 #214 #218.
+- **Archive ca suprafata separata** — inca decizie de proprietar, nestartat.
+- **Din `specs/atribuire-cercetare-si-plan.md`** — E1 permalink decuplat (decizie proprietar),
+  E3 focus score, E4 axe separate (decizie proprietar), E5 gold set ~150 + poarta CI.
+- Cifrele masurate azi (randare 638 s / 34.898 fisiere, 822 articole/zi, regim stabilizat
+  ~80.145 fisiere sub bugetul de 90.000, CLAUDE.md 23.920/24.576) → `specs/istoric-executie.md`.
 
 ## Standing rules that keep being rediscovered — do not "fix" these
 

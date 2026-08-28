@@ -25,7 +25,7 @@ Returneaza JSON:
   "category": "<una din: {cats}>",
   "entities": ["<1-4 nume proprii cheie din stire (persoane, organizatii, locuri), forma scurta canonica, ex. 'Nicusor Dan', 'PSD', 'Timisoara'>"],
   "icon": "<pictograma care surprinde cel mai bine subiectul, UN slug din: {icons}; null daca niciuna nu se potriveste>"}}
-Reguli: titlul trebuie sa se inteleaga singur si sa contina faptul real, nu o intrebare/teaser; NU copia nicio propozitie din original; zero opinii; foloseste DOAR fapte prezente in textul primit — daca un fapt (cine, unde, cand) nu apare acolo, nu-l inventa si nu-l inlocui cu o formulare vaga."""
+Reguli: SCRIE IN ROMANA — daca stirea primita e in alta limba, tradu-o, nu o reda in original; titlul trebuie sa se inteleaga singur si sa contina faptul real, nu o intrebare/teaser; NU copia nicio propozitie din original; zero opinii; foloseste DOAR fapte prezente in textul primit — daca un fapt (cine, unde, cand) nu apare acolo, nu-l inventa si nu-l inlocui cu o formulare vaga."""
 
 SYSTEM_C = ("Esti editor care sintetizeaza un eveniment din MAI MULTE surse, cu cuvintele tale. "
             "Titlul reda esenta evenimentului; sinteza comprima faptele confirmate. Raspunzi exclusiv JSON valid.")
@@ -40,7 +40,7 @@ Returneaza JSON:
   "category": "<una din: {cats}>",
   "entities": ["<1-4 nume proprii cheie din eveniment (persoane, organizatii, locuri), forma scurta canonica>"],
   "icon": "<pictograma care surprinde cel mai bine evenimentul, UN slug din: {icons}; null daca niciuna nu se potriveste>"}}
-Reguli: trianguleaza faptele comune; ZERO propozitii copiate; titlul contine faptul real, nu un teaser; zero opinii. Verifica semantic fiecare verb: nu transforma „au pretins”, „s-au dat drept” sau „au oprit” într-un verb de percepție precum „au simțit”; dacă sursele spun că suspecții s-au dat drept polițiști, formulează explicit acest fapt."""
+Reguli: SCRIE IN ROMANA — daca sursele sunt in alta limba, tradu; trianguleaza faptele comune; ZERO propozitii copiate; titlul contine faptul real, nu un teaser; zero opinii. Verifica semantic fiecare verb: nu transforma „au pretins”, „s-au dat drept” sau „au oprit” într-un verb de percepție precum „au simțit”; dacă sursele spun că suspecții s-au dat drept polițiști, formulează explicit acest fapt."""
 
 
 SYSTEM_C_BATCH = ("Esti editor care sintetizeaza MAI MULTE evenimente, fiecare din mai multe surse, "
@@ -56,7 +56,7 @@ Pentru FIECARE eveniment, scrie titlu + sinteza care REDAU ESENTA, cu cuvintele 
 Returneaza EXCLUSIV un array JSON, cate UN obiect per eveniment, cu acelasi id primit:
 [{{"id": <id>, "title": "<esenta evenimentului: ce s-a intamplat, concret; 6-16 cuvinte; fara clickbait>", "synthesis": "<sinteza COMPRIMATA in 40-80 de cuvinte: faptele confirmate de mai multe surse (cine, ce, cand, unde, cat), reformulate 100%; marcheaza daca sursele se contrazic>", "category": "<{cats}>", "entities": ["<1-4 nume proprii cheie din eveniment>"], "icon": "<UN slug din lista de la final sau null>"}}]
 Pictograme permise: {icons}
-Reguli: pastreaza id-ul EXACT (numar); un obiect per id; trianguleaza faptele comune DOAR din sursele evenimentului cu acelasi id -- NU amesteca fapte intre evenimente diferite, chiar daca par legate; ZERO propozitii copiate; titlul contine faptul real, nu un teaser; zero opinii. Verifica semantic verbele: nu transforma „au pretins”, „s-au dat drept” sau „au oprit” în „au simțit”; când sursele descriu o identitate falsă, scrie explicit „s-au dat drept polițiști”."""
+Reguli: SCRIE IN ROMANA — daca sursele sunt in alta limba, tradu; pastreaza id-ul EXACT (numar); un obiect per id; trianguleaza faptele comune DOAR din sursele evenimentului cu acelasi id -- NU amesteca fapte intre evenimente diferite, chiar daca par legate; ZERO propozitii copiate; titlul contine faptul real, nu un teaser; zero opinii. Verifica semantic verbele: nu transforma „au pretins”, „s-au dat drept” sau „au oprit” în „au simțit”; când sursele descriu o identitate falsă, scrie explicit „s-au dat drept polițiști”."""
 
 
 SYSTEM_BATCH = ("Esti editor de stiri. Pentru FIECARE stire primita, titlul reda ESENTA faptului, "
@@ -149,7 +149,7 @@ def _repair_synthesis_title(title: str, context: str) -> str:
     if not isinstance(title, str):
         return ""
     if _revendica_identitate(context) and "au simtit politisti" in strip_diacritics(title).lower():
-        return re.sub(r"au simțit polițiști", "s-au dat drept polițiști", title, flags=re.IGNORECASE)
+        return re.sub(r"au\s+(?:simțit|simtit)\s+(?:polițiști|politisti)", "s-au dat drept polițiști", title, flags=re.IGNORECASE)
 
     return title.strip()
 
@@ -518,7 +518,10 @@ def process_single(item: dict, provider) -> dict | None:
     """
     if provider is None:
         item["model"] = "B"
-        if item.get("source_lang") == "en":
+        # Orice sursa care NU e in romana: fara provider AI nu exista cine sa traduca, deci
+        # itemul se sare, nu se publica in limba originala. Testul era cablat pe "en" si
+        # lasa sa treaca brut orice alta limba (it/de/fr) — vezi `lang` din config.SOURCES.
+        if (item.get("source_lang") or "ro") != "ro":
             item["skip"] = True
             return item
         item["title"] = item.get("original_title", "")
@@ -586,7 +589,7 @@ def process_cluster(group: list, provider) -> dict | None:
         rep["updated"] = datetime.now(timezone.utc).isoformat()
 
     if provider is None:
-        if rep.get("source_lang") == "en":
+        if (rep.get("source_lang") or "ro") != "ro":
             rep["skip"] = True
             return rep
         # `original_title` lipseste de pe membrii deja publicati (scrub juridic); pe calea fara
@@ -678,7 +681,7 @@ def process_clusters_batch(groups: list, provider) -> list:
     if provider is None:
         out = []
         for _, rep in preps:
-            if rep.get("source_lang") == "en":
+            if (rep.get("source_lang") or "ro") != "ro":
                 rep["skip"] = True
                 out.append(rep)
                 continue

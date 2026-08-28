@@ -22,9 +22,17 @@ from urllib.request import Request, urlopen
 
 REPO = os.getenv("RELEASE_REPO", "Ramanul/izz-ro")
 EXPECTED = os.getenv("EXPECTED_COMMIT", "").strip()
+# Originile publice verificate. `izz.ro` e domeniul si e mereu in lista. A doua e
+# originea FARA bot challenge, singura pe care sondele o pot citi fara sa primeasca
+# pagina de interstitiu: pe Pages era `izz-ro.pages.dev`, pe Workers e subdomeniul
+# workers.dev al contului, care se afla abia DUPA primul deploy -- de aceea vine din
+# mediu, nu din cod. Nesetata, sonda verifica doar `izz.ro`: mai putina acoperire, dar
+# niciodata o origine moarta care sa treaca verde pe un deploy vechi.
+_ALT_ORIGIN = os.getenv("RELEASE_ALT_ORIGIN", "").strip().rstrip("/")
+_IMPLICIT = ",".join(u for u in (_ALT_ORIGIN, "https://izz.ro") if u)
 BASE_URLS = tuple(
     url.strip().rstrip("/")
-    for url in os.getenv("RELEASE_BASE_URLS", "https://izz-ro.pages.dev,https://izz.ro").split(",")
+    for url in os.getenv("RELEASE_BASE_URLS", _IMPLICIT).split(",")
     if url.strip()
 )
 POLL_SECONDS = int(os.getenv("RELEASE_POLL_SECONDS", "30"))
