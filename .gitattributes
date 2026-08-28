@@ -2,3 +2,18 @@
 *.png binary
 *.jpg binary
 *.svg text
+
+# specs/registru.tsv e append-only prin regula (CLAUDE.md §20): un rand nou se adauga
+# la coada, niciodata nu se rescrie unul existent. Fara driver de merge, doua ramuri
+# care adauga fiecare cate un rand produc un conflict TEXTUAL pe ultima linie, desi
+# intentia celor doua nu se contrazice deloc. Masurat 2026-08-28: 9 din 17 PR-uri
+# deschise erau blocate exact aici si NICIUNUL in cod.
+#
+# `union` pastreaza ambele seturi de randuri. Riscul pe care il introduce — doua
+# ramuri care revendica acelasi ID, fiindca `_next_id` calculeaza max+1 pe vederea
+# proprie — nu e ipotetic (IZZ-0241: s-a intamplat de doua ori intr-o zi) si NU e
+# acoperit de union. E acoperit de garda `id_duplicate()` din tools/registru.py,
+# fuzionata in #208 si rulata de tests.yml pe starea MERGED a fiecarui PR: o
+# coliziune iese rosie in loc sa aterizeze tacut. Cele doua se tin reciproc — nu
+# scoate una fara cealalta.
+specs/registru.tsv merge=union

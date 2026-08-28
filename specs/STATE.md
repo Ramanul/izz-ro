@@ -13,29 +13,27 @@
 > history with two live rules buried in it. That is the same failure the 08-07 cut documented.
 > **A section is `Open` only if a PR is open or a decision is pending — check, don't assume.**
 
-**Updated:** 2026-08-23 (`ALT_ORIGIN` set; #209 recalibrated — Pages now safe to remove)
+**Updated:** 2026-08-28 (coordonare: 6 PR-uri fuzionate, 2 cauze structurale reparate)
 
 ## Open
 
-- **HOST CHANGED: izz.ro deploys from a Worker, not Pages** (#211 merged `40ac007`). Workers
-  Paid is **active** → asset ceiling 100,000, not 20,000. `ALT_ORIGIN` is **set** (08-23 04:06
-  UTC), so all five workflows reading it (`build`, `monitor`, `visual`, `harta-smoke`,
-  `harta-data`) probe the Worker, not `pages.dev` — **Pages is now safe to pause/delete**.
-  Domain = same commit as workers.dev (08-23). From a **web session** every `workers.dev` host
-  is proxy-blocked, branch previews too (#215) — §16.3 fails there; `izz.ro` answers 200.
-- **#209 recalibrated for Workers Paid** (`27b1abb`), draft, ready to review. Budget/ceiling
-  19,500/20,000 → 90,000/100,000; the ceiling is now read from the Cloudflare docs, not
-  bracketed. The guard stays — the silent deploy-refusal it defends against is host-independent.
-  Measured 08-23 on a full render: 23,961 files = 24% of ceiling; steady state ~83,000 (17%).
-- **PR #202 (draft) `claude/lumina-reguli-sesiuni-ypgdky`** — wrong-county map fix (A/B: 12
-  articles moved, all correct). Its rules half already landed: `tests/test_reguli.py` enforces
-  the caps, and it caught a 45-line edit to this file today. Only the map half is still open.
-- **Archive as a separate surface ("varianta 3")** — owner asked to be reminded on 08-21. Not
-  started, still an owner decision. `ARTICLE_TTL_DAYS` went 7 → 30 (#197) as the cheap half of
-  the same problem; `tools/arhiva.py` already reconstructs the full series from git history.
-- **From `specs/atribuire-cercetare-si-plan.md`, in order** — E1 permalink decoupled from
-  category (**owner decision, blocks all retroactive correction**), E3 focus score instead of
-  `max()`, E4 separate topic/place axes (**owner decision**), E5 gold set grown to ~150 + CI gate.
+- **PR #222 (draft) `claude/verify-resolve-issues-pqwlkj`** — doua mecanisme ale repo-ului care
+  blocau tacit tot backlogul, ambele constante rotite, nu regresii. (a) Fixtura de randare taia
+  la 600 s fix, randarea ia **638 s** → 5 fisiere ieseau ERROR pe `main`; cauza e TTL 7→30 (#197),
+  corpus ~4.600 → 10.742. Acum scaleaza cu corpusul; verificat **45 passed in 629 s**. (b)
+  `registru.tsv merge=union` — **9 din 17** PR-uri aveau conflict, TOATE in registru/STATE,
+  **zero in cod**; perechea obligatorie e #208 (garda de ID, fuzionata inainte).
+- **Decizii de proprietar, NEATINSE deliberat:** **#205** (poze CC BY — §10+§18); **#216**
+  (publicare pe Worker — §10, plus `CLOUDFLARE_API_TOKEN` nefolosit nicaieri altundeva).
+- **#201** (rubrica AI + traducere) — verificat, NEfuzionat: 37 redirecturi valide, `_redirects`
+  confirmat pe originea live. Contine un fix real de §7 (testul de sarire era cablat pe `"en"`,
+  deci `it`/`de`/`fr` treceau BRUTE). Ramane decizie de PRODUS.
+- **Doar documente, dupa #222** (union le rezolva): #202 #203 #204 #206 #207 #210 #214 #218.
+- **Archive ca suprafata separata** — inca decizie de proprietar, nestartat.
+- **Din `specs/atribuire-cercetare-si-plan.md`** — E1 permalink decuplat (decizie proprietar),
+  E3 focus score, E4 axe separate (decizie proprietar), E5 gold set ~150 + poarta CI.
+- Cifrele masurate azi (randare 638 s / 34.898 fisiere, 822 articole/zi, regim stabilizat
+  ~80.145 fisiere sub bugetul de 90.000, CLAUDE.md 23.920/24.576) → `specs/istoric-executie.md`.
 
 ## Standing rules that keep being rediscovered — do not "fix" these
 
