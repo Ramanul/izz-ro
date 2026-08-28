@@ -262,6 +262,49 @@ def assign_slugs(articles: list) -> None:
 _PAGES_WRITTEN: set = set()
 
 
+def _image_budget(n: int, budget: int | None = None,
+                  reserve: int | None = None) -> tuple[int, int, int]:
+    """Cate fisiere de imagine incap, si cum se impart pe cele `n` articole.
+
+    Intoarce `(img_budget, n_art, n_cover)`: cate fisiere de imagine sunt disponibile,
+    cate articole primesc arta 960x504 si cate dintre ele primesc SI coperta 1200x630.
+    Apelantul parcurge articolele de la cel mai nou la cel mai vechi, deci taierea cade
+    intotdeauna pe arhiva, nu pe ce e pe homepage.
+
+    Pagina fiecarui articol se scade din buget prima (`- n`) si nu e niciodata sacrificata:
+    o pagina lipsa e un 404 pe un URL deja indexat, adica exact regresia reparata de #199.
+    """
+    budget = config.OUTPUT_FILE_BUDGET if budget is None else budget
+    reserve = config.OUTPUT_NON_ARTICLE_RESERVE if reserve is None else reserve
+    img_budget = max(0, budget - reserve - n)
+    n_art = min(n, img_budget)                        # cate primesc macar arta
+    n_cover = max(0, min(n_art, img_budget - n_art))  # dintre ele, cate primesc si coperta
+    return img_budget, n_art, n_cover
+
+
+def _o_singura_pasa(n: int, n_art: int, n_cover: int,
+                    img_budget: int, card_reserve: int) -> bool:
+    """Poate scrie arta si coperta in ACEEASI iteratie, fara sa schimbe ce se publica?
+
+    `covers._scene()` cache-uieste EXACT un articol ("pastreaza doar ultimul articol",
+    covers.py:345), iar scena e identica pentru `art.jpg` si `cover.jpg`. Doua apeluri
+    lipite o calculeaza o data; despartite in doua pase peste toate articolele sunt la `n`
+    iteratii distanta si rateaza cache-ul de FIECARE data -- se deseneaza de doua ori.
+    Masurat 2026-08-23, output identic (23.961 fisiere, 5.550 coperti): 729s cu doua pase,
+    508s cu bucla unica. ~220s aruncati la fiecare randare, adica la fiecare 2 ore in
+    productie plus la fiecare rulare de CI.
+
+    Cele doua pase NU sunt insa un moft: ele garanteaza ca, la buget strans, se sacrifica
+    o coperta inaintea unei imagini de pe pagina. Garantia aia conteaza doar daca bugetul
+    chiar poate lega. Conditia de aici e SUFICIENTA ca sa nu poata: fiecare articol scrie
+    cel mult 3 fisiere de imagine (art + webp + cover), deci daca bugetul acopera 3n peste
+    rezerva de carduri, `spent` nu atinge plafonul in timpul buclei si prioritatea nu e
+    niciodata pusa la incercare. Sub conditie, cele doua forme dau acelasi output; peste
+    ea se cade inapoi pe doua pase.
+    """
+    return n_cover >= n_art >= n and img_budget - card_reserve >= 3 * n
+
+
 def _write(path: str, content: str) -> None:
     os.makedirs(os.path.dirname(path), exist_ok=True)
     with open(path, "w", encoding="utf-8") as fh:
@@ -647,31 +690,129 @@ def build(articles: list, mod: dict | None = None) -> None:
     # in query schimba URL-ul doar cand se schimba imaginea, deci cache-ul ramane
     # eficient dar nu mai poate fi vreodata stale.
     leadphotos = _load_leadphotos()
-    for a in by_date:
-        cdir = os.path.join(OUT_DIR, a["category"], a["slug"])
-        aid = htmlart.art_id(a)
-        cover_dst, art_dst = os.path.join(cdir, "cover.jpg"), os.path.join(cdir, "art.jpg")
-        webp_dst = os.path.join(cdir, "art.webp")
-        # prioritate: (1) fotografie reala LEAD (landscape, atribuire-libera) daca articolul
-        # are una -> imagine principala "foto"; (2) coperta HTML/Chromium comisa;
-        # (3) fallback Pillow. Fotografia reala inlocuieste pictograma pe carduri/hero/og.
-        lp = leadphotos.get(aid)
-        cover_ok = art_ok = False
-        if lp:
-            cover_ok = _use_media(os.path.join(MEDIA_DIR, lp["cover"]), cover_dst)
-            art_ok = _use_media(os.path.join(MEDIA_DIR, lp["art"]), art_dst)
-            if art_ok and lp.get("webp") and _use_media(os.path.join(MEDIA_DIR, lp["webp"]), webp_dst):
-                a["art_webp"] = f"/{a['category']}/{a['slug']}/art.webp?v={_content_ver(webp_dst)}"
-            if cover_ok or art_ok:
-                a["lead_credit"] = lp   # afisat DOAR pe pagina de articol (curtoazie); PD/CC0 -> nu e obligatoriu
-        if cover_ok or _use_media(os.path.join(MEDIA_DIR, f"{aid}.c.jpg"), cover_dst) or covers.generate(a, cover_dst):
+
+    # BUGET DE FISIERE. Pana pe 2026-08-22 randarea scria cate imagini avea de scris si
+    # atat. Cand output-ul a trecut plafonul de fisiere al Cloudflare Pages, deploy-ul a
+    # inceput sa fie refuzat TACUT -- jobul de continut trecea verde si abia `release-probe`
+    # pica 25 de minute mai tarziu, cu "izz.ro serveste 63bcc9bd0965, care nu include
+    # 51fe7790c026". Site-ul a stat inghetat 21 de ore pe un release vechi.
+    #
+    # Ordinea prioritatilor, de sus in jos:
+    #   1. pagina fiecarui articol -- niciodata sacrificata. O pagina lipsa e un 404 pe un
+    #      URL pe care Google il are deja indexat: exact regresia reparata de #199.
+    #   2. arta 960x504 afisata pe pagina si pe card (+ derivata .webp comisa, cand exista)
+    #   3. coperta 1200x630 cu titlul desenat -- folosita DOAR ca og:image si in
+    #      sitemap-images, deci conteaza doar cat timp articolul chiar se distribuie
+    #
+    # De ce doua pase si nu una: `art.webp` vine din `media/` si exista doar la ~63% din
+    # articole (masurat 2026-08-22: 3.250 din 5.799), deci costul real per articol nu se
+    # poate sti inainte de scriere. Pasa 1 da arta tuturor si NUMARA ce a scris efectiv;
+    # pasa 2 imparte ce a ramas, de la cel mai nou spre cel mai vechi. Asa taierea cade
+    # mereu pe arhiva, iar plafonul e respectat exact, nu estimat.
+    n = len(by_date)
+    img_budget, n_art, n_cover = _image_budget(n)
+    # Variantele mici pentru cardurile de pe homepage se finanteaza INAINTEA copertelor de
+    # share: sunt putine si sunt exact zona unde Lighthouse a masurat imagini prea mari.
+    # Fara rezerva, pasa 2 golea bugetul si homepage-ul ramanea fara ele (masurat: 0 din 61).
+    card_reserve = len(config.CATEGORIES) * config.HOME_CARDS_PER_CATEGORY + 16
+    spent = 0
+    # Contorizat separat: sub `_o_singura_pasa` coperta se scrie IN pasa 1, deci `spent`
+    # de la finalul ei nu mai e "cat s-a dus pe arta". Fara asta linia de raport ar spune
+    # ca s-au scris 0 coperti exact cand s-au scris toate.
+    spent_cover = 0
+
+    def _spend(ok: bool) -> bool:
+        """Contorizeaza un fisier de imagine chiar scris. Returneaza `ok` neschimbat."""
+        nonlocal spent
+        if ok:
+            spent += 1
+        return ok
+
+    def _scrie_coperta(a: dict, cdir: str, aid: str, lp) -> None:
+        """Coperta 1200x630 pentru `a`. Aceeasi in ambele pase -- o singura definitie."""
+        nonlocal spent_cover
+        inainte = spent
+        cover_dst = os.path.join(cdir, "cover.jpg")
+        ok = bool(lp) and _spend(_use_media(os.path.join(MEDIA_DIR, lp["cover"]), cover_dst))
+        if not ok:
+            ok = _spend(_use_media(os.path.join(MEDIA_DIR, f"{aid}.c.jpg"), cover_dst)
+                        or covers.generate(a, cover_dst))
+        if ok:
             a["cover_url"] = (f"{config.SITE['url']}/{a['category']}/{a['slug']}/cover.jpg"
                               f"?v={_content_ver(cover_dst)}")
-        if art_ok or _use_media(os.path.join(MEDIA_DIR, f"{aid}.jpg"), art_dst) or covers.generate_art(a, art_dst):
+            if lp and not a.get("lead_credit"):
+                a["lead_credit"] = lp
+        spent_cover += spent - inainte
+
+    # Vezi `_o_singura_pasa`: cand bugetul nu poate lega, coperta se scrie in ACEEASI
+    # iteratie cu arta, cat timp scena e in cache-ul de un element din covers.py.
+    intr_o_pasa = _o_singura_pasa(n, n_art, n_cover, img_budget, card_reserve)
+
+    # PASA 1 -- arta afisata. Fiecare articol care incape primeste imaginea de pe pagina.
+    for idx, a in enumerate(by_date):
+        if idx >= n_art or spent >= img_budget:
+            break
+        cdir = os.path.join(OUT_DIR, a["category"], a["slug"])
+        aid = htmlart.art_id(a)
+        art_dst = os.path.join(cdir, "art.jpg")
+        webp_dst = os.path.join(cdir, "art.webp")
+        lp = leadphotos.get(aid)
+        art_ok = False
+        if lp:
+            # prioritate: fotografie reala LEAD (landscape, atribuire-libera) daca articolul
+            # are una -- inlocuieste pictograma generata pe carduri/hero/og.
+            art_ok = _spend(_use_media(os.path.join(MEDIA_DIR, lp["art"]), art_dst))
+            if art_ok:
+                a["lead_credit"] = lp   # afisat DOAR pe pagina de articol (curtoazie)
+                if (lp.get("webp") and spent < img_budget
+                        and _spend(_use_media(os.path.join(MEDIA_DIR, lp["webp"]), webp_dst))):
+                    a["art_webp"] = f"/{a['category']}/{a['slug']}/art.webp?v={_content_ver(webp_dst)}"
+        if art_ok or _spend(_use_media(os.path.join(MEDIA_DIR, f"{aid}.jpg"), art_dst)
+                            or covers.generate_art(a, art_dst)):
             a["art_path"] = f"/{a['category']}/{a['slug']}/art.jpg?v={_content_ver(art_dst)}"
             # varianta WebP (~70% mai mica) daca e comisa; <picture> cade pe JPEG altfel
-            if not a.get("art_webp") and _use_media(os.path.join(MEDIA_DIR, f"{aid}.webp"), webp_dst):
+            if (not a.get("art_webp") and spent < img_budget
+                    and _spend(_use_media(os.path.join(MEDIA_DIR, f"{aid}.webp"), webp_dst))):
                 a["art_webp"] = f"/{a['category']}/{a['slug']}/art.webp?v={_content_ver(webp_dst)}"
+        # Coperta ACUM, nu peste `n` iteratii: `covers._scene()` tine un singur articol, iar
+        # `generate_art` de mai sus tocmai l-a pus acolo. Despartite, ambele apeluri rateaza.
+        if intr_o_pasa and idx < n_cover:
+            _scrie_coperta(a, cdir, aid, lp)
+
+    spent_art = spent - spent_cover
+
+    # PASA 2 -- coperta de share, din ce a ramas, tot dinspre cel mai nou.
+    # Sub `_o_singura_pasa` pasa 1 le-a scris deja, cat timp scena era in cache; aici raman
+    # doar cele pe care nu le-a putut finanta. La bugetul de azi bucla asta nu face nimic.
+    for idx, a in enumerate(by_date):
+        if idx >= n_cover or spent >= img_budget - card_reserve:
+            break
+        if a.get("cover_url"):
+            continue
+        cdir = os.path.join(OUT_DIR, a["category"], a["slug"])
+        aid = htmlart.art_id(a)
+        _scrie_coperta(a, cdir, aid, leadphotos.get(aid))
+
+    # Articolele ramase fara coperta proprie isi pastreaza og:image: aceeasi scena, 960x504.
+    # Raportul e identic (1,905:1) si trece minimul de 600x315 al retelelor sociale -- se
+    # pierde titlul desenat peste imagine, nu imaginea. Fara asta ar ramane fara og:image
+    # deloc, iar `sitemap-images.xml` s-ar goli.
+    fara_coperta = 0
+    for a in by_date:
+        if not a.get("cover_url") and a.get("art_path"):
+            a["cover_url"] = f"{config.SITE['url']}{a['art_path']}"
+            fara_coperta += 1
+
+    # print, nu logging.info: radacina sta pe WARNING, deci INFO nu se vede in rulare --
+    # masurat 2026-08-22, linia asta a lipsit cu totul din log. Restul progresului din
+    # pipeline foloseste tot print.
+    print(f">> buget imagini: {img_budget} fisiere pentru {n} articole -> {spent_art} pe arta, "
+          f"{spent - spent_art} pe coperti ({fara_coperta} cad pe og:image din arta)")
+    if n_art < n:
+        logging.warning("!! bugetul nu acopera o imagine per articol: %d din %d articole raman "
+                        "fara. Se ridica doar prin ARTICLE_TTL_DAYS mai mic sau imagini in "
+                        "afara Pages -- NU prin marirea bugetului fara o masuratoare noua.",
+                        n - n_art, n)
 
     hero = _pick_hero(by_date)
     hero_urls = {a["url"] for a in hero}
@@ -694,7 +835,9 @@ def build(articles: list, mod: dict | None = None) -> None:
         source = os.path.join(OUT_DIR, a["category"], a["slug"], "art.webp")
         if not os.path.isfile(source):
             source = os.path.join(OUT_DIR, a["category"], a["slug"], "art.jpg")
-        if _responsive_webp(source, card_dst):
+        # numarata in acelasi buget: sunt putine (61 masurat), dar garantia trebuie sa fie
+        # exacta, nu aproximativa -- exact aproximarea a lasat plafonul sa fie depasit tacut.
+        if spent < img_budget and _spend(_responsive_webp(source, card_dst)):
             a["art_card_webp"] = f"/{a['category']}/{a['slug']}/art-card.webp?v={_content_ver(card_dst)}"
 
     # homepage
@@ -852,7 +995,6 @@ def build(articles: list, mod: dict | None = None) -> None:
                intro="Adresa nu există sau articolul a expirat. Între timp, ce e nou:",
                articles=by_date[:12])))
     _write_sitemap(by_date)
-    _write_build_metadata(len(by_date))
     _write_robots()
     _write_security_txt()
     # dovada de domeniu pentru IndexNow: motorul citeste cheia de la radacina
@@ -861,6 +1003,8 @@ def build(articles: list, mod: dict | None = None) -> None:
     _write_redirects()
     _write_feed(by_date)
     _write_search(env, by_date)
+    # ULTIMUL: numara ce s-a scris efectiv, deci trebuie sa vina dupa toate scrierile.
+    _write_build_metadata(len(by_date))
 
 
 def _write_build_metadata(article_count: int) -> None:
@@ -880,14 +1024,42 @@ def _write_build_metadata(article_count: int) -> None:
               or os.getenv("GITHUB_SHA") or os.getenv("BUILD_COMMIT_SHA") or "local")
     branch = (os.getenv("WORKERS_CI_BRANCH") or os.getenv("CF_PAGES_BRANCH")
               or os.getenv("GITHUB_REF_NAME") or os.getenv("BUILD_BRANCH") or "local")
+    # Numarul REAL de fisiere, nu cel prezis. Bugetul din `render` imparte imaginile pe
+    # baza unei rezerve estimate; asta e masuratoarea care spune daca estimarea mai tine.
+    # Ajunge in build.json ca sa fie citibila pe live, nu doar in logul rularii.
+    file_count = sum(len(fs) for _, _, fs in os.walk(OUT_DIR)) + 1   # +1: build.json insusi
     payload = {
         "commit": commit,
         "branch": branch,
         "generated_at": datetime.now(timezone.utc).isoformat(),
         "article_count": article_count,
+        "file_count": file_count,
     }
     # Cheile JSON raman stabile pentru ca probele externe sa nu depinda de ordinea dict-ului Python.
     _write(os.path.join(OUT_DIR, "build.json"), json.dumps(payload, ensure_ascii=False, sort_keys=True) + "\n")
+
+    if file_count > config.OUTPUT_FILE_CEILING:
+        # Zgomotos, nu doar logat. Un `logging.error` lasa randarea sa iasa cu cod 0: jobul de
+        # continut ramane verde, Cloudflare refuza deploy-ul supradimensionat fara sa raporteze
+        # inapoi, si esecul reapare abia in `release-probe`, 25 de minute mai tarziu. Acela e
+        # incidentul din 2026-08-21, si un rand de log in plus nu l-ar fi oprit. Exceptia se
+        # ridica DUPA scrierea lui build.json, ca diagnosticul sa supravietuiasca esecului.
+        raise RuntimeError(
+            f"output/ are {file_count} fisiere, peste plafonul gazdei "
+            f"({config.OUTPUT_FILE_CEILING}): Cloudflare ar refuza deploy-ul TACUT. "
+            f"Remasoara cu tools/count_output.py si corecteaza OUTPUT_NON_ARTICLE_RESERVE, "
+            f"sau coboara ARTICLE_TTL_DAYS.")
+    if file_count > config.OUTPUT_FILE_BUDGET:
+        # Intre buget si plafon: inca se deployeaza, dar rezerva a derivat. Avertisment, nu
+        # moarte -- o marja stramta nu trebuie sa doboare publicarea cand deploy-ul ar trece.
+        logging.error("!! output-ul are %d fisiere, peste bugetul de %d (plafon %d). Rezerva "
+                      "pentru fisierele din afara articolelor (%d) e prea mica -- remasoara cu "
+                      "tools/count_output.py si corecteaza OUTPUT_NON_ARTICLE_RESERVE.",
+                      file_count, config.OUTPUT_FILE_BUDGET, config.OUTPUT_FILE_CEILING,
+                      config.OUTPUT_NON_ARTICLE_RESERVE)
+    else:
+        print(f">> output: {file_count} fisiere "
+              f"(buget {config.OUTPUT_FILE_BUDGET}, marja {config.OUTPUT_FILE_BUDGET - file_count})")
 
 
 def _newsletter_html() -> str:
