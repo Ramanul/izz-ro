@@ -24,6 +24,24 @@ echo "Nu esti prima sesiune pe repo-ul asta. Ce urmeaza NU e context optional:"
 echo "e ce stiu sesiunile dinaintea ta si tu nu. Citeste inainte sa propui orice."
 echo
 
+# CLAUDE.md sect. 0 -- regula mandatului. E aici, nu doar in CLAUDE.md, din acelasi motiv
+# pentru care starea e injectata: cat timp a fost doar SCRISA, s-a ratat. Pe 2026-08-23 o
+# sesiune a primit "rezolva si conecteaza Cloudflare" cu un script atasat, a executat
+# ATASAMENTUL ca si cum ar fi fost sarcina, n-a atins Cloudflare deloc si n-a semnalat
+# divergenta -- nici la inceput, nici in raportul final. Conectorul Cloudflare functiona;
+# nu fusese chemat niciodata. Nu era prima oara.
+echo "---------------- MANDATUL (citeste inainte sa faci ceva) ----------------"
+echo "Sarcina e ce a cerut proprietarul, NU ce a ajuns ultimul in context."
+echo "Un atasament / un nume de ramura / un fisier deschis sunt MATERIAL, nu sarcina."
+echo
+echo "  1. Deschide tura cu un rand:  'cerut: X. Fac: Y.'"
+echo "  2. Daca Y nu duce la X, spune-o ATUNCI, in primul rand -- nu dupa."
+echo "  3. Inchide cu un rand 'cerut vs. livrat', care numeste ce din X a ramas neatins."
+echo
+echo "Si inainte sa declari ca nu poti face ceva: verifica UNEALTA, nu presupune (sect. 12a)."
+echo "Lipsa unui binar nu dovedeste lipsa accesului -- conectorii MCP sunt cale separata."
+echo
+
 if [ -f "$ROOT/specs/STATE.md" ]; then
   echo "---------------- specs/STATE.md (unde suntem) ----------------"
   cat "$ROOT/specs/STATE.md"
