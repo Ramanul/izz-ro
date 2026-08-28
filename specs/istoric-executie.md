@@ -1975,3 +1975,26 @@ all 189 sources instead of 2 links · #90 freed the slot held by an unreachable 
 - MAI WAF blocks `*.prefectura.mai.gov.ro` from this IP (502). Retest from Actions.
 - Cloudflare free plan ~500 builds/month is why `build.yml` runs every 2h (`13 */2`). Do not
   raise the frequency — see CLAUDE.md §17.
+
+
+## 2026-08-28 — sesiune de coordonare: masuratori
+
+Contra-verificate cap-coada, ca sa nu fie re-masurate:
+
+- **Randare completa: 638 s, exit 0, 34.898 fisiere** (erau 23.961 pe 08-23). Randarea NU e
+  stricata — fixtura taia la 600 s. De aici cele 28 de ERROR raportate ca „bug de randare".
+- **Ritm real de intrare: 822 articole/zi** (mediana pe 13 zile complete din `articles.json`).
+  Regim stabilizat la `ARTICLE_TTL_DAYS = 30`: ~24.660 articole → **~80.145 fisiere**, adica sub
+  bugetul de 90.000 din #209. Confirma independent cifra „~83.000" din STATE.md. Garda e
+  calibrata corect; NU o re-deschide fara o masuratoare noua.
+- **#209 rulat cap-coada pe corpusul real:** exit 0, 654 s, **34.898 fisiere — identic cu
+  baseline-ul**. Deci garda de buget e inerta la scara actuala, nu taie nicio imagine.
+- **`CLAUDE.md`: 23.920 / 24.576 octeti.** Au mai ramas 656. Urmatoarea regula adaugata acolo
+  sparge poarta din `test_reguli.py` — mai intai mutat ceva in `specs/`.
+- **Egress dintr-o sesiune web (`tools/verify_allowlist.sh`, #215):**
+  `izz-ro.andifreelancer2.workers.dev` → **200**; `izz.ro` si `www.izz.ro` → CONNECT refuzat
+  (403 de la gateway). Deci §16.3 se poate face pe originea Worker, dar NU pe apex.
+- **Clona din sesiunile remote e shallow** (63 de commits) — `git fetch --unshallow` inainte de
+  orice test-merge, altfel `git merge-base` da „no merge base" si triajul iese fals.
+- **`pytest`/`ruff` pot fi instalate izolat prin uv**, fara dependintele pipeline-ului: `pytest`
+  exista ca binar dar `python3 -m pytest` esueaza. Verifica interpretorul, nu doar `which`.
