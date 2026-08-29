@@ -13,22 +13,18 @@
 > history with two live rules buried in it. That is the same failure the 08-07 cut documented.
 > **A section is `Open` only if a PR is open or a decision is pending — check, don't assume.**
 
-**Updated:** 2026-08-28 (coordonare: 6 PR-uri fuzionate, 2 cauze structurale reparate)
+**Updated:** 2026-08-29 (PR #222 + #224 fuzionate — pragul de randare si conflictul de registru
+sunt rezolvate pe `main`; #223 inchis ca duplicat de #224)
 
 ## Open
 
-- **PR #222 (draft) `claude/verify-resolve-issues-pqwlkj`** — doua mecanisme ale repo-ului care
-  blocau tacit tot backlogul, ambele constante rotite, nu regresii. (a) Fixtura de randare taia
-  la 600 s fix, randarea ia **638 s** → 5 fisiere ieseau ERROR pe `main`; cauza e TTL 7→30 (#197),
-  corpus ~4.600 → 10.742. Acum scaleaza cu corpusul; verificat **45 passed in 629 s**. (b)
-  `registru.tsv merge=union` — **9 din 17** PR-uri aveau conflict, TOATE in registru/STATE,
-  **zero in cod**; perechea obligatorie e #208 (garda de ID, fuzionata inainte).
 - **Decizii de proprietar, NEATINSE deliberat:** **#205** (poze CC BY — §10+§18); **#216**
   (publicare pe Worker — §10, plus `CLOUDFLARE_API_TOKEN` nefolosit nicaieri altundeva).
 - **#201** (rubrica AI + traducere) — verificat, NEfuzionat: 37 redirecturi valide, `_redirects`
   confirmat pe originea live. Contine un fix real de §7 (testul de sarire era cablat pe `"en"`,
   deci `it`/`de`/`fr` treceau BRUTE). Ramane decizie de PRODUS.
-- **Doar documente, dupa #222** (union le rezolva): #202 #203 #204 #206 #207 #210 #214 #218.
+- **Doar documente** (conflictul din registru rezolvat de #222, nemaiverificate individual azi):
+  #202 #203 #204 #206 #207 #214 #218.
 - **Archive ca suprafata separata** — inca decizie de proprietar, nestartat.
 - **Din `specs/atribuire-cercetare-si-plan.md`** — E1 permalink decuplat (decizie proprietar),
   E3 focus score, E4 axe separate (decizie proprietar), E5 gold set ~150 + poarta CI.
