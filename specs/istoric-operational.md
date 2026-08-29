@@ -40,7 +40,23 @@ curățenie în `covers.py` — toate ✅.
 lipsește adesea zile întregi și vrea progres între timp, deci un Routine de fundal e permis din nou,
 sub limite care fac imposibil eșecul original. Limitele active sunt în `CLAUDE.md §14b`.
 
+## §21 — De ce există harta fișierelor de la rădăcină
+
+Garda din `tests/test_reguli.py::test_harta_acopera_exact_fisierele_de_la_radacina` există fiindcă
+rădăcina ajunsese la **15 fișiere `.md`** și nimeni nu mai știa care e canonic. Cifrele, măsurate
+pe commit-ul de dinaintea curățeniei (2026-08-21): **166.326 de octeți** în total pe cele 15, din
+care **82.890** în cele opt fișiere propriu-zis „de reguli" (fără `README.md` și fără rapoartele
+mutate atunci în `notes/`). Textul mai vechi din `CLAUDE.md §21` împerechea cele două cifre greșit
+(„15 fișiere, 82 KB", numitori diferiți) și mai afirma că treisprezece fuseseră înghețate în
+același commit — nesusținut: cel mai mare grup cu același ultim commit era de **trei** fișiere.
+Corectat 2026-08-29.
+
 ## §15 — Sub-agenți și comenzi (detaliu)
+
+**De ce `CLAUDE.md §15` nu mai repetă plafonul lui `STATE.md`:** până pe 2026-08-21 erau scrise
+două cifre diferite pentru aceeași regulă (~30 de linii în `CLAUDE.md`, ~40 în antetul lui
+`STATE.md`) — iar fișierul ajunsese la 656 de linii, deci nu se ținea niciuna. O regulă, o cifră,
+un loc. Garda mecanică e `tests/test_reguli.py::test_fiecare_plafon_e_declarat_intr_un_singur_loc`.
 
 Sub-agenții de proiect stau în `.claude/agents/` (versionați, vezi README-ul lor). Fiecare izolează
 o treabă zgomotoasă, mărginită și rezumabilă, și întoarce un verdict.
@@ -86,9 +102,12 @@ feedparser/sgmllib3k), ca să poată rula pipeline-ul și agenții din Claude Co
 De două ori o sesiune a citit „cron 30 min" în fișier, a văzut rulări la 1.5-4.5h distanță și a
 conchis că pipeline-ul e stricat. Nu e. Documentația era greșită.
 
-- **`build.yml` are cron `13 */2` — la fiecare 2 ore, deliberat.** Fiecare commit de stare
-  declanșează un build Cloudflare Pages, iar planul gratuit permite ~500/lună; 12/zi ≈ 360/lună lasă
-  spațiu pentru preview-urile de PR. Mai des = bugetul de build se epuizează și deploy-urile se
+- **Cadența: vezi `CLAUDE.md §17`, care e sursa unică.** Cifra din paragraful ăsta era `13 */2`
+  („la fiecare 2 ore") și a rămas în urmă: `build.yml` a trecut între timp la cron **orar**
+  (`13 * * * *`) cu o poartă de 105 minute, care păstrează publicarea la ~2h. Corectat 2026-08-29,
+  după ce arhiva asta a fost găsită contrazicând regula vie — deci nu re-cita cadența de aici.
+  Ce rămâne valabil și e motivul de fond: fiecare commit de stare declanșează un build Cloudflare,
+  iar planul gratuit permite ~500/lună. Mai des = bugetul de build se epuizează și deploy-urile se
   opresc — aia e literalmente pana din 5-9 iulie 2026. **Nu „repara" cadența făcând-o mai deasă.**
 - **Plafonul de debit e bugetul AI, nu programul:** `max_ai_calls` implicit 18 per rulare
   (≈216/zi). `workflow_dispatch` acceptă un override punctual pentru însămânțarea unei categorii noi.

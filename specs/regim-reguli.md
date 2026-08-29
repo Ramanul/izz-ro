@@ -142,6 +142,18 @@ Nu se repetă aici; sunt clasa pe care regimul de mai jos o face imposibilă.
 
 ## 3. Armonizare — ce se repară și cum
 
+> **F1 LIVRAT 2026-08-29.** Cele 7 corecții de fapt din tabelul A sunt aplicate, iar cele 13 reguli
+> pierdute sunt repuse — **fiecare la nivelul ei**, nu toate în `CLAUDE.md`, fiindcă nu încăpeau:
+> 934 de octeți necesari contra 656 disponibili. Zece au intrat în `CLAUDE.md` scrise concis, restul
+> în sateliți (`specs/masuratori-frontend.md`, `specs/registru-decizii.md`,
+> `.claude/commands/slice.md`). Ca să încapă, trei bucăți de arhivă pură au fost mutate din
+> `CLAUDE.md` în `specs/istoric-operational.md` — inclusiv antetul care conținea cifra greșită
+> „~11 KB" și §21 care conținea „82 KB / treisprezece", ambele corectate acolo cu valorile
+> măsurate. Rezultat: **24.390/24.576 octeți, 186 liberi**, toate gărzile verzi.
+>
+> Ce dovedește felia asta: F1 a consumat aproape tot bugetul rămas doar ca să repare și să repună.
+> Nicio regulă nouă nu mai încape fără F4. Ordinea F2 → F3 → F4 rămâne cea propusă în §4.
+
 Trei clase, cu tratament diferit. **Nu se atinge nimic din §10** (sinteză/atribuire, legal, deploy)
 fără confirmare separată.
 

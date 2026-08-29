@@ -3,7 +3,11 @@
   "permissions": {
     "allow": [
       "Bash(python -m generator.main:*)",
+      "Bash(python -m pytest:*)",
+      "Bash(python -m ruff check:*)",
       "Bash(python tools/qa_check.py:*)",
+      "Bash(python tools/registru.py:*)",
+      "Bash(bash tools/verify_allowlist.sh:*)",
       "Bash(python tools/smoke_live.py:*)",
       "Bash(bash tools/audit.sh:*)",
       "Bash(python -m http.server:*)",
@@ -12,7 +16,9 @@
       "Bash(git diff:*)",
       "Bash(git log:*)",
       "Bash(git show:*)",
-      "Bash(git branch:*)"
+      "Bash(git branch:*)",
+      "Bash(git fetch:*)",
+      "Bash(git pull:*)"
     ]
   },
   "hooks": {
