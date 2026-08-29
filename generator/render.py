@@ -48,43 +48,87 @@ LEADPHOTOS_JSON = os.path.join(ROOT, "data", "leadphotos.json")
 # coperta internă, nu pe fotografia terță.
 _CREDIT_FREE_LICENSE = re.compile(r"^(cc0|cc[ -]?zero|public domain|pd([ -]|$))", re.I)
 
+# Pagina de articol ARE legendă completă (`figcaption.art-credit`), deci acolo o fotografie cu
+# atribuire obligatorie este permisă — exact ce spune `content/legal/images.md`. Allowlist-ul
+# este POZITIV, nu „tot ce nu e credit-free": `Copyrighted`, un șir gol sau o licență
+# necunoscută trebuie să rămână respinse, nu să cadă în nivelul cu credit.
+_CREDIT_REQUIRED_LICENSE = re.compile(r"^cc[ -]?by(?:[ -]sa)?[ -](\d)\.(\d)(?:[ -](\w+))?", re.I)
+
 
 def _is_credit_free_license(license_name: str | None) -> bool:
     return bool(_CREDIT_FREE_LICENSE.match((license_name or "").strip()))
 
 
+def _is_credit_required_license(license_name: str | None) -> bool:
+    """CC BY / CC BY-SA (inclusiv `CC BY-SA 3.0 ro`) — publicabile DOAR lângă credit complet."""
+    return bool(_CREDIT_REQUIRED_LICENSE.match((license_name or "").strip()))
+
+
+def _license_url(license_name: str | None) -> str | None:
+    """URI-ul licenței CC, cerut de CC BY 4.0 par.3(a)(1)(C) langa orice credit obligatoriu."""
+    m = _CREDIT_REQUIRED_LICENSE.match((license_name or "").strip())
+    if not m:
+        return None
+    sa = "-sa" if re.search(r"[ -]sa[ -]", " " + (license_name or "").strip().lower() + " ") else ""
+    major, minor, variant = m.group(1), m.group(2), m.group(3)
+    url = f"https://creativecommons.org/licenses/by{sa}/{major}.{minor}/"
+    return f"{url}{variant.lower()}/" if variant else url
+
+
+def _leadphoto_has_files(rec: dict) -> bool:
+    required = ("cover", "art", "webp", "license", "page", "name")
+    return bool(rec) and not rec.get("miss") and all(rec.get(key) for key in required)
+
+
 def _leadphoto_is_publication_safe(rec: dict) -> bool:
-    """Validează o intrare din cache înainte ca fotografia să ajungă în orice zonă publică.
+    """Validează o intrare din cache înainte ca fotografia să ajungă pe card/hero/og:image.
 
     `leadphotos.json` este un cache istoric; validarea aici protejează și intrările create
-    înainte de regula actuală. O fotografie cu credit obligatoriu rămâne permisă doar în
-    contexte cu legendă completă, nu ca imagine LEAD.
+    înainte de regula actuală.
     """
-    required = ("cover", "art", "webp", "license", "page", "name")
-    return bool(rec) and not rec.get("miss") and all(rec.get(key) for key in required) and \
-        _is_credit_free_license(rec.get("license"))
+    return _leadphoto_has_files(rec) and _is_credit_free_license(rec.get("license"))
+
+
+def _leadphoto_is_article_only(rec: dict) -> bool:
+    """Fotografie admisă exclusiv pe pagina de articol, sub credit — niciodată card/hero/og."""
+    return _leadphoto_has_files(rec) and _is_credit_required_license(rec.get("license"))
 
 
 def _load_leadphotos() -> dict:
-    """Fotografii LEAD per articol, admise numai dacă nu cer credit obligatoriu.
+    """Fotografii LEAD per articol, pe două niveluri după ce cere licența.
 
-    Imaginile neeligibile sunt ignorate la randare, inclusiv cele din cache-ul vechi; articolul
-    revine automat la coperta grafică internă. Lipsa fișierului ori a unei intrări conforme
-    nu blochează build-ul.
+    · fără `credit_required` — Public domain / CC0: pot ilustra orice suprafață (card, hero,
+      `og:image`, pagina de articol), fiindcă nu obligă la atribuire.
+    · cu `credit_required` — CC BY / CC BY-SA: numai pagina de articol, unde
+      `figcaption.art-credit` afișează autor, sursă și licență.
+
+    Imaginile neeligibile (licență necunoscută, `Copyrighted`, câmpuri lipsă) sunt ignorate la
+    randare, inclusiv cele din cache-ul vechi; articolul revine automat la coperta grafică
+    internă. Lipsa fișierului ori a unei intrări conforme nu blochează build-ul.
     """
     try:
         import json as _json
         cache = _json.load(open(LEADPHOTOS_JSON, encoding="utf-8"))
     except (OSError, ValueError):
         return {}
-    safe = {k: v for k, v in cache.items() if _leadphoto_is_publication_safe(v)}
+    out = {}
+    for key, rec in cache.items():
+        if _leadphoto_is_publication_safe(rec):
+            out[key] = {**rec, "credit_required": False, "license_url": None}
+        elif _leadphoto_is_article_only(rec):
+            # CC BY 4.0 par.3(a)(1)(C) cere URI-ul licentei langa credit, nu doar numele ei.
+            out[key] = {**rec, "credit_required": True, "license_url": _license_url(rec.get("license"))}
     # Nu copiem întregul cache istoric în output: un fișier cu licență neeligibilă nu trebuie
-    # să rămână public accesibil doar fiindcă nu mai este referit de HTML.
-    for rec in safe.values():
+    # să rămână public accesibil doar fiindcă nu mai este referit de HTML. Nivelul cu credit
+    # obligatoriu nu se publică nici aici, la `/leads/…`: ajunge în output doar sub pagina
+    # articolului, singurul loc unde poartă legenda cerută de licență.
+    for rec in out.values():
+        if rec["credit_required"]:
+            continue
         for field in ("cover", "art", "webp"):
             rel = rec[field]
             _use_media(os.path.join(MEDIA_DIR, rel), os.path.join(OUT_DIR, rel))
-    return safe
+    return out
 
 
 def _load_portraits() -> dict:
@@ -733,7 +777,11 @@ def build(articles: list, mod: dict | None = None) -> None:
         nonlocal spent_cover
         inainte = spent
         cover_dst = os.path.join(cdir, "cover.jpg")
-        ok = bool(lp) and _spend(_use_media(os.path.join(MEDIA_DIR, lp["cover"]), cover_dst))
+        # IZZ-0249: o poza cu credit obligatoriu (CC BY/CC BY-SA) NU poate deveni og:image --
+        # acolo nu exista loc pentru legenda cerura de licenta. Garda e aici, nu doar la
+        # apelant, ca sursa unica de adevar sa fie functia care chiar scrie fisierul.
+        ok = (bool(lp) and not lp.get("credit_required")
+              and _spend(_use_media(os.path.join(MEDIA_DIR, lp["cover"]), cover_dst)))
         if not ok:
             ok = _spend(_use_media(os.path.join(MEDIA_DIR, f"{aid}.c.jpg"), cover_dst)
                         or covers.generate(a, cover_dst))
@@ -758,7 +806,22 @@ def build(articles: list, mod: dict | None = None) -> None:
         webp_dst = os.path.join(cdir, "art.webp")
         lp = leadphotos.get(aid)
         art_ok = False
-        if lp:
+        if lp and lp.get("credit_required"):
+            # CC BY / CC BY-SA: fisier si variabile SEPARATE de art.jpg/art_path, ca poza sa nu
+            # poata ajunge pe card, hero sau og:image nici din greseala -- cardurile citesc
+            # doar art_path, deci scurgerea e imposibila prin constructie, nu prin vigilenta.
+            # Scrierile trec prin _spend() ca sa intre in bugetul de fisiere din #209 -- altfel
+            # garda anti-deploy-refuzat le rateaza.
+            photo_dst = os.path.join(cdir, "photo.jpg")
+            if _spend(_use_media(os.path.join(MEDIA_DIR, lp["art"]), photo_dst)):
+                a["photo_path"] = f"/{a['category']}/{a['slug']}/photo.jpg?v={_content_ver(photo_dst)}"
+                photo_webp_dst = os.path.join(cdir, "photo.webp")
+                if (lp.get("webp") and spent < img_budget
+                        and _spend(_use_media(os.path.join(MEDIA_DIR, lp["webp"]), photo_webp_dst))):
+                    a["photo_webp"] = (f"/{a['category']}/{a['slug']}/photo.webp"
+                                        f"?v={_content_ver(photo_webp_dst)}")
+                a["lead_credit"] = lp   # legenda obligatorie -- fara ea poza n-are voie sa apara
+        elif lp:
             # prioritate: fotografie reala LEAD (landscape, atribuire-libera) daca articolul
             # are una -- inlocuieste pictograma generata pe carduri/hero/og.
             art_ok = _spend(_use_media(os.path.join(MEDIA_DIR, lp["art"]), art_dst))

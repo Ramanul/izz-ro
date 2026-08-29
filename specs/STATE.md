@@ -13,19 +13,21 @@
 > history with two live rules buried in it. That is the same failure the 08-07 cut documented.
 > **A section is `Open` only if a PR is open or a decision is pending — check, don't assume.**
 
-**Updated:** 2026-08-29 (PR #222 + #224 fuzionate — pragul de randare si conflictul de registru
-sunt rezolvate pe `main`; #223 inchis ca duplicat de #224)
+**Updated:** 2026-08-29 (#205 integrat cu bugetul din #209 si aterizat pe main, cu proprietarul;
+R2 investigat pentru arhiva — vezi mai jos)
 
 ## Open
 
-- **Decizii de proprietar, NEATINSE deliberat:** **#205** (poze CC BY — §10+§18); **#216**
-  (publicare pe Worker — §10, plus `CLOUDFLARE_API_TOKEN` nefolosit nicaieri altundeva).
-- **#201** (rubrica AI + traducere) — verificat, NEfuzionat: 37 redirecturi valide, `_redirects`
-  confirmat pe originea live. Contine un fix real de §7 (testul de sarire era cablat pe `"en"`,
-  deci `it`/`de`/`fr` treceau BRUTE). Ramane decizie de PRODUS.
 - **Doar documente** (conflictul din registru rezolvat de #222, nemaiverificate individual azi):
   #202 #203 #204 #206 #207 #214 #218.
-- **Archive ca suprafata separata** — inca decizie de proprietar, nestartat.
+- **Archiva paginilor expirate (issue #198, deschis de proprietar 08-21)** — diagnostic complet
+  deja facut acolo (193 pagini moarte in Search Console). Necesita alegerea proprietarului intre
+  3 optiuni; R2 investigat azi (IZZ-0250/0251-adiacent): bucket `izz-bucket` exista deja pe cont
+  (creat intentionat de proprietar la trecerea pe Cloudflare Paid), gol, neconectat in cod.
+  Plafon gratuit 10GB/1M scrieri/10M citiri/luna — suficient pentru arhiva. Obstacol real:
+  `izz-ro` ruleaza assets-only (fara `main`), deci R2 nu poate fi citit la runtime fara cod nou;
+  hook-ul natural e `izz-failover` (infra/failover-worker.js), care azi trateaza orice 404 ca
+  404 final. Ramane decizie de arhitectura, nu implementare mecanica.
 - **Din `specs/atribuire-cercetare-si-plan.md`** — E1 permalink decuplat (decizie proprietar),
   E3 focus score, E4 axe separate (decizie proprietar), E5 gold set ~150 + poarta CI.
 - Cifrele masurate azi (randare 638 s / 34.898 fisiere, 822 articole/zi, regim stabilizat
