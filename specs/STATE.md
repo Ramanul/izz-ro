@@ -18,9 +18,9 @@ R2 investigat pentru arhiva — vezi mai jos)
 
 ## Open
 
-- **Regimul regulilor** (`specs/regim-reguli.md`, doar pe #226) — F1 = **#226** (verde, draft,
-  asteapta merge). F2 = 4 garzi de fapte canonice, pe `claude/reguli-canonice-reordonare-wqdb16`.
-  F3.5 a masurat ca F4 planificat e fals (IZZ-0252); inlocuitorul propus e IZZ-0253.
+- **Regimul regulilor** (`specs/regim-reguli.md`, doar pe #226) — F1 = **#226** (verde, asteapta
+  merge). F2+F3 (garzi de fapte canonice + censul celor 47 de reguli cu nume) = **#227**, verde.
+  F3.5 a picat premisa lui F4 (IZZ-0252); inlocuitorul e IZZ-0253, iar F4 vrea plan nou.
 - **Doar documente** (conflictul din registru rezolvat de #222, nemaiverificate individual azi):
   #202 #203 #204 #206 #207 #214 #218.
 - **Archiva paginilor expirate (issue #198, deschis de proprietar 08-21)** — diagnostic complet
