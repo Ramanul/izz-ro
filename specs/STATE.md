@@ -13,19 +13,21 @@
 > history with two live rules buried in it. That is the same failure the 08-07 cut documented.
 > **A section is `Open` only if a PR is open or a decision is pending — check, don't assume.**
 
-**Updated:** 2026-08-29 (corectie: #216 si #201 erau deja merged pe 08-28, gresit listate Open)
+**Updated:** 2026-08-29 (#205 integrat cu bugetul din #209 si aterizat pe main, cu proprietarul;
+R2 investigat pentru arhiva — vezi mai jos)
 
 ## Open
 
-- **PR #205 (draft, NEmerged) — poze CC BY/CC BY-SA pe pagina de articol** — decizie de
-  proprietar (§10+§18), neatinsa deliberat.
-- **#216 si #201 sunt MERGED** (08-28, verificat cu `pull_request_read get`: `merged:true`,
-  `merged_at` populat, plus continut confirmat pe `main` — `deploy-worker.yml`, categoria
-  `"ai"` in `config.py`). Nu mai sunt Open; scoase de aici dupa ce fusesera copiate gresit
-  dintr-o versiune veche a acestui fisier.
 - **Doar documente** (conflictul din registru rezolvat de #222, nemaiverificate individual azi):
   #202 #203 #204 #206 #207 #214 #218.
-- **Archive ca suprafata separata** — inca decizie de proprietar, nestartat.
+- **Archiva paginilor expirate (issue #198, deschis de proprietar 08-21)** — diagnostic complet
+  deja facut acolo (193 pagini moarte in Search Console). Necesita alegerea proprietarului intre
+  3 optiuni; R2 investigat azi (IZZ-0250/0251-adiacent): bucket `izz-bucket` exista deja pe cont
+  (creat intentionat de proprietar la trecerea pe Cloudflare Paid), gol, neconectat in cod.
+  Plafon gratuit 10GB/1M scrieri/10M citiri/luna — suficient pentru arhiva. Obstacol real:
+  `izz-ro` ruleaza assets-only (fara `main`), deci R2 nu poate fi citit la runtime fara cod nou;
+  hook-ul natural e `izz-failover` (infra/failover-worker.js), care azi trateaza orice 404 ca
+  404 final. Ramane decizie de arhitectura, nu implementare mecanica.
 - **Din `specs/atribuire-cercetare-si-plan.md`** — E1 permalink decuplat (decizie proprietar),
   E3 focus score, E4 axe separate (decizie proprietar), E5 gold set ~150 + poarta CI.
 - Cifrele masurate azi (randare 638 s / 34.898 fisiere, 822 articole/zi, regim stabilizat
