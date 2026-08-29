@@ -242,3 +242,61 @@ def test_scutirea_ramane_o_exceptie_de_categorie_nu_o_lista_care_creste():
     assert len(SCUTITE_TTL) == 1
     for cale in SCUTITE_TTL:
         assert (ROOT / cale).exists(), f"scutire pentru un fisier inexistent: {cale}"
+
+
+# --- unicitatea ID-urilor din registru --------------------------------------------
+#
+# De ce EXISTA garda asta si de ce sta AICI, nu in `tools/registru.py`:
+#
+# `registru.py add` calculeaza „ultimul + 1" pe fisierul din ramura curenta. O verificare
+# acolo n-ar prinde nimic — o ramura vede doar `main` plus pe ea insasi, deci fiecare sesiune
+# paralela nimereste aceeasi cifra fara sa aiba cum sa afle. Coliziunea nu se NASTE la
+# scriere; se naste la MERGE. Deci acolo trebuie prinsa, adica intr-un test care ruleaza pe
+# rezultatul fuziunii.
+#
+# Masurat pe 2026-08-22, cu `main` la IZZ-0236 si cinci ramuri deschise: IZZ-0237 revendicat
+# de #204, #205 si #210; IZZ-0238 de #204 si #210; IZZ-0239 de #203 si #210; IZZ-0240 de #206
+# si #210. Doua decizii diferite sub acelasi ID rup `registru.py find` si trimiterile prin
+# campul `leaga`, adica exact mecanismul pe care §20 se bazeaza ca sa opreasca re-litigarea.
+# Mesajele de commit de pe #203 si #204 arata ca doua sesiuni mutasera deja randuri („second
+# collision round") si coliziunea a supravietuit — fiindca fiecare fix muta o singura ramura.
+
+REGISTRU = ROOT / "specs" / "registru.tsv"
+
+
+def id_uri_registru(text: str) -> list[str]:
+    """ID-urile, in ordinea din fisier. Randul de antet si liniile goale nu conteaza."""
+    out = []
+    for linie in text.split("\n"):
+        cap = linie.split("\t", 1)[0].strip()
+        if re.fullmatch(r"IZZ-\d{4}", cap):
+            out.append(cap)
+    return out
+
+
+def incalcari_id_unic(text: str) -> list[str]:
+    vazute, duble = set(), []
+    for cod in id_uri_registru(text):
+        if cod in vazute:
+            duble.append(cod)
+        else:
+            vazute.add(cod)
+    return [f"ID folosit de mai multe ori: {cod}" for cod in sorted(set(duble))]
+
+
+def test_fiecare_id_din_registru_apare_o_singura_data():
+    assert not incalcari_id_unic(REGISTRU.read_text(encoding="utf-8"))
+
+
+def test_garda_id_pica_pe_acelasi_id_de_doua_ori():
+    """Testul negativ: exact tiparul care se produce cand doua ramuri fuzioneaza."""
+    doua = "IZZ-0237\t2026-08-22\tzona\tun titlu\tblocat\n" \
+           "IZZ-0237\t2026-08-22\talta\talt titlu\trespins\n"
+    assert incalcari_id_unic(doua) == ["ID folosit de mai multe ori: IZZ-0237"]
+
+
+def test_garda_id_nu_confunda_o_trimitere_din_text_cu_un_rand():
+    """`IZZ-0177` citat in campul `motiv` al altui rand nu e un ID revendicat."""
+    text = "IZZ-0240\t2026-08-22\tzona\ttitlu\tblocat\tclaude\tdovada\tvezi IZZ-0240 si IZZ-0177\n"
+    assert id_uri_registru(text) == ["IZZ-0240"]
+    assert not incalcari_id_unic(text)
