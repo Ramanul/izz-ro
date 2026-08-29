@@ -13,16 +13,16 @@
 > history with two live rules buried in it. That is the same failure the 08-07 cut documented.
 > **A section is `Open` only if a PR is open or a decision is pending — check, don't assume.**
 
-**Updated:** 2026-08-29 (PR #222 + #224 fuzionate — pragul de randare si conflictul de registru
-sunt rezolvate pe `main`; #223 inchis ca duplicat de #224)
+**Updated:** 2026-08-29 (corectie: #216 si #201 erau deja merged pe 08-28, gresit listate Open)
 
 ## Open
 
-- **Decizii de proprietar, NEATINSE deliberat:** **#205** (poze CC BY — §10+§18); **#216**
-  (publicare pe Worker — §10, plus `CLOUDFLARE_API_TOKEN` nefolosit nicaieri altundeva).
-- **#201** (rubrica AI + traducere) — verificat, NEfuzionat: 37 redirecturi valide, `_redirects`
-  confirmat pe originea live. Contine un fix real de §7 (testul de sarire era cablat pe `"en"`,
-  deci `it`/`de`/`fr` treceau BRUTE). Ramane decizie de PRODUS.
+- **PR #205 (draft, NEmerged) — poze CC BY/CC BY-SA pe pagina de articol** — decizie de
+  proprietar (§10+§18), neatinsa deliberat.
+- **#216 si #201 sunt MERGED** (08-28, verificat cu `pull_request_read get`: `merged:true`,
+  `merged_at` populat, plus continut confirmat pe `main` — `deploy-worker.yml`, categoria
+  `"ai"` in `config.py`). Nu mai sunt Open; scoase de aici dupa ce fusesera copiate gresit
+  dintr-o versiune veche a acestui fisier.
 - **Doar documente** (conflictul din registru rezolvat de #222, nemaiverificate individual azi):
   #202 #203 #204 #206 #207 #214 #218.
 - **Archive ca suprafata separata** — inca decizie de proprietar, nestartat.
