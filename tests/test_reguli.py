@@ -451,3 +451,114 @@ def test_harta_sectiunilor_ramane_o_categorie_nu_o_lista_care_creste():
     for cale, document in PROPRIETAR_SECTIUNI.items():
         assert (ROOT / cale).exists(), f"proprietar pentru un fisier inexistent: {cale}"
         assert cale == document, "un fisier isi detine propriile sectiuni sau deloc"
+
+
+# --- censul regulilor cu nume: o regula nu are voie sa dispara tacut ---------------------------
+#
+# DE CE EXISTA (F3, 2026-08-29). Pe 2026-08-06 taierea lui `CLAUDE.md` a pierdut 13 reguli si
+# nimic n-a semnalat. Redescoperirea lor a costat o sesiune intreaga de arheologie pe git (#226),
+# si tot manuala a fost. Garda asta face stergerea imposibil de facut tacut: numele regulii e
+# scris aici, deci ca sa dispara din `CLAUDE.md` trebuie sters si de aici — act vizibil, in
+# acelasi diff, vazut de acelasi reviewer.
+#
+# DE CE NU ancore `[R-nnn]`, cum era planul initial: MASURAT, nu presupus. 70 de enunturi x 8
+# octeti = 560 de octeti in `CLAUDE.md`, iar dupa #226 raman 186 liberi din 24.576. Nu incap —
+# si a ridica plafonul ca sa incapa niste ancore ar fi exact inversul scopului. Amprenta aleasa
+# e capul INGROSAT al regulii, adica numele ei: costa zero octeti fiindca e deja scris.
+#
+# UN SINGUR SENS, deliberat: garda prinde DISPARITIA, nu aparitia. Problema documentata a fost
+# pierderea tacuta; o regula noua se vede oricum in diff-ul lui `CLAUDE.md`. (Harta §21 merge in
+# ambele sensuri fiindca acolo un fisier nou chiar avea nevoie de un rol declarat.) Consecinta
+# practica: ordinea in care aterizeaza doua PR-uri nu poate face CI rosu pe merge-ul altcuiva.
+#
+# CE NU ACOPERA, spus explicit: doar regulile cu CAP INGROSAT. Cele 23 de sub-puncte fara nume
+# sunt parte din regula-parinte si nu au identitate proprie. Si o REFORMULARE a numelui pica
+# garda — intentionat: numele unei reguli e identitatea ei, iar schimbarea lui merita sa fie un
+# act vizibil, nu o alunecare. Cele 47 de mai jos sunt verificate ca fiind prezente si pe `main`,
+# si pe ramura lui #226, deci niciuna nu depinde de ordinea de aterizare.
+
+CAP_DE_REGULA = re.compile(r"^\s*(?:[-*]|\d+\.)\s+\*\*(.+?)\*\*", re.MULTILINE)
+
+REGULI_ACTIVE = frozenset({
+    'Fii proactiv',
+    'Starea de completare ÎNAINTE de rezultat, ca fracție',
+    'Mandatul e ce a cerut proprietarul, nu ce a ajuns ultimul în context — REGULĂ TARE.',
+    'Inventarul uneltelor (§12a).',
+    'Spec întâi.',
+    'Plan înainte de muncă netrivială.',
+    'Felii verticale.',
+    'Verifică rulând, nu declarând.',
+    'Commit pe verde.',
+    'Diff minim.',
+    'Fără output stricat.',
+    'O axă, o casă.',
+    'Schimbările de clustering se verifică empiric.',
+    'Diversitatea surselor.',
+    'Formula de atribuire — PERMANENTĂ (decizie proprietar 2026-07-04).',
+    'Nu confunda unealta cu capacitatea.',
+    'O limitare se declară cu comanda care a eșuat, nu din memorie.',
+    'Verificările care merită, ieftine, la început:',
+    'Ce lipsește dar se poate obține → propune, nu ocoli tăcut.',
+    'Ține-l scurt.',
+    'După orice felie care schimbă output-ul de front-end',
+    'Rulează 3+ repetări per revizie și compară medianele',
+    'Măsurătoarea e busolă, nu pilot automat.',
+    'Baseline, cifre, ipoteze picate (CLS, fonturi, consent) → `specs/masuratori-frontend.md`.',
+    'Nu arma nicio buclă autonomă / CronCreate recurent',
+    'Cine face merge în `main`',
+    'După orice merge, anunță celălalt cont',
+    'Nu face curse pe `main`.',
+    'Nu face niciodată merge în `main`.',
+    'Un task per declanșare',
+    'Se oprește și raportează în loc să ghicească.',
+    'Actualizează `specs/STATE.md`',
+    'Verifică în AMBELE roluri.',
+    'Verifică LIVRABILITATEA, nu doar corectitudinea.',
+    'Trei stări distincte — nu le confunda, folosește cuvintele exacte:',
+    'Când nu poți testa ceva, spune explicit',
+    'Un task, o sesiune.',
+    'Nu trage niciodată un payload mare în context.',
+    'Model pe măsura muncii.',
+    'Sub-agenții costă ~5.6× per linie livrată',
+    'Agenții împart working tree-ul.',
+    'Fișierele de reguli se plătesc la fiecare tură.',
+    'Înainte să propui orice, caută:',
+    'O decizie care NU produce un PR primește un rând în aceeași tură',
+    '`motiv` e obligatoriu',
+    'Append-only.',
+    'Un `find` gol NU e dovadă că nu s-a încercat',
+})
+
+
+def capete_de_regula(text: str) -> set[str]:
+    """Numele regulilor: capul ingrosat al unui bullet. `**text**` din mijlocul frazei nu e nume."""
+    return set(CAP_DE_REGULA.findall(text))
+
+
+def incalcari_cens(active: frozenset[str], prezente: set[str]) -> list[str]:
+    return [f"regula «{nume}» e in cens dar a disparut din CLAUDE.md — daca e intentionat, "
+            f"scoate-o si din REGULI_ACTIVE, in acelasi diff"
+            for nume in sorted(active - prezente)]
+
+
+def test_nicio_regula_din_cens_nu_a_disparut():
+    """Cele 13 reguli pierdute pe 2026-08-06 au disparut fara ca nimic sa pice. Acum pica."""
+    prezente = capete_de_regula((ROOT / "CLAUDE.md").read_text(encoding="utf-8"))
+    assert not incalcari_cens(REGULI_ACTIVE, prezente)
+
+
+def test_garda_censului_pica_pe_regula_stearsa():
+    assert incalcari_cens(frozenset({"Diff minim.", "Spec intai."}), {"Diff minim."})
+
+
+def test_censul_nu_confunda_ingrosarea_din_proza_cu_un_nume_de_regula():
+    """`- text cu **accent** la mijloc` nu e o regula noua, e o sublinierea intr-o fraza."""
+    text = "- **Diff minim.** fara refactorizari\n- o fraza cu **accent** pe un cuvant\n"
+    assert capete_de_regula(text) == {"Diff minim."}
+
+
+def test_censul_ramane_un_cens_nu_un_esantion():
+    """Miscarea care ar goli garda fara sa stearga nicio regula: sa nu mai urmareasca decat cateva."""
+    prezente = capete_de_regula((ROOT / "CLAUDE.md").read_text(encoding="utf-8"))
+    assert len(REGULI_ACTIVE) >= 0.9 * len(prezente), (
+        f"censul urmareste {len(REGULI_ACTIVE)} din {len(prezente)} reguli cu nume")
