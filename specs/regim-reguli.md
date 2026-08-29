@@ -266,9 +266,12 @@ măsurate în #227, nu deduse:
 4. `CLAUDE.md` imbricat rămâne util ca al doilea strat, dar **nu singur**: o sesiune care citește
    cu `cat`/`sed`/`grep` nu-l aprinde niciodată.
 
-**Ce rămâne de decis înainte de F4:** supra-declanșarea de la punctul 3 e acceptabilă, sau merită
-un filtru mai strict care riscă să rateze? Prima variantă costă context degeaba; a doua poate rata
-exact felia care avea nevoie de regulă. E o decizie de cost, deci a proprietarului.
+**Supra-declanșarea de la punctul 3 se acceptă — decis 2026-08-29.** Asimetria decide, nu gustul:
+un `ls templates/` care aprinde §13 costă ~1 KB de context degeaba, o dată; un filtru strict care
+ratează felia care chiar schimba front-end-ul costă o regulă neaplicată — exact eșecul pe care tot
+regimul îl previne. Prima greșeală e mică, măsurabilă și reversibilă; a doua e invizibilă până
+face pagubă. Deci brațul pe `Bash` rămâne larg, iar dacă zgomotul devine o problemă reală, se
+îngustează **atunci**, cu o măsurătoare a cât de des se aprinde degeaba — nu preventiv.
 
 ### 4.4 Fiecare regulă își declară garda
 
