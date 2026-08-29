@@ -33,14 +33,18 @@
     {% if a.ai_generat %}<span class="ai-mark">Titlu sintetizat automat</span>{% endif %}
   </div>
 
-  {% if a.art_path %}
+  {# `photo_path` = fotografie CC BY / CC BY-SA, admisa DOAR aici, fiindca doar pagina de articol
+     poarta legenda completa de mai jos. Nu exista pe carduri, in hero sau in og:image. #}
+  {% set art_src = a.photo_path or a.art_path %}
+  {% set art_src_webp = a.photo_webp if a.photo_path else a.art_webp %}
+  {% if art_src %}
   <figure class="article-art-fig">
     <picture>
-      {% if a.art_webp %}<source srcset="{{ base }}{{ a.art_webp }}" type="image/webp">{% endif %}
-      <img class="article-art" src="{{ base }}{{ a.art_path }}" alt="{% if a.lead_credit %}{{ a.lead_credit.name }}{% endif %}" width="960" height="504" sizes="(min-width: 770px) 729px, calc(100vw - 42px)" fetchpriority="high">
+      {% if art_src_webp %}<source srcset="{{ base }}{{ art_src_webp }}" type="image/webp">{% endif %}
+      <img class="article-art" src="{{ base }}{{ art_src }}" alt="{% if a.lead_credit %}{{ a.lead_credit.name }}{% endif %}" width="960" height="504" sizes="(min-width: 770px) 729px, calc(100vw - 42px)" fetchpriority="high">
     </picture>
     {% if a.lead_credit %}
-    <figcaption class="art-credit">{% if a.lead_credit.kind == 'locality' %}Ilustrație: {{ a.lead_credit.name }}. {% endif %}Foto: {% if a.lead_credit.artist %}{{ a.lead_credit.artist }} · {% endif %}<a href="{{ a.lead_credit.page }}" target="_blank" rel="noopener noreferrer">Wikimedia Commons</a> · {{ a.lead_credit.license }}</figcaption>
+    <figcaption class="art-credit">{% if a.lead_credit.kind == 'locality' %}Ilustrație: {{ a.lead_credit.name }}. {% endif %}Foto: {% if a.lead_credit.artist %}{{ a.lead_credit.artist }} · {% endif %}<a href="{{ a.lead_credit.page }}" target="_blank" rel="noopener noreferrer">Wikimedia Commons</a> · {% if a.lead_credit.license_url %}<a href="{{ a.lead_credit.license_url }}" target="_blank" rel="noopener noreferrer">{{ a.lead_credit.license }}</a>{% else %}{{ a.lead_credit.license }}{% endif %}{% if a.photo_path %} · decupat de IZZ.ro{% endif %}</figcaption>
     {% endif %}
   </figure>
   {% endif %}
