@@ -129,10 +129,11 @@ Contextul de execuție diferă de la o sesiune la alta (local vs. remote, ce con
 ce lasă proxy-ul să treacă). **Înainte să începi un task netrivial, verifică ce ai efectiv la
 îndemână — și abia apoi începe.**
 
-- **Nu confunda unealta cu capacitatea.** Lipsa unui binar NU dovedește lipsa accesului. Măsurat
-  2026-08-21: `gh` nu era instalat, și am dedus de acolo că nu pot interoga CI — fals, accesul la
-  GitHub exista tot timpul prin conector, cu care deschisesem chiar eu PR-ul. Întreabă „pot face
-  X?", nu „am unealta Y?".
+- **Capacitatea = REUNIUNEA canalelor; un canal testat nu e o măsurătoare.** Patru canale, cu
+  rețele și autorizări DIFERITE: binar local · HTTP prin proxy · conector MCP · runner Actions.
+  „Nu se poate" cere ieșire reală de la FIECARE, sau motivul pentru care unul nu se aplică —
+  `python tools/canale.py <host>` tipărește tabelul și lasă `?` pe ce n-ai verificat. Picat de
+  trei ori pe același tipar: `gh` (2026-08-21), GA4 și Cloudflare (IZZ-0250/0253).
 - **O limitare se declară cu comanda care a eșuat, nu din memorie.** Fără ieșire reală citată,
   n-ai măsurat — ai presupus. Vezi §16.4.
 - **Verificările care merită, ieftine, la început:** binare (`which`), rețea către host-ul exact de
