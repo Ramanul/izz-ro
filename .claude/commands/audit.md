@@ -8,7 +8,7 @@ Delegate to the `frontend-auditor` sub-agent (or run it directly): execute `bash
 Report as a small before/after table:
 - Lighthouse for BOTH home and article: Performance / Accessibility / Best-practices / SEO.
 - pa11y WCAG2AA error count on home.
-- The "before" baseline is the "Current scores" line in CLAUDE.md §13 unless I gave you fresh before-numbers.
+- The "before" baseline lives in `specs/masuratori-frontend.md` (section "Baseline"), not in CLAUDE.md — it was moved there on 2026-08-06. Use it unless I gave you fresh before-numbers.
 
 Rules:
 - If `lighthouse` or `pa11y` is missing, the one-time fix is `npm i -g lighthouse pa11y` — say so, don't silently skip.
