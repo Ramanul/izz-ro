@@ -172,8 +172,9 @@ Mandatul autonom din iulie e **încheiat** (istoric: `specs/istoric-operational.
 - **Cine face merge în `main`** (regulă proprietar 2026-07-24): contul de la care lucrează el
   *în momentul ăla*. Nu „cine a deschis PR-ul". Dacă ești sesiunea cu care vorbește acum, tu faci
   merge; nu parca un PR verde așteptând celălalt cont.
-- **După orice merge, anunță celălalt cont** — `TASKS-B.md` în `Ramanul/claude-desktop-workspace`
-  plus `specs/STATE.md` aici. Un merge neanunțat e exact ce cauzează ciocnirile.
+- **După orice merge, anunță celălalt cont** — un fișier nou în `handoff/to-A/` din workspace
+  (format: `handoff/PROTOCOL.md`), plus `specs/STATE.md` aici. **NU** în `TASKS-B.md` de acolo:
+  înghețat din 2026-08-04, verificat. Un anunț într-un canal mort e ca și cum n-ar fi.
 - **Nu face curse pe `main`.** Ramifică, ține diff-ul mic, aterizează, anunță.
 
 ### 14b. Muncă în fundal — permisă, mărginită (decizie proprietar 2026-08-01)
@@ -281,7 +282,7 @@ care proprietarul (sau juristul) îl aprobă ÎNAINTE** de a trage vreo imagine 
   prea mare, ăla e semnalul că apelul a fost greșit — îngustează-l, nu citi fișierul.
 - **Model pe măsura muncii.** Editările de rutină nu au nevoie de cel mai scump model. §12 e
   adâncime, asta e cost — butoane diferite.
-- **Sub-agenții costă ~5.6× per linie livrată** (măsurat, `COORD-DASHBOARD.md`). Merită pentru muncă
+- **Sub-agenții costă ~5.6× per linie livrată** (n=3, iulie 2026; jurnalul s-a oprit atunci). Merită pentru muncă
   genuin paralelă sau zgomotoasă; risipă pentru o editare pe care o poți face direct.
 - **Agenții împart working tree-ul.** Un agent care rulează `git checkout` mută ramura de sub toți —
   s-a întâmplat pe 2026-07-25. Dă fiecărui agent paralel `isolation: "worktree"`. **Niciodată doi
@@ -315,7 +316,8 @@ trecut aici cu rolul lui. De ce există garda: `specs/istoric-operational.md`.
 - `COORD-DASHBOARD.md` — metrici de coordonare. **Generat de `tools/log_slice.py` — nu se mută și
   nu se editează manual.**
 - `REVIEW.md` — protocolul de review; referit din README.
-- `TASKS-A.md` / `TASKS-B.md` — cozile celor două conturi. `TASKS-B.md` e canalul de anunț din §14.
+- `TASKS-A.md` / `TASKS-B.md` — jurnalele locale ale conturilor. Canalul de anunț din §14 e
+  `handoff/` din workspace, nu ele.
 - `TASKS-MISTRAL.md` — coada executorului Mistral.
 - `SESSION-2026-08-14.md` / `mistral-analiza-workflow.md` — instantanee istorice, păstrate la
   rădăcină doar fiindcă jurnalele din `sessions/` trimit la ele cu calea asta.

@@ -188,41 +188,33 @@ pierdute). Astea nu se repară cu un diff, fiindcă se vor reproduce. Vezi mai j
 Scopul e explicit: **nu «fără tăieri niciodată», ci «nicio tăiere care pierde ceva tăcut», plus un
 buget care nu se mai umple.**
 
-### 4.1 Identitate stabilă: ID de regulă, nu poziție
+### 4.1 + 4.2 — LIVRATE ALTFEL în #227. Planul de mai jos a fost măsurat și abandonat.
 
-**Cauza rădăcină a tot ce e mai sus:** regulile sunt identificate prin *poziție* (`§13`), iar
-poziția se schimbă la fiecare rescriere. De-aia `audit.md` trimite în gol, de-aia `§N` se ciocnește
-între două documente, de-aia 13 reguli au dispărut fără să pice nimic.
+**Cauza rădăcină rămâne valabilă:** regulile sunt identificate prin *poziție* (`§13`), iar poziția
+se schimbă la fiecare rescriere. De-aia `/audit` trimitea în gol, de-aia `§N` se ciocnește între
+două documente, de-aia 13 reguli au dispărut fără să pice nimic.
 
-Fiecare regulă primește un ID stabil, scris ca ancoră în linia ei:
+**Ce propunea planul inițial:** o ancoră `[R-nnn]` în fiecare regulă, plus `specs/reguli.tsv`
+generat de un `tools/reguli.py` nou.
 
-```markdown
-- **Fără output stricat.** `[R-014]` Pipeline-ul nu publică niciodată titluri brute…
-```
+**De ce a picat, măsurat în #227, nu presupus:** 70 de enunțuri × 8 octeți = **560 de octeți** în
+`CLAUDE.md`, care după F1 are **186 liberi** din 24.576. Ancorele nu încap, iar ridicarea
+plafonului ca să încapă niște ancore ar inversa exact scopul exercițiului.
 
-Codul, agenții, comenzile și hook-ul citează **`R-014`**, nu `§7`. Secțiunile rămân doar
-organizare vizuală și pot fi rearanjate liber. Cost: ~10 octeți per regulă (~700 pe tot L0).
+**Ce s-a livrat în loc:** amprenta e **capul îngroșat al regulii** — numele ei — care costă zero
+octeți fiindcă e deja scris. Censul celor 47 de reguli cu nume stă ca `frozenset` în
+`tests/test_reguli.py`, nu într-un fișier nou: **zero registre noi**, într-un proiect a cărui
+boală e că adevărul stă în prea multe locuri. Ca o regulă să dispară din `CLAUDE.md` trebuie
+ștearsă și din test — act vizibil, în același diff, văzut de același reviewer.
 
-### 4.2 Registrul de reguli — `specs/reguli.tsv`
+Două consecințe de reținut, ambele deliberate:
 
-Aceeași formă care a mers deja pentru decizii (`registru.tsv`), pentru același motiv: proza nu se
-poate interoga.
-
-```
-id	sursa	sectiune	stare	garda	text_scurt
-R-014	CLAUDE.md	7	activa	test:test_render_editorial	fara output stricat — sare itemul
-R-041	CLAUDE.md	16	activa	doar-scrisa	masoara, nu deduce
-R-052	—	—	retrasa	—	tura ultrathink (retrasa 2026-08-06, motiv: …)
-```
-
-Generat cu `tools/reguli.py sync` din ancorele `[R-nnn]`. Face două lucruri:
-
-1. **Răspunde la „câte reguli avem și care s-au pierdut" cu un `diff`**, nu cu arheologie pe git.
-   Munca de azi devine o comandă.
-2. **Permite garda din 4.4:** o regulă care dispare din fișier dar are rând `activa` în registru →
-   CI roșu: *„R-041 a dispărut din CLAUDE.md. Dacă e intenționat, treci-o `retrasa` cu motiv."*
-
-Asta nu împiedică tăierea. Împiedică **pierderea tăcută** — singura problemă reală.
+- **Garda merge într-un singur sens** — prinde dispariția, nu apariția. O regulă nouă se vede
+  oricum în diff. Efectul practic: nicio ordine de aterizare a două PR-uri nu face CI roșu pe
+  merge-ul altcuiva.
+- **O reformulare a numelui pică garda.** Intenționat: numele unei reguli e identitatea ei.
+  Consecință operațională, valabilă acum: **editează corpul unei reguli cât vrei, dar nu-i
+  schimba capul îngroșat** fără să actualizezi censul în același commit.
 
 ### 4.3 Trei niveluri de cost, nu un plafon unic
 
@@ -236,14 +228,47 @@ tăierea. Regulile au însă frecvențe de utilizare foarte diferite:
 | **L2** | `specs/` + registru | cifre, istoric, ipoteze picate | se consultă, nu se respectă |
 
 Tăierile de până acum au mutat **arhiva** din L0 în L2. Mișcarea următoare e alta: **regulile
-condiționate din L0 în L1** — și L1 n-a fost niciodată folosit ca strat gândit, deși infrastructura
-există (`.claude/agents/`, `.claude/skills/`, `.claude/commands/`).
+condiționate din L0 în L1**. Candidații, măsurați pe fișierul de azi: §13 front-end (1.069 o.),
+§17 cadență (1.011), §18 imagini (1.204), §20 registru (928), §12a inventar de unelte (1.650) —
+**~5,9 KB**, un sfert din fișier, toate condiționate de un declanșator clar.
 
-Candidați măsurați, din L0 de azi: §13 front-end (1.069 o.), §17 cadență (1.011), §18 imagini
-(1.204), §20 registru (928), §12a inventar de unelte (1.650) — **~5,9 KB**, adică 25% din fișier,
-toate condiționate de un declanșator clar. Mutate ca skill-uri cu `description` care declanșează
-automat, L0 coboară la ~18 KB și **regulile ajung mai des la sesiune decât acum**, fiindcă vin
-exact când sunt relevante, nu diluate în 24 KB citite superficial.
+#### Ce transportă L1 — REPLANIFICAT 2026-08-29, după ce premisa inițială a picat
+
+Versiunea inițială a paragrafului ăstuia spunea: mută-le ca agenți cu `description` care se
+aprinde automat. **Fals, măsurat în #227** (`IZZ-0252`), pe amândouă jumătățile:
+
+- `description`-ul unui agent e injectat în promptul de sistem la **fiecare tură**, verbatim
+  identic cu fișierul de pe disc — deci mutarea acolo economisește **zero octeți**;
+- corpul agentului (2,0-2,7 KB) chiar e deferat, dar se încarcă **doar la spawn**, iar spawn-ul e
+  o decizie a modelului, nu un mecanism: zero rulări ale celor patru agenți în șapte săptămâni.
+
+Deci §13 mutat în `frontend-auditor` **ar dispărea**, nu s-ar declanșa. Aia e chiar eroarea din
+6 august, cu alt ambalaj.
+
+Din cele patru mecanisme măsurate, două transportă efectiv o regulă:
+
+| mecanism | se aprinde singur? | cost/tură | verdict |
+|---|---|---|---|
+| `description` de agent | e deja în context mereu | plin | economisește zero (`IZZ-0252`) |
+| corp de agent | doar la spawn, decis de model | 0 | regula dispare (`IZZ-0252`) |
+| `CLAUDE.md` imbricat pe director | mecanic, dar **doar** pe `Read`/`Edit`/`Write` | 0 | real, orb la `cat`/`sed` (`IZZ-0253`) |
+| **hook `PostToolUse`** | **mecanic, pe orice unealtă** | 0 | **ăsta e L1** (`IZZ-0254`) |
+
+**Deci L1 = hook `PostToolUse` cu filtrare pe cale**, nu agent. Patru lucruri de respectat, toate
+măsurate în #227, nu deduse:
+
+1. Hook-ul trebuie să iasă cu **`exit 2` și să scrie pe `stderr`** — `exit 0` + `stdout` **nu
+   ajunge la model**. Un hook care doar face `echo` pe succes e invizibil, deci regula nu sosește.
+2. Trebuie pus în **`.claude/settings.json`** (comis), ca hook-ul `SessionStart`.
+   `settings.local.json` e în `.gitignore` — un hook de acolo nu există pentru nimeni altcineva.
+3. Brațul pe `Bash` e potrivire de subșir pe textul comenzii, deci **supra-declanșează**: un
+   `ls templates/` aprinde §13 deși e o citire. De acceptat conștient sau de îngustat în script.
+4. `CLAUDE.md` imbricat rămâne util ca al doilea strat, dar **nu singur**: o sesiune care citește
+   cu `cat`/`sed`/`grep` nu-l aprinde niciodată.
+
+**Ce rămâne de decis înainte de F4:** supra-declanșarea de la punctul 3 e acceptabilă, sau merită
+un filtru mai strict care riscă să rateze? Prima variantă costă context degeaba; a doua poate rata
+exact felia care avea nevoie de regulă. E o decizie de cost, deci a proprietarului.
 
 ### 4.4 Fiecare regulă își declară garda
 
@@ -261,28 +286,53 @@ gardă mecanică.** Regulile `doar-scrisa` sunt exact populația din care s-au p
 *o regulă nouă intră doar dacă îi numești garda.* Dacă e `doar-scrisa`, primește ID și rând în
 registru, dar merge în L1/L2 — nu ocupă buget L0.
 
-### 4.5 Ce se schimbă în `test_reguli.py`
+### 4.5 Ce s-a schimbat efectiv în `test_reguli.py`
 
-Trei gărzi noi, aceeași formă ca cele existente:
+Livrat în #227: **15 → 33 de teste.** Patru gărzi de fapte canonice (secțiuni, constante, cron,
+căi) plus censul celor 47 de reguli cu nume, fiecare cu testul ei de auto-verificare care dovedește
+că garda chiar poate să pice. A găsit drift real la prima rulare: `handoff.md:64` trimitea la un
+`sessions/README.md` inexistent.
 
-1. `test_fiecare_regula_activa_exista_in_fisierul_ei` — anti-pierdere tăcută (K14).
-2. `test_fiecare_trimitere_R_are_tinta` — orice `[R-nnn]` citat în cod/agenți/comenzi există și e
-   `activa` (K3, K8).
-3. `test_textul_duplicat_intre_hook_si_CLAUDE_md_e_identic` — extinde unicitatea de la cifre la
-   text de regulă (K13).
+Ce **nu** acoperă, spus explicit ca să nu pară protecție mai largă decât e:
+
+- Gărzile prind **citate cu sintaxă proprie** — `§7`, `NUME = 22`, un cron sau o cale în
+  backtick-uri. Proza liberă („cadența e la două ore") rămâne neacoperită. Aceeași limită ca la
+  garda de TTL — știută, nu scăpată.
+- Censul acoperă doar `CLAUDE.md`. **Nu e extins la sateliți**, și de-aia: măsurat, `AGENTS.md`
+  are 22 de enunțuri dar **2** capete îngroșate — censul ar acoperi 2 din 22 și ar sugera o
+  protecție inexistentă. Convenția `- **Nume.**` ține doar în `CLAUDE.md`. **Consecință: cele trei
+  reguli pe care F1 le-a mutat în sateliți sunt, azi, neprotejate.**
 
 ## 5. Ce NU rezolvă asta
 
-- Nu face regulile corecte — doar trasabile. O regulă greșită cu ID rămâne greșită.
-- Nu înlocuiește citirea. `L0` tot trebuie citit; regimul doar îl ține mic destul cât să fie citit.
-- Nu recuperează ce s-a pierdut înainte de ID-uri. Cele 13 reguli se repun manual, o singură dată.
-- Costă o felie de construit (`tools/reguli.py` + 3 teste + ancorele) și o trecere de adnotare pe
-  cele 272 de enunțuri. Adnotarea e mecanică și se poate delega.
+- Nu face regulile corecte — doar trasabile. O regulă greșită, cu nume, rămâne greșită.
+- Nu înlocuiește citirea. L0 tot trebuie citit; regimul doar îl ține mic destul cât să fie citit.
+- **Nu acoperă sateliții.** Vezi §4.5 — trei reguli repuse de F1 stau azi în afara censului.
+- Nu prinde proza liberă, doar citatele cu sintaxă.
 
-## 6. Criterii de acceptare (dacă se aprobă)
+## 6. Unde suntem — 2026-08-29
 
-- [ ] `python tools/reguli.py sync` produce `specs/reguli.tsv` cu ≥ 250 de rânduri, fiecare cu `garda`.
-- [ ] `python tools/reguli.py find <subiect>` întoarce regula și garda ei în ≤ 5 rânduri.
-- [ ] Ștergerea unei reguli `activa` din `CLAUDE.md` face CI roșu, cu ID-ul în mesaj.
-- [ ] `CLAUDE.md` ≤ 18 KB după mutarea în L1, cu zero reguli `activa` pierdute (verificat prin `diff` pe registru, nu prin citire).
-- [ ] Cele 13 reguli pierdute pe 2026-08-06 sunt repuse sau marcate `retrasa` **cu motiv**.
+| felie | ce e | stare |
+|---|---|---|
+| **F1** | 7 corecții de fapt + 13 reguli repuse | **livrat**, #226 fuzionat |
+| **F2** | gărzi de fapte canonice | **livrat**, #227 (draft, verde) |
+| **F3** | censul celor 47 de reguli cu nume | **livrat**, #227 |
+| **F3.5** | dovada declanșatorului | **livrat**, #227 — a ucis premisa lui F4 |
+| **F4** | mutarea în L1 | **replanificat pe hook** (§4.3), nestartat |
+
+**Criterii pentru F4, când se face:**
+
+- [ ] Hook-ul e în `.claude/settings.json` comis, iese cu `exit 2` + `stderr`, și e dovedit că
+      mesajul chiar ajunge la model — nu presupus din faptul că scriptul a rulat.
+- [ ] `CLAUDE.md` scade sub 20 KB, cu **zero** capete de regulă dispărute din cens.
+- [ ] Fiecare regulă mutată își poartă limita cunoscută scrisă lângă ea (supra-declanșarea pe
+      `Bash`, orbirea la `cat`/`sed`).
+- [ ] Se mută **o singură secțiune** ca pilot, măsurată înainte/după, înainte de restul.
+
+## 7. Ipoteze picate în cursul auditului — a nu se redeschide
+
+- **`#D6AD33` din `templates/base.html` NU e un drift față de `--gold`.** L-am raportat greșit ca
+  încălcare de §8 pe 2026-08-29. Comentariul de deasupra liniei explică: e valoarea plată care
+  reprezintă auriul **metalic** (gradient) din iconițe, iar `<meta name="theme-color">` și
+  manifestul nu pot referi un gradient. Nu e o culoare hardcodată în locul unui token — e o
+  categorie pe care tokenul n-o poate exprima. **Nu-l „repara".**
