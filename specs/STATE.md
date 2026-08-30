@@ -13,28 +13,27 @@
 > history with two live rules buried in it. That is the same failure the 08-07 cut documented.
 > **A section is `Open` only if a PR is open or a decision is pending — check, don't assume.**
 
-**Updated:** 2026-08-29 (F2 = garzile de fapte canonice; F3.5 a picat premisa lui F4;
-R2 investigat pentru arhiva — vezi mai jos)
+**Updated:** 2026-08-30 (F1+F2+F3 aterizate pe `main` — #226 #227 #228; F4 replanificat pe hook
+`PostToolUse` si predat contului A)
 
 ## Open
 
-- **Regimul regulilor** (`specs/regim-reguli.md`, doar pe #226) — F1 = **#226** (verde, asteapta
-  merge). F2+F3 (garzi de fapte canonice + censul celor 47 de reguli cu nume) = **#227**, verde.
-  F3.5 a picat premisa lui F4 (IZZ-0252); inlocuitorul e IZZ-0253, iar F4 vrea plan nou.
-- **Doar documente** (conflictul din registru rezolvat de #222, nemaiverificate individual azi):
-  #202 #203 #204 #206 #207 #214 #218.
-- **Archiva paginilor expirate (issue #198, deschis de proprietar 08-21)** — diagnostic complet
-  deja facut acolo (193 pagini moarte in Search Console). Necesita alegerea proprietarului intre
-  3 optiuni; R2 investigat azi (IZZ-0250/0251-adiacent): bucket `izz-bucket` exista deja pe cont
-  (creat intentionat de proprietar la trecerea pe Cloudflare Paid), gol, neconectat in cod.
-  Plafon gratuit 10GB/1M scrieri/10M citiri/luna — suficient pentru arhiva. Obstacol real:
-  `izz-ro` ruleaza assets-only (fara `main`), deci R2 nu poate fi citit la runtime fara cod nou;
-  hook-ul natural e `izz-failover` (infra/failover-worker.js), care azi trateaza orice 404 ca
-  404 final. Ramane decizie de arhitectura, nu implementare mecanica.
+- **F4 — stratul L1 e hook `PostToolUse`, nu agenti** (`IZZ-0252` masurat-fals, `IZZ-0254` e
+  inlocuitorul; plan replanificat in `specs/regim-reguli.md`). F1/F2/F3 sunt pe `main`; F4 e
+  predat contului A prin `handoff/to-A/2026-08-29-izz-f4-hook-postooluse.md`, fiindca B n-are
+  hook-uri. `CLAUDE.md` e la 24.532 din 24.576 octeti: nicio regula noua nu incape fara F4.
+- **K12, decizie proprietar** — `REVIEW.md` descrie un regim incheiat: se actualizeaza la cel de
+  azi, sau se marcheaza istoric si `README.md` trimite altundeva? (K5 si K11 rezolvate in #228.)
+- **PR-uri deschise, doar documente:** #203 #204 #207 #214. **#225 nu poate ateriza asa cum e** —
+  refoloseste `IZZ-0250/0251/0252`, ID-uri luate deja pe `main` de alt continut (verificat
+  2026-08-30); cere renumerotare inainte de merge.
+- **Arhiva paginilor expirate (issue #198, deschis de proprietar 08-21)** — diagnostic complet
+  acolo (193 pagini moarte in Search Console); cere alegerea proprietarului intre 3 optiuni.
+  R2: bucket `izz-bucket` exista, gol, neconectat in cod (`IZZ-0250`), plafonul gratuit acopera
+  arhiva. Obstacol real: `izz-ro` ruleaza assets-only, deci R2 nu se poate citi la runtime fara
+  cod nou; hookul natural e `izz-failover`, care azi trateaza orice 404 ca 404 final.
 - **Din `specs/atribuire-cercetare-si-plan.md`** — E1 permalink decuplat (decizie proprietar),
   E3 focus score, E4 axe separate (decizie proprietar), E5 gold set ~150 + poarta CI.
-- Cifrele masurate azi (randare 638 s / 34.898 fisiere, 822 articole/zi, regim stabilizat
-  ~80.145 fisiere sub bugetul de 90.000, CLAUDE.md 23.920/24.576) → `specs/istoric-executie.md`.
 
 ## Standing rules that keep being rediscovered — do not "fix" these
 
