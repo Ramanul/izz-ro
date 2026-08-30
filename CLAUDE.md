@@ -44,8 +44,8 @@ deduplicate, curate. Site **generat static** dintr-un pipeline de conținut
 Python 3.11 (cloud) / 3.14 (local), Jinja2, feedparser, pyyaml, python-slugify, markdown,
 python-dotenv. AI: Gemini 2.5 Flash Lite prin REST (fără SDK), comutabil pe Claude API cu
 `AI_PROVIDER=anthropic`. CI/CD: GitHub Actions (`build.yml`, cron `13 * * * *` + poartă de
-cadență la 105 min → publicare ~2h, §17). Hosting: Cloudflare
-Pages (build doar de randare). Stare pipeline: `data/articles.json` (comis în repo — fără SQLite).
+cadență la 105 min → publicare ~2h, §17). Hosting: Cloudflare **Workers Static Assets**
+(`wrangler.jsonc`, assets-only, fără `main` — migrat de pe Pages în #211). Stare pipeline: `data/articles.json` (comis în repo — fără SQLite).
 
 ## 3. Structura repo-ului
 ```
@@ -56,7 +56,7 @@ static/             styles.css · logo.svg · favicon.svg
 content/legal/      pagini legale (markdown)
 data/articles.json  starea pipeline-ului (comisă în repo, persistă între rulări)
 moderation.yaml     control editorial (om în buclă)
-output/             site generat (gitignored; deployat de Cloudflare Pages)
+output/             site generat (gitignored; servit de Cloudflare Workers)
 .github/workflows/  build.yml (fetch+AI+commit; cron orar + poartă → publicare ~2h, vezi §17)
 ```
 
@@ -115,7 +115,7 @@ proprietăți CSS custom. Lipsește o valoare? Adaugă o proprietate; nu inline-
 
 ## 10. A NU se atinge fără instrucțiune explicită
 Logica de sinteză / atribuire („Model C" multi-sursă) și orice e legal/GDPR-relevant ·
-configurația de deploy în producție (Cloudflare Pages, secrete GitHub Actions).
+configurația de deploy în producție (`wrangler.jsonc`, Cloudflare Workers, secrete GitHub Actions).
 
 ## 11. SEO — REZOLVAT 2026-06-26
 `og:type`, `dateModified`, `lastmod` sunt implementate și verificate pe output real.

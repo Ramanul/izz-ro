@@ -34,26 +34,30 @@ output/      site generat (gitignored; deployat de Actions)
 
 ## Administrare
 - **Ce apare pe site** se controlează din `moderation.yaml` (vezi `REVIEW.md`).
-- **Surse RSS:** `generator/config.py` -> `SOURCES`. (`gsp` dă 404 — de înlocuit cu un feed valid.)
+- **Surse RSS:** `generator/config.py` -> `SOURCES`.
 - **Praguri B/C, TTL, max/sursă:** tot în `config.py`.
 
-## Deploy (GitHub Actions + Cloudflare Pages)
+## Deploy (GitHub Actions + Cloudflare Workers)
 
 Arhitectura separă **munca grea** de **publicare**:
 
 1. **GitHub Actions** (`.github/workflows/build.yml`, cron `13 * * * *`): rulează pipeline-ul (fetch + AI, cu buget per rulare), apoi **comite** `data/articles.json` în repo. Secret necesar: `GEMINI_API_KEY` (repo → Settings → Secrets → Actions).
    **Încearcă orar, publică la ~2h:** un job de poartă taie rularea dacă ultimul conținut e mai proaspăt de 105 minute. Cron-ul e des *ca să apere* cele 2h — planificatorul GitHub sare firings de `schedule` (măsurat 2026-08-04: 4 rulări în loc de 12), iar cu încercări orare un firing pierdut se recuperează în ora următoare. Bugetul de build Cloudflare (~500/lună pe planul free) e păzit de poartă, nu de cron — **nu coborî pragul fără să refaci socoteala**.
-2. **Cloudflare Pages** (conectat la repo, auto-deploy la fiecare commit): rulează doar **render-only** și publică `output/`. Setări în Cloudflare Pages → Settings:
-   - **Build command:** `pip install -r requirements.txt && python -m generator.main --render-only`
-   - **Build output directory:** `output`
-   - **Environment variables:** `PYTHON_VERSION=3.11`, `SITE_BASE=` (gol). *(GEMINI nu e necesar aici — render-only nu apelează AI.)*
+2. **Cloudflare Workers Static Assets** (Workers Builds, conectat la repo, auto-deploy la fiecare commit): rulează doar **render-only** și servește `output/`. Configurația versionată stă în `wrangler.jsonc`:
+   - `assets.directory: ./output` — site-ul e 100% static, deci proiectul **nu are** `main` (assets-only);
+   - `not_found_handling: "404-page"` — Pages deducea singur pagina 404, Workers **nu**; fără linia asta orice URL inexistent întoarce un 404 gol, iar `output/404.html` nu mai e servit niciodată;
+   - `preview_urls: true` — preview per ramură, pe care se bazează §16.3 din `CLAUDE.md`.
+
+   Comanda de build și variabilele de mediu (`PYTHON_VERSION`, `SITE_BASE`) stau în Workers Builds → Settings. *(GEMINI nu e necesar aici — render-only nu apelează AI.)*
 
 Astfel: Actions face fetch+AI și salvează starea → commit-ul declanșează Cloudflare → Cloudflare randează rapid (fără AI/quota) și publică. Cron-ul de auto-actualizare vine din Actions.
+
+*Migrat de pe Cloudflare Pages pe Workers în #211 (2026-08-22); descrierea de mai sus a rămas pe Pages până pe 2026-08-30.*
 
 ### Domeniul izz.ro
 1. În Cloudflare „Add a site" → izz.ro → primești 2 nameservere.
 2. La registrar (ICI/ROTLD) setezi acele nameservere pentru izz.ro.
-3. În Pages → proiectul izz-ro → Custom domains → adaugi izz.ro.
+3. În Workers → serviciul izz-ro → Domains & Routes → adaugi izz.ro.
 
 ### Comutare pe Claude API
 Adaugă secret `ANTHROPIC_API_KEY` în GitHub și pune `AI_PROVIDER: anthropic` în `build.yml`.
