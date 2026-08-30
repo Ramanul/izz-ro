@@ -29,9 +29,9 @@
   agregat) si **#234 (merged)** (agentii pe Codex) — niciunul nu atingea STATE.md, de-aia erau
   curate. **#231 inchis ca fantoma** (`IZZ-0262`): F4 aterizase prin **#229 (merged)**. Raman
   deschise **#207 #214 #225 #230**; #230 e absorbit de PR-ul acestei sesiuni.
-- **Ce cere K12 acum ca a aterizat:** `revizuire.yml` posteaza zilnic la 06:40 UTC pe issue-ul
-  #233 — prima rulare e de CITIT, nu de presupus. `masoara-gazde.yml` e doar manual: pana la o
-  rulare, axa 3 ramane fara corpus, deci fara praguri masurate.
+- **Ce cere K12 acum ca a aterizat:** `revizuire.yml` posteaza zilnic la 09:40 ora RO (06:40 UTC
+  in cron) pe issue-ul #233 — prima rulare e de CITIT, nu de presupus. `masoara-gazde.yml` e doar
+  manual: pana la o rulare, axa 3 ramane fara corpus, deci fara praguri masurate.
 - **F4: pilotul (§13) a aterizat prin #229 (merged).** `CLAUDE.md` la 23.835 octeti, 741 liberi.
   Urmatorii candidati masurati: §12 (2.259 o.), §14 (1.795), §18 (1.489), §17 (1.084), §20 (1.024).
 - **Arhiva (#198)** — `IZZ-0260`: decide NUMARUL de fisiere, nu marimea starii. 3,23 fisiere/

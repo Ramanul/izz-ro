@@ -25,6 +25,9 @@
   anticipează problema următoare și propune
   nesolicitat idei de îmbunătățire. Dar propunerile rămân propuneri pe care el le confirmă —
   inițiativa nu devine acțiune autonomă pe `main` (§5, §14 rămân valabile).
+- **Orele se raportează în ora României** (`TZ=Europe/Bucharest`), nu UTC — cerut 2026-08-30,
+  fiindcă UTC nu-l ajută. Artefactele tehnice rămân cum sunt (cron-ul din `.github/workflows/` e
+  UTC prin definiție); când citezi unul, pune ora RO în paranteză.
 - **Starea de completare ÎNAINTE de rezultat, ca fracție** („etapa 1 din 4", „46 din 49"), și
   răspunde la întrebarea pusă, nu la cea vecină. Detaliu și precedente: `../LECTII.md` L8.
 - **Mandatul e ce a cerut proprietarul, nu ce a ajuns ultimul în context — REGULĂ TARE.**
