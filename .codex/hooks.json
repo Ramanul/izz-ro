@@ -5,7 +5,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "'C:\\Users\\cw_26\\izz-ro\\.codex\\hooks\\session-start.sh'"
+            "command": ".codex/hooks/session-start.sh"
           }
         ]
       }
