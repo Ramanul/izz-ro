@@ -562,3 +562,78 @@ def test_censul_ramane_un_cens_nu_un_esantion():
     prezente = capete_de_regula((ROOT / "CLAUDE.md").read_text(encoding="utf-8"))
     assert len(REGULI_ACTIVE) >= 0.9 * len(prezente), (
         f"censul urmareste {len(REGULI_ACTIVE)} din {len(prezente)} reguli cu nume")
+
+
+# --- STATE.md nu are voie sa numeasca deschis un PR deja integrat -----------------------------
+#
+# DE CE EXISTA (P2, 2026-08-30). Antetul lui `specs/STATE.md` documenteaza singur, de DOUA ori,
+# acelasi esec: sectiuni scrise `Open PR` pentru PR-uri deja merged (#196, #197 pe 2026-08-21;
+# la fel la taierea din 08-07). A treia oara s-a intamplat azi: #226 statea scris „verde, asteapta
+# merge" si #227 „verde" dupa ce amandoua fusesera integrate. Costul nu e cosmetic — sesiunea
+# urmatoare citeste STATE.md la pornire si reimplementeaza ce a aterizat deja.
+#
+# CUM MASOARA, fara retea: un PR integrat lasa pe `main` un commit „Merge pull request #N".
+# Masurat pe repo-ul real: 21 de merge-uri, 21 de numere distincte, deci forma e consecventa.
+# Semnalul e sigur INTR-UN SINGUR SENS — un astfel de commit dovedeste ca PR-ul s-a integrat;
+# lipsa lui NU dovedeste ca e deschis (un merge facut altfel nu lasa urma). Garda foloseste doar
+# sensul sigur, deci poate rata, dar nu poate acuza pe nedrept.
+#
+# CONVENTIA, ca sa nu fie nevoie de ghicit intentia: un PR integrat POATE fi pomenit in `## Open`
+# — dar numai adnotat `#NNN (merged)`. Asa se deosebeste mecanic o trimitere la istorie
+# („rezolvat de #222 (merged)") de o afirmatie ca lucrarea e inca deschisa. O singura conventie,
+# nu o lista de cuvinte-cheie care creste.
+
+PR_CITAT = re.compile(r"#(\d{2,4})(\s*\(merged\))?")
+MERGE_PE_MAIN = re.compile(r"^Merge pull request #(\d+)", re.MULTILINE)
+
+
+def sectiunea_open(text: str) -> str:
+    """Sectiunea, nu prima potrivire de sir: antetul lui STATE.md POMENESTE `## Open` in proza
+    („the 195-line `## Open` section"), iar un `split` naiv taia acolo si garda citea 374 de
+    caractere de antet in loc de sectiune — adica trecea verde peste #226 si #227 scrise ca
+    deschise. Prins la prima rulare pe fisierul real, nu pe fixtura."""
+    titlu = re.search(r"^## Open\s*$", text, re.MULTILINE)
+    if not titlu:
+        return ""
+    return re.split(r"^## ", text[titlu.end():], maxsplit=1, flags=re.MULTILINE)[0]
+
+
+def pr_integrate() -> set[str]:
+    iesire = subprocess.run(["git", "log", "--format=%s", "--grep=^Merge pull request #"],
+                            cwd=ROOT, capture_output=True, text=True, check=True).stdout
+    return set(MERGE_PE_MAIN.findall(iesire))
+
+
+def incalcari_pr_fantoma(open_text: str, integrate: set[str]) -> list[str]:
+    gasite = []
+    for numar, adnotat in PR_CITAT.findall(open_text):
+        if numar in integrate and not adnotat:
+            gasite.append(f"#{numar} e scris in ## Open dar are deja merge pe main — "
+                          f"scoate-l, sau adnoteaza-l `#{numar} (merged)` daca e trimitere la istorie")
+    return sorted(set(gasite))
+
+
+def test_open_nu_contine_pr_uri_deja_integrate():
+    """A treia oara ar fi fost tot tacuta. Acum pica."""
+    text = (ROOT / "specs/STATE.md").read_text(encoding="utf-8")
+    assert sectiunea_open(text).strip(), "sectiunea ## Open nu a fost gasita — garda ar trece degeaba"
+    assert not incalcari_pr_fantoma(sectiunea_open(text), pr_integrate())
+
+
+def test_garda_pr_fantoma_pica_pe_pr_integrat():
+    assert incalcari_pr_fantoma("- **#226** asteapta merge", {"226"})
+
+
+def test_garda_pr_fantoma_accepta_trimiterea_adnotata():
+    """„rezolvat de #222 (merged)" e istorie, nu o afirmatie ca lucrarea e deschisa."""
+    assert not incalcari_pr_fantoma("- conflictul rezolvat de #222 (merged)", {"222"})
+
+
+def test_garda_pr_fantoma_nu_atinge_un_pr_chiar_deschis():
+    assert not incalcari_pr_fantoma("- **#999** verde, asteapta merge", {"226"})
+
+
+def test_sectiunea_open_se_opreste_la_titlul_urmator():
+    """Altfel garda ar citi si `## Standing rules`, unde trimiterile la istorie sunt normale."""
+    text = "# T\n\n## Open\n\n- #1\n\n## Standing rules\n\n- #2\n"
+    assert "#1" in sectiunea_open(text) and "#2" not in sectiunea_open(text)

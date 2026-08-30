@@ -12,17 +12,23 @@
 > #197 on 08-21), and the 195-line `## Open` section was almost entirely SHIPPED/FIXED/REVERTED
 > history with two live rules buried in it. That is the same failure the 08-07 cut documented.
 > **A section is `Open` only if a PR is open or a decision is pending — check, don't assume.**
+>
+> **Nu se atinge in PR-uri de functionalitate.** Se actualizeaza pe `main`, dupa merge. Motivul e
+> masurat (2026-08-30): din 10 PR-uri deschise, 5 erau blocate EXCLUSIV de conflicte pe fisierul
+> asta — la #207, 7 linii din 594, adica 1%. Un fisier pe care fiecare sesiune il rescrie nu are
+> ce cauta intr-o ramura de functionalitate.
 
-**Updated:** 2026-08-29 (F2 = garzile de fapte canonice; F3.5 a picat premisa lui F4;
-R2 investigat pentru arhiva — vezi mai jos)
+**Updated:** 2026-08-30 (F1/F2/F3 aterizate; garda de PR fantoma; STATE.md scos din
+ramurile de functionalitate — vezi antetul)
 
 ## Open
 
-- **Regimul regulilor** (`specs/regim-reguli.md`, doar pe #226) — F1 = **#226** (verde, asteapta
-  merge). F2+F3 (garzi de fapte canonice + censul celor 47 de reguli cu nume) = **#227**, verde.
-  F3.5 a picat premisa lui F4 (IZZ-0252); inlocuitorul e IZZ-0253, iar F4 vrea plan nou.
-- **Doar documente** (conflictul din registru rezolvat de #222, nemaiverificate individual azi):
-  #202 #203 #204 #206 #207 #214 #218.
+- **Regimul regulilor** — F1/F2/F3 aterizate (#226 (merged), #227 (merged)). Ramane **F4, plan
+  nou**: F3.5 i-a picat premisa (IZZ-0252 → IZZ-0253). `CLAUDE.md` e la 24.532/24.576 — 44 liberi.
+- **#225 blocat, trei decizii ale proprietarului:** +107 octeti peste plafon · sterge regula «Nu
+  confunda unealta cu capacitatea.» (prinsa de cens) · IZZ-0250..0253 se ciocnesc, vor 0255+.
+- **Doar documente:** #202 #206 #207 #214 #218 — toate conflictuale doar pe `specs/STATE.md`.
+  #206 nu merita asa: 19/21 linii sunt STATE.md, iar titlul („main cannot deploy") e infirmat.
 - **Archiva paginilor expirate (issue #198, deschis de proprietar 08-21)** — diagnostic complet
   deja facut acolo (193 pagini moarte in Search Console). Necesita alegerea proprietarului intre
   3 optiuni; R2 investigat azi (IZZ-0250/0251-adiacent): bucket `izz-bucket` exista deja pe cont
@@ -33,8 +39,7 @@ R2 investigat pentru arhiva — vezi mai jos)
   404 final. Ramane decizie de arhitectura, nu implementare mecanica.
 - **Din `specs/atribuire-cercetare-si-plan.md`** — E1 permalink decuplat (decizie proprietar),
   E3 focus score, E4 axe separate (decizie proprietar), E5 gold set ~150 + poarta CI.
-- Cifrele masurate azi (randare 638 s / 34.898 fisiere, 822 articole/zi, regim stabilizat
-  ~80.145 fisiere sub bugetul de 90.000, CLAUDE.md 23.920/24.576) → `specs/istoric-executie.md`.
+- Cifre (randare, ritm, regimul de ~80.145 fisiere sub 90.000) → `specs/istoric-executie.md`.
 
 ## Standing rules that keep being rediscovered — do not "fix" these
 
