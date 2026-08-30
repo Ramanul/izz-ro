@@ -10,7 +10,9 @@ Acuratețea rămâne umană — AI poate greși, iar la știri o greșeală e ri
    - **scoate o sursă** temporar → adaug-o la `suppress_sources`;
    - **promovează** o știre în hero → adaug-o la `featured`;
    - **filtru pe cuvinte** → `blocklist_keywords`.
-3. Salvează fișierul pe GitHub. Build-ul următor (sau **Actions → Run workflow**) aplică schimbarea în câteva minute.
+3. Salvează fișierul pe GitHub. Când se vede schimbarea depinde de calea aleasă — **nu sunt „câteva minute" în ambele cazuri**:
+   - **acum** → **Actions → Run workflow**. Rularea manuală ocolește poarta de cadență (`build.yml`, jobul `pipeline`), deci publică în ~12 minute, indiferent cât de proaspăt e ultimul conținut;
+   - **de la sine** → următorul build automat, la până la ~2h. Cron-ul încearcă orar, dar poarta taie rularea dacă ultimul conținut e mai proaspăt de 105 minute. Deliberat: vezi `CLAUDE.md` §17.
 
 ## Exemple
 ```yaml
@@ -30,5 +32,8 @@ Pentru ca știrile importante (clusterele C) să **aștepte aprobarea** ta înai
 hold_important: true
 ```
 
-## Lansare soft (primele 7 zile)
-Urmărește erorile din **Actions** și calitatea rezumatelor. Dacă AI derivează, ajustează prompturile din `generator/process.py`. Abia apoi pornește distribuția (newsletter + social).
+## Lansare soft — etapă încheiată
+
+Cele 7 zile au trecut demult; secțiunea rămâne pentru partea care e valabilă permanent, nu pentru fază. Urmărește erorile din **Actions** și calitatea rezumatelor; dacă AI derivează, ajustează prompturile din `generator/process.py` — după `REGULI-SINTEZA.md`, care e normativul.
+
+Distribuția (newsletter + social) **nu mai e condiționată de faza asta**. Dacă n-a pornit, e o decizie separată, nu o condiție de lansare rămasă neîndeplinită.

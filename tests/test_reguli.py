@@ -269,7 +269,10 @@ def test_scutirea_ramane_o_exceptie_de_categorie_nu_o_lista_care_creste():
 # si stiuta, ca la garda de TTL — nu o scapare.
 
 NORMATIVE = frozenset({"CLAUDE.md", "AGENTS.md", "REGULI-SINTEZA.md", "README.md", "REVIEW.md"})
-PREFIXE_NORMATIVE = (".claude/commands/", ".claude/agents/")
+# `.claude/reguli/` intra aici de la F4 (2026-08-30): o regula mutata in L1 ramane
+# normativa: citeaza sectiuni, cai si constante exact ca `CLAUDE.md`, deci trebuie sa
+# treaca prin aceleasi patru garzi de fapte. Altfel mutarea ar fi fost o evadare.
+PREFIXE_NORMATIVE = (".claude/commands/", ".claude/agents/", ".claude/reguli/")
 
 SECTIUNE_DEF = re.compile(r"^##+\s*(\d+[a-z]?)\.", re.MULTILINE)
 SECTIUNE_REF = re.compile(r"§\s?(\d+[a-z]?)")
@@ -500,10 +503,6 @@ REGULI_ACTIVE = frozenset({
     'Verificările care merită, ieftine, la început:',
     'Ce lipsește dar se poate obține → propune, nu ocoli tăcut.',
     'Ține-l scurt.',
-    'După orice felie care schimbă output-ul de front-end',
-    'Rulează 3+ repetări per revizie și compară medianele',
-    'Măsurătoarea e busolă, nu pilot automat.',
-    'Baseline, cifre, ipoteze picate (CLS, fonturi, consent) → `specs/masuratori-frontend.md`.',
     'Nu arma nicio buclă autonomă / CronCreate recurent',
     'Cine face merge în `main`',
     'După orice merge, anunță celălalt cont',
@@ -529,6 +528,20 @@ REGULI_ACTIVE = frozenset({
     'Un `find` gol NU e dovadă că nu s-a încercat',
 })
 
+# Stratul L1 (F4, 2026-08-30): regulile conditionate NU mai stau in `CLAUDE.md` — se livreaza
+# de hook-ul `PostToolUse` cand atingi fisierul care le declanseaza. Censul le urmareste la fel,
+# in fisierul lor: altfel mutarea din L0 in L1 ar fi fost chiar gaura pe care F3 o inchidea.
+REGULI_L1 = {
+    ".claude/reguli/13-frontend.md": frozenset({
+        'După orice felie care schimbă output-ul de front-end',
+        'Rulează 3+ repetări per revizie și compară medianele',
+        'Măsurătoarea e busolă, nu pilot automat.',
+        'Baseline, cifre, ipoteze picate (CLS, fonturi, consent) → `specs/masuratori-frontend.md`.',
+    }),
+}
+
+CENS = {"CLAUDE.md": REGULI_ACTIVE, **REGULI_L1}
+
 
 def capete_de_regula(text: str) -> set[str]:
     """Numele regulilor: capul ingrosat al unui bullet. `**text**` din mijlocul frazei nu e nume."""
@@ -541,10 +554,11 @@ def incalcari_cens(active: frozenset[str], prezente: set[str]) -> list[str]:
             for nume in sorted(active - prezente)]
 
 
-def test_nicio_regula_din_cens_nu_a_disparut():
+@pytest.mark.parametrize("fisier", sorted(CENS))
+def test_nicio_regula_din_cens_nu_a_disparut(fisier):
     """Cele 13 reguli pierdute pe 2026-08-06 au disparut fara ca nimic sa pice. Acum pica."""
-    prezente = capete_de_regula((ROOT / "CLAUDE.md").read_text(encoding="utf-8"))
-    assert not incalcari_cens(REGULI_ACTIVE, prezente)
+    prezente = capete_de_regula((ROOT / fisier).read_text(encoding="utf-8"))
+    assert not incalcari_cens(CENS[fisier], prezente)
 
 
 def test_garda_censului_pica_pe_regula_stearsa():
@@ -557,8 +571,9 @@ def test_censul_nu_confunda_ingrosarea_din_proza_cu_un_nume_de_regula():
     assert capete_de_regula(text) == {"Diff minim."}
 
 
-def test_censul_ramane_un_cens_nu_un_esantion():
+@pytest.mark.parametrize("fisier", sorted(CENS))
+def test_censul_ramane_un_cens_nu_un_esantion(fisier):
     """Miscarea care ar goli garda fara sa stearga nicio regula: sa nu mai urmareasca decat cateva."""
-    prezente = capete_de_regula((ROOT / "CLAUDE.md").read_text(encoding="utf-8"))
-    assert len(REGULI_ACTIVE) >= 0.9 * len(prezente), (
-        f"censul urmareste {len(REGULI_ACTIVE)} din {len(prezente)} reguli cu nume")
+    prezente = capete_de_regula((ROOT / fisier).read_text(encoding="utf-8"))
+    assert len(CENS[fisier]) >= 0.9 * len(prezente), (
+        f"{fisier}: censul urmareste {len(CENS[fisier])} din {len(prezente)} reguli cu nume")

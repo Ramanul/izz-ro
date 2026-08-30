@@ -44,8 +44,8 @@ deduplicate, curate. Site **generat static** dintr-un pipeline de conținut
 Python 3.11 (cloud) / 3.14 (local), Jinja2, feedparser, pyyaml, python-slugify, markdown,
 python-dotenv. AI: Gemini 2.5 Flash Lite prin REST (fără SDK), comutabil pe Claude API cu
 `AI_PROVIDER=anthropic`. CI/CD: GitHub Actions (`build.yml`, cron `13 * * * *` + poartă de
-cadență la 105 min → publicare ~2h, §17). Hosting: Cloudflare
-Pages (build doar de randare). Stare pipeline: `data/articles.json` (comis în repo — fără SQLite).
+cadență la 105 min → publicare ~2h, §17). Hosting: Cloudflare **Workers Static Assets**
+(`wrangler.jsonc`, assets-only, fără `main` — migrat de pe Pages în #211). Stare pipeline: `data/articles.json` (comis în repo — fără SQLite).
 
 ## 3. Structura repo-ului
 ```
@@ -56,7 +56,7 @@ static/             styles.css · logo.svg · favicon.svg
 content/legal/      pagini legale (markdown)
 data/articles.json  starea pipeline-ului (comisă în repo, persistă între rulări)
 moderation.yaml     control editorial (om în buclă)
-output/             site generat (gitignored; deployat de Cloudflare Pages)
+output/             site generat (gitignored; servit de Cloudflare Workers)
 .github/workflows/  build.yml (fetch+AI+commit; cron orar + poartă → publicare ~2h, vezi §17)
 ```
 
@@ -115,7 +115,7 @@ proprietăți CSS custom. Lipsește o valoare? Adaugă o proprietate; nu inline-
 
 ## 10. A NU se atinge fără instrucțiune explicită
 Logica de sinteză / atribuire („Model C" multi-sursă) și orice e legal/GDPR-relevant ·
-configurația de deploy în producție (Cloudflare Pages, secrete GitHub Actions).
+configurația de deploy în producție (`wrangler.jsonc`, Cloudflare Workers, secrete GitHub Actions).
 
 ## 11. SEO — REZOLVAT 2026-06-26
 `og:type`, `dateModified`, `lastmod` sunt implementate și verificate pe output real.
@@ -152,19 +152,10 @@ Acțiunile distructive sau ireversibile o cer în continuare.
 Pentru task-uri substanțiale, multi-fișier: `/effort ultracode`. Pentru editări de rutină:
 `/effort high` ajunge și consumă mai puțin. O tură `ultrathink` înainte de o felie grea.
 
-## 13. Verificare front-end — măsoară, nu te uita cu ochiul
-- **După orice felie care schimbă output-ul de front-end** (template-uri, `static/styles.css`,
-  HTML/JSON-LD din `render.py`): rulează `bash tools/audit.sh` și raportează scorurile Lighthouse
-  (Perf / A11y / Best-practices / SEO) și numărul de erori pa11y WCAG2AA **înainte vs după**.
-  „Arată bine" nu e un rezultat; un delta de scor e.
-- **Rulează 3+ repetări per revizie și compară medianele**, cu `ARTICLE_PATH=/cat/slug/` fixat.
-  Varianța e un comutator cu două stări, nu zgomot — o singură pereche înainte/după nu poate
-  rezolva un efect sub ~8 puncte pe home.
-- **Măsurătoarea e busolă, nu pilot automat.** Scorurile *informează* felia următoare, pe care tot
-  tu o propui și proprietarul o confirmă (§5). Niciodată un maraton autonom de „optimizare", și
-  niciodată vânătoare de scor cu trucuri care strică experiența reală.
-- **Baseline, cifre, ipoteze picate (CLS, fonturi, consent) → `specs/masuratori-frontend.md`.**
-  Citește-l ÎNAINTE de a re-investiga CLS: două explicații sunt deja măsurate și infirmate acolo.
+## 13. Verificare front-end — regulă L1, livrată de hook
+Textul stă în `.claude/reguli/13-frontend.md` și ajunge singur în context când atingi
+`templates/`, `static/styles.css` sau `generator/render.py`. Secțiunea rămâne numerotată fiindcă
+`§13` e citat în comenzi și agenți. **Nu o copia înapoi aici** — ar plăti-o fiecare tură.
 
 ## 14. Autonomie și cine face merge
 Mandatul autonom din iulie e **încheiat** (istoric: `specs/istoric-operational.md`). Rămân active:
