@@ -22,8 +22,8 @@
   inlocuitorul; plan replanificat in `specs/regim-reguli.md`). F1/F2/F3 sunt pe `main`; F4 e
   predat contului A prin `handoff/to-A/2026-08-29-izz-f4-hook-postooluse.md`, fiindca B n-are
   hook-uri. `CLAUDE.md` e la 24.532 din 24.576 octeti: nicio regula noua nu incape fara F4.
-- **K12, decizie proprietar** — `REVIEW.md` descrie un regim incheiat: se actualizeaza la cel de
-  azi, sau se marcheaza istoric si `README.md` trimite altundeva? (K5 si K11 rezolvate in #228.)
+- **K12** — cele doua defecte de fapt din `REVIEW.md` reparate azi; ramane doar ce nu se poate
+  masura de aici: mai faci rutina zilnica de 15 min si a pornit distributia? (K5, K11 in #228.)
 - **PR-uri deschise:** #203 #204 #207 #214, doar documente. **#225 nu poate ateriza asa cum e**,
   doua blocaje masurate azi: cele cinci randuri de registru refolosesc `IZZ-0250`..`IZZ-0254`,
   luate deja pe `main` de alt continut; si redenumeste o regula din censul F3
