@@ -13,26 +13,27 @@
 > history with two live rules buried in it. That is the same failure the 08-07 cut documented.
 > **A section is `Open` only if a PR is open or a decision is pending — check, don't assume.**
 
-**Updated:** 2026-08-30 (F1+F2+F3 aterizate pe `main` — #226 #227 #228; F4 replanificat pe hook
-`PostToolUse`, predat contului A; K12 decis de proprietar — `IZZ-0255`)
+**Updated:** 2026-08-30 (F1-F4 livrate: #226 #227 #228 + pilotul L1 din #229; plan de remediere
+rulat pe cinci probleme — `IZZ-0255`..`IZZ-0260`)
 
 ## Open
 
-- **F4 — stratul L1 e hook `PostToolUse`, nu agenti** (`IZZ-0252` masurat-fals, `IZZ-0254`
-  inlocuitorul; plan in `specs/regim-reguli.md`). F1/F2/F3 sunt pe `main`; F4 e predat contului A
-  prin `handoff/to-A/2026-08-29-izz-f4-hook-postooluse.md`. `CLAUDE.md`: 24.532/24.576 octeti.
-- **K12 decis (`IZZ-0255`): rutina nu se rescrie ca text, se construieste mecanismul** — rezumat
-  zilnic „ce e nou, ce e riscant". Defectele de fapt din `REVIEW.md` reparate; **specul nu e
-  scris**. Nu porni de zero: `editorial-quality.yml` + `guard.anomalie`; axa cadenta e moarta.
-- **PR-uri deschise:** #203 #204 #207 #214, doar documente. **#225 nu poate ateriza asa cum e**,
-  doua blocaje masurate azi: cele cinci randuri de registru refolosesc `IZZ-0250`..`IZZ-0254`,
-  luate deja pe `main` de alt continut; si redenumeste o regula din censul F3
-  (`tests/test_reguli.py`, 'Nu confunda unealta cu capacitatea'). Ambele in acelasi commit.
-- **Arhiva paginilor expirate (issue #198, deschis de proprietar 08-21)** — diagnostic complet
-  acolo (193 pagini moarte in Search Console); cere alegerea proprietarului intre 3 optiuni.
-  R2: bucket `izz-bucket` exista, gol, neconectat in cod (`IZZ-0250`), plafonul gratuit acopera
-  arhiva. Obstacol real: `izz-ro` ruleaza assets-only, deci R2 nu se poate citi la runtime fara
-  cod nou; hookul natural e `izz-failover`, care azi trateaza orice 404 ca 404 final.
+- **F4 livrat ca PILOT (§13).** Hook-ul `PostToolUse` livreaza regulile L1, verificat live.
+  `CLAUDE.md`: 24.532 -> 23.835 octeti, liberi 44 -> 741. Urmatorii candidati masurati: §12
+  (2.259 o.), §14 (1.795), §18 (1.489), §17 (1.084), §20 (1.024). `IZZ-0256`: **'B n-are
+  hook-uri' era fals**, iar `additionalContext` bate `exit 2`.
+- **K12 decis (`IZZ-0255`)**: rutina nu se rescrie, se construieste mecanismul (rezumat zilnic
+  „ce e nou, ce e riscant"). **Specul nu e scris**; porneste de la `editorial-quality.yml`.
+- **Axa 3 a garzii de anomalie** — spec in `specs/anomalie-linkuri.md` (`IZZ-0259`), NEimplementat
+  deliberat: R3 cere praguri masurate, iar corpusul de gazde-destinatie nu exista. Pasul 1 e un
+  job pe runner. Cauza mecanica: `clean_html()` scoate `href`-urile inainte de `guard.verdict()`.
+- **Arhiva (#198)** — `IZZ-0260`: decide NUMARUL de fisiere, nu marimea starii. 3,23 fisiere/
+  articol, deci optiunile 2 si 3 mor in 7-24 de zile pe plafonul de 100.000 assets; R2 e singura
+  care scapa. **Blocat pe #214**, care da ruta catre `izz-failover`.
+- **Trafic** — sonda `.github/workflows/trafic.yml` scrisa; rulabila abia dupa aterizarea lui
+  #229. Raspunde masurat daca tokenul CLOUDFLARE existent are scope de analytics.
+- **PR-uri deschise:** #203 #204 #207 #214. **#225** are doua blocaje: cinci ID-uri refolosite
+  si o regula redenumita din censul F3.
 - **Din `specs/atribuire-cercetare-si-plan.md`** — E1 + E4 cer decizia proprietarului, E3 focus
   score, E5 gold set ~150 + poarta CI.
 
