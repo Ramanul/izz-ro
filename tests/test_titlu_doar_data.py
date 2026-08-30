@@ -8,7 +8,7 @@ titlul format exclusiv dintr-o data — `27.08.2026` si `17.08.2026`, ambele CJ 
 Garda e INGUSTA dinadins: prinde titlul care e doar data, nu incearca sa judece calitatea in
 general. Un titlu cu eticheta („Anunt 27.08.2026") ramane valid — spune ceva.
 """
-from generator.util import titlu_e_doar_o_data
+from generator.util import fara_titluri_data, titlu_e_doar_o_data
 
 
 def test_prinde_exact_titlurile_gasite_pe_site():
@@ -29,3 +29,23 @@ def test_nu_atinge_un_titlu_care_spune_ceva():
               "Sedinta extraordinara de indata",
               ""):
         assert not titlu_e_doar_o_data(t), t
+
+
+def test_curata_si_ce_e_deja_in_stare_nu_doar_itemele_noi():
+    """Diferenta care conteaza. Prima versiune filtra doar `processed_new`, deci ar fi oprit
+    urmatoarele titluri-data si le-ar fi lasat pe cele DEJA publicate sa se randeze pana la
+    expirarea TTL-ului — adica exact cele doua pagini raportate ar fi ramas pe site."""
+    stare = [
+        {"url": "https://x/1", "title": "27.08.2026"},          # deja publicat, stricat
+        {"url": "https://x/2", "title": "Sedinta de indata"},    # deja publicat, valid
+        {"url": "https://x/3", "title": "17.08.2026"},           # proaspat, stricat
+    ]
+    pastrate, sarite = fara_titluri_data(stare)
+    assert [a["url"] for a in sarite] == ["https://x/1", "https://x/3"]
+    assert [a["url"] for a in pastrate] == ["https://x/2"]
+
+
+def test_nu_arunca_nimic_cand_starea_e_curata():
+    stare = [{"url": "https://x/1", "title": "Anunt 27.08.2026"}]
+    pastrate, sarite = fara_titluri_data(stare)
+    assert sarite == [] and pastrate == stare

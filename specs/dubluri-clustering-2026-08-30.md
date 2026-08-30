@@ -79,9 +79,15 @@ fallback nu atinge bara, **sare** itemul. Aici n-a sărit. Sursele oficiale loca
 - **F-B, structural:** entitățile devin dovadă POZITIVĂ (≥2 entități comune + aceeași zi ⇒
   același eveniment), nu doar veto. Repară cauza 2, dar e exact genul de schimbare pentru care
   §7 cere eșantioane pe ambele erori înainte de commit.
-- **F-C — LIVRAT.** `titlu_e_doar_o_data()` în `generator/util.py`, aplicat în `main.py` chiar
-  după filtrul de `skip`. Îngust dinadins: „Anunt 27.08.2026" rămâne titlu valid.
-  `tests/test_titlu_doar_data.py`, 3 teste, inclusiv direcția inversă.
+- **F-C — LIVRAT.** `titlu_e_doar_o_data()` + `fara_titluri_data()` în `generator/util.py`,
+  aplicate în `main.py` pe `combined`, adică pe starea ÎNTREAGĂ. Prima versiune filtra doar
+  `processed_new` și ar fi lăsat pe site cele două pagini deja publicate până la expirarea
+  TTL-ului — deci ar fi prevenit viitorul fără să repare prezentul. Îngust dinadins:
+  „Anunt 27.08.2026" rămâne titlu valid. `tests/test_titlu_doar_data.py`, 5 teste, inclusiv
+  direcția inversă și cazul „curăță și ce e deja în stare".
+  **Ce NU acoperă, spus explicit:** doar forma „titlul e exact o dată". Titluri ca
+  `ANUNT LOCUINTE APOLD` sau `Publicatie Bujor Elise` trec în continuare — cauza-rădăcină e
+  că sursele oficiale locale ocolesc AI-ul, deci n-au NICIO bară de calitate, nu doar pe asta.
 
 **Rămâne F-B**, singura care repară cauza 2 — cardurile din captură, cu 0 tokeni comuni. F-A nu
 le atinge: pragul de text nu e trecut deloc, deci veto-ul de entități nici nu ajunge să conteze.

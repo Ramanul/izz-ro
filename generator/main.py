@@ -16,7 +16,7 @@ except ImportError:
 
 from . import fetch, state, cluster, moderation, config, guard
 from .process import get_provider, process_single, process_clusters_batch, process_batch, process_official, OFFICIAL_PREFIXES
-from .util import domain_of, titlu_e_doar_o_data
+from .util import domain_of, fara_titluri_data
 from .claude_orchestrator import ClaudeCodeValidator
 
 
@@ -401,17 +401,21 @@ def run(dry_run: bool = False) -> dict:
     respinse_substanta = {i["url"] for i in itemele_fara_substanta(new_items)}
     deferred = numara_amanate(new_items, handled)
     processed_new = [a for a in processed_new if not a.get("skip")]
-    # §7, „fara output stricat": un titlu care e DOAR o data calendaristica nu spune nimic
-    # despre stire. Masurat 2026-08-30: `27.08.2026` si `17.08.2026` de la CJ Giurgiu
-    # ajunsesera publicate asa. Sursele oficiale locale ocolesc AI-ul, deci titlul din feed
-    # nu trecea prin nicio bara. Se SARE itemul, nu se publica stricat.
-    titluri_data = [a for a in processed_new if titlu_e_doar_o_data(a.get("title", ""))]
-    if titluri_data:
-        processed_new = [a for a in processed_new if a not in titluri_data]
     # inlocuire pe URL: un rep C poate purta URL-ul unei stiri B existente pe care a absorbit-o
     rep_urls = {a.get("url") for a in processed_new}
     combined = [a for a in existing
                 if a.get("url") not in folded and a.get("url") not in rep_urls] + processed_new
+    # §7, „fara output stricat": un titlu care e DOAR o data calendaristica nu spune nimic despre
+    # stire. Masurat 2026-08-30: `27.08.2026` si `17.08.2026` de la CJ Giurgiu erau publicate asa.
+    # Sursele oficiale locale ocolesc AI-ul, deci titlul din feed nu trecea prin nicio bara.
+    #
+    # Se aplica pe `combined`, NU doar pe itemele noi, si asta e diferenta care conteaza: filtrul
+    # pus doar pe `processed_new` ar fi oprit urmatoarele, dar le-ar fi lasat pe cele DEJA in
+    # stare sa se randeze pana le expira TTL-ul. Adica exact bug-ul raportat ar fi ramas pe site.
+    # Aici starea se curata la fiecare rulare, deci garda repara si trecutul, nu doar viitorul.
+    combined, titluri_data = fara_titluri_data(combined)
+    if titluri_data:
+        print(f"Sarite ca avand drept titlu doar o data calendaristica: {len(titluri_data)}")
     upgraded = upgrade_fallbacks(combined, provider, budget - used)
     combined = state.expire(combined)
 

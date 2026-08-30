@@ -191,3 +191,15 @@ def titlu_e_doar_o_data(title: str) -> bool:
     if not title:
         return False
     return bool(DOAR_O_DATA.match(title) or DOAR_O_DATA_ISO.match(title))
+
+
+def fara_titluri_data(items: list) -> tuple[list, list]:
+    """Imparte itemele in (pastrate, sarite), unde „sarite" au drept titlu doar o data.
+
+    Se aplica pe starea INTREAGA, nu doar pe itemele noi: un filtru care ar privi doar
+    intrarile proaspete ar opri urmatoarele, dar ar lasa pe site cele deja publicate pana le
+    expira TTL-ul — adica exact bug-ul raportat pe 2026-08-30 ar fi ramas vizibil.
+    """
+    sarite = [a for a in items if titlu_e_doar_o_data(a.get("title", ""))]
+    urls = {a.get("url") for a in sarite}
+    return [a for a in items if a.get("url") not in urls], sarite
