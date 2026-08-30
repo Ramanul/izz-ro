@@ -14,16 +14,16 @@
 > **A section is `Open` only if a PR is open or a decision is pending — check, don't assume.**
 
 **Updated:** 2026-08-30 (F1+F2+F3 aterizate pe `main` — #226 #227 #228; F4 replanificat pe hook
-`PostToolUse` si predat contului A)
+`PostToolUse`, predat contului A; K12 decis de proprietar — `IZZ-0255`)
 
 ## Open
 
-- **F4 — stratul L1 e hook `PostToolUse`, nu agenti** (`IZZ-0252` masurat-fals, `IZZ-0254` e
-  inlocuitorul; plan replanificat in `specs/regim-reguli.md`). F1/F2/F3 sunt pe `main`; F4 e
-  predat contului A prin `handoff/to-A/2026-08-29-izz-f4-hook-postooluse.md`, fiindca B n-are
-  hook-uri. `CLAUDE.md` e la 24.532 din 24.576 octeti: nicio regula noua nu incape fara F4.
-- **K12** — cele doua defecte de fapt din `REVIEW.md` reparate azi; ramane doar ce nu se poate
-  masura de aici: mai faci rutina zilnica de 15 min si a pornit distributia? (K5, K11 in #228.)
+- **F4 — stratul L1 e hook `PostToolUse`, nu agenti** (`IZZ-0252` masurat-fals, `IZZ-0254`
+  inlocuitorul; plan in `specs/regim-reguli.md`). F1/F2/F3 sunt pe `main`; F4 e predat contului A
+  prin `handoff/to-A/2026-08-29-izz-f4-hook-postooluse.md`. `CLAUDE.md`: 24.532/24.576 octeti.
+- **K12 decis (`IZZ-0255`): rutina nu se rescrie ca text, se construieste mecanismul** — rezumat
+  zilnic „ce e nou, ce e riscant". Defectele de fapt din `REVIEW.md` reparate; **specul nu e
+  scris**. Nu porni de zero: `editorial-quality.yml` + `guard.anomalie`; axa cadenta e moarta.
 - **PR-uri deschise:** #203 #204 #207 #214, doar documente. **#225 nu poate ateriza asa cum e**,
   doua blocaje masurate azi: cele cinci randuri de registru refolosesc `IZZ-0250`..`IZZ-0254`,
   luate deja pe `main` de alt continut; si redenumeste o regula din censul F3
@@ -33,8 +33,8 @@
   R2: bucket `izz-bucket` exista, gol, neconectat in cod (`IZZ-0250`), plafonul gratuit acopera
   arhiva. Obstacol real: `izz-ro` ruleaza assets-only, deci R2 nu se poate citi la runtime fara
   cod nou; hookul natural e `izz-failover`, care azi trateaza orice 404 ca 404 final.
-- **Din `specs/atribuire-cercetare-si-plan.md`** — E1 permalink decuplat (decizie proprietar),
-  E3 focus score, E4 axe separate (decizie proprietar), E5 gold set ~150 + poarta CI.
+- **Din `specs/atribuire-cercetare-si-plan.md`** — E1 + E4 cer decizia proprietarului, E3 focus
+  score, E5 gold set ~150 + poarta CI.
 
 ## Standing rules that keep being rediscovered — do not "fix" these
 
