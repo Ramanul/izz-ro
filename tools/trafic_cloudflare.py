@@ -26,16 +26,21 @@ from datetime import date, datetime, timedelta, timezone
 
 API = "https://api.cloudflare.com/client/v4/graphql"
 
-# AGREGAT, nu puncte brute. Prima versiune cerea `workersInvocationsAdaptive` cu `limit: 100`
-# si `datetime_ASC`: a intors 100 de invocari individuale din cea mai VECHE zi, deci totalul
-# tiparit era chiar limita (100), iar `izz-ro` nici nu aparea — taiat de limita. Masurat pe
-# rularea din 2026-08-30, nu dedus. `...Groups` intoarce un rand per (zi, script), deci
-# 7 zile x cativa workeri incap sub orice limita rezonabila.
+# AGREGAT PE ZI. Doua greseli, amandoua masurate pe runner, amandoua scrise aici ca sa nu
+# se repete:
+#   1. Prima versiune grupa dupa `datetime` — granularitate de SECUNDA — deci fiecare rand
+#      avea „1 cerere", iar totalul tiparit era chiar `limit: 100`. `izz-ro` nici nu aparea,
+#      taiat de limita, fiindca `datetime_ASC` livra cea mai veche zi.
+#   2. A doua versiune a cerut `workersInvocationsAdaptiveGroups`, dedus prin analogie cu
+#      alte seturi Cloudflare care au varianta `...Groups`. API-ul a raspuns
+#      `unknown field "workersInvocationsAdaptiveGroups"`: setul NU exista.
+# Corect e setul din prima versiune, cu DIMENSIUNEA schimbata: `date` in loc de `datetime`.
+# Agregarea o face API-ul pe dimensiunile cerute; problema n-a fost niciodata setul.
 INTEROGARE = """
 query ($account: String!, $de_la: Time!, $pana_la: Time!) {
   viewer {
     accounts(filter: {accountTag: $account}) {
-      workersInvocationsAdaptiveGroups(
+      workersInvocationsAdaptive(
         limit: 1000
         filter: {datetime_geq: $de_la, datetime_leq: $pana_la}
         orderBy: [date_ASC]
@@ -62,7 +67,7 @@ def rezuma(raspuns: dict) -> list[tuple[str, int, int]]:
     conturi = (((raspuns or {}).get("data") or {}).get("viewer") or {}).get("accounts") or []
     randuri = []
     for cont in conturi:
-        for punct in cont.get("workersInvocationsAdaptiveGroups") or []:
+        for punct in cont.get("workersInvocationsAdaptive") or []:
             dim, suma = punct.get("dimensions") or {}, punct.get("sum") or {}
             randuri.append((f"{str(dim.get('date', '?'))[:10]} {dim.get('scriptName', '?')}",
                             int(suma.get("requests") or 0), int(suma.get("errors") or 0)))
