@@ -26,17 +26,22 @@ from datetime import date, datetime, timedelta, timezone
 
 API = "https://api.cloudflare.com/client/v4/graphql"
 
+# AGREGAT, nu puncte brute. Prima versiune cerea `workersInvocationsAdaptive` cu `limit: 100`
+# si `datetime_ASC`: a intors 100 de invocari individuale din cea mai VECHE zi, deci totalul
+# tiparit era chiar limita (100), iar `izz-ro` nici nu aparea — taiat de limita. Masurat pe
+# rularea din 2026-08-30, nu dedus. `...Groups` intoarce un rand per (zi, script), deci
+# 7 zile x cativa workeri incap sub orice limita rezonabila.
 INTEROGARE = """
 query ($account: String!, $de_la: Time!, $pana_la: Time!) {
   viewer {
     accounts(filter: {accountTag: $account}) {
-      workersInvocationsAdaptive(
-        limit: 100
+      workersInvocationsAdaptiveGroups(
+        limit: 1000
         filter: {datetime_geq: $de_la, datetime_leq: $pana_la}
-        orderBy: [datetime_ASC]
+        orderBy: [date_ASC]
       ) {
         sum { requests errors }
-        dimensions { datetime scriptName }
+        dimensions { date scriptName }
       }
     }
   }
@@ -57,9 +62,9 @@ def rezuma(raspuns: dict) -> list[tuple[str, int, int]]:
     conturi = (((raspuns or {}).get("data") or {}).get("viewer") or {}).get("accounts") or []
     randuri = []
     for cont in conturi:
-        for punct in cont.get("workersInvocationsAdaptive") or []:
+        for punct in cont.get("workersInvocationsAdaptiveGroups") or []:
             dim, suma = punct.get("dimensions") or {}, punct.get("sum") or {}
-            randuri.append((f"{dim.get('datetime', '?')[:10]} {dim.get('scriptName', '?')}",
+            randuri.append((f"{str(dim.get('date', '?'))[:10]} {dim.get('scriptName', '?')}",
                             int(suma.get("requests") or 0), int(suma.get("errors") or 0)))
     return randuri
 

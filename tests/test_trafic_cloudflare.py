@@ -26,8 +26,8 @@ def test_lipsa_erorilor_nu_inventeaza_una():
 
 
 def test_rezuma_extrage_cererile_pe_zi_si_script():
-    raspuns = {"data": {"viewer": {"accounts": [{"workersInvocationsAdaptive": [
-        {"dimensions": {"datetime": "2026-08-29T00:00:00Z", "scriptName": "izz-ro"},
+    raspuns = {"data": {"viewer": {"accounts": [{"workersInvocationsAdaptiveGroups": [
+        {"dimensions": {"date": "2026-08-29", "scriptName": "izz-ro"},
          "sum": {"requests": 1234, "errors": 5}}]}]}}}
     assert tc.rezuma(raspuns) == [("2026-08-29 izz-ro", 1234, 5)]
 
