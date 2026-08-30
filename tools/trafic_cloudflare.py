@@ -74,10 +74,18 @@ def interogheaza(token: str, cont: str, zile: int = 7) -> dict:
     de_la, pana_la = fereastra(zile)
     corp = json.dumps({"query": INTEROGARE,
                        "variables": {"account": cont, "de_la": de_la, "pana_la": pana_la}}).encode()
+    # Semgrep semnaleaza `urlopen` cu argument ne-literal (dynamic-urllib-use-detected) si are
+    # dreptate ca REGULA: `urllib` accepta `file://`, deci un URL venit din afara ar citi fisiere.
+    # Aici nu vine din afara — `API` e constanta de modul, iar din exterior intra doar tokenul si
+    # id-ul de cont, amandoua in ANTET si in CORP, niciodata in URL. Garda de mai jos nu e o
+    # suprimare: e invarianta scrisa executabil, ca o editare viitoare care ar parametriza
+    # endpointul sa pice AICI, nu in productie. Acelasi principiu ca `guard.url_ostil`.
+    if not API.startswith("https://api.cloudflare.com/"):
+        raise ValueError(f"endpoint neasteptat: {API!r}")
     cerere = urllib.request.Request(API, data=corp, headers={
         "Authorization": f"Bearer {token}", "Content-Type": "application/json"})
     try:
-        with urllib.request.urlopen(cerere, timeout=30) as r:
+        with urllib.request.urlopen(cerere, timeout=30) as r:  # noqa: S310 - vezi garda de mai sus
             return json.loads(r.read())
     except urllib.error.HTTPError as exc:
         # Corpul unui 403 de la Cloudflare contine motivul; fara el n-am masurat nimic.

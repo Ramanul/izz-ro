@@ -37,3 +37,26 @@ def test_rezuma_nu_crapa_pe_raspuns_incomplet():
     for raspuns in ({}, {"data": None}, {"data": {"viewer": {"accounts": []}}},
                     {"data": {"viewer": {"accounts": [{}]}}}):
         assert tc.rezuma(raspuns) == []
+
+
+def test_endpointul_e_verificat_inainte_de_apel(monkeypatch):
+    """Testul negativ al gardei de endpoint: daca cineva parametrizeaza `API` cu altceva,
+    apelul pica AICI, nu in productie. Semgrep semnala exact riscul asta (`file://` prin
+    urllib); garda il face imposibil in loc sa-l suprime."""
+    import pytest
+    monkeypatch.setattr(tc, "API", "file:///etc/passwd")
+    with pytest.raises(ValueError, match="endpoint neasteptat"):
+        tc.interogheaza("token-fals", "cont-fals")
+
+
+def test_garda_lasa_endpointul_real_sa_treaca(monkeypatch):
+    """Si perechea pozitiva: garda nu blocheaza URL-ul legitim. Apelul de retea e inlocuit,
+    deci testul ramane fara retea."""
+    monkeypatch.setattr(tc.urllib.request, "urlopen",
+                        lambda *a, **k: (_ for _ in ()).throw(AssertionError("nu ajunge aici")))
+    try:
+        tc.interogheaza("token-fals", "cont-fals")
+    except AssertionError as exc:
+        assert "nu ajunge aici" in str(exc)   # a trecut de garda, a ajuns la apel
+    except ValueError:
+        raise AssertionError("garda a respins endpointul real") from None
