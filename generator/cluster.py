@@ -80,6 +80,36 @@ def _entity_stems(a: dict) -> set:
     return {t[:STEM_LEN] for e in (a.get("entities") or []) for t in title_tokens(e)}
 
 
+ENTITATE_MIN = 4  # sub asta un prefix comun nu mai spune nimic („mar", „con")
+
+
+def _entitati_se_ating(ge: set, ce: set) -> bool:
+    """Suprapunere de entitati care NU cade pe articolul hotarat.
+
+    DE CE (masurat 2026-08-30, cazul Cipru din `specs/dubluri-clustering-2026-08-30.md`).
+    `STEM_LEN = 6` taie „Ciprului" la `ciprul` si lasa „Cipru" intreg ca `cipru`. Aceeasi
+    entitate, doua stemuri diferite, deci garda de mai jos a citit ca DISJUNCTE doua stiri
+    despre acelasi feribot si a oprit o absorbtie care trecuse deja pragul de text
+    (inter=4, jac=0.44). Garda pusa contra over-merge-ului producea under-merge.
+
+    Clasa e generala: orice substantiv romanesc de <=6 litere rateaza potrivirea cu forma lui
+    articulata. Repararea e ingusta — un stem se atinge de altul doar daca unul e PREFIXUL
+    celuilalt si are cel putin ENTITATE_MIN litere; nu substring oriunde, care ar lipi
+    entitati fara legatura.
+    """
+    if ge & ce:
+        return True
+    for a in ge:
+        if len(a) < ENTITATE_MIN:
+            continue
+        for b in ce:
+            if len(b) < ENTITATE_MIN:
+                continue
+            if a.startswith(b) or b.startswith(a):
+                return True
+    return False
+
+
 def attach_recent(groups: list, candidates: list) -> list:
     """Ataseaza stiri din rulari ANTERIOARE (deja procesate) la clusterele itemelor
     noi -- doua surse care relateaza acelasi eveniment la ~20-30 min distanta cad in
@@ -107,7 +137,7 @@ def attach_recent(groups: list, candidates: list) -> list:
             if not _strict_match(len(tk & sig), len(tk | sig)):
                 continue
             ce = _entity_stems(c)
-            if ge and ce and not (ge & ce):
+            if ge and ce and not _entitati_se_ating(ge, ce):
                 continue  # potrivire textuala, dar entitati disjuncte -> evenimente diferite
             members.append(c)
             used.add(c["url"])
