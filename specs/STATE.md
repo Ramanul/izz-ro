@@ -24,9 +24,10 @@
   hook-uri. `CLAUDE.md` e la 24.532 din 24.576 octeti: nicio regula noua nu incape fara F4.
 - **K12, decizie proprietar** — `REVIEW.md` descrie un regim incheiat: se actualizeaza la cel de
   azi, sau se marcheaza istoric si `README.md` trimite altundeva? (K5 si K11 rezolvate in #228.)
-- **PR-uri deschise, doar documente:** #203 #204 #207 #214. **#225 nu poate ateriza asa cum e** —
-  refoloseste `IZZ-0250/0251/0252`, ID-uri luate deja pe `main` de alt continut (verificat
-  2026-08-30); cere renumerotare inainte de merge.
+- **PR-uri deschise:** #203 #204 #207 #214, doar documente. **#225 nu poate ateriza asa cum e**,
+  doua blocaje masurate azi: cele cinci randuri de registru refolosesc `IZZ-0250`..`IZZ-0254`,
+  luate deja pe `main` de alt continut; si redenumeste o regula din censul F3
+  (`tests/test_reguli.py`, 'Nu confunda unealta cu capacitatea'). Ambele in acelasi commit.
 - **Arhiva paginilor expirate (issue #198, deschis de proprietar 08-21)** — diagnostic complet
   acolo (193 pagini moarte in Search Console); cere alegerea proprietarului intre 3 optiuni.
   R2: bucket `izz-bucket` exista, gol, neconectat in cod (`IZZ-0250`), plafonul gratuit acopera
