@@ -21,20 +21,25 @@
 > nu-l ating, au ramas curate. Un fisier pe care fiecare sesiune il rescrie n-are ce cauta intr-o
 > ramura de functionalitate.
 
-**Updated:** 2026-08-30 (coada de PR-uri triata: #232 si #234 verzi, #231 fantoma, #230 absorbit)
+**Updated:** 2026-08-30 (coada triata si aterizata: #232 + #234 merged, #231 inchis ca fantoma)
 
 ## Open
 
-- **Coada de PR-uri, verificata pe GitHub azi:** deschise **#207 #214 #225 #230 #231 #232 #234**.
-  Verzi si gata de merge: **#232** (mecanismul K12 + pasul 1 al axei 3 + interogarea de trafic
-  agregata) si **#234** (agentii portati pe Codex) — niciunul nu atinge STATE.md, de-aia sunt
-  curate. **#231 e fantoma:** F4 a aterizat prin #229 (merged), ramura e cu 29 de commit-uri in
-  urma si un merge al ei ar sterge 8.265 de linii. **#230 e absorbit** de PR-ul acestei sesiuni.
+- **Coada de PR-uri, triata azi:** aterizate **#232 (merged)** (K12 + pasul 1 al axei 3 + trafic
+  agregat) si **#234 (merged)** (agentii pe Codex) — niciunul nu atingea STATE.md, de-aia erau
+  curate. **#231 inchis ca fantoma** (`IZZ-0262`): F4 aterizase prin **#229 (merged)**. Raman
+  deschise **#207 #214 #225 #230**; #230 e absorbit de PR-ul acestei sesiuni.
+- **Ce cere K12 acum ca a aterizat:** `revizuire.yml` posteaza zilnic la 06:40 UTC pe issue-ul
+  #233 — prima rulare e de CITIT, nu de presupus. `masoara-gazde.yml` e doar manual: pana la o
+  rulare, axa 3 ramane fara corpus, deci fara praguri masurate.
 - **F4: pilotul (§13) a aterizat prin #229 (merged).** `CLAUDE.md` la 23.835 octeti, 741 liberi.
   Urmatorii candidati masurati: §12 (2.259 o.), §14 (1.795), §18 (1.489), §17 (1.084), §20 (1.024).
 - **Arhiva (#198)** — `IZZ-0260`: decide NUMARUL de fisiere, nu marimea starii. 3,23 fisiere/
   articol, deci optiunile 2 si 3 mor in 7-24 de zile pe plafonul de 100.000 assets; R2 e singura
-  care scapa. **Blocat pe #214**, care da ruta catre `izz-failover`.
+  care scapa. **NU e blocat pe #214** — `IZZ-0261` corecteaza: rutele erau deja pe `izz-failover`
+  din 23 august. Blocajul real e decizia de arhitectura plus codul din `izz-failover`.
+- **#214 cere o alegere** (`IZZ-0261`): renumerotare + trei conflicte rezolvate, sau inchidere ca
+  depasit, cu extragerea lui `infra/verifica-live.sh`, care ramane util.
 - **#225 blocat pe decizii de proprietar:** cinci ID-uri de registru refolosite si o regula
   redenumita din censul F3. Ramura e cu 52 de commit-uri in urma.
 - **Din `specs/atribuire-cercetare-si-plan.md`** — E1 + E4 cer decizia proprietarului, E3 focus
