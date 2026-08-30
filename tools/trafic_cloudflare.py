@@ -46,7 +46,7 @@ query ($account: String!, $de_la: Time!, $pana_la: Time!) {
         orderBy: [date_ASC]
       ) {
         sum { requests errors }
-        dimensions { date scriptName }
+        dimensions { date scriptName status }
       }
     }
   }
@@ -69,7 +69,16 @@ def rezuma(raspuns: dict) -> list[tuple[str, int, int]]:
     for cont in conturi:
         for punct in cont.get("workersInvocationsAdaptive") or []:
             dim, suma = punct.get("dimensions") or {}, punct.get("sum") or {}
-            randuri.append((f"{str(dim.get('date', '?'))[:10]} {dim.get('scriptName', '?')}",
+            eticheta = f"{str(dim.get('date', '?'))[:10]} {dim.get('scriptName', '?')}"
+            # `status` e in dimensiuni fiindca „erori" nu inseamna acelasi lucru peste tot:
+            # documentatia Cloudflare separa success / clientDisconnected / scriptThrewException /
+            # exceededResources / internalError. Masurat 2026-08-30: izz-failover avea ~1.400 de
+            # „erori" pe zi, aproape CONSTANTE, in timp ce cererile variau intre 1.940 si 3.391.
+            # O cifra care nu se misca odata cu traficul nu e proportionala cu utilizatorii —
+            # dar care dintre stari e, nu se poate deduce, se cere de la API.
+            if (stare := dim.get("status")):
+                eticheta += f"  [{stare}]"
+            randuri.append((eticheta,
                             int(suma.get("requests") or 0), int(suma.get("errors") or 0)))
     return randuri
 
