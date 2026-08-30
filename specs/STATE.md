@@ -13,28 +13,29 @@
 > history with two live rules buried in it. That is the same failure the 08-07 cut documented.
 > **A section is `Open` only if a PR is open or a decision is pending — check, don't assume.**
 
-**Updated:** 2026-08-29 (F2 = garzile de fapte canonice; F3.5 a picat premisa lui F4;
-R2 investigat pentru arhiva — vezi mai jos)
+**Updated:** 2026-08-30 (#226 + #227 + #228 fuzionate; F4 pilotat pe hook `PostToolUse`)
 
 ## Open
 
-- **Regimul regulilor** (`specs/regim-reguli.md`, doar pe #226) — F1 = **#226** (verde, asteapta
-  merge). F2+F3 (garzi de fapte canonice + censul celor 47 de reguli cu nume) = **#227**, verde.
-  F3.5 a picat premisa lui F4 (IZZ-0252); inlocuitorul e IZZ-0253, iar F4 vrea plan nou.
-- **Doar documente** (conflictul din registru rezolvat de #222, nemaiverificate individual azi):
-  #202 #203 #204 #206 #207 #214 #218.
-- **Archiva paginilor expirate (issue #198, deschis de proprietar 08-21)** — diagnostic complet
-  deja facut acolo (193 pagini moarte in Search Console). Necesita alegerea proprietarului intre
-  3 optiuni; R2 investigat azi (IZZ-0250/0251-adiacent): bucket `izz-bucket` exista deja pe cont
-  (creat intentionat de proprietar la trecerea pe Cloudflare Paid), gol, neconectat in cod.
-  Plafon gratuit 10GB/1M scrieri/10M citiri/luna — suficient pentru arhiva. Obstacol real:
-  `izz-ro` ruleaza assets-only (fara `main`), deci R2 nu poate fi citit la runtime fara cod nou;
-  hook-ul natural e `izz-failover` (infra/failover-worker.js), care azi trateaza orice 404 ca
-  404 final. Ramane decizie de arhitectura, nu implementare mecanica.
+- **Regimul regulilor** (`specs/regim-reguli.md`) — F1/F2/F3/F3.5 **aterizate** (#226, #227,
+  #228). F4 e **pilotat pe o singura sectiune**: §13 mutata in `.claude/reguli/13-frontend.md`,
+  livrata de hook-ul `PostToolUse` (`.claude/hooks/reguli-l1.sh`). Ce ramane: restul candidatilor
+  (§12a 1.743 o., §18 1.489, §17 1.084, §20 1.024) se muta doar dupa ce pilotul se dovedeste in
+  uz real, nu doar in teste.
+- **Doar documente, ramase:** #203 #204 (fiecare adauga un fisier NOU, doar `registru.tsv` intra
+  in conflict — rebase si ateriza), #207, #214 (infra: rute + probe, are valoare reala).
+  #202/#206/#218 **inchise 2026-08-29** cu motivul scris: complet inlocuite.
+- **Arhiva paginilor expirate (issue #198)** — decizie de ARHITECTURA a proprietarului, intre 3
+  optiuni. Diagnosticul (193 pagini moarte) e in issue; R2 e investigat in `IZZ-0250`. Obstacolul
+  real, ca sa nu se re-descopere: `izz-ro` ruleaza assets-only, deci R2 nu se poate citi la
+  runtime fara cod nou, iar hook-ul natural (`infra/failover-worker.js`) trateaza orice 404 ca final.
 - **Din `specs/atribuire-cercetare-si-plan.md`** — E1 permalink decuplat (decizie proprietar),
   E3 focus score, E4 axe separate (decizie proprietar), E5 gold set ~150 + poarta CI.
-- Cifrele masurate azi (randare 638 s / 34.898 fisiere, 822 articole/zi, regim stabilizat
-  ~80.145 fisiere sub bugetul de 90.000, CLAUDE.md 23.920/24.576) → `specs/istoric-executie.md`.
+- **Suita de teste: 626 din 647 s sunt setup-ul unei singure fixturi** (`output_randat`, care
+  randeaza tot site-ul). Analiza, cele doua fundaturi si criteriile: `specs/randare-in-teste.md`.
+  Nu re-masura.
+- Cifre: randare 638 s / 34.898 fisiere, ~80.145 fisiere sub bugetul de 90.000,
+  **CLAUDE.md 23.711/24.576 dupa F4** → `specs/istoric-executie.md`.
 
 ## Standing rules that keep being rediscovered — do not "fix" these
 

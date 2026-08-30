@@ -29,6 +29,7 @@ rulat niciodata cu adevarat, de-aia fix-urile pareau confirmate si nu erau".
 """
 from __future__ import annotations
 
+import json
 import re
 import subprocess
 from pathlib import Path
@@ -535,16 +536,39 @@ def capete_de_regula(text: str) -> set[str]:
     return set(CAP_DE_REGULA.findall(text))
 
 
+# Censul urmareste regulile ORIUNDE stau, nu doar in `CLAUDE.md`. Din 2026-08-30, o regula
+# conditionata poate trai in `.claude/reguli/` si sa soseasca prin hook-ul `PostToolUse` (F4,
+# `specs/regim-reguli.md` sect. 4.3). Daca censul ar citi doar `CLAUDE.md`, atunci mutarea unei
+# reguli in L1 ar cere stergerea numelui ei din cens — adica exact operatia care, facuta din
+# neatentie, o lasa neprotejata. Asa, mutarea nu schimba nimic in cens: regula e tot acolo.
+# Conventia `- **Nume.**` tine prin constructie in `.claude/reguli/`, spre deosebire de
+# `AGENTS.md`, unde 22 de enunturi au doar 2 capete ingrosate si un cens ar minti.
+SURSE_CENS = ("CLAUDE.md",)
+DIR_REGULI_L1 = ".claude/reguli"
+
+
+def reguli_prezente() -> set[str]:
+    """Capetele ingrosate din L0 plus cele din stratul L1, ca o singura multime."""
+    prezente: set[str] = set()
+    for cale in SURSE_CENS:
+        prezente |= capete_de_regula((ROOT / cale).read_text(encoding="utf-8"))
+    l1 = ROOT / DIR_REGULI_L1
+    if l1.is_dir():
+        for fisier in sorted(l1.glob("*.md")):
+            prezente |= capete_de_regula(fisier.read_text(encoding="utf-8"))
+    return prezente
+
+
 def incalcari_cens(active: frozenset[str], prezente: set[str]) -> list[str]:
-    return [f"regula «{nume}» e in cens dar a disparut din CLAUDE.md — daca e intentionat, "
-            f"scoate-o si din REGULI_ACTIVE, in acelasi diff"
+    return [f"regula «{nume}» e in cens dar a disparut si din CLAUDE.md, si din "
+            f"{DIR_REGULI_L1}/ — daca e intentionat, scoate-o si din REGULI_ACTIVE, "
+            f"in acelasi diff"
             for nume in sorted(active - prezente)]
 
 
 def test_nicio_regula_din_cens_nu_a_disparut():
     """Cele 13 reguli pierdute pe 2026-08-06 au disparut fara ca nimic sa pice. Acum pica."""
-    prezente = capete_de_regula((ROOT / "CLAUDE.md").read_text(encoding="utf-8"))
-    assert not incalcari_cens(REGULI_ACTIVE, prezente)
+    assert not incalcari_cens(REGULI_ACTIVE, reguli_prezente())
 
 
 def test_garda_censului_pica_pe_regula_stearsa():
@@ -559,6 +583,53 @@ def test_censul_nu_confunda_ingrosarea_din_proza_cu_un_nume_de_regula():
 
 def test_censul_ramane_un_cens_nu_un_esantion():
     """Miscarea care ar goli garda fara sa stearga nicio regula: sa nu mai urmareasca decat cateva."""
-    prezente = capete_de_regula((ROOT / "CLAUDE.md").read_text(encoding="utf-8"))
+    prezente = reguli_prezente()
     assert len(REGULI_ACTIVE) >= 0.9 * len(prezente), (
         f"censul urmareste {len(REGULI_ACTIVE)} din {len(prezente)} reguli cu nume")
+
+
+# --- stratul L1: mecanismul care transporta regulile conditionate ------------------------------
+#
+# DE CE EXISTA (F4, 2026-08-30). O regula mutata din `CLAUDE.md` intr-un fisier care nu e citit de
+# nimeni nu e mutata, e stearsa — exact ce s-a masurat despre agenti (`IZZ-0252`). Garda asta tine
+# cele doua capete legate: fiecare fisier de regula L1 e declansat de hook, si fiecare rand din
+# harta hook-ului arata catre un fisier care exista. Un fisier orfan inseamna o regula care nu
+# soseste niciodata; un rand orfan inseamna o harta care minte.
+
+HOOK_L1 = ".claude/hooks/reguli-l1.sh"
+
+
+def harta_hookului(text: str) -> dict[str, str]:
+    """Randurile `fisier|tipar` dintre marcajele heredoc-ului HARTA."""
+    intre = re.search(r"<<'HARTA'\n(.*?)\nHARTA", text, re.S)
+    if not intre:
+        return {}
+    return {linie.split("|", 1)[0]: linie.split("|", 1)[1]
+            for linie in intre.group(1).strip().split("\n") if "|" in linie}
+
+
+def test_fiecare_regula_l1_e_declansata_de_hook():
+    """Un fisier de regula pe care harta nu-l pomeneste e o regula care nu ajunge nicaieri."""
+    dir_reguli = ROOT / DIR_REGULI_L1
+    if not dir_reguli.is_dir():
+        return
+    harta = harta_hookului((ROOT / HOOK_L1).read_text(encoding="utf-8"))
+    orfane = sorted(f.name for f in dir_reguli.glob("*.md") if f.name not in harta)
+    assert not orfane, f"reguli L1 pe care hook-ul nu le declanseaza: {orfane}"
+
+
+def test_fiecare_rand_din_harta_arata_catre_un_fisier_care_exista():
+    """Reversul: o harta care trimite in gol tace exact cand ar trebui sa vorbeasca."""
+    harta = harta_hookului((ROOT / HOOK_L1).read_text(encoding="utf-8"))
+    assert harta, "harta hook-ului e goala sau nu se poate citi — garda ar trece degeaba"
+    lipsa = sorted(f for f in harta if not (ROOT / DIR_REGULI_L1 / f).is_file())
+    assert not lipsa, f"harta trimite catre fisiere inexistente: {lipsa}"
+
+
+def test_hookul_e_cablat_in_settings_comis():
+    """`settings.local.json` e in .gitignore: un hook de acolo nu exista pentru nimeni altcineva."""
+    setari = json.loads((ROOT / ".claude/settings.json").read_text(encoding="utf-8"))
+    comenzi = [h["command"]
+               for intrare in setari.get("hooks", {}).get("PostToolUse", [])
+               for h in intrare.get("hooks", [])]
+    assert any(HOOK_L1 in c for c in comenzi), "hook-ul L1 nu e cablat in settings.json comis"
