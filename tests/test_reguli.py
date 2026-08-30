@@ -577,3 +577,125 @@ def test_censul_ramane_un_cens_nu_un_esantion(fisier):
     prezente = capete_de_regula((ROOT / fisier).read_text(encoding="utf-8"))
     assert len(CENS[fisier]) >= 0.9 * len(prezente), (
         f"{fisier}: censul urmareste {len(CENS[fisier])} din {len(prezente)} reguli cu nume")
+
+
+# --- STATE.md nu are voie sa numeasca deschis un PR deja integrat ------------------------------
+#
+# DE CE EXISTA (2026-08-30; garda vine din #230, dusa mai departe aici). Antetul lui
+# `specs/STATE.md` documenteaza singur, de DOUA ori, acelasi esec: sectiuni scrise `Open PR`
+# pentru PR-uri deja merged (#196, #197 pe 08-21; la fel la taierea din 08-07). A treia oara s-a
+# intamplat azi: `## Open` scria «PR-uri deschise: #203 #204 #207 #214» dupa ce #203 si #204
+# aterizasera amandoua. Costul nu e cosmetic — sesiunea urmatoare citeste STATE.md la pornire si
+# reimplementeaza ce a aterizat deja.
+#
+# CUM MASOARA, fara retea: un PR integrat lasa pe `main` un commit «Merge pull request #N».
+# Masurat pe repo-ul real: 27 de merge-uri, 27 de numere distincte, deci forma e consecventa.
+# Semnalul e sigur INTR-UN SINGUR SENS — un astfel de commit dovedeste ca PR-ul s-a integrat;
+# lipsa lui NU dovedeste ca e deschis (un merge facut altfel nu lasa urma). Garda foloseste doar
+# sensul sigur, deci poate rata, dar nu poate acuza pe nedrept. Din acelasi motiv un numar de
+# ISSUE (#198) trece nevatamat: nu are commit de merge.
+#
+# CE LIPSEA LA PRIMA SCRIERE — masurat, nu dedus. `actions/checkout` cloneaza implicit cu
+# `fetch-depth: 1`. Rulat pe o clona `--depth 1` a repo-ului asta: 1 commit vizibil, `git log
+# --grep` intoarce ZERO merge-uri, deci multimea celor integrate iese vida si garda trecea verde
+# fara sa masoare nimic. Adica exact `IZZ-0177`, esecul pe care docstring-ul de sus il numeste:
+# „o garda care nu poate esua e mai rea decat niciuna". Reparat in doua locuri — `tests.yml` cere
+# acum istoricul complet, iar garda REFUZA sa treaca cand nu poate masura, in loc sa taca.
+#
+# Semnalul corect e NUMARUL DE MERGE-URI VIZIBILE, nu steagul de clona superficiala: prima
+# versiune a acestei garzi asculta `git rev-parse --is-shallow-repository` si a picat pe loc pe
+# checkout-ul acestei sesiuni, care raporteaza `true` desi are 227 de commit-uri si toate cele 27
+# de merge-uri (o clona superficiala adancita ulterior de `fetch`). Steagul si capacitatea de a
+# masura sunt lucruri diferite; garda intreaba direct ce o intereseaza.
+#
+# CONVENTIA, ca sa nu fie nevoie de ghicit intentia: un PR integrat POATE fi pomenit in `## Open`
+# — dar numai adnotat `#NNN (merged)`. Asa se deosebeste mecanic o trimitere la istorie
+# («aterizat prin #229 (merged)») de o afirmatie ca lucrarea e inca deschisa. O singura
+# conventie, nu o lista de cuvinte-cheie care creste.
+
+PR_CITAT = re.compile(r"#(\d{2,4})(\s*\(merged\))?")
+MERGE_PE_MAIN = re.compile(r"^Merge pull request #(\d+)", re.MULTILINE)
+
+
+def sectiunea_open(text: str) -> str:
+    """Sectiunea, nu prima potrivire de sir: antetul lui STATE.md POMENESTE `## Open` in proza
+    („the 195-line `## Open` section"), iar un `split` naiv taia acolo si garda citea antetul in
+    loc de sectiune. Prins in #230 la prima rulare pe fisierul real, nu pe fixtura."""
+    titlu = re.search(r"^## Open\s*$", text, re.MULTILINE)
+    if not titlu:
+        return ""
+    return re.split(r"^## ", text[titlu.end():], maxsplit=1, flags=re.MULTILINE)[0]
+
+
+def numere_de_merge(subiecte: str) -> set[str]:
+    """Functie pura peste iesirea lui `git log --format=%s`, ca sa poata avea test negativ."""
+    return set(MERGE_PE_MAIN.findall(subiecte))
+
+
+def incalcari_pr_fantoma(open_text: str, integrate: set[str]) -> list[str]:
+    gasite = []
+    for numar, adnotat in PR_CITAT.findall(open_text):
+        if numar in integrate and not adnotat:
+            gasite.append(
+                f"#{numar} e scris in ## Open dar are deja merge pe main — scoate-l, sau "
+                f"adnoteaza-l `#{numar} (merged)` daca e trimitere la istorie")
+    return sorted(set(gasite))
+
+
+def _git(*argumente: str) -> str | None:
+    """None inseamna «nu am putut masura», si NU se confunda cu «n-am gasit nimic»."""
+    try:
+        return subprocess.run(["git", *argumente], cwd=ROOT, capture_output=True,
+                              text=True, check=True).stdout
+    except (OSError, subprocess.CalledProcessError):
+        return None
+
+
+def merge_uri_vizibile() -> set[str]:
+    return numere_de_merge(_git("log", "--format=%s", "--grep=^Merge pull request #") or "")
+
+
+def test_istoricul_permite_garzii_sa_masoare():
+    """Garda de mai jos e vida pe un istoric taiat. Atunci pica ASTA, cu ce trebuie facut."""
+    assert _git("rev-parse", "HEAD") is not None, "git nu raspunde — garda nu poate masura"
+    assert merge_uri_vizibile(), (
+        "niciun commit «Merge pull request #N» vizibil: istoricul e taiat, deci garda de PR "
+        "fantoma ar trece degeaba — pune `fetch-depth: 0` la actions/checkout")
+
+
+def test_open_nu_contine_pr_uri_deja_integrate():
+    """A treia oara ar fi fost tot tacuta. Acum pica."""
+    text = (ROOT / "specs/STATE.md").read_text(encoding="utf-8")
+    open_text = sectiunea_open(text)
+    assert open_text.strip(), "sectiunea ## Open nu a fost gasita — garda ar trece degeaba"
+    assert not incalcari_pr_fantoma(open_text, merge_uri_vizibile())
+
+
+def test_garda_pr_fantoma_pica_pe_pr_integrat():
+    assert incalcari_pr_fantoma("- **#226** asteapta merge", {"226"})
+
+
+def test_garda_pr_fantoma_accepta_trimiterea_adnotata():
+    """„aterizat prin #229 (merged)" e istorie, nu o afirmatie ca lucrarea e deschisa."""
+    assert not incalcari_pr_fantoma("- F4 a aterizat prin #229 (merged)", {"229"})
+
+
+def test_garda_pr_fantoma_nu_atinge_un_pr_chiar_deschis():
+    assert not incalcari_pr_fantoma("- **#999** verde, asteapta merge", {"226"})
+
+
+def test_garda_pr_fantoma_lasa_in_pace_un_numar_de_issue():
+    """#198 e issue deschis de proprietar: n-are commit de merge, deci nu intra in multime."""
+    assert not incalcari_pr_fantoma("- **Arhiva (#198)** ramane de decis", {"229"})
+
+
+def test_numerele_de_merge_sunt_vide_pe_istoric_superficial():
+    """Intrarea stricata dinadins: exact ce intoarce `git log` intr-o clona `--depth 1`."""
+    assert numere_de_merge("") == set()
+    assert numere_de_merge("update content\nfix(trafic): garda de endpoint") == set()
+
+
+def test_sectiunea_open_se_opreste_la_titlul_urmator():
+    """Altfel garda ar citi si `## Standing rules`, unde trimiterile la istorie sunt normale."""
+    text = "# T\n\n## Open\n\n- #1\n\n## Standing rules\n\n- #2\n"
+    assert "#1" in sectiunea_open(text) and "#2" not in sectiunea_open(text)

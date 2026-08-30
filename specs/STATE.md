@@ -12,28 +12,31 @@
 > #197 on 08-21), and the 195-line `## Open` section was almost entirely SHIPPED/FIXED/REVERTED
 > history with two live rules buried in it. That is the same failure the 08-07 cut documented.
 > **A section is `Open` only if a PR is open or a decision is pending — check, don't assume.**
+> Asta nu mai e doar scris: `tests/test_reguli.py` pica daca `## Open` numeste un PR care are deja
+> commit de merge pe `main`. Un PR integrat poate aparea aici doar adnotat `#NNN (merged)`.
+>
+> **Nu se atinge in PR-uri de functionalitate** (regula adusa din #230). Se actualizeaza pe `main`,
+> dupa merge. Motivul e masurat (2026-08-30): dintre PR-urile deschise, cele blocate erau blocate
+> EXCLUSIV de conflicte pe fisierul asta — la #207, 7 linii din 594 — in timp ce #232 si #234, care
+> nu-l ating, au ramas curate. Un fisier pe care fiecare sesiune il rescrie n-are ce cauta intr-o
+> ramura de functionalitate.
 
-**Updated:** 2026-08-30 (F1-F4 livrate: #226 #227 #228 + pilotul L1 din #229; plan de remediere
-rulat pe cinci probleme — `IZZ-0255`..`IZZ-0260`)
+**Updated:** 2026-08-30 (coada de PR-uri triata: #232 si #234 verzi, #231 fantoma, #230 absorbit)
 
 ## Open
 
-- **F4 livrat ca PILOT (§13).** Hook-ul `PostToolUse` livreaza regulile L1, verificat live.
-  `CLAUDE.md`: 24.532 -> 23.835 octeti, liberi 44 -> 741. Urmatorii candidati masurati: §12
-  (2.259 o.), §14 (1.795), §18 (1.489), §17 (1.084), §20 (1.024). `IZZ-0256`: **'B n-are
-  hook-uri' era fals**, iar `additionalContext` bate `exit 2`.
-- **K12 decis (`IZZ-0255`)**: rutina nu se rescrie, se construieste mecanismul (rezumat zilnic
-  „ce e nou, ce e riscant"). **Specul nu e scris**; porneste de la `editorial-quality.yml`.
-- **Axa 3 a garzii de anomalie** — spec in `specs/anomalie-linkuri.md` (`IZZ-0259`), NEimplementat
-  deliberat: R3 cere praguri masurate, iar corpusul de gazde-destinatie nu exista. Pasul 1 e un
-  job pe runner. Cauza mecanica: `clean_html()` scoate `href`-urile inainte de `guard.verdict()`.
+- **Coada de PR-uri, verificata pe GitHub azi:** deschise **#207 #214 #225 #230 #231 #232 #234**.
+  Verzi si gata de merge: **#232** (mecanismul K12 + pasul 1 al axei 3 + interogarea de trafic
+  agregata) si **#234** (agentii portati pe Codex) — niciunul nu atinge STATE.md, de-aia sunt
+  curate. **#231 e fantoma:** F4 a aterizat prin #229 (merged), ramura e cu 29 de commit-uri in
+  urma si un merge al ei ar sterge 8.265 de linii. **#230 e absorbit** de PR-ul acestei sesiuni.
+- **F4: pilotul (§13) a aterizat prin #229 (merged).** `CLAUDE.md` la 23.835 octeti, 741 liberi.
+  Urmatorii candidati masurati: §12 (2.259 o.), §14 (1.795), §18 (1.489), §17 (1.084), §20 (1.024).
 - **Arhiva (#198)** — `IZZ-0260`: decide NUMARUL de fisiere, nu marimea starii. 3,23 fisiere/
   articol, deci optiunile 2 si 3 mor in 7-24 de zile pe plafonul de 100.000 assets; R2 e singura
   care scapa. **Blocat pe #214**, care da ruta catre `izz-failover`.
-- **Trafic** — sonda `.github/workflows/trafic.yml` scrisa; rulabila abia dupa aterizarea lui
-  #229. Raspunde masurat daca tokenul CLOUDFLARE existent are scope de analytics.
-- **PR-uri deschise:** #203 #204 #207 #214. **#225** are doua blocaje: cinci ID-uri refolosite
-  si o regula redenumita din censul F3.
+- **#225 blocat pe decizii de proprietar:** cinci ID-uri de registru refolosite si o regula
+  redenumita din censul F3. Ramura e cu 52 de commit-uri in urma.
 - **Din `specs/atribuire-cercetare-si-plan.md`** — E1 + E4 cer decizia proprietarului, E3 focus
   score, E5 gold set ~150 + poarta CI.
 
