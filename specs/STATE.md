@@ -13,24 +13,28 @@
 > history with two live rules buried in it. That is the same failure the 08-07 cut documented.
 > **A section is `Open` only if a PR is open or a decision is pending — check, don't assume.**
 
-**Updated:** 2026-08-21 (map county fix; rule files now verified by CI, not by trust)
+**Updated:** 2026-08-29 (F2 = garzile de fapte canonice; F3.5 a picat premisa lui F4;
+R2 investigat pentru arhiva — vezi mai jos)
 
 ## Open
 
-- **PR #199 `fix/recuperare-404-pagini-indexate`** — targeted recovery of the pages Google has
-  indexed. Open, not draft, awaiting owner merge.
-- **PR (draft) `claude/lumina-reguli-sesiuni-ypgdky`** — wrong-county fix on the map (measured
-  A/B: 12 articles moved, all 12 correct, 0 dropped), plus the rules work that produced this
-  file. The rules half is now WIRED: `tests/test_reguli.py` enforces the caps each rule file
-  declares about itself, that a cap is declared in exactly one place, that every cited
-  `ARTICLE_TTL_DAYS` matches config, and that every root `.md` has a role in CLAUDE.md §21.
-  Every guard has a negative test — a guard that cannot fail is worse than none (`IZZ-0177`).
-- **Archive as a separate surface ("varianta 3")** — owner asked to be reminded on 08-21. Not
-  started, still an owner decision. `ARTICLE_TTL_DAYS` went 7 → 30 (#197) as the cheap half of
-  the same problem; `tools/arhiva.py` already reconstructs the full series from git history.
-- **From `specs/atribuire-cercetare-si-plan.md`, in order** — E1 permalink decoupled from
-  category (**owner decision, blocks all retroactive correction**), E3 focus score instead of
-  `max()`, E4 separate topic/place axes (**owner decision**), E5 gold set grown to ~150 + CI gate.
+- **Regimul regulilor** (`specs/regim-reguli.md`, doar pe #226) — F1 = **#226** (verde, asteapta
+  merge). F2+F3 (garzi de fapte canonice + censul celor 47 de reguli cu nume) = **#227**, verde.
+  F3.5 a picat premisa lui F4 (IZZ-0252); inlocuitorul e IZZ-0253, iar F4 vrea plan nou.
+- **Doar documente** (conflictul din registru rezolvat de #222, nemaiverificate individual azi):
+  #202 #203 #204 #206 #207 #214 #218.
+- **Archiva paginilor expirate (issue #198, deschis de proprietar 08-21)** — diagnostic complet
+  deja facut acolo (193 pagini moarte in Search Console). Necesita alegerea proprietarului intre
+  3 optiuni; R2 investigat azi (IZZ-0250/0251-adiacent): bucket `izz-bucket` exista deja pe cont
+  (creat intentionat de proprietar la trecerea pe Cloudflare Paid), gol, neconectat in cod.
+  Plafon gratuit 10GB/1M scrieri/10M citiri/luna — suficient pentru arhiva. Obstacol real:
+  `izz-ro` ruleaza assets-only (fara `main`), deci R2 nu poate fi citit la runtime fara cod nou;
+  hook-ul natural e `izz-failover` (infra/failover-worker.js), care azi trateaza orice 404 ca
+  404 final. Ramane decizie de arhitectura, nu implementare mecanica.
+- **Din `specs/atribuire-cercetare-si-plan.md`** — E1 permalink decuplat (decizie proprietar),
+  E3 focus score, E4 axe separate (decizie proprietar), E5 gold set ~150 + poarta CI.
+- Cifrele masurate azi (randare 638 s / 34.898 fisiere, 822 articole/zi, regim stabilizat
+  ~80.145 fisiere sub bugetul de 90.000, CLAUDE.md 23.920/24.576) → `specs/istoric-executie.md`.
 
 ## Standing rules that keep being rediscovered — do not "fix" these
 

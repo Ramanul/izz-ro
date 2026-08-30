@@ -34,6 +34,8 @@ id	data	zona	titlu	stare	decident	dovada	motiv	leaga
 - `dovada` — `#131`, `cb5b1ff4`, `specs/x.md`, `sessions/A/2026-08-04-...md`. Poate fi goală doar
   la `propus`.
 - `motiv` — o linie. **Obligatorie** la `respins`, `abandonat`, `anulat`, `masurat-fals`.
+  **O respingere fără motivul ei nu previne nimic** — e doar o urmă că cineva a spus nu odată,
+  și exact asta lasă pe altcineva să redeschidă subiectul peste o lună. De-aia CLI-ul refuză rândul.
 - `leaga` — id-uri legate: ce înlocuiește, ce a anulat, ce a rezultat din ce.
 
 ### Vocabularul de stări — asta face registrul interogabil

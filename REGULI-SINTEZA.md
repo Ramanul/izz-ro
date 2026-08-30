@@ -59,7 +59,8 @@ asumată în cunoștință de cauză, nu o presupunere că n-ar merge.
 
 ### 1.5 Formă
 Verb activ, prezent, un singur fapt. Se aruncă articolele unde nu strică înțelesul.
-**6-16 cuvinte** țintă (vezi §6 pentru raportul cu `TITLE_MAX_WORDS`).
+**6-16 cuvinte** țintă. `TITLE_MAX_WORDS` din `config.py` e plasa de siguranță, nu a doua țintă —
+vezi §6.
 
 ### 1.6 Fără opinie, fără adjectiv evaluativ
 „Scandalos", „incredibil", „dezastruos" nu apar în titlu decât în citat atribuit.
@@ -217,12 +218,20 @@ citește totul înainte de publicare, procesul de după:
 
 ---
 
-## 6. Nepotrivire găsită în cod, de decis
+## 6. Raportul dintre 6-16 și `TITLE_MAX_WORDS` — DECIS 2026-08-29
 
-`generator/config.py:230` fixează `TITLE_MAX_WORDS = 22`; prompturile din
-`generator/process.py` cer 6-16 cuvinte. Nu e neapărat defect — poate fi țintă moale plus plasă
-de siguranță — dar cele două numere n-au fost puse acolo împreună. Merită aliniate conștient.
-**Nu am modificat nimic.**
+Cele două numere nu se contrazic; sunt straturi diferite, și de-acum scrise ca atare:
+
+- **6-16 cuvinte = ținta cerută modelului** în prompturile din `generator/process.py`. E regula
+  editorială din §1.5 și rămâne singura cifră pe care o urmărește un om când judecă un titlu.
+- **`TITLE_MAX_WORDS = 22` (`generator/config.py`) = plasa de siguranță**, nu o a doua țintă.
+  Nu cere modelului nimic; taie doar titlurile care scapă mult peste țintă, ca să nu ajungă în
+  output ceva nelizibil pe mobil. Un titlu de 18 cuvinte trece de plasă, dar rămâne în afara
+  țintei — și asta e intenționat, fiindcă alternativa e să respingi conținut bun pentru un cuvânt.
+
+Ridicarea sau coborârea plasei se face în `config.py`, nu aici; textul ăsta nu repetă valoarea,
+tocmai ca să nu rămână în urmă cum a rămas trimiterea veche la `config.py:230` (linia reală era
+`:306` când a fost verificată pe 2026-08-29).
 
 ---
 

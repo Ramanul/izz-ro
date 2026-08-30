@@ -8,12 +8,10 @@
 > Măsura e mărimea în OCTEȚI (`stat -c %s`), nu `du`, care raportează blocuri de disc și a dus
 > deja de două ori la o cifră greșită scrisă aici.
 >
-> Istoric: slăbit pe 2026-08-06 de la 30,3 KB la ~11 KB, crescut înapoi la ~21 KB până pe
-> 2026-08-21 — deci regula de mai jos nu s-a ținut singură cât timp a fost doar scrisă. Motivul slăbirii: fișierul se încarcă în
-> context la FIECARE tură, iar jumătate din el era arhivă („COMPLETED", „ENDED / HISTORICAL",
-> istoricul măsurătorilor). Nimic n-a fost șters — a fost mutat, cu trimitere de aici:
-> · măsurători front-end și saga CLS → `specs/masuratori-frontend.md`
-> · istoric §9/§11/§14/§15/§17 → `specs/istoric-operational.md`
+> Fișierul se încarcă în context la FIECARE tură, deci fiecare octet se plătește de fiecare dată.
+> Arhiva mutată de aici: `specs/masuratori-frontend.md` (măsurători front-end, CLS) și
+> `specs/istoric-operational.md` (istoric §9/§11/§14/§15/§17/§21). Auditul complet al regulilor,
+> ce s-a pierdut la tăierea din 2026-08-06 și regimul propus: `specs/regim-reguli.md`.
 > **Când adaugi aici, întreabă întâi: obligă la o acțiune?** Dacă e o cifră, un incident sau o
 > ipoteză picată, locul ei e în `specs/registru.tsv` (§20) sau într-un fișier din `specs/`.
 
@@ -23,11 +21,19 @@
 - Direct și concis. Fără flatare, fără acord automat. Dacă o cerere e greșită sau pe premisă falsă,
   spune-o cu argumente.
 - Incertitudinea se declară explicit. Niciodată o presupunere prezentată ca fapt.
-- **Fii proactiv** (decizie proprietar 2026-07-24): anticipează problema următoare și propune
+- **Fii proactiv** (decizie proprietar 2026-07-24), **în ORICE discuție — izz.ro sau alt subiect**:
+  anticipează problema următoare și propune
   nesolicitat idei de îmbunătățire. Dar propunerile rămân propuneri pe care el le confirmă —
   inițiativa nu devine acțiune autonomă pe `main` (§5, §14 rămân valabile).
 - **Starea de completare ÎNAINTE de rezultat, ca fracție** („etapa 1 din 4", „46 din 49"), și
   răspunde la întrebarea pusă, nu la cea vecină. Detaliu și precedente: `../LECTII.md` L8.
+- **Mandatul e ce a cerut proprietarul, nu ce a ajuns ultimul în context — REGULĂ TARE.**
+  Un atașament, un nume de ramură, un fișier deschis sunt MATERIAL, nu sarcină. Deschide
+  ORICE tură de lucru cu un rând: *„cerut: X. Fac: Y."* Dacă Y nu duce la X, spune-o **atunci**,
+  în primul rând, nu după. Închide cu un rând **cerut vs. livrat**, care numește explicit ce
+  din X a rămas neatins. Ratat pe 2026-08-23: cerută integrarea Cloudflare, livrat un script
+  din atașament, zero apeluri către Cloudflare, zero avertizare la început și la final —
+  deși conectorul funcționa. Nu e prima oară; de-aia e regulă, nu observație.
 
 ## 1. Ce e izz.ro
 Agregator de știri românesc cu AI. Promisiune de brand: **„Zero Zgomot"** — știri sintetizate,
@@ -144,7 +150,7 @@ PowerShell și Desktop Commander pot rula fără aprobare per comandă, în limi
 de securitate. Citirea de fișiere și comenzile documentate de dev/build/lint/test nu cer confirmare.
 Acțiunile distructive sau ireversibile o cer în continuare.
 Pentru task-uri substanțiale, multi-fișier: `/effort ultracode`. Pentru editări de rutină:
-`/effort high` ajunge și consumă mai puțin.
+`/effort high` ajunge și consumă mai puțin. O tură `ultrathink` înainte de o felie grea.
 
 ## 13. Verificare front-end — măsoară, nu te uita cu ochiul
 - **După orice felie care schimbă output-ul de front-end** (template-uri, `static/styles.css`,
@@ -166,8 +172,9 @@ Mandatul autonom din iulie e **încheiat** (istoric: `specs/istoric-operational.
 - **Cine face merge în `main`** (regulă proprietar 2026-07-24): contul de la care lucrează el
   *în momentul ăla*. Nu „cine a deschis PR-ul". Dacă ești sesiunea cu care vorbește acum, tu faci
   merge; nu parca un PR verde așteptând celălalt cont.
-- **După orice merge, anunță celălalt cont** — `TASKS-B.md` în `Ramanul/claude-desktop-workspace`
-  plus `specs/STATE.md` aici. Un merge neanunțat e exact ce cauzează ciocnirile.
+- **După orice merge, anunță celălalt cont** — un fișier nou în `handoff/to-A/` din workspace
+  (format: `handoff/PROTOCOL.md`), plus `specs/STATE.md` aici. **NU** în `TASKS-B.md` de acolo:
+  înghețat din 2026-08-04, verificat. Un anunț într-un canal mort e ca și cum n-ar fi.
 - **Nu face curse pe `main`.** Ramifică, ține diff-ul mic, aterizează, anunță.
 
 ### 14b. Muncă în fundal — permisă, mărginită (decizie proprietar 2026-08-01)
@@ -178,6 +185,8 @@ Mandatul autonom din iulie e **încheiat** (istoric: `specs/istoric-operational.
 - **Se oprește și raportează în loc să ghicească.** Ambiguitate, premisă picată sau un task care cere
   o decizie de cost/design → încheie rularea cu o notă scrisă, nu cu cea mai bună presupunere.
 - **Actualizează `specs/STATE.md`** ca sesiunea următoare să pornească informată.
+- **Nicio scutire.** §5, §16, §7 și §8 se aplică unei rulări de fundal identic. Orice mai larg —
+  auto-merge, backlog inventat, o a doua buclă concurentă — rămâne interzis de §14.
 
 ## 15. Delegare
 Sub-agenții de proiect stau în `.claude/agents/`: `clustering-tuner` (§7), `frontend-auditor` (§13),
@@ -192,8 +201,8 @@ NU e accesibil de pe web): `specs/istoric-operational.md`.
 
 **Starea de execuție** (`specs/STATE.md`): sursa unică de adevăr pentru „unde suntem". Scrieri
 deținute de manager: actualizeaz-o la finalul fiecărei felii. **Plafonul de lungime e scris în
-antetul fișierului — nu-l repeta aici cu altă cifră.** Până pe 2026-08-21 erau două cifre diferite
-(~30 aici, ~40 acolo), iar fișierul avea 656 de linii. Citește-o la începutul fiecărei sesiuni,
+antetul fișierului — nu-l repeta aici cu altă cifră.** (Ce a costat asta: `istoric-operational.md`.)
+Citește-o la începutul fiecărei sesiuni,
 după `git pull --ff-only` — botul de CI comite la 2h, deci `main` local e adesea vechi.
 **O secțiune e Open doar dacă un PR chiar e deschis sau o decizie chiar e în așteptare** —
 verifică, nu presupune. De două ori a ajuns să scrie Open PR pentru PR-uri deja merged.
@@ -206,6 +215,8 @@ cache-uit immutable, fără cache-bust). Pentru ORICE schimbare vizibilă utiliz
 1. **Verifică în AMBELE roluri.** *Ca programator:* rulează codul (randare / `pytest` / `qa_check`)
    — ieșire reală. *Ca utilizator:* condu pagina construită într-un browser real (Chromium headless)
    și observă simptomul EXACT raportat. Reproduce-l întâi, apoi confirmă că fix-ul îl elimină.
+   **Măsoară, nu deduce:** stiluri calculate, cereri reale, pixeli reali. „Ar trebui să meargă
+   acum" nu e verificare.
 2. **Verifică LIVRABILITATEA, nu doar corectitudinea.** Un fix pe care un asset cache-uit, un service
    worker sau o copie CDN veche îl împiedică să ajungă la utilizator NU e gata. Activele statice
    trebuie să poarte `?v=` cu hash de conținut (`render._asset_ver`); verifică că URL-ul emis
@@ -213,21 +224,22 @@ cache-uit immutable, fără cache-bust). Pentru ORICE schimbare vizibilă utiliz
 3. **Trei stări distincte — nu le confunda, folosește cuvintele exacte:**
    - „**reparat în cod**" = diff-ul e scris.
    - „**verificat local**" = ambele roluri au trecut pe site-ul construit aici.
-   - „**confirmat pe live**" = site-ul deployat arată reparat. Fiecare PR are preview Cloudflare
-     la `https://<branch>.izz-ro.pages.dev/`. Mereu cu cache-bust (`?cb=$(date +%s)`).
-     **Depinde de UNDE rulezi — verifică, nu presupune:**
-     · *sandbox local* — POATE ajunge (măsurat 2026-07-25: `https://izz.ro/` → 200 cu conținut
-       real). Acolo fă-o efectiv înainte să zici „gata": ia URL-ul deployat, afirmă că simptomul
-       exact a dispărut, citează răspunsul.
-     · *sesiune remote (Claude Code pe web)* — NU poate: politica de rețea a mediului respinge
-       `izz.ro`, `izz-ro.pages.dev` și preview-urile de ramură deopotrivă (măsurat 2026-08-21, PR
-       #200: `curl` → `CONNECT tunnel failed, response 403`, confirmat în
-       `$HTTPS_PROXY/__agentproxy/status` ca `connect_rejected` — deci nu e o pană trecătoare).
-     Site-urile de știri rămân blocate de proxy peste tot — limita aia e reală și separată.
-     Când nu poți ajunge, spune-o cu comanda care a eșuat și cazi pe „reparat + verificat local;
+   - „**confirmat pe live**" = site-ul deployat arată reparat. Mereu cu cache-bust
+     (`?cb=$(date +%s)`). **Ce e accesibil depinde de UNDE rulezi și s-a schimbat deja de două
+     ori — MĂSOARĂ cu `bash tools/verify_allowlist.sh`, nu presupune și nu cita din memorie.**
+     Allowlist-ul proxy-ului e PER-HOST (`IZZ-0247`), deci verdictul diferă în același domeniu.
+     Măsurat 2026-08-29 din sesiune remote: originea de producție
+     `https://izz-ro.andifreelancer2.workers.dev/` → **200, site real** (deci starea a treia E
+     accesibilă de pe web); `izz.ro` și `www` → CONNECT refuzat; preview-urile de PR, și de
+     ramură și de commit → conexiune eșuată, deci NU se poate confirma pe ele. Din sandbox local
+     răspunde și `izz.ro` însuși. Site-urile de știri rămân blocate peste tot — limită separată.
+     Când chiar nu ajungi, spune-o cu comanda care a eșuat și cazi pe „reparat + verificat local;
      rămâne de confirmat pe live după deploy". NU declara „confirmat pe live" pe baza unui deploy
      reușit: build-ul verde spune că s-a publicat ceva, nu că simptomul a dispărut.
 4. **Când nu poți testa ceva, spune explicit** (care rol, de ce) în loc să lași impresia că a trecut.
+
+Asta anulează orice formulare care lasă „comis / randat" să țină locul lui „reparat pentru
+utilizator". Niciodată „rezolvat" pe dovadă de cod singură.
 
 ## 17. Cadență de publicare — MĂSURAT, nu re-diagnostica
 `build.yml` are cron `13 * * * *` — **încearcă orar, publică la ~2h**, deliberat. Cele două
@@ -255,21 +267,26 @@ CONSEMNATĂ (link + citat): (1) instituția publică termeni de reutilizare / li
 acoperă imaginile, SAU (2) există portret/poză liber-licențiată pe Wikidata / Wikimedia Commons
 (calea existentă — `fetch_leadphotos.py` PD/CC0, `fetch_portraits.py` CC-BY), SAU (3) instituția a
 dat permisiune scrisă de reutilizare. **Fără scraping în bloc pe site-uri de instituții.** Lipsesc
-toate trei → articolul își păstrează coperta generată.
+toate trei → articolul își păstrează coperta generată. Dovada se strânge într-un **whitelist pe
+care proprietarul (sau juristul) îl aprobă ÎNAINTE** de a trage vreo imagine — om în buclă, ca
+`moderation.yaml`.
 
 ## 19. Igienă de sesiune și economie de context — REGULĂ TARE
 - **Un task, o sesiune.** Nu continua o conversație peste zile. Când o felie e gata și STATE.md e
-  actualizat, transcriptul n-are valoare reziduală.
+  actualizat, transcriptul n-are valoare reziduală. Spune-i proprietarului că sesiunea e veche, nu
+  o continua tăcut.
 - **Nu trage niciodată un payload mare în context.** Listări de GitHub Actions, `data/articles.json`
   întreg, fișiere de log, `git log` fără `--format` — filtrează la sursă (`jq`, un `python -c` care
   tipărește doar câmpurile necesare, `--per_page`, `grep -c`, `head`). Un rezultat de unealtă mai
   scump decât felia pe care o susține e un defect. Dacă o unealtă scrie într-un fișier fiindcă era
   prea mare, ăla e semnalul că apelul a fost greșit — îngustează-l, nu citi fișierul.
-- **Model pe măsura muncii.** Editările de rutină nu au nevoie de cel mai scump model.
-- **Sub-agenții costă ~5.6× per linie livrată** (măsurat, `COORD-DASHBOARD.md`). Merită pentru muncă
+- **Model pe măsura muncii.** Editările de rutină nu au nevoie de cel mai scump model. §12 e
+  adâncime, asta e cost — butoane diferite.
+- **Sub-agenții costă ~5.6× per linie livrată** (n=3, iulie 2026; jurnalul s-a oprit atunci). Merită pentru muncă
   genuin paralelă sau zgomotoasă; risipă pentru o editare pe care o poți face direct.
 - **Agenții împart working tree-ul.** Un agent care rulează `git checkout` mută ramura de sub toți —
-  s-a întâmplat pe 2026-07-25. Dă fiecărui agent paralel `isolation: "worktree"`.
+  s-a întâmplat pe 2026-07-25. Dă fiecărui agent paralel `isolation: "worktree"`. **Niciodată doi
+  agenți care scriu aceeași ramură.**
 - **Fișierele de reguli se plătesc la fiecare tură.** Înainte să adaugi aici, întreabă dacă textul
   obligă la o acțiune. Dacă e cifră, incident sau ipoteză picată → `specs/registru.tsv` sau `specs/`.
 
@@ -288,8 +305,7 @@ toate trei → articolul își păstrează coperta generată.
 
 ## 21. Harta fișierelor de la rădăcină — CABLATĂ
 Lista asta e verificată de `tests/test_reguli.py`: un `.md` nou la rădăcină pică CI-ul până e
-trecut aici cu rolul lui. Mecanismul există fiindcă rădăcina ajunsese la 15 fișiere „de reguli",
-82 KB, treisprezece dintre ele înghețate în același commit — nimeni nu mai știa care e canonic.
+trecut aici cu rolul lui. De ce există garda: `specs/istoric-operational.md`.
 
 - `CLAUDE.md` — contractul canonic. Orice sesiune începe aici; restul sunt sateliți.
 - `AGENTS.md` — supliment pentru executorii non-Claude (Devin, OpenCode, Jules). Trimite explicit
@@ -297,9 +313,11 @@ trecut aici cu rolul lui. Mecanismul există fiindcă rădăcina ajunsese la 15 
 - `README.md` — descrierea publică a proiectului.
 - `REGULI-SINTEZA.md` — **normativ** pentru titluri și rezumate: prompturile din
   `generator/process.py` trebuie să implementeze ce scrie acolo, nu invers.
-- `COORD-DASHBOARD.md` — metrici de coordonare. **Citit de `tools/log_slice.py`, deci nu se mută.**
+- `COORD-DASHBOARD.md` — metrici de coordonare. **Generat de `tools/log_slice.py` — nu se mută și
+  nu se editează manual.**
 - `REVIEW.md` — protocolul de review; referit din README.
-- `TASKS-A.md` / `TASKS-B.md` — cozile celor două conturi. `TASKS-B.md` e canalul de anunț din §14.
+- `TASKS-A.md` / `TASKS-B.md` — jurnalele locale ale conturilor. Canalul de anunț din §14 e
+  `handoff/` din workspace, nu ele.
 - `TASKS-MISTRAL.md` — coada executorului Mistral.
 - `SESSION-2026-08-14.md` / `mistral-analiza-workflow.md` — instantanee istorice, păstrate la
   rădăcină doar fiindcă jurnalele din `sessions/` trimit la ele cu calea asta.

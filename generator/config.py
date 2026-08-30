@@ -138,6 +138,63 @@ SOURCES = {
             "dw_europe":  {"name": "DW Europe",     "url": "https://rss.dw.com/rdf/rss-en-eu",                   "category": "extern", "lang": "en"},
             "el_moldova": {"name": "Europa Liberă", "url": "https://moldova.europalibera.org/api/epiqq",          "category": "extern"},
             "extern":     {"name": "Digi24 Extern", "url": "https://www.digi24.ro/rss/stiri/externe",            "category": "extern"},
+    # ============================================================================
+    # VAL 2026-08-21 — candidati extrasi din istoricul de navigare al owner-ului
+    # (Google Takeout / Chrome, 27.205 vizite intre 2026-05-23 si 2026-08-21). Criteriul de
+    # triaj: publicatie de stiri cu site propriu, vizitata de cel putin 10 ori. Excluse
+    # explicit din acelasi set, ca sa nu fie re-cautate:
+    #   · mediafax.ro (243 vizite, a doua cea mai citita) — AGENTIE, cade pe AGENCY_BLOCKLIST
+    #   · ziare.com (50) — agregator, republica continut licentiat de la terti
+    #   · interfans.org (48), forzainterforums.com (20) — forumuri, nu publicatii
+    #   · inter.it (19) — site oficial de club, comunicate, nu presa
+    #   · fifa.com (314) — comunicate de federatie, aceeasi problema
+    #
+    # ATENTIE — NICIUNUL dintre URL-urile de mai jos nu a fost cerut din sandbox: acolo
+    # proxy-ul intoarce 403 la orice host extern. Sunt cai probabile, exact tiparul care a
+    # produs ~30% caderi la valul de 79 din iulie. Se verifica cu `feedcheck.yml` (dispatch,
+    # runnerii au internet) INAINTE de merge, si se taie ce nu raspunde.
+    # ----------------------------------------------------------------------------
+    # AI — rubrica noua (owner 2026-08-21). Prima in bloc: e categoria cea mai infometata
+    # (0 surse dedicate azi), iar ordinea dictului decide ordinea bugetului AI.
+            "marktechpost": {"name": "MarkTechPost",   "url": "https://www.marktechpost.com/feed/",     "category": "ai", "lang": "en"},
+    # tech
+            "thenewstack": {"name": "The New Stack",   "url": "https://thenewstack.io/feed/",           "category": "tech", "lang": "en"},
+            "xda":        {"name": "XDA Developers",   "url": "https://www.xda-developers.com/feed/",   "category": "tech", "lang": "en"},
+            "kitguru":    {"name": "KitGuru",          "url": "https://www.kitguru.net/feed/",          "category": "tech", "lang": "en"},
+            "connect":    {"name": "Connect.ro",       "url": "https://www.connect.ro/feed/",           "category": "tech"},
+            "zonait":     {"name": "ZonaIT",           "url": "https://zonait.ro/feed/",                "category": "tech"},
+    # sport — `fcinter1908` e, dupa Google, cel mai vizitat site real din istoric (763 vizite
+    # in 89 de zile). E in ITALIANA: fara `lang` ar fi fost publicat brut. Vezi process.py,
+    # garda `source_lang != "ro"`.
+            "fcinter1908": {"name": "FC Inter 1908",   "url": "https://www.fcinter1908.it/feed/",       "category": "sport", "lang": "it"},
+            "as_ro":      {"name": "Antena Sport",     "url": "https://www.as.ro/rss",                  "category": "sport"},
+            "sportro":    {"name": "Sport.ro",         "url": "https://www.sport.ro/rss",               "category": "sport"},
+    # auto
+            "automarket": {"name": "AutoMarket",       "url": "https://www.automarket.ro/rss/",         "category": "auto"},
+    # judetean — Timisoara; owner-ul e din Timis, iar `tion` si `pressalert` sunt deja acolo.
+            "opiniatm":   {"name": "Opinia Timișoarei", "url": "https://www.opiniatimisoarei.ro/feed/", "category": "judetean", "judet": "TIMIS"},
+    # economic
+            "profit":     {"name": "Profit.ro",        "url": "https://www.profit.ro/rss",              "category": "economic"},
+    # general / politic — volum mare, deci la coada blocului
+            "antena3":    {"name": "Antena 3 CNN",     "url": "https://www.antena3.ro/rss",             "category": "general"},
+            "adevarul":   {"name": "Adevărul",         "url": "https://adevarul.ro/rss",                "category": "general"},
+            "observator": {"name": "Observator",       "url": "https://observatornews.ro/rss",          "category": "general"},
+            "stiripesurse": {"name": "Știri pe surse", "url": "https://www.stiripesurse.ro/rss",        "category": "general"},
+            "evz":        {"name": "Evenimentul Zilei", "url": "https://evz.ro/feed",                   "category": "politic"},
+    # ----------------------------------------------------------------------------
+    # VERDICTUL `feedcheck` run 32455583095 (2026-08-21, runner GitHub, IP cu internet):
+    # 15 din 21 VII. Taiate, cu motivul masurat — NU re-adauga fara sa gasesti alta cale:
+    #   · eurosportro — `https://www.eurosport.ro/rss.xml` -> HTTP 404
+    #   · historia    — `https://historia.ro/feed/`        -> HTTP 404
+    #   · newsweekro  — `https://newsweek.ro/feed/`        -> HTTP 404
+    #   · gazzetta    — `https://www.gazzetta.it/rss/home.xml` raspunde 200 cu 8 intrari, dar
+    #     cea mai noua e din 2023-12-08. Feed INGHETAT de 2 ani si jumatate, adica mort in
+    #     practica; aceeasi regula sub care au cazut deja primariaclujnapoca si constanta.
+    # PASTRATE desi n-au putut fi verificate (nu inseamna vii, inseamna neverificabile de acolo):
+    #   · stiripesurse — HTTP 403, IP de datacenter respins (acelasi tipar ca ziaruldeiasi,
+    #     despre care s-a masurat pe 2026-08-05 ca raspunde 200 de pe o retea obisnuita)
+    #   · evz          — HTTP 429, rate-limit pe IP
+    # ============================================================================
             "gsp":        {"name": "GSP",          "url": "https://www.gsp.ro/rss.xml",                "category": "sport"},
             "digisport":  {"name": "Digi Sport",   "url": "https://www.digisport.ro/rss",               "category": "sport"},
             "prosport":   {"name": "ProSport",     "url": "https://www.prosport.ro/feed/",              "category": "sport"},
@@ -177,18 +234,33 @@ if _gold:
 # Exclude orice URL/sursă de agenție (verificare suplimentară pe domeniul linkului)
 AGENCY_BLOCKLIST = ["agerpres", "mediafax", "reuters", "afp.com", "apnews", "ap.org"]
 
-CATEGORIES = ["general", "politic", "economic", "extern", "tech", "sport",
-              "auto", "sanatate", "cultura", "lifestyle", "discounturi",
-              "regional", "judetean", "local"]
+# ORDINEA E BARA DE NAVIGARE, nu o listă alfabetică: `templates/base.html` afișează
+# primele 9 inline si restul sub „mai multe". Cerinta owner 2026-08-21: cele patru trepte
+# geografice — national, regional, judetean, local — trebuie sa fie VIZIBILE si numite
+# explicit, nu ascunse in dropdown. Inainte stateau pe pozitiile 12-14, deci pe telefon nu
+# le vedea nimeni (vezi si comentariul de la `.subnav` din static/styles.css, care masurase
+# deja ca „exact categoriile geografice ramaneau nedescoperite").
+# `general` isi PASTREAZA slug-ul (SEO: /general/ e indexat) si primeste doar eticheta
+# „National" — treapta de sus a scarii. Slug-ul nu se schimba, doar textul afisat.
+CATEGORIES = ["general", "regional", "judetean", "local",
+              "politic", "economic", "extern", "sport", "ai",
+              "tech", "auto", "sanatate", "cultura", "lifestyle", "discounturi"]
 
 # Categorii in INSAMANTARE: nou-adaugate, cu surse de volum mic — pot fi goale fara sa pice
 # QA (warn, nu FAIL). Se scot de aici dupa ce categoria s-a populat stabil.
-SEED_CATEGORIES = {"regional", "judetean", "local"}
+SEED_CATEGORIES = {"regional", "judetean", "local", "ai"}
 
 # Categorii GEOGRAFICE (axa proprie): articolele surselor cu aceste categorii NU sunt
 # re-clasificate pe tema de catre AI (vezi process._resolve_category). Un ziar judetean
 # ramane in sectiunea 'local', nu ajunge pe sport/politic dupa continut.
 PINNED_CATEGORIES = {"regional", "judetean", "local"}
+
+# Categorii care si-au schimbat NUMELE de-a lungul timpului. Istoricul lui
+# `data/articles.json` pastreaza articolele vechi sub numele de atunci, iar o categorie
+# moarta nu mai primeste pagina de articol la randare, dar tot produce linkuri catre ea
+# din listari -- adica exact legaturi interne rupte. Orice cod care scoate articole din
+# istoric trece prin harta asta (vezi tools/recupereaza_404.py).
+CATEGORII_REDENUMITE = {"zonal": "judetean"}
 
 # Etichete AFISATE (owner 2026-07-17): slug-ul din URL ramane neschimbat (SEO), doar
 # textul din nav/titluri/carduri foloseste aceste nume. Fallback = slug capitalizat.
@@ -197,10 +269,14 @@ PINNED_CATEGORIES = {"regional", "judetean", "local"}
 # (_write_redirects) si tools/migrate_zonal_to_judetean.py pentru cele 295 de articole
 # deja publicate sub vechiul slug.
 CATEGORY_LABELS = {
-    "general": "Actualitate", "politic": "Politică", "economic": "Economie",
+    "general": "Național", "politic": "Politică", "economic": "Economie",
     "extern": "Externe", "tech": "Tech", "sport": "Sport", "auto": "Auto",
     "sanatate": "Sănătate", "cultura": "Cultură", "lifestyle": "Lifestyle",
     "discounturi": "Discounturi", "regional": "Regional", "judetean": "Județean", "local": "Local",
+    # Rubrica AI (owner 2026-08-21). Slug scurt `ai` — respecta conventia celorlalte slug-uri
+    # (un cuvant: general/politic/tech) si da un URL curat, /ai/. Eticheta afisata e intreaga,
+    # ca cititorul sa nu ghiceasca ce inseamna doua litere in bara.
+    "ai": "Inteligență artificială",
 }
 
 # Cate cuvinte trebuie sa aduca `description` PESTE titlu ca itemul sa merite sintetizat.
@@ -263,6 +339,46 @@ RELATED_MIN_SHARED = 2         # "Articole conectate": minim entitati comune. 1 
 # Plafonul se ridica definitiv doar prin arhiva separata de starea de lucru (paginile raman
 # publicate, articolele ies doar din procesare) - proiect separat, programat pe 21 aug.
 ARTICLE_TTL_DAYS = 30
+
+# Plafonul de fisiere al gazdei. Gazda NU mai e Pages: izz.ro se serveste dintr-un Worker
+# cu Static Assets de pe 2026-08-22 (#211, 40ac007), pe plan Workers PAID. Acolo plafonul e
+# 100.000 de fisiere per versiune de Worker (25 MiB per fisier), nu 20.000 ca pe planul
+# gratuit. Citit din documentatie pe 2026-08-23, nu dedus prin bracket:
+# developers.cloudflare.com/workers/platform/limits/#static-assets
+#
+# Cifrele dinainte (19.500 / 20.000) erau ale lui Pages Free si au ramas in acest PR dupa
+# migrare. Lasate asa, ar fi taiat ~4.800 de imagini la prima randare si toate la regim
+# stabilizat: garda ar fi degradat site-ul aparandu-l de un plafon care nu mai exista.
+#
+# Incidentul pe care garda il apara ramane real, si de-aia NU o stergem: gazda refuza
+# deploy-ul supradimensionat si NU raporteaza inapoi in pipeline (jobul de continut trece
+# verde, esecul apare 25 de minute mai tarziu in `release-probe`, ca "izz.ro serveste <sha
+# vechi>"). Asa a stat site-ul inghetat 21 de ore pe 63bcc9bd (2026-08-21 10:25 -> 08-22
+# 07:00), cu sase rulari complete picate una dupa alta.
+#
+# Randarea nu lasa marimea output-ului pe seama ingestului. Bugetul de mai jos e ce respecta
+# EA, sub plafonul real, iar marja acopera derivatele webp care nu se pot prezice inainte de
+# scriere. Masurat 2026-08-23 pe o randare completa: 23.961 de fisiere = 24% din plafon.
+# Regim stabilizat estimat in specs/STATE.md: ~83.000, cu 17% marja.
+OUTPUT_FILE_BUDGET = int(os.getenv("OUTPUT_FILE_BUDGET", "90000"))
+# Plafonul GAZDEI, separat de bugetul de mai sus. Bugetul e tinta la care randarea imparte
+# imaginile (depasirea lui inseamna ca rezerva a derivat -> avertisment); plafonul e punctul
+# de la care Cloudflare REFUZA deploy-ul. Peste el randarea trebuie sa moara zgomotos: altfel
+# iese cu cod 0, jobul de continut ramane verde si esecul reapare 25 de minute mai tarziu in
+# `release-probe` -- exact bucla tacuta din 2026-08-21.
+# ATENTIE: 100.000 e plafonul planului PAID. Daca abonamentul cade inapoi pe Workers Free,
+# plafonul redevine 20.000 si cifra de aici trebuie coborata odata cu el.
+OUTPUT_FILE_CEILING = int(os.getenv("OUTPUT_FILE_CEILING", "100000"))
+# Fisierele care NU stau in directoarele de articol: static, categorii cu paginare,
+# subiecte + feedurile lor, ghiduri, instrumente, harta, sitemapuri, feed, cautare.
+# MASURAT pe o randare reala din 2026-08-22: 3.483 de fisiere care nu sunt nici pagina de
+# articol, nici imagine de articol (`python tools/count_output.py`). Include paginile de
+# paginare si de subiect, care stau INAUNTRUL directoarelor de categorie -- o prima
+# masuratoare le-a numarat gresit ca pagini de articol si bugetul a iesit cu 183 de fisiere
+# peste. Cifra de aici e rotunjita in sus, ca marja.
+# Se scade din buget INAINTE de imparteala pe articole: paginile de articol au prioritate
+# absoluta, imaginile se dau din ce ramane. Remasoara dupa orice rubrica sau sectiune noua.
+OUTPUT_NON_ARTICLE_RESERVE = int(os.getenv("OUTPUT_NON_ARTICLE_RESERVE", "3600"))
 MAX_PER_SOURCE = 8             # redus de la 12 ca sa scada apelurile AI/rulare
 # Homepage-ul este un tablou de bord, nu arhiva zilei: patru carduri per categorie pastreaza
 # orientarea larga, iar restul raman accesibile prin pagina de categorie. Limita reduce DOM-ul

@@ -7,3 +7,16 @@ compatibility_date = "2026-07-01"
 routes = [
   { pattern = "izz.ro/*", zone_name = "izz.ro" }
 ]
+
+# Worker-ul deployat manual pe 2026-08-22 (nu din repo) a introdus o clasa Durable Object
+# `RateLimiter` si un Workflow, prin dashboard. Versiunea din repo nu le exporta, iar
+# Cloudflare refuza un deploy care lasa in urma o clasa DO fara migrare explicita.
+# Migrarea de mai jos o sterge o singura data; ramane inerta la deploy-urile urmatoare.
+# Tag-ul NU e "v1": clasa a fost creata din dashboard, deci Worker-ul avea deja un tag
+# inregistrat. Wrangler trateaza un tag deja aplicat ca no-op, nu mai trimite migrarea, si
+# cade pe calea /versions -- care prin documentatie NU poate aplica schimbari de ciclu de
+# viata pe Durable Objects. Trei deploy-uri au picat pe cod 10064 din motivul asta, cu
+# migrarea scrisa corect chiar in fisier. Un tag nefolosit vreodata forteaza calea buna.
+[[migrations]]
+tag = "cleanup-2026-08-22"
+deleted_classes = ["RateLimiter"]

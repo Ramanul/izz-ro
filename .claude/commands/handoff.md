@@ -61,7 +61,7 @@ git add sessions/<A|B>/<fișier>.md && git commit -m "docs(sessions): handoff ch
 
 Din secunda în care push-ul trece, predarea e recuperabilă chiar dacă sesiunea moare pe loc.
 
-**3b. Abia acum scrii jurnalul adevărat**, peste schelet, după regulile din `sessions/README.md`:
+**3b. Abia acum scrii jurnalul adevărat**, peste schelet, după regulile de mai jos:
 detaliat, nu rezumat — ce s-a cerut (în cuvintele utilizatorului), pași concreți și comenzi
 rulate, ieșiri verbatim când contează, **fundăturile și de ce n-au mers**, decizii cu
 raționamentul lor, starea la final, fișiere și branch-uri atinse.
