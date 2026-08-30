@@ -35,6 +35,11 @@ jobs:
     steps:
       - name: Verifica public + primar + mirror
         shell: bash
+        env:
+          # Originea de build, fara bot challenge: `izz-ro.pages.dev` cat timp gazda e
+          # Pages, subdomeniul workers.dev dupa migrare. Variabila de repo ALT_ORIGIN o
+          # schimba dintr-un singur loc, in loc de cinci workflow-uri.
+          ALT_ORIGIN: ${{ vars.ALT_ORIGIN || 'https://izz-ro.pages.dev' }}
         run: |
           set +e
           UA="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0 Safari/537.36"
@@ -48,10 +53,10 @@ jobs:
             echo "${code:-000}"
           }
           PUB=$(probe "https://izz.ro/")
-          PRI=$(probe "https://izz-ro.pages.dev/")
+          PRI=$(probe "$ALT_ORIGIN/")
           MIR=$(probe "https://ramanul.github.io/")
           echo "public izz.ro     : $PUB   (403 de la edge = bot-block pe runner, nu outage)"
-          echo "primar pages.dev  : $PRI"
+          echo "primar build      : $PRI   ($ALT_ORIGIN)"
           echo "mirror github.io  : $MIR"
 
           crit=0

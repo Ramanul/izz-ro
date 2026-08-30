@@ -51,7 +51,14 @@
       var cas = Math.round(brut * 0.25);
       var cass = Math.round(brut * 0.1);
       // Deducere personala de baza, fara persoane in intretinere: art. 77 Cod Fiscal
-      // (Legea 227/2015, modificat OG 16/2022) NU e un procent fix -- e degresiva. La
+      // (Legea 227/2015, modificat OG 16/2022) NU e un procent fix -- e degresiva.
+      //
+      // Sursa exacta, ca sa nu se reciteasca gresit peste sase luni: forma consolidata de pe
+      // legislatie.just.ro, document 257144, citita 2026-08-07; in vigoare de la 01-01-2023
+      // prin pct. 40 al art. I din OG nr. 16/2022 (M. Of. 716/15.07.2022).
+      // CAPCANA PORTALULUI: deasupra formei in vigoare afiseaza si forma VECHE a art. 77,
+      // cea cu "venit lunar brut de pana la 1.950 lei ... 510 lei". Aia e istoric, nu drept
+      // aplicabil -- cine o copiaza de acolo obtine un calculator gresit care pare documentat. La
       // salariul minim brut: 20%. Peste minim, scade cu 0,5 puncte procentuale la fiecare
       // transa de 50 lei, pana la 0% cand brutul trece de minim+2.000 lei (plafonul de
       // acordare). Un flat `salariuMinim * 0.2` supraestima deducerea (deci subestima

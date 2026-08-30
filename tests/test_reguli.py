@@ -242,3 +242,323 @@ def test_scutirea_ramane_o_exceptie_de_categorie_nu_o_lista_care_creste():
     assert len(SCUTITE_TTL) == 1
     for cale in SCUTITE_TTL:
         assert (ROOT / cale).exists(), f"scutire pentru un fisier inexistent: {cale}"
+
+
+# --- fapte canonice: ce spune regula despre proiect trebuie sa fie ce e in proiect ------------
+#
+# DE CE EXISTA (F2, 2026-08-29). Auditul din `specs/regim-reguli.md` a gasit sapte corectii de
+# fapt, si patru sunt aceeasi greseala: un fisier de reguli CITEAZA ceva din cod — o sectiune, o
+# cifra de config, un cron, o cale — si codul s-a mutat de sub citat.
+#   · K2: arhiva scria cron `13 */2` dupa ce `build.yml` trecuse la `13 * * * *`.
+#   · K4: `REGULI-SINTEZA.md` trimitea la `config.py:230`; valoarea era la `:306`.
+#   · K8: `/audit` trimitea la un baseline mutat cu trei saptamani inainte.
+#   · K9: `/slice` punea clustering-ul in §10; clustering e §7.
+# Toate patru au fost reparate MANUAL in F1 (#226). Manual inseamna ca se intorc: nimic nu le
+# opreste sa drifteze din nou. De-aia F1 nu e suficient si de-aia astea sunt teste, nu inca un
+# paragraf care cere atentie.
+#
+# CE E „NORMATIV" si de ce nu tot repo-ul: normative sunt fisierele care spun ce SA FACI.
+# Arhivele (`specs/istoric-*.md`, `sessions/`, `notes/`) sunt dinadins in afara — ele consemneaza
+# cifre vechi ca istorie, si a le cere sa fie curente ar insemna sa le stergem exact ce au de
+# spus. E aceeasi taietura pe care o face deja `test_marcajul_nu_confunda_istoria_cu_o_declaratie`
+# intre „plafonul e 24 KB" si „pana azi erau doua cifre".
+#
+# CE NU ACOPERA, spus explicit: garzile prind CITATE cu sintaxa proprie — `§7`, `NUME = 22`, un
+# cron in backtick-uri, o cale in backtick-uri. Nu pot prinde proza libera („cadenta e la doua
+# ore", „constanta aia e douazeci si doi"), care e cealalta jumatate a driftului. Limita e reala
+# si stiuta, ca la garda de TTL — nu o scapare.
+
+NORMATIVE = frozenset({"CLAUDE.md", "AGENTS.md", "REGULI-SINTEZA.md", "README.md", "REVIEW.md"})
+PREFIXE_NORMATIVE = (".claude/commands/", ".claude/agents/")
+
+SECTIUNE_DEF = re.compile(r"^##+\s*(\d+[a-z]?)\.", re.MULTILINE)
+SECTIUNE_REF = re.compile(r"§\s?(\d+[a-z]?)")
+# `§N` e un spatiu de nume folosit de DOUA documente (K3 din audit): `CLAUDE.md` numeroteaza
+# §0-§21, iar `REGULI-SINTEZA.md` isi numeroteaza propriile §1-§6. Harta e scrisa explicit, nu
+# dedusa din „fisierul isi are propriile sectiuni": `.claude/commands/handoff.md` isi numeroteaza
+# pasii `## 1.`..`## 8.`, dar `§15` de acolo e al lui CLAUDE.md, nu al lui.
+PROPRIETAR_SECTIUNI = {"REGULI-SINTEZA.md": "REGULI-SINTEZA.md"}
+DOCUMENT_IMPLICIT = "CLAUDE.md"
+
+CONST_DEFINITA = re.compile(r"^([A-Z][A-Z0-9_]{3,})\s*=\s*(\d+)", re.MULTILINE)
+CONST_CITATA = re.compile(r"`?([A-Z][A-Z0-9_]{3,})`?\s*=\s*`?(\d+)`?")
+
+CRON_REAL = re.compile(r"cron:\s*[\"']([^\"']+)[\"']")
+CRON_CITAT = re.compile(r"`([-\d*/,]+(?: [-\d*/,]+){4})`")
+
+CALE_CITATA = re.compile(
+    r"`([A-Za-z0-9_][A-Za-z0-9_./-]*\.(?:py|sh|yml|yaml|md|css|html|json|tsv|svg))`")
+
+
+def fisiere_normative() -> dict[str, str]:
+    """Doar fisierele care spun ce sa faci. Arhivele si notele raman in afara, deliberat."""
+    return {cale: text for cale, text in fisiere_urmarite("*.md").items()
+            if cale in NORMATIVE or cale.startswith(PREFIXE_NORMATIVE)}
+
+
+def incalcari_sectiuni(fisiere: dict[str, str], sectiuni: dict[str, set[str]],
+                       proprietari: dict[str, str], implicit: str) -> list[str]:
+    """Orice §N citat in proza normativa trebuie sa existe in documentul care detine numarul.
+
+    Antetul unui fisier e PROVENIENTA, nu trimitere: „istoric §9/§11 → arhiva" spune unde a
+    PLECAT o sectiune, deci n-are voie sa ceara ca ea sa mai existe. De-aia se citesc doar
+    `linii_de_continut`, aceeasi taietura folosita de garda de plafoane.
+    """
+    gasite = []
+    for cale, text in sorted(fisiere.items()):
+        document = proprietari.get(cale, implicit)
+        exista = sectiuni.get(document, set())
+        for linie in linii_de_continut(text):
+            for referinta in SECTIUNE_REF.findall(linie):
+                if referinta not in exista:
+                    gasite.append(f"{cale} trimite la §{referinta}, inexistenta in {document}")
+    return gasite
+
+
+def incalcari_constante(fisiere: dict[str, str], definite: dict[str, str]) -> list[str]:
+    """O constanta de config citata cu valoare trebuie sa aiba valoarea din `config.py`."""
+    gasite = []
+    for cale, text in sorted(fisiere.items()):
+        for linie_nr, linie in enumerate(text.split("\n"), 1):
+            for nume, cifra in CONST_CITATA.findall(linie):
+                if nume in definite and definite[nume] != cifra:
+                    gasite.append(
+                        f"{cale}:{linie_nr} spune {nume} = {cifra}, config.py spune {definite[nume]}")
+    return gasite
+
+
+def incalcari_cron(fisiere: dict[str, str], reale: set[str]) -> list[str]:
+    """Un cron citat intr-un fisier normativ trebuie sa fie unul care chiar ruleaza."""
+    gasite = []
+    for cale, text in sorted(fisiere.items()):
+        for linie_nr, linie in enumerate(text.split("\n"), 1):
+            for citat in CRON_CITAT.findall(linie):
+                if citat not in reale:
+                    gasite.append(f"{cale}:{linie_nr} citeaza cron `{citat}`, care nu e in niciun workflow")
+    return gasite
+
+
+def incalcari_cai(fisiere: dict[str, str], urmarite: set[str]) -> list[str]:
+    """O cale citata intr-un fisier normativ trebuie sa existe.
+
+    Rezolvarea, in trei categorii — nu o lista de scutiri:
+      · nume simplu (`gemini.py`) → trece daca exista undeva in repo. E prescurtarea folosita
+        dupa ce calea intreaga a fost scrisa o data in acelasi paragraf.
+      · cale al carei prim segment NU e un director din repo (`izz/CLAUDE.md`) → in afara
+        scopului: `/handoff` coordoneaza cu alt arbore, de pe masina proprietarului.
+      · restul → trebuie sa existe exact cum e scrisa.
+    """
+    nume_simple = {cale.rsplit("/", 1)[-1] for cale in urmarite}
+    directoare = {cale.split("/", 1)[0] for cale in urmarite if "/" in cale}
+    gasite = []
+    for cale, text in sorted(fisiere.items()):
+        for linie_nr, linie in enumerate(text.split("\n"), 1):
+            for citata in CALE_CITATA.findall(linie):
+                if "/" not in citata:
+                    if citata not in nume_simple:
+                        gasite.append(f"{cale}:{linie_nr} citeaza `{citata}`, inexistent in repo")
+                    continue
+                if citata.split("/", 1)[0] not in directoare:
+                    continue
+                if citata not in urmarite:
+                    gasite.append(f"{cale}:{linie_nr} citeaza `{citata}`, care nu exista")
+    return gasite
+
+
+# --- garzile de fapte canonice, pe repo-ul real ----------------------------------------------
+
+def test_fiecare_trimitere_la_sectiune_are_tinta():
+    """K8/K9: o comanda care trimite la o sectiune mutata inventeaza o regula inexistenta."""
+    fisiere = fisiere_normative()
+    sectiuni = {document: set(SECTIUNE_DEF.findall((ROOT / document).read_text(encoding="utf-8")))
+                for document in {DOCUMENT_IMPLICIT, *PROPRIETAR_SECTIUNI.values()}}
+    assert not incalcari_sectiuni(fisiere, sectiuni, PROPRIETAR_SECTIUNI, DOCUMENT_IMPLICIT)
+
+
+def test_fiecare_constanta_citata_are_valoarea_din_config():
+    """K4: `TITLE_MAX_WORDS = 22` scris intr-o regula trebuie sa fie 22 si in `config.py`."""
+    definite = dict(CONST_DEFINITA.findall(
+        (ROOT / "generator/config.py").read_text(encoding="utf-8")))
+    assert not incalcari_constante(fisiere_normative(), definite)
+
+
+def test_fiecare_cron_citat_e_unul_care_ruleaza():
+    """K2: cadenta scrisa in reguli trebuie sa fie cea din `.github/workflows/`."""
+    reale = set()
+    for workflow in sorted((ROOT / ".github/workflows").glob("*.yml")):
+        reale |= set(CRON_REAL.findall(workflow.read_text(encoding="utf-8")))
+    assert reale, "niciun cron gasit in workflows — garda ar trece degeaba"
+    assert not incalcari_cron(fisiere_normative(), reale)
+
+
+def test_fiecare_cale_citata_exista():
+    """K8: un fisier mutat lasa in urma comenzi care trimit in gol."""
+    urmarite = set(subprocess.run(["git", "ls-files"], cwd=ROOT, capture_output=True,
+                                  text=True, check=True).stdout.split("\n")) - {""}
+    assert not incalcari_cai(fisiere_normative(), urmarite)
+
+
+# --- fiecare garda de fapte trebuie sa poata ESUA --------------------------------------------
+
+def test_garda_sectiunilor_pica_pe_trimitere_moarta():
+    stricat = {"x.md": "prima linie\nvezi §99 pentru detalii"}
+    assert incalcari_sectiuni(stricat, {"CLAUDE.md": {"7"}}, {}, "CLAUDE.md")
+
+
+def test_garda_sectiunilor_respecta_proprietarul_numarului():
+    """§6 exista in REGULI-SINTEZA dar nu in CLAUDE.md — harta decide, nu norocul."""
+    fisiere = {"REGULI-SINTEZA.md": "prima linie\nvezi §6"}
+    sectiuni = {"CLAUDE.md": {"7"}, "REGULI-SINTEZA.md": {"6"}}
+    assert not incalcari_sectiuni(fisiere, sectiuni, {"REGULI-SINTEZA.md": "REGULI-SINTEZA.md"},
+                                  "CLAUDE.md")
+    assert incalcari_sectiuni(fisiere, sectiuni, {}, "CLAUDE.md")
+
+
+def test_garda_sectiunilor_nu_confunda_antetul_cu_o_trimitere():
+    """„istoric §9 → arhiva" spune unde a plecat sectiunea, nu ca ea mai exista."""
+    antet = "# Titlu\n> istoric §9/§11 → `specs/istoric-operational.md`\n\ncorp fara trimiteri\n"
+    assert not incalcari_sectiuni({"CLAUDE.md": antet}, {"CLAUDE.md": {"7"}}, {}, "CLAUDE.md")
+
+
+def test_garda_constantelor_pica_pe_cifra_veche():
+    stricat = {"x.md": "`TITLE_MAX_WORDS = 12` e plasa de siguranta"}
+    assert incalcari_constante(stricat, {"TITLE_MAX_WORDS": "22"})
+
+
+def test_garda_constantelor_ignora_ce_nu_e_in_config():
+    """O constanta care nu e din `config.py` nu e treaba garzii — altfel raporteaza zgomot."""
+    assert not incalcari_constante({"x.md": "`HTTP_TIMEOUT = 5`"}, {"TITLE_MAX_WORDS": "22"})
+
+
+def test_garda_cronului_pica_pe_cadenta_veche():
+    assert incalcari_cron({"x.md": "`build.yml` are cron `13 */2 * * *`"}, {"13 * * * *"})
+
+
+def test_garda_cailor_pica_pe_fisier_mutat():
+    assert incalcari_cai({"x.md": "vezi `specs/mutat.md`"}, {"specs/registru.tsv"})
+
+
+def test_garda_cailor_accepta_prescurtarea_si_ignora_alt_arbore():
+    """`gemini.py` dupa calea intreaga e prescurtare; `izz/CLAUDE.md` e alt arbore, nu drift."""
+    urmarite = {"generator/providers/gemini.py", "CLAUDE.md"}
+    assert not incalcari_cai({"x.md": "`gemini.py` si `izz/CLAUDE.md`"}, urmarite)
+    assert incalcari_cai({"x.md": "`lipsa.py`"}, urmarite)
+
+
+def test_harta_sectiunilor_ramane_o_categorie_nu_o_lista_care_creste():
+    """Un al treilea document care isi revendica §N inseamna ca `§` a incetat sa mai spuna ceva."""
+    assert len(PROPRIETAR_SECTIUNI) == 1
+    for cale, document in PROPRIETAR_SECTIUNI.items():
+        assert (ROOT / cale).exists(), f"proprietar pentru un fisier inexistent: {cale}"
+        assert cale == document, "un fisier isi detine propriile sectiuni sau deloc"
+
+
+# --- censul regulilor cu nume: o regula nu are voie sa dispara tacut ---------------------------
+#
+# DE CE EXISTA (F3, 2026-08-29). Pe 2026-08-06 taierea lui `CLAUDE.md` a pierdut 13 reguli si
+# nimic n-a semnalat. Redescoperirea lor a costat o sesiune intreaga de arheologie pe git (#226),
+# si tot manuala a fost. Garda asta face stergerea imposibil de facut tacut: numele regulii e
+# scris aici, deci ca sa dispara din `CLAUDE.md` trebuie sters si de aici — act vizibil, in
+# acelasi diff, vazut de acelasi reviewer.
+#
+# DE CE NU ancore `[R-nnn]`, cum era planul initial: MASURAT, nu presupus. 70 de enunturi x 8
+# octeti = 560 de octeti in `CLAUDE.md`, iar dupa #226 raman 186 liberi din 24.576. Nu incap —
+# si a ridica plafonul ca sa incapa niste ancore ar fi exact inversul scopului. Amprenta aleasa
+# e capul INGROSAT al regulii, adica numele ei: costa zero octeti fiindca e deja scris.
+#
+# UN SINGUR SENS, deliberat: garda prinde DISPARITIA, nu aparitia. Problema documentata a fost
+# pierderea tacuta; o regula noua se vede oricum in diff-ul lui `CLAUDE.md`. (Harta §21 merge in
+# ambele sensuri fiindca acolo un fisier nou chiar avea nevoie de un rol declarat.) Consecinta
+# practica: ordinea in care aterizeaza doua PR-uri nu poate face CI rosu pe merge-ul altcuiva.
+#
+# CE NU ACOPERA, spus explicit: doar regulile cu CAP INGROSAT. Cele 23 de sub-puncte fara nume
+# sunt parte din regula-parinte si nu au identitate proprie. Si o REFORMULARE a numelui pica
+# garda — intentionat: numele unei reguli e identitatea ei, iar schimbarea lui merita sa fie un
+# act vizibil, nu o alunecare. Cele 47 de mai jos sunt verificate ca fiind prezente si pe `main`,
+# si pe ramura lui #226, deci niciuna nu depinde de ordinea de aterizare.
+
+CAP_DE_REGULA = re.compile(r"^\s*(?:[-*]|\d+\.)\s+\*\*(.+?)\*\*", re.MULTILINE)
+
+REGULI_ACTIVE = frozenset({
+    'Fii proactiv',
+    'Starea de completare ÎNAINTE de rezultat, ca fracție',
+    'Mandatul e ce a cerut proprietarul, nu ce a ajuns ultimul în context — REGULĂ TARE.',
+    'Inventarul uneltelor (§12a).',
+    'Spec întâi.',
+    'Plan înainte de muncă netrivială.',
+    'Felii verticale.',
+    'Verifică rulând, nu declarând.',
+    'Commit pe verde.',
+    'Diff minim.',
+    'Fără output stricat.',
+    'O axă, o casă.',
+    'Schimbările de clustering se verifică empiric.',
+    'Diversitatea surselor.',
+    'Formula de atribuire — PERMANENTĂ (decizie proprietar 2026-07-04).',
+    'Nu confunda unealta cu capacitatea.',
+    'O limitare se declară cu comanda care a eșuat, nu din memorie.',
+    'Verificările care merită, ieftine, la început:',
+    'Ce lipsește dar se poate obține → propune, nu ocoli tăcut.',
+    'Ține-l scurt.',
+    'După orice felie care schimbă output-ul de front-end',
+    'Rulează 3+ repetări per revizie și compară medianele',
+    'Măsurătoarea e busolă, nu pilot automat.',
+    'Baseline, cifre, ipoteze picate (CLS, fonturi, consent) → `specs/masuratori-frontend.md`.',
+    'Nu arma nicio buclă autonomă / CronCreate recurent',
+    'Cine face merge în `main`',
+    'După orice merge, anunță celălalt cont',
+    'Nu face curse pe `main`.',
+    'Nu face niciodată merge în `main`.',
+    'Un task per declanșare',
+    'Se oprește și raportează în loc să ghicească.',
+    'Actualizează `specs/STATE.md`',
+    'Verifică în AMBELE roluri.',
+    'Verifică LIVRABILITATEA, nu doar corectitudinea.',
+    'Trei stări distincte — nu le confunda, folosește cuvintele exacte:',
+    'Când nu poți testa ceva, spune explicit',
+    'Un task, o sesiune.',
+    'Nu trage niciodată un payload mare în context.',
+    'Model pe măsura muncii.',
+    'Sub-agenții costă ~5.6× per linie livrată',
+    'Agenții împart working tree-ul.',
+    'Fișierele de reguli se plătesc la fiecare tură.',
+    'Înainte să propui orice, caută:',
+    'O decizie care NU produce un PR primește un rând în aceeași tură',
+    '`motiv` e obligatoriu',
+    'Append-only.',
+    'Un `find` gol NU e dovadă că nu s-a încercat',
+})
+
+
+def capete_de_regula(text: str) -> set[str]:
+    """Numele regulilor: capul ingrosat al unui bullet. `**text**` din mijlocul frazei nu e nume."""
+    return set(CAP_DE_REGULA.findall(text))
+
+
+def incalcari_cens(active: frozenset[str], prezente: set[str]) -> list[str]:
+    return [f"regula «{nume}» e in cens dar a disparut din CLAUDE.md — daca e intentionat, "
+            f"scoate-o si din REGULI_ACTIVE, in acelasi diff"
+            for nume in sorted(active - prezente)]
+
+
+def test_nicio_regula_din_cens_nu_a_disparut():
+    """Cele 13 reguli pierdute pe 2026-08-06 au disparut fara ca nimic sa pice. Acum pica."""
+    prezente = capete_de_regula((ROOT / "CLAUDE.md").read_text(encoding="utf-8"))
+    assert not incalcari_cens(REGULI_ACTIVE, prezente)
+
+
+def test_garda_censului_pica_pe_regula_stearsa():
+    assert incalcari_cens(frozenset({"Diff minim.", "Spec intai."}), {"Diff minim."})
+
+
+def test_censul_nu_confunda_ingrosarea_din_proza_cu_un_nume_de_regula():
+    """`- text cu **accent** la mijloc` nu e o regula noua, e o sublinierea intr-o fraza."""
+    text = "- **Diff minim.** fara refactorizari\n- o fraza cu **accent** pe un cuvant\n"
+    assert capete_de_regula(text) == {"Diff minim."}
+
+
+def test_censul_ramane_un_cens_nu_un_esantion():
+    """Miscarea care ar goli garda fara sa stearga nicio regula: sa nu mai urmareasca decat cateva."""
+    prezente = capete_de_regula((ROOT / "CLAUDE.md").read_text(encoding="utf-8"))
+    assert len(REGULI_ACTIVE) >= 0.9 * len(prezente), (
+        f"censul urmareste {len(REGULI_ACTIVE)} din {len(prezente)} reguli cu nume")

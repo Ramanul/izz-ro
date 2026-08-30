@@ -8,6 +8,7 @@ output.stale*/
 # ce mai inventeaza sesiunea urmatoare). Un `git add -A` neatent ar comite un site randat intreg.
 output.*/
 .audit/
+.audit-*/
 __pycache__/
 *.pyc
 *.log

@@ -10,6 +10,11 @@
 
 ## Unealta
 
+**Regula de alegere a uneltei:** preferă măsurarea CLI **locală** în locul „site-urilor de
+testare" — ieșire JSON structurată, rulează pe `localhost` ÎNAINTE de deploy, fără rate limits.
+API-urile externe (PageSpeed Insights, validatorul W3C) sunt un complement **post-deploy** pe
+site-ul live, **nu un substitut** pentru măsurătoarea de dinainte de commit.
+
 `bash tools/audit.sh` — Lighthouse + pa11y pe `output/` servit local, JSON în `.audit/` (gitignored).
 Setup: `npm i -g lighthouse pa11y`. Auto-detectează Chromium (`CHROME_PATH` pentru override).
 

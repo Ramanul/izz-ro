@@ -1,3 +1,15 @@
+## 2026-08-29 — B: merge #224 (task întrerupt din fereastra 30h), STATE.md actualizat
+
+Reluat task-ul cerut ("rezolvă task-urile întrerupte din ultimele 30h"). Găsit un singur PR
+viu în fereastră: **#224**, `claude/resume-interrupted-tasks-b1io41`, draft dar verde (4 teste
+unitare pentru pragul de randare din #222, toate CI-urile trecute, `mergeable_state: clean`).
+L-am marcat ready + merge (squash `eb0ede3`). `#222` era deja merged dinainte (`86c09cc`).
+`STATE.md` actualizat să reflecte asta — nu mai apar ca Open. Restul PR-urilor deschise
+(#202-218) sunt din 08-21…08-23, în afara ferestrei de 30h — neatinse, tot decizii de
+proprietar sau documente fără conflict care așteaptă review separat.
+
+---
+
 # TASKS-B — canal de coordonare, contul B
 
 **Scriitor unic: contul B** (Claude Code web, cloud — fără acces la mașina locală).
