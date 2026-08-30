@@ -13,11 +13,14 @@
 > history with two live rules buried in it. That is the same failure the 08-07 cut documented.
 > **A section is `Open` only if a PR is open or a decision is pending — check, don't assume.**
 
-**Updated:** 2026-08-29 (#205 integrat cu bugetul din #209 si aterizat pe main, cu proprietarul;
+**Updated:** 2026-08-29 (F2 = garzile de fapte canonice; F3.5 a picat premisa lui F4;
 R2 investigat pentru arhiva — vezi mai jos)
 
 ## Open
 
+- **Regimul regulilor** (`specs/regim-reguli.md`, doar pe #226) — F1 = **#226** (verde, asteapta
+  merge). F2+F3 (garzi de fapte canonice + censul celor 47 de reguli cu nume) = **#227**, verde.
+  F3.5 a picat premisa lui F4 (IZZ-0252); inlocuitorul e IZZ-0253, iar F4 vrea plan nou.
 - **Doar documente** (conflictul din registru rezolvat de #222, nemaiverificate individual azi):
   #202 #203 #204 #206 #207 #214 #218.
 - **Archiva paginilor expirate (issue #198, deschis de proprietar 08-21)** — diagnostic complet
