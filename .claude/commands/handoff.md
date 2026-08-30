@@ -114,14 +114,20 @@ construcție, nu prin disciplină.
 
 ## 5. Predare explicită, dacă e cazul
 
-Dacă rămâne ceva concret pentru celălalt cont, adaugă-l la „În așteptare" în `TASKS-B.md`
-(A → B) — un task per punct, cu ce anume e de făcut și unde e spec-ul. Fără asta, celălalt
-cont află ce s-a făcut, dar nu ce are de făcut.
+Dacă rămâne ceva concret pentru celălalt cont, scrie-i un fișier în `handoff/to-<celălalt>/`
+din workspace, cu formatul din `handoff/PROTOCOL.md` — un fișier per felie, cu ce e de făcut,
+constrângerile și criteriul de verificare. Fără asta, celălalt cont află ce s-a făcut, dar nu
+ce are de făcut.
+
+**NU în `TASKS-B.md` din workspace** — înghețat din 2026-08-04 („nu mai adăuga elemente noi
+aici"), înlocuit de `handoff/` tocmai fiindcă un fișier per element face coliziunea imposibilă
+la rebase. `TASKS-A.md` / `TASKS-B.md` din izz-ro sunt jurnalele locale ale conturilor, alt
+fișier decât cel înghețat. Vezi `CLAUDE.md` §14 și §21.
 
 **Anunță ce ai integrat.** `izz/CLAUDE.md` §14 (regulă din 2026-07-24): merge-ul îl face contul
 din care lucrează Alexandru **în acel moment** — nu „cine a deschis PR-ul", nu „contul care
 deține main". Un PR verde nu se parchează așteptând celălalt cont. În schimb, **orice merge se
-scrie în `TASKS-B.md`**, la „Anunțuri de merge", plus în `specs/STATE.md`. Munca paralelă e
+scrie ca fișier în `handoff/to-<celălalt>/`**, plus în `specs/STATE.md`. Munca paralelă e
 sigură pentru că ambele conturi știu ce a aterizat, nu pentru că doar unul are voie să miște.
 Un merge neanunțat e exact ce a cauzat coliziunile pentru care s-a scris §14.
 
@@ -130,8 +136,8 @@ Regula veche „o singură sesiune scrie la `main`, întreabă înainte" e **dep
 ## 6. Commit + push — și la pașii 4 și 5, nu doar aici
 
 Jurnalul e deja pe remote de la 3a. Aceeași regulă se aplică însă la tot ce ai scris după:
-**`STATE.md` (pasul 4) și `TASKS-B.md` (pasul 5) se comit și se pushează pe măsură ce le
-termini**, nu se adună pentru un push final. Nu există motiv să ții pe disc, în ultima parte a
+**`STATE.md` (pasul 4) și fișierul de predare (pasul 5) se comit și se pushează pe măsură ce
+le termini**, nu se adună pentru un push final. Nu există motiv să ții pe disc, în ultima parte a
 bugetului, un fișier deja terminat.
 
 Push explicit în **fiecare** repo atins (mesaje în engleză). Workspace-ul are sync automat la
@@ -145,4 +151,4 @@ ajuns pe remote e mai rău decât niciunul, pentru că pare făcut.
 ## 7. Raportează, scurt
 
 Trei-cinci linii: unde e jurnalul, ce s-a actualizat în STATE.md, ce a rămas necomis (și de ce),
-ce e în TASKS-B.md pentru celălalt cont. Fără reluarea conținutului jurnalului.
+ce ai lăsat în `handoff/to-<celălalt>/`. Fără reluarea conținutului jurnalului.
