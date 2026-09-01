@@ -6,6 +6,8 @@ from urllib.parse import urlsplit, urlunsplit, parse_qsl, urlencode
 
 _TAG_RE = re.compile(r"<[^>]+>")
 _WS_RE = re.compile(r"\s+")
+# Pattern to extract hrefs from anchor tags so link destinations are preserved as text
+_HREF_ANCHOR_RE = re.compile(r'<a\b[^>]*?\bhref\s*=\s*["\']([^"\']+)["\'][^>]*>(.*?)</a>', re.I | re.S)
 
 # Parametri de tracking eliminati la normalizarea URL-ului (pentru dedup stabil)
 _TRACKING_PREFIXES = ("utm_",)
@@ -79,7 +81,18 @@ def clean_html(text: str) -> str:
     # vizibil, in teaserele de pe izz.ro — evaziune clasica prin dubla codare.
     # Se itereaza pana la punct fix fiindca si codarea poate fi dubla (`&amp;lt;img`).
     for _ in range(3):
-        nou = _TAG_RE.sub(" ", _html.unescape(text))
+        text = _html.unescape(text)
+    # Inainte de a sterge tagurile, convertim ancorele in: "inner_text URL" pentru a pastra
+    # destinatia link-ului ca text vizibil (utile pentru detectii de URL ostil in corp).
+    def _anchor_repl(m: re.Match) -> str:
+        href = _html.unescape(m.group(1) or "")
+        inner = _TAG_RE.sub(" ", m.group(2) or "")
+        return (inner + " " + href).strip()
+
+    text = _HREF_ANCHOR_RE.sub(_anchor_repl, text)
+    # Apoi eliminam restul tagurilor
+    for _ in range(3):
+        nou = _TAG_RE.sub(" ", text)
         if nou == text:
             break
         text = nou
