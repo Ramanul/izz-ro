@@ -15,7 +15,7 @@
 > Garda `incalcari_pr_fantoma` in `tests/test_pr_fantoma.py` pica daca `## Open` numeste un PR
 > care are deja commit de merge pe main (fara adnotarea `(merged)`).
 
-**Updated:** 2026-09-02 (#245 UX ai-mark doar pe articol; #243/#244 pe main)
+**Updated:** 2026-09-02 (main rosu de la #245 -> fix in #248; #247 deschis, blocat de aceeasi regresie)
 
 ## Open
 
@@ -26,8 +26,11 @@
 - **Axa 3** — spec `specs/anomalie-linkuri.md` (`IZZ-0259`), NEimplementat deliberat (R3).
 - **Arhiva (#198)** — `IZZ-0260`/`IZZ-0261`: blocata pe decizia de arhitectura + `izz-failover`.
 - **Trafic** — sonda `trafic.yml` scrisa; de citit daca tokenul CLOUDFLARE are scope analytics.
-- **Home fresh 72h** — helper pe branch `fix/home-fresh-72h`; wiring in `render.py` pending.
-- **PR-uri deschise (draft / decizie owner):** #207 #214 #235.
+- **Home fresh 72h** — **PR #247 deschis** (`fix/home-fresh-72h-v2`): helper + wiring in
+  `render.py` + 6 teste. Wiring-ul NU mai e pending. CI-ul lui pica pe `test_marcaj_ai`, o
+  regresie venita de pe main (#245) — nu a lui; se deblocheaza cand intra #248.
+- **PR-uri deschise:** #247 (prospetime 72h), #248 (repara main-ul rosu — `test_marcaj_ai`
+  randa `article.html` fara `asset_ver`/`jsonld`). Draft / decizie owner: #207 #214 #235.
   (#245/#243/#244 merged; #225/#240 closed.)
 - **Din `specs/atribuire-cercetare-si-plan.md`** — E1 + E4 cer decizia proprietarului.
 
@@ -43,7 +46,10 @@
 - **Attribution: `specs/atribuire-cercetare-si-plan.md` is the dossier — do not re-research it.**
   7 external systems, 8 causes, a 6-stage plan, paid for once. Run `tools/eval_atribuire.py`
   before and after **any** change to `geo.py`. Baseline 2026-08-08: category 25/39 (64%),
-  place-on-badge 31/32 (97%). Covers are never redrawn on a first run (`IZZ-0163`, owner refused
+  place-on-badge 31/32 (97%). **Cifra aia NU mai e comparabila** (`IZZ-0268`, masurat 2026-09-02):
+  TTL-ul a expirat 44 din cele 51 de randuri ale setului de aur, deci o rulare de azi masoara 7
+  articole si da 86% — alt esantion, nu alt rezultat. Unealta cere set de aur reimprospatat.
+  Covers are never redrawn on a first run (`IZZ-0163`, owner refused
   2026-08-06); `FORCE_REGEN=1` is the opt-in.
 
 ## Where the rest lives
