@@ -37,3 +37,54 @@ def test_is_synthesis_candidate_needs_distinct_domains():
     diff = [_a("t", "u3", "https://digi24.ro/a"), _a("t", "u4", "https://hotnews.ro/b")]
     assert not cluster.is_synthesis_candidate(same)
     assert cluster.is_synthesis_candidate(diff)
+
+
+# ---------------------------------------------------------------------------
+# Garzile de mai jos apara CONJUNCTIA din `_similar`, nu comportamentul general.
+#
+# DE CE EXISTA (masurat 2026-09-02, prin mutation testing): docstring-ul lui `_similar`
+# argumenteaza explicit „Conditie AND (nu OR) -> evita lipirea a doua titluri lungi cu 3
+# cuvinte generice comune". Decizia era scrisa, dar NEPAZITA: schimband `and` in `or` pe
+# linia 40, INTREAGA suita trecea. Cu `or`, termenul `union > 0` e adevarat pentru orice
+# pereche de titluri nevide, deci `_similar` ar returna True aproape mereu — over-merge
+# total, toate articolele intr-un cluster.
+#
+# Sect. 7 cere ca schimbarile de clustering sa fie verificate pe AMBELE cazuri, over-merge
+# SI under-merge. `test_cluster_does_not_merge_different_events` acoperea under-merge pe
+# titluri fara legatura; ce lipsea era cazul GREU: titluri care CHIAR au tokeni comuni, dar
+# nu suficient de proportional ca sa fie acelasi eveniment.
+
+
+def test_similar_cere_AMBELE_praguri_nu_doar_unul():
+    """Tokeni comuni PESTE prag, dar proportie SUB prag -> NU e acelasi eveniment.
+
+    Ucide mutantul `and` -> `or`: cu `or`, primul termen singur ar decide."""
+    from generator.cluster import _similar, SHARED_TOKENS_MIN, JACCARD_MIN
+    comune = {f"cuvant{i}" for i in range(SHARED_TOKENS_MIN)}
+    # doua titluri lungi care impart exact pragul de tokeni, dar sunt altfel diferite
+    t1 = comune | {f"a{i}" for i in range(20)}
+    t2 = comune | {f"b{i}" for i in range(20)}
+    inter, union = len(t1 & t2), len(t1 | t2)
+    assert inter >= SHARED_TOKENS_MIN, "fixtura trebuie sa treaca pragul de tokeni"
+    assert inter / union < JACCARD_MIN, "fixtura trebuie sa PICE pragul de proportie"
+    assert _similar(t1, t2) is False, (
+        f"{inter} tokeni comuni din {union} (Jaccard {inter/union:.2f}) NU e acelasi eveniment; "
+        "daca asta trece, conjunctia din _similar a devenit disjunctie")
+
+
+def test_similar_cere_AMBELE_praguri_si_invers():
+    """Proportie PESTE prag, dar prea putini tokeni -> tot NU.
+
+    Cazul simetric: doua titluri foarte scurte si aproape identice trec usor de Jaccard,
+    dar `SHARED_TOKENS_MIN` exista tocmai ca sa nu lipeasca stiri pe doua cuvinte. Fixtura
+    se CONSTRUIESTE din constanta, ca sa nu devina tacut inaplicabila daca pragul se schimba.
+    """
+    from generator.cluster import _similar, SHARED_TOKENS_MIN, JACCARD_MIN
+    comune = {f"cuvant{i}" for i in range(SHARED_TOKENS_MIN - 1)}   # exact UNUL sub prag
+    t1, t2 = set(comune), comune | {"in_plus"}
+    inter, union = len(t1 & t2), len(t1 | t2)
+    assert inter / union >= JACCARD_MIN, "fixtura trebuie sa treaca pragul de proportie"
+    assert inter < SHARED_TOKENS_MIN, "fixtura trebuie sa PICE pragul de tokeni"
+    assert _similar(t1, t2) is False, (
+        f"doar {inter} tokeni comuni, sub pragul de {SHARED_TOKENS_MIN}; "
+        "daca asta trece, conjunctia din _similar a devenit disjunctie")
