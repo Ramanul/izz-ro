@@ -31,6 +31,7 @@ from .select import (_dedup, _dedup_sources, _diversify, _entity_index,
 # in paranteze NU acopera numele de pe continuari — verificat, nu presupus.
 from .select import _slug_stems, sources_coherent  # noqa: F401
 from .util import domain_of
+from .home_fresh import home_fresh
 
 ROOT = config.ROOT
 TPL_DIR = os.path.join(ROOT, "templates")
@@ -884,7 +885,8 @@ def build(articles: list, mod: dict | None = None) -> None:
     for cat in config.CATEGORIES:
         # Homepage-ul ramane un tablou de bord: limita configurabila pastreaza orientarea
         # rapida, iar arhiva completa ramane pe pagina categoriei.
-        items = [a for a in by_date if a.get("category") == cat and a["url"] not in hero_urls]
+        items = [a for a in by_date
+                 if a.get("category") == cat and a["url"] not in hero_urls and home_fresh(a)]
         by_category[cat] = _diversify(items)[:config.HOME_CARDS_PER_CATEGORY]
 
     # Variantele mici se emit doar pentru cardurile homepage-ului (nu pentru toate
