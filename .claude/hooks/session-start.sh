@@ -59,11 +59,23 @@ if [ -f "$ROOT/specs/registru.tsv" ]; then
   # Coloanele sunt: id, data, zona, titlu, STARE, decident, dovada, motiv, leaga.
   # Starea e a 5-a. Prima versiune a hook-ului filtra pe $3 (`zona`) si iesea mereu goala,
   # fara sa dea eroare -- de-aia fiecare ramura de aici e verificata rulind hook-ul, nu citindu-l.
+  #
+  # `tail` taie DECIZII, nu linii. Versiunea de dinainte formata intai si taia dupa, deci
+  # numarul de decizii afisate depindea de cate aveau motiv (12 pe 2026-09-02, dar 24 daca
+  # niciuna n-ar avea) si prima linie putea ramane un `motiv:` orfan, fara titlul lui.
+  #
+  # Motivul se tipareste doar pentru `masurat-fals`. Masurat 2026-09-02: acolo ipoteza SUNA
+  # plauzibil, deci titlul singur nu opreste redeschiderea -- motivul e antidotul. La `respins`
+  # si `anulat` decizia e a proprietarului si titlul e semnalul suficient; detaliul e la un
+  # `registru.py find` distanta. (Economia e mica -- 11 din 12 randuri sunt `masurat-fals`;
+  # castigul aici e predictibilitatea, nu octetii.)
   awk -F'\t' 'NR>1 && ($5=="respins" || $5=="anulat" || $5=="abandonat" \
-      || $5=="masurat-fals" || $5=="inchis-de-proprietar") {
+      || $5=="masurat-fals" || $5=="inchis-de-proprietar")' "$ROOT/specs/registru.tsv" \
+    | tail -12 \
+    | awk -F'\t' '{
         printf "%s  %s  %-20s %s\n", $1, $2, $5, substr($4,1,90)
-        if ($8 != "") printf "        motiv: %s\n", substr($8,1,150)
-      }' "$ROOT/specs/registru.tsv" | tail -24 || true
+        if ($5=="masurat-fals" && $8 != "") printf "        motiv: %s\n", substr($8,1,150)
+      }' || true
   echo
   echo "(lista completa: python tools/registru.py find <subiect>)"
   echo
