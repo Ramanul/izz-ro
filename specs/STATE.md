@@ -12,23 +12,22 @@
 > #197 on 08-21), and the 195-line `## Open` section was almost entirely SHIPPED/FIXED/REVERTED
 > history with two live rules buried in it. That is the same failure the 08-07 cut documented.
 > **A section is `Open` only if a PR is open or a decision is pending — check, don't assume.**
-> Garda `incalcari_pr_fantoma` in `tests/test_reguli.py` pica daca `## Open` numeste un PR care
-> are deja commit de merge pe main (fara adnotarea `(merged)`).
+> Garda `incalcari_pr_fantoma` in `tests/test_pr_fantoma.py` pica daca `## Open` numeste un PR
+> care are deja commit de merge pe main (fara adnotarea `(merged)`).
 
-**Updated:** 2026-09-02 (titlu-doar-data + garda PR fantoma; STATE aliniat cu API)
+**Updated:** 2026-09-02 (#244 pe main: titlu-doar-data + garda PR fantoma; STATE curatat)
 
 ## Open
 
-- **F4 CONTINUAT (#241, merged).** §18 in L1; plafon pe SUPRAFATA de pornire. Buget 34.936 o.,
-  plafon 37 KB. Urmatorii: §12, §14, §20; **§17 NU**. `IZZ-0265`.
+- **F4 CONTINUAT (#241, merged).** §18 in L1; plafon pe SUPRAFATA de pornire. Urmatorii: §12,
+  §14, §20; **§17 NU**. `IZZ-0265`.
 - **K12 decis (`IZZ-0255`)**: mecanism rezumat zilnic. Specul nu e scris; porneste de la
   `editorial-quality.yml`.
 - **Axa 3** — spec `specs/anomalie-linkuri.md` (`IZZ-0259`), NEimplementat deliberat (R3).
-- **Arhiva (#198)** — `IZZ-0260`/`IZZ-0261`: blocata pe **decizia de arhitectura** + codul din
-  `izz-failover`, **nu pe #214**.
+- **Arhiva (#198)** — `IZZ-0260`/`IZZ-0261`: blocata pe decizia de arhitectura + `izz-failover`.
 - **Trafic** — sonda `trafic.yml` scrisa; de citit daca tokenul CLOUDFLARE are scope analytics.
-- **PR-uri deschise (API 2026-09-02):** #207 #214 #225 #230 #235 #236 #240 #242 #243.
-  #225 blocat pe decizii; #214 depasit partial; #236 absorbit de ramura de fix de azi.
+- **PR-uri deschise (API 2026-09-02):** #207 #214 #225 #235 #240 #243.
+  (#236/#230 absorbite de #244, inchise.)
 - **Din `specs/atribuire-cercetare-si-plan.md`** — E1 + E4 cer decizia proprietarului.
 
 ## Standing rules that keep being rediscovered — do not "fix" these
