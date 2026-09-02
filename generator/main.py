@@ -16,7 +16,7 @@ except ImportError:
 
 from . import fetch, state, cluster, moderation, config, guard
 from .process import get_provider, process_single, process_clusters_batch, process_batch, process_official, OFFICIAL_PREFIXES
-from .util import domain_of
+from .util import domain_of, fara_titluri_data
 from .claude_orchestrator import ClaudeCodeValidator
 
 
@@ -405,6 +405,14 @@ def run(dry_run: bool = False) -> dict:
     rep_urls = {a.get("url") for a in processed_new}
     combined = [a for a in existing
                 if a.get("url") not in folded and a.get("url") not in rep_urls] + processed_new
+
+    # §7: titlu care e DOAR o data calendaristica nu se publica (ex. CJ Giurgiu 27.08.2026).
+    # Aplicat pe starea INTREAGA, nu doar pe itemele noi — altfel cele deja publicate ar
+    # ramane pe site pana la expirarea TTL-ului.
+    combined, titluri_data = fara_titluri_data(combined)
+    if titluri_data:
+        print(f"Sarite ca avand drept titlu doar o data calendaristica: {len(titluri_data)}")
+
     upgraded = upgrade_fallbacks(combined, provider, budget - used)
     combined = state.expire(combined)
 

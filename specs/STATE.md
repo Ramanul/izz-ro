@@ -12,30 +12,24 @@
 > #197 on 08-21), and the 195-line `## Open` section was almost entirely SHIPPED/FIXED/REVERTED
 > history with two live rules buried in it. That is the same failure the 08-07 cut documented.
 > **A section is `Open` only if a PR is open or a decision is pending — check, don't assume.**
+> Garda `incalcari_pr_fantoma` in `tests/test_reguli.py` pica daca `## Open` numeste un PR care
+> are deja commit de merge pe main (fara adnotarea `(merged)`).
 
-**Updated:** 2026-09-02 (#241: bugetul de pornire sub garda, §18 in L1, `IZZ-0265`)
+**Updated:** 2026-09-02 (titlu-doar-data + garda PR fantoma; STATE aliniat cu API)
 
 ## Open
 
-- **F4 CONTINUAT (#241, draft).** §18 e a doua regula in L1, verificata prin rulare. Plafonul
-  s-a mutat de pe FISIER pe SUPRAFATA de pornire (`CLAUDE.md` + hook + frontmatter agenti si
-  comenzi): o mutare intre straturi NU economiseste — toate intra in aceeasi sesiune. Buget
-  36.278 -> 34.936 o., plafon 37 KB, garda acopera 100% (era 78%). Urmatorii: §12 (2.259 o.),
-  §14 (1.795), §20 (1.024); **§17 NU** — fara declansator pe cale s-ar dizolva. `IZZ-0265`.
-- **K12 decis (`IZZ-0255`)**: rutina nu se rescrie, se construieste mecanismul (rezumat zilnic
-  „ce e nou, ce e riscant"). **Specul nu e scris**; porneste de la `editorial-quality.yml`.
-- **Axa 3 a garzii de anomalie** — spec in `specs/anomalie-linkuri.md` (`IZZ-0259`), NEimplementat
-  deliberat: R3 cere praguri masurate, iar corpusul de gazde-destinatie nu exista. Pasul 1 e un
-  job pe runner. Cauza mecanica: `clean_html()` scoate `href`-urile inainte de `guard.verdict()`.
-- **Arhiva (#198)** — `IZZ-0260`: decide NUMARUL de fisiere, nu marimea starii. 3,23 fisiere/
-  articol, deci optiunile 2 si 3 mor in 7-24 de zile pe plafonul de 100.000 assets; R2 e singura
-  care scapa. **Blocat pe #214**, care da ruta catre `izz-failover`.
-- **Trafic** — sonda `.github/workflows/trafic.yml` scrisa; rulabila abia dupa aterizarea lui
-  #229. Raspunde masurat daca tokenul CLOUDFLARE existent are scope de analytics.
-- **PR-uri deschise:** #203 #204 #207 #214 **#241**. **#225** are doua blocaje: cinci ID-uri refolosite
-  si o regula redenumita din censul F3.
-- **Din `specs/atribuire-cercetare-si-plan.md`** — E1 + E4 cer decizia proprietarului, E3 focus
-  score, E5 gold set ~150 + poarta CI.
+- **F4 CONTINUAT (#241, merged).** §18 in L1; plafon pe SUPRAFATA de pornire. Buget 34.936 o.,
+  plafon 37 KB. Urmatorii: §12, §14, §20; **§17 NU**. `IZZ-0265`.
+- **K12 decis (`IZZ-0255`)**: mecanism rezumat zilnic. Specul nu e scris; porneste de la
+  `editorial-quality.yml`.
+- **Axa 3** — spec `specs/anomalie-linkuri.md` (`IZZ-0259`), NEimplementat deliberat (R3).
+- **Arhiva (#198)** — `IZZ-0260`/`IZZ-0261`: blocata pe **decizia de arhitectura** + codul din
+  `izz-failover`, **nu pe #214**.
+- **Trafic** — sonda `trafic.yml` scrisa; de citit daca tokenul CLOUDFLARE are scope analytics.
+- **PR-uri deschise (API 2026-09-02):** #207 #214 #225 #230 #235 #236 #240 #242 #243.
+  #225 blocat pe decizii; #214 depasit partial; #236 absorbit de ramura de fix de azi.
+- **Din `specs/atribuire-cercetare-si-plan.md`** — E1 + E4 cer decizia proprietarului.
 
 ## Standing rules that keep being rediscovered — do not "fix" these
 
@@ -54,8 +48,5 @@
 
 ## Where the rest lives
 
-`specs/istoric-executie.md` (everything cut from here, verbatim — measurements, killed
-hypotheses, the bot-challenge diagnosis, owner answers) · `specs/registru.tsv` +
-`python tools/registru.py find` (decisions, incl. what was rejected and why) ·
-`specs/masuratori-frontend.md` (Lighthouse/CLS) · `specs/istoric-operational.md` (cadence,
-delegation, autonomy history) · `../HANDOFF.md` (the cross-account state, ~30 lines).
+`specs/istoric-executie.md` · `specs/registru.tsv` + `python tools/registru.py find` ·
+`specs/masuratori-frontend.md` · `specs/istoric-operational.md` · `../HANDOFF.md`.

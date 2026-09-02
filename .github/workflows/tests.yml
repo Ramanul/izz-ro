@@ -37,6 +37,11 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
         with:
           persist-credentials: false
+          # Istoric COMPLET, nu implicitul `fetch-depth: 1`. Garda de PR fantoma din
+          # tests/test_reguli.py citeste commit-urile «Merge pull request #N» de pe main ca sa
+          # stie ce PR e deja integrat; masurat pe o clona `--depth 1` a repo-ului, `git log
+          # --grep` intoarce ZERO merge-uri, deci garda ar trece verde fara sa masoare nimic.
+          fetch-depth: 0
       - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7
         with:
           python-version: "3.11"
