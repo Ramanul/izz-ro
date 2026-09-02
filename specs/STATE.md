@@ -19,23 +19,23 @@
 
 ## Open
 
-- **F4 CONTINUAT (#241, merged).** §18 in L1; plafon pe SUPRAFATA de pornire. Urmatorii: §12,
-  §14, §20; **§17 NU**.
-- **K12 decis (`IZZ-0255`)**: mecanism rezumat zilnic. Specul nu e scris; porneste de la
-  `editorial-quality.yml`.
+- **F4 (#241, merged)**: §18 in L1. Urmatorii: §12, §14, §20; **§17 NU**.
+- **K12 (`IZZ-0255`)**: rezumat zilnic, spec nescris; porneste de la `editorial-quality.yml`.
 - **Axa 3** — spec `specs/anomalie-linkuri.md` (`IZZ-0259`), NEimplementat deliberat (R3).
 - **Arhiva (#198)** — `IZZ-0260`/`IZZ-0261`: blocata pe decizia de arhitectura + `izz-failover`.
 - **Trafic** — sonda `trafic.yml` scrisa; de citit daca tokenul CLOUDFLARE are scope analytics.
-- **Home fresh 72h** — **PR #247 deschis** (`fix/home-fresh-72h-v2`): helper + wiring in
-  `render.py` + 6 teste. DEBLOCAT: `test_marcaj_ai` e reparat pe main prin #248, deci CI-ul
-  lui trece dupa ce aduce main in ramura.
-- **PR-uri deschise:** #247 (prospetime 72h). Draft / decizie owner: #207 #214 #235.
+- **Home fresh 72h — PR #247** (`fix/home-fresh-72h-v2`): helper + wiring + 6 teste.
+  DEBLOCAT de #248; CI-ul lui trece dupa ce aduce main in ramura.
+- **PR-uri deschise:** #247 (prospetime 72h), #250 (plasa de echivalenta). Owner: #207 #214 #235.
   (#248 merged; #244 merged; #225/#240 closed. Fiecare PR cere propria adnotare — intr-o
   lista `#A/#B merged` garda o vede doar pe ultima.)
-- **CI paralelizat (#248)**: `pytest` + `html-gate` simultan, 29m39s -> 15m32s. Numele
-  jobului `pytest` NU se schimba (check obligatoriu).
-- **`ramanul-triage-blockers` (e1c8fbe2)**: vie, NEmergeuita, arunca tacut articole legitime
-  (`IZZ-0266`). De sters — decizie proprietar.
+- **CI paralelizat (#248)**: 29m39s -> 15m32s. Numele jobului `pytest` NU se schimba.
+  `ramanul-triage-blockers` (e1c8fbe2) e vie si arunca tacut articole legitime (`IZZ-0266`).
+- **PLASA pentru restructurare (#250, `IZZ-0271`)**: `tools/echivalenta.py` amprenteaza
+  `output/`, deci o refactorizare se poate DOVEDI neutra fara sa citesti 8.515 linii.
+  NEVERIFICAT, in ordinea asta: (1) determinismul intre DOUA randari, 2x10 min; (2) coverage
+  — `pip install pytest-cov && pytest --cov=generator`. Cuplarea reala NU e prin importuri:
+  16 chei fac punte in `articles.json` — dosar: `specs/arhitectura-cuplare.md`, NU re-cerceta.
 - **Din `specs/atribuire-cercetare-si-plan.md`** — E1 + E4 cer decizia proprietarului.
 
 ## Standing rules that keep being rediscovered — do not "fix" these
