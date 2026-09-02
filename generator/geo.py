@@ -114,6 +114,14 @@ _AMBIGUE = {
     "GEORGE ENESCU", # „Filarmonica George Enescu" — comuna in Botosani
     "MIHAI BRAVU",   # nume de strada in mai multe orase
     "GRADINARI",     # aparea intr-o insiruire de strazi
+    # Trei nume in care coliziunea vine din NORMALIZAREA DIACRITICELOR, nu din omonimie
+    # simpla: `strip_diacritics` face din Siria (comuna, Arad) exact „SIRIA", tara. Masurat
+    # 2026-09-02 pe corpusul de 13.462 de articole, in AMBELE directii (sect. 7):
+    "SIRIA",         # tara: 11 articole il numesc, TOATE 11 ajunsesera pe axa geo, ZERO au
+                     # marca geografica („comuna Siria") -> 11 din 11 erau gresite. „Fortele
+                     # kurde din Siria", „SUA au eliminat Siria de pe lista sponsorilor".
+    "FOCURI",        # „Focuri de arma la o petrecere rave in Elvetia" — comuna in Iasi
+    "BALCANI",       # „disputele istorice in Balcani" — Balcani, comuna in Bacau
 }
 
 _INDEX = None
