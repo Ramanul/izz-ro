@@ -288,65 +288,151 @@ să citească tot.
 
 ## 4e. A cincea axă: ce VERIFICĂ testele, nu doar ce execută
 
-Măsurat 2026-09-02. Cele patru axe de mai sus descriu **codul**. Aceasta descrie **plasa de
-sub el** — și e condiția de intrare pentru orice restructurare din §7: dacă suita nu observă
+Măsurat 2026-09-02. Primele patru axe descriu **codul**. Aceasta descrie **plasa de sub el**
+— și e condiția de intrare pentru orice restructurare din §7: dacă suita nu observă
 schimbările, „testele trec" nu spune nimic despre neutralitatea unui refactor.
 
 **Distincția care contează.** Coverage răspunde la „ce linii se **execută**". Mutation
-testing răspunde la „ce linii sunt **verificate**". Nu sunt același lucru: o linie executată
-de un test care nu o afirmă e acoperită și nepăzită simultan. Metoda: schimb un operator
-(`>=`→`>`, `and`→`or`, șterg un `not`), rulez testele care acoperă modulul, și dacă trec —
-**mutantul a supraviețuit**, adică nimeni nu privea acolo.
+testing răspunde la „ce linii sunt **verificate**". Nu e același lucru: o linie executată
+de un test care nu o afirmă e acoperită și nepăzită simultan.
 
-**Ce s-a găsit** — patru granițe nepăzite, toate off-by-one sau logică booleană, adică
-exact clasa pe care testele „la mijlocul intervalului" nu o prind:
+**Cifra care arată prăpastia dintre cele două**, măsurată pe `cluster.py`:
+
+```
+  coverage       95%   (73 instrucțiuni, 4 neatinse)
+  mutanți uciși  24%   (5 din 21)
+```
+
+Adică: aproape tot codul se execută, și **trei sferturi din el nu era privit de nimeni**.
+După testele adăugate în aceeași zi: **90%** mutanți uciși (19 din 21), cu coverage-ul
+practic neschimbat (singurele linii neatinse rămân gărzi de intrare vidă). Coverage-ul nu
+putea distinge cele două stări — de asta singur nu e o măsură de încredere, oricât de sus
+e procentul.
+
+Sweep-ul complet pe cele cinci module cu teste rapide, `32d6408a` vs. capul ramurii:
+
+```
+  modul      mutanți   înainte   după    ce s-a adăugat
+  cluster       21       24%      90%    _similar, _strict_match, garda pe entități
+  select        27       63%      81%    _dedup (avea ZERO teste), _titlu_scurt
+  geo           31       74%      77%    gazetteer-ul cu rânduri stricate
+  guard         17       76%      76%    —
+  util          20       80%      80%    —
+  ------------------------------------
+  TOTAL        116       64%      81%
+```
+
+`guard.py` merită privit separat, deși procentul lui n-a fost atins: 512 de linii, **un
+singur fișier de test**. E poarta de conținut ostil — codul care *aruncă* articole. Nu e cel
+mai slab procent, dar e cel mai slab raport între cât decide și cât e privit.
+
+*Precizie:* cele două coloane nu sunt măsurate în același moment. Coverage-ul e al suitei
+curente; procentul „înainte" e măsurat pe commit-ul `32d6408a`, rulând unealta de azi peste
+testele de atunci (worktree separat). Pentru `cluster` diferența dintre cele două momente e
+de două teste care nu schimbă coverage-ul, deci perechea 95%/24% se poate citi ca atare.
+
+### Coverage × hotspots: unde se suprapun cele două riscuri
+
+Suita completă, 1301 teste, 15m38s, **71% coverage total** (3733 instrucțiuni, 1087
+neatinse). Încrucișat cu hotspot-urile din §4c:
+
+```
+  modul      hotspot (§4c)   coverage      citire
+  render         24684          49%    ← cel mai rău pe AMBELE axe, simultan
+  fetch           6256          83%
+  process         4572          77%    ← al doilea
+  main            2272          84%
+  geo             1680          87%
+```
+
+`render.py` e răspunsul empiric la „unde se concentrează riscul": e cel mai mare hotspot
+(de 4× următorul) **și** cel mai slab acoperit dintre ele. Nuanță importantă, ca cifra să
+nu fie citită greșit: testul lent care randează tot site-ul pornește `python -m
+generator.main --render-only` ca **subproces**, iar coverage nu urmărește subprocese fără
+`COVERAGE_PROCESS_START`. Deci 49% e ce ating testele **în proces**. Diferența nu e doar
+artefact de măsurare — spune că randarea e testată aproape numai cap-coadă, ca o cutie
+neagră, nu pe unități.
+
+Restul, în ordinea surprizei:
+
+```
+  providers/gemini.py       0%   ← providerul folosit în PRODUCȚIE
+  providers/anthropic.py    0%
+  providers/cascade.py      0%   ← rutare între provideri: logică pură, nu I/O
+  providers/ollama.py       0%
+  covers.py                21%   (264 instrucțiuni, 209 neatinse)
+  htmlart.py               60%
+```
+
+Zero pe wrapper-ele de rețea e o alegere apărabilă. Zero pe `cascade.py` nu e: acolo se
+decide **ce provider răspunde când primul cade**, adică exact comportamentul pe care nu-l
+vezi până în ziua în care contează.
+
+### Ce s-a găsit și s-a păzit
+
+Opt granițe nepăzite, toate off-by-one sau logică booleană — clasa pe care testele „la
+mijlocul intervalului" nu o prind niciodată:
 
 ```
   cluster.py:40   and -> or    over-merge total (`union > 0` e mereu adevărat)
+  cluster.py:40   >= -> >      pragul de tokeni atins EXACT era respins
+  cluster.py:75   and -> or    absorbție cross-run pentru orice 4 cuvinte comune
+  cluster.py:75   >= -> >      ambele praguri din `_strict_match`, atinse exact
+  cluster.py:110  and -> or    garda pe entități (cronici sportive-șablon)
   select.py:37    >= -> >      două titluri cu fix 4 cuvinte comune → duplicat publicat
   select.py:108   <= -> <      titlu de fix `limit` caractere → trunchiat pe site
   geo.py:338      and -> or    rând stricat în gazetteer → alternanță regex vidă
 ```
 
-Toate patru sunt acum ucise (`IZZ-0276`). Al cincilea, `cluster.py:27`, e **mutant echivalent
-în practică** și rămâne deliberat nepăzit (`IZZ-0277`).
+**Tiparul e același de fiecare dată, și e mai interesant decât mutanții:** decizia era
+**scrisă și argumentată**, dar nepăzită. `_similar` are în docstring „condiție AND (nu OR)".
+`_strict_match` își poartă calibrarea în docstring — trei perechi reale, cu cifrele lor
+(CFR/Ceară 3 tokeni / jac 0.50 → DA; Messi vs Ronaldo 3 / 0.43 → NU; Ormuz 5 / 0.63 → DA).
+Garda pe entități își explică motivul („X învinge Y și avansează în optimi"). Datele
+existau, raționamentul exista — testul nu. Un comentariu nu rulează.
 
-**Constatarea cea mai grea nu e vreun mutant, ci un gol de acoperire:** `select._dedup` —
-funcția care implementează chiar promisiunea de brand („Zero Zgomot", deduplicat) — nu avea
-**niciun** test direct, deși antetul lui `tests/test_render_editorial.py` afirmă din
-2026-08-30 că avea. Afirmația a devenit falsă între timp și nimic n-o verifica. Aceeași
-formă cu §11 din CLAUDE.md și cu `IZZ-0257`: un fișier normativ care descrie o stare
-dispărută e mai rău decât tăcerea, fiindcă oprește căutarea.
+Doi supraviețuitori rămân **deliberat**, ca mutanți echivalenți în practică:
+`cluster.py:27` (`dt >= cutoff`, graniță de o microsecundă pe un ceas calculat în interiorul
+funcției — `IZZ-0277`) și `cluster.py:40` (`union > 0` → `union >= 0`, imposibil de atins
+fiindcă garda `if not t1 or not t2` de deasupra exclude mulțimile vide).
 
-**Unde măsurătoarea asta a greșit prima dată** (`IZZ-0275`, consemnat ca `masurat-fals`):
-prima rulare a raportat „67% rată de ucidere". Cifra e nefolosibilă, din două defecte ale
-propriului harness — nu ale repo-ului:
+**Golul de acoperire e mai grav decât oricare mutant:** `select._dedup` — funcția care
+implementează chiar promisiunea de brand — nu avea **niciun** test direct, deși antetul lui
+`tests/test_render_editorial.py` afirmă din 2026-08-30 că avea. Coverage-ul confirmă
+independent (`select.py`, linii 27-43 neatinse). Aceeași formă cu `IZZ-0257`: un fișier
+normativ care descrie o stare dispărută e mai rău decât tăcerea, fiindcă oprește căutarea.
 
-1. **Bytecode stale.** Harness-ul scria mutantul, rula, restaura. Doi mutanți succesivi pe
-   *același* fișier ieșeau cu *aceeași mărime* în *aceeași secundă*, iar invalidarea `.pyc`
-   se face pe (mtime în secunde, mărime) — deci pytest rula bytecode-ul mutantului
-   **anterior**. Așa a raportat `cluster.py:40` drept supraviețuitor și *după* ce testul
-   care îl ucide exista deja. Remediu: `PYTHONDONTWRITEBYTECODE=1` + ștergerea
-   `__pycache__` înainte de fiecare rulare.
-2. **Setul de teste ales de mână.** Pentru `select.py` omitea `test_render_editorial.py`,
-   singurul fișier care acoperă modulul. Cei doi mutanți „supraviețuiau" unei suite care
-   nu-i vedea.
+### Unde a greșit măsurătoarea — de trei ori, pe aceeași unealtă
 
-Lecția e mai generală decât mutation testing: **o unealtă de măsură scrisă ad-hoc trebuie
-ea însăși verificată pe un caz cu răspuns cunoscut** înainte să-i citezi cifra. Aici cazul
-cu răspuns cunoscut a apărut din noroc (un mutant despre care *știam* că e ucis a fost
-raportat viu). Fără el, aș fi raportat 67% și aș fi crezut-o.
+Consemnat fiindcă e lecția cea mai transferabilă din toată dimensiunea (`IZZ-0275`,
+`IZZ-0279`):
 
-**Cum se reface**, determinist:
+1. **„67% rată de ucidere"** — nefolosibil. Harness-ul scria mutantul, rula, restaura; doi
+   mutanți succesivi pe același fișier ieșeau cu *aceeași mărime* în *aceeași secundă*, iar
+   invalidarea `.pyc` se face pe (mtime în secunde, mărime) — deci pytest rula bytecode-ul
+   mutantului **anterior**. Remediu: `PYTHONDONTWRITEBYTECODE=1` + ștergerea `__pycache__`.
+2. **Setul de teste ales de mână** omitea `test_render_editorial.py` pentru `select.py`
+   (numele vechi, de dinainte de extragerea din `render.py`) — doi supraviețuitori falși.
+3. **Mutanți în proză.** Filtrul sărea liniile cu `#` sau ghilimele, ceea ce lăsa să treacă
+   *interiorul* docstring-urilor și comentariile de la capătul liniei: săgeata `->` dintr-un
+   comentariu devenea `->=`. 13 din 33 de „supraviețuitori" erau text, nu cod. Remediu:
+   selecția se face pe **tokeni** (`tokenize`), unde `->` e un singur token.
+
+**Lecția, mai generală decât mutation testing:** o unealtă de măsură scrisă ad-hoc trebuie
+ea însăși verificată pe un caz cu răspuns cunoscut înainte să-i citezi cifra. Aici cazul cu
+răspuns cunoscut a apărut din noroc — un mutant despre care *știam* că e ucis a fost
+raportat viu. Fără norocul ăla, cifra falsă ar fi intrat în dosar ca fapt.
+
+### Cum se reface
 
 ```
-python tools/mutanti.py            # aplică fiecare mutant, rulează testele care îl acoperă
+python tools/mutanti.py              # sweep complet, determinist (~4 min)
+python tools/mutanti.py --regresie   # doar granițele de mai sus (~10 s, iese 1 dacă cedează)
+python -m pytest tests/ -q --cov=generator --cov-report=term-missing:skip-covered
 ```
 
-**Ce NU acoperă axa asta.** Mutanții testați sunt operatori simpli pe module cu teste
-rapide; `render.py` — cel mai mare hotspot din §4c — n-a fost mutantat deloc, fiindcă
-testele care îl acoperă randează `output/` și o rulare completă ar costa ore. Deci
-afirmația „plasa ține" e dovedită pe `cluster`/`select`/`geo`/`util`/`guard`, nu pe
-întregul pipeline. Pentru `render`, plasa rămâne `tools/echivalenta.py` (amprentă pe
-output), care e complementară: ea nu spune dacă testele privesc, ci dacă rezultatul s-a
-schimbat.
+**Ce NU acoperă axa asta.** `render.py` — cel mai mare hotspot — n-a fost mutantat deloc:
+testele care îl acoperă randează `output/`, deci un sweep ar costa ore. Deci „plasa ține" e
+dovedit pe `cluster`/`select`/`geo`/`util`/`guard`, nu pe tot pipeline-ul. Pentru `render`,
+plasa rămâne `tools/echivalenta.py` (amprentă pe output) — complementară: nu spune dacă
+testele privesc, ci dacă rezultatul s-a schimbat.

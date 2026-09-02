@@ -37,6 +37,8 @@ import shutil
 import subprocess
 import sys
 import tempfile
+import token
+import tokenize
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 
@@ -64,10 +66,14 @@ MUTATII = [
 # Granitele gasite pe 2026-09-02 si pazite de atunci. `--regresie` verifica DOAR ca raman
 # ucise: e verificarea ieftina de rulat inainte de un refactor pe modulele astea.
 REGRESIE = [
-    ("cluster", 40,  r"\band\b",            "or"),
-    ("select",  37,  r"(?<![<>=!])>=(?!=)", ">"),
-    ("select",  108, r"(?<![<>=!])<=(?!=)", "<"),
-    ("geo",     338, r"\band\b",            "or"),
+    ("cluster", 40,  r"\band\b",            "or"),   # _similar: conjunctie, nu disjunctie
+    ("cluster", 40,  r"(?<![<>=!])>=(?!=)", ">"),    # _similar: pragul de tokeni, atins exact
+    ("cluster", 75,  r"\band\b",            "or"),   # _strict_match: absorbtia cross-run
+    ("cluster", 75,  r"(?<![<>=!])>=(?!=)", ">"),    # _strict_match: pragul de 4 tokeni
+    ("cluster", 110, r"\band\b",            "or"),   # attach_recent: garda pe entitati
+    ("select",  37,  r"(?<![<>=!])>=(?!=)", ">"),    # _dedup: 4 cuvinte comune = duplicat
+    ("select",  108, r"(?<![<>=!])<=(?!=)", "<"),    # _titlu_scurt: taiere la limita exacta
+    ("geo",     338, r"\band\b",            "or"),   # gazetteer: randurile stricate se arunca
 ]
 
 ENV = {**os.environ, "PYTHONDONTWRITEBYTECODE": "1"}
@@ -107,14 +113,23 @@ def _testele_trec(lucru: pathlib.Path, fisiere: list) -> bool | None:
 
 
 def _incearca(lucru, modul, nr, tipar, inlocuire) -> bool | None:
-    """Aplica un mutant pe linia `nr` (1-indexata), ruleaza, restaureaza. None = inaplicabil."""
+    """Aplica un mutant pe linia `nr` (1-indexata), ruleaza, restaureaza. None = inaplicabil.
+
+    `tipar` e fie un regex (modul --regresie, unde linia e cunoscuta si e cod), fie perechea
+    (coloana_start, coloana_stop) venita din `_candidati`, care taie exact tokenul.
+    """
     p = lucru / "generator" / f"{modul}.py"
     orig = p.read_text(encoding="utf-8")
     linii = orig.split("\n")
     if nr > len(linii):
         return None
-    mutata = re.sub(tipar, inlocuire, linii[nr - 1], count=1)
-    if mutata == linii[nr - 1]:
+    linie = linii[nr - 1]
+    if isinstance(tipar, tuple):
+        c0, c1 = tipar
+        mutata = linie[:c0] + inlocuire + linie[c1:]
+    else:
+        mutata = re.sub(tipar, inlocuire, linie, count=1)
+    if mutata == linie:
         return None
     linii[nr - 1] = mutata
     p.write_text("\n".join(linii), encoding="utf-8")
@@ -128,17 +143,32 @@ def _incearca(lucru, modul, nr, tipar, inlocuire) -> bool | None:
 def _candidati(modul: str):
     """(nr_linie, tipar, inlocuire, eticheta, textul liniei) — determinist, in ordinea din fisier.
 
-    Sar peste comentarii si peste liniile cu ghilimele: un `and` dintr-un sir de caractere
-    n-ar schimba comportamentul, doar textul, si ar umple raportul cu zgomot.
+    Selectia se face pe TOKENI, nu pe text. Prima versiune filtra liniile cu `#` sau ghilimele
+    si atat — ceea ce lasa sa treaca INTERIORUL docstring-urilor si comentariile de la capatul
+    liniei. Rezultatul: 13 din 33 de „supravietuitori" din primul sweep erau proza — sageata
+    `->` dintr-un comentariu, mutata in `->=`. Zgomot care umfla numitorul si ascunde
+    supravietuitorii reali. `tokenize` stie exact ce e cod si ce nu; `->` e un singur token,
+    deci nu se mai confunda cu operatorul `>`.
     """
-    text = (ROOT / "generator" / f"{modul}.py").read_text(encoding="utf-8")
-    for i, linie in enumerate(text.split("\n"), start=1):
-        despuiat = linie.strip()
-        if despuiat.startswith("#") or '"' in linie or "'" in linie:
+    cale = ROOT / "generator" / f"{modul}.py"
+    linii = cale.read_text(encoding="utf-8").split("\n")
+    with open(cale, "rb") as fh:
+        jetoane = list(tokenize.tokenize(fh.readline))
+
+    for jeton in jetoane:
+        if jeton.start[0] != jeton.end[0]:
+            continue                      # token pe mai multe linii (sir triplu) — nu se muta
+        cheie = jeton.string
+        if jeton.type == token.OP and cheie in (">=", "<=", ">"):
+            inlocuire = {">=": ">", "<=": "<", ">": ">="}[cheie]
+        elif jeton.type == token.NAME and cheie in ("and", "not"):
+            inlocuire = "or" if cheie == "and" else ""
+        else:
             continue
-        for tipar, inlocuire, eticheta in MUTATII:
-            if re.search(tipar, linie):
-                yield i, tipar, inlocuire, eticheta, despuiat
+        nr, c0 = jeton.start[0], jeton.start[1]
+        c1 = jeton.end[1]
+        eticheta = f"{cheie} -> {inlocuire or '(sters)'}"
+        yield nr, c0, c1, inlocuire, eticheta, linii[nr - 1].strip()
 
 
 def main() -> int:
@@ -170,8 +200,8 @@ def main() -> int:
         ucisi = supravietuitori = 0
         detalii = []
         for modul in module:
-            for nr, tipar, inlocuire, eticheta, linie in _candidati(modul):
-                stare = _incearca(lucru, modul, nr, tipar, inlocuire)
+            for nr, c0, c1, inlocuire, eticheta, linie in _candidati(modul):
+                stare = _incearca(lucru, modul, nr, (c0, c1), inlocuire)
                 if stare is None:
                     continue
                 if stare:

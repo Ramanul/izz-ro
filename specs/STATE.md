@@ -15,7 +15,7 @@
 > Garda `incalcari_pr_fantoma` in `tests/test_pr_fantoma.py` pica daca `## Open` numeste un PR
 > care are deja commit de merge pe main (fara adnotarea `(merged)`).
 
-**Updated:** 2026-09-02 (#248 pe main: main-ul reparat, CI 29m39s -> 15m32s, Siria-tara != Siria-comuna)
+**Updated:** 2026-09-02 (dimensiunea 4: 7 granite nepazite in cluster/select/geo, ucise; PR #252)
 
 ## Open
 
@@ -32,10 +32,11 @@
 - **CI paralelizat (#248)**: 29m39s -> 15m32s. Numele jobului `pytest` NU se schimba.
   `ramanul-triage-blockers` (e1c8fbe2) e vie si arunca tacut articole legitime (`IZZ-0266`).
 - **PLASA pentru restructurare (#250 merged, `IZZ-0271`)**: `tools/echivalenta.py` amprenteaza
-  `output/`, deci o refactorizare se poate DOVEDI neutra fara sa citesti 8.515 linii.
-  NEVERIFICAT, in ordinea asta: (1) determinismul intre DOUA randari, 2x10 min; (2) coverage
-  — `pip install pytest-cov && pytest --cov=generator`. Cuplarea reala NU e prin importuri:
-  16 chei fac punte in `articles.json` — dosar: `specs/arhitectura-cuplare.md`, NU re-cerceta.
+  `output/`; `tools/mutanti.py --regresie` (~10 s) masoara ce VERIFICA testele — ruleaza-l
+  inainte de orice refactor pe cluster/select/geo/util/guard. Masurat: coverage 71%, mutanti
+  ucisi 81%, `render.py` cel mai rau pe AMBELE axe (`IZZ-0280`/`IZZ-0281`). RAMANE neverificat
+  determinismul intre DOUA randari (2x10 min). Cuplarea reala NU e prin importuri: 16 chei fac
+  punte in `articles.json` — dosar `specs/arhitectura-cuplare.md` sect. 4e, NU re-cerceta.
 - **Din `specs/atribuire-cercetare-si-plan.md`** — E1 + E4 cer decizia proprietarului.
 
 ## Standing rules that keep being rediscovered — do not "fix" these
