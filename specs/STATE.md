@@ -26,12 +26,12 @@
 - **Trafic** — sonda `trafic.yml` scrisa; de citit daca tokenul CLOUDFLARE are scope analytics.
 - **Home fresh 72h — PR #247** (`fix/home-fresh-72h-v2`): helper + wiring + 6 teste.
   DEBLOCAT de #248; CI-ul lui trece dupa ce aduce main in ramura.
-- **PR-uri deschise:** #247 (prospetime 72h), #250 (plasa de echivalenta). Owner: #207 #214 #235.
-  (#248 merged; #244 merged; #225/#240 closed. Fiecare PR cere propria adnotare — intr-o
+- **PR-uri deschise:** #247 (prospetime 72h). Owner: #207 #214 #235.
+  (#250 merged; #248 merged; #244 merged; #225/#240 closed. Fiecare PR cere propria adnotare — intr-o
   lista `#A/#B merged` garda o vede doar pe ultima.)
 - **CI paralelizat (#248)**: 29m39s -> 15m32s. Numele jobului `pytest` NU se schimba.
   `ramanul-triage-blockers` (e1c8fbe2) e vie si arunca tacut articole legitime (`IZZ-0266`).
-- **PLASA pentru restructurare (#250, `IZZ-0271`)**: `tools/echivalenta.py` amprenteaza
+- **PLASA pentru restructurare (#250 merged, `IZZ-0271`)**: `tools/echivalenta.py` amprenteaza
   `output/`, deci o refactorizare se poate DOVEDI neutra fara sa citesti 8.515 linii.
   NEVERIFICAT, in ordinea asta: (1) determinismul intre DOUA randari, 2x10 min; (2) coverage
   — `pip install pytest-cov && pytest --cov=generator`. Cuplarea reala NU e prin importuri:
