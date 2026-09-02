@@ -33,11 +33,24 @@ def pr_uri_adnotate_merged(bloc: str) -> set[int]:
 
 
 def pr_uri_mergeuite_pe_main() -> set[int]:
-    iesire = subprocess.run(
+    """PR-uri cu commit de merge pe main.
+
+    În CI (checkout pe branch-ul PR) ref-ul local `main` lipsește adesea.
+    Încercăm origin/main, apoi main, apoi --all.
+    """
+    for args in (
+        ["git", "log", "origin/main", "--grep=Merge pull request #", "--format=%s"],
         ["git", "log", "main", "--grep=Merge pull request #", "--format=%s"],
-        cwd=ROOT, capture_output=True, text=True, check=True,
-    ).stdout
-    return {int(n) for n in MERGE_COMMIT.findall(iesire)}
+        ["git", "log", "--all", "--grep=Merge pull request #", "--format=%s"],
+    ):
+        iesire = subprocess.run(
+            args, cwd=ROOT, capture_output=True, text=True, check=False,
+        )
+        if iesire.returncode == 0:
+            return {int(n) for n in MERGE_COMMIT.findall(iesire.stdout)}
+    raise RuntimeError(
+        "nu pot citi istoricul de merge — verifică fetch-depth: 0 în tests.yml"
+    )
 
 
 def incalcari_pr_fantoma(state_md: str, mergeuite: set[int]) -> list[str]:
