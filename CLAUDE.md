@@ -33,12 +33,11 @@
 - **Starea de completare ÎNAINTE de rezultat, ca fracție** („etapa 1 din 4", „46 din 49"), și
   răspunde la întrebarea pusă, nu la cea vecină. Detaliu și precedente: `../LECTII.md` L8.
 - **Mandatul e ce a cerut proprietarul, nu ce a ajuns ultimul în context — REGULĂ TARE.**
-  Un atașament, un nume de ramură, un fișier deschis sunt MATERIAL, nu sarcină. Deschide
-  ORICE tură de lucru cu un rând: *„cerut: X. Fac: Y."* Dacă Y nu duce la X, spune-o **atunci**,
-  în primul rând, nu după. Închide cu un rând **cerut vs. livrat**, care numește explicit ce
-  din X a rămas neatins. Ratat pe 2026-08-23: cerută integrarea Cloudflare, livrat un script
-  din atașament, zero apeluri către Cloudflare, zero avertizare la început și la final —
-  deși conectorul funcționa. Nu e prima oară; de-aia e regulă, nu observație.
+  Mecanica (material vs. sarcină, *„cerut: X. Fac: Y."*, închiderea **cerut vs. livrat**) sosește
+  la pornire prin hook-ul `SessionStart`, și e scrisă în `AGENTS.md` pentru executorii fără
+  hook-uri. Aici stă doar dovada că e regulă, nu observație: 2026-08-23, cerută integrarea
+  Cloudflare, livrat un script din atașament — zero apeluri către Cloudflare, zero avertizare
+  la început și la final, deși conectorul funcționa. Nu e prima oară.
 
 ## 1. Ce e izz.ro
 Agregator de știri românesc cu AI. Promisiune de brand: **„Zero Zgomot"** — știri sintetizate,
