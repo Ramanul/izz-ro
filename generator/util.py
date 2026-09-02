@@ -164,3 +164,42 @@ def cuvinte_adaugate(title: str, description: str) -> int:
 
     din_titlu = set(_cuv(title))
     return sum(1 for w in _cuv(description) if w not in din_titlu)
+
+
+# --- titlu care nu e titlu ------------------------------------------------------------------
+#
+# DE CE (masurat 2026-08-30, raportat de proprietar). Doua iteme au ajuns publicate cu titlul
+# format EXCLUSIV dintr-o data calendaristica: `27.08.2026` si `17.08.2026`, ambele de la
+# CJ Giurgiu, categoria `judetean`. §7 e explicit — pipeline-ul nu publica niciodata titluri
+# brute sau stricate; daca o cale de fallback nu atinge bara, SARE itemul. Sursele oficiale
+# locale ocolesc AI-ul (`specs/local-official-no-ai.md`), deci titlul din feed ajunge nefiltrat
+# pe site si nimic nu-l oprea.
+#
+# CE PRINDE, ingust dinadins: titlul e DOAR o data, eventual cu un cuvant-eticheta lipit
+# („Anunt 27.08.2026" ramane titlu valid — spune ceva). Nu incearca sa judece calitatea in
+# general; aia cere AI si e alta discutie.
+DOAR_O_DATA = re.compile(
+    r"^\s*(?:nr\.?\s*\d+\s*)?"                              # „nr. 12" optional in fata
+    r"\d{1,2}\s*[.\-/]\s*\d{1,2}\s*[.\-/]\s*\d{2,4}"       # 27.08.2026 / 27-08-26
+    r"\s*$"
+)
+DOAR_O_DATA_ISO = re.compile(r"^\s*\d{4}\s*[.\-/]\s*\d{1,2}\s*[.\-/]\s*\d{1,2}\s*$")
+
+
+def titlu_e_doar_o_data(title: str) -> bool:
+    """True daca tot titlul e o data calendaristica, deci nu spune nimic despre stire."""
+    if not title:
+        return False
+    return bool(DOAR_O_DATA.match(title) or DOAR_O_DATA_ISO.match(title))
+
+
+def fara_titluri_data(items: list) -> tuple[list, list]:
+    """Imparte itemele in (pastrate, sarite), unde „sarite" au drept titlu doar o data.
+
+    Se aplica pe starea INTREAGA, nu doar pe itemele noi: un filtru care ar privi doar
+    intrarile proaspete ar opri urmatoarele, dar ar lasa pe site cele deja publicate pana le
+    expira TTL-ul — adica exact bug-ul raportat pe 2026-08-30 ar fi ramas vizibil.
+    """
+    sarite = [a for a in items if titlu_e_doar_o_data(a.get("title", ""))]
+    urls = {a.get("url") for a in sarite}
+    return [a for a in items if a.get("url") not in urls], sarite
