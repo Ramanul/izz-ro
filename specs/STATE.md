@@ -15,7 +15,7 @@
 > Garda `incalcari_pr_fantoma` in `tests/test_pr_fantoma.py` pica daca `## Open` numeste un PR
 > care are deja commit de merge pe main (fara adnotarea `(merged)`).
 
-**Updated:** 2026-09-02 (curățenie PR: #243 merged, #225/#240 closed)
+**Updated:** 2026-09-02 (#245 UX ai-mark doar pe articol; #243/#244 pe main)
 
 ## Open
 
@@ -26,8 +26,9 @@
 - **Axa 3** — spec `specs/anomalie-linkuri.md` (`IZZ-0259`), NEimplementat deliberat (R3).
 - **Arhiva (#198)** — `IZZ-0260`/`IZZ-0261`: blocata pe decizia de arhitectura + `izz-failover`.
 - **Trafic** — sonda `trafic.yml` scrisa; de citit daca tokenul CLOUDFLARE are scope analytics.
+- **Home fresh 72h** — helper pe branch `fix/home-fresh-72h`; wiring in `render.py` pending.
 - **PR-uri deschise (draft / decizie owner):** #207 #214 #235.
-  (#243 merged; #225/#240 closed — conflict ID registru; #236/#230 absorbite.)
+  (#245/#243/#244 merged; #225/#240 closed.)
 - **Din `specs/atribuire-cercetare-si-plan.md`** — E1 + E4 cer decizia proprietarului.
 
 ## Standing rules that keep being rediscovered — do not "fix" these
