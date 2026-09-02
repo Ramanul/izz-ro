@@ -436,3 +436,83 @@ testele care îl acoperă randează `output/`, deci un sweep ar costa ore. Deci 
 dovedit pe `cluster`/`select`/`geo`/`util`/`guard`, nu pe tot pipeline-ul. Pentru `render`,
 plasa rămâne `tools/echivalenta.py` (amprentă pe output) — complementară: nu spune dacă
 testele privesc, ci dacă rezultatul s-a schimbat.
+
+## 4f. A șasea axă: ce există dar nu e folosit
+
+Măsurat 2026-09-02 cu `tools/nefolosit.py`. Două jumătăți care par una singură dar au
+economii diferite: **codul mort costă la citire**, **documentele orfane costă la căutare**,
+iar **regulile costă la fiecare tură**.
+
+### Cod fără apelant — puțin, dar concentrat
+
+```
+  8 din 586 de definiții n-au apelant în producție sau șabloane (148 de linii)
+
+  process.py:553    process_cluster      85 linii   8 utilizări în teste
+  agents.py         get_agent, list_agents, validate_profiles, profiles_as_dict
+  covers.py:133     _pick_icon           13 linii   0 teste
+  state.py:143      merge                11 linii   1 test
+  localities.py:140 usable               11 linii   2 teste
+```
+
+Repo-ul e **sănătos la nivel de funcție** — 1,4% mort. Trei observații care nu se văd din
+procent:
+
+1. **`process_cluster` e calea single a sintezei Model C**, iar producția importă doar
+   `process_clusters_batch`. Nu e apelată nici măcar ca rezervă la eșecul lotului. 85 de
+   linii de logică de sinteză ținute în viață exclusiv de 8 utilizări din teste. §10 apără
+   logica de sinteză de atingeri neinstruite — deci **se raportează, nu se curăță**.
+2. **`generator/agents.py` (239 de linii) e mort integral**, și o știe: docstring-ul lui
+   spune, din auditul de pe 2026-08-20, *„NECONECTAT LA PIPELINE — schelet declarativ"*, cu
+   cele trei variante lăsate explicit proprietarului. Nu e o descoperire nouă; e o decizie
+   care așteaptă de două săptămâni fără rând în registru — până acum (`IZZ-0284`).
+3. **`state.merge` e la `state.py:143`, nu la `state.py:95`** cum scrie regula permanentă
+   din `specs/STATE.md`. Regula e corectă în fond (chiar e cod mort cunoscut), dar trimite
+   la o linie greșită. A treia oară în sesiunea asta când un fișier normativ descrie o stare
+   dispărută — după antetul lui `test_render_editorial.py` și după `IZZ-0257`.
+
+### Documente orfane — 23 de fișiere, 272 KB
+
+```
+  116027  specs/recon-github-stiri-2026-08-05.md   ← de 5× cât CLAUDE.md
+   22173  notes/eficientizare-reguli-2026-09-02.md ← scris AZI, deja orfan
+   17383  notes/raport-progres-si-finalizare.md
+   16122  notes/organism-izz.md
+   15619  notes/provideri-calificati-si-workflow-izzro.md
+   15557  specs/harta-felia4-7-design.md
+   ... încă 17
+```
+
+**Nu costă tokeni per tură** — nu se încarcă. Costă la *căutare*, și acolo costul e real:
+cine deschide `specs/` citește numele directorului ca pe o promisiune de stare. Cel mai mare
+orfan e cazul limită: 116 KB care se auto-declară în antet *„Citește ca ipoteze, nu ca
+fapte… findings-urile NU sunt verificate"* — material neverificat care stă într-un director
+al cărui nume spune „specificație".
+
+Mutarea din 2026-08-21 (60 KB de la rădăcină în `notes/`) a relocat problema, n-a rezolvat-o:
+`notes/` are acum 6 orfani, ~90 KB. §21 are gardă cablată pentru `.md`-urile de la rădăcină;
+`specs/` și `notes/` n-au — de-aia au acumulat 20 dintre cei 23.
+
+### Reguli — costul per citare, nu „citită sau nu"
+
+Toate cele 21 de secțiuni din CLAUDE.md sunt citate cel puțin o dată, deci întrebarea
+„necitită?" e greșit pusă. Cea utilă e **cât plătește fiecare tură pentru fiecare utilizare**:
+
+```
+  §    octeți  citări  oct/citare  gardă mecanică
+  12     2259       1        2259       —          ← de 9× următorul
+  0      1480       6         247      DA
+  21     1473       6         246      DA
+  ...
+  13      354      14          25      DA          ← cea mai ieftină
+```
+
+**20% din CLAUDE.md (4621 de octeți) stă în secțiuni fără nicio gardă mecanică** (§12, §18,
+§3, §5, §8): dacă modelul nu le citește într-o tură, nimic nu prinde încălcarea.
+
+*Ce NU dovedește măsurătoarea asta:* citările arată dacă regula e **purtată de mașinăria
+repo-ului** (un test, un agent, un hook), nu dacă e **respectată**. §12a a fost urmată azi —
+inventarul uneltelor s-a făcut — fără ca nimeni să scrie „§12a" nicăieri. Deci un cost mare
+per citare e un semnal de re-examinat, nu o condamnare. [OPINIE] §12 rămâne totuși
+candidatul cel mai serios la comprimare: 9,6% din bugetul plătit la fiecare tură, pentru o
+regulă a cărei parte operativă (§12a, inventarul) încape în trei rânduri.

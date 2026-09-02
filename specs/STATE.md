@@ -15,7 +15,7 @@
 > Garda `incalcari_pr_fantoma` in `tests/test_pr_fantoma.py` pica daca `## Open` numeste un PR
 > care are deja commit de merge pe main (fara adnotarea `(merged)`).
 
-**Updated:** 2026-09-02 (dimensiunea 4: 7 granite nepazite in cluster/select/geo, ucise; PR #252)
+**Updated:** 2026-09-02 (dim. 4: 8 granite ucise, mutanti 64->81%; dim. 7: cod mort + orfani masurati)
 
 ## Open
 
@@ -29,19 +29,21 @@
 - **PR-uri deschise:** #247 (prospetime 72h). Owner: #207 #214 #235.
   (#250 merged; #248 merged; #244 merged; #225/#240 closed. Fiecare PR cere propria adnotare — intr-o
   lista `#A/#B merged` garda o vede doar pe ultima.)
-- **CI paralelizat (#248)**: 29m39s -> 15m32s. Numele jobului `pytest` NU se schimba.
-  `ramanul-triage-blockers` (e1c8fbe2) e vie si arunca tacut articole legitime (`IZZ-0266`).
+- **CI paralelizat (#248)**: numele jobului `pytest` NU se schimba. `ramanul-triage-blockers`
+  (e1c8fbe2) e vie si arunca tacut articole legitime (`IZZ-0266`).
 - **PLASA pentru restructurare (#250 merged, `IZZ-0271`)**: `tools/echivalenta.py` amprenteaza
   `output/`; `tools/mutanti.py --regresie` (~10 s) masoara ce VERIFICA testele — ruleaza-l
   inainte de orice refactor pe cluster/select/geo/util/guard. Masurat: coverage 71%, mutanti
   ucisi 81%, `render.py` cel mai rau pe AMBELE axe (`IZZ-0280`/`IZZ-0281`). RAMANE neverificat
   determinismul intre DOUA randari (2x10 min). Cuplarea reala NU e prin importuri: 16 chei fac
   punte in `articles.json` — dosar `specs/arhitectura-cuplare.md` sect. 4e, NU re-cerceta.
+- **Nefolosit (`tools/nefolosit.py`, dosar sect. 4f)** — decizii proprietar: `agents.py` mort din
+  08-20 (`IZZ-0284`), `process_cluster` (`IZZ-0285`), 23 .md orfane/272 KB (`IZZ-0287`), §12 (`IZZ-0288`).
 - **Din `specs/atribuire-cercetare-si-plan.md`** — E1 + E4 cer decizia proprietarului.
 
 ## Standing rules that keep being rediscovered — do not "fix" these
 
-- **`state.merge()` is dead code, NOT a live bug.** `state.py:95`; the only caller is
+- **`state.merge()` is dead code, NOT a live bug.** `state.py:143`; the only caller is
   `tests/test_state.py:14`. Dedup between fresh items happens inline at `main.py:227-236` (#158).
   The recurring "lying function" hunt keeps rereading it as a duplicate bug; touching it is an
   opportunistic refactor (§5.6).
@@ -51,11 +53,9 @@
 - **Attribution: `specs/atribuire-cercetare-si-plan.md` is the dossier — do not re-research it.**
   7 external systems, 8 causes, a 6-stage plan, paid for once. Run `tools/eval_atribuire.py`
   before and after **any** change to `geo.py`. Baseline 2026-08-08: category 25/39 (64%),
-  place-on-badge 31/32 (97%). **Cifra aia NU mai e comparabila** (`IZZ-0268`, masurat 2026-09-02):
-  TTL-ul a expirat 44 din cele 51 de randuri ale setului de aur, deci o rulare de azi masoara 7
-  articole si da 86% — alt esantion, nu alt rezultat. Unealta cere set de aur reimprospatat.
-  Covers are never redrawn on a first run (`IZZ-0163`, owner refused
-  2026-08-06); `FORCE_REGEN=1` is the opt-in.
+  place-on-badge 31/32 (97%). **Cifra aia NU mai e comparabila** (`IZZ-0268`): TTL-ul a expirat 44
+  din cele 51 de randuri, deci o rulare de azi masoara 7 articole — alt esantion, nu alt rezultat.
+  Covers are never redrawn on a first run (`IZZ-0163`, owner refused 08-06); `FORCE_REGEN=1` opts in.
 
 ## Where the rest lives
 
