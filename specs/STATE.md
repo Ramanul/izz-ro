@@ -35,7 +35,7 @@
   `output/`, deci o refactorizare se poate DOVEDI neutra fara sa citesti 8.515 linii.
   NEVERIFICAT, in ordinea asta: (1) determinismul intre DOUA randari, 2x10 min; (2) coverage
   — `pip install pytest-cov && pytest --cov=generator`. Cuplarea reala NU e prin importuri:
-  16 chei fac punte in `articles.json`, `title` e scris de 2 module si citit de 12.
+  16 chei fac punte in `articles.json` — dosar: `specs/arhitectura-cuplare.md`, NU re-cerceta.
 - **Din `specs/atribuire-cercetare-si-plan.md`** — E1 + E4 cer decizia proprietarului.
 
 ## Standing rules that keep being rediscovered — do not "fix" these
