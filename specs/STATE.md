@@ -15,19 +15,19 @@
 > Garda `incalcari_pr_fantoma` in `tests/test_pr_fantoma.py` pica daca `## Open` numeste un PR
 > care are deja commit de merge pe main (fara adnotarea `(merged)`).
 
-**Updated:** 2026-09-02 (#244 pe main: titlu-doar-data + garda PR fantoma; STATE curatat)
+**Updated:** 2026-09-02 (#243 §10 MCP CF merged; #244 pe main; STATE aliniat)
 
 ## Open
 
 - **F4 CONTINUAT (#241, merged).** §18 in L1; plafon pe SUPRAFATA de pornire. Urmatorii: §12,
-  §14, §20; **§17 NU**. `IZZ-0265`.
+  §14, §20; **§17 NU**.
 - **K12 decis (`IZZ-0255`)**: mecanism rezumat zilnic. Specul nu e scris; porneste de la
   `editorial-quality.yml`.
 - **Axa 3** — spec `specs/anomalie-linkuri.md` (`IZZ-0259`), NEimplementat deliberat (R3).
 - **Arhiva (#198)** — `IZZ-0260`/`IZZ-0261`: blocata pe decizia de arhitectura + `izz-failover`.
 - **Trafic** — sonda `trafic.yml` scrisa; de citit daca tokenul CLOUDFLARE are scope analytics.
-- **PR-uri deschise (API 2026-09-02):** #207 #214 #225 #235 #240 #243.
-  (#236/#230 absorbite, inchise.)
+- **PR-uri deschise (API 2026-09-02):** #207 #214 #235 #240 (toate draft / decizie owner).
+  (#243 merged; #225 conflict ID registru — de inchis; #236/#230 absorbite.)
 - **Din `specs/atribuire-cercetare-si-plan.md`** — E1 + E4 cer decizia proprietarului.
 
 ## Standing rules that keep being rediscovered — do not "fix" these
