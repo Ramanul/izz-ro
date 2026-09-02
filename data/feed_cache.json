@@ -2,61 +2,61 @@
  "bbc_europe": {
   "etag": null,
   "last_modified": null,
-  "fetched_at": "2026-09-01T21:49:25.705753+00:00",
+  "fetched_at": "2026-09-02T00:17:33.141154+00:00",
   "server": "Belfrage"
  },
  "guardian_eu": {
-  "etag": "W/\"hash1094918975637591256\"",
+  "etag": "W/\"hash7162597576564779250\"",
   "last_modified": null,
-  "fetched_at": "2026-09-01T21:49:32.585059+00:00",
+  "fetched_at": "2026-09-02T00:17:39.312213+00:00",
   "server": null
  },
  "politico_eu": {
-  "etag": "\"8f785eb8f2a3137715eb4d5eebc88fbf\"",
-  "last_modified": "Tue, 01 Sep 2026 20:16:16 GMT",
-  "fetched_at": "2026-09-01T21:49:32.747589+00:00",
+  "etag": "\"b42c611d8a62dafc34210410a2929a01\"",
+  "last_modified": "Tue, 01 Sep 2026 22:00:17 GMT",
+  "fetched_at": "2026-09-02T00:17:40.304877+00:00",
   "server": "cloudflare"
  },
  "dw_europe": {
   "etag": null,
   "last_modified": null,
-  "fetched_at": "2026-09-01T21:49:32.555899+00:00",
+  "fetched_at": "2026-09-02T00:17:39.419884+00:00",
   "server": null
  },
  "el_moldova": {
   "etag": null,
   "last_modified": null,
-  "fetched_at": "2026-09-01T21:49:33.165935+00:00",
+  "fetched_at": "2026-09-02T00:17:40.428828+00:00",
   "server": null
  },
  "extern": {
   "etag": null,
   "last_modified": null,
-  "fetched_at": "2026-09-01T21:49:34.041160+00:00",
+  "fetched_at": "2026-09-02T00:17:40.889126+00:00",
   "server": "RDS-WebServer v2"
  },
  "gsp": {
   "etag": null,
   "last_modified": null,
-  "fetched_at": "2026-09-01T21:49:50.834823+00:00",
+  "fetched_at": "2026-09-02T00:18:04.625823+00:00",
   "server": "cloudflare"
  },
  "digisport": {
   "etag": null,
   "last_modified": null,
-  "fetched_at": "2026-09-01T21:49:43.986684+00:00",
+  "fetched_at": "2026-09-02T00:17:59.212506+00:00",
   "server": "RDS-WebServer v2"
  },
  "prosport": {
-  "etag": "\"3d03f4e2d269b2167ae44b1ce0718bdc\"",
-  "last_modified": "Tue, 01 Sep 2026 21:15:00 GMT",
-  "fetched_at": "2026-09-01T21:49:52.950301+00:00",
+  "etag": "\"f188d4d3dc0e1282842a089e325e9464\"",
+  "last_modified": "Tue, 01 Sep 2026 22:31:42 GMT",
+  "fetched_at": "2026-09-02T00:18:06.725053+00:00",
   "server": "cloudflare"
  },
  "startup": {
   "etag": null,
   "last_modified": null,
-  "fetched_at": "2026-09-01T21:49:44.727676+00:00",
+  "fetched_at": "2026-09-02T00:17:59.879638+00:00",
   "server": "nginx/1.30.4"
  },
  "autocritica": {
@@ -66,21 +66,21 @@
   "server": "cloudflare"
  },
  "spotmedia": {
-  "etag": "\"41f78b98c8b1bac88658be22b064aabb\"",
-  "last_modified": "Tue, 01 Sep 2026 20:42:27 GMT",
-  "fetched_at": "2026-09-01T21:49:56.671685+00:00",
+  "etag": "\"d731c3a0a27945e9a800f477e6476b19\"",
+  "last_modified": "Tue, 01 Sep 2026 21:45:20 GMT",
+  "fetched_at": "2026-09-02T00:18:10.728835+00:00",
   "server": "cloudflare"
  },
  "digi24": {
   "etag": null,
   "last_modified": null,
-  "fetched_at": "2026-09-01T21:49:45.969186+00:00",
+  "fetched_at": "2026-09-02T00:18:01.586344+00:00",
   "server": "RDS-WebServer v2"
  },
  "hotnews": {
-  "etag": "\"94cf4532c9ccec6dacc9546a28909db0\"",
-  "last_modified": "Tue, 01 Sep 2026 21:43:24 GMT",
-  "fetched_at": "2026-09-01T21:49:46.480462+00:00",
+  "etag": "\"8e9e38ab661377989b6df5666c2224fa\"",
+  "last_modified": "Tue, 01 Sep 2026 22:51:30 GMT",
+  "fetched_at": "2026-09-02T00:18:01.332369+00:00",
   "server": "nginx"
  },
  "g4media": {
@@ -96,9 +96,9 @@
   "server": "cloudflare"
  },
  "contributors": {
-  "etag": "W/\"c35c5cb55690f6d68666894cd35f2c47\"",
-  "last_modified": "Tue, 01 Sep 2026 16:40:15 GMT",
-  "fetched_at": "2026-09-01T21:50:03.293927+00:00",
+  "etag": "W/\"677be7efa0ac60189c31e7df24a089d3\"",
+  "last_modified": "Wed, 02 Sep 2026 00:09:31 GMT",
+  "fetched_at": "2026-09-02T00:18:17.056124+00:00",
   "server": "cloudflare"
  },
  "tolo": {
@@ -109,8 +109,8 @@
  },
  "zf": {
   "etag": null,
-  "last_modified": "Tue, 01 Sep 2026 21:49:37 GMT",
-  "fetched_at": "2026-09-01T21:50:00.319336+00:00",
+  "last_modified": "Wed, 02 Sep 2026 00:17:35 GMT",
+  "fetched_at": "2026-09-02T00:18:14.281464+00:00",
   "server": "nginx"
  },
  "economica": {
@@ -134,13 +134,13 @@
  "protv": {
   "etag": null,
   "last_modified": null,
-  "fetched_at": "2026-09-01T21:50:13.391072+00:00",
+  "fetched_at": "2026-09-02T00:18:27.290974+00:00",
   "server": "cloudflare"
  },
  "libertatea": {
-  "etag": "\"1430bb11729e1b253bb26db18c34debe\"",
-  "last_modified": "Sun, 30 Aug 2026 23:26:40 GMT",
-  "fetched_at": "2026-08-30T23:33:30.696281+00:00",
+  "etag": "\"70a977b45f7d2f7e149d0e9e529112ad\"",
+  "last_modified": "Wed, 02 Sep 2026 00:16:17 GMT",
+  "fetched_at": "2026-09-02T00:18:21.285805+00:00",
   "server": "cloudflare"
  },
  "csid": {
@@ -150,9 +150,9 @@
   "server": "cloudflare"
  },
  "urban": {
-  "etag": "\"f523eeea6f0f6b1a6624bf7b3530a1c1\"",
-  "last_modified": "Tue, 01 Sep 2026 11:02:11 GMT",
-  "fetched_at": "2026-09-01T21:47:15.597337+00:00",
+  "etag": "\"45872639935d5dcb441cbcd04c09b98e\"",
+  "last_modified": "Tue, 01 Sep 2026 23:39:16 GMT",
+  "fetched_at": "2026-09-02T00:15:18.867655+00:00",
   "server": "cloudflare"
  },
  "avantaje": {
@@ -164,7 +164,7 @@
  "nwradu": {
   "etag": "\"93a1e5aefbd32017804d2759a708cab2\"",
   "last_modified": "Tue, 01 Sep 2026 15:32:39 GMT",
-  "fetched_at": "2026-09-01T21:47:17.186701+00:00",
+  "fetched_at": "2026-09-02T00:15:20.296799+00:00",
   "server": "nginx"
  },
  "unica": {
@@ -188,13 +188,13 @@
  "liternet": {
   "etag": "W/\"5644-65a7172a4313e-gzip\"",
   "last_modified": "Tue, 01 Sep 2026 20:06:01 GMT",
-  "fetched_at": "2026-09-01T21:47:20.047200+00:00",
+  "fetched_at": "2026-09-02T00:15:23.187025+00:00",
   "server": "cloudflare"
  },
  "scena9": {
   "etag": null,
   "last_modified": null,
-  "fetched_at": "2026-09-01T21:47:12.790047+00:00",
+  "fetched_at": "2026-09-02T00:15:16.017605+00:00",
   "server": "nginx"
  },
  "bookhub": {
@@ -212,7 +212,7 @@
  "zcj": {
   "etag": null,
   "last_modified": null,
-  "fetched_at": "2026-09-01T21:49:07.938456+00:00",
+  "fetched_at": "2026-09-02T00:17:10.589323+00:00",
   "server": "Apache/2.4.6 (CentOS) OpenSSL/1.0.2k-fips mod_fcgid/2.3.9 PHP/5.6.33"
  },
  "bzi": {
@@ -277,8 +277,8 @@
  },
  "pl_ialomita_bucu": {
   "etag": null,
-  "last_modified": "Tue, 01 Sep 2026 21:48:40 GMT",
-  "fetched_at": "2026-09-01T21:48:42.106722+00:00",
+  "last_modified": "Wed, 02 Sep 2026 00:16:43 GMT",
+  "fetched_at": "2026-09-02T00:16:45.878720+00:00",
   "server": null
  },
  "pl_bacau_hemeius": {
@@ -325,8 +325,8 @@
  },
  "pl_neamt_municipiul_roman": {
   "etag": "\"ce9db9c8fa678e18829e5a71761e30d8\"",
-  "last_modified": "Tue, 01 Sep 2026 12:31:02 GMT",
-  "fetched_at": "2026-09-01T21:47:19.915201+00:00",
+  "last_modified": null,
+  "fetched_at": "2026-09-02T00:15:20.214249+00:00",
   "server": "Apache"
  },
  "pl_neamt_vanatori_neamt": {
@@ -463,7 +463,7 @@
  "cj_cluj": {
   "etag": "W/\"2e6d7df3097d3e7f3f571b9f48cc40f3\"",
   "last_modified": "Tue, 01 Sep 2026 11:30:02 GMT",
-  "fetched_at": "2026-09-01T21:49:01.821451+00:00",
+  "fetched_at": "2026-09-02T00:17:04.709771+00:00",
   "server": "cloudflare"
  },
  "cj_timis": {
@@ -511,13 +511,13 @@
  "pl_vrancea_municipiul_focsani": {
   "etag": null,
   "last_modified": null,
-  "fetched_at": "2026-09-01T21:47:18.922583+00:00",
+  "fetched_at": "2026-09-02T00:15:21.928414+00:00",
   "server": "Apache/2.4.52 (Ubuntu)"
  },
  "pl_satu_mare_municipiul_carei": {
   "etag": null,
   "last_modified": null,
-  "fetched_at": "2026-09-01T21:47:23.754818+00:00",
+  "fetched_at": "2026-09-02T00:15:26.534729+00:00",
   "server": "Apache"
  },
  "pl_bacau_municipiul_bacau": {
@@ -565,13 +565,13 @@
  "pl_vaslui_municipiul_husi": {
   "etag": null,
   "last_modified": null,
-  "fetched_at": "2026-09-01T21:47:30.022684+00:00",
+  "fetched_at": "2026-09-02T00:15:32.549316+00:00",
   "server": "Apache/2.4.67 (Debian)"
  },
  "pl_ialomita_oras_tandarei": {
   "etag": null,
   "last_modified": null,
-  "fetched_at": "2026-09-01T21:47:28.068306+00:00",
+  "fetched_at": "2026-09-02T00:15:30.687008+00:00",
   "server": "nginx/1.24.0 (Ubuntu)"
  },
  "pl_prahova_municipiul_ploiesti": {
@@ -666,7 +666,7 @@
  "pl_alba_oras_teius": {
   "etag": "W/\"4cb6b357c76f578c2a59b0d9d94ad675\"",
   "last_modified": "Thu, 27 Aug 2026 13:01:52 GMT",
-  "fetched_at": "2026-09-01T21:47:39.805755+00:00",
+  "fetched_at": "2026-09-02T00:15:43.404883+00:00",
   "server": "cloudflare"
  },
  "pl_arad_oras_pecica": {
@@ -744,7 +744,7 @@
  "pl_caras_severin_oras_oravita": {
   "etag": "W/\"8dccc41e154aa8cceb6f3d588b4d1b80\"",
   "last_modified": "Wed, 26 Aug 2026 11:49:48 GMT",
-  "fetched_at": "2026-09-01T21:47:53.325753+00:00",
+  "fetched_at": "2026-09-02T00:15:56.377739+00:00",
   "server": "cloudflare"
  },
  "pl_caras_severin_oras_otelu_rosu": {
@@ -1007,7 +1007,7 @@
  "pl_sibiu_oras_saliste": {
   "etag": "W/\"3cc92c5b263123aadcd06feb2585687a-br\"",
   "last_modified": "Mon, 31 Aug 2026 10:49:30 GMT",
-  "fetched_at": "2026-09-01T21:48:26.308994+00:00",
+  "fetched_at": "2026-09-02T00:16:29.697711+00:00",
   "server": "cloudflare"
  },
  "pl_timis_oras_buzias": {
@@ -1099,8 +1099,8 @@
  },
  "expressdebanat": {
   "etag": null,
-  "last_modified": "Tue, 01 Sep 2026 21:01:09 GMT",
-  "fetched_at": "2026-09-01T21:49:20.637908+00:00",
+  "last_modified": "Tue, 01 Sep 2026 23:01:11 GMT",
+  "fetched_at": "2026-09-02T00:17:28.243595+00:00",
   "server": "nginx"
  },
  "actualmm": {
@@ -1118,7 +1118,7 @@
  "zch": {
   "etag": "W/\"e9c0b6aca04c8953d93c5ba4ef9209fc\"",
   "last_modified": null,
-  "fetched_at": "2026-09-01T21:49:27.395206+00:00",
+  "fetched_at": "2026-09-02T00:17:34.780786+00:00",
   "server": "cloudflare"
  },
  "criticarad": {
@@ -1160,19 +1160,19 @@
  "cronicaolteniei": {
   "etag": "\"40ad3dd6d4626b3c5d8f7eea9e99a21a\"",
   "last_modified": null,
-  "fetched_at": "2026-09-01T21:49:24.352616+00:00",
+  "fetched_at": "2026-09-02T00:17:31.459976+00:00",
   "server": null
  },
  "newsbucovina": {
   "etag": "W/\"01df4d9dd45b4f29a3497e56465c373d\"",
   "last_modified": "Tue, 01 Sep 2026 17:58:24 GMT",
-  "fetched_at": "2026-09-01T21:49:30.093199+00:00",
+  "fetched_at": "2026-09-02T00:17:37.717182+00:00",
   "server": "cloudflare"
  },
  "dobrogeaonline": {
-  "etag": "\"768fca21159fb9e2df8e418619da18c8\"",
-  "last_modified": "Tue, 01 Sep 2026 20:48:26 GMT",
-  "fetched_at": "2026-09-01T21:49:25.919621+00:00",
+  "etag": null,
+  "last_modified": "Tue, 01 Sep 2026 23:03:27 GMT",
+  "fetched_at": "2026-09-02T00:17:33.641564+00:00",
   "server": "Apache"
  },
  "stirileolteniei": {
@@ -1201,8 +1201,8 @@
  },
  "alba24": {
   "etag": null,
-  "last_modified": "Tue, 01 Sep 2026 21:16:42 GMT",
-  "fetched_at": "2026-09-01T21:49:12.499001+00:00",
+  "last_modified": "Tue, 01 Sep 2026 23:18:13 GMT",
+  "fetched_at": "2026-09-02T00:17:14.802451+00:00",
   "server": "nginx"
  },
  "zidezi": {
@@ -1212,9 +1212,9 @@
   "server": "cloudflare"
  },
  "turnulsfatului": {
-  "etag": "W/\"030d7a8f2c8f5fbf4fd42ef9aa518447-br\"",
-  "last_modified": "Tue, 01 Sep 2026 19:27:07 GMT",
-  "fetched_at": "2026-09-01T21:49:12.379909+00:00",
+  "etag": "W/\"8ae19271e39c5f8d58e7a113d4a18b7f-br\"",
+  "last_modified": "Tue, 01 Sep 2026 23:30:12 GMT",
+  "fetched_at": "2026-09-02T00:17:14.786108+00:00",
   "server": "cloudflare"
  },
  "cvlpress": {
@@ -1224,9 +1224,9 @@
   "server": "nginx"
  },
  "b365": {
-  "etag": "W/\"c451b2fa24617fd9f9548aadec1cfd68\"",
-  "last_modified": "Tue, 01 Sep 2026 21:34:26 GMT",
-  "fetched_at": "2026-09-01T21:49:14.781679+00:00",
+  "etag": "W/\"2307e3c876223c7588ab391693806711\"",
+  "last_modified": "Tue, 01 Sep 2026 23:34:53 GMT",
+  "fetched_at": "2026-09-02T00:17:17.104514+00:00",
   "server": "cloudflare"
  },
  "bihon": {
@@ -1274,7 +1274,7 @@
  "xda": {
   "etag": null,
   "last_modified": null,
-  "fetched_at": "2026-09-01T21:49:32.689275+00:00",
+  "fetched_at": "2026-09-02T00:17:39.508706+00:00",
   "server": "nginx"
  },
  "marktechpost": {
@@ -1290,9 +1290,9 @@
   "server": "LiteSpeed"
  },
  "fcinter1908": {
-  "etag": "\"293eeabd10b3e5df5ea96f9501bed7000321fa1c521ed2d4f2817c8ebb8b1efa\"",
-  "last_modified": "Tue, 01 Sep 2026 21:47:17 GMT",
-  "fetched_at": "2026-09-01T21:49:33.577788+00:00",
+  "etag": "\"6ddf572151927a813851fbac25fec4949aba5dd1b9f7c204215d98f3890a8f72\"",
+  "last_modified": "Wed, 02 Sep 2026 00:00:35 GMT",
+  "fetched_at": "2026-09-02T00:17:41.360774+00:00",
   "server": "Caddy"
  },
  "kitguru": {
@@ -1303,8 +1303,8 @@
  },
  "as_ro": {
   "etag": null,
-  "last_modified": "Tue, 01 Sep 2026 20:51:44 GMT",
-  "fetched_at": "2026-09-01T21:49:34.968652+00:00",
+  "last_modified": "Tue, 01 Sep 2026 22:52:20 GMT",
+  "fetched_at": "2026-09-02T00:17:41.502751+00:00",
   "server": "nginx"
  },
  "connect": {
@@ -1322,7 +1322,7 @@
  "automarket": {
   "etag": null,
   "last_modified": null,
-  "fetched_at": "2026-09-01T21:49:35.277434+00:00",
+  "fetched_at": "2026-09-02T00:17:42.098610+00:00",
   "server": "Apache"
  },
  "opiniatm": {
@@ -1334,25 +1334,25 @@
  "antena3": {
   "etag": null,
   "last_modified": null,
-  "fetched_at": "2026-09-01T21:49:46.858025+00:00",
+  "fetched_at": "2026-09-02T00:18:00.816450+00:00",
   "server": "cloudflare"
  },
  "adevarul": {
   "etag": null,
   "last_modified": null,
-  "fetched_at": "2026-09-01T21:49:43.152900+00:00",
+  "fetched_at": "2026-09-02T00:17:58.555288+00:00",
   "server": null
  },
  "profit": {
   "etag": null,
   "last_modified": null,
-  "fetched_at": "2026-09-01T21:49:44.740793+00:00",
+  "fetched_at": "2026-09-02T00:17:58.737829+00:00",
   "server": "cloudflare"
  },
  "observator": {
   "etag": null,
   "last_modified": null,
-  "fetched_at": "2026-09-01T21:49:49.084694+00:00",
+  "fetched_at": "2026-09-02T00:18:02.828465+00:00",
   "server": "cloudflare"
  }
 }
