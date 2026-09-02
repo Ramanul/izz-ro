@@ -289,6 +289,14 @@ CONST_CITATA = re.compile(r"`?([A-Z][A-Z0-9_]{3,})`?\s*=\s*`?(\d+)`?")
 CRON_REAL = re.compile(r"cron:\s*[\"']([^\"']+)[\"']")
 CRON_CITAT = re.compile(r"`([-\d*/,]+(?: [-\d*/,]+){4})`")
 
+# O trimitere poate cita si ANCORA din documentul tinta: `§13 ("Current scores")`. Sectiunea
+# poate exista in timp ce titlul citat s-a mutat — atunci trimiterea pare valida si duce in gol.
+# Masurat 2026-09-02: exact asa a supravietuit `frontend-auditor.md:23` gardii de sectiuni, care
+# vedea ca §13 exista si se oprea acolo. E cea mai ingusta bucata de „proza libera" care are
+# totusi sintaxa proprie, deci se poate pazi.
+ANCORA_CITATA = re.compile(
+    r"(§\s?\d+[a-z]?|`[^`]+\.md`)\s*\(\s*[„\"\u201c]([^\"\u201d\u201c]{2,60})[\"\u201d]\s*\)")
+
 CALE_CITATA = re.compile(
     r"`([A-Za-z0-9_][A-Za-z0-9_./-]*\.(?:py|sh|yml|yaml|md|css|html|json|tsv|svg))`")
 
@@ -368,6 +376,22 @@ def incalcari_cai(fisiere: dict[str, str], urmarite: set[str]) -> list[str]:
     return gasite
 
 
+def incalcari_ancore(fisiere: dict[str, str], texte: dict[str, str],
+                     proprietari: dict[str, str], implicit: str) -> list[str]:
+    """Titlul citat intre paranteze dupa o trimitere trebuie sa existe in documentul tinta."""
+    gasite = []
+    for cale, text in sorted(fisiere.items()):
+        for linie_nr, linie in enumerate(text.split("\n"), 1):
+            for tinta, ancora in ANCORA_CITATA.findall(linie):
+                document = (tinta.strip("`") if tinta.startswith("`")
+                            else proprietari.get(cale, implicit))
+                continut = texte.get(document)
+                if continut is None or ancora in continut:
+                    continue
+                gasite.append(f"{cale}:{linie_nr} citeaza ancora «{ancora}», "
+                              f"inexistenta in {document}")
+    return gasite
+
 # --- garzile de fapte canonice, pe repo-ul real ----------------------------------------------
 
 def test_fiecare_trimitere_la_sectiune_are_tinta():
@@ -400,6 +424,14 @@ def test_fiecare_cale_citata_exista():
                                   text=True, check=True).stdout.split("\n")) - {""}
     assert not incalcari_cai(fisiere_normative(), urmarite)
 
+
+def test_fiecare_ancora_citata_exista():
+    """K8, a doua jumatate: §N poate exista in timp ce titlul citat din el s-a mutat."""
+    fisiere = fisiere_normative()
+    texte = {document: (ROOT / document).read_text(encoding="utf-8")
+             for document in {DOCUMENT_IMPLICIT, *PROPRIETAR_SECTIUNI.values()}}
+    texte.update({cale: text for cale, text in fisiere.items()})
+    assert not incalcari_ancore(fisiere, texte, PROPRIETAR_SECTIUNI, DOCUMENT_IMPLICIT)
 
 # --- fiecare garda de fapte trebuie sa poata ESUA --------------------------------------------
 
@@ -447,6 +479,17 @@ def test_garda_cailor_accepta_prescurtarea_si_ignora_alt_arbore():
     assert not incalcari_cai({"x.md": "`gemini.py` si `izz/CLAUDE.md`"}, urmarite)
     assert incalcari_cai({"x.md": "`lipsa.py`"}, urmarite)
 
+
+
+def test_garda_ancorelor_pica_pe_titlu_mutat():
+    stricat = {"x.md": "prima linie\nvezi §13 („Current scores\u201d) pentru baseline"}
+    assert incalcari_ancore(stricat, {"CLAUDE.md": "## 13. Verificare"}, {}, "CLAUDE.md")
+
+
+def test_garda_ancorelor_accepta_titlul_care_chiar_exista():
+    ok = {"x.md": "prima linie\nvezi §13 („Verificare front-end\u201d)"}
+    assert not incalcari_ancore(ok, {"CLAUDE.md": "## 13. Verificare front-end — masoara"},
+                                {}, "CLAUDE.md")
 
 def test_harta_sectiunilor_ramane_o_categorie_nu_o_lista_care_creste():
     """Un al treilea document care isi revendica §N inseamna ca `§` a incetat sa mai spuna ceva."""
