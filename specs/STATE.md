@@ -27,7 +27,7 @@
 - **Arhiva (#198)** — `IZZ-0260`/`IZZ-0261`: blocata pe decizia de arhitectura + `izz-failover`.
 - **Trafic** — sonda `trafic.yml` scrisa; de citit daca tokenul CLOUDFLARE are scope analytics.
 - **PR-uri deschise (API 2026-09-02):** #207 #214 #225 #235 #240 #243.
-  (#236/#230 absorbite de #244, inchise.)
+  (#236/#230 absorbite, inchise.)
 - **Din `specs/atribuire-cercetare-si-plan.md`** — E1 + E4 cer decizia proprietarului.
 
 ## Standing rules that keep being rediscovered — do not "fix" these
