@@ -42,6 +42,7 @@ ROOT = Path(__file__).resolve().parents[1]
 # nu are voie sa declanseze nimic.
 MARCAJ_KB = re.compile(r"\*\*Plafon: (\d+) KB\.\*\*")
 MARCAJ_LINII = re.compile(r"\*\*Hard cap: ~(\d+) lines of content\.\*\*")
+MARCAJ_BUGET = re.compile(r"\*\*Buget de pornire: (\d+) KB\.\*\*")
 TTL_LIPIT = re.compile(r"ARTICLE_TTL_DAYS\s*(?:=|\()\s*(\d+)")
 # Un nume de fisier din harta e ghilimelat si NU contine cale — asa se deosebeste
 # `TASKS-B.md` (intrare in harta) de `specs/STATE.md` sau `tools/log_slice.py` (trimiteri).
@@ -129,6 +130,58 @@ def incalcari_unicitate(fisiere: dict[str, str], marcaj: re.Pattern, unde: str) 
     return [f"plafonul e declarat in {declara or 'niciun fisier'}, asteptat exact in ['{unde}']"]
 
 
+# --- bugetul de pornire: plafonul se pune pe SUPRAFATA, nu pe un fisier ----------------------
+#
+# DE CE EXISTA (2026-09-02). Plafonul de KB pazea `CLAUDE.md` — 23.835 din 24.576 de octeti — in
+# timp ce inca 12.443 de octeti la fel de scumpi intrau in aceeasi sesiune fara sa-i numere
+# nimeni: iesirea hook-ului `SessionStart` (8.829, din care registrul 3.712) si frontmatter-ul
+# agentilor si comenzilor (1.925 + 1.689), injectat la FIECARE tura.
+#
+# Consecinta masurata, si motivul pentru care garda asta nu e cosmetica: mutarea unui text din
+# `CLAUDE.md` in hook SCADE cifra pazita si nu schimba NIMIC in context — ambele intra la
+# pornire si raman acolo toata sesiunea. Cu o singura garda pe un singur fisier, o astfel de
+# mutare se raporteaza ca economie si trece verde. Economiseste doar ce nu mai intra deloc:
+# stergerea unui duplicat, compresia, sau declansatorul `PostToolUse` (stratul L1).
+
+COMPONENTE_BUGET = (".claude/agents", ".claude/commands")
+
+
+def _frontmatter(text: str) -> int:
+    """Octetii dintre cele doua `---` — singura parte injectata la fiecare tura."""
+    potrivire = re.match(r"^---\n(.*?)\n---", text, re.S)
+    return len(potrivire.group(1).encode("utf-8")) if potrivire else 0
+
+
+def buget_de_pornire() -> dict[str, int]:
+    """Tot ce intra in context la pornirea unei sesiuni, masurat — nu dedus.
+
+    Hook-ul se RULEAZA, nu se aproximeaza din marimea fisierelor pe care le citeste: iesirea
+    lui depinde de `tail -24` din registru si de STATE.md, deci o suma statica ar minti.
+    """
+    masurat = {"CLAUDE.md": (ROOT / "CLAUDE.md").stat().st_size}
+    hook = ROOT / ".claude/hooks/session-start.sh"
+    iesire = subprocess.run(["bash", str(hook)], cwd=ROOT, capture_output=True,
+                            timeout=60, check=False)
+    assert iesire.returncode == 0, f"hook-ul SessionStart a esuat: {iesire.stderr[:200]!r}"
+    masurat["hook SessionStart"] = len(iesire.stdout)
+    for director in COMPONENTE_BUGET:
+        masurat[director] = sum(_frontmatter((ROOT / cale).read_text(encoding="utf-8"))
+                                for cale in fisiere_urmarite(f"{director}/*.md"))
+    return masurat
+
+
+def incalcari_buget(text: str, masurat: dict[str, int]) -> list[str]:
+    potrivire = MARCAJ_BUGET.search(text)
+    if not potrivire:
+        return ["CLAUDE.md nu declara un buget de pornire — garda n-are contra ce sa masoare"]
+    plafon = int(potrivire.group(1)) * 1024
+    total = sum(masurat.values())
+    if total <= plafon:
+        return []
+    defalcare = ", ".join(f"{nume} {octeti}" for nume, octeti in sorted(masurat.items()))
+    return [f"bugetul de pornire e {total} octeti, peste plafonul declarat de {plafon}"
+            f" ({defalcare}). Mutarea intre straturi NU ajuta: toate intra in aceeasi sesiune."]
+
 # --- garzile, pe repo-ul real -----------------------------------------------------
 
 def test_claude_md_sub_plafonul_pe_care_il_declara():
@@ -140,6 +193,12 @@ def test_state_md_sub_plafonul_pe_care_il_declara():
     cale = ROOT / "specs" / "STATE.md"
     assert not incalcari_plafon_linii(cale.read_text(encoding="utf-8"))
 
+
+def test_bugetul_de_pornire_sub_plafonul_declarat():
+    """Plafonul pe suprafata, nu pe fisier: altfel o mutare in hook trece ca economie."""
+    incalcari = incalcari_buget((ROOT / "CLAUDE.md").read_text(encoding="utf-8"),
+                                buget_de_pornire())
+    assert not incalcari, incalcari[0]
 
 def test_ttl_citat_in_text_e_cel_din_config():
     config_py = (ROOT / "generator" / "config.py").read_text(encoding="utf-8")
@@ -154,6 +213,7 @@ def test_ttl_citat_in_text_e_cel_din_config():
 @pytest.mark.parametrize("marcaj,unde", [
     (MARCAJ_KB, "CLAUDE.md"),
     (MARCAJ_LINII, "specs/STATE.md"),
+    (MARCAJ_BUGET, "CLAUDE.md"),
 ])
 def test_fiecare_plafon_e_declarat_intr_un_singur_loc(marcaj, unde):
     """O regula, o cifra. Doua locuri inseamna ca niciuna nu se tine."""
@@ -169,6 +229,21 @@ def test_garda_kb_pica_pe_fisier_prea_mare():
 def test_garda_kb_pica_pe_fisier_fara_plafon_declarat():
     assert incalcari_plafon_kb("fara niciun marcaj", 10)
 
+
+
+def test_garda_bugetului_pica_pe_suprafata_prea_mare():
+    assert incalcari_buget("> **Buget de pornire: 1 KB.**", {"CLAUDE.md": 2048})
+
+
+def test_garda_bugetului_pica_pe_fisier_fara_buget_declarat():
+    assert incalcari_buget("fara niciun marcaj", {"CLAUDE.md": 10})
+
+
+def test_garda_bugetului_numara_TOATE_straturile_nu_doar_fisierul():
+    """Regresia pe care o previne: mutarea din CLAUDE.md in hook, raportata ca economie."""
+    antet = "> **Buget de pornire: 1 KB.**"
+    assert not incalcari_buget(antet, {"CLAUDE.md": 1000})
+    assert incalcari_buget(antet, {"CLAUDE.md": 600, "hook SessionStart": 500})
 
 def test_garda_linii_pica_pe_fisier_prea_lung():
     antet = "# T\n> **Hard cap: ~2 lines of content.**\n\n"

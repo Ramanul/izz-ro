@@ -8,6 +8,11 @@
 > Măsura e mărimea în OCTEȚI (`stat -c %s`), nu `du`, care raportează blocuri de disc și a dus
 > deja de două ori la o cifră greșită scrisă aici.
 >
+> **Buget de pornire: 40 KB.** Al doilea plafon, pe SUPRAFAȚA încărcată la pornire, nu pe un
+> fișier: acesta + ieșirea hook-ului `SessionStart` + frontmatter-ul din `.claude/agents/` și
+> `.claude/commands/`. Măsurat 2026-09-02: 36.278 octeți, din care plafonul de sus vede 66%.
+> De-aia mutarea unui text de aici în hook NU e economie — ambele intră în aceeași sesiune.
+>
 > Fișierul se încarcă în context la FIECARE tură, deci fiecare octet se plătește de fiecare dată.
 > Arhiva mutată de aici: `specs/masuratori-frontend.md` (măsurători front-end, CLS) și
 > `specs/istoric-operational.md` (istoric §9/§11/§14/§15/§17/§21). Auditul complet al regulilor,
