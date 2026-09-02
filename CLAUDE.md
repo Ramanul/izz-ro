@@ -120,6 +120,9 @@ proprietăți CSS custom. Lipsește o valoare? Adaugă o proprietate; nu inline-
 ## 10. A NU se atinge fără instrucțiune explicită
 Logica de sinteză / atribuire („Model C" multi-sursă) și orice e legal/GDPR-relevant ·
 configurația de deploy în producție (`wrangler.jsonc`, Cloudflare Workers, secrete GitHub Actions).
+**Excepție (decizie proprietar 2026-09-02):** conectorul MCP Cloudflare (D1/KV/R2/Hyperdrive) e
+liber de folosit direct, inclusiv creare/ștergere, fără aprobare per-task. NU are unealtă de deploy
+pentru codul Worker-ului — acela rămâne exclusiv pe calea repo → PR → CI, neschimbat.
 
 ## 11. SEO — REZOLVAT 2026-06-26
 `og:type`, `dateModified`, `lastmod` sunt implementate și verificate pe output real.
