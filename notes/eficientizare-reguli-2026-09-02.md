@@ -289,3 +289,51 @@ Două lucruri se schimbă din asta, amândouă măsurate, nu deduse:
   [OPINIE] Nu propun îngustarea filtrului. Un fals pozitiv de 1,4 KB pe o sesiune de audit e exact
   prețul pe care decizia din 08-29 l-a acceptat conștient; îngustarea ar cere excluderea căilor
   citate în heredoc-uri, adică parsare de shell — complexitate mult peste paguba.
+
+## 11. LIVRAT — cifre reale vs. estimate (aceeași zi, PR #241)
+
+Toate cele șase propuneri au fost implementate. Tabelul compară ce am estimat în §3 cu ce a ieșit
+măsurat, fiindcă două estimări au fost greșite și e mai util să se vadă cât:
+
+| # | estimat | real | verdict |
+|---|---:|---:|---|
+| **P1** buget de pornire | structural | gardă pe 4 straturi, plafon 37 KB | livrat |
+| **P2** registru | 1.200-2.200 o. | **166 o.** | **estimare infirmată** (`IZZ-0265`) |
+| **P3** mandat | ~600 o. | **98 o.** | livrat pe de-duplicare, nu pe economie |
+| **P4** §18 în L1 | ~1.270 o. | 928 o. în L0 | livrat, **plus** intrare în cens |
+| **P5** descrieri agenți | ~1.200 o. | 700 o. | livrat |
+| **P6** ancoră moartă | — | fix + gardă nouă | livrat |
+| | | **36.278 → 34.936 (−1.342)** | −3,7% |
+
+**Unde am greșit, explicit:**
+
+- **P2 a fost cea mai mare eroare de estimare.** Am calculat pe sumă (1.992 octeți de motive), nu
+  pe distribuție. Măsurat: **11 din cele 12 decizii injectate sunt `masurat-fals`** — exact
+  categoria al cărei motiv trebuie păstrat. Varianta calibrată atinge un singur rând. Consemnat
+  ca `IZZ-0265`, ca să nu fie re-propusă.
+  Ce a supraviețuit din P2 e altceva, găsit citind codul: `tail -24` tăia **linii formatate**, nu
+  decizii, deci numărul de decizii afișate depindea de câte aveau motiv, iar prima linie putea fi
+  un `motiv:` orfan. Acum taie rânduri înainte de formatare — 12 decizii, mereu cu titlul lor.
+- **P3 a economisit 98 de octeți, nu 600.** Sub pragul de zgomot. L-am livrat pe argumentul de
+  de-duplicare (două copii ale aceleiași mecanici pot drifta), nu pe cel bugetar, și commit-ul o
+  spune.
+- **P5 a dat 700, nu 1.200** — frontmatter-ul conține și `name`/`tools`/`model`, care nu se taie.
+
+**Ce s-a câștigat de fapt, și e mai mult decât cei 1.342 de octeți:**
+
+- **Acoperirea de gardă: 78% → 100%** din suprafața de pornire. Cei 12.443 de octeți nesupravegheați
+  intră acum sub un plafon declarat.
+- **Trei gărzi noi:** bugetul pe suprafață (cu testul negativ care dovedește că un text mutat între
+  straturi tot pică), ancora citată, și censul extins cu cele 7 reguli din §18 — care înainte nu
+  erau urmărite deloc, fiindcă §18 n-avea capete de regulă cu nume.
+- **A doua regulă în L1**, cu limita ei scrisă lângă ea și verificată prin rulare (livrează pe
+  `fetch_portraits.py`, `photojudge.py`, `media/`; tace pe `cluster.py`).
+
+**Ce NU s-a atins, deliberat:** §17 (cadență) și §12a (inventar de unelte) rămân în L0 — niciuna
+n-are declanșator mecanic pe cale, deci mutarea le-ar dizolva, nu le-ar muta. Ținta „`CLAUDE.md`
+sub 20 KB" rămâne nerecomandată din același motiv; fișierul e la 23.198.
+
+**Onestitate finală asupra cifrei:** −3,7% din bugetul de pornire e sub pragul la care economia
+singură ar justifica munca. Dacă valoarea e reală, ea vine din gărzi și din cens, nu din octeți —
+și asta era, de altfel, concluzia din §5, perspectiva inginerească. Rivalul din §6 rămâne
+necontrazis pe punctul lui principal: costul dominant e în altă parte.
