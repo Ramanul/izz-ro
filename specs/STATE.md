@@ -46,7 +46,10 @@
 - **Attribution: `specs/atribuire-cercetare-si-plan.md` is the dossier — do not re-research it.**
   7 external systems, 8 causes, a 6-stage plan, paid for once. Run `tools/eval_atribuire.py`
   before and after **any** change to `geo.py`. Baseline 2026-08-08: category 25/39 (64%),
-  place-on-badge 31/32 (97%). Covers are never redrawn on a first run (`IZZ-0163`, owner refused
+  place-on-badge 31/32 (97%). **Cifra aia NU mai e comparabila** (`IZZ-0268`, masurat 2026-09-02):
+  TTL-ul a expirat 44 din cele 51 de randuri ale setului de aur, deci o rulare de azi masoara 7
+  articole si da 86% — alt esantion, nu alt rezultat. Unealta cere set de aur reimprospatat.
+  Covers are never redrawn on a first run (`IZZ-0163`, owner refused
   2026-08-06); `FORCE_REGEN=1` is the opt-in.
 
 ## Where the rest lives
