@@ -45,13 +45,19 @@ DESPRINSE  agents (238) · local_sources (180) · photojudge (57)  ← fan-in 0,
 Intuiția „fișierul mare e problema" e **falsă**. Costul unei modificări nu e cât de mare e
 fișierul atins, ci câte alte fișiere trebuie atinse ca urmare.
 
-| modul | fan-in | schimbări/90z | **durere** |
+| modul | fan-in | schimbări (2,5 luni) | **propagare** |
 |---|---|---|---|
-| `config` | 9 | 6 | **54** |
-| `util` | 9 | 2 | **18** |
-| `geo` | 5 | 2 | **10** |
-| `render` | 1 | 9 | **9** |
-| `guard` | 3 | 0 | **0** |
+| `config` | 9 | 34 | **306** |
+| `util` | 9 | 21 | **189** |
+| `geo` | 5 | 15 | **75** |
+| `render` | 1 | 102 | **102** |
+| `guard` | 3 | 6 | **18** |
+
+> **CORECȚIE 2026-09-02, aceeași zi.** Prima versiune a tabelului spunea „schimbări/90z" cu
+> cifre de 6-9. Erau măsurate pe un clone **shallow** care vedea doar **13 zile** din istoric —
+> eticheta era falsă. După `git fetch --unshallow`: 1.361 de commit-uri, din 20 iunie.
+> Ordinea relativă s-a păstrat, magnitudinea nu. Lecție de metodă: verifică `.git/shallow`
+> înainte de orice măsurătoare pe istoric.
 
 **Concluzia contra-intuitivă:** `render.py` are 1784 de linii — de patru ori cât `config` —
 dar expune **2 funcții publice** și îl importă **un singur** modul. E deja o cutie închisă.
@@ -92,6 +98,80 @@ Cuplarea trece prin date, nu prin `import`, iar niciun tool static de importuri 
 
 `render.py` are 2 funcții publice, documentate, testate. Dicționarul de articol are ~16 chei
 publice, **zero** linii de definiție, **zero** gardă, **zero** versiune.
+
+## 4b. A treia axă: cuplarea TEMPORALĂ (ce se schimbă împreună)
+
+Tehnica e din analiza comportamentală a codului (Adam Tornhill): două fișiere care apar
+mereu în același commit sunt cuplate chiar dacă nu se importă și nu împart date. Măsurat pe
+**369 de commit-uri fără merge**, excluzând commit-urile de peste 8 fișiere (care sunt
+bump-uri de dependențe, nu muncă de design):
+
+```
+TIPUL perechilor care se schimbă împreună     nr.
+  cod + testul lui                            219   ← SĂNĂTOS
+  MODUL + MODUL (în generator/)               181   ← asta contează
+  generator + tools                            88
+  test + test                                  41
+```
+
+Cuplările modul-modul, cu procentul din schimbările modulului:
+
+```
+  13x  config + render    38% din schimbările lui config
+  12x  main + process     44% din ale lui main        ← main e orchestrator, normal
+  12x  config + process   35% din ale lui config
+   9x  process + render   27% din ale lui process
+   6x  config + fetch     18%
+```
+
+**`config` apare în patru din primele cinci.** Cuplarea temporală confirmă independent
+diagnosticul din §3: peste o treime din schimbările lui `config` trag după ele alt modul.
+
+## 4c. A patra axă: unde se ADUNĂ problemele (hotspots)
+
+Hotspot = complexitate × frecvența schimbării. Nu „mare", nu „des schimbat" — ambele
+simultan, fiindcă acolo se aglomerează bug-urile:
+
+```
+  modul       linii  ramificații  schimbări  HOTSPOT
+  render       1784      242         102      24684   ← de 4x următorul
+  fetch         899      184          34       6256
+  process       746      127          36       4572
+  main          566       71          32       2272
+  geo           789      112          15       1680
+```
+
+`config` NU apare aici: are **0 ramificații**, e doar date. Deci sunt **două feluri de
+durere**, iar §3 le confunda:
+
+- **`config` = durere de PROPAGARE** — mic și simplu, dar schimbarea lui atinge 9 module.
+- **`render` = durere de NAVIGARE** — nimeni nu depinde de interiorul lui, dar 1784 de linii
+  cu 242 de ramificații și 102 schimbări sunt greu de străbătut.
+
+Amândouă sunt reale. Prima se repară prin **decuplare** (spargere pe consumator), a doua prin
+**navigabilitate** (spargere pe subiect). Nu e aceeași operație.
+
+**Cod ÎNGHEȚAT** (≤2 schimbări în 2,5 luni): `agents`, `verifica_sinteza`, `raport_copiere`,
+`photojudge`. Trei dintre ele aveau și fan-in 0 în §2. Înghețat + neimportat = candidat serios
+la cod mort; de verificat dacă `tools/` le folosește înainte de a le șterge.
+
+## 4d. Răspunsul empiric la întrebarea din §1
+
+Îngrijorarea era: *„să nu trebuiască să modific o ramură cu 10 rămurele ca să modific un
+fruct."* Măsurat pe 369 de commit-uri:
+
+```
+  1 fișier   177  (48%)
+  2 fișiere   93  (25%)
+  3 fișiere   54  (15%)   → 88% ating cel mult 3
+  4-5         32   (9%)
+  6+          13   (4%)
+```
+
+**Mediana e 2.** Iar din perechile care se schimbă împreună, cele mai multe sunt cod + testul
+lui — exact ce vrei să vezi. Deci teama nu se confirmă în practică: structura actuală **nu**
+obligă la modificări largi. Problema reală e alta, și e cea din §4c: nu „ating prea multe
+fișiere", ci „`render` e greu de navigat, iar `config` propagă".
 
 ## 5. Vocabularul: connascence
 
@@ -172,3 +252,36 @@ doar pe calea atinsă. Practica publicată raportează ~94% reducere prin nivelu
 **Ce lipsește e un `.claude/reguli/INDEX.md`** — ~20 de linii, o linie per regulă cu
 declanșatorul ei, ~1 KB permanent, care înlocuiește ~15 KB. Atunci poți avea 50 de reguli:
 costul permanent devine indexul, nu regulile.
+
+## 10. Întrebările pe care NU ni le-am pus încă
+
+Dosarul acoperă patru axe: importuri (§2), date partajate (§4), cuplare temporală (§4b),
+hotspots (§4c). Rămân cel puțin șase întrebări nemăsurate, în ordinea utilității:
+
+1. **Graful de APELURI, nu de importuri.** `render` importă `geo`, dar folosește o funcție sau
+   douăzeci? Un import de care atârnă o singură funcție se taie ușor; unul de care atârnă
+   douăzeci, nu. Măsurabil cu `ast.Call` + rezoluție de nume.
+
+2. **Structura de fișiere reflectă FLUXUL?** Pipeline-ul e `fetch → cluster → process →
+   render`, o secvență clară. `generator/` e un director **plat** cu 22 de fișiere, în care
+   etapele stau lângă unelte (`util`, `config`) și lângă cod mort. Un `generator/etape/` +
+   `generator/comun/` ar face fluxul vizibil din `ls`. Întrebarea nu e „e mai frumos?", ci
+   „un om nou găsește etapa 3 fără să caute?".
+
+3. **Coeziunea INTERNĂ.** `render` are 59 de funcții. Formează un tot, sau sunt trei module
+   lipite? Măsurabil: ce funcții împart aceleași variabile de modul (LCOM).
+
+4. **Cicluri de dependență.** Nemăsurat. Dacă A → B → A, orice restructurare devine grea.
+   Ieftin de verificat cu o parcurgere în adâncime peste graful din §2.
+
+5. **Ce cod nu e ATINS de teste dar se schimbă des?** Intersecția dintre coverage (nemăsurat
+   încă, vezi `IZZ-0271`) și hotspots din §4c. Acolo e riscul maxim: complex, volatil, nepăzit.
+
+6. **Vârsta codului.** Cod vechi și stabil ≠ cod vechi și uitat. `git log --format=%ad` pe
+   fiecare fișier separă „matur" de „abandonat" — util pentru cele patru module înghețate.
+
+**Întrebarea cea mai bună dintre ele, după o singură lectură:** nr. 2. Celelalte cinci
+măsoară cuplarea *existentă*; nr. 2 întreabă dacă structura **comunică** ceea ce face
+programul — iar asta e singura care ajută un om (sau o sesiune nouă) să se orienteze fără
+să citească tot.
+
