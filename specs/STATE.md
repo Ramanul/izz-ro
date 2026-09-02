@@ -13,15 +13,15 @@
 > history with two live rules buried in it. That is the same failure the 08-07 cut documented.
 > **A section is `Open` only if a PR is open or a decision is pending — check, don't assume.**
 
-**Updated:** 2026-08-30 (F1-F4 livrate: #226 #227 #228 + pilotul L1 din #229; plan de remediere
-rulat pe cinci probleme — `IZZ-0255`..`IZZ-0260`)
+**Updated:** 2026-09-02 (#241: bugetul de pornire sub garda, §18 in L1, `IZZ-0265`)
 
 ## Open
 
-- **F4 livrat ca PILOT (§13).** Hook-ul `PostToolUse` livreaza regulile L1, verificat live.
-  `CLAUDE.md`: 24.532 -> 23.835 octeti, liberi 44 -> 741. Urmatorii candidati masurati: §12
-  (2.259 o.), §14 (1.795), §18 (1.489), §17 (1.084), §20 (1.024). `IZZ-0256`: **'B n-are
-  hook-uri' era fals**, iar `additionalContext` bate `exit 2`.
+- **F4 CONTINUAT (#241, draft).** §18 e a doua regula in L1, verificata prin rulare. Plafonul
+  s-a mutat de pe FISIER pe SUPRAFATA de pornire (`CLAUDE.md` + hook + frontmatter agenti si
+  comenzi): o mutare intre straturi NU economiseste — toate intra in aceeasi sesiune. Buget
+  36.278 -> 34.936 o., plafon 37 KB, garda acopera 100% (era 78%). Urmatorii: §12 (2.259 o.),
+  §14 (1.795), §20 (1.024); **§17 NU** — fara declansator pe cale s-ar dizolva. `IZZ-0265`.
 - **K12 decis (`IZZ-0255`)**: rutina nu se rescrie, se construieste mecanismul (rezumat zilnic
   „ce e nou, ce e riscant"). **Specul nu e scris**; porneste de la `editorial-quality.yml`.
 - **Axa 3 a garzii de anomalie** — spec in `specs/anomalie-linkuri.md` (`IZZ-0259`), NEimplementat
@@ -32,7 +32,7 @@ rulat pe cinci probleme — `IZZ-0255`..`IZZ-0260`)
   care scapa. **Blocat pe #214**, care da ruta catre `izz-failover`.
 - **Trafic** — sonda `.github/workflows/trafic.yml` scrisa; rulabila abia dupa aterizarea lui
   #229. Raspunde masurat daca tokenul CLOUDFLARE existent are scope de analytics.
-- **PR-uri deschise:** #203 #204 #207 #214. **#225** are doua blocaje: cinci ID-uri refolosite
+- **PR-uri deschise:** #203 #204 #207 #214 **#241**. **#225** are doua blocaje: cinci ID-uri refolosite
   si o regula redenumita din censul F3.
 - **Din `specs/atribuire-cercetare-si-plan.md`** — E1 + E4 cer decizia proprietarului, E3 focus
   score, E5 gold set ~150 + poarta CI.

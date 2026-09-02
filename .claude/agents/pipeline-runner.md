@@ -1,10 +1,9 @@
 ---
 name: pipeline-runner
 description: >-
-  Runs the izz.ro content pipeline in a safe, non-destructive way and reports the real output
-  against the acceptance criteria. Use PROACTIVELY to satisfy CLAUDE.md §5.4 ("verify by running,
-  not by claiming") after changes to fetch / process / render / state / moderation, or when asked
-  "does it still build?". Prefers --dry-run and --render-only so it never spends AI quota or mutates state.
+  Runs the pipeline safely (`--dry-run` / `--render-only`) and reports the real output against
+  the acceptance criteria. Use PROACTIVELY after changes to fetch / process / render / state /
+  moderation, or when asked "does it still build?".
 tools: Bash, Read, Grep, Glob
 model: sonnet
 ---

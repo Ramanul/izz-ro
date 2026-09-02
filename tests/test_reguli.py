@@ -42,6 +42,7 @@ ROOT = Path(__file__).resolve().parents[1]
 # nu are voie sa declanseze nimic.
 MARCAJ_KB = re.compile(r"\*\*Plafon: (\d+) KB\.\*\*")
 MARCAJ_LINII = re.compile(r"\*\*Hard cap: ~(\d+) lines of content\.\*\*")
+MARCAJ_BUGET = re.compile(r"\*\*Buget de pornire: (\d+) KB\.\*\*")
 TTL_LIPIT = re.compile(r"ARTICLE_TTL_DAYS\s*(?:=|\()\s*(\d+)")
 # Un nume de fisier din harta e ghilimelat si NU contine cale — asa se deosebeste
 # `TASKS-B.md` (intrare in harta) de `specs/STATE.md` sau `tools/log_slice.py` (trimiteri).
@@ -129,6 +130,58 @@ def incalcari_unicitate(fisiere: dict[str, str], marcaj: re.Pattern, unde: str) 
     return [f"plafonul e declarat in {declara or 'niciun fisier'}, asteptat exact in ['{unde}']"]
 
 
+# --- bugetul de pornire: plafonul se pune pe SUPRAFATA, nu pe un fisier ----------------------
+#
+# DE CE EXISTA (2026-09-02). Plafonul de KB pazea `CLAUDE.md` — 23.835 din 24.576 de octeti — in
+# timp ce inca 12.443 de octeti la fel de scumpi intrau in aceeasi sesiune fara sa-i numere
+# nimeni: iesirea hook-ului `SessionStart` (8.829, din care registrul 3.712) si frontmatter-ul
+# agentilor si comenzilor (1.925 + 1.689), injectat la FIECARE tura.
+#
+# Consecinta masurata, si motivul pentru care garda asta nu e cosmetica: mutarea unui text din
+# `CLAUDE.md` in hook SCADE cifra pazita si nu schimba NIMIC in context — ambele intra la
+# pornire si raman acolo toata sesiunea. Cu o singura garda pe un singur fisier, o astfel de
+# mutare se raporteaza ca economie si trece verde. Economiseste doar ce nu mai intra deloc:
+# stergerea unui duplicat, compresia, sau declansatorul `PostToolUse` (stratul L1).
+
+COMPONENTE_BUGET = (".claude/agents", ".claude/commands")
+
+
+def _frontmatter(text: str) -> int:
+    """Octetii dintre cele doua `---` — singura parte injectata la fiecare tura."""
+    potrivire = re.match(r"^---\n(.*?)\n---", text, re.S)
+    return len(potrivire.group(1).encode("utf-8")) if potrivire else 0
+
+
+def buget_de_pornire() -> dict[str, int]:
+    """Tot ce intra in context la pornirea unei sesiuni, masurat — nu dedus.
+
+    Hook-ul se RULEAZA, nu se aproximeaza din marimea fisierelor pe care le citeste: iesirea
+    lui depinde de `tail -24` din registru si de STATE.md, deci o suma statica ar minti.
+    """
+    masurat = {"CLAUDE.md": (ROOT / "CLAUDE.md").stat().st_size}
+    hook = ROOT / ".claude/hooks/session-start.sh"
+    iesire = subprocess.run(["bash", str(hook)], cwd=ROOT, capture_output=True,
+                            timeout=60, check=False)
+    assert iesire.returncode == 0, f"hook-ul SessionStart a esuat: {iesire.stderr[:200]!r}"
+    masurat["hook SessionStart"] = len(iesire.stdout)
+    for director in COMPONENTE_BUGET:
+        masurat[director] = sum(_frontmatter((ROOT / cale).read_text(encoding="utf-8"))
+                                for cale in fisiere_urmarite(f"{director}/*.md"))
+    return masurat
+
+
+def incalcari_buget(text: str, masurat: dict[str, int]) -> list[str]:
+    potrivire = MARCAJ_BUGET.search(text)
+    if not potrivire:
+        return ["CLAUDE.md nu declara un buget de pornire — garda n-are contra ce sa masoare"]
+    plafon = int(potrivire.group(1)) * 1024
+    total = sum(masurat.values())
+    if total <= plafon:
+        return []
+    defalcare = ", ".join(f"{nume} {octeti}" for nume, octeti in sorted(masurat.items()))
+    return [f"bugetul de pornire e {total} octeti, peste plafonul declarat de {plafon}"
+            f" ({defalcare}). Mutarea intre straturi NU ajuta: toate intra in aceeasi sesiune."]
+
 # --- garzile, pe repo-ul real -----------------------------------------------------
 
 def test_claude_md_sub_plafonul_pe_care_il_declara():
@@ -140,6 +193,12 @@ def test_state_md_sub_plafonul_pe_care_il_declara():
     cale = ROOT / "specs" / "STATE.md"
     assert not incalcari_plafon_linii(cale.read_text(encoding="utf-8"))
 
+
+def test_bugetul_de_pornire_sub_plafonul_declarat():
+    """Plafonul pe suprafata, nu pe fisier: altfel o mutare in hook trece ca economie."""
+    incalcari = incalcari_buget((ROOT / "CLAUDE.md").read_text(encoding="utf-8"),
+                                buget_de_pornire())
+    assert not incalcari, incalcari[0]
 
 def test_ttl_citat_in_text_e_cel_din_config():
     config_py = (ROOT / "generator" / "config.py").read_text(encoding="utf-8")
@@ -154,6 +213,7 @@ def test_ttl_citat_in_text_e_cel_din_config():
 @pytest.mark.parametrize("marcaj,unde", [
     (MARCAJ_KB, "CLAUDE.md"),
     (MARCAJ_LINII, "specs/STATE.md"),
+    (MARCAJ_BUGET, "CLAUDE.md"),
 ])
 def test_fiecare_plafon_e_declarat_intr_un_singur_loc(marcaj, unde):
     """O regula, o cifra. Doua locuri inseamna ca niciuna nu se tine."""
@@ -169,6 +229,21 @@ def test_garda_kb_pica_pe_fisier_prea_mare():
 def test_garda_kb_pica_pe_fisier_fara_plafon_declarat():
     assert incalcari_plafon_kb("fara niciun marcaj", 10)
 
+
+
+def test_garda_bugetului_pica_pe_suprafata_prea_mare():
+    assert incalcari_buget("> **Buget de pornire: 1 KB.**", {"CLAUDE.md": 2048})
+
+
+def test_garda_bugetului_pica_pe_fisier_fara_buget_declarat():
+    assert incalcari_buget("fara niciun marcaj", {"CLAUDE.md": 10})
+
+
+def test_garda_bugetului_numara_TOATE_straturile_nu_doar_fisierul():
+    """Regresia pe care o previne: mutarea din CLAUDE.md in hook, raportata ca economie."""
+    antet = "> **Buget de pornire: 1 KB.**"
+    assert not incalcari_buget(antet, {"CLAUDE.md": 1000})
+    assert incalcari_buget(antet, {"CLAUDE.md": 600, "hook SessionStart": 500})
 
 def test_garda_linii_pica_pe_fisier_prea_lung():
     antet = "# T\n> **Hard cap: ~2 lines of content.**\n\n"
@@ -289,6 +364,14 @@ CONST_CITATA = re.compile(r"`?([A-Z][A-Z0-9_]{3,})`?\s*=\s*`?(\d+)`?")
 CRON_REAL = re.compile(r"cron:\s*[\"']([^\"']+)[\"']")
 CRON_CITAT = re.compile(r"`([-\d*/,]+(?: [-\d*/,]+){4})`")
 
+# O trimitere poate cita si ANCORA din documentul tinta: `§13 ("Current scores")`. Sectiunea
+# poate exista in timp ce titlul citat s-a mutat — atunci trimiterea pare valida si duce in gol.
+# Masurat 2026-09-02: exact asa a supravietuit `frontend-auditor.md:23` gardii de sectiuni, care
+# vedea ca §13 exista si se oprea acolo. E cea mai ingusta bucata de „proza libera" care are
+# totusi sintaxa proprie, deci se poate pazi.
+ANCORA_CITATA = re.compile(
+    r"(§\s?\d+[a-z]?|`[^`]+\.md`)\s*\(\s*[„\"\u201c]([^\"\u201d\u201c]{2,60})[\"\u201d]\s*\)")
+
 CALE_CITATA = re.compile(
     r"`([A-Za-z0-9_][A-Za-z0-9_./-]*\.(?:py|sh|yml|yaml|md|css|html|json|tsv|svg))`")
 
@@ -368,6 +451,22 @@ def incalcari_cai(fisiere: dict[str, str], urmarite: set[str]) -> list[str]:
     return gasite
 
 
+def incalcari_ancore(fisiere: dict[str, str], texte: dict[str, str],
+                     proprietari: dict[str, str], implicit: str) -> list[str]:
+    """Titlul citat intre paranteze dupa o trimitere trebuie sa existe in documentul tinta."""
+    gasite = []
+    for cale, text in sorted(fisiere.items()):
+        for linie_nr, linie in enumerate(text.split("\n"), 1):
+            for tinta, ancora in ANCORA_CITATA.findall(linie):
+                document = (tinta.strip("`") if tinta.startswith("`")
+                            else proprietari.get(cale, implicit))
+                continut = texte.get(document)
+                if continut is None or ancora in continut:
+                    continue
+                gasite.append(f"{cale}:{linie_nr} citeaza ancora «{ancora}», "
+                              f"inexistenta in {document}")
+    return gasite
+
 # --- garzile de fapte canonice, pe repo-ul real ----------------------------------------------
 
 def test_fiecare_trimitere_la_sectiune_are_tinta():
@@ -400,6 +499,14 @@ def test_fiecare_cale_citata_exista():
                                   text=True, check=True).stdout.split("\n")) - {""}
     assert not incalcari_cai(fisiere_normative(), urmarite)
 
+
+def test_fiecare_ancora_citata_exista():
+    """K8, a doua jumatate: §N poate exista in timp ce titlul citat din el s-a mutat."""
+    fisiere = fisiere_normative()
+    texte = {document: (ROOT / document).read_text(encoding="utf-8")
+             for document in {DOCUMENT_IMPLICIT, *PROPRIETAR_SECTIUNI.values()}}
+    texte.update({cale: text for cale, text in fisiere.items()})
+    assert not incalcari_ancore(fisiere, texte, PROPRIETAR_SECTIUNI, DOCUMENT_IMPLICIT)
 
 # --- fiecare garda de fapte trebuie sa poata ESUA --------------------------------------------
 
@@ -447,6 +554,17 @@ def test_garda_cailor_accepta_prescurtarea_si_ignora_alt_arbore():
     assert not incalcari_cai({"x.md": "`gemini.py` si `izz/CLAUDE.md`"}, urmarite)
     assert incalcari_cai({"x.md": "`lipsa.py`"}, urmarite)
 
+
+
+def test_garda_ancorelor_pica_pe_titlu_mutat():
+    stricat = {"x.md": "prima linie\nvezi §13 („Current scores\u201d) pentru baseline"}
+    assert incalcari_ancore(stricat, {"CLAUDE.md": "## 13. Verificare"}, {}, "CLAUDE.md")
+
+
+def test_garda_ancorelor_accepta_titlul_care_chiar_exista():
+    ok = {"x.md": "prima linie\nvezi §13 („Verificare front-end\u201d)"}
+    assert not incalcari_ancore(ok, {"CLAUDE.md": "## 13. Verificare front-end — masoara"},
+                                {}, "CLAUDE.md")
 
 def test_harta_sectiunilor_ramane_o_categorie_nu_o_lista_care_creste():
     """Un al treilea document care isi revendica §N inseamna ca `§` a incetat sa mai spuna ceva."""
@@ -537,6 +655,15 @@ REGULI_L1 = {
         'Rulează 3+ repetări per revizie și compară medianele',
         'Măsurătoarea e busolă, nu pilot automat.',
         'Baseline, cifre, ipoteze picate (CLS, fonturi, consent) → `specs/masuratori-frontend.md`.',
+    }),
+    ".claude/reguli/18-imagini.md": frozenset({
+        'Finanțarea din taxe NU pune fotografiile unei instituții în domeniul public.',
+        'O poză făcută de un angajat al primăriei e opera INSTITUȚIEI:',
+        'Nu improviza fapte juridice.',
+        'Trei căi, oricare, verificată și CONSEMNATĂ (link + citat):',
+        'Prezența unui ales reduce *dreptul lui la imagine*, nu *dreptul de autor al fotografului*.',
+        'Fără scraping în bloc pe site-uri de instituții.',
+        'Dovada se strânge într-un whitelist pe care proprietarul (sau juristul) îl aprobă ÎNAINTE',
     }),
 }
 

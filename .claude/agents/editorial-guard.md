@@ -1,11 +1,9 @@
 ---
 name: editorial-guard
 description: >-
-  Read-only reviewer that checks rendered output and templates against izz.ro's non-negotiable
-  editorial and design rules BEFORE a front-end change is committed. Use PROACTIVELY when
-  templates/*.html or generator/render.py change the way sources, cards, the hero aside, or article
-  pages are presented, or when someone is unsure whether a new surface follows the attribution formula.
-  It reviews and reports findings — it never edits.
+  Reviews templates and rendered output against the attribution, Zero Zgomot and design-token
+  rules. Use PROACTIVELY when `templates/*.html` or `render.py` change how sources, cards, the
+  hero aside or article pages are presented.
 tools: Read, Grep, Glob
 model: inherit
 ---

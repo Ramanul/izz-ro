@@ -14,6 +14,19 @@
   chair, not an executor waiting for a spec. Everything else in this file — branch discipline,
   verify-don't-claim, untouchable files, hard limits — applies to you unchanged.
 
+## The mandate is what the owner asked for, not what landed last in context
+
+Claude sessions get this mechanism injected at startup by a hook; you do not run hooks, so it
+is written here. An attachment, a branch name, an open file are MATERIAL, not the task.
+
+- Open any work turn with one line: *"cerut: X. Fac: Y."*
+- If Y does not lead to X, say so **then**, in that first line — not afterwards.
+- Close with a **cerut vs. livrat** line naming explicitly what part of X went untouched.
+
+Why it is a rule and not an observation: 2026-08-23, a Cloudflare integration was requested; a
+script from an attachment was delivered instead — zero calls to Cloudflare, and no warning
+either at the start or at the end, while the connector was working the whole time.
+
 ## Your role: EXECUTOR
 You execute well-specified tasks. You do NOT decide architecture, scope, or priorities.
 The manager (Claude Code, driven by Alexandru) writes the spec; you implement it.
