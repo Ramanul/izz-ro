@@ -1,4 +1,5 @@
 """Citire RSS robusta (Atom-safe) + filtru de agentii de presa + scraper HTML pentru surse fara RSS."""
+import collections
 import json
 import os
 import re
@@ -11,6 +12,22 @@ import defusedxml.ElementTree as ET
 from concurrent.futures import ThreadPoolExecutor, TimeoutError, as_completed
 from defusedxml.common import DefusedXmlException
 from datetime import datetime, timezone
+
+# Cate intrari brute sunt aruncate la INGESTIE, si de ce. Pana la 2026-09-02 nimeni nu stia:
+# `main.py` numara ce se pierde DUPA fetch (`stale_skipped`, `deferred`, itemele fara
+# substanta), dar ce nu intra niciodata in pipeline era invizibil prin constructie — un item
+# sarit nu apare pe site, nu apare in `articles.json` si nu apare in log.
+#
+# Sect. 7 PRESCRIE pierderea tacuta („SARE itemul"), deci contorul nu o schimba: o face
+# numarabila. Cifra care intereseaza cel mai mult e „garda de continut ostil" — pana acum
+# nimeni nu putea spune cate articole respinge `guard` intr-o rulare reala.
+_SARITE = collections.Counter()
+
+
+def pierderi_ingestie() -> dict:
+    """Ce s-a aruncat la ingestie in rularea curenta. Se citeste din `main.py`, la final."""
+    return dict(_SARITE)
+
 from html.parser import HTMLParser
 from urllib.parse import urljoin
 
@@ -281,15 +298,18 @@ def _parse_sitemap_news(raw: bytes, key: str, source: dict) -> tuple[list, str |
                                    namespaces=_SITEMAP_NS)
         if not loc or not title:
             unusable += 1
+            _SARITE["item incomplet (fara link sau titlu)"] += 1
             continue
         resolved_loc = urljoin(source.get("url", ""), loc)
         if _is_agency(resolved_loc, source["name"]):
+            _SARITE["agentie de presa (exclusa deliberat)"] += 1
             continue
         motiv = (guard.verdict(title) or guard.url_ostil(resolved_loc)
                  or guard.anomalie(title, source.get("lang", "ro")))
         if motiv:
             respinse += 1
             print(f"   !! garda ingestie (sitemap): sar [{key}] {title[:60]!r} — {motiv}")
+            _SARITE["garda de continut ostil"] += 1
             continue
         items.append({
             "url": normalize_url(resolved_loc),
@@ -549,12 +569,14 @@ def _items_from_html(raw: str, key: str, source: dict) -> tuple[list, str | None
         link = entry["href"]
         title = clean_html(entry["title"])
         if not link or not title or _is_agency(link, source["name"]):
+            _SARITE["item incomplet (fara link sau titlu)"] += 1
             continue
         motiv = (guard.verdict(title) or guard.url_ostil(link)
                  or guard.anomalie(title, source.get("lang", "ro")))
         if motiv:
             respinse += 1
             print(f"   !! garda ingestie (lista HTML): sar [{key}] {title[:60]!r} — {motiv}")
+            _SARITE["garda de continut ostil"] += 1
             continue
         items.append({
             "url": normalize_url(link),
@@ -675,8 +697,10 @@ def _fetch_one(key: str, source: dict, cache: dict | None = None) -> tuple[list,
         link = entry.get("link", "").strip()
         title = clean_html(entry.get("title") or "")
         if not link or not title:
+            _SARITE["item incomplet (fara link sau titlu)"] += 1
             continue
         if _is_agency(link, source["name"]):
+            _SARITE["agentie de presa (exclusa deliberat)"] += 1
             continue
         body = _entry_body(entry)
         # Garda de continut ostil: o sursa poate fi compromisa fara sa stim (vezi guard.py).
@@ -686,6 +710,7 @@ def _fetch_one(key: str, source: dict, cache: dict | None = None) -> tuple[list,
         if motiv:
             respinse += 1
             print(f"   !! garda ingestie: sar [{key}] {title[:60]!r} — {motiv}")
+            _SARITE["garda de continut ostil"] += 1
             continue
         items.append({
             "url": normalize_url(link),

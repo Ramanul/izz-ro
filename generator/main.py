@@ -374,6 +374,18 @@ def run(dry_run: bool = False) -> dict:
     stale_skipped = len(new_items) - len(fresh_items)
     new_items = fresh_items
 
+    # Ce s-a aruncat la INGESTIE, inainte ca pipeline-ul sa vada itemele. Restul raportului
+    # numara ce se pierde DUPA fetch; asta era singura etapa fara cifra, si e invizibila prin
+    # constructie — un item sarit nu apare pe site, nu apare in `articles.json`, nu apare in
+    # log. Sect. 7 PRESCRIE saritul („SARE itemul"), deci contorul nu schimba comportamentul:
+    # il face numarabil. Cifra pe „garda de continut ostil" e cea care merita urmarita in timp.
+    pierderi = fetch.pierderi_ingestie()
+    if pierderi:
+        total = sum(pierderi.values())
+        print(f">> Sarite la ingestie: {total} intrari brute")
+        for motiv, n in sorted(pierderi.items(), key=lambda kv: -kv[1]):
+            print(f"     {n:>5}  {motiv}")
+
     provider = get_provider()
     provider_name = provider.name if provider else "fallback (fara cheie/SDK AI)"
 
