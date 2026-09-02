@@ -54,14 +54,17 @@ def test_cardul_lipseste_marcajul_cand_nu_e_generat(card):
 
 def test_articolul_poarta_marcajul_cand_e_generat():
     """Pagina de articol păstrează dezvăluirea scurtă + nota detaliată."""
+    a = _articol(ai_generat=True)
     tpl = render._env().get_template("article.html")
-    html = tpl.render(
-        site={"name": "IZZ.ro", "url": "https://izz.ro", "tagline": "t"},
-        base="", canonical="https://izz.ro/economie/titlu-de-test/",
-        a=_articol(ai_generat=True),
-        topics=[], people=[], related=[],
-        nav_section="stiri",
-    )
+    # Contextul vine din `render._base_ctx`, exact ca in productie (render.py:1029). Un context
+    # reconstruit de mana se rupe la FIECARE variabila noua ceruta de `base.html` — asa a picat
+    # testul asta pe main: `asset_ver` indexat direct si `jsonld | tojson` sunt neconditionate,
+    # deci lipsa lor da UndefinedError, respectiv TypeError. Un `default(...)` in sablon ar fi
+    # ascuns pierderea cache-bust-ului, exact capcana din §16.2.
+    html = tpl.render(**render._base_ctx(
+        f"/{a['category']}/{a['slug']}/", a=a, active_cat=a["category"],
+        topics=[], people=[], related=[], nav_section="stiri",
+    ))
     assert "Titlu sintetizat automat" in html
     assert 'class="ai-mark"' in html
     assert "ai-note" in html
