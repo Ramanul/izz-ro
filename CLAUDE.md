@@ -8,9 +8,9 @@
 > Măsura e mărimea în OCTEȚI (`stat -c %s`), nu `du`, care raportează blocuri de disc și a dus
 > deja de două ori la o cifră greșită scrisă aici.
 >
-> **Buget de pornire: 40 KB.** Al doilea plafon, pe SUPRAFAȚA încărcată la pornire, nu pe un
+> **Buget de pornire: 37 KB.** Al doilea plafon, pe SUPRAFAȚA încărcată la pornire, nu pe un
 > fișier: acesta + ieșirea hook-ului `SessionStart` + frontmatter-ul din `.claude/agents/` și
-> `.claude/commands/`. Măsurat 2026-09-02: 36.278 octeți, din care plafonul de sus vede 66%.
+> `.claude/commands/`. Măsurat 2026-09-02: 34.936 octeți, din care plafonul de sus vede 66%.
 > De-aia mutarea unui text de aici în hook NU e economie — ambele intră în aceeași sesiune.
 >
 > Fișierul se încarcă în context la FIECARE tură, deci fiecare octet se plătește de fiecare dată.
@@ -248,23 +248,12 @@ cauzat pana din 5-9 iulie. Plafonul de debit e bugetul AI (`max_ai_calls`, impli
 programul. Varianța zilnică e mare și normală; verifică `gh run list` înainte să pretinzi că
 pipeline-ul e picat. Cifre și context: `specs/istoric-operational.md`.
 
-## 18. Imagini de instituții locale — condiționate de consimțământ (decizie proprietar 2026-07-24)
-Finanțarea din taxe NU pune fotografiile unei instituții publice în domeniul public, iar „public pe
-site-ul lor" ≠ liber de reutilizat. Legea 8/1996 art. 9 eliberează **TEXTUL** actelor oficiale — NU
-fotografiile. O poză făcută de un angajat al primăriei e opera INSTITUȚIEI: ea e titularul și ea
-trebuie să acorde reutilizarea; o poză de la un fotograf contractat sau o agenție (Agerpres/Mediafax)
-aparține terțului. Faptul că apare un ales reduce *dreptul lui la imagine*, dar NU atinge *dreptul
-de autor al fotografului*. Nu improviza fapte juridice — pentru orice operațional, proprietarul
-confirmă cu un avocat.
-
-izz.ro poate folosi imaginea unei instituții locale DOAR dacă una din astea ține, verificată și
-CONSEMNATĂ (link + citat): (1) instituția publică termeni de reutilizare / licență deschisă care
-acoperă imaginile, SAU (2) există portret/poză liber-licențiată pe Wikidata / Wikimedia Commons
-(calea existentă — `fetch_leadphotos.py` PD/CC0, `fetch_portraits.py` CC-BY), SAU (3) instituția a
-dat permisiune scrisă de reutilizare. **Fără scraping în bloc pe site-uri de instituții.** Lipsesc
-toate trei → articolul își păstrează coperta generată. Dovada se strânge într-un **whitelist pe
-care proprietarul (sau juristul) îl aprobă ÎNAINTE** de a trage vreo imagine — om în buclă, ca
-`moderation.yaml`.
+## 18. Imagini de instituții locale — regulă L1, livrată de hook
+Textul stă în `.claude/reguli/18-imagini.md` și ajunge singur în context când atingi
+`tools/fetch_leadphotos.py`, `tools/fetch_portraits.py`, `generator/photojudge.py` sau `media/`.
+Regula are însă și o latură conversațională, pe care un hook pe cale n-o poate prinde: **dacă se
+discută folosirea unei imagini de instituție fără să atingi vreun fișier, citește-o ÎNTÂI.** Fără
+una din cele trei dovezi consemnate acolo, articolul își păstrează coperta generată.
 
 ## 19. Igienă de sesiune și economie de context — REGULĂ TARE
 - **Un task, o sesiune.** Nu continua o conversație peste zile. Când o felie e gata și STATE.md e

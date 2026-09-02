@@ -43,6 +43,14 @@ CATALOG: dict[str, tuple[str, tuple[str, ...]]] = {
         "13-frontend.md",
         ("templates/", "static/styles.css", "generator/render.py"),
     ),
+    # §18 e a doua regula mutata in L1 (2026-09-02). Declansatorul ei pe cale e cel mai clar
+    # dintre sectiunile ramase — de-aia ea si nu §17, a carei situatie tipica („nu s-a publicat
+    # nimic de 4 ore") nu atinge niciun fisier, deci un hook pe cale ar rata exact cazul propriu.
+    "18-imagini": (
+        "18-imagini.md",
+        ("tools/fetch_leadphotos.py", "tools/fetch_portraits.py",
+         "generator/photojudge.py", "media/", "data/leadphotos.json", "data/portraits.json"),
+    ),
 }
 
 CAMP_CALE = ("file_path", "notebook_path", "path")

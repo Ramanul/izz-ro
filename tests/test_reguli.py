@@ -656,6 +656,15 @@ REGULI_L1 = {
         'Măsurătoarea e busolă, nu pilot automat.',
         'Baseline, cifre, ipoteze picate (CLS, fonturi, consent) → `specs/masuratori-frontend.md`.',
     }),
+    ".claude/reguli/18-imagini.md": frozenset({
+        'Finanțarea din taxe NU pune fotografiile unei instituții în domeniul public.',
+        'O poză făcută de un angajat al primăriei e opera INSTITUȚIEI:',
+        'Nu improviza fapte juridice.',
+        'Trei căi, oricare, verificată și CONSEMNATĂ (link + citat):',
+        'Prezența unui ales reduce *dreptul lui la imagine*, nu *dreptul de autor al fotografului*.',
+        'Fără scraping în bloc pe site-uri de instituții.',
+        'Dovada se strânge într-un whitelist pe care proprietarul (sau juristul) îl aprobă ÎNAINTE',
+    }),
 }
 
 CENS = {"CLAUDE.md": REGULI_ACTIVE, **REGULI_L1}
