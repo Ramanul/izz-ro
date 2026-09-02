@@ -285,3 +285,68 @@ măsoară cuplarea *existentă*; nr. 2 întreabă dacă structura **comunică** 
 programul — iar asta e singura care ajută un om (sau o sesiune nouă) să se orienteze fără
 să citească tot.
 
+
+## 4e. A cincea axă: ce VERIFICĂ testele, nu doar ce execută
+
+Măsurat 2026-09-02. Cele patru axe de mai sus descriu **codul**. Aceasta descrie **plasa de
+sub el** — și e condiția de intrare pentru orice restructurare din §7: dacă suita nu observă
+schimbările, „testele trec" nu spune nimic despre neutralitatea unui refactor.
+
+**Distincția care contează.** Coverage răspunde la „ce linii se **execută**". Mutation
+testing răspunde la „ce linii sunt **verificate**". Nu sunt același lucru: o linie executată
+de un test care nu o afirmă e acoperită și nepăzită simultan. Metoda: schimb un operator
+(`>=`→`>`, `and`→`or`, șterg un `not`), rulez testele care acoperă modulul, și dacă trec —
+**mutantul a supraviețuit**, adică nimeni nu privea acolo.
+
+**Ce s-a găsit** — patru granițe nepăzite, toate off-by-one sau logică booleană, adică
+exact clasa pe care testele „la mijlocul intervalului" nu o prind:
+
+```
+  cluster.py:40   and -> or    over-merge total (`union > 0` e mereu adevărat)
+  select.py:37    >= -> >      două titluri cu fix 4 cuvinte comune → duplicat publicat
+  select.py:108   <= -> <      titlu de fix `limit` caractere → trunchiat pe site
+  geo.py:338      and -> or    rând stricat în gazetteer → alternanță regex vidă
+```
+
+Toate patru sunt acum ucise (`IZZ-0276`). Al cincilea, `cluster.py:27`, e **mutant echivalent
+în practică** și rămâne deliberat nepăzit (`IZZ-0277`).
+
+**Constatarea cea mai grea nu e vreun mutant, ci un gol de acoperire:** `select._dedup` —
+funcția care implementează chiar promisiunea de brand („Zero Zgomot", deduplicat) — nu avea
+**niciun** test direct, deși antetul lui `tests/test_render_editorial.py` afirmă din
+2026-08-30 că avea. Afirmația a devenit falsă între timp și nimic n-o verifica. Aceeași
+formă cu §11 din CLAUDE.md și cu `IZZ-0257`: un fișier normativ care descrie o stare
+dispărută e mai rău decât tăcerea, fiindcă oprește căutarea.
+
+**Unde măsurătoarea asta a greșit prima dată** (`IZZ-0275`, consemnat ca `masurat-fals`):
+prima rulare a raportat „67% rată de ucidere". Cifra e nefolosibilă, din două defecte ale
+propriului harness — nu ale repo-ului:
+
+1. **Bytecode stale.** Harness-ul scria mutantul, rula, restaura. Doi mutanți succesivi pe
+   *același* fișier ieșeau cu *aceeași mărime* în *aceeași secundă*, iar invalidarea `.pyc`
+   se face pe (mtime în secunde, mărime) — deci pytest rula bytecode-ul mutantului
+   **anterior**. Așa a raportat `cluster.py:40` drept supraviețuitor și *după* ce testul
+   care îl ucide exista deja. Remediu: `PYTHONDONTWRITEBYTECODE=1` + ștergerea
+   `__pycache__` înainte de fiecare rulare.
+2. **Setul de teste ales de mână.** Pentru `select.py` omitea `test_render_editorial.py`,
+   singurul fișier care acoperă modulul. Cei doi mutanți „supraviețuiau" unei suite care
+   nu-i vedea.
+
+Lecția e mai generală decât mutation testing: **o unealtă de măsură scrisă ad-hoc trebuie
+ea însăși verificată pe un caz cu răspuns cunoscut** înainte să-i citezi cifra. Aici cazul
+cu răspuns cunoscut a apărut din noroc (un mutant despre care *știam* că e ucis a fost
+raportat viu). Fără el, aș fi raportat 67% și aș fi crezut-o.
+
+**Cum se reface**, determinist:
+
+```
+python tools/mutanti.py            # aplică fiecare mutant, rulează testele care îl acoperă
+```
+
+**Ce NU acoperă axa asta.** Mutanții testați sunt operatori simpli pe module cu teste
+rapide; `render.py` — cel mai mare hotspot din §4c — n-a fost mutantat deloc, fiindcă
+testele care îl acoperă randează `output/` și o rulare completă ar costa ore. Deci
+afirmația „plasa ține" e dovedită pe `cluster`/`select`/`geo`/`util`/`guard`, nu pe
+întregul pipeline. Pentru `render`, plasa rămâne `tools/echivalenta.py` (amprentă pe
+output), care e complementară: ea nu spune dacă testele privesc, ci dacă rezultatul s-a
+schimbat.
