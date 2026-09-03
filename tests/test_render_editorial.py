@@ -231,3 +231,67 @@ def test_entity_index_keeps_only_entities_seen_at_least_twice():
 
 def test_entity_index_skips_entities_that_slugify_to_nothing():
     assert render._entity_index([{"entities": ["!!!"]}, {"entities": ["!!!"]}]) == {}
+
+
+# --- praguri de dedup si de taiere: doua granite gasite prin mutation testing ------
+#
+# DE CE EXISTA (masurat 2026-09-02): `_dedup` — functia care implementeaza chiar promisiunea
+# de brand („Zero Zgomot", deduplicat) — nu avea NICIUN test direct. Antetul acestui fisier
+# afirma contrariul; afirmatia e veche si a devenit falsa. Dovada nu e o citire, ci un mutant:
+# schimband `inter >= 4` in `inter > 4` (select.py:37), toata suita ramanea verde. In productie
+# mutantul inseamna ca doua titluri care impart EXACT 4 cuvinte nu mai sunt vazute ca duplicat
+# — deci un duplicat ajunge publicat. Duplicatele sunt exact bug-ul numit in sect. 7.
+#
+# Al doilea mutant, `len(text) <= limit` -> `<` (select.py:108): un titlu de fix `limit`
+# caractere si-ar pierde ultimul cuvant si ar primi „…", adica titlu trunchiat pe site —
+# interzis de sect. 7 („Fara output stricat"). Ambele sunt off-by-one pe granita: exact
+# clasa de defect pe care testele „la mijlocul intervalului" nu o prind niciodata.
+
+
+def _titlu(cuvinte):
+    return " ".join(cuvinte)
+
+
+def test_dedup_prinde_exact_pragul_de_patru_cuvinte_comune():
+    """Fix 4 tokeni comuni = duplicat. Ucide mutantul `>= 4` -> `> 4`.
+
+    Proportia e tinuta DELIBERAT sub 0.55, ca al doilea termen al lui `or` sa nu decida:
+    altfel testul ar trece si cu mutantul, masurand alta ramura decat cea vizata.
+    """
+    comune = ["primaria", "aprobat", "bugetul", "investitii"]
+    a = {"title": _titlu(comune + ["metrou", "tramvai", "autobuz", "transport",
+                                   "public", "urban", "modernizare", "licitatie"])}
+    b = {"title": _titlu(comune + ["scoala", "spital", "gradinita", "cladire",
+                                   "reabilitare", "termica", "izolatie", "acoperis"])}
+    from generator.util import title_tokens
+    ta, tb = title_tokens(a["title"]), title_tokens(b["title"])
+    assert len(ta & tb) == 4, f"fixtura trebuie sa aiba fix 4 comune, are {len(ta & tb)}"
+    assert len(ta & tb) / len(ta | tb) < .55, "fixtura nu trebuie sa treaca pragul Jaccard"
+    assert len(render._dedup([a, b])) == 1, "4 cuvinte comune = acelasi eveniment, nededuplicat"
+
+
+def test_dedup_lasa_in_pace_titluri_cu_trei_cuvinte_comune():
+    """Cealalta parte a granitei: 3 comune NU e duplicat. Fara asta, primul test ar trece
+    si daca `_dedup` ar deduplica tot — sect. 7 cere ambele directii, nu doar over-merge."""
+    comune = ["primaria", "aprobat", "bugetul"]
+    a = {"title": _titlu(comune + ["metrou", "tramvai", "autobuz", "transport",
+                                   "public", "urban", "modernizare", "licitatie"])}
+    b = {"title": _titlu(comune + ["scoala", "spital", "gradinita", "cladire",
+                                   "reabilitare", "termica", "izolatie", "acoperis"])}
+    from generator.util import title_tokens
+    assert len(title_tokens(a["title"]) & title_tokens(b["title"])) == 3
+    assert len(render._dedup([a, b])) == 2, "3 cuvinte comune nu fac acelasi eveniment"
+
+
+def test_titlu_de_exact_limita_nu_e_trunchiat():
+    """Ucide mutantul `<=` -> `<`: un titlu de fix `limit` caractere ramane INTREG.
+
+    Sect. 7: nimic trunchiat pe site. Granita e cea mai probabila sa se strice tacut, fiindca
+    orice titlu mai scurt sau mai lung se comporta corect si cu mutantul.
+    """
+    from generator.select import _titlu_scurt
+    for limita in (84, 110):        # cele doua limite folosite in select.py
+        text = "a" * (limita - 6) + " final"
+        assert len(text) == limita
+        assert _titlu_scurt(text, limita) == text, f"taiat la exact {limita} caractere"
+        assert _titlu_scurt(text, limita - 1).endswith("…"), "cu un caracter peste, TREBUIE taiat"
