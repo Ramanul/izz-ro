@@ -15,7 +15,7 @@
 > Garda `incalcari_pr_fantoma` in `tests/test_pr_fantoma.py` pica daca `## Open` numeste un PR
 > care are deja commit de merge pe main (fara adnotarea `(merged)`).
 
-**Updated:** 2026-09-02 (dim. 4: 8 granite ucise, mutanti 64->81%; dim. 7: cod mort + orfani masurati)
+**Updated:** 2026-09-03 (#252 merged: dim. 4 + dim. 7 pe main; CI verde, garzile trec)
 
 ## Open
 
@@ -27,7 +27,7 @@
 - **Home fresh 72h — PR #247** (`fix/home-fresh-72h-v2`): helper + wiring + 6 teste.
   DEBLOCAT de #248; CI-ul lui trece dupa ce aduce main in ramura.
 - **PR-uri deschise:** #247 (prospetime 72h). Owner: #207 #214 #235.
-  (#250 merged; #248 merged; #244 merged; #225/#240 closed. Fiecare PR cere propria adnotare — intr-o
+  (#252 merged; #250 merged; #248 merged; #244 merged; #225/#240 closed. Fiecare cere adnotare proprie — intr-o
   lista `#A/#B merged` garda o vede doar pe ultima.)
 - **CI paralelizat (#248)**: numele jobului `pytest` NU se schimba. `ramanul-triage-blockers`
   (e1c8fbe2) e vie si arunca tacut articole legitime (`IZZ-0266`).
