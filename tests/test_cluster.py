@@ -203,3 +203,29 @@ def test_similar_accepta_exact_ambele_praguri_atinse():
         f"fixtura trebuie sa atinga pragul exact; {inter}/{union} = {inter/union!r} "
         f"vs {JACCARD_MIN!r} — daca pica aici, e rotunjire in virgula mobila, nu un bug de cod")
     assert _similar(t1, t2) is True, "pragurile atinse exact TREBUIE sa fie acceptate"
+
+
+def test_recent_exclude_data_neparsabila_in_loc_sa_o_trateze_ca_ACUM():
+    """O vechime necunoscuta nu are voie sa treaca drept prospetime maxima.
+
+    Varianta veche punea `datetime.now()` pe data stricata, deci articolul ramanea vesnic
+    eligibil pentru `attach_recent` — adica lipibil de stirile de azi. Sect. 7 cere invers:
+    un fallback care nu poate atinge bara SARE itemul.
+
+    Masurat 2026-09-02 (`IZZ-0278`): zero din 13.916 articole reale au data stricata, deci
+    ramura nu se atinge azi. De-aia are nevoie de test — altfel decizia se poate inversa
+    tacut la urmatoarea editare, exact tiparul din dimensiunea 4.
+    """
+    proaspat = {"url": "https://a.ro/1", "title": "titlu", "published": _acum()}
+    stricat = {"url": "https://b.ro/2", "title": "titlu", "published": "ieri pe la pranz"}
+    lipsa = {"url": "https://c.ro/3", "title": "titlu"}
+    rezultat = cluster._recent([proaspat, stricat, lipsa])
+    assert [a["url"] for a in rezultat] == ["https://a.ro/1"], rezultat
+
+
+def test_recent_pastreaza_articolul_fara_fus_orar():
+    """Cealalta directie: o data VALIDA fara `tzinfo` se normalizeaza la UTC, nu se arunca.
+    Fara asta, „exclude ce nu se parseaza" ar putea aluneca in „exclude ce nu are fus"."""
+    naiv = {"url": "https://a.ro/1", "title": "t",
+            "published": datetime.now(timezone.utc).replace(tzinfo=None).isoformat()}
+    assert len(cluster._recent([naiv])) == 1

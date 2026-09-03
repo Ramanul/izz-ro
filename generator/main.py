@@ -464,7 +464,17 @@ def run(dry_run: bool = False) -> dict:
         "upgrade_reserve": reserve,
         "upgradable": pending_upgrades,
         "ai_last_error": provider.last_error if provider else None,
+        # Caderile providerului PRINCIPAL, cand cascada le-a acoperit. `ai_down` si
+        # `ai_last_error` raman goale in cazul asta — corect, fiindca articolele chiar s-au
+        # procesat — deci fara randul asta o cadere Gemini de zile intregi nu lasa nicio
+        # urma in build.json. Gol cand nu exista cascada sau n-a cazut nimic (`IZZ-0282`).
+        "ai_caderi_acoperite": (provider.caderi_pe_provider()
+                                if hasattr(provider, "caderi_pe_provider") else {}),
     }
+    caderi = stats.get("ai_caderi_acoperite") or {}
+    if caderi:
+        detaliu = ", ".join(f"{nume}x{n}" for nume, n in sorted(caderi.items()))
+        print(f">> Cascada a acoperit caderi ale providerului principal: {detaliu}")
     if upgraded:
         print(f">> Upgrade fallback -> AI: {upgraded} articole vechi reprocesate")
 
