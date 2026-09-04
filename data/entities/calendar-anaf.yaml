@@ -1,0 +1,48 @@
+# Entitate: Calendarul obligațiilor fiscale ANAF 2026
+# Datele volatile sunt ținute într-un fișier separat, cu sursa oficială și data verificării.
+id: calendar-anaf
+nume: "Calendarul obligațiilor fiscale ANAF 2026"
+tip: procedural
+categorie_ghid: acte
+categorie_stiri: economic
+
+valoare_curenta:
+  in_vigoare_de: "2026-01-01"
+  act_normativ: "Calendarul obligațiilor fiscale ANAF pentru anul 2026"
+  sursa_url: "https://static.anaf.ro/static/10/Anaf/AsistentaContribuabili_r/Calendar/Calendar_obligatii_fiscale_2025.htm"
+  descriere_lunga: "Calendarul oficial al obligațiilor fiscale ANAF pentru 2026, organizat pe luni, termene, obligații și categorii de contribuabili. Un termen din calendar este aplicabil numai dacă formularul și categoria contribuabilului se potrivesc situației tale."
+
+sectiuni:
+  - titlu: "Cum folosești calendarul ANAF"
+    continut: >-
+      Verifică mai întâi **data-limită**, apoi **formularul** și **categoria de contribuabil** din dreptul obligației. Calendarul ANAF nu înseamnă că toate formularele se aplică tuturor persoanelor sau firmelor. Pentru o obligație concretă, deschide sursa oficială și verifică forma în vigoare la data depunerii.
+  - titlu: "Termen important în septembrie 2026"
+    continut: >-
+      În **vineri, 25 septembrie 2026**, calendarul oficial ANAF include, în funcție de categoria contribuabilului, termene pentru formulare precum **100, 112, 208, 224, 300, 301 și 390 VIES**. Lista completă și condițiile pentru fiecare formular sunt în calendarul ANAF.
+  - titlu: "Nu toate obligațiile au același ritm"
+    continut: >-
+      Unele declarații se depun lunar, altele trimestrial, semestrial sau anual, iar anumite obligații au termene speciale. De aceea, pagina IZZ nu înlocuiește calendarul oficial: oferă orientarea rapidă și trimite la sursa primară pentru detaliile aplicabile.
+
+faq:
+  - q: "Toate persoanele fizice trebuie să depună aceleași declarații?"
+    a: "Nu. Obligația depinde de tipul venitului, statutul fiscal și situația concretă a contribuabilului."
+  - q: "Care este un termen fiscal important în septembrie 2026?"
+    a: "25 septembrie 2026 este termen pentru mai multe obligații, inclusiv unele declarații fiscale și deconturi, dar numai pentru categoriile de contribuabili indicate în calendarul ANAF."
+  - q: "Unde verific termenul exact pentru formularul meu?"
+    a: "În calendarul oficial ANAF, unde fiecare obligație este însoțită de categoria de contribuabili și baza legală."
+
+termene:
+  - data: "2026-09-25"
+    eveniment: "Termene fiscale ANAF pentru o serie de formulare, în funcție de categoria contribuabilului"
+
+relatii: {}
+
+verificat: true
+ultima_verificare: "2026-09-04"
+
+monitorizare:
+  surse:
+    - url: "https://static.anaf.ro/static/10/Anaf/AsistentaContribuabili_r/Calendar/Calendar_obligatii_fiscale_2025.htm"
+      tip: html
+    - url: "https://www.anaf.ro/"
+      tip: html
