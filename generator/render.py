@@ -946,8 +946,15 @@ def build(articles: list, mod: dict | None = None) -> None:
             for other in art_slugs.get(a["url"], ()):  
                 if other != s:
                     co[other] = co.get(other, 0) + 1
+        # `kv[0]` (slug-ul) ca departajare la egalitate de co-ocurente. Fara el, ordinea
+        # venea din iterarea lui `art_slugs[...]`, care e un `set` de siruri — ordinea lui
+        # depinde de PYTHONHASHSEED, randomizat la fiecare proces. `sorted` fiind stabil,
+        # egalitatile pastrau acea ordine aleatoare, iar `[:6]` schimba atunci COMPONENTA
+        # listei, nu doar ordinea: doi cititori pe doua build-uri vedeau alte „Conexiuni".
+        # Masurat 2026-09-04, doua randari ale aceluiasi commit pe aceleasi date:
+        # 945 din 4.307 pagini de subiect diferite.
         connections = [(o, ents[o]["name"], n) for o, n in
-                       sorted(co.items(), key=lambda kv: -kv[1])[:6]]
+                       sorted(co.items(), key=lambda kv: (-kv[1], kv[0]))[:6]]
         _write(os.path.join(OUT_DIR, "subiect", s, "index.html"),
                subject_tpl.render(**_base_ctx(f"/subiect/{s}/", name=d["name"], slug=s,
                                               articles=sorted(d["articles"],
@@ -1009,9 +1016,14 @@ def build(articles: list, mod: dict | None = None) -> None:
                             continue
                         weight = sum(idf.get(s, 0.0) for s in common)
                         scored.append((len(common), weight,
-                                       other.get("published") or "", other))
-                scored.sort(key=lambda t: (t[0], t[1], t[2]), reverse=True)
-                related = [t[3] for t in scored[:3]]
+                                       other.get("published") or "", other["url"], other))
+                # URL-ul ca a patra cheie, din aceeasi cauza ca la `connections`: `mine` e
+                # un `set`, iar la egalitate pe toate cele trei chei ordinea ramanea cea de
+                # iterare a lui. Egalitatea completa e rara, deci efectul era mic si tocmai
+                # de-aia a stat nedetectat: 8 pagini de articol din 8.350, intre doua randari
+                # ale aceluiasi commit (masurat 2026-09-04).
+                scored.sort(key=lambda t: (t[0], t[1], t[2], t[3]), reverse=True)
+                related = [t[4] for t in scored[:3]]
             og_image = a.get("cover_url")
             jsonld = _article_jsonld(a)
             if og_image:
