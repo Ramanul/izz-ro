@@ -176,8 +176,10 @@ Mandatul autonom din iulie e **încheiat** (istoric: `specs/istoric-operational.
 - **Nu face curse pe `main`.** Ramifică, ține diff-ul mic, aterizează, anunță.
 
 ### 14b. Muncă în fundal — permisă, mărginită (decizie proprietar 2026-08-01)
-- **Nu face niciodată merge în `main`.** Deschide un **draft PR** și se oprește. Doar proprietarul
-  face merge. Asta e toată proprietatea de siguranță.
+- **Nu face niciodată merge în `main`.** Regula e A RULĂRII DE FUNDAL, nu a sesiunii care
+  vorbește cu el: în fundal, draft PR și se oprește — asta e toată proprietatea de siguranță.
+  Interactiv se aplică §14, merge-ul îl face sesiunea cu care vorbește. (Confundate 2026-09-04:
+  §14b citat drept motiv să parchez un PR verde, exact ce §14 interzice.)
 - **Un task per declanșare**, luat din lista `## Open` din `specs/STATE.md`. Nu inventează muncă, nu
   atinge ce e marcat „owner decision pending", nu începe al doilea task.
 - **Se oprește și raportează în loc să ghicească.** Ambiguitate, premisă picată sau un task care cere

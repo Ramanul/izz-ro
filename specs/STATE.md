@@ -23,7 +23,7 @@
 - **K12 (`IZZ-0255`)**: rezumat zilnic, spec nescris; porneste de la `editorial-quality.yml`.
 - **PR-uri deschise:** #247 prospetime 72h (`fix/home-fresh-72h-v2`, helper+wiring+6 teste,
   DEBLOCAT de #248 — CI-ul trece dupa ce aduce main in ramura). Owner: #207 #214 #235.
-  (#253 merged; #252 merged; #250 merged; #248 merged; #244 merged; #225/#240 closed. Fiecare
+  (#278 merged; #253 merged; #252 merged; #250 merged; #248 merged; #244 merged; #225/#240 closed. Fiecare
   cere adnotarea lui, pe aceeasi linie — intr-o lista `#A/#B merged` garda o vede doar pe ultima.)
 - **CI paralelizat (#248)**: numele jobului `pytest` NU se schimba. `ramanul-triage-blockers`
   (e1c8fbe2) e vie si arunca tacut articole legitime (`IZZ-0266`). Debitul e limitat de
