@@ -1,28 +1,16 @@
-"""Contract tests for agent roles and the optional Claude Code validator."""
+"""Contract tests for the optional Claude Code validator.
+
+Cele doua teste de profiluri de agenti au fost sterse odata cu `generator/agents.py`
+(2026-09-03): modulul era schelet declarativ, fara niciun apelant in productie, iar
+testele erau singurul lucru care il tinea in viata. Rutarea AI reala e `CascadeProvider`
+din `process.get_provider()`; validatorul de mai jos ramane, fiindca `main.py:20` chiar
+il importa. Urma deciziei: `IZZ-0284`.
+"""
 from __future__ import annotations
 
 import json
 
-from generator.agents import get_agent, list_agents, validate_profiles
 from generator.claude_orchestrator import ClaudeCodeValidator
-
-
-def test_all_agent_profiles_have_bounded_contracts():
-    assert validate_profiles() == []
-    assert "claude_orchestrator" in list_agents()
-    assert "gemini_editor" in list_agents()
-    assert "mistral_verifier" in list_agents()
-    assert "groq_triage" in list_agents()
-    assert get_agent("claude_orchestrator").allowed_tools
-
-
-def test_unknown_agent_fails_loudly():
-    try:
-        get_agent("unbounded-agent")
-    except ValueError as exc:
-        assert "agent necunoscut" in str(exc)
-    else:
-        raise AssertionError("unknown agent must not be silently accepted")
 
 
 def test_claude_validator_accepts_existing_absolute_executable(tmp_path, monkeypatch):
