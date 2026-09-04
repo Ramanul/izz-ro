@@ -1,8 +1,27 @@
 const state = { data: null };
+const API_BASE = String(window.IZZ_INTELLIGENCE_API || '/api/intelligence').replace(/\/$/, '');
+const SESSION_KEY = 'izz_intelligence_session';
 
 const escapeHtml = (value) => String(value ?? '').replace(/[&<>'"]/g, (char) => ({
   '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;'
 }[char]));
+
+function sessionKey() {
+  let value = sessionStorage.getItem(SESSION_KEY);
+  if (!value) {
+    value = `${crypto.randomUUID()}-${crypto.randomUUID()}`;
+    sessionStorage.setItem(SESSION_KEY, value);
+  }
+  return value;
+}
+
+async function apiRequest(path, options = {}) {
+  const headers = { accept: 'application/json', ...(options.headers || {}) };
+  if (options.body) headers['content-type'] = 'application/json';
+  const response = await fetch(`${API_BASE}${path}`, { ...options, headers });
+  if (!response.ok) throw new Error(`API HTTP ${response.status}`);
+  return response.json();
+}
 
 async function loadData() {
   try {
@@ -36,47 +55,84 @@ function setupTabs() {
   if (initial && document.getElementById(initial)) document.querySelector(`[data-tab="${CSS.escape(initial)}"]`)?.click();
 }
 
+function rankLocalLeads(need, city, budget) {
+  const normalizedNeed = need.trim().toLowerCase();
+  const normalizedCity = city.trim().toLowerCase();
+  return state.data.providers.map((provider) => {
+    const providerCities = provider.cities ?? (provider.city ? [provider.city] : []);
+    const categoryHit = provider.categories.some((category) => normalizedNeed.includes(category.toLowerCase()) || category.toLowerCase().includes(normalizedNeed)) ? 45 : 0;
+    const cityHit = providerCities.some((item) => item.toLowerCase() === normalizedCity) ? 30 : 0;
+    const budgetHit = provider.budgets.includes(budget) ? 15 : 0;
+    return { provider, score: Math.min(100, 10 + categoryHit + cityHit + budgetHit) };
+  }).sort((a, b) => b.score - a.score).slice(0, 3);
+}
+
+function renderLeadMatches(matches) {
+  document.getElementById('lead-result').innerHTML = matches.length
+    ? matches.map((match) => `<div class="iz-result"><strong>${escapeHtml(match.name || match.provider?.name)}</strong><div class="iz-score">${escapeHtml(match.score)}/100</div><p>${escapeHtml(match.reason || match.provider?.reason || 'Potrivire pe baza intenției declarate.')}</p><span class="iz-muted">${escapeHtml(match.city || match.provider?.city || '')} · ${escapeHtml(match.contact || match.provider?.contact || '')}${match.verified ? ' · verificat' : ''}</span></div>`).join('')
+    : '<div class="iz-result">Nu există furnizori potriviți în dataset.</div>';
+}
+
 function setupLeads() {
-  document.getElementById('lead-form').addEventListener('submit', (event) => {
+  document.getElementById('lead-form').addEventListener('submit', async (event) => {
     event.preventDefault();
     const form = new FormData(event.currentTarget);
-    const need = String(form.get('need')).trim().toLowerCase();
-    const city = String(form.get('city')).trim().toLowerCase();
+    const need = String(form.get('need')).trim();
+    const city = String(form.get('city')).trim();
     const budget = String(form.get('budget'));
-    const ranked = state.data.providers.map((provider) => {
-      const providerCities = provider.cities ?? (provider.city ? [provider.city] : []);
-      const categoryHit = provider.categories.some((category) => need.includes(category) || category.includes(need)) ? 45 : 0;
-      const cityHit = providerCities.some((item) => item.toLowerCase() === city) ? 30 : 0;
-      const budgetHit = provider.budgets.includes(budget) ? 15 : 0;
-      return { provider, score: Math.min(100, 10 + categoryHit + cityHit + budgetHit) };
-    }).sort((a, b) => b.score - a.score).slice(0, 3);
-    document.getElementById('lead-result').innerHTML = ranked.length ? ranked.map(({ provider, score }) => `<div class="iz-result"><strong>${escapeHtml(provider.name)}</strong><div class="iz-score">${score}/100</div><p>${escapeHtml(provider.reason)}</p><span class="iz-muted">${escapeHtml(provider.city)} · ${escapeHtml(provider.contact)}</span></div>`).join('') : '<div class="iz-result">Nu există furnizori în dataset.</div>';
+    try {
+      const result = await apiRequest('/leads', {
+        method: 'POST',
+        headers: { 'x-izz-session': sessionKey() },
+        body: JSON.stringify({ need, city, budget, session_key: sessionKey() }),
+      });
+      renderLeadMatches(result.matches || []);
+    } catch (_) {
+      renderLeadMatches(rankLocalLeads(need.toLowerCase(), city.toLowerCase(), budget).map(({ provider, score }) => ({ provider, score })));
+    }
   });
+}
+
+async function renderBusiness(cui) {
+  const localCompany = state.data.companies[cui];
+  try {
+    const result = await apiRequest(`/company?cui=${encodeURIComponent(cui)}`);
+    if (result.data) {
+      const company = result.data;
+      document.getElementById('business-result').innerHTML = `<div class="iz-result"><h3>${escapeHtml(company.canonical_name)}</h3><p>${escapeHtml(company.city || '')} · CUI ${escapeHtml(company.external_key || cui)}</p><div class="iz-grid">${(company.changes || []).map((change) => `<article class="iz-card"><h3>${escapeHtml(change.type)}</h3><p>${escapeHtml(change.title)}</p><span class="iz-muted">${escapeHtml(change.published_at || change.observed_at || '')} · încredere ${escapeHtml(change.confidence)}%</span></article>`).join('')}</div></div>`;
+      return;
+    }
+  } catch (_) {}
+  if (localCompany) {
+    document.getElementById('business-result').innerHTML = `<div class="iz-result"><h3>${escapeHtml(localCompany.name)}</h3><p><strong>${escapeHtml(localCompany.status)}</strong> · ${escapeHtml(localCompany.city)} · ${escapeHtml(localCompany.domain)}</p><div class="iz-grid">${localCompany.changes.map((change) => `<article class="iz-card"><h3>${escapeHtml(change.type)}</h3><p>${escapeHtml(change.text)}</p><span class="iz-muted">${escapeHtml(change.date)} · încredere ${escapeHtml(change.confidence)}%</span></article>`).join('')}</div></div>`;
+  } else {
+    document.getElementById('business-result').innerHTML = '<div class="iz-result">Compania nu există în datele locale. Pentru producție, conectează un dataset public în D1.</div>';
+  }
 }
 
 function setupBusiness() {
   document.getElementById('business-form').addEventListener('submit', (event) => {
     event.preventDefault();
     const cui = String(new FormData(event.currentTarget).get('cui')).replace(/\s+/g, '').toUpperCase();
-    const company = state.data.companies[cui];
-    const target = document.getElementById('business-result');
-    if (!company) {
-      target.innerHTML = '<div class="iz-result">CUI-ul nu există în datasetul demonstrativ. În producție, aici intră adaptorii către sursele publice.</div>';
-      return;
-    }
-    target.innerHTML = `<div class="iz-result"><h3>${escapeHtml(company.name)}</h3><p><strong>${escapeHtml(company.status)}</strong> · ${escapeHtml(company.city)} · ${escapeHtml(company.domain)}</p><div class="iz-grid">${company.changes.map((change) => `<article class="iz-card"><h3>${escapeHtml(change.type)}</h3><p>${escapeHtml(change.text)}</p><span class="iz-muted">${escapeHtml(change.date)} · încredere ${escapeHtml(change.confidence)}%</span></article>`).join('')}</div></div>`;
+    renderBusiness(cui);
   });
 }
 
-function setupActions() {
-  document.getElementById('action-form').addEventListener('submit', (event) => {
+async function setupActions() {
+  document.getElementById('action-form').addEventListener('submit', async (event) => {
     event.preventDefault();
-    const text = String(new FormData(event.currentTarget).get('text')).toLowerCase();
+    const text = String(new FormData(event.currentTarget).get('text'));
+    try {
+      const result = await apiRequest('/actions', { method: 'POST', body: JSON.stringify({ text }) });
+      document.getElementById('action-result').innerHTML = `<div class="iz-result"><strong>Următorii pași</strong><ul class="iz-list">${(result.actions || []).map((item) => `<li>${escapeHtml(item)}</li>`).join('')}</ul></div>`;
+      return;
+    } catch (_) {}
+    const value = text.toLowerCase();
     const actions = [];
-    if (/salari|tax|impozit|venit/.test(text)) actions.push('Calculează impactul pentru profilul tău');
-    if (/lege|ordonan|reglement|guvern|minister/.test(text)) actions.push('Verifică textul oficial și termenul de aplicare');
-    if (/achizi|contract|licit|proiect/.test(text)) actions.push('Caută oportunități și contracte similare');
-    if (/preț|energie|credit|asigur|rca|locuin/.test(text)) actions.push('Compară ofertele și costul total');
+    if (/salari|tax|impozit|venit/.test(value)) actions.push('Calculează impactul pentru profilul tău');
+    if (/lege|ordonan|reglement|guvern|minister/.test(value)) actions.push('Verifică textul oficial și termenul de aplicare');
+    if (/achizi|contract|licit|proiect/.test(value)) actions.push('Caută oportunități și contracte similare');
+    if (/preț|energie|credit|asigur|rca|locuin/.test(value)) actions.push('Compară ofertele și costul total');
     if (!actions.length) actions.push('Salvează subiectul și activează o alertă de schimbare');
     document.getElementById('action-result').innerHTML = `<div class="iz-result"><strong>Următorii pași</strong><ul class="iz-list">${actions.map((item) => `<li>${escapeHtml(item)}</li>`).join('')}</ul></div>`;
   });
