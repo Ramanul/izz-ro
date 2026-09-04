@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="ro">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="IZZ Intelligence — informație structurată transformată în intenție, acțiuni și oportunități.">
+  <title>IZZ Intelligence</title>
+  <link rel="stylesheet" href="/styles.css">
+  <style>
+    .iz-wrap{max-width:var(--maxw);margin:0 auto;padding:var(--s-34)}
+    .iz-hero{border-top:4px solid var(--gold);background:var(--paper-2);padding:var(--s-34);margin-bottom:var(--s-34)}
+    .iz-eyebrow{font-family:var(--font-mono);font-size:var(--fs-eyebrow);letter-spacing:2px;text-transform:uppercase;color:var(--gold-strong)}
+    .iz-title{font-family:var(--font-display);font-size:var(--fs-3xl);line-height:1.04;margin:var(--s-8) 0 var(--s-13)}
+    .iz-lede{font-size:var(--fs-md);color:var(--ink-2);max-width:var(--measure)}
+    .iz-tabs{display:flex;gap:var(--s-8);flex-wrap:wrap;margin:var(--s-21) 0}
+    .iz-tabs button{font:600 var(--fs-xs) var(--font-mono);text-transform:uppercase;letter-spacing:1px;padding:var(--s-8) var(--s-13);border:1px solid var(--line-strong);background:var(--paper-2);color:var(--ink-2);cursor:pointer}
+    .iz-tabs button[aria-selected="true"]{border-color:var(--gold-strong);color:var(--gold-strong)}
+    .iz-panel{display:none}.iz-panel.active{display:block}
+    .iz-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:var(--s-21)}
+    .iz-card{border-top:2px solid var(--line-strong);background:var(--paper-2);padding:var(--s-21)}
+    .iz-card h2,.iz-card h3{font-family:var(--font-display);margin:0 0 var(--s-8)}
+    .iz-card p{color:var(--ink-2);margin:0 0 var(--s-13)}
+    .iz-list{padding-left:var(--s-21);margin:0;color:var(--ink-2)}
+    .iz-form{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:var(--s-13);margin-bottom:var(--s-21)}
+    .iz-form label{font:700 var(--fs-eyebrow) var(--font-mono);text-transform:uppercase;letter-spacing:1px;color:var(--ink-3)}
+    .iz-form input,.iz-form select{display:block;width:100%;margin-top:var(--s-5);padding:var(--s-8);border:1px solid var(--line-strong);background:var(--paper-2);color:var(--ink);font:inherit}
+    .iz-btn{padding:var(--s-8) var(--s-13);border:1px solid var(--gold-strong);background:var(--gold-strong);color:var(--paper-2);font:700 var(--fs-xs) var(--font-mono);text-transform:uppercase;letter-spacing:1px;cursor:pointer}
+    .iz-result{border-left:3px solid var(--gold);background:var(--gold-wash);padding:var(--s-13);margin-top:var(--s-13)}
+    .iz-score{font:800 var(--fs-2xl) var(--font-display);color:var(--gold-strong)}
+    .iz-muted{color:var(--ink-3);font-size:var(--fs-xs)}
+    .iz-catalog{columns:2 260px;column-gap:var(--s-34)}
+    .iz-catalog li{break-inside:avoid;margin-bottom:var(--s-8)}
+    .iz-foot{margin-top:var(--s-55);padding-top:var(--s-21);border-top:1px solid var(--line);font-size:var(--fs-xs);color:var(--ink-3)}
+    @media(max-width:640px){.iz-wrap{padding:var(--s-21)}.iz-title{font-size:var(--fs-2xl)}}
+  </style>
+</head>
+<body>
+  <main class="iz-wrap">
+    <header class="iz-hero">
+      <div class="iz-eyebrow">IZZ Intelligence</div>
+      <h1 class="iz-title">Informație → intenție → acțiune</h1>
+      <p class="iz-lede">Noul strat al IZZ: aceeași infrastructură de date alimentează produse pentru cetățeni, profesioniști și companii. Pagina funcționează static, iar sursa de date poate fi schimbată ulterior cu API/D1 fără schimbarea interfeței.</p>
+    </header>
+
+    <nav class="iz-tabs" role="tablist" aria-label="Produse IZZ">
+      <button role="tab" aria-selected="true" data-tab="overview">Overview</button>
+      <button role="tab" aria-selected="false" data-tab="leads">IZZ Leads</button>
+      <button role="tab" aria-selected="false" data-tab="business">Business Monitor</button>
+      <button role="tab" aria-selected="false" data-tab="actions">IZZ Actions</button>
+      <button role="tab" aria-selected="false" data-tab="market">Market Intelligence</button>
+      <button role="tab" aria-selected="false" data-tab="tools">IZZ Tools</button>
+      <button role="tab" aria-selected="false" data-tab="commerce">IZZ Commerce</button>
+      <button role="tab" aria-selected="false" data-tab="events">IZZ Events</button>
+    </nav>
+
+    <section id="overview" class="iz-panel active" role="tabpanel">
+      <div class="iz-grid">
+        <article class="iz-card"><h2>IZZ Leads</h2><p>„Ai nevoie de X? Găsește 3 furnizori.” Matching pe intenție, localitate și categorie.</p></article>
+        <article class="iz-card"><h2>Business Monitor</h2><p>Profil public de companie și detectare de schimbări: contracte, proiecte, achiziții, concurenți și reglementări.</p></article>
+        <article class="iz-card"><h2>IZZ Actions</h2><p>Fiecare informație primește următorul pas util: verifică, calculează, depune, compară, cere ofertă sau activează alertă.</p></article>
+        <article class="iz-card"><h2>Market Intelligence</h2><p>Date publice transformate în indicatori despre investiții, industrii, județe, companii și bani publici.</p></article>
+        <article class="iz-card"><h2>Tools</h2><p>Calculatoare, comparații, estimări și verificări care convertesc traficul în intenție.</p></article>
+        <article class="iz-card"><h2>Commerce</h2><p>Conținut → produs/serviciu → afiliere sau lead, fără a transforma editorialul în publicitate mascată.</p></article>
+        <article class="iz-card"><h2>Events</h2><p>Evenimente IZZ și micro-evenimente specializate, cu bilete, sponsori, parteneri și lead-uri.</p></article>
+      </div>
+      <article class="iz-card" style="margin-top:var(--s-21)"><h2>Catalogul celor 37 de direcții</h2><ul class="iz-list iz-catalog" id="catalog"></ul></article>
+    </section>
+
+    <section id="leads" class="iz-panel" role="tabpanel">
+      <article class="iz-card"><h2>IZZ Leads</h2><p>Descrie ce cauți; motorul returnează furnizorii cu scor de potrivire.</p>
+        <form class="iz-form" id="lead-form">
+          <label>Nevoie<input name="need" required placeholder="ex. acoperiș, contabil, pompă de căldură"></label>
+          <label>Localitate<input name="city" required placeholder="ex. Timișoara"></label>
+          <label>Buget<select name="budget"><option value="low">sub 5.000 lei</option><option value="mid">5.000–25.000 lei</option><option value="high">peste 25.000 lei</option></select></label>
+          <button class="iz-btn" type="submit">Găsește 3 furnizori</button>
+        </form>
+        <div id="lead-result" aria-live="polite"></div>
+      </article>
+    </section>
+
+    <section id="business" class="iz-panel" role="tabpanel">
+      <article class="iz-card"><h2>IZZ Business Monitor</h2><p>Introdu CUI-ul. În versiunea de producție, adaptorul poate alimenta profilul din surse publice și conectori Cloudflare.</p>
+        <form class="iz-form" id="business-form"><label>CUI<input name="cui" required inputmode="numeric" placeholder="RO12345678"></label><button class="iz-btn" type="submit">Monitorizează</button></form>
+        <div id="business-result" aria-live="polite"></div>
+      </article>
+    </section>
+
+    <section id="actions" class="iz-panel" role="tabpanel">
+      <article class="iz-card"><h2>IZZ Actions</h2><p>Acțiunile sunt generate deterministic din tipul evenimentului, apoi pot primi un adaptor AI/date.</p>
+        <form class="iz-form" id="action-form"><label>Informație<input name="text" required placeholder="Guvernul modifică salariul minim"></label><button class="iz-btn" type="submit">Generează acțiuni</button></form>
+        <div id="action-result" aria-live="polite"></div>
+      </article>
+    </section>
+
+    <section id="market" class="iz-panel" role="tabpanel">
+      <article class="iz-card"><h2>IZZ Market Intelligence</h2><p>Indicatori demonstrativi din schema comună. Înlocuiește fișierul static cu feed-ul de date pentru producție.</p><div class="iz-grid" id="market-grid"></div></article>
+    </section>
+
+    <section id="tools" class="iz-panel" role="tabpanel">
+      <article class="iz-card"><h2>IZZ Tools</h2><div class="iz-form">
+        <label>Salariu brut<input id="gross" type="number" min="0" step="100" value="10000"></label>
+        <label>Tip calcul<select id="calc-type"><option value="net">Estimare net</option><option value="annual">Brut anual</option></select></label>
+        <button class="iz-btn" id="calc-btn" type="button">Calculează</button>
+      </div><div id="tool-result" class="iz-result"></div></article>
+    </section>
+
+    <section id="commerce" class="iz-panel" role="tabpanel">
+      <article class="iz-card"><h2>IZZ Commerce</h2><p>Compară opțiuni pe baza intenției, nu a unui banner.</p><div id="commerce-grid" class="iz-grid"></div></article>
+    </section>
+
+    <section id="events" class="iz-panel" role="tabpanel">
+      <article class="iz-card"><h2>IZZ Events</h2><p>Strat pentru forumuri și micro-evenimente specializate.</p><div id="events-grid" class="iz-grid"></div></article>
+    </section>
+
+    <footer class="iz-foot">Datele afișate fără sursă externă sunt demonstrative. Pentru producție, fiecare record trebuie să păstreze sursa, timestamp-ul și nivelul de încredere. Nu sunt incluse credențiale sau date personale în această implementare.</footer>
+  </main>
+  <script src="./app.js" defer></script>
+</body>
+</html>
