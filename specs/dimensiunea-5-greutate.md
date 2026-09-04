@@ -1,0 +1,76 @@
+# Dimensiunea 5 — greutatea primei încărcări, măsurată
+
+**Măsurat:** 2026-09-04, cu `tools/greutate.py`, pe o randare locală completă
+(`python -m generator.main --render-only`) — **13.430 de pagini**.
+
+**Ce e:** dimensiunea 5 din `specs/dimensiuni.md` avea doar eticheta „perf front-end", fără
+definiție. Definiția aleasă: *câți octeți plătește cititorul ca să deschidă o pagină, și din ce
+sunt făcuți.* Nu dublează §13 — `tools/audit.sh` dă scoruri Lighthouse pe câteva pagini și cere
+Chromium; asta măsoară static, pe toate paginile, **compoziția**.
+
+## Cifra de ansamblu
+
+```
+13.430 pagini · mediana primei încărcări 127 KB · cea mai grea 508 KB
+```
+
+## Compoziția, pe cele patru tipuri de pagină
+
+| pagină | HTML | eager | cereri | lazy |
+|---|---|---|---|---|
+| `index.html` (home) | 123 KB | **201 KB** | 65 | 1.090 KB (65 imagini) |
+| `local/index.html` | 40 KB | 154 KB | 23 | 337 KB |
+| `judetean/index.html` | 40 KB | 124 KB | 15 | 400 KB |
+| articol (13.400 pagini) | 13 KB | **116 KB** | 6 | 0 KB |
+
+## Constatarea principală: șasiul costă de 7× cât conținutul
+
+Pe o pagină de articol — adică pe **99,8% din site** — greutatea se împarte așa:
+
+```
+  CSS      50 KB  ┐
+  fonturi  25 KB  ├─ 93 KB identice pe toate paginile = „șasiu"
+  JS       18 KB  ┘
+  ────────────────
+  HTML     13 KB  ← singurul lucru diferit de la o pagină la alta
+  copertă  23 KB
+```
+
+Șasiul se cache-uiește după prima vizită. Dar traficul de căutare și de rețele sociale
+aterizează direct pe un articol, o dată — deci cazul tipic **este** prima vizită, iar acolo
+cititorul plătește 129 KB ca să primească 13 KB de text.
+
+[INTERPRETARE] Cel mai mare element unic e CSS-ul, 50 KB, adică 39% din greutatea unui articol.
+Întrebarea următoare, nemăsurată încă: **cât din el se aplică efectiv unei pagini de articol?**
+Un `styles.css` care servește și harta, și homepage-ul, și paginile de categorie, e prin
+construcție mai mare decât are nevoie orice pagină în parte.
+
+## Corecție la `IZZ-0237`
+
+Rândul din registru spune *„home trage acum 1.256 KB de imagini pe 62 de carduri"* (2026-08-22).
+Măsurat azi: 1.090 KB lazy + 109 KB eager = **1.199 KB de imagini**, pe 130 de referințe. Ordinul
+de mărime se confirmă.
+
+**Dar cifra e înșelătoare ca impact, și asta contează mai mult decât confirmarea:** 87% din ea e
+`loading="lazy"`, deci nu intră în prima încărcare. Prima încărcare reală a homepage-ului e
+**324 KB** (123 HTML + 201 assets). O optimizare de imagini pe homepage ar ataca 1.199 KB dintre
+care 1.090 nu se descarcă niciodată pentru cine nu derulează.
+
+Amestecul eager/lazy e chiar motivul pentru care `tools/greutate.py` le raportează separat.
+
+## Ce NU spun cifrele astea
+
+- **Nu e transfer real.** Sunt octeți pe disc: fără gzip/brotli de la Cloudflare (CSS-ul de 50 KB
+  probabil pleacă sub 12 KB comprimat), fără cache-ul vizitatorului, fără HTTP/2.
+- **Totalul pe tip de fișier, peste toate paginile, nu înseamnă nimic.** Unealta îl tipărește
+  (`.css 657 MB`), dar e același `styles.css` numărat de 13.430 de ori. Comparabilă e cifra
+  **per pagină**, nu suma.
+- **Nu e un scor.** Nu înlocuiește Lighthouse din §13; spune din ce e făcută greutatea, nu cât de
+  bine se comportă pagina la încărcare.
+
+## Cum se reface
+
+```bash
+python -m generator.main --render-only   # ~25 min; imaginile se refolosesc dacă output/ există
+python tools/greutate.py 12              # top 12 pagini + compoziția pe tip
+```
