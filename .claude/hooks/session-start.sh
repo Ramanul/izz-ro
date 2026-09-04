@@ -51,6 +51,21 @@ else
   echo
 fi
 
+# Faptele CURENTE de infrastructura. Fara ele, injectia de mai jos are o gaura structurala:
+# filtreaza doar starile INCHISE, deci sesiunea primea lista lucrurilor FALSE si niciodata lista
+# lucrurilor ADEVARATE -- un fapt pozitiv se consemneaza `implementat`, stare neinjectata, deci
+# invizibil prin constructie. Masurat de doua ori pe acelasi fapt: 2026-08-23 si 2026-09-02, doua
+# sesiuni au pus proprietarul sa reverifice planul Cloudflare, desi raspunsul era comis. A doua
+# oara statea intr-un COMENTARIU din scriptul asta -- adica nicaieri, din punctul de vedere al
+# unei sesiuni: comentariile nu se tiparesc.
+if [ -f "$ROOT/specs/infrastructura.md" ]; then
+  echo "---------------- fapte curente de infrastructura (nu le re-intreba) ----------------"
+  # Doar randurile de fapt: antetul explicativ (`>`) e pentru cine EDITEAZA fisierul, iar
+  # injectarea lui ar plati de doua ori acelasi text -- o data aici, o data la deschidere.
+  grep -v '^>' "$ROOT/specs/infrastructura.md" | grep -v '^# ' | sed '/^$/d'
+  echo
+fi
+
 # Doar randurile care INCHID ceva. Un hit pe astea inseamna 'nu redeschide fara sa citesti
 # motivul' (CLAUDE.md sect. 20) -- exact clasa de greseala pe care hook-ul asta o previne.
 # Cauta cu: python tools/registru.py find <subiect>
@@ -100,11 +115,27 @@ export SETUPTOOLS_USE_DISTUTILS=stdlib
 # cu `set -e` murea tot hook-ul -- tacut, fiindca nu tiparea nimic. Masurat 2026-08-23:
 # sesiunile web rulau cu PyYAML 6.0.1, nu cu versiunea fixata, deci "randari reproductibile"
 # din antetul requirements.txt nu se tinea. Cu flagul, 6.0.3 se instaleaza peste el.
-if ! pip install -q --ignore-installed PyYAML -r "$ROOT/requirements.txt"; then
+# Uneltele de dev sunt INSTALATE AICI, nu luate din requirements.txt, si nici din binarele
+# care par sa existe deja in container. Motivul, masurat 2026-09-02 pe o sesiune web curata:
+# `ruff` si `pytest` ERAU in PATH -- instalate ca unelte `uv`, cu shebang pe interpretorul lor
+# izolat, care nu vede nici `generator`, nici dependentele instalate mai sus. Consecinta era ca
+# AMBELE comenzi canonice din CLAUDE.md sect. 4 cadeau, fiecare altfel si niciuna evident:
+#   python -m ruff check .   -> No module named ruff
+#   python -m pytest tests/  -> No module named pytest
+#   pytest tests/ (binarul)  -> 47 errors during collection: No module named 'generator'
+# Ultima arata ca un repo stricat si nu e. Dupa instalarea de aici: 1295 passed, 1 skipped,
+# 8 xfailed. Lista e IDENTICA cu ce instaleaza tests.yml, deliberat -- un mediu de sesiune
+# care difera de cel de CI ar produce verde local si rosu pe PR, adica exact increderea pe
+# care sect. 6 o cere. `ruff` ramane in afara lui requirements.txt (sect. 4): acolo stau
+# dependentele de PRODUCTIE, iar astea sunt unelte de lucru.
+# NU se instaleaza aici `lighthouse`/`pa11y` (sect. 13): ~2 minute prin npm, la FIECARE
+# pornire, pentru o capacitate ceruta rar. Le ia `tools/audit.sh`, cand chiar se ruleaza.
+if ! pip install -q --ignore-installed PyYAML -r "$ROOT/requirements.txt" \
+       pytest ruff pytest-randomly; then
   # NU muri in tacere: injectia de stare a ajuns deja in context, iar sesiunea trebuie sa
   # afle ca mediul e incomplet. Un hook care cade fara sa spuna nimic e exact defectul reparat
   # aici, si a stat nedetectat pentru ca `set -e` iesea fara sa scrie un rand.
   echo "!! ATENTIE: instalarea dependentelor a ESUAT. Pipeline-ul ('python -m generator.main')"
   echo "!! si suita de teste pot sa nu functioneze. Ruleaza manual si citeste eroarea:"
-  echo "!!   pip install --ignore-installed PyYAML -r requirements.txt"
+  echo "!!   pip install --ignore-installed PyYAML -r requirements.txt pytest ruff pytest-randomly"
 fi
