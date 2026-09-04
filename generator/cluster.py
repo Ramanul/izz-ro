@@ -16,14 +16,32 @@ def _stemset(title: str) -> set:
 
 
 def _recent(articles: list) -> list:
+    """Articolele din ultimele `RECENT_HOURS` ore. O data neparsabila EXCLUDE articolul.
+
+    Varianta veche punea `datetime.now()` pe data stricata, adica trata vechimea
+    necunoscuta drept „cea mai proaspata cu putinta" — cel mai putin conservator raspuns
+    posibil. Consecinta: o stire de varsta necunoscuta ramanea vesnic eligibila sa fie
+    lipita de stirile de azi prin `attach_recent`. Sect. 7 spune exact invers pentru un
+    fallback care nu poate atinge bara: SARE itemul.
+
+    Excluderea NU pierde articolul: ce nu intra in niciun grup e publicat ca `single`
+    (`main.py:166`, `singles += [it for it in new_items if it["url"] not in clustered]`).
+    Pierde doar sansa de a fi CLUSTERIZAT, ceea ce e si intentia — nu poti decide ca doua
+    stiri sunt acelasi eveniment recent cand nu stii cand s-a intamplat una din ele.
+
+    Masurat inainte de schimbare (`IZZ-0278`): din 13.916 articole din `data/articles.json`,
+    **zero** au `published` lipsa sau neparsabil. Deci diferenta pe datele reale e nula in
+    ambele directii — nici over-merge, nici under-merge — si schimbarea e o intarire a
+    caii de fallback, nu o schimbare de comportament observabil (sect. 7).
+    """
     cutoff = datetime.now(timezone.utc) - timedelta(hours=RECENT_HOURS)
     out = []
     for a in articles:
         try:
             dt = datetime.fromisoformat(a.get("published", ""))
-            dt = dt if dt.tzinfo else dt.replace(tzinfo=timezone.utc)
         except (ValueError, TypeError):
-            dt = datetime.now(timezone.utc)
+            continue
+        dt = dt if dt.tzinfo else dt.replace(tzinfo=timezone.utc)
         if dt >= cutoff:
             out.append(a)
     return out

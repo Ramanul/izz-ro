@@ -15,30 +15,30 @@
 > Garda `incalcari_pr_fantoma` in `tests/test_pr_fantoma.py` pica daca `## Open` numeste un PR
 > care are deja commit de merge pe main (fara adnotarea `(merged)`).
 
-**Updated:** 2026-09-02 (dim. 4: 8 granite ucise, mutanti 64->81%; dim. 7: cod mort + orfani masurati)
+**Updated:** 2026-09-03 (#252 merged: dim. 4 + dim. 7 pe main; CI verde, garzile trec)
 
 ## Open
 
 - **F4 (#241, merged)**: §18 in L1. Urmatorii: §12, §14, §20; **§17 NU**.
 - **K12 (`IZZ-0255`)**: rezumat zilnic, spec nescris; porneste de la `editorial-quality.yml`.
-- **Axa 3** — spec `specs/anomalie-linkuri.md` (`IZZ-0259`), NEimplementat deliberat (R3).
-- **Arhiva (#198)** — `IZZ-0260`/`IZZ-0261`: blocata pe decizia de arhitectura + `izz-failover`.
-- **Trafic** — sonda `trafic.yml` scrisa; de citit daca tokenul CLOUDFLARE are scope analytics.
-- **Home fresh 72h — PR #247** (`fix/home-fresh-72h-v2`): helper + wiring + 6 teste.
-  DEBLOCAT de #248; CI-ul lui trece dupa ce aduce main in ramura.
-- **PR-uri deschise:** #247 (prospetime 72h). Owner: #207 #214 #235.
-  (#250 merged; #248 merged; #244 merged; #225/#240 closed. Fiecare PR cere propria adnotare — intr-o
-  lista `#A/#B merged` garda o vede doar pe ultima.)
+- **PR-uri deschise:** #253 (STATE), #247 prospetime 72h (`fix/home-fresh-72h-v2`, helper+wiring+6
+  teste, DEBLOCAT de #248 — CI-ul trece dupa ce aduce main in ramura). Owner: #207 #214 #235.
+  (#252 merged; #250 merged; #248 merged; #244 merged; #225/#240 closed. Fiecare cere adnotarea
+  lui, pe aceeasi linie — intr-o lista `#A/#B merged` garda o vede doar pe ultima.)
 - **CI paralelizat (#248)**: numele jobului `pytest` NU se schimba. `ramanul-triage-blockers`
-  (e1c8fbe2) e vie si arunca tacut articole legitime (`IZZ-0266`).
-- **PLASA pentru restructurare (#250 merged, `IZZ-0271`)**: `tools/echivalenta.py` amprenteaza
-  `output/`; `tools/mutanti.py --regresie` (~10 s) masoara ce VERIFICA testele — ruleaza-l
-  inainte de orice refactor pe cluster/select/geo/util/guard. Masurat: coverage 71%, mutanti
-  ucisi 81%, `render.py` cel mai rau pe AMBELE axe (`IZZ-0280`/`IZZ-0281`). RAMANE neverificat
-  determinismul intre DOUA randari (2x10 min). Cuplarea reala NU e prin importuri: 16 chei fac
-  punte in `articles.json` — dosar `specs/arhitectura-cuplare.md` sect. 4e, NU re-cerceta.
-- **Nefolosit (`tools/nefolosit.py`, dosar sect. 4f)** — decizii proprietar: `agents.py` mort din
-  08-20 (`IZZ-0284`), `process_cluster` (`IZZ-0285`), 23 .md orfane/272 KB (`IZZ-0287`), §12 (`IZZ-0288`).
+  (e1c8fbe2) e vie si arunca tacut articole legitime (`IZZ-0266`). Debitul e limitat de
+  PLANIFICATORUL GitHub — 4,7 porniri/zi, nu 12 (`IZZ-0292`); sect. 17 ramane valabila.
+- **PLASA pentru restructurare (`IZZ-0271`)**: `tools/echivalenta.py` amprenteaza `output/`;
+  `tools/mutanti.py --regresie` (~10 s) — inainte de orice refactor pe cluster/select/geo/util/
+  guard. Coverage 71%, mutanti ucisi 81%, `render.py` cel mai rau pe AMBELE axe (`IZZ-0280`/
+  `IZZ-0281`). NEVERIFICAT: determinismul intre DOUA randari (2x10 min). Cuplarea reala nu e
+  prin importuri — dosar `specs/arhitectura-cuplare.md`, NU re-cerceta.
+- **Nefolosit (`tools/nefolosit.py`, dosar sect. 4f)**: `agents.py` STERS (`IZZ-0289`). Decizii
+  proprietar: `process_cluster` §10 (`IZZ-0294`), 272 KB orfane masurate dar necuratate
+  (`IZZ-0301`), §12 (`IZZ-0295`), F4 (`IZZ-0296`), Axa 3 (`IZZ-0297`), arhiva (`IZZ-0298`).
+- **Garda anti-amanare (`tests/test_registru_amanari.py`, `IZZ-0293`)**: un rand `propus` cu
+  `decident` = agent expira in 14 zile. Iesiri: fa-l, treci-l pe om, inchide-l cu motiv (un rand
+  nou care il leaga il inchide). La scriere: 12 amanari catre mine -> 0.
 - **Din `specs/atribuire-cercetare-si-plan.md`** — E1 + E4 cer decizia proprietarului.
 
 ## Standing rules that keep being rediscovered — do not "fix" these
