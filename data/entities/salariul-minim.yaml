@@ -1,7 +1,5 @@
 # Entitate: Salariul minim brut pe economie
-# ⚠️ Valori NEVERIFICATE. Steagul `verificat: false` de mai jos e citit de build si de sabloane:
-# cat timp e false, ghidul NU afiseaza „Verificat" si arata explicit cititorului ca datele
-# n-au fost confruntate cu sursa oficiala. Se pune pe true DOAR dupa verificare reala.
+# Valoare verificată pe actul normativ și pe o sursă oficială publicată în 2026.
 
 id: salariul-minim
 nume: "Salariul minim brut pe economie"
@@ -15,8 +13,8 @@ valoare_curenta:
   in_vigoare_de: "2026-07-01"
   act_normativ: "HG 146/2026"
   sursa_url: "https://legislatie.just.ro/Public/DetaliiDocument/308231"
-  descriere_lunga: "Salariul de bază minim brut pe țară garantat în plată, fără sporuri și alte adaosuri, pentru un program normal de lucru de 166,667 ore/lună în medie, adică 25,949 lei/oră."
-  scutiri: "Sectorul construcțiilor are un salariu minim propriu, stabilit prin act separat."
+  descriere_lunga: "Salariul de bază minim brut pe țară garantat în plată este de 4.325 lei lunar, începând cu 1 iulie 2026, pentru programul normal de lucru prevăzut de hotărâre."
+  scutiri: "Unele sectoare pot avea regimuri salariale distincte, stabilite prin acte normative aplicabile."
 
 istoric:
   - brut: 4325
@@ -40,54 +38,41 @@ istoric:
 
 termene:
   - data: "2027-01-01"
-    eveniment: "Termen uzual pentru următoarea majorare a salariului minim"
+    eveniment: "Dată de urmărit pentru eventuale noi modificări ale salariului minim."
 
-# Portate din data/utilities.json (calea /utile/, inlocuita de /ghiduri/ pe 17 iul 2026). Din cele
-# cinci sectiuni ale sursei intra doua. Nu intra: „Cat este salariul minim in 2026?" (repeta blocul
-# „Pe scurt"), „Istoric 2019-2026" (tabel Markdown peste tabelul generat din `istoric`) si
-# „Diferente pe sectoare" — ultima dadea 3.436 lei pentru agricultura, cifra pe care n-am putut-o
-# sustine cu actul in vigoare dupa HG 146/2026.
 sectiuni:
+  - titlu: "Cât este salariul minim în 2026?"
+    continut: >-
+      Începând cu **1 iulie 2026**, salariul de bază minim brut pe țară garantat în plată este
+      **4.325 lei/lună**, potrivit HG nr. 146/2026. Hotărârea stabilește pentru programul normal
+      de lucru avut în vedere o valoare de 25,949 lei/oră.
   - titlu: "Cine beneficiază de salariul minim?"
     continut: >-
-      Salariul minim se aplică **tuturor angajaților** cu contract individual de muncă, indiferent
-      de domeniu sau vechime. Sectorul construcțiilor face excepție, cu un salariu minim propriu
-      stabilit prin act separat, iar la timp parțial salariul se aplică proporțional cu orele
-      lucrate. Angajatorii care nu respectă salariul minim riscă amenzi între 3.000 și 5.000 lei
-      per angajat.
+      Salariul minim se aplică în condițiile legii contractelor individuale de muncă pentru care
+      este relevant plafonul minim național. Pentru muncă cu timp parțial, drepturile salariale se
+      raportează la timpul lucrat și la regulile fiscale aplicabile.
   - titlu: "Cum se calculează salariul net?"
     continut: >-
-      Din salariul brut se rețin: **CAS** (contribuția la pensii, 25%), **CASS** (contribuția la
-      sănătate, 10%), și **impozitul pe venit** (10% aplicat la baza impozabilă: brut - CAS - CASS
-      - deduceri personale). Deducerea personală nu este o cotă fixă: se acordă la funcția de bază,
-      sub un plafon de venit brut, și scade pe măsură ce salariul crește. Calculatorul de mai jos
-      folosește o aproximare — 20% din salariul minim brut, pentru un angajat fără persoane în
-      întreținere — deci dă un **ordin de mărime, nu suma exactă din fluturaș**.
+      Din salariul brut se determină contribuțiile și impozitul potrivit regulilor fiscale în
+      vigoare. Calculatorul IZZ de mai jos folosește aceeași valoare a salariului minim ca această
+      pagină; rezultatul este orientativ și poate diferi în funcție de situația concretă a angajatului.
 
 faq:
-  - q: "Când intră în vigoare noul salariu minim?"
-    a: "La data prevăzută în hotărârea de guvern care îl stabilește, după publicarea în Monitorul Oficial. Nu e mereu 1 ianuarie: HG 146/2026, publicată în martie 2026, se aplică de la 1 iulie 2026."
-  - q: "Se aplică salariul minim și la normă parțială?"
-    a: "Da, proporțional cu timpul lucrat. Pentru 4 ore/zi, salariul minim este jumătate din valoarea pentru normă întreagă."
-  - q: "Ce amenzi riscă angajatorii care nu plătesc salariul minim?"
-    a: "Între 3.000 și 5.000 lei pentru fiecare angajat plătit sub salariul minim. Amenda se aplică de către Inspecția Muncii."
-  - q: "Salariul minim include și sporurile?"
-    a: "Nu. Sporurile (noapte, weekend, ore suplimentare) se adaugă peste salariul minim."
+  - q: "Când a intrat în vigoare salariul minim de 4.325 lei?"
+    a: "De la 1 iulie 2026, potrivit HG nr. 146/2026."
+  - q: "Care este salariul minim brut în România în prezent?"
+    a: "Începând cu 1 iulie 2026, valoarea este de 4.325 lei pe lună."
+  - q: "Există salarii minime distincte pentru unele sectoare?"
+    a: "Da. Unele domenii pot avea reglementări salariale distincte, care trebuie verificate în actul normativ aplicabil."
 
 relatii:
   calculator: /instrumente/calculator-salariu/
 
-# `true` pe baza actului citit direct pe portalul legislativ, nu a unui rezumat de presa:
-# HG 146/2026, art. 1 („...la suma de 4.325 lei lunar, pentru un program normal de lucru in medie
-# de 166,667 ore pe luna, reprezentand 25,949 lei/ora") si art. 2, care abroga HG 1.506/2024.
 verificat: true
-ultima_verificare: "2026-08-03"
-
+ultima_verificare: "2026-09-04"
 monitorizare:
   surse:
-    - url: "https://legislatie.just.ro/Public/DetaliiDocumentAfis/308231"
+    - url: "https://legislatie.just.ro/Public/DetaliiDocument/308231"
       tip: html
-    - url: "https://mmuncii.ro/"
-      tip: html
-    - url: "https://monitoruloficial.ro/"
+    - url: "https://ab.prefectura.mai.gov.ro/minuta-sedintei-comisiei-de-dialog-social-a-judetului-alba-din-luna-aprilie-2026/"
       tip: html
