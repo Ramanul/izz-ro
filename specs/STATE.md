@@ -31,8 +31,8 @@
 - **PLASA pentru restructurare (`IZZ-0271`)**: `tools/echivalenta.py` amprenteaza `output/`;
   `tools/mutanti.py --regresie` (~10 s) — inainte de orice refactor pe cluster/select/geo/util/
   guard. Coverage 71%, mutanti ucisi 81%, `render.py` cel mai rau pe ambele (`IZZ-0280`/`-0281`).
-  Determinism VERIFICAT 09-04: 953 fisiere difereau intre doua randari (`set` iterat, 2 locuri in
-  `render.py`), reparat in #254. Cuplarea reala nu e prin importuri — `specs/arhitectura-cuplare.md`, NU re-cerceta.
+  Determinism VERIFICAT 09-04: 953 fisiere difereau intre doua randari (3 locuri in `render.py`:
+  `set` iterat x2 + `sum` pe float, neasociativ), reparat in #254. Cuplarea reala nu e prin importuri — `specs/arhitectura-cuplare.md`, NU re-cerceta.
 - **Nefolosit (`tools/nefolosit.py`, dosar sect. 4f)**: `agents.py` STERS (`IZZ-0289`). Decizii
   proprietar: `process_cluster` §10 (`IZZ-0294`), 272 KB orfane masurate dar necuratate
   (`IZZ-0301`), §12 (`IZZ-0295`), F4 (`IZZ-0296`), Axa 3 (`IZZ-0297`), arhiva (`IZZ-0298`).

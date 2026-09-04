@@ -1021,7 +1021,14 @@ def build(articles: list, mod: dict | None = None) -> None:
                         common = mine & art_slugs.get(other["url"], set())
                         if len(common) < config.RELATED_MIN_SHARED:
                             continue
-                        weight = sum(idf.get(s, 0.0) for s in common)
+                        # `sorted(common)`, nu `common`: adunarea in virgula mobila NU e
+                        # asociativa, iar `common` e un `set` — aceiasi termeni, insumati in
+                        # alta ordine, dau alt ULP. Masurat 2026-09-04 pe exact cele doua
+                        # articole ramase nedeterministe dupa fixul cheilor de sortare:
+                        # 23.80437088061844 vs 23.804370880618443 (si 18.935162280163738 vs
+                        # 18.93516228016374). Un bit ajunge: `scored.sort` inverseaza doi
+                        # candidati si `[:3]` taie altul. 2 din 26 de candidati per articol.
+                        weight = sum(idf.get(s, 0.0) for s in sorted(common))
                         scored.append((len(common), weight,
                                        other.get("published") or "", other["url"], other))
                 # URL-ul ca a patra cheie, din aceeasi cauza ca la `connections`: `mine` e

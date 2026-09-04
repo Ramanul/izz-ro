@@ -43,6 +43,15 @@ PYTHONHASHSEED — randomizat la fiecare proces — si al caror rezultat intra i
 STABIL cu chei care nu departajeaza egalitatile. La `[:6]` / `[:3]` asta schimba nu doar
 ordinea, ci componenta listei: 945 din 4.307 pagini de subiect („Conexiuni") si 8 din 8.350
 pagini de articol („Articole conectate"). Reparat prin chei de departajare deterministe.
+
+A TREIA sursa, gasita abia la reverificare — 953 scazuse la 2, nu la 0: `weight = sum(idf[s]
+for s in common)`, unde `common` e tot un `set`. Adunarea in virgula mobila NU e asociativa,
+deci aceiasi termeni insumati in alta ordine dau alt ULP: masurat 23.80437088061844 vs
+23.804370880618443. Un bit ajunge ca sortarea sa inverseze doi candidati si `[:3]` sa taie
+altul. Reparat cu `sorted(common)`. Lectia operationala: dupa un fix de determinism,
+reverificarea NU e formalitate — primul fix a lasat 0,2% din defect in urma, iar 0,2%
+nedeterminist inseamna tot „plasa nu poate raporta IDENTIC".
+
 Consecinta care conteaza pentru unealta asta: cat timp defectul a existat, `compara` NU putea
 raporta „IDENTIC" niciodata, deci plasa care apara refactorizarile era decor. O plasa se
 verifica pe ea insasi inainte sa fie crezuta.
