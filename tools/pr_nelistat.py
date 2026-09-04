@@ -108,13 +108,14 @@ def _pr_deschise_din_api(repo: str, token: str) -> list[dict]:
         headers={"Authorization": f"Bearer {token}",
                  "Accept": "application/vnd.github+json"},
     )
-    # nosemgrep: python.lang.security.audit.dynamic-urllib-use-detected
-    # Regula e de tip AUDIT, si auditul e facut, aici, deasupra: schema e scrisa in cod,
-    # `repo` e validat pe forma `owner/nume` (deci fara `:`, `@`, `..` sau `/` in plus) si
-    # originea URL-ului e reconfirmata dupa construire. Ce ar reactiva riscul — mutarea
-    # schemei intr-o variabila, sau slabirea lui REPO_VALID — pica testele din
+    # Regula Semgrep de mai jos e de tip AUDIT, si auditul e facut chiar deasupra: schema e
+    # scrisa in cod, `repo` e validat pe forma `owner/nume` (deci fara `:`, `@`, `..` sau `/`
+    # in plus) si originea URL-ului e reconfirmata dupa construire. Ce ar reactiva riscul —
+    # mutarea schemei intr-o variabila, sau slabirea lui REPO_VALID — pica testele din
     # tests/test_pr_nelistat.py, deci suprimarea nu ramane adevarata din intamplare.
-    with urllib.request.urlopen(cerere, timeout=30) as raspuns:  # noqa: S310
+    # Marcajul trebuie sa stea pe LINIA apelului: pus deasupra unui bloc de comentarii,
+    # Semgrep nu-l leaga de constatare si alerta reapare (verificat pe findings 96/97/98).
+    with urllib.request.urlopen(cerere, timeout=30) as raspuns:  # noqa: S310  # nosemgrep: python.lang.security.audit.dynamic-urllib-use-detected.dynamic-urllib-use-detected
         return json.load(raspuns)
 
 
