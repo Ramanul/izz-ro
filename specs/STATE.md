@@ -22,7 +22,7 @@
 - **F4 (#241, merged)**: §18 in L1. Urmatorii: §12, §14, §20; **§17 NU**.
 - **K12 (`IZZ-0255`)**: rezumat zilnic, spec nescris; porneste de la `editorial-quality.yml`.
 - **PR-uri deschise:** #214, #235, #254, #263, #264, #266, #268. #247 este merged; #260 este closed.
-- **CI paralelizat (#248)**: numele jobului `pytest` NU se schimba. `ramanul-triage-blockers`
+- **CI paralelizat (#248, merged)**: numele jobului `pytest` NU se schimba. `ramanul-triage-blockers`
   (e1c8fbe2) e vie si arunca tacut articole legitime (`IZZ-0266`). Debitul e limitat de
   PLANIFICATORUL GitHub — 4,7 porniri/zi, nu 12 (`IZZ-0292`); sect. 17 ramane valabila.
 - **PLASA pentru restructurare (`IZZ-0271`)**: `tools/echivalenta.py` amprenteaza `output/`;
