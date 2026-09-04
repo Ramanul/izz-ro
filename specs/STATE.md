@@ -26,7 +26,7 @@
 - **Trafic** — sonda `trafic.yml` scrisa; de citit daca tokenul CLOUDFLARE are scope analytics.
 - **Home fresh 72h — PR #247** (`fix/home-fresh-72h-v2`): helper + wiring + 6 teste.
   DEBLOCAT de #248; CI-ul lui trece dupa ce aduce main in ramura.
-- **PR-uri deschise:** #247 (prospetime 72h). Owner: #207 #214 #235.
+- **PR-uri deschise:** #247; **#253 (verde, draft, asteapta merge)**; #260. Owner: #207 #214 #235.
   (#250 merged; #248 merged; #244 merged; #225/#240 closed. Fiecare PR cere propria adnotare — intr-o
   lista `#A/#B merged` garda o vede doar pe ultima.)
 - **CI paralelizat (#248)**: numele jobului `pytest` NU se schimba. `ramanul-triage-blockers`
