@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "IZZ Intelligence Dataset",
+  "type": "object",
+  "required": ["catalog", "providers", "companies", "market", "commerce", "events"],
+  "properties": {
+    "catalog": {
+      "type": "array",
+      "minItems": 37,
+      "items": {"type": "object", "required": ["name", "value"], "properties": {"name": {"type": "string", "minLength": 1}, "value": {"type": "string", "minLength": 1}}, "additionalProperties": true}
+    },
+    "providers": {
+      "type": "array",
+      "items": {"type": "object", "required": ["name", "city", "categories", "budgets", "contact"], "properties": {"name": {"type": "string", "minLength": 1}, "city": {"type": "string", "minLength": 1}, "cities": {"type": "array", "items": {"type": "string"}}, "categories": {"type": "array", "items": {"type": "string"}, "minItems": 1}, "budgets": {"type": "array", "items": {"type": "string"}, "minItems": 1}, "contact": {"type": "string", "minLength": 1}}, "additionalProperties": true}
+    },
+    "companies": {"type": "object"},
+    "market": {"type": "array"},
+    "commerce": {"type": "array"},
+    "events": {"type": "array"}
+  },
+  "additionalProperties": true
+}
