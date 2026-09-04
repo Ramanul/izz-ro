@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="IZZ Radare — schimbări relevante, oportunități și dosare permanente.">
   <title>IZZ Radare</title>
-  <link rel="stylesheet" href="./styles.css">
+  <link rel="stylesheet" href="../styles.css">
   <style>
     .ir-wrap{max-width:1200px;margin:0 auto;padding:34px}
     .ir-hero{background:#fff;padding:34px;border-top:4px solid #c9a227;margin-bottom:21px}
@@ -66,8 +66,8 @@ document.getElementById('radar-form').addEventListener('submit', async (event) =
     const result = await api(`/radar?target_type=${encodeURIComponent(type)}&target_id=${encodeURIComponent(target)}&days=${encodeURIComponent(days)}`);
     if (!result.target) { box.innerHTML = '<strong>Fără date.</strong><p>Targetul nu există în corpusul curent.</p>'; return; }
     box.innerHTML = `<strong>${esc(result.target.canonical_name)}</strong><p>${esc(result.changes.length)} schimbări găsite în interval.</p><div class="ir-grid">${result.changes.map(item => `<article class="ir-card"><div class="ir-score">${esc(item.confidence)}%</div><h3>${esc(item.type)}</h3><p>${esc(item.title)}</p><div class="ir-muted">${esc(item.published_at || item.observed_at || '')}</div></article>`).join('')}</div>`;
-  } catch (error) {
-    box.innerHTML = `<strong>API indisponibil.</strong><p>Pagina rămâne funcțională ca interfață, dar rezultatele reale cer API/D1 configurat.</p>`;
+  } catch (_) {
+    box.innerHTML = '<strong>API indisponibil.</strong><p>Pagina rămâne funcțională ca interfață, dar rezultatele reale cer API/D1 configurat.</p>';
   }
 });
 
