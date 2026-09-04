@@ -8,7 +8,7 @@ not coupled to RDF implementation details.
 
 Usage:
   python tools/sync_ted.py --query-file tools/queries/ted_ro_contracts.rq \
-    --out data/ted_observations.json
+    --since 2026-08-28 --out data/ted_observations.json
 """
 from __future__ import annotations
 
@@ -74,10 +74,15 @@ def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--query-file", required=True)
     parser.add_argument("--endpoint", default=DEFAULT_ENDPOINT)
+    parser.add_argument("--since", help="ISO date injected into {{SINCE}} in the query")
     parser.add_argument("--out", default="data/ted_observations.json")
     args = parser.parse_args()
 
     query = (ROOT / args.query_file).read_text(encoding="utf-8")
+    if "{{SINCE}}" in query:
+        if not args.since:
+            raise SystemExit("--since este obligatoriu când query-ul conține {{SINCE}}")
+        query = query.replace("{{SINCE}}", args.since)
     payload = query_ted(query, args.endpoint)
     result = normalize(payload, query, args.endpoint)
     output = ROOT / args.out
