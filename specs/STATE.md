@@ -25,7 +25,7 @@
   DEBLOCAT de #248 — CI-ul trece dupa ce aduce main in ramura). Owner: #207 #214 #235.
   (#253 merged; #252 merged; #250 merged; #248 merged; #244 merged; #225/#240 closed. Fiecare
   cere adnotarea lui, pe aceeasi linie — intr-o lista `#A/#B merged` garda o vede doar pe ultima.)
-- **CI paralelizat (#248)**: numele jobului `pytest` NU se schimba. `ramanul-triage-blockers`
+- **CI paralelizat (#248)**: numele jobului `pytest` NU se schimba. `ramanul-triage-blockers` (merged)
   (e1c8fbe2) e vie si arunca tacut articole legitime (`IZZ-0266`). Debitul e limitat de
   PLANIFICATORUL GitHub — 4,7 porniri/zi, nu 12 (`IZZ-0292`); sect. 17 ramane valabila.
 - **PLASA pentru restructurare (`IZZ-0271`)**: `tools/echivalenta.py` amprenteaza `output/`;
