@@ -33,13 +33,13 @@ def test_calendarul_anaf_are_sursa_oficiala_si_termenul_curent():
     assert "verificat: true" in text
 
 
-def test_alocatia_are_valori_confirmate_si_fara_vechiul_steg_neverificat():
+def test_alocatia_are_valori_confirmate():
     text = _read("data/entities/alocatia-copii.yaml")
     assert "brut: 292" in text
     assert "valoare_secundara: 719" in text
     assert "verificat: true" in text
     assert "ultima_verificare: \"2026-09-04\"" in text
-    assert "Valorile curente" in text or "Valorile" not in text  # contractul nu depinde de comentarii vechi
+    assert "Valori NEVERIFICATE" not in text
 
 
 def test_salariul_minim_este_actualizat_si_documenteaza_facilitatea_200():
