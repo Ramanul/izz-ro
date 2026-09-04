@@ -51,3 +51,18 @@ def test_sectiunea_open_se_opreste_la_urmatorul_titlu():
     """Altfel un `#253` dintr-o sectiune de istoric ar masca o omisiune reala."""
     md = "## Open\n\n- #247\n\n## Istoric\n\n- #253 a fost candva aici\n"
     assert "#247" in sectiune_open(md) and "#253" not in sectiune_open(md)
+
+
+def test_pr_de_bot_e_sarit():
+    """Dependabot nu intra in STATE.md: 4 din cele 11 PR-uri deschise la prima rulare a
+    garzii erau bump-uri, iar STATE.md are plafon de 40 de linii citite la fiecare pornire.
+    O garda care suna zilnic pentru bump-uri ajunge dezactivata."""
+    bot = _pr(258, 48, "ci: bump actions/checkout") | {"user": {"type": "Bot"}}
+    assert incalcari([bot], STATE_CU_247, ACUM) == []
+
+
+def test_pr_de_om_nu_e_sarit_de_filtrul_de_bot():
+    """Granita: filtrul se uita la `type`, si un PR fara camp `user` ramane verificat."""
+    om = _pr(261, 48, "fix real") | {"user": {"type": "User"}}
+    assert incalcari([om], STATE_CU_247, ACUM) != []
+    assert incalcari([_pr(262, 48)], STATE_CU_247, ACUM) != []

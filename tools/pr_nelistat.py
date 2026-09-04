@@ -50,6 +50,15 @@ def incalcari(pr_deschise: list[dict], state_md: str, acum: datetime,
 
     `exclude` = PR-ul pe care ruleaza CI chiar acum: nu se poate cere unui PR sa se
     autodeclare in STATE.md inainte sa fie deschis.
+
+    PR-urile deschise de BOTI se sar. Motivul e plafonul: STATE.md are 40 de linii si e
+    citit la fiecare pornire de sesiune — un `ci: bump actions/checkout` acolo costa context
+    la fiecare tura si nu spune nimic despre unde suntem. Masurat la prima rulare a garzii
+    (2026-09-04): din 11 PR-uri deschise, 4 erau Dependabot, deci fara regula asta garda ar
+    fi sunat zilnic pentru bump-uri si ar fi fost dezactivata — exact esecul pe care o garda
+    cu alarme false il produce. Ce NU acopera: un bot care deschide un PR de continut real
+    ar fi sarit si el. Nu s-a intamplat inca in repo-ul asta; daca se intampla, filtrul
+    trebuie ingustat pe `login`, nu pe `type`.
     """
     bloc = sectiune_open(state_md)
     if not bloc:
@@ -61,6 +70,8 @@ def incalcari(pr_deschise: list[dict], state_md: str, acum: datetime,
     for pr in pr_deschise:
         numar = int(pr["number"])
         if numar in mentionate or numar in exclude:
+            continue
+        if (pr.get("user") or {}).get("type") == "Bot":
             continue
         deschis = datetime.fromisoformat(pr["created_at"].replace("Z", "+00:00"))
         if deschis > limita:
