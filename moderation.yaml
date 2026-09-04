@@ -33,6 +33,7 @@ suppress_sources:
   # titlul n-are niciun marker ostil — doar e in engleza pe o sursa 100% romaneasca. Vezi
   # `guard.anomalie` si comentariul din `local_sources._DEAD_SLUGS`.
   - pl_suceava_oras_cajvana
+  - piataauto
 corrections:                # corectezi un titlu/teaser greșit de AI, pe un URL anume
   # "https://sursa.ro/articol": { title: "Titlu corect", teaser: "Rezumat corect." }
 featured: []                # URL-uri pe care le forțezi în hero (sus de tot)
