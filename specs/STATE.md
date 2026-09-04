@@ -15,16 +15,16 @@
 > Garda `incalcari_pr_fantoma` in `tests/test_pr_fantoma.py` pica daca `## Open` numeste un PR
 > care are deja commit de merge pe main (fara adnotarea `(merged)`).
 
-**Updated:** 2026-09-03 (#252 merged: dim. 4 + dim. 7 pe main; CI verde, garzile trec)
+**Updated:** 2026-09-04 (#277: garda PR fantoma vedea 42/190 aterizari; inventar recitit din API)
 
 ## Open
 
 - **F4 (#241, merged)**: §18 in L1. Urmatorii: §12, §14, §20; **§17 NU**.
 - **K12 (`IZZ-0255`)**: rezumat zilnic, spec nescris; porneste de la `editorial-quality.yml`.
-- **PR-uri deschise:** #247 prospetime 72h (`fix/home-fresh-72h-v2`, helper+wiring+6 teste,
-  DEBLOCAT de #248 — CI-ul trece dupa ce aduce main in ramura). Owner: #207 #214 #235.
-  (#253 merged; #252 merged; #250 merged; #248 merged; #244 merged; #225/#240 closed. Fiecare
-  cere adnotarea lui, pe aceeasi linie — intr-o lista `#A/#B merged` garda o vede doar pe ultima.)
+- **PR-uri deschise — citit pe API 2026-09-04:** verzi #254 #262 #263 #268; #277 draft (garda
+  de mai jos); ROSII #264 (`test_pr_fantoma`: #248 neadnotat), #266 (5 picate + 3 erori), #269
+  (23 + 3). Owner: #207 #214 #235. (#248 merged; #247 merged — adnotarea sta pe aceeasi linie;
+  in `#A/#B merged` garda vede doar ultima.) Garda e oarba la squash scris de mana: cere API.
 - **CI paralelizat (#248)**: numele jobului `pytest` NU se schimba. `ramanul-triage-blockers`
   (e1c8fbe2) e vie si arunca tacut articole legitime (`IZZ-0266`). Debitul e limitat de
   PLANIFICATORUL GitHub — 4,7 porniri/zi, nu 12 (`IZZ-0292`); sect. 17 ramane valabila.
