@@ -638,3 +638,40 @@ def test_eticheta_copertei_titlul_bate_slugul_sursei():
     a = {"category": "local", "title": "Delegație în vizită la Cernavodă",
          "source": "pl_vaslui_municipiul_husi"}
     assert geo.eticheta_copertei(a) == "Cernavodă"
+
+
+# --- gazetteer-ul de sate: randurile stricate se arunca, nu se indexeaza ---------
+#
+# DE CE EXISTA (masurat 2026-09-02 prin mutation testing): `if judet and nume:` din
+# `_sate()` filtreaza randurile incomplete din `data/sate_judet.csv`. Schimband `and` in
+# `or`, suita ramanea VERDE — deci filtrul nu era pazit de nimic. Fisierul e GENERAT
+# (`tools/build_gazetteer.py`), deci un rand stricat e o posibilitate reala, nu ipotetica.
+#
+# Consecinta mutantului nu e cosmetica: un nume gol ajunge in lista judetului, iar
+# `_regex_sate` construieste alternanta `\b(alfa||beta)` — o ramura VIDA, care se potriveste
+# oriunde. Adica orice articol ar primi un sat. Azi CSV-ul e curat (12.540 de randuri, zero
+# campuri goale), deci mutantul e invizibil pe date reale: exact motivul pentru care testul
+# isi construieste propriul CSV in loc sa se bazeze pe cel din repo.
+
+
+def test_gazetteerul_arunca_randurile_cu_camp_gol(tmp_path, monkeypatch):
+    csv_stricat = tmp_path / "sate_judet.csv"
+    csv_stricat.write_text(
+        "judet,nume\n"
+        "CLUJ,Floresti\n"
+        ",Sat fara judet\n"          # judet gol -> se arunca
+        "CLUJ,\n"                    # nume gol  -> se arunca (ar da ramura vida in regex)
+        "CLUJ,Baciu\n",
+        encoding="utf-8")
+    monkeypatch.setattr(geo, "_SATE_CSV", str(csv_stricat))
+    monkeypatch.setattr(geo, "_SATE", None)
+    monkeypatch.setattr(geo, "_REGEX_SATE", {})
+
+    sate = geo._sate()
+    assert set(sate) == {"CLUJ"}, f"un judet gol nu are voie sa devina cheie: {sorted(sate)}"
+    assert sate["CLUJ"] == ["Floresti", "Baciu"], sate["CLUJ"]
+    assert "" not in sate["CLUJ"], "un nume gol face alternanta regex sa se potriveasca oriunde"
+
+    # si dovada consecintei, nu doar a filtrului: regexul nu se potriveste pe text arbitrar
+    rx = geo._regex_sate("CLUJ")
+    assert rx is not None and not rx.search("un text fara niciun sat clujean in el")
