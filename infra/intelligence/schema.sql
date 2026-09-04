@@ -70,19 +70,40 @@ CREATE TABLE IF NOT EXISTS monitors (
   UNIQUE(owner_key, target_type, target_id)
 );
 
+CREATE TABLE IF NOT EXISTS provider_profiles (
+  entity_id TEXT PRIMARY KEY REFERENCES entities(id) ON DELETE CASCADE,
+  categories_json TEXT NOT NULL DEFAULT '[]',
+  cities_json TEXT NOT NULL DEFAULT '[]',
+  budgets_json TEXT NOT NULL DEFAULT '[]',
+  contact TEXT,
+  verified INTEGER NOT NULL DEFAULT 0 CHECK (verified IN (0,1)),
+  updated_at TEXT NOT NULL
+);
+
 CREATE TABLE IF NOT EXISTS leads (
   id TEXT PRIMARY KEY,
   session_key TEXT,
   need TEXT NOT NULL,
   city TEXT,
   budget TEXT,
-  provider_entity_id TEXT REFERENCES entities(id) ON DELETE SET NULL,
   score INTEGER NOT NULL CHECK (score BETWEEN 0 AND 100),
-  status TEXT NOT NULL DEFAULT 'new' CHECK (status IN ('new', 'sent', 'accepted', 'rejected', 'closed')),
+  status TEXT NOT NULL DEFAULT 'new' CHECK (status IN ('new', 'matched', 'sent', 'accepted', 'rejected', 'closed')),
   created_at TEXT NOT NULL
 );
 
 CREATE INDEX IF NOT EXISTS leads_status_time ON leads(status, created_at DESC);
+
+CREATE TABLE IF NOT EXISTS lead_matches (
+  lead_id TEXT NOT NULL REFERENCES leads(id) ON DELETE CASCADE,
+  provider_entity_id TEXT NOT NULL REFERENCES entities(id) ON DELETE CASCADE,
+  score INTEGER NOT NULL CHECK (score BETWEEN 0 AND 100),
+  reason TEXT NOT NULL,
+  status TEXT NOT NULL DEFAULT 'candidate' CHECK (status IN ('candidate', 'sent', 'accepted', 'rejected', 'closed')),
+  created_at TEXT NOT NULL,
+  PRIMARY KEY (lead_id, provider_entity_id)
+);
+
+CREATE INDEX IF NOT EXISTS lead_matches_score ON lead_matches(lead_id, score DESC);
 
 CREATE TABLE IF NOT EXISTS actions (
   id TEXT PRIMARY KEY,
