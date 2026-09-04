@@ -1,4 +1,4 @@
-"""Regresii pentru prima felie România Utilă.
+"""Regresii pentru felia curentă România Utilă.
 
 Testăm contractul de date și legăturile publice, nu rendererul în oglindă: valorile rămân în
 `data/entities/*.yaml`, iar paginile sunt generate din acea sursă unică.
@@ -49,6 +49,38 @@ def test_salariul_minim_este_actualizat_si_documenteaza_facilitatea_200():
     assert "ultima_verificare: \"2026-09-04\"" in text
     assert "200 lei/lună" in text
     assert "OUG 89/2025" in text
+
+
+def test_pensia_minima_are_sursa_si_data_verificarii():
+    text = _read("data/entities/pensia-minima.yaml")
+    assert "brut: 1281" in text
+    assert "cnpp.ro" in text
+    assert "verificat: true" in text
+    assert "15 ani" not in text
+
+
+def test_actele_si_pasaportul_au_tarife_actuale():
+    text = _read("data/entities/buletin-pasaport.yaml")
+    assert "265 lei" in text
+    assert "70 lei" in text
+    assert "40 lei" in text
+    assert "verificat: true" in text
+    assert "258 lei" not in text
+
+
+def test_permisul_auto_are_tariful_curent_si_schimbarea_publicata():
+    text = _read("data/entities/permis-auto.yaml")
+    assert "89 lei" in text
+    assert "139 lei" in text
+    assert "15 septembrie 2026" in text
+    assert "verificat: true" in text
+
+
+def test_noua_casa_nu_prezinta_cifre_2026_neconfirmate_ca_valori_curente():
+    text = _read("data/entities/noua-casa.yaml")
+    assert "verificat: false" in text
+    assert "ultima_verificare: \"2026-09-04\"" in text
+    assert "plafonul anual" in text
 
 
 def test_aliasurile_romania_utila_sunt_301_si_tinta_exista():
