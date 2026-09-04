@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="ro">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="IZZ Radare — schimbări relevante, oportunități și dosare permanente.">
+  <title>IZZ Radare</title>
+  <link rel="stylesheet" href="./styles.css">
+  <style>
+    .ir-wrap{max-width:1200px;margin:0 auto;padding:34px}
+    .ir-hero{background:#fff;padding:34px;border-top:4px solid #c9a227;margin-bottom:21px}
+    .ir-hero h1{font:800 2.618rem/1.05 Georgia,serif;margin:8px 0}
+    .ir-form{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:13px;background:#fff;padding:21px;border-top:2px solid #c9ccd3}
+    .ir-form label{font:700 .7rem ui-monospace,monospace;text-transform:uppercase;letter-spacing:1px}
+    .ir-form input,.ir-form select{display:block;width:100%;margin-top:5px;padding:8px;border:1px solid #c9ccd3;font:inherit}
+    .ir-form button{padding:8px 13px;border:1px solid #8b6918;background:#8b6918;color:#fff;font:700 .786rem ui-monospace,monospace;text-transform:uppercase;letter-spacing:1px;cursor:pointer}
+    .ir-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:21px;margin-top:21px}
+    .ir-card{background:#fff;padding:21px;border-top:2px solid #e4e7ec}
+    .ir-card h2,.ir-card h3{font-family:Georgia,serif;margin:0 0 8px}
+    .ir-score{font:800 2.058rem Georgia,serif;color:#8b6918}
+    .ir-muted{font-size:.786rem;color:#6d6d7f}
+    .ir-result{margin-top:21px;padding:21px;background:#faf5e6;border-left:3px solid #c9a227;min-height:60px}
+    @media(max-width:640px){.ir-wrap{padding:21px}.ir-hero h1{font-size:2.058rem}}
+  </style>
+</head>
+<body>
+<main class="ir-wrap">
+  <header class="ir-hero">
+    <div class="ir-muted">IZZ INTELLIGENCE</div>
+    <h1>Radare și dosare</h1>
+    <p>„Ce s-a schimbat?” pentru o companie, instituție, profesie, concurent sau temă. API-ul real alimentează pagina când este disponibil; altfel, pagina explică lipsa datasetului fără să inventeze rezultate.</p>
+  </header>
+
+  <section class="ir-card">
+    <form class="ir-form" id="radar-form">
+      <label>Tip target<select id="target-type"><option value="company">Companie</option><option value="institution">Instituție</option><option value="topic">Temă</option><option value="profession">Profesie</option><option value="competitor">Concurent</option></select></label>
+      <label>Target<input id="target-id" required placeholder="CUI / nume / identificator"></label>
+      <label>Perioadă<select id="days"><option value="7">7 zile</option><option value="30" selected>30 zile</option><option value="90">90 zile</option><option value="365">365 zile</option></select></label>
+      <button type="submit">Vezi schimbările</button>
+    </form>
+    <div id="radar-result" class="ir-result" aria-live="polite">Alege un target și rulează radarul.</div>
+  </section>
+
+  <section class="ir-card" style="margin-top:21px">
+    <h2>Oportunități</h2>
+    <form class="ir-form" id="opp-form">
+      <label>Scor minim<input id="min-score" type="number" min="0" max="100" value="70"></label>
+      <label>Tip<select id="opp-kind"><option value="">Toate</option><option value="procurement">Achiziții</option><option value="grant">Finanțări</option><option value="market">Piață</option><option value="lead">Lead</option></select></label>
+      <button type="submit">Caută oportunități</button>
+    </form>
+    <div id="opp-grid" class="ir-grid"></div>
+  </section>
+</main>
+<script>
+const API_BASE = String(window.IZZ_INTELLIGENCE_API || '/api/intelligence').replace(/\/$/, '');
+const esc = (value) => String(value ?? '').replace(/[&<>'"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]));
+async function api(path){ const r=await fetch(API_BASE+path,{headers:{accept:'application/json'}}); if(!r.ok) throw new Error(`HTTP ${r.status}`); return r.json(); }
+
+document.getElementById('radar-form').addEventListener('submit', async (event) => {
+  event.preventDefault();
+  const type = document.getElementById('target-type').value;
+  const target = document.getElementById('target-id').value.trim();
+  const days = document.getElementById('days').value;
+  const box = document.getElementById('radar-result');
+  try {
+    const result = await api(`/radar?target_type=${encodeURIComponent(type)}&target_id=${encodeURIComponent(target)}&days=${encodeURIComponent(days)}`);
+    if (!result.target) { box.innerHTML = '<strong>Fără date.</strong><p>Targetul nu există în corpusul curent.</p>'; return; }
+    box.innerHTML = `<strong>${esc(result.target.canonical_name)}</strong><p>${esc(result.changes.length)} schimbări găsite în interval.</p><div class="ir-grid">${result.changes.map(item => `<article class="ir-card"><div class="ir-score">${esc(item.confidence)}%</div><h3>${esc(item.type)}</h3><p>${esc(item.title)}</p><div class="ir-muted">${esc(item.published_at || item.observed_at || '')}</div></article>`).join('')}</div>`;
+  } catch (error) {
+    box.innerHTML = `<strong>API indisponibil.</strong><p>Pagina rămâne funcțională ca interfață, dar rezultatele reale cer API/D1 configurat.</p>`;
+  }
+});
+
+document.getElementById('opp-form').addEventListener('submit', async (event) => {
+  event.preventDefault();
+  const min = document.getElementById('min-score').value;
+  const kind = document.getElementById('opp-kind').value;
+  const box = document.getElementById('opp-grid');
+  try {
+    const result = await api(`/opportunities?min_score=${encodeURIComponent(min)}&limit=25${kind ? `&kind=${encodeURIComponent(kind)}` : ''}`);
+    box.innerHTML = (result.opportunities || []).map(item => `<article class="ir-card"><div class="ir-score">${esc(item.score)}/100</div><h3>${esc(item.canonical_name || item.kind)}</h3><p>${esc(item.reason)}</p><div class="ir-muted">${esc(item.observation_title || '')}</div></article>`).join('') || '<article class="ir-card">Nicio oportunitate în intervalul de scor ales.</article>';
+  } catch (_) {
+    box.innerHTML = '<article class="ir-card">API-ul de intelligence nu este configurat încă.</article>';
+  }
+});
+</script>
+</body>
+</html>
