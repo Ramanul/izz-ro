@@ -568,8 +568,11 @@ def _items_from_html(raw: str, key: str, source: dict) -> tuple[list, str | None
     for entry in parser.items[: config.MAX_PER_SOURCE]:
         link = entry["href"]
         title = clean_html(entry["title"])
-        if not link or not title or _is_agency(link, source["name"]):
+        if not link or not title:
             _SARITE["item incomplet (fara link sau titlu)"] += 1
+            continue
+        if _is_agency(link, source["name"]):
+            _SARITE["agentie de presa (exclusa deliberat)"] += 1
             continue
         motiv = (guard.verdict(title) or guard.url_ostil(link)
                  or guard.anomalie(title, source.get("lang", "ro")))
