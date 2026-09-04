@@ -67,6 +67,10 @@ Amestecul eager/lazy e chiar motivul pentru care `tools/greutate.py` le raportea
   **per pagină**, nu suma.
 - **Nu e un scor.** Nu înlocuiește Lighthouse din §13; spune din ce e făcută greutatea, nu cât de
   bine se comportă pagina la încărcare.
+- **Nu numără cererile externe, iar producția are cel puțin una în plus.** `templates/base.html:53`
+  încarcă `beacon.min.js` de la Cloudflare, condiționat de `analytics_token` — absent în randarea
+  locală, prezent pe site. Unealta sare deliberat peste `https://` (nu poate ști mărimea fără
+  rețea), deci cei 116 KB eager de pe un articol sunt un plafon **local**, nu unul de producție.
 
 ## Cum se reface
 
@@ -74,3 +78,8 @@ Amestecul eager/lazy e chiar motivul pentru care `tools/greutate.py` le raportea
 python -m generator.main --render-only   # ~25 min; imaginile se refolosesc dacă output/ există
 python tools/greutate.py 12              # top 12 pagini + compoziția pe tip
 ```
+
+Șasiul (93 KB) se verifică însă **fără randare, în ~1 secundă** — sunt fișiere din repo, iar
+`base.html` spune exact care: `static/styles.css` (51.298) + cele două `preload` woff2,
+Playfair-800 și JetBrainsMono-700 (25.280) + `theme.js` și `personalize.js` (18.452) =
+**95.030 octeți = 92,8 KB**. Reverificat astfel pe 2026-09-04, independent de randare.
