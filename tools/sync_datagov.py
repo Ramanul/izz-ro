@@ -19,6 +19,7 @@ from urllib.request import Request, urlopen
 
 ROOT = Path(__file__).resolve().parents[1]
 CKAN_BASE = "https://data.gov.ro/api/3/action/package_search"
+DATASET_BASE = "https://data.gov.ro/dataset/"
 
 
 def search_datasets(query: str, rows: int = 20, timeout: int = 20) -> dict:
@@ -44,12 +45,13 @@ def normalize(result: dict, query: str) -> dict:
                 "url": resource.get("url"),
                 "last_modified": resource.get("last_modified"),
             })
+        package_name = package.get("name")
         datasets.append({
             "id": package.get("id"),
-            "name": package.get("name"),
+            "name": package_name,
             "title": package.get("title"),
             "notes": package.get("notes"),
-            "url": package.get("url") or package.get("metadata_created"),
+            "url": f"{DATASET_BASE}{package_name}" if package_name else None,
             "organization": (package.get("organization") or {}).get("title"),
             "metadata_modified": package.get("metadata_modified"),
             "license_id": package.get("license_id"),
