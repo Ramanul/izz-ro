@@ -51,6 +51,13 @@ def test_salariul_minim_este_actualizat_si_documenteaza_facilitatea_200():
     assert "OUG 89/2025" in text
 
 
+def test_istoricul_salariului_minim_are_date_si_acte_corecte():
+    text = _read("data/entities/salariul-minim.yaml")
+    assert "brut: 4050\n    in_vigoare_de: \"2026-01-01\"\n    act_normativ: \"HG 1506/2024\"" in text
+    assert "brut: 3700\n    in_vigoare_de: \"2024-07-01\"\n    act_normativ: \"HG 598/2024\"" in text
+    assert "brut: 3700\n    in_vigoare_de: \"2025-01-01\"" not in text
+
+
 def test_aliasurile_romania_utila_sunt_301_si_tinta_exista():
     text = _read("data/redirects_migrare.tsv")
     expected = {
