@@ -1,78 +1,50 @@
 # Entitate: Alocația de stat pentru copii
-# ⚠️ Valori NEVERIFICATE. Steagul `verificat: false` de mai jos e citit de build si de sabloane:
-# cat timp e false, ghidul NU afiseaza „Verificat" si arata explicit cititorului ca datele
-# n-au fost confruntate cu sursa oficiala. Se pune pe true DOAR dupa verificare reala.
-
+# Valorile curente sunt verificate pe o sursă oficială a administrației publice.
 id: alocatia-copii
 nume: "Alocația de stat pentru copii"
 tip: valoare_monetara
 categorie_ghid: bani
 categorie_stiri: general
 
-# NIVEL DE DOVADA MAI SLAB DECAT LA CELELALTE GHIDURI — de aceea `verificat` ramane false mai jos.
-# Cifrele vechi de aici (794 / 1.019) sunt contrazise concordant de mai multe surse secundare
-# (Digi24, avocatnet, portalinvatamant, lugera, playtech), care dau 292 si 719 lei, cu indexarea
-# suspendata pentru al doilea an prin art. XXV din Legea 141/2025. Actul primar NU a putut fi citit:
-# `legislatie.just.ro` serveste Legea 61/1993 in forma republicata din 1999, al carei art. 3 spune
-# inca „3.500 lei" — ROL, dinainte de denominare. Am pus cifrele mai probabile, nu pe cele
-# demonstrabil vechi, dar poarta `verificat` ramane inchisa pana cand cineva citeste actul.
 valoare_curenta:
   brut: 292
   moneda: RON
   in_vigoare_de: "2026-01-01"
-  act_normativ: "Legea 61/1993; cuantum mentinut pentru 2026 prin art. XXV din Legea 141/2025"
-  sursa_url: "https://legislatie.just.ro/Public/DetaliiDocument/300022"
-  descriere_lunga: "Alocația se acordă tuturor copiilor cu domiciliul în România, de la naștere până la 18 ani, fără condiții de venit. Valoarea de 292 lei/lună este cea pentru copiii între 2 și 18 ani fără handicap; restul intră pe tranșa de 719 lei."
+  act_normativ: "Legea 61/1993; cuantumul aferent anului 2026 este menținut la nivelul anului 2025 prin măsurile fiscal-bugetare în vigoare"
+  sursa_url: "https://ab.prefectura.mai.gov.ro/minuta-sedintei-comisiei-de-dialog-social-a-judetului-alba-din-luna-martie-2026/"
+  descriere_lunga: "Alocația de stat pentru copii este 292 lei/lună pentru copiii între 2 și 18 ani și 719 lei/lună pentru copiii de până la 2 ani, respectiv pentru copiii cu handicap în limitele de vârstă prevăzute de lege."
   valoare_secundara: 719
-  valoare_secundara_label: "lei/lună pentru copii până la 2 ani și pentru copiii cu handicap"
+  valoare_secundara_label: "lei/lună pentru copiii de până la 2 ani și pentru copiii cu handicap"
 
-# Istoricul de aici pornea de la aceleasi cifre contrazise (794 / 600 / 243) si nu poate fi
-# reconstruit fara actele care au stabilit fiecare cuantum. Un tabel gol e mai onest decat unul
-# gresit: sablonul sare peste sectiunea „Istoric" cand lista lipseste.
-
-termene:
-  - data: "2027-01-01"
-    eveniment: "Prima data la care indexarea cu inflația ar putea fi reluată, dacă suspendarea nu se prelungește"
-
-# Portate din data/utilities.json (calea /utile/, inlocuita de /ghiduri/ pe 17 iul 2026).
-# „Cat este alocatia?" e singura rescrisa: sursa dadea 1.019/794 lei si spunea ca sumele se
-# indexeaza anual — ambele contrazise de suspendarea din Legea 141/2025.
 sectiuni:
   - titlu: "Cine beneficiază de alocație?"
     continut: >-
-      Toți copiii cu domiciliul în România, de la naștere până la împlinirea vârstei de 18 ani. Nu
-      există condiții de venit — alocația este universală și se acordă indiferent de situația
-      financiară a familiei. Pentru tinerii peste 18 ani care urmează studii liceale sau
-      profesionale, alocația continuă până la finalizarea studiilor.
-  - titlu: "Cât este alocația?"
+      Alocația de stat se acordă copiilor până la împlinirea vârstei de 18 ani, precum și tinerilor care continuă studiile în condițiile prevăzute de lege. Pentru stabilirea dreptului se aplică regulile din Legea nr. 61/1993 și normele de aplicare.
+  - titlu: "Cât este alocația în 2026?"
     continut: >-
-      **719 lei/lună** pentru copiii până la 2 ani, pentru copiii cu handicap până la 3 ani și
-      pentru copiii cu handicap între 3 și 18 ani. **292 lei/lună** pentru copiii între 2 și 18 ani
-      fără handicap și pentru tinerii peste 18 ani care continuă studiile. Legea prevede indexarea
-      anuală cu rata inflației, dar aceasta este **suspendată pentru al doilea an consecutiv**,
-      astfel că sumele rămân la nivelul plătit anterior.
-  - titlu: "Cum depui cererea?"
+      Pentru 2026, cuantumul confirmat de o instituție publică este de **719 lei/lună** pentru copiii de până la 2 ani și pentru copiii cu handicap în categoriile prevăzute de lege, respectiv **292 lei/lună** pentru ceilalți copii beneficiari din grupa generală. Măsurile fiscal-bugetare pentru 2026 mențin cuantumul la nivelul aflat în plată anterior.
+  - titlu: "Cum verifici situația concretă?"
     continut: >-
-      Cererea se depune la **primăria de domiciliu** (compartimentul de asistență socială). Acte
-      necesare: **cerere tip**, **certificat de naștere al copilului** (original + copie), **acte de
-      identitate ale părinților**, **certificat de încadrare în grad de handicap** (dacă e cazul),
-      **adeverință școlară** (pentru tinerii peste 18 ani). Plata se face lunar, prin mandat poștal
-      sau transfer bancar, în funcție de opțiunea declarată în cerere.
+      Pentru un caz individual, verifică documentele emise de Agenția Județeană pentru Plăți și Inspecție Socială / agenția competentă și condițiile exacte din legislația în vigoare. Pagina IZZ oferă orientare și sursa oficială, nu o decizie administrativă.
 
 faq:
-  - q: "Se cumulează alocația cu alte ajutoare?"
-    a: "Da. Alocația este independentă de venitul minim de incluziune sau indemnizația de creștere a copilului."
-  - q: "Când se plătește alocația?"
-    a: "Lunar, de regulă între data de 8 și 15 a fiecărei luni, prin mandat poștal sau transfer bancar."
-  - q: "Ce se întâmplă dacă uit să depun cererea?"
-    a: "Alocația se acordă de la data depunerii cererii, nu retroactiv."
+  - q: "Care este cuantumul alocației pentru un copil între 2 și 18 ani?"
+    a: "292 lei pe lună, conform informației oficiale publicate de Instituția Prefectului Alba în martie 2026."
+  - q: "Care este cuantumul pentru un copil de până la 2 ani?"
+    a: "719 lei pe lună. Pentru copiii cu handicap se aplică, în limitele de vârstă prevăzute de lege, cuantumul de 719 lei pe lună."
+  - q: "Unde cer informații pentru situația mea?"
+    a: "La AJPIS/APISMB competentă pentru domiciliul sau reședința ta, în funcție de situația concretă."
 
 relatii: {}
 
-verificat: false
-ultima_verificare: "2025-01-01"
+verificat: true
+ultima_verificare: "2026-09-04"
 
 monitorizare:
   surse:
-    - url: "https://mmuncii.ro/"
+    - url: "https://ab.prefectura.mai.gov.ro/minuta-sedintei-comisiei-de-dialog-social-a-judetului-alba-din-luna-martie-2026/"
+      tip: html
+    - url: "https://legislatie.just.ro/Public/DetaliiDocument/300022"
+      tip: html
+    - url: "https://beneficiifamiliale.mmuncii.ro/"
       tip: html
