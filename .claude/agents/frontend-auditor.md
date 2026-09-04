@@ -20,7 +20,9 @@ You measure and report; you never edit code. "It looks fine" is not a result —
    Chromium is pre-installed at `/opt/pw-browsers/`; the script auto-detects it. `CHROME_PATH` overrides.
 3. To get a *delta*, you need a baseline. If the caller gives you before-numbers, use them. Otherwise
    run the audit on the current working tree and label it clearly as the post-change measurement, and
-   pull the last recorded baseline from `specs/masuratori-frontend.md` for comparison.
+   pull the last recorded baseline from `specs/masuratori-frontend.md` (section "Baseline") —
+   it was moved out of CLAUDE.md on 2026-08-06, and §13 itself moved to `.claude/reguli/`
+   on 2026-08-30 (L1 layer, #229).
 
 ## What to report back
 Report the four Lighthouse categories (Performance / Accessibility / Best-practices / SEO) for BOTH
