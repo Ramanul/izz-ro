@@ -24,7 +24,7 @@ import json
 import os
 import re
 import sys
-import urllib.request
+import http.client
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
@@ -85,38 +85,41 @@ def incalcari(pr_deschise: list[dict], state_md: str, acum: datetime,
 
 
 REPO_VALID = re.compile(r"^[A-Za-z0-9._-]+/[A-Za-z0-9._-]+$")
+API_HOST = "api.github.com"
 
 
 def _pr_deschise_din_api(repo: str, token: str) -> list[dict]:
     """Lista PR-urilor deschise, direct din API.
 
-    `repo` vine dintr-o variabila de mediu, deci e o intrare — nu o constanta. Semgrep a
-    semnalat exact asta (`dynamic-urllib-use-detected`, finding 96 pe PR #260): `urllib`
-    onoreaza si `file://`, deci o valoare ostila ar putea citi fisiere locale. Aici schema e
-    scrisa in cod si valoarea intra doar in PATH, deci exploatarea prin schema nu era
-    posibila — dar constrangerea nu era EXPRIMATA nicaieri, doar adevarata din intamplare.
-    Cele doua verificari de mai jos o exprima: forma `owner/nume` fara `/`, `..`, `@` sau `:`,
-    si originea finala confirmata dupa construirea URL-ului, nu inainte.
+    DE CE `http.client` si nu `urllib`: `repo` vine dintr-o variabila de mediu, deci e o
+    INTRARE, nu o constanta, iar `urllib.urlopen` onoreaza si `file://` — Semgrep a semnalat
+    exact asta de patru ori (findings 96-99). Prima incercare a fost sa validez intrarea si
+    sa suprim regula; marcajul n-a prins de doua ori la rand, si asta e semnalul ca reparam
+    raportul, nu cauza.
+
+    Aici nu exista schema de schimbat: gazda e un literal, conexiunea e HTTPS prin
+    constructor, iar valoarea variabila intra DOAR in path. Nici macar o slabire viitoare a
+    lui `REPO_VALID` n-ar putea produce o citire de fisier local. Validarea ramane, dar
+    pentru ce e ea buna cu adevarat — un mesaj clar cand mediul e configurat gresit, in loc
+    de un 404 opac.
     """
     if not REPO_VALID.match(repo):
         raise ValueError(f"GITHUB_REPOSITORY nu are forma owner/nume: {repo!r}")
-    url = f"https://api.github.com/repos/{repo}/pulls?state=open&per_page=100"
-    if not url.startswith("https://api.github.com/repos/"):
-        raise ValueError(f"URL construit in afara originii asteptate: {url!r}")
-    cerere = urllib.request.Request(
-        url,
-        headers={"Authorization": f"Bearer {token}",
-                 "Accept": "application/vnd.github+json"},
-    )
-    # Regula Semgrep de mai jos e de tip AUDIT, si auditul e facut chiar deasupra: schema e
-    # scrisa in cod, `repo` e validat pe forma `owner/nume` (deci fara `:`, `@`, `..` sau `/`
-    # in plus) si originea URL-ului e reconfirmata dupa construire. Ce ar reactiva riscul —
-    # mutarea schemei intr-o variabila, sau slabirea lui REPO_VALID — pica testele din
-    # tests/test_pr_nelistat.py, deci suprimarea nu ramane adevarata din intamplare.
-    # Marcajul trebuie sa stea pe LINIA apelului: pus deasupra unui bloc de comentarii,
-    # Semgrep nu-l leaga de constatare si alerta reapare (verificat pe findings 96/97/98).
-    with urllib.request.urlopen(cerere, timeout=30) as raspuns:  # noqa: S310  # nosemgrep: python.lang.security.audit.dynamic-urllib-use-detected.dynamic-urllib-use-detected
-        return json.load(raspuns)
+    conexiune = http.client.HTTPSConnection(API_HOST, timeout=30)
+    try:
+        conexiune.request(
+            "GET", f"/repos/{repo}/pulls?state=open&per_page=100",
+            headers={"Authorization": f"Bearer {token}",
+                     "Accept": "application/vnd.github+json",
+                     "User-Agent": "izz-ro-pr-nelistat"},
+        )
+        raspuns = conexiune.getresponse()
+        corp = raspuns.read()
+        if raspuns.status != 200:
+            raise RuntimeError(f"API a raspuns {raspuns.status}: {corp[:200]!r}")
+        return json.loads(corp)
+    finally:
+        conexiune.close()
 
 
 def main() -> int:
