@@ -99,10 +99,27 @@ Amestecul eager/lazy e chiar motivul pentru care `tools/greutate.py` le raportea
   **per pagină**, nu suma.
 - **Nu e un scor.** Nu înlocuiește Lighthouse din §13; spune din ce e făcută greutatea, nu cât de
   bine se comportă pagina la încărcare.
-- **Nu numără cererile externe, iar producția are cel puțin una în plus.** `templates/base.html:53`
-  încarcă `beacon.min.js` de la Cloudflare, condiționat de `analytics_token` — absent în randarea
-  locală, prezent pe site. Unealta sare deliberat peste `https://` (nu poate ști mărimea fără
-  rețea), deci cei 116 KB eager de pe un articol sunt un plafon **local**, nu unul de producție.
+- **Nu numără cererile externe, și sunt trei, nu una.** Unealta sare deliberat peste `https://`
+  (nu poate ști mărimea unui fișier de pe alt domeniu fără rețea), iar două dintre cele trei nici
+  măcar nu apar în HTML — sunt injectate din JS la runtime, deci nicio unealtă care citește HTML
+  nu le poate vedea:
+
+  | ce | de unde | poartă |
+  |---|---|---|
+  | `beacon.min.js` | `templates/base.html:53` | `analytics_token` |
+  | `googletagmanager.com/gtag/js` | `static/personalize.js:305`, `s.src=` | `eProductie()` **+ opt-in** |
+  | `clarity.ms/tag/…` | `static/personalize.js:331`, `s.src=` | `eProductie()` **+ opt-in** |
+
+  Toate trei au poartă de producție, deci **niciuna nu e în randarea locală**. Prin urmare cei
+  116 KB eager de pe un articol nu sunt „greutatea unui articol": sunt **podeaua locală, înainte
+  de consimțământ**. În producție, un cititor care acceptă personalizarea încarcă în plus cele
+  trei, iar tag-ul Clarity mai cheamă la rândul lui `scripts.clarity.ms` și un host de colectare
+  (`n.clarity.ms`, măsurat 2026-08-13 — vezi comentariul din `personalize.js`).
+
+  [INTERPRETARE, din cunoștințe generale, NU dintr-o măsurătoare a acestui site] `gtag.js` e în
+  mod obișnuit de ordinul zecilor bune de KB, deci greutatea third-party nemăsurată poate fi
+  comparabilă cu întreg șasiul de 93 KB. **Nu am nicio cifră proprie și nu inventez una.**
+  Măsurarea ei cere un browser real cu opt-in acceptat — adică §13, nu unealta asta.
 
 ## Cum se reface
 
