@@ -1,108 +1,161 @@
 # IZZ.ro — Informația Zero Zgomot
 
-Agregator de știri românești anti-clickbait. Site **static (SSG)**, model de conținut **B+C** (rezumat scurt + link / sinteză multi-sursă), publicat **serverless**: GitHub Actions rulează pipeline-ul orar și publică la ~2 ore (vezi *Deploy*). AI implicit **Gemini** (gratuit), comutabil pe **Claude API**.
+> **Portalul știrilor tale** · [izz.ro](https://izz.ro)
 
-## Cum rulezi local
+Agregator de știri românești construit pe o promisiune simplă: **mai puțin zgomot, mai multă informație**. Titlurile sunt reformulate faptic, fără cârlige emoționale. Rezumatele sunt scrise cu cuvinte proprii și duc întotdeauna la sursa originală. Când mai multe publicații relatează același eveniment, subiectul apare o singură dată, cu toate sursele enumerate. Imaginile sunt grafică generată pentru fiecare articol, nu fotografii preluate.
+
+Site-ul este **100% static (SSG)**, publicat serverless: pipeline-ul rulează în GitHub Actions, publicarea se face prin Cloudflare Workers. Fără server propriu, fără baze de date gestionate, fără publicitate.
+
+---
+
+## Ce oferă site-ul
+
+- **Trei tipuri de conținut**, afișate explicit pe fiecare card: *Sinteză multi-sursă* (mai multe publicații despre același eveniment), *Rezumat dintr-o sursă* (un singur articol de referință) și *Anunț oficial* (textul integral se citește la instituția emitentă).
+- **Categoriile:** Național · Regional · Județean · Local · Politică · Economie · Externe · Sport · Inteligență artificială · Tech · Auto · Sănătate · Cultură · Lifestyle · Discounturi · Ghiduri.
+- **Harta știrilor** — acoperirea județeană, vizualizată pe hartă.
+- **„Ce urmează"** (`/calendar/`) — calendarul evenimentelor care urmează în știri.
+- **Instrumente** — utilitare, inclusiv calculator de salariu.
+- **Căutare** (`/cauta/`) și **RSS** (`/feed.xml`).
+- **PWA instalabilă** (manifest `static/site.webmanifest`, pictograme dedicate) și temă cu comutare deschis/închis.
+- **Pagini publice de transparență:** Cum sintetizăm (metodologia), Surse & originalitate, Corecții, Securitate, Politica imaginilor, Drepturi de autor.
+
+## Arhitectura pipeline-ului
+
+```
+Surse RSS (SOURCES din generator/config.py)
+  │
+  ├─ fetch.py       descărcare fluxuri
+  ├─ state.py       stare, dedup, expirare        → data/articles.json (comis în repo)
+  ├─ cluster.py     grupare multi-sursă
+  ├─ select.py      selecție editorială
+  ├─ process.py     sinteză AI (model B/C)
+  ├─ covers.py      grafică proprie per articol
+  ├─ moderation.py  filtrare editorială          → moderation.yaml (om în buclă)
+  └─ render.py      randare Jinja2               → output/
+```
+
+Modelul de conținut **B+C** corespunde celor două tipuri vizibile pe site: rezumat dintr-o sursă (**B**) și sinteză multi-sursă (**C**). Starea persistă între rulări prin `data/articles.json`, comis în repo — nu există bază de date externă.
+
+## Rulare local
 
 ```bash
 pip install -r requirements.txt
 
-# Pipeline complet (RSS -> AI -> HTML în output/) + salvează starea
+# Pipeline complet (RSS → AI → HTML în output/) + salvează starea
 python -m generator.main
 
-# Doar test, fără să salveze sau să randeze (afișează rezultatul + sursele RSS moarte)
+# Doar test, fără salvare sau randare (afișează rezultatul + sursele RSS moarte)
 python -m generator.main --dry-run
 
 # Vizualizare locală
 python -m http.server 8000 --directory output
-# -> http://localhost:8000
+# → http://localhost:8000
 ```
 
 Fără cheie AI, pipeline-ul folosește un **fallback determinist** (rezumat din descrierea RSS) — util pentru testat structura. Pentru reformulare reală, pune `GEMINI_API_KEY` în `.env` (vezi `.env.example`).
 
-## Structură
+## Structura repo-ului
 
 ```
-generator/   cod: fetch (RSS) · state (dedup/expirare) · cluster · process (AI B/C) · moderation · render (SSG) · main
-templates/   Jinja2 (autoescape ON): base, index, article, category, legal, _card
-static/      styles.css (auriu-dark) · logo.svg · favicon.svg
-content/legal/  pagini legale (markdown)
-data/articles.json  STAREA (comisă în repo — așa persistă între rulări)
-moderation.yaml     control editorial (om în buclă)
-output/      site generat (gitignored; deployat de Actions)
+generator/   pipeline-ul: fetch · state · cluster · select · process (AI B/C)
+             covers · moderation · render · main · providers/
+templates/   Jinja2 (autoescape ON): base · index · article · category · legal
+             search · calendar · instrumente · calculator · ghid/ghiduri · surse
+             sectiuni · subject · _card
+static/      styles.css (temă auriu-dark) · logo · favicon · og-image · pictograme
+             PWA · site.webmanifest · theme.js · search.js · calc-salariu.js
+             fonts/ · harta-stiri/
+content/     pagini legale și metodologice (markdown): method (Cum sintetizăm),
+             terms, privacy, corrections, security, images, takedown,
+             accessibility, contact
+data/        articles.json — starea comisă în repo
+moderation.yaml   control editorial (om în buclă) — vezi REVIEW.md
+infra/       Worker de failover pentru redundanța originii (vezi infra/README-failover.md)
+tools/       utilitare operaționale: qa_check, feed_check, verify_release,
+             title_quality_audit, build_harta*, indexnow_submit etc.
+tests/       teste Python
+.github/     workflows (build, tests, monitor, editorial-quality, security…)
 ```
 
-## Administrare
-- **Ce apare pe site** se controlează din `moderation.yaml` (vezi `REVIEW.md`).
-- **Surse RSS:** `generator/config.py` -> `SOURCES`.
-- **Praguri B/C, TTL, max/sursă:** tot în `config.py`.
+Documente de proiect comise: `CLAUDE.md` și `AGENTS.md` (reguli pentru dezvoltare asistată de agenți AI), `REVIEW.md` (fluxul de moderare), `REGULI-SINTEZA.md` (regulile de sinteză), `specs/`, `notes/`, `sessions/` (istoric de lucru intern).
 
-## Deploy (GitHub Actions + Cloudflare Workers)
+## Configurare
 
-Arhitectura separă **munca grea** de **publicare**:
+- **Surse RSS, praguri B/C, TTL, max/sursă:** `generator/config.py`.
+- **Ce apare pe site:** `moderation.yaml` (fluxul e descris în `REVIEW.md`).
+- **Chei AI:** în `.env` local / secrete GitHub — nu se comit niciodată.
 
-1. **GitHub Actions** (`.github/workflows/build.yml`, cron `13 * * * *`): rulează pipeline-ul (fetch + AI, cu buget per rulare), apoi **comite** `data/articles.json` în repo. Secret necesar: `GEMINI_API_KEY` (repo → Settings → Secrets → Actions).
-   **Încearcă orar, publică la ~2h:** un job de poartă taie rularea dacă ultimul conținut e mai proaspăt de 105 minute. Cron-ul e des *ca să apere* cele 2h — planificatorul GitHub sare firings de `schedule` (măsurat 2026-08-04: 4 rulări în loc de 12), iar cu încercări orare un firing pierdut se recuperează în ora următoare. Bugetul de build Cloudflare (~500/lună pe planul free) e păzit de poartă, nu de cron — **nu coborî pragul fără să refaci socoteala**.
-2. **Cloudflare Workers Static Assets** (Workers Builds, conectat la repo, auto-deploy la fiecare commit): rulează doar **render-only** și servește `output/`. Configurația versionată stă în `wrangler.jsonc`:
-   - `assets.directory: ./output` — site-ul e 100% static, deci proiectul **nu are** `main` (assets-only);
-   - `not_found_handling: "404-page"` — Pages deducea singur pagina 404, Workers **nu**; fără linia asta orice URL inexistent întoarce un 404 gol, iar `output/404.html` nu mai e servit niciodată;
-   - `preview_urls: true` — preview per ramură, pe care se bazează §16.3 din `CLAUDE.md`.
+## AI: provideri și router
 
-   Comanda de build și variabilele de mediu (`PYTHON_VERSION`, `SITE_BASE`) stau în Workers Builds → Settings. *(GEMINI nu e necesar aici — render-only nu apelează AI.)*
+| Scenariu | Configurare |
+|---|---|
+| Implicit | `GEMINI_API_KEY` (secret GitHub sau `.env`) · fluxul `Gemini → Ollama local fallback` |
+| Claude API | secret `ANTHROPIC_API_KEY` + `AI_PROVIDER: anthropic` în `build.yml` |
+| Router multi-provider (opțional) | `AI_ROUTER_MODE=multi` + `AI_FALLBACK_PROVIDERS=groq,cerebras,mistral,openrouter` |
+| Fără cheie | fallback determinist din descrierea RSS |
 
-Astfel: Actions face fetch+AI și salvează starea → commit-ul declanșează Cloudflare → Cloudflare randează rapid (fără AI/quota) și publică. Cron-ul de auto-actualizare vine din Actions.
-
-*Migrat de pe Cloudflare Pages pe Workers în #211 (2026-08-22); descrierea de mai sus a rămas pe Pages până pe 2026-08-30.*
-
-### Domeniul izz.ro
-1. În Cloudflare „Add a site" → izz.ro → primești 2 nameservere.
-2. La registrar (ICI/ROTLD) setezi acele nameservere pentru izz.ro.
-3. În Workers → serviciul izz-ro → Domains & Routes → adaugi izz.ro.
-
-### Comutare pe Claude API
-Adaugă secret `ANTHROPIC_API_KEY` în GitHub și pune `AI_PROVIDER: anthropic` în `build.yml`.
-
-### Comutare pe Claude API
-Adaugă secret `ANTHROPIC_API_KEY` și pune `AI_PROVIDER: anthropic` în `build.yml`. Restul rămâne identic.
-
-## Router multi-provider (opțional)
-
-Fluxul implicit rămâne `Gemini -> Ollama local fallback`, compatibil cu configurația existentă. Routerul multi-provider se activează numai explicit, cu `AI_ROUTER_MODE=multi`, și folosește ordinea din `AI_FALLBACK_PROVIDERS`. Sunt suportate endpointuri OpenAI-compatible pentru `groq`, `cerebras`, `mistral`, `openrouter`, `perplexity` și `upstage`; fiecare provider este ignorat automat dacă nu are cheia proprie în mediu. Cheile nu se comit și nu sunt incluse în configurația GitHub.
-
-Exemplu local de activare, după validarea fluxului legacy:
+Routerul multi-provider este o cascadă: providerul principal configurat, apoi providerii din `AI_FALLBACK_PROVIDERS` în ordinea declarată (endpointuri OpenAI-compatible), apoi Ollama dacă e activ. Un provider fără cheie proprie este ignorat automat; implicit rămâne `AI_PROVIDER=gemini`. Exemplu local:
 
 ```shell
 AI_ROUTER_MODE=multi
 AI_FALLBACK_PROVIDERS=groq,cerebras,mistral,openrouter
 ```
 
-Routerul este o cascadă: încearcă providerul principal configurat, apoi providerii compatibili configurați în ordinea declarată, apoi fallback-ul Ollama dacă este activ. Un provider configurat dar fără cheie nu este apelat. Pentru CI, adăugarea de provideri se face ulterior, prin secrete separate și un test controlat; nu se schimbă implicit `AI_PROVIDER=gemini`.
+## Publicare (GitHub Actions + Cloudflare Workers)
+
+Arhitectura separă **munca grea** de **publicare**:
+
+1. **GitHub Actions** — `.github/workflows/build.yml`, cron `13 * * * *`: rulează pipeline-ul (fetch + AI, cu buget per rulare) și comite `data/articles.json` în repo. Secret necesar: `GEMINI_API_KEY`.
+   **Încearcă orar, publică la ~2h:** un job de poartă taie rularea dacă ultimul conținut e mai proaspăt de 105 minute. Cron-ul orar dens acoperă firings-urile sărite de planificatorul GitHub; pragul păzește și bugetul lunar de build Cloudflare (≈500 rulări pe planul gratuit).
+2. **Cloudflare Workers Static Assets** (Workers Builds, conectat la repo, auto-deploy la fiecare commit): rulează doar **render-only** și servește `output/`. Configurația versionată stă în `wrangler.jsonc`:
+   - `assets.directory: ./output` — proiect assets-only, fără `main`;
+   - `not_found_handling: "404-page"` — fără linia asta, `output/404.html` nu ar fi servit niciodată;
+   - `preview_urls: true` — preview per ramură.
+
+   Comanda de build și variabilele de mediu (`PYTHON_VERSION`, `SITE_BASE`) stau în Workers Builds → Settings. GEMINI nu e necesar aici — render-only nu apelează AI.
+
+Fluxul: Actions face fetch + AI și salvează starea → commit-ul declanșează Cloudflare → Cloudflare randează rapid (fără AI/quota) și publică pe **izz.ro**. *(Migrat de pe Cloudflare Pages pe Workers în august 2026.)*
+
+### Domeniul izz.ro
+
+1. Cloudflare → „Add a site" → izz.ro → primești două nameservere.
+2. La registrar (ICI/ROTLD) setezi acele nameservere pentru izz.ro.
+3. Workers → serviciul izz-ro → Domains & Routes → adaugi izz.ro.
 
 ## Controale autonome de calitate
 
-Calitatea editorială și disponibilitatea nu depind de intervenția manuală a unui agent. Repository-ul rulează controale deterministe direct în GitHub Actions, iar o execuție eșuată devine vizibilă administratorului în pagina Actions și prin notificările GitHub configurate pentru repository.
+Calitatea editorială și disponibilitatea nu depind de intervenția manuală. Verificările deterministe rulează în GitHub Actions; o execuție eșuată devine vizibilă în pagina Actions și prin notificările GitHub.
 
-| Control | Când rulează | Ce blochează sau semnalează |
+| Verificare | Declanșare | Ce verifică |
 |---|---|---|
-| `tests.yml` | La orice pull request și la schimbări de cod pe `main` | Lint, teste Python, contractul titlurilor oficiale, randare și integritate HTML |
-| `build.yml` → `QA check` | După fiecare actualizare automată de conținut | Surse incoerente, categorii goale și orice titlu oficial afișat peste 110 caractere sau gol |
-| `editorial-quality.yml` | Zilnic la 06:37 UTC și la rulare manuală | Audit independent al titlurilor, raport JSON păstrat 30 de zile și verificarea corpusului publicabil |
-| `monitor.yml` | Periodic, independent de deploy | Lipsa răspunsului pentru domeniul public sau indisponibilitatea simultană a ambelor origini |
-| `build.yml` → `release-probe` | După publicarea unei actualizări | Nepotrivirea dintre commitul publicat și manifestul `/build.json` de pe Pages și `izz.ro` |
+| `tests.yml` | PR-uri și schimbări de cod pe `main` | lint (ruff), teste Python, contractul titlurilor, randare, integritate HTML |
+| `QA check` (în `build.yml`) | după fiecare actualizare de conținut | surse incoerente, categorii goale, titluri oficiale goale sau peste 110 caractere |
+| `editorial-quality.yml` | zilnic, 06:37 UTC + manual | audit independent al titlurilor, raport JSON reținut 30 de zile |
+| `monitor.yml` | periodic, independent de deploy | lipsa răspunsului pe domeniul public sau căderea simultană a ambelor origini |
+| `release-probe` (în `build.yml`) | după publicare | potrivirea commitului publicat cu manifestul `/build.json` servit pe izz.ro |
+
+Repo-ul include și analiză statică de securitate (CodeQL, Semgrep), verificarea dependențelor (Dependabot) și sonde de fum/trafic (smoke, visual, probe, trafic).
 
 ### Contractul titlurilor oficiale
 
-`tools/title_quality_audit.py` este verificarea autonomă a regulii de lectură mobilă. Rulează fără apeluri AI și fără servicii externe:
+`tools/title_quality_audit.py` verifică regula de lectură mobilă, fără apeluri AI și fără servicii externe:
 
 ```bash
 python tools/title_quality_audit.py
 python tools/title_quality_audit.py --report title-quality-report.json
 ```
 
-Un rezultat reușit garantează că titlul de afișare al fiecărui anunț oficial este nevid și are cel mult **110 caractere**. Titlul instituției rămâne neschimbat în `data/articles.json`; reducerea se aplică doar în câmpul de afișare calculat la randare. Dacă regula este încălcată, workflow-ul eșuează și administratorul are în raport exemplele concrete care necesită corectare.
+Un rezultat reușit garantează că titlul de afișare al fiecărui anunț oficial este nevid și are cel mult **110 caractere**. Titlul instituției rămâne neschimbat în `data/articles.json`; reducerea se aplică doar câmpului de afișare, calculat la randare. Dacă regula este încălcată, workflow-ul eșuează și raportul conține exemplele concrete care necesită corectare.
 
-> Programarea GitHub este potrivită pentru controalele zilnice de consistență. Pentru detectare garantată la minut a indisponibilității externe ar fi necesar un serviciu de monitorizare dedicat, configurat separat la nivel de cont.
+Programarea GitHub acoperă controalele zilnice de consistență; pentru detectare garantată la minut a indisponibilității externe ar fi necesar un serviciu de monitorizare dedicat, configurat separat la nivel de cont.
 
-### Răspuns operațional fără agent
+### Răspuns operațional
 
-Nu este necesară nicio acțiune la fiecare rulare verde. Dacă un workflow devine roșu, administratorul deschide execuția din GitHub Actions, descarcă artefactul `title-quality-report` când este disponibil și corectează articolul sau regula indicată. După un commit, testele și verificarea release-ului rulează din nou automat.
+Nu este necesară nicio acțiune la rulările verzi. Dacă un workflow devine roșu: deschide execuția din GitHub Actions, descarcă artefactul `title-quality-report` când e disponibil și corectează articolul sau regula indicată. După un commit, testele și verificarea release-ului rulează din nou automat.
+
+## Proiectul
+
+- **Independent**, operat de o persoană fizică din România; nu aparține niciunui trust de presă, fără afilieri politice sau comerciale, fără publicitate.
+- Agregă exclusiv **publicații cu flux RSS public**; agențiile de presă (conținut licențiat) sunt excluse.
+- **Metodologia este publică:** [Cum sintetizăm](https://izz.ro/despre/) și [Surse & originalitate](https://izz.ro/surse/).
+- Contact: **contact@izz.ro** sau pagina [Contact](https://izz.ro/contact/).
