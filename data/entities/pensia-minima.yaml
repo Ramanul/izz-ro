@@ -1,10 +1,7 @@
-# Entitate: Pensia minimă garantată (indemnizația socială)
-# ⚠️ Valori NEVERIFICATE. Steagul `verificat: false` de mai jos e citit de build si de sabloane:
-# cat timp e false, ghidul NU afiseaza „Verificat" si arata explicit cititorului ca datele
-# n-au fost confruntate cu sursa oficiala. Se pune pe true DOAR dupa verificare reala.
-
+# Entitate: Indemnizația socială pentru pensionari
+# Valorile curente sunt verificate pe site-ul oficial CNPP.
 id: pensia-minima
-nume: "Pensia minimă garantată"
+nume: "Indemnizația socială pentru pensionari"
 tip: valoare_monetara
 categorie_ghid: bani
 categorie_stiri: economic
@@ -12,61 +9,49 @@ categorie_stiri: economic
 valoare_curenta:
   brut: 1281
   moneda: RON
-  in_vigoare_de: "2026-01-01"
-  act_normativ: "Legea 360/2023, actualizată prin OUG 156/2024"
-  sursa_url: "https://cnpp.ro/"
-  descriere_lunga: "Indemnizația socială pentru pensionari — statul completează pensia calculată până la acest prag, cu condiția realizării stagiului minim de cotizare de 15 ani."
+  in_vigoare_de: "2024-01-01"
+  act_normativ: "OUG nr. 115/2023"
+  sursa_url: "https://www.cnpp.ro/statistici/evolutia-indemnizatiei-sociale/"
+  descriere_lunga: "Indemnizația socială pentru pensionari are nivelul de 1.281 lei în perioada 2024–2026. Este un sprijin social acordat pensionarilor ale căror venituri eligibile se situează sub nivelul stabilit prin lege."
 
 istoric:
   - brut: 1281
-    in_vigoare_de: "2026-01-01"
-    act_normativ: "Legea 360/2023"
-  - brut: 1106
     in_vigoare_de: "2024-01-01"
-    act_normativ: "Legea 360/2023"
-  - brut: 1000
+    act_normativ: "OUG nr. 115/2023"
+  - brut: 1125
     in_vigoare_de: "2023-01-01"
-    act_normativ: "OUG 168/2022"
+    act_normativ: "OUG nr. 168/2022"
+  - brut: 1000
+    in_vigoare_de: "2022-01-01"
+    act_normativ: "OUG nr. 125/2021"
 
-termene:
-  - data: "2026-09-01"
-    eveniment: "Termen recalculare pensii (Legea 360/2023)"
-
-# Portate din data/utilities.json (calea /utile/ a fost inlocuita de /ghiduri/ pe 17 iul 2026).
 sectiuni:
-  - titlu: "Cine primește pensia minimă?"
+  - titlu: "Este pensia minimă o categorie distinctă de pensie?"
     continut: >-
-      Pensia minimă se acordă pensionarilor din sistemul public de pensii al căror cuantum al
-      pensiei (calculat pe baza contributivității) este sub pragul de 1.281 lei. Condiția esențială
-      este **stagiul minim de cotizare realizat**: 15 ani. Cei care nu îndeplinesc acest stagiu
-      primesc doar pensia calculată, indiferent de valoare, sau indemnizația socială (dacă se
-      califică).
-  - titlu: "Cât este pensia minimă?"
+      Nu. CNPP explică faptul că indemnizația socială pentru pensionari este un ajutor cu caracter social și nu o categorie distinctă de pensie. Ea completează veniturile de pensie eligibile până la nivelul stabilit prin lege.
+  - titlu: "Cât este indemnizația socială în 2026?"
     continut: >-
-      **1.281 lei** reprezintă indemnizația socială pentru pensionari. Este diferită de pensia
-      calculată pe contributivitate. Dacă pensia ta calculată este de 900 lei, statul completează
-      diferența până la 1.281 lei. Dacă pensia calculată depășește 1.281 lei, primești pensia
-      calculată integral.
-  - titlu: "Ce acte ai nevoie?"
+      În perioada **2024–2026**, nivelul este **1.281 lei**. CNPP arată aceeași valoare în tabelul oficial actualizat în august 2026.
+  - titlu: "Cum se stabilește suma primită?"
     continut: >-
-      Pentru depunerea dosarului de pensie: **cerere tip** (de la Casa de Pensii), **carte de
-      identitate** (original + copie), **carnet de muncă** sau adeverințe de vechime, **adeverință
-      de salarizare** pentru ultimele 12 luni, **certificat de naștere** și **certificat de
-      căsătorie** (dacă e cazul), **livret militar** (pentru bărbați). Depunerea se face cu 30 de
-      zile înainte de data pensionării.
+      Indemnizația se determină ca diferență între nivelul legal de **1.281 lei** și cuantumul însumat al veniturilor eligibile luate în calcul, în condițiile prevăzute de legislație. Nu trebuie confundată cu pensia calculată pe baza contributivității.
 
 faq:
-  - q: "Care e diferența între pensia minimă și indemnizația socială?"
-    a: "Sunt același lucru în practică. Statul completează pensia calculată până la pragul minim garantat."
-  - q: "Ce se întâmplă dacă nu am 15 ani de cotizare?"
-    a: "Nu beneficiezi de pensia minimă. Primești pensia calculată pe contributivitate, oricât de mică ar fi."
+  - q: "Cât este pensia minimă în 2026?"
+    a: "Nivelul indemnizației sociale pentru pensionari este de 1.281 lei în 2026, potrivit CNPP."
+  - q: "Este indemnizația socială aceeași cu pensia mea calculată?"
+    a: "Nu. Este un ajutor social care poate completa veniturile de pensie eligibile până la pragul stabilit prin lege."
+  - q: "Se aplică tuturor pensionarilor la fel?"
+    a: "Eligibilitatea și cuantumul efectiv depind de categoria de pensionar și de veniturile care intră în calculul prevăzut de legislație. Pentru cazul individual, verifică regulile CNPP și casa teritorială de pensii."
 
 relatii: {}
 
-verificat: false
-ultima_verificare: "2026-01-01"
+verificat: true
+ultima_verificare: "2026-09-04"
 
 monitorizare:
   surse:
-    - url: "https://cnpp.ro/"
+    - url: "https://www.cnpp.ro/statistici/evolutia-indemnizatiei-sociale/"
+      tip: html
+    - url: "https://www.cnpp.ro/activitati-cnpp/pensii/indemnizatia-sociala-pentru-pensionari/"
       tip: html
