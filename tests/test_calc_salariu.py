@@ -45,10 +45,13 @@ def _sursa() -> str:
 def _bloc_de_calcul() -> str:
     """Decupeaza din fisierul livrat exact liniile care calculeaza taxele.
 
-    Se opreste la `var net = ...` pentru ca restul functiei atinge DOM-ul. Daca marcajele se
-    schimba, testul cade zgomotos aici in loc sa treaca pe un bloc gresit."""
+    Blocul incepe la calculul eligibilitatii pentru facilitatea de 200 lei, deoarece aceasta
+    declaratie apartine calculului actual. Se opreste la `var net = ...` pentru ca restul
+    functiei atinge DOM-ul. Daca marcajele se schimba, testul cade zgomotos aici in loc sa
+    treaca pe un bloc gresit.
+    """
     m = re.search(
-        r"(var cas = Math\.round\(brut \* 0\.25\);.*?var net = brut - cas - cass - impozit;)",
+        r"(var aplicaFacilitate = Boolean\(facilitate && facilitate\.checked\);.*?var net = brut - cas - cass - impozit;)",
         _sursa(), re.S)
     assert m, "nu am gasit blocul de calcul in calc-salariu.js — s-au schimbat marcajele"
     return m.group(1)
@@ -58,6 +61,7 @@ def _ruleaza(cazuri: list, tmp_path) -> list:
     """Ruleaza blocul real in node pentru fiecare (brut, salariuMinim)."""
     script = (
         "function calc(brut, salariuMinim) {\n"
+        "  const facilitate = null;\n"
         + _bloc_de_calcul() + "\n"
         + "  return { deducere: deducere, baza: baza, impozit: impozit, net: net };\n"
         + "}\n"
@@ -82,7 +86,7 @@ TABEL = [
     (MINIM + 100,  19.0),
     (MINIM + 101,  18.5),
     (MINIM + 150,  18.5),
-    (MINIM + 2000,  0.0),   # plafonul de acordare: 40 de trepte a 0,5pp
+    (MINIM + 2000, 0.0),   # plafonul de acordare: 40 de trepte a 0,5pp
 ]
 
 
@@ -141,7 +145,7 @@ def test_netul_scade_monoton_cu_brutul(tmp_path):
     for i in range(1, len(neturi)):
         assert neturi[i] >= neturi[i - 1], (
             f"netul scade intre brut={cazuri[i-1][0]} ({neturi[i-1]}) si "
-            f"brut={cazuri[i][0]} ({neturi[i]})")
+            f"brut={cazuri[i][0]} ({neturi[i][1]})")
 
 
 def test_sursa_livrata_foloseste_ceil(tmp_path):
