@@ -130,12 +130,19 @@ export SETUPTOOLS_USE_DISTUTILS=stdlib
 # dependentele de PRODUCTIE, iar astea sunt unelte de lucru.
 # NU se instaleaza aici `lighthouse`/`pa11y` (sect. 13): ~2 minute prin npm, la FIECARE
 # pornire, pentru o capacitate ceruta rar. Le ia `tools/audit.sh`, cand chiar se ruleaza.
-if ! pip install -q --ignore-installed PyYAML -r "$ROOT/requirements.txt" \
+# `python -m pip`, NU `pip`: altfel felia asta ar contine chiar defectul pe care il repara.
+# `pip` se alege din PATH si poate apartine ALTUI interpretor decat cel pe care il foloseste
+# `python -m pytest` / `python -m ruff` din sect. 4 -- exact separarea masurata aici pe 09-02,
+# cand binarele erau prezente si comenzile canonice cadeau. Cu `python -m pip`, interpretorul
+# care primeste pachetele e prin constructie acelasi cu cel care le importa. Semnalat de
+# CodeRabbit pe PR #254 si verificat pe container: `pip` -> /usr/bin/pip (Python de sistem),
+# `python` -> /usr/local/bin/python 3.11.15. Doi interpreti, nu unul.
+if ! python -m pip install -q --ignore-installed PyYAML -r "$ROOT/requirements.txt" \
        pytest ruff pytest-randomly; then
   # NU muri in tacere: injectia de stare a ajuns deja in context, iar sesiunea trebuie sa
   # afle ca mediul e incomplet. Un hook care cade fara sa spuna nimic e exact defectul reparat
   # aici, si a stat nedetectat pentru ca `set -e` iesea fara sa scrie un rand.
   echo "!! ATENTIE: instalarea dependentelor a ESUAT. Pipeline-ul ('python -m generator.main')"
   echo "!! si suita de teste pot sa nu functioneze. Ruleaza manual si citeste eroarea:"
-  echo "!!   pip install --ignore-installed PyYAML -r requirements.txt pytest ruff pytest-randomly"
+  echo "!!   python -m pip install --ignore-installed PyYAML -r requirements.txt pytest ruff pytest-randomly"
 fi

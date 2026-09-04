@@ -54,6 +54,14 @@ if ! command -v lighthouse >/dev/null 2>&1 || ! command -v pa11y >/dev/null 2>&1
     echo ">> lighthouse/pa11y lipsesc — le instalez (o data per container, ~2 min)"
     npm i -g lighthouse pa11y --silent || {
       echo "!! npm i -g lighthouse pa11y a esuat — vezi eroarea de mai sus"; exit 1; }
+    # Instalarea poate REUSI fara ca binarele sa ajunga pe PATH (prefix npm global in alt loc
+    # decat cel din PATH). Fara verificarea asta, scriptul ar trece mai departe la `render-only`
+    # -- minute de randare -- si ar cadea abia dupa. Semnalat de CodeRabbit pe PR #254.
+    for unealta in lighthouse pa11y; do
+      command -v "$unealta" >/dev/null 2>&1 || {
+        echo "!! $unealta nu e pe PATH dupa instalare. Prefixul npm global ($(npm prefix -g 2>/dev/null))"
+        echo "!! nu e in PATH, sau instalarea a fost partiala."; exit 1; }
+    done
   else
     echo "!! lighthouse si/sau pa11y lipsesc. Instaleaza o data:  npm i -g lighthouse pa11y"
     exit 1

@@ -29,6 +29,7 @@ rulat niciodata cu adevarat, de-aia fix-urile pareau confirmate si nu erau".
 """
 from __future__ import annotations
 
+import functools
 import re
 import subprocess
 from pathlib import Path
@@ -202,6 +203,20 @@ def _frontmatter(text: str) -> int:
     return len(potrivire.group(1).encode("utf-8")) if potrivire else 0
 
 
+@functools.lru_cache(maxsize=1)
+def iesirea_hookului() -> bytes:
+    """Ce tipareste EFECTIV hook-ul SessionStart. Rulat o singura data pe sesiune de teste.
+
+    Cachat fiindca il folosesc doua garzi (bugetul si injectia faptelor), iar hook-ul
+    instaleaza dependente — a doua rulare ar fi minute pierdute pentru acelasi rezultat.
+    """
+    hook = ROOT / ".claude/hooks/session-start.sh"
+    iesire = subprocess.run(["bash", str(hook)], cwd=ROOT, capture_output=True,
+                            timeout=600, check=False)
+    assert iesire.returncode == 0, f"hook-ul SessionStart a esuat: {iesire.stderr[:200]!r}"
+    return iesire.stdout
+
+
 def buget_de_pornire() -> dict[str, int]:
     """Tot ce intra in context la pornirea unei sesiuni, masurat — nu dedus.
 
@@ -209,11 +224,7 @@ def buget_de_pornire() -> dict[str, int]:
     lui depinde de `tail -24` din registru si de STATE.md, deci o suma statica ar minti.
     """
     masurat = {"CLAUDE.md": (ROOT / "CLAUDE.md").stat().st_size}
-    hook = ROOT / ".claude/hooks/session-start.sh"
-    iesire = subprocess.run(["bash", str(hook)], cwd=ROOT, capture_output=True,
-                            timeout=60, check=False)
-    assert iesire.returncode == 0, f"hook-ul SessionStart a esuat: {iesire.stderr[:200]!r}"
-    masurat["hook SessionStart"] = len(iesire.stdout)
+    masurat["hook SessionStart"] = len(iesirea_hookului())
     for director in COMPONENTE_BUGET:
         masurat[director] = sum(_frontmatter((ROOT / cale).read_text(encoding="utf-8"))
                                 for cale in fisiere_urmarite(f"{director}/*.md"))
@@ -262,11 +273,19 @@ def test_hookul_chiar_injecteaza_faptele_de_infrastructura():
     Un fisier de fapte pe care hook-ul nu-l citeste e mai rau decat niciunul: pare ca informatia
     ajunge in context si nu ajunge. Exact asa a fost pierdut faptul 'Workers Paid' — statea intr-un
     COMENTARIU al hook-ului, adica nicaieri din punctul de vedere al unei sesiuni.
+
+    Verifica IESIREA, nu textul hook-ului. Versiunea de dinainte cauta doar calea intr-o linie
+    executabila, si ar fi trecut si daca hook-ul tiparea literalmente calea fara sa deschida
+    fisierul (semnalat de CodeRabbit pe PR #254). Un test care nu poate distinge cele doua
+    cazuri e chiar defectul pe care garda il pazeste, mutat cu un nivel mai sus.
     """
-    hook = (ROOT / ".claude" / "hooks" / "session-start.sh").read_text(encoding="utf-8")
-    executabile = [linie for linie in hook.splitlines() if not linie.lstrip().startswith("#")]
-    assert any("specs/infrastructura.md" in linie for linie in executabile), \
-        "session-start.sh nu citeste specs/infrastructura.md in cod executabil"
+    fapte = linii_de_continut((ROOT / "specs" / "infrastructura.md").read_text(encoding="utf-8"))
+    bullets = [linie[2:].strip() for linie in fapte if linie.startswith("- ")]
+    assert bullets, "specs/infrastructura.md nu contine niciun fapt de verificat"
+    iesire = iesirea_hookului().decode("utf-8", errors="replace")
+    lipsa = [b[:60] for b in bullets if b not in iesire]
+    assert not lipsa, ("faptele astea nu ajung in contextul sesiunii, desi sunt in fisier:\n  "
+                       + "\n  ".join(lipsa))
 
 
 def test_bugetul_de_pornire_sub_plafonul_declarat():
