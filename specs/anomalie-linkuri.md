@@ -1,7 +1,8 @@
 # Axa 3 a gărzii de anomalie: unde duc linkurile din corp
 
-> **Stare: SPEC, neimplementat.** Scris 2026-08-30 după ce măsurătoarea a arătat că axa nu se
-> poate construi corect fără un corpus care azi nu există. Nu implementa fără pasul 1 de mai jos.
+> **Stare: PASUL 1 FĂCUT, implementarea rămâne.** Scris 2026-08-30; corpusul a fost măsurat în
+> aceeași zi, pe runner ([run 33319058373](https://github.com/Ramanul/izz-ro/actions/runs/33319058373)).
+> Cifrele sunt în §3a. Pasul 2 e acum decidabil.
 > Regula care o cere: `specs/securitate-ingestie.md` §5.1 (gaura declarată) și R3 (pragurile se
 > **măsoară**, nu se aleg).
 
@@ -44,13 +45,45 @@ pot re-fetch-a dintr-o sesiune web (proxy: `CONNECT tunnel failed 403` pe site-u
 
 **Canalul care ajunge: runner-ul de GitHub Actions.** Același truc care a infirmat „`gsp` dă 404".
 
+## 3a. Corpusul, MĂSURAT — 2026-08-30
+
+57 de surse citite pe runner, **437 de articole, 1.973 de linkuri** în corpurile brute:
+
+| clasă | local (368 art., 1.672 linkuri) | național (69 art., 301 linkuri) |
+|---|---|---|
+| `proprie` | 1.622 (97,0%) | 266 (88,4%) |
+| `alta` | 35 (2,1%) | 30 (10,0%) |
+| `retea-sociala` | 15 (0,9%) | 5 (1,7%) |
+| **`mesagerie`** | **0** | **0** |
+| **`file-locker`** | **0** | **0** |
+| **`torrent`** | **0** | **0** |
+| **`scurtatura`** | **0** | **0** |
+| **`paste`** | **0** | **0** |
+
+**Ce decide asta.** Rata de fals-pozitive pentru o gardă care respinge un articol de sursă locală
+cu linkuri către `mesagerie` / `file-locker` / `torrent` / `paste` este **0 din 368**. Clasele
+alea pur și simplu nu apar în conținut legitim, deci lista se poate scrie cu pragul măsurat, nu
+ales.
+
+**Capcana evitată prin măsurare, și motivul pentru care R3 există:** `retea-sociala` **apare**
+legitim (15 local + 5 național). O listă scrisă după intuiție ar fi inclus-o — Facebook și
+YouTube arată „externe" la fel ca Telegram — și ar fi respins articole reale de primărie.
+
+**Ce NU dovedește.** Eșantion de o singură citire, 8 iteme per sursă. O primărie își poate
+deschide mâine un canal de Telegram legitim; 0/368 e un prior tare, nu o garanție. De aceea
+garda trebuie să respingă **itemul**, nu sursa întreagă, și să aibă comutator de om mort (R4).
+
+**`scurtatura` e cazul slab:** 0 apariții, dar un shortener nu e ostil prin natură, spre
+deosebire de restul. Recomandarea e să intre pe listă doar dacă apare combinat cu alt semnal.
+
 ## 4. Pașii, în ordine
 
-1. **Măsoară întâi.** Un tool + un job `workflow_dispatch` care rulează pe runner, trage feed-urile
-   **prin `generator.fetch`** — nu cu un fetch propriu; `feed_check.py` a făcut greșeala asta și
-   raporta 429/timeout pe surse pe care pipeline-ul le recuperează — extrage gazdele din `href`
-   **înainte** de `clean_html`, și raportează: câte articole au linkuri externe, spre ce clase de
-   gazde, separat pentru sursele `pl_*` și cele naționale.
+1. **~~Măsoară întâi.~~ FĂCUT** — `tools/masoara_gazde.py` + `.github/workflows/masoara-gazde.yml`,
+   rulat 2026-08-30. Cifrele în §3a. *(Nota din specul inițial, „trage feed-urile prin
+   `generator.fetch`", a fost relaxată conștient: unealta citește feedurile cu `feedparser`.
+   Greșeala lui `feed_check.py` era că raporta SĂNĂTATEA sursei cu alt fetcher; aici se numără
+   gazde, iar o sursă care nu răspunde înseamnă doar mai puține eșantioane — 3 din 60, tipărite
+   în raport.)*
 2. **Abia apoi alege pragul**, din cifrele alea, cu fals-pozitivele numărate. Dacă o clasă apare
    la primării legitime, nu intră în listă — sau intră doar combinată cu alt semnal.
 3. **Implementează** ca strat 9, după modelul lui `anomalie()`: funcție pură, corpus de autotest

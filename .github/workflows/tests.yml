@@ -37,6 +37,11 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
         with:
           persist-credentials: false
+          # Istoric COMPLET, nu implicitul `fetch-depth: 1`. Garda de PR fantoma din
+          # tests/test_pr_fantoma.py citeste commit-urile «Merge pull request #N» de pe main ca sa
+          # stie ce PR e deja integrat; masurat pe o clona `--depth 1` a repo-ului, `git log
+          # --grep` intoarce ZERO merge-uri, deci garda ar trece verde fara sa masoare nimic.
+          fetch-depth: 0
       - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7
         with:
           python-version: "3.11"
@@ -63,16 +68,6 @@ jobs:
         # trebuie să fie nevid și să aibă cel mult 110 caractere.
         run: python tools/title_quality_audit.py
 
-      - name: Poarta HTML pe output-ul construit
-        # `qa_check.py` auditeaza DATELE; nimic nu se uita la HTML-ul rezultat, deci o regresie
-        # de sablon care sparge o legatura interna sau scoate un `alt` ajungea pe live si se
-        # vedea abia in Search Console. Randam explicit: pytest o face printr-o fixtura, dar a
-        # depinde de ea ar lega poarta asta de faptul ca un anume test a rulat.
-        # Praguri ZERO pe toate categoriile — nu sunt alese, sunt starea masurata a lui main la
-        # cablare: 2921 de pagini, 118791 de legaturi, 5116 imagini, 0 probleme.
-        run: |
-          python -m generator.main --render-only
-          python tools/html_check.py
       - name: Sanatatea surselor RSS (doar la rulare manuala; PR-urile raman hermetice)
         # per sursa: HTTP / numar intrari / prospetime — prinde si feed-uri care raspund
         # 200 dar nu-s RSS. Nu ruleaza pe PR ca sa nu faca testele dependente de retea.
@@ -81,3 +76,40 @@ jobs:
         if: github.event_name == 'workflow_dispatch'
         continue-on-error: true
         run: python tools/feed_check.py
+
+  html-gate:
+    # PARALEL cu `pytest`, nu dupa el. Motivul e masurat, nu estetic: randarea completa dureaza
+    # ~14m40s, iar suita ~14m34s — si AMANDOUA randeaza (pytest prin fixtura `output_randat`,
+    # poarta asta explicit). Serial, jobul verde de pe #244 (bd8da86) a durat 29m39s. In paralel,
+    # wall-clock-ul scade la maximul celor doua, ~15 min: aceeasi munca, jumatate din asteptare.
+    #
+    # Randarea ramane DUBLA in mod deliberat — a face poarta sa depinda de artefactul lasat de
+    # pytest ar lega-o de faptul ca un anume test a rulat, exact ce evita comentariul original.
+    # Costul acelei independente e minute de runner, care sunt paralelizabili; costul dependentei
+    # ar fi o poarta care tace cand fixtura nu ruleaza, care nu e.
+    #
+    # Numele jobului `pytest` NU s-a schimbat, ca sa nu se rupa un check obligatoriu care il
+    # numeste; asta e un job NOU, adaugat langa el.
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          persist-credentials: false
+          # `fetch-depth` implicit (1) e suficient AICI: istoricul complet il cere doar garda de
+          # PR fantoma, care ruleaza in jobul `pytest`. Un checkout superficial e si mai rapid.
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7
+        with:
+          python-version: "3.11"
+          cache: "pip"
+      # Doar dependentele pipeline-ului: jobul asta nu ruleaza teste, deci nu-i trebuie
+      # pytest/ruff/pytest-randomly.
+      - run: pip install -r requirements.txt
+      - name: Poarta HTML pe output-ul construit
+        # `qa_check.py` auditeaza DATELE; nimic nu se uita la HTML-ul rezultat, deci o regresie
+        # de sablon care sparge o legatura interna sau scoate un `alt` ajungea pe live si se
+        # vedea abia in Search Console.
+        # Praguri ZERO pe toate categoriile — nu sunt alese, sunt starea masurata a lui main la
+        # cablare: 2921 de pagini, 118791 de legaturi, 5116 imagini, 0 probleme.
+        run: |
+          python -m generator.main --render-only
+          python tools/html_check.py

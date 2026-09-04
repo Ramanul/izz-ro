@@ -26,10 +26,19 @@ def test_lipsa_erorilor_nu_inventeaza_una():
 
 
 def test_rezuma_extrage_cererile_pe_zi_si_script():
-    raspuns = {"data": {"viewer": {"accounts": [{"workersInvocationsAdaptiveGroups": [
+    raspuns = {"data": {"viewer": {"accounts": [{"workersInvocationsAdaptive": [
         {"dimensions": {"date": "2026-08-29", "scriptName": "izz-ro"},
          "sum": {"requests": 1234, "errors": 5}}]}]}}}
     assert tc.rezuma(raspuns) == [("2026-08-29 izz-ro", 1234, 5)]
+
+
+def test_rezuma_arata_starea_cand_API_ul_o_trimite():
+    """`status` decide daca ~1.400 de „erori" pe zi sunt excepcii reale sau clienti deconectati."""
+    raspuns = {"data": {"viewer": {"accounts": [{"workersInvocationsAdaptive": [
+        {"dimensions": {"date": "2026-08-29", "scriptName": "izz-failover",
+                        "status": "clientDisconnected"},
+         "sum": {"requests": 1400, "errors": 1400}}]}]}}}
+    assert tc.rezuma(raspuns) == [("2026-08-29 izz-failover  [clientDisconnected]", 1400, 1400)]
 
 
 def test_rezuma_nu_crapa_pe_raspuns_incomplet():

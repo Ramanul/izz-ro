@@ -1,11 +1,9 @@
 ---
 name: clustering-tuner
 description: >-
-  Verifies any change to the article clustering logic (generator/cluster.py) EMPIRICALLY
-  before it is committed. Use PROACTIVELY whenever cluster.py, the Jaccard/stem thresholds,
-  or attach_recent / is_synthesis_candidate are touched, or when someone reports duplicate
-  stories or wrongly-merged unrelated stories. Read-only: it measures and reports a verdict,
-  it does NOT edit code.
+  Measures a clustering change on real samples before commit. Use PROACTIVELY when `cluster.py`,
+  its Jaccard/stem thresholds or `attach_recent` change, or when duplicate or wrongly-merged
+  stories are reported.
 tools: Read, Grep, Glob, Bash
 model: inherit
 ---

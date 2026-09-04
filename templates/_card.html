@@ -16,13 +16,9 @@
     {% set wc = (body or '').split() | length %}
     <span class="reading-time">~{{ [wc // 200, 1] | max }} min</span>
     {% endif %}
-    {#- Dezvaluire AI Act art. 50(4). Sta in `meta` (cum e facut articolul), NU in `badge`
-        (despre ce e articolul): eticheta aurie e eyebrow de categorie, o dezvaluire pusa
-        acolo s-ar citi ca tema. Cardul e prima expunere, deci marcajul e obligatoriu AICI,
-        nu doar pe pagina de articol sau in subsol. -#}
-    {#- Cardul e prima expunere: eticheta ramane explicita, dar spune ca se refera la
-        formularea titlului, nu la faptele publicate de sursele citate. -#}
-    {% if a.ai_generat %}<span class="ai-mark">Titlu sintetizat automat</span>{% endif %}
+    {#- Marcajul AI Act art. 50(4) NU mai sta pe card: se repeta pe fiecare item si se citeste
+        ca semnal de neincredere, desi trust-label + /legal/method/ + pagina de articol
+        (ai-mark + ai-note) acopera deja dezvaluirea. Cardul pastreaza doar provenienta. -#}
   </div>
   {% if not a.anunt_fara_corp %}
   <p class="summary">{% if a.model == 'C' %}{{ a.synthesis }}{% else %}{{ a.teaser }}{% endif %}</p>

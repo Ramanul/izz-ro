@@ -35,3 +35,11 @@ data/local/
 
 # jurnal de masurare a suprapunerii; creste la fiecare rulare, nu se versioneaza
 data/raport_copiere.jsonl
+
+# artefacte npm intr-un proiect Python: `node_modules/` + manifestele lui apar ca untracked
+# la FIECARE `git status` in worktree-urile unde s-a rulat vreodata npm (masurat 2026-09-02 in
+# copilot-worktrees/.../ramanul-jubilant-enigma). Pipeline-ul nu are dependente Node —
+# uneltele front-end (Lighthouse, pa11y) se instaleaza ad-hoc prin npx, nu se versioneaza.
+node_modules/
+package.json
+package-lock.json

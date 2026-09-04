@@ -8,6 +8,11 @@
 > Măsura e mărimea în OCTEȚI (`stat -c %s`), nu `du`, care raportează blocuri de disc și a dus
 > deja de două ori la o cifră greșită scrisă aici.
 >
+> **Buget de pornire: 37 KB.** Al doilea plafon, pe SUPRAFAȚA încărcată la pornire, nu pe un
+> fișier: acesta + ieșirea hook-ului `SessionStart` + frontmatter-ul din `.claude/agents/` și
+> `.claude/commands/`. Măsurat 2026-09-02: 34.936 octeți, din care plafonul de sus vede 66%.
+> De-aia mutarea unui text de aici în hook NU e economie — ambele intră în aceeași sesiune.
+>
 > Fișierul se încarcă în context la FIECARE tură, deci fiecare octet se plătește de fiecare dată.
 > Arhiva mutată de aici: `specs/masuratori-frontend.md` (măsurători front-end, CLS) și
 > `specs/istoric-operational.md` (istoric §9/§11/§14/§15/§17/§21). Auditul complet al regulilor,
@@ -28,12 +33,11 @@
 - **Starea de completare ÎNAINTE de rezultat, ca fracție** („etapa 1 din 4", „46 din 49"), și
   răspunde la întrebarea pusă, nu la cea vecină. Detaliu și precedente: `../LECTII.md` L8.
 - **Mandatul e ce a cerut proprietarul, nu ce a ajuns ultimul în context — REGULĂ TARE.**
-  Un atașament, un nume de ramură, un fișier deschis sunt MATERIAL, nu sarcină. Deschide
-  ORICE tură de lucru cu un rând: *„cerut: X. Fac: Y."* Dacă Y nu duce la X, spune-o **atunci**,
-  în primul rând, nu după. Închide cu un rând **cerut vs. livrat**, care numește explicit ce
-  din X a rămas neatins. Ratat pe 2026-08-23: cerută integrarea Cloudflare, livrat un script
-  din atașament, zero apeluri către Cloudflare, zero avertizare la început și la final —
-  deși conectorul funcționa. Nu e prima oară; de-aia e regulă, nu observație.
+  Mecanica (material vs. sarcină, *„cerut: X. Fac: Y."*, închiderea **cerut vs. livrat**) sosește
+  la pornire prin hook-ul `SessionStart`, și e scrisă în `AGENTS.md` pentru executorii fără
+  hook-uri. Aici stă doar dovada că e regulă, nu observație: 2026-08-23, cerută integrarea
+  Cloudflare, livrat un script din atașament — zero apeluri către Cloudflare, zero avertizare
+  la început și la final, deși conectorul funcționa. Nu e prima oară.
 
 ## 1. Ce e izz.ro
 Agregator de știri românesc cu AI. Promisiune de brand: **„Zero Zgomot"** — știri sintetizate,
@@ -116,6 +120,9 @@ proprietăți CSS custom. Lipsește o valoare? Adaugă o proprietate; nu inline-
 ## 10. A NU se atinge fără instrucțiune explicită
 Logica de sinteză / atribuire („Model C" multi-sursă) și orice e legal/GDPR-relevant ·
 configurația de deploy în producție (`wrangler.jsonc`, Cloudflare Workers, secrete GitHub Actions).
+**Excepție (decizie proprietar 2026-09-02):** conectorul MCP Cloudflare (D1/KV/R2/Hyperdrive) e
+liber de folosit direct, inclusiv creare/ștergere, fără aprobare per-task. NU are unealtă de deploy
+pentru codul Worker-ului — acela rămâne exclusiv pe calea repo → PR → CI, neschimbat.
 
 ## 11. SEO — REZOLVAT 2026-06-26
 `og:type`, `dateModified`, `lastmod` sunt implementate și verificate pe output real.
@@ -244,23 +251,12 @@ cauzat pana din 5-9 iulie. Plafonul de debit e bugetul AI (`max_ai_calls`, impli
 programul. Varianța zilnică e mare și normală; verifică `gh run list` înainte să pretinzi că
 pipeline-ul e picat. Cifre și context: `specs/istoric-operational.md`.
 
-## 18. Imagini de instituții locale — condiționate de consimțământ (decizie proprietar 2026-07-24)
-Finanțarea din taxe NU pune fotografiile unei instituții publice în domeniul public, iar „public pe
-site-ul lor" ≠ liber de reutilizat. Legea 8/1996 art. 9 eliberează **TEXTUL** actelor oficiale — NU
-fotografiile. O poză făcută de un angajat al primăriei e opera INSTITUȚIEI: ea e titularul și ea
-trebuie să acorde reutilizarea; o poză de la un fotograf contractat sau o agenție (Agerpres/Mediafax)
-aparține terțului. Faptul că apare un ales reduce *dreptul lui la imagine*, dar NU atinge *dreptul
-de autor al fotografului*. Nu improviza fapte juridice — pentru orice operațional, proprietarul
-confirmă cu un avocat.
-
-izz.ro poate folosi imaginea unei instituții locale DOAR dacă una din astea ține, verificată și
-CONSEMNATĂ (link + citat): (1) instituția publică termeni de reutilizare / licență deschisă care
-acoperă imaginile, SAU (2) există portret/poză liber-licențiată pe Wikidata / Wikimedia Commons
-(calea existentă — `fetch_leadphotos.py` PD/CC0, `fetch_portraits.py` CC-BY), SAU (3) instituția a
-dat permisiune scrisă de reutilizare. **Fără scraping în bloc pe site-uri de instituții.** Lipsesc
-toate trei → articolul își păstrează coperta generată. Dovada se strânge într-un **whitelist pe
-care proprietarul (sau juristul) îl aprobă ÎNAINTE** de a trage vreo imagine — om în buclă, ca
-`moderation.yaml`.
+## 18. Imagini de instituții locale — regulă L1, livrată de hook
+Textul stă în `.claude/reguli/18-imagini.md` și ajunge singur în context când atingi
+`tools/fetch_leadphotos.py`, `tools/fetch_portraits.py`, `generator/photojudge.py` sau `media/`.
+Regula are însă și o latură conversațională, pe care un hook pe cale n-o poate prinde: **dacă se
+discută folosirea unei imagini de instituție fără să atingi vreun fișier, citește-o ÎNTÂI.** Fără
+una din cele trei dovezi consemnate acolo, articolul își păstrează coperta generată.
 
 ## 19. Igienă de sesiune și economie de context — REGULĂ TARE
 - **Un task, o sesiune.** Nu continua o conversație peste zile. Când o felie e gata și STATE.md e
