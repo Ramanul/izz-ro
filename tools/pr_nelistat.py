@@ -84,13 +84,31 @@ def incalcari(pr_deschise: list[dict], state_md: str, acum: datetime,
     return sorted(lipsa)
 
 
+REPO_VALID = re.compile(r"^[A-Za-z0-9._-]+/[A-Za-z0-9._-]+$")
+
+
 def _pr_deschise_din_api(repo: str, token: str) -> list[dict]:
+    """Lista PR-urilor deschise, direct din API.
+
+    `repo` vine dintr-o variabila de mediu, deci e o intrare — nu o constanta. Semgrep a
+    semnalat exact asta (`dynamic-urllib-use-detected`, finding 96 pe PR #260): `urllib`
+    onoreaza si `file://`, deci o valoare ostila ar putea citi fisiere locale. Aici schema e
+    scrisa in cod si valoarea intra doar in PATH, deci exploatarea prin schema nu era
+    posibila — dar constrangerea nu era EXPRIMATA nicaieri, doar adevarata din intamplare.
+    Cele doua verificari de mai jos o exprima: forma `owner/nume` fara `/`, `..`, `@` sau `:`,
+    si originea finala confirmata dupa construirea URL-ului, nu inainte.
+    """
+    if not REPO_VALID.match(repo):
+        raise ValueError(f"GITHUB_REPOSITORY nu are forma owner/nume: {repo!r}")
+    url = f"https://api.github.com/repos/{repo}/pulls?state=open&per_page=100"
+    if not url.startswith("https://api.github.com/repos/"):
+        raise ValueError(f"URL construit in afara originii asteptate: {url!r}")
     cerere = urllib.request.Request(
-        f"https://api.github.com/repos/{repo}/pulls?state=open&per_page=100",
+        url,
         headers={"Authorization": f"Bearer {token}",
                  "Accept": "application/vnd.github+json"},
     )
-    with urllib.request.urlopen(cerere, timeout=30) as raspuns:
+    with urllib.request.urlopen(cerere, timeout=30) as raspuns:  # noqa: S310 — validat mai sus
         return json.load(raspuns)
 
 

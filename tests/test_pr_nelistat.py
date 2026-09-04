@@ -66,3 +66,30 @@ def test_pr_de_om_nu_e_sarit_de_filtrul_de_bot():
     om = _pr(261, 48, "fix real") | {"user": {"type": "User"}}
     assert incalcari([om], STATE_CU_247, ACUM) != []
     assert incalcari([_pr(262, 48)], STATE_CU_247, ACUM) != []
+
+
+def test_repo_ostil_e_respins_inainte_de_orice_cerere():
+    """Semgrep finding 96 pe #260: `urllib` onoreaza `file://`, iar `repo` vine din mediu.
+
+    Schema era deja scrisa in cod, deci exploatarea prin schema nu era posibila — dar
+    constrangerea era adevarata din intamplare, nu exprimata. Testul o exprima: orice forma
+    care nu e `owner/nume` pica INAINTE de orice acces la retea (daca ar ajunge la retea,
+    testul ar atarna sau ar arunca URLError, nu ValueError).
+    """
+    import pytest as _p
+
+    from tools.pr_nelistat import _pr_deschise_din_api
+    for ostil in ("../../etc/passwd", "a/b/../..", "evil.com/x:1", "owner", "a b/c",
+                  "file:///etc/passwd", "owner/repo?x=1"):
+        with _p.raises(ValueError, match="owner/nume"):
+            _pr_deschise_din_api(ostil, "token-fals")
+
+
+def test_repo_valid_trece_de_validare():
+    """Granita cealalta: numele reale nu sunt respinse. Se opreste la retea, nu la validare."""
+    from urllib.error import URLError
+
+    from tools.pr_nelistat import REPO_VALID
+    for bun in ("Ramanul/izz-ro", "a/b", "org.x/repo-1_2", "OWNER/REPO.md"):
+        assert REPO_VALID.match(bun), bun
+    assert URLError  # importat ca sa fie explicit ce ar urma dupa validare
