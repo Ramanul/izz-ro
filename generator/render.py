@@ -946,15 +946,22 @@ def build(articles: list, mod: dict | None = None) -> None:
             for other in art_slugs.get(a["url"], ()):  
                 if other != s:
                     co[other] = co.get(other, 0) + 1
-        # `kv[0]` (slug-ul) ca departajare la egalitate de co-ocurente. Fara el, ordinea
-        # venea din iterarea lui `art_slugs[...]`, care e un `set` de siruri — ordinea lui
-        # depinde de PYTHONHASHSEED, randomizat la fiecare proces. `sorted` fiind stabil,
-        # egalitatile pastrau acea ordine aleatoare, iar `[:6]` schimba atunci COMPONENTA
-        # listei, nu doar ordinea: doi cititori pe doua build-uri vedeau alte „Conexiuni".
-        # Masurat 2026-09-04, doua randari ale aceluiasi commit pe aceleasi date:
-        # 945 din 4.307 pagini de subiect diferite.
+        # Departajare la egalitate de co-ocurente. Fara ea, ordinea venea din iterarea lui
+        # `art_slugs[...]`, care e un `set` de siruri — ordinea lui depinde de PYTHONHASHSEED,
+        # randomizat la fiecare proces. `sorted` fiind stabil, egalitatile pastrau acea ordine
+        # aleatoare, iar `[:6]` schimba atunci COMPONENTA listei, nu doar ordinea: doi cititori
+        # pe doua build-uri vedeau alte „Conexiuni". Masurat 2026-09-04, doua randari ale
+        # ACELUIASI commit pe aceleasi date: 945 din 4.307 pagini de subiect diferite.
+        #
+        # Criteriul e IDF-ul, nu alfabetul: la egalitate de co-ocurente o entitate RARA spune
+        # mai mult decat una ubicua — exact principiul pe care `idf` il aplica deja mai jos la
+        # „Articole conectate". Alfabetul ar fi fost la fel de determinist, dar ar fi favorizat
+        # sistematic numele care incep cu `a`; aleatoriul era nepartinitor si instabil, deci
+        # niciunul din cele doua nu e raspunsul. Slug-ul ramane ULTIMA cheie, ca ordinea sa fie
+        # totala: doua entitati cu acelasi numar de articole au si acelasi IDF.
         connections = [(o, ents[o]["name"], n) for o, n in
-                       sorted(co.items(), key=lambda kv: (-kv[1], kv[0]))[:6]]
+                       sorted(co.items(),
+                              key=lambda kv: (-kv[1], -idf.get(kv[0], 0.0), kv[0]))[:6]]
         _write(os.path.join(OUT_DIR, "subiect", s, "index.html"),
                subject_tpl.render(**_base_ctx(f"/subiect/{s}/", name=d["name"], slug=s,
                                               articles=sorted(d["articles"],
