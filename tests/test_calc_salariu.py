@@ -145,7 +145,7 @@ def test_netul_scade_monoton_cu_brutul(tmp_path):
     for i in range(1, len(neturi)):
         assert neturi[i] >= neturi[i - 1], (
             f"netul scade intre brut={cazuri[i-1][0]} ({neturi[i-1]}) si "
-            f"brut={cazuri[i][0]} ({neturi[i][1]})")
+            f"brut={cazuri[i][0]} ({neturi[i]})")
 
 
 def test_sursa_livrata_foloseste_ceil(tmp_path):
