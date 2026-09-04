@@ -30,6 +30,14 @@ from pathlib import Path
 _PR = re.compile(r"#(\d+)")
 # Subiectul pe care GitHub il pune la „Squash and merge": `<titlu al PR-ului> (#NNN)`.
 _SQUASH = re.compile(r"\(#(\d+)\)\s*$")
+# „Declarat deja merge-uit". Tiparul e COPIAT din `tests/test_pr_fantoma.py` (`PR_MERGED_ANNOT`)
+# si se aplica pe TOT blocul `## Open`, nu pe o linie: garda aia ruleaza in CI, deci ea e
+# autoritatea asupra a ce inseamna „adnotat". Fara alinierea asta cele doua unelte se
+# contrazic — masurat 2026-09-04: garda trecea, iar `sync_state` voia sa mai adauge un
+# `(merged)` pe bullet-ul de regula care doar CITEAZA `#248`, desi linia-paranteza de
+# deasupra il declara deja. Adnotarea in plus e zgomot si creste fisierul spre plafonul
+# lui de 40 de linii, adica strica exact ce pazeste cealalta garda.
+_DECLARAT_MERGED = re.compile(r"#(\d+)[^#\n]*\bmerged\b", re.I)
 
 
 def find_state_file() -> Path | None:
@@ -78,6 +86,30 @@ def merged_prs() -> set[str]:
     return din_merge | din_squash
 
 
+def blocul_open(continut: str) -> str:
+    """Textul dintre `## Open` si urmatorul titlu de nivel 2. Gol daca sectiunea lipseste."""
+    linii, aduna, bloc = continut.splitlines(), False, []
+    for linie in linii:
+        s = linie.strip()
+        if s.startswith("## Open"):
+            aduna = True
+            continue
+        if s.startswith("## ") and aduna:
+            break
+        if aduna:
+            bloc.append(linie)
+    return "\n".join(bloc)
+
+
+def deja_declarate_merged(continut: str) -> set[str]:
+    """PR-urile pe care blocul `## Open` le declara deja merge-uite, oriunde in el.
+
+    Aceeasi semantica cu garda din `tests/test_pr_fantoma.py` — vezi comentariul de la
+    `_DECLARAT_MERGED`. Un PR de aici NU mai primeste inca o adnotare.
+    """
+    return set(_DECLARAT_MERGED.findall(blocul_open(continut)))
+
+
 def prs_din_open(continut: str) -> list[str]:
     """PR-urile numite in ## Open, in ordinea aparitiei, fara duplicate."""
     gasite: list[str] = []
@@ -110,6 +142,7 @@ def reconcile(dry_run: bool = False) -> bool:
 
     continut = state_file.read_text(encoding="utf-8")
     dovedite = merged_prs()
+    declarate = deja_declarate_merged(continut)
 
     linii = continut.splitlines()
     noi, in_open, modificat = [], False, False
@@ -128,7 +161,10 @@ def reconcile(dry_run: bool = False) -> bool:
             m = _PR.search(linie)
             # Adnoteaza dupa PRIMUL PR de pe linie: intr-o lista `#A/#B merged` adnotarea
             # de la coada s-ar citi ca si cum ar acoperi doar ultimul (nota din STATE.md).
-            if m and m.group(1) in dovedite and "merged" not in linie.lower():
+            # `declarate` opreste o a doua adnotare pentru un PR pe care blocul il declara
+            # deja merge-uit ALTUNDEVA — vezi `_DECLARAT_MERGED`.
+            if (m and m.group(1) in dovedite and m.group(1) not in declarate
+                    and "merged" not in linie.lower()):
                 linie = f"{linie.rstrip()} (merged)"
                 adnotate.append(m.group(1))
                 modificat = True
@@ -146,7 +182,14 @@ def reconcile(dry_run: bool = False) -> bool:
 
     # Partea care lipsea: ce NU poate decide git. Fara randurile astea, un PR aterizat prin
     # rebase ramane tacut in ## Open si fisierul pare sincronizat.
-    nedecise = [pr for pr in prs_din_open(continut) if pr not in dovedite]
+    # `declarate` iese si de aici: un PR pe care textul il declara deja merge-uit e o
+    # decizie luata de om si scrisa. Git tot nu-l poate dovedi (rebase), deci fara excluderea
+    # asta ar fi raportat la FIECARE rulare, la nesfarsit — iar un avertisment care nu se
+    # stinge niciodata devine zgomot pe care cititorul invata sa-l sara. Costul acceptat,
+    # spus pe fata: unealta crede adnotarea pe cuvant. Nu are alternativa — pentru o
+    # aterizare prin rebase git nu ofera nicio dovada de verificat impotriva.
+    nedecise = [pr for pr in prs_din_open(continut)
+                if pr not in dovedite and pr not in declarate]
     if nedecise:
         print()
         print("NU POT DECIDE din git (fara commit de merge si fara sufix squash) —")

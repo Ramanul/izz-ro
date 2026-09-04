@@ -67,6 +67,61 @@ def test_raporteaza_explicit_ce_nu_poate_decide(state, monkeypatch, capsys):
     assert "#247" in iesire.split("NU POT DECIDE")[1], "#247 lipseste din lista de nedecise"
 
 
+STATE_CU_PARANTEZA_ISTORICA = """# STATE
+
+## Open
+
+- **Regula care doar CITEAZA #248**: nu pretinde ca ar fi deschis.
+- **Istoric pe aceeasi linie:** (#253 merged; #248 merged; #244 merged).
+- **Aterizat prin rebase:** #247, declarat merged chiar aici.
+
+## Standing rules
+"""
+
+
+@pytest.fixture
+def state_paranteza(tmp_path, monkeypatch):
+    (tmp_path / "STATE.md").write_text(STATE_CU_PARANTEZA_ISTORICA, encoding="utf-8")
+    monkeypatch.chdir(tmp_path)
+    return tmp_path / "STATE.md"
+
+
+def test_nu_adnoteaza_de_doua_ori_un_pr_declarat_deja_altundeva(state_paranteza, monkeypatch, capsys):
+    """Divergenta masurata 2026-09-04 intre unealta asta si `tests/test_pr_fantoma.py`.
+
+    Garda scaneaza TOT blocul `## Open` dupa `#N ... merged`, deci pentru ea `#248` e deja
+    adnotat prin linia-paranteza si trece. Unealta lucra pe linie si voia sa mai adauge un
+    `(merged)` pe bullet-ul de regula care doar il citeaza — zgomot, si crestere spre
+    plafonul de 40 de linii pe care il pazeste ALTA garda. Autoritatea e garda din CI.
+    """
+    monkeypatch.setattr(sync_state, "merged_prs", lambda: {"248", "253", "244"})
+    sync_state.reconcile()
+    text = state_paranteza.read_text(encoding="utf-8")
+    assert "#248**: nu pretinde ca ar fi deschis." in text, \
+        f"bullet-ul de regula a fost adnotat inutil:\n{text}"
+    assert text == STATE_CU_PARANTEZA_ISTORICA, "fisierul nu trebuia atins deloc"
+    assert "adnotate (merged)" not in capsys.readouterr().out
+
+
+def test_nu_mai_raporteaza_nedecis_un_pr_declarat_merged_in_text(state_paranteza, monkeypatch, capsys):
+    """`#247` e nedovedibil din git la infinit (rebase). Odata declarat in text, tace.
+
+    Fara asta, avertismentul s-ar repeta la fiecare rulare pentru totdeauna, iar unul care
+    nu se stinge niciodata e zgomot pe care cititorul invata sa-l sara.
+    """
+    monkeypatch.setattr(sync_state, "merged_prs", lambda: set())
+    sync_state.reconcile()
+    iesire = capsys.readouterr().out
+    assert "#247" not in iesire, f"#247 e declarat merged in text, nu mai e nedecis:\n{iesire}"
+
+
+def test_declaratia_merged_se_citeste_pe_tot_blocul_nu_pe_linie():
+    """Aceeasi semantica cu `PR_MERGED_ANNOT` din garda — daca diverg, se contrazic din nou."""
+    declarate = sync_state.deja_declarate_merged(STATE_CU_PARANTEZA_ISTORICA)
+    assert {"253", "248", "244", "247"} <= declarate, declarate
+    assert sync_state.deja_declarate_merged("## Open\n\n- doar #99 fara nimic\n") == set()
+
+
 def test_dry_run_nu_scrie(state, monkeypatch):
     monkeypatch.setattr(sync_state, "merged_prs", lambda: {"248"})
     inainte = state.read_text(encoding="utf-8")
