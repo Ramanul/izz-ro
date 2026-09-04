@@ -1,7 +1,5 @@
 # Entitate: Alocația de stat pentru copii
-# ⚠️ Valori NEVERIFICATE. Steagul `verificat: false` de mai jos e citit de build si de sabloane:
-# cat timp e false, ghidul NU afiseaza „Verificat" si arata explicit cititorului ca datele
-# n-au fost confruntate cu sursa oficiala. Se pune pe true DOAR dupa verificare reala.
+# Cuantum verificat pe surse oficiale publicate în 2026.
 
 id: alocatia-copii
 nume: "Alocația de stat pentru copii"
@@ -9,70 +7,50 @@ tip: valoare_monetara
 categorie_ghid: bani
 categorie_stiri: general
 
-# NIVEL DE DOVADA MAI SLAB DECAT LA CELELALTE GHIDURI — de aceea `verificat` ramane false mai jos.
-# Cifrele vechi de aici (794 / 1.019) sunt contrazise concordant de mai multe surse secundare
-# (Digi24, avocatnet, portalinvatamant, lugera, playtech), care dau 292 si 719 lei, cu indexarea
-# suspendata pentru al doilea an prin art. XXV din Legea 141/2025. Actul primar NU a putut fi citit:
-# `legislatie.just.ro` serveste Legea 61/1993 in forma republicata din 1999, al carei art. 3 spune
-# inca „3.500 lei" — ROL, dinainte de denominare. Am pus cifrele mai probabile, nu pe cele
-# demonstrabil vechi, dar poarta `verificat` ramane inchisa pana cand cineva citeste actul.
 valoare_curenta:
   brut: 292
   moneda: RON
   in_vigoare_de: "2026-01-01"
-  act_normativ: "Legea 61/1993; cuantum mentinut pentru 2026 prin art. XXV din Legea 141/2025"
+  act_normativ: "Legea 61/1993; art. XXV lit. k din Legea 141/2025"
   sursa_url: "https://legislatie.just.ro/Public/DetaliiDocument/300022"
-  descriere_lunga: "Alocația se acordă tuturor copiilor cu domiciliul în România, de la naștere până la 18 ani, fără condiții de venit. Valoarea de 292 lei/lună este cea pentru copiii între 2 și 18 ani fără handicap; restul intră pe tranșa de 719 lei."
+  descriere_lunga: "În 2026, alocațiile de stat pentru copii se mențin la nivelul acordat sau cuvenit pentru luna decembrie 2025. Pentru copiii între 2 și 18 ani fără handicap cuantumul este 292 lei/lună; pentru copiii până la 2 ani și pentru copiii cu handicap cuantumul este 719 lei/lună."
   valoare_secundara: 719
   valoare_secundara_label: "lei/lună pentru copii până la 2 ani și pentru copiii cu handicap"
 
-# Istoricul de aici pornea de la aceleasi cifre contrazise (794 / 600 / 243) si nu poate fi
-# reconstruit fara actele care au stabilit fiecare cuantum. Un tabel gol e mai onest decat unul
-# gresit: sablonul sare peste sectiunea „Istoric" cand lista lipseste.
-
-termene:
-  - data: "2027-01-01"
-    eveniment: "Prima data la care indexarea cu inflația ar putea fi reluată, dacă suspendarea nu se prelungește"
-
-# Portate din data/utilities.json (calea /utile/, inlocuita de /ghiduri/ pe 17 iul 2026).
-# „Cat este alocatia?" e singura rescrisa: sursa dadea 1.019/794 lei si spunea ca sumele se
-# indexeaza anual — ambele contrazise de suspendarea din Legea 141/2025.
 sectiuni:
   - titlu: "Cine beneficiază de alocație?"
     continut: >-
-      Toți copiii cu domiciliul în România, de la naștere până la împlinirea vârstei de 18 ani. Nu
-      există condiții de venit — alocația este universală și se acordă indiferent de situația
-      financiară a familiei. Pentru tinerii peste 18 ani care urmează studii liceale sau
-      profesionale, alocația continuă până la finalizarea studiilor.
-  - titlu: "Cât este alocația?"
+      Alocația de stat se acordă copiilor până la 18 ani, iar în situațiile prevăzute de lege poate
+      continua pentru tinerii care urmează cursurile liceale sau profesionale. Acordarea alocației
+      de stat nu este condiționată de venitul familiei.
+  - titlu: "Cât este alocația în 2026?"
     continut: >-
-      **719 lei/lună** pentru copiii până la 2 ani, pentru copiii cu handicap până la 3 ani și
-      pentru copiii cu handicap între 3 și 18 ani. **292 lei/lună** pentru copiii între 2 și 18 ani
-      fără handicap și pentru tinerii peste 18 ani care continuă studiile. Legea prevede indexarea
-      anuală cu rata inflației, dar aceasta este **suspendată pentru al doilea an consecutiv**,
-      astfel că sumele rămân la nivelul plătit anterior.
+      **719 lei/lună** pentru copiii până la 2 ani, pentru copiii cu handicap până la 3 ani și pentru
+      copiii cu handicap între 3 și 18 ani. **292 lei/lună** pentru copiii între 2 și 18 ani fără
+      handicap și pentru tinerii peste 18 ani care continuă studiile în condițiile legii.
+
+      Art. XXV lit. k din Legea nr. 141/2025 menține în anul 2026 alocațiile de stat pentru copii
+      la nivelul acordat sau cuvenit pentru luna decembrie 2025.
   - titlu: "Cum depui cererea?"
     continut: >-
-      Cererea se depune la **primăria de domiciliu** (compartimentul de asistență socială). Acte
-      necesare: **cerere tip**, **certificat de naștere al copilului** (original + copie), **acte de
-      identitate ale părinților**, **certificat de încadrare în grad de handicap** (dacă e cazul),
-      **adeverință școlară** (pentru tinerii peste 18 ani). Plata se face lunar, prin mandat poștal
-      sau transfer bancar, în funcție de opțiunea declarată în cerere.
+      Cererea și documentele se depun potrivit procedurii locale aplicabile, de regulă prin primăria
+      sau serviciul de asistență socială de la domiciliu. Verifică lista de documente cerută de
+      autoritatea competentă înainte de depunere.
 
 faq:
-  - q: "Se cumulează alocația cu alte ajutoare?"
-    a: "Da. Alocația este independentă de venitul minim de incluziune sau indemnizația de creștere a copilului."
-  - q: "Când se plătește alocația?"
-    a: "Lunar, de regulă între data de 8 și 15 a fiecărei luni, prin mandat poștal sau transfer bancar."
-  - q: "Ce se întâmplă dacă uit să depun cererea?"
-    a: "Alocația se acordă de la data depunerii cererii, nu retroactiv."
+  - q: "Se acordă alocația în funcție de venitul părinților?"
+    a: "Nu. Alocația de stat este un drept distinct de beneficiile sociale condiționate de venit."
+  - q: "Care sunt cuantumurile în 2026?"
+    a: "719 lei pe lună pentru copiii din tranșele speciale prevăzute de lege și 292 lei pe lună pentru copiii între 2 și 18 ani fără handicap."
+  - q: "De ce nu a crescut alocația în 2026?"
+    a: "Legea nr. 141/2025 prevede menținerea în 2026 a alocațiilor de stat pentru copii la nivelul acordat sau cuvenit pentru decembrie 2025."
 
 relatii: {}
-
-verificat: false
-ultima_verificare: "2025-01-01"
-
+verificat: true
+ultima_verificare: "2026-09-04"
 monitorizare:
   surse:
-    - url: "https://mmuncii.ro/"
+    - url: "https://legislatie.just.ro/Public/DetaliiDocument/300022"
+      tip: html
+    - url: "https://ab.prefectura.mai.gov.ro/minuta-sedintei-comisiei-de-dialog-social-a-judetului-alba-din-luna-martie-2026/"
       tip: html
