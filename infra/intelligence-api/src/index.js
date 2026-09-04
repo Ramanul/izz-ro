@@ -4,6 +4,7 @@ const json = (body, status = 200, extra = {}) => new Response(JSON.stringify(bod
 });
 
 const cors = { "access-control-allow-origin": "*", "access-control-allow-headers": "content-type,x-izz-lead-key,x-izz-session", "access-control-allow-methods": "GET,POST,OPTIONS" };
+const ALLOWED_TARGETS = new Set(["company", "institution", "topic", "profession", "competitor"]);
 
 function actionsFor(text) {
   const value = String(text || "").toLocaleLowerCase("ro-RO");
@@ -40,6 +41,40 @@ async function getMarket(db) {
   return result.results || [];
 }
 
+async function getRadar(db, targetType, targetId, days) {
+  if (!ALLOWED_TARGETS.has(targetType) || !targetId) return json({ error: "invalid_target" }, 400, cors);
+  const since = new Date(Date.now() - days * 86400000).toISOString();
+  let entity = null;
+  if (targetType === "company") {
+    entity = await db.prepare("SELECT id, canonical_name, city, region, external_key FROM entities WHERE kind = 'company' AND (id = ? OR external_key = ?) LIMIT 1")
+      .bind(targetId, targetId.toUpperCase()).first();
+  } else {
+    entity = await db.prepare("SELECT id, canonical_name, city, region, external_key FROM entities WHERE kind = ? AND (id = ? OR external_key = ? OR canonical_name = ?) LIMIT 1")
+      .bind(targetType, targetId, targetId, targetId).first();
+  }
+  if (!entity) return json({ schema: "izz-intelligence-v1", target_type: targetType, target_id: targetId, changes: [] }, 200, cors);
+  const result = await db.prepare(`SELECT id, type, title, summary, url, published_at, observed_at, confidence, value_number, value_currency
+    FROM observations WHERE entity_id = ? AND observed_at >= ? ORDER BY COALESCE(published_at, observed_at) DESC LIMIT 200`).bind(entity.id, since).all();
+  return json({ schema: "izz-intelligence-v1", target: entity, since, changes: result.results || [] }, 200, cors);
+}
+
+async function getOpportunities(db, url) {
+  const minimum = Math.max(0, Math.min(100, Number(url.searchParams.get("min_score")) || 0));
+  const kind = String(url.searchParams.get("kind") || "").trim();
+  const limit = Math.max(1, Math.min(100, Number(url.searchParams.get("limit")) || 25));
+  const params = [minimum];
+  let query = `SELECT o.id, o.kind, o.score, o.status, o.reason, o.created_at, o.updated_at,
+    e.id AS entity_id, e.canonical_name, e.city, e.region,
+    ob.title AS observation_title, ob.url AS observation_url
+    FROM opportunities o LEFT JOIN entities e ON e.id = o.entity_id LEFT JOIN observations ob ON ob.id = o.observation_id
+    WHERE o.score >= ?`;
+  if (kind) { query += " AND o.kind = ?"; params.push(kind); }
+  query += " ORDER BY o.score DESC, o.updated_at DESC LIMIT ?";
+  params.push(limit);
+  const result = await db.prepare(query).bind(...params).all();
+  return json({ schema: "izz-intelligence-v1", minimum_score: minimum, opportunities: result.results || [] }, 200, cors);
+}
+
 async function getMonitors(db, request) {
   const owner = sessionKey(request);
   if (!owner) return json({ error: "session_required" }, 401, cors);
@@ -51,13 +86,10 @@ async function getMonitors(db, request) {
 async function getMonitorChanges(db, request, targetType, targetId) {
   const owner = sessionKey(request);
   if (!owner) return json({ error: "session_required" }, 401, cors);
-  if (!["company", "institution", "topic", "profession", "competitor"].includes(targetType) || !targetId) {
-    return json({ error: "invalid_target" }, 400, cors);
-  }
+  if (!ALLOWED_TARGETS.has(targetType) || !targetId) return json({ error: "invalid_target" }, 400, cors);
   const monitor = await db.prepare(`SELECT id FROM monitors WHERE owner_key = ? AND target_type = ? AND target_id = ? AND active = 1 LIMIT 1`)
     .bind(owner, targetType, targetId).first();
   if (!monitor) return json({ error: "monitor_not_found" }, 404, cors);
-
   let entityId = targetId;
   if (targetType === "company") {
     const entity = await db.prepare("SELECT id FROM entities WHERE kind = 'company' AND (id = ? OR external_key = ?) LIMIT 1")
@@ -66,8 +98,7 @@ async function getMonitorChanges(db, request, targetType, targetId) {
     entityId = entity.id;
   }
   const result = await db.prepare(`SELECT o.id, o.type, o.title, o.summary, o.url, o.published_at, o.observed_at, o.confidence
-    FROM observations o
-    WHERE o.entity_id = ?
+    FROM observations o WHERE o.entity_id = ?
     ORDER BY COALESCE(o.published_at, o.observed_at) DESC LIMIT 100`).bind(entityId).all();
   return json({ schema: "izz-intelligence-v1", monitor_id: monitor.id, changes: result.results || [] }, 200, cors);
 }
@@ -79,9 +110,8 @@ async function createMonitor(request, env) {
   const targetType = String(body.target_type || "").trim();
   const targetId = String(body.target_id || "").trim();
   const frequency = String(body.frequency || "weekly").trim();
-  const allowed = new Set(["company", "institution", "topic", "profession", "competitor"]);
   const frequencies = new Set(["daily", "weekly"]);
-  if (!allowed.has(targetType) || !targetId || targetId.length > 200) return json({ error: "invalid_target" }, 400, cors);
+  if (!ALLOWED_TARGETS.has(targetType) || !targetId || targetId.length > 200) return json({ error: "invalid_target" }, 400, cors);
   if (!frequencies.has(frequency)) return json({ error: "invalid_frequency" }, 400, cors);
   const now = new Date().toISOString();
   const newId = crypto.randomUUID();
@@ -96,16 +126,13 @@ async function createMonitor(request, env) {
 
 async function matchProviders(db, need, city, budget, limit = 3) {
   const result = await db.prepare(`SELECT e.id, e.canonical_name, e.city, p.categories_json, p.cities_json, p.budgets_json, p.contact, p.verified
-    FROM provider_profiles p JOIN entities e ON e.id = p.entity_id
-    WHERE e.kind = 'company' LIMIT 500`).all();
+    FROM provider_profiles p JOIN entities e ON e.id = p.entity_id WHERE e.kind = 'company' LIMIT 500`).all();
   const wanted = normalizeText(need);
   const wantedCity = normalizeText(city);
   const wantedBudget = normalizeText(budget);
   const ranked = [];
   for (const row of result.results || []) {
-    let categories = [];
-    let cities = [];
-    let budgets = [];
+    let categories = [], cities = [], budgets = [];
     try { categories = JSON.parse(row.categories_json || "[]"); } catch (_) {}
     try { cities = JSON.parse(row.cities_json || "[]"); } catch (_) {}
     try { budgets = JSON.parse(row.budgets_json || "[]"); } catch (_) {}
@@ -117,12 +144,7 @@ async function matchProviders(db, need, city, budget, limit = 3) {
     if (categoryHit || cityHit) ranked.push({ provider: row, score });
   }
   return ranked.sort((a, b) => b.score - a.score).slice(0, limit).map(({ provider, score }) => ({
-    entity_id: provider.id,
-    name: provider.canonical_name,
-    city: provider.city,
-    contact: provider.contact,
-    verified: Boolean(provider.verified),
-    score,
+    entity_id: provider.id, name: provider.canonical_name, city: provider.city, contact: provider.contact, verified: Boolean(provider.verified), score,
   }));
 }
 
@@ -136,17 +158,15 @@ async function createLead(request, env) {
   const budget = String(body.budget || "").trim();
   if (!need) return json({ error: "need_required" }, 400, cors);
   if (need.length > 300 || city.length > 120 || budget.length > 40) return json({ error: "field_too_long" }, 400, cors);
-
   const now = new Date().toISOString();
   const id = crypto.randomUUID();
   const matches = await matchProviders(env.IZZ_DB, need, city, budget);
   const leadScore = matches.length ? matches[0].score : 0;
-  await env.IZZ_DB.prepare(`INSERT INTO leads (id, session_key, need, city, budget, score, status, created_at)
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?)`)
+  await env.IZZ_DB.prepare(`INSERT INTO leads (id, session_key, need, city, budget, score, status, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?)`)
     .bind(id, body.session_key || null, need, city || null, budget || null, leadScore, matches.length ? "matched" : "new", now).run();
   for (const match of matches) {
-    await env.IZZ_DB.prepare(`INSERT INTO lead_matches (lead_id, provider_entity_id, score, reason, status, created_at)
-      VALUES (?, ?, ?, ?, 'candidate', ?)`).bind(id, match.entity_id, match.score, `Potrivire pentru ${need}${city ? ` în ${city}` : ""}.`, now).run();
+    await env.IZZ_DB.prepare(`INSERT INTO lead_matches (lead_id, provider_entity_id, score, reason, status, created_at) VALUES (?, ?, ?, ?, 'candidate', ?)`)
+      .bind(id, match.entity_id, match.score, `Potrivire pentru ${need}${city ? ` în ${city}` : ""}.`, now).run();
   }
   return json({ schema: "izz-intelligence-v1", id, status: matches.length ? "matched" : "new", score: leadScore, matches }, 201, cors);
 }
@@ -162,6 +182,8 @@ export default {
         const company = await getCompany(env.IZZ_DB, url.searchParams.get("cui"));
         return company ? json({ schema: "izz-intelligence-v1", data: company }, 200, cors) : json({ error: "company_not_found" }, 404, cors);
       }
+      if (request.method === "GET" && url.pathname === "/api/intelligence/radar") return getRadar(env.IZZ_DB, url.searchParams.get("target_type"), url.searchParams.get("target_id"), Math.max(1, Math.min(365, Number(url.searchParams.get("days")) || 30)));
+      if (request.method === "GET" && url.pathname === "/api/intelligence/opportunities") return getOpportunities(env.IZZ_DB, url);
       if (request.method === "GET" && url.pathname === "/api/intelligence/monitors") return getMonitors(env.IZZ_DB, request);
       if (request.method === "GET" && url.pathname === "/api/intelligence/monitor") return getMonitorChanges(env.IZZ_DB, request, url.searchParams.get("target_type"), url.searchParams.get("target_id"));
       if (request.method === "POST" && url.pathname === "/api/intelligence/monitors") return createMonitor(request, env);
