@@ -43,6 +43,11 @@ ROOT = Path(__file__).resolve().parents[1]
 MARCAJ_KB = re.compile(r"\*\*Plafon: (\d+) KB\.\*\*")
 MARCAJ_LINII = re.compile(r"\*\*Hard cap: ~(\d+) lines of content\.\*\*")
 MARCAJ_BUGET = re.compile(r"\*\*Buget de pornire: (\d+) KB\.\*\*")
+MARCAJ_FAPTE = re.compile(r"\*\*Plafon: (\d+) linii de fapt\.\*\*")
+# Un fapt din specs/infrastructura.md trebuie sa fie TRASABIL la registru. Fara asta ar fi doar
+# proza injectata la fiecare pornire, adica exact felul in care s-a nascut IZZ-0257: o afirmatie
+# lasata intr-un fisier normativ fara data si fara dovada, pe care nimeni n-a mai putut-o data.
+CITARE_IZZ = re.compile(r"IZZ-(\d{4})")
 TTL_LIPIT = re.compile(r"ARTICLE_TTL_DAYS\s*(?:=|\()\s*(\d+)")
 # Un nume de fisier din harta e ghilimelat si NU contine cale — asa se deosebeste
 # `TASKS-B.md` (intrare in harta) de `specs/STATE.md` sau `tools/log_slice.py` (trimiteri).
@@ -111,6 +116,51 @@ def incalcari_plafon_linii(text: str) -> list[str]:
     if real > plafon:
         return [f"{real} linii de continut > plafonul declarat de {plafon}"]
     return []
+
+
+def incalcari_plafon_fapte(text: str) -> list[str]:
+    potrivire = MARCAJ_FAPTE.search(text)
+    if not potrivire:
+        return ["nu declara niciun plafon in linii de fapt"]
+    plafon = int(potrivire.group(1))
+    real = len(linii_de_continut(text))
+    if real > plafon:
+        return [f"{real} linii de fapt > plafonul declarat de {plafon}"]
+    return []
+
+
+def incalcari_trasabilitate(text: str, ids_cunoscute: set[str]) -> list[str]:
+    """Fiecare fapt injectat trebuie sa poata fi verificat inapoi in registru.
+
+    Se verifica pe BULLET, nu pe linie: un fapt se intinde pe mai multe linii, iar citarea sta
+    la sfarsit. Impartind pe linii, continuarile ar cadea toate ca 'fara citare'.
+    """
+    incalcari: list[str] = []
+    fapt: list[str] = []
+    for linie in linii_de_continut(text) + ["- "]:   # santinela: inchide ultimul bullet
+        if linie.startswith("- ") and fapt:
+            incalcari += _verifica_fapt(" ".join(fapt), ids_cunoscute)
+            fapt = []
+        fapt.append(linie.strip())
+    return incalcari
+
+
+def _verifica_fapt(fapt: str, ids_cunoscute: set[str]) -> list[str]:
+    citate = set(CITARE_IZZ.findall(fapt))
+    scurt = fapt[:60]
+    if not citate:
+        return [f"fapt fara citare de registru: {scurt}"]
+    lipsa = sorted(i for i in citate if i not in ids_cunoscute)
+    if lipsa:
+        return [f"fapt care citeaza ID inexistent in registru ({', '.join(lipsa)}): {scurt}"]
+    return []
+
+
+def ids_din_registru() -> set[str]:
+    cale = ROOT / "specs" / "registru.tsv"
+    return {linie.split("\t")[0].removeprefix("IZZ-")
+            for linie in cale.read_text(encoding="utf-8").splitlines()[1:]
+            if linie.startswith("IZZ-")}
 
 
 def incalcari_ttl(fisiere: dict[str, str], asteptat: int) -> list[str]:
@@ -194,6 +244,31 @@ def test_state_md_sub_plafonul_pe_care_il_declara():
     assert not incalcari_plafon_linii(cale.read_text(encoding="utf-8"))
 
 
+def test_infrastructura_md_sub_plafonul_pe_care_il_declara():
+    cale = ROOT / "specs" / "infrastructura.md"
+    assert not incalcari_plafon_fapte(cale.read_text(encoding="utf-8"))
+
+
+def test_fiecare_fapt_de_infrastructura_e_trasabil_la_registru():
+    """Injectat la fiecare pornire => trebuie sa poata fi verificat, nu doar crezut."""
+    cale = ROOT / "specs" / "infrastructura.md"
+    incalcari = incalcari_trasabilitate(cale.read_text(encoding="utf-8"), ids_din_registru())
+    assert not incalcari, "\n  ".join(incalcari)
+
+
+def test_hookul_chiar_injecteaza_faptele_de_infrastructura():
+    """Garda pe LEGATURA, nu pe fisier.
+
+    Un fisier de fapte pe care hook-ul nu-l citeste e mai rau decat niciunul: pare ca informatia
+    ajunge in context si nu ajunge. Exact asa a fost pierdut faptul 'Workers Paid' — statea intr-un
+    COMENTARIU al hook-ului, adica nicaieri din punctul de vedere al unei sesiuni.
+    """
+    hook = (ROOT / ".claude" / "hooks" / "session-start.sh").read_text(encoding="utf-8")
+    executabile = [linie for linie in hook.splitlines() if not linie.lstrip().startswith("#")]
+    assert any("specs/infrastructura.md" in linie for linie in executabile), \
+        "session-start.sh nu citeste specs/infrastructura.md in cod executabil"
+
+
 def test_bugetul_de_pornire_sub_plafonul_declarat():
     """Plafonul pe suprafata, nu pe fisier: altfel o mutare in hook trece ca economie."""
     incalcari = incalcari_buget((ROOT / "CLAUDE.md").read_text(encoding="utf-8"),
@@ -214,6 +289,7 @@ def test_ttl_citat_in_text_e_cel_din_config():
     (MARCAJ_KB, "CLAUDE.md"),
     (MARCAJ_LINII, "specs/STATE.md"),
     (MARCAJ_BUGET, "CLAUDE.md"),
+    (MARCAJ_FAPTE, "specs/infrastructura.md"),
 ])
 def test_fiecare_plafon_e_declarat_intr_un_singur_loc(marcaj, unde):
     """O regula, o cifra. Doua locuri inseamna ca niciuna nu se tine."""
@@ -221,6 +297,28 @@ def test_fiecare_plafon_e_declarat_intr_un_singur_loc(marcaj, unde):
 
 
 # --- testele NEGATIVE: fiecare garda trebuie sa POATA esua -------------------------
+
+def test_garda_faptelor_pica_pe_fisier_peste_plafon():
+    assert incalcari_plafon_fapte("# t\n\n> **Plafon: 1 linii de fapt.**\n\n- a\n- b\n")
+
+
+def test_garda_faptelor_pica_pe_fisier_fara_plafon_declarat():
+    assert incalcari_plafon_fapte("# t\n\n- un fapt fara marcaj de plafon\n")
+
+
+def test_garda_trasabilitatii_pica_pe_fapt_fara_citare():
+    assert incalcari_trasabilitate("# t\n\n- fapt fara nicio dovada\n", {"0001"})
+
+
+def test_garda_trasabilitatii_pica_pe_id_inexistent():
+    assert incalcari_trasabilitate("# t\n\n- fapt cu dovada moarta [IZZ-9999]\n", {"0001"})
+
+
+def test_garda_trasabilitatii_accepta_fapt_pe_mai_multe_linii():
+    """Citarea sta la sfarsitul faptului; impartind pe linii, continuarile ar cadea toate."""
+    text = "# t\n\n- inceputul unui fapt\n  care continua pe randul urmator [IZZ-0001]\n"
+    assert not incalcari_trasabilitate(text, {"0001"})
+
 
 def test_garda_kb_pica_pe_fisier_prea_mare():
     assert incalcari_plafon_kb("> **Plafon: 1 KB.**", 2048)

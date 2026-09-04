@@ -40,6 +40,26 @@ fi
 export CHROME_PATH
 FLAGS="--headless=new --no-sandbox --disable-gpu --disable-dev-shm-usage"
 
+# Lighthouse/pa11y se verifica AICI, inainte de `render-only` -- care dureaza minute. Varianta
+# de dinainte le atingea abia la `versions.txt`, deci o sesiune fara ele randa tot site-ul si
+# abia apoi afla ca nu poate masura nimic.
+# Instalarea automata e limitata la containerele efemere (CLAUDE_CODE_REMOTE): acolo `npm i -g`
+# moare odata cu sesiunea si nu are pe cine deranja. Pe masina proprietarului ramane mesajul si
+# atat -- un `npm i -g` nesolicitat pe o masina reala e o schimbare globala pe care scriptul asta
+# nu are mandat s-o faca (CLAUDE.md sect. 12b: ireversibilul cere confirmare).
+# De ce nu stau in hook-ul SessionStart, unde stau uneltele Python: ~2 minute prin npm, la
+# fiecare pornire, pentru o capacitate ceruta rar. Aici se platesc doar cand chiar auditezi.
+if ! command -v lighthouse >/dev/null 2>&1 || ! command -v pa11y >/dev/null 2>&1; then
+  if [ "${CLAUDE_CODE_REMOTE:-}" = "true" ]; then
+    echo ">> lighthouse/pa11y lipsesc — le instalez (o data per container, ~2 min)"
+    npm i -g lighthouse pa11y --silent || {
+      echo "!! npm i -g lighthouse pa11y a esuat — vezi eroarea de mai sus"; exit 1; }
+  else
+    echo "!! lighthouse si/sau pa11y lipsesc. Instaleaza o data:  npm i -g lighthouse pa11y"
+    exit 1
+  fi
+fi
+
 echo ">> render-only"
 ( cd "$ROOT" && python -m generator.main --render-only >/dev/null )
 

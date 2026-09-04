@@ -141,6 +141,9 @@ ce lasă proxy-ul să treacă). **Înainte să începi un task netrivial, verifi
   X?", nu „am unealta Y?".
 - **O limitare se declară cu comanda care a eșuat, nu din memorie.** Fără ieșire reală citată,
   n-ai măsurat — ai presupus. Vezi §16.4.
+- **Necunoscutul se închide, nu se raportează.** „Rămâne necunoscut" e concluzie validă DOAR după
+  ce ai numit experimentul care l-ar decide și l-ai rulat, dacă e ieftin și reversibil. Cere acces
+  pe care nu-l ai? Spune ce anume lipsește și cine îl are — nu doar că nu știi.
 - **Verificările care merită, ieftine, la început:** binare (`which`), rețea către host-ul exact de
   care ai nevoie (`curl` + `$HTTPS_PROXY/__agentproxy/status` pentru MOTIVUL refuzului, nu doar
   pentru cod), ce conectori/MCP sunt active, ce unelte amânate se pot încărca (`ToolSearch`), ce
