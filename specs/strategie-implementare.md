@@ -30,7 +30,7 @@ Sursa: `strategie cu detalii.pdf`, 26 pagini. Documentul propune 37 de direcții
 | 22 | IZZ „Ce se construiește?” | foundation | projects + places |
 | 23 | Harta banilor publici | foundation | opportunities + observations |
 | 24 | IZZ Market Intelligence | implemented | static contract + market cards |
-| 25 | Vânzarea datelor / IZZ Data | foundation | D1 schema + export table |
+| 25 | Vânzarea datelor / IZZ Data | implemented | D1 schema + JSON/CSV exports |
 | 26 | White-label IZZ | foundation | tenant-ready owner_key in monitors |
 | 27 | IZZ pentru agenții | foundation | tenant-ready monitors |
 | 28 | IZZ Reputation Monitor | foundation | observations + monitors |
