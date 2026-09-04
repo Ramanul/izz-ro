@@ -45,10 +45,13 @@ def _sursa() -> str:
 def _bloc_de_calcul() -> str:
     """Decupeaza din fisierul livrat exact liniile care calculeaza taxele.
 
+    Blocul incepe la calculul eligibilitatii pentru facilitatea de 200 lei, fiindca de acolo
+    incepe calculul actual: baza contributiilor nu mai e `brut`, ci `brut - sumaNetaxabila`.
     Se opreste la `var net = ...` pentru ca restul functiei atinge DOM-ul. Daca marcajele se
     schimba, testul cade zgomotos aici in loc sa treaca pe un bloc gresit."""
     m = re.search(
-        r"(var cas = Math\.round\(brut \* 0\.25\);.*?var net = brut - cas - cass - impozit;)",
+        r"(var aplicaFacilitate = Boolean\(facilitate && facilitate\.checked\);"
+        r".*?var net = brut - cas - cass - impozit;)",
         _sursa(), re.S)
     assert m, "nu am gasit blocul de calcul in calc-salariu.js — s-au schimbat marcajele"
     return m.group(1)
@@ -58,6 +61,8 @@ def _ruleaza(cazuri: list, tmp_path) -> list:
     """Ruleaza blocul real in node pentru fiecare (brut, salariuMinim)."""
     script = (
         "function calc(brut, salariuMinim) {\n"
+        # blocul decupat incepe cu `facilitate.checked`; in afara paginii nu exista checkbox
+        "  const facilitate = null;\n"
         + _bloc_de_calcul() + "\n"
         + "  return { deducere: deducere, baza: baza, impozit: impozit, net: net };\n"
         + "}\n"

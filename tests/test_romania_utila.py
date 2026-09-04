@@ -80,7 +80,7 @@ def test_noua_casa_nu_prezinta_cifre_2026_neconfirmate_ca_valori_curente():
     text = _read("data/entities/noua-casa.yaml")
     assert "verificat: false" in text
     assert "ultima_verificare: \"2026-09-04\"" in text
-    assert "plafonul anual" in text
+    assert "plafonul anual" in text.lower()   # fisierul scrie „Plafonul anual"
 
 
 def test_aliasurile_romania_utila_sunt_301_si_tinta_exista():
