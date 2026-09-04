@@ -44,8 +44,9 @@ function setupLeads() {
     const city = String(form.get('city')).trim().toLowerCase();
     const budget = String(form.get('budget'));
     const ranked = state.data.providers.map((provider) => {
+      const providerCities = provider.cities ?? (provider.city ? [provider.city] : []);
       const categoryHit = provider.categories.some((category) => need.includes(category) || category.includes(need)) ? 45 : 0;
-      const cityHit = provider.cities.some((item) => item.toLowerCase() === city) ? 30 : 0;
+      const cityHit = providerCities.some((item) => item.toLowerCase() === city) ? 30 : 0;
       const budgetHit = provider.budgets.includes(budget) ? 15 : 0;
       return { provider, score: Math.min(100, 10 + categoryHit + cityHit + budgetHit) };
     }).sort((a, b) => b.score - a.score).slice(0, 3);
