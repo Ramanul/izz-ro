@@ -13,6 +13,7 @@ __pycache__/
 *.pyc
 *.log
 data/*.db
+*.coverage
 
 # wrangler local cache (contine wrangler-account.json - date de cont)
 .wrangler/
