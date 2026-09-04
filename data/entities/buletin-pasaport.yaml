@@ -1,59 +1,45 @@
 # Entitate: Carte de identitate și pașaport 2026
-# Portat din data/utilities.json (calea /utile/ a fost inlocuita de /ghiduri/ pe 17 iul 2026).
-# ⚠️ Valori NEVERIFICATE. `verificat: false` e citit de build si de sabloane: cat timp e false,
-# ghidul NU afiseaza „Verificat" si arata explicit cititorului ca cifrele (taxe, termene) n-au
-# fost confruntate cu sursa oficiala. Se pune pe true DOAR dupa verificare reala.
-# act_normativ + sursa_url sunt verificate pe legislatie.just.ro, nu scrise din memorie.
-
+# Valorile curente sunt confruntate cu surse oficiale MAI/DGEP/DGP.
 id: buletin-pasaport
-nume: Carte de identitate și pașaport 2026
+nume: "Carte de identitate și pașaport 2026"
 tip: acte
 categorie_ghid: acte
 categorie_stiri: general
+
 valoare_curenta:
-  in_vigoare_de: '2005-07-20'
-  act_normativ: OUG 97/2005 (acte de identitate) și Legea 248/2005 (pașapoarte)
-  sursa_url: https://legislatie.just.ro/Public/DetaliiDocument/63354
-  descriere_lunga: Cartea de identitate electronică (CIE) se eliberează la nivel național din 2025. Costul
-    este de 57 lei pentru adulți (valabilitate 10 ani) și 37 lei pentru minori (valabilitate 5 ani). Pașaportul
-    simplu electronic costă 258 lei (valabilitate 10 ani, adulți). Ambele se pot solicita la orice serviciu
-    de evidență a populației/pașapoarte, indiferent de domiciliu.
+  in_vigoare_de: "2026-09-04"
+  act_normativ: "OUG 97/2005 privind actele de identitate și Legea 248/2005 privind libera circulație a cetățenilor români în străinătate"
+  sursa_url: "https://depabd.mai.gov.ro/intrebari_frecvente.html"
+  descriere_lunga: "Pentru CEI, prima carte electronică de identitate este gratuită pentru cetățenii români de la 14 ani, în limita fondurilor disponibile; o nouă CEI costă 70 lei, iar CEI pentru copii sub 14 ani costă 70 lei. Cartea de identitate simplă costă 40 lei. Pentru pașaport simplu electronic sau temporar depus în țară, contravaloarea unică este 265 lei."
+
 sectiuni:
-- titlu: Cartea de identitate — cine, unde, cât costă?
-  continut: 'Se eliberează de **Direcția de Evidență a Persoanelor** din cadrul primăriei de domiciliu
-    sau reședință. Programarea se face online pe platforma hub.mai.gov.ro. Ai nevoie de: **certificat
-    de naștere** (original + copie), **certificat de căsătorie** (dacă e cazul), **documentul de plată
-    al taxei**, **dovada adresei de domiciliu** (act de proprietate, contract de închiriere, etc.), și
-    **vechiul act de identitate** (dacă e vorba de preschimbare). Termen de eliberare: până la 15 zile
-    lucrătoare (5 zile cu taxă de urgență).'
-- titlu: Pașaport — costuri și termene
-  continut: 'Pașaportul simplu electronic (CRDS) costă **258 lei** pentru persoane peste 12 ani (valabilitate
-    10 ani) și **234 lei** pentru minori sub 12 ani (valabilitate 3 ani). Pașaportul temporar costă **100
-    lei** (valabilitate 1 an). Se poate solicita la orice serviciu de pașapoarte, indiferent de domiciliu.
-    Programare online: epasapoarte.ro. Acte necesare: carte de identitate valabilă, chitanța plății taxei,
-    cerere tip. Termen de eliberare: până la 10 zile lucrătoare (3 zile cu taxă de urgență de 100 lei
-    suplimentar).'
-- titlu: Programare online — cum faci?
-  continut: 'Pentru cartea de identitate: platforma **hub.mai.gov.ro** — selectezi județul, instituția,
-    data și ora. Pentru pașaport: **epasapoarte.ro** — creezi cont, selectezi serviciul de pașapoarte,
-    completezi datele și alegi data. Ambele platforme necesită o adresă de email validă și un număr de
-    telefon. Confirmarea se primește pe email. Prezintă-te la ghișeu cu numărul de programare și actele
-    necesare.'
+  - titlu: "Cartea electronică de identitate"
+    continut: >-
+      Cererea pentru CEI poate fi depusă la orice serviciu de evidență a persoanelor, indiferent de domiciliu. Prima CEI este gratuită pentru cetățenii români care au împlinit 14 ani, în limita fondurilor disponibile. Pentru o nouă CEI sau pentru o CEI emisă înainte de 14 ani, taxa este de **70 lei**. Cartea de identitate simplă (CIS) are un tarif de **40 lei**.
+  - titlu: "Pașaport — cât costă?"
+    continut: >-
+      Din **1 august 2025**, pentru cererile depuse la serviciile publice comunitare de pașapoarte, contravaloarea pașaportului simplu electronic sau temporar este de **265 lei**, TVA inclus. Valoarea este unică pentru aceste două tipuri de pașaport în țară, potrivit informării oficiale a Direcției Generale de Pașapoarte.
+  - titlu: "Programare și acte"
+    continut: >-
+      Pentru CEI se folosește platforma oficială HUB MAI, iar pentru pașaport se utilizează pagina de programare online a Direcției Generale de Pașapoarte. Lista exactă a documentelor depinde de tipul cererii; verifică pagina oficială înainte de programare.
+
 faq:
-- q: Pot obține cartea de identitate în alt județ?
-  a: Da. Din 2025, cartea de identitate se poate solicita la orice serviciu de evidență a populației din
-    țară, indiferent de domiciliu.
-- q: Cât costă pașaportul în regim de urgență?
-  a: Taxa normală (258 lei) + taxa de urgență (100 lei) = 358 lei total. Se eliberează în 3 zile lucrătoare.
-- q: Am nevoie de certificat de naștere pentru pașaport?
-  a: Doar dacă este prima dată când soliciți pașaport, sau dacă ai schimbat numele (căsătorie, divorț).
-    Pentru reînnoire, cartea de identitate valabilă este suficientă.
+  - q: "Unde pot cere CEI?"
+    a: "La orice serviciu de evidență a persoanelor unde este operațional serviciul, indiferent de domiciliu."
+  - q: "Cât costă CEI?"
+    a: "Prima CEI pentru cetățenii români de la 14 ani este gratuită în limita fondurilor disponibile; o nouă CEI și CEI pentru sub 14 ani costă 70 lei."
+  - q: "Cât costă pașaportul în 2026?"
+    a: "265 lei pentru pașaport simplu electronic sau temporar depus în țară."
+
 relatii: {}
-verificat: false
-ultima_verificare: '2025-11-15'
+verificat: true
+ultima_verificare: "2026-09-04"
+
 monitorizare:
   surse:
-  - url: https://depabd.mai.gov.ro/
-    tip: html
-  - url: https://pasapoarte.mai.gov.ro/
-    tip: html
+    - url: "https://depabd.mai.gov.ro/intrebari_frecvente.html"
+      tip: html
+    - url: "https://hub.mai.gov.ro/cei/programari/documente-necesare/"
+      tip: html
+    - url: "https://pasapoarte.mai.gov.ro/wp-content/uploads/2025/08/comunicat-de-presa-nr.19-din-01.08.2025-modificare-taxe-pasaport.pdf"
+      tip: pdf

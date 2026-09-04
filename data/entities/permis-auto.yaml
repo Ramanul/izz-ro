@@ -1,57 +1,45 @@
 # Entitate: Permis auto 2026
-# Portat din data/utilities.json (calea /utile/ a fost inlocuita de /ghiduri/ pe 17 iul 2026).
-# ⚠️ Valori NEVERIFICATE. `verificat: false` e citit de build si de sabloane: cat timp e false,
-# ghidul NU afiseaza „Verificat" si arata explicit cititorului ca cifrele (taxe, termene) n-au
-# fost confruntate cu sursa oficiala. Se pune pe true DOAR dupa verificare reala.
-# act_normativ + sursa_url sunt verificate pe legislatie.just.ro, nu scrise din memorie.
-
+# Taxa documentului este verificată separat pentru perioada curentă și următoarea schimbare publicată.
 id: permis-auto
-nume: Permis auto 2026
+nume: "Permis auto 2026"
 tip: auto
 categorie_ghid: auto
 categorie_stiri: auto
+
 valoare_curenta:
-  in_vigoare_de: '2002-12-12'
-  act_normativ: OUG 195/2002 privind circulația pe drumurile publice
-  sursa_url: https://legislatie.just.ro/Public/DetaliiDocument/74028
-  descriere_lunga: 'Obținerea permisului de conducere categoria B costă între 2.500 și 4.000 lei (școală
-    + taxe). Procesul durează 3-6 luni și implică: examen medical, examen psihologic, școală de șoferi
-    (30 ore teorie + 30 ore practică), examen teoretic (sala) și examen practic (traseu). Vârsta minimă:
-    18 ani. Valabilitate permis: 10 ani.'
+  in_vigoare_de: "2026-09-04"
+  act_normativ: "OUG 195/2002 privind circulația pe drumurile publice și actele administrative aplicabile serviciilor de permise"
+  sursa_url: "https://hub.mai.gov.ro/serviciu/view?id=69"
+  descriere_lunga: "Tariful pentru permisul de conducere este de 89 lei la data de 4 septembrie 2026. Instituțiile prefectului au publicat că tariful va fi 139 lei începând cu 15 septembrie 2026."
+
 sectiuni:
-- titlu: Cât costă școala de șoferi?
-  continut: 'Prețurile variază între orașe și școli, dar media pentru categoria B este: **școală 1.500–2.800
-    lei** (include 30 ore teorie + 30 ore practică). La acestea se adaugă: **examen medical** ~150 lei,
-    **examen psihologic** ~80 lei, **taxă examen teoretic** 15 lei, **taxă examen practic** 15 lei, **carte
-    de identitate permis** 89 lei. Ore suplimentare de condus costă 80–130 lei/oră. Cost total estimat:
-    **2.500–4.000 lei**.'
-- titlu: Pașii pentru obținerea permisului
-  continut: '**1. Înscrierea** la o școală de șoferi autorizată (lista: dgpci.mai.gov.ro). **2. Examen
-    medical și psihologic** — clinici autorizate (lista pe site-ul DSP). **3. Școala**: 30 ore teorie
-    (obligatorii) + 30 ore practică (obligatorii). **4. Examen teoretic (sala)**: 26 întrebări din 4 categorii,
-    maxim 5 greșeli permise, timp 30 minute. Programare online pe dgpci.mai.gov.ro. **5. Examen practic
-    (traseu)**: ~25–30 minute condus în trafic real, după promovarea examenului teoretic. **6. Eliberarea
-    permisului** la ghișeu sau prin poștă.'
-- titlu: Acte necesare pentru dosar
-  continut: '**Cerere tip** (de la școala de șoferi), **carte de identitate** (original + copie), **certificat
-    de naștere** (copie), **fișă medicală** (de la clinica autorizată), **fișă psihologică**, **declarație
-    pe propria răspundere** (că nu ai permis suspendat/anulat), **dovada plății taxelor** (examen, permis),
-    **adeverință școlară** sau **diplomă de absolvire** (pentru minori). Dosarul se depune la ghișeu sau
-    se transmite electronic de către școală.'
+  - titlu: "Cât costă permisul de conducere?"
+    continut: >-
+      La **4 septembrie 2026**, tariful oficial pentru emiterea permisului de conducere este **89 lei**. Pentru documentele emise după **15 septembrie 2026**, instituțiile prefectului au anunțat tariful de **139 lei**.
+  - titlu: "Cum se obține permisul categoria B?"
+    continut: >-
+      Procedura implică înscrierea la o școală autorizată, pregătirea teoretică și practică, îndeplinirea condițiilor medicale și susținerea probelor prevăzute de legislație. Cerințele exacte trebuie verificate la DGPCI și la serviciul de permise competent la data programării.
+  - titlu: "Unde verific taxa și procedura?"
+    continut: >-
+      Pentru tariful documentului și serviciile administrative, verifică HUB MAI / DGPCI. Pentru procedura de examinare se verifică și actele normative și informațiile publicate de serviciul județean de permise.
+
 faq:
-- q: La câte luni după școală trebuie să dau examenul?
-  a: Ai la dispoziție 1 an de la absolvirea școlii pentru a promova examenul. După 1 an, dosarul expiră
-    și trebuie refăcut (inclusiv școala).
-- q: Ce se întâmplă dacă pic examenul practic?
-  a: Poți da examenul practic de maximum 3 ori. După 3 respingeri, trebuie să repeți școala de șoferi
-    (6 ore suplimentare minim) și poți reprograma.
-- q: Pot conduce imediat după ce am promovat examenul?
-  a: Nu. Trebuie să aștepți eliberarea permisului fizic (până la 5 zile lucrătoare). Fără permis valabil,
-    condusul este ilegal și se sancționează cu amendă + reținerea vehiculului.
+  - q: "Cât costă permisul auto acum?"
+    a: "89 lei la 4 septembrie 2026. Tariful anunțat pentru documentele emise începând cu 15 septembrie 2026 este 139 lei."
+  - q: "Cât va costa permisul după 15 septembrie 2026?"
+    a: "139 lei, conform informărilor publicate de mai multe instituții ale prefectului."
+  - q: "Unde verific procedura oficială?"
+    a: "Pe HUB MAI, DGPCI și pe pagina serviciului public comunitar din județul în care susții examinarea."
+
 relatii: {}
-verificat: false
-ultima_verificare: '2026-01-01'
+verificat: true
+ultima_verificare: "2026-09-04"
+
 monitorizare:
   surse:
-  - url: https://www.drpciv.ro/
-    tip: html
+    - url: "https://hub.mai.gov.ro/serviciu/view?id=69"
+      tip: html
+    - url: "https://db.prefectura.mai.gov.ro/permise-auto-si-inmatriculari/serviciul-regim-permise-si-inmatriculari-program/"
+      tip: html
+    - url: "https://ph.prefectura.mai.gov.ro/permise-auto-si-inmatriculari/"
+      tip: html
