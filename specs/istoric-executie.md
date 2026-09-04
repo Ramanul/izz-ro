@@ -1998,3 +1998,8 @@ Contra-verificate cap-coada, ca sa nu fie re-masurate:
   orice test-merge, altfel `git merge-base` da „no merge base" si triajul iese fals.
 - **`pytest`/`ruff` pot fi instalate izolat prin uv**, fara dependintele pipeline-ului: `pytest`
   exista ca binar dar `python3 -m pytest` esueaza. Verifica interpretorul, nu doar `which`.
+
+- **Nefolosit (`tools/nefolosit.py`, dosar sect. 4f)** — mutat din `STATE.md` pe 2026-09-04,
+  la plafonul de 40 de linii: `agents.py` STERS (`IZZ-0289`). Decizii proprietar:
+  `process_cluster` §10 (`IZZ-0294`), 272 KB orfane masurate dar necuratate (`IZZ-0301`),
+  §12 (`IZZ-0295`), F4 (`IZZ-0296`), Axa 3 (`IZZ-0297`), arhiva (`IZZ-0298`).

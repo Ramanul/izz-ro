@@ -33,13 +33,13 @@
   guard. Coverage 71%, mutanti ucisi 81%, `render.py` cel mai rau pe AMBELE axe (`IZZ-0280`/
   `IZZ-0281`). NEVERIFICAT: determinismul intre DOUA randari (2x10 min). Cuplarea reala nu e
   prin importuri — dosar `specs/arhitectura-cuplare.md`, NU re-cerceta.
-- **Nefolosit (`tools/nefolosit.py`, dosar sect. 4f)**: `agents.py` STERS (`IZZ-0289`). Decizii
-  proprietar: `process_cluster` §10 (`IZZ-0294`), 272 KB orfane masurate dar necuratate
-  (`IZZ-0301`), §12 (`IZZ-0295`), F4 (`IZZ-0296`), Axa 3 (`IZZ-0297`), arhiva (`IZZ-0298`).
 - **Garda anti-amanare (`tests/test_registru_amanari.py`, `IZZ-0293`)**: un rand `propus` cu
   `decident` = agent expira in 14 zile. Iesiri: fa-l, treci-l pe om, inchide-l cu motiv (un rand
   nou care il leaga il inchide). La scriere: 12 amanari catre mine -> 0.
 - **Din `specs/atribuire-cercetare-si-plan.md`** — E1 + E4 cer decizia proprietarului.
+- **Coperti cu silueta judetului (draft PR)**: `htmlart._t_harta`, geometrie DOMENIU PUBLIC;
+  2.923 eligibile, dar doar cele generate de acum incolo (`IZZ-0163`); judet DOAR din cheia
+  sursei. **Pozele NU repara copertile** — 59 PD/CC0 in cache, 0,38% (`IZZ-0304`); OSM respins.
 
 ## Standing rules that keep being rediscovered — do not "fix" these
 
