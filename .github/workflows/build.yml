@@ -4,51 +4,26 @@ name: pipeline
 # Commit-ul declanseaza Cloudflare Pages, care doar randeaza (vezi README).
 
 on:
-  # Se INCEARCA din ora in ora, dar se PUBLICA tot la ~2 ore: jobul `cadenta` de mai jos
-  # taie rularea daca ultimul continut e mai proaspat de 105 minute.
-  #
-  # De ce nu mai e cron-ul la 2h, desi cadenta dorita ramane 2h: planificatorul GitHub
-  # intarzie si SARE firings de `schedule` cand platforma e incarcata, iar la izz se vede.
-  # Masurat 2026-08-04 pe ultimele 40 de rulari: 08-04 a avut 4 rulari (03:32, 06:37, 10:47,
-  # 14:35Z) in loc de 12, 08-03 a avut 8, 08-02 a avut 10 — toate pornite cu 20-35 min dupa
-  # minutul :13, cu gauri de 3-4h dimineata. Cu incercari orare, un firing pierdut se
-  # recupereaza in ora urmatoare in loc sa astepte inca doua ore.
-  #
-  # Bugetul de build ramane protejat de poarta, nu de cron: fiecare commit de stare
-  # declanseaza un build Cloudflare Pages, iar planul free are ~500/luna. Poarta la 105 min
-  # tine doua commituri de continut la >=2h distanta (105 + ~12 min cat dureaza rularea),
-  # deci maximum ~12/zi = ~360/luna, exact ca inainte. NU cobori pragul fara sa refaci
-  # socoteala: la 5-9 iul 2026 deploy-urile chiar s-au oprit (atunci din alta cauza —
-  # [skip ci] in commit, onorat SI de Cloudflare -> site inghetat).
+  # Incercare orara; poarta de cadenta mentine aproximativ 2 ore intre commituri de continut.
   schedule:
     - cron: "13 * * * *"
-  workflow_dispatch:          # buton „Run workflow" pentru rulare manuala / deploy imediat
+  workflow_dispatch:
     inputs:
       max_ai_calls:
         description: >-
-          Buget de apeluri AI pentru aceasta rulare (gol = 18, ca la cron). Util
-          pentru populare initiala a unei categorii noi: clusterele C (sinteze
-          multi-sursa) au prioritate absoluta fata de loturile B in bugetul normal,
-          deci o sursa noua cu volum mic poate astepta multe cicluri pana ii vine
-          randul. NU schimba bugetul implicit al cron-ului.
+          Buget de apeluri AI pentru aceasta rulare (gol = 40, ca la cron).
+          Util pentru o populare accelerata sau pentru recuperarea unei cozi mari de articole.
         required: false
         default: ""
 
 permissions:
-  contents: write                # ca sa comita data/articles.json
+  contents: write
 
 concurrency:
   group: pipeline
   cancel-in-progress: false
 
 jobs:
-  # Poarta de cadenta: transforma „de 12 ori pe zi, daca planificatorul GitHub binevoieste"
-  # in „de 12 ori pe zi, recuperand firing-urile pierdute". Nu face checkout — intreaba API-ul
-  # cand a fost ultimul commit care atinge data/articles.json, deci costa ~10 secunde de runner.
-  # Rularile manuale (workflow_dispatch) NU trec pe aici: vezi `if:` de la `pipeline`.
-  # Daca apelul de API pica, jobul pica ROSU si `pipeline` e sarit — deliberat inchis, nu deschis:
-  # o poarta stricata care lasa sa treaca tot ar produce 24 de build-uri Cloudflare pe zi.
-  # Costul unui esec e o ora de intarziere, vizibila in Actions.
   cadenta:
     runs-on: ubuntu-latest
     outputs:
@@ -73,15 +48,11 @@ jobs:
 
   pipeline:
     needs: cadenta
-    # Manualul trece intotdeauna — butonul „Run workflow" trebuie sa insemne „acum", nu „poate".
     if: github.event_name != 'schedule' || needs.cadenta.outputs.ruleaza == 'true'
     runs-on: ubuntu-latest
     outputs:
-      # sha-ul care contine EFECTIV continutul acestei rulari; jobul mirror randeaza exact
-      # acest commit, ca sa nu mai poata publica un corpus vechi (vezi comentariul de la 'mirror').
       content_sha: ${{ steps.commit.outputs.sha }}
     steps:
-      # Fara persist-credentials: false — jobul comite si face push (pasul "Comite starea").
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
 
       - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7
@@ -100,17 +71,12 @@ jobs:
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           AI_PROVIDER: gemini
-          MAX_AI_CALLS_PER_RUN: ${{ github.event.inputs.max_ai_calls != '' && github.event.inputs.max_ai_calls || '18' }}
-          UPGRADE_RESERVE: "8"
-          # Optional: ruteaza Gemini prin Cloudflare AI Gateway (cache/retry/observabilitate).
-          # Activezi setand variabila de repo GEMINI_BASE_URL la URL-ul gateway-ului;
-          # gol -> direct la Google (comportament neschimbat).
+          MAX_AI_CALLS_PER_RUN: ${{ github.event.inputs.max_ai_calls != '' && github.event.inputs.max_ai_calls || '40' }}
+          UPGRADE_RESERVE: "4"
           GEMINI_BASE_URL: ${{ vars.GEMINI_BASE_URL }}
         run: python -m generator.main
 
       - name: Genereaza imagini per-articol (HTML/Chromium, best-effort)
-        # Chromium NU exista in build-ul Cloudflare -> generam aici, comitem in media/.
-        # non-fatal: daca pica, render.py cade pe Pillow -> site-ul nu se strica niciodata.
         continue-on-error: true
         env:
           CHROME_BIN: ${{ steps.chrome.outputs.chrome-path }}
@@ -124,9 +90,6 @@ jobs:
         run: python tools/fetch_portraits.py
 
       - name: Fotografii lead per articol (Wikidata P18 landscape+PD, best-effort)
-        # imaginea principala "foto" cand exista; non-fatal -> altfel coperta generata.
-        # GEMINI_API_KEY activeaza judecatorul AI foto<->articol (photojudge); fara cheie
-        # ramane pe regulile deterministe (echipe excluse). AI_PROVIDER=anthropic -> Claude.
         continue-on-error: true
         env:
           MAX_LEAD_LOOKUPS: "20"
@@ -135,24 +98,11 @@ jobs:
         run: python tools/fetch_leadphotos.py
 
       - name: IndexNow — ce s-a schimbat (scrie manifestul, NU trimite inca)
-        # INAINTE de commit, dinadins: manifestul trebuie sa intre in commit-ul de continut
-        # care se face oricum, altfel runnerul stateless il pierde si fiecare rulare ar
-        # redescoperi acelasi corpus. Un commit separat ar declansa un build Cloudflare in
-        # plus (vezi bugetul de la 'on:'). Anuntul propriu-zis pleaca dupa deploy, mai jos.
         continue-on-error: true
         run: python tools/indexnow_submit.py --plan
 
       - name: Comite starea (declanseaza deploy Cloudflare)
         id: commit
-        # FARA [skip ci]: niciun workflow nu se declanseaza pe push (doar cron),
-        # deci [skip ci] nu ne ajuta la Actions -- dar Cloudflare Pages IL onoreaza
-        # si ar sari deploy-ul, inghetand site-ul. Vezi comentariul de la 'on:'.
-        #
-        # Push-ul NU are voie sa esueze in tacere. Masurat pe 2026-08-04: vechiul
-        # 'git push || echo "nimic de impins"' a facut ca 6 din ultimele 30 de rulari (20%)
-        # sa fie respinse cu '! [rejected] main -> main (fetch first)' si totusi SUCCESS,
-        # aruncand 200-500 fisiere de continut de fiecare data. Cauza: un om impinge pe main
-        # in cele ~11 minute cat dureaza rularea -> se declanseaza exact in zilele de lucru.
         run: |
           set -euo pipefail
           git config user.name "izz-bot"
@@ -163,8 +113,6 @@ jobs:
           git add data/leadphotos.json 2>/dev/null || true
           git add media 2>/dev/null || true
           if git diff --cached --quiet; then
-            # 'nimic de comis' e legitim, dar la ~75 de surse si 2h de decalaj e o anomalie,
-            # nu o normalitate -> semnal, nu tacere. Mirror-ul randeaza sha-ul curent.
             echo "::warning::nimic de comis - pipeline-ul nu a schimbat niciun fisier"
             echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
             exit 0
@@ -179,9 +127,6 @@ jobs:
             echo "::warning::push respins (incercarea $i) - reaplic peste origin/main"
             git fetch origin main
             if ! git rebase origin/main; then
-              # NU rezolvam automat in favoarea botului: in istoria repo-ului exista 10 commituri
-              # umane pe data/*.json, deci un conflict chiar poate insemna o editare manuala.
-              # Conflictul e rar (pushul uman care ne-a lovit ultima data atingea doar generator/).
               git rebase --abort
               echo "::error::conflict la rebase peste origin/main - continutul acestei rulari NU a fost publicat"
               exit 1
@@ -192,29 +137,17 @@ jobs:
           exit 1
 
       - name: QA check (alerta daca scade calitatea publicabila)
-        # ruleaza DUPA commit/deploy -> daca pica, owner-ul e anuntat de GitHub, dar site-ul nu ingheata
         run: python tools/qa_check.py
 
       - name: IndexNow — trimite coada (dupa deploy, best-effort)
-        # DUPA commit: nu anuntam un URL inainte ca el sa fie publicat. Coada e cea calculata
-        # de pasul `--plan` de mai sus; daca push-ul a esuat, jobul a iesit deja cu 1 si aici
-        # nu se mai ajunge — deci nici manifestul nu s-a comis, iar URL-urile revin data viitoare.
         continue-on-error: true
         run: python tools/indexnow_submit.py --send
 
-  # Sistem de servire REDUNDANT #2: mirror pe GitHub Pages (ramanul.github.io),
-  # host complet independent de Cloudflare Pages. Ruleaza dupa ce 'pipeline' a comis
-  # continutul (needs), reia acelasi render rapid (fara AI) si publica output/ pe mirror.
-  # Daca acest job pica, deploy-ul primar (Cloudflare) e deja facut -> jobul rosu doar
-  # alerteaza, nu strica nimic. Failover-ul intre cele doua host-uri se face automat la edge
-  # (Cloudflare Worker, vezi infra/failover-worker.js).
   mirror:
     needs: pipeline
     runs-on: ubuntu-latest
     steps:
       - name: Refuza oglindirea fara sha de continut
-        # 'ref' gol NU e o eroare pentru actions/checkout: cade tacut pe branch-ul implicit,
-        # adica exact bug-ul reparat aici. Deci verificam inainte, nu dupa.
         env:
           CONTENT_SHA: ${{ needs.pipeline.outputs.content_sha }}
         run: |
@@ -223,12 +156,8 @@ jobs:
             exit 1
           fi
           echo "oglindesc $CONTENT_SHA"
-      # Fara persist-credentials: false — jobul publica pe mirror (peaceiris/actions-gh-pages).
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
         with:
-          # Exact commit-ul comis de 'pipeline', nu 'main'. Cu 'main', pe 2026-08-04 (rularea
-          # 30902133131) mirror-ul a randat corpusul VECHI dupa un push respins si a publicat
-          # verde pe ramanul.github.io -- a doua redundanta propaga esecul in loc sa-l acopere.
           ref: ${{ needs.pipeline.outputs.content_sha }}
       - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7
         with:
@@ -244,14 +173,9 @@ jobs:
           external_repository: Ramanul/ramanul.github.io
           publish_branch: gh-pages
           publish_dir: ./output
-          force_orphan: true   # un singur commit -> mirror-ul nu creste la nesfarsit (122MB/rulare)
-          cname: ""            # fara custom domain pe mirror: Worker-ul face Host rewrite la failover
+          force_orphan: true
+          cname: ""
 
-
-  # Contractul de release: pipeline-ul nu este considerat complet doar pentru ca a impins
-  # datele in Git. Asteapta pana cand Pages si domeniul public confirma acelasi release
-  # prin /build.json. Accepta un SHA mai nou (un commit ulterior pe main il contine pe cel
-  # de continut), dar nu un build vechi sau manifest fara metadate.
   release-probe:
     needs: [pipeline, mirror]
     if: ${{ needs.pipeline.result == 'success' }}
@@ -265,8 +189,5 @@ jobs:
           EXPECTED_COMMIT: ${{ needs.pipeline.outputs.content_sha }}
           RELEASE_TIMEOUT_SECONDS: "1500"
           RELEASE_POLL_SECONDS: "30"
-          # Originea fara bot challenge. Cat timp gazda e Pages, `izz-ro.pages.dev`;
-          # dupa migrarea pe Workers, subdomeniul workers.dev al contului. Se schimba
-          # dintr-un SINGUR loc, variabila de repo `ALT_ORIGIN`, nu din cinci fisiere.
           RELEASE_ALT_ORIGIN: ${{ vars.ALT_ORIGIN || 'https://izz-ro.pages.dev' }}
         run: python tools/verify_release.py
