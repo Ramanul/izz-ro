@@ -45,6 +45,38 @@ cititorul plătește 129 KB ca să primească 13 KB de text.
 Un `styles.css` care servește și harta, și homepage-ul, și paginile de categorie, e prin
 construcție mai mare decât are nevoie orice pagină în parte.
 
+## Reverificat pe 2026-09-04, pe alt set de date
+
+Măsurătoarea de mai sus a fost repetată dintr-o randare complet nouă (`output/` gol la start,
+31.011 imagini regenerate), pe conținutul de peste zi: **14.773 de pagini** în loc de 13.430.
+Faptul că e alt eșantion e tocmai ce face reverificarea utilă — arată ce ține la schimbarea de
+conținut și ce nu.
+
+| | prima măsurătoare (13.430 pag.) | reverificare (14.773 pag.) |
+|---|---|---|
+| mediana primei încărcări | 127 KB | **127 KB** |
+| cea mai grea pagină | 508 KB | **508 KB** |
+| CSS pe un articol | 50 KB | **50,1 KB** |
+| fonturi | 25 KB | **24,7 KB** |
+| JS | 18 KB | **18,0 KB** |
+| **șasiu** | **93 KB** | **92,8 KB** |
+| copertă | 23 KB | 20,0 KB (`.jpg` 15,5 + `.webp` 4,5) |
+| HTML pe un articol | 13 KB | 14,3 KB |
+| cereri pe un articol | 6 | 7 |
+
+**Ce ține:** șasiul, la zecime de KB — normal, sunt fișiere din repo, nu conținut. Și mediana,
+la kilobyte, deși s-au adăugat 1.343 de pagini.
+
+**Ce s-a mișcat:** coperta (20 KB în loc de 23) și numărul de cereri (7 în loc de 6) — o copertă
+se servește ca `<picture>` cu `.webp` plus `.jpg` de rezervă, deci două cereri, iar mărimea ei
+depinde de imaginea concretă. Cifra de 23 KB din prima măsurătoare nu era greșită; era media
+altui set de coperți.
+
+**Riscul declarat atunci se închide:** prima măsurătoare a fost făcută dintr-o randare tăiată de
+timeout, cu suspiciunea că un subset de coperți lipsește și trage media în jos. Randarea asta a
+mers până la capăt (`>> Render-only: 13198 articole din state -> output/`), iar mediana e
+aceeași. Nu lipsea nimic.
+
 ## Corecție la `IZZ-0237`
 
 Rândul din registru spune *„home trage acum 1.256 KB de imagini pe 62 de carduri"* (2026-08-22).
