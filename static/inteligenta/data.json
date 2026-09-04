@@ -39,10 +39,10 @@
     {"name":"Lizieră comună de date","value":"un corpus, produse și venituri multiple"}
   ],
   "providers": [
-    {"name":"Acoperiș Timiș","city":"Timișoara","categories":["acoperiș","acoperis","renovare"],"budgets":["mid","high"],"contact":"lead@demo.izz.ro","reason":"categorie + localitate potrivite; furnizor orientat pe proiecte de renovare"},
-    {"name":"Contabil Pro Vest","city":"Timișoara","categories":["contabil","contabilitate"],"budgets":["low","mid"],"contact":"lead@demo.izz.ro","reason":"servicii contabile pentru IMM-uri din regiune"},
-    {"name":"Energia Eficientă","city":"Arad","categories":["pompă de căldură","pompa de caldura","energie"],"budgets":["mid","high"],"contact":"lead@demo.izz.ro","reason":"potrivire bună pentru proiecte de eficiență energetică"},
-    {"name":"Avocat Business","city":"București","categories":["avocat","juridic"],"budgets":["mid","high"],"contact":"lead@demo.izz.ro","reason":"acoperă nevoi comerciale și contractuale"}
+    {"name":"Acoperiș Timiș","city":"Timișoara","cities":["Timișoara"],"categories":["acoperiș","acoperis","renovare"],"budgets":["mid","high"],"contact":"lead@demo.izz.ro","reason":"categorie + localitate potrivite; furnizor orientat pe proiecte de renovare"},
+    {"name":"Contabil Pro Vest","city":"Timișoara","cities":["Timișoara"],"categories":["contabil","contabilitate"],"budgets":["low","mid"],"contact":"lead@demo.izz.ro","reason":"servicii contabile pentru IMM-uri din regiune"},
+    {"name":"Energia Eficientă","city":"Arad","cities":["Arad"],"categories":["pompă de căldură","pompa de caldura","energie"],"budgets":["mid","high"],"contact":"lead@demo.izz.ro","reason":"potrivire bună pentru proiecte de eficiență energetică"},
+    {"name":"Avocat Business","city":"București","cities":["București"],"categories":["avocat","juridic"],"budgets":["mid","high"],"contact":"lead@demo.izz.ro","reason":"acoperă nevoi comerciale și contractuale"}
   ],
   "companies": {
     "RO12345678": {
