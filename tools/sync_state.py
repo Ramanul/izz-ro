@@ -33,6 +33,11 @@ _SQUASH = re.compile(r"\(#(\d+)\)\s*$")
 
 
 def find_state_file() -> Path | None:
+    """Primul STATE.md gasit: intai locurile canonice, apoi o cautare recursiva.
+
+    Ordinea conteaza — o cautare recursiva pornita direct ar putea gasi un STATE.md
+    dintr-un worktree sau dintr-un director de arhiva inaintea celui real.
+    """
     for p in [Path("STATE.md"), Path("specs/STATE.md"), Path("docs/STATE.md")]:
         if p.exists():
             return p
@@ -43,6 +48,12 @@ def find_state_file() -> Path | None:
 
 
 def _git(*args: str) -> str:
+    """Iesirea standard a unui `git`, cu esecul tratat ca text gol.
+
+    `check=False` deliberat: intr-un repo fara istoric (clona superficiala, worktree
+    proaspat) comenzile de log ies nenul, si atunci raspunsul corect e „git nu stie",
+    nu o exceptie — chemarea de mai sus tocmai asta trebuie sa poata distinge.
+    """
     res = subprocess.run(["git", *args], capture_output=True, text=True, check=False)
     return res.stdout
 
@@ -86,6 +97,12 @@ def prs_din_open(continut: str) -> list[str]:
 
 
 def reconcile(dry_run: bool = False) -> bool:
+    """Adnoteaza `(merged)` ce poate dovedi git; raporteaza restul ca nedecis.
+
+    Intoarce True daca fisierul a fost modificat. Raportul de la final NU e optional:
+    fara el, un PR aterizat prin rebase ramane tacut in ## Open si fisierul pare
+    sincronizat — defectul masurat pe #247, descris in docstring-ul modulului.
+    """
     state_file = find_state_file()
     if not state_file:
         print("!! STATE.md nu a fost gasit. Treci pe main sau pe ramura cu PR-ul.")
