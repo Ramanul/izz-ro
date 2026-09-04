@@ -1,13 +1,5 @@
 /* Calculator salariu net.
- *
- * De ce e fisier extern si nu <script> inline: CSP-ul sitului e `script-src 'self'` FARA
- * `'unsafe-inline'` (vezi render._write_headers). Varianta inline nu a rulat niciodata pe
- * live -- masurat 2026-08-02 pe https://izz.ro/ghiduri/salariul-minim/: `calcSalariu` era
- * `undefined`, `#calc-results` era gol, si nicio cifra introdusa nu producea nimic.
- * Din acelasi motiv nu exista `onclick=`/`oninput=` in markup: si alea sunt cod inline.
- *
- * Salariul minim vine din `data-salariu-minim` pe container, nu dintr-un literal generat
- * in JS, ca sa nu mai fie nevoie de interpolare de sursa executabila.
+ * Codul este extern deoarece CSP-ul sitului folosește script-src 'self'.
  */
 (function () {
   "use strict";
@@ -43,16 +35,12 @@
     var salariuMinim = parseFloat(box.getAttribute("data-salariu-minim")) || 0;
 
     function calc() {
-      // `min="0"` tine doar de validarea formularului, nu de valoarea citita aici.
       var brut = Math.max(0, parseFloat(input.value) || 0);
       var aplicaFacilitate = Boolean(facilitate && facilitate.checked);
 
-      // OUG 89/2025, art. III: in perioada 1 iulie-31 decembrie 2026, pentru salariatii
-      // eligibili, 200 lei din venitul salarial sunt exceptati de la CAS, CASS si impozit.
-      // Conditiile sunt cumulative; calculatorul confirma automat doar partea verificabila din
-      // cele doua campuri disponibile: brutul trebuie sa fie salariul minim si sa nu depaseasca
-      // plafonul de 4.600 lei. Functia de baza/norma intreaga si istoricul salariului de baza
-      // trebuie confirmate de utilizator prin checkbox.
+      // OUG 89/2025, art. III: facilitatea de 200 lei este condiționată cumulativ.
+      // Interfața solicită utilizatorului confirmarea situației sale; aici verificăm
+      // mecanic salariul minim și plafonul brut disponibil calculatorului.
       var eligibil200 = aplicaFacilitate && brut === salariuMinim && brut <= 4600 && salariuMinim === 4325;
       var sumaNetaxabila = eligibil200 ? 200 : 0;
       var bazaContributii = Math.max(0, brut - sumaNetaxabila);
@@ -60,12 +48,10 @@
       var cas = Math.round(bazaContributii * 0.25);
       var cass = Math.round(bazaContributii * 0.1);
 
-      // Deducere personala de baza, fara persoane in intretinere: art. 77 Cod Fiscal
-      // (Legea 227/2015, modificat OG 16/2022) NU e un procent fix -- e degresiva.
+      // Art. 77 Cod fiscal: deducerea de bază este degresivă.
       var trepte = Math.max(0, Math.ceil((brut - salariuMinim) / 50));
       var rataDeducere = Math.max(0, 20 - trepte * 0.5);
       var deducere = brut > salariuMinim + 2000 ? 0 : Math.round(salariuMinim * rataDeducere / 100);
-      // Art. 77 alin. (2): deducerea se acorda in limita venitului impozabil lunar realizat.
       deducere = Math.min(deducere, Math.max(0, bazaContributii - cas - cass));
 
       var baza = Math.max(0, bazaContributii - cas - cass - deducere);
