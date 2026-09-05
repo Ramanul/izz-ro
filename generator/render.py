@@ -946,8 +946,22 @@ def build(articles: list, mod: dict | None = None) -> None:
             for other in art_slugs.get(a["url"], ()):  
                 if other != s:
                     co[other] = co.get(other, 0) + 1
+        # Departajare la egalitate de co-ocurente. Fara ea, ordinea venea din iterarea lui
+        # `art_slugs[...]`, care e un `set` de siruri — ordinea lui depinde de PYTHONHASHSEED,
+        # randomizat la fiecare proces. `sorted` fiind stabil, egalitatile pastrau acea ordine
+        # aleatoare, iar `[:6]` schimba atunci COMPONENTA listei, nu doar ordinea: doi cititori
+        # pe doua build-uri vedeau alte „Conexiuni". Masurat 2026-09-04, doua randari ale
+        # ACELUIASI commit pe aceleasi date: 945 din 4.307 pagini de subiect diferite.
+        #
+        # Criteriul e IDF-ul, nu alfabetul: la egalitate de co-ocurente o entitate RARA spune
+        # mai mult decat una ubicua — exact principiul pe care `idf` il aplica deja mai jos la
+        # „Articole conectate". Alfabetul ar fi fost la fel de determinist, dar ar fi favorizat
+        # sistematic numele care incep cu `a`; aleatoriul era nepartinitor si instabil, deci
+        # niciunul din cele doua nu e raspunsul. Slug-ul ramane ULTIMA cheie, ca ordinea sa fie
+        # totala: doua entitati cu acelasi numar de articole au si acelasi IDF.
         connections = [(o, ents[o]["name"], n) for o, n in
-                       sorted(co.items(), key=lambda kv: -kv[1])[:6]]
+                       sorted(co.items(),
+                              key=lambda kv: (-kv[1], -idf.get(kv[0], 0.0), kv[0]))[:6]]
         _write(os.path.join(OUT_DIR, "subiect", s, "index.html"),
                subject_tpl.render(**_base_ctx(f"/subiect/{s}/", name=d["name"], slug=s,
                                               articles=sorted(d["articles"],
@@ -1007,11 +1021,23 @@ def build(articles: list, mod: dict | None = None) -> None:
                         common = mine & art_slugs.get(other["url"], set())
                         if len(common) < config.RELATED_MIN_SHARED:
                             continue
-                        weight = sum(idf.get(s, 0.0) for s in common)
+                        # `sorted(common)`, nu `common`: adunarea in virgula mobila NU e
+                        # asociativa, iar `common` e un `set` — aceiasi termeni, insumati in
+                        # alta ordine, dau alt ULP. Masurat 2026-09-04 pe exact cele doua
+                        # articole ramase nedeterministe dupa fixul cheilor de sortare:
+                        # 23.80437088061844 vs 23.804370880618443 (si 18.935162280163738 vs
+                        # 18.93516228016374). Un bit ajunge: `scored.sort` inverseaza doi
+                        # candidati si `[:3]` taie altul. 2 din 26 de candidati per articol.
+                        weight = sum(idf.get(s, 0.0) for s in sorted(common))
                         scored.append((len(common), weight,
-                                       other.get("published") or "", other))
-                scored.sort(key=lambda t: (t[0], t[1], t[2]), reverse=True)
-                related = [t[3] for t in scored[:3]]
+                                       other.get("published") or "", other["url"], other))
+                # URL-ul ca a patra cheie, din aceeasi cauza ca la `connections`: `mine` e
+                # un `set`, iar la egalitate pe toate cele trei chei ordinea ramanea cea de
+                # iterare a lui. Egalitatea completa e rara, deci efectul era mic si tocmai
+                # de-aia a stat nedetectat: 8 pagini de articol din 8.350, intre doua randari
+                # ale aceluiasi commit (masurat 2026-09-04).
+                scored.sort(key=lambda t: (t[0], t[1], t[2], t[3]), reverse=True)
+                related = [t[4] for t in scored[:3]]
             og_image = a.get("cover_url")
             jsonld = _article_jsonld(a)
             if og_image:

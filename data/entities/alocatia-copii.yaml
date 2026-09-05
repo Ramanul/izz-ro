@@ -1,5 +1,6 @@
 # Entitate: Alocația de stat pentru copii
-# Valorile curente sunt verificate pe o sursă oficială a administrației publice.
+# Cuantum verificat pe o sursă oficială publicată în 2026.
+
 id: alocatia-copii
 nume: "Alocația de stat pentru copii"
 tip: valoare_monetara
@@ -10,41 +11,46 @@ valoare_curenta:
   brut: 292
   moneda: RON
   in_vigoare_de: "2026-01-01"
-  act_normativ: "Legea 61/1993; cuantumul aferent anului 2026 este menținut la nivelul anului 2025 prin măsurile fiscal-bugetare în vigoare"
-  sursa_url: "https://ab.prefectura.mai.gov.ro/minuta-sedintei-comisiei-de-dialog-social-a-judetului-alba-din-luna-martie-2026/"
-  descriere_lunga: "Alocația de stat pentru copii este 292 lei/lună pentru copiii între 2 și 18 ani și 719 lei/lună pentru copiii de până la 2 ani, respectiv pentru copiii cu handicap în limitele de vârstă prevăzute de lege."
+  act_normativ: "Legea 61/1993; art. XXV lit. k din Legea 141/2025"
+  sursa_url: "https://legislatie.just.ro/Public/DetaliiDocument/300022"
+  descriere_lunga: "Alocația de stat se menține în 2026 la nivelul aflat în plată în decembrie 2025. Pentru copiii între 2 și 18 ani fără handicap cuantumul este 292 lei/lună; pentru copiii până la 2 ani și pentru copiii cu handicap cuantumul este 719 lei/lună."
   valoare_secundara: 719
-  valoare_secundara_label: "lei/lună pentru copiii de până la 2 ani și pentru copiii cu handicap"
+  valoare_secundara_label: "lei/lună pentru copii până la 2 ani și pentru copiii cu handicap"
 
 sectiuni:
   - titlu: "Cine beneficiază de alocație?"
     continut: >-
-      Alocația de stat se acordă copiilor până la împlinirea vârstei de 18 ani, precum și tinerilor care continuă studiile în condițiile prevăzute de lege. Pentru stabilirea dreptului se aplică regulile din Legea nr. 61/1993 și normele de aplicare.
+      Alocația de stat se acordă copiilor până la 18 ani, iar în situațiile prevăzute de lege poate
+      continua pentru tinerii care urmează cursurile liceale sau profesionale. Acordarea alocației
+      de stat nu este condiționată de venitul familiei.
   - titlu: "Cât este alocația în 2026?"
     continut: >-
-      Pentru 2026, cuantumul confirmat de o instituție publică este de **719 lei/lună** pentru copiii de până la 2 ani și pentru copiii cu handicap în categoriile prevăzute de lege, respectiv **292 lei/lună** pentru ceilalți copii beneficiari din grupa generală. Măsurile fiscal-bugetare pentru 2026 mențin cuantumul la nivelul aflat în plată anterior.
-  - titlu: "Cum verifici situația concretă?"
+      **719 lei/lună** pentru copiii până la 2 ani, pentru copiii cu handicap până la 3 ani și pentru
+      copiii cu handicap între 3 și 18 ani. **292 lei/lună** pentru copiii între 2 și 18 ani fără
+      handicap și pentru tinerii peste 18 ani care continuă studiile în condițiile legii.
+
+      Art. XXV lit. k din Legea nr. 141/2025 menține în anul 2026 alocațiile de stat pentru copii
+      la nivelul acordat sau cuvenit pentru luna decembrie 2025.
+  - titlu: "Cum depui cererea?"
     continut: >-
-      Pentru un caz individual, verifică documentele emise de Agenția Județeană pentru Plăți și Inspecție Socială / agenția competentă și condițiile exacte din legislația în vigoare. Pagina IZZ oferă orientare și sursa oficială, nu o decizie administrativă.
+      Cererea și documentele se depun potrivit procedurii locale aplicabile, de regulă prin primăria
+      sau serviciul de asistență socială de la domiciliu. Verifică lista de documente cerută de
+      autoritatea competentă înainte de depunere.
 
 faq:
-  - q: "Care este cuantumul alocației pentru un copil între 2 și 18 ani?"
-    a: "292 lei pe lună, conform informației oficiale publicate de Instituția Prefectului Alba în martie 2026."
-  - q: "Care este cuantumul pentru un copil de până la 2 ani?"
-    a: "719 lei pe lună. Pentru copiii cu handicap se aplică, în limitele de vârstă prevăzute de lege, cuantumul de 719 lei pe lună."
-  - q: "Unde cer informații pentru situația mea?"
-    a: "La AJPIS/APISMB competentă pentru domiciliul sau reședința ta, în funcție de situația concretă."
+  - q: "Se acordă alocația în funcție de venitul părinților?"
+    a: "Nu. Alocația de stat este un drept distinct de beneficiile sociale condiționate de venit."
+  - q: "Care sunt cuantumurile în 2026?"
+    a: "719 lei pe lună pentru copiii din tranșele speciale prevăzute de lege și 292 lei pe lună pentru copiii între 2 și 18 ani fără handicap."
+  - q: "De ce nu a crescut alocația în 2026?"
+    a: "Legea nr. 141/2025 prevede menținerea în 2026 a alocațiilor de stat pentru copii la nivelul acordat sau cuvenit pentru decembrie 2025."
 
 relatii: {}
-
 verificat: true
 ultima_verificare: "2026-09-04"
-
 monitorizare:
   surse:
-    - url: "https://ab.prefectura.mai.gov.ro/minuta-sedintei-comisiei-de-dialog-social-a-judetului-alba-din-luna-martie-2026/"
-      tip: html
     - url: "https://legislatie.just.ro/Public/DetaliiDocument/300022"
       tip: html
-    - url: "https://beneficiifamiliale.mmuncii.ro/"
+    - url: "https://ab.prefectura.mai.gov.ro/minuta-sedintei-comisiei-de-dialog-social-a-judetului-alba-din-luna-martie-2026/"
       tip: html
