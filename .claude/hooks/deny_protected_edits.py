@@ -24,15 +24,19 @@ def main() -> int:
         return 2
 
     candidate = os.path.abspath(os.path.join(root, path) if not os.path.isabs(path) else path)
-    protected = {
+    workflows = os.path.abspath(os.path.join(root, ".github", "workflows")) + os.sep
+    protected_exact = {
         os.path.abspath(os.path.join(root, "moderation.yaml")),
         os.path.abspath(os.path.join(root, "data", "articles.json")),
         os.path.abspath(os.path.join(root, "data", "feed_cache.json")),
-        os.path.abspath(os.path.join(root, ".github", "workflows", "build.yml")),
+        os.path.abspath(os.path.join(root, "wrangler.jsonc")),
+        os.path.abspath(os.path.join(root, ".claude", "settings.json")),
     }
-    if candidate in protected:
+    protected = candidate in protected_exact or candidate.startswith(workflows)
+    if protected:
         print(
-            f"DENY: direct agent edit blocked for protected file: {os.path.relpath(candidate, root)}",
+            "DENY: direct agent edit blocked for protected control-plane file: "
+            f"{os.path.relpath(candidate, root)}",
             file=sys.stderr,
         )
         return 2
