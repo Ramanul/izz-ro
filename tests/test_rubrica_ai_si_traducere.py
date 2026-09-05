@@ -137,11 +137,12 @@ def test_sursele_straine_isi_declara_limba():
 
 # ------------------------------------------------------------------ redirecturi ---
 def test_articolele_mutate_pe_ai_au_301_de_pe_url_ul_vechi():
-    """Permalinkul contine categoria, deci mutarea schimba URL-ul. Fara 301, fiecare link
-    deja indexat da 404 — problema rezolvata la `zonal` -> `judetean`, dar acolo cu wildcard."""
+    """Redirecturile sunt un registru comun: aici verificam numai migrarile catre AI.
+    Migrarile legitime catre alte zone, inclusiv România Utilă, nu apartin acestui contract."""
     linii = render._redirects_migrare()
-    assert linii, "nu s-a generat niciun redirect pentru articolele migrate"
-    for ln in linii.strip().split("\n"):
+    ai_linii = [ln for ln in linii.strip().split("\n") if ln.split(" ")[1].startswith("/ai/")]
+    assert ai_linii, "nu s-a generat niciun redirect catre rubrica AI"
+    for ln in ai_linii:
         vechi, nou, cod = ln.split(" ")
         assert cod == "301"
         assert nou.startswith("/ai/")
