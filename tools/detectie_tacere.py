@@ -21,11 +21,12 @@ from pathlib import Path
 # GitHub întârzie/omite rulările programate la vârf, iar o alertă permanentă e o alertă
 # ignorată. Măsurat 2026-09-05 (gh run list): monitor.yml cu cron */10 a rulat efectiv la
 # 01:16 / 05:51 / 10:03 (≈4,5h) => plafon 6h. build.yml orar cu poartă ~2h => 6h.
-# smoke.yml orar => 2h (rulări orare confirmate). feedcheck.yml zilnic => 26h.
+# smoke.yml: cron orar, dar măsurat 2026-09-05 rulase la 23:18 / 01:23 / 06:18 / 10:54
+# (goluri de până la ~5h — aceleași întârzieri GitHub) => plafon 6h. feedcheck.yml zilnic => 26h.
 MECANISME = [
     ("build.yml", 6),
     ("monitor.yml", 6),
-    ("smoke.yml", 2),
+    ("smoke.yml", 6),
     ("feedcheck.yml", 26),
 ]
 PLAFON_CONTINUT_ORE = 6  # cadența de conținut e ~2h; 6h fără commit de conținut = înghețat
