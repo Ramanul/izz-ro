@@ -9,11 +9,9 @@
 
 ## Open
 
-- **Coperte din date — felia 2**: harta de cutremur (epicentru USGS) + atașare retroactivă pe știrile
-  de vreme recente; #283 (merged) e baza.
+- **Coperte din date — felia 2**: harta de cutremur (USGS) + retroactiv pe vreme; baza e #283 (merged).
 - **PR #282 — audit unified hardening:** merged 09-05, branch `audit-unified-hardening-2026-09-05`.
-  K1–K14 have explicit closure status in
-  `specs/regim-reguli.md`.
+  K1–K14 closure status: `specs/regim-reguli.md`.
 - **CI closure:** the latest verified run is not yet green. The runtime dependency install is fixed;
   remaining failures are regression-contract mismatches discovered by the suite and must be fixed
   before the audit can be called closed.
