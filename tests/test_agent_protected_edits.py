@@ -5,10 +5,13 @@ import subprocess
 from pathlib import Path
 
 
-def _run(root: Path, payload: dict) -> int:
-    script = root / ".claude" / "hooks" / "deny-protected-edits.py"
+ROOT = Path(__file__).resolve().parents[1]
+SCRIPT = ROOT / ".claude" / "hooks" / "deny-protected-edits.py"
+
+
+def _run(payload: dict) -> int:
     return subprocess.run(
-        ["python", str(script), str(root)],
+        ["python", str(SCRIPT), str(ROOT)],
         input=json.dumps(payload),
         text=True,
         capture_output=True,
@@ -16,16 +19,16 @@ def _run(root: Path, payload: dict) -> int:
     ).returncode
 
 
-def test_protected_file_edit_is_denied(tmp_path):
+def test_protected_file_edit_is_denied():
     payload = {"tool_name": "Edit", "tool_input": {"file_path": "moderation.yaml"}}
-    assert _run(Path(tmp_path), payload) != 0
+    assert _run(payload) != 0
 
 
-def test_regular_file_edit_is_allowed(tmp_path):
+def test_regular_file_edit_is_allowed():
     payload = {"tool_name": "Edit", "tool_input": {"file_path": "generator/process.py"}}
-    assert _run(Path(tmp_path), payload) == 0
+    assert _run(payload) == 0
 
 
-def test_missing_path_fails_closed(tmp_path):
+def test_missing_path_fails_closed():
     payload = {"tool_name": "Write", "tool_input": {}}
-    assert _run(Path(tmp_path), payload) != 0
+    assert _run(payload) != 0
