@@ -5,7 +5,7 @@
 >
 > **Hard cap: ~40 lines of content.**
 
-**Updated:** 2026-09-05 (#283 merged: coperte din date — felia meteo; prima prognoză atașată automat din open-meteo)
+**Updated:** 2026-09-06 (#295 merged: redesign editorial coperte clasice — regenerare progresiva ~1 sapt; #283: felia meteo live)
 
 ## Open
 
