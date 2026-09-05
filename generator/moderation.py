@@ -29,8 +29,16 @@ class ModerationConfigCorrupt(RuntimeError):
     """Control-plane moderation lipsa/corupta; publicarea nu este permisa."""
 
 
-def _valid_string_list(value, key: str) -> bool:
-    return isinstance(value, list) and all(isinstance(item, str) and item.strip() for item in value)
+def _effective(data: dict) -> dict:
+    """Completeaza doar valorile YAML omise (null) cu defaultul tipat.
+
+    O cheie prezenta fara valoare in YAML inseamna null si este echivalenta, in acest
+    control-plane, cu „lista/map goala". Tipurile gresite raman erori; nu facem coercitie.
+    """
+    return {
+        key: (DEFAULTS[key] if data.get(key) is None else data[key])
+        for key in DEFAULTS
+    } | {key: value for key, value in data.items() if key not in DEFAULTS}
 
 
 def _validate(mod: dict) -> dict:
@@ -43,13 +51,14 @@ def _validate(mod: dict) -> dict:
         raise ModerationConfigCorrupt(
             f"{MOD_PATH} contine chei necunoscute: {', '.join(sorted(unknown))}."
         )
+    mod = _effective(mod)
     for key in ("blocklist_urls", "blocklist_keywords", "suppress_sources", "featured", "approved"):
-        value = mod.get(key, DEFAULTS[key])
-        if not _valid_string_list(value, key):
+        value = mod[key]
+        if not isinstance(value, list) or not all(isinstance(item, str) and item.strip() for item in value):
             raise ModerationConfigCorrupt(
                 f"{MOD_PATH}:{key} trebuie sa fie lista de siruri ne-goale."
             )
-    corrections = mod.get("corrections", DEFAULTS["corrections"])
+    corrections = mod["corrections"]
     if not isinstance(corrections, dict):
         raise ModerationConfigCorrupt(f"{MOD_PATH}:corrections trebuie sa fie obiect/map.")
     for url, change in corrections.items():
@@ -62,13 +71,10 @@ def _validate(mod: dict) -> dict:
                 raise ModerationConfigCorrupt(
                     f"{MOD_PATH}: corrections[{url!r}] are un camp invalid: {field!r}."
                 )
-    hold = mod.get("hold_important", DEFAULTS["hold_important"])
-    if not isinstance(hold, bool):
+    if not isinstance(mod["hold_important"], bool):
         raise ModerationConfigCorrupt(f"{MOD_PATH}:hold_important trebuie sa fie boolean.")
 
-    normalized = dict(DEFAULTS)
-    normalized.update(mod)
-    # Copii separate ca sa nu existe efecte secundare intre teste si rularea curenta.
+    normalized = dict(mod)
     for key in ("blocklist_urls", "blocklist_keywords", "suppress_sources", "featured", "approved"):
         normalized[key] = list(normalized[key])
     normalized["corrections"] = dict(normalized["corrections"])
@@ -234,5 +240,5 @@ def apply(articles: list, mod: dict) -> list:
     deduped = _dedup_visible(out)
     removed = len(out) - len(deduped)
     if removed:
-        print(f"   >> dedup editorial: eliminate {removed} duplicate de eveniment inainte de publicare")
+        print(f"   >> dedup editorial: elimina {removed} duplicate de eveniment inainte de publicare")
     return deduped
