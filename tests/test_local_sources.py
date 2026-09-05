@@ -168,7 +168,8 @@ def test_tie_break_asc_judet_localitate(tmp_path):
 def test_integration_pl_sources_count():
     from generator import config
     count = sum(1 for k in config.SOURCES if k.startswith("pl_"))
-    assert 0 < count <= 300  # LOCAL_GOLD_LIMIT default din 2026-09-05 (impact-first: municipii/orase intai)
+    # LOCAL_GOLD_LIMIT (300) + LOCAL_HTML_LIMIT (100) — sursele pl_ fara RSS vin in plus
+    assert 0 < count <= 400
 
 
 def test_pl_sources_ordered_before_gsp():
@@ -234,3 +235,65 @@ def test_dead_slugs_are_slugs_not_keys():
     """Lista contine slug-uri fara prefixul pl_ — altfel filtrul n-ar potrivi nimic."""
     from generator.local_sources import _DEAD_SLUGS
     assert all(not s.startswith("pl_") for s in _DEAD_SLUGS)
+
+
+# --- load_html_sources: surse fara RSS (wp_json / html_list) -------------------
+
+HTML_HEADER = "judet,localitate,url,tip,base_url,item,title,date"
+
+
+def _write_html_csv(tmp_path, lines):
+    path = tmp_path / "html.csv"
+    path.write_text("\n".join([HTML_HEADER] + lines), encoding="utf-8-sig")
+    return str(path)
+
+
+def test_html_sources_wirujeaza_tipurile_si_selectorii(tmp_path):
+    from generator.local_sources import load_html_sources
+    lines = [
+        "ARGES,Municipiul Campulung,http://x.ro/wp-json/wp/v2/posts?per_page=8,wp_json,,,,,",
+        "ALBA,Comuna Stiatica,http://y.ro/stiri,html_list,http://y.ro,article.notice,h2.notice-title,div.notice-date,",
+    ]
+    path = _write_html_csv(tmp_path, lines)
+    result = load_html_sources(path, 10)
+    assert set(result) == {"pl_arges_municipiul_campulung", "pl_alba_comuna_stiatica"}
+    wp = result["pl_arges_municipiul_campulung"]
+    assert wp["type"] == "wp_json" and wp["category"] == "local" and wp["url"].startswith("http://x.ro/")
+    hl = result["pl_alba_comuna_stiatica"]
+    assert hl["type"] == "html_list" and hl["base_url"] == "http://y.ro"
+    assert hl["item"] == "article.notice" and hl["title"] == "h2.notice-title" and hl["date"] == "div.notice-date"
+
+
+def test_html_sources_ignora_tipuri_necunoscute_si_limit_zero(tmp_path):
+    from generator.local_sources import load_html_sources
+    lines = ["ARGES,X,http://x.ro/feed,yes,,,,,,"]  # tip "yes" — necunoscut, exclus
+    path = _write_html_csv(tmp_path, lines)
+    assert load_html_sources(path, 10) == {}
+    lines2 = ["ARGES,X,http://x.ro/wp-json/wp/v2/posts,wp_json,,,,,",
+              "ALBA,Y,http://y.ro/stiri,html_list,http://y.ro,article.notice,h2.notice-title,div.notice-date,"]
+    assert load_html_sources(_write_html_csv(tmp_path, lines2), 0) == {}
+    r2 = load_html_sources(_write_html_csv(tmp_path, lines2), 1)  # municipiu (X nu-i municipiu; X si Y nu au prefix)
+    assert len(r2) == 1  # limit 1 din 2
+    missing = str(tmp_path / "nu_exista.csv")
+    assert load_html_sources(missing, 10) == {}
+
+
+def test_html_sources_ordine_impact(tmp_path):
+    """Municipiul bate orasul bate comuna, la limita — ca la GOLD."""
+    from generator.local_sources import load_html_sources
+    lines = [
+        "ALBA,Comuna Sfar,http://c.ro/wp-json/wp/v2/posts,wp_json,,,,,",
+        "ALBA,Oras Mijloc,http://b.ro/wp-json/wp/v2/posts,wp_json,,,,,",
+        "ALBA,Municipiul Varf,http://a.ro/wp-json/wp/v2/posts,wp_json,,,,,",
+    ]
+    path = _write_html_csv(tmp_path, lines)
+    result = load_html_sources(path, 2)
+    assert set(result) == {"pl_alba_municipiul_varf", "pl_alba_oras_mijloc"}
+
+
+def test_integration_html_sources_in_config():
+    from generator import config
+    html = [k for k, v in config.SOURCES.items() if v.get("type") in ("wp_json", "html_list")]
+    assert 0 < len(html) <= 100  # LOCAL_HTML_LIMIT default
+    for k in html:
+        assert config.SOURCES[k]["category"] == "local" and config.SOURCES[k]["url"].startswith("http")

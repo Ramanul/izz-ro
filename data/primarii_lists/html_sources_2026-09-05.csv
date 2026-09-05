@@ -1,0 +1,17 @@
+judet,localitate,url,tip,base_url,item,title,date
+ARAD,LIVADA,https://livada-arad.ro/wp-json/wp/v2/posts?per_page=8,wp_json,,,,
+BOTOSANI,CONCESTI,https://primariaconcesti.ro/wp-json/wp/v2/posts?per_page=8,wp_json,,,,
+CONSTANTA,ORAS TECHIRGHIOL,https://www.primariatechirghiol.ro/wp-json/wp/v2/posts?per_page=8,wp_json,,,,
+CONSTANTA,ORAS EFORIE,https://www.primariaeforie.ro/wp-json/wp/v2/posts?per_page=8,wp_json,,,,
+BIHOR,LAZARENI,https://primarialazareni.ro/wp-json/wp/v2/posts?per_page=8,wp_json,,,,
+GORJ,RUNCU,https://runcugorj.ro/wp-json/wp/v2/posts?per_page=8,wp_json,,,,
+IASI,DUMESTI,http://www.comunadumesti.ro/wp-json/wp/v2/posts?per_page=8,wp_json,,,,
+GORJ,ANINOASA,http://www.primariaaninoasa.ro/wp-json/wp/v2/posts?per_page=8,wp_json,,,,
+DAMBOVITA,ANINOASA,https://www.primariaaninoasa.ro/wp-json/wp/v2/posts?per_page=8,wp_json,,,,
+MEHEDINTI,VANATORI,http://www.clvinatori.ro/wp-json/wp/v2/posts?per_page=8,wp_json,,,,
+HUNEDOARA,BAITA,https://baita.ro/wp-json/wp/v2/posts?per_page=8,wp_json,,,,
+ALBA,CRACIUNELU DE JOS,https://www.craciuneludejos.ro/stiri,html_list,https://www.craciuneludejos.ro,article.notice,h2.notice-title,div.notice-date
+BIHOR,TINCA,https://www.comuna-tinca.ro/wp-json/wp/v2/posts?per_page=8,wp_json,,,,
+GORJ,LELESTI,https://www.primarialelesti.ro/stiri,html_list,https://www.primarialelesti.ro,article.notice,h2.notice-title,div.notice-date
+GORJ,SAULESTI,https://www.primariasaulesti.ro/stiri,html_list,https://www.primariasaulesti.ro,article.notice,h2.notice-title,div.notice-date
+MURES,CUCERDEA,https://www.e-comune.ro/primaria-cucerdea-ms/stiri,html_list,https://www.e-comune.ro/primaria-cucerdea-ms,article.notice,h2.notice-title,div.notice-date
