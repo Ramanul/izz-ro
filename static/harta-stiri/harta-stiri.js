@@ -759,10 +759,29 @@
   // CODEAZA volumul de stiri, deci marirea ei uniforma ar sterge informatia. Calea corecta e
   // zona de atins mai mare decat desenul -- exact ce recomanda si Apple HIG (44pt) si Material
   // (48dp): pictograma ramane mica, zona din jurul ei creste.
+  // ORDINEA (audit harta, P0): interiorul clar de poligon castiga inaintea bulinelor. O bulina
+  // are raza de desen + 10px de toleranta si sta langa granita județului ei; fara regula asta,
+  // un click clar primit in județul A, langa granita cu B, putea fi furat de bulina lui B.
+  // Pentru clickul tintit pe bulina nimic nu se schimba: bulina sta in poligonul propriului
+  // judet, iar acolo interiorul intoarce exact acelasi judet.
 
-  function countyAtPoint(ctx, point) {
-    const inside = state.paths.find((e) => e.count > 0 && ctx.isPointInPath(e.path, point.x, point.y));
-    if (inside) return inside;
+  function countyFillAtPoint(ctx, point, { includeEmpty = false } = {}) {
+    let best = null;
+    for (const e of state.paths) {
+      if (!includeEmpty && !(e.count > 0)) continue;
+      if (!ctx.isPointInPath(e.path, point.x, point.y)) continue;
+      // Enclavele: Bucurestiul e desenat in inelul Ilfovului, iar datele nu modeleaza mereu
+      // enclavele ca gauri, deci un punct din Bucuresti poate fi "inside" si pentru Ilfov.
+      // Poligonul cel mai mic castiga -- acolo e singura intentie geometrica posibila.
+      const area = e.bounds
+        ? (e.bounds.maxX - e.bounds.minX) * (e.bounds.maxY - e.bounds.minY)
+        : Infinity;
+      if (!best || area < best.area) best = { ...e, area };
+    }
+    return best || null;
+  }
+
+  function countyEdgeAtPoint(ctx, point) {
     // Toleranta pe contur pentru judetele mici (Ilfov, Bucuresti): 10px CSS, transformata in
     // unitati viewBox ca sa insemne aceeasi distanta reala pe orice ecran. `lineWidth` se umfla
     // DOAR pentru interogare si se reseteaza imediat, deci desenul nu se schimba deloc.
@@ -918,6 +937,15 @@
         picker.appendChild(button);
         if (button.dataset.uat === focusedKey) button.focus();
       }
+      // Tastatura nu trebuie sa-si piarda locul cand pickerul se schimba din judete in UAT-uri:
+      // niciun buton UAT nu poarta cheia judetului (dataset.uat e cod SIRUTA), deci
+      // refocalizarea de mai sus nu gaseste nimic si focusul cade pe body -- acelasi mod de
+      // esec reparat in IZZ-0194, reaparut insa pe tranzitia judet -> lista UAT. Primul UAT
+      // e o tinta sigura; pentru utilizatorul de mouse focusedKey e null si nu i se fura focusul.
+      if (focusedKey && !picker.contains(document.activeElement)) {
+        const first = picker.querySelector("button[data-uat]");
+        if (first) first.focus();
+      }
       syncUatHighlight();
       return;
     }
@@ -1041,11 +1069,14 @@
     } else {
       // Transformarea se reafirma explicit inainte de hit-test: buildMap() o lasa setata, dar
       // a te baza pe ordinea apelurilor face hit-testul sa cada silentios la prima schimbare.
+      // Cascada: (1) interior clar de poligon, (2) bulina cea mai apropiata, (3) margine cu
+      // toleranta. Vezi comentariul de la countyFillAtPoint pentru de ce poligonul e primul.
       const ctx = canvas.getContext("2d");
       applyViewTransform(ctx, canvas, view);
       const dp = devicePointForEvent(canvas, event);
-      const entry = closestHit(p, state.paths, (e) => e.marker)
-        || (dp && countyAtPoint(ctx, dp));
+      const entry = (dp && countyFillAtPoint(ctx, dp))
+        || closestHit(p, state.paths, (e) => e.marker)
+        || (dp && countyEdgeAtPoint(ctx, dp));
       if (entry) {
         if (state.level === "regional") {
           const regions = state.map?.regiuni || {};

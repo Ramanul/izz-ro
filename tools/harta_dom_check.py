@@ -1,6 +1,9 @@
 #!/usr/bin/env python
-"""Verificare DOM randat pentru harta stirilor. Ruleaza cu serverul local pornit:
-   python -m http.server 8765 --directory static/harta-stiri
+"""Verificare DOM randat pentru harta stirilor. Ruleaza cu serverul local pornit DIN RADACINA
+   repo-ului -- index.html foloseste cai absolute (/static/...), deci un server din
+   static/harta-stiri ar lasa JS-ul si CSS-ul pe 404 si pagina blocata in "Se încarcă…":
+   python -m http.server 8765
+   MAP_URL=http://localhost:8765/static/harta-stiri/ python tools/harta_dom_check.py
 
 Asserteaza pe STRUCTURA VIZIBILA si pe COMPORTAMENT OBSERVAT (id-uri, taguri, pixeli, clickuri),
 nu pe clase CSS si nu pe identificatori din sursa -- de doua ori in repo-ul asta o garda a stat
@@ -209,6 +212,129 @@ def felia4_hittest(p):
     check(not county_selected(p), "derularea cu degetul pe harta NU selecteaza un judet")
     reset(p)
 
+def hit_ordin_fara_furt(p):
+    """Ordinea cascadei (audit harta, P0): un click clar primit in interiorul poligonului unui
+    judet nu poate fi furat de bulina unui vecin ajunsa in raza de toleranta peste granita.
+    Ground truth = geometria din map.json, calculata in pagina cu acelasi Path2D + isPointInPath
+    pe care le foloseste aplicatia, in acelasi spatiu (px de canvas, transformarea aplicata --
+    IZZ-0193). Daca in datele curente nu exista niciun punct in care vechea ordine greseA,
+    verificarea se raporteaza NEVERIFICAT, nu verde -- nu se inventeaza o reusita."""
+    print("\nHIT-TEST ORDINE -- bulina nu fura poligonul clar atins")
+    # Bucuresti/Ilfov stau in JUMATATEA DE SUD a canvasului: la 1280x900 punctele lor cad sub
+    # fold, iar un click in afara viewportului nu atinge canvasul (elementFromPoint -> none).
+    # Aducem harta in viewport INAINTE de a captura rect si de a calcula coordonatele.
+    p.locator("#map canvas.map-canvas").scroll_into_view_if_needed()
+    p.wait_for_timeout(150)
+    truth = p.evaluate("""async () => {
+      const d = await (await fetch('./data/map.json')).json();
+      const vb = String(d.map.viewbox).trim().split(/\\s+/).map(Number);
+      const c = document.querySelector('#map canvas.map-canvas');
+      const scratch = document.createElement('canvas');
+      scratch.width = c.width; scratch.height = c.height;
+      const ctx = scratch.getContext('2d');
+      ctx.setTransform(c.width / vb[2], 0, 0, c.height / vb[3],
+                       -vb[0] * c.width / vb[2], -vb[1] * c.height / vb[3]);
+      const paths = {}, bounds = {};
+      for (const [county, pd] of Object.entries(d.map.judete)) {
+        try { paths[county] = new Path2D(pd); } catch { continue; }
+        const nums = String(pd).match(/-?\\d+(?:\\.\\d+)?/g).map(Number);
+        let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
+        for (let i = 0; i + 1 < nums.length; i += 2) {
+          minX = Math.min(minX, nums[i]); minY = Math.min(minY, nums[i + 1]);
+          maxX = Math.max(maxX, nums[i]); maxY = Math.max(maxY, nums[i + 1]);
+        }
+        bounds[county] = { minX, minY, maxX, maxY };
+      }
+      // Numarul de EVENIMENTE pe judet, identic cu itemsForView la nivel "all" -- raza bulinei
+      // se calculeaza din el, nu din articolele brute.
+      const keys = new Map(), counts = {};
+      for (const a of d.articles || []) {
+        if (!a.county) continue;
+        const k = a.event_id || `${a.slug || a.title}|${a.county}|${a.published}`;
+        if (!keys.has(k)) keys.set(k, a.county);
+      }
+      for (const county of keys.values()) counts[county] = (counts[county] || 0) + 1;
+      const rect = c.getBoundingClientRect();
+      const tolVb = 10 * (vb[2] / rect.width);  // 10px CSS -> unitati viewBox, ca in hitDistance
+      const markers = {};
+      for (const [county, b] of Object.entries(bounds)) {
+        if (!counts[county]) continue;
+        const radius = Math.max(7, Math.min(18, 6 + Math.sqrt(counts[county]) * 1.8));
+        markers[county] = {
+          x: (b.minX + b.maxX) / 2, y: (b.minY + b.maxY) / 2, radius,
+        };
+      }
+      const area = (b) => (b.maxX - b.minX) * (b.maxY - b.minY);
+      const found = [];
+      const NX = 48, NY = 30;
+      for (let i = 1; i < NX && found.length < 3; i += 1) {
+        for (let j = 1; j < NY && found.length < 3; j += 1) {
+          const xd = Math.round(c.width * i / NX), yd = Math.round(c.height * j / NY);
+          const pv = { x: vb[0] + (xd / c.width) * vb[2], y: vb[1] + (yd / c.height) * vb[3] };
+          let inside = null;
+          for (const [county, path] of Object.entries(paths)) {
+            if (!ctx.isPointInPath(path, xd, yd)) continue;
+            if (!inside || area(bounds[county]) < area(bounds[inside])) inside = county;
+          }
+          if (!inside || !counts[inside]) continue;
+          let steal = null, bestDist = Infinity;
+          for (const [county, m] of Object.entries(markers)) {
+            if (county === inside) continue;
+            const dist = Math.hypot(pv.x - m.x, pv.y - m.y);
+            if (dist <= m.radius + tolVb && dist < bestDist) { bestDist = dist; steal = county; }
+          }
+          // Cazul discriminator: vechea ordine (bulina intai) ar fi selectat `steal`,
+          // desi punctul e clar in interiorul lui `inside`.
+          if (steal) found.push({
+            xCss: rect.x + (xd / c.width) * rect.width,
+            yCss: rect.y + (yd / c.height) * rect.height,
+            inside, steal,
+          });
+        }
+      }
+      // Enclavele: centrul Bucurestiului trebuie sa intoarca BUCURESTI, nu Ilfov, chiar daca
+      // poligonul Ilfovului il contine geometric.
+      let enclave = null;
+      if (bounds.BUCURESTI && counts.BUCURESTI) {
+        const b = bounds.BUCURESTI;
+        const xd = Math.round(((b.minX + b.maxX) / 2 - vb[0]) * c.width / vb[2]);
+        const yd = Math.round(((b.minY + b.maxY) / 2 - vb[1]) * c.height / vb[3]);
+        enclave = {
+          xCss: rect.x + (xd / c.width) * rect.width,
+          yCss: rect.y + (yd / c.height) * rect.height,
+          inBuc: !!paths.BUCURESTI && ctx.isPointInPath(paths.BUCURESTI, xd, yd),
+          inIlfov: !!paths.ILFOV && ctx.isPointInPath(paths.ILFOV, xd, yd),
+        };
+      }
+      return { found, enclave };
+    }""")
+
+    if truth["enclave"] and truth["enclave"]["inBuc"]:
+        p.mouse.click(truth["enclave"]["xCss"], truth["enclave"]["yCss"])
+        p.wait_for_timeout(120)
+        url = p.evaluate("() => location.search")
+        check("judet=BUCURESTI" in url,
+              f"click in centrul Bucurestiului selecteaza BUCURESTI, nu Ilfov ('{url}')")
+        reset(p)
+    elif truth["enclave"]:
+        skip(f"enclava Bucuresti: punctul de test nu e in poligonul lui (inBuc={truth['enclave']['inBuc']})")
+    else:
+        skip("enclava Bucuresti: BUCURESTI nu are stiri in datele curente")
+
+    if not truth["found"]:
+        skip("niciun punct de furt in grila curenta: nicio bulina de vecin nu ajunge in raza de "
+             "toleranta peste un poligon clar atins -- vechea ordine n-ar fi gresit niciunde azi")
+        return
+    for case in truth["found"]:
+        p.mouse.click(case["xCss"], case["yCss"])
+        p.wait_for_timeout(120)
+        url = p.evaluate("() => location.search")
+        check(f"judet={case['inside']}" in url,
+              f"click clar in {case['inside']} (bulina lui {case['steal']} e in raza) selecteaza "
+              f"{case['inside']}, nu {case['steal']} ('{url}')")
+        reset(p)
+
+
 def felia2_localitate(p):
     print("\nFELIA 2 -- click pe localitate nu fura campul de cautare")
     r = canvas_rect(p)
@@ -308,8 +434,22 @@ def felia5_county_picker(p):
     p.wait_for_timeout(200)
     after = panel_count(p)
     check(after != before, f"Enter pe buton filtreaza lista ('{before}' -> '{after}')")
-    check(p.evaluate("() => document.activeElement.getAttribute('aria-pressed')") == "true",
-          "butonul selectat primeste aria-pressed='true'")
+    # Starea vizibila de selectie are doua forme legitime: butonul de judet cu aria-pressed
+    # (daca UAT-urile județului nu s-au incarcat inca) sau pickerul deja trecut pe lista de
+    # UAT-uri (comportament proaspat implementat -- butoanele UAT au aria-haspopup, nu
+    # aria-pressed). Incarcarea UAT e asincrona, deci intre cele doua e o cursa care nu tine
+    # de felia 5; aserțiunea accepta ambele, nu o singura fereastra de timp norocoasa.
+    sel = p.evaluate("""() => {
+      const a = document.activeElement;
+      const inPicker = !!(a && a.closest && a.closest('#county-picker'));
+      return {
+        pressed: inPicker && a.getAttribute('aria-pressed') === 'true',
+        uats: inPicker && a.hasAttribute('data-uat'),
+        popup: inPicker ? a.getAttribute('aria-haspopup') : null,
+      };
+    }""")
+    check(sel["pressed"] or sel["uats"],
+          f"selectia e vizibila pe buton (aria-pressed={sel['pressed']}, buton UAT={sel['uats']}, haspopup={sel['popup']})")
 
     # Capcana de blocare: picker-ul se reconstruieste din stirile VIZIBILE, iar dupa selectie
     # vizibile sunt doar ale judetului ales. Daca ar ramane un singur buton, utilizatorul de
@@ -419,6 +559,7 @@ def main():
         felia1_lista(p)
         felia7_cautare(p)
         felia4_hittest(p)
+        hit_ordin_fara_furt(p)
         felia2_localitate(p)
         felia5_county_picker(p)
         felia6_url(p)
