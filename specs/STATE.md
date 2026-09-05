@@ -15,9 +15,14 @@
 > Garda `incalcari_pr_fantoma` in `tests/test_pr_fantoma.py` pica daca `## Open` numeste un PR
 > care are deja commit de merge pe main (fara adnotarea `(merged)`).
 
-**Updated:** 2026-09-03 (#252 merged: dim. 4 + dim. 7 pe main; CI verde, garzile trec)
+**Updated:** 2026-09-05 (#283 merged: coperte din datele evenimentului — felia meteo;
+suita 1351 passed local, restul eșecurilor dovedit preexistent pe main sau artefact
+Windows-local — fixture-ul de randare depășește 900 s pe mașina locală, render-only complet)
 
 ## Open
+
+- **Coperte din date — următoarea felie**: harta de cutremur (epicentru USGS) + atașare
+  retroactivă pe știrile de vreme recente; PR #283 (merged).
 
 - **F4 (#241, merged)**: §18 in L1. Urmatorii: §12, §14, §20; **§17 NU**.
 - **K12 (`IZZ-0255`)**: rezumat zilnic, spec nescris; porneste de la `editorial-quality.yml`.
