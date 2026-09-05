@@ -13,6 +13,7 @@ from . import config, guard, cluster
 from .util import normalize_url, title_tokens
 
 MOD_PATH = os.path.join(config.ROOT, "moderation.yaml")
+REQUIRE_HUMAN_GATE_ENV = "IZZ_REQUIRE_HUMAN_GATE"
 
 DEFAULTS = {
     "blocklist_urls": [],
@@ -79,6 +80,19 @@ def _validate(mod: dict) -> dict:
         normalized[key] = list(normalized[key])
     normalized["corrections"] = dict(normalized["corrections"])
     return normalized
+
+
+def _human_gate_required() -> bool:
+    """Citeste poarta de productie; orice valoare necunoscuta este fail-closed."""
+    raw = os.environ.get(REQUIRE_HUMAN_GATE_ENV)
+    if raw is None or not raw.strip():
+        return False
+    value = raw.strip().lower()
+    if value not in {"true", "false"}:
+        raise ModerationConfigCorrupt(
+            f"{REQUIRE_HUMAN_GATE_ENV} trebuie sa fie exact true/false, nu {raw!r}."
+        )
+    return value == "true"
 
 
 def load() -> dict:
@@ -198,7 +212,7 @@ def apply(articles: list, mod: dict) -> list:
     suppress = set(mod["suppress_sources"])
     corrections = {normalize_url(u): c for u, c in mod["corrections"].items()}
     featured = {normalize_url(u) for u in mod["featured"]}
-    hold = bool(mod.get("hold_important"))
+    hold = bool(mod.get("hold_important")) or _human_gate_required()
     approved = {normalize_url(u) for u in (mod.get("approved") or [])}
 
     out = []
@@ -232,8 +246,8 @@ def apply(articles: list, mod: dict) -> list:
         out.append(a)
 
     if held:
-        print(f"   >> hold_important: {len(held)} sinteze C RETINUTE, nepublicate. "
-              "Aproba adaugand URL-ul in lista `approved` din moderation.yaml:")
+        print(f"   >> human gate: {len(held)} sinteze C RETINUTE, nepublicate. "
+              "Aprobarea se face adaugand URL-ul in lista `approved` din moderation.yaml:")
         for a in held:
             print(f"      - {(a.get('title') or '')[:70]!r} | {_article_url(a)}")
 
