@@ -45,12 +45,34 @@ def test_workflow_niciodata_rulat_si_tacut_este_constatare(monkeypatch):
     assert len(probleme) == 1
 
 
-def test_main_exit_2_cand_gh_esueaza(monkeypatch, capsys):
+def test_main_exit_2_cand_gh_esueaza(monkeypatch, tmp_path, capsys):
+    monkeypatch.chdir(tmp_path)
     monkeypatch.setattr(dt, "ultimul_commit_continut",
                         lambda acum, repo: (_ for _ in ()).throw(RuntimeError("gh lipsa")))
     cod = dt.main()
     assert cod == 2
     assert "NECLAR" in capsys.readouterr().out
+    # NECLAR e tot incident: alerta.md se scrie si la 2, altfel pasul de alerta din
+    # workflow murea pe "open alerta.md: no such file or directory" (prins real).
+    assert "NECLAR" in (tmp_path / "alerta.md").read_text(encoding="utf-8")
+
+
+def test_api_call_foloseste_get_explicit(monkeypatch):
+    # gh api cu flag-uri de campuri face implicit POST; POST /commits = 404.
+    apeluri = []
+
+    def fals(args, **kwargs):
+        apeluri.append(list(args))
+        class R:
+            returncode = 0
+            stdout = "2026-09-05T10:00:00Z\n"
+            stderr = ""
+        return R()
+
+    monkeypatch.setattr(dt.subprocess, "run", fals)
+    dt.ultimul_commit_continut(datetime.now(timezone.utc), "Ramanul/izz-ro")
+    assert apeluri, "api nu a fost chemat"
+    assert "-X" in apeluri[0] and "GET" in apeluri[0]
 
 
 def test_main_exit_1_si_scrie_alerta_la_tacere(monkeypatch, tmp_path, capsys):
