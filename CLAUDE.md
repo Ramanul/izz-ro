@@ -77,6 +77,7 @@ Spec îndeplinită · comanda relevantă trecută · lint/test/type-check dispon
 - **Formula de atribuire — PERMANENTĂ (decizie proprietar 2026-07-04).** Exact un element `Sursă` / `Surse`, după corp; carduri cu `sources-inline`, articol cu `sources-box`, hero cu aside-ul φ; link extern cu `target="_blank" rel="noopener noreferrer"`.
 - **Nu confunda unealta cu capacitatea.** O unealtă existentă nu dovedește că suprafața este accesibilă în sesiunea curentă.
 - **O limitare se declară cu comanda care a eșuat, nu din memorie.**
+- **Necunoscutul se închide, nu se raportează.** „Rămâne necunoscut" e concluzie validă DOAR după ce ai numit experimentul care l-ar decide și l-ai rulat, dacă e ieftin și reversibil. Cere acces pe care nu-l ai? Spune ce anume lipsește și cine îl are — nu doar că nu știi.
 - **O limită se declară mecanic, nu prin impresie.** Plafoanele canonice au sintaxă proprie și gărzi în `tests/test_reguli.py`.
 - **Atribuire și legalitate.** Nu confunda linkul către sursă cu dreptul de autor asupra materialului.
 - **Titluri: 6–16 cuvinte este ținta editorială.** `TITLE_MAX_WORDS = 22` este hard safety ceiling; normativul este `REGULI-SINTEZA.md §6`.
@@ -107,6 +108,7 @@ Regula completă este în `.claude/reguli/13-frontend.md` și este injectată de
 
 ### 14b. Munca de fundal
 Un task per declanșare, luat din `specs/STATE.md`; nu inventa muncă și nu atinge decizii de proprietar. Se oprește și raportează la ambiguități. Fără auto-merge.
+- **Nicio scutire.** §5, §16, §7 și §8 se aplică unei rulări de fundal identic. Orice mai larg — auto-merge, backlog inventat, o a doua buclă concurentă — rămâne interzis de §14.
 
 ## 15. Delegare
 Sub-agenții sunt opționali și trebuie folosiți când reduc costul net. Pentru lucrări paralele folosește `isolation: "worktree"`; doi agenți nu scriu aceeași ramură.
