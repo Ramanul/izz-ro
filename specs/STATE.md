@@ -21,25 +21,25 @@
 
 - **F4 (#241, merged)**: §18 in L1. Urmatorii: §12, §14, §20; **§17 NU**.
 - **K12 (`IZZ-0255`)**: rezumat zilnic, spec nescris; porneste de la `editorial-quality.yml`.
-- **PR-uri deschise:** #247 prospetime 72h (`fix/home-fresh-72h-v2`, helper+wiring+6 teste,
-  DEBLOCAT de #248 — CI-ul trece dupa ce aduce main in ramura). Owner: #207 #214 #235.
-  (#253 merged; #252 merged; #250 merged; #248 merged; #244 merged; #225/#240 closed. Fiecare
-  cere adnotarea lui, pe aceeasi linie — intr-o lista `#A/#B merged` garda o vede doar pe ultima.)
+- **PR-uri deschise:** #247 (merged 09-04 prin REBASE — git nu-l poate dovedi; `sync_state.py`
+  il da acum ca „nu pot decide"). Owner: #207 #214 #235. Alte 8 deschise 09-04 de ceilalti
+  agenti (#262-#277) — le acopera garda din #264. #279: felia copertilor cu harta.
+  (#253 merged; #252 merged; #250 merged; #248 merged; #244 merged; #225/#240 closed — fiecare pe aceeasi linie, altfel garda o vede doar pe ultima.)
 - **CI paralelizat (#248)**: numele jobului `pytest` NU se schimba. `ramanul-triage-blockers`
   (e1c8fbe2) e vie si arunca tacut articole legitime (`IZZ-0266`). Debitul e limitat de
   PLANIFICATORUL GitHub — 4,7 porniri/zi, nu 12 (`IZZ-0292`); sect. 17 ramane valabila.
 - **PLASA pentru restructurare (`IZZ-0271`)**: `tools/echivalenta.py` amprenteaza `output/`;
   `tools/mutanti.py --regresie` (~10 s) — inainte de orice refactor pe cluster/select/geo/util/
-  guard. Coverage 71%, mutanti ucisi 81%, `render.py` cel mai rau pe AMBELE axe (`IZZ-0280`/
-  `IZZ-0281`). NEVERIFICAT: determinismul intre DOUA randari (2x10 min). Cuplarea reala nu e
-  prin importuri — dosar `specs/arhitectura-cuplare.md`, NU re-cerceta.
+  guard. Coverage 71%, mutanti ucisi 81%, `render.py` cel mai rau pe ambele (`IZZ-0280`/`-0281`).
+  Determinism VERIFICAT 09-04: 953 fisiere difereau intre doua randari (3 locuri in `render.py`:
+  `set` iterat x2 + `sum` pe float, neasociativ), reparat in #254 (merged). Cuplarea reala nu e prin importuri — `specs/arhitectura-cuplare.md`, NU re-cerceta.
 - **Garda anti-amanare (`tests/test_registru_amanari.py`, `IZZ-0293`)**: un rand `propus` cu
   `decident` = agent expira in 14 zile. Iesiri: fa-l, treci-l pe om, inchide-l cu motiv (un rand
   nou care il leaga il inchide). La scriere: 12 amanari catre mine -> 0.
 - **Din `specs/atribuire-cercetare-si-plan.md`** — E1 + E4 cer decizia proprietarului.
 - **Coperti cu silueta judetului (draft PR)**: `htmlart._t_harta`, geometrie DOMENIU PUBLIC;
   2.923 eligibile, dar doar cele generate de acum incolo (`IZZ-0163`); judet DOAR din cheia
-  sursei. **Pozele NU repara copertile** — 59 PD/CC0 in cache, 0,38% (`IZZ-0304`); OSM respins.
+  sursei. **Pozele NU repara copertile** — 59 PD/CC0 in cache, 0,38% (`IZZ-0308`); OSM respins.
 
 ## Standing rules that keep being rediscovered — do not "fix" these
 

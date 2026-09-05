@@ -12,7 +12,30 @@ on:
   pull_request:
     branches: [main]
   push:
-    branches: [main]
+    # `claude/**` adaugat 2026-09-03, ca PLASA sub `pull_request`. Masurat pe PR #254: nici
+    # `opened`, nici `synchronize` n-au pornit VREUN workflow pe branch -- zero rulari, si
+    # pentru codeql si semgrep, nu doar aici -- desi acelasi `pull_request` pornise normal pe
+    # #235 (tot branch de sesiune) si pe #252 cu 13 minute inainte.
+    # DOUA ipoteze ridicate si amandoua infirmate prin masuratoare, in aceeasi tura:
+    #   (a) regula anti-recursie a GitHub (evenimente produse cu un token de GitHub App nu
+    #       pornesc workflow-uri) -- infirmata de linia asta: push-ul care a adaugat-o a
+    #       pornit rularea 502 automat, de la aceeasi identitate care impinsese si inainte;
+    #   (b) "PR-ul deschis prin conector nu emite un pull_request care declanseaza" --
+    #       infirmata de sonda #255: PR deschis IDENTIC (acelasi conector, draft, branch
+    #       `claude/*`, aceeasi identitate) a pornit CINCI workflow-uri in 2 secunde.
+    # Ce ramane: esecul de pe #254 a fost TRANZITORIU, nu structural -- push la 03:17:45,
+    # PR deschis la 03:18, si nimic nu s-a declansat in fereastra aia. Cauza exacta ramane
+    # neconfirmata (ar cere audit log-ul repo-ului).
+    # DECI de ce ramane linia, desi evenimentul e rar: consecinta lui e tacuta. Un PR care nu
+    # ruleaza NIMIC arata, din afara, identic cu unul care ruleaza si trece.
+    # CE COSTA, spus explicit: pe branch-urile unde `pull_request` merge, un push care atinge
+    # `paths` produce ACUM doua rulari, nu una. Nu se unifica prin `concurrency`: grupul ar
+    # trebui sa fie comun, iar atunci `cancel-in-progress` ar putea anula tocmai rularea de
+    # `pull_request` -- singura care testeaza codul IMBINAT cu main. Doua rulari pe minute
+    # gratuite (repo public) bat o rulare anulata nedeterminist.
+    # Fara ea, un PR care nu ruleaza NIMIC arata identic cu unul care ruleaza si trece.
+    # Filtrul `paths` de mai jos se aplica si aici, deci un branch de continut nu arde minute.
+    branches: [main, 'claude/**']
     paths:
       - '**.py'
       - 'requirements.txt'
@@ -21,6 +44,15 @@ on:
       - '.github/workflows/editorial-quality.yml'
       - 'tools/title_quality_audit.py'
       - 'tools/qa_check.py'
+      # Caile de mai jos NU contin cod de pipeline -- sunt ce CITESC garzile din
+      # tests/test_reguli.py, si de-aia trebuie sa declanseze suita. Fara ele, o schimbare
+      # in chiar materialul pazit trece neverificata pe push: `buget_de_pornire()` RULEAZA
+      # hook-ul, garda de trasabilitate citeste registrul, iar plafoanele se masoara pe
+      # CLAUDE.md, specs/STATE.md si specs/infrastructura.md. O garda care nu ruleaza cand
+      # se schimba ce pazeste e decor.
+      - 'CLAUDE.md'
+      - 'specs/**'
+      - '.claude/**'
   workflow_dispatch: {}
 
 permissions:
