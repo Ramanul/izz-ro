@@ -132,3 +132,93 @@ python tools/greutate.py 12              # top 12 pagini + compoziția pe tip
 `base.html` spune exact care: `static/styles.css` (51.298) + cele două `preload` woff2,
 Playfair-800 și JetBrainsMono-700 (25.280) + `theme.js` și `personalize.js` (18.452) =
 **95.030 octeți = 92,8 KB**. Reverificat astfel pe 2026-09-04, independent de randare.
+
+---
+
+## Corecție 2026-09-05: cifrele de mai sus sunt pe DISC, iar pe sârmă compoziția se inversează
+
+Secțiunea „Ce NU spun cifrele astea" declara onest că măsurătoarea e pe disc și presupunea în
+paranteză *„CSS-ul de 50 KB probabil pleacă sub 12 KB comprimat"*. Presupunerea a fost măsurată:
+
+| | pe disc | pe sârmă (gzip -9) | cotă din șasiu, pe sârmă |
+|---|---|---|---|
+| `styles.css` | 51.298 | **11.769** | 27% |
+| fonturi preload (2 × woff2) | 25.280 | **25.280** — deja comprimate | **58%** |
+| `theme.js` + `personalize.js` | 18.452 | **6.638** | 15% |
+| **șasiu** | **95.030 = 92,8 KB** | **43.687 = 42,7 KB** | |
+
+HTML-ul unui articol: mediana 14.656 → **3.972** octeți gzip (n=400 pagini reale, raport 0,27).
+Cloudflare servește brotli, deci cifrele de pe sârmă sunt limite superioare.
+
+**Ce schimbă asta.** Șasiul e sub jumătate din cifra publicată. Și, mai important, **ordinea se
+inversează**: pe disc CSS-ul e cel mai mare element (54% din șasiu), pe sârmă sunt fonturile (58%),
+fiindcă woff2 e deja comprimat și nu se mai strânge. Constatarea „șasiul costă de 7× cât conținutul"
+se *întărește* pe sârmă, nu se înmoaie — jumătatea de conținut se comprimă la 27%, jumătatea de
+șasiu aproape deloc.
+
+**Deci întrebarea deschisă de mai sus țintea al doilea element ca mărime, nu primul.** [OPINIE]
+Rămâne totuși întrebarea corectă de pus prima: fonturile sunt mari dar aproape netăiabile (deja
+subset românesc, exact două fețe preload, iar scoaterea uneia e decizie de design, §8), pe când
+CSS-ul e tăiabil. „Cel mai mare" și „cel mai tăiabil" nu sunt același lucru.
+
+## Răspunsul la întrebarea deschisă: cât din CSS se aplică unei pagini de articol
+
+Măsurat cu `tools/css_folosit.mjs` (Chromium prin CDP, `CSS.startRuleUsageTracking` +
+`takeCoverageDelta`), pe 6 articole + cele trei indexuri, în două viewporturi.
+
+```
+51.298 octeti  = 41,6 KB in reguli (363)  +  8,5 KB comentarii/spatii/preambul @media
+```
+
+Contabilitate pe octeți de regulă, ca să fie comparabilă cu restul dimensiunii. **Nu un procent
+unic**, fiindcă o regulă neatinsă la prima randare nu e o regulă moartă:
+
+| stare condusă | prima dată folosit aici |
+|---|---|
+| prima randare | 12,7 KB · 89 reguli |
+| personalizare (consimțământ + panou) | 2,4 KB · 16 |
+| derulare până jos | 0,0 KB · 1 |
+| hover / focus | 0,3 KB · 4 |
+| temă întunecată | 0,9 KB · 6 |
+| mobil (390px), prima randare | 0,6 KB · 8 |
+| mobil, personalizare | 0,1 KB · 1 |
+| **total folosit** | **17,0 KB = 40,9% din reguli** |
+
+Pe tip de pagină: home 39,9% · articol 39,8% · local 34,6% · județean 34,6%. **Nicio pagină nu
+folosește mai mult de 40%** — șasiul CSS e comun prin construcție, deci fiecare pagină plătește
+pentru suprafețele celorlalte.
+
+**Neatins de nicio pagină, în nicio stare: 19,6 KB, 192 de reguli.** Cele mai mari grupuri:
+`Pagini utilitate` (6,0 KB, 56 reguli), `/surse/` (3,0 KB), `Căutare` (2,6 KB),
+`orientare editorială` (1,7 KB) — adică suprafețe care există, dar nu se ating de pe cele patru
+tipuri de pagină măsurate.
+
+### Cât valorează tăierea — MĂSURAT, nu estimat
+
+Am scos cele 192 de reguli din fișier și l-am recomprimat:
+
+```
+brut    51.298 -> 31.215   (-39%)
+gzip-9  11.769 ->  8.930   (-24%,  -2.839 octeti)
+```
+
+**Tot premiul e 2,8 KB pe sârmă**, adică ~4% dintr-o pagină de articol. Cauza e instructivă:
+regulile moarte sunt repetitive, deci gzip le mânca deja aproape gratis — 39% din fișier
+înseamnă 24% din octeții transmiși.
+
+[OPINIE] **Deci: nu tăiați CSS-ul pentru greutate.** Cei 19,6 KB rămân un semnal de întreținere
+(dimensiunea 7 aplicată pe CSS), nu o optimizare de performanță.
+
+### Ce NU spune cifra de 192
+
+„Neatins" = neexercitat de stările conduse de unealtă. O stare la care ea nu ajunge — harta,
+un formular trimis, o pagină de eroare, un breakpoint nedeschis — apare tot acolo, pe nedrept.
+De-aia unealta conduce stările explicit **și verifică** dacă s-au aplicat: prima versiune raporta
+toată tema întunecată drept „neatinsă" fiindcă un clic eșua tăcut pe un element acoperit.
+
+### Cum se reface
+
+```bash
+python -m generator.main --render-only      # ~25 min
+node tools/css_folosit.mjs --json raport.json
+```
