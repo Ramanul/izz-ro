@@ -49,14 +49,22 @@ def main() -> int:
             except json.JSONDecodeError:
                 malformed += 1
                 continue
-            for issue in row.get("blocking_issues", []) or []:
+            if not isinstance(row, dict):
+                malformed += 1
+                continue
+            raw_blocking = row.get("blocking_issues", [])
+            raw_advisory = row.get("advisory_issues", [])
+            if not isinstance(raw_blocking, list) or not isinstance(raw_advisory, list):
+                malformed += 1
+                continue
+            for issue in raw_blocking:
                 blocking.append({
                     "line": line_no,
                     "id": row.get("id", ""),
                     "model": row.get("model", ""),
                     "issue": issue,
                 })
-            for issue in row.get("advisory_issues", []) or []:
+            for issue in raw_advisory:
                 advisory.append({
                     "line": line_no,
                     "id": row.get("id", ""),
@@ -70,14 +78,14 @@ def main() -> int:
         f"blocante: {len(blocking)} | advisory: {len(advisory)} | malformed: {malformed}"
     )
     for item in blocking[:25]:
-        print(f"FAIL [{item['model']}] {item['id']}: {item['issue']}")
+        print(f"BLOCK [{item['model']}] {item['id']}: {item['issue']}")
     if len(blocking) > 25:
         print(f"... si inca {len(blocking) - 25} incalcari blocante")
     for item in advisory[:10]:
         print(f"WARN [{item['model']}] {item['id']}: {item['issue']}")
 
     if malformed:
-        print(f"FAIL: raportul grounding contine {malformed} linii JSON invalide.")
+        print(f"FAIL: raportul grounding contine {malformed} linii invalide.")
         return 1
     if blocking:
         print("FAIL: publicarea este blocata de verificari deterministe de grounding.")
