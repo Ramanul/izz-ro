@@ -562,17 +562,21 @@ def felia6_url(p):
     check(direct != start_count, f"link direct cu ?judet= arata lista filtrata ('{direct}')")
     # Filtrat NU e acelasi lucru cu filtrat pe judetul CERUT: un cod care citeste parametrul si
     # apoi aplica altceva ar trece un test care se uita doar la numarul de rezultate.
-    metas = p.evaluate("() => [...document.querySelectorAll('#news-list li span')].map(s => s.textContent.toUpperCase())")
+    # Doar span-urile de META, nu si cele de context-eveniment ("N relatări · M surse"),
+    # care nu contin judet prin constructie. Pe datele vechi cele doua selectoare coincideau;
+    # din 5 sep 2026, 2 evenimente CLUJ au relatări multiple si le dezvaluie (falsa alarma).
+    metas = p.evaluate("() => [...document.querySelectorAll('#news-list li span:not(.event-context)')].map(s => s.textContent.toUpperCase())")
     off = [m for m in metas if "CLUJ" not in m]
     check(bool(metas) and not off,
           f"toate cele {len(metas)} rezultate sunt din CLUJ ({len(off)} din alt judet)")
     p.goto(BASE, wait_until="networkidle")
     p.wait_for_selector("#news-list li", timeout=15000)
 
-def uat_in_url(p):
-    """Dialogul UAT e stare navigabila (audit harta, P0): vine din URL, intra in URL, Back il
-    inchide, X-ul curata adresa, iar un link direct il redeschide fara niciun click."""
-    print("\nUAT IN ADRESA -- dialogul e stare navigabila")
+def uat_selectie(p):
+    """Click pe UAT = selectare (audit harta, P0): panoul filtreaza, adresa primeste uat=,
+    Back anuleaza, clickul repetat deselecteaza, iar un link direct restabileste selectia.
+    Dialogul a fost ELIMINAT prin unificare -- o aserțiune pe el ar verifica un mort."""
+    print("\nSELECTIE UAT -- click = filtrare in panou, starea in adresa")
     p.goto(BASE, wait_until="networkidle")
     p.wait_for_selector("#county-picker button", timeout=15000)
     p.wait_for_timeout(200)
@@ -581,46 +585,49 @@ def uat_in_url(p):
     try:
         p.wait_for_selector("#county-picker button[data-uat]", timeout=5000)
     except Exception:
-        skip("judetul intrat nu a primit lista de UAT-uri in 5s -- nu se poate testa dialogul in URL")
+        skip("judetul intrat nu a primit lista de UAT-uri in 5s -- nu se poate testa selectia")
         reset(p)
         return
     p.wait_for_timeout(200)
+    before = panel_count(p)
 
     p.click("#county-picker button[data-uat]")
-    p.wait_for_timeout(300)
+    p.wait_for_timeout(350)
     url = p.evaluate("() => location.search")
-    check("uat=" in url, f"deschiderea dialogului scrie uat= in adresa ('{url}')")
+    check("uat=" in url, f"selectia de UAT ajunge in adresa ('{url}')")
     check("judet=" in url, f"adresa pastreaza si județul ('{url}')")
-    check(p.evaluate("() => !document.querySelector('#uat-dialog').hidden"), "dialogul e deschis")
+    after = panel_count(p)
+    check(after != before, f"panoul filtreaza la selectia de UAT ('{before}' -> '{after}')")
+    pressed = p.evaluate(
+        "() => document.querySelector('#county-picker button[data-uat][aria-pressed=\"true\"]')?.textContent || ''")
+    check(bool(pressed), f"butonul UAT selectat primeste aria-pressed ('{pressed}')")
 
-    # X inchide si curata adresa prin replaceState -- altfel Back de dupa X ar redeschide
-    # dialogul pe care utilizatorul tocmai l-a inchis.
-    p.click("#uat-dialog-close")
-    p.wait_for_timeout(250)
-    check(p.evaluate("() => document.querySelector('#uat-dialog').hidden"), "X inchide dialogul")
-    check("uat=" not in p.evaluate("() => location.search"),
-          f"X scoate uat= din adresa ('{p.evaluate('() => location.search')}')")
-
-    # Back, de la dialog deschis, inchide dialogul in loc sa iasa de pe pagina.
+    # Click repetat pe acelasi UAT deselecteaza (toggle, ca aria-pressed sa minta pe nimeni).
     p.click("#county-picker button[data-uat]")
     p.wait_for_timeout(300)
+    check("uat=" not in p.evaluate("() => location.search"),
+          f"clickul repetat deselecteaza ('{p.evaluate('() => location.search')}')")
+    check(panel_count(p) == before, f"panoul revine la lista judetului ('{panel_count(p)}' vs '{before}')")
+
+    # Back, de la selectie activa, anuleaza selectia in loc sa iasa de pe pagina.
+    p.click("#county-picker button[data-uat]")
+    p.wait_for_timeout(350)
     opened_url = p.evaluate("() => location.search")
-    check("uat=" in opened_url and p.evaluate("() => !document.querySelector('#uat-dialog').hidden"),
-          "dialogul s-a redeschis pentru testul Back")
+    check("uat=" in opened_url, "selectia s-a refacut pentru testul Back")
     p.go_back()
     p.wait_for_timeout(350)
-    check(p.evaluate("() => document.querySelector('#uat-dialog').hidden"),
-          f"Back inchide dialogul, nu paraseste pagina (adresa: '{p.evaluate('() => location.search')}')")
+    check("uat=" not in p.evaluate("() => location.search"),
+          f"Back anuleaza selectia de UAT ('{p.evaluate('() => location.search')}')")
 
-    # Link direct: cine prinde adresa cu uat= vede dialogul deschis, fara niciun click.
+    # Link direct: cine prinde adresa cu uat= vede UAT-ul deja selectat, fara niciun click.
     p.goto(BASE + opened_url, wait_until="networkidle")
     try:
-        p.wait_for_selector("#uat-dialog-list a", timeout=8000)
+        p.wait_for_selector("#county-picker button[data-uat][aria-pressed=\"true\"]", timeout=8000)
     except Exception:
-        skip(f"linkul direct '{opened_url}' nu a deschis dialogul in 8s (JSON UAT n-a sosit?)")
+        skip(f"linkul direct '{opened_url}' nu a restabilit selectia in 8s (JSON UAT n-a sosit?)")
     else:
-        check(p.evaluate("() => !document.querySelector('#uat-dialog').hidden"),
-              f"link direct ({opened_url}) redeschide dialogul")
+        check("uat=" in p.evaluate("() => location.search"),
+              f"link direct ({opened_url}) restabileste selectia")
     p.goto(BASE, wait_until="networkidle")
     p.wait_for_selector("#news-list li", timeout=15000)
 
@@ -686,7 +693,7 @@ def main():
         felia2_localitate(p)
         felia5_county_picker(p)
         felia6_url(p)
-        uat_in_url(p)
+        uat_selectie(p)
 
         mob = br.new_page(viewport={"width": 390, "height": 844}, is_mobile=True, has_touch=True)
         mob.goto(BASE, wait_until="networkidle")

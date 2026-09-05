@@ -33,11 +33,13 @@
     // ca la UAT-uri (audit harta, P1) -- până acum doar UAT-urile spuneau numele înainte
     // de click, deși suprafața de județ e ținta cea mai des atinsă.
     hoverCounty: null,
-    // Dialogul UAT deschis, ca stare navigabila (audit harta, P0): cheia lui (cod SIRUTA sau
-    // nume) traieste in adresa (?judet=X&uat=Y), deci Back/Forward il inchid/deschid si un
-    // link partajat il redeschide. `pendingUat` tine intentia pana cand UAT-urile județului
-    // s-au incarcat -- JSON-ul lor soseste asincron, dialogul nu poate deschide mai devreme.
-    openUat: null,
+    // UAT-ul selectat, ca orice alt filtru (audit harta, P0: click = selectare, nu fereastra
+    // separata): cheia lui (cod SIRUTA sau nume) traieste in adresa (?judet=X&uat=Y), Back/
+    // Forward il anuleaza/restabileste, iar panoul lateral arata stirile lui. `pendingUat`
+    // tine intentia pana cand asignarea geometrica e posibila (UAT-urile judetului incarcate
+    // + canvas dimensionat) -- pana atunci panoul primeste mesajul de incarcare, nu o lista
+    // inselatoare.
+    selectedUat: null,
     pendingUat: null,
   };
 
@@ -50,8 +52,6 @@
     "Oltenia": "#f3c1bd",
     "Bucovina": "#cbd6f3",
   };
-
-  let dialogOpener = null;
 
   const $ = (selector) => document.querySelector(selector);
   const $$ = (selector) => Array.from(document.querySelectorAll(selector));
@@ -222,18 +222,18 @@
       .finally(() => {
         if (state.uatCounty === county && state.uatRequestId === requestId) {
           state.uatLoading = false;
+          // buildMap face si aplicarea selectiei de UAT (asignarea geometrica abia acum e
+          // posibila), apoi renderList o prezinta in panou.
           buildMap();
           renderList();
           announceState();
-          settleUatDialog();
-          // Dialogul s-a putut deschide abia ACUM, cand datele au sosit: fara asta, adresa
-          // ar ramane fara `uat` pana la urmatoarea schimbare de stare si un link copiat
-          // intre timp ar duce altcineva pe harta fara dialog.
-          if (state.openUat) history.replaceState(null, "", urlForState());
         }
       });
   }
 
+  // Asignarea articolelor la UAT-uri se face din `rawVisible`, NU din `visible`: selectia de
+  // UAT restrange `visible` pe baza asignarii, deci daca asignarea s-ar calcula din el,
+  // selectia s-ar auto-hrani -- la a doua trecere toate celelalte UAT-uri ar cadea pe 0.
   function countUatNews(ctx, canvas, view) {
     if (!state.zoomCounty || !state.uats.length) return;
     for (const uat of state.uats) {
@@ -241,7 +241,7 @@
       uat.localities = [];
       uat.items = [];
     }
-    for (const item of state.visible) {
+    for (const item of state.rawVisible) {
       if (item.county !== state.zoomCounty || item.x == null || item.y == null) continue;
       const point = devicePointFromMap(canvas, view, Number(item.x), Number(item.y));
       if (!Number.isFinite(point.x) || !Number.isFinite(point.y)) continue;
@@ -295,68 +295,6 @@
     return best || { x: uat.center?.[0] || bounds.minX, y: uat.center?.[1] || bounds.minY, clearance: 2.4 };
   }
 
-  function closeUatDialog({ restoreFocus = true } = {}) {
-    const dialog = $("#uat-dialog");
-    if (!dialog || dialog.hidden) return;
-    dialog.hidden = true;
-    state.openUat = null;
-    document.body.classList.remove("uat-dialog-open");
-    if (restoreFocus && dialogOpener && typeof dialogOpener.focus === "function") dialogOpener.focus();
-    dialogOpener = null;
-  }
-
-  function openUatDialog(uat, opener) {
-    const dialog = $("#uat-dialog");
-    const title = $("#uat-dialog-title");
-    const context = $("#uat-dialog-context");
-    const summary = $("#uat-dialog-summary");
-    const list = $("#uat-dialog-list");
-    const close = $("#uat-dialog-close");
-    if (!dialog || !title || !context || !summary || !list || !close || !uat?.items?.length) return;
-    dialogOpener = opener || null;
-    state.openUat = String(uat.id || uat.name);
-    const label = uat.label || "UAT selectat";
-    const count = uat.items.length;
-    title.textContent = `Știri în ${label}`;
-    context.textContent = `${state.zoomCounty || "România"} · ${uat.kind || "UAT"}`;
-    summary.textContent = `${count} ${itemLabel()} localizat${count === 1 ? "" : "e"} în această unitate administrativ-teritorială.`;
-    list.replaceChildren();
-    for (const item of uat.items) {
-      const li = document.createElement("li");
-      const link = document.createElement("a");
-      link.href = articleUrl(item);
-      link.textContent = item.title || "Fără titlu";
-      const meta = document.createElement("span");
-      meta.textContent = [item.locality, item.source_name || item.source, dateLabel(item.published)]
-        .filter(Boolean).join(" · ");
-      li.append(link, meta);
-      list.appendChild(li);
-    }
-    dialog.hidden = false;
-    document.body.classList.add("uat-dialog-open");
-    close.focus();
-  }
-
-  // Onoreaza intentia de deschidere a dialogului cand UAT-urile sunt disponibile. La un link
-  // direct (?judet=X&uat=Y) JSON-ul UAT soseste asincron, deci intentia asteapta in
-  // `pendingUat`; functia e apelata la sfarsitul fiecarui applyState SI dupa incarcarea din
-  // syncUats. Daca cheia din adresa nu mai exista in date (link vechi, date schimbate),
-  // intentia se renunta si adresa ramane fara dialog, in loc sa blocheze pagina.
-  function settleUatDialog() {
-    if (!state.pendingUat) return;
-    if (!state.zoomCounty) { state.pendingUat = null; return; }
-    if (state.uatLoading) return; // syncUats recheama functia la finalizarea incarcarii
-    if (!state.uats.length) { state.pendingUat = null; return; }
-    const wanted = state.pendingUat;
-    state.pendingUat = null;
-    const uat = state.uats.find((unit) => String(unit.id || unit.name) === wanted);
-    if (uat?.items?.length) {
-      const active = document.activeElement;
-      const opener = active instanceof Element && active.closest("#county-picker") ? active : state.canvas;
-      openUatDialog(uat, opener);
-    }
-  }
-
   // Conturul de judet vine din Natural Earth (`tools/build_harta.py`), UAT-urile din exportul
   // oficial geo-spatial.org (`tools/build_harta_uat.py`). Proiectia e IDENTICA -- masurat pe
   // datele comise, bbox-ul total al celor doua straturi coincide (raport latime 0.99950,
@@ -399,12 +337,18 @@
       // UAT-ul de sub cursor/deget se ingroasa si se umple mai tare: fara asta, tooltipul
       // spune un nume dar nu se vede CARE forma de pe harta il poarta.
       const hovered = uat === state.hoverUat;
-      ctx.globalAlpha = hovered ? 0.42 : uat.count ? 0.24 : 0.08;
-      ctx.fillStyle = uat.count || hovered ? palette.accentSoft : palette.fill;
+      // Selectia e persistenta, hover-ul e trecator: UAT-ul ales prinde accentul, restul
+      // se estompeaza mai puternic decat simpla lipsa de stiri, ca sa se vada CE e selectat.
+      const isSelected = state.selectedUat === String(uat.id || uat.name);
+      const dimmedBySelection = Boolean(state.selectedUat) && !isSelected;
+      ctx.globalAlpha = dimmedBySelection ? 0.12
+        : hovered || isSelected ? 0.42 : uat.count ? 0.24 : 0.08;
+      ctx.fillStyle = uat.count || hovered || isSelected ? palette.accentSoft : palette.fill;
       ctx.fill(uat.path2d, "evenodd");
       ctx.globalAlpha = 1;
-      ctx.strokeStyle = hovered ? palette.hot : uat.count ? palette.locality : palette.stroke;
-      ctx.lineWidth = hovered ? 2 : uat.count ? 1.25 : 0.65;
+      ctx.strokeStyle = hovered || isSelected ? palette.hot
+        : uat.count ? palette.locality : palette.stroke;
+      ctx.lineWidth = hovered ? 2 : isSelected ? 1.6 : uat.count ? 1.25 : 0.65;
       ctx.stroke(uat.path2d);
     }
     for (const uat of state.uats) {
@@ -660,6 +604,20 @@
 
     drawUats(ctx, palette, canvas, view);
 
+    // Selectia de UAT devine continut abia cand asignarea geometrica e posibila (UAT-urile
+    // incarcate + canvas dimensionat). Pana atunci `pendingUat` tine intentia, iar panoul
+    // arata lista judetului -- nu o lista inselatoare. Cheia dintr-un link vechi, care nu
+    // mai exista in date, se renunta in loc sa blocheze filtrarea.
+    if (state.pendingUat && state.uats.length && !state.uatLoading) {
+      const wanted = state.uats.find((unit) => String(unit.id || unit.name) === state.pendingUat);
+      state.pendingUat = null;
+      if (wanted) {
+        state.visible = state.selectedUat ? itemsForView(wanted.items) : state.visible;
+      } else {
+        state.selectedUat = null;
+      }
+    }
+
     if (!state.zoomCounty && state.level !== "regional") {
       for (const entry of paths) {
         if (!entry.count || !entry.bounds) continue;
@@ -850,9 +808,9 @@
     if (state.viewMode !== "events") params.set("mod", state.viewMode);
     if (state.selectedRegion) params.set("regiune", state.selectedRegion);
     if (state.selectedCounty) params.set("judet", state.selectedCounty);
-    // Dialogul deschis sau intentionat intra in adresa; `pendingUat` acopera fereastra dintre
-    // click si sosirea JSON-ului UAT, ca linkul copiat in acel interval sa nu piarda dialogul.
-    if (state.openUat || state.pendingUat) params.set("uat", state.openUat || state.pendingUat);
+    // Selectia de UAT, ca orice filtru: instant in adresa (nu asteapta asignarea geometrica,
+    // care doar determina CONTINUTUL panoului, nu starea).
+    if (state.selectedUat) params.set("uat", state.selectedUat);
     const loc = Array.isArray(state.selectedLocality)
       ? state.selectedLocality
       : (state.selectedLocality ? [state.selectedLocality] : []);
@@ -886,12 +844,15 @@
     if ("locality" in patch) state.selectedLocality = patch.locality || null;
     if ("query" in patch) state.search = patch.query || "";
     if ("uat" in patch) {
-      if (patch.uat) {
-        state.pendingUat = String(patch.uat);
-      } else {
-        state.pendingUat = null;
-        closeUatDialog({ restoreFocus: true });
-      }
+      state.selectedUat = patch.uat ? String(patch.uat) : null;
+      state.pendingUat = state.selectedUat;
+    }
+    // UAT-ul selectat e sub-judet: orice schimbare de context geografic superior il anuleaza,
+    // altfel un filtru de UAT ar supravietui județului lui. Doar un patch care vine cu `uat`
+    // explicit (popstate, link direct) il pastreaza peste schimbarea de județ.
+    if (["level", "region", "county"].some((key) => key in patch) && !("uat" in patch)) {
+      state.selectedUat = null;
+      state.pendingUat = null;
     }
     // `zoomCounty` nu e stare independenta, e derivata: la nivel Judetean click-ul filtreaza
     // fara sa mareasca (decizie proprietar, 13 aug). Tinuta separat, se desincroniza.
@@ -900,10 +861,9 @@
     // Evidentierea de hover e a VECHII vederi: dupa zoom sau schimbare de filtru, un contur
     // ramas aprins ar arata o selectie care nu exista; urmatoarea miscare de mouse o repune.
     state.hoverCounty = null;
-    // Plafonul listei se reseteaza doar cand se schimba CE e filtrat: deschiderea sau
-    // inchiderea dialogului UAT muta doar fereastra de citire, nu filtrele -- ar fi absurd
-    // ca "Arată încă N rezultate" sa se piarda doar pentru că ai privit un dialog.
-    if (["level", "viewMode", "region", "county", "locality", "query"].some((key) => key in patch)) {
+    // Plafonul listei se reseteaza doar cand se schimba CE e filtrat: selectia de UAT filtreaza
+    // continutul, deci si ea reseteaza; dezactivarea unui UAT la fel.
+    if (["level", "viewMode", "region", "county", "locality", "query", "uat"].some((key) => key in patch)) {
       state.listLimit = 120;
     }
     state.rawVisible = filtered();
@@ -918,9 +878,6 @@
     renderList();
     updateStats();
     announceState();
-    // Dupa ce UAT-urile au fost numarate (buildMap -> countUatNews): abia aici are dialogul
-    // `items` de ce deschide, daca UAT-urile erau deja in cache.
-    settleUatDialog();
 
     if (!push && !replace) return;
     const url = urlForState();
@@ -993,11 +950,12 @@
         const button = document.createElement("button");
         button.type = "button";
         button.dataset.uat = uat.id || uat.name;
-        button.setAttribute("aria-haspopup", "dialog");
         button.textContent = `${uat.label || "UAT"} · ${uat.count}`;
-        // Prin applyState, nu direct prin openUatDialog: dialogul trebuie sa ajunga si in
-        // adresa (?judet=X&uat=Y), altfel Back nu-l inchide si linkul copiat nu-l poarta.
-        button.addEventListener("click", () => applyState({ uat: String(uat.id || uat.name) }));
+        // Selectie, nu fereastra: acelasi contract ca butoanele de judet (audit harta:
+        // click = selectare, panoul arata stirile). Click repetat deselecteaza.
+        const uatKey = String(uat.id || uat.name);
+        button.setAttribute("aria-pressed", state.selectedUat === uatKey ? "true" : "false");
+        button.addEventListener("click", () => applyState({ uat: state.selectedUat === uatKey ? null : uatKey }));
         // Legatura merge in ambele sensuri: peste forma de pe harta se aprinde randul din
         // lista, iar peste randul din lista se aprinde forma. Altfel lista si harta ar fi
         // doua liste de nume care nu se stiu una pe alta.
@@ -1170,8 +1128,8 @@
       const uat = closestHit(p, state.uats.filter((unit) => unit.count > 0), (unit) => unit.marker)
         || state.uats.find((unit) => unit.count > 0
           && ctx.isPointInPath(unit.path2d, dp.x, dp.y, "evenodd"));
-      // Prin applyState: deschiderea din harta si deschiderea din lista trebuie sa fie
-      // aceeasi stare, nu doua mecanisme -- una cu URL, una fara.
+      // Selectie, nu fereastra: acelasi contract ca clickul pe judet sau pe localitate --
+      // panoul filtreaza, adresa poarta starea, Back anuleaza.
       if (uat?.items?.length) applyState({ uat: String(uat.id || uat.name) });
     } else {
       // Transformarea se reafirma explicit inainte de hit-test: buildMap() o lasa setata, dar
@@ -1197,6 +1155,12 @@
   }
 
   function contextName() {
+    if (state.selectedUat) {
+      const uat = state.uats.find((unit) => String(unit.id || unit.name) === state.selectedUat);
+      // Asignarea poate sa nu fie inca posibila (UAT-urile se incarca): panoul spune atunci
+      // județul, nu o cheie tehnica.
+      return uat ? (uat.label || uat.name) : (state.selectedCounty || state.selectedUat);
+    }
     if (state.selectedLocality) return Array.isArray(state.selectedLocality)
       ? state.selectedLocality.join(", ") : state.selectedLocality;
     if (state.selectedCounty) return state.selectedCounty;
@@ -1366,21 +1330,6 @@
     });
     if (clear) clear.addEventListener("click", resetSelection);
     if (reset) reset.addEventListener("click", resetAll);
-    const dialog = $("#uat-dialog");
-    const closeDialog = $("#uat-dialog-close");
-    // Inchiderea trece prin applyState ca sa scoata `uat` din adresa. `replace`, nu `push`:
-    // altfel istoricul ar pastra o intrare cu dialog deschis si Back de dupa X ar redeschide
-    // ceva ce utilizatorul a inchis el.
-    if (closeDialog) closeDialog.addEventListener("click", () => applyState({ uat: null }, { replace: true }));
-    if (dialog) dialog.addEventListener("click", (event) => {
-      if (event.target instanceof Element && event.target.closest("[data-uat-close]")) {
-        applyState({ uat: null }, { replace: true });
-      }
-    });
-    document.addEventListener("keydown", (event) => {
-      const box = $("#uat-dialog");
-      if (event.key === "Escape" && box && !box.hidden) applyState({ uat: null }, { replace: true });
-    });
     window.addEventListener("popstate", () => applyState(stateFromUrl(), { push: false }));
   }
 
