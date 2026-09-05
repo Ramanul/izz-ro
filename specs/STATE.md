@@ -35,6 +35,7 @@
   (REGULI-SINTEZA 2.2), the calibration journal holds no real corpus yet.
 - **Triage journal:** ingest discards (fetch losses, no-substance rejects, expired) land per run in
   `data/triage_log.jsonl`, committed with pipeline state.
+- **Grounding defer:** items with deterministic grounding violations are deferred (not published, retried next run) instead of freezing the whole release; the post-commit gate stays fail-closed as the final net.
 - **Silence detection:** hourly `detectie-tacere.yml` checks last runs of build/monitor/smoke/feedcheck
   and the last content commit against ceilings; alert issue opens on silence and closes on recovery.
 - **Human gate is a switch:** `IZZ_REQUIRE_HUMAN_GATE` is a repo variable (default false, armable from

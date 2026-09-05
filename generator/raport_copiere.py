@@ -125,3 +125,46 @@ def noteaza(model: str, identificator: str, titlu: str, rezumat: str, sursa: str
     # sters la sfarsitul rularii; contine numai dovezi minime, nu textul sursei.
     if gate_cale is not None:
         _scrie_jsonl(gate_cale, rand)
+
+
+def url_uri_blocate(cale_raport: str) -> set[str]:
+    """ID-urile (URL-uri) cu probleme blocante din raportul tranzitoriu al gate-ului."""
+    blocate: set[str] = set()
+    try:
+        with open(cale_raport, "r", encoding="utf-8") as fh:
+            for line in fh:
+                try:
+                    rand = json.loads(line)
+                except json.JSONDecodeError:
+                    continue
+                if isinstance(rand, dict) and rand.get("blocking_issues"):
+                    blocate.add(str(rand.get("id", "")))
+    except OSError:
+        pass
+    return blocate
+
+
+def pastreaza_doar_curate(cale_raport: str) -> int:
+    """Scoate din raportul gate randurile cu probleme blocante; intoarce cate au fost scoase.
+
+    Raportul gate este dovada pentru CE SE PUBLICE in rularea asta. Itemele cu incalcari
+    deterministe sunt amanate inainte de salvarea starii (mecanismul existent de defer:
+    revin ca iteme noi la rularea urmatoare), deci randurile lor ies din dovada — gate-ul
+    de dupa commit ramane fail-closed pentru orice scapare. Jurnalul observational din
+    `data/raport_copiere.jsonl` pastreaza neatinse toate masuratorile.
+    """
+    try:
+        with open(cale_raport, "r", encoding="utf-8") as fh:
+            randuri = [json.loads(line) for line in fh if line.strip()]
+    except (OSError, json.JSONDecodeError):
+        return 0
+    curate = [r for r in randuri if isinstance(r, dict) and not r.get("blocking_issues")]
+    scoase = len(randuri) - len(curate)
+    if scoase:
+        try:
+            with open(cale_raport, "w", encoding="utf-8") as fh:
+                for r in curate:
+                    fh.write(json.dumps(r, ensure_ascii=False) + "\n")
+        except OSError:
+            return 0
+    return scoase
