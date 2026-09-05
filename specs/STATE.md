@@ -35,6 +35,7 @@
   (REGULI-SINTEZA 2.2), the calibration journal holds no real corpus yet.
 - **Triage journal:** ingest discards (fetch losses, no-substance rejects, expired) land per run in
   `data/triage_log.jsonl`, committed with pipeline state.
+- **Grounding defer:** deterministic grounding violations defer the item, not the release; post-commit gate stays fail-closed.
 - **Silence detection:** hourly `detectie-tacere.yml` checks last runs of build/monitor/smoke/feedcheck
   and the last content commit against ceilings; alert issue opens on silence and closes on recovery.
 - **Human gate is a switch:** `IZZ_REQUIRE_HUMAN_GATE` is a repo variable (default false, armable from
@@ -51,5 +52,4 @@
 
 ## Where the rest lives
 
-`specs/regim-reguli.md` — unified audit closure · `specs/istoric-executie.md` — settled history ·
-`specs/registru.tsv` — decisions · `specs/masuratori-frontend.md` — measurements · `CLAUDE.md` — canonical contract.
+`specs/regim-reguli.md` — unified audit closure · `specs/registru.tsv` — decisions · `CLAUDE.md` — canonical contract.
