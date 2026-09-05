@@ -9,8 +9,8 @@
 
 ## Open
 
-- **PR #282 — audit unified hardening** (merged): branch `audit-unified-hardening-2026-09-05`.
-  Current HEAD is the audit-closure branch; K1–K14 have explicit closure status in
+- **PR #282 — audit unified hardening:** merged 09-05, branch `audit-unified-hardening-2026-09-05`.
+  K1–K14 have explicit closure status in
   `specs/regim-reguli.md`.
 - **CI closure:** the latest verified run is not yet green. The runtime dependency install is fixed;
   remaining failures are regression-contract mismatches discovered by the suite and must be fixed

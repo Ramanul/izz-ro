@@ -220,8 +220,12 @@ SOURCES = {
             "protv":      {"name": "Știrile ProTV","url": "https://stirileprotv.ro/rss",               "category": "general"},
 }
 from generator.local_sources import load_gold_sources
-_GOLD_CSV = os.path.join(ROOT, "data", "primarii_lists", "gold_integrare.csv")
-_gold = load_gold_sources(_GOLD_CSV, int(os.environ.get("LOCAL_GOLD_LIMIT", "120")))
+# Rescanarea completa 2026-09-05 (3187 site-uri, re-verificare pe eșecuri + feed-uri
+# citite individual): doar 828 din 1453 feed-uri marcate "rss_ok" au chiar conținut
+# din 2026, iar datele din fișierul vechi erau în mare parte artefact (1052/1274 cu
+# data exact 2026-01-01, ne-parseate). Lista nouă poartă datele REALE din feed-uri.
+_GOLD_CSV = os.path.join(ROOT, "data", "primarii_lists", "gold_integrare_2026-09-05.csv")
+_gold = load_gold_sources(_GOLD_CSV, int(os.environ.get("LOCAL_GOLD_LIMIT", "300")))
 # Bugetul AI proceseaza in ordinea dictului (niche-first) -> sursele locale intra
 # imediat dupa blocul 'local' literal, nu la coada (altfel sunt infometate de buget).
 if _gold:
