@@ -1,11 +1,11 @@
 name: harta-stiri-smoke
 
-# Smoke validation for the public Cloudflare Pages build.
+# Smoke validation for the public Cloudflare Workers build.
 
-# Zero drepturi: jobul face doar `curl` catre pages.dev si `node --check`, deci nu atinge
-# niciodata `GITHUB_TOKEN`. Fara blocul asta primea permisiunile IMPLICITE ale repo-ului —
-# posibil write pe cod, pentru un job care n-are ce scrie. Era singurul din cele 19 workflow-uri
-# fara `permissions` declarat (audit 2026-08-20, [W1]).
+# Zero drepturi: jobul face doar `curl` catre originea publica si `node --check`, deci nu atinge
+# niciodata `GITHUB_TOKEN`. Fara blocul asta primea permisiunile implicite ale repo-ului —
+# posibil write pe cod, pentru un job care n-are ce scrie. Originea este configurabila dintr-un
+# singur repository variable: `ALT_ORIGIN`; fallback-ul este Worker origin, nu o gazda retrasa.
 permissions: {}
 
 on:
@@ -15,20 +15,18 @@ on:
       - "static/harta-stiri/data/map.json"
       - "static/harta-stiri/harta-stiri.js"
       - ".github/workflows/harta-smoke.yml"
-  workflow_dispatch:
+  workflow_dispatch
 
 jobs:
   smoke:
     runs-on: ubuntu-latest
     steps:
-      - name: Așteaptă propagarea deploy-ului Cloudflare
+      - name: Așteaptă propagarea deploy-ului Workers
         run: sleep 20
       - name: Verifică pagina și datasetul hărții pe originea de build
         env:
-          # Originea de build, fara bot challenge: `izz-ro.pages.dev` cat timp gazda e
-          # Pages, subdomeniul workers.dev dupa migrare. Variabila de repo ALT_ORIGIN o
-          # schimba dintr-un singur loc, in loc de cinci workflow-uri.
-          ALT_ORIGIN: ${{ vars.ALT_ORIGIN || 'https://izz-ro.pages.dev' }}
+          # Originea de build, fara bot challenge. `ALT_ORIGIN` se modifica dintr-un singur loc.
+          ALT_ORIGIN: ${{ vars.ALT_ORIGIN || 'https://izz-ro.andifreelancer2.workers.dev' }}
         run: |
           set -euo pipefail
           for i in 1 2 3 4 5 6 7 8; do
@@ -44,13 +42,6 @@ jobs:
           counties = data['map']['judete']
           articles = data.get('articles') or []
           stats = data.get('stats') or {}
-          # Harta are TREI niveluri, nu doua. Un articol `regional` e ancorat de regiune si
-          # primeste deliberat `county: ""` (tools/build_harta_data.py, ramura `category ==
-          # "regional"`), fiindca regiunea nu e continuta intr-un singur judet. Versiunea
-          # anterioara a acestui bloc presupunea doar local+judetean, deci pica pe orice
-          # dataset cu macar un articol regional: pe 21 aug erau 2 din 548, si garda statea
-          # rosie din 20 aug 18:15. O garda rosie permanent nu mai semnaleaza nimic.
-          # Fiecare `assert` are mesaj: log-ul precedent nu spunea decat "linia 10".
           niveluri = ('local', 'judetean', 'regional')
           assert data['map']['viewbox'], 'harta publica nu are viewbox'
           assert len(counties) == 42, f'{len(counties)} judete in dataset, asteptat 42'
@@ -60,8 +51,6 @@ jobs:
           assert not fara_judet, (
               f'{len(fara_judet)} articole ne-regionale au judet necunoscut; '
               f'primul: {fara_judet[0].get("slug")!r} judet={fara_judet[0].get("county")!r}')
-          # Reversul: un articol regional TREBUIE sa aiba regiune si sa NU aiba judet. Fara
-          # asta, verificarea de mai sus s-ar putea ocoli punand `regional` pe orice.
           regional_stricat = [a for a in articles if a.get('geo_level') == 'regional'
                               and (a.get('county') or not a.get('region'))]
           assert not regional_stricat, (
