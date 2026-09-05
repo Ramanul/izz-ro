@@ -9,14 +9,17 @@
 
 ## Open
 
-- **PR #282 — audit unified hardening:** OPEN, mergeable, branch `audit-unified-hardening-2026-09-05`.
-  Current HEAD is the audit-closure branch; K1–K14 have explicit closure status in
-  `specs/regim-reguli.md`.
-- **CI closure:** the latest verified run is not yet green. The runtime dependency install is fixed;
-  remaining failures are regression-contract mismatches discovered by the suite and must be fixed
-  before the audit can be called closed.
-- **Platform/external controls:** branch protection / required checks, Cloudflare WAF/DNS, operational
-  restore/takedown drills, and live verification from proxy-blocked sessions remain external facts.
+- **PR #282 — audit unified hardening (merged, d88f6dd2, 2026-09-05).** Control-urile din matricea
+  unificată sunt în `main`; stare completă în secțiunea de mai jos și în `specs/regim-reguli.md`.
+- **CI closure:** green pe HEAD-ul final al #282 (pytest 20m56s, tests + ruff 16m16s) și pe merge.
+  Required checks `pytest` + `tests + ruff` sunt impuse pe `main` (strict, inclusiv pentru admin).
+- **Platform/external controls:** rămân externi: Cloudflare WAF/DNS, drill-ul complet cu rollback
+  real (modul `check` rulat pe `main` la 2026-09-05; rollback-ul cere confirmare manuală) și
+  verificarea live din medii unde domeniul e blocat.
+- **Detectare tăcere:** prima rulare reală a prins două defecte de integrare (POST implicit pe
+  /commits, alerta lipsă la NECLAR) — fix în curs de merge; a arătat și că monitor.yml rulează
+  efectiv la ~4,5h, nu la 10 min (GitHub întârzie rulările programate), deci plafoanele sunt
+  calibrate pe cadență măsurată.
 
 ## Audit closure status
 
