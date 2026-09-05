@@ -1,14 +1,20 @@
 name: feed-check
 
-# Sanatatea surselor RSS, per sursa (HTTP / numar intrari / prospetime) — rulat manual
-# inainte de a adauga/lasa o sursa in productie. Sandbox-urile de dev nu au internet;
-# runnerii da. Nu consuma AI quota si nu scrie nimic.
+# Sanatatea surselor RSS, per sursa (HTTP / numar intrari / prospetime).
+# Ruleaza programat si manual inainte de a lasa o sursa in productie. Nu consuma AI quota si nu scrie nimic.
+# Un esec de feed nu blocheaza PR-urile de cod: este un semnal operațional despre surse externe.
 
 on:
+  schedule:
+    - cron: "17 5 * * *"
   workflow_dispatch: {}
 
 permissions:
   contents: read
+
+concurrency:
+  group: feed-check
+  cancel-in-progress: true
 
 jobs:
   feeds:
