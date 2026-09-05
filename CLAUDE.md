@@ -250,9 +250,8 @@ cifre nu se contrazic: un job de poartă taie rularea dacă ultimul conținut e 
 cu încercări orare un firing pierdut se recuperează în ora următoare în loc să aștepte încă două.
 Motivul e comentat pe larg în `build.yml`. Bugetul de build e păzit de **poartă**, nu de cron:
 fiecare commit declanșează un build Cloudflare, iar planul gratuit dă ~500/lună. **Nu „repara" cadența făcând-o mai deasă** — aia a
-cauzat pana din 5-9 iulie. Plafonul de debit e bugetul AI, nu programul: `MAX_AI_CALLS_PER_RUN`
-din `build.yml` — **40** de la 2026-09-04 (`9003e5f`, ridicat de proprietar de la 18). Codul cade
-pe **12** cand variabila lipseste (`main.py:392`), deci o rulare LOCALA nu masoara debitul real. Varianța zilnică e mare și normală; verifică `gh run list` înainte să pretinzi că
+cauzat pana din 5-9 iulie. Plafonul de debit e bugetul AI (`max_ai_calls`, implicit 18/rulare), nu
+programul. Varianța zilnică e mare și normală; verifică `gh run list` înainte să pretinzi că
 pipeline-ul e picat. Cifre și context: `specs/istoric-operational.md`.
 
 ## 18. Imagini de instituții locale — regulă L1, livrată de hook
