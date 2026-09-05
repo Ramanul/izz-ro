@@ -9,17 +9,9 @@
 
 ## Open
 
-- **PR #282 — audit unified hardening (merged, d88f6dd2, 2026-09-05).** Control-urile din matricea
-  unificată sunt în `main`; stare completă în secțiunea de mai jos și în `specs/regim-reguli.md`.
-- **CI closure:** green pe HEAD-ul final al #282 (pytest 20m56s, tests + ruff 16m16s) și pe merge.
-  Required checks `pytest` + `tests + ruff` sunt impuse pe `main` (strict, inclusiv pentru admin).
-- **Platform/external controls:** rămân externi: Cloudflare WAF/DNS, drill-ul complet cu rollback
-  real (modul `check` rulat pe `main` la 2026-09-05; rollback-ul cere confirmare manuală) și
-  verificarea live din medii unde domeniul e blocat.
-- **Detectare tăcere:** prima rulare reală a prins două defecte de integrare (POST implicit pe
-  /commits, alerta lipsă la NECLAR) — fix în curs de merge; a arătat și că monitor.yml rulează
-  efectiv la ~4,5h, nu la 10 min (GitHub întârzie rulările programate), deci plafoanele sunt
-  calibrate pe cadență măsurată.
+- **PR #282 — audit unified hardening (merged, d88f6dd2, 2026-09-05).** Control-urile matricei unificate sunt în `main`; CI verde pe HEAD final (pytest 20m56s, tests + ruff 16m16s). Required checks `pytest` + `tests + ruff` impuse pe `main` (strict, inclusiv admin).
+- **Rămân externi:** Cloudflare WAF/DNS; rollback-ul real al drill-ului (modul `check` rulat pe `main`, 2026-09-05, cere confirmare manuală); verificarea live din medii cu domeniul blocat.
+- **Detectare tăcere:** prima rulare reală a prins două defecte de integrare (POST implicit pe /commits; alerta lipsă la NECLAR), fix în curs de merge; monitor.yml rulează efectiv la ~4,5h (GitHub amână cron-urile programate), deci plafoanele sunt calibrate pe măsurătoare.
 
 ## Audit closure status
 
