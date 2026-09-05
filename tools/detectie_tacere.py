@@ -42,7 +42,9 @@ def _varsta_ore(iso: str, acum: datetime) -> float:
 
 def ultimul_commit_continut(acum: datetime, repo: str) -> float | None:
     """Vârsta în ore a ultimului commit pe data/articles.json; None dacă nu există."""
-    iesire = _gh("api", f"repos/{repo}/commits", "-f", "path=data/articles.json",
+    # -X GET obligatoriu: gh api cu flag-uri de campuri (-f/-F) face implicit POST,
+    # iar POST pe /commits intoarce 404 (prins la prima rulare reala, 2026-09-05).
+    iesire = _gh("api", f"repos/{repo}/commits", "-X", "GET", "-f", "path=data/articles.json",
                  "-F", "per_page=1", "--jq", ".[0].commit.committer.date")
     date = iesire.strip()
     return _varsta_ore(date, acum) if date and date != "null" else None
@@ -81,8 +83,13 @@ def main() -> int:
     try:
         probleme = constata(repo, acum)
     except (RuntimeError, ValueError) as exc:
-        print(f"NECLAR: detectorul nu a putut verifica ({exc}). "
-              "Tăcerea detectorului e tot tăcere — trateaz-o ca incident.")
+        mesaj = f"Detectorul nu a putut verifica ({exc}). Tăcerea detectorului e tot tăcere."
+        print(f"NECLAR: {mesaj} Trateaz-o ca incident.")
+        Path("alerta.md").write_text(
+            "## Tăcere pipeline — NECLAR — " + acum.isoformat(timespec="seconds") + "\n\n"
+            + mesaj + "\n",
+            encoding="utf-8",
+        )
         return 2
     if not probleme:
         print("OK: mecanismele programate au rulat în plafon.")
