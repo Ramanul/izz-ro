@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
-"""Verifică dacă Cloudflare Pages și domeniul public servesc un release derivat din SHA-ul așteptat.
+"""Verifică dacă Cloudflare Workers și domeniul public servesc release-ul așteptat.
 
-Un simplu test de HTTP 200 nu prinde cel mai costisitor incident IZZ.ro: buildul Pages sare sau
-servește un commit vechi, iar site-ul pare sănătos, dar nu conține conținutul publicat. Manifestul
-/build.json este generat în același build ca HTML-ul; această probă îl așteaptă pe ambele origini.
+Un simplu test de HTTP 200 nu prinde incidentul critic IZZ.ro: deployul poate servi un commit vechi,
+în timp ce site-ul pare sănătos. Manifestul `/build.json` este generat în același build ca HTML-ul;
+această probă verifică manifestul pe toate originile configurate.
 
 Acceptă un commit mai nou decât SHA-ul de conținut: pe `main` pot apărea modificări editoriale sau
 de cod între pushul pipeline-ului și terminarea deployului, iar buildul nou conține totuși release-ul
@@ -12,7 +12,6 @@ cerut. Relația de descendență este verificată prin GitHub Compare API, nu pr
 
 from __future__ import annotations
 
-import json
 import os
 import sys
 import time
@@ -22,12 +21,9 @@ from urllib.request import Request, urlopen
 
 REPO = os.getenv("RELEASE_REPO", "Ramanul/izz-ro")
 EXPECTED = os.getenv("EXPECTED_COMMIT", "").strip()
-# Originile publice verificate. `izz.ro` e domeniul si e mereu in lista. A doua e
-# originea FARA bot challenge, singura pe care sondele o pot citi fara sa primeasca
-# pagina de interstitiu: pe Pages era `izz-ro.pages.dev`, pe Workers e subdomeniul
-# workers.dev al contului, care se afla abia DUPA primul deploy -- de aceea vine din
-# mediu, nu din cod. Nesetata, sonda verifica doar `izz.ro`: mai putina acoperire, dar
-# niciodata o origine moarta care sa treaca verde pe un deploy vechi.
+# Originile publice verificate. `izz.ro` este domeniul si este mereu in lista in CI. A doua origine
+# este configurabila pentru o ruta fara bot challenge; in productie `build.yml` o seteaza la Worker
+# origin. Nesetata, sonda verifica doar domeniul public — nu inventam o origine alternativa.
 _ALT_ORIGIN = os.getenv("RELEASE_ALT_ORIGIN", "").strip().rstrip("/")
 _IMPLICIT = ",".join(u for u in (_ALT_ORIGIN, "https://izz.ro") if u)
 BASE_URLS = tuple(
@@ -42,7 +38,7 @@ TIMEOUT_SECONDS = int(os.getenv("RELEASE_TIMEOUT_SECONDS", "1500"))
 def _get_json(url: str) -> dict:
     req = Request(url, headers={"User-Agent": "izz-release-probe/1.0 (+https://izz.ro)"})
     with urlopen(req, timeout=20) as response:  # nosec B310: URL-uri controlate de configurarea CI
-        return json.loads(response.read().decode("utf-8"))
+        return __import__("json").loads(response.read().decode("utf-8"))
 
 
 def _is_expected_or_descendant(deployed: str) -> bool:
@@ -65,7 +61,7 @@ def _probe(base: str) -> tuple[bool, str]:
         return False, f"manifest indisponibil ({exc})"
     deployed = str(data.get("commit") or "")
     if not deployed or deployed == "local":
-        return False, "manifest fără SHA de Pages"
+        return False, "manifest fără SHA public"
     if data.get("branch") != "main":
         return False, f"ramură neașteptată: {data.get('branch')!r}"
     if not _is_expected_or_descendant(deployed):
@@ -104,11 +100,8 @@ def main() -> int:
 
 
 if __name__ == "__main__":
-    # Windows: cp1252 nu are „ș"/„ț", deci un `print` cu diacritice arunca
-    # UnicodeEncodeError si scriptul iese cu 1 — indistingibil de un esec real de
-    # continut. Masurat 2026-08-20: `qa_check.py` iesea cu 1 pe date valide, iar cu
-    # PYTHONIOENCODING=utf-8 cu 0. In CI (Linux, UTF-8) nu se vede. Acelasi idiom ca
-    # in `scan_homepages.py`, extins la toate punctele de intrare cu diacritice.
+    # Windows: stdout/stderr trebuie sa afiseze diacritice fara sa mascheze un esec real cu
+    # UnicodeEncodeError. In CI (Linux, UTF-8) nu se vede, dar scriptul este util si local.
     for _stream in (sys.stdout, sys.stderr):
         if hasattr(_stream, "reconfigure"):
             _stream.reconfigure(encoding="utf-8", errors="replace")
