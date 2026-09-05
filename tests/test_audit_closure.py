@@ -151,3 +151,15 @@ def test_grounding_report_writer_failure_is_not_silent(monkeypatch, tmp_path):
     monkeypatch.setattr(raport_copiere, "_scrie_jsonl", fail_write)
     with pytest.raises(OSError, match="gate path read-only"):
         raport_copiere.noteaza("B", "id", "Titlu", "Rezumat", "Sursa")
+
+
+def test_silence_detection_is_scheduled_and_alerts():
+    tacere = (ROOT / ".github/workflows/detectie-tacere.yml").read_text(encoding="utf-8")
+    assert "schedule:" in tacere
+    assert "python tools/detectie_tacere.py" in tacere
+    assert "issues: write" in tacere
+    assert "if: failure()" in tacere
+    tool = (ROOT / "tools/detectie_tacere.py").read_text(encoding="utf-8")
+    for workflow in ("build.yml", "monitor.yml", "smoke.yml", "feedcheck.yml"):
+        assert workflow in tool
+    assert "data/articles.json" in tool
