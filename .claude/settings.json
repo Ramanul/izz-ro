@@ -6,6 +6,7 @@
       "Bash(python -m pytest:*)",
       "Bash(python -m ruff check:*)",
       "Bash(python tools/qa_check.py:*)",
+      "Bash(python tools/grounding_gate.py:*)",
       "Bash(python tools/registru.py:*)",
       "Bash(bash tools/verify_allowlist.sh:*)",
       "Bash(python tools/smoke_live.py:*)",
@@ -28,6 +29,17 @@
           {
             "type": "command",
             "command": "$CLAUDE_PROJECT_DIR/.claude/hooks/session-start.sh"
+          }
+        ]
+      }
+    ],
+    "PreToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "$CLAUDE_PROJECT_DIR/.claude/hooks/deny-protected-edits.sh"
           }
         ]
       }
