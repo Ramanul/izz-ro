@@ -29,6 +29,16 @@
     // Silueta judetului derivata din UAT-urile lui. Vezi buildCountyOutline().
     uatOutlineCache: new Map(),
     hoverUat: null,
+    // Județul de sub cursor la nivel național: același contract „hover = previzualizare"
+    // ca la UAT-uri (audit harta, P1) -- până acum doar UAT-urile spuneau numele înainte
+    // de click, deși suprafața de județ e ținta cea mai des atinsă.
+    hoverCounty: null,
+    // Dialogul UAT deschis, ca stare navigabila (audit harta, P0): cheia lui (cod SIRUTA sau
+    // nume) traieste in adresa (?judet=X&uat=Y), deci Back/Forward il inchid/deschid si un
+    // link partajat il redeschide. `pendingUat` tine intentia pana cand UAT-urile județului
+    // s-au incarcat -- JSON-ul lor soseste asincron, dialogul nu poate deschide mai devreme.
+    openUat: null,
+    pendingUat: null,
   };
 
   const REGION_FILLS = {
@@ -215,6 +225,11 @@
           buildMap();
           renderList();
           announceState();
+          settleUatDialog();
+          // Dialogul s-a putut deschide abia ACUM, cand datele au sosit: fara asta, adresa
+          // ar ramane fara `uat` pana la urmatoarea schimbare de stare si un link copiat
+          // intre timp ar duce altcineva pe harta fara dialog.
+          if (state.openUat) history.replaceState(null, "", urlForState());
         }
       });
   }
@@ -284,6 +299,7 @@
     const dialog = $("#uat-dialog");
     if (!dialog || dialog.hidden) return;
     dialog.hidden = true;
+    state.openUat = null;
     document.body.classList.remove("uat-dialog-open");
     if (restoreFocus && dialogOpener && typeof dialogOpener.focus === "function") dialogOpener.focus();
     dialogOpener = null;
@@ -298,6 +314,7 @@
     const close = $("#uat-dialog-close");
     if (!dialog || !title || !context || !summary || !list || !close || !uat?.items?.length) return;
     dialogOpener = opener || null;
+    state.openUat = String(uat.id || uat.name);
     const label = uat.label || "UAT selectat";
     const count = uat.items.length;
     title.textContent = `Știri în ${label}`;
@@ -318,6 +335,26 @@
     dialog.hidden = false;
     document.body.classList.add("uat-dialog-open");
     close.focus();
+  }
+
+  // Onoreaza intentia de deschidere a dialogului cand UAT-urile sunt disponibile. La un link
+  // direct (?judet=X&uat=Y) JSON-ul UAT soseste asincron, deci intentia asteapta in
+  // `pendingUat`; functia e apelata la sfarsitul fiecarui applyState SI dupa incarcarea din
+  // syncUats. Daca cheia din adresa nu mai exista in date (link vechi, date schimbate),
+  // intentia se renunta si adresa ramane fara dialog, in loc sa blocheze pagina.
+  function settleUatDialog() {
+    if (!state.pendingUat) return;
+    if (!state.zoomCounty) { state.pendingUat = null; return; }
+    if (state.uatLoading) return; // syncUats recheama functia la finalizarea incarcarii
+    if (!state.uats.length) { state.pendingUat = null; return; }
+    const wanted = state.pendingUat;
+    state.pendingUat = null;
+    const uat = state.uats.find((unit) => String(unit.id || unit.name) === wanted);
+    if (uat?.items?.length) {
+      const active = document.activeElement;
+      const opener = active instanceof Element && active.closest("#county-picker") ? active : state.canvas;
+      openUatDialog(uat, opener);
+    }
   }
 
   // Conturul de judet vine din Natural Earth (`tools/build_harta.py`), UAT-urile din exportul
@@ -585,8 +622,11 @@
       // umple gaurile dintre ele; conturul simplu de judet se umple la fel de bine asa.
       ctx.fill(path, "evenodd");
       ctx.globalAlpha = 1;
-      ctx.strokeStyle = palette.stroke;
-      ctx.lineWidth = 1.2;
+      // Județul de sub cursor se ingroasa si prinde culoarea de accent, la fel ca UAT-ul
+      // de sub cursor: tooltipul spune numele, conturul arata CARE forma il poartă.
+      const hovered = !state.zoomCounty && state.hoverCounty === county;
+      ctx.strokeStyle = hovered ? palette.hot : palette.stroke;
+      ctx.lineWidth = hovered ? 2 : 1.2;
       ctx.stroke(path);
       paths.push({ county, region, path, count, bounds: pathBounds(outline ? outline.d : pathData) });
     }
@@ -759,10 +799,29 @@
   // CODEAZA volumul de stiri, deci marirea ei uniforma ar sterge informatia. Calea corecta e
   // zona de atins mai mare decat desenul -- exact ce recomanda si Apple HIG (44pt) si Material
   // (48dp): pictograma ramane mica, zona din jurul ei creste.
+  // ORDINEA (audit harta, P0): interiorul clar de poligon castiga inaintea bulinelor. O bulina
+  // are raza de desen + 10px de toleranta si sta langa granita județului ei; fara regula asta,
+  // un click clar primit in județul A, langa granita cu B, putea fi furat de bulina lui B.
+  // Pentru clickul tintit pe bulina nimic nu se schimba: bulina sta in poligonul propriului
+  // judet, iar acolo interiorul intoarce exact acelasi judet.
 
-  function countyAtPoint(ctx, point) {
-    const inside = state.paths.find((e) => e.count > 0 && ctx.isPointInPath(e.path, point.x, point.y));
-    if (inside) return inside;
+  function countyFillAtPoint(ctx, point, { includeEmpty = false } = {}) {
+    let best = null;
+    for (const e of state.paths) {
+      if (!includeEmpty && !(e.count > 0)) continue;
+      if (!ctx.isPointInPath(e.path, point.x, point.y)) continue;
+      // Enclavele: Bucurestiul e desenat in inelul Ilfovului, iar datele nu modeleaza mereu
+      // enclavele ca gauri, deci un punct din Bucuresti poate fi "inside" si pentru Ilfov.
+      // Poligonul cel mai mic castiga -- acolo e singura intentie geometrica posibila.
+      const area = e.bounds
+        ? (e.bounds.maxX - e.bounds.minX) * (e.bounds.maxY - e.bounds.minY)
+        : Infinity;
+      if (!best || area < best.area) best = { ...e, area };
+    }
+    return best || null;
+  }
+
+  function countyEdgeAtPoint(ctx, point) {
     // Toleranta pe contur pentru judetele mici (Ilfov, Bucuresti): 10px CSS, transformata in
     // unitati viewBox ca sa insemne aceeasi distanta reala pe orice ecran. `lineWidth` se umfla
     // DOAR pentru interogare si se reseteaza imediat, deci desenul nu se schimba deloc.
@@ -791,6 +850,9 @@
     if (state.viewMode !== "events") params.set("mod", state.viewMode);
     if (state.selectedRegion) params.set("regiune", state.selectedRegion);
     if (state.selectedCounty) params.set("judet", state.selectedCounty);
+    // Dialogul deschis sau intentionat intra in adresa; `pendingUat` acopera fereastra dintre
+    // click si sosirea JSON-ului UAT, ca linkul copiat in acel interval sa nu piarda dialogul.
+    if (state.openUat || state.pendingUat) params.set("uat", state.openUat || state.pendingUat);
     const loc = Array.isArray(state.selectedLocality)
       ? state.selectedLocality
       : (state.selectedLocality ? [state.selectedLocality] : []);
@@ -811,6 +873,7 @@
       region: params.get("regiune") || null,
       county: params.get("judet") || null,
       locality: loc ? loc.split("|").filter(Boolean) : null,
+      uat: params.get("uat") || null,
       query: params.get("q") || "",
     };
   }
@@ -822,11 +885,27 @@
     if ("county" in patch) state.selectedCounty = patch.county || null;
     if ("locality" in patch) state.selectedLocality = patch.locality || null;
     if ("query" in patch) state.search = patch.query || "";
+    if ("uat" in patch) {
+      if (patch.uat) {
+        state.pendingUat = String(patch.uat);
+      } else {
+        state.pendingUat = null;
+        closeUatDialog({ restoreFocus: true });
+      }
+    }
     // `zoomCounty` nu e stare independenta, e derivata: la nivel Judetean click-ul filtreaza
     // fara sa mareasca (decizie proprietar, 13 aug). Tinuta separat, se desincroniza.
     state.zoomCounty = state.selectedCounty && !["judetean", "regional"].includes(state.level)
       ? state.selectedCounty : null;
-    state.listLimit = 120;
+    // Evidentierea de hover e a VECHII vederi: dupa zoom sau schimbare de filtru, un contur
+    // ramas aprins ar arata o selectie care nu exista; urmatoarea miscare de mouse o repune.
+    state.hoverCounty = null;
+    // Plafonul listei se reseteaza doar cand se schimba CE e filtrat: deschiderea sau
+    // inchiderea dialogului UAT muta doar fereastra de citire, nu filtrele -- ar fi absurd
+    // ca "Arată încă N rezultate" sa se piarda doar pentru că ai privit un dialog.
+    if (["level", "viewMode", "region", "county", "locality", "query"].some((key) => key in patch)) {
+      state.listLimit = 120;
+    }
     state.rawVisible = filtered();
     state.visible = itemsForView(state.rawVisible);
     syncUats();
@@ -839,6 +918,9 @@
     renderList();
     updateStats();
     announceState();
+    // Dupa ce UAT-urile au fost numarate (buildMap -> countUatNews): abia aici are dialogul
+    // `items` de ce deschide, daca UAT-urile erau deja in cache.
+    settleUatDialog();
 
     if (!push && !replace) return;
     const url = urlForState();
@@ -882,6 +964,18 @@
       ? (active.dataset.uat || active.dataset.region || active.dataset.county) : null;
     picker.replaceChildren();
 
+    // Incarcarea UAT-urilor unui judet e async si se vede: fara mesajul asta, pickerul ar
+    // sari inapoi pe butoanele de judet timp de cateva sute de ms si ar parea ca selectia
+    // "nu a prins" (audit harta, P1 -- starea intermediara trebuie comunicata).
+    if (state.zoomCounty && state.uatLoading) {
+      picker.setAttribute("aria-label", `Localități în ${state.zoomCounty}`);
+      const loading = document.createElement("p");
+      loading.className = "picker-empty";
+      loading.textContent = `Se încarcă localitățile din ${state.zoomCounty}…`;
+      picker.appendChild(loading);
+      return;
+    }
+
     // După alegerea unui județ, selectorul devine lista UAT-urilor acelui județ care au
     // știri în filtrul curent. Fiecare buton deschide aceeași listă de știri ca badge-ul de hartă.
     if (state.zoomCounty && state.uats.length) {
@@ -901,7 +995,9 @@
         button.dataset.uat = uat.id || uat.name;
         button.setAttribute("aria-haspopup", "dialog");
         button.textContent = `${uat.label || "UAT"} · ${uat.count}`;
-        button.addEventListener("click", () => openUatDialog(uat, button));
+        // Prin applyState, nu direct prin openUatDialog: dialogul trebuie sa ajunga si in
+        // adresa (?judet=X&uat=Y), altfel Back nu-l inchide si linkul copiat nu-l poarta.
+        button.addEventListener("click", () => applyState({ uat: String(uat.id || uat.name) }));
         // Legatura merge in ambele sensuri: peste forma de pe harta se aprinde randul din
         // lista, iar peste randul din lista se aprinde forma. Altfel lista si harta ar fi
         // doua liste de nume care nu se stiu una pe alta.
@@ -917,6 +1013,15 @@
         button.addEventListener("blur", () => setHover(null));
         picker.appendChild(button);
         if (button.dataset.uat === focusedKey) button.focus();
+      }
+      // Tastatura nu trebuie sa-si piarda locul cand pickerul se schimba din judete in UAT-uri:
+      // niciun buton UAT nu poarta cheia judetului (dataset.uat e cod SIRUTA), deci
+      // refocalizarea de mai sus nu gaseste nimic si focusul cade pe body -- acelasi mod de
+      // esec reparat in IZZ-0194, reaparut insa pe tranzitia judet -> lista UAT. Primul UAT
+      // e o tinta sigura; pentru utilizatorul de mouse focusedKey e null si nu i se fura focusul.
+      if (focusedKey && !picker.contains(document.activeElement)) {
+        const first = picker.querySelector("button[data-uat]");
+        if (first) first.focus();
       }
       syncUatHighlight();
       return;
@@ -962,13 +1067,33 @@
   // Numele UAT-ului sub cursor sau sub deget. Pana acum harta nu spunea nicaieri peste ce
   // esti: aflai abia dupa ce dadeai click si se deschidea dialogul.
   function onCanvasHover(event) {
-    const uat = uatAtPoint(event);
-    if (uat !== state.hoverUat) {
-      state.hoverUat = uat;
-      syncUatHighlight();
+    if (state.zoomCounty) {
+      const uat = uatAtPoint(event);
+      if (uat !== state.hoverUat) {
+        state.hoverUat = uat;
+        syncUatHighlight();
+        buildMap();
+      }
+      showMapTip(uat, event);
+      return;
+    }
+    // Nivel național: același contract „hover = previzualizare". Doar interiorul poligonului
+    // aprinde -- fără toleranță aici, ca un deget pe margine să nu aprindă vecinul doar
+    // pentru că e aproape; toleranțele rămân treaba clickului.
+    const canvas = state.canvas;
+    const view = state.view;
+    if (!canvas || !view) { showMapTip(null, null); return; }
+    const ctx = canvas.getContext("2d");
+    const dp = devicePointForEvent(canvas, event);
+    if (!ctx || !dp) { showMapTip(null, null); return; }
+    applyViewTransform(ctx, canvas, view);
+    const entry = countyFillAtPoint(ctx, dp, { includeEmpty: true });
+    const county = entry ? entry.county : null;
+    if (county !== state.hoverCounty) {
+      state.hoverCounty = county;
       buildMap();
     }
-    showMapTip(uat, event);
+    showMapTip(entry, event);
   }
 
   function clearCanvasHover() {
@@ -977,22 +1102,30 @@
       syncUatHighlight();
       buildMap();
     }
+    if (state.hoverCounty) {
+      state.hoverCounty = null;
+      buildMap();
+    }
     showMapTip(null, null);
   }
 
-  function showMapTip(uat, event) {
+  function showMapTip(target, event) {
     const tip = state.tip;
     const canvas = state.canvas;
     if (!tip) return;
-    if (!uat || !event || !canvas) {
+    if (!target || !event || !canvas) {
       tip.hidden = true;
       tip.textContent = "";
       return;
     }
-    const count = uat.count || 0;
+    const count = target.count || 0;
+    // Eticheta depinde de forma de sub cursor: UAT-urile poarta label/name, județele
+    // county, iar la nivel regional cifra apartine REGIUNII, nu județului atins.
+    const label = target.label || target.name || target.county
+      || (state.level === "regional" ? target.region : "") || "";
     tip.textContent = count
-      ? `${uat.label || uat.name} · ${count} ${itemLabelFor(count)}`
-      : `${uat.label || uat.name}`;
+      ? `${label} · ${count} ${itemLabelFor(count)}`
+      : `${label}`;
     tip.hidden = false;
     // Pozitionare relativa la gazda hartii, tinuta in interiorul ei: langa marginea din
     // dreapta un tooltip ancorat la cursor ar iesi din ecran, iar pe telefon exact acolo
@@ -1037,15 +1170,20 @@
       const uat = closestHit(p, state.uats.filter((unit) => unit.count > 0), (unit) => unit.marker)
         || state.uats.find((unit) => unit.count > 0
           && ctx.isPointInPath(unit.path2d, dp.x, dp.y, "evenodd"));
-      if (uat?.items?.length) openUatDialog(uat, canvas);
+      // Prin applyState: deschiderea din harta si deschiderea din lista trebuie sa fie
+      // aceeasi stare, nu doua mecanisme -- una cu URL, una fara.
+      if (uat?.items?.length) applyState({ uat: String(uat.id || uat.name) });
     } else {
       // Transformarea se reafirma explicit inainte de hit-test: buildMap() o lasa setata, dar
       // a te baza pe ordinea apelurilor face hit-testul sa cada silentios la prima schimbare.
+      // Cascada: (1) interior clar de poligon, (2) bulina cea mai apropiata, (3) margine cu
+      // toleranta. Vezi comentariul de la countyFillAtPoint pentru de ce poligonul e primul.
       const ctx = canvas.getContext("2d");
       applyViewTransform(ctx, canvas, view);
       const dp = devicePointForEvent(canvas, event);
-      const entry = closestHit(p, state.paths, (e) => e.marker)
-        || (dp && countyAtPoint(ctx, dp));
+      const entry = (dp && countyFillAtPoint(ctx, dp))
+        || closestHit(p, state.paths, (e) => e.marker)
+        || (dp && countyEdgeAtPoint(ctx, dp));
       if (entry) {
         if (state.level === "regional") {
           const regions = state.map?.regiuni || {};
@@ -1230,12 +1368,18 @@
     if (reset) reset.addEventListener("click", resetAll);
     const dialog = $("#uat-dialog");
     const closeDialog = $("#uat-dialog-close");
-    if (closeDialog) closeDialog.addEventListener("click", () => closeUatDialog());
+    // Inchiderea trece prin applyState ca sa scoata `uat` din adresa. `replace`, nu `push`:
+    // altfel istoricul ar pastra o intrare cu dialog deschis si Back de dupa X ar redeschide
+    // ceva ce utilizatorul a inchis el.
+    if (closeDialog) closeDialog.addEventListener("click", () => applyState({ uat: null }, { replace: true }));
     if (dialog) dialog.addEventListener("click", (event) => {
-      if (event.target instanceof Element && event.target.closest("[data-uat-close]")) closeUatDialog();
+      if (event.target instanceof Element && event.target.closest("[data-uat-close]")) {
+        applyState({ uat: null }, { replace: true });
+      }
     });
     document.addEventListener("keydown", (event) => {
-      if (event.key === "Escape") closeUatDialog();
+      const box = $("#uat-dialog");
+      if (event.key === "Escape" && box && !box.hidden) applyState({ uat: null }, { replace: true });
     });
     window.addEventListener("popstate", () => applyState(stateFromUrl(), { push: false }));
   }

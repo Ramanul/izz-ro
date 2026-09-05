@@ -139,3 +139,14 @@ def test_uat_badge_radius_is_constrained_to_polygon_interior():
     assert "function uatBadgePlacement" in js
     assert "uatContainsMapPoint" in js
     assert "placement.clearance * 0.72" in js
+
+
+def test_uat_dialog_is_url_navigable_state():
+    # Dialogul UAT e stare navigabila, nu un mecanism independent (audit harta, P0): intra in
+    # adresa, se citeste din adresa, iar deschiderea asteapta UAT-urile județului (settle).
+    js = Path("static/harta-stiri/harta-stiri.js").read_text(encoding="utf-8")
+    assert 'params.set("uat", state.openUat || state.pendingUat)' in js
+    assert 'uat: params.get("uat") || null' in js
+    assert "function settleUatDialog(" in js
+    # Inchiderea prin X/Escape/backdrop trece prin applyState, ca sa curate adresa.
+    assert 'applyState({ uat: null }, { replace: true })' in js

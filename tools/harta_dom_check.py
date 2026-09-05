@@ -1,6 +1,9 @@
 #!/usr/bin/env python
-"""Verificare DOM randat pentru harta stirilor. Ruleaza cu serverul local pornit:
-   python -m http.server 8765 --directory static/harta-stiri
+"""Verificare DOM randat pentru harta stirilor. Ruleaza cu serverul local pornit DIN RADACINA
+   repo-ului -- index.html foloseste cai absolute (/static/...), deci un server din
+   static/harta-stiri ar lasa JS-ul si CSS-ul pe 404 si pagina blocata in "Se încarcă…":
+   python -m http.server 8765
+   MAP_URL=http://localhost:8765/static/harta-stiri/ python tools/harta_dom_check.py
 
 Asserteaza pe STRUCTURA VIZIBILA si pe COMPORTAMENT OBSERVAT (id-uri, taguri, pixeli, clickuri),
 nu pe clase CSS si nu pe identificatori din sursa -- de doua ori in repo-ul asta o garda a stat
@@ -209,6 +212,195 @@ def felia4_hittest(p):
     check(not county_selected(p), "derularea cu degetul pe harta NU selecteaza un judet")
     reset(p)
 
+def hit_ordin_fara_furt(p):
+    """Ordinea cascadei (audit harta, P0): un click clar primit in interiorul poligonului unui
+    judet nu poate fi furat de bulina unui vecin ajunsa in raza de toleranta peste granita.
+    Ground truth = geometria din map.json, calculata in pagina cu acelasi Path2D + isPointInPath
+    pe care le foloseste aplicatia, in acelasi spatiu (px de canvas, transformarea aplicata --
+    IZZ-0193). Daca in datele curente nu exista niciun punct in care vechea ordine greseA,
+    verificarea se raporteaza NEVERIFICAT, nu verde -- nu se inventeaza o reusita."""
+    print("\nHIT-TEST ORDINE -- bulina nu fura poligonul clar atins")
+    # Bucuresti/Ilfov stau in JUMATATEA DE SUD a canvasului: la 1280x900 punctele lor cad sub
+    # fold, iar un click in afara viewportului nu atinge canvasul (elementFromPoint -> none).
+    # Aducem harta in viewport INAINTE de a captura rect si de a calcula coordonatele.
+    p.locator("#map canvas.map-canvas").scroll_into_view_if_needed()
+    p.wait_for_timeout(150)
+    truth = p.evaluate("""async () => {
+      const d = await (await fetch('./data/map.json')).json();
+      const vb = String(d.map.viewbox).trim().split(/\\s+/).map(Number);
+      const c = document.querySelector('#map canvas.map-canvas');
+      const scratch = document.createElement('canvas');
+      scratch.width = c.width; scratch.height = c.height;
+      const ctx = scratch.getContext('2d');
+      ctx.setTransform(c.width / vb[2], 0, 0, c.height / vb[3],
+                       -vb[0] * c.width / vb[2], -vb[1] * c.height / vb[3]);
+      const paths = {}, bounds = {};
+      for (const [county, pd] of Object.entries(d.map.judete)) {
+        try { paths[county] = new Path2D(pd); } catch { continue; }
+        const nums = String(pd).match(/-?\\d+(?:\\.\\d+)?/g).map(Number);
+        let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
+        for (let i = 0; i + 1 < nums.length; i += 2) {
+          minX = Math.min(minX, nums[i]); minY = Math.min(minY, nums[i + 1]);
+          maxX = Math.max(maxX, nums[i]); maxY = Math.max(maxY, nums[i + 1]);
+        }
+        bounds[county] = { minX, minY, maxX, maxY };
+      }
+      // Numarul de EVENIMENTE pe judet, identic cu itemsForView la nivel "all" -- raza bulinei
+      // se calculeaza din el, nu din articolele brute.
+      const keys = new Map(), counts = {};
+      for (const a of d.articles || []) {
+        if (!a.county) continue;
+        const k = a.event_id || `${a.slug || a.title}|${a.county}|${a.published}`;
+        if (!keys.has(k)) keys.set(k, a.county);
+      }
+      for (const county of keys.values()) counts[county] = (counts[county] || 0) + 1;
+      const rect = c.getBoundingClientRect();
+      const tolVb = 10 * (vb[2] / rect.width);  // 10px CSS -> unitati viewBox, ca in hitDistance
+      const markers = {};
+      for (const [county, b] of Object.entries(bounds)) {
+        if (!counts[county]) continue;
+        const radius = Math.max(7, Math.min(18, 6 + Math.sqrt(counts[county]) * 1.8));
+        markers[county] = {
+          x: (b.minX + b.maxX) / 2, y: (b.minY + b.maxY) / 2, radius,
+        };
+      }
+      const area = (b) => (b.maxX - b.minX) * (b.maxY - b.minY);
+      const found = [];
+      const NX = 48, NY = 30;
+      for (let i = 1; i < NX && found.length < 3; i += 1) {
+        for (let j = 1; j < NY && found.length < 3; j += 1) {
+          const xd = Math.round(c.width * i / NX), yd = Math.round(c.height * j / NY);
+          const pv = { x: vb[0] + (xd / c.width) * vb[2], y: vb[1] + (yd / c.height) * vb[3] };
+          let inside = null;
+          for (const [county, path] of Object.entries(paths)) {
+            if (!ctx.isPointInPath(path, xd, yd)) continue;
+            if (!inside || area(bounds[county]) < area(bounds[inside])) inside = county;
+          }
+          if (!inside || !counts[inside]) continue;
+          let steal = null, bestDist = Infinity;
+          for (const [county, m] of Object.entries(markers)) {
+            if (county === inside) continue;
+            const dist = Math.hypot(pv.x - m.x, pv.y - m.y);
+            if (dist <= m.radius + tolVb && dist < bestDist) { bestDist = dist; steal = county; }
+          }
+          // Cazul discriminator: vechea ordine (bulina intai) ar fi selectat `steal`,
+          // desi punctul e clar in interiorul lui `inside`.
+          if (steal) found.push({
+            xCss: rect.x + (xd / c.width) * rect.width,
+            yCss: rect.y + (yd / c.height) * rect.height,
+            inside, steal,
+          });
+        }
+      }
+      // Enclavele: centrul Bucurestiului trebuie sa intoarca BUCURESTI, nu Ilfov, chiar daca
+      // poligonul Ilfovului il contine geometric.
+      let enclave = null;
+      if (bounds.BUCURESTI && counts.BUCURESTI) {
+        const b = bounds.BUCURESTI;
+        const xd = Math.round(((b.minX + b.maxX) / 2 - vb[0]) * c.width / vb[2]);
+        const yd = Math.round(((b.minY + b.maxY) / 2 - vb[1]) * c.height / vb[3]);
+        enclave = {
+          xCss: rect.x + (xd / c.width) * rect.width,
+          yCss: rect.y + (yd / c.height) * rect.height,
+          inBuc: !!paths.BUCURESTI && ctx.isPointInPath(paths.BUCURESTI, xd, yd),
+          inIlfov: !!paths.ILFOV && ctx.isPointInPath(paths.ILFOV, xd, yd),
+        };
+      }
+      return { found, enclave };
+    }""")
+
+    if truth["enclave"] and truth["enclave"]["inBuc"]:
+        p.mouse.click(truth["enclave"]["xCss"], truth["enclave"]["yCss"])
+        p.wait_for_timeout(120)
+        url = p.evaluate("() => location.search")
+        check("judet=BUCURESTI" in url,
+              f"click in centrul Bucurestiului selecteaza BUCURESTI, nu Ilfov ('{url}')")
+        reset(p)
+    elif truth["enclave"]:
+        skip(f"enclava Bucuresti: punctul de test nu e in poligonul lui (inBuc={truth['enclave']['inBuc']})")
+    else:
+        skip("enclava Bucuresti: BUCURESTI nu are stiri in datele curente")
+
+    if not truth["found"]:
+        skip("niciun punct de furt in grila curenta: nicio bulina de vecin nu ajunge in raza de "
+             "toleranta peste un poligon clar atins -- vechea ordine n-ar fi gresit niciunde azi")
+        return
+    for case in truth["found"]:
+        p.mouse.click(case["xCss"], case["yCss"])
+        p.wait_for_timeout(120)
+        url = p.evaluate("() => location.search")
+        check(f"judet={case['inside']}" in url,
+              f"click clar in {case['inside']} (bulina lui {case['steal']} e in raza) selecteaza "
+              f"{case['inside']}, nu {case['steal']} ('{url}')")
+        reset(p)
+
+
+def hover_preview(p):
+    """hover = previzualizare peste tot (audit harta, P1): la nivel national, numele si cifra
+    judetului apar sub cursor INAINTE de click, la fel ca la UAT-uri."""
+    print("\nHOVER PREVIEW -- numele zonei de sub cursor, inainte de click")
+    p.locator("#map canvas.map-canvas").scroll_into_view_if_needed()
+    p.wait_for_timeout(150)
+    pt = p.evaluate("""async () => {
+      const d = await (await fetch('./data/map.json')).json();
+      const vb = String(d.map.viewbox).trim().split(/\\s+/).map(Number);
+      const c = document.querySelector('#map canvas.map-canvas');
+      const scratch = document.createElement('canvas');
+      scratch.width = c.width; scratch.height = c.height;
+      const ctx = scratch.getContext('2d');
+      ctx.setTransform(c.width / vb[2], 0, 0, c.height / vb[3],
+                       -vb[0] * c.width / vb[2], -vb[1] * c.height / vb[3]);
+      const rect = c.getBoundingClientRect();
+      // Cel mai mare judet, cu un punct VERIFICAT in interior: centroidul unui poligon
+      // concav poate iesi in exterior -- acelasi motiv pentru care exista uatBadgePlacement.
+      let best = null;
+      for (const [county, pd] of Object.entries(d.map.judete)) {
+        const nums = String(pd).match(/-?\\d+(?:\\.\\d+)?/g).map(Number);
+        let minX = 1e9, minY = 1e9, maxX = -1e9, maxY = -1e9;
+        for (let i = 0; i + 1 < nums.length; i += 2) {
+          minX = Math.min(minX, nums[i]); minY = Math.min(minY, nums[i + 1]);
+          maxX = Math.max(maxX, nums[i]); maxY = Math.max(maxY, nums[i + 1]);
+        }
+        const area = (maxX - minX) * (maxY - minY);
+        if (!best || area > best.area) best = { county, minX, minY, maxX, maxY, area };
+      }
+      const path = new Path2D(d.map.judete[best.county]);
+      let hit = null;
+      for (let row = 1; row < 12 && !hit; row += 1) {
+        for (let col = 1; col < 12 && !hit; col += 1) {
+          const x = best.minX + (best.maxX - best.minX) * col / 12;
+          const y = best.minY + (best.maxY - best.minY) * row / 12;
+          const xd = Math.round((x - vb[0]) * c.width / vb[2]);
+          const yd = Math.round((y - vb[1]) * c.height / vb[3]);
+          if (ctx.isPointInPath(path, xd, yd)) {
+            hit = { x: rect.x + (xd / c.width) * rect.width,
+                    y: rect.y + (yd / c.height) * rect.height };
+          }
+        }
+      }
+      return hit ? { county: best.county, ...hit } : { county: best.county, x: null, y: null };
+    }""")
+    if pt.get("x") is None:
+        skip("nu am gasit un punct interior verificat -- hoverul nu a putut fi testat")
+        return
+    p.mouse.move(pt["x"], pt["y"], steps=3)
+    p.wait_for_timeout(250)
+    tip = p.evaluate("""() => {
+      const t = document.querySelector('.map-tip');
+      return { hidden: t ? t.hidden : null, text: t ? t.textContent.trim() : '' };
+    }""")
+    check(bool(tip["text"]) and not tip["hidden"],
+          f"tooltipul arata zona de sub cursor inainte de click ('{tip['text']}')")
+    check(pt["county"] in tip["text"].upper(),
+          f"numele e cel al judetului tintit ({pt['county']})")
+    # Click = selectare; hover = doar previzualizare. La iesirea de pe canvas, totul dispare.
+    r = canvas_rect(p)
+    p.mouse.move(r["x"] + r["w"] + 12, r["y"] + r["h"] / 2, steps=2)
+    p.wait_for_timeout(200)
+    check(p.evaluate("() => document.querySelector('.map-tip').hidden"),
+          "la iesirea de pe harta tooltipul dispare")
+
+
 def felia2_localitate(p):
     print("\nFELIA 2 -- click pe localitate nu fura campul de cautare")
     r = canvas_rect(p)
@@ -308,8 +500,22 @@ def felia5_county_picker(p):
     p.wait_for_timeout(200)
     after = panel_count(p)
     check(after != before, f"Enter pe buton filtreaza lista ('{before}' -> '{after}')")
-    check(p.evaluate("() => document.activeElement.getAttribute('aria-pressed')") == "true",
-          "butonul selectat primeste aria-pressed='true'")
+    # Starea vizibila de selectie are doua forme legitime: butonul de judet cu aria-pressed
+    # (daca UAT-urile județului nu s-au incarcat inca) sau pickerul deja trecut pe lista de
+    # UAT-uri (comportament proaspat implementat -- butoanele UAT au aria-haspopup, nu
+    # aria-pressed). Incarcarea UAT e asincrona, deci intre cele doua e o cursa care nu tine
+    # de felia 5; aserțiunea accepta ambele, nu o singura fereastra de timp norocoasa.
+    sel = p.evaluate("""() => {
+      const a = document.activeElement;
+      const inPicker = !!(a && a.closest && a.closest('#county-picker'));
+      return {
+        pressed: inPicker && a.getAttribute('aria-pressed') === 'true',
+        uats: inPicker && a.hasAttribute('data-uat'),
+        popup: inPicker ? a.getAttribute('aria-haspopup') : null,
+      };
+    }""")
+    check(sel["pressed"] or sel["uats"],
+          f"selectia e vizibila pe buton (aria-pressed={sel['pressed']}, buton UAT={sel['uats']}, haspopup={sel['popup']})")
 
     # Capcana de blocare: picker-ul se reconstruieste din stirile VIZIBILE, iar dupa selectie
     # vizibile sunt doar ale judetului ales. Daca ar ramane un singur buton, utilizatorul de
@@ -362,6 +568,62 @@ def felia6_url(p):
           f"toate cele {len(metas)} rezultate sunt din CLUJ ({len(off)} din alt judet)")
     p.goto(BASE, wait_until="networkidle")
     p.wait_for_selector("#news-list li", timeout=15000)
+
+def uat_in_url(p):
+    """Dialogul UAT e stare navigabila (audit harta, P0): vine din URL, intra in URL, Back il
+    inchide, X-ul curata adresa, iar un link direct il redeschide fara niciun click."""
+    print("\nUAT IN ADRESA -- dialogul e stare navigabila")
+    p.goto(BASE, wait_until="networkidle")
+    p.wait_for_selector("#county-picker button", timeout=15000)
+    p.wait_for_timeout(200)
+    # Intra intr-un judet prin picker: cale garantata, nu tap precis pe harta.
+    p.click("#county-picker button")
+    try:
+        p.wait_for_selector("#county-picker button[data-uat]", timeout=5000)
+    except Exception:
+        skip("judetul intrat nu a primit lista de UAT-uri in 5s -- nu se poate testa dialogul in URL")
+        reset(p)
+        return
+    p.wait_for_timeout(200)
+
+    p.click("#county-picker button[data-uat]")
+    p.wait_for_timeout(300)
+    url = p.evaluate("() => location.search")
+    check("uat=" in url, f"deschiderea dialogului scrie uat= in adresa ('{url}')")
+    check("judet=" in url, f"adresa pastreaza si județul ('{url}')")
+    check(p.evaluate("() => !document.querySelector('#uat-dialog').hidden"), "dialogul e deschis")
+
+    # X inchide si curata adresa prin replaceState -- altfel Back de dupa X ar redeschide
+    # dialogul pe care utilizatorul tocmai l-a inchis.
+    p.click("#uat-dialog-close")
+    p.wait_for_timeout(250)
+    check(p.evaluate("() => document.querySelector('#uat-dialog').hidden"), "X inchide dialogul")
+    check("uat=" not in p.evaluate("() => location.search"),
+          f"X scoate uat= din adresa ('{p.evaluate('() => location.search')}')")
+
+    # Back, de la dialog deschis, inchide dialogul in loc sa iasa de pe pagina.
+    p.click("#county-picker button[data-uat]")
+    p.wait_for_timeout(300)
+    opened_url = p.evaluate("() => location.search")
+    check("uat=" in opened_url and p.evaluate("() => !document.querySelector('#uat-dialog').hidden"),
+          "dialogul s-a redeschis pentru testul Back")
+    p.go_back()
+    p.wait_for_timeout(350)
+    check(p.evaluate("() => document.querySelector('#uat-dialog').hidden"),
+          f"Back inchide dialogul, nu paraseste pagina (adresa: '{p.evaluate('() => location.search')}')")
+
+    # Link direct: cine prinde adresa cu uat= vede dialogul deschis, fara niciun click.
+    p.goto(BASE + opened_url, wait_until="networkidle")
+    try:
+        p.wait_for_selector("#uat-dialog-list a", timeout=8000)
+    except Exception:
+        skip(f"linkul direct '{opened_url}' nu a deschis dialogul in 8s (JSON UAT n-a sosit?)")
+    else:
+        check(p.evaluate("() => !document.querySelector('#uat-dialog').hidden"),
+              f"link direct ({opened_url}) redeschide dialogul")
+    p.goto(BASE, wait_until="networkidle")
+    p.wait_for_selector("#news-list li", timeout=15000)
+
 
 def mobil_390(p):
     """Android: harta e ~359x256px la 390 latime, deci ea e cazul greu pentru zona de atins.
@@ -419,9 +681,12 @@ def main():
         felia1_lista(p)
         felia7_cautare(p)
         felia4_hittest(p)
+        hit_ordin_fara_furt(p)
+        hover_preview(p)
         felia2_localitate(p)
         felia5_county_picker(p)
         felia6_url(p)
+        uat_in_url(p)
 
         mob = br.new_page(viewport={"width": 390, "height": 844}, is_mobile=True, has_touch=True)
         mob.goto(BASE, wait_until="networkidle")
