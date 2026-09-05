@@ -23,6 +23,7 @@ prin COMPOZITIE si valoare, nu prin nuanta. Titlul NU se pune pe bannerul de sit
 pe pagina, sub imagine.
 """
 import base64
+import datetime
 import hashlib
 import os
 
@@ -47,6 +48,7 @@ _PALETE = [
     ("#4a3244", "#f5f0f4"),   # prun
 ]
 GOLD = "#c9a227"
+GOLD_INCHIS = "#8b6918"  # --gold-strong din static/styles.css (§8)
 
 
 def _font() -> str:
@@ -68,6 +70,46 @@ def _subtitlu(a: dict) -> str:
     if not cat or cat.lower() == _eticheta(a).strip().lower():
         return ""
     return cat
+
+
+# Data publicarii ca ELEMENT DE DESIGN (reproiectare 2026-09-06): coperta clasica era
+# diagnosticata "~80% spatiu alb, template gol". Fiecare template umple acum canvasul cu
+# tipografie mare si cu DATA stirii — fapt stabil din stare, nu provenienta (sect. 7 nu
+# interzice data; numele surselor raman pe card, nu pe imagine).
+_ZILE_RO = ("luni", "marți", "miercuri", "joi", "vineri", "sâmbătă", "duminică")
+_LUNI_RO = ("ianuarie", "februarie", "martie", "aprilie", "mai", "iunie", "iulie",
+            "august", "septembrie", "octombrie", "noiembrie", "decembrie")
+
+
+def _data_copertei(a: dict) -> dict | None:
+    """{zi, zi_n, wk, luna, an} din `published`, sau None daca e irecuperabila."""
+    pub = (a.get("published") or "")[:10]
+    try:
+        d = datetime.date.fromisoformat(pub)
+    except ValueError:
+        return None
+    return {"zi": f"{d.day:02d}", "zi_n": str(d.day), "wk": _ZILE_RO[d.weekday()],
+            "luna": _LUNI_RO[d.month - 1], "an": str(d.year)}
+
+
+def _et_px(et: str, trepte: tuple[tuple[int, int], ...], k: float) -> int:
+    """Marimea etichetei treptata pe lungime: numele lungi nu se taie din cadru."""
+    n = len((et or "").strip())
+    for plafon, px in trepte:
+        if n <= plafon:
+            return int(px * k)
+    return int(trepte[-1][1] * k)
+
+
+def _rand_sub(sb: str, k: float) -> str:
+    """Randul de subtitlu cu filet auriu inline; gol cand subtitlul e gol."""
+    if not sb:
+        return ""
+    return (f'<div style="margin-top:{18 * k:.0f}px;display:flex;align-items:center;gap:{14 * k:.0f}px">'
+            f'<span style="width:{64 * k:.0f}px;height:{3 * k:.0f}px;background:{GOLD};'
+            f'display:inline-block"></span>'
+            f'<span class="sub" style="margin-top:0;font-size:{18 * k:.0f}px;'
+            f'letter-spacing:{4 * k:.0f}px">{sb}</span></div>')
 
 
 _GRAIN = ("url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E"
@@ -99,75 +141,129 @@ def _base_css(w: int, h: int) -> str:
 
 
 def _t_editorial(a, acc, bg, k):
-    """Hartie, filet auriu, tipografie asezata pe verticala de aur. Cel mai sobru."""
+    """Pagina intai: bara de sus cu data, tipografie mare centrate vertical, filet dublu."""
+    et, sb = _eticheta(a), _subtitlu(a)
+    dt = _data_copertei(a)
+    et_px = _et_px(et, ((8, 128), (13, 102), (18, 82), (99, 60)), k)
+    sus = f"{dt['wk']} {dt['zi_n']} {dt['luna']} {dt['an']}" if dt else "izz.ro"
     return (
         f'<div class="stage" style="background:{bg};color:{acc}">'
-        f'<div style="position:absolute;left:{56*k:.0f}px;top:{56*k:.0f}px;'
-        f'width:{int((ART_W-112)/PHI*k)}px" class="filet"></div>'
-        f'<div style="position:absolute;left:{56*k:.0f}px;top:{int(ART_H/PHI*k)}px;'
-        f'transform:translateY(-50%)">'
-        f'<div class="eticheta">{_eticheta(a)}</div>'
-        f'<div class="sub">{_subtitlu(a)}</div></div>'
-        f'<div style="position:absolute;right:{-120*k:.0f}px;bottom:{-160*k:.0f}px;'
-        f'width:{440*k:.0f}px;height:{440*k:.0f}px;border-radius:50%;'
-        f'border:{2*k:.0f}px solid {acc};opacity:.10"></div>'
-        f'<div class="marca" style="left:{56*k:.0f}px;bottom:{44*k:.0f}px">izz.ro</div>'
+        f'<div style="position:absolute;left:{56 * k:.0f}px;right:{56 * k:.0f}px;top:{30 * k:.0f}px;'
+        f'display:flex;justify-content:space-between;align-items:baseline">'
+        f'<span class="marca" style="position:static;font-size:{15 * k:.0f}px;opacity:.65">izz.ro</span>'
+        f'<span class="marca" style="position:static;font-size:{13 * k:.0f}px">{sus}</span></div>'
+        f'<div style="position:absolute;left:{56 * k:.0f}px;right:{56 * k:.0f}px;top:{68 * k:.0f}px;'
+        f'height:{3 * k:.0f}px;background:{GOLD}"></div>'
+        f'<div style="position:absolute;left:{56 * k:.0f}px;top:{92 * k:.0f}px;bottom:{96 * k:.0f}px;'
+        f'display:flex;flex-direction:column;justify-content:center;max-width:{660 * k:.0f}px">'
+        f'<div class="eticheta" style="font-size:{et_px}px;letter-spacing:{2 * k:.0f}px;'
+        f'line-height:1.04">{et}</div>{_rand_sub(sb, k)}</div>'
+        f'<div style="position:absolute;right:{-150 * k:.0f}px;bottom:{-190 * k:.0f}px;'
+        f'width:{430 * k:.0f}px;height:{430 * k:.0f}px;border-radius:50%;'
+        f'border:{2 * k:.0f}px solid {acc};opacity:.10"></div>'
+        f'<div style="position:absolute;right:{-60 * k:.0f}px;bottom:{-260 * k:.0f}px;'
+        f'width:{300 * k:.0f}px;height:{300 * k:.0f}px;border-radius:50%;'
+        f'background:{acc};opacity:.05"></div>'
+        f'<div style="position:absolute;left:{56 * k:.0f}px;right:{56 * k:.0f}px;bottom:{34 * k:.0f}px;'
+        f'display:flex;justify-content:space-between;align-items:baseline">'
+        f'<span class="marca" style="position:static;font-size:{11 * k:.0f}px;opacity:.5">Portalul știrilor tale</span>'
+        f'<span class="marca" style="position:static;font-size:{11 * k:.0f}px;opacity:.5">{sb}</span></div>'
         f'<div class="grain"></div></div>'
     )
 
 
 def _t_inversat(a, acc, bg, k):
-    """Fundal de accent, tipografie deschisa. Contrastul cel mai puternic din set."""
+    """Noaptea: fond inchis, cifra zilei uriasa in aur — contrastul maxim din set."""
+    et, sb = _eticheta(a), _subtitlu(a)
+    dt = _data_copertei(a)
+    et_px = _et_px(et, ((8, 84), (13, 68), (18, 54), (99, 42)), k)
+    numeral = (f'<div style="position:absolute;right:{56 * k:.0f}px;bottom:{34 * k:.0f}px;'
+               f'text-align:right;line-height:1">'
+               f'<div class="marca" style="position:static;font-size:{16 * k:.0f}px;opacity:.6">{dt["wk"]}</div>'
+               f'<div style="font-weight:800;font-size:{232 * k:.0f}px;color:{GOLD};line-height:.92">{dt["zi"]}</div>'
+               f'<div style="font-weight:800;font-size:{20 * k:.0f}px;letter-spacing:{7 * k:.0f}px;'
+               f'text-transform:uppercase;opacity:.85">{dt["luna"]}</div></div>') if dt else ""
     return (
         f'<div class="stage" style="background:{acc};color:{bg}">'
-        f'<div style="position:absolute;inset:{18*k:.0f}px;border:{1*k:.0f}px solid {GOLD};'
-        f'opacity:.45"></div>'
-        f'<div style="position:absolute;left:{64*k:.0f}px;top:50%;transform:translateY(-50%)">'
-        f'<div class="eticheta">{_eticheta(a)}</div>'
-        f'<div style="width:{int(190*k)}px;margin-top:{20*k:.0f}px" class="filet"></div>'
-        f'<div class="sub">{_subtitlu(a)}</div></div>'
-        f'<div style="position:absolute;right:{-90*k:.0f}px;top:50%;transform:translateY(-50%) '
-        f'rotate(45deg);width:{380*k:.0f}px;height:{380*k:.0f}px;border:{1*k:.0f}px solid {bg};'
-        f'opacity:.14"></div>'
-        f'<div class="marca" style="right:{40*k:.0f}px;bottom:{34*k:.0f}px">izz.ro</div>'
+        f'<div style="position:absolute;inset:{18 * k:.0f}px;border:{2 * k:.0f}px solid {GOLD};opacity:.5"></div>'
+        f'<div style="position:absolute;left:{64 * k:.0f}px;top:{0};bottom:{0};'
+        f'display:flex;flex-direction:column;justify-content:center;max-width:{500 * k:.0f}px">'
+        f'<div class="eticheta" style="font-size:{et_px}px;letter-spacing:{2 * k:.0f}px;'
+        f'line-height:1.06">{et}</div>'
+        f'<div style="width:{190 * k:.0f}px;height:{3 * k:.0f}px;background:{GOLD};margin:{22 * k:.0f}px 0 0"></div>'
+        f'<div class="sub" style="font-size:{18 * k:.0f}px;margin-top:{16 * k:.0f}px">{sb}</div></div>'
+        f'<div style="position:absolute;left:{-90 * k:.0f}px;top:50%;transform:translateY(-50%) '
+        f'rotate(45deg);width:{380 * k:.0f}px;height:{380 * k:.0f}px;border:{1 * k:.0f}px solid {bg};'
+        f'opacity:.14"></div>{numeral}'
+        f'<div class="marca" style="left:{64 * k:.0f}px;bottom:{40 * k:.0f}px">izz.ro</div>'
         f'<div class="grain"></div></div>'
     )
 
 
 def _t_banda(a, acc, bg, k):
-    """Banda de accent taiata la φ; tipografia sta pe hartie, langa ea."""
+    """Coltul: banda inchisa la stanga cu eticheta; in dreapta, categoria-fantomă si data."""
+    et, sb = _eticheta(a), _subtitlu(a)
+    dt = _data_copertei(a)
+    et_px = _et_px(et, ((8, 42), (13, 34), (18, 28), (99, 22)), k)
+    banda_jos = (f'<div style="position:absolute;left:{40 * k:.0f}px;bottom:{38 * k:.0f}px;'
+                 f'opacity:.7;font-weight:800;font-size:{14 * k:.0f}px;letter-spacing:{3 * k:.0f}px;'
+                 f'text-transform:uppercase;line-height:1.6">{dt["wk"]},<br>{dt["zi_n"]} {dt["luna"]}</div>'
+                 ) if dt else ""
+    data_dr = (f'<div style="position:absolute;right:{64 * k:.0f}px;top:{56 * k:.0f}px;text-align:right">'
+               f'<div class="eticheta" style="font-size:{72 * k:.0f}px">{dt["zi_n"]}</div>'
+               f'<div class="sub" style="margin-top:{8 * k:.0f}px;font-size:{17 * k:.0f}px">{dt["luna"]}</div>'
+               f'<div style="width:{64 * k:.0f}px;height:{3 * k:.0f}px;background:{GOLD};'
+               f'margin:{14 * k:.0f}px 0 0 auto"></div></div>') if dt else ""
+    fantoma = sb or "stiri"
     return (
         f'<div class="stage" style="background:{bg};color:{acc}">'
-        f'<div style="position:absolute;left:0;top:0;bottom:0;width:{int(ART_W/PHI/PHI*k)}px;'
-        f'background:{acc}"></div>'
-        f'<div style="position:absolute;left:{int(ART_W/PHI/PHI*k)}px;top:0;bottom:0;'
-        f'width:{3*k:.0f}px;background:{GOLD}"></div>'
-        f'<div style="position:absolute;left:{int(ART_W/PHI/PHI*k)+int(52*k)}px;top:50%;'
-        f'transform:translateY(-50%)">'
-        f'<div class="eticheta">{_eticheta(a)}</div>'
-        f'<div class="sub">{_subtitlu(a)}</div></div>'
-        f'<div style="position:absolute;left:{34*k:.0f}px;bottom:{34*k:.0f}px;color:{bg};'
-        f'font-weight:800;font-size:{13*k:.0f}px;letter-spacing:{3*k:.0f}px;'
-        f'text-transform:uppercase;opacity:.55">izz.ro</div>'
+        f'<div style="position:absolute;left:0;top:0;bottom:0;width:{300 * k:.0f}px;background:{acc}"></div>'
+        f'<div style="position:absolute;left:{300 * k:.0f}px;top:0;bottom:0;width:{3 * k:.0f}px;background:{GOLD}"></div>'
+        f'<div style="position:absolute;left:{40 * k:.0f}px;top:{56 * k:.0f}px;bottom:{110 * k:.0f}px;'
+        f'display:flex;flex-direction:column;justify-content:center;max-width:{220 * k:.0f}px">'
+        f'<div class="eticheta" style="font-size:{et_px}px;color:{bg};letter-spacing:{2 * k:.0f}px;'
+        f'line-height:1.08">{et}</div></div>'
+        f'<div style="position:absolute;left:{40 * k:.0f}px;width:{190 * k:.0f}px;height:{2 * k:.0f}px;'
+        f'background:{GOLD};top:50%"></div>{banda_jos}{data_dr}'
+        f'<div style="position:absolute;right:{-12 * k:.0f}px;bottom:{-34 * k:.0f}px;font-weight:800;'
+        f'font-size:{168 * k:.0f}px;letter-spacing:{2 * k:.0f}px;text-transform:uppercase;'
+        f'opacity:.06;white-space:nowrap">{fantoma}</div>'
+        f'<div class="marca" style="right:{24 * k:.0f}px;bottom:{34 * k:.0f}px;color:{acc};opacity:.6">izz.ro</div>'
         f'<div class="grain"></div></div>'
     )
 
 
 def _t_arc(a, acc, bg, k):
-    """Arc mare de accent taiat de margine — singura forma din set, geometrica, nu figurativa."""
+    """Sigiliul: cerc dublu auriu cu cifra zilei; eticheta mare ancorata la stanga."""
+    et, sb = _eticheta(a), _subtitlu(a)
+    dt = _data_copertei(a)
+    et_px = _et_px(et, ((8, 92), (13, 74), (18, 60), (99, 46)), k)
+    cx, cy, r = int(764 * k), int(252 * k), int(168 * k)
+    sigiliu = (f'<div style="position:absolute;left:{cx - r}px;top:{cy - r}px;width:{2 * r}px;height:{2 * r}px;'
+               f'border-radius:50%;border:{2 * k:.0f}px solid {GOLD};opacity:.6"></div>'
+               f'<div style="position:absolute;left:{cx - r + int(14 * k)}px;top:{cy - r + int(14 * k)}px;'
+               f'width:{2 * r - int(28 * k)}px;height:{2 * r - int(28 * k)}px;border-radius:50%;'
+               f'border:{1 * k:.0f}px solid {GOLD};opacity:.35"></div>'
+               f'<div style="position:absolute;left:{cx - r}px;top:{cy - int(58 * k)}px;width:{2 * r}px;'
+               f'text-align:center;line-height:1">'
+               f'<div style="font-weight:800;font-size:{96 * k:.0f}px;color:{GOLD_INCHIS}">{dt["zi"]}</div>'
+               f'<div style="font-weight:800;font-size:{15 * k:.0f}px;letter-spacing:{5 * k:.0f}px;'
+               f'text-transform:uppercase;opacity:.55;margin-top:{6 * k:.0f}px">{dt["wk"]}</div>'
+               f'<div style="font-weight:800;font-size:{13 * k:.0f}px;letter-spacing:{4 * k:.0f}px;'
+               f'text-transform:uppercase;opacity:.55">{dt["luna"]}</div></div>') if dt else ""
     return (
         f'<div class="stage" style="background:{bg};color:{acc}">'
-        f'<div style="position:absolute;right:{-200*k:.0f}px;top:50%;transform:translateY(-50%);'
-        f'width:{620*k:.0f}px;height:{620*k:.0f}px;border-radius:50%;background:{acc};'
-        f'opacity:.09"></div>'
-        f'<div style="position:absolute;right:{-150*k:.0f}px;top:50%;transform:translateY(-50%);'
-        f'width:{480*k:.0f}px;height:{480*k:.0f}px;border-radius:50%;'
-        f'border:{2*k:.0f}px solid {GOLD};opacity:.5"></div>'
-        f'<div style="position:absolute;left:{56*k:.0f}px;top:{56*k:.0f}px">'
-        f'<div style="width:{int(120*k)}px;margin-bottom:{22*k:.0f}px" class="filet"></div>'
-        f'<div class="eticheta">{_eticheta(a)}</div>'
-        f'<div class="sub">{_subtitlu(a)}</div></div>'
-        f'<div class="marca" style="left:{56*k:.0f}px;bottom:{44*k:.0f}px">izz.ro</div>'
+        f'<div style="position:absolute;left:{56 * k:.0f}px;top:{56 * k:.0f}px;'
+        f'width:{int(120 * k)}px" class="filet"></div>'
+        f'<div style="position:absolute;left:{56 * k:.0f}px;top:{96 * k:.0f}px;bottom:{64 * k:.0f}px;'
+        f'display:flex;flex-direction:column;justify-content:center;max-width:{470 * k:.0f}px">'
+        f'<div class="eticheta" style="font-size:{et_px}px;letter-spacing:{2 * k:.0f}px;'
+        f'line-height:1.05">{et}</div>{_rand_sub(sb, k)}</div>'
+        f'<div style="position:absolute;left:{540 * k:.0f}px;top:{cy}px;width:{cx - r - int(540 * k)}px;'
+        f'height:{1 * k:.0f}px;background:{acc};opacity:.2"></div>'
+        f'<div style="position:absolute;left:{cx + r - int(7 * k)}px;top:{cy - int(7 * k)}px;'
+        f'width:{14 * k:.0f}px;height:{14 * k:.0f}px;border-radius:50%;background:{GOLD}"></div>{sigiliu}'
+        f'<div class="marca" style="left:{56 * k:.0f}px;bottom:{34 * k:.0f}px">izz.ro</div>'
         f'<div class="grain"></div></div>'
     )
 

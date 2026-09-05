@@ -28,9 +28,15 @@ MAX_PER_RUN = int(os.getenv("MAX_IMAGES_PER_RUN", "80"))
 LABELS = os.path.join(MEDIA, "labels.json")
 
 
+VERSIUNE_DESIGN = "v2-2026-09-06"  # reproiectarea editoriala; schimba-o la urmatorul redesign
+
+
 def _semnatura(a: dict) -> str:
     """Textul VIZIBIL de pe imagine. Se schimba -> imaginea trebuie redesenata."""
-    sig = f"{htmlart._eticheta(a)}|{htmlart._subtitlu(a)}"
+    # VERSIUNE_DESIGN in fata: la un redesign, TOATE copertile devin invechite si se
+    # regenereaza progresiv (plafonul MAX_IMAGES_PER_RUN le esaloneaza pe ~o saptamana;
+    # vechile fisiere raman valabile pana atunci — fara cadere pe fallback Pillow).
+    sig = f"{VERSIUNE_DESIGN}|{htmlart._eticheta(a)}|{htmlart._subtitlu(a)}"
     # Coperta din date (prognoza): cifrele se schimba zilnic, deci semnatura le include.
     if a.get("event_chart"):
         sig += "|" + json.dumps(a["event_chart"], sort_keys=True, ensure_ascii=False)
