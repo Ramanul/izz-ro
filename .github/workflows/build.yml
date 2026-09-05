@@ -1,7 +1,7 @@
 name: pipeline
 
 # Munca grea: fetch RSS + AI (buget per rulare) + salveaza starea in git.
-# Commit-ul declanseaza Cloudflare Pages, care doar randeaza (vezi README).
+# Commit-ul declanseaza Cloudflare Workers Static Assets, care servesc output-ul generat.
 
 on:
   # Incercare orara; poarta de cadenta mentine aproximativ 2 ore intre commituri de continut.
@@ -190,10 +190,10 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
         with:
           ref: ${{ needs.pipeline.outputs.content_sha }}
-      - name: Verifica release-ul public pe originea de build si pe izz.ro
+      - name: Verifica release-ul public pe originea Workers si pe izz.ro
         env:
           EXPECTED_COMMIT: ${{ needs.pipeline.outputs.content_sha }}
           RELEASE_TIMEOUT_SECONDS: "1500"
           RELEASE_POLL_SECONDS: "30"
-          RELEASE_ALT_ORIGIN: ${{ vars.ALT_ORIGIN || 'https://izz-ro.pages.dev' }}
+          RELEASE_ALT_ORIGIN: ${{ vars.ALT_ORIGIN || 'https://izz-ro.andifreelancer2.workers.dev' }}
         run: python tools/verify_release.py
