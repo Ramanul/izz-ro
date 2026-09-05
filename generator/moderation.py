@@ -1,6 +1,8 @@
 """Om in bucla: aplica moderation.yaml peste lista de articole.
 
-Fisierul lipsa = configurare goala (nicio filtrare). Toleranta deliberat.
+Fisierul de control-plane este obligatoriu. Lipsa, YAML invalid sau schema invalida
+opreste pipeline-ul inainte de publicare, pentru ca o eroare de configurare critica
+nu trebuie confundata cu „configurare goala".
 """
 import os
 from datetime import datetime, timezone, timedelta
@@ -23,18 +25,74 @@ DEFAULTS = {
 }
 
 
+class ModerationConfigCorrupt(RuntimeError):
+    """Control-plane moderation lipsa/corupta; publicarea nu este permisa."""
+
+
+def _valid_string_list(value, key: str) -> bool:
+    return isinstance(value, list) and all(isinstance(item, str) and item.strip() for item in value)
+
+
+def _validate(mod: dict) -> dict:
+    if not isinstance(mod, dict):
+        raise ModerationConfigCorrupt(
+            f"{MOD_PATH} trebuie sa contina un obiect YAML, nu {type(mod).__name__}."
+        )
+    unknown = set(mod) - set(DEFAULTS)
+    if unknown:
+        raise ModerationConfigCorrupt(
+            f"{MOD_PATH} contine chei necunoscute: {', '.join(sorted(unknown))}."
+        )
+    for key in ("blocklist_urls", "blocklist_keywords", "suppress_sources", "featured", "approved"):
+        value = mod.get(key, DEFAULTS[key])
+        if not _valid_string_list(value, key):
+            raise ModerationConfigCorrupt(
+                f"{MOD_PATH}:{key} trebuie sa fie lista de siruri ne-goale."
+            )
+    corrections = mod.get("corrections", DEFAULTS["corrections"])
+    if not isinstance(corrections, dict):
+        raise ModerationConfigCorrupt(f"{MOD_PATH}:corrections trebuie sa fie obiect/map.")
+    for url, change in corrections.items():
+        if not isinstance(url, str) or not url.strip() or not isinstance(change, dict):
+            raise ModerationConfigCorrupt(
+                f"{MOD_PATH}: fiecare entry din corrections trebuie sa fie URL -> obiect."
+            )
+        for field in change:
+            if field not in {"title", "teaser", "synthesis"} or not isinstance(change[field], str):
+                raise ModerationConfigCorrupt(
+                    f"{MOD_PATH}: corrections[{url!r}] are un camp invalid: {field!r}."
+                )
+    hold = mod.get("hold_important", DEFAULTS["hold_important"])
+    if not isinstance(hold, bool):
+        raise ModerationConfigCorrupt(f"{MOD_PATH}:hold_important trebuie sa fie boolean.")
+
+    normalized = dict(DEFAULTS)
+    normalized.update(mod)
+    # Copii separate ca sa nu existe efecte secundare intre teste si rularea curenta.
+    for key in ("blocklist_urls", "blocklist_keywords", "suppress_sources", "featured", "approved"):
+        normalized[key] = list(normalized[key])
+    normalized["corrections"] = dict(normalized["corrections"])
+    return normalized
+
+
 def load() -> dict:
-    mod = dict(DEFAULTS)
-    if os.path.exists(MOD_PATH):
-        try:
-            with open(MOD_PATH, "r", encoding="utf-8") as fh:
-                data = yaml.safe_load(fh) or {}
-            for key in DEFAULTS:
-                if key in data and data[key] is not None:
-                    mod[key] = data[key]
-        except (yaml.YAMLError, OSError):
-            pass
-    return mod
+    """Citeste control-plane-ul si esueaza CLOSED la orice problema.
+
+    `moderation.yaml` exista in repo si este parte din contractul de release. Lipsa lui
+    nu mai inseamna „nicio filtrare": inseamna stare necunoscuta, deci pipeline-ul se opreste.
+    """
+    if not os.path.exists(MOD_PATH):
+        raise ModerationConfigCorrupt(
+            f"Lipseste {MOD_PATH}; refuz publicarea deoarece control-plane-ul de moderare nu poate fi determinat."
+        )
+    try:
+        with open(MOD_PATH, "r", encoding="utf-8") as fh:
+            data = yaml.safe_load(fh)
+    except (yaml.YAMLError, OSError) as exc:
+        raise ModerationConfigCorrupt(
+            f"Nu pot citi {MOD_PATH}: {type(exc).__name__}: {exc}. Publicarea este blocata."
+        ) from exc
+    return _validate(data or {})
 
 
 def _article_url(a: dict) -> str:
@@ -91,16 +149,7 @@ def _same_event(a: dict, b: dict) -> bool:
 
 
 def _dedup_visible(articles: list) -> list:
-    """Elimina duplicatele la ultimul punct inainte de publicare.
-
-    Ingestia elimina URL-uri identice, iar clustering-ul rezolva multe cazuri inainte de AI.
-    Garda aceasta este necesara pentru duplicatele cu URL diferit si pentru duplicatele deja
-    existente in state. Se aplica si la `render_only()`, deci curata si stocul vechi fara fetch.
-
-    Ordinea de pastrare este deliberata: sinteza C castiga fata de B, iar dintre doua sinteze
-    castiga cea cu mai multe surse. Pentru egalitate, articolul mai nou castiga. Asta face
-    rezultatul determinist si pastreaza varianta editorial mai bogata.
-    """
+    """Elimina duplicatele la ultimul punct inainte de publicare."""
     ordered = sorted(
         articles,
         key=lambda a: (
@@ -111,11 +160,6 @@ def _dedup_visible(articles: list) -> list:
         reverse=True,
     )
     kept = []
-    # `_same_event` is intentionally conservative, but calling it against every previous
-    # article makes moderation O(n^2). In the Windows dry-run this became visible after
-    # 892 articles reached moderation. Every non-URL duplicate must share at least one
-    # six-character title stem, so use that as a lossless candidate index and keep the
-    # exact predicate below as the authority.
     seen_urls = set()
     by_stem: dict[str, list[dict]] = {}
     for article in ordered:
@@ -142,15 +186,12 @@ def _dedup_visible(articles: list) -> list:
 
 
 def apply(articles: list, mod: dict) -> list:
+    mod = _validate(mod)
     block_urls = {normalize_url(u) for u in mod["blocklist_urls"]}
     keywords = [k.lower() for k in mod["blocklist_keywords"]]
     suppress = set(mod["suppress_sources"])
     corrections = {normalize_url(u): c for u, c in mod["corrections"].items()}
     featured = {normalize_url(u) for u in mod["featured"]}
-    # Poarta de aprobare (AI Act art. 50). Pana la 2026-08-15 `hold_important` era un steag
-    # mincinos: `main.py` tiparea "asteapta aprobare" si publica exact ca inainte. Acum retine
-    # efectiv sintezele C — singurul loc unde se poate face asta o data pentru toate caile,
-    # fiindca `apply()` ruleaza si pe build complet si pe `--render-only`.
     hold = bool(mod.get("hold_important"))
     approved = {normalize_url(u) for u in (mod.get("approved") or [])}
 
@@ -179,8 +220,6 @@ def apply(articles: list, mod: dict) -> list:
                 if field in corrections[norm_url]:
                     a[field] = corrections[norm_url][field]
         a["featured"] = norm_url in featured
-        # Retinerea vine ULTIMA: un articol blocat, spam sau prins de garda nu e "in asteptare
-        # de aprobare", e respins. Altfel coada de revizuire s-ar umple cu gunoi.
         if hold and a.get("model") == "C" and norm_url not in approved:
             held.append(a)
             continue
@@ -195,5 +234,5 @@ def apply(articles: list, mod: dict) -> list:
     deduped = _dedup_visible(out)
     removed = len(out) - len(deduped)
     if removed:
-        print(f"   >> dedup editorial: eliminate {removed} duplicate de eveniment inainte de publicare: {removed}")
+        print(f"   >> dedup editorial: eliminate {removed} duplicate de eveniment inainte de publicare")
     return deduped
