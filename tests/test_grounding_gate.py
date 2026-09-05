@@ -41,3 +41,14 @@ def test_grounding_gate_does_not_block_advisory_reserve(tmp_path, monkeypatch):
     }])
     monkeypatch.setenv("IZZ_RAPORT_COPIERE_GATE", str(report))
     assert main() == 0
+
+
+def test_grounding_gate_fails_closed_when_report_missing(tmp_path, monkeypatch):
+    report = tmp_path / "missing.jsonl"
+    monkeypatch.setenv("IZZ_RAPORT_COPIERE_GATE", str(report))
+    assert main() == 1
+
+
+def test_grounding_gate_fails_closed_when_report_path_missing(tmp_path, monkeypatch):
+    monkeypatch.delenv("IZZ_RAPORT_COPIERE_GATE", raising=False)
+    assert main() == 2
