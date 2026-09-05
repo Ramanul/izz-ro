@@ -335,6 +335,72 @@ def hit_ordin_fara_furt(p):
         reset(p)
 
 
+def hover_preview(p):
+    """hover = previzualizare peste tot (audit harta, P1): la nivel national, numele si cifra
+    judetului apar sub cursor INAINTE de click, la fel ca la UAT-uri."""
+    print("\nHOVER PREVIEW -- numele zonei de sub cursor, inainte de click")
+    p.locator("#map canvas.map-canvas").scroll_into_view_if_needed()
+    p.wait_for_timeout(150)
+    pt = p.evaluate("""async () => {
+      const d = await (await fetch('./data/map.json')).json();
+      const vb = String(d.map.viewbox).trim().split(/\\s+/).map(Number);
+      const c = document.querySelector('#map canvas.map-canvas');
+      const scratch = document.createElement('canvas');
+      scratch.width = c.width; scratch.height = c.height;
+      const ctx = scratch.getContext('2d');
+      ctx.setTransform(c.width / vb[2], 0, 0, c.height / vb[3],
+                       -vb[0] * c.width / vb[2], -vb[1] * c.height / vb[3]);
+      const rect = c.getBoundingClientRect();
+      // Cel mai mare judet, cu un punct VERIFICAT in interior: centroidul unui poligon
+      // concav poate iesi in exterior -- acelasi motiv pentru care exista uatBadgePlacement.
+      let best = null;
+      for (const [county, pd] of Object.entries(d.map.judete)) {
+        const nums = String(pd).match(/-?\\d+(?:\\.\\d+)?/g).map(Number);
+        let minX = 1e9, minY = 1e9, maxX = -1e9, maxY = -1e9;
+        for (let i = 0; i + 1 < nums.length; i += 2) {
+          minX = Math.min(minX, nums[i]); minY = Math.min(minY, nums[i + 1]);
+          maxX = Math.max(maxX, nums[i]); maxY = Math.max(maxY, nums[i + 1]);
+        }
+        const area = (maxX - minX) * (maxY - minY);
+        if (!best || area > best.area) best = { county, minX, minY, maxX, maxY, area };
+      }
+      const path = new Path2D(d.map.judete[best.county]);
+      let hit = null;
+      for (let row = 1; row < 12 && !hit; row += 1) {
+        for (let col = 1; col < 12 && !hit; col += 1) {
+          const x = best.minX + (best.maxX - best.minX) * col / 12;
+          const y = best.minY + (best.maxY - best.minY) * row / 12;
+          const xd = Math.round((x - vb[0]) * c.width / vb[2]);
+          const yd = Math.round((y - vb[1]) * c.height / vb[3]);
+          if (ctx.isPointInPath(path, xd, yd)) {
+            hit = { x: rect.x + (xd / c.width) * rect.width,
+                    y: rect.y + (yd / c.height) * rect.height };
+          }
+        }
+      }
+      return hit ? { county: best.county, ...hit } : { county: best.county, x: null, y: null };
+    }""")
+    if pt.get("x") is None:
+        skip("nu am gasit un punct interior verificat -- hoverul nu a putut fi testat")
+        return
+    p.mouse.move(pt["x"], pt["y"], steps=3)
+    p.wait_for_timeout(250)
+    tip = p.evaluate("""() => {
+      const t = document.querySelector('.map-tip');
+      return { hidden: t ? t.hidden : null, text: t ? t.textContent.trim() : '' };
+    }""")
+    check(bool(tip["text"]) and not tip["hidden"],
+          f"tooltipul arata zona de sub cursor inainte de click ('{tip['text']}')")
+    check(pt["county"] in tip["text"].upper(),
+          f"numele e cel al judetului tintit ({pt['county']})")
+    # Click = selectare; hover = doar previzualizare. La iesirea de pe canvas, totul dispare.
+    r = canvas_rect(p)
+    p.mouse.move(r["x"] + r["w"] + 12, r["y"] + r["h"] / 2, steps=2)
+    p.wait_for_timeout(200)
+    check(p.evaluate("() => document.querySelector('.map-tip').hidden"),
+          "la iesirea de pe harta tooltipul dispare")
+
+
 def felia2_localitate(p):
     print("\nFELIA 2 -- click pe localitate nu fura campul de cautare")
     r = canvas_rect(p)
@@ -616,6 +682,7 @@ def main():
         felia7_cautare(p)
         felia4_hittest(p)
         hit_ordin_fara_furt(p)
+        hover_preview(p)
         felia2_localitate(p)
         felia5_county_picker(p)
         felia6_url(p)

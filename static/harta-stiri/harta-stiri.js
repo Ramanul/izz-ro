@@ -29,6 +29,10 @@
     // Silueta judetului derivata din UAT-urile lui. Vezi buildCountyOutline().
     uatOutlineCache: new Map(),
     hoverUat: null,
+    // Județul de sub cursor la nivel național: același contract „hover = previzualizare"
+    // ca la UAT-uri (audit harta, P1) -- până acum doar UAT-urile spuneau numele înainte
+    // de click, deși suprafața de județ e ținta cea mai des atinsă.
+    hoverCounty: null,
     // Dialogul UAT deschis, ca stare navigabila (audit harta, P0): cheia lui (cod SIRUTA sau
     // nume) traieste in adresa (?judet=X&uat=Y), deci Back/Forward il inchid/deschid si un
     // link partajat il redeschide. `pendingUat` tine intentia pana cand UAT-urile județului
@@ -618,8 +622,11 @@
       // umple gaurile dintre ele; conturul simplu de judet se umple la fel de bine asa.
       ctx.fill(path, "evenodd");
       ctx.globalAlpha = 1;
-      ctx.strokeStyle = palette.stroke;
-      ctx.lineWidth = 1.2;
+      // Județul de sub cursor se ingroasa si prinde culoarea de accent, la fel ca UAT-ul
+      // de sub cursor: tooltipul spune numele, conturul arata CARE forma il poartă.
+      const hovered = !state.zoomCounty && state.hoverCounty === county;
+      ctx.strokeStyle = hovered ? palette.hot : palette.stroke;
+      ctx.lineWidth = hovered ? 2 : 1.2;
       ctx.stroke(path);
       paths.push({ county, region, path, count, bounds: pathBounds(outline ? outline.d : pathData) });
     }
@@ -890,6 +897,9 @@
     // fara sa mareasca (decizie proprietar, 13 aug). Tinuta separat, se desincroniza.
     state.zoomCounty = state.selectedCounty && !["judetean", "regional"].includes(state.level)
       ? state.selectedCounty : null;
+    // Evidentierea de hover e a VECHII vederi: dupa zoom sau schimbare de filtru, un contur
+    // ramas aprins ar arata o selectie care nu exista; urmatoarea miscare de mouse o repune.
+    state.hoverCounty = null;
     // Plafonul listei se reseteaza doar cand se schimba CE e filtrat: deschiderea sau
     // inchiderea dialogului UAT muta doar fereastra de citire, nu filtrele -- ar fi absurd
     // ca "Arată încă N rezultate" sa se piarda doar pentru că ai privit un dialog.
@@ -1057,13 +1067,33 @@
   // Numele UAT-ului sub cursor sau sub deget. Pana acum harta nu spunea nicaieri peste ce
   // esti: aflai abia dupa ce dadeai click si se deschidea dialogul.
   function onCanvasHover(event) {
-    const uat = uatAtPoint(event);
-    if (uat !== state.hoverUat) {
-      state.hoverUat = uat;
-      syncUatHighlight();
+    if (state.zoomCounty) {
+      const uat = uatAtPoint(event);
+      if (uat !== state.hoverUat) {
+        state.hoverUat = uat;
+        syncUatHighlight();
+        buildMap();
+      }
+      showMapTip(uat, event);
+      return;
+    }
+    // Nivel național: același contract „hover = previzualizare". Doar interiorul poligonului
+    // aprinde -- fără toleranță aici, ca un deget pe margine să nu aprindă vecinul doar
+    // pentru că e aproape; toleranțele rămân treaba clickului.
+    const canvas = state.canvas;
+    const view = state.view;
+    if (!canvas || !view) { showMapTip(null, null); return; }
+    const ctx = canvas.getContext("2d");
+    const dp = devicePointForEvent(canvas, event);
+    if (!ctx || !dp) { showMapTip(null, null); return; }
+    applyViewTransform(ctx, canvas, view);
+    const entry = countyFillAtPoint(ctx, dp, { includeEmpty: true });
+    const county = entry ? entry.county : null;
+    if (county !== state.hoverCounty) {
+      state.hoverCounty = county;
       buildMap();
     }
-    showMapTip(uat, event);
+    showMapTip(entry, event);
   }
 
   function clearCanvasHover() {
@@ -1072,22 +1102,30 @@
       syncUatHighlight();
       buildMap();
     }
+    if (state.hoverCounty) {
+      state.hoverCounty = null;
+      buildMap();
+    }
     showMapTip(null, null);
   }
 
-  function showMapTip(uat, event) {
+  function showMapTip(target, event) {
     const tip = state.tip;
     const canvas = state.canvas;
     if (!tip) return;
-    if (!uat || !event || !canvas) {
+    if (!target || !event || !canvas) {
       tip.hidden = true;
       tip.textContent = "";
       return;
     }
-    const count = uat.count || 0;
+    const count = target.count || 0;
+    // Eticheta depinde de forma de sub cursor: UAT-urile poarta label/name, județele
+    // county, iar la nivel regional cifra apartine REGIUNII, nu județului atins.
+    const label = target.label || target.name || target.county
+      || (state.level === "regional" ? target.region : "") || "";
     tip.textContent = count
-      ? `${uat.label || uat.name} · ${count} ${itemLabelFor(count)}`
-      : `${uat.label || uat.name}`;
+      ? `${label} · ${count} ${itemLabelFor(count)}`
+      : `${label}`;
     tip.hidden = false;
     // Pozitionare relativa la gazda hartii, tinuta in interiorul ei: langa marginea din
     // dreapta un tooltip ancorat la cursor ar iesi din ecran, iar pe telefon exact acolo
