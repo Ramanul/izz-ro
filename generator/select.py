@@ -42,22 +42,56 @@ def _dedup(articles: list) -> list:
             kept_tok.append(tok)
     return kept
 
-def _diversify(items: list, max_run: int = 2) -> list:
-    """Reordonare blanda anti-monotonie (regula 'source diversity'): pastreaza
-    ordinea cronologica, dar acelasi domeniu-sursa nu apare mai mult de `max_run`
-    ori consecutiv -- urmatorul articol de la alta sursa e tras in fata.
-    Nu elimina nimic; sursele vorbarete (ex. Digi24 Extern, 53% din extern) doar
-    se intretes cu restul in loc sa monopolizeze vizual sectiunea.
+def _diversify(items: list, max_run: int = 2, max_per_window: int = 3, window_size: int = 10) -> list:
+    """Reordonare anti-monotonie cu protectie impotriva dominarii unei singure surse.
+
+    Pastreaza ordinea cronologica cat poate, dar aplica doua limite:
+    1. acelasi domeniu nu apare mai mult de `max_run` ori consecutiv;
+    2. in fiecare fereastra de `window_size` pozitii, o sursa nu poate ocupa mai mult
+       de `max_per_window` pozitii atunci cand exista alte surse disponibile.
+
+    Regula 2 rezolva cazul feedurilor foarte prolifice (de ex. un site sportiv): regula
+    veche oprea trei articole consecutive, dar urmatoarele articole din aceeasi sursa puteau
+    totusi umple aproape toata pagina deoarece pagina se taia dupa primele 20 de articole.
+    Nu elimina articolele si nu inventeaza un deficit de surse: daca toate articolele ramase
+    sunt din aceeasi sursa, lista se completeaza normal.
     """
+    if max_run < 1:
+        raise ValueError("max_run must be >= 1")
+    if max_per_window < 1:
+        raise ValueError("max_per_window must be >= 1")
+    if window_size < 1:
+        raise ValueError("window_size must be >= 1")
+
     def dom(a: dict) -> str:
         return domain_of(a.get("original_link") or "") or a.get("source_name", "")
 
     pool, out = list(items), []
     while pool:
+        window_start = (len(out) // window_size) * window_size
+        window = out[window_start:]
+        counts = {}
+        for a in window:
+            counts[dom(a)] = counts.get(dom(a), 0) + 1
+
         tail = [dom(x) for x in out[-max_run:]]
         idx = 0
-        if len(tail) == max_run and len(set(tail)) == 1:
-            idx = next((i for i, a in enumerate(pool) if dom(a) != tail[0]), 0)
+
+        def admissibil(a: dict) -> bool:
+            source = dom(a)
+            if len(tail) == max_run and len(set(tail)) == 1 and source == tail[0]:
+                return False
+            return counts.get(source, 0) < max_per_window
+
+        candidate = next((i for i, a in enumerate(pool) if admissibil(a)), None)
+        if candidate is not None:
+            idx = candidate
+        else:
+            # Daca toate articolele ramase sunt din surse deja la plafon, nu aruncam nimic;
+            # alegem primul articol care sparge seria consecutiva, iar daca nici acela nu exista,
+            # completam cronologic. Astfel sursele putine nu genereaza goluri artificiale.
+            if len(tail) == max_run and len(set(tail)) == 1:
+                idx = next((i for i, a in enumerate(pool) if dom(a) != tail[0]), 0)
         out.append(pool.pop(idx))
     return out
 

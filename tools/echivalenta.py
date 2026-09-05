@@ -34,6 +34,39 @@ build.json, `lastmod`, `expires`, anul din subsol). Alea se normalizeaza inainte
 vezi `_NORMALIZARI`. Daca doua amprente pe ACELASI commit ies diferite, cauza e o sursa de
 nedeterminism nenormalizata inca (ordinea unui `set`, un dict neordonat): comanda `compara`
 o va arata ca lista de fisiere, si acolo se adauga regula noua.
+
+MASURAT 2026-09-04, prima oara cand unealta a fost intoarsa asupra propriei premise: doua
+randari ale ACELUIASI commit pe aceleasi date au dat **953 de fisiere diferite** din 47.222
+(zero adaugate sau sterse). Predictia era „IDENTIC" si a fost gresita. Cauza, exact cea
+ghicita mai sus: doua `set`-uri de siruri iterate in `render.py`, a caror ordine depinde de
+PYTHONHASHSEED — randomizat la fiecare proces — si al caror rezultat intra intr-un `sorted`
+STABIL cu chei care nu departajeaza egalitatile. La `[:6]` / `[:3]` asta schimba nu doar
+ordinea, ci componenta listei: 945 din 4.307 pagini de subiect („Conexiuni") si 8 din 8.350
+pagini de articol („Articole conectate"). Reparat prin chei de departajare deterministe.
+
+A TREIA sursa, gasita abia la reverificare — 953 scazuse la 2, nu la 0: `weight = sum(idf[s]
+for s in common)`, unde `common` e tot un `set`. Adunarea in virgula mobila NU e asociativa,
+deci aceiasi termeni insumati in alta ordine dau alt ULP: masurat 23.80437088061844 vs
+23.804370880618443. Un bit ajunge ca sortarea sa inverseze doi candidati si `[:3]` sa taie
+altul. Reparat cu `sorted(common)`. Lectia operationala: dupa un fix de determinism,
+reverificarea NU e formalitate — primul fix a lasat 0,2% din defect in urma, iar 0,2%
+nedeterminist inseamna tot „plasa nu poate raporta IDENTIC".
+
+Consecinta care conteaza pentru unealta asta: cat timp defectul a existat, `compara` NU putea
+raporta „IDENTIC" niciodata, deci plasa care apara refactorizarile era decor. O plasa se
+verifica pe ea insasi inainte sa fie crezuta.
+
+A DOUA CAUZA POSIBILA, pe care textul de mai sus n-o numea si care NU s-a manifestat in
+masuratoarea aia: ceasul nu intra doar in output, ci si in SELECTIE. `home_fresh()`
+(`render.py`, sectiunile de pe homepage) taie la 72h fata de `datetime.now()`. Masurat in
+aceeasi zi: 46 de articole ies din fereastra intr-un interval de 20 de minute. Doua amprente
+luate la distanta — adica exact scenariul „amprenta, refactorizezi, amprenta" de mai sus —
+nu au acelasi input. Pe 09-04 nu a muscat, fiindca articolele de la limita sunt cele mai
+VECHI din setul proaspat, iar plafonul e de 4 carduri per categorie cu 41-584 de articole
+proaspete in fiecare; dar in `regional`, cu 2 articole proaspete, tot ce e proaspat se
+afiseaza, deci acolo un singur articol care traverseaza pragul schimba pagina. Cand `compara`
+iese DIFERIT, discriminatorul e LISTA: diferente limitate la `index.html` (si eventual
+`art-card.webp`) inseamna ceasul; orice altceva inseamna nedeterminism in cod.
 """
 import argparse
 import hashlib
