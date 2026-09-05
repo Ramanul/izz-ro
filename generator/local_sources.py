@@ -2,7 +2,24 @@ import csv
 import os
 import re
 
+from collections import Counter
+
 from . import localities
+
+# Normalizare pentru potrivirea codurilor de judet („ARGES", fara diacritice, cum vin in
+# CSV) cu etichetele din gazetteer („Argeș"). Ambele variante de s/t sub litera exista in
+# natura — cedilla U+015F/U+0163 SI virgula U+0219/U+021B — deci le acopar explicit; un
+# singur cod lipsa duce la nume fara județ exact la omonimele pe care le depanez aici.
+_DIA = str.maketrans({
+    "ă": "a", "â": "a", "î": "i", "ș": "s", "ş": "s", "ț": "t", "ţ": "t",
+    "Ă": "A", "Â": "A", "Î": "I", "Ș": "S", "Ş": "S", "Ț": "T", "Ţ": "T",
+})
+
+
+def _norm(s: str) -> str:
+    """Forma de potrivire: litere mici... ba NU — codurile din CSV sunt MAJUSCULE, deci
+    normalizarea le păstrează și scoate doar diacriticele."""
+    return (s or "").translate(_DIA).upper()
 
 # Prefixul administrativ din CSV („MUNICIPIUL PLOIESTI"). Acelasi tipar ca `localities._PREFIX`,
 # scris aici ca sa nu depindem de un nume privat din alt modul.
@@ -120,6 +137,11 @@ def nume_primarie(judet: str, localitate: str, by_name: dict) -> str:
     return "Primăria " + (rec["label"] if rec else curat.title())
 
 
+# Cele doua coduri de judet care lipsesc din gazetteerul Wikidata (masurat 2026-09-05 pe
+# toate codurile din primarii_status: BUCURESTI, VALCEA). Numere oficiale, nu inventate.
+_ETICHETE_JUDETE_MANUALE = {"BUCURESTI": "București", "VALCEA": "Vâlcea"}
+
+
 def _impact_tier(localitate: str) -> int:
     """Prioritate de IMPACT, dedusa STATIC din numele localitatii (nu re-analiza la runtime):
     municipiu (oras mare) inaintea orasului, orasul inaintea comunei. Reper cheie: un primar
@@ -132,6 +154,27 @@ def _impact_tier(localitate: str) -> int:
     if _ORAS_RE.search(loc):
         return 1
     return 2  # comuna
+
+
+def _etichete_judete(by_name: dict) -> dict:
+    """Cod de judet („ARGES") -> eticheta cu diacritice („Argeș"), din gazetteer.
+
+    Nevoie reala: omonimele de localitate legitime (3x Ștefănești in Botoșani/Argeș/Vâlcea,
+    2x Beclean, 2x Vidra) produceau nume afisate identice pe surse DIFERITE, iar catalogul
+    de surse cere unicitate (test_render_sources::test_catalog_respects_one_axis_one_home,
+    masurat 397 nume pe 392 unice la primele 300 surse). Județul in paranteza disambigueaza.
+    """
+    etichete: dict = {}
+    for intrari in by_name.values():
+        for e in intrari:
+            brut = (e.get("judet") or "").strip()
+            if brut:
+                curat = re.sub(r"^Jude[tț]ul\s+", "", brut).strip()
+                if curat:
+                    etichete.setdefault(_norm(curat), curat)
+    for cod, eticheta in _ETICHETE_JUDETE_MANUALE.items():
+        etichete.setdefault(cod, eticheta)
+    return etichete
 
 
 def _make_slug(judet: str, localitate: str) -> str:
@@ -174,6 +217,7 @@ def load_gold_sources(csv_path: str, limit: int, min_date: str = "2026-01-01") -
     _by_name = localities.load_dataset()
 
     result = {}
+    judet_by_key: dict = {}
     for row in rows[:limit]:
         slug = _make_slug(row["judet"], row["localitate"])
         key = "pl_" + slug
@@ -183,5 +227,18 @@ def load_gold_sources(csv_path: str, limit: int, min_date: str = "2026-01-01") -
                 "url": row["rss_url"].strip(),
                 "category": "local",
             }
+            judet_by_key[key] = row["judet"]
+
+    # omonimele legitime primesc județul in paranteza, ca numele afisat sa fie unic
+    # (vezi _etichete_judete: 3x Ștefănești, 2x Beclean, 2x Vidra — masurat pe 300 surse)
+    if result:
+        _dubluri = {n for n, c in Counter(v["name"] for v in result.values()).items() if c > 1}
+        if _dubluri:
+            _et = _etichete_judete(_by_name)
+            for _key, _v in result.items():
+                if _v["name"] in _dubluri:
+                    _etiqueta = _et.get(_norm(judet_by_key.get(_key, "").upper()))
+                    if _etiqueta:
+                        _v["name"] = f"{_v['name']} ({_etiqueta})"
 
     return result
