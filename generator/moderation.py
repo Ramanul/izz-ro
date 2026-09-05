@@ -4,6 +4,7 @@ Fisierul de control-plane este obligatoriu. Lipsa, YAML invalid sau schema inval
 opreste pipeline-ul inainte de publicare, pentru ca o eroare de configurare critica
 nu trebuie confundata cu „configurare goala".
 """
+import json
 import os
 from datetime import datetime, timezone, timedelta
 
@@ -20,6 +21,7 @@ DEFAULTS = {
     "blocklist_keywords": [],
     "suppress_sources": [],
     "corrections": {},
+    "takedowns": {},
     "featured": [],
     "hold_important": False,
     "approved": [],
@@ -72,6 +74,16 @@ def _validate(mod: dict) -> dict:
                 raise ModerationConfigCorrupt(
                     f"{MOD_PATH}: corrections[{url!r}] are un camp invalid: {field!r}."
                 )
+    takedowns = mod["takedowns"]
+    if not isinstance(takedowns, dict):
+        raise ModerationConfigCorrupt(f"{MOD_PATH}:takedowns trebuie sa fie obiect URL -> motiv.")
+    for url, motiv in takedowns.items():
+        if not isinstance(url, str) or not url.strip():
+            raise ModerationConfigCorrupt(f"{MOD_PATH}:takedowns are o cheie URL goala.")
+        if not isinstance(motiv, str) or not motiv.strip():
+            raise ModerationConfigCorrupt(
+                f"{MOD_PATH}:takedowns[{url!r}] cere motiv ne-gol — un takedown fara motiv nu intra in audit trail."
+            )
     if not isinstance(mod["hold_important"], bool):
         raise ModerationConfigCorrupt(f"{MOD_PATH}:hold_important trebuie sa fie boolean.")
 
@@ -93,6 +105,45 @@ def _human_gate_required() -> bool:
             f"{REQUIRE_HUMAN_GATE_ENV} trebuie sa fie exact true/false, nu {raw!r}."
         )
     return value == "true"
+
+
+def _takedown_log_path() -> str:
+    return os.path.join(config.ROOT, "data", "takedown_log.jsonl")
+
+
+def _inregistreaza_takedown(evenimente: list[dict]) -> None:
+    """Audit trail append-only pentru retrageri, idempotent pe perechea (url, motiv).
+
+    Retragerea efectiva (filtrul din `apply`) nu depinde de jurnal: daca scrierea pica,
+    build-ul continua cu avertisment tare — o inregistrare pierduta nu inseamna un
+    articol publicat din greseala. Idempotenta e necesara fiindca `apply` ruleaza la
+    fiecare build pe tot stocul din stare; fara ea, jurnalul s-ar dubla la fiecare ciclu.
+    """
+    if not evenimente:
+        return
+    cale = _takedown_log_path()
+    vechi: set[tuple[str, str]] = set()
+    try:
+        with open(cale, "r", encoding="utf-8") as fh:
+            for line in fh:
+                try:
+                    rand = json.loads(line)
+                except json.JSONDecodeError:
+                    continue
+                if isinstance(rand, dict):
+                    vechi.add((rand.get("url", ""), rand.get("motiv", "")))
+    except OSError:
+        pass
+    noi = [e for e in evenimente if (e["url"], e["motiv"]) not in vechi]
+    if not noi:
+        return
+    try:
+        os.makedirs(os.path.dirname(cale), exist_ok=True)
+        with open(cale, "a", encoding="utf-8") as fh:
+            for e in noi:
+                fh.write(json.dumps(e, ensure_ascii=False, sort_keys=True) + "\n")
+    except OSError as exc:
+        print(f"   !! ATENTIE: nu am putut scrie jurnalul de takedown ({exc}); retragerea a avut oricum loc.")
 
 
 def load() -> dict:
@@ -214,12 +265,24 @@ def apply(articles: list, mod: dict) -> list:
     featured = {normalize_url(u) for u in mod["featured"]}
     hold = bool(mod.get("hold_important")) or _human_gate_required()
     approved = {normalize_url(u) for u in (mod.get("approved") or [])}
+    takedowns = {normalize_url(u): r.strip() for u, r in mod["takedowns"].items()}
 
     out = []
     held = []
+    retrase = []
     for a in articles:
         url = a.get("url", "")
-        if normalize_url(url) in block_urls or a.get("source") in suppress:
+        norm_url = normalize_url(url)
+        if norm_url in takedowns:
+            retrase.append({
+                "cand": datetime.now(timezone.utc).isoformat(timespec="seconds"),
+                "url": url or "",
+                "motiv": takedowns[norm_url],
+                "model": a.get("model") or "",
+                "titlu": (a.get("title") or a.get("original_title") or "")[:120],
+            })
+            continue
+        if norm_url in block_urls or a.get("source") in suppress:
             continue
         motiv = (guard.verdict(a.get("title") or "",
                                a.get("teaser") or a.get("synthesis") or a.get("description") or "")
@@ -234,7 +297,6 @@ def apply(articles: list, mod: dict) -> list:
         title_l = (a.get("title", "") + " " + a.get("original_title", "")).lower()
         if any(kw in title_l for kw in keywords):
             continue
-        norm_url = normalize_url(url)
         if norm_url in corrections:
             for field in ("title", "teaser", "synthesis"):
                 if field in corrections[norm_url]:
@@ -250,6 +312,13 @@ def apply(articles: list, mod: dict) -> list:
               "Aprobarea se face adaugand URL-ul in lista `approved` din moderation.yaml:")
         for a in held:
             print(f"      - {(a.get('title') or '')[:70]!r} | {_article_url(a)}")
+
+    if retrase:
+        print(f"   >> takedown: {len(retrase)} articole retrase conform moderation.yaml "
+              "(audit trail: data/takedown_log.jsonl):")
+        for e in retrase:
+            print(f"      - {e['titlu'][:60]!r} | {e['url']} | motiv: {e['motiv'][:80]}")
+    _inregistreaza_takedown(retrase)
 
     deduped = _dedup_visible(out)
     removed = len(out) - len(deduped)

@@ -118,6 +118,7 @@ jobs:
           git config user.name "izz-bot"
           git config user.email "bot@izz.ro"
           git add data/articles.json data/feed_cache.json
+          git add data/takedown_log.jsonl 2>/dev/null || true
           git add data/indexnow_seen.json 2>/dev/null || true
           git add data/portraits.json 2>/dev/null || true
           git add data/leadphotos.json 2>/dev/null || true
