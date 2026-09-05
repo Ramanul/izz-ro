@@ -14,13 +14,8 @@ try:
 except ImportError:
     pass
 
-<<<<<<< HEAD
 from . import fetch, state, cluster, moderation, config, guard, eventdata
-from . import jurnal_triage
-=======
-from . import fetch, state, cluster, moderation, config, guard
 from . import jurnal_triage, raport_copiere
->>>>>>> origin/main
 from .process import get_provider, process_single, process_clusters_batch, process_batch, process_official, OFFICIAL_PREFIXES
 from .util import domain_of, fara_titluri_data
 from .claude_orchestrator import ClaudeCodeValidator
@@ -421,13 +416,6 @@ def run(dry_run: bool = False) -> dict:
         jurnal_triage.inregistreaza(pierderi, respinse_substanta, stale_skipped)
     deferred = numara_amanate(new_items, handled)
     processed_new = [a for a in processed_new if not a.get("skip")]
-<<<<<<< HEAD
-    # Coperte din datele evenimentului (felia meteo, 2026-09-05): DOAR articole noi,
-    # fail-safe per articol — fara date, coperta ramane cea generata de azi.
-    n_event = eventdata.attach(processed_new)
-    if n_event:
-        print(f">> Coperte din date: {n_event} prognoze atasate articolelor noi")
-=======
     # PLAN UNIFICAT #1: prag de blocare/DEFER. Itemele cu incalcari deterministe de
     # grounding (citate inventate, cifre straine, propozitii copiate, titluri transcrise)
     # NU se publica in rularea asta, dar nu blocheaza intregul release: se amana si revin
@@ -446,7 +434,11 @@ def run(dry_run: bool = False) -> dict:
                       "revin la rularea urmatoare:")
                 for a in amanate_grounding:
                     print(f"     - {(a.get('title') or '')[:70]!r} | {a.get('url')}")
->>>>>>> origin/main
+    # Coperte din datele evenimentului (felia meteo, 2026-09-05): DOAR articolele care au
+    # trecut gate-ul de grounding, fail-safe per articol — fara date, coperta ramane cea de azi.
+    n_event = eventdata.attach(processed_new)
+    if n_event:
+        print(f">> Coperte din date: {n_event} prognoze atasate articolelor noi")
     # inlocuire pe URL: un rep C poate purta URL-ul unei stiri B existente pe care a absorbit-o
     rep_urls = {a.get("url") for a in processed_new}
     combined = [a for a in existing
