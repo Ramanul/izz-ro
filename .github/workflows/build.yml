@@ -75,6 +75,7 @@ jobs:
           UPGRADE_RESERVE: "4"
           GEMINI_BASE_URL: ${{ vars.GEMINI_BASE_URL }}
           IZZ_RAPORT_COPIERE_GATE: ${{ runner.temp }}/izz-grounding-gate.jsonl
+          IZZ_REQUIRE_HUMAN_GATE: "true"
         run: python -m generator.main
 
       - name: Grounding gate (blocant pentru citate/cifre straine)
