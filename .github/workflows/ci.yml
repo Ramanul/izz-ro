@@ -24,7 +24,8 @@ jobs:
         with:
           python-version: "3.11"
           cache: pip
-      - run: pip install -r requirements-dev.txt
+      - name: Install runtime and test dependencies
+        run: pip install -r requirements.txt -r requirements-dev.txt
       - name: Ruff
         run: python -m ruff check .
       - name: Pytest
