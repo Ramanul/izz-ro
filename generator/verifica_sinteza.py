@@ -204,6 +204,53 @@ def suprapunere_sursa(rezumat: str, sursa: str, n: int = _LUNGIME_SECVENTA) -> S
     return Suprapunere(round(procent, 1), max_cuvinte, fragment)
 
 
+# --- Praguri BLOCANTE pentru §2.2, derivate din REGULA, nu din statistici ---------
+# Jurnalul de calibrare (data/raport_copiere.jsonl, 21 randuri la 2026-09-05) NU conține
+# corpus real: 7 din 21 sunt artefacte sintetice (același URL de test „bizbrasov.ro/a"),
+# deci nu există distribuție pe care să o citim — un prag statistic ar fi ghicit.
+# În schimb, §2.2 spune literal „reformulare integrală, ZERO propoziții copiate":
+# o secvență verbatim de 15+ cuvinte în afara citatelor E cel puțin o propoziție copiată
+# integral, indiferent de corpus. Aceeași logică pentru titlu: un titlu de 6+ cuvinte
+# regăsit cuvânt cu cuvânt în sursă este un titlu transcris, nu reformulat.
+# Recalibrarea statistică rămâne deschisă: dacă jurnalul acumulează corpus real și arată
+# fals pozitive, pragurile se schimbă AICI, cu distribuția citată în comentariu.
+PRAG_PROPOZITIE_COPIATA = 15
+PRAG_TITLU_COPIAT = 6
+
+
+def _fara_citate_echilibrate(text: str) -> str:
+    """Scoate spanurile dintre perechile de ghilimele.
+
+    §2.3 permite citatul exact, deci un citat verbatim lung NU e copiere ilicită. Se
+    elimină doar perechile echilibrate: un ghilimel neînchis nu aruncă restul textului
+    sub prag — mai bine un fals blocant decât o copiere ascunsă de o ghilimeală pierdută.
+    """
+    text = text or ""
+    for deschis, inchis in _PERECHI_GHILIMELE:
+        text = re.sub(re.escape(deschis) + r"[^" + re.escape(inchis) + r"]*?" + re.escape(inchis),
+                      " ", text)
+    return text
+
+
+def propozitii_copiate(rezumat: str, sursa: str) -> list[str]:
+    """Fragmentele din rezumat (în afara citatelor) copiate verbatim ≥ PRAG cuvinte."""
+    r = _cuvinte(_fara_citate_echilibrate(rezumat or ""))
+    s = _cuvinte(sursa or "")
+    lungime, fragment = _cea_mai_lunga_comuna(r, s)
+    if lungime >= PRAG_PROPOZITIE_COPIATA:
+        return [fragment]
+    return []
+
+
+def titlu_copiat(titlu: str, sursa: str) -> bool:
+    """True când titlul (≥ PRAG_TITLU_COPIAT cuvinte) există cuvânt cu cuvânt în sursă."""
+    t = _cuvinte(titlu or "")
+    if len(t) < PRAG_TITLU_COPIAT:
+        return False
+    lungime, _ = _cea_mai_lunga_comuna(t, _cuvinte(sursa or ""))
+    return lungime == len(t)
+
+
 def verifica(titlu: str, rezumat: str, sursa: str) -> list[Problema]:
     """Toate verificarile, pe titlu + rezumat impreuna.
 
@@ -218,4 +265,14 @@ def verifica(titlu: str, rezumat: str, sursa: str) -> list[Problema]:
         probleme.append(Problema("cifra_straina", n))
     if rezerva_pierduta(text, sursa):
         probleme.append(Problema("rezerva_pierduta", ""))
+    for fragment in propozitii_copiate(rezumat, sursa):
+        probleme.append(Problema(
+            "text_copiat",
+            f"{PRAG_PROPOZITIE_COPIATA}+ cuvinte verbatim în afara citatelor: {fragment[:100]}",
+        ))
+    if titlu_copiat(titlu, sursa):
+        probleme.append(Problema(
+            "titlu_copiat",
+            f"titlul ({len(_cuvinte(titlu or ''))} cuvinte) reproduce cuvânt cu cuvânt o secvență din sursă",
+        ))
     return probleme

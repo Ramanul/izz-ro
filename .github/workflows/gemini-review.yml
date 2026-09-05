@@ -1,21 +1,12 @@
 name: gemini review
 
-# Al doilea recenzor AI, pe ALT furnizor decat Claude, ca sa nu concureze pe aceeasi cota.
-# Context: recenzorul Claude cade tacut cand se termina cota proprietarului (PR #88), iar
-# Gemini Code Assist (IZZ-0067) nu mai comenteaza de la PR #136. `GEMINI_API_KEY` era deja
-# secret in repo -- folosit doar de pipeline -- iar nivelul gratuit e 1500 cereri/zi.
-# Un PR = o cerere. Practic imposibil de epuizat la cadenta acestui repo.
-#
-# Logica de filtrare (constatarile fara fisier:linie+reproducere sunt aruncate) sta in
-# tools/pr_review_gemini.py, ca sa poata fi rulata si local pe un PR deschis.
+# Al doilea recenzor AI pe un furnizor diferit de Claude. Review-ul este ADVISORY: nu devine
+# merge gate, deoarece quota/retea/model availability sunt dependente de un serviciu extern.
+# Fiecare update al PR-ului retriggereaza analiza; asta evita ca un fix nou sa ramana neverificat.
 
 on:
   pull_request:
-    types: [opened, ready_for_review]
-  # Rulare la cerere pe un PR deschis. Motivul e concret: `opened`/`ready_for_review` inseamna
-  # ca un fix adus recenzorului NU poate fi testat pe PR-ul care il introduce -- un push nu
-  # re-declanseaza nimic. Masurat pe PR #150. `synchronize` ar rezolva si asta, dar ar comenta
-  # la fiecare push; alegerea aia e a proprietarului, nu un efect secundar al unei felii de CI.
+    types: [opened, ready_for_review, synchronize]
   workflow_dispatch:
     inputs:
       pr:
@@ -27,7 +18,7 @@ permissions:
   pull-requests: write
 
 concurrency:
-  group: gemini-review-${{ github.event.pull_request.number }}
+  group: gemini-review-${{ github.event.pull_request.number || inputs.pr }}
   cancel-in-progress: true
 
 jobs:
@@ -44,15 +35,12 @@ jobs:
 
       - name: Review
         if: env.HAS_KEY == 'true'
-        # Non-blocking, din acelasi motiv scris pe larg in claude-code-review.yml: un check
-        # care se face rosu din motive externe (cota, retea, model retras) inceteaza sa mai
-        # fie citit. Esecul ramane vizibil ca warning.
         continue-on-error: true
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: python tools/pr_review_gemini.py ${{ github.event.pull_request.number }}
+        run: python tools/pr_review_gemini.py ${{ github.event.pull_request.number || inputs.pr }}
 
       - name: Cheie lipsa
         if: env.HAS_KEY != 'true'
-        run: echo "GEMINI_API_KEY nu e setat - sar peste review."
+        run: echo "GEMINI_API_KEY nu e setat - review-ul extern este indisponibil."

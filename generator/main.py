@@ -15,6 +15,7 @@ except ImportError:
     pass
 
 from . import fetch, state, cluster, moderation, config, guard, eventdata
+from . import jurnal_triage
 from .process import get_provider, process_single, process_clusters_batch, process_batch, process_official, OFFICIAL_PREFIXES
 from .util import domain_of, fara_titluri_data
 from .claude_orchestrator import ClaudeCodeValidator
@@ -411,6 +412,8 @@ def run(dry_run: bool = False) -> dict:
     # presiunea reala era 107-29=78 si 254-30=224. Cifra veche amesteca doua marimi opuse,
     # iar decizia „merita batching pentru Model C?" se ia tocmai pe ea.
     respinse_substanta = {i["url"] for i in itemele_fara_substanta(new_items)}
+    if not dry_run:
+        jurnal_triage.inregistreaza(pierderi, respinse_substanta, stale_skipped)
     deferred = numara_amanate(new_items, handled)
     processed_new = [a for a in processed_new if not a.get("skip")]
     # Coperte din datele evenimentului (felia meteo, 2026-09-05): DOAR articole noi,
