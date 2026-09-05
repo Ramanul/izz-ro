@@ -954,6 +954,18 @@
       ? (active.dataset.uat || active.dataset.region || active.dataset.county) : null;
     picker.replaceChildren();
 
+    // Incarcarea UAT-urilor unui judet e async si se vede: fara mesajul asta, pickerul ar
+    // sari inapoi pe butoanele de judet timp de cateva sute de ms si ar parea ca selectia
+    // "nu a prins" (audit harta, P1 -- starea intermediara trebuie comunicata).
+    if (state.zoomCounty && state.uatLoading) {
+      picker.setAttribute("aria-label", `Localități în ${state.zoomCounty}`);
+      const loading = document.createElement("p");
+      loading.className = "picker-empty";
+      loading.textContent = `Se încarcă localitățile din ${state.zoomCounty}…`;
+      picker.appendChild(loading);
+      return;
+    }
+
     // După alegerea unui județ, selectorul devine lista UAT-urilor acelui județ care au
     // știri în filtrul curent. Fiecare buton deschide aceeași listă de știri ca badge-ul de hartă.
     if (state.zoomCounty && state.uats.length) {
