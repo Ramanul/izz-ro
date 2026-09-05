@@ -52,5 +52,4 @@
 
 ## Where the rest lives
 
-`specs/regim-reguli.md` — unified audit closure · `specs/istoric-executie.md` — settled history ·
-`specs/registru.tsv` — decisions · `specs/masuratori-frontend.md` — measurements · `CLAUDE.md` — canonical contract.
+`specs/regim-reguli.md` — unified audit closure · `specs/registru.tsv` — decisions · `CLAUDE.md` — canonical contract.
