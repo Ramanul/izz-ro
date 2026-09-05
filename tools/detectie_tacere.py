@@ -16,12 +16,15 @@ import subprocess
 from datetime import datetime, timezone
 from pathlib import Path
 
-# (workflow, plafon_ore): cât maxim poate tăcea un mecanism viu.
-# build.yml (pipeline): cron orar, poartă de cadență ~2h => 4h fără nicio rulare = mort.
-# monitor.yml: */10 min => 1h. smoke.yml: orar => 2h. feedcheck.yml: zilnic => 26h.
+# (workflow, plafon_ore): cât maxim poate tăcea un mecanism viu. Plafoanele pentru
+# workflow-uri planificate sunt calibrate pe CADENȚA MĂSURATĂ, nu pe cron-ul scris:
+# GitHub întârzie/omite rulările programate la vârf, iar o alertă permanentă e o alertă
+# ignorată. Măsurat 2026-09-05 (gh run list): monitor.yml cu cron */10 a rulat efectiv la
+# 01:16 / 05:51 / 10:03 (≈4,5h) => plafon 6h. build.yml orar cu poartă ~2h => 6h.
+# smoke.yml orar => 2h (rulări orare confirmate). feedcheck.yml zilnic => 26h.
 MECANISME = [
-    ("build.yml", 4),
-    ("monitor.yml", 1),
+    ("build.yml", 6),
+    ("monitor.yml", 6),
     ("smoke.yml", 2),
     ("feedcheck.yml", 26),
 ]
