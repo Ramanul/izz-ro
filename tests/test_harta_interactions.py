@@ -124,14 +124,17 @@ def test_uat_geometry_is_published_for_every_map_county():
         assert all(unit["path"].startswith("M") for unit in payload["uats"])
 
 
-def test_uat_picker_and_dialog_are_exposed_after_county_selection():
+def test_uat_picker_selects_in_panel_after_county_selection():
+    # Audit harta, P0: click = selectare. Dialogul a fost ELIMINAT, nu doar neatinse -- panoul
+    # lateral si adresa sunt singurele reprezentari ale selectiei de UAT (un singur mecanism,
+    # nu doua: un dialog mort ar fi exact identificatorul care putrezeste, vezi IZZ-0177).
     html = Path("static/harta-stiri/index.html").read_text(encoding="utf-8")
     js = Path("static/harta-stiri/harta-stiri.js").read_text(encoding="utf-8")
-    assert 'id="uat-dialog"' in html
-    assert 'role="dialog"' in html
-    assert "function openUatDialog" in js
+    assert 'id="uat-dialog"' not in html
+    assert 'role="dialog"' not in html
+    assert "openUatDialog" not in js
     assert "button.dataset.uat" in js
-    assert 'button.setAttribute("aria-haspopup", "dialog")' in js
+    assert 'button.setAttribute("aria-pressed", state.selectedUat === uatKey ? "true" : "false")' in js
 
 
 def test_uat_badge_radius_is_constrained_to_polygon_interior():
@@ -141,12 +144,13 @@ def test_uat_badge_radius_is_constrained_to_polygon_interior():
     assert "placement.clearance * 0.72" in js
 
 
-def test_uat_dialog_is_url_navigable_state():
-    # Dialogul UAT e stare navigabila, nu un mecanism independent (audit harta, P0): intra in
-    # adresa, se citeste din adresa, iar deschiderea asteapta UAT-urile județului (settle).
+def test_uat_selection_is_url_navigable_state():
+    # Selectia de UAT e stare navigabila: intra in adresa (?judet=X&uat=Y), se citeste din
+    # adresa, iar aplicarea asteapta asignarea geometrica (`pendingUat`).
     js = Path("static/harta-stiri/harta-stiri.js").read_text(encoding="utf-8")
-    assert 'params.set("uat", state.openUat || state.pendingUat)' in js
+    assert 'params.set("uat", state.selectedUat)' in js
     assert 'uat: params.get("uat") || null' in js
-    assert "function settleUatDialog(" in js
-    # Inchiderea prin X/Escape/backdrop trece prin applyState, ca sa curate adresa.
-    assert 'applyState({ uat: null }, { replace: true })' in js
+    assert "state.pendingUat" in js
+    # Asignarea UAT-urilor se face din rawVisible, nu din visible: selectia se filtreaza pe
+    # baza asignarii, deci din visible s-ar auto-hrani (toate celelalte UAT-uri ar cadea pe 0).
+    assert "for (const item of state.rawVisible) {" in js
