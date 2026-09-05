@@ -146,7 +146,6 @@ def _t_editorial(a, acc, bg, k):
     dt = _data_copertei(a)
     et_px = _et_px(et, ((8, 128), (13, 102), (18, 82), (99, 60)), k)
     sus = f"{dt['wk']} {dt['zi_n']} {dt['luna']} {dt['an']}" if dt else "izz.ro"
-    jos = dt["an"] if dt else "știri de sinteză"
     return (
         f'<div class="stage" style="background:{bg};color:{acc}">'
         f'<div style="position:absolute;left:{56 * k:.0f}px;right:{56 * k:.0f}px;top:{30 * k:.0f}px;'
@@ -168,7 +167,7 @@ def _t_editorial(a, acc, bg, k):
         f'<div style="position:absolute;left:{56 * k:.0f}px;right:{56 * k:.0f}px;bottom:{34 * k:.0f}px;'
         f'display:flex;justify-content:space-between;align-items:baseline">'
         f'<span class="marca" style="position:static;font-size:{11 * k:.0f}px;opacity:.5">Portalul știrilor tale</span>'
-        f'<span class="marca" style="position:static;font-size:{11 * k:.0f}px;opacity:.5">{jos}</span></div>'
+        f'<span class="marca" style="position:static;font-size:{11 * k:.0f}px;opacity:.5">{sb}</span></div>'
         f'<div class="grain"></div></div>'
     )
 
@@ -211,8 +210,8 @@ def _t_banda(a, acc, bg, k):
                  f'text-transform:uppercase;line-height:1.6">{dt["wk"]},<br>{dt["zi_n"]} {dt["luna"]}</div>'
                  ) if dt else ""
     data_dr = (f'<div style="position:absolute;right:{64 * k:.0f}px;top:{56 * k:.0f}px;text-align:right">'
-               f'<div class="eticheta" style="font-size:{34 * k:.0f}px">{dt["zi_n"]}</div>'
-               f'<div class="sub" style="margin-top:{6 * k:.0f}px">{dt["luna"]}</div>'
+               f'<div class="eticheta" style="font-size:{72 * k:.0f}px">{dt["zi_n"]}</div>'
+               f'<div class="sub" style="margin-top:{8 * k:.0f}px;font-size:{17 * k:.0f}px">{dt["luna"]}</div>'
                f'<div style="width:{64 * k:.0f}px;height:{3 * k:.0f}px;background:{GOLD};'
                f'margin:{14 * k:.0f}px 0 0 auto"></div></div>') if dt else ""
     fantoma = sb or "stiri"
