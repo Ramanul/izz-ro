@@ -69,7 +69,7 @@ def test_release_probe_points_to_workers_fallback():
 def test_feedcheck_is_scheduled_and_read_only():
     feedcheck = (ROOT / ".github/workflows/feedcheck.yml").read_text(encoding="utf-8")
     assert "schedule:" in feedcheck
-    assert 'contents: read' in feedcheck
+    assert "contents: read" in feedcheck
     assert "permissions:\n  contents: write" not in feedcheck
 
 
@@ -78,6 +78,21 @@ def test_pr_checks_cover_all_surfaces():
     pull_block = tests.split("  push:\n", 1)[0]
     assert "pull_request:" in pull_block
     assert "paths:" not in pull_block
+
+
+def test_recovery_drill_is_non_destructive_by_default():
+    recovery = (ROOT / ".github/workflows/recovery-drill.yml").read_text(encoding="utf-8")
+    assert 'default: "check"' in recovery
+    assert "if: inputs.action == 'rollback'" in recovery
+    assert "wrangler@4.125.0 rollback" in recovery
+    assert "python tools/arhiva.py --stats" in recovery
+
+
+def test_protected_edit_guard_covers_deploy_control_plane():
+    hook = (ROOT / ".claude/hooks/deny_protected_edits.py").read_text(encoding="utf-8")
+    assert "wrangler.jsonc" in hook
+    assert 'os.path.join(root, ".github", "workflows")' in hook
+    assert "settings.json" in hook
 
 
 def test_grounding_gate_blocks_deterministic_violation(tmp_path):
