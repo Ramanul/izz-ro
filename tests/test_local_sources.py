@@ -168,7 +168,7 @@ def test_tie_break_asc_judet_localitate(tmp_path):
 def test_integration_pl_sources_count():
     from generator import config
     count = sum(1 for k in config.SOURCES if k.startswith("pl_"))
-    assert 0 < count <= 120  # LOCAL_GOLD_LIMIT default (impact-first: municipii/orase intai)
+    assert 0 < count <= 300  # LOCAL_GOLD_LIMIT default din 2026-09-05 (impact-first: municipii/orase intai)
 
 
 def test_pl_sources_ordered_before_gsp():

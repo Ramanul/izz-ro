@@ -83,6 +83,13 @@ _DEAD_SLUGS = frozenset({
     # /#E403, iar itemele nu trec garda http/https. Se reactiveaza doar dupa repararea
     # endpointului si o reverificare manuala a feedului.
     "tulcea_luncavita",
+    # COMPROMIS (2026-09-05). Feed-ul primariei Plenita publica spam cazino intercalat cu
+    # anunturi reale, exact tiparul Rovinari: „Chicken Cross the Road Gambling Game Review
+    # for Canada", „VulkanSpieleBonus Polish App" — prins de garda lingvistica la primul
+    # fetch al listei rescanate (104s/308 surse), apoi carantinat automat (2 din 8 iteme
+    # respinse in aceeasi rulare). Suprimarea opreste re-ingestia; se scoate doar dupa ce
+    # primaria curata site-ul si feed-ul e reverificat manual prin garda.
+    "dolj_plenita",
 })
 
 
