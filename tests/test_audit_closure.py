@@ -88,6 +88,15 @@ def test_recovery_drill_is_non_destructive_by_default():
     assert "python tools/arhiva.py --stats" in recovery
 
 
+def test_protected_edit_guard_covers_bash_writes():
+    settings = json.loads((ROOT / ".claude/settings.json").read_text(encoding="utf-8"))
+    hook = (ROOT / ".claude/hooks/deny_protected_edits.py").read_text(encoding="utf-8")
+    pre = settings["hooks"]["PreToolUse"][0]["matcher"]
+    assert pre == "Edit|Write|Bash", f"PreToolUse matcher acopera doar {pre!r} — scrierile prin Bash ocolesc garda"
+    assert "PROTECTED_TOKENS" in hook
+    assert "def _bash_scrie_control_plane" in hook
+
+
 def test_protected_edit_guard_covers_deploy_control_plane():
     hook = (ROOT / ".claude/hooks/deny_protected_edits.py").read_text(encoding="utf-8")
     assert "wrangler.jsonc" in hook
