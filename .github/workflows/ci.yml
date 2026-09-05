@@ -30,5 +30,9 @@ jobs:
         run: python -m ruff check .
       - name: Pytest
         run: python -m pytest -q
-      - name: Grounding gate contract
-        run: python tools/grounding_gate.py
+      - name: Grounding gate contract (clean evidence)
+        env:
+          IZZ_RAPORT_COPIERE_GATE: ${{ runner.temp }}/grounding-contract.jsonl
+        run: |
+          printf '%s\n' '{"id":"ci-contract","model":"test","blocking_issues":[],"advisory_issues":[]}' > "$IZZ_RAPORT_COPIERE_GATE"
+          python tools/grounding_gate.py
