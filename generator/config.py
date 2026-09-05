@@ -235,6 +235,21 @@ if _gold:
     _items[_idx + 1:_idx + 1] = list(_gold.items())
     SOURCES = dict(_items)
 
+# Surse locale FARA RSS validate individual (probe 2026-09-05): WordPress REST API
+# (wp_json) si liste e-adm „notice" (html_list). Inserate imediat DUPA blocul GOLD —
+# tot inainte de sursele non-locale, ca invariant-ul niche-first (testul de ordine
+# pl_ < gsp) sa ramana valabil. GOLD castiga pe ciocnire: un feed viu e mai bogat.
+from generator.local_sources import load_html_sources
+_HTML_CSV = os.path.join(ROOT, "data", "primarii_lists", "html_sources_2026-09-05.csv")
+_html = load_html_sources(_HTML_CSV, int(os.environ.get("LOCAL_HTML_LIMIT", "100")))
+if _html:
+    _hitems = [(k, v) for k, v in _html.items() if k not in SOURCES]
+    if _hitems:
+        _items = list(SOURCES.items())
+        _idx = max(i for i, (_k, _v) in enumerate(_items) if _k.startswith("pl_"))
+        _items[_idx + 1:_idx + 1] = _hitems
+        SOURCES = dict(_items)
+
 # Exclude orice URL/sursă de agenție (verificare suplimentară pe domeniul linkului)
 AGENCY_BLOCKLIST = ["agerpres", "mediafax", "reuters", "afp.com", "apnews", "ap.org"]
 

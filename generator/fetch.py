@@ -29,7 +29,7 @@ def pierderi_ingestie() -> dict:
     return dict(_SARITE)
 
 from html.parser import HTMLParser
-from urllib.parse import urljoin
+from urllib.parse import urljoin, urlsplit
 
 import feedparser
 
@@ -516,6 +516,73 @@ def _fetch_html_list(key: str, source: dict) -> tuple[list, str | None]:
     return _items_from_html(raw, key, source)
 
 
+def _fetch_wp_json(key: str, source: dict) -> tuple[list, str | None]:
+    """Lista de articole din WordPress REST API (`/wp-json/wp/v2/posts`) — pentru primariile
+    cu WordPress care NU au RSS activ (215 masurate 2026-09-05). API-ul e standard pe orice
+    WordPress si livreaza titlu + data ISO + link + excerpt in JSON; garda de ingestie e
+    ACEEASI ca la lista HTML (pas comun: verdict/url_ostil/anomalie + carantina).
+    """
+    try:
+        req = urllib.request.Request(source["url"], headers={"User-Agent": USER_AGENT})
+        with urllib.request.urlopen(req, timeout=TIMEOUT) as resp:
+            raw = _read_limitat(resp)
+    except (urllib.error.HTTPError, urllib.error.URLError, socket.timeout, ValueError) as exc:
+        return [], f"{key}: {exc}"
+    try:
+        data = json.loads(raw.decode("utf-8", errors="replace"))
+    except json.JSONDecodeError as exc:
+        # NU se prinde de except-ul de mai sus: JSONDecodeError e subclasa ValueError, iar
+        # acolo mesajul ar fi trecut drept eroare de retea. Aici e un raspuns netradus de API.
+        return [], f"{key}: raspuns non-JSON pe wp-json ({exc})"
+
+    if not isinstance(data, list) or not data:
+        return [], f"{key}: wp-json a raspuns dar fara articole"
+
+    items: list = []
+    respinse = 0
+    # origin-ul surselor, pentru link-urile relative pe care WordPress le da uneori
+    _origin = urlsplit(source["url"])
+    _origin = f"{_origin.scheme}://{_origin.netloc}"
+    for entry in data[: config.MAX_PER_SOURCE]:
+        if not isinstance(entry, dict):
+            continue
+        title = clean_html((entry.get("title") or {}).get("rendered", "") if isinstance(entry.get("title"), dict) else entry.get("title") or "")
+        link = (entry.get("link") or "").strip()
+        if link and not link.startswith(("http://", "https://")):
+            link = _origin + (link if link.startswith("/") else "/" + link)
+        if not link or not title or _is_agency(link, source["name"]):
+            _SARITE["item incomplet (fara link sau titlu)"] += 1
+            continue
+        excerpt = clean_html((entry.get("excerpt") or {}).get("rendered", "") if isinstance(entry.get("excerpt"), dict) else "")
+        motiv = (guard.verdict(title) or guard.url_ostil(link)
+                 or guard.anomalie(title, source.get("lang", "ro")))
+        if motiv:
+            respinse += 1
+            print(f"   !! garda ingestie (wp-json): sar [{key}] {title[:60]!r} — {motiv}")
+            _SARITE["garda de continut ostil"] += 1
+            continue
+        items.append({
+            "url": normalize_url(link),
+            "original_link": link,
+            "source": key,
+            "source_name": source["name"],
+            "source_lang": source.get("lang", "ro"),
+            "original_title": title,
+            "title": title,
+            "description": excerpt,
+            "category": source["category"],
+            "published": (entry.get("date_gmt") or entry.get("date") or "")[:10],
+            "model": None,
+        })
+    if (motiv := guard.carantina(respinse, respinse + len(items), key)):
+        print(f"   !! {motiv}")
+        return [], motiv
+
+    if not items:
+        return items, f"{key}: wp-json a dat {len(data)} intrari, toate respinse sau goale"
+    return items, None
+
+
 def _fetch_html_list_js(key: str, source: dict) -> tuple[list, str | None]:
     """Ca `_fetch_html_list`, dar randeaza pagina intr-un Chromium headless (crawl4ai/Playwright)
     inainte de a o parsa cu acelasi `_GenericListParser`.
@@ -568,11 +635,8 @@ def _items_from_html(raw: str, key: str, source: dict) -> tuple[list, str | None
     for entry in parser.items[: config.MAX_PER_SOURCE]:
         link = entry["href"]
         title = clean_html(entry["title"])
-        if not link or not title:
+        if not link or not title or _is_agency(link, source["name"]):
             _SARITE["item incomplet (fara link sau titlu)"] += 1
-            continue
-        if _is_agency(link, source["name"]):
-            _SARITE["agentie de presa (exclusa deliberat)"] += 1
             continue
         motiv = (guard.verdict(title) or guard.url_ostil(link)
                  or guard.anomalie(title, source.get("lang", "ro")))
@@ -655,6 +719,8 @@ def _fetch_one(key: str, source: dict, cache: dict | None = None) -> tuple[list,
         return _fetch_html_list(key, source)
     if source.get("type") == "html_list_js":
         return _fetch_html_list_js(key, source)
+    if source.get("type") == "wp_json":
+        return _fetch_wp_json(key, source)
 
     items = []
     headers = {"User-Agent": USER_AGENT}
