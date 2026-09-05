@@ -25,13 +25,15 @@ REPORT_ENV = "IZZ_RAPORT_COPIERE_GATE"
 def main() -> int:
     raw_path = os.environ.get(REPORT_ENV, "").strip()
     if not raw_path:
-        print(f"OK: {REPORT_ENV} nu este configurat; grounding gate nu are date de verificat.")
-        return 0
+        print(
+            f"FAIL: {REPORT_ENV} nu este configurat; grounding gate nu poate valida release-ul.",
+        )
+        return 2
 
     path = Path(raw_path)
     if not path.exists():
-        print(f"OK: grounding gate — nu exista raport pentru rularea curenta: {path}")
-        return 0
+        print(f"FAIL: grounding gate — raportul tranzitoriu lipseste: {path}")
+        return 1
 
     blocking: list[dict] = []
     advisory: list[dict] = []
