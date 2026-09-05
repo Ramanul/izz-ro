@@ -14,6 +14,8 @@ nu pastreaza textul sursei.
 
 Regula de siguranta: esecul scrierii raportului observational nu blocheaza singur pipeline-ul.
 Gate-ul explicit (`tools/grounding_gate.py`) decide blocarea pe baza raportului tranzitoriu.
+Daca masurarea nu poate fi executata sau a evidencia de gate nu poate fi scrisa, rularea de
+producao este tratata ca stare necunoscuta si esueaza closed, nu ca „nicio problema".
 """
 from __future__ import annotations
 
@@ -37,7 +39,9 @@ def _gate_cale() -> Path | None:
     raw = os.environ.get("IZZ_RAPORT_COPIERE_GATE", "").strip()
     return Path(raw) if raw else None
 
+
 _MAX_FRAGMENT = 120
+_BLOCKING = {"citat_inventat", "cifra_straina"}
 
 
 def _scrie_jsonl(cale: Path, rand: dict) -> None:
@@ -46,27 +50,49 @@ def _scrie_jsonl(cale: Path, rand: dict) -> None:
         f.write(json.dumps(rand, ensure_ascii=False) + "\n")
 
 
-def noteaza(model: str, identificator: str, titlu: str, rezumat: str, sursa: str) -> None:
-    """Masoara si scrie rapoartele. Nu ridica exceptii.
+def _rand_de_eroare(model: str, identificator: str, exc: Exception) -> dict:
+    """Produce o dovada blocanta cand verificarea insasi nu poate fi executata."""
+    return {
+        "cand": datetime.now(timezone.utc).isoformat(timespec="seconds"),
+        "model": model,
+        "id": (identificator or "")[:200],
+        "titlu_procent": 0,
+        "titlu_max_cuvinte": 0,
+        "text_procent": 0,
+        "text_max_cuvinte": 0,
+        "fragment": "",
+        "blocking_issues": [{
+            "cod": "grounding_measurement_error",
+            "detaliu": f"{type(exc).__name__}: {exc}"[:_MAX_FRAGMENT],
+        }],
+        "advisory_issues": [],
+    }
 
-    `model` e „B" sau „C"; `identificator` e link-ul/slug-ul, ca randul sa poata fi urmarit
-    inapoi la articol. Niciun raport nu pastreaza textul brut al sursei.
+
+def noteaza(model: str, identificator: str, titlu: str, rezumat: str, sursa: str) -> None:
+    """Masoara si scrie rapoartele.
+
+    Jurnalul observational ramane best-effort. Raportul tranzitoriu este insa parte din
+    release contract: cand este configurat, orice eroare de masurare devine o dovada
+    blocanta, iar orice eroare de scriere a dovezii se propaga si opreste pipeline-ul.
     """
+    if not sursa or not (titlu or rezumat):
+        return
+
+    gate_cale = _gate_cale()
     try:
-        if not sursa or not (titlu or rezumat):
-            return
         s_titlu = suprapunere_sursa(titlu or "", sursa)
         s_text = suprapunere_sursa(rezumat or "", sursa)
         probleme = verifica(titlu or "", rezumat or "", sursa)
         blocking = [
             {"cod": p.cod, "detaliu": p.detaliu[:_MAX_FRAGMENT]}
             for p in probleme
-            if p.cod in {"citat_inventat", "cifra_straina"}
+            if p.cod in _BLOCKING
         ]
         advisory = [
             {"cod": p.cod, "detaliu": p.detaliu[:_MAX_FRAGMENT]}
             for p in probleme
-            if p.cod not in {"citat_inventat", "cifra_straina"}
+            if p.cod not in _BLOCKING
         ]
         rand = {
             "cand": datetime.now(timezone.utc).isoformat(timespec="seconds"),
@@ -80,13 +106,22 @@ def noteaza(model: str, identificator: str, titlu: str, rezumat: str, sursa: str
             "blocking_issues": blocking,
             "advisory_issues": advisory,
         }
-        # Jurnalul de calibrare existent; ramane observational si nu este comis de build.
-        _scrie_jsonl(_cale(), rand)
-        # Raportul tranzitoriu pentru gate traieste in RUNNER_TEMP/alt path si poate fi
-        # sters la sfarsitul rularii; contine numai dovezi minime, nu textul sursei.
-        gate_cale = _gate_cale()
-        if gate_cale is not None:
-            _scrie_jsonl(gate_cale, rand)
-    except Exception:
-        # O problema de jurnalizare nu trebuie sa devina singurul punct de esec al pipeline-ului.
+    except Exception as exc:
+        if gate_cale is None:
+            # Development/legacy callers fara gate isi pastreaza comportamentul best-effort.
+            return
+        # Dovada de eroare trebuie SCRISA. Daca scrierea esueaza, exceptia se propaga:
+        # release-ul nu are voie sa transforme „nu am putut masura" in „curat".
+        _scrie_jsonl(gate_cale, _rand_de_eroare(model, identificator, exc))
         return
+
+    # Jurnalul de calibrare existent; ramane observational si nu este comis de build.
+    try:
+        _scrie_jsonl(_cale(), rand)
+    except Exception:
+        pass
+
+    # Raportul tranzitoriu pentru gate traieste in RUNNER_TEMP/alt path si poate fi
+    # sters la sfarsitul rularii; contine numai dovezi minime, nu textul sursei.
+    if gate_cale is not None:
+        _scrie_jsonl(gate_cale, rand)
