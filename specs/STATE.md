@@ -28,6 +28,19 @@
 - **Coordination:** live channel is `handoff/` + `specs/STATE.md`; historical dashboards stay historical.
 - **Containment:** destructive git commands are denied and protected control-plane files are denied
   to direct Edit/Write operations; the hook contract is under test.
+- **Takedown registry:** `moderation.yaml` accepts `takedowns` (URL -> motive); removal runs on every
+  publish path, with an idempotent audit trail in `data/takedown_log.jsonl` (committed by the pipeline).
+- **Near-verbatim copy:** >=15-word verbatim runs outside quotes in summaries and fully transcribed
+  titles are grounding-gate blocking codes (`text_copiat`, `titlu_copiat`); thresholds are rule-derived
+  (REGULI-SINTEZA 2.2), the calibration journal holds no real corpus yet.
+- **Triage journal:** ingest discards (fetch losses, no-substance rejects, expired) land per run in
+  `data/triage_log.jsonl`, committed with pipeline state.
+- **Silence detection:** hourly `detectie-tacere.yml` checks last runs of build/monitor/smoke/feedcheck
+  and the last content commit against ceilings; alert issue opens on silence and closes on recovery.
+- **Human gate is a switch:** `IZZ_REQUIRE_HUMAN_GATE` is a repo variable (default false, armable from
+  the GitHub UI without code changes); `hold_important` in `moderation.yaml` stays the per-config switch.
+- **Bash writes are guarded:** the protected-edit PreToolUse hook covers Bash commands combining a
+  control-plane path with a write indicator; read-only mentions and pipeline runs stay allowed.
 
 ## Standing rules
 

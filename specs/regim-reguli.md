@@ -72,3 +72,13 @@ Auditul unificat este considerat **închis în repo** când:
 - CI-ul pentru HEAD-ul ramurii trece.
 
 Ultimul punct este o proprietate a rulării CI, nu o presupunere din existența fișierelor. Un audit „închis” nu înseamnă „site live confirmat” pe hosturile pe care proxy-ul le blochează.
+
+## 4. Poarta umană pentru sintezele C — comutator, nu stare permanentă (2026-09-05)
+
+`IZZ_REQUIRE_HUMAN_GATE` nu mai e hardcoded `true` în `build.yml`. Este o **variabilă de
+repo GitHub**, armabilă fără atingere de cod: Settings → Secrets and variables → Actions →
+Variables → `IZZ_REQUIRE_HUMAN_GATE` = `true`. Default `false`, din același motiv pentru
+care există detecția de tăcere: poartă mereu pornită + proprietar care nu operează YAML
+zilnic = site înghețat tăcut, cel mai rău mod de eșec din matrice. Comutatorul aparține
+proprietarului; când e armată, poarta rămâne fail-closed (orice valoare necunoscută
+oprește pipeline-ul — `generator/moderation.py::_human_gate_required`).

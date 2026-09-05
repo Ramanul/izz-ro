@@ -75,7 +75,11 @@ jobs:
           UPGRADE_RESERVE: "4"
           GEMINI_BASE_URL: ${{ vars.GEMINI_BASE_URL }}
           IZZ_RAPORT_COPIERE_GATE: ${{ runner.temp }}/izz-grounding-gate.jsonl
-          IZZ_REQUIRE_HUMAN_GATE: "true"
+          # Poartă umană pentru sintezele C: armabilă din UI (Settings → Secrets and
+          # variables → Actions → Variables → IZZ_REQUIRE_HUMAN_GATE=true), fără atingere
+          # de cod. Default false: proprietar netehnic + poartă mereu pornită = site
+          # înghețat tăcut (failure mode „Tăcere" din audit); comutatorul rămâne la el.
+          IZZ_REQUIRE_HUMAN_GATE: ${{ vars.IZZ_REQUIRE_HUMAN_GATE || 'false' }}
         run: python -m generator.main
 
       - name: Grounding gate (blocant pentru citate/cifre straine)

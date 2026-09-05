@@ -50,7 +50,9 @@ def test_build_quality_and_human_gates_run_before_content_commit():
     qa = build.index("name: QA check (blocking, inainte de commit)")
     commit = build.index("name: Comite starea")
     assert grounding < qa < commit
-    assert 'IZZ_REQUIRE_HUMAN_GATE: "true"' in build
+    # Poarta umana e COMUTATOR, nu starea permanenta: default false (flux neinghetat),
+    # armabila din UI-ul GitHub (vars.IZZ_REQUIRE_HUMAN_GATE) fara atingere de cod.
+    assert "IZZ_REQUIRE_HUMAN_GATE: ${{ vars.IZZ_REQUIRE_HUMAN_GATE || 'false' }}" in build
 
 
 def test_production_deploy_uses_release_manifest_probe():
