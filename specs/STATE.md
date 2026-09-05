@@ -5,10 +5,12 @@
 >
 > **Hard cap: ~40 lines of content.**
 
-**Updated:** 2026-09-05
+**Updated:** 2026-09-05 (#283 merged: coperte din date — felia meteo; prima prognoză atașată automat din open-meteo)
 
 ## Open
 
+- **Coperte din date — felia 2**: harta de cutremur (epicentru USGS) + atașare retroactivă pe știrile
+  de vreme recente; #283 (merged) e baza.
 - **PR #282 — audit unified hardening:** merged 09-05, branch `audit-unified-hardening-2026-09-05`.
   K1–K14 have explicit closure status in
   `specs/regim-reguli.md`.
