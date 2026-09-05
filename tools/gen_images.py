@@ -30,7 +30,11 @@ LABELS = os.path.join(MEDIA, "labels.json")
 
 def _semnatura(a: dict) -> str:
     """Textul VIZIBIL de pe imagine. Se schimba -> imaginea trebuie redesenata."""
-    return f"{htmlart._eticheta(a)}|{htmlart._subtitlu(a)}"
+    sig = f"{htmlart._eticheta(a)}|{htmlart._subtitlu(a)}"
+    # Coperta din date (prognoza): cifrele se schimba zilnic, deci semnatura le include.
+    if a.get("event_chart"):
+        sig += "|" + json.dumps(a["event_chart"], sort_keys=True, ensure_ascii=False)
+    return sig
 
 
 def _load_labels() -> dict:

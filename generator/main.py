@@ -14,7 +14,7 @@ try:
 except ImportError:
     pass
 
-from . import fetch, state, cluster, moderation, config, guard
+from . import fetch, state, cluster, moderation, config, guard, eventdata
 from .process import get_provider, process_single, process_clusters_batch, process_batch, process_official, OFFICIAL_PREFIXES
 from .util import domain_of, fara_titluri_data
 from .claude_orchestrator import ClaudeCodeValidator
@@ -413,6 +413,11 @@ def run(dry_run: bool = False) -> dict:
     respinse_substanta = {i["url"] for i in itemele_fara_substanta(new_items)}
     deferred = numara_amanate(new_items, handled)
     processed_new = [a for a in processed_new if not a.get("skip")]
+    # Coperte din datele evenimentului (felia meteo, 2026-09-05): DOAR articole noi,
+    # fail-safe per articol — fara date, coperta ramane cea generata de azi.
+    n_event = eventdata.attach(processed_new)
+    if n_event:
+        print(f">> Coperte din date: {n_event} prognoze atasate articolelor noi")
     # inlocuire pe URL: un rep C poate purta URL-ul unei stiri B existente pe care a absorbit-o
     rep_urls = {a.get("url") for a in processed_new}
     combined = [a for a in existing
