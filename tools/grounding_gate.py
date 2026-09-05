@@ -2,7 +2,7 @@
 """Blocking gate for deterministic AI/source consistency checks.
 
 `generator.raport_copiere` writes one JSON object per processed AI item to the path in
-`IZZ_RAPORT_COPIERE_GATE`.  This command is intentionally separate from the reporting
+`IZZ_RAPORT_COPIERE_GATE`. This command is intentionally separate from the reporting
 journal: reports remain observational, while this gate is a release control.
 
 Only deterministic, high-confidence violations block:
@@ -17,7 +17,6 @@ from __future__ import annotations
 
 import json
 import os
-import sys
 from pathlib import Path
 
 REPORT_ENV = "IZZ_RAPORT_COPIERE_GATE"
@@ -37,10 +36,12 @@ def main() -> int:
     blocking: list[dict] = []
     advisory: list[dict] = []
     malformed = 0
+    entries = 0
     with path.open("r", encoding="utf-8") as fh:
         for line_no, line in enumerate(fh, 1):
             if not line.strip():
                 continue
+            entries += 1
             try:
                 row = json.loads(line)
             except json.JSONDecodeError:
@@ -63,7 +64,7 @@ def main() -> int:
 
     print(
         f"=== AI grounding gate ===\n"
-        f"intrari verificate: {sum(1 for _ in path.open('r', encoding='utf-8'))}\n"
+        f"intrari verificate: {entries}\n"
         f"blocante: {len(blocking)} | advisory: {len(advisory)} | malformed: {malformed}"
     )
     for item in blocking[:25]:
