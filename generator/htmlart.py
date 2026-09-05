@@ -24,10 +24,13 @@ pe pagina, sub imagine.
 """
 import base64
 import hashlib
+import json
 import os
+import re
 
 from . import geo
 
+_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 _ASSETS = os.path.join(os.path.dirname(os.path.abspath(__file__)), "assets")
 ART_W, ART_H = 960, 504
 COVER_W, COVER_H = 1200, 630
@@ -172,6 +175,125 @@ def _t_arc(a, acc, bg, k):
     )
 
 
+# ---- silueta judetului -----------------------------------------------------
+# Geometria vine din `data/harta_judete.json`, al carui antet isi declara sursa: Natural Earth,
+# DOMENIU PUBLIC. Deci zero cerere de retea la randare, zero licenta de tert, zero termeni de
+# serviciu de respectat. Alternativa evidenta — tile-uri raster de la OpenStreetMap — ar fi
+# insemnat cereri automate catre serverul lor la fiecare rulare, pe care politica lor de tile-uri
+# o interzice; aici nu se pune problema, fisierul e deja in repo si e deja folosit de harta
+# stirilor (`render.py:590`).
+#
+# De ce asta NU incalca „zero figurativ" din reproiectarea 2026-08-05: critica de atunci tintea
+# PICTOGRAMELE DE INTERFATA scalate de la 24px la 300px+ — contur gros, forma schematica, zero
+# detaliu. Silueta unui judet e opusul: contur cartografic real, cu zeci de vertexuri, care
+# CASTIGA detaliu la marime mare in loc sa-l piarda. Si, spre deosebire de eticheta „ECONOMIC"
+# scrisa pe coperta unui articol economic, spune ceva adevarat si specific despre articol.
+_HARTA_PATH = os.path.join(_ROOT, "data", "harta_judete.json")
+_HARTA = None
+_NUM = re.compile(r"-?\d+(?:\.\d+)?")
+
+
+def _harta() -> dict:
+    """`{cod judet: path SVG}`. Citit o data si tinut pe modul — randam mii de imagini per rulare.
+
+    Orice esec de citire da `{}`, nu exceptie: coperta cade pe template-urile vechi. Un fisier
+    de date lipsa nu are voie sa opreasca pipeline-ul (§7 — mai bine sobru decat stricat).
+    """
+    global _HARTA
+    if _HARTA is None:
+        try:
+            with open(_HARTA_PATH, encoding="utf-8") as f:
+                _HARTA = json.load(f).get("judete") or {}
+        except (OSError, ValueError):
+            _HARTA = {}
+    return _HARTA
+
+
+def _bbox(d: str):
+    """Cutia de incadrare a unui path. Fisierul foloseste DOAR M/L/Z (verificat pe toate cele 42),
+    deci numerele sunt perechi x,y in ordine si nu e nevoie de un parser de path."""
+    n = [float(x) for x in _NUM.findall(d)]
+    if len(n) < 4:
+        return None
+    xs, ys = n[0::2], n[1::2]
+    return min(xs), min(ys), max(xs), max(ys)
+
+
+def _silueta(cod: str | None, latime: float, inaltime: float, culoare: str, op: float) -> str:
+    """SVG cu judetul scalat sa umple cutia data, pastrand proportia. "" cand lipseste geometria.
+
+    Silueta intra INTREAGA in cutie: un judet taiat de margine nu se mai citeste ca judet, ci ca
+    o pata (masurat vizual 2026-09-04, prima varianta o ancora la -110px si o taia pe trei parti).
+    Judetele au forme foarte diferite (Constanta e alungita, Ilfov e compact), deci se scaleaza
+    dupa bbox-ul PROPRIU, nu dupa viewbox-ul comun al tarii — altfel Ilfov ar aparea ca un punct.
+    Grosimea conturului se imparte la scara, ca sa ramana constanta in pixeli pe toate judetele.
+    """
+    d = _harta().get(cod or "")
+    b = _bbox(d) if d else None
+    if not b:
+        return ""
+    x0, y0, x1, y1 = b
+    lw, lh = max(x1 - x0, 0.01), max(y1 - y0, 0.01)
+    s = min(latime / lw, inaltime / lh)
+    tx, ty = (latime - lw * s) / 2 - x0 * s, (inaltime - lh * s) / 2 - y0 * s
+    return (f'<svg width="{latime:.0f}" height="{inaltime:.0f}" '
+            f'viewBox="0 0 {latime:.0f} {inaltime:.0f}" aria-hidden="true" focusable="false">'
+            f'<g transform="translate({tx:.2f} {ty:.2f}) scale({s:.4f})">'
+            f'<path d="{d}" fill="{culoare}" fill-opacity="{op}" stroke="{GOLD}" '
+            f'stroke-opacity=".5" stroke-width="{2.2 / s:.2f}" stroke-linejoin="round"/>'
+            f'</g></svg>')
+
+
+def _judet(a: dict) -> str | None:
+    """Codul judetului pe care coperta il poate desena, sau None.
+
+    DOAR din cheia sursei (`geo.judet_sursa`), care il codeaza in clar (`pl_vrancea_...`, `cj_cluj`)
+    — determinist, fara euristica. Titlul e refuzat deliberat ca sursa: o stire locala poate numi
+    alt judet decat cel despre care e vorba, iar o silueta GRESITA e mai rea decat niciuna (§7).
+    `regional` e exclus din acelasi motiv: acopera mai multe judete, deci oricare ar fi o minciuna.
+    Masurat 2026-09-04 pe `data/articles.json`: 2.923 din cele 5.264 de articole cu axa geografica.
+    """
+    if (a.get("category") or "") not in ("local", "judetean"):
+        return None
+    cod = geo.judet_sursa(a.get("source"))
+    return cod if cod and cod in _harta() else None
+
+
+def _sub_harta(a: dict, cod: str) -> str:
+    """Sub eticheta sta JUDETUL, nu categoria: el explica silueta si adauga ceva ce cardul nu are.
+    Cade pe categorie cand eticheta E deja judetul — „CLUJ / CLUJ" n-ar spune nimic in plus.
+
+    NU e inclusa in `gen_images._semnatura()`, si asta e deliberat: semnatura decide ce imagine se
+    REGENEREAZA, iar adaugarea judetului acolo ar invalida-o pentru toate cele ~2.900 de articole
+    locale deodata. Exact regenerarea in masa refuzata de proprietar (`IZZ-0163`) si exact modul in
+    care `IZZ-0162` era pe cale sa stearga ~8.900 de imagini intr-o rulare. Consecinta acceptata:
+    silueta apare pe copertile generate DE ACUM INCOLO, nu retroactiv; `FORCE_REGEN=1` le aduce
+    pe cele vechi cand proprietarul decide asta.
+    """
+    nume = geo.eticheta_judet(cod) or ""
+    return nume if nume.strip().lower() != _eticheta(a).strip().lower() else _subtitlu(a)
+
+
+def _t_harta(a, acc, bg, k):
+    """Silueta reala a judetului, ancorata dreapta si taiata de margine; tipografia pe verticala
+    de aur. Se alege in locul rotatiei de patru doar cand judetul e cunoscut (vezi `_judet`)."""
+    cod = _judet(a)
+    return (
+        f'<div class="stage" style="background:{bg};color:{acc}">'
+        f'<div style="position:absolute;right:{44 * k:.0f}px;top:50%;'
+        f'transform:translateY(-50%);line-height:0">'
+        f'{_silueta(cod, 360 * k, 364 * k, acc, 0.15)}</div>'
+        f'<div style="position:absolute;left:{56 * k:.0f}px;top:{56 * k:.0f}px;'
+        f'width:{int((ART_W - 112) / PHI * k)}px" class="filet"></div>'
+        f'<div style="position:absolute;left:{56 * k:.0f}px;top:{int(ART_H / PHI * k)}px;'
+        f'transform:translateY(-50%)">'
+        f'<div class="eticheta">{_eticheta(a)}</div>'
+        f'<div class="sub">{_sub_harta(a, cod)}</div></div>'
+        f'<div class="marca" style="left:{56 * k:.0f}px;bottom:{44 * k:.0f}px">izz.ro</div>'
+        f'<div class="grain"></div></div>'
+    )
+
+
 _TEMPLATES = [_t_editorial, _t_inversat, _t_banda, _t_arc]
 
 
@@ -180,7 +302,11 @@ def build_html(a: dict, cover: bool = False) -> str:
     seed = hashlib.sha1((a.get("title") or "x").encode()).digest()
     acc, bg = _PALETE[seed[0] % len(_PALETE)]
     w, h = (COVER_W, COVER_H) if cover else (ART_W, ART_H)
-    body = _TEMPLATES[seed[4] % len(_TEMPLATES)](a, acc, bg, w / ART_W)
+    # Harta bate rotatia cand judetul e cunoscut: e singurul strat din set care spune ceva
+    # despre ARTICOL, nu despre rubrica. Paleta ramane derivata din titlu, deci doua stiri din
+    # acelasi judet nu ies identice.
+    sablon = _t_harta if _judet(a) else _TEMPLATES[seed[4] % len(_TEMPLATES)]
+    body = sablon(a, acc, bg, w / ART_W)
     return (f"<!doctype html><html><head><meta charset='utf-8'><style>{_base_css(w, h)}</style></head>"
             f"<body>{body}</body></html>")
 
