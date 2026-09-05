@@ -2,20 +2,22 @@ from __future__ import annotations
 
 import json
 import subprocess
+import sys
 from pathlib import Path
 
 
 ROOT = Path(__file__).resolve().parents[1]
-SCRIPT = ROOT / ".claude" / "hooks" / "deny-protected-edits.py"
+SCRIPT = ROOT / ".claude" / "hooks" / "deny_protected_edits.py"
 
 
 def _run(payload: dict) -> int:
     return subprocess.run(
-        ["python", str(SCRIPT), str(ROOT)],
+        [sys.executable, str(SCRIPT), str(ROOT)],
         input=json.dumps(payload),
         text=True,
         capture_output=True,
         check=False,
+        cwd=ROOT,
     ).returncode
 
 
