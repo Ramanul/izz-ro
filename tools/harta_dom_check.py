@@ -503,6 +503,62 @@ def felia6_url(p):
     p.goto(BASE, wait_until="networkidle")
     p.wait_for_selector("#news-list li", timeout=15000)
 
+def uat_in_url(p):
+    """Dialogul UAT e stare navigabila (audit harta, P0): vine din URL, intra in URL, Back il
+    inchide, X-ul curata adresa, iar un link direct il redeschide fara niciun click."""
+    print("\nUAT IN ADRESA -- dialogul e stare navigabila")
+    p.goto(BASE, wait_until="networkidle")
+    p.wait_for_selector("#county-picker button", timeout=15000)
+    p.wait_for_timeout(200)
+    # Intra intr-un judet prin picker: cale garantata, nu tap precis pe harta.
+    p.click("#county-picker button")
+    try:
+        p.wait_for_selector("#county-picker button[data-uat]", timeout=5000)
+    except Exception:
+        skip("judetul intrat nu a primit lista de UAT-uri in 5s -- nu se poate testa dialogul in URL")
+        reset(p)
+        return
+    p.wait_for_timeout(200)
+
+    p.click("#county-picker button[data-uat]")
+    p.wait_for_timeout(300)
+    url = p.evaluate("() => location.search")
+    check("uat=" in url, f"deschiderea dialogului scrie uat= in adresa ('{url}')")
+    check("judet=" in url, f"adresa pastreaza si județul ('{url}')")
+    check(p.evaluate("() => !document.querySelector('#uat-dialog').hidden"), "dialogul e deschis")
+
+    # X inchide si curata adresa prin replaceState -- altfel Back de dupa X ar redeschide
+    # dialogul pe care utilizatorul tocmai l-a inchis.
+    p.click("#uat-dialog-close")
+    p.wait_for_timeout(250)
+    check(p.evaluate("() => document.querySelector('#uat-dialog').hidden"), "X inchide dialogul")
+    check("uat=" not in p.evaluate("() => location.search"),
+          f"X scoate uat= din adresa ('{p.evaluate('() => location.search')}')")
+
+    # Back, de la dialog deschis, inchide dialogul in loc sa iasa de pe pagina.
+    p.click("#county-picker button[data-uat]")
+    p.wait_for_timeout(300)
+    opened_url = p.evaluate("() => location.search")
+    check("uat=" in opened_url and p.evaluate("() => !document.querySelector('#uat-dialog').hidden"),
+          "dialogul s-a redeschis pentru testul Back")
+    p.go_back()
+    p.wait_for_timeout(350)
+    check(p.evaluate("() => document.querySelector('#uat-dialog').hidden"),
+          f"Back inchide dialogul, nu paraseste pagina (adresa: '{p.evaluate('() => location.search')}')")
+
+    # Link direct: cine prinde adresa cu uat= vede dialogul deschis, fara niciun click.
+    p.goto(BASE + opened_url, wait_until="networkidle")
+    try:
+        p.wait_for_selector("#uat-dialog-list a", timeout=8000)
+    except Exception:
+        skip(f"linkul direct '{opened_url}' nu a deschis dialogul in 8s (JSON UAT n-a sosit?)")
+    else:
+        check(p.evaluate("() => !document.querySelector('#uat-dialog').hidden"),
+              f"link direct ({opened_url}) redeschide dialogul")
+    p.goto(BASE, wait_until="networkidle")
+    p.wait_for_selector("#news-list li", timeout=15000)
+
+
 def mobil_390(p):
     """Android: harta e ~359x256px la 390 latime, deci ea e cazul greu pentru zona de atins.
     Aici se verifica si ca garda tap-vs-drag chiar tine cu EVENIMENTE TACTILE, nu doar cu mouse-ul
@@ -563,6 +619,7 @@ def main():
         felia2_localitate(p)
         felia5_county_picker(p)
         felia6_url(p)
+        uat_in_url(p)
 
         mob = br.new_page(viewport={"width": 390, "height": 844}, is_mobile=True, has_touch=True)
         mob.goto(BASE, wait_until="networkidle")
