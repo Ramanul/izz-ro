@@ -1,0 +1,20 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "izz-intelligence-api",
+  "main": "src/index.js",
+  "compatibility_date": "2026-06-18",
+  "workers_dev": true,
+  "observability": {
+    "enabled": true
+  },
+  "d1_databases": [
+    {
+      "binding": "IZZ_DB",
+      "database_name": "izz-intelligence",
+      "database_id": "REPLACE_WITH_CLOUDFLARE_D1_DATABASE_ID"
+    }
+  ],
+  "vars": {
+    "LEAD_INGEST_KEY": "SET_AS_A_SECRET_IN_PRODUCTION"
+  }
+}

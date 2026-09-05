@@ -1,0 +1,74 @@
+{
+  "catalog": [
+    {"name":"Ce înseamnă pentru mine","value":"impact personal + următorul pas"},
+    {"name":"Radar pentru profesia mea","value":"schimbări săptămânale pentru profesie"},
+    {"name":"Radar pentru compania mea","value":"profil public + schimbări relevante"},
+    {"name":"Monitorizează concurentul","value":"competitive intelligence"},
+    {"name":"Oportunități pentru firma mea","value":"selecție de oportunități din fluxul public"},
+    {"name":"IZZ Opportunity Score","value":"scor 0–100 pentru oportunități"},
+    {"name":"Business Radar","value":"oportunități, concurenți, investiții, achiziții"},
+    {"name":"Grants Radar","value":"finanțări eligibile + sursă oficială"},
+    {"name":"Lead marketplace","value":"intenție de cumpărare → furnizori"},
+    {"name":"IZZ Oferte","value":"cerere de ofertă către furnizori verificați"},
+    {"name":"Local Business Index","value":"directory + lead generation"},
+    {"name":"IZZ Verified","value":"profil public verificabil al companiei"},
+    {"name":"Company Pages","value":"dosar permanent /companii/{slug}"},
+    {"name":"Institution Monitor","value":"documente + decizii + proiecte + achiziții"},
+    {"name":"Topic Monitor","value":"dosar permanent pentru o temă"},
+    {"name":"Dosarele IZZ","value":"cronologie + documente + date + explicații"},
+    {"name":"Ce s-a schimbat?","value":"diferențe înainte → după"},
+    {"name":"Comparatorul de România","value":"costuri + prețuri + salarii + taxe"},
+    {"name":"IZZ Calculator → afiliere","value":"estimează, compară, convertește"},
+    {"name":"Job Radar","value":"job intelligence și tendințe"},
+    {"name":"Salary Intelligence","value":"interval salarial + oraș + industrie"},
+    {"name":"Ce se construiește?","value":"PUZ + autorizații + proiecte + investiții"},
+    {"name":"Harta banilor publici","value":"unde se duc contractele și investițiile"},
+    {"name":"Market Intelligence","value":"indicatori din date publice"},
+    {"name":"IZZ Data","value":"API / JSON / CSV machine-readable"},
+    {"name":"White-label IZZ","value":"radare și dosare pentru organizații"},
+    {"name":"IZZ pentru agenții","value":"monitorizare multi-client"},
+    {"name":"Reputation Monitor","value":"alerte despre companie și concurenți"},
+    {"name":"AI Research","value":"întrebări peste corpul structurat de date"},
+    {"name":"IZZ Reports","value":"rapoarte premium generate automat"},
+    {"name":"Top 100 sponsorizat","value":"rankings cu metodologie transparentă"},
+    {"name":"Evenimente IZZ","value":"forumuri + micro-evenimente + lead-uri"},
+    {"name":"Premiile IZZ","value":"awards / sponsorizări"},
+    {"name":"Membrii IZZ","value":"instrumente + rapoarte + acces anticipat"},
+    {"name":"Commerce media","value":"content → intent → transaction"},
+    {"name":"IZZ Actions","value":"informație → acțiune"},
+    {"name":"Lizieră comună de date","value":"un corpus, produse și venituri multiple"}
+  ],
+  "providers": [
+    {"name":"Acoperiș Timiș","city":"Timișoara","cities":["Timișoara"],"categories":["acoperiș","acoperis","renovare"],"budgets":["mid","high"],"contact":"lead@demo.izz.ro","reason":"categorie + localitate potrivite; furnizor orientat pe proiecte de renovare"},
+    {"name":"Contabil Pro Vest","city":"Timișoara","cities":["Timișoara"],"categories":["contabil","contabilitate"],"budgets":["low","mid"],"contact":"lead@demo.izz.ro","reason":"servicii contabile pentru IMM-uri din regiune"},
+    {"name":"Energia Eficientă","city":"Arad","cities":["Arad"],"categories":["pompă de căldură","pompa de caldura","energie"],"budgets":["mid","high"],"contact":"lead@demo.izz.ro","reason":"potrivire bună pentru proiecte de eficiență energetică"},
+    {"name":"Avocat Business","city":"București","cities":["București"],"categories":["avocat","juridic"],"budgets":["mid","high"],"contact":"lead@demo.izz.ro","reason":"acoperă nevoi comerciale și contractuale"}
+  ],
+  "companies": {
+    "RO12345678": {
+      "name":"Compania Demo SRL","status":"Activă","city":"Timișoara","domain":"construcții",
+      "changes":[
+        {"type":"Contract","text":"Apare un contract nou în valoare de 2,4 milioane lei.","date":"2026-08-29","confidence":92},
+        {"type":"Proiect","text":"Este menționată într-un proiect local nou.","date":"2026-09-01","confidence":84},
+        {"type":"Achiziție","text":"Participă la o achiziție publică relevantă.","date":"2026-09-03","confidence":79}
+      ]
+    }
+  },
+  "market": [
+    {"label":"Investiții publice urmărite","value":"3.827","note":"număr demonstrativ de înregistrări în corpusul strategic"},
+    {"label":"Oportunități candidate","value":"127","note":"exemplu de selecție după scor"},
+    {"label":"Companii monitorizate","value":"248","note":"exemplu de watchlist"},
+    {"label":"Industrii cu accelerație","value":"12","note":"exemplu de indicator"}
+  ],
+  "commerce": [
+    {"name":"Comparator energie","description":"Compară costuri și oferte înainte de cumpărare.","model":"lead / afiliere"},
+    {"name":"Comparator RCA","description":"Pe baza profilului și intenției utilizatorului.","model":"afiliere"},
+    {"name":"Calculator credit","description":"Estimare + comparație oferte.","model":"lead / afiliere"},
+    {"name":"Ghid + ofertă","description":"Conținut editorial care conduce către furnizori.","model":"lead"}
+  ],
+  "events": [
+    {"name":"IZZ Business Forum","date":"TBD","location":"România / online","description":"Eveniment B2B pentru oportunități, date și intelligence."},
+    {"name":"IZZ Construcții","date":"TBD","location":"Timișoara / online","description":"Micro-eveniment specializat pentru construcții și investiții."},
+    {"name":"IZZ Tech","date":"TBD","location":"Online","description":"Întâlnire tematică pentru tehnologie și piață."}
+  ]
+}

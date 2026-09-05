@@ -1,0 +1,33 @@
+PREFIX dc: <http://purl.org/dc/elements/1.1/>
+PREFIX epo: <http://data.europa.eu/a4g/ontology#>
+PREFIX cccev: <http://data.europa.eu/m8g/>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+
+# Starter query for Romanian procurement observations.
+# The endpoint is public TED Open Data. The runner injects the desired date.
+SELECT DISTINCT ?publicationNumber ?legalName ?procedureType ?country ?publicationDate
+WHERE {
+  FILTER (?publicationDate >= "{{SINCE}}"^^xsd:date)
+  GRAPH ?g {
+    ?notice
+      epo:hasPublicationDate ?publicationDate ;
+      epo:hasNoticePublicationNumber ?publicationNumber ;
+      epo:hasFormType <http://publications.europa.eu/resource/authority/form-type/competition> ;
+      epo:announcesRole [
+        epo:playedBy [
+          epo:hasLegalName ?legalName ;
+          cccev:registeredAddress [ epo:hasCountryCode ?countryUri ]
+        ]
+      ] .
+    OPTIONAL {
+      ?notice epo:refersToProcedure [ epo:hasProcedureType ?procedureTypeUri ] .
+      ?procedureTypeUri skos:prefLabel ?procedureType .
+      FILTER (lang(?procedureType) = "en")
+    }
+  }
+  ?countryUri dc:identifier ?countryCode .
+  FILTER (?countryCode = "ROU")
+  BIND("RO" AS ?country)
+}
+LIMIT 1000
