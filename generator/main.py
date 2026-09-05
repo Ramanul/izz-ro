@@ -14,8 +14,13 @@ try:
 except ImportError:
     pass
 
+<<<<<<< HEAD
 from . import fetch, state, cluster, moderation, config, guard, eventdata
 from . import jurnal_triage
+=======
+from . import fetch, state, cluster, moderation, config, guard
+from . import jurnal_triage, raport_copiere
+>>>>>>> origin/main
 from .process import get_provider, process_single, process_clusters_batch, process_batch, process_official, OFFICIAL_PREFIXES
 from .util import domain_of, fara_titluri_data
 from .claude_orchestrator import ClaudeCodeValidator
@@ -416,11 +421,32 @@ def run(dry_run: bool = False) -> dict:
         jurnal_triage.inregistreaza(pierderi, respinse_substanta, stale_skipped)
     deferred = numara_amanate(new_items, handled)
     processed_new = [a for a in processed_new if not a.get("skip")]
+<<<<<<< HEAD
     # Coperte din datele evenimentului (felia meteo, 2026-09-05): DOAR articole noi,
     # fail-safe per articol — fara date, coperta ramane cea generata de azi.
     n_event = eventdata.attach(processed_new)
     if n_event:
         print(f">> Coperte din date: {n_event} prognoze atasate articolelor noi")
+=======
+    # PLAN UNIFICAT #1: prag de blocare/DEFER. Itemele cu incalcari deterministe de
+    # grounding (citate inventate, cifre straine, propozitii copiate, titluri transcrise)
+    # NU se publica in rularea asta, dar nu blocheaza intregul release: se amana si revin
+    # ca iteme noi la rularea urmatoare, la fel ca amanarile pe 429. Raportul gate pastreaza
+    # doar dovada pentru ce se publica; gate-ul de dupa commit ramane fail-closed ca plasa.
+    gate_cale = os.environ.get("IZZ_RAPORT_COPIERE_GATE", "").strip()
+    if gate_cale:
+        blocate = raport_copiere.url_uri_blocate(gate_cale)
+        if blocate:
+            amanate_grounding = [a for a in processed_new if a.get("url") in blocate]
+            processed_new = [a for a in processed_new if a.get("url") not in blocate]
+            if amanate_grounding:
+                scoase = raport_copiere.pastreaza_doar_curate(gate_cale)
+                print(f">> grounding defer: {len(amanate_grounding)} iteme cu incalcari deterministe "
+                      f"NU se publica in rularea asta ({scoase} randuri scoase din dovada gate); "
+                      "revin la rularea urmatoare:")
+                for a in amanate_grounding:
+                    print(f"     - {(a.get('title') or '')[:70]!r} | {a.get('url')}")
+>>>>>>> origin/main
     # inlocuire pe URL: un rep C poate purta URL-ul unei stiri B existente pe care a absorbit-o
     rep_urls = {a.get("url") for a in processed_new}
     combined = [a for a in existing
