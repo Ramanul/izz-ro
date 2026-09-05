@@ -20,6 +20,13 @@
       "Bash(git branch:*)",
       "Bash(git fetch:*)",
       "Bash(git pull:*)"
+    ],
+    "deny": [
+      "Bash(git restore:*)",
+      "Bash(git checkout --:*)",
+      "Bash(git stash:*)",
+      "Bash(git clean:*)",
+      "Bash(git reset:*)"
     ]
   },
   "hooks": {
