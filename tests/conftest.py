@@ -39,7 +39,10 @@ OUT = os.path.join(ROOT, "output")
 # runner de CI mai lent decat mediul de dezvoltare, si tot ramane departe de plafonul implicit
 # de 6 ore al GitHub Actions — care e adevaratul lucru de evitat: acolo jobul raporteaza
 # "cancelled", nu cauza.
-SECUNDE_PER_ARTICOL = 0.12
+# Remasurat 2026-09-06, cutia locala Windows: ~1980 s / 13.696 articole ≈ 0,145 s/articol
+# (2,4x masuratoarea de referinta de mai sus) -> plafonul vechi de 0,12 taia randarea de
+# fixtura cu cateva secunde si arunca 28 de ERRORS care aratau ca regresie. 0,16 = masuratoarea + 10% garda.
+SECUNDE_PER_ARTICOL = 0.16
 LIMITA_MINIMA = 900
 
 
