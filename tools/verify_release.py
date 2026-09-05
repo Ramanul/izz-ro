@@ -12,6 +12,7 @@ cerut. Relația de descendență este verificată prin GitHub Compare API, nu pr
 
 from __future__ import annotations
 
+import json
 import os
 import sys
 import time
@@ -38,7 +39,7 @@ TIMEOUT_SECONDS = int(os.getenv("RELEASE_TIMEOUT_SECONDS", "1500"))
 def _get_json(url: str) -> dict:
     req = Request(url, headers={"User-Agent": "izz-release-probe/1.0 (+https://izz.ro)"})
     with urlopen(req, timeout=20) as response:  # nosec B310: URL-uri controlate de configurarea CI
-        return __import__("json").loads(response.read().decode("utf-8"))
+        return json.loads(response.read().decode("utf-8"))
 
 
 def _is_expected_or_descendant(deployed: str) -> bool:
