@@ -175,12 +175,65 @@ def _t_arc(a, acc, bg, k):
 _TEMPLATES = [_t_editorial, _t_inversat, _t_banda, _t_arc]
 
 
+def _t_meteo(a, ch, acc, bg, k):
+    """Coperta din date: prognoza pe 7 zile pentru localitatea stirii.
+
+    Apare doar cand `eventdata.attach` a atasat `event_chart` (fail-safe la
+    sursa: datele vin din api.open-meteo.com, etichetate pe imagine). Cifrele
+    NU se recomputa aici — desenam exact ce e in stare.
+    """
+    zile = ch["zile"]
+    lo = min(z["min"] for z in zile) - 2
+    hi = max(z["max"] for z in zile) + 2
+    x0, x1, y0, y1 = 350 * k, 920 * k, 150 * k, 390 * k
+    step = (x1 - x0) / len(zile)
+    bw = step * 0.5
+    cols = []
+    for i, z in enumerate(zile):
+        cx = x0 + (i + .5) * step
+        hmax = (z["max"] - lo) / (hi - lo) * (y1 - y0)
+        hmin = (z["min"] - lo) / (hi - lo) * (y1 - y0)
+        cols.append(
+            f'<div style="position:absolute;left:{cx - bw / 2:.0f}px;width:{bw:.0f}px;'
+            f'top:{y1 - hmax:.0f}px;height:{hmax - hmin:.0f}px;background:{GOLD};'
+            f'border-radius:{9 * k:.0f}px"></div>'
+            f'<div style="position:absolute;left:{cx:.0f}px;top:{y1 - hmax - 30 * k:.0f}px;'
+            f'transform:translateX(-50%);font-weight:800;font-size:{22 * k:.0f}px">{z["max"]}°</div>'
+            f'<div style="position:absolute;left:{cx:.0f}px;top:{y1 - hmin + 6 * k:.0f}px;'
+            f'transform:translateX(-50%);font-weight:800;font-size:{15 * k:.0f}px;'
+            f'opacity:.5">{z["min"]}°</div>'
+            f'<div style="position:absolute;left:{cx:.0f}px;top:{y1 + 16 * k:.0f}px;'
+            f'transform:translateX(-50%);font-weight:800;font-size:{20 * k:.0f}px">{z["lit"]}</div>'
+            f'<div style="position:absolute;left:{cx:.0f}px;top:{y1 + 42 * k:.0f}px;'
+            f'transform:translateX(-50%);font-weight:800;font-size:{13 * k:.0f}px;'
+            f'opacity:.5">{z["zi"]}</div>')
+    return (
+        f'<div class="stage" style="background:{bg};color:{acc}">'
+        f'<div style="position:absolute;left:{56 * k:.0f}px;top:{56 * k:.0f}px;'
+        f'width:{int(120 * k)}px" class="filet"></div>'
+        f'<div style="position:absolute;left:{56 * k:.0f}px;top:{78 * k:.0f}px">'
+        f'<div class="eticheta">{ch.get("localitate") or _eticheta(a)}</div>'
+        f'<div class="sub">Prognoză · 7 zile</div></div>'
+        f'<div style="position:absolute;left:{x0 - 10 * k:.0f}px;top:{y1 + 4 * k:.0f}px;'
+        f'width:{x1 - x0 + 10 * k:.0f}px;height:{2 * k:.0f}px;opacity:.25;background:{acc}"></div>'
+        f'{"".join(cols)}'
+        f'<div class="marca" style="left:{56 * k:.0f}px;bottom:{44 * k:.0f}px">izz.ro</div>'
+        f'<div class="marca" style="right:{20 * k:.0f}px;bottom:{28 * k:.0f}px">'
+        f'Sursa datelor: {ch.get("sursa") or "open-meteo.com"}</div>'
+        f'<div class="grain"></div></div>'
+    )
+
+
 def build_html(a: dict, cover: bool = False) -> str:
     """HTML pentru imaginea articolului. cover=True -> 1200x630 (og); altfel 960x504 (banner)."""
     seed = hashlib.sha1((a.get("title") or "x").encode()).digest()
     acc, bg = _PALETE[seed[0] % len(_PALETE)]
     w, h = (COVER_W, COVER_H) if cover else (ART_W, ART_H)
-    body = _TEMPLATES[seed[4] % len(_TEMPLATES)](a, acc, bg, w / ART_W)
+    ch = a.get("event_chart") or {}
+    if ch.get("tip") == "meteo" and ch.get("zile"):
+        body = _t_meteo(a, ch, acc, bg, w / ART_W)
+    else:
+        body = _TEMPLATES[seed[4] % len(_TEMPLATES)](a, acc, bg, w / ART_W)
     return (f"<!doctype html><html><head><meta charset='utf-8'><style>{_base_css(w, h)}</style></head>"
             f"<body>{body}</body></html>")
 

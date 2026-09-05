@@ -14,7 +14,7 @@ try:
 except ImportError:
     pass
 
-from . import fetch, state, cluster, moderation, config, guard
+from . import fetch, state, cluster, moderation, config, guard, eventdata
 from . import jurnal_triage, raport_copiere
 from .process import get_provider, process_single, process_clusters_batch, process_batch, process_official, OFFICIAL_PREFIXES
 from .util import domain_of, fara_titluri_data
@@ -434,6 +434,11 @@ def run(dry_run: bool = False) -> dict:
                       "revin la rularea urmatoare:")
                 for a in amanate_grounding:
                     print(f"     - {(a.get('title') or '')[:70]!r} | {a.get('url')}")
+    # Coperte din datele evenimentului (felia meteo, 2026-09-05): DOAR articolele care au
+    # trecut gate-ul de grounding, fail-safe per articol — fara date, coperta ramane cea de azi.
+    n_event = eventdata.attach(processed_new)
+    if n_event:
+        print(f">> Coperte din date: {n_event} prognoze atasate articolelor noi")
     # inlocuire pe URL: un rep C poate purta URL-ul unei stiri B existente pe care a absorbit-o
     rep_urls = {a.get("url") for a in processed_new}
     combined = [a for a in existing
