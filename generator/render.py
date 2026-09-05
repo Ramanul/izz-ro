@@ -219,6 +219,7 @@ def _asset_ver() -> dict:
 
 _RO_MONTHS = ["", "ianuarie", "februarie", "martie", "aprilie", "mai", "iunie",
               "iulie", "august", "septembrie", "octombrie", "noiembrie", "decembrie"]
+_RO_DAYS = ["Luni", "Marți", "Miercuri", "Joi", "Vineri", "Sâmbătă", "Duminică"]
 
 
 def _env() -> Environment:
@@ -251,6 +252,13 @@ def _human_date(iso: str) -> str:
         dt = dt.replace(tzinfo=timezone.utc)
     dt = dt.astimezone(_TZ_RO)
     return f"{dt.day} {_RO_MONTHS[dt.month]} {dt.year}, {dt:%H:%M}"
+
+
+def _today_ro() -> str:
+    """Masthead de ziar: „Vineri, 5 septembrie 2026". Ora Romaniei, ca _human_date —
+    determinista fata de fusul masinii care randeaza (local sau GitHub Actions)."""
+    dt = datetime.now(_TZ_RO)
+    return f"{_RO_DAYS[dt.weekday()]}, {dt.day} {_RO_MONTHS[dt.month]} {dt.year}"
 
 
 def _taie_slug(s: str, limita: int = 80, minim: int = 40) -> str:
@@ -482,6 +490,7 @@ def _base_ctx(canonical_path: str, jsonld_nodes: list | None = None,
         # asta nu schimba anul din subsol in productie — face doar ca o randare locala
         # (UTC+3) sa dea acelasi octet ca CI-ul, in loc sa depinda de ceasul masinii.
         "year": datetime.now(timezone.utc).year,
+        "today": _today_ro(),
         "canonical": config.SITE["url"] + canonical_path,
         # UN singur bloc `application/ld+json` per pagina, emis din base.html
         "jsonld": _graph_jsonld(canonical_path, jsonld_nodes or [], jsonld_page),
@@ -587,6 +596,78 @@ def _source_catalog(by_date: list) -> tuple[list, int, int]:
 _HARTA_CACHE: dict | None = None
 
 
+def _incarca_harta() -> dict:
+    """Conturul judetelor din data/harta_judete.json (Natural Earth, domeniu public),
+    incarcat o singura data pe proces. Dict gol daca fisierul lipseste — apelantii randeaza
+    fara harta, nu crapa."""
+    global _HARTA_CACHE
+    if _HARTA_CACHE is None:
+        try:
+            with open(os.path.join(config.ROOT, "data", "harta_judete.json"),
+                      encoding="utf-8") as fh:
+                _HARTA_CACHE = json.load(fh)
+        except (OSError, ValueError):
+            _HARTA_CACHE = {}
+    return _HARTA_CACHE or {}
+
+
+def _numerele_zilei(articles: list) -> dict | None:
+    """„Numerele zilei" pentru masthead, din starea reala a pipeline-ului (nu din afara):
+    cate stiri au aparut in ultimele 24h, din cate surse distincte, in cate judete
+    (judetul sursei pentru categoriile local/judetean — aceeasi atribuire ca pe harta).
+
+    None cand fereastra e goala: strip-ul nu se emite deloc, nu arata zerori falsi.
+    """
+    limita = datetime.now(timezone.utc) - timedelta(hours=24)
+    fereastra = []
+    for a in articles:
+        try:
+            dt = datetime.fromisoformat(a.get("published") or "")
+        except (ValueError, TypeError):
+            continue
+        if dt.tzinfo is None:
+            dt = dt.replace(tzinfo=timezone.utc)
+        if dt >= limita:
+            fereastra.append(a)
+    if not fereastra:
+        return None
+    surse = {a.get("source_name") or a.get("source") or "" for a in fereastra} - {""}
+    pe_judet: dict = {}
+    for a in fereastra:
+        if a.get("category") in ("judetean", "local"):
+            j = geo.judet_sursa(a.get("source"))
+            if j:
+                pe_judet[j] = pe_judet.get(j, 0) + 1
+    return {"stiri": len(fereastra), "surse": len(surse),
+            "judete": len(pe_judet), "pe_judet": pe_judet}
+
+
+def _mini_harta(pe_judet: dict) -> dict | None:
+    """Mini-harta „puls" pentru prima pagina: SVG static, judetele incalzite dupa volumul
+    de stiri locale din ultimele 24h. ZERO JS — umplerea e o clasa de culoare, iar harta
+    intreaga e un link catre /static/harta-stiri/ (un singur element accesibil).
+
+    Trepte h0-h4: h0 = judet fara stiri in fereastra; h1-h4 = cuartele volumului. Cuartele,
+    nu culori absolute: un județ cu 2 știri nu trebuie sa para „rece" într-o zi liniștită.
+    None cand nu exista contur sau nicio stire judeteana.
+    """
+    if not pe_judet:
+        return None
+    cache = _incarca_harta()
+    if not cache.get("judete"):
+        return None
+    max_c = max(pe_judet.values())
+    praguri = sorted({max_c * q // 4 for q in (1, 2, 3)} - {0})
+    forme = []
+    for judet, d in cache["judete"].items():
+        c = pe_judet.get(judet, 0)
+        treapta = 0 if c == 0 else 1 + sum(1 for p in praguri if c >= p)
+        forme.append({"judet": judet, "label": geo.eticheta_judet(judet),
+                      "d": d, "count": c, "treapta": treapta})
+    return {"viewbox": cache.get("viewbox", "0 0 1000 704"), "forme": forme,
+            "total": sum(pe_judet.values())}
+
+
 def _harta_judete(catalog: list) -> dict | None:
     """Conturul SVG al judetelor + ancora catre sectiunea fiecaruia de pe /surse/.
 
@@ -599,15 +680,8 @@ def _harta_judete(catalog: list) -> dict | None:
     Returneaza None daca fisierul de contur lipseste; pagina se randeaza atunci fara harta,
     nu crapa. Datele vin din `tools/build_harta.py` (Natural Earth, domeniu public).
     """
-    global _HARTA_CACHE
-    if _HARTA_CACHE is None:
-        try:
-            with open(os.path.join(config.ROOT, "data", "harta_judete.json"),
-                      encoding="utf-8") as fh:
-                _HARTA_CACHE = json.load(fh)
-        except (OSError, ValueError):
-            _HARTA_CACHE = {}
-    if not _HARTA_CACHE.get("judete"):
+    _HARTA = _incarca_harta()
+    if not _HARTA.get("judete"):
         return None
 
     # Ancorele exista doar pentru judetele care chiar au o sectiune in pagina.
@@ -619,7 +693,7 @@ def _harta_judete(catalog: list) -> dict | None:
                     ancore[county["judet"]] = county
 
     forme = []
-    for judet, d in _HARTA_CACHE["judete"].items():
+    for judet, d in _HARTA["judete"].items():
         county = ancore.get(judet)
         forme.append({
             "judet": judet,
@@ -628,7 +702,7 @@ def _harta_judete(catalog: list) -> dict | None:
             "anchor": county["anchor"] if county else None,
             "count": county["count"] if county else 0,
         })
-    return {"viewbox": _HARTA_CACHE.get("viewbox", "0 0 1000 704"),
+    return {"viewbox": _HARTA.get("viewbox", "0 0 1000 704"),
             "forme": forme,
             "cu_surse": sum(1 for f in forme if f["anchor"])}
 
@@ -914,10 +988,12 @@ def build(articles: list, mod: dict | None = None) -> None:
             for i, a in enumerate(by_date[:20])
         ],
     }
+    zi = _numerele_zilei(by_date)
     _write(os.path.join(OUT_DIR, "index.html"),
            env.get_template("index.html").render(**_base_ctx(
                "/", nav_section="stiri", articles=by_date, hero=hero, by_category=by_category,
-               jsonld_nodes=[item_list], newsletter_html=_newsletter_html())))
+               jsonld_nodes=[item_list], newsletter_html=_newsletter_html(),
+               zi=zi, mini_harta=_mini_harta(zi["pe_judet"]) if zi else None)))
 
     src_catalog, total_sources, stats_sources = _source_catalog(by_date)
     _write(os.path.join(OUT_DIR, "surse", "index.html"),

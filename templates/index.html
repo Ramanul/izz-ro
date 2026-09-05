@@ -56,6 +56,23 @@
     {% endfor %}
   {% endif %}
 
+  {#- „Puls": mini-harta statica a ultimelor 24h (render._mini_harta). SVG inline, ZERO JS,
+      intreaga harta e un link catre harta interactiva. Umplerea pe trepte in styles.css. -#}
+  {% if mini_harta %}
+  <section class="puls" aria-labelledby="puls-title">
+    <h2 class="section-title" id="puls-title">România în ultimele 24 de ore</h2>
+    <div class="puls-layout">
+      <a class="puls-map" href="{{ base }}/static/harta-stiri/"
+         aria-label="Harta știrilor locale: {{ mini_harta.total }} știri în ultimele 24 de ore. Deschide harta completă.">
+        <svg viewBox="{{ mini_harta.viewbox }}" focusable="false" aria-hidden="true">
+          {% for f in mini_harta.forme %}<path class="h{{ f.treapta }}" d="{{ f.d }}"/>{% endfor %}
+        </svg>
+      </a>
+      <p class="puls-caption">Căldura arată câte știri locale și județene a publicat fiecare județ în ultimele 24 de ore, după județul sursei. <a href="{{ base }}/static/harta-stiri/">Explorează harta completă</a> cu evenimente pe localități.</p>
+    </div>
+  </section>
+  {% endif %}
+
   <aside class="reader-briefing" aria-labelledby="reader-briefing-title">
     <div>
       <p class="eyebrow">Surse și actualizări</p>
