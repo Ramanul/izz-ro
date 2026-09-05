@@ -21,10 +21,10 @@
 
 - **F4 (#241, merged)**: §18 in L1. Urmatorii: §12, §14, §20; **§17 NU**.
 - **K12 (`IZZ-0255`)**: rezumat zilnic, spec nescris; porneste de la `editorial-quality.yml`.
-- **PR-uri deschise, CI verificat 2026-09-05:** VERZI si neintegrate de ~14h — **#262 #263 #264
-  #266 #268**; ROSII — #269 (pytest), #270 (html-gate + Workers Builds); draft — #277 #279.
-  Owner: #207 #214 #235. #247 a aterizat prin REBASE, deci `sync_state.py` il da „nu pot decide".
-  (#278 merged; #254 merged; #253 merged; #252 merged; #250 merged; #248 merged; #244 merged; #225/#240 closed — fiecare pe aceeasi linie, altfel garda o vede doar pe ultima.)
+- **PR-uri deschise, CI verificat 2026-09-05:** owner #207 #214 #235 · #264 (conflict rezolvat)
+  · #268 BLOCAT pe decizie de continut legal, surse divergente fata de #266 (`IZZ-0311`)
+  · rosii #269 #270 · draft #277 #279 #280. #247 a aterizat prin REBASE (`sync_state.py`: „nu pot decide").
+  (#266 merged; #263 merged; #262 merged; #278 merged; #254 merged; #253 merged; #252 merged; #250 merged; #248 merged; #244 merged; #225/#240 closed — fiecare pe aceeasi linie, altfel garda o vede doar pe ultima.)
 - **CI paralelizat (#248)**: numele jobului `pytest` NU se schimba. `ramanul-triage-blockers`
   (e1c8fbe2) e vie si arunca tacut articole legitime (`IZZ-0266`). Debitul e limitat de
   PLANIFICATORUL GitHub — 4,7 porniri/zi, nu 12 (`IZZ-0292`); sect. 17 ramane valabila.
