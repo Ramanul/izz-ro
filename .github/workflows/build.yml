@@ -74,7 +74,13 @@ jobs:
           MAX_AI_CALLS_PER_RUN: ${{ github.event.inputs.max_ai_calls != '' && github.event.inputs.max_ai_calls || '40' }}
           UPGRADE_RESERVE: "4"
           GEMINI_BASE_URL: ${{ vars.GEMINI_BASE_URL }}
+          IZZ_RAPORT_COPIERE_GATE: ${{ runner.temp }}/izz-grounding-gate.jsonl
         run: python -m generator.main
+
+      - name: Grounding gate (blocant pentru citate/cifre straine)
+        env:
+          IZZ_RAPORT_COPIERE_GATE: ${{ runner.temp }}/izz-grounding-gate.jsonl
+        run: python tools/grounding_gate.py
 
       - name: Genereaza imagini per-articol (HTML/Chromium, best-effort)
         continue-on-error: true
@@ -100,6 +106,9 @@ jobs:
       - name: IndexNow — ce s-a schimbat (scrie manifestul, NU trimite inca)
         continue-on-error: true
         run: python tools/indexnow_submit.py --plan
+
+      - name: QA check (blocking, inainte de commit)
+        run: python tools/qa_check.py
 
       - name: Comite starea (declanseaza deploy Cloudflare)
         id: commit
@@ -135,9 +144,6 @@ jobs:
           done
           echo "::error::push esuat dupa 5 incercari - continutul NU a ajuns pe main, deploy-ul NU s-a declansat"
           exit 1
-
-      - name: QA check (alerta daca scade calitatea publicabila)
-        run: python tools/qa_check.py
 
       - name: IndexNow — trimite coada (dupa deploy, best-effort)
         continue-on-error: true
