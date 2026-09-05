@@ -15,17 +15,17 @@
 > Garda `incalcari_pr_fantoma` in `tests/test_pr_fantoma.py` pica daca `## Open` numeste un PR
 > care are deja commit de merge pe main (fara adnotarea `(merged)`).
 
-**Updated:** 2026-09-03 (#252 merged: dim. 4 + dim. 7 pe main; CI verde, garzile trec)
+**Updated:** 2026-09-04 (#263/#264 split from #260; #247 merged; #260 closed as superseded)
 
 ## Open
 
 - **F4 (#241, merged)**: §18 in L1. Urmatorii: §12, §14, §20; **§17 NU**.
 - **K12 (`IZZ-0255`)**: rezumat zilnic, spec nescris; porneste de la `editorial-quality.yml`.
-- **PR-uri deschise:** #247 (merged 09-04 prin REBASE — git nu-l poate dovedi; `sync_state.py`
-  il da acum ca „nu pot decide"). Owner: #207 #214 #235. Alte 8 deschise 09-04 de ceilalti
-  agenti (#262-#277) — le acopera garda din #264.
-  (#253 merged; #252 merged; #250 merged; #248 merged; #244 merged; #225/#240 closed — fiecare pe aceeasi linie, altfel garda o vede doar pe ultima.)
-- **CI paralelizat (#248)**: numele jobului `pytest` NU se schimba. `ramanul-triage-blockers`
+- **PR-uri deschise, CI verificat 2026-09-05:** #207 #214 #235 (owner) · #264 #268 (verzi, in
+  conflict dupa merge-urile de azi) · #269 (pytest rosu) · #270 (html-gate rosu) · #277 #279 #280.
+  #247 a aterizat prin REBASE, deci `sync_state.py` il da „nu pot decide".
+  (#266 merged; #263 merged; #262 merged; #278 merged; #254 merged; #253 merged; #252 merged; #250 merged; #248 merged; #244 merged; #225/#240 closed — fiecare pe aceeasi linie, altfel garda o vede doar pe ultima.)
+- **CI paralelizat (#248, merged)**: numele jobului `pytest` NU se schimba. `ramanul-triage-blockers`
   (e1c8fbe2) e vie si arunca tacut articole legitime (`IZZ-0266`). Debitul e limitat de
   PLANIFICATORUL GitHub — 4,7 porniri/zi, nu 12 (`IZZ-0292`); sect. 17 ramane valabila.
 - **PLASA pentru restructurare (`IZZ-0271`)**: `tools/echivalenta.py` amprenteaza `output/`;
