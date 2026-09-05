@@ -3,8 +3,6 @@ Test pe fixture JSON (sandbox-ul n-are internet); garda de ingestie e aceeasi ca
 import io
 import json
 
-import pytest
-
 from generator import fetch
 
 
