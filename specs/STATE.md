@@ -15,21 +15,17 @@
 > Garda `incalcari_pr_fantoma` in `tests/test_pr_fantoma.py` pica daca `## Open` numeste un PR
 > care are deja commit de merge pe main (fara adnotarea `(merged)`).
 
-**Updated:** 2026-09-05 (#283 merged: coperte din datele evenimentului — felia meteo;
-suita 1351 passed local, restul eșecurilor dovedit preexistent pe main sau artefact
-Windows-local — fixture-ul de randare depășește 900 s pe mașina locală, render-only complet)
+**Updated:** 2026-09-05 (#283 merged: coperte din date — felia meteo; 1381 passed CI, restul eșecurilor preexistente/artefact local)
 
 ## Open
 
-- **Coperte din date — următoarea felie**: harta de cutremur (epicentru USGS) + atașare
-  retroactivă pe știrile de vreme recente; PR #283 (merged).
+- **Coperte din date — felia 2**: harta de cutremur (USGS) + atașare retroactivă pe vreme; #283 (merged).
 
 - **F4 (#241, merged)**: §18 in L1. Urmatorii: §12, §14, §20; **§17 NU**.
 - **K12 (`IZZ-0255`)**: rezumat zilnic, spec nescris; porneste de la `editorial-quality.yml`.
-- **PR-uri deschise:** #247 (merged 09-04 prin REBASE — git nu-l poate dovedi; `sync_state.py`
-  il da acum ca „nu pot decide"). Owner: #207 #214 #235. Alte 8 deschise 09-04 de ceilalti
-  agenti (#262-#277) — le acopera garda din #264.
-  (#253 merged; #252 merged; #250 merged; #248 merged; #244 merged; #225/#240 closed — fiecare pe aceeasi linie, altfel garda o vede doar pe ultima.)
+- **PR-uri deschise:** #247 (merged 09-04 prin REBASE — git nu-l poate dovedi; `sync_state.py` il da acum ca „nu pot decide").
+  Owner: #207 #214 #235. Opt PR-uri de-ale celorlalti agenti 09-04, toate (merged); garda lor #264 (merged).
+  (#253 merged; #252 merged; #250 merged; #248 merged; #244 merged; #225/#240 closed.)
 - **CI paralelizat (#248)**: numele jobului `pytest` NU se schimba. `ramanul-triage-blockers`
   (e1c8fbe2) e vie si arunca tacut articole legitime (`IZZ-0266`). Debitul e limitat de
   PLANIFICATORUL GitHub — 4,7 porniri/zi, nu 12 (`IZZ-0292`); sect. 17 ramane valabila.
@@ -37,7 +33,7 @@ Windows-local — fixture-ul de randare depășește 900 s pe mașina locală, r
   `tools/mutanti.py --regresie` (~10 s) — inainte de orice refactor pe cluster/select/geo/util/
   guard. Coverage 71%, mutanti ucisi 81%, `render.py` cel mai rau pe ambele (`IZZ-0280`/`-0281`).
   Determinism VERIFICAT 09-04: 953 fisiere difereau intre doua randari (3 locuri in `render.py`:
-  `set` iterat x2 + `sum` pe float, neasociativ), reparat in #254. Cuplarea reala nu e prin importuri — `specs/arhitectura-cuplare.md`, NU re-cerceta.
+  `set` iterat x2 + `sum` pe float, neasociativ), reparat in #254 (merged). Cuplarea reala nu e prin importuri — `specs/arhitectura-cuplare.md`, NU re-cerceta.
 - **Nefolosit (`tools/nefolosit.py`, dosar sect. 4f)**: `agents.py` STERS (`IZZ-0289`). Decizii
   proprietar: `process_cluster` §10 (`IZZ-0294`), 272 KB orfane masurate dar necuratate
   (`IZZ-0301`), §12 (`IZZ-0295`), F4 (`IZZ-0296`), Axa 3 (`IZZ-0297`), arhiva (`IZZ-0298`).
