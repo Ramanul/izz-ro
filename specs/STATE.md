@@ -22,8 +22,10 @@
 - **F4 (#241, merged)**: §18 in L1. Urmatorii: §12, §14, §20; **§17 NU**.
 - **K12 (`IZZ-0255`)**: rezumat zilnic, spec nescris; porneste de la `editorial-quality.yml`.
 - **PR-uri deschise:** #247 (merged 09-04 prin REBASE — git nu-l poate dovedi; `sync_state.py`
-  il da acum ca „nu pot decide"). Owner: #207 #214 #235. Alte 8 deschise 09-04 de ceilalti
-  agenti (#262-#277) — le acopera garda din #264.
+  il da acum ca „nu pot decide"). Owner: #207 #214 #235. Serie 09-04 de ceilalti agenti,
+  cu garda lor din #264: #262 (merged 09-05), #263 (merged 09-05), #264 deschis, #265
+  inchis, #266 (merged 09-05), #267 inchis, #268-#270 si #277 inca deschise (#271-#276
+  nu exista).
   (#253 merged; #252 merged; #250 merged; #248 merged; #244 merged; #225/#240 closed — fiecare pe aceeasi linie, altfel garda o vede doar pe ultima.)
 - **CI paralelizat (#248)**: numele jobului `pytest` NU se schimba. `ramanul-triage-blockers`
   (e1c8fbe2) e vie si arunca tacut articole legitime (`IZZ-0266`). Debitul e limitat de
