@@ -39,8 +39,9 @@
   and the last content commit against ceilings; alert issue opens on silence and closes on recovery.
 - **Human gate is a switch:** `IZZ_REQUIRE_HUMAN_GATE` is a repo variable (default false, armable from
   the GitHub UI without code changes); `hold_important` in `moderation.yaml` stays the per-config switch.
-- **Bash writes are guarded:** the protected-edit PreToolUse hook covers Bash commands combining a
-  control-plane path with a write indicator; the hook wiring is under test (`tests/test_hooks_cablaj.py`).
+- **Bash writes are guarded, with declared gaps:** PreToolUse blocks a control-plane path paired with a
+  write indicator; behaviour under test (`tests/test_garda_control_plane.py`), wiring separately. Shell-
+  expansion forms (backslash in the name, glob) stay open by design — substring match, not a shell parser.
 
 ## Standing rules
 

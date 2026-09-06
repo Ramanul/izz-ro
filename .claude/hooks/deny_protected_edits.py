@@ -13,15 +13,21 @@ PROTECTED_TOKENS = (
     "articles.json",
     "feed_cache.json",
     "wrangler.jsonc",
-    ".claude/settings.json",
+    # Nume SCURT, nu calea cu prefix de director: un token care incepe cu `.claude/`
+    # rateaza `cd .claude && echo x > <acest fisier>`, care e munca normala a unui agent,
+    # nu o ocolire construita. Ceilalti tokeni erau deja scurti (`articles.json` prinde
+    # si `cd data && ...`), deci prefixul facea garda inconsecventa cu ea insasi.
+    "settings.json",
     ".github/workflows",
 )
 
 # Indicatori de scriere în comenzi Bash: redirecturi, tee, editare in-place, ștergere,
-# mutare/copiere, și descrieri de mod 'w' pentru uneltele python (open/write_text).
+# mutare/copiere, și apeluri de scriere din python. `.write` e acolo pentru modul APPEND
+# (`open(cale, 'a').write(...)`), pe care lista de moduri `'w'` îl rata: un append pe un
+# JSON de configurare îl strică la fel de bine ca o rescriere.
 SCRITORI = (
     ">", ">>", "tee ", "sed -i", " rm ", " mv ", " cp ", "truncate ", " dd ",
-    "'w'", '"w"', "write_text", "unlink(", "rmtree", "shutil",
+    "'w'", '"w"', ".write", "write_text", "unlink(", "rmtree", "shutil",
 )
 
 
