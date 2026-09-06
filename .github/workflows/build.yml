@@ -135,6 +135,8 @@ jobs:
           git add data/indexnow_seen.json 2>/dev/null || true
           git add data/portraits.json 2>/dev/null || true
           git add data/leadphotos.json 2>/dev/null || true
+          git add data/eventphotos-miss.json 2>/dev/null || true
+          git add data/localities_coords.json 2>/dev/null || true
           git add media 2>/dev/null || true
           if git diff --cached --quiet; then
             echo "::warning::nimic de comis - pipeline-ul nu a schimbat niciun fisier"
