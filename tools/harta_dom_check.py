@@ -690,6 +690,50 @@ def uat_selectie(p):
     p.wait_for_selector("#news-list li", timeout=15000)
 
 
+def breadcrumb(p):
+    """Firul ierarhic (NN/g 'Breadcrumbs': pozitie in IERARHIE, nu istoric; nivelul curent e
+    text simplu, nu link; toti stramosii clickabili) + limbaj de utilizator, nu jargon
+    administrativ, in etichetele vizibile."""
+    print("\nBREADCRUMB -- ierarhie vizibila, parinti clickabili, fara jargon")
+    p.goto(BASE, wait_until="networkidle")
+    p.wait_for_selector("#map-breadcrumb .crumb-current", timeout=15000)
+    crumb0 = p.evaluate("() => document.querySelector('#map-breadcrumb .crumb-current')?.textContent?.trim()")
+    check(crumb0 == "România", f"la start firul arata România ca pozitie ('{crumb0}')")
+
+    p.click("#county-picker button")
+    try:
+        p.wait_for_selector("#county-picker button[data-uat]", timeout=5000)
+    except Exception:
+        skip("judetul intrat nu a primit lista de unitati -- firul partial netestat")
+        reset(p)
+        return
+    county = p.evaluate("() => new URLSearchParams(location.search).get('judet')")
+    current1 = p.evaluate("() => document.querySelector('#map-breadcrumb .crumb-current')?.textContent?.trim()")
+    buttons1 = p.evaluate("() => [...document.querySelectorAll('#map-breadcrumb button')].map(b => b.textContent.trim())")
+    check(current1 == county and "România" in buttons1,
+          f"firul arata traseul: România clickabil, judetul e pozitia curenta (butone={buttons1}, curent='{current1}')")
+
+    p.click("#county-picker button[data-uat]")
+    p.wait_for_timeout(350)
+    current = p.evaluate("() => document.querySelector('#map-breadcrumb .crumb-current')?.textContent?.trim()")
+    check(bool(current) and "România" not in (current or ""),
+          f"nivelul curent (unitatea) e text, nu link ('{current}')")
+    # Stramosul clickabil duce EXACT la nivelul lui: unitatea dispare, judetul ramane.
+    p.evaluate("() => [...document.querySelectorAll('#map-breadcrumb button')].pop().click()")
+    p.wait_for_timeout(300)
+    search = p.evaluate("() => location.search")
+    check("uat=" not in search and "judet=" in search,
+          f"click pe nivelul judet din fir anuleaza unitatea, pastreaza judetul ('{search}')")
+    # Nivelul curent revine la judet, iar România e din nou buton clickabil.
+    current2 = p.evaluate("() => document.querySelector('#map-breadcrumb .crumb-current')?.textContent?.trim()")
+    check(current2 == county, f"firul revine pe judet ca pozitie curenta ('{current2}')")
+    # Limbaj de utilizator in etichete, nu jargon administrativ (audit harta, P2).
+    picker_label = p.evaluate("() => document.querySelector('#county-picker')?.getAttribute('aria-label') || ''")
+    check("UAT" not in picker_label, f"eticheta selectorului nu mai foloseste jargonul ('{picker_label}')")
+    reset(p)
+    p.wait_for_timeout(150)
+
+
 def gold_pixels(p):
     """Numara pixelii de umplutura aurie (judetele/zonele pline, tema deschisa) si centroidul
     lor. La zoom, aceleasi umpluturi ocupa mai multi pixeli -- marimea e proxima pentru scara."""
@@ -848,6 +892,7 @@ def main():
         felia6_url(p)
         zoom_interactiv(p)
         uat_selectie(p)
+        breadcrumb(p)
 
         mob = br.new_page(viewport={"width": 390, "height": 844}, is_mobile=True, has_touch=True)
         mob.goto(BASE, wait_until="networkidle")
