@@ -250,6 +250,11 @@ if _html:
         _items[_idx + 1:_idx + 1] = _hitems
         SOURCES = dict(_items)
 
+# A doua tura de disambiguare, GLOBALA: omonimele INTRE loturi (GOLD vs wp_json vs surse
+# literale) nu se vad in loaderele individuale — 2x Măgura, 2x Cristești masurate 09-06.
+from generator.local_sources import disambigueaza_nume_in_config
+disambigueaza_nume_in_config(SOURCES)
+
 # Exclude orice URL/sursă de agenție (verificare suplimentară pe domeniul linkului)
 AGENCY_BLOCKLIST = ["agerpres", "mediafax", "reuters", "afp.com", "apnews", "ap.org"]
 
