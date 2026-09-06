@@ -49,3 +49,42 @@ def test_rand_malformat_nu_rescrie_dovada(tmp_path):
 def test_fisier_lipsa_inseamna_nimic_blocat(tmp_path):
     assert raport_copiere.url_uri_blocate(str(tmp_path / "lipsa.jsonl")) == set()
     assert raport_copiere.pastreaza_doar_curate(str(tmp_path / "lipsa.jsonl")) == 0
+
+
+# --- aplica_defer: defer dupa toata procesarea AI, cu restaurare pe upgrade -------
+
+from generator import raport_copiere as rc  # noqa: E402
+
+
+def test_articol_nou_blocat_iese_din_stare():
+    articol = {"url": "https://a.test/x", "original_link": "https://a.test/x", "title": "Nou"}
+    iesire, amanate, nerezolvate = rc.aplica_defer(
+        [articol], {"https://a.test/x"}, {}, {"https://a.test/x"})
+    assert iesire == [] and amanate == 1 and nerezolvate == []
+
+
+def test_articol_nou_blocat_pe_original_link_iese():
+    articol = {"url": "https://a.test/normalizat", "original_link": "https://a.test/raw", "title": "Nou"}
+    iesire, amanate, _ = rc.aplica_defer([articol], {"https://a.test/raw"}, {}, {"https://a.test/raw"})
+    assert iesire == [] and amanate == 1
+
+
+def test_upgrade_blocat_se_restaureaza_din_instantaneu():
+    vechi = {"url": "https://a.test/v", "original_link": "https://a.test/v", "title": "Vechi bun"}
+    mutat = dict(vechi, title="Sinteza cu cifra straina")
+    instantanee = {"https://a.test/v": vechi}
+    iesire, amanate, nerezolvate = rc.aplica_defer([mutat], {"https://a.test/v"}, instantanee, set())
+    assert amanate == 1 and nerezolvate == []
+    assert iesire[0]["title"] == "Vechi bun"  # continutul vechi, deja public, ramane
+
+
+def test_blocat_fara_instantaneu_si_fara_statut_de_nou_ramane_si_se_raporteaza():
+    vechi = {"url": "https://a.test/v", "title": "Vechi"}
+    iesire, amanate, nerezolvate = rc.aplica_defer([vechi], {"https://a.test/v"}, {}, set())
+    assert iesire == [vechi] and amanate == 1 and nerezolvate == ["https://a.test/v"]
+
+
+def test_fara_blocante_lista_ramane_intacta():
+    articole = [{"url": "https://a.test/1"}, {"url": "https://a.test/2"}]
+    iesire, amanate, nerezolvate = rc.aplica_defer(articole, set(), {}, set())
+    assert iesire == articole and amanate == 0 and nerezolvate == []
