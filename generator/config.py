@@ -241,7 +241,7 @@ if _gold:
 # pl_ < gsp) sa ramana valabil. GOLD castiga pe ciocnire: un feed viu e mai bogat.
 from generator.local_sources import load_html_sources
 _HTML_CSV = os.path.join(ROOT, "data", "primarii_lists", "html_sources_2026-09-05.csv")
-_html = load_html_sources(_HTML_CSV, int(os.environ.get("LOCAL_HTML_LIMIT", "100")))
+_html = load_html_sources(_HTML_CSV, int(os.environ.get("LOCAL_HTML_LIMIT", "250")))
 if _html:
     _hitems = [(k, v) for k, v in _html.items() if k not in SOURCES]
     if _hitems:
