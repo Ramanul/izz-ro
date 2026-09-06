@@ -5,17 +5,17 @@
 >
 > **Hard cap: ~40 lines of content.**
 
-**Updated:** 2026-09-06 (+ tari in geo: cutremur extern si poze de eveniment externe; #302/#305 live)
+**Updated:** 2026-09-06 (publicare deblocata si confirmata pe live: run 34023056515, `6d19b69`)
 
 ## Open
 
 - **PR #282 — audit unified hardening:** merged 09-05, branch `audit-unified-hardening-2026-09-05`.
   K1–K14 closure status: `specs/regim-reguli.md`.
-- **CI closure:** the latest verified run is not yet green. The runtime dependency install is fixed;
-  remaining failures are regression-contract mismatches discovered by the suite and must be fixed
-  before the audit can be called closed.
+- **Publishing — confirmed live 09-06.** Run 34023056515 is green end to end; `verify_release.py` saw
+  `6d19b69` on the Worker origin and on `izz.ro` (12252 articles). Grounding block cleared (IZZ-0311/0312).
 - **Cloudflare routes — OWNER ACTION:** `izz.ro/*` + `www.izz.ro/*` were repointed `izz-failover` ->
-  `izz-ro` on 2026-09-06 04:31 on a false diagnosis; mirror fallback and `x-izz-origin` are gone.
+  `izz-ro` on 2026-09-06 04:31 on a false diagnosis (IZZ-0308); `x-izz-origin` is gone. The mirror is
+  still fresh — the `mirror` job published in the same run — so only the route is missing.
 
 ## Audit closure status
 
