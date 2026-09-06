@@ -16,7 +16,7 @@
 - **Cloudflare routes — OWNER ACTION:** `izz.ro/*` + `www.izz.ro/*` were repointed `izz-failover` ->
   `izz-ro` on 2026-09-06 04:31 on a false diagnosis (IZZ-0308); `x-izz-origin` is gone, the mirror
   is still fresh, so only the route is missing. Zone control plane is protected in CLAUDE.md §10
-  now — propose, never execute; the evidence layer stays unwired (IZZ-0314 level 0).
+  now — propose, never execute; the evidence layer stays unwired (IZZ-0317 level 0).
 
 ## Audit closure status
 
