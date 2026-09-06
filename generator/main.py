@@ -425,15 +425,30 @@ def run(dry_run: bool = False) -> dict:
     if gate_cale:
         blocate = raport_copiere.url_uri_blocate(gate_cale)
         if blocate:
-            amanate_grounding = [a for a in processed_new if a.get("url") in blocate]
-            processed_new = [a for a in processed_new if a.get("url") not in blocate]
+            # Potrivirea se face si pe `original_link` (id-ul scris in raport), nu doar pe
+            # `url` — pentru sintezele de model B cele doua difera, iar filtrele doar pe url
+            # nu amanau nimic si lasau randuri blocate in dovada (prins 2026-09-06, 23:53).
+            amanate_grounding = [a for a in processed_new
+                                 if a.get("url") in blocate or a.get("original_link") in blocate]
+            processed_new = [a for a in processed_new
+                             if a.get("url") not in blocate and a.get("original_link") not in blocate]
+            # Dovada se curata ori de cate ori exista incalcari, nu doar la potrivire:
+            # raportul gate este dovada pentru CE SE PUBLICA in rularea asta.
+            scoase = raport_copiere.pastreaza_doar_curate(gate_cale)
             if amanate_grounding:
-                scoase = raport_copiere.pastreaza_doar_curate(gate_cale)
                 print(f">> grounding defer: {len(amanate_grounding)} iteme cu incalcari deterministe "
                       f"NU se publica in rularea asta ({scoase} randuri scoase din dovada gate); "
                       "revin la rularea urmatoare:")
                 for a in amanate_grounding:
                     print(f"     - {(a.get('title') or '')[:70]!r} | {a.get('url')}")
+            ramase = blocate - {a.get("url") for a in amanate_grounding} \
+                - {a.get("original_link") for a in amanate_grounding}
+            if ramase:
+                print(f">> grounding ATENTIE: {len(ramase)} id-uri blocate nu corespund niciunui "
+                      "articol procesat (posibil upgrade B->C modificat pe loc in `existing`) — "
+                      "verificat in jurnalul observational daca se repeta:")
+                for x in sorted(ramase):
+                    print(f"     - {x}")
     # Coperte din datele evenimentului (felia meteo, 2026-09-05): DOAR articolele care au
     # trecut gate-ul de grounding, fail-safe per articol — fara date, coperta ramane cea de azi.
     n_event = eventdata.attach(processed_new)
