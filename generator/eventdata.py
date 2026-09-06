@@ -36,6 +36,11 @@ _ZILE = ["L", "M", "M", "J", "V", "S", "D"]
 _METEO = re.compile(
     r"meteo|vreme|prognoz|ninsoare|canicul|ploaie|averse|descărcări|"
     r"ger\b|îngheț|umidit| temperatur", re.I)
+_CUTREMUR = re.compile(r"\bcutremur|\bseism\b|\bseisme\b", re.I)
+# Caseta României (toată seismicitatea din țară, Vrancea inclusiv, întra în ea).
+_RO_BOX = {"minlatitude": 43.5, "maxlatitude": 48.5, "minlongitude": 20.0, "maxlongitude": 30.0}
+_MAG_MIN = 2.5
+_EMSC = "https://www.seismicportal.eu/fdsnws/event/1/query?format=json&orderby=magnitude&limit=30"
 
 
 def _http_get(url: str) -> bytes:
@@ -135,6 +140,58 @@ def prognoza(loc: dict, lat: float, lon: float) -> dict | None:
             "zile": zile, "sursa": "open-meteo.com"}
 
 
+# ---------------------------------------------------------------- cutremure --
+def parse_emsc(payload: dict) -> list[dict]:
+    """Feature-urile FDSN -> [{mag, lat, lon, adancime, timp}]. Pure; ridica KeyError."""
+    out = []
+    for f in payload["features"]:
+        p, c = f["properties"], f["geometry"]["coordinates"]
+        mag = p.get("mag")
+        if mag is None:
+            continue
+        out.append({"mag": round(float(mag), 1),
+                    "lat": float(c[1]), "lon": float(c[0]),
+                    # EMSC livreaza uneori adancimi negative (chibritul dat invers);
+                    # Vrancea are seisme intermediare ~100 km, deci |d| e valoarea reala.
+                    "adancime": max(0, abs(round(float(c[2])))),
+                    "timp": (p.get("time") or "")[:10]})
+    return out
+
+
+def _fereastra_cutremur(a: dict) -> tuple[str, str]:
+    """[publicat-2 zile, publicat+6h] in ISO, pe data publicarii (fara ora -> miezul noptii)."""
+    pub = (a.get("published") or "")[:10]
+    d0 = datetime.date.fromisoformat(pub)
+    return ((d0 - datetime.timedelta(days=2)).isoformat(),
+            (d0 + datetime.timedelta(hours=30)).isoformat()[:10])
+
+
+def cutremur(a: dict) -> dict | None:
+    """Cel mai puternic seism din caseta Romaniei in fereastra articolului, sau None.
+
+    Sursa: EMSC FDSN (acopera microseismele romanesti pe care USGS NU le are — masurat
+    2026-09-06: Vrancea 30-31 aug, M2.5-3.4, prezent in EMSC, absent in USGS).
+    Alegerea max-magnitudine e determinista; fereastra larga +-2 zile poate prinde un
+    seism vecin mai mare decat cel din titlu — riscul e acoperit de poarta de categorie
+    (local/judetean) si de faptul ca hartile arata locul real al epicentrului.
+    """
+    text = f"{a.get('title') or ''} {a.get('teaser') or ''}"
+    if a.get("category") not in localities._GEO_CATEGORIES or not _CUTREMUR.search(text):
+        return None
+    t0, t1 = _fereastra_cutremur(a)
+    box = "&".join(f"{k}={v}" for k, v in _RO_BOX.items())
+    url = f"{_EMSC}&starttime={t0}&endtime={t1}&minmagnitude={_MAG_MIN}&{box}"
+    try:
+        evenimente = parse_emsc(json.loads(_http_get(url)))
+    except (OSError, ValueError, KeyError, TypeError):
+        return None
+    if not evenimente:
+        return None
+    top = max(evenimente, key=lambda e: (e["mag"], e["timp"]))
+    return {"tip": "cutremur", "mag": top["mag"], "lat": top["lat"], "lon": top["lon"],
+            "adancime": top["adancime"], "data": top["timp"], "sursa": "EMSC"}
+
+
 def attach(articles: list[dict], by_name: dict | None = None,
            coords_path: str = COORDS) -> int:
     """Ataseaza `event_chart` articolelor eligibile, in loc. Returneaza cate.
@@ -148,13 +205,14 @@ def attach(articles: list[dict], by_name: dict | None = None,
     for a in articles:
         if a.get("event_chart"):
             continue
+        chart = None
         loc = gate(a, by_name)
-        if not loc or not loc.get("qid"):
-            continue
-        latlon = coords_for(loc["qid"], cache, coords_path)
-        if not latlon:
-            continue
-        chart = prognoza(loc, latlon[0], latlon[1])
+        if loc and loc.get("qid"):
+            latlon = coords_for(loc["qid"], cache, coords_path)
+            if latlon:
+                chart = prognoza(loc, latlon[0], latlon[1])
+        if chart is None:
+            chart = cutremur(a)
         if chart:
             a["event_chart"] = chart
             n += 1
