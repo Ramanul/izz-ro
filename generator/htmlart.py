@@ -20,6 +20,7 @@ subtitlu cu filet din #295. `_data_copertei` si `_et_px` sunt pastrate cu semant
 import base64
 import datetime
 import hashlib
+import math
 import os
 
 from . import geo
@@ -43,6 +44,7 @@ _PALETE = [
     ("#4a3244", "#f5f0f4"),   # prun
 ]
 GOLD = "#c9a227"
+GOLD_STRONG = "#8b6918"  # --gold-strong din styles.css (§8)
 GOLD_INCHIS = "#8b6918"  # --gold-strong din static/styles.css (§8)
 
 
@@ -336,6 +338,72 @@ def _t_retea(a, acc, bg, k):
     )
 
 
+def _tile_xt_yt(lat: float, lon: float, z: int) -> tuple[float, float]:
+    """Coordonatele FRACTIONARE de dala Web Mercator pentru (lat, lon)."""
+    n = 2 ** z
+    xt = (lon + 180) / 360 * n
+    lat_r = math.radians(lat)
+    yt = (1 - math.log(math.tan(lat_r) + 1 / math.cos(lat_r)) / math.pi) / 2 * n
+    return xt, yt
+
+
+def _t_cutremur(a, ch, acc, bg, k):
+    """Coperta din date: harta OSM cu epicentrul (sursa EMSC) si panou editorial.
+
+    Dalile vin de la tile.openstreetmap.org randate de Chromium in Actions
+    (atribuirea obligatorie e tiparita pe imagine). Epicentrul cade la ~62% din
+    latimea hartii, cu inele aurii concentrice — figura intreaga e geometrica,
+    nu figurativa (regula din docstringul modulului).
+    """
+    et = ch.get("loc") or _eticheta(a)
+    dt = _data_copertei(a)
+    mag_ro = f'M {ch["mag"]:.1f}'.replace(".", ",")
+    panel_w = 300
+    cw = ART_W - panel_w
+    epi_x, epi_y = (panel_w + int(cw * 0.62)) * k, int(ART_H * 0.5) * k
+    xt, yt = _tile_xt_yt(ch["lat"], ch["lon"], 8)
+    x0, y0 = int(xt) - 1, int(yt) - 1
+    px, py = (xt - x0) * 256, (yt - y0) * 256
+    grid_left, grid_top = epi_x - px * k, epi_y - py * k
+    dale = "".join(
+        f'<img src="https://tile.openstreetmap.org/8/{x0 + c}/{y0 + r}.png" '
+        f'style="position:absolute;left:{grid_left + c * 256 * k:.0f}px;'
+        f'top:{grid_top + r * 256 * k:.0f}px;width:{256 * k:.0f}px;height:{256 * k:.0f}px;'
+        f'filter:grayscale(1) sepia(.14) brightness(1.05) contrast(.92)">'
+        for c in range(4) for r in range(3))
+    inele = "".join(
+        f'<div style="position:absolute;left:{epi_x - r * k:.0f}px;top:{epi_y - r * k:.0f}px;'
+        f'width:{2 * r * k:.0f}px;height:{2 * r * k:.0f}px;border-radius:50%;'
+        f'border:{3 * k:.0f}px solid {GOLD};opacity:{op}"></div>'
+        for r, op in ((52, ".9"), (34, ".65"), (18, "1")))
+    data_txt = f'{dt["zi_n"]} {dt["luna"]} {dt["an"]}' if dt else ""
+    adanc = f' · adâncime {ch["adancime"]} km' if ch.get("adancime") else ""
+    return (
+        f'<div class="stage" style="background:{bg};color:{acc}">'
+        f'<div style="position:absolute;left:0;top:0;bottom:0;width:{panel_w * k:.0f}px;'
+        f'background:{bg}"></div>{dale}{inele}'
+        f'<div style="position:absolute;left:{epi_x - 9 * k:.0f}px;top:{epi_y - 9 * k:.0f}px;'
+        f'width:{18 * k:.0f}px;height:{18 * k:.0f}px;border-radius:50%;background:{GOLD};'
+        f'outline:{3 * k:.0f}px solid {bg}"></div>'
+        f'<div style="position:absolute;left:{panel_w * k:.0f}px;top:0;bottom:0;'
+        f'width:{3 * k:.0f}px;background:{GOLD}"></div>'
+        f'<div style="position:absolute;left:{44 * k:.0f}px;top:{52 * k:.0f}px">'
+        f'<div style="width:{96 * k:.0f}px;height:{3 * k:.0f}px;background:{GOLD}"></div>'
+        f'<div class="eticheta" style="font-size:{40 * k:.0f}px;margin-top:{26 * k:.0f}px">{et}</div>'
+        f'<div class="sub" style="margin-top:{10 * k:.0f}px">CUTREMUR</div></div>'
+        f'<div style="position:absolute;left:{44 * k:.0f}px;bottom:{96 * k:.0f}px;line-height:1">'
+        f'<div style="font-weight:800;font-size:{84 * k:.0f}px;color:{GOLD_STRONG}">{mag_ro}</div>'
+        f'<div style="font-weight:800;font-size:{16 * k:.0f}px;opacity:.7;margin-top:{10 * k:.0f}px">'
+        f'{data_txt}{adanc}</div></div>'
+        f'<div class="marca" style="left:{44 * k:.0f}px;bottom:{34 * k:.0f}px">izz.ro</div>'
+        f'<div style="position:absolute;right:{12 * k:.0f}px;bottom:{10 * k:.0f}px;'
+        f'background:{bg};opacity:.85;padding:{4 * k:.0f}px {8 * k:.0f}px">'
+        f'<span class="marca" style="position:static;opacity:.65">'
+        f'Hartă © OpenStreetMap · Seisme: EMSC</span></div>'
+        f'<div class="grain"></div></div>'
+    )
+
+
 def _t_meteo(a, ch, acc, bg, k):
     """Coperta din date: prognoza pe 7 zile pentru localitatea stirii (venita din #293).
 
@@ -400,6 +468,8 @@ def build_html(a: dict, cover: bool = False) -> str:
     ch = a.get("event_chart") or {}
     if ch.get("tip") == "meteo" and ch.get("zile"):
         body = _t_meteo(a, ch, acc, bg, w / ART_W)
+    elif ch.get("tip") == "cutremur" and ch.get("lat") is not None:
+        body = _t_cutremur(a, ch, acc, bg, w / ART_W)
     else:
         body = _TEMPLATES[seed[4] % len(_TEMPLATES)](a, acc, bg, w / ART_W)
     return (f"<!doctype html><html><head><meta charset='utf-8'><style>{_base_css(w, h)}</style></head>"

@@ -64,3 +64,20 @@ def test_wp_json_nu_crapa_pe_lista_golita(monkeypatch):
     monkeypatch.setattr(fetch.urllib.request, "urlopen", lambda req, timeout=20: _Resp(b"[]"))
     items, err = fetch._fetch_wp_json("pl_test_x", SRC)
     assert items == [] and err and "fara articole" in err
+
+
+def test_spam_jocuri_de_noroc_respins_pe_toate_limbile():
+    from generator.guard import verdict
+    spam = [
+        ("Chicken Cross the Road Gambling Game Review for Canada", "ro"),
+        ("Legjobb online kaszinó bónusz 2026 — ingyen pörgetések", "ro_hu"),
+        ("Best casino slots — bet now and get free spins", "ro"),
+    ]
+    for titlu, _lang in spam:
+        assert verdict(titlu), f"spam nerespins: {titlu}"
+    legitime = [
+        ("Hotarare privind aprobarea bugetului local pe 2026",),
+        ("Közgyűlés határozatok — Târgu Secuiesc",),
+    ]
+    for (titlu,) in legitime:
+        assert verdict(titlu) is None, f"titlu legitim respins: {titlu}"

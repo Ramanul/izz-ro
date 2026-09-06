@@ -168,3 +168,31 @@ def pastreaza_doar_curate(cale_raport: str) -> int:
         except OSError:
             return 0
     return scoase
+
+
+def aplica_defer(articole: list, blocate: set, instantanee: dict, noi: set) -> tuple:
+    """Scoate sintezele blocate de grounding si restaureaza upgrade-urile blocate.
+
+    Articol NOU blocat: iese din stare (revine ca nou la rularea urmatoare, ca amanarea
+    pe 429). Articol VECHI upgrade-uit pe loc cu o sinteza blocata: se restaureaza din
+    instantaneul de dinaintea upgrade-ului — vechiul continut era public si conform.
+    Un blocat fara instantaneu si fara statut de nou NU este sters (continut publicat
+    vechi nu se pierde): se intoarce in lista si se raporteaza pentru investigatie.
+    Intoarce (lista curata, cate amanari, id-urile nerezolvate).
+    """
+    iesire, amanate, nerezolvate = [], 0, []
+    for a in articole:
+        lovit = {a.get("url"), a.get("original_link")} & set(blocate)
+        if not lovit:
+            iesire.append(a)
+            continue
+        amanate += 1
+        instantan = instantanee.get(a.get("original_link") or a.get("url") or "")
+        if instantan is not None:
+            iesire.append(dict(instantan))
+            continue
+        if a.get("url") in noi or a.get("original_link") in noi:
+            continue
+        nerezolvate.append(a.get("url") or a.get("original_link") or "?")
+        iesire.append(a)
+    return iesire, amanate, nerezolvate

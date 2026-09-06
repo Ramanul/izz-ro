@@ -129,7 +129,9 @@ def load_html_sources(csv_path: str, limit: int) -> dict:
         for row in csv.DictReader(f):
             url = (row.get("url") or "").strip()
             tip = (row.get("tip") or "").strip()
-            if url and tip in ("wp_json", "html_list"):
+            # „rss" = feed standard fara cheie `type` in sursa (implicitul din fetch._fetch_one);
+            # sitemap_news exista in fetch.py; wp_json si html_list au fost adaugate odata cu CSV-ul
+            if url and tip in ("wp_json", "html_list", "sitemap_news", "rss"):
                 rows.append(row)
 
     # acelasi criteriu de prioritate ca la GOLD: municipiu > oras > comuna, apoi alfabetic
@@ -142,13 +144,16 @@ def load_html_sources(csv_path: str, limit: int) -> dict:
         key = "pl_" + _make_slug(row["judet"], row["localitate"])
         if key in result:
             continue
+        tip = row["tip"].strip()
         sursa = {
             "name": nume_primarie(row["judet"], row["localitate"], _by_name),
             "url": row["url"].strip(),
             "category": "local",
-            "type": row["tip"].strip(),
+            "lang": _lang(row["judet"]),
         }
-        if sursa["type"] == "html_list":
+        if tip != "rss":   # feed standard: fara cheie type, fetch il trateaza implicit ca RSS
+            sursa["type"] = tip
+        if tip == "html_list":
             sursa["base_url"] = (row.get("base_url") or "").strip()
             sursa["item"] = (row.get("item") or "").strip()
             sursa["title"] = (row.get("title") or "").strip() or None
@@ -157,7 +162,7 @@ def load_html_sources(csv_path: str, limit: int) -> dict:
         judet_by_key[key] = row["judet"]
 
     # omonimele apar si aici: 2x Aninoasa (Dambovita/Gorj) masurat in lotul de 16 (09-05)
-    _disambigueaza_omonime(result, judet_by_key, _by_name)
+    _disambigueaza_omonime(result, _provider_din_judet_key(judet_by_key), _by_name)
     return result
 
 
@@ -191,6 +196,16 @@ def nume_primarie(judet: str, localitate: str, by_name: dict) -> str:
 # Cele doua coduri de judet care lipsesc din gazetteerul Wikidata (masurat 2026-09-05 pe
 # toate codurile din primarii_status: BUCURESTI, VALCEA). Numere oficiale, nu inventate.
 _ETICHETE_JUDETE_MANUALE = {"BUCURESTI": "București", "VALCEA": "Vâlcea"}
+
+# Județe cu populație maghiară semnificativă: anunțurile oficiale LEGITIME in maghiara
+# nu trebuie respinse de garda lingvistică (Târgu Secuiesc carantinat greșit, masurat
+# 2026-09-06 pe titluri reale locale). Sursele din aceste județe primesc lang="ro_hu";
+# vezi guard.anomalie — spam-ul fără markeri ro/hu rămâne respins.
+_JUDETE_RO_HU = {"COVASNA", "HARGHITA", "MURES", "SALAJ", "BIHOR", "CLUJ", "MARAMURES", "SATU MARE"}
+
+
+def _lang(judet: str) -> str:
+    return "ro_hu" if (judet or "").strip().upper() in _JUDETE_RO_HU else "ro"
 
 
 def _impact_tier(localitate: str) -> int:
@@ -236,22 +251,53 @@ def _make_slug(judet: str, localitate: str) -> str:
     return slug
 
 
-def _disambigueaza_omonime(result: dict, judet_by_key: dict, by_name: dict) -> None:
+def _disambigueaza_omonime(result: dict, judet_provider, by_name: dict) -> None:
     """Omonimele legitime primesc județul in paranteza, ca numele afisat sa fie unic.
     Catalogul de surse cere unicitate (test_render_sources) si omonimele apar in ORICE
-    lot mare de primarii: 3x Ștefănești, 2x Beclean, 2x Vidra in GOLD (masurat 09-05),
-    2x Aninoasa in sursele wp_json (masurat in aceeasi zi). In-place pe `result`."""
+    lot mare de primarii: 3x Ștefănești in GOLD, 2x Aninoasa in wp_json, 2x Măgura si
+    2x Cristești DOAR la intersectia GOLD+wp_json (masurate 2026-09-05/06). In-place.
+    `judet_provider(cheie)` -> eticheta județului cu diacritice, sau None.
+    """
     if not result:
         return
     _dubluri = {n for n, c in Counter(v["name"] for v in result.values()).items() if c > 1}
     if not _dubluri:
         return
-    _et = _etichete_judete(by_name)
     for _key, _v in result.items():
         if _v["name"] in _dubluri:
-            _etiqueta = _et.get(_norm(judet_by_key.get(_key, "").upper()))
+            _etiqueta = judet_provider(_key)
             if _etiqueta:
                 _v["name"] = f"{_v['name']} ({_etiqueta})"
+
+
+def _provider_din_judet_key(judet_by_key: dict):
+    """Providerul standard cand județul e stocat pe cheie (loturi individuale)."""
+    _by_name = localities.load_dataset()
+    _et = _etichete_judete(_by_name)
+    return lambda cheie: _et.get(_norm(judet_by_key.get(cheie, "").upper()))
+
+
+def disambigueaza_nume_in_config(sources: dict) -> None:
+    """A doua tura, la nivel de CONFIG: omonimele INTRE loturi (GOLD vs wp_json/html vs
+    surse literale) nu se vad in loaderele individuale. Județul se recupereaza din cheia
+    `pl_<judet>_<localitate>`: cautam codul de judet a carui forma-slug e prefix-ul cheii,
+    cel mai lung primul (BISTRITA-NASAUD inaintea unui eventual BISTRITA)."""
+    _by_name = localities.load_dataset()
+    _et = _etichete_judete(_by_name)
+    _coduri = sorted(_et.keys(), key=len, reverse=True)
+    forme = [(cod, re.sub(r"_+", "_", re.sub(r"[^a-z0-9]", "_", cod.lower())).strip("_"))
+             for cod in _coduri]
+
+    def provider(cheie: str):
+        if not cheie.startswith("pl_"):
+            return None
+        slug = cheie[3:]
+        for cod, forma in forme:
+            if slug == forma or slug.startswith(forma + "_"):
+                return _et[cod]
+        return None
+
+    _disambigueaza_omonime(sources, provider, _by_name)
 
 
 def load_gold_sources(csv_path: str, limit: int, min_date: str = "2026-01-01") -> dict:
@@ -295,11 +341,12 @@ def load_gold_sources(csv_path: str, limit: int, min_date: str = "2026-01-01") -
                 "name": nume_primarie(row["judet"], row["localitate"], _by_name),
                 "url": row["rss_url"].strip(),
                 "category": "local",
+                "lang": _lang(row["judet"]),
             }
             judet_by_key[key] = row["judet"]
 
     # omonimele legitime primesc județul in paranteza, ca numele afisat sa fie unic
     # (vezi _etichete_judete: 3x Ștefănești, 2x Beclean, 2x Vidra — masurat pe 300 surse)
-    _disambigueaza_omonime(result, judet_by_key, _by_name)
+    _disambigueaza_omonime(result, _provider_din_judet_key(judet_by_key), _by_name)
 
     return result

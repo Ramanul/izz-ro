@@ -241,7 +241,7 @@ if _gold:
 # pl_ < gsp) sa ramana valabil. GOLD castiga pe ciocnire: un feed viu e mai bogat.
 from generator.local_sources import load_html_sources
 _HTML_CSV = os.path.join(ROOT, "data", "primarii_lists", "html_sources_2026-09-05.csv")
-_html = load_html_sources(_HTML_CSV, int(os.environ.get("LOCAL_HTML_LIMIT", "100")))
+_html = load_html_sources(_HTML_CSV, int(os.environ.get("LOCAL_HTML_LIMIT", "250")))
 if _html:
     _hitems = [(k, v) for k, v in _html.items() if k not in SOURCES]
     if _hitems:
@@ -249,6 +249,11 @@ if _html:
         _idx = max(i for i, (_k, _v) in enumerate(_items) if _k.startswith("pl_"))
         _items[_idx + 1:_idx + 1] = _hitems
         SOURCES = dict(_items)
+
+# A doua tura de disambiguare, GLOBALA: omonimele INTRE loturi (GOLD vs wp_json vs surse
+# literale) nu se vad in loaderele individuale — 2x Măgura, 2x Cristești masurate 09-06.
+from generator.local_sources import disambigueaza_nume_in_config
+disambigueaza_nume_in_config(SOURCES)
 
 # Exclude orice URL/sursă de agenție (verificare suplimentară pe domeniul linkului)
 AGENCY_BLOCKLIST = ["agerpres", "mediafax", "reuters", "afp.com", "apnews", "ap.org"]

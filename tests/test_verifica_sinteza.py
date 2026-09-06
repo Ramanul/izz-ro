@@ -59,6 +59,33 @@ def test_cifrele_de_o_singura_cifra_sunt_ignorate():
     assert cifre_straine("s-a intamplat a 3-a oara", "text fara cifre") == []
 
 
+def test_data_din_titlu_nu_ascunde_cifrele_sursei():
+    # Regresie 2026-09-06 (rularea 34013150305, pasul Grounding gate): titlul primariei
+    # contine "nr. 29061/13.08.2026". Tokenizatorul vechi producea un singur "13082026",
+    # deci "13" si "2026" din rezumat pareau inventate si opreau publicarea intregului
+    # site — desi ambele numere sunt in sursa.
+    sursa = "Proces verbal nr. 29061/13.08.2026 de constatare privind dosarele"
+    assert cifre_straine("Documentul din 13 august 2026 confirma dosarele", sursa) == []
+
+
+def test_doua_numere_separate_de_virgula_raman_distincte():
+    # Separatorii MULTIPLI ("2026, 13") nu leaga: sunt doua numere, nu "202613".
+    sursa = "Consiliul a aprobat in 2026, 13 proiecte si 30 de locuri"
+    assert cifre_straine("In 2026 au fost 13 proiecte si 30 de locuri", sursa) == []
+
+
+def test_numerele_pe_linii_separate_raman_distincte():
+    assert cifre_straine("Termenele sunt 13, 30 si 2026", "termene:\n13\n30\n2026") == []
+
+
+def test_garda_prinde_in_continuare_cifrele_inventate():
+    # Fixul nu are voie sa slabeasca gate-ul: un numar absent din sursa ramane semnalat.
+    sursa = "Proiect depus in 13.08.2026, buget 1.500.000 lei"
+    assert "9876" in cifre_straine("Buget de 9876 lei", sursa)
+    assert "1999" in cifre_straine("Proiect depus in 1999", sursa)
+    assert "46" in cifre_straine("Au participat 46 de elevi", "Au participat 45 de elevi")
+
+
 # ---- §2.5 rezerve ------------------------------------------------------------
 
 def test_rezerva_pierduta_cand_rezumatul_afirma_ce_sursa_doar_banuieste():

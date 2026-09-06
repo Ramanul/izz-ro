@@ -421,19 +421,6 @@ def run(dry_run: bool = False) -> dict:
     # NU se publica in rularea asta, dar nu blocheaza intregul release: se amana si revin
     # ca iteme noi la rularea urmatoare, la fel ca amanarile pe 429. Raportul gate pastreaza
     # doar dovada pentru ce se publica; gate-ul de dupa commit ramane fail-closed ca plasa.
-    gate_cale = os.environ.get("IZZ_RAPORT_COPIERE_GATE", "").strip()
-    if gate_cale:
-        blocate = raport_copiere.url_uri_blocate(gate_cale)
-        if blocate:
-            amanate_grounding = [a for a in processed_new if a.get("url") in blocate]
-            processed_new = [a for a in processed_new if a.get("url") not in blocate]
-            if amanate_grounding:
-                scoase = raport_copiere.pastreaza_doar_curate(gate_cale)
-                print(f">> grounding defer: {len(amanate_grounding)} iteme cu incalcari deterministe "
-                      f"NU se publica in rularea asta ({scoase} randuri scoase din dovada gate); "
-                      "revin la rularea urmatoare:")
-                for a in amanate_grounding:
-                    print(f"     - {(a.get('title') or '')[:70]!r} | {a.get('url')}")
     # Coperte din datele evenimentului (felia meteo, 2026-09-05): DOAR articolele care au
     # trecut gate-ul de grounding, fail-safe per articol — fara date, coperta ramane cea de azi.
     n_event = eventdata.attach(processed_new)
@@ -451,8 +438,32 @@ def run(dry_run: bool = False) -> dict:
     if titluri_data:
         print(f"Sarite ca avand drept titlu doar o data calendaristica: {len(titluri_data)}")
 
+    # Instantanee pentru ce urmeaza a fi upgrade-uit pe loc: daca sinteza noua iese
+    # blocata de grounding, restauram versiunea veche (deja publica si conforma).
+    instantanee_upgrades = {(a.get("original_link") or a.get("url") or ""): dict(a)
+                            for a in upgradable(combined)}
     upgraded = upgrade_fallbacks(combined, provider, budget - used)
     combined = state.expire(combined)
+    # PLAN UNIFICAT #1: defer-ul ruleaza DUPA TOTA procesarea AI (inclusiv upgrade-urile),
+    # fiindca fiecare pas AI scrie randuri in dovada gate. Asezat mai devreme, rândurile
+    # scrise de upgrade-uri apreau dupã curatãre si gate bloca tot release-ul (prins
+    # 2026-09-06: articolul Ghimbav, upgrade-uit si re-blocat la fiecare rulare).
+    gate_cale = os.environ.get("IZZ_RAPORT_COPIERE_GATE", "").strip()
+    if gate_cale:
+        blocate = raport_copiere.url_uri_blocate(gate_cale)
+        if blocate:
+            noi = {a.get("url") for a in processed_new} | {a.get("original_link") for a in processed_new}
+            combined, amanate_g, nerezolvate_g = raport_copiere.aplica_defer(
+                combined, blocate, instantanee_upgrades, noi)
+            scoase = raport_copiere.pastreaza_doar_curate(gate_cale)
+            if amanate_g:
+                print(f">> grounding defer: {amanate_g} sinteze cu incalcari deterministe NU se "
+                      f"publica in rularea asta ({scoase} randuri scoase din dovada gate).")
+            if nerezolvate_g:
+                print(f">> grounding ATENTIE: {len(nerezolvate_g)} id-uri blocate fara versiune "
+                      "veche de restaurat si fara statut de nou — raman in loc, verificat manual:")
+                for x in nerezolvate_g[:5]:
+                    print(f"     - {x}")
 
     mod = moderation.load()
     visible = moderation.apply(combined, mod)
