@@ -94,6 +94,20 @@ _WAREZ_RE = re.compile(
     re.I,
 )
 
+# Spam de jocuri de noroc in 3 limbi (ro/hu/en). DE CE un strat separat de warez: Plenita
+# (2026-09-05, „Chicken Cross the Road Gambling Game") si Rovinari (august) au aratat ca
+# site-urile de primarii compromise publica cazino/fogadas in titlu, iar warez-ul clasic
+# n-l prinde. Anunturile legitime ale primariilor NU contin acest vocabular in nicio limba —
+# fals-pozitiv rezidual: un titlu izolat de genul „bonus la plata impozitelor" pierde un
+# item, nu sursa (carantina cere 2+ respingeri).
+_SPAM_JOCURI_RE = re.compile(
+    r"\bcazinou?l?[eă]?\b|\bpacanele\b|\bpariuri\b|\bpoker\b|\bjackpot\b|"
+    r"\bkaszin[oó]\b|\bb[oó]nusz(?:ok)?\b|\bfogad[aá]s(?:i)?\b|\bnyer[őo]g[eé]p\b|"
+    r"\bcasino\b|\bgambling\b|\bbetting\b|\bslots?\b|\bbet\s+now\b|\bfree\s+spins?\b|"
+    r"\bno\s+deposit\s+bonus\b|\bvulkan(?:\w*)\b|\bmostbet\b|\b1xbet\b|\bpin-?up\b",
+    re.I,
+)
+
 # blocul Unicode al literelor „matematice" (U+1D400-U+1D7FF): 𝐀 𝚊 etc. Se normalizeaza NFKC
 # in litere ASCII, deci sunt exact unealta de evaziune — si au zero utilizare legitima aici.
 _MATH_ALPHA = (0x1D400, 0x1D7FF)
@@ -245,6 +259,8 @@ def verdict(titlu: str, corp: str = "") -> str | None:
         return "homoglife in titlu (amestec de alfabete)"
     if _WAREZ_RE.search(tot):
         return "marker de warez"
+    if _SPAM_JOCURI_RE.search(tot):
+        return "spam de jocuri de noroc (ro/hu/en)"
     if _INJECTIE_RE.search(tot):
         return "instructiuni adresate modelului (prompt injection)"
     if _e_titlu_gunoi(titlu):
