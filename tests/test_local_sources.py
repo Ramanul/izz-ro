@@ -269,6 +269,12 @@ def test_html_sources_ignora_tipuri_necunoscute_si_limit_zero(tmp_path):
     lines = ["ARGES,X,http://x.ro/feed,yes,,,,,,"]  # tip "yes" — necunoscut, exclus
     path = _write_html_csv(tmp_path, lines)
     assert load_html_sources(path, 10) == {}
+    lines_rss = ["ARGES,X,http://x.ro/feed/rss/,rss,,,,,",
+                 "ARGES,Y,http://y.ro/sitemap.xml,sitemap_news,,,,,"]
+    result_rss = load_html_sources(_write_html_csv(tmp_path, lines_rss), 10)
+    assert "type" not in result_rss["pl_arges_x"]          # rss = implicit, fara cheie type
+    assert result_rss["pl_arges_y"]["type"] == "sitemap_news"
+    assert all(v["category"] == "local" for v in result_rss.values())
     lines2 = ["ARGES,X,http://x.ro/wp-json/wp/v2/posts,wp_json,,,,,",
               "ALBA,Y,http://y.ro/stiri,html_list,http://y.ro,article.notice,h2.notice-title,div.notice-date,"]
     assert load_html_sources(_write_html_csv(tmp_path, lines2), 0) == {}

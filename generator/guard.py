@@ -342,13 +342,49 @@ def anomalie(titlu: str, source_lang: str = "ro") -> str | None:
 
     Se aplica DOAR surselor declarate `ro` in catalog. Cele 4 surse `en` (BBC, DW, Guardian,
     Politico) sunt scutite — la ele engleza e comportamentul asteptat, nu deviatia.
+
+    Limba compusa `ro_hu`: sursele din județele cu populație maghiară semnificativă
+    (setate in `local_sources`) publica anunțuri oficiale LEGITIME in maghiara. Nu le
+    scutim de garda — le scutim de clasificarea greșită: titlul maghiar legitim are
+    markeri hu (vezi _scor_hu) si trece; spam-ul fara niciun marker ro/hu continua respins.
     """
-    if (source_lang or "ro") != "ro":
+    lang = source_lang or "ro"
+    if lang == "ro_hu":
+        ro, en = _scor_limba(titlu or "")
+        if en >= 1 and ro == 0 and _scor_hu(titlu or ""):
+            return None
+        if en >= 1 and ro == 0:
+            return "titlu in alta limba decat cea declarata a sursei"
+        return None
+    if lang != "ro":
         return None
     ro, en = _scor_limba(titlu or "")
     if en >= 1 and ro == 0:
         return "titlu in alta limba decat cea declarata a sursei"
     return None
+
+
+# Markerile maghiare legitime: ő/ű exista DOAR in maghiara; cuvintele functionale de mai jos
+# sunt cele frecvente in titlurile administrative. Nicio coliziune cu _CUVINTE_EN, deci un
+# titlu maghiar nu primeste markeri EN de la ele.
+_DIACRITICE_HU = set("őűŐŰ")
+_CUVINTE_HU = {
+    "és", "az", "egy", "ez", "ezt", "van", "vannak", "lesz", "nem", "meg", "már",
+    "hogy", "mint", "illetve", "valamint", "helyi", "községi", "önkormányzat",
+    "közgyűlés", "határozat", "felhívás", "pályázat", "támogatás", "rendezvény",
+}
+
+
+_CUVANT_HU_RE = re.compile(r"[a-zőűáéíóöü]+")
+
+
+def _scor_hu(titlu: str) -> bool:
+    """Adevarat daca titlul are macar un marker maghiar legitim. Regex propriu (cu
+    á/é/ő/ű maghiare): _CUVANT_RE al gardzei de limba taie pe diacriticele straine si
+    rupe cuvinte precum „és" in „s" — masurat pe titlul real de la Târgu Secuiesc."""
+    if any(ch in _DIACRITICE_HU for ch in titlu):
+        return True
+    return any(c in _CUVINTE_HU for c in _CUVANT_HU_RE.findall(titlu.lower()))
 
 
 # --- 9. carantina de sursa: de la ITEM la SURSA ------------------------------------------
