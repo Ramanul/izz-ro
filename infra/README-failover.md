@@ -121,6 +121,22 @@ câmpul; `annotations.workers/triggered_by: version_upload` e cel care spune ade
 Starea sănătoasă, măsurată în aceeași zi: `https://izz.ro/` → 200 cu `x-izz-origin: primary`;
 originea primară servea `sitemap.xml` cu `lastmod` la zi și `404.html` propriu.
 
+## Cum verifici că lanțul chiar e în funcțiune
+
+```bash
+bash infra/verifica-live.sh
+```
+
+Rulează de pe o mașină cu ieșire la internet — sesiunile pe web primesc 403 de la proxy, iar
+scriptul iese cu `2` și spune asta explicit, în loc să raporteze site-ul drept căzut. Verifică cine
+servește (`x-izz-origin`), cache-ul de edge și `/build.json` comparat între domeniu și primar.
+Detaliile și tabelul de interpretare: `infra/VERIFICARE-CLOUDFLARE.md`.
+
+**Un `200` nu dovedește nimic** — spune că a răspuns cineva, nu CINE. De două ori (2026-08-23 și
+2026-09-06) ruta `izz.ro/*` a fost mutată de pe `izz-failover` pe `izz-ro` exact pe baza unui 200,
+pierzând failover-ul, cache-ul de edge și `x-izz-origin`. Pasul 1 al scriptului prinde asta:
+fără headere `x-izz-*`, `izz-failover` nu mai e în lanț. Vezi IZZ-0237 și IZZ-0308.
+
 ## De reținut
 
 - Ruta Worker are prioritate peste custom domain-ul Pages — nu șterge custom domain-ul izz.ro
