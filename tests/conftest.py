@@ -119,3 +119,65 @@ def output_randat() -> str:
         f"{r.stdout}\n{r.stderr}")
     assert os.path.isdir(OUT), "output/ lipseste si dupa randare"
     return OUT
+
+
+# Jurnalele pe care pipeline-ul le ADAUGA si le comite alaturi de restul starii. Nu sunt
+# artefacte de build: `data/triage_log.jsonl` e baza analizei de over-blocking, iar
+# `data/takedown_log.jsonl` e urma de audit a retragerilor. Un rand fals in ele nu se vede
+# ca fals — arata exact ca output de pipeline.
+#
+# De ce exista garda asta, masurat 2026-09-06: fixtura `ruleaza` din `test_slug_stabil.py`
+# izola corect `state.STATE_PATH`, providerul, `render.build` si `fetch_all` — tot ce scria
+# `main.run` CAND a fost scrisa. `jurnal_triage` a aparut dupa (PLAN UNIFICAT #5) si isi ia
+# calea din `config.ROOT`, pe care fixtura nu-l acopera. Rezultat: fiecare rulare locala a
+# suitei adauga in jurnalul comis doua randuri cu toate contoarele pe zero, iar `git status`
+# le prezinta ca munca de comis. Lectia nu e „fixtura era gresita" — era corecta la scriere.
+# E ca izolarea enumerata pe scriitori putrezeste cand apare un scriitor nou, deci trebuie
+# verificata mecanic, nu prin recitirea fixturii.
+_JURNALE_COMISE = ("triage_log.jsonl", "takedown_log.jsonl")
+
+
+def _amprenta_jurnale() -> dict:
+    """(dimensiune, mtime_ns) per jurnal; None daca lipseste. Stat, nu continut: fisierele
+    cresc cu o rulare de pipeline pe ora si suita are ~1500 de teste."""
+    amprente = {}
+    for nume in _JURNALE_COMISE:
+        try:
+            st = os.stat(os.path.join(ROOT, "data", nume))
+            amprente[nume] = (st.st_size, st.st_mtime_ns)
+        except FileNotFoundError:
+            amprente[nume] = None
+    return amprente
+
+
+@pytest.fixture(autouse=True)
+def jurnalele_comise_raman_neatinse():
+    """Pica testul care scrie in jurnalele comise din `data/`, si il numeste.
+
+    Repara si murdaria, dar DOAR pentru cazul curat de append (dimensiunea a crescut,
+    fisierul exista si inainte): atunci trunchierea la dimensiunea dinainte reface octet
+    cu octet. Orice alta mutatie — rescriere, stergere, fisier aparut din nimic — se
+    raporteaza fara sa se atinga, fiindca nu stim ce era acolo.
+    """
+    inainte = _amprenta_jurnale()
+    yield
+    dupa = _amprenta_jurnale()
+    murdare = [n for n in _JURNALE_COMISE if inainte[n] != dupa[n]]
+    if not murdare:
+        return
+    nereparate = []
+    for nume in murdare:
+        vechi, nou = inainte[nume], dupa[nume]
+        if vechi is not None and nou is not None and nou[0] > vechi[0]:
+            with open(os.path.join(ROOT, "data", nume), "r+", encoding="utf-8") as fh:
+                fh.truncate(vechi[0])
+        else:
+            nereparate.append(nume)
+    raise AssertionError(
+        f"IZOLARE SCAPATA: testul a scris in jurnalul comis data/{', data/'.join(murdare)}.\n"
+        "Nu e un fisier temporar: pipeline-ul il comite, deci randul tau ajunge in istoria "
+        "reala si arata ca output de pipeline.\n"
+        "Fix: izoleaza scriitorul in fixtura testului (ex. monkeypatch pe `jurnal_triage.cale` "
+        "sau pe `config.ROOT`), nu adauga o exceptie aici.\n"
+        + (f"NEREPARAT (mutatie care nu e append, nu se atinge): {nereparate}"
+           if nereparate else "Continutul dinainte a fost refacut prin trunchiere."))

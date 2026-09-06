@@ -12,7 +12,7 @@ import json
 
 import pytest
 
-from generator import main, render, state
+from generator import jurnal_triage, main, render, state
 
 
 def test_slugul_stocat_supravietuieste_schimbarii_de_titlu():
@@ -62,6 +62,10 @@ def ruleaza(tmp_path, monkeypatch):
     monkeypatch.setattr(state, "STATE_PATH", str(p))
     monkeypatch.setattr(main, "get_provider", lambda: None)
     monkeypatch.setattr(render, "build", lambda *a, **k: None)
+    # `jurnal_triage` isi ia calea din `config.ROOT`, nu din `state.STATE_PATH`, deci nu era
+    # acoperit de izolarea de mai sus: fiecare rulare locala a suitei adauga doua randuri in
+    # jurnalul COMIS `data/triage_log.jsonl`. Masurat 2026-09-06; garda din conftest il prinde.
+    monkeypatch.setattr(jurnal_triage, "cale", lambda: str(tmp_path / "triage_log.jsonl"))
 
     def _run(items):
         monkeypatch.setattr(main.fetch, "fetch_all", lambda: (items, []))

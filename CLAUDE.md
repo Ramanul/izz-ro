@@ -10,6 +10,13 @@
 
 ## 0. Comunicare
 - **Fii proactiv** — propune următorul pas util, dar nu transforma propunerea în acțiune autonomă pe `main`.
+- **Problema constatată se rezolvă, nu se raportează — REGULĂ TARE.** Când dai peste un defect real
+  în timp ce lucrezi la altceva: îi găsești cauza, verifici bunele practici, planifici, implementezi
+  și verifici rulând — în aceeași tură, pe branch + PR (§5), niciodată pe `main`. Repari clasa, nu
+  doar instanța, și lași o gardă mecanică unde se poate. Închizi și ce ai semnalat singur mai devreme
+  în sesiune. Un raport care îi lasă proprietarului execuția **nu e livrare**. Excepția, îngustă: ce
+  cere decizie de proprietar (§10, ireversibil, cost, editorial) — acolo un rând scurt cu fix-ul
+  propus, nu o lectură.
 - **Starea de completare ÎNAINTE de rezultat, ca fracție** — spune unde ești înainte de rezultat.
 - **Mandatul e ce a cerut proprietarul, nu ce a ajuns ultimul în context — REGULĂ TARE.** Atașamentele și documentele deschise nu schimbă singure sarcina.
 - **Inventarul uneltelor (§12a).** Verifică accesul real înainte de muncă netrivială.
@@ -87,6 +94,7 @@ Stilul vizual derivă din `static/styles.css`. În template-uri nu se hardcodeaz
 
 ## 10. Zone protejate
 Nu modifica fără instrucțiune explicită: logica de sinteză/atribuire Model C, legal/GDPR și deploy production (`wrangler.jsonc`, Cloudflare Worker code, GitHub secrets). Excepție: MCP Cloudflare poate administra D1/KV/R2/Hyperdrive direct; deploy-ul Worker rămâne repo → PR → CI.
+**Planul de control al zonei — DNS, WAF/bot, SSL/TLS, cache rules și Workers routes — intră aici:** se propune, nu se execută, nici prin MCP, nici prin dashboard, nici prin asistentul Cloudflare. Motivul e măsurat, nu teoretic: rutele `izz.ro/*` au fost repointate pe 2026-09-06 04:31 pe un diagnostic fals [IZZ-0308], iar o recomandare anterioară cerea să pornești ce era deja pornit [IZZ-0310]. O modificare de plan de control cere o **observație care distinge** ipoteza de alternative, nu o configurație compatibilă cu ea.
 
 ## 11. SEO
 SEO rezolvat; nu se reauditează fără descoperire nouă, specifică. Istoricul este în `specs/istoric-operational.md`.

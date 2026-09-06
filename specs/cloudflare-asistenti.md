@@ -268,12 +268,12 @@ Formatul obligatoriu al oricărei propuneri, indiferent de agent:
 ### Nivelul 3 — execuție, cu poartă
 - **Cine execută ce:** D1/KV/R2/Hyperdrive prin MCP direct (deja permis, CLAUDE.md §10); codul
   Worker și `wrangler.jsonc` rămân **repo → PR → CI** (§10, fără excepție).
-- **Gaura de contract, semnalată nu decisă:** **DNS, WAF, SSL și Workers routes** nu sunt acoperite
-  de §10 — nu sunt nici permise explicit, nici interzise explicit. Iar exact acolo a lovit incidentul
-  de la 04:31. **Cere o decizie de proprietar** înainte ca orice agent (Lee inclus) să primească
-  scriere pe ele.
-- **[OPINIE]** Recomandarea mea: rutele și WAF-ul intră în §10 ca zonă protejată, cu aceeași
-  excepție îngustă ca D1/KV/R2 — adică *nu*.
+- **Gaura de contract — închisă în aceeași livrare.** **DNS, WAF/bot, SSL/TLS, cache rules și
+  Workers routes** nu erau acoperite de §10: nici permise, nici interzise explicit. Exact acolo a
+  lovit incidentul de la 04:31. Sunt acum **zonă protejată** în §10 — se propun, nu se execută, nici
+  prin MCP, nici prin dashboard, nici prin asistentul Cloudflare.
+- **[OPINIE]** E direcția sigură: restrânge, nu extinde. Dacă proprietarul o consideră prea strictă,
+  se relaxează cu o linie — invers ar fi costat încă un 04:31.
 
 ### Nivelul 4 — verificare, cu regulile care există deja
 - CLAUDE.md §16: două roluri (programator + utilizator), trei stări distincte (reparat în cod /
