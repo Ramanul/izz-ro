@@ -129,7 +129,9 @@ def load_html_sources(csv_path: str, limit: int) -> dict:
         for row in csv.DictReader(f):
             url = (row.get("url") or "").strip()
             tip = (row.get("tip") or "").strip()
-            if url and tip in ("wp_json", "html_list"):
+            # „rss" = feed standard fara cheie `type` in sursa (implicitul din fetch._fetch_one);
+            # sitemap_news exista in fetch.py; wp_json si html_list au fost adaugate odata cu CSV-ul
+            if url and tip in ("wp_json", "html_list", "sitemap_news", "rss"):
                 rows.append(row)
 
     # acelasi criteriu de prioritate ca la GOLD: municipiu > oras > comuna, apoi alfabetic
@@ -142,13 +144,16 @@ def load_html_sources(csv_path: str, limit: int) -> dict:
         key = "pl_" + _make_slug(row["judet"], row["localitate"])
         if key in result:
             continue
+        tip = row["tip"].strip()
         sursa = {
             "name": nume_primarie(row["judet"], row["localitate"], _by_name),
             "url": row["url"].strip(),
             "category": "local",
-            "type": row["tip"].strip(),
+            "lang": _lang(row["judet"]),
         }
-        if sursa["type"] == "html_list":
+        if tip != "rss":   # feed standard: fara cheie type, fetch il trateaza implicit ca RSS
+            sursa["type"] = tip
+        if tip == "html_list":
             sursa["base_url"] = (row.get("base_url") or "").strip()
             sursa["item"] = (row.get("item") or "").strip()
             sursa["title"] = (row.get("title") or "").strip() or None
@@ -191,6 +196,16 @@ def nume_primarie(judet: str, localitate: str, by_name: dict) -> str:
 # Cele doua coduri de judet care lipsesc din gazetteerul Wikidata (masurat 2026-09-05 pe
 # toate codurile din primarii_status: BUCURESTI, VALCEA). Numere oficiale, nu inventate.
 _ETICHETE_JUDETE_MANUALE = {"BUCURESTI": "București", "VALCEA": "Vâlcea"}
+
+# Județe cu populație maghiară semnificativă: anunțurile oficiale LEGITIME in maghiara
+# nu trebuie respinse de garda lingvistică (Târgu Secuiesc carantinat greșit, masurat
+# 2026-09-06 pe titluri reale locale). Sursele din aceste județe primesc lang="ro_hu";
+# vezi guard.anomalie — spam-ul fără markeri ro/hu rămâne respins.
+_JUDETE_RO_HU = {"COVASNA", "HARGHITA", "MURES", "SALAJ", "BIHOR", "CLUJ", "MARAMURES", "SATU MARE"}
+
+
+def _lang(judet: str) -> str:
+    return "ro_hu" if (judet or "").strip().upper() in _JUDETE_RO_HU else "ro"
 
 
 def _impact_tier(localitate: str) -> int:
@@ -326,6 +341,7 @@ def load_gold_sources(csv_path: str, limit: int, min_date: str = "2026-01-01") -
                 "name": nume_primarie(row["judet"], row["localitate"], _by_name),
                 "url": row["rss_url"].strip(),
                 "category": "local",
+                "lang": _lang(row["judet"]),
             }
             judet_by_key[key] = row["judet"]
 
