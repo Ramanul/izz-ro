@@ -5,7 +5,7 @@
 >
 > **Hard cap: ~40 lines of content.**
 
-**Updated:** 2026-09-06 (#295 merged: redesign editorial coperte clasice — regenerare progresiva ~1 sapt; #283: felia meteo live)
+**Updated:** 2026-09-06 (PreToolUse hook wiring repaired; the 09-06 04:31 Cloudflare route change needs an owner decision)
 
 ## Open
 
@@ -15,8 +15,8 @@
 - **CI closure:** the latest verified run is not yet green. The runtime dependency install is fixed;
   remaining failures are regression-contract mismatches discovered by the suite and must be fixed
   before the audit can be called closed.
-- **Platform/external controls:** branch protection / required checks, Cloudflare WAF/DNS, operational
-  restore/takedown drills, and live verification from proxy-blocked sessions remain external facts.
+- **Cloudflare routes — OWNER ACTION:** `izz.ro/*` + `www.izz.ro/*` were repointed `izz-failover` ->
+  `izz-ro` on 2026-09-06 04:31 on a false diagnosis; mirror fallback and `x-izz-origin` are gone.
 
 ## Audit closure status
 
@@ -41,7 +41,7 @@
 - **Human gate is a switch:** `IZZ_REQUIRE_HUMAN_GATE` is a repo variable (default false, armable from
   the GitHub UI without code changes); `hold_important` in `moderation.yaml` stays the per-config switch.
 - **Bash writes are guarded:** the protected-edit PreToolUse hook covers Bash commands combining a
-  control-plane path with a write indicator; read-only mentions and pipeline runs stay allowed.
+  control-plane path with a write indicator; the hook wiring is under test (`tests/test_hooks_cablaj.py`).
 
 ## Standing rules
 
