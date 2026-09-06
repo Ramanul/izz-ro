@@ -16,6 +16,7 @@
   before the audit can be called closed.
 - **Cloudflare routes — OWNER ACTION:** `izz.ro/*` + `www.izz.ro/*` were repointed `izz-failover` ->
   `izz-ro` on 2026-09-06 04:31 on a false diagnosis; mirror fallback and `x-izz-origin` are gone.
+  Control plane (DNS/WAF/SSL/cache/routes) is protected in §10 now; evidence layer unwired (IZZ-0314).
 
 ## Audit closure status
 
