@@ -47,7 +47,7 @@
 
     {% for cat, items in by_category.items() %}
       {% if items %}
-      <h2 class="section-title">{{ cat | cat_label }}</h2>
+      <h2 class="section-title">{{ cat | cat_label }}{% if sparks and sparks.get(cat) %}{% set s = sparks[cat] %}<span class="spark" aria-hidden="true"><svg width="72" height="20" viewBox="0 0 72 20" focusable="false"><polyline points="{{ s.puncte }}" fill="none" stroke-width="1.5" style="stroke: var(--ink-3)"/><circle cx="{{ s.ux }}" cy="{{ s.uy }}" r="2.5" style="fill: var(--gold)"/></svg><span><b>{{ s.azi }}</b> azi</span></span>{% endif %}</h2>
       <section class="grid">
         {% for a in items %}{{ card(a) }}{% endfor %}
       </section>

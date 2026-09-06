@@ -166,6 +166,16 @@ main { max-width: var(--maxw); margin: 0 auto; padding: var(--s-34) var(--s-34);
 }
 .section-title::first-letter { color: var(--gold-strong); }
 .section-title:first-of-type { margin-top: var(--s-21); }
+/* Linia-tendință per categorie (felie din „sala de control", principii Tufte):
+   fara axe — titlul si cuvantul „azi" dau contextul; linia e cerna discreta,
+   ULTIMUL punct e accentul auriu; cifra zilei sta in text, nu in grafic. */
+.section-title .spark {
+  float: right; display: inline-flex; align-items: center; gap: var(--s-8);
+  font-family: var(--font-mono); font-size: var(--fs-eyebrow); font-weight: 400;
+  letter-spacing: .5px; color: var(--ink-3);
+}
+.section-title .spark svg { display: block; }
+.section-title .spark b { color: var(--gold-strong); font-weight: 700; }
 
 /* ---- LEAD: povestea principala, spart in proportia de aur ---- */
 .lead-feature {
@@ -477,6 +487,7 @@ picture { display: contents; }
      primul ecran stirilor; consimtamantul devine o fâșie, nu un perete. */
   .dateline { padding: var(--s-5) var(--s-21); }
   .day-numbers { display: none; }
+  .section-title .spark { display: none; }   /* mobil: titlul de sectiune sta singur */
   .brand .logo { font-size: var(--fs-lg); }
   .brand-descriptor { display: none; }
   .site-header { padding: var(--s-8) var(--s-21); gap: var(--s-13); }

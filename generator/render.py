@@ -254,6 +254,59 @@ def _human_date(iso: str) -> str:
     return f"{dt.day} {_RO_MONTHS[dt.month]} {dt.year}, {dt:%H:%M}"
 
 
+_FEREASTRA_SPARK = 7  # zile vizibile in linia de tendinta per categorie
+
+
+def _sparkline_pe_categorii(articles: list, categorii: list) -> dict:
+    """Linii-tendință per categorie pentru titlurile de sectiune de pe prima pagina:
+    cate stiri a publicat fiecare categorie pe zi, in ultimele 7 zile.
+
+    Tufte-minimal (edwardtufte.com, „Sparkline theory and practice"): FARA axe, grile
+    sau etichete — contextul (titlul sectiunii + cuvintele „azi") le furnizeaza;
+    linia e discreta, ULTIMUL punct e accentuat (la Tufte rosu, la noi --gold), iar
+    valoarea zilei merge in text, nu in grafic. Categoriile fara nicio stire in
+    fereastra lipsesc din dict — nu desenam o forma care nu spune nimic. Zero JS:
+    punctele ies ca polyline SVG inline, calculata la build.
+
+    Returneaza {cat: {puncte, ux, uy, azi, total}}; punctele in coordonatele
+    viewBox-ului „0 0 72 20" din template.
+    """
+    azi = datetime.now(_TZ_RO).date()
+    zile = [azi - timedelta(days=d) for d in range(_FEREASTRA_SPARK - 1, -1, -1)]
+    in_fereastra = set(zile)
+    contor: dict = {}
+    for a in articles:
+        try:
+            dt = datetime.fromisoformat(a.get("published") or "")
+        except (ValueError, TypeError):
+            continue
+        if dt.tzinfo is None:
+            dt = dt.replace(tzinfo=timezone.utc)
+        zi = dt.astimezone(_TZ_RO).date()
+        cat = a.get("category") or ""
+        if zi in in_fereastra and cat in categorii:
+            pe_zi = contor.setdefault(cat, {})
+            pe_zi[zi] = pe_zi.get(zi, 0) + 1
+    W, H, PAD = 72, 20, 3
+    pas = (W - 2 * PAD) / (_FEREASTRA_SPARK - 1)
+    out: dict = {}
+    for cat in categorii:
+        pe_zi = contor.get(cat, {})
+        valori = [pe_zi.get(z, 0) for z in zile]
+        if sum(valori) == 0:
+            continue
+        vmax = max(valori)
+        puncte = []
+        for i, v in enumerate(valori):
+            x = PAD + i * pas
+            y = (H - PAD) - ((v / vmax) * (H - 2 * PAD) if vmax else 0)
+            puncte.append(f"{x:.1f},{y:.1f}")
+        ux, uy = puncte[-1].split(",")
+        out[cat] = {"puncte": " ".join(puncte), "ux": ux, "uy": uy,
+                    "azi": valori[-1], "total": sum(valori)}
+    return out
+
+
 def _today_ro() -> str:
     """Masthead de ziar: „Vineri, 5 septembrie 2026". Ora Romaniei, ca _human_date —
     determinista fata de fusul masinii care randeaza (local sau GitHub Actions)."""
@@ -993,7 +1046,8 @@ def build(articles: list, mod: dict | None = None) -> None:
            env.get_template("index.html").render(**_base_ctx(
                "/", nav_section="stiri", articles=by_date, hero=hero, by_category=by_category,
                jsonld_nodes=[item_list], newsletter_html=_newsletter_html(),
-               zi=zi, mini_harta=_mini_harta(zi["pe_judet"]) if zi else None)))
+               zi=zi, mini_harta=_mini_harta(zi["pe_judet"]) if zi else None,
+               sparks=_sparkline_pe_categorii(by_date, config.CATEGORIES))))
 
     src_catalog, total_sources, stats_sources = _source_catalog(by_date)
     _write(os.path.join(OUT_DIR, "surse", "index.html"),
