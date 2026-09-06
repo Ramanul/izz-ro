@@ -396,6 +396,21 @@
       ctx.textAlign = "center";
       ctx.textBaseline = "middle";
       ctx.fillText(String(uat.count), x, y);
+      // Numele unitatii, sub badge, DOAR cand in propria forma e loc de text: clearance-ul
+      // calculat pentru badge masoara spatiul liber pana la contur, deci e si masura spatiului
+      // pentru eticheta. Fara garda asta, 99 de nume ar inunda vederea unui judet dens.
+      const name = uat.label || uat.name;
+      if (name && placement.clearance >= 7) {
+        ctx.font = "700 8px sans-serif";
+        ctx.textBaseline = "top";
+        const ty = y + radius + 1.5;
+        // Halo in culoarea fundalului, ca numele sa fie lizibil si peste granitele UAT-urilor.
+        ctx.lineWidth = 2.6;
+        ctx.strokeStyle = palette.surface;
+        ctx.strokeText(name, x, ty);
+        ctx.fillStyle = palette.text;
+        ctx.fillText(name, x, ty);
+      }
       uat.marker = { x, y, radius };
     }
   }
@@ -919,12 +934,72 @@
     state.paths = paths;
     state.localityMarkers = localityMarkers;
     if (state.backButton) {
-      const hasSelection = Boolean(state.selectedRegion || state.selectedCounty || state.selectedLocality);
+      const hasSelection = Boolean(state.selectedRegion || state.selectedCounty || state.selectedLocality || state.selectedUat);
       state.backButton.hidden = !hasSelection;
-      state.backButton.textContent = state.selectedLocality ? "← Județul selectat"
-        : state.selectedCounty ? "← Toate județele" : "← Toate regiunile";
+      // Text UNIC, nu trei variante dupa adancimea selectiei (audit harta, P2): cat de adanc
+      // esti il spune acum firul de deasupra hartii; butonul are o singura promisiune.
+      state.backButton.textContent = "← Înapoi la România";
     }
     syncZoomControls();
+  }
+
+  // Firul ierarhic de deasupra hartii (NN/g "Breadcrumbs": pozitia in IERARHIE, nu istoricul
+  // sesiunii; nivelul curent e text simplu, nu link; toti stramosii clickabili). Cu el,
+  // adancimea selectiei e vizibila inainte de orice click -- inclusiv cand ajungi direct
+  // printr-un link partajat, unde istoricul nu exista.
+  function updateBreadcrumb() {
+    const crumb = $("#map-breadcrumb");
+    if (!crumb) return;
+    crumb.replaceChildren();
+    // Fara nicio selectie, România e POZITIA curenta (text, nu link -- NN/g: nivelul curent
+    // nu e clickabil, e locul in care esti deja).
+    const hasGeo = Boolean(state.selectedRegion || state.selectedCounty || state.selectedLocality || state.selectedUat);
+    const trail = [{ label: "România", action: resetSelection, current: !hasGeo }];
+    if (state.selectedRegion) {
+      trail.push({
+        label: state.selectedRegion,
+        action: () => applyState({ region: state.selectedRegion, county: null, locality: null, uat: null }),
+        current: !state.selectedCounty && !state.selectedUat,
+      });
+    }
+    if (state.selectedCounty) {
+      trail.push({
+        label: state.selectedCounty,
+        action: () => applyState({ county: state.selectedCounty, locality: null, uat: null }),
+        current: !state.selectedLocality && !state.selectedUat,
+      });
+    }
+    if (state.selectedLocality && !state.selectedUat) {
+      const locality = Array.isArray(state.selectedLocality)
+        ? state.selectedLocality.join(", ") : state.selectedLocality;
+      trail.push({ label: locality, current: true });
+    }
+    if (state.selectedUat) {
+      const uat = state.uats.find((unit) => String(unit.id || unit.name) === state.selectedUat);
+      trail.push({ label: uat ? (uat.label || uat.name) : (state.selectedCounty || state.selectedUat), current: true });
+    }
+    trail.forEach((step, index) => {
+      if (index) {
+        const sep = document.createElement("span");
+        sep.className = "crumb-sep";
+        sep.setAttribute("aria-hidden", "true");
+        sep.textContent = "›";
+        crumb.appendChild(sep);
+      }
+      if (step.current || !step.action) {
+        const current = document.createElement("span");
+        current.className = "crumb-current";
+        current.setAttribute("aria-current", "location");
+        current.textContent = step.label;
+        crumb.appendChild(current);
+      } else {
+        const button = document.createElement("button");
+        button.type = "button";
+        button.textContent = step.label;
+        button.addEventListener("click", step.action);
+        crumb.appendChild(button);
+      }
+    });
   }
 
   function pointForEvent(canvas, view, event) {
@@ -1162,11 +1237,11 @@
     if (state.zoomCounty && state.uats.length) {
       const uats = state.uats.filter((uat) => uat.count > 0)
         .sort((a, b) => String(a.label).localeCompare(String(b.label), "ro"));
-      picker.setAttribute("aria-label", `UAT-uri cu știri în ${state.zoomCounty}`);
+      picker.setAttribute("aria-label", `Orașe și comune cu știri în ${state.zoomCounty}`);
       if (!uats.length) {
         const empty = document.createElement("p");
         empty.className = "picker-empty";
-        empty.textContent = `Nu există știri localizate pe UAT-uri în ${state.zoomCounty} pentru filtrul curent.`;
+        empty.textContent = `Nu există știri localizate pe orașe și comune în ${state.zoomCounty} pentru filtrul curent.`;
         picker.appendChild(empty);
         return;
       }
@@ -1174,7 +1249,7 @@
         const button = document.createElement("button");
         button.type = "button";
         button.dataset.uat = uat.id || uat.name;
-        button.textContent = `${uat.label || "UAT"} · ${uat.count}`;
+        button.textContent = `${uat.label || uat.name || "zonă"} · ${uat.count}`;
         // Selectie, nu fereastra: acelasi contract ca butoanele de judet (audit harta:
         // click = selectare, panoul arata stirile). Click repetat deselecteaza.
         const uatKey = String(uat.id || uat.name);
@@ -1470,6 +1545,7 @@
       showMore.textContent = `Arată încă ${Math.min(120, Math.max(0, all.length - items.length))} rezultate`;
     }
     updateCountyPicker();
+    updateBreadcrumb();
   }
 
   function updateStats() {
