@@ -5,11 +5,10 @@
 >
 > **Hard cap: ~40 lines of content.**
 
-**Updated:** 2026-09-06 (PreToolUse hook wiring repaired; the 09-06 04:31 Cloudflare route change needs an owner decision)
+**Updated:** 2026-09-06 (#302: coperte cutremur din EMSC; #305: poze de eveniment Commons — ambele merged; #295/#283 live)
 
 ## Open
 
-- **Coperte din date — felia 2**: harta de cutremur (USGS) + retroactiv pe vreme; baza e #283 (merged).
 - **PR #282 — audit unified hardening:** merged 09-05, branch `audit-unified-hardening-2026-09-05`.
   K1–K14 closure status: `specs/regim-reguli.md`.
 - **CI closure:** the latest verified run is not yet green. The runtime dependency install is fixed;
