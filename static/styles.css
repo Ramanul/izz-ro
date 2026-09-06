@@ -131,6 +131,11 @@ a:hover { color: var(--ink); }
   white-space: nowrap;
 }
 .subnav-more summary::-webkit-details-marker { display: none; }
+/* Tinta de 24px (WCAG 2.2 target-size, semnalat de Lighthouse pe Chromium 152):
+   summary-ul si linkul din el aveau ~20px inaltime. */
+.subnav-more summary, .subnav-more summary a {
+  display: inline-flex; align-items: center; min-height: 24px;
+}
 .subnav-more summary::after { content: " ▾"; color: var(--gold-strong); }
 .subnav-more[open] summary::after { content: " ▴"; }
 .subnav-more-list {
@@ -623,9 +628,12 @@ picture { display: contents; }
       animation: intra-in-pagina ease-out both; animation-timeline: view();
       animation-range: entry 0% entry 50%;
     }
+    /* Doar transform, FARA opacity: o opacitate de start mica face textul sub fold
+       ilizibil in orice instantaneu (Lighthouse color-contrast 1.01:1 pe carduri,
+       masurat 2026-09-06) — miscarea rămane, cerneala nu dispare niciodata. */
     @keyframes intra-in-pagina {
-      from { opacity: .01; transform: translateY(14px); }
-      to { opacity: 1; transform: none; }
+      from { transform: translateY(14px); }
+      to { transform: none; }
     }
   }
 }
