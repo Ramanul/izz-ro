@@ -15,7 +15,7 @@ on:
       - "static/harta-stiri/data/map.json"
       - "static/harta-stiri/harta-stiri.js"
       - ".github/workflows/harta-smoke.yml"
-  workflow_dispatch
+  workflow_dispatch:
 
 jobs:
   smoke:
