@@ -9,10 +9,11 @@
 
 ## Open
 
-- **PR #282 — audit unified hardening:** merged 09-05, branch `audit-unified-hardening-2026-09-05`.
-  K1–K14 closure status: `specs/regim-reguli.md`.
-- **Publishing — confirmed live 09-06.** Run 34023056515 is green end to end; `verify_release.py` saw
-  `6d19b69` on the Worker origin and on `izz.ro` (12252 articles). Grounding block cleared (IZZ-0311/0312).
+- **PR #282 — audit unified hardening:** merged 09-05; K1–K14 closure: `specs/regim-reguli.md`.
+- **Publishing — confirmed live 09-06.** Run 34023056515 green; `6d19b69` on origin and on `izz.ro`; grounding cleared (IZZ-0311/0312).
+- **§5.4 has no mechanical guard — OWNER ACTION.** Nothing denies merge, auto-merge or direct MCP
+  writes to `main`, and the session token is the owner's own (IZZ-0313). The contract now declares
+  `MERGE-GUARD = absent`, rechecked by `tests/test_reguli.py`; `deny` patch in `specs/acces-real.md`.
 - **Cloudflare routes — OWNER ACTION:** `izz.ro/*` + `www.izz.ro/*` were repointed `izz-failover` ->
   `izz-ro` on 2026-09-06 04:31 on a false diagnosis (IZZ-0308); `x-izz-origin` is gone. The mirror is
   still fresh — the `mirror` job published in the same run — so only the route is missing.

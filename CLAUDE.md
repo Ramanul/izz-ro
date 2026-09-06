@@ -47,6 +47,9 @@ CI rulează testele și lint-ul. Numărul de teste este doar reper, nu contract.
 2. **După orice merge, anunță celălalt cont** prin canalul operațional agreat și actualizează starea.
 3. **Nu face curse pe `main`.** Lucrează prin branch + PR.
 4. **Nu face niciodată merge în `main`.** Executorul livrează branch + PR, fără auto-merge.
+   **MERGE-GUARD = absent** — nimic nu refuză mecanic merge-ul, auto-merge-ul sau scrisul direct
+   în `main` prin uneltele MCP GitHub, iar identitatea sesiunii e chiar a proprietarului. Regula
+   ține doar fiindcă o citești. Suprafața măsurată: `specs/acces-real.md`.
 5. **Un task per declanșare.** Nu deschide muncă paralelă necerută printr-un singur trigger.
 6. **Se oprește și raportează în loc să ghicească.** Ambiguitățile materiale se declară exact.
 7. **Actualizează `specs/STATE.md`** la finalul lucrării relevante.

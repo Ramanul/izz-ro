@@ -30,6 +30,7 @@ rulat niciodata cu adevarat, de-aia fix-urile pareau confirmate si nu erau".
 from __future__ import annotations
 
 import functools
+import json
 import re
 import subprocess
 from pathlib import Path
@@ -827,3 +828,181 @@ def test_censul_ramane_un_cens_nu_un_esantion(fisier):
     prezente = capete_de_regula((ROOT / fisier).read_text(encoding="utf-8"))
     assert len(CENS[fisier]) >= 0.9 * len(prezente), (
         f"{fisier}: censul urmareste {len(CENS[fisier])} din {len(prezente)} reguli cu nume")
+
+
+# --- garda de merge: contractul n-are voie sa pretinda o aparare pe care n-o are ---------------
+#
+# DE CE EXISTA (2026-09-06). §5.4 e scrisa ca imperativ absolut — „nu face niciodata merge" — iar
+# un imperativ absolut se citeste ca garda. Masurat in aceeasi zi: nu e. Lista `deny` din
+# settings.json acopera cinci comenzi git distructive si nimic altceva; hook-ul PreToolUse are
+# matcher Edit|Write|Bash, deci nu vede niciun tool MCP; iar identitatea GitHub a sesiunii e chiar
+# a proprietarului, deci §5.1 descrie o distinctie de proces, nu una tehnica. Comenzile care au
+# produs fiecare verdict stau in `specs/acces-real.md`.
+#
+# Regula nu e prudenta teoretica: IZZ-0140 (13 iulie) e incidentul in care doua sesiuni cu cron au
+# facut merge in paralel si munca a trebuit refacuta. §5.4 s-a scris DUPA pierdere si a ramas
+# singura de atunci.
+#
+# Garda nu impune politica — impune ADEVARUL despre politica. Starea reala se RECALCULEAZA din
+# settings.json la fiecare rulare si trebuie sa fie cea declarata in `CLAUDE.md`:
+#   · cineva inchide gaura in settings.json si uita sa scrie in contract -> rosu;
+#   · cineva scrie in contract ca e inchisa fara s-o inchida -> rosu.
+# A doua directie e cea care conteaza. E singurul fel in care o promisiune neacoperita nu poate fi
+# prezentata drept garda — inclusiv catre viitoarele sesiuni, care citesc contractul ca pe fapt.
+#
+# CE NU ACOPERA, spus explicit: merge-ul facut din interfata web GitHub sau de pe alta masina.
+# settings.json guverneaza sesiunile Claude Code, nu contul. Aia cere branch protection, care e
+# actiune de proprietar si nu se poate verifica din `tests/`. Garda spune ce apara sesiunea, nu ce
+# apara repo-ul.
+
+MARCAJ_MERGE_GUARD = re.compile(r"\*\*MERGE-GUARD = (absent|partial|prezent)\*\*")
+
+# Caile prin care o sesiune poate ateriza cod in `main`. Numele sunt cele pe care le-ar scrie
+# cineva in `deny`, iar potrivirea e pe SUBSIR: "Bash(git merge:*)" acopera "git merge".
+CAI_CATRE_MAIN = (
+    "git merge",
+    "git push",
+    "mcp__github__merge_pull_request",
+    "mcp__github__enable_pr_auto_merge",
+    "mcp__github__push_files",
+    "mcp__github__create_or_update_file",
+)
+
+
+def deny_din_settings() -> list[str]:
+    """Lista `deny` comisa in repo. Citita, nu importata: e date, nu cod."""
+    cale = ROOT / ".claude" / "settings.json"
+    date = json.loads(cale.read_text(encoding="utf-8"))
+    return list(date.get("permissions", {}).get("deny", []))
+
+
+def cai_refuzate(deny: list[str]) -> set[str]:
+    turnat = " ".join(deny)
+    return {cale for cale in CAI_CATRE_MAIN if cale in turnat}
+
+
+def starea_merge_guard(deny: list[str]) -> str:
+    """`absent` / `partial` / `prezent`, recalculat — niciodata citit dintr-o declaratie."""
+    acoperite = len(cai_refuzate(deny))
+    if acoperite == 0:
+        return "absent"
+    return "prezent" if acoperite == len(CAI_CATRE_MAIN) else "partial"
+
+
+def incalcari_merge_guard(contract: str, deny: list[str]) -> list[str]:
+    declarat = MARCAJ_MERGE_GUARD.search(contract)
+    if not declarat:
+        return ["CLAUDE.md nu declara MERGE-GUARD: §5.4 n-are voie sa taca despre ce o apara"]
+    real = starea_merge_guard(deny)
+    if declarat.group(1) == real:
+        return []
+    return [f"CLAUDE.md declara MERGE-GUARD = {declarat.group(1)}, dar settings.json da {real}"
+            f" ({len(cai_refuzate(deny))}/{len(CAI_CATRE_MAIN)} cai catre main refuzate)"]
+
+
+def test_contractul_declara_starea_reala_a_gardii_de_merge():
+    incalcari = incalcari_merge_guard((ROOT / "CLAUDE.md").read_text(encoding="utf-8"),
+                                      deny_din_settings())
+    assert not incalcari, incalcari[0]
+
+
+def test_garda_merge_pica_pe_promisiune_neacoperita():
+    """Directia care conteaza: contractul pretinde o aparare pe care settings.json n-o da."""
+    assert incalcari_merge_guard("**MERGE-GUARD = prezent**", ["Bash(git stash:*)"])
+
+
+def test_garda_merge_pica_pe_aparare_nedeclarata():
+    """Celalalt sens: cineva inchide gaura si lasa contractul sa spuna ca e deschisa."""
+    acoperit = [f"Bash({cale}:*)" for cale in CAI_CATRE_MAIN]
+    assert incalcari_merge_guard("**MERGE-GUARD = absent**", acoperit)
+
+
+def test_garda_merge_pica_pe_contract_care_tace():
+    assert incalcari_merge_guard("4. Nu face niciodata merge in `main`.", [])
+
+
+def test_starea_merge_guard_deosebeste_partialul_de_capete():
+    """Fara treapta din mijloc, o singura intrare in `deny` ar raporta gaura ca inchisa."""
+    assert starea_merge_guard([]) == "absent"
+    assert starea_merge_guard(["Bash(git merge:*)"]) == "partial"
+    assert starea_merge_guard([f"Bash({c}:*)" for c in CAI_CATRE_MAIN]) == "prezent"
+
+
+def test_caile_catre_main_acopera_si_uneltele_MCP_nu_doar_git():
+    """Miscarea care ar goli garda: sa urmareasca doar `git`, adica exact stratul pe care
+    hook-ul il vede deja. Gaura masurata e pe MCP, unde niciun hook nu ajunge."""
+    assert sum(1 for cale in CAI_CATRE_MAIN if cale.startswith("mcp__")) >= 4
+
+
+# --- garda de sub-punct: §5 exista, dar §5.99 nu -----------------------------------------------
+#
+# DE CE EXISTA (2026-09-06). Garda de sectiuni de mai sus vede ca §5 exista si se opreste acolo —
+# limita ei e declarata la locul ei. Masurat azi: `.claude/agents/pipeline-runner.md` si
+# `.claude/agents/README.md` citau amandoua §5.4 drept regula „verifica ruland". §5.4 e „nu face
+# merge in main"; regula citata e §0. Doua fisiere care descriu un agent se refereau la alta
+# regula decat cea pe care agentul o aplica, si nimic n-a semnalat.
+#
+# CE NU ACOPERA, spus explicit si masurat pe cazul care a produs-o: garda prinde sub-punctul
+# INEXISTENT (§5.99), nu sub-punctul EXISTENT folosit pentru alta regula — adica exact bug-ul de
+# mai sus, fiindca §5 chiar are un punct 4. Ca sa-l prinda ar trebui sa stie despre CE vorbeste
+# fiecare punct, ceea ce e judecata, ca §7 sau §16. Ramane o jumatate de acoperire, declarata.
+
+SUBPUNCT_REF = re.compile(r"§\s?(\d+[a-z]?)\.(\d+)")
+SUBPUNCT_DEF = re.compile(r"^\s*(\d+)\.\s", re.MULTILINE)
+
+
+def subpuncte_din_document(text: str) -> dict[str, set[str]]:
+    """Numerele de sub-punct ale fiecarei sectiuni: `## 5.` -> {'0','1',...,'22'}."""
+    bucati = re.split(r"^##+\s*(\d+[a-z]?)\.", text, flags=re.MULTILINE)
+    return {bucati[i]: set(SUBPUNCT_DEF.findall(bucati[i + 1]))
+            for i in range(1, len(bucati) - 1, 2)}
+
+
+def incalcari_subpuncte(fisiere: dict[str, str], subpuncte: dict[str, dict[str, set[str]]],
+                        proprietari: dict[str, str], implicit: str) -> list[str]:
+    """`§N.M` citat in proza normativa trebuie sa aiba un punct M in sectiunea N.
+
+    O sectiune fara sub-puncte numerotate nu produce incalcari: `§13.2` intr-un document unde §13
+    e proza n-are cum sa fie verificat, iar a-l declara gresit ar fi tot o minciuna mecanica.
+    """
+    gasite = []
+    for cale, text in sorted(fisiere.items()):
+        document = proprietari.get(cale, implicit)
+        harta = subpuncte.get(document, {})
+        for linie in linii_de_continut(text):
+            for sectiune, punct in SUBPUNCT_REF.findall(linie):
+                cunoscute = harta.get(sectiune)
+                if cunoscute and punct not in cunoscute:
+                    gasite.append(
+                        f"{cale} trimite la §{sectiune}.{punct}, inexistent in {document}")
+    return gasite
+
+
+def test_fiecare_trimitere_la_subpunct_are_tinta():
+    fisiere = fisiere_normative()
+    subpuncte = {document: subpuncte_din_document((ROOT / document).read_text(encoding="utf-8"))
+                 for document in {DOCUMENT_IMPLICIT, *PROPRIETAR_SECTIUNI.values()}}
+    incalcari = incalcari_subpuncte(fisiere, subpuncte, PROPRIETAR_SECTIUNI, DOCUMENT_IMPLICIT)
+    assert not incalcari, "\n  ".join(incalcari)
+
+
+def test_garda_subpunctelor_pica_pe_punct_inexistent():
+    harta = {"CLAUDE.md": {"5": {"1", "2", "3", "4"}}}
+    assert incalcari_subpuncte({"x.md": "prima linie\nvezi §5.99"}, harta, {}, "CLAUDE.md")
+
+
+def test_garda_subpunctelor_accepta_punctul_care_chiar_exista():
+    harta = {"CLAUDE.md": {"5": {"1", "2", "3", "4"}}}
+    assert not incalcari_subpuncte({"x.md": "prima linie\nvezi §5.4"}, harta, {}, "CLAUDE.md")
+
+
+def test_garda_subpunctelor_tace_pe_sectiune_fara_puncte_numerotate():
+    """Fara asta, orice `§13.2` ar deveni rosu doar fiindca §13 e scrisa ca proza."""
+    harta = {"CLAUDE.md": {"13": set()}}
+    assert not incalcari_subpuncte({"x.md": "prima linie\nvezi §13.2"}, harta, {}, "CLAUDE.md")
+
+
+def test_harta_subpunctelor_chiar_citeste_contractul_real():
+    """O harta goala ar face garda sa treaca pe orice — deci se verifica pe documentul real."""
+    harta = subpuncte_din_document((ROOT / "CLAUDE.md").read_text(encoding="utf-8"))
+    assert "4" in harta.get("5", set()), "§5.4 nu mai e un sub-punct al §5"
