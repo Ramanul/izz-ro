@@ -157,7 +157,7 @@ def load_html_sources(csv_path: str, limit: int) -> dict:
         judet_by_key[key] = row["judet"]
 
     # omonimele apar si aici: 2x Aninoasa (Dambovita/Gorj) masurat in lotul de 16 (09-05)
-    _disambigueaza_omonime(result, judet_by_key, _by_name)
+    _disambigueaza_omonime(result, _provider_din_judet_key(judet_by_key), _by_name)
     return result
 
 
@@ -236,22 +236,53 @@ def _make_slug(judet: str, localitate: str) -> str:
     return slug
 
 
-def _disambigueaza_omonime(result: dict, judet_by_key: dict, by_name: dict) -> None:
+def _disambigueaza_omonime(result: dict, judet_provider, by_name: dict) -> None:
     """Omonimele legitime primesc județul in paranteza, ca numele afisat sa fie unic.
     Catalogul de surse cere unicitate (test_render_sources) si omonimele apar in ORICE
-    lot mare de primarii: 3x Ștefănești, 2x Beclean, 2x Vidra in GOLD (masurat 09-05),
-    2x Aninoasa in sursele wp_json (masurat in aceeasi zi). In-place pe `result`."""
+    lot mare de primarii: 3x Ștefănești in GOLD, 2x Aninoasa in wp_json, 2x Măgura si
+    2x Cristești DOAR la intersectia GOLD+wp_json (masurate 2026-09-05/06). In-place.
+    `judet_provider(cheie)` -> eticheta județului cu diacritice, sau None.
+    """
     if not result:
         return
     _dubluri = {n for n, c in Counter(v["name"] for v in result.values()).items() if c > 1}
     if not _dubluri:
         return
-    _et = _etichete_judete(by_name)
     for _key, _v in result.items():
         if _v["name"] in _dubluri:
-            _etiqueta = _et.get(_norm(judet_by_key.get(_key, "").upper()))
+            _etiqueta = judet_provider(_key)
             if _etiqueta:
                 _v["name"] = f"{_v['name']} ({_etiqueta})"
+
+
+def _provider_din_judet_key(judet_by_key: dict):
+    """Providerul standard cand județul e stocat pe cheie (loturi individuale)."""
+    _by_name = localities.load_dataset()
+    _et = _etichete_judete(_by_name)
+    return lambda cheie: _et.get(_norm(judet_by_key.get(cheie, "").upper()))
+
+
+def disambigueaza_nume_in_config(sources: dict) -> None:
+    """A doua tura, la nivel de CONFIG: omonimele INTRE loturi (GOLD vs wp_json/html vs
+    surse literale) nu se vad in loaderele individuale. Județul se recupereaza din cheia
+    `pl_<judet>_<localitate>`: cautam codul de judet a carui forma-slug e prefix-ul cheii,
+    cel mai lung primul (BISTRITA-NASAUD inaintea unui eventual BISTRITA)."""
+    _by_name = localities.load_dataset()
+    _et = _etichete_judete(_by_name)
+    _coduri = sorted(_et.keys(), key=len, reverse=True)
+    forme = [(cod, re.sub(r"_+", "_", re.sub(r"[^a-z0-9]", "_", cod.lower())).strip("_"))
+             for cod in _coduri]
+
+    def provider(cheie: str):
+        if not cheie.startswith("pl_"):
+            return None
+        slug = cheie[3:]
+        for cod, forma in forme:
+            if slug == forma or slug.startswith(forma + "_"):
+                return _et[cod]
+        return None
+
+    _disambigueaza_omonime(sources, provider, _by_name)
 
 
 def load_gold_sources(csv_path: str, limit: int, min_date: str = "2026-01-01") -> dict:
@@ -300,6 +331,6 @@ def load_gold_sources(csv_path: str, limit: int, min_date: str = "2026-01-01") -
 
     # omonimele legitime primesc județul in paranteza, ca numele afisat sa fie unic
     # (vezi _etichete_judete: 3x Ștefănești, 2x Beclean, 2x Vidra — masurat pe 300 surse)
-    _disambigueaza_omonime(result, judet_by_key, _by_name)
+    _disambigueaza_omonime(result, _provider_din_judet_key(judet_by_key), _by_name)
 
     return result

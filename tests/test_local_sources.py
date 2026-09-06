@@ -168,8 +168,8 @@ def test_tie_break_asc_judet_localitate(tmp_path):
 def test_integration_pl_sources_count():
     from generator import config
     count = sum(1 for k in config.SOURCES if k.startswith("pl_"))
-    # LOCAL_GOLD_LIMIT (300) + LOCAL_HTML_LIMIT (100) — sursele pl_ fara RSS vin in plus
-    assert 0 < count <= 400
+    # LOCAL_GOLD_LIMIT (300) + LOCAL_HTML_LIMIT (250) — sursele pl_ fara RSS vin in plus
+    assert 0 < count <= 550
 
 
 def test_pl_sources_ordered_before_gsp():
@@ -294,6 +294,6 @@ def test_html_sources_ordine_impact(tmp_path):
 def test_integration_html_sources_in_config():
     from generator import config
     html = [k for k, v in config.SOURCES.items() if v.get("type") in ("wp_json", "html_list")]
-    assert 0 < len(html) <= 100  # LOCAL_HTML_LIMIT default
+    assert 0 < len(html) <= 250  # LOCAL_HTML_LIMIT default
     for k in html:
         assert config.SOURCES[k]["category"] == "local" and config.SOURCES[k]["url"].startswith("http")
