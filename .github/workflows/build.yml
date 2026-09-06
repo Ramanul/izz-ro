@@ -108,6 +108,14 @@ jobs:
           AI_PROVIDER: gemini
         run: python tools/fetch_leadphotos.py
 
+      - name: Poze DE LA eveniment (Commons, fereastra stirii, clasa A)
+        continue-on-error: true
+        env:
+          MAX_EVENT_LOOKUPS: "10"
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          AI_PROVIDER: gemini
+        run: python tools/fetch_eventphotos.py
+
       - name: IndexNow — ce s-a schimbat (scrie manifestul, NU trimite inca)
         continue-on-error: true
         run: python tools/indexnow_submit.py --plan
