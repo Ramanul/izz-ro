@@ -61,19 +61,60 @@ def _norm(text: str) -> str:
     return re.sub(r"\s+", " ", fara).strip().lower()
 
 
-def _cifre(text: str) -> list[str]:
-    """Siruri de cifre, normalizate: separatorii de mii si zecimalele se arunca.
+# Un separator leaga doua grupuri de cifre intr-un SINGUR numar doar cand arata a
+# separator de mii: cel mult 3 cifre in stanga, exact 3 in dreapta („1.500.000", „1 500").
+# Orice altceva — o data („13.08.2026"), o enumerare („2026, 13") — sunt numere distincte.
+# Tiparul vechi, `\d[\d.,\s]*\d`, inghitea separatori MULTIPLI si lipea tot ce prindea:
+# „13.08.2026" devenea „13082026", deci „13" si „2026" nu mai existau in sursa si un
+# rezumat corect era marcat `cifra_straina`. Masurat 2026-09-06 pe rularea 34013150305:
+# a blocat publicarea intregului site pe doua anunturi de primarie.
+_GRUP_NUMERIC = re.compile(r"\d+(?:[.,\s]\d+)*")
+_SEPARATOR_MII = re.compile(r"^\d{1,3}(?:[.,\s]\d{3})+$")
 
-    „1.500", „1 500" si „1500" sunt acelasi numar. Numerele de o singura cifra se ignora:
-    apar peste tot din motive gramaticale si ar produce zgomot, nu semnal.
+
+def _variante_numar(token: str) -> set[str]:
+    """Formele sub care acelasi token numeric poate fi recunoscut.
+
+    Un format valid de mii se citeste DOAR lipit („1.500.000" e un milion si jumatate,
+    nu 1, 500 si 000). Restul se citeste in ambele feluri, ca o data sau o enumerare sa
+    nu isi ascunda componentele.
     """
-    brut = re.findall(r"\d[\d.,\s]*\d|\d", text or "")
+    parti = [p for p in re.split(r"[.,\s]+", token) if p]
+    lipit = "".join(parti)
+    out: set[str] = set()
+    if len(lipit) >= 2:
+        out.add(lipit)
+    if not _SEPARATOR_MII.match(token):
+        out.update(p for p in parti if len(p) >= 2)
+    return out
+
+
+def _cifre(text: str) -> list[str]:
+    """Numerele din text, normalizate.
+
+    Numerele de o singura cifra se ignora: apar peste tot din motive gramaticale si ar
+    produce zgomot, nu semnal.
+    """
     iesire = []
-    for n in brut:
-        curat = re.sub(r"[.,\s]", "", n)
-        if len(curat) >= 2:
-            iesire.append(curat)
+    for token in _GRUP_NUMERIC.findall(text or ""):
+        variante = _variante_numar(token)
+        if variante:
+            iesire.append(min(sorted(variante), key=len))
     return iesire
+
+
+def _index_cifre(text: str) -> set[str]:
+    """Toate formele numerelor din sursa.
+
+    Indexarea e GENEROASA deliberat, si asimetria e voita: gate-ul e blocant, deci un
+    fals pozitiv opreste publicarea unui articol corect (costul masurat: site inghetat),
+    pe cand un fals negativ cere ca numarul inventat sa fie exact concatenarea a doua
+    numere reale alaturate din sursa.
+    """
+    idx: set[str] = set()
+    for token in _GRUP_NUMERIC.findall(text or ""):
+        idx |= _variante_numar(token)
+    return idx
 
 
 def citate_inventate(rezumat: str, sursa: str) -> list[str]:
@@ -98,8 +139,13 @@ def cifre_straine(rezumat: str, sursa: str) -> list[str]:
     §2.7: cifrele se transporta exact. Un numar aparut din compresie e cel mai usor de
     prins tip de fapt inventat, si cel mai greu de observat cu ochiul liber.
     """
-    in_sursa = set(_cifre(sursa))
-    return [n for n in _cifre(rezumat) if n not in in_sursa]
+    in_sursa = _index_cifre(sursa)
+    straine = []
+    for token in _GRUP_NUMERIC.findall(rezumat or ""):
+        variante = _variante_numar(token)
+        if variante and not (variante & in_sursa):
+            straine.append(min(sorted(variante), key=len))
+    return straine
 
 
 def rezerva_pierduta(rezumat: str, sursa: str) -> bool:
