@@ -30,6 +30,7 @@ from . import geo, localities
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 COORDS = os.path.join(ROOT, "data", "localities_coords.json")
+TARI = os.path.join(ROOT, "data", "tari.json")
 UA = "izz.ro-pipeline/1.0 (coperti din date; contact: contact@izz.ro)"
 
 _ZILE = ["L", "M", "M", "J", "V", "S", "D"]
@@ -166,21 +167,65 @@ def _fereastra_cutremur(a: dict) -> tuple[str, str]:
             (d0 + datetime.timedelta(hours=30)).isoformat()[:10])
 
 
-def cutremur(a: dict) -> dict | None:
-    """Cel mai puternic seism din caseta Romaniei in fereastra articolului, sau None.
+# ------------------------------------------------------------------- tari --
+_TARI_CACHE: dict | None = None
 
-    Sursa: EMSC FDSN (acopera microseismele romanesti pe care USGS NU le are — masurat
-    2026-09-06: Vrancea 30-31 aug, M2.5-3.4, prezent in EMSC, absent in USGS).
-    Alegerea max-magnitudine e determinista; fereastra larga +-2 zile poate prinde un
-    seism vecin mai mare decat cel din titlu — riscul e acoperit de poarta de categorie
-    (local/judetean) si de faptul ca hartile arata locul real al epicentrului.
+
+def _incarca_tari() -> dict:
+    """{nume normalizat (fara diacritice): inregistrare}. Fail-safe {} la fisier lipsa."""
+    global _TARI_CACHE
+    if _TARI_CACHE is not None:
+        return _TARI_CACHE
+    try:
+        raw = json.load(open(TARI, encoding="utf-8"))
+        _TARI_CACHE = {localities.norm(nume): recs
+                       for nume, recs in raw.get("by_name", {}).items()}
+    except (OSError, ValueError):
+        _TARI_CACHE = {}
+    return _TARI_CACHE
+
+
+def tara(a: dict, tari: dict | None = None) -> dict | None:
+    """Tara numita in titlu/rezumat, sau None. Cea mai lunga denumire bate (Nigeria > Niger;
+    \b la granita de cuvant taie 'Niger' din 'Nigeria' oricum). Numarul complexe
+    ('M 5,2') nu poate colisiona pentru ca numele incep cu litera."""
+    tari = tari if tari is not None else _incarca_tari()
+    if not tari:
+        return None
+    text = " " + localities.norm(f"{a.get('title') or ''} {a.get('teaser') or ''}") + " "
+    for nume in sorted(tari, key=len, reverse=True):
+        if re.search(rf"\b{re.escape(nume)}\b", text):
+            return tari[nume][0]
+    return None
+
+
+def cutremur(a: dict, tari: dict | None = None) -> dict | None:
+    """Cel mai puternic seism relevant pentru articol in fereastra lui, sau None.
+
+    Doua rute deterministe, in ordine:
+      - TARA numita in text (stirile externe): cutia EMSC = centroid ± jumatatea
+        tarii (din data/tari.json, generat din Wikidata), minmagnitude 4.0;
+      - ROMANIA (local/judetean): caseta fixa a tarii, minmagnitude 2.5. EMSC, nu
+        USGS — masurat 2026-09-06: Vrancea M2.5-3.4 e in EMSC, absent din USGS.
+    Alegerea max-magnitudine e determinista; fail-safe complet la retea/parsare.
     """
     text = f"{a.get('title') or ''} {a.get('teaser') or ''}"
-    if a.get("category") not in localities._GEO_CATEGORIES or not _CUTREMUR.search(text):
+    if not _CUTREMUR.search(text):
+        return None
+    rec = tara(a, tari)
+    if rec:
+        box = (f"minlatitude={rec['lat'] - rec['jumatate_grade']:.2f}"
+               f"&maxlatitude={rec['lat'] + rec['jumatate_grade']:.2f}"
+               f"&minlongitude={rec['lon'] - rec['jumatate_grade'] * 1.35:.2f}"
+               f"&maxlongitude={rec['lon'] + rec['jumatate_grade'] * 1.35:.2f}")
+        mag_min, loc = 4.0, rec["ro"]
+    elif a.get("category") in localities._GEO_CATEGORIES:
+        box = "&".join(f"{k}={v}" for k, v in _RO_BOX.items())
+        mag_min, loc = _MAG_MIN, None
+    else:
         return None
     t0, t1 = _fereastra_cutremur(a)
-    box = "&".join(f"{k}={v}" for k, v in _RO_BOX.items())
-    url = f"{_EMSC}&starttime={t0}&endtime={t1}&minmagnitude={_MAG_MIN}&{box}"
+    url = f"{_EMSC}&starttime={t0}&endtime={t1}&minmagnitude={mag_min}&{box}"
     try:
         evenimente = parse_emsc(json.loads(_http_get(url)))
     except (OSError, ValueError, KeyError, TypeError):
@@ -189,7 +234,7 @@ def cutremur(a: dict) -> dict | None:
         return None
     top = max(evenimente, key=lambda e: (e["mag"], e["timp"]))
     return {"tip": "cutremur", "mag": top["mag"], "lat": top["lat"], "lon": top["lon"],
-            "adancime": top["adancime"], "data": top["timp"], "sursa": "EMSC"}
+            "adancime": top["adancime"], "data": top["timp"], "sursa": "EMSC", "loc": loc}
 
 
 def attach(articles: list[dict], by_name: dict | None = None,
@@ -200,6 +245,7 @@ def attach(articles: list[dict], by_name: dict | None = None,
     coordonate creste incremental si se comisoreaza odata cu stare.
     """
     by_name = by_name if by_name is not None else localities.load_dataset()
+    tari = _incarca_tari()
     cache = _load_coords(coords_path)
     n = 0
     for a in articles:
@@ -212,7 +258,7 @@ def attach(articles: list[dict], by_name: dict | None = None,
             if latlon:
                 chart = prognoza(loc, latlon[0], latlon[1])
         if chart is None:
-            chart = cutremur(a)
+            chart = cutremur(a, tari)
         if chart:
             a["event_chart"] = chart
             n += 1
