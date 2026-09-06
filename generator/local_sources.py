@@ -110,6 +110,57 @@ _DEAD_SLUGS = frozenset({
 })
 
 
+def load_html_sources(csv_path: str, limit: int) -> dict:
+    """Sursele locale FARA RSS, validate individual: WordPress REST API (tip `wp_json`) si
+    liste e-adm „notice" (tip `html_list` cu selectori). CSV: judet,localitate,url,tip,
+    base_url,item,title,date. Aceleasi conventii ca `load_gold_sources`: surse oficiale
+    (prefix `pl_`, category `local`), deterministe, {} daca fisierul lipseste, limit<=0 → {}.
+    Cheia poate ciocni un `pl_` din GOLD pentru acelasi UAT — aici second-wins la INSERT
+    (config.py face update dup GOLD), deci verificam explicit: primul castiga.
+    """
+    if limit <= 0:
+        return {}
+    if not os.path.isfile(csv_path):
+        return {}
+
+    _by_name = localities.load_dataset()
+    rows = []
+    with open(csv_path, encoding="utf-8-sig", newline="") as f:
+        for row in csv.DictReader(f):
+            url = (row.get("url") or "").strip()
+            tip = (row.get("tip") or "").strip()
+            if url and tip in ("wp_json", "html_list"):
+                rows.append(row)
+
+    # acelasi criteriu de prioritate ca la GOLD: municipiu > oras > comuna, apoi alfabetic
+    rows.sort(key=lambda r: (r["judet"], r["localitate"]))
+    rows.sort(key=lambda r: _impact_tier(r["localitate"]))
+
+    result: dict = {}
+    judet_by_key: dict = {}
+    for row in rows[:limit]:
+        key = "pl_" + _make_slug(row["judet"], row["localitate"])
+        if key in result:
+            continue
+        sursa = {
+            "name": nume_primarie(row["judet"], row["localitate"], _by_name),
+            "url": row["url"].strip(),
+            "category": "local",
+            "type": row["tip"].strip(),
+        }
+        if sursa["type"] == "html_list":
+            sursa["base_url"] = (row.get("base_url") or "").strip()
+            sursa["item"] = (row.get("item") or "").strip()
+            sursa["title"] = (row.get("title") or "").strip() or None
+            sursa["date"] = (row.get("date") or "").strip() or None
+        result[key] = sursa
+        judet_by_key[key] = row["judet"]
+
+    # omonimele apar si aici: 2x Aninoasa (Dambovita/Gorj) masurat in lotul de 16 (09-05)
+    _disambigueaza_omonime(result, judet_by_key, _by_name)
+    return result
+
+
 def nume_primarie(judet: str, localitate: str, by_name: dict) -> str:
     """Numele AFISAT al sursei, cu diacritice si fara prefixul administrativ.
 
@@ -185,6 +236,24 @@ def _make_slug(judet: str, localitate: str) -> str:
     return slug
 
 
+def _disambigueaza_omonime(result: dict, judet_by_key: dict, by_name: dict) -> None:
+    """Omonimele legitime primesc județul in paranteza, ca numele afisat sa fie unic.
+    Catalogul de surse cere unicitate (test_render_sources) si omonimele apar in ORICE
+    lot mare de primarii: 3x Ștefănești, 2x Beclean, 2x Vidra in GOLD (masurat 09-05),
+    2x Aninoasa in sursele wp_json (masurat in aceeasi zi). In-place pe `result`."""
+    if not result:
+        return
+    _dubluri = {n for n, c in Counter(v["name"] for v in result.values()).items() if c > 1}
+    if not _dubluri:
+        return
+    _et = _etichete_judete(by_name)
+    for _key, _v in result.items():
+        if _v["name"] in _dubluri:
+            _etiqueta = _et.get(_norm(judet_by_key.get(_key, "").upper()))
+            if _etiqueta:
+                _v["name"] = f"{_v['name']} ({_etiqueta})"
+
+
 def load_gold_sources(csv_path: str, limit: int, min_date: str = "2026-01-01") -> dict:
     if limit <= 0:
         return {}
@@ -231,14 +300,6 @@ def load_gold_sources(csv_path: str, limit: int, min_date: str = "2026-01-01") -
 
     # omonimele legitime primesc județul in paranteza, ca numele afisat sa fie unic
     # (vezi _etichete_judete: 3x Ștefănești, 2x Beclean, 2x Vidra — masurat pe 300 surse)
-    if result:
-        _dubluri = {n for n, c in Counter(v["name"] for v in result.values()).items() if c > 1}
-        if _dubluri:
-            _et = _etichete_judete(_by_name)
-            for _key, _v in result.items():
-                if _v["name"] in _dubluri:
-                    _etiqueta = _et.get(_norm(judet_by_key.get(_key, "").upper()))
-                    if _etiqueta:
-                        _v["name"] = f"{_v['name']} ({_etiqueta})"
+    _disambigueaza_omonime(result, judet_by_key, _by_name)
 
     return result

@@ -5,13 +5,13 @@
 >
 > **Hard cap: ~40 lines of content.**
 
-**Updated:** 2026-09-05
+**Updated:** 2026-09-06 (#295 merged: redesign editorial coperte clasice — regenerare progresiva ~1 sapt; #283: felia meteo live)
 
 ## Open
 
+- **Coperte din date — felia 2**: harta de cutremur (USGS) + retroactiv pe vreme; baza e #283 (merged).
 - **PR #282 — audit unified hardening:** merged 09-05, branch `audit-unified-hardening-2026-09-05`.
-  K1–K14 have explicit closure status in
-  `specs/regim-reguli.md`.
+  K1–K14 closure status: `specs/regim-reguli.md`.
 - **CI closure:** the latest verified run is not yet green. The runtime dependency install is fixed;
   remaining failures are regression-contract mismatches discovered by the suite and must be fixed
   before the audit can be called closed.
@@ -35,6 +35,7 @@
   (REGULI-SINTEZA 2.2), the calibration journal holds no real corpus yet.
 - **Triage journal:** ingest discards (fetch losses, no-substance rejects, expired) land per run in
   `data/triage_log.jsonl`, committed with pipeline state.
+- **Grounding defer:** deterministic grounding violations defer the item, not the release; post-commit gate stays fail-closed.
 - **Silence detection:** hourly `detectie-tacere.yml` checks last runs of build/monitor/smoke/feedcheck
   and the last content commit against ceilings; alert issue opens on silence and closes on recovery.
 - **Human gate is a switch:** `IZZ_REQUIRE_HUMAN_GATE` is a repo variable (default false, armable from
@@ -51,5 +52,4 @@
 
 ## Where the rest lives
 
-`specs/regim-reguli.md` — unified audit closure · `specs/istoric-executie.md` — settled history ·
-`specs/registru.tsv` — decisions · `specs/masuratori-frontend.md` — measurements · `CLAUDE.md` — canonical contract.
+`specs/regim-reguli.md` — unified audit closure · `specs/registru.tsv` — decisions · `CLAUDE.md` — canonical contract.
