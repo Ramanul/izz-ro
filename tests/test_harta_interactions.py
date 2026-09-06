@@ -154,3 +154,17 @@ def test_uat_selection_is_url_navigable_state():
     # Asignarea UAT-urilor se face din rawVisible, nu din visible: selectia se filtreaza pe
     # baza asignarii, deci din visible s-ar auto-hrani (toate celelalte UAT-uri ar cadea pe 0).
     assert "for (const item of state.rawVisible) {" in js
+
+
+def test_map_has_location_breadcrumb_and_plain_language():
+    # Firul ierarhic = pozitie in IERARHIE (NN/g), nivelul curent text cu aria-current;
+    # interfata vorbeste limba utilizatorului ("orase si comune"), nu jargon administrativ.
+    html = Path("static/harta-stiri/index.html").read_text(encoding="utf-8")
+    js = Path("static/harta-stiri/harta-stiri.js").read_text(encoding="utf-8")
+    assert 'id="map-breadcrumb"' in html
+    assert "function updateBreadcrumb(" in js
+    assert 'aria-current", "location"' in js
+    assert 'Orașe și comune cu știri în' in js
+    assert 'UAT-uri cu știri în' not in js
+    # Text unic de revenire (audit P2: trei texte diferite au devenit unul).
+    assert 'state.backButton.textContent = "← Înapoi la România"' in js
