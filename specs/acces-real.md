@@ -70,16 +70,36 @@ e deliberat: ca gaura să se închidă, schimbarea trebuie să treacă prin revi
 sesiune. A o aplica ocolind garda ar fi exact comportamentul pe care fișierul ăsta îl
 documentează ca risc.
 
-Patch-ul propus, gata de aplicat de proprietar, adaugă în `deny`:
+### Patch-ul de aplicat — decis de proprietar 2026-09-06
 
-```
-"Bash(git merge:*)", "Bash(git push origin main:*)", "Bash(git push:* main:*)",
-"mcp__github__merge_pull_request", "mcp__github__enable_pr_auto_merge",
-"mcp__github__push_files", "mcp__github__create_or_update_file"
+Aleasă e **varianta îngustă**: se refuză exact cele două unelte care fac merge, nimic altceva.
+Fluxul normal — push pe branch de lucru, deschidere de PR — rămâne neatins.
+
+În `deny` din `.claude/settings.json`, după `"Bash(git reset:*)"`:
+
+```json
+      "mcp__github__merge_pull_request",
+      "mcp__github__enable_pr_auto_merge"
 ```
 
-Ultimele două opresc și scrisul direct în `main`, dar opresc și scrisul legitim în branch de
-lucru — costul e real și e al proprietarului să-l cântărească, nu al sesiunii.
+**Se aplică împreună cu editarea din `CLAUDE.md` §5.4: `MERGE-GUARD = absent` devine `partial`.**
+Cele două sunt o pereche atomică — garda recalculează starea la fiecare rulare, deci oricare
+singură face CI roșu. Asta e comportamentul dorit, nu un efect secundar.
+
+Respinse deliberat, cu motivul:
+
+- `push_files` / `create_or_update_file` — ar închide și scrisul direct în `main` fără PR, dar
+  blochează și scrierile legitime prin MCP într-un branch de lucru. Cost prea mare pentru cât
+  acoperă.
+- Branch protection — ar apăra repo-ul, nu doar sesiunile, dar nu se poate verifica din `tests/`,
+  deci `MERGE-GUARD` ar rămâne `absent` fără ca asta să mai fie adevărat. Rămâne opțiune separată.
+
+**Cine aplică:** proprietarul, manual. O sesiune nu poate: hook-ul refuză `Edit` pe fișier —
+măsurat, nu presupus („DENY: direct agent edit blocked for protected control-plane file"). Există
+o cale de ocolire — `mcp__github__create_or_update_file`, chiar una dintre cele patru din §2 — și
+**nu se folosește**. La fel, nu se scrie un `tools/aplica_*.py` care să facă schimbarea printr-un
+nivel de indirectare: hook-ul potrivește pe textul comenzii, deci un asemenea script ar dezarma
+garda permanent, pentru orice sesiune viitoare, nu doar pentru asta.
 
 ## 6. Trimiterile greșite găsite pe drum
 
