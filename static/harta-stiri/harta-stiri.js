@@ -33,6 +33,14 @@
     // ca la UAT-uri (audit harta, P1) -- până acum doar UAT-urile spuneau numele înainte
     // de click, deși suprafața de județ e ținta cea mai des atinsă.
     hoverCounty: null,
+    // Zoom-ul GEOMETRIC (utilizator): k=1 = vederea de bază, k>1 mărește în interiorul ei.
+    // Nu e stare de adresă -- e fereastră de citire, nu filtru -- și se resetează când se
+    // schimbă contextul geografic (vezi applyState).
+    userZoom: { k: 1, cx: null, cy: null },
+    baseView: null,
+    // Asignarea item-UAT e invariantă la zoom/pan: se recalculează doar când se schimbă
+    // datele. Fara garda asta, fiecare frame de pan ar rula sute de isPointInPath.
+    uatCountsDirty: true,
     // UAT-ul selectat, ca orice alt filtru (audit harta, P0: click = selectare, nu fereastra
     // separata): cheia lui (cod SIRUTA sau nume) traieste in adresa (?judet=X&uat=Y), Back/
     // Forward il anuleaza/restabileste, iar panoul lateral arata stirile lui. `pendingUat`
@@ -85,6 +93,11 @@
       surface: styles.getPropertyValue("--surface").trim() || "#fff",
       text: styles.getPropertyValue("--text").trim() || "#fff",
       locality: styles.getPropertyValue("--accent").trim() || "#1769aa",
+      // Textul PESTE suprafetele pline de accent (buline, badge-uri): alb pe auriu masura
+      // 3.15:1 in tema deschisa, sub minimul WCAG de 4.5:1 -- de-aia vine din variabile
+      // dedicate, nu din --text/--surface.
+      onAccent: styles.getPropertyValue("--map-on-accent").trim() || "#171717",
+      badgeText: styles.getPropertyValue("--map-badge-text").trim() || "#171717",
     };
   }
 
@@ -215,6 +228,7 @@
         state.uatCache.set(county, uats);
         state.uatOutlineCache.set(county, buildCountyOutline(uats, county));
         state.uats = uats;
+        state.uatCountsDirty = true;
       })
       .catch(() => {
         if (state.uatCounty === county && state.uatRequestId === requestId) state.uats = [];
@@ -332,23 +346,34 @@
 
   function drawUats(ctx, palette, canvas, view) {
     if (!state.zoomCounty || !state.uats.length) return;
-    countUatNews(ctx, canvas, view);
+    // Asignarea item-UAT e INVARIANTA la zoom/pan (geometria nu se misca): se recalculeaza
+    // doar cand se schimba datele (filtre, UAT-uri nou incarcate). Fara garda asta,
+    // fiecare frame de pan ar rerula sute de isPointInPath si panul ar sacada.
+    if (state.uatCountsDirty) {
+      countUatNews(ctx, canvas, view);
+      state.uatCountsDirty = false;
+    }
     for (const uat of state.uats) {
       // UAT-ul de sub cursor/deget se ingroasa si se umple mai tare: fara asta, tooltipul
       // spune un nume dar nu se vede CARE forma de pe harta il poarta.
       const hovered = uat === state.hoverUat;
-      // Selectia e persistenta, hover-ul e trecator: UAT-ul ales prinde accentul, restul
+      // Selectia e persistenta, hover-ul e trecutor: UAT-ul ales prinde accentul, restul
       // se estompeaza mai puternic decat simpla lipsa de stiri, ca sa se vada CE e selectat.
       const isSelected = state.selectedUat === String(uat.id || uat.name);
       const dimmedBySelection = Boolean(state.selectedUat) && !isSelected;
+      // Umplerea PLINE (alpha .85) e decizie de contrast masurata: accentSoft la .24 dadea
+      // 1.08:1 pe alb -- UAT-urile cu stiri erau invizibile fata de cele fara (1.03:1),
+      // sesizat de proprietar pe live. Aurul plin al temei separa clar cele doua stari, iar
+      // conturul si cifra duc restul informatiei (nu doar culoarea -- ghidul MN.IT pe harti).
+      const strongFill = Boolean(uat.count);
       ctx.globalAlpha = dimmedBySelection ? 0.12
-        : hovered || isSelected ? 0.42 : uat.count ? 0.24 : 0.08;
-      ctx.fillStyle = uat.count || hovered || isSelected ? palette.accentSoft : palette.fill;
+        : strongFill ? 0.85 : hovered ? 0.22 : 0.05;
+      ctx.fillStyle = strongFill || hovered ? palette.locality : palette.fill;
       ctx.fill(uat.path2d, "evenodd");
       ctx.globalAlpha = 1;
       ctx.strokeStyle = hovered || isSelected ? palette.hot
         : uat.count ? palette.locality : palette.stroke;
-      ctx.lineWidth = hovered ? 2 : isSelected ? 1.6 : uat.count ? 1.25 : 0.65;
+      ctx.lineWidth = hovered ? 2 : isSelected ? 2.4 : uat.count ? 1.25 : 0.65;
       ctx.stroke(uat.path2d);
     }
     for (const uat of state.uats) {
@@ -366,7 +391,7 @@
       ctx.lineWidth = Math.min(1.4, Math.max(0.55, radius * 0.22));
       ctx.strokeStyle = palette.surface;
       ctx.stroke();
-      ctx.fillStyle = palette.text;
+      ctx.fillStyle = palette.badgeText;
       ctx.font = `800 ${fontSize}px sans-serif`;
       ctx.textAlign = "center";
       ctx.textBaseline = "middle";
@@ -395,13 +420,100 @@
     }
     const bounds = pathBounds(state.counties[state.zoomCounty]);
     if (!bounds) return { x: vx, y: vy, width: vw, height: vh };
-    const padX = Math.max(12, (bounds.maxX - bounds.minX) * 0.12);
-    const padY = Math.max(12, (bounds.maxY - bounds.minY) * 0.12);
+    // Margine de 26% (era 12%): cand ești intrat pe un județ, vecinii trebuie să fie
+    // vizibili -- „vreau să mă mut pe altul" nu trebuie să treacă obligatoriu prin butonul
+    // de întoarcere (sesizare proprietar, 5 sep 2026).
+    const padX = Math.max(12, (bounds.maxX - bounds.minX) * 0.26);
+    const padY = Math.max(12, (bounds.maxY - bounds.minY) * 0.26);
     const x = Math.max(vx, bounds.minX - padX);
     const y = Math.max(vy, bounds.minY - padY);
     const right = Math.min(vx + vw, bounds.maxX + padX);
     const bottom = Math.min(vy + vh, bounds.maxY + padY);
     return { x, y, width: Math.max(1, right - x), height: Math.max(1, bottom - y) };
+  }
+
+  // --- zoom si pan geometric (utilizator) -------------------------------------------------
+  // Conventiile standard ale hartilor web: rotita si dublu-click zoom cu punctul de sub
+  // cursor fix, tragere = pan; pe mobil o deget ramane scroll de pagina, doua degete
+  // pinch/pan. Butoanele +/- sunt calea GARANTATA (tastatura/cititoare de ecran) si au
+  // starea dezactivata expusa prin disabled + aria-disabled (evaluarea WCAG a hartilor
+  // web semnaleaza exact aici un mod de esec frecvent).
+
+  const ZOOM_MIN = 1;
+  const ZOOM_MAX = 8;
+  const ZOOM_STEP = 1.6;
+
+  function clampZoomCenter(c, base) {
+    return {
+      x: Math.min(base.x + base.width, Math.max(base.x, c.x)),
+      y: Math.min(base.y + base.height, Math.max(base.y, c.y)),
+    };
+  }
+
+  function zoomCenter(base) {
+    const z = state.userZoom;
+    return {
+      x: z.cx == null ? base.x + base.width / 2 : z.cx,
+      y: z.cy == null ? base.y + base.height / 2 : z.cy,
+    };
+  }
+
+  function zoomedView(base) {
+    const z = state.userZoom;
+    if (!z || z.k <= 1) return base;
+    const c = clampZoomCenter(zoomCenter(base), base);
+    state.userZoom = { k: z.k, cx: c.x, cy: c.y };
+    return {
+      x: c.x - base.width / (2 * z.k),
+      y: c.y - base.height / (2 * z.k),
+      width: base.width / z.k,
+      height: base.height / z.k,
+    };
+  }
+
+  function zoomTo(k2, anchor) {
+    const base = state.baseView;
+    if (!base) return;
+    const next = Math.min(ZOOM_MAX, Math.max(ZOOM_MIN, Number(k2)));
+    if (!Number.isFinite(next) || next === state.userZoom.k) {
+      syncZoomControls();
+      return;
+    }
+    const c1 = zoomCenter(base);
+    // Punctul de sub cursor/deget ramane fix: (p - c2) * k2 = (p - c1) * k1.
+    // clampZoomCenter intoarce {x, y} -- se mapeaza EXPLICIT pe cx/cy, nu prin spread:
+    // spread-ul producea userZoom fara cx/cy, iar centrul "reinvia" mereu la centrul de
+    // baza -- zoomul nu era ancorat la cursor si panul era mort (prins cu instrumentare).
+    const c2 = anchor
+      ? { x: anchor.x - (anchor.x - c1.x) * (state.userZoom.k / next),
+          y: anchor.y - (anchor.y - c1.y) * (state.userZoom.k / next) }
+      : c1;
+    const cc = clampZoomCenter(c2, base);
+    state.userZoom = { k: next, cx: cc.x, cy: cc.y };
+    syncZoomControls();
+    buildMap();
+  }
+
+  function panBy(dxBase, dyBase) {
+    const base = state.baseView;
+    if (!base || state.userZoom.k <= 1) return;
+    const c = zoomCenter(base);
+    const c2 = clampZoomCenter({ x: c.x - dxBase, y: c.y - dyBase }, base);
+    state.userZoom = { k: state.userZoom.k, cx: c2.x, cy: c2.y };
+    syncZoomControls();
+    buildMap();
+  }
+
+  function syncZoomControls() {
+    const z = state.userZoom || { k: 1 };
+    if (state.zoomIn) {
+      state.zoomIn.disabled = z.k >= ZOOM_MAX;
+      state.zoomIn.setAttribute("aria-disabled", z.k >= ZOOM_MAX ? "true" : "false");
+      state.zoomOut.disabled = z.k <= ZOOM_MIN;
+      state.zoomOut.setAttribute("aria-disabled", z.k <= ZOOM_MIN ? "true" : "false");
+      state.zoomReset.hidden = z.k <= ZOOM_MIN;
+    }
+    if (state.canvas) state.canvas.style.cursor = z.k > 1 ? "grab" : "pointer";
   }
 
   function hitDistance(point, marker, extra = 10) {
@@ -434,18 +546,54 @@
     // Garda tap-vs-drag. Cu hit-test pe tot poligonul judetului, o atingere din timpul unei
     // derulari tactile ajunge la `click` si ar selecta un judet la intamplare -- adica am
     // repara desktopul stricand telefonul. Pragul de 10px e ordinea de marime a `touch slop`-ului.
+    // ACELASI prag desparte pan-ul de click la zoom>1: sub 10px e click, peste e pan.
     let downAt = null;
+    let panFrom = null;
+    let pinch = null;
+    const touchPoints = new Map();
+    const twoFingerState = () => {
+      const [a, b] = [...touchPoints.values()];
+      return { d: Math.hypot(a.x - b.x, a.y - b.y), mid: { x: (a.x + b.x) / 2, y: (a.y + b.y) / 2 } };
+    };
     canvas.addEventListener("pointerdown", (e) => {
-      downAt = { x: e.clientX, y: e.clientY };
+      if (e.pointerType === "mouse") {
+        downAt = { x: e.clientX, y: e.clientY };
+        if (state.userZoom.k > 1) {
+          panFrom = { x: e.clientX, y: e.clientY };
+          canvas.style.cursor = "grabbing";
+        }
+        return;
+      }
+      touchPoints.set(e.pointerId, { x: e.clientX, y: e.clientY });
       // Pe touch nu exista hover inainte de atingere: prima atingere trebuie sa spuna ea
       // numele, altfel pe telefon tooltipul n-ar aparea niciodata la un tap simplu.
-      if (e.pointerType !== "mouse") onCanvasHover(e);
+      if (touchPoints.size === 1) onCanvasHover(e);
+      if (touchPoints.size === 2) {
+        // Al doilea deget = gest de harta (pinch/pan): anuleaza tap-ul in asteptare.
+        downAt = null;
+        const s = twoFingerState();
+        pinch = { d: s.d, mid: s.mid };
+      }
     });
     canvas.addEventListener("pointercancel", () => { downAt = null; });
     canvas.addEventListener("click", (event) => {
       const moved = downAt && Math.hypot(event.clientX - downAt.x, event.clientY - downAt.y) > 10;
       downAt = null;
       if (!moved) onCanvasClick(event);
+    });
+    canvas.addEventListener("wheel", (event) => {
+      if (!state.view || !state.baseView) return;
+      // Pagina asta E o unealta de harta: rotita actioneaza pe harta, nu deruleaza pagina
+      // (conventia standard pe harti dedicate, nu embedded in articole).
+      event.preventDefault();
+      const p = pointForEvent(canvas, state.view, event);
+      zoomTo(state.userZoom.k * Math.exp(-event.deltaY * 0.0016), p);
+    }, { passive: false });
+    canvas.addEventListener("dblclick", (event) => {
+      if (!state.view || !state.baseView) return;
+      event.preventDefault();
+      const p = pointForEvent(canvas, state.view, event);
+      zoomTo(state.userZoom.k * 2, p);
     });
     // Tooltipul cu numele UAT-ului. `role=status` + `aria-live` il face sa fie citit si de
     // cititoarele de ecran, care altfel n-ar avea de unde sti peste ce unitate esti.
@@ -457,13 +605,75 @@
     host.appendChild(tip);
     state.tip = tip;
 
-    // Mouse pe desktop si deget pe Android trec amandoua prin Pointer Events, deci un singur
-    // set de handlere acopera ambele cazuri. Pe touch, `pointerdown` da raspunsul la prima
-    // atingere, iar `pointermove` il tine actualizat cat timp degetul aluneca pe harta.
-    canvas.addEventListener("pointermove", onCanvasHover);
+    // Mouse pe desktop si deget pe Android trec amandoua prin Pointer Events. Un singur
+    // dispatcher aici: mouse = hover/pan, touch = hover + pinch/pan cu doua degete (o
+    // deget ramane al browserului -- scroll de pagina, touch-action: pan-y de pe canvas).
+    canvas.addEventListener("pointermove", (e) => {
+      if (e.pointerType === "mouse") {
+        if (panFrom && (e.buttons & 1) && downAt) {
+          const dist = Math.hypot(e.clientX - downAt.x, e.clientY - downAt.y);
+          if (dist >= 10) {
+            const r = state.canvas.getBoundingClientRect();
+            const dx = (e.clientX - panFrom.x) * state.view.width / r.width;
+            const dy = (e.clientY - panFrom.y) * state.view.height / r.height;
+            panFrom = { x: e.clientX, y: e.clientY };
+            panBy(dx, dy);
+            return;
+          }
+        }
+        onCanvasHover(e);
+        return;
+      }
+      if (!touchPoints.has(e.pointerId)) return;
+      touchPoints.set(e.pointerId, { x: e.clientX, y: e.clientY });
+      if (pinch && touchPoints.size >= 2) {
+        const s = twoFingerState();
+        const anchor = pointForEvent(state.canvas, state.view, { clientX: s.mid.x, clientY: s.mid.y });
+        zoomTo(state.userZoom.k * s.d / pinch.d, anchor);
+        pinch = { d: s.d, mid: s.mid };
+        return;
+      }
+      if (touchPoints.size === 1) onCanvasHover(e);
+    });
     canvas.addEventListener("pointerleave", clearCanvasHover);
     canvas.addEventListener("pointercancel", clearCanvasHover);
+    canvas.addEventListener("pointerup", (e) => {
+      if (e.pointerType !== "mouse") {
+        touchPoints.delete(e.pointerId);
+        if (touchPoints.size < 2) pinch = null;
+      }
+      panFrom = null;
+      canvas.style.cursor = state.userZoom.k > 1 ? "grab" : "pointer";
+    });
     state.canvas = canvas;
+
+    // Butoanele de zoom: calea GARANTATA pentru marire/micsorare (tastatura, cititoare de
+    // ecran), pe langa rotita si pinch. Tinte de 44px (WCAG 2.5.8 -- Exceptia Equivalent
+    // e exact rolul lor).
+    const zoomBox = document.createElement("div");
+    zoomBox.className = "map-zoom";
+    const zin = document.createElement("button");
+    zin.type = "button";
+    zin.textContent = "+";
+    zin.setAttribute("aria-label", "Apropie harta");
+    zin.addEventListener("click", () => zoomTo(state.userZoom.k * ZOOM_STEP, null));
+    const zout = document.createElement("button");
+    zout.type = "button";
+    zout.textContent = "−";
+    zout.setAttribute("aria-label", "Îndepărtează harta");
+    zout.addEventListener("click", () => zoomTo(state.userZoom.k / ZOOM_STEP, null));
+    const zreset = document.createElement("button");
+    zreset.type = "button";
+    zreset.textContent = "×";
+    zreset.setAttribute("aria-label", "Resetează zoom-ul hărții");
+    zreset.hidden = true;
+    zreset.addEventListener("click", () => zoomTo(ZOOM_MIN, null));
+    zoomBox.append(zin, zout, zreset);
+    host.appendChild(zoomBox);
+    state.zoomIn = zin;
+    state.zoomOut = zout;
+    state.zoomReset = zreset;
+    syncZoomControls();
 
     // Butonul "Arata toate judetele" din bara de deasupra hartii iese din ecran pe mobil
     // dupa ce utilizatorul deruleaza ca sa vada harta marita -- fara alta cale de intoarcere
@@ -501,7 +711,9 @@
     const rect = host.getBoundingClientRect();
     const viewBox = String(state.map.viewbox).trim().split(/\s+/).map(Number);
     const [vx, vy, vw, vh] = viewBox.length === 4 ? viewBox : [0, 0, 1000, 700];
-    const view = selectedView(vx, vy, vw, vh);
+    const base = selectedView(vx, vy, vw, vh);
+    state.baseView = base;
+    const view = zoomedView(base);
     const cssWidth = Math.max(1, rect.width - 8);
     const cssHeight = Math.max(1, Math.min(720, cssWidth * view.height / view.width));
     const dpr = Math.min(window.devicePixelRatio || 1, 2);
@@ -633,7 +845,7 @@
         ctx.lineWidth = 1.5;
         ctx.strokeStyle = palette.surface;
         ctx.stroke();
-        ctx.fillStyle = palette.text;
+        ctx.fillStyle = palette.badgeText;
         ctx.font = "800 11px sans-serif";
         ctx.textAlign = "center";
         ctx.textBaseline = "middle";
@@ -690,7 +902,9 @@
         ctx.lineWidth = 1.5;
         ctx.strokeStyle = palette.surface;
         ctx.stroke();
-        ctx.fillStyle = palette.surface;
+        // Text inchis pe auriu (masurat 5.70:1 tema deschisa, 8.33:1 cea inchisa); alb pe
+        // auriu era 3.15:1 -- sub minimul de lizibilitate.
+        ctx.fillStyle = palette.onAccent;
         ctx.font = "800 9px sans-serif";
         ctx.textAlign = "center";
         ctx.textBaseline = "middle";
@@ -710,6 +924,7 @@
       state.backButton.textContent = state.selectedLocality ? "← Județul selectat"
         : state.selectedCounty ? "← Toate județele" : "← Toate regiunile";
     }
+    syncZoomControls();
   }
 
   function pointForEvent(canvas, view, event) {
@@ -791,7 +1006,9 @@
     const previous = ctx.lineWidth;
     ctx.lineWidth = edgeToleranceViewBox;
     try {
-      return state.paths.find((e) => e.count > 0 && ctx.isPointInStroke(e.path, point.x, point.y)) || null;
+      // Fara filtrul de stiri: un județ gol e o zona legitima de selectat (raspunsul e
+      // mesajul explicit de gol), nu o zona moarta.
+      return state.paths.find((e) => ctx.isPointInStroke(e.path, point.x, point.y)) || null;
     } finally {
       ctx.lineWidth = previous;
     }
@@ -861,6 +1078,12 @@
     // Evidentierea de hover e a VECHII vederi: dupa zoom sau schimbare de filtru, un contur
     // ramas aprins ar arata o selectie care nu exista; urmatoarea miscare de mouse o repune.
     state.hoverCounty = null;
+    // Zoom-ul geometric e legat de contextul geografic: o selectie noua = o scena noua.
+    // Pastrat, ar arata un cadru care nu mai are legatura cu ce a ales omul. Cautarea si
+    // schimbarea modului pastreaza zoom-ul (filtreaza aceeasi scena).
+    if (["level", "region", "county", "uat"].some((key) => key in patch)) {
+      state.userZoom = { k: 1, cx: null, cy: null };
+    }
     // Plafonul listei se reseteaza doar cand se schimba CE e filtrat: selectia de UAT filtreaza
     // continutul, deci si ea reseteaza; dezactivarea unui UAT la fel.
     if (["level", "viewMode", "region", "county", "locality", "query", "uat"].some((key) => key in patch)) {
@@ -868,6 +1091,7 @@
     }
     state.rawVisible = filtered();
     state.visible = itemsForView(state.rawVisible);
+    state.uatCountsDirty = true;
     syncUats();
 
     const search = $("#map-search");
@@ -993,6 +1217,14 @@
       const key = isRegional ? item.region : item.county;
       if (!key) continue;
       counts.set(key, (counts.get(key) || 0) + 1);
+    }
+    // Județele fără nicio știre rămâneau în afara listei, dar pe hartă acum sunt clickabile
+    // -- cine navighează din tastatură trebuie să aibă aceeași cale (echivalența WCAG:
+    // controlul HTML acoperă funcția hărții). Intră cu 0, stilizate la fel.
+    if (!isRegional) {
+      for (const key of Object.keys(state.counties)) {
+        if (!counts.has(key)) counts.set(key, 0);
+      }
     }
     picker.setAttribute("aria-label", isRegional ? "Alege regiunea" : "Alege județul");
     for (const key of Array.from(counts.keys()).sort((a, b) => a.localeCompare(b, "ro"))) {
@@ -1125,21 +1357,22 @@
       const dp = devicePointForEvent(canvas, event);
       if (!ctx || !dp) return;
       applyViewTransform(ctx, canvas, view);
-      const uat = closestHit(p, state.uats.filter((unit) => unit.count > 0), (unit) => unit.marker)
-        || state.uats.find((unit) => unit.count > 0
-          && ctx.isPointInPath(unit.path2d, dp.x, dp.y, "evenodd"));
+      const uat = closestHit(p, state.uats.filter((unit) => unit.marker), (unit) => unit.marker)
+        || state.uats.find((unit) => ctx.isPointInPath(unit.path2d, dp.x, dp.y, "evenodd"));
       // Selectie, nu fereastra: acelasi contract ca clickul pe judet sau pe localitate --
-      // panoul filtreaza, adresa poarta starea, Back anuleaza.
-      if (uat?.items?.length) applyState({ uat: String(uat.id || uat.name) });
+      // panoul filtreaza, adresa poarta starea, Back anuleaza. UAT-urile fara stiri sunt
+      // si ele selectabile (panoul raspunde cu mesajul explicit de gol), pe acelasi principiu.
+      if (uat) applyState({ uat: String(uat.id || uat.name) });
     } else {
       // Transformarea se reafirma explicit inainte de hit-test: buildMap() o lasa setata, dar
       // a te baza pe ordinea apelurilor face hit-testul sa cada silentios la prima schimbare.
       // Cascada: (1) interior clar de poligon, (2) bulina cea mai apropiata, (3) margine cu
-      // toleranta. Vezi comentariul de la countyFillAtPoint pentru de ce poligonul e primul.
+      // toleranta. includeEmpty: județele fara stiri se selecteaza si ele -- click mort pe
+      // o zona vizibila era exact plangerea de pe live; panoul raspunde cu mesaj de gol.
       const ctx = canvas.getContext("2d");
       applyViewTransform(ctx, canvas, view);
       const dp = devicePointForEvent(canvas, event);
-      const entry = (dp && countyFillAtPoint(ctx, dp))
+      const entry = (dp && countyFillAtPoint(ctx, dp, { includeEmpty: true }))
         || closestHit(p, state.paths, (e) => e.marker)
         || (dp && countyEdgeAtPoint(ctx, dp));
       if (entry) {
@@ -1189,9 +1422,13 @@
     if (!items.length) {
       const empty = document.createElement("li");
       empty.className = "empty";
+      const hasSelection = Boolean(state.selectedRegion || state.selectedCounty
+        || state.selectedLocality || state.selectedUat);
       empty.textContent = state.search
         ? `Nu am găsit rezultate pentru „${state.search}” în contextul ales. Elimină un filtru sau resetează harta.`
-        : "Nu există rezultate pentru filtrele selectate. Elimină un filtru sau resetează harta.";
+        : hasSelection
+          ? `Nu există știri localizate în ${contextName()} pentru filtrele actuale. Alege altă zonă de pe hartă sau resetează filtrele.`
+          : "Nu există rezultate pentru filtrele selectate. Elimină un filtru sau resetează harta.";
       list.appendChild(empty);
     }
     for (const item of items) {

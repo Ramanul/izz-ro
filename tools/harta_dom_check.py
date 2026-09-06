@@ -401,6 +401,64 @@ def hover_preview(p):
           "la iesirea de pe harta tooltipul dispare")
 
 
+def click_zona_fara_stiri(p):
+    """Județele/UAT-urile fără știri răspund la click cu mesaj explicit -- clickul mort pe o
+    zonă vizibilă a fost sesizare directă de pe live (5 sep 2026). Alege un județ cu 0
+    articole din date, calculează un punct interior verificat și dă click real."""
+    print("\nCLICK PE ZONA FARA STIRI -- raspuns explicit, nu moarte")
+    p.locator("#map canvas.map-canvas").scroll_into_view_if_needed()
+    p.wait_for_timeout(150)
+    target = p.evaluate("""async () => {
+      const d = await (await fetch('./data/map.json')).json();
+      const counties = {};
+      for (const a of d.articles || []) counties[a.county] = (counties[a.county] || 0) + 1;
+      const empty = Object.keys(d.map.judete).filter((c) => !counties[c]);
+      if (!empty.length) return null;
+      const vb = String(d.map.viewbox).trim().split(/\\s+/).map(Number);
+      const c = document.querySelector('#map canvas.map-canvas');
+      const scratch = document.createElement('canvas');
+      scratch.width = c.width; scratch.height = c.height;
+      const ctx = scratch.getContext('2d');
+      ctx.setTransform(c.width / vb[2], 0, 0, c.height / vb[3],
+                       -vb[0] * c.width / vb[2], -vb[1] * c.height / vb[3]);
+      const path = new Path2D(d.map.judete[empty[0]]);
+      const nums = String(d.map.judete[empty[0]]).match(/-?\\d+(?:\\.\\d+)?/g).map(Number);
+      let minX = 1e9, minY = 1e9, maxX = -1e9, maxY = -1e9;
+      for (let i = 0; i + 1 < nums.length; i += 2) {
+        minX = Math.min(minX, nums[i]); minY = Math.min(minY, nums[i + 1]);
+        maxX = Math.max(maxX, nums[i]); maxY = Math.max(maxY, nums[i + 1]);
+      }
+      const rect = c.getBoundingClientRect();
+      for (let row = 1; row < 12; row += 1) {
+        for (let col = 1; col < 12; col += 1) {
+          const x = minX + (maxX - minX) * col / 12;
+          const y = minY + (maxY - minY) * row / 12;
+          const xd = Math.round((x - vb[0]) * c.width / vb[2]);
+          const yd = Math.round((y - vb[1]) * c.height / vb[3]);
+          if (ctx.isPointInPath(path, xd, yd)) {
+            return { county: empty[0],
+                     x: rect.x + (xd / c.width) * rect.width,
+                     y: rect.y + (yd / c.height) * rect.height };
+          }
+        }
+      }
+      return null;
+    }""")
+    if not target:
+        skip("toate judetele au stiri in datele curente -- scenariul nu se poate declansa")
+        return
+    p.mouse.click(target["x"], target["y"])
+    p.wait_for_timeout(300)
+    got = p.evaluate("() => new URLSearchParams(location.search).get('judet')")
+    check(got == target["county"],
+          f"județul fara stiri ({target['county']}) se selecteaza din click (URL judet='{got}')")
+    empty_text = p.evaluate("() => document.querySelector('#news-list li.empty')?.textContent || ''")
+    check("Nu există știri localizate" in empty_text,
+          f"panoul raspunde cu mesaj explicit de gol ('{empty_text[:80]}')")
+    reset(p)
+    p.wait_for_timeout(150)
+
+
 def felia2_localitate(p):
     print("\nFELIA 2 -- click pe localitate nu fura campul de cautare")
     r = canvas_rect(p)
@@ -632,6 +690,100 @@ def uat_selectie(p):
     p.wait_for_selector("#news-list li", timeout=15000)
 
 
+def gold_pixels(p):
+    """Numara pixelii de umplutura aurie (judetele/zonele pline, tema deschisa) si centroidul
+    lor. La zoom, aceleasi umpluturi ocupa mai multi pixeli -- marimea e proxima pentru scara."""
+    return p.evaluate("""() => {
+      const c = document.querySelector('#map canvas.map-canvas');
+      const d = c.getContext('2d').getImageData(0, 0, c.width, c.height).data;
+      let n = 0, sx = 0, sy = 0;
+      for (let i = 0; i < d.length; i += 16) {
+        const r = d[i], g = d[i + 1], b = d[i + 2];
+        if (r > 150 && r < 245 && g > 95 && g < 205 && b < 130 && r > g && g > b) {
+          const idx = i / 4;
+          n++; sx += idx % c.width; sy += Math.floor(idx / c.width);
+        }
+      }
+      return n ? { n, cx: sx / n, cy: sy / n } : { n: 0, cx: 0, cy: 0 };
+    }""")
+
+
+def zoom_interactiv(p):
+    """Zoom/pan pe hartă (cerere proprietar 5 sep 2026: „nu se poate face niciun fel de zoom,
+    e penibil"). Verifica: rotita mareste, dublu-click mareste, butoanele +/− si reset,
+    starea dezactivata expusa, pan-ul prin tragere la zoom, fara selectie accidentala."""
+    print("\nZOOM/PAN -- harta interactiva")
+    r = canvas_rect(p)
+    cx, cy = r["x"] + r["w"] / 2, r["y"] + r["h"] / 2
+    p.wait_for_function("() => document.querySelector('#news-list li a') !== null", timeout=15000)
+    before = gold_pixels(p)
+
+    # (a) rotita mareste
+    p.mouse.move(cx, cy)
+    p.mouse.wheel(0, -480)
+    p.wait_for_timeout(300)
+    zoomed = gold_pixels(p)
+    check(zoomed["n"] >= before["n"] * 1.5,
+          f"rotita mareste harta ({before['n']} -> {zoomed['n']} pixeli aurii)")
+
+    # (b) pan prin tragere misca scena, fara sa selecteze nimic. Pan MIC (48px) ca compozitia
+    # de buline sa ramana stabila: centroidul se translazeaza proportional cu drag-ul, dar
+    # marginea de zgomot e reala (buline schimba setul la margini), deci fereastra 15-95px.
+    p.mouse.move(cx, cy)
+    p.mouse.down()
+    p.mouse.move(cx - 48, cy - 24, steps=6)
+    p.mouse.up()
+    p.wait_for_timeout(300)
+    panned = gold_pixels(p)
+    dx = panned["cx"] - zoomed["cx"]
+    dy = panned["cy"] - zoomed["cy"]
+    shift = (dx * dx + dy * dy) ** 0.5
+    check(15 < shift < 95,
+          f"pan-ul misca scena la zoom (centroid mutat cu {shift:.0f}px la drag de 54px)")
+    check(not county_selected(p), "pan-ul prin tragere NU selecteaza un judet")
+
+    # (c) butonul reset revine la scara de baza
+    check(p.evaluate("() => !document.querySelector('.map-zoom button[aria-label=\"Resetează zoom-ul hărții\"]').hidden"),
+          "butonul de reset zoom apare cand harta e marita")
+    p.click(".map-zoom button[aria-label=\"Resetează zoom-ul hărții\"]")
+    p.wait_for_timeout(300)
+    reset_zoom = gold_pixels(p)
+    check(abs(reset_zoom["n"] - before["n"]) <= before["n"] * 0.25,
+          f"resetul revine la scara de baza ({zoomed['n']} -> {reset_zoom['n']} vs {before['n']})")
+    check(p.evaluate("() => document.querySelector('.map-zoom button[aria-label=\"Resetează zoom-ul hărții\"]').hidden"),
+          "resetul dispare la scara 1:1")
+
+    # (d) dublu-click mareste; butonul minus scade
+    p.mouse.dblclick(cx, cy)
+    p.wait_for_timeout(300)
+    dbl = gold_pixels(p)
+    check(dbl["n"] >= before["n"] * 1.5, f"dublu-click mareste ({before['n']} -> {dbl['n']})")
+    p.click(".map-zoom button[aria-label=\"Îndepărtează harta\"]")
+    p.wait_for_timeout(300)
+    minus = gold_pixels(p)
+    check(minus["n"] < dbl["n"], f"butonul minus micsoreaza ({dbl['n']} -> {minus['n']})")
+
+    # (e) starea dezactivata e expusa programatic: minus la scara 1:1
+    p.click(".map-zoom button[aria-label=\"Resetează zoom-ul hărții\"]")
+    p.wait_for_timeout(250)
+    out = p.evaluate("""() => {
+      const b = document.querySelector('.map-zoom button[aria-label=\"Îndepărtează harta\"]');
+      return { disabled: b.disabled, aria: b.getAttribute('aria-disabled') };
+    }""")
+    check(out["disabled"] and out["aria"] == "true",
+          f"butonul minus e dezactivat la scara 1:1 (disabled={out['disabled']}, aria={out['aria']})")
+
+    # (f) la zoom, clickul inca selecteaza judetul corect (hit-test prin transformare)
+    p.mouse.move(cx, cy)
+    p.mouse.wheel(0, -720)
+    p.wait_for_timeout(300)
+    p.mouse.click(cx, cy)
+    p.wait_for_timeout(250)
+    check(county_selected(p), "clickul la harta marita selecteaza judetul de sub cursor")
+    reset(p)
+    p.wait_for_timeout(150)
+
+
 def mobil_390(p):
     """Android: harta e ~359x256px la 390 latime, deci ea e cazul greu pentru zona de atins.
     Aici se verifica si ca garda tap-vs-drag chiar tine cu EVENIMENTE TACTILE, nu doar cu mouse-ul
@@ -690,9 +842,11 @@ def main():
         felia4_hittest(p)
         hit_ordin_fara_furt(p)
         hover_preview(p)
+        click_zona_fara_stiri(p)
         felia2_localitate(p)
         felia5_county_picker(p)
         felia6_url(p)
+        zoom_interactiv(p)
         uat_selectie(p)
 
         mob = br.new_page(viewport={"width": 390, "height": 844}, is_mobile=True, has_touch=True)
