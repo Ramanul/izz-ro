@@ -137,6 +137,10 @@ Detaliile și tabelul de interpretare: `infra/VERIFICARE-CLOUDFLARE.md`.
 pierzând failover-ul, cache-ul de edge și `x-izz-origin`. Pasul 1 al scriptului prinde asta:
 fără headere `x-izz-*`, `izz-failover` nu mai e în lanț. Vezi IZZ-0237 și IZZ-0308.
 
+Când rutele chiar trebuie readuse pe `izz-failover`, pașii executabili (precondiții, apeluri API,
+verificarea care dovedește, rollback) sunt în `infra/INSTRUCTIUNI-REPARARE-RUTE.md`. Operațiunea
+cere acces de scriere la API-ul Cloudflare, pe care sesiunile pe web nu îl au.
+
 ## De reținut
 
 - Ruta Worker are prioritate peste custom domain-ul Pages — nu șterge custom domain-ul izz.ro
