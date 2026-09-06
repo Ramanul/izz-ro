@@ -34,7 +34,7 @@ import urllib.request
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, ROOT)
-from generator import geo, htmlart, photojudge, state  # noqa: E402
+from generator import eventdata, geo, htmlart, photojudge, state  # noqa: E402
 from generator.process import get_provider  # noqa: E402
 
 _spec = importlib.util.spec_from_file_location(
@@ -62,6 +62,80 @@ _NOUNS = [
 # in curs (au fost luate la fata locului, apoi incarcate), deci fereastra e asimetrica
 # spre trecut: luata in [publicat-7 zile, publicat+2 zile].
 _FEREASTRA = (datetime.timedelta(days=-7), datetime.timedelta(days=2))
+
+# clasa C v1: NASA (imagini public domain, API gratuit fara cheie) pentru stiri de
+# spatiu/stiinta. Poza de AICI e a OBIECTULUI (telescopul, racheta), nu a evenimentului
+# — ca P18-ul: o arhiva onesta, deci fereastra larga, iar photojudge decide potrivirea.
+_NASA = re.compile(
+    r"\bnasa\b|spa[țt]ial|spa[țt]iul|rachet|satelit|telescop|astronaut|cosmonaut|"
+    r"\bmarte\b|lunar|\blună\b|cosmos|cosmic|artemis|webb|hubble|voyager", re.I)
+_NASA_FEREASTRA = (datetime.timedelta(days=-365), datetime.timedelta(days=2))
+
+
+def _nasa_parse(payload: dict) -> list[dict]:
+    """Raspunsul images-api.nasa.gov -> candidati [{nasa_id, titlu, centru, data, thumb}]."""
+    out = []
+    for it in (payload.get("collection", {}).get("items") or []):
+        dd = (it.get("data") or [{}])[0]
+        nid = dd.get("nasa_id")
+        if not nid:
+            continue
+        links = it.get("links") or [{}]
+        out.append({"nasa_id": nid, "titlu": dd.get("title", ""),
+                    "centru": dd.get("center", ""),
+                    "data": (dd.get("date_created") or "")[:10],
+                    "thumb": links[0].get("href", "")})
+    return out
+
+
+def _nasa_cauta(q: str) -> list[dict]:
+    qs = urllib.parse.urlencode({"q": q, "media_type": "image", "page_size": 6})
+    payload = json.loads(eventdata._http_get(f"https://images-api.nasa.gov/search?{qs}"))
+    return _nasa_parse(payload)
+
+
+def _nasa_orig(nasa_id: str) -> bytes | None:
+    """Asset-ul cel mai mare (~orig.jpg) pentru un nasa_id."""
+    d = json.loads(eventdata._http_get(
+        f"https://images-api.nasa.gov/asset/{urllib.parse.quote(nasa_id)}"))
+    urls = [it.get("href", "") for it in d.get("collection", {}).get("items", [])]
+    orig = [u for u in urls if u.endswith("~orig.jpg")] or \
+           [u for u in urls if u.endswith("~large.jpg")]
+    if not orig:
+        return None
+    return eventdata._http_get(orig[0])
+
+
+def _nasa_candidat(a: dict, provider) -> dict | None:
+    """Un candidat NASA PD pt. stirea de spatiu, sau None. Poarta finala: photojudge."""
+    try:
+        pub = datetime.date.fromisoformat((a.get("published") or "")[:10])
+    except ValueError:
+        return None
+    lo, hi = pub + _NASA_FEREASTRA[0], pub + _NASA_FEREASTRA[1]
+    q = " ".join((a.get("title") or "").split()[:6])
+    for c in _nasa_cauta(q):
+        try:
+            d = datetime.date.fromisoformat(c["data"])
+        except ValueError:
+            continue
+        if not (lo <= d <= hi):
+            continue
+        summary = a.get("synthesis") or a.get("teaser") or ""
+        if not photojudge.photo_fits(provider, a.get("title", ""), summary,
+                                     c["titlu"] or q, c["titlu"] or q):
+            continue
+        data = _nasa_orig(c["nasa_id"])
+        if not data:
+            continue
+        rend = lp._save_renditions(data, f"nasa-{htmlart.art_id(a)}")
+        if rend:
+            return {**rend, "artist": f"NASA/{c['centru']}".rstrip("/"),
+                    "license": "Public domain (NASA)",
+                    "page": f"https://images.nasa.gov/details/{c['nasa_id']}",
+                    "name": "NASA", "kind": "event", "noun": "nasa",
+                    "data_poza": c["data"]}
+    return None
 
 
 def _fereastra(pub: str) -> tuple[datetime.date, datetime.date] | None:
@@ -137,13 +211,17 @@ def main() -> int:
         if not noun or not fereastra:
             continue
         loc = geo.eticheta_copertei(a) or ""
-        if not loc or loc.lower() in ("local", "judetean", "general", "extern", "sport",
-                                      "stiri", "regional"):
-            continue  # fara loc rezolvabil nu am query onest
+        loc_query, loc_badge = loc, loc
+        if not loc_query or loc_query.lower() in ("local", "judetean", "general", "extern",
+                                                  "sport", "stiri", "regional"):
+            tr = eventdata.tara(a)
+            if not tr:
+                continue  # fara loc rezolvabil (localitate sau tara) nu am query onest
+            loc_query, loc_badge = tr["en"], tr["ro"]
         m = miss_cache.get(aid)
         if m and m.get("v", 0) >= MISS_VERSION:
             continue
-        q = f"{loc} {noun}"
+        q = f"{loc_query} {noun}"
         if q in memo_query:
             cands = memo_query[q]  # acelasi eveniment relatat de 3 surse = 1 cautare,
         else:                      # si o singura unitate de buget (se scade abia aici)
@@ -159,7 +237,7 @@ def main() -> int:
         for c in cands:
             summary = a.get("synthesis") or a.get("teaser") or ""
             if not photojudge.photo_fits(provider, a.get("title", ""), summary,
-                                         f"{loc} {noun}", lp._caption(c["filename"])):
+                                         f"{loc_badge} {noun}", lp._caption(c["filename"])):
                 continue
             try:
                 data = urllib.request.urlopen(
@@ -171,9 +249,14 @@ def main() -> int:
             rend = lp._save_renditions(data, f"ev-{aid}")
             if rend:
                 gasit = {**rend, "artist": c["artist"], "license": c["license"],
-                         "page": c["page"], "name": loc, "kind": "event",
+                         "page": c["page"], "name": loc_badge, "kind": "event",
                          "noun": noun, "data_poza": c["data"]}
                 break
+        if not gasit and _NASA.search(text):
+            try:
+                gasit = _nasa_candidat(a, provider)
+            except (OSError, ValueError, KeyError):
+                gasit = None
         if gasit:
             lead_cache[aid] = gasit
             atasate += 1

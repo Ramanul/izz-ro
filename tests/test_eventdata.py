@@ -130,3 +130,42 @@ def test_fereastra_cutremur_inconjoara_publicarea():
     a = _art_cutremur(published="2026-08-31T06:00:00+00:00")
     t0, t1 = eventdata._fereastra_cutremur(a)
     assert t0 == "2026-08-29" and t1 == "2026-09-01"
+
+
+# ------------------------------------------------------ tari + cutremur extern --
+def test_tara_recunoaste_numele_cu_si_fara_diacritice():
+    assert eventdata.tara(_art_cutremur(title="Cutremur puternic în Nepal"))["en"] == "Nepal"
+    # Turcia fara sedila (forma fara diacritice) trebuie gasita la fel ca Turcia
+    assert eventdata.tara(_art_cutremur(title="Cutremur în Turcia"))["ro"] == "Turcia"
+    # granita de cuvant + cel mai lung nume bate: Nigeria nu trebuie sa iasa Niger
+    assert eventdata.tara(_art_cutremur(title="Inundații în Nigeria"))["en"] == "Nigeria"
+    assert eventdata.tara(_art_cutremur(title="Cutremur în Niger"))["en"] == "Niger"
+
+
+def test_cutremur_extern_foloseste_cutia_tarii(monkeypatch):
+    vazut = {}
+
+    def fake_get(url):
+        vazut["url"] = url
+        return json.dumps({"features": [
+            {"properties": {"mag": 4.1, "time": "2026-09-01T00:00:00+00:00"},
+             "geometry": {"coordinates": [84.0, 27.0, 10]}},
+            {"properties": {"mag": 5.2, "time": "2026-08-31T02:52:00+00:00"},
+             "geometry": {"coordinates": [85.515, 28.271, 0]}}]}).encode()
+    monkeypatch.setattr(eventdata, "_http_get", fake_get)
+    a = {"category": "extern", "source": "stirileprotv", "published": "2026-09-02T10:00:00+00:00",
+         "title": "Cutremurul de 5,2 care a declanșat viitura în Nepal", "teaser": ""}
+    ch = eventdata.cutremur(a)
+    assert ch and ch["mag"] == 5.2 and ch["loc"] == "Nepal"
+    assert "minlatitude=25.67" in vazut["url"] and "minmagnitude=4.0" in vazut["url"]
+
+
+def test_template_cutremur_afiseaza_tara_din_chart():
+    chart = {"tip": "cutremur", "mag": 5.2, "lat": 28.27, "lon": 85.51,
+             "adancime": 10, "data": "2026-08-31", "sursa": "EMSC", "loc": "Nepal"}
+    a = {"category": "extern", "source": "stirileprotv", "title": "Viitură în Nepal",
+         "teaser": "", "published": "2026-09-02"}
+    html = htmlart.build_html(a, )
+    assert "NEPAL" not in html  # fara chart ramane template-ul clasic
+    html2 = htmlart.build_html({**a, "event_chart": chart})
+    assert "Nepal" in html2 and "M 5,2" in html2

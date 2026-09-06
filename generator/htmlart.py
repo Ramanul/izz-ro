@@ -290,7 +290,7 @@ def _t_cutremur(a, ch, acc, bg, k):
     latimea hartii, cu inele aurii concentrice — figura intreaga e geometrica,
     nu figurativa (regula din docstringul modulului).
     """
-    et = _eticheta(a)
+    et = ch.get("loc") or _eticheta(a)
     dt = _data_copertei(a)
     mag_ro = f'M {ch["mag"]:.1f}'.replace(".", ",")
     panel_w = 300

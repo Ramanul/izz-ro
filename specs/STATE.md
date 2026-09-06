@@ -5,7 +5,7 @@
 >
 > **Hard cap: ~40 lines of content.**
 
-**Updated:** 2026-09-06 (#302: coperte cutremur din EMSC; #305: poze de eveniment Commons — ambele merged; #295/#283 live)
+**Updated:** 2026-09-06 (+ tari in geo: cutremur extern si poze de eveniment externe; #302/#305 live)
 
 ## Open
 
