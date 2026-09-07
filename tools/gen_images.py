@@ -28,7 +28,7 @@ MAX_PER_RUN = int(os.getenv("MAX_IMAGES_PER_RUN", "80"))
 LABELS = os.path.join(MEDIA, "labels.json")
 
 
-VERSIUNE_DESIGN = "v2-2026-09-06"  # reproiectarea editoriala; schimba-o la urmatorul redesign
+VERSIUNE_DESIGN = "v3-cronica-vie"  # fuziunea Cronica vie + #295: data ca element de design in cele 5 compozitii  # reproiectarea editoriala; schimba-o la urmatorul redesign
 
 
 def _semnatura(a: dict) -> str:

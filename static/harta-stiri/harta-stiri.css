@@ -1,23 +1,33 @@
 :root {
   color-scheme: light dark;
-  --bg: #f6f5f1;
-  --surface: #fff;
-  --surface-2: #efeee8;
-  --text: #171717;
-  --muted: #686868;
-  --border: #d9d7ce;
-  --accent: #b58b18;
-  --accent-soft: #ead9a0;
-  --map-fill: #e2dfd3;
-  --map-stroke: #83806f;
-  --map-hot: #b58b18;
-  --map-on-accent: #171717;
-  --map-badge-text: #171717;
-  --shadow: 0 8px 30px rgba(0,0,0,.07);
+  /* Tokenuri ALINEATE cu static/styles.css („Cronică aurie", §8): până pe 2026-09-05
+     harta vorbea o a doua limbă vizuală (alt auriu, bej cald, cerneli proprii). Aceleași
+     valori, aceeași identitate — harta e o pagină a site-ului, nu un site în site. */
+  --bg: #f6f7f9;            /* --paper */
+  --surface: #ffffff;       /* --paper-2 */
+  --surface-2: #f0f2f5;     /* suprafață secundară pe hârtie rece */
+  --text: #15171c;          /* --ink */
+  --muted: #4d5562;         /* --ink-2 */
+  --border: #e4e7ec;        /* --line */
+  --border-strong: #c9ccd3; /* --line-strong */
+  --accent: #8b6918;        /* --gold-strong (text) */
+  --accent-soft: #faf5e6;   /* --gold-wash */
+  --map-fill: #eceef1;
+  --map-stroke: #c9ccd3;
+  --map-hot: #c9a227;       /* --gold */
+  --map-on-accent: #15171c; /* --ink-fixed: text pe auriu, identic in ambele teme */
+  --map-badge-text: #15171c;
+  --shadow: 0 8px 30px rgba(21,23,28,.06);
 }
 @media (prefers-color-scheme: dark) {
-  :root { --bg:#151513; --surface:#20201d; --surface-2:#292923; --text:#f1f0ea; --muted:#aaa89e; --border:#3a3933; --accent:#d6ad33; --accent-soft:#4a3d1b; --map-fill:#2a2a25; --map-stroke:#7d7a6e; --map-hot:#d6ad33; --map-on-accent:#171717; --map-badge-text:#20201d; --shadow:0 10px 30px rgba(0,0,0,.25); }
+  :root { --bg:#0d1116; --surface:#141b22; --surface-2:#1a222b; --text:#e4e8ec; --muted:#9ba3ae; --border:#1e2a35; --border-strong:#2a3746; --accent:#c9a227; --accent-soft:#1a1d10; --map-fill:#1e2a35; --map-stroke:#2a3746; --map-hot:#d6b25e; --map-on-accent:#15171c; --map-badge-text:#141b22; --shadow:0 10px 30px rgba(0,0,0,.25); }
 }
+@font-face {
+  font-family: 'Playfair Display';
+  font-style: normal; font-weight: 800; font-display: swap;
+  src: url(/static/fonts/PlayfairDisplay-800.ro.woff2) format('woff2');
+}
+h1, .brand-small { font-family: 'Playfair Display', Georgia, serif; }
 * { box-sizing:border-box; }
 html { overflow-x:hidden; }
 body { margin:0; background:var(--bg); color:var(--text); font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif; }

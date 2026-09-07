@@ -54,6 +54,13 @@
   <script defer src="{{ base }}/static/personalize.js?v={{ asset_ver['personalize.js'] }}"></script>
 </head>
 <body{% block body_attrs %}{% endblock %}>
+  <p class="dateline">
+    <span class="dateline-date">{{ today }}</span>
+    {#- Numerele zilei (doar prima pagina are `zi` in context): starea reala a
+        pipeline-ului in ultimele 24h, calculata in render._numerele_zilei. Pe mobil
+        se ascund in CSS — primul ecran ramane al stirilor. -#}
+    {% if zi %}<span class="day-numbers"><b>{{ zi.stiri }}</b> știri · <b>{{ zi.surse }}</b> surse · <b>{{ zi.judete }}</b> județe în ultimele 24 de ore</span>{% endif %}
+  </p>
   <div class="site-header-group">
   <header class="site-header">
     <a class="brand" href="{{ base }}/">

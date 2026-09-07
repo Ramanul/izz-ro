@@ -10,6 +10,9 @@
   <meta property="article:published_time" content="{{ a.published }}">
 {% endblock %}
 {% block content %}
+{#- Linia de progres a citirii: element fix, animat 100% in CSS (scroll-driven,
+    vezi styles.css). In browsere fara suport, @supports nu-l afiseaza deloc. -#}
+<div class="progress" aria-hidden="true"></div>
 <nav class="breadcrumbs" aria-label="Breadcrumb">
   <a href="{{ base }}/">{{ site.name }}</a>
   <span class="sep">/</span>

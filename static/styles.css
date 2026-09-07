@@ -30,8 +30,8 @@
   --fs-md:      1.272rem;
   --fs-lg:      1.618rem;
   --fs-xl:      2.058rem;
-  --fs-2xl:     2.618rem;
-  --fs-3xl:     3.330rem;
+  --fs-2xl:     clamp(1.85rem, 1.35rem + 2.2vw, 2.618rem);  /* fluid mobil -> --maxw */
+  --fs-3xl:     clamp(2.1rem, 1.4rem + 3.2vw, 3.330rem);
 
   --s-5: 5px; --s-8: 8px; --s-13: 13px; --s-21: 21px; --s-34: 34px; --s-55: 55px; --s-89: 89px;
   --radius: 6px;            /* colturi rotunjite pt. media (miniaturi carduri, banner) */
@@ -57,6 +57,21 @@ body {
   font-size: var(--fs-base); line-height: var(--lh-body);
   -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility;
 }
+
+/* ------------------------------------------------- Dateline (masthead de ziar) --- */
+/* Prima linie a paginii, deasupra antetului: data de azi in Romania, iar pe prima
+   pagina si numerele zilei (render._numerele_zilei). Se deruleaza odata cu pagina —
+   sticky-ul ramane al antetului, ca sa nu manance ecran la citit. */
+.dateline {
+  margin: 0; padding: var(--s-8) var(--s-34);
+  display: flex; flex-wrap: wrap; gap: 3px var(--s-21); align-items: baseline;
+  justify-content: space-between;
+  background: var(--paper-2); border-bottom: 1px solid var(--line);
+  font-family: var(--font-mono); font-size: var(--fs-eyebrow); font-weight: 700;
+  text-transform: uppercase; letter-spacing: 2px; color: var(--ink-3);
+}
+.day-numbers { font-weight: 400; letter-spacing: 1px; }
+.day-numbers b { color: var(--gold-strong); font-weight: 700; }
 a { color: var(--gold-strong); text-decoration: none; }
 a:hover { color: var(--ink); }
 :focus-visible { outline: 2px solid var(--gold-strong); outline-offset: 3px; }
@@ -116,6 +131,11 @@ a:hover { color: var(--ink); }
   white-space: nowrap;
 }
 .subnav-more summary::-webkit-details-marker { display: none; }
+/* Tinta de 24px (WCAG 2.2 target-size, semnalat de Lighthouse pe Chromium 152):
+   summary-ul si linkul din el aveau ~20px inaltime. */
+.subnav-more summary, .subnav-more summary a {
+  display: inline-flex; align-items: center; min-height: 24px;
+}
 .subnav-more summary::after { content: " ▾"; color: var(--gold-strong); }
 .subnav-more[open] summary::after { content: " ▴"; }
 .subnav-more-list {
@@ -146,6 +166,16 @@ main { max-width: var(--maxw); margin: 0 auto; padding: var(--s-34) var(--s-34);
 }
 .section-title::first-letter { color: var(--gold-strong); }
 .section-title:first-of-type { margin-top: var(--s-21); }
+/* Linia-tendință per categorie (felie din „sala de control", principii Tufte):
+   fara axe — titlul si cuvantul „azi" dau contextul; linia e cerna discreta,
+   ULTIMUL punct e accentul auriu; cifra zilei sta in text, nu in grafic. */
+.section-title .spark {
+  float: right; display: inline-flex; align-items: center; gap: var(--s-8);
+  font-family: var(--font-mono); font-size: var(--fs-eyebrow); font-weight: 400;
+  letter-spacing: .5px; color: var(--ink-3);
+}
+.section-title .spark svg { display: block; }
+.section-title .spark b { color: var(--gold-strong); font-weight: 700; }
 
 /* ---- LEAD: povestea principala, spart in proportia de aur ---- */
 .lead-feature {
@@ -163,6 +193,11 @@ main { max-width: var(--maxw); margin: 0 auto; padding: var(--s-34) var(--s-34);
 .lead-feature h2.lead-title {
   font-family: var(--font-display); font-size: var(--fs-2xl); line-height: 1.08;
   margin: var(--s-5) 0 var(--s-21); font-weight: 800; letter-spacing: -.5px;
+}
+/* Peste 1000px, stirea de capat iese o treapta tipografica peste restul paginii:
+   ierarhia de ziar — lead-ul se vede de la usa. */
+@media (min-width: 1001px) {
+  .lead-feature h2.lead-title { font-size: var(--fs-3xl); }
 }
 .lead-feature h2.lead-title a { color: var(--ink); }
 .lead-feature h2.lead-title a:hover { color: var(--gold-strong); }
@@ -272,6 +307,32 @@ picture { display: contents; }
   font-family: var(--font-mono); font-size: var(--fs-xs); font-weight: 700;
   text-transform: uppercase; letter-spacing: 1px; color: var(--gold-strong);
 }
+
+/* --------------------------------------------------------- Puls: mini-harta --- */
+/* Harta „calduta" a ultimelor 24h pe prima pagina. SVG inline, ZERO JS: umplerea e
+   clasa h0-h4 pusa de render._mini_harta (cuartele volumului), iar harta intreaga e
+   un link catre harta interactiva. aspect-ratio rezerva inaltimea -> zero layout shift. */
+.puls { margin-top: var(--s-55); }
+.puls-layout {
+  display: grid; grid-template-columns: minmax(0, 1.618fr) minmax(260px, 1fr);
+  gap: var(--s-34); align-items: end; max-width: var(--measure);
+}
+.puls-map { display: block; }
+.puls-map svg { display: block; width: 100%; height: auto; aspect-ratio: 1000 / 704; }
+.puls-map path { fill: var(--gold-wash); stroke: var(--paper); stroke-width: 1.2; transition: fill .2s ease; }
+.puls-map path.h0 { fill: var(--line); }
+/* color-mix: treptele intermediare_deriva din tokenuri, nu culori noi (§8). Fara suport,
+   declaratia e ignorata si judetul ramane la fill-ul de baza — degradare onesta. */
+.puls-map path.h2 { fill: color-mix(in srgb, var(--gold) 45%, var(--gold-wash)); }
+.puls-map path.h3 { fill: color-mix(in srgb, var(--gold) 78%, var(--gold-wash)); }
+.puls-map path.h4 { fill: var(--gold-strong); }
+.puls-map:hover path.h0, .puls-map:hover path.h1 { fill: var(--gold-wash); }
+.puls-caption {
+  font-family: var(--font-mono); font-size: var(--fs-eyebrow);
+  color: var(--ink-2); line-height: 1.6; margin: 0;
+}
+.puls-caption a { text-decoration: underline; }
+@media (max-width: 1000px) { .puls-layout { grid-template-columns: 1fr; align-items: start; } }
 
 /* ----------------------------------------------------- Pagina de articol --- */
 .article { max-width: var(--measure); margin: 0 auto; }
@@ -422,10 +483,19 @@ picture { display: contents; }
 }
 @media (max-width: 640px) {
   main { padding: var(--s-21) var(--s-21); }
+  /* Antet compact: brandul pe un rand, fara descriptor; numerele zilei cedeaza
+     primul ecran stirilor; consimtamantul devine o fâșie, nu un perete. */
+  .dateline { padding: var(--s-5) var(--s-21); }
+  .day-numbers { display: none; }
+  .section-title .spark { display: none; }   /* mobil: titlul de sectiune sta singur */
+  .brand .logo { font-size: var(--fs-lg); }
+  .brand-descriptor { display: none; }
+  .site-header { padding: var(--s-8) var(--s-21); gap: var(--s-13); }
+  #izz-consent { padding: var(--s-8) var(--s-13); gap: var(--s-8); }
+  #izz-consent p { font-size: var(--fs-eyebrow); }
   .reader-briefing { align-items: flex-start; flex-direction: column; }
   .subnav-more-list { right: 0; left: auto; min-width: min(220px, calc(100vw - 2 * var(--s-21))); }
   .article-accountability a:not(.article-report-link) { display: inline-block; margin: var(--s-13) 0 0; }
-  .site-header { padding: var(--s-13) var(--s-21); }
   .lead-feature { padding: var(--s-21); }
   .lead-feature h2.lead-title { font-size: var(--fs-xl); }
   .section-title { font-size: var(--fs-lg); }
@@ -545,6 +615,39 @@ picture { display: contents; }
 .pagination .disabled { opacity: .4; pointer-events: none; }
 /* saltul din numerotare („…") nu e o tinta, deci nici chenar de tinta */
 .pagination .gap { border-color: transparent; min-width: 0; padding-left: 0; padding-right: 0; }
+
+/* --------------------------------- Miscare (scroll-driven, progressive) --- */
+/* Totul in @supports: browserele fara animation-timeline nu vad nicio animatie si
+   afiseaza pagina exact ca inainte. Doar transform/opacity -> zero layout shift.
+   .progress e bara de citire pe articole; .card/.lead-feature intra in pagina la
+   derulare, in stil de ziar care se aseaza, nu de instrument. */
+.progress { display: none; }
+@supports (animation-timeline: scroll()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .progress {
+      display: block; position: fixed; top: 0; left: 0; z-index: 30;
+      width: 100%; height: 3px; background: var(--gold);
+      transform-origin: 0 50%; transform: scaleX(0);
+      animation: citire linear both; animation-timeline: scroll(root);
+    }
+    @keyframes citire { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+  }
+}
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .card, .lead-feature {
+      animation: intra-in-pagina ease-out both; animation-timeline: view();
+      animation-range: entry 0% entry 50%;
+    }
+    /* Doar transform, FARA opacity: o opacitate de start mica face textul sub fold
+       ilizibil in orice instantaneu (Lighthouse color-contrast 1.01:1 pe carduri,
+       masurat 2026-09-06) — miscarea rămane, cerneala nu dispare niciodata. */
+    @keyframes intra-in-pagina {
+      from { transform: translateY(14px); }
+      to { transform: none; }
+    }
+  }
+}
 
 @media (prefers-reduced-motion: reduce) { * { transition: none !important; scroll-behavior: auto !important; } }
 
@@ -840,6 +943,12 @@ picture { display: contents; }
   .editorial-guide { grid-template-columns: 1fr; padding: var(--s-13); }
 }
 [data-theme="dark"] .editorial-guide, [data-theme="dark"] .verification-note { background: var(--paper-2); }
+/* Arta generativa are fundal deschis si orbiteaza pe tema inchisa: o coboram in valoare
+   cu filtru, nu o regeneram — variantele dark ar dubla imaginile comise si ar sparge
+   plafonul de fisiere al hostingului gratuit. */
+[data-theme="dark"] .card-media img,
+[data-theme="dark"] .lead-art,
+[data-theme="dark"] .article-art { filter: brightness(.84) saturate(.96); }
 
 /* Indexul tuturor rubricilor accesibil din „Mai multe secțiuni”. */
 .section-page-narrow { max-width: 960px; margin: 0 auto; padding: 3rem 1.25rem 5rem; }
