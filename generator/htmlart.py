@@ -147,7 +147,10 @@ def _t_editorial(a, acc, bg, k):
     et, sb = _eticheta(a), _subtitlu(a)
     dt = _data_copertei(a)
     et_px = _et_px(et, ((8, 128), (13, 102), (18, 82), (99, 60)), k)
-    sus = f"{dt['wk']} {dt['zi_n']} {dt['luna']} {dt['an']}" if dt else "izz.ro"
+    # Fara data, bara de sus ramane doar cu marca din stanga. Inainte punea tot "izz.ro" si
+    # in dreapta, deci coperta de categorie (care n-are data) scria brandul de doua ori
+    # pe acelasi rand.
+    sus = f"{dt['wk']} {dt['zi_n']} {dt['luna']} {dt['an']}" if dt else ""
     return (
         f'<div class="stage" style="background:{bg};color:{acc}">'
         f'<div style="position:absolute;left:{56 * k:.0f}px;right:{56 * k:.0f}px;top:{30 * k:.0f}px;'
@@ -271,6 +274,12 @@ def _t_arc(a, acc, bg, k):
 
 
 _TEMPLATES = [_t_editorial, _t_inversat, _t_banda, _t_arc]
+# Numele compozitiilor, in ACEEASI ordine: `stil_inline` le trimite in clasa CSS
+# `art--<nume>`, iar `build_html(sablon=...)` le cauta dupa nume. Perechea e verificata
+# imediat mai jos, nu prin convenite: desincronizata, ar da tacut alta compozitie decat
+# arata rasterul pentru acelasi articol.
+_NUME_TEMPLATE = ("editorial", "inversat", "banda", "arc")
+assert len(_NUME_TEMPLATE) == len(_TEMPLATES)
 
 
 def _tile_xt_yt(lat: float, lon: float, z: int) -> tuple[float, float]:
@@ -388,8 +397,16 @@ def _t_meteo(a, ch, acc, bg, k):
     )
 
 
-def build_html(a: dict, cover: bool = False) -> str:
-    """HTML pentru imaginea articolului. cover=True -> 1200x630 (og); altfel 960x504 (banner)."""
+def build_html(a: dict, cover: bool = False, sablon: str | None = None) -> str:
+    """HTML pentru imaginea articolului. cover=True -> 1200x630 (og); altfel 960x504 (banner).
+
+    `sablon` forteaza o compozitie anume, dupa numele ei din `_NUME_TEMPLATE`. Exista pentru
+    copertile de CATEGORIE (`tools/gen_images.py`), care n-au data publicarii: trei din cele
+    patru compozitii isi construiesc jumatatea dreapta din cifra zilei, iar fara ea raman
+    aproape goale -- exact critica „~80% spatiu alb" din reproiectarea 2026-09-06. `editorial`
+    e singura care se inchide corect fara data. Pentru articole ramane seed-ul: acolo data
+    exista intotdeauna, iar variatia e chiar scopul.
+    """
     seed = hashlib.sha1((a.get("title") or "x").encode()).digest()
     acc, bg = _PALETE[seed[0] % len(_PALETE)]
     w, h = (COVER_W, COVER_H) if cover else (ART_W, ART_H)
@@ -398,6 +415,8 @@ def build_html(a: dict, cover: bool = False) -> str:
         body = _t_meteo(a, ch, acc, bg, w / ART_W)
     elif ch.get("tip") == "cutremur" and ch.get("lat") is not None:
         body = _t_cutremur(a, ch, acc, bg, w / ART_W)
+    elif sablon:
+        body = _TEMPLATES[_NUME_TEMPLATE.index(sablon)](a, acc, bg, w / ART_W)
     else:
         body = _TEMPLATES[seed[4] % len(_TEMPLATES)](a, acc, bg, w / ART_W)
     return (f"<!doctype html><html><head><meta charset='utf-8'><style>{_base_css(w, h)}</style></head>"
@@ -408,3 +427,42 @@ def art_id(a: dict) -> str:
     """ID stabil (din URL/titlu) — numele imaginii comise, independent de slug-ul de render."""
     key = a.get("url") or a.get("original_link") or a.get("title") or ""
     return hashlib.sha1(key.encode()).hexdigest()[:16]
+
+
+# ---- arta DESENATA IN PAGINA (Workers Free, 2026-09-09) --------------------
+# Compozitiile de mai sus sunt tipografie si geometrie: fond plat, eticheta majuscula,
+# filete aurii, cercuri, cifra zilei. Nimic figurativ, nimic fotografic. Un browser le
+# deseneaza direct, vectorial, fara sa descarce 960x504 de pixeli — deci pe planul gratuit
+# Cloudflare (20.000 de fisiere/versiune) nu mai are rost sa existe fisierul.
+#
+# Ce intoarce `stil_inline` NU e HTML: e DESCRIEREA compozitiei. Culorile si marimile stau
+# in `static/styles.css` (§8: template-urile nu hardcodeaza culori), iar `templates/_art.html`
+# le pune pe DOM. Semintele sunt aceleasi ca in `build_html`, deci un articol pastreaza exact
+# compozitia si paleta pe care le avea ca raster. (`_NUME_TEMPLATE` sta langa `_TEMPLATES`.)
+#
+# Aceleasi praguri de lungime ca `_et_px`: numele lungi coboara o treapta ca sa nu iasa din
+# cadru. Raportul intre trepte e practic identic la toate cele patru compozitii (1 / .80 /
+# .65 / .50), deci CSS-ul tine un singur set de coeficienti si o marime de baza per compozitie.
+_ET_TREPTE = (8, 13, 18)
+
+
+def _treapta_eticheta(et: str) -> int:
+    n = len((et or "").strip())
+    for i, plafon in enumerate(_ET_TREPTE):
+        if n <= plafon:
+            return i
+    return len(_ET_TREPTE)
+
+
+def stil_inline(a: dict) -> dict:
+    """Descrierea artei desenate in pagina pentru `a` (compozitie, paleta, texte, data)."""
+    seed = hashlib.sha1((a.get("title") or "x").encode()).digest()
+    et = _eticheta(a)
+    return {
+        "tpl": _NUME_TEMPLATE[seed[4] % len(_NUME_TEMPLATE)],
+        "pal": seed[0] % len(_PALETE),
+        "eticheta": et,
+        "sub": _subtitlu(a),
+        "treapta": _treapta_eticheta(et),
+        "data": _data_copertei(a),
+    }
