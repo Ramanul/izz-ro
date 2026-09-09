@@ -14,7 +14,8 @@ try:
 except ImportError:
     pass
 
-from . import fetch, state, cluster, moderation, config, guard
+from . import fetch, state, cluster, moderation, config, guard, eventdata
+from . import jurnal_triage, raport_copiere
 from .process import get_provider, process_single, process_clusters_batch, process_batch, process_official, OFFICIAL_PREFIXES
 from .util import domain_of, fara_titluri_data
 from .claude_orchestrator import ClaudeCodeValidator
@@ -411,8 +412,20 @@ def run(dry_run: bool = False) -> dict:
     # presiunea reala era 107-29=78 si 254-30=224. Cifra veche amesteca doua marimi opuse,
     # iar decizia „merita batching pentru Model C?" se ia tocmai pe ea.
     respinse_substanta = {i["url"] for i in itemele_fara_substanta(new_items)}
+    if not dry_run:
+        jurnal_triage.inregistreaza(pierderi, respinse_substanta, stale_skipped)
     deferred = numara_amanate(new_items, handled)
     processed_new = [a for a in processed_new if not a.get("skip")]
+    # PLAN UNIFICAT #1: prag de blocare/DEFER. Itemele cu incalcari deterministe de
+    # grounding (citate inventate, cifre straine, propozitii copiate, titluri transcrise)
+    # NU se publica in rularea asta, dar nu blocheaza intregul release: se amana si revin
+    # ca iteme noi la rularea urmatoare, la fel ca amanarile pe 429. Raportul gate pastreaza
+    # doar dovada pentru ce se publica; gate-ul de dupa commit ramane fail-closed ca plasa.
+    # Coperte din datele evenimentului (felia meteo, 2026-09-05): DOAR articolele care au
+    # trecut gate-ul de grounding, fail-safe per articol — fara date, coperta ramane cea de azi.
+    n_event = eventdata.attach(processed_new)
+    if n_event:
+        print(f">> Coperte din date: {n_event} prognoze atasate articolelor noi")
     # inlocuire pe URL: un rep C poate purta URL-ul unei stiri B existente pe care a absorbit-o
     rep_urls = {a.get("url") for a in processed_new}
     combined = [a for a in existing
@@ -425,8 +438,32 @@ def run(dry_run: bool = False) -> dict:
     if titluri_data:
         print(f"Sarite ca avand drept titlu doar o data calendaristica: {len(titluri_data)}")
 
+    # Instantanee pentru ce urmeaza a fi upgrade-uit pe loc: daca sinteza noua iese
+    # blocata de grounding, restauram versiunea veche (deja publica si conforma).
+    instantanee_upgrades = {(a.get("original_link") or a.get("url") or ""): dict(a)
+                            for a in upgradable(combined)}
     upgraded = upgrade_fallbacks(combined, provider, budget - used)
     combined = state.expire(combined)
+    # PLAN UNIFICAT #1: defer-ul ruleaza DUPA TOTA procesarea AI (inclusiv upgrade-urile),
+    # fiindca fiecare pas AI scrie randuri in dovada gate. Asezat mai devreme, rândurile
+    # scrise de upgrade-uri apreau dupã curatãre si gate bloca tot release-ul (prins
+    # 2026-09-06: articolul Ghimbav, upgrade-uit si re-blocat la fiecare rulare).
+    gate_cale = os.environ.get("IZZ_RAPORT_COPIERE_GATE", "").strip()
+    if gate_cale:
+        blocate = raport_copiere.url_uri_blocate(gate_cale)
+        if blocate:
+            noi = {a.get("url") for a in processed_new} | {a.get("original_link") for a in processed_new}
+            combined, amanate_g, nerezolvate_g = raport_copiere.aplica_defer(
+                combined, blocate, instantanee_upgrades, noi)
+            scoase = raport_copiere.pastreaza_doar_curate(gate_cale)
+            if amanate_g:
+                print(f">> grounding defer: {amanate_g} sinteze cu incalcari deterministe NU se "
+                      f"publica in rularea asta ({scoase} randuri scoase din dovada gate).")
+            if nerezolvate_g:
+                print(f">> grounding ATENTIE: {len(nerezolvate_g)} id-uri blocate fara versiune "
+                      "veche de restaurat si fara statut de nou — raman in loc, verificat manual:")
+                for x in nerezolvate_g[:5]:
+                    print(f"     - {x}")
 
     mod = moderation.load()
     visible = moderation.apply(combined, mod)

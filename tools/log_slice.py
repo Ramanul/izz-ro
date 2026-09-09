@@ -38,11 +38,6 @@ def _safe(text: str) -> str:
 
 def append(args) -> int:
     row = {
-        # UTC, nu ora locala: acelasi CSV e scris si de masina asta (UTC+3) si de CI (UTC),
-        # iar coloana e sortata lexicografic mai jos (`max(...)`, `sorted(key=...)`) — exact
-        # tiparul de offseturi amestecate pe care `test_published_is_utc.py` il opreste
-        # pentru `published`. Consecinta reala e mica (un rand de partea gresita a miezului
-        # noptii intr-un jurnal de metrici), dar contrazicea conventia scrisa in acest fisier.
         "date": datetime.now(timezone.utc).date().isoformat(),
         "account": args.account,
         "slice": _safe(args.slice),
@@ -54,9 +49,6 @@ def append(args) -> int:
         "notes": _safe(args.notes),
     }
     os.makedirs(os.path.dirname(LOG), exist_ok=True)
-    # Gol, nu inexistent: un `touch` sau un checkout care lasa fisierul vid ar primi altfel
-    # un rand fara antet, si atunci DictReader ia primul rand drept antet — jurnalul dispare
-    # tacit din raport, fara nicio eroare.
     is_new = not os.path.isfile(LOG) or os.path.getsize(LOG) == 0
     with open(LOG, "a", encoding="utf-8", newline="") as fh:
         w = csv.DictWriter(fh, fieldnames=COLUMNS, quoting=csv.QUOTE_MINIMAL)
@@ -75,7 +67,7 @@ def _rows() -> list:
 
 
 def _scurt(text: str, n: int = 70) -> str:
-    """Taie la ultima limita de cuvant, nu la mijloc: „...datele Actio" arata a fisier stricat."""
+    """Taie la ultima limita de cuvant, nu la mijloc."""
     if len(text) <= n:
         return text
     taiat = text[:n - 1]
@@ -84,8 +76,7 @@ def _scurt(text: str, n: int = 70) -> str:
 
 
 def _cell(v) -> str:
-    """Un camp de CSV pus intr-un tabel markdown: `|` inchide celula, iar o valoare
-    multilinie (CSV le accepta) creeaza randuri noi si sparge tabelul."""
+    """Un camp de CSV pus intr-un tabel markdown."""
     return str(v or "").replace("\r", " ").replace("\n", " ").replace("|", "\\|")
 
 
@@ -99,8 +90,6 @@ def _num(v) -> int:
 def report() -> int:
     rows = _rows()
     if not rows:
-        # Se SCRIE raportul gol, nu se lasa cel vechi: un dashboard de coordonare care arata
-        # 13 slice-uri dupa ce jurnalul a fost sters ar minti exact pe cine se bazeaza pe el.
         with open(REPORT, "w", encoding="utf-8") as fh:
             fh.write("# Munca si consumul — jurnal comun A + B\n\n"
                      "> Generat din `specs/metrics.csv` cu `python tools/log_slice.py --report`.\n\n"
@@ -125,16 +114,13 @@ def report() -> int:
     out.append("# Munca si consumul — jurnal comun A + B\n")
     out.append("> Generat din `specs/metrics.csv` cu `python tools/log_slice.py --report`.")
     out.append("> Ambele conturi scriu in el. Nu edita tabelele de mai jos manual — se suprascriu.")
-    # Marca de timp e obligatorie: fara ea, un raport de acum trei zile arata identic cu unul
-    # regenerat acum si nimeni nu poate spune care. Ultima data acoperita nu e acelasi lucru cu
-    # momentul generarii -- daca difera, jurnalul n-a mai fost completat, si asta se vede aici.
     _last = max((r.get("date") or "") for r in rows)
     out.append(f"> **Generat: {datetime.now(timezone.utc):%Y-%m-%d %H:%M} UTC** · "
                f"ultimul slice raportat: {_last or 'necunoscut'}. Daca cele doua difera mult, "
                "raportul e vechi pentru ca jurnalul n-a fost completat, nu pentru ca n-a fost munca.\n")
-    out.append("> **Cine lucreaza acum si ce e blocat** nu sta aici (s-ar invechi intre rulari), "
-               "ci pe canalul live: [issue #83](https://github.com/Ramanul/izz-ro/issues/83) — "
-               "intentia se anunta acolo INAINTE de a atinge fisiere.\n")
+    out.append("> **Cine lucreaza acum si ce e blocat** se anunta in `handoff/` din workspace; "
+               "`specs/STATE.md` ramane starea persistenta dintre sesiuni. Acest raport este doar "
+               "un snapshot de metrici si nu este canal de coordonare.\n")
     out.append(f"**{len(rows)} slice-uri** · **{tot_lines} linii** de diff · "
                f"**~{tot_tok}k tokeni** raportati\n")
 
@@ -156,9 +142,6 @@ def report() -> int:
     out.append("\n## Slice-uri, cele mai recente primele\n")
     out.append("| data | cont | slice | mod | linii | ~tok | note |")
     out.append("|---|---|---|---|---:|---:|---|")
-    # Se logheaza doar ziua, deci randurile din aceeasi zi sunt la egalitate; sortarea stabila
-    # le-ar lasa in ordinea din CSV, adica cele mai VECHI primele — exact pe dos fata de titlu.
-    # Pozitia in fisier departajeaza.
     recent = sorted(enumerate(rows), key=lambda t: (t[1].get("date", ""), t[0]), reverse=True)
     for _, r in recent[:40]:
         out.append(f"| {_cell(r.get('date'))} | {_cell(r.get('account'))} "
@@ -172,21 +155,12 @@ def report() -> int:
                "(masurat de contul A prin API, 2026-07-24):\n")
     out.append("| resursa | cost | de ce |")
     out.append("|---|---|---|")
-    out.append("| minute GitHub Actions | **zero** | repo public → minute gratuite si nelimitate; "
-               "129 min intr-o zi = 0 lei |")
-    out.append("| tururi de conversatie | **cota Claude a owner-ului** | resursa cu adevarat "
-               "limitata; fiecare mesaj costa |")
-    out.append("| rulari `pipeline` | **cota AI Gemini** | singurul workflow care consuma "
-               "altceva decat minute |\n")
-    out.append("**Regula care rezulta:** nu „rulati mai putine workflow-uri\", ci "
-               "**muta in Actions tot ce e mecanic si taie din tururile de conversatie**. "
-               "CI-ul e cel mai ieftin executor pe care il avem, nu cel mai scump — "
-               "si e singurul care ajunge la internetul real.\n")
-    out.append("**Cum se citeste `tokeni / 100 linii`:** cost aproximativ al modului de lucru. "
-               "Numarul mic = ieftin pentru cat livreaza. Coloana e utila abia dupa ~20 de "
-               "randuri; sub atat, variatia intre slice-uri o face inselatoare.\n")
-    out.append("**Tokenii sunt estimati de cel care raporteaza**, nu masurati automat — "
-               "sunt un ordin de marime, nu o factura.\n")
+    out.append("| minute GitHub Actions | **zero** | repo public → minute gratuite si nelimitate; 129 min intr-o zi = 0 lei |")
+    out.append("| tururi de conversatie | **cota Claude a owner-ului** | resursa cu adevarat limitata; fiecare mesaj costa |")
+    out.append("| rulari `pipeline` | **cota AI Gemini** | singurul workflow care consuma altceva decat minute |\n")
+    out.append("**Regula care rezulta:** nu „rulati mai putine workflow-uri\", ci **muta in Actions tot ce e mecanic si taie din tururile de conversatie**. CI-ul e cel mai ieftin executor pe care il avem, nu cel mai scump — si e singurul care ajunge la internetul real.\n")
+    out.append("**Cum se citeste `tokeni / 100 linii`:** cost aproximativ al modului de lucru. Numarul mic = ieftin pentru cat livreaza. Coloana e utila abia dupa ~20 de randuri; sub atat, variatia intre slice-uri o face inselatoare.\n")
+    out.append("**Tokenii sunt estimati de cel care raporteaza**, nu masurati automat — sunt un ordin de marime, nu o factura.\n")
 
     with open(REPORT, "w", encoding="utf-8") as fh:
         fh.write("\n".join(out) + "\n")

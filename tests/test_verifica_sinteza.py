@@ -59,6 +59,33 @@ def test_cifrele_de_o_singura_cifra_sunt_ignorate():
     assert cifre_straine("s-a intamplat a 3-a oara", "text fara cifre") == []
 
 
+def test_data_din_titlu_nu_ascunde_cifrele_sursei():
+    # Regresie 2026-09-06 (rularea 34013150305, pasul Grounding gate): titlul primariei
+    # contine "nr. 29061/13.08.2026". Tokenizatorul vechi producea un singur "13082026",
+    # deci "13" si "2026" din rezumat pareau inventate si opreau publicarea intregului
+    # site — desi ambele numere sunt in sursa.
+    sursa = "Proces verbal nr. 29061/13.08.2026 de constatare privind dosarele"
+    assert cifre_straine("Documentul din 13 august 2026 confirma dosarele", sursa) == []
+
+
+def test_doua_numere_separate_de_virgula_raman_distincte():
+    # Separatorii MULTIPLI ("2026, 13") nu leaga: sunt doua numere, nu "202613".
+    sursa = "Consiliul a aprobat in 2026, 13 proiecte si 30 de locuri"
+    assert cifre_straine("In 2026 au fost 13 proiecte si 30 de locuri", sursa) == []
+
+
+def test_numerele_pe_linii_separate_raman_distincte():
+    assert cifre_straine("Termenele sunt 13, 30 si 2026", "termene:\n13\n30\n2026") == []
+
+
+def test_garda_prinde_in_continuare_cifrele_inventate():
+    # Fixul nu are voie sa slabeasca gate-ul: un numar absent din sursa ramane semnalat.
+    sursa = "Proiect depus in 13.08.2026, buget 1.500.000 lei"
+    assert "9876" in cifre_straine("Buget de 9876 lei", sursa)
+    assert "1999" in cifre_straine("Proiect depus in 1999", sursa)
+    assert "46" in cifre_straine("Au participat 46 de elevi", "Au participat 45 de elevi")
+
+
 # ---- §2.5 rezerve ------------------------------------------------------------
 
 def test_rezerva_pierduta_cand_rezumatul_afirma_ce_sursa_doar_banuieste():
@@ -220,3 +247,49 @@ def test_jurnal_inexistent_da_cod_de_eroare_si_explica(tmp_path):
                        cwd=RADACINA, capture_output=True, text=True, encoding="utf-8")
     assert r.returncode == 1
     assert "NU EXISTA" in r.stdout
+
+
+# --- Praguri blocante §2.2 (text_copiat / titlu_copiat), 2026-09-05 ---------------
+
+from generator import verifica_sinteza as vs  # noqa: E402 - bloc de teste dedicat
+
+_SURSA_16 = ("primăria a anunțat astăzi că lucrările la pasajul central vor începe lunea "
+             "viitoare iar traficul va fi deviat complet timp de trei luni")
+
+
+def test_propozitie_copiata_integrala_e_blocanta():
+    probleme = vs.verifica("Titlu reformulat altfel", _SURSA_16, _SURSA_16 + " și mai mult context oficial.")
+    assert any(p.cod == "text_copiat" for p in probleme)
+
+
+def test_parafraza_curata_nu_e_blocanta():
+    rezumat = ("administrația locală a comunicat că șantierul de la pasaj pornește săptămâna "
+               "viitoare, cu devieri pe tot parcursul veri")
+    probleme = vs.verifica("Consiliul local a votat planul de trafic", rezumat, _SURSA_16)
+    coduri = {p.cod for p in probleme}
+    assert "text_copiat" not in coduri
+    assert "titlu_copiat" not in coduri
+
+
+def test_citat_verbatim_lung_permis():
+    rezumat = "„" + _SURSA_16 + "” a declarat purtătorul de cuvânt."
+    probleme = vs.verifica("Declarație despre pasaj", rezumat, _SURSA_16 + " Confirmarea a venit oficial.")
+    coduri = {p.cod for p in probleme}
+    assert "text_copiat" not in coduri
+    assert "citat_inventat" not in coduri
+
+
+def test_titlu_transcris_integral_e_blocant():
+    titlu = " ".join(_SURSA_16.split()[:8])
+    probleme = vs.verifica(titlu, "Rezumat parafrazat, alte cuvinte cu totul.", _SURSA_16)
+    assert any(p.cod == "titlu_copiat" for p in probleme)
+
+
+def test_text_copiat_ajunge_blocant_in_gate(tmp_path, monkeypatch):
+    monkeypatch.setenv("IZZ_RAPORT_COPIERE", str(tmp_path / "jurnal.jsonl"))
+    monkeypatch.setenv("IZZ_RAPORT_COPIERE_GATE", str(tmp_path / "gate.jsonl"))
+    raport_copiere.noteaza("C", "id-gate-test", "Titlu reformulat separat", _SURSA_16, _SURSA_16)
+    randuri = [json.loads(l) for l in (tmp_path / "gate.jsonl")
+               .read_text(encoding="utf-8").splitlines() if l.strip()]
+    coduri = {i["cod"] for r in randuri for i in r["blocking_issues"]}
+    assert "text_copiat" in coduri

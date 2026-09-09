@@ -1,63 +1,56 @@
 # STATE — project execution state
 
-> Single source of truth for "where we are". Manager-owned; updated at the end of every slice.
-> Executors get it read-only. **Hard cap: ~40 lines of content.** When it grows past that, cut
-> the settled history into `specs/istoric-executie.md` — do not let it accumulate here. It is
-> read at the start of every session, so every stale line is paid for twice: in tokens, and in
-> an executor re-implementing something that already shipped. `git fetch` immediately before
-> rewriting it.
+> Single source of truth for where we are. Manager-owned; executors read it. Keep this file short
+> and factual; settled history belongs in `specs/istoric-executie.md`.
 >
-> **Cut on 2026-08-21** from 656 lines, the second time. What it cost, stated so nobody repeats
-> it: two sections were headed `Open PR` while both PRs were already **merged** (#196 on 08-20,
-> #197 on 08-21), and the 195-line `## Open` section was almost entirely SHIPPED/FIXED/REVERTED
-> history with two live rules buried in it. That is the same failure the 08-07 cut documented.
-> **A section is `Open` only if a PR is open or a decision is pending — check, don't assume.**
-> Garda `incalcari_pr_fantoma` in `tests/test_pr_fantoma.py` pica daca `## Open` numeste un PR
-> care are deja commit de merge pe main (fara adnotarea `(merged)`).
+> **Hard cap: ~40 lines of content.**
+>
+> Where the rest lives: `specs/regim-reguli.md` — unified audit closure ·
+> `specs/registru.tsv` — decisions · `CLAUDE.md` — canonical contract.
 
-**Updated:** 2026-09-03 (#252 merged: dim. 4 + dim. 7 pe main; CI verde, garzile trec)
+**Updated:** 2026-09-09 (migrare Free merged #326; ruta pe izz-failover confirmata; cron fantoma sters)
 
 ## Open
 
-- **F4 (#241, merged)**: §18 in L1. Urmatorii: §12, §14, §20; **§17 NU**.
-- **K12 (`IZZ-0255`)**: rezumat zilnic, spec nescris; porneste de la `editorial-quality.yml`.
-- **PR-uri deschise:** #247 (merged 09-04 prin REBASE — git nu-l poate dovedi; `sync_state.py`
-  il da acum ca „nu pot decide"). Owner: #207 #214 #235. Alte 8 deschise 09-04 de ceilalti
-  agenti (#262-#277) — le acopera garda din #264. #279: felia copertilor cu harta.
-  (#253 merged; #252 merged; #250 merged; #248 merged; #244 merged; #225/#240 closed — fiecare pe aceeasi linie, altfel garda o vede doar pe ultima.)
-- **CI paralelizat (#248)**: numele jobului `pytest` NU se schimba. `ramanul-triage-blockers`
-  (e1c8fbe2) e vie si arunca tacut articole legitime (`IZZ-0266`). Debitul e limitat de
-  PLANIFICATORUL GitHub — 4,7 porniri/zi, nu 12 (`IZZ-0292`); sect. 17 ramane valabila.
-- **PLASA pentru restructurare (`IZZ-0271`)**: `tools/echivalenta.py` amprenteaza `output/`;
-  `tools/mutanti.py --regresie` (~10 s) — inainte de orice refactor pe cluster/select/geo/util/
-  guard. Coverage 71%, mutanti ucisi 81%, `render.py` cel mai rau pe ambele (`IZZ-0280`/`-0281`).
-  Determinism VERIFICAT 09-04: 953 fisiere difereau intre doua randari (3 locuri in `render.py`:
-  `set` iterat x2 + `sum` pe float, neasociativ), reparat in #254 (merged). Cuplarea reala nu e prin importuri — `specs/arhitectura-cuplare.md`, NU re-cerceta.
-- **Garda anti-amanare (`tests/test_registru_amanari.py`, `IZZ-0293`)**: un rand `propus` cu
-  `decident` = agent expira in 14 zile. Iesiri: fa-l, treci-l pe om, inchide-l cu motiv (un rand
-  nou care il leaga il inchide). La scriere: 12 amanari catre mine -> 0.
-- **Din `specs/atribuire-cercetare-si-plan.md`** — E1 + E4 cer decizia proprietarului.
-- **Coperti cu silueta judetului (draft PR)**: `htmlart._t_harta`, geometrie DOMENIU PUBLIC;
-  2.923 eligibile, dar doar cele generate de acum incolo (`IZZ-0163`); judet DOAR din cheia
-  sursei. **Pozele NU repara copertile** — 59 PD/CC0 in cache, 0,38% (`IZZ-0308`); OSM respins.
+- **Workers Free — branch `claude/cloudflare-free-migration-2sqeju`.** Plafonul redevine 20.000
+  de fisiere/versiune din 22 septembrie. Masurat: 51.896 fisiere inainte (259%), 16.732 dupa
+  (84%); arta se deseneaza in pagina, `ARTICLE_TTL_DAYS=21`, og:image propriu doar pe fereastra
+  recenta. Cifre si alternative respinse: `specs/cloudflare-free-2026-09.md`. [IZZ-0313..0315]
+- **Downgrade blockers — CLEARED.** 0 Durable Object namespaces on the account (the one thing that
+  refuses Paid -> Free); KV `izz-kv`, R2 `izz-bucket`, D1 `izz-db` (0 tables) exist, are unbound and
+  fit the free tiers. Open: Workers Builds minutes on Free — unreadable from session; if they run
+  out, publishing moves to `deploy-worker.yml` AND the git integration must be disconnected.
+- **INGEST COLLAPSE — separate from the Free migration, not caused by it.** Published volume fell to
+  ~5% on 09-05: 730–1052 articles/day on 09-01..09-04, then 43–183/day; `sitemap-news.xml` live holds
+  6 articles for 09-09. Category sorting is correct — there is simply no fresh content. ~5 pipeline
+  runs/day (not ~12), 49–85 min each, 4 failures in 12, all `release-probe` (Cloudflare needs >25 min
+  for 51.896 files). Levers (`MAX_AI_CALLS_PER_RUN=40`, `PRAG_MIN=105`) are in `build.yml` — protected,
+  owner's call. [IZZ-0317]
+- **Cloudflare routes — on `izz-failover`, confirmed live 09-09** (`x-izz-origin: primary`, overturns
+  IZZ-0308): ~2.9k hits/day vs 100k Free, failover kept; assets routing stays owner's call. The ~48%
+  error rate was a dashboard cron with no `scheduled()` (08-22) — deleted, verified silent. [IZZ-0318/0319]
 
-## Standing rules that keep being rediscovered — do not "fix" these
+## Audit closure status
 
-- **`state.merge()` is dead code, NOT a live bug.** `state.py:143`; the only caller is
-  `tests/test_state.py:14`. Dedup between fresh items happens inline at `main.py:227-236` (#158).
-  The recurring "lying function" hunt keeps rereading it as a duplicate bug; touching it is an
-  opportunistic refactor (§5.6).
-- **Map: do not re-land the enlarged hit areas without a scroll guard.** Reverted 2026-08-15
-  (`c6397735`), causation confirmed on device by the owner. Before retrying: suppress
-  re-selection while a scroll is in flight. Full mechanism in the archive.
-- **Attribution: `specs/atribuire-cercetare-si-plan.md` is the dossier — do not re-research it.**
-  7 external systems, 8 causes, a 6-stage plan, paid for once. Run `tools/eval_atribuire.py`
-  before and after **any** change to `geo.py`. Baseline 2026-08-08: category 25/39 (64%),
-  place-on-badge 31/32 (97%). **Cifra aia NU mai e comparabila** (`IZZ-0268`): TTL-ul a expirat 44
-  din cele 51 de randuri, deci o rulare de azi masoara 7 articole — alt esantion, nu alt rezultat.
-  Covers are never redrawn on a first run (`IZZ-0163`, owner refused 08-06); `FORCE_REGEN=1` opts in.
+- **K1–K14:** re-verified mechanism-by-mechanism in `specs/regim-reguli.md` — a reconciliation
+  register, not a substitute for passing tests. **Grounding:** blocks deterministic invented quotes
+  and foreign numbers, fails closed on missing evidence; order is grounding → QA → commit.
+- **Coordination:** live channel is `handoff/` + `specs/STATE.md`; historical dashboards stay historical.
+  **Containment:** destructive git commands and direct Edit/Write on control-plane files are denied.
+- **Journals:** `takedowns` in `moderation.yaml` removed on every publish path (trail in
+  `data/takedown_log.jsonl`); ingest discards per run in `data/triage_log.jsonl`.
+- **Near-verbatim copy:** >=15-word verbatim runs outside quotes and fully transcribed titles block the
+  gate, thresholds from REGULI-SINTEZA 2.2, no calibration corpus yet; violations defer the item.
+- **Silence detection:** hourly `detectie-tacere.yml`. **Human gate:** `IZZ_REQUIRE_HUMAN_GATE`
+  repo variable, default false.
+- **Bash writes are guarded:** the protected-edit hook covers Bash commands combining a control-plane
+  path with a write indicator; wiring under test (`tests/test_hooks_cablaj.py`).
 
-## Where the rest lives
+## Standing rules
 
-`specs/istoric-executie.md` · `specs/registru.tsv` + `python tools/registru.py find` ·
-`specs/masuratori-frontend.md` · `specs/istoric-operational.md` · `../HANDOFF.md`.
+- Free plan: `izz.ro` must be served by the assets-only Worker. Routing it through `izz-failover`
+  turns every hit into a metered Worker request (100k/day) instead of a free static-asset hit.
+- Do not treat retired static-host origins as live origins; Worker origin is the fallback verification path.
+- Do not use old task journals as normative coordination channels.
+- Do not describe historical benchmark values as current measurements.
+- Do not mark live, GitHub settings, or Cloudflare facts as solved based only on repository code.
