@@ -8,7 +8,7 @@
 > Where the rest lives: `specs/regim-reguli.md` — unified audit closure ·
 > `specs/registru.tsv` — decisions · `CLAUDE.md` — canonical contract.
 
-**Updated:** 2026-09-09 (migrare pe Workers Free: arta in pagina, TTL 21, plafon 20.000)
+**Updated:** 2026-09-09 (migrare Free merged #326; ruta pe izz-failover confirmata; cron fantoma sters)
 
 ## Open
 
@@ -26,9 +26,9 @@
   runs/day (not ~12), 49–85 min each, 4 failures in 12, all `release-probe` (Cloudflare needs >25 min
   for 51.896 files). Levers (`MAX_AI_CALLS_PER_RUN=40`, `PRAG_MIN=105`) are in `build.yml` — protected,
   owner's call. [IZZ-0317]
-- **Cloudflare routes — OWNER DECISION:** on Free, serving `izz.ro/*` from the assets Worker is the
-  cheap routing (static-asset hits are unmetered); `izz-failover` meters every hit against 100k/day
-  but restores automatic failover. Which one holds the route today is unverified. [IZZ-0308]
+- **Cloudflare routes — on `izz-failover`, confirmed live 09-09** (`x-izz-origin: primary`, overturns
+  IZZ-0308): ~2.9k hits/day vs 100k Free, failover kept; assets routing stays owner's call. The ~48%
+  error rate was a dashboard cron with no `scheduled()` (08-22) — deleted, verified silent. [IZZ-0318/0319]
 
 ## Audit closure status
 
