@@ -84,10 +84,26 @@ intermediar raster.
 | imagini de articol | 32.702 | 1.246 | **−96%** |
 | rest (subiecte, feeduri, paginare, static) | 6.675 | 3.886 | −42% |
 
+**Cifra „înainte" e CONFIRMATĂ PE LIVE, nu doar măsurată local** (2026-09-09 09:41 UTC):
+
+```
+$ curl -s https://izz-ro.andifreelancer2.workers.dev/build.json
+{"article_count": 12475, "branch": "main", "commit": "6babd4f...", "file_count": 51896, ...}
+```
+
+Adică exact ce servește `izz.ro` acum. Fără schimbarea de aici, pe 22 septembrie deploy-ul ar
+fi fost refuzat — tăcut, ca în 2026-08-21. Cele trei stări din §5.10 nu se confundă: „înainte"
+e **confirmat pe live**, „după" e **verificat local**; pe live se confirmă abia după merge.
+
 Ambele randări sunt făcute pe aceeași stare comisă, care acoperă 30 de zile — TTL-ul de 21 se
 aplică abia la prima rulare de pipeline (`state.expire()`). Până atunci supapa taie de la cel
 mai vechi, exact pentru ce a fost pusă: 11.600 de articole publicate din 12.475 publicabile.
 După prima rulare de pipeline nu mai are ce tăia.
+
+**Preview-ul de ramură al Cloudflare nu e verificabil din sesiune** — măsurat, nu presupus:
+`bash tools/verify_allowlist.sh https://claude-cloudflare-free-migration-2sqeju-izz-ro.andifreelancer2.workers.dev/`
+→ `[BLOCAT DE PROXY] ... CONNECT refuzat, dar numele se rezolvă în DNS -> nu e în allowlist`,
+în timp ce originea de producție răspunde `HTTP 200`. Proprietarul îl poate deschide în browser.
 
 Proiecție pe paginile chiar scrise, grupate pe zi din `output/sitemap.xml` (înainte de supapă):
 
