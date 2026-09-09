@@ -127,6 +127,7 @@ Pentru orice schimbare vizibilă:
 
 ## 17. Cadență
 `build.yml` încearcă orar (`13 * * * *`), dar poarta de 105 minute apără publicarea la ~2h. Nu modifica cronul pentru a „repara” cadența.
+Bugetul AI pe rulare e `MAX_AI_CALLS_PER_RUN` — **40** din 2026-09-04 (`9003e5f`, ridicat de proprietar de la 18); codul cade pe **12** când variabila lipsește (`main.py:392`), deci rularea locală nu măsoară debitul real.
 
 ## 18. Imagini de instituții locale — L1
 Textul complet este în `.claude/reguli/18-imagini.md`; hook-ul îl injectează pentru fișierele media aferente. Discuția fără atingerea unui fișier cere citirea regulii înainte.
