@@ -27,6 +27,29 @@ separate (niciun browser găsit; o linie de versiune care citea „Opening in ex
 session."; pa11y murea pe o cale MSYS iar rularea tot tipărea „-1 errors"). Un `.audit/` de dinainte
 de data aia, de pe Windows, **nu e o măsurătoare**.
 
+## 2026-09-09 — arta desenată în pagină (migrarea pe Workers Free)
+
+Mediane pe **3 repetări**, aceeași unealtă ca baseline-ul de mai jos (Lighthouse 13.4.1,
+Chromium 141.0.7390.37), `output/` servit pe `127.0.0.1:8899`,
+`ARTICLE_PATH=/sport/30-de-ani-de-la-moartea-legendarului-fotbalist-ion-oblemenco/`.
+
+| Pagină | Perf | A11y | BP | SEO |
+|---|---|---|---|---|
+| home | **94** (94/96/92) — baseline 80 → **+14** | 96 | 100 | 100 |
+| articol | **97** (97/97/97) — baseline 88 → **+9** | 96 | 100 | 100 |
+
+pa11y WCAG2AA (v10.0.0): **0** erori pe ambele pagini — arta desenată în pagină nu adaugă
+niciuna, deși textul ei devine text DOM real.
+
+**De unde vin cele +14 / +9:** homepage-ul face acum **14 cereri în total, dintre care 1 de
+imagine** (o fotografie reală de lead) și 258 KB transferați. Înainte, fiecare card cerea propriul
+`art.jpg`/`art-card.webp` — 44 de cereri de imagine doar pe home. CLS 0.091, TBT 0 ms, LCP 2,4 s.
+
+**A11y 96, nu 100 — și NU din cauza artei.** Singura penalizare e `target-size`, pe
+`nav.subnav > details.subnav-more > summary` și pe linkul din el, adică pe meniul „Mai multe
+secțiuni". Suprafața aia nu e atinsă de această felie; e o regresie apărută între 2026-08-02 și
+azi, de reparat separat. Blocurile `.art` nu apar în niciun audit picat.
+
 ## Baseline — re-măsurat 2026-08-02 pe `main` @ `34cc8d3`
 
 | Pagină | Perf | A11y | BP | SEO |

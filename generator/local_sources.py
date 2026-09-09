@@ -2,7 +2,24 @@ import csv
 import os
 import re
 
+from collections import Counter
+
 from . import localities
+
+# Normalizare pentru potrivirea codurilor de judet („ARGES", fara diacritice, cum vin in
+# CSV) cu etichetele din gazetteer („Argeș"). Ambele variante de s/t sub litera exista in
+# natura — cedilla U+015F/U+0163 SI virgula U+0219/U+021B — deci le acopar explicit; un
+# singur cod lipsa duce la nume fara județ exact la omonimele pe care le depanez aici.
+_DIA = str.maketrans({
+    "ă": "a", "â": "a", "î": "i", "ș": "s", "ş": "s", "ț": "t", "ţ": "t",
+    "Ă": "A", "Â": "A", "Î": "I", "Ș": "S", "Ş": "S", "Ț": "T", "Ţ": "T",
+})
+
+
+def _norm(s: str) -> str:
+    """Forma de potrivire: litere mici... ba NU — codurile din CSV sunt MAJUSCULE, deci
+    normalizarea le păstrează și scoate doar diacriticele."""
+    return (s or "").translate(_DIA).upper()
 
 # Prefixul administrativ din CSV („MUNICIPIUL PLOIESTI"). Acelasi tipar ca `localities._PREFIX`,
 # scris aici ca sa nu depindem de un nume privat din alt modul.
@@ -83,7 +100,70 @@ _DEAD_SLUGS = frozenset({
     # /#E403, iar itemele nu trec garda http/https. Se reactiveaza doar dupa repararea
     # endpointului si o reverificare manuala a feedului.
     "tulcea_luncavita",
+    # COMPROMIS (2026-09-05). Feed-ul primariei Plenita publica spam cazino intercalat cu
+    # anunturi reale, exact tiparul Rovinari: „Chicken Cross the Road Gambling Game Review
+    # for Canada", „VulkanSpieleBonus Polish App" — prins de garda lingvistica la primul
+    # fetch al listei rescanate (104s/308 surse), apoi carantinat automat (2 din 8 iteme
+    # respinse in aceeasi rulare). Suprimarea opreste re-ingestia; se scoate doar dupa ce
+    # primaria curata site-ul si feed-ul e reverificat manual prin garda.
+    "dolj_plenita",
 })
+
+
+def load_html_sources(csv_path: str, limit: int) -> dict:
+    """Sursele locale FARA RSS, validate individual: WordPress REST API (tip `wp_json`) si
+    liste e-adm „notice" (tip `html_list` cu selectori). CSV: judet,localitate,url,tip,
+    base_url,item,title,date. Aceleasi conventii ca `load_gold_sources`: surse oficiale
+    (prefix `pl_`, category `local`), deterministe, {} daca fisierul lipseste, limit<=0 → {}.
+    Cheia poate ciocni un `pl_` din GOLD pentru acelasi UAT — aici second-wins la INSERT
+    (config.py face update dup GOLD), deci verificam explicit: primul castiga.
+    """
+    if limit <= 0:
+        return {}
+    if not os.path.isfile(csv_path):
+        return {}
+
+    _by_name = localities.load_dataset()
+    rows = []
+    with open(csv_path, encoding="utf-8-sig", newline="") as f:
+        for row in csv.DictReader(f):
+            url = (row.get("url") or "").strip()
+            tip = (row.get("tip") or "").strip()
+            # „rss" = feed standard fara cheie `type` in sursa (implicitul din fetch._fetch_one);
+            # sitemap_news exista in fetch.py; wp_json si html_list au fost adaugate odata cu CSV-ul
+            if url and tip in ("wp_json", "html_list", "sitemap_news", "rss"):
+                rows.append(row)
+
+    # acelasi criteriu de prioritate ca la GOLD: municipiu > oras > comuna, apoi alfabetic
+    rows.sort(key=lambda r: (r["judet"], r["localitate"]))
+    rows.sort(key=lambda r: _impact_tier(r["localitate"]))
+
+    result: dict = {}
+    judet_by_key: dict = {}
+    for row in rows[:limit]:
+        key = "pl_" + _make_slug(row["judet"], row["localitate"])
+        if key in result:
+            continue
+        tip = row["tip"].strip()
+        sursa = {
+            "name": nume_primarie(row["judet"], row["localitate"], _by_name),
+            "url": row["url"].strip(),
+            "category": "local",
+            "lang": _lang(row["judet"]),
+        }
+        if tip != "rss":   # feed standard: fara cheie type, fetch il trateaza implicit ca RSS
+            sursa["type"] = tip
+        if tip == "html_list":
+            sursa["base_url"] = (row.get("base_url") or "").strip()
+            sursa["item"] = (row.get("item") or "").strip()
+            sursa["title"] = (row.get("title") or "").strip() or None
+            sursa["date"] = (row.get("date") or "").strip() or None
+        result[key] = sursa
+        judet_by_key[key] = row["judet"]
+
+    # omonimele apar si aici: 2x Aninoasa (Dambovita/Gorj) masurat in lotul de 16 (09-05)
+    _disambigueaza_omonime(result, _provider_din_judet_key(judet_by_key), _by_name)
+    return result
 
 
 def nume_primarie(judet: str, localitate: str, by_name: dict) -> str:
@@ -113,6 +193,21 @@ def nume_primarie(judet: str, localitate: str, by_name: dict) -> str:
     return "Primăria " + (rec["label"] if rec else curat.title())
 
 
+# Cele doua coduri de judet care lipsesc din gazetteerul Wikidata (masurat 2026-09-05 pe
+# toate codurile din primarii_status: BUCURESTI, VALCEA). Numere oficiale, nu inventate.
+_ETICHETE_JUDETE_MANUALE = {"BUCURESTI": "București", "VALCEA": "Vâlcea"}
+
+# Județe cu populație maghiară semnificativă: anunțurile oficiale LEGITIME in maghiara
+# nu trebuie respinse de garda lingvistică (Târgu Secuiesc carantinat greșit, masurat
+# 2026-09-06 pe titluri reale locale). Sursele din aceste județe primesc lang="ro_hu";
+# vezi guard.anomalie — spam-ul fără markeri ro/hu rămâne respins.
+_JUDETE_RO_HU = {"COVASNA", "HARGHITA", "MURES", "SALAJ", "BIHOR", "CLUJ", "MARAMURES", "SATU MARE"}
+
+
+def _lang(judet: str) -> str:
+    return "ro_hu" if (judet or "").strip().upper() in _JUDETE_RO_HU else "ro"
+
+
 def _impact_tier(localitate: str) -> int:
     """Prioritate de IMPACT, dedusa STATIC din numele localitatii (nu re-analiza la runtime):
     municipiu (oras mare) inaintea orasului, orasul inaintea comunei. Reper cheie: un primar
@@ -127,12 +222,82 @@ def _impact_tier(localitate: str) -> int:
     return 2  # comuna
 
 
+def _etichete_judete(by_name: dict) -> dict:
+    """Cod de judet („ARGES") -> eticheta cu diacritice („Argeș"), din gazetteer.
+
+    Nevoie reala: omonimele de localitate legitime (3x Ștefănești in Botoșani/Argeș/Vâlcea,
+    2x Beclean, 2x Vidra) produceau nume afisate identice pe surse DIFERITE, iar catalogul
+    de surse cere unicitate (test_render_sources::test_catalog_respects_one_axis_one_home,
+    masurat 397 nume pe 392 unice la primele 300 surse). Județul in paranteza disambigueaza.
+    """
+    etichete: dict = {}
+    for intrari in by_name.values():
+        for e in intrari:
+            brut = (e.get("judet") or "").strip()
+            if brut:
+                curat = re.sub(r"^Jude[tț]ul\s+", "", brut).strip()
+                if curat:
+                    etichete.setdefault(_norm(curat), curat)
+    for cod, eticheta in _ETICHETE_JUDETE_MANUALE.items():
+        etichete.setdefault(cod, eticheta)
+    return etichete
+
+
 def _make_slug(judet: str, localitate: str) -> str:
     raw = f"{judet}_{localitate}".lower()
     slug = re.sub(r"[^a-z0-9]", "_", raw)
     slug = re.sub(r"_+", "_", slug)
     slug = slug.strip("_")
     return slug
+
+
+def _disambigueaza_omonime(result: dict, judet_provider, by_name: dict) -> None:
+    """Omonimele legitime primesc județul in paranteza, ca numele afisat sa fie unic.
+    Catalogul de surse cere unicitate (test_render_sources) si omonimele apar in ORICE
+    lot mare de primarii: 3x Ștefănești in GOLD, 2x Aninoasa in wp_json, 2x Măgura si
+    2x Cristești DOAR la intersectia GOLD+wp_json (masurate 2026-09-05/06). In-place.
+    `judet_provider(cheie)` -> eticheta județului cu diacritice, sau None.
+    """
+    if not result:
+        return
+    _dubluri = {n for n, c in Counter(v["name"] for v in result.values()).items() if c > 1}
+    if not _dubluri:
+        return
+    for _key, _v in result.items():
+        if _v["name"] in _dubluri:
+            _etiqueta = judet_provider(_key)
+            if _etiqueta:
+                _v["name"] = f"{_v['name']} ({_etiqueta})"
+
+
+def _provider_din_judet_key(judet_by_key: dict):
+    """Providerul standard cand județul e stocat pe cheie (loturi individuale)."""
+    _by_name = localities.load_dataset()
+    _et = _etichete_judete(_by_name)
+    return lambda cheie: _et.get(_norm(judet_by_key.get(cheie, "").upper()))
+
+
+def disambigueaza_nume_in_config(sources: dict) -> None:
+    """A doua tura, la nivel de CONFIG: omonimele INTRE loturi (GOLD vs wp_json/html vs
+    surse literale) nu se vad in loaderele individuale. Județul se recupereaza din cheia
+    `pl_<judet>_<localitate>`: cautam codul de judet a carui forma-slug e prefix-ul cheii,
+    cel mai lung primul (BISTRITA-NASAUD inaintea unui eventual BISTRITA)."""
+    _by_name = localities.load_dataset()
+    _et = _etichete_judete(_by_name)
+    _coduri = sorted(_et.keys(), key=len, reverse=True)
+    forme = [(cod, re.sub(r"_+", "_", re.sub(r"[^a-z0-9]", "_", cod.lower())).strip("_"))
+             for cod in _coduri]
+
+    def provider(cheie: str):
+        if not cheie.startswith("pl_"):
+            return None
+        slug = cheie[3:]
+        for cod, forma in forme:
+            if slug == forma or slug.startswith(forma + "_"):
+                return _et[cod]
+        return None
+
+    _disambigueaza_omonime(sources, provider, _by_name)
 
 
 def load_gold_sources(csv_path: str, limit: int, min_date: str = "2026-01-01") -> dict:
@@ -167,6 +332,7 @@ def load_gold_sources(csv_path: str, limit: int, min_date: str = "2026-01-01") -
     _by_name = localities.load_dataset()
 
     result = {}
+    judet_by_key: dict = {}
     for row in rows[:limit]:
         slug = _make_slug(row["judet"], row["localitate"])
         key = "pl_" + slug
@@ -175,6 +341,12 @@ def load_gold_sources(csv_path: str, limit: int, min_date: str = "2026-01-01") -
                 "name": nume_primarie(row["judet"], row["localitate"], _by_name),
                 "url": row["rss_url"].strip(),
                 "category": "local",
+                "lang": _lang(row["judet"]),
             }
+            judet_by_key[key] = row["judet"]
+
+    # omonimele legitime primesc județul in paranteza, ca numele afisat sa fie unic
+    # (vezi _etichete_judete: 3x Ștefănești, 2x Beclean, 2x Vidra — masurat pe 300 surse)
+    _disambigueaza_omonime(result, _provider_din_judet_key(judet_by_key), _by_name)
 
     return result
