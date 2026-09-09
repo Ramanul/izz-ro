@@ -58,9 +58,10 @@
 
     <section class="map-layout">
       <div class="map-card">
+        <nav id="map-breadcrumb" class="map-breadcrumb" aria-label="Poziția în hartă"></nav>
         <div id="map" class="map" role="region" aria-label="Harta României cu știri pe județe"></div>
         <div id="county-picker" class="county-picker" role="group" aria-label="Alege județul"></div>
-        <p class="map-note">În modul regional, culorile delimitează regiunile editoriale. După ce alegi un județ, harta arată limitele UAT-urilor; o cifră apare numai pe UAT-urile cu știri localizate și reprezintă evenimentele sau relatările din filtrul activ. Poți alege aceeași zonă din listă, fără să fie nevoie să nimerești un marker.</p>
+        <p class="map-note">În modul regional, culorile delimitează regiunile editoriale. După ce alegi un județ, harta arată limitele orașelor și comunelor; o cifră apare numai pe unitățile cu știri localizate și reprezintă evenimentele sau relatările din filtrul activ. Poți alege aceeași zonă din listă, fără să fie nevoie să nimerești un marker.</p>
         <p class="map-note">Preferi o listă statică? Consultă <a href="/surse/">sursele organizate pe județe și regiuni</a>.</p>
         <noscript><p class="map-note">Harta necesită JavaScript pentru filtrare. Poți consulta în continuare <a href="/surse/">catalogul surselor pe județe și regiuni</a> și <a href="/">ultimele știri</a>.</p></noscript>
         <p id="map-status" class="sr-only" aria-live="polite" aria-atomic="true"></p>
@@ -80,21 +81,6 @@
       </aside>
     </section>
   </main>
-
-  <div id="uat-dialog" class="uat-dialog" hidden>
-    <div class="uat-dialog-backdrop" data-uat-close></div>
-    <section class="uat-dialog-panel" role="dialog" aria-modal="true" aria-labelledby="uat-dialog-title" aria-describedby="uat-dialog-summary" tabindex="-1">
-      <div class="uat-dialog-heading">
-        <div>
-          <p id="uat-dialog-context" class="panel-context">UAT</p>
-          <h2 id="uat-dialog-title">Știri localizate</h2>
-          <p id="uat-dialog-summary" class="uat-dialog-summary"></p>
-        </div>
-        <button type="button" id="uat-dialog-close" class="uat-dialog-close" aria-label="Închide lista știrilor">×</button>
-      </div>
-      <ul id="uat-dialog-list" class="uat-dialog-list"></ul>
-    </section>
-  </div>
 
   <script src="/static/harta-stiri/harta-stiri.js" defer></script>
 </body>

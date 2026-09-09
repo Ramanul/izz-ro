@@ -220,8 +220,12 @@ SOURCES = {
             "protv":      {"name": "Știrile ProTV","url": "https://stirileprotv.ro/rss",               "category": "general"},
 }
 from generator.local_sources import load_gold_sources
-_GOLD_CSV = os.path.join(ROOT, "data", "primarii_lists", "gold_integrare.csv")
-_gold = load_gold_sources(_GOLD_CSV, int(os.environ.get("LOCAL_GOLD_LIMIT", "120")))
+# Rescanarea completa 2026-09-05 (3187 site-uri, re-verificare pe eșecuri + feed-uri
+# citite individual): doar 828 din 1453 feed-uri marcate "rss_ok" au chiar conținut
+# din 2026, iar datele din fișierul vechi erau în mare parte artefact (1052/1274 cu
+# data exact 2026-01-01, ne-parseate). Lista nouă poartă datele REALE din feed-uri.
+_GOLD_CSV = os.path.join(ROOT, "data", "primarii_lists", "gold_integrare_2026-09-05.csv")
+_gold = load_gold_sources(_GOLD_CSV, int(os.environ.get("LOCAL_GOLD_LIMIT", "300")))
 # Bugetul AI proceseaza in ordinea dictului (niche-first) -> sursele locale intra
 # imediat dupa blocul 'local' literal, nu la coada (altfel sunt infometate de buget).
 if _gold:
@@ -230,6 +234,26 @@ if _gold:
                default=len(_items) - 1)
     _items[_idx + 1:_idx + 1] = list(_gold.items())
     SOURCES = dict(_items)
+
+# Surse locale FARA RSS validate individual (probe 2026-09-05): WordPress REST API
+# (wp_json) si liste e-adm „notice" (html_list). Inserate imediat DUPA blocul GOLD —
+# tot inainte de sursele non-locale, ca invariant-ul niche-first (testul de ordine
+# pl_ < gsp) sa ramana valabil. GOLD castiga pe ciocnire: un feed viu e mai bogat.
+from generator.local_sources import load_html_sources
+_HTML_CSV = os.path.join(ROOT, "data", "primarii_lists", "html_sources_2026-09-05.csv")
+_html = load_html_sources(_HTML_CSV, int(os.environ.get("LOCAL_HTML_LIMIT", "250")))
+if _html:
+    _hitems = [(k, v) for k, v in _html.items() if k not in SOURCES]
+    if _hitems:
+        _items = list(SOURCES.items())
+        _idx = max(i for i, (_k, _v) in enumerate(_items) if _k.startswith("pl_"))
+        _items[_idx + 1:_idx + 1] = _hitems
+        SOURCES = dict(_items)
+
+# A doua tura de disambiguare, GLOBALA: omonimele INTRE loturi (GOLD vs wp_json vs surse
+# literale) nu se vad in loaderele individuale — 2x Măgura, 2x Cristești masurate 09-06.
+from generator.local_sources import disambigueaza_nume_in_config
+disambigueaza_nume_in_config(SOURCES)
 
 # Exclude orice URL/sursă de agenție (verificare suplimentară pe domeniul linkului)
 AGENCY_BLOCKLIST = ["agerpres", "mediafax", "reuters", "afp.com", "apnews", "ap.org"]
@@ -338,47 +362,69 @@ RELATED_MIN_SHARED = 2         # "Articole conectate": minim entitati comune. 1 
 #
 # Plafonul se ridica definitiv doar prin arhiva separata de starea de lucru (paginile raman
 # publicate, articolele ies doar din procesare) - proiect separat, programat pe 21 aug.
-ARTICLE_TTL_DAYS = 30
+#
+# COBORAT 30 -> 21 pe 2026-09-09, la intoarcerea pe Workers FREE (specs/cloudflare-free-2026-09.md).
+# Nu e o preferinta editoriala, e aritmetica plafonului de 20.000 de fisiere: numarat pe starea
+# reala, cu arta mutata in pagina, 21 de zile dau 16.882 de fisiere (84% din plafon) iar 24 de
+# zile dau 20.330 (102% -- deploy refuzat). Pe regimul VECHI, cu arta ca fisiere, planul gratuit
+# ar fi permis 9 zile, nu 21: mutarea artei in HTML e ce cumpara cele trei saptamani.
+# Literal, nu `os.getenv`: `tests/test_reguli.py` citeste cifra de aici si o compara cu fiecare
+# rationament scris in repo. Un TTL configurabil din mediu ar rupe garda aia tacut.
+ARTICLE_TTL_DAYS = 21
 
-# Plafonul de fisiere al gazdei. Gazda NU mai e Pages: izz.ro se serveste dintr-un Worker
-# cu Static Assets de pe 2026-08-22 (#211, 40ac007), pe plan Workers PAID. Acolo plafonul e
-# 100.000 de fisiere per versiune de Worker (25 MiB per fisier), nu 20.000 ca pe planul
-# gratuit. Citit din documentatie pe 2026-08-23, nu dedus prin bracket:
+# Plafonul de fisiere al gazdei. Gazda e un Worker cu Static Assets de pe 2026-08-22
+# (#211, 40ac007), iar contul se intoarce pe **Workers FREE** din 2026-09-22 (decizie
+# proprietar 2026-09-09). Pe Free plafonul e 20.000 de fisiere per versiune de Worker,
+# nu 100.000 ca pe Paid; fisierul individual ramane 25 MiB pe ambele.
+# Citit din documentatie pe 2026-09-09, nu dedus prin bracket:
 # developers.cloudflare.com/workers/platform/limits/#static-assets
 #
-# Cifrele dinainte (19.500 / 20.000) erau ale lui Pages Free si au ramas in acest PR dupa
-# migrare. Lasate asa, ar fi taiat ~4.800 de imagini la prima randare si toate la regim
-# stabilizat: garda ar fi degradat site-ul aparandu-l de un plafon care nu mai exista.
-#
-# Incidentul pe care garda il apara ramane real, si de-aia NU o stergem: gazda refuza
+# Incidentul pe care garda il apara e real, si de-aia NU o stergem: gazda refuza
 # deploy-ul supradimensionat si NU raporteaza inapoi in pipeline (jobul de continut trece
 # verde, esecul apare 25 de minute mai tarziu in `release-probe`, ca "izz.ro serveste <sha
 # vechi>"). Asa a stat site-ul inghetat 21 de ore pe 63bcc9bd (2026-08-21 10:25 -> 08-22
-# 07:00), cu sase rulari complete picate una dupa alta.
+# 07:00), cu sase rulari complete picate una dupa alta. Pe Free marja e de cinci ori mai
+# mica, deci garda conteaza de cinci ori mai mult.
 #
-# Randarea nu lasa marimea output-ului pe seama ingestului. Bugetul de mai jos e ce respecta
-# EA, sub plafonul real, iar marja acopera derivatele webp care nu se pot prezice inainte de
-# scriere. Masurat 2026-08-23 pe o randare completa: 23.961 de fisiere = 24% din plafon.
-# Regim stabilizat estimat in specs/STATE.md: ~83.000, cu 17% marja.
-OUTPUT_FILE_BUDGET = int(os.getenv("OUTPUT_FILE_BUDGET", "90000"))
-# Plafonul GAZDEI, separat de bugetul de mai sus. Bugetul e tinta la care randarea imparte
-# imaginile (depasirea lui inseamna ca rezerva a derivat -> avertisment); plafonul e punctul
-# de la care Cloudflare REFUZA deploy-ul. Peste el randarea trebuie sa moara zgomotos: altfel
+# Randarea nu lasa marimea output-ului pe seama ingestului: `_taie_la_buget()` scoate din
+# publicare articolele cele mai vechi pana cand proiectia intra in bugetul de mai jos.
+# Bugetul e 85% din plafon -- restul de 15% acopera ce nu se poate prezice inainte de
+# scriere (fotografii reale, coperti, pagini de subiect care apar din entitati noi).
+OUTPUT_FILE_BUDGET = int(os.getenv("OUTPUT_FILE_BUDGET", "17000"))
+# Plafonul GAZDEI, separat de bugetul de mai sus. Bugetul e tinta la care randarea taie
+# (depasirea lui inseamna ca rezerva a derivat -> avertisment); plafonul e punctul de la
+# care Cloudflare REFUZA deploy-ul. Peste el randarea trebuie sa moara zgomotos: altfel
 # iese cu cod 0, jobul de continut ramane verde si esecul reapare 25 de minute mai tarziu in
 # `release-probe` -- exact bucla tacuta din 2026-08-21.
-# ATENTIE: 100.000 e plafonul planului PAID. Daca abonamentul cade inapoi pe Workers Free,
-# plafonul redevine 20.000 si cifra de aici trebuie coborata odata cu el.
-OUTPUT_FILE_CEILING = int(os.getenv("OUTPUT_FILE_CEILING", "100000"))
+# ATENTIE: 20.000 e plafonul planului FREE. Daca abonamentul urca inapoi pe Workers Paid,
+# plafonul redevine 100.000 si cifra de aici se ridica odata cu el -- NU invers.
+OUTPUT_FILE_CEILING = int(os.getenv("OUTPUT_FILE_CEILING", "20000"))
 # Fisierele care NU stau in directoarele de articol: static, categorii cu paginare,
 # subiecte + feedurile lor, ghiduri, instrumente, harta, sitemapuri, feed, cautare.
-# MASURAT pe o randare reala din 2026-08-22: 3.483 de fisiere care nu sunt nici pagina de
-# articol, nici imagine de articol (`python tools/count_output.py`). Include paginile de
-# paginare si de subiect, care stau INAUNTRUL directoarelor de categorie -- o prima
-# masuratoare le-a numarat gresit ca pagini de articol si bugetul a iesit cu 183 de fisiere
-# peste. Cifra de aici e rotunjita in sus, ca marja.
+# MASURAT cu `tools/count_output.py` pe randarea din 2026-09-09, la 12.475 de pagini publicate
+# (fereastra plina de 30 de zile din stare): 4.072 de fisiere care nu sunt nici pagina de articol,
+# nici imagine de articol -- 1.627 pagini de subiect, 297 de feeduri, 638 de pagini de paginare si
+# ~1.584 fixe (static/, legal, ghiduri, harta, sitemapuri, cautare). Rotunjit in sus la 4.200.
+# La regimul tinta (TTL 21) restul scade spre ~3.500, deci cifra e o limita superioara, nu o
+# estimare -- directia sigura, fiindca din ea se calculeaza cate articole incap.
+# Include paginile de paginare si de subiect, care stau INAUNTRUL directoarelor de categorie --
+# o prima masuratoare le-a numarat gresit ca pagini de articol si bugetul a iesit cu 183 peste.
 # Se scade din buget INAINTE de imparteala pe articole: paginile de articol au prioritate
-# absoluta, imaginile se dau din ce ramane. Remasoara dupa orice rubrica sau sectiune noua.
-OUTPUT_NON_ARTICLE_RESERVE = int(os.getenv("OUTPUT_NON_ARTICLE_RESERVE", "3600"))
+# absoluta. Remasoara cu `tools/count_output.py` dupa orice rubrica sau sectiune noua.
+OUTPUT_NON_ARTICLE_RESERVE = int(os.getenv("OUTPUT_NON_ARTICLE_RESERVE", "4200"))
+# Cate articole, de la cel mai nou spre cel mai vechi, primesc `cover.jpg` propriu (og:image
+# 1200x630 cu titlul desenat). Restul cad pe coperta STATICA a categoriei (15 fisiere,
+# generate o data per build). Motivul e ca og:image conteaza cat timp articolul chiar se
+# distribuie: la ~590 de articole/zi, 1.200 acopera ultimele ~2 zile. Pe Paid nu exista
+# motiv sa fie plafonat; pe Free, 12.600 de coperti ar fi 63% din plafonul intreg.
+OG_COVER_MAX_ARTICLES = int(os.getenv("OG_COVER_MAX_ARTICLES", "1200"))
+# Graful de subiecte: de la cate articole primeste o entitate pagina proprie, si de la cate
+# primeste si feed RSS. Pragul de 2 producea 3.671 de pagini din care 2.145 aveau exact
+# doua-trei articole -- thin content pentru Google si 21% din plafonul gratuit pentru noi.
+# Pragul 3 e si o regula editoriala mai buna, nu doar o taiere: o entitate cu doua aparitii
+# nu e un subiect, e o coincidenta.
+SUBJECT_MIN_ARTICLES = int(os.getenv("SUBJECT_MIN_ARTICLES", "3"))
+SUBJECT_FEED_MIN_ARTICLES = int(os.getenv("SUBJECT_FEED_MIN_ARTICLES", "12"))
 MAX_PER_SOURCE = 8             # redus de la 12 ca sa scada apelurile AI/rulare
 # Homepage-ul este un tablou de bord, nu arhiva zilei: patru carduri per categorie pastreaza
 # orientarea larga, iar restul raman accesibile prin pagina de categorie. Limita reduce DOM-ul

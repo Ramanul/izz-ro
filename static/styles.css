@@ -456,7 +456,9 @@ picture { display: contents; }
 [data-theme="dark"] .izz-profile-btn { background: var(--paper-2); }
 [data-theme="dark"] .stats-row { background: var(--paper); }
 [data-theme="dark"] .notice { background: var(--gold-wash); }
-[data-theme="dark"] img { opacity: .92; }
+/* Arta desenata in pagina se stinge la fel ca o fotografie: pe tema intunecata un card cu
+   fond deschis la 100% ar stralui langa unul cu poza deja atenuata. */
+[data-theme="dark"] img, [data-theme="dark"] .art { opacity: .92; }
 
 /* buton toggle dark mode (in header) */
 .izz-install-btn {
@@ -488,7 +490,9 @@ picture { display: contents; }
   0%, 100% { opacity: .4; }
   50% { opacity: .7; }
 }
-.card-media:not(:has(img[src]))::before,
+/* `.art` = arta desenata in pagina: e deja pictata, deci NU e un placeholder de asteptat.
+   Fara exceptia asta, pulsul de skeleton ar rula la infinit peste fiecare card. */
+.card-media:not(:has(img[src], .art))::before,
 .card-media:has(img:not([src]), img[src=""])::before {
   content: "";
   display: block; width: 100%; height: 100%;
@@ -639,7 +643,192 @@ picture { display: contents; }
 /* Judet fara surse: desenat, ca tara sa fie intreaga, dar inert — fara link mort. */
 .harta-jud-gol { fill: var(--line); stroke: var(--paper); stroke-width: 1.5; }
 
-/* ---- arta generativa pe site (faza 2: articol + hero) ---- */
+/* =====================================================================
+   ARTA GENERATIVA, DESENATA IN PAGINA (2026-09-09, Workers Free)
+
+   Pana acum aceleasi patru compozitii erau capturate cu Chromium in Actions si servite ca
+   `art.jpg` / `art.webp` / `art-card.webp` — pana la trei fisiere si trei cereri per articol,
+   pentru tipografie si geometrie. Pe planul gratuit Cloudflare (20.000 de fisiere pe versiune
+   de Worker) imaginile consumau singure 65% din plafon si limitau arhiva la ~9 zile.
+
+   Sistemul de coordonate e cel al rasterului: 960x504. Containerul e `container-type:
+   inline-size`, deci 100cqw = latimea artei, iar 1px din desenul original = 1/9.6 cqw.
+   Asa compozitia scaleaza identic pe card (360px), pe hero (430px) si pe articol (729px),
+   fara sa se rescrie nicio pozitie.
+
+   Paleta e FIXA in ambele teme, ca la o imagine: arta e un artefact tiparit, nu o suprafata
+   de interfata. De-aia culorile stau aici, in variabile, si nu in template (§8).
+   ===================================================================== */
+:root {
+  /* perechile (accent, fond) din generator/htmlart.py `_PALETE`, in aceeasi ordine */
+  --art-a0: #8b6918; --art-b0: #faf5e6;   /* aur inchis pe spalare aurie */
+  --art-a1: #15171c; --art-b1: #f6f7f9;   /* cerneala pe hartie */
+  --art-a2: #3d4a3a; --art-b2: #f1f4ee;   /* masliniu */
+  --art-a3: #4a3b32; --art-b3: #f7f2ed;   /* pamant ars */
+  --art-a4: #2f3d4a; --art-b4: #eef1f5;   /* ardezie */
+  --art-a5: #4a3244; --art-b5: #f5f0f4;   /* prun */
+  --art-gold: #c9a227;   /* NU se inverseaza pe dark: e aurul tiparit, ca --ink-fixed */
+  --art-grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.5'/%3E%3C/svg%3E");
+}
+.art--p0 { --art-acc: var(--art-a0); --art-bg: var(--art-b0); }
+.art--p1 { --art-acc: var(--art-a1); --art-bg: var(--art-b1); }
+.art--p2 { --art-acc: var(--art-a2); --art-bg: var(--art-b2); }
+.art--p3 { --art-acc: var(--art-a3); --art-bg: var(--art-b3); }
+.art--p4 { --art-acc: var(--art-a4); --art-bg: var(--art-b4); }
+.art--p5 { --art-acc: var(--art-a5); --art-bg: var(--art-b5); }
+
+.art {
+  container-type: inline-size;
+  position: relative; width: 100%; aspect-ratio: 960 / 504; overflow: hidden;
+  background: var(--art-bg); color: var(--art-acc);
+  font-family: var(--font-display); font-weight: 800; line-height: 1;
+  text-transform: uppercase; user-select: none;
+}
+.art p, .art div, .art span { margin: 0; }
+.art-grain {
+  position: absolute; inset: 0; background-image: var(--art-grain);
+  opacity: .05; mix-blend-mode: multiply; pointer-events: none;
+}
+/* Eticheta: o singura marime tipografica pe tot fisierul, pe patru trepte de lungime —
+   exact tabelul `_et_px` din htmlart.py. Raportul intre trepte e acelasi la toate cele
+   patru compozitii (1 / .80 / .65 / .50), deci difera doar marimea de baza. */
+.art--t0 { --art-et-k: 1; }
+.art--t1 { --art-et-k: .8; }
+.art--t2 { --art-et-k: .65; }
+.art--t3 { --art-et-k: .5; }
+.art-label {
+  font-size: var(--fs-lg);                                  /* cadere fara `cqw` */
+  font-size: calc(var(--art-et-base) * var(--art-et-k));
+  letter-spacing: .21cqw; line-height: 1.05; overflow-wrap: anywhere;
+}
+.art-brand, .art-when, .art-foot, .art-sub, .art-num-wk, .art-num-luna {
+  font-size: 1.35cqw; letter-spacing: .31cqw; opacity: .5;
+}
+.art-tick { display: block; background: var(--art-gold); height: .31cqw; width: 6.7cqw; }
+.art-body {
+  position: absolute; display: flex; flex-direction: column; justify-content: center;
+}
+.art-subrow { display: flex; align-items: center; gap: 1.46cqw; margin-top: 1.9cqw; }
+.art-subrow .art-sub { font-size: 1.87cqw; letter-spacing: .42cqw; opacity: .55; }
+
+/* -- editorial: bara de sus cu data, tipografie mare pe centru, filet dublu -- */
+.art--editorial { --art-et-base: 13.33cqw; }
+.art--editorial .art-head, .art--editorial .art-foot {
+  position: absolute; left: 5.83cqw; right: 5.83cqw;
+  display: flex; justify-content: space-between; align-items: baseline;
+}
+.art--editorial .art-head { top: 3.13cqw; }
+.art--editorial .art-head .art-brand { opacity: .65; font-size: 1.56cqw; }
+.art--editorial .art-foot { bottom: 3.54cqw; font-size: 1.15cqw; }
+.art--editorial .art-rule {
+  position: absolute; left: 5.83cqw; right: 5.83cqw; top: 7.08cqw;
+  height: .31cqw; background: var(--art-gold);
+}
+.art--editorial .art-body { left: 5.83cqw; top: 9.58cqw; bottom: 10cqw; max-width: 68.75cqw; }
+.art--editorial .art-ring, .art--editorial .art-blob {
+  position: absolute; border-radius: 50%;
+}
+.art--editorial .art-ring {
+  right: -15.6cqw; bottom: -19.8cqw; width: 44.8cqw; height: 44.8cqw;
+  border: .21cqw solid var(--art-acc); opacity: .1;
+}
+.art--editorial .art-blob {
+  right: -6.25cqw; bottom: -27.1cqw; width: 31.25cqw; height: 31.25cqw;
+  background: var(--art-acc); opacity: .05;
+}
+
+/* -- inversat: fond inchis, cifra zilei uriasa in aur (contrastul maxim din set) -- */
+.art--inversat {
+  --art-et-base: 8.75cqw;
+  background: var(--art-acc); color: var(--art-bg);
+}
+.art--inversat .art-frame {
+  position: absolute; inset: 1.87cqw; border: .21cqw solid var(--art-gold); opacity: .5;
+}
+.art--inversat .art-body { left: 6.67cqw; top: 0; bottom: 0; max-width: 52cqw; }
+.art--inversat .art-body .art-tick { width: 19.8cqw; margin-top: 2.29cqw; }
+.art--inversat .art-body .art-sub { font-size: 1.87cqw; margin-top: 1.67cqw; opacity: .55; }
+.art--inversat .art-diamond {
+  position: absolute; left: -9.4cqw; top: 50%; width: 39.6cqw; height: 39.6cqw;
+  transform: translateY(-50%) rotate(45deg);
+  border: .1cqw solid var(--art-bg); opacity: .14;
+}
+.art--inversat .art-num {
+  position: absolute; right: 5.83cqw; bottom: 3.54cqw;
+  display: flex; flex-direction: column; align-items: flex-end; line-height: 1;
+}
+.art--inversat .art-num-wk { font-size: 1.67cqw; opacity: .6; }
+.art--inversat .art-num-zi { font-size: 24.2cqw; color: var(--art-gold); line-height: .92; }
+.art--inversat .art-num-luna { font-size: 2.08cqw; letter-spacing: .73cqw; opacity: .85; }
+.art--inversat .art-brand--jos { left: 6.67cqw; bottom: 4.17cqw; }
+
+/* -- banda: banda inchisa la stanga, categoria-fantoma si data in dreapta -- */
+.art--banda { --art-et-base: 4.375cqw; }
+.art--banda .art-band {
+  position: absolute; left: 0; top: 0; bottom: 0; width: 31.25cqw;
+  background: var(--art-acc); border-right: .31cqw solid var(--art-gold);
+}
+.art--banda .art-body {
+  left: 4.17cqw; top: 5.83cqw; bottom: 11.5cqw; max-width: 22.9cqw; color: var(--art-bg);
+}
+.art--banda > .art-tick { position: absolute; left: 4.17cqw; top: 50%; width: 19.8cqw; height: .21cqw; }
+.art--banda .art-when {
+  position: absolute; left: 4.17cqw; bottom: 3.96cqw;
+  font-size: 1.46cqw; line-height: 1.6; opacity: .7; color: var(--art-bg);
+}
+.art--banda .art-num {
+  position: absolute; right: 6.67cqw; top: 5.83cqw;
+  display: flex; flex-direction: column; align-items: flex-end;
+}
+.art--banda .art-num-zi { font-size: 7.5cqw; letter-spacing: .21cqw; }
+.art--banda .art-num-luna { font-size: 1.77cqw; margin-top: .83cqw; }
+.art--banda .art-num .art-tick { margin-top: 1.46cqw; }
+.art--banda .art-ghost {
+  position: absolute; right: -1.25cqw; bottom: -3.5cqw; white-space: nowrap;
+  font-size: 17.5cqw; letter-spacing: .21cqw; opacity: .06;
+}
+.art--banda .art-brand--jos { right: 2.5cqw; bottom: 3.54cqw; opacity: .6; }
+
+/* -- arc: sigiliul, cerc dublu auriu cu cifra zilei -- */
+.art--arc { --art-et-base: 9.58cqw; }
+.art--arc .art-rule {
+  position: absolute; left: 5.83cqw; top: 5.83cqw;
+  width: 12.5cqw; height: .31cqw; background: var(--art-gold);
+}
+.art--arc .art-body { left: 5.83cqw; top: 10cqw; bottom: 6.67cqw; max-width: 49cqw; }
+.art--arc .art-hairline {
+  position: absolute; left: 56.25cqw; top: 50%; width: 5.83cqw; height: .1cqw;
+  background: var(--art-acc); opacity: .2;
+}
+.art--arc .art-dot {
+  position: absolute; left: 95.6cqw; top: 50%; transform: translateY(-50%);
+  width: 1.46cqw; height: 1.46cqw; border-radius: 50%; background: var(--art-gold);
+}
+.art--arc .art-seal {
+  position: absolute; left: 62.1cqw; top: 8.75cqw; width: 35cqw; height: 35cqw;
+  border-radius: 50%; border: .21cqw solid var(--art-gold);
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  line-height: 1; text-align: center;
+}
+.art--arc .art-seal::before {
+  content: ""; position: absolute; inset: 1.46cqw; border-radius: 50%;
+  border: .1cqw solid var(--art-gold); opacity: .35;
+}
+.art--arc .art-seal .art-num-zi { font-size: 10cqw; color: var(--art-acc); }
+.art--arc .art-seal .art-num-wk { font-size: 1.56cqw; letter-spacing: .52cqw; margin-top: .63cqw; }
+.art--arc .art-seal .art-num-luna { font-size: 1.35cqw; letter-spacing: .42cqw; }
+.art--arc .art-brand--jos { left: 5.83cqw; bottom: 3.54cqw; }
+
+.art-brand--jos { position: absolute; }
+
+/* Locurile in care intra arta. `--radius`/marginile raman ale locului, nu ale artei. */
+.card-media > .art { height: 100%; border-radius: inherit; }
+.art--hero { border: 1px solid var(--line); margin-bottom: var(--s-5); }
+.art--articol {
+  border: 1px solid var(--line); max-width: var(--measure); margin: var(--s-8) 0 var(--s-21);
+}
+
+/* ---- fotografii REALE (lead Wikimedia/Commons) — raman fisiere ---- */
 .article-art {
   display: block; width: 100%; max-width: var(--measure); height: auto;
   aspect-ratio: 960 / 504;
