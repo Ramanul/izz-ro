@@ -154,3 +154,16 @@ def test_uat_selection_is_url_navigable_state():
     # Asignarea UAT-urilor se face din rawVisible, nu din visible: selectia se filtreaza pe
     # baza asignarii, deci din visible s-ar auto-hrani (toate celelalte UAT-uri ar cadea pe 0).
     assert "for (const item of state.rawVisible) {" in js
+
+
+def test_zoom_and_pan_are_keyboard_operable_and_documented():
+    # Ghidurile de harti accesibile cer zoom+pan pe TOATE input-urile: sagețile deplaseaza
+    # vederea pe grupul de controale, +/- schimba scara, iar nota de sub harta documenta
+    # interactiunile (rotita, dublu-click, tragere, tastatura, gesturi).
+    js = Path("static/harta-stiri/harta-stiri.js").read_text(encoding="utf-8")
+    html = Path("static/harta-stiri/index.html").read_text(encoding="utf-8")
+    assert 'zoomBox.addEventListener("keydown"' in js
+    assert 'zoomBox.setAttribute("role", "group")' in js
+    assert "function announceZoom(" in js
+    assert "săgețile" in html
+    assert "două degete" in html
