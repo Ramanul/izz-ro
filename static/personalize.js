@@ -126,7 +126,20 @@
     const now = Date.now();
     const nav = document.querySelector('.subnav');   // categoriile stau in randul secundar
     if (!nav) return;
-    const links = Array.from(nav.querySelectorAll('a[href]'));
+    // DOAR linkurile de pe primul nivel, si reasezate INAINTEA dropdownului.
+    //
+    // Varianta dinainte lua `nav.querySelectorAll('a[href]')`, care prinde si linkul din
+    // <summary> ("Mai multe secțiuni") si pe cele patru din <details class="subnav-more">.
+    // Apoi `nav.appendChild(l)` le MUTA — deci golea dropdownul, scotea rubricile ascunse in
+    // bara si arunca "Mai multe secțiuni" in mijlocul randului, ca element fara continut.
+    // Cu 16 rubrici pe un rand, bara capata si scroll orizontal.
+    //
+    // De ce n-a fost prins pana acum: `reorderNav` ruleaza abia dupa MIN_INTERACTIONS clicuri,
+    // deci un browser fara istoric (orice verificare headless, orice vizitator nou) vede
+    // ordinea canonica si nimic stricat. Raportat de proprietar pe 2026-09-09, de pe propriul
+    // profil de lectura.
+    const more = nav.querySelector('.subnav-more');
+    const links = Array.from(nav.querySelectorAll(':scope > a[data-cat]'));
     links.sort((a, b) => {
       // cheia = slug-ul (data-cat), nu textul afisat (care e acum eticheta localizata)
       const catA = (a.dataset.cat || a.textContent.trim()).toLowerCase();
@@ -135,7 +148,9 @@
       const sB = (decayed(p.cats, now)[catB]?.score || 0);
       return sB - sA;
     });
-    links.forEach(l => nav.appendChild(l));
+    // `insertBefore(l, null)` se comporta ca `appendChild`, deci merge si cand nu exista
+    // dropdown (sub 12 rubrici configurate).
+    links.forEach(l => nav.insertBefore(l, more));
   }
 
   /* ---- wire click tracking on cards ---- */
