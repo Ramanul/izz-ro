@@ -43,13 +43,17 @@ CI rulează testele și lint-ul. Numărul de teste este doar reper, nu contract.
 
 ## 5. Flux obligatoriu
 0. **Nu arma nicio buclă autonomă / CronCreate recurent** care se conduce singură prin backlog.
-1. **Cine face merge în `main`** este proprietarul/revizorul autorizat, nu executorul.
+1. **Cine face merge în `main`** decide proprietarul; executorul îl poate executa doar sub mandatul de la §5.4.
 2. **După orice merge, anunță celălalt cont** prin canalul operațional agreat și actualizează starea.
 3. **Nu face curse pe `main`.** Lucrează prin branch + PR.
-4. **Nu face niciodată merge în `main`.** Executorul livrează branch + PR, fără auto-merge.
+4. **Merge doar cu mandat explicit, pe verde — REGULĂ TARE.** Executorul face merge în `main`
+   numai dacă proprietarul a numit PR-ul în sesiunea curentă, CI e verde pe head-ul curent și nu
+   există conflict. Un PR odată, niciodată unul deschis de altă sesiune vie — exact asta a costat
+   [IZZ-0140]. Auto-merge rămâne interzis: e o delegare permanentă, nu o decizie. Fără mandat,
+   livrarea rămâne branch + PR.
    **MERGE-GUARD = absent** — nimic nu refuză mecanic merge-ul, auto-merge-ul sau scrisul direct
    în `main` prin uneltele MCP GitHub, iar identitatea sesiunii e chiar a proprietarului. Regula
-   ține doar fiindcă o citești. Suprafața măsurată: `specs/acces-real.md`.
+   ține doar fiindcă o citești, iar testul din `tests/test_reguli.py` păzește ADEVĂRUL declarației: Suprafața măsurată: `specs/acces-real.md`.
 5. **Un task per declanșare.** Nu deschide muncă paralelă necerută printr-un singur trigger.
 6. **Se oprește și raportează în loc să ghicească.** Ambiguitățile materiale se declară exact.
 7. **Actualizează `specs/STATE.md`** la finalul lucrării relevante.
@@ -130,6 +134,7 @@ Pentru orice schimbare vizibilă:
 
 ## 17. Cadență
 `build.yml` încearcă orar (`13 * * * *`), dar poarta de 105 minute apără publicarea la ~2h. Nu modifica cronul pentru a „repara” cadența.
+Bugetul AI pe rulare e `MAX_AI_CALLS_PER_RUN` — **40** din 2026-09-04 (`9003e5f`, ridicat de proprietar de la 18); codul cade pe **12** când variabila lipsește (`main.py:392`), deci rularea locală nu măsoară debitul real.
 
 ## 18. Imagini de instituții locale — L1
 Textul complet este în `.claude/reguli/18-imagini.md`; hook-ul îl injectează pentru fișierele media aferente. Discuția fără atingerea unui fișier cere citirea regulii înainte.

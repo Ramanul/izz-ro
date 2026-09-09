@@ -25,11 +25,14 @@ pe pagina, sub imagine.
 import base64
 import datetime
 import hashlib
+import json
 import math
 import os
+import re
 
 from . import geo
 
+_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 _ASSETS = os.path.join(os.path.dirname(os.path.abspath(__file__)), "assets")
 ART_W, ART_H = 960, 504
 COVER_W, COVER_H = 1200, 630
@@ -147,7 +150,10 @@ def _t_editorial(a, acc, bg, k):
     et, sb = _eticheta(a), _subtitlu(a)
     dt = _data_copertei(a)
     et_px = _et_px(et, ((8, 128), (13, 102), (18, 82), (99, 60)), k)
-    sus = f"{dt['wk']} {dt['zi_n']} {dt['luna']} {dt['an']}" if dt else "izz.ro"
+    # Fara data, bara de sus ramane doar cu marca din stanga. Inainte punea tot "izz.ro" si
+    # in dreapta, deci coperta de categorie (care n-are data) scria brandul de doua ori
+    # pe acelasi rand.
+    sus = f"{dt['wk']} {dt['zi_n']} {dt['luna']} {dt['an']}" if dt else ""
     return (
         f'<div class="stage" style="background:{bg};color:{acc}">'
         f'<div style="position:absolute;left:{56 * k:.0f}px;right:{56 * k:.0f}px;top:{30 * k:.0f}px;'
@@ -270,7 +276,147 @@ def _t_arc(a, acc, bg, k):
     )
 
 
+# ---- silueta judetului -----------------------------------------------------
+# Geometria vine din `data/harta_judete.json`, al carui antet isi declara sursa: Natural Earth,
+# DOMENIU PUBLIC. Deci zero cerere de retea la randare, zero licenta de tert, zero termeni de
+# serviciu de respectat. Alternativa evidenta — tile-uri raster de la OpenStreetMap — ar fi
+# insemnat cereri automate catre serverul lor la fiecare rulare, pe care politica lor de tile-uri
+# o interzice; aici nu se pune problema, fisierul e deja in repo si e deja folosit de harta
+# stirilor (`render.py:590`).
+#
+# De ce asta NU incalca „zero figurativ" din reproiectarea 2026-08-05: critica de atunci tintea
+# PICTOGRAMELE DE INTERFATA scalate de la 24px la 300px+ — contur gros, forma schematica, zero
+# detaliu. Silueta unui judet e opusul: contur cartografic real, cu zeci de vertexuri, care
+# CASTIGA detaliu la marime mare in loc sa-l piarda. Si, spre deosebire de eticheta „ECONOMIC"
+# scrisa pe coperta unui articol economic, spune ceva adevarat si specific despre articol.
+_HARTA_PATH = os.path.join(_ROOT, "data", "harta_judete.json")
+_HARTA = None
+_NUM = re.compile(r"-?\d+(?:\.\d+)?")
+
+
+def _harta() -> dict:
+    """`{cod judet: path SVG}`. Citit o data si tinut pe modul — randam mii de imagini per rulare.
+
+    Orice esec de citire da `{}`, nu exceptie: coperta cade pe template-urile vechi. Un fisier
+    de date lipsa nu are voie sa opreasca pipeline-ul (§7 — mai bine sobru decat stricat).
+    """
+    global _HARTA
+    if _HARTA is None:
+        try:
+            with open(_HARTA_PATH, encoding="utf-8") as f:
+                _HARTA = json.load(f).get("judete") or {}
+        except (OSError, ValueError):
+            _HARTA = {}
+    return _HARTA
+
+
+def _bbox(d: str):
+    """Cutia de incadrare a unui path. Fisierul foloseste DOAR M/L/Z (verificat pe toate cele 42),
+    deci numerele sunt perechi x,y in ordine si nu e nevoie de un parser de path."""
+    n = [float(x) for x in _NUM.findall(d)]
+    if len(n) < 4:
+        return None
+    xs, ys = n[0::2], n[1::2]
+    return min(xs), min(ys), max(xs), max(ys)
+
+
+def _silueta(cod: str | None, latime: float, inaltime: float, culoare: str, op: float) -> str:
+    """SVG cu judetul scalat sa umple cutia data, pastrand proportia. "" cand lipseste geometria.
+
+    Silueta intra INTREAGA in cutie: un judet taiat de margine nu se mai citeste ca judet, ci ca
+    o pata (masurat vizual 2026-09-04, prima varianta o ancora la -110px si o taia pe trei parti).
+    Judetele au forme foarte diferite (Constanta e alungita, Ilfov e compact), deci se scaleaza
+    dupa bbox-ul PROPRIU, nu dupa viewbox-ul comun al tarii — altfel Ilfov ar aparea ca un punct.
+    Grosimea conturului se imparte la scara, ca sa ramana constanta in pixeli pe toate judetele.
+    """
+    d = _harta().get(cod or "")
+    b = _bbox(d) if d else None
+    if not b:
+        return ""
+    x0, y0, x1, y1 = b
+    lw, lh = max(x1 - x0, 0.01), max(y1 - y0, 0.01)
+    s = min(latime / lw, inaltime / lh)
+    tx, ty = (latime - lw * s) / 2 - x0 * s, (inaltime - lh * s) / 2 - y0 * s
+    return (f'<svg width="{latime:.0f}" height="{inaltime:.0f}" '
+            f'viewBox="0 0 {latime:.0f} {inaltime:.0f}" aria-hidden="true" focusable="false">'
+            f'<g transform="translate({tx:.2f} {ty:.2f}) scale({s:.4f})">'
+            f'<path d="{d}" fill="{culoare}" fill-opacity="{op}" stroke="{GOLD}" '
+            f'stroke-opacity=".5" stroke-width="{2.2 / s:.2f}" stroke-linejoin="round"/>'
+            f'</g></svg>')
+
+
+def _judet(a: dict) -> str | None:
+    """Codul judetului pe care coperta il poate desena, sau None.
+
+    DOAR din cheia sursei (`geo.judet_sursa`), care il codeaza in clar (`pl_vrancea_...`, `cj_cluj`)
+    — determinist, fara euristica. Titlul e refuzat deliberat ca sursa: o stire locala poate numi
+    alt judet decat cel despre care e vorba, iar o silueta GRESITA e mai rea decat niciuna (§7).
+    `regional` e exclus din acelasi motiv: acopera mai multe judete, deci oricare ar fi o minciuna.
+    Masurat 2026-09-04 pe `data/articles.json`: 2.923 din cele 5.264 de articole cu axa geografica.
+    """
+    if (a.get("category") or "") not in ("local", "judetean"):
+        return None
+    cod = geo.judet_sursa(a.get("source"))
+    return cod if cod and cod in _harta() else None
+
+
+def _sub_harta(a: dict, cod: str) -> str:
+    """Sub eticheta sta JUDETUL, nu categoria: el explica silueta si adauga ceva ce cardul nu are.
+    Cade pe categorie cand eticheta E deja judetul — „CLUJ / CLUJ" n-ar spune nimic in plus.
+
+    NU e inclusa in `gen_images._semnatura()`, si asta e deliberat: semnatura decide ce imagine se
+    REGENEREAZA, iar adaugarea judetului acolo ar invalida-o pentru toate cele ~2.900 de articole
+    locale deodata. Exact regenerarea in masa refuzata de proprietar (`IZZ-0163`) si exact modul in
+    care `IZZ-0162` era pe cale sa stearga ~8.900 de imagini intr-o rulare. Consecinta acceptata:
+    silueta apare pe copertile generate DE ACUM INCOLO, nu retroactiv; `FORCE_REGEN=1` le aduce
+    pe cele vechi cand proprietarul decide asta.
+    """
+    nume = geo.eticheta_judet(cod) or ""
+    return nume if nume.strip().lower() != _eticheta(a).strip().lower() else _subtitlu(a)
+
+
+def _t_harta(a, acc, bg, k):
+    """Silueta reala a judetului in dreapta, tipografia in stanga, in limbajul reproiectarii
+    din 2026-09-06: bara de sus cu data si filet auriu, eticheta treptata, filet inline la
+    subtitlu, bara de jos. Se alege doar cand judetul e cunoscut (vezi `_judet`).
+
+    Alinierea la limbajul ala NU e cosmetica: dupa merge-ul cu main, un `_t_harta` ramas in
+    stilul vechi ar fi dat articolelor locale exact coperta criticata acolo ca „~80% spatiu
+    alb", pe langa carduri care poarta data. Latimea tipografiei e plafonata la 520px (fata de
+    660 la `editorial`), ca numele lungi sa nu intre peste silueta (masurat: la 520px si 104px, „FLOREȘTI"
+    ajungea la 14px de ea).
+    """
+    cod = _judet(a)
+    et, sb = _eticheta(a), _sub_harta(a, cod)
+    dt = _data_copertei(a)
+    et_px = _et_px(et, ((8, 92), (13, 76), (18, 62), (99, 48)), k)
+    sus = f"{dt['wk']} {dt['zi_n']} {dt['luna']} {dt['an']}" if dt else ""
+    return (
+        f'<div class="stage" style="background:{bg};color:{acc}">'
+        f'<div style="position:absolute;right:{40 * k:.0f}px;top:{104 * k:.0f}px;'
+        f'bottom:{72 * k:.0f}px;display:flex;align-items:center;line-height:0">'
+        f'{_silueta(cod, 330 * k, 300 * k, acc, 0.15)}</div>'
+        f'<div style="position:absolute;left:{56 * k:.0f}px;right:{56 * k:.0f}px;top:{30 * k:.0f}px;'
+        f'display:flex;justify-content:space-between;align-items:baseline">'
+        f'<span class="marca" style="position:static;font-size:{15 * k:.0f}px;opacity:.65">izz.ro</span>'
+        f'<span class="marca" style="position:static;font-size:{13 * k:.0f}px">{sus}</span></div>'
+        f'<div style="position:absolute;left:{56 * k:.0f}px;right:{56 * k:.0f}px;top:{68 * k:.0f}px;'
+        f'height:{3 * k:.0f}px;background:{GOLD}"></div>'
+        f'<div style="position:absolute;left:{56 * k:.0f}px;top:{92 * k:.0f}px;bottom:{96 * k:.0f}px;'
+        f'display:flex;flex-direction:column;justify-content:center;max-width:{470 * k:.0f}px">'
+        f'<div class="eticheta" style="font-size:{et_px}px;letter-spacing:{2 * k:.0f}px;'
+        f'line-height:1.04">{et}</div>{_rand_sub(sb, k)}</div>'
+        f'<div class="grain"></div></div>'
+    )
+
+
 _TEMPLATES = [_t_editorial, _t_inversat, _t_banda, _t_arc]
+# Numele compozitiilor, in ACEEASI ordine: `stil_inline` le trimite in clasa CSS
+# `art--<nume>`, iar `build_html(sablon=...)` le cauta dupa nume. Perechea e verificata
+# imediat mai jos, nu prin convenite: desincronizata, ar da tacut alta compozitie decat
+# arata rasterul pentru acelasi articol.
+_NUME_TEMPLATE = ("editorial", "inversat", "banda", "arc")
+assert len(_NUME_TEMPLATE) == len(_TEMPLATES)
 
 
 def _tile_xt_yt(lat: float, lon: float, z: int) -> tuple[float, float]:
@@ -388,9 +534,49 @@ def _t_meteo(a, ch, acc, bg, k):
     )
 
 
-def build_html(a: dict, cover: bool = False) -> str:
-    """HTML pentru imaginea articolului. cover=True -> 1200x630 (og); altfel 960x504 (banner)."""
-    seed = hashlib.sha1((a.get("title") or "x").encode()).digest()
+def _seed(a: dict) -> bytes:
+    """Semintele de compozitie ale articolului `a` — sursa unica pentru raster si pentru
+    arta desenata in pagina.
+
+    UN SINGUR LOC, fiindca e o invarianta: `build_html` si `stil_inline` TREBUIE sa aleaga
+    aceeasi paleta si acelasi sablon pentru acelasi articol, altfel og:image-ul arata altfel
+    decat pagina pe care o anunta. Cu doua copii ale expresiei, invarianta tinea prin
+    coincidenta (`tests/test_arta_inline.py` o verifica — dar un test prinde, nu previne).
+
+    SHA-256, nu SHA-1, si nu din superstitie. Aici digestul nu apara nimic: din el ies un
+    index de paleta si unul de sablon, deci o coliziune inseamna „doua stiri seamana", nu o
+    semnatura falsificata. Prima incercare a fost tocmai asta, scrisa ca `# nosemgrep` cu
+    justificarea alaturi — si a esuat MASURAT: semgrep chiar recunoaste suprimarea (SARIF:
+    `suppressions: [{kind: inSource}]`, constatarea iese din numarul de blocking), dar
+    pastreaza rezultatul in SARIF, iar GitHub ridica alerta oricum si botul o re-posteaza pe
+    PR la fiecare atingere a liniei. Reparatia adevarata e in poarta care nu citeste
+    `suppressions` — cale protejata (§10), deci nu a mea (IZZ-0316). Ce ramane sub controlul
+    codului e algoritmul, iar aici nu costa nimic sa fie cel pe care nimeni nu-l discuta.
+
+    Ce a costat schimbarea, ca sa nu se re-deschida: semintele noi remixeaza paletele si
+    sabloanele, deci copertile `media/<aid>.c.jpg` desenate inainte nu se mai potrivesc cu
+    arta din pagina. Tranzitoriu si autovindecator: fereastra og e de ~1.200 de articole
+    (~2 zile), iar `tools/gen_images.py` prune-uieste copertile iesite din ea si le deseneaza
+    din nou pe cele intrate. Dupa o rotatie completa a ferestrei, nimic nu mai difera.
+
+    `art_id()` de mai jos ramane pe SHA-1 DELIBERAT: acolo digestul e NUMELE FISIERULUI din
+    `media/`. Schimbat, ar redenumi peste 12.000 de fisiere comise si ar rupe fiecare imagine
+    deja publicata. Alt uz, alt calcul — nu-l „repara" la pachet cu asta.
+    """
+    return hashlib.sha256((a.get("title") or "x").encode()).digest()
+
+
+def build_html(a: dict, cover: bool = False, sablon: str | None = None) -> str:
+    """HTML pentru imaginea articolului. cover=True -> 1200x630 (og); altfel 960x504 (banner).
+
+    `sablon` forteaza o compozitie anume, dupa numele ei din `_NUME_TEMPLATE`. Exista pentru
+    copertile de CATEGORIE (`tools/gen_images.py`), care n-au data publicarii: trei din cele
+    patru compozitii isi construiesc jumatatea dreapta din cifra zilei, iar fara ea raman
+    aproape goale -- exact critica „~80% spatiu alb" din reproiectarea 2026-09-06. `editorial`
+    e singura care se inchide corect fara data. Pentru articole ramane seed-ul: acolo data
+    exista intotdeauna, iar variatia e chiar scopul.
+    """
+    seed = _seed(a)
     acc, bg = _PALETE[seed[0] % len(_PALETE)]
     w, h = (COVER_W, COVER_H) if cover else (ART_W, ART_H)
     ch = a.get("event_chart") or {}
@@ -398,6 +584,14 @@ def build_html(a: dict, cover: bool = False) -> str:
         body = _t_meteo(a, ch, acc, bg, w / ART_W)
     elif ch.get("tip") == "cutremur" and ch.get("lat") is not None:
         body = _t_cutremur(a, ch, acc, bg, w / ART_W)
+    elif sablon:
+        body = _TEMPLATES[_NUME_TEMPLATE.index(sablon)](a, acc, bg, w / ART_W)
+    # Silueta judetului sta SUB graficele de eveniment si SUB sablonul fortat: meteo si
+    # cutremur spun ce s-a intamplat, harta spune doar unde, iar copertile de categorie
+    # (`sablon`) n-au judet prin constructie. Peste rotatia generica trece insa, fiindca e
+    # singurul strat ramas care spune ceva despre ARTICOL, nu despre rubrica.
+    elif _judet(a):
+        body = _t_harta(a, acc, bg, w / ART_W)
     else:
         body = _TEMPLATES[seed[4] % len(_TEMPLATES)](a, acc, bg, w / ART_W)
     return (f"<!doctype html><html><head><meta charset='utf-8'><style>{_base_css(w, h)}</style></head>"
@@ -408,3 +602,42 @@ def art_id(a: dict) -> str:
     """ID stabil (din URL/titlu) — numele imaginii comise, independent de slug-ul de render."""
     key = a.get("url") or a.get("original_link") or a.get("title") or ""
     return hashlib.sha1(key.encode()).hexdigest()[:16]
+
+
+# ---- arta DESENATA IN PAGINA (Workers Free, 2026-09-09) --------------------
+# Compozitiile de mai sus sunt tipografie si geometrie: fond plat, eticheta majuscula,
+# filete aurii, cercuri, cifra zilei. Nimic figurativ, nimic fotografic. Un browser le
+# deseneaza direct, vectorial, fara sa descarce 960x504 de pixeli — deci pe planul gratuit
+# Cloudflare (20.000 de fisiere/versiune) nu mai are rost sa existe fisierul.
+#
+# Ce intoarce `stil_inline` NU e HTML: e DESCRIEREA compozitiei. Culorile si marimile stau
+# in `static/styles.css` (§8: template-urile nu hardcodeaza culori), iar `templates/_art.html`
+# le pune pe DOM. Semintele sunt aceleasi ca in `build_html`, deci un articol pastreaza exact
+# compozitia si paleta pe care le avea ca raster. (`_NUME_TEMPLATE` sta langa `_TEMPLATES`.)
+#
+# Aceleasi praguri de lungime ca `_et_px`: numele lungi coboara o treapta ca sa nu iasa din
+# cadru. Raportul intre trepte e practic identic la toate cele patru compozitii (1 / .80 /
+# .65 / .50), deci CSS-ul tine un singur set de coeficienti si o marime de baza per compozitie.
+_ET_TREPTE = (8, 13, 18)
+
+
+def _treapta_eticheta(et: str) -> int:
+    n = len((et or "").strip())
+    for i, plafon in enumerate(_ET_TREPTE):
+        if n <= plafon:
+            return i
+    return len(_ET_TREPTE)
+
+
+def stil_inline(a: dict) -> dict:
+    """Descrierea artei desenate in pagina pentru `a` (compozitie, paleta, texte, data)."""
+    seed = _seed(a)
+    et = _eticheta(a)
+    return {
+        "tpl": _NUME_TEMPLATE[seed[4] % len(_NUME_TEMPLATE)],
+        "pal": seed[0] % len(_PALETE),
+        "eticheta": et,
+        "sub": _subtitlu(a),
+        "treapta": _treapta_eticheta(et),
+        "data": _data_copertei(a),
+    }

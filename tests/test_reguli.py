@@ -743,7 +743,7 @@ REGULI_ACTIVE = frozenset({
     'Cine face merge în `main`',
     'După orice merge, anunță celălalt cont',
     'Nu face curse pe `main`.',
-    'Nu face niciodată merge în `main`.',
+    'Merge doar cu mandat explicit, pe verde — REGULĂ TARE.',
     'Un task per declanșare.',
     'Se oprește și raportează în loc să ghicească.',
     'Actualizează `specs/STATE.md`',
