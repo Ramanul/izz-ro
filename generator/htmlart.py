@@ -397,6 +397,27 @@ def _t_meteo(a, ch, acc, bg, k):
     )
 
 
+def _seed(a: dict) -> bytes:
+    """Semintele de compozitie ale articolului `a` — sursa unica pentru raster si pentru
+    arta desenata in pagina.
+
+    Extrasa aici pe 2026-09-09 din doua motive care coincid. Primul e o invarianta:
+    `build_html` si `stil_inline` TREBUIE sa aleaga aceeasi paleta si acelasi sablon pentru
+    acelasi articol, altfel og:image-ul arata altfel decat pagina pe care o anunta; cu doua
+    copii ale expresiei, invarianta tinea prin coincidenta, nu prin constructie
+    (`tests/test_arta_inline.py` o verifica, dar un test prinde, nu previne).
+
+    Al doilea: Semgrep semnaleaza `sha1` ca „insecure hash". Constatarea e reala ca tipar si
+    falsa ca risc AICI — din digest se aleg un fundal si o compozitie, deci o coliziune
+    inseamna „doua stiri seamana", nu o semnatura falsificata; nu exista adversar si nu se
+    verifica nimic. Nu se trece pe SHA-256 fiindca ar remixa TOATE copertile deja comise in
+    `media/` si deja publicate ca og:image, fara niciun castig de securitate. Justificarea
+    sta acum intr-un singur loc, langa singura linie care o cere.
+    """
+    # nosemgrep: python.lang.security.insecure-hash-algorithms.insecure-hash-algorithm-sha1
+    return hashlib.sha1((a.get("title") or "x").encode()).digest()
+
+
 def build_html(a: dict, cover: bool = False, sablon: str | None = None) -> str:
     """HTML pentru imaginea articolului. cover=True -> 1200x630 (og); altfel 960x504 (banner).
 
@@ -407,7 +428,7 @@ def build_html(a: dict, cover: bool = False, sablon: str | None = None) -> str:
     e singura care se inchide corect fara data. Pentru articole ramane seed-ul: acolo data
     exista intotdeauna, iar variatia e chiar scopul.
     """
-    seed = hashlib.sha1((a.get("title") or "x").encode()).digest()
+    seed = _seed(a)
     acc, bg = _PALETE[seed[0] % len(_PALETE)]
     w, h = (COVER_W, COVER_H) if cover else (ART_W, ART_H)
     ch = a.get("event_chart") or {}
@@ -456,7 +477,7 @@ def _treapta_eticheta(et: str) -> int:
 
 def stil_inline(a: dict) -> dict:
     """Descrierea artei desenate in pagina pentru `a` (compozitie, paleta, texte, data)."""
-    seed = hashlib.sha1((a.get("title") or "x").encode()).digest()
+    seed = _seed(a)
     et = _eticheta(a)
     return {
         "tpl": _NUME_TEMPLATE[seed[4] % len(_NUME_TEMPLATE)],
