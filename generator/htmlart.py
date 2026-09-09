@@ -401,21 +401,32 @@ def _seed(a: dict) -> bytes:
     """Semintele de compozitie ale articolului `a` — sursa unica pentru raster si pentru
     arta desenata in pagina.
 
-    Extrasa aici pe 2026-09-09 din doua motive care coincid. Primul e o invarianta:
-    `build_html` si `stil_inline` TREBUIE sa aleaga aceeasi paleta si acelasi sablon pentru
-    acelasi articol, altfel og:image-ul arata altfel decat pagina pe care o anunta; cu doua
-    copii ale expresiei, invarianta tinea prin coincidenta, nu prin constructie
-    (`tests/test_arta_inline.py` o verifica, dar un test prinde, nu previne).
+    UN SINGUR LOC, fiindca e o invarianta: `build_html` si `stil_inline` TREBUIE sa aleaga
+    aceeasi paleta si acelasi sablon pentru acelasi articol, altfel og:image-ul arata altfel
+    decat pagina pe care o anunta. Cu doua copii ale expresiei, invarianta tinea prin
+    coincidenta (`tests/test_arta_inline.py` o verifica — dar un test prinde, nu previne).
 
-    Al doilea: Semgrep semnaleaza `sha1` ca „insecure hash". Constatarea e reala ca tipar si
-    falsa ca risc AICI — din digest se aleg un fundal si o compozitie, deci o coliziune
-    inseamna „doua stiri seamana", nu o semnatura falsificata; nu exista adversar si nu se
-    verifica nimic. Nu se trece pe SHA-256 fiindca ar remixa TOATE copertile deja comise in
-    `media/` si deja publicate ca og:image, fara niciun castig de securitate. Justificarea
-    sta acum intr-un singur loc, langa singura linie care o cere.
+    SHA-256, nu SHA-1, si nu din superstitie. Aici digestul nu apara nimic: din el ies un
+    index de paleta si unul de sablon, deci o coliziune inseamna „doua stiri seamana", nu o
+    semnatura falsificata. Prima incercare a fost tocmai asta, scrisa ca `# nosemgrep` cu
+    justificarea alaturi — si a esuat MASURAT: semgrep chiar recunoaste suprimarea (SARIF:
+    `suppressions: [{kind: inSource}]`, constatarea iese din numarul de blocking), dar
+    pastreaza rezultatul in SARIF, iar GitHub ridica alerta oricum si botul o re-posteaza pe
+    PR la fiecare atingere a liniei. Reparatia adevarata e in poarta care nu citeste
+    `suppressions` — cale protejata (§10), deci nu a mea (IZZ-0316). Ce ramane sub controlul
+    codului e algoritmul, iar aici nu costa nimic sa fie cel pe care nimeni nu-l discuta.
+
+    Ce a costat schimbarea, ca sa nu se re-deschida: semintele noi remixeaza paletele si
+    sabloanele, deci copertile `media/<aid>.c.jpg` desenate inainte nu se mai potrivesc cu
+    arta din pagina. Tranzitoriu si autovindecator: fereastra og e de ~1.200 de articole
+    (~2 zile), iar `tools/gen_images.py` prune-uieste copertile iesite din ea si le deseneaza
+    din nou pe cele intrate. Dupa o rotatie completa a ferestrei, nimic nu mai difera.
+
+    `art_id()` de mai jos ramane pe SHA-1 DELIBERAT: acolo digestul e NUMELE FISIERULUI din
+    `media/`. Schimbat, ar redenumi peste 12.000 de fisiere comise si ar rupe fiecare imagine
+    deja publicata. Alt uz, alt calcul — nu-l „repara" la pachet cu asta.
     """
-    # nosemgrep: python.lang.security.insecure-hash-algorithms.insecure-hash-algorithm-sha1
-    return hashlib.sha1((a.get("title") or "x").encode()).digest()
+    return hashlib.sha256((a.get("title") or "x").encode()).digest()
 
 
 def build_html(a: dict, cover: bool = False, sablon: str | None = None) -> str:
