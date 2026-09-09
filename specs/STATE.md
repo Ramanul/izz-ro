@@ -30,6 +30,7 @@
   IZZ-0308): ~2.9k hits/day vs 100k Free, failover kept; assets routing stays owner's call. The ~48%
   error rate was a dashboard cron with no `scheduled()` (08-22) — deleted, verified silent. [IZZ-0318/0319]
 
+
 ## Audit closure status
 
 - **K1–K14:** re-verified mechanism-by-mechanism in `specs/regim-reguli.md` — a reconciliation
