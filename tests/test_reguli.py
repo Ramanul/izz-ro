@@ -712,8 +712,8 @@ def test_harta_sectiunilor_ramane_o_categorie_nu_o_lista_care_creste():
 # CE NU ACOPERA, spus explicit: doar regulile cu CAP INGROSAT. Cele 23 de sub-puncte fara nume
 # sunt parte din regula-parinte si nu au identitate proprie. Si o REFORMULARE a numelui pica
 # garda — intentionat: numele unei reguli e identitatea ei, iar schimbarea lui merita sa fie un
-# act vizibil, nu o alunecare. Cele 47 de mai jos sunt verificate ca fiind prezente si pe `main`,
-# si pe ramura lui #226, deci niciuna nu depinde de ordinea de aterizare.
+# act vizibil, nu o alunecare. Cele 49 de mai jos sunt capete bold din `CLAUDE.md`: 43 existau
+# si pe `main`, 6 au intrat cu PR #282 (audit 2026-09-05); niciuna nu depinde de ordinea de aterizare.
 
 CAP_DE_REGULA = re.compile(r"^\s*(?:[-*]|\d+\.)\s+\*\*(.+?)\*\*", re.MULTILINE)
 
@@ -743,7 +743,7 @@ REGULI_ACTIVE = frozenset({
     'După orice merge, anunță celălalt cont',
     'Nu face curse pe `main`.',
     'Nu face niciodată merge în `main`.',
-    'Un task per declanșare',
+    'Un task per declanșare.',
     'Se oprește și raportează în loc să ghicească.',
     'Actualizează `specs/STATE.md`',
     'Verifică în AMBELE roluri.',
@@ -757,10 +757,16 @@ REGULI_ACTIVE = frozenset({
     'Agenții împart working tree-ul.',
     'Fișierele de reguli se plătesc la fiecare tură.',
     'Înainte să propui orice, caută:',
-    'O decizie care NU produce un PR primește un rând în aceeași tură',
+    'O decizie care NU produce un PR primește un rând în aceeași tură.',
     '`motiv` e obligatoriu',
     'Append-only.',
-    'Un `find` gol NU e dovadă că nu s-a încercat',
+    'Un `find` gol NU e dovadă că nu s-a încercat.',
+    'O limită se declară mecanic, nu prin impresie.',
+    'Atribuire și legalitate.',
+    'Titluri: 6–16 cuvinte este ținta editorială.',
+    'Programator:',
+    'Utilizator:',
+    'Livrabilitate:',
 })
 
 # Stratul L1 (F4, 2026-08-30): regulile conditionate NU mai stau in `CLAUDE.md` — se livreaza

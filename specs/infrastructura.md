@@ -23,12 +23,15 @@
 - **Gazda e Cloudflare Workers Static Assets, NU Pages** — migrat în #211 pe 2026-08-22;
   `wrangler.jsonc` assets-only, fără `main`. Check-ul de pe PR-uri se numește
   `Workers Builds: izz-ro`. [IZZ-0258]
-- **Contul e Workers PAID.** Plafonul de fișiere statice e 100.000/versiune (free ar fi 20.000);
-  `config.py:363 OUTPUT_FILE_BUDGET=90000` e dimensionat pe el. Plafonul de 500 build-uri/lună al
-  lui Pages NU se mai aplică — Workers n-are așa ceva. [IZZ-0305]
+- **Contul e Workers FREE din 2026-09-22** (decizie proprietar 2026-09-09). Plafon: **20.000 de
+  fișiere statice pe versiune** de Worker; `OUTPUT_FILE_CEILING=20000`, `OUTPUT_FILE_BUDGET=17000`.
+  Cererile către fișiere statice rămân gratuite și nelimitate. [IZZ-0313]
 - **Constrângerea reală de creștere e NUMĂRUL DE FIȘIERE, nu lățimea de bandă și nu build-urile.**
-  Randare 2026-09-02: 43.148 fișiere la 11.867 articole. Fereastra TTL plină proiectează ~70.000,
-  deci se apropie de plafonul plătit. Decizie deschisă a proprietarului. [IZZ-0237, IZZ-0238]
+  Arta per articol NU mai e fișier: se desenează în pagină (`templates/_art.html`). Rămân fișiere
+  fotografiile reale, imaginile din date și og:image-ul primelor `OG_COVER_MAX_ARTICLES`.
+  La `ARTICLE_TTL_DAYS=21`: ~16.900 fișiere, 84% din plafon. [IZZ-0315, IZZ-0238]
+- **„Doar știri din România" NU e o pârghie de plafon** — 94,7% din articole vin deja din surse
+  în română. Nu se re-propune ca soluție de încadrare. [IZZ-0314]
 - **Allowlist-ul proxy-ului e PER-HOST și diferă între sesiuni** — nu se citează din memorie, se
   măsoară cu `bash tools/verify_allowlist.sh`. `izz-ro.andifreelancer2.workers.dev` trece; alte
   hosturi `workers.dev`, preview-urile de PR și `api.cloudflare.com` nu. [IZZ-0247, IZZ-0248]
