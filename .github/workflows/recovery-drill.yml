@@ -1,0 +1,83 @@
+name: recovery-drill
+
+# Check-ul implicit este non-destructiv. Rollback-ul real cere explicit action=rollback,
+# un VERSION_ID si confirmarea ROLLBACK. Wrangler confirma ca rollback creeaza imediat un nou
+# deployment activ, deci nu il executam ca efect secundar al unui simplu audit.
+
+on:
+  workflow_dispatch:
+    inputs:
+      action:
+        description: "check sau rollback"
+        required: true
+        default: "check"
+      version_id:
+        description: "Worker Version ID tinta pentru rollback"
+        required: false
+        default: ""
+      confirmation:
+        description: "Pentru rollback scrie exact ROLLBACK"
+        required: false
+        default: ""
+
+permissions:
+  contents: read
+
+concurrency:
+  group: recovery-drill
+  cancel-in-progress: false
+
+jobs:
+  drill:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7
+        with:
+          python-version: "3.11"
+          cache: pip
+      - run: pip install -r requirements.txt
+      - name: Reconstructie archive - dry run
+        run: python tools/arhiva.py --stats
+      - name: Listeaza versiunile Worker disponibile
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          WRANGLER_SEND_METRICS: "false"
+        run: npx --yes wrangler@4.125.0 versions list --json
+      - name: Poarta rollback
+        if: inputs.action == 'rollback'
+        env:
+          VERSION_ID: ${{ inputs.version_id }}
+          CONFIRMATION: ${{ inputs.confirmation }}
+        run: |
+          set -euo pipefail
+          test -n "$VERSION_ID" || { echo "::error::version_id este obligatoriu"; exit 1; }
+          test "$CONFIRMATION" = "ROLLBACK" || {
+            echo "::error::confirmarea trebuie sa fie exact ROLLBACK"; exit 1;
+          }
+      - name: Rollback Worker
+        if: inputs.action == 'rollback'
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          WRANGLER_SEND_METRICS: "false"
+        run: npx --yes wrangler@4.125.0 rollback "${{ inputs.version_id }}" --message "recovery drill rollback"
+      - name: Smoke post-rollback
+        if: inputs.action == 'rollback'
+        env:
+          BASE: ${{ vars.ALT_ORIGIN || 'https://izz-ro.andifreelancer2.workers.dev' }}
+        run: |
+          set -euo pipefail
+          curl -fsSL --connect-timeout 5 --max-time 20 "$BASE/build.json?recovery=$(date +%s)" -o /tmp/build.json
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          data = json.loads(Path('/tmp/build.json').read_text(encoding='utf-8'))
+          assert data.get('branch') == 'main', data
+          assert isinstance(data.get('commit'), str) and data['commit'] != 'local', data
+          assert isinstance(data.get('article_count'), int) and data['article_count'] > 0, data
+          print('Recovery smoke OK:', data['commit'][:12], data['article_count'])
+          PY

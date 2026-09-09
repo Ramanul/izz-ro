@@ -1,14 +1,8 @@
 name: deploy-worker
 
-# Buton MANUAL de publicare pe Worker-ul izz-ro. Nu are niciun trigger automat, deliberat:
-# publicarea normala o face Cloudflare singur, din git, la fiecare push in main (vezi build.yml).
-# Butonul asta e plasa de siguranta pentru cazul in care build-ul Cloudflare refuza sa publice si
-# site-ul ingheata cu continut vechi -- s-a intamplat 21-22 aug 2026 (34h), iar monitorul nu l-a
-# prins fiindca originea raspundea 200 cu bytes vechi. Failover-ul acopera o origine CAZUTA, nu una
-# invechita.
-#
-# Tokenul din secretul CLOUDFLARE_API_TOKEN e scoped pe Workers Scripts:Edit + Account Settings:Read.
-# NU poate atinge DNS, setarile zonei, bot challenge / WAF sau Pages -- alea raman doar la owner.
+# Buton MANUAL de publicare pe Worker-ul izz-ro. Nu are trigger automat: publicarea normala este
+# facuta din git prin pipeline. Workflow-ul este fail-closed si publica DOAR continutul din main.
+# Tokenul este scoped pe Workers Scripts:Edit + Account Settings:Read; NU poate atinge DNS/WAF.
 
 on:
   workflow_dispatch:
@@ -29,8 +23,6 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      # Doua porti inainte sa se atinga productia: un misclick pe "Run workflow" nu publica nimic,
-      # iar o ramura de lucru aleasa gresit in dropdown nu poate ajunge pe izz.ro.
       - name: Poarta - confirmare + ramura
         run: |
           if [ "${{ inputs.confirmare }}" != "deploy" ]; then
@@ -43,6 +35,8 @@ jobs:
           fi
 
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          persist-credentials: false
 
       - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7
         with:
@@ -51,16 +45,12 @@ jobs:
 
       - run: pip install -r requirements.txt
 
-      # output/ e gitignored, deci Worker-ul nu are ce servi pana nu randam aici. --render-only,
-      # ca in build.yml: nu cheltuie cota AI si nu atinge data/articles.json.
       - name: Randeaza site-ul
         run: python -m generator.main --render-only
 
-      # Fara poarta asta, un render picat pe jumatate ar publica un site gol PESTE unul functional.
-      # Randarea completa da ~24.000 de fisiere (masurat 2026-08-23); 1000 e un prag de siguranta,
-      # nu o asteptare.
-      - name: Verifica ce urmeaza sa se publice
+      - name: Verifica outputul inainte de productie
         run: |
+          set -euo pipefail
           test -s output/index.html || { echo "::error::output/index.html lipseste - render picat, NU publicam"; exit 1; }
           n=$(find output -type f | wc -l)
           echo "fisiere de publicat: $n"
@@ -73,16 +63,13 @@ jobs:
           WRANGLER_SEND_METRICS: "false"
         run: npx --yes wrangler@4.125.0 deploy
 
-      # "Deploy verde" spune ca s-a publicat ceva, nu ca site-ul raspunde (CLAUDE.md §16.3).
-      # Sondam originea de build, nu izz.ro: zona are bot challenge care refuza IP-uri de datacenter.
-      - name: Confirma pe origine
+      # HTTP 200 singur nu detecteaza un release ramas in urma. Verificam manifestul buildului,
+      # SHA-ul si numarul de articole. Origin-only este intentionat: domeniul public poate avea
+      # bot challenge din runnerii GitHub; `build.yml` incearca ambele origini cand acestea sunt accesibile.
+      - name: Verifica release-ul pe Worker
         env:
-          ALT_ORIGIN: ${{ vars.ALT_ORIGIN || 'https://izz-ro.andifreelancer2.workers.dev' }}
-        run: |
-          for i in 1 2 3; do
-            code=$(curl -sL -o /dev/null -w '%{http_code}' --max-time 25 "$ALT_ORIGIN/" || true)
-            [ "$code" = "200" ] && break
-            sleep 5
-          done
-          echo "origine dupa deploy: ${code:-000} ($ALT_ORIGIN)"
-          [ "$code" = "200" ] || { echo "::error::originea raspunde ${code:-000} dupa deploy"; exit 1; }
+          EXPECTED_COMMIT: ${{ github.sha }}
+          RELEASE_BASE_URLS: ${{ vars.ALT_ORIGIN || 'https://izz-ro.andifreelancer2.workers.dev' }}
+          RELEASE_TIMEOUT_SECONDS: "300"
+          RELEASE_POLL_SECONDS: "15"
+        run: python tools/verify_release.py

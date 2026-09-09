@@ -20,17 +20,31 @@ import tempfile
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, ROOT)
-from generator import htmlart, state  # noqa: E402
+from generator import config, htmlart, state  # noqa: E402
 from PIL import Image  # noqa: E402
 
 MEDIA = os.path.join(ROOT, "media")
 MAX_PER_RUN = int(os.getenv("MAX_IMAGES_PER_RUN", "80"))
+# Plafon de STERGERI per rulare, din acelasi motiv ca plafonul de generari: la trecerea pe
+# regimul „arta in pagina" (2026-09-09) raman ~36.000 de fisiere fara consumator, iar un
+# singur commit care le sterge pe toate ar fi nerevizuibil si greu de intors.
+MAX_PRUNE_PER_RUN = int(os.getenv("MAX_MEDIA_PRUNE_PER_RUN", "2000"))
 LABELS = os.path.join(MEDIA, "labels.json")
+
+
+VERSIUNE_DESIGN = "v2-2026-09-06"  # reproiectarea editoriala; schimba-o la urmatorul redesign
 
 
 def _semnatura(a: dict) -> str:
     """Textul VIZIBIL de pe imagine. Se schimba -> imaginea trebuie redesenata."""
-    return f"{htmlart._eticheta(a)}|{htmlart._subtitlu(a)}"
+    # VERSIUNE_DESIGN in fata: la un redesign, TOATE copertile devin invechite si se
+    # regenereaza progresiv (plafonul MAX_IMAGES_PER_RUN le esaloneaza pe ~o saptamana;
+    # vechile fisiere raman valabile pana atunci — fara cadere pe fallback Pillow).
+    sig = f"{VERSIUNE_DESIGN}|{htmlart._eticheta(a)}|{htmlart._subtitlu(a)}"
+    # Coperta din date (prognoza): cifrele se schimba zilnic, deci semnatura le include.
+    if a.get("event_chart"):
+        sig += "|" + json.dumps(a["event_chart"], sort_keys=True, ensure_ascii=False)
+    return sig
 
 
 def _load_labels() -> dict:
@@ -111,6 +125,18 @@ def main() -> int:
     # `handoff/arhiva/2026-08-06-handoff-integral.md`), iar un implicit care ar reface 2962 de
     # imagini ar redeschide singur o decizie inchisa. Cine vrea si trecutul reparat foloseste
     # `FORCE_REGEN=1`, pe loturi — ramane decizia proprietarului, cum a fost.
+    # CE MAI ARE NEVOIE DE FISIER dupa 2026-09-09 (specs/cloudflare-free-2026-09.md).
+    # Arta compusa din seed (fond, eticheta, filete, cifra zilei) se deseneaza acum in pagina,
+    # din `templates/_art.html`: zero fisiere, zero cereri, vectorial. Raman de randat cu
+    # Chromium doar doua lucruri:
+    #   - `<aid>.c.jpg`, coperta og, pentru fereastra recenta (`OG_COVER_MAX_ARTICLES`) --
+    #     restul articolelor folosesc coperta categoriei, scrisa la randare;
+    #   - `<aid>.jpg` + `.webp`, arta 960x504, DOAR pentru imaginile din DATE (`event_chart`:
+    #     harta epicentrului, graficul meteo), care nu se pot desena din seed.
+    arts.sort(key=lambda a: a.get("published") or "", reverse=True)
+    vrea_coperta = {htmlart.art_id(a) for a in arts[:config.OG_COVER_MAX_ARTICLES]}
+    vrea_arta = {htmlart.art_id(a) for a in arts if a.get("event_chart")}
+
     seed = not os.path.exists(LABELS)
     labels = _load_labels()
     wanted = set()
@@ -118,6 +144,8 @@ def main() -> int:
     for a in arts:
         aid = htmlart.art_id(a)
         wanted.add(aid)
+        if aid not in vrea_coperta and aid not in vrea_arta:
+            continue
         sig = _semnatura(a)
         art_jpg = os.path.join(MEDIA, f"{aid}.jpg")
         cov_jpg = os.path.join(MEDIA, f"{aid}.c.jpg")
@@ -126,8 +154,9 @@ def main() -> int:
         # doua generatii de coperti amestecate (2201 imagini existente la 2026-08-05). Lasat
         # explicit, nu implicit: o regenerare completa rescrie ~204 MB in repo si costa cate
         # doua randari Chromium per articol, deci se face pe loturi (MAX_IMAGES_PER_RUN).
-        complet = (os.path.exists(art_jpg) and os.path.exists(cov_jpg)
-                   and os.path.exists(art_jpg[:-4] + ".webp"))
+        complet = ((aid not in vrea_arta
+                    or (os.path.exists(art_jpg) and os.path.exists(art_jpg[:-4] + ".webp")))
+                   and (aid not in vrea_coperta or os.path.exists(cov_jpg)))
         if not os.getenv("FORCE_REGEN") and complet:
             if seed and aid not in labels:
                 labels[aid] = sig      # decizie proprietar 2026-08-06: trecutul nu se reface
@@ -137,23 +166,56 @@ def main() -> int:
         invechite += 1
         if made >= MAX_PER_RUN:
             continue
-        # webp doar pentru arta (cards/articol via <picture>); cover.jpg ramane doar og:image
-        ok_a = _render(htmlart.build_html(a, cover=False), htmlart.ART_W, htmlart.ART_H, art_jpg, webp=True)
-        ok_c = _render(htmlart.build_html(a, cover=True), htmlart.COVER_W, htmlart.COVER_H, cov_jpg)
+        # webp doar pentru arta din date (articol via <picture>); c.jpg ramane doar og:image
+        ok_a = ok_c = False
+        if aid in vrea_arta:
+            ok_a = _render(htmlart.build_html(a, cover=False),
+                           htmlart.ART_W, htmlart.ART_H, art_jpg, webp=True)
+        if aid in vrea_coperta:
+            ok_c = _render(htmlart.build_html(a, cover=True),
+                           htmlart.COVER_W, htmlart.COVER_H, cov_jpg)
         if ok_a or ok_c:
             made += 1
             # Doar la generare REUSITA: altfel un articol sarit de plafon s-ar marca fals ca
             # actualizat si n-ar mai fi redesenat niciodata.
             labels[aid] = sig
             print(f"  img {aid}  {a['title'][:56]}")
-    # curata imaginile articolelor care nu mai exista in stare (TTL)
+    # Copertile og de CATEGORIE (15 fisiere): og:image-ul articolelor din afara ferestrei de
+    # coperti proprii. Randate aici, cu Chromium, ca sa fie in aceeasi limba vizuala ca restul;
+    # `render._coperti_de_categorie()` cade pe Pillow daca fisierul comis lipseste. Se redeseneaza
+    # doar la schimbarea designului (`VERSIUNE_DESIGN` intra in semnatura), nu la fiecare rulare.
+    os.makedirs(os.path.join(MEDIA, "og"), exist_ok=True)
+    for cat in config.CATEGORIES:
+        fals = {"title": config.CATEGORY_LABELS.get(cat, cat.capitalize()), "category": cat}
+        cheie, dst = f"og:{cat}", os.path.join(MEDIA, "og", f"{cat}.jpg")
+        if labels.get(cheie) == _semnatura(fals) and os.path.exists(dst):
+            continue
+        # `editorial` fortat: coperta de categorie nu are data publicarii, iar celelalte trei
+        # compozitii isi construiesc jumatatea dreapta din cifra zilei. Fara ea raman goale.
+        if _render(htmlart.build_html(fals, cover=True, sablon="editorial"),
+                   htmlart.COVER_W, htmlart.COVER_H, dst):
+            labels[cheie] = _semnatura(fals)
+            print(f"  og  {cat}")
+
+    # Curata fisierele fara consumator: fie articolul a iesit din stare (TTL), fie regimul
+    # s-a schimbat si imaginea nu mai e ceruta de nimeni (arta din seed, coperti din afara
+    # ferestrei og). Plafonat per rulare -- vezi MAX_PRUNE_PER_RUN. `media/leads/` si
+    # `media/portraits/` sunt fotografii reale si stau in subdirectoare, unde `*.jpg` nu ajunge.
     pruned = 0
-    for p in glob.glob(os.path.join(MEDIA, "*.jpg")) + glob.glob(os.path.join(MEDIA, "*.webp")):
-        aid = os.path.basename(p).split(".")[0]
-        if aid not in wanted:
-            os.remove(p)
-            pruned += 1
-    labels = {k: v for k, v in labels.items() if k in wanted}
+    for p in sorted(glob.glob(os.path.join(MEDIA, "*.jpg"))
+                    + glob.glob(os.path.join(MEDIA, "*.webp"))):
+        if pruned >= MAX_PRUNE_PER_RUN:
+            break
+        nume = os.path.basename(p)
+        aid = nume.split(".")[0]
+        cerut = (aid in vrea_coperta) if nume.endswith(".c.jpg") else (aid in vrea_arta)
+        if aid in wanted and cerut:
+            continue
+        os.remove(p)
+        pruned += 1
+    # `og:<categorie>` nu e un `art_id`, deci nu e in `wanted`: pastrat explicit, altfel
+    # manifestul l-ar uita la fiecare rulare si cele 15 coperti s-ar redesena la infinit.
+    labels = {k: v for k, v in labels.items() if k in wanted or k.startswith("og:")}
     try:
         with open(LABELS, "w", encoding="utf-8") as fh:
             json.dump(labels, fh, ensure_ascii=False, indent=0, sort_keys=True)

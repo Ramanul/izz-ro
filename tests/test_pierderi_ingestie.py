@@ -47,7 +47,6 @@ def test_item_fara_titlu_e_numarat_SI_aruncat():
     p = fetch.pierderi_ingestie()
     assert sum(p.values()) == 1, f"asteptam exact o pierdere, avem {p}"
     assert "item incomplet" in " ".join(p), p
-    # si chiar a fost aruncat, nu doar numarat
     assert all("/b/" not in (i.get("url") or "") for i in iteme), iteme
 
 
@@ -66,3 +65,25 @@ def test_contorul_e_o_copie_nu_referinta():
     p = fetch.pierderi_ingestie()
     p["ceva"] = 999
     assert fetch.pierderi_ingestie()["ceva"] == 1
+
+
+def _sursa(nume="Test", url="https://exemplu.ro"):
+    return {"name": nume, "url": url, "base_url": url, "item": "div.art",
+            "category": "general", "lang": "ro"}
+
+
+def test_agentia_e_numarata_ca_agentie_in_parserul_html():
+    """O agentie exclusa nu trebuie clasificata drept item incomplet."""
+    agentie = "https://www.agerpres.ro/stire/1/"
+    html = f'<div class="art"><a href="{agentie}">Titlu de agentie despre ceva</a></div>'
+    iteme, _ = fetch._items_from_html(html, "test", _sursa())
+    assert iteme == []
+    p = fetch.pierderi_ingestie()
+    assert p == {"agentie de presa (exclusa deliberat)": 1}, p
+
+
+def test_articolul_normal_trece_fara_sa_fie_numarat():
+    html = '<div class="art"><a href="https://exemplu.ro/a/">Titlu normal despre ceva</a></div>'
+    iteme, _ = fetch._items_from_html(html, "test", _sursa())
+    assert len(iteme) == 1, iteme
+    assert fetch.pierderi_ingestie() == {}, "un articol valid nu e o pierdere"
