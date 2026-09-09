@@ -96,8 +96,18 @@ def _diversify(items: list, max_run: int = 2, max_per_window: int = 3, window_si
     return out
 
 def _entity_index(articles: list) -> dict:
-    """Slug -> {name, articles} pentru entitatile AI cu >=2 aparitii publicate.
-    Grauntele grafului cunoasterii: pagini statice /subiect/<slug>/."""
+    """Slug -> {name, articles} pentru entitatile cu cel putin `SUBJECT_MIN_ARTICLES`
+    aparitii publicate. Grauntele grafului cunoasterii: pagini statice /subiect/<slug>/.
+
+    Pragul a urcat 2 -> 3 pe 2026-09-09. Doua motive independente, si niciunul nu e
+    "economie de dragul economiei":
+      - editorial: o entitate cu doua aparitii nu e un subiect, e o coincidenta. Pagina
+        arata doua carduri si o sectiune "Conexiuni" goala -- thin content, exact ce
+        Google penalizeaza la agregatoare.
+      - buget: numarat pe starea din 2026-09-09, pragul 2 dadea 3.671 de pagini din care
+        2.066 aveau exact doua articole. Pe Workers Free (20.000 de fisiere/versiune)
+        alea singure erau 10% din plafon.
+    """
     idx: dict = {}
     for a in articles:
         for e in a.get("entities") or []:
@@ -106,7 +116,8 @@ def _entity_index(articles: list) -> dict:
                 continue
             d = idx.setdefault(s, {"name": e, "articles": []})
             d["articles"].append(a)
-    return {s: d for s, d in idx.items() if len(d["articles"]) >= 2}
+    return {s: d for s, d in idx.items()
+            if len(d["articles"]) >= config.SUBJECT_MIN_ARTICLES}
 
 def _pick_hero(articles: list) -> list:
     featured = [a for a in articles if a.get("featured")]

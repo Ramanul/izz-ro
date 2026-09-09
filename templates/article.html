@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% from "_art.html" import art with context %}
 {% block title %}{{ a.display_title or a.title }} — {{ site.name }}{% endblock %}
 {# meta/og description taiata la limita SERP (~158c, la cuvant); corpul ramane intreg #}
 {# anuntul oficial n-are corp: meta description ar iesi GOALA (regresie SEO masurabila), asa ca
@@ -47,6 +48,9 @@
     <figcaption class="art-credit">{% if a.lead_credit.kind == 'locality' %}Ilustrație: {{ a.lead_credit.name }}. {% endif %}Foto: {% if a.lead_credit.artist %}{{ a.lead_credit.artist }} · {% endif %}<a href="{{ a.lead_credit.page }}" target="_blank" rel="noopener noreferrer">Wikimedia Commons</a> · {% if a.lead_credit.license_url %}<a href="{{ a.lead_credit.license_url }}" target="_blank" rel="noopener noreferrer">{{ a.lead_credit.license }}</a>{% else %}{{ a.lead_credit.license }}{% endif %}{% if a.photo_path %} · decupat de IZZ.ro{% endif %}</figcaption>
     {% endif %}
   </figure>
+  {% elif a.art_style %}
+  {#- Fara fotografie reala: arta se deseneaza in pagina. Nicio cerere, niciun fisier. -#}
+  {{ art(a, 'art--articol') }}
   {% endif %}
 
   {% if a.anunt_fara_corp %}
