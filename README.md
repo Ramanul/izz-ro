@@ -106,7 +106,7 @@ AI_FALLBACK_PROVIDERS=groq,cerebras,mistral,openrouter
 Arhitectura separă **munca grea** de **publicare**:
 
 1. **GitHub Actions** — `.github/workflows/build.yml`, cron `13 * * * *`: rulează pipeline-ul (fetch + AI, cu buget per rulare) și comite `data/articles.json` în repo. Secret necesar: `GEMINI_API_KEY`.
-   **Încearcă orar, publică la ~2h:** un job de poartă taie rularea dacă ultimul conținut e mai proaspăt de 105 minute. Cron-ul orar dens acoperă firings-urile sărite de planificatorul GitHub; pragul păzește și bugetul lunar de build Cloudflare (≈500 rulări pe planul gratuit).
+   **Încearcă orar, publică la ~2h:** un job de poartă taie rularea dacă ultimul conținut e mai proaspăt de 105 minute. Cron-ul orar dens acoperă firings-urile sărite de planificatorul GitHub; pragul ține și numărul de build-uri Cloudflare la ~12/zi. *(Plafonul de 500 build-uri/lună era al lui Pages și nu se mai aplică — vezi IZZ-0305.)*
 2. **Cloudflare Workers Static Assets** (Workers Builds, conectat la repo, auto-deploy la fiecare commit): rulează doar **render-only** și servește `output/`. Configurația versionată stă în `wrangler.jsonc`:
    - `assets.directory: ./output` — proiect assets-only, fără `main`;
    - `not_found_handling: "404-page"` — fără linia asta, `output/404.html` nu ar fi servit niciodată;
@@ -115,6 +115,27 @@ Arhitectura separă **munca grea** de **publicare**:
    Comanda de build și variabilele de mediu (`PYTHON_VERSION`, `SITE_BASE`) stau în Workers Builds → Settings. GEMINI nu e necesar aici — render-only nu apelează AI.
 
 Fluxul: Actions face fetch + AI și salvează starea → commit-ul declanșează Cloudflare → Cloudflare randează rapid (fără AI/quota) și publică pe **izz.ro**. *(Migrat de pe Cloudflare Pages pe Workers în august 2026.)*
+
+### Bugetul de fișiere (plan Workers Free)
+
+Din 22 septembrie 2026 contul e pe **Workers Free**, unde o versiune de Worker poate avea cel mult
+**20.000 de fișiere statice** (Paid: 100.000). Cererile către fișiere statice rămân gratuite și
+nelimitate, deci constrângerea e strict numărul de fișiere.
+
+Consecințe, toate versionate în cod:
+
+- **Arta articolului se desenează în pagină** (`templates/_art.html` + `static/styles.css`), nu se
+  mai servește ca `art.jpg`/`art.webp`. Compozițiile sunt tipografie și geometrie, deci ies identic
+  (și mai clar) din CSS. Rămân fișiere doar fotografiile reale și imaginile din date.
+- **og:image propriu** doar pentru cele mai noi `OG_COVER_MAX_ARTICLES` articole; restul folosesc
+  coperta categoriei din `output/og/<categorie>.jpg`.
+- **`ARTICLE_TTL_DAYS = 21`**, dimensionat pe plafon: ~16.900 fișiere, 84% din 20.000.
+- **Supapă de siguranță**: dacă ingestul sare peste ce a fost măsurat, randarea publică doar câte
+  articole încap (`OUTPUT_FILE_BUDGET`) și taie de la cel mai vechi. Peste `OUTPUT_FILE_CEILING`
+  randarea moare zgomotos — altfel Cloudflare ar refuza deploy-ul tăcut și site-ul ar îngheța.
+
+Măsoară cu `python tools/count_output.py` după `python -m generator.main --render-only`.
+Detaliile și cifrele: `specs/cloudflare-free-2026-09.md`.
 
 ### Domeniul izz.ro
 

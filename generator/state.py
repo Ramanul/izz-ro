@@ -181,9 +181,9 @@ class StareCorupta(RuntimeError):
 
 
 # Sub ce fractie din corpusul de pe disc refuzam sa salvam. NU e ales din burta: `expire()`
-# taie la `ARTICLE_TTL_DAYS = 30`, iar pipeline-ul publica la ~2h, deci o rulare normala
-# pierde ~0,28% (1/360). Ca sa cada legitim sub 20% ar trebui o intrerupere de peste
-# 24 de zile — moment in care un build ROSU e oricum raspunsul corect, nu o publicare tacuta.
+# taie la `ARTICLE_TTL_DAYS = 21`, iar pipeline-ul publica la ~2h, deci o rulare normala
+# pierde ~0,40% (1/252). Ca sa cada legitim sub 20% ar trebui o intrerupere de peste
+# 16 zile — moment in care un build ROSU e oricum raspunsul corect, nu o publicare tacuta.
 # Se poate ridica deliberat cu `IZZ_PERMITE_COLAPS=1` (repopulare, schimbare de TTL).
 PRAG_COLAPS = 0.20
 
