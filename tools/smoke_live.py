@@ -92,11 +92,16 @@ def main() -> int:
         check(re.search(r'sources-box.*?<a href="http', html, re.S) is not None,
               page, "sursele din box sunt linkuri externe")
         check("btn-source" not in html, page, "fara btn-source")
-        # coperta generata: og:image per articol + imaginea chiar exista pe live
+        # og:image: fie coperta PROPRIE a articolului (fereastra recenta,
+        # `OG_COVER_MAX_ARTICLES`), fie coperta CATEGORIEI pentru arhiva. Oricare ar fi,
+        # fisierul trebuie sa se incarce: un og:image care da 404 e mai rau decat niciunul,
+        # fiindca retelele sociale il cacheaza ca imagine stricata.
         m = re.search(r'property="og:image" content="([^"]+)"', html)
         cover_url = m.group(1) if m else ""
+        check(bool(cover_url), page, "articolul are og:image")
         if "/cover.jpg" in cover_url:
             with_cover += 1
+        if cover_url:
             cpath = re.sub(r"^https?://[^/]+", "", cover_url)
             try:
                 req = urllib.request.Request(BASE + cpath, headers=UA)
@@ -105,10 +110,12 @@ def main() -> int:
                               and len(r.read()) > 5000)
             except Exception:
                 ok_img = False
-            check(ok_img, page, "coperta og:image exista si e imagine reala (>5KB)")
-        # arta pe site (faza 2): banner fara text -- verifica si ca FISIERUL art.jpg
-        # chiar se incarca (nu doar ca tag-ul <img> exista in HTML). Altfel un art.jpg
-        # lipsa/404 pe deploy trece neobservat: tag prezent, imagine goala pe ecran.
+            check(ok_img, page, "og:image exista si e imagine reala (>5KB)")
+        # Arta pe pagina. Din 2026-09-09 arta generata se DESENEAZA in pagina (`.art`), deci
+        # de regula nu mai exista fisier de verificat; raman fisiere doar fotografiile reale
+        # si imaginile din date. Verificam ca articolul are una din cele doua, iar cand are
+        # fisier verificam ca acesta chiar se incarca (un `<img>` cu 404 arata gol pe ecran,
+        # dar trece orice verificare care se uita doar la HTML).
         am = re.search(r'class="article-art"[^>]*\ssrc="([^"]+)"', html)
         if am:
             apath = re.sub(r"^https?://[^/]+", "", am.group(1))
@@ -119,14 +126,14 @@ def main() -> int:
                               and len(r.read()) > 5000)
             except Exception:
                 ok_art = False
-            if ok_art:
-                with_art += 1
-    check(with_art >= max(1, N_ARTICLES - 1), "articole",
-          f"arta pe site se incarca real pe esantion: {with_art}/{N_ARTICLES} (minim {N_ARTICLES - 1})")
-    # cateva articole pot cadea legitim pe og-image static (generate() a esuat izolat),
-    # dar majoritatea esantionului TREBUIE sa aiba coperta proprie
-    check(with_cover >= max(1, N_ARTICLES - 1), "articole",
-          f"coperti generate pe esantion: {with_cover}/{N_ARTICLES} (minim {N_ARTICLES - 1})")
+            check(ok_art, page, "fotografia de pe pagina se incarca real (>5KB)")
+            with_art += 1
+        elif re.search(r'class="art art--', html):
+            with_art += 1
+    check(with_art == N_ARTICLES, "articole",
+          f"fiecare articol are arta (desenata sau fotografie): {with_art}/{N_ARTICLES}")
+    print(f"  .. {with_cover}/{N_ARTICLES} din esantion au coperta og proprie "
+          f"(restul folosesc coperta categoriei -- normal pe arhiva)")
 
     # headere de securitate + cache (livrate 2026-07-12): verifica pe LIVE ca
     # Cloudflare chiar le serveste din _headers, nu doar ca fisierul exista in repo.

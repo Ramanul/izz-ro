@@ -48,14 +48,12 @@ def test_security_txt_has_required_public_contact_and_policy(tmp_path, monkeypat
     assert len(text.splitlines()) == 5
 
 
-def test_responsive_webp_scales_only_when_it_saves_bytes(tmp_path):
-    assert covers.Image is not None, "Pillow este dependință de producție pentru imagini"
-    source = tmp_path / "source.jpg"
-    target = tmp_path / "card.webp"
-    covers.Image.effect_noise((960, 504), 80).convert("RGB").save(source, "JPEG", quality=92)
-    assert render._responsive_webp(str(source), str(target), max_width=480)
-    with covers.Image.open(target) as image:
-        assert image.size == (480, 252)
+# `_responsive_webp` a fost scos pe 2026-09-09 odata cu `art-card.webp`: exista doar ca sa
+# faca varianta mica a miniaturii de pe homepage, iar miniatura nu mai e fisier — arta se
+# deseneaza in pagina (specs/cloudflare-free-2026-09.md). Pillow ramane dependinta de
+# productie pentru coperti, deci verificarea aia se muta pe suprafata care inca o foloseste.
+def test_pillow_ramane_disponibil_pentru_coperti():
+    assert covers.Image is not None, "Pillow este dependință de producție pentru coperți"
 
 
 def test_search_page_explains_the_actual_index_scope():
