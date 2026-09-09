@@ -26,10 +26,9 @@
   runs/day (not ~12), 49–85 min each, 4 failures in 12, all `release-probe` (Cloudflare needs >25 min
   for 51.896 files). Levers (`MAX_AI_CALLS_PER_RUN=40`, `PRAG_MIN=105`) are in `build.yml` — protected,
   owner's call. [IZZ-0317]
-- **Cloudflare routes — held by `izz-failover`, confirmed live 09-09** (`x-izz-origin: primary`,
-  overturns IZZ-0308): ~2.9k hits/day vs 100k on Free, automatic failover kept; assets-Worker routing
-  stays the owner's call. The ~48% error rate was a dashboard `* * * * *` cron with no `scheduled()`
-  handler (dated 08-22) — deleted via API, verified silent 09-09; readers unaffected. [IZZ-0318, IZZ-0319]
+- **Cloudflare routes — on `izz-failover`, confirmed live 09-09** (`x-izz-origin: primary`, overturns
+  IZZ-0308): ~2.9k hits/day vs 100k Free, failover kept; assets routing stays owner's call. The ~48%
+  error rate was a dashboard cron with no `scheduled()` (08-22) — deleted, verified silent. [IZZ-0318/0319]
 
 ## Audit closure status
 
