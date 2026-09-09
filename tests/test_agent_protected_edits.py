@@ -5,7 +5,7 @@ scris dupa regresia `IZZ-0309`. Aici se verifica CE respinge garda, fiindca una 
 corect si care nu blocheaza nimic arata identic din exterior: ambele trec, iar `STATE.md`
 continua sa scrie ca scrierile Bash sunt pazite.
 
-Masurat pe 2026-09-06 pe 14 tipare de scriere: patru treceau (`IZZ-0319`). Doua erau pe
+Masurat pe 2026-09-06 pe 14 tipare de scriere: patru treceau (`IZZ-0331`). Doua erau pe
 traiectoria muncii normale a unui agent si s-au inchis -- `cd` in directorul parinte urmat de
 redirect pe numele scurt, si modul append (`open(cale, 'a')`), pe care lista de moduri `'w'`
 il rata. Doua cer expansiune de shell si RAMAN deschise prin design; sunt testate ca atare
