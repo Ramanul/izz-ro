@@ -8,27 +8,22 @@
 > Where the rest lives: `specs/regim-reguli.md` — unified audit closure ·
 > `specs/registru.tsv` — decisions · `CLAUDE.md` — canonical contract.
 
-**Updated:** 2026-09-11 (ingest fix #328 pregatit de merge; coada de PR-uri listata pentru pr-nelistat)
+**Updated:** 2026-09-11 (auditul unificat verificat si mutat in registru mecanic; ingest fix #328 mergeuit)
 
 ## Open
 
-- **Workers Free — branch `claude/cloudflare-free-migration-2sqeju`.** Plafonul redevine 20.000
-  de fisiere/versiune din 22 septembrie. Masurat: 51.896 fisiere inainte (259%), 16.732 dupa
-  (84%); arta se deseneaza in pagina, `ARTICLE_TTL_DAYS=21`, og:image propriu doar pe fereastra
-  recenta. Cifre si alternative respinse: `specs/cloudflare-free-2026-09.md`. [IZZ-0313..0315]
-- **Downgrade blockers — CLEARED.** 0 Durable Object namespaces on the account (the one thing that
-  refuses Paid -> Free); KV `izz-kv`, R2 `izz-bucket`, D1 `izz-db` (0 tables) exist, are unbound and
-  fit the free tiers. Open: Workers Builds minutes on Free — unreadable from session; if they run
-  out, publishing moves to `deploy-worker.yml` AND the git integration must be disconnected.
-- **INGEST COLLAPSE — separate from the Free migration.** 730–1052 articles/day on 09-01..09-04,
-  then 43–183/day; root cause found 09-09: `FETCH_GLOBAL_DEADLINE_S=300` cuts the last ~142 of 634
-  sources — fix in this PR. Levers (`MAX_AI_CALLS_PER_RUN`, `PRAG_MIN`) stay in `build.yml`, owner's
-  call. [IZZ-0317]
-- **Cloudflare routes — on `izz-failover`, confirmed live 09-09** (`x-izz-origin: primary`, overturns
-  IZZ-0308): ~2.9k hits/day vs 100k Free, failover kept; assets routing stays owner's call. The ~48%
-  error rate was a dashboard cron with no `scheduled()` (08-22) — deleted, verified silent. [IZZ-0318/0319]
-- **PR queue (open >24h):** #328 = this IZZ-0317 fix · #321 §5.4 guard · #324 Bash-guard hook ·
-  #320 Lee audit · #297 Cronica vie — owner acceptance · #280 stale, close candidate.
+- **Workers Free — branch `claude/cloudflare-free-migration-2sqeju`.** Cap back to 20.000
+  files/version from 22 Sept. Measured: 51.896 files before (259%), 16.732 after (84%). Figures and
+  rejected alternatives: `specs/cloudflare-free-2026-09.md`. [IZZ-0313..0315]
+- **Downgrade blockers — CLEARED.** 0 Durable Objects; KV/R2/D1 unbound, within free tiers. Open:
+  Workers Builds minutes on Free — unreadable here; if spent, publishing moves to `deploy-worker.yml`
+  AND the git integration must be disconnected.
+- **INGEST COLLAPSE — fix in #328, merged.** Root cause: `FETCH_GLOBAL_DEADLINE_S=300` cut the last
+  ~142 of 634 sources. Verify the recovery on live volume; levers stay owner's call. [IZZ-0317]
+- **Cloudflare routes — on `izz-failover`, confirmed live 09-09** (overturns IZZ-0308): ~2.9k hits/day
+  vs 100k Free, failover kept, assets routing owner's call. The ~48% error rate was a dashboard cron
+  with no `scheduled()` — deleted, verified silent. [IZZ-0318/0319]
+- **PR queue (open >24h):** #321 §5.4 · #324 Bash-guard (overlaps IZZ-0353) · #320 Lee · #297 Cronica vie · #280 stale.
 
 
 ## Audit closure status
@@ -36,16 +31,21 @@
 - **K1–K14:** re-verified mechanism-by-mechanism in `specs/regim-reguli.md` — a reconciliation
   register, not a substitute for passing tests. **Grounding:** blocks deterministic invented quotes
   and foreign numbers, fails closed on missing evidence; order is grounding → QA → commit.
-- **Coordination:** live channel is `handoff/` + `specs/STATE.md`; historical dashboards stay historical.
-  **Containment:** destructive git commands and direct Edit/Write on control-plane files are denied.
-- **Journals:** `takedowns` in `moderation.yaml` removed on every publish path (trail in
-  `data/takedown_log.jsonl`); ingest discards per run in `data/triage_log.jsonl`.
-- **Near-verbatim copy:** >=15-word verbatim runs outside quotes and fully transcribed titles block the
-  gate, thresholds from REGULI-SINTEZA 2.2, no calibration corpus yet; violations defer the item.
-- **Silence detection:** hourly `detectie-tacere.yml`. **Human gate:** `IZZ_REQUIRE_HUMAN_GATE`
-  repo variable, default false.
-- **Bash writes are guarded:** the protected-edit hook covers Bash commands combining a control-plane
-  path with a write indicator; wiring under test (`tests/test_hooks_cablaj.py`).
+- **Coordination:** live channel is `handoff/` + `specs/STATE.md`. **Containment:** destructive git
+  commands and direct Edit/Write on control-plane files are denied.
+- **Journals:** takedowns removed on every publish path (`data/takedown_log.jsonl`); ingest
+  discards per run in `data/triage_log.jsonl`. `published` is normalized to UTC on load + save.
+- **Near-verbatim copy:** >=15-word verbatim runs and transcribed titles block the gate; violations
+  defer the item. Open: calibration corpus, 2x determinism run.
+- **Silence detection:** hourly. **Human gate:** repo var `IZZ_REQUIRE_HUMAN_GATE`, default false.
+  **Main** is `protected: true`; required-checks list unreadable here (403), rulesets: none.
+- **Bash writes are guarded** by the protected-edit hook; fd-only redirects no longer count [IZZ-0353].
+- **Unified audit (xlsx 2026-09-05) is a mechanical register now:** `specs/audit-unificat.tsv` +
+  `tools/audit_matrice.py` + `tests/test_audit_matrice.py`; findings in `specs/audit-unificat.md`.
+  Row 32 was a phantom; two more in code, both fixed — a nonexistent SSRF compensation named by
+  `guard.py`, and `published is uniform UTC` assumed by `state.save` but broken by the WP-JSON
+  path, mis-ordering 159 articles. Content commits pushed with the default `GITHUB_TOKEN` trigger
+  NO workflow, so `data/*.json` regressions surface only via a PR — owner call. [IZZ-0351…0357]
 
 ## Standing rules
 

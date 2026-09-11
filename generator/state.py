@@ -4,6 +4,7 @@ import os
 from datetime import datetime, timezone, timedelta
 
 from . import config, geo
+from .util import iso_utc
 
 STATE_PATH = os.path.join(config.ROOT, "data", "articles.json")
 
@@ -98,6 +99,12 @@ def load() -> list:
         raise StareCorupta(
             f"{STATE_PATH} contine {type(data).__name__}, nu o lista de articole."
         )
+    # Si la citire, nu doar la scriere. `save` normalizeaza o COPIE, deci fisierul de pe disc
+    # iese corect, dar consumatorii din aceeasi rulare ar ramane cu valorile naive. Conteaza
+    # concret: `main.py --render-only` face `state.load()` -> `render.build()` si NU trece
+    # niciodata prin `save` — exact calea pe care ruleaza jobul `mirror` si build-ul Cloudflare.
+    # Fara linia asta, oglinda si site-ul ar randa ordinea gresita pana la prima rulare completa.
+    _impune_published_utc(data)
     return _resync_pinned(data)
 
 
@@ -188,10 +195,49 @@ class StareCorupta(RuntimeError):
 PRAG_COLAPS = 0.20
 
 
+def _impune_published_utc(articles: list) -> int:
+    """Normalizeaza `published` la ISO UTC. Intoarce cate randuri au fost reparate.
+
+    DE CE AICI, si nu printr-o migrare unica. Contractul „`published` e uniform `+00:00`" era
+    PRESUPUS de `save` (vezi comentariul sortarii, mai jos) si tinut din patru locuri de parsare
+    independente. Pe 2026-09-11 al patrulea l-a rupt si nimeni nu a aflat pana cand un PR
+    oarecare a picat: commiturile de continut sunt impinse cu `GITHUB_TOKEN`, iar GitHub nu
+    declanseaza workflow-uri pentru ele, deci `data/articles.json` intra in repo netestat.
+
+    Functia a carei corectitudine depinde de un invariant e locul unde invariantul se IMPUNE,
+    nu unde se spera. Asezata aici, reparatia e si preventie (orice cale de parsare viitoare e
+    acoperita), si vindecare: randurile deja comise se normalizeaza la urmatoarea rulare de
+    pipeline, care le si comite — fara ca cineva sa editeze manual starea, cale de control-plane
+    protejata tocmai ca agentii sa nu umble in ea.
+
+    Nu ridica exceptie: o data prost formatata e corectabila determinist, iar oprirea publicarii
+    pentru atat ar transforma un defect de formatare in tacere pe site — cel mai rau mod de esec
+    din matricea de audit. Se repara si se NUMARA, ca sa se vada in log.
+    """
+    reparate = 0
+    for art in articles:
+        # Intrarile malformate (sir, `None`, numar, lista) se sar, nu opresc rularea:
+        # `test_state_resync.py::test_intrarile_malformate_nu_opresc_pipeline_ul` fixeaza
+        # contractul, fiindca `except (JSONDecodeError, OSError)` din `load` NU prinde un
+        # `AttributeError` de aici, deci ar cadea tot pipeline-ul pentru un rand stricat.
+        if not isinstance(art, dict):
+            continue
+        brut = art.get("published")
+        if not isinstance(brut, str) or not brut:
+            continue
+        curat = iso_utc(brut)
+        if curat and curat != brut:
+            art["published"] = curat
+            reparate += 1
+    return reparate
+
+
 def save(articles: list) -> None:
     _refuza_colapsul(articles)
     articles_to_save = [dict(a) for a in articles]
     _scrub_processed(articles_to_save)
+    if (reparate := _impune_published_utc(articles_to_save)):
+        print(f"   ~~ published normalizat la UTC pentru {reparate} articole")
     # Sortare pe SIR, nu pe datetime: corecta doar cat timp `published` e uniform `+00:00`.
     # Tine (masurat: 1736/1736 la 2026-08-03), fiindca `_parse_w3c_date` si `_parse_ro_date`
     # inchid amandoua cu `astimezone(timezone.utc)`. Apucata de tests/test_published_is_utc.py —
