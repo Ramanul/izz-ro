@@ -218,4 +218,9 @@ def main() -> int:
 
 
 if __name__ == "__main__":
-    raise SystemExit(main())
+    try:
+        raise SystemExit(main())
+    except BrokenPipeError:
+        # `… raport | head` inchide stdout la mijloc. Un exit normal ar mai incerca un flush
+        # si ar tipari un traceback peste iesirea utila; `os._exit` sare peste flush.
+        os._exit(0)

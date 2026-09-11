@@ -36,16 +36,16 @@
   commands and direct Edit/Write on control-plane files are denied.
 - **Journals:** `takedowns` in `moderation.yaml` removed on every publish path (trail in
   `data/takedown_log.jsonl`); ingest discards per run in `data/triage_log.jsonl`.
-- **Near-verbatim copy:** >=15-word verbatim runs outside quotes and fully transcribed titles block the
-  gate, thresholds from REGULI-SINTEZA 2.2, no calibration corpus yet; violations defer the item.
+- **Near-verbatim copy:** >=15-word verbatim runs outside quotes and transcribed titles block the gate
+  (REGULI-SINTEZA 2.2); violations defer the item. Open: calibration corpus, 2x determinism run.
 - **Silence detection:** hourly `detectie-tacere.yml`. **Human gate:** repo var `IZZ_REQUIRE_HUMAN_GATE`,
   default false. **Main** is `protected: true`; the required-checks list is unreadable from a session.
-- **Bash writes are guarded:** the protected-edit hook covers Bash commands combining a control-plane
-  path with a write indicator; fd-only redirects (`2>&1`, `/dev/null`) no longer count [IZZ-0353].
+- **Bash writes are guarded** by the protected-edit hook; fd-only redirects no longer count [IZZ-0353].
 - **Unified audit (xlsx 2026-09-05) is a mechanical register now:** `specs/audit-unificat.tsv` +
-  `tools/audit_matrice.py`, guarded by `tests/test_audit_matrice.py`; findings in
-  `specs/audit-unificat.md`. Row 32 was a phantom: an unmerged branch inventoried as a live
-  fail-closed gate, `masurat-fals` since IZZ-0266. Open: corpora + 2x determinism. [IZZ-0351/0352]
+  `tools/audit_matrice.py` + `tests/test_audit_matrice.py`; findings in `specs/audit-unificat.md`.
+  Row 32 was a phantom (unmerged branch inventoried as a live gate). A SECOND, in code: `guard.py`
+  named `fetch._deschizator_sigur` as the SSRF compensation; it did not exist, so redirects to
+  internal hosts were followed — now implemented and guarded. [IZZ-0351/0352/0355]
 
 ## Standing rules
 

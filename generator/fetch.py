@@ -41,6 +41,60 @@ TIMEOUT = 10  # secunde per feed
 SITEMAP_ARTICLE_TIMEOUT = float(os.environ.get("SITEMAP_ARTICLE_TIMEOUT", "6"))
 
 
+class _RedirectVerificat(urllib.request.HTTPRedirectHandler):
+    """Trece fiecare salt de redirectare prin `guard.url_ostil` inainte sa-l urmeze.
+
+    DE CE. `guard.url_ostil` verifica LEXICAL, fara DNS — decizie masurata, documentata in
+    `guard._gazda_interna`: ruleaza de mii de ori per rulare si o rezolvare de nume acolo ar
+    lega ingestia de retea. Golul pe care il lasa deliberat e numit tot acolo: „un domeniu
+    public care REZOLVA catre o adresa interna trece de aici; ala e treaba lui
+    `fetch._deschizator_sigur`, care verifica fiecare salt de redirectare".
+
+    Functia aceea NU EXISTA pana la 2026-09-11 (`grep -rn deschizator_sigur` peste tot repo-ul:
+    o singura aparitie, chiar citarea din `guard.py:202`), si nu exista niciun opener sau
+    handler de redirectare in acest fisier. `urllib.request.urlopen` urmeaza redirecturile
+    IMPLICIT, deci compensarea declarata era un mecanism fantoma: exact clasa de defect gasita
+    la randul 32 al matricei de audit, dar de data asta pe un control de securitate.
+
+    Calea reala: `_parse_sitemap_news` valideaza `<loc>`-ul unui sitemap TERT cu `url_ostil`
+    (fetch.py, pasul de garda), apoi `_fetch_meta_description` il cere. Un `<loc>` catre un
+    domeniu public care raspunde `302 -> http://169.254.169.254/…` trecea de garda si era urmat,
+    iar continutul intra in `description`, adica in corpusul publicabil.
+
+    CE NU REZOLVA, spus pe fata: ramane verificare lexicala, la fel ca `url_ostil`. Un domeniu
+    public al carui DNS rezolva direct catre o adresa interna, FARA redirect, trece in
+    continuare — pentru asta ar trebui validare la nivel de socket, nu de URL. Se inchide
+    golul „redirect catre intern", nu intreaga clasa SSRF.
+    """
+
+    def redirect_request(self, req, fp, code, msg, headers, newurl):
+        if (motiv := guard.url_ostil(newurl)):
+            raise urllib.error.HTTPError(
+                newurl, code, f"redirectare refuzata de garda: {motiv}", headers, fp)
+        return super().redirect_request(req, fp, code, msg, headers, newurl)
+
+
+def _deschizator_sigur() -> urllib.request.OpenerDirector:
+    """Opener care refuza redirectarile catre gazde interne. Vezi `_RedirectVerificat`."""
+    return urllib.request.build_opener(_RedirectVerificat)
+
+
+def _deschide(req, timeout):
+    """UNICA iesire in retea a acestui modul. Orice cerere trece pe aici, deci prin garda.
+
+    De ce o functie si nu `urllib.request.urlopen` direct, desi ar fi fost zero modificari in
+    teste: politica trebuie sa stea pe granita, nu langa ea. Varianta alternativa,
+    `urllib.request.install_opener(...)` la import, ar fi pastrat apelurile neatinse, dar ar fi
+    mutat starea GLOBALA a lui `urllib` pentru tot procesul — inclusiv pentru `tools/`, care
+    are propriul cod de retea. Actiune la distanta, invizibila la citirea fisierului.
+
+    Cu cusatura aici, un apel nou primeste garda automat, iar testele patch-uiesc granita
+    (`fetch._deschide`), nu apelul de stdlib de sub ea. `test_fetch_redirect_ssrf` verifica
+    mecanic ca nu a reaparut niciun `urllib.request.urlopen(` direct in acest fisier.
+    """
+    return _deschizator_sigur().open(req, timeout=timeout)
+
+
 class _MetaDescriptionParser(HTMLParser):
     """Extrage doar meta description dintr-o pagină editorială, fără scraping de navigație."""
 
@@ -62,7 +116,7 @@ def _fetch_meta_description(url: str) -> str:
     """Fetch bounded metadata; failure means the item remains safely unprocessed."""
     try:
         request = urllib.request.Request(url, headers={"User-Agent": USER_AGENT})
-        with urllib.request.urlopen(request, timeout=SITEMAP_ARTICLE_TIMEOUT) as response:
+        with _deschide(request, timeout=SITEMAP_ARTICLE_TIMEOUT) as response:
             raw = response.read(min(MAX_RESPONSE_BYTES, 512 * 1024))
         parser = _MetaDescriptionParser()
         parser.feed(raw.decode("utf-8", errors="replace"))
@@ -345,7 +399,7 @@ def _fetch_sitemap_news(key: str, source: dict) -> tuple[list, str | None]:
     """Fetch dintr-un sitemap Google News: Title + URL + data. Legal (robots.txt: Allow /)."""
     try:
         req = urllib.request.Request(source["url"], headers={"User-Agent": USER_AGENT})
-        with urllib.request.urlopen(req, timeout=TIMEOUT) as resp:
+        with _deschide(req, timeout=TIMEOUT) as resp:
             raw = _read_limitat(resp)
     except (urllib.error.HTTPError, urllib.error.URLError, socket.timeout, ValueError) as exc:
         return [], f"{key}: {exc}"
@@ -513,7 +567,7 @@ def _fetch_html_list(key: str, source: dict) -> tuple[list, str | None]:
     """Scraper generic pentru o lista de anunturi HTML (surse fara RSS). Legal: pagina publica."""
     try:
         req = urllib.request.Request(source["url"], headers={"User-Agent": USER_AGENT})
-        with urllib.request.urlopen(req, timeout=TIMEOUT) as resp:
+        with _deschide(req, timeout=TIMEOUT) as resp:
             raw = _read_limitat(resp).decode("utf-8", errors="replace")
     except (urllib.error.HTTPError, urllib.error.URLError, socket.timeout, ValueError) as exc:
         return [], f"{key}: {exc}"
@@ -528,7 +582,7 @@ def _fetch_wp_json(key: str, source: dict) -> tuple[list, str | None]:
     """
     try:
         req = urllib.request.Request(source["url"], headers={"User-Agent": USER_AGENT})
-        with urllib.request.urlopen(req, timeout=TIMEOUT) as resp:
+        with _deschide(req, timeout=TIMEOUT) as resp:
             raw = _read_limitat(resp)
     except (urllib.error.HTTPError, urllib.error.URLError, socket.timeout, ValueError) as exc:
         return [], f"{key}: {exc}"
@@ -744,7 +798,7 @@ def _fetch_one(key: str, source: dict, cache: dict | None = None) -> tuple[list,
     for attempt in range(RETRY_ATTEMPTS + 1):
         try:
             req = urllib.request.Request(source["url"], headers=headers)
-            with urllib.request.urlopen(req, timeout=TIMEOUT) as resp:
+            with _deschide(req, timeout=TIMEOUT) as resp:
                 raw = _read_limitat(resp)
                 if cache is not None:
                     cache[key] = {

@@ -12,16 +12,17 @@ Toate cifrele de mai jos sunt recalculate din datele registrului, nu citite din 
 
 | Agregat | Excel 2026-09-05 | Registru 2026-09-11 | De ce difera |
 |---|---|---|---|
-| mecanisme inventariate | 36 | 43 | 7 mecanisme lipseau din inventar (§3) |
-| mecanisme vii | 36 (implicit) | 42 | unul era fantoma (§2.1) |
-| cu autoritate de blocare | 19 „reala" | 17 `efectiva` + 6 `conditionata` | autoritatea conditionata de branch protection e separata, nu declarata reala |
+| mecanisme inventariate | 36 | 44 | 7 lipseau din inventar (§3) + garda de redirectare (§2.1b) |
+| mecanisme vii | 36 (implicit) | 43 | unul era fantoma (§2.1) |
+| cu autoritate de blocare | 19 „reala" | 18 `efectiva` + 6 `conditionata` | autoritatea conditionata de branch protection e separata, nu declarata reala |
 | fara autoritate | 17 | 19 | reclasificare + mecanismele adaugate |
 | bypass documentat | 8 | 7 | #22 feedcheck a primit cron, deci nu mai e ocolibil prin omisiune |
 | eroziune > 2 | 1 | **0** | acel 1 era chiar fantoma |
 | risc >= 3 | 5 | 2 | #17, #34 remediate intre timp; #32 inexistent |
 
-Baza de verificare, rulata local pe 2026-09-11: `python -m pytest tests/ -q` -> 1542 trecute,
-3 sarite, 8 xfailed; `python -m ruff check .` -> curat.
+Baza de verificare, rulata local pe 2026-09-11 cu istoric complet: `python -m pytest tests/ -q`
+-> **1586 trecute**, 1 sarit, 8 xfailed; `python -m ruff check .` -> curat; `git status` gol si
+dupa suita. (La deschiderea lucrarii erau 1542; diferenta sunt testele adaugate aici.)
 
 ## 2. Trei defecte structurale ale registrului Excel
 
@@ -58,6 +59,52 @@ Premisa era gresita, remediul nu. Nu se sterge nimic retroactiv din cauza asta.
 Randul ramane in registru marcat `stare=absent`, deliberat: sters, s-ar reinventaria la
 urmatorul audit. `tests/test_audit_matrice.py::test_fantoma_ramane_consemnata_ca_absenta`
 il tine acolo.
+
+### 2.1b A DOUA fantoma, gasita aplicand auditul — de data asta pe un control de securitate
+
+Aceeasi clasa de defect ca §2.1, dar in cod, nu in registru. `guard._gazda_interna` isi
+declara explicit golul si numeste compensarea:
+
+> „un domeniu public care REZOLVA catre o adresa interna trece de aici; ala e treaba lui
+> `fetch._deschizator_sigur`, care verifica fiecare salt de redirectare, acolo unde cererea
+> chiar se face."
+
+Masurat pe 2026-09-11: `grep -rn deschizator_sigur` peste tot repo-ul returna **o singura
+aparitie — chiar citarea de mai sus**. Functia nu exista. Nu exista nici opener, nici
+`HTTPRedirectHandler`, nici `allow_redirects`, nici `max_redirect` in `fetch.py`, iar
+`urllib.request.urlopen` urmeaza redirecturile IMPLICIT.
+
+Calea reala, nu ipotetica: `_parse_sitemap_news` valideaza cu `url_ostil` `<loc>`-ul unui
+sitemap TERT (fetch.py, pasul de garda), apoi `_fetch_meta_description` cere acel URL si ii
+pune raspunsul in `description`, adica in corpusul publicabil.
+
+Demonstrat in ambele directii pe un server local (`tests/test_fetch_redirect_ssrf.py`):
+
+| Stare | `_fetch_meta_description(url care redirecteaza spre intern)` |
+|---|---|
+| inainte (opener implicit) | `'continut-intern-care-nu-trebuie-sa-iasa'` |
+| dupa (`_deschide` + `_RedirectVerificat`) | `''` |
+
+Inchis prin implementarea chiar a functiei pe care documentatia o promitea. Trei decizii de
+proiectare, fiecare cu motivul ei:
+
+- **Cusatura e `fetch._deschide`, nu `urllib.request.install_opener`.** A doua varianta ar fi
+  cerut zero modificari in teste, dar muta starea GLOBALA a lui `urllib` pentru tot procesul,
+  inclusiv pentru `tools/`. Am platit 11 editari mecanice in teste ca sa nu las o capcana.
+- **Garda apara SALTURILE, nu cererea initiala.** URL-ul de plecare ramane treaba lui
+  `url_ostil`, aplicat de apelant; dublarea verificarii ar fi mutat-o in locul gresit.
+- **Un test de invariant** (`test_nicio_iesire_in_retea_nu_ocoleste_cusatura`) pica daca reapare
+  un `urllib.request.urlopen(` direct in `fetch.py` — altfel golul se reintroduce exact cum a
+  aparut prima data.
+
+O premisa verificata, nu presupusa: `url_ostil` respinge orice nu incepe cu `http`/`https`,
+deci un `Location: /pagina` relativ ar fi omorat tacit orice sursa care redirecteaza relativ.
+Masurat: `urllib` rezolva `Location` fata de URL-ul cererii INAINTE de `redirect_request`,
+deci garda vede mereu un URL absolut. Premisa e tinuta sub test.
+
+**Ce NU rezolva, spus pe fata:** ramane verificare lexicala. Un domeniu public al carui DNS
+rezolva DIRECT catre o adresa interna, fara redirect, trece in continuare — pentru asta ar
+trebui validare la nivel de socket. S-a inchis golul „redirect catre intern", nu clasa SSRF.
 
 ### 2.2 Agregate nereproductibile
 
@@ -122,19 +169,31 @@ integritate a regulilor, #42 garda de PR nelistat, #43 jurnal de takedown.
 | 6 | Stale release detection | **inchis** | `EXPECTED_COMMIT` + `tools/verify_release.py`; `detectie-tacere.yml` orar |
 | 7 | Determinism render | **partial** | garda pe sursa exista; comparatia comportamentala 2x (~50 min) nu incape in CI si ramane manuala |
 | 8 | Takedown / similaritate text | **partial** | takedown-urile se aplica pe orice cale; pragul de similaritate nu are corpus de calibrare |
-| 9 | Feedcheck + corpus adversarial | **partial** | feedcheck programat; corpusul de poisoning/SSRF nu e o suita dedicata |
+| 9 | Feedcheck + corpus adversarial | **inchis pe redirect/SSRF** | feedcheck programat; `tests/test_fetch_redirect_ssrf.py` (18 cazuri) + garda implementata (§2.1b). Poisoning de continut ramane in `guard._CORPUS_OSTIL` |
 | 10 | Observabilitate + tacere | **inchis** | `detectie-tacere.yml` + `tools/detectie_tacere.py` |
 | 11 | Edge/WAF drift | **partial** | `specs/snapshot-edge.md` exista ca baseline; comparatia e manuala |
 | 12 | Recovery drill | **inchis in repo** | `.github/workflows/recovery-drill.yml`; exercitiul operational ramane la proprietar |
 
 ## 5. Ce ramane deschis, si de ce nu l-am inchis
 
-- **Lista de required status checks pe `main`.** `main` e `protected: true` (citit prin API),
-  dar continutul protectiei nu e expus de uneltele din sesiune. De asta #25/#26/#27/#29/#41/#42
-  sunt `autoritate=conditionata` cu conditia numita, nu `efectiva`. Se inchide cu o citire a
-  setarilor de catre proprietar, nu cu un commit.
-- **Corpusul de calibrare pentru similaritate** (#43) si **corpusul adversarial de ingestie**
-  (#9) — amandoua cer date reale, nu cod; pragurile ghicite ar incalca disciplina IZZ-0168.
+- **Lista de required status checks pe `main`.** Limita e declarata prin experimentele care au
+  esuat, nu din impresie (2026-09-11, autentificat ca `Ramanul`, `GET /user` da 200):
+
+  | Comanda | Rezultat |
+  |---|---|
+  | `GET /repos/Ramanul/izz-ro/branches/main/protection` | **403** `Resource not accessible by integration` |
+  | `GET …/branches/main/protection/required_status_checks` | **403** idem |
+  | GraphQL `branchProtectionRules` | **403** — GraphQL e blocat pentru sesiunile Claude Code |
+  | `GET /repos/Ramanul/izz-ro/rulesets` | **200 — lista goala** |
+
+  Ultima linie restrange necunoscutul: nu exista niciun ruleset, deci `protected: true` de pe
+  `main` vine din branch protection CLASICA, iar ce nu se poate citi e continutul EI.
+  De asta #25/#26/#27/#29/#41/#42 sunt `autoritate=conditionata` cu conditia numita, nu
+  `efectiva`. Se inchide cu o citire in Settings → Branches de catre proprietar, sau cu un
+  token care are `administration:read`; nu cu un commit.
+- **Corpusul de calibrare pentru similaritate** (#43) — cere date reale, nu cod; un prag ghicit
+  ar incalca disciplina IZZ-0168. Corpusul adversarial de ingestie (#9) e inchis pe axa
+  redirect/SSRF (§2.1b); pe axa de poisoning editorial ramane `guard._CORPUS_OSTIL`.
 - **Comparatia de determinism 2x** (#30) — ~50 de minute, in afara CI prin constructie.
 - **Driftul edge** (#11) — configuratia Cloudflare nu e in repo; ramane control de platforma.
 
