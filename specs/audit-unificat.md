@@ -177,3 +177,23 @@ Doua clase de fals pozitiv RAMAN, deliberat:
 Pentru ambele, calea corecta e cea pe care garda o impune deja: scrierea prin unealta de
 fisiere, unde calea tinta e neambigua si verificarea e exacta. Costul e o reformulare
 ocazionala; alternativa ar fi fost o gaura reala in planul de control.
+
+## 8. A doua constatare din aplicare: testele poluau jurnalul de triaj
+
+Mecanismul #39 (`data/triage_log.jsonl`) e observabilitatea nascuta din actiunea P0 #5 —
+locul unde se masoara over-blocking-ul la ingestie. Aplicand registrul s-a vazut ca el
+crestea la fiecare rulare LOCALA a suitei.
+
+Masurat prin experiment, nu dedus: 32 de linii inainte de `pytest tests/test_slug_stabil.py`,
+34 dupa. Delta exact 2, doua randuri identice pe aceeasi secunda.
+
+Cauza: fixture-ul `ruleaza` cheama `main.run(dry_run=False)` cu `state.STATE_PATH`
+redirectionat in `tmp_path`, dar `jurnal_triage.cale()` si-o ia din `config.ROOT`, care nu e
+redirectionat. `build.yml` comite fisierul, deci poluarea ajungea in repo. Nu strica niciun
+test — se strecoara tocmai in datele pe care se ia decizia editoriala.
+
+Reparat pe clasa, nu pe caz (IZZ-0354): fixture-ul redirectioneaza si jurnalul, iar
+`tests/conftest.py` primeste o gardă autouse care, dupa FIECARE test, verifica amprenta
+fisierelor de stare comisa (`triage_log`, `takedown_log`, `articles.json`, `feed_cache.json`)
+si numeste testul vinovat. Verificata in ambele directii: cu bugul repus, garda da ERROR pe
+exact testul care polua; cu fixul, suita trece si arborele de lucru ramane curat.
