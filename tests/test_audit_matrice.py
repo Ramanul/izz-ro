@@ -134,3 +134,98 @@ def test_mecanism_absent_cu_eroziune_e_respins():
         _rand_valid(stare="absent", poate_bloca="nu", autoritate="niciuna", eroziune="4")
     ])
     assert any("nu are ce eroda" in p for p in probleme)
+
+
+# --- subcomanda `eroziune` -------------------------------------------------------------
+#
+# Garda esentiala de aici nu e „ruleaza", ci CONTRACTUL dintre ce declara unealta ca poate
+# masura si ce raporteaza efectiv. Prima versiune a subcomenzii declara „duplicare" drept
+# dimensiune masurata si emitea semnale pe ea, desi proxy-ul folosit (fisier de dovada comun)
+# marca 20+ din 44 de mecanisme — zgomot, nu masuratoare. Corectia a fost facuta de mana;
+# testul de mai jos o face mecanica, ca sa nu se poata reintroduce tacut.
+
+
+def _sintetic(rid, dovada, *, poate_bloca="nu", autoritate="niciuna", bypass="nu",
+              stare="activ"):
+    return {"id": rid, "mecanism": f"mecanism {rid}", "dovada": dovada, "stare": stare,
+            "poate_bloca": poate_bloca, "autoritate": autoritate, "bypass": bypass}
+
+
+def test_dimensiunile_sunt_opt_si_fiecare_e_etichetata():
+    assert len(am.DIMENSIUNI) == 8
+    for nume, text in am.DIMENSIUNI.items():
+        assert text.split(" ")[0] in ("MASURAT", "INDICATOR", "NEMASURAT"), nume
+
+
+def test_nicio_dimensiune_declarata_nemasurata_nu_apare_ca_semnal(randuri):
+    """Contractul: ce e declarat NEMASURAT nu are voie sa produca semnale."""
+    nemasurate = [n for n, t in am.DIMENSIUNI.items() if t.startswith("NEMASURAT")]
+    assert nemasurate, "testul ar fi vid daca toate ar fi masurate"
+    for date in am.eroziune(randuri).values():
+        for semnal in date["semnale"]:
+            eticheta = semnal.split(":")[0].strip()
+            assert eticheta not in nemasurate, (
+                f"semnalul {semnal!r} raporteaza dimensiunea {eticheta!r}, declarata NEMASURAT"
+            )
+
+
+def test_eroziunea_nu_produce_scor_compozit(randuri):
+    """Deliberat: un numar unic ar insuma cu zero patru dimensiuni necitibile din repo."""
+    for date in am.eroziune(randuri).values():
+        assert set(date) == {"mecanism", "semnale", "zile_de_la_ultima_atingere"}
+        assert not isinstance(date.get("scor"), (int, float))
+
+
+def test_semnalul_de_autoritate_e_derivat_din_registru(randuri):
+    asteptat = {r["id"] for r in randuri if r["stare"] != "absent"
+                and r["poate_bloca"] == "da" and r["autoritate"] != "efectiva"}
+    obtinut = {rid for rid, d in am.eroziune(randuri).items()
+               if any(s.startswith("autoritate:") for s in d["semnale"])}
+    assert obtinut == asteptat
+
+
+def test_semnalul_de_bypass_e_derivat_din_registru(randuri):
+    asteptat = {r["id"] for r in randuri if r["stare"] != "absent" and r["bypass"] == "da"}
+    obtinut = {rid for rid, d in am.eroziune(randuri).items()
+               if any(s.startswith("bypass:") for s in d["semnale"])}
+    assert obtinut == asteptat
+
+
+def test_mecanismele_absente_nu_apar_in_eroziune(randuri):
+    absente = {r["id"] for r in randuri if r["stare"] == "absent"}
+    assert absente, "registrul trebuie sa pastreze mecanismul fantoma"
+    assert not (absente & set(am.eroziune(randuri)))
+
+
+def test_granularitatea_grupeaza_doar_dovezi_identice():
+    """Falsul pozitiv care a stricat prima versiune: dovada COMUNA nu e dovada identica."""
+    r = [_sintetic("1", "a.py"), _sintetic("2", "a.py"),
+         _sintetic("3", "a.py;b.py"), _sintetic("4", "b.py;a.py"),
+         _sintetic("5", "a.py;c.py"), _sintetic("6", "d.py")]
+    assert am.granularitate_registru(r) == [["1", "2"], ["3", "4"]]
+
+
+def test_granularitatea_ignora_mecanismele_absente_si_dovezile_goale():
+    r = [_sintetic("1", "a.py"), _sintetic("2", "a.py", stare="absent"),
+         _sintetic("3", "-"), _sintetic("4", "")]
+    assert am.granularitate_registru(r) == []
+
+
+def test_granularitatea_nu_e_raportata_ca_eroziune(randuri):
+    """E o observatie despre REGISTRU; amestecata in semnale ar citi ca defect al sistemului."""
+    ids = {x for grup in am.granularitate_registru(randuri) for x in grup}
+    assert ids, "registrul comis are grupuri cu dovada identica; testul ar fi vid altfel"
+    date = am.eroziune(randuri)
+    for rid in ids:
+        for semnal in date[rid]["semnale"]:
+            assert "identic" not in semnal and "duplicare" not in semnal
+
+
+def test_subcomanda_eroziune_ruleaza_si_isi_declara_limitele():
+    rez = subprocess.run(
+        [sys.executable, os.path.join(ROOT, "tools", "audit_matrice.py"), "eroziune"],
+        capture_output=True, text=True, cwd=ROOT,
+    )
+    assert rez.returncode == 0, rez.stdout + rez.stderr
+    assert "NEMASURAT" in rez.stdout
+    assert "GRANULARITATEA REGISTRULUI (nu eroziune)" in rez.stdout
