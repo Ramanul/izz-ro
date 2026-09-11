@@ -20,18 +20,15 @@
   refuses Paid -> Free); KV `izz-kv`, R2 `izz-bucket`, D1 `izz-db` (0 tables) exist, are unbound and
   fit the free tiers. Open: Workers Builds minutes on Free — unreadable from session; if they run
   out, publishing moves to `deploy-worker.yml` AND the git integration must be disconnected.
-- **INGEST COLLAPSE — separate from the Free migration, not caused by it.** Published volume fell to
-  ~5% on 09-05: 730–1052 articles/day on 09-01..09-04, then 43–183/day; `sitemap-news.xml` live holds
-  6 articles for 09-09. Category sorting is correct — there is simply no fresh content. ~5 pipeline
-  runs/day (not ~12), 49–85 min each, 4 failures in 12, all `release-probe` (Cloudflare needs >25 min
-  for 51.896 files). Levers (`MAX_AI_CALLS_PER_RUN=40`, `PRAG_MIN=105`) are in `build.yml` — protected,
-  owner's call. [IZZ-0317]
+- **INGEST COLLAPSE — separate from the Free migration.** 730–1052 articles/day on 09-01..09-04,
+  then 43–183/day; root cause found 09-09: `FETCH_GLOBAL_DEADLINE_S=300` cuts the last ~142 of 634
+  sources — fix in this PR. Levers (`MAX_AI_CALLS_PER_RUN`, `PRAG_MIN`) stay in `build.yml`, owner's
+  call. [IZZ-0317]
 - **Cloudflare routes — on `izz-failover`, confirmed live 09-09** (`x-izz-origin: primary`, overturns
   IZZ-0308): ~2.9k hits/day vs 100k Free, failover kept; assets routing stays owner's call. The ~48%
   error rate was a dashboard cron with no `scheduled()` (08-22) — deleted, verified silent. [IZZ-0318/0319]
-- **PR queue (all open >24h, per pr-nelistat):** #328 fetch deadline 300→900s — the IZZ-0317 fix ·
-  #321 §5.4 contract + guard · #324 control-plane Bash guard · #320 Agent Lee audit §10 ·
-  #297 Cronica vie visual rework — owner visual acceptance · #280 CSS slice 5 — stale, close candidate.
+- **PR queue (open >24h):** #328 = this IZZ-0317 fix · #321 §5.4 guard · #324 Bash-guard hook ·
+  #320 Lee audit · #297 Cronica vie — owner acceptance · #280 stale, close candidate.
 
 
 ## Audit closure status
