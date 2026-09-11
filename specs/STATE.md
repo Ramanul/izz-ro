@@ -8,7 +8,7 @@
 > Where the rest lives: `specs/regim-reguli.md` — unified audit closure ·
 > `specs/registru.tsv` — decisions · `CLAUDE.md` — canonical contract.
 
-**Updated:** 2026-09-09 (migrare Free merged #326; ruta pe izz-failover confirmata; cron fantoma sters)
+**Updated:** 2026-09-11 (ingest fix #328 pregatit de merge; coada de PR-uri listata pentru pr-nelistat)
 
 ## Open
 
@@ -29,6 +29,9 @@
 - **Cloudflare routes — on `izz-failover`, confirmed live 09-09** (`x-izz-origin: primary`, overturns
   IZZ-0308): ~2.9k hits/day vs 100k Free, failover kept; assets routing stays owner's call. The ~48%
   error rate was a dashboard cron with no `scheduled()` (08-22) — deleted, verified silent. [IZZ-0318/0319]
+- **PR queue (all open >24h, per pr-nelistat):** #328 fetch deadline 300→900s — the IZZ-0317 fix ·
+  #321 §5.4 contract + guard · #324 control-plane Bash guard · #320 Agent Lee audit §10 ·
+  #297 Cronica vie visual rework — owner visual acceptance · #280 CSS slice 5 — stale, close candidate.
 
 
 ## Audit closure status
