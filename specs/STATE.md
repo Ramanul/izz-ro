@@ -8,22 +8,21 @@
 > Where the rest lives: `specs/regim-reguli.md` — unified audit closure ·
 > `specs/registru.tsv` — decisions · `CLAUDE.md` — canonical contract.
 
-**Updated:** 2026-09-11 (auditul unificat verificat si mutat in registru mecanic; ingest fix #328 mergeuit)
+**Updated:** 2026-09-11 (#332 audit unificat MERGED; plan Free reverificat; izz-failover masurat)
 
 ## Open
 
-- **Workers Free — branch `claude/cloudflare-free-migration-2sqeju`.** Cap back to 20.000
-  files/version from 22 Sept. Measured: 51.896 files before (259%), 16.732 after (84%). Figures and
-  rejected alternatives: `specs/cloudflare-free-2026-09.md`. [IZZ-0313..0315]
-- **Downgrade blockers — CLEARED.** 0 Durable Objects; KV/R2/D1 unbound, within free tiers. Open:
-  Workers Builds minutes on Free — unreadable here; if spent, publishing moves to `deploy-worker.yml`
-  AND the git integration must be disconnected.
-- **INGEST COLLAPSE — fix in #328, merged.** Root cause: `FETCH_GLOBAL_DEADLINE_S=300` cut the last
-  ~142 of 634 sources. Verify the recovery on live volume; levers stay owner's call. [IZZ-0317]
-- **Cloudflare routes — on `izz-failover`, confirmed live 09-09** (overturns IZZ-0308): ~2.9k hits/day
-  vs 100k Free, failover kept, assets routing owner's call. The ~48% error rate was a dashboard cron
-  with no `scheduled()` — deleted, verified silent. [IZZ-0318/0319]
-- **PR queue (open >24h):** #321 §5.4 · #324 Bash-guard (overlaps IZZ-0353) · #320 Lee · #297 Cronica vie · #280 stale.
+- **Workers Free — DONE, measured 2026-09-11.** The free-migration branch is fully merged (0 commits
+  outside main); the deploy config is assets-only; live serves **13.733 files = 69% of the 20.000
+  cap**. `ARTICLE_TTL_DAYS=21` is the lever that holds it there. [IZZ-0313..0315, IZZ-0361]
+- **Downgrade blockers — CLEARED, re-measured 2026-09-11:** `izz-db` (0 tables), `izz-kv`,
+  `izz-bucket` exist, unbound, within free tiers. Open: Workers Builds minutes — unreadable here.
+- **INGEST COLLAPSE — fix in #328, merged.** Verify recovery on live volume; levers owner's call. [IZZ-0317]
+- **`izz-failover` — KEEP; recommendation against closing [IZZ-0362].** Read its code 09-11: proxies
+  to the primary Worker (1.5s timeout), falls back to the mirror, adds edge TTL. Metered on Free, but
+  ~2.9k hits/day vs 100k. Not changeable from a session anyway: no MCP tool for routes, §10 owner-only.
+- **PR queue:** #332 audit unificat — MERGED [IZZ-0360]. Open: #321 §5.4 · #324 Bash-guard (now
+  overlaps the merged IZZ-0353, needs rebase) · #320 Lee · #297 Cronica vie · #280 stale · #331 harta.
 
 
 ## Audit closure status
@@ -49,8 +48,8 @@
 
 ## Standing rules
 
-- Free plan: `izz.ro` must be served by the assets-only Worker. Routing it through `izz-failover`
-  turns every hit into a metered Worker request (100k/day) instead of a free static-asset hit.
+- Free plan: routing `izz.ro` through `izz-failover` meters every hit (100k/day) instead of serving a
+  free static-asset hit. Measured 09-11: ~2.9k/day, so the cost is real but not binding — watch it.
 - Do not treat retired static-host origins as live origins; Worker origin is the fallback verification path.
 - Do not use old task journals as normative coordination channels.
 - Do not describe historical benchmark values as current measurements.
