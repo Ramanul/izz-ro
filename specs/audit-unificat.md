@@ -243,9 +243,34 @@ propriu, `Location` relativ rezolvat absolut inainte de garda). Prima proba in c
 urmatoarea rulare de pipeline; o pierdere in masa ar aparea in `detectie-tacere.yml` si in
 `data/triage_log.jsonl`.
 
-**Lanțul de protecție (11 proprietati) si cele 8 dimensiuni de eroziune** raman neaplicate.
-Sunt singurele foi ale auditului care privesc sistemul ca FLUX, nu ca inventar — vezi §2.3 pentru
-de ce lipsa lor face scorul de eroziune nefalsificabil.
+**Cele 8 dimensiuni de eroziune** raman neaplicate — vezi §2.3 pentru de ce lipsa lor face scorul
+de eroziune nefalsificabil. Lantul de protectie e reverificat in §2c.
+
+## 2c. Lanțul de protecție, reverificat pe codul de azi
+
+Foaia `Lanț protecție` are **10** proprietati protejate (nu 11, cum scrisesem initial: `A1:S11`
+inseamna antet + 10 randuri). Pentru fiecare, matricea numea „ultima bariera efectiva". Aici e
+ce spune codul si live-ul pe 2026-09-11.
+
+| # | Proprietate | Ultima bariera, in matrice | Ce e masurat acum |
+|---|---|---|---|
+| 1 | Titlu corect | `editorial-quality` (POST-publicare) | **SCHIMBAT**: `qa_check` importa `title_quality_audit` si pica build-ul pe contract, deci bariera e INAINTE de commit |
+| 2 | Atribuire / provenance | `eval_atribuire` | neschimbat ca mecanism, dar baseline-ul e `masurat-fals` din `IZZ-0268` — bariera exista, calibrarea nu |
+| 3 | Clasificare / taxonomie | proces + qa | **CONFIRMAT**: `process._valid_category` valideaza apartenenta mecanic, cu fallback; `qa_check` prinde categoriile goale. Nu e doar regula de prompt |
+| 4 | Integritate HTML | guard + autoescape | **CONFIRMAT PE LIVE**: singurul `<script>` inline e `ld+json`; zero markup periculos scapat |
+| 5 | Integritatea release-ului | `release-probe` | **CONFIRMAT PE LIVE**: `build.json` serveste exact HEAD-ul lui `main` |
+| 6 | Disponibilitatea site-ului | mirror | origine Worker 200; domeniul public NU se poate verifica din sesiune (proxy) |
+| 7 | Securitatea codului | pytest CI | `main` e `protected: true`, dar lista de required checks da 403 — bariera e `conditionata`, nu dovedita |
+| 8 | Trafic / bot abuse | edge CDN | `specs/snapshot-edge.md` e baseline-ul; comparatia de drift ramane MANUALA, deci bariera nu are gardă |
+| 9 | Calitate editoriala | `verifica_sinteza` (raport, NU blocheaza) | **SCHIMBAT**: `grounding_gate` blocheaza subsetul determinist inaintea QA si a commitului |
+| 10 | Consistency state / date | garzi in teste | **SCHIMBAT**: plus invariantul `published` UTC, impus acum in `load` si `save` (§2.1c) |
+
+Concluzia care conteaza: **trei din zece bariere s-au mutat mai devreme in lant** fata de
+descrierea din matrice (1, 9, 10) — toate in sensul bun, de la detectiv la preventiv. Doua raman
+declarate dar nedovedite: **#7**, fiindca setarea nu e citibila, si **#8**, fiindca driftul edge
+nu are comparatie automata. **#2** e cazul cel mai subtil: mecanismul exista si ruleaza, dar
+pragul fata de care raporteaza e expirat, deci bariera masoara fata de o referinta moarta —
+acelasi tipar ca §2.1c, un contract presupus in loc de impus.
 
 ## 3. Fapte schimbate intre 2026-09-05 si 2026-09-11
 
