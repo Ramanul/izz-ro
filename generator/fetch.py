@@ -101,7 +101,11 @@ MAX_WORKERS = int(os.environ.get("FETCH_WORKERS", "8"))
 FETCH_BATCH_TIMEOUT_S = float(os.environ.get("FETCH_BATCH_TIMEOUT_S", "90"))
 # Deadline pentru intreaga ingestie, nu doar pentru o fereastra paralela. Zero dezactiveaza
 # limita globala (util pentru depanare), dar valoarea implicita protejeaza rularea reala.
-FETCH_GLOBAL_DEADLINE_S = float(os.environ.get("FETCH_GLOBAL_DEADLINE_S", "300"))
+# 900, nu 300: de la valul de surse primarii (09-05) sunt 634 de surse, iar pacing-ul
+# (2s/grup de 10) + fetch-ul la 8 workers nu mai incap in 300s — deadline-ul taia ultimele
+# ~142 surse din ordinarea configului, exact sursele mainstream (digi24, zf, protv,
+# libertatea, gsp, extern). Masurat din logul rularii 34345282668 si feed_cache.json.
+FETCH_GLOBAL_DEADLINE_S = float(os.environ.get("FETCH_GLOBAL_DEADLINE_S", "900"))
 FETCH_PROGRESS_EVERY = max(1, int(os.environ.get("FETCH_PROGRESS_EVERY", "10")))
 
 # Retry pe refuzuri tranzitorii. Feedcheck-ul din 2026-07-24 (run 30093310671) a prins

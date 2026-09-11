@@ -115,7 +115,7 @@ construcție, nu prin disciplină.
 ## 5. Predare explicită, dacă e cazul
 
 Dacă rămâne ceva concret pentru celălalt cont, scrie-i un fișier în `handoff/to-<celălalt>/`
-din workspace, cu formatul din `handoff/PROTOCOL.md` — un fișier per felie, cu ce e de făcut,
+din workspace: un fișier per felie, cu ce e de făcut,
 constrângerile și criteriul de verificare. Fără asta, celălalt cont află ce s-a făcut, dar nu
 ce are de făcut.
 
