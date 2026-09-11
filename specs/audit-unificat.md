@@ -327,6 +327,21 @@ integritate a regulilor, #42 garda de PR nelistat, #43 jurnal de takedown.
   redirect/SSRF (§2.1b); pe axa de poisoning editorial ramane `guard._CORPUS_OSTIL`.
 - **Comparatia de determinism 2x** (#30) — ~50 de minute, in afara CI prin constructie.
 - **Driftul edge** (#11) — configuratia Cloudflare nu e in repo; ramane control de platforma.
+- **Punctul orb de CI pe starea persistenta** (IZZ-0357) — scris la §2.1c, listat abia acum aici,
+  ceea ce e chiar defectul pe care raportul il reclama. Commiturile de continut sunt impinse de
+  `izz-bot` cu tokenul implicit, iar GitHub NU declanseaza niciun workflow pentru ele. Deci o
+  regresie intrata prin fisierele de stare nu e vazuta de nimeni pana cand un PR o scoate la
+  suprafata — asa a stat sase ore pe `main`. Se inchide fie cu un token dedicat pentru push-ul
+  de continut, fie cu un workflow `schedule` care verifica starea comisa; ambele sunt decizii de
+  proprietar, fiindca prima cere un secret nou si a doua atinge automatizarile.
+- **Ritmul de publicare la ~4h in loc de ~2h** (IZZ-0364) — masurat la §9, dar pana acum enuntat
+  doar ca observatie, nu pus ca DECIZIE. Nu e un bug de reparat in cod: cronul nu e limita, deci
+  nu exista patch. Optiunile reale sunt de produs — se accepta ritmul masurat si se corecteaza
+  asteptarea (deja facut in sect. 17), sau se schimba mecanismul de declansare (planificator
+  extern prin `repository_dispatch`), ceea ce adauga o dependenta externa pentru ceva ce azi e
+  gratuit si autonom. Recomandarea mea e prima, si o spun ca recomandare, nu ca fapt: marja
+  dintre ~4h si ~2h nu justifica o dependenta noua pe calea critica de publicare. Proprietarul
+  decide; nu am schimbat nimic.
 
 ## 6. De ce registrul a devenit TSV + unealta, si nu un Excel mai bun
 
