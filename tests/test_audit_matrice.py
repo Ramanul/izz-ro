@@ -229,3 +229,33 @@ def test_subcomanda_eroziune_ruleaza_si_isi_declara_limitele():
     assert rez.returncode == 0, rez.stdout + rez.stderr
     assert "NEMASURAT" in rez.stdout
     assert "GRANULARITATEA REGISTRULUI (nu eroziune)" in rez.stdout
+
+
+# --- defectul gasit de recenzia Codex pe PR #333 ---------------------------------------
+
+
+def test_raportul_si_eroziunea_refuza_un_registru_in_drift(tmp_path, monkeypatch, capsys):
+    """P2 Codex: subcomenzile de raport sareau peste `verifica()`.
+
+    Un raport scos dintr-un registru in drift arata exact ca o masuratoare si nu e una —
+    chiar teza uneltei. Verificat pe ambele subcomenzi, nu doar pe cea nou adaugata.
+    """
+    stricat = tmp_path / "rupt.tsv"
+    rand = dict.fromkeys(am.COLOANE, "-")
+    rand.update({"id": "1", "categorie": "guard", "pozitie": "fetch", "poate_bloca": "da",
+                 "autoritate": "efectiva", "conditie_autoritate": "", "mod": "preventiv",
+                 "esec": "inchis", "bypass": "nu", "eroziune": "0", "risc": "0",
+                 "stare": "activ", "mecanism": "inventat", "nota": "n",
+                 "dovada": "cale/care/nu/exista.py"})
+    stricat.write_text(
+        "\t".join(am.COLOANE) + "\n" + "\t".join(rand[c] for c in am.COLOANE) + "\n",
+        encoding="utf-8")
+    monkeypatch.setattr(am, "TSV", str(stricat))
+
+    for comanda in ("eroziune", "raport"):
+        monkeypatch.setattr(sys, "argv", ["audit_matrice.py", comanda])
+        assert am.main() == 1, f"`{comanda}` a raportat peste un registru in drift"
+        iesire = capsys.readouterr().out
+        assert "dovada inexistenta pe disc" in iesire
+        assert f"Comanda `{comanda}` NU a rulat" in iesire
+        assert "EROZIUNE" not in iesire and "agregate calculate" not in iesire

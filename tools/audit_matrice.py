@@ -65,7 +65,12 @@ VOCAB = {
 SCORURI = ("eroziune", "risc")
 
 
-def citeste(cale: str = TSV) -> list[dict]:
+def citeste(cale: str | None = None) -> list[dict]:
+    # Legare TARZIE, nu `cale: str = TSV`: o valoare implicita se leaga la DEFINIREA
+    # functiei, deci constanta de modul nu mai poate fi suprascrisa — iar un test care
+    # crede ca a redirectionat registrul ar verifica de fapt fisierul comis si ar trece
+    # degeaba. Gasit scriind chiar testul pentru constatarea Codex.
+    cale = cale or TSV
     with open(cale, encoding="utf-8", newline="") as fh:
         randuri = list(csv.DictReader(fh, delimiter="\t"))
     if not randuri:
@@ -318,19 +323,26 @@ def main() -> int:
     args = p.parse_args()
 
     randuri = citeste()
+
+    # Verificarea ruleaza INTAI, pentru orice subcomanda. Un raport scos dintr-un registru
+    # in drift — dovezi care nu mai exista pe disc, vocabular invalid, contradictii de
+    # autoritate — arata exact ca o masuratoare si nu este una. Chiar teza acestei unelte.
+    probleme = verifica(randuri)
+    if probleme:
+        print(f"FAIL: {len(probleme)} probleme in specs/audit-unificat.tsv:")
+        for pb in probleme:
+            print(f"  - {pb}")
+        if args.comanda != "verifica":
+            print(f"\n  Comanda `{args.comanda}` NU a rulat: un raport peste un registru "
+                  "in drift ar fi o masuratoare falsa.")
+        return 1
+
     if args.comanda == "eroziune":
         raport_eroziune(randuri)
         return 0
     if args.comanda == "raport":
         raport(randuri)
         return 0
-
-    probleme = verifica(randuri)
-    if probleme:
-        print(f"FAIL: {len(probleme)} probleme in specs/audit-unificat.tsv:")
-        for pb in probleme:
-            print(f"  - {pb}")
-        return 1
     ag = agregate(randuri)
     print(
         f"OK: {ag['mecanisme_in_registru']} mecanisme inventariate, "

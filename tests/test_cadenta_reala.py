@@ -123,3 +123,48 @@ def test_json_e_parsabil_pentru_alt_consumator(tmp_path):
         capture_output=True, text=True, cwd=ROOT,
     )
     assert json.loads(rez.stdout)["rulari"] == 2
+
+
+# --- cele doua defecte gasite de recenzia Codex pe PR #333 -----------------------------
+#
+# Amandoua au trecut de testele de mai sus, ceea ce spune ceva despre ele: verificau ca
+# functiile raspund, nu ca cifrele raportate sunt comparabile intre ele si nici ca portita
+# documentata pentru cronuri neacoperite chiar se poate folosi.
+
+
+def test_cifrele_comparate_au_aceeasi_baza():
+    """P2 Codex: rata se calcula pe intervale, dar tabelul punea intervale langa porniri."""
+    st = cr.masoara(cr._porniri(_runs([60 * i for i in range(25)])), 60, 105)
+    assert st["rata_declansare"] == 1.0
+    assert st["intervale_asteptate"] == st["intervale_observate"] == 24
+    assert st["rulari"] == 25, "pornirile raman raportate, dar separat si etichetat ca atare"
+
+
+def test_raportul_nu_pune_doua_baze_una_langa_alta(capsys):
+    cr.raport(cr.masoara(cr._porniri(_runs([60 * i for i in range(25)])), 60, 105))
+    iesire = capsys.readouterr().out
+    assert "intervale asteptate      24" in iesire
+    assert "intervale observate      24" in iesire
+    assert "porniri in fereastra    25" in iesire
+
+
+def test_interval_impus_ocoleste_parsarea_cronului(tmp_path):
+    """P2 Codex: `--interval-min` era aplicat DUPA `_citeste_workflow`, care iesea deja."""
+    w = tmp_path / "build.yml"
+    w.write_text('    - cron: "13 3,9,15 * * *"\n    PRAG_MIN: "105"\n', encoding="utf-8")
+    with pytest.raises(SystemExit):
+        cr._citeste_workflow(str(w))                      # fara portita: tot esueaza tare
+    assert cr._citeste_workflow(str(w), interval_impus=480) == (480, 105)
+
+
+def test_cli_cu_interval_impus_merge_pe_cron_neacoperit(tmp_path, monkeypatch, capsys):
+    """Acelasi defect, pe calea reala: CLI-ul trebuie sa functioneze, nu doar functia."""
+    w = tmp_path / "build.yml"
+    w.write_text('    - cron: "13 3,9,15 * * *"\n    PRAG_MIN: "105"\n', encoding="utf-8")
+    f = tmp_path / "runs.json"
+    f.write_text(json.dumps(_runs([0, 480, 960])), encoding="utf-8")
+    monkeypatch.setattr(cr, "WORKFLOW", str(w))
+    monkeypatch.setattr(sys, "argv", ["cadenta_reala.py", str(f), "--interval-min", "480",
+                                      "--json"])
+    assert cr.main() == 0
+    assert json.loads(capsys.readouterr().out)["interval_declarat_min"] == 480

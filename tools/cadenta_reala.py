@@ -37,14 +37,23 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 WORKFLOW = os.path.join(ROOT, ".github", "workflows", "build.yml")
 
 
-def _citeste_workflow(cale: str = WORKFLOW) -> tuple[int, int]:
+def _citeste_workflow(cale: str = WORKFLOW, interval_impus: int | None = None) -> tuple[int, int]:
     """(interval declarat in minute, pragul portii in minute), citite din workflow.
 
     Citite, nu primite ca argument: o baza de comparatie data de mana se poate potrivi cu
     concluzia dorita. Formele de cron acceptate sunt cele folosite efectiv; orice alta forma
     e o eroare explicita, nu o ghicire.
+
+    `interval_impus` OCOLESTE parsarea cronului, nu o corecteaza dupa. Altfel portita
+    documentata pentru forme neacoperite („foloseste --interval-min") era inutilizabila exact
+    in cazul pentru care exista: `_citeste_workflow` iesea cu SystemExit inainte ca
+    suprascrierea sa apuce sa se aplice.
     """
     text = open(cale, encoding="utf-8").read()
+    p = re.search(r'PRAG_MIN:\s*"(\d+)"', text)
+    prag = int(p.group(1)) if p else 0
+    if interval_impus:
+        return interval_impus, prag
     m = re.search(r'cron:\s*"([^"]+)"', text)
     if not m:
         raise SystemExit(f"FAIL: niciun `cron:` in {cale}")
@@ -62,9 +71,7 @@ def _citeste_workflow(cale: str = WORKFLOW) -> tuple[int, int]:
         )
     if not minut.isdigit():
         raise SystemExit(f"FAIL: minut {minut!r} neasteptat; foloseste --interval-min explicit.")
-
-    p = re.search(r'PRAG_MIN:\s*"(\d+)"', text)
-    return interval, int(p.group(1)) if p else 0
+    return interval, prag
 
 
 def _porniri(date: dict | list) -> list[datetime]:
@@ -88,7 +95,12 @@ def masoara(porniri: list[datetime], interval_min: int, prag_min: int) -> dict:
         "pana_la": porniri[-1].isoformat(),
         "fereastra_ore": round(fereastra / 60, 1),
         "interval_declarat_min": interval_min,
-        "rulari_asteptate": int(fereastra // interval_min),
+        # Rata se calculeaza pe INTERVALE, deci si cifrele comparate sunt intervale. Prima
+        # versiune punea fata in fata `int(fereastra // interval)` (intervale) cu `len(porniri)`
+        # (porniri): la 25 de porniri perfect orare pe 24h raporta „24 asteptate / 25 observate"
+        # langa o rata de 100%, adica doua baze diferite in acelasi tabel.
+        "intervale_asteptate": round(fereastra / interval_min),
+        "intervale_observate": len(goluri),
         "rata_declansare": round(len(goluri) / (fereastra / interval_min), 3),
         "gol_min": round(min(goluri)),
         "gol_median": round(statistics.median(goluri)),
@@ -103,9 +115,10 @@ def raport(st: dict) -> None:
     print(f"CADENTA REALA — {st['rulari']} rulari programate, "
           f"{st['fereastra_ore']}h ({st['de_la'][:16]} … {st['pana_la'][:16]})\n")
     print(f"  cron declarat            la fiecare {st['interval_declarat_min']} min")
-    print(f"  rulari asteptate         {st['rulari_asteptate']}")
-    print(f"  rulari observate         {st['rulari']}")
-    print(f"  rata de declansare       {st['rata_declansare']:.0%}\n")
+    print(f"  intervale asteptate      {st['intervale_asteptate']}")
+    print(f"  intervale observate      {st['intervale_observate']}")
+    print(f"  rata de declansare       {st['rata_declansare']:.0%}")
+    print(f"  (porniri in fereastra    {st['rulari']})\n")
     print(f"  gol intre rulari         min {st['gol_min']} · median {st['gol_median']}"
           f" · max {st['gol_max']} min")
     print(f"  pragul portii            {st['prag_poarta_min']} min")
@@ -129,9 +142,7 @@ def main() -> int:
     p.add_argument("--json", action="store_true", help="date brute, pentru alt consumator")
     args = p.parse_args()
 
-    interval, prag = _citeste_workflow()
-    if args.interval_min:
-        interval = args.interval_min
+    interval, prag = _citeste_workflow(interval_impus=args.interval_min)
 
     brut = open(args.fisier, encoding="utf-8").read() if args.fisier else sys.stdin.read()
     if not brut.strip():
