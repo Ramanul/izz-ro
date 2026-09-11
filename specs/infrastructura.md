@@ -39,3 +39,7 @@
   runnerele le văd. Poarta autoritară pentru feed-uri e `feedcheck.yml`. [IZZ-0257]
 - **Repo-ul e PUBLIC** ⇒ minute Actions gratuite și nelimitate. Timpul de job nu e o resursă de
   economisit; build-urile Cloudflare și cuota AI sunt. [IZZ-0139]
+- **Cronul orar al pipeline-ului NU se respectă** — măsurat 2026-09-11 pe 40 de rulări: declanșare
+  25%, ~6 porniri/zi, gol median ~4h. Constrângerea e planificatorul GitHub, nu poarta de 105 min
+  (0 din 39 de intervale sub prag). Cifra se mișcă (4,68 → 6,05 în 8 zile): re-măsoară cu
+  `tools/cadenta_reala.py`, nu o cita din memorie. [IZZ-0292, IZZ-0364]

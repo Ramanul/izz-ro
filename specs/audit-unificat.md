@@ -387,3 +387,63 @@ Reparat pe clasa, nu pe caz (IZZ-0354): fixture-ul redirectioneaza si jurnalul, 
 fisierelor de stare comisa (`triage_log`, `takedown_log`, `articles.json`, `feed_cache.json`)
 si numeste testul vinovat. Verificata in ambele directii: cu bugul repus, garda da ERROR pe
 exact testul care polua; cu fixul, suita trece si arborele de lucru ramane curat.
+
+## 9. A treia constatare: o decizie masurata acum 8 zile nu a ajuns niciodata in contract
+
+Prima varianta a acestei sectiuni prezenta cifrele de mai jos ca descoperire. Nu sunt.
+Cautarea in registru — `python tools/registru.py find cadenta`, pe care sect. 20 o cere INAINTE
+de a propune ceva, si pe care am facut-o dupa — scoate `IZZ-0292` (2026-09-03, stare
+`implementat`): „Constrangerea pe debit e PLANIFICATORUL GitHub: 4,7 porniri/zi, nu 12", masurat
+pe 30 de rulari consecutive. O sesiune stabilise deja asta, pe o metoda comparabila.
+
+Constatarea reala e alta, si e mai putin flatanta: **`CLAUDE.md` sect. 17 a continuat opt zile
+sa spuna** „`build.yml` incearca orar (`13 * * * *`), dar poarta de 105 minute apara publicarea
+la ~2h" — o deductie din cod, contrazisa de o masuratoare consemnata ca `implementat`. Defectul
+nu e de masurare, ci de PROPAGARE: registrul stia, documentul normativ pe care il citeste fiecare
+sesiune la fiecare tura nu. Un audit al mecanismelor de protectie care rateaza exact asta ar fi
+inventariat inca o data harta in locul teritoriului.
+
+Re-masurat pe 40 de rulari programate consecutive (2026-09-05 05:45 → 2026-09-11 16:28 UTC,
+154,7h; `run_number` 1075–1106 contiguu, deci nicio rulare anulata sau nelistata in fereastra):
+
+| Marime | Valoare |
+|---|---|
+| Rulari asteptate la cron orar | 154 |
+| Rulari observate | 40 |
+| Rata de declansare | **25%** |
+| Porniri pe zi | **6,05** (IZZ-0292 masurase 4,68) |
+| Gol intre rulari: min / median / max | **128 / 248 / 369 min** |
+| Intervale sub pragul portii (105 min) | **0 din 39** |
+| Porniri chiar la minutul 13 | **0** (31 de minute distincte) |
+
+Ce ADAUGA fata de IZZ-0292, punct cu punct, ca sa nu para mai mult decat e:
+
+1. **Poarta nu leaga niciodata.** IZZ-0292 spunea ca poarta „ar lasa ~12/zi". Masurat acum: zero
+   din 39 de intervale coboara sub 105 minute, deci poarta nu are ce opri. Asta e ce face
+   afirmatia din sect. 17 falsificata, nu doar suspecta.
+2. **Si totusi poarta e vie**, ceea ce parea o contradictie: 2 rulari din 40 au fost oprite de ea
+   (rulari de ~9 secunde, cu `cadenta` reusit si `pipeline`/`mirror`/`release-probe` sarite —
+   verificat pe rularea 34054056580, nu dedus din durata). Se rezolva fiindca pragul se masoara
+   fata de ultimul COMMIT de continut, nu fata de pornirea precedenta: o rulare lunga comite
+   tarziu, iar urmatoarea porneste la 128 de minute dupa pornire, dar la mai putin de 105 dupa
+   commit.
+3. **Cifra nu e stabila:** 4,68 → 6,05 porniri/zi in opt zile, adica +29%. Exact motivul pentru
+   care nu trebuie inghetata in document ca adevar (sect. 19: o valoare istorica nu se prezinta
+   ca masuratoare curenta).
+4. **E reproductibila:** `tools/cadenta_reala.py`, cu 12 teste. Baza de comparatie se CITESTE din
+   `build.yml` (cronul si `PRAG_MIN`), nu se da ca argument — un prag dat de mana se poate potrivi
+   cu concluzia dorita. Calculul citeste de la stdin ca sa se poata verifica offline: o unealta
+   care are nevoie de retea ca sa fie testata e ea insasi o afirmatie netestabila.
+
+Consecinta pentru produs, spusa fara infrumusetare: ritmul real de publicare e ~4h mediana, nu
+~2h. Promisiunea de prospetime a agregatorului e la jumatate fata de ce credea contractul.
+
+Ce s-a facut, si ce NU s-a facut. Regula „nu modifica cronul ca sa repari cadenta" ramane — dar
+motivul ei se schimba complet: nu fiindca poarta ar apara ritmul, ci fiindca nu cronul e limita,
+deci schimbarea lui nu poate ajuta. Sect. 17 poarta acum cifrele, data si unealta. Nu am schimbat
+cronul, nu am scazut pragul si nu am introdus un planificator extern: toate trei sunt decizii de
+produs si ating directorul de workflow-uri, zona protejata (sect. 10).
+
+Ce NU stabileste masuratoarea: de ce lipseste o rulare anume. Intarziere de planificator, rulare
+nelivrata sau o fereastra de inactivitate arata identic in lista de rulari. Concluzia e despre
+CANTITATE (75% din rulari nu apar), nu despre mecanismul din spate.
