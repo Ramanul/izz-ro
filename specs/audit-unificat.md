@@ -191,6 +191,62 @@ Remediu: `autoritate` are acum trei valori — `efectiva` / `conditionata` / `ni
 `conditionata` cere numirea conditiei. Verificatorul respinge `autoritate=efectiva` cu
 `esec=deschis`, si `poate_bloca=nu` cu autoritate nenula.
 
+## 2b. Verificare LIVE (rolul utilizator, §16) — 2026-09-11, 15:33–15:50 UTC
+
+Pana aici auditul fusese aplicat pe o singura axa: „exista si cine opreste", citita din repo.
+Sectiunea asta e a doua axa, cea pe care o vede cititorul. Masurat pe originea Worker, fiindca
+`izz.ro` si `www.izz.ro` sunt **blocate de proxy** din aceasta sesiune — `bash tools/verify_allowlist.sh`:
+CONNECT refuzat, dar numele se rezolva in DNS, deci refuz de politica, nu nume gresit (§16.3).
+
+| Ce | Rezultat |
+|---|---|
+| Disponibilitate | `/`, `/robots.txt`, `/sitemap.xml`, `/feed.xml`, `/build.json` → 200; inexistent → 404 |
+| Pagini legale | toate 9 (`terms`, `privacy`, `accessibility`, `contact`, `corrections`, `images`, `method`, `security`, `takedown`) → 200 |
+| Integritate release | live serveste `74a0fcac` = HEAD-ul lui `main`; generat 12:02 UTC; 9.077 articole, 13.733 fisiere |
+| Atribuire (§7) | `sources-inline` prezent; 69 de linkuri externe, **0** cu `target="_blank"` fara `noopener` |
+| Integritate HTML | singurul `<script>` inline e `application/ld+json` — date, nu cod, permis explicit de `test_no_inline_js` |
+| Livrabilitate | `styles.css?v=6ff439d0` → 200; 1/1 asset versionat |
+| Ordine pe homepage | 11 inversiuni cronologice, **toate la granite de sectiune**, 0 in interiorul unei sectiuni — pagina e compusa din blocuri per categorie, deci nu e defect |
+
+### Impactul datelor naive, masurat pe live (nu dedus)
+
+Inainte de sectiunea asta, afirmatia „159 de articole apareau mai vechi decat erau" era derivata
+din cod. Acum e masurata, si e mai grava decat parea — atinge suprafetele pentru masini:
+
+- **78 din 159** sunt publicate (prezente in `sitemap.xml`).
+- `<time datetime="2026-09-11">` — **naiv in HTML-ul servit**; `_card.html` si `article.html`
+  emit `a.published` brut, fara normalizare la randare.
+- JSON-LD `NewsArticle`: `datePublished: '2026-09-11'`, `dateModified: '2026-09-11'`.
+- **`sitemap-news.xml`: 13 din 699** `<news:publication_date>` fara fus orar — suprafata Google News.
+- **Deplasare masurabila:** `/local/` pagina 1 arata 20 de articole, toate din 2026-09-11 intre
+  10:22 si 11:30. Un articol naiv cu `published='2026-09-11'` se sorteaza ca sir INAINTE de
+  `'2026-09-11T00:00:00+00:00'`, deci sub toate — impins in afara primei pagini a propriei
+  sectiuni, desi e din aceeasi zi.
+
+### Patru alarme false, ale mele, prinse verificand
+
+Consemnate fiindca metoda conteaza: fiecare ar fi devenit un „defect raportat" daca opream la
+prima citire.
+
+1. `/legal/termeni` → 404. Ghicisem calea in romana; numele reale sunt englezesti si toate 9 dau 200.
+2. „11 inversiuni de ordine" → toate la granite de sectiune. Aplicasem un criteriu de sortare
+   globala unei pagini compuse din blocuri.
+3. „`<script>` inline incalca contractul" → e `ld+json`, exceptat explicit in `test_no_inline_js`.
+4. „`_news_articles` va crapa pe date naive" → are deja `if ts.tzinfo is None`.
+
+### Ce NU s-a putut verifica, si de ce
+
+**Garda de redirectare, pe surse reale.** Rulata pe 14 surse din config: **0 blocate de garda**,
+dar 13 au dat `URLError` — proxy-ul sesiunii nu lasa hosturile externe, deci cererile nu au ajuns
+la sursa. Testul e NECONCLUDENT, nu pozitiv. Singura dovada reala ramane cea locala (server
+propriu, `Location` relativ rezolvat absolut inainte de garda). Prima proba in conditii reale e
+urmatoarea rulare de pipeline; o pierdere in masa ar aparea in `detectie-tacere.yml` si in
+`data/triage_log.jsonl`.
+
+**Lanțul de protecție (11 proprietati) si cele 8 dimensiuni de eroziune** raman neaplicate.
+Sunt singurele foi ale auditului care privesc sistemul ca FLUX, nu ca inventar — vezi §2.3 pentru
+de ce lipsa lor face scorul de eroziune nefalsificabil.
+
 ## 3. Fapte schimbate intre 2026-09-05 si 2026-09-11
 
 Auditul a fost corect la data lui pe punctele de mai jos; nu mai este.
