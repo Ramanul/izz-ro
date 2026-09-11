@@ -18,7 +18,7 @@
 - **Downgrade blockers — CLEARED.** 0 Durable Object namespaces (the one thing refusing Paid -> Free);
   KV/R2/D1 exist, unbound, within free tiers. Open: Workers Builds minutes on Free — unreadable from
   session; if they run out, publishing moves to `deploy-worker.yml` AND git integration must go.
-- **INGEST COLLAPSE — fix merged (#328).** Root cause: `FETCH_GLOBAL_DEADLINE_S=300` cut the last
+- **INGEST COLLAPSE — fix in #328, merged.** Root cause: `FETCH_GLOBAL_DEADLINE_S=300` cut the last
   ~142 of 634 sources. Verify the recovery on live volume; levers stay owner's call. [IZZ-0317]
 - **Cloudflare routes — on `izz-failover`, confirmed live 09-09** (overturns IZZ-0308): ~2.9k hits/day
   vs 100k Free, failover kept, assets routing owner's call. The ~48% error rate was a dashboard cron
