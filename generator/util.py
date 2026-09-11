@@ -2,7 +2,38 @@
 import re
 import html as _html
 import unicodedata
+from datetime import datetime, timezone
 from urllib.parse import urlsplit, urlunsplit, parse_qsl, urlencode
+
+
+def iso_utc(valoare: str) -> str | None:
+    """`published` in ISO 8601 UTC, sau `None` daca sirul nu contine o data utilizabila.
+
+    DE CE UN SINGUR NORMALIZATOR. Contractul „`published` e uniform `+00:00`" nu e o preferinta
+    de stil: `state.save` sorteaza pe SIR, nu pe `datetime`, si spune asta in propriul comentariu.
+    Sortarea de siruri e corecta doar cat timp toate valorile au acelasi sufix. Pana la
+    2026-09-11 contractul era tinut din trei locuri independente (`_parse_w3c_date`,
+    `_parse_ro_date`, `_parse_date`), iar al patrulea — calea WP-JSON — il rupea cu un `[:10]`
+    care taia si ora, si fusul.
+
+    Consecinta nu era doar un test rosu. Lexicografic, `'2026-09-11' < '2026-09-11T08:00:00+00:00'`,
+    iar sortarea e `reverse=True`, deci o data naiva ateriza DUPA orice ora constienta din aceeasi
+    zi: 159 de anunturi de primarie aparute ca mai vechi decat erau.
+
+    O data fara ora se citeste ca miezul noptii UTC — aceeasi valoare pe care sortarea de siruri
+    i-o atribuia deja implicit, deci normalizarea nu schimba ordinea afisata, doar o face corecta
+    fata de orele constiente. Ora reala pierduta prin trunchiere NU se poate recupera de aici.
+    """
+    brut = (valoare or "").strip()
+    if not brut:
+        return None
+    try:
+        dt = datetime.fromisoformat(brut.replace("Z", "+00:00"))
+    except (ValueError, TypeError):
+        return None
+    if dt.tzinfo is None:
+        dt = dt.replace(tzinfo=timezone.utc)
+    return dt.astimezone(timezone.utc).isoformat()
 
 _TAG_RE = re.compile(r"<[^>]+>")
 _WS_RE = re.compile(r"\s+")

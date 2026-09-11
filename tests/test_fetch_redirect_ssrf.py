@@ -23,6 +23,7 @@ stdlib-ul, fara opener, chiar urmeaza saltul.
 from __future__ import annotations
 
 import http.server
+import re
 import threading
 import urllib.error
 import urllib.request
@@ -167,7 +168,7 @@ def test_nicio_iesire_in_retea_nu_ocoleste_cusatura():
     linii = [
         f"  fetch.py:{nr}: {linie.strip()}"
         for nr, linie in enumerate(sursa.splitlines(), 1)
-        if "urllib.request.urlopen(" in linie and not linie.lstrip().startswith("#")
-        and "`urllib.request.urlopen(`" not in linie
+        if "urllib.request.urlopen(" in re.sub(r"`[^`]*`", "", linie)
+        and not linie.lstrip().startswith("#")
     ]
     assert not linii, "apel direct in retea, in afara lui _deschide:\n" + "\n".join(linii)

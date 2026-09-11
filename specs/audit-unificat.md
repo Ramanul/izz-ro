@@ -12,19 +12,23 @@ Toate cifrele de mai jos sunt recalculate din datele registrului, nu citite din 
 
 | Agregat | Excel 2026-09-05 | Registru 2026-09-11 | De ce difera |
 |---|---|---|---|
-| mecanisme inventariate | 36 | 44 | 7 lipseau din inventar (§3) + garda de redirectare (§2.1b) |
-| mecanisme vii | 36 (implicit) | 43 | unul era fantoma (§2.1) |
-| cu autoritate de blocare | 19 „reala" | 18 `efectiva` + 6 `conditionata` | autoritatea conditionata de branch protection e separata, nu declarata reala |
+| mecanisme inventariate | 36 | 45 | 7 lipseau din inventar (§3) + garda de redirectare (§2.1b) + invariantul UTC (§2.1c) |
+| mecanisme vii | 36 (implicit) | 44 | unul era fantoma (§2.1) |
+| cu autoritate de blocare | 19 „reala" | 19 `efectiva` + 6 `conditionata` | autoritatea conditionata de branch protection e separata, nu declarata reala |
 | fara autoritate | 17 | 19 | reclasificare + mecanismele adaugate |
 | bypass documentat | 8 | 7 | #22 feedcheck a primit cron, deci nu mai e ocolibil prin omisiune |
 | eroziune > 2 | 1 | **0** | acel 1 era chiar fantoma |
 | risc >= 3 | 5 | 2 | #17, #34 remediate intre timp; #32 inexistent |
 
 Baza de verificare, rulata local pe 2026-09-11 cu istoric complet: `python -m pytest tests/ -q`
--> **1586 trecute**, 1 sarit, 8 xfailed; `python -m ruff check .` -> curat; `git status` gol si
+-> **1618 trecute**, 1 sarit, 8 xfailed; `python -m ruff check .` -> curat; `git status` gol si
 dupa suita. (La deschiderea lucrarii erau 1542; diferenta sunt testele adaugate aici.)
 
-## 2. Trei defecte structurale ale registrului Excel
+## 2. Ce a iesit la verificare
+
+Trei defecte sunt ale registrului Excel (§2.1, §2.2, §2.3). Doua au iesit APLICANDU-L, si sunt
+in cod, nu in foaie (§2.1b, §2.1c) — acelasi tipar de fiecare data: documentatia descrie un
+mecanism care nu se comporta cum spune, si nimic nu semnaleaza momentul in care a incetat.
 
 ### 2.1 Un mecanism inventariat care nu exista — FANTOMA (#32)
 
@@ -105,6 +109,52 @@ deci garda vede mereu un URL absolut. Premisa e tinuta sub test.
 **Ce NU rezolva, spus pe fata:** ramane verificare lexicala. Un domeniu public al carui DNS
 rezolva DIRECT catre o adresa interna, fara redirect, trece in continuare — pentru asta ar
 trebui validare la nivel de socket. S-a inchis golul „redirect catre intern", nu clasa SSRF.
+
+### 2.1c A TREIA oara: un contract presupus, nu impus (`published` uniform UTC)
+
+Ridicat de CI pe acest PR, dar cauza e pe `main`. Acelasi tipar ca §2.1 si §2.1b — documentatia
+descrie un mecanism care nu se comporta cum spune — de data asta pe un INVARIANT.
+
+`state.save` isi scrie singur premisa: *„Sortare pe SIR, nu pe datetime: corecta doar cat timp
+`published` e uniform `+00:00`"*. Premisa era tinuta din patru locuri de parsare independente.
+Al patrulea, calea WP-JSON, o rupea: `(date_gmt or date or "")[:10]` taia si ora, si fusul.
+
+Masurat pe `main@74a0fcac`: **159 din 12.299 articole** cu `published` naiv, toate din surse
+`pl_*` (primarii pe WordPress). Consecinta tacuta e mai grava decat testul rosu — lexicografic
+`'2026-09-11' < '2026-09-11T08:00:00+00:00'`, iar sortarea e `reverse=True`, deci anunturile
+naive apareau **mai vechi decat erau**, in aceeasi zi. Ordine editoriala gresita, nu doar CI.
+
+Reparat pe trei straturi, fiecare cu rolul lui:
+
+| Strat | Unde | De ce acolo |
+|---|---|---|
+| normalizator unic | `util.iso_utc` | un singur loc care defineste ce inseamna „UTC", nu al cincilea parser |
+| preventie | `fetch._wp_published` | valoarea iese corecta de la sursa, fara sa se piarda ora |
+| impunere | `state._impune_published_utc`, chemat din `load` SI din `save` | functia a carei corectitudine depinde de invariant e locul unde el se impune |
+
+De ce si din `load`, nu doar din `save`: `save` normalizeaza o COPIE, deci fisierul iese corect
+dar consumatorii din aceeasi rulare raman cu valorile naive. `main.py --render-only` face
+`load()` → `render.build()` si nu trece niciodata prin `save` — exact calea pe care ruleaza
+jobul `mirror` si build-ul Cloudflare.
+
+De ce NU o migrare unica peste `data/articles.json`: e cale de control-plane protejata tocmai ca
+agentii sa nu umble in ea, iar o ramura care o editeaza intra in conflict la fiecare rulare de
+pipeline (la ~2h). Asezata in `load`/`save`, reparatia se aplica singura la urmatoarea rulare,
+care si comite rezultatul. Nu ridica exceptie: o data prost formatata e corectabila determinist,
+iar oprirea publicarii pentru atat ar transforma un defect de formatare in tacere pe site.
+
+Proba end-to-end pe datele reale de pe `main` (nu pe fixture): 159 naive inainte de `load`,
+**0** dupa `load`, **0** pe disc dupa `save`, 12.299 articole pastrate, zero pierderi.
+
+**Consecinta operationala, ramasa deschisa** [IZZ-0357]: regresia a stat sase ore pe `main`
+nedetectata. Masurat prin API — ultima rulare `event=push` pe `main` e pe `b4484d28`, un merge
+al proprietarului; commiturile de continut `0f1137bb` si `74a0fcac`, impinse de `izz-bot`, nu au
+declansat nicio rulare, fiindca GitHub nu porneste workflow-uri pentru push-uri facute cu
+`GITHUB_TOKEN`-ul implicit. Deci orice regresie care intra prin `data/*.json` e invizibila pana
+cand o ridica un PR. Comentariul din `tests.yml` descrie o intentie pe care filtrul `paths` nici
+nu o implementeaza (`**.json` prinde `data/articles.json`), dar chestiunea e oricum ocolita de
+regula de token. Inchiderea cere un token separat pentru commitul de continut sau mutarea
+verificarii intr-un pas al pipeline-ului — decizie de proprietar, pe cale de control-plane.
 
 ### 2.2 Agregate nereproductibile
 

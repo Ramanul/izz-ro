@@ -34,7 +34,7 @@ from urllib.parse import urljoin, urlsplit
 import feedparser
 
 from . import config, guard
-from .util import normalize_url, domain_of, clean_html, cuvinte_adaugate
+from .util import normalize_url, domain_of, clean_html, cuvinte_adaugate, iso_utc
 
 USER_AGENT = "IZZ.ro Bot/1.0 (+https://izz.ro)"
 TIMEOUT = 10  # secunde per feed
@@ -434,6 +434,24 @@ def _sel(spec: str | None) -> tuple[str | None, str | None]:
     return (spec, None)
 
 
+def _wp_published(entry: dict) -> str:
+    """Data unui articol WordPress in ISO 8601 UTC. A patra cale de data, si singura care rupea
+    contractul „`published` e uniform `+00:00`" pe care se sprijina sortarea din `state.save`.
+
+    Inainte: `(entry.get("date_gmt") or entry.get("date") or "")[:10]`. `[:10]` taia si ora, si
+    fusul, deci iesea `2026-09-11` — naiv. Masurat pe `main@74a0fcac`: 159 de articole din 12.299,
+    toate din surse `pl_*` (primarii pe WordPress).
+
+    `date_gmt` e deja UTC, ii lipsea doar sufixul. `date` e ora LOCALA a site-ului, deci ramane
+    doar fallback si e tratata ca UTC — aproximare pe care o prefer unei date lipsa, dar care
+    e o aproximare, nu un fapt. Fara niciuna din ele, momentul ingestiei e singurul reper onest.
+    """
+    for camp in ("date_gmt", "date"):
+        if (iso := iso_utc(entry.get(camp) or "")):
+            return iso
+    return datetime.now(timezone.utc).isoformat()
+
+
 def _parse_ro_date(raw: str) -> str:
     """Data unui anunt de primarie in ISO 8601 UTC; fallback = acum.
     Accepta: '17.07.2026', '17/07/2026', '17-07-2026', '2026-07-17', '17 iulie 2026'."""
@@ -632,7 +650,7 @@ def _fetch_wp_json(key: str, source: dict) -> tuple[list, str | None]:
             "title": title,
             "description": excerpt,
             "category": source["category"],
-            "published": (entry.get("date_gmt") or entry.get("date") or "")[:10],
+            "published": _wp_published(entry),
             "model": None,
         })
     if (motiv := guard.carantina(respinse, respinse + len(items), key)):
