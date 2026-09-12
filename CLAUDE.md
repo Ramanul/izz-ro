@@ -92,6 +92,12 @@ Stilul vizual derivă din `static/styles.css`. În template-uri nu se hardcodeaz
 ## 10. Zone protejate
 Nu modifica fără instrucțiune explicită: logica de sinteză/atribuire Model C, legal/GDPR și deploy production (`wrangler.jsonc`, Cloudflare Worker code, GitHub secrets). Excepție: MCP Cloudflare poate administra D1/KV/R2/Hyperdrive direct; deploy-ul Worker rămâne repo → PR → CI.
 
+**Lista de mai sus e completă — nu o extinde prin analogie.** `.github/workflows/` NU e aici; e apărat de hook-ul de control-plane, care e alt mecanism, cu alt motiv.
+
+**Un mandat explicit de proprietar în sesiunea curentă ESTE „instrucțiunea explicită" cerută aici.** A invoca §10 ca să amâni muncă pe care proprietarul tocmai a autorizat-o e o încălcare a §10, nu o aplicare a lui.
+
+**Când amâni ceva, spune care din două e — REGULĂ TARE:** *blocat de politică* (cere o decizie pe care proprietarul nu a dat-o) sau *blocat de capacitate* (unealta lipsește / a eșuat). Al doilea se declară cu comanda care a eșuat (§7), nu din memorie. „Zonă protejată" fără una din cele două e amânare deghizată.
+
 ## 11. SEO
 SEO rezolvat; nu se reauditează fără descoperire nouă, specifică. Istoricul este în `specs/istoric-operational.md`.
 
@@ -130,7 +136,7 @@ Pentru orice schimbare vizibilă:
 `izz.ro` și `www.izz.ro` pot fi blocate de proxy; **originea Worker este calea de verificare când este accesibilă**. Verificarea curentă se face cu `bash tools/verify_allowlist.sh`, pe `https://izz-ro.andifreelancer2.workers.dev/` când hostul este disponibil. Originea poate rămâne în urmă față de domeniul public până la un deploy nou; un `200` la origine nu dovedește că domeniul public are aceeași versiune.
 
 ## 17. Cadență
-`build.yml` încearcă orar (`13 * * * *`), dar poarta de 105 minute apără publicarea la ~2h. Nu modifica cronul pentru a „repara” cadența.
+`build.yml` **declară** cron orar (`13 * * * *`); constrângerea reală e planificatorul GitHub, nu poarta (IZZ-0292, reconfirmat IZZ-0364). **Măsurat 2026-09-11 pe 40 de rulări consecutive: declanșare 25%, ~6 porniri/zi, gol median ~4h, ZERO din 39 de intervale sub pragul de 105 min** — deci poarta nu leagă aproape niciodată. Regula rămâne: nu modifica cronul ca să „repari” cadența; nu cronul e limita. Cifra se mișcă (4,68 → 6,05 porniri/zi în 8 zile): **re-măsoară, nu re-crede** — `tools/cadenta_reala.py`.
 Bugetul AI pe rulare e `MAX_AI_CALLS_PER_RUN` — **40** din 2026-09-04 (`9003e5f`, ridicat de proprietar de la 18); codul cade pe **12** când variabila lipsește (`main.py:392`), deci rularea locală nu măsoară debitul real.
 
 ## 18. Imagini de instituții locale — L1
