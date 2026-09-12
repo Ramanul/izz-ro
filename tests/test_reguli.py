@@ -827,3 +827,79 @@ def test_censul_ramane_un_cens_nu_un_esantion(fisier):
     prezente = capete_de_regula((ROOT / fisier).read_text(encoding="utf-8"))
     assert len(CENS[fisier]) >= 0.9 * len(prezente), (
         f"{fisier}: censul urmareste {len(CENS[fisier])} din {len(prezente)} reguli cu nume")
+
+
+# --- garda de sub-punct: §5 exista, dar §5.99 nu ----------------------------------------------
+#
+# DE CE EXISTA (proiectata in PR #321, 2026-09-06; livrata 2026-09-12). Garda de sectiuni de mai
+# sus vede ca §5 exista si se opreste acolo. Masurat: `.claude/agents/pipeline-runner.md` si
+# `.claude/agents/README.md` citau amandoua §5.4 drept regula „verifica ruland". §5.4 e „merge
+# doar cu mandat explicit"; regula citata e §0. Doua fisiere care descriu un agent trimiteau la
+# alta regula decat cea pe care agentul o aplica, si nimic n-a semnalat — o saptamana.
+#
+# CE NU ACOPERA, spus explicit si masurat pe cazul care a produs-o: garda prinde sub-punctul
+# INEXISTENT (§5.99), NU sub-punctul EXISTENT folosit pentru alta regula — adica exact bug-ul de
+# mai sus, fiindca §5 chiar are un punct 4. Ca sa-l prinda ar trebui sa stie despre CE vorbeste
+# fiecare punct, ceea ce e judecata, ca §7 sau §16. Jumatate de acoperire, declarata ca atare in
+# loc sa fie prezentata ca intreaga.
+
+SUBPUNCT_REF = re.compile(r"§\s?(\d+[a-z]?)\.(\d+)")
+SUBPUNCT_DEF = re.compile(r"^\s*(\d+)\.\s", re.MULTILINE)
+
+
+def subpuncte_din_document(text: str) -> dict[str, set[str]]:
+    """Numerele de sub-punct ale fiecarei sectiuni: `## 5.` -> {'0','1',...,'22'}."""
+    bucati = re.split(r"^##+\s*(\d+[a-z]?)\.", text, flags=re.MULTILINE)
+    return {bucati[i]: set(SUBPUNCT_DEF.findall(bucati[i + 1]))
+            for i in range(1, len(bucati) - 1, 2)}
+
+
+def incalcari_subpuncte(fisiere: dict[str, str], subpuncte: dict[str, dict[str, set[str]]],
+                        proprietari: dict[str, str], implicit: str) -> list[str]:
+    """`§N.M` citat in proza normativa trebuie sa aiba un punct M in sectiunea N.
+
+    O sectiune fara sub-puncte numerotate nu produce incalcari: `§13.2` intr-un document unde
+    §13 e proza n-are cum sa fie verificat, iar a-l declara gresit ar fi tot o minciuna mecanica.
+    """
+    gasite = []
+    for cale, text in sorted(fisiere.items()):
+        document = proprietari.get(cale, implicit)
+        harta = subpuncte.get(document, {})
+        for linie in linii_de_continut(text):
+            for sectiune, punct in SUBPUNCT_REF.findall(linie):
+                cunoscute = harta.get(sectiune)
+                if cunoscute and punct not in cunoscute:
+                    gasite.append(
+                        f"{cale} trimite la §{sectiune}.{punct}, inexistent in {document}")
+    return gasite
+
+
+def test_fiecare_trimitere_la_subpunct_are_tinta():
+    fisiere = fisiere_normative()
+    subpuncte = {document: subpuncte_din_document((ROOT / document).read_text(encoding="utf-8"))
+                 for document in {DOCUMENT_IMPLICIT, *PROPRIETAR_SECTIUNI.values()}}
+    incalcari = incalcari_subpuncte(fisiere, subpuncte, PROPRIETAR_SECTIUNI, DOCUMENT_IMPLICIT)
+    assert not incalcari, "\n  ".join(incalcari)
+
+
+def test_garda_subpunctelor_pica_pe_punct_inexistent():
+    harta = {"CLAUDE.md": {"5": {"1", "2", "3", "4"}}}
+    assert incalcari_subpuncte({"x.md": "prima linie\nvezi §5.99"}, harta, {}, "CLAUDE.md")
+
+
+def test_garda_subpunctelor_accepta_punctul_care_chiar_exista():
+    harta = {"CLAUDE.md": {"5": {"1", "2", "3", "4"}}}
+    assert not incalcari_subpuncte({"x.md": "prima linie\nvezi §5.4"}, harta, {}, "CLAUDE.md")
+
+
+def test_garda_subpunctelor_tace_pe_sectiune_fara_puncte_numerotate():
+    """Fara asta, orice `§13.2` ar deveni rosu doar fiindca §13 e scrisa ca proza."""
+    harta = {"CLAUDE.md": {"13": set()}}
+    assert not incalcari_subpuncte({"x.md": "prima linie\nvezi §13.2"}, harta, {}, "CLAUDE.md")
+
+
+def test_harta_subpunctelor_chiar_citeste_contractul_real():
+    """O harta goala ar face garda sa treaca pe orice — deci se verifica pe documentul real."""
+    harta = subpuncte_din_document((ROOT / "CLAUDE.md").read_text(encoding="utf-8"))
+    assert "4" in harta.get("5", set()), "§5.4 nu mai e un sub-punct al §5"
+    assert len(harta.get("5", set())) > 10, "harta §5 pare trunchiata, nu citeste tot"
