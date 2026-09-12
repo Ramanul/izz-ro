@@ -21,10 +21,10 @@
 - **`izz-failover` — KEEP [IZZ-0362]; marja e DECLARAT NECUNOSCUTĂ [IZZ-0367, IZZ-0369].** Ambele
   cifre publicate („2.9k/zi", „1.5k/zi") sunt retrase: prima fără fereastră, a doua fără `Analytics:Read`.
 - **INGEST COLLAPSE — fix in #328, merged.** Verify recovery on live volume; levers owner's call. [IZZ-0317]
-- **REDUNDANȚA: prospețimea mirror-ului nu e verificată [IZZ-0370].** `monitor.yml` (*/10) probează
-  toate trei originile dar **doar cu cod HTTP**; `release-probe` compară commitul din `/build.json`
-  dar **sare peste mirror**. Ținta failover-ului e singura origine a cărei prospețime n-o verifică
-  nimeni — exact eșecul pentru care a fost scris `verify_release.py`. Remediul atinge §10.
+- **REDUNDANȚA — REPARAT [IZZ-0370 → IZZ-0372].** `verify_release.py` verifică acum prospețimea
+  mirror-ului după `generated_at` (prag 360 min), neblocant, cu `::warning::`. Rămâne de curățat:
+  manifestul mirror-ului poartă `GITHUB_SHA`, nu content-sha — o linie `BUILD_COMMIT_SHA` în jobul
+  `mirror`, blocată de hook, NU de §10 (care nu acoperă workflow-uri) [IZZ-0373].
 - **Rezerve `ALT_ORIGIN` divergente — inert [IZZ-0371].** 3 workflow-uri au ca fallback gazda retrasă
   `izz-ro.pages.dev`, 4 au `workers.dev`. Nu se activează: repo var e setată (verificat în logul
   rulării 34664617862). Devine real doar dacă variabila dispare.
