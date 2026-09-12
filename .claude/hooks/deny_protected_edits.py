@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import json
 import os
+import re
 import sys
 
 # Subșiruri care identifică un fișier de control-plane într-o comandă oarecare.
@@ -25,13 +26,36 @@ SCRITORI = (
 )
 
 
+# Redirecturi care NU POT scrie un fișier cu nume: duplicarea unui descriptor
+# (`2>&1`, `>&2`, `2>&-`) și trimiterea la dispozitivul nul (`2>/dev/null`, `&>/dev/null`).
+# Se scot din comandă ÎNAINTE de căutarea indicatorilor, altfel `>`-ul lor face ca orice
+# citire să pară scriere. Măsurat pe 2026-09-11: din primele șase comenzi ale unei sesiuni
+# de audit, trei au fost refuzate, toate read-only, toate din cauza unui `2>&1` — `ls`,
+# `grep` și `sed -n` pe `.github/workflows/`. Un agent care nu poate CITI planul de control
+# nu devine mai puțin periculos, doar mai prost informat.
+#
+# De ce e sigur: fiecare tipar consumă propriul `>` și are ca țintă un descriptor sau
+# `/dev/null`, niciodată un fișier de control-plane. `echo x >&2 > moderation.yaml` rămâne
+# refuzat — al doilea `>` supraviețuiește ștergerii.
+REDIRECT_INOFENSIV = (
+    re.compile(r"\d*>&(?:\d+-?|-)"),
+    re.compile(r"(?:\d*|&)>>?\s*/dev/null(?=$|[\s;|&)])"),
+)
+
+
+def _fara_redirect_inofensiv(command: str) -> str:
+    for tipar in REDIRECT_INOFENSIV:
+        command = tipar.sub(" ", command)
+    return command
+
+
 def _bash_scrie_control_plane(command: str) -> str | None:
     """Tokenul protejat găsit într-o comandă cu indicator de scriere, sau None."""
     turnat = f" {command} "
     if not any(token in turnat for token in PROTECTED_TOKENS):
         return None
     gasit = next((token for token in PROTECTED_TOKENS if token in turnat), None)
-    if any(indicator in turnat for indicator in SCRITORI):
+    if any(indicator in _fara_redirect_inofensiv(turnat) for indicator in SCRITORI):
         return gasit
     return None
 

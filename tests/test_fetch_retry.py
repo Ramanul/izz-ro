@@ -55,7 +55,7 @@ def _patch_urlopen(monkeypatch, responses):
             raise result
         return _FakeResponse(result)
 
-    monkeypatch.setattr(fetch.urllib.request, "urlopen", fake_urlopen)
+    monkeypatch.setattr(fetch, "_deschide", fake_urlopen)
     return calls
 
 

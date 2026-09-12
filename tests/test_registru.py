@@ -74,3 +74,53 @@ def test_scrierea_merge_cand_id_urile_sunt_unice(tmp_path, monkeypatch):
 def test_next_id_nu_intoarce_un_id_deja_luat():
     randuri = registru._read()
     assert registru._next_id(randuri) not in {r["id"] for r in randuri}
+
+
+# --- masuratoare fara fereastra (IZZ-0367 -> IZZ-0370) ---------------------------------
+#
+# A doua garda din fisierul asta nascuta dintr-o greseala care s-a intamplat, nu dintr-una
+# imaginata. Diferenta fata de prima: aici greseala e a sesiunii care scrie testul.
+
+
+def _masur(id_: str, dovada: str) -> dict:
+    r = _rand(id_)
+    r.update({"zona": "masuratoare", "dovada": dovada})
+    return r
+
+
+def test_registrul_livrat_nu_are_masuratoare_fara_fereastra():
+    assert registru.masuratoare_fara_fereastra(registru._read()) == []
+
+
+def test_garda_prinde_cifra_fara_fereastra():
+    """NEGATIV: exact forma lui IZZ-0362 — o cifra si o marja, fara sa spuna pe ce interval."""
+    incalcari = registru.masuratoare_fara_fereastra(
+        [_masur("IZZ-0400", "traficul masurat e ~2.900/zi, marja de 34x")])
+    assert len(incalcari) == 1 and "IZZ-0400" in incalcari[0]
+
+
+def test_o_data_in_dovada_e_de_ajuns_ca_sa_treaca():
+    assert registru.masuratoare_fara_fereastra(
+        [_masur("IZZ-0400", "7 zile pana la 2026-09-11, run 34031862325: 20.092 cereri")]) == []
+
+
+def test_pragul_nu_cere_rescrierea_istoriei():
+    """Registrul e append-only (§21): garda incepe la prag, nu retroactiv."""
+    vechi = _masur(f"IZZ-{registru.PRAG_FEREASTRA - 1:04d}", "fara nicio data")
+    assert registru.masuratoare_fara_fereastra([vechi]) == []
+    nou = _masur(f"IZZ-{registru.PRAG_FEREASTRA:04d}", "fara nicio data")
+    assert len(registru.masuratoare_fara_fereastra([nou])) == 1
+
+
+def test_garda_nu_atinge_alte_zone():
+    """Ingust deliberat: o garda care se intinde peste tot produce zgomot, nu semnal."""
+    altele = [_rand("IZZ-0400"), {**_rand("IZZ-0401"), "zona": "infra", "dovada": "fara data"}]
+    assert registru.masuratoare_fara_fereastra(altele) == []
+
+
+def test_scrierea_refuza_o_masuratoare_fara_fereastra(tmp_path, monkeypatch):
+    """O garda pe care doar o poti apela nu apara nimic: trebuie legata de scriere."""
+    monkeypatch.setattr(registru, "PATH", str(tmp_path / "r.tsv"))
+    with pytest.raises(SystemExit, match="masuratoare fara fereastra"):
+        registru._write([_masur("IZZ-0400", "o cifra oarecare, fara interval")])
+    assert not os.path.exists(registru.PATH), "nu trebuie sa scrie nimic cand refuza"
