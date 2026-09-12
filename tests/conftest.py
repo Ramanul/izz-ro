@@ -25,6 +25,51 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 OUT = os.path.join(ROOT, "output")
 
 
+# --- niciun test nu are voie sa scrie starea comisa a productiei ---------------------
+#
+# Masurat 2026-09-11: `tests/test_slug_stabil.py` chema `main.run(dry_run=False)` cu
+# `state.STATE_PATH` redirectionat in `tmp_path`, dar `jurnal_triage.cale()` si-o ia din
+# `config.ROOT` — deci FIECARE rulare locala a suitei adauga doua randuri in
+# `data/triage_log.jsonl`, fisier pe care `build.yml` il comite. Poluarea nu strica niciun
+# test: se strecoara in jurnalul de observabilitate al productiei, adica exact in datele pe
+# care se masoara over-blocking-ul la ingestie. Un test care minte despre productie e mai rau
+# decat unul care pica.
+#
+# Garda e pe CLASA, nu pe cazul gasit: acelasi tipar (redirectezi o cale, uiti alta) poate
+# reveni oricand prin alt test. Verifica dupa fiecare test, ca sa numeasca vinovatul.
+STARE_COMISA = (
+    "data/triage_log.jsonl",
+    "data/takedown_log.jsonl",
+    "data/articles.json",
+    "data/feed_cache.json",
+)
+
+
+def _amprenta_stare() -> dict[str, tuple[int, float] | None]:
+    amprente: dict[str, tuple[int, float] | None] = {}
+    for rel in STARE_COMISA:
+        cale = os.path.join(ROOT, rel)
+        try:
+            st = os.stat(cale)
+        except OSError:
+            amprente[rel] = None
+        else:
+            amprente[rel] = (st.st_size, st.st_mtime)
+    return amprente
+
+
+@pytest.fixture(autouse=True)
+def _starea_comisa_ramane_neatinsa():
+    inainte = _amprenta_stare()
+    yield
+    schimbate = [rel for rel, a in _amprenta_stare().items() if a != inainte[rel]]
+    assert not schimbate, (
+        "testul a modificat starea COMISA a productiei: " + ", ".join(schimbate) + ".\n"
+        "Redirectioneaza calea in `tmp_path` (monkeypatch), nu lasa testul sa scrie in "
+        "fisierele pe care le comite `build.yml`."
+    )
+
+
 # Cat lasam randarea sa dureze. NU o constanta: exact o constanta a rotit tacut aici.
 # Cifra dinainte era 600 s, aleasa cand randarea lua ~86 s ("~7x randarea normala"). Pe
 # 2026-08-28 aceeasi randare ia 638 s — cu 38 peste plafon — si toate cele cinci fisiere care

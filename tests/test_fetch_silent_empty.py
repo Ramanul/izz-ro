@@ -59,7 +59,7 @@ SURSA = {"url": "https://exemplu.ro/feed", "name": "Exemplu", "category": "gener
 @pytest.fixture
 def raspunde(monkeypatch):
     def _set(body):
-        monkeypatch.setattr(fetch.urllib.request, "urlopen",
+        monkeypatch.setattr(fetch, "_deschide",
                             lambda req, timeout=None: _FakeResponse(body))
     return _set
 
@@ -91,7 +91,7 @@ def test_304_ramane_sanatos(monkeypatch):
     def _304(req, timeout=None):
         raise urllib.error.HTTPError(url=SURSA["url"], code=304, msg="Not Modified",
                                      hdrs={}, fp=None)
-    monkeypatch.setattr(fetch.urllib.request, "urlopen", _304)
+    monkeypatch.setattr(fetch, "_deschide", _304)
     items, err = fetch._fetch_one("exemplu", SURSA, cache={})
     assert items == []
     assert err is None
@@ -131,7 +131,7 @@ def test_is_challenge_ignores_the_marker_deep_in_a_long_body():
 def test_challenge_is_reported_distinctly_from_an_empty_feed(monkeypatch):
     challenge = (b'<!DOCTYPE html><html><head><title>One moment, please...</title></head>'
                  b'<body><div class="spinner"></div></body></html>')
-    monkeypatch.setattr(fetch.urllib.request, "urlopen",
+    monkeypatch.setattr(fetch, "_deschide",
                         lambda req, timeout=None: _FakeResponse(challenge))
     items, err = fetch._fetch_one("x", {"url": "https://ex.ro/feed/", "name": "X",
                                         "category": "local"})

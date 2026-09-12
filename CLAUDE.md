@@ -130,7 +130,7 @@ Pentru orice schimbare vizibilă:
 `izz.ro` și `www.izz.ro` pot fi blocate de proxy; **originea Worker este calea de verificare când este accesibilă**. Verificarea curentă se face cu `bash tools/verify_allowlist.sh`, pe `https://izz-ro.andifreelancer2.workers.dev/` când hostul este disponibil. Originea poate rămâne în urmă față de domeniul public până la un deploy nou; un `200` la origine nu dovedește că domeniul public are aceeași versiune.
 
 ## 17. Cadență
-`build.yml` încearcă orar (`13 * * * *`), dar poarta de 105 minute apără publicarea la ~2h. Nu modifica cronul pentru a „repara” cadența.
+`build.yml` **declară** cron orar (`13 * * * *`); constrângerea reală e planificatorul GitHub, nu poarta (IZZ-0292, reconfirmat IZZ-0364). **Măsurat 2026-09-11 pe 40 de rulări consecutive: declanșare 25%, ~6 porniri/zi, gol median ~4h, ZERO din 39 de intervale sub pragul de 105 min** — deci poarta nu leagă aproape niciodată. Regula rămâne: nu modifica cronul ca să „repari” cadența; nu cronul e limita. Cifra se mișcă (4,68 → 6,05 porniri/zi în 8 zile): **re-măsoară, nu re-crede** — `tools/cadenta_reala.py`.
 Bugetul AI pe rulare e `MAX_AI_CALLS_PER_RUN` — **40** din 2026-09-04 (`9003e5f`, ridicat de proprietar de la 18); codul cade pe **12** când variabila lipsește (`main.py:392`), deci rularea locală nu măsoară debitul real.
 
 ## 18. Imagini de instituții locale — L1

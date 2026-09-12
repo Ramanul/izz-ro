@@ -81,11 +81,59 @@ def id_duplicate(rows: list[dict]) -> list[str]:
     return [f"{i or '(gol)'} apare de {n} ori" for i, n in sorted(vazute.items()) if n > 1]
 
 
+# Regula incepe AICI, nu retroactiv: registrul e append-only (§21) si o garda care ar cere
+# rescrierea randurilor vechi ar incalca exact principiul pe care il apara. Randurile de
+# dinainte raman cum sunt.
+PRAG_FEREASTRA = 370
+
+
+def masuratoare_fara_fereastra(rows: list[dict]) -> list[str]:
+    """Randurile de zona `masuratoare` care nu spun CAND au fost masurate. Garda pura.
+
+    DE CE (`IZZ-0367`, 2026-09-11). `IZZ-0362` a afirmat „traficul masurat e ~2.900/zi, marja
+    de 34x" fara sa numeasca fereastra sau comanda. Randul vecin, `IZZ-0264`, numea run ID-ul
+    si cele sapte zile. Diferenta nu e de stil: prima cifra nu poate fi nici verificata, nici
+    infirmata, deci nu e o masuratoare -- e o impresie cu zecimale. Cand a fost recitita, nu
+    s-a mai putut stabili daca includea sau nu ~1.400 de invocari de cron sterse intre timp,
+    si a trebuit retrasa ca `masurat-fals`.
+
+    Lectia a fost scrisa intai ca regula in `specs/STATE.md` -- adica proza, exact forma despre
+    care aceeasi zi a demonstrat ca putrezeste. Asta e versiunea ei mecanica.
+
+    CE NU VERIFICA, deliberat: daca metoda e numita, si daca fereastra e cea potrivita. Ambele
+    cer judecata, iar o garda care are nevoie de judecata produce zgomot, nu semnal -- lectia
+    proxy-ului „duplicare" din aceeasi zi, care marca 20+ mecanisme din 44 pentru ca imparteau
+    un fisier. O data ISO in dovada e verificabila fara nicio interpretare, si e chiar bucata
+    care lipsea la `IZZ-0362`.
+
+    Randul propriu `IZZ-0365` ar pica regula asta -- spune „20+ semnale din 44" fara data. E
+    lasat dinadins sub prag si numit aici, ca sa nu para ca pragul ascunde ceva.
+    """
+    incalcari = []
+    for r in rows:
+        if (r.get("zona") or "") != "masuratoare":
+            continue
+        if not (m := re.fullmatch(r"IZZ-(\d+)", r.get("id") or "")):
+            continue
+        if int(m.group(1)) < PRAG_FEREASTRA:
+            continue
+        if not re.search(r"\d{4}-\d{2}-\d{2}", r.get("dovada") or ""):
+            incalcari.append(
+                f"{r['id']} e de zona `masuratoare` dar dovada nu contine nicio data "
+                "(AAAA-LL-ZZ): o cifra fara fereastra nu poate fi verificata"
+            )
+    return incalcari
+
+
 def _write(rows: list[dict]) -> None:
     if dubluri := id_duplicate(rows):
         raise SystemExit("!! ID duplicat in registru, nu am scris nimic: " + "; ".join(dubluri)
                          + "\n   registrul e append-only (§20): renumeroteaza randul nou,"
                            " nu-l suprascrie pe cel existent.")
+    if fara := masuratoare_fara_fereastra(rows):
+        raise SystemExit("!! masuratoare fara fereastra, nu am scris nimic:\n   "
+                         + "\n   ".join(fara)
+                         + "\n   pune data (si, daca ai, comanda sau run ID-ul) in `dovada`.")
     os.makedirs(os.path.dirname(PATH), exist_ok=True)
     with open(PATH, "w", encoding="utf-8", newline="\n") as fh:
         fh.write("\t".join(COLS) + "\n")
