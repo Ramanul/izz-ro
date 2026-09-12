@@ -8,27 +8,28 @@
 > Where the rest lives: `specs/regim-reguli.md` — unified audit closure ·
 > `specs/registru.tsv` — decisions · `CLAUDE.md` — canonical contract.
 
-**Updated:** 2026-09-11 (UTC normalizat pe live; cadența re-măsurată; DNS apex → gazdă retrasă)
+**Updated:** 2026-09-12 (#333 merged; prospețimea mirror-ului nu e verificată de nimeni)
 
 ## Open
 
-- **`published` UTC — CONFIRMAT PE LIVE.** Rularea manuală `34634978821` a scris starea normalizată:
-  **178 → 0 rânduri naive**, 12.470 articole, sufix unic `+00:00`. Ipoteza de auto-vindecare din
-  #332 (merged) e validată prin observație, nu dedusă. [IZZ-0356, IZZ-0357]
-- **Proiectul Pages `izz-ro` e un ZOMBI care revendică `izz.ro` [IZZ-0366, IZZ-0368].** Există, are
-  atașate `izz-ro.pages.dev` **și `izz.ro`**, ultimul build reușit 21 aug, apoi 17 eșecuri consecutive
-  (22–23 aug = fereastra migrării din #211, merged). DNS apex+www → `izz-ro.pages.dev`. Rutele Worker au
-  precedență, deci azi traficul merge corect — dar două sisteme cred că dețin apexul. Owner call (§10),
-  după ce se confirmă că lanțul viu e sănătos.
+- **Pages `izz-ro` e un ZOMBI care revendică `izz.ro` [IZZ-0366, IZZ-0368].** Are atașate
+  `izz-ro.pages.dev` **și `izz.ro`**; ultim build reușit 21 aug, apoi 17 eșecuri (#211 merged).
+  DNS apex+www → Pages, dar rutele Worker au precedență. 2 sisteme cred că dețin apexul. §10.
 - **Workers Free — DONE, measured 2026-09-11.** Assets-only; live serves **13.733 files = 69% of the
   20.000 cap**; `ARTICLE_TTL_DAYS=21` is the lever. Blockers cleared: `izz-db` (0 tables), `izz-kv`,
   `izz-bucket` unbound, within free tiers. Unreadable here: Workers Builds minutes. [IZZ-0313..0315, 0361]
-- **`izz-failover` — KEEP [IZZ-0362], dar cifra e nesigură [IZZ-0367].** Proxy → Worker origin (1.5s),
-  fallback mirror. „~2.9k hits/zi" a fost scris fără fereastră de măsurare și poate conține ~1.4k
-  invocări de cron șterse pe 09-09; real ar fi ~1.5k. Direcția nu se schimbă, marja da.
+- **`izz-failover` — KEEP [IZZ-0362]; marja e DECLARAT NECUNOSCUTĂ [IZZ-0367, IZZ-0369].** Ambele
+  cifre publicate („2.9k/zi", „1.5k/zi") sunt retrase: prima fără fereastră, a doua fără `Analytics:Read`.
 - **INGEST COLLAPSE — fix in #328, merged.** Verify recovery on live volume; levers owner's call. [IZZ-0317]
-- **PR queue — 9 deschise:** #333 audit (al meu) · #331 hartă · #330, #329 dependabot · #324 (needs
-  rebase peste IZZ-0353 mergeuit) · #321 §5.4 · #320 Lee · #297 Cronica vie · #280 CSS.
+- **REDUNDANȚA: prospețimea mirror-ului nu e verificată [IZZ-0370].** `monitor.yml` (*/10) probează
+  toate trei originile dar **doar cu cod HTTP**; `release-probe` compară commitul din `/build.json`
+  dar **sare peste mirror**. Ținta failover-ului e singura origine a cărei prospețime n-o verifică
+  nimeni — exact eșecul pentru care a fost scris `verify_release.py`. Remediul atinge §10.
+- **Rezerve `ALT_ORIGIN` divergente — inert [IZZ-0371].** 3 workflow-uri au ca fallback gazda retrasă
+  `izz-ro.pages.dev`, 4 au `workers.dev`. Nu se activează: repo var e setată (verificat în logul
+  rulării 34664617862). Devine real doar dacă variabila dispare.
+- **PR queue — 8 deschise:** #333 audit, merged [`cc9a7793`] · #331 hartă · #330, #329 dependabot ·
+  #324 (needs rebase peste IZZ-0353) · #321 §5.4 · #320 Lee · #297 Cronica vie · #280 CSS.
 
 ## Audit closure status
 
