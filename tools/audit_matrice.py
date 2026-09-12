@@ -65,7 +65,12 @@ VOCAB = {
 SCORURI = ("eroziune", "risc")
 
 
-def citeste(cale: str = TSV) -> list[dict]:
+def citeste(cale: str | None = None) -> list[dict]:
+    # Legare TARZIE, nu `cale: str = TSV`: o valoare implicita se leaga la DEFINIREA
+    # functiei, deci constanta de modul nu mai poate fi suprascrisa — iar un test care
+    # crede ca a redirectionat registrul ar verifica de fapt fisierul comis si ar trece
+    # degeaba. Gasit scriind chiar testul pentru constatarea Codex.
+    cale = cale or TSV
     with open(cale, encoding="utf-8", newline="") as fh:
         randuri = list(csv.DictReader(fh, delimiter="\t"))
     if not randuri:
@@ -191,23 +196,153 @@ def raport(randuri: list[dict]) -> None:
             print(f"  #{r['id']:>2s} {r['mecanism']}\n      {r['nota']}")
 
 
+# --- eroziune: cele opt dimensiuni, si care dintre ele se pot MASURA -------------------
+#
+# Foaia `Eroziune` a auditului defineste opt dimensiuni in detaliu, apoi le lasa GOALE pe
+# toate cele 36 de randuri, iar scorul agregat „Nivel eroziune (0-5)" e introdus direct.
+# Un scor care nu deriva din nimic nu poate fi infirmat, deci nu e o masuratoare.
+#
+# Aici nu completez cele opt cu judecata mea — ar fi aceeasi greseala, cu alta mana. Calculez
+# indicatorii care CHIAR se pot citi din repo si din registru, si declar restul nemasurate.
+# Patru da, patru nu; motivul e scris langa fiecare.
+DIMENSIUNI = {
+    "autoritate": "MASURAT — poate_bloca=da dar autoritatea nu e efectiva",
+    "bypass": "MASURAT — ruta alternativa documentata in registru",
+    "temporala": "INDICATOR — vechimea ultimei atingeri a dovezilor (git)",
+    "acoperire": "NEMASURAT — cere graful de apeluri per mecanism, nu o coloana",
+    "strictete": "NEMASURAT — cere istoricul pragurilor, iar relaxarea legitima arata identic",
+    "integrare": "NEMASURAT — cere ordinea reala a pipeline-ului per proprietate",
+    "duplicare": "NEMASURAT — cere compararea REGULILOR, nu a cailor de fisier",
+    "orbire": "NEMASURAT — prin definitie, garda nu poate raporta ce nu vede",
+}
+
+# Nota de metoda, pastrata fiindca e chiar greseala pe care auditul original a facut-o.
+# Prima versiune a acestei unelte marca drept „duplicare" orice doua mecanisme care impart
+# un fisier de dovada. A produs 20+ semnale din 44 de mecanisme — adica zgomot, nu masuratoare:
+# `generator/fetch.py` gazduieste legitim garda XML, retry-ul si garda de redirectare, care nu
+# se dubleaza intre ele. Dimensiunea „duplicare/conflict" din foaia de audit inseamna doua
+# mecanisme care pot DECIDE DIFERIT asupra aceluiasi caz; caile de fisier nu spun nimic despre
+# asta. Ce ramane masurabil e altceva, si e o observatie despre REGISTRU, nu despre sistem:
+# doua mecanisme cu dovezi IDENTICE nu pot fi deosebite unul de altul pe baza registrului.
+
+
+def _zile_de_la_ultima_atingere(cale: str) -> int | None:
+    """Zile de cand nu s-a mai atins fisierul. `None` daca git nu raspunde."""
+    import subprocess
+    from datetime import datetime, timezone
+    try:
+        ies = subprocess.run(["git", "log", "-1", "--format=%cI", "--", cale],
+                             capture_output=True, text=True, cwd=ROOT, timeout=20).stdout.strip()
+        if not ies:
+            return None
+        return (datetime.now(timezone.utc) - datetime.fromisoformat(ies)).days
+    except Exception:
+        return None
+
+
+def eroziune(randuri: list[dict]) -> dict:
+    """Indicatorii masurabili, per mecanism viu. NU un scor compozit, deliberat.
+
+    Un numar unic ar ascunde tocmai ce conteaza: ca patru dimensiuni din opt nu se pot citi
+    din repo. Insumate cu zero in locul lor, ar arata ca un sistem sanatos.
+    """
+    viu = [r for r in randuri if r["stare"] != "absent"]
+
+    out = {}
+    for r in viu:
+        cai = _cai(r)
+        semnale = []
+        if r["poate_bloca"] == "da" and r["autoritate"] != "efectiva":
+            semnale.append(f"autoritate: poate bloca, dar e {r['autoritate']}")
+        if r["bypass"] == "da":
+            semnale.append("bypass: ruta alternativa documentata")
+        varste = [z for z in (_zile_de_la_ultima_atingere(c) for c in cai) if z is not None]
+        out[r["id"]] = {
+            "mecanism": r["mecanism"],
+            "semnale": semnale,
+            "zile_de_la_ultima_atingere": max(varste) if varste else None,
+        }
+    return out
+
+
+def granularitate_registru(randuri: list[dict]) -> list[list[str]]:
+    """Grupuri de mecanisme vii cu dovada IDENTICA — deci nedeosebibile din registru.
+
+    Nu e eroziune si nu e o afirmatie despre sistem: e consecinta directa a deciziei de
+    schema „dovada e o cale de fisier, niciodata un numar de linie" (numerele de linie
+    putrezesc la prima refactorizare). Doua garzi legitime din acelasi fisier vor arata
+    mereu la fel aici. Se raporteaza separat tocmai ca sa nu fie citit ca defect al
+    sistemului; s-ar inchide trecand dovada la `cale#simbol`, verificabil prin cautare si
+    la fel de rezistent la refactorizare — schimbare de schema, nu de raport.
+    """
+    grupuri: dict[tuple[str, ...], list[str]] = {}
+    for r in randuri:
+        if r["stare"] == "absent":
+            continue
+        if (cheie := tuple(sorted(_cai(r)))):
+            grupuri.setdefault(cheie, []).append(r["id"])
+    return [sorted(ids, key=int) for ids in grupuri.values() if len(ids) > 1]
+
+
+def raport_eroziune(randuri: list[dict]) -> None:
+    print("EROZIUNE — doar ce se poate masura din repo\n")
+    for nume, explicatie in DIMENSIUNI.items():
+        print(f"  {nume:12s} {explicatie}")
+
+    date = eroziune(randuri)
+    cu_semnale = {k: v for k, v in date.items() if v["semnale"]}
+    print(f"\nMecanisme vii cu cel putin un semnal: {len(cu_semnale)} din {len(date)}")
+    for rid, d in sorted(cu_semnale.items(), key=lambda kv: int(kv[0])):
+        print(f"\n  #{rid:>2s} {d['mecanism']}")
+        for s in d["semnale"]:
+            print(f"       · {s}")
+
+    vechi = sorted(((v["zile_de_la_ultima_atingere"] or 0), k, v["mecanism"])
+                   for k, v in date.items())
+    print("\nCele mai VECHI dovezi (indicator temporal, NU un verdict):")
+    for zile, rid, mec in vechi[-5:][::-1]:
+        print(f"  {zile:4d} zile  #{rid:>2s} {mec}")
+    print("\n  Vechimea singura nu e eroziune: o garda stabila pe o suprafata stabila e sanatoasa.")
+    print("  Semnalul e vechimea gardii langa o suprafata care S-A schimbat — comparatie care")
+    print("  cere judecata, deci ramane aici indicator, nu scor.")
+
+    if (grupuri := granularitate_registru(randuri)):
+        n = sum(len(g) for g in grupuri)
+        print(f"\nGRANULARITATEA REGISTRULUI (nu eroziune): {n} mecanisme in {len(grupuri)} "
+              "grupuri cu dovada identica,")
+        print("  deci nedeosebibile din registru. E consecinta schemei de dovada "
+              "(cale de fisier, nu numar de linie), nu un defect al sistemului.")
+        for g in grupuri:
+            print("  #" + ", #".join(g))
+
+
 def main() -> int:
     p = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     p.add_argument("comanda", nargs="?", default="verifica",
-                   choices=("verifica", "raport"))
+                   choices=("verifica", "raport", "eroziune"))
     args = p.parse_args()
 
     randuri = citeste()
-    if args.comanda == "raport":
-        raport(randuri)
-        return 0
 
+    # Verificarea ruleaza INTAI, pentru orice subcomanda. Un raport scos dintr-un registru
+    # in drift — dovezi care nu mai exista pe disc, vocabular invalid, contradictii de
+    # autoritate — arata exact ca o masuratoare si nu este una. Chiar teza acestei unelte.
     probleme = verifica(randuri)
     if probleme:
         print(f"FAIL: {len(probleme)} probleme in specs/audit-unificat.tsv:")
         for pb in probleme:
             print(f"  - {pb}")
+        if args.comanda != "verifica":
+            print(f"\n  Comanda `{args.comanda}` NU a rulat: un raport peste un registru "
+                  "in drift ar fi o masuratoare falsa.")
         return 1
+
+    if args.comanda == "eroziune":
+        raport_eroziune(randuri)
+        return 0
+    if args.comanda == "raport":
+        raport(randuri)
+        return 0
     ag = agregate(randuri)
     print(
         f"OK: {ag['mecanisme_in_registru']} mecanisme inventariate, "
