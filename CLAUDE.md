@@ -92,6 +92,12 @@ Stilul vizual derivă din `static/styles.css`. În template-uri nu se hardcodeaz
 ## 10. Zone protejate
 Nu modifica fără instrucțiune explicită: logica de sinteză/atribuire Model C, legal/GDPR și deploy production (`wrangler.jsonc`, Cloudflare Worker code, GitHub secrets). Excepție: MCP Cloudflare poate administra D1/KV/R2/Hyperdrive direct; deploy-ul Worker rămâne repo → PR → CI.
 
+**Lista de mai sus e completă — nu o extinde prin analogie.** `.github/workflows/` NU e aici; e apărat de hook-ul de control-plane, care e alt mecanism, cu alt motiv.
+
+**Un mandat explicit de proprietar în sesiunea curentă ESTE „instrucțiunea explicită" cerută aici.** A invoca §10 ca să amâni muncă pe care proprietarul tocmai a autorizat-o e o încălcare a §10, nu o aplicare a lui.
+
+**Când amâni ceva, spune care din două e — REGULĂ TARE:** *blocat de politică* (cere o decizie pe care proprietarul nu a dat-o) sau *blocat de capacitate* (unealta lipsește / a eșuat). Al doilea se declară cu comanda care a eșuat (§7), nu din memorie. „Zonă protejată" fără una din cele două e amânare deghizată.
+
 ## 11. SEO
 SEO rezolvat; nu se reauditează fără descoperire nouă, specifică. Istoricul este în `specs/istoric-operational.md`.
 

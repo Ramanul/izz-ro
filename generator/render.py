@@ -1081,10 +1081,16 @@ def _write_build_metadata(article_count: int) -> None:
     Local, manifestul rămâne explicit ca neidentificat, în loc să pretindă un commit
     care nu există.
     """
-    commit = (os.getenv("WORKERS_CI_COMMIT_SHA") or os.getenv("CF_PAGES_COMMIT_SHA")
-              or os.getenv("GITHUB_SHA") or os.getenv("BUILD_COMMIT_SHA") or "local")
-    branch = (os.getenv("WORKERS_CI_BRANCH") or os.getenv("CF_PAGES_BRANCH")
-              or os.getenv("GITHUB_REF_NAME") or os.getenv("BUILD_BRANCH") or "local")
+    # `BUILD_*` PRIMUL: e singurul override EXPLICIT din lant, restul sunt valori deduse din
+    # mediul gazdei. Pana pe 2026-09-12 statea ultimul, dupa `GITHUB_SHA`, care e mereu setat in
+    # Actions — deci nu putea suprascrie niciodata nimic acolo, adica exact unde ar fi folosit.
+    # Cazul concret: jobul `mirror` face checkout pe content-sha dar ruleaza cu `GITHUB_SHA` =
+    # commitul care a declansat rularea, un STRAMOS; manifestul oglinzii raporta deci un commit
+    # mai vechi decat continutul pe care tocmai il publicase. Vezi `tools/verify_release.py`.
+    commit = (os.getenv("BUILD_COMMIT_SHA") or os.getenv("WORKERS_CI_COMMIT_SHA")
+              or os.getenv("CF_PAGES_COMMIT_SHA") or os.getenv("GITHUB_SHA") or "local")
+    branch = (os.getenv("BUILD_BRANCH") or os.getenv("WORKERS_CI_BRANCH")
+              or os.getenv("CF_PAGES_BRANCH") or os.getenv("GITHUB_REF_NAME") or "local")
     # Numarul REAL de fisiere, nu cel prezis. Bugetul din `render` imparte imaginile pe
     # baza unei rezerve estimate; asta e masuratoarea care spune daca estimarea mai tine.
     # Ajunge in build.json ca sa fie citibila pe live, nu doar in logul rularii.
