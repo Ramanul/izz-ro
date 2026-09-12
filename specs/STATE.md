@@ -4,51 +4,53 @@
 > and factual; settled history belongs in `specs/istoric-executie.md`.
 >
 > **Hard cap: ~40 lines of content.**
+>
+> Where the rest lives: `specs/regim-reguli.md` — unified audit closure ·
+> `specs/registru.tsv` — decisions · `CLAUDE.md` — canonical contract.
 
-**Updated:** 2026-09-06 (publicare deblocata si confirmata pe live: run 34023056515, `6d19b69`)
+**Updated:** 2026-09-12 (#333 merged; prospețimea mirror-ului nu e verificată de nimeni)
 
 ## Open
 
-- **PR #282 — audit unified hardening:** merged 09-05, branch `audit-unified-hardening-2026-09-05`.
-  K1–K14 closure status: `specs/regim-reguli.md`.
-- **Publishing — confirmed live 09-06.** Run 34023056515 is green end to end; `verify_release.py` saw
-  `6d19b69` on the Worker origin and on `izz.ro` (12252 articles). Grounding block cleared (IZZ-0311/0312).
-- **Cloudflare routes — OWNER ACTION:** `izz.ro/*` + `www.izz.ro/*` were repointed `izz-failover` ->
-  `izz-ro` on 2026-09-06 04:31 on a false diagnosis (IZZ-0308); `x-izz-origin` is gone. The mirror is
-  still fresh — the `mirror` job published in the same run — so only the route is missing.
+- **Pages `izz-ro` e un ZOMBI care revendică `izz.ro` [IZZ-0366, IZZ-0368].** Are atașate
+  `izz-ro.pages.dev` **și `izz.ro`**; ultim build reușit 21 aug, apoi 17 eșecuri (#211 merged).
+  DNS apex+www → Pages, dar rutele Worker au precedență. 2 sisteme cred că dețin apexul. §10.
+- **Workers Free — DONE, measured 2026-09-11.** Assets-only; live serves **13.733 files = 69% of the
+  20.000 cap**; `ARTICLE_TTL_DAYS=21` is the lever. Blockers cleared: `izz-db` (0 tables), `izz-kv`,
+  `izz-bucket` unbound, within free tiers. Unreadable here: Workers Builds minutes. [IZZ-0313..0315, 0361]
+- **`izz-failover` — KEEP [IZZ-0362]; marja e DECLARAT NECUNOSCUTĂ [IZZ-0367, IZZ-0369].** Ambele
+  cifre publicate („2.9k/zi", „1.5k/zi") sunt retrase: prima fără fereastră, a doua fără `Analytics:Read`.
+- **INGEST COLLAPSE — fix in #328, merged.** Verify recovery on live volume; levers owner's call. [IZZ-0317]
+- **REDUNDANȚA — REPARAT [IZZ-0370 → IZZ-0372].** `verify_release.py` verifică acum prospețimea
+  mirror-ului după `generated_at` (prag 360 min), neblocant, cu `::warning::`. Rămâne de curățat:
+  manifestul mirror-ului poartă `GITHUB_SHA`, nu content-sha — o linie `BUILD_COMMIT_SHA` în jobul
+  `mirror`, blocată de hook, NU de §10 (care nu acoperă workflow-uri) [IZZ-0373].
+- **Rezerve `ALT_ORIGIN` divergente — inert [IZZ-0371].** 3 workflow-uri au ca fallback gazda retrasă
+  `izz-ro.pages.dev`, 4 au `workers.dev`. Nu se activează: repo var e setată (verificat în logul
+  rulării 34664617862). Devine real doar dacă variabila dispare.
+- **PR queue — 8 deschise:** #333 audit, merged [`cc9a7793`] · #331 hartă · #330, #329 dependabot ·
+  #324 (needs rebase peste IZZ-0353) · #321 §5.4 · #320 Lee · #297 Cronica vie · #280 CSS.
 
 ## Audit closure status
 
-- **K1–K14:** closure is being re-verified mechanism-by-mechanism; `specs/regim-reguli.md` is the
-  current reconciliation register, not a substitute for passing tests.
-- **Grounding:** blocking for deterministic invented quotes and foreign numbers; missing/malformed
-  grounding evidence fails closed.
-- **Quality/release order:** grounding → QA → commit is enforced in `build.yml`.
-- **Coordination:** live channel is `handoff/` + `specs/STATE.md`; historical dashboards stay historical.
-- **Containment:** destructive git commands are denied and protected control-plane files are denied
-  to direct Edit/Write operations; the hook contract is under test.
-- **Takedown registry:** `moderation.yaml` accepts `takedowns` (URL -> motive); removal runs on every
-  publish path, with an idempotent audit trail in `data/takedown_log.jsonl` (committed by the pipeline).
-- **Near-verbatim copy:** >=15-word verbatim runs outside quotes in summaries and fully transcribed
-  titles are grounding-gate blocking codes (`text_copiat`, `titlu_copiat`); thresholds are rule-derived
-  (REGULI-SINTEZA 2.2), the calibration journal holds no real corpus yet.
-- **Triage journal:** ingest discards (fetch losses, no-substance rejects, expired) land per run in
-  `data/triage_log.jsonl`, committed with pipeline state.
-- **Grounding defer:** deterministic grounding violations defer the item, not the release; post-commit gate stays fail-closed.
-- **Silence detection:** hourly `detectie-tacere.yml` checks last runs of build/monitor/smoke/feedcheck
-  and the last content commit against ceilings; alert issue opens on silence and closes on recovery.
-- **Human gate is a switch:** `IZZ_REQUIRE_HUMAN_GATE` is a repo variable (default false, armable from
-  the GitHub UI without code changes); `hold_important` in `moderation.yaml` stays the per-config switch.
-- **Bash writes are guarded:** the protected-edit PreToolUse hook covers Bash commands combining a
-  control-plane path with a write indicator; the hook wiring is under test (`tests/test_hooks_cablaj.py`).
+- **K1–K14:** re-verified in `specs/regim-reguli.md` — a reconciliation register, not a substitute
+  for passing tests. **Grounding:** blocks invented quotes and foreign numbers, fails closed.
+- **Coordination:** live channel is `handoff/` + `specs/STATE.md`. **Containment:** destructive git
+  commands and direct Edit/Write on control-plane files are denied; fd-only redirects no longer
+  count [IZZ-0353]. **Journals:** takedowns removed on every publish path; ingest discards logged.
+- **Near-verbatim copy:** >=15-word runs and transcribed titles block the gate. Open: calibration
+  corpus, 2x determinism run. **Silence detection:** hourly. **Human gate:** `IZZ_REQUIRE_HUMAN_GATE`.
+  **Main** is `protected: true`; required-checks list unreadable here (403), rulesets: none.
+- **Unified audit is mechanical now:** `specs/audit-unificat.tsv` + `tools/audit_matrice.py`
+  (+ `eroziune`) + `tools/cadenta_reala.py` + tests; findings in `specs/audit-unificat.md` §5.
+  Content commits pushed with the default `GITHUB_TOKEN` trigger NO workflow, so state regressions
+  surface only via a PR — owner call. [IZZ-0351…0357, 0363…0367]
 
 ## Standing rules
 
-- Do not treat retired static-host origins as live origins; Worker origin is the fallback verification path.
+- Cadence is the GitHub scheduler, not the 105-min gate: 25% firing, ~6 starts/day, median ~4h.
+  Re-measure with `tools/cadenta_reala.py`; do not quote the number from memory. [IZZ-0364]
+- Do not treat retired static-host origins as live origins; Worker origin is the fallback path.
 - Do not use old task journals as normative coordination channels.
-- Do not describe historical benchmark values as current measurements.
+- Every measurement gets its window and its command, or it is not a measurement [IZZ-0367].
 - Do not mark live, GitHub settings, or Cloudflare facts as solved based only on repository code.
-
-## Where the rest lives
-
-`specs/regim-reguli.md` — unified audit closure · `specs/registru.tsv` — decisions · `CLAUDE.md` — canonical contract.

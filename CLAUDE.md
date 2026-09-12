@@ -43,10 +43,14 @@ CI rulează testele și lint-ul. Numărul de teste este doar reper, nu contract.
 
 ## 5. Flux obligatoriu
 0. **Nu arma nicio buclă autonomă / CronCreate recurent** care se conduce singură prin backlog.
-1. **Cine face merge în `main`** este proprietarul/revizorul autorizat, nu executorul.
+1. **Cine face merge în `main`** decide proprietarul; executorul îl poate executa doar sub mandatul de la §5.4.
 2. **După orice merge, anunță celălalt cont** prin canalul operațional agreat și actualizează starea.
 3. **Nu face curse pe `main`.** Lucrează prin branch + PR.
-4. **Nu face niciodată merge în `main`.** Executorul livrează branch + PR, fără auto-merge.
+4. **Merge doar cu mandat explicit, pe verde — REGULĂ TARE.** Executorul face merge în `main`
+   numai dacă proprietarul a numit PR-ul în sesiunea curentă, CI e verde pe head-ul curent și nu
+   există conflict. Un PR odată, niciodată unul deschis de altă sesiune vie — exact asta a costat
+   [IZZ-0140]. Auto-merge rămâne interzis: e o delegare permanentă, nu o decizie. Fără mandat,
+   livrarea rămâne branch + PR.
 5. **Un task per declanșare.** Nu deschide muncă paralelă necerută printr-un singur trigger.
 6. **Se oprește și raportează în loc să ghicească.** Ambiguitățile materiale se declară exact.
 7. **Actualizează `specs/STATE.md`** la finalul lucrării relevante.
@@ -88,6 +92,12 @@ Stilul vizual derivă din `static/styles.css`. În template-uri nu se hardcodeaz
 ## 10. Zone protejate
 Nu modifica fără instrucțiune explicită: logica de sinteză/atribuire Model C, legal/GDPR și deploy production (`wrangler.jsonc`, Cloudflare Worker code, GitHub secrets). Excepție: MCP Cloudflare poate administra D1/KV/R2/Hyperdrive direct; deploy-ul Worker rămâne repo → PR → CI.
 
+**Lista de mai sus e completă — nu o extinde prin analogie.** `.github/workflows/` NU e aici; e apărat de hook-ul de control-plane, care e alt mecanism, cu alt motiv.
+
+**Un mandat explicit de proprietar în sesiunea curentă ESTE „instrucțiunea explicită" cerută aici.** A invoca §10 ca să amâni muncă pe care proprietarul tocmai a autorizat-o e o încălcare a §10, nu o aplicare a lui.
+
+**Când amâni ceva, spune care din două e — REGULĂ TARE:** *blocat de politică* (cere o decizie pe care proprietarul nu a dat-o) sau *blocat de capacitate* (unealta lipsește / a eșuat). Al doilea se declară cu comanda care a eșuat (§7), nu din memorie. „Zonă protejată" fără una din cele două e amânare deghizată.
+
 ## 11. SEO
 SEO rezolvat; nu se reauditează fără descoperire nouă, specifică. Istoricul este în `specs/istoric-operational.md`.
 
@@ -126,7 +136,8 @@ Pentru orice schimbare vizibilă:
 `izz.ro` și `www.izz.ro` pot fi blocate de proxy; **originea Worker este calea de verificare când este accesibilă**. Verificarea curentă se face cu `bash tools/verify_allowlist.sh`, pe `https://izz-ro.andifreelancer2.workers.dev/` când hostul este disponibil. Originea poate rămâne în urmă față de domeniul public până la un deploy nou; un `200` la origine nu dovedește că domeniul public are aceeași versiune.
 
 ## 17. Cadență
-`build.yml` încearcă orar (`13 * * * *`), dar poarta de 105 minute apără publicarea la ~2h. Nu modifica cronul pentru a „repara” cadența.
+`build.yml` **declară** cron orar (`13 * * * *`); constrângerea reală e planificatorul GitHub, nu poarta (IZZ-0292, reconfirmat IZZ-0364). **Măsurat 2026-09-11 pe 40 de rulări consecutive: declanșare 25%, ~6 porniri/zi, gol median ~4h, ZERO din 39 de intervale sub pragul de 105 min** — deci poarta nu leagă aproape niciodată. Regula rămâne: nu modifica cronul ca să „repari” cadența; nu cronul e limita. Cifra se mișcă (4,68 → 6,05 porniri/zi în 8 zile): **re-măsoară, nu re-crede** — `tools/cadenta_reala.py`.
+Bugetul AI pe rulare e `MAX_AI_CALLS_PER_RUN` — **40** din 2026-09-04 (`9003e5f`, ridicat de proprietar de la 18); codul cade pe **12** când variabila lipsește (`main.py:392`), deci rularea locală nu măsoară debitul real.
 
 ## 18. Imagini de instituții locale — L1
 Textul complet este în `.claude/reguli/18-imagini.md`; hook-ul îl injectează pentru fișierele media aferente. Discuția fără atingerea unui fișier cere citirea regulii înainte.

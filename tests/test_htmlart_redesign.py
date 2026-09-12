@@ -48,6 +48,36 @@ def test_coperta_og_scaleaza_tipografia():
     assert max(px) > 90  # tipografia mare exista in set
 
 
+# --- coperta de CATEGORIE: fara data publicarii (2026-09-09) -------------------
+# og:image-ul articolelor din afara ferestrei recente e coperta categoriei. Ea nu are data --
+# o data de build pe o stire de acum doua saptamani ar minti -- iar trei din cele patru
+# compozitii isi construiesc jumatatea dreapta din cifra zilei. De-aia `sablon` exista.
+
+def test_sablonul_fortat_alege_compozitia_ceruta_indiferent_de_seed():
+    fals = {"title": "Sport", "category": "sport"}
+    editorial = htmlart.build_html(fals, cover=True, sablon="editorial")
+    assert "Portalul știrilor tale" in editorial, "nu e compozitia editoriala"
+    # aceeasi intrare, fara `sablon`, poate cadea pe alta compozitie -- fortarea trebuie sa
+    # invinga seed-ul, nu sa coincida cu el din intamplare
+    for nume in htmlart._NUME_TEMPLATE:
+        assert htmlart.build_html(fals, cover=True, sablon=nume)
+
+
+def test_NEGATIV_fara_data_bara_de_sus_nu_repeta_marca():
+    """Inainte, lipsa datei punea 'izz.ro' si in stanga si in dreapta pe acelasi rand."""
+    html = htmlart.build_html({"title": "Sport", "category": "sport"},
+                              cover=True, sablon="editorial")
+    assert html.count("izz.ro") == 1, "marca apare de mai multe ori in bara de sus"
+    cu_data = htmlart.build_html(_art(), cover=True, sablon="editorial")
+    assert "septembrie" in cu_data, "cu data, bara de sus trebuie sa o arate"
+
+
+def test_numele_compozitiilor_raman_lipite_de_functii():
+    """Desincronizate, `stil_inline` ar da alta compozitie decat rasterul, tacut."""
+    assert len(htmlart._NUME_TEMPLATE) == len(htmlart._TEMPLATES)
+    assert htmlart._NUME_TEMPLATE[0] == "editorial"
+
+
 def test_marimea_etichetei_treptata_pe_lungime():
     k = 1.0
     scurt = htmlart._et_px("SIBIU", ((8, 128), (13, 102), (18, 82), (99, 60)), k)

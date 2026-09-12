@@ -168,3 +168,14 @@ def test_map_has_location_breadcrumb_and_plain_language():
     assert 'UAT-uri cu știri în' not in js
     # Text unic de revenire (audit P2: trei texte diferite au devenit unul).
     assert 'state.backButton.textContent = "← Înapoi la România"' in js
+def test_zoom_and_pan_are_keyboard_operable_and_documented():
+    # Ghidurile de harti accesibile cer zoom+pan pe TOATE input-urile: sagețile deplaseaza
+    # vederea pe grupul de controale, +/- schimba scara, iar nota de sub harta documenta
+    # interactiunile (rotita, dublu-click, tragere, tastatura, gesturi).
+    js = Path("static/harta-stiri/harta-stiri.js").read_text(encoding="utf-8")
+    html = Path("static/harta-stiri/index.html").read_text(encoding="utf-8")
+    assert 'zoomBox.addEventListener("keydown"' in js
+    assert 'zoomBox.setAttribute("role", "group")' in js
+    assert "function announceZoom(" in js
+    assert "săgețile" in html
+    assert "două degete" in html

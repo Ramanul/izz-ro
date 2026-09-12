@@ -162,32 +162,6 @@ def _use_media(src: str, dst: str) -> bool:
     return False
 
 
-def _responsive_webp(src: str, dst: str, max_width: int = 480) -> bool:
-    """Scrie o varianta WebP mica numai cand aduce economie reala.
-
-    Nu generam derivata pentru fiecare articol: Pages Free are plafon de fisiere, iar
-    o copie pe toate permalinkurile ar apropia deploy-ul de limita. Este folosita doar
-    pentru cardurile de pe homepage, exact zona unde Lighthouse a masurat imagini prea
-    mari fata de suprafata afisata.
-    """
-    image = getattr(covers, "Image", None)
-    if image is None:
-        return False
-    try:
-        with image.open(src) as im:
-            if im.width <= max_width:
-                return False
-            ratio = max_width / im.width
-            size = (max_width, max(1, round(im.height * ratio)))
-            resampling = getattr(image, "Resampling", image).LANCZOS
-            out = im.convert("RGB").resize(size, resampling)
-            os.makedirs(os.path.dirname(dst), exist_ok=True)
-            out.save(dst, "WEBP", quality=72, method=4)
-            return os.path.getsize(dst) > 1000
-    except (OSError, ValueError):
-        return False
-
-
 def _content_ver(path: str) -> str:
     """Amprenta scurta a CONTINUTULUI imaginii, pentru ?v= in URL (cache-busting).
     Hash de continut, nu mtime: mtime se schimba la fiecare copyfile/render, ceea
@@ -307,47 +281,61 @@ def assign_slugs(articles: list) -> None:
 _PAGES_WRITTEN: set = set()
 
 
-def _image_budget(n: int, budget: int | None = None,
-                  reserve: int | None = None) -> tuple[int, int, int]:
-    """Cate fisiere de imagine incap, si cum se impart pe cele `n` articole.
+def _articole_publicabile(n: int, budget: int | None = None,
+                          reserve: int | None = None) -> int:
+    """Cate din cele `n` articole incap in bugetul de fisiere al gazdei.
 
-    Intoarce `(img_budget, n_art, n_cover)`: cate fisiere de imagine sunt disponibile,
-    cate articole primesc arta 960x504 si cate dintre ele primesc SI coperta 1200x630.
-    Apelantul parcurge articolele de la cel mai nou la cel mai vechi, deci taierea cade
-    intotdeauna pe arhiva, nu pe ce e pe homepage.
+    SUPAPA DE SIGURANTA, nu politica editoriala: fereastra normala e data de
+    `ARTICLE_TTL_DAYS`, dimensionat (specs/cloudflare-free-2026-09.md) ca sa lase ~15%
+    marja. Functia asta apara doar cazul in care ingestul sare peste ce a fost masurat --
+    o zi de 1.500 de articole in loc de 590. Fara ea, Cloudflare refuza deploy-ul TACUT:
+    jobul de continut trece verde, iar esecul apare 25 de minute mai tarziu in
+    `release-probe`, ca "izz.ro serveste <sha vechi>" (incidentul din 2026-08-21, site
+    inghetat 21 de ore).
 
-    Pagina fiecarui articol se scade din buget prima (`- n`) si nu e niciodata sacrificata:
-    o pagina lipsa e un 404 pe un URL deja indexat, adica exact regresia reparata de #199.
+    Costul per articol e o pagina; primele `OG_COVER_MAX_ARTICLES` platesc si o coperta
+    og. Apelantul taie de la coada listei sortate descrescator dupa data, deci pierderea
+    cade pe arhiva, niciodata pe ce e pe homepage.
     """
     budget = config.OUTPUT_FILE_BUDGET if budget is None else budget
     reserve = config.OUTPUT_NON_ARTICLE_RESERVE if reserve is None else reserve
-    img_budget = max(0, budget - reserve - n)
-    n_art = min(n, img_budget)                        # cate primesc macar arta
-    n_cover = max(0, min(n_art, img_budget - n_art))  # dintre ele, cate primesc si coperta
-    return img_budget, n_art, n_cover
+    liber = max(0, budget - reserve)
+    og = max(0, config.OG_COVER_MAX_ARTICLES)
+    if n + min(og, n) <= liber:
+        return n
+    # Peste buget: cate articole `k` satisfac `k + min(og, k) <= liber`. Daca `k` ramane
+    # peste fereastra de coperti, fiecare coperta e platita o singura data (`liber - og`);
+    # altfel fiecare articol plateste doua fisiere, deci `liber // 2`.
+    if liber - og >= og:
+        return max(0, liber - og)
+    return max(0, liber // 2)
 
 
-def _o_singura_pasa(n: int, n_art: int, n_cover: int,
-                    img_budget: int, card_reserve: int) -> bool:
-    """Poate scrie arta si coperta in ACEEASI iteratie, fara sa schimbe ce se publica?
+def _coperti_de_categorie() -> dict:
+    """og:image de rezerva, unul per categorie, in `output/og/<categorie>.jpg`.
 
-    `covers._scene()` cache-uieste EXACT un articol ("pastreaza doar ultimul articol",
-    covers.py:345), iar scena e identica pentru `art.jpg` si `cover.jpg`. Doua apeluri
-    lipite o calculeaza o data; despartite in doua pase peste toate articolele sunt la `n`
-    iteratii distanta si rateaza cache-ul de FIECARE data -- se deseneaza de doua ori.
-    Masurat 2026-08-23, output identic (23.961 fisiere, 5.550 coperti): 729s cu doua pase,
-    508s cu bucla unica. ~220s aruncati la fiecare randare, adica la fiecare 2 ore in
-    productie plus la fiecare rulare de CI.
+    Articolele din afara ferestrei de coperti proprii (`OG_COVER_MAX_ARTICLES`) nu raman
+    fara previzualizare sociala: primesc coperta categoriei lor, desenata cu acelasi motor
+    si aceeasi paleta. Cincisprezece fisiere in loc de unul per articol -- pe planul gratuit
+    (20.000 de fisiere) o coperta per articol ar fi consumat singura peste jumatate.
 
-    Cele doua pase NU sunt insa un moft: ele garanteaza ca, la buget strans, se sacrifica
-    o coperta inaintea unei imagini de pe pagina. Garantia aia conteaza doar daca bugetul
-    chiar poate lega. Conditia de aici e SUFICIENTA ca sa nu poata: fiecare articol scrie
-    cel mult 3 fisiere de imagine (art + webp + cover), deci daca bugetul acopera 3n peste
-    rezerva de carduri, `spent` nu atinge plafonul in timpul buclei si prioritatea nu e
-    niciodata pusa la incercare. Sub conditie, cele doua forme dau acelasi output; peste
-    ea se cade inapoi pe doua pase.
+    Aceeasi ordine ca la copertile de articol: intai desenul Chromium comis de
+    `tools/gen_images.py` in `media/og/`, apoi fallback-ul Pillow. Chromium nu exista in
+    build-ul Cloudflare, deci fara fisierul comis coperta iese in stilul mai vechi al lui
+    `covers.py` -- corect, dar nu in aceeasi limba vizuala ca restul site-ului.
+
+    Dictionar gol cand nu se poate scrie nimic; apelantul cade atunci pe `static/og-image.png`.
     """
-    return n_cover >= n_art >= n and img_budget - card_reserve >= 3 * n
+    out: dict = {}
+    for cat in config.CATEGORIES:
+        dst = os.path.join(OUT_DIR, "og", f"{cat}.jpg")
+        eticheta = config.CATEGORY_LABELS.get(cat, cat.capitalize())
+        # Fara `published`: `_data_copertei` intoarce None si coperta nu poarta o data care
+        # s-ar potrivi cu build-ul, nu cu articolul distribuit.
+        if (_use_media(os.path.join(MEDIA_DIR, "og", f"{cat}.jpg"), dst)
+                or covers.generate({"title": eticheta, "category": cat}, dst)):
+            out[cat] = f"{config.SITE['url']}/og/{cat}.jpg?v={_content_ver(dst)}"
+    return out
 
 
 def _write(path: str, content: str) -> None:
@@ -727,6 +715,17 @@ def build(articles: list, mod: dict | None = None) -> None:
     # Sortare pe sir; vezi nota din state.save si tests/test_published_is_utc.py.
     by_date = sorted(articles, key=lambda a: a.get("published") or "", reverse=True)
 
+    # Supapa de siguranta a plafonului gazdei. Taie ACUM, inainte de orice scriere, ca
+    # paginile de subiect, paginarea, sitemapurile si feedul sa vada exact ce se publica.
+    incap = _articole_publicabile(len(by_date))
+    if incap < len(by_date):
+        logging.error("!! ingestul depaseste bugetul de fisiere: public %d din %d articole "
+                      "(buget %d, rezerva %d). Fereastra efectiva scade sub ARTICLE_TTL_DAYS=%d "
+                      "-- coboara TTL-ul sau remasoara rezerva cu tools/count_output.py.",
+                      incap, len(by_date), config.OUTPUT_FILE_BUDGET,
+                      config.OUTPUT_NON_ARTICLE_RESERVE, config.ARTICLE_TTL_DAYS)
+        by_date = by_date[:incap]
+
     # coperti: share (og, cu titlu) + arta fara text pentru site -- generate O DATA,
     # INAINTE de orice randare, ca hero-ul si paginile de articol sa le poata folosi.
     # URL-urile poarta ?v=<hash-continut>: imaginile stau pe cai stabile cu TTL 24h,
@@ -754,17 +753,27 @@ def build(articles: list, mod: dict | None = None) -> None:
     # poate sti inainte de scriere. Pasa 1 da arta tuturor si NUMARA ce a scris efectiv;
     # pasa 2 imparte ce a ramas, de la cel mai nou spre cel mai vechi. Asa taierea cade
     # mereu pe arhiva, iar plafonul e respectat exact, nu estimat.
+    # ARTA IN PAGINA, NU IN FISIERE (2026-09-09 -- specs/cloudflare-free-2026-09.md).
+    #
+    # Pana aici fiecare articol primea `art.jpg` + `art.webp` (+ `art-card.webp` pe homepage)
+    # si, cat tinea bugetul, `cover.jpg`: pana la patru fisiere si tot atatea cereri HTTP ca
+    # sa transporte tipografie si geometrie desenate din seed-ul articolului. Pe Workers PAID
+    # incapeau; pe Workers FREE (20.000 de fisiere per versiune) imaginile consumau singure
+    # 65% din plafon si limitau arhiva la ~9 zile.
+    #
+    # Compozitiile nu sunt fotografii: `generator/htmlart.py` le compune din fond plat,
+    # eticheta majuscula, filete aurii si cifra zilei -- zero figurativ, prin decizie de
+    # design (2026-08-05). Le deseneaza browserul, vectorial, din `templates/_art.html`.
+    # Raman FISIERE doar lucrurile care chiar sunt imagini:
+    #   1. fotografia reala de lead (Wikidata/Commons) -- pe pagina, si pe card cand licenta
+    #      nu cere credit;
+    #   2. imaginea din DATE (`event_chart`: harta epicentrului, graficul meteo);
+    #   3. `cover.jpg` -- og:image-ul, doar pentru primele `OG_COVER_MAX_ARTICLES` articole,
+    #      fiindca previzualizarea sociala conteaza cat timp stirea chiar se distribuie.
+    # Restul articolelor primesc og:image-ul CATEGORIEI (15 fisiere, scrise o data per build).
     n = len(by_date)
-    img_budget, n_art, n_cover = _image_budget(n)
-    # Variantele mici pentru cardurile de pe homepage se finanteaza INAINTEA copertelor de
-    # share: sunt putine si sunt exact zona unde Lighthouse a masurat imagini prea mari.
-    # Fara rezerva, pasa 2 golea bugetul si homepage-ul ramanea fara ele (masurat: 0 din 61).
-    card_reserve = len(config.CATEGORIES) * config.HOME_CARDS_PER_CATEGORY + 16
+    n_cover = min(config.OG_COVER_MAX_ARTICLES, n)
     spent = 0
-    # Contorizat separat: sub `_o_singura_pasa` coperta se scrie IN pasa 1, deci `spent`
-    # de la finalul ei nu mai e "cat s-a dus pe arta". Fara asta linia de raport ar spune
-    # ca s-au scris 0 coperti exact cand s-au scris toate.
-    spent_cover = 0
 
     def _spend(ok: bool) -> bool:
         """Contorizeaza un fisier de imagine chiar scris. Returneaza `ok` neschimbat."""
@@ -774,12 +783,10 @@ def build(articles: list, mod: dict | None = None) -> None:
         return ok
 
     def _scrie_coperta(a: dict, cdir: str, aid: str, lp) -> None:
-        """Coperta 1200x630 pentru `a`. Aceeasi in ambele pase -- o singura definitie."""
-        nonlocal spent_cover
-        inainte = spent
+        """Coperta 1200x630 folosita ca og:image pentru `a`."""
         cover_dst = os.path.join(cdir, "cover.jpg")
         # IZZ-0249: o poza cu credit obligatoriu (CC BY/CC BY-SA) NU poate deveni og:image --
-        # acolo nu exista loc pentru legenda cerura de licenta. Garda e aici, nu doar la
+        # acolo nu exista loc pentru legenda ceruta de licenta. Garda e aici, nu doar la
         # apelant, ca sursa unica de adevar sa fie functia care chiar scrie fisierul.
         ok = (bool(lp) and not lp.get("credit_required")
               and _spend(_use_media(os.path.join(MEDIA_DIR, lp["cover"]), cover_dst)))
@@ -789,94 +796,69 @@ def build(articles: list, mod: dict | None = None) -> None:
         if ok:
             a["cover_url"] = (f"{config.SITE['url']}/{a['category']}/{a['slug']}/cover.jpg"
                               f"?v={_content_ver(cover_dst)}")
+            # Marcaj, nu deducere din URL: `sitemap-images.xml` are voie sa listeze doar
+            # imaginile PROPRII articolului. Coperta de categorie e aceeasi pentru mii de
+            # pagini, iar Google citeste asta ca imagine duplicata, nu ca ilustratie.
+            a["cover_propriu"] = True
             if lp and not a.get("lead_credit"):
                 a["lead_credit"] = lp
-        spent_cover += spent - inainte
 
-    # Vezi `_o_singura_pasa`: cand bugetul nu poate lega, coperta se scrie in ACEEASI
-    # iteratie cu arta, cat timp scena e in cache-ul de un element din covers.py.
-    intr_o_pasa = _o_singura_pasa(n, n_art, n_cover, img_budget, card_reserve)
-
-    # PASA 1 -- arta afisata. Fiecare articol care incape primeste imaginea de pe pagina.
     for idx, a in enumerate(by_date):
-        if idx >= n_art or spent >= img_budget:
-            break
+        # Stilul se calculeaza pentru TOATE articolele: e ce deseneaza cardul si pagina cand
+        # articolul nu are fotografie proprie. Nu costa niciun fisier.
+        a["art_style"] = htmlart.stil_inline(a)
         cdir = os.path.join(OUT_DIR, a["category"], a["slug"])
         aid = htmlart.art_id(a)
         art_dst = os.path.join(cdir, "art.jpg")
         webp_dst = os.path.join(cdir, "art.webp")
         lp = leadphotos.get(aid)
-        art_ok = False
         if lp and lp.get("credit_required"):
-            # CC BY / CC BY-SA: fisier si variabile SEPARATE de art.jpg/art_path, ca poza sa nu
-            # poata ajunge pe card, hero sau og:image nici din greseala -- cardurile citesc
-            # doar art_path, deci scurgerea e imposibila prin constructie, nu prin vigilenta.
-            # Scrierile trec prin _spend() ca sa intre in bugetul de fisiere din #209 -- altfel
-            # garda anti-deploy-refuzat le rateaza.
+            # CC BY / CC BY-SA: fisier si variabile SEPARATE de art.jpg/art_path, ca poza sa
+            # nu poata ajunge pe card, hero sau og:image nici din greseala -- cardurile citesc
+            # doar `art_path` si `art_style`, deci scurgerea e imposibila prin constructie.
             photo_dst = os.path.join(cdir, "photo.jpg")
             if _spend(_use_media(os.path.join(MEDIA_DIR, lp["art"]), photo_dst)):
                 a["photo_path"] = f"/{a['category']}/{a['slug']}/photo.jpg?v={_content_ver(photo_dst)}"
                 photo_webp_dst = os.path.join(cdir, "photo.webp")
-                if (lp.get("webp") and spent < img_budget
+                if (lp.get("webp")
                         and _spend(_use_media(os.path.join(MEDIA_DIR, lp["webp"]), photo_webp_dst))):
                     a["photo_webp"] = (f"/{a['category']}/{a['slug']}/photo.webp"
-                                        f"?v={_content_ver(photo_webp_dst)}")
+                                       f"?v={_content_ver(photo_webp_dst)}")
                 a["lead_credit"] = lp   # legenda obligatorie -- fara ea poza n-are voie sa apara
-        elif lp:
-            # prioritate: fotografie reala LEAD (landscape, atribuire-libera) daca articolul
-            # are una -- inlocuieste pictograma generata pe carduri/hero/og.
-            art_ok = _spend(_use_media(os.path.join(MEDIA_DIR, lp["art"]), art_dst))
-            if art_ok:
-                a["lead_credit"] = lp   # afisat DOAR pe pagina de articol (curtoazie)
-                if (lp.get("webp") and spent < img_budget
-                        and _spend(_use_media(os.path.join(MEDIA_DIR, lp["webp"]), webp_dst))):
-                    a["art_webp"] = f"/{a['category']}/{a['slug']}/art.webp?v={_content_ver(webp_dst)}"
-        if art_ok or _spend(_use_media(os.path.join(MEDIA_DIR, f"{aid}.jpg"), art_dst)
-                            or covers.generate_art(a, art_dst)):
+        elif lp and _spend(_use_media(os.path.join(MEDIA_DIR, lp["art"]), art_dst)):
+            # Fotografie reala de lead, fara obligatie de credit: inlocuieste arta generata
+            # pe card, pe hero si pe og:image.
+            a["lead_credit"] = lp       # afisat DOAR pe pagina de articol (curtoazie)
             a["art_path"] = f"/{a['category']}/{a['slug']}/art.jpg?v={_content_ver(art_dst)}"
-            # varianta WebP (~70% mai mica) daca e comisa; <picture> cade pe JPEG altfel
-            if (not a.get("art_webp") and spent < img_budget
-                    and _spend(_use_media(os.path.join(MEDIA_DIR, f"{aid}.webp"), webp_dst))):
+            if (lp.get("webp")
+                    and _spend(_use_media(os.path.join(MEDIA_DIR, lp["webp"]), webp_dst))):
                 a["art_webp"] = f"/{a['category']}/{a['slug']}/art.webp?v={_content_ver(webp_dst)}"
-        # Coperta ACUM, nu peste `n` iteratii: `covers._scene()` tine un singur articol, iar
-        # `generate_art` de mai sus tocmai l-a pus acolo. Despartite, ambele apeluri rateaza.
-        if intr_o_pasa and idx < n_cover:
+        elif a.get("event_chart"):
+            # Imagine DIN DATE (harta epicentrului, graficul meteo): nu e decor derivat din
+            # seed, e continut, deci nu se poate desena din `art_style`. Ramane fisier cat
+            # timp exista randarea Chromium comisa; altfel articolul cade pe arta inline.
+            if _spend(_use_media(os.path.join(MEDIA_DIR, f"{aid}.jpg"), art_dst)):
+                a["art_path"] = f"/{a['category']}/{a['slug']}/art.jpg?v={_content_ver(art_dst)}"
+                if _spend(_use_media(os.path.join(MEDIA_DIR, f"{aid}.webp"), webp_dst)):
+                    a["art_webp"] = f"/{a['category']}/{a['slug']}/art.webp?v={_content_ver(webp_dst)}"
+        if idx < n_cover:
             _scrie_coperta(a, cdir, aid, lp)
 
-    spent_art = spent - spent_cover
-
-    # PASA 2 -- coperta de share, din ce a ramas, tot dinspre cel mai nou.
-    # Sub `_o_singura_pasa` pasa 1 le-a scris deja, cat timp scena era in cache; aici raman
-    # doar cele pe care nu le-a putut finanta. La bugetul de azi bucla asta nu face nimic.
-    for idx, a in enumerate(by_date):
-        if idx >= n_cover or spent >= img_budget - card_reserve:
-            break
-        if a.get("cover_url"):
-            continue
-        cdir = os.path.join(OUT_DIR, a["category"], a["slug"])
-        aid = htmlart.art_id(a)
-        _scrie_coperta(a, cdir, aid, leadphotos.get(aid))
-
-    # Articolele ramase fara coperta proprie isi pastreaza og:image: aceeasi scena, 960x504.
-    # Raportul e identic (1,905:1) si trece minimul de 600x315 al retelelor sociale -- se
-    # pierde titlul desenat peste imagine, nu imaginea. Fara asta ar ramane fara og:image
-    # deloc, iar `sitemap-images.xml` s-ar goli.
+    # og:image pentru arhiva: coperta CATEGORIEI, scrisa o data per build. Fara ea, un articol
+    # de acum doua saptamani distribuit pe Facebook ar aparea fara imagine deloc, iar
+    # `sitemap-images.xml` s-ar goli.
+    og_cat = _coperti_de_categorie()
     fara_coperta = 0
     for a in by_date:
-        if not a.get("cover_url") and a.get("art_path"):
-            a["cover_url"] = f"{config.SITE['url']}{a['art_path']}"
-            fara_coperta += 1
+        if a.get("cover_url"):
+            continue
+        a["cover_url"] = (og_cat.get(a.get("category"))
+                          or f"{config.SITE['url']}/static/og-image.png")
+        fara_coperta += 1
 
-    # print, nu logging.info: radacina sta pe WARNING, deci INFO nu se vede in rulare --
-    # masurat 2026-08-22, linia asta a lipsit cu totul din log. Restul progresului din
-    # pipeline foloseste tot print.
-    print(f">> buget imagini: {img_budget} fisiere pentru {n} articole -> {spent_art} pe arta, "
-          f"{spent - spent_art} pe coperti ({fara_coperta} cad pe og:image din arta)")
-    if n_art < n:
-        logging.warning("!! bugetul nu acopera o imagine per articol: %d din %d articole raman "
-                        "fara. Se ridica doar prin ARTICLE_TTL_DAYS mai mic sau imagini in "
-                        "afara Pages -- NU prin marirea bugetului fara o masuratoare noua.",
-                        n - n_art, n)
+    # print, nu logging.info: radacina sta pe WARNING, deci INFO nu se vede in rulare.
+    print(f">> imagini: {spent} fisiere pentru {n} articole ({n_cover} coperti proprii, "
+          f"{fara_coperta} pe coperta de categorie); arta se deseneaza in pagina")
 
     hero = _pick_hero(by_date)
     hero_urls = {a["url"] for a in hero}
@@ -888,22 +870,6 @@ def build(articles: list, mod: dict | None = None) -> None:
         items = [a for a in by_date
                  if a.get("category") == cat and a["url"] not in hero_urls and home_fresh(a)]
         by_category[cat] = _diversify(items)[:config.HOME_CARDS_PER_CATEGORY]
-
-    # Variantele mici se emit doar pentru cardurile homepage-ului (nu pentru toate
-    # permalinkurile) — economie in primul viewport, sub plafonul gratuit de fisiere Pages.
-    homepage_cards = {a["url"] for a in hero[1:]}
-    homepage_cards.update(a["url"] for items in by_category.values() for a in items)
-    for a in by_date:
-        if a["url"] not in homepage_cards or not a.get("art_path"):
-            continue
-        card_dst = os.path.join(OUT_DIR, a["category"], a["slug"], "art-card.webp")
-        source = os.path.join(OUT_DIR, a["category"], a["slug"], "art.webp")
-        if not os.path.isfile(source):
-            source = os.path.join(OUT_DIR, a["category"], a["slug"], "art.jpg")
-        # numarata in acelasi buget: sunt putine (61 masurat), dar garantia trebuie sa fie
-        # exacta, nu aproximativa -- exact aproximarea a lasat plafonul sa fie depasit tacut.
-        if spent < img_budget and _spend(_responsive_webp(source, card_dst)):
-            a["art_card_webp"] = f"/{a['category']}/{a['slug']}/art-card.webp?v={_content_ver(card_dst)}"
 
     # homepage
     item_list = {
@@ -940,7 +906,11 @@ def build(articles: list, mod: dict | None = None) -> None:
     idf = {s: math.log(_n_docs / len(d["articles"])) for s, d in ents.items()}
     subject_tpl = env.get_template("subject.html")
     for s, d in ents.items():
-        has_feed = len(d["articles"]) >= 3
+        # Feedul de subiect e o suprafata de urmarire, nu una de indexare: are sens doar
+        # unde chiar apare stire noua. Pragul a urcat 3 -> `SUBJECT_FEED_MIN_ARTICLES` la
+        # intoarcerea pe Workers Free -- 2.118 feeduri erau 11% din plafonul de 20.000, iar
+        # majoritatea acopereau entitati cu trei aparitii intr-o luna.
+        has_feed = len(d["articles"]) >= config.SUBJECT_FEED_MIN_ARTICLES
         co: dict = {}
         for a in d["articles"]:
             for other in art_slugs.get(a["url"], ()):  
@@ -1064,9 +1034,9 @@ def build(articles: list, mod: dict | None = None) -> None:
     _render_sections(env)
     _render_ghiduri(env, by_date)
     # Pagina 404 nu e o categorie goala, e capatul unui link mort — si cel mai frecvent motiv
-    # NU e o adresa gresita, ci un articol EXPIRAT. `config.ARTICLE_TTL_DAYS = 30`, iar
+    # NU e o adresa gresita, ci un articol EXPIRAT. `config.ARTICLE_TTL_DAYS = 21`, iar
     # `state.expire()` scoate articolul din stare, deci pagina lui nu se mai randeaza:
-    # orice permalink partajat moare intr-o luna. (Era o saptamana pana la #197, ridicat
+    # orice permalink partajat moare in trei saptamani. (Era o saptamana pana la #197, ridicat
     # la 30 fiindca Google raportase 193 de pagini indexate care dadeau 404.) Masurat pe live 8/8, cu control pozitiv
     # (articol viu -> 200) si negativ (articol expirat -> 404) — vezi
     # handoff/arhiva/2026-08-06-handoff-integral.md.
@@ -1075,11 +1045,11 @@ def build(articles: list, mod: dict | None = None) -> None:
     # primea `articles=[]` si cadea pe starea goala a sablonului de categorie. Adica raspundea
     # la alta intrebare decat cea pusa de vizitator.
     #
-    # Asta NU repara expirarea — aia cere o decizie de proprietar, fiindca e marginita tare:
-    # planul gratuit Cloudflare Pages da 20.000 de fisiere pe site (documentatie, verificat
-    # 2026-08-07), iar `output/` are azi 10.997 la ~3,5 fisiere/articol, deci TTL-ul nu poate
-    # trece realist de ~14 zile. Aici se repara doar capatul: spune ce s-a intamplat si da
-    # vizitatorului stirile de acum, in loc sa-l lase intr-o fundatura.
+    # Asta NU repara expirarea, si expirarea e marginita de plafonul gazdei: pe Workers Free
+    # o versiune are 20.000 de fisiere. Mutarea artei in pagina (2026-09-09) a scazut costul
+    # de la ~3,2 la ~1,1 fisiere per articol, ceea ce a urcat fereastra de la ~9 zile la trei
+    # saptamani — dar nu o face nelimitata. Aici se repara doar capatul: spune ce s-a
+    # intamplat si da vizitatorului stirile de acum, in loc sa-l lase intr-o fundatura.
     _write(os.path.join(OUT_DIR, "404.html"),
            env.get_template("category.html").render(**_base_ctx(
                "/404.html", category="Pagina negăsită",
@@ -1111,10 +1081,16 @@ def _write_build_metadata(article_count: int) -> None:
     Local, manifestul rămâne explicit ca neidentificat, în loc să pretindă un commit
     care nu există.
     """
-    commit = (os.getenv("WORKERS_CI_COMMIT_SHA") or os.getenv("CF_PAGES_COMMIT_SHA")
-              or os.getenv("GITHUB_SHA") or os.getenv("BUILD_COMMIT_SHA") or "local")
-    branch = (os.getenv("WORKERS_CI_BRANCH") or os.getenv("CF_PAGES_BRANCH")
-              or os.getenv("GITHUB_REF_NAME") or os.getenv("BUILD_BRANCH") or "local")
+    # `BUILD_*` PRIMUL: e singurul override EXPLICIT din lant, restul sunt valori deduse din
+    # mediul gazdei. Pana pe 2026-09-12 statea ultimul, dupa `GITHUB_SHA`, care e mereu setat in
+    # Actions — deci nu putea suprascrie niciodata nimic acolo, adica exact unde ar fi folosit.
+    # Cazul concret: jobul `mirror` face checkout pe content-sha dar ruleaza cu `GITHUB_SHA` =
+    # commitul care a declansat rularea, un STRAMOS; manifestul oglinzii raporta deci un commit
+    # mai vechi decat continutul pe care tocmai il publicase. Vezi `tools/verify_release.py`.
+    commit = (os.getenv("BUILD_COMMIT_SHA") or os.getenv("WORKERS_CI_COMMIT_SHA")
+              or os.getenv("CF_PAGES_COMMIT_SHA") or os.getenv("GITHUB_SHA") or "local")
+    branch = (os.getenv("BUILD_BRANCH") or os.getenv("WORKERS_CI_BRANCH")
+              or os.getenv("CF_PAGES_BRANCH") or os.getenv("GITHUB_REF_NAME") or "local")
     # Numarul REAL de fisiere, nu cel prezis. Bugetul din `render` imparte imaginile pe
     # baza unei rezerve estimate; asta e masuratoarea care spune daca estimarea mai tine.
     # Ajunge in build.json ca sa fie citibila pe live, nu doar in logul rularii.
@@ -1576,7 +1552,7 @@ def _write_sitemap(articles: list, now: datetime = None) -> None:
     # Image sitemap
     img_locs = []
     for a in articles:
-        if a.get("cover_url"):
+        if a.get("cover_url") and a.get("cover_propriu"):
             img_locs.append((f"{url}/{a['category']}/{a['slug']}/",
                               a.get("cover_url"),
                               a.get("title") or a.get("original_title", "")))
