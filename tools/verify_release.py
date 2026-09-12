@@ -48,9 +48,16 @@ TIMEOUT_SECONDS = int(os.getenv("RELEASE_TIMEOUT_SECONDS", "1500"))
 # un STRAMOS al continutului), fiindca in `render._write_build_metadata` `GITHUB_SHA` are
 # precedenta peste `BUILD_COMMIT_SHA`. Deci o comparatie de commit ar raporta „vechi" la
 # fiecare rulare, corect tehnic si inutil practic. `generated_at` masoara direct ce conteaza:
-# cat de veche e copia. Remediul curat — o linie `BUILD_COMMIT_SHA` in pasul de render al
-# jobului `mirror` — cere editarea unui workflow, blocata in sesiune de hook-ul de
-# control-plane (`DENY: direct agent edit blocked for .github/workflows/build.yml`).
+# cat de veche e copia.
+#
+# Remediul curat cere DOUA schimbari, nu una — prima versiune a acestui comentariu prescria doar
+# a doua, care singura n-ar fi facut nimic:
+#   (a) `BUILD_COMMIT_SHA` trebuie sa BATA `GITHUB_SHA` in `render._write_build_metadata`.
+#       Facut: e acum primul in lant, fiindca e override EXPLICIT, iar celelalte sunt valori
+#       deduse din mediu. Fara asta, pasul (b) e inert: `GITHUB_SHA` e mereu setat in Actions.
+#   (b) o linie `BUILD_COMMIT_SHA: ${{ needs.pipeline.outputs.content_sha }}` in pasul de render
+#       al jobului `mirror`. Blocata in sesiune de hook-ul de control-plane, verificat incercand:
+#       `DENY: direct agent edit blocked for .github/workflows/build.yml`.
 #
 # De ce NEBLOCANT. Cand sonda asta ruleaza, primarul a servit deja release-ul cerut; site-ul
 # public functioneaza. Un mirror ramas in urma degradeaza redundanta, nu publicarea, si a face
@@ -86,6 +93,8 @@ def _probe(base: str) -> tuple[bool, str]:
         data = _get_json(f"{base}/build.json?{nonce}")
     except (HTTPError, URLError, ValueError) as exc:
         return False, f"manifest indisponibil ({exc})"
+    if not isinstance(data, dict):
+        return False, f"manifest care nu e obiect JSON: {type(data).__name__}"
     deployed = str(data.get("commit") or "")
     if not deployed or deployed == "local":
         return False, "manifest fără SHA public"
@@ -113,6 +122,11 @@ def verifica_mirror(base: str = "", max_age_min: int = 0) -> tuple[bool, str]:
         data = _get_json(f"{base}/build.json?mirror={int(time.time())}")
     except (HTTPError, URLError, ValueError) as exc:
         return False, f"manifest indisponibil ({exc})"
+    # JSON valid sintactic dar care nu e obiect — `[]` dupa o publicare stricata — ar da
+    # `AttributeError` pe `.get`, adica un traceback si cod de iesire nenul TOCMAI in bucata
+    # proiectata sa fie neblocanta. Ar fi transformat plasa de siguranta in blocaj.
+    if not isinstance(data, dict):
+        return False, f"manifest care nu e obiect JSON: {type(data).__name__}"
     brut = str(data.get("generated_at") or "")
     if not brut:
         return False, "manifest fără `generated_at`"

@@ -126,3 +126,39 @@ def test_originile_primare_raman_blocante(monkeypatch, capsys):
     monkeypatch.setattr(vr, "TIMEOUT_SECONDS", 0)
     monkeypatch.setattr(vr, "_probe", lambda _b: (False, "serveste altceva"))
     assert vr.main() == 1
+
+
+# --- constatarile Codex pe PR #334 -----------------------------------------------------
+
+
+def test_manifest_care_nu_e_obiect_NU_crapa(manifest):
+    """P2 Codex: JSON valid dar care nu e obiect dadea AttributeError pe `.get`.
+
+    Adica traceback si cod de iesire nenul TOCMAI in bucata proiectata sa fie neblocanta —
+    plasa de siguranta s-ar fi transformat in blocaj. Cazul real: `[]` dupa o publicare
+    stricata a oglinzii.
+    """
+    for valoare in ([], "text", 42, None):
+        manifest(valoare)
+        ok, detaliu = vr.verifica_mirror("https://exemplu.test")
+        assert not ok and "nu e obiect JSON" in detaliu, valoare
+
+
+def test_manifest_nedict_nu_blocheaza_publicarea(monkeypatch, capsys):
+    """Acelasi caz, pe calea completa: trebuie sa ramana avertisment, nu esec."""
+    monkeypatch.setattr(vr, "EXPECTED", "c" * 40)
+    monkeypatch.setattr(vr, "BASE_URLS", ("https://primar.test",))
+    monkeypatch.setattr(vr, "_probe", lambda _b: (True, "ok"))
+    monkeypatch.setattr(vr, "_get_json", lambda _u: [])
+    assert vr.main() == 0
+    assert "::warning::" in capsys.readouterr().out
+
+
+def test_si_originile_primare_supravietuiesc_unui_manifest_nedict(manifest):
+    """Aceeasi clasa de defect exista si pe calea blocanta: un traceback e mai rau decat
+    un mesaj clar, fiindca ascunde ce anume serveste originea."""
+    monkey = vr._probe
+    assert callable(monkey)
+    manifest([])
+    ok, detaliu = vr._probe("https://primar.test")
+    assert not ok and "nu e obiect JSON" in detaliu
