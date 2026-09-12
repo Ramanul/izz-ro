@@ -14,15 +14,25 @@ PROTECTED_TOKENS = (
     "articles.json",
     "feed_cache.json",
     "wrangler.jsonc",
-    ".claude/settings.json",
+    # Nume SCURT, nu calea cu prefix de director. Masurat 2026-09-12: `cd .claude && echo x >
+    # settings.json` TRECEA, fiindca tokenul era calea completa. Ceilalti tokeni erau deja
+    # scurti — `articles.json` prinde si `cd data && ...` — deci garda era inconsecventa cu
+    # ea insasi, iar gaura statea exact pe traiectoria muncii normale a unui agent, nu pe a
+    # unuia care vrea s-o ocoleasca. `.github/workflows` ramane cale: e un DIRECTOR, iar
+    # numele lui scurt („workflows") ar prinde orice mentiune a cuvantului.
+    "settings.json",
     ".github/workflows",
 )
 
 # Indicatori de scriere în comenzi Bash: redirecturi, tee, editare in-place, ștergere,
-# mutare/copiere, și descrieri de mod 'w' pentru uneltele python (open/write_text).
+# mutare/copiere, și apeluri de scriere din python.
+#
+# `.write` acopera modul APPEND, pe care lista de moduri `'w'` il rata: masurat 2026-09-12,
+# `open('.claude/settings.json','a').write('x')` TRECEA. Un append pe un JSON de configurare
+# il strica la fel de bine ca o rescriere.
 SCRITORI = (
     ">", ">>", "tee ", "sed -i", " rm ", " mv ", " cp ", "truncate ", " dd ",
-    "'w'", '"w"', "write_text", "unlink(", "rmtree", "shutil",
+    "'w'", '"w"', ".write", "write_text", "unlink(", "rmtree", "shutil",
 )
 
 
