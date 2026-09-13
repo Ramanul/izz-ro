@@ -24,9 +24,9 @@
 - **REDUNDANȚA — REPARAT [IZZ-0370 → IZZ-0372].** Rămâne de curățat: manifestul mirror-ului
   poartă `GITHUB_SHA`, nu content-sha — o linie `BUILD_COMMIT_SHA` în jobul `mirror`, blocată de
   hook (capacitate), NU de §10, care nu acoperă workflow-uri [IZZ-0373].
-- **PR queue — 5 deschise:** #339 STATE+reguli (acest PR) · #336 registru IZZ-0313 · #320 Lee ·
-  #297 Cronica vie · #280 CSS. Ieșite: #337 merged, #333 merged, #331 merged, #330 merged,
-  #329 merged; #324 și #321 închise nemergeuite.
+- **PR queue — 4 deschise:** #336 registru IZZ-0313 · #320 Lee · #297 Cronica vie · #280 CSS.
+  Ieșite: #337 merged, #333 merged, #331 merged, #330 merged, #329 merged; #324 și #321
+  închise nemergeuite.
 
 ## Audit closure status
 
