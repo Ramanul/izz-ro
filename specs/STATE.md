@@ -8,7 +8,7 @@
 > Where the rest lives: `specs/regim-reguli.md` — unified audit closure ·
 > `specs/registru.tsv` — decisions · `CLAUDE.md` — canonical contract.
 
-**Updated:** 2026-09-12 (#333 merged; prospețimea mirror-ului nu e verificată de nimeni)
+**Updated:** 2026-09-13 (main deblocat; garda de sub-punct verifica 1 trimitere din 14 — reparată)
 
 ## Open
 
@@ -21,9 +21,12 @@
 - **`izz-failover` — KEEP [IZZ-0362]; marja e DECLARAT NECUNOSCUTĂ [IZZ-0367, IZZ-0369].** Ambele
   cifre publicate („2.9k/zi", „1.5k/zi") sunt retrase: prima fără fereastră, a doua fără `Analytics:Read`.
 - **INGEST COLLAPSE — fix in #328, merged.** Verify recovery on live volume; levers owner's call. [IZZ-0317]
-- **PR queue — 5 deschise:** #337 harta-audit (acest PR) · #336 registru IZZ-0313 · #320 Lee ·
-  #297 Cronica vie · #280 CSS. Ieșite pe 12 sep: #333 merged [`cc9a7793`], #331 merged,
-  #330 merged, #329 merged (dependabot), #324 și #321 închise.
+- **REDUNDANȚA — REPARAT [IZZ-0370 → IZZ-0372].** Rămâne de curățat: manifestul mirror-ului
+  poartă `GITHUB_SHA`, nu content-sha — o linie `BUILD_COMMIT_SHA` în jobul `mirror`, blocată de
+  hook (capacitate), NU de §10, care nu acoperă workflow-uri [IZZ-0373].
+- **PR queue — 4 deschise:** #336 registru IZZ-0313 · #320 Lee · #297 Cronica vie · #280 CSS.
+  Ieșite: #337 merged, #333 merged, #331 merged, #330 merged, #329 merged; #324 și #321
+  închise nemergeuite.
 
 ## Audit closure status
 

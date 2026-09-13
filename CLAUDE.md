@@ -123,8 +123,8 @@ Un task per declanșare, luat din `specs/STATE.md`; nu inventa muncă și nu ati
 ## 15. Delegare
 Sub-agenții sunt opționali și trebuie folosiți când reduc costul net. Pentru lucrări paralele folosește `isolation: "worktree"`; doi agenți nu scriu aceeași ramură.
 
-## 16. Verificare în două roluri
-Pentru orice schimbare vizibilă:
+## 16. Verificare — DOUĂ roluri, TREI axe
+Pentru orice schimbare vizibilă. **Rolurile sunt două, axele de verificare sunt trei:** a treia nu e un al treilea rol și „ambele roluri" (§5.8) NU o acoperă — §5.9 o cere separat. Nu raporta „verificat pe ambele axe" când ai făcut doar 1 și 2.
 1. **Programator:** rulează randare/teste/QA.
 2. **Utilizator:** verifică în Chromium headless simptomul real și măsoară rezultatul.
 3. **Livrabilitate:** confirmă hash/versioning al assetelor (`render._asset_ver`).
@@ -132,7 +132,7 @@ Pentru orice schimbare vizibilă:
 5. Pentru live, folosește `?cb=$(date +%s)` și `bash tools/verify_allowlist.sh` pentru hosturile accesibile din sesiunea curentă.
 6. Dacă ceva nu poate fi verificat, numește exact rolul și motivul.
 
-### 16.3 Live verification — regula actuală
+### 16a. Verificare live — regula actuală
 `izz.ro` și `www.izz.ro` pot fi blocate de proxy; **originea Worker este calea de verificare când este accesibilă**. Verificarea curentă se face cu `bash tools/verify_allowlist.sh`, pe `https://izz-ro.andifreelancer2.workers.dev/` când hostul este disponibil. Originea poate rămâne în urmă față de domeniul public până la un deploy nou; un `200` la origine nu dovedește că domeniul public are aceeași versiune.
 
 ## 17. Cadență

@@ -196,7 +196,7 @@ Remediu: `autoritate` are acum trei valori — `efectiva` / `conditionata` / `ni
 Pana aici auditul fusese aplicat pe o singura axa: „exista si cine opreste", citita din repo.
 Sectiunea asta e a doua axa, cea pe care o vede cititorul. Masurat pe originea Worker, fiindca
 `izz.ro` si `www.izz.ro` sunt **blocate de proxy** din aceasta sesiune — `bash tools/verify_allowlist.sh`:
-CONNECT refuzat, dar numele se rezolva in DNS, deci refuz de politica, nu nume gresit (§16.3).
+CONNECT refuzat, dar numele se rezolva in DNS, deci refuz de politica, nu nume gresit (§16a).
 
 | Ce | Rezultat |
 |---|---|
