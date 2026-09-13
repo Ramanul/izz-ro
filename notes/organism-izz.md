@@ -73,7 +73,7 @@ publicarea, e cea care consumă bugetul** — o inversiune care schimbă unde se
 Dosarul cu cifra și comanda: `specs/resurse-gratuite.md` §3.1 (`IZZ-0237`, în #204).
 
 **c) Membrana selectiv permeabilă.** Măsurat azi: GitHub trece, `izz.ro` nu. Corpul remote e
-proiectat să nu-și poată vedea propria piele — de aceea §16.3 impune formularea „reparat +
+proiectat să nu-și poată vedea propria piele — de aceea §16.4 impune formularea „reparat +
 verificat local; rămâne de confirmat pe live".
 
 **d) Patru feluri de memorie, cu durate radical diferite.**
