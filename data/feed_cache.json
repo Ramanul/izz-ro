@@ -2,139 +2,139 @@
  "bbc_europe": {
   "etag": null,
   "last_modified": null,
-  "fetched_at": "2026-09-13T12:05:44.916976+00:00",
+  "fetched_at": "2026-09-13T16:26:09.221877+00:00",
   "server": "Belfrage"
  },
  "guardian_eu": {
-  "etag": "W/\"hash-519025959780192984\"",
+  "etag": "W/\"hash1897458601696703853\"",
   "last_modified": null,
-  "fetched_at": "2026-09-13T12:05:44.861788+00:00",
+  "fetched_at": "2026-09-13T16:26:09.131174+00:00",
   "server": null
  },
  "politico_eu": {
-  "etag": "\"46ddda43f044d0a36135e8ad316fbab8\"",
-  "last_modified": "Sun, 13 Sep 2026 12:01:48 GMT",
-  "fetched_at": "2026-09-13T12:05:44.855791+00:00",
+  "etag": "\"21b84620b7569af3e3d41e29bbf2f16a\"",
+  "last_modified": "Sun, 13 Sep 2026 16:19:27 GMT",
+  "fetched_at": "2026-09-13T16:26:09.165813+00:00",
   "server": "cloudflare"
  },
  "dw_europe": {
   "etag": null,
   "last_modified": null,
-  "fetched_at": "2026-09-13T12:05:45.329524+00:00",
+  "fetched_at": "2026-09-13T16:26:09.457026+00:00",
   "server": null
  },
  "el_moldova": {
   "etag": null,
   "last_modified": null,
-  "fetched_at": "2026-09-13T12:05:46.448906+00:00",
+  "fetched_at": "2026-09-13T16:26:09.966531+00:00",
   "server": null
  },
  "extern": {
   "etag": null,
   "last_modified": null,
-  "fetched_at": "2026-09-13T12:05:47.366729+00:00",
+  "fetched_at": "2026-09-13T16:26:11.344299+00:00",
   "server": "RDS-WebServer v2"
  },
  "gsp": {
   "etag": null,
   "last_modified": null,
-  "fetched_at": "2026-09-13T12:06:03.591273+00:00",
+  "fetched_at": "2026-09-13T16:26:27.502325+00:00",
   "server": "cloudflare"
  },
  "digisport": {
   "etag": null,
   "last_modified": null,
-  "fetched_at": "2026-09-13T12:05:56.308837+00:00",
+  "fetched_at": "2026-09-13T16:26:19.293516+00:00",
   "server": "RDS-WebServer v2"
  },
  "prosport": {
-  "etag": "\"af6b8615ad0bd0af00312908c94a6d04\"",
-  "last_modified": "Sun, 13 Sep 2026 12:02:45 GMT",
-  "fetched_at": "2026-09-13T12:06:05.811763+00:00",
+  "etag": "\"9a07c593e722e5b34c45df001524cb25\"",
+  "last_modified": "Sun, 13 Sep 2026 16:16:26 GMT",
+  "fetched_at": "2026-09-13T16:26:29.814861+00:00",
   "server": "cloudflare"
  },
  "startup": {
   "etag": null,
   "last_modified": null,
-  "fetched_at": "2026-09-13T12:05:56.270371+00:00",
+  "fetched_at": "2026-09-13T16:26:19.717661+00:00",
   "server": "nginx/1.30.4"
  },
  "autocritica": {
-  "etag": "\"b4e981aa78ed87e0001c344b3356e57d\"",
-  "last_modified": "Sat, 12 Sep 2026 15:57:44 GMT",
-  "fetched_at": "2026-09-13T12:06:08.694102+00:00",
+  "etag": "\"7b8dc4cb87a9a45ed1991abb75810483\"",
+  "last_modified": "Sun, 13 Sep 2026 16:15:13 GMT",
+  "fetched_at": "2026-09-13T16:26:34.219101+00:00",
   "server": "cloudflare"
  },
  "spotmedia": {
-  "etag": "\"6853eb332e994c9c5e479e90c9bbc668\"",
-  "last_modified": "Sun, 13 Sep 2026 11:04:09 GMT",
-  "fetched_at": "2026-09-13T12:06:09.143075+00:00",
+  "etag": "\"266958cff2ef28152a91556b5867560b\"",
+  "last_modified": "Sun, 13 Sep 2026 15:06:55 GMT",
+  "fetched_at": "2026-09-13T16:26:33.215183+00:00",
   "server": "cloudflare"
  },
  "digi24": {
   "etag": null,
   "last_modified": null,
-  "fetched_at": "2026-09-13T12:05:59.344901+00:00",
+  "fetched_at": "2026-09-13T16:26:22.970431+00:00",
   "server": "RDS-WebServer v2"
  },
  "hotnews": {
-  "etag": "\"38edf0a71c03de11407ca5407a84f805\"",
-  "last_modified": "Sun, 13 Sep 2026 11:56:27 GMT",
-  "fetched_at": "2026-09-13T12:05:59.465468+00:00",
+  "etag": "\"45cd97d2490e3de63f84c4a58302709c\"",
+  "last_modified": "Sun, 13 Sep 2026 16:04:40 GMT",
+  "fetched_at": "2026-09-13T16:26:23.402456+00:00",
   "server": "nginx"
  },
  "g4media": {
-  "etag": "\"2b212768c0bf228f60302d4b1ff02e3a\"",
-  "last_modified": "Sun, 13 Sep 2026 11:55:28 GMT",
-  "fetched_at": "2026-09-13T12:06:11.217805+00:00",
+  "etag": "\"242288bd04caea234d33761e2f5615c0\"",
+  "last_modified": "Sun, 13 Sep 2026 16:19:49 GMT",
+  "fetched_at": "2026-09-13T16:26:35.396363+00:00",
   "server": "cloudflare"
  },
  "recorder": {
   "etag": "W/\"e4fdd6c22ac28ad94a0c662fc3e33529\"",
   "last_modified": "Sat, 12 Sep 2026 05:19:06 GMT",
-  "fetched_at": "2026-09-13T12:06:13.677659+00:00",
+  "fetched_at": "2026-09-13T16:26:37.813829+00:00",
   "server": "cloudflare"
  },
  "contributors": {
   "etag": "W/\"6c6cc6cfb1d11400d82a100897293c49\"",
   "last_modified": "Sun, 13 Sep 2026 05:12:24 GMT",
-  "fetched_at": "2026-09-13T12:06:15.923557+00:00",
+  "fetched_at": "2026-09-13T16:26:39.973678+00:00",
   "server": "cloudflare"
  },
  "tolo": {
   "etag": "\"a79f37c15efffec77ef457f4c9a4094a\"",
   "last_modified": "Sat, 20 Jun 2026 21:47:13 GMT",
-  "fetched_at": "2026-09-13T12:06:17.612219+00:00",
+  "fetched_at": "2026-09-13T16:26:41.861861+00:00",
   "server": "cloudflare"
  },
  "zf": {
   "etag": null,
-  "last_modified": "Sun, 13 Sep 2026 12:05:30 GMT",
-  "fetched_at": "2026-09-13T12:06:11.094815+00:00",
+  "last_modified": "Sun, 13 Sep 2026 16:26:35 GMT",
+  "fetched_at": "2026-09-13T16:26:36.096709+00:00",
   "server": "nginx"
  },
  "economica": {
-  "etag": "\"f060762e5f330ab870f2802ae67cd0af\"",
-  "last_modified": "Sun, 13 Sep 2026 11:48:40 GMT",
-  "fetched_at": "2026-09-13T12:06:22.081573+00:00",
+  "etag": "\"c7671694a1183011078dc4159103cca9\"",
+  "last_modified": "Sun, 13 Sep 2026 15:29:56 GMT",
+  "fetched_at": "2026-09-13T16:26:45.492077+00:00",
   "server": "cloudflare"
  },
  "economedia": {
-  "etag": "\"e9772e2cd96727079de1b3aef16bac4e\"",
-  "last_modified": "Sun, 13 Sep 2026 11:50:43 GMT",
-  "fetched_at": "2026-09-13T12:06:24.742576+00:00",
+  "etag": "\"92f5feea9a4b71a75aa6cc6c8c46d5c3\"",
+  "last_modified": "Sun, 13 Sep 2026 15:03:42 GMT",
+  "fetched_at": "2026-09-13T16:26:47.781665+00:00",
   "server": "cloudflare"
  },
  "cursdeguv": {
   "etag": null,
-  "last_modified": "Sun, 13 Sep 2026 12:05:45 GMT",
-  "fetched_at": "2026-09-13T12:06:11.760825+00:00",
+  "last_modified": "Sun, 13 Sep 2026 16:11:56 GMT",
+  "fetched_at": "2026-09-13T16:26:36.863437+00:00",
   "server": "nginx"
  },
  "protv": {
   "etag": null,
   "last_modified": null,
-  "fetched_at": "2026-09-13T12:06:26.289764+00:00",
+  "fetched_at": "2026-09-13T16:26:49.680140+00:00",
   "server": "cloudflare"
  },
  "libertatea": {
@@ -144,27 +144,27 @@
   "server": "cloudflare"
  },
  "csid": {
-  "etag": "\"c8a4f956104a5ed3820535179438c211\"",
-  "last_modified": "Sun, 13 Sep 2026 11:48:19 GMT",
-  "fetched_at": "2026-09-13T11:57:12.034730+00:00",
+  "etag": "\"2d78e333412232f73ccdb8a1bf876290\"",
+  "last_modified": "Sun, 13 Sep 2026 14:00:31 GMT",
+  "fetched_at": "2026-09-13T16:17:42.886105+00:00",
   "server": "cloudflare"
  },
  "urban": {
-  "etag": "\"4a5306d0e0ca74f012e2d20b1fb61a28\"",
-  "last_modified": "Sun, 13 Sep 2026 07:33:57 GMT",
-  "fetched_at": "2026-09-13T11:57:15.271106+00:00",
+  "etag": "\"b44f139bfabd2677ba04e872b583fa78\"",
+  "last_modified": "Sun, 13 Sep 2026 13:12:49 GMT",
+  "fetched_at": "2026-09-13T16:17:46.514082+00:00",
   "server": "cloudflare"
  },
  "avantaje": {
-  "etag": "\"15f3cd987da126a1d3b52ef6b8ff65f9\"",
-  "last_modified": "Fri, 11 Sep 2026 15:32:23 GMT",
-  "fetched_at": "2026-09-13T06:10:54.101390+00:00",
+  "etag": "\"dbc7ef4d2c551512fa25a591761e3a87\"",
+  "last_modified": "Sun, 13 Sep 2026 15:47:59 GMT",
+  "fetched_at": "2026-09-13T16:17:49.455451+00:00",
   "server": "cloudflare"
  },
  "nwradu": {
   "etag": "\"ff1921afb0aa128554fd03c67db977ba\"",
   "last_modified": "Sun, 13 Sep 2026 03:58:54 GMT",
-  "fetched_at": "2026-09-13T11:57:17.571477+00:00",
+  "fetched_at": "2026-09-13T16:17:47.834758+00:00",
   "server": "nginx"
  },
  "unica": {
@@ -176,43 +176,43 @@
  "elle": {
   "etag": "\"f11d5265b0f0486df144c47897051daa\"",
   "last_modified": "Sun, 13 Sep 2026 11:18:40 GMT",
-  "fetched_at": "2026-09-13T11:57:16.397322+00:00",
+  "fetched_at": "2026-09-13T16:17:46.820074+00:00",
   "server": "cloudflare"
  },
  "sfatulparintilor": {
   "etag": "\"74bb24a59420a9d8ce535ae38c297aca\"",
   "last_modified": "Sun, 13 Sep 2026 08:00:00 GMT",
-  "fetched_at": "2026-09-13T11:57:11.324482+00:00",
+  "fetched_at": "2026-09-13T16:17:41.909272+00:00",
   "server": "nginx/1.28.1"
  },
  "liternet": {
-  "etag": "W/\"5c78-65b5b4d8eefe0-gzip\"",
-  "last_modified": "Sun, 13 Sep 2026 11:06:01 GMT",
-  "fetched_at": "2026-09-13T11:57:19.858794+00:00",
+  "etag": "W/\"5c78-65b5f7e6d060c-gzip\"",
+  "last_modified": "Sun, 13 Sep 2026 16:06:01 GMT",
+  "fetched_at": "2026-09-13T16:17:50.746800+00:00",
   "server": "cloudflare"
  },
  "scena9": {
   "etag": null,
   "last_modified": null,
-  "fetched_at": "2026-09-13T11:57:12.935305+00:00",
+  "fetched_at": "2026-09-13T16:17:43.486959+00:00",
   "server": "nginx"
  },
  "bookhub": {
-  "etag": "\"9d0e7262937f37e5bd057d1b528a15b7\"",
-  "last_modified": "Sat, 12 Sep 2026 14:31:20 GMT",
-  "fetched_at": "2026-09-13T11:57:11.985314+00:00",
+  "etag": "\"3801b49f270207a62ba5c3ac07e52c67\"",
+  "last_modified": "Sun, 13 Sep 2026 12:33:44 GMT",
+  "fetched_at": "2026-09-13T16:17:42.160606+00:00",
   "server": "LiteSpeed"
  },
  "pr_buzau": {
   "etag": "\"f969ebd6ff4eb95e5f54b9a29a5140a9\"",
   "last_modified": null,
-  "fetched_at": "2026-09-13T11:57:17.169982+00:00",
+  "fetched_at": "2026-09-13T16:17:47.727179+00:00",
   "server": "nginx"
  },
  "zcj": {
   "etag": null,
   "last_modified": null,
-  "fetched_at": "2026-09-13T12:05:12.181031+00:00",
+  "fetched_at": "2026-09-13T16:25:38.342742+00:00",
   "server": "Apache/2.4.6 (CentOS) OpenSSL/1.0.2k-fips mod_fcgid/2.3.9 PHP/5.6.33"
  },
  "bzi": {
@@ -230,31 +230,31 @@
  "pressalert": {
   "etag": null,
   "last_modified": "Sun, 13 Sep 2026 12:03:56 GMT",
-  "fetched_at": "2026-09-13T12:05:10.356905+00:00",
+  "fetched_at": "2026-09-13T16:25:35.394740+00:00",
   "server": "cloudflare"
  },
  "tion": {
-  "etag": "\"7616068cc8f5450b6869b7b9acf85758\"",
-  "last_modified": "Sun, 13 Sep 2026 10:50:38 GMT",
-  "fetched_at": "2026-09-13T12:05:14.902907+00:00",
+  "etag": "\"c6a9d43565988fbf70842e8708ebd234\"",
+  "last_modified": "Sun, 13 Sep 2026 14:29:42 GMT",
+  "fetched_at": "2026-09-13T16:25:39.872734+00:00",
   "server": "nginx"
  },
  "bizbrasov": {
   "etag": "\"b3202b24da7f900f29828e6909502192\"",
   "last_modified": "Sun, 13 Sep 2026 11:07:28 GMT",
-  "fetched_at": "2026-09-13T12:05:16.742155+00:00",
+  "fetched_at": "2026-09-13T16:25:41.246476+00:00",
   "server": "LiteSpeed"
  },
  "newsbv": {
   "etag": "\"6e3efd6ab6c1ed1009e3ebd263842f66\"",
   "last_modified": "Sat, 12 Sep 2026 19:12:52 GMT",
-  "fetched_at": "2026-09-13T12:05:21.194896+00:00",
+  "fetched_at": "2026-09-13T16:25:45.851116+00:00",
   "server": "LiteSpeed"
  },
  "pl_mehedinti_municipiul_drobeta_turnu_severin": {
   "etag": "\"abbd22e0bb58fa32484779f7671d56ca\"",
   "last_modified": "Fri, 11 Sep 2026 11:20:59 GMT",
-  "fetched_at": "2026-09-13T11:57:42.062942+00:00",
+  "fetched_at": "2026-09-13T16:18:12.235425+00:00",
   "server": "Apache/2.4.54 (Win64) OpenSSL/1.1.1s PHP/8.3.24 mod_fcgid/2.3.10-dev"
  },
  "pl_vaslui_muntenii_de_jos": {
@@ -266,7 +266,7 @@
  "pl_botosani_todireni": {
   "etag": "\"3af1c8a80cbce56307950dd1f421b624\"",
   "last_modified": "Wed, 09 Sep 2026 09:59:43 GMT",
-  "fetched_at": "2026-09-13T12:01:11.456059+00:00",
+  "fetched_at": "2026-09-13T16:21:38.808648+00:00",
   "server": null
  },
  "pl_cluj_risca": {
@@ -284,7 +284,7 @@
  "pl_bacau_hemeius": {
   "etag": "\"b9c6a76c13df50b8caa8a2395aae7eb0\"",
   "last_modified": "Fri, 11 Sep 2026 11:10:21 GMT",
-  "fetched_at": "2026-09-13T12:01:11.228700+00:00",
+  "fetched_at": "2026-09-13T16:21:39.001181+00:00",
   "server": "Apache"
  },
  "pl_bacau_tatarasti": {
@@ -302,43 +302,43 @@
  "pl_bistrita_nasaud_municipiul_bistrita": {
   "etag": null,
   "last_modified": "Sat, 12 Sep 2026 23:00:25 GMT",
-  "fetched_at": "2026-09-13T11:57:26.523804+00:00",
+  "fetched_at": "2026-09-13T16:17:57.221934+00:00",
   "server": "Apache"
  },
  "pl_brasov_sanpetru": {
   "etag": "\"28022d993ba01d879ed3b6194579ae8f\"",
   "last_modified": "Fri, 04 Sep 2026 06:16:49 GMT",
-  "fetched_at": "2026-09-13T12:00:29.408774+00:00",
+  "fetched_at": "2026-09-13T16:20:59.208475+00:00",
   "server": "LiteSpeed"
  },
  "pl_ilfov_domnesti": {
   "etag": "\"c2ed80a6c597dc0e77e427b0fc8ad9ad\"",
   "last_modified": "Fri, 11 Sep 2026 16:27:39 GMT",
-  "fetched_at": "2026-09-13T12:00:39.719574+00:00",
+  "fetched_at": "2026-09-13T16:21:07.414329+00:00",
   "server": null
  },
  "pl_neamt_secuieni": {
   "etag": "\"36dc2f8741c2e0725b25ceeb5618e2a8\"",
   "last_modified": "Fri, 04 Sep 2026 06:55:53 GMT",
-  "fetched_at": "2026-09-13T12:00:00.015525+00:00",
+  "fetched_at": "2026-09-13T16:20:28.117168+00:00",
   "server": "LiteSpeed"
  },
  "pl_neamt_municipiul_roman": {
   "etag": "\"2fb2478e80d87326be0a697af273a82e\"",
-  "last_modified": null,
-  "fetched_at": "2026-09-13T11:57:25.170219+00:00",
+  "last_modified": "Fri, 11 Sep 2026 10:29:24 GMT",
+  "fetched_at": "2026-09-13T16:17:57.962312+00:00",
   "server": "Apache"
  },
  "pl_neamt_vanatori_neamt": {
   "etag": "\"ff33c97e72f0478ed2a3297a1d4eec0c\"",
   "last_modified": "Fri, 11 Sep 2026 11:46:27 GMT",
-  "fetched_at": "2026-09-13T12:00:01.383760+00:00",
+  "fetched_at": "2026-09-13T16:20:29.242361+00:00",
   "server": "LiteSpeed"
  },
  "pl_arad_oras_sebis": {
   "etag": "\"1e8fa8ad0b6b658ff31336f032b4e63a\"",
   "last_modified": "Thu, 03 Sep 2026 13:12:25 GMT",
-  "fetched_at": "2026-09-13T11:59:04.497052+00:00",
+  "fetched_at": "2026-09-13T16:19:33.275067+00:00",
   "server": null
  },
  "pl_constanta_costinesti": {
@@ -350,7 +350,7 @@
  "pl_dolj_sadova": {
   "etag": "\"2d735cfbb732495c0d9077314f536246\"",
   "last_modified": "Tue, 08 Sep 2026 07:15:09 GMT",
-  "fetched_at": "2026-09-13T12:01:28.133244+00:00",
+  "fetched_at": "2026-09-13T16:21:55.894019+00:00",
   "server": "LiteSpeed"
  },
  "pl_braila_municipiul_braila": {
@@ -362,7 +362,7 @@
  "pl_dolj_oras_bechet": {
   "etag": "\"932dff33f905eba1fc0e86c1d729e451\"",
   "last_modified": "Fri, 11 Sep 2026 08:19:23 GMT",
-  "fetched_at": "2026-09-13T11:58:42.584068+00:00",
+  "fetched_at": "2026-09-13T16:19:12.978266+00:00",
   "server": "openresty"
  },
  "pl_dolj_perisor": {
@@ -398,13 +398,13 @@
  "pl_ilfov_jilava": {
   "etag": "\"7cb7e380c6d546c58f8976caad694e86\"",
   "last_modified": "Thu, 10 Sep 2026 11:18:08 GMT",
-  "fetched_at": "2026-09-13T12:00:41.106168+00:00",
+  "fetched_at": "2026-09-13T16:21:08.809190+00:00",
   "server": "Apache"
  },
  "pl_mures_oras_sovata": {
   "etag": "\"704f1cc2cbf9495118b41ef36a7eeac3\"",
   "last_modified": "Thu, 10 Sep 2026 14:27:27 GMT",
-  "fetched_at": "2026-09-13T11:58:54.569021+00:00",
+  "fetched_at": "2026-09-13T16:19:24.451816+00:00",
   "server": "LiteSpeed"
  },
  "pl_mures_sanpaul": {
@@ -434,7 +434,7 @@
  "pl_prahova_sirna": {
   "etag": "\"c011c823cc8e9086b9b54f9209163718\"",
   "last_modified": "Tue, 08 Sep 2026 06:57:29 GMT",
-  "fetched_at": "2026-09-13T12:00:04.473831+00:00",
+  "fetched_at": "2026-09-13T16:20:32.143263+00:00",
   "server": "nginx"
  },
  "pl_tulcea_sarichioi": {
@@ -463,55 +463,55 @@
  "cj_cluj": {
   "etag": "W/\"35cd4d59f697a3f887e3030211e926b8\"",
   "last_modified": "Fri, 11 Sep 2026 10:42:34 GMT",
-  "fetched_at": "2026-09-13T12:05:04.671626+00:00",
+  "fetched_at": "2026-09-13T16:25:30.479555+00:00",
   "server": "cloudflare"
  },
  "cj_timis": {
   "etag": "\"e22572017293b5cfbc3d4e8b0145f9ce\"",
   "last_modified": "Fri, 11 Sep 2026 08:09:50 GMT",
-  "fetched_at": "2026-09-13T12:05:13.751089+00:00",
+  "fetched_at": "2026-09-13T16:25:38.832268+00:00",
   "server": "Apache/2.4.48 (Win64) OpenSSL/1.1.1k PHP/7.3.29"
  },
  "cj_botosani": {
   "etag": "\"d78d3abc1444fc5205409da1bbe6688e\"",
   "last_modified": "Fri, 11 Sep 2026 09:34:32 GMT",
-  "fetched_at": "2026-09-13T12:05:13.467015+00:00",
+  "fetched_at": "2026-09-13T16:25:37.522351+00:00",
   "server": "Apache/2.4.41 (Win64) OpenSSL/1.1.1c PHP/8.2.4"
  },
  "cj_galati": {
   "etag": "\"04b9052cb2bda8114815060e3434384e\"",
   "last_modified": "Fri, 11 Sep 2026 09:16:23 GMT",
-  "fetched_at": "2026-09-13T12:05:04.482253+00:00",
+  "fetched_at": "2026-09-13T16:25:30.993640+00:00",
   "server": "openresty"
  },
  "cj_giurgiu": {
   "etag": "\"bd310aaf145a5672b570f863804a4822\"",
   "last_modified": "Fri, 11 Sep 2026 11:53:21 GMT",
-  "fetched_at": "2026-09-13T12:05:06.623486+00:00",
+  "fetched_at": "2026-09-13T16:25:31.723412+00:00",
   "server": "LiteSpeed"
  },
  "cj_ialomita": {
   "etag": "\"59bc7e0f7a4d218f377bf4f5e1badaf3\"",
   "last_modified": "Wed, 09 Sep 2026 07:45:59 GMT",
-  "fetched_at": "2026-09-13T12:05:06.413121+00:00",
+  "fetched_at": "2026-09-13T16:25:32.009628+00:00",
   "server": "nginx/1.26.1"
  },
  "cj_vaslui": {
   "etag": "\"3f27a721f377b21ca37b0beafeadd957\"",
   "last_modified": "Fri, 11 Sep 2026 13:31:57 GMT",
-  "fetched_at": "2026-09-13T12:05:08.093844+00:00",
+  "fetched_at": "2026-09-13T16:25:33.283272+00:00",
   "server": "LiteSpeed"
  },
  "cj_vrancea": {
   "etag": "\"ec78ba73ff260699a0be97b74b327b94\"",
   "last_modified": null,
-  "fetched_at": "2026-09-13T12:05:09.527332+00:00",
+  "fetched_at": "2026-09-13T16:25:35.807817+00:00",
   "server": "Apache"
  },
  "pl_vrancea_municipiul_focsani": {
   "etag": null,
   "last_modified": null,
-  "fetched_at": "2026-09-13T11:57:34.811471+00:00",
+  "fetched_at": "2026-09-13T16:18:04.981923+00:00",
   "server": "Apache/2.4.52 (Ubuntu)"
  },
  "pl_satu_mare_municipiul_carei": {
@@ -523,103 +523,103 @@
  "pl_bacau_municipiul_bacau": {
   "etag": "\"67838a1e848a9d8d5eba23b2c8e02eeb\"",
   "last_modified": "Fri, 11 Sep 2026 07:57:40 GMT",
-  "fetched_at": "2026-09-13T11:57:29.761920+00:00",
+  "fetched_at": "2026-09-13T16:17:59.738689+00:00",
   "server": "LiteSpeed"
  },
  "pl_constanta_municipiul_mangalia": {
   "etag": "\"229c3dd4743314fc68e509659770ad26\"",
   "last_modified": "Fri, 11 Sep 2026 17:57:10 GMT",
-  "fetched_at": "2026-09-13T11:57:17.072322+00:00",
+  "fetched_at": "2026-09-13T16:17:46.961347+00:00",
   "server": "LiteSpeed"
  },
  "pl_hunedoara_municipiul_brad": {
   "etag": "\"717cb4eae4c77e86b0db107f40188c00\"",
   "last_modified": "Sat, 12 Sep 2026 11:18:40 GMT",
-  "fetched_at": "2026-09-13T11:57:43.645859+00:00",
+  "fetched_at": "2026-09-13T16:18:13.828105+00:00",
   "server": "Apache"
  },
  "pl_alba_municipiul_sebes": {
   "etag": "\"f99b221e60d19f63088f7474dabdf5c9\"",
   "last_modified": "Fri, 11 Sep 2026 09:30:37 GMT",
-  "fetched_at": "2026-09-13T11:57:33.620694+00:00",
+  "fetched_at": "2026-09-13T16:18:04.185512+00:00",
   "server": "LiteSpeed"
  },
  "pl_prahova_municipiul_campina": {
   "etag": "\"7c159b345b098e0ce696a0339c653a57\"",
   "last_modified": "Wed, 09 Sep 2026 11:30:53 GMT",
-  "fetched_at": "2026-09-13T11:57:21.411910+00:00",
+  "fetched_at": "2026-09-13T16:17:51.768536+00:00",
   "server": "LiteSpeed"
  },
  "pl_giurgiu_municipiul_giurgiu": {
   "etag": "\"61908957d23864ccbb8f3e23a1b35ead\"",
   "last_modified": "Fri, 11 Sep 2026 10:35:38 GMT",
-  "fetched_at": "2026-09-13T11:57:23.861011+00:00",
+  "fetched_at": "2026-09-13T16:17:53.280764+00:00",
   "server": "Apache/2.4.58 (Win64) OpenSSL/3.1.3 PHP/8.3.23 mod_fcgid/2.3.10-dev"
  },
  "pl_ialomita_municipiul_slobozia": {
   "etag": "\"91ef060f6e296f1240e03d1066a99d25\"",
   "last_modified": "Fri, 11 Sep 2026 09:35:52 GMT",
-  "fetched_at": "2026-09-13T11:57:24.404502+00:00",
+  "fetched_at": "2026-09-13T16:17:52.739065+00:00",
   "server": "nginx"
  },
  "pl_vaslui_municipiul_husi": {
   "etag": null,
   "last_modified": null,
-  "fetched_at": "2026-09-13T11:57:39.093171+00:00",
+  "fetched_at": "2026-09-13T16:18:09.301808+00:00",
   "server": "Apache/2.4.67 (Debian)"
  },
  "pl_ialomita_oras_tandarei": {
   "etag": null,
   "last_modified": null,
-  "fetched_at": "2026-09-13T11:57:52.748084+00:00",
+  "fetched_at": "2026-09-13T16:18:22.440445+00:00",
   "server": "nginx/1.24.0 (Ubuntu)"
  },
  "pl_prahova_municipiul_ploiesti": {
   "etag": "\"489141449d085946cbd08fec95655ce0\"",
   "last_modified": "Fri, 11 Sep 2026 12:03:32 GMT",
-  "fetched_at": "2026-09-13T11:57:26.401127+00:00",
+  "fetched_at": "2026-09-13T16:17:52.324006+00:00",
   "server": null
  },
  "pl_arad_oras_pancota": {
   "etag": "W/\"217308a48752494e54e684da55ff2758\"",
   "last_modified": "Mon, 31 Aug 2026 15:13:57 GMT",
-  "fetched_at": "2026-09-13T11:58:37.002008+00:00",
+  "fetched_at": "2026-09-13T16:19:07.865417+00:00",
   "server": "cloudflare"
  },
  "pl_bihor_municipiul_marghita": {
   "etag": "\"743a4ddd13c4cb06097364cbeaef305b\"",
   "last_modified": "Fri, 11 Sep 2026 10:34:43 GMT",
-  "fetched_at": "2026-09-13T11:57:36.078633+00:00",
+  "fetched_at": "2026-09-13T16:18:08.573241+00:00",
   "server": "LiteSpeed"
  },
  "pl_ilfov_oras_pantelimon": {
   "etag": "\"235cbb04148992699f376624db91c89d\"",
   "last_modified": "Fri, 11 Sep 2026 10:52:59 GMT",
-  "fetched_at": "2026-09-13T11:58:22.218813+00:00",
+  "fetched_at": "2026-09-13T16:18:52.074818+00:00",
   "server": "Apache/2.4.59 (Debian)"
  },
  "pl_constanta_oras_baneasa": {
   "etag": "\"2b3f079bb24a01e03e8adc6b38594ada\"",
   "last_modified": "Wed, 26 Aug 2026 11:22:27 GMT",
-  "fetched_at": "2026-09-13T12:02:40.207130+00:00",
+  "fetched_at": "2026-09-13T16:23:06.209955+00:00",
   "server": "LiteSpeed"
  },
  "pl_timis_oras_faget": {
   "etag": "\"9e305ed02c623d492a4ac722542c0e81\"",
   "last_modified": "Fri, 11 Sep 2026 14:05:06 GMT",
-  "fetched_at": "2026-09-13T11:58:57.149068+00:00",
+  "fetched_at": "2026-09-13T16:19:27.458948+00:00",
   "server": null
  },
  "pl_alba_oras_zlatna": {
   "etag": "\"56e4ec3decdccc8a9c25ef6b8d7ce425\"",
   "last_modified": "Fri, 11 Sep 2026 10:24:17 GMT",
-  "fetched_at": "2026-09-13T11:57:45.294067+00:00",
+  "fetched_at": "2026-09-13T16:18:15.737354+00:00",
   "server": "Apache"
  },
  "pl_harghita_oras_vlahita": {
   "etag": "\"c7053d13e5abd268076a39ab6177d2e2\"",
   "last_modified": "Wed, 26 Aug 2026 05:45:25 GMT",
-  "fetched_at": "2026-09-13T11:58:28.848167+00:00",
+  "fetched_at": "2026-09-13T16:18:58.012522+00:00",
   "server": "nginx"
  },
  "pl_suceava_oras_dolhasca": {
@@ -631,7 +631,7 @@
  "pl_salaj_oras_simleu_silvaniei": {
   "etag": "\"8423f80553edac21ca88676b26dc4cf7\"",
   "last_modified": "Fri, 11 Sep 2026 10:26:11 GMT",
-  "fetched_at": "2026-09-13T11:58:39.409644+00:00",
+  "fetched_at": "2026-09-13T16:19:09.170181+00:00",
   "server": "LiteSpeed"
  },
  "pl_hunedoara_orastioara_de_sus": {
@@ -642,7 +642,7 @@
  "pl_prahova_oras_comarnic": {
   "etag": "\"6f37f9e0b43ad55b11390b6ba8166d49\"",
   "last_modified": "Wed, 09 Sep 2026 09:15:12 GMT",
-  "fetched_at": "2026-09-13T11:58:54.384425+00:00",
+  "fetched_at": "2026-09-13T16:19:24.114447+00:00",
   "server": "LiteSpeed"
  },
  "pl_vrancea_oras_odobesti": {
@@ -660,31 +660,31 @@
  "pl_ilfov_oras_chitila": {
   "etag": "\"408dd65f60809e755c7de4104bb44b18\"",
   "last_modified": "Thu, 10 Sep 2026 11:09:36 GMT",
-  "fetched_at": "2026-09-13T11:58:18.632378+00:00",
+  "fetched_at": "2026-09-13T16:18:48.581652+00:00",
   "server": "Apache"
  },
  "pl_alba_oras_teius": {
   "etag": "W/\"f3a9419560ce85886b7d35e026c678fd\"",
   "last_modified": "Wed, 09 Sep 2026 14:03:46 GMT",
-  "fetched_at": "2026-09-13T11:58:39.910333+00:00",
+  "fetched_at": "2026-09-13T16:19:10.690138+00:00",
   "server": "cloudflare"
  },
  "pl_arad_oras_pecica": {
   "etag": "\"15a978b505658324c925f773bece5f6c\"",
   "last_modified": "Wed, 09 Sep 2026 11:14:12 GMT",
-  "fetched_at": "2026-09-13T11:57:42.079147+00:00",
+  "fetched_at": "2026-09-13T16:18:12.459032+00:00",
   "server": "LiteSpeed"
  },
  "pl_mures_oras_miercurea_nirajului": {
   "etag": "\"d59f1e8023bb8a53ee5ed780fbc4a0f8\"",
   "last_modified": "Fri, 11 Sep 2026 10:40:08 GMT",
-  "fetched_at": "2026-09-13T11:59:12.697254+00:00",
+  "fetched_at": "2026-09-13T16:19:42.688753+00:00",
   "server": "LiteSpeed"
  },
  "pl_brasov_oras_zarnesti": {
   "etag": "\"8e48a6a7774195ec05f68176fe01d012\"",
   "last_modified": "Fri, 11 Sep 2026 12:10:52 GMT",
-  "fetched_at": "2026-09-13T11:57:59.081311+00:00",
+  "fetched_at": "2026-09-13T16:18:27.766195+00:00",
   "server": "LiteSpeed"
  },
  "pl_bacau_oras_slanic_moldova": {
@@ -696,13 +696,13 @@
  "pl_arges_oras_costesti": {
   "etag": "\"df6707ac297cfc37b9e01e08089c3ecf\"",
   "last_modified": "Mon, 31 Aug 2026 08:08:42 GMT",
-  "fetched_at": "2026-09-13T11:58:22.823283+00:00",
+  "fetched_at": "2026-09-13T16:18:52.226320+00:00",
   "server": null
  },
  "pl_braila_oras_faurei": {
   "etag": "\"dd3402fb32859424834e55122a5b6c70\"",
   "last_modified": "Wed, 09 Sep 2026 10:13:56 GMT",
-  "fetched_at": "2026-09-13T11:58:41.657774+00:00",
+  "fetched_at": "2026-09-13T16:19:11.530543+00:00",
   "server": "LiteSpeed"
  },
  "pl_bihor_oras_valea_lui_mihai": {
@@ -714,25 +714,25 @@
  "pl_botosani_oras_bucecea": {
   "etag": "\"6414cad91dac7043470cdb763a486dc7\"",
   "last_modified": "Thu, 10 Sep 2026 08:54:09 GMT",
-  "fetched_at": "2026-09-13T11:58:02.739314+00:00",
+  "fetched_at": "2026-09-13T16:18:32.780822+00:00",
   "server": "Apache"
  },
  "pl_bacau_oras_buhusi": {
   "etag": "\"297f0b08ed43f7d820788a3f25307d46\"",
   "last_modified": "Fri, 11 Sep 2026 08:21:08 GMT",
-  "fetched_at": "2026-09-13T11:57:48.346375+00:00",
+  "fetched_at": "2026-09-13T16:18:17.044946+00:00",
   "server": "Apache"
  },
  "pl_braila_oras_ianca": {
   "etag": "\"8ee38a06d55a94112a41b19fafbecd5e\"",
   "last_modified": "Wed, 09 Sep 2026 05:20:06 GMT",
-  "fetched_at": "2026-09-13T11:59:07.981643+00:00",
+  "fetched_at": "2026-09-13T16:19:40.038478+00:00",
   "server": "LiteSpeed"
  },
  "pl_buzau_oras_nehoiu": {
   "etag": "\"7e2d52cd1ac6b02ad57882c81c252cbe\"",
   "last_modified": "Fri, 11 Sep 2026 10:48:42 GMT",
-  "fetched_at": "2026-09-13T11:59:06.000879+00:00",
+  "fetched_at": "2026-09-13T16:19:35.742195+00:00",
   "server": "LiteSpeed"
  },
  "pl_buzau_oras_pogoanele": {
@@ -756,19 +756,19 @@
  "pl_brasov_oras_predeal": {
   "etag": "\"618c62c25157a1ce0cf3c818cd381b08\"",
   "last_modified": "Sat, 12 Sep 2026 07:06:27 GMT",
-  "fetched_at": "2026-09-13T11:58:51.866788+00:00",
+  "fetched_at": "2026-09-13T16:19:21.580206+00:00",
   "server": "LiteSpeed"
  },
  "pl_calarasi_oras_budesti": {
   "etag": "\"3730c730078ae44e56e66c34d9af9c78\"",
   "last_modified": "Tue, 08 Sep 2026 13:38:40 GMT",
-  "fetched_at": "2026-09-13T11:57:44.246953+00:00",
+  "fetched_at": "2026-09-13T16:18:14.655180+00:00",
   "server": "LiteSpeed"
  },
  "pl_cluj_oras_huedin": {
   "etag": "\"e820ce1a8f18eb7bad3d12b5a0322c84\"",
   "last_modified": "Thu, 10 Sep 2026 07:09:11 GMT",
-  "fetched_at": "2026-09-13T11:58:22.125393+00:00",
+  "fetched_at": "2026-09-13T16:18:51.854410+00:00",
   "server": "LiteSpeed"
  },
  "pl_caras_severin_oras_baile_herculane": {
@@ -780,7 +780,7 @@
  "pl_constanta_oras_navodari": {
   "etag": "\"c266b192ddd5a8d69bf097380575b468\"",
   "last_modified": "Fri, 11 Sep 2026 11:39:42 GMT",
-  "fetched_at": "2026-09-13T11:57:53.683642+00:00",
+  "fetched_at": "2026-09-13T16:18:23.226000+00:00",
   "server": null
  },
  "pl_buzau_oras_patarlagele": {
@@ -792,7 +792,7 @@
  "pl_constanta_oras_ovidiu": {
   "etag": "\"abf0097c67d709252170d87f9dfd6292\"",
   "last_modified": "Thu, 10 Sep 2026 06:41:54 GMT",
-  "fetched_at": "2026-09-13T11:58:30.737555+00:00",
+  "fetched_at": "2026-09-13T16:19:02.269116+00:00",
   "server": "LiteSpeed"
  },
  "pl_dolj_oras_segarcea": {
@@ -808,7 +808,7 @@
  "pl_galati_oras_targu_bujor": {
   "etag": "\"5b5391dacbdc3996f6444f9c196ed22f\"",
   "last_modified": "Tue, 08 Sep 2026 08:00:23 GMT",
-  "fetched_at": "2026-09-13T12:02:47.877002+00:00",
+  "fetched_at": "2026-09-13T16:23:09.912001+00:00",
   "server": "LiteSpeed"
  },
  "pl_giurgiu_oras_mihailesti": {
@@ -819,19 +819,19 @@
  "pl_constanta_oras_cernavoda": {
   "etag": "\"ed014245e606de65004aa3ad44c7ee20\"",
   "last_modified": "Fri, 11 Sep 2026 09:45:05 GMT",
-  "fetched_at": "2026-09-13T11:58:03.720231+00:00",
+  "fetched_at": "2026-09-13T16:18:34.267352+00:00",
   "server": "Apache"
  },
  "pl_dambovita_oras_fieni": {
   "etag": "\"26b5b9e14cb15eef56a86d246b496ae0\"",
   "last_modified": "Fri, 11 Sep 2026 08:11:28 GMT",
-  "fetched_at": "2026-09-13T11:59:11.353908+00:00",
+  "fetched_at": "2026-09-13T16:19:41.237717+00:00",
   "server": "LiteSpeed"
  },
  "pl_galati_oras_beresti": {
   "etag": "\"3b1b399035fedce9b2bbd0ad67386eaa\"",
   "last_modified": "Wed, 09 Sep 2026 12:34:58 GMT",
-  "fetched_at": "2026-09-13T12:02:46.508771+00:00",
+  "fetched_at": "2026-09-13T16:23:08.416193+00:00",
   "server": "LiteSpeed"
  },
  "pl_gorj_borascu": {
@@ -842,19 +842,19 @@
  "pl_hunedoara_oras_uricani": {
   "etag": "\"32c2902ae891310f7ab688b9b4113beb\"",
   "last_modified": "Tue, 08 Sep 2026 07:54:09 GMT",
-  "fetched_at": "2026-09-13T11:58:56.053431+00:00",
+  "fetched_at": "2026-09-13T16:19:26.663522+00:00",
   "server": "LiteSpeed"
  },
  "pl_gorj_oras_ticleni": {
   "etag": "\"5cd3ec75ea02b75059ef33ebd64771c4\"",
   "last_modified": "Mon, 07 Sep 2026 06:08:19 GMT",
-  "fetched_at": "2026-09-13T11:58:28.403934+00:00",
+  "fetched_at": "2026-09-13T16:18:59.551620+00:00",
   "server": "LiteSpeed"
  },
  "pl_ialomita_oras_amara": {
   "etag": "\"7bfbe23ea029bb855310e21654982830\"",
   "last_modified": "Fri, 04 Sep 2026 10:36:48 GMT",
-  "fetched_at": "2026-09-13T11:57:54.523173+00:00",
+  "fetched_at": "2026-09-13T16:18:23.011663+00:00",
   "server": null
  },
  "pl_gorj_oras_rovinari": {
@@ -866,25 +866,25 @@
  "pl_ilfov_oras_magurele": {
   "etag": "\"5cd739250ca6e349c3103a116035a076\"",
   "last_modified": "Fri, 11 Sep 2026 07:26:03 GMT",
-  "fetched_at": "2026-09-13T11:58:47.754456+00:00",
+  "fetched_at": "2026-09-13T16:19:17.661893+00:00",
   "server": "LiteSpeed"
  },
  "pl_maramures_oras_tautii_magheraus": {
   "etag": "\"cec743ec8a4369ae2f53ca8b27bc631b\"",
   "last_modified": "Fri, 11 Sep 2026 05:56:20 GMT",
-  "fetched_at": "2026-09-13T11:58:36.885755+00:00",
+  "fetched_at": "2026-09-13T16:19:07.771110+00:00",
   "server": "Apache/2.4.29"
  },
  "pl_iasi_oras_podu_iloaiei": {
   "etag": "\"539340eaa5402d540f5da05e409dc38e\"",
   "last_modified": "Sun, 06 Sep 2026 09:33:10 GMT",
-  "fetched_at": "2026-09-13T11:59:02.252349+00:00",
+  "fetched_at": "2026-09-13T16:19:32.237320+00:00",
   "server": "Apache"
  },
  "pl_maramures_oras_ulmeni": {
   "etag": "\"c365b05a65656781fb69aa1b45851877\"",
   "last_modified": "Thu, 10 Sep 2026 12:04:08 GMT",
-  "fetched_at": "2026-09-13T11:58:43.647841+00:00",
+  "fetched_at": "2026-09-13T16:19:13.634145+00:00",
   "server": "LiteSpeed"
  },
  "pl_mures_oras_iernut": {
@@ -896,25 +896,25 @@
  "pl_neamt_oras_targu_neamt": {
   "etag": "W/\"fcca7475b780367ea417aa369f0139bf\"",
   "last_modified": "Fri, 11 Sep 2026 10:07:36 GMT",
-  "fetched_at": "2026-09-13T11:58:07.342140+00:00",
+  "fetched_at": "2026-09-13T16:18:37.315930+00:00",
   "server": "cloudflare"
  },
  "pl_hunedoara_oras_calan": {
   "etag": "\"82577bc055bc8394dd0e735d39bd77c6\"",
   "last_modified": "Wed, 09 Sep 2026 15:53:39 GMT",
-  "fetched_at": "2026-09-13T11:58:11.533293+00:00",
+  "fetched_at": "2026-09-13T16:18:39.983628+00:00",
   "server": "Apache"
  },
  "pl_mehedinti_oras_strehaia": {
   "etag": "\"3a8e2e197ea6e1f01f02cb1ebef0125e\"",
   "last_modified": "Wed, 22 Jul 2026 08:19:14 GMT",
-  "fetched_at": "2026-09-13T11:59:01.258638+00:00",
+  "fetched_at": "2026-09-13T16:19:30.702869+00:00",
   "server": "LiteSpeed"
  },
  "pl_mures_oras_ungheni": {
   "etag": "\"613536044131e1ee86222aa72d0fa1bc\"",
   "last_modified": "Fri, 11 Sep 2026 08:05:01 GMT",
-  "fetched_at": "2026-09-13T11:57:59.655629+00:00",
+  "fetched_at": "2026-09-13T16:18:29.278427+00:00",
   "server": "LiteSpeed"
  },
  "pl_olt_oras_bals": {
@@ -937,43 +937,43 @@
  "pl_prahova_oras_urlati": {
   "etag": "\"cd319be0972f26fbd639e0928753ff03\"",
   "last_modified": "Wed, 09 Sep 2026 10:26:33 GMT",
-  "fetched_at": "2026-09-13T11:58:33.238280+00:00",
+  "fetched_at": "2026-09-13T16:19:02.770121+00:00",
   "server": "LiteSpeed"
  },
  "pl_prahova_oras_busteni": {
   "etag": "\"5dda1699bce1bf3ed858d658fa5a113c\"",
   "last_modified": "Fri, 27 Feb 2026 11:42:51 GMT",
-  "fetched_at": "2026-09-13T11:59:15.114494+00:00",
+  "fetched_at": "2026-09-13T16:19:45.422816+00:00",
   "server": "nginx"
  },
  "pl_sibiu_oras_agnita": {
   "etag": "\"e334f206b02b8dbb0a79448d9030caf8\"",
   "last_modified": "Thu, 27 Aug 2026 11:15:28 GMT",
-  "fetched_at": "2026-09-13T12:02:49.223065+00:00",
+  "fetched_at": "2026-09-13T16:23:10.942620+00:00",
   "server": "Apache"
  },
  "pl_prahova_oras_baicoi": {
   "etag": "\"fff7aa39c144d315183cc712c5a643bc\"",
   "last_modified": "Wed, 02 Sep 2026 04:25:44 GMT",
-  "fetched_at": "2026-09-13T11:58:42.440647+00:00",
+  "fetched_at": "2026-09-13T16:19:12.735081+00:00",
   "server": "nginx"
  },
  "pl_sibiu_oras_cisnadie": {
   "etag": "\"02c176612adfd81f9afe912ec25ae507\"",
   "last_modified": "Fri, 11 Sep 2026 10:26:18 GMT",
-  "fetched_at": "2026-09-13T11:58:07.738644+00:00",
+  "fetched_at": "2026-09-13T16:18:40.038184+00:00",
   "server": "LiteSpeed"
  },
  "pl_prahova_oras_slanic": {
   "etag": "\"00142c6ec174b81969857c503f2cb612\"",
   "last_modified": "Fri, 11 Sep 2026 11:06:45 GMT",
-  "fetched_at": "2026-09-13T11:58:14.985321+00:00",
+  "fetched_at": "2026-09-13T16:18:42.619929+00:00",
   "server": "LiteSpeed"
  },
  "pl_olt_oras_piatra_olt": {
   "etag": "\"3e2045ca8d08c77b1e7b1c9937fff63b\"",
   "last_modified": "Wed, 01 Jul 2026 12:30:26 GMT",
-  "fetched_at": "2026-09-13T11:59:06.541962+00:00",
+  "fetched_at": "2026-09-13T16:19:36.268743+00:00",
   "server": "LiteSpeed"
  },
  "pl_suceava_oras_cajvana": {
@@ -985,13 +985,13 @@
  "pl_sibiu_oras_miercurea_sibiului": {
   "etag": "\"0196735f2d0dbd0c02f7777a61861145\"",
   "last_modified": "Fri, 28 Aug 2026 11:20:50 GMT",
-  "fetched_at": "2026-09-13T11:58:23.930123+00:00",
+  "fetched_at": "2026-09-13T16:18:54.305992+00:00",
   "server": "Apache"
  },
  "pl_sibiu_oras_ocna_sibiului": {
   "etag": "\"adfe71a2c98f1c8832a8f7431186c28b\"",
   "last_modified": "Fri, 11 Sep 2026 07:26:49 GMT",
-  "fetched_at": "2026-09-13T11:58:20.807090+00:00",
+  "fetched_at": "2026-09-13T16:18:50.828529+00:00",
   "server": "LiteSpeed"
  },
  "pl_sibiu_oras_talmaciu": {
@@ -1003,13 +1003,13 @@
  "pl_suceava_oras_frasin": {
   "etag": "\"16d12683991a9c1df36eacdf8556e43b\"",
   "last_modified": "Thu, 10 Sep 2026 08:41:45 GMT",
-  "fetched_at": "2026-09-13T11:57:53.397452+00:00",
+  "fetched_at": "2026-09-13T16:18:23.095362+00:00",
   "server": "LiteSpeed"
  },
  "pl_sibiu_oras_saliste": {
   "etag": "W/\"11e644ef96dda8b19b2331b6f67f389e-br\"",
   "last_modified": "Wed, 02 Sep 2026 11:45:43 GMT",
-  "fetched_at": "2026-09-13T11:58:58.447532+00:00",
+  "fetched_at": "2026-09-13T16:19:28.638454+00:00",
   "server": "cloudflare"
  },
  "pl_timis_oras_buzias": {
@@ -1027,25 +1027,25 @@
  "pl_suceava_oras_milisauti": {
   "etag": "\"0916608d6038e3a9548b1253d156df3d\"",
   "last_modified": "Wed, 22 Apr 2026 13:06:49 GMT",
-  "fetched_at": "2026-09-13T12:02:58.493807+00:00",
+  "fetched_at": "2026-09-13T16:23:20.055502+00:00",
   "server": "LiteSpeed"
  },
  "pl_suceava_oras_gura_humorului": {
   "etag": "\"86cc6342375e328aac49c7a48ce53934\"",
   "last_modified": "Fri, 11 Sep 2026 18:26:07 GMT",
-  "fetched_at": "2026-09-13T11:57:56.425931+00:00",
+  "fetched_at": "2026-09-13T16:18:25.999715+00:00",
   "server": "LiteSpeed"
  },
  "pl_timis_oras_recas": {
   "etag": "\"fb1915403af1ded9714cfdee1d1e1a34\"",
   "last_modified": "Wed, 09 Sep 2026 16:22:24 GMT",
-  "fetched_at": "2026-09-13T11:59:15.491937+00:00",
+  "fetched_at": "2026-09-13T16:19:45.209573+00:00",
   "server": null
  },
  "pl_vrancea_ciorasti": {
   "etag": "\"aff41b94237a95e716bfc211fc25b460\"",
   "last_modified": "Thu, 10 Sep 2026 05:54:08 GMT",
-  "fetched_at": "2026-09-13T12:01:09.790099+00:00",
+  "fetched_at": "2026-09-13T16:21:37.838840+00:00",
   "server": "LiteSpeed"
  },
  "pl_timis_oras_deta": {
@@ -1057,13 +1057,13 @@
  "pl_vrancea_oras_marasesti": {
   "etag": "\"752f74850dfa63a9dbd8e7356315f952\"",
   "last_modified": "Fri, 11 Sep 2026 09:08:13 GMT",
-  "fetched_at": "2026-09-13T11:58:09.268672+00:00",
+  "fetched_at": "2026-09-13T16:18:40.422502+00:00",
   "server": null
  },
  "pl_tulcea_oras_macin": {
   "etag": "\"074d2ba09aee6d2367b9b376eaf558fd\"",
   "last_modified": "Wed, 02 Sep 2026 13:15:03 GMT",
-  "fetched_at": "2026-09-13T11:58:12.570564+00:00",
+  "fetched_at": "2026-09-13T16:18:42.501560+00:00",
   "server": "Apache"
  },
  "pl_valcea_oras_babeni": {
@@ -1072,15 +1072,15 @@
   "fetched_at": "2026-07-24T15:42:11.952097+00:00"
  },
  "pl_valcea_oras_baile_govora": {
-  "etag": "\"29ca9ba96b798b5d2925a3571f7f16e7\"",
-  "last_modified": "Fri, 28 Aug 2026 09:55:34 GMT",
-  "fetched_at": "2026-09-13T11:58:29.265169+00:00",
-  "server": "Apache"
+  "etag": null,
+  "last_modified": null,
+  "fetched_at": "2026-09-13T16:18:57.089322+00:00",
+  "server": null
  },
  "pl_timis_oras_ciacova": {
   "etag": "\"bc79aa6d8787b0f3093cbd56cad07c26\"",
   "last_modified": "Fri, 11 Sep 2026 10:14:28 GMT",
-  "fetched_at": "2026-09-13T11:58:58.849303+00:00",
+  "fetched_at": "2026-09-13T16:19:28.594249+00:00",
   "server": "Apache"
  },
  "pl_vrancea_slobozia_ciorasti": {
@@ -1089,111 +1089,111 @@
   "fetched_at": "2026-07-24T15:42:12.310933+00:00"
  },
  "emaramures": {
-  "etag": "\"ae2d74c6be1abe56331d3a3b58181fe0\"",
-  "last_modified": "Sun, 13 Sep 2026 12:00:34 GMT",
-  "fetched_at": "2026-09-13T12:05:22.047697+00:00",
+  "etag": "\"c7cc2b1d3324dd48059f8bb321443baf\"",
+  "last_modified": "Sun, 13 Sep 2026 16:19:30 GMT",
+  "fetched_at": "2026-09-13T16:25:39.905810+00:00",
   "server": "ClausWeb-nginx"
  },
  "gazetadetransilvania": {
   "etag": null,
   "last_modified": "Sun, 13 Sep 2026 08:19:06 GMT",
-  "fetched_at": "2026-09-13T12:05:33.864036+00:00",
+  "fetched_at": "2026-09-13T16:25:58.720430+00:00",
   "server": "LiteSpeed"
  },
  "expressdebanat": {
   "etag": null,
-  "last_modified": "Sun, 13 Sep 2026 10:37:34 GMT",
-  "fetched_at": "2026-09-13T12:05:31.101133+00:00",
+  "last_modified": "Sun, 13 Sep 2026 15:39:48 GMT",
+  "fetched_at": "2026-09-13T16:25:55.599386+00:00",
   "server": "nginx"
  },
  "actualmm": {
-  "etag": "\"8bac9cce8e20c981d19fd9ce789df475\"",
-  "last_modified": "Sun, 13 Sep 2026 10:48:17 GMT",
-  "fetched_at": "2026-09-13T12:05:20.325555+00:00",
+  "etag": "\"74d3bc72b200982de81cdde85c7f68b3\"",
+  "last_modified": "Sun, 13 Sep 2026 15:31:06 GMT",
+  "fetched_at": "2026-09-13T16:25:44.998432+00:00",
   "server": "LiteSpeed"
  },
  "ziuadevest": {
   "etag": null,
-  "last_modified": "Sun, 13 Sep 2026 11:26:07 GMT",
-  "fetched_at": "2026-09-13T12:05:32.095281+00:00",
+  "last_modified": "Sun, 13 Sep 2026 15:22:54 GMT",
+  "fetched_at": "2026-09-13T16:25:56.701606+00:00",
   "server": "cloudflare"
  },
  "zch": {
   "etag": "W/\"dd5b3afe7b0b2ca0013bccf3633d91ef\"",
   "last_modified": "Sun, 13 Sep 2026 10:33:08 GMT",
-  "fetched_at": "2026-09-13T12:05:37.408971+00:00",
+  "fetched_at": "2026-09-13T16:26:02.249217+00:00",
   "server": "cloudflare"
  },
  "criticarad": {
   "etag": null,
-  "last_modified": "Sun, 13 Sep 2026 11:30:09 GMT",
-  "fetched_at": "2026-09-13T12:05:35.275370+00:00",
+  "last_modified": "Sun, 13 Sep 2026 14:59:04 GMT",
+  "fetched_at": "2026-09-13T16:26:00.233232+00:00",
   "server": "cloudflare"
  },
  "banatnews": {
   "etag": "\"210baeb59178beba8a60dd1c7875e787\"",
   "last_modified": "Tue, 18 Aug 2026 09:08:45 GMT",
-  "fetched_at": "2026-09-13T12:05:34.248131+00:00",
+  "fetched_at": "2026-09-13T16:25:58.385853+00:00",
   "server": "cloudflare"
  },
  "stirilemoldovei": {
   "etag": "\"530eb0b3ff88d55a4ae8efdd13542225\"",
   "last_modified": "Wed, 09 Sep 2026 14:39:22 GMT",
-  "fetched_at": "2026-09-13T12:05:35.775918+00:00",
+  "fetched_at": "2026-09-13T16:26:00.251646+00:00",
   "server": "LiteSpeed"
  },
  "ziarultransilvaniei": {
   "etag": null,
   "last_modified": "Wed, 09 Sep 2026 13:37:11 GMT",
-  "fetched_at": "2026-09-13T12:05:34.307885+00:00",
+  "fetched_at": "2026-09-13T16:25:58.772569+00:00",
   "server": "LiteSpeed"
  },
  "jurnalulolteniei": {
   "etag": "\"39cd72cdeaa343f62a8557ef5ba373a0\"",
   "last_modified": "Sun, 13 Sep 2026 08:35:35 GMT",
-  "fetched_at": "2026-09-13T12:05:41.854438+00:00",
+  "fetched_at": "2026-09-13T16:26:06.499128+00:00",
   "server": "cloudflare"
  },
  "stirimuntenia": {
   "etag": null,
   "last_modified": "Sun, 13 Sep 2026 07:44:38 GMT",
-  "fetched_at": "2026-09-13T12:05:37.672428+00:00",
+  "fetched_at": "2026-09-13T16:26:02.279272+00:00",
   "server": "LiteSpeed"
  },
  "cronicaolteniei": {
   "etag": "\"21769166605047d6a031adfb40c10082\"",
   "last_modified": null,
-  "fetched_at": "2026-09-13T12:05:35.347066+00:00",
+  "fetched_at": "2026-09-13T16:25:59.711269+00:00",
   "server": null
  },
  "newsbucovina": {
-  "etag": "W/\"a1c26510fec75d26f7362cc96c923f99\"",
-  "last_modified": "Sun, 13 Sep 2026 11:10:08 GMT",
-  "fetched_at": "2026-09-13T12:05:40.374045+00:00",
+  "etag": "W/\"838405c927516749bcf257691abe3060\"",
+  "last_modified": "Sun, 13 Sep 2026 14:14:36 GMT",
+  "fetched_at": "2026-09-13T16:26:05.273975+00:00",
   "server": "cloudflare"
  },
  "dobrogeaonline": {
   "etag": null,
-  "last_modified": "Sun, 13 Sep 2026 11:49:22 GMT",
-  "fetched_at": "2026-09-13T12:05:36.988293+00:00",
+  "last_modified": "Sun, 13 Sep 2026 16:04:27 GMT",
+  "fetched_at": "2026-09-13T16:26:01.072550+00:00",
   "server": "Apache"
  },
  "stirileolteniei": {
   "etag": "\"6a79971b1e335d38a95630fd3714ada4\"",
   "last_modified": "Wed, 09 Sep 2026 14:24:33 GMT",
-  "fetched_at": "2026-09-13T12:05:42.473711+00:00",
+  "fetched_at": "2026-09-13T16:26:07.407188+00:00",
   "server": "LiteSpeed"
  },
  "dobrogeanews": {
   "etag": null,
   "last_modified": "Sun, 13 Sep 2026 09:32:13 GMT",
-  "fetched_at": "2026-09-13T12:05:44.565820+00:00",
+  "fetched_at": "2026-09-13T16:26:08.945585+00:00",
   "server": "LiteSpeed"
  },
  "zdp": {
   "etag": "\"4761c3ad3010fbdae3696c872c3651fb\"",
   "last_modified": "Tue, 08 Sep 2026 15:48:50 GMT",
-  "fetched_at": "2026-09-13T12:05:41.494462+00:00",
+  "fetched_at": "2026-09-13T16:26:05.897312+00:00",
   "server": "LiteSpeed"
  },
  "pl_buzau_topliceni": {
@@ -1204,8 +1204,8 @@
  },
  "alba24": {
   "etag": null,
-  "last_modified": "Sun, 13 Sep 2026 12:01:12 GMT",
-  "fetched_at": "2026-09-13T12:05:18.281474+00:00",
+  "last_modified": "Sun, 13 Sep 2026 16:06:30 GMT",
+  "fetched_at": "2026-09-13T16:25:43.080418+00:00",
   "server": "nginx"
  },
  "zidezi": {
@@ -1215,45 +1215,45 @@
   "server": "cloudflare"
  },
  "turnulsfatului": {
-  "etag": "W/\"3fe73a4548e97559cc0315a8f7fe5ac2-br\"",
-  "last_modified": "Sun, 13 Sep 2026 10:48:24 GMT",
-  "fetched_at": "2026-09-13T12:05:16.002275+00:00",
+  "etag": "W/\"01ffc2b6964c59a84b069d5c0cb6db3e-br\"",
+  "last_modified": "Sun, 13 Sep 2026 16:03:37 GMT",
+  "fetched_at": "2026-09-13T16:25:40.994030+00:00",
   "server": "cloudflare"
  },
  "cvlpress": {
-  "etag": "\"5ba12157846a53c8a294cd0b889b4a7b\"",
-  "last_modified": "Sun, 13 Sep 2026 12:05:17 GMT",
-  "fetched_at": "2026-09-13T12:05:17.629208+00:00",
+  "etag": "\"d6cb591e0608eec3d0165240b655e9ac\"",
+  "last_modified": "Sun, 13 Sep 2026 16:25:42 GMT",
+  "fetched_at": "2026-09-13T16:25:42.376566+00:00",
   "server": "nginx"
  },
  "b365": {
-  "etag": "W/\"d18e8a79e205fa9046dda0ec41791b85\"",
-  "last_modified": "Sun, 13 Sep 2026 11:54:51 GMT",
-  "fetched_at": "2026-09-13T12:05:18.387313+00:00",
+  "etag": "W/\"565ccafa1c4936258c0beb82207491be\"",
+  "last_modified": "Sun, 13 Sep 2026 15:40:51 GMT",
+  "fetched_at": "2026-09-13T16:25:43.179593+00:00",
   "server": "cloudflare"
  },
  "bihon": {
-  "etag": "\"b26f2cd62aecb467edbe44596db0d1f4\"",
-  "last_modified": "Sun, 13 Sep 2026 11:31:01 GMT",
-  "fetched_at": "2026-09-13T12:05:23.124233+00:00",
+  "etag": "\"a8a0ef3e9d58c4fe6f82f734903cfeca\"",
+  "last_modified": "Sun, 13 Sep 2026 14:39:54 GMT",
+  "fetched_at": "2026-09-13T16:25:47.630236+00:00",
   "server": "nginx"
  },
  "gazetadecluj": {
   "etag": "\"859260e75d0c4592d7013cfd7f024fc1\"",
   "last_modified": "Sun, 13 Sep 2026 11:21:54 GMT",
-  "fetched_at": "2026-09-13T12:05:20.919666+00:00",
+  "fetched_at": "2026-09-13T16:25:45.657969+00:00",
   "server": "cloudflare"
  },
  "mytex": {
-  "etag": "\"daf409bf229534168e9c2fd77f076a41\"",
-  "last_modified": "Sun, 13 Sep 2026 09:55:40 GMT",
-  "fetched_at": "2026-09-13T12:05:19.006746+00:00",
+  "etag": "\"69a2548c28ce34aa66b40c1a9a5c11ab\"",
+  "last_modified": "Sun, 13 Sep 2026 15:54:42 GMT",
+  "fetched_at": "2026-09-13T16:25:42.907767+00:00",
   "server": "Apache"
  },
  "sptgiurgiu": {
   "etag": "\"e703b716735cdc49ef18e22a9dd344e4\"",
   "last_modified": "Sat, 12 Sep 2026 21:25:56 GMT",
-  "fetched_at": "2026-09-13T12:05:21.997691+00:00",
+  "fetched_at": "2026-09-13T16:25:46.835287+00:00",
   "server": "LiteSpeed"
  },
  "monitorulbt": {
@@ -1269,573 +1269,573 @@
   "server": "LiteSpeed"
  },
  "thenewstack": {
-  "etag": "W/\"91c1640ffec49e451a23ef66be9e60ea-gzip\"",
-  "last_modified": "Sat, 12 Sep 2026 15:59:58 GMT",
-  "fetched_at": "2026-09-13T12:05:48.813073+00:00",
+  "etag": "W/\"58f86f15bda24de059bd97c61c2d5072-gzip\"",
+  "last_modified": "Sun, 13 Sep 2026 15:00:00 GMT",
+  "fetched_at": "2026-09-13T16:26:13.100902+00:00",
   "server": "cloudflare"
  },
  "xda": {
   "etag": null,
   "last_modified": null,
-  "fetched_at": "2026-09-13T12:05:45.212763+00:00",
+  "fetched_at": "2026-09-13T16:26:09.407568+00:00",
   "server": "nginx"
  },
  "marktechpost": {
-  "etag": null,
-  "last_modified": null,
-  "fetched_at": "2026-09-13T12:05:46.762075+00:00",
+  "etag": "\"e9505198680babdd8344546c560f2b2b\"",
+  "last_modified": "Sun, 13 Sep 2026 08:55:36 GMT",
+  "fetched_at": "2026-09-13T16:26:12.212471+00:00",
   "server": "cloudflare"
  },
  "zonait": {
   "etag": "\"f1b35453799cf8538d95e003e57929b4\"",
   "last_modified": "Sun, 13 Sep 2026 07:00:00 GMT",
-  "fetched_at": "2026-09-13T12:05:46.605070+00:00",
+  "fetched_at": "2026-09-13T16:26:10.300482+00:00",
   "server": "LiteSpeed"
  },
  "fcinter1908": {
-  "etag": "\"cbb45f69ffecdae27ba4b8a5ac9a35443590e8f520d88f182da0c8811bebbec7\"",
-  "last_modified": "Sun, 13 Sep 2026 12:05:41 GMT",
-  "fetched_at": "2026-09-13T12:05:46.188544+00:00",
+  "etag": "\"37d79ef65e094816bb3d20612456a4782bc38fc26bb037ed65ece68d2d88b403\"",
+  "last_modified": "Sun, 13 Sep 2026 16:23:21 GMT",
+  "fetched_at": "2026-09-13T16:26:10.569033+00:00",
   "server": "Caddy"
  },
  "kitguru": {
-  "etag": "\"b6a2a0967e4c9400c66f53ab4797a5da\"",
-  "last_modified": "Sun, 13 Sep 2026 11:54:26 GMT",
-  "fetched_at": "2026-09-13T12:05:52.134334+00:00",
+  "etag": "\"e148654754ef16dc7943e1292443c8ea\"",
+  "last_modified": "Sun, 13 Sep 2026 12:09:21 GMT",
+  "fetched_at": "2026-09-13T16:26:16.293462+00:00",
   "server": "cloudflare"
  },
  "as_ro": {
   "etag": null,
-  "last_modified": "Sun, 13 Sep 2026 12:02:24 GMT",
-  "fetched_at": "2026-09-13T12:05:47.940327+00:00",
+  "last_modified": "Sun, 13 Sep 2026 16:22:12 GMT",
+  "fetched_at": "2026-09-13T16:26:11.560313+00:00",
   "server": "nginx"
  },
  "connect": {
   "etag": "\"92ede977cf7c744d9156361be94f505a\"",
   "last_modified": "Sat, 12 Sep 2026 19:27:44 GMT",
-  "fetched_at": "2026-09-13T12:05:46.938542+00:00",
+  "fetched_at": "2026-09-13T16:26:10.848104+00:00",
   "server": "Apache"
  },
  "sportro": {
   "etag": null,
   "last_modified": null,
-  "fetched_at": "2026-09-13T12:05:53.883309+00:00",
+  "fetched_at": "2026-09-13T16:26:17.684200+00:00",
   "server": "cloudflare"
  },
  "automarket": {
   "etag": null,
   "last_modified": null,
-  "fetched_at": "2026-09-13T12:05:47.810695+00:00",
+  "fetched_at": "2026-09-13T16:26:11.889373+00:00",
   "server": "Apache"
  },
  "opiniatm": {
-  "etag": "W/\"3d06aacb4cf3dcdcffee2a329c578f5e\"",
-  "last_modified": "Sun, 13 Sep 2026 09:17:14 GMT",
-  "fetched_at": "2026-09-13T12:05:55.456726+00:00",
+  "etag": "W/\"928b96aacc0bc6bb83e5db89d0cc9b39\"",
+  "last_modified": "Sun, 13 Sep 2026 14:47:28 GMT",
+  "fetched_at": "2026-09-13T16:26:19.516805+00:00",
   "server": "cloudflare"
  },
  "antena3": {
   "etag": null,
   "last_modified": null,
-  "fetched_at": "2026-09-13T12:05:59.061049+00:00",
+  "fetched_at": "2026-09-13T16:26:23.333413+00:00",
   "server": "cloudflare"
  },
  "adevarul": {
   "etag": null,
   "last_modified": null,
-  "fetched_at": "2026-09-13T12:05:54.513346+00:00",
+  "fetched_at": "2026-09-13T16:26:18.307216+00:00",
   "server": null
  },
  "profit": {
   "etag": null,
   "last_modified": null,
-  "fetched_at": "2026-09-13T12:05:57.329680+00:00",
+  "fetched_at": "2026-09-13T16:26:21.549581+00:00",
   "server": "cloudflare"
  },
  "observator": {
   "etag": null,
   "last_modified": null,
-  "fetched_at": "2026-09-13T12:06:01.512658+00:00",
+  "fetched_at": "2026-09-13T16:26:25.635888+00:00",
   "server": "cloudflare"
  },
  "pl_botosani_municipiul_dorohoi": {
   "etag": null,
-  "last_modified": "Sun, 13 Sep 2026 11:57:12 GMT",
-  "fetched_at": "2026-09-13T11:57:14.660845+00:00",
+  "last_modified": "Sun, 13 Sep 2026 16:17:42 GMT",
+  "fetched_at": "2026-09-13T16:17:44.761894+00:00",
   "server": "LiteSpeed"
  },
  "pl_arges_municipiul_campulung": {
   "etag": null,
   "last_modified": null,
-  "fetched_at": "2026-09-13T11:57:16.045882+00:00",
+  "fetched_at": "2026-09-13T16:17:45.373051+00:00",
   "server": "Apache"
  },
  "pl_buzau_municipiul_ramnicu_sarat": {
   "etag": "\"2ad73b464b68e7466adc64932e0a01a9\"",
   "last_modified": "Fri, 11 Sep 2026 09:59:36 GMT",
-  "fetched_at": "2026-09-13T11:57:18.839122+00:00",
+  "fetched_at": "2026-09-13T16:17:50.300583+00:00",
   "server": "nginx"
  },
  "pl_mures_municipiul_tarnaveni": {
   "etag": null,
-  "last_modified": "Sat, 12 Sep 2026 12:07:34 GMT",
-  "fetched_at": "2026-09-13T11:57:23.054863+00:00",
+  "last_modified": "Sun, 13 Sep 2026 12:28:05 GMT",
+  "fetched_at": "2026-09-13T16:17:53.578178+00:00",
   "server": "Apache"
  },
  "pl_teleorman_municipiul_turnu_magurele": {
   "etag": "\"8cc3e640becdc64fd837017b451ef81d\"",
   "last_modified": "Fri, 11 Sep 2026 11:02:13 GMT",
-  "fetched_at": "2026-09-13T11:57:23.503278+00:00",
+  "fetched_at": "2026-09-13T16:17:54.102042+00:00",
   "server": "LiteSpeed"
  },
  "pl_tulcea_municipiul_tulcea": {
   "etag": "\"c1b20c87becaa631d810ec816c296e77\"",
   "last_modified": "Thu, 10 Sep 2026 13:14:34 GMT",
-  "fetched_at": "2026-09-13T11:57:25.561264+00:00",
+  "fetched_at": "2026-09-13T16:17:56.055513+00:00",
   "server": "LiteSpeed"
  },
  "pl_constanta_municipiul_medgidia": {
   "etag": "\"ef04d6d3b77acd4e24d2e08653962695\"",
   "last_modified": "Thu, 10 Sep 2026 14:41:52 GMT",
-  "fetched_at": "2026-09-13T11:57:31.971360+00:00",
+  "fetched_at": "2026-09-13T16:18:02.572009+00:00",
   "server": "LiteSpeed"
  },
  "pl_brasov_municipiul_sacele": {
   "etag": "\"b9bf25815131f69c68941adcb30b295d\"",
   "last_modified": "Thu, 10 Sep 2026 14:56:39 GMT",
-  "fetched_at": "2026-09-13T11:57:30.393776+00:00",
+  "fetched_at": "2026-09-13T16:18:00.723922+00:00",
   "server": "LiteSpeed"
  },
  "pl_mures_municipiul_targu_mures": {
   "etag": null,
-  "last_modified": "Sun, 13 Sep 2026 11:57:26 GMT",
-  "fetched_at": "2026-09-13T11:57:26.913544+00:00",
+  "last_modified": "Sun, 13 Sep 2026 16:17:56 GMT",
+  "fetched_at": "2026-09-13T16:17:56.989056+00:00",
   "server": "cloudflare"
  },
  "pl_harghita_municipiul_toplita": {
   "etag": "\"0186cfae30744dd54dac94a4faf078d6\"",
   "last_modified": "Fri, 11 Sep 2026 09:34:23 GMT",
-  "fetched_at": "2026-09-13T11:57:28.496162+00:00",
+  "fetched_at": "2026-09-13T16:17:57.249606+00:00",
   "server": null
  },
  "pl_olt_municipiul_caracal": {
   "etag": "\"08045012d7a8d9386d1708464470930f\"",
   "last_modified": "Thu, 10 Sep 2026 08:38:33 GMT",
-  "fetched_at": "2026-09-13T11:57:31.463397+00:00",
+  "fetched_at": "2026-09-13T16:18:01.831178+00:00",
   "server": "Apache"
  },
  "pl_covasna_municipiul_targu_secuiesc": {
   "etag": "W/\"d738bf8edd60cdd0b8c1af69d4612cf2\"",
   "last_modified": "Thu, 10 Sep 2026 13:41:45 GMT",
-  "fetched_at": "2026-09-13T11:57:36.130993+00:00",
+  "fetched_at": "2026-09-13T16:18:05.924689+00:00",
   "server": "cloudflare"
  },
  "pl_bihor_municipiul_salonta": {
   "etag": "\"80119cf4fec181c4807d47cb74ffffbf\"",
   "last_modified": "Wed, 09 Sep 2026 12:26:34 GMT",
-  "fetched_at": "2026-09-13T11:57:34.755461+00:00",
+  "fetched_at": "2026-09-13T16:18:06.502739+00:00",
   "server": "nginx"
  },
  "pl_dolj_municipiul_calafat": {
   "etag": "\"8043b78e0873a372eb0ea9a734e74e6e\"",
   "last_modified": "Tue, 08 Sep 2026 08:47:00 GMT",
-  "fetched_at": "2026-09-13T11:57:38.478740+00:00",
+  "fetched_at": "2026-09-13T16:18:09.653317+00:00",
   "server": "LiteSpeed"
  },
  "pl_calarasi_municipiul_calarasi": {
   "etag": null,
   "last_modified": null,
-  "fetched_at": "2026-09-13T11:57:38.879306+00:00",
+  "fetched_at": "2026-09-13T16:18:06.983519+00:00",
   "server": "Apache"
  },
  "pl_arad_oras_ineu": {
   "etag": "\"601c0cf9415fdbc4a3e713377e96dd06\"",
   "last_modified": "Fri, 11 Sep 2026 07:56:28 GMT",
-  "fetched_at": "2026-09-13T11:57:39.939637+00:00",
+  "fetched_at": "2026-09-13T16:18:09.856185+00:00",
   "server": "LiteSpeed"
  },
  "pl_bihor_oras_stei": {
   "etag": null,
   "last_modified": null,
-  "fetched_at": "2026-09-13T11:57:49.348457+00:00",
+  "fetched_at": "2026-09-13T16:18:19.418746+00:00",
   "server": "Apache"
  },
  "pl_bistrita_nasaud_oras_beclean": {
   "etag": "\"5e9a038dbe359e687e93432af7cf73a1\"",
   "last_modified": "Fri, 11 Sep 2026 10:08:05 GMT",
-  "fetched_at": "2026-09-13T11:57:51.846090+00:00",
+  "fetched_at": "2026-09-13T16:18:21.770547+00:00",
   "server": "Apache"
  },
  "pl_maramures_oras_seini": {
   "etag": "\"1f70b449a5d3726fc3721e8b7bb895fa\"",
   "last_modified": "Thu, 10 Sep 2026 11:10:04 GMT",
-  "fetched_at": "2026-09-13T11:57:54.342927+00:00",
+  "fetched_at": "2026-09-13T16:18:24.008804+00:00",
   "server": null
  },
  "pl_prahova_oras_sinaia": {
   "etag": "\"b695d0253b4df2c553809f6dc72d059f\"",
   "last_modified": "Fri, 11 Sep 2026 11:25:17 GMT",
-  "fetched_at": "2026-09-13T11:57:53.313488+00:00",
+  "fetched_at": "2026-09-13T16:18:23.372006+00:00",
   "server": "Apache"
  },
  "pl_timis_oras_sannicolau_mare": {
   "etag": "\"e464f17ef1227b4b5908aff476a1dae6\"",
   "last_modified": "Sat, 12 Sep 2026 21:17:23 GMT",
-  "fetched_at": "2026-09-13T11:57:55.629937+00:00",
+  "fetched_at": "2026-09-13T16:18:25.026364+00:00",
   "server": "nginx"
  },
  "pl_alba_oras_ocna_mures": {
   "etag": null,
   "last_modified": null,
-  "fetched_at": "2026-09-13T11:57:55.680997+00:00",
+  "fetched_at": "2026-09-13T16:18:25.581559+00:00",
   "server": "Apache"
  },
  "pl_arad_oras_nadlac": {
   "etag": "\"5ff37cc2224006a7501546e789f033b0\"",
   "last_modified": "Fri, 11 Sep 2026 07:56:55 GMT",
-  "fetched_at": "2026-09-13T11:58:04.591278+00:00",
+  "fetched_at": "2026-09-13T16:18:30.718173+00:00",
   "server": "Apache"
  },
  "pl_bacau_oras_darmanesti": {
   "etag": "\"5db3ea23acb1df46d9c6a07bfcfdb346\"",
   "last_modified": "Fri, 11 Sep 2026 06:21:06 GMT",
-  "fetched_at": "2026-09-13T11:57:59.340886+00:00",
+  "fetched_at": "2026-09-13T16:18:29.437368+00:00",
   "server": "Apache"
  },
  "pl_ilfov_oras_buftea": {
   "etag": "\"5cfb9cd94579a35f81a45460cfefb207\"",
   "last_modified": "Thu, 10 Sep 2026 04:18:56 GMT",
-  "fetched_at": "2026-09-13T11:58:06.466931+00:00",
+  "fetched_at": "2026-09-13T16:18:36.672564+00:00",
   "server": "Apache"
  },
  "pl_teleorman_oras_zimnicea": {
   "etag": "\"9793bc43f681756a035a30db4fc3db59\"",
   "last_modified": "Thu, 10 Sep 2026 06:43:05 GMT",
-  "fetched_at": "2026-09-13T11:58:13.278581+00:00",
+  "fetched_at": "2026-09-13T16:18:43.267146+00:00",
   "server": "LiteSpeed"
  },
  "pl_satu_mare_oras_negresti_oas": {
   "etag": "\"2e30e19068fcb7b8e46071800bfce483\"",
   "last_modified": "Wed, 09 Sep 2026 07:49:10 GMT",
-  "fetched_at": "2026-09-13T11:58:08.151566+00:00",
+  "fetched_at": "2026-09-13T16:18:37.892035+00:00",
   "server": null
  },
  "pl_prahova_oras_breaza": {
   "etag": "\"75b91555771a2e39221d75a6bc06b96f\"",
   "last_modified": "Thu, 10 Sep 2026 05:54:01 GMT",
-  "fetched_at": "2026-09-13T11:58:10.131419+00:00",
+  "fetched_at": "2026-09-13T16:18:40.397671+00:00",
   "server": "LiteSpeed"
  },
  "pl_botosani_oras_stefanesti": {
   "etag": "\"543e71b2d38f771eb0954a45917ac256\"",
   "last_modified": "Thu, 10 Sep 2026 12:40:00 GMT",
-  "fetched_at": "2026-09-13T11:58:08.277105+00:00",
+  "fetched_at": "2026-09-13T16:18:38.248234+00:00",
   "server": "Apache"
  },
  "pl_timis_oras_jimbolia": {
   "etag": "\"5bfc0c698f291904590492253689b59e\"",
   "last_modified": "Fri, 11 Sep 2026 09:53:08 GMT",
-  "fetched_at": "2026-09-13T11:58:16.032025+00:00",
+  "fetched_at": "2026-09-13T16:18:45.864440+00:00",
   "server": "LiteSpeed"
  },
  "pl_gorj_oras_novaci": {
   "etag": "\"5e1451af30bfa89c124870cce822f49c\"",
   "last_modified": "Wed, 09 Sep 2026 07:15:44 GMT",
-  "fetched_at": "2026-09-13T11:58:18.428804+00:00",
+  "fetched_at": "2026-09-13T16:18:48.229197+00:00",
   "server": "LiteSpeed"
  },
  "pl_iasi_oras_targu_frumos": {
   "etag": "\"009bcab22b4154a152973efac5f6264f\"",
   "last_modified": "Fri, 11 Sep 2026 08:43:24 GMT",
-  "fetched_at": "2026-09-13T11:58:15.092637+00:00",
+  "fetched_at": "2026-09-13T16:18:45.350404+00:00",
   "server": "Apache"
  },
  "pl_mehedinti_oras_vanju_mare": {
   "etag": "\"65a20f7ab19ce5ebc1d34cf67d16711b\"",
   "last_modified": "Mon, 31 Aug 2026 06:33:37 GMT",
-  "fetched_at": "2026-09-13T11:58:21.644410+00:00",
+  "fetched_at": "2026-09-13T16:18:51.409382+00:00",
   "server": "cloudflare"
  },
  "pl_constanta_oras_murfatlar": {
   "etag": null,
-  "last_modified": "Sun, 13 Sep 2026 11:58:23 GMT",
-  "fetched_at": "2026-09-13T11:58:24.971433+00:00",
+  "last_modified": "Sun, 13 Sep 2026 16:18:52 GMT",
+  "fetched_at": "2026-09-13T16:18:54.583433+00:00",
   "server": "LiteSpeed"
  },
  "pl_bacau_oras_targu_ocna": {
   "etag": "\"306b238a22d0d4918e8d7c8b90e27b61\"",
   "last_modified": "Wed, 09 Sep 2026 13:49:13 GMT",
-  "fetched_at": "2026-09-13T11:58:27.489530+00:00",
+  "fetched_at": "2026-09-13T16:18:56.805039+00:00",
   "server": "LiteSpeed"
  },
  "pl_tulcea_oras_isaccea": {
   "etag": "\"c5d89f499b3c622972c2f18d819afce3\"",
   "last_modified": "Wed, 09 Sep 2026 11:04:18 GMT",
-  "fetched_at": "2026-09-13T11:58:35.904484+00:00",
+  "fetched_at": "2026-09-13T16:19:05.748627+00:00",
   "server": "LiteSpeed"
  },
  "pl_sibiu_oras_copsa_mica": {
   "etag": "\"bd75009935cb8a2fa8a8a98760baf805\"",
   "last_modified": "Wed, 09 Sep 2026 10:50:17 GMT",
-  "fetched_at": "2026-09-13T11:58:34.331315+00:00",
+  "fetched_at": "2026-09-13T16:19:07.014796+00:00",
   "server": "LiteSpeed"
  },
  "pl_arad_oras_curtici": {
   "etag": "\"bd72d535750f2273aff7fb908f72bdf8\"",
   "last_modified": "Thu, 10 Sep 2026 16:27:14 GMT",
-  "fetched_at": "2026-09-13T11:58:23.493371+00:00",
+  "fetched_at": "2026-09-13T16:18:51.939037+00:00",
   "server": null
  },
  "pl_ialomita_oras_cazanesti": {
   "etag": null,
-  "last_modified": "Sun, 13 Sep 2026 11:58:39 GMT",
-  "fetched_at": "2026-09-13T11:58:40.706963+00:00",
+  "last_modified": "Sun, 13 Sep 2026 16:19:08 GMT",
+  "fetched_at": "2026-09-13T16:19:10.374145+00:00",
   "server": "LiteSpeed"
  },
  "pl_olt_oras_corabia": {
   "etag": "\"ad45f0bb3e7cfa921f2b56094dfbca27\"",
   "last_modified": "Tue, 18 Aug 2026 12:20:58 GMT",
-  "fetched_at": "2026-09-13T11:58:46.974048+00:00",
+  "fetched_at": "2026-09-13T16:19:16.904437+00:00",
   "server": "LiteSpeed"
  },
  "pl_vaslui_oras_negresti": {
   "etag": "\"217e4790a71b95c323d5e5ebdbc00bdb\"",
   "last_modified": "Wed, 09 Sep 2026 18:46:06 GMT",
-  "fetched_at": "2026-09-13T11:58:41.321224+00:00",
+  "fetched_at": "2026-09-13T16:19:11.966446+00:00",
   "server": "Apache"
  },
  "pl_arges_oras_stefanesti": {
   "etag": "\"3a90759b80ef2e56748e666e6ff3da9b\"",
   "last_modified": "Sun, 06 Sep 2026 13:32:06 GMT",
-  "fetched_at": "2026-09-13T11:59:02.385180+00:00",
+  "fetched_at": "2026-09-13T16:19:32.335693+00:00",
   "server": "LiteSpeed"
  },
  "pl_maramures_oras_baia_sprie": {
   "etag": null,
-  "last_modified": "Sun, 13 Sep 2026 11:58:56 GMT",
-  "fetched_at": "2026-09-13T11:58:58.147135+00:00",
+  "last_modified": "Sun, 13 Sep 2026 16:19:25 GMT",
+  "fetched_at": "2026-09-13T16:19:27.848458+00:00",
   "server": "LiteSpeed"
  },
  "pl_salaj_oras_jibou": {
   "etag": "\"80a6e13bd34ae2b68138102dfa6f367e\"",
   "last_modified": "Fri, 11 Sep 2026 10:46:52 GMT",
-  "fetched_at": "2026-09-13T11:59:03.205349+00:00",
+  "fetched_at": "2026-09-13T16:19:33.506302+00:00",
   "server": "Apache"
  },
  "pl_mures_oras_sarmasu": {
   "etag": "\"535290cd284cc6f2f575592167052288\"",
   "last_modified": "Fri, 31 Jul 2026 06:02:20 GMT",
-  "fetched_at": "2026-09-13T11:59:03.785435+00:00",
+  "fetched_at": "2026-09-13T16:19:33.902718+00:00",
   "server": "Apache"
  },
  "pl_vaslui_oras_murgeni": {
   "etag": "\"fd7fdcc97d3adbb3396ff69080eff727\"",
   "last_modified": "Wed, 29 Jul 2026 07:28:26 GMT",
-  "fetched_at": "2026-09-13T11:59:08.141093+00:00",
+  "fetched_at": "2026-09-13T16:19:38.108370+00:00",
   "server": "Apache"
  },
  "pl_bacau_dealu_morii": {
   "etag": "\"65633789a41affb10acfbdb8b961e108\"",
   "last_modified": "Wed, 09 Sep 2026 11:45:21 GMT",
-  "fetched_at": "2026-09-13T11:59:22.324416+00:00",
+  "fetched_at": "2026-09-13T16:19:52.265719+00:00",
   "server": "LiteSpeed"
  },
  "pl_alba_miraslau": {
   "etag": "\"25d07005a4fc68c42df6086d62e68ffb\"",
   "last_modified": "Fri, 04 Sep 2026 09:16:28 GMT",
-  "fetched_at": "2026-09-13T11:59:20.381949+00:00",
+  "fetched_at": "2026-09-13T16:19:50.174349+00:00",
   "server": "LiteSpeed"
  },
  "pl_alba_farau": {
   "etag": "\"1f7d3441c4dd0df00bf0855a3e782dfb\"",
   "last_modified": "Fri, 04 Sep 2026 16:27:34 GMT",
-  "fetched_at": "2026-09-13T11:59:18.718418+00:00",
+  "fetched_at": "2026-09-13T16:19:48.302910+00:00",
   "server": "LiteSpeed"
  },
  "pl_dambovita_oras_racari": {
   "etag": null,
   "last_modified": "Tue, 01 Sep 2026 20:15:35 GMT",
-  "fetched_at": "2026-09-13T11:59:16.509167+00:00",
+  "fetched_at": "2026-09-13T16:19:46.406018+00:00",
   "server": "LiteSpeed"
  },
  "pl_brasov_oras_rupea": {
   "etag": "\"77d45411d87a1e007043ef097bc4b866\"",
   "last_modified": "Thu, 10 Sep 2026 12:52:40 GMT",
-  "fetched_at": "2026-09-13T11:59:14.716368+00:00",
+  "fetched_at": "2026-09-13T16:19:44.354272+00:00",
   "server": "LiteSpeed"
  },
  "pl_arad_bocsig": {
   "etag": "W/\"5050116a8dbb12e67bfcae181787b10f\"",
   "last_modified": "Wed, 09 Sep 2026 15:12:42 GMT",
-  "fetched_at": "2026-09-13T06:12:50.914774+00:00",
+  "fetched_at": "2026-09-13T16:19:43.248380+00:00",
   "server": "cloudflare"
  },
  "pl_bacau_helegiu": {
   "etag": null,
   "last_modified": "Fri, 04 Sep 2026 07:20:23 GMT",
-  "fetched_at": "2026-09-13T11:59:18.308524+00:00",
+  "fetched_at": "2026-09-13T16:19:44.421640+00:00",
   "server": "Apache"
  },
  "pl_bacau_magura": {
   "etag": "\"a578a8a3cb68b724493fb7b6055057e9\"",
   "last_modified": "Fri, 11 Sep 2026 06:31:01 GMT",
-  "fetched_at": "2026-09-13T11:59:20.153180+00:00",
+  "fetched_at": "2026-09-13T16:19:48.518027+00:00",
   "server": "Apache"
  },
  "pl_bacau_livezi": {
   "etag": "\"a67023e8feddb52a8cc850f1ad88be66\"",
   "last_modified": "Fri, 11 Sep 2026 07:20:06 GMT",
-  "fetched_at": "2026-09-13T11:59:18.396374+00:00",
+  "fetched_at": "2026-09-13T16:19:46.523231+00:00",
   "server": "Apache"
  },
  "pl_bacau_sanduleni": {
   "etag": "\"e037e23b85cb5f3b80522778f10f27aa\"",
   "last_modified": "Mon, 07 Sep 2026 13:01:21 GMT",
-  "fetched_at": "2026-09-13T11:59:26.221528+00:00",
+  "fetched_at": "2026-09-13T16:19:54.412059+00:00",
   "server": "Apache"
  },
  "pl_bacau_margineni": {
   "etag": "\"54382a1327685bf1da41d8521002965e\"",
   "last_modified": "Wed, 09 Sep 2026 08:54:23 GMT",
-  "fetched_at": "2026-09-13T11:59:22.335937+00:00",
+  "fetched_at": "2026-09-13T16:19:50.608617+00:00",
   "server": "Apache"
  },
  "pl_bacau_sarata": {
   "etag": "\"5c675810bb711884710a538bbf4c33a1\"",
   "last_modified": "Thu, 10 Sep 2026 11:45:36 GMT",
-  "fetched_at": "2026-09-13T11:59:27.873960+00:00",
+  "fetched_at": "2026-09-13T16:19:56.275213+00:00",
   "server": "Apache"
  },
  "pl_bacau_oncesti": {
   "etag": "\"995fa78c9b06953a9e8f254ff8b461a8\"",
   "last_modified": "Fri, 11 Sep 2026 08:55:14 GMT",
-  "fetched_at": "2026-09-13T11:59:23.912918+00:00",
+  "fetched_at": "2026-09-13T16:19:52.379751+00:00",
   "server": "Apache"
  },
  "pl_bihor_balc": {
   "etag": "\"a09fc13d0cf5f073e21b3c21ee3b61f3\"",
   "last_modified": "Tue, 08 Sep 2026 09:32:22 GMT",
-  "fetched_at": "2026-09-13T11:59:22.863823+00:00",
+  "fetched_at": "2026-09-13T16:19:50.804595+00:00",
   "server": null
  },
  "pl_buzau_largu": {
   "etag": null,
-  "last_modified": "Sun, 13 Sep 2026 11:59:33 GMT",
-  "fetched_at": "2026-09-13T11:59:31.021960+00:00",
+  "last_modified": "Sun, 13 Sep 2026 16:20:01 GMT",
+  "fetched_at": "2026-09-13T16:19:59.186739+00:00",
   "server": null
  },
  "pl_buzau_galbinasi": {
   "etag": "W/\"38d470f69bde22e1bb1ff034427cdb01\"",
   "last_modified": "Wed, 09 Sep 2026 08:16:16 GMT",
-  "fetched_at": "2026-09-13T11:59:28.656443+00:00",
+  "fetched_at": "2026-09-13T16:19:56.856279+00:00",
   "server": "cloudflare"
  },
  "pl_braila_ulmu": {
   "etag": "\"84eeaf9ea0c0b736ccb8331710c25c4e\"",
   "last_modified": "Tue, 08 Sep 2026 12:50:32 GMT",
-  "fetched_at": "2026-09-13T11:59:31.196698+00:00",
+  "fetched_at": "2026-09-13T16:20:01.148836+00:00",
   "server": "LiteSpeed"
  },
  "pl_botosani_curtesti": {
   "etag": "\"87b8e22430ffd07cefe605dc4655169a\"",
   "last_modified": "Fri, 11 Sep 2026 08:09:08 GMT",
-  "fetched_at": "2026-09-13T11:59:30.690651+00:00",
+  "fetched_at": "2026-09-13T16:19:57.268030+00:00",
   "server": null
  },
  "pl_braila_maxineni": {
   "etag": "\"5fdcee37c33a31e21767701d7b212560\"",
   "last_modified": "Thu, 10 Sep 2026 08:50:35 GMT",
-  "fetched_at": "2026-09-13T11:59:29.968402+00:00",
+  "fetched_at": "2026-09-13T16:19:57.845256+00:00",
   "server": "LiteSpeed"
  },
  "pl_calarasi_lupsanu": {
   "etag": "\"bc60a0b101abe5694df5918a463a9f39\"",
   "last_modified": "Thu, 10 Sep 2026 12:24:01 GMT",
-  "fetched_at": "2026-09-13T11:59:29.776524+00:00",
+  "fetched_at": "2026-09-13T16:19:58.686736+00:00",
   "server": null
  },
  "pl_brasov_feldioara": {
   "etag": "\"eb26ac5b484e0510c338e958590392f8\"",
   "last_modified": "Thu, 10 Sep 2026 11:47:48 GMT",
-  "fetched_at": "2026-09-13T11:59:30.316293+00:00",
+  "fetched_at": "2026-09-13T16:19:57.389836+00:00",
   "server": "nginx"
  },
  "pl_cluj_floresti": {
   "etag": "\"3829c74b4b6db8a4b13a32db802bd0f1\"",
   "last_modified": "Fri, 11 Sep 2026 11:15:21 GMT",
-  "fetched_at": "2026-09-13T11:59:33.188015+00:00",
+  "fetched_at": "2026-09-13T16:20:01.736299+00:00",
   "server": "nginx"
  },
  "pl_cluj_ceanu_mare": {
   "etag": "\"4de3881d04445184e43a96d75942033c\"",
   "last_modified": "Wed, 09 Sep 2026 07:57:32 GMT",
-  "fetched_at": "2026-09-13T11:59:33.488942+00:00",
+  "fetched_at": "2026-09-13T16:20:01.796315+00:00",
   "server": "LiteSpeed"
  },
  "pl_buzau_cozieni": {
   "etag": null,
   "last_modified": "Fri, 04 Sep 2026 09:07:08 GMT",
-  "fetched_at": "2026-09-13T11:59:32.907081+00:00",
+  "fetched_at": "2026-09-13T16:20:03.205465+00:00",
   "server": null
  },
  "pl_bucuresti_bucuresti_sectorul_4": {
   "etag": "\"5f7c38bf0cc2e6287939805b19c69408\"",
   "last_modified": "Fri, 11 Sep 2026 10:10:10 GMT",
-  "fetched_at": "2026-09-13T11:59:35.738590+00:00",
+  "fetched_at": "2026-09-13T16:20:03.183327+00:00",
   "server": "nginx"
  },
  "pl_dambovita_contesti": {
   "etag": "\"a53bfd32b13e533ba8717b652ea478f9\"",
   "last_modified": "Mon, 07 Sep 2026 12:19:52 GMT",
-  "fetched_at": "2026-09-13T11:59:41.352151+00:00",
+  "fetched_at": "2026-09-13T16:20:09.458504+00:00",
   "server": "LiteSpeed"
  },
  "pl_dambovita_cornatelu": {
   "etag": null,
   "last_modified": null,
-  "fetched_at": "2026-09-13T11:59:42.994259+00:00",
+  "fetched_at": "2026-09-13T16:20:11.254622+00:00",
   "server": "LiteSpeed"
  },
  "pl_cluj_gilau": {
   "etag": "\"a77b3d216113a26455e48a1f40a1b8af\"",
   "last_modified": "Fri, 11 Sep 2026 07:52:56 GMT",
-  "fetched_at": "2026-09-13T11:59:38.003511+00:00",
+  "fetched_at": "2026-09-13T16:20:06.940424+00:00",
   "server": "LiteSpeed"
  },
  "pl_constanta_lumina": {
   "etag": "\"0c3ddaeaae71eadc402f276c6ce3c1ff\"",
   "last_modified": "Fri, 11 Sep 2026 05:24:36 GMT",
-  "fetched_at": "2026-09-13T11:59:41.365382+00:00",
+  "fetched_at": "2026-09-13T16:20:08.892092+00:00",
   "server": "LiteSpeed"
  },
  "pl_cluj_dabaca": {
   "etag": "\"f09154e5440f4d401486f30a2792a1cf\"",
   "last_modified": "Mon, 07 Sep 2026 18:29:35 GMT",
-  "fetched_at": "2026-09-13T11:59:36.105633+00:00",
+  "fetched_at": "2026-09-13T16:20:04.067281+00:00",
   "server": "LiteSpeed"
  },
  "pl_iasi_holboca": {
   "etag": "W/\"6d2f805108467c226838feda61c225b7\"",
   "last_modified": "Fri, 11 Sep 2026 08:28:40 GMT",
-  "fetched_at": "2026-09-13T11:59:43.840885+00:00",
+  "fetched_at": "2026-09-13T16:20:12.460578+00:00",
   "server": "cloudflare"
  },
  "pl_iasi_ciurea": {
   "etag": "\"cb1dba79ec7d16dbdde1633bfd3d9122\"",
   "last_modified": "Fri, 11 Sep 2026 07:47:57 GMT",
-  "fetched_at": "2026-09-13T11:59:49.399059+00:00",
+  "fetched_at": "2026-09-13T16:20:17.616461+00:00",
   "server": "LiteSpeed"
  },
  "pl_giurgiu_calugareni": {
   "etag": "\"2b86d5db01a29cffa847a5ddcc6f7f11\"",
   "last_modified": "Sun, 13 Sep 2026 08:29:51 GMT",
-  "fetched_at": "2026-09-13T11:59:45.960906+00:00",
+  "fetched_at": "2026-09-13T16:20:12.637536+00:00",
   "server": "nginx"
  },
  "pl_harghita_tusnad": {
   "etag": "\"73831e903867f9770fadc417fd2664a7\"",
   "last_modified": "Fri, 04 Sep 2026 14:19:11 GMT",
-  "fetched_at": "2026-09-13T11:59:47.304595+00:00",
+  "fetched_at": "2026-09-13T16:20:15.519811+00:00",
   "server": "LiteSpeed"
  },
  "pl_gorj_prigoria": {
@@ -1847,25 +1847,25 @@
  "pl_iasi_letcani": {
   "etag": "\"746147b39a8a7c9f6547a7e58c26c72a\"",
   "last_modified": "Wed, 09 Sep 2026 08:16:18 GMT",
-  "fetched_at": "2026-09-13T11:59:51.003796+00:00",
+  "fetched_at": "2026-09-13T16:20:19.254423+00:00",
   "server": "LiteSpeed"
  },
  "pl_dambovita_odobesti": {
   "etag": "\"7ac889ffbfa4f80590c3c7f52f63117c\"",
   "last_modified": "Fri, 11 Sep 2026 12:48:55 GMT",
-  "fetched_at": "2026-09-13T11:59:45.865025+00:00",
+  "fetched_at": "2026-09-13T16:20:14.061481+00:00",
   "server": "LiteSpeed"
  },
  "pl_neamt_dumbrava_rosie": {
   "etag": "\"393243ff40d3f291416fcdb720368956\"",
   "last_modified": "Fri, 11 Sep 2026 07:22:59 GMT",
-  "fetched_at": "2026-09-13T11:59:54.922581+00:00",
+  "fetched_at": "2026-09-13T16:20:23.242281+00:00",
   "server": "LiteSpeed"
  },
  "pl_ilfov_corbeanca": {
   "etag": "\"570a9550a5a716c03602e31c0728447b\"",
   "last_modified": "Thu, 10 Sep 2026 14:08:16 GMT",
-  "fetched_at": "2026-09-13T11:59:49.108687+00:00",
+  "fetched_at": "2026-09-13T16:20:15.099496+00:00",
   "server": "cloudflare"
  },
  "pl_prahova_aricestii_rahtivani": {
@@ -1877,685 +1877,685 @@
  "pl_gorj_pestisani": {
   "etag": "\"2f7c688db2f59a4e55bf29fbb8e1e351\"",
   "last_modified": "Mon, 07 Sep 2026 11:16:21 GMT",
-  "fetched_at": "2026-09-13T11:59:46.379620+00:00",
+  "fetched_at": "2026-09-13T16:20:15.308069+00:00",
   "server": "Apache"
  },
  "pl_iasi_motca": {
   "etag": "\"eab60dafd35d0fdea0d79fe331b3925c\"",
   "last_modified": "Fri, 04 Sep 2026 08:36:15 GMT",
-  "fetched_at": "2026-09-13T11:59:53.421797+00:00",
+  "fetched_at": "2026-09-13T16:20:21.972956+00:00",
   "server": "LiteSpeed"
  },
  "pl_neamt_pastraveni": {
   "etag": "\"3b7bbb595b02a218234417eba856739f\"",
   "last_modified": "Fri, 04 Sep 2026 12:13:12 GMT",
-  "fetched_at": "2026-09-13T12:00:02.209330+00:00",
+  "fetched_at": "2026-09-13T16:20:27.262461+00:00",
   "server": "LiteSpeed"
  },
  "pl_harghita_cozmeni": {
   "etag": "\"38a6327aec0493562547477d97500305\"",
   "last_modified": "Fri, 04 Sep 2026 07:05:32 GMT",
-  "fetched_at": "2026-09-13T11:59:52.311662+00:00",
+  "fetched_at": "2026-09-13T16:20:19.748680+00:00",
   "server": "nginx"
  },
  "pl_salaj_plopis": {
   "etag": "\"547dd263953764b65c753c227f8af365\"",
   "last_modified": "Fri, 11 Sep 2026 11:28:29 GMT",
-  "fetched_at": "2026-09-13T12:00:07.323023+00:00",
+  "fetched_at": "2026-09-13T16:20:35.159145+00:00",
   "server": "LiteSpeed"
  },
  "pl_suceava_galanesti": {
   "etag": "\"1c627e947cd4d7b2f487af805f8d52f3\"",
   "last_modified": "Fri, 04 Sep 2026 07:42:51 GMT",
-  "fetched_at": "2026-09-13T12:00:11.030099+00:00",
+  "fetched_at": "2026-09-13T16:20:39.541689+00:00",
   "server": "LiteSpeed"
  },
  "pl_prahova_maneciu": {
   "etag": null,
   "last_modified": null,
-  "fetched_at": "2026-09-13T12:00:06.079737+00:00",
+  "fetched_at": "2026-09-13T16:20:33.898397+00:00",
   "server": "LiteSpeed"
  },
  "pl_salaj_valcau_de_jos": {
   "etag": "\"58d74eb630210b7e281ab5322e3970c8\"",
   "last_modified": "Tue, 08 Sep 2026 07:40:45 GMT",
-  "fetched_at": "2026-09-13T12:00:10.049972+00:00",
+  "fetched_at": "2026-09-13T16:20:37.678436+00:00",
   "server": "LiteSpeed"
  },
  "pl_tulcea_cerna": {
   "etag": "\"b67c75c197b6dc101e9c84a692b5dc9a\"",
   "last_modified": "Mon, 07 Sep 2026 12:00:47 GMT",
-  "fetched_at": "2026-09-13T12:00:13.465358+00:00",
+  "fetched_at": "2026-09-13T16:20:41.500353+00:00",
   "server": "LiteSpeed"
  },
  "pl_alba_hoparta": {
   "etag": "\"8fb9afa8530d1d43ef094549b5acabbd\"",
   "last_modified": "Thu, 03 Sep 2026 10:05:00 GMT",
-  "fetched_at": "2026-09-13T12:00:19.010471+00:00",
+  "fetched_at": "2026-09-13T16:20:47.247400+00:00",
   "server": "LiteSpeed"
  },
  "pl_valcea_stefanesti": {
   "etag": "\"1a916c5ad82b8d0e6848fefef9424a92\"",
   "last_modified": "Mon, 07 Sep 2026 12:22:02 GMT",
-  "fetched_at": "2026-09-13T12:00:15.967852+00:00",
+  "fetched_at": "2026-09-13T16:20:43.839834+00:00",
   "server": "LiteSpeed"
  },
  "pl_suceava_ipotesti": {
   "etag": "\"963ac72f102da9e7bd505725c8ab12ca\"",
   "last_modified": "Fri, 04 Sep 2026 07:27:58 GMT",
-  "fetched_at": "2026-09-13T12:00:06.057152+00:00",
+  "fetched_at": "2026-09-13T16:20:33.962926+00:00",
   "server": null
  },
  "pl_arad_cermei": {
   "etag": "\"351487d2a85bdc2268f8bc389795dd58\"",
   "last_modified": "Fri, 04 Sep 2026 13:47:28 GMT",
-  "fetched_at": "2026-09-13T12:00:20.867835+00:00",
+  "fetched_at": "2026-09-13T16:20:49.102761+00:00",
   "server": "LiteSpeed"
  },
  "pl_vrancea_vidra": {
   "etag": "\"08016fbe30f0ea50b08332f8e0623f0f\"",
   "last_modified": "Fri, 04 Sep 2026 05:45:52 GMT",
-  "fetched_at": "2026-09-13T12:00:17.776674+00:00",
+  "fetched_at": "2026-09-13T16:20:46.182709+00:00",
   "server": "LiteSpeed"
  },
  "pl_salaj_maeriste": {
   "etag": "\"c80353a8ee3fd2882838dcb1edf643f3\"",
   "last_modified": "Wed, 09 Sep 2026 14:42:49 GMT",
-  "fetched_at": "2026-09-13T12:00:06.230778+00:00",
+  "fetched_at": "2026-09-13T16:20:32.596363+00:00",
   "server": null
  },
  "pl_bacau_agas": {
   "etag": "\"8923b13359e0c413dc76f94e570fbb5d\"",
   "last_modified": "Tue, 08 Sep 2026 06:42:34 GMT",
-  "fetched_at": "2026-09-13T12:00:22.925158+00:00",
+  "fetched_at": "2026-09-13T16:20:51.080405+00:00",
   "server": "LiteSpeed"
  },
  "pl_arges_micesti": {
   "etag": "\"ab969c9760d3f92ba9deaf36cde5e1df\"",
   "last_modified": "Fri, 04 Sep 2026 08:01:04 GMT",
-  "fetched_at": "2026-09-13T12:00:09.624728+00:00",
+  "fetched_at": "2026-09-13T16:20:39.706989+00:00",
   "server": null
  },
  "pl_bacau_berzunti": {
   "etag": "\"8e6d4e47a9dc80f6737437ddee155607\"",
   "last_modified": "Wed, 09 Sep 2026 11:33:55 GMT",
-  "fetched_at": "2026-09-13T12:00:11.298760+00:00",
+  "fetched_at": "2026-09-13T16:20:40.680520+00:00",
   "server": "Apache"
  },
  "pl_bacau_garleni": {
   "etag": "\"fda23411b91c13b50d6fca3bd9bf18ea\"",
   "last_modified": "Sat, 12 Sep 2026 21:30:07 GMT",
-  "fetched_at": "2026-09-13T12:00:24.927005+00:00",
+  "fetched_at": "2026-09-13T16:20:53.083946+00:00",
   "server": "LiteSpeed"
  },
  "pl_bacau_colonesti": {
   "etag": "\"3d43fc5bce5f86e460a50bd8e461a193\"",
   "last_modified": "Thu, 10 Sep 2026 12:23:34 GMT",
-  "fetched_at": "2026-09-13T12:00:24.124862+00:00",
+  "fetched_at": "2026-09-13T16:20:52.069516+00:00",
   "server": "Apache"
  },
  "pl_bacau_luizi_calugara": {
   "etag": "\"3dc4161f390f3687a9298c16bba5d190\"",
   "last_modified": "Sun, 06 Sep 2026 08:37:49 GMT",
-  "fetched_at": "2026-09-13T12:00:26.282625+00:00",
+  "fetched_at": "2026-09-13T16:20:54.258883+00:00",
   "server": "Apache"
  },
  "pl_bacau_oituz": {
   "etag": "\"cd0b50d9f56bde81961fc3d9e2ba3244\"",
   "last_modified": "Fri, 11 Sep 2026 07:24:54 GMT",
-  "fetched_at": "2026-09-13T12:00:28.418791+00:00",
+  "fetched_at": "2026-09-13T16:20:56.471488+00:00",
   "server": "Apache"
  },
  "pl_bacau_manastirea_casin": {
   "etag": "\"d3cc9ba4d0125ccf7770e4cf959d728d\"",
   "last_modified": "Thu, 10 Sep 2026 13:26:56 GMT",
-  "fetched_at": "2026-09-13T12:00:26.995668+00:00",
+  "fetched_at": "2026-09-13T16:20:55.130134+00:00",
   "server": "LiteSpeed"
  },
  "pl_buzau_sapoca": {
   "etag": "\"50feb54de6949f8483eefc6d32493d4e\"",
   "last_modified": "Thu, 03 Sep 2026 07:15:12 GMT",
-  "fetched_at": "2026-09-13T12:00:30.619922+00:00",
+  "fetched_at": "2026-09-13T16:20:58.943725+00:00",
   "server": "LiteSpeed"
  },
  "pl_bucuresti_bucuresti_sectorul_6": {
-  "etag": "\"1789270326\"",
-  "last_modified": "Sun, 13 Sep 2026 03:32:06 GMT",
-  "fetched_at": "2026-09-13T12:00:25.115333+00:00",
+  "etag": "\"1789315741\"",
+  "last_modified": "Sun, 13 Sep 2026 16:09:01 GMT",
+  "fetched_at": "2026-09-13T16:20:52.749556+00:00",
   "server": "baffin-bay-inlet"
  },
  "pl_bacau_parjol": {
   "etag": "\"0143b9abe673a57d9098eb31794ea057\"",
   "last_modified": "Wed, 09 Sep 2026 11:31:53 GMT",
-  "fetched_at": "2026-09-13T12:00:30.576203+00:00",
+  "fetched_at": "2026-09-13T16:20:58.455649+00:00",
   "server": "Apache"
  },
  "pl_cluj_apahida": {
   "etag": "\"40515ef9741c91705cc9009f7075a9ee\"",
   "last_modified": "Sun, 13 Sep 2026 09:03:27 GMT",
-  "fetched_at": "2026-09-13T12:00:27.687249+00:00",
+  "fetched_at": "2026-09-13T16:20:55.362815+00:00",
   "server": "nginx"
  },
  "pl_cluj_tureni": {
   "etag": "\"136e17c1f398802213018d0885e14b28\"",
   "last_modified": "Thu, 03 Sep 2026 11:38:44 GMT",
-  "fetched_at": "2026-09-13T12:00:37.481631+00:00",
+  "fetched_at": "2026-09-13T16:21:05.694185+00:00",
   "server": "LiteSpeed"
  },
  "pl_caras_severin_domasnea": {
   "etag": "\"da947cf83c0e69be5c2a1fff7f9a466f\"",
   "last_modified": "Thu, 03 Sep 2026 12:03:58 GMT",
-  "fetched_at": "2026-09-13T12:00:33.544365+00:00",
+  "fetched_at": "2026-09-13T16:21:01.730683+00:00",
   "server": "LiteSpeed"
  },
  "pl_cluj_luna": {
   "etag": "\"ac8e6ebf2f89501762d2aa22c207b87a\"",
   "last_modified": "Thu, 03 Sep 2026 09:02:05 GMT",
-  "fetched_at": "2026-09-13T12:00:35.810893+00:00",
+  "fetched_at": "2026-09-13T16:21:04.008185+00:00",
   "server": "LiteSpeed"
  },
  "pl_cluj_cojocna": {
   "etag": "\"89b7d0d4c5159ea2ea9aa6920b03abae\"",
   "last_modified": "Thu, 03 Sep 2026 07:25:43 GMT",
-  "fetched_at": "2026-09-13T12:00:29.346045+00:00",
+  "fetched_at": "2026-09-13T16:20:56.083344+00:00",
   "server": null
  },
  "pl_braila_salcia_tudor": {
   "etag": "\"b26be170d33c96ecba3bdb25d380492a\"",
   "last_modified": "Thu, 03 Sep 2026 09:07:28 GMT",
-  "fetched_at": "2026-09-13T12:00:32.878665+00:00",
+  "fetched_at": "2026-09-13T16:21:00.418630+00:00",
   "server": "Apache"
  },
  "pl_iasi_deleni": {
   "etag": "\"0aaea46b1631f2c435f2ac877ba944dc\"",
   "last_modified": "Fri, 11 Sep 2026 07:59:18 GMT",
-  "fetched_at": "2026-09-13T12:00:38.546652+00:00",
+  "fetched_at": "2026-09-13T16:21:06.550760+00:00",
   "server": null
  },
  "pl_constanta_rasova": {
   "etag": "\"09049dda69e82c195d930d48eba1505a\"",
   "last_modified": "Wed, 09 Sep 2026 09:19:42 GMT",
-  "fetched_at": "2026-09-13T12:00:39.264280+00:00",
+  "fetched_at": "2026-09-13T16:21:07.296952+00:00",
   "server": "LiteSpeed"
  },
  "pl_hunedoara_bosorod": {
   "etag": "\"e86d7b84197176291fc1a42c56616afb\"",
   "last_modified": "Thu, 10 Sep 2026 14:18:09 GMT",
-  "fetched_at": "2026-09-13T12:00:41.184114+00:00",
+  "fetched_at": "2026-09-13T16:21:09.397815+00:00",
   "server": "LiteSpeed"
  },
  "pl_hunedoara_pestisu_mic": {
   "etag": "\"8264e4c66fadf5884e3a621e3728d0fe\"",
   "last_modified": "Thu, 03 Sep 2026 07:45:54 GMT",
-  "fetched_at": "2026-09-13T12:00:45.180567+00:00",
+  "fetched_at": "2026-09-13T16:21:13.384075+00:00",
   "server": "LiteSpeed"
  },
  "pl_hunedoara_bretea_romana": {
   "etag": null,
   "last_modified": "Thu, 03 Sep 2026 11:57:30 GMT",
-  "fetched_at": "2026-09-13T12:00:45.788104+00:00",
+  "fetched_at": "2026-09-13T16:21:14.383700+00:00",
   "server": "LiteSpeed"
  },
  "pl_ilfov_vidra": {
   "etag": "W/\"f79acedbf896b87289072ece05600446\"",
   "last_modified": "Thu, 03 Sep 2026 09:44:41 GMT",
-  "fetched_at": "2026-09-13T12:00:40.692936+00:00",
+  "fetched_at": "2026-09-13T16:21:08.088146+00:00",
   "server": "cloudflare"
  },
  "pl_mehedinti_ponoarele": {
   "etag": "\"05eccd9b14ea6908aef175cc587e9898\"",
   "last_modified": "Wed, 09 Sep 2026 09:15:25 GMT",
-  "fetched_at": "2026-09-13T12:00:48.900924+00:00",
+  "fetched_at": "2026-09-13T16:21:17.059269+00:00",
   "server": "LiteSpeed"
  },
  "pl_ilfov_dobroesti": {
   "etag": "\"9cc80c7dec378d5e13d0b7eb78e4a1d6\"",
   "last_modified": "Sat, 12 Sep 2026 09:29:15 GMT",
-  "fetched_at": "2026-09-13T12:00:49.240655+00:00",
+  "fetched_at": "2026-09-13T16:21:16.336990+00:00",
   "server": "LiteSpeed"
  },
  "pl_mures_albesti": {
   "etag": "W/\"db8f11ac4b6a055597a908a1f8d60d23-br\"",
   "last_modified": "Fri, 11 Sep 2026 09:10:34 GMT",
-  "fetched_at": "2026-09-13T12:00:43.649753+00:00",
+  "fetched_at": "2026-09-13T16:21:10.974055+00:00",
   "server": "cloudflare"
  },
  "pl_constanta_mereni": {
   "etag": "\"3a910c9511e90180d3d1346a94ae83cf\"",
   "last_modified": "Mon, 07 Sep 2026 18:06:16 GMT",
-  "fetched_at": "2026-09-13T12:00:40.713778+00:00",
+  "fetched_at": "2026-09-13T16:21:08.298711+00:00",
   "server": "nginx"
  },
  "pl_mures_alunis": {
   "etag": "\"3ca85e3d4342629c90f133a9f41eb54d\"",
   "last_modified": "Thu, 03 Sep 2026 10:37:24 GMT",
-  "fetched_at": "2026-09-13T12:00:52.003257+00:00",
+  "fetched_at": "2026-09-13T16:21:19.856670+00:00",
   "server": "LiteSpeed"
  },
  "pl_hunedoara_baita": {
   "etag": "\"c42941de4ac76a8bb05047d931f55347\"",
   "last_modified": "Sat, 12 Sep 2026 20:49:18 GMT",
-  "fetched_at": "2026-09-13T12:00:39.835160+00:00",
+  "fetched_at": "2026-09-13T16:21:07.610508+00:00",
   "server": "Apache"
  },
  "pl_mures_band": {
   "etag": "\"da66ef65c7bfee9fe733ba7ff61548c6\"",
   "last_modified": "Fri, 11 Sep 2026 06:24:35 GMT",
-  "fetched_at": "2026-09-13T12:00:53.664839+00:00",
+  "fetched_at": "2026-09-13T16:21:21.861255+00:00",
   "server": "LiteSpeed"
  },
  "pl_mures_ideciu_de_jos": {
   "etag": "\"a56b4dbbfcffbf8a8389a3de716bf5ee\"",
   "last_modified": "Thu, 03 Sep 2026 11:39:44 GMT",
-  "fetched_at": "2026-09-13T12:00:54.744330+00:00",
+  "fetched_at": "2026-09-13T16:21:23.025080+00:00",
   "server": "LiteSpeed"
  },
  "pl_prahova_paulesti": {
   "etag": "\"71a9fcd83cb17b908c485fe61bad1812\"",
   "last_modified": "Wed, 09 Sep 2026 12:26:33 GMT",
-  "fetched_at": "2026-09-13T12:00:55.253018+00:00",
+  "fetched_at": "2026-09-13T16:21:22.725555+00:00",
   "server": "nginx"
  },
  "pl_salaj_napradea": {
   "etag": "\"ddf7d95ddc6005a59b1592c7067d1ef2\"",
   "last_modified": "Tue, 08 Sep 2026 06:21:10 GMT",
-  "fetched_at": "2026-09-13T12:01:06.124257+00:00",
+  "fetched_at": "2026-09-13T16:21:34.252880+00:00",
   "server": "LiteSpeed"
  },
  "pl_prahova_valea_calugareasca": {
   "etag": "\"df8ddf68cdbb0bf423f8104ca16238ab\"",
   "last_modified": "Fri, 11 Sep 2026 12:07:11 GMT",
-  "fetched_at": "2026-09-13T12:01:05.173322+00:00",
+  "fetched_at": "2026-09-13T16:21:31.928116+00:00",
   "server": "LiteSpeed"
  },
  "pl_mures_sanger": {
   "etag": "\"9b8bcb4c7c23be45336b072db5589e4b\"",
   "last_modified": "Fri, 11 Sep 2026 12:03:12 GMT",
-  "fetched_at": "2026-09-13T12:00:57.945487+00:00",
+  "fetched_at": "2026-09-13T16:21:25.833703+00:00",
   "server": "LiteSpeed"
  },
  "pl_satu_mare_halmeu": {
   "etag": "W/\"19f1ea8c13f80e6200e2248e3add4193\"",
   "last_modified": "Thu, 10 Sep 2026 05:20:39 GMT",
-  "fetched_at": "2026-09-13T12:00:55.537815+00:00",
+  "fetched_at": "2026-09-13T16:21:23.410664+00:00",
   "server": "cloudflare"
  },
  "pl_prahova_provita_de_jos": {
   "etag": "\"18796866990987df7f6e63b16178743f\"",
   "last_modified": "Wed, 09 Sep 2026 07:23:32 GMT",
-  "fetched_at": "2026-09-13T12:01:01.786908+00:00",
+  "fetched_at": "2026-09-13T16:21:30.298642+00:00",
   "server": "LiteSpeed"
  },
  "pl_neamt_valea_ursului": {
   "etag": "\"8326ea144ffe7790564ad05984e08829\"",
   "last_modified": "Thu, 10 Sep 2026 09:43:25 GMT",
-  "fetched_at": "2026-09-13T12:01:00.287734+00:00",
+  "fetched_at": "2026-09-13T16:21:28.558082+00:00",
   "server": "LiteSpeed"
  },
  "pl_suceava_patrauti": {
   "etag": null,
   "last_modified": null,
-  "fetched_at": "2026-09-13T12:00:57.282631+00:00",
+  "fetched_at": "2026-09-13T16:21:24.200930+00:00",
   "server": null
  },
  "pl_suceava_putna": {
   "etag": "\"c14adb2ee9ab71089a5452b0b75aa72d\"",
   "last_modified": "Wed, 09 Sep 2026 10:58:57 GMT",
-  "fetched_at": "2026-09-13T12:01:00.192169+00:00",
+  "fetched_at": "2026-09-13T16:21:26.779763+00:00",
   "server": null
  },
  "pl_timis_sacalaz": {
   "etag": "\"2139a79857ba9d6860735ea91c33b3a5\"",
   "last_modified": "Fri, 11 Sep 2026 10:13:17 GMT",
-  "fetched_at": "2026-09-13T12:00:59.175120+00:00",
+  "fetched_at": "2026-09-13T16:21:27.700993+00:00",
   "server": null
  },
  "pl_vaslui_zorleni": {
   "etag": "\"31d60a56b048da6733d2e86a5b39c736\"",
   "last_modified": "Fri, 11 Sep 2026 12:58:09 GMT",
-  "fetched_at": "2026-09-13T12:01:00.418460+00:00",
+  "fetched_at": "2026-09-13T16:21:27.750901+00:00",
   "server": "Apache"
  },
  "pl_vaslui_dimitrie_cantemir": {
   "etag": "\"4301a0ff99a1362bb88a15e4de13560a\"",
   "last_modified": "Thu, 10 Sep 2026 11:22:45 GMT",
-  "fetched_at": "2026-09-13T12:00:59.452669+00:00",
+  "fetched_at": "2026-09-13T16:21:27.125895+00:00",
   "server": null
  },
  "pl_suceava_marginea": {
   "etag": "\"0c3ebb031464e4f24e2fc51537852381\"",
   "last_modified": "Thu, 03 Sep 2026 16:24:36 GMT",
-  "fetched_at": "2026-09-13T12:00:59.737834+00:00",
+  "fetched_at": "2026-09-13T16:21:28.010706+00:00",
   "server": "nginx"
  },
  "pl_suceava_dorna_candrenilor": {
   "etag": "\"9e327232912c6813688f61ebe577e3d4\"",
   "last_modified": "Thu, 10 Sep 2026 06:21:36 GMT",
-  "fetched_at": "2026-09-13T12:00:58.073858+00:00",
+  "fetched_at": "2026-09-13T16:21:25.781912+00:00",
   "server": "nginx"
  },
  "pl_vaslui_falciu": {
   "etag": "\"e2621f22835e5e51234eac133f1ca8fe\"",
   "last_modified": "Mon, 07 Sep 2026 12:22:59 GMT",
-  "fetched_at": "2026-09-13T12:01:07.917273+00:00",
+  "fetched_at": "2026-09-13T16:21:35.988379+00:00",
   "server": "LiteSpeed"
  },
  "pl_bacau_gaiceana": {
   "etag": "\"0b47437dd67a392bb7acbdce980368ce\"",
   "last_modified": "Wed, 09 Sep 2026 10:59:28 GMT",
-  "fetched_at": "2026-09-13T12:01:09.534958+00:00",
+  "fetched_at": "2026-09-13T16:21:37.418445+00:00",
   "server": "Apache"
  },
  "pl_bacau_pargaresti": {
   "etag": "\"95f8ba96ab26a1039bae3c1ba29c3b55\"",
   "last_modified": "Fri, 11 Sep 2026 08:00:45 GMT",
-  "fetched_at": "2026-09-13T12:01:13.398909+00:00",
+  "fetched_at": "2026-09-13T16:21:41.802425+00:00",
   "server": "Apache"
  },
  "pl_bacau_tamasi": {
   "etag": "\"4c070772100c080707e3a5498a66b93e\"",
   "last_modified": "Thu, 10 Sep 2026 11:45:14 GMT",
-  "fetched_at": "2026-09-13T12:01:17.608008+00:00",
+  "fetched_at": "2026-09-13T16:21:45.266992+00:00",
   "server": "Apache"
  },
  "pl_arad_ignesti": {
   "etag": "\"0cbd70fea599f812d9e8250ee0d466c0\"",
   "last_modified": "Tue, 08 Sep 2026 11:24:26 GMT",
-  "fetched_at": "2026-09-13T12:01:09.447066+00:00",
+  "fetched_at": "2026-09-13T16:21:37.324288+00:00",
   "server": null
  },
  "pl_bacau_scorteni": {
   "etag": "\"7bc61e325ae5e211e7b96e3800b5ce95\"",
   "last_modified": "Thu, 10 Sep 2026 11:04:54 GMT",
-  "fetched_at": "2026-09-13T12:01:15.795735+00:00",
+  "fetched_at": "2026-09-13T16:21:43.859662+00:00",
   "server": "Apache"
  },
  "pl_buzau_braesti": {
   "etag": "\"56f872f291f85649b8026ac2b70727cf\"",
   "last_modified": "Fri, 11 Sep 2026 11:15:15 GMT",
-  "fetched_at": "2026-09-13T12:01:14.870992+00:00",
+  "fetched_at": "2026-09-13T16:21:43.858347+00:00",
   "server": "LiteSpeed"
  },
  "pl_bihor_bratca": {
   "etag": "\"028b72b6e696b27a8222c4dbbd8c5db4\"",
   "last_modified": "Fri, 11 Sep 2026 10:02:36 GMT",
-  "fetched_at": "2026-09-13T12:01:20.441778+00:00",
+  "fetched_at": "2026-09-13T16:21:47.016483+00:00",
   "server": "Apache"
  },
  "pl_vrancea_vizantea_livezi": {
   "etag": null,
   "last_modified": "Thu, 10 Sep 2026 14:45:23 GMT",
-  "fetched_at": "2026-09-13T12:01:12.632377+00:00",
+  "fetched_at": "2026-09-13T16:21:40.680757+00:00",
   "server": "LiteSpeed"
  },
  "pl_cluj_borsa": {
   "etag": "\"3723c48fe71c067c9bc532e3ff16497c\"",
   "last_modified": "Fri, 11 Sep 2026 06:32:02 GMT",
-  "fetched_at": "2026-09-13T12:01:21.542764+00:00",
+  "fetched_at": "2026-09-13T16:21:49.146728+00:00",
   "server": "LiteSpeed"
  },
  "pl_brasov_ormenis": {
   "etag": null,
-  "last_modified": "Sun, 13 Sep 2026 12:01:11 GMT",
-  "fetched_at": "2026-09-13T12:01:14.037414+00:00",
+  "last_modified": "Sun, 13 Sep 2026 16:21:38 GMT",
+  "fetched_at": "2026-09-13T16:21:42.096327+00:00",
   "server": "LiteSpeed"
  },
  "pl_caras_severin_coronini": {
   "etag": "\"ac95e932475676d54e81551fd3777e53\"",
   "last_modified": "Wed, 02 Sep 2026 10:35:58 GMT",
-  "fetched_at": "2026-09-13T12:01:21.029135+00:00",
+  "fetched_at": "2026-09-13T16:21:48.575846+00:00",
   "server": "LiteSpeed"
  },
  "pl_buzau_cochirleanca": {
   "etag": "\"368f00be8033d93342402ccf76ec77f1\"",
   "last_modified": "Wed, 09 Sep 2026 12:20:48 GMT",
-  "fetched_at": "2026-09-13T12:01:19.151699+00:00",
+  "fetched_at": "2026-09-13T16:21:47.551174+00:00",
   "server": "LiteSpeed"
  },
  "pl_buzau_scutelnici": {
   "etag": null,
-  "last_modified": "Sun, 13 Sep 2026 12:01:18 GMT",
-  "fetched_at": "2026-09-13T12:01:17.146062+00:00",
+  "last_modified": "Sun, 13 Sep 2026 16:21:44 GMT",
+  "fetched_at": "2026-09-13T16:21:42.272435+00:00",
   "server": null
  },
  "pl_dambovita_finta": {
   "etag": "\"d0f2b5d25f8d5841e2b3285f4c804d04\"",
   "last_modified": "Fri, 04 Sep 2026 10:13:51 GMT",
-  "fetched_at": "2026-09-13T12:01:23.522440+00:00",
+  "fetched_at": "2026-09-13T16:21:50.836394+00:00",
   "server": null
  },
  "pl_cluj_negreni": {
   "etag": "\"0685cb346a86c78e46fd65d89b277861\"",
   "last_modified": "Wed, 09 Sep 2026 12:13:10 GMT",
-  "fetched_at": "2026-09-13T12:01:22.931454+00:00",
+  "fetched_at": "2026-09-13T16:21:50.272112+00:00",
   "server": null
  },
  "pl_constanta_adamclisi": {
   "etag": "\"cdc027eb0ed67249909db00bfe4f8e19\"",
   "last_modified": "Wed, 09 Sep 2026 08:46:45 GMT",
-  "fetched_at": "2026-09-13T12:01:23.531113+00:00",
+  "fetched_at": "2026-09-13T16:21:51.697756+00:00",
   "server": "LiteSpeed"
  },
  "pl_ialomita_ciulnita": {
   "etag": "\"65836695ff24d656e796d22328143813\"",
   "last_modified": "Wed, 09 Sep 2026 05:39:36 GMT",
-  "fetched_at": "2026-09-13T12:01:31.860556+00:00",
+  "fetched_at": "2026-09-13T16:21:59.895467+00:00",
   "server": "LiteSpeed"
  },
  "pl_dolj_carcea": {
   "etag": "\"20e1f2ed9bff4c7b9297d9085cbe71b7\"",
   "last_modified": "Wed, 09 Sep 2026 07:04:37 GMT",
-  "fetched_at": "2026-09-13T12:01:26.295921+00:00",
+  "fetched_at": "2026-09-13T16:21:54.188293+00:00",
   "server": "LiteSpeed"
  },
  "pl_harghita_galautas": {
   "etag": "\"f530cd41fa4573a452557c6fbe8cf8bf\"",
   "last_modified": "Fri, 11 Sep 2026 20:30:17 GMT",
-  "fetched_at": "2026-09-13T12:01:30.094426+00:00",
+  "fetched_at": "2026-09-13T16:21:57.401766+00:00",
   "server": "LiteSpeed"
  },
  "pl_galati_smardan": {
   "etag": "\"878521e153909a6a4c6c9e0817a5d1f9\"",
   "last_modified": "Fri, 11 Sep 2026 10:52:12 GMT",
-  "fetched_at": "2026-09-13T12:01:23.718976+00:00",
+  "fetched_at": "2026-09-13T16:21:51.058346+00:00",
   "server": null
  },
  "pl_ialomita_dridu": {
   "etag": "\"ed82d24cab515bb44b36b7cedc780554\"",
   "last_modified": "Wed, 09 Sep 2026 13:03:21 GMT",
-  "fetched_at": "2026-09-13T12:01:34.323731+00:00",
+  "fetched_at": "2026-09-13T16:22:02.151260+00:00",
   "server": "LiteSpeed"
  },
  "pl_iasi_oteleni": {
   "etag": "\"790029575c23c8d55fea964715473dae\"",
   "last_modified": "Wed, 02 Sep 2026 06:22:19 GMT",
-  "fetched_at": "2026-09-13T12:01:35.709779+00:00",
+  "fetched_at": "2026-09-13T16:22:03.791707+00:00",
   "server": "LiteSpeed"
  },
  "pl_ilfov_stefanestii_de_jos": {
   "etag": "\"44431a91fdb3f8241c2e1593dbf7d78e\"",
   "last_modified": "Wed, 02 Sep 2026 12:41:57 GMT",
-  "fetched_at": "2026-09-13T12:01:24.984355+00:00",
+  "fetched_at": "2026-09-13T16:21:52.943300+00:00",
   "server": null
  },
  "pl_mures_hodac": {
   "etag": "\"2f0a67326c2a3cc7f5d15d445f4ad454\"",
   "last_modified": "Fri, 11 Sep 2026 10:21:25 GMT",
-  "fetched_at": "2026-09-13T12:01:38.955118+00:00",
+  "fetched_at": "2026-09-13T16:22:07.139026+00:00",
   "server": "LiteSpeed"
  },
  "pl_mures_cristesti": {
   "etag": null,
   "last_modified": "Sun, 13 Sep 2026 10:27:50 GMT",
-  "fetched_at": "2026-09-13T12:01:37.204469+00:00",
+  "fetched_at": "2026-09-13T16:22:05.284668+00:00",
   "server": "LiteSpeed"
  },
  "pl_mures_deda": {
   "etag": "\"f7a70429beee2b05db2a4ccbed2ed420\"",
   "last_modified": "Tue, 08 Sep 2026 14:56:05 GMT",
-  "fetched_at": "2026-09-13T12:01:27.990969+00:00",
+  "fetched_at": "2026-09-13T16:21:54.956119+00:00",
   "server": "Apache"
  },
  "pl_neamt_brusturi": {
   "etag": "\"a642fa421a706623cbc0c489b82ca0a6\"",
   "last_modified": "Mon, 07 Sep 2026 12:42:32 GMT",
-  "fetched_at": "2026-09-13T12:01:29.868395+00:00",
+  "fetched_at": "2026-09-13T16:21:58.486204+00:00",
   "server": null
  },
  "pl_ilfov_1_decembrie": {
   "etag": "\"2656117fc7a21fd816464319e069841f\"",
   "last_modified": "Thu, 10 Sep 2026 12:33:10 GMT",
-  "fetched_at": "2026-09-13T12:01:25.890542+00:00",
+  "fetched_at": "2026-09-13T16:21:53.143596+00:00",
   "server": null
  },
  "pl_neamt_horia": {
   "etag": "\"26f06688095b8e5396296b213087f6c1\"",
   "last_modified": "Fri, 11 Sep 2026 07:09:53 GMT",
-  "fetched_at": "2026-09-13T12:01:42.603686+00:00",
+  "fetched_at": "2026-09-13T16:22:10.841339+00:00",
   "server": "LiteSpeed"
  },
  "pl_suceava_fantanele": {
   "etag": "\"a4e2eb388186ba1cba0b4a6cfddf1729\"",
   "last_modified": "Wed, 09 Sep 2026 01:11:02 GMT",
-  "fetched_at": "2026-09-13T12:01:41.309492+00:00",
+  "fetched_at": "2026-09-13T16:22:08.580047+00:00",
   "server": null
  },
  "pl_satu_mare_lazuri": {
   "etag": "\"d7dd25abbe6b0f48528311981f778ede\"",
   "last_modified": "Wed, 09 Sep 2026 10:26:30 GMT",
-  "fetched_at": "2026-09-13T12:01:45.158347+00:00",
+  "fetched_at": "2026-09-13T16:22:13.634728+00:00",
   "server": "LiteSpeed"
  },
  "pl_neamt_ruginoasa": {
   "etag": "\"8d95021a481f10815ea0bab9ca54b910\"",
   "last_modified": "Fri, 11 Sep 2026 07:43:46 GMT",
-  "fetched_at": "2026-09-13T12:01:41.482054+00:00",
+  "fetched_at": "2026-09-13T16:22:08.871247+00:00",
   "server": "Apache"
  },
  "pl_timis_fibis": {
   "etag": "\"847c7c20d2fb5b618ecd756544a3e12a\"",
   "last_modified": "Tue, 08 Sep 2026 10:43:49 GMT",
-  "fetched_at": "2026-09-13T12:01:49.286896+00:00",
+  "fetched_at": "2026-09-13T16:22:17.305426+00:00",
   "server": "LiteSpeed"
  },
  "pl_suceava_fundu_moldovei": {
   "etag": "\"b86ab92f56487b5bc6987f0bd9e8afaa\"",
   "last_modified": "Thu, 03 Sep 2026 13:12:12 GMT",
-  "fetched_at": "2026-09-13T12:01:40.578228+00:00",
+  "fetched_at": "2026-09-13T16:22:08.470858+00:00",
   "server": "cloudflare"
  },
  "pl_timis_giarmata": {
   "etag": "\"d895d819967de4e8adb5344b97dd76c7\"",
   "last_modified": "Wed, 09 Sep 2026 07:00:46 GMT",
-  "fetched_at": "2026-09-13T12:01:51.201976+00:00",
+  "fetched_at": "2026-09-13T16:22:21.275188+00:00",
   "server": "LiteSpeed"
  },
  "pl_suceava_sucevita": {
   "etag": "\"86df4ea4f6448df8de7044145cda4790\"",
   "last_modified": "Fri, 11 Sep 2026 11:34:47 GMT",
-  "fetched_at": "2026-09-13T12:01:47.778839+00:00",
+  "fetched_at": "2026-09-13T16:22:16.155345+00:00",
   "server": "LiteSpeed"
  },
  "pl_neamt_gadinti": {
   "etag": "\"f72ac5cccdb73aa515a3599aef0eafdc\"",
   "last_modified": "Fri, 11 Sep 2026 06:18:28 GMT",
-  "fetched_at": "2026-09-13T12:01:42.543733+00:00",
+  "fetched_at": "2026-09-13T16:22:10.068578+00:00",
   "server": "LiteSpeed"
  },
  "pl_sibiu_racovita": {
   "etag": "\"059f61e834c877da3a64371d1cd7df2d\"",
   "last_modified": "Wed, 02 Sep 2026 12:53:10 GMT",
-  "fetched_at": "2026-09-13T12:01:43.794156+00:00",
+  "fetched_at": "2026-09-13T16:22:11.737797+00:00",
   "server": "Apache"
  },
  "pl_valcea_bujoreni": {
   "etag": "\"515afafffbb5e0ab875e70d318d2e579\"",
   "last_modified": "Wed, 09 Sep 2026 08:44:44 GMT",
-  "fetched_at": "2026-09-13T12:01:53.585466+00:00",
+  "fetched_at": "2026-09-13T16:22:22.048623+00:00",
   "server": "LiteSpeed"
  },
  "pl_arges_valea_danului": {
   "etag": "\"5da4048412e9dd286f3cb5f84f9eab3e\"",
   "last_modified": "Tue, 08 Sep 2026 06:22:14 GMT",
-  "fetched_at": "2026-09-13T12:01:59.008756+00:00",
+  "fetched_at": "2026-09-13T16:22:27.277686+00:00",
   "server": "LiteSpeed"
  },
  "pl_vaslui_gherghesti": {
   "etag": "\"d0f1cff037241820e637d05c8b2a2044\"",
   "last_modified": "Thu, 03 Sep 2026 06:51:37 GMT",
-  "fetched_at": "2026-09-13T12:01:56.254414+00:00",
+  "fetched_at": "2026-09-13T16:22:23.925024+00:00",
   "server": "LiteSpeed"
  },
  "pl_vrancea_vulturu": {
   "etag": "\"090e664350392b70ed75735a897f63f5\"",
   "last_modified": "Thu, 10 Sep 2026 06:18:12 GMT",
-  "fetched_at": "2026-09-13T12:01:58.474830+00:00",
+  "fetched_at": "2026-09-13T16:22:26.106115+00:00",
   "server": "LiteSpeed"
  },
  "pl_alba_cenade": {
   "etag": "W/\"5b7b230427b753aee7056e0974c9d1f7-br\"",
   "last_modified": "Tue, 08 Sep 2026 09:17:53 GMT",
-  "fetched_at": "2026-09-13T12:01:45.599336+00:00",
+  "fetched_at": "2026-09-13T16:22:13.649575+00:00",
   "server": "cloudflare"
  },
  "pl_alba_vadu_motilor": {
   "etag": "\"4c6dd047ac8151f024412fa980f309c8\"",
   "last_modified": "Fri, 11 Sep 2026 08:54:10 GMT",
-  "fetched_at": "2026-09-13T12:01:46.723727+00:00",
+  "fetched_at": "2026-09-13T16:22:14.920801+00:00",
   "server": "Apache"
  },
  "pl_botosani_ibanesti": {
   "etag": "\"a7899432ebee855d6a8a92069e3fbe21\"",
   "last_modified": "Mon, 07 Sep 2026 10:01:43 GMT",
-  "fetched_at": "2026-09-13T12:02:03.038563+00:00",
+  "fetched_at": "2026-09-13T16:22:31.128654+00:00",
   "server": "LiteSpeed"
  },
  "pl_botosani_varfu_campului": {
   "etag": "\"55fa2fb4bb63e8200732dbc0c066e0aa\"",
   "last_modified": "Fri, 11 Sep 2026 06:09:14 GMT",
-  "fetched_at": "2026-09-13T12:02:04.925954+00:00",
+  "fetched_at": "2026-09-13T16:22:33.029348+00:00",
   "server": "LiteSpeed"
  },
  "pl_bacau_filipesti": {
   "etag": "\"3b1b399035fedce9b2bbd0ad67386eaa\"",
   "last_modified": "Wed, 09 Sep 2026 12:34:58 GMT",
-  "fetched_at": "2026-09-13T12:02:02.233092+00:00",
+  "fetched_at": "2026-09-13T16:22:30.307689+00:00",
   "server": "Apache"
  },
  "pl_bacau_poduri": {
   "etag": "\"4795d62665f4d09c99e254eeb9ffa843\"",
   "last_modified": "Thu, 10 Sep 2026 05:12:52 GMT",
-  "fetched_at": "2026-09-13T12:02:04.430732+00:00",
+  "fetched_at": "2026-09-13T16:22:32.429387+00:00",
   "server": "Apache"
  },
  "pl_bacau_barsanesti": {
   "etag": "\"b6c6ebd9e25e151c3cb2c9a374c17ce4\"",
   "last_modified": "Tue, 08 Sep 2026 08:11:45 GMT",
-  "fetched_at": "2026-09-13T12:02:00.520110+00:00",
+  "fetched_at": "2026-09-13T16:22:28.639742+00:00",
   "server": "Apache"
  },
  "pl_bacau_faraoani": {
   "etag": "W/\"2778358aa55e89a7923abb823d8800d2-br\"",
   "last_modified": "Fri, 11 Sep 2026 09:39:45 GMT",
-  "fetched_at": "2026-09-13T12:02:01.115363+00:00",
+  "fetched_at": "2026-09-13T16:22:29.196653+00:00",
   "server": "cloudflare"
  },
  "pl_buzau_posta_calnau": {
   "etag": "\"8885a255687842f457d9b08a559bffd5\"",
   "last_modified": "Fri, 11 Sep 2026 18:39:05 GMT",
-  "fetched_at": "2026-09-13T12:02:09.183003+00:00",
+  "fetched_at": "2026-09-13T16:22:37.145390+00:00",
   "server": "LiteSpeed"
  },
  "pl_buzau_tintesti": {
   "etag": "\"10d1e6c9f34efca6a68c6af2f85fb980\"",
   "last_modified": "Fri, 11 Sep 2026 11:17:20 GMT",
-  "fetched_at": "2026-09-13T12:02:11.184770+00:00",
+  "fetched_at": "2026-09-13T16:22:39.225732+00:00",
   "server": "LiteSpeed"
  },
  "pl_brasov_tarlungeni": {
   "etag": "\"64e6ef0c275e08bff674f15732dc5bd9\"",
   "last_modified": "Thu, 10 Sep 2026 14:53:03 GMT",
-  "fetched_at": "2026-09-13T12:02:07.638908+00:00",
+  "fetched_at": "2026-09-13T16:22:35.613983+00:00",
   "server": "LiteSpeed"
  },
  "pl_brasov_beclean": {
@@ -2567,79 +2567,79 @@
  "pl_calarasi_stefan_cel_mare": {
   "etag": "\"f4091441b173db0eaec1712242460afe\"",
   "last_modified": "Mon, 07 Sep 2026 10:47:32 GMT",
-  "fetched_at": "2026-09-13T12:02:13.812100+00:00",
+  "fetched_at": "2026-09-13T16:22:41.848676+00:00",
   "server": "LiteSpeed"
  },
  "pl_cluj_sandulesti": {
   "etag": "\"b87c4b393bdec8dd5602d41170aed08f\"",
   "last_modified": "Tue, 01 Sep 2026 12:42:28 GMT",
-  "fetched_at": "2026-09-13T12:02:17.679150+00:00",
+  "fetched_at": "2026-09-13T16:22:45.778352+00:00",
   "server": "LiteSpeed"
  },
  "pl_bacau_buhoci": {
   "etag": "\"0250f7aa8ece06f42b0f4dea97725295\"",
   "last_modified": "Fri, 11 Sep 2026 09:38:48 GMT",
-  "fetched_at": "2026-09-13T12:02:01.205506+00:00",
+  "fetched_at": "2026-09-13T16:22:30.965263+00:00",
   "server": "LiteSpeed"
  },
  "pl_cluj_petrestii_de_jos": {
   "etag": "\"938c8b3679094f92e1d8475213cd83f6\"",
   "last_modified": "Tue, 01 Sep 2026 11:12:59 GMT",
-  "fetched_at": "2026-09-13T12:02:16.428022+00:00",
+  "fetched_at": "2026-09-13T16:22:44.651106+00:00",
   "server": "LiteSpeed"
  },
  "pl_cluj_savadisla": {
   "etag": "\"b763a3a0bb4827daab1a105b88e2504c\"",
   "last_modified": "Tue, 01 Sep 2026 05:42:10 GMT",
-  "fetched_at": "2026-09-13T12:02:08.732399+00:00",
+  "fetched_at": "2026-09-13T16:22:36.650913+00:00",
   "server": "Apache/2.4.59 (Win64) OpenSSL/3.1.5 PHP/8.2.18 mod_fcgid/2.3.10-dev"
  },
  "pl_constanta_ciocarlia": {
   "etag": "\"82016a4167b526a10100b805dc795a38\"",
   "last_modified": "Thu, 10 Sep 2026 18:13:50 GMT",
-  "fetched_at": "2026-09-13T12:02:07.889361+00:00",
+  "fetched_at": "2026-09-13T16:22:38.068369+00:00",
   "server": "nginx"
  },
  "pl_dambovita_nucet": {
   "etag": null,
   "last_modified": "Thu, 03 Sep 2026 12:40:38 GMT",
-  "fetched_at": "2026-09-13T12:02:19.050492+00:00",
+  "fetched_at": "2026-09-13T16:22:46.887261+00:00",
   "server": "cloudflare"
  },
  "pl_iasi_mironeasa": {
   "etag": "\"b4599691319c3a3ab144d3b8bdd85bef\"",
   "last_modified": "Tue, 01 Sep 2026 13:24:39 GMT",
-  "fetched_at": "2026-09-13T12:02:21.101311+00:00",
+  "fetched_at": "2026-09-13T16:22:49.057407+00:00",
   "server": "Apache"
  },
  "pl_gorj_danesti": {
   "etag": "\"e51d9034c576dc259dd5788822882453\"",
   "last_modified": "Tue, 01 Sep 2026 12:31:43 GMT",
-  "fetched_at": "2026-09-13T12:02:20.546485+00:00",
+  "fetched_at": "2026-09-13T16:22:48.340483+00:00",
   "server": null
  },
  "pl_galati_scanteiesti": {
   "etag": "\"b4a6d51b6c66ef398f3f3aabacc0bb9f\"",
   "last_modified": "Mon, 07 Sep 2026 07:33:22 GMT",
-  "fetched_at": "2026-09-13T12:02:21.982145+00:00",
+  "fetched_at": "2026-09-13T16:22:49.783543+00:00",
   "server": "LiteSpeed"
  },
  "pl_constanta_independenta": {
   "etag": "\"35fbebb9a94333f4b4920b50a4d7d082\"",
   "last_modified": "Thu, 10 Sep 2026 10:43:20 GMT",
-  "fetched_at": "2026-09-13T12:02:19.755067+00:00",
+  "fetched_at": "2026-09-13T16:22:47.867156+00:00",
   "server": "LiteSpeed"
  },
  "pl_hunedoara_salasu_de_sus": {
   "etag": "\"38643ed9227b6f55ec5fd66bf18f82be\"",
   "last_modified": "Fri, 11 Sep 2026 05:12:51 GMT",
-  "fetched_at": "2026-09-13T12:02:21.505489+00:00",
+  "fetched_at": "2026-09-13T16:22:50.822369+00:00",
   "server": "Apache"
  },
  "pl_brasov_oras_ghimbav": {
   "etag": "\"5420e30a27bc8bd146e0e61e8570e9fb\"",
   "last_modified": "Wed, 09 Sep 2026 08:19:27 GMT",
-  "fetched_at": "2026-09-13T11:58:29.044841+00:00",
+  "fetched_at": "2026-09-13T16:18:59.013290+00:00",
   "server": "Apache"
  },
  "pl_satu_mare_moftin": {
@@ -2651,169 +2651,169 @@
  "pl_cluj_municipiul_campia_turzii": {
   "etag": null,
   "last_modified": null,
-  "fetched_at": "2026-09-13T12:02:25.995905+00:00",
+  "fetched_at": "2026-09-13T16:22:54.982049+00:00",
   "server": "LiteSpeed"
  },
  "pl_bihor_municipiul_oradea": {
   "etag": "\"e0a99b4b38ae439884b65a5f8d8697ef\"",
   "last_modified": "Sun, 13 Sep 2026 04:00:10 GMT",
-  "fetched_at": "2026-09-13T12:02:21.601956+00:00",
+  "fetched_at": "2026-09-13T16:22:49.169785+00:00",
   "server": "cloudflare"
  },
  "pl_caras_severin_oras_bocsa": {
   "etag": "\"7523b7da300ea4c28aafca28143b3b5c\"",
   "last_modified": "Wed, 09 Sep 2026 14:09:24 GMT",
-  "fetched_at": "2026-09-13T12:02:41.279302+00:00",
+  "fetched_at": "2026-09-13T16:23:06.978821+00:00",
   "server": "LiteSpeed"
  },
  "pl_mures_oras_sangeorgiu_de_padure": {
-  "etag": null,
-  "last_modified": null,
-  "fetched_at": "2026-09-13T12:02:45.761375+00:00",
+  "etag": "\"0acdd2716c7bd5abefd024773cf6be89\"",
+  "last_modified": "Wed, 09 Sep 2026 22:24:34 GMT",
+  "fetched_at": "2026-09-13T16:23:08.190416+00:00",
   "server": "nginx"
  },
  "pl_arad_varfurile": {
   "etag": "\"0763a4b65d47455d57e8018edf8a9669\"",
   "last_modified": "Tue, 04 Aug 2026 07:29:47 GMT",
-  "fetched_at": "2026-09-13T12:03:04.252448+00:00",
+  "fetched_at": "2026-09-13T16:23:25.016840+00:00",
   "server": "LiteSpeed"
  },
  "pl_arad_sistarovat": {
   "etag": "\"49a6f540bde74a47fb8d38ef9e8affed\"",
   "last_modified": "Fri, 28 Aug 2026 10:33:46 GMT",
-  "fetched_at": "2026-09-13T12:03:02.726778+00:00",
+  "fetched_at": "2026-09-13T16:23:23.354614+00:00",
   "server": "LiteSpeed"
  },
  "pl_arad_zimandu_nou": {
   "etag": "\"53e2789f4ab3a23fa062280b003742f1\"",
   "last_modified": "Fri, 29 May 2026 09:44:07 GMT",
-  "fetched_at": "2026-09-13T12:03:03.996471+00:00",
+  "fetched_at": "2026-09-13T16:23:25.786763+00:00",
   "server": "Apache"
  },
  "pl_arges_cosesti": {
   "etag": "\"0710a6c3eb08eb55508ee4f2bcf2709e\"",
   "last_modified": "Tue, 10 Feb 2026 14:42:41 GMT",
-  "fetched_at": "2026-09-13T12:03:13.563558+00:00",
+  "fetched_at": "2026-09-13T16:23:28.088974+00:00",
   "server": "LiteSpeed"
  },
  "pl_braila_surdila_gaiseanca": {
   "etag": "\"b690ce15863ce704a27ccee641034be2\"",
   "last_modified": "Sat, 23 May 2026 06:37:04 GMT",
-  "fetched_at": "2026-09-13T12:03:21.236868+00:00",
+  "fetched_at": "2026-09-13T16:23:33.155501+00:00",
   "server": "LiteSpeed"
  },
  "pl_buzau_beceni": {
   "etag": "\"fff2c59799ddef3a45520f159b0c52db\"",
   "last_modified": "Tue, 04 Aug 2026 07:55:17 GMT",
-  "fetched_at": "2026-09-13T12:03:32.876466+00:00",
+  "fetched_at": "2026-09-13T16:23:51.341292+00:00",
   "server": "LiteSpeed"
  },
  "pl_calarasi_alexandru_odobescu": {
   "etag": "\"12335a676e3b3896faaa179451b263fa\"",
   "last_modified": "Fri, 11 Sep 2026 10:06:35 GMT",
-  "fetched_at": "2026-09-13T12:03:31.300379+00:00",
+  "fetched_at": "2026-09-13T16:23:55.464578+00:00",
   "server": "LiteSpeed"
  },
  "pl_buzau_costesti": {
   "etag": "\"5a9e22f1a639b3c0839814868292e977\"",
   "last_modified": "Fri, 11 Sep 2026 11:15:23 GMT",
-  "fetched_at": "2026-09-13T12:03:27.505664+00:00",
+  "fetched_at": "2026-09-13T16:23:51.517813+00:00",
   "server": "LiteSpeed"
  },
  "pl_brasov_homorod": {
   "etag": "\"7aa369603d349e5cbb7d602dc5a7d60e\"",
   "last_modified": "Wed, 09 Sep 2026 09:23:19 GMT",
-  "fetched_at": "2026-09-13T12:03:27.560321+00:00",
+  "fetched_at": "2026-09-13T16:23:51.799381+00:00",
   "server": null
  },
  "pl_calarasi_perisoru": {
   "etag": "\"d0c6f32fa37c628b178feaac46bdac92\"",
   "last_modified": "Thu, 20 Aug 2026 11:00:49 GMT",
-  "fetched_at": "2026-09-13T12:03:38.301758+00:00",
+  "fetched_at": "2026-09-13T16:24:00.512561+00:00",
   "server": "LiteSpeed"
  },
  "pl_caras_severin_gradinari": {
   "etag": "\"b9d62ac594ac459202cd1fd3c2e0a6f4\"",
   "last_modified": "Fri, 11 Sep 2026 11:58:38 GMT",
-  "fetched_at": "2026-09-13T12:03:43.427401+00:00",
+  "fetched_at": "2026-09-13T16:24:04.663698+00:00",
   "server": "Apache"
  },
  "pl_constanta_corbu": {
   "etag": null,
   "last_modified": "Thu, 19 Mar 2026 14:43:09 GMT",
-  "fetched_at": "2026-09-13T12:03:48.746443+00:00",
+  "fetched_at": "2026-09-13T16:24:08.782127+00:00",
   "server": null
  },
  "pl_covasna_ilieni": {
-  "etag": null,
-  "last_modified": null,
-  "fetched_at": "2026-09-13T12:03:51.512434+00:00",
+  "etag": "\"44cb17ea6397cb1686e7301561d95621\"",
+  "last_modified": "Fri, 04 Sep 2026 11:21:48 GMT",
+  "fetched_at": "2026-09-13T16:24:12.277682+00:00",
   "server": "nginx"
  },
  "pl_constanta_dumbraveni": {
   "etag": "\"6a3e5b7feadd370d54e0fd876d296dd2\"",
   "last_modified": "Thu, 03 Sep 2026 09:47:44 GMT",
-  "fetched_at": "2026-09-13T12:03:51.198544+00:00",
+  "fetched_at": "2026-09-13T16:24:11.441911+00:00",
   "server": "LiteSpeed"
  },
  "pl_covasna_moacsa": {
   "etag": "\"ba7837dc16514403593caf9ff7cce161\"",
   "last_modified": "Wed, 29 Jul 2026 09:37:10 GMT",
-  "fetched_at": "2026-09-13T12:03:53.390153+00:00",
+  "fetched_at": "2026-09-13T16:24:13.407319+00:00",
   "server": "LiteSpeed"
  },
  "pl_constanta_cumpana": {
   "etag": "\"d9ecb69e8c29a543907e9532dbc4450f\"",
   "last_modified": "Thu, 10 Sep 2026 13:11:09 GMT",
-  "fetched_at": "2026-09-13T12:03:51.538011+00:00",
+  "fetched_at": "2026-09-13T16:24:11.602746+00:00",
   "server": "nginx"
  },
  "pl_dambovita_i_l_caragiale": {
   "etag": "\"4f615cb95432cf6c7ef5e16607afec59\"",
   "last_modified": "Tue, 04 Aug 2026 09:49:50 GMT",
-  "fetched_at": "2026-09-13T12:03:56.679516+00:00",
+  "fetched_at": "2026-09-13T16:24:16.826841+00:00",
   "server": "LiteSpeed"
  },
  "pl_dambovita_lucieni": {
   "etag": null,
   "last_modified": null,
-  "fetched_at": "2026-09-13T12:03:59.801965+00:00",
+  "fetched_at": "2026-09-13T16:24:19.903197+00:00",
   "server": "LiteSpeed"
  },
  "pl_gorj_crasna": {
   "etag": "\"0754735623df862c3843df32551382e2\"",
   "last_modified": "Fri, 11 Sep 2026 07:00:59 GMT",
-  "fetched_at": "2026-09-13T12:04:04.532803+00:00",
+  "fetched_at": "2026-09-13T16:24:23.601280+00:00",
   "server": "BitNinja-WafPro"
  },
  "pl_iasi_braesti": {
   "etag": null,
   "last_modified": null,
-  "fetched_at": "2026-09-13T12:04:12.620016+00:00",
+  "fetched_at": "2026-09-13T16:24:31.742910+00:00",
   "server": null
  },
  "pl_iasi_butea": {
   "etag": "\"c64fcc520c22f819e79023983bd053df\"",
   "last_modified": "Thu, 10 Sep 2026 10:17:37 GMT",
-  "fetched_at": "2026-09-13T12:04:13.008906+00:00",
+  "fetched_at": "2026-09-13T16:24:32.355685+00:00",
   "server": null
  },
  "pl_harghita_ciumani": {
-  "etag": "\"c144e37ece6fddba5d63c95b7bb2cb3b\"",
-  "last_modified": "Fri, 11 Sep 2026 10:08:17 GMT",
-  "fetched_at": "2026-09-13T12:04:13.867618+00:00",
+  "etag": "\"0af6b28963f589fe061d574c2bf6eed1\"",
+  "last_modified": "Sun, 13 Sep 2026 15:18:48 GMT",
+  "fetched_at": "2026-09-13T16:24:32.707937+00:00",
   "server": "LiteSpeed"
  },
  "pl_hunedoara_cerbal": {
   "etag": "\"837f86b1ddbeec9e090d836927076d87\"",
   "last_modified": "Mon, 17 Aug 2026 10:03:29 GMT",
-  "fetched_at": "2026-09-13T12:04:15.087988+00:00",
+  "fetched_at": "2026-09-13T16:24:32.425879+00:00",
   "server": "Apache"
  },
  "pl_iasi_bivolari": {
   "etag": "\"873653bd97b34d7fcb0e32515104df51\"",
   "last_modified": "Tue, 04 Aug 2026 08:16:35 GMT",
-  "fetched_at": "2026-09-13T12:04:16.381914+00:00",
+  "fetched_at": "2026-09-13T16:24:35.363116+00:00",
   "server": "LiteSpeed"
  },
  "pl_iasi_todiresti": {
@@ -2823,123 +2823,123 @@
   "server": "LiteSpeed"
  },
  "pl_mures_balauseri": {
-  "etag": null,
-  "last_modified": null,
-  "fetched_at": "2026-09-13T12:04:29.885106+00:00",
+  "etag": "\"edae8fa7d121e557d89b7aaa81ca9a27\"",
+  "last_modified": "Wed, 09 Sep 2026 22:21:27 GMT",
+  "fetched_at": "2026-09-13T16:24:49.459256+00:00",
   "server": "nginx"
  },
  "pl_mures_vargata": {
-  "etag": null,
-  "last_modified": null,
-  "fetched_at": "2026-09-13T12:04:31.914645+00:00",
+  "etag": "\"23018834ac0bc6acd990ed9678b267c6\"",
+  "last_modified": "Mon, 07 Sep 2026 13:12:33 GMT",
+  "fetched_at": "2026-09-13T16:24:51.079553+00:00",
   "server": "nginx"
  },
  "pl_maramures_rona_de_sus": {
   "etag": "\"54c876c821fe98277c69924f23b2ba46\"",
   "last_modified": "Thu, 13 Aug 2026 17:04:44 GMT",
-  "fetched_at": "2026-09-13T12:04:31.644569+00:00",
+  "fetched_at": "2026-09-13T16:24:49.915242+00:00",
   "server": null
  },
  "pl_neamt_bahna": {
   "etag": "\"ca4886d4286f5f9f268939bf3906068a\"",
   "last_modified": "Thu, 03 Sep 2026 08:30:52 GMT",
-  "fetched_at": "2026-09-13T12:04:33.460918+00:00",
+  "fetched_at": "2026-09-13T16:24:51.258537+00:00",
   "server": "LiteSpeed"
  },
  "pl_prahova_batrani": {
   "etag": "\"451557803ba1dece72af1da2cf3bb9c4\"",
   "last_modified": "Mon, 16 Mar 2026 04:31:50 GMT",
-  "fetched_at": "2026-09-13T12:04:41.503119+00:00",
+  "fetched_at": "2026-09-13T16:25:00.007257+00:00",
   "server": "LiteSpeed"
  },
  "pl_prahova_baba_ana": {
   "etag": "\"ac260cb2bb77114f78807e80c909edd5\"",
   "last_modified": "Thu, 10 Sep 2026 11:05:54 GMT",
-  "fetched_at": "2026-09-13T12:04:40.948134+00:00",
+  "fetched_at": "2026-09-13T16:24:59.364719+00:00",
   "server": "LiteSpeed"
  },
  "pl_salaj_benesat": {
   "etag": "\"87bce68cd4df6e4cb6a3e2b488597d27\"",
   "last_modified": "Wed, 09 Sep 2026 10:36:04 GMT",
-  "fetched_at": "2026-09-13T12:04:43.370830+00:00",
+  "fetched_at": "2026-09-13T16:25:02.019427+00:00",
   "server": "LiteSpeed"
  },
  "pl_satu_mare_viile_satu_mare": {
   "etag": "\"2c2dea3b9d824eb3567ab1589f704e9c\"",
   "last_modified": "Tue, 08 Sep 2026 07:56:55 GMT",
-  "fetched_at": "2026-09-13T12:04:47.355175+00:00",
+  "fetched_at": "2026-09-13T16:25:05.538818+00:00",
   "server": "LiteSpeed"
  },
  "pl_suceava_berchisesti": {
   "etag": "\"d314fb0cf0a4e821786481a868c38bbb\"",
   "last_modified": "Mon, 27 Jul 2026 18:26:10 GMT",
-  "fetched_at": "2026-09-13T12:04:46.734851+00:00",
+  "fetched_at": "2026-09-13T16:25:04.644981+00:00",
   "server": null
  },
  "pl_satu_mare_tarsolt": {
   "etag": "\"56724cc0648692c6591a1198d04f9f30\"",
   "last_modified": "Mon, 10 Aug 2026 18:56:46 GMT",
-  "fetched_at": "2026-09-13T12:04:45.811873+00:00",
+  "fetched_at": "2026-09-13T16:25:04.029658+00:00",
   "server": "LiteSpeed"
  },
  "pl_sibiu_tilisca": {
   "etag": "\"b82729fb5c24e66b4b52c0b5040bd9a4\"",
   "last_modified": "Mon, 31 Aug 2026 06:27:03 GMT",
-  "fetched_at": "2026-09-13T12:04:48.826439+00:00",
+  "fetched_at": "2026-09-13T16:25:06.421469+00:00",
   "server": "Apache"
  },
  "pl_sibiu_chirpar": {
   "etag": "W/\"b73b08e5be17a58ccbd35b13116640f7-br\"",
   "last_modified": "Thu, 13 Aug 2026 10:32:54 GMT",
-  "fetched_at": "2026-09-13T12:04:47.651505+00:00",
+  "fetched_at": "2026-09-13T16:25:05.762194+00:00",
   "server": "cloudflare"
  },
  "pl_sibiu_sadu": {
   "etag": "\"216cbfffdb80c6c2ceefa081b9e9fd41\"",
   "last_modified": "Fri, 11 Sep 2026 08:00:46 GMT",
-  "fetched_at": "2026-09-13T12:04:49.228992+00:00",
+  "fetched_at": "2026-09-13T16:25:06.570167+00:00",
   "server": "Apache"
  },
  "pl_timis_giera": {
   "etag": "\"04adfdb22dace41c40e443320aec99e1\"",
   "last_modified": "Mon, 31 Aug 2026 14:27:02 GMT",
-  "fetched_at": "2026-09-13T12:04:51.421772+00:00",
+  "fetched_at": "2026-09-13T16:25:16.056021+00:00",
   "server": "nginx/1.18.0 (Ubuntu)"
  },
  "pl_timis_gavojdia": {
   "etag": "\"d6fe38a30cf48638240d009035360c65\"",
   "last_modified": "Mon, 07 Sep 2026 07:14:32 GMT",
-  "fetched_at": "2026-09-13T12:04:54.225310+00:00",
+  "fetched_at": "2026-09-13T16:25:18.531530+00:00",
   "server": null
  },
  "pl_tulcea_valea_teilor": {
   "etag": "\"0a0d9c30abc10f267e1387dc372b9351\"",
   "last_modified": "Fri, 11 Sep 2026 07:49:29 GMT",
-  "fetched_at": "2026-09-13T12:04:55.018757+00:00",
+  "fetched_at": "2026-09-13T16:25:19.198548+00:00",
   "server": "LiteSpeed"
  },
  "pl_tulcea_stejaru": {
   "etag": "\"d5e48a5bd72b255f89760c460906771e\"",
   "last_modified": "Fri, 21 Aug 2026 07:47:50 GMT",
-  "fetched_at": "2026-09-13T12:04:56.198761+00:00",
+  "fetched_at": "2026-09-13T16:25:19.233253+00:00",
   "server": "nginx"
  },
  "pl_valcea_ionesti": {
   "etag": "\"d13f9a64c823002f46f8661119b72adb\"",
   "last_modified": "Thu, 20 Aug 2026 10:51:34 GMT",
-  "fetched_at": "2026-09-13T12:05:02.794051+00:00",
+  "fetched_at": "2026-09-13T16:25:27.273041+00:00",
   "server": "Apache"
  },
  "pl_vaslui_bacesti": {
   "etag": "\"0ab2c45c9340f49bb978103e047399b7\"",
   "last_modified": "Wed, 19 Aug 2026 05:58:43 GMT",
-  "fetched_at": "2026-09-13T12:05:07.336180+00:00",
+  "fetched_at": "2026-09-13T16:25:29.969821+00:00",
   "server": "Apache"
  },
  "pl_dambovita_baleni": {
   "etag": "\"3f0e21b05391da685e6b1227eb0b2fad\"",
   "last_modified": "Fri, 11 Sep 2026 13:57:46 GMT",
-  "fetched_at": "2026-09-13T12:03:54.713955+00:00",
+  "fetched_at": "2026-09-13T16:24:14.961931+00:00",
   "server": "LiteSpeed"
  },
  "pl_ilfov_peris": {
@@ -2951,7 +2951,7 @@
  "pl_neamt_ceahlau": {
   "etag": "\"d97b7fdcdafd0d3ef5f8c20c7451a24c\"",
   "last_modified": "Wed, 09 Sep 2026 07:09:12 GMT",
-  "fetched_at": "2026-09-13T12:04:34.816491+00:00",
+  "fetched_at": "2026-09-13T16:24:51.736206+00:00",
   "server": null
  },
  "pl_suceava_volovat": {
