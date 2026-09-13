@@ -8,19 +8,22 @@
 > Where the rest lives: `specs/regim-reguli.md` — unified audit closure ·
 > `specs/registru.tsv` — decisions · `CLAUDE.md` — canonical contract.
 
-**Updated:** 2026-09-13 (main deblocat; garda de sub-punct verifica 1 trimitere din 14 — reparată)
+**Updated:** 2026-09-13 (backlog de PRODUS, prima oară — 75% din commit-uri nu atingeau site-ul)
 
 ## Open
 
 - **Pages `izz-ro` e un ZOMBI care revendică `izz.ro` [IZZ-0366, IZZ-0368].** Are atașate
   `izz-ro.pages.dev` **și `izz.ro`**; ultim build reușit 21 aug, apoi 17 eșecuri (#211 merged).
   DNS apex+www → Pages, dar rutele Worker au precedență. 2 sisteme cred că dețin apexul. §10.
-- **Workers Free — DONE, measured 2026-09-11.** Assets-only; live serves **13.733 files = 69% of the
-  20.000 cap**; `ARTICLE_TTL_DAYS=21` is the lever. Blockers cleared: `izz-db` (0 tables), `izz-kv`,
-  `izz-bucket` unbound, within free tiers. Unreadable here: Workers Builds minutes. [IZZ-0313..0315, 0361]
-- **`izz-failover` — KEEP [IZZ-0362]; marja e DECLARAT NECUNOSCUTĂ [IZZ-0367, IZZ-0369].** Ambele
-  cifre publicate („2.9k/zi", „1.5k/zi") sunt retrase: prima fără fereastră, a doua fără `Analytics:Read`.
-- **INGEST COLLAPSE — fix in #328, merged.** Verify recovery on live volume; levers owner's call. [IZZ-0317]
+- **PRODUS P1 — homepage-ul n-are NICIO fotografie [IZZ-0382].** Măsurat 13 sep pe build-ul local:
+  0 `<img>` pe homepage; „imaginile" sunt blocuri HTML/CSS generate. Dar **56 din ultimele 76 de
+  articole (73%) au entitate cu portret REAL** deja în `output/portraits/` — deci zero fișiere noi
+  și zero cost de plafon. Cardurile nu fac potrivirea; doar paginile de articol o fac (`render.py:971`).
+- **PRODUS P2 — coperțile generate arată amatoricesc [IZZ-0383].** Verdict proprietar: „desene de
+  copii mici". Un dreptunghi cu rubrica + data, fără legătură cu subiectul. `htmlart`/`covers.py`.
+- **PRODUS P3 — harta: markere fără ierarhie vizuală [IZZ-0384].** 482 evenimente, dar un marker de
+  66 și unul de 1 arată aproape identic. Clickurile SUNT cablate (29 `addEventListener`) — problema
+  e afordanța, nu funcția. Datele afișau „actualizat 11 sept" pe un build din 13 sep.
 - **REDUNDANȚA — REPARAT [IZZ-0370 → IZZ-0372].** Rămâne de curățat: manifestul mirror-ului
   poartă `GITHUB_SHA`, nu content-sha — o linie `BUILD_COMMIT_SHA` în jobul `mirror`, blocată de
   hook (capacitate), NU de §10, care nu acoperă workflow-uri [IZZ-0373].
