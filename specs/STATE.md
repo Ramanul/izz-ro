@@ -8,7 +8,7 @@
 > Where the rest lives: `specs/regim-reguli.md` — unified audit closure ·
 > `specs/registru.tsv` — decisions · `CLAUDE.md` — canonical contract.
 
-**Updated:** 2026-09-12 (#333 merged; prospețimea mirror-ului nu e verificată de nimeni)
+**Updated:** 2026-09-13 (main era roșu: trei PR-uri aterizate stăteau în ## Open ca deschise)
 
 ## Open
 
@@ -28,8 +28,8 @@
 - **Rezerve `ALT_ORIGIN` divergente — inert [IZZ-0371].** 3 workflow-uri au ca fallback gazda retrasă
   `izz-ro.pages.dev`, 4 au `workers.dev`. Nu se activează: repo var e setată (verificat în logul
   rulării 34664617862). Devine real doar dacă variabila dispare.
-- **PR queue — 8 deschise:** #333 audit, merged [`cc9a7793`] · #331 hartă · #330, #329 dependabot ·
-  #324 (needs rebase peste IZZ-0353) · #321 §5.4 · #320 Lee · #297 Cronica vie · #280 CSS.
+- **PR queue — 5 deschise:** #337 audit hartă · #336 registru IZZ-0313 · #320 Lee · #297 Cronica vie ·
+  #280 CSS. Închise NEmergeuite: #321 (substanța luată separat), #324 (rebase imposibil, IZZ-0375).
 
 ## Audit closure status
 
