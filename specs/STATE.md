@@ -21,7 +21,8 @@
 - **`izz-failover` — KEEP [IZZ-0362]; marja e DECLARAT NECUNOSCUTĂ [IZZ-0367, IZZ-0369].** Ambele
   cifre publicate („2.9k/zi", „1.5k/zi") sunt retrase: prima fără fereastră, a doua fără `Analytics:Read`.
 - **INGEST COLLAPSE — fix in #328, merged.** Verify recovery on live volume; levers owner's call. [IZZ-0317]
-- **PR queue — 3 deschise:** #320 Lee · #297 Cronica vie · #280 CSS. Ieșite pe 12 sep: #333 merged [`cc9a7793`], #331 merged,
+- **PR queue — 5 deschise:** #337 harta-audit (acest PR) · #336 registru IZZ-0313 · #320 Lee ·
+  #297 Cronica vie · #280 CSS. Ieșite pe 12 sep: #333 merged [`cc9a7793`], #331 merged,
   #330 merged, #329 merged (dependabot), #324 și #321 închise.
 
 ## Audit closure status
