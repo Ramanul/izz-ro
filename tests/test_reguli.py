@@ -30,6 +30,7 @@ rulat niciodata cu adevarat, de-aia fix-urile pareau confirmate si nu erau".
 from __future__ import annotations
 
 import functools
+import os
 import re
 import subprocess
 from pathlib import Path
@@ -203,6 +204,53 @@ def _frontmatter(text: str) -> int:
     return len(potrivire.group(1).encode("utf-8")) if potrivire else 0
 
 
+def motiv_bash_inutilizabil(cod: int, stdout: bytes, stderr: bytes) -> str | None:
+    """Verdictul PUR pe rezultatul probei `bash -c 'printf ok'`. None = bash adevarat.
+
+    DE CE EXISTA, cu incidentul care a produs-o (2026-09-13, semnalat de proprietar pe Windows):
+    cele doua garzi de mai jos picau cu „hook-ul SessionStart a esuat", desi hook-ul NICI NU
+    RULASE. Pe Windows, `subprocess` rezolva `bash` prin PATH-ul Windows, unde
+    `C:\\Windows\\System32\\bash.exe` e LANSATORUL WSL, nu bash-ul din Git Bash. Fara WSL
+    instalat iese cu cod 1 si un mesaj UTF-16 terminat in `HYPERV_NOT_INSTALLED`, fara sa atinga
+    scriptul. Masurat pe aceeasi masina: `which bash` din Git Bash da `/usr/bin/bash`
+    (GNU bash 5.3.15) — deci shell-ul EXISTA, doar ca Python nu-l vede.
+
+    E acelasi defect pe care `test_hookul_chiar_injecteaza_faptele_de_infrastructura` il numeste
+    in propriul docstring — „un test care nu poate distinge cele doua cazuri" — aparut aici la
+    un nivel mai jos: garda nu putea distinge „hook stricat" de „n-am cu ce sa-l rulez".
+    """
+    if cod == 0 and stdout.strip() == b"ok":
+        return None
+    urma = (stdout or stderr)[:120]
+    return (f"`bash` de pe PATH nu ruleaza un script POSIX (cod {cod}, iesire {urma!r}) — "
+            "pe Windows e de regula lansatorul WSL din System32, nu bash-ul din Git Bash")
+
+
+@functools.lru_cache(maxsize=1)
+def bash_indisponibil() -> str | None:
+    """Proba reala, cachata: `bash` de pe PATH chiar ruleaza un script, sau de ce nu."""
+    try:
+        proba = subprocess.run(["bash", "-c", "printf ok"], capture_output=True,
+                               timeout=60, check=False)
+    except (OSError, subprocess.SubprocessError) as eroare:  # binar lipsa, PATH stricat
+        return f"`bash` nu poate fi lansat deloc: {eroare}"
+    return motiv_bash_inutilizabil(proba.returncode, proba.stdout, proba.stderr)
+
+
+def _cere_bash() -> None:
+    """Sare LOCAL cu motivul, dar PICA in CI — acolo lipsa lui bash e defect, nu mediu.
+
+    Acelasi tipar ca `test_pr_fantoma`: un verde pe o masina care nu poate rula proba nu
+    dovedeste nimic, deci se declara ca sarit; in CI, unde bash e promis, tacerea ar fi minciuna.
+    """
+    motiv = bash_indisponibil()
+    if not motiv:
+        return
+    if os.environ.get("GITHUB_ACTIONS") == "true":
+        pytest.fail(f"CI fara bash utilizabil, desi acolo e promis — {motiv}")
+    pytest.skip(motiv)
+
+
 @functools.lru_cache(maxsize=1)
 def iesirea_hookului() -> bytes:
     """Ce tipareste EFECTIV hook-ul SessionStart. Rulat o singura data pe sesiune de teste.
@@ -210,6 +258,7 @@ def iesirea_hookului() -> bytes:
     Cachat fiindca il folosesc doua garzi (bugetul si injectia faptelor), iar hook-ul
     instaleaza dependente — a doua rulare ar fi minute pierdute pentru acelasi rezultat.
     """
+    _cere_bash()
     hook = ROOT / ".claude/hooks/session-start.sh"
     iesire = subprocess.run(["bash", str(hook)], cwd=ROOT, capture_output=True,
                             timeout=600, check=False)
@@ -293,6 +342,23 @@ def test_bugetul_de_pornire_sub_plafonul_declarat():
     incalcari = incalcari_buget((ROOT / "CLAUDE.md").read_text(encoding="utf-8"),
                                 buget_de_pornire())
     assert not incalcari, incalcari[0]
+
+
+def test_proba_de_bash_accepta_un_bash_adevarat():
+    assert motiv_bash_inutilizabil(0, b"ok", b"") is None
+    assert motiv_bash_inutilizabil(0, b"ok\n", b"") is None
+
+
+def test_proba_de_bash_prinde_lansatorul_wsl():
+    """Cazul REAL de pe Windows, 2026-09-13: cod 1, mesaj UTF-16, scriptul neatins."""
+    wsl = "HCS_E_HYPERV_NOT_INSTALLED\r\n".encode("utf-16-le")
+    motiv = motiv_bash_inutilizabil(1, wsl, b"")
+    assert motiv and "WSL" in motiv
+
+
+def test_proba_de_bash_prinde_si_un_bash_care_iese_zero_dar_nu_executa():
+    """Cod 0 nu e dovada: un shim care nu ruleaza nimic ar trece garda pe cod, nu si pe iesire."""
+    assert motiv_bash_inutilizabil(0, b"", b"")
 
 def test_ttl_citat_in_text_e_cel_din_config():
     config_py = (ROOT / "generator" / "config.py").read_text(encoding="utf-8")
