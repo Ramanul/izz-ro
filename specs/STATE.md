@@ -8,7 +8,7 @@
 > Where the rest lives: `specs/regim-reguli.md` — unified audit closure ·
 > `specs/registru.tsv` — decisions · `CLAUDE.md` — canonical contract.
 
-**Updated:** 2026-09-13 (main deblocat; garda de sub-punct verifica 1 trimitere din 14 — reparată)
+**Updated:** 2026-09-14 (fereastra TTL peste bugetul de fișiere; garda oscilează, nu s-a reparat)
 
 ## Open
 
@@ -20,13 +20,16 @@
   `izz-bucket` unbound, within free tiers. Unreadable here: Workers Builds minutes. [IZZ-0313..0315, 0361]
 - **`izz-failover` — KEEP [IZZ-0362]; marja e DECLARAT NECUNOSCUTĂ [IZZ-0367, IZZ-0369].** Ambele
   cifre publicate („2.9k/zi", „1.5k/zi") sunt retrase: prima fără fereastră, a doua fără `Analytics:Read`.
-- **INGEST COLLAPSE — fix in #328, merged.** Verify recovery on live volume; levers owner's call. [IZZ-0317]
+- **FEREASTRA TTL a trecut de bugetul de fișiere; RECUPERAREA ingestului e cauza [IZZ-0385].**
+  IZZ-0317 și plafonul sunt ACELAȘI punct. 09-14: 11.967 în fereastră vs prag CI 12.800; live
+  servește 9.575 art./14.396 fișiere. Roșu stabil din 09-14. `ARTICLE_TTL_DAYS` = decizie proprietar.
 - **REDUNDANȚA — REPARAT [IZZ-0370 → IZZ-0372].** Rămâne de curățat: manifestul mirror-ului
   poartă `GITHUB_SHA`, nu content-sha — o linie `BUILD_COMMIT_SHA` în jobul `mirror`, blocată de
   hook (capacitate), NU de §10, care nu acoperă workflow-uri [IZZ-0373].
-- **PR queue — 4 deschise:** #336 registru IZZ-0313 · #320 Lee · #297 Cronica vie · #280 CSS.
-  Ieșite: #337 merged, #333 merged, #331 merged, #330 merged, #329 merged; #324 și #321
-  închise nemergeuite.
+- **PR queue — 7 deschise:** #342 triaj issue-uri · #341 mandat permanent · #340 backlog PRODUS
+  (ROȘU din cauza punctului de mai sus, nu a diff-ului lui) · #336 registru · #320 Lee · #297
+  Cronica vie · #280 CSS. Ultimul aterizat: #339 merged. Restul aterizărilor: în registru, nu aici —
+  lista de PR-uri moarte e chiar ce reaprinde garda de fantome la fiecare merge.
 
 ## Audit closure status
 
