@@ -183,3 +183,4 @@ jobs:
             sleep 20
           done
           echo 'Deploy-ul public nu a propagat o versiune coerentă a hărții.'
+          exit 1
