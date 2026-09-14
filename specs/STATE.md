@@ -8,7 +8,7 @@
 > Where the rest lives: `specs/regim-reguli.md` — unified audit closure ·
 > `specs/registru.tsv` — decisions · `CLAUDE.md` — canonical contract.
 
-**Updated:** 2026-09-13 (main deblocat; garda de sub-punct verifica 1 trimitere din 14 — reparată)
+**Updated:** 2026-09-14 (§5.13 are prag numeric 8 KB; hook-ul dă index, nu mandat de lectură — PR #343)
 
 ## Open
 
@@ -24,9 +24,9 @@
 - **REDUNDANȚA — REPARAT [IZZ-0370 → IZZ-0372].** Rămâne de curățat: manifestul mirror-ului
   poartă `GITHUB_SHA`, nu content-sha — o linie `BUILD_COMMIT_SHA` în jobul `mirror`, blocată de
   hook (capacitate), NU de §10, care nu acoperă workflow-uri [IZZ-0373].
-- **PR queue — 4 deschise:** #336 registru IZZ-0313 · #320 Lee · #297 Cronica vie · #280 CSS.
-  Ieșite: #337 merged, #333 merged, #331 merged, #330 merged, #329 merged; #324 și #321
-  închise nemergeuite.
+- **PR queue — 9 deschise (verificat 2026-09-14):** #344 măsurare TTL vs buget · #343 prag payload
+  + hook · #342 TTL 21→20 · #341 mandat merge · #340 backlog produs · #336 registru · #320 Lee ·
+  #297 Cronica vie · #280 CSS. Ieșite: #337, #333, #331, #330, #329 merged; #324, #321 închise.
 
 ## Audit closure status
 
