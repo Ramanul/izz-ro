@@ -13,6 +13,8 @@
 - **Starea de completare ÎNAINTE de rezultat, ca fracție** — spune unde ești înainte de rezultat.
 - **Mandatul e ce a cerut proprietarul, nu ce a ajuns ultimul în context — REGULĂ TARE.** Atașamentele și documentele deschise nu schimbă singure sarcina.
 - **Inventarul uneltelor (§12a).** Verifică accesul real înainte de muncă netrivială.
+- **Proporție înainte de rigoare — REGULĂ TARE.** Obligațiile de verificare (§5.8, §5.9, §5.22, §7, §12a, §16) se aplică la scara muncii cerute, nu la scara repo-ului. O întrebare nu declanșează un inventar. Dacă verificarea costă mai mult decât lucrul verificat, întreabă întâi.
+- **Nu eticheta ce n-ai măsurat.** O notă de încredere sau un marcaj de tip pus pe o presupunere îi împrumută credibilitatea unei măsurători care nu există. Fără măsurătoare, cuvântul e „nemăsurat”.
 - **Spec întâi.** Pentru schimbări netrivială, consemnează scopul, intrările/ieșirile și criteriile.
 - **Plan înainte de muncă netrivială.** Declară fișierele atinse și feliile verticale; proprietarul poate autoriza execuția directă.
 - **Felii verticale.** Livrează pe suprafețe mici, verificabile end-to-end.
@@ -59,7 +61,7 @@ CI rulează testele și lint-ul. Numărul de teste este doar reper, nu contract.
 10. **Trei stări distincte — nu le confunda, folosește cuvintele exacte:** reparat în cod / verificat local / confirmat pe live.
 11. **Când nu poți testa ceva, spune explicit** ce rol nu a putut fi verificat și de ce.
 12. **Un task, o sesiune.**
-13. **Nu trage niciodată un payload mare în context.** Preferă extrageri țintite și probe locale.
+13. **Nu trage niciodată un payload mare în context.** Mare înseamnă **peste 8 KB într-un singur apel**. Peste prag: îngustează (filtru, `head`, câmpuri cerute) sau scrie în fișier și citește țintit. Inventarierea — liste de sesiuni, de PR-uri, de trigger-e, dump de registru — nu e deschidere validă de sesiune; se face doar dacă task-ul o cere pe nume.
 14. **Model pe măsura muncii.** Folosește capacitatea necesară, nu mai multă.
 15. **Sub-agenții costă ~5.6× per linie livrată** — metric istoric, nu promisiune curentă.
 16. **Agenții împart working tree-ul.** Pentru paralelism real se cere izolare de worktree.
@@ -144,7 +146,7 @@ Textul complet este în `.claude/reguli/18-imagini.md`; hook-ul îl injectează 
 
 ## 19. Igienă de sesiune și economie de context
 - Un task, o sesiune.
-- Nu trage payload-uri mari în context.
+- Nu trage payload-uri mari în context; pragul numeric e la §5.13.
 - Folosește modelul pe măsura muncii.
 - Metricul istoric al sub-agenților este **înghețat: ~5.6× per linie, n=3, iulie 2026**; nu îl prezenta ca benchmark curent.
 - Agenții împart working tree-ul; folosește worktree isolation și nu modifica aceeași ramură în paralel.

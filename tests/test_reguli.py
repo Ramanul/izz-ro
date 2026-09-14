@@ -997,3 +997,57 @@ def test_garda_prinde_acum_sub_punctul_inventat_in_sectiunile_altadata_oarbe():
                                {"CLAUDE.md": contract}, {}, "CLAUDE.md")
     assert incalcari_subpuncte({"y.md": "prima linie\nvezi §1.99"},
                                {"REGULI-SINTEZA.md": sinteza}, {}, "REGULI-SINTEZA.md")
+
+
+# --- sect. 5.13: interdictia de payload trebuie sa fie o CIFRA ------------------------------
+#
+# O interdictie fara prag pierde in fata oricarei obligatii cu criteriu. Contractul cere in
+# peste zece locuri sa te duci sa verifici (sect. 0, 5.8, 5.9, 5.18, 5.22, 7, 12a, 16), fiecare
+# cu criteriu clar de indeplinire, si intr-un singur loc sa nu tragi "mult" in context. "Mult"
+# nu se poate incalca demonstrabil, deci nu se respecta. Garda tine cifra in text.
+
+PRAG_PAYLOAD = re.compile(r"\*\*peste (\d+) KB într-un singur apel\*\*")
+
+
+def fisiere_de_reguli() -> dict[str, str]:
+    cai = ["CLAUDE.md", "AGENTS.md", "REVIEW.md"] + [
+        str(p.relative_to(ROOT)) for p in sorted((ROOT / ".claude/reguli").glob("*.md"))
+    ]
+    return {c: (ROOT / c).read_text(encoding="utf-8") for c in cai if (ROOT / c).exists()}
+
+
+def test_pragul_de_payload_e_o_cifra_nu_un_adjectiv():
+    potrivire = PRAG_PAYLOAD.search((ROOT / "CLAUDE.md").read_text(encoding="utf-8"))
+    assert potrivire, ("sect. 5.13 trebuie sa numeasca un prag numeric: o interdictie fara cifra "
+                       "nu poate fi incalcata demonstrabil, deci nu se respecta")
+    assert 1 <= int(potrivire.group(1)) <= 64, "pragul declarat e in afara domeniului util"
+
+
+def test_pragul_de_payload_e_declarat_intr_un_singur_loc():
+    assert not incalcari_unicitate(fisiere_de_reguli(), PRAG_PAYLOAD, "CLAUDE.md")
+
+
+def test_garda_pragului_pica_pe_adjectiv_fara_cifra():
+    assert incalcari_unicitate({"CLAUDE.md": "Nu trage payload-uri mari in context."},
+                               PRAG_PAYLOAD, "CLAUDE.md")
+
+
+# --- hook-ul muta primul: are voie sa dea un index, nu un mandat de explorare ---------------
+#
+# Garda pe IESIRE, nu pe textul scriptului, din acelasi motiv ca garda faptelor de
+# infrastructura: conteaza ce ajunge in contextul sesiunii, nu ce scrie in sursa.
+
+MANDATE_DE_LECTURA = ("nu e context optional", "citeste inainte sa propui orice")
+
+
+def test_hookul_ofera_un_index_nu_un_mandat_de_lectura():
+    """Hook-ul tipareste inaintea oricarui task, deci muta primul.
+
+    Daca deschide cerand lectura ("NU e context optional... citeste inainte sa propui orice"),
+    sesiunea porneste cu un mandat de explorare pe care proprietarul nu l-a dat, si care
+    contrazice direct sect. 5.13. Intre o regula scrisa in contract si o instructiune care
+    ruleaza prima, castiga cea care ruleaza prima — asa s-a pierdut sect. 5.13 in practica.
+    """
+    iesire = iesirea_hookului().decode("utf-8", errors="replace").lower()
+    gasite = [f for f in MANDATE_DE_LECTURA if f in iesire]
+    assert not gasite, "hook-ul cere lectura in loc sa ofere index: " + ", ".join(gasite)

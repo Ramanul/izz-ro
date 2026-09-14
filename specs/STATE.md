@@ -8,7 +8,7 @@
 > Where the rest lives: `specs/regim-reguli.md` — unified audit closure ·
 > `specs/registru.tsv` — decisions · `CLAUDE.md` — canonical contract.
 
-**Updated:** 2026-09-14 (#342 aterizat: TTL 21→20; `sync_state` nu mai e orb la continuări)
+**Updated:** 2026-09-14 (#342 și #346 aterizate; §5.13 primește prag numeric 8 KB — PR #343)
 
 ## Open
 
