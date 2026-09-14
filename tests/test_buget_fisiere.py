@@ -101,6 +101,7 @@ def test_invariantul_tine_pe_tot_domeniul(n):
     assert total <= max(config.OUTPUT_FILE_BUDGET, config.OUTPUT_NON_ARTICLE_RESERVE)
 
 
+@pytest.mark.stare_partajata
 def test_fereastra_TTL_incape_fara_sa_intervina_supapa():
     """Tripwire pe starea REALA: supapa e pentru accidente, nu pentru regimul normal.
 
@@ -116,6 +117,7 @@ def test_fereastra_TTL_incape_fara_sa_intervina_supapa():
         f"Vezi specs/cloudflare-free-2026-09.md.")
 
 
+@pytest.mark.stare_partajata
 def test_podeaua_absoluta_ramane_deasupra_ferestrei_TTL():
     """Chiar si fara nicio coperta, paginile trebuie sa incapa. Asta e limita dura."""
     n = _in_fereastra_ttl(_stare())
