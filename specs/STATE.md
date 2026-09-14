@@ -26,7 +26,8 @@
   hook (capacitate), NU de §10, care nu acoperă workflow-uri [IZZ-0373].
 - **PR queue — 9 deschise (verificat 2026-09-14):** #344 măsurare TTL vs buget · #343 prag payload
   + hook · #342 TTL 21→20 · #341 mandat merge · #340 backlog produs · #336 registru · #320 Lee ·
-  #297 Cronica vie · #280 CSS. Ieșite: #337, #333, #331, #330, #329 merged; #324, #321 închise.
+  #297 Cronica vie · #280 CSS. Ieșite: #337 merged, #333 merged, #331 merged, #330 merged,
+  #329 merged; #324, #321 închise nemergeuite.
 
 ## Audit closure status
 
