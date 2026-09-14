@@ -48,7 +48,7 @@ def test_adnoteaza_doar_ce_git_poate_dovedi(state, monkeypatch):
     monkeypatch.setattr(sync_state, "merged_prs", lambda: {"248"})
     sync_state.reconcile()
     text = state.read_text(encoding="utf-8")
-    assert "#248 ceva. (merged)" in text, "PR-ul dovedit nu a primit adnotarea"
+    assert "#248 (merged) ceva." in text, "PR-ul dovedit nu a primit adnotarea"
     assert "#247 prospetime 72h. Owner: #207." in text, "PR-ul nedovedit a fost adnotat gresit"
 
 
@@ -137,3 +137,105 @@ def test_dry_run_nu_scrie(state, monkeypatch):
 def test_tiparul_de_squash(subiect, asteptat):
     m = sync_state._SQUASH.search(subiect)
     assert (m.group(1) if m else None) == asteptat
+
+
+# --------------------------------------------------------------------------------------
+# Recidiva din 2026-09-14: aceeasi eroare, de doua ori in 12 ore, pe doua ramuri.
+# --------------------------------------------------------------------------------------
+
+_spec_g = importlib.util.spec_from_file_location("garda_fantoma", ROOT / "tests" / "test_pr_fantoma.py")
+garda = importlib.util.module_from_spec(_spec_g)
+_spec_g.loader.exec_module(garda)
+
+
+STATE_CU_CONTINUARE = """# STATE
+
+## Open
+
+- **PR queue — 9 deschise:** #344 masurare TTL · #343 prag payload
+  + hook · #342 TTL 21-20 · #341 mandat merge · #340 backlog · #336 registru · #320 Lee ·
+  #297 Cronica vie · #280 CSS. Iesite: #337, #333, #331, #330, #329 merged.
+
+## Standing rules
+"""
+
+_DOVEDITE = {"337", "333", "331", "330", "329"}
+
+
+@pytest.fixture
+def state_continuare(tmp_path, monkeypatch):
+    (tmp_path / "STATE.md").write_text(STATE_CU_CONTINUARE, encoding="utf-8")
+    monkeypatch.chdir(tmp_path)
+    return tmp_path / "STATE.md"
+
+
+def test_pr_merged_pe_linie_de_continuare_e_vazut(state_continuare, monkeypatch):
+    """Bucla veche sarea liniile care nu incep cu `- `, deci nu vedea niciodata #337.
+
+    STATE.md are plafon de ~40 de linii: wrappingul e regula, nu exceptia. Masurat pe
+    STATE.md de pe #343 — unealta vedea 3 PR-uri, garda vedea 18.
+    """
+    monkeypatch.setattr(sync_state, "merged_prs", lambda: _DOVEDITE)
+    sync_state.reconcile()
+    text = state_continuare.read_text(encoding="utf-8")
+    assert "#337 (merged)" in text, f"PR-ul de pe continuare a ramas neadnotat:\n{text}"
+
+
+def test_fiecare_numar_de_pe_linie_isi_primeste_adnotarea(state_continuare, monkeypatch):
+    """`_PR.search` lua doar PRIMUL numar de pe linie; restul erau invizibili."""
+    monkeypatch.setattr(sync_state, "merged_prs", lambda: _DOVEDITE)
+    sync_state.reconcile()
+    text = state_continuare.read_text(encoding="utf-8")
+    lipsa = [n for n in ("337", "333", "331", "330") if f"#{n} (merged)" not in text]
+    assert not lipsa, f"neadnotate: {lipsa}\n{text}"
+    assert text.count("#329 (merged)") == 0, "#329 era deja declarat merged, nu se dubleaza"
+
+
+def test_adnotarea_sta_dupa_numar_nu_la_capatul_liniei(state_continuare, monkeypatch):
+    """Pozitia nu e cosmetica: garda accepta `#(\\d+)[^#\\n]*\\bmerged\\b`, iar clasa exclude `#`.
+
+    Un `(merged)` pus la coada e atins DOAR de ultimul numar de pe linie; pentru toate
+    celelalte drumul e taiat de urmatorul `#`. Exact asa a picat #343.
+    """
+    monkeypatch.setattr(sync_state, "merged_prs", lambda: _DOVEDITE)
+    sync_state.reconcile()
+    for linie in state_continuare.read_text(encoding="utf-8").splitlines():
+        assert not linie.rstrip().endswith("(merged)") or linie.count("#") <= 1, \
+            f"adnotare la coada pe o linie cu mai multe PR-uri: {linie!r}"
+
+
+def test_iesirea_uneltei_satisface_garda_de_fantome(state_continuare, monkeypatch):
+    """Integrarea care le impiedica sa mai diverga: dupa unealta, garda TREBUIE sa treaca.
+
+    Cele doua au divergat de doua ori — 2026-09-04 (unealta voia sa adnoteze ce garda
+    considera deja adnotat) si 2026-09-14 (unealta raporta 'nimic de adnotat' pe exact
+    starea pe care garda o pica). Un test pe fiecare, separat, nu prinde divergenta.
+    """
+    monkeypatch.setattr(sync_state, "merged_prs", lambda: _DOVEDITE)
+    sync_state.reconcile()
+    text = state_continuare.read_text(encoding="utf-8")
+    incalcari = garda.incalcari_pr_fantoma(text, {int(n) for n in _DOVEDITE})
+    assert not incalcari, "\n".join(incalcari)
+
+
+def test_raportul_de_nedecise_vede_si_continuarile(state_continuare, monkeypatch, capsys):
+    """`prs_din_open` avea acelasi filtru pe `- `, deci raporta din 3 PR-uri, nu din 18."""
+    monkeypatch.setattr(sync_state, "merged_prs", lambda: set())
+    sync_state.reconcile()
+    nedecise = capsys.readouterr().out.split("NU POT DECIDE")[1]
+    lipsa = [n for n in ("342", "336", "320", "297", "280") if f"#{n}" not in nedecise]
+    assert not lipsa, f"PR-uri de pe continuare lipsa din raport: {lipsa}"
+
+
+def test_raportul_isi_declara_zgomotul_de_issue_uri(state_continuare, monkeypatch, capsys):
+    """Efect secundar ASUMAT al citirii intregului bloc, nu scapare.
+
+    Largind suprafata de la bullet-uri la tot blocul, raportul vede si `#N`-urile care sunt
+    ISSUE-uri, nu PR-uri (STATE.md citeste #83, #198, #214 ca issue-uri deschise). Din text
+    nu se poate spune care e care, iar unealta nu atinge reteaua — deci alternativa la zgomot
+    ar fi o euristica pe cuvinte, adica exact falsul pozitiv pe care docstringul garzii il
+    numeste mai scump decat un fals negativ. Alegerea: raportul isi spune limita pe fata.
+    """
+    monkeypatch.setattr(sync_state, "merged_prs", lambda: set())
+    sync_state.reconcile()
+    assert "si ISSUE-uri citate in ## Open" in capsys.readouterr().out
