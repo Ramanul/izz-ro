@@ -8,25 +8,28 @@
 > Where the rest lives: `specs/regim-reguli.md` — unified audit closure ·
 > `specs/registru.tsv` — decisions · `CLAUDE.md` — canonical contract.
 
-**Updated:** 2026-09-13 (main deblocat; garda de sub-punct verifica 1 trimitere din 14 — reparată)
+**Updated:** 2026-09-13 (issues triate: #83 închis, #198 re-fundamentat cu cifrele Free)
 
 ## Open
 
 - **Pages `izz-ro` e un ZOMBI care revendică `izz.ro` [IZZ-0366, IZZ-0368].** Are atașate
   `izz-ro.pages.dev` **și `izz.ro`**; ultim build reușit 21 aug, apoi 17 eșecuri (#211 merged).
   DNS apex+www → Pages, dar rutele Worker au precedență. 2 sisteme cred că dețin apexul. §10.
-- **Workers Free — DONE, measured 2026-09-11.** Assets-only; live serves **13.733 files = 69% of the
-  20.000 cap**; `ARTICLE_TTL_DAYS=21` is the lever. Blockers cleared: `izz-db` (0 tables), `izz-kv`,
-  `izz-bucket` unbound, within free tiers. Unreadable here: Workers Builds minutes. [IZZ-0313..0315, 0361]
+- **Free-readiness — host is STILL PAID (100.000) until 22 Sep; the 20.000 ceiling is a chosen
+  target, adopted 13 days early [IZZ-0313].** Rendered 2026-09-14 at `ARTICLE_TTL_DAYS=20`:
+  **14.336 files = 72% of 20.000**, valve idle. `izz-db`/`izz-kv`/`izz-bucket` unbound, within
+  free tiers. Unreadable here: Workers Builds minutes. [IZZ-0386, IZZ-0313..0315, 0361]
 - **`izz-failover` — KEEP [IZZ-0362]; marja e DECLARAT NECUNOSCUTĂ [IZZ-0367, IZZ-0369].** Ambele
   cifre publicate („2.9k/zi", „1.5k/zi") sunt retrase: prima fără fereastră, a doua fără `Analytics:Read`.
 - **INGEST COLLAPSE — fix in #328, merged.** Verify recovery on live volume; levers owner's call. [IZZ-0317]
 - **REDUNDANȚA — REPARAT [IZZ-0370 → IZZ-0372].** Rămâne de curățat: manifestul mirror-ului
   poartă `GITHUB_SHA`, nu content-sha — o linie `BUILD_COMMIT_SHA` în jobul `mirror`, blocată de
   hook (capacitate), NU de §10, care nu acoperă workflow-uri [IZZ-0373].
-- **PR queue — 4 deschise:** #336 registru IZZ-0313 · #320 Lee · #297 Cronica vie · #280 CSS.
-  Ieșite: #337 merged, #333 merged, #331 merged, #330 merged, #329 merged; #324 și #321
-  închise nemergeuite.
+- **PR queue — 5 deschise:** #340 PRODUS · #336 registru · #320 Lee · #297 Cronica vie · #280 CSS.
+  Ieșite: #337 merged · #333 merged · #331 merged · #330 merged · #329 merged; #324, #321 închise.
+- **Issues triate 2026-09-13 [IZZ-0381…0383]:** #83 închis (blocaje moarte; §14 l-a înlocuit).
+  **#198 arhiva rămâne decizie de proprietar** (R2 e singura care scapă structural; #214 a murit
+  nemergeuit). #233 canal · #271 scope — deschise prin design.
 
 ## Audit closure status
 
