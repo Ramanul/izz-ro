@@ -18,6 +18,21 @@ acolo unde nu avea nici informatie. De-aia varianta asta prefera sa spuna „nu 
 un fals negativ TACUT intr-un fisier de memorie partajata e mai rau decat un semn de
 intrebare vizibil.
 
+DE CE CITESTE TOT BLOCUL, nu doar liniile care incep cu `- ` (reparat 2026-09-14): pana
+azi bucla sarea liniile de CONTINUARE ale unui bullet. STATE.md are plafon de ~40 de linii,
+deci wrappingul e regula, nu exceptia — adica unealta era oarba pe majoritatea continutului
+tocmai in fisierul pentru care a fost scrisa. Masurat pe STATE.md de pe #343: unealta vedea
+3 PR-uri in `## Open` (328, 344, 343), garda din `tests/test_pr_fantoma.py` vedea 18. De-aia
+raporta „nimic de adnotat" pe exact starea pe care garda o pica, iar aceeasi eroare a aparut
+de doua ori in 12 ore, pe doua ramuri (#342 commit 1870208, apoi #343).
+
+DE CE ADNOTAREA STA IMEDIAT DUPA NUMAR, nu la capatul liniei: garda accepta
+`_DECLARAT_MERGED` (definit mai jos), iar clasa lui exclude `#`. Pe o linie cu mai multe PR-uri, un
+`(merged)` pus la coada e atins DOAR de ultimul numar; pentru toate celelalte drumul e taiat
+de urmatorul `#`. Pozitia veche era corecta doar accidental, cand PR-ul adnotat se intampla
+sa fie ultimul de pe linie. Imediat dupa numar e singura pozitie care garanteaza potrivirea
+indiferent de cate PR-uri mai sunt pe linie.
+
     python tools/sync_state.py                 # adnoteaza ce se poate dovedi, raporteaza restul
     python tools/sync_state.py --dry-run       # nu scrie nimic, doar spune ce ar face
 """
@@ -121,11 +136,31 @@ def prs_din_open(continut: str) -> list[str]:
             continue
         if s.startswith("## ") and in_open:
             break
-        if in_open and s.startswith("- "):
+        if in_open:
             for pr in _PR.findall(linie):
                 if pr not in gasite:
                     gasite.append(pr)
     return gasite
+
+
+def adnoteaza_linie(linie: str, dovedite: set[str], declarate: set[str]) -> tuple[str, list[str]]:
+    """Pune `(merged)` imediat dupa FIECARE `#N` dovedit si inca nedeclarat de pe o linie.
+
+    Pura, ca sa poata fi testata fara repo si fara fisier. `declarate` e MUTATA: un PR se
+    declara o singura data in tot blocul, deci odata adnotat aici nu mai primeste o a doua
+    adnotare pe alta linie. Vezi docstringul modulului pentru de ce pozitia conteaza.
+    """
+    proaspete: list[str] = []
+
+    def _sub(m: "re.Match[str]") -> str:
+        nr = m.group(1)
+        if nr in dovedite and nr not in declarate:
+            declarate.add(nr)
+            proaspete.append(nr)
+            return f"#{nr} (merged)"
+        return m.group(0)
+
+    return _PR.sub(_sub, linie), proaspete
 
 
 def reconcile(dry_run: bool = False) -> bool:
@@ -157,16 +192,14 @@ def reconcile(dry_run: bool = False) -> bool:
         if s.startswith("## ") and in_open:
             in_open = False
 
-        if in_open and s.startswith("- "):
-            m = _PR.search(linie)
-            # Adnoteaza dupa PRIMUL PR de pe linie: intr-o lista `#A/#B merged` adnotarea
-            # de la coada s-ar citi ca si cum ar acoperi doar ultimul (nota din STATE.md).
-            # `declarate` opreste o a doua adnotare pentru un PR pe care blocul il declara
-            # deja merge-uit ALTUNDEVA — vezi `_DECLARAT_MERGED`.
-            if (m and m.group(1) in dovedite and m.group(1) not in declarate
-                    and "merged" not in linie.lower()):
-                linie = f"{linie.rstrip()} (merged)"
-                adnotate.append(m.group(1))
+        if in_open:
+            # Tot blocul, inclusiv continuarile de bullet, si fiecare numar de pe linie —
+            # nu doar primul. `declarate` opreste o a doua adnotare pentru un PR pe care
+            # blocul il declara deja merge-uit ALTUNDEVA (vezi `_DECLARAT_MERGED`) si se
+            # completeaza pe masura ce adnotam, ca acelasi PR sa nu fie marcat de doua ori.
+            linie, proaspete = adnoteaza_linie(linie, dovedite, declarate)
+            if proaspete:
+                adnotate.extend(proaspete)
                 modificat = True
 
         noi.append(linie)
@@ -197,6 +230,8 @@ def reconcile(dry_run: bool = False) -> bool:
         print(f"  #{', #'.join(nedecise)}")
         print("Verifica-le la sursa inainte sa le crezi deschise, de exemplu prin conectorul")
         print("GitHub (`pull_request_read` -> campul `merged`). Un `find` gol nu e dovada.")
+        print("Lista contine si ISSUE-uri citate in ## Open (#83, #198 ...): din text nu se")
+        print("poate spune care `#N` e PR si care e issue, iar unealta nu atinge reteaua.")
     return modificat
 
 
