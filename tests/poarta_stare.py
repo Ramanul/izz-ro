@@ -54,6 +54,7 @@ MARCAJ = "stare_partajata"
 #   · `generator/fetch.py`   — parserele de data care produc `published`
 #   · `data/articles.json`   — starea insasi
 #   · `specs/STATE.md`       — sectiunea `## Open` pe care o citeste garda de PR fantoma
+#   · `specs/registru.tsv`   — garda de coliziuni de ID intre ramuri paralele
 #   · `tests/`               — testul marcat insusi; daca il schimbi, raspunzi de el
 INTRARI = (
     "generator/config.py",
@@ -61,6 +62,7 @@ INTRARI = (
     "generator/fetch.py",
     "data/articles.json",
     "specs/STATE.md",
+    "specs/registru.tsv",
 )
 INTRARI_PREFIX = ("tests/",)
 
