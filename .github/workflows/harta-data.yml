@@ -144,10 +144,11 @@ jobs:
         run: sleep 30
       - name: Verifică versiunea publică a hărții
         env:
-          # Originea de build, fara bot challenge: `izz-ro.pages.dev` cat timp gazda e
-          # Pages, subdomeniul workers.dev dupa migrare. Variabila de repo ALT_ORIGIN o
-          # schimba dintr-un singur loc, in loc de cinci workflow-uri.
-          ALT_ORIGIN: ${{ vars.ALT_ORIGIN || 'https://izz-ro.pages.dev' }}
+          # Originea de build, fara bot challenge: subdomeniul workers.dev de la migrarea pe
+          # Workers (#211, 21 aug). Pana pe 2026-09-14 fallback-ul de aici era `izz-ro.pages.dev`,
+          # gazda RETRASA — sonda masura un nume mort si nimeni nu semnala. Variabila de repo
+          # ALT_ORIGIN o schimba dintr-un singur loc, in loc de cinci workflow-uri.
+          ALT_ORIGIN: ${{ vars.ALT_ORIGIN || 'https://izz-ro.andifreelancer2.workers.dev' }}
         run: |
           set -euo pipefail
           for i in 1 2 3 4 5 6 7 8; do

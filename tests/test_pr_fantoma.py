@@ -151,17 +151,32 @@ def incalcari_pr_fantoma(state_md: str, mergeuite: set[int]) -> list[str]:
     ]
 
 
+_MOTIV_TRUNCHIAT = (
+    "clonă shallow: garda vede doar istoricul descărcat, deci un verde aici "
+    "nu acoperă PR-urile mai vechi. Local: `git fetch --unshallow`."
+)
+
+
+def test_istoricul_e_complet_in_ci():
+    """Integritatea MĂSURĂTORII, separat de verdictul ei — și deliberat NEMARCAT.
+
+    În CI istoricul complet e promis de `fetch-depth: 0`. Dacă lipsește, verdictul de mai
+    jos e fals și trebuie să pice zgomotos, nu să fie sărit tăcut.
+
+    Stă separat fiindcă e o proprietate a WORKFLOW-ului, nu a stării: dacă ar fi rămas în
+    testul marcat `stare_partajata`, poarta din `tests/poarta_stare.py` i-ar fi înghițit
+    tocmai alarma pe PR-urile care nu ating intrările — adică exact tăcerea pe care alarma
+    există ca s-o împiedice. Găsit rulând poarta, nu citind-o.
+    """
+    if os.environ.get("GITHUB_ACTIONS") != "true":
+        pytest.skip("garda e despre promisiunea din workflow, verificabilă doar în CI")
+    assert not istoric_trunchiat(), f"fetch-depth: 0 lipsește din workflow — {_MOTIV_TRUNCHIAT}"
+
+
+@pytest.mark.stare_partajata
 def test_niciun_pr_fantoma_in_state_open():
     if istoric_trunchiat():
-        motiv = (
-            "clonă shallow: garda vede doar istoricul descărcat, deci un verde aici "
-            "nu acoperă PR-urile mai vechi. Local: `git fetch --unshallow`."
-        )
-        # În CI istoricul complet e promis de `fetch-depth: 0`. Dacă lipsește,
-        # verdictul e fals și trebuie să pice zgomotos, nu să fie sărit tăcut.
-        if os.environ.get("GITHUB_ACTIONS") == "true":
-            pytest.fail(f"fetch-depth: 0 lipsește din workflow — {motiv}")
-        pytest.skip(motiv)
+        pytest.skip(_MOTIV_TRUNCHIAT)
     state = (ROOT / "specs" / "STATE.md").read_text(encoding="utf-8")
     incalcari = incalcari_pr_fantoma(state, pr_uri_mergeuite_pe_main())
     assert not incalcari, "\n".join(incalcari)

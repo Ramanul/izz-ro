@@ -365,12 +365,25 @@ RELATED_MIN_SHARED = 2         # "Articole conectate": minim entitati comune. 1 
 #
 # COBORAT 30 -> 21 pe 2026-09-09, la intoarcerea pe Workers FREE (specs/cloudflare-free-2026-09.md).
 # Nu e o preferinta editoriala, e aritmetica plafonului de 20.000 de fisiere: numarat pe starea
-# reala, cu arta mutata in pagina, 21 de zile dau 16.882 de fisiere (84% din plafon) iar 24 de
-# zile dau 20.330 (102% -- deploy refuzat). Pe regimul VECHI, cu arta ca fisiere, planul gratuit
-# ar fi permis 9 zile, nu 21: mutarea artei in HTML e ce cumpara cele trei saptamani.
+# reala, cu arta mutata in pagina, 21 de zile dadeau 16.882 de fisiere (84% din plafon) iar 24 de
+# zile 20.330 (102% -- deploy refuzat). Pe regimul VECHI, cu arta ca fisiere, planul gratuit
+# ar fi permis 9 zile: mutarea artei in HTML e ce cumpara saptamanile.
+#
+# COBORAT 21 -> 20 pe 2026-09-14, fiindca ingestul a crescut peste mediana de 590/zi pe care
+# fusese dimensionat 21. NU s-a stricat nimic si NU se pierduse arhiva: masurat in aceeasi zi,
+# supapa `_articole_publicabile()` nu taia nimic (12.882 articole in fereastra, din care doar
+# 84,2% ajung pagini = 10.846, sub podeaua de 12.800), iar plafonul REAL al gazdei e inca
+# 100.000 pana pe 22 septembrie. Ce sarise era MARJA conservatoare a lui
+# `test_podeaua_absoluta_ramane_deasupra_ferestrei_TTL`, care cere ca fereastra sa incapa in
+# podea chiar daca rata de supravietuire ar sari la 100%: 12.882 > 12.800, cu 82.
+# Restaurarea marjei costa o zi de arhiva si tine garda verde inainte de 22 septembrie, cand
+# plafonul chiar scade de cinci ori. Numarat pe starea reala, variind doar fereastra:
+# 20 de zile = 11.829 articole (971 sub podea, marja 7,6%); 19 = 10.900 (1.900, 15%).
+# Ales 20, nu 19: fiecare zi taiata e arhiva indexata care moare, adica exact ce reclama
+# issue #198, iar 19 ar plati inca o zi pentru o marja de care nu e nevoie azi.
 # Literal, nu `os.getenv`: `tests/test_reguli.py` citeste cifra de aici si o compara cu fiecare
 # rationament scris in repo. Un TTL configurabil din mediu ar rupe garda aia tacut.
-ARTICLE_TTL_DAYS = 21
+ARTICLE_TTL_DAYS = 20
 
 # Plafonul de fisiere al gazdei. Gazda e un Worker cu Static Assets de pe 2026-08-22
 # (#211, 40ac007), iar contul se intoarce pe **Workers FREE** din 2026-09-22 (decizie

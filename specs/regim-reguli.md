@@ -8,7 +8,7 @@
 
 | ID | Problemă din audit | Închidere | Mecanism / dovadă |
 |---|---|---|---|
-| K1 | regula §16.3 spunea că remote nu poate verifica live | **închis** | `CLAUDE.md §16.3` declară explicit izz.ro/www ca hosturi ce pot fi blocate de proxy și Worker origin ca rută de verificare; `build.yml` folosește Worker origin |
+| K1 | regula §16a spunea că remote nu poate verifica live | **închis** | `CLAUDE.md §16a` declară explicit izz.ro/www ca hosturi ce pot fi blocate de proxy și Worker origin ca rută de verificare; `build.yml` folosește Worker origin |
 | K2 | documentația istorică indica vechiul cron | **închis** | cadența canonică este `13 * * * *` + poartă 105 min; `CLAUDE.md §17` este sursa operațională |
 | K3 | `§N` ambigu între documente | **închis** | `CLAUDE.md` definește namespace-ul: §N necalificat = `CLAUDE.md`; `REGULI-SINTEZA.md §N` este explicit când se referă la normativul de conținut |
 | K4 | 22 vs. 6–16 cuvinte | **închis** | 6–16 = ținta editorială; `TITLE_MAX_WORDS = 22` = safety ceiling; decizia este în `REGULI-SINTEZA.md §6` și repetată concis în `CLAUDE.md §7` |
