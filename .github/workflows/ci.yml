@@ -4,6 +4,20 @@ on:
   pull_request:
   push:
     branches: [main]
+  # Rularea programata NU e redundanta cu push-ul in main, si de-aia exista.
+  #
+  # Masurat 2026-09-14 pe ultimele 19 rulari `ci.yml` incheiate pe main: 10 ROSII. O parte
+  # dintre ele au aparut FARA niciun commit vinovat — garzile citesc `data/articles.json`,
+  # pe care pipeline-ul il rescrie la fiecare rulare. Iar commiturile de continut sunt
+  # impinse cu `GITHUB_TOKEN`-ul implicit, care prin regula GitHub NU declanseaza niciun
+  # workflow. Deci main putea deriva in rosu si sta asa pana cand deschidea cineva un PR,
+  # iar PR-ul aparea vinovat.
+  #
+  # Ora: 05:17 UTC, deliberat in afara varfului de `schedule` (:00), unde planificatorul
+  # GitHub sare cel mai des firings.
+  schedule:
+    - cron: "17 5 * * *"
+  workflow_dispatch: {}
 
 permissions:
   contents: read
@@ -29,6 +43,9 @@ jobs:
         run: pip install -r requirements.txt -r requirements-dev.txt
       - name: Ruff
         run: python -m ruff check .
+      # Poarta pentru garzile de stare partajata e in `tests/poarta_stare.py`, nu aici:
+      # aceeasi suita e pornita si din `tests.yml`, iar o regula scrisa in doua YAML-uri se
+      # desincronizeaza — exact defectul reparat de commitul asta in ALT_ORIGIN.
       - name: Pytest
         run: python -m pytest -q
       - name: Grounding gate contract (clean evidence)
