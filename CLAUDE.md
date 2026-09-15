@@ -69,6 +69,15 @@ CI rulează testele și lint-ul. Numărul de teste este doar reper, nu contract.
 20. **`motiv` e obligatoriu** pentru `respins`, `abandonat`, `anulat`, `masurat-fals`.
 21. **Append-only.** Registrul de decizii nu se rescrie retrospectiv.
 22. **Un `find` gol NU e dovadă că nu s-a încercat.** Folosește o comandă și o suprafață de căutare verificabile.
+23. **Coada e PLAFONATĂ — decizie proprietar 2026-09-15 [IZZ-0393].** Maximum **5** PR-uri
+    deschise (boții nu se numără) și **niciun PR stagnant peste 7 zile** de la ultima atingere:
+    se aterizează sau se închide cu motiv, nu există a treia variantă. **Orice issue deschis
+    trebuie NUMIT în `## Open` cu motivul** pentru care stă acolo — issue-urile n-au termen
+    (o decizie poate aștepta luni, #198), dar n-au voie să fie nenumite. Garda e
+    `tools/pr_nelistat.py`: raportează pe PR, blochează pe rularea programată, fiindcă
+    lungimea cozii nu e vina diff-ului care tocmai s-a deschis.
+24. **Înainte să deschizi un PR nou, întreabă dacă nu închizi unul.** Măsurat la adoptarea
+    regulii: 7 din 9 PR-uri deschise erau muncă de META, iar singurul de SITE aștepta de 9 zile.
 
 ## 6. Definition of done
 Spec îndeplinită · comanda relevantă trecută · lint/test/type-check disponibile trecute · site-ul încă se construiește · commit descriptiv.

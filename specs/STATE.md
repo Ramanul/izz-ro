@@ -25,9 +25,9 @@
   roșu pe main fără commit vinovat. **Owner:** podeaua revine roșie peste 640 art./zi [IZZ-0391].
 - **Coliziuni de ID în registru — 4 incidente, reparate la ALOCARE [IZZ-0392].** `IZZ-0385` e viu
   în #344 cu alt titlu decât pe main: de renumerotat ACOLO, înainte de aterizare.
-- **PR queue — 8 deschise:** #344 TTL · #343 payload · #341 mandat · #340 PRODUS · #336
-  registru · #320 Lee · #297 Cronica · #280 CSS. Aterizările: în `specs/registru.tsv`, nu
-  aici — o listă moartă reaprinde garda de fantome la fiecare merge.
+- **PR queue — 7 deschise, 6 META și 1 de SITE:** #297 Cronica vie (SITE, verificat, 175 de
+  commituri de drift) · #344 TTL · #343 payload · #340 PRODUS · #336 registru · #320 Lee ·
+  #280 CSS (neterminat). Aterizările: în `specs/registru.tsv`, nu aici [IZZ-0393].
 - **Issues triate 2026-09-13 [IZZ-0381…0383]:** #83 închis. **#198 arhiva rămâne decizie de
   proprietar** (R2 scapă structural; #214 a murit nemergeuit). #233 · #271 — deschise prin design.
 
