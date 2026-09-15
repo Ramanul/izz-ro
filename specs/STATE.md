@@ -8,25 +8,26 @@
 > Where the rest lives: `specs/regim-reguli.md` — unified audit closure ·
 > `specs/registru.tsv` — decisions · `CLAUDE.md` — canonical contract.
 
-**Updated:** 2026-09-14 (#342 aterizat: TTL 21→20; `sync_state` nu mai e orb la continuări)
+**Updated:** 2026-09-15 (#347 + #341 aterizate: poarta de stare, apoi mandatul permanent de merge)
 
 ## Open
 
 - **Pages `izz-ro` e un ZOMBI care revendică `izz.ro` [IZZ-0366, IZZ-0368].** Are atașate
   `izz-ro.pages.dev` **și `izz.ro`**; ultim build reușit 21 aug, apoi 17 eșecuri (#211 merged).
   DNS apex+www → Pages, dar rutele Worker au precedență. 2 sisteme cred că dețin apexul. §10.
-- **Free-readiness — host is STILL PAID (100.000) until 22 Sep; the 20.000 ceiling is a chosen
-  target, adopted 13 days early [IZZ-0313].** Rendered 2026-09-14 at `ARTICLE_TTL_DAYS=20`:
-  **14.336 files = 72% of 20.000**, valve idle. `izz-db`/`izz-kv`/`izz-bucket` unbound, within
-  free tiers. Unreadable here: Workers Builds minutes. [IZZ-0386, IZZ-0313..0315, 0361]
+- **Free-readiness — gazda e ÎNCĂ PAID (100.000) până 22 sep; 20.000 e ținta adoptată devreme
+  [IZZ-0313].** Randat 09-14 la TTL=20: 14.336 fișiere (72%), supapa inactivă. **Măsurat 09-15:**
+  fereastra are 11.250 articole din podeaua de 12.800, iar ingestul median e **960/zi** față de
+  590/zi pe care s-a dimensionat spec-ul — echilibrul cere TTL ≈ **13 zile**, nu 20; podea roșie
+  ~09-17. `izz-kv`/`izz-bucket` nelegate; minutele de Workers Builds necitibile. [IZZ-0386, 0361]
 - **`izz-failover` — KEEP [IZZ-0362]; marja e DECLARAT NECUNOSCUTĂ [IZZ-0367, IZZ-0369].** Ambele
   cifre publicate („2.9k/zi", „1.5k/zi") sunt retrase: prima fără fereastră, a doua fără `Analytics:Read`.
 - **REDUNDANȚA — REPARAT [IZZ-0370 → IZZ-0372].** Rămâne de curățat: manifestul mirror-ului
   poartă `GITHUB_SHA`, nu content-sha — o linie `BUILD_COMMIT_SHA` în jobul `mirror`, blocată de
   hook (capacitate), NU de §10, care nu acoperă workflow-uri [IZZ-0373].
-- **PR queue — 8 deschise:** #344 TTL · #343 payload · #341 mandat · #340 PRODUS · #336
-  registru · #320 Lee · #297 Cronica · #280 CSS. Aterizările: în `specs/registru.tsv`, nu
-  aici — o listă de PR-uri moarte în `## Open` reaprinde garda de fantome la fiecare merge.
+- **PR queue — 7 deschise:** #344 TTL · #343 payload · #340 PRODUS · #336 registru · #320 Lee ·
+  #297 Cronica · #280 CSS. Aterizările: în `specs/registru.tsv`, nu aici — o listă de PR-uri moarte
+  în `## Open` reaprinde garda de fantome la fiecare merge.
 - **Issues triate 2026-09-13 [IZZ-0381…0383]:** #83 închis (blocaje moarte; §14 l-a înlocuit).
   **#198 arhiva rămâne decizie de proprietar** (R2 e singura care scapă structural; #214 a murit
   nemergeuit). #233 canal · #271 scope — deschise prin design.
@@ -43,8 +44,7 @@
   **Main** is `protected: true`; required-checks list unreadable here (403), rulesets: none.
 - **Unified audit is mechanical now:** `specs/audit-unificat.tsv` + `tools/audit_matrice.py`
   (+ `eroziune`) + `tools/cadenta_reala.py` + tests; findings in `specs/audit-unificat.md` §5.
-  Content commits pushed with the default `GITHUB_TOKEN` trigger NO workflow, so state regressions
-  surface only via a PR — owner call. [IZZ-0351…0357, 0363…0367]
+  Derivarea de stare o găsește `schedule` zilnic (#347), nu următorul PR. [IZZ-0351…0357, 0363…0367]
 
 ## Standing rules
 
