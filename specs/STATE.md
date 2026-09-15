@@ -20,14 +20,14 @@
   72%**, valve idle. `izz-db`/`izz-kv`/`izz-bucket` unbound. [IZZ-0386, IZZ-0313..0315, 0361]
 - **`izz-failover` — KEEP [IZZ-0362]; marja e DECLARAT NECUNOSCUTĂ [IZZ-0367, IZZ-0369].** Ambele
   cifre publicate („2.9k/zi", „1.5k/zi") sunt retrase: prima fără fereastră, a doua fără `Analytics:Read`.
-- **REDUNDANȚA — REPARAT [IZZ-0370 → IZZ-0372].** Rămâne: manifestul mirror-ului poartă
-  `GITHUB_SHA`, nu content-sha — `BUILD_COMMIT_SHA` în jobul `mirror`, blocat de hook [IZZ-0373].
-- **RECIDIVE — roșul de STARE separat de cel de COD [IZZ-0388…0391; PR #347 draft].** 10 din 19
-  rulări `ci.yml` pe main roșii fără commit vinovat; gazda retrasă în 3 workflow-uri nemăturate.
-  **Owner:** podeaua revine roșie peste 640 art./zi (ingest real 603–1147) [IZZ-0391].
-- **PR queue — 9 deschise:** #347 recidive · #344 TTL · #343 payload · #341 mandat · #340
-  PRODUS · #336 registru · #320 Lee · #297 Cronica · #280 CSS. Aterizările: în
-  `specs/registru.tsv`, nu aici — o listă moartă reaprinde garda de fantome la fiecare merge.
+- **REDUNDANȚA — ÎNCHISĂ [IZZ-0370 → IZZ-0373].** `BUILD_COMMIT_SHA` e în jobul `mirror` (#347).
+- **RECIDIVE — roșul de STARE separat de cel de COD [IZZ-0388…0391; #347 merged].** Era 10/19
+  roșu pe main fără commit vinovat. **Owner:** podeaua revine roșie peste 640 art./zi [IZZ-0391].
+- **Coliziuni de ID în registru — 4 incidente, reparate la ALOCARE [IZZ-0392].** `IZZ-0385` e viu
+  în #344 cu alt titlu decât pe main: de renumerotat ACOLO, înainte de aterizare.
+- **PR queue — 8 deschise:** #344 TTL · #343 payload · #341 mandat · #340 PRODUS · #336
+  registru · #320 Lee · #297 Cronica · #280 CSS. Aterizările: în `specs/registru.tsv`, nu
+  aici — o listă moartă reaprinde garda de fantome la fiecare merge.
 - **Issues triate 2026-09-13 [IZZ-0381…0383]:** #83 închis. **#198 arhiva rămâne decizie de
   proprietar** (R2 scapă structural; #214 a murit nemergeuit). #233 · #271 — deschise prin design.
 
