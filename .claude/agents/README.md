@@ -20,7 +20,7 @@ Pushing them into sub-agents keeps the main conversation focused on the decision
 |-------|----------------|-------|-------------------|
 | `clustering-tuner` | Verify clustering changes empirically (over-merge AND under-merge) on real samples | Read, Grep, Glob, Bash | §7 clustering rule |
 | `frontend-auditor` | Run `tools/audit.sh`, report Lighthouse + pa11y deltas before/after | Bash, Read, Grep, Glob | §13 measure, don't eyeball |
-| `pipeline-runner` | Run the pipeline safely (`--dry-run` / `--render-only` / `qa_check.py`) and report real output | Bash, Read, Grep, Glob | §5.4 verify by running |
+| `pipeline-runner` | Run the pipeline safely (`--dry-run` / `--render-only` / `qa_check.py`) and report real output | Bash, Read, Grep, Glob | §0 verify by running |
 | `editorial-guard` | Read-only review of templates/render against the attribution formula, Zero Zgomot, one-axis, design tokens | Read, Grep, Glob | §7, §8 |
 
 ### Tool-scoping rationale

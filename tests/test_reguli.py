@@ -827,3 +827,173 @@ def test_censul_ramane_un_cens_nu_un_esantion(fisier):
     prezente = capete_de_regula((ROOT / fisier).read_text(encoding="utf-8"))
     assert len(CENS[fisier]) >= 0.9 * len(prezente), (
         f"{fisier}: censul urmareste {len(CENS[fisier])} din {len(prezente)} reguli cu nume")
+
+
+# --- garda de sub-punct: §5 exista, dar §5.99 nu ----------------------------------------------
+#
+# DE CE EXISTA (proiectata in PR #321, 2026-09-06; livrata 2026-09-12). Garda de sectiuni de mai
+# sus vede ca §5 exista si se opreste acolo. Masurat: `.claude/agents/pipeline-runner.md` si
+# `.claude/agents/README.md` citau amandoua §5.4 drept regula „verifica ruland". §5.4 e „merge
+# doar cu mandat explicit"; regula citata e §0. Doua fisiere care descriu un agent trimiteau la
+# alta regula decat cea pe care agentul o aplica, si nimic n-a semnalat — o saptamana.
+#
+# CE NU ACOPERA, spus explicit si masurat pe cazul care a produs-o: garda prinde sub-punctul
+# INEXISTENT (§5.99), NU sub-punctul EXISTENT folosit pentru alta regula — adica exact bug-ul de
+# mai sus, fiindca §5 chiar are un punct 4. Ca sa-l prinda ar trebui sa stie despre CE vorbeste
+# fiecare punct, ceea ce e judecata, ca §7 sau §16. Jumatate de acoperire, declarata ca atare in
+# loc sa fie prezentata ca intreaga.
+
+SUBPUNCT_REF = re.compile(r"§\s?(\d+[a-z]?)\.(\d+)")
+SUBPUNCT_DEF = re.compile(r"^\s*(\d+)\.\s", re.MULTILINE)
+
+# Un titlu `### N.M` e DEFINITIA sub-punctului N.M, nu inceputul sectiunii N. Cele doua tipare
+# de mai jos tin distinctia asta, si masuratoarea care le-a cerut e in comentariul de sub ele.
+#
+# `(?!\d)` face diferenta intre `## 16.` (sectiune) si `### 16.3` (sub-punct). Fara el, split-ul
+# rupea documentul si la al doilea, iar dict comprehension-ul pastra ULTIMA aparitie a cheii —
+# deci `## 16.` cu lista lui de 6 puncte era suprascris de un `### 16.` cu set gol.
+SECTIUNE_DEF = re.compile(r"^##+\s*(\d+[a-z]?)\.(?!\d)", re.MULTILINE)
+# Sub-punctul definit ca TITLU, nu ca element de lista: `### 1.5 Forma` -> punctul 5 al lui §1.
+SUBPUNCT_TITLU = re.compile(r"^###+\s*\d+[a-z]?\.(\d+)", re.MULTILINE)
+
+
+def subpuncte_din_document(text: str) -> dict[str, set[str]]:
+    """Numerele de sub-punct ale fiecarei sectiuni: `## 5.` -> {'0','1',...,'22'}.
+
+    Doua forme de definitie, fiindca repo-ul le foloseste pe amandoua: elementul de lista
+    numerotata (`CLAUDE.md` §5, §16) si titlul de nivel 3 (`REGULI-SINTEZA.md` §1.1 … §2.9).
+
+    MASURAT 2026-09-13, inainte de reparatie: din 14 trimiteri `§N.M` din documentele
+    normative, garda verifica UNA. Celelalte 13 cadeau pe `if cunoscute` fals — set gol — si
+    treceau tacit. Doua cauze distincte, ambele din acelasi regex de split prea larg:
+      (a) `### 16.3` era citit ca „sectiunea 16" si golea sub-punctele reale ale lui `## 16.`;
+      (b) titlurile `### 1.1` … `### 2.9` nu erau recunoscute ca definitii, deci §1 / §2 / §4
+          din `REGULI-SINTEZA.md` nu aveau niciun sub-punct cunoscut.
+    Verificat dupa reparatie: 14 din 14 verificate, 0 incalcari reale ascunse dedesubt.
+    """
+    bucati = SECTIUNE_DEF.split(text)
+    return {bucati[i]: (set(SUBPUNCT_DEF.findall(bucati[i + 1]))
+                        | set(SUBPUNCT_TITLU.findall(bucati[i + 1])))
+            for i in range(1, len(bucati) - 1, 2)}
+
+
+def incalcari_subpuncte(fisiere: dict[str, str], subpuncte: dict[str, dict[str, set[str]]],
+                        proprietari: dict[str, str], implicit: str) -> list[str]:
+    """`§N.M` citat in proza normativa trebuie sa aiba un punct M in sectiunea N.
+
+    O sectiune fara sub-puncte numerotate nu produce incalcari: `§13.2` intr-un document unde
+    §13 e proza n-are cum sa fie verificat, iar a-l declara gresit ar fi tot o minciuna mecanica.
+    """
+    gasite = []
+    for cale, text in sorted(fisiere.items()):
+        document = proprietari.get(cale, implicit)
+        harta = subpuncte.get(document, {})
+        for linie in linii_de_continut(text):
+            for sectiune, punct in SUBPUNCT_REF.findall(linie):
+                cunoscute = harta.get(sectiune)
+                if cunoscute and punct not in cunoscute:
+                    gasite.append(
+                        f"{cale} trimite la §{sectiune}.{punct}, inexistent in {document}")
+    return gasite
+
+
+def test_fiecare_trimitere_la_subpunct_are_tinta():
+    fisiere = fisiere_normative()
+    subpuncte = {document: subpuncte_din_document((ROOT / document).read_text(encoding="utf-8"))
+                 for document in {DOCUMENT_IMPLICIT, *PROPRIETAR_SECTIUNI.values()}}
+    incalcari = incalcari_subpuncte(fisiere, subpuncte, PROPRIETAR_SECTIUNI, DOCUMENT_IMPLICIT)
+    assert not incalcari, "\n  ".join(incalcari)
+
+
+def test_garda_subpunctelor_pica_pe_punct_inexistent():
+    harta = {"CLAUDE.md": {"5": {"1", "2", "3", "4"}}}
+    assert incalcari_subpuncte({"x.md": "prima linie\nvezi §5.99"}, harta, {}, "CLAUDE.md")
+
+
+def test_garda_subpunctelor_accepta_punctul_care_chiar_exista():
+    harta = {"CLAUDE.md": {"5": {"1", "2", "3", "4"}}}
+    assert not incalcari_subpuncte({"x.md": "prima linie\nvezi §5.4"}, harta, {}, "CLAUDE.md")
+
+
+def test_garda_subpunctelor_tace_pe_sectiune_fara_puncte_numerotate():
+    """Fara asta, orice `§13.2` ar deveni rosu doar fiindca §13 e scrisa ca proza."""
+    harta = {"CLAUDE.md": {"13": set()}}
+    assert not incalcari_subpuncte({"x.md": "prima linie\nvezi §13.2"}, harta, {}, "CLAUDE.md")
+
+
+def test_harta_subpunctelor_chiar_citeste_contractul_real():
+    """O harta goala ar face garda sa treaca pe orice — deci se verifica pe documentul real."""
+    harta = subpuncte_din_document((ROOT / "CLAUDE.md").read_text(encoding="utf-8"))
+    assert "4" in harta.get("5", set()), "§5.4 nu mai e un sub-punct al §5"
+    assert len(harta.get("5", set())) > 10, "harta §5 pare trunchiata, nu citeste tot"
+
+
+def test_un_titlu_de_sub_punct_nu_mai_goleste_sectiunea():
+    """Regresia (a): `### 16.3` era citit ca sectiune si stergea punctele lui `## 16.`."""
+    document = "## 16. Titlu\n1. unu\n2. doi\n3. trei\n\n### 16.3 Sub-titlu\nproza\n"
+    harta = subpuncte_din_document(document)
+    assert harta["16"] == {"1", "2", "3"}, harta
+
+
+def test_un_titlu_de_sub_punct_conteaza_ca_definitie():
+    """Regresia (b): §1.1 … §1.7 din REGULI-SINTEZA sunt titluri, nu elemente de lista."""
+    document = "## 1. Titlu\nproza\n\n### 1.1 Unu\nx\n\n### 1.2 Doi\ny\n"
+    harta = subpuncte_din_document(document)
+    assert harta["1"] == {"1", "2"}, harta
+
+
+def test_sectiunile_cu_litera_raman_sectiuni_separate():
+    """`### 12a.` NU e un sub-punct — `(?!\\d)` nu are voie sa-l absoarba in §12."""
+    harta = subpuncte_din_document("## 12. Titlu\n\n### 12a. Alt titlu\n1. unu\n")
+    assert harta["12a"] == {"1"} and harta["12"] == set(), harta
+
+
+# --- garda: un titlu care DECLARA o cifra trebuie sa numere ce enumera corpul ---------------
+#
+# DE CE EXISTA, cu incidentul care a produs-o (2026-09-13). §16 se numea „Verificare in doua
+# roluri" si enumera TREI axe: Programator, Utilizator, Livrabilitate. Proprietarul a intrebat
+# „de ce 2 si nu 7?" dupa ce am raportat „confirmat pe ambele axe" — raportasem doua fiindca
+# titlul contractului spunea doua. Nu inventasem cifra; o preluasem. Acelasi tipar pe care
+# docstring-ul de sus il documenteaza deja de doua ori: un document care se descrie gresit pe
+# sine e mai scump decat unul care tace, fiindca e citit ca fapt.
+#
+# CE NU ACOPERA, declarat: prinde CRESTEREA numarului de axe fara actualizarea titlului (4 axe
+# si titlu care nu zice PATRU). NU prinde scaderea la doua, fiindca titlul contine legitim si
+# „DOUA" pentru roluri. Jumatate de acoperire, spusa ca atare.
+NUMERALE = {1: "UNA", 2: "DOUĂ", 3: "TREI", 4: "PATRU", 5: "CINCI"}
+
+
+def axele_din_sectiunea_16(text: str) -> tuple[str, int]:
+    """Titlul §16 si cate axe numerotate cu cap ingrosat enumera corpul ei."""
+    bloc = re.search(r"^## 16\..*?(?=^##\s|\Z)", text, re.MULTILINE | re.DOTALL)
+    if not bloc:
+        return "", 0
+    corp = bloc.group(0)
+    titlu = corp.splitlines()[0]
+    return titlu, len(re.findall(r"^\d+\.\s+\*\*[^*]+:\*\*", corp, re.MULTILINE))
+
+
+def test_titlul_sectiunii_16_numara_cate_axe_chiar_enumera():
+    titlu, axe = axele_din_sectiunea_16((ROOT / "CLAUDE.md").read_text(encoding="utf-8"))
+    assert axe >= 2, f"§16 nu mai enumera axe cu cap ingrosat: {titlu!r}"
+    assert NUMERALE[axe] in titlu.upper(), (
+        f"§16 enumera {axe} axe, dar titlul nu spune {NUMERALE[axe]}: {titlu!r}")
+
+
+def test_garda_de_numarare_pica_pe_titlul_care_minte():
+    fals = ("## 16. Verificare în două roluri\n"
+            "1. **Programator:** x\n2. **Utilizator:** y\n3. **Livrabilitate:** z\n")
+    titlu, axe = axele_din_sectiunea_16(fals)
+    assert axe == 3 and NUMERALE[axe] not in titlu.upper()
+
+
+def test_garda_prinde_acum_sub_punctul_inventat_in_sectiunile_altadata_oarbe():
+    """Inainte de 2026-09-13, §16.99 si REGULI-SINTEZA §1.99 treceau amandoua tacit."""
+    contract = subpuncte_din_document((ROOT / "CLAUDE.md").read_text(encoding="utf-8"))
+    sinteza = subpuncte_din_document((ROOT / "REGULI-SINTEZA.md").read_text(encoding="utf-8"))
+    assert contract.get("16"), "§16 nu mai are sub-puncte cunoscute — garda a orbit din nou"
+    assert sinteza.get("1") and sinteza.get("2"), "REGULI-SINTEZA §1/§2 au orbit din nou"
+    assert incalcari_subpuncte({"x.md": "prima linie\nvezi §16.99"},
+                               {"CLAUDE.md": contract}, {}, "CLAUDE.md")
+    assert incalcari_subpuncte({"y.md": "prima linie\nvezi §1.99"},
+                               {"REGULI-SINTEZA.md": sinteza}, {}, "REGULI-SINTEZA.md")
