@@ -8,7 +8,7 @@
 > Where the rest lives: `specs/regim-reguli.md` — unified audit closure ·
 > `specs/registru.tsv` — decisions · `CLAUDE.md` — canonical contract.
 
-**Updated:** 2026-09-15 (#347 + #341 aterizate: poarta de stare, apoi mandatul permanent de merge)
+**Updated:** 2026-09-15 (#347, #341, #348 aterizate; ID-urile de registru colidau — IZZ-0389)
 
 ## Open
 
@@ -25,8 +25,8 @@
 - **REDUNDANȚA — REPARAT [IZZ-0370 → IZZ-0372].** Rămâne de curățat: manifestul mirror-ului
   poartă `GITHUB_SHA`, nu content-sha — o linie `BUILD_COMMIT_SHA` în jobul `mirror`, blocată de
   hook (capacitate), NU de §10, care nu acoperă workflow-uri [IZZ-0373].
-- **PR queue — 7 deschise:** #344 TTL · #343 payload · #340 PRODUS · #336 registru · #320 Lee ·
-  #297 Cronica · #280 CSS. Aterizările: în `specs/registru.tsv`, nu aici — o listă de PR-uri moarte
+- **PR queue — 6 deschise:** #344 TTL · #343 payload · #340 PRODUS · #320 Lee · #297 Cronica ·
+  #280 CSS. Aterizările: în `specs/registru.tsv`, nu aici — o listă de PR-uri moarte
   în `## Open` reaprinde garda de fantome la fiecare merge.
 - **Issues triate 2026-09-13 [IZZ-0381…0383]:** #83 închis (blocaje moarte; §14 l-a înlocuit).
   **#198 arhiva rămâne decizie de proprietar** (R2 e singura care scapă structural; #214 a murit
