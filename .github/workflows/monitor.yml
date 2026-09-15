@@ -5,9 +5,10 @@ name: uptime-monitor
 # Subtilitate: Cloudflare bot-fight-mode raspunde 403 IP-urilor de datacenter ale runnerului,
 # desi siteul e 200 pentru useri reali cu browser. Un 403/503 de la edge DOVEDESTE ca frontul
 # Cloudflare + DNS-ul sunt VII -> NU e outage. De aceea alertam (job rosu -> email owner) doar
-# la cele doua dezastre reale pentru useri:
+# la dezastrele reale pentru useri:
 #   1) izz.ro nu raspunde DELOC (000) = DNS/edge/registrar cazut total;
-#   2) ambele origini (Pages + mirror) jos = nimic de servit, nici prin failover.
+#   2) ambele origini (primar Worker + mirror) jos = nimic de servit, nici prin failover;
+#   3) ALT_ORIGIN nu e o origine cunoscuta = sonda primara nu masoara nimic real (vezi mai jos).
 # Restul (edge viu dar bot-block pe runner, o singura origine jos) = avertisment, job verde.
 
 on:
@@ -36,10 +37,10 @@ jobs:
       - name: Verifica public + primar + mirror
         shell: bash
         env:
-          # Originea de build, fara bot challenge: `izz-ro.pages.dev` cat timp gazda e
-          # Pages, subdomeniul workers.dev dupa migrare. Variabila de repo ALT_ORIGIN o
-          # schimba dintr-un singur loc, in loc de cinci workflow-uri.
-          ALT_ORIGIN: ${{ vars.ALT_ORIGIN || 'https://izz-ro.pages.dev' }}
+          # Originea de build, fara bot challenge. Fallback-ul e originea Worker; pana pe
+          # 2026-09-14 era `izz-ro.pages.dev`, gazda RETRASA de la migrarea pe Workers (#211,
+          # 21 aug). Variabila de repo ALT_ORIGIN o schimba dintr-un singur loc.
+          ALT_ORIGIN: ${{ vars.ALT_ORIGIN || 'https://izz-ro.andifreelancer2.workers.dev' }}
         run: |
           set +e
           UA="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0 Safari/537.36"
@@ -60,6 +61,25 @@ jobs:
           echo "mirror github.io  : $MIR"
 
           crit=0
+
+          # ALLOWLIST, nu denylist. De ce conteaza distinctia: intre 21 august si 14 septembrie
+          # fallback-ul de mai sus a fost o gazda RETRASA, deci `PRI` masura un nume mort. Jobul
+          # a ramas VERDE tot timpul, fiindca `crit` cerea sa cada si mirror-ul: o redundanta
+          # care acopera un nume mort arata exact ca una sanatoasa. Un denylist ar fi prins doar
+          # gazda de care ne-am adus aminte; allowlistul prinde ORICE origine necunoscuta,
+          # inclusiv urmatoarea gazda retrasa, si asta e tot rostul lui.
+          #
+          # Cand schimbi deliberat `vars.ALT_ORIGIN`, adauga originea noua AICI, in aceeasi
+          # tura. Rosul e ieftin de reparat si e singurul lucru care tine cele doua locuri de
+          # acord.
+          case "$ALT_ORIGIN" in
+            https://izz-ro.andifreelancer2.workers.dev|https://izz.ro) ;;
+            *)
+              echo "::error::ALT_ORIGIN nu e o origine cunoscuta ($ALT_ORIGIN) - sonda primara nu masoara nimic real. Adauga originea in lista din monitor.yml sau corecteaza variabila de repo."
+              crit=1
+              ;;
+          esac
+
           if [ "$PUB" = "000" ]; then
             echo "::error::izz.ro NU raspunde deloc — DNS/edge/registrar cazut, outage total"
             crit=1
