@@ -620,24 +620,71 @@ def art_id(a: dict) -> str:
 # .65 / .50), deci CSS-ul tine un singur set de coeficienti si o marime de baza per compozitie.
 _ET_TREPTE = (8, 13, 18)
 
+# Pragul de lungime nu ajunge: CSS-ul randeaza eticheta MAJUSCUL (`.art` are text-transform:
+# uppercase) si o poate rupe oriunde (`overflow-wrap: anywhere` pe .art-label) cand tokenul
+# cel mai lat nu incape in latimea utila a compozitiei — cazul real: „Dâmbovița" pe `arc`
+# la t1 cade din „DÂMBOVIȚ / A" (50,9cqw > 49cqw, masurat in fontul real). Corectia masoara
+# tokenul cu ACELASI font pe care-l primeste browserul si coboara treapta pana incape pe o
+# singura linie. Valorile de mai jos OGLINDESC static/styles.css (§8): coeficientii .art--t*,
+# --art-et-base si max-width-ul .art-body per compozitie, plus letter-spacing .21cqw al
+# .art-label. Daca le schimbi acolo, schimba-le si aici.
+_ET_K = (1, .80, .65, .50)
+_ET_BAZA = {"editorial": 13.33, "inversat": 8.75, "banda": 4.375, "arc": 9.58}
+_ET_LATIME = {"editorial": 68.75, "inversat": 52.0, "banda": 22.9, "arc": 49.0}
+_ET_SPATIERE = 0.21  # cqw / caracter
 
-def _treapta_eticheta(et: str) -> int:
-    n = len((et or "").strip())
+_FONT_MASURA = None  # ImageFont la 100px din TTF-ul display; 0 = fontul nu e disponibil
+
+
+def _latime_em(s: str) -> float:
+    """Latimea lui `s` in em in fontul display real (0.0 daca masuratoarea nu e posibila)."""
+    global _FONT_MASURA
+    if _FONT_MASURA is None:
+        try:
+            from PIL import ImageFont
+            p = os.path.join(_ASSETS, "PlayfairDisplay_800ExtraBold.ttf")
+            _FONT_MASURA = ImageFont.truetype(p, 100) if os.path.exists(p) else 0
+        except Exception:
+            _FONT_MASURA = 0
+    return _FONT_MASURA.getlength(s) / 100.0 if _FONT_MASURA else 0.0
+
+
+def _treapta_eticheta(et: str, tpl: str = "arc") -> int:
+    """Treapta de marime a etichetei: dupa lungime (ca inainte), coborita pana ce cel mai
+    lat token, MAJUSCUL, incape pe o singura linie in compozitia `tpl`. Fara date de
+    masuratoare (font lipsa, compozitie necunoscuta) ramane la regula de lungime."""
+    et = (et or "").strip()
+    n = len(et)
+    t = len(_ET_TREPTE)
     for i, plafon in enumerate(_ET_TREPTE):
         if n <= plafon:
-            return i
-    return len(_ET_TREPTE)
+            t = i
+            break
+    baza, latime = _ET_BAZA.get(tpl), _ET_LATIME.get(tpl)
+    if not et or not baza or not latime:
+        return t
+    tokens = [tok for tok in re.split(r"\s+|(?<=-)", et.upper()) if tok]
+    tok = max(tokens, key=_latime_em) if tokens else ""
+    if not tok:
+        return t
+    while t < len(_ET_K) - 1:
+        lat = baza * _ET_K[t] * _latime_em(tok) + _ET_SPATIERE * len(tok)
+        if lat <= 0.97 * latime:  # 3% rezerva de siguranta (kerning, submontarea woff2)
+            break
+        t += 1
+    return t
 
 
 def stil_inline(a: dict) -> dict:
     """Descrierea artei desenate in pagina pentru `a` (compozitie, paleta, texte, data)."""
     seed = _seed(a)
     et = _eticheta(a)
+    tpl = _NUME_TEMPLATE[seed[4] % len(_NUME_TEMPLATE)]
     return {
-        "tpl": _NUME_TEMPLATE[seed[4] % len(_NUME_TEMPLATE)],
+        "tpl": tpl,
         "pal": seed[0] % len(_PALETE),
         "eticheta": et,
         "sub": _subtitlu(a),
-        "treapta": _treapta_eticheta(et),
+        "treapta": _treapta_eticheta(et, tpl),
         "data": _data_copertei(a),
     }

@@ -76,6 +76,35 @@ def test_treapta_etichetei_scade_cu_lungimea_numelui():
     assert htmlart._treapta_eticheta("Bistrița-Năsăud și împrejurimi") == 3
 
 
+def test_tokenul_majuscul_incape_pe_o_linie_pe_orice_compozitie():
+    """CSS-ul randeaza eticheta MAJUSCUL (`.art` are text-transform: uppercase) si o poate
+    rupe oriunde (`overflow-wrap: anywhere`) cand tokenul cel mai lat nu incape in latimea
+    utila. Cazul real, vazut pe live: „Dâmbovița" pe `arc` la t1 cade din „DÂMBOVIȚ / A"
+    (50,9cqw > 49cqw, masurat in PlayfairDisplay 800). Treapta trebuie sa coboare pana
+    tokenul incape, nu sa se rupa cuvantul."""
+    assert htmlart._treapta_eticheta("Dâmbovița", "arc") == 2
+    assert htmlart._treapta_eticheta("Dâmbovița", "inversat") == 1
+    assert htmlart._treapta_eticheta("Dâmbovița", "editorial") == 2
+    assert htmlart._treapta_eticheta("Dâmbovița", "banda") == 2
+
+
+def test_constantele_de_latime_oglinesc_css_ul():
+    """_ET_BAZA/_ET_LATIME/_ET_K din htmlart sunt OGLINDA valorilor din styles.css
+    (--art-et-base, max-width-ul .art-body, coeficientii .art--t*). Dacă CSS-ul se
+    schimbă și oglinda nu, corecția de încadrare decide pe alte mărimi decât randează
+    browserul — defect tacut."""
+    css = _css()
+    for t, k in enumerate(htmlart._ET_K):
+        m = re.search(rf"\.art--t{t} \{{ --art-et-k: ([\d.]+); \}}", css)
+        assert m and float(m.group(1)) == k, f".art--t{t}"
+    for tpl, baza in htmlart._ET_BAZA.items():
+        m = re.search(rf"\.art--{tpl} \{{[^}}]*--art-et-base: ([\d.]+)cqw", css)
+        assert m and float(m.group(1)) == baza, tpl
+    for tpl, latime in htmlart._ET_LATIME.items():
+        m = re.search(rf"\.art--{tpl} \.art-body \{{[^}}]*max-width: ([\d.]+)cqw", css)
+        assert m and float(m.group(1)) == latime, tpl
+
+
 def test_fara_data_publicatie_nu_afiseaza_none():
     s = htmlart.stil_inline(_art(published=None))
     assert s["data"] is None
