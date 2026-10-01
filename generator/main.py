@@ -340,6 +340,10 @@ def run(dry_run: bool = False) -> dict:
     _utf8_stdout()
     raw, dead = fetch.fetch_all()
     existing = state.load()
+    # Frecventa titlurilor intregului corpus, pentru garda `cuvant_deformat_sursa`
+    # (raport-only, cazul „Transtrictica"): fara ea, forma rara nu se poate deosebi de
+    # transliterarile legitime si verificarea ar coplesi jurnalul advisory.
+    raport_copiere.configureaza_frecventa(existing)
     known = {a.get("url") for a in existing}
     # Dedup si INTRE itemele proaspete, nu doar fata de stare. Doua feeduri ale aceluiasi site
     # se suprapun — `digi24` (RSS general) le contine si pe cele din `extern`

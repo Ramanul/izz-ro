@@ -675,3 +675,28 @@ def test_gazetteerul_arunca_randurile_cu_camp_gol(tmp_path, monkeypatch):
     # si dovada consecintei, nu doar a filtrului: regexul nu se potriveste pe text arbitrar
     rx = geo._regex_sate("CLUJ")
     assert rx is not None and not rx.search("un text fara niciun sat clujean in el")
+
+
+# --- gentilicii de judet (2026-10-01, cazul „Polițiștii mehedințeni") --------------
+
+def test_demonimul_din_titlu_da_judetul():
+    """Gentiliciul e ultimul recourse: nimic altceva in titlu → judetul lui."""
+    assert geo.judet_din_demonim("Polițiștii mehedințeni au instruit elevii") == "MEHEDINTI"
+    assert geo.judet_din_demonim("Clujeni la dezbatere") == "CLUJ"
+
+
+def test_demonim_nedeterminat_raman_afara():
+    """„olteni" inseamna Oltenia (regiune), nu judetul Olt — tabelul curatat il exclude."""
+    assert geo.judet_din_demonim("Oltenii au votat") == ""
+
+
+def test_loc_din_titlu_cade_pe_demonim_cand_nimic_altceva():
+    """Cazul real: sursa fara judet + titlu cu gentilici → coperta scrie judetul."""
+    eticheta = geo.loc_din_titlu("Polițiștii mehedințeni au instruit elevii privind regulile")
+    assert eticheta == "Mehedinți"
+
+
+def test_localitatea_bate_inca_demonimul():
+    """Titlu cu localitate si gentilici: localitatea, mai specifica, castiga."""
+    eticheta = geo.loc_din_titlu("Polițiștii mehedințeni au fost la Cernavodă")
+    assert eticheta == "Cernavodă"

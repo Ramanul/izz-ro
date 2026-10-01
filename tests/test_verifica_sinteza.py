@@ -15,6 +15,7 @@ from pathlib import Path
 
 
 from generator import raport_copiere
+from generator import verifica_sinteza
 from generator.verifica_sinteza import (
     citate_inventate,
     cifre_straine,
@@ -371,3 +372,69 @@ def test_garda_ajunge_advisory_niciodata_blocanta(tmp_path, monkeypatch):
             .read_text(encoding="utf-8").splitlines() if l.strip()][0]
     assert "cuvant_strain_titlu" in {i["cod"] for i in rand["advisory_issues"]}
     assert "cuvant_strain_titlu" not in {i["cod"] for i in rand["blocking_issues"]}
+
+
+# --- cuvinte_deformate_sursa: cazul „Transtrictica" (2026-10-01) -------------------
+
+def _frecventa_pentru(titluri: list[str]) -> dict:
+    from generator.verifica_sinteza import _normalizat
+    frec = {}
+    for t in titluri:
+        for w in t.lower().split():
+            c = _normalizat(w.strip(".,:;„”\"()"))
+            if c:
+                frec[c] = frec.get(c, 0) + 1
+    return frec
+
+
+def test_deformarea_grea_prinsa_cand_sursa_o_scrise_corect():
+    """Transtrictica (d=4 de Transelectrica) — cazul pe care garda veche, la ≤2, l-a ratat."""
+    frec = _frecventa_pentru(["ANRE a aprobat planul de investiții Transelectrica",
+                              "Transelectrica a sacrificat profitul",
+                              "Planul Transelectrica pentru rețea"])
+    gasite = verifica_sinteza.cuvinte_deformate_sursa(
+        "Transtrictica a fost autorizată să limiteze exportul",
+        "transelectrica-abilitata-de-guvern-sa-ia-masuri-in-situatii-de-criza",
+        frec)
+    assert gasite == ["transtrictica"]
+
+
+def test_forma_frecventa_din_titlu_nu_se_semneaza():
+    """Transliterarile legitime (canabis/cannabis) au ambele forme frecvente — trec."""
+    frec = _frecventa_pentru(["transport de canabis", "canabis medical", "canabis",
+                              "cannabis legal", "cannabis"])
+    assert verifica_sinteza.cuvinte_deformate_sursa(
+        "Condamnări pentru transport de canabis", "transport-cannabis-kilograme", frec) == []
+
+
+def test_inflexiunea_si_diacriticele_normalizate_nu_se_semneaza():
+    """Forma noastră identică cu slug-ul după normalizare, sau flexiune — trec."""
+    frec = _frecventa_pentru(["achiziția de sapă", "achiziția de muniție"])
+    assert verifica_sinteza.cuvinte_deformate_sursa(
+        "Licitație pentru achiziția de sapă cu role", "licitatie-achizitia-sapa", frec) == []
+
+
+def test_fara_slug_ora_fara_frecventa_verificarea_tace():
+    assert verifica_sinteza.cuvinte_deformate_sursa("titlu", "", {"x": 1}) == []
+    assert verifica_sinteza.cuvinte_deformate_sursa("titlu", "slug", None) == []
+
+
+def test_slug_din_link_extras_corect():
+    assert (verifica_sinteza.slug_din_link(
+        "https://g4media.ro/transelectrica-abilitata-de-guvern.html") ==
+        "transelectrica-abilitata-de-guvern")
+    assert verifica_sinteza.slug_din_link("") == ""
+
+
+def test_verifica_integreaza_noua_verificare_doar_cu_slug():
+    """Advisory, nu blocant: codul nou NU e în `_BLOCKING` (aceeași disciplină ca #373)."""
+    frec = _frecventa_pentru(["Transelectrica a", "Transelectrica b", "Transelectrica c"])
+    probleme = verifica_sinteza.verifica(
+        "Transtrictica a fost autorizată", "rezumat",
+        "Transelectrica abilitata de guvern",
+        slug_sursa="transelectrica-abilitata-de-guvern",
+        frecventa=frec)
+    coduri = {p.cod for p in probleme}
+    assert "cuvant_deformat_sursa" in coduri
+    from generator.raport_copiere import _BLOCKING
+    assert "cuvant_deformat_sura" not in _BLOCKING and "cuvant_deformat_sursa" not in _BLOCKING

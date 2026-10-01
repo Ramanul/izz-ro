@@ -388,7 +388,74 @@ def cuvinte_straine_titlu(titlu: str, sursa: str) -> list[str]:
     return straine
 
 
-def verifica(titlu: str, rezumat: str, sursa: str) -> list[Problema]:
+# --- deformari fata de slug-ul original al sursei (2026-10-01, cazul „Transtrictica") ---
+# Garda `cuvant_strain_titlu` compara titlul cu descrierea din feed la distanta ≤ 2 si n-a
+# vazut „Transtrictica": distanta 4 fata de „Transelectrica" din slug-ul G4Media, iar
+# teaser-ul nostru scria corect — doar titlul sintetizat era mutilat. Slug-ul URL-ului
+# original e derivat din titlul SURSEI de catre CMS-ul ei, deci acopera 100% din articole
+# si pastreaza numele proprii intregi.
+#
+# Regula, calibrata pe sondajul din 2026-10-01 peste 20.265 de titluri (9 cazuri reale,
+# fiecare verificat manual): cuvant din titlu, normalizat fara diacritice, care in tot
+# corpusul apare de cel mult 2 ori, dar are in slug-ul sursei un vecin Levenshtein la
+# distanta mica care e MAI FRECVENT in corpus. Frecventa e discriminatorul: fara ea,
+# transliterarile legitime (canabis/cannabis, hibrid/hybrid) si morfologia (limiteze/
+# limita) umfla semnalul la sute de cazuri pe rulare. Fara tabela de frecventa
+# (`configureaza_frecventa` din raport_copiere) verificarea tace.
+_LUNGIME_MIN_SLUG = 6
+_MAX_DISTANTA_SLUG_LUNG = 4    # ambele cuvinte >= 8 litere (ex. transtrictica)
+_MAX_DISTANTA_SLUG_SCURT = 3
+
+
+def _normalizat(cuvant: str) -> str:
+    """Cuvantul fara diacritice, mic: slug-urile de sursa sunt ASCII fara diacritice."""
+    dat = unicodedata.normalize("NFD", (cuvant or "").lower())
+    return "".join(ch for ch in dat if "a" <= ch <= "z")
+
+
+def slug_din_link(link: str) -> str:
+    """Ultimul segment de cale din URL-ul original, fara extensie: baza comparatiei."""
+    fara = re.sub(r".*/", "", (link or "").split("?")[0])
+    return re.sub(r"\.[a-z0-9]+$", "", fara, flags=re.I)
+
+
+def cuvinte_deformate_sursa(titlu: str, slug_sursa: str,
+                            frecventa: dict | None = None) -> list[str]:
+    """Cuvintele din titlu suspectate ca am deformat NOI un nume pe care sursa il scrie corect.
+
+    Directia conteaza: semnalam cuvantul RAR din titlu cand slug-ul sursei are forma mai
+    frecventa. Inversul (sursa gresita, noi corecti) e frecvent si nu e defectul nostru.
+    """
+    if not titlu or not slug_sursa or frecventa is None:
+        return []
+    slug_words = {_normalizat(w) for w in re.split(r"[^a-zA-ZĂÂÎȘȚăâîșț]+", slug_sursa)
+                  if len(_normalizat(w)) >= _LUNGIME_MIN_SLUG}
+    if not slug_words:
+        return []
+    straine, vazute = [], set()
+    for brut in re.findall(r"[a-zăâîșț]{4,}", (titlu or "").lower()):
+        c = _normalizat(brut)
+        if len(c) < _LUNGIME_MIN_SLUG or c in vazute:
+            continue
+        vazute.add(c)
+        if c in slug_words or frecventa.get(c, 0) > 2:
+            continue
+        limita = (_MAX_DISTANTA_SLUG_LUNG if len(c) >= 8
+                  else _MAX_DISTANTA_SLUG_SCURT)
+        for v in slug_words:
+            if _levenshtein_pană_la(c, v, limita) > limita:
+                continue
+            if frecventa.get(v, 0) <= frecventa.get(c, 0):
+                continue
+            if _arata_a_inflexiune(c, v):
+                continue
+            straine.append(c)
+            break
+    return straine
+
+
+def verifica(titlu: str, rezumat: str, sursa: str, slug_sursa: str = "",
+             frecventa: dict | None = None) -> list[Problema]:
     """Toate verificarile, pe titlu + rezumat impreuna.
 
     Titlul si rezumatul se verifica in acelasi bloc fiindca regulile sunt aceleasi si
@@ -416,5 +483,10 @@ def verifica(titlu: str, rezumat: str, sursa: str) -> list[Problema]:
         probleme.append(Problema(
             "cuvant_strain_titlu",
             f"„{c}” nu există în sursă la distanță de editare ≤ 1",
+        ))
+    for c in cuvinte_deformate_sursa(titlu, slug_sursa, frecventa):
+        probleme.append(Problema(
+            "cuvant_deformat_sursa",
+            f"„{c}” e forma rară în corpus; sursa îl scrie aproape la fel în slug (ex. Transtrictica/Transelectrica)",
         ))
     return probleme

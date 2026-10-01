@@ -8,6 +8,7 @@ import re
 from datetime import datetime, timezone
 
 from . import config, geo, raport_copiere
+from .verifica_sinteza import slug_din_link
 from .util import truncate_words, domain_of, strip_diacritics
 
 # ---- Prompturi calibrate juridic (zero propozitii copiate din original) ----
@@ -503,7 +504,8 @@ def process_batch(items: list, provider) -> list:
             # §2.2 (drept de autor): masoara cat din rezumat e copiat din sursa. Doar
             # noteaza intr-un jurnal; nu respinge nimic si nu poate ridica exceptii.
             raport_copiere.noteaza("B", it.get("original_link"), it["title"],
-                                   it["teaser"], source_texts[i])
+                                   it["teaser"], source_texts[i],
+                                   slug_original=slug_din_link(it.get("original_link")))
             done.append(it)
         # nemapat/invalid -> nu il adaugam (reluat la rularea urmatoare)
     return done
@@ -546,7 +548,8 @@ def process_single(item: dict, provider) -> dict | None:
     item["processed_by"] = provider.name
     item["prompt_version"] = config.PROMPT_VERSION
     raport_copiere.noteaza("B", item.get("original_link"), item["title"], item["teaser"],
-                           f"{item.get('original_title', '')} {item.get('description', '')}")
+                           f"{item.get('original_title', '')} {item.get('description', '')}",
+                           slug_original=slug_din_link(item.get("original_link")))
     return item
 
 
@@ -631,7 +634,8 @@ def process_cluster(group: list, provider) -> dict | None:
         rep["processed_by"] = provider.name
         rep["prompt_version"] = config.PROMPT_VERSION
         raport_copiere.noteaza("C", rep.get("original_link"), rep["title"],
-                               rep["synthesis"], block)
+                               rep["synthesis"], block,
+                               slug_original=slug_din_link(rep.get("original_link")))
     except Exception:
         return None                            # esec AI -> amanat, reluat data viitoare
     return rep
@@ -741,6 +745,7 @@ def process_clusters_batch(groups: list, provider) -> list:
         rep["processed_by"] = provider.name
         rep["prompt_version"] = config.PROMPT_VERSION
         raport_copiere.noteaza("C", rep.get("original_link"), rep["title"],
-                               rep["synthesis"], context)
+                               rep["synthesis"], context,
+                               slug_original=slug_din_link(rep.get("original_link")))
         out.append(rep)
     return out

@@ -14,12 +14,12 @@
 <nav class="breadcrumbs" aria-label="Breadcrumb">
   <a href="{{ base }}/">{{ site.name }}</a>
   <span class="sep">/</span>
-  <a href="{{ base }}/{{ a.category }}/">{{ a.category }}</a>
+  <a href="{{ base }}/{{ a.category }}/">{{ a.category | cat_label }}</a>
   <span class="sep">/</span>
   <span>{{ a.display_title or a.title }}</span>
 </nav>
 <article class="article">
-  <span class="badge{% if a.model == 'C' %} c{% endif %}">{{ a.category }}{% if a.anunt_fara_corp %} · Anunț oficial{% endif %}</span>
+  <span class="badge{% if a.model == 'C' %} c{% endif %}">{{ a.category | cat_label }}{% if a.anunt_fara_corp %} · Anunț oficial{% endif %}</span>
   <p class="trust-label article-trust">{% if a.anunt_fara_corp %}Anunț oficial · verifică textul integral la instituția emitentă{% elif a.model == 'C' %}Sinteză multi-sursă · compară sursele de mai jos{% else %}Rezumat dintr-o sursă · verifică informația în articolul original{% endif %}</p>
   <h1>{{ a.display_title or a.title }}</h1>
   <div class="meta">
