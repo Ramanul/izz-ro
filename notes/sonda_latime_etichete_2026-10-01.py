@@ -153,7 +153,7 @@ print(f"Verificate {len(etichete)} etichete x 4 compozitii: {esecuri} esecuri"
 # cazul raportat, dupa fix
 et = "Dâmbovița"
 cuv, lem_w, nw = cuvant_lat_eticheta(et)
-print(f"\n-- DÂMBOVIȚA (t1) dupa fix:")
+print("\n-- DÂMBOVIȚA (t1) dupa fix:")
 for nume, base, _ in TEMPLATEURI:
     size = base * FIX_K[nume][1]
     w = size * lem_w + nw * LS
