@@ -24,7 +24,7 @@
 - **RECIDIVE — roșul de STARE separat de cel de COD [IZZ-0388…0391]; Owner: podeaua roșie peste 640 art./zi [IZZ-0391].**
 - **Coliziuni de ID reparate la ALOCARE [IZZ-0392]; IZZ-0400 aterizat prin #344 merged.**
 - **PR queue — 3 deschise:** #280 CSS (acest PR; merged la aterizare) · #297 Cronica ·
-  #320 Lee. Aterizările: în `specs/registru.tsv`, nu aici.
+  #320 Lee (merged). Aterizările: în `specs/registru.tsv`, nu aici.
 - **Issues triate 09-13 [IZZ-0381…0383]:** #83 închis. **#198 arhiva = decizie de proprietar**
   (R2 singura structurală). #233 canal · #271 scope — deschise prin design.
 

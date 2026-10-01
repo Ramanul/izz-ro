@@ -69,10 +69,15 @@ def test_NEGATIV_articole_diferite_primesc_stiluri_diferite():
 
 
 def test_treapta_etichetei_scade_cu_lungimea_numelui():
-    """Numele lungi trebuie sa coboare o treapta, altfel ies din cadru."""
+    """Numele lungi trebuie sa coboare o treapta, altfel ies din cadru.
+
+    Pragurile (8/11/14) sunt cele calibrate 2026-10-01 pe metricile reale ale
+    Playfair 800 — vezi `_ET_TREPTE` din generator/htmlart.py si sonda
+    notes/sonda_latime_etichete_2026-10-01.py.
+    """
     assert htmlart._treapta_eticheta("Cluj") == 0
-    assert htmlart._treapta_eticheta("Caraș-Severin") == 1
-    assert htmlart._treapta_eticheta("Satu Mare-Baia") == 2
+    assert htmlart._treapta_eticheta("Dâmbovița") == 1
+    assert htmlart._treapta_eticheta("Caraș-Severin") == 2
     assert htmlart._treapta_eticheta("Bistrița-Năsăud și împrejurimi") == 3
 
 

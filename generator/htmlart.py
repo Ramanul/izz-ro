@@ -615,10 +615,14 @@ def art_id(a: dict) -> str:
 # le pune pe DOM. Semintele sunt aceleasi ca in `build_html`, deci un articol pastreaza exact
 # compozitia si paleta pe care le avea ca raster. (`_NUME_TEMPLATE` sta langa `_TEMPLATES`.)
 #
-# Aceleasi praguri de lungime ca `_et_px`: numele lungi coboara o treapta ca sa nu iasa din
-# cadru. Raportul intre trepte e practic identic la toate cele patru compozitii (1 / .80 /
-# .65 / .50), deci CSS-ul tine un singur set de coeficienti si o marime de baza per compozitie.
-_ET_TREPTE = (8, 13, 18)
+# Praguri WEB, calibrate 2026-10-01 pe metricile reale ale Playfair 800 (sonda
+# notes/sonda_latime_etichete_2026-10-01.py): cel mai lat cuvant simplu al fiecarei
+# trepte trebuie sa incapa pe un singur rand in coloana oricarei compozitii. Diverg de
+# tabelele raster `_et_px` (8/13/18) INTENTIONAT: rasterul lasa cuvintele prea lungi sa
+# depaseasca incet caseta (nu le taie niciodata), pe web insa `overflow-wrap: anywhere`
+# taie prin cuvant („DÂMBOVIȚ / A”), deci pragurile web sunt mai stranse. Coeficientii
+# per treapta si per compozitie stau in `static/styles.css`, langa `.art-label`.
+_ET_TREPTE = (8, 11, 14)
 
 
 def _treapta_eticheta(et: str) -> int:

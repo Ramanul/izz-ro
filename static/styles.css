@@ -689,13 +689,27 @@ picture { display: contents; }
   position: absolute; inset: 0; background-image: var(--art-grain);
   opacity: .05; mix-blend-mode: multiply; pointer-events: none;
 }
-/* Eticheta: o singura marime tipografica pe tot fisierul, pe patru trepte de lungime —
-   exact tabelul `_et_px` din htmlart.py. Raportul intre trepte e acelasi la toate cele
-   patru compozitii (1 / .80 / .65 / .50), deci difera doar marimea de baza. */
+/* Eticheta: o singura marime tipografica pe tot fisierul, pe patru trepte de lungime.
+   Calibrata 2026-10-01 pe metricile REALE ale Playfair 800 (sonda
+   notes/sonda_latime_etichete_2026-10-01.py): cel mai lat cuvant REAL al fiecarei trepte
+   trebuie sa incapa pe un singur rand in coloana fiecarei compozitii. Inainte treptele
+   veneau din tabelele raster `_et_px` (1/.8/.65/.5 peste 8/13/18 litere), calibrate pe
+   o geometrie in care fontul nu fusese masurat: cuvintele intregi de 9+ litere nu
+   incapeau si `overflow-wrap: anywhere` le taia prin mijloc (ex. „DÂMBOVIȚ / A” pe
+   /judetean/). `overflow-wrap` ramane ca plasa de siguranta pentru un cuvant mai lungi
+   decât orice exista azi in gazetteer. */
 .art--t0 { --art-et-k: 1; }
-.art--t1 { --art-et-k: .8; }
-.art--t2 { --art-et-k: .65; }
+.art--t1 { --art-et-k: .77; }
+.art--t2 { --art-et-k: .6; }
 .art--t3 { --art-et-k: .5; }
+/* arc si banda au coloana mai ingusta (sigiliul, respectiv banda inchisa), deci coboara
+   toata scara; editorial si inversat folosesc valorile de deasupra. */
+.art--arc.art--t0 { --art-et-k: .87; }
+.art--arc.art--t1 { --art-et-k: .67; }
+.art--arc.art--t2 { --art-et-k: .54; }
+.art--banda.art--t0 { --art-et-k: .87; }
+.art--banda.art--t1 { --art-et-k: .66; }
+.art--banda.art--t2 { --art-et-k: .52; }
 .art-label {
   font-size: var(--fs-lg);                                  /* cadere fara `cqw` */
   font-size: calc(var(--art-et-base) * var(--art-et-k));
@@ -724,7 +738,11 @@ picture { display: contents; }
   position: absolute; left: 5.83cqw; right: 5.83cqw; top: 7.08cqw;
   height: .31cqw; background: var(--art-gold);
 }
-.art--editorial .art-body { left: 5.83cqw; top: 9.58cqw; bottom: 10cqw; max-width: 68.75cqw; }
+/* Coloanele .art-body, latite 2026-10-01 la calibrarea treptelor (vezi nota de la
+   .art-label): fiecare da cuvintelor intregi locul masurat, fara sa invada elementele
+   de alaturi (inelul opacity .1 la editorial, sigiliul de la 62.1cqw la arc,
+   chenarul auriu al benzii de 31.25cqw, cifra zilei de la ~67cqw la inversat). */
+.art--editorial .art-body { left: 5.83cqw; top: 9.58cqw; bottom: 10cqw; max-width: 84cqw; }
 .art--editorial .art-ring, .art--editorial .art-blob {
   position: absolute; border-radius: 50%;
 }
@@ -745,7 +763,7 @@ picture { display: contents; }
 .art--inversat .art-frame {
   position: absolute; inset: 1.87cqw; border: .21cqw solid var(--art-gold); opacity: .5;
 }
-.art--inversat .art-body { left: 6.67cqw; top: 0; bottom: 0; max-width: 52cqw; }
+.art--inversat .art-body { left: 6.67cqw; top: 0; bottom: 0; max-width: 56cqw; }
 .art--inversat .art-body .art-tick { width: 19.8cqw; margin-top: 2.29cqw; }
 .art--inversat .art-body .art-sub { font-size: 1.87cqw; margin-top: 1.67cqw; opacity: .55; }
 .art--inversat .art-diamond {
@@ -769,7 +787,7 @@ picture { display: contents; }
   background: var(--art-acc); border-right: .31cqw solid var(--art-gold);
 }
 .art--banda .art-body {
-  left: 4.17cqw; top: 5.83cqw; bottom: 11.5cqw; max-width: 22.9cqw; color: var(--art-bg);
+  left: 4.17cqw; top: 5.83cqw; bottom: 11.5cqw; max-width: 25.4cqw; color: var(--art-bg);
 }
 .art--banda > .art-tick { position: absolute; left: 4.17cqw; top: 50%; width: 19.8cqw; height: .21cqw; }
 .art--banda .art-when {
@@ -795,7 +813,7 @@ picture { display: contents; }
   position: absolute; left: 5.83cqw; top: 5.83cqw;
   width: 12.5cqw; height: .31cqw; background: var(--art-gold);
 }
-.art--arc .art-body { left: 5.83cqw; top: 10cqw; bottom: 6.67cqw; max-width: 49cqw; }
+.art--arc .art-body { left: 5.83cqw; top: 10cqw; bottom: 6.67cqw; max-width: 54cqw; }
 .art--arc .art-hairline {
   position: absolute; left: 56.25cqw; top: 50%; width: 5.83cqw; height: .1cqw;
   background: var(--art-acc); opacity: .2;
