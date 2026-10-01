@@ -21,7 +21,7 @@
 - **Free-readiness — gazda ÎNCĂ PAID până 22 sep [IZZ-0313]:** ingest median 960/zi vs 590 dimensionat;
   TTL=20 trebuie scurtat spre ≈13 zile, altfel podea roșie [IZZ-0386, 0391, 0399].
 - **`izz-failover` — KEEP [IZZ-0362]; marja NECUNOSCUTĂ [IZZ-0367, 0369]:** ambele cifre publicate retrase.
-- **REDUNDANȚA — ÎNCHISĂ [IZZ-0370 → IZZ-0373]:** `BUILD_COMMIT_SHA` e în jobul `mirror` (#347).
+- **REDUNDANȚA — ÎNCHISĂ [IZZ-0370 → IZZ-0373]:** `BUILD_COMMIT_SHA` e în jobul `mirror`, prin #347 merged.
 - **RECIDIVE — roșul de STARE separat de cel de COD [IZZ-0388…0391]; Owner: podeaua roșie peste 640 art./zi [IZZ-0391].**
 - **Coliziuni de ID reparate la ALOCARE [IZZ-0392]; IZZ-0400 aterizat prin #344 merged.**
 - **PR queue — 5 deschise:** #340 PRODUS (acest PR; merged la aterizare) · #320 Lee · #297 Cronica ·
