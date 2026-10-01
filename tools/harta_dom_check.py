@@ -828,6 +828,89 @@ def zoom_interactiv(p):
     p.wait_for_timeout(150)
 
 
+def tastatura_pan_zoom(p):
+    """Pan/zoom si din TASTATURA (ghidurile de harti accesibile cer zoom+pan pe toate
+    input-urile): +/- schimba scara (anuntate in regiunea aria-live), sagețile deplaseaza
+    vederea. Deplasarea se verifica COMPORTAMENTAL: sub acelasi cursor, dupa pan, apare o
+    ALTA zona -- centroidul de pixeli e o metrica slaba la zoom, pentru ca zone aurii care
+    ies din cadru sunt inlocuite de altele si centrul de masa ramane aproape fix (masurat)."""
+    print("\nTASTATURA -- pan cu sagețile, zoom cu +/-, anunt aria-live")
+    plus = p.locator('.map-zoom button[aria-label="Apropie harta"]')
+    plus.focus()
+    plus.click()
+    plus.click()
+    p.wait_for_timeout(300)
+    status = p.evaluate("() => document.querySelector('#map-status')?.textContent || ''")
+    check("mărită" in status, f"schimbarea de scara e anuntata aria-live ('{status}')")
+
+    # Punct interior intr-un judet (oricare cu stiri), in coordonate de ecran.
+    pt = p.evaluate("""async () => {
+      const d = await (await fetch('./data/map.json')).json();
+      const vb = String(d.map.viewbox).trim().split(/\\s+/).map(Number);
+      const c = document.querySelector('#map canvas.map-canvas');
+      const scratch = document.createElement('canvas');
+      scratch.width = c.width; scratch.height = c.height;
+      const ctx = scratch.getContext('2d');
+      ctx.setTransform(c.width / vb[2], 0, 0, c.height / vb[3],
+                       -vb[0] * c.width / vb[2], -vb[1] * c.height / vb[3]);
+      const withNews = new Set((d.articles || []).map(a => a.county).filter(Boolean));
+      const county = Object.keys(d.map.judete).find(k => withNews.has(k));
+      const nums = String(d.map.judete[county]).match(/-?\\d+(?:\\.\\d+)?/g).map(Number);
+      let minX = 1e9, minY = 1e9, maxX = -1e9, maxY = -1e9;
+      for (let i = 0; i + 1 < nums.length; i += 2) {
+        minX = Math.min(minX, nums[i]); minY = Math.min(minY, nums[i + 1]);
+        maxX = Math.max(maxX, nums[i]); maxY = Math.max(maxY, nums[i + 1]);
+      }
+      const path = new Path2D(d.map.judete[county]);
+      const rect = c.getBoundingClientRect();
+      for (let row = 1; row < 12; row += 1) {
+        for (let col = 1; col < 12; col += 1) {
+          const x = minX + (maxX - minX) * col / 12;
+          const y = minY + (maxY - minY) * row / 12;
+          const xd = Math.round((x - vb[0]) * c.width / vb[2]);
+          const yd = Math.round((y - vb[1]) * c.height / vb[3]);
+          if (ctx.isPointInPath(path, xd, yd)) {
+            return { county, x: rect.x + (xd / c.width) * rect.width,
+                     y: rect.y + (yd / c.height) * rect.height };
+          }
+        }
+      }
+      return null;
+    }""")
+    if not pt:
+        skip("nu am gasit punct interior pentru testul de pan din tastatura")
+        return
+    p.mouse.move(pt["x"], pt["y"], steps=2)
+    p.wait_for_timeout(200)
+    tip_before = p.evaluate("() => document.querySelector('.map-tip')?.textContent || ''")
+    check(pt["county"] in tip_before.upper(),
+          f"cursorul porneste peste {pt['county']} (tooltip: '{tip_before}')")
+
+    # Sageata dreapta = vederea spre est; 6 apasari x ~39 unitati ≈ 232 -- mai mult decat
+    # latimea oricarui judet, deci sub cursor NU poate ramane aceeasi zona.
+    p.keyboard.press("ArrowRight")
+    for _ in range(5):
+        p.keyboard.press("ArrowRight")
+        p.wait_for_timeout(100)
+    p.wait_for_timeout(350)
+    p.mouse.move(pt["x"], pt["y"], steps=2)
+    p.wait_for_timeout(250)
+    tip_after = p.evaluate("() => document.querySelector('.map-tip')?.textContent || ''")
+    check(tip_after != tip_before,
+          f"dupa sageți sub acelasi cursor a ajuns o alta zona ('{tip_before}' -> '{tip_after or 'fara tooltip'}')")
+
+    minus = p.locator('.map-zoom button[aria-label="Îndepărtează harta"]')
+    minus.focus()
+    for _ in range(5):
+        p.keyboard.press("-")
+        p.wait_for_timeout(120)
+    p.wait_for_timeout(250)
+    status2 = p.evaluate("() => document.querySelector('#map-status')?.textContent || ''")
+    check("normală" in status2, f"revenirea la scara 1:1 e anuntata ('{status2}')")
+    reset(p)
+    p.wait_for_timeout(150)
+
+
 def mobil_390(p):
     """Android: harta e ~359x256px la 390 latime, deci ea e cazul greu pentru zona de atins.
     Aici se verifica si ca garda tap-vs-drag chiar tine cu EVENIMENTE TACTILE, nu doar cu mouse-ul
@@ -891,6 +974,7 @@ def main():
         felia5_county_picker(p)
         felia6_url(p)
         zoom_interactiv(p)
+        tastatura_pan_zoom(p)
         uat_selectie(p)
         breadcrumb(p)
 

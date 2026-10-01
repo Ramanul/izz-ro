@@ -84,3 +84,40 @@ def test_build_metadata_is_explicit_when_rendered_locally(monkeypatch, tmp_path)
 
 def test_homepage_card_limit_is_small_and_explicit():
     assert config.HOME_CARDS_PER_CATEGORY == 4
+
+
+def test_build_commit_sha_e_override_explicit_si_bate_mediul(monkeypatch, tmp_path):
+    """P2 Codex pe PR #334: pana pe 2026-09-12 `BUILD_*` era ULTIMUL in lant.
+
+    `GITHUB_SHA` e mereu setat in Actions, deci override-ul explicit nu putea suprascrie
+    nimic exact acolo unde ar fi fost folosit. Cazul concret: jobul `mirror` face checkout pe
+    content-sha dar ruleaza cu `GITHUB_SHA` = commitul declansator, un STRAMOS, deci
+    manifestul oglinzii raporta un commit mai vechi decat continutul tocmai publicat.
+    """
+    monkeypatch.setattr(render, "OUT_DIR", str(tmp_path))
+    for key in ENV_RELEASE:
+        monkeypatch.delenv(key, raising=False)
+    monkeypatch.setenv("GITHUB_SHA", "e" * 40)
+    monkeypatch.setenv("GITHUB_REF_NAME", "main")
+    monkeypatch.setenv("BUILD_COMMIT_SHA", "f" * 40)
+    monkeypatch.setenv("BUILD_BRANCH", "continut")
+
+    render._write_build_metadata(article_count=3)
+
+    data = json.loads((tmp_path / "build.json").read_text(encoding="utf-8"))
+    assert data["commit"] == "f" * 40, "override-ul explicit trebuie sa bata mediul gazdei"
+    assert data["branch"] == "continut"
+
+
+def test_fara_override_explicit_mediul_gazdei_ramane_sursa(monkeypatch, tmp_path):
+    """Directia opusa: schimbarea de precedenta nu are voie sa rupa cazul normal."""
+    monkeypatch.setattr(render, "OUT_DIR", str(tmp_path))
+    for key in ENV_RELEASE:
+        monkeypatch.delenv(key, raising=False)
+    monkeypatch.setenv("WORKERS_CI_COMMIT_SHA", "b" * 40)
+    monkeypatch.setenv("WORKERS_CI_BRANCH", "main")
+
+    render._write_build_metadata(article_count=3)
+
+    data = json.loads((tmp_path / "build.json").read_text(encoding="utf-8"))
+    assert data["commit"] == "b" * 40

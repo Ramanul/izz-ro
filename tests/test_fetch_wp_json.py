@@ -31,7 +31,7 @@ SRC = {"type": "wp_json", "name": "Primăria Test", "category": "local",
 
 def test_wp_json_extrage_titlu_data_link(monkeypatch):
     monkeypatch.setattr(fetch, "USER_AGENT", "ua")
-    monkeypatch.setattr(fetch.urllib.request, "urlopen", lambda req, timeout=20: _Resp(_wp_fixture()))
+    monkeypatch.setattr(fetch, "_deschide", lambda req, timeout=20: _Resp(_wp_fixture()))
     items, err = fetch._fetch_wp_json("pl_test_x", SRC)
     # „Hacked by X" e respins de garda de continut (o singura respingere < prag carantina)
     assert err is None
@@ -46,7 +46,7 @@ def test_wp_json_extrage_titlu_data_link(monkeypatch):
 
 
 def test_wp_json_garda_respinge_continut_ostil_si_carantineaza(monkeypatch):
-    monkeypatch.setattr(fetch.urllib.request, "urlopen", lambda req, timeout=20: _Resp(_wp_fixture()))
+    monkeypatch.setattr(fetch, "_deschide", lambda req, timeout=20: _Resp(_wp_fixture()))
     items, err = fetch._fetch_wp_json("pl_test_x", SRC)
     # „Hacked by X" respins de garda; 2 din 3 > pragul de carantina? nu — carantina cere >=2
     # respingeri intr-o rulare DOAR cand depasesc fractia din guard; aici una respinsa din 3.
@@ -55,13 +55,13 @@ def test_wp_json_garda_respinge_continut_ostil_si_carantineaza(monkeypatch):
 
 
 def test_wp_json_nu_crapa_pe_raspuns_nonjson(monkeypatch):
-    monkeypatch.setattr(fetch.urllib.request, "urlopen", lambda req, timeout=20: _Resp(b"<html>nu sunt json</html>"))
+    monkeypatch.setattr(fetch, "_deschide", lambda req, timeout=20: _Resp(b"<html>nu sunt json</html>"))
     items, err = fetch._fetch_wp_json("pl_test_x", SRC)
     assert items == [] and err and "non-JSON" in err
 
 
 def test_wp_json_nu_crapa_pe_lista_golita(monkeypatch):
-    monkeypatch.setattr(fetch.urllib.request, "urlopen", lambda req, timeout=20: _Resp(b"[]"))
+    monkeypatch.setattr(fetch, "_deschide", lambda req, timeout=20: _Resp(b"[]"))
     items, err = fetch._fetch_wp_json("pl_test_x", SRC)
     assert items == [] and err and "fara articole" in err
 

@@ -11,6 +11,8 @@ import importlib.util
 import json
 import os
 
+import pytest
+
 from generator import config
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -46,6 +48,7 @@ def test_normalizarea_nu_muteaza_articolul_din_istoric():
     assert original["category"] == "zonal"
 
 
+@pytest.mark.stare_partajata
 def test_starea_comisa_nu_contine_categorii_moarte():
     """Garda pe DATE, nu doar pe cod: `data/articles.json` nu are voie sa poarte o
     categorie redenumita — ar produce exact legaturile rupte de mai sus."""

@@ -20,6 +20,8 @@
 - **Starea de completare ÎNAINTE de rezultat, ca fracție** — spune unde ești înainte de rezultat.
 - **Mandatul e ce a cerut proprietarul, nu ce a ajuns ultimul în context — REGULĂ TARE.** Atașamentele și documentele deschise nu schimbă singure sarcina.
 - **Inventarul uneltelor (§12a).** Verifică accesul real înainte de muncă netrivială.
+- **Proporție înainte de rigoare — REGULĂ TARE.** Obligațiile de verificare (§5.8, §5.9, §5.22, §7, §12a, §16) se aplică la scara muncii cerute, nu la scara repo-ului. O întrebare nu declanșează un inventar. Dacă verificarea costă mai mult decât lucrul verificat, întreabă întâi.
+- **Nu eticheta ce n-ai măsurat.** O notă de încredere sau un marcaj de tip pus pe o presupunere îi împrumută credibilitatea unei măsurători care nu există. Fără măsurătoare, cuvântul e „nemăsurat”.
 - **Spec întâi.** Pentru schimbări netrivială, consemnează scopul, intrările/ieșirile și criteriile.
 - **Plan înainte de muncă netrivială.** Declară fișierele atinse și feliile verticale; proprietarul poate autoriza execuția directă.
 - **Felii verticale.** Livrează pe suprafețe mici, verificabile end-to-end.
@@ -50,10 +52,18 @@ CI rulează testele și lint-ul. Numărul de teste este doar reper, nu contract.
 
 ## 5. Flux obligatoriu
 0. **Nu arma nicio buclă autonomă / CronCreate recurent** care se conduce singură prin backlog.
-1. **Cine face merge în `main`** este proprietarul/revizorul autorizat, nu executorul.
+1. **Cine face merge în `main`** decide proprietarul; executorul îl execută sub mandatul permanent de la §5.4.
 2. **După orice merge, anunță celălalt cont** prin canalul operațional agreat și actualizează starea.
 3. **Nu face curse pe `main`.** Lucrează prin branch + PR.
-4. **Nu face niciodată merge în `main`.** Executorul livrează branch + PR, fără auto-merge.
+4. **Mandat PERMANENT de merge, pe verde — REGULĂ TARE.** Decizie proprietar 2026-09-13
+   [IZZ-0382]: executorul face merge în `main` FĂRĂ să ceară acordul per PR. Acoperă PR-urile
+   deschise de el; unul deschis de altă sesiune vie rămâne al ei — exact asta a costat [IZZ-0140].
+   Condițiile rămân, și sunt ale executorului, nu ale proprietarului: CI verde pe head-ul CURENT,
+   fără conflict, fără constatare de recenzie neadresată, și `specs/STATE.md` fără PR-ul propriu în
+   `## Open` ÎNAINTE de merge (altfel aterizarea lui îl face fantomă — IZZ-0378).
+   **Auto-merge rămâne interzis, dar din alt motiv decât înainte:** nu fiindcă e „delegare
+   permanentă" — asta tocmai a devenit regula — ci fiindcă e judecată absentă. Merge-ul de aici
+   trece printr-un executor care verifică head-ul corect și starea reală; auto-merge nu verifică.
 5. **Un task per declanșare.** Nu deschide muncă paralelă necerută printr-un singur trigger.
 6. **Se oprește și raportează în loc să ghicească.** Ambiguitățile materiale se declară exact.
 7. **Actualizează `specs/STATE.md`** la finalul lucrării relevante.
@@ -62,7 +72,7 @@ CI rulează testele și lint-ul. Numărul de teste este doar reper, nu contract.
 10. **Trei stări distincte — nu le confunda, folosește cuvintele exacte:** reparat în cod / verificat local / confirmat pe live.
 11. **Când nu poți testa ceva, spune explicit** ce rol nu a putut fi verificat și de ce.
 12. **Un task, o sesiune.**
-13. **Nu trage niciodată un payload mare în context.** Preferă extrageri țintite și probe locale.
+13. **Nu trage niciodată un payload mare în context.** Mare înseamnă **peste 8 KB într-un singur apel**. Peste prag: îngustează (filtru, `head`, câmpuri cerute) sau scrie în fișier și citește țintit. Inventarierea — liste de sesiuni, de PR-uri, de trigger-e, dump de registru — nu e deschidere validă de sesiune; se face doar dacă task-ul o cere pe nume.
 14. **Model pe măsura muncii.** Folosește capacitatea necesară, nu mai multă.
 15. **Sub-agenții costă ~5.6× per linie livrată** — metric istoric, nu promisiune curentă.
 16. **Agenții împart working tree-ul.** Pentru paralelism real se cere izolare de worktree.
@@ -72,6 +82,15 @@ CI rulează testele și lint-ul. Numărul de teste este doar reper, nu contract.
 20. **`motiv` e obligatoriu** pentru `respins`, `abandonat`, `anulat`, `masurat-fals`.
 21. **Append-only.** Registrul de decizii nu se rescrie retrospectiv.
 22. **Un `find` gol NU e dovadă că nu s-a încercat.** Folosește o comandă și o suprafață de căutare verificabile.
+23. **Coada e PLAFONATĂ — decizie proprietar 2026-09-15 [IZZ-0393].** Maximum **5** PR-uri
+    deschise (boții nu se numără) și **niciun PR stagnant peste 7 zile** de la ultima atingere:
+    se aterizează sau se închide cu motiv, nu există a treia variantă. **Orice issue deschis
+    trebuie NUMIT în `## Open` cu motivul** pentru care stă acolo — issue-urile n-au termen
+    (o decizie poate aștepta luni, #198), dar n-au voie să fie nenumite. Garda e
+    `tools/pr_nelistat.py`: raportează pe PR, blochează pe rularea programată, fiindcă
+    lungimea cozii nu e vina diff-ului care tocmai s-a deschis.
+24. **Înainte să deschizi un PR nou, întreabă dacă nu închizi unul.** Măsurat la adoptarea
+    regulii: 7 din 9 PR-uri deschise erau muncă de META, iar singurul de SITE aștepta de 9 zile.
 
 ## 6. Definition of done
 Spec îndeplinită · comanda relevantă trecută · lint/test/type-check disponibile trecute · site-ul încă se construiește · commit descriptiv.
@@ -95,6 +114,12 @@ Stilul vizual derivă din `static/styles.css`. În template-uri nu se hardcodeaz
 ## 10. Zone protejate
 Nu modifica fără instrucțiune explicită: logica de sinteză/atribuire Model C, legal/GDPR și deploy production (`wrangler.jsonc`, Cloudflare Worker code, GitHub secrets). Excepție: MCP Cloudflare poate administra D1/KV/R2/Hyperdrive direct; deploy-ul Worker rămâne repo → PR → CI.
 **Planul de control al zonei — DNS, WAF/bot, SSL/TLS, cache rules și Workers routes — intră aici:** se propune, nu se execută, nici prin MCP, nici prin dashboard, nici prin asistentul Cloudflare. Motivul e măsurat, nu teoretic: rutele `izz.ro/*` au fost repointate pe 2026-09-06 04:31 pe un diagnostic fals [IZZ-0308], iar o recomandare anterioară cerea să pornești ce era deja pornit [IZZ-0310]. O modificare de plan de control cere o **observație care distinge** ipoteza de alternative, nu o configurație compatibilă cu ea.
+
+**Lista de mai sus e completă — nu o extinde prin analogie.** `.github/workflows/` NU e aici; e apărat de hook-ul de control-plane, care e alt mecanism, cu alt motiv.
+
+**Un mandat explicit de proprietar în sesiunea curentă ESTE „instrucțiunea explicită" cerută aici.** A invoca §10 ca să amâni muncă pe care proprietarul tocmai a autorizat-o e o încălcare a §10, nu o aplicare a lui.
+
+**Când amâni ceva, spune care din două e — REGULĂ TARE:** *blocat de politică* (cere o decizie pe care proprietarul nu a dat-o) sau *blocat de capacitate* (unealta lipsește / a eșuat). Al doilea se declară cu comanda care a eșuat (§7), nu din memorie. „Zonă protejată" fără una din cele două e amânare deghizată.
 
 ## 11. SEO
 SEO rezolvat; nu se reauditează fără descoperire nouă, specifică. Istoricul este în `specs/istoric-operational.md`.
@@ -121,8 +146,8 @@ Un task per declanșare, luat din `specs/STATE.md`; nu inventa muncă și nu ati
 ## 15. Delegare
 Sub-agenții sunt opționali și trebuie folosiți când reduc costul net. Pentru lucrări paralele folosește `isolation: "worktree"`; doi agenți nu scriu aceeași ramură.
 
-## 16. Verificare în două roluri
-Pentru orice schimbare vizibilă:
+## 16. Verificare — DOUĂ roluri, TREI axe
+Pentru orice schimbare vizibilă. **Rolurile sunt două, axele de verificare sunt trei:** a treia nu e un al treilea rol și „ambele roluri" (§5.8) NU o acoperă — §5.9 o cere separat. Nu raporta „verificat pe ambele axe" când ai făcut doar 1 și 2.
 1. **Programator:** rulează randare/teste/QA.
 2. **Utilizator:** verifică în Chromium headless simptomul real și măsoară rezultatul.
 3. **Livrabilitate:** confirmă hash/versioning al assetelor (`render._asset_ver`).
@@ -130,18 +155,19 @@ Pentru orice schimbare vizibilă:
 5. Pentru live, folosește `?cb=$(date +%s)` și `bash tools/verify_allowlist.sh` pentru hosturile accesibile din sesiunea curentă.
 6. Dacă ceva nu poate fi verificat, numește exact rolul și motivul.
 
-### 16.3 Live verification — regula actuală
+### 16a. Verificare live — regula actuală
 `izz.ro` și `www.izz.ro` pot fi blocate de proxy; **originea Worker este calea de verificare când este accesibilă**. Verificarea curentă se face cu `bash tools/verify_allowlist.sh`, pe `https://izz-ro.andifreelancer2.workers.dev/` când hostul este disponibil. Originea poate rămâne în urmă față de domeniul public până la un deploy nou; un `200` la origine nu dovedește că domeniul public are aceeași versiune.
 
 ## 17. Cadență
-`build.yml` încearcă orar (`13 * * * *`), dar poarta de 105 minute apără publicarea la ~2h. Nu modifica cronul pentru a „repara” cadența.
+`build.yml` **declară** cron orar (`13 * * * *`); constrângerea reală e planificatorul GitHub, nu poarta (IZZ-0292, reconfirmat IZZ-0364). **Măsurat 2026-09-11 pe 40 de rulări consecutive: declanșare 25%, ~6 porniri/zi, gol median ~4h, ZERO din 39 de intervale sub pragul de 105 min** — deci poarta nu leagă aproape niciodată. Regula rămâne: nu modifica cronul ca să „repari” cadența; nu cronul e limita. Cifra se mișcă (4,68 → 6,05 porniri/zi în 8 zile): **re-măsoară, nu re-crede** — `tools/cadenta_reala.py`.
+Bugetul AI pe rulare e `MAX_AI_CALLS_PER_RUN` — **40** din 2026-09-04 (`9003e5f`, ridicat de proprietar de la 18); codul cade pe **12** când variabila lipsește (`main.py:392`), deci rularea locală nu măsoară debitul real.
 
 ## 18. Imagini de instituții locale — L1
 Textul complet este în `.claude/reguli/18-imagini.md`; hook-ul îl injectează pentru fișierele media aferente. Discuția fără atingerea unui fișier cere citirea regulii înainte.
 
 ## 19. Igienă de sesiune și economie de context
 - Un task, o sesiune.
-- Nu trage payload-uri mari în context.
+- Nu trage payload-uri mari în context; pragul numeric e la §5.13.
 - Folosește modelul pe măsura muncii.
 - Metricul istoric al sub-agenților este **înghețat: ~5.6× per linie, n=3, iulie 2026**; nu îl prezenta ca benchmark curent.
 - Agenții împart working tree-ul; folosește worktree isolation și nu modifica aceeași ramură în paralel.

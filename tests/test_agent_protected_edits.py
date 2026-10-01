@@ -62,6 +62,12 @@ def test_bash_redirect_spre_control_plane_e_respins():
         "python -c \"import json; json.dump({}, open('data/articles.json','w'))\"",
         "python -c \"from pathlib import Path; Path('moderation.yaml').write_text('x')\"",
         "echo x > .github/workflows/build.yml",
+        # Cele doua ocoliri masurate ca deschise pe 2026-09-12, acum inchise (`IZZ-0331`).
+        # Amandoua stau pe traiectoria muncii normale a unui agent, nu a unuia care vrea sa
+        # treaca de garda: un `cd` in directorul parinte, si modul append.
+        "cd .claude && echo x > settings.json",
+        "cd .github/workflows && sed -i 's/a/b/' build.yml",
+        "python -c \"open('.claude/settings.json','a').write('x')\"",
     ]
     for comanda in comenzi:
         payload = {"tool_name": "Bash", "tool_input": {"command": comanda}}
@@ -81,3 +87,101 @@ def test_bash_citiri_si_pipeline_continua_permise():
     for comanda in permise:
         payload = {"tool_name": "Bash", "tool_input": {"command": comanda}}
         assert _run(payload) == 0, comanda
+
+
+# --- Redirecturi care nu pot scrie un fisier cu nume (2026-09-11) -----------------
+#
+# Falsul pozitiv masurat: `2>&1` contine un `>`, deci orice CITIRE care mentiona o cale
+# protejata era refuzata. Trei din primele sase comenzi ale sesiunii de audit, toate
+# read-only. Testele de mai jos fixeaza si granita: garda ramane la fel de stricta pe
+# scrierile reale, inclusiv cand ele stau langa un redirect inofensiv.
+
+def test_bash_citire_cu_redirect_de_descriptor_e_permisa():
+    permise = [
+        "ls .github/workflows/ 2>&1",
+        "cat moderation.yaml 2>&1 | head -5",
+        "grep -n cron .github/workflows/build.yml 2>/dev/null",
+        "sed -n '1,20p' .github/workflows/tests.yml 2>&1",
+        "python -c \"print(1)\" >&2",
+        "git diff data/articles.json &>/dev/null",
+        "wc -l wrangler.jsonc 2>&-",
+    ]
+    for comanda in permise:
+        payload = {"tool_name": "Bash", "tool_input": {"command": comanda}}
+        assert _run(payload) == 0, comanda
+
+
+def test_scrierea_reala_ramane_refuzata_langa_un_redirect_inofensiv():
+    """Granita: stergerea redirectului inofensiv nu are voie sa deschida o ocolire."""
+    comenzi = [
+        "echo x >&2 > moderation.yaml",
+        "echo x 2>/dev/null > data/articles.json",
+        "sed -i 's/a/b/' moderation.yaml 2>&1",
+        "cp alfa.yaml data/articles.json 2>/dev/null",
+        "cat x > .github/workflows/build.yml 2>&1",
+        "echo x >> wrangler.jsonc &>/dev/null",
+    ]
+    for comanda in comenzi:
+        payload = {"tool_name": "Bash", "tool_input": {"command": comanda}}
+        assert _run(payload) != 0, comanda
+
+
+def test_dev_null_nu_e_prefix_pentru_alt_fisier():
+    """`>/dev/nullx` e o scriere intr-un fisier oarecare, nu dispozitivul nul."""
+    payload = {
+        "tool_name": "Bash",
+        "tool_input": {"command": "echo x >/dev/nullx && cat moderation.yaml"},
+    }
+    assert _run(payload) != 0
+
+
+def _garda():
+    """Modulul garzii, pentru verificarile care nu au nevoie de un subproces intreg."""
+    import importlib.util
+    spec = importlib.util.spec_from_file_location("deny_protected_edits", SCRIPT)
+    modul = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(modul)
+    return modul
+
+
+def test_niciun_token_de_fisier_nu_e_prins_doar_cu_prefix_de_director():
+    """Invariantul din spatele ocolirii `cd`, nu inca un caz punctual.
+
+    Pentru fiecare FISIER protejat, numele lui de baza trebuie sa fie el insusi prins —
+    altfel un `cd` in directorul parinte deschide o poarta, si se va redeschide la primul
+    token nou scris cu cale completa. `.github/workflows` e exceptia legitima: e un DIRECTOR,
+    iar numele lui scurt ar prinde orice mentiune a cuvantului.
+    """
+    garda = _garda()
+    directoare = {".github/workflows"}
+    scapari = [
+        token for token in garda.PROTECTED_TOKENS
+        if "/" in token and token not in directoare
+        and garda._bash_scrie_control_plane("echo x > " + token.rsplit("/", 1)[1]) is None
+    ]
+    assert scapari == [], f"tokeni prinsi doar cu prefix de director: {scapari}"
+
+
+def test_appendul_din_python_e_tratat_ca_scriere():
+    """Un append pe un JSON de configurare il strica la fel de bine ca o rescriere."""
+    garda = _garda()
+    assert garda._bash_scrie_control_plane(
+        "python -c \"open('.claude/settings.json','a').write('x')\"") is not None
+
+
+def test_citirile_raman_permise_dupa_intarire():
+    """Garda pe garda: intarirea NU are voie sa inchida munca normala de citire.
+
+    Exact regresia din `IZZ-0353`, cand `2>&1` facea ca orice citire sa para scriere si trei
+    din primele sase comenzi ale unei sesiuni de audit au fost refuzate degeaba.
+    """
+    garda = _garda()
+    permise = [
+        "cat .claude/settings.json",
+        "grep -rn cron .github/workflows/ 2>&1",
+        "ls -la .github/workflows/ 2>/dev/null",
+        "python tools/registru.py find settings 2>&1 | head",
+    ]
+    for comanda in permise:
+        assert garda._bash_scrie_control_plane(comanda) is None, comanda
+

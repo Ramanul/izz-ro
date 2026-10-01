@@ -531,6 +531,18 @@
     if (state.canvas) state.canvas.style.cursor = z.k > 1 ? "grab" : "pointer";
   }
 
+  // Schimbările de scară se anunta in regiunea live (#map-status), dar DOAR la acțiuni
+  // discrete (butoane, taste) -- rotița și pinch-ul produc zeci de evenimente pe gest și
+  // ar scălda cititoarea de ecran în anunțuri.
+  function announceZoom() {
+    const status = $("#map-status");
+    const z = state.userZoom;
+    if (!status || !z) return;
+    status.textContent = z.k <= 1
+      ? "Harta la scara normală."
+      : `Harta mărită de ${z.k.toFixed(1).replace(".", ",")}x.`;
+  }
+
   function hitDistance(point, marker, extra = 10) {
     // `extra` e in pixeli CSS. Se converteste in unitati viewBox ca sa insemne aceeasi distanta
     // reala pe orice rezolutie de ecran.
@@ -590,7 +602,15 @@
         pinch = { d: s.d, mid: s.mid };
       }
     });
-    canvas.addEventListener("pointercancel", () => { downAt = null; });
+    canvas.addEventListener("pointercancel", () => {
+      downAt = null;
+      // Fara resetarea asta, un drag de mouse intrerupt de cancel lasa cursorul "grabbing"
+      // si panFrom agatat -- gestul urmator porni de unde a ramas, nu de sub cursor.
+      panFrom = null;
+      touchPoints.clear();
+      pinch = null;
+      canvas.style.cursor = state.userZoom.k > 1 ? "grab" : "pointer";
+    });
     canvas.addEventListener("click", (event) => {
       const moved = downAt && Math.hypot(event.clientX - downAt.x, event.clientY - downAt.y) > 10;
       downAt = null;
@@ -667,22 +687,49 @@
     // e exact rolul lor).
     const zoomBox = document.createElement("div");
     zoomBox.className = "map-zoom";
+    zoomBox.setAttribute("role", "group");
+    zoomBox.setAttribute("aria-label", "Controale de zoom și deplasare ale hărții");
     const zin = document.createElement("button");
     zin.type = "button";
     zin.textContent = "+";
     zin.setAttribute("aria-label", "Apropie harta");
-    zin.addEventListener("click", () => zoomTo(state.userZoom.k * ZOOM_STEP, null));
+    zin.addEventListener("click", () => { zoomTo(state.userZoom.k * ZOOM_STEP, null); announceZoom(); });
     const zout = document.createElement("button");
     zout.type = "button";
     zout.textContent = "−";
     zout.setAttribute("aria-label", "Îndepărtează harta");
-    zout.addEventListener("click", () => zoomTo(state.userZoom.k / ZOOM_STEP, null));
+    zout.addEventListener("click", () => { zoomTo(state.userZoom.k / ZOOM_STEP, null); announceZoom(); });
     const zreset = document.createElement("button");
     zreset.type = "button";
     zreset.textContent = "×";
     zreset.setAttribute("aria-label", "Resetează zoom-ul hărții");
     zreset.hidden = true;
-    zreset.addEventListener("click", () => zoomTo(ZOOM_MIN, null));
+    zreset.addEventListener("click", () => { zoomTo(ZOOM_MIN, null); announceZoom(); });
+    // Zoom si pan si din TASTATURA, pe grupul de controale: sagețile deplasează vederea
+    // cand harta e mărită, +/- schimbă scara. Fara asta, un utilizator de tastatura poate
+    // mări dar NU se poate misca -- exact golul pe care ghidurile de harti accesibile îl
+    // semnalează (pan/zoom trebuie să răspundă pe toate input-urile). Săgeata = vederea
+    // merge in direcția ei (centrul crește pe axa), ca în Leaflet.
+    zoomBox.addEventListener("keydown", (event) => {
+      const step = { ArrowLeft: [-1, 0], ArrowRight: [1, 0], ArrowUp: [0, -1], ArrowDown: [0, 1] }[event.key];
+      if (step && state.view && state.canvas) {
+        event.preventDefault();
+        const rect = state.canvas.getBoundingClientRect();
+        const css = 80; // pas de deplasare, in pixeli CSS
+        panBy(-step[0] * css * state.view.width / rect.width,
+              -step[1] * css * state.view.height / rect.height);
+        return;
+      }
+      if (event.key === "+" || event.key === "=") {
+        event.preventDefault();
+        zoomTo(state.userZoom.k * ZOOM_STEP, null);
+        announceZoom();
+      } else if (event.key === "-" || event.key === "_") {
+        event.preventDefault();
+        zoomTo(state.userZoom.k / ZOOM_STEP, null);
+        announceZoom();
+      }
+    });
     zoomBox.append(zin, zout, zreset);
     host.appendChild(zoomBox);
     state.zoomIn = zin;

@@ -8,49 +8,45 @@
 > Where the rest lives: `specs/regim-reguli.md` — unified audit closure ·
 > `specs/registru.tsv` — decisions · `CLAUDE.md` — canonical contract.
 
-**Updated:** 2026-09-09 (migrare Free merged #326; ruta pe izz-failover confirmata; cron fantoma sters)
+**Updated:** 2026-10-01 (#340: primul backlog de PRODUS în ## Open
 
 ## Open
-
-- **Workers Free — branch `claude/cloudflare-free-migration-2sqeju`.** Plafonul redevine 20.000
-  de fisiere/versiune din 22 septembrie. Masurat: 51.896 fisiere inainte (259%), 16.732 dupa
-  (84%); arta se deseneaza in pagina, `ARTICLE_TTL_DAYS=21`, og:image propriu doar pe fereastra
-  recenta. Cifre si alternative respinse: `specs/cloudflare-free-2026-09.md`. [IZZ-0313..0315]
-- **Downgrade blockers — CLEARED.** 0 Durable Object namespaces on the account (the one thing that
-  refuses Paid -> Free); KV `izz-kv`, R2 `izz-bucket`, D1 `izz-db` (0 tables) exist, are unbound and
-  fit the free tiers. Open: Workers Builds minutes on Free — unreadable from session; if they run
-  out, publishing moves to `deploy-worker.yml` AND the git integration must be disconnected.
-- **INGEST COLLAPSE — separate from the Free migration, not caused by it.** Published volume fell to
-  ~5% on 09-05: 730–1052 articles/day on 09-01..09-04, then 43–183/day; `sitemap-news.xml` live holds
-  6 articles for 09-09. Category sorting is correct — there is simply no fresh content. ~5 pipeline
-  runs/day (not ~12), 49–85 min each, 4 failures in 12, all `release-probe` (Cloudflare needs >25 min
-  for 51.896 files). Levers (`MAX_AI_CALLS_PER_RUN=40`, `PRAG_MIN=105`) are in `build.yml` — protected,
-  owner's call. [IZZ-0317]
-- **Cloudflare routes — on `izz-failover`, confirmed live 09-09** (`x-izz-origin: primary`, overturns
-  IZZ-0308): ~2.9k hits/day vs 100k Free, failover kept; assets routing stays owner's call. The ~48%
-  error rate was a dashboard cron with no `scheduled()` (08-22) — deleted, verified silent. [IZZ-0318/0319]
+- **Pages `izz-ro` ZOMBI revendică `izz.ro` [IZZ-0366, 0368]:** ștergerea = decizie proprietar [IZZ-0395].
+- **PRODUS P1 — homepage fără nicio fotografie [IZZ-0403]:** 0 `<img>` măsurat; 73% din articole au portret real
+  deja în `output/portraits/` — zero fișiere noi; potrivirea rulează doar pe articol (`render.py:971`).
+- **PRODUS P2 — copertile arată amatoricesc [IZZ-0404]** (verdict proprietar); `htmlart`/`covers.py`.
+- **PRODUS P3 — harta: markere fără ierarhie vizuală [IZZ-0405]:** 482 evenimente, clickuri cablate; e afordanța, nu funcția.
+- **FEREASTRA TTL a trecut de buget [IZZ-0400]:** 11.967 vs prag 12.800; `ARTICLE_TTL_DAYS` = decizie proprietar [IZZ-0401].
+- **Free-readiness — gazda ÎNCĂ PAID până 22 sep [IZZ-0313]:** ingest median 960/zi vs 590 dimensionat; TTL=20
+  trebuie scurtat spre ≈13 zile, altfel podea roșie [IZZ-0386, 0391, 0399].
+- **`izz-failover` — KEEP [IZZ-0362]; marja NECUNOSCUTĂ [IZZ-0367, 0369]:** ambele cifre publicate retrase.
+- **REDUNDANȚA — ÎNCHISĂ [IZZ-0370 → IZZ-0373]:** `BUILD_COMMIT_SHA` e în jobul `mirror`, prin #347 merged.
+- **RECIDIVE — roșul de STARE separat de cel de COD [IZZ-0388…0391]; Owner: podeaua roșie peste 640 art./zi [IZZ-0391].**
+- **Coliziuni de ID reparate la ALOCARE [IZZ-0392]; IZZ-0400 aterizat prin #344 merged.**
+- **PR queue — 4 deschise:** #340 PRODUS (acest PR; merged la aterizare) · #320 Lee · #297 Cronica ·
+  #280 CSS. Aterizările: în `specs/registru.tsv`, nu aici.
+- **Issues triate 09-13 [IZZ-0381…0383]:** #83 închis. **#198 arhiva = decizie de proprietar**
+  (R2 singura structurală). #233 canal · #271 scope — deschise prin design.
 
 ## Audit closure status
 
-- **K1–K14:** re-verified mechanism-by-mechanism in `specs/regim-reguli.md` — a reconciliation
-  register, not a substitute for passing tests. **Grounding:** blocks deterministic invented quotes
-  and foreign numbers, fails closed on missing evidence; order is grounding → QA → commit.
-- **Coordination:** live channel is `handoff/` + `specs/STATE.md`; historical dashboards stay historical.
-  **Containment:** destructive git commands and direct Edit/Write on control-plane files are denied.
-- **Journals:** `takedowns` in `moderation.yaml` removed on every publish path (trail in
-  `data/takedown_log.jsonl`); ingest discards per run in `data/triage_log.jsonl`.
-- **Near-verbatim copy:** >=15-word verbatim runs outside quotes and fully transcribed titles block the
-  gate, thresholds from REGULI-SINTEZA 2.2, no calibration corpus yet; violations defer the item.
-- **Silence detection:** hourly `detectie-tacere.yml`. **Human gate:** `IZZ_REQUIRE_HUMAN_GATE`
-  repo variable, default false.
-- **Bash writes are guarded:** the protected-edit hook covers Bash commands combining a control-plane
-  path with a write indicator; wiring under test (`tests/test_hooks_cablaj.py`).
+- **K1–K14:** re-verified in `specs/regim-reguli.md` — a reconciliation register, not a substitute
+  for passing tests. **Grounding:** blocks invented quotes and foreign numbers, fails closed.
+- **Coordination:** live channel is `handoff/` + `specs/STATE.md`. **Containment:** destructive git
+  commands and direct Edit/Write on control-plane files are denied; fd-only redirects no longer
+  count [IZZ-0353]. **Journals:** takedowns removed on every publish path; ingest discards logged.
+- **Near-verbatim copy:** >=15-word runs and transcribed titles block the gate. Open: calibration
+  corpus, 2x determinism run. **Silence detection:** hourly. **Human gate:** `IZZ_REQUIRE_HUMAN_GATE`.
+  **Main** is `protected: true`; required-checks list unreadable here (403), rulesets: none.
+- **Unified audit is mechanical now:** `specs/audit-unificat.tsv` + `tools/audit_matrice.py`
+  (+ `eroziune`) + `tools/cadenta_reala.py` + tests; findings in `specs/audit-unificat.md` §5.
+  Derivarea de stare o găsește `schedule` zilnic (#347), nu următorul PR. [IZZ-0351…0357, 0363…0367]
 
 ## Standing rules
 
-- Free plan: `izz.ro` must be served by the assets-only Worker. Routing it through `izz-failover`
-  turns every hit into a metered Worker request (100k/day) instead of a free static-asset hit.
-- Do not treat retired static-host origins as live origins; Worker origin is the fallback verification path.
+- Cadence is the GitHub scheduler, not the 105-min gate: 25% firing, ~6 starts/day, median ~4h.
+  Re-measure with `tools/cadenta_reala.py`; do not quote the number from memory. [IZZ-0364]
+- Do not treat retired static-host origins as live origins; Worker origin is the fallback path.
 - Do not use old task journals as normative coordination channels.
-- Do not describe historical benchmark values as current measurements.
+- Every measurement gets its window and its command, or it is not a measurement [IZZ-0367].
 - Do not mark live, GitHub settings, or Cloudflare facts as solved based only on repository code.
