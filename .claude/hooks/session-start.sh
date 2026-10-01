@@ -11,8 +11,9 @@ set -euo pipefail
 ROOT="${CLAUDE_PROJECT_DIR:-$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)}"
 
 echo "================ MEMORIA PROIECTULUI (injectata automat) ================"
-echo "Nu esti prima sesiune pe repo-ul asta. Ce urmeaza NU e context optional:"
-echo "e ce stiu sesiunile dinaintea ta si tu nu. Citeste inainte sa propui orice."
+echo "Nu esti prima sesiune pe repo-ul asta. Ce urmeaza e un INDEX, nu o sarcina de lectura:"
+echo "exista ca sa NU redescoperi ce se stie deja. Nu deschide nimic pe langa el fara ca"
+echo "task-ul sa ceara — sect. 5.13 (prag de payload) bate curiozitatea."
 echo
 
 echo "---------------- MANDATUL (citeste inainte sa faci ceva) ----------------"

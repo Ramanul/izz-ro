@@ -8,7 +8,11 @@
 > Where the rest lives: `specs/regim-reguli.md` — unified audit closure ·
 > `specs/registru.tsv` — decisions · `CLAUDE.md` — canonical contract.
 
+<<<<<<< HEAD
 **Updated:** 2026-10-01 (#340: primul backlog de PRODUS — homepage fără fotografii, coperte, markere)
+=======
+**Updated:** 2026-10-01 (#343 adus pe main: pragul §5.13 devine cifră; #344 aterizat azi)
+>>>>>>> origin/main
 
 ## Open
 
@@ -21,11 +25,21 @@
 - **Free-readiness — gazda ÎNCĂ PAID până 22 sep [IZZ-0313]:** ingest median 960/zi vs 590 dimensionat;
   TTL=20 trebuie scurtat spre ≈13 zile, altfel podea roșie [IZZ-0386, 0391, 0399].
 - **`izz-failover` — KEEP [IZZ-0362]; marja NECUNOSCUTĂ [IZZ-0367, 0369]:** ambele cifre publicate retrase.
+<<<<<<< HEAD
 - **REDUNDANȚA — ÎNCHISĂ [IZZ-0370 → IZZ-0373]:** `BUILD_COMMIT_SHA` e în jobul `mirror`, prin #347 merged.
 - **RECIDIVE — roșul de STARE separat de cel de COD [IZZ-0388…0391]; Owner: podeaua roșie peste 640 art./zi [IZZ-0391].**
 - **Coliziuni de ID reparate la ALOCARE [IZZ-0392]; IZZ-0400 aterizat prin #344 merged.**
 - **PR queue — 5 deschise:** #340 PRODUS (acest PR; merged la aterizare) · #320 Lee · #297 Cronica ·
   #280 CSS. Aterizările: în `specs/registru.tsv`, nu aici.
+=======
+- **REDUNDANȚA — ÎNCHISĂ [IZZ-0370 → IZZ-0373]:** `BUILD_COMMIT_SHA` e în jobul `mirror` (#347).
+- **RECIDIVE — roșul de STARE separat de cel de COD [IZZ-0388…0391; #347 merged].** Era 10/19
+  roșu pe main fără commit vinovat. **Owner:** podeaua revine roșie peste 640 art./zi [IZZ-0391].
+- **Coliziuni de ID în registru — 4 incidente, reparate la ALOCARE [IZZ-0392].** IZZ-0385 a fost
+  renumerotat IZZ-0400 și aterizat prin #344 merged; pentru următoarele PR-uri, alocarea evită ID-urile vii.
+- **PR queue — 5 deschise:** #343 payload (acest PR; merged la aterizare) · #340 PRODUS ·
+  #320 Lee · #297 Cronica · #280 CSS. Aterizările: în `specs/registru.tsv`, nu aici.
+>>>>>>> origin/main
 - **Issues triate 09-13 [IZZ-0381…0383]:** #83 închis. **#198 arhiva = decizie de proprietar**
   (R2 singura structurală). #233 canal · #271 scope — deschise prin design.
 
