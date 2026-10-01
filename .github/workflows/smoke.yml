@@ -9,12 +9,22 @@ on:
   schedule:
     - cron: "45 * * * *"
   workflow_dispatch: {}
+  # Smoke IMEDI dupa fiecare deploy reusit de pe main (nu doar la :45, care poate prinde
+  # deploy-ul din plin — cronul de deploy e la :53). Cronul ramane ca watchdog periodic.
+  workflow_run:
+    workflows: ["deploy-worker"]
+    types: [completed]
 
 permissions:
   contents: read
 
 jobs:
   smoke:
+    # La workflow_run: ruleaza doar dupa deploy SUCCES de pe main (ignora rulari picate sau
+    # declansate de alte branch-uri). Cronul si dispatch-ul raman neatinse.
+    if: >-
+      github.event_name != 'workflow_run' ||
+      (github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.head_branch == 'main')
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
