@@ -1,0 +1,24 @@
+# izz-watchdog — sondă gratuită la edge pentru pipeline-ul de build izz.ro.
+#
+# De ce există: site-ul e reconstruit de GitHub Actions, iar Actions poate
+# întârzia cronurile programate cu 62-200 de minute. Asta e sonda independentă
+# de la edge: rulează pe cron la 20 de minute, ia build.json de pe ambele
+# origini (izz.ro + workers.dev), ține fail_streak-ul per origine în KV și
+# scrie un WATCHDOG ALERT (console.error) în Workers Observability când o
+# origine pică repetat. Gratuit: cron trigger + Observability, pe
+# infrastructura existentă (namespace-ul KV „izz-kv" de mai jos).
+# Nu are rute și nu servește trafic — e sondă, nu server.
+
+name = "izz-watchdog"
+main = "index.js"
+compatibility_date = "2026-06-18"
+workers_dev = false
+
+[triggers]
+crons = ["*/20 * * * *"]
+
+# Namespace-ul KV existent „izz-kv"; watchdog-ul își ține starea anterioară
+# sub cheia "status" (recordul {ts, primary, public}).
+[[kv_namespaces]]
+binding = "WATCHDOG_KV"
+id = "cd9eb1d794cd42c0aca9fcd86248f308"
