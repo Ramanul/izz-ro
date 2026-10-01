@@ -115,7 +115,8 @@ def parse_published(value: object) -> dt.date | None:
             continue
     for fmt in ("%Y-%m-%d", "%Y/%m/%d", "%d.%m.%Y", "%Y-%m-%d %H:%M:%S", "%d %b %Y"):
         try:
-            return dt.datetime.strptime(text, fmt).date()
+            # fara %z in formate: publicarile site-ului sunt UTC, deci naive = UTC
+            return dt.datetime.strptime(text, fmt).replace(tzinfo=dt.timezone.utc).date()
         except ValueError:
             continue
     return None
@@ -228,7 +229,7 @@ def build_report(
     add("")
 
     lines += cohort_section(
-        f"Cohorta 21–60 zile",
+        "Cohorta 21–60 zile",
         f"Publicate între {cohort_start.isoformat()} și {cohort_end.isoformat()} inclusiv. "
         "Acestea sunt cele mai proaspete scoateri — traficul rezidual e așteptat să scadă treptat.",
         sorted(cohorts[COHORT_21_60], key=lambda pair: (pair[0] or dt.date.min, pair[1])),
@@ -315,7 +316,7 @@ def main(argv: list[str] | None = None) -> int:
     if main_raw is None:
         fail(f"cannot build report: {main_error}")
 
-    today = dt.date.today()
+    today = dt.datetime.now(tz=dt.timezone.utc).date()
     old_articles, old_malformed = extract_site_articles(old_raw)
     main_articles, main_malformed = extract_site_articles(main_raw)
 
