@@ -8,6 +8,11 @@ name: deploy-worker
 on:
   push:
     branches: [main]
+  # Deploy orar de siguranta: comiturile de continut ale build.yml folosesc GITHUB_TOKEN,
+  # care NU declanseaza workflow-uri pe push (anti-recursivitate GitHub). Fara acest cron,
+  # continutul publicat de pipeline ar ramane nerealizat dupa deconectarea Workers Builds.
+  schedule:
+    - cron: "53 * * * *"
   workflow_dispatch:
     inputs:
       confirmare:
