@@ -12,6 +12,9 @@ Ce se verifica aici (§2.3, §2.5, §2.7 din REGULI-SINTEZA.md):
   · cifrele         — orice numar din rezumat trebuie sa apara in sursa
   · rezerva         — daca sursa spune „ar fi / acuzat / presupus" si rezumatul nu, semnal
   · text copiat     — cate cuvinte consecutive din rezumat exista identic in sursa (§2.2)
+  · ortografia      — cuvintele din titlu care sunt deformări interne ale unor
+                      cuvinte din sursă (cazul care o cere: „Artizeții" in loc de
+                      „Artiștii", PR #371)
 
 Ce NU se poate verifica aici si ramane in prompt: esenta vs detaliul secundar (§1.1),
 informatia grea la inceput (§1.2), atribuirea (§2.6). Nicio masina nu le poate citi.
@@ -29,7 +32,7 @@ from typing import NamedTuple
 
 
 class Problema(NamedTuple):
-    cod: str          # citat_inventat | cifra_straina | rezerva_pierduta
+    cod: str          # citat_inventat | cifra_straina | rezerva_pierduta | cuvant_strain_titlu
     detaliu: str
 
 
@@ -297,6 +300,94 @@ def titlu_copiat(titlu: str, sursa: str) -> bool:
     return lungime == len(t)
 
 
+# --- Garda ortografiei titlului: cuvinte deformate intern (2026-10-01) -------------
+# Cazul real care o cere (PR #371): titlul sintetizat de model a scris „Artizeții" în
+# loc de „Artiștii", eroarea a ajuns în titlu, H1 și în slug-ul URL, publicată și
+# indexată. Verificările existente n-o vedeau: ele se uită la citate, cifre și
+# copiere — nimic nu compara ortografia cuvintelor din titlu cu textul sursei.
+#
+# DIRECȚIA VERIFICĂRII, decisă după prima rundă de teste: NU „titlul nu poate conține
+# decât cuvinte din sursă" — acolo modelul scrie legitime cuvinte pe care rezumatul-
+# sursă (descrierea din feed) nu le conține („anunțați" nu era în descrierea B365), deci
+# alarme false pe cuvinte corecte. Ci invers: se semnalează doar cuvântul care este
+# DEFORMARE INTERNĂ a unui cuvânt care ESTE în sursă:
+#   · vecin în sursă la distanță Levenshtein ≤ 2 (cazul real: z→s + „e" în plus = 2);
+#   · trece fără semnal dacă diferența arată a inflexiune românească: un cuvânt este
+#     prefixul celuilalt („consiliu"→„consiliului") sau divergența e doar în
+#     terminație („hotărârea"→„hotărârii");
+#   · cuvânt fără vecin în sursă trece — vocabularul modelului e mai mare decât
+#     descrierea din feed, și asta e normal.
+# RAPORTEAZĂ, nu respinge: codul NU e în `_BLOCKING` din `raport_copiere.py` până
+# când rata de alarme false nu e măsurată pe rulări reale — jurnalul acumulează
+# `advisory_issues` de la prima rulare, activarea e o linie în `_BLOCKING`.
+_LUNGIME_MIN_CUVANT = 5
+# ALEGERE DE PORNIRE, NU PRAG MASURAT (aceeași disciplină ca `_LUNGIME_SECVENTA`):
+# sub 5 litere, acronimele și numele prescurtate („Fest", „SIDA") ar produce zgomot.
+_MAX_DISTANTA = 2
+_PORCIUNE_SUFIX = 0.7
+# Divergența dintre cuvinte se ia „infecție" doar dacă e îngropată în corpul cuvântului;
+# dacă apare în ultimele ~30% (terminația), arată a caz gramatical, nu deformare.
+_DELTA_PREFIX_MAX = 3
+
+
+def _levenshtein_pană_la(a: str, b: str, limită: int) -> int:
+    """Distanța Levenshtein, tăiată la `limită` (rânduri DP + abandon devreme).
+
+    Întoarce limită+1 când depășește limita — apelantul compară cu `_MAX_DISTANTA`.
+    Cuvintele sunt scurte (≤15 litere), deci DP-ul simplu bate orice indexare specială.
+    """
+    if abs(len(a) - len(b)) > limită:
+        return limită + 1
+    anterior = list(range(len(b) + 1))
+    for i, ca in enumerate(a, 1):
+        curent = [i] + [0] * len(b)
+        minim_rând = curent[0]
+        for j, cb in enumerate(b, 1):
+            cost = 0 if ca == cb else 1
+            curent[j] = min(anterior[j] + 1, curent[j - 1] + 1, anterior[j - 1] + cost)
+            minim_rând = min(minim_rând, curent[j])
+        if minim_rând > limită:
+            return limită + 1
+        anterior = curent
+    return anterior[-1]
+
+
+def _arata_a_inflexiune(c: str, vecin: str) -> bool:
+    """Diferența dintre c și vecin arată a caz gramatical, nu a deformare internă."""
+    mare, mic = (c, vecin) if len(c) >= len(vecin) else (vecin, c)
+    if mare.startswith(mic) and len(mare) - len(mic) <= _DELTA_PREFIX_MAX:
+        return True
+    prima_diferență = next((i for i in range(len(mic)) if c[i] != vecin[i]), len(mic))
+    return prima_diferență / len(mare) >= _PORCIUNE_SUFIX
+
+
+def cuvinte_straine_titlu(titlu: str, sursa: str) -> list[str]:
+    """Cuvintele din titlu suspectate de deformare internă față de cuvinte din sursă.
+
+    Vezi comentariul de bloc de mai sus pentru direcție și reguli. Fără cifre (au
+    propria verificare, `cifre_straine`) și fără cuvinte sub `_LUNGIME_MIN_CUVANT`.
+    O sursă fără niciun cuvânt întoarce []: nu putem verifica nimic față de nimic,
+    iar `masoara_sinteza.py` numără oricum cazul ca neverificabil.
+    """
+    vocabular = set(_cuvinte(sursa or ""))
+    if not vocabular:
+        return []
+    straine, vazute = [], set()
+    for c in _cuvinte(titlu or ""):
+        if len(c) < _LUNGIME_MIN_CUVANT or c.isdigit() or c in vazute:
+            continue
+        vazute.add(c)
+        if c in vocabular:
+            continue
+        vecini = [v for v in vocabular
+                  if _levenshtein_pană_la(c, v, _MAX_DISTANTA) <= _MAX_DISTANTA]
+        if not vecini:
+            continue
+        if any(not _arata_a_inflexiune(c, v) for v in vecini):
+            straine.append(c)
+    return straine
+
+
 def verifica(titlu: str, rezumat: str, sursa: str) -> list[Problema]:
     """Toate verificarile, pe titlu + rezumat impreuna.
 
@@ -320,5 +411,10 @@ def verifica(titlu: str, rezumat: str, sursa: str) -> list[Problema]:
         probleme.append(Problema(
             "titlu_copiat",
             f"titlul ({len(_cuvinte(titlu or ''))} cuvinte) reproduce cuvânt cu cuvânt o secvență din sursă",
+        ))
+    for c in cuvinte_straine_titlu(titlu, sursa):
+        probleme.append(Problema(
+            "cuvant_strain_titlu",
+            f"„{c}” nu există în sursă la distanță de editare ≤ 1",
         ))
     return probleme
