@@ -234,14 +234,15 @@ def locate(article: dict, county_keys: list[str], by_name: dict[str, list[dict]]
     category = article.get("category") or ""
     if category not in {"local", "judetean", "regional"}:
         return None
+    # teaser si synthesis raman INTRARE pentru potrivirea geo de mai jos, dar nu mai pleaca
+    # spre client: harta randeaza doar titlu + meta (renderList), deci erau 33 KB gzip de
+    # payload pe care nicio linie din harta-stiri.js nu le citeste.
     text = " ".join(str(article.get(k) or "") for k in ("title", "teaser", "synthesis"))
     base = {
         "category": category,
         "geo_level": category,
         "slug": article.get("slug", ""),
         "title": article.get("title") or article.get("original_title") or "Fără titlu",
-        "teaser": article.get("teaser") or "",
-        "synthesis": article.get("synthesis") or "",
         "published": article.get("published") or "",
         "source": article.get("source") or "",
         "source_name": article.get("source_name") or article.get("source") or "",
