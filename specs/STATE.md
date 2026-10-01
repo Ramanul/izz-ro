@@ -8,27 +8,28 @@
 > Where the rest lives: `specs/regim-reguli.md` — unified audit closure ·
 > `specs/registru.tsv` — decisions · `CLAUDE.md` — canonical contract.
 
-**Updated:** 2026-10-01 (#344: fereastra TTL măsurată; IZZ-0385 renumerotat IZZ-0400 — coliziune cu main)
+**Updated:** 2026-10-01 (#344 adus pe main: fereastra TTL măsurată, IZZ-0400; #349 aterizat azi)
 
 ## Open
 
 - **Pages `izz-ro` e un ZOMBI care revendică `izz.ro` [IZZ-0366, IZZ-0368].** Are atașate
   `izz-ro.pages.dev` **și `izz.ro`**; ultim build reușit 21 aug, apoi 17 eșecuri (#211 merged).
   DNS apex+www → Pages, dar rutele Worker au precedență. 2 sisteme cred că dețin apexul. §10.
-- **Free-readiness — gazda e ÎNCĂ PAID (100.000) până 22 sep; 20.000 e ținta adoptată devreme
-  [IZZ-0313].** Randat 09-14 la TTL=20: 14.336 fișiere (72%), supapa inactivă. **Măsurat 09-15:**
-  fereastra are 11.250 articole din podeaua de 12.800, iar ingestul median e **960/zi** față de
-  590/zi pe care s-a dimensionat spec-ul — echilibrul cere TTL ≈ **13 zile**, nu 20; podea roșie
-  ~09-17. `izz-kv`/`izz-bucket` nelegate; minutele de Workers Builds necitibile. [IZZ-0386, 0361]
-- **`izz-failover` — KEEP [IZZ-0362]; marja NECUNOSCUTĂ [IZZ-0367, 0369]:** ambele cifre publicate retrase.
 - **FEREASTRA TTL a trecut de buget; RECUPERAREA ingestului e cauza [IZZ-0400].** 09-14: 11.967
   în fereastră vs prag CI 12.800; live 9.575 art./14.396 fișiere; roșu stabil din 09-14.
-  `ARTICLE_TTL_DAYS` = decizie proprietar.
-- **REDUNDANȚA — REPARAT [IZZ-0370 → IZZ-0372].** Rămâne de curățat: manifestul mirror-ului
-  poartă `GITHUB_SHA`, nu content-sha — o linie `BUILD_COMMIT_SHA` în jobul `mirror`, blocată de
-  hook (capacitate), NU de §10, care nu acoperă workflow-uri [IZZ-0373].
-- **PR queue — 8 deschise:** #344 TTL (acest PR; merged la aterizare) · #349 coliziuni ID · #343 payload ·
-  #340 PRODUS · #320 Lee · #297 Cronica · #280 CSS. Aterizările: în `specs/registru.tsv`.
+  `ARTICLE_TTL_DAYS` = decizie proprietar [IZZ-0401].
+- **Free-readiness — gazda e ÎNCĂ PAID până 22 sep; 20.000 e ținta adoptată devreme [IZZ-0313].**
+  **Măsurat 09-15:** fereastra 11.250 articole din podeaua de 12.800, ingest median **960/zi** vs
+  590 dimensionat — echilibrul cere TTL ≈ **13 zile**, nu 20; podea roșie [IZZ-0386, 0391, 0399].
+- **`izz-failover` — KEEP [IZZ-0362]; marja e DECLARAT NECUNOSCUTĂ [IZZ-0367, IZZ-0369].** Ambele
+  cifre publicate („2.9k/zi", „1.5k/zi") sunt retrase: prima fără fereastră, a doua fără `Analytics:Read`.
+- **REDUNDANȚA — ÎNCHISĂ [IZZ-0370 → IZZ-0373]:** `BUILD_COMMIT_SHA` e în jobul `mirror` (#347).
+- **RECIDIVE — roșul de STARE separat de cel de COD [IZZ-0388…0391; #347 merged].** Era 10/19
+  roșu pe main fără commit vinovat. **Owner:** podeaua revine roșie peste 640 art./zi [IZZ-0391].
+- **Coliziuni de ID în registru — 4 incidente, reparate la ALOCARE [IZZ-0392].** `IZZ-0385` e viu
+  în #344 cu alt titlu decât pe main: de renumerotat ACOLO, înainte de aterizare.
+- **PR queue — 6 deschise:** #344 TTL (acest PR; merged la aterizare) · #343 payload · #340 PRODUS ·
+  #320 Lee · #297 Cronica · #280 CSS. Aterizările: în `specs/registru.tsv`, nu aici.
 - **Issues triate 09-13 [IZZ-0381…0383]:** #83 închis. **#198 arhiva = decizie de proprietar**
   (R2 singura structurală). #233 canal · #271 scope — deschise prin design.
 
