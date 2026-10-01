@@ -30,8 +30,12 @@
   --fs-md:      1.272rem;
   --fs-lg:      1.618rem;
   --fs-xl:      2.058rem;
-  --fs-2xl:     2.618rem;
-  --fs-3xl:     3.330rem;
+  /* Tipografie fluida pe cele doua trepte mari (faza 3, PR #297 ca sursa de design):
+     titlurile de hero/articol coboara lin pe tablete in loc sa ramana la marimea de
+     desktop; plafonul clamp-ului e valoarea statica de dinainte, deci pe desktop nimic
+     nu se misca. --fs-lg/--fs-xl (card-title, section-title) raman fixe — nu global. */
+  --fs-2xl:     clamp(1.85rem, 1.35rem + 2.2vw, 2.618rem);
+  --fs-3xl:     clamp(2.1rem, 1.4rem + 3.2vw, 3.330rem);
 
   --s-5: 5px; --s-8: 8px; --s-13: 13px; --s-21: 21px; --s-34: 34px; --s-55: 55px; --s-89: 89px;
   --radius: 6px;            /* colturi rotunjite pt. media (miniaturi carduri, banner) */
@@ -440,7 +444,12 @@ picture { display: contents; }
   .reader-briefing { align-items: flex-start; flex-direction: column; }
   .subnav-more-list { right: 0; left: auto; min-width: min(220px, calc(100vw - 2 * var(--s-21))); }
   .article-accountability a:not(.article-report-link) { display: inline-block; margin: var(--s-13) 0 0; }
-  .site-header { padding: var(--s-13) var(--s-21); }
+  /* Antet compact (faza 4, adaptat la header-ul actual din base.html): logo mai mic si
+     descriptor ascuns — pe telefon el ocupa un rand intreg doar ca sa repete tagline-ul;
+     nav-ul cedeaza si el spatiu prin gap redus. */
+  .site-header { padding: var(--s-8) var(--s-21); gap: var(--s-13); }
+  .brand .logo { font-size: var(--fs-lg); }
+  .brand-descriptor { display: none; }
   .lead-feature { padding: var(--s-21); }
   .lead-feature h2.lead-title { font-size: var(--fs-xl); }
   .section-title { font-size: var(--fs-lg); }
@@ -564,6 +573,28 @@ picture { display: contents; }
 .pagination .disabled { opacity: .4; pointer-events: none; }
 /* saltul din numerotare („…") nu e o tinta, deci nici chenar de tinta */
 .pagination .gap { border-color: transparent; min-width: 0; padding-left: 0; padding-right: 0; }
+
+/* --------------------------------- Miscare la scroll (faza 6, PR #297 ca sursa) --- */
+/* Scroll-driven, totul in @supports: browserul fara animation-timeline nu vede nicio
+   animatie si prinde pagina exact ca inainte; peste asta, garda prefers-reduced-motion.
+   Doar transform, FARA opacity si FARA JS: zero layout shift, zero bucla de rAF, iar
+   cerneala nu dispare niciodata in cursul animatiei (Lighthouse color-contrast pe
+   carduri, masurat 2026-09-06). Cardurile intra in pagina la derulare, in stil de ziar
+   care se aseaza, nu de instrument. */
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .card, .lead-feature {
+      animation: intra-in-pagina ease-out both; animation-timeline: view();
+      animation-range: entry 0% entry 50%;
+    }
+    /* Bara .progress din PR nu are element in sabloanele actuale (Faza 5, necuperata)
+       si a fost sarita; keyframes-ul e al doilea pas al aceleiasi reguli, nu regula noua. */
+    @keyframes intra-in-pagina {
+      from { transform: translateY(14px); }
+      to { transform: none; }
+    }
+  }
+}
 
 @media (prefers-reduced-motion: reduce) { * { transition: none !important; scroll-behavior: auto !important; } }
 
