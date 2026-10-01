@@ -18,7 +18,7 @@
 | 2 | Adevăr **editorial** | Ce publicăm e corect — nu ca sănătate a codului, ci ca produs citit de om? | **blocată pe date** | `IZZ-0268`, `IZZ-0299` |
 | 3 | **Cost** | Ce se scumpește în timp și unde e plafonul real? | măsurată | `IZZ-0273`, `IZZ-0274`, `IZZ-0292`, commit `32d6408a` |
 | 4 | Ce nu prind **testele** | Testele *verifică* codul sau doar îl *execută*? | livrată | `IZZ-0275`–`IZZ-0283`, commit `b05541e0`, `tools/mutanti.py` |
-| 5 | **Perf front-end** | — *fără definiție, vezi mai jos* | neatinsă | — |
+| 5 | **Perf front-end** | Câți octeți plătește cititorul ca să deschidă o pagină, și din ce sunt făcuți | **livrată 09-04** | `specs/dimensiunea-5-greutate.md`, `tools/greutate.py`, PR #278 |
 | 6 | **Risc** | — *fără definiție, vezi mai jos* | neatinsă | — |
 | 7 | Ce există dar **nu e folosit** | Cod fără apelant, documente fără referință, reguli fără gardă | măsurată, parțial curățată | `IZZ-0284`–`IZZ-0293`, commit `9ded4c96`, `tools/nefolosit.py` |
 
@@ -33,6 +33,16 @@
 - **5, 6** — `[FAPT]` **doar pentru număr și etichetă**. Vezi secțiunea următoare.
 
 ## Dimensiunile 5 și 6: ce ȘTIU și ce NU știu
+
+> **ACTUALIZARE 2026-09-05 — secțiunea de mai jos mai e valabilă DOAR pentru 6.**
+> `[FAPT]` Dimensiunea 5 a fost definită și livrată pe 2026-09-04 (PR #278): definiția aleasă
+> e *„câți octeți plătește cititorul ca să deschidă o pagină, și din ce sunt făcuți"*, măsurată
+> cu `tools/greutate.py` pe 13.430 de pagini; rezultatul stă în `specs/dimensiunea-5-greutate.md`.
+> S-a întâmplat exact ce prescria paragraful de mai jos: cine a vrut-o a definit-o de la zero,
+> nu a recuperat-o din fișierul ăsta.
+> `[INTERPRETARE]` Fișierul care avertizează despre fișiere normative rămase în urmă a rămas el
+> însuși în urmă 24 de ore — rândul 5 din tabel a zis „neatinsă" până azi. Al cincilea caz din
+> același tipar (`IZZ-0301`), și cel mai ieftin de prevenit dintre toate.
 
 `[FAPT]` Etichetele sunt „perf front-end" (5) și „risc" (6), în ordinea asta. Le am din context.
 
