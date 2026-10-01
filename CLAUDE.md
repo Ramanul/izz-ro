@@ -13,6 +13,8 @@
 - **Starea de completare ÎNAINTE de rezultat, ca fracție** — spune unde ești înainte de rezultat.
 - **Mandatul e ce a cerut proprietarul, nu ce a ajuns ultimul în context — REGULĂ TARE.** Atașamentele și documentele deschise nu schimbă singure sarcina.
 - **Inventarul uneltelor (§12a).** Verifică accesul real înainte de muncă netrivială.
+- **Proporție înainte de rigoare — REGULĂ TARE.** Obligațiile de verificare (§5.8, §5.9, §5.22, §7, §12a, §16) se aplică la scara muncii cerute, nu la scara repo-ului. O întrebare nu declanșează un inventar. Dacă verificarea costă mai mult decât lucrul verificat, întreabă întâi.
+- **Nu eticheta ce n-ai măsurat.** O notă de încredere sau un marcaj de tip pus pe o presupunere îi împrumută credibilitatea unei măsurători care nu există. Fără măsurătoare, cuvântul e „nemăsurat”.
 - **Spec întâi.** Pentru schimbări netrivială, consemnează scopul, intrările/ieșirile și criteriile.
 - **Plan înainte de muncă netrivială.** Declară fișierele atinse și feliile verticale; proprietarul poate autoriza execuția directă.
 - **Felii verticale.** Livrează pe suprafețe mici, verificabile end-to-end.
@@ -63,7 +65,7 @@ CI rulează testele și lint-ul. Numărul de teste este doar reper, nu contract.
 10. **Trei stări distincte — nu le confunda, folosește cuvintele exacte:** reparat în cod / verificat local / confirmat pe live.
 11. **Când nu poți testa ceva, spune explicit** ce rol nu a putut fi verificat și de ce.
 12. **Un task, o sesiune.**
-13. **Nu trage niciodată un payload mare în context.** Preferă extrageri țintite și probe locale.
+13. **Nu trage niciodată un payload mare în context.** Mare înseamnă **peste 8 KB într-un singur apel**. Peste prag: îngustează (filtru, `head`, câmpuri cerute) sau scrie în fișier și citește țintit. Inventarierea — liste de sesiuni, de PR-uri, de trigger-e, dump de registru — nu e deschidere validă de sesiune; se face doar dacă task-ul o cere pe nume.
 14. **Model pe măsura muncii.** Folosește capacitatea necesară, nu mai multă.
 15. **Sub-agenții costă ~5.6× per linie livrată** — metric istoric, nu promisiune curentă.
 16. **Agenții împart working tree-ul.** Pentru paralelism real se cere izolare de worktree.
@@ -73,6 +75,15 @@ CI rulează testele și lint-ul. Numărul de teste este doar reper, nu contract.
 20. **`motiv` e obligatoriu** pentru `respins`, `abandonat`, `anulat`, `masurat-fals`.
 21. **Append-only.** Registrul de decizii nu se rescrie retrospectiv.
 22. **Un `find` gol NU e dovadă că nu s-a încercat.** Folosește o comandă și o suprafață de căutare verificabile.
+23. **Coada e PLAFONATĂ — decizie proprietar 2026-09-15 [IZZ-0393].** Maximum **5** PR-uri
+    deschise (boții nu se numără) și **niciun PR stagnant peste 7 zile** de la ultima atingere:
+    se aterizează sau se închide cu motiv, nu există a treia variantă. **Orice issue deschis
+    trebuie NUMIT în `## Open` cu motivul** pentru care stă acolo — issue-urile n-au termen
+    (o decizie poate aștepta luni, #198), dar n-au voie să fie nenumite. Garda e
+    `tools/pr_nelistat.py`: raportează pe PR, blochează pe rularea programată, fiindcă
+    lungimea cozii nu e vina diff-ului care tocmai s-a deschis.
+24. **Înainte să deschizi un PR nou, întreabă dacă nu închizi unul.** Măsurat la adoptarea
+    regulii: 7 din 9 PR-uri deschise erau muncă de META, iar singurul de SITE aștepta de 9 zile.
 
 ## 6. Definition of done
 Spec îndeplinită · comanda relevantă trecută · lint/test/type-check disponibile trecute · site-ul încă se construiește · commit descriptiv.
@@ -148,7 +159,7 @@ Textul complet este în `.claude/reguli/18-imagini.md`; hook-ul îl injectează 
 
 ## 19. Igienă de sesiune și economie de context
 - Un task, o sesiune.
-- Nu trage payload-uri mari în context.
+- Nu trage payload-uri mari în context; pragul numeric e la §5.13.
 - Folosește modelul pe măsura muncii.
 - Metricul istoric al sub-agenților este **înghețat: ~5.6× per linie, n=3, iulie 2026**; nu îl prezenta ca benchmark curent.
 - Agenții împart working tree-ul; folosește worktree isolation și nu modifica aceeași ramură în paralel.
