@@ -12,7 +12,7 @@ import json
 
 import pytest
 
-from generator import jurnal_triage, main, render, state
+from generator import main, render, state
 
 
 def test_slugul_stocat_supravietuieste_schimbarii_de_titlu():
