@@ -58,6 +58,19 @@ body {
   -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility;
 }
 a { color: var(--gold-strong); text-decoration: none; }
+
+/* Masthead de ziar: data de azi + numerele zilei (render._numerele_zilei), pe toate
+   paginile. Nu e sticky — se deruleaza odata cu pagina; sticky-ul ramane al antetului. */
+.dateline {
+  margin: 0; padding: var(--s-8) var(--s-34);
+  display: flex; flex-wrap: wrap; gap: 3px var(--s-21); align-items: baseline;
+  justify-content: space-between;
+  background: var(--paper-2); border-bottom: 1px solid var(--line);
+  font-family: var(--font-mono); font-size: var(--fs-eyebrow); font-weight: 700;
+  text-transform: uppercase; letter-spacing: 2px; color: var(--ink-3);
+}
+.day-numbers { font-weight: 400; letter-spacing: 1px; }
+.day-numbers b { color: var(--gold-strong); font-weight: 700; }
 a:hover { color: var(--ink); }
 :focus-visible { outline: 2px solid var(--gold-strong); outline-offset: 3px; }
 
@@ -422,6 +435,8 @@ picture { display: contents; }
 }
 @media (max-width: 640px) {
   main { padding: var(--s-21) var(--s-21); }
+  .dateline { padding: var(--s-5) var(--s-21); }
+  .day-numbers { display: none; }   /* mobil: primul ecran ramane al stirilor */
   .reader-briefing { align-items: flex-start; flex-direction: column; }
   .subnav-more-list { right: 0; left: auto; min-width: min(220px, calc(100vw - 2 * var(--s-21))); }
   .article-accountability a:not(.article-report-link) { display: inline-block; margin: var(--s-13) 0 0; }

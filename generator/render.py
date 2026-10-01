@@ -193,6 +193,7 @@ def _asset_ver() -> dict:
 
 _RO_MONTHS = ["", "ianuarie", "februarie", "martie", "aprilie", "mai", "iunie",
               "iulie", "august", "septembrie", "octombrie", "noiembrie", "decembrie"]
+_RO_DAYS = ["Luni", "Marți", "Miercuri", "Joi", "Vineri", "Sâmbătă", "Duminică"]
 
 
 def _env() -> Environment:
@@ -225,6 +226,13 @@ def _human_date(iso: str) -> str:
         dt = dt.replace(tzinfo=timezone.utc)
     dt = dt.astimezone(_TZ_RO)
     return f"{dt.day} {_RO_MONTHS[dt.month]} {dt.year}, {dt:%H:%M}"
+
+
+def _today_ro() -> str:
+    """Masthead de ziar: „Vineri, 5 septembrie 2026". Ora Romaniei, ca _human_date —
+    determinista fata de fusul masinii care randeaza (local sau GitHub Actions)."""
+    dt = datetime.now(_TZ_RO)
+    return f"{_RO_DAYS[dt.weekday()]}, {dt.day} {_RO_MONTHS[dt.month]} {dt.year}"
 
 
 def _taie_slug(s: str, limita: int = 80, minim: int = 40) -> str:
@@ -470,6 +478,7 @@ def _base_ctx(canonical_path: str, jsonld_nodes: list | None = None,
         # asta nu schimba anul din subsol in productie — face doar ca o randare locala
         # (UTC+3) sa dea acelasi octet ca CI-ul, in loc sa depinda de ceasul masinii.
         "year": datetime.now(timezone.utc).year,
+        "today": _today_ro(),
         "canonical": config.SITE["url"] + canonical_path,
         # UN singur bloc `application/ld+json` per pagina, emis din base.html
         "jsonld": _graph_jsonld(canonical_path, jsonld_nodes or [], jsonld_page),
@@ -570,6 +579,37 @@ def _source_catalog(by_date: list) -> tuple[list, int, int]:
             "regions": _grupeaza_pe_regiuni(pe_judet),
         })
     return catalog, len(config.SOURCES), len(src_stats)
+
+
+def _numerele_zilei(articles: list) -> dict | None:
+    """„Numerele zilei" pentru masthead, din starea reala a pipeline-ului (nu din afara):
+    cate stiri au aparut in ultimele 24h, din cate surse distincte, in cate judete
+    (judetul sursei pentru categoriile local/judetean — aceeasi atribuire ca pe harta).
+
+    None cand fereastra e goala: strip-ul nu se emite deloc, nu arata zerori falsi.
+    """
+    limita = datetime.now(timezone.utc) - timedelta(hours=24)
+    fereastra = []
+    for a in articles:
+        try:
+            dt = datetime.fromisoformat(a.get("published") or "")
+        except (ValueError, TypeError):
+            continue
+        if dt.tzinfo is None:
+            dt = dt.replace(tzinfo=timezone.utc)
+        if dt >= limita:
+            fereastra.append(a)
+    if not fereastra:
+        return None
+    surse = {a.get("source_name") or a.get("source") or "" for a in fereastra} - {""}
+    pe_judet: dict = {}
+    for a in fereastra:
+        if a.get("category") in ("judetean", "local"):
+            j = geo.judet_sursa(a.get("source"))
+            if j:
+                pe_judet[j] = pe_judet.get(j, 0) + 1
+    return {"stiri": len(fereastra), "surse": len(surse),
+            "judete": len(pe_judet), "pe_judet": pe_judet}
 
 
 _HARTA_CACHE: dict | None = None
@@ -880,10 +920,11 @@ def build(articles: list, mod: dict | None = None) -> None:
             for i, a in enumerate(by_date[:20])
         ],
     }
+    zi = _numerele_zilei(by_date)
     _write(os.path.join(OUT_DIR, "index.html"),
            env.get_template("index.html").render(**_base_ctx(
                "/", nav_section="stiri", articles=by_date, hero=hero, by_category=by_category,
-               jsonld_nodes=[item_list], newsletter_html=_newsletter_html())))
+               jsonld_nodes=[item_list], newsletter_html=_newsletter_html(), zi=zi)))
 
     src_catalog, total_sources, stats_sources = _source_catalog(by_date)
     _write(os.path.join(OUT_DIR, "surse", "index.html"),
