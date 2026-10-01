@@ -76,6 +76,10 @@ jobs:
             echo "fara output/_redirects - sar pasul"
           fi
 
+      - name: Buget assets (census + headroom, best-effort)
+        run: |
+          python tools/asset_budget.py --output-dir output || echo "::warning::census a picat - deployul ramane valid"
+
       - name: Publica pe Worker
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
