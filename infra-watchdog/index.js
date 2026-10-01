@@ -5,7 +5,7 @@
  * întârzia cronurile programate cu 62-200 de minute — „cronul a întârziat" e
  * de nedistins de „site-ul e căzut" dacă nimeni nu sondează independent.
  * Worker-ul rulează la fiecare 20 de minute, ia build.json de pe ambele origini
- * (domeniul primar izz.ro + originea primară workers.dev), compară cu starea
+ * (domeniul primar izz.ro + oglinda GitHub Pages), compară cu starea
  * anterioară ținută în KV și scrie un WATCHDOG ALERT prin console.error când o
  * origine pică repetat. Workers Observability colectează logurile de eroare —
  * singura suprafață de alertă gratuită disponibilă aici.
@@ -19,7 +19,12 @@ const ALERT_STREAK = 2;
 
 const ORIGINS = {
   primary: "https://izz.ro/build.json",
-  public: "https://izz-ro.andifreelancer2.workers.dev/build.json",
+  // Oglinda GitHub Pages (repo-ul extern ramanul.github.io, jobul `mirror` din build.yml).
+  // Spec-ul initial zicea subdomenia workers.dev, dar prima rulare reala a sondei (KV,
+  // 2026-10-01 17:20 UTC) a primit 404 de acolo — fetch din worker catre un workers.dev al
+  // ACELUIASI cont, in timp ce acelasi URL raspunde 200 din exterior. Oglinda pe host
+  // independent (GitHub) e accesibila din edge si testeaza efectiv failover-ul final.
+  public: "https://ramanul.github.io/build.json",
 };
 
 const USER_AGENT = "izz-watchdog/1.0 (+https://izz.ro)";
