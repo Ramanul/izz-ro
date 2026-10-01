@@ -141,9 +141,156 @@ def _write(rows: list[dict]) -> None:
             fh.write("\t".join((r.get(c) or "").replace("\t", " ") for c in COLS) + "\n")
 
 
+def _numere(text: str) -> set[int]:
+    return {int(m.group(1)) for m in re.finditer(r"^IZZ-(\d+)\t", text, re.M)}
+
+
+def ids_din_toate_refurile() -> set[int]:
+    """ID-urile din `specs/registru.tsv` asa cum arata pe FIECARE ref din repo.
+
+    DE CE EXISTA (2026-09-14). `_next_id` citea doar working tree-ul, deci doua sesiuni
+    paralele porniser de la acelasi main vedeau acelasi maxim si alocau AMANDOUA acelasi ID.
+    Garda de duplicate (`id_duplicate`) verifica un SINGUR fisier, deci nu vedea nimic; iar la
+    merge cele doua randuri sunt linii diferite, deci git le imbina curat si duplicatul
+    ateriza pe main in tacere.
+
+    Masurat, de trei ori acelasi defect:
+      · IZZ-0327 — commit 76f0df0 (2026-09-09): „ID dublat IZZ-0327 sesiuni paralele".
+      · IZZ-0321 — consemnat `masurat-fals`: „registru.py add aloca un ID liber" nu era
+        adevarat, fiindca „liber" insemna „liber in working tree".
+      · IZZ-0385 — 2026-09-14: pe main e constatarea despre clona shallow, in PR #344 e
+        fereastra TTL. Doua decizii diferite, acelasi ID, ambele scrise de bunacredinta.
+      · IZZ-0375 consemnase deja consecinta: un PR care renumeroteaza un ID intre timp
+        mergeuit nu se mai poate rebaza curat.
+
+    Deci nu e o scapare, e o proprietate a alocatorului. Se repara la ALOCARE, unde decizia
+    se ia, nu la merge, unde e prea tarziu.
+
+    Degradeaza curat: fara git, sau cu un ref fara fisierul asta, se intoarce ce s-a putut
+    citi. Un ID sarit e ieftin; un ID dublat costa un rebase imposibil.
+    """
+    try:
+        refs = subprocess.run(
+            ["git", "for-each-ref", "--format=%(refname)", "refs/heads", "refs/remotes"],
+            cwd=ROOT, capture_output=True, text=True, check=False, timeout=60,
+        )
+    except (OSError, subprocess.SubprocessError):
+        return set()
+    if refs.returncode != 0:
+        return set()
+    gasite: set[int] = set()
+    for ref in refs.stdout.split():
+        fisier = subprocess.run(
+            ["git", "show", f"{ref}:specs/registru.tsv"],
+            cwd=ROOT, capture_output=True, text=True, check=False, timeout=60,
+        )
+        if fisier.returncode == 0:
+            gasite |= _numere(fisier.stdout)
+    return gasite
+
+
 def _next_id(rows: list[dict]) -> str:
-    nums = [int(m.group(1)) for r in rows if (m := re.fullmatch(r"IZZ-(\d+)", r["id"]))]
+    nums = {int(m.group(1)) for r in rows if (m := re.fullmatch(r"IZZ-(\d+)", r["id"]))}
+    nums |= ids_din_toate_refurile()
     return f"IZZ-{max(nums, default=0) + 1:04d}"
+
+
+def _titluri_pe_ref(text: str) -> dict[str, str]:
+    return {
+        linie.split("\t", 4)[0]: linie.split("\t", 4)[3]
+        for linie in text.splitlines()
+        if linie.startswith("IZZ-") and linie.count("\t") >= 4
+    }
+
+
+def coliziuni_intre_refuri(titluri_pe_ref: dict[str, dict[str, str]]) -> list[str]:
+    """ID-uri carora doua refuri le dau TITLURI diferite — adica doua decizii, un singur ID.
+
+    Alocatorul reparat opreste coliziunile VIITOARE, dar nu le vede pe cele deja scrise pe
+    ramuri deschise. Iar merge-ul nu le vede nici el: randurile sunt linii diferite, deci git
+    le imbina curat si duplicatul ateriza pe main in tacere — apoi §20 (append-only) interzice
+    rescrierea lui, si singura iesire e un rebase care nu mai e curat (IZZ-0375).
+
+    Detectia se face pe TITLU, nu pe randul intreg: acelasi rand editat (o dovada adaugata,
+    o stare mutata din `propus` in `implementat`) e evolutie normala, nu coliziune.
+    """
+    vazute: dict[str, dict[str, str]] = {}
+    for ref, titluri in titluri_pe_ref.items():
+        for izz, titlu in titluri.items():
+            vazute.setdefault(izz, {})[titlu] = ref
+    return [
+        f"{izz}: " + " vs ".join(f"{ref} „{t[:60]}…\"" for t, ref in sorted(v.items(), key=lambda x: x[1]))
+        for izz, v in sorted(vazute.items()) if len(v) > 1
+    ]
+
+
+def titluri_din_toate_refurile() -> dict[str, dict[str, str]]:
+    """`{ref: {IZZ-xxxx: titlu}}` pentru fiecare ref care are fisierul. Gol fara git."""
+    try:
+        refs = subprocess.run(
+            ["git", "for-each-ref", "--format=%(refname)", "refs/heads", "refs/remotes"],
+            cwd=ROOT, capture_output=True, text=True, check=False, timeout=60,
+        )
+    except (OSError, subprocess.SubprocessError):
+        return {}
+    if refs.returncode != 0:
+        return {}
+    out: dict[str, dict[str, str]] = {}
+    for ref in refs.stdout.split():
+        fisier = subprocess.run(
+            ["git", "show", f"{ref}:specs/registru.tsv"],
+            cwd=ROOT, capture_output=True, text=True, check=False, timeout=60,
+        )
+        if fisier.returncode == 0:
+            out[ref] = _titluri_pe_ref(fisier.stdout)
+    return out
+
+
+def titluri_pe_refuri(refuri: tuple[str, ...]) -> dict[str, dict[str, str]]:
+    """`{ref: {IZZ-xxxx: titlu}}` pentru refurile cerute care au fisierul."""
+    out: dict[str, dict[str, str]] = {}
+    for ref in refuri:
+        fisier = subprocess.run(
+            ["git", "show", f"{ref}:specs/registru.tsv"],
+            cwd=ROOT, capture_output=True, text=True, check=False, timeout=60,
+        )
+        if fisier.returncode == 0:
+            out[ref] = _titluri_pe_ref(fisier.stdout)
+    return out
+
+
+def coliziuni_cu_baza(baza: str = "origin/main") -> list[str]:
+    """Coliziunile pe care ramura CURENTA le-ar ateriza pe `baza`.
+
+    DE CE NU TOATE REFURILE. Scanarea completa gaseste 29 de coliziuni (masurat 2026-09-14),
+    dar aproape toate sunt pe ramuri moarte — `wip/portare-codex`, `ramanul-triage-blockers`,
+    sesiuni abandonate — care nu vor ateriza niciodata. O garda care e rosie permanent din
+    cauza lor ar fi ignorata in doua zile, exact ca una care nu poate pica (IZZ-0177).
+
+    Perechea HEAD vs baza e insa exact riscul real si e verificabila offline: daca acelasi ID
+    poarta titluri diferite pe cele doua, merge-ul asta LIVREAZA duplicatul. Diagnosticul larg
+    ramane disponibil cu `--toate`.
+    """
+    return coliziuni_intre_refuri(titluri_pe_refuri((baza, "HEAD")))
+
+
+def cmd_coliziuni(args) -> int:
+    if getattr(args, "toate", False):
+        gasite = coliziuni_intre_refuri(titluri_din_toate_refurile())
+        unde = "intre TOATE refurile (inclusiv ramuri moarte, care nu vor ateriza)"
+    else:
+        gasite = coliziuni_cu_baza(args.baza)
+        unde = f"pe care ramura curenta le-ar ateriza pe {args.baza}"
+    if not gasite:
+        print(f">> nicio coliziune de ID {unde}")
+        return 0
+    print(f"!! ID-uri cu titluri DIFERITE, {unde}:")
+    for linie in gasite:
+        print("   " + linie)
+    print("\n   Registrul e append-only (§20), deci dupa aterizare duplicatul nu se mai poate")
+    print("   rescrie, iar renumerotarea rupe rebase-ul (IZZ-0375). Repara ACUM, pe ramura")
+    print("   nemergeuita: `python tools/registru.py add` aloca peste toate refurile.")
+    return 1
 
 
 def _zona_din_titlu(titlu: str) -> str:
@@ -338,6 +485,13 @@ def main() -> int:
     f.add_argument("--stare")
     f.add_argument("--zona")
     f.set_defaults(fn=cmd_find)
+
+    c = sub.add_parser(
+        "coliziuni", help="ID-uri cu titluri diferite pe refuri diferite (doua decizii, un ID)")
+    c.add_argument("--baza", default="origin/main", help="ref de comparatie (implicit origin/main)")
+    c.add_argument("--toate", action="store_true",
+                   help="scaneaza toate refurile, inclusiv ramuri moarte (diagnostic)")
+    c.set_defaults(fn=cmd_coliziuni)
 
     s = sub.add_parser("show", help="un rand intreg")
     s.add_argument("id")

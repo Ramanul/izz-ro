@@ -8,29 +8,25 @@
 > Where the rest lives: `specs/regim-reguli.md` — unified audit closure ·
 > `specs/registru.tsv` — decisions · `CLAUDE.md` — canonical contract.
 
-**Updated:** 2026-09-15 (#347, #341, #348 aterizate; ID-urile de registru colidau — IZZ-0389)
+**Updated:** 2026-10-01 (#340: primul backlog de PRODUS în ## Open
 
 ## Open
-
-- **Pages `izz-ro` e un ZOMBI care revendică `izz.ro` [IZZ-0366, IZZ-0368].** Are atașate
-  `izz-ro.pages.dev` **și `izz.ro`**; ultim build reușit 21 aug, apoi 17 eșecuri (#211 merged).
-  DNS apex+www → Pages, dar rutele Worker au precedență. 2 sisteme cred că dețin apexul. §10.
-- **Free-readiness — gazda e ÎNCĂ PAID (100.000) până 22 sep; 20.000 e ținta adoptată devreme
-  [IZZ-0313].** Randat 09-14 la TTL=20: 14.336 fișiere (72%), supapa inactivă. **Măsurat 09-15:**
-  fereastra are 11.250 articole din podeaua de 12.800, iar ingestul median e **960/zi** față de
-  590/zi pe care s-a dimensionat spec-ul — echilibrul cere TTL ≈ **13 zile**, nu 20; podea roșie
-  ~09-17. `izz-kv`/`izz-bucket` nelegate; minutele de Workers Builds necitibile. [IZZ-0386, 0361]
-- **`izz-failover` — KEEP [IZZ-0362]; marja e DECLARAT NECUNOSCUTĂ [IZZ-0367, IZZ-0369].** Ambele
-  cifre publicate („2.9k/zi", „1.5k/zi") sunt retrase: prima fără fereastră, a doua fără `Analytics:Read`.
-- **REDUNDANȚA — REPARAT [IZZ-0370 → IZZ-0372].** Rămâne de curățat: manifestul mirror-ului
-  poartă `GITHUB_SHA`, nu content-sha — o linie `BUILD_COMMIT_SHA` în jobul `mirror`, blocată de
-  hook (capacitate), NU de §10, care nu acoperă workflow-uri [IZZ-0373].
-- **PR queue — 6 deschise:** #344 TTL · #343 payload · #340 PRODUS · #320 Lee · #297 Cronica ·
-  #280 CSS. Aterizările: în `specs/registru.tsv`, nu aici — o listă de PR-uri moarte
-  în `## Open` reaprinde garda de fantome la fiecare merge.
-- **Issues triate 2026-09-13 [IZZ-0381…0383]:** #83 închis (blocaje moarte; §14 l-a înlocuit).
-  **#198 arhiva rămâne decizie de proprietar** (R2 e singura care scapă structural; #214 a murit
-  nemergeuit). #233 canal · #271 scope — deschise prin design.
+- **Pages `izz-ro` ZOMBI revendică `izz.ro` [IZZ-0366, 0368]:** ștergerea = decizie proprietar [IZZ-0395].
+- **PRODUS P1 — homepage fără nicio fotografie [IZZ-0403]:** 0 `<img>` măsurat; 73% din articole au portret real
+  deja în `output/portraits/` — zero fișiere noi; potrivirea rulează doar pe articol (`render.py:971`).
+- **PRODUS P2 — copertile arată amatoricesc [IZZ-0404]** (verdict proprietar); `htmlart`/`covers.py`.
+- **PRODUS P3 — harta: markere fără ierarhie vizuală [IZZ-0405]:** 482 evenimente, clickuri cablate; e afordanța, nu funcția.
+- **FEREASTRA TTL a trecut de buget [IZZ-0400]:** 11.967 vs prag 12.800; `ARTICLE_TTL_DAYS` = decizie proprietar [IZZ-0401].
+- **Free-readiness — gazda ÎNCĂ PAID până 22 sep [IZZ-0313]:** ingest median 960/zi vs 590 dimensionat; TTL=20
+  trebuie scurtat spre ≈13 zile, altfel podea roșie [IZZ-0386, 0391, 0399].
+- **`izz-failover` — KEEP [IZZ-0362]; marja NECUNOSCUTĂ [IZZ-0367, 0369]:** ambele cifre publicate retrase.
+- **REDUNDANȚA — ÎNCHISĂ [IZZ-0370 → IZZ-0373]:** `BUILD_COMMIT_SHA` e în jobul `mirror`, prin #347 merged.
+- **RECIDIVE — roșul de STARE separat de cel de COD [IZZ-0388…0391]; Owner: podeaua roșie peste 640 art./zi [IZZ-0391].**
+- **Coliziuni de ID reparate la ALOCARE [IZZ-0392]; IZZ-0400 aterizat prin #344 merged.**
+- **PR queue — 4 deschise:** #340 PRODUS (acest PR; merged la aterizare) · #320 Lee · #297 Cronica ·
+  #280 CSS. Aterizările: în `specs/registru.tsv`, nu aici.
+- **Issues triate 09-13 [IZZ-0381…0383]:** #83 închis. **#198 arhiva = decizie de proprietar**
+  (R2 singura structurală). #233 canal · #271 scope — deschise prin design.
 
 ## Audit closure status
 
