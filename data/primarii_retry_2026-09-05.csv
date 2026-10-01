@@ -1,0 +1,899 @@
+judet,localitate,url,retry_alive,retry_status
+ALBA,ALBAC,https://N/A,no,fara url
+ALBA,BERGHIN,https://N/A,no,fara url
+ALBA,CUT,https://N/A,no,fara url
+ALBA,ORAS ABRUD,http://www.primaria-abrud.ro,yes,404
+ALBA,ORAS BAIA DE ARIES,http://www.baiadearies.ro,yes,200
+ALBA,ARIESENI,http://www.primariaarieseni.ro,yes,200
+ALBA,ORAS CUGIR,http://www.primariacugir.ro,yes,200
+ALBA,LUNCA MURESULUI,https://www.lunca-muresului.ro,yes,200
+ALBA,SANTIMBRU,https://N/A,no,fara url
+ALBA,PONOR,https://www.comunaponor.ro,yes,200
+ALBA,RAMET,https://www.comunarimet.ro,yes,200
+ARAD,GHIOROC,https://www.primariaghioroc.ro,yes,200
+ARAD,CRAIVA,https://primariacraiva.ro/wp/contact,yes,404
+ARAD,BIRCHIS,https://N/A,no,fara url
+ARAD,BRAZII,https://N/A,no,fara url
+ARAD,HALMAGIU,https://www.primariahalmagiu.ro,yes,200
+ARAD,PAULIS,https://www.paulis.ro,yes,200
+ALBA,BUCERDEA GRANOASA,https://bucerdea-granoasa.ro/site,yes,404
+ARAD,PETRIS,https://www.comunapetris.ro,yes,200
+ARAD,TARNOVA,https://N/A,no,fara url
+ALBA,ORAS CAMPENI,http://www.primariacimpeni.ro,yes,403
+ARAD,SEPREUS,https://sepreus.ro,yes,200
+ARAD,SICULA,https://sicula.ro,yes,200
+ARAD,SILINDIA,https://www.comunasilindia.ro,yes,200
+ARAD,SIMAND,https://simand.ro,yes,200
+ALBA,LOPADEA NOUA,https://www.primarialopadeanoua.ro,no,dns_failed_real
+ALBA,BUCIUM,https://primariabucium.ro,no,dns_failed_real
+ALBA,HOREA,http://primariahorea.ro,no,dns_failed_real
+ALBA,CRICAU,http://www.comunacricau.ro,no,dns_failed_real
+ARAD,SIRIA,https://primariasiria.ro,yes,200
+ARAD,SINTEA MARE,https://sintea-mare.ro,yes,200
+ARAD,USUSAU,http://www.comunaususau.ro,yes,200
+ARAD,SOCODOR,https://socodor.ro,yes,200
+ARAD,VARADIA DE MURES,https://varadia-de-mures.ro,yes,200
+ARAD,GURAHONT,https://www.gurahont.ro,no,dns_failed_real
+ARAD,VINGA,https://primaria-vinga.ro,yes,200
+ARAD,ZABRANI,https://www.primaria-zabrani.ro,yes,200
+ARAD,VLADIMIRESCU,https://www.primariavladimirescu.ro,yes,200
+ARAD,SISTAROVAT,https://www.primariasistarovat.ro,yes,200
+ARAD,VARFURILE,http://www.primariavirfurile.ro,yes,200
+ARAD,TAUT,https://www.primariataut.ro,yes,200
+ARAD,PLESCUTA,http://www.plescuta.ro,no,dns_failed_real
+ARAD,ZERIND,https://primariazerind.ro,yes,200
+ARGES,BRADU,http://www.comunabradu.ro,yes,200
+ARAD,ZIMANDU NOU,https://zimandunou.ro,yes,200
+ARGES,ORAS TOPOLOVENI,http://www.topoloveni.ro,yes,200
+ARAD,SOFRONEA,https://www.primaria-sofronea.ro,no,dns_failed_real
+ARGES,BUZOESTI,https://N/A,no,fara url
+ARGES,ANINOASA,https://comuna-aninoasa.ro,no,dns_failed_real
+ARGES,BOTESTI,http://www.comunabotestiarges.ro/home,no,dns_failed_real
+ARGES,BOGATI,https://comunabogati.ro,no,dns_failed_real
+ARGES,MUSATESTI,https://primariamusatesti.ro/ro,yes,404
+ARGES,CALINESTI,http://www.primariacalinesti.ro,no,dns_failed_real
+ARGES,CATEASCA,http://primariacateasca.ro,no,dns_failed_real
+ARGES,UNGHENI,https://N/A,no,fara url
+ARGES,BASCOV,http://www.primariabascov.ro/portal/arges/bascov/beta/portal.nsf/Index/$First?OpenDocument,yes,404
+ARGES,CIOMAGESTI,http://primaria-ciomagesti.ro,no,dns_failed_real
+BACAU,ASAU,https://comunaasau.ro/ro,yes,404
+ARGES,MORARESTI,http://primariamoraresti.ro,no,dns_failed_real
+BACAU,DAMIENESTI,https://www.primariadamienesti.judetbacau.ro,no,URLError: <urlopen error [SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of 
+BACAU,BERESTI-TAZLAU,http://www.comunaberestitazlau.ro,no,dns_failed_real
+ARGES,MUNICIPIUL CURTEA DE ARGES,http://www.primariacurteadearges.ro/portal/arges/cda/portalcda.nsf,yes,404
+BACAU,HORGESTI,http://www.comunahorgesti.ro,no,dns_failed_real
+BACAU,ITESTI,http://www.primariaitestibacau.ro,no,dns_failed_real
+ARAD,ZADARENI,https://primariazadareni.ro,yes,200
+ARGES,BUDEASA,https://www.comunabudeasa.ro,yes,200
+BACAU,NEGRI,http://www.comunanegri.ro,no,dns_failed_real
+BACAU,PODU TURCULUI,https://comunapoduturcului.ro,no,dns_failed_real
+ARGES,COSESTI,http://comunacosesti.ro,yes,200
+BIHOR,MUNICIPIUL ORADEA,http://www.oradea.ro,yes,200
+BIHOR,ORAS ALESD,https://www.alesd-bihor.ro,yes,200
+ARGES,POIANA LACULUI,https://www.poianalacului.ro,yes,200
+BIHOR,ORAS NUCET,http://www.primarianucet.ro,yes,200
+BIHOR,ORAS SACUENI,https://www.sacueni.ro,yes,200
+BACAU,STANISESTI,https://primariastanisesti.ro,yes,200
+BIHOR,ORAS VALEA LUI MIHAI,http://www.valealuimihai.ro,yes,200
+BIHOR,BIHARIA,https://e.comunabiharia.ro,no,dns_failed_real
+BIHOR,ABRAMUT,http://comuna-abramut.ro,no,dns_failed_real
+BIHOR,MUNICIPIUL BEIUS,https://www.primariabeius.ro,no,URLError: <urlopen error [SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of 
+BIHOR,CHISLAZ,http://chislaz.ro,yes,200
+BIHOR,CIUHOI,https://www.saniob.ro,yes,200
+BIHOR,CABESTI,https://cabesti-bh.ro,no,dns_failed_real
+BIHOR,CAMPANI,http://www.primariacomuneicimpani.ro,no,dns_failed_real
+BIHOR,BOROD,https://www.comunaborod.ro,no,dns_failed_real
+BIHOR,CEFA,https://e.cefa-bh.ro,no,dns_failed_real
+BIHOR,CURATELE,https://e.curatele.ro,no,dns_failed_real
+BIHOR,DRAGESTI,https://e.primariadragesti.ro,no,dns_failed_real
+BIHOR,FINIS,http://www.primariafinis.bihor.ro,no,dns_failed_real
+BIHOR,HIDISELU DE SUS,http://www.primaria-hidiseludesus.ro,no,dns_failed_real
+BIHOR,INEU,https://e.ineu-bh.ro,no,dns_failed_real
+BIHOR,LAZURI DE BEIUS,https://e.lazuridebeius.ro,no,dns_failed_real
+BIHOR,MADARAS,https://e.madaras-bh.ro,no,dns_failed_real
+BIHOR,HOLOD,https://e.holod.ro,no,dns_failed_real
+BIHOR,COPACEL,http://www.copacel-bihor.ro,no,dns_failed_real
+BIHOR,PALEU,https://e.paleu.ro,no,dns_failed_real
+BIHOR,LUNCA,https://www.comunaluncabh.ro,no,dns_failed_real
+BIHOR,POMEZEU,http://www.pomezeu.ro,no,dns_failed_real
+BIHOR,POPESTI,http://comunapopesti-bh.ro,no,dns_failed_real
+BIHOR,RABAGANI,http://rabagani.ro,no,dns_failed_real
+BIHOR,ROSIA,https://e.comunarosiabihor.ro,no,dns_failed_real
+BIHOR,SANNICOLAU ROMAN,http://e.sinnicolauroman.ro,no,dns_failed_real
+BIHOR,TARCEA,https://www.tarcea.ro,yes,200
+BIHOR,SARBI,http://www.primariasarbi.ro,no,dns_failed_real
+BIHOR,SINTEU,https://www.primariasinteu.bihor.ro,no,dns_failed_real
+BIHOR,SUNCUIUS,http://suncuius-bihor.ro,no,dns_failed_real
+BIHOR,SPINUS,http://www.primaria-spinus.ro,no,dns_failed_real
+BIHOR,TULCA,http://www.primariatulca.bihor.ro,no,dns_failed_real
+BACAU,PLOPANA,http://www.comunaplopana.ro,yes,200
+BIHOR,TOBOLIU,https://e.toboliu.ro,no,dns_failed_real
+ARAD,BUTENI,http://www.buteni.ro,no,TimeoutError: The read operation timed out
+BIHOR,VIISOARA,http://www.primariaviisoarabh.ro,no,dns_failed_real
+BISTRITA-NASAUD,MILAS,http://comunamilas.ro/wp,yes,404
+BISTRITA-NASAUD,GALATII BISTRITEI,http://www.galatiibistritei.ro,yes,200
+BISTRITA-NASAUD,ORAS SANGEORZ-BAI,http://www.singeorz-bai.ro,yes,404
+BISTRITA-NASAUD,ORAS NASAUD,http://www.primarianasaud.ro,yes,200
+BISTRITA-NASAUD,SILIVASU DE CIMPIE,https://N/A,no,fara url
+BISTRITA-NASAUD,TEACA,http://www.primariateaca.ro,yes,200
+BISTRITA-NASAUD,SPERMEZEU,https://N/A,no,fara url
+ALBA,OHABA,https://www.primariaohaba.ro,no,URLError: <urlopen error timed out>
+BIHOR,BUNTESTI,https://e.comunabuntesti.ro,no,dns_failed_real
+ARAD,HASMAS,https://comunahasmas.ro,no,URLError: <urlopen error timed out>
+BISTRITA-NASAUD,PARVA,http://www.primariaparva.ro,yes,403
+BISTRITA-NASAUD,MAGURA ILVEI,http://www.magurailvei.ro/ro,yes,404
+BISTRITA-NASAUD,PETRU RARES,https://www.primaria-petrurares.ro,yes,200
+BISTRITA-NASAUD,BUDESTI,https://comunabudesti.ro,no,dns_failed_real
+BISTRITA-NASAUD,RUNCU SALVEI,https://primariaruncusalvei.ro,yes,200
+BOTOSANI,BALUSENI,https://www.primariabaluseni.ro,no,URLError: <urlopen error [SSL: SSLV3_ALERT_HANDSHAKE_FAILURE] ssl/tls alert handshake fail
+BISTRITA-NASAUD,SANMIHAIU DE CIMPIE,https://www.sinmihaiudecimpie.ro,no,dns_failed_real
+BISTRITA-NASAUD,SIEU-MAGHERUS,http://www.sieu-magherus.ro,no,dns_failed_real
+BOTOSANI,MUNICIPIUL BOTOSANI,https://www.primariabt.ro,yes,200
+BOTOSANI,CORDARENI,http://cordareni.botosani.ro,no,dns_failed_real
+BOTOSANI,CRISTESTI,http://cristesti.botosani.ro,no,dns_failed_real
+BOTOSANI,ORAS FLAMANZI,http://www.primariaflamanzi.ro,yes,200
+BIHOR,CHERECHIU,http://cherechiu.ro,no,URLError: <urlopen error timed out>
+BIHOR,CAPALNA,http://www.primaria-capilnabh.ro,no,URLError: <urlopen error timed out>
+BIHOR,CIUMEGHIU,http://www.comunaciumeghiu.ro,no,URLError: <urlopen error timed out>
+BIHOR,BUDUSLAU,https://www.buduslau.ro,no,URLError: <urlopen error timed out>
+BIHOR,BULZ,https://www.comunabulz.ro,no,URLError: <urlopen error timed out>
+BIHOR,OLCEA,https://comunaolcea.ro,no,URLError: <urlopen error timed out>
+BOTOSANI,HUDESTI,https://primariahudesti.ro,no,dns_failed_real
+BIHOR,POCOLA,https://primariapocola.ro,no,URLError: <urlopen error timed out>
+BOTOSANI,MIHAI EMINESCU,http://mihaieminescu.botosani.ro,no,dns_failed_real
+BOTOSANI,RAUSENI,http://rauseni.botosani.ro,no,dns_failed_real
+BOTOSANI,MANOLEASA,https://N/A,no,fara url
+BOTOSANI,TUDORA,http://tudora.botosani.ro,no,dns_failed_real
+BOTOSANI,CRISTINESTI,https://www.primariacristinesti.ro,no,dns_failed_real
+BOTOSANI,RIPICENI,http://www.comunaripiceni.ro,no,dns_failed_real
+BIHOR,REMETEA,https://remetea-bh.ro,no,URLError: <urlopen error timed out>
+BOTOSANI,ROMA,https://roma.botosani.ro,no,dns_failed_real
+BRASOV,BUNESTI,https://www.primariabunesti.ro,yes,200
+BRASOV,CATA,https://www.comunacata.ro,yes,200
+BRASOV,DRAGUS,https://www.comunadragus.ro,yes,200
+BRASOV,HALCHIU,https://primariahalchiu.ro,yes,200
+BRASOV,CRIZBAV,http://new.comunacrizbav.ro,no,dns_failed_real
+BIHOR,SACADAT,https://sacadat.ro,no,URLError: <urlopen error timed out>
+BIHOR,HUSASAU DE TINCA,https://primariahusasaudetinca.ro,no,URLError: <urlopen error timed out>
+BIHOR,CURTUISENI,http://www.curtuiseni.ro,no,URLError: <urlopen error timed out>
+BRASOV,HARMAN,http://www.primariaharman.ro,yes,200
+BRASOV,HARSENI,http://www.primariaharseni.ro,yes,200
+BRASOV,HOGHIZ,https://www.comunahoghiz.ro,yes,200
+BRASOV,RACOS,https://www.comunaracos.ro,yes,200
+BIHOR,VARCIOROG,https://comunavirciorog.ro,no,URLError: <urlopen error timed out>
+BRASOV,UNGRA,https://www.comunaungra.ro,no,dns_failed_real
+BRAILA,DUDESTI,http://www.comunadudesti.ro,yes,403
+BRAILA,FRECATEI,http://www.primariafrecatei-braila.ro,no,dns_failed_real
+BRAILA,CIRESU,https://cjbraila.ro/dm/portal.nsf/AllByUNID/Prim%C4%83ria-Cire%C5%9Fu-00019506?OpenDocument,yes,404
+BRAILA,GEMENELE,https://cjbraila.ro/dm/portal.nsf/AllByUNID/Prim%C4%83ria-Gemenele-00019512?OpenDocument,yes,404
+BRASOV,TELIU,http://www.primariateliu.ro,yes,200
+BRAILA,VISANI,http://primariavisani.ro,no,dns_failed_real
+BRASOV,PARAU,https://comuna-parau.ro,no,URLError: <urlopen error [SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of 
+BIHOR,DOBRESTI,https://primdobresti.ro,no,URLError: <urlopen error timed out>
+BIHOR,DIOSIG,https://www.diosig.ro,no,URLError: <urlopen error timed out>
+BRAILA,TUDOR VLADIMIRESCU,https://www.primariatudorvladimirescu-br.ro,no,dns_failed_real
+BUZAU,SCORTOASA,https://primariascortoasa.ro,no,dns_failed_real
+BUZAU,BALTA ALBA,https://www.baltaalba.ro,yes,200
+BUZAU,BALACEANU,http://www.comunabalaceanu.ro,no,dns_failed_real
+BUZAU,CATINA,http://www.primaria-catina.ro,yes,200
+BUZAU,SAHATENI,https://N/A,no,fara url
+BUZAU,PIETROASELE,https://N/A,no,fara url
+BRASOV,LISA,http://www.primaria-lisa.ro,yes,200
+BRASOV,HOMOROD,https://www.homorod.ro,yes,200
+BUZAU,MAGURA,https://www.comunamagura.ro,yes,200
+BUZAU,RUSETU,https://www.primariarusetu.ro,yes,200
+BUZAU,ORAS PATARLAGELE,http://www.primariapatarlagele.ro,yes,503
+BUZAU,COLTI,http://primariacolti.ro,no,dns_failed_real
+BUZAU,PADINA,http://www.primariapadina.ro,yes,200
+BUZAU,ORAS POGOANELE,https://www.primariepogoanele.ro,yes,200
+BUZAU,AMARU,https://www.primariaamaru.ro,yes,200
+BUZAU,BECENI,http://primariabeceni.ro,yes,200
+BUZAU,MARGARITESTI,https://primariamargaritesti.ro,no,dns_failed_real
+BUZAU,PANATAU,http://primariapanatau.ro,no,dns_failed_real
+BUZAU,VINTILA VODA,https://vintila-voda.judet-buzau.ro,no,dns_failed_real
+BUZAU,ZARNESTI,https://primariazarnesti.judet-buzau.ro,no,dns_failed_real
+BUZAU,VERNESTI,https://primariavernesti.judet-buzau.ro,no,dns_failed_real
+CARAS-SEVERIN,BAUTAR,https://N/A,no,fara url
+CARAS-SEVERIN,BREBU NOU,https://N/A,no,fara url
+CARAS-SEVERIN,BREBU,https://www.comunabrebu.ro,no,dns_failed_real
+CARAS-SEVERIN,BOZOVICI,http://www.primariabozovici.ro,yes,403
+CARAS-SEVERIN,CIUCHICI,http://www.primaria-ciuchici.ro,no,dns_failed_real
+CARAS-SEVERIN,DALBOSET,https://N/A,no,fara url
+BUZAU,COSTESTI,https://www.costesti-buzau.ro,yes,200
+CARAS-SEVERIN,LUNCAVITA,http://www.luncavita.com,yes,404
+CARAS-SEVERIN,EZERIS,http://www.primariaezeris.ro,yes,403
+BUZAU,STALPU,https://primariastilpu.ro,no,dns_failed_real
+CARAS-SEVERIN,CICLOVA ROMANA,https://primariaciclovaromana.ro,no,dns_failed_real
+CARAS-SEVERIN,GORUIA,https://N/A,no,fara url
+CARAS-SEVERIN,LAPUSNICEL,https://N/A,no,fara url
+CARAS-SEVERIN,GRADINARI,https://www.gradinari-cs.ro,yes,200
+CARAS-SEVERIN,ORAS MOLDOVA NOUA,http://www.moldovanoua.com,yes,200
+BUZAU,PUIESTI,https://www.primariapuiesti-bz.ro,yes,200
+CARAS-SEVERIN,RUSCA MONTANA,https://N/A,no,fara url
+BUZAU,TOPLICENI,https://www.comunatopliceni.ro,yes,200
+CARAS-SEVERIN,FARLIUG,https://www.comuna-firliug.ro,yes,200
+CARAS-SEVERIN,SASCA MONTANA,https://N/A,no,fara url
+CARAS-SEVERIN,VALIUG,https://www.primaria-valiug.ro,yes,200
+CARAS-SEVERIN,ORAS BOCSA,https://www.orasulbocsa.ro,yes,200
+CARAS-SEVERIN,SICHEVITA,https://www.comunasichevita.ro,yes,200
+CARAS-SEVERIN,ORAS ORAVITA,http://www.primariaoravita.ro,yes,200
+CARAS-SEVERIN,POJEJENA,https://www.primariapojejena.ro,yes,200
+CALARASI,ORAS LEHLIU GARA,https://www.primarialehliugara.ro,yes,200
+CARAS-SEVERIN,ZAVOI,http://primariazavoi.ro,no,dns_failed_real
+CALARASI,ALEXANDRU ODOBESCU,http://primariaodobescu.ro,yes,200
+CALARASI,FUNDENI,https://www.primariafundeni.ro,yes,200
+CALARASI,STEFAN VODA,https://N/A,no,fara url
+CALARASI,MANASTIREA,http://primariamanastirea.ro,no,dns_failed_real
+BISTRITA-NASAUD,TIHA BARGAULUI,https://primariatihabargaului.ro,no,TimeoutError: The read operation timed out
+CALARASI,ULMU,http://ulmu.infoprimarie.ro,no,dns_failed_real
+CARAS-SEVERIN,OBREJA,http://primaria-obreja.ro,no,dns_failed_real
+CALARASI,TAMADAU MARE,http://www.primariatamadau.ro,no,dns_failed_real
+BRAILA,MUNICIPIUL BRAILA,http://www.primariabr.ro,no,URLError: <urlopen error timed out>
+CALARASI,CRIVAT,http://www.comunacrivat.ro,yes,200
+CALARASI,PERISORU,http://www.comunaperisoru.ro,yes,200
+CALARASI,SOLDANU,https://primaria-soldanu.ro,yes,200
+CLUJ,MUNICIPIUL CAMPIA TURZII,https://campiaturzii.ro,yes,200
+CLUJ,CATINA,https://www.primariacatina.ro,yes,200
+CALARASI,NANA,http://www.primarianana.ro,yes,200
+CLUJ,CORNESTI,http://primariacornesti.ro/ro,yes,404
+CALARASI,MODELU,http://www.primariamodelu.ro,yes,200
+CLUJ,FRATA,https://www.primariafrata.ro,yes,200
+CALARASI,VALEA ARGOVEI,http://comunavaleaargovei.ro,no,dns_failed_real
+CARAS-SEVERIN,SACU,https://www.comunasacu.ro,yes,200
+CALARASI,MUNICIPIUL OLTENITA,https://www.primariaoltenita.ro,yes,200
+CLUJ,JICHISU DE JOS,https://N/A,no,fara url
+CLUJ,MARGAU,https://N/A,no,fara url
+CLUJ,BELIS,https://primariabelis.ro,no,URLError: <urlopen error [SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of 
+CALARASI,VALCELELE,http://www.primariavilcelele.ro,no,dns_failed_real
+CLUJ,ICLOD,https://www.primariaiclod.ro,no,dns_failed_real
+CLUJ,PLOSCOS,http://www.primariaploscos.ro,no,dns_failed_real
+CLUJ,MOCIU,https://www.primariamociu.ro,yes,200
+CALARASI,NICOLAE BALCESCU,http://www.primarianicolaebalcescu.ro,no,URLError: <urlopen error [Errno 11001] getaddrinfo failed>
+CLUJ,VULTURENI,http://www.vultureni.ro,no,dns_failed_real
+CLUJ,SANPAUL,http://www.sinpaul.ro,no,dns_failed_real
+CLUJ,BOBALNA,https://www.primariabobilna.ro,yes,200
+CLUJ,TRITENII DE JOS,https://www.primariatriteniidejos.ro,yes,200
+CLUJ,TAGA,https://www.primariataga.ro,yes,200
+CLUJ,RISCA,https://www.primariarisca.ro,yes,200
+CLUJ,UNGURAS,https://www.comunaunguras.ro,no,URLError: <urlopen error [Errno 11001] getaddrinfo failed>
+CLUJ,SIC,http://www.szek-sic.ro,yes,404
+CLUJ,SANCRAIU,http://www.sancraiu.ro,yes,200
+CLUJ,BAISOARA,https://www.primariabaisoara.ro,yes,200
+CLUJ,PANTICEU,https://www.primaria-panticeu.ro/c,yes,404
+CONSTANTA,CUMPANA,https://primaria-cumpana.ro,yes,200
+CONSTANTA,CORBU,http://primariacorbu.ro,yes,200
+CONSTANTA,DOBROMIR,http://primariadobromir.yolasite.com,yes,200
+CLUJ,SANMARTIN,https://www.primariasinmartin.ro,yes,200
+CONSTANTA,COSTINESTI,https://primariacostinesti.ro,yes,200
+CONSTANTA,HORIA,https://www.primariahoriaconstanta.ro,no,dns_failed_real
+CLUJ,POIENI,https://www.primariapoieni.ro,yes,200
+CONSTANTA,CUZA VODA,https://www.primariacuzavodact.ro,no,URLError: <urlopen error [SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of 
+COVASNA,BATANI,https://nagybacon.ro/index.php/hu,yes,503
+CONSTANTA,DUMBRAVENI,https://www.primaria-dumbraveni.ro,yes,200
+CONSTANTA,CIOBANU,http://primaria-ciobanu.ro,no,dns_failed_real
+CONSTANTA,TOPALU,http://www.primariatopalu.ro,yes,200
+COVASNA,BIXAD,http://www.primariabixad.ro,no,dns_failed_real
+COVASNA,GHIDFALAU,https://primariaghidfalau.ro/index.php/ro,yes,503
+CLUJ,VALEA IERII,https://www.primariavaleaierii.ro,yes,200
+CONSTANTA,PANTELIMON,https://www.pantelimonct.ro,yes,427
+COVASNA,POIAN,https://kezdiszentkereszt.ro/index.php/ro,yes,503
+CONSTANTA,FANTANELE,https://www.primariafantanelect.ro,yes,200
+COVASNA,ORAS BARAOLT,https://primariabaraolt.ro/index.php/hu,yes,503
+COVASNA,CHICHIS,http://www.ro.chichis.ro,no,dns_failed_real
+COVASNA,CATALINA,http://www.szentkatolna.info/ro/index.php?page=contact#2,no,dns_failed_real
+CONSTANTA,MIHAI VITEAZU,http://www.primaria-mihaiviteazu.ro/index.html,yes,404
+COVASNA,BRETCU,https://bretcu-bereck.ro/index.php/ro,yes,503
+COVASNA,ILIENI,https://ilieni.ro,yes,200
+COVASNA,ZAGON,https://comunazagon.info/index.php/ro,yes,503
+COVASNA,LEMNIA,http://www.lemnia.ro/ro/index.php#1,yes,410
+COVASNA,ZABALA,https://zabola.ro/index.php/ro,yes,503
+DAMBOVITA,ORAS PUCIOASA,https://www.primpuc.ro,yes,403
+COVASNA,TURIA,https://torja.info/index.php/ro,yes,503
+CONSTANTA,ORAS BANEASA,https://primaria-baneasa.ro,yes,200
+COVASNA,VALCELE,https://primariavalcele.ro/index.php/ro,yes,503
+COVASNA,MOACSA,http://www.moacsa.ro/moacsa,yes,200
+COVASNA,DOBARLAU,https://primariadobarlau.ro,no,dns_failed_real
+COVASNA,OZUN,http://ozun.ro/ozun/2009/08/12/uzon-3/?lang=ro,yes,200
+COVASNA,OJDULA,https://ozsdola.ro/index.php/ro,yes,200
+COVASNA,VALEA MARE,https://valeamare.info/index.php/ro,no,dns_failed_real
+DAMBOVITA,BALENI,https://www.primariabaleni.ro,yes,200
+DAMBOVITA,BILCIURESTI,http://primaria-bilciuresti.ro,yes,200
+DAMBOVITA,CREVEDIA,http://www.primariacrevedia.ro,yes,200
+DAMBOVITA,BEZDEAD,http://www.bezdead.ro,yes,200
+DAMBOVITA,BRANISTEA,http://primaria-branistea.ro,no,dns_failed_real
+DAMBOVITA,DRAGOMIRESTI,http://primaria-dragomiresti.ro,no,dns_failed_real
+DAMBOVITA,GLODENI,http://www.primaria-glodeni.ro/p/acasa_48.html,no,dns_failed_real
+COVASNA,MICFALAU,https://mikoujfalu.ro/index.php/hu,yes,503
+COVASNA,MERENI,https://kezdialmas.ro/index.php/hu,yes,200
+DAMBOVITA,COMISANI,https://www.comisani.ro,yes,200
+DAMBOVITA,MALU CU FLORI,http://primariamalucuflori.ro,no,dns_failed_real
+DAMBOVITA,MANESTI,http://www.primariamanesti.ro,no,dns_failed_real
+DAMBOVITA,IEDERA,https://sites.google.com/site/comunaiedera,yes,200
+CONSTANTA,TOPRAISAR,https://www.primaria-topraisar.ro,yes,200
+DAMBOVITA,I. L. CARAGIALE,https://www.primariacaragiale.ro,yes,200
+DAMBOVITA,MOGOSANI,http://mogosani.ro,yes,200
+DAMBOVITA,LUCIENI,http://primarialucieni.ro,yes,200
+DAMBOVITA,LUDESTI,https://primarialudesti.ro,yes,200
+DAMBOVITA,MATASARU,http://www.primariamatasarudb.ro,no,dns_failed_real
+DAMBOVITA,RUNCU,https://N/A,no,fara url
+DAMBOVITA,COSTESTII DIN VALE,http://primariacostestiidinvale.ro,no,dns_failed_real
+DAMBOVITA,RASCAETI,https://primaria-rascaeti.ro,no,dns_failed_real
+DAMBOVITA,MORTENI,http://primaria-morteni.ro/morteni,yes,404
+DOLJ,BUCOVAT,http://primaria-bucovat.ro/wp,yes,404
+DOLJ,BOTOSESTI-PAIA,https://N/A,no,fara url
+DAMBOVITA,SLOBOZIA MOARA,https://www.primariasloboziamoara.ro,no,dns_failed_real
+DAMBOVITA,PIETRARI,http://www.pietraridambovita.ro,no,dns_failed_real
+DAMBOVITA,VLADENI,http://primaria-vladeni.ro,no,dns_failed_real
+DOLJ,CETATE,http://www.primaria-cetate.ro/index.html,yes,404
+DOLJ,CARPEN,https://N/A,no,fara url
+DAMBOVITA,VALENI-DIMBOVITA,http://primaria-valeni-dambovita.ro,no,dns_failed_real
+DOLJ,BULZESTI,https://primariabulzesti.ro,no,dns_failed_real
+DOLJ,DIOSTI,https://N/A,no,fara url
+DAMBOVITA,VULCANA-BAI,http://www.vulcanabai.ro/SiteNou,yes,404
+DAMBOVITA,SELARU,http://comunaselaru.ro,yes,200
+DOLJ,CARAULA,https://primariacaraula.ro,no,dns_failed_real
+DOLJ,ARGETOAIA,http://primaria-argetoaia.ro,yes,200
+DOLJ,CERAT,https://primariacerat.ro,no,dns_failed_real
+DOLJ,DOBROTESTI,http://www.primariadobrotesti.ro,no,dns_failed_real
+DOLJ,GHERCESTI,http://www.primaria.ghercesti.ro,no,dns_failed_real
+DAMBOVITA,VIRFURI,https://www.primaria-varfuri.ro,yes,200
+DOLJ,GRECESTI,https://comunagrecesti.ro,no,dns_failed_real
+DOLJ,MAGLAVIT,http://maglavit.info.ro,no,dns_failed_real
+DOLJ,MURGASI,http://www.primaria.murgasi.ro,no,dns_failed_real
+DOLJ,SCAESTI,https://scaesti.info,no,dns_failed_real
+DOLJ,MARSANI,http://www.primaria-mirsani.ro,no,dns_failed_real
+DOLJ,ISALNITA,https://isalnita.ro,yes,200
+DOLJ,SEACA DE CAMP,http://www.seacadecamp-dolj.ro,no,dns_failed_real
+DOLJ,TESLUI,http://primaria-teslui.ro,yes,200
+DOLJ,TUGLUI,http://primaria-tuglui.ro/wp,yes,200
+DOLJ,TEASC,https://www.primariateasc.ro,no,dns_failed_real
+GALATI,MUNICIPIUL TECUCI,https://primariatecuci.ro,yes,200
+GALATI,ORAS BERESTI,https://www.orasulberesti.ro,yes,200
+DOLJ,SOPOT,http://primaria-sopot.ro/wp,yes,404
+GALATI,ORAS TARGU BUJOR,https://www.primariatgbujor.ro,yes,200
+DOLJ,GOICEA,http://www.primaria-goicea.ro,no,dns_failed_real
+DOLJ,URZICUTA,http://www.primaria-urzicuta.ro,no,dns_failed_real
+GALATI,COSTACHE NEGRI,http://primariacostachenegri.ro/index.php,yes,404
+GALATI,FOLTESTI,http://www.comunafoltesti.ro,yes,403
+GALATI,BARCEA,https://primaria-barcea.ro,yes,200
+GALATI,MUNICIPIUL GALATI,https://www.primariagalati.ro/portal/index.php,yes,404
+DOLJ,VARTOP,http://primaria-vartop.ro/wp,no,dns_failed_real
+GALATI,BRAHASESTI,https://primariabrahasesti.ro,yes,200
+DOLJ,VELA,http://vela-dolj.ro,no,dns_failed_real
+GALATI,BALABANESTI,https://www.comunabalabanesti.ro,yes,200
+DOLJ,OSTROVENI,https://comunaostroveni.ro,no,dns_failed_real
+DOLJ,LEU,http://www.primarialeu.ro,yes,200
+GALATI,BALASESTI,http://www.primariabalasesti.ro,no,dns_failed_real
+GALATI,PECHEA,https://www.pecheagalati.ro,no,dns_failed_real
+GALATI,TUDOR VLADIMIRESCU,https://www.tudor-vladimirescu.ro,yes,403
+GALATI,VARLEZI,https://N/A,no,fara url
+GALATI,INDEPENDENTA,http://www.primaria-independenta.ro,yes,403
+GALATI,RADESTI,http://www.radestigl.ro,no,dns_failed_real
+GALATI,SLOBOZIA CONACHI,http://primariaslobozia-conachi.ro,no,dns_failed_real
+GALATI,SMULTI,http://www.primaria-smulti.ro,no,dns_failed_real
+GALATI,CUZA VODA,https://cuzavoda-galati.ro,yes,200
+GALATI,SUCEVENI,http://www.primariasuceveni.ro,no,dns_failed_real
+GALATI,SUHURLUI,http://www.primariasuhurlui.ro,no,dns_failed_real
+DOLJ,SILISTEA CRUCII,http://www.comunasilisteacrucii.ro,yes,200
+GALATI,DRAGANESTI,https://primaria-draganesti.ro,yes,200
+GIURGIU,CLEJANI,https://N/A,no,fara url
+GIURGIU,COLIBASI,http://www.primariacolibasi.ro,no,dns_failed_real
+GIURGIU,ISVOARELE,https://N/A,no,fara url
+GIURGIU,OGREZENI,https://N/A,no,fara url
+GIURGIU,PRUNDU,https://N/A,no,fara url
+GIURGIU,GHIMPATI,http://www.primariaghimpati.ro,no,dns_failed_real
+GIURGIU,ULMI,https://N/A,no,fara url
+GIURGIU,VALEA DRAGULUI,https://N/A,no,fara url
+GIURGIU,GRADINARI,https://primariagradinari-gr.ro,no,dns_failed_real
+GIURGIU,HOTARELE,https://primariahotarele.ro,no,dns_failed_real
+GALATI,DRAGUSENI,http://www.dragusenigalati.ro,no,dns_failed_real
+GIURGIU,IEPURESTI,http://www.primariaiepuresti.ro,no,dns_failed_real
+GIURGIU,LETCA NOUA,https://www.comunaletcanoua.ro,no,URLError: <urlopen error [SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of 
+GIURGIU,MARSA,http://primariamirsa.ro,no,dns_failed_real
+GIURGIU,VANATORII MICI,http://www.primariavanatoriimici.ro,no,dns_failed_real
+GORJ,ORAS TURCENI,http://www.turceni.ro,no,dns_failed_real
+GIURGIU,STOENESTI,https://www.comunastoenesti.ro,no,URLError: <urlopen error [SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of 
+GORJ,BERLESTI,https://N/A,no,fara url
+GORJ,ALBENI,https://primariaalbeni.ro,no,dns_failed_real
+GORJ,BENGESTI-CIOCADIA,http://www.primariabengesti.ro,no,dns_failed_real
+GORJ,BOLBOSI,https://primariacomuneibolbosi.com,no,dns_failed_real
+GORJ,BRANESTI,http://www.branestigorj.ro,no,dns_failed_real
+CONSTANTA,CASTELU,http://www.primariacastelu.ro,no,URLError: <urlopen error timed out>
+GORJ,BUMBESTI-PITIC,http://primariabumbestipitic.ro,no,dns_failed_real
+GORJ,CALNIC,http://www.primariacilnic.ro/contact.php,no,dns_failed_real
+GORJ,FARCASESTI,http://www.primaria-farcasesti.ro,no,dns_failed_real
+GORJ,CATUNELE,http://www.primariacatunelegorj.ro/index.php/comuna-catunele,yes,200
+GORJ,BALANESTI,https://primariabalanesti.ro,yes,200
+GORJ,GODINESTI,http://www.primariagodinesti-gorj.ro,no,dns_failed_real
+GORJ,DRAGUTESTI,http://www.primariadragutesti.ro,no,dns_failed_real
+GORJ,BAIA DE FIER,http://www.primariabaiadefier.ro,no,URLError: <urlopen error [Errno 11001] getaddrinfo failed>
+GORJ,IONESTI,http://www.primariaionesti-gorj.ro,no,dns_failed_real
+GIURGIU,MALU,https://primaria-malu.ro,yes,200
+GORJ,SACELU,https://N/A,no,fara url
+GORJ,SAMARINESTI,https://N/A,no,fara url
+GIURGIU,IZVOARELE,http://www.primariaizvoarelegiurgiu.ro,yes,200
+GORJ,LICURICI,http://www.primarialicurici.ro,yes,200
+GORJ,CRASNA,https://crasnagorj.ro,yes,200
+GALATI,LIESTI,http://primaria-liesti.ro,yes,200
+GORJ,JUPANESTI,http://www.primariajupinesti.ro,yes,403
+GORJ,ORAS BUMBESTI-JIU,https://www.bumbesti-jiu.ro,yes,200
+GORJ,PLOPSORU,http://www.primariaplopsoru.ro,no,dns_failed_real
+HARGHITA,FELICENI,https://N/A,no,fara url
+GORJ,PADES,http://www.primaria-pades.ro,no,dns_failed_real
+HARGHITA,LAZAREA,https://www.lazarea.ro,yes,503
+HARGHITA,CIUCSANGEORGIU,https://www.csikszentgyorgy.eu,no,URLError: <urlopen error [SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of 
+HARGHITA,SACEL,https://N/A,no,fara url
+HARGHITA,CIUMANI,https://www.csomafalva.info,yes,500
+HARGHITA,SANCRAIENI,https://N/A,no,fara url
+GORJ,SLIVILESTI,http://www.primariaslivilesti.ro,no,dns_failed_real
+HARGHITA,SANMARTIN,https://csikszentmarton.ro/ro/acasa,yes,404
+HARGHITA,REMETEA,https://gyergyoremete.ro/ro_RO,yes,404
+HARGHITA,BRADESTI,http://www.fenyedkozseg.ro,yes,200
+HARGHITA,VARSAG,http://www.comunavarsag.ro/main,yes,404
+GORJ,STOINA,https://primariastoina.ro,no,dns_failed_real
+HARGHITA,AVRAMESTI,http://www.szentabraham.ro,yes,200
+HARGHITA,ULIES,http://www.comunaulies.ro,yes,200
+HARGHITA,CORUND,https://www.primariacorund.ro,no,URLError: <urlopen error [SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of 
+GORJ,LELESTI,https://www.primarialelesti.ro,yes,200
+HUNEDOARA,ORAS ANINOASA,https://orasulaninoasa.ro,yes,200
+HARGHITA,TOMESTI,https://www.csikszenttamas.ro/web/?lang=ro,yes,200
+HARGHITA,DARJIU,https://www.comunadirjiu.ro,no,dns_failed_real
+HARGHITA,ORAS BAILE TUSNAD,https://tusnadfurdo.info/ro,no,dns_failed_real
+HUNEDOARA,ORAS SIMERIA,http://www.primariasimeria.ro/default.aspx,yes,404
+HUNEDOARA,MUNICIPIUL VULCAN,http://www.e-vulcan.ro,yes,200
+HUNEDOARA,ORAS PETRILA,http://www.orasulpetrila.ro,yes,200
+HUNEDOARA,ORAS HATEG,https://primariehateg.ro,yes,200
+HUNEDOARA,LUNCA CERNII DE JOS,http://www.comuna-luncacerniidejos.ro,yes,200
+HUNEDOARA,HARAU,https://primariaharau.ro/harau/index.php/primariaharau,yes,404
+HUNEDOARA,BUCURESCI,https://www.primariabucuresci.ro,yes,200
+HARGHITA,SUSENI,http://www.suseni.ro/ro,yes,404
+HUNEDOARA,ILIA,https://primariailia.ro/ro,yes,404
+HUNEDOARA,TOMESTI,https://primariatomestihd.ro,yes,200
+HARGHITA,SARMAS,https://www.sarmas.ro,no,dns_failed_real
+HUNEDOARA,CERTEJU DE SUS,http://www.certejudesus.ro,yes,200
+HUNEDOARA,CERBAL,http://www.primariacerbal.ro,yes,200
+HUNEDOARA,CRISCIOR,http://www.comuna-criscior.ro,no,dns_failed_real
+HUNEDOARA,ORAS GEOAGIU,https://www.geoagiu.ro,yes,200
+HUNEDOARA,BULZESTII DE SUS,http://www.primariabulzestiidesus.ro,yes,200
+HUNEDOARA,RAU DE MORI,https://riu-de-mori.ro,no,dns_failed_real
+IALOMITA,JILAVELE,https://N/A,no,fara url
+IALOMITA,DRAGOESTI,http://www.comunadragoesti.ro,no,dns_failed_real
+HUNEDOARA,LUNCOIU DE JOS,http://www.luncoi.ro/primaria/primaria.php,no,dns_failed_real
+IALOMITA,PERIETI,http://primaria-perieti.ro,yes,200
+IALOMITA,SARATENI,http://www.primariasarateni.ro,yes,200
+IASI,MUNICIPIUL PASCANI,http://primariapascani.ro/primarie,yes,404
+IALOMITA,FACAENI,https://www.primariafacaeni.ro,no,dns_failed_real
+IALOMITA,VALEA CIORII,http://www.primariavaleaciorii.ro,yes,200
+IALOMITA,BARCANESTI,http://www.primariabarcanestiialomita.ro,no,dns_failed_real
+IALOMITA,VALEA MACRISULUI,http://www.valeamacrisului.ro,yes,200
+IASI,CUCUTENI,http://primariacucuteni.ro,yes,500
+IALOMITA,REVIGA,http://www.primariareviga.ro,no,dns_failed_real
+IASI,MUNICIPIUL IASI,http://www.primaria-iasi.ro,yes,200
+IASI,BRAESTI,https://primariabraesti.ro,yes,200
+IASI,ARONEANU,https://www.comunaaroneanu.ro,yes,200
+IASI,BALS,http://primariacomuneibals.ro,yes,200
+IASI,GOLAIESTI,https://N/A,no,fara url
+IASI,BUTEA,http://primariabutea.ro,yes,200
+IASI,BIVOLARI,http://comunabivolari.ro,yes,200
+IASI,ANDRIESENI,http://www.primariaandrieseni.ro,no,dns_failed_real
+IALOMITA,MUNICIPIUL FETESTI,https://www.primariafetesti.ro,yes,200
+IASI,LESPEZI,https://www.primarialespezi.ro,yes,404
+IASI,VALEA SEACA,https://www.valeaseaca.ro,yes,200
+IASI,BELCESTI,https://primaria.belcesti.ro,no,URLError: <urlopen error [SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of 
+IASI,SIRETEL,https://N/A,no,fara url
+IASI,COTNARI,http://www.primaria-cotnari.ro/contact.html,no,dns_failed_real
+HARGHITA,LUNCA DE SUS,http://gyimesfelsolok.ro,yes,200
+IASI,TUTORA,http://www.primariatutora.ro,yes,200
+IASI,CRISTESTI,https://www.comunacristesti.ro,yes,200
+IASI,DAGATA,http://www.primariadagita.ro,no,dns_failed_real
+IASI,VLADENI,https://N/A,no,fara url
+ILFOV,DARASTI-ILFOV,https://N/A,no,fara url
+IASI,SIPOTE,http://www.primariasipote.ro,yes,200
+ILFOV,GLINA,https://primaria-glina.ro,yes,200
+IASI,ROMANESTI,https://www.comuna-romanesti.ro,yes,200
+IASI,SCANTEIA,http://www.primariascinteia.ro,yes,200
+IASI,TATARUSI,https://www.tatarusi.ro,no,dns_failed_real
+IASI,SCHITU DUCA,http://www.primariaschituduca.ro,no,dns_failed_real
+ILFOV,PERIS,http://www.primaria-peris.ro,yes,200
+MARAMURES,ORAS SOMCUTA MARE,https://www.somcutamare.ro,yes,200
+IASI,VICTORIA,https://newsite.comunavictoria.ro,no,dns_failed_real
+MARAMURES,ASUAJU DE SUS,https://www.comunaasuajudesus.ro/index.php/ro,yes,404
+ILFOV,MOGOSOAIA,https://primaria.mogosoaia.ro,yes,200
+IASI,RUGINOASA,http://primaria-ruginoasa.ro,no,dns_failed_real
+MARAMURES,CAMPULUNG LA TISA,https://N/A,no,fara url
+ILFOV,DASCALU,https://comunadascalu.ro,yes,200
+MARAMURES,CUPSENI,https://N/A,no,fara url
+ILFOV,SNAGOV,https://www.primaria-snagov.ro,yes,200
+MARAMURES,ONCESTI,https://www.primariaoncesti.ro,yes,200
+MARAMURES,BAIUT,https://www.comunabaiut.ro/ari2_364-contact.html,yes,404
+ILFOV,TUNARI,https://www.primaria-tunari.ro,yes,200
+MARAMURES,REMETI,https://N/A,no,fara url
+MARAMURES,ORAS VISEU DE SUS,https://www.viseudesus.ro,no,URLError: <urlopen error [SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of 
+MARAMURES,RUSCOVA,https://N/A,no,fara url
+MARAMURES,VADU IZEI,https://N/A,no,fara url
+MARAMURES,VIMA MICA,https://N/A,no,fara url
+MARAMURES,IEUD,https://N/A,no,fara url
+MEHEDINTI,BALA,http://www.primariacomuneibala.ro,yes,403
+MARAMURES,BISTRA,https://www.primariabistra.ro,no,dns_failed_real
+MEHEDINTI,BALACITA,https://N/A,no,fara url
+MARAMURES,COAS,https://www.primariacoas.ro,no,dns_failed_real
+MEHEDINTI,BALTA,https://N/A,no,fara url
+MEHEDINTI,BREZNITA-MOTRU,https://N/A,no,fara url
+MEHEDINTI,BROSTENI,https://N/A,no,fara url
+IASI,TODIRESTI,http://www.primariatodiresti.ro,yes,200
+MEHEDINTI,CAZANESTI,https://N/A,no,fara url
+MARAMURES,POIENILE DE SUB MUNTE,http://www.primariapoieniledesubmunte.ro,no,dns_failed_real
+MEHEDINTI,CIRESU,https://N/A,no,fara url
+MEHEDINTI,MUNICIPIUL ORSOVA,https://www.primariaorsova.ro,yes,200
+MEHEDINTI,CUJMIR,https://N/A,no,fara url
+MEHEDINTI,DARVARI,https://N/A,no,fara url
+MARAMURES,SACEL,http://www.primariasacel.ro,no,dns_failed_real
+MEHEDINTI,DUMBRAVA,https://N/A,no,fara url
+MEHEDINTI,ESELNITA,https://N/A,no,fara url
+MEHEDINTI,FLORESTI,https://N/A,no,fara url
+MARAMURES,SAPANTA,https://www.primaria-sapanta.com,no,dns_failed_real
+MEHEDINTI,GARLA MARE,https://N/A,no,fara url
+MEHEDINTI,GRECI,https://N/A,no,fara url
+MEHEDINTI,GROZESTI,https://N/A,no,fara url
+MEHEDINTI,GRUIA,https://N/A,no,fara url
+MEHEDINTI,HINOVA,https://N/A,no,fara url
+MEHEDINTI,HUSNICIOARA,https://N/A,no,fara url
+MEHEDINTI,ILOVAT,https://N/A,no,fara url
+MEHEDINTI,ISVERNA,https://N/A,no,fara url
+MEHEDINTI,IZVORU BARZII,https://N/A,no,fara url
+MEHEDINTI,LIVEZILE,https://N/A,no,fara url
+MEHEDINTI,OBARSIA DE CAMP,https://N/A,no,fara url
+MEHEDINTI,OBARSIA-CLOSANI,https://N/A,no,fara url
+MEHEDINTI,OPRISOR,https://N/A,no,fara url
+MEHEDINTI,PADINA,https://N/A,no,fara url
+MEHEDINTI,POROINA MARE,https://N/A,no,fara url
+MEHEDINTI,PRISTOL,https://N/A,no,fara url
+MEHEDINTI,SALCIA,https://N/A,no,fara url
+MEHEDINTI,SISESTI,https://N/A,no,fara url
+MEHEDINTI,STANGACEAUA,https://N/A,no,fara url
+MEHEDINTI,TAMNA,https://N/A,no,fara url
+MEHEDINTI,VANJULET,https://N/A,no,fara url
+MEHEDINTI,VLADAIA,https://N/A,no,fara url
+MEHEDINTI,VOLOIAC,https://N/A,no,fara url
+MEHEDINTI,VRATA,https://N/A,no,fara url
+MARAMURES,SIEU,http://primaria-sieu.ro,no,dns_failed_real
+MURES,ACATARI,https://www.acatari.ro,yes,200
+MARAMURES,RONA DE SUS,https://www.primariaronadesus.ro,yes,200
+MARAMURES,OARTA DE JOS,https://www.oartadejos.ro,yes,200
+MEHEDINTI,PUNGHINA,http://www.primariapunghina.ro,yes,200
+MEHEDINTI,GODEANU,https://primaria-godeanu.ro,no,dns_failed_real
+MEHEDINTI,JIANA,https://primaria-jiana.ro,no,dns_failed_real
+MURES,BALAUSERI,http://balauseri.ro,yes,200
+MEHEDINTI,MALOVAT,http://www.primariamalovat.ro,no,dns_failed_real
+MEHEDINTI,PODENI,http://comunapodenimh.ro,no,dns_failed_real
+MURES,BERENI,https://www.bereni.ro,yes,200
+MURES,ORAS SANGEORGIU DE PADURE,https://sgpadure.ro,yes,200
+MURES,BATOS,https://www.primariabatos.ro,yes,200
+MEHEDINTI,PRUNISOR,http://www.primariaprunisor.ro,no,dns_failed_real
+MURES,GREBENISU DE CAMPIE,https://www.grebenisudecimpie.ro,yes,200
+MURES,FARAGAU,https://N/A,no,fara url
+MEHEDINTI,ROGOVA,http://www.cetateaseverinului.ro,no,dns_failed_real
+MURES,FANTANELE,https://www.fantanele-ms.ro,yes,200
+MURES,CRACIUNESTI,https://www.comunacraciunesti.ro,yes,200
+MURES,BRANCOVENESTI,https://www.primariabrincovenesti.ro,yes,200
+MURES,BALA,https://www.primariabala.ro,yes,200
+MARAMURES,STRAMTURA,https://www.primariastramtura.ro,no,URLError: <urlopen error [SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of 
+MURES,GALESTI,https://galesti.ro/ro,yes,404
+MURES,MADARAS,https://N/A,no,fara url
+MURES,MICA,https://www.primaria-mica.ro,yes,200
+MURES,NEAUA,https://www.neaua.ro,yes,200
+MURES,GHINDARI,https://www.ghindari.ro/c,yes,404
+MURES,MIHESU DE CAMPIE,https://www.mihesudecimpie.ro,yes,200
+MURES,MAGHERANI,https://www.comunamagherani.ro,yes,200
+MURES,GURGHIU,https://www.comunagurghiu.ro,yes,200
+MURES,GHEORGHE DOJA,https://www.gheorghedoja.ro,yes,200
+MURES,GLODENI,http://www.primariaglodeni.ro/ro,yes,200
+MURES,PANET,http://panit.ro/ro/primaria-panet,yes,403
+MURES,RASTOLITA,https://www.comunarastolita.ro,yes,200
+MURES,EREMITU,https://eremitu.ro,yes,200
+MURES,VIISOARA,https://www.viisoarams.ro,yes,200
+MURES,SANCRAIU DE MURES,http://www.sancraiums.ro,yes,200
+MURES,RUSII-MUNTI,https://rusiimunti.com,yes,200
+NEAMT,ORAS ROZNOV,https://www.primariaroznov.ro,yes,200
+MURES,PASARENI,https://www.pasareni.ro,yes,200
+MURES,PAPIU ILARIAN,https://papiuilarian.ro,no,URLError: <urlopen error [SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of 
+MURES,VARGATA,http://ms.ovelo.ro/vargata,yes,200
+MURES,LUNCA,https://www.comunalunca.ro,yes,200
+NEAMT,BAHNA,http://www.bahna.ro,yes,200
+MURES,CHETANI,https://www.primariachetani.ro,yes,200
+NEAMT,BICAZU ARDELEAN,https://comunabicazuardelean.ro,yes,200
+NEAMT,BIRA,https://bira.ro/prima-pagina,yes,404
+NEAMT,BARGAUANI,http://www.comunabirgauani.ro,no,dns_failed_real
+NEAMT,DOBRENI,https://primariadobreni.ro,no,dns_failed_real
+NEAMT,ALEXANDRU CEL BUN,http://www.pacb.ro,no,dns_failed_real
+OLT,CRAMPOIA,http://www.primariacrimpoia.ro,yes,200
+NEAMT,ZANESTI,http://www.comunazanesti.ro,yes,200
+OLT,BARASTI,http://www.primariabarastiolt.ro,yes,200
+NEAMT,GARCINA,http://www.primariagircina.ro,no,dns_failed_real
+OLT,BARZA,http://www.primariabirzaolt.ro,yes,200
+OLT,BREBENI,http://www.primariabrebeni.ro,yes,200
+OLT,DOBROSLOVENI,http://www.dobrosloveni.ro,yes,200
+OLT,GOSTAVATU,http://www.primariagostavatu.ro,yes,200
+NEAMT,CEAHLAU,http://www.primariaceahlau.ro,yes,200
+NEAMT,TIMISESTI,http://comunatimisesti.eu,no,dns_failed_real
+OLT,GRADINILE,https://N/A,no,fara url
+OLT,CURTISOARA,http://www.primariacurtisoara.ro,yes,200
+OLT,ICOANA,http://www.primariaicoana.ro,yes,200
+OLT,GURA PADINII,https://N/A,no,fara url
+OLT,LELEASCA,http://www.primarialeleasca.ro,yes,200
+OLT,ORAS SCORNICESTI,https://primariascornicesti.ro,yes,500
+NEAMT,URECHENI,http://urecheni.ro,no,dns_failed_real
+OLT,FALCOIU,http://www.primariacomuneifalcoiu.ro,yes,200
+NEAMT,TRIFESTI,https://www.primariatrifesti.ro,yes,200
+OLT,MOVILENI,https://N/A,no,fara url
+OLT,NICOLAE TITULESCU,https://N/A,no,fara url
+OLT,BALDOVINESTI,https://baldovinesti.ro,no,dns_failed_real
+OLT,POBORU,http://www.primariapoboru.ro,yes,200
+OLT,RADOMIRESTI,http://www.primariaradomiresti.ro,yes,200
+OLT,SEACA,https://www.primariaseaca.ro,yes,200
+NEAMT,VALENI,http://valeni-neamt.ro,no,dns_failed_real
+OLT,PRISEACA,https://N/A,no,fara url
+OLT,TIA MARE,http://www.primariatiamare.ro,yes,200
+OLT,TRAIAN,https://traian.ghidulprimariilor.ro,yes,200
+OLT,STEFAN CEL MARE,https://N/A,no,fara url
+OLT,TUFENI,http://www.primariatufeni.ro,yes,200
+OLT,FARCASELE,http://www.primaria-farcasele.ro,yes,200
+OLT,VALEA MARE,http://www.primaria-valeamare.ro,yes,200
+OLT,VISINA,https://N/A,no,fara url
+OLT,DOBROTEASA,http://www.primariadobroteasa.ro,yes,200
+OLT,VITOMIRESTI,https://www.primariavitomiresti.ro,yes,200
+OLT,SERBANESTI,http://www.primariaserbanesti.ro,yes,200
+OLT,COLONESTI,http://www.primariacolonesti.ro,yes,200
+OLT,MARUNTEI,http://www.primariamaruntei.ro,yes,200
+PRAHOVA,APOSTOLACHE,https://www.cjph.ro/judetul-prahova/localitatile-judetului/48-primaria-apostolache,yes,404
+OLT,GROJDIBODU,http://www.primariagrojdibodu.ro,no,dns_failed_real
+OLT,PLESOIU,http://www.primariaplesoiu.ro,no,dns_failed_real
+OLT,VALENI,https://primariavaleniolt.ro,no,dns_failed_real
+PRAHOVA,ORAS BOLDESTI-SCAENI,http://pbs.infoprimarie.ro,no,dns_failed_real
+OLT,OBOGA,http://www.primariaoboga.ro,no,dns_failed_real
+PRAHOVA,FLORESTI,https://www.cjph.ro/judetul-prahova/localitatile-judetului/106-primaria-floresti,yes,404
+PRAHOVA,BANESTI,http://www.banestiprahova.ro,yes,200
+PRAHOVA,COCORASTII COLT,https://cocorastiicolt.europrahova.eu,no,dns_failed_real
+PRAHOVA,COLCEAG,http://colceag.infoprimarie.ro,no,dns_failed_real
+PRAHOVA,BATRANI,https://primariabatrani.ro,yes,200
+PRAHOVA,DUMBRAVA,http://dumbrava.infoprimarie.ro,no,dns_failed_real
+PRAHOVA,CEPTURA,http://comunaceptura.ro,yes,200
+PRAHOVA,BLEJOI,http://www.primariablejoi.ro,yes,200
+PRAHOVA,PODENII NOI,https://www.cjph.ro/judetul-prahova/localitatile-judetului/128-primaria-podenii-noi,yes,404
+PRAHOVA,FANTANELE,http://fintinele.infoprimarie.ro,no,dns_failed_real
+PRAHOVA,SECARIA,https://www.cjph.ro/judetul-prahova/localitatile-judetului/144-primaria-secaria,yes,404
+PRAHOVA,ARICESTII ZELETIN,http://www.primariaaricesti.ro,yes,200
+PRAHOVA,BABA ANA,https://www.primariababaana.ro,yes,200
+PRAHOVA,JUGURENI,https://www.primariajugureni.ro,yes,200
+PRAHOVA,BALTA DOAMNEI,https://baltadoamnei.europrahova.eu,no,dns_failed_real
+PRAHOVA,IZVOARELE,http://www.izvoarele-ph.ro,yes,200
+PRAHOVA,LIPANESTI,https://www.lipanesti.ro,yes,200
+PRAHOVA,CERASU,https://www.primariacerasu.ro,yes,200
+SATU MARE,CEHAL,https://N/A,no,fara url
+SATU MARE,CAUAS,https://N/A,no,fara url
+SATU MARE,SAUCA,https://N/A,no,fara url
+SATU MARE,DOBA,http://www.primariadoba.ro,yes,200
+PRAHOVA,PACURETI,http://comunapacureti.ro,no,dns_failed_real
+PRAHOVA,CHIOJDEANCA,http://chiojdeanca.infoprimarie.ro,no,dns_failed_real
+PRAHOVA,SALCIILE,https://salciile.informare.ro,no,dns_failed_real
+PRAHOVA,SCORTENI,http://www.primariascorteni.ro,no,dns_failed_real
+SATU MARE,GHERTA MICA,https://www.primariaghertamica.ro,yes,200
+SATU MARE,ODOREU,https://www.odoreu.ro,yes,200
+SATU MARE,VAMA,https://vama-sm.ro,no,RemoteDisconnected: Remote end closed connection without response
+SATU MARE,TARSOLT,https://primariatarsolt.ro,yes,200
+IASI,ERBICENI,http://primariaerbiceni.ro,no,URLError: <urlopen error timed out>
+SATU MARE,VIILE SATU MARE,http://viilesatumare.ro,yes,200
+SATU MARE,URZICENI,https://www.comunaurziceni.ro,yes,200
+SALAJ,ALMASU,https://www.facebook.com/pages/category/Public-Service/Primaria-Almasu-113294830312763,yes,400
+SATU MARE,PAULESTI,https://paulestism.ro,yes,200
+SALAJ,GALGAU,https://www.primariagilgau.ro,yes,200
+SALAJ,BALAN,https://primariabalan.ro/site,yes,404
+SALAJ,BENESAT,http://comunabenesat.ro,yes,200
+SATU MARE,BERVENI,http://www.berveni.eu,no,dns_failed_real
+SATU MARE,TURT,https://www.primariaturt.ro,yes,200
+SALAJ,AGRIJ,https://www.comunaagrij.ro,no,dns_failed_real
+SALAJ,FILDU DE JOS,https://www.primariafildudejos.ro,no,RemoteDisconnected: Remote end closed connection without response
+SALAJ,BANISOR,https://www.primariabanisor.ro,yes,200
+SALAJ,SAG,https://www.primariasig.ro,yes,200
+SALAJ,BABENI,http://comunababenisalaj.ro,no,dns_failed_real
+SALAJ,MESESENII DE JOS,https://www.meseseniidejos.ro,yes,200
+SATU MARE,MICULA,https://comunamicula.ro,yes,200
+SALAJ,BOCSA,https://www.comunabocsa.ro,yes,200
+SALAJ,ZIMBOR,https://N/A,no,fara url
+SALAJ,CUZAPLAC,https://N/A,no,fara url
+SALAJ,CHIESD,http://www.primariachiesd.ro,no,dns_failed_real
+SALAJ,SARMASAG,https://www.sarmasag.ro/ro/home.html,yes,404
+SALAJ,CRISTOLT,https://www.comunacristolt.ro,yes,200
+SALAJ,ZALHA,https://www.comunazalha.ro,yes,200
+SALAJ,SOMES-ODORHEI,https://www.comunasomesodorhei.ro,yes,200
+SIBIU,MUNICIPIUL SIBIU,https://www.sibiu.ro,yes,200
+SALAJ,BOBOTA,http://www.primariabobota.ro,yes,200
+SUCEAVA,ADANCATA,https://N/A,no,fara url
+SALAJ,LETCA,http://comuna-letca.ro,no,dns_failed_real
+SUCEAVA,MUNICIPIUL RADAUTI,https://primariaradauti.ro,yes,200
+SIBIU,CHIRPAR,https://chirpar.ro,yes,200
+SIBIU,ORAS AVRIG,https://primaria-avrig.ro,yes,200
+SIBIU,ORAS AGNITA,https://primaria-agnita.ro,yes,200
+SUCEAVA,ORAS CAJVANA,https://www.cajvana.ro,yes,200
+SALAJ,PERICEI,http://comunapericei.ro,no,dns_failed_real
+SIBIU,SADU,https://www.sadu.ro,yes,200
+SUCEAVA,ORAS DOLHASCA,https://primariadolhasca.ro,yes,200
+SIBIU,TILISCA,https://www.comunatilisca.ro,yes,200
+SUCEAVA,BOTOSANA,https://N/A,no,fara url
+SALAJ,VARSOLT,http://virsolt.ro,no,dns_failed_real
+SIBIU,TURNU ROSU,https://primariaturnurosu.ro,yes,200
+SUCEAVA,BUNESTI,https://N/A,no,fara url
+SUCEAVA,DRAGOIESTI,https://N/A,no,fara url
+SUCEAVA,CARLIBABA,http://www.primariacirlibaba.ro,yes,200
+SUCEAVA,DUMBRAVENI,https://www.comuna-dumbraveni.ro,yes,200
+SUCEAVA,ORAS LITENI,https://www.primaria-liteni.ro,yes,200
+SUCEAVA,ORAS MILISAUTI,https://primariamilisauti.ro,yes,200
+SUCEAVA,HANTESTI,https://N/A,no,fara url
+SUCEAVA,HORODNIC DE JOS,http://horodnicdejos.ro,yes,200
+SUCEAVA,IASLOVAT,http://www.comunaiaslovat.ro,yes,403
+SUCEAVA,CACICA,https://www.comuna-cacica.ro,yes,200
+SUCEAVA,ORAS VICOVU DE SUS,https://www.primaria-vicovudesus.ro,yes,200
+SUCEAVA,SCHEIA,https://N/A,no,fara url
+SUCEAVA,SERBAUTI,https://N/A,no,fara url
+SUCEAVA,SIMINICEA,https://N/A,no,fara url
+SIBIU,TARNAVA,https://www.primariatirnava.ro,yes,200
+SUCEAVA,BERCHISESTI,https://comunaberchisesti.ro,yes,200
+TELEORMAN,BEUCA,https://N/A,no,fara url
+SUCEAVA,GRAMESTI,http://www.comunagramesti.ro,no,dns_failed_real
+SUCEAVA,CALAFINDESTI,https://www.comunacalafindestisv.ro,no,dns_failed_real
+TELEORMAN,BRAGADIRU,https://N/A,no,fara url
+SUCEAVA,BREAZA,http://www.comunabreaza.eu,no,dns_failed_real
+SUCEAVA,PALTINOASA,http://www.comunapaltinoasa.ro,no,dns_failed_real
+TELEORMAN,BRANCENI,http://www.primariabrinceni.ro,no,dns_failed_real
+SUCEAVA,VERESTI,http://www.eprimarii.ro/veresti,yes,404
+SUCEAVA,VATRA MOLDOVITEI,http://www.primariavatramoldovitei.ro,yes,200
+SUCEAVA,VICOVU DE JOS,https://www.primariavicovudejos.ro,yes,200
+TELEORMAN,BUJORU,http://www.bujoru.ro,no,dns_failed_real
+SUCEAVA,VAMA,https://www.comuna-vama.info,yes,200
+TELEORMAN,DIDESTI,https://N/A,no,fara url
+TELEORMAN,CALMATUIU,https://N/A,no,fara url
+TELEORMAN,CIOLANESTI,https://N/A,no,fara url
+TELEORMAN,CONTESTI,https://N/A,no,fara url
+TELEORMAN,CREVENICU,https://N/A,no,fara url
+TELEORMAN,COSMESTI,https://N/A,no,fara url
+TELEORMAN,CERVENIA,https://N/A,no,fara url
+TELEORMAN,BABAITA,http://www.primariababaitatr.ro,no,dns_failed_real
+SUCEAVA,ZAMOSTEA,http://www.eprimarii.ro/zamostea,yes,200
+SUCEAVA,TODIRESTI,http://www.comunatodiresti.ro,no,dns_failed_real
+TELEORMAN,MUNICIPIUL ALEXANDRIA,https://www.alexandria.ro,yes,200
+TELEORMAN,CALINESTI,http://www.calinestitr.ro,yes,200
+TELEORMAN,CRANGENI,http://www.comunacringeni.ro,no,dns_failed_real
+TELEORMAN,BUJORENI,http://www.comunabujoreni.ro,no,dns_failed_real
+TELEORMAN,DOBROTESTI,http://www.primaria-dobrotesti.ro,no,dns_failed_real
+TELEORMAN,ORBEASCA,http://primariaorbeasca.ro,yes,200
+TELEORMAN,NASTURELU,http://www.primarianasturelu.ro,no,dns_failed_real
+TELEORMAN,PERETU,https://primariaperetu.ro,no,dns_failed_real
+TELEORMAN,PIETROSANI,http://primariapietrosani.ro,no,dns_failed_real
+TELEORMAN,POENI,http://primaria-poeni.ro,no,dns_failed_real
+TELEORMAN,LUNCA,http://www.primariaonline.ro/judet-Teleorman/primarie-LUNCA,yes,200
+TELEORMAN,MARZANESTI,http://www.primariamarzanesti.ro,no,dns_failed_real
+TELEORMAN,LITA,http://primaria-lita.ro,yes,403
+TELEORMAN,NECSESTI,https://N/A,no,fara url
+TELEORMAN,OLTENI,https://N/A,no,fara url
+TELEORMAN,LISA,https://N/A,no,fara url
+TELEORMAN,GALATENI,https://N/A,no,fara url
+TELEORMAN,SCURTU MARE,https://N/A,no,fara url
+TELEORMAN,SARBENI,https://N/A,no,fara url
+TELEORMAN,SEGARCEA-VALE,https://N/A,no,fara url
+TELEORMAN,RASMIRESTI,https://N/A,no,fara url
+TELEORMAN,RADOIESTI,https://N/A,no,fara url
+TELEORMAN,PLOSCA,https://N/A,no,fara url
+TELEORMAN,SFINTESTI,https://N/A,no,fara url
+TELEORMAN,SLOBOZIA MANDRA,https://N/A,no,fara url
+TELEORMAN,STOROBANEASA,https://N/A,no,fara url
+TELEORMAN,TALPA,https://N/A,no,fara url
+TELEORMAN,TATARASTII DE JOS,https://N/A,no,fara url
+TIMIS,BECICHERECU MIC,http://becicherecu-mic.ro,yes,403
+TELEORMAN,UDA-CLOCOCIOV,https://N/A,no,fara url
+TELEORMAN,SALCIA,http://www.primariasalciatr.ro,no,dns_failed_real
+TELEORMAN,VARTOAPE,https://N/A,no,fara url
+SUCEAVA,VOLOVAT,https://www.comunavolovat.ro,yes,200
+TELEORMAN,SILISTEA,http://primariasilistea-tr.ro,no,dns_failed_real
+TELEORMAN,ISLAZ,http://islaztr.ro,no,dns_failed_real
+TIMIS,CRICIOVA,https://www.primariacriciova.ro,yes,200
+TELEORMAN,ZAMBREASCA,https://N/A,no,fara url
+TIMIS,BETHAUSEN,https://www.primariabethausen.ro,yes,200
+TELEORMAN,TATARASTII DE SUS,https://www.primariatatarastiidesus.ro,no,dns_failed_real
+TIMIS,COMLOSU MARE,http://www.comlosumare.ro,yes,403
+TIMIS,FOENI,https://www.primariafoenitm.ro,yes,200
+TIMIS,BALINT,https://www.primariabalint.ro,yes,200
+TIMIS,GIULVAZ,https://www.primariagiulvaz.ro,yes,200
+TIMIS,BRESTOVAT,http://www.brestovat.ro,no,dns_failed_real
+TIMIS,BARA,https://www.comunabara.ro,yes,200
+TIMIS,BANLOC,https://www.primaria-banloc.ro,yes,200
+SUCEAVA,ORAS SALCEA,http://www.primariasalcea.ro,yes,522
+TIMIS,BIRDA,https://www.birda.ro,yes,200
+TIMIS,CARPINIS,http://primariacarpinis.ro,no,dns_failed_real
+TIMIS,BOGDA,https://www.primariabogda.ro,yes,200
+TIMIS,IECEA MARE,https://www.primariaieceamare.ro,yes,200
+TIMIS,DUMBRAVITA,https://primaria-dumbravita.ro,yes,200
+TELEORMAN,MAGURA,http://www.primariemagura.ro,no,dns_failed_real
+TIMIS,MANASTIUR,https://www.primariamanastiur.ro,yes,200
+TIMIS,CHEVERESU MARE,http://primaria.cheveresumare.ro,no,dns_failed_real
+TIMIS,GIERA,http://www.comunagiera.ro,yes,200
+TIMIS,GAVOJDIA,https://www.comunagavojdia.ro,yes,200
+TIMIS,MUNICIPIUL LUGOJ,https://www.primarialugoj.ro,yes,200
+TIMIS,MOSNITA NOUA,https://mosnita.ro,yes,200
+TIMIS,REMETEA MARE,https://www.remeteamaretimis.ro,yes,200
+TIMIS,GHILAD,https://www.comunaghilad.ro,yes,200
+TIMIS,BARNA,https://www.primariabirna.ro,no,dns_failed_real
+TIMIS,STIUCA,https://www.primariastiuca.ro,yes,200
+TIMIS,TEREMIA MARE,http://www.primariateremiamare.ro,yes,200
+TIMIS,FARDEA,https://www.primariafirdea.ro,no,dns_failed_real
+TIMIS,MORAVITA,https://comunamoravita.ro,yes,200
+TIMIS,PARTA,http://www.comunaparta.ro,no,dns_failed_real
+TIMIS,SECAS,https://www.primariasecas.ro,yes,200
+TIMIS,PESAC,https://www.primariapesac.ro,yes,200
+TIMIS,PERIAM,https://primatimperiam.ro,no,dns_failed_real
+TIMIS,SANANDREI,https://www.primaria-sinandrei.ro,no,URLError: <urlopen error [SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of 
+TIMIS,TOMNATIC,http://www.primariatomnatic.ro,no,dns_failed_real
+TIMIS,SANPETRU MARE,https://www.primariasanpetrumare.ro,yes,200
+TIMIS,NADRAG,http://primarianadrag.ro,yes,200
+TIMIS,TRAIAN VUIA,http://comunatraianvuia.ro,no,dns_failed_real
+TIMIS,PADURENI,https://www.comunapadureni.ro,no,dns_failed_real
+TIMIS,JEBEL,https://www.primariajebel.ro,yes,200
+TULCEA,MALIUC,https://www.comuna-maliuc.ro,yes,200
+TULCEA,TURCOAIA,https://www.primaria-turcoaia.ro,yes,200
+TULCEA,CEATALCHIOI,https://www.primariaceatalchioi.ro,no,dns_failed_real
+VASLUI,BACESTI,http://www.comunabacesti.ro,yes,200
+VASLUI,MUNICIPIUL BARLAD,http://www.primariabarlad.ro,yes,500
+VASLUI,ARSURA,https://www.comuna-arsura.ro,yes,200
+TULCEA,SOMOVA,https://www.comunasomova.ro,no,dns_failed_real
+TULCEA,SMARDAN,https://primariasmirdan.ro,no,dns_failed_real
+VASLUI,BALTENI,https://www.comunabaltenivs.ro,yes,200
+VASLUI,CODAESTI,https://www.primariacodaesti.ro,yes,200
+TULCEA,SLAVA CERCHEZA,https://www.primariaslavacercheza.ro,no,dns_failed_real
+VASLUI,BLAGESTI,http://www.comuna-blagesti.ro,no,dns_failed_real
+TULCEA,STEJARU,https://www.primaria-stejaru.ro,yes,200
+VASLUI,BOGDANITA,https://www.bogdanita.ro,yes,200
+SATU MARE,BARSAU,https://comunabarsau.ro,no,URLError: <urlopen error timed out>
+VASLUI,BANCA,http://comunabanca.ro,yes,200
+VASLUI,DRANCENI,https://primariadrinceni.ro,no,dns_failed_real
+VALCEA,ORAS HOREZU,http://www.orasul-horezu.ro/home,yes,404
+VALCEA,LALOSU,https://N/A,no,fara url
+VASLUI,GARCENI,https://www.primariagirceni.ro,no,dns_failed_real
+VALCEA,GALICEA,https://primariagalicea-valcea.ro,yes,200
+VASLUI,MUNICIPIUL VASLUI,https://www.primariavs.ro,yes,200
+VASLUI,COSTESTI,http://www.comunacostestivs.ro,no,dns_failed_real
+VASLUI,SULETEA,https://www.suletea.ro,no,URLError: <urlopen error [SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of 
+VASLUI,PADURENI,https://www.comuna-padureni.ro,no,dns_failed_real
+VALCEA,GHIOROIU,http://www.ghioroiu.ro,yes,200
+VALCEA,GUSOENI,http://www.gusoeni.ro,yes,200
+VALCEA,GOLESTI,http://www.comunagolesti.ro,yes,200
+VASLUI,PUIESTI,https://www.comuna-puiesti-vaslui.ro,no,dns_failed_real
+VALCEA,OLANU,https://N/A,no,fara url
+VALCEA,LACUSTENI,https://lacusteni.ro,yes,200
+VALCEA,LADESTI,https://primaria-ladesti.ro,yes,200
+VALCEA,GLAVILE,https://www.glavile.ro,yes,200
+VALCEA,SINESTI,https://N/A,no,fara url
+VALCEA,STANESTI,https://N/A,no,fara url
+VALCEA,MACIUCA,https://www.primaria-maciuca.ro,yes,200
+VALCEA,ORAS OCNELE MARI,https://ocne.ro,yes,200
+VALCEA,ALUNU,https://www.alunu.ro,yes,200
+VALCEA,BARBATESTI,https://primariabarbatesti.ro/2018/primaria,yes,404
+VALCEA,FRANCESTI,http://primariafrancesti-valcea.ro,yes,200
+VALCEA,ORLESTI,http://primariaorlesti.ro,yes,200
+VALCEA,PAUSESTI,https://www.comunapausesti-otasau.ro,yes,200
+VALCEA,DRAGOESTI,http://www.primariadragoesti-valcea.ro,yes,403
+VALCEA,IONESTI,https://comunaionestivalcea.ro,yes,200
+VALCEA,OTESANI,http://www.primariaotesani.ro,no,dns_failed_real
+VALCEA,RUNCU,http://primariaruncu-vl.ro,no,dns_failed_real
+VRANCEA,RUGINESTI,https://www.ruginesti.ro,yes,200
+VALCEA,SCUNDU,https://www.primariascundu.ro,no,dns_failed_real
+VRANCEA,SLOBOZIA CIORASTI,http://www.primariasloboziaciorasti.ro,yes,200
+VRANCEA,SLOBOZIA BRADULUI,https://www.slobozia-bradului.primarievrancea.ro,yes,200
+VALCEA,FARTATESTI,http://comuna-fartatesti.ro,yes,200
+BUCURESTI,BUCURESTI SECTORUL 3,https://www.primarie3.ro,yes,200
+BUCURESTI,BUCURESTI SECTORUL 1,https://www.primariasector1.ro,yes,200
+VRANCEA,VRANCIOAIA,http://www.vrincioaia.ro,yes,404
+VALCEA,VALEA MARE,http://www.primariavaleamare-valcea.ro,no,dns_failed_real
+VRANCEA,JITIA,http://jitia.infoprimarie.ro,no,dns_failed_real
+BUCURESTI,BUCURESTI SECTORUL 5,http://www.sector5.ro,yes,200
+VRANCEA,NARUJA,http://www.naruja.primarievn.ro,no,dns_failed_real
+VRANCEA,PLOSCUTENI,http://primariaploscuteni.ro,no,dns_failed_real
+TULCEA,VALEA TEILOR,https://www.primaria-valea-teilor.ro,yes,200

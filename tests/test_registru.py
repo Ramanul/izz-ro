@@ -74,3 +74,114 @@ def test_scrierea_merge_cand_id_urile_sunt_unice(tmp_path, monkeypatch):
 def test_next_id_nu_intoarce_un_id_deja_luat():
     randuri = registru._read()
     assert registru._next_id(randuri) not in {r["id"] for r in randuri}
+
+
+# --- masuratoare fara fereastra (IZZ-0367 -> IZZ-0370) ---------------------------------
+#
+# A doua garda din fisierul asta nascuta dintr-o greseala care s-a intamplat, nu dintr-una
+# imaginata. Diferenta fata de prima: aici greseala e a sesiunii care scrie testul.
+
+
+def _masur(id_: str, dovada: str) -> dict:
+    r = _rand(id_)
+    r.update({"zona": "masuratoare", "dovada": dovada})
+    return r
+
+
+def test_registrul_livrat_nu_are_masuratoare_fara_fereastra():
+    assert registru.masuratoare_fara_fereastra(registru._read()) == []
+
+
+def test_garda_prinde_cifra_fara_fereastra():
+    """NEGATIV: exact forma lui IZZ-0362 — o cifra si o marja, fara sa spuna pe ce interval."""
+    incalcari = registru.masuratoare_fara_fereastra(
+        [_masur("IZZ-0400", "traficul masurat e ~2.900/zi, marja de 34x")])
+    assert len(incalcari) == 1 and "IZZ-0400" in incalcari[0]
+
+
+def test_o_data_in_dovada_e_de_ajuns_ca_sa_treaca():
+    assert registru.masuratoare_fara_fereastra(
+        [_masur("IZZ-0400", "7 zile pana la 2026-09-11, run 34031862325: 20.092 cereri")]) == []
+
+
+def test_pragul_nu_cere_rescrierea_istoriei():
+    """Registrul e append-only (§21): garda incepe la prag, nu retroactiv."""
+    vechi = _masur(f"IZZ-{registru.PRAG_FEREASTRA - 1:04d}", "fara nicio data")
+    assert registru.masuratoare_fara_fereastra([vechi]) == []
+    nou = _masur(f"IZZ-{registru.PRAG_FEREASTRA:04d}", "fara nicio data")
+    assert len(registru.masuratoare_fara_fereastra([nou])) == 1
+
+
+def test_garda_nu_atinge_alte_zone():
+    """Ingust deliberat: o garda care se intinde peste tot produce zgomot, nu semnal."""
+    altele = [_rand("IZZ-0400"), {**_rand("IZZ-0401"), "zona": "infra", "dovada": "fara data"}]
+    assert registru.masuratoare_fara_fereastra(altele) == []
+
+
+def test_scrierea_refuza_o_masuratoare_fara_fereastra(tmp_path, monkeypatch):
+    """O garda pe care doar o poti apela nu apara nimic: trebuie legata de scriere."""
+    monkeypatch.setattr(registru, "PATH", str(tmp_path / "r.tsv"))
+    with pytest.raises(SystemExit, match="masuratoare fara fereastra"):
+        registru._write([_masur("IZZ-0400", "o cifra oarecare, fara interval")])
+    assert not os.path.exists(registru.PATH), "nu trebuie sa scrie nimic cand refuza"
+
+
+# --- coliziuni de ID intre sesiuni paralele ------------------------------------------
+#
+# DE CE (2026-09-14). `_next_id` citea doar working tree-ul, deci doua sesiuni pornite de pe
+# acelasi main alocau AMANDOUA acelasi ID. Garda `id_duplicate` verifica un singur fisier si
+# nu vedea nimic; la merge randurile sunt linii diferite, deci git le imbina curat si
+# duplicatul ateriza pe main in tacere. Apoi §20 (append-only) interzice rescrierea lui, si
+# renumerotarea rupe rebase-ul (IZZ-0375).
+#
+# Masurat de patru ori: IZZ-0327 (commit 76f0df0), IZZ-0321 (`masurat-fals`: „aloca un ID
+# liber" era fals — „liber" insemna „liber in working tree"), IZZ-0375 (consecinta), si
+# IZZ-0385, viu in PR #344 in timp ce scriu asta.
+
+def test_alocatorul_sare_peste_ID_uri_care_traiesc_pe_alt_ref():
+    """Proba pe repo-ul REAL: fara asta, reparatia ar fi doar o intentie."""
+    de_pe_refuri = registru.ids_din_toate_refurile()
+    if not de_pe_refuri:
+        pytest.skip("fara git sau fara refuri — alocatorul cade pe working tree, cum e scris")
+    urmatorul = int(registru._next_id(registru._read())[4:])
+    assert urmatorul > max(de_pe_refuri), (
+        f"urmatorul ID {urmatorul} nu depaseste maximul de pe refuri {max(de_pe_refuri)}"
+    )
+
+
+def test_garda_de_coliziune_vede_doua_titluri_pe_acelasi_id():
+    coliziuni = registru.coliziuni_intre_refuri({
+        "refs/A": {"IZZ-0001": "un lucru", "IZZ-0002": "acelasi peste tot"},
+        "refs/B": {"IZZ-0001": "cu totul altceva", "IZZ-0002": "acelasi peste tot"},
+    })
+    assert len(coliziuni) == 1 and coliziuni[0].startswith("IZZ-0001")
+
+
+def test_garda_de_coliziune_NU_confunda_o_editare_cu_o_coliziune():
+    """Acelasi rand cu titlu neschimbat e evolutie normala, nu doua decizii."""
+    assert registru.coliziuni_intre_refuri({
+        "refs/A": {"IZZ-0001": "un lucru"},
+        "refs/B": {"IZZ-0001": "un lucru"},
+    }) == []
+
+
+def test_parserul_de_titluri_ignora_liniile_care_nu_sunt_randuri():
+    text = "id\tdata\tzona\ttitlu\tstare\nIZZ-0001\t2026-01-01\tci\tTitlul\timplementat\nzgomot\n"
+    assert registru._titluri_pe_ref(text) == {"IZZ-0001": "Titlul"}
+
+
+@pytest.mark.stare_partajata
+def test_ramura_curenta_nu_ateriza_un_ID_dublat_pe_main():
+    """Verdictul depinde de origin/main, care se misca sub ramura — de aici marcajul.
+
+    Ingust deliberat la perechea HEAD-vs-baza: scanarea tuturor refurilor gaseste 29 de
+    coliziuni, aproape toate pe ramuri moarte care nu vor ateriza niciodata. O garda rosie
+    permanent e ignorata la fel de sigur ca una care nu poate pica (IZZ-0177).
+    """
+    if not registru.titluri_pe_refuri(("origin/main",)):
+        pytest.skip("origin/main nu e disponibil in acest checkout")
+    coliziuni = registru.coliziuni_cu_baza()
+    assert not coliziuni, (
+        "ramura asta ar ateriza un ID dublat pe main:\n  " + "\n  ".join(coliziuni)
+        + "\n  Renumeroteaza ACUM, aici: dupa merge registrul e append-only (§20)."
+    )

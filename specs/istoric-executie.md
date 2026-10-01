@@ -1984,9 +1984,10 @@ Contra-verificate cap-coada, ca sa nu fie re-masurate:
 - **Randare completa: 638 s, exit 0, 34.898 fisiere** (erau 23.961 pe 08-23). Randarea NU e
   stricata — fixtura taia la 600 s. De aici cele 28 de ERROR raportate ca „bug de randare".
 - **Ritm real de intrare: 822 articole/zi** (mediana pe 13 zile complete din `articles.json`).
-  Regim stabilizat la `ARTICLE_TTL_DAYS = 30`: ~24.660 articole → **~80.145 fisiere**, adica sub
-  bugetul de 90.000 din #209. Confirma independent cifra „~83.000" din STATE.md. Garda e
-  calibrata corect; NU o re-deschide fara o masuratoare noua.
+  Regim stabilizat la TTL-ul de atunci, 30 de zile: ~24.660 articole → **~80.145 fisiere**, adica
+  sub bugetul de 90.000 din #209. Confirma independent cifra „~83.000" din STATE.md. Garda era
+  calibrata corect pentru planul PAID; ambele cifre au cazut odata cu intoarcerea pe Free
+  (2026-09-09, `specs/cloudflare-free-2026-09.md`) — nu le cita ca actuale.
 - **#209 rulat cap-coada pe corpusul real:** exit 0, 654 s, **34.898 fisiere — identic cu
   baseline-ul**. Deci garda de buget e inerta la scara actuala, nu taie nicio imagine.
 - **`CLAUDE.md`: 23.920 / 24.576 octeti.** Au mai ramas 656. Urmatoarea regula adaugata acolo
@@ -1998,3 +1999,8 @@ Contra-verificate cap-coada, ca sa nu fie re-masurate:
   orice test-merge, altfel `git merge-base` da „no merge base" si triajul iese fals.
 - **`pytest`/`ruff` pot fi instalate izolat prin uv**, fara dependintele pipeline-ului: `pytest`
   exista ca binar dar `python3 -m pytest` esueaza. Verifica interpretorul, nu doar `which`.
+
+- **Nefolosit (`tools/nefolosit.py`, dosar sect. 4f)** — mutat din `STATE.md` pe 2026-09-04,
+  la plafonul de 40 de linii: `agents.py` STERS (`IZZ-0289`). Decizii proprietar:
+  `process_cluster` §10 (`IZZ-0294`), 272 KB orfane masurate dar necuratate (`IZZ-0301`),
+  §12 (`IZZ-0295`), F4 (`IZZ-0296`), Axa 3 (`IZZ-0297`), arhiva (`IZZ-0298`).

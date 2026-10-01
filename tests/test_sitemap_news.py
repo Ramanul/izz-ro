@@ -133,11 +133,25 @@ def test_robots_anunta_doar_sitemapurile_scrise(out):
 
 
 def test_robots_anunta_imaginile_cand_exista(out):
-    render._write_sitemap([_art(1, "stire", cover_url="https://izz.ro/media/x.webp")], now=NOW)
+    render._write_sitemap([_art(1, "stire", cover_url="https://izz.ro/media/x.webp",
+                                cover_propriu=True)], now=NOW)
     render._write_robots()
     robots = (out / "robots.txt").read_text(encoding="utf-8")
     assert f"Sitemap: {config.SITE['url']}/sitemap-images.xml\n" in robots
     assert os.path.isfile(os.path.join(str(out), "sitemap-images.xml"))
+
+
+def test_NEGATIV_coperta_de_categorie_nu_intra_in_sitemapul_de_imagini(out):
+    """Din 2026-09-09 articolele din afara ferestrei og impart coperta CATEGORIEI.
+
+    Aceeasi imagine declarata drept ilustratia a mii de pagini nu e un sitemap de imagini,
+    e o duplicare pe care Google o citeste ca atare. Marcajul `cover_propriu` e singurul
+    lucru care deosebeste cele doua cazuri, iar `cover_url` exista in amandoua.
+    """
+    render._write_sitemap([_art(1, "stire", cover_url="https://izz.ro/og/general.jpg")], now=NOW)
+    render._write_robots()
+    assert "sitemap-images.xml" not in (out / "robots.txt").read_text(encoding="utf-8")
+    assert not os.path.exists(os.path.join(str(out), "sitemap-images.xml"))
 
 
 def test_sitemapul_principal_ramane_fara_namespace_news(out):

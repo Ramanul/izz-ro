@@ -22,7 +22,11 @@ from generator import config  # noqa: E402
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 OUT = os.path.join(ROOT, "output")
-IMAGINI = {"art.jpg", "art.webp", "art-card.webp", "cover.jpg"}
+# Ce mai poate exista ca FISIER intr-un director de articol dupa 2026-09-09: coperta og a
+# ferestrei recente si fotografiile reale (Wikimedia/Commons). Arta generata se deseneaza in
+# pagina, deci `art-card.webp` a disparut, iar `art.jpg`/`art.webp` raman doar pentru
+# fotografii reale si pentru imaginile din date (`event_chart`).
+IMAGINI = {"art.jpg", "art.webp", "cover.jpg", "photo.jpg", "photo.webp"}
 
 
 def _slugs_de_articol() -> set[tuple[str, str]]:

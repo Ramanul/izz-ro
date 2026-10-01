@@ -1,0 +1,46 @@
+{#- Arta articolului, DESENATA IN PAGINA.
+
+    Pana pe 2026-09-09 aceleasi compozitii erau capturate cu Chromium in Actions, comise in
+    `media/` si copiate in `output/<cat>/<slug>/art.{jpg,webp}` — doua-trei fisiere si tot
+    atatea cereri HTTP per articol, ca sa transporte tipografie si geometrie. Pe Workers Free
+    (20.000 de fisiere/versiune) asta consuma singur 65% din plafon. Aici desenam direct.
+
+    Structura: `generator/htmlart.stil_inline()` da compozitia (`tpl`), paleta (`pal`), treapta
+    de marime a etichetei (`treapta`) si textele. Culorile si marimile stau in `static/styles.css`
+    (CLAUDE.md §8 — in template nu se hardcodeaza culori, font-size sau spacing).
+
+    `aria-hidden`: e decor generat din categorie si data, care sunt deja scrise in text pe
+    card si pe pagina. Anuntat la cititorul de ecran ar fi repetitie, nu informatie. -#}
+{% macro art(a, extra='') %}
+{%- set s = a.art_style %}{% if s %}{% set d = s.data -%}
+<div class="art art--{{ s.tpl }} art--p{{ s.pal }} art--t{{ s.treapta }}{% if extra %} {{ extra }}{% endif %}" aria-hidden="true">
+  {%- if s.tpl == 'editorial' %}
+  <div class="art-head"><span class="art-brand">izz.ro</span><span class="art-when">{% if d %}{{ d.wk }} {{ d.zi_n }} {{ d.luna }} {{ d.an }}{% else %}izz.ro{% endif %}</span></div>
+  <div class="art-rule"></div>
+  <div class="art-body"><p class="art-label">{{ s.eticheta }}</p>{% if s.sub %}<p class="art-subrow"><span class="art-tick"></span><span class="art-sub">{{ s.sub }}</span></p>{% endif %}</div>
+  <div class="art-ring"></div><div class="art-blob"></div>
+  <div class="art-foot"><span>Portalul știrilor tale</span><span>{{ s.sub }}</span></div>
+  {%- elif s.tpl == 'inversat' %}
+  <div class="art-frame"></div>
+  <div class="art-body"><p class="art-label">{{ s.eticheta }}</p><span class="art-tick"></span>{% if s.sub %}<p class="art-sub">{{ s.sub }}</p>{% endif %}</div>
+  <div class="art-diamond"></div>
+  {%- if d %}<div class="art-num"><span class="art-num-wk">{{ d.wk }}</span><span class="art-num-zi">{{ d.zi }}</span><span class="art-num-luna">{{ d.luna }}</span></div>{% endif %}
+  <span class="art-brand art-brand--jos">izz.ro</span>
+  {%- elif s.tpl == 'banda' %}
+  <div class="art-band"></div>
+  <div class="art-body"><p class="art-label">{{ s.eticheta }}</p></div>
+  <div class="art-tick"></div>
+  {%- if d %}<p class="art-when">{{ d.wk }},<br>{{ d.zi_n }} {{ d.luna }}</p>
+  <div class="art-num"><span class="art-num-zi">{{ d.zi_n }}</span><span class="art-num-luna">{{ d.luna }}</span><span class="art-tick"></span></div>{% endif %}
+  <p class="art-ghost">{{ s.sub or 'stiri' }}</p>
+  <span class="art-brand art-brand--jos">izz.ro</span>
+  {%- else %}
+  <div class="art-rule"></div>
+  <div class="art-body"><p class="art-label">{{ s.eticheta }}</p>{% if s.sub %}<p class="art-subrow"><span class="art-tick"></span><span class="art-sub">{{ s.sub }}</span></p>{% endif %}</div>
+  <div class="art-hairline"></div><div class="art-dot"></div>
+  <div class="art-seal">{% if d %}<span class="art-num-zi">{{ d.zi }}</span><span class="art-num-wk">{{ d.wk }}</span><span class="art-num-luna">{{ d.luna }}</span>{% endif %}</div>
+  <span class="art-brand art-brand--jos">izz.ro</span>
+  {%- endif %}
+  <div class="art-grain"></div>
+</div>
+{%- endif %}{% endmacro %}

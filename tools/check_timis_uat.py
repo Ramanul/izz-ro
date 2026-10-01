@@ -48,21 +48,19 @@ with sync_playwright() as pw:
         raise AssertionError(f"Nu a fost găsit un badge UAT vizibil: {result}")
     if not result["uatButtons"] or any("TIMIS" in button for button in result["uatButtons"]):
         raise AssertionError(f"Selectorul județului nu afișează UAT-urile corect: {result}")
+    # Click pe badge = selectie (audit harta: click = selectare, nu fereastra separata):
+    # panoul filtreaza, adresa primeste uat=, butonul UAT primeste aria-pressed.
+    # Dialogul a fost ELIMINAT odată cu unificarea; a-l mai astepta ar fi o verificare moarta.
     page.mouse.click(result["badge"]["x"], result["badge"]["y"])
-    page.wait_for_function("() => !document.querySelector('#uat-dialog').hidden")
-    result["dialog"] = page.evaluate("""() => ({
-      role: document.querySelector('#uat-dialog [role=dialog]')?.getAttribute('role'),
-      title: document.querySelector('#uat-dialog-title')?.textContent || '',
-      summary: document.querySelector('#uat-dialog-summary')?.textContent || '',
-      items: document.querySelectorAll('#uat-dialog-list li').length,
-      focused: document.activeElement?.id || '',
+    page.wait_for_function("() => (location.search || '').includes('uat=')")
+    result["selection"] = page.evaluate("""() => ({
+      selected: document.querySelector('#county-picker button[aria-pressed="true"]')?.textContent || '',
+      title: document.querySelector('#panel-title')?.textContent || '',
+      count: document.querySelector('#panel-count')?.textContent || '',
     })""")
-    if result["dialog"]["role"] != "dialog" or result["dialog"]["items"] < 1:
-        raise AssertionError(f"Dialogul UAT nu a expus lista știrilor: {result}")
+    if not result["selection"]["selected"] or "uat=" not in page.evaluate("() => location.search"):
+        raise AssertionError(f"Clickul pe badge nu a selectat UAT-ul in panou: {result}")
     page.screenshot(path=str(OUT), full_page=True)
-    page.click('#uat-dialog-close')
-    page.wait_for_function("() => document.querySelector('#uat-dialog').hidden")
-    result["dialog_closed"] = True
     print(result)
     print(f"screenshot={OUT}")
 

@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # verify_allowlist.sh — ce hosturi izz.ro pot fi atinse din mediul CURENT.
 #
-# De ce exista: CLAUDE.md §16.3 permite "confirmat pe live" doar dupa ce ai atins
+# De ce exista: CLAUDE.md §16a permite "confirmat pe live" doar dupa ce ai atins
 # efectiv site-ul deployat, si cere sa citezi comanda cand nu poti. Raspunsul difera
 # de la un mediu la altul (sandbox local vs. sesiune remote) SI se schimba in timp:
 # pe 2026-08-21 izz.ro era respins de proxy din sesiunea remote, pe 2026-08-23

@@ -1,58 +1,27 @@
 name: tests
 
-# Suita minima pytest (functii pure: util/state/cluster/config). Ruleaza pe PR-uri,
-# la push in main CAND SE ATINGE COD, si manual -- NU pe commit-urile de continut
-# la 2h (ating doar data/*.json), care raman filtrate prin `paths` de mai jos.
-#
-# `push` adaugat 2026-08-17. Motivul: fara el `main` nu era verificat NICIODATA, iar
-# doua importuri moarte au stat in main pana cand un PR fara legatura a iesit rosu si
-# autorul a crezut ca e vina lui. Filtrul pe cai pastreaza intentia originala (nu arde
-# minute pe conținut) fara sa lase main nepazit: lint-ul dureaza 2s, suita ~90s.
+# Suita minima pytest si verificarile de output. Ruleaza pe PR-uri fara filtru de cai, ca orice
+# schimbare de cod/config/sablon/reguli sa aiba aceeasi poarta. Push-ul in main ramane filtrat pentru
+# a nu rula suita grea pe commituri automate care ating doar data/*.json.
 on:
   pull_request:
     branches: [main]
   push:
-    # `claude/**` adaugat 2026-09-03, ca PLASA sub `pull_request`. Masurat pe PR #254: nici
-    # `opened`, nici `synchronize` n-au pornit VREUN workflow pe branch -- zero rulari, si
-    # pentru codeql si semgrep, nu doar aici -- desi acelasi `pull_request` pornise normal pe
-    # #235 (tot branch de sesiune) si pe #252 cu 13 minute inainte.
-    # DOUA ipoteze ridicate si amandoua infirmate prin masuratoare, in aceeasi tura:
-    #   (a) regula anti-recursie a GitHub (evenimente produse cu un token de GitHub App nu
-    #       pornesc workflow-uri) -- infirmata de linia asta: push-ul care a adaugat-o a
-    #       pornit rularea 502 automat, de la aceeasi identitate care impinsese si inainte;
-    #   (b) "PR-ul deschis prin conector nu emite un pull_request care declanseaza" --
-    #       infirmata de sonda #255: PR deschis IDENTIC (acelasi conector, draft, branch
-    #       `claude/*`, aceeasi identitate) a pornit CINCI workflow-uri in 2 secunde.
-    # Ce ramane: esecul de pe #254 a fost TRANZITORIU, nu structural -- push la 03:17:45,
-    # PR deschis la 03:18, si nimic nu s-a declansat in fereastra aia. Cauza exacta ramane
-    # neconfirmata (ar cere audit log-ul repo-ului).
-    # DECI de ce ramane linia, desi evenimentul e rar: consecinta lui e tacuta. Un PR care nu
-    # ruleaza NIMIC arata, din afara, identic cu unul care ruleaza si trece.
-    # CE COSTA, spus explicit: pe branch-urile unde `pull_request` merge, un push care atinge
-    # `paths` produce ACUM doua rulari, nu una. Nu se unifica prin `concurrency`: grupul ar
-    # trebui sa fie comun, iar atunci `cancel-in-progress` ar putea anula tocmai rularea de
-    # `pull_request` -- singura care testeaza codul IMBINAT cu main. Doua rulari pe minute
-    # gratuite (repo public) bat o rulare anulata nedeterminist.
-    # Fara ea, un PR care nu ruleaza NIMIC arata identic cu unul care ruleaza si trece.
-    # Filtrul `paths` de mai jos se aplica si aici, deci un branch de continut nu arde minute.
     branches: [main, 'claude/**']
     paths:
       - '**.py'
+      - '**.yml'
+      - '**.yaml'
+      - '**.json'
+      - '**.jsonc'
+      - '**.md'
+      - '**.css'
+      - '**.html'
+      - '**.js'
+      - 'moderation.yaml'
       - 'requirements.txt'
       - 'ruff.toml'
-      - '.github/workflows/tests.yml'
-      - '.github/workflows/editorial-quality.yml'
-      - 'tools/title_quality_audit.py'
-      - 'tools/qa_check.py'
-      # Caile de mai jos NU contin cod de pipeline -- sunt ce CITESC garzile din
-      # tests/test_reguli.py, si de-aia trebuie sa declanseze suita. Fara ele, o schimbare
-      # in chiar materialul pazit trece neverificata pe push: `buget_de_pornire()` RULEAZA
-      # hook-ul, garda de trasabilitate citeste registrul, iar plafoanele se masoara pe
-      # CLAUDE.md, specs/STATE.md si specs/infrastructura.md. O garda care nu ruleaza cand
-      # se schimba ce pazeste e decor.
-      - 'CLAUDE.md'
-      - 'specs/**'
-      - '.claude/**'
+      - 'wrangler.jsonc'
   workflow_dispatch: {}
 
 permissions:
@@ -69,79 +38,35 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
         with:
           persist-credentials: false
-          # Istoric COMPLET, nu implicitul `fetch-depth: 1`. Garda de PR fantoma din
-          # tests/test_pr_fantoma.py citeste commit-urile «Merge pull request #N» de pe main ca sa
-          # stie ce PR e deja integrat; masurat pe o clona `--depth 1` a repo-ului, `git log
-          # --grep` intoarce ZERO merge-uri, deci garda ar trece verde fara sa masoare nimic.
           fetch-depth: 0
       - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7
         with:
           python-version: "3.11"
           cache: "pip"
-      # `pytest-randomly` amesteca ordinea testelor la fiecare rulare (seed nou per rulare,
-      # tiparit in antetul pytest). Motivul e concret: pe 2026-08-05 suita a dat `0 failed`
-      # si `5 failed` pe acelasi cod, iar criteriul folosit atunci ca dovada de determinism —
-      # „doua rulari identice" — era satisfacut SI INAINTE de fix, deci nu putea distinge nimic.
-      # Ordinea aleatoare chiar poate: expune dependentele ascunse intre teste, care sunt cauza
-      # obisnuita a unui astfel de rezultat bimodal.
-      # Un esec se reproduce cu: python -m pytest tests/ -p randomly --randomly-seed=<seed>
-      # NU intra in requirements.txt — acolo stau dependentele pipeline-ului de productie.
-      # Verificat local pe seed-urile 1/2/3 inainte de a-l cabla: 570 passed de fiecare data,
-      # deci NU repara nimic azi, previne maine.
       - run: pip install -r requirements.txt pytest ruff pytest-randomly
-      - name: Lint (ruff — F + DTZ, configurat in ruff.toml)
-        # Inaintea suitei intentionat: un import mort sau un datetime naiv se vede in 2
-        # secunde, iar pytest dureaza ~90. `ruff` NU e in requirements.txt — alea sunt
-        # dependentele pipeline-ului de productie, si un linter n-are ce cauta acolo.
+      - name: Lint (ruff)
         run: python -m ruff check .
-      - run: python -m pytest tests/ -q
+      - name: Pytest
+        run: python -m pytest tests/ -q
       - name: Contractul titlurilor oficiale
-        # Regula mobilă este testată separat de randare: orice titlu oficial afișat
-        # trebuie să fie nevid și să aibă cel mult 110 caractere.
         run: python tools/title_quality_audit.py
-
-      - name: Sanatatea surselor RSS (doar la rulare manuala; PR-urile raman hermetice)
-        # per sursa: HTTP / numar intrari / prospetime — prinde si feed-uri care raspund
-        # 200 dar nu-s RSS. Nu ruleaza pe PR ca sa nu faca testele dependente de retea.
-        # NON-BLOCANT: sanatatea feed-urilor (429 tranzitoriu, sursa moarta) NU trebuie sa
-        # pice check-ul de COD "pytest". Poarta autoritara pt. feed-uri e feedcheck.yml.
+      - name: Sanatatea surselor RSS (manual)
         if: github.event_name == 'workflow_dispatch'
         continue-on-error: true
         run: python tools/feed_check.py
 
   html-gate:
-    # PARALEL cu `pytest`, nu dupa el. Motivul e masurat, nu estetic: randarea completa dureaza
-    # ~14m40s, iar suita ~14m34s — si AMANDOUA randeaza (pytest prin fixtura `output_randat`,
-    # poarta asta explicit). Serial, jobul verde de pe #244 (bd8da86) a durat 29m39s. In paralel,
-    # wall-clock-ul scade la maximul celor doua, ~15 min: aceeasi munca, jumatate din asteptare.
-    #
-    # Randarea ramane DUBLA in mod deliberat — a face poarta sa depinda de artefactul lasat de
-    # pytest ar lega-o de faptul ca un anume test a rulat, exact ce evita comentariul original.
-    # Costul acelei independente e minute de runner, care sunt paralelizabili; costul dependentei
-    # ar fi o poarta care tace cand fixtura nu ruleaza, care nu e.
-    #
-    # Numele jobului `pytest` NU s-a schimbat, ca sa nu se rupa un check obligatoriu care il
-    # numeste; asta e un job NOU, adaugat langa el.
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
         with:
           persist-credentials: false
-          # `fetch-depth` implicit (1) e suficient AICI: istoricul complet il cere doar garda de
-          # PR fantoma, care ruleaza in jobul `pytest`. Un checkout superficial e si mai rapid.
       - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7
         with:
           python-version: "3.11"
           cache: "pip"
-      # Doar dependentele pipeline-ului: jobul asta nu ruleaza teste, deci nu-i trebuie
-      # pytest/ruff/pytest-randomly.
       - run: pip install -r requirements.txt
       - name: Poarta HTML pe output-ul construit
-        # `qa_check.py` auditeaza DATELE; nimic nu se uita la HTML-ul rezultat, deci o regresie
-        # de sablon care sparge o legatura interna sau scoate un `alt` ajungea pe live si se
-        # vedea abia in Search Console.
-        # Praguri ZERO pe toate categoriile — nu sunt alese, sunt starea masurata a lui main la
-        # cablare: 2921 de pagini, 118791 de legaturi, 5116 imagini, 0 probleme.
         run: |
           python -m generator.main --render-only
           python tools/html_check.py

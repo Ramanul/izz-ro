@@ -144,8 +144,13 @@ def test_articolele_mutate_pe_ai_au_301_de_pe_url_ul_vechi():
     for ln in linii.strip().split("\n"):
         vechi, nou, cod = ln.split(" ")
         assert cod == "301"
-        assert nou.startswith("/ai/")
-        assert not vechi.startswith("/ai/"), "redirect catre el insusi"
+        assert vechi != nou, "redirect catre el insusi"
+        # TSV-ul poarta si fixuri de slug in cadrul aceleiasi rubrici (Artizetii,
+        # /general/ -> /general/). Asertiunile de migrare /ai/ se aplica doar
+        # mutarilor de rubrica, unde categoria veche difera de cea noua.
+        if vechi.split("/")[1] != nou.split("/")[1]:
+            assert nou.startswith("/ai/")
+            assert not vechi.startswith("/ai/")
 
 
 def test_redirecturile_de_migrare_intra_in_fisierul_final():

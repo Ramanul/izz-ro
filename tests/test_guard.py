@@ -293,7 +293,7 @@ def raspunde(monkeypatch):
     from generator import fetch
 
     def _set(body):
-        monkeypatch.setattr(fetch.urllib.request, "urlopen",
+        monkeypatch.setattr(fetch, "_deschide",
                             lambda req, timeout=None: _RaspunsFake(body))
     return _set
 

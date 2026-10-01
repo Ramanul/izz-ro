@@ -58,6 +58,7 @@ def test_w3c_parser_converts_rather_than_truncating():
     assert fetch._parse_w3c_date("2026-08-03T09:00:00+03:00").startswith("2026-08-03T06:00:00")
 
 
+@pytest.mark.stare_partajata
 def test_string_sort_matches_chronological_sort_on_real_state():
     """Garda de capat: ordinea lexicografica pe care se sprijina codul trebuie sa fie aceeasi
     cu ordinea reala pe datele publicate azi. Daca cele doua se despart, sortarea din
@@ -75,6 +76,7 @@ def test_string_sort_matches_chronological_sort_on_real_state():
     assert ca_sir == ca_timp, "sortarea pe sir nu mai da ordinea cronologica"
 
 
+@pytest.mark.stare_partajata
 def test_state_carries_no_mixed_offsets():
     """Cauza pentru care testul de mai sus ar pica. Verificat separat, ca esecul sa arate
     fusul intrus, nu doua liste lungi care difera."""

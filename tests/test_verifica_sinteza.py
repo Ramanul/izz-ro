@@ -59,6 +59,33 @@ def test_cifrele_de_o_singura_cifra_sunt_ignorate():
     assert cifre_straine("s-a intamplat a 3-a oara", "text fara cifre") == []
 
 
+def test_data_din_titlu_nu_ascunde_cifrele_sursei():
+    # Regresie 2026-09-06 (rularea 34013150305, pasul Grounding gate): titlul primariei
+    # contine "nr. 29061/13.08.2026". Tokenizatorul vechi producea un singur "13082026",
+    # deci "13" si "2026" din rezumat pareau inventate si opreau publicarea intregului
+    # site — desi ambele numere sunt in sursa.
+    sursa = "Proces verbal nr. 29061/13.08.2026 de constatare privind dosarele"
+    assert cifre_straine("Documentul din 13 august 2026 confirma dosarele", sursa) == []
+
+
+def test_doua_numere_separate_de_virgula_raman_distincte():
+    # Separatorii MULTIPLI ("2026, 13") nu leaga: sunt doua numere, nu "202613".
+    sursa = "Consiliul a aprobat in 2026, 13 proiecte si 30 de locuri"
+    assert cifre_straine("In 2026 au fost 13 proiecte si 30 de locuri", sursa) == []
+
+
+def test_numerele_pe_linii_separate_raman_distincte():
+    assert cifre_straine("Termenele sunt 13, 30 si 2026", "termene:\n13\n30\n2026") == []
+
+
+def test_garda_prinde_in_continuare_cifrele_inventate():
+    # Fixul nu are voie sa slabeasca gate-ul: un numar absent din sursa ramane semnalat.
+    sursa = "Proiect depus in 13.08.2026, buget 1.500.000 lei"
+    assert "9876" in cifre_straine("Buget de 9876 lei", sursa)
+    assert "1999" in cifre_straine("Proiect depus in 1999", sursa)
+    assert "46" in cifre_straine("Au participat 46 de elevi", "Au participat 45 de elevi")
+
+
 # ---- §2.5 rezerve ------------------------------------------------------------
 
 def test_rezerva_pierduta_cand_rezumatul_afirma_ce_sursa_doar_banuieste():
@@ -220,3 +247,127 @@ def test_jurnal_inexistent_da_cod_de_eroare_si_explica(tmp_path):
                        cwd=RADACINA, capture_output=True, text=True, encoding="utf-8")
     assert r.returncode == 1
     assert "NU EXISTA" in r.stdout
+
+
+# --- Praguri blocante §2.2 (text_copiat / titlu_copiat), 2026-09-05 ---------------
+
+from generator import verifica_sinteza as vs  # noqa: E402 - bloc de teste dedicat
+
+_SURSA_16 = ("primăria a anunțat astăzi că lucrările la pasajul central vor începe lunea "
+             "viitoare iar traficul va fi deviat complet timp de trei luni")
+
+
+def test_propozitie_copiata_integrala_e_blocanta():
+    probleme = vs.verifica("Titlu reformulat altfel", _SURSA_16, _SURSA_16 + " și mai mult context oficial.")
+    assert any(p.cod == "text_copiat" for p in probleme)
+
+
+def test_parafraza_curata_nu_e_blocanta():
+    rezumat = ("administrația locală a comunicat că șantierul de la pasaj pornește săptămâna "
+               "viitoare, cu devieri pe tot parcursul veri")
+    probleme = vs.verifica("Consiliul local a votat planul de trafic", rezumat, _SURSA_16)
+    coduri = {p.cod for p in probleme}
+    assert "text_copiat" not in coduri
+    assert "titlu_copiat" not in coduri
+
+
+def test_citat_verbatim_lung_permis():
+    rezumat = "„" + _SURSA_16 + "” a declarat purtătorul de cuvânt."
+    probleme = vs.verifica("Declarație despre pasaj", rezumat, _SURSA_16 + " Confirmarea a venit oficial.")
+    coduri = {p.cod for p in probleme}
+    assert "text_copiat" not in coduri
+    assert "citat_inventat" not in coduri
+
+
+def test_titlu_transcris_integral_e_blocant():
+    titlu = " ".join(_SURSA_16.split()[:8])
+    probleme = vs.verifica(titlu, "Rezumat parafrazat, alte cuvinte cu totul.", _SURSA_16)
+    assert any(p.cod == "titlu_copiat" for p in probleme)
+
+
+def test_text_copiat_ajunge_blocant_in_gate(tmp_path, monkeypatch):
+    monkeypatch.setenv("IZZ_RAPORT_COPIERE", str(tmp_path / "jurnal.jsonl"))
+    monkeypatch.setenv("IZZ_RAPORT_COPIERE_GATE", str(tmp_path / "gate.jsonl"))
+    raport_copiere.noteaza("C", "id-gate-test", "Titlu reformulat separat", _SURSA_16, _SURSA_16)
+    randuri = [json.loads(l) for l in (tmp_path / "gate.jsonl")
+               .read_text(encoding="utf-8").splitlines() if l.strip()]
+    coduri = {i["cod"] for r in randuri for i in r["blocking_issues"]}
+    assert "text_copiat" in coduri
+
+
+# --- Garda ortografiei titlului (cuvant_strain_titlu), 2026-10-01 ------------------
+# Cazul care o cere: PR #371 — „Artizeții" în loc de „Artiștii", ajuns public în
+# titlu, H1 și URL. Logica: se semnalează doar DEFORMĂRILE INTERNE ale cuvintelor
+# care sunt în sursă; cuvintele legitime absente din descrierea-sursă trec (modelul
+# are vocabular mai mare decât feedul), la fel inflexiunile pe terminație.
+
+def test_cazul_real_artizetii_e_prins():
+    # Contextul real de sinteza: titlul original B365 + descrierea din feed (exact
+    # ce a vazut modelul la procesare, vezi `sursa_pentru` din masoara_sinteza).
+    sursa = ("Cine și când urcă pe scena West Side Hallo Fest 2026: RVRSE, Antonio "
+             "Pican, Lupii lui Calancea și Andra printre artiștii care vin la "
+             "festivalul de Halloween de la Lacul Morii. Evenimentul organizat la "
+             "Lacul Morii va aduce pe scenă, în seara de 31 octombrie, artiști "
+             "cunoscuți.")
+    gasite = vs.cuvinte_straine_titlu(
+        "Artizeții anunțați pentru ediția 2026 a festivalului West Side Hallo Fest", sursa)
+    # „artizetii" = vecin la distanța 2 de „artistii", divergență în corpul cuvântului
+    assert "artizetii" in gasite
+    # „anuntati" și „festivalului" sunt corecte — absente sau prefix legitims — trec
+    assert "anuntati" not in gasite
+    assert "festivalului" not in gasite
+
+
+def test_titlu_corect_nu_produce_semnal():
+    sursa = "Primăria a anunțat că lucrările la pasajul central încep lunea viitoare."
+    assert vs.cuvinte_straine_titlu("Primăria anunță lucrările la pasajul central", sursa) == []
+
+
+def test_inflexiunile_pe_prefix_si_terminatie_trec():
+    sursa = "consiliul local a aprobat bugetul"
+    # „bugetu" = prefix pierdut, „aprobatt" = sufix adăugat — morfologie, nu deformare
+    assert vs.cuvinte_straine_titlu("consiliul bugetu aprobatt", sursa) == []
+
+
+def test_deformare_interna_e_semnal():
+    sursa = "consiliul local a aprobat bugetul"
+    # „locta" vs „local": literă schimbată ÎN CORPUL cuvântului → semnal
+    # „locaa" vs „local": diferența e doar pe terminație → trece (caz gramatical posibil)
+    assert vs.cuvinte_straine_titlu("locta aprobat", sursa) == ["locta"]
+    assert vs.cuvinte_straine_titlu("locaa aprobat", sursa) == []
+
+
+def test_cuvintele_scurte_si_cifrele_sunt_ignorate():
+    # „west/side/hall/fest" sunt sub prag ȘI absente din sursă — lipsa lor din semnal
+    # dovedește că skip-ul e pe lungime, nu pe întâmplare. „scenei" vs „scena" are
+    # diferența în corpul cuvântului → semnal; „adusele" n-are vecin la distanța 2 → trece.
+    sursa = "Festivalul de la Lacul Morii aduce artiști pe scenă în seara de 31 octombrie"
+    gasite = vs.cuvinte_straine_titlu("West Side Hallo Fest scenei adusele", sursa)
+    assert gasite == ["scenei"]
+
+
+def test_sursa_gol_intoarce_nimic():
+    assert vs.cuvinte_straine_titlu("un titlu oarecare destul de lung", "") == []
+    assert vs.cuvinte_straine_titlu("un titlu oarecare destul de lung", "2026 31") == []
+
+
+def test_verifica_include_garda_pe_titlu():
+    sursa = "Consiliul a aprobat hotărarea de buget."
+    coduri = {p.cod for p in verifica(
+        "Consiliul oprobat bugetul fiscal local", "Rezumat parafrazat cu totul altfel.", sursa)}
+    assert "cuvant_strain_titlu" in coduri
+
+
+def test_garda_ajunge_advisory_niciodata_blocanta(tmp_path, monkeypatch):
+    # Modul „doar raportează": prin `noteaza`, codul cade în advisory_issues —
+    # `_BLOCKING` nu-l conține până la activarea explicită, după măsurătoare.
+    monkeypatch.setenv("IZZ_RAPORT_COPIERE", str(tmp_path / "jurnal.jsonl"))
+    monkeypatch.setenv("IZZ_RAPORT_COPIERE_GATE", str(tmp_path / "gate.jsonl"))
+    raport_copiere.noteaza("B", "id-garda",
+                           "Comunicatul instutiei vorbește despre alt subiect.",
+                           "Rezumat scris cu totul altfel decât sursa.",
+                           "Comunicatul instituției vorbește despre alt subiect.")
+    rand = [json.loads(l) for l in (tmp_path / "gate.jsonl")
+            .read_text(encoding="utf-8").splitlines() if l.strip()][0]
+    assert "cuvant_strain_titlu" in {i["cod"] for i in rand["advisory_issues"]}
+    assert "cuvant_strain_titlu" not in {i["cod"] for i in rand["blocking_issues"]}

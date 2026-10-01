@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% from "_card.html" import card with context %}
+{% from "_art.html" import art with context %}
 {% block title %}{{ site.name }} — {{ site.tagline }}{% endblock %}
 {% block description %}Știri din România și din lume, grupate din surse publice, cu proveniență afișată și rezumate clare. Actualizat automat.{% endblock %}
 {% block content %}
@@ -26,6 +27,7 @@
           {% if top.art_webp %}<source srcset="{{ base }}{{ top.art_webp }}" type="image/webp">{% endif %}
           <img class="lead-art" src="{{ base }}{{ top.art_path }}" alt="" width="960" height="504" sizes="(min-width: 1000px) 430px, 100vw" fetchpriority="high">
         </picture>
+        {% elif top.art_style %}{{ art(top, 'art--hero') }}
         {% endif %}
         <div>
           {% set top_srcs = top.sources[:6] if (top.model == 'C' and top.sources) else [{'name': top.source_name, 'url': top.original_link}] %}

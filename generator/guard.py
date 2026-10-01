@@ -94,6 +94,20 @@ _WAREZ_RE = re.compile(
     re.I,
 )
 
+# Spam de jocuri de noroc in 3 limbi (ro/hu/en). DE CE un strat separat de warez: Plenita
+# (2026-09-05, „Chicken Cross the Road Gambling Game") si Rovinari (august) au aratat ca
+# site-urile de primarii compromise publica cazino/fogadas in titlu, iar warez-ul clasic
+# n-l prinde. Anunturile legitime ale primariilor NU contin acest vocabular in nicio limba —
+# fals-pozitiv rezidual: un titlu izolat de genul „bonus la plata impozitelor" pierde un
+# item, nu sursa (carantina cere 2+ respingeri).
+_SPAM_JOCURI_RE = re.compile(
+    r"\bcazinou?l?[eă]?\b|\bpacanele\b|\bpariuri\b|\bpoker\b|\bjackpot\b|"
+    r"\bkaszin[oó]\b|\bb[oó]nusz(?:ok)?\b|\bfogad[aá]s(?:i)?\b|\bnyer[őo]g[eé]p\b|"
+    r"\bcasino\b|\bgambling\b|\bbetting\b|\bslots?\b|\bbet\s+now\b|\bfree\s+spins?\b|"
+    r"\bno\s+deposit\s+bonus\b|\bvulkan(?:\w*)\b|\bmostbet\b|\b1xbet\b|\bpin-?up\b",
+    re.I,
+)
+
 # blocul Unicode al literelor „matematice" (U+1D400-U+1D7FF): 𝐀 𝚊 etc. Se normalizeaza NFKC
 # in litere ASCII, deci sunt exact unealta de evaziune — si au zero utilizare legitima aici.
 _MATH_ALPHA = (0x1D400, 0x1D7FF)
@@ -245,6 +259,8 @@ def verdict(titlu: str, corp: str = "") -> str | None:
         return "homoglife in titlu (amestec de alfabete)"
     if _WAREZ_RE.search(tot):
         return "marker de warez"
+    if _SPAM_JOCURI_RE.search(tot):
+        return "spam de jocuri de noroc (ro/hu/en)"
     if _INJECTIE_RE.search(tot):
         return "instructiuni adresate modelului (prompt injection)"
     if _e_titlu_gunoi(titlu):
@@ -342,13 +358,49 @@ def anomalie(titlu: str, source_lang: str = "ro") -> str | None:
 
     Se aplica DOAR surselor declarate `ro` in catalog. Cele 4 surse `en` (BBC, DW, Guardian,
     Politico) sunt scutite — la ele engleza e comportamentul asteptat, nu deviatia.
+
+    Limba compusa `ro_hu`: sursele din județele cu populație maghiară semnificativă
+    (setate in `local_sources`) publica anunțuri oficiale LEGITIME in maghiara. Nu le
+    scutim de garda — le scutim de clasificarea greșită: titlul maghiar legitim are
+    markeri hu (vezi _scor_hu) si trece; spam-ul fara niciun marker ro/hu continua respins.
     """
-    if (source_lang or "ro") != "ro":
+    lang = source_lang or "ro"
+    if lang == "ro_hu":
+        ro, en = _scor_limba(titlu or "")
+        if en >= 1 and ro == 0 and _scor_hu(titlu or ""):
+            return None
+        if en >= 1 and ro == 0:
+            return "titlu in alta limba decat cea declarata a sursei"
+        return None
+    if lang != "ro":
         return None
     ro, en = _scor_limba(titlu or "")
     if en >= 1 and ro == 0:
         return "titlu in alta limba decat cea declarata a sursei"
     return None
+
+
+# Markerile maghiare legitime: ő/ű exista DOAR in maghiara; cuvintele functionale de mai jos
+# sunt cele frecvente in titlurile administrative. Nicio coliziune cu _CUVINTE_EN, deci un
+# titlu maghiar nu primeste markeri EN de la ele.
+_DIACRITICE_HU = set("őűŐŰ")
+_CUVINTE_HU = {
+    "és", "az", "egy", "ez", "ezt", "van", "vannak", "lesz", "nem", "meg", "már",
+    "hogy", "mint", "illetve", "valamint", "helyi", "községi", "önkormányzat",
+    "közgyűlés", "határozat", "felhívás", "pályázat", "támogatás", "rendezvény",
+}
+
+
+_CUVANT_HU_RE = re.compile(r"[a-zőűáéíóöü]+")
+
+
+def _scor_hu(titlu: str) -> bool:
+    """Adevarat daca titlul are macar un marker maghiar legitim. Regex propriu (cu
+    á/é/ő/ű maghiare): _CUVANT_RE al gardzei de limba taie pe diacriticele straine si
+    rupe cuvinte precum „és" in „s" — masurat pe titlul real de la Târgu Secuiesc."""
+    if any(ch in _DIACRITICE_HU for ch in titlu):
+        return True
+    return any(c in _CUVINTE_HU for c in _CUVANT_HU_RE.findall(titlu.lower()))
 
 
 # --- 9. carantina de sursa: de la ITEM la SURSA ------------------------------------------

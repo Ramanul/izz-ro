@@ -7,7 +7,7 @@ Intrari/iesiri: functii pure — dict/lista in, bool/lista out. Zero disk, zero 
 Acceptare: testele INGHEATA comportamentul actual. Daca unul pica dupa un refactor,
 comportament vizibil s-a schimbat — asta e o decizie, nu un detaliu.
 """
-from generator import render
+from generator import config, render
 
 
 def _ok(**over):
@@ -218,19 +218,27 @@ def test_hero_tolerates_a_missing_published_field():
     assert [a["title"] for a in out] == ["cu", "fara-data"]
 
 
-# --- _entity_index: pragul de 2 aparitii -------------------------------------
+# --- _entity_index: pragul de aparitii (config.SUBJECT_MIN_ARTICLES) ----------
+# Pragul a urcat 2 -> 3 pe 2026-09-09: o entitate cu doua aparitii nu e un subiect, e o
+# coincidenta, iar pagina ei e thin content. Testele citesc pragul din config, nu il
+# rescriu — altfel ar trebui rescrise la fiecare recalibrare, si tocmai atunci trebuie sa taie.
 
-def test_entity_index_keeps_only_entities_seen_at_least_twice():
-    arts = [{"entities": ["Klaus Iohannis", "Cluj"]},
-            {"entities": ["Klaus Iohannis"]},
-            {"entities": ["Timisoara"]}]
-    idx = render._entity_index(arts)
+def test_entity_index_pastreaza_doar_entitatile_peste_prag():
+    prag = config.SUBJECT_MIN_ARTICLES
+    iohannis = [{"entities": ["Klaus Iohannis", "Cluj"]}] + [{"entities": ["Klaus Iohannis"]}] * (prag - 1)
+    idx = render._entity_index(iohannis + [{"entities": ["Timisoara"]}])
     assert set(idx) == {render.slugify("Klaus Iohannis")[:60]}
-    assert len(idx[render.slugify("Klaus Iohannis")[:60]]["articles"]) == 2
+    assert len(idx[render.slugify("Klaus Iohannis")[:60]]["articles"]) == prag
+
+
+def test_NEGATIV_o_entitate_sub_prag_nu_primeste_pagina():
+    """Cazul negativ: exact un articol sub prag trebuie sa cada, altfel pragul nu taie."""
+    sub_prag = [{"entities": ["Cluj"]}] * (config.SUBJECT_MIN_ARTICLES - 1)
+    assert render._entity_index(sub_prag) == {}
 
 
 def test_entity_index_skips_entities_that_slugify_to_nothing():
-    assert render._entity_index([{"entities": ["!!!"]}, {"entities": ["!!!"]}]) == {}
+    assert render._entity_index([{"entities": ["!!!"]}] * config.SUBJECT_MIN_ARTICLES) == {}
 
 
 # --- praguri de dedup si de taiere: doua granite gasite prin mutation testing ------

@@ -62,6 +62,11 @@ def ruleaza(tmp_path, monkeypatch):
     monkeypatch.setattr(state, "STATE_PATH", str(p))
     monkeypatch.setattr(main, "get_provider", lambda: None)
     monkeypatch.setattr(render, "build", lambda *a, **k: None)
+    # `dry_run=False` inseamna si jurnalul de triaj, iar `jurnal_triage.cale()` si-o ia din
+    # `config.ROOT`, nu din `state.STATE_PATH`. Fara linia asta, fiecare rulare a suitei
+    # adauga doua randuri in `data/triage_log.jsonl` — fisier pe care `build.yml` il comite,
+    # deci poluare de test in observabilitatea productiei. Masurat 2026-09-11.
+    monkeypatch.setattr(main.jurnal_triage, "cale", lambda: str(tmp_path / "triage_log.jsonl"))
 
     def _run(items):
         monkeypatch.setattr(main.fetch, "fetch_all", lambda: (items, []))

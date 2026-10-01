@@ -1,63 +1,52 @@
 # STATE — project execution state
 
-> Single source of truth for "where we are". Manager-owned; updated at the end of every slice.
-> Executors get it read-only. **Hard cap: ~40 lines of content.** When it grows past that, cut
-> the settled history into `specs/istoric-executie.md` — do not let it accumulate here. It is
-> read at the start of every session, so every stale line is paid for twice: in tokens, and in
-> an executor re-implementing something that already shipped. `git fetch` immediately before
-> rewriting it.
+> Single source of truth for where we are. Manager-owned; executors read it. Keep this file short
+> and factual; settled history belongs in `specs/istoric-executie.md`.
 >
-> **Cut on 2026-08-21** from 656 lines, the second time. What it cost, stated so nobody repeats
-> it: two sections were headed `Open PR` while both PRs were already **merged** (#196 on 08-20,
-> #197 on 08-21), and the 195-line `## Open` section was almost entirely SHIPPED/FIXED/REVERTED
-> history with two live rules buried in it. That is the same failure the 08-07 cut documented.
-> **A section is `Open` only if a PR is open or a decision is pending — check, don't assume.**
-> Garda `incalcari_pr_fantoma` in `tests/test_pr_fantoma.py` pica daca `## Open` numeste un PR
-> care are deja commit de merge pe main (fara adnotarea `(merged)`).
+> **Hard cap: ~40 lines of content.**
+>
+> Where the rest lives: `specs/regim-reguli.md` — unified audit closure ·
+> `specs/registru.tsv` — decisions · `CLAUDE.md` — canonical contract.
 
-**Updated:** 2026-09-05 (#254 merged + #278 merged: mediul de dev, determinismul randarii, dimensiunea 5)
+**Updated:** 2026-10-01 (#280: dimensiunea 5 — greutatea CSS, cu unealta de audit css_folosit.mjs)
 
 ## Open
+- **Pages `izz-ro` ZOMBI revendică `izz.ro` [IZZ-0366, 0368]:** ștergerea = decizie proprietar [IZZ-0395].
+- **PRODUS P1 — homepage fără nicio fotografie [IZZ-0403]:** 0 `<img>` măsurat; 73% din articole au portret real
+  deja în `output/portraits/` — zero fișiere noi; potrivirea rulează doar pe articol (`render.py:971`).
+- **PRODUS P2 — copertile arată amatoricesc [IZZ-0404]** (verdict proprietar); `htmlart`/`covers.py`.
+- **PRODUS P3 — harta: markere fără ierarhie vizuală [IZZ-0405]:** 482 evenimente, clickuri cablate; e afordanța, nu funcția.
+- **FEREASTRA TTL a trecut de buget [IZZ-0400]:** 11.967 vs prag 12.800; `ARTICLE_TTL_DAYS` = decizie proprietar [IZZ-0401].
+- **Free-readiness — gazda ÎNCĂ PAID până 22 sep [IZZ-0313]:** ingest median 960/zi vs 590 dimensionat; TTL=20
+  trebuie scurtat spre ≈13 zile, altfel podea roșie [IZZ-0386, 0391, 0399].
+- **`izz-failover` — KEEP [IZZ-0362]; marja NECUNOSCUTĂ [IZZ-0367, 0369]:** ambele cifre publicate retrase.
+- **REDUNDANȚA — ÎNCHISĂ [IZZ-0370 → IZZ-0373]:** `BUILD_COMMIT_SHA` e în jobul `mirror`, prin #347 merged.
+- **RECIDIVE — roșul de STARE separat de cel de COD [IZZ-0388…0391]; Owner: podeaua roșie peste 640 art./zi [IZZ-0391].**
+- **Coliziuni de ID reparate la ALOCARE [IZZ-0392]; IZZ-0400 aterizat prin #344 merged.**
+- **PR queue — 3 deschise:** #280 CSS (acest PR; merged la aterizare) · #297 Cronica ·
+  #320 Lee. Aterizările: în `specs/registru.tsv`, nu aici.
+- **Issues triate 09-13 [IZZ-0381…0383]:** #83 închis. **#198 arhiva = decizie de proprietar**
+  (R2 singura structurală). #233 canal · #271 scope — deschise prin design.
 
-- **F4 (#241, merged)**: §18 in L1. Urmatorii: §12, §14, §20; **§17 NU**.
-- **K12 (`IZZ-0255`)**: rezumat zilnic, spec nescris; porneste de la `editorial-quality.yml`.
-- **PR-uri deschise, CI verificat 2026-09-05:** owner #207 #214 #235 · #264 (conflict rezolvat)
-  · #268 BLOCAT pe decizie de continut legal, surse divergente fata de #266 (`IZZ-0311`)
-  · rosii #269 #270 · draft #277 #279 #280. #247 a aterizat prin REBASE (`sync_state.py`: „nu pot decide").
-  (#266 merged; #263 merged; #262 merged; #278 merged; #254 merged; #253 merged; #252 merged; #250 merged; #248 merged; #244 merged; #225/#240 closed — fiecare pe aceeasi linie, altfel garda o vede doar pe ultima.)
-- **CI paralelizat (#248)**: numele jobului `pytest` NU se schimba. `ramanul-triage-blockers`
-  (e1c8fbe2) e vie si arunca tacut articole legitime (`IZZ-0266`). Debitul e limitat de
-  PLANIFICATORUL GitHub — 4,7 porniri/zi, nu 12 (`IZZ-0292`); sect. 17 ramane valabila.
-- **PLASA pentru restructurare (`IZZ-0271`)**: `tools/echivalenta.py` amprenteaza `output/`;
-  `tools/mutanti.py --regresie` (~10 s) — inainte de orice refactor pe cluster/select/geo/util/
-  guard. Coverage 71%, mutanti ucisi 81%, `render.py` cel mai rau pe ambele (`IZZ-0280`/`-0281`).
-  Determinism VERIFICAT 09-04: 953 fisiere difereau intre doua randari (3 locuri in `render.py`:
-  `set` iterat x2 + `sum` pe float, neasociativ), reparat in #254. Cuplarea reala nu e prin importuri — `specs/arhitectura-cuplare.md`, NU re-cerceta.
-- **Nefolosit (`tools/nefolosit.py`, dosar sect. 4f)**: `agents.py` STERS (`IZZ-0289`). Decizii
-  proprietar: `process_cluster` §10 (`IZZ-0294`), 272 KB orfane masurate dar necuratate
-  (`IZZ-0301`), §12 (`IZZ-0295`), F4 (`IZZ-0296`), Axa 3 (`IZZ-0297`), arhiva (`IZZ-0298`).
-- **Garda anti-amanare (`tests/test_registru_amanari.py`, `IZZ-0293`)**: un rand `propus` cu
-  `decident` = agent expira in 14 zile. Iesiri: fa-l, treci-l pe om, inchide-l cu motiv (un rand
-  nou care il leaga il inchide). La scriere: 12 amanari catre mine -> 0.
-- **Din `specs/atribuire-cercetare-si-plan.md`** — E1 + E4 cer decizia proprietarului.
+## Audit closure status
 
-## Standing rules that keep being rediscovered — do not "fix" these
+- **K1–K14:** re-verified in `specs/regim-reguli.md` — a reconciliation register, not a substitute
+  for passing tests. **Grounding:** blocks invented quotes and foreign numbers, fails closed.
+- **Coordination:** live channel is `handoff/` + `specs/STATE.md`. **Containment:** destructive git
+  commands and direct Edit/Write on control-plane files are denied; fd-only redirects no longer
+  count [IZZ-0353]. **Journals:** takedowns removed on every publish path; ingest discards logged.
+- **Near-verbatim copy:** >=15-word runs and transcribed titles block the gate. Open: calibration
+  corpus, 2x determinism run. **Silence detection:** hourly. **Human gate:** `IZZ_REQUIRE_HUMAN_GATE`.
+  **Main** is `protected: true`; required-checks list unreadable here (403), rulesets: none.
+- **Unified audit is mechanical now:** `specs/audit-unificat.tsv` + `tools/audit_matrice.py`
+  (+ `eroziune`) + `tools/cadenta_reala.py` + tests; findings in `specs/audit-unificat.md` §5.
+  Derivarea de stare o găsește `schedule` zilnic (#347), nu următorul PR. [IZZ-0351…0357, 0363…0367]
 
-- **`state.merge()` is dead code, NOT a live bug.** `state.py:143`; the only caller is
-  `tests/test_state.py:14`. Dedup between fresh items happens inline at `main.py:227-236` (#158).
-  The recurring "lying function" hunt keeps rereading it as a duplicate bug; touching it is an
-  opportunistic refactor (§5.6).
-- **Map: do not re-land the enlarged hit areas without a scroll guard.** Reverted 2026-08-15
-  (`c6397735`), causation confirmed on device by the owner. Before retrying: suppress
-  re-selection while a scroll is in flight. Full mechanism in the archive.
-- **Attribution: `specs/atribuire-cercetare-si-plan.md` is the dossier — do not re-research it.**
-  7 external systems, 8 causes, a 6-stage plan, paid for once. Run `tools/eval_atribuire.py`
-  before and after **any** change to `geo.py`. Baseline 2026-08-08: category 25/39 (64%),
-  place-on-badge 31/32 (97%). **Cifra aia NU mai e comparabila** (`IZZ-0268`): TTL-ul a expirat 44
-  din cele 51 de randuri, deci o rulare de azi masoara 7 articole — alt esantion, nu alt rezultat.
-  Covers are never redrawn on a first run (`IZZ-0163`, owner refused 08-06); `FORCE_REGEN=1` opts in.
+## Standing rules
 
-## Where the rest lives
-
-`specs/istoric-executie.md` · `specs/registru.tsv` + `python tools/registru.py find` ·
-`specs/masuratori-frontend.md` · `specs/istoric-operational.md` · `../HANDOFF.md`.
+- Cadence is the GitHub scheduler, not the 105-min gate: 25% firing, ~6 starts/day, median ~4h.
+  Re-measure with `tools/cadenta_reala.py`; do not quote the number from memory. [IZZ-0364]
+- Do not treat retired static-host origins as live origins; Worker origin is the fallback path.
+- Do not use old task journals as normative coordination channels.
+- Every measurement gets its window and its command, or it is not a measurement [IZZ-0367].
+- Do not mark live, GitHub settings, or Cloudflare facts as solved based only on repository code.

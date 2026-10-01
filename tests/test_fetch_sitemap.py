@@ -60,7 +60,7 @@ def test_sitemap_enrichment_is_opt_in(monkeypatch):
             return raw
 
     calls = []
-    monkeypatch.setattr(fetch.urllib.request, "urlopen", lambda *args, **kwargs: Response())
+    monkeypatch.setattr(fetch, "_deschide", lambda *args, **kwargs: Response())
     monkeypatch.setattr(fetch, "_fetch_meta_description", lambda url: calls.append(url) or "Descriere editorială")
     items, err = _fetch_sitemap_news("piataauto", source)
     assert err is None
@@ -86,7 +86,7 @@ def test_sitemap_enrichment_remains_disabled_by_default(monkeypatch):
         def __enter__(self): return self
         def __exit__(self, *args): return False
         def read(self, *args): return raw
-    monkeypatch.setattr(fetch.urllib.request, "urlopen", lambda *args, **kwargs: Response())
+    monkeypatch.setattr(fetch, "_deschide", lambda *args, **kwargs: Response())
     monkeypatch.setattr(fetch, "_fetch_meta_description", lambda url: (_ for _ in ()).throw(AssertionError("nu trebuie apelat")))
     items, err = _fetch_sitemap_news("other", source)
     assert err is None and items[0]["description"] == ""

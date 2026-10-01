@@ -23,11 +23,16 @@ prin COMPOZITIE si valoare, nu prin nuanta. Titlul NU se pune pe bannerul de sit
 pe pagina, sub imagine.
 """
 import base64
+import datetime
 import hashlib
+import json
+import math
 import os
+import re
 
 from . import geo
 
+_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 _ASSETS = os.path.join(os.path.dirname(os.path.abspath(__file__)), "assets")
 ART_W, ART_H = 960, 504
 COVER_W, COVER_H = 1200, 630
@@ -47,6 +52,8 @@ _PALETE = [
     ("#4a3244", "#f5f0f4"),   # prun
 ]
 GOLD = "#c9a227"
+GOLD_STRONG = "#8b6918"  # --gold-strong din styles.css (§8)
+GOLD_INCHIS = "#8b6918"  # --gold-strong din static/styles.css (§8)
 
 
 def _font() -> str:
@@ -68,6 +75,46 @@ def _subtitlu(a: dict) -> str:
     if not cat or cat.lower() == _eticheta(a).strip().lower():
         return ""
     return cat
+
+
+# Data publicarii ca ELEMENT DE DESIGN (reproiectare 2026-09-06): coperta clasica era
+# diagnosticata "~80% spatiu alb, template gol". Fiecare template umple acum canvasul cu
+# tipografie mare si cu DATA stirii — fapt stabil din stare, nu provenienta (sect. 7 nu
+# interzice data; numele surselor raman pe card, nu pe imagine).
+_ZILE_RO = ("luni", "marți", "miercuri", "joi", "vineri", "sâmbătă", "duminică")
+_LUNI_RO = ("ianuarie", "februarie", "martie", "aprilie", "mai", "iunie", "iulie",
+            "august", "septembrie", "octombrie", "noiembrie", "decembrie")
+
+
+def _data_copertei(a: dict) -> dict | None:
+    """{zi, zi_n, wk, luna, an} din `published`, sau None daca e irecuperabila."""
+    pub = (a.get("published") or "")[:10]
+    try:
+        d = datetime.date.fromisoformat(pub)
+    except ValueError:
+        return None
+    return {"zi": f"{d.day:02d}", "zi_n": str(d.day), "wk": _ZILE_RO[d.weekday()],
+            "luna": _LUNI_RO[d.month - 1], "an": str(d.year)}
+
+
+def _et_px(et: str, trepte: tuple[tuple[int, int], ...], k: float) -> int:
+    """Marimea etichetei treptata pe lungime: numele lungi nu se taie din cadru."""
+    n = len((et or "").strip())
+    for plafon, px in trepte:
+        if n <= plafon:
+            return int(px * k)
+    return int(trepte[-1][1] * k)
+
+
+def _rand_sub(sb: str, k: float) -> str:
+    """Randul de subtitlu cu filet auriu inline; gol cand subtitlul e gol."""
+    if not sb:
+        return ""
+    return (f'<div style="margin-top:{18 * k:.0f}px;display:flex;align-items:center;gap:{14 * k:.0f}px">'
+            f'<span style="width:{64 * k:.0f}px;height:{3 * k:.0f}px;background:{GOLD};'
+            f'display:inline-block"></span>'
+            f'<span class="sub" style="margin-top:0;font-size:{18 * k:.0f}px;'
+            f'letter-spacing:{4 * k:.0f}px">{sb}</span></div>')
 
 
 _GRAIN = ("url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E"
@@ -99,88 +146,454 @@ def _base_css(w: int, h: int) -> str:
 
 
 def _t_editorial(a, acc, bg, k):
-    """Hartie, filet auriu, tipografie asezata pe verticala de aur. Cel mai sobru."""
+    """Pagina intai: bara de sus cu data, tipografie mare centrate vertical, filet dublu."""
+    et, sb = _eticheta(a), _subtitlu(a)
+    dt = _data_copertei(a)
+    et_px = _et_px(et, ((8, 128), (13, 102), (18, 82), (99, 60)), k)
+    # Fara data, bara de sus ramane doar cu marca din stanga. Inainte punea tot "izz.ro" si
+    # in dreapta, deci coperta de categorie (care n-are data) scria brandul de doua ori
+    # pe acelasi rand.
+    sus = f"{dt['wk']} {dt['zi_n']} {dt['luna']} {dt['an']}" if dt else ""
     return (
         f'<div class="stage" style="background:{bg};color:{acc}">'
-        f'<div style="position:absolute;left:{56*k:.0f}px;top:{56*k:.0f}px;'
-        f'width:{int((ART_W-112)/PHI*k)}px" class="filet"></div>'
-        f'<div style="position:absolute;left:{56*k:.0f}px;top:{int(ART_H/PHI*k)}px;'
-        f'transform:translateY(-50%)">'
-        f'<div class="eticheta">{_eticheta(a)}</div>'
-        f'<div class="sub">{_subtitlu(a)}</div></div>'
-        f'<div style="position:absolute;right:{-120*k:.0f}px;bottom:{-160*k:.0f}px;'
-        f'width:{440*k:.0f}px;height:{440*k:.0f}px;border-radius:50%;'
-        f'border:{2*k:.0f}px solid {acc};opacity:.10"></div>'
-        f'<div class="marca" style="left:{56*k:.0f}px;bottom:{44*k:.0f}px">izz.ro</div>'
+        f'<div style="position:absolute;left:{56 * k:.0f}px;right:{56 * k:.0f}px;top:{30 * k:.0f}px;'
+        f'display:flex;justify-content:space-between;align-items:baseline">'
+        f'<span class="marca" style="position:static;font-size:{15 * k:.0f}px;opacity:.65">izz.ro</span>'
+        f'<span class="marca" style="position:static;font-size:{13 * k:.0f}px">{sus}</span></div>'
+        f'<div style="position:absolute;left:{56 * k:.0f}px;right:{56 * k:.0f}px;top:{68 * k:.0f}px;'
+        f'height:{3 * k:.0f}px;background:{GOLD}"></div>'
+        f'<div style="position:absolute;left:{56 * k:.0f}px;top:{92 * k:.0f}px;bottom:{96 * k:.0f}px;'
+        f'display:flex;flex-direction:column;justify-content:center;max-width:{660 * k:.0f}px">'
+        f'<div class="eticheta" style="font-size:{et_px}px;letter-spacing:{2 * k:.0f}px;'
+        f'line-height:1.04">{et}</div>{_rand_sub(sb, k)}</div>'
+        f'<div style="position:absolute;right:{-150 * k:.0f}px;bottom:{-190 * k:.0f}px;'
+        f'width:{430 * k:.0f}px;height:{430 * k:.0f}px;border-radius:50%;'
+        f'border:{2 * k:.0f}px solid {acc};opacity:.10"></div>'
+        f'<div style="position:absolute;right:{-60 * k:.0f}px;bottom:{-260 * k:.0f}px;'
+        f'width:{300 * k:.0f}px;height:{300 * k:.0f}px;border-radius:50%;'
+        f'background:{acc};opacity:.05"></div>'
+        f'<div style="position:absolute;left:{56 * k:.0f}px;right:{56 * k:.0f}px;bottom:{34 * k:.0f}px;'
+        f'display:flex;justify-content:space-between;align-items:baseline">'
+        f'<span class="marca" style="position:static;font-size:{11 * k:.0f}px;opacity:.5">Portalul știrilor tale</span>'
+        f'<span class="marca" style="position:static;font-size:{11 * k:.0f}px;opacity:.5">{sb}</span></div>'
         f'<div class="grain"></div></div>'
     )
 
 
 def _t_inversat(a, acc, bg, k):
-    """Fundal de accent, tipografie deschisa. Contrastul cel mai puternic din set."""
+    """Noaptea: fond inchis, cifra zilei uriasa in aur — contrastul maxim din set."""
+    et, sb = _eticheta(a), _subtitlu(a)
+    dt = _data_copertei(a)
+    et_px = _et_px(et, ((8, 84), (13, 68), (18, 54), (99, 42)), k)
+    numeral = (f'<div style="position:absolute;right:{56 * k:.0f}px;bottom:{34 * k:.0f}px;'
+               f'text-align:right;line-height:1">'
+               f'<div class="marca" style="position:static;font-size:{16 * k:.0f}px;opacity:.6">{dt["wk"]}</div>'
+               f'<div style="font-weight:800;font-size:{232 * k:.0f}px;color:{GOLD};line-height:.92">{dt["zi"]}</div>'
+               f'<div style="font-weight:800;font-size:{20 * k:.0f}px;letter-spacing:{7 * k:.0f}px;'
+               f'text-transform:uppercase;opacity:.85">{dt["luna"]}</div></div>') if dt else ""
     return (
         f'<div class="stage" style="background:{acc};color:{bg}">'
-        f'<div style="position:absolute;inset:{18*k:.0f}px;border:{1*k:.0f}px solid {GOLD};'
-        f'opacity:.45"></div>'
-        f'<div style="position:absolute;left:{64*k:.0f}px;top:50%;transform:translateY(-50%)">'
-        f'<div class="eticheta">{_eticheta(a)}</div>'
-        f'<div style="width:{int(190*k)}px;margin-top:{20*k:.0f}px" class="filet"></div>'
-        f'<div class="sub">{_subtitlu(a)}</div></div>'
-        f'<div style="position:absolute;right:{-90*k:.0f}px;top:50%;transform:translateY(-50%) '
-        f'rotate(45deg);width:{380*k:.0f}px;height:{380*k:.0f}px;border:{1*k:.0f}px solid {bg};'
-        f'opacity:.14"></div>'
-        f'<div class="marca" style="right:{40*k:.0f}px;bottom:{34*k:.0f}px">izz.ro</div>'
+        f'<div style="position:absolute;inset:{18 * k:.0f}px;border:{2 * k:.0f}px solid {GOLD};opacity:.5"></div>'
+        f'<div style="position:absolute;left:{64 * k:.0f}px;top:{0};bottom:{0};'
+        f'display:flex;flex-direction:column;justify-content:center;max-width:{500 * k:.0f}px">'
+        f'<div class="eticheta" style="font-size:{et_px}px;letter-spacing:{2 * k:.0f}px;'
+        f'line-height:1.06">{et}</div>'
+        f'<div style="width:{190 * k:.0f}px;height:{3 * k:.0f}px;background:{GOLD};margin:{22 * k:.0f}px 0 0"></div>'
+        f'<div class="sub" style="font-size:{18 * k:.0f}px;margin-top:{16 * k:.0f}px">{sb}</div></div>'
+        f'<div style="position:absolute;left:{-90 * k:.0f}px;top:50%;transform:translateY(-50%) '
+        f'rotate(45deg);width:{380 * k:.0f}px;height:{380 * k:.0f}px;border:{1 * k:.0f}px solid {bg};'
+        f'opacity:.14"></div>{numeral}'
+        f'<div class="marca" style="left:{64 * k:.0f}px;bottom:{40 * k:.0f}px">izz.ro</div>'
         f'<div class="grain"></div></div>'
     )
 
 
 def _t_banda(a, acc, bg, k):
-    """Banda de accent taiata la φ; tipografia sta pe hartie, langa ea."""
+    """Coltul: banda inchisa la stanga cu eticheta; in dreapta, categoria-fantomă si data."""
+    et, sb = _eticheta(a), _subtitlu(a)
+    dt = _data_copertei(a)
+    et_px = _et_px(et, ((8, 42), (13, 34), (18, 28), (99, 22)), k)
+    banda_jos = (f'<div style="position:absolute;left:{40 * k:.0f}px;bottom:{38 * k:.0f}px;'
+                 f'opacity:.7;font-weight:800;font-size:{14 * k:.0f}px;letter-spacing:{3 * k:.0f}px;'
+                 f'text-transform:uppercase;line-height:1.6">{dt["wk"]},<br>{dt["zi_n"]} {dt["luna"]}</div>'
+                 ) if dt else ""
+    data_dr = (f'<div style="position:absolute;right:{64 * k:.0f}px;top:{56 * k:.0f}px;text-align:right">'
+               f'<div class="eticheta" style="font-size:{72 * k:.0f}px">{dt["zi_n"]}</div>'
+               f'<div class="sub" style="margin-top:{8 * k:.0f}px;font-size:{17 * k:.0f}px">{dt["luna"]}</div>'
+               f'<div style="width:{64 * k:.0f}px;height:{3 * k:.0f}px;background:{GOLD};'
+               f'margin:{14 * k:.0f}px 0 0 auto"></div></div>') if dt else ""
+    fantoma = sb or "stiri"
     return (
         f'<div class="stage" style="background:{bg};color:{acc}">'
-        f'<div style="position:absolute;left:0;top:0;bottom:0;width:{int(ART_W/PHI/PHI*k)}px;'
-        f'background:{acc}"></div>'
-        f'<div style="position:absolute;left:{int(ART_W/PHI/PHI*k)}px;top:0;bottom:0;'
-        f'width:{3*k:.0f}px;background:{GOLD}"></div>'
-        f'<div style="position:absolute;left:{int(ART_W/PHI/PHI*k)+int(52*k)}px;top:50%;'
-        f'transform:translateY(-50%)">'
-        f'<div class="eticheta">{_eticheta(a)}</div>'
-        f'<div class="sub">{_subtitlu(a)}</div></div>'
-        f'<div style="position:absolute;left:{34*k:.0f}px;bottom:{34*k:.0f}px;color:{bg};'
-        f'font-weight:800;font-size:{13*k:.0f}px;letter-spacing:{3*k:.0f}px;'
-        f'text-transform:uppercase;opacity:.55">izz.ro</div>'
+        f'<div style="position:absolute;left:0;top:0;bottom:0;width:{300 * k:.0f}px;background:{acc}"></div>'
+        f'<div style="position:absolute;left:{300 * k:.0f}px;top:0;bottom:0;width:{3 * k:.0f}px;background:{GOLD}"></div>'
+        f'<div style="position:absolute;left:{40 * k:.0f}px;top:{56 * k:.0f}px;bottom:{110 * k:.0f}px;'
+        f'display:flex;flex-direction:column;justify-content:center;max-width:{220 * k:.0f}px">'
+        f'<div class="eticheta" style="font-size:{et_px}px;color:{bg};letter-spacing:{2 * k:.0f}px;'
+        f'line-height:1.08">{et}</div></div>'
+        f'<div style="position:absolute;left:{40 * k:.0f}px;width:{190 * k:.0f}px;height:{2 * k:.0f}px;'
+        f'background:{GOLD};top:50%"></div>{banda_jos}{data_dr}'
+        f'<div style="position:absolute;right:{-12 * k:.0f}px;bottom:{-34 * k:.0f}px;font-weight:800;'
+        f'font-size:{168 * k:.0f}px;letter-spacing:{2 * k:.0f}px;text-transform:uppercase;'
+        f'opacity:.06;white-space:nowrap">{fantoma}</div>'
+        f'<div class="marca" style="right:{24 * k:.0f}px;bottom:{34 * k:.0f}px;color:{acc};opacity:.6">izz.ro</div>'
         f'<div class="grain"></div></div>'
     )
 
 
 def _t_arc(a, acc, bg, k):
-    """Arc mare de accent taiat de margine — singura forma din set, geometrica, nu figurativa."""
+    """Sigiliul: cerc dublu auriu cu cifra zilei; eticheta mare ancorata la stanga."""
+    et, sb = _eticheta(a), _subtitlu(a)
+    dt = _data_copertei(a)
+    et_px = _et_px(et, ((8, 92), (13, 74), (18, 60), (99, 46)), k)
+    cx, cy, r = int(764 * k), int(252 * k), int(168 * k)
+    sigiliu = (f'<div style="position:absolute;left:{cx - r}px;top:{cy - r}px;width:{2 * r}px;height:{2 * r}px;'
+               f'border-radius:50%;border:{2 * k:.0f}px solid {GOLD};opacity:.6"></div>'
+               f'<div style="position:absolute;left:{cx - r + int(14 * k)}px;top:{cy - r + int(14 * k)}px;'
+               f'width:{2 * r - int(28 * k)}px;height:{2 * r - int(28 * k)}px;border-radius:50%;'
+               f'border:{1 * k:.0f}px solid {GOLD};opacity:.35"></div>'
+               f'<div style="position:absolute;left:{cx - r}px;top:{cy - int(58 * k)}px;width:{2 * r}px;'
+               f'text-align:center;line-height:1">'
+               f'<div style="font-weight:800;font-size:{96 * k:.0f}px;color:{GOLD_INCHIS}">{dt["zi"]}</div>'
+               f'<div style="font-weight:800;font-size:{15 * k:.0f}px;letter-spacing:{5 * k:.0f}px;'
+               f'text-transform:uppercase;opacity:.55;margin-top:{6 * k:.0f}px">{dt["wk"]}</div>'
+               f'<div style="font-weight:800;font-size:{13 * k:.0f}px;letter-spacing:{4 * k:.0f}px;'
+               f'text-transform:uppercase;opacity:.55">{dt["luna"]}</div></div>') if dt else ""
     return (
         f'<div class="stage" style="background:{bg};color:{acc}">'
-        f'<div style="position:absolute;right:{-200*k:.0f}px;top:50%;transform:translateY(-50%);'
-        f'width:{620*k:.0f}px;height:{620*k:.0f}px;border-radius:50%;background:{acc};'
-        f'opacity:.09"></div>'
-        f'<div style="position:absolute;right:{-150*k:.0f}px;top:50%;transform:translateY(-50%);'
-        f'width:{480*k:.0f}px;height:{480*k:.0f}px;border-radius:50%;'
-        f'border:{2*k:.0f}px solid {GOLD};opacity:.5"></div>'
-        f'<div style="position:absolute;left:{56*k:.0f}px;top:{56*k:.0f}px">'
-        f'<div style="width:{int(120*k)}px;margin-bottom:{22*k:.0f}px" class="filet"></div>'
-        f'<div class="eticheta">{_eticheta(a)}</div>'
-        f'<div class="sub">{_subtitlu(a)}</div></div>'
-        f'<div class="marca" style="left:{56*k:.0f}px;bottom:{44*k:.0f}px">izz.ro</div>'
+        f'<div style="position:absolute;left:{56 * k:.0f}px;top:{56 * k:.0f}px;'
+        f'width:{int(120 * k)}px" class="filet"></div>'
+        f'<div style="position:absolute;left:{56 * k:.0f}px;top:{96 * k:.0f}px;bottom:{64 * k:.0f}px;'
+        f'display:flex;flex-direction:column;justify-content:center;max-width:{470 * k:.0f}px">'
+        f'<div class="eticheta" style="font-size:{et_px}px;letter-spacing:{2 * k:.0f}px;'
+        f'line-height:1.05">{et}</div>{_rand_sub(sb, k)}</div>'
+        f'<div style="position:absolute;left:{540 * k:.0f}px;top:{cy}px;width:{cx - r - int(540 * k)}px;'
+        f'height:{1 * k:.0f}px;background:{acc};opacity:.2"></div>'
+        f'<div style="position:absolute;left:{cx + r - int(7 * k)}px;top:{cy - int(7 * k)}px;'
+        f'width:{14 * k:.0f}px;height:{14 * k:.0f}px;border-radius:50%;background:{GOLD}"></div>{sigiliu}'
+        f'<div class="marca" style="left:{56 * k:.0f}px;bottom:{34 * k:.0f}px">izz.ro</div>'
+        f'<div class="grain"></div></div>'
+    )
+
+
+# ---- silueta judetului -----------------------------------------------------
+# Geometria vine din `data/harta_judete.json`, al carui antet isi declara sursa: Natural Earth,
+# DOMENIU PUBLIC. Deci zero cerere de retea la randare, zero licenta de tert, zero termeni de
+# serviciu de respectat. Alternativa evidenta — tile-uri raster de la OpenStreetMap — ar fi
+# insemnat cereri automate catre serverul lor la fiecare rulare, pe care politica lor de tile-uri
+# o interzice; aici nu se pune problema, fisierul e deja in repo si e deja folosit de harta
+# stirilor (`render.py:590`).
+#
+# De ce asta NU incalca „zero figurativ" din reproiectarea 2026-08-05: critica de atunci tintea
+# PICTOGRAMELE DE INTERFATA scalate de la 24px la 300px+ — contur gros, forma schematica, zero
+# detaliu. Silueta unui judet e opusul: contur cartografic real, cu zeci de vertexuri, care
+# CASTIGA detaliu la marime mare in loc sa-l piarda. Si, spre deosebire de eticheta „ECONOMIC"
+# scrisa pe coperta unui articol economic, spune ceva adevarat si specific despre articol.
+_HARTA_PATH = os.path.join(_ROOT, "data", "harta_judete.json")
+_HARTA = None
+_NUM = re.compile(r"-?\d+(?:\.\d+)?")
+
+
+def _harta() -> dict:
+    """`{cod judet: path SVG}`. Citit o data si tinut pe modul — randam mii de imagini per rulare.
+
+    Orice esec de citire da `{}`, nu exceptie: coperta cade pe template-urile vechi. Un fisier
+    de date lipsa nu are voie sa opreasca pipeline-ul (§7 — mai bine sobru decat stricat).
+    """
+    global _HARTA
+    if _HARTA is None:
+        try:
+            with open(_HARTA_PATH, encoding="utf-8") as f:
+                _HARTA = json.load(f).get("judete") or {}
+        except (OSError, ValueError):
+            _HARTA = {}
+    return _HARTA
+
+
+def _bbox(d: str):
+    """Cutia de incadrare a unui path. Fisierul foloseste DOAR M/L/Z (verificat pe toate cele 42),
+    deci numerele sunt perechi x,y in ordine si nu e nevoie de un parser de path."""
+    n = [float(x) for x in _NUM.findall(d)]
+    if len(n) < 4:
+        return None
+    xs, ys = n[0::2], n[1::2]
+    return min(xs), min(ys), max(xs), max(ys)
+
+
+def _silueta(cod: str | None, latime: float, inaltime: float, culoare: str, op: float) -> str:
+    """SVG cu judetul scalat sa umple cutia data, pastrand proportia. "" cand lipseste geometria.
+
+    Silueta intra INTREAGA in cutie: un judet taiat de margine nu se mai citeste ca judet, ci ca
+    o pata (masurat vizual 2026-09-04, prima varianta o ancora la -110px si o taia pe trei parti).
+    Judetele au forme foarte diferite (Constanta e alungita, Ilfov e compact), deci se scaleaza
+    dupa bbox-ul PROPRIU, nu dupa viewbox-ul comun al tarii — altfel Ilfov ar aparea ca un punct.
+    Grosimea conturului se imparte la scara, ca sa ramana constanta in pixeli pe toate judetele.
+    """
+    d = _harta().get(cod or "")
+    b = _bbox(d) if d else None
+    if not b:
+        return ""
+    x0, y0, x1, y1 = b
+    lw, lh = max(x1 - x0, 0.01), max(y1 - y0, 0.01)
+    s = min(latime / lw, inaltime / lh)
+    tx, ty = (latime - lw * s) / 2 - x0 * s, (inaltime - lh * s) / 2 - y0 * s
+    return (f'<svg width="{latime:.0f}" height="{inaltime:.0f}" '
+            f'viewBox="0 0 {latime:.0f} {inaltime:.0f}" aria-hidden="true" focusable="false">'
+            f'<g transform="translate({tx:.2f} {ty:.2f}) scale({s:.4f})">'
+            f'<path d="{d}" fill="{culoare}" fill-opacity="{op}" stroke="{GOLD}" '
+            f'stroke-opacity=".5" stroke-width="{2.2 / s:.2f}" stroke-linejoin="round"/>'
+            f'</g></svg>')
+
+
+def _judet(a: dict) -> str | None:
+    """Codul judetului pe care coperta il poate desena, sau None.
+
+    DOAR din cheia sursei (`geo.judet_sursa`), care il codeaza in clar (`pl_vrancea_...`, `cj_cluj`)
+    — determinist, fara euristica. Titlul e refuzat deliberat ca sursa: o stire locala poate numi
+    alt judet decat cel despre care e vorba, iar o silueta GRESITA e mai rea decat niciuna (§7).
+    `regional` e exclus din acelasi motiv: acopera mai multe judete, deci oricare ar fi o minciuna.
+    Masurat 2026-09-04 pe `data/articles.json`: 2.923 din cele 5.264 de articole cu axa geografica.
+    """
+    if (a.get("category") or "") not in ("local", "judetean"):
+        return None
+    cod = geo.judet_sursa(a.get("source"))
+    return cod if cod and cod in _harta() else None
+
+
+def _sub_harta(a: dict, cod: str) -> str:
+    """Sub eticheta sta JUDETUL, nu categoria: el explica silueta si adauga ceva ce cardul nu are.
+    Cade pe categorie cand eticheta E deja judetul — „CLUJ / CLUJ" n-ar spune nimic in plus.
+
+    NU e inclusa in `gen_images._semnatura()`, si asta e deliberat: semnatura decide ce imagine se
+    REGENEREAZA, iar adaugarea judetului acolo ar invalida-o pentru toate cele ~2.900 de articole
+    locale deodata. Exact regenerarea in masa refuzata de proprietar (`IZZ-0163`) si exact modul in
+    care `IZZ-0162` era pe cale sa stearga ~8.900 de imagini intr-o rulare. Consecinta acceptata:
+    silueta apare pe copertile generate DE ACUM INCOLO, nu retroactiv; `FORCE_REGEN=1` le aduce
+    pe cele vechi cand proprietarul decide asta.
+    """
+    nume = geo.eticheta_judet(cod) or ""
+    return nume if nume.strip().lower() != _eticheta(a).strip().lower() else _subtitlu(a)
+
+
+def _t_harta(a, acc, bg, k):
+    """Silueta reala a judetului in dreapta, tipografia in stanga, in limbajul reproiectarii
+    din 2026-09-06: bara de sus cu data si filet auriu, eticheta treptata, filet inline la
+    subtitlu, bara de jos. Se alege doar cand judetul e cunoscut (vezi `_judet`).
+
+    Alinierea la limbajul ala NU e cosmetica: dupa merge-ul cu main, un `_t_harta` ramas in
+    stilul vechi ar fi dat articolelor locale exact coperta criticata acolo ca „~80% spatiu
+    alb", pe langa carduri care poarta data. Latimea tipografiei e plafonata la 520px (fata de
+    660 la `editorial`), ca numele lungi sa nu intre peste silueta (masurat: la 520px si 104px, „FLOREȘTI"
+    ajungea la 14px de ea).
+    """
+    cod = _judet(a)
+    et, sb = _eticheta(a), _sub_harta(a, cod)
+    dt = _data_copertei(a)
+    et_px = _et_px(et, ((8, 92), (13, 76), (18, 62), (99, 48)), k)
+    sus = f"{dt['wk']} {dt['zi_n']} {dt['luna']} {dt['an']}" if dt else ""
+    return (
+        f'<div class="stage" style="background:{bg};color:{acc}">'
+        f'<div style="position:absolute;right:{40 * k:.0f}px;top:{104 * k:.0f}px;'
+        f'bottom:{72 * k:.0f}px;display:flex;align-items:center;line-height:0">'
+        f'{_silueta(cod, 330 * k, 300 * k, acc, 0.15)}</div>'
+        f'<div style="position:absolute;left:{56 * k:.0f}px;right:{56 * k:.0f}px;top:{30 * k:.0f}px;'
+        f'display:flex;justify-content:space-between;align-items:baseline">'
+        f'<span class="marca" style="position:static;font-size:{15 * k:.0f}px;opacity:.65">izz.ro</span>'
+        f'<span class="marca" style="position:static;font-size:{13 * k:.0f}px">{sus}</span></div>'
+        f'<div style="position:absolute;left:{56 * k:.0f}px;right:{56 * k:.0f}px;top:{68 * k:.0f}px;'
+        f'height:{3 * k:.0f}px;background:{GOLD}"></div>'
+        f'<div style="position:absolute;left:{56 * k:.0f}px;top:{92 * k:.0f}px;bottom:{96 * k:.0f}px;'
+        f'display:flex;flex-direction:column;justify-content:center;max-width:{470 * k:.0f}px">'
+        f'<div class="eticheta" style="font-size:{et_px}px;letter-spacing:{2 * k:.0f}px;'
+        f'line-height:1.04">{et}</div>{_rand_sub(sb, k)}</div>'
         f'<div class="grain"></div></div>'
     )
 
 
 _TEMPLATES = [_t_editorial, _t_inversat, _t_banda, _t_arc]
+# Numele compozitiilor, in ACEEASI ordine: `stil_inline` le trimite in clasa CSS
+# `art--<nume>`, iar `build_html(sablon=...)` le cauta dupa nume. Perechea e verificata
+# imediat mai jos, nu prin convenite: desincronizata, ar da tacut alta compozitie decat
+# arata rasterul pentru acelasi articol.
+_NUME_TEMPLATE = ("editorial", "inversat", "banda", "arc")
+assert len(_NUME_TEMPLATE) == len(_TEMPLATES)
 
 
-def build_html(a: dict, cover: bool = False) -> str:
-    """HTML pentru imaginea articolului. cover=True -> 1200x630 (og); altfel 960x504 (banner)."""
-    seed = hashlib.sha1((a.get("title") or "x").encode()).digest()
+def _tile_xt_yt(lat: float, lon: float, z: int) -> tuple[float, float]:
+    """Coordonatele FRACTIONARE de dala Web Mercator pentru (lat, lon)."""
+    n = 2 ** z
+    xt = (lon + 180) / 360 * n
+    lat_r = math.radians(lat)
+    yt = (1 - math.log(math.tan(lat_r) + 1 / math.cos(lat_r)) / math.pi) / 2 * n
+    return xt, yt
+
+
+def _t_cutremur(a, ch, acc, bg, k):
+    """Coperta din date: harta OSM cu epicentrul (sursa EMSC) si panou editorial.
+
+    Dalile vin de la tile.openstreetmap.org randate de Chromium in Actions
+    (atribuirea obligatorie e tiparita pe imagine). Epicentrul cade la ~62% din
+    latimea hartii, cu inele aurii concentrice — figura intreaga e geometrica,
+    nu figurativa (regula din docstringul modulului).
+    """
+    et = ch.get("loc") or _eticheta(a)
+    dt = _data_copertei(a)
+    mag_ro = f'M {ch["mag"]:.1f}'.replace(".", ",")
+    panel_w = 300
+    cw = ART_W - panel_w
+    epi_x, epi_y = (panel_w + int(cw * 0.62)) * k, int(ART_H * 0.5) * k
+    xt, yt = _tile_xt_yt(ch["lat"], ch["lon"], 8)
+    x0, y0 = int(xt) - 1, int(yt) - 1
+    px, py = (xt - x0) * 256, (yt - y0) * 256
+    grid_left, grid_top = epi_x - px * k, epi_y - py * k
+    dale = "".join(
+        f'<img src="https://tile.openstreetmap.org/8/{x0 + c}/{y0 + r}.png" '
+        f'style="position:absolute;left:{grid_left + c * 256 * k:.0f}px;'
+        f'top:{grid_top + r * 256 * k:.0f}px;width:{256 * k:.0f}px;height:{256 * k:.0f}px;'
+        f'filter:grayscale(1) sepia(.14) brightness(1.05) contrast(.92)">'
+        for c in range(4) for r in range(3))
+    inele = "".join(
+        f'<div style="position:absolute;left:{epi_x - r * k:.0f}px;top:{epi_y - r * k:.0f}px;'
+        f'width:{2 * r * k:.0f}px;height:{2 * r * k:.0f}px;border-radius:50%;'
+        f'border:{3 * k:.0f}px solid {GOLD};opacity:{op}"></div>'
+        for r, op in ((52, ".9"), (34, ".65"), (18, "1")))
+    data_txt = f'{dt["zi_n"]} {dt["luna"]} {dt["an"]}' if dt else ""
+    adanc = f' · adâncime {ch["adancime"]} km' if ch.get("adancime") else ""
+    return (
+        f'<div class="stage" style="background:{bg};color:{acc}">'
+        f'<div style="position:absolute;left:0;top:0;bottom:0;width:{panel_w * k:.0f}px;'
+        f'background:{bg}"></div>{dale}{inele}'
+        f'<div style="position:absolute;left:{epi_x - 9 * k:.0f}px;top:{epi_y - 9 * k:.0f}px;'
+        f'width:{18 * k:.0f}px;height:{18 * k:.0f}px;border-radius:50%;background:{GOLD};'
+        f'outline:{3 * k:.0f}px solid {bg}"></div>'
+        f'<div style="position:absolute;left:{panel_w * k:.0f}px;top:0;bottom:0;'
+        f'width:{3 * k:.0f}px;background:{GOLD}"></div>'
+        f'<div style="position:absolute;left:{44 * k:.0f}px;top:{52 * k:.0f}px">'
+        f'<div style="width:{96 * k:.0f}px;height:{3 * k:.0f}px;background:{GOLD}"></div>'
+        f'<div class="eticheta" style="font-size:{40 * k:.0f}px;margin-top:{26 * k:.0f}px">{et}</div>'
+        f'<div class="sub" style="margin-top:{10 * k:.0f}px">CUTREMUR</div></div>'
+        f'<div style="position:absolute;left:{44 * k:.0f}px;bottom:{96 * k:.0f}px;line-height:1">'
+        f'<div style="font-weight:800;font-size:{84 * k:.0f}px;color:{GOLD_STRONG}">{mag_ro}</div>'
+        f'<div style="font-weight:800;font-size:{16 * k:.0f}px;opacity:.7;margin-top:{10 * k:.0f}px">'
+        f'{data_txt}{adanc}</div></div>'
+        f'<div class="marca" style="left:{44 * k:.0f}px;bottom:{34 * k:.0f}px">izz.ro</div>'
+        f'<div style="position:absolute;right:{12 * k:.0f}px;bottom:{10 * k:.0f}px;'
+        f'background:{bg};opacity:.85;padding:{4 * k:.0f}px {8 * k:.0f}px">'
+        f'<span class="marca" style="position:static;opacity:.65">'
+        f'Hartă © OpenStreetMap · Seisme: EMSC</span></div>'
+        f'<div class="grain"></div></div>'
+    )
+
+
+def _t_meteo(a, ch, acc, bg, k):
+    """Coperta din date: prognoza pe 7 zile pentru localitatea stirii.
+
+    Apare doar cand `eventdata.attach` a atasat `event_chart` (fail-safe la
+    sursa: datele vin din api.open-meteo.com, etichetate pe imagine). Cifrele
+    NU se recomputa aici — desenam exact ce e in stare.
+    """
+    zile = ch["zile"]
+    lo = min(z["min"] for z in zile) - 2
+    hi = max(z["max"] for z in zile) + 2
+    x0, x1, y0, y1 = 350 * k, 920 * k, 150 * k, 390 * k
+    step = (x1 - x0) / len(zile)
+    bw = step * 0.5
+    cols = []
+    for i, z in enumerate(zile):
+        cx = x0 + (i + .5) * step
+        hmax = (z["max"] - lo) / (hi - lo) * (y1 - y0)
+        hmin = (z["min"] - lo) / (hi - lo) * (y1 - y0)
+        cols.append(
+            f'<div style="position:absolute;left:{cx - bw / 2:.0f}px;width:{bw:.0f}px;'
+            f'top:{y1 - hmax:.0f}px;height:{hmax - hmin:.0f}px;background:{GOLD};'
+            f'border-radius:{9 * k:.0f}px"></div>'
+            f'<div style="position:absolute;left:{cx:.0f}px;top:{y1 - hmax - 30 * k:.0f}px;'
+            f'transform:translateX(-50%);font-weight:800;font-size:{22 * k:.0f}px">{z["max"]}°</div>'
+            f'<div style="position:absolute;left:{cx:.0f}px;top:{y1 - hmin + 6 * k:.0f}px;'
+            f'transform:translateX(-50%);font-weight:800;font-size:{15 * k:.0f}px;'
+            f'opacity:.5">{z["min"]}°</div>'
+            f'<div style="position:absolute;left:{cx:.0f}px;top:{y1 + 16 * k:.0f}px;'
+            f'transform:translateX(-50%);font-weight:800;font-size:{20 * k:.0f}px">{z["lit"]}</div>'
+            f'<div style="position:absolute;left:{cx:.0f}px;top:{y1 + 42 * k:.0f}px;'
+            f'transform:translateX(-50%);font-weight:800;font-size:{13 * k:.0f}px;'
+            f'opacity:.5">{z["zi"]}</div>')
+    return (
+        f'<div class="stage" style="background:{bg};color:{acc}">'
+        f'<div style="position:absolute;left:{56 * k:.0f}px;top:{56 * k:.0f}px;'
+        f'width:{int(120 * k)}px" class="filet"></div>'
+        f'<div style="position:absolute;left:{56 * k:.0f}px;top:{78 * k:.0f}px">'
+        f'<div class="eticheta">{ch.get("localitate") or _eticheta(a)}</div>'
+        f'<div class="sub">Prognoză · 7 zile</div></div>'
+        f'<div style="position:absolute;left:{x0 - 10 * k:.0f}px;top:{y1 + 4 * k:.0f}px;'
+        f'width:{x1 - x0 + 10 * k:.0f}px;height:{2 * k:.0f}px;opacity:.25;background:{acc}"></div>'
+        f'{"".join(cols)}'
+        f'<div class="marca" style="left:{56 * k:.0f}px;bottom:{44 * k:.0f}px">izz.ro</div>'
+        f'<div class="marca" style="right:{20 * k:.0f}px;bottom:{28 * k:.0f}px">'
+        f'Sursa datelor: {ch.get("sursa") or "open-meteo.com"}</div>'
+        f'<div class="grain"></div></div>'
+    )
+
+
+def _seed(a: dict) -> bytes:
+    """Semintele de compozitie ale articolului `a` — sursa unica pentru raster si pentru
+    arta desenata in pagina.
+
+    UN SINGUR LOC, fiindca e o invarianta: `build_html` si `stil_inline` TREBUIE sa aleaga
+    aceeasi paleta si acelasi sablon pentru acelasi articol, altfel og:image-ul arata altfel
+    decat pagina pe care o anunta. Cu doua copii ale expresiei, invarianta tinea prin
+    coincidenta (`tests/test_arta_inline.py` o verifica — dar un test prinde, nu previne).
+
+    SHA-256, nu SHA-1, si nu din superstitie. Aici digestul nu apara nimic: din el ies un
+    index de paleta si unul de sablon, deci o coliziune inseamna „doua stiri seamana", nu o
+    semnatura falsificata. Prima incercare a fost tocmai asta, scrisa ca `# nosemgrep` cu
+    justificarea alaturi — si a esuat MASURAT: semgrep chiar recunoaste suprimarea (SARIF:
+    `suppressions: [{kind: inSource}]`, constatarea iese din numarul de blocking), dar
+    pastreaza rezultatul in SARIF, iar GitHub ridica alerta oricum si botul o re-posteaza pe
+    PR la fiecare atingere a liniei. Reparatia adevarata e in poarta care nu citeste
+    `suppressions` — cale protejata (§10), deci nu a mea (IZZ-0316). Ce ramane sub controlul
+    codului e algoritmul, iar aici nu costa nimic sa fie cel pe care nimeni nu-l discuta.
+
+    Ce a costat schimbarea, ca sa nu se re-deschida: semintele noi remixeaza paletele si
+    sabloanele, deci copertile `media/<aid>.c.jpg` desenate inainte nu se mai potrivesc cu
+    arta din pagina. Tranzitoriu si autovindecator: fereastra og e de ~1.200 de articole
+    (~2 zile), iar `tools/gen_images.py` prune-uieste copertile iesite din ea si le deseneaza
+    din nou pe cele intrate. Dupa o rotatie completa a ferestrei, nimic nu mai difera.
+
+    `art_id()` de mai jos ramane pe SHA-1 DELIBERAT: acolo digestul e NUMELE FISIERULUI din
+    `media/`. Schimbat, ar redenumi peste 12.000 de fisiere comise si ar rupe fiecare imagine
+    deja publicata. Alt uz, alt calcul — nu-l „repara" la pachet cu asta.
+    """
+    return hashlib.sha256((a.get("title") or "x").encode()).digest()
+
+
+def build_html(a: dict, cover: bool = False, sablon: str | None = None) -> str:
+    """HTML pentru imaginea articolului. cover=True -> 1200x630 (og); altfel 960x504 (banner).
+
+    `sablon` forteaza o compozitie anume, dupa numele ei din `_NUME_TEMPLATE`. Exista pentru
+    copertile de CATEGORIE (`tools/gen_images.py`), care n-au data publicarii: trei din cele
+    patru compozitii isi construiesc jumatatea dreapta din cifra zilei, iar fara ea raman
+    aproape goale -- exact critica „~80% spatiu alb" din reproiectarea 2026-09-06. `editorial`
+    e singura care se inchide corect fara data. Pentru articole ramane seed-ul: acolo data
+    exista intotdeauna, iar variatia e chiar scopul.
+    """
+    seed = _seed(a)
     acc, bg = _PALETE[seed[0] % len(_PALETE)]
     w, h = (COVER_W, COVER_H) if cover else (ART_W, ART_H)
-    body = _TEMPLATES[seed[4] % len(_TEMPLATES)](a, acc, bg, w / ART_W)
+    ch = a.get("event_chart") or {}
+    if ch.get("tip") == "meteo" and ch.get("zile"):
+        body = _t_meteo(a, ch, acc, bg, w / ART_W)
+    elif ch.get("tip") == "cutremur" and ch.get("lat") is not None:
+        body = _t_cutremur(a, ch, acc, bg, w / ART_W)
+    elif sablon:
+        body = _TEMPLATES[_NUME_TEMPLATE.index(sablon)](a, acc, bg, w / ART_W)
+    # Silueta judetului sta SUB graficele de eveniment si SUB sablonul fortat: meteo si
+    # cutremur spun ce s-a intamplat, harta spune doar unde, iar copertile de categorie
+    # (`sablon`) n-au judet prin constructie. Peste rotatia generica trece insa, fiindca e
+    # singurul strat ramas care spune ceva despre ARTICOL, nu despre rubrica.
+    elif _judet(a):
+        body = _t_harta(a, acc, bg, w / ART_W)
+    else:
+        body = _TEMPLATES[seed[4] % len(_TEMPLATES)](a, acc, bg, w / ART_W)
     return (f"<!doctype html><html><head><meta charset='utf-8'><style>{_base_css(w, h)}</style></head>"
             f"<body>{body}</body></html>")
 
@@ -189,3 +602,42 @@ def art_id(a: dict) -> str:
     """ID stabil (din URL/titlu) — numele imaginii comise, independent de slug-ul de render."""
     key = a.get("url") or a.get("original_link") or a.get("title") or ""
     return hashlib.sha1(key.encode()).hexdigest()[:16]
+
+
+# ---- arta DESENATA IN PAGINA (Workers Free, 2026-09-09) --------------------
+# Compozitiile de mai sus sunt tipografie si geometrie: fond plat, eticheta majuscula,
+# filete aurii, cercuri, cifra zilei. Nimic figurativ, nimic fotografic. Un browser le
+# deseneaza direct, vectorial, fara sa descarce 960x504 de pixeli — deci pe planul gratuit
+# Cloudflare (20.000 de fisiere/versiune) nu mai are rost sa existe fisierul.
+#
+# Ce intoarce `stil_inline` NU e HTML: e DESCRIEREA compozitiei. Culorile si marimile stau
+# in `static/styles.css` (§8: template-urile nu hardcodeaza culori), iar `templates/_art.html`
+# le pune pe DOM. Semintele sunt aceleasi ca in `build_html`, deci un articol pastreaza exact
+# compozitia si paleta pe care le avea ca raster. (`_NUME_TEMPLATE` sta langa `_TEMPLATES`.)
+#
+# Aceleasi praguri de lungime ca `_et_px`: numele lungi coboara o treapta ca sa nu iasa din
+# cadru. Raportul intre trepte e practic identic la toate cele patru compozitii (1 / .80 /
+# .65 / .50), deci CSS-ul tine un singur set de coeficienti si o marime de baza per compozitie.
+_ET_TREPTE = (8, 13, 18)
+
+
+def _treapta_eticheta(et: str) -> int:
+    n = len((et or "").strip())
+    for i, plafon in enumerate(_ET_TREPTE):
+        if n <= plafon:
+            return i
+    return len(_ET_TREPTE)
+
+
+def stil_inline(a: dict) -> dict:
+    """Descrierea artei desenate in pagina pentru `a` (compozitie, paleta, texte, data)."""
+    seed = _seed(a)
+    et = _eticheta(a)
+    return {
+        "tpl": _NUME_TEMPLATE[seed[4] % len(_NUME_TEMPLATE)],
+        "pal": seed[0] % len(_PALETE),
+        "eticheta": et,
+        "sub": _subtitlu(a),
+        "treapta": _treapta_eticheta(et),
+        "data": _data_copertei(a),
+    }

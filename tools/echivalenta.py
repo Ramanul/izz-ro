@@ -65,8 +65,9 @@ nu au acelasi input. Pe 09-04 nu a muscat, fiindca articolele de la limita sunt 
 VECHI din setul proaspat, iar plafonul e de 4 carduri per categorie cu 41-584 de articole
 proaspete in fiecare; dar in `regional`, cu 2 articole proaspete, tot ce e proaspat se
 afiseaza, deci acolo un singur articol care traverseaza pragul schimba pagina. Cand `compara`
-iese DIFERIT, discriminatorul e LISTA: diferente limitate la `index.html` (si eventual
-`art-card.webp`) inseamna ceasul; orice altceva inseamna nedeterminism in cod.
+iese DIFERIT, discriminatorul e LISTA: diferente limitate la `index.html` inseamna ceasul;
+orice altceva inseamna nedeterminism in cod. (Pana pe 2026-09-09 in aceeasi categorie intra si
+`art-card.webp`, derivata miniaturilor de pe homepage; arta nu mai e fisier, deci nici exceptia.)
 """
 import argparse
 import hashlib
