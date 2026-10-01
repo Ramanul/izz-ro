@@ -718,7 +718,10 @@ def loc_din_titlu(titlu: str, judet: str | None = None) -> str:
             return eticheta_judet(judet)
     if localitati:
         return eticheta_localitate(localitati[0])
-    return eticheta_judet(judete[0]) if judete else ""
+    if judete:
+        return eticheta_judet(judete[0])
+    # Ultimul recourse: titlul numeste judetul prin gentilici („mehedințeni"), nu prin nume.
+    return eticheta_judet(judet_din_demonim(titlu))
 
 
 def loc_din_sursa(sursa: str | None) -> str:
@@ -746,6 +749,52 @@ def loc_din_sursa(sursa: str | None) -> str:
     if strip_diacritics(judet).upper() not in _JUDETUL_LOCALITATII.get(cheie, ()):
         return ""
     return eticheta_localitate(cheie)
+
+
+# Demonime de judet (2026-10-01, cazul real „Polițiștii mehedințeni..."): titlul numeste
+# judetul prin forma de gentilici, nu prin nume, iar potrivirea exacta pe nume il rateaza
+# si coperta cade pe numele categoriei. Tabel CURATAT, nu regula de derivare: fiecare
+# intrare e nedeterminata (un singur judet) si uzuala in presa; formele ambigue sau rare
+# stau afara deliberat — „olteni" inseamna Oltenia, nu judetul Olt; Alba si Ialomita au
+# gentilici prea rar folosit pentru a merita o intrare. Cheile se compara pe cuvant intreg,
+# normalizat fara diacritice („Mehedințeni" == „mehedinteni").
+_DEMONIME_JUDETE: dict[str, str] = {
+    "clujeni": "CLUJ", "brașoveni": "BRASOV", "arădeni": "ARAD",
+    "timișoreni": "TIMIS", "reșițeni": "CARAS-SEVERIN", "bihoreni": "BIHOR",
+    "orădeni": "BIHOR", "ieșeni": "IASI", "galațeni": "GALATI",
+    "constănțeni": "CONSTANTA", "dâmbovițeni": "DAMBOVITA", "bucureșteni": "BUCURESTI",
+    "sibieni": "SIBIU", "ploieșteni": "PRAHOVA", "brăileni": "BRAILA",
+    "botoșăneni": "BOTOSANI", "călărașeni": "CALARASI", "giurgiuveni": "GIURGIU",
+    "hunedoreni": "HUNEDOARA", "mureșeni": "MURES", "covăsneni": "COVASNA",
+    "harghiteni": "HARGHITA", "maramureșeni": "MARAMURES", "sătmăreni": "SATU-MARE",
+    "tulceni": "TULCEA", "gorjeni": "GORJ", "mehedințeni": "MEHEDINTI",
+    "vrânceni": "VRANCEA", "vasluieni": "VASLUI", "bacăueni": "BACAU",
+    "neamțeni": "NEAMT", "buzoeni": "BUZAU", "bistrițeni": "BISTRITA-NASAUD",
+    "sălăjeni": "SALAJ", "argeșeni": "ARGES", "suceveni": "SUCEAVA",
+    "craioveni": "DOLJ", "râmniceni": "VALCEA", "ilfoveni": "ILFOV",
+    "teleormăneni": "TELEORMAN", "ialomițeni": "IALOMITA",
+}
+_DEMONIME_NORMALIZATE: dict[str, str] | None = None
+
+
+def judet_din_demonim(titlu: str) -> str:
+    """Codul de judet numit in titlu prin gentilici, sau "" — ultimul punct de recourse.
+
+    Apeleat doar cand niciun nume de localitate sau de judet nu a scazut: gentiliciul e
+    mai slab decat numele, si o stire „clujeni și suceveni împreună" cade oricum pe
+    departajarea din `loc_din_titlu`, nu pe prima intrare de aici.
+    """
+    global _DEMONIME_NORMALIZATE
+    if not titlu:
+        return ""
+    if _DEMONIME_NORMALIZATE is None:
+        _DEMONIME_NORMALIZATE = {strip_diacritics(k).lower(): v
+                                 for k, v in _DEMONIME_JUDETE.items()}
+    for token in re.findall(r"[a-zăâîșț]{5,}", titlu.lower()):
+        cod = _DEMONIME_NORMALIZATE.get(strip_diacritics(token).lower())
+        if cod:
+            return cod
+    return ""
 
 
 def eticheta_copertei(a: dict) -> str:

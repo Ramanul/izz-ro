@@ -1059,7 +1059,8 @@ def build(articles: list, mod: dict | None = None) -> None:
                 "itemListElement": [
                     {"@type": "ListItem", "position": 1, "name": config.SITE["name"],
                      "item": config.SITE["url"] + "/"},
-                    {"@type": "ListItem", "position": 2, "name": cat,
+                    {"@type": "ListItem", "position": 2,
+                     "name": config.CATEGORY_LABELS.get(cat, cat.capitalize()),
                      "item": f"{config.SITE['url']}/{cat}/"},
                     {"@type": "ListItem", "position": 3, "name": a.get("title", "")},
                 ]

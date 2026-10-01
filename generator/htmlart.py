@@ -30,7 +30,7 @@ import math
 import os
 import re
 
-from . import geo
+from . import config, geo
 
 _ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 _ASSETS = os.path.join(os.path.dirname(os.path.abspath(__file__)), "assets")
@@ -64,17 +64,32 @@ def _font() -> str:
     return _FONT_B64
 
 
+def _eticheta_categorie(cat: str) -> str:
+    """Numele afisat al categoriei, cu diacritice — nu slug-ul URL.
+
+    Coperta e limba cititorului: „Sănătate", nu „sanatate". Caderea pe capitalizat
+    pastreaza contractul filtrului `cat_label` (render.py): o categorie noua neconfigurata
+    arata decente pana intra in `config.CATEGORY_LABELS`."""
+    cat = (cat or "").strip()
+    if not cat:
+        return ""
+    return config.CATEGORY_LABELS.get(cat, cat.capitalize())
+
+
 def _eticheta(a: dict) -> str:
     """Textul etichetei: locul la stirile de loc, altfel categoria (vezi geo.eticheta_copertei)."""
-    return geo.eticheta_copertei(a) or (a.get("category") or "").strip() or "stiri"
+    return geo.eticheta_copertei(a) or _eticheta_categorie(a.get("category")) or "Știri"
 
 
 def _subtitlu(a: dict) -> str:
     """A doua linie, discreta. Goala cand ar repeta eticheta (categorie == judet afisat)."""
     cat = (a.get("category") or "").strip()
-    if not cat or cat.lower() == _eticheta(a).strip().lower():
+    if not cat:
         return ""
-    return cat
+    sub = _eticheta_categorie(cat)
+    if sub.lower() == _eticheta(a).strip().lower():
+        return ""
+    return sub
 
 
 # Data publicarii ca ELEMENT DE DESIGN (reproiectare 2026-09-06): coperta clasica era

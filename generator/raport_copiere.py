@@ -21,12 +21,29 @@ from __future__ import annotations
 
 import json
 import os
+import re
+from collections import Counter
 from datetime import datetime, timezone
 from pathlib import Path
 
-from .verifica_sinteza import suprapunere_sursa, verifica
+from .verifica_sinteza import _normalizat, suprapunere_sursa, verifica
 
 CALE = Path(__file__).resolve().parents[1] / "data" / "raport_copiere.jsonl"
+
+# Frecventa cuvintelor din titlurile intregului corpus, normalizate fara diacritice —
+# discriminatorul verificarii `cuvant_deformat_sursa` (forma rara din titlul nostru vs.
+# forma frecventa din slug-ul sursei). O configureaza `main.run` o data per rulare,
+# dupa incarcarea starii; neconfigurata, verificarea tace.
+_FRECVENTA_TITLURI: Counter | None = None
+
+
+def configureaza_frecventa(articole: list) -> None:
+    """Tabla de frecventa a titlurilor existente, o singura data per rulare."""
+    global _FRECVENTA_TITLURI
+    _FRECVENTA_TITLURI = Counter()
+    for a in articole or []:
+        for w in re.findall(r"[a-zăâîșț]{4,}", (a.get("title") or "").lower()):
+            _FRECVENTA_TITLURI[_normalizat(w)] += 1
 
 
 def _cale() -> Path:
@@ -69,12 +86,15 @@ def _rand_de_eroare(model: str, identificator: str, exc: Exception) -> dict:
     }
 
 
-def noteaza(model: str, identificator: str, titlu: str, rezumat: str, sursa: str) -> None:
+def noteaza(model: str, identificator: str, titlu: str, rezumat: str, sursa: str,
+            slug_original: str = "") -> None:
     """Masoara si scrie rapoartele.
 
     Jurnalul observational ramane best-effort. Raportul tranzitoriu este insa parte din
     release contract: cand este configurat, orice eroare de masurare devine o dovada
     blocanta, iar orice eroare de scriere a dovezii se propaga si opreste pipeline-ul.
+    `slug_original` e slug-ul URL-ului original al sursei — hraneste verificarea
+    `cuvant_deformat_sursa` (cazul „Transtrictica"); gol, verificarea respective tace.
     """
     if not sursa or not (titlu or rezumat):
         return
@@ -83,7 +103,9 @@ def noteaza(model: str, identificator: str, titlu: str, rezumat: str, sursa: str
     try:
         s_titlu = suprapunere_sursa(titlu or "", sursa)
         s_text = suprapunere_sursa(rezumat or "", sursa)
-        probleme = verifica(titlu or "", rezumat or "", sursa)
+        probleme = verifica(titlu or "", rezumat or "", sursa,
+                            slug_sursa=slug_original,
+                            frecventa=_FRECVENTA_TITLURI)
         blocking = [
             {"cod": p.cod, "detaliu": p.detaliu[:_MAX_FRAGMENT]}
             for p in probleme
