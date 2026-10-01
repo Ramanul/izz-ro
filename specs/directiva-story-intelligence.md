@@ -1,7 +1,7 @@
 # Directiva de agent — Story Intelligence pe izz.ro
 
-> **Stare: `propus` — așteaptă acordul proprietarului.** Până la adoptare, nicio regulă de aici
-> nu obligă nicio sesiune; obligă doar CLAUDE.md și AGENTS.md.
+> **Stare: `adoptată` 2026-10-01.** Proprietarul a delegat adoptarea în chat („rezolva tu tot",
+> după prezentarea celor patru decizii care îi aparțineau). Obligă din momentul aterizării acestui commit.
 >
 > **De ce există.** izz.ro este, azi, „articol → rezumat → sursă". Transformarea propusă îl mută
 > pe „STORY → surse → fapte → contradicții → timeline → sinteză": mai multe articole despre
