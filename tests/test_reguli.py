@@ -767,6 +767,12 @@ REGULI_ACTIVE = frozenset({
     'Programator:',
     'Utilizator:',
     'Livrabilitate:',
+    "Coada e PLAFONATĂ — decizie proprietar 2026-09-15 [IZZ-0393].",
+    "Necunoscutul se închide, nu se raportează.",
+    "Nicio scutire.",
+    "Nu eticheta ce n-ai măsurat.",
+    "Proporție înainte de rigoare — REGULĂ TARE.",
+    "Înainte să deschizi un PR nou, întreabă dacă nu închizi unul.",
 })
 
 # Stratul L1 (F4, 2026-08-30): regulile conditionate NU mai stau in `CLAUDE.md` — se livreaza
