@@ -1034,9 +1034,9 @@ def build(articles: list, mod: dict | None = None) -> None:
     _render_sections(env)
     _render_ghiduri(env, by_date)
     # Pagina 404 nu e o categorie goala, e capatul unui link mort — si cel mai frecvent motiv
-    # NU e o adresa gresita, ci un articol EXPIRAT. `config.ARTICLE_TTL_DAYS = 21`, iar
+    # NU e o adresa gresita, ci un articol EXPIRAT. `config.ARTICLE_TTL_DAYS = 20`, iar
     # `state.expire()` scoate articolul din stare, deci pagina lui nu se mai randeaza:
-    # orice permalink partajat moare in trei saptamani. (Era o saptamana pana la #197, ridicat
+    # orice permalink partajat moare in douazeci de zile. (Era o saptamana pana la #197, ridicat
     # la 30 fiindca Google raportase 193 de pagini indexate care dadeau 404.) Masurat pe live 8/8, cu control pozitiv
     # (articol viu -> 200) si negativ (articol expirat -> 404) — vezi
     # handoff/arhiva/2026-08-06-handoff-integral.md.

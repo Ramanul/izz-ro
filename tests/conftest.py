@@ -21,8 +21,29 @@ import sys
 
 import pytest
 
+import poarta_stare
+
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 OUT = os.path.join(ROOT, "output")
+
+
+# --- garzile care citesc stare COMISA si MUTABILA -----------------------------------
+# Motivatia, cifrele si invariantul sunt in `tests/poarta_stare.py`. Aici e doar cablajul.
+def pytest_configure(config):
+    config.addinivalue_line(
+        "markers",
+        f"{poarta_stare.MARCAJ}: verdictul depinde de stare comisa si mutabila "
+        "(data/articles.json, istoricul de merge al lui main), nu de diff-ul testat.",
+    )
+
+
+def pytest_collection_modifyitems(items):
+    motiv = poarta_stare.motiv_neblocant()
+    if motiv is None:
+        return
+    for item in items:
+        if item.get_closest_marker(poarta_stare.MARCAJ):
+            item.add_marker(pytest.mark.xfail(reason=motiv, strict=False, run=True))
 
 
 # --- niciun test nu are voie sa scrie starea comisa a productiei ---------------------
