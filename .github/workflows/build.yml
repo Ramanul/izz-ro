@@ -188,6 +188,15 @@ jobs:
           cache: "pip"
       - run: pip install -r requirements.txt
       - name: Render (rapid, fara fetch/AI)
+        env:
+          # IZZ-0373, partea (b). Jobul asta face checkout pe `content_sha`, dar `GITHUB_SHA`
+          # ramane commitul care a DECLANSAT rularea — un STRAMOS al continutului. Fara linia
+          # de mai jos, manifestul mirror-ului poarta commitul gresit, iar `verify_release.py`
+          # nu poate compara mirror-ul pe commit si cade pe `generated_at`.
+          # Partea (a) — `BUILD_COMMIT_SHA` bate `GITHUB_SHA` in `render._write_build_metadata`
+          # — era deja facuta pe 2026-09-12 si era INERTA fara asta: `GITHUB_SHA` e mereu setat
+          # in Actions, deci ar fi castigat oricum daca ar fi fost primul in lant.
+          BUILD_COMMIT_SHA: ${{ needs.pipeline.outputs.content_sha }}
         run: python -m generator.main --render-only
       - name: Publica pe mirror (host independent)
         uses: peaceiris/actions-gh-pages@84c30a85c19949d7eee79c4ff27748b70285e453 # v4

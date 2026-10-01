@@ -43,14 +43,18 @@ CI rulează testele și lint-ul. Numărul de teste este doar reper, nu contract.
 
 ## 5. Flux obligatoriu
 0. **Nu arma nicio buclă autonomă / CronCreate recurent** care se conduce singură prin backlog.
-1. **Cine face merge în `main`** decide proprietarul; executorul îl poate executa doar sub mandatul de la §5.4.
+1. **Cine face merge în `main`** decide proprietarul; executorul îl execută sub mandatul permanent de la §5.4.
 2. **După orice merge, anunță celălalt cont** prin canalul operațional agreat și actualizează starea.
 3. **Nu face curse pe `main`.** Lucrează prin branch + PR.
-4. **Merge doar cu mandat explicit, pe verde — REGULĂ TARE.** Executorul face merge în `main`
-   numai dacă proprietarul a numit PR-ul în sesiunea curentă, CI e verde pe head-ul curent și nu
-   există conflict. Un PR odată, niciodată unul deschis de altă sesiune vie — exact asta a costat
-   [IZZ-0140]. Auto-merge rămâne interzis: e o delegare permanentă, nu o decizie. Fără mandat,
-   livrarea rămâne branch + PR.
+4. **Mandat PERMANENT de merge, pe verde — REGULĂ TARE.** Decizie proprietar 2026-09-13
+   [IZZ-0382]: executorul face merge în `main` FĂRĂ să ceară acordul per PR. Acoperă PR-urile
+   deschise de el; unul deschis de altă sesiune vie rămâne al ei — exact asta a costat [IZZ-0140].
+   Condițiile rămân, și sunt ale executorului, nu ale proprietarului: CI verde pe head-ul CURENT,
+   fără conflict, fără constatare de recenzie neadresată, și `specs/STATE.md` fără PR-ul propriu în
+   `## Open` ÎNAINTE de merge (altfel aterizarea lui îl face fantomă — IZZ-0378).
+   **Auto-merge rămâne interzis, dar din alt motiv decât înainte:** nu fiindcă e „delegare
+   permanentă" — asta tocmai a devenit regula — ci fiindcă e judecată absentă. Merge-ul de aici
+   trece printr-un executor care verifică head-ul corect și starea reală; auto-merge nu verifică.
 5. **Un task per declanșare.** Nu deschide muncă paralelă necerută printr-un singur trigger.
 6. **Se oprește și raportează în loc să ghicească.** Ambiguitățile materiale se declară exact.
 7. **Actualizează `specs/STATE.md`** la finalul lucrării relevante.

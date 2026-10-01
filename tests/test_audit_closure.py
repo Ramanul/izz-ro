@@ -13,15 +13,86 @@ ROOT = Path(__file__).resolve().parents[1]
 
 def test_no_retired_origin_or_issue_channel_in_control_plane():
     claude = (ROOT / "CLAUDE.md").read_text(encoding="utf-8")
-    build = (ROOT / ".github/workflows/build.yml").read_text(encoding="utf-8")
-    harta = (ROOT / ".github/workflows/harta-smoke.yml").read_text(encoding="utf-8")
     log_slice = (ROOT / "tools/log_slice.py").read_text(encoding="utf-8")
     assert "izz-ro.pages.dev" not in claude
-    assert "izz-ro.pages.dev" not in build
-    assert "izz-ro.pages.dev" not in harta
     assert "issue #83" not in claude
     assert "issue #83" not in log_slice
     assert "handoff/" in claude
+
+
+# --- gazde retrase: matura, nu enumera ----------------------------------------------
+#
+# DE CE S-A SCHIMBAT (2026-09-14). Versiunea de dinainte verifica TREI fisiere pe nume —
+# `CLAUDE.md`, `build.yml`, `harta-smoke.yml` — si era verde. In acelasi timp, alte trei
+# fisiere foloseau gazda RETRASA ca fallback efectiv, nu ca pomenire:
+#
+#     .github/workflows/visual.yml:60      BASE_URL: ... || 'https://izz-ro.pages.dev'
+#     .github/workflows/monitor.yml:42     ALT_ORIGIN: ... || 'https://izz-ro.pages.dev'
+#     .github/workflows/harta-data.yml:150 ALT_ORIGIN: ... || 'https://izz-ro.pages.dev'
+#
+# Deci garda nu ratase o schimbare noua: ratase jumatate din suprafata de la inceput. Exact
+# forma lui IZZ-0379 (o trimitere verificata din paisprezece) si a lui IZZ-0371, consemnat
+# `propus` pe 2026-09-12 si inca neinchis doua zile mai tarziu. O lista de fisiere scrisa de
+# mana ramane in urma repo-ului; o matura nu.
+#
+# DE CE MONITORUL NU A SEMNALAT-O. `monitor.yml` da `crit=1` doar cand CAD AMANDOUA originile.
+# Cu primarul pe un nume mort si mirror-ul viu, iesea `::warning::` si jobul ramanea VERDE —
+# 953 de rulari fara nicio alarma. O redundanta care acopera un nume mort arata identic cu una
+# sanatoasa.
+#
+# INVARIANTUL: gazda retrasa poate aparea in PROZA (istoric, note, o negatie explicita), dar
+# nu in COD. Linia de comentariu e proza; linia care poarta o valoare, nu.
+GAZDE_RETRASE = ("izz-ro.pages.dev",)
+
+SUPRAFATA_OPERATIONALA = (
+    ".github/workflows/*.yml",
+    ".github/workflows/*.yaml",
+    "tools/*.py",
+    "tools/*.sh",
+    "generator/*.py",
+)
+
+
+def _linii_de_cod_cu(text: str, ac: str) -> list[int]:
+    """Numerele liniilor NECOMENTATE care contin `ac`.
+
+    Comentariul se recunoaste pe primul caracter negol: `#` in YAML si in shell, `#` si in
+    Python. Nu e un parser — si nu trebuie sa fie: un `#` la inceput de linie nu poate fi o
+    valoare in niciuna dintre cele trei limbi maturate.
+    """
+    return [
+        nr for nr, linie in enumerate(text.splitlines(), 1)
+        if ac in linie and not linie.lstrip().startswith("#")
+    ]
+
+
+def test_nicio_gazda_retrasa_nu_e_folosita_ca_valoare():
+    gasite = []
+    for tipar in SUPRAFATA_OPERATIONALA:
+        for cale in sorted(ROOT.glob(tipar)):
+            text = cale.read_text(encoding="utf-8")
+            for gazda in GAZDE_RETRASE:
+                for nr in _linii_de_cod_cu(text, gazda):
+                    gasite.append(f"{cale.relative_to(ROOT)}:{nr} -> {gazda}")
+    assert not gasite, (
+        "gazda RETRASA folosita ca valoare, nu doar pomenita:\n  " + "\n  ".join(gasite)
+        + "\nFallback-ul corect e originea Worker. O pomenire in comentariu sau in proza e "
+        "permisa; o valoare, nu."
+    )
+
+
+def test_garda_gazdelor_distinge_valoarea_de_comentariu(tmp_path, monkeypatch):
+    """Proba in ambele directii: altfel garda ar fi ori oarba, ori de nefolosit."""
+    (tmp_path / "tools").mkdir()
+    (tmp_path / "tools" / "a.sh").write_text(
+        "# fallback-ul vechi era izz-ro.pages.dev\nURL=https://exemplu.test\n", encoding="utf-8")
+    monkeypatch.setattr(sys.modules[__name__], "ROOT", tmp_path)
+    test_nicio_gazda_retrasa_nu_e_folosita_ca_valoare()  # comentariu: trece
+
+    (tmp_path / "tools" / "b.sh").write_text(
+        "URL=https://izz-ro.pages.dev\n", encoding="utf-8")
+    with pytest.raises(AssertionError, match="b.sh:1"):
+        test_nicio_gazda_retrasa_nu_e_folosita_ca_valoare()
 
 
 def test_destructive_git_commands_are_denied_for_claude():
