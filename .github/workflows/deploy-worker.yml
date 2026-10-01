@@ -64,6 +64,18 @@ jobs:
           echo "fisiere de publicat: $n"
           [ "$n" -ge 1000 ] || { echo "::error::doar $n fisiere - render incomplet, NU publicam"; exit 1; }
 
+      - name: Buget redirecte (plafon Cloudflare ~2.000 reguli statice)
+        run: |
+          set -euo pipefail
+          if [ -f output/_redirects ]; then
+            n=$(grep -cv '^\s*$\|^#' output/_redirects || true)
+            echo "redirecturi active: $n"
+            if [ "$n" -gt 2100 ]; then echo "::error::$n redirecturi > 2.100 - Cloudflare va refuza regulile"; exit 1; fi
+            if [ "$n" -gt 1800 ]; then echo "::warning::$n redirecturi > 1.800 - aproape de plafon"; fi
+          else
+            echo "fara output/_redirects - sar pasul"
+          fi
+
       - name: Publica pe Worker
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
@@ -81,3 +93,12 @@ jobs:
           RELEASE_TIMEOUT_SECONDS: "300"
           RELEASE_POLL_SECONDS: "15"
         run: python tools/verify_release.py
+      # Dovada atomica main -> Worker -> izz.ro, CAT timp zona lasa runnerii GitHub sa citeasca.
+      # Bot challenge pe zona izz.ro (vezi wrangler.jsonc) poate bloca runnerii -> pas NEBLOCANT:
+      # verde = dovada; esec = warning, nu deploy rosu (monitor.yml si smoke-live verifica in continuare).
+      - name: Verifica si izz.ro (best-effort)
+        env:
+          EXPECTED_COMMIT: ${{ github.sha }}
+          RELEASE_BASE_URLS: https://izz.ro
+        run: |
+          python tools/verify_release.py             || echo "::warning::izz.ro nu a confirmat SHA-ul (posibil bot challenge) - deployul ramane valid"
