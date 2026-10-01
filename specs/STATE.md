@@ -8,28 +8,20 @@
 > Where the rest lives: `specs/regim-reguli.md` — unified audit closure ·
 > `specs/registru.tsv` — decisions · `CLAUDE.md` — canonical contract.
 
-**Updated:** 2026-10-01 (#340: primul backlog de PRODUS în ## Open; #344, #343 aterizate azi)
+**Updated:** 2026-10-01 (#340: primul backlog de PRODUS în ## Open
 
-## Open
-
-- **Pages `izz-ro` e un ZOMBI care revendică `izz.ro` [IZZ-0366, IZZ-0368].** Are atașate
+- **Pages `izz-ro` ZOMBI revendică `izz.ro` [IZZ-0366, 0368]:** ștergerea = decizie proprietar [IZZ-0395].
 - **PRODUS P1 — homepage fără nicio fotografie [IZZ-0403]:** 0 `<img>` măsurat; 73% din articole au portret real
   deja în `output/portraits/` — zero fișiere noi; potrivirea rulează doar pe articol (`render.py:971`).
 - **PRODUS P2 — copertile arată amatoricesc [IZZ-0404]** (verdict proprietar); `htmlart`/`covers.py`.
 - **PRODUS P3 — harta: markere fără ierarhie vizuală [IZZ-0405]:** 482 evenimente, clickuri cablate; e afordanța, nu funcția.
-  `izz-ro.pages.dev` **și `izz.ro`**; ultim build reușit 21 aug, apoi 17 eșecuri (#211 merged).
-  DNS apex+www → Pages, dar rutele Worker au precedență. 2 sisteme cred că dețin apexul. §10.
-- **FEREASTRA TTL a trecut de buget [IZZ-0400].** 09-14: 11.967 în fereastră vs prag CI 12.800; roșu
-  stabil. `ARTICLE_TTL_DAYS` = decizie proprietar [IZZ-0401].
-- **Free-readiness — gazda e ÎNCĂ PAID până 22 sep; 20.000 e ținta adoptată devreme [IZZ-0313].**
-  **Măsurat 09-15:** fereastra 11.250 articole din podeaua de 12.800, ingest median **960/zi** vs
-  590 dimensionat — echilibrul cere TTL ≈ **13 zile**, nu 20; podea roșie [IZZ-0386, 0391, 0399].
+- **FEREASTRA TTL a trecut de buget [IZZ-0400]:** 11.967 vs prag 12.800; `ARTICLE_TTL_DAYS` = decizie proprietar [IZZ-0401].
+- **Free-readiness — gazda ÎNCĂ PAID până 22 sep [IZZ-0313]:** ingest median 960/zi vs 590 dimensionat; TTL=20
+  trebuie scurtat spre ≈13 zile, altfel podea roșie [IZZ-0386, 0391, 0399].
 - **`izz-failover` — KEEP [IZZ-0362]; marja NECUNOSCUTĂ [IZZ-0367, 0369]:** ambele cifre publicate retrase.
-- **REDUNDANȚA — ÎNCHISĂ [IZZ-0370 → IZZ-0373]:** `BUILD_COMMIT_SHA` e în jobul `mirror` (#347).
-- **RECIDIVE — roșul de STARE separat de cel de COD [IZZ-0388…0391; #347 merged].** Era 10/19
-  roșu pe main fără commit vinovat. **Owner:** podeaua revine roșie peste 640 art./zi [IZZ-0391].
-- **Coliziuni de ID în registru — 4 incidente, reparate la ALOCARE [IZZ-0392].** IZZ-0385 a fost
-  renumerotat IZZ-0400 și aterizat prin #344 merged; pentru următoarele PR-uri, alocarea evită ID-urile vii.
+- **REDUNDANȚA — ÎNCHISĂ [IZZ-0370 → IZZ-0373]:** `BUILD_COMMIT_SHA` e în jobul `mirror`, prin #347 merged.
+- **RECIDIVE — roșul de STARE separat de cel de COD [IZZ-0388…0391]; Owner: podeaua roșie peste 640 art./zi [IZZ-0391].**
+- **Coliziuni de ID reparate la ALOCARE [IZZ-0392]; IZZ-0400 aterizat prin #344 merged.**
 - **PR queue — 4 deschise:** #340 PRODUS (acest PR; merged la aterizare) · #320 Lee · #297 Cronica ·
   #280 CSS. Aterizările: în `specs/registru.tsv`, nu aici.
 - **Issues triate 09-13 [IZZ-0381…0383]:** #83 închis. **#198 arhiva = decizie de proprietar**
