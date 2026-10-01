@@ -293,3 +293,81 @@ def test_text_copiat_ajunge_blocant_in_gate(tmp_path, monkeypatch):
                .read_text(encoding="utf-8").splitlines() if l.strip()]
     coduri = {i["cod"] for r in randuri for i in r["blocking_issues"]}
     assert "text_copiat" in coduri
+
+
+# --- Garda ortografiei titlului (cuvant_strain_titlu), 2026-10-01 ------------------
+# Cazul care o cere: PR #371 — „Artizeții" în loc de „Artiștii", ajuns public în
+# titlu, H1 și URL. Logica: se semnalează doar DEFORMĂRILE INTERNE ale cuvintelor
+# care sunt în sursă; cuvintele legitime absente din descrierea-sursă trec (modelul
+# are vocabular mai mare decât feedul), la fel inflexiunile pe terminație.
+
+def test_cazul_real_artizetii_e_prins():
+    # Contextul real de sinteza: titlul original B365 + descrierea din feed (exact
+    # ce a vazut modelul la procesare, vezi `sursa_pentru` din masoara_sinteza).
+    sursa = ("Cine și când urcă pe scena West Side Hallo Fest 2026: RVRSE, Antonio "
+             "Pican, Lupii lui Calancea și Andra printre artiștii care vin la "
+             "festivalul de Halloween de la Lacul Morii. Evenimentul organizat la "
+             "Lacul Morii va aduce pe scenă, în seara de 31 octombrie, artiști "
+             "cunoscuți.")
+    gasite = vs.cuvinte_straine_titlu(
+        "Artizeții anunțați pentru ediția 2026 a festivalului West Side Hallo Fest", sursa)
+    # „artizetii" = vecin la distanța 2 de „artistii", divergență în corpul cuvântului
+    assert "artizetii" in gasite
+    # „anuntati" și „festivalului" sunt corecte — absente sau prefix legitims — trec
+    assert "anuntati" not in gasite
+    assert "festivalului" not in gasite
+
+
+def test_titlu_corect_nu_produce_semnal():
+    sursa = "Primăria a anunțat că lucrările la pasajul central încep lunea viitoare."
+    assert vs.cuvinte_straine_titlu("Primăria anunță lucrările la pasajul central", sursa) == []
+
+
+def test_inflexiunile_pe_prefix_si_terminatie_trec():
+    sursa = "consiliul local a aprobat bugetul"
+    # „bugetu" = prefix pierdut, „aprobatt" = sufix adăugat — morfologie, nu deformare
+    assert vs.cuvinte_straine_titlu("consiliul bugetu aprobatt", sursa) == []
+
+
+def test_deformare_interna_e_semnal():
+    sursa = "consiliul local a aprobat bugetul"
+    # „locta" vs „local": literă schimbată ÎN CORPUL cuvântului → semnal
+    # „locaa" vs „local": diferența e doar pe terminație → trece (caz gramatical posibil)
+    assert vs.cuvinte_straine_titlu("locta aprobat", sursa) == ["locta"]
+    assert vs.cuvinte_straine_titlu("locaa aprobat", sursa) == []
+
+
+def test_cuvintele_scurte_si_cifrele_sunt_ignorate():
+    # „west/side/hall/fest" sunt sub prag ȘI absente din sursă — lipsa lor din semnal
+    # dovedește că skip-ul e pe lungime, nu pe întâmplare. „scenei" vs „scena" are
+    # diferența în corpul cuvântului → semnal; „adusele" n-are vecin la distanța 2 → trece.
+    sursa = "Festivalul de la Lacul Morii aduce artiști pe scenă în seara de 31 octombrie"
+    gasite = vs.cuvinte_straine_titlu("West Side Hallo Fest scenei adusele", sursa)
+    assert gasite == ["scenei"]
+
+
+def test_sursa_gol_intoarce_nimic():
+    assert vs.cuvinte_straine_titlu("un titlu oarecare destul de lung", "") == []
+    assert vs.cuvinte_straine_titlu("un titlu oarecare destul de lung", "2026 31") == []
+
+
+def test_verifica_include_garda_pe_titlu():
+    sursa = "Consiliul a aprobat hotărarea de buget."
+    coduri = {p.cod for p in verifica(
+        "Consiliul oprobat bugetul fiscal local", "Rezumat parafrazat cu totul altfel.", sursa)}
+    assert "cuvant_strain_titlu" in coduri
+
+
+def test_garda_ajunge_advisory_niciodata_blocanta(tmp_path, monkeypatch):
+    # Modul „doar raportează": prin `noteaza`, codul cade în advisory_issues —
+    # `_BLOCKING` nu-l conține până la activarea explicită, după măsurătoare.
+    monkeypatch.setenv("IZZ_RAPORT_COPIERE", str(tmp_path / "jurnal.jsonl"))
+    monkeypatch.setenv("IZZ_RAPORT_COPIERE_GATE", str(tmp_path / "gate.jsonl"))
+    raport_copiere.noteaza("B", "id-garda",
+                           "Comunicatul instutiei vorbește despre alt subiect.",
+                           "Rezumat scris cu totul altfel decât sursa.",
+                           "Comunicatul instituției vorbește despre alt subiect.")
+    rand = [json.loads(l) for l in (tmp_path / "gate.jsonl")
+            .read_text(encoding="utf-8").splitlines() if l.strip()][0]
+    assert "cuvant_strain_titlu" in {i["cod"] for i in rand["advisory_issues"]}
+    assert "cuvant_strain_titlu" not in {i["cod"] for i in rand["blocking_issues"]}

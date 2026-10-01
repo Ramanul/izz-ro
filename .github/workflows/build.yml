@@ -87,6 +87,19 @@ jobs:
           IZZ_RAPORT_COPIERE_GATE: ${{ runner.temp }}/izz-grounding-gate.jsonl
         run: python tools/grounding_gate.py
 
+      # Jurnalul observational e materia prima pentru praguri (vezi antetul din
+      # generator/verifica_sinteza.py): fara upload dispare odata cu runner-ul, deci
+      # pragurile noi (ex. cuvant_strain_titlu) ar ramane fara cifre pe care sa se
+      # calibreze. Pastrat 30 de zile; fisierul poate lipsi (rulari fara AI) - nu-i eroare.
+      - name: Salveaza jurnalul de masurare sinteza
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: raport-copiere-${{ github.run_id }}
+          path: data/raport_copiere.jsonl
+          retention-days: 30
+          if-no-files-found: ignore
+
       - name: Genereaza imagini per-articol (HTML/Chromium, best-effort)
         continue-on-error: true
         env:
