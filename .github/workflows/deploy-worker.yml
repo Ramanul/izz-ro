@@ -1,10 +1,13 @@
 name: deploy-worker
 
-# Buton MANUAL de publicare pe Worker-ul izz-ro. Nu are trigger automat: publicarea normala este
-# facuta din git prin pipeline. Workflow-ul este fail-closed si publica DOAR continutul din main.
-# Tokenul este scoped pe Workers Scripts:Edit + Account Settings:Read; NU poate atinge DNS/WAF.
+# Publicare pe Worker-ul izz-ro. Trigger automat: orice push pe main — inlocuieste Workers Builds,
+# care factura minutele de build (7.407 min peste plafon in Aug 22-Sep 21 = $37.04). Butonul manual
+# ramane, cu poarta de confirmare 'deploy'. Workflow-ul este fail-closed si publica DOAR continutul
+# din main. Tokenul este scoped pe Workers Scripts:Edit + Account Settings:Read; NU poate atinge DNS/WAF.
 
 on:
+  push:
+    branches: [main]
   workflow_dispatch:
     inputs:
       confirmare:
@@ -23,9 +26,9 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      - name: Poarta - confirmare + ramura
+      - name: Poarta - confirmare (manual) + ramura
         run: |
-          if [ "${{ inputs.confirmare }}" != "deploy" ]; then
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ] && [ "${{ inputs.confirmare }}" != "deploy" ]; then
             echo "::error::Confirmare lipsa sau gresita - scrie exact 'deploy' in casuta."
             exit 1
           fi
