@@ -107,9 +107,10 @@ def test_dintele_de_fierastrau_e_reproductibil():
 
 def test_proiectia_SCADE_din_ziua_care_iese_nu_doar_aduna():
     """Extrapolarea naiva marja/debit ignora ziua care iese si supraestimeaza cresterea."""
-    zile = _zile([("2026-09-14", 100)] + [(f"2026-08-{d:02d}", 1000) for d in (24, 25)])
+    # TTL=20 (config): ancora 09-14 are fereastra d > 08-25; la pasul 1 (09-15) iese 08-26.
+    zile = _zile([("2026-09-14", 100), ("2026-08-25", 1000), ("2026-08-26", 1000)])
     pr = ft.proiecteaza(zile, "2026-09-14", debit=1000, orizont=1)
-    # ziua 0: se completeaza la debit (100 -> 1000). ziua 1: +1000 dar iese 2026-08-25 (1000)
+    # ziua 0: 08-26 (1000) + completarea zilei de ancora la debit => 2000. ziua 1: +1000, iese 08-26 (1000)
     assert pr[0]["n"] - pr[1]["n"] == 0, "castig 1000, pierdere 1000 => plat"
 
 
