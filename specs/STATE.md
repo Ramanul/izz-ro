@@ -15,14 +15,12 @@
 - **Pages `izz-ro` e un ZOMBI care revendică `izz.ro` [IZZ-0366, IZZ-0368].** Are atașate
   `izz-ro.pages.dev` **și `izz.ro`**; ultim build reușit 21 aug, apoi 17 eșecuri (#211 merged).
   DNS apex+www → Pages, dar rutele Worker au precedență. 2 sisteme cred că dețin apexul. §10.
-- **FEREASTRA TTL a trecut de buget; RECUPERAREA ingestului e cauza [IZZ-0400].** 09-14: 11.967
-  în fereastră vs prag CI 12.800; live 9.575 art./14.396 fișiere; roșu stabil din 09-14.
-  `ARTICLE_TTL_DAYS` = decizie proprietar [IZZ-0401].
+- **FEREASTRA TTL a trecut de buget [IZZ-0400].** 09-14: 11.967 în fereastră vs prag CI 12.800; roșu
+  stabil. `ARTICLE_TTL_DAYS` = decizie proprietar [IZZ-0401].
 - **Free-readiness — gazda e ÎNCĂ PAID până 22 sep; 20.000 e ținta adoptată devreme [IZZ-0313].**
   **Măsurat 09-15:** fereastra 11.250 articole din podeaua de 12.800, ingest median **960/zi** vs
   590 dimensionat — echilibrul cere TTL ≈ **13 zile**, nu 20; podea roșie [IZZ-0386, 0391, 0399].
-- **`izz-failover` — KEEP [IZZ-0362]; marja e DECLARAT NECUNOSCUTĂ [IZZ-0367, IZZ-0369].** Ambele
-  cifre publicate („2.9k/zi", „1.5k/zi") sunt retrase: prima fără fereastră, a doua fără `Analytics:Read`.
+- **`izz-failover` — KEEP [IZZ-0362]; marja NECUNOSCUTĂ [IZZ-0367, 0369]:** ambele cifre publicate retrase.
 - **REDUNDANȚA — ÎNCHISĂ [IZZ-0370 → IZZ-0373]:** `BUILD_COMMIT_SHA` e în jobul `mirror` (#347).
 - **RECIDIVE — roșul de STARE separat de cel de COD [IZZ-0388…0391; #347 merged].** Era 10/19
   roșu pe main fără commit vinovat. **Owner:** podeaua revine roșie peste 640 art./zi [IZZ-0391].
