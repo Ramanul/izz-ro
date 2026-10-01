@@ -1,7 +1,7 @@
 name: pipeline
 
 # Munca grea: fetch RSS + AI (buget per rulare) + salveaza starea in git.
-# Commit-ul declanseaza Cloudflare Workers Static Assets, care servesc output-ul generat.
+# Commit-ul pe main declanseaza deploy-worker.yml din GitHub Actions, care randeaza si publica output-ul in Workers Static Assets.
 
 on:
   # Incercare orara; poarta de cadenta mentine aproximativ 2 ore intre commituri de continut.
@@ -136,7 +136,7 @@ jobs:
       - name: QA check (blocking, inainte de commit)
         run: python tools/qa_check.py
 
-      - name: Comite starea (declanseaza deploy Cloudflare)
+      - name: Comite starea (declanseaza deploy-worker.yml)
         id: commit
         run: |
           set -euo pipefail
@@ -172,7 +172,7 @@ jobs:
             fi
             sleep $((i * 5))
           done
-          echo "::error::push esuat dupa 5 incercari - continutul NU a ajuns pe main, deploy-ul NU s-a declansat"
+          echo "::error::push esuat dupa 5 incercari - continutul NU a ajuns pe main, deploy-ul GitHub Actions NU s-a declansat"
           exit 1
 
       - name: IndexNow — trimite coada (dupa deploy, best-effort)
