@@ -20,17 +20,15 @@
   fereastra are 11.250 articole din podeaua de 12.800, iar ingestul median e **960/zi** față de
   590/zi pe care s-a dimensionat spec-ul — echilibrul cere TTL ≈ **13 zile**, nu 20; podea roșie
   ~09-17. `izz-kv`/`izz-bucket` nelegate; minutele de Workers Builds necitibile. [IZZ-0386, 0361]
-- **`izz-failover` — KEEP [IZZ-0362]; marja e DECLARAT NECUNOSCUTĂ [IZZ-0367, IZZ-0369].** Ambele
-  cifre publicate („2.9k/zi", „1.5k/zi") sunt retrase: prima fără fereastră, a doua fără `Analytics:Read`.
+- **`izz-failover` — KEEP [IZZ-0362]; marja NECUNOSCUTĂ [IZZ-0367, 0369]:** ambele cifre publicate retrase.
 - **FEREASTRA TTL a trecut de buget; RECUPERAREA ingestului e cauza [IZZ-0400].** 09-14: 11.967
   în fereastră vs prag CI 12.800; live 9.575 art./14.396 fișiere; roșu stabil din 09-14.
   `ARTICLE_TTL_DAYS` = decizie proprietar.
 - **REDUNDANȚA — REPARAT [IZZ-0370 → IZZ-0372].** Rămâne de curățat: manifestul mirror-ului
   poartă `GITHUB_SHA`, nu content-sha — o linie `BUILD_COMMIT_SHA` în jobul `mirror`, blocată de
   hook (capacitate), NU de §10, care nu acoperă workflow-uri [IZZ-0373].
-- **PR queue — 8 deschise:** #344 TTL (acest PR; merged la aterizare) · #349 coliziuni ID ·
-  #343 payload · #340 PRODUS · #320 Lee · #297 Cronica · #280 CSS. Aterizările: în
-  `specs/registru.tsv`, nu aici.
+- **PR queue — 8 deschise:** #344 TTL (acest PR; merged la aterizare) · #349 coliziuni ID · #343 payload ·
+  #340 PRODUS · #320 Lee · #297 Cronica · #280 CSS. Aterizările: în `specs/registru.tsv`.
 - **Issues triate 09-13 [IZZ-0381…0383]:** #83 închis. **#198 arhiva = decizie de proprietar**
   (R2 singura structurală). #233 canal · #271 scope — deschise prin design.
 
