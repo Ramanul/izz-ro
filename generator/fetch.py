@@ -11,7 +11,7 @@ import urllib.request
 import defusedxml.ElementTree as ET
 from concurrent.futures import ThreadPoolExecutor, TimeoutError, as_completed
 from defusedxml.common import DefusedXmlException
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 
 # Cate intrari brute sunt aruncate la INGESTIE, si de ce. Pana la 2026-09-02 nimeni nu stia:
 # `main.py` numara ce se pierde DUPA fetch (`stale_skipped`, `deferred`, itemele fara
@@ -252,6 +252,21 @@ def _parse_date(entry) -> str:
     return datetime.now(timezone.utc).isoformat()
 
 
+def _clamp_future(iso: str, margin_hours: int = 48) -> str:
+    """Un „published" din viitor nu e o publicare, e o dată de EVENIMENT parsată din text:
+    anunțul „colectare deșeuri 01.01.2027" ajungea cu published în 2027 și împingea
+    „actualizat …" din statistici în viitor (Voiteg/Retim Ecologic, 2 oct 2026). Adevărul
+    disponibil la ingest e momentul crawl-ului; marja de 48 h acoperă datele-fără-ore
+    (miezul nopții UTC al „mâine" e legitim pentru o știre publicată diseară)."""
+    try:
+        dt = datetime.fromisoformat(iso)
+    except (ValueError, TypeError):
+        return iso
+    if dt > datetime.now(timezone.utc) + timedelta(hours=margin_hours):
+        return datetime.now(timezone.utc).isoformat()
+    return iso
+
+
 # ---- Sitemap Google News: fetch legal pentru surse fara RSS (ex. piataauto.md) ----
 # Multe publicatii NU expun RSS, dar publica un sitemap Google News (declarat in
 # robots.txt, destinat indexarii) cu exact ce ne trebuie: <loc> + news:title +
@@ -379,7 +394,7 @@ def _parse_sitemap_news(raw: bytes, key: str, source: dict) -> tuple[list, str |
             "title": title,
             "description": "",
             "category": source["category"],
-            "published": _parse_w3c_date(date_raw),
+            "published": _clamp_future(_parse_w3c_date(date_raw)),
             "model": None,
         })
 
@@ -739,7 +754,7 @@ def _items_from_html(raw: str, key: str, source: dict) -> tuple[list, str | None
                                         # substanta si e oprit inainte de AI (config.
                                         # MIN_SUBSTANTA_CUVINTE). NU se genereaza din titlu.
             "category": source["category"],
-            "published": _parse_ro_date(entry.get("date_raw", "")),
+            "published": _clamp_future(_parse_ro_date(entry.get("date_raw", ""))),
             "model": None,
         })
     if (motiv := guard.carantina(respinse, respinse + len(items), key)):
@@ -873,7 +888,7 @@ def _fetch_one(key: str, source: dict, cache: dict | None = None) -> tuple[list,
             "title": title,
             "description": body,
             "category": source["category"],
-            "published": _parse_date(entry),
+            "published": _clamp_future(_parse_date(entry)),
             "model": None,
         })
     if (motiv := guard.carantina(respinse, respinse + len(items), key)):
