@@ -185,6 +185,35 @@ La ~2.000 de titluri nu e realist.
   Descărcare: <https://digital-strategy.ec.europa.eu/en/policies/eu-icons-labelling-ai-generated-content>
   **Care din cele trei ni se potrivește nu e stabilit** — alegerea depinde de cât din conținut
   e responsabilitatea AI-ului, iar pagina cu pictogramele n-a fost deschisă încă. De făcut.
+
+**AMENDAMENT 2026-10-03 (IZZ-0416) — cele două întrebări deschise de mai sus sunt închise,
+cu textul primar verificat, nu cu rezumatul. Așteaptă veto-ul proprietarului.**
+
+1. **Numărarea articolelor din §4.1 era incompletă.** Citit pe textul AI Act (AI Act Explorer,
+   art. 50): obligația de marcare *machine-readable* e la **art. 50 alin. (2)** — furnizorii
+   de sisteme care generează conținut sintetic marchează ieșirea, iar lista acoperă în mod
+   explicit și **textul** („synthetic audio, image, video or text content"); excepțiile ei
+   (editare standard, nesubstanțial) nu ni se aplică. Obligația NOASTRĂ, de *deployer*, e la
+   **art. 50 alin. (4)**: dezvăluirea textului publicat în scopul informării publicului, cu
+   excepția „human review or editorial control" + „editorial responsibility" — exact cum
+   conchidea §4.2, dar numerotarea completă acum.
+2. **Pictograma aleasă: „Basic icon"** (fișierul `LABEL_AI_black.svg` din arhiva oficială,
+   comis ca `static/icons/ai-generated.svg`). Criteriul e din regulile de folosire de pe
+   pagina CE: iconița Basic se folosește „când AI a fost implicat în crearea textului publicat
+   **sau** când se folosește o etichetă-text personalizată" — noi ne încadrăm în ambele.
+   „Fully AI-Generated" ar pretinde că tot conținutul e fabricat de AI, exact eroarea inversă
+   de la §4.4; „Partially AI-Modified" e pentru conținut uman modificat cu AI (face swap etc.).
+3. **Locul pictogramei: pagina de articol, lângă ai-mark** — NU pe fiecare card. Pictograma e
+   opțională (pagina CE: folosirea ei singură nu garantează conformitatea); dezvăluirea e
+   obligatorie. Pe card, dezvaluirea la prima expunere o dă trust-label-ul, actualizat astăzi:
+   „Rezumat dintr-o sursă · **generat automat**" / „Sinteză multi-sursă · **generată
+   automat**". Decizia anterioară #245 (2 sept 2026: fără marcaj repetat pe card) rămâne în
+   picioare; ce se schimbă e că eticheta ACUM numește generarea automată explicit — versiunea
+   veche („Rezumat dintr-o sursă") descria proveniența, nu generarea, deci nu satisfacea
+   „clar și distinct" de la §4.3.
+4. **Marcare machine-readable:** `<meta name="digitalSourceType" content="trainedAlgorithmicMedia">`
+   pe paginile de articol marcate `ai_generat` (IPTC Digital Source Type — convenția de
+   industrie pentru conținut generat algoritmic).
 - **Pictograma singură nu ajunge.** Testarea cu utilizatori a arătat că funcționează doar
   însoțită de etichetă text. La noi: **„Titlu și rezumat generate automat"**.
 - **Accesibilitate:** `alt` sau `aria-label` care spune că textul e generat automat. Nu se pune

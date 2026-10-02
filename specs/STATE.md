@@ -8,15 +8,16 @@
 > Where the rest lives: `specs/regim-reguli.md` — unified audit closure ·
 > `specs/registru.tsv` — decisions · `CLAUDE.md` — canonical contract.
 
-**Updated:** 2026-10-03 (state: plafon STATE înapoi la 40 de linii; asignare deterministă UAT în PR deschis)
+**Updated:** 2026-10-03 (IZZ-0415 CI pe eșantion aterizat prin #407; IZZ-0416 portrete pe carduri + marcaj AI Act în #408; protecțiile main verificate prin API [IZZ-0417])
 
 ## Open
 - **`ai_gateway` — aterizat pe main prin #390, merged (mai demult și #387, merged):**
   gateway AI local $0; cheile doar în `.env`; docs: `ai_gateway/FREE_AI_SETUP.md`.
   Cataloagele free churn-uisază: 2 oct, `llama-3.3-70b*`/`kimi-k2` dispăruți, `qwen-3.8-27b` nou la ambii.
 - **Pages `izz-ro` ZOMBI revendică `izz.ro` [IZZ-0366, 0368]:** ștergerea = decizie proprietar [IZZ-0395].
-- **PRODUS P1 — homepage fără nicio fotografie [IZZ-0403]:** 0 `<img>` măsurat; 73% din articole au portret real
-  deja în `output/portraits/` — zero fișiere noi; potrivirea rulează doar pe articol (`render.py:971`).
+- **PRODUS P1 — homepage fără nicio fotografie [IZZ-0403]:** mecanismul e IMPLEMENTAT în #408 (portretul
+  entității pe card, între poza de lead și arta desenată; 0→17 img pe sample-ul de 3 oct, test `test_card_portrete`).
+  Corecție de cifră: rata de potrivire e **34% azi (68/200)**, nu 73% cât s-a măsurat pe 13 sept.
 - **PRODUS P2 — copertile arată amatoricesc [IZZ-0404]** (verdict proprietar); `htmlart`/`covers.py`.
 - **PRODUS P3 — harta: markere fără ierarhie vizuală [IZZ-0405]:** 482 evenimente, clickuri cablate; e afordanța, nu funcția.
 - **FEREASTRA TTL a trecut de buget [IZZ-0400]:** 11.967 vs prag 12.800; `ARTICLE_TTL_DAYS` = decizie proprietar [IZZ-0401].
@@ -39,7 +40,9 @@
   count [IZZ-0353]. **Journals:** takedowns removed on every publish path; ingest discards logged.
 - **Near-verbatim copy:** >=15-word runs and transcribed titles block the gate. Open: calibration
   corpus, 2x determinism run. **Silence detection:** hourly. **Human gate:** `IZZ_REQUIRE_HUMAN_GATE`.
-  **Main** is `protected: true`; required-checks list unreadable here (403), rulesets: none.
+  **Main** is `protected: true`; **required status checks: NICIUNUL** (verificat prin API,
+  3 oct — GET `/branches/main/protection` răspunde 200; întâiul 403 era alt endpoint/context);
+  force-push și ștergeri blocate, `enforce_admins` on, rulesets: none. [IZZ-0417]
 - **Unified audit is mechanical now:** `specs/audit-unificat.tsv` + `tools/audit_matrice.py`
   (+ `eroziune`) + `tools/cadenta_reala.py` + tests; findings in `specs/audit-unificat.md` §5.
   Derivarea de stare o găsește `schedule` zilnic (#347), nu următorul PR. [IZZ-0351…0357, 0363…0367]

@@ -766,6 +766,17 @@ def build(articles: list, mod: dict | None = None) -> None:
                       config.OUTPUT_NON_ARTICLE_RESERVE, config.ARTICLE_TTL_DAYS)
         by_date = by_date[:incap]
 
+    # Portretele reale (Wikidata P18, thumbs auto-gazduite) se incarca O SINGURA data:
+    # mai jos alimenteaza media reala a cardurilor (IZZ-0416 — zero fisiere noi, thumb-ele
+    # sunt deja copiate in output/portraits) si paginile /subiect/.
+    portraits = _load_portraits()
+    for a in by_date:
+        for e in (a.get("entities") or []):
+            p = portraits.get(_norm_name(e))
+            if p:
+                a["card_portrait"] = p
+                break
+
     # coperti: share (og, cu titlu) + arta fara text pentru site -- generate O DATA,
     # INAINTE de orice randare, ca hero-ul si paginile de articol sa le poata folosi.
     # URL-urile poarta ?v=<hash-continut>: imaginile stau pe cai stabile cu TTL 24h,
@@ -935,7 +946,7 @@ def build(articles: list, mod: dict | None = None) -> None:
 
     # graful cunoasterii v1: pagini de subiect per entitate (+ feed de urmarire >=3)
     ents = _entity_index(by_date)
-    portraits = _load_portraits()   # fotografii reale P18 (auto-gazduite) cheie=nume normalizat
+    # portraits e deja incarcat la supapa de buget (acolo alimenteaza cardurile, IZZ-0416)
     # graf-lite: entitatile care apar IMPREUNA (co-ocurenta pe articole) -> "Conexiuni"
     art_slugs: dict = {}
     for s, d in ents.items():

@@ -9,6 +9,12 @@
 {% block body_attrs %} data-category="{{ a.category }}" data-source="{{ a.source_name }}" data-title="{{ a.title }}"{% endblock %}
 {% block head_extra %}
   <meta property="article:published_time" content="{{ a.published }}">
+  {%- if a.ai_generat %}
+  {#- Marcaj machine-readable (IPTC digitalSourceType) al textului sintetizat — art. 50(2)
+      AI Act acopera si TEXTUL; obligatia noastra de dezvaluire e art. 50(4) (ai-mark/ai-note).
+      REGULI-SINTEZA.md §4.3, amendament 2026-10-03. -#}
+  <meta name="digitalSourceType" content="trainedAlgorithmicMedia">
+  {%- endif %}
 {% endblock %}
 {% block content %}
 <div class="progress" aria-hidden="true"></div>
@@ -32,7 +38,7 @@
     <span class="reading-time">~{{ read_mins }} min citire</span>
     {% endif %}
     {% if a.updated_human %}<span class="article-updated">Actualizat: {{ a.updated_human }}</span>{% endif %}
-    {% if a.ai_generat %}<span class="ai-mark">Titlu sintetizat automat</span>{% endif %}
+    {% if a.ai_generat %}<span class="ai-mark"><img src="{{ base }}/static/icons/ai-generated.svg" alt="" width="14" height="14">Titlu sintetizat automat</span>{% endif %}
   </div>
 
   {# `photo_path` = fotografie CC BY / CC BY-SA, admisa DOAR aici, fiindca doar pagina de articol
