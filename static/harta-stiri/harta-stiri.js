@@ -49,16 +49,20 @@
     // inselatoare.
     selectedUat: null,
     pendingUat: null,
+    // Fly-to: în timpul animației de apropiere, vederea e dictată de interpolare
+    // (flyView), nu de stare. flyToken anulează animația anterioară când pornește alta.
+    flyView: null,
+    flyToken: 0,
   };
 
   const REGION_FILLS = {
-    "Transilvania": "#bdd7ee",
-    "Muntenia": "#f6d6ad",
-    "Moldova": "#c9e6cf",
-    "Banat": "#e4c6e8",
-    "Dobrogea": "#f6df91",
-    "Oltenia": "#f3c1bd",
-    "Bucovina": "#cbd6f3",
+    "Transilvania": "#cddccd",
+    "Muntenia": "#f1e2c3",
+    "Moldova": "#cddfe9",
+    "Banat": "#e3d3e6",
+    "Dobrogea": "#eee0a6",
+    "Oltenia": "#efcabf",
+    "Bucovina": "#d0d7ee",
   };
 
   const $ = (selector) => document.querySelector(selector);
@@ -98,6 +102,17 @@
       // dedicate, nu din --text/--surface.
       onAccent: styles.getPropertyValue("--map-on-accent").trim() || "#171717",
       badgeText: styles.getPropertyValue("--map-badge-text").trim() || "#171717",
+      // Treptele choropleth h0-h4 (h0 = fără știri) + haloul de silueta + bordura internă.
+      // Vin din variabile, ca tema dark să fie o primă cetățeană, nu o excepție.
+      h: [
+        styles.getPropertyValue("--map-h0").trim() || "#f2f0e8",
+        styles.getPropertyValue("--map-h1").trim() || "#f1e3b6",
+        styles.getPropertyValue("--map-h2").trim() || "#e4c46a",
+        styles.getPropertyValue("--map-h3").trim() || "#c2911c",
+        styles.getPropertyValue("--map-h4").trim() || "#7a5a10",
+      ],
+      halo: styles.getPropertyValue("--map-halo").trim() || "#d9d5c7",
+      inner: styles.getPropertyValue("--map-inner").trim() || "#ffffff",
     };
   }
 
@@ -353,27 +368,30 @@
       countUatNews(ctx, canvas, view);
       state.uatCountsDirty = false;
     }
+    // Scara choropleth pentru UAT-uri: cuartele volumului județului curent, aceeași
+    // formulă ca la nivel național și ca mini-harta (praguriFor/rampClassFor).
+    const uatMax = Math.max(0, ...state.uats.map((unit) => unit.count));
+    const uatPraguri = praguriFor(uatMax);
+    updateLegend(uatPraguri, uatMax, { show: Boolean(state.uats.length) });
     for (const uat of state.uats) {
-      // UAT-ul de sub cursor/deget se ingroasa si se umple mai tare: fara asta, tooltipul
-      // spune un nume dar nu se vede CARE forma de pe harta il poarta.
+      // UAT-ul de sub cursor/deget se ingroasa si prinde contur de accent: fara asta,
+      // tooltipul spune un nume dar nu se vede CARE forma de pe harta il poarta.
       const hovered = uat === state.hoverUat;
       // Selectia e persistenta, hover-ul e trecutor: UAT-ul ales prinde accentul, restul
       // se estompeaza mai puternic decat simpla lipsa de stiri, ca sa se vada CE e selectat.
       const isSelected = state.selectedUat === String(uat.id || uat.name);
       const dimmedBySelection = Boolean(state.selectedUat) && !isSelected;
-      // Umplerea PLINE (alpha .85) e decizie de contrast masurata: accentSoft la .24 dadea
-      // 1.08:1 pe alb -- UAT-urile cu stiri erau invizibile fata de cele fara (1.03:1),
-      // sesizat de proprietar pe live. Aurul plin al temei separa clar cele doua stari, iar
-      // conturul si cifra duc restul informatiei (nu doar culoarea -- ghidul MN.IT pe harti).
+      // Umplerea PLINE e decizie de contrast masurata: accentSoft la alpha mic nu separa
+      // doua stari adiacente (1.08:1 pe alb, sesizat de proprietar pe live). Pe choropleth
+      // umplerea duce volumul pe toata forma — de la h0 (hartie rece) la h4 (brun inchis).
       const strongFill = Boolean(uat.count);
-      ctx.globalAlpha = dimmedBySelection ? 0.12
-        : strongFill ? 0.85 : hovered ? 0.22 : 0.05;
-      ctx.fillStyle = strongFill || hovered ? palette.locality : palette.fill;
+      ctx.globalAlpha = dimmedBySelection ? 0.12 : 1;
+      ctx.fillStyle = strongFill ? palette.h[rampClassFor(uat.count, uatPraguri)]
+        : hovered ? palette.accentSoft : palette.h[0];
       ctx.fill(uat.path2d, "evenodd");
       ctx.globalAlpha = 1;
-      ctx.strokeStyle = hovered || isSelected ? palette.hot
-        : uat.count ? palette.locality : palette.stroke;
-      ctx.lineWidth = hovered ? 2 : isSelected ? 2.4 : uat.count ? 1.25 : 0.65;
+      ctx.strokeStyle = hovered || isSelected ? palette.hot : palette.inner;
+      ctx.lineWidth = hovered ? 2 : isSelected ? 2.4 : 0.9;
       ctx.stroke(uat.path2d);
     }
     for (const uat of state.uats) {
@@ -386,12 +404,15 @@
       const fontSize = Math.max(4.5, Math.min(11, radius * 0.82));
       ctx.beginPath();
       ctx.arc(x, y, radius, 0, Math.PI * 2);
-      ctx.fillStyle = palette.hot;
+      // Badge INVERS față de înainte: pastilă albă cu cifră închisă, peste orice treaptă
+      // a rampei — lizibil pe h1–h4 la fel ca pe h0 (auriu plin cu cifră închisă mergea,
+      // dar cifrele plutite pe auriu formau mormanul vizual raportat de proprietar).
+      ctx.fillStyle = palette.surface;
       ctx.fill();
-      ctx.lineWidth = Math.min(1.4, Math.max(0.55, radius * 0.22));
-      ctx.strokeStyle = palette.surface;
+      ctx.lineWidth = Math.min(1.2, Math.max(0.5, radius * 0.2));
+      ctx.strokeStyle = palette.halo;
       ctx.stroke();
-      ctx.fillStyle = palette.badgeText;
+      ctx.fillStyle = palette.text;
       ctx.font = `800 ${fontSize}px sans-serif`;
       ctx.textAlign = "center";
       ctx.textBaseline = "middle";
@@ -427,6 +448,53 @@
     }
     if (![minX, minY, maxX, maxY].every(Number.isFinite)) return null;
     return { minX, minY, maxX, maxY };
+  }
+
+  // --- scara choropleth --------------------------------------------------------------------
+  // ACEEASI formula ca mini-harta din homepage (generator/mini_harta.py, fixul #382):
+  // praguri = cuartele volumului maxim, deduplicate, fara 0; clasa = 1 + cate praguri
+  // sunt STRICT sub count (c > p, nu c >= p). Doua feliuiaza aceeasi scara — homepage si
+  // harta spun aceeasi poveste cu aceeasi culori.
+  function praguriFor(max) {
+    return [...new Set([1, 2, 3].map((q) => Math.floor(max * q / 4)))]
+      .filter((p) => p > 0).sort((a, b) => a - b);
+  }
+
+  function rampClassFor(count, praguri) {
+    if (!count) return 0;
+    return Math.min(4, 1 + praguri.filter((p) => count > p).length);
+  }
+
+  function updateLegend(praguri, max, { show = true } = {}) {
+    const legend = $("#map-legend");
+    if (!legend) return;
+    if (!show || !(max > 0)) {
+      legend.hidden = true;
+      legend.replaceChildren();
+      return;
+    }
+    const p = praguri.length === 3 ? praguri : praguriFor(max);
+    const steps = [
+      { cls: "h0", label: "0" },
+      { cls: "h1", label: p[0] > 1 ? `1–${p[0] - 1}` : "1" },
+      { cls: "h2", label: `${p[0] + 1}–${p[1]}` },
+      { cls: "h3", label: `${p[1] + 1}–${p[2]}` },
+      { cls: "h4", label: `${p[2] + 1}+` },
+    ];
+    const title = document.createElement("span");
+    title.className = "legend-title";
+    title.textContent = "Volum de știri";
+    legend.replaceChildren(title);
+    for (const step of steps) {
+      const cell = document.createElement("span");
+      cell.className = "legend-step";
+      const swatch = document.createElement("span");
+      swatch.className = `swatch ${step.cls}`;
+      swatch.setAttribute("aria-hidden", "true");
+      cell.append(swatch, document.createTextNode(step.label));
+      legend.appendChild(cell);
+    }
+    legend.hidden = false;
   }
 
   function selectedView(vx, vy, vw, vh) {
@@ -775,7 +843,10 @@
     const [vx, vy, vw, vh] = viewBox.length === 4 ? viewBox : [0, 0, 1000, 700];
     const base = selectedView(vx, vy, vw, vh);
     state.baseView = base;
-    const view = zoomedView(base);
+    // În timpul fly-to-ului vederea e dictată de interpolare, nu de stare: animația
+    // scrie state.flyView la fiecare cadru, iar starea reală se aplică la final —
+    // ultimul cadru al animației coincide cu prima randare a stării noi.
+    const view = state.flyView || zoomedView(base);
     const cssWidth = Math.max(1, rect.width - 8);
     const cssHeight = Math.max(1, Math.min(720, cssWidth * view.height / view.width));
     const dpr = Math.min(window.devicePixelRatio || 1, 2);
@@ -817,7 +888,6 @@
       } else {
         try { path = new Path2D(pathData); } catch { continue; }
       }
-      const hasNews = count > 0;
       // `matchesSearch` a fost STERS, nu reparat. Era o constanta recalculata de 42 de ori
       // (nu continea `county`), deci o cautare potrivita doar pe titlu stingea toata harta.
       // Dar nici versiunea per-judet nu era corecta: la o cautare care nu e un loc ("accident")
@@ -829,24 +899,46 @@
         || (state.selectedRegion && state.selectedRegion === region);
       const outsideSelection = (state.selectedCounty && county !== state.selectedCounty)
         || (state.selectedRegion && region !== state.selectedRegion);
-      const dimmed = Boolean(outsideSelection || !hasNews);
+      paths.push({ county, region, path, count, selected, outsideSelection,
+        bounds: pathBounds(outline ? outline.d : pathData) });
+    }
+    // Choroplethul: pragurile se calculeaza din volumul VIZIBIL (filtrul curent), deci
+    // scara urmareste ce priveste omul, nu corpusul intreg. Legenda spune acelasi lucru.
+    const maxCount = Math.max(0, ...paths.map((e) => e.count));
+    const praguri = praguriFor(maxCount);
+    updateLegend(praguri, maxCount, { show: !state.zoomCounty && state.level !== "regional" });
 
-      ctx.globalAlpha = dimmed ? 0.32 : 1;
+    // Trei treceri, nu una: (1) contur lat deschis sub fiecare judet; (2) umplerea
+    // choropleth; (3) bordura fina intre judete. Umplerea din trecerea 2 acopera haloul
+    // din interior — haloul ramane vizibil DOAR pe marginea exterioara, unde nu are
+    // vecin care sa-l acopere: silueta tarii iese dintr-un data, fara nicio geometrie noua.
+    ctx.lineJoin = "round";
+    ctx.strokeStyle = palette.halo;
+    ctx.lineWidth = 3;
+    for (const entry of paths) ctx.stroke(entry.path);
+    for (const entry of paths) {
+      // Județele fără știri nu mai sunt „stinse" (alpha 0.32 inainte): primesc h0, hartia
+      // rece a scalei — absența de știri e informație, nu defect de randare.
+      ctx.globalAlpha = entry.outsideSelection ? 0.25 : 1;
       // În modul regional, culorile distincte și etichetele fac vizibilă delimitarea
-      // regiunilor editoriale; în celelalte moduri se păstrează harta neutră actuală.
-      ctx.fillStyle = selected ? palette.accentSoft
-        : state.level === "regional" ? regionFill(region, palette.fill) : palette.fill;
+      // regiunilor editoriale; în celelalte moduri umplerea duce volumul de știri.
+      ctx.fillStyle = entry.selected ? palette.accentSoft
+        : state.level === "regional" ? regionFill(entry.region, palette.fill)
+        : palette.h[rampClassFor(entry.count, praguri)];
       // Silueta e o reuniune de subcai (cate una per UAT), deci cere "evenodd" ca sa nu se
       // umple gaurile dintre ele; conturul simplu de judet se umple la fel de bine asa.
-      ctx.fill(path, "evenodd");
+      ctx.fill(entry.path, "evenodd");
       ctx.globalAlpha = 1;
-      // Județul de sub cursor se ingroasa si prinde culoarea de accent, la fel ca UAT-ul
+    }
+    for (const entry of paths) {
+      // Județul de sub cursor se ingroasa si prinde contur de accent, la fel ca UAT-ul
       // de sub cursor: tooltipul spune numele, conturul arata CARE forma il poartă.
-      const hovered = !state.zoomCounty && state.hoverCounty === county;
-      ctx.strokeStyle = hovered ? palette.hot : palette.stroke;
-      ctx.lineWidth = hovered ? 2 : 1.2;
-      ctx.stroke(path);
-      paths.push({ county, region, path, count, bounds: pathBounds(outline ? outline.d : pathData) });
+      const hovered = !state.zoomCounty && state.hoverCounty === entry.county;
+      ctx.globalAlpha = entry.outsideSelection ? 0.25 : 1;
+      ctx.strokeStyle = hovered || entry.selected ? palette.hot : palette.inner;
+      ctx.lineWidth = hovered ? 2.2 : entry.selected ? 2 : 1.2;
+      ctx.stroke(entry.path);
+      ctx.globalAlpha = 1;
     }
 
     if (state.level === "regional") {
@@ -892,29 +984,11 @@
       }
     }
 
-    if (!state.zoomCounty && state.level !== "regional") {
-      for (const entry of paths) {
-        if (!entry.count || !entry.bounds) continue;
-        const p = {
-          x: (entry.bounds.minX + entry.bounds.maxX) / 2,
-          y: (entry.bounds.minY + entry.bounds.maxY) / 2,
-        };
-        const radius = Math.max(7, Math.min(18, 6 + Math.sqrt(entry.count) * 1.8));
-        ctx.beginPath();
-        ctx.arc(p.x, p.y, radius, 0, Math.PI * 2);
-        ctx.fillStyle = palette.hot;
-        ctx.fill();
-        ctx.lineWidth = 1.5;
-        ctx.strokeStyle = palette.surface;
-        ctx.stroke();
-        ctx.fillStyle = palette.badgeText;
-        ctx.font = "800 11px sans-serif";
-        ctx.textAlign = "center";
-        ctx.textBaseline = "middle";
-        ctx.fillText(String(entry.count), p.x, p.y);
-        entry.marker = { x: p.x, y: p.y, radius };
-      }
-    }
+    // Bulinele cu cifre de la nivel național au fost STERSE, nu restilizate: pe choropleth,
+    // intensitatea umplerii duce volumul, tooltipul dă cifra + primele titluri, iar cifra
+    // desenată peste umplere crea exact zgomotul raportat de proprietar (buline aurii
+    // uniforme, suprapuse la București, pe un fond gri fără semnificație). Hit-testul de
+    // click nu le simte lipsa: cascada rămâne pe interiorul poligonului, apoi margine.
 
     const localityMarkers = [];
     // UAT-urile au prioritate vizuală: când geometria lor este disponibilă, cifra de pe
@@ -959,14 +1033,15 @@
         const radius = Math.max(5, Math.min(14, 4 + Math.sqrt(group.count) * 1.7));
         ctx.beginPath();
         ctx.arc(group.x, group.y, radius, 0, Math.PI * 2);
-        ctx.fillStyle = palette.locality;
+        // Același badge invers ca la UAT-uri: pastilă albă, cifră închisă, lizibilă pe
+        // orice treaptă a rampei (auriu plin cu cifră închisă masura 5.70:1, dar nu se mai
+        // potrivește cu limbajul choropleth).
+        ctx.fillStyle = palette.surface;
         ctx.fill();
-        ctx.lineWidth = 1.5;
-        ctx.strokeStyle = palette.surface;
+        ctx.lineWidth = 1.2;
+        ctx.strokeStyle = palette.halo;
         ctx.stroke();
-        // Text inchis pe auriu (masurat 5.70:1 tema deschisa, 8.33:1 cea inchisa); alb pe
-        // auriu era 3.15:1 -- sub minimul de lizibilitate.
-        ctx.fillStyle = palette.onAccent;
+        ctx.fillStyle = palette.text;
         ctx.font = "800 9px sans-serif";
         ctx.textAlign = "center";
         ctx.textBaseline = "middle";
@@ -1234,8 +1309,70 @@
     else history.pushState(null, "", url);
   }
 
+  // --- fly-to: apropierea animată la selecție ----------------------------------------------
+  // Convenția hărților de produs: selectarea unei zone ZOOMEAZĂ lin spre ea (380 ms,
+  // easeInOutCubic), nu sari brutal la alt cadru. Restaurările din URL/Back rămân instant:
+  // cine ajunge printr-un link vrea starea, nu spectacolul. reduce-motion sare animația.
+
+  function baseViewBox() {
+    const vb = String(state.map?.viewbox || "").trim().split(/\s+/).map(Number);
+    return vb.length === 4 ? vb : [0, 0, 1000, 700];
+  }
+
+  // Vederea țintă pentru un județ, calculată fără a schimba starea: selectedView depinde
+  // de state.zoomCounty, deci îl împrumutăm pe durata calculului și-l întoarcem.
+  function peekViewFor(county) {
+    const saved = state.zoomCounty;
+    state.zoomCounty = county;
+    const [vx, vy, vw, vh] = baseViewBox();
+    const view = selectedView(vx, vy, vw, vh);
+    state.zoomCounty = saved;
+    return view;
+  }
+
+  function animateViewTo(target, done) {
+    const from = state.view;
+    const reduce = window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches;
+    if (!from || reduce) {
+      done();
+      return;
+    }
+    state.flyToken += 1;
+    const token = state.flyToken;
+    const t0 = performance.now();
+    const DURATION = 380;
+    const ease = (t) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2);
+    const step = (now) => {
+      // O animație mai nouă a luat locul: nu mai scriem vederea peste ea.
+      if (token !== state.flyToken) return;
+      const t = Math.min(1, (now - t0) / DURATION);
+      const e = ease(t);
+      state.flyView = {
+        x: from.x + (target.x - from.x) * e,
+        y: from.y + (target.y - from.y) * e,
+        width: from.width + (target.width - from.width) * e,
+        height: from.height + (target.height - from.height) * e,
+      };
+      buildMap();
+      if (t < 1) {
+        requestAnimationFrame(step);
+        return;
+      }
+      state.flyView = null;
+      done();
+    };
+    requestAnimationFrame(step);
+  }
+
   function selectCounty(county) {
-    applyState({ region: null, county, locality: null });
+    const go = () => applyState({ region: null, county, locality: null });
+    // Fly-to doar la trecerea efectivă din vederea largă în cea de județ (click pe hartă
+    // sau în picker), nu la re-selectarea aceluiași județ și nu în timpul altei animații.
+    if (county && !state.zoomCounty && county !== state.selectedCounty && !state.flyView) {
+      animateViewTo(peekViewFor(county), go);
+      return;
+    }
+    go();
   }
 
   function selectRegion(region) {
@@ -1427,7 +1564,7 @@
     if (!tip) return;
     if (!target || !event || !canvas) {
       tip.hidden = true;
-      tip.textContent = "";
+      tip.replaceChildren();
       return;
     }
     const count = target.count || 0;
@@ -1435,9 +1572,39 @@
     // county, iar la nivel regional cifra apartine REGIUNII, nu județului atins.
     const label = target.label || target.name || target.county
       || (state.level === "regional" ? target.region : "") || "";
-    tip.textContent = count
-      ? `${label} · ${count} ${itemLabelFor(count)}`
-      : `${label}`;
+    tip.replaceChildren();
+    const head = document.createElement("div");
+    head.className = "tip-head";
+    const name = document.createElement("span");
+    name.textContent = label || "—";
+    head.appendChild(name);
+    if (count) {
+      const figure = document.createElement("span");
+      figure.className = "tip-count";
+      figure.textContent = `${count} ${itemLabelFor(count)}`;
+      head.appendChild(figure);
+    }
+    tip.appendChild(head);
+    // Previzualizare: primele trei titluri din zona atinsă. UAT-urile au asignarea
+    // proprie (uat.items); județele le scot din lista vizibilă; regiunile, la fel.
+    let titles = [];
+    if (Array.isArray(target.items)) titles = target.items.slice(0, 3);
+    else if (target.county) titles = state.visible.filter((it) => it.county === target.county).slice(0, 3);
+    else if (target.region) titles = state.visible.filter((it) => it.region === target.region).slice(0, 3);
+    if (titles.length) {
+      const list = document.createElement("ul");
+      list.className = "tip-list";
+      for (const item of titles) {
+        const li = document.createElement("li");
+        li.textContent = item.title || "…";
+        list.appendChild(li);
+      }
+      tip.appendChild(list);
+      const hint = document.createElement("div");
+      hint.className = "tip-hint";
+      hint.textContent = "Click pentru lista completă";
+      tip.appendChild(hint);
+    }
     tip.hidden = false;
     // Pozitionare relativa la gazda hartii, tinuta in interiorul ei: langa marginea din
     // dreapta un tooltip ancorat la cursor ar iesi din ecran, iar pe telefon exact acolo
@@ -1647,6 +1814,14 @@
   }
 
   function resetSelection() {
+    // Zoom-out animat doar când chiar ești în vederea de județ; în rest (filtre active
+    // fără zoom geometric) întoarcerea e instant.
+    if (state.zoomCounty && state.view && !state.flyView) {
+      const [vx, vy, vw, vh] = baseViewBox();
+      animateViewTo({ x: vx, y: vy, width: vw, height: vh },
+        () => applyState({ region: null, county: null, locality: null }));
+      return;
+    }
     applyState({ region: null, county: null, locality: null });
   }
 
