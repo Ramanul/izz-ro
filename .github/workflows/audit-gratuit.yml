@@ -1,0 +1,76 @@
+name: audit-gratuit
+
+# Audit extern gratuit pe site-ul LIVE — complementul post-deploy al masuratorilor locale
+# din tools/audit.sh (specs/masuratori-frontend.md). Spec: specs/audit-gratuit-2026-10-02.md.
+# Scanere: PageSpeed Insights (lab + field CrUX), Mozilla Observatory (antete HTTP),
+# SSL Labs (TLS), validatoare W3C (HTML/CSS), JSON-LD schema.org, lychee (linkuri).
+# Toate keyless sau cu cheia gratuita optionala PSI_API_KEY;
+# nimic facturabil. Un esec de scan NU blocheaza: fiecare pas scrie reports/*.json
+# (aceeasi filosofie ca feedcheck.yml), sumarul cade in job summary + artifact 90 zile.
+# IndexNow NU e aici: exista deja in pipeline (tools/indexnow_submit.py, la fiecare rulare).
+
+on:
+  schedule:
+    - cron: "23 3 * * 1"   # luni 03:23 UTC — decalat de codeql (:27) si semgrep (:41)
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+
+concurrency:
+  group: audit-gratuit
+  cancel-in-progress: false
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7
+        with:
+          python-version: "3.11"
+
+      - name: Esantion URL-uri din sitemap
+        run: python tools/audit_gratuit.py esantion
+
+      - name: PageSpeed Insights (lab + field)
+        run: python tools/audit_gratuit.py psi
+        env:
+          PSI_API_KEY: ${{ secrets.PSI_API_KEY }}
+
+      - name: W3C CSS validator
+        run: python tools/audit_gratuit.py css
+
+      - name: W3C Nu HTML validator
+        run: python tools/audit_gratuit.py nu
+
+      - name: JSON-LD schema.org
+        run: python tools/audit_gratuit.py jsonld
+
+      - name: Mozilla Observatory
+        run: python tools/audit_gratuit.py observatory
+
+      - name: SSL Labs
+        run: python tools/audit_gratuit.py ssllabs
+
+      - name: Linkuri rupte (lychee)
+        uses: lycheeverse/lychee-action@e7477775783ea5526144ba13e8db5eec57747ce8 # v2
+        with:
+          args: >-
+            --max-retries 2 --max-concurrency 8 --timeout 20s --no-progress
+            --user-agent 'izz-ro-audit/1.0 (+https://github.com/Ramanul/izz-ro)'
+            --format json --output reports/lychee.json reports/urls.txt
+          fail: false
+
+      - name: Sumar in job summary
+        run: python tools/audit_gratuit.py sumar
+
+      - name: Artifact rapoarte (90 zile)
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: audit-gratuit-reports
+          path: reports/
+          retention-days: 90
