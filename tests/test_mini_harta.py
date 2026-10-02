@@ -4,7 +4,7 @@ import sys
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from generator import render  # noqa: E402
-from generator.mini_harta import install_hook, mini_harta  # noqa: E402
+from generator.mini_harta import install_hook  # noqa: E402
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -81,3 +81,4 @@ def test_base_leaga_faza2_css():
     with open(os.path.join(ROOT, "templates", "base.html"), encoding="utf-8") as fh:
         html = fh.read()
     assert "faza2.css" in html
+    assert "site.css" in html
