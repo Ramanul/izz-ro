@@ -187,5 +187,7 @@ Textul complet este în `.claude/reguli/18-imagini.md`; hook-ul îl injectează 
 - `TASKS-A.md` / `TASKS-B.md` — jurnale locale, nu canal live.
 - `TASKS-MISTRAL.md` — coada executorului Mistral.
 - `SESSION-2026-08-14.md` / `mistral-analiza-workflow.md` — instantanee istorice.
+- `CONTRIBUTING.md` — ghidul public de contribuție (community profile); static, nu canal de lucru.
+- `CODE_OF_CONDUCT.md` — Contributor Covenant standard (community profile); nu se editează local.
 
 Normativele din `.claude/commands/`, `.claude/agents/` și `.claude/reguli/` sunt condiționale și se activează prin hook/command, nu se copiază în L0.
