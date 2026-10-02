@@ -24,6 +24,35 @@
         }
       }
     },
+    "zai": {
+      "npm": "@ai-sdk/openai-compatible",
+      "name": "Z.ai (GLM) — paid, opt-in",
+      "options": {
+        "baseURL": "https://api.z.ai/api/paas/v4",
+        "apiKey": "{env:ZAI_API_KEY}"
+      },
+      "models": {
+        "glm-5.3-flash": {
+          "name": "GLM-5.3-Flash (1M ctx, multimodal, $0.15/$0.50)"
+        },
+        "glm-5.3": {
+          "name": "GLM-5.3 (1M ctx, $1.40/$4.40)"
+        }
+      }
+    },
+    "xai": {
+      "npm": "@ai-sdk/openai-compatible",
+      "name": "xAI (Grok) — paid, opt-in",
+      "options": {
+        "baseURL": "https://api.x.ai/v1",
+        "apiKey": "{env:XAI_API_KEY}"
+      },
+      "models": {
+        "grok-4.7": {
+          "name": "Grok 4.7 (500k ctx, $2/$6)"
+        }
+      }
+    },
     "groq": {
       "npm": "@ai-sdk/openai-compatible",
       "name": "Groq (free tier)",
