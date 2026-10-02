@@ -12,9 +12,8 @@
 
 ## Open
 - **`ai_gateway` — aterizat pe main prin #390, merged (mai demult și #387, merged):**
-  gateway AI local $0; cheile doar în `.env`. docs: `ai_gateway/FREE_AI_SETUP.md`.
-  Catalogul providerilor churn-uisază: 2 oct, `llama-3.3-70b*`/`kimi-k2` dispăruți de
-  la Groq, `qwen-3.8-27b` nou la ambii.
+  gateway AI local $0; cheile doar în `.env`; docs: `ai_gateway/FREE_AI_SETUP.md`.
+  Cataloagele free churn-uisază: 2 oct, `llama-3.3-70b*`/`kimi-k2` dispăruți, `qwen-3.8-27b` nou la ambii.
 - **Pages `izz-ro` ZOMBI revendică `izz.ro` [IZZ-0366, 0368]:** ștergerea = decizie proprietar [IZZ-0395].
 - **PRODUS P1 — homepage fără nicio fotografie [IZZ-0403]:** 0 `<img>` măsurat; 73% din articole au portret real
   deja în `output/portraits/` — zero fișiere noi; potrivirea rulează doar pe articol (`render.py:971`).
