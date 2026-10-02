@@ -31,24 +31,40 @@ concurrency:
 
 jobs:
   ai:
-    # matches() cu \b, nu contains(): "@ai" e prefix al multor cuvinte (@aiurea etc.).
+    # Poartă pe două straturi. Straturile 1 (aici): contains() ieftin — expresiile GitHub
+    # NU au regex (matches() nu există; verificat cu actionlint 1.7.7), iar "@ai" e prefix
+    # al multor cuvinte. Straturile 2: pasul "Declanșator valid?" verifică granița reală
+    # de cuvânt cu grep -E și taie totul dacă textul era un fals pozitiv (ex. "@aiurea").
     if: |
       (github.event_name == 'issue_comment'
-        && matches(github.event.comment.body, '@(ai|deepseek|qwen|kimi|glm|grok|nemotron|gemma|inkling)\b')
+        && contains(github.event.comment.body, '@ai') || contains(github.event.comment.body, '@deepseek') || contains(github.event.comment.body, '@qwen') || contains(github.event.comment.body, '@kimi') || contains(github.event.comment.body, '@glm') || contains(github.event.comment.body, '@grok') || contains(github.event.comment.body, '@nemotron') || contains(github.event.comment.body, '@gemma') || contains(github.event.comment.body, '@inkling')
         && contains(fromJSON('["OWNER","COLLABORATOR"]'), github.event.comment.author_association)) ||
       (github.event_name == 'pull_request_review_comment'
-        && matches(github.event.comment.body, '@(ai|deepseek|qwen|kimi|glm|grok|nemotron|gemma|inkling)\b')
+        && contains(github.event.comment.body, '@ai') || contains(github.event.comment.body, '@deepseek') || contains(github.event.comment.body, '@qwen') || contains(github.event.comment.body, '@kimi') || contains(github.event.comment.body, '@glm') || contains(github.event.comment.body, '@grok') || contains(github.event.comment.body, '@nemotron') || contains(github.event.comment.body, '@gemma') || contains(github.event.comment.body, '@inkling')
         && contains(fromJSON('["OWNER","COLLABORATOR"]'), github.event.comment.author_association)) ||
       (github.event_name == 'issues'
-        && matches(github.event.issue.body, '@(ai|deepseek|qwen|kimi|glm|grok|nemotron|gemma|inkling)\b')
+        && contains(github.event.issue.body, '@ai') || contains(github.event.issue.body, '@deepseek') || contains(github.event.issue.body, '@qwen') || contains(github.event.issue.body, '@kimi') || contains(github.event.issue.body, '@glm') || contains(github.event.issue.body, '@grok') || contains(github.event.issue.body, '@nemotron') || contains(github.event.issue.body, '@gemma') || contains(github.event.issue.body, '@inkling')
         && contains(fromJSON('["OWNER","COLLABORATOR"]'), github.event.issue.author_association))
     runs-on: ubuntu-latest
     timeout-minutes: 15
     env:
       HAS_KEY: ${{ secrets.OPENROUTER_API_KEY != '' }}
     steps:
-      - name: Checkout
+      - name: Declanșator valid?
         if: env.HAS_KEY == 'true'
+        # Straturile 2 ale porții: granița reală de cuvânt (expresiile GitHub n-au regex).
+        # Fără declanșator adevărat, totul se taie aici — fără checkout, fără API.
+        env:
+          COMMENT_BODY: ${{ github.event.comment.body || github.event.issue.body }}
+        run: |
+          if printf '%s' "$COMMENT_BODY" | grep -qE '@(ai|deepseek|qwen|kimi|glm|grok|nemotron|gemma|inkling)([^a-z0-9-]|$)'; then
+            echo "HAS_TRIGGER=true" >> "$GITHUB_ENV"
+          else
+            echo "Fals pozitiv (ex. @aiurea) — nu e declanșator valid, jobul iese."
+          fi
+
+      - name: Checkout
+        if: env.HAS_TRIGGER == 'true'
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
         with:
           fetch-depth: 1
@@ -59,7 +75,7 @@ jobs:
         run: echo "OPENROUTER_API_KEY nu e setat — botul tace."
 
       - name: Asamblează promptul
-        if: env.HAS_KEY == 'true'
+        if: env.HAS_TRIGGER == 'true'
         env:
           EVENT_NAME: ${{ github.event_name }}
           COMMENT_BODY: ${{ github.event.comment.body }}
@@ -98,7 +114,7 @@ jobs:
           echo "Prompt asamblat: $(wc -c < /tmp/ai-bot/task.md) bytes"
 
       - name: Întreabă modelul gratuit
-        if: env.HAS_KEY == 'true'
+        if: env.HAS_TRIGGER == 'true'
         env:
           OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
           COMMENT_BODY: ${{ github.event.comment.body || github.event.issue.body }}
@@ -108,7 +124,7 @@ jobs:
           echo "MODEL=$MODEL" >> "$GITHUB_ENV"
 
       - name: Publică răspunsul
-        if: env.HAS_KEY == 'true'
+        if: env.HAS_TRIGGER == 'true'
         env:
           GH_TOKEN: ${{ github.token }}
           NUMAR: ${{ github.event.issue.number || github.event.pull_request.number }}
