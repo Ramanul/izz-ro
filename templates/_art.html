@@ -13,7 +13,7 @@
     card si pe pagina. Anuntat la cititorul de ecran ar fi repetitie, nu informatie. -#}
 {% macro art(a, extra='') %}
 {%- set s = a.art_style %}{% if s %}{% set d = s.data -%}
-<div class="art art--{{ s.tpl }} art--p{{ s.pal }} art--t{{ s.treapta }}{% if extra %} {{ extra }}{% endif %}" aria-hidden="true">
+<div class="art art--{{ s.tpl }} art--p{{ s.pal }} art--t{{ s.treapta }}{% if s.harta %} art--harta{% elif s.portret %} art--portret{% endif %}{% if extra %} {{ extra }}{% endif %}" aria-hidden="true">
   {%- if s.tpl == 'editorial' %}
   <div class="art-head"><span class="art-brand">izz.ro</span><span class="art-when">{% if d %}{{ d.wk }} {{ d.zi_n }} {{ d.luna }} {{ d.an }}{% else %}izz.ro{% endif %}</span></div>
   <div class="art-rule"></div>
@@ -41,6 +41,8 @@
   <div class="art-seal">{% if d %}<span class="art-num-zi">{{ d.zi }}</span><span class="art-num-wk">{{ d.wk }}</span><span class="art-num-luna">{{ d.luna }}</span>{% endif %}</div>
   <span class="art-brand art-brand--jos">izz.ro</span>
   {%- endif %}
+  {%- if s.harta %}<div class="art-harta"><svg viewBox="0 0 330 300" aria-hidden="true" focusable="false"><g transform="{{ s.harta.transform }}"><path d="{{ s.harta.d }}" stroke-width="{{ s.harta.sw }}" stroke-linejoin="round"/></g></svg></div>
+  {%- elif s.portret %}<div class="art-portret-wrap"><img class="art-portret" src="/{{ s.portret.img }}" alt="{{ s.portret.name }}" loading="lazy" decoding="async" width="160" height="160"></div>{% endif %}
   <div class="art-grain"></div>
 </div>
 {%- endif %}{% endmacro %}
