@@ -68,18 +68,14 @@ Protocol — every step is mandatory, in order (identical to /delegate-devin exc
         prompt alone is 32–46k tokens ("Request too large" on every call); cerebras returns
         `payment_required` on every chat call and caps free context at 8k anyway. They stay
         wired in `opencode.json` so a paid plan would work instantly.
-     3b. `zai/glm-5.3-flash` · `xai/grok-4.7` — GLM and Grok, the owner's two paid routes.
-        Wired in `opencode.json` + `key_var_for` in `tools/oc_run.sh`, and **OUT of the
-        default ladder on purpose**: both bill per token, so they are only ever used when
-        the manager names them.
-        `OC_ROUTES="zai/glm-5.3-flash" tools/oc_run.sh "..."` (needs `ZAI_API_KEY`)
-        `OC_ROUTES="xai/grok-4.7" tools/oc_run.sh "..."` (needs `XAI_API_KEY`)
-        GLM is Z.ai DIRECT — `https://api.z.ai/api/paas/v4`, not the cerebras `zai-glm-4.7`
-        (that one is `payment_required` on a free key, see 3 above). A GLM **Coding Plan**
-        key needs `https://api.z.ai/api/coding/paas/v4` instead; the endpoints are not
-        interchangeable. Cost trap for an agent loop: `glm-5.3-flash` has thinking always
-        on and `reasoning_effort` defaulting to `max`, billed as output — measure one probe
-        call before handing it a long task. `grok-4.7` is the expensive one ($2/$6 per 1M).
+     3b. `zai/glm-5.3-flash` · `xai/grok-4.7` — the API-KEY path, and the owner has **no
+        key on purpose**. Do not "fix" a missing `ZAI_API_KEY` by telling them to buy one.
+        Their GLM is free and account-based: Z.ai quota consumed inside ZCode (`zcode`).
+        Wiring that into this ladder means a new EXECUTOR, not a model route, because an
+        account entitlement is not reachable from `opencode run`. Not wired yet on purpose —
+        Z.ai does not document the non-interactive prompt flag, and a wrong guess hangs in
+        an interactive TUI instead of failing. `grok` (Grok Build) is the same shape and has
+        no free allowance either: it needs a SuperGrok/X Premium+ login or API credits.
      4. `ollama/qwen2.5-coder:7b` — local, unlimited, offline. **Deliberately NOT in the
         default ladder.** Measured 2026-08-02: this machine has a GTX 1060 with 3GB VRAM and
         16GB RAM, so a 4.7GB 7B model runs half on CPU — far too slow to drive an agentic
