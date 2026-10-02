@@ -53,6 +53,8 @@
     // (flyView), nu de stare. flyToken anulează animația anterioară când pornește alta.
     flyView: null,
     flyToken: 0,
+    // Fetchuri de siluete UAT pentru vecini, în zbor (dedup per județ).
+    neighborFetches: new Set(),
   };
 
   const REGION_FILLS = {
@@ -244,6 +246,9 @@
         state.uatOutlineCache.set(county, buildCountyOutline(uats, county));
         state.uats = uats;
         state.uatCountsDirty = true;
+        // Vecinii, în fundal: siluetele lor UAT înlocuiesc conturul Natural Earth în
+        // vederea de județ, ca granițele comune să se potrivească prin construcție.
+        loadNeighborOutlines(county);
       })
       .catch(() => {
         if (state.uatCounty === county && state.uatRequestId === requestId) state.uats = [];
@@ -357,6 +362,57 @@
 
   function countyOutline(county) {
     return county ? state.uatOutlineCache.get(county) || null : null;
+  }
+
+  // Vecinii geografici ai județului deschis: intersectarea dreptunghiurilor împadritoare
+  // cu o margine de 35% din mărimea județului. Nu e o listă de adiacență reală, e o
+  // supraproximare deliberată — un vecin în plus costă un fetch mic (fișier ~50 KB,
+  // cache force-cache), o graniță nealiniată costă încrederea în hartă.
+  function neighborCountiesFor(county) {
+    const self = state.counties[county] ? pathBounds(state.counties[county]) : null;
+    if (!self) return [];
+    const padX = (self.maxX - self.minX) * 0.35;
+    const padY = (self.maxY - self.minY) * 0.35;
+    const out = [];
+    for (const other of Object.keys(state.counties)) {
+      if (other === county) continue;
+      const b = pathBounds(state.counties[other]);
+      if (!b) continue;
+      if (b.minX > self.maxX + padX || b.maxX < self.minX - padX) continue;
+      if (b.minY > self.maxY + padY || b.maxY < self.minY - padY) continue;
+      out.push(other);
+    }
+    return out;
+  }
+
+  // Silueta UAT pentru un vecin, în fundal: vine din ACEEAȘI sursă oficială ca județul
+  // deschis, deci granița comună se potrivește prin construcție. Eșecul e tăcut și
+  // acceptabil: vecinul rămâne pe conturul Natural Earth, exact ca înainte de fix.
+  function loadNeighborOutline(county) {
+    if (state.uatOutlineCache.has(county) || state.uatCache.has(county)) return;
+    if (state.neighborFetches.has(county)) return;
+    state.neighborFetches.add(county);
+    fetch(`./data/uat/${encodeURIComponent(county)}.json`, { cache: "force-cache" })
+      .then((response) => response.ok ? response.json() : null)
+      .then((data) => {
+        const units = Array.isArray(data?.uats) ? data.uats.map((unit) => ({
+          ...unit,
+          path2d: new Path2D(unit.path || ""),
+          count: 0,
+          localities: [],
+          items: [],
+        })) : [];
+        state.uatCache.set(county, units);
+        state.uatOutlineCache.set(county, buildCountyOutline(units, county));
+        // Silueta contează doar în vederea de județ; acolo o redesenare o pune în lactă.
+        if (state.zoomCounty) buildMap();
+      })
+      .catch(() => {})
+      .finally(() => state.neighborFetches.delete(county));
+  }
+
+  function loadNeighborOutlines(county) {
+    for (const neighbor of neighborCountiesFor(county)) loadNeighborOutline(neighbor);
   }
 
   function drawUats(ctx, palette, canvas, view) {
@@ -878,10 +934,14 @@
     for (const [county, pathData] of Object.entries(state.counties)) {
       const region = regionForCounty(county);
       const count = counts.get(state.level === "regional" ? region : county) || 0;
-      // Judetul deschis se deseneaza din silueta UAT-urilor lui, ca sa se potriveasca exact
-      // cu ele (vezi buildCountyOutline). Restul judetelor raman pe conturul Natural Earth:
-      // acolo nu se vede niciun UAT, deci nu exista cu ce sa nu se potriveasca.
-      const outline = county === state.zoomCounty ? countyOutline(county) : null;
+      // În vederea de județ TOATE județele se desenează din silueta UAT-urilor când e
+      // disponibilă (cache populat de syncUats: județul deschis + vecinii lui). Silueta
+      // oficială geo-spatial.org și conturul UAT provin din ACEEAȘI sursă, deci granita
+      // comună se potrivește prin construcție; conturul Natural Earth e generalizat și
+      // lăsa un canal vizibil între județul conturat auriu și vecini (audit 12 sep:
+      // mediană 14px, max 44px). La nivel național rămân TOATE pe Natural Earth:
+      // uniformitate de sursă, niciodată amestec.
+      const outline = state.zoomCounty ? countyOutline(county) : null;
       let path;
       if (outline) {
         path = outline.path2d;
@@ -899,7 +959,15 @@
         || (state.selectedRegion && state.selectedRegion === region);
       const outsideSelection = (state.selectedCounty && county !== state.selectedCounty)
         || (state.selectedRegion && region !== state.selectedRegion);
-      paths.push({ county, region, path, count, selected, outsideSelection,
+      // Estomparea pe niveluri: național/regional — județele în afara selecției. În
+      // vederea de județ vecinii rămân VIZIBILI pe ton de hârtie (decizie proprietar,
+      // 5 sep: „vreau să mă mut pe altul" nu trebuie să treacă prin butonul de
+      // întoarcere) și se estompează doar când un UAT e selectat, ca alegerea să iasă.
+      const isZoomedCounty = county === state.zoomCounty;
+      const dim = isZoomedCounty ? 1
+        : state.zoomCounty ? (state.selectedUat ? 0.25 : 1)
+        : (outsideSelection ? 0.25 : 1);
+      paths.push({ county, region, path, count, selected, dim,
         bounds: pathBounds(outline ? outline.d : pathData) });
     }
     // Choroplethul: pragurile se calculeaza din volumul VIZIBIL (filtrul curent), deci
@@ -913,13 +981,23 @@
     // din interior — haloul ramane vizibil DOAR pe marginea exterioara, unde nu are
     // vecin care sa-l acopere: silueta tarii iese dintr-un data, fara nicio geometrie noua.
     ctx.lineJoin = "round";
-    ctx.strokeStyle = palette.halo;
-    ctx.lineWidth = 3;
-    for (const entry of paths) ctx.stroke(entry.path);
+    // Haloul de silueta există doar la vederea largă: în vederea de județ conturul auriu
+    // al județului deschis e singurul accent necesar, iar halourile cu opacitate plină
+    // sângerau prin zonele estompute ale vecinilor și dublau bandă la granița externă
+    // (raportat de proprietar pe live, 2 oct). Haloul respectă și el estomparea.
+    if (!state.zoomCounty) {
+      ctx.strokeStyle = palette.halo;
+      ctx.lineWidth = 3;
+      for (const entry of paths) {
+        ctx.globalAlpha = entry.dim;
+        ctx.stroke(entry.path);
+      }
+      ctx.globalAlpha = 1;
+    }
     for (const entry of paths) {
       // Județele fără știri nu mai sunt „stinse" (alpha 0.32 inainte): primesc h0, hartia
       // rece a scalei — absența de știri e informație, nu defect de randare.
-      ctx.globalAlpha = entry.outsideSelection ? 0.25 : 1;
+      ctx.globalAlpha = entry.dim;
       // În modul regional, culorile distincte și etichetele fac vizibilă delimitarea
       // regiunilor editoriale; în celelalte moduri umplerea duce volumul de știri.
       ctx.fillStyle = entry.selected ? palette.accentSoft
@@ -934,7 +1012,7 @@
       // Județul de sub cursor se ingroasa si prinde contur de accent, la fel ca UAT-ul
       // de sub cursor: tooltipul spune numele, conturul arata CARE forma il poartă.
       const hovered = !state.zoomCounty && state.hoverCounty === entry.county;
-      ctx.globalAlpha = entry.outsideSelection ? 0.25 : 1;
+      ctx.globalAlpha = entry.dim;
       ctx.strokeStyle = hovered || entry.selected ? palette.hot : palette.inner;
       ctx.lineWidth = hovered ? 2.2 : entry.selected ? 2 : 1.2;
       ctx.stroke(entry.path);
