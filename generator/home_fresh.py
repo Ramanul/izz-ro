@@ -10,8 +10,24 @@ from datetime import datetime, timedelta, timezone
 # 72h: regional stale (zile) pe home arăta abandon; național/județean de azi trec.
 HOME_MAX_AGE = timedelta(hours=72)
 
+_faza2_tried = False
+
+
+def _ensure_faza2_hook() -> None:
+    """Instalează hook-ul mini_harta o singură dată, după ce render e complet încărcat."""
+    global _faza2_tried
+    if _faza2_tried:
+        return
+    _faza2_tried = True
+    try:
+        from .mini_harta import install_hook
+        install_hook()
+    except Exception:
+        pass
+
 
 def home_fresh(a: dict, *, now: datetime | None = None, max_age: timedelta = HOME_MAX_AGE) -> bool:
+    _ensure_faza2_hook()
     raw = (a.get("published") or "").strip()
     if not raw:
         return True
