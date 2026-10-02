@@ -1,0 +1,230 @@
+# =============================================================================
+# Registry FreeQuotaGuard — provideri și modele (spec secțiunile 3, 10, 11, 21, 22)
+#
+# Reguli:
+#   tos_status: SAFE → folosit implicit · CAUTION → doar cu ALLOW_CAUTION=true
+#               UNVERIFIED → niciodată · NOT_ALLOWED → exclus
+#   billing_possible: true → POATE factura (doar OpenAI aici); în GLOBAL_FREE_ONLY
+#               e folosit DOAR dacă cotă free e confirmată explicit în .env
+#   quota.type: daily | monthly | one_time | rolling_window | rate_limit_only
+#   rate_limit_only  ≠  cotă garantată de tokeni (spec secțiunea 22): providerii de
+#               mai jos resping cererile peste limită, NU facturează — deci nu se
+#               blochează pe tokeni în guard, doar se contorizează.
+#
+# Surse, toate verificate la 2026-10-02:
+#   [OAI] https://help.openai.com/en/articles/10306912 (docs oficiale OpenAI)
+#   [OMR] https://github.com/diegosouzapw/OmniRoute (README + catalog auditat bi-săptămânal)
+#   [GEN] cunoștință generală, ofertă free oficială de lungă durată — re-verifică la
+#         activare pe pagina „docs" a fiecărui provider (URL-urile sunt mai jos).
+#
+# Modelele se schimbă des la toți providerii: lista de aici e PUNCT DE PLECARE.
+# Actualizează fără să atingi codul — tot ce citește routerul stă în fișierul ăsta.
+# =============================================================================
+
+group_limits:
+  # plafoanele oficiale OpenAI, pe grup (comune modelelor din grup):
+  # nu le pune aici decât temporar — sursa adevărată e .env:
+  #   OPENAI_LIMIT_GROUP_1M / OPENAI_LIMIT_GROUP_10M
+  1m: 0
+  10m: 0
+
+providers:
+
+  openai:
+    tos_status: SAFE          # cu data sharing ACTIVAT manual de tine (vezi FREE_AI_SETUP.md §OpenAI)
+    billing_possible: true    # docs [OAI]: cererea care depășește plafonul se facturează integral
+    enabled: true
+    api_key_env: OPENAI_API_KEY
+    base_url: https://api.openai.com/v1
+    quota: {type: daily, reset: "00:00 UTC"}
+    docs: https://help.openai.com/en/articles/10306912
+    source: "[OAI] 2026-10-02"
+    notes: >
+      Disponibil DOAR când în .env: OPENAI_COMPLIMENTARY_CONFIRMED=true și plafonul
+      oficial > 0 (OPENAI_LIMIT_GROUP_1M / OPENAI_LIMIT_GROUP_10M). Fără ele, guard-ul
+      îl ține pe FREE_QUOTA_DISABLED. Grupurile împart plafonul. Balance pozitiv
+      obligatoriu; oferta poate înceta cu preaviz 30 zile.
+    fallback_priority: 5
+    models:
+      # grupul 10M — modelele mini/nano (listă din docs [OAI]; re-verifică la activare)
+      - {id: gpt-5.4-mini,        quota_group: 10m, context: 128000, priority: 10, quality: {simple: 5, coding: 5, reasoning: 4, large_context: 4, search: 2, agentic: 5}}
+      - {id: gpt-5.4-nano,        quota_group: 10m, context: 128000, priority: 20, quality: {simple: 4, coding: 3, reasoning: 3, large_context: 2, search: 2, agentic: 3}}
+      - {id: gpt-5.1-codex-mini,  quota_group: 10m, context: 128000, priority: 15, quality: {simple: 4, coding: 5, reasoning: 4, large_context: 3, search: 2, agentic: 5}}
+      - {id: gpt-5-mini,          quota_group: 10m, context: 128000, priority: 20, quality: {simple: 4, coding: 4, reasoning: 4, large_context: 3, search: 2, agentic: 4}}
+      - {id: gpt-5-nano,          quota_group: 10m, context: 128000, priority: 30, quality: {simple: 4, coding: 3, reasoning: 3, large_context: 2, search: 2, agentic: 3}}
+      - {id: gpt-4.1-mini,        quota_group: 10m, context: 128000, priority: 30, quality: {simple: 4, coding: 4, reasoning: 3, large_context: 3, search: 2, agentic: 4}}
+      - {id: gpt-4.1-nano,        quota_group: 10m, context: 128000, priority: 40, quality: {simple: 3, coding: 3, reasoning: 2, large_context: 2, search: 2, agentic: 3}}
+      - {id: gpt-4o-mini,         quota_group: 10m, context: 128000, priority: 40, quality: {simple: 4, coding: 3, reasoning: 3, large_context: 3, search: 2, agentic: 3}}
+      - {id: o4-mini,             quota_group: 10m, context: 128000, priority: 30, quality: {simple: 3, coding: 4, reasoning: 5, large_context: 3, search: 2, agentic: 4}}
+      - {id: o1-mini,             quota_group: 10m, context: 128000, priority: 40, quality: {simple: 3, coding: 3, reasoning: 4, large_context: 2, search: 2, agentic: 3}}
+      # grupul 1M — modelele mari (extras confirmat din docs [OAI]; lista completă la URL)
+      - {id: gpt-5.4,             quota_group: 1m, context: 128000, priority: 10, quality: {simple: 5, coding: 5, reasoning: 5, large_context: 5, search: 3, agentic: 5}}
+      - {id: gpt-5.4-thinking,    quota_group: 1m, context: 128000, priority: 15, quality: {simple: 3, coding: 5, reasoning: 5, large_context: 4, search: 2, agentic: 5}}
+      - {id: gpt-5.1,             quota_group: 1m, context: 128000, priority: 20, quality: {simple: 5, coding: 5, reasoning: 5, large_context: 5, search: 3, agentic: 5}}
+      - {id: gpt-5,               quota_group: 1m, context: 128000, priority: 30, quality: {simple: 4, coding: 4, reasoning: 5, large_context: 4, search: 3, agentic: 4}}
+      - {id: gpt-4.1,             quota_group: 1m, context: 1000000, priority: 40, quality: {simple: 4, coding: 4, reasoning: 4, large_context: 4, search: 2, agentic: 4}}
+      - {id: codex-mini-latest,   quota_group: 1m, context: 128000, priority: 25, quality: {simple: 3, coding: 5, reasoning: 4, large_context: 3, search: 2, agentic: 4}}
+
+  groq:
+    tos_status: SAFE
+    billing_possible: false   # free tier: rate limits dure, fără facturare [GEN]
+    enabled: true
+    api_key_env: GROQ_API_KEY
+    base_url: https://api.groq.com/openai/v1
+    quota: {type: rate_limit_only}
+    docs: https://console.groq.com/docs/rate-limits
+    source: "[GEN]+[OMR] 2026-10-02"
+    notes: Cel mai rapid fallback; limite RPM/RPD pe model, re-verifică în consolă.
+    fallback_priority: 10
+    models:
+      - {id: llama-3.3-70b-versatile,    context: 128000, priority: 10, quality: {simple: 4, coding: 4, reasoning: 4, large_context: 3, search: 2, agentic: 4}}
+      - {id: llama-3.1-8b-instant,       context: 128000, priority: 30, quality: {simple: 3, coding: 2, reasoning: 2, large_context: 2, search: 2, agentic: 3}}
+      - {id: openai/gpt-oss-120b,        context: 128000, priority: 15, quality: {simple: 4, coding: 4, reasoning: 4, large_context: 3, search: 2, agentic: 4}}
+      - {id: openai/gpt-oss-20b,         context: 128000, priority: 35, quality: {simple: 3, coding: 3, reasoning: 3, large_context: 2, search: 2, agentic: 3}}
+      - {id: moonshotai/kimi-k2-instruct, context: 128000, priority: 20, quality: {simple: 4, coding: 4, reasoning: 4, large_context: 3, search: 2, agentic: 4}}
+
+  cerebras:
+    tos_status: SAFE
+    billing_possible: false
+    enabled: true
+    api_key_env: CEREBRAS_API_KEY
+    base_url: https://api.cerebras.ai/v1
+    quota: {type: daily, official_limit: 1000000, reset: "00:00 UTC"}  # [OMR]: 1M tokeni/zi
+    docs: https://cloud.cerebras.ai
+    source: "[OMR] 2026-10-02"
+    fallback_priority: 20
+    models:
+      - {id: llama-3.3-70b,   context: 128000, priority: 10, quality: {simple: 4, coding: 4, reasoning: 4, large_context: 3, search: 2, agentic: 4}}
+      - {id: gpt-oss-120b,    context: 128000, priority: 15, quality: {simple: 4, coding: 4, reasoning: 4, large_context: 3, search: 2, agentic: 4}}
+      - {id: qwen-3-32b,      context: 128000, priority: 30, quality: {simple: 3, coding: 3, reasoning: 3, large_context: 2, search: 2, agentic: 3}}
+
+  gemini:
+    tos_status: SAFE
+    billing_possible: false   # free tier AI Studio: RPD/TPM pe model, respinge, nu facturează [GEN]
+    enabled: true
+    api_key_env: GEMINI_API_KEY
+    base_url: https://generativelanguage.googleapis.com/v1beta/openai
+    quota: {type: rate_limit_only}
+    docs: https://ai.google.dev/gemini-api/docs/rate-limits
+    source: "[GEN] 2026-10-02"
+    notes: Cheie separată în AI Studio; accesul web Gemini ≠ acces API (spec secțiunea 27).
+    fallback_priority: 30
+    models:
+      - {id: gemini-2.5-flash,      context: 1000000, priority: 10, quality: {simple: 4, coding: 4, reasoning: 4, large_context: 4, search: 3, agentic: 4}}
+      - {id: gemini-2.5-flash-lite, context: 1000000, priority: 30, quality: {simple: 3, coding: 3, reasoning: 3, large_context: 3, search: 2, agentic: 3}}
+      - {id: gemini-2.5-pro,        context: 1000000, priority: 15, quality: {simple: 4, coding: 4, reasoning: 5, large_context: 5, search: 3, agentic: 4}}
+
+  mistral:
+    tos_status: SAFE
+    billing_possible: false   # plan gratuit La Plateforme: rate limits [GEN]
+    enabled: true
+    api_key_env: MISTRAL_API_KEY
+    base_url: https://api.mistral.ai/v1
+    quota: {type: rate_limit_only}
+    docs: https://docs.mistral.ai/deployment/laplateforme/tier/
+    source: "[GEN] 2026-10-02"
+    fallback_priority: 40
+    models:
+      - {id: mistral-small-latest,   context: 128000, priority: 10, quality: {simple: 4, coding: 3, reasoning: 3, large_context: 3, search: 2, agentic: 3}}
+      - {id: mistral-medium-latest,  context: 128000, priority: 20, quality: {simple: 4, coding: 4, reasoning: 4, large_context: 3, search: 2, agentic: 4}}
+      - {id: codestral-latest,       context: 128000, priority: 15, quality: {simple: 3, coding: 4, reasoning: 3, large_context: 3, search: 2, agentic: 4}}
+
+  github_models:
+    tos_status: SAFE
+    billing_possible: false   # GitHub Models free: rate limits pe nivel de model [GEN]
+    enabled: true
+    api_key_env: GITHUB_TOKEN   # PAT cu drept minimal: models:read
+    base_url: https://models.github.ai/inference
+    quota: {type: rate_limit_only}
+    docs: https://docs.github.com/en/github-models
+    source: "[GEN] 2026-10-02"
+    notes: Limita depinde de planul contului; nu presupune nelimitat (spec secțiunea 26).
+    fallback_priority: 50
+    models:
+      - {id: openai/gpt-4o-mini,          context: 128000, priority: 20, quality: {simple: 4, coding: 3, reasoning: 3, large_context: 3, search: 2, agentic: 3}}
+      - {id: openai/gpt-4.1,              context: 1000000, priority: 15, quality: {simple: 4, coding: 4, reasoning: 4, large_context: 4, search: 2, agentic: 4}}
+      - {id: meta/Llama-3.3-70B-Instruct, context: 128000, priority: 25, quality: {simple: 3, coding: 3, reasoning: 3, large_context: 3, search: 2, agentic: 3}}
+
+  zai:
+    tos_status: SAFE
+    billing_possible: false
+    enabled: true
+    api_key_env: ZAI_API_KEY
+    base_url: https://api.z.ai/api/paas/v4
+    quota: {type: rate_limit_only}
+    docs: https://docs.z.ai
+    source: "[OMR] 2026-10-02 — GLM flash „free forever” în catalogul OmniRoute"
+    notes: >
+      Cont web ZCode ≠ cheie API (spec secțiunea 25): cheia se creează în consola z.ai.
+      Doar modelele flash gratuite intră aici; nu presupune că abonamentul web acoperă API.
+    fallback_priority: 60
+    models:
+      - {id: glm-4.5-flash, context: 128000, priority: 10, quality: {simple: 4, coding: 3, reasoning: 3, large_context: 3, search: 2, agentic: 3}}
+
+  cloudflare_workers_ai:
+    tos_status: SAFE
+    billing_possible: false   # free: 10K neurons/zi [OMR]; peste → respinge
+    enabled: true
+    api_key_env: CLOUDFLARE_API_TOKEN
+    base_url: https://api.cloudflare.com/client/v4/accounts/CONTUL_TAU/ai/v1
+    quota: {type: rate_limit_only}
+    docs: https://developers.cloudflare.com/workers-ai/platform/pricing/
+    source: "[OMR] 2026-10-02"
+    notes: Înlocuiește CONTUL_TAU cu account id (dashboard Cloudflare). Ai deja cont CF.
+    fallback_priority: 70
+    models:
+      - {id: "@cf/meta/llama-3.3-70b-instruct-fp8-fast", context: 128000, priority: 10, quality: {simple: 3, coding: 3, reasoning: 3, large_context: 2, search: 2, agentic: 3}}
+      - {id: "@cf/qwen/qwen2.5-coder-32b-instruct",      context: 128000, priority: 20, quality: {simple: 3, coding: 3, reasoning: 2, large_context: 2, search: 2, agentic: 3}}
+
+  nvidia_nim:
+    tos_status: SAFE
+    billing_possible: false   # ~40 RPM free [OMR]
+    enabled: true
+    api_key_env: NVIDIA_API_KEY
+    base_url: https://integrate.api.nvidia.com/v1
+    quota: {type: rate_limit_only}
+    docs: https://build.nvidia.com
+    source: "[OMR] 2026-10-02"
+    fallback_priority: 80
+    models:
+      - {id: meta/llama-3.3-70b-instruct, context: 128000, priority: 10, quality: {simple: 3, coding: 3, reasoning: 3, large_context: 3, search: 2, agentic: 3}}
+
+  # ---- CAUTION: doar cu ALLOW_CAUTION=true (spec secțiunea 11) -------------------
+  openrouter:
+    tos_status: CAUTION
+    billing_possible: true    # cataloagele amestecă modele plătite; o id greșită costă
+    enabled: false
+    api_key_env: OPENROUTER_API_KEY
+    base_url: https://openrouter.ai/api/v1
+    quota: {type: rate_limit_only}
+    docs: https://openrouter.ai/docs
+    source: "[OMR] 2026-10-02"
+    notes: Cont preplătit → nu se poate îndatora, dar NU e implicit. Doar modele „:free".
+    models:
+      - {id: deepseek/deepseek-chat-v3.1:free, context: 128000, priority: 20, quality: {simple: 3, coding: 4, reasoning: 3, large_context: 3, search: 2, agentic: 3}}
+
+  pollinations:
+    tos_status: CAUTION       # fără cheie, dar comunitar: calitate/disponibilitate variabile
+    billing_possible: false
+    enabled: false
+    api_key_env: ""
+    base_url: https://text.pollinations.ai/openai
+    quota: {type: rate_limit_only}
+    docs: https://github.com/pollinations/pollinations
+    source: "[OMR] 2026-10-02"
+    models:
+      - {id: openai-fast, context: 32000, priority: 50, quality: {simple: 2, coding: 2, reasoning: 2, large_context: 1, search: 2, agentic: 1}}
+
+  # ---- UNVERIFIED: dezactivat până e verificat (spec secțiunile 11, 21, 33) ------
+  deepseek:
+    tos_status: UNVERIFIED
+    billing_possible: true
+    enabled: false
+    api_key_env: DEEPSEEK_API_KEY
+    base_url: https://api.deepseek.com/v1
+    quota: {type: one_time, official_limit: 0}
+    docs: https://api-docs.deepseek.com
+    source: "neoficial — credit de signup istoric; NU e ofertă recurentă (spec secțiunea 21)"
+    notes: "Exemplu de cotă one_time. Fără verificare azi — rămâne dezactivat."
+    models:
+      - {id: deepseek-chat, context: 128000, priority: 20, quality: {simple: 3, coding: 4, reasoning: 3, large_context: 3, search: 2, agentic: 3}}
