@@ -23,3 +23,11 @@ def home_fresh(a: dict, *, now: datetime | None = None, max_age: timedelta = HOM
         dt = dt.replace(tzinfo=timezone.utc)
     ref = now or datetime.now(timezone.utc)
     return (ref - dt) <= max_age
+
+
+# Faza 2: la importul render -> home_fresh, instaleaza hook-ul mini_harta.
+try:
+    from .mini_harta import install_hook
+    install_hook()
+except Exception:
+    pass

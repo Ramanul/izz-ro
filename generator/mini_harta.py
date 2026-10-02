@@ -2,6 +2,9 @@
 
 SVG static, ZERO JS: judetele incalzite dupa volumul de stiri locale din ultimele 24h.
 Reutilizeaza cache-ul de contururi din data/harta_judete.json (acelasi ca /surse/).
+
+La import (via home_fresh), instaleaza un hook pe render._base_ctx care injecteaza
+`mini_harta` in contextul paginii de index cand exista `zi`.
 """
 from __future__ import annotations
 
@@ -53,3 +56,35 @@ def mini_harta(pe_judet: dict | None) -> dict | None:
         "forme": forme,
         "total": sum(pe_judet.values()),
     }
+
+
+def install_hook() -> None:
+    """Injecteaza mini_harta in contextul Jinja cand exista zi (homepage).
+
+    Ataseaza si render._mini_harta pentru teste (conventia test_numerele_zilei).
+    Idempotent: al doilea apel nu reinvelopa.
+    """
+    from generator import render as r
+
+    r._mini_harta = mini_harta
+    if getattr(r, "_faza2_hooked", False):
+        return
+
+    _orig = r._base_ctx
+
+    def _base_ctx_wrapped(canonical_path: str, jsonld_nodes=None, jsonld_page=None, **extra):
+        if "zi" in extra and "mini_harta" not in extra:
+            zi = extra.get("zi")
+            if zi and isinstance(zi, dict):
+                extra["mini_harta"] = mini_harta(zi.get("pe_judet") or {})
+            else:
+                extra["mini_harta"] = None
+        return _orig(
+            canonical_path,
+            jsonld_nodes=jsonld_nodes,
+            jsonld_page=jsonld_page,
+            **extra,
+        )
+
+    r._base_ctx = _base_ctx_wrapped
+    r._faza2_hooked = True
