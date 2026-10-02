@@ -131,6 +131,13 @@
     return norm(`${item.title} ${item.source}`).includes(query);
   }
 
+  // Al treilea predicat, separat: potrivirea pe numele SURSEI. Meta randului afisat arata
+  // sursa, deci o potrivire pe sursa e "vizibila in rand" la fel ca locul -- sortarea o
+  // trateaza ca pe locul, nu ca pe o potrivire doar de titlu (vezi filtered).
+  function matchesSource(item, query) {
+    return norm(item.source_name || item.source || "").includes(query);
+  }
+
   // Nivelurile sunt CUMULATIVE, nu trei cutii separate: "Regional" arata tot ce se afla in
   // regiune, nu doar stirile care pomenesc exclusiv regiunea. Egalitatea stricta de dinainte
   // filtra de fapt RUBRICA editoriala a articolului (/local/, /judetean/, /regional/), care
@@ -171,9 +178,13 @@
       return matchesPlace(item, query) || matchesText(item, query);
     });
     if (!query) return base;
-    // Sortare stabila: potrivirile de loc urca primele, ordinea originala se pastreaza in
-    // fiecare grup. Nimeni nu pierde rezultate; ordinea le explica.
-    return [...base].sort((a, b) => Number(matchesPlace(b, query)) - Number(matchesPlace(a, query)));
+    // Sortare stabila: potrivirile care se VAD in rand (loc sau sursa -- meta randului
+    // afiseaza amandoua) urca primele, apoi cele care intra doar prin titlu; ordinea
+    // originala se pastreaza in fiecare grup. Un articol de la "Gazeta de Cluj" e citit
+    // de utilizator ca potrivire de Cluj chiar daca county/locality spun altceva, deci
+    // nu are ce cauta printre potrivirile de titlu. Nimeni nu pierde rezultate.
+    const visibleMatch = (item) => matchesPlace(item, query) || matchesSource(item, query);
+    return [...base].sort((a, b) => Number(visibleMatch(b)) - Number(visibleMatch(a)));
   }
 
   function itemsForView(items) {
@@ -618,6 +629,9 @@
       syncZoomControls();
       return;
     }
+    // Zoomul preia controlul vederii: fly-to-ul in zbor s-ar lupta cu el (flyView
+    // suprascrie vederea la fiecare cadru pana la finalul animatiei).
+    cancelFly();
     const c1 = zoomCenter(base);
     // Punctul de sub cursor/deget ramane fix: (p - c2) * k2 = (p - c1) * k1.
     // clampZoomCenter intoarce {x, y} -- se mapeaza EXPLICIT pe cx/cy, nu prin spread:
@@ -701,6 +715,11 @@
     let downAt = null;
     let panFrom = null;
     let pinch = null;
+    // Memoria gestului de dublu-click: primul click al unui dblclick se aplica deja ca
+    // selectie (starea e imediata), deci dblclick-ul are nevoie de adresa de dinaintea
+    // gestului ca sa o poata restabili si sa zoomeze curat. Se pastreaza PRIMA atingere a
+    // gestului (click-2 al aceluiasi dblclick nu o suprascrie) si doar pe acelasi loc.
+    let lastCanvasSelect = null;
     const touchPoints = new Map();
     const twoFingerState = () => {
       const [a, b] = [...touchPoints.values()];
@@ -718,7 +737,13 @@
       touchPoints.set(e.pointerId, { x: e.clientX, y: e.clientY });
       // Pe touch nu exista hover inainte de atingere: prima atingere trebuie sa spuna ea
       // numele, altfel pe telefon tooltipul n-ar aparea niciodata la un tap simplu.
-      if (touchPoints.size === 1) onCanvasHover(e);
+      if (touchPoints.size === 1) {
+        // Garda tap-vs-drag are nevoie de punctul de plecare SI la atingere: doar mouse-ul
+        // o seta, deci un click sintetizat la capatul unui gest de derulare trecea drept
+        // tap si selecta un judet (masurat de garda mobila, 2 oct 2026).
+        downAt = { x: e.clientX, y: e.clientY };
+        onCanvasHover(e);
+      }
       if (touchPoints.size === 2) {
         // Al doilea deget = gest de harta (pinch/pan): anuleaza tap-ul in asteptare.
         downAt = null;
@@ -738,19 +763,40 @@
     canvas.addEventListener("click", (event) => {
       const moved = downAt && Math.hypot(event.clientX - downAt.x, event.clientY - downAt.y) > 10;
       downAt = null;
-      if (!moved) onCanvasClick(event);
+      if (!moved) {
+        const now = performance.now();
+        const sameSpot = lastCanvasSelect
+          && Math.hypot(event.clientX - lastCanvasSelect.x, event.clientY - lastCanvasSelect.y) <= 10;
+        if (!lastCanvasSelect || now - lastCanvasSelect.at > 600 || !sameSpot) {
+          lastCanvasSelect = { at: now, prevSearch: location.search, x: event.clientX, y: event.clientY };
+        }
+        onCanvasClick(event);
+      }
     });
     canvas.addEventListener("wheel", (event) => {
       if (!state.view || !state.baseView) return;
       // Pagina asta E o unealta de harta: rotita actioneaza pe harta, nu deruleaza pagina
       // (conventia standard pe harti dedicate, nu embedded in articole).
       event.preventDefault();
+      takeUserView();
       const p = pointForEvent(canvas, state.view, event);
       zoomTo(state.userZoom.k * Math.exp(-event.deltaY * 0.0016), p);
     }, { passive: false });
     canvas.addEventListener("dblclick", (event) => {
       if (!state.view || !state.baseView) return;
       event.preventDefault();
+      // Dublu-click = comanda de ZOOM (conventia hartilor web), nu selectie. Primul click
+      // al gestului s-a aplicat deja ca selectie (starea e imediata), al doilea a intrat
+      // pe UAT-ul de sub cursor -- ambele se anuleaza restabilind adresa de dinaintea
+      // gestului, altfel zoomul ar lucra pe vederea de județ selectata de propriul sau
+      // primul click (masurat: ×2 pe zona de UAT-uri fara stiri, aproape fara aur).
+      if (lastCanvasSelect && performance.now() - lastCanvasSelect.at <= 600
+          && Math.hypot(event.clientX - lastCanvasSelect.x, event.clientY - lastCanvasSelect.y) <= 10) {
+        history.replaceState(null, "", lastCanvasSelect.prevSearch || location.pathname);
+        applyState(stateFromUrl(), { push: false });
+        lastCanvasSelect = null;
+      }
+      takeUserView();
       const p = pointForEvent(canvas, state.view, event);
       zoomTo(state.userZoom.k * 2, p);
     });
@@ -787,6 +833,7 @@
       touchPoints.set(e.pointerId, { x: e.clientX, y: e.clientY });
       if (pinch && touchPoints.size >= 2) {
         const s = twoFingerState();
+        takeUserView();
         const anchor = pointForEvent(state.canvas, state.view, { clientX: s.mid.x, clientY: s.mid.y });
         zoomTo(state.userZoom.k * s.d / pinch.d, anchor);
         pinch = { d: s.d, mid: s.mid };
@@ -1358,6 +1405,10 @@
     // schimbarea modului pastreaza zoom-ul (filtreaza aceeasi scena).
     if (["level", "region", "county", "uat"].some((key) => key in patch)) {
       state.userZoom = { k: 1, cx: null, cy: null };
+      // Schimbarea de context anuleaza si orice fly-to in zbor: fara garda asta, animatia
+      // veche isi aplica la final patch-ul propriu peste starea noua -- exact modul in
+      // care un reset din timpul zborului era anulat de selectia fantoma.
+      cancelFly();
     }
     // Plafonul listei se reseteaza doar cand se schimba CE e filtrat: selectia de UAT filtreaza
     // continutul, deci si ea reseteaza; dezactivarea unui UAT la fel.
@@ -1408,18 +1459,42 @@
     return view;
   }
 
-  function animateViewTo(target, done) {
-    const from = state.view;
+  // Orice schimbare de vedere dictata de utilizator sau de stare omoara animatia in zbor.
+  // Token-ul face ca pasul programat al animatiei vechi sa se opreasca la primul cadru;
+  // flyView=null redeseneaza vederea reala (starea), nu una interpolata de zgomot.
+  function cancelFly() {
+    state.flyToken += 1;
+    state.flyView = null;
+  }
+
+  // Intrarea de zoom a utilizatorului (rotita, dublu-click, pinch) preia controlul vederii:
+  // omoara orice fly-to in zbor si redeseneaza vederea reala INAINTE ca apelantul sa
+  // calculeze punctul de ancorare. Altfel ancora e calculata in spatiul vederii interpolate
+  // (in plin zbor) dar zoomTo o interpreteaza in spatiul bazei -- cursorul "ajunge" in alta
+  // parte si zoomul priveste o zona goala (masurat: dublu-click 16619 -> 1543 pixeli aurii).
+  function takeUserView() {
+    if (!state.flyView) return;
+    cancelFly();
+    buildMap();
+  }
+
+  function animateViewTo(target, fromView) {
+    // `fromView` e plecarea EXPLICITA: cu starea aplicata imediat, state.view e deja
+    // vederea finala in momentul apelului -- animatia pleaca de unde era vederea
+    // inainte de aplicare, nu de unde e acum.
+    const from = fromView || state.view;
     const reduce = window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches;
-    if (!from || reduce) {
-      done();
-      return;
-    }
+    if (!from || reduce) return;
     state.flyToken += 1;
     const token = state.flyToken;
     const t0 = performance.now();
     const DURATION = 380;
     const ease = (t) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2);
+    // Primul cadru, la plecare, randat SINCRON: aplicarea starii a desenat deja vederea
+    // finala; fara asta, finalul aparea o clipa, apoi vederea sarea inapoi la plecare
+    // (palpaire la fiecare selectie). Acelasi task JS, deci nicio afisare intre ele.
+    state.flyView = { ...from };
+    buildMap();
     const step = (now) => {
       // O animație mai nouă a luat locul: nu mai scriem vederea peste ea.
       if (token !== state.flyToken) return;
@@ -1437,20 +1512,21 @@
         return;
       }
       state.flyView = null;
-      done();
     };
     requestAnimationFrame(step);
   }
 
   function selectCounty(county) {
-    const go = () => applyState({ region: null, county, locality: null });
-    // Fly-to doar la trecerea efectivă din vederea largă în cea de județ (click pe hartă
-    // sau în picker), nu la re-selectarea aceluiași județ și nu în timpul altei animații.
-    if (county && !state.zoomCounty && county !== state.selectedCounty && !state.flyView) {
-      animateViewTo(peekViewFor(county), go);
-      return;
-    }
-    go();
+    // Starea se aplica IMMEDIAT; fly-to-ul ramane doar decorul vederii. Aplicarea amanata
+    // pana la finalul animatiei (380 ms) facea ca orice citire din timpul zborului sa
+    // vada starea veche (adresa, panou, aria-pressed), iar un reset din acel interval era
+    // suprascris la final de animatie, care isi re-aplica singura judetul abandonat --
+    // selectie fantoma, cauza comuna a FAIL-urilor gardii DOM.
+    const from = state.view;
+    const willFly = county && !state.zoomCounty && county !== state.selectedCounty && !state.flyView;
+    const target = willFly ? peekViewFor(county) : null;
+    applyState({ region: null, county, locality: null });
+    if (target) animateViewTo(target, from);
   }
 
   function selectRegion(region) {
@@ -1892,15 +1968,14 @@
   }
 
   function resetSelection() {
-    // Zoom-out animat doar când chiar ești în vederea de județ; în rest (filtre active
-    // fără zoom geometric) întoarcerea e instant.
-    if (state.zoomCounty && state.view && !state.flyView) {
-      const [vx, vy, vw, vh] = baseViewBox();
-      animateViewTo({ x: vx, y: vy, width: vw, height: vh },
-        () => applyState({ region: null, county: null, locality: null }));
-      return;
-    }
+    // Aceeasi regula ca la selectCounty: intoarcerea se aplica imediat, zoom-out-ul e decor.
+    const from = state.view;
+    const willFly = Boolean(state.zoomCounty) && Boolean(from) && !state.flyView;
     applyState({ region: null, county: null, locality: null });
+    if (willFly) {
+      const [vx, vy, vw, vh] = baseViewBox();
+      animateViewTo({ x: vx, y: vy, width: vw, height: vh }, from);
+    }
   }
 
   function resetAll() {
