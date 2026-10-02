@@ -43,7 +43,9 @@ def mini_harta(pe_judet: dict | None) -> dict | None:
     forme = []
     for judet, d in cache["judete"].items():
         c = pe_judet.get(judet, 0)
-        treapta = 0 if c == 0 else 1 + sum(1 for p in praguri if c >= p)
+        # Strict > (nu >=): altfel valoarea egală cu pragul inferior sare o treaptă
+        # (ex. BRASOV=1 cu praguri [1,2,3] devenea h2 în loc de h1).
+        treapta = 0 if c == 0 else 1 + sum(1 for p in praguri if c > p)
         forme.append({
             "judet": judet,
             "label": geo.eticheta_judet(judet),

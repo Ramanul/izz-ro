@@ -40,6 +40,8 @@
   <link rel="preload" href="{{ base }}/static/fonts/JetBrainsMono-700.ro.woff2" as="font" type="font/woff2" crossorigin>
   {% if fonts_css %}<style>{{ fonts_css | safe }}</style>{% else %}<link rel="stylesheet" href="{{ base }}/static/fonts.css?v={{ asset_ver['fonts.css'] }}">{% endif %}
   <link rel="stylesheet" href="{{ base }}/static/styles.css?v={{ asset_ver['styles.css'] }}">
+  {# Delta #380: cale noua — sparge cache immutable pe styles.css (2026-10-02) #}
+  <link rel="stylesheet" href="{{ base }}/static/site.css?v=20261002b">
   <link rel="stylesheet" href="{{ base }}/static/faza2.css?v=20261002">
   {# Sincron, in <head>: tema trebuie aplicata inainte de prima pictare, altfel un
      vizitator pe dark vede un flash alb. Fisier EXTERN, nu inline: CSP-ul emis de
