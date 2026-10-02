@@ -33,6 +33,22 @@ opencode/north-mini-code-free,\
 mistral/codestral-latest,\
 google/gemini-3.1-flash-lite,\
 openrouter-free/poolside/laguna-s-2.1:free"
+# NOT in the default ladder: zai/* and xai/*. GLM and Grok ARE the two routes the owner
+# asked for, and both are wired end to end here, but they are PAID, so they must never be
+# reached by accident from a delegation run -- a burnt ladder that ends up billing $2/1M
+# tokens is worse than one that stops. Use them on purpose:
+#   OC_ROUTES="zai/glm-5.3-flash"        tools/oc_run.sh "..."   # $0.15/$0.50 per 1M
+#   OC_ROUTES="xai/grok-4.7"            tools/oc_run.sh "..."   # $2/$6 per 1M
+#   OC_ROUTES="zai/glm-5.3-flash,xai/grok-4.7" tools/oc_run.sh "..."
+# GLM here is Z.ai DIRECT (api.z.ai), NOT the cerebras `zai-glm-4.7` below: the owner
+# runs GLM-5.3-Flash in their agent app, and that model only exists on the Z.ai endpoint.
+# Base URL is the pay-as-you-go one; a GLM **Coding Plan** key needs the coding endpoint
+# instead (https://api.z.ai/api/coding/paas/v4) -- the two are NOT interchangeable and a
+# plan key against /api/paas/v4 is what returns 401/403. Measured cost note for an agentic
+# loop: glm-5.3-flash has thinking ALWAYS on and `reasoning_effort` defaults to `max`,
+# so a long tool-calling run costs reasoning tokens as output. If that shows up on the
+# bill, the model to move to is grok-4.7 with its reasoning_effort set low, or
+# zai/glm-5.3-flash measured with a probe first (see `curl` in the PR body).
 # NOT in the default ladder: cerebras/* and groq/*. Keys were created and tested
 # 2026-08-02; both fail for structural reasons, not bad keys:
 #   groq     — key valid, but the free tier caps tokens-per-minute at 8k (gpt-oss-120b)
@@ -83,6 +99,8 @@ key_var_for() {
     groq/*)            echo GROQ_API_KEY ;;
     openrouter-free/*) echo OPENROUTER_API_KEY ;;
     mistral/*)         echo MISTRAL_API_KEY ;;
+    zai/*)             echo ZAI_API_KEY ;;
+    xai/*)             echo XAI_API_KEY ;;
     *)                 echo "" ;;
   esac
 }
