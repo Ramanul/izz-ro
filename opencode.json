@@ -26,7 +26,7 @@
     },
     "zai": {
       "npm": "@ai-sdk/openai-compatible",
-      "name": "Z.ai (GLM) — paid, opt-in",
+      "name": "Z.ai (GLM) — PAID API key. The free GLM is the Z.ai account inside ZCode, not this",
       "options": {
         "baseURL": "https://api.z.ai/api/paas/v4",
         "apiKey": "{env:ZAI_API_KEY}"
@@ -42,7 +42,7 @@
     },
     "xai": {
       "npm": "@ai-sdk/openai-compatible",
-      "name": "xAI (Grok) — paid, opt-in",
+      "name": "xAI (Grok) — NO free tier exists. Key, or SuperGrok/X Premium+ login via the grok CLI",
       "options": {
         "baseURL": "https://api.x.ai/v1",
         "apiKey": "{env:XAI_API_KEY}"
