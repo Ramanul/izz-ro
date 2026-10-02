@@ -37,13 +37,13 @@ jobs:
     # de cuvânt cu grep -E și taie totul dacă textul era un fals pozitiv (ex. "@aiurea").
     if: |
       (github.event_name == 'issue_comment'
-        && contains(github.event.comment.body, '@ai')
+        && contains(github.event.comment.body, '@ai') || contains(github.event.comment.body, '@deepseek') || contains(github.event.comment.body, '@qwen') || contains(github.event.comment.body, '@kimi') || contains(github.event.comment.body, '@glm') || contains(github.event.comment.body, '@grok') || contains(github.event.comment.body, '@nemotron') || contains(github.event.comment.body, '@gemma') || contains(github.event.comment.body, '@inkling')
         && contains(fromJSON('["OWNER","COLLABORATOR"]'), github.event.comment.author_association)) ||
       (github.event_name == 'pull_request_review_comment'
-        && contains(github.event.comment.body, '@ai')
+        && contains(github.event.comment.body, '@ai') || contains(github.event.comment.body, '@deepseek') || contains(github.event.comment.body, '@qwen') || contains(github.event.comment.body, '@kimi') || contains(github.event.comment.body, '@glm') || contains(github.event.comment.body, '@grok') || contains(github.event.comment.body, '@nemotron') || contains(github.event.comment.body, '@gemma') || contains(github.event.comment.body, '@inkling')
         && contains(fromJSON('["OWNER","COLLABORATOR"]'), github.event.comment.author_association)) ||
       (github.event_name == 'issues'
-        && contains(github.event.issue.body, '@ai')
+        && contains(github.event.issue.body, '@ai') || contains(github.event.issue.body, '@deepseek') || contains(github.event.issue.body, '@qwen') || contains(github.event.issue.body, '@kimi') || contains(github.event.issue.body, '@glm') || contains(github.event.issue.body, '@grok') || contains(github.event.issue.body, '@nemotron') || contains(github.event.issue.body, '@gemma') || contains(github.event.issue.body, '@inkling')
         && contains(fromJSON('["OWNER","COLLABORATOR"]'), github.event.issue.author_association))
     runs-on: ubuntu-latest
     timeout-minutes: 15
