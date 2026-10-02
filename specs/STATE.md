@@ -8,9 +8,12 @@
 > Where the rest lives: `specs/regim-reguli.md` — unified audit closure ·
 > `specs/registru.tsv` — decisions · `CLAUDE.md` — canonical contract.
 
-**Updated:** 2026-10-02 (#nou: audit-gratuit — scanere externe gratuite pe LIVE, spec `specs/audit-gratuit-2026-10-02.md`)
+**Updated:** 2026-10-02 (#nou: refresh catalog groq/cerebras în registry — cataloagele s-au schimbat live)
 
 ## Open
+- **`ai_gateway` — MERGED (#387 + #390):** gateway AI local $0; cheile doar în `.env`.
+  docs: `ai_gateway/FREE_AI_SETUP.md`. Catalogul providerilor churn-uisază: 2 oct,
+  `llama-3.3-70b*`/`kimi-k2` dispăruți de la Groq, `qwen-3.8-27b` nou la ambii.
 - **Pages `izz-ro` ZOMBI revendică `izz.ro` [IZZ-0366, 0368]:** ștergerea = decizie proprietar [IZZ-0395].
 - **PRODUS P1 — homepage fără nicio fotografie [IZZ-0403]:** 0 `<img>` măsurat; 73% din articole au portret real
   deja în `output/portraits/` — zero fișiere noi; potrivirea rulează doar pe articol (`render.py:971`).
@@ -23,9 +26,9 @@
 - **REDUNDANȚA — ÎNCHISĂ [IZZ-0370 → IZZ-0373]:** `BUILD_COMMIT_SHA` e în jobul `mirror`, prin #347 merged.
 - **RECIDIVE — roșul de STARE separat de cel de COD [IZZ-0388…0391]; Owner: podeaua roșie peste 640 art./zi [IZZ-0391].**
 - **Coliziuni de ID reparate la ALOCARE [IZZ-0392]; IZZ-0400 aterizat prin #344 merged.**
-- **PR queue — 4 deschise:** #391 audit-gratuit (acest PR; spec + workflow scanere externe) ·
-  #280 CSS (merged la aterizare) · #297 Cronica · #320 Lee (merged). Aterizările: în
-  `specs/registru.tsv`, nu aici.
+- **PR queue — 4 deschise:** PR-ul acestui branch (catalog refresh groq/cerebras, număr după
+  creare) · #391 audit-gratuit · #280 CSS (merged la aterizare) · #297 Cronica. Aterizările:
+  în `specs/registru.tsv`, nu aici.
 - **Issues triate 09-13 [IZZ-0381…0383]:** #83 închis. **#198 arhiva = decizie de proprietar**
   (R2 singura structurală). #233 canal · #271 scope — deschise prin design.
 

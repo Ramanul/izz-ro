@@ -73,15 +73,18 @@ providers:
     base_url: https://api.groq.com/openai/v1
     quota: {type: rate_limit_only}
     docs: https://console.groq.com/docs/rate-limits
-    source: "[GEN]+[OMR] 2026-10-02"
-    notes: Cel mai rapid fallback; limite RPM/RPD pe model, re-verifică în consolă.
+    source: "[GEN]+[OMR] 2026-10-02, catalog verificat live cu cheia în aceeași zi"
+    notes: >
+      Catalogul real (GET /models cu cheie, 2 oct): gpt-oss-120b/20b, qwen/qwen3.8-27b,
+      allam-2-7b + voce/whisper/prompt-guard (fără chat, excluse). llama-3.3-70b-versatile,
+      llama-3.1-8b-instant și kimi-k2-instruct au dispărut din catalog — catalogul churn-uisază,
+      re-verifică cu GET /models înainte de orice activare.
     fallback_priority: 10
     models:
-      - {id: llama-3.3-70b-versatile,    context: 128000, priority: 10, quality: {simple: 4, coding: 4, reasoning: 4, large_context: 3, search: 2, agentic: 4}}
-      - {id: llama-3.1-8b-instant,       context: 128000, priority: 30, quality: {simple: 3, coding: 2, reasoning: 2, large_context: 2, search: 2, agentic: 3}}
-      - {id: openai/gpt-oss-120b,        context: 128000, priority: 15, quality: {simple: 4, coding: 4, reasoning: 4, large_context: 3, search: 2, agentic: 4}}
-      - {id: openai/gpt-oss-20b,         context: 128000, priority: 35, quality: {simple: 3, coding: 3, reasoning: 3, large_context: 2, search: 2, agentic: 3}}
-      - {id: moonshotai/kimi-k2-instruct, context: 128000, priority: 20, quality: {simple: 4, coding: 4, reasoning: 4, large_context: 3, search: 2, agentic: 4}}
+      - {id: openai/gpt-oss-120b,   context: 128000, priority: 10, quality: {simple: 4, coding: 4, reasoning: 4, large_context: 3, search: 2, agentic: 4}}
+      - {id: qwen/qwen3.8-27b,      context: 128000, priority: 15, quality: {simple: 4, coding: 4, reasoning: 4, large_context: 3, search: 2, agentic: 4}}
+      - {id: openai/gpt-oss-20b,    context: 128000, priority: 30, quality: {simple: 3, coding: 3, reasoning: 3, large_context: 2, search: 2, agentic: 3}}
+      - {id: allam-2-7b,            context: 128000, priority: 40, quality: {simple: 3, coding: 2, reasoning: 2, large_context: 2, search: 2, agentic: 2}}
 
   cerebras:
     tos_status: SAFE
@@ -91,12 +94,11 @@ providers:
     base_url: https://api.cerebras.ai/v1
     quota: {type: daily, official_limit: 1000000, reset: "00:00 UTC"}  # [OMR]: 1M tokeni/zi
     docs: https://cloud.cerebras.ai
-    source: "[OMR] 2026-10-02"
+    source: "[OMR] 2026-10-02, catalog verificat live cu cheia în aceeași zi"
     fallback_priority: 20
     models:
-      - {id: llama-3.3-70b,   context: 128000, priority: 10, quality: {simple: 4, coding: 4, reasoning: 4, large_context: 3, search: 2, agentic: 4}}
-      - {id: gpt-oss-120b,    context: 128000, priority: 15, quality: {simple: 4, coding: 4, reasoning: 4, large_context: 3, search: 2, agentic: 4}}
-      - {id: qwen-3-32b,      context: 128000, priority: 30, quality: {simple: 3, coding: 3, reasoning: 3, large_context: 2, search: 2, agentic: 3}}
+      - {id: gpt-oss-120b,   context: 128000, priority: 10, quality: {simple: 4, coding: 4, reasoning: 4, large_context: 3, search: 2, agentic: 4}}
+      - {id: qwen-3.8-27b,   context: 128000, priority: 15, quality: {simple: 4, coding: 4, reasoning: 4, large_context: 3, search: 2, agentic: 4}}
 
   gemini:
     tos_status: SAFE
