@@ -67,7 +67,12 @@ FAR_PART_THRESHOLD = 8.0
 # o a doua parte de teritoriu la ~35 km nord de comuna reală, peste municipiul Brăila și
 # Chiscani — hover-ul hărții răspundea „Mărașu" lângă Brăila (descoperit 2026-10-02).
 # Până corectează sursa, păstrăm numai partea cea mai mare, care e comuna adevărată.
-KEEP_LARGEST_PART_NATCODES = {"43493"}
+# 43493 (Mărașu) a fost aici până pe 2 oct 2026: partea nordică la ~21 km părea eroare de
+# sursă și se tăia — dar e exclavă REALĂ (granița OSM relația 10487259 o are identică, KMZ-ul
+# oficial ANCPI 2014 o include, ariile OSM vs WFS concordă la 0,1 km²). Revert-ul PR #393 a
+# restabilit geometria oficială; whitelist-ul gol păstrează mecanismul pentru o corecție
+# țintită FUTURĂ, confirmată din a doua sursă oficială înainte de a tăia orice.
+KEEP_LARGEST_PART_NATCODES: set[str] = set()
 
 COUNTY_KEYS = {
     "BISTRITA NASAUD": "BISTRITA-NASAUD",
@@ -172,6 +177,196 @@ def path_for_geometry(geometry: dict) -> str:
             path = ring_path(ring)
             if path:
                 paths.append(path)
+    return " ".join(paths)
+
+
+# ---- simplificare topologica (arce partajate) --------------------------------------------
+# Simplificarea Douglas-Peucker aplicata INDEPENDENT fiecarui inel taie granita comuna in
+# doua copii divergente: masurat pe stratul comis 2026-10-02, 1094 perechi de vecini
+# suprapusi (131 km2), ~1105 km2 de fisii-gol si 104 puncte de localitate care cadeau in
+# suprapunere si se asignau UAT-ului gresit la hit-test. Sursa (ANCPI via geo-spatial.org)
+# partajeaza secvente EXACTE de varfuri pe granite (98,0% din segmente au >=2 inele), deci
+# fiecare granita comuna se simplifica O SINGURA DATA ca "arc" si se refoloseste de ambele
+# inele — suprapunerile si golurile devin imposibile prin constructie.
+#
+# Modelul e acelasi ca TopoJSON: jonctiuni = varfuri cu >=3 incidente globale (sau atingere
+# de sine in acelasi inel); intre jonctiuni, arce; un arc apare o data (frontiera tarii,
+# coasta) sau de doua ori (granita comuna, in orientari opuse). Fiecare arc se simplifica o
+# data, apoi inelele se reconstruiesc din arce in orientarea lor proprie.
+
+def _vkey(point: tuple[float, float]) -> tuple[int, int]:
+    return (round(point[0], 3), round(point[1], 3))
+
+
+def _dedupe_ring(points: list[tuple[float, float]]) -> list[tuple[float, float]]:
+    """Puncte consecutive duplicate + punctul de inchidere, ca la simplify()."""
+    out = [points[0]] if points else []
+    for p in points[1:]:
+        if p != out[-1]:
+            out.append(p)
+    while len(out) > 1 and out[0] == out[-1]:
+        out.pop()
+    return out
+
+
+def _open_arc_key(keys: list) -> tuple:
+    """Cheia canonica a unui arc deschis: directia data de capatul mai mic."""
+    first, last = keys[0], keys[-1]
+    return tuple(keys) if first <= last else tuple(reversed(keys))
+
+
+def _closed_arc_key(keys: list) -> tuple:
+    """Cheia canonica a unui arc inchis (inel de insula): rotirea lexicografic minima, in
+    ambele orientari. Inelele de insula sunt mici, deci O(n^2) e acceptabil."""
+    n = len(keys)
+    best = None
+    for seq in (keys, list(reversed(keys))):
+        for start in range(n):
+            rot = tuple(seq[(start + i) % n] for i in range(n))
+            if best is None or rot < best:
+                best = rot
+    return best
+
+
+def topological_simplify(features: list[dict]) -> list[list[list[tuple[float, float]]]]:
+    """Pentru fiecare feature, inelele simplificate cu arce partajate taiate o singura data.
+
+    Intoarce, pe aceeasi pozitie ca `features`, lista de inele (fiecare = lista de puncte
+    proiectate, deschise). Inelele degenerate (<3 puncte) lipsesc din rezultat.
+    """
+    # 1. toate inelele, proiectate si dedublate, in ordinea feature-urilor
+    feature_rings: list[list[list[tuple[float, float]]]] = []
+    for feature in features:
+        geometry = feature.get("geometry") or {}
+        coords = geometry.get("coordinates") or []
+        kind = geometry.get("type")
+        polygons = [coords] if kind == "Polygon" else coords if kind == "MultiPolygon" else []
+        rings = []
+        for polygon in polygons:
+            if not isinstance(polygon, list):
+                continue
+            for ring in polygon:
+                pts = []
+                for pair in ring:
+                    if not isinstance(pair, list) or len(pair) < 2:
+                        continue
+                    try:
+                        lon, lat = float(pair[0]), float(pair[1])
+                    except (TypeError, ValueError):
+                        continue
+                    if -180 <= lon <= 180 and -90 <= lat <= 90:
+                        pts.append(project(lon, lat))
+                pts = _dedupe_ring(pts)
+                if len(pts) >= 3:
+                    rings.append(pts)
+        feature_rings.append(rings)
+
+    # 2. incidente globale ale varfurilor (pentru jonctiuni)
+    incidence: dict = {}
+    for ring in (r for rings in feature_rings for r in rings):
+        for p in ring:
+            k = _vkey(p)
+            incidence[k] = incidence.get(k, 0) + 1
+
+    # 3. impartirea fiecarui inel in arce la jonctiuni + registru de arce unice
+    registry: dict[tuple, list[tuple[float, float]]] = {}
+    ring_arcs: list[list[tuple[tuple, bool]]] = []   # per inel: (arc_key, in sensul stocat?)
+    for ring in (r for rings in feature_rings for r in rings):
+        keys = [_vkey(p) for p in ring]
+        local: dict = {}
+        for k in keys:
+            local[k] = local.get(k, 0) + 1
+        # jonctiune: >=3 incidente globale, sau varful atinge de 2+ ori acelasi inel
+        junction = [i for i, k in enumerate(keys) if incidence.get(k, 0) >= 3 or local[k] >= 2]
+        if not junction:
+            # inel liber inchis (insula): un singur arc ciclic
+            key = _closed_arc_key(keys)
+            if key not in registry:
+                registry[key] = list(ring)
+            ring_arcs.append([(key, True)])
+            continue
+        if len(junction) == 1:
+            # o singura jonctiune (contact punctual cu un vecin, restul frontiera a tarii):
+            # tot inelul e un singur arc ciclic care pleaca si se intoarce in jonctiune —
+            # fara cazul asta, start==end sari peste tot si inelul dispare (3 UAT-uri de la
+            # granita de vest au fost pierdute exact asa la prima rulare)
+            s = junction[0]
+            seq = keys[s:] + keys[:s] + [keys[s]]
+            pts = ring[s:] + ring[:s] + [ring[s]]
+            ckey = _closed_arc_key(seq)
+            if ckey not in registry:
+                registry[ckey] = list(pts[:-1])
+            ring_arcs.append([(ckey, True)])
+            continue
+        arcs = []
+        for pos, start in enumerate(junction):
+            end = junction[(pos + 1) % len(junction)]
+            if start == end:
+                continue
+            if start < end:
+                seq = keys[start:end + 1]
+                pts = ring[start:end + 1]
+            else:
+                seq = keys[start:] + keys[:end + 1]
+                pts = ring[start:] + ring[:end + 1]
+            if len(seq) < 2:
+                continue
+            if seq[0] == seq[-1]:
+                # arcul inchis cu jonctiune unica: cheie ciclica
+                ckey = _closed_arc_key(seq)
+                if ckey not in registry:
+                    registry[ckey] = list(pts[:-1])
+                arcs.append((ckey, True))
+            else:
+                akey = _open_arc_key(seq)
+                if akey not in registry:
+                    # stocarea se normalizeaza pe directia CANONICA a cheii (capatul mai
+                    # mic intai): altfel flag-ul `forward` al oricarei aparitii compara cu
+                    # o stocare in orientarea primei aparitii, arcele se refolosesc
+                    # inversate si inelele ies auto-intersectate (-7% arie la prima rulare)
+                    registry[akey] = list(pts) if seq[0] <= seq[-1] else list(reversed(pts))
+                # orientarea in care inelul parcurge arcul fata de forma stocata
+                arcs.append((akey, seq[0] <= seq[-1]))
+        ring_arcs.append(arcs)
+
+    # 4. simplificarea o singura data per arc (pastreaza capetele = jonctiunile)
+    simplified: dict[tuple, list[tuple[float, float]]] = {}
+    for key, pts in registry.items():
+        simp = simplify(pts, TOLERANCE)
+        simplified[key] = simp if len(simp) >= 2 else pts
+
+    # 5. reconstructia inelelor din arce, in orientarea proprie a fiecarui inel
+    out_rings: list[list[list[tuple[float, float]]]] = []
+    ring_index = 0
+    for rings in feature_rings:
+        rebuilt = []
+        for _ in rings:
+            arcs = ring_arcs[ring_index]
+            ring_index += 1
+            pts: list[tuple[float, float]] = []
+            for key, forward in arcs:
+                arc = simplified.get(key)
+                if not arc:
+                    continue
+                use = arc if forward else list(reversed(arc))
+                # primul punct al arcului coincide cu ultimul adaugat (jonctiunea comuna)
+                if pts and use and _vkey(use[0]) == _vkey(pts[-1]):
+                    use = use[1:]
+                pts.extend(use)
+            pts = _dedupe_ring(pts)
+            if len(pts) >= 3:
+                rebuilt.append(pts)
+        out_rings.append(rebuilt)
+    return out_rings
+
+
+def path_from_rings(rings: list[list[tuple[float, float]]]) -> str:
+    """Formateaza inelele deja simplificate ca subcai SVG (M ... Z, cate una per inel)."""
+    paths = []
+    for pts in rings:
+        if len(pts) < 3:
+            continue
+        paths.append("M" + " L".join(f"{x:g} {y:g}" for x, y in pts) + " Z")
     return " ".join(paths)
 
 
@@ -420,7 +615,8 @@ def main() -> int:
     features = request_features()
     label_overrides = load_label_overrides()
     report: list[str] = []
-    by_county: dict[str, list[dict]] = defaultdict(list)
+    meta: list[tuple] = []
+    cleaned: list[dict] = []
     for feature in features:
         props = feature.get("properties") or {}
         geometry = feature.get("geometry") or {}
@@ -429,8 +625,17 @@ def main() -> int:
         county = COUNTY_MN_KEYS.get(norm(labels.get("countyMn") or props.get("countyMn")), county_key(labels.get("county") or props.get("county")))
         label = display(labels.get("name") or props.get("name"))
         report.extend(far_parts(county, natcode, label, geometry))
-        geometry = drop_far_parts(natcode, geometry)
-        path = path_for_geometry(geometry)
+        meta.append((natcode, labels, props, county, label, geometry))
+        cleaned.append({**feature, "geometry": drop_far_parts(natcode, geometry)})
+
+    # Granita comuna se simplifica o singura data (vezi topological_simplify): fara asta,
+    # copiile independente ale aceleiasi granite divergeau si produceau suprapuneri, fisii
+    # si asignari gresite la hit-test (masurat 2026-10-02, vezi antetul functiei).
+    rings_by_feature = topological_simplify(cleaned)
+
+    by_county: dict[str, list[dict]] = defaultdict(list)
+    for (natcode, labels, props, county, label, geometry), rings in zip(meta, rings_by_feature):
+        path = path_from_rings(rings)
         centre = centre_for_geometry(geometry)
         if not county or not path or centre is None:
             continue
@@ -456,12 +661,13 @@ def main() -> int:
     for county, units in sorted(by_county.items()):
         units.sort(key=lambda item: item["label"].casefold())
         data = {
-            "version": 1,
+            "version": 2,
             "county": county,
             "source": "geo-spatial.org — Limită UAT România (poligon)",
             "source_url": SOURCE_URL,
             "source_crs": "EPSG:4326",
             "projection": "IZZ map viewBox 0 0 1000 703.53",
+            "simplification": "topological (shared arcs, Douglas-Peucker 0.28)",
             "uats": units,
         }
         path = os.path.join(OUT_DIR, f"{county}.json")

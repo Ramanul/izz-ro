@@ -231,7 +231,10 @@
       return;
     }
     state.uatLoading = true;
-    fetch(`./data/uat/${encodeURIComponent(county)}.json`, { cache: "force-cache" })
+    // Cache implicit (nu "force-cache"): ala servea copia din cache CHIAR SI expirata, deci
+    // dupa un rebuild de geometrie browserul arata vechea harta nerevalidata. Cu default,
+    // max-age=300 + ETag revalideaza ieftin (304) dupa 5 minute.
+    fetch(`./data/uat/${encodeURIComponent(county)}.json`)
       .then((response) => response.ok ? response.json() : null)
       .then((data) => {
         if (state.uatCounty !== county || state.uatRequestId !== requestId) return;
@@ -265,6 +268,21 @@
       });
   }
 
+  // Fallback geometric pentru articolele fara SIRUTA: cel mai MIC poligon care acopera
+  // punctul — acelasi principiu ca la enclavele Bucuresti/Ilfov din countyFillAtPoint.
+  // Regula veche (primul care acopera) dadea UAT-ul gresit in fasiile de suprapunere.
+  function smallestCoveringUat(ctx, point) {
+    let best = null;
+    let bestArea = Infinity;
+    for (const unit of state.uats) {
+      if (!ctx.isPointInPath(unit.path2d, point.x, point.y, "evenodd")) continue;
+      const bounds = pathBounds(unit.path);
+      const area = bounds ? (bounds.maxX - bounds.minX) * (bounds.maxY - bounds.minY) : Infinity;
+      if (area < bestArea) { bestArea = area; best = unit; }
+    }
+    return best;
+  }
+
   // Asignarea articolelor la UAT-uri se face din `rawVisible`, NU din `visible`: selectia de
   // UAT restrange `visible` pe baza asignarii, deci daca asignarea s-ar calcula din el,
   // selectia s-ar auto-hrani -- la a doua trecere toate celelalte UAT-uri ar cadea pe 0.
@@ -276,10 +294,19 @@
       uat.items = [];
     }
     for (const item of state.rawVisible) {
-      if (item.county !== state.zoomCounty || item.x == null || item.y == null) continue;
-      const point = devicePointFromMap(canvas, view, Number(item.x), Number(item.y));
-      if (!Number.isFinite(point.x) || !Number.isFinite(point.y)) continue;
-      const uat = state.uats.find((unit) => ctx.isPointInPath(unit.path2d, point.x, point.y, "evenodd"));
+      if (item.county !== state.zoomCounty) continue;
+      // Asignarea DETERMINISTA bate geometria: `uat` vine din SIRUTA la build (satul ->
+      // UAT-ul parinte). Hit-testul geometric intoarce vecinul cand punctul satului sta la
+      // mai putin de toleranta de simplificare de granita (masurat 2026-10-02: 102 sate,
+      // Apuseni preponderent). x/y nu mai e obligatoriu: localitatea e cunoscuta si cand
+      // punctul ei lipseste din stratul de puncte.
+      let uat = item.uat ? state.uats.find((unit) => String(unit.id) === String(item.uat)) : null;
+      if (!uat && item.x != null && item.y != null) {
+        const point = devicePointFromMap(canvas, view, Number(item.x), Number(item.y));
+        if (Number.isFinite(point.x) && Number.isFinite(point.y)) {
+          uat = smallestCoveringUat(ctx, point);
+        }
+      }
       if (!uat) continue;
       uat.count += 1;
       uat.items.push(item);
@@ -392,7 +419,7 @@
     if (state.uatOutlineCache.has(county) || state.uatCache.has(county)) return;
     if (state.neighborFetches.has(county)) return;
     state.neighborFetches.add(county);
-    fetch(`./data/uat/${encodeURIComponent(county)}.json`, { cache: "force-cache" })
+    fetch(`./data/uat/${encodeURIComponent(county)}.json`)
       .then((response) => response.ok ? response.json() : null)
       .then((data) => {
         const units = Array.isArray(data?.uats) ? data.uats.map((unit) => ({
@@ -1733,14 +1760,15 @@
     } else {
       // Transformarea se reafirma explicit inainte de hit-test: buildMap() o lasa setata, dar
       // a te baza pe ordinea apelurilor face hit-testul sa cada silentios la prima schimbare.
-      // Cascada: (1) interior clar de poligon, (2) bulina cea mai apropiata, (3) margine cu
-      // toleranta. includeEmpty: județele fara stiri se selecteaza si ele -- click mort pe
-      // o zona vizibila era exact plangerea de pe live; panoul raspunde cu mesaj de gol.
+      // Cascada: (1) interior clar de poligon, (2) margine cu toleranta. includeEmpty:
+      // județele fara stiri se selecteaza si ele -- click mort pe o zona vizibila era exact
+      // plangerea de pe live; panoul raspunde cu mesaj de gol. Ramasa din cascada a fost
+      // stearsa, nu pastrata: closestHit pe state.paths era cod mort din momentul in care
+      // bulinele nationale au fost scoase (intrarile din state.paths n-au .marker).
       const ctx = canvas.getContext("2d");
       applyViewTransform(ctx, canvas, view);
       const dp = devicePointForEvent(canvas, event);
       const entry = (dp && countyFillAtPoint(ctx, dp, { includeEmpty: true }))
-        || closestHit(p, state.paths, (e) => e.marker)
         || (dp && countyEdgeAtPoint(ctx, dp));
       if (entry) {
         if (state.level === "regional") {
