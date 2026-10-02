@@ -63,11 +63,12 @@ TOLERANCE = float(os.getenv("UAT_TOLERANCE", "0.28"))
 # O unitate de hartă ≈ 0,73 km (1000 units peste ~730 km de lată).
 KM_PER_UNIT = (LON_MAX - LON_MIN) * 111.32 * K / WIDTH
 FAR_PART_THRESHOLD = 8.0
-# Sursa WFS (ro_uat_poligon, versiunea 2021-12-23) atașează Comunei Mărașu (natcode 43493)
-# o a doua parte de teritoriu la ~35 km nord de comuna reală, peste municipiul Brăila și
-# Chiscani — hover-ul hărții răspundea „Mărașu" lângă Brăila (descoperit 2026-10-02).
-# Până corectează sursa, păstrăm numai partea cea mai mare, care e comuna adevărată.
-KEEP_LARGEST_PART_NATCODES = {"43493"}
+# Lecția din 2 oct 2026 (vezi revert-ul PR #393): partea a doua a Comunei Mărașu
+# (natcode 43493), la ~21 km nord de corp, a părut o eroare de sursă și a fost tăiată —
+# dar e exclavă REALĂ: granița OSM (relația 10487259) o are identică, KMZ-ul oficial
+# ANCPI 2014 o include, iar ariile OSM și WFS concordă la 0,1 km² (127,4 + 69,1 =
+# 196,5). Tăierea a lăsat o gaură de ~69 km² pe hartă. Regula: o parte secundară
+# îndepărtată NU se taie fără confirmare din a doua sursă oficială.
 
 COUNTY_KEYS = {
     "BISTRITA NASAUD": "BISTRITA-NASAUD",
@@ -231,11 +232,12 @@ def bbox_distance(first: tuple, second: tuple) -> float:
 
 
 def far_parts(county: str, natcode: str, label: str, geometry: dict) -> list[str]:
-    """Gardă de raport: părți secundare ale unui UAT la peste ~6 km de corpul principal.
+    """Inventar: părți secundare ale unui UAT la peste ~6 km de corpul principal.
 
-    Se rulează pe geometria SURSEI, înainte de corecții: un defect nou la geo-spatial.org
-    trebuie să se vadă în jurnalul rebuild-ului, nu pe live. Părțile îndepărtate pot fi
-    legitime (păduri și insule administrate din comună), deci raportul nu ratează build-ul.
+    Se rulează pe geometria sursei. Părțile secundare îndepărtate sunt de obicei exclave
+    legitime (insule, balta, păduri administrate din comună — vezi lecția Mărașu de mai
+    sus), deci raportul nu ratează build-ul: există ca rebuild-ul să arate structura
+    multi-part a datelor la sursă.
     """
     kind = geometry.get("type")
     coords = geometry.get("coordinates") or []
@@ -259,17 +261,6 @@ def far_parts(county: str, natcode: str, label: str, geometry: dict) -> list[str
                 f"aria {areas[index]:.0f} vs corp {areas[main]:.0f}"
             )
     return notes
-
-
-def drop_far_parts(natcode: str, geometry: dict) -> dict:
-    """Corecție țintită: păstrează doar partea cea mai mare pentru UAT-urile cu geometrie eronată la sursă."""
-    if natcode not in KEEP_LARGEST_PART_NATCODES or geometry.get("type") != "MultiPolygon":
-        return geometry
-    polygons = [p for p in geometry.get("coordinates") or [] if isinstance(p, list) and p]
-    if len(polygons) < 2:
-        return geometry
-    largest = max(polygons, key=polygon_area)
-    return {"type": "Polygon", "coordinates": largest}
 
 
 def _transform_coordinates(value, transformer, swap_axes: bool = False):
@@ -429,7 +420,6 @@ def main() -> int:
         county = COUNTY_MN_KEYS.get(norm(labels.get("countyMn") or props.get("countyMn")), county_key(labels.get("county") or props.get("county")))
         label = display(labels.get("name") or props.get("name"))
         report.extend(far_parts(county, natcode, label, geometry))
-        geometry = drop_far_parts(natcode, geometry)
         path = path_for_geometry(geometry)
         centre = centre_for_geometry(geometry)
         if not county or not path or centre is None:
