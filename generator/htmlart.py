@@ -306,7 +306,79 @@ def _t_arc(a, acc, bg, k):
 # scrisa pe coperta unui articol economic, spune ceva adevarat si specific despre articol.
 _HARTA_PATH = os.path.join(_ROOT, "data", "harta_judete.json")
 _HARTA = None
+_HARTA_INLINE_CACHE: dict[str, dict | None] = {}
 _NUM = re.compile(r"-?\d+(?:\.\d+)?")
+
+_PORTRAITS_PATH = os.path.join(_ROOT, "data", "portraits.json")
+_PORTRETE_LIBERE: dict[str, dict] | None = None
+_CREDIT_FREE_RE = re.compile(r"^(cc0|cc[ -]?zero|public domain|pd([ -]|$))", re.I)
+
+
+def _portrete_libere() -> dict[str, dict]:
+    """Portretele din `data/portraits.json` cu licenta fara obligatie de credit (Public domain / CC0).
+
+    Doar activele `Public domain` si `CC0` pot aparea pe carduri si pe prima pagina, unde nu
+    exista legenda de atribuire (`content/legal/images.md`, `tests/test_image_policy.py`).
+    Fisierele sunt deja copiate in `output/portraits/` de `render._load_portraits()`, deci nu
+    adauga niciun fisier suplimentar la bugetul Cloudflare Workers Free.
+    """
+    global _PORTRETE_LIBERE
+    if _PORTRETE_LIBERE is None:
+        out: dict[str, dict] = {}
+        try:
+            with open(_PORTRAITS_PATH, encoding="utf-8") as f:
+                raw = json.load(f) or {}
+            for k, v in raw.items():
+                if not isinstance(v, dict) or v.get("miss"):
+                    continue
+                img = (v.get("img") or "").strip()
+                lic = (v.get("license") or "").strip()
+                if not img or not _CREDIT_FREE_RE.match(lic):
+                    continue
+                if os.path.exists(os.path.join(_ROOT, "media", img)):
+                    out[k] = {"img": img, "name": (v.get("name") or k).strip()}
+        except (OSError, ValueError):
+            out = {}
+        _PORTRETE_LIBERE = out
+    return _PORTRETE_LIBERE
+
+
+def _portret_liber(a: dict) -> dict | None:
+    """Primul portret Public domain / CC0 potrivit unei entitati din articol, sau None."""
+    ents = a.get("entities") or []
+    if not ents:
+        return None
+    from .util import strip_diacritics
+    libere = _portrete_libere()
+    if not libere:
+        return None
+    for e in ents:
+        key = re.sub(r"\s+", " ", strip_diacritics((e or "").strip().lower()))
+        if key in libere:
+            return libere[key]
+    return None
+
+
+def _harta_inline(cod: str | None) -> dict | None:
+    """Geometria scalata a judetului `cod` pentru cutia 330x300 din `_art.html` (cache per judet)."""
+    if not cod:
+        return None
+    if cod not in _HARTA_INLINE_CACHE:
+        d = _harta().get(cod)
+        b = _bbox(d) if d else None
+        if not b:
+            _HARTA_INLINE_CACHE[cod] = None
+        else:
+            x0, y0, x1, y1 = b
+            lw, lh = max(x1 - x0, 0.01), max(y1 - y0, 0.01)
+            s = min(330.0 / lw, 300.0 / lh)
+            tx, ty = (330.0 - lw * s) / 2 - x0 * s, (300.0 - lh * s) / 2 - y0 * s
+            _HARTA_INLINE_CACHE[cod] = {
+                "d": d,
+                "transform": f"translate({tx:.2f} {ty:.2f}) scale({s:.4f})",
+                "sw": f"{2.2 / s:.2f}",
+            }
+    return _HARTA_INLINE_CACHE[cod]
 
 
 def _harta() -> dict:
@@ -649,14 +721,23 @@ def _treapta_eticheta(et: str) -> int:
 
 
 def stil_inline(a: dict) -> dict:
-    """Descrierea artei desenate in pagina pentru `a` (compozitie, paleta, texte, data)."""
+    """Descrierea artei desenate in pagina pentru `a` (compozitie, paleta, texte, data, harta/portret)."""
     seed = _seed(a)
     et = _eticheta(a)
-    return {
+    cod = _judet(a)
+    sub = _sub_harta(a, cod) if cod else _subtitlu(a)
+    harta = _harta_inline(cod) if cod else None
+    portret = None if harta else _portret_liber(a)
+    res = {
         "tpl": _NUME_TEMPLATE[seed[4] % len(_NUME_TEMPLATE)],
         "pal": seed[0] % len(_PALETE),
         "eticheta": et,
-        "sub": _subtitlu(a),
+        "sub": sub,
         "treapta": _treapta_eticheta(et),
         "data": _data_copertei(a),
     }
+    if harta:
+        res["harta"] = harta
+    elif portret:
+        res["portret"] = portret
+    return res

@@ -424,7 +424,7 @@ OUTPUT_FILE_CEILING = int(os.getenv("OUTPUT_FILE_CEILING", "20000"))
 # o prima masuratoare le-a numarat gresit ca pagini de articol si bugetul a iesit cu 183 peste.
 # Se scade din buget INAINTE de imparteala pe articole: paginile de articol au prioritate
 # absoluta. Remasoara cu `tools/count_output.py` dupa orice rubrica sau sectiune noua.
-OUTPUT_NON_ARTICLE_RESERVE = int(os.getenv("OUTPUT_NON_ARTICLE_RESERVE", "4200"))
+OUTPUT_NON_ARTICLE_RESERVE = int(os.getenv("OUTPUT_NON_ARTICLE_RESERVE", "4400"))
 # Cate articole, de la cel mai nou spre cel mai vechi, primesc `cover.jpg` propriu (og:image
 # 1200x630 cu titlul desenat). Restul cad pe coperta STATICA a categoriei (15 fisiere,
 # generate o data per build). Motivul e ca og:image conteaza cat timp articolul chiar se

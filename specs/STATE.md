@@ -8,16 +8,15 @@
 > Where the rest lives: `specs/regim-reguli.md` — unified audit closure ·
 > `specs/registru.tsv` — decisions · `CLAUDE.md` — canonical contract.
 
-**Updated:** 2026-10-03 (state: plafon STATE înapoi la 40 de linii; asignare deterministă UAT în PR deschis)
+**Updated:** 2026-10-03 (produs + viteză: portrete PD/CC0 și siluete județ pe carduri, `covers.py` editorial, `--render-only` 44s [IZZ-0415, 0416])
 
 ## Open
 - **`ai_gateway` — aterizat pe main prin #390, merged (mai demult și #387, merged):**
   gateway AI local $0; cheile doar în `.env`; docs: `ai_gateway/FREE_AI_SETUP.md`.
   Cataloagele free churn-uisază: 2 oct, `llama-3.3-70b*`/`kimi-k2` dispăruți, `qwen-3.8-27b` nou la ambii.
-- **Pages `izz-ro` ZOMBI revendică `izz.ro` [IZZ-0366, 0368]:** ștergerea = decizie proprietar [IZZ-0395].
-- **PRODUS P1 — homepage fără nicio fotografie [IZZ-0403]:** 0 `<img>` măsurat; 73% din articole au portret real
-  deja în `output/portraits/` — zero fișiere noi; potrivirea rulează doar pe articol (`render.py:971`).
-- **PRODUS P2 — copertile arată amatoricesc [IZZ-0404]** (verdict proprietar); `htmlart`/`covers.py`.
+- **Pages `izz-ro` ZOMBI — CONFIRMAT ȘTERS [IZZ-0411]:** `izz-ro.pages.dev` returnează `000` [IZZ-0366, 0395].
+- **PRODUS P1/P2 — portrete PD/CC0 + siluete județ pe carduri și `covers.py` editorial [IZZ-0403, 0404 → IZZ-0416]:**
+  homepage are acum fotografii reale din `output/portraits/` + siluete SVG de județ (0 fișiere noi); `--render-only` scade la 44s.
 - **PRODUS P3 — harta: markere fără ierarhie vizuală [IZZ-0405]:** 482 evenimente, clickuri cablate; e afordanța, nu funcția.
 - **FEREASTRA TTL a trecut de buget [IZZ-0400]:** 11.967 vs prag 12.800; `ARTICLE_TTL_DAYS` = decizie proprietar [IZZ-0401].
 - **Free-readiness — gazda ÎNCĂ PAID până 22 sep [IZZ-0313]:** ingest median 960/zi vs 590 dimensionat; TTL=20
