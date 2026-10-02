@@ -8,9 +8,12 @@
 > Where the rest lives: `specs/regim-reguli.md` — unified audit closure ·
 > `specs/registru.tsv` — decisions · `CLAUDE.md` — canonical contract.
 
-**Updated:** 2026-10-01 (#280: dimensiunea 5 — greutatea CSS, cu unealta de audit css_folosit.mjs)
+**Updated:** 2026-10-02 (#nou: ai_gateway — FreeQuotaGuard în fața OmniRoute, infra AI $0)
 
 ## Open
+- **PR acest branch — `ai_gateway` (FreeQuotaGuard + OmniRoute):** gateway AI local $0;
+  teste în `tests/test_gateway_*`; cheile doar în `.env` (gitignore dinainte). docs:
+  `ai_gateway/FREE_AI_SETUP.md`.
 - **Pages `izz-ro` ZOMBI revendică `izz.ro` [IZZ-0366, 0368]:** ștergerea = decizie proprietar [IZZ-0395].
 - **PRODUS P1 — homepage fără nicio fotografie [IZZ-0403]:** 0 `<img>` măsurat; 73% din articole au portret real
   deja în `output/portraits/` — zero fișiere noi; potrivirea rulează doar pe articol (`render.py:971`).
