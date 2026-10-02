@@ -69,6 +69,10 @@ class Settings:
     def load(cls, env_file: Path | None = None) -> "Settings":
         env_path = env_file or Path(".env")
         file_values = parse_env_file(env_path)
+        # cheile din .env trebuie să fie vizibile și pentru guard (registry.api_key citește
+        # os.environ); variabilele deja setate în sistem au precedență
+        for key, value in file_values.items():
+            os.environ.setdefault(key, value)
 
         def get(name: str, default: str = "") -> str:
             return os.environ.get(name, file_values.get(name, default))

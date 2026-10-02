@@ -112,7 +112,6 @@ providers:
     models:
       - {id: gemini-2.5-flash,      context: 1000000, priority: 10, quality: {simple: 4, coding: 4, reasoning: 4, large_context: 4, search: 3, agentic: 4}}
       - {id: gemini-2.5-flash-lite, context: 1000000, priority: 30, quality: {simple: 3, coding: 3, reasoning: 3, large_context: 3, search: 2, agentic: 3}}
-      - {id: gemini-2.5-pro,        context: 1000000, priority: 15, quality: {simple: 4, coding: 4, reasoning: 5, large_context: 5, search: 3, agentic: 4}}
 
   mistral:
     tos_status: SAFE
@@ -161,10 +160,11 @@ providers:
     models:
       - {id: glm-4.5-flash, context: 128000, priority: 10, quality: {simple: 4, coding: 3, reasoning: 3, large_context: 3, search: 2, agentic: 3}}
 
-  cloudflare_workers_ai:
+  cloudflare-ai:
     tos_status: SAFE
     billing_possible: false   # free: 10K neurons/zi [OMR]; peste → respinge
-    enabled: true
+    enabled: false  # 2 oct: tokenul din D: respins la apelul real (401) — probabil fără
+                    # permisiunea Workers AI; creează token nou cu scope „Workers AI:Edit"
     api_key_env: CLOUDFLARE_API_TOKEN
     base_url: https://api.cloudflare.com/client/v4/accounts/CONTUL_TAU/ai/v1
     quota: {type: rate_limit_only}
@@ -176,10 +176,11 @@ providers:
       - {id: "@cf/meta/llama-3.3-70b-instruct-fp8-fast", context: 128000, priority: 10, quality: {simple: 3, coding: 3, reasoning: 3, large_context: 2, search: 2, agentic: 3}}
       - {id: "@cf/qwen/qwen2.5-coder-32b-instruct",      context: 128000, priority: 20, quality: {simple: 3, coding: 3, reasoning: 2, large_context: 2, search: 2, agentic: 3}}
 
-  nvidia_nim:
+  nvidia:
     tos_status: SAFE
     billing_possible: false   # ~40 RPM free [OMR]
-    enabled: true
+    enabled: false  # 2 oct: toate id-urile cunoscute → 410 „Gone"; catalogul s-a schimbat —
+                    # re-activează cu id-uri din build.nvidia.com
     api_key_env: NVIDIA_API_KEY
     base_url: https://integrate.api.nvidia.com/v1
     quota: {type: rate_limit_only}

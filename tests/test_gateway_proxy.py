@@ -63,6 +63,8 @@ def stack(monkeypatch):
     threading.Thread(target=upstream.serve_forever, daemon=True).start()
 
     settings = Settings()
+    settings.port = 0  # port efemerez OBLIGATORIU: altfel instanța de test se leagă peste
+                       # gate-ul real de pe 20129 (SO_REUSEADDR permite dubla legare pe Windows)
     settings.upstream_base = f"http://127.0.0.1:{upstream.server_address[1]}"
     registry, store, guard, router, _env, _clock = build_full(settings=settings)
     app = GatewayApp(settings, registry, guard, router, store)
