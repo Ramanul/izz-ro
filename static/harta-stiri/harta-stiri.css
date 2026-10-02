@@ -83,7 +83,7 @@ button,input { font:inherit; }
    titluri. `pointer-events:none` e obligatoriu: altfel tooltipul insusi ar prinde
    evenimentele si ar declansa `pointerleave` pe panza, adica ar palpai continuu exact
    acolo unde e cursorul. */
-.map-tip{position:absolute;z-index:6;pointer-events:none;width:min(72%,300px);
+.map-tip{position:absolute;z-index:6;pointer-events:none;width:max-content;max-width:min(72%,300px);min-width:96px;
   background:var(--surface);color:var(--text);border:1px solid var(--border);
   border-radius:10px;padding:.55rem .7rem;box-shadow:var(--shadow)}
 .map-tip .tip-head{display:flex;justify-content:space-between;align-items:baseline;gap:.6rem;font-weight:800;font-size:.8rem}
