@@ -4,8 +4,12 @@ import sys
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from generator import render  # noqa: E402
+from generator.mini_harta import install_hook, mini_harta  # noqa: E402
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+# Asigura hook-ul in mediu de test (home_fresh poate sa nu fi fost apelat inca)
+install_hook()
 
 
 def test_fara_pe_judet_intoarce_none():
@@ -23,6 +27,14 @@ def test_trepte_pe_cuartele_volumului():
     assert by.get("CLUJ") == 4
     assert by.get("BRASOV") == 1
     assert any(f["treapta"] == 0 for f in out["forme"])
+
+
+def test_base_ctx_injecteaza_mini_harta_cand_are_zi():
+    zi = {"stiri": 1, "surse": 1, "judete": 1, "pe_judet": {"CLUJ": 2}}
+    ctx = render._base_ctx("/", zi=zi)
+    assert "mini_harta" in ctx
+    # None daca lipseste harta_judete.json in mediu izolat; altfel dict cu forme
+    assert ctx["mini_harta"] is None or "forme" in ctx["mini_harta"]
 
 
 def test_sablonul_are_blocul_puls():
