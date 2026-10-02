@@ -76,7 +76,7 @@ def main() -> int:
     model, text = rezultat
     with open(sys.argv[2], "w", encoding="utf-8") as f:
         f.write(text)
-    print(f"model={model}")
+    print(model)
     return 0
 
 
