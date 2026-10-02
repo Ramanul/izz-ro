@@ -1,0 +1,131 @@
+name: AI Gratuit OpenRouter
+
+# @ai (și aliasuri @deepseek/@qwen/@kimi/@glm/@grok/@nemotron/@gemma/@inkling) — bot
+# conversațional pe modelele GRATUITE OpenRouter (`:free`), fără card, cu cheia existentă
+# a contului. Scrii "@qwen <întrebarea>" sau "@ai <întrebarea>" pe un issue/PR și răspunde
+# ca comentariu. E doar sfat: nu comite nimic, nu e merge gate.
+#
+# Catalogul `:free` se schimbă zilnic, deci aliasul cerut e doar PREFERINȚĂ: dacă nu mai
+# există, cererea cade pe routerul `openrouter/free` + cascada, iar comentariul numește
+# modelul care chiar a răspuns. Cota: 50 cereri/zi, ÎMPĂRȚITĂ cu claude CLI și OpenCode.
+# Poarta de securitate: ca la claude.yml/mistral.yml — OWNER/COLLABORATOR obligatoriu.
+# Răspunsul NU conține niciun declanșator literal (nici măcar "@ai"), ca să nu se
+# autodeclanșeze; poarta rămâne al doilea strat.
+
+on:
+  issue_comment:
+    types: [created]
+  pull_request_review_comment:
+    types: [created]
+  issues:
+    types: [opened]
+
+permissions:
+  issues: write
+  pull-requests: write
+  contents: read
+
+concurrency:
+  group: ai-gratuit-${{ github.event.pull_request.number || github.event.issue.number || github.run_id }}
+  cancel-in-progress: false
+
+jobs:
+  ai:
+    # matches() cu \b, nu contains(): "@ai" e prefix al multor cuvinte (@aiurea etc.).
+    if: |
+      (github.event_name == 'issue_comment'
+        && matches(github.event.comment.body, '@(ai|deepseek|qwen|kimi|glm|grok|nemotron|gemma|inkling)\b')
+        && contains(fromJSON('["OWNER","COLLABORATOR"]'), github.event.comment.author_association)) ||
+      (github.event_name == 'pull_request_review_comment'
+        && matches(github.event.comment.body, '@(ai|deepseek|qwen|kimi|glm|grok|nemotron|gemma|inkling)\b')
+        && contains(fromJSON('["OWNER","COLLABORATOR"]'), github.event.comment.author_association)) ||
+      (github.event_name == 'issues'
+        && matches(github.event.issue.body, '@(ai|deepseek|qwen|kimi|glm|grok|nemotron|gemma|inkling)\b')
+        && contains(fromJSON('["OWNER","COLLABORATOR"]'), github.event.issue.author_association))
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      HAS_KEY: ${{ secrets.OPENROUTER_API_KEY != '' }}
+    steps:
+      - name: Checkout
+        if: env.HAS_KEY == 'true'
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          fetch-depth: 1
+          persist-credentials: false
+
+      - name: Cheie lipsa
+        if: env.HAS_KEY != 'true'
+        run: echo "OPENROUTER_API_KEY nu e setat — botul tace."
+
+      - name: Asamblează promptul
+        if: env.HAS_KEY == 'true'
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          COMMENT_BODY: ${{ github.event.comment.body }}
+          COMMENT_USER: ${{ github.event.comment.user.login }}
+          ISSUE_TITLE: ${{ github.event.issue.title }}
+          ISSUE_BODY: ${{ github.event.issue.body }}
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/ai-bot
+          {
+            echo "# Întrebare de la proprietarul repo-ului Ramanul/izz-ro, prin comentariu GitHub"
+            echo "Event: $EVENT_NAME"
+            echo ""
+            echo "## Instrucțiuni de proiect"
+            for f in CLAUDE.md AGENTS.md; do
+              if [ -f "$f" ]; then echo "### $f"; cat "$f"; echo ""; fi
+            done
+            echo "## Context"
+            if [ "$EVENT_NAME" = "issues" ]; then
+              echo "Issue: $ISSUE_TITLE"
+              echo ""
+              printf '%s\n' "$ISSUE_BODY"
+            else
+              echo "De la: $COMMENT_USER"
+              echo ""
+              printf '%s\n' "$COMMENT_BODY"
+            fi
+            echo ""
+            echo "## Cum răspunzi"
+            echo "Răspunzi ÎN ROMÂNĂ, concis, pe înțelesul unui proprietar care nu programează."
+            echo "Codul, comenzile și identificatorii rămân în engleză, în blocuri markdown."
+            echo "Dacă răspunsul cere o decizie de-a lui, formulezi explicit ce are de decis."
+          } > /tmp/ai-bot/task.md
+          head -c 60000 /tmp/ai-bot/task.md > /tmp/ai-bot/task.t.md
+          mv /tmp/ai-bot/task.t.md /tmp/ai-bot/task.md
+          echo "Prompt asamblat: $(wc -c < /tmp/ai-bot/task.md) bytes"
+
+      - name: Întreabă modelul gratuit
+        if: env.HAS_KEY == 'true'
+        env:
+          OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+          COMMENT_BODY: ${{ github.event.comment.body || github.event.issue.body }}
+        run: |
+          set -euo pipefail
+          MODEL="$(python tools/openrouter_chat.py /tmp/ai-bot/task.md /tmp/ai-bot/raspuns.md)"
+          echo "MODEL=$MODEL" >> "$GITHUB_ENV"
+
+      - name: Publică răspunsul
+        if: env.HAS_KEY == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          NUMAR: ${{ github.event.issue.number || github.event.pull_request.number }}
+          MODEL: ${{ env.MODEL }}
+        run: |
+          set -euo pipefail
+          {
+            echo "🤖 **Răspuns AI gratuit** (model: \`$MODEL\`, OpenRouter) — automat, doar sfat; nu comite nimic."
+            echo ""
+            head -c 60000 /tmp/ai-bot/raspuns.md
+          } > /tmp/ai-bot/comentariu.md
+          gh issue comment "$NUMAR" --body-file /tmp/ai-bot/comentariu.md
+
+      - name: Raportează eșecul
+        if: always() && job.status != 'success'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          NUMAR: ${{ github.event.issue.number || github.event.pull_request.number }}
+        run: |
+          gh issue comment "$NUMAR" --body "❌ Botul AI gratuit a eșuat (catalogul :free poate fi congestionat azi). Vezi logurile: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"

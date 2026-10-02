@@ -1,0 +1,127 @@
+name: Gemini Chat
+
+# @gemini — bot conversațional pe cota GRATUITĂ a Google AI Studio (1500 cereri/zi, fără
+# card), cu cheia deja probată live de gemini-review.yml. Scrii "@gemini <întrebarea>" pe
+# un issue/PR și răspunde ca comentariu. E doar sfat: nu comite nimic, nu e merge gate.
+# Poarta de securitate oglindește claude.yml/mistral.yml: textul conține @gemini ȘI autorul
+# e OWNER/COLLABORATOR — altfel oricine cu cont GitHub ar consuma cheia pe repo public.
+# Răspunsul botului NU conține "@gemini" literal, ca să nu se autodeclanșeze (poarta ar
+# oricum opri github-actions[bot], dar nu riscăm pe două straturi).
+
+on:
+  issue_comment:
+    types: [created]
+  pull_request_review_comment:
+    types: [created]
+  issues:
+    types: [opened]
+
+permissions:
+  issues: write
+  pull-requests: write
+  contents: read
+
+concurrency:
+  group: gemini-chat-${{ github.event.pull_request.number || github.event.issue.number || github.run_id }}
+  # Fără cancel: o întrebare în zbor nu merită ucisă de o a doua (lecția mistral #389).
+  cancel-in-progress: false
+
+jobs:
+  gemini:
+    if: |
+      (github.event_name == 'issue_comment'
+        && contains(github.event.comment.body, '@gemini')
+        && contains(fromJSON('["OWNER","COLLABORATOR"]'), github.event.comment.author_association)) ||
+      (github.event_name == 'pull_request_review_comment'
+        && contains(github.event.comment.body, '@gemini')
+        && contains(fromJSON('["OWNER","COLLABORATOR"]'), github.event.comment.author_association)) ||
+      (github.event_name == 'issues'
+        && contains(github.event.issue.body, '@gemini')
+        && contains(fromJSON('["OWNER","COLLABORATOR"]'), github.event.issue.author_association))
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      HAS_KEY: ${{ secrets.GEMINI_API_KEY != '' }}
+    steps:
+      - name: Checkout
+        if: env.HAS_KEY == 'true'
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          fetch-depth: 1
+          persist-credentials: false
+
+      - name: Cheie lipsa
+        if: env.HAS_KEY != 'true'
+        run: echo "GEMINI_API_KEY nu e setat — botul tace."
+
+      - name: Asamblează promptul
+        if: env.HAS_KEY == 'true'
+        # Body-urile prin ENV, nu interpolate în bash -> previne injecția (tipar mistral.yml).
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          COMMENT_BODY: ${{ github.event.comment.body }}
+          COMMENT_USER: ${{ github.event.comment.user.login }}
+          ISSUE_TITLE: ${{ github.event.issue.title }}
+          ISSUE_BODY: ${{ github.event.issue.body }}
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/gemini-bot
+          {
+            echo "# Întrebare de la proprietarul repo-ului Ramanul/izz-ro, prin comentariu GitHub"
+            echo "Event: $EVENT_NAME"
+            echo ""
+            echo "## Instrucțiuni de proiect"
+            for f in CLAUDE.md AGENTS.md; do
+              if [ -f "$f" ]; then echo "### $f"; cat "$f"; echo ""; fi
+            done
+            echo "## Context"
+            if [ "$EVENT_NAME" = "issues" ]; then
+              echo "Issue: $ISSUE_TITLE"
+              echo ""
+              printf '%s\n' "$ISSUE_BODY"
+            else
+              echo "De la: $COMMENT_USER"
+              echo ""
+              printf '%s\n' "$COMMENT_BODY"
+            fi
+            echo ""
+            echo "## Cum răspunzi"
+            echo "Răspunzi ÎN ROMÂNĂ, concis, pe înțelesul unui proprietar care nu programează."
+            echo "Codul, comenzile și identificatorii rămân în engleză, în blocuri markdown."
+            echo "Dacă răspunsul cere o decizie de-a lui, formulezi explicit ce are de decis."
+          } > /tmp/gemini-bot/task.md
+          head -c 60000 /tmp/gemini-bot/task.md > /tmp/gemini-bot/task.t.md
+          mv /tmp/gemini-bot/task.t.md /tmp/gemini-bot/task.md
+          echo "Prompt asamblat: $(wc -c < /tmp/gemini-bot/task.md) bytes"
+
+      - name: Întreabă Gemini
+        if: env.HAS_KEY == 'true'
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        run: |
+          set -euo pipefail
+          MODEL="$(python tools/gemini_chat.py /tmp/gemini-bot/task.md /tmp/gemini-bot/raspuns.md)"
+          echo "MODEL=$MODEL" >> "$GITHUB_ENV"
+
+      - name: Publică răspunsul
+        if: env.HAS_KEY == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          NUMAR: ${{ github.event.issue.number || github.event.pull_request.number }}
+          MODEL: ${{ env.MODEL }}
+        run: |
+          set -euo pipefail
+          {
+            echo "🤖 **Gemini** (\`$MODEL\`) — răspuns automat, doar sfat; nu comite nimic."
+            echo ""
+            head -c 60000 /tmp/gemini-bot/raspuns.md
+          } > /tmp/gemini-bot/comentariu.md
+          gh issue comment "$NUMAR" --body-file /tmp/gemini-bot/comentariu.md
+
+      - name: Raportează eșecul
+        if: always() && job.status != 'success'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          NUMAR: ${{ github.event.issue.number || github.event.pull_request.number }}
+        run: |
+          gh issue comment "$NUMAR" --body "❌ Botul Gemini a eșuat. Vezi logurile: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
