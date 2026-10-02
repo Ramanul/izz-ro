@@ -32,6 +32,7 @@ import math
 import os
 import re
 import struct
+import sys
 import unicodedata
 import urllib.parse
 import urllib.request
@@ -59,11 +60,21 @@ SCALE_X = WIDTH / ((LON_MAX - LON_MIN) * K)
 SCALE_Y = HEIGHT / (LAT_MAX - LAT_MIN)
 TOLERANCE = float(os.getenv("UAT_TOLERANCE", "0.28"))
 
+# O unitate de hartă ≈ 0,73 km (1000 units peste ~730 km de lată).
+KM_PER_UNIT = (LON_MAX - LON_MIN) * 111.32 * K / WIDTH
+FAR_PART_THRESHOLD = 8.0
+# Sursa WFS (ro_uat_poligon, versiunea 2021-12-23) atașează Comunei Mărașu (natcode 43493)
+# o a doua parte de teritoriu la ~35 km nord de comuna reală, peste municipiul Brăila și
+# Chiscani — hover-ul hărții răspundea „Mărașu" lângă Brăila (descoperit 2026-10-02).
+# Până corectează sursa, păstrăm numai partea cea mai mare, care e comuna adevărată.
+KEEP_LARGEST_PART_NATCODES = {"43493"}
+
 COUNTY_KEYS = {
     "BISTRITA NASAUD": "BISTRITA-NASAUD",
     "CARAS SEVERIN": "CARAS-SEVERIN",
 }
 COUNTY_FILTER_NAMES = {
+    "BRAILA": "Brăila",
     "TIMIS": "Timiș",
 }
 # Codurile județene sunt stabile în exportul UAT și evită problemele de codare DBF ale diacriticelor.
@@ -191,6 +202,74 @@ def centre_for_geometry(geometry: dict) -> tuple[float, float] | None:
     if total <= 1e-6:
         return None
     return round(weighted_x / total, 1), round(weighted_y / total, 1)
+
+
+def polygon_area(polygon: list) -> float:
+    """Aria proiectată a inelului exterior; suficientă pentru compararea părților aceluiași UAT."""
+    exterior = polygon[0] if polygon else []
+    projected = [project(float(point[0]), float(point[1])) for point in exterior if len(point) >= 2]
+    if len(projected) < 3:
+        return 0.0
+    area2 = 0.0
+    for first, second in zip(projected, projected[1:] + projected[:1]):
+        area2 += first[0] * second[1] - second[0] * first[1]
+    return abs(area2) / 2.0
+
+
+def ring_bbox(ring: list) -> tuple[float, float, float, float]:
+    points = [(float(point[0]), float(point[1])) for point in ring if len(point) >= 2]
+    projected = [project(x, y) for x, y in points]
+    xs = [point[0] for point in projected]
+    ys = [point[1] for point in projected]
+    return min(xs), min(ys), max(xs), max(ys)
+
+
+def bbox_distance(first: tuple, second: tuple) -> float:
+    dx = max(first[0] - second[2], second[0] - first[2], 0.0)
+    dy = max(first[1] - second[3], second[1] - first[3], 0.0)
+    return math.hypot(dx, dy)
+
+
+def far_parts(county: str, natcode: str, label: str, geometry: dict) -> list[str]:
+    """Gardă de raport: părți secundare ale unui UAT la peste ~6 km de corpul principal.
+
+    Se rulează pe geometria SURSEI, înainte de corecții: un defect nou la geo-spatial.org
+    trebuie să se vadă în jurnalul rebuild-ului, nu pe live. Părțile îndepărtate pot fi
+    legitime (păduri și insule administrate din comună), deci raportul nu ratează build-ul.
+    """
+    kind = geometry.get("type")
+    coords = geometry.get("coordinates") or []
+    polygons = [coords] if kind == "Polygon" else coords if kind == "MultiPolygon" else []
+    if len(polygons) < 2:
+        return []
+    areas = [polygon_area(polygon) for polygon in polygons]
+    main = max(range(len(polygons)), key=lambda i: areas[i])
+    if areas[main] <= 0 or not polygons[main] or not polygons[main][0]:
+        return []
+    main_box = ring_bbox(polygons[main][0])
+    notes = []
+    for index, polygon in enumerate(polygons):
+        if index == main or not polygon or not polygon[0]:
+            continue
+        distance = bbox_distance(ring_bbox(polygon[0]), main_box)
+        if distance > FAR_PART_THRESHOLD:
+            notes.append(
+                f"GARDĂ UAT: {county}/{label} ({natcode}) partea {index} la "
+                f"{distance:.1f} map-units (~{distance * KM_PER_UNIT:.0f} km) de corpul principal, "
+                f"aria {areas[index]:.0f} vs corp {areas[main]:.0f}"
+            )
+    return notes
+
+
+def drop_far_parts(natcode: str, geometry: dict) -> dict:
+    """Corecție țintită: păstrează doar partea cea mai mare pentru UAT-urile cu geometrie eronată la sursă."""
+    if natcode not in KEEP_LARGEST_PART_NATCODES or geometry.get("type") != "MultiPolygon":
+        return geometry
+    polygons = [p for p in geometry.get("coordinates") or [] if isinstance(p, list) and p]
+    if len(polygons) < 2:
+        return geometry
+    largest = max(polygons, key=polygon_area)
+    return {"type": "Polygon", "coordinates": largest}
 
 
 def _transform_coordinates(value, transformer, swap_axes: bool = False):
@@ -340,6 +419,7 @@ def request_features() -> list[dict]:
 def main() -> int:
     features = request_features()
     label_overrides = load_label_overrides()
+    report: list[str] = []
     by_county: dict[str, list[dict]] = defaultdict(list)
     for feature in features:
         props = feature.get("properties") or {}
@@ -347,6 +427,9 @@ def main() -> int:
         natcode = str(props.get("natcode") or feature.get("id") or "")
         labels = label_overrides.get(natcode, props)
         county = COUNTY_MN_KEYS.get(norm(labels.get("countyMn") or props.get("countyMn")), county_key(labels.get("county") or props.get("county")))
+        label = display(labels.get("name") or props.get("name"))
+        report.extend(far_parts(county, natcode, label, geometry))
+        geometry = drop_far_parts(natcode, geometry)
         path = path_for_geometry(geometry)
         centre = centre_for_geometry(geometry)
         if not county or not path or centre is None:
@@ -354,7 +437,7 @@ def main() -> int:
         entry = {
             "id": natcode,
             "name": norm(labels.get("name") or props.get("name")),
-            "label": display(labels.get("name") or props.get("name")),
+            "label": label,
             "kind": display(labels.get("natLevName") or props.get("natLevName")),
             "path": path,
             "center": list(centre),
@@ -386,6 +469,8 @@ def main() -> int:
             json.dump(data, fh, ensure_ascii=False, separators=(",", ":"))
         total_size += os.path.getsize(path)
     print(f"{sum(map(len, by_county.values()))} UAT-uri în {len(by_county)} județe -> {OUT_DIR} ({total_size / 1024 / 1024:.2f} MB)")
+    for line in report:
+        print(line, file=sys.stderr)
     return 0
 
 
