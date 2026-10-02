@@ -99,6 +99,7 @@ def read_siruta(county_alias: dict[str, str] | None = None) -> tuple[dict[str, s
     duplicate_sats = {name for name, count in counts.items() if count > 1}
 
     by_name: dict[str, list[dict]] = {}
+    parents: dict[str, str] = {}
     for row in rows:
         niv = str(row.get("NIV") or "")
         if niv not in {"2", "3"}:
@@ -107,16 +108,26 @@ def read_siruta(county_alias: dict[str, str] | None = None) -> tuple[dict[str, s
         county = counties.get(str(row.get("JUD") or "").strip(), "")
         if not name or not county:
             continue
-        if niv == "3" and (len(name) < 5 or name in STOPWORDS or name in AMBIGUE or name in duplicate_sats):
-            continue
         siruta = ""
         for key in ("SIRUTA", "CODSIRUTA", "COD SIRUTA", "COD_SIRUTA", "COD_SIRUTA_LOCALITATE"):
             if row.get(key):
                 siruta = str(row[key]).strip()
                 break
         rec = {"name": name, "county": county, "siruta": siruta_key(siruta), "level": niv}
+        if niv == "3":
+            # SIRSUP = codul UAT-ului parinte (NIV2): satul -> comuna/orasul lui. E baza
+            # asignarii DETERMINISTE la UAT (vezi `locate`): hit-testul geometric intoarce
+            # vecinul cand satul sta la mai putin de toleranta de simplificare de granita
+            # (masurat 2026-10-02: 102 puncte, Apuseni preponderent). Se colecteaza pentru
+            # TOATE satele, si pentru cele filtrate mai jos din by_name: un articol poate
+            # ajunge aici cu SIRUTA rezolvata doar prin puncte, nu prin nume.
+            parent = siruta_key(row.get("SIRSUP") or "")
+            if parent:
+                parents[rec["siruta"]] = parent
+        if niv == "3" and (len(name) < 5 or name in STOPWORDS or name in AMBIGUE or name in duplicate_sats):
+            continue
         by_name.setdefault(name, []).append(rec)
-    return counties, by_name
+    return counties, by_name, parents
 
 
 def load_json(path: str):
@@ -145,6 +156,29 @@ def load_locality_points() -> dict[str, dict]:
         key = f"{norm(entry.get('name'))}|{norm(entry.get('county'))}"
         points.setdefault(key, entry)
     return points
+
+
+def load_uat_ids() -> set[str]:
+    """Codurile SIRUTA (natcode) ale UAT-urilor din stratul de poligoane, pentru asignarea
+    determinista din `locate`. Se citesc de pe disc, nu se deduc — daca build-ul UAT n-a
+    rulat, asignarea cade pe hit-testul geometric, exact ca inainte de campul `uat`."""
+    ids: set[str] = set()
+    uat_dir = os.path.join(ROOT, "static", "harta-stiri", "data", "uat")
+    if not os.path.isdir(uat_dir):
+        return ids
+    for filename in os.listdir(uat_dir):
+        if not filename.endswith(".json"):
+            continue
+        try:
+            with open(os.path.join(uat_dir, filename), encoding="utf-8") as fh:
+                data = json.load(fh)
+        except (OSError, ValueError):
+            continue
+        for unit in data.get("uats") or []:
+            code = siruta_key((unit or {}).get("id") or "")
+            if code:
+                ids.add(code)
+    return ids
 
 
 def point_for(locality: dict | None, points: dict[str, dict]) -> dict | None:
@@ -230,7 +264,14 @@ def locality_from_text(
     return candidates[0] if candidates else None
 
 
-def locate(article: dict, county_keys: list[str], by_name: dict[str, list[dict]], points: dict[str, dict]) -> dict | None:
+def locate(
+    article: dict,
+    county_keys: list[str],
+    by_name: dict[str, list[dict]],
+    points: dict[str, dict],
+    uat_ids: set[str] | None = None,
+    siruta_parents: dict[str, str] | None = None,
+) -> dict | None:
     category = article.get("category") or ""
     if category not in {"local", "judetean", "regional"}:
         return None
@@ -259,6 +300,7 @@ def locate(article: dict, county_keys: list[str], by_name: dict[str, list[dict]]
             "county": "",
             "locality": "",
             "siruta": "",
+            "uat": "",
             "x": None,
             "y": None,
             "confidence": "text",
@@ -316,12 +358,27 @@ def locate(article: dict, county_keys: list[str], by_name: dict[str, list[dict]]
     else:
         confidence = "text" if tc else "source" if sc else "siruta"
     point = point_for(locality, points)
+    # Asignarea DETERMINISTA la UAT: SIRUTA localitatii, direct (orase) sau prin parintele
+    # SIRUP (sate). bate hit-testul geometric, care intoarce vecinul cand punctul satului
+    # sta mai aproape de granita decat toleranta de simplificare (0.28 units ~ 200 m;
+    # masurat 2026-10-02: 102 sate, Apuseni preponderent). JS o prefera pe asta, iar
+    # hit-testul ramane doar fallback pentru articolele fara SIRUTA.
+    loc_siruta = siruta_key(locality["siruta"]) if locality else ""
+    uat_code = ""
+    if loc_siruta and uat_ids:
+        if loc_siruta in uat_ids:
+            uat_code = loc_siruta
+        else:
+            parent = (siruta_parents or {}).get(loc_siruta, "")
+            if parent in uat_ids:
+                uat_code = parent
     return {
         **base,
         "region": geo.ETICHETE_REGIUNI.get(geo.regiune_afisare(county), ""),
         "county": county,
         "locality": locality["name"] if locality else "",
-        "siruta": siruta_key(locality["siruta"]) if locality else "",
+        "siruta": loc_siruta,
+        "uat": uat_code,
         "x": point.get("x") if point else None,
         "y": point.get("y") if point else None,
         "confidence": confidence,
@@ -402,16 +459,23 @@ def main() -> int:
     counties = map_data.get("judete") or {}
     county_keys = list(counties)
     county_alias = {norm(key): key for key in county_keys}
-    _, siruta = read_siruta(county_alias)
+    _, siruta, siruta_parents = read_siruta(county_alias)
     points = load_locality_points()
     if not points:
         raise RuntimeError("harta_localitati.json nu contine puncte de localitati.")
+    uat_ids = load_uat_ids()
 
     articles = sorted(articles, key=lambda a: str(a.get("published") or ""), reverse=True)
     located = []
+    now_iso = datetime.now(timezone.utc).isoformat()
     for article in articles[:MAX_ARTICLES]:
-        item = locate(article, county_keys, siruta, points)
+        item = locate(article, county_keys, siruta, points, uat_ids, siruta_parents)
         if item:
+            # Anunturi cu data in viitor (cazul real: „colectare deseuri 01.01.2027",
+            # publicat cu published in 2027) ar urca `latest_article_at` si meta din lista
+            # intr-un an care nu a venit. Pentru HARTA data viitoare nu e informatie.
+            if item["published"] > now_iso:
+                item["published"] = now_iso
             located.append(item)
 
     located = annotate_events(located)

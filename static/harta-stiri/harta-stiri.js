@@ -287,10 +287,20 @@
       uat.items = [];
     }
     for (const item of state.rawVisible) {
-      if (item.county !== state.zoomCounty || item.x == null || item.y == null) continue;
-      const point = devicePointFromMap(canvas, view, Number(item.x), Number(item.y));
-      if (!Number.isFinite(point.x) || !Number.isFinite(point.y)) continue;
-      const uat = smallestUatAt(ctx, point.x, point.y);
+      if (item.county !== state.zoomCounty) continue;
+      // Asignarea DETERMINISTA bate geometria: `uat` vine din SIRUTA la build (satul ->
+      // UAT-ul parinte, campul `uat` din map.json). smallestUatAt intoarce tot comuna
+      // gresita cand satul sta in raza poligonului mic vecin: masurat 3 oct 2026, 106
+      // puncte (Apuseni preponderent) erau asignate comunei vecine si dupa fixul
+      // min-poligon. x/y nu mai e obligatoriu: localitatea e cunoscuta si cand punctul
+      // ei lipseste din stratul de puncte.
+      let uat = item.uat ? state.uats.find((unit) => String(unit.id) === String(item.uat)) : null;
+      if (!uat && item.x != null && item.y != null) {
+        const point = devicePointFromMap(canvas, view, Number(item.x), Number(item.y));
+        if (Number.isFinite(point.x) && Number.isFinite(point.y)) {
+          uat = smallestUatAt(ctx, point.x, point.y);
+        }
+      }
       if (!uat) continue;
       uat.count += 1;
       uat.items.push(item);
