@@ -18,8 +18,6 @@
         {% if not top.anunt_fara_corp %}
         <p class="lead-summary">{% if top.model == 'C' %}{{ top.synthesis }}{% else %}{{ top.teaser }}{% endif %}</p>
         {% endif %}
-        {#- Fara ai-mark pe hero: acelasi rationament ca pe card — dezvaluirea completa e pe
-            pagina de articol (ai-mark + ai-note) si in /legal/method/. -#}
       </div>
       <aside class="lead-aside">
         {% if top.art_path %}
@@ -40,7 +38,6 @@
 
     {% if hero[1:] %}
     <h2 class="section-title">Ultimele știri</h2>
-    {# banda de top: ancora vizuala intre lead si sectiunile de categorie #}
     <section class="grid top-band">
       {% for a in hero[1:] %}{{ card(a) }}{% endfor %}
     </section>
@@ -56,6 +53,21 @@
       <a class="see-all" href="{{ base }}/{{ cat }}/">Vezi toate din {{ cat | cat_label }} &rarr;</a>
       {% endif %}
     {% endfor %}
+  {% endif %}
+
+  {% if mini_harta %}
+  <section class="puls" aria-labelledby="puls-title">
+    <h2 class="section-title" id="puls-title">România în ultimele 24 de ore</h2>
+    <div class="puls-layout">
+      <a class="puls-map" href="{{ base }}/static/harta-stiri/"
+         aria-label="Harta știrilor locale: {{ mini_harta.total }} știri în ultimele 24 de ore. Deschide harta completă.">
+        <svg viewBox="{{ mini_harta.viewbox }}" focusable="false" aria-hidden="true">
+          {% for f in mini_harta.forme %}<path class="h{{ f.treapta }}" d="{{ f.d }}"/>{% endfor %}
+        </svg>
+      </a>
+      <p class="puls-caption">Căldura arată câte știri locale și județene a publicat fiecare județ în ultimele 24 de ore, după județul sursei. <a href="{{ base }}/static/harta-stiri/">Explorează harta completă</a> cu evenimente pe localități.</p>
+    </div>
+  </section>
   {% endif %}
 
   <aside class="reader-briefing" aria-labelledby="reader-briefing-title">
