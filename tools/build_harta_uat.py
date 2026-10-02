@@ -110,30 +110,35 @@ def project(lon: float, lat: float) -> tuple[float, float]:
     return round((lon - LON_MIN) * K * SCALE_X, 1), round((LAT_MAX - lat) * SCALE_Y, 1)
 
 
-def simplify(points: list[tuple[float, float]], tolerance: float) -> list[tuple[float, float]]:
-    """Simplificare Douglas–Peucker iterativă pentru un inel închis."""
-    unique = [points[0]] if points else []
+def _dedupe_ring_points(points: list[tuple[float, float]]) -> list[tuple[float, float]]:
+    """Puncte consecutive duplicate + punctul de inchidere, inainte de simplificare."""
+    out = [points[0]] if points else []
     for point in points[1:]:
-        if point != unique[-1]:
-            unique.append(point)
-    while len(unique) > 1 and unique[0] == unique[-1]:
-        unique.pop()
-    if len(unique) < 3:
-        return unique
-    keep = [False] * len(unique)
+        if point != out[-1]:
+            out.append(point)
+    while len(out) > 1 and out[0] == out[-1]:
+        out.pop()
+    return out
+
+
+def _dp_keep(points: list[tuple[float, float]], tolerance: float) -> list[bool]:
+    """Flagurile de pastrare ale Douglas–Peucker pentru un inel deschis (fara inchidere)."""
+    keep = [False] * len(points)
+    if not points:
+        return keep
     keep[0] = keep[-1] = True
-    stack = [(0, len(unique) - 1)]
+    stack = [(0, len(points) - 1)]
     while stack:
         start, end = stack.pop()
         if end <= start + 1:
             continue
-        ax, ay = unique[start]
-        bx, by = unique[end]
+        ax, ay = points[start]
+        bx, by = points[end]
         dx, dy = bx - ax, by - ay
         length = math.hypot(dx, dy) or 1e-12
         distance, selected = 0.0, start
         for index in range(start + 1, end):
-            px, py = unique[index]
+            px, py = points[index]
             candidate = abs(dx * (ay - py) - (ax - px) * dy) / length
             if candidate > distance:
                 distance, selected = candidate, index
@@ -141,10 +146,10 @@ def simplify(points: list[tuple[float, float]], tolerance: float) -> list[tuple[
             keep[selected] = True
             stack.append((start, selected))
             stack.append((selected, end))
-    return [point for point, retained in zip(unique, keep) if retained]
+    return keep
 
 
-def ring_path(ring: Iterable[Iterable[float]]) -> str:
+def _project_ring(ring: Iterable[Iterable[float]]) -> list[tuple[float, float]]:
     points = []
     for pair in ring:
         if not isinstance(pair, list) or len(pair) < 2:
@@ -155,25 +160,74 @@ def ring_path(ring: Iterable[Iterable[float]]) -> str:
             continue
         if -180 <= lon <= 180 and -90 <= lat <= 90:
             points.append(project(lon, lat))
-    points = simplify(points, TOLERANCE)
-    if len(points) < 3:
-        return ""
-    return "M" + " L".join(f"{x:g} {y:g}" for x, y in points) + " Z"
+    return points
 
 
-def path_for_geometry(geometry: dict) -> str:
-    kind = geometry.get("type")
-    coords = geometry.get("coordinates") or []
-    polygons = [coords] if kind == "Polygon" else coords if kind == "MultiPolygon" else []
-    paths = []
-    for polygon in polygons:
-        if not isinstance(polygon, list):
-            continue
-        for ring in polygon:
-            path = ring_path(ring)
-            if path:
-                paths.append(path)
-    return " ".join(paths)
+# ---- simplificare topologica (vot global pe varfuri) --------------------------------------
+# Douglas–Peucker pe fiecare inel INDEPENDENT taie granita comuna in doua copii divergente:
+# masurat pe stratul comis 2026-10-02, 1094 perechi de vecini suprapusi (131 km2), ~1105 km2
+# de fisii-gol si 104 puncte de localitate care cadeau in suprapunere si isi afisau stirea
+# pe comuna vecina. Sursa ANCPI e mozaic perfect (0 suprapuneri, 0 goluri — masurat pe
+# stratul brut), deci toate defectele astea sunt ale SIMPLIFICARII, si regula care le face
+# imposibile e una singura:
+#
+#   Un varf se sterge doar daca NICIUN inel nu-l vrea pastrat.
+#
+# DP ruleaza pe fiecare inel pentru setul lui de pastrati; se face uniunea globala a
+# seturilor, plus varfurile de jonctiune (prezente in >=3 inele distincte — colturile in T,
+# de care se prinde si granita unui al treilea UAT: daca ar disparea, vecinul s-ar desprinde
+# de muchia simplificata a celorlalti). Fiecare inel se reconstruieste apoi pastrand exact
+# varfurile uniunii. Doua inele vecine impart ACEEASI multime de varfuri pe granita comuna,
+# deci muchia simplificata le iese identica prin constructie — suprapunerea si golul nu mai
+# au din ce sa apara. Costul: pe granitele comune se pastreaza unirea pastratilor ambelor
+# parti, adica putin mai multe puncte decat ar pastra fiecare DP singur — se plateste in
+# marimea fisierului, nu in corectitudine.
+
+def topological_simplify(geometries: list[dict]) -> list[list[str]]:
+    """Pentru fiecare geometrie, subcaile simplificate cu granite comune taiate o singura data.
+
+    Intoarce, pe aceeasi pozitie ca `geometries`, cate o lista de subcai „M ... Z" (una per
+    inel supravietuitor); inelele degenerate (<3 varfuri) lipsesc. Se apeleaza cu TOATE
+    geometriile corectate deodata — topologia e globala, nu per județ.
+    """
+    all_rings: list[list[tuple[float, float]]] = []
+    ring_indexes_per_geometry: list[list[int]] = []
+    for geometry in geometries:
+        kind = geometry.get("type")
+        coords = geometry.get("coordinates") or []
+        polygons = [coords] if kind == "Polygon" else coords if kind == "MultiPolygon" else []
+        indexes: list[int] = []
+        for polygon in polygons:
+            if not isinstance(polygon, list):
+                continue
+            for ring in polygon:
+                pts = _dedupe_ring_points(_project_ring(ring))
+                if len(pts) >= 3:
+                    indexes.append(len(all_rings))
+                    all_rings.append(pts)
+        ring_indexes_per_geometry.append(indexes)
+
+    keep: set[tuple[float, float]] = set()
+    incidence: dict[tuple[float, float], set[int]] = {}
+    for ring_index, pts in enumerate(all_rings):
+        for index, retained in enumerate(_dp_keep(pts, TOLERANCE)):
+            if retained:
+                keep.add(pts[index])
+        for point in pts:
+            incidence.setdefault(point, set()).add(ring_index)
+    for point, rings_here in incidence.items():
+        if len(rings_here) >= 3:
+            keep.add(point)
+
+    out: list[list[str]] = []
+    for indexes in ring_indexes_per_geometry:
+        paths = []
+        for ring_index in indexes:
+            pts = [point for point in all_rings[ring_index] if point in keep]
+            if len(pts) >= 3:
+                paths.append("M" + " L".join(f"{x:g} {y:g}" for x, y in pts) + " Z")
+        out.append(paths)
+    return out
 
 
 def centre_for_geometry(geometry: dict) -> tuple[float, float] | None:
@@ -407,11 +461,120 @@ def request_features() -> list[dict]:
     return features
 
 
+# ---- garda geometrica a rebuild-ului ------------------------------------------------------
+# Pragurile sunt valorile BUNE ale rebuild-ului topologic, cu aer pentru zgomotul mostenit
+# de la sursa (ANCPI livreaza ~1170 geometrii invalide OGC, care se mostenesc partial).
+# Un rebuild care inrautateste vreo cifra iese cu 1 — datele nu se comita orbeste. Cere
+# shapely la rebuild; scriptul e rulare manuala, deliberat necablata in CI.
+KM2_PER_UNIT2 = KM_PER_UNIT ** 2
+# Masurat pe rebuild-ul topologic din 2 oct 2026: union 237.007 km2, 1 pereche suprapusa
+# (0.0 km2), 0 goluri >0.5 km2, 1154 inele invalide. Inelele invalide se mostenesc de la
+# sursa (ANCPI livreaza ~1172 geometrii „bowtie"; randarea canvas evenodd le deseneaza
+# corect, doar metricile shapely au nevoie de buffer(0)) — pragul tine locul mostenirii,
+# nu-i cere repararea.
+GUARDA_MAX = {
+    "suprapuneri_km2": 2.0,      # suma suprapunerilor > 2 ha
+    "perechi_suprapuse": 20,     # perechi de UAT cu suprapunere > 2 ha
+    "goluri": 5,                 # goluri de tesatura > 0.5 km2
+    "inele_invalide": 1300,      # mostenite de la sursa (~1172 la ANCPI)
+}
+GUARDA_MIN_UNION_KM2 = 235500.0
+
+
+def valida_geometrie() -> list[str]:
+    """Masura suprapuneri/goluri/validitate pe fisierele scrise; intoarce incalcarile gărzii."""
+    try:
+        from shapely import STRtree
+        from shapely.geometry import Polygon
+        from shapely.ops import unary_union
+    except ImportError:
+        return ["shapely lipseste (pip install shapely) — rebuild-ul NU a putut fi validat."]
+    token = re.compile(r"[-+]?\d+(?:\.\d+)?")
+    geoms = []
+    inele_invalide = 0
+    for filename in sorted(os.listdir(OUT_DIR)):
+        if not filename.endswith(".json"):
+            continue
+        with open(os.path.join(OUT_DIR, filename), encoding="utf-8") as fh:
+            data = json.load(fh)
+        for uat in data["uats"]:
+            parts = []
+            for chunk in uat["path"].split("M"):
+                if not chunk.strip():
+                    continue
+                nums = [float(value) for value in token.findall(chunk.replace("Z", ""))]
+                pts = list(zip(nums[0::2], nums[1::2]))
+                if len(pts) < 3:
+                    continue
+                poly = Polygon(pts)
+                if not poly.is_valid:
+                    inele_invalide += 1
+                    # buffer(0), nu make_valid: pe inele „bowtie" make_valid poate intoarce
+                    # colectie fara arie, iar UAT-ul ar disparea din uniune desi canvas-ul
+                    # il randeaza. buffer(0) pastreaza aria, semantica fill-rule.
+                    poly = poly.buffer(0)
+                if poly.is_empty:
+                    continue
+                if poly.geom_type == "MultiPolygon":
+                    parts.extend(poly.geoms)
+                else:
+                    parts.append(poly)
+            if not parts:
+                continue
+            # evenodd exact, ca randarea din browser: XOR succesiv al inelelor.
+            geom = parts[0]
+            for extra in parts[1:]:
+                geom = geom.symmetric_difference(extra)
+            if not geom.is_valid:
+                geom = geom.buffer(0)
+            geoms.append(geom)
+
+    tree = STRtree(geoms)
+    perechi = 0
+    suprapuneri_km2 = 0.0
+    seen: set[tuple[int, int]] = set()
+    for index, geom in enumerate(geoms):
+        for other in tree.query(geom):
+            other = int(other)
+            if other <= index or (index, other) in seen:
+                continue
+            seen.add((index, other))
+            inter = geom.intersection(geoms[other])
+            if inter.is_empty:
+                continue
+            area_km2 = inter.area * KM2_PER_UNIT2
+            if area_km2 > 0.02:
+                perechi += 1
+                suprapuneri_km2 += area_km2
+    union = unary_union(geoms)
+    union_km2 = union.area * KM2_PER_UNIT2
+    goluri = 0
+    for part in ([union] if union.geom_type == "Polygon" else list(union.geoms)):
+        for index in range(len(part.interiors)):
+            if Polygon(part.interiors[index]).area * KM2_PER_UNIT2 > 0.5:
+                goluri += 1
+
+    print(f"GARDA GEOMETRIE: union {union_km2:.0f} km2 | suprapuneri {perechi} perechi / "
+          f"{suprapuneri_km2:.1f} km2 | goluri >0.5 km2: {goluri} | inele invalide: {inele_invalide}")
+    failures = []
+    if suprapuneri_km2 > GUARDA_MAX["suprapuneri_km2"]:
+        failures.append(f"suprapuneri {suprapuneri_km2:.1f} km2 > prag {GUARDA_MAX['suprapuneri_km2']}")
+    if perechi > GUARDA_MAX["perechi_suprapuse"]:
+        failures.append(f"{perechi} perechi suprapuse > prag {GUARDA_MAX['perechi_suprapuse']}")
+    if goluri > GUARDA_MAX["goluri"]:
+        failures.append(f"{goluri} goluri > prag {GUARDA_MAX['goluri']}")
+    if inele_invalide > GUARDA_MAX["inele_invalide"]:
+        failures.append(f"{inele_invalide} inele invalide > prag {GUARDA_MAX['inele_invalide']}")
+    if union_km2 < GUARDA_MIN_UNION_KM2:
+        failures.append(f"union {union_km2:.0f} km2 sub minimul {GUARDA_MIN_UNION_KM2:.0f}")
+    return failures
+
+
 def main() -> int:
     features = request_features()
     label_overrides = load_label_overrides()
     report: list[str] = []
-    by_county: dict[str, list[dict]] = defaultdict(list)
+    kept: list[tuple[str, str, str, str, dict]] = []
     for feature in features:
         props = feature.get("properties") or {}
         geometry = feature.get("geometry") or {}
@@ -420,15 +583,29 @@ def main() -> int:
         county = COUNTY_MN_KEYS.get(norm(labels.get("countyMn") or props.get("countyMn")), county_key(labels.get("county") or props.get("county")))
         label = display(labels.get("name") or props.get("name"))
         report.extend(far_parts(county, natcode, label, geometry))
-        path = path_for_geometry(geometry)
+        if county:
+            kept.append((
+                county, natcode, label,
+                norm(labels.get("name") or props.get("name")),
+                display(labels.get("natLevName") or props.get("natLevName")),
+                geometry,
+            ))
+
+    # Topologia e GLOBALA: toate geometriile corectate intr-o singura trecere, ca granitele
+    # comune sa fie taiate o singura data (vezi votul de varfuri de pe topological_simplify).
+    paths_per_feature = topological_simplify([item[5] for item in kept])
+
+    by_county: dict[str, list[dict]] = defaultdict(list)
+    for (county, natcode, label, name, kind, geometry), paths in zip(kept, paths_per_feature):
+        path = " ".join(paths)
         centre = centre_for_geometry(geometry)
-        if not county or not path or centre is None:
+        if not path or centre is None:
             continue
         entry = {
             "id": natcode,
-            "name": norm(labels.get("name") or props.get("name")),
+            "name": name,
             "label": label,
-            "kind": display(labels.get("natLevName") or props.get("natLevName")),
+            "kind": kind,
             "path": path,
             "center": list(centre),
         }
@@ -461,6 +638,16 @@ def main() -> int:
     print(f"{sum(map(len, by_county.values()))} UAT-uri în {len(by_county)} județe -> {OUT_DIR} ({total_size / 1024 / 1024:.2f} MB)")
     for line in report:
         print(line, file=sys.stderr)
+    if requested:
+        # Rebuild partial (UAT_COUNTIES): tesatura nationala e incompleta, garda pe
+        # suprapuneri/goluri n-ar masura ceva sensibil. Se reruleaza complet inainte de comit.
+        print("GARDA GEOMETRIE: sarita — rebuild partial (UAT_COUNTIES).")
+        return 0
+    failures = valida_geometrie()
+    if failures:
+        for line in failures:
+            print(f"GARDA GEOMETRIE PICA: {line}", file=sys.stderr)
+        return 1
     return 0
 
 
