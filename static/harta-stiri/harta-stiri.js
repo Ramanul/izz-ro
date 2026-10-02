@@ -242,7 +242,7 @@
       return;
     }
     state.uatLoading = true;
-    fetch(`./data/uat/${encodeURIComponent(county)}.json`, { cache: "force-cache" })
+    fetch(`./data/uat/${encodeURIComponent(county)}.json`)
       .then((response) => response.ok ? response.json() : null)
       .then((data) => {
         if (state.uatCounty !== county || state.uatRequestId !== requestId) return;
@@ -290,7 +290,7 @@
       if (item.county !== state.zoomCounty || item.x == null || item.y == null) continue;
       const point = devicePointFromMap(canvas, view, Number(item.x), Number(item.y));
       if (!Number.isFinite(point.x) || !Number.isFinite(point.y)) continue;
-      const uat = state.uats.find((unit) => ctx.isPointInPath(unit.path2d, point.x, point.y, "evenodd"));
+      const uat = smallestUatAt(ctx, point.x, point.y);
       if (!uat) continue;
       uat.count += 1;
       uat.items.push(item);
@@ -301,6 +301,27 @@
   function uatContainsMapPoint(ctx, canvas, view, uat, x, y) {
     const point = devicePointFromMap(canvas, view, x, y);
     return ctx.isPointInPath(uat.path2d, point.x, point.y, "evenodd");
+  }
+
+  // In zonele de suprapunere reziduale dintre UAT-uri, poligonul cel mai MIC care acopera
+  // punctul castiga -- acelasi principiu ca la enclava Bucuresti/Ilfov in countyFillAtPoint:
+  // acolo e singura intentie geometrica posibila, iar asignarea stirilor trebuie sa o urmeze,
+  // altfel lista si hit-testul harti ar spune lucruri diferite. Auditul geometric din 2 oct
+  // a masurat 104 puncte de localitate care cadeau in suprapunerea vecinilor si luau
+  // „primul poligon care acopera" -- adica comuna gresita la prima stire din ele.
+  function smallestUatAt(ctx, x, y) {
+    let best = null;
+    let bestArea = Infinity;
+    for (const unit of state.uats) {
+      if (!ctx.isPointInPath(unit.path2d, x, y, "evenodd")) continue;
+      const bounds = pathBounds(unit.path);
+      const area = bounds ? (bounds.maxX - bounds.minX) * (bounds.maxY - bounds.minY) : 0;
+      if (area < bestArea) {
+        bestArea = area;
+        best = unit;
+      }
+    }
+    return best;
   }
 
   function uatBadgePlacement(ctx, canvas, view, uat) {
@@ -378,7 +399,7 @@
   // Vecinii geografici ai județului deschis: intersectarea dreptunghiurilor împadritoare
   // cu o margine de 35% din mărimea județului. Nu e o listă de adiacență reală, e o
   // supraproximare deliberată — un vecin în plus costă un fetch mic (fișier ~50 KB,
-  // cache force-cache), o graniță nealiniată costă încrederea în hartă.
+  // cache HTTP implicit), o graniță nealiniată costă încrederea în hartă.
   function neighborCountiesFor(county) {
     const self = state.counties[county] ? pathBounds(state.counties[county]) : null;
     if (!self) return [];
@@ -399,11 +420,14 @@
   // Silueta UAT pentru un vecin, în fundal: vine din ACEEAȘI sursă oficială ca județul
   // deschis, deci granița comună se potrivește prin construcție. Eșecul e tăcut și
   // acceptabil: vecinul rămâne pe conturul Natural Earth, exact ca înainte de fix.
+  // Cache-ul e cel implicit al browserului (revalidare ETag după max-age), nu force-cache:
+  // după un rebuild al geometriei, copia veche din cache nu trebuie să supraviețuiască
+  // mai mult de fereastra serverului.
   function loadNeighborOutline(county) {
     if (state.uatOutlineCache.has(county) || state.uatCache.has(county)) return;
     if (state.neighborFetches.has(county)) return;
     state.neighborFetches.add(county);
-    fetch(`./data/uat/${encodeURIComponent(county)}.json`, { cache: "force-cache" })
+    fetch(`./data/uat/${encodeURIComponent(county)}.json`)
       .then((response) => response.ok ? response.json() : null)
       .then((data) => {
         const units = Array.isArray(data?.uats) ? data.uats.map((unit) => ({
@@ -1664,7 +1688,7 @@
     const dp = devicePointForEvent(canvas, event);
     if (!ctx || !dp) return null;
     applyViewTransform(ctx, canvas, view);
-    return state.uats.find((unit) => ctx.isPointInPath(unit.path2d, dp.x, dp.y, "evenodd")) || null;
+    return smallestUatAt(ctx, dp.x, dp.y) || null;
   }
 
   // Numele UAT-ului sub cursor sau sub deget. Pana acum harta nu spunea nicaieri peste ce
@@ -1801,7 +1825,7 @@
       if (!ctx || !dp) return;
       applyViewTransform(ctx, canvas, view);
       const uat = closestHit(p, state.uats.filter((unit) => unit.marker), (unit) => unit.marker)
-        || state.uats.find((unit) => ctx.isPointInPath(unit.path2d, dp.x, dp.y, "evenodd"));
+        || smallestUatAt(ctx, dp.x, dp.y);
       // Selectie, nu fereastra: acelasi contract ca clickul pe judet sau pe localitate --
       // panoul filtreaza, adresa poarta starea, Back anuleaza. UAT-urile fara stiri sunt
       // si ele selectabile (panoul raspunde cu mesajul explicit de gol), pe acelasi principiu.
@@ -1809,14 +1833,14 @@
     } else {
       // Transformarea se reafirma explicit inainte de hit-test: buildMap() o lasa setata, dar
       // a te baza pe ordinea apelurilor face hit-testul sa cada silentios la prima schimbare.
-      // Cascada: (1) interior clar de poligon, (2) bulina cea mai apropiata, (3) margine cu
-      // toleranta. includeEmpty: județele fara stiri se selecteaza si ele -- click mort pe
-      // o zona vizibila era exact plangerea de pe live; panoul raspunde cu mesaj de gol.
+      // Cascada: (1) interior clar de poligon, (2) margine cu toleranta. IncludeEmpty:
+      // județele fara stiri se selecteaza si ele -- click mort pe o zona vizibila era exact
+      // plangerea de pe live; panoul raspunde cu mesaj de gol. Bulinele au fost sterse odata
+      // cu choroplethul (markerii de judet nu mai exista), deci nu mai e si un pas de bulina.
       const ctx = canvas.getContext("2d");
       applyViewTransform(ctx, canvas, view);
       const dp = devicePointForEvent(canvas, event);
       const entry = (dp && countyFillAtPoint(ctx, dp, { includeEmpty: true }))
-        || closestHit(p, state.paths, (e) => e.marker)
         || (dp && countyEdgeAtPoint(ctx, dp));
       if (entry) {
         if (state.level === "regional") {
