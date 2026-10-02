@@ -105,3 +105,43 @@ def test_duplicate_municipality_uses_exact_siruta_with_map_point():
     }
     resolved = harta_data.locality_from_text("Intervenție în Timișoara", "TIMIS", by_name, points)
     assert resolved == by_name["TIMISOARA"][1]
+
+
+def test_locate_assigns_uat_deterministically_from_siruta_parent():
+    # Satul sta in text, UAT-ul parinte vine prin SIRUP: campul `uat` trebuie sa pointeze
+    # comuna, nu poligonul vecin pe care hit-testul geometric l-ar alege cand punctul
+    # satului sta la mai putin de toleranta de simplificare de granita (2 oct 2026).
+    by_name = {
+        "SOMESU RECE": [{"name": "SOMESU RECE", "county": "BRASOV", "siruta": "41731", "level": "3"}],
+    }
+    points = {"41731": {"name": "SOMESU RECE", "county": "BRASOV", "siruta": "41731", "x": 500.0, "y": 300.0}}
+    article = {
+        "title": "Reparații drum județean la Someșu Rece în Brașov",
+        "slug": "reparatii-somesu-rece",
+        "category": "local",
+        "published": "2026-10-02T10:00:00+00:00",
+        "source": "sursa-test",
+    }
+    result = harta_data.locate(
+        article, ["BRASOV"], by_name, points,
+        uat_ids={"41170"}, siruta_parents={"41731": "41170"},
+    )
+    assert result["uat"] == "41170"
+    assert result["siruta"] == "41731"
+
+
+def test_locate_leaves_uat_empty_without_ids():
+    # Fara stratul UAT (build n-a rulat), campul `uat` ramane gol si JS cade pe hit-test:
+    # degradare spre comportamentul vechi, nu blocaj.
+    by_name = {
+        "SOMESU RECE": [{"name": "SOMESU RECE", "county": "BRASOV", "siruta": "41731", "level": "3"}],
+    }
+    article = {
+        "title": "Reparații drum județean la Someșu Rece în Brașov",
+        "slug": "reparatii-somesu-rece",
+        "category": "local",
+        "published": "2026-10-02T10:00:00+00:00",
+        "source": "sursa-test",
+    }
+    result = harta_data.locate(article, ["BRASOV"], by_name, {})
+    assert result["uat"] == ""
