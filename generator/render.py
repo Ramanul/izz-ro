@@ -319,6 +319,37 @@ def _articole_publicabile(n: int, budget: int | None = None,
     return max(0, liber // 2)
 
 
+def _fara_date_viitoare(articles: list) -> list:
+    """Scoate din lista publicata articolele cu `published` in viitor (marja 48 h).
+
+    `_clamp_future` din fetch protejeaza doar itemele NOI la ingest; `state.merge()` nu reia
+    niciodata un URL deja stocat, deci un record intrat candva cu data de EVENIMENT parsata
+    din titlu (Voiteg/Retim: „colectare deseuri 01.01.2027", adaugat pe site-ul primariei la
+    24 sep 2026) ar fi trait in feed, sitemap, pe pagini si pe 404 pana dupa aceea data.
+    Functia asta e ultimul punct prin care trece tot ce se publica: articolul NU se sterge
+    din stare, doar nu se publica pana cand data lui devine adevarata.
+    """
+    limita = datetime.now(timezone.utc) + timedelta(hours=48)
+    pastrate, sarite = [], []
+    for a in articles:
+        try:
+            dt = datetime.fromisoformat(a.get("published") or "")
+            if dt.tzinfo is None:
+                dt = dt.replace(tzinfo=timezone.utc)
+        except (ValueError, TypeError):
+            dt = None
+        if dt is not None and dt > limita:
+            sarite.append(a)
+        else:
+            pastrate.append(a)
+    if sarite:
+        logging.error("!! %d articole cu 'published' in viitor NU se publica (ex: %s — %r): "
+                      "data de eveniment nu e data de publicare; repar sursa si recordul.",
+                      len(sarite), sarite[0].get("source"),
+                      (sarite[0].get("title") or "")[:60])
+    return pastrate
+
+
 def _coperti_de_categorie() -> dict:
     """og:image de rezerva, unul per categorie, in `output/og/<categorie>.jpg`.
 
@@ -754,6 +785,10 @@ def build(articles: list, mod: dict | None = None) -> None:
 
     # Sortare pe sir; vezi nota din state.save si tests/test_published_is_utc.py.
     by_date = sorted(articles, key=lambda a: a.get("published") or "", reverse=True)
+
+    # Garda date-viitoare, inainte de orice alt consum al listei (pagini, subiecte,
+    # paginare, sitemap, feed): un `published` din viitor nu se publica.
+    by_date = _fara_date_viitoare(by_date)
 
     # Supapa de siguranta a plafonului gazdei. Taie ACUM, inainte de orice scriere, ca
     # paginile de subiect, paginarea, sitemapurile si feedul sa vada exact ce se publica.

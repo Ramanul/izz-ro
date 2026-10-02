@@ -126,3 +126,31 @@ def test_generic_parser_single_wrapping_anchor_captures_href():
     assert p.items[0]["href"] == "https://primaria.ro/2026/08/12/anunt-unu"
     assert p.items[0]["title"] == "Primaria anunta lucrari pe strada Lunga"
     assert p.items[1]["href"] == "https://primaria.ro/2026/08/11/anunt-doi"
+
+
+# --- Voiteg (fix 3 oct 2026) ----------------------------------------------------------
+# Selectorul de data era `h5.mb-0` — adica TITLUL cardului, iar titlul continea data de
+# EVENIMENT („colectare deseuri 01.01.2027"), care ajungea `published` in 2027 si punea
+# articolul primul in feed si in sitemap-ul de stiri. Structura reala a cardului, verificata
+# pe primariavoiteg.ro la 3 oct 2026: data reala („Adaugat la ...") e in primul <span>.
+VOITEG_FIXTURE = """
+<div class="card flex-md-row mb-4 shadow-sm h-md-250">
+  <div class="card-body d-flex flex-column align-items-start">
+    <h5 class="mb-0">
+      <a href="/stiri/retim-ecologic-service-sa-anunt-colectare-deseuri-01012027_2249">Retim Ecologic Service S.A. - Anunț colectare deșeuri 01.01.2027</a>
+    </h5>
+    <div class="mb-1 text-muted"><span>Adaugat la <b>24 septembrie 2026</b></span></div>
+    <p class="card-text mb-auto"></p>
+  </div>
+</div>
+"""
+
+
+def test_voiteg_data_este_adaugat_la_nu_titlul():
+    p = _GenericListParser("https://www.primariavoiteg.ro", "div.card",
+                           title=None, date="span")
+    p.feed(VOITEG_FIXTURE)
+    assert len(p.items) == 1
+    assert "01.01.2027" in p.items[0]["title"]
+    assert p.items[0]["date_raw"] == "Adaugat la 24 septembrie 2026"
+    assert _parse_ro_date(p.items[0]["date_raw"]) == "2026-09-24T00:00:00+00:00"
