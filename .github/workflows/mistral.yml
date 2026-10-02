@@ -24,7 +24,12 @@ permissions:
 
 concurrency:
   group: mistral-${{ github.event.pull_request.number || github.event.issue.number || github.run_id }}
-  cancel-in-progress: true
+  # cancel-in-progress oprit (test e2e 2 oct, issue #388: 2 din 3 rulări ucise în zbor):
+  # orice comentariu pe issue — inclusiv al boturilor, a căror job apoi se skipuie —
+  # ocupă aceeași grupă și anulează agentul la jumătate din max-turns. Fără cancel,
+  # rulările duplicat se serializează; fiecare are branch propriu (timestamp), deci
+  # nu există conflict; excedentul se închide la triaj.
+  cancel-in-progress: false
 
 jobs:
   mistral:
