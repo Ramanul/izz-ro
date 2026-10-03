@@ -55,6 +55,11 @@
   {% block head_extra %}{% endblock %}
   {% if analytics_token %}<script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "{{ analytics_token }}"}'></script>{% endif %}
   <script defer src="{{ base }}/static/personalize.js?v={{ asset_ver['personalize.js'] }}"></script>
+  {# Service workerul si butonul de instalare. `defer`, nu `async`: cele doua se cearta pe
+     acelasi `navigator.serviceWorker` si ordinea conteaza -- pwa.js inregistreaza,
+     push.js asteapta inregistrarea prin `serviceWorker.ready`. #}
+  <script defer src="{{ base }}/static/pwa.js?v={{ asset_ver['pwa.js'] }}"></script>
+  <script defer src="{{ base }}/static/push.js?v={{ asset_ver['push.js'] }}"></script>
 </head>
 <body{% block body_attrs %}{% endblock %}>
   <p class="dateline">
@@ -78,7 +83,6 @@
       <a href="{{ base }}/calendar/"{% if nav_section == 'calendar' %} class="active"{% endif %}>Ce urmează</a>
       <a href="{{ base }}/instrumente/"{% if nav_section == 'instrumente' %} class="active"{% endif %}>Instrumente</a>
       <a href="{{ base }}/cauta/">caută</a>
-      <button id="izz-install-btn" class="izz-install-btn" type="button" hidden title="Instalează aplicația pe acest dispozitiv" aria-label="Instalează aplicația">Instalează aplicația</button>
       <button class="theme-toggle" type="button" aria-label="Comută tema"></button>
     </nav>
   </header>
@@ -114,7 +118,26 @@
       <a href="{{ base }}/surse/">Surse & originalitate</a>
       <a href="{{ base }}/legal/takedown/">Drepturi de autor</a>
     </nav>
+    {# Alertele stau ULTIMUL element din footer, dintr-un motiv masurabil: blocul apare si
+       dispare in functie de ce suporta browserul, iar un element care isi schimba dimensiunea
+       la coada documentului NU poate muta nimic din ce e deja pictat. In header, acelasi
+       mecanism a produs 0.272 CLS (specs/masuratori-frontend.md). #}
+    <div class="izz-alerte" id="izz-alerte" hidden>
+      <button class="izz-alerte-btn" id="izz-alerte-btn" type="button" aria-expanded="false" aria-controls="izz-alerte-panou">Alerte de ultimă oră</button>
+      <div class="izz-alerte-panou" id="izz-alerte-panou" hidden>
+        <p class="izz-alerte-text">Maximum <b>o alertă pe zi</b>, numai pentru știri de ultimă oră, scrise faptic. Fără îndemnuri, fără reclame, fără urmărire. Poți dezactiva oricând, din același loc.</p>
+        <button class="izz-alerte-actiune" id="izz-alerte-porneste" type="button">Activează alertele</button>
+        <button class="izz-alerte-actiune" id="izz-alerte-opreste" type="button" hidden>Dezactivează alertele</button>
+        <p class="izz-alerte-stare" id="izz-alerte-stare" role="status"></p>
+      </div>
+    </div>
   </footer>
+  {# Butonul de instalare e `position: fixed` (vezi comentariul din static/pwa.js): scos din
+     flux, deci nu poate impinge <main> in jos cand apare. #}
+  <div class="izz-install" id="izz-install" hidden>
+    <button class="izz-install-btn" id="izz-install-btn" type="button" title="Adaugă IZZ.ro pe ecranul de pornire, ca să-l citești și fără net">Instalează aplicația</button>
+    <button class="izz-install-inchide" id="izz-install-inchide" type="button" aria-label="Nu acum" title="Nu acum">×</button>
+  </div>
   <button class="back-to-top" type="button" title="Sus" aria-label="Înapoi sus">↑</button>
 </body>
 </html>
