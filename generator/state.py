@@ -6,7 +6,10 @@ from datetime import datetime, timezone, timedelta
 from . import config, geo
 from .util import iso_utc
 
-STATE_PATH = os.path.join(config.ROOT, "data", "articles.json")
+# Override pentru testele care randeaza pe un esantion al starii (fixtura `output_randat`,
+# IZZ-0415): subprocesul primeste IZZ_STATE_PATH catre o copie trunchiata. In afara testelor
+# variabila nu e setata si calea ramane cea canonica.
+STATE_PATH = os.environ.get("IZZ_STATE_PATH") or os.path.join(config.ROOT, "data", "articles.json")
 
 
 def _text_articol(art: dict) -> str:

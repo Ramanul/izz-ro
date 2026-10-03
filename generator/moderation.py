@@ -230,28 +230,45 @@ def _dedup_visible(articles: list) -> list:
         ),
         reverse=True,
     )
-    kept = []
-    seen_urls = set()
-    by_stem: dict[str, list[dict]] = {}
+    kept: list[dict] = []
+    kept_meta: list[tuple[str, datetime, set, set]] = []
+    seen_urls: set[str] = set()
+    by_stem: dict[str, list[int]] = {}
     for article in ordered:
         norm_url = normalize_url(_article_url(article))
         if norm_url and norm_url in seen_urls:
             continue
-        candidates: list[dict] = []
-        candidate_ids = set()
-        for stem in _event_stems(article):
-            for old in by_stem.get(stem, ()):
-                marker = id(old)
-                if marker not in candidate_ids:
-                    candidate_ids.add(marker)
-                    candidates.append(old)
-        if any(_same_event(article, old) for old in candidates):
-            continue
+        ta_time = _article_time(article)
+        ta = _event_stems(article)
+        ea = _entity_stems(article)
+        if ta:
+            counts: dict[int, int] = {}
+            for stem in ta:
+                for idx in by_stem.get(stem, ()):
+                    counts[idx] = counts.get(idx, 0) + 1
+            is_dup = False
+            na = len(ta)
+            for idx, inter in counts.items():
+                if inter < 3:
+                    continue
+                _, tb_time, tb, eb = kept_meta[idx]
+                if abs(ta_time - tb_time) > timedelta(hours=48):
+                    continue
+                if not cluster._strict_match(inter, na + len(tb) - inter):
+                    continue
+                if ea and eb and not (ea & eb):
+                    continue
+                is_dup = True
+                break
+            if is_dup:
+                continue
+        new_idx = len(kept)
         kept.append(article)
+        kept_meta.append((norm_url, ta_time, ta, ea))
         if norm_url:
             seen_urls.add(norm_url)
-        for stem in _event_stems(article):
-            by_stem.setdefault(stem, []).append(article)
+        for stem in ta:
+            by_stem.setdefault(stem, []).append(new_idx)
     kept.sort(key=lambda a: a.get("published") or "", reverse=True)
     return kept
 

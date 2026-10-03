@@ -809,6 +809,7 @@ def build(articles: list, mod: dict | None = None) -> None:
     # in query schimba URL-ul doar cand se schimba imaginea, deci cache-ul ramane
     # eficient dar nu mai poate fi vreodata stale.
     leadphotos = _load_leadphotos()
+    portraits = _load_portraits()   # fotografii reale P18 (auto-gazduite) cheie=nume normalizat
 
     # BUGET DE FISIERE. Pana pe 2026-08-22 randarea scria cate imagini avea de scris si
     # atat. Cand output-ul a trecut plafonul de fisiere al Cloudflare Pages, deploy-ul a
@@ -970,7 +971,6 @@ def build(articles: list, mod: dict | None = None) -> None:
 
     # graful cunoasterii v1: pagini de subiect per entitate (+ feed de urmarire >=3)
     ents = _entity_index(by_date)
-    portraits = _load_portraits()   # fotografii reale P18 (auto-gazduite) cheie=nume normalizat
     # graf-lite: entitatile care apar IMPREUNA (co-ocurenta pe articole) -> "Conexiuni"
     art_slugs: dict = {}
     for s, d in ents.items():

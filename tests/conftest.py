@@ -131,7 +131,7 @@ def _limita_randare() -> int:
 
 
 @pytest.fixture(scope="session")
-def output_randat() -> str:
+def output_randat(tmp_path_factory) -> str:
     """`output/` produs de codul curent, o singura data pe rulare de suita.
 
     Neconditionat: „randeaza daca lipseste" e exact bug-ul de mai sus, fiindca fisierul
@@ -156,6 +156,17 @@ def output_randat() -> str:
     Scope „session", nu „module": inainte se randa de pana la doua ori per suita
     (`test_pagination` neconditionat + `test_entities_verified` cand lipsea `output/ghiduri`),
     acum o singura data pentru toti consumatorii.
+
+    **ESANTION, nu corpus complet (IZZ-0415, 2026-10-03).** Pana azi fixtura randa TOATA
+    starea comisa (5.799 articole la masuratoarea din 2026-08-29; ~20.000 in octombrie):
+    626 s din 647 s de suita local, ~23 min in CI, pentru ca 6 fisiere de teste sa
+    verifice structura (paginare, JSON-LD, 404, ghiduri, garda editoriala, sitemap).
+    Acum randeaza cele mai noi `IZZ_RENDER_ESANTION` articole (default 200 — 10 pagini
+    la PAGE_SIZE=20), intr-o copie trunchiata a starii redirectata prin IZZ_STATE_PATH
+    (generator/state.py). Randarea COMPLETA nu a disparut: o ruleaza de mai multe ori
+    pe zi jobul `mirror` din build.yml (--render-only pe starea reala) si poate fi
+    ceruta local cu IZZ_RENDER_ESANTION=0. Fixtura ramane neconditionata: randeaza
+    mereu, doar corpusul e marginit.
     """
     # `timeout` NU e optional (audit 2026-08-20, [T1]). Fara el, o randare care se blocheaza din
     # ORICE motiv opreste suita la infinit, fara niciun mesaj: masurat 421 s si zero iesire, dupa
@@ -166,12 +177,26 @@ def output_randat() -> str:
     # PIL/Image.resize <- covers._save <- render.build). 600 s = ~7x randarea normala, deci nu
     # se declanseaza pe o masina incarcata, dar taie bucla infinita.
     limita = _limita_randare()
+    esantion = int(os.environ.get("IZZ_RENDER_ESANTION", "200"))
+    env = dict(os.environ)
+    if esantion > 0:
+        # Corpus marginit, DETERMINIST: primele N articole din starea comisa. Starea e
+        # sortata desc pe `published` la save (generator/state.py), deci esantionul e
+        # "cele mai noi N" si se schimba doar cand se schimba starea comisa.
+        with open(os.path.join(ROOT, "data", "articles.json"), encoding="utf-8") as fh:
+            stare_comisa = json.load(fh)
+        corpus = tmp_path_factory.mktemp("randare") / "articles.json"
+        with open(corpus, "w", encoding="utf-8") as fh:
+            json.dump(stare_comisa[:esantion], fh, ensure_ascii=False)
+        env["IZZ_STATE_PATH"] = str(corpus)
     try:
         r = subprocess.run([sys.executable, "-m", "generator.main", "--render-only"],
-                           cwd=ROOT, capture_output=True, text=True, timeout=limita)
+                           cwd=ROOT, capture_output=True, text=True, timeout=limita, env=env)
     except subprocess.TimeoutExpired:
+        corpus_desc = (f"esantion {esantion} articole" if esantion > 0
+                       else f"{_numar_articole()} articole (starea completa)")
         raise AssertionError(
-            f"TIMEOUT DE RANDARE: a depasit {limita} s (corpus: {_numar_articole()} articole).\n"
+            f"TIMEOUT DE RANDARE: a depasit {limita} s (corpus: {corpus_desc}).\n"
             "Astea sunt lucruri DIFERITE, nu le confunda cu un render picat: aici procesul inca "
             "rula cand l-am taiat, deci ori e lent, ori e blocat.\n"
             "  - lent  -> corpusul a crescut peste ce acopera formula din `_limita_randare`; "

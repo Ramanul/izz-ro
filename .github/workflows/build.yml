@@ -62,6 +62,15 @@ jobs:
 
       - run: pip install -r requirements.txt
 
+      # Suita rapida (~1 min de la IZZ-0415: fixtura randeaza un esantion de 200 articole)
+      # inainte de cheltuirea bugetului AI, ca un cod regresat sa nu consume 40 de apeluri
+      # si sa nu comite stare deasupra unui defect. RAPORT-ONLY la aterizare: content job-ul
+      # e pulsul site-ului, iar un test fragil ar ingheta publicarea tăcut — comutatorul
+      # (scoaterea `continue-on-error`) se aplica dupa o saptamana de rulari verzi.
+      - name: Suita de teste (raport-only, IZZ-0415)
+        continue-on-error: true
+        run: python -m pytest -q
+
       - name: Chromium pentru imagini (best-effort)
         id: chrome
         continue-on-error: true
