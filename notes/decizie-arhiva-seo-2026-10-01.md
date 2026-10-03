@@ -4,7 +4,7 @@ Data: 2026-10-01 · Context: audit Codex (P0.3) + analize ZCode din aceeași zi 
 
 ## Problema
 
-`ARTICLE_TTL_DAYS = 11` (config.py, din 2026-10-03, IZZ-0421; era 20 când s-a scris doc-ul) →
+`ARTICLE_TTL_DAYS = 12` (config.py, din 2026-10-03: 11 la tripwire [IZZ-0421], 12 după Q5 [IZZ-0422]; era 20 când s-a scris doc-ul) →
 articolele ies din `output/` după ~11 zile → URL-urile
 indexate de Google ajung la 404. E o decizie de capacitate (plafonul Workers Free de 20.000
 fișiere/versiune; live 1 oct: 17.122 fișiere, marjă ~2.900). Arhiva veche NU se pierde: istoricul
