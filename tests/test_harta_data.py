@@ -148,9 +148,9 @@ def test_locate_leaves_uat_empty_without_ids():
 
 
 def test_buildul_atentioneaza_dar_nu_cade_pe_sluguri_gole(tmp_path, monkeypatch, capsys):
-    """Articolele ascunse de moderare raman in stare fara slug (assign_slugs prinde doar
-    subsetul vizibil). Build-ul le raporteaza, dar NU esueaza: starea e legitima, iar
-    harta-stiri.js le randeaza ca text simplu, nu ca ancora."""
+    """Dupa IZZ-0422, moderarea se aplica inainte de localizare, deci un articol cu URL
+    dar fara slug e abatere moderare/assign_slugs, nu o stare legitima. Build-ul o
+    raporteaza, dar NU esueaza: harta-stiri.js o randeaza ca text simplu, nu ca ancora."""
     harta_data.OUT = str(tmp_path / "map.json")
     real_load = harta_data.load_json
 
@@ -165,6 +165,47 @@ def test_buildul_atentioneaza_dar_nu_cade_pe_sluguri_gole(tmp_path, monkeypatch,
     assert harta_data.main() == 0
     assert "fara slug" in capsys.readouterr().out
     assert (tmp_path / "map.json").exists()
+
+
+def test_buildul_exclude_articolele_ascunse_de_moderare(tmp_path, monkeypatch, capsys):
+    """Harta arata doar ce publica si site-ul (IZZ-0422): acelasi `moderation.apply`
+    ruleaza inainte de localizare, deci un articol din blocklist nu mai ajunge deloc
+    pe harta — nici macar ca text fara link, cum se intampla inainte de fix."""
+    import json
+    harta_data.OUT = str(tmp_path / "map.json")
+    real_load = harta_data.load_json
+
+    def load_patch(cale):
+        if str(cale) == str(harta_data.ARTICLES):
+            return [
+                {"title": "Reparații drum județean la Someșu Rece în Brașov",
+                 "slug": "reparatii-somesu-rece", "category": "local",
+                 "published": "2026-08-19T10:00:00+00:00", "url": "https://ex.ro/stire",
+                 "source": "sursa-test"},
+                {"title": "Pariuri online fara depunere", "slug": "", "category": "local",
+                 "published": "2026-08-19T11:00:00+00:00", "url": "https://spam.example/pariuri",
+                 "source": "sursa-test"},
+            ]
+        return real_load(cale)
+
+    siruta = {"SOMESU RECE": [{"name": "SOMESU RECE", "county": "BRASOV",
+                               "siruta": "41731", "level": "3"}]}
+    punct = {"41731": {"name": "SOMESU RECE", "county": "BRASOV",
+                       "siruta": "41731", "x": 500.0, "y": 300.0}}
+    monkeypatch.setattr(harta_data, "load_json", load_patch)
+    monkeypatch.setattr(harta_data, "read_siruta",
+                        lambda alias: (alias, siruta, {"41731": "41170"}))
+    monkeypatch.setattr(harta_data, "load_locality_points", lambda: punct)
+    monkeypatch.setattr(
+        harta_data.moderation, "load",
+        lambda: {**harta_data.moderation.DEFAULTS,
+                 "blocklist_urls": ["https://spam.example/pariuri"]})
+    assert harta_data.main() == 0
+    assert "moderarea a ascuns 1" in capsys.readouterr().out
+    iesire = json.loads((tmp_path / "map.json").read_text(encoding="utf-8"))
+    titluri = [a["title"] for a in iesire["articles"]]
+    assert "Pariuri online fara depunere" not in titluri
+    assert "Reparații drum județean la Someșu Rece în Brașov" in titluri
 
 
 def test_datasetul_comis_pastreaza_cheia_slug_pe_fiecare_inregistrare():

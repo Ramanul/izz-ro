@@ -15,7 +15,7 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 if ROOT not in sys.path:
     sys.path.insert(0, ROOT)
 
-from generator import geo
+from generator import geo, moderation
 from generator.util import title_tokens
 
 ARTICLES = os.path.join(ROOT, "data", "articles.json")
@@ -467,13 +467,21 @@ def main() -> int:
 
     articles = sorted(articles, key=lambda a: str(a.get("published") or ""), reverse=True)
 
-    # AVERTIZARE: articolele ascunse de moderare raman in stare FARA slug (slugul se
-    # atribuie doar subsetului vizibil — main.run cheama `assign_slugs(visible)`, iar
-    # moderation.apply le sare inainte de asta), deci harta le primeste fara pagina de
-    # articol. Avertisment, nu esec: starea e legitima, iar harta-stiri.js randeaza
-    # inregistrarile fara slug ca text simplu, nu ca ancoră (un link ar fi fost `/local//`,
-    # adica pagina de categorie). Masurat 2026-10-03: 347 articole in stare, 22 in fereastra
-    # de 1.500; daca cifra creste brusc, ceva s-a schimbat in moderare sau in assign_slugs.
+    # IZZ-0422: harta arata doar ce publica si site-ul. In pipeline, main.run aplica
+    # `moderation.apply` inainte de `assign_slugs`, deci starea pastreaza articolele
+    # ascunse (blocklist, spam pariuri, takedowns) FARA slug — si pana acum harta le
+    # colecta ca evenimente fara link (masurat 2026-10-03: 22 in fereastra de 1.500).
+    # Acelasi filtru, inainte de fereastra, ca sloturile sa ramana pentru ce e vizibil.
+    inainte_filtru = len(articles)
+    articles = moderation.apply(articles, moderation.load())
+    ascunse = inainte_filtru - len(articles)
+    if ascunse:
+        print(f"harta-stiri: moderarea a ascuns {ascunse} articole — nu ajung pe harta.")
+
+    # Dupa filtru, un articol cu URL dar fara slug e abatere intre moderare si
+    # assign_slugs, nu o stare legitima. Avertisment, nu esec: harta-stiri.js randeaza
+    # inregistrarile fara slug ca text simplu, nu ca ancora (un link ar fi fost
+    # `/local//`, adica pagina de categorie).
     cu_url_fara_slug = [a for a in articles[:MAX_ARTICLES] if a.get("url") and not a.get("slug")]
     if cu_url_fara_slug:
         print(f"harta-stiri: ATENTIE {len(cu_url_fara_slug)} articole cu URL dar fara slug "
