@@ -15,7 +15,7 @@
 - **Pages `izz-ro` ZOMBI — CONFIRMAT ȘTERS [IZZ-0411]:** `izz-ro.pages.dev` returnează `000` [IZZ-0366, 0395].
 - **PRODUS P1/P2 — media pe carduri [IZZ-0403, 0404 → IZZ-0416; #414 merged]:** portrete PD/CC0 + siluete județ,
   `covers.py` editorial. **Marcaj AI Act la prima expunere [IZZ-0420]:** trust-label «generat automat» pe card +
-  meta digitalSourceType + pictograma UE Basic — așteaptă veto pe amendamentul §4.3.
+  meta digitalSourceType + pictograma UE Basic — amendament §4.3 adoptat, veto neexercitat [IZZ-0423].
 - **PRODUS P3 — harta: markere fără ierarhie vizuală [IZZ-0405]:** 482 evenimente, clickuri cablate; e afordanța, nu funcția.
 - **FEREASTRA TTL — DECIZIE EXECUTATĂ [IZZ-0421, 3 oct]:** tripwire-ul a crapat pe starea reală
   (20.543 în fereastră vs 12.600, după ce #408 (merged) a adus datele reale de publicare); `ARTICLE_TTL_DAYS`
