@@ -241,7 +241,11 @@ jobs:
       - name: Verifica release-ul public pe originea Workers si pe izz.ro
         env:
           EXPECTED_COMMIT: ${{ needs.pipeline.outputs.content_sha }}
-          RELEASE_TIMEOUT_SECONDS: "1500"
+          # 25 de minute nu acoperea decalajul structur al lantului: commiturile de continut
+          # impinse cu GITHUB_TOKEN NU declanseaza push-workflows, deci release-ul asteapta
+          # cronul :53 al deploy-worker — in cazul rau, probe moare cu ~17 minute inainte sa
+          # fie verificabil (rosul din 3 oct). 65 de minute acopera urmatorul ciclu de cron.
+          RELEASE_TIMEOUT_SECONDS: "3900"
           RELEASE_POLL_SECONDS: "30"
           RELEASE_ALT_ORIGIN: ${{ vars.ALT_ORIGIN || 'https://izz-ro.andifreelancer2.workers.dev' }}
         run: python tools/verify_release.py
