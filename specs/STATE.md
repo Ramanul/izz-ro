@@ -18,14 +18,16 @@
 - **PRODUS P1/P2 — portrete PD/CC0 + siluete județ pe carduri și `covers.py` editorial [IZZ-0403, 0404 → IZZ-0416]:**
   homepage are acum fotografii reale din `output/portraits/` + siluete SVG de județ (0 fișiere noi); `--render-only` scade la 44s.
 - **PRODUS P3 — harta: markere fără ierarhie vizuală [IZZ-0405]:** 482 evenimente, clickuri cablate; e afordanța, nu funcția.
-- **FEREASTRA TTL a trecut de buget [IZZ-0400]:** 11.967 vs prag 12.800; `ARTICLE_TTL_DAYS` = decizie proprietar [IZZ-0401].
-- **Free-readiness — gazda ÎNCĂ PAID până 22 sep [IZZ-0313]:** ingest median 960/zi vs 590 dimensionat; TTL=20
-  trebuie scurtat spre ≈13 zile, altfel podea roșie [IZZ-0386, 0391, 0399].
+- **FEREASTRA TTL — DECIZIE EXECUTATĂ [IZZ-0421, 3 oct]:** tripwire-ul a crapat pe starea reală
+  (20.543 în fereastră vs 12.600, după ce #408 a adus datele reale de publicare); `ARTICLE_TTL_DAYS`
+  20 → **11** (decizie delegată în chat, Q1: „rezolva tot"; TTL 13 nu mai incape: 13.045). Se re-evaluează
+  la 12-13 când ingestul median coboară sub ~900/zi.
+- **Free-readiness — gazda ÎNCĂ PAID până 22 sep [IZZ-0313]:** ingest median 960/zi vs 590 dimensionat;
+  fereastra efectivă e acum 11 zile [IZZ-0421] [IZZ-0386, 0391, 0399].
 - **`izz-failover` — KEEP [IZZ-0362]; marja NECUNOSCUTĂ [IZZ-0367, 0369]:** ambele cifre publicate retrase.
-- **REDUNDANȚA — ÎNCHISĂ [IZZ-0370 → IZZ-0373]:** `BUILD_COMMIT_SHA` e în jobul `mirror`, prin #347 merged.
-- **RECIDIVE — roșul de STARE separat de cel de COD [IZZ-0388…0391]; Owner: podeaua roșie peste 640 art./zi [IZZ-0391].**
-- **Coliziuni de ID reparate la ALOCARE [IZZ-0392]; IZZ-0400 aterizat prin #344 merged.**
-- **PR queue — 0 deschise.** Aterizările din 2 oct (toate merge-uite): în `specs/registru.tsv`, nu aici.
+- **REDUNDANȚA — ÎNCHISĂ [IZZ-0370 → IZZ-0373]:** `BUILD_COMMIT_SHA` în jobul `mirror`, #347. **RECIDIVE —
+  roșul de STARE separat de cel de COD [IZZ-0388…0391]; Coliziuni de ID la ALOCARE [IZZ-0392].**
+- **PR queue — vezi `gh pr list`.** Aterizările: în `specs/registru.tsv`, nu aici.
 - **Issues triate 09-13 [IZZ-0381…0383]:** #83 închis. **#198 arhiva = decizie de proprietar**
   (R2 singura structurală). #233 canal · #271 scope — deschise prin design.
 
