@@ -129,6 +129,7 @@ query ($zona: String!, $de_la: Time!, $pana_la: Time!) {
         limit: 300
         filter: {datetime_geq: $de_la, datetime_leq: $pana_la}
       ) {
+        count
         sum { requests }
         dimensions { clientRequestPath clientCountryName }
       }
@@ -183,7 +184,7 @@ def rezuma_cai(raspuns: dict) -> dict:
         for punct in zona.get("httpRequestsAdaptiveGroups") or []:
             dim, suma = punct.get("dimensions") or {}, punct.get("sum") or {}
             cale = dim.get("clientRequestPath") or ""
-            cereri = int(suma.get("requests") or 0)
+            cereri = int(suma.get("requests") or punct.get("count") or 0)
             total += cereri
             tema = cale.strip("/").split("/")[0] if cale not in ("", "/") else "<home>"
             pe_tema[tema] = pe_tema.get(tema, 0) + cereri
