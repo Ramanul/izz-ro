@@ -1,6 +1,8 @@
 """Mini-harta puls pentru homepage (Faza 2).
 
 SVG static, ZERO JS: judetele incalzite dupa volumul de stiri locale din ultimele 24h.
+Contoarele vin din datasetul hartii mari (map.json — aceeasi atribuire geografica, deci
+cele doua harti nu se contrazic); fallback: judetul sursei din `zi.pe_judet`.
 Reutilizeaza cache-ul de contururi din data/harta_judete.json (acelasi ca /surse/).
 
 Hook pe render._base_ctx (instalat din home_fresh la primul apel): injecteaza
@@ -10,6 +12,7 @@ from __future__ import annotations
 
 import json
 import os
+from datetime import datetime, timedelta, timezone
 
 from . import config, geo
 
@@ -26,6 +29,52 @@ def _load_harta() -> dict:
         except (OSError, ValueError):
             _HARTA_CACHE = {}
     return _HARTA_CACHE or {}
+
+
+_DATASET_CACHE: dict | None = None
+
+
+def _load_dataset() -> dict:
+    """Datasetul hartii mari (static/harta-stiri/data/map.json), gol daca nu exista."""
+    global _DATASET_CACHE
+    if _DATASET_CACHE is None:
+        try:
+            with open(
+                os.path.join(config.ROOT, "static", "harta-stiri", "data", "map.json"),
+                encoding="utf-8",
+            ) as fh:
+                _DATASET_CACHE = json.load(fh)
+        except (OSError, ValueError):
+            _DATASET_CACHE = {}
+    return _DATASET_CACHE or {}
+
+
+def _counts_din_dataset(ore: int = 24) -> dict | None:
+    """Contoare pe judet din datasetul hartii mari, fereastra `ore` ore.
+
+    Sursa de adevar e ACEEASI atribuire geografica ca pe /static/harta-stiri/ — mini-harta
+    si harta mare nu mai pot spune lucruri diferite despre acelasi judet (pana la 3 oct
+    mini-harta folosea judetul sursei, harta mare geocodarea din text, iar OLT aparea
+    unde nu era). None doar cand datasetul lipseste: atunci ramane fallback-ul istoric.
+    """
+    articles = _load_dataset().get("articles")
+    if not isinstance(articles, list):
+        return None
+    prag = datetime.now(timezone.utc) - timedelta(hours=ore)
+    counts: dict[str, int] = {}
+    for a in articles:
+        judet = a.get("county")
+        if not judet:
+            continue
+        try:
+            dt = datetime.fromisoformat(str(a.get("published") or ""))
+        except ValueError:
+            continue
+        if dt.tzinfo is None:
+            dt = dt.replace(tzinfo=timezone.utc)
+        if dt >= prag:
+            counts[judet] = counts.get(judet, 0) + 1
+    return counts
 
 
 def mini_harta(pe_judet: dict | None) -> dict | None:
@@ -77,11 +126,14 @@ def install_hook() -> None:
 
     def _base_ctx_wrapped(canonical_path: str, jsonld_nodes=None, jsonld_page=None, **extra):
         if "zi" in extra and "mini_harta" not in extra:
-            zi = extra.get("zi")
-            if zi and isinstance(zi, dict):
-                extra["mini_harta"] = mini_harta(zi.get("pe_judet") or {})
-            else:
-                extra["mini_harta"] = None
+            # Metodologie unica: contoarele vin din datasetul hartii mari (aceeasi
+            # geocodare). `zi.pe_judet` (judetul sursei) rămâne doar fallback daca
+            # datasetul nu poate fi citit, ca pagina sa nu ramana fara harta.
+            counts = _counts_din_dataset()
+            if counts is None:
+                zi = extra.get("zi")
+                counts = (zi.get("pe_judet") or {}) if isinstance(zi, dict) else {}
+            extra["mini_harta"] = mini_harta(counts)
         return _orig(
             canonical_path,
             jsonld_nodes=jsonld_nodes,

@@ -9,7 +9,7 @@ import os
 import re
 import sys
 import unicodedata
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 if ROOT not in sys.path:
@@ -24,6 +24,15 @@ SIRUTA = os.path.join(ROOT, "data", "siruta_raw.csv")
 LOCALITIES = os.path.join(ROOT, "data", "harta_localitati.json")
 OUT = os.path.join(ROOT, "static", "harta-stiri", "data", "map.json")
 MAX_ARTICLES = 1500
+# Fereastra principala e de VOLUM (1500 de articole ~= 37h de stiri), deci o sursa care
+# publica rar — primariile de comuna, cateva anunturi pe luna — cade integral din fereastra
+# si judetul ei apare gol pe harta desi registrul il acopera (masurat pe live 2026-10-03:
+# OLT 0 stiri cu 3 surse configurate, SALAJ 0/11, SATU MARE 0/9, TELEORMAN 0/3).
+# Backfill: fiecare sursa locala ACTIVA (a publicat ceva in ultimele BACKFILL_DAYS zile)
+# care n-a prins fereastra primeste cel mai recent articol al ei, marcat `backfill: true`
+# si afisat cu data reala — o stire veche de o saptamana, etichetata onest, e informatie;
+# un judet pur si simplu absent arata ca o panza moarta.
+BACKFILL_DAYS = 14
 
 STOPWORDS = {
     "UNIREA", "VICTORIA", "LIBERTATEA", "INDEPENDENTA", "PROGRESU", "PROGRESUL",
@@ -288,6 +297,15 @@ def locate(
         "source": article.get("source") or "",
         "source_name": article.get("source_name") or article.get("source") or "",
     }
+    # Sursele originale unite la publicare (select._dedup uneste relatarile identice si
+    # pastreaza lista) se pastreaza DOAR cand sunt mai multe: de ele depinde contorul
+    # „N surse" din harta — altfel fiecare eveniment parea acoperit de o singura sursa,
+    # desi pipeline-ul vazuse doua-trei relatari (masurat pe live 2026-10-03: 21 de
+    # articole din fereastra aveau 2-3 surse, toate raportate ca 1).
+    surse = article.get("sources")
+    if isinstance(surse, list) and len(surse) > 1:
+        base["sources"] = [{"name": str(s.get("name") or ""), "url": str(s.get("url") or "")}
+                           for s in surse if isinstance(s, dict) and s.get("name")]
     if category == "regional":
         # O regiune ajunge pe hartă numai dacă este recunoscută de aceeași poartă
         # deterministă care a clasificat articolul. Nu se deduce regiunea din sursă.
@@ -443,7 +461,17 @@ def annotate_events(items: list[dict]) -> list[dict]:
         slugs = "|".join(sorted(str(member.get("slug") or member.get("title") or "") for member in members))
         fingerprint = f"{cluster['leader'].get('region', '')}|{cluster['leader'].get('county', '')}|{localities}|{first_day}|{slugs}"
         event_id = hashlib.sha1(fingerprint.encode("utf-8")).hexdigest()[:16]
-        source_count = len({member.get("source") for member in members if member.get("source")})
+        # Sursele unui eveniment = sursele fiecarui articol PLUS lista `sources` pastrata
+        # de dedup-ul editorial (acolo se unesc relatarile identice inainte de harta, deci
+        # fara aceasta lista aproape orice eveniment ar numara o singura sursa).
+        source_names = set()
+        for member in members:
+            if member.get("source_name") or member.get("source"):
+                source_names.add(member.get("source_name") or member.get("source"))
+            for s in member.get("sources") or []:
+                if s.get("name"):
+                    source_names.add(s["name"])
+        source_count = len(source_names)
         for member in members:
             member["event_id"] = event_id
             member["event_article_count"] = len(members)
@@ -489,7 +517,9 @@ def main() -> int:
               f"fara link, ca text simplu.")
 
     located = []
-    now_iso = datetime.now(timezone.utc).isoformat()
+    now_dt = datetime.now(timezone.utc)
+    now_iso = now_dt.isoformat()
+    surse_pe_harta: set[str] = set()
     for article in articles[:MAX_ARTICLES]:
         item = locate(article, county_keys, siruta, points, uat_ids, siruta_parents)
         if item:
@@ -498,6 +528,28 @@ def main() -> int:
             # intr-un an care nu a venit. Pentru HARTA data viitoare nu e informatie.
             if item["published"] > now_iso:
                 item["published"] = now_iso
+            if item["source"]:
+                surse_pe_harta.add(item["source"])
+            located.append(item)
+
+    # Backfill de acoperire (vezi BACKFILL_DAYS): sursele locale active care n-au prins
+    # fereastra de volum aduc cel mult cate un articol — ultimul publicat — daca intra
+    # sub pragul de vechime. Plecarea din fereastra, nu din tot istoricul, tine harta
+    # oglinda a zilelor recente: o primarie tacuta de 3 luni NU aprinde judetul.
+    prag_backfill = now_dt - timedelta(days=BACKFILL_DAYS)
+    for article in articles[MAX_ARTICLES:]:
+        source = str(article.get("source") or "")
+        if not source or source in surse_pe_harta:
+            continue
+        if (article.get("category") or "") not in {"local", "judetean"}:
+            continue
+        published = _published_at(article.get("published"))
+        if not published or published < prag_backfill:
+            continue
+        item = locate(article, county_keys, siruta, points, uat_ids, siruta_parents)
+        if item:
+            item["backfill"] = True
+            surse_pe_harta.add(source)
             located.append(item)
 
     located = annotate_events(located)
@@ -530,6 +582,7 @@ def main() -> int:
             "coordinates": geocoded_articles,
             "geocoded_localities": len({a["siruta"] or f"{norm(a['locality'])}|{a['county']}" for a in located if a.get("locality") and a.get("x") is not None and a.get("y") is not None}),
             "sources": len({a.get("source") for a in located if a.get("source")}),
+            "backfill": sum(1 for a in located if a.get("backfill")),
         },
     }
     os.makedirs(os.path.dirname(OUT), exist_ok=True)

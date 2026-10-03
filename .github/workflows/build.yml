@@ -145,6 +145,16 @@ jobs:
       - name: QA check (blocking, inainte de commit)
         run: python tools/qa_check.py
 
+      - name: Genereaza datasetul hartii (proaspat la fiecare commit de continut)
+        # Fara pasul asta harta traia din merge-urile de PR facute de un om: commitul de
+        # mai jos e impins cu GITHUB_TOKEN, iar GitHub taie recursia — un push facut cu
+        # GITHUB_TOKEN nu aprinde workflow-uri pe `push`, deci harta-data.yml nu se
+        # declansa pana la urmatorul merge uman (masurat 2026-10-03: map.json cu 12h in
+        # urma fata de articles.json). Regenerarea punctelor de localitati
+        # (build_harta_localitati.py, cere retea) ramane in harta-data.yml, care ruleaza
+        # la schimbarile de cod hartii.
+        run: python tools/build_harta_data.py
+
       - name: Comite starea (declanseaza deploy-worker.yml)
         id: commit
         run: |
@@ -152,6 +162,7 @@ jobs:
           git config user.name "izz-bot"
           git config user.email "bot@izz.ro"
           git add data/articles.json data/feed_cache.json
+          git add static/harta-stiri/data/map.json 2>/dev/null || true
           git add data/takedown_log.jsonl 2>/dev/null || true
           git add data/triage_log.jsonl 2>/dev/null || true
           git add data/indexnow_seen.json 2>/dev/null || true

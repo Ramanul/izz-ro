@@ -215,3 +215,89 @@ def test_datasetul_comis_pastreaza_cheia_slug_pe_fiecare_inregistrare():
     data = json.loads(Path("static/harta-stiri/data/map.json").read_text(encoding="utf-8"))
     assert all("slug" in a for a in data["articles"])
     assert all(not (a.get("slug") == "" and a.get("url")) for a in data["articles"])
+
+
+def test_sursele_rare_iesite_din_fereastra_ies_in_backfill(tmp_path, monkeypatch, capsys):
+    """Fereastra e de VOLUM (MAX_ARTICLES), deci o sursă locală activă care n-a prins-o
+    cădea integral de pe hartă — și județul ei rămânea orb deși registrul îl acoperea
+    (OLT/SĂLAJ/SATU MARE/TELEORMAN, măsurat pe live 3 oct 2026). Backfill: ultimul ei
+    articol, cât e sub BACKFILL_DAYS, intră marcat `backfill: true`."""
+    import json
+    from datetime import datetime, timedelta, timezone
+
+    harta_data.OUT = str(tmp_path / "map.json")
+    fresh = (datetime.now(timezone.utc) - timedelta(hours=2)).isoformat()
+    older = (datetime.now(timezone.utc) - timedelta(days=3)).isoformat()
+    articole = [
+        {"title": "Știre proaspătă la Someșu Rece", "slug": "stire-brasov",
+         "category": "local", "published": fresh, "url": "https://ex.ro/a",
+         "source": "pl_brasov_test"},
+        {"title": "Anunț de interes public", "slug": "anunt-olt", "category": "local",
+         "published": older, "url": "https://ex.ro/b", "source": "pl_olt_caracal"},
+        {"title": "A doua știre la Someșu Rece", "slug": "stire-brasov-2",
+         "category": "local", "published": older, "url": "https://ex.ro/c",
+         "source": "pl_brasov_test"},
+    ]
+    real_load = harta_data.load_json
+
+    def load_patch(cale):
+        if str(cale) == str(harta_data.ARTICLES):
+            return articole
+        return real_load(cale)
+
+    monkeypatch.setattr(harta_data, "load_json", load_patch)
+    monkeypatch.setattr(harta_data, "MAX_ARTICLES", 1)
+    assert harta_data.main() == 0
+    capsys.readouterr()
+    iesire = json.loads((tmp_path / "map.json").read_text(encoding="utf-8"))
+    pe_sursa = {a["source"]: a for a in iesire["articles"]}
+    assert "pl_brasov_test" in pe_sursa  # în fereastra de volum
+    assert pe_sursa["pl_olt_caracal"]["backfill"] is True  # ieșită din fereastră, totuși pe hartă
+    assert "OLT" in {a.get("county") for a in iesire["articles"]}
+    assert iesire["stats"]["backfill"] == 1
+
+
+def test_locate_pastreaza_sursele_unite_doar_cand_sunt_mai_multe():
+    by_name = {
+        "SOMESU RECE": [{"name": "SOMESU RECE", "county": "BRASOV",
+                         "siruta": "41731", "level": "3"}],
+    }
+    punct = {"41731": {"name": "SOMESU RECE", "county": "BRASOV",
+                       "siruta": "41731", "x": 500.0, "y": 300.0}}
+    simplu = {
+        "title": "Reparații drum județean la Someșu Rece în Brașov",
+        "slug": "reparatii-somesu-rece", "category": "local",
+        "published": "2026-10-02T10:00:00+00:00", "source": "sursa-test",
+    }
+    unit = {
+        **simplu,
+        "sources": [
+            {"name": "Agerpres", "url": "https://agerpres.ro/x"},
+            {"name": "Digi24", "url": "https://digi24.ro/x"},
+        ],
+    }
+    result_simplu = harta_data.locate(simplu, ["BRASOV"], by_name, punct)
+    result_unit = harta_data.locate(unit, ["BRASOV"], by_name, punct)
+    assert "sources" not in result_simplu  # o singură sursă = zgomot în payload
+    assert result_unit["sources"] == [
+        {"name": "Agerpres", "url": "https://agerpres.ro/x"},
+        {"name": "Digi24", "url": "https://digi24.ro/x"},
+    ]
+
+
+def test_evenimentul_numara_si_sursele_unite_de_dedup():
+    """Dedup-ul editorial unește relatări identice ÎNAINTE de hartă, păstrând lista
+    `sources`; fără ea, un eveniment acoperit de 3 surse reale apărea „1 sursă" și
+    comutatorul Evenimente/Relatări era no-op (438 = 438, măsurat 3 oct 2026)."""
+    a = item("Accident rutier grav cu trei răniți pe DN1 în Brașov", locality="BRASOV")
+    a["sources"] = [
+        {"name": "Agerpres", "url": "https://agerpres.ro/x"},
+        {"name": "Digi24", "url": "https://digi24.ro/x"},
+    ]
+    b = item("Accident grav pe DN1 în Brașov: trei răniți", locality="BRASOV",
+             published="2026-08-19T10:30:00+00:00")
+    b["source"] = "sursa-doi"
+    result = harta_data.annotate_events([a, b])
+    assert result[0]["event_id"] == result[1]["event_id"]
+    assert result[0]["event_article_count"] == 2
+    assert result[0]["event_source_count"] == 4  # sursa-test, Agerpres, Digi24, sursa-doi
