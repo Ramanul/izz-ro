@@ -27,7 +27,7 @@
 </nav>
 <article class="article">
   <span class="badge{% if a.model == 'C' %} c{% endif %}">{{ a.category | cat_label }}{% if a.anunt_fara_corp %} · Anunț oficial{% endif %}</span>
-  <p class="trust-label article-trust">{% if a.anunt_fara_corp %}Anunț oficial · verifică textul integral la instituția emitentă{% elif a.model == 'C' %}Sinteză multi-sursă · compară sursele de mai jos{% else %}Rezumat dintr-o sursă · verifică informația în articolul original{% endif %}</p>
+  <p class="trust-label article-trust">{% if a.anunt_fara_corp %}Anunț oficial · verifică textul integral la instituția emitentă{% elif a.model == 'C' %}Sinteză multi-sursă · compară sursele de mai jos{% else %}Rezumat dintr-o sursă · verifică informația în articolul original{% endif %}{% if a.publicitar_la_sursa %} · <strong>Material publicitar la sursă</strong> (advertorial){% endif %}</p>
   <h1>{{ a.display_title or a.title }}</h1>
   <div class="meta">
     <time datetime="{{ a.published }}">{{ a.published_human }}</time>
