@@ -227,6 +227,12 @@ jobs:
           OUTPUT_FILE_BUDGET: "100000"
           OUTPUT_FILE_CEILING: "110000"
           OUTPUT_NON_ARTICLE_RESERVE: "1000"
+          # Oglinda serveste pagini de articol la 404 (worker-404-mirror.js), nu /cauta/,
+          # deci indexul de cautare n-are ce cauta aici. Costul evitat e real: bucatile de
+          # index au nume-amprentate, deci `keep_files: true` ar acumula ~50 de fisiere noi
+          # la fiecare republicare (de ~12 ori pe zi) intr-un repo cu plafon 1 GB, masurat
+          # deja lunar. Pe primar indexul se construieste — vezi generator/pagefind_index.py.
+          PAGEFIND_ENABLED: "0"
         run: python -m generator.main --render-only
       - name: Publica pe mirror (host independent)
         uses: peaceiris/actions-gh-pages@84c30a85c19949d7eee79c4ff27748b70285e453 # v4
