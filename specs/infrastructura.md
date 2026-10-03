@@ -20,9 +20,9 @@
 > Ce NU intră aici: istoric, ce s-a încercat, ce a picat (→ registru), unde suntem cu munca
 > (→ `specs/STATE.md`), reguli care obligă la o acțiune (→ `CLAUDE.md`).
 
-- **Gazda e Cloudflare Workers Static Assets, NU Pages** — migrat în #211 pe 2026-08-22;
-  `wrangler.jsonc` assets-only, fără `main`. Check-ul de pe PR-uri se numește
-  `Workers Builds: izz-ro`. [IZZ-0258]
+- **Gazda e Cloudflare Workers Static Assets, NU Pages** — migrat în #211 pe 2026-08-22.
+  Din 2026-10-03 `wrangler.jsonc` ARE `main` (`infra/worker.js`: `/push/*`, `/sw.js`, restul
+  prin fallback-ul 404→oglindă) + `run_worker_first` pe aceleași rute. [IZZ-0258, IZZ-0425, IZZ-0430, IZZ-0431]
 - **Contul e Workers FREE din 2026-09-22** (decizie proprietar 2026-09-09). Plafon: **20.000 de
   fișiere statice pe versiune** de Worker; `OUTPUT_FILE_CEILING=20000`, `OUTPUT_FILE_BUDGET=17000`.
   Cererile către fișiere statice rămân gratuite și nelimitate. [IZZ-0313]

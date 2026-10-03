@@ -187,7 +187,7 @@ def _asset_ver() -> dict:
     if _ASSET_VER is None:
         _ASSET_VER = {name: _content_ver(os.path.join(STATIC_DIR, name))
                       for name in ("styles.css", "personalize.js", "search.js", "theme.js", "fonts.css",
-                                   "calc-salariu.js", "site.webmanifest")}
+                                   "calc-salariu.js", "site.webmanifest", "pwa.js", "push.js")}
     return _ASSET_VER
 
 
@@ -741,6 +741,18 @@ def _grupeaza_pe_regiuni(pe_judet: dict) -> list:
     return out
 
 
+def _copy_static() -> None:
+    """Copiază `static/` în `output/static/`, MAI PUȚIN `sw.js`.
+
+    Excluderea nu e igienă: un service worker nu vede decât propriul director și
+    subdirectoarele lui, deci o copie la `/static/sw.js` ar fi un al doilea fișier cu
+    același conținut pe care nimeni nu-l înregistrează — un fișier în plus dintr-un plafon
+    de 20.000 și o capcană pentru cineva care-l găsește și-l înregistrează.
+    """
+    shutil.copytree(STATIC_DIR, os.path.join(OUT_DIR, "static"),
+                    ignore=shutil.ignore_patterns("sw.js"))
+
+
 def build(articles: list, mod: dict | None = None) -> None:
     env = _env()
     articles = _dedup(articles)
@@ -791,7 +803,8 @@ def build(articles: list, mod: dict | None = None) -> None:
     for entry in os.listdir(OUT_DIR):
         p = os.path.join(OUT_DIR, entry)
         shutil.rmtree(p) if os.path.isdir(p) else os.remove(p)
-    shutil.copytree(STATIC_DIR, os.path.join(OUT_DIR, "static"))
+    _copy_static()
+    _write_sw()
 
     # Run build_entities in-process (validate YAML -> entities.json)
     try:
@@ -1152,6 +1165,12 @@ def build(articles: list, mod: dict | None = None) -> None:
                "/404.html", category="Pagina negăsită",
                intro="Adresa nu există sau articolul a expirat. Între timp, ce e nou:",
                articles=by_date[:12])))
+    # Pagina de offline a aplicatiei instalate: o precache-uieste service workerul si o
+    # serveste cand nu e net si nici articolul cerut nu e in cache. Nu intra in sitemap
+    # (`_SITEMAP_SECTIONS` n-o acopera) si nici in navigatie: e un raspuns de eroare, nu o
+    # pagina pe care cineva vrea sa ajunga din Google.
+    _write(os.path.join(OUT_DIR, "offline", "index.html"),
+           env.get_template("offline.html").render(**_base_ctx("/offline/")))
     _write_sitemap(by_date)
     _write_robots()
     _write_security_txt()
@@ -1712,6 +1731,31 @@ def _write_security_txt() -> None:
            f"Expires: {expires}\n")
 
 
+_SW_SRC = os.path.join(STATIC_DIR, "sw.js")
+
+
+def _write_sw() -> None:
+    """Publică service workerul la RĂDĂCINA output-ului (`/sw.js`).
+
+    De ce la rădăcină: un service worker controlează doar propriul director și
+    subdirectoarele lui. Servit de la `/static/sw.js`, ar vedea doar `/static/` — nicio
+    pagină, niciun articol — deci „citire offline" ar însemna „css offline".
+
+    De ce FĂRĂ `?v=`: browserul compară octet cu octet fișierul SW la fiecare navigare, iar
+    răspunsul e servit cu `max-age=0, must-revalidate` (regula din `_write_headers`), deci o
+    schimbare ajunge la următoarea vizită. Un `?v=` în URL-ul de înregistrare ar înregistra
+    un service worker NOU la fiecare build, fiecare cu cache-urile lui — exact inversul
+    economiei pe care o cere un site cu 12.000 de pagini.
+    """
+    try:
+        with open(_SW_SRC, encoding="utf-8") as fh:
+            continut = fh.read()
+    except OSError:
+        logging.warning("static/sw.js lipseste: aplicatia nu se va putea instala si nici citi offline")
+        return
+    _write(os.path.join(OUT_DIR, "sw.js"), continut)
+
+
 def _write_headers() -> None:
     """Cache-Control + headere de securitate pe Cloudflare Pages (fisierul _headers).
     Activele imutabile tin mult; imaginile o zi; HTML-ul NU se cache-uieste agresiv
@@ -1750,6 +1794,13 @@ def _write_headers() -> None:
            "  Referrer-Policy: strict-origin-when-cross-origin\n"
            "  Permissions-Policy: camera=(), microphone=(), geolocation=(), interest-cohort=()\n"
            "/static/*\n  Cache-Control: public, max-age=2592000, immutable\n"
+           # Service workerul e singurul fisier pe care browserul il reciteste SINGUR, la
+           # fiecare navigare, ca sa vada daca s-a schimbat. Servit cu cache lung, un SW
+           # reparat nu ar ajunge la nimeni zile intregi; cu `max-age=0` ajunge la prima
+           # vizita de dupa deploy. (Workerul pune acelasi antet cand e chemat el primul —
+           # regula de aici e pentru calea pe care raspunde stratul de active.)
+           # `# sw.js` NU e versionat in URL: vezi `_write_sw`.
+           "/sw.js\n  Cache-Control: public, max-age=0, must-revalidate\n"
            # harta-stiri lives under /static/ but is a live page + dataset, not a
            # versioned asset -- without this override a CSS/JS/dataset fix stays
            # invisible to any browser that already cached the page for 30 days.

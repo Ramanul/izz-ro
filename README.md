@@ -16,7 +16,8 @@ Site-ul este **100% static (SSG)**, publicat serverless: pipeline-ul rulează î
 - **„Ce urmează"** (`/calendar/`) — calendarul evenimentelor care urmează în știri.
 - **Instrumente** — utilitare, inclusiv calculator de salariu.
 - **Căutare** (`/cauta/`) și **RSS** (`/feed.xml`).
-- **PWA instalabilă** (manifest `static/site.webmanifest`, pictograme dedicate) și temă cu comutare deschis/închis.
+- **PWA instalabilă** (manifest `static/site.webmanifest`, service worker la `/sw.js`) cu **citire offline**: shellul se precachează la instalare, iar articolele se servesc *stale-while-revalidate* — ce ai mai citit rămâne disponibil fără net. Butonul de instalare apare discret, jos-stânga, și dispare definitiv după instalare sau după refuz.
+- **Alerte de ultimă oră** (Web Push cu VAPID, pe planul Cloudflare gratuit): **maximum una pe zi**, doar pentru știri de ultimă oră, cu politica «Zero zgomot» aplicată mecanic pe server. Activate exclusiv la cererea cititorului, din subsolul site-ului; configurarea e descrisă în `infra/PUSH-SETUP.md`.
 - **Pagini publice de transparență:** Cum sintetizăm (metodologia), Surse & originalitate, Corecții, Securitate, Politica imaginilor, Drepturi de autor.
 
 ## Arhitectura pipeline-ului
@@ -70,7 +71,9 @@ content/     pagini legale și metodologice (markdown): method (Cum sintetizăm)
              accessibility, contact
 data/        articles.json — starea comisă în repo
 moderation.yaml   control editorial (om în buclă) — vezi REVIEW.md
-infra/       Worker de failover pentru redundanța originii (vezi infra/README-failover.md)
+infra/       Workerul publicat (infra/worker.js): compune fallback-ul 404 -> oglinda
+             (infra/worker-404-mirror.js) cu rutele de alerte (infra/push.js — VAPID,
+             criptare aes128gcm, KV). Configurarea alertelor: infra/PUSH-SETUP.md
 tools/       utilitare operaționale: qa_check, feed_check, verify_release,
              title_quality_audit, build_harta*, indexnow_submit etc.
 tests/       teste Python

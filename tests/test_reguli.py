@@ -311,6 +311,33 @@ def test_infrastructura_md_sub_plafonul_pe_care_il_declara():
     assert not incalcari_plafon_fapte(cale.read_text(encoding="utf-8"))
 
 
+def test_registrul_nu_are_iduri_dublate():
+    """Doua randuri cu acelasi ID = doua sesiuni care au alocat in paralel [IZZ-0392].
+
+    Nu e o curiozitate de arhiva: registrul se aloca LA ADAUGARE, inainte de merge, deci
+    doua branch-uri deschise in aceeasi zi ajung la urmatorul ID liber fara sa stie una de
+    alta. Git le auto-merge (sint liniile de la coada), testele trec, si abia la citirea
+    registrului se vede ca doua decizii impart un numar. Exact coliziunea de pe PR-ul de
+    PWA+push (2026-10-03): branch-ul a alocat 0429 in timp ce main il dadea auditului
+    og:image, iar niciun test nu l-a prins.
+
+    Verificarea e pe FISIER, nu pe `ids_din_registru()` (care intoarce un set si sterge
+    tocmai dublura).
+    """
+    cale = ROOT / "specs" / "registru.tsv"
+    vazute: dict[str, int] = {}
+    dubluri = []
+    for nr, linie in enumerate(cale.read_text(encoding="utf-8").splitlines()[1:], 2):
+        if not linie.startswith("IZZ-"):
+            continue
+        id_ = linie.split("\t")[0]
+        if id_ in vazute:
+            dubluri.append(f"{id_}: linia {vazute[id_]} si linia {nr}")
+        else:
+            vazute[id_] = nr
+    assert not dubluri, "ID-uri alocate de doua ori:\n  " + "\n  ".join(dubluri)
+
+
 def test_fiecare_fapt_de_infrastructura_e_trasabil_la_registru():
     """Injectat la fiecare pornire => trebuie sa poata fi verificat, nu doar crezut."""
     cale = ROOT / "specs" / "infrastructura.md"
