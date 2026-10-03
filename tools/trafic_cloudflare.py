@@ -130,7 +130,6 @@ query ($zona: String!, $de_la: Time!, $pana_la: Time!) {
         filter: {datetime_geq: $de_la, datetime_leq: $pana_la}
       ) {
         count
-        sum { requests }
         dimensions { clientRequestPath clientCountryName }
       }
     }
