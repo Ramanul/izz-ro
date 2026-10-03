@@ -1,7 +1,9 @@
 {
-  // Workers Static Assets — izz.ro este 100% static, deci NU exista "main":
-  // fara script de Worker, assets-only (docs Cloudflare: binding ASSETS e valid
-  // doar impreuna cu "main").
+  // 2026-10-03 (IZZ-0425): adaugat "main" cu fallback 404 -> oglinda gh-pages,
+  // ca paginile care ies din fereastra TTL sa raspunda din arhiva in loc de 404.
+  // Comportamentul exact (assets mai intai, apoi scriptul la ratau) trebuie VERIFICAT
+  // pe preview URL al branch-ului inainte de merge — nu-l lua ca sigur din comentariu.
+  "main": "infra/worker-404-mirror.js",
   "name": "izz-ro",
   "compatibility_date": "2026-06-18",
   "assets": {
