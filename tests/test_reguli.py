@@ -259,9 +259,11 @@ def iesirea_hookului() -> bytes:
     instaleaza dependente — a doua rulare ar fi minute pierdute pentru acelasi rezultat.
     """
     _cere_bash()
-    hook = ROOT / ".claude/hooks/session-start.sh"
-    iesire = subprocess.run(["bash", str(hook)], cwd=ROOT, capture_output=True,
-                            timeout=600, check=False)
+    # Git Bash pornit prin subprocess nu accepta NICIO cale absoluta Windows
+    # (nici «C:\...», nici «C:/...», nici «/c/...» — toate mor cu 127; functioneaza
+    # doar calea posix RELATIVA, iar cwd e deja ROOT). Masurat 3 oct 2026.
+    iesire = subprocess.run(["bash", ".claude/hooks/session-start.sh"], cwd=ROOT,
+                            capture_output=True, timeout=600, check=False)
     assert iesire.returncode == 0, f"hook-ul SessionStart a esuat: {iesire.stderr[:200]!r}"
     return iesire.stdout
 
