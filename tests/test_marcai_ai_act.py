@@ -6,8 +6,6 @@ pe articol (art. 50(2) — text INCLUS) si pictograma oficiala UE comisa + refer
 """
 import os
 
-import pytest
-
 
 def _index(output_randat) -> str:
     with open(os.path.join(output_randat, "index.html"), encoding="utf-8") as fh:
