@@ -12,12 +12,14 @@ categorie_ghid: locuinte
 categorie_stiri: economic
 valoare_curenta:
   in_vigoare_de: '2009-06-17'
-  act_normativ: HG 717/2009 — norme de implementare a programului „Noua Casă”
+  act_normativ: HG 717/2009 — norme de implementare a programului „Noua Casă” (continuat anual;
+    plafonul 2026 de 500 mil. lei a fost aprobat prin HG din mai 2026)
   sursa_url: https://legislatie.just.ro/Public/DetaliiDocument/107177
-  descriere_lunga: Programul Noua Casă permite achiziția unei locuințe cu avans de doar 5% (locuințe ≤
-    70.000 EUR) sau 15% (locuințe 70.001–140.000 EUR). Statul garantează până la 60% din credit. Dobânda
-    este cea a pieței, negociată cu băncile participante. Plafonul maxim al creditului este de 133.000
-    EUR (140.000 EUR prețul locuinței).
+  descriere_lunga: Programul Noua Casă permite achiziția unei locuințe noi sau vechi cu credit bancar
+    garantat de stat. Pentru credite de până la 66.500 EUR (locuințe de cca. ≤ 70.000 EUR) avansul minim
+    este de 5%, iar garanția statului ajunge la 50% din credit. Pentru credite între 59.501 și 119.000
+    EUR (locuințe de cca. ≤ 140.000 EUR) avansul minim este de 15%, iar garanția statului ajunge la 60%.
+    Creditul maxim este de 119.000 EUR. Plafonul garanțiilor alocate pe 2026 este de 500 milioane lei.
 sectiuni:
 - titlu: Cine poate aplica?
   continut: 'Orice persoană fizică cu vârsta peste 18 ani, venituri din muncă (salariat, PFA, profesii
@@ -25,10 +27,12 @@ sectiuni:
     necesar: să poată suporta rata lunară (maxim 40% din venitul net familial). Nu se acceptă persoane
     cu credite restante la stat sau birou de credit cu scor negativ.'
 - titlu: Ce sume și avansuri se aplică?
-  continut: '**Locuințe ≤ 70.000 EUR**: avans minim **5%**, garanție de stat până la 60%. **Locuințe 70.001–140.000
-    EUR**: avans minim **15%**, garanție de stat până la 50%. Creditul maxim: **133.000 EUR** (adică 140.000
-    EUR preț minus avans). Plafonul include TVA (9% pentru locuințe sub 140.000 EUR). Dobânda: ROBOR la
-    3 luni + marja băncii (~2-2,5%), variabilă.'
+  continut: '**Credite de până la 66.500 EUR** (locuințe de cca. ≤ 70.000 EUR): avans minim **5%**, garanție
+    de stat până la **50%** din credit — se aplică și locuințelor vechi. **Credite între 59.501 și 119.000
+    EUR** (locuințe de cca. ≤ 140.000 EUR): avans minim **15%**, garanție de stat până la **60%**. Creditul
+    maxim: **119.000 EUR**. Plafonul garanțiilor pe 2026: **500 milioane lei**. Plafonul include TVA (9%
+    pentru locuințe sub 140.000 EUR). Dobânda este de piață, negociată cu banca participante (index de
+    referință + marjă; condițiile exacte le stabilește fiecare bancă).'
 - titlu: Acte necesare și pași
   continut: '**1. Acreditare** la Fondul de Garantare (prin bancă). **2. Documente**: carte de identitate,
     certificat de căsătorie (dacă e cazul), adeverință de venit (ultimele 6 luni), extras de cont (3 luni),
@@ -45,7 +49,10 @@ faq:
     ipotecar standard cu avans mare.'
 relatii: {}
 verificat: false
-ultima_verificare: '2026-01-01'
+ultima_verificare: '2026-10-03'
+# Verificat pe fngcimm.ro/noua-casa la 2026-10-03: avans/garanție pe benzi de credit
+# (66.500 / 119.000), creditul maxim și plafonul 2026. Rămân neverificate: actele necesare,
+# costurile notariale și condițiile exacte de dobândă — de aceea `verificat` rămâne false.
 monitorizare:
   surse:
   - url: https://www.fngcimm.ro/noua-casa
