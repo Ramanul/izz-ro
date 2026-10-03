@@ -49,19 +49,54 @@ function forwardHeaders(request) {
   return h;
 }
 
+// Timeout pentru TRANSFERUL CORPULUI, dupa ce headerele au sosit. Pana la garda asta,
+// timerul de 1.500ms se stergea exact cand `fetch()` rezolva — adica la HEADERE — si o
+// origine care trimitea headerele si apoi ingheta la corp tinea cererea deschisa la
+// nesfarsit, fara failover si fara eroare. Masura: 10s fara NICIUN fragment nou = abort.
+// Nu putem comuta pe mirror dupa ce corpul a inceput sa curga (raspunsul e deja in zbor
+// spre client), deci protectia e intrerupere vizibila, nu failover.
+const BODY_IDLE_TIMEOUT_MS = 10000;
+
+function cuGardaCorp(resp, ctl) {
+  if (!resp.body) return resp;   // HEAD, 204, 304: nu are corp ce se poate bloca
+  const { readable, writable } = new TransformStream();
+  const scrie = writable.getWriter();
+  let timer = setTimeout(() => ctl.abort(), BODY_IDLE_TIMEOUT_MS);
+  (async () => {
+    const citeste = resp.body.getReader();
+    try {
+      for (;;) {
+        const { done, value } = await citeste.read();
+        clearTimeout(timer);
+        if (done) break;
+        await scrie.write(value);
+        timer = setTimeout(() => ctl.abort(), BODY_IDLE_TIMEOUT_MS);
+      }
+      await scrie.close();
+    } catch (e) {
+      try { await scrie.abort(e); } catch (_) { /* corpul deja intrerupt */ }
+    }
+  })();
+  return new Response(readable, {
+    status: resp.status, statusText: resp.statusText, headers: resp.headers,
+  });
+}
+
 async function tryOrigin(base, request, url, timeoutMs) {
   const target = base + url.pathname + url.search;
   const ctl = new AbortController();
   const t = timeoutMs ? setTimeout(() => ctl.abort(), timeoutMs) : null;
   const hasBody = request.method !== "GET" && request.method !== "HEAD";
   try {
-    return await fetch(target, {
+    const resp = await fetch(target, {
       method: request.method,
       headers: forwardHeaders(request),
       body: hasBody ? request.body : undefined,
       redirect: "manual",
       signal: ctl.signal,
     });
+    // Timeout-ul de headere se sterge aici; de acum garda pe corp preia controlul.
+    return cuGardaCorp(resp, ctl);
   } finally {
     if (t) clearTimeout(t);
   }
