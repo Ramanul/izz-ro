@@ -9,7 +9,9 @@
 //
 // TINUT IN AFARA ARTICELOR NECUNOSCUTE: fallback-ul se declanseaza doar pe tiparul
 // `/<categorie>/<slug>/` (o trasa articol). Restul 404-urilor (static?/fisieri/404.html) raman
-// text-area. Un raspuns de oglinda cu 404 intoarce 404-ul local, ca sa nu oferi de doua ori.
+// text-area. Orice raspuns de oglinda care nu e 2xx — INCLUDING 5xx si erori de retea —
+// intoarce 404-ul local: a publica pagina de eroare a oglinzii drept articol (200 cu gunoi)
+// ar fi mai rau decat status quo, iar promisiunea fallback-ului e no-worse.
 //
 // CANARY LIPSESTE pe Free: nu se porneste — cine „merge" aplică transita dintre
 // `keep_files`-mirror si fallback deja verificate prin `verify_release.py` (care confirma
@@ -24,10 +26,15 @@ export default {
     if (raspuns.status !== 404) return raspuns;
     const pathname = new URL(request.url).pathname;
     if (!CALEA_ARTICOL.test(pathname)) return raspuns;
-    const din_oglinda = await fetch(MIRROR + pathname, {
-      cf: { cacheEverything: true, cacheTtl: 3600 },
-    });
-    if (din_oglinda.status === 404) return raspuns;
+    let din_oglinda;
+    try {
+      din_oglinda = await fetch(MIRROR + pathname, {
+        cf: { cacheEverything: true, cacheTtl: 3600 },
+      });
+    } catch {
+      return raspuns; // oglinda jos/timeout: 404 local, nu 500
+    }
+    if (!din_oglinda.ok) return raspuns;
     const headers = new Headers(din_oglinda.headers);
     headers.set("cache-control", "public, max-age=300");
     return new Response(din_oglinda.body, { status: 200, headers });
