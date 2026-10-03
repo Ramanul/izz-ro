@@ -5,5 +5,13 @@ Jinja2==3.1.6
 PyYAML==6.0.3
 python-slugify==9.1.2
 Markdown==3.11
+# Binarul Pagefind (indexul de cautare, generator/pagefind_index.py). E in requirements.txt,
+# nu in requirements-dev.txt, fiindca il ruleaza randarea de productie: comanda de build din
+# Cloudflare Workers Builds sta in Settings, nu in repo, deci asta e singurul loc din care
+# binarul ajunge acolo fara o setare manuala. Variantă `pagefind-bin` (5 MB), NU
+# `pagefind-bin-extended` (52 MB): masurat pe 1.5.2, ambele produc `wasm.ro.pagefind` si
+# `pagefind.js` identice octet cu octet, deci romana costa la fel in amandoua. Vezi
+# specs/cautare-pagefind.md.
+pagefind-bin==1.5.2
 python-dotenv==1.2.3
 Pillow==12.3.0

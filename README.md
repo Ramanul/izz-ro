@@ -15,7 +15,7 @@ Site-ul este **100% static (SSG)**, publicat serverless: pipeline-ul rulează î
 - **Harta știrilor** — acoperirea județeană, vizualizată pe hartă.
 - **„Ce urmează"** (`/calendar/`) — calendarul evenimentelor care urmează în știri.
 - **Instrumente** — utilitare, inclusiv calculator de salariu.
-- **Căutare** (`/cauta/`) și **RSS** (`/feed.xml`).
+- **Căutare instantă** (`/cauta/`) — index [Pagefind](https://pagefind.app) construit la fiecare build: rezultate pe măsură ce tastezi, în titluri și în rezumate, cu diacritice opționale („inundatii” găsește „inundații”), termeni marcați în rezultat, filtre pe categorie și pe tip de anunț oficial. Fără serviciu extern, fără chei. **RSS** (`/feed.xml`).
 - **PWA instalabilă** (manifest `static/site.webmanifest`, pictograme dedicate) și temă cu comutare deschis/închis.
 - **Pagini publice de transparență:** Cum sintetizăm (metodologia), Surse & originalitate, Corecții, Securitate, Politica imaginilor, Drepturi de autor.
 
@@ -32,6 +32,7 @@ Surse RSS (SOURCES din generator/config.py)
   ├─ covers.py      grafică proprie per articol
   ├─ moderation.py  filtrare editorială          → moderation.yaml (om în buclă)
   └─ render.py      randare Jinja2               → output/
+       └─ pagefind_index.py  index de căutare    → output/_pagefind/ (52 fișiere, fără fragmente)
 ```
 
 Modelul de conținut **B+C** corespunde celor două tipuri vizibile pe site: rezumat dintr-o sursă (**B**) și sinteză multi-sursă (**C**). Starea persistă între rulări prin `data/articles.json`, comis în repo — nu există bază de date externă.
@@ -133,6 +134,13 @@ Consecințe, toate versionate în cod:
 - **Supapă de siguranță**: dacă ingestul sare peste ce a fost măsurat, randarea publică doar câte
   articole încap (`OUTPUT_FILE_BUDGET`) și taie de la cel mai vechi. Peste `OUTPUT_FILE_CEILING`
   randarea moare zgomotos — altfel Cloudflare ar refuza deploy-ul tăcut și site-ul ar îngheța.
+
+- **Indexul de căutare se publică fără fragmente** (`generator/pagefind_index.py`). Pagefind
+  scrie un fișier de fragment per pagină, iar la 9.451 de pagini asta ar însemna 23.941 de
+  fișiere — cu 19,7% peste plafon. `curata_bundle()` le șterge după ce a citit din ele
+  legătura id→articol, deci bundle-ul rămâne la **52 de fișiere (1,7 MB)**. Prețul: rezultatele
+  arată titlul (cu termenii marcați), categoria și data, nu un fragment de text. Detaliile,
+  măsurătorile și variantele respinse: `specs/cautare-pagefind.md`.
 
 Măsoară cu `python tools/count_output.py` după `python -m generator.main --render-only`.
 Detaliile și cifrele: `specs/cloudflare-free-2026-09.md`.
