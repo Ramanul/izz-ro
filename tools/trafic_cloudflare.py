@@ -122,9 +122,9 @@ def interogheaza(token: str, cont: str, zile: int = 7) -> dict:
 # de baza: daca tokenul nu are scope de zona, eroarea API se tipareste si programul NU pica —
 # o cifra pe care n-o pot masura ramane nenotata, niciodata inventata.
 INTEROGARE_CAI = """
-query ($de_la: Time!, $pana_la: Time!) {
+query ($zona: String!, $de_la: Time!, $pana_la: Time!) {
   viewer {
-    zones(filter: {zoneName: "izz.ro"}) {
+    zones(filter: {zoneTag: $zona}) {
       httpRequestsAdaptiveGroups(
         limit: 300
         filter: {datetime_geq: $de_la, datetime_leq: $pana_la}
@@ -139,10 +139,29 @@ query ($de_la: Time!, $pana_la: Time!) {
 """
 
 
+def _zone_tag(token: str, zone: str = "izz.ro") -> str | None:
+    """ID-ul zonei dupa nume, prin REST. Masurat de ce e REST, nu GraphQL: filt-ul GraphQL
+    pe zone NU accepta `zoneName` (eroarea exacta, 2026-10-03: 'unknown arg zoneName')."""
+    cerere = urllib.request.Request(
+        f"https://api.cloudflare.com/client/v4/zones?name={zone}",
+        headers={"Authorization": f"Bearer {token}"})
+    try:
+        with urllib.request.urlopen(cerere, timeout=30) as r:  # noqa: S310 - endpoint literal
+            date_ = json.loads(r.read())
+    except urllib.error.HTTPError as exc:
+        print(f"  REST /zones a refuzat: {exc.code}")
+        return None
+    rezultate = date_.get("result") or []
+    return rezultate[0].get("id") if rezultate else None
+
+
 def interogheaza_cai(token: str, zile: int = 7) -> dict:
+    zona = _zone_tag(token)
+    if not zona:
+        return {"errors": [{"code": "zone-id", "message": "nu am putut rezolva id-ul zonei"}]}
     de_la, pana_la = fereastra(zile)
     corp = json.dumps({"query": INTEROGARE_CAI,
-                       "variables": {"de_la": de_la, "pana_la": pana_la}}).encode()
+                       "variables": {"zona": zona, "de_la": de_la, "pana_la": pana_la}}).encode()
     cerere = urllib.request.Request(API, data=corp, headers={
         "Authorization": f"Bearer {token}", "Content-Type": "application/json"})
     try:
