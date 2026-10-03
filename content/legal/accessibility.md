@@ -12,7 +12,7 @@ IZZ.ro își propune să fie ușor de folosit de cât mai multe persoane, inclus
 - **Fără cookie-uri de urmărire** și fără ferestre care blochează cititul.
 
 ## Stadiul conformării
-Verificăm automat fiecare versiune înainte de publicare (Lighthouse Accessibility și pa11y / WCAG2AA), iar în prezent aceste verificări trec **fără erori**. Conformarea AA completă este un proces continuu — este posibil să existe zone perfectibile.
+Verificăm periodic accesibilitatea site-ului cu audituri automate (printre care Lighthouse Accessibility și pa11y / WCAG2AA) și reparăm ce găsim. Conformarea AA completă este un proces continuu — este posibil să existe în continuare zone perfectibile.
 
 ## Ne poți semnala o problemă
 Dacă întâmpini o barieră de accesibilitate, scrie-ne la **contact@izz.ro**, descriind pagina și problema. Răspundem și remediem în cel mai scurt timp rezonabil.
