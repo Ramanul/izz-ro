@@ -179,3 +179,12 @@ def test_zoom_and_pan_are_keyboard_operable_and_documented():
     assert "function announceZoom(" in js
     assert "săgețile" in html
     assert "două degete" in html
+
+
+def test_lista_harti_nu_linkuieste_inregistrarile_fara_slug():
+    # Fara slug nu exista pagina de articol: linkul construit oricum ducea la `/local//`
+    # — pagina de categorie Local, nu articolul (20 de inregistrari event fara URL in
+    # map.json, masurat 2026-10-03). Titlul se randeaza ca <span>, nu ca ancora.
+    js = Path("static/harta-stiri/harta-stiri.js").read_text(encoding="utf-8")
+    assert 'item.slug ? "a" : "span"' in js
+    assert "a.href = articleUrl(item);" not in js

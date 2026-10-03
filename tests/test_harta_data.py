@@ -145,3 +145,32 @@ def test_locate_leaves_uat_empty_without_ids():
     }
     result = harta_data.locate(article, ["BRASOV"], by_name, {})
     assert result["uat"] == ""
+
+
+def test_buildul_atentioneaza_dar_nu_cade_pe_sluguri_gole(tmp_path, monkeypatch, capsys):
+    """Articolele ascunse de moderare raman in stare fara slug (assign_slugs prinde doar
+    subsetul vizibil). Build-ul le raporteaza, dar NU esueaza: starea e legitima, iar
+    harta-stiri.js le randeaza ca text simplu, nu ca ancora."""
+    harta_data.OUT = str(tmp_path / "map.json")
+    real_load = harta_data.load_json
+
+    def load_patch(cale):
+        if str(cale) == str(harta_data.ARTICLES):
+            return [{"title": "Știre localizată", "slug": "", "category": "local",
+                     "published": "2026-08-19T10:00:00+00:00",
+                     "url": "https://ex.ro/stire-fara-slug"}]
+        return real_load(cale)
+
+    monkeypatch.setattr(harta_data, "load_json", load_patch)
+    assert harta_data.main() == 0
+    assert "fara slug" in capsys.readouterr().out
+    assert (tmp_path / "map.json").exists()
+
+
+def test_datasetul_comis_pastreaza_cheia_slug_pe_fiecare_inregistrare():
+    """Contractul cu `harta-stiri.js`: fiecare înregistrare are cheia `slug`; cele fără
+    valoare sunt evenimente agregate fără URL și se randează ca text simplu."""
+    import json
+    data = json.loads(Path("static/harta-stiri/data/map.json").read_text(encoding="utf-8"))
+    assert all("slug" in a for a in data["articles"])
+    assert all(not (a.get("slug") == "" and a.get("url")) for a in data["articles"])

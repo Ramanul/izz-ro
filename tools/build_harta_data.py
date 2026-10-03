@@ -466,6 +466,20 @@ def main() -> int:
     uat_ids = load_uat_ids()
 
     articles = sorted(articles, key=lambda a: str(a.get("published") or ""), reverse=True)
+
+    # AVERTIZARE: articolele ascunse de moderare raman in stare FARA slug (slugul se
+    # atribuie doar subsetului vizibil — main.run cheama `assign_slugs(visible)`, iar
+    # moderation.apply le sare inainte de asta), deci harta le primeste fara pagina de
+    # articol. Avertisment, nu esec: starea e legitima, iar harta-stiri.js randeaza
+    # inregistrarile fara slug ca text simplu, nu ca ancoră (un link ar fi fost `/local//`,
+    # adica pagina de categorie). Masurat 2026-10-03: 347 articole in stare, 22 in fereastra
+    # de 1.500; daca cifra creste brusc, ceva s-a schimbat in moderare sau in assign_slugs.
+    cu_url_fara_slug = [a for a in articles[:MAX_ARTICLES] if a.get("url") and not a.get("slug")]
+    if cu_url_fara_slug:
+        print(f"harta-stiri: ATENTIE {len(cu_url_fara_slug)} articole cu URL dar fara slug "
+              f"(ex: {str(cu_url_fara_slug[0].get('title') or '')[:60]!r}) — vor aparea pe harta "
+              f"fara link, ca text simplu.")
+
     located = []
     now_iso = datetime.now(timezone.utc).isoformat()
     for article in articles[:MAX_ARTICLES]:
