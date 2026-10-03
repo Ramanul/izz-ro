@@ -17,11 +17,11 @@
   `covers.py` editorial. **Marcaj AI Act la prima expunere [IZZ-0420]:** trust-label «generat automat» pe card +
   meta digitalSourceType + pictograma UE Basic — așteaptă veto pe amendamentul §4.3.
 - **PRODUS P3 — harta: markere fără ierarhie vizuală [IZZ-0405]:** 482 evenimente, clickuri cablate; e afordanța, nu funcția.
-- **FEREASTRA TTL — DECIZIE EXECUTATĂ [IZZ-0421, 0422, 3 oct]:** tripwire-ul a crapat pe starea reală
+- **FEREASTRA TTL — DECIZIE EXECUTATĂ [IZZ-0421, 0424, 3 oct]:** tripwire-ul a crapat pe starea reală
   (20.543 în fereastră vs 12.600, după ce #408 (merged) a adus datele reale); TTL 20 → 11, apoi 12 după
   tăietura a 4 surse tech-en fără vizitatori măsurați (Q5). Marja actuală: 10.665 în fereastră (~2 zile).
   Se re-evaluează la 13 când ingestul median coboară sub ~900/zi (automatizare lunară activă).
-- **Free-readiness — gazda ÎNCĂ PAID până 22 sep [IZZ-0313]:** [IZZ-0386, 0391, 0399] [IZZ-0421, 0422].
+- **Free-readiness — gazda ÎNCĂ PAID până 22 sep [IZZ-0313]:** [IZZ-0386, 0391, 0399] [IZZ-0421, 0424].
 - **`izz-failover` — KEEP [IZZ-0362]; marja NECUNOSCUTĂ [IZZ-0367, 0369]:** ambele cifre publicate retrase.
 - **REDUNDANȚA — ÎNCHISĂ [IZZ-0370 → IZZ-0373]:** `BUILD_COMMIT_SHA` în jobul `mirror`, #347 merged. **RECIDIVE —
   roșul de STARE separat de cel de COD [IZZ-0388…0391]; Coliziuni de ID la ALOCARE [IZZ-0392].**
