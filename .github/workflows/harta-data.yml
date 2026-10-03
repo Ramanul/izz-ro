@@ -42,6 +42,13 @@ jobs:
         with:
           node-version: "22"
 
+      - name: Instaleaza dependentele pipeline-ului
+        # IZZ-0422: builder-ul hartii aplica `moderation.apply` inainte de localizare,
+        # iar moderation.py necesita PyYAML. Pana la fix, builder-ul era stdlib pur
+        # si workflow-ul nu instala nimic — prima rulare cu filtrul a picat cu
+        # ModuleNotFoundError: No module named 'yaml'.
+        run: pip install -r requirements.txt
+
       - name: Verifica sintaxa frontend-ului hărții
         run: node --check static/harta-stiri/harta-stiri.js
 
