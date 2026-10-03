@@ -37,6 +37,22 @@ NODE = shutil.which("node")
 FARA_NODE = "Node lipseste: nu se poate rula codul Workerului"
 
 
+PRELUDIU = r"""
+/*
+ * PRELUDIU de test, NU de productie. Pe Workers, `crypto`, `fetch`, `Request` si `Response`
+ * sint globale oferite de runtime. In Node, `crypto` global a aparut abia in 19/20 (pina
+ * atunci trebuia --experimental-global-webcrypto), iar pe 18 `fetch`/`Request` tiparesc un
+ * ExperimentalWarning pe stderr. Fara puntea asta testele pica pe un runtime mai vechi
+ * pentru un motiv care n-are nicio legatura cu codul verificat — si exact asa au facut in
+ * CI, unde runnerul aduce alt Node decit masina de lucru.
+ *
+ * Se injecteaza DOAR daca lipseste: unde Node il are deja, nu se schimba nimic.
+ */
+import { webcrypto as __webcrypto } from 'node:crypto';
+if (!globalThis.crypto) globalThis.crypto = __webcrypto;
+"""
+
+
 def _ruleaza(script: str) -> dict:
     """Copiaza `infra/` intr-un director temporar ca ESM si ruleaza scriptul in Node.
 
@@ -57,12 +73,20 @@ def _ruleaza(script: str) -> dict:
                           sursa.read_text(encoding="utf-8"))
             (dest / (sursa.stem + ".mjs")).write_text(text, encoding="utf-8")
         proba = Path(tmp) / "proba.mjs"
-        proba.write_text(script, encoding="utf-8")
+        proba.write_text(PRELUDIU + script, encoding="utf-8")
         proc = subprocess.run([NODE, str(proba)], capture_output=True, text=True, timeout=180,
                               cwd=tmp)
-    if proc.returncode != 0 or proc.stderr.strip():
+    # Se judeca dupa CODUL DE IESIRE, nu dupa stderr: Node poate scrie avertismente
+    # (ExperimentalWarning pe versiunile unde `fetch` e experimental) fara ca proba sa fi
+    # gresit cu ceva. A confunda avertismentul cu esecul a facut testele sa pice in CI
+    # in timp ce treceau local, doar pentru ca cele doua medii au versiuni diferite.
+    if proc.returncode != 0:
         pytest.fail(f"proba a esuat ({proc.returncode}):\n{proc.stderr}\n{proc.stdout}")
-    return json.loads(proc.stdout)
+    try:
+        return json.loads(proc.stdout)
+    except json.JSONDecodeError:
+        pytest.fail(f"proba n-a scris JSON pe stdout:\n{proc.stderr}\n{proc.stdout}")
+    return {}
 
 
 MEDIU = r"""
