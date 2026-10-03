@@ -43,7 +43,7 @@ de build command în `wrangler.jsonc`.
    proaspete (`vazute`) — main.py:358-367. Câștigă primul în ordinea din config. [FAPT]
    `state.merge()` (state.py:150) NU e apelată în producție — singurul apelant e
    tests/test_state.py (consemnat și în comentariul main.py:352-356).
-3. **TTL la ingest** — `state.expire()` (state.py:163, `ARTICLE_TTL_DAYS = 20`, config.py:386)
+3. **TTL la ingest** — `state.expire()` (state.py:163; TTL-ul de la data auditului era 20 de zile, config.py:386)
    taie itemele deja expirate la citire (main.py:374) și din nou pe starea finală (main.py:446).
 4. **Clustering** — `cluster.cluster()` (generator/cluster.py:61): leader clustering (nu
    single-link) pe titluri, tokeni cu stemming RO la 6 litere, intrare în cluster doar dacă
