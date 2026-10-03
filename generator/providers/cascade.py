@@ -17,6 +17,15 @@ class CascadeProvider(Provider):
     def available(self) -> bool:
         return any(p.available() for p in self._providers)
 
+    def numar_provideri(self) -> int:
+        """Cati provideri sunt in cascada — adica atatea cote free distincte.
+
+        Numara ce a construit `process.get_provider()`, deci DOAR providerii disponibili
+        (cheie prezenta + endpoint configurat): un provider din `AI_FALLBACK_PROVIDERS` fara
+        cheie e ignorat la constructie si nu are voie sa umfle bugetul.
+        """
+        return len(self._providers)
+
     def caderi_pe_provider(self) -> dict:
         """{nume_provider: cate apeluri i-au esuat} in rularea curenta.
 
