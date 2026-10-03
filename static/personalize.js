@@ -209,6 +209,7 @@
           <h3 class="stats-section">Topicuri frecvente</h3>
           <div class="stats-tags">${topKws.map(([w]) => `<span class="tag">${w}</span>`).join('')}</div>` : ''}
           <button class="stats-reset">Resetează preferințele</button>
+          <button class="stats-consent"></button>
           ${!p.interactions || p.interactions < MIN_INTERACTIONS
             ? `<p class="stats-hint">Mai citește ${MIN_INTERACTIONS - (p.interactions||0)} articol${(MIN_INTERACTIONS - (p.interactions||0)) === 1 ? '' : 'e'} pentru a activa secțiunea „Pentru tine".</p>`
             : ''}
@@ -221,6 +222,23 @@
       localStorage.removeItem(KEY);
       panel.remove();
       document.getElementById('pentru-tine')?.remove();
+    };
+    // Retragerea/reactivarea, la fel de usoara ca acordarea (GDPR art. 7 alin. 3). Butonul
+    // ◎ e singurul control persistent: bara de consimtamant apare o data, apoi dispare.
+    const activ = consentCurent() === 'yes';
+    const btnConsent = panel.querySelector('.stats-consent');
+    btnConsent.textContent = activ ? 'Dezactivează personalizarea și statisticile'
+                                   : 'Activează personalizarea și statisticile';
+    btnConsent.onclick = () => {
+      if (activ) {
+        retrageConsimtamant();
+      } else {
+        try { localStorage.setItem(CONSENT, 'yes'); } catch {}
+        init();
+        loadAnalytics();
+        loadClarity();
+      }
+      panel.remove();
     };
     document.body.appendChild(panel);
   }
@@ -239,14 +257,21 @@
   function initArticlePage() {
     if (!document.querySelector('.article')) return;
     const start = Date.now();
-    window.addEventListener('visibilitychange', () => {
-      if (document.visibilityState === 'hidden') {
-        trackTime(Math.round((Date.now() - start) / 1000));
-      }
-    });
-    window.addEventListener('pagehide', () => {
+    let raportat = false;
+    // O SINGURA raportare per pagina. Inainte, visibilitychange(hidden) si pagehide
+    // raportau AMBELE timpul total de la incarcare: ascunderea tab-ului dupa 5 minute,
+    // urmata de inchiderea paginii, adauga citirea si durata a DOUA oara — profil de
+    // lectura umflat si „timp mediu" dublat. Un show/hide repetat adauga de fiecare data
+    // timpul integral de la load, nu doar intervalul nou.
+    function tick() {
+      if (raportat) return;
+      raportat = true;
       trackTime(Math.round((Date.now() - start) / 1000));
+    }
+    window.addEventListener('visibilitychange', () => {
+      if (document.visibilityState === 'hidden') tick();
     });
+    window.addEventListener('pagehide', tick);
   }
 
   /* ---- buton instalare PWA: independent de consimtamant, nu stocheaza nimic ---- */
@@ -272,7 +297,6 @@
     rewireClicks();
     renderForYou();
     reorderNav();
-    addStatsButton();
     initArticlePage();
   }
 
@@ -285,6 +309,24 @@
      furnizor nou, deci consimtamantul dat pe v2 NU-l acopera; se cere din nou.
      Acelasi motiv ca la v1->v2. ---- */
   const CONSENT = 'izz_consent_v3';   // 'yes' | 'no'
+
+  function consentCurent() {
+    try { return localStorage.getItem(CONSENT); } catch { return null; }
+  }
+
+  /* Retragerea consimtamantului (GDPR art. 7 alin. 3): la fel de usoara ca acordarea.
+     Profilul local se sterge, GA4 si Clarity primesc deny pentru sesiunea curenta (nu se
+     mai inregistreaza nimic din acest moment), iar la urmatoarea vizita boot() nu le mai
+     incarca deloc. */
+  function retrageConsimtamant() {
+    try { localStorage.setItem(CONSENT, 'no'); localStorage.removeItem(KEY); } catch {}
+    if (window.gtag) window.gtag('consent', 'update', {
+      ad_storage: 'denied', ad_user_data: 'denied',
+      ad_personalization: 'denied', analytics_storage: 'denied'
+    });
+    if (window.clarity) window.clarity('consentv2', { ad_Storage: 'denied', analytics_Storage: 'denied' });
+    document.getElementById('pentru-tine')?.remove();
+  }
 
   /* ---- statistici de trafic (GA4), incarcate DOAR dupa opt-in: Consent Mode
      v2 cu totul refuzat implicit; acordam exclusiv analytics_storage. Fara
@@ -378,8 +420,12 @@
 
   function boot() {
     initInstallButton();
-    let c = null;
-    try { c = localStorage.getItem(CONSENT); } catch {}
+    // Butonul ◎ e prezent ORICAND, si pentru utilizatorii care au refuzat: e singurul
+    // control persistent prin care consimtamantul se retrage sau se re-activeaza
+    // (GDPR art. 7 alin. 3 — retragerea la fel de usoara ca acordarea). Nu stocheaza
+    // nimic si nu trimite nimic: deschide doar panoul local.
+    addStatsButton();
+    const c = consentCurent();
     if (c === 'yes') { init(); loadAnalytics(); loadClarity(); return; }
     if (c === 'no') { return; }
     consentBar();

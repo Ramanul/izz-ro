@@ -107,9 +107,10 @@ def test_dintele_de_fierastrau_e_reproductibil():
 
 def test_proiectia_SCADE_din_ziua_care_iese_nu_doar_aduna():
     """Extrapolarea naiva marja/debit ignora ziua care iese si supraestimeaza cresterea."""
-    # TTL=20 (config): ancora 09-14 are fereastra d > 08-25; la pasul 1 (09-15) iese 08-26.
+    # TTL pin-uit la 20: testul verifica MECANICA scaderii (ziua care iese la pasul 1),
+    # nu valoarea din config — de la IZZ-0421 config e 11 si ziua de iesire n-ar fi in date.
     zile = _zile([("2026-09-14", 100), ("2026-08-25", 1000), ("2026-08-26", 1000)])
-    pr = ft.proiecteaza(zile, "2026-09-14", debit=1000, orizont=1)
+    pr = ft.proiecteaza(zile, "2026-09-14", debit=1000, orizont=1, ttl=20)
     # ziua 0: 08-26 (1000) + completarea zilei de ancora la debit => 2000. ziua 1: +1000, iese 08-26 (1000)
     assert pr[0]["n"] - pr[1]["n"] == 0, "castig 1000, pierdere 1000 => plat"
 
@@ -117,7 +118,7 @@ def test_proiectia_SCADE_din_ziua_care_iese_nu_doar_aduna():
 def test_NEGATIV_cand_ziua_care_iese_e_goala_proiectia_chiar_creste():
     """Cazul negativ: fara zi de scazut, aceeasi proiectie urca cu tot debitul."""
     zile = _zile([("2026-09-14", 100)])
-    pr = ft.proiecteaza(zile, "2026-09-14", debit=1000, orizont=1)
+    pr = ft.proiecteaza(zile, "2026-09-14", debit=1000, orizont=1, ttl=20)
     assert pr[1]["n"] - pr[0]["n"] == 1000
 
 

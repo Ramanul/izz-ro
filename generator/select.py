@@ -26,20 +26,28 @@ def _dedup(articles: list) -> list:
     """
     ordered = sorted(articles, key=lambda a: a.get("published") or "", reverse=True)
     ordered.sort(key=lambda a: (0 if a.get("model") == "C" else 1, -len(a.get("sources") or [])))
-    kept, kept_tok = [], []
+    kept: list[dict] = []
+    kept_len: list[int] = []
+    by_tok: dict[str, list[int]] = {}
     for a in ordered:
         tok = title_tokens(a.get("title") or a.get("original_title") or "")
         is_dup = False
-        for kt in kept_tok:
-            if not tok or not kt:
-                continue
-            inter = len(tok & kt)
-            if inter >= 4 or inter / len(tok | kt) >= 0.55:
-                is_dup = True
-                break
+        if tok:
+            counts: dict[int, int] = {}
+            for t in tok:
+                for idx in by_tok.get(t, ()):
+                    counts[idx] = counts.get(idx, 0) + 1
+            nt = len(tok)
+            for idx, inter in counts.items():
+                if inter >= 4 or inter / (nt + kept_len[idx] - inter) >= 0.55:
+                    is_dup = True
+                    break
         if not is_dup:
+            new_idx = len(kept)
             kept.append(a)
-            kept_tok.append(tok)
+            kept_len.append(len(tok))
+            for t in tok:
+                by_tok.setdefault(t, []).append(new_idx)
     return kept
 
 def _diversify(items: list, max_run: int = 2, max_per_window: int = 3, window_size: int = 10) -> list:

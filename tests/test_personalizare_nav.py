@@ -76,3 +76,30 @@ def test_sablonul_chiar_are_structura_pe_care_se_bazeaza_selectorul():
     summary = re.search(r"<summary>.*?</summary>", subnav, re.S)
     assert summary and "data-cat" not in summary.group(0), (
         "daca linkul din <summary> primeste data-cat, reordonarea il va muta din nou")
+
+
+def test_timpul_de_lectura_se_raporteaza_o_singura_data():
+    """Raportat de audit (3 oct 2026): visibilitychange(hidden) si pagehide raportau AMBELE
+    timpul integral de la load — ascunderea tab-ului dupa 5 minute, urmata de inchidere,
+    dubla citirea si durata; un show/hide repetat adauga de fiecare data tot timpul.
+    Garda pe sursa: exact un singur apel de raportare, gardat de steagul `raportat`."""
+    with open(os.path.join(ROOT, "static", "personalize.js"), encoding="utf-8") as fh:
+        js = fh.read()
+    # definitia + UN SINGUR apel (din tick()); orice al doilea apel e regresia intoarsa
+    assert js.count("trackTime(") == 2, "trackTime trebuie chemat dintr-un singur loc"
+    assert "if (raportat) return;" in js
+
+
+def test_retragerea_consimtamantului_are_control_persistent():
+    """Audit (3 oct 2026): dupa „Activează" nu exista nicio cale vizibila de retragere,
+    iar politica trimitea utilizatorul sa stearga datele browserului. Acum butonul ◎ e
+    prezent si pentru utilizatorii care au refuzat, iar panoul ofera ambele sensuri."""
+    with open(os.path.join(ROOT, "static", "personalize.js"), encoding="utf-8") as fh:
+        js = fh.read()
+    assert js.index("function boot()") < js.index("addStatsButton();"), \
+        "butonul ◎ trebuie adaugat in boot(), nu doar dupa consimtamant"
+    assert "Dezactivează personalizarea și statisticile" in js
+    assert "Activează personalizarea și statisticile" in js
+    assert "function retrageConsimtamant()" in js
+    # retragerea notifica si furnizorii incarcati in sesiunea curenta, nu doar localStorage
+    assert "analytics_storage: 'denied'" in js

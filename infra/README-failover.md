@@ -23,6 +23,11 @@ Scop: site-ul public să nu pice la un incident de deploy sau la o cădere a hos
   de jobul `mirror` din `.github/workflows/build.yml` la fiecare rulare a pipeline-ului (2h).
 - **Failover:** Worker la edge, per-request, instant, fără propagare DNS. Clientul vede mereu
   certul Cloudflare pentru izz.ro; originile-s fetch-uite server-side → **fără gol de certificat**.
+- **Timeout-uri (două etape):** primarul are 1.500 ms până la **headere** (~9× p90 măsurat;
+  la depășire → mirror). După headere, transferul corpului e acoperit separat: 10 s fără niciun
+  fragment nou = `abort` (BODY_IDLE_TIMEOUT_MS). Corpul nu are failover — răspunsul e deja în
+  zbor spre client — deci o origine care îngheață la corp produce o eroare vizibilă, nu o
+  așteptare infinită (gol reparat pe 3 oct 2026, semnalat de auditul extern).
 - **Detecție:** `.github/workflows/monitor.yml` verifică extern cele trei suprafețe la 10 min și
   alertează (email owner) doar la cădere publică sau pierdere totală a redundanței.
 

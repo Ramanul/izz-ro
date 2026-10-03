@@ -385,7 +385,13 @@ RELATED_MIN_SHARED = 2         # "Articole conectate": minim entitati comune. 1 
 # issue #198, iar 19 ar plati inca o zi pentru o marja de care nu e nevoie azi.
 # Literal, nu `os.getenv`: `tests/test_reguli.py` citeste cifra de aici si o compara cu fiecare
 # rationament scris in repo. Un TTL configurabil din mediu ar rupe garda aia tacut.
-ARTICLE_TTL_DAYS = 20
+# 20 -> 11 (2026-10-03, decizie delegata de proprietar in chat — «rezolva tot», Q1; precedent
+# IZZ-0410): tripwire-ul test_buget_fisiere a crapat pe starea reala — 20.543 articole in fereastra
+# vs 12.600 pagini sub buget, dupa ce #408 a adus datele reale de publicare (mii de articole iesite
+# din viitor au intrat in fereastra). Masurat pe starea din 3 oct: TTL 13 -> 13.045 (NU incape),
+# 12 -> 12.208 (marja 392, sub o zi de ingest), 11 -> 11.176 (marja 1.424). Se revine la 12-13
+# daca ingestul median coboara sub ~900/zi la golirea completa a restantei.
+ARTICLE_TTL_DAYS = 11
 
 # Plafonul de fisiere al gazdei. Gazda e un Worker cu Static Assets de pe 2026-08-22
 # (#211, 40ac007), iar contul se intoarce pe **Workers FREE** din 2026-09-22 (decizie
@@ -426,7 +432,7 @@ OUTPUT_FILE_CEILING = int(os.getenv("OUTPUT_FILE_CEILING", "20000"))
 # o prima masuratoare le-a numarat gresit ca pagini de articol si bugetul a iesit cu 183 peste.
 # Se scade din buget INAINTE de imparteala pe articole: paginile de articol au prioritate
 # absoluta. Remasoara cu `tools/count_output.py` dupa orice rubrica sau sectiune noua.
-OUTPUT_NON_ARTICLE_RESERVE = int(os.getenv("OUTPUT_NON_ARTICLE_RESERVE", "4200"))
+OUTPUT_NON_ARTICLE_RESERVE = int(os.getenv("OUTPUT_NON_ARTICLE_RESERVE", "4400"))
 # Cate articole, de la cel mai nou spre cel mai vechi, primesc `cover.jpg` propriu (og:image
 # 1200x630 cu titlul desenat). Restul cad pe coperta STATICA a categoriei (15 fisiere,
 # generate o data per build). Motivul e ca og:image conteaza cat timp articolul chiar se

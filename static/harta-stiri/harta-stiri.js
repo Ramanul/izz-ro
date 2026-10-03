@@ -1910,14 +1910,17 @@
     }
     for (const item of items) {
       const li = document.createElement("li");
-      const a = document.createElement("a");
-      a.href = articleUrl(item);
-      a.textContent = item.title || "Fără titlu";
+      // Fara slug nu exista pagina de articol: un link construit oricum ateriza pe
+      // `/local//` — adica pe pagina de categorie Local, nu pe articol (20 de inregistrari
+      // event fara URL in map.json, masurat 2026-10-03). Randam titlul ca text simplu.
+      const titlu = document.createElement(item.slug ? "a" : "span");
+      if (item.slug) titlu.href = articleUrl(item);
+      titlu.textContent = item.title || "Fără titlu";
       const meta = document.createElement("span");
       const source = item.source_name || item.source;
       meta.textContent = [item.locality, item.county, item.region, source, dateLabel(item.published)]
         .filter(Boolean).join(" · ");
-      li.append(a, meta);
+      li.append(titlu, meta);
       if (state.viewMode === "events" && item.eventArticleCount > 1) {
         const context = document.createElement("span");
         context.className = "event-context";

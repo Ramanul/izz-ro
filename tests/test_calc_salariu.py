@@ -43,26 +43,26 @@ def _sursa() -> str:
 
 
 def _bloc_de_calcul() -> str:
-    """Decupeaza din fisierul livrat exact liniile care calculeaza taxele.
+    """Decupeaza din fisierul livrat exact codul care calculeaza taxele.
 
-    Se opreste la `var net = ...` pentru ca restul functiei atinge DOM-ul. Daca marcajele se
-    schimba, testul cade zgomotos aici in loc sa treaca pe un bloc gresit."""
+    Doua functii complete, fara DOM: `sumaNeimpozabila` (facilitatea OUG 89/2025) si
+    `calculeaza` (CAS/CASS/deducere/impozit), de la prima pana la `return {...};` plus
+    acolada de inchidere a lui `calculeaza`. Daca marcajele se schimba, testul cade
+    zgomotos aici in loc sa treaca pe un bloc gresit."""
     m = re.search(
-        r"(var cas = Math\.round\(brut \* 0\.25\);.*?var net = brut - cas - cass - impozit;)",
+        r"(function sumaNeimpozabila.*?var net = brut - cas - cass - impozit;"
+        r"\s*return \{[^}]*\};\s*\})",
         _sursa(), re.S)
     assert m, "nu am gasit blocul de calcul in calc-salariu.js — s-au schimbat marcajele"
     return m.group(1)
 
 
 def _ruleaza(cazuri: list, tmp_path) -> list:
-    """Ruleaza blocul real in node pentru fiecare (brut, salariuMinim)."""
+    """Ruleaza blocul real in node pentru fiecare (brut, salariuMinim, inPerioada)."""
     script = (
-        "function calc(brut, salariuMinim) {\n"
-        + _bloc_de_calcul() + "\n"
-        + "  return { deducere: deducere, baza: baza, impozit: impozit, net: net };\n"
-        + "}\n"
+        _bloc_de_calcul() + "\n"
         + f"const cazuri = {json.dumps(cazuri)};\n"
-        + "console.log(JSON.stringify(cazuri.map(c => calc(c[0], c[1]))));\n"
+        + "console.log(JSON.stringify(cazuri.map(c => calculeaza(c[0], c[1], c[2]))));\n"
     )
     cale = tmp_path / "harness.js"
     cale.write_text(script, encoding="utf-8")
@@ -134,7 +134,10 @@ def test_baza_impozabila_nu_devine_negativa(tmp_path):
 # --- coerenta interna ---------------------------------------------------------------------
 
 def test_netul_scade_monoton_cu_brutul(tmp_path):
-    """O treapta de deducere nu are voie sa faca netul sa scada cand brutul creste."""
+    """O treapta de deducere nu are voie sa faca netul sa scada cand brutul creste.
+
+    Cazurile nu trimit `inPerioada` (falsy), deci verifica calea fara facilitatea OUG
+    89/2025 — cea valabila in afara ferestrei legale sau peste minimul pe economie."""
     cazuri = [[MINIM + i, MINIM] for i in range(0, 401, 7)]
     rez = _ruleaza(cazuri, tmp_path)
     neturi = [r["net"] for r in rez]
@@ -149,3 +152,58 @@ def test_sursa_livrata_foloseste_ceil(tmp_path):
     sursa = _sursa()
     assert "Math.ceil((brut - salariuMinim) / 50)" in sursa
     assert "Math.floor((brut - salariuMinim) / 50)" not in sursa
+
+
+# --- facilitatea OUG 89/2025: 200 lei neimpozabili, 01.07 - 31.12.2026 ---------------------
+
+def test_facilitatea_200_lei_la_salariul_minim(tmp_path):
+    """Cazul eligibil, cifrele legii: 4.325 brut -> CAS 1.031, CASS 413, impozit 182,
+    net 2.699 (fara facilitate: 2.616). Verificat contra estimarilor publicate la intrarea
+    in vigoare (fgo.ro BI 06/2025, avocatnet.ro 1 iul 2026: ~2.699 lei net)."""
+    got = _ruleaza([[MINIM, MINIM, True]], tmp_path)[0]
+    assert got["neimpozabil"] == 200
+    assert got["cas"] == 1031
+    assert got["cass"] == 413
+    assert got["impozit"] == 182
+    assert got["net"] == 2699
+
+
+def test_dupa_inchiderea_ferestrei_calculul_revine_la_regula_generala(tmp_path):
+    """La 1 ianuarie 2027 facilitatea dispare: pagina nu are voie sa mai afiseze 2.699.
+    Perioada e verificata la runtime (`inPerioadaFacilitate`), testul prinde exact traseul."""
+    got = _ruleaza([[MINIM, MINIM, False]], tmp_path)[0]
+    assert got["neimpozabil"] == 0
+    assert got["net"] == 2616
+
+
+def test_peste_salariul_minim_nicio_facilitate(tmp_path):
+    """Dreptul e legat de salariul minim: un brut cu 1 leu peste minim nu primeste nimic."""
+    got = _ruleaza([[MINIM + 1, MINIM, True]], tmp_path)[0]
+    assert got["neimpozabil"] == 0
+
+
+def test_sub_minim_suma_se_diminueaza_proportional(tmp_path):
+    """Sub minim, suma se diminueaza proportional cu venitul realizat (estimare declarata
+    in nota paginii): la jumatate din minim, 200 * 2162 / 4325 = 99,97 -> 100 lei."""
+    got = _ruleaza([[MINIM // 2, MINIM, True]], tmp_path)[0]
+    assert got["neimpozabil"] == 100
+
+
+def test_grindul_legal_la_iesirea_din_facilitate(tmp_path):
+    """La minim+1 leu suma neimpozabila dispare si netul POATE scada — discontinuitate din
+    lege, nu bug de rotunjire. Testul o documenteaza ca atare."""
+    inauntru = _ruleaza([[MINIM, MINIM, True]], tmp_path)[0]["net"]
+    afara = _ruleaza([[MINIM + 1, MINIM, True]], tmp_path)[0]["net"]
+    assert inauntru == 2699
+    assert afara < inauntru
+
+
+def test_monoton_in_interiorul_ferestrei_facilitatei(tmp_path):
+    """Cu facilitatea activa, netul creste monoton cat timp brutul ramane sub minim."""
+    cazuri = [[MINIM - 300 + i, MINIM, True] for i in range(0, 301, 7)]
+    rez = _ruleaza(cazuri, tmp_path)
+    neturi = [r["net"] for r in rez]
+    for i in range(1, len(neturi)):
+        assert neturi[i] >= neturi[i - 1], (
+            f"netul scade sub facilitare intre brut={cazuri[i-1][0]} ({neturi[i-1]}) si "
+            f"brut={cazuri[i][0]} ({neturi[i]})")
