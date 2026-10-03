@@ -22,6 +22,14 @@ import pytest
 
 yaml = pytest.importorskip("yaml")
 
+# Pasul se testeaza ruland scriptul lui de commit prin `bash -c` real. Mediul tinta al
+# workflow-ului e ubuntu-latest, iar pe Windows (Git Bash) pasul moare inainte de ramuri, cu
+# cod 1 si stderr gol — reproductibil chiar pe un main curat, cifra masurata 3 oct 2026.
+# De depanat in mediul lui, nu aici: pe Windows e zgomot de suita, nu informatie.
+pytestmark = pytest.mark.skipif(
+    __import__("os").name == "nt",
+    reason="scriptul bash al pasului nu e reproductibil sub Git Bash pe Windows; CI-ul e pe Linux")
+
 WORKFLOW = Path(__file__).resolve().parents[1] / ".github" / "workflows" / "mistral.yml"
 
 
