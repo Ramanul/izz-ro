@@ -12,7 +12,7 @@
 
 ## Open
 - **Audit extern 3 oct — ÎNCHIS [IZZ-0426]** (#425, #426 merged) · **`ai_gateway` pe main** (#390, #387): $0, cheile în `.env`.
-- **PWA + alerte push [IZZ-0429, 0430] — PR DESCHIS, fără merge:** SW la `/sw.js`, buton instalare fix, alerte VAPID în KV. **Blochează pe tine:** namespace KV + 4 secrete (`infra/PUSH-SETUP.md`); fără ele rutele dau 503 și site-ul merge ca azi.
+- **PWA + alerte push [IZZ-0430, IZZ-0431] — PR DESCHIS, fără merge:** SW la `/sw.js`, buton instalare fix, alerte VAPID în KV. **Blochează pe tine:** namespace KV + 4 secrete (`infra/PUSH-SETUP.md`); fără ele rutele dau 503 și site-ul merge ca azi.
 - **Pages `izz-ro` ZOMBI — CONFIRMAT ȘTERS [IZZ-0411]:** `izz-ro.pages.dev` returnează `000` [IZZ-0366, 0395].
 - **PRODUS P1/P2 — media pe carduri [IZZ-0403, 0404 → IZZ-0416; #414 merged]:** portrete PD/CC0 + siluete județ,
   `covers.py` editorial. **Marcaj AI Act la prima expunere [IZZ-0420]:** trust-label «generat automat» pe card +
