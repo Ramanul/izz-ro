@@ -123,14 +123,17 @@ a:hover { color: var(--ink); }
 .subnav a {
   color: var(--ink-2); font-family: var(--font-mono); font-weight: 600;
   font-size: var(--fs-xs); text-transform: uppercase; letter-spacing: 1px;
-  padding-bottom: 3px; border-bottom: 2px solid transparent; white-space: nowrap;
+  /* WCAG 2.5.8 (AA): tinta de atingere minima 24x24 CSS px. Inainte: 12,6px font + 3px
+     padding jos = ~20,6px — regresie prinsa de auditul din 2 oct. +5px sus adauga tactil,
+     nu modifica linia vizuala (padding-top nu muta borderul decolativ). */
+  padding: var(--s-5) 0 3px; border-bottom: 2px solid transparent; white-space: nowrap;
 }
 .subnav a:hover, .subnav a.active { color: var(--gold-strong); border-bottom-color: var(--gold); }
 .subnav-more { position: relative; flex: 0 0 auto; }
 .subnav-more summary {
   cursor: pointer; list-style: none; color: var(--ink-2); font-family: var(--font-mono);
   font-weight: 600; font-size: var(--fs-xs); text-transform: uppercase; letter-spacing: 1px;
-  white-space: nowrap;
+  white-space: nowrap; padding: var(--s-5) 0;  /* idem: tinta de atingere >= 24px */
 }
 .subnav-more summary::-webkit-details-marker { display: none; }
 .subnav-more summary::after { content: " ▾"; color: var(--gold-strong); }

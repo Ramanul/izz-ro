@@ -30,7 +30,7 @@
   Arta per articol NU mai e fișier: se desenează în pagină (`templates/_art.html`). Rămân fișiere
   fotografiile reale, imaginile din date și og:image-ul primelor `OG_COVER_MAX_ARTICLES`.
   La TTL 20 (valoarea din 2026-09-14): 14.336 fișiere, 72% din plafon. [IZZ-0386, IZZ-0315;
-  TTL acum 11, IZZ-0421]
+  TTL acum 12, IZZ-0421/0422]
 - **„Doar știri din România" NU e o pârghie de plafon** — 94,7% din articole vin deja din surse
   în română. Nu se re-propune ca soluție de încadrare. [IZZ-0314]
 - **Allowlist-ul proxy-ului e PER-HOST și diferă între sesiuni** — nu se citează din memorie, se
