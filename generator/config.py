@@ -331,6 +331,8 @@ TITLE_MAX_WORDS = 22           # titlu: soft-cap care transmite faptul complet (
 TEASER_MAX_WORDS = 40          # B: teaser scurt ("extras foarte scurt")
 SYNTHESIS_MAX_WORDS = 90       # C: sinteză multi-sursă (doar pentru clustere importante)
 CLUSTER_MIN_SOURCES = 2        # >=2 surse pe același eveniment -> candidat pentru C
+STORY_MAX_MEMBRI = 40          # schelet de timeline per sinteza C (IZZ-0418); trecerea peste
+                               # e semnal de clustering prea larg, nu ceva de stocat orbeste
 RELATED_MIN_SHARED = 2         # "Articole conectate": minim entitati comune. 1 singura entitate
                                # comuna (de regula o tara larga: "Franța") = zgomot, nu relevanta.
 # Cat timp ramane un articol PUBLICAT. `state.expire()` sterge din stare tot ce trece de prag,

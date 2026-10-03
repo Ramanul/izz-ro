@@ -3,6 +3,7 @@
 Apararea in adancime: chiar daca AI depaseste limita sau pica, codul taie la
 TEASER_MAX_WORDS / SYNTHESIS_MAX_WORDS si are fallback determinist (fara AI).
 """
+import hashlib
 import json
 import re
 from datetime import datetime, timezone
@@ -641,6 +642,37 @@ def process_cluster(group: list, provider) -> dict | None:
     return rep
 
 
+def _membri_din_grup(group: list) -> list:
+    """Schelet de timeline per membru al story-ului (Etapa 1 STORY, IZZ-0418): doar
+    {published, title, source, url} — exact campurile de care are nevoie timeline-ul
+    determinist, NU articolele intregi (data/articles.json e la 23 MB si se comite de
+    ~12 ori/zi). Un membru care e el insusi o sinteza C isi duce propriii membri mai
+    departe, deci istoricul evenimentului se acumuleaza la fiecare absorbire."""
+    membri: dict = {}
+    for a in group:
+        propriu = {"published": a.get("published"), "title": a.get("title"),
+                   "source": a.get("source_name"), "url": a.get("url")}
+        for m in [propriu] + list(a.get("members") or []):
+            u = m.get("url")
+            if u and u not in membri:
+                membri[u] = m
+    out = sorted(membri.values(), key=lambda m: m.get("published") or "")
+    return out[-config.STORY_MAX_MEMBRI:]
+
+
+def _story_id(group: list) -> str:
+    """Identitate persistenta a evenimentului (Etapa 1 STORY, IZZ-0418): mosteneste
+    story_id-ul oricarui membru C deja publicat; la prima formare, id determinist din
+    cel mai vechi membru — aceeasi grupare produce acelasi id indiferent de rulare."""
+    for a in group:
+        if a.get("story_id"):
+            return a["story_id"]
+    cel_vechi = min(group, key=lambda a: a.get("published") or "")
+    sambure = (cel_vechi.get("published") or "") + "|" + \
+        (cel_vechi.get("original_link") or cel_vechi.get("url") or "")
+    return "st-" + hashlib.sha1(sambure.encode("utf-8")).hexdigest()[:12]
+
+
 def _prep_cluster_rep(group: list) -> tuple:
     """Partea din process_cluster care NU cere AI: alege reprezentantul, aduna sursele,
     marcheaza actualizarea. Extrasa ca sa fie identica intre calea single (process_cluster)
@@ -662,6 +694,8 @@ def _prep_cluster_rep(group: list) -> tuple:
             surse.append({"name": s.get("name"), "url": s.get("url")})
     rep["sources"] = surse
     rep["first_source"] = group[0].get("source_name")
+    rep["members"] = _membri_din_grup(group)
+    rep.setdefault("story_id", _story_id(group))
     if actualizare:
         rep["updated"] = datetime.now(timezone.utc).isoformat()
     return group, rep
