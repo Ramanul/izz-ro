@@ -26,7 +26,7 @@
 - **`izz-failover` — KEEP [IZZ-0362]; marja NECUNOSCUTĂ [IZZ-0367, 0369]:** ambele cifre publicate retrase.
 - **REDUNDANȚA — ÎNCHISĂ [IZZ-0370 → IZZ-0373]:** `BUILD_COMMIT_SHA` în jobul `mirror`, #347 merged. **RECIDIVE —
   roșul de STARE separat de cel de COD [IZZ-0388…0391]; Coliziuni de ID la ALOCARE [IZZ-0392].**
-- **PR queue — vezi `gh pr list`.** Aterizările: în `specs/registru.tsv`, nu aici.
+- **PR queue — vezi `gh pr list`.** Aterizările: în `specs/registru.tsv`, nu aici. **#435 deschis (3 oct):** căutare Pagefind generată în pipeline, fără fragmente (plafonul de fișiere) — `specs/cautare-pagefind.md`.
 - **Issues triate 09-13 [IZZ-0381…0383]:** #83 închis. **#198 arhiva = decizie de proprietar**
   (R2 singura structurală). #233 canal · #271 scope — deschise prin design.
 
