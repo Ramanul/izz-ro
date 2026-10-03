@@ -197,8 +197,7 @@ cu textul primar verificat, nu cu rezumatul. Așteaptă veto-ul proprietarului.*
    **art. 50 alin. (4)**: dezvăluirea textului publicat în scopul informării publicului, cu
    excepția „human review or editorial control" + „editorial responsibility" — exact cum
    conchidea §4.2, dar numerotarea completă acum.
-2. **Pictograma aleasă: „Basic icon"** (fișierul `LABEL_AI_black.svg` din arhiva oficială,
-   comis ca `static/icons/ai-generated.svg`). Criteriul e din regulile de folosire de pe
+2. **Pictograma aleasă: „Basic icon"** (varianta neagră din arhiva oficială SVG a CE, descărcată 3 oct de pe pagina de mai sus — ZIP document nr. 129546 — comisă redenumită ca `static/icons/ai-generated.svg`). Criteriul e din regulile de folosire de pe
    pagina CE: iconița Basic se folosește „când AI a fost implicat în crearea textului publicat
    **sau** când se folosește o etichetă-text personalizată" — noi ne încadrăm în ambele.
    „Fully AI-Generated" ar pretinde că tot conținutul e fabricat de AI, exact eroarea inversă
