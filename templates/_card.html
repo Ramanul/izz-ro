@@ -11,7 +11,7 @@
       2026-08-04, specs/sinteza-fara-substanta.md). Elementele fara continut NU se emit deloc:
       `.card` e flex cu `gap`, deci un `<p>` gol ar lasa exact o gaura in card. -#}
   <span class="badge{% if a.model == 'C' %} c{% endif %}">{{ a.category | cat_label }}{% if a.anunt_fara_corp %} · Anunț oficial{% endif %}</span>
-  <p class="trust-label" title="Cum este construită această informație">{% if a.anunt_fara_corp %}Anunț oficial · citește textul integral la sursă{% elif a.model == 'C' %}Sinteză multi-sursă{% else %}Rezumat dintr-o sursă{% endif %}</p>
+  <p class="trust-label" title="Cum este construită această informație">{% if a.anunt_fara_corp %}Anunț oficial · citește textul integral la sursă{% elif a.model == 'C' %}Sinteză multi-sursă · generată automat{% else %}Rezumat dintr-o sursă · generat automat{% endif %}</p>
   <h2 class="card-title"><a href="{{ base }}/{{ a.category }}/{{ a.slug }}/">{{ a.display_title or a.title }}</a></h2>
   <div class="meta">
     <time datetime="{{ a.published }}">{{ a.published_human }}</time>
@@ -20,9 +20,10 @@
     {% set wc = (body or '').split() | length %}
     <span class="reading-time">~{{ [wc // 200, 1] | max }} min</span>
     {% endif %}
-    {#- Marcajul AI Act art. 50(4) NU mai sta pe card: se repeta pe fiecare item si se citeste
-        ca semnal de neincredere, desi trust-label + /legal/method/ + pagina de articol
-        (ai-mark + ai-note) acopera deja dezvaluirea. Cardul pastreaza doar provenienta. -#}
+    {#- Marcajul AI Act art. 50(4) NU e iconita repetata pe card (decizia #245 din 2026-09-02:
+        se citeste ca semnal de neincredere). Dezvaluirea la PRIMA expunere o da trust-label-ul
+        («· generat automat», IZZ-0420), pagina de articol poarta ai-mark + ai-note + meta
+        digitalSourceType, iar /legal/method/ explica metodologia. REGULI-SINTEZA.md §4.3. -#}
   </div>
   {% if not a.anunt_fara_corp %}
   <p class="summary">{% if a.model == 'C' %}{{ a.synthesis }}{% else %}{{ a.teaser }}{% endif %}</p>

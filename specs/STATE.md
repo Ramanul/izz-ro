@@ -8,15 +8,14 @@
 > Where the rest lives: `specs/regim-reguli.md` — unified audit closure ·
 > `specs/registru.tsv` — decisions · `CLAUDE.md` — canonical contract.
 
-**Updated:** 2026-10-03 (produs + viteză: portrete PD/CC0 și siluete județ pe carduri, `covers.py` editorial, `--render-only` 44s [IZZ-0415, 0416])
+**Updated:** 2026-10-03 (IZZ-0415 CI pe eșantion prin #407; IZZ-0416 media cardurilor PD/CC0 prin #414; IZZ-0420 marcaj AI Act în #411; protecțiile main verificate prin API [IZZ-0417])
 
 ## Open
-- **`ai_gateway` — aterizat pe main prin #390, merged (mai demult și #387, merged):**
-  gateway AI local $0; cheile doar în `.env`; docs: `ai_gateway/FREE_AI_SETUP.md`.
-  Cataloagele free churn-uisază: 2 oct, `llama-3.3-70b*`/`kimi-k2` dispăruți, `qwen-3.8-27b` nou la ambii.
+- **`ai_gateway` — pe main (#390 merged, #387 merged):** $0, cheile în `.env`; cataloagele free churn-uisază zilnic.
 - **Pages `izz-ro` ZOMBI — CONFIRMAT ȘTERS [IZZ-0411]:** `izz-ro.pages.dev` returnează `000` [IZZ-0366, 0395].
-- **PRODUS P1/P2 — portrete PD/CC0 + siluete județ pe carduri și `covers.py` editorial [IZZ-0403, 0404 → IZZ-0416]:**
-  homepage are acum fotografii reale din `output/portraits/` + siluete SVG de județ (0 fișiere noi); `--render-only` scade la 44s.
+- **PRODUS P1/P2 — media pe carduri [IZZ-0403, 0404 → IZZ-0416; #414 merged]:** portrete PD/CC0 + siluete județ,
+  `covers.py` editorial. **Marcaj AI Act la prima expunere [IZZ-0420]:** trust-label «generat automat» pe card +
+  meta digitalSourceType + pictograma UE Basic — așteaptă veto pe amendamentul §4.3.
 - **PRODUS P3 — harta: markere fără ierarhie vizuală [IZZ-0405]:** 482 evenimente, clickuri cablate; e afordanța, nu funcția.
 - **FEREASTRA TTL — DECIZIE EXECUTATĂ [IZZ-0421, 3 oct]:** tripwire-ul a crapat pe starea reală
   (20.543 în fereastră vs 12.600, după ce #408 (merged) a adus datele reale de publicare); `ARTICLE_TTL_DAYS`
@@ -35,12 +34,13 @@
 
 - **K1–K14:** re-verified in `specs/regim-reguli.md` — a reconciliation register, not a substitute
   for passing tests. **Grounding:** blocks invented quotes and foreign numbers, fails closed.
-- **Coordination:** live channel is `handoff/` + `specs/STATE.md`. **Containment:** destructive git
-  commands and direct Edit/Write on control-plane files are denied; fd-only redirects no longer
-  count [IZZ-0353]. **Journals:** takedowns removed on every publish path; ingest discards logged.
+- **Coordination:** `handoff/` + `specs/STATE.md`. **Containment:** git destructiv și Edit pe control-plane
+  refuzate [IZZ-0353]. **Journals:** takedowns șterse pe fiecare cale de publicare; ingest discards logged.
 - **Near-verbatim copy:** >=15-word runs and transcribed titles block the gate. Open: calibration
   corpus, 2x determinism run. **Silence detection:** hourly. **Human gate:** `IZZ_REQUIRE_HUMAN_GATE`.
-  **Main** is `protected: true`; required-checks list unreadable here (403), rulesets: none.
+  **Main** is `protected: true`; **required status checks: NICIUNUL** (verificat prin API,
+  3 oct — GET `/branches/main/protection` răspunde 200; întâiul 403 era alt endpoint/context);
+  force-push și ștergeri blocate, `enforce_admins` on, rulesets: none. [IZZ-0417]
 - **Unified audit is mechanical now:** `specs/audit-unificat.tsv` + `tools/audit_matrice.py`
   (+ `eroziune`) + `tools/cadenta_reala.py` + tests; findings in `specs/audit-unificat.md` §5.
   Derivarea de stare o găsește `schedule` zilnic (#347), nu următorul PR. [IZZ-0351…0357, 0363…0367]
