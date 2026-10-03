@@ -128,7 +128,6 @@ query ($zona: String!, $de_la: Time!, $pana_la: Time!) {
       httpRequestsAdaptiveGroups(
         limit: 300
         filter: {datetime_geq: $de_la, datetime_leq: $pana_la}
-        orderBy: [sum_requests_DESC]
       ) {
         sum { requests }
         dimensions { clientRequestPath clientCountryName }
