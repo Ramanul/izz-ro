@@ -100,7 +100,7 @@ def debit_observat(zile: Counter, ancora: str, n: int = 3) -> int:
     return int(sorted(complete)[len(complete) // 2]) if complete else 0
 
 
-def proiecteaza(zile: Counter, ancora: str, debit: int, orizont: int = 14) -> list[dict]:
+def proiecteaza(zile: Counter, ancora: str, debit: int, orizont: int = 14, ttl: int = None) -> list[dict]:
     """Fereastra zi cu zi, daca fiecare zi viitoare aduce `debit` articole.
 
     Nu extrapolez naiv marja/rata: fereastra CASTIGA ziua noua si PIERDE ziua de acum TTL,
@@ -108,13 +108,14 @@ def proiecteaza(zile: Counter, ancora: str, debit: int, orizont: int = 14) -> li
     doua e semnul real, si el e pozitiv chiar si cand debitul pare modest.
     """
     prag_a, prag_b = praguri()
+    ttl_zile = config.ARTICLE_TTL_DAYS if ttl is None else ttl
     zi0 = datetime.date.fromisoformat(ancora)
     n = in_fereastra(zile, ancora) + (debit - zile[ancora])
     out = []
     for k in range(orizont + 1):
         zi = zi0 + datetime.timedelta(days=k)
         if k:
-            iese = zi - datetime.timedelta(days=config.ARTICLE_TTL_DAYS)
+            iese = zi - datetime.timedelta(days=ttl_zile)
             n += debit - zile.get(iese.isoformat(), 0)
         out.append({"zi": zi.isoformat(), "n": n,
                     "peste_A": n > prag_a, "peste_B": n > prag_b})
