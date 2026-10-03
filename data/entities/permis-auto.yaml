@@ -43,14 +43,20 @@ faq:
   a: Ai la dispoziție 1 an de la absolvirea școlii pentru a promova examenul. După 1 an, dosarul expiră
     și trebuie refăcut (inclusiv școala).
 - q: Ce se întâmplă dacă pic examenul practic?
-  a: Poți da examenul practic de maximum 3 ori. După 3 respingeri, trebuie să repeți școala de șoferi
-    (6 ore suplimentare minim) și poți reprograma.
+  a: După o respingere la proba practică poți fi reprogramat la o nouă probă după cel puțin 15 zile,
+    cu taxa de examinare achitată și cu dovada a cel puțin 6 ore suplimentare de condus efectuate cu
+    instructorul. Metodologia de aplicare a OUG 195/2002 nu prevede un număr maxim de încercări și
+    nu obligă la refacerea școlii de șoferi.
 - q: Pot conduce imediat după ce am promovat examenul?
   a: Nu. Trebuie să aștepți eliberarea permisului fizic (până la 5 zile lucrătoare). Fără permis valabil,
     condusul este ilegal și se sancționează cu amendă + reținerea vehiculului.
 relatii: {}
 verificat: false
-ultima_verificare: '2026-01-01'
+ultima_verificare: '2026-10-03'
+# Verificat la 2026-10-03 (metodologia de aplicare a OUG 195/2002): regula de reprogramare
+# după respingerea la proba practică — cel puțin 15 zile, taxa achitată, dovada a minimum
+# 6 ore suplimentare de condus; nu există plafon de 3 încercări. Rămân neverificate:
+# costurile școlii/taxelor și detaliile examenului — de aceea `verificat` rămâne false.
 monitorizare:
   surse:
   - url: https://www.drpciv.ro/
