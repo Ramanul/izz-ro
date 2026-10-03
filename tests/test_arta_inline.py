@@ -167,3 +167,50 @@ def test_arta_scaleaza_din_container_nu_din_marimi_fixe():
     assert "container-type: inline-size" in bloc
     assert "aspect-ratio: 960 / 504" in bloc
     assert "cqw" in css, "fara unitati de container, arta nu scaleaza cu locul in care sta"
+
+
+# --- 4. silueta judetului si medalionul portret (IZZ-0403 / IZZ-0404) --------------
+
+def test_stil_inline_include_silueta_judetului_pentru_stire_locala():
+    """Articol local dintr-o sursa cu judet cunoscut primeste silueta SVG inline si judetul ca subtitlu."""
+    a = _art(category="local", source="pl_cluj_floresti", title="Sedinta consiliului local Floresti")
+    s = htmlart.stil_inline(a)
+    assert s.get("harta") and s["harta"].get("d")
+    assert s["sub"] == "Cluj"
+    html = str(_macro()({"art_style": s}))
+    assert "art--harta" in html and "art-harta" in html and "<svg" in html
+    css = _css()
+    for cls in ("art--harta", "art-harta"):
+        assert f".{cls}" in css
+
+
+def test_stil_inline_include_doar_portrete_fara_obligatie_de_credit(monkeypatch):
+    """Pe carduri si pe prima pagina apar doar portrete Public domain / CC0, niciodata CC BY / CC BY-SA."""
+    monkeypatch.setattr(
+        htmlart,
+        "_PORTRETE_LIBERE",
+        {"donald trump": {"img": "portraits/donald-trump.jpg", "name": "Donald Trump"}},
+    )
+    a_pd = _art(category="externe", entities=["Donald Trump"])
+    s_pd = htmlart.stil_inline(a_pd)
+    assert s_pd.get("portret") == {"img": "portraits/donald-trump.jpg", "name": "Donald Trump"}
+    html = str(_macro()({"art_style": s_pd}))
+    assert "art--portret" in html and 'src="/portraits/donald-trump.jpg"' in html
+    css = _css()
+    for cls in ("art--portret", "art-portret-wrap", "art-portret"):
+        assert f".{cls}" in css
+
+    a_cc = _art(category="politic", entities=["Entitate Cu Credit Obligatoriu"])
+    assert "portret" not in htmlart.stil_inline(a_cc)
+
+
+def test_covers_generate_produce_jpeg_editorial_valid(tmp_path):
+    """Fallback-ul Pillow pentru og:image deseneaza 1200x630 in paleta editoriala (>5 KB pentru smoke_live)."""
+    from generator import covers
+    dst = tmp_path / "cover.jpg"
+    a = _art(title="Guvernul adoptă rectificarea bugetară pentru trimestrul patru")
+    assert covers.generate(a, str(dst))
+    assert dst.is_file() and dst.stat().st_size > 5000
+    with covers.Image.open(dst) as im:
+        assert im.size == (1200, 630)
+

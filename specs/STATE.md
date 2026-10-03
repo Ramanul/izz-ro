@@ -8,17 +8,16 @@
 > Where the rest lives: `specs/regim-reguli.md` — unified audit closure ·
 > `specs/registru.tsv` — decisions · `CLAUDE.md` — canonical contract.
 
-**Updated:** 2026-10-03 (IZZ-0415 CI pe eșantion aterizat prin #407; IZZ-0416 portrete pe carduri + marcaj AI Act în #408; protecțiile main verificate prin API [IZZ-0417])
+**Updated:** 2026-10-03 (IZZ-0415 CI pe eșantion prin #407; IZZ-0416 media cardurilor PD/CC0 prin #414; IZZ-0420 marcaj AI Act în #411; protecțiile main verificate prin API [IZZ-0417])
 
 ## Open
 - **`ai_gateway` — aterizat pe main prin #390, merged (mai demult și #387, merged):**
   gateway AI local $0; cheile doar în `.env`; docs: `ai_gateway/FREE_AI_SETUP.md`.
   Cataloagele free churn-uisază: 2 oct, `llama-3.3-70b*`/`kimi-k2` dispăruți, `qwen-3.8-27b` nou la ambii.
-- **Pages `izz-ro` ZOMBI revendică `izz.ro` [IZZ-0366, 0368]:** ștergerea = decizie proprietar [IZZ-0395].
-- **PRODUS P1 — homepage fără nicio fotografie [IZZ-0403]:** mecanismul e IMPLEMENTAT în #408 (portretul
-  entității pe card, între poza de lead și arta desenată; 0→17 img pe sample-ul de 3 oct, test `test_card_portrete`).
-  Corecție de cifră: rata de potrivire e **34% azi (68/200)**, nu 73% cât s-a măsurat pe 13 sept.
-- **PRODUS P2 — copertile arată amatoricesc [IZZ-0404]** (verdict proprietar); `htmlart`/`covers.py`.
+- **Pages `izz-ro` ZOMBI — CONFIRMAT ȘTERS [IZZ-0411]:** `izz-ro.pages.dev` returnează `000` [IZZ-0366, 0395].
+- **PRODUS P1/P2 — media pe carduri [IZZ-0403, 0404 → IZZ-0416, #414]:** portrete PD/CC0 + siluete județ,
+  `covers.py` editorial. **Marcajul AI Act la prima expunere [IZZ-0420, #411]:** trust-label «generat automat»
+  pe card + meta digitalSourceType + pictograma UE Basic pe articol — așteaptă veto pe amendamentul §4.3.
 - **PRODUS P3 — harta: markere fără ierarhie vizuală [IZZ-0405]:** 482 evenimente, clickuri cablate; e afordanța, nu funcția.
 - **FEREASTRA TTL a trecut de buget [IZZ-0400]:** 11.967 vs prag 12.800; `ARTICLE_TTL_DAYS` = decizie proprietar [IZZ-0401].
 - **Free-readiness — gazda ÎNCĂ PAID până 22 sep [IZZ-0313]:** ingest median 960/zi vs 590 dimensionat; TTL=20

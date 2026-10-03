@@ -319,6 +319,37 @@ def _articole_publicabile(n: int, budget: int | None = None,
     return max(0, liber // 2)
 
 
+def _fara_date_viitoare(articles: list) -> list:
+    """Scoate din lista publicata articolele cu `published` in viitor (marja 48 h).
+
+    `_clamp_future` din fetch protejeaza doar itemele NOI la ingest; `state.merge()` nu reia
+    niciodata un URL deja stocat, deci un record intrat candva cu data de EVENIMENT parsata
+    din titlu (Voiteg/Retim: „colectare deseuri 01.01.2027", adaugat pe site-ul primariei la
+    24 sep 2026) ar fi trait in feed, sitemap, pe pagini si pe 404 pana dupa aceea data.
+    Functia asta e ultimul punct prin care trece tot ce se publica: articolul NU se sterge
+    din stare, doar nu se publica pana cand data lui devine adevarata.
+    """
+    limita = datetime.now(timezone.utc) + timedelta(hours=48)
+    pastrate, sarite = [], []
+    for a in articles:
+        try:
+            dt = datetime.fromisoformat(a.get("published") or "")
+            if dt.tzinfo is None:
+                dt = dt.replace(tzinfo=timezone.utc)
+        except (ValueError, TypeError):
+            dt = None
+        if dt is not None and dt > limita:
+            sarite.append(a)
+        else:
+            pastrate.append(a)
+    if sarite:
+        logging.error("!! %d articole cu 'published' in viitor NU se publica (ex: %s — %r): "
+                      "data de eveniment nu e data de publicare; repar sursa si recordul.",
+                      len(sarite), sarite[0].get("source"),
+                      (sarite[0].get("title") or "")[:60])
+    return pastrate
+
+
 def _coperti_de_categorie() -> dict:
     """og:image de rezerva, unul per categorie, in `output/og/<categorie>.jpg`.
 
@@ -755,6 +786,10 @@ def build(articles: list, mod: dict | None = None) -> None:
     # Sortare pe sir; vezi nota din state.save si tests/test_published_is_utc.py.
     by_date = sorted(articles, key=lambda a: a.get("published") or "", reverse=True)
 
+    # Garda date-viitoare, inainte de orice alt consum al listei (pagini, subiecte,
+    # paginare, sitemap, feed): un `published` din viitor nu se publica.
+    by_date = _fara_date_viitoare(by_date)
+
     # Supapa de siguranta a plafonului gazdei. Taie ACUM, inainte de orice scriere, ca
     # paginile de subiect, paginarea, sitemapurile si feedul sa vada exact ce se publica.
     incap = _articole_publicabile(len(by_date))
@@ -766,17 +801,6 @@ def build(articles: list, mod: dict | None = None) -> None:
                       config.OUTPUT_NON_ARTICLE_RESERVE, config.ARTICLE_TTL_DAYS)
         by_date = by_date[:incap]
 
-    # Portretele reale (Wikidata P18, thumbs auto-gazduite) se incarca O SINGURA data:
-    # mai jos alimenteaza media reala a cardurilor (IZZ-0416 — zero fisiere noi, thumb-ele
-    # sunt deja copiate in output/portraits) si paginile /subiect/.
-    portraits = _load_portraits()
-    for a in by_date:
-        for e in (a.get("entities") or []):
-            p = portraits.get(_norm_name(e))
-            if p:
-                a["card_portrait"] = p
-                break
-
     # coperti: share (og, cu titlu) + arta fara text pentru site -- generate O DATA,
     # INAINTE de orice randare, ca hero-ul si paginile de articol sa le poata folosi.
     # URL-urile poarta ?v=<hash-continut>: imaginile stau pe cai stabile cu TTL 24h,
@@ -785,6 +809,7 @@ def build(articles: list, mod: dict | None = None) -> None:
     # in query schimba URL-ul doar cand se schimba imaginea, deci cache-ul ramane
     # eficient dar nu mai poate fi vreodata stale.
     leadphotos = _load_leadphotos()
+    portraits = _load_portraits()   # fotografii reale P18 (auto-gazduite) cheie=nume normalizat
 
     # BUGET DE FISIERE. Pana pe 2026-08-22 randarea scria cate imagini avea de scris si
     # atat. Cand output-ul a trecut plafonul de fisiere al Cloudflare Pages, deploy-ul a
@@ -946,7 +971,6 @@ def build(articles: list, mod: dict | None = None) -> None:
 
     # graful cunoasterii v1: pagini de subiect per entitate (+ feed de urmarire >=3)
     ents = _entity_index(by_date)
-    # portraits e deja incarcat la supapa de buget (acolo alimenteaza cardurile, IZZ-0416)
     # graf-lite: entitatile care apar IMPREUNA (co-ocurenta pe articole) -> "Conexiuni"
     art_slugs: dict = {}
     for s, d in ents.items():
