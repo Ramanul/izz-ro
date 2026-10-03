@@ -26,9 +26,27 @@
   <span>{{ a.display_title or a.title }}</span>
 </nav>
 <article class="article">
+  {# Semnale pentru indexul de cautare (generator/pagefind_index.py). Stau pe elemente GOALE,
+     in afara blocurilor `data-pagefind-body` de mai jos: valoarea unui filtru e metadată,
+     nu text — indexată, ar face ca fiecare articol dintr-o categorie sa se potriveasca la
+     numele categoriei. Verificat prin masurare: cu `data-pagefind-body` pus pe <article>
+     intreg, termenul „Rezumat" se potrivea pe toate paginile (eticheta de incredere) si
+     „octombrie" pe toate din luna aia (meta cu data). -#}
+  <span data-pagefind-filter="categorie: {{ a.category }}"></span>
+  {% if a.tip_anunt %}
+  <span data-pagefind-filter="tip: {{ a.tip_anunt }}"></span>
+  <span data-pagefind-filter="oficial: da"></span>
+  {% endif %}
+  {# Sortare pe data publicarii. Taiat la secunda (19 caractere) ca TOATE valorile sa aiba
+     aceeasi lungime: Pagefind sorteaza lexicografic, iar 15 articole din stare au `published`
+     cu microsecunde — amestecate cu restul, ordinea intre doua evenimente din aceeasi secunda
+     ar depinde de punct, nu de timp. -#}
+  <span data-pagefind-sort="data: {{ a.published[:19] }}"></span>
   <span class="badge{% if a.model == 'C' %} c{% endif %}">{{ a.category | cat_label }}{% if a.anunt_fara_corp %} · Anunț oficial{% endif %}</span>
   <p class="trust-label article-trust">{% if a.anunt_fara_corp %}Anunț oficial · verifică textul integral la instituția emitentă{% elif a.model == 'C' %}Sinteză multi-sursă · compară sursele de mai jos{% else %}Rezumat dintr-o sursă · verifică informația în articolul original{% endif %}{% if a.publicitar_la_sursa %} · <strong>Material publicitar la sursă</strong> (advertorial){% endif %}</p>
-  <h1>{{ a.display_title or a.title }}</h1>
+  {# `data-pagefind-body` marcheaza CE se indexeaza: titlul si rezumatul, nimic altceva. Greutatea
+     mai mare pe titlu face ca o potrivire in titlu sa iasa deasupra uneia din corp. -#}
+  <h1 data-pagefind-body data-pagefind-weight="3">{{ a.display_title or a.title }}</h1>
   <div class="meta">
     <time datetime="{{ a.published }}">{{ a.published_human }}</time>
     {% if not a.anunt_fara_corp %}
@@ -65,12 +83,14 @@
      ramane un singur element, `sources-box` de mai jos (CLAUDE.md §7). #}
   <p class="official-note">Anunț oficial. Titlul a fost scurtat pentru orientare; textul integral și condițiile sunt la sursa instituției.</p>
   {% else %}
-  <p class="body">{% if a.model == 'C' %}{{ a.synthesis }}{% else %}{{ a.teaser }}{% endif %}</p>
+  <p class="body" data-pagefind-body>{% if a.model == 'C' %}{{ a.synthesis }}{% else %}{{ a.teaser }}{% endif %}</p>
   {% endif %}
   {% if a.display_title and a.display_title != a.title %}
   <details class="source-title">
     <summary>Titlul integral al instituției</summary>
-    <p>{{ a.title }}</p>
+    {# Indexat si el: la anunturile oficiale titlul afisat e scurtat pentru mobil, iar cel
+       integral poarta detaliile dupa care cauta cineva („HCL 123", „concurs promovare"). -#}
+    <p data-pagefind-body data-pagefind-weight="2">{{ a.title }}</p>
   </details>
   {% endif %}
 

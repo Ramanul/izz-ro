@@ -67,6 +67,13 @@ jobs:
           cache: "pip"
       - run: pip install -r requirements.txt
       - name: Poarta HTML pe output-ul construit
+        env:
+          # Randarea trebuie SA PICA daca indexul de cautare nu se construieste. In productie
+          # e invers dinadins (un index lipsa inseamna cautare simplificata, nu site jos —
+          # generator/pagefind_index.py); aici, un esec tacut ar ajunge pe live si s-ar vedea
+          # abia cand un cititor cauta ceva si nu gaseste nimic.
+          PAGEFIND_STRICT: "1"
         run: |
           python -m generator.main --render-only
+          python -m generator.pagefind_index --verify output
           python tools/html_check.py

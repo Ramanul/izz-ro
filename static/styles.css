@@ -995,6 +995,21 @@ picture { display: contents; }
 .search-results a { font-family: var(--font-display); font-weight: 700; font-size: var(--fs-md); color: var(--ink); }
 .search-results a:hover { color: var(--gold-strong); }
 .search-meta { color: var(--ink-3); font-size: var(--fs-eyebrow); font-family: var(--font-mono); }
+/* Controalele de sub casuta de cautare (categorie + ordonare) stau pe un rand cat incape. */
+.search-controls {
+  display: flex; flex-wrap: wrap; align-items: center; gap: var(--s-8);
+  max-width: var(--measure);
+}
+.search-sort { display: inline-flex; flex-wrap: wrap; gap: var(--s-5); }
+/* Termenii gasiti, marcati in titlu. `mark` vine din browser cu fond galben si text negru,
+   care in tema intunecata ar fi o pata: folosim spalarea aurie a temei, definita in ambele
+   variante, deci marcarea se inverseaza odata cu restul paginii. */
+.search-results mark {
+  background: var(--gold-wash); color: var(--ink);
+  padding: 0 .12em; border-radius: 2px;
+}
+/* Cat timp vine raspunsul, lista e deja goalita; o stingem ca sa nu para rezultat final. */
+#search-results[aria-busy="true"] { opacity: .45; }
 @media (max-width: 520px) {
   .search-quick-filters { gap: var(--s-5); }
   .search-quick-label { width: 100%; }
