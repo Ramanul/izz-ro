@@ -22,7 +22,7 @@ from slugify import slugify
 from . import config, covers, geo, htmlart
 from .select import (_dedup, _dedup_sources, _diversify, _entity_index,
                      _pick_hero, _quality_gate, anunt_oficial_fara_corp, filtru_cautare_rapida,
-                     titlu_afisare)
+                     publicitar_la_sursa, titlu_afisare)
 # Re-export DELIBERAT, nu import mort: `tests/test_render_editorial.py` le cheama ca
 # `render._slug_stems` / `render.sources_coherent` (9 apeluri), iar `tools/qa_check.py:18`
 # importa `sources_coherent` din `generator.render`, nu din `generator.select` — si scriptul
@@ -261,12 +261,20 @@ def assign_slugs(articles: list) -> None:
     `state.save` ca slug-ul sa intre in stare si sa supravietuiasca intre rulari.
 
     Doua treceri: slug-urile deja publicate isi rezerva locul intai, ca un titlu nou identic
-    sa primeasca sufixul numeric, nu invers.
+    sa primeasca sufixul numeric, nu invers. A treia trecere repara coruptiile istorice: doua
+    articole care poarta ACELASI slug in stare (masurat 2026-10-03: 16 grupuri / 36 randuri in
+    fereastra de 20 zile) se scriau unul peste altul la aceeasi cale — primul din lista isi
+    pastreaza permalinkul, restul primesc sufix numeric.
     """
     luate: set = set()
+    dublate: list[dict] = []
     for a in articles:
         if a.get("slug"):
-            luate.add((a.get("category", "general"), a["slug"]))
+            cheie = (a.get("category", "general"), a["slug"])
+            if cheie in luate:
+                dublate.append(a)
+            else:
+                luate.add(cheie)
     for a in articles:
         if a.get("slug"):
             continue
@@ -282,6 +290,14 @@ def assign_slugs(articles: list) -> None:
         while (cat, slug) in luate:
             n += 1
             slug = f"{base}-{n}"
+        luate.add((cat, slug))
+        a["slug"] = slug
+    for a in dublate:
+        cat = a.get("category", "general")
+        slug, n = a["slug"], 1
+        while (cat, slug) in luate:
+            n += 1
+            slug = f"{a['slug']}-{n}"
         luate.add((cat, slug))
         a["slug"] = slug
 
@@ -755,6 +771,10 @@ def build(articles: list, mod: dict | None = None) -> None:
         # Articolele vechi fara `processed_by` se marcheaza: toate au trecut prin model B/C,
         # iar golul de conformitate e eroarea mai scumpa dintre cele doua.
         a["ai_generat"] = a.get("processed_by") not in ("official", "fallback")
+        # Transparența sursei promoționale (audit extern 2026-10-03): articolul original
+        # poate fi advertorial la sursă — eticheta se afișează în pagină, nu eliminăm
+        # articolul. Computat o dată aici, citit de article.html.
+        a["publicitar_la_sursa"] = publicitar_la_sursa(a)
     assign_slugs(articles)
     # data formatata e artefact de AFISARE, nu identitate: se recalculeaza la fiecare randare
     # si nu are ce cauta in stare (`assign_slugs` ruleaza acum si inainte de `state.save`).
@@ -1313,6 +1333,10 @@ def _render_ghiduri(env: Environment, articles: list) -> None:
     for eid, ent in entities.items():
         cat_stiri = ent.get("categorie_stiri", "")
         related = [a for a in articles if a.get("category") == cat_stiri][:5]
+        # „Știri despre acest subiect" mintea: lista e ultimele articole din categoria
+        # ghidului, nu despre subiect (audit extern 2026-10-03). Eticheta spune ce sunt.
+        eticheta_stiri = ("Cele mai noi din "
+                          + config.CATEGORY_LABELS.get(cat_stiri, cat_stiri.capitalize()))
         # FAQPage e un SUBTIP de WebPage: pagina de ghid *este* FAQ-ul. Deci intrebarile stau
         # pe nodul paginii, nu pe un al doilea nod care ar pretinde acelasi URL cu alt `@id`.
         # Fara intrebari nu se declara FAQPage deloc — un FAQPage cu `mainEntity` gol e o
@@ -1345,6 +1369,7 @@ def _render_ghiduri(env: Environment, articles: list) -> None:
                ghid_tpl.render(**_base_ctx(
                    f"/ghiduri/{eid}/", ent=ent, categorii=categorii,
                    categorii_icon=categorii_icon, related_news=related,
+                   related_news_eticheta=eticheta_stiri,
                    jsonld_nodes=[breadcrumb_jsonld], jsonld_page=jsonld_page,
                    calculator_html=calculator_html, sectiuni=sectiuni, active_cat=None)))
 
