@@ -36,6 +36,13 @@ INFRA = ROOT / "infra"
 NODE = shutil.which("node")
 FARA_NODE = "Node lipseste: nu se poate rula codul Workerului"
 
+# Conventia repo-ului (vezi test_calc_salariu.py): garda e la nivel de MODUL, nu pe
+# fiecare test. Pe unele medii `node` pur si simplu nu e in PATH (niciun workflow din
+# .github/workflows/ nu-l instaleaza, in afara de harta-data.yml), iar o garda pusa doar
+# pe o parte din teste lasa restul sa ruleze `subprocess.run([None, ...])` — au ramas 18
+# asa si au inrosit CI-ul in timp ce local, cu node instalat, treceau toate.
+pytestmark = pytest.mark.skipif(NODE is None, reason=FARA_NODE)
+
 
 PRELUDIU = r"""
 /*
@@ -290,7 +297,6 @@ def rulat() -> dict:
     return _ruleaza(MEDIU)
 
 
-@pytest.mark.skipif(NODE is None, reason=FARA_NODE)
 def test_fara_configuratie_raspunde_503_curat(rulat):
     assert rulat["cheie_fara_vapid"]["status"] == 503
     assert "VAPID_PUBLIC_KEY" in rulat["cheie_fara_vapid"]["corp"]["lipsesc"]
@@ -301,7 +307,6 @@ def test_fara_configuratie_raspunde_503_curat(rulat):
     assert rulat["cheie_cu_vapid"]["corp"]["cheie"]
 
 
-@pytest.mark.skipif(NODE is None, reason=FARA_NODE)
 def test_abonarea_se_scrie_o_singura_data(rulat):
     assert rulat["abonare_noua"]["status"] == 201
     assert rulat["abonare_noua"]["corp"]["nou"] is True
@@ -312,20 +317,17 @@ def test_abonarea_se_scrie_o_singura_data(rulat):
     assert rulat["abonare_fara_chei"]["status"] == 400
 
 
-@pytest.mark.skipif(NODE is None, reason=FARA_NODE)
 def test_starea_numara_si_cere_token(rulat):
     assert rulat["stare"]["corp"]["abonati"] == 5
     assert rulat["stare_fara_token"]["status"] == 401
 
 
-@pytest.mark.skipif(NODE is None, reason=FARA_NODE)
 def test_politica_refuza_inainte_de_orice_trimitere(rulat):
     assert rulat["trimite_fara_token"]["status"] == 401
     assert rulat["trimite_prost"]["status"] == 422
     assert rulat["trimite_prost"]["corp"]["refuzat"] is True
 
 
-@pytest.mark.skipif(NODE is None, reason=FARA_NODE)
 def test_repetitia_nu_trimite_si_nu_consuma_ziua(rulat):
     assert rulat["uscat"]["corp"]["uscat"] is True
     assert rulat["uscat"]["corp"]["arFiPlecat"] == 5
@@ -333,7 +335,6 @@ def test_repetitia_nu_trimite_si_nu_consuma_ziua(rulat):
     assert rulat["uscat_cap"] is None, "repetitia a consumat plafonul zilei"
 
 
-@pytest.mark.skipif(NODE is None, reason=FARA_NODE)
 def test_loturile_se_continua_fara_sa_se_ciocneasca_de_plafon(rulat):
     assert rulat["trimite_lot1"]["corp"]["trimise"] == 2
     assert rulat["trimite_cereri1"] == 2
@@ -346,13 +347,11 @@ def test_loturile_se_continua_fara_sa_se_ciocneasca_de_plafon(rulat):
     assert rulat["trimite_antete"]["ttl"] == str(24 * 3600)
 
 
-@pytest.mark.skipif(NODE is None, reason=FARA_NODE)
 def test_maxim_o_alerta_pe_zi(rulat):
     assert rulat["a_doua_zi"]["status"] == 409
     assert rulat["a_doua_cereri"] == 0, "a doua alerta din aceeasi zi a plecat totusi"
 
 
-@pytest.mark.skipif(NODE is None, reason=FARA_NODE)
 def test_abonamentele_moarte_se_sterg(rulat):
     assert rulat["morti"]["corp"]["trimise"] == 1
     assert rulat["morti"]["corp"]["sterse"] == 1
@@ -360,14 +359,12 @@ def test_abonamentele_moarte_se_sterg(rulat):
     assert rulat["morti_stergeri"] == 1
 
 
-@pytest.mark.skipif(NODE is None, reason=FARA_NODE)
 def test_dezabonarea_scoate_cheia(rulat):
     assert rulat["dezabonare"]["status"] == 200
     assert rulat["dezabonare_ramase"] == 0
     assert rulat["dezabonare_straina"]["status"] == 400
 
 
-@pytest.mark.skipif(NODE is None, reason=FARA_NODE)
 def test_workerul_compune_rutele(rulat):
     assert rulat["worker_push"]["status"] == 200, "pushul nu ajunge la push.js prin worker"
     assert rulat["worker_sw_cache"] == "public, max-age=0, must-revalidate"

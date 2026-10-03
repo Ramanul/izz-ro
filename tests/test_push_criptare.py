@@ -37,6 +37,13 @@ PUSH_JS = ROOT / "infra" / "push.js"
 NODE = shutil.which("node")
 FARA_NODE = "Node lipseste: nu se poate rula codul Workerului"
 
+# Conventia repo-ului (vezi test_calc_salariu.py): garda e la nivel de MODUL, nu pe
+# fiecare test. Pe unele medii `node` pur si simplu nu e in PATH (niciun workflow din
+# .github/workflows/ nu-l instaleaza, in afara de harta-data.yml), iar o garda pusa doar
+# pe o parte din teste lasa restul sa ruleze `subprocess.run([None, ...])` — au ramas 18
+# asa si au inrosit CI-ul in timp ce local, cu node instalat, treceau toate.
+pytestmark = pytest.mark.skipif(NODE is None, reason=FARA_NODE)
+
 
 PRELUDIU = r"""
 /*
@@ -248,7 +255,6 @@ def test_modulul_exista():
     assert PUSH_JS.is_file(), "infra/push.js lipseste"
 
 
-@pytest.mark.skipif(NODE is None, reason=FARA_NODE)
 def test_harnessul_poate_pica():
     """Cazul negativ al intregii metode: un modul STRICAT trebuie sa se vada, nu sa treaca."""
     with tempfile.TemporaryDirectory() as tmp:
@@ -263,7 +269,6 @@ def test_harnessul_poate_pica():
                      stricat)
 
 
-@pytest.mark.skipif(NODE is None, reason=FARA_NODE)
 def test_criptarea_respecta_vectorul_din_rfc8291():
     r = _ruleaza(VECTOR)
     assert r["sare_corecta"], "sarea nu ajunge in antet"
@@ -275,14 +280,12 @@ def test_criptarea_respecta_vectorul_din_rfc8291():
     assert r["rs_acopera"], "dimensiunea inregistrarii nu acopera cifrul: mesajul s-ar imparti in bucati"
 
 
-@pytest.mark.skipif(NODE is None, reason=FARA_NODE)
 def test_alerta_se_decripteaza_cu_cheia_clientului():
     r = _ruleaza(VECTOR)
     assert r["roundtrip"], "mesajul criptat nu se intoarce la textul initial"
     assert r["delimitator"] == 2, "RFC 8188 cere delimitatorul 0x02 la finalul textului clar"
 
 
-@pytest.mark.skipif(NODE is None, reason=FARA_NODE)
 def test_vapid_jwt_e_semnat_corect():
     r = _ruleaza(VECTOR)
     assert r["jwt_antet"] == {"typ": "JWT", "alg": "ES256"}
@@ -293,14 +296,12 @@ def test_vapid_jwt_e_semnat_corect():
     assert r["jwt_pem_verificat"], "cheia in forma PEM nu semneaza la fel ca cea in base64url"
 
 
-@pytest.mark.skipif(NODE is None, reason=FARA_NODE)
 def test_politica_accepta_alerta_faptica():
     r = _ruleaza(POLITICA)
     assert r["bun"]["ok"] is True, r["bun"]["motive"]
     assert r["acronim_bun"]["ok"] is True, f"SUA e acronim, nu tipat: {r['acronim_bun']['motive']}"
 
 
-@pytest.mark.skipif(NODE is None, reason=FARA_NODE)
 @pytest.mark.parametrize("caz", ["gol", "emoji", "exclamare", "intrebare", "suspans",
                                  "tipat", "momitor", "text_scurt", "url_strain",
                                  "url_prima", "url_cu_urmatoare", "repetat"])
@@ -311,7 +312,6 @@ def test_politica_refuza_clickbaitul(caz):
     assert r[caz]["motive"], "refuzul fara motiv nu ajuta pe nimeni"
 
 
-@pytest.mark.skipif(NODE is None, reason=FARA_NODE)
 def test_validari_de_intrare():
     r = _ruleaza(POLITICA)
     g = r["gazde"]
