@@ -32,7 +32,8 @@ from typing import NamedTuple
 
 
 class Problema(NamedTuple):
-    cod: str          # citat_inventat | cifra_straina | rezerva_pierduta | cuvant_strain_titlu
+    cod: str          # citat_inventat | cifra_straina | rezerva_pierduta | cuvant_strain_titlu |
+                      # dublare_cuvinte
     detaliu: str
 
 
@@ -454,6 +455,30 @@ def cuvinte_deformate_sursa(titlu: str, slug_sursa: str,
     return straine
 
 
+# --- dublari simple de cuvinte (2026-10-03, audit extern) ---
+# „Ac Acesta" pe live: rezumatul generat avea text stricat prin repetare, iar nicio
+# verificare nu prindea clasa. Regula mecanica: ACELASI cuvant de doua ori consecutiv,
+# ignorand cazul. „Ac Acesta" insusi (fragment + cuvant) nu e dublare exacta si nu e
+# distingabil mecanic de o enumerare legitima fara falsuri pozitive — garda prinde clasa
+# „cuvant cuvant" (ex. „scopul scopul"), care e ce se poate verifica determinist.
+# Raport-only: merg in `advisory_issues` (nu sunt in _BLOCKING din raport_copiere),
+# fiindca perechi legitime (interjectii fara virgula, toponime repetate) exista si se
+# calibreaza pe jurnal inainte de orice activare.
+_INTERJECTII = {"vai", "hei", "hop", "hai", "aha", "oho", "ehei", "da", "nu", "ba"}
+
+
+def dublari_cuvinte(text: str) -> list[str]:
+    """Cuvintele repetate consecutiv in titlu sau rezumat (ex. „scopul scopul")."""
+    gasite, vazute = [], set()
+    for m in re.finditer(r"\b(\w{2,})\s+\1\b", (text or ""), flags=re.IGNORECASE):
+        c = m.group(1).lower()
+        if c in _INTERJECTII or c in vazute:
+            continue
+        vazute.add(c)
+        gasite.append(m.group(1))
+    return gasite
+
+
 def verifica(titlu: str, rezumat: str, sursa: str, slug_sursa: str = "",
              frecventa: dict | None = None) -> list[Problema]:
     """Toate verificarile, pe titlu + rezumat impreuna.
@@ -488,5 +513,10 @@ def verifica(titlu: str, rezumat: str, sursa: str, slug_sursa: str = "",
         probleme.append(Problema(
             "cuvant_deformat_sursa",
             f"„{c}” e forma rară în corpus; sursa îl scrie aproape la fel în slug (ex. Transtrictica/Transelectrica)",
+        ))
+    for c in dublari_cuvinte(text):
+        probleme.append(Problema(
+            "dublare_cuvinte",
+            f"„{c} {c}” — cuvânt repetat consecutiv în titlu sau rezumat",
         ))
     return probleme

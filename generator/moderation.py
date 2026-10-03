@@ -11,6 +11,7 @@ from datetime import datetime, timezone, timedelta
 import yaml
 
 from . import config, guard, cluster
+from .select import e_anunt_oficial
 from .util import normalize_url, title_tokens
 
 MOD_PATH = os.path.join(config.ROOT, "moderation.yaml")
@@ -231,7 +232,7 @@ def _dedup_visible(articles: list) -> list:
         reverse=True,
     )
     kept: list[dict] = []
-    kept_meta: list[tuple[str, datetime, set, set]] = []
+    kept_meta: list[tuple[str, datetime, set, set, bool]] = []
     seen_urls: set[str] = set()
     by_stem: dict[str, list[int]] = {}
     for article in ordered:
@@ -241,6 +242,7 @@ def _dedup_visible(articles: list) -> list:
         ta_time = _article_time(article)
         ta = _event_stems(article)
         ea = _entity_stems(article)
+        oficial = e_anunt_oficial(article)
         if ta:
             counts: dict[int, int] = {}
             for stem in ta:
@@ -251,12 +253,18 @@ def _dedup_visible(articles: list) -> list:
             for idx, inter in counts.items():
                 if inter < 3:
                     continue
-                _, tb_time, tb, eb = kept_meta[idx]
+                _, tb_time, tb, eb, tb_oficial = kept_meta[idx]
                 if abs(ta_time - tb_time) > timedelta(hours=48):
                     continue
                 if not cluster._strict_match(inter, na + len(tb) - inter):
                     continue
                 if ea and eb and not (ea & eb):
+                    continue
+                if oficial or tb_oficial:
+                    # Anunt oficial de institutie: titlurile de sablon asemanatoare nu
+                    # inseamna acelasi eveniment (audit extern 2026-10-03, cazul Primăria
+                    # Moravița). Fereastra de 48h + poarta de entitati nu-l acopera, caci
+                    # anunturile oficiale nu poarta entitati — dedup-ul pe titlu nu-i aplica.
                     continue
                 is_dup = True
                 break
@@ -264,7 +272,7 @@ def _dedup_visible(articles: list) -> list:
                 continue
         new_idx = len(kept)
         kept.append(article)
-        kept_meta.append((norm_url, ta_time, ta, ea))
+        kept_meta.append((norm_url, ta_time, ta, ea, oficial))
         if norm_url:
             seen_urls.add(norm_url)
         for stem in ta:

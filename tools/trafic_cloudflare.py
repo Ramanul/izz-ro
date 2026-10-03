@@ -114,6 +114,84 @@ def interogheaza(token: str, cont: str, zile: int = 7) -> dict:
             return {"errors": [{"code": exc.code, "message": exc.reason}]}
 
 
+# --- IZZ-0427: vizibilitatea pe CAI (teme) -------------------------------------------------------------
+# Totalurile din INTEROGARE raspund „cat se intampla", dar nu POT borcan numarul pe subiecte:
+# workersInvocationsAdaptive nu are nici path, nici referer. Zona izz.ro trece tot traficul
+# prin proxy-ul Cloudflare (ruta `izz.ro/*` din infra/wrangler.toml), deci datasetul DE ZONA
+# httpRequestsAdaptiveGroups vede aceleasi cereri, cu path. Sonda e BEST-EFFORT peste raportul
+# de baza: daca tokenul nu are scope de zona, eroarea API se tipareste si programul NU pica —
+# o cifra pe care n-o pot masura ramane nenotata, niciodata inventata.
+INTEROGARE_CAI = """
+query ($zona: String!, $de_la: Time!, $pana_la: Time!) {
+  viewer {
+    zones(filter: {zoneTag: $zona}) {
+      httpRequestsAdaptiveGroups(
+        limit: 300
+        filter: {datetime_geq: $de_la, datetime_leq: $pana_la}
+      ) {
+        count
+        dimensions { clientRequestPath clientCountryName }
+      }
+    }
+  }
+}
+"""
+
+
+def _zone_tag(token: str, zone: str = "izz.ro") -> str | None:
+    """ID-ul zonei dupa nume, prin REST. Masurat de ce e REST, nu GraphQL: filt-ul GraphQL
+    pe zone NU accepta `zoneName` (eroarea exacta, 2026-10-03: 'unknown arg zoneName')."""
+    cerere = urllib.request.Request(
+        f"https://api.cloudflare.com/client/v4/zones?name={zone}",
+        headers={"Authorization": f"Bearer {token}"})
+    try:
+        with urllib.request.urlopen(cerere, timeout=30) as r:  # noqa: S310 - endpoint literal
+            date_ = json.loads(r.read())
+    except urllib.error.HTTPError as exc:
+        print(f"  REST /zones a refuzat: {exc.code}")
+        return None
+    rezultate = date_.get("result") or []
+    return rezultate[0].get("id") if rezultate else None
+
+
+def interogheaza_cai(token: str, zile: int = 7) -> dict:
+    zona = _zone_tag(token)
+    if not zona:
+        return {"errors": [{"code": "zone-id", "message": "nu am putut rezolva id-ul zonei"}]}
+    de_la, pana_la = fereastra(zile)
+    corp = json.dumps({"query": INTEROGARE_CAI,
+                       "variables": {"zona": zona, "de_la": de_la, "pana_la": pana_la}}).encode()
+    cerere = urllib.request.Request(API, data=corp, headers={
+        "Authorization": f"Bearer {token}", "Content-Type": "application/json"})
+    try:
+        with urllib.request.urlopen(cerere, timeout=30) as r:  # noqa: S310 - aceeasi garda
+            return json.loads(r.read())
+    except urllib.error.HTTPError as exc:
+        try:
+            return json.loads(exc.read())
+        except Exception:
+            return {"errors": [{"code": exc.code, "message": exc.reason}]}
+
+
+def rezuma_cai(raspuns: dict) -> dict:
+    """Cereri agregate pe prefix tematic (/sport/, /local/...). Pur, testabil fara retea."""
+    conturi = (((raspuns or {}).get("data") or {}).get("viewer") or {}).get("zones") or []
+    pe_tema: dict[str, int] = {}
+    pe_tara: dict[str, int] = {}
+    total = 0
+    for zona in conturi:
+        for punct in zona.get("httpRequestsAdaptiveGroups") or []:
+            dim, suma = punct.get("dimensions") or {}, punct.get("sum") or {}
+            cale = dim.get("clientRequestPath") or ""
+            cereri = int(suma.get("requests") or punct.get("count") or 0)
+            total += cereri
+            tema = cale.strip("/").split("/")[0] if cale not in ("", "/") else "<home>"
+            pe_tema[tema] = pe_tema.get(tema, 0) + cereri
+            tara = dim.get("clientCountryName") or "?"
+            pe_tara[tara] = pe_tara.get(tara, 0) + cereri
+    return {"total": total, "pe_tema": pe_tema, "pe_tara": pe_tara}
+
+
 def main() -> int:
     token, cont = os.environ.get("CLOUDFLARE_API_TOKEN"), os.environ.get("CLOUDFLARE_ACCOUNT_ID")
     if not token or not cont:
@@ -136,6 +214,28 @@ def main() -> int:
     print(f"Cereri catre Workers, ultimele 7 zile: {total:,}\n")
     for eticheta, cereri, err in randuri:
         print(f"  {eticheta:<32} {cereri:>10,} cereri  {err:>6,} erori")
+
+    # IZZ-0427: sondajul pe cai e aditiv si optional — esecul LUI nu transforma raportul
+    # de baza in esec (diagram: erorile de scope se tiparesc, nu se reduc in tacere).
+    print("\n-- Cereri pe cai (top 300), zone httpRequests —")
+    raspuns_cai = interogheaza_cai(token)
+    if (mesaje_cai := erori(raspuns_cai)):
+        print("  sondajul pe cai a refuzat; mesajul API:")
+        for m in mesaje_cai:
+            print(f"  - {m}")
+    else:
+        agregat = rezuma_cai(raspuns_cai)
+        if not agregat["total"]:
+            print("  raspuns valid, dar fara randuri — zona n-a vazut cereri in fereastra.")
+        else:
+            print(f"  total in fereastra (poate diferi de Workers: include media/static): "
+                  f"{agregat['total']:,}")
+            print("  pe precourseul tematic (primul segment din URL):")
+            for tema, cereri in sorted(agregat["pe_tema"].items(), key=lambda kv: -kv[1])[:15]:
+                print(f"    /{tema:<15} {cereri:>8,}  ({cereri / agregat['total'] * 100:.0f}%)")
+            print("  pe tari (top 8):")
+            for tara, cereri in sorted(agregat["pe_tara"].items(), key=lambda kv: -kv[1])[:8]:
+                print(f"    {tara:<18} {cereri:>8,}")
     return 0
 
 

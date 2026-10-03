@@ -219,6 +219,14 @@ jobs:
           # — era deja facuta pe 2026-09-12 si era INERTA fara asta: `GITHUB_SHA` e mereu setat
           # in Actions, deci ar fi castigat oricum daca ar fi fost primul in lant.
           BUILD_COMMIT_SHA: ${{ needs.pipeline.outputs.content_sha }}
+          # IZZ-0423 (arhiva, #198): mirror-ul NU are plafonul de 20.000 de fisiere al
+          # Workers Free (gh-pages = 1 GB). Supapa de buget e ridicata aici si numai aici:
+          # intregul set din fereastra TTL se randeaza, iar impreuna cu `keep_files` la
+          # publicare paginile pensionate supravietuiesc pe oglinda la aceeasi adresa.
+          # Primarul NU-si schimba supapa — oglinda suporta fara ea.
+          OUTPUT_FILE_BUDGET: "100000"
+          OUTPUT_FILE_CEILING: "110000"
+          OUTPUT_NON_ARTICLE_RESERVE: "1000"
         run: python -m generator.main --render-only
       - name: Publica pe mirror (host independent)
         uses: peaceiris/actions-gh-pages@84c30a85c19949d7eee79c4ff27748b70285e453 # v4
@@ -227,7 +235,12 @@ jobs:
           external_repository: Ramanul/ramanul.github.io
           publish_branch: gh-pages
           publish_dir: ./output
-          force_orphan: true
+          # IZZ-0423: fara force_orphan + keep_files. Paginile iesite din fereasta TTL
+          # NU se sterg la republicare — oglinda devine arhiva vietii destinate (#198).
+          # Urmare acceptata: adaugare continua de fisiere vechi pe gh-pages (plafon
+          # platformei 1 GB); masuram lunar cu automation-5331e2e9 si setam taierea
+          # cand ne apropiem — NU azi. Fallback-ul 404->mirror pe primar e PR separat.
+          keep_files: true
           cname: ""
 
   release-probe:

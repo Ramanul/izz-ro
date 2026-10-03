@@ -19,18 +19,50 @@ from slugify import slugify
 from . import config
 from .util import title_tokens, domain_of
 
+
+def e_anunt_oficial(a: dict) -> bool:
+    """Anunț emis de o instituție (feed oficial, procesat de `process_official`).
+
+    Două anunțuri oficiale DISTINCTE au frecvent titluri de șablon aproape identice —
+    „Rezultatul selecției dosarelor la concurs..." vine la fel de la aceeași primărie pentru
+    două posturi diferite, iar „Ofertă vânzare teren" la fel de la zece primării. Dedup-ul pe
+    similitudinea titlurilor le confunda (audit extern 2026-10-03: Primăria Moravița, asistent
+    medical comunitar vs. consilier școlar — al doilea disparea de pe site). Instituțiile emit
+    anunțuri ca posturi separate, deci nu se unesc niciodată doar pentru că titlurile seamănă;
+    duplicatele reale din același feed cad deja pe URL identic (moderation.seen_urls).
+    """
+    return a.get("processed_by") == "official"
+
+
+def publicitar_la_sursa(a: dict) -> bool:
+    """Material promotional la origine (advertorial), nu stire editoriala.
+
+    Semnalul e URL-ul original: CMS-urile tip Elle/Viva marcheaza sponsored content cu
+    segmentul `/advertorial/` in cale (audit extern 2026-10-03, cazul Philip Morris ->
+    Elle). Noi nu vindem reclame, dar cititorul trebuie sa vada distinctia: e etichetat
+    in pagina, nu eliminat — respingerea ar ascunde exact ce surse fac PR mascat.
+    """
+    if "/advertorial/" in (a.get("original_link") or ""):
+        return True
+    return any("/advertorial/" in (s.get("url") or "")
+               for s in (a.get("sources") or []))
+
+
 def _dedup(articles: list) -> list:
     """Elimina articolele despre acelasi eveniment (titluri foarte asemanatoare).
 
     Pastreaza varianta cea mai bogata: C inaintea B, mai multe surse, mai recent.
+    Exceptie: anunturile oficiale (`e_anunt_oficial`) nu se unesc pe titlu — vezi acolo.
     """
     ordered = sorted(articles, key=lambda a: a.get("published") or "", reverse=True)
     ordered.sort(key=lambda a: (0 if a.get("model") == "C" else 1, -len(a.get("sources") or [])))
     kept: list[dict] = []
     kept_len: list[int] = []
+    kept_oficial: list[bool] = []
     by_tok: dict[str, list[int]] = {}
     for a in ordered:
         tok = title_tokens(a.get("title") or a.get("original_title") or "")
+        oficial = e_anunt_oficial(a)
         is_dup = False
         if tok:
             counts: dict[int, int] = {}
@@ -40,12 +72,17 @@ def _dedup(articles: list) -> list:
             nt = len(tok)
             for idx, inter in counts.items():
                 if inter >= 4 or inter / (nt + kept_len[idx] - inter) >= 0.55:
+                    if oficial or kept_oficial[idx]:
+                        # Unul din doua e anunt oficial de institutie: asemanarea titlurilor
+                        # e suflul sablonului, nu acelasi eveniment. Le lasam pe amandoua.
+                        continue
                     is_dup = True
                     break
         if not is_dup:
             new_idx = len(kept)
             kept.append(a)
             kept_len.append(len(tok))
+            kept_oficial.append(oficial)
             for t in tok:
                 by_tok.setdefault(t, []).append(new_idx)
     return kept

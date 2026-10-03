@@ -8,21 +8,21 @@
 > Where the rest lives: `specs/regim-reguli.md` — unified audit closure ·
 > `specs/registru.tsv` — decisions · `CLAUDE.md` — canonical contract.
 
-**Updated:** 2026-10-03 (IZZ-0415 CI pe eșantion prin #407; IZZ-0416 media cardurilor PD/CC0 prin #414; IZZ-0420 marcaj AI Act în #411; protecțiile main verificate prin API [IZZ-0417])
+**Updated:** 2026-10-03 (IZZ-0415 CI pe eșantion prin #407; IZZ-0416 media cardurilor PD/CC0 prin #414; IZZ-0420 marcaj AI Act în #411; protecțiile main verificate prin API [IZZ-0417]; audit extern triat + rezolvat prin #425, #426 [IZZ-0426])
 
 ## Open
+- **Audit extern 3 oct — ÎNCHIS [IZZ-0426]:** dedup anunțuri oficiale + ghiduri pe surse primare + advertorial + gardă dublări (#425 merged, #426 merged); restul: deja rezolvate pe live sau nereproduse (registru).
 - **`ai_gateway` — pe main (#390 merged, #387 merged):** $0, cheile în `.env`; cataloagele free churn-uisază zilnic.
 - **Pages `izz-ro` ZOMBI — CONFIRMAT ȘTERS [IZZ-0411]:** `izz-ro.pages.dev` returnează `000` [IZZ-0366, 0395].
 - **PRODUS P1/P2 — media pe carduri [IZZ-0403, 0404 → IZZ-0416; #414 merged]:** portrete PD/CC0 + siluete județ,
   `covers.py` editorial. **Marcaj AI Act la prima expunere [IZZ-0420]:** trust-label «generat automat» pe card +
   meta digitalSourceType + pictograma UE Basic — amendament §4.3 adoptat, veto neexercitat [IZZ-0423].
 - **PRODUS P3 — harta: markere fără ierarhie vizuală [IZZ-0405]:** 482 evenimente, clickuri cablate; e afordanța, nu funcția.
-- **FEREASTRA TTL — DECIZIE EXECUTATĂ [IZZ-0421, 3 oct]:** tripwire-ul a crapat pe starea reală
-  (20.543 în fereastră vs 12.600, după ce #408 (merged) a adus datele reale de publicare); `ARTICLE_TTL_DAYS`
-  20 → **11** (decizie delegată în chat, Q1: „rezolva tot"; TTL 13 nu mai incape: 13.045). Se re-evaluează
-  la 12-13 când ingestul median coboară sub ~900/zi.
-- **Free-readiness — gazda ÎNCĂ PAID până 22 sep [IZZ-0313]:** ingest median 960/zi vs 590 dimensionat;
-  fereastra efectivă e acum 11 zile [IZZ-0421] [IZZ-0386, 0391, 0399].
+- **FEREASTRA TTL — DECIZIE EXECUTATĂ [IZZ-0421, 0424, 3 oct]:** tripwire-ul a crapat pe starea reală
+  (20.543 în fereastră vs 12.600, după ce #408 (merged) a adus datele reale); TTL 20 → 11, apoi 12 după
+  tăietura a 4 surse tech-en fără vizitatori măsurați (Q5). Marja actuală: 10.665 în fereastră (~2 zile).
+  Se re-evaluează la 13 când ingestul median coboară sub ~900/zi (automatizare lunară activă).
+- **Free-readiness — gazda ÎNCĂ PAID până 22 sep [IZZ-0313]:** [IZZ-0386, 0391, 0399] [IZZ-0421, 0424].
 - **`izz-failover` — KEEP [IZZ-0362]; marja NECUNOSCUTĂ [IZZ-0367, 0369]:** ambele cifre publicate retrase.
 - **REDUNDANȚA — ÎNCHISĂ [IZZ-0370 → IZZ-0373]:** `BUILD_COMMIT_SHA` în jobul `mirror`, #347 merged. **RECIDIVE —
   roșul de STARE separat de cel de COD [IZZ-0388…0391]; Coliziuni de ID la ALOCARE [IZZ-0392].**

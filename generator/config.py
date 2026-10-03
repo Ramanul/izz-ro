@@ -156,11 +156,7 @@ SOURCES = {
     # ----------------------------------------------------------------------------
     # AI — rubrica noua (owner 2026-08-21). Prima in bloc: e categoria cea mai infometata
     # (0 surse dedicate azi), iar ordinea dictului decide ordinea bugetului AI.
-            "marktechpost": {"name": "MarkTechPost",   "url": "https://www.marktechpost.com/feed/",     "category": "ai", "lang": "en"},
     # tech
-            "thenewstack": {"name": "The New Stack",   "url": "https://thenewstack.io/feed/",           "category": "tech", "lang": "en"},
-            "xda":        {"name": "XDA Developers",   "url": "https://www.xda-developers.com/feed/",   "category": "tech", "lang": "en"},
-            "kitguru":    {"name": "KitGuru",          "url": "https://www.kitguru.net/feed/",          "category": "tech", "lang": "en"},
             "connect":    {"name": "Connect.ro",       "url": "https://www.connect.ro/feed/",           "category": "tech"},
             "zonait":     {"name": "ZonaIT",           "url": "https://zonait.ro/feed/",                "category": "tech"},
     # sport — `fcinter1908` e, dupa Google, cel mai vizitat site real din istoric (763 vizite
@@ -385,13 +381,17 @@ RELATED_MIN_SHARED = 2         # "Articole conectate": minim entitati comune. 1 
 # issue #198, iar 19 ar plati inca o zi pentru o marja de care nu e nevoie azi.
 # Literal, nu `os.getenv`: `tests/test_reguli.py` citeste cifra de aici si o compara cu fiecare
 # rationament scris in repo. Un TTL configurabil din mediu ar rupe garda aia tacut.
-# 20 -> 11 (2026-10-03, decizie delegata de proprietar in chat — «rezolva tot», Q1; precedent
-# IZZ-0410): tripwire-ul test_buget_fisiere a crapat pe starea reala — 20.543 articole in fereastra
-# vs 12.600 pagini sub buget, dupa ce #408 a adus datele reale de publicare (mii de articole iesite
-# din viitor au intrat in fereastra). Masurat pe starea din 3 oct: TTL 13 -> 13.045 (NU incape),
-# 12 -> 12.208 (marja 392, sub o zi de ingest), 11 -> 11.176 (marja 1.424). Se revine la 12-13
-# daca ingestul median coboara sub ~900/zi la golirea completa a restantei.
-ARTICLE_TTL_DAYS = 11
+# 20 -> 11 -> 12 (2026-10-03, decizie delegata de proprietar in chat, Q1+Q5; precedente
+# IZZ-0410): tripwire-ul test_buget_fisiere a crapat in noaptea asta — 20.543 articole in
+# fereastra vs 12.600 pagini sub buget, dupa ce #408 a adus datele reale de publicare.
+# Masurari consecutive pe starea reala:
+#   intai:        TTL 13 -> 13.045 (NU incape) / 12 -> 12.208 / 11 -> 11.176
+#   dupa taierea surselor tech-en fara valoare masurata de cititor (xda, thenewstack,
+#   kitguru, marktechpost — ~450 articole in stare, nimeni nu le-a dat click relevant,
+#   spre deosebire de fcinter1908 care are 763 vizite măsurate si ramane):
+#                 TTL 12 -> 10.665 (marja 1.935 ~ 2 zile de ingest median)
+# Se revine spre 13 daca ingestul median coboara sub ~900/zi sustinut (autom. lunara).
+ARTICLE_TTL_DAYS = 12
 
 # Plafonul de fisiere al gazdei. Gazda e un Worker cu Static Assets de pe 2026-08-22
 # (#211, 40ac007), iar contul se intoarce pe **Workers FREE** din 2026-09-22 (decizie

@@ -12,14 +12,14 @@ categorie_stiri: economic
 valoare_curenta:
   brut: 1281
   moneda: RON
-  in_vigoare_de: "2026-01-01"
+  in_vigoare_de: "2024-09-01"
   act_normativ: "Legea 360/2023, actualizată prin OUG 156/2024"
   sursa_url: "https://cnpp.ro/"
   descriere_lunga: "Indemnizația socială pentru pensionari — statul completează pensia calculată până la acest prag, cu condiția realizării stagiului minim de cotizare de 15 ani."
 
 istoric:
   - brut: 1281
-    in_vigoare_de: "2026-01-01"
+    in_vigoare_de: "2024-09-01"
     act_normativ: "Legea 360/2023"
   - brut: 1106
     in_vigoare_de: "2024-01-01"
@@ -64,7 +64,11 @@ faq:
 relatii: {}
 
 verificat: false
-ultima_verificare: "2026-01-01"
+ultima_verificare: "2026-10-03"
+# Verificat la 2026-10-03 (surse concordante: MFE, Ministerul Muncii, presă): cuantumul de
+# 1.281 lei se menține de la 1 septembrie 2024, neindexat și în 2025-2026 — data din yaml
+# era greșită (2026-01-01). Rămâne neverificată sursa primară pentru act_normativ; de aceea
+# `verificat` rămâne false.
 
 monitorizare:
   surse:

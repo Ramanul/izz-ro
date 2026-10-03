@@ -438,3 +438,14 @@ def test_verifica_integreaza_noua_verificare_doar_cu_slug():
     assert "cuvant_deformat_sursa" in coduri
     from generator.raport_copiere import _BLOCKING
     assert "cuvant_deformat_sura" not in _BLOCKING and "cuvant_deformat_sursa" not in _BLOCKING
+
+
+def test_dublari_cuvinte_prinde_repetitia_consecutiva():
+    """Regresie audit extern 2026-10-03: „Ac Acesta" pe live — clasa mecanică verificabilă
+    e dublarea exactă consecutivă; fragmentul+cuvântul nu e distingabil fără falsuri pozitive."""
+    from generator.verifica_sinteza import dublari_cuvinte
+    assert dublari_cuvinte("Echipa a anunțat anunțat oficial programul") == ["anunțat"]
+    assert dublari_cuvinte("Rezultatul final final a fost comunicat") == ["final"]
+    assert dublari_cuvinte("Da, da, e clar") == []          # interjecție, cu virgulă
+    assert dublari_cuvinte("Ac Acesta a fost momentul") == []  # fragment ≠ cuvânt repetat
+    assert dublari_cuvinte("Meciul s-a încheiat 2-2") == []

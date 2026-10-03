@@ -116,7 +116,7 @@
   {# Știri legate #}
   {% if related_news %}
   <section class="utility-section">
-    <h2>📰 Știri despre acest subiect</h2>
+    <h2>📰 {{ related_news_eticheta | default('Știri din aceeași categorie') }}</h2>
     <ul class="related-news-list">
       {% for a in related_news %}
       <li><a href="{{ base }}/{{ a.category }}/{{ a.slug }}/">{{ a.title }}</a>
