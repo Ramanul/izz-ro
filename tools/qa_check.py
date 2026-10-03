@@ -15,6 +15,7 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, ROOT)
 
 from generator import config                                   # noqa: E402
+from generator.cluster import _strict_match                    # noqa: E402
 from generator.render import _quality_gate, _dedup, sources_coherent  # noqa: E402
 from generator.util import title_tokens                        # noqa: E402
 from tools.title_quality_audit import audit as audit_title_quality  # noqa: E402
@@ -62,6 +63,26 @@ def main() -> int:
           + (f"  (in insamantare, doar warn: {empty_seed})" if empty_seed else ""))
     print(f"fallback (fara AI)               : {len(fallback)} ({len(fallback)/n*100:.0f}%)")
     print(f"posibile duplicate de eveniment  : {dup} ({dup/n*100:.0f}%)  (warn > {DUP_WARN_RATE*100:.0f}%)")
+
+    # Sinteze C strict-asemanatoare — sub-unirea story-urilor (IZZ-0419, REPORT-ONLY).
+    # Doua sinteze C care trec pragul `_strict_match` (acelasi folosit la absorbirea
+    # cross-run) ar trebui sa fie ACELASI story: cazul real ANAF din 1 oct — doua sinteze
+    # la 8 minute distanta despre aceleasi controale (notes/story-intelligence/
+    # audit-arhitectura.md §D). Metrica masoara dimensiunea problemei inainte de Etapa 5;
+    # relaxarea clusteringului e zona protejata (§10 directiva) si nu se atinge aici.
+    c_stems = [({t[:6] for t in title_tokens(a.get("title", ""))}, a) for a in C]
+    perechi_story = []
+    for i in range(len(c_stems)):
+        for j in range(i + 1, len(c_stems)):
+            inter = len(c_stems[i][0] & c_stems[j][0])
+            union = len(c_stems[i][0] | c_stems[j][0])
+            if _strict_match(inter, union):
+                perechi_story.append((c_stems[i][1], c_stems[j][1]))
+    print(f"sinteze C strict-asemanatoare    : {len(perechi_story)} perechi "
+          "(report-only, sub-unire story — IZZ-0419)")
+    for x, y in perechi_story[:5]:
+        print(f"    · {x.get('published', '')[:16]} / {y.get('published', '')[:16]}  "
+              f"{x.get('title', '')[:60]}")
     print(
         "titluri oficiale >110 la afișare : "
         f"{title_report['display_titles_over_limit']}  (prag FAIL > 0)"
