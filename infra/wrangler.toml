@@ -8,12 +8,13 @@ routes = [
   { pattern = "izz.ro/*", zone_name = "izz.ro" }
 ]
 
-# Worker-ul deployat manual pe 2026-08-22 (nu din repo) a introdus o clasa Durable Object
-# `RateLimiter` si un Workflow, prin dashboard. Versiunea din repo nu le exporta, iar
-# Cloudflare refuza un deploy care lasa in urma o clasa DO fara migrare explicita.
-# FIXAT 2026-09-01: Tag-ul s-a schimbat la "cleanup-do-lifecycle-2026-09-01" pentru a forta
-# calea coreca in Cloudflare (migrari se aplica o singura data per tag; un tag vechi e no-op).
-# Trei deploy-uri au picat pe cod 10064 cu tag-ul anterior; cu tag nou se aplica migrarea.
-[[migrations]]
-tag = "cleanup-do-lifecycle-2026-09-01"
-deleted_classes = ["RateLimiter"]
+# Nota migrarilor (actualizata 2026-10-03): worker-ul deployat manual pe 2026-08-22 (nu din
+# repo) a introdus o clasa Durable Object `RateLimiter` si un Workflow, prin dashboard. Pe
+# 2026-09-01 s-a adaugat aici migrarea `deleted_classes: ["RateLimiter"]` ca sa curete clasa
+# fara ca deploy-ul sa oppoare orfelinatul ei. La deploy-ul din 2026-10-03 (PR #414) Cloudflare
+# a raspuns cu cod 10074: „Cannot apply delete-class migration to class 'RateLimiter' which was
+# not exported in the previous version" — adica versiunea live NU mai exporta clasa (a fost
+# curatata cândva intre timp), deci nu mai exista nimic de sters, iar migrarea ramasa otraveste
+# orice deploy viitor. Sectiunea s-a scos complet. Daca un DO/Workflow revine vreodata in acest
+# worker, migrarea se scrie iar — cu tag NOU, pentru ca migrarile vechi sunt no-op.
+
