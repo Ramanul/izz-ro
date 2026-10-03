@@ -429,6 +429,14 @@ picture { display: contents; }
   color: var(--ink-3); font-size: var(--fs-xs); cursor: pointer; align-self: flex-start;
 }
 .stats-reset:hover { border-color: var(--danger); color: var(--danger); }
+/* Retragerea/reactivarea consimtamantului din panoul ◎: acelasi stil ca resetarea,
+   distinct ca utilizatorul vada ca sunt doua actiuni diferite. */
+.stats-consent {
+  margin-top: var(--s-5); padding: var(--s-8) var(--s-13);
+  background: none; border: 1px solid var(--line-strong); border-radius: 4px;
+  color: var(--ink-3); font-size: var(--fs-xs); cursor: pointer; align-self: flex-start;
+}
+.stats-consent:hover { border-color: var(--gold-strong); color: var(--gold-strong); }
 .stats-hint { font-size: var(--fs-xs); color: var(--ink-3); margin: 0; font-style: italic; }
 
 /* ---------------------------------------------------------- Responsive --- */
