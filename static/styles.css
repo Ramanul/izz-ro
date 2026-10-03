@@ -256,7 +256,7 @@ picture { display: contents; }
    tipe. Locul pictogramei oficiale UE („Fully AI-Generated") e inaintea textului, daca se adauga
    fisierul in static/ — pictograma e OPTIONALA, dezvaluirea in sine nu. Vezi REGULI-SINTEZA.md §4. */
 .ai-mark { color: var(--ink-2); }
-/* pictograma oficiala UE (Basic icon, static/icons/ai-generated.svg, IZZ-0416): fisier
+/* pictograma oficiala UE (Basic icon, static/icons/ai-generated.svg, IZZ-0420): fisier
    unic, inline prin <img>; dimensiunea calib pe randul de meta, aliniata la text */
 .ai-mark img { width: .95em; height: .95em; vertical-align: -.12em; margin-right: .3em; }
 

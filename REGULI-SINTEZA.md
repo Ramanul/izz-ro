@@ -186,7 +186,7 @@ La ~2.000 de titluri nu e realist.
   **Care din cele trei ni se potrivește nu e stabilit** — alegerea depinde de cât din conținut
   e responsabilitatea AI-ului, iar pagina cu pictogramele n-a fost deschisă încă. De făcut.
 
-**AMENDAMENT 2026-10-03 (IZZ-0416) — cele două întrebări deschise de mai sus sunt închise,
+**AMENDAMENT 2026-10-03 (IZZ-0420) — cele două întrebări deschise de mai sus sunt închise,
 cu textul primar verificat, nu cu rezumatul. Așteaptă veto-ul proprietarului.**
 
 1. **Numărarea articolelor din §4.1 era incompletă.** Citit pe textul AI Act (AI Act Explorer,
