@@ -11,9 +11,7 @@
 **Updated:** 2026-10-03 (IZZ-0415 CI pe eșantion prin #407; IZZ-0416 media cardurilor PD/CC0 prin #414; IZZ-0420 marcaj AI Act în #411; protecțiile main verificate prin API [IZZ-0417]; audit extern triat + rezolvat prin #425, #426 [IZZ-0425])
 
 ## Open
-- **Audit extern 3 oct — ÎNCHIS [IZZ-0425]:** dedup anunțuri oficiale (Călan/Nucet, +326/+595 recuperate) +
-  ghiduri corectate pe surse primare + advertorial + gardă dublări, #425+#426 merged. Restul auditului: deja
-  rezolvate pe live între timp sau nereproduse (detalii în registru).
+- **Audit extern 3 oct — ÎNCHIS [IZZ-0425]:** dedup anunțuri oficiale + ghiduri pe surse primare + advertorial + gardă dublări, #425+#426; restul: deja rezolvate pe live sau nereproduse (registru).
 - **`ai_gateway` — pe main (#390 merged, #387 merged):** $0, cheile în `.env`; cataloagele free churn-uisază zilnic.
 - **Pages `izz-ro` ZOMBI — CONFIRMAT ȘTERS [IZZ-0411]:** `izz-ro.pages.dev` returnează `000` [IZZ-0366, 0395].
 - **PRODUS P1/P2 — media pe carduri [IZZ-0403, 0404 → IZZ-0416; #414 merged]:** portrete PD/CC0 + siluete județ,
