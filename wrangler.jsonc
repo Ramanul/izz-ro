@@ -8,6 +8,9 @@
   "compatibility_date": "2026-06-18",
   "assets": {
     "directory": "./output",
+    // Obligatoriu cand scriptul citeste assets-urile din cod: fara numele asta de binding,
+    // env.ASSETS e undefined iar fallback-ul moare cu 500 (prins pe preview, IZZ-0428).
+    "binding": "ASSETS",
     // Pages DEDUCEA singur 404.html; Workers NU o face — fara linia asta,
     // orice URL inexistent intoarce un 404 gol si pagina noastra 404.html
     // (output/404.html) nu mai e servita niciodata.
