@@ -175,6 +175,29 @@ def test_pagina_de_cautare_arata_spre_indexul_generat_de_pipeline():
     assert "JavaScript" in html   # <noscript>: cautarea e client-side, o spunem, nu ascundem
 
 
+def test_golirea_campului_anuleaza_cererea_in_drum():
+    """Regresie gasita ruland pagina in browser: rezultate care REAPAR dupa ce stergi textul.
+
+    `ruleaza()` goleste lista si iese devreme cand nu mai e nici termen, nici filtru. Un
+    raspuns Pagefind plecat cu ~200 ms mai devreme (debounce) inca vine; fara `cerere++` in
+    ramura aia, el isi gaseste `idCerere === cerere` si redeseneaza exact lista tocmai
+    golita — 50 de titluri care apar din senin intr-o pagina pe care ai lasat-o goala.
+    Masurat in happy-dom, pe motorul Pagefind real servit din output/_pagefind/: inainte de
+    fix, scenariul „camp golit, fara filtre" afisa 1100 de rezultate vechi; dupa fix, 0.
+    """
+    js = open(os.path.join(ROOT, "static", "search.js"), encoding="utf-8").read()
+    inceput = js.index("if (!termeni.length && !areFiltre) {")
+    ramura = js[inceput: js.index("\n      }", inceput)]
+    # Fara comentarii: un comentariu care POMENESTE contorul nu e o invalidare a lui, iar
+    # garda care se multumeste cu substring-ul ar trece si cu fixul sters (verificat: a
+    # trecut, la prima versiune a testului, cu `cerere++` scos din cod).
+    cod = "\n".join(l for l in ramura.splitlines() if not l.strip().startswith("//"))
+    assert "cerere++;" in cod, (
+        "ramura care goleste lista nu mai anuleaza cererile in drum; un raspuns intarziat "
+        "va redesena rezultate peste pagina goala")
+    assert "return;" in ramura   # altfel am citit alt bloc decat cel verificat
+
+
 # --- poarta de build ---------------------------------------------------------------
 def test_verifica_pica_daca_bundleul_e_incomplet(tmp_path):
     """Cazul negativ al portii din `tests.yml`: un index gol nu are voie sa treaca."""

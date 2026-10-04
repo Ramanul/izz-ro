@@ -257,6 +257,11 @@
       out.textContent = "";
 
       if (!termeni.length && !areFiltre) {
+        // Campul si filtrele au fost golite: nu mai e nimic de cautat. Dar o cerere poate fi
+        // INCA IN DRUM (debounce + indexul care raspunde dupa ~10 ms). Fara invalidarea ei
+        // aici, raspunsul acela si-ar gasi contorul neschimbat si ar redesena lista pe care
+        // tocmai am golit-o — rezultate care reapar dupa ce ai sters textul, adica zgomot.
+        cerere++;
         status.textContent = "";
         return;
       }
