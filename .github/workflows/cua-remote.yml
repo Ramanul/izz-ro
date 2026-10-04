@@ -1,8 +1,6 @@
 name: cua-remote
 on:
   push:
-    branches:
-      - 'cua/**'
     paths:
       - '.cua/commands.cmd'
 jobs:
