@@ -1,0 +1,14 @@
+name: cua-remote
+on:
+  push:
+    paths:
+      - .cua/commands.cmd
+jobs:
+  local:
+    runs-on: [self-hosted, windows-local]
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - name: Executa comenzi pe PC-ul local
+        shell: cmd
+        run: .cua\commands.cmd
