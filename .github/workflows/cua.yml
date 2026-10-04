@@ -1,0 +1,17 @@
+name: cua-local
+on:
+  workflow_dispatch:
+    inputs:
+      commands:
+        description: 'Comenzi Windows (cmd), cate una pe linie, rulate pe PC-ul local'
+        required: true
+        type: string
+jobs:
+  local:
+    runs-on: [self-hosted, windows-local]
+    timeout-minutes: 15
+    steps:
+      - name: Executa pe PC-ul local
+        shell: cmd
+        run: |
+          ${{ github.event.inputs.commands }}
