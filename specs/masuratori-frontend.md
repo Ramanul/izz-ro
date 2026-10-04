@@ -98,6 +98,10 @@ Butonul stă în `.nav`, în grupul de header sticky, e `hidden` în markup, iar
 împingând fiecare articol în jos cu **49 px** în timpul cititului. Momentul evenimentului ăluia nu
 e determinist, exact de-aia scorul e bimodal, nu zgomotos.
 
+*(2026-10-03: funcția nu mai e în `personalize.js`, s-a mutat în `static/pwa.js`, iar butonul a
+ieșit din `.nav` într-un element `position: fixed`. Măsurătoarea de mai sus rămâne așa cum a
+fost făcută — descrie poziția din header, care e exact ce NU trebuie refăcut.)*
+
 ### Două ipoteze picate — a NU se redeschide
 
 - **NU e `#izz-consent`:** e `position: fixed; bottom: 0`, adică în afara fluxului — nu are cum să

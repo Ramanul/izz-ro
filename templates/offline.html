@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{# Pagina de offline a aplicatiei instalate. Nu e o pagina de continut: nu apare in sitemap
+   (`_SITEMAP_SECTIONS` din generator/render.py n-o acopera) si nu se indexeaza — exista doar
+   ca raspuns al service workerului cand nu e net si articolul cerut nu e in cache. #}
+{% block robots %}noindex,follow{% endblock %}
+{% block title %}Fără conexiune — {{ site.name }}{% endblock %}
+{% block description %}Pagina afișată când nu ai conexiune și articolul cerut nu e salvat pe dispozitiv.{% endblock %}
+{% block content %}
+<nav class="breadcrumbs" aria-label="Breadcrumb">
+  <a href="{{ base }}/">{{ site.name }}</a>
+  <span class="sep">/</span>
+  <span>Fără conexiune</span>
+</nav>
+
+<h1 class="section-title">Fără conexiune</h1>
+<p class="empty">Articolul ăsta nu e salvat pe dispozitiv, iar acum nu ai net.</p>
+
+<div class="static-page">
+  <p>Prima pagină și articolele pe care le-ai mai deschis rămân disponibile fără conexiune: se salvează pe măsură ce le citești.</p>
+  <p><a href="{{ base }}/">Mergi la prima pagină</a></p>
+</div>
+{% endblock %}

@@ -3,7 +3,14 @@
   // ca paginile care ies din fereastra TTL sa raspunda din arhiva in loc de 404.
   // Comportamentul exact (assets mai intai, apoi scriptul la ratau) trebuie VERIFICAT
   // pe preview URL al branch-ului inainte de merge — nu-l lua ca sigur din comentariu.
-  "main": "infra/worker-404-mirror.js",
+  //
+  // 2026-10-03 (alerte): "main" e acum `infra/worker.js`, nu workerul de oglinda direct.
+  // Noul fisier e doar compozitie: rutele /push/* le raspunde `infra/push.js`, /sw.js
+  // primeste antetul de revalidare, iar TOT restul trece prin `infra/worker-404-mirror.js`
+  // NESCHIMBAT. Motivul: fallback-ul articolelor expirate are deja o descriere, un istoric
+  // si un registru; a scrie alertele in acelasi fisier ar insemna ca orice modificare la
+  // notificari atinge si arhiva.
+  "main": "infra/worker.js",
   "name": "izz-ro",
   "compatibility_date": "2026-06-18",
   "assets": {
@@ -14,8 +21,30 @@
     // Pages DEDUCEA singur 404.html; Workers NU o face — fara linia asta,
     // orice URL inexistent intoarce un 404 gol si pagina noastra 404.html
     // (output/404.html) nu mai e servita niciodata.
-    "not_found_handling": "404-page"
+    "not_found_handling": "404-page",
+    // Implicitul e „assets intai, Worker doar la ratau". Pentru /push/* si /sw.js
+    // functioneaza si asa (nu exista fisiere cu numele astea in output/), dar functioneaza
+    // DIN INTAMPLARE: ajunge cineva sa adauge un fisier `push/...` si alertele mor tacut.
+    // Contractul se scrie, nu se deduce — si _headers nu poate pune antete pe ce serveste
+    // Workerul, deci /sw.js are nevoie de el oricum. Restul traficului ramane pe calea
+    // rapida a activelor: un Worker chemat pentru fiecare imagine ar arde plafonul zilnic
+    // de 100.000 de invocari (plan Free) pentru nimic.
+    "run_worker_first": ["/push/*", "/sw.js"]
   },
+  // ── ALERTE (Web Push, VAPID) ──────────────────────────────────────────────────────
+  // Legatura KV e ACTIVA: namespace-ul `PUSH_SUBS` exista deja (creat de proprietar, pe
+  // planul gratuit), deci id-ul de mai jos e real, nu un placeholder. Fusese lasat comentat
+  // dinadins — un id inexistent face deploy-ul sa pice — dar motivul ala a disparut o data
+  // cu namespace-ul, iar un bloc comentat ar livra un Worker care raspunde 503 pe
+  // /push/abonare: o functie care practic nu exista.
+  //
+  // NU crea alt namespace si NU roti cheile: VAPID_PUBLIC_KEY, VAPID_PRIVATE_KEY si
+  // VAPID_SUBJECT sunt deja setate pe worker. Ramane de setat doar PUSH_ADMIN_TOKEN
+  // (cheia de trimitere) — vezi infra/PUSH-SETUP.md §1.
+  "kv_namespaces": [
+    { "binding": "PUSH_SUBS", "id": "4cc469142f264228942aeac7d4406aba" }
+  ],
+  // ──────────────────────────────────────────────────────────────────────────────────
   // Preview per ramura (echivalentul <branch>.izz-ro.pages.dev de la Pages).
   // CLAUDE.md §16.3 se bazeaza pe el ca sa poata confirma "pe live" un fix.
   "preview_urls": true,
