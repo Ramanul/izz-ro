@@ -9,6 +9,10 @@ afirmație. Ce nu e verificat e marcat **[NEVERIFICAT]**.
 > Politica proiectului rămâne $0. Documentul nu e o recomandare de a plăti acum; descrie
 > **prețul real al gratuității** și pragurile la care ele devin vizibile pentru cititor.
 
+**Structura:** §1–§10 — plafoanele platformelor, pipeline-ul, AI-ul, funcționalitățile, SEO și
+juridic; §11–§14 — extensii prea des trecute cu vederea (dezvoltare, operare, distribuție,
+date personale); §15 — plan de mitigare la $0, ordonat după raport risc/efort.
+
 ---
 
 ## 0. Pe scurt — zece concluzii
@@ -58,6 +62,15 @@ afirmație. Ce nu e verificat e marcat **[NEVERIFICAT]**.
     IndexNow, oglinda GitHub Pages. Free-ul e suficient pentru suma de azi de funcții — dar
     fiecare funcție nouă care cere **stare**, **CPU** sau **fișiere** lovește unul din
     plafoanele de mai sus.
+11. **Dezvoltarea are și ea cote**: asistentul de coding free (Copilot: 2.000 de completări +
+    50 de cereri de chat pe lună, personal use) nu ține un proiect cu release zilnic; de aceea
+    repo-ul se bazează pe agenți delegați + gateway local cu buget. Iar **operațional**, cea
+    mai gravă limită măsurată în acest repo e cron-ul GitHub însuși: `monitor.yml` cere la 10
+    minute, real livrează 62–200 de minute — fereastra de detectare a unui outage e de **ore**.
+12. **Distribuția și datele personale nu au scutire pe free**: emailul nu are free tier serios
+    (~500 contacte/1.000 emailuri la Mailchimp), automatizarea socială a devenit imposibilă
+    (X a închis free tier-ul API), GA4 ține datele 2–14 luni; iar pe termeni de client gratuit
+    nu obții DPA negociat. Vezi §11–§14.
 
 ---
 
@@ -340,6 +353,7 @@ ci: **adâncimea arhivei, greutatea funcțiilor cu stare și certitudinea furniz
 | Pana globală CDN (tip 18 nov. 2025) | scăzută | site indisponibil complet | status Cloudflare | oglindă (dar și ea în spatele altor servicii) |
 | Oglinda GitHub Pages peste limite (bandă/1 GB) | scăzută | articole expirate greu accesibile | `verify_release.py` pe ambele origini | rute cu listă pozitivă, no-worse fallback |
 | Trafic de căutare în scădere la nivel de industrie | **ridicată** | mai puțini cititori, indiferent de plan | Search Console (pas manual lunar) | diferențiere editorială, ghiduri, RSS/alerts |
+| Sirenele se opresc odată cu repo-ul (60 de zile fără activitate) | medie | incidente nedetectate, fără niciun semnal | nimic azi — workflow-urile programate sunt ele însele expuse | keep-alive lunar propus (§15, pct. 1) |
 
 ---
 
@@ -358,7 +372,145 @@ harta constrângerilor cu care planificăm.
 
 ---
 
-## 11. Surse
+## 11. Dimensiunea G — dezvoltarea: ce limitează planul gratuit în construcție
+
+Până acum am vorbit despre site. Aici e vorba de **fluxul de dezvoltare însuși**, care pe $0
+depinde de trei lucruri: un asistent AI de coding pe plan gratuit, agenți externi și
+infrastructura de testare.
+
+**G1. Asistentul de coding free are cote de evaluare, nu de producție.** GitHub Copilot Free
+(std. 2026): **2.000 de completări și 50 de cereri de chat pe lună**, pentru uz personal, cu
+modele alese automat [2](https://fast.io/resources/github-copilot-free-access/); din iunie 2026
+GitHub a trecut Copilot pe facturare pe consum („AI Credits") — principiul „consum = bani" nu
+dispare, doar pragul se mută [2](https://fast.io/resources/github-copilot-free-access/). Pentru
+un proiect cu 1.800+ teste și pipeline zilnic, 50 de cereri de chat pe lună se termină în primele
+câteva sesiuni — de aceea proiectul folosește **agenți delegați** (`.claude/commands/delegate-*`,
+`.codex/`, `.gemini/`) și gateway-ul local `ai_gateway` cu buget, care mută consumul pe cotele
+gratuite ale furnizorilor de inference.
+
+**G2. Tooling-ul plătit al momentului nu e disponibil pe free.** Instrumente precum CodeRabbit
+au ture limitate/review-uri gratuite pe PR — la volumul de PR-uri al repo-ului, `revizuire.yml`
+și `claude-code-review.yml` suportă restul în CI (unde consumă tot din cotele gratuite).
+
+**G3. Mediul de dezvoltare nu e reproducibil din repo.** O parte a configurației (cheile,
+`GEMINI_API_KEY` în `.env`) trăiește local; pe planul gratuit nu există un mediu cloud de
+dezvoltare dedicat (devcontainer cu resurse garantate, staging permanent) — **staging-ul
+dinamic costă, staging-ul nostru = randare locală + preview pe ramură Cloudflare** (gratuit, dar
+nepublicabil pentru proprietar din motive de DNS, conform spec-ului).
+
+**G4. Consecința de proces:** fiecare funcție nouă trebuie mai întâi clasificată — „static →
+gratis, nemărginit" sau „stare/CPU → costă". Altfel se scrie cod care nu poate fi pus în
+producție pe planul actual. Regula există deja implicit în proiect (spec-uri, fișiere de
+arhitectură); documentul ăsta o face explicită.
+
+---
+
+## 12. Dimensiunea H — operarea: cine veghează când nimeni nu plătește
+
+**H1. Cea mai gravă capcană de operare măsurată în acest repo nu e o limită de furnizor — e a
+noastră.** `monitor.yml` e programat la fiecare 10 minute, dar măsurătoarea din 5 august 2026
+(consemnată în fișier) arată că **intervalele reale au fost 62–200 de minute — ~5% din cadența
+cerută**. Fereastra reală de detectare a unui outage este deci de **ore**, nu de 10 minute.
+Sondajul `infra-watchdog` (cron la 20 min pe Cloudflare) completează, dar tot „best effort".
+Pe planul gratuit nu există Health Checks centrale — decizia (extern, tip UptimeRobot —
+**50 de monitoare gratuite, verificări la 5 minute, retenție 3 luni**
+[2](https://notifier.so/guides/uptimerobot-pricing-2026/)) e de cont, nu de repo, și încă
+nefăcută.
+
+**H2. Sirenele noastre sunt găzduite de GitHub — deci expiră și ele.** Dacă repo-ul are 60 de
+zile fără activitate, workflow-urile programate (monitor, detectie-tacere, deploy-worker,
+smoke) se opresc **toate deodată**, inclusiv cele care ne-ar anunța că ceva nu merge. O
+dependență circulară: supravegherea depinde de platforma supravegheată. Soluția ieftină:
+keep-alive lunar (§15, pct. 1).
+
+**H3. Retenția datelor de analytics e scurtă pe free.** GA4 standard: retenție **2 luni
+implicit, maximum 14 luni** pentru date la nivel de eveniment/utilizator, pe free; peste asta
+doar agregări (și Analytics 360 plătit). Clarity: sesiuni limitate și eșantionare pe free
+[1](https://mrs.digital/blog/blog-why-do-i-only-see-2-months-of-ga4-data/). Consecința: nu
+putem compara „acum un an" fără un export propriu al datelor — pe $0.
+
+**H4. Zero istoric de incidente al furnizorilor cu SLA.** Fără contract nu primești nici
+răspuns, nici credit de serviciu la incidente (secțiunea A6). Pentru un site de știri, asta
+înseamnă că disponibilitatea depinde de bunăvoința a patru companii: Cloudflare, GitHub,
+furnizorii AI și (dacă va exista) serviciul de email.
+
+---
+
+## 13. Dimensiunea I — distribuția: RSS e singurul canal deținut
+
+Site-ul are azi două căi de întoarcere pentru cititor: **RSS** și **bookmark**. Newsletterul
+explicit lipsește, iar absența nu e un moft — trimiterea de email nu are un free tier serios
+pentru un portal: Mailchimp free = **~500 contacte și 1.000 de emailuri/lună**
+[3](https://www.misar.blog/@misarmail/articles/mailchimp-free-plan-limits-2026/), iar la
+depășire îngheață trimiterile și eventual șterge contacte; alternativele (MailerLite,
+EmailOctopus) au praguri comparabile. Pentru un site care speră la mii de cititori, `$0` + email
+nu coexistă mult timp.
+
+**Ce rămâne pe gratis și e deținut 100% de proiect:** RSS, sitemap, IndexNow, PWA (instalare +
+offline), Web Push (limită: **maximum o alertă pe zi**, sau altfel ar arde KV). Deci distribuția
+nu e blocată — dar e **filtrată** de platforme terțe (Google, agregatoare sociale), iar
+direcția industriei e ostilă: referințele din Google către presă scad (§6), iar canalul social
+nu poate fi nici măcar automatizat ieftin: **X a închis free tier-ul API** în februarie 2026
+(pay-per-use; 0,015 $/post, 0,20 $ dacă postarea conține un link
+[1](https://postproxy.dev/blog/x-api-pricing-2026/)). Automatizarea distribuirii pe social —
+o funcție de bază pentru un portal modern — e, pe $0, indisponibilă.
+
+---
+
+## 14. Dimensiunea J — GDPR, cookie-uri și datele cititorilor pe plan gratuit
+
+Aici planul gratuit nu te scutește de nimic, iar riscul e juridic, nu tehnic.
+
+**J1. Datele personale ale cititorului nu stau la noi, stau la furnizori.** Site-ul respectă
+consimțământul prin construcție: GA4 și Clarity se încarcă **doar după opt-in** (Consent Mode
+v2, `static/personalize.js`), profilul local e șters la retragere, iar abonarea la push se face
+exclusiv din subsolul site-ului (endpoint-ul `/push/*`). Ce nu schimbă planul gratuit: pe un
+termen de client free, Cloudflare/GitHub/Google **nu semnează contracte de prelucrare (DPA)**
+la cerere și nu au reprezentant special pentru RO; pentru un portal românesc asta înseamnă că
+lămurirea GDPR se sprijină pe politica publică, nu pe un contract negociat. **[NEVERIFICAT: de
+confirmat cu un jurist înainte de a promite altceva în `content/privacy.md`.]**
+
+**J2. Atacuri de cotă prin endpoint-uri publice.** `/push/abonare` e public; cu KV 1.000
+scrieri/zi, cineva hotărât poate umple plafonul zilnic. Mitigarea (**turnstile / rate-limit /
+doar POST cu token de sesiune emis de pagină**) e încă la nivel de notă. Pe planurile plătite ai
+WAF/bot management să tai valul; pe free, doar măsuri locale în Worker.
+
+**J3. Stocare de date pe free = fără retenție controlată.** Nu putem păstra istoric de analytics
+pe termen lung (H3), nu putem găzdui date de cititor (KV prea mic), nu putem face backup
+automat extern fără servicii terțe — deci „minimizarea datelor" nu e doar o alegere etică, e și
+singura arhitectură care încape în buget.
+
+---
+
+## 15. Plan de mitigare la $0 — în ordinea raportului risc/efort
+
+1. **Keep-alive lunar (30 de minute de lucru).** Un workflow care comite un fișier
+   `data/keepalive.txt` lunar previne dezactivarea silențioasă a tuturor cron-urilor (H2, B2,
+   riscul din §9). Cost $0; elimină un failure mode total.
+2. **Descoperirea cotelor consumate, măsurată (1 zi).** Contorizarea invocărilor de Worker și a
+   scrierilor KV într-un jurnal propriu (campion din `build.json` + alerte la praguri 50%/80%),
+   pentru că pe Free nu ai dashboard de cotă performant. Face vizibil riscul „Error 1027".
+3. **Sonde externe gratuite (30 de minute de cont, zero cod).** UptimeRobot free (50 de
+   monitoare, 5 min) către `izz.ro`, oglindă și `/health` → detectare în minute, nu ore, și
+   independentă de cron-urile GitHub.
+4. **Anti-abuz pe `/push/*` (1 zi).** Contor per IP/zi în KV (scriere o singură dată pe zi per
+   cheie), turnstile pe abonare dacă se dovedește nevoie — protejează cele 1.000 de scrieri/zi
+   (A4, J2).
+5. **Retenția GA4 pusă pe 14 luni + export lunar în artifact (2 ore).** Recuperează singura
+   fereastră de analiză gratis (H3) fără serviciu nou — un job care descarcă raportul agregat
+   în `reports/` (artifact 90 de zile).
+6. **Buget AI „de criză" (0,5 zi).** Un jurnal al ratei de succes per furnizor și un prag care
+   comută pe fallback determinist **înainte** de a produce carte ne-editată; plus re-verificarea
+   trimestrială a cotelor (C1–C3).
+7. **Reevaluare de sistem la fiecare schimbare de pricing (lunar, 30 min).** Un singur loc
+   (`specs/STATE.md`) unde se notează: cote curente, incidente, praguri. Gratuit și previne
+   surpriza.
+
+Ordinea de mai sus nu cere niciun ban; doar disciplina de a măsura înainte de a promite.
+
+---
+
+## 16. Surse
 
 **Documentație oficială (accesată 2026-10-04):**
 - Cloudflare Workers — Limits: <https://developers.cloudflare.com/workers/platform/limits/>
@@ -399,6 +551,14 @@ harta constrângerilor cu care planificăm.
 - Precedente de închidere a free tier-urilor: X API (feb. 2026) —
   <https://postproxy.dev/blog/x-api-pricing-2026/> · Qwen OAuth (15 apr. 2026) —
   <https://news.ycombinator.com/item?id=47789014>
+- GitHub Copilot Free — limite și trecerea pe billing pe consum (iun. 2026):
+  <https://fast.io/resources/github-copilot-free-access/>
+- UptimeRobot — plan Free (50 de monitoare, 5 minute, retenție 3 luni):
+  <https://notifier.so/guides/uptimerobot-pricing-2026/>
+- Retenție GA4 pe free (2 luni implicit / 14 luni maximum):
+  <https://mrs.digital/blog/blog-why-do-i-only-see-2-months-of-ga4-data/>
+- Mailchimp Free — limite (500 contacte / 1.000 emailuri lunar):
+  <https://www.misar.blog/@misarmail/articles/mailchimp-free-plan-limits-2026/>
 
 **Dovezi interne (repo, comise):**
 - `specs/cloudflare-free-2026-09.md` — calculul 20.000 fișiere, 51.896 → 16.732, TTL 21,
