@@ -81,6 +81,23 @@ jobs:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           AI_PROVIDER: gemini
           MAX_AI_CALLS_PER_RUN: ${{ github.event.inputs.max_ai_calls != '' && github.event.inputs.max_ai_calls || '40' }}
+          # Cascada de provideri GRATUITI. Fiecare are cota proprie si niciunul nu factureaza
+          # depasirea (Gemini RPD/TPM, Cerebras 1M tokeni/zi, Groq rate-limit — sursele in
+          # `ai_gateway/registry.yaml`), deci bugetul real al unei rulari e SUMA cotelor, nu
+          # o cifra globala impartita. De asta `AI_CALLS_PER_PROVIDER` e aceeasi cifra ca
+          # `MAX_AI_CALLS_PER_RUN`: cu un singur provider disponibil rezultatul e identic cu
+          # inainte (40 × 1), cu doi e 80, cu trei 120.
+          #
+          # Cheile sunt OPTIONALE. `openai_compat.configured_compatible_providers()` construieste
+          # doar providerii cu cheie prezenta, iar `process.get_provider()` filtreaza din nou pe
+          # `available()` — deci un secret absent NU umfla bugetul si nu schimba nimic fata de
+          # comportamentul curent. Activarea e: adaugi GROQ_API_KEY / CEREBRAS_API_KEY in
+          # Settings → Secrets, atat.
+          AI_ROUTER_MODE: multi
+          AI_FALLBACK_PROVIDERS: groq,cerebras
+          GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
+          CEREBRAS_API_KEY: ${{ secrets.CEREBRAS_API_KEY }}
+          AI_CALLS_PER_PROVIDER: ${{ github.event.inputs.max_ai_calls != '' && github.event.inputs.max_ai_calls || '40' }}
           UPGRADE_RESERVE: "4"
           GEMINI_BASE_URL: ${{ vars.GEMINI_BASE_URL }}
           IZZ_RAPORT_COPIERE_GATE: ${{ runner.temp }}/izz-grounding-gate.jsonl

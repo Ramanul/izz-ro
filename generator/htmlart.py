@@ -311,6 +311,7 @@ _NUM = re.compile(r"-?\d+(?:\.\d+)?")
 
 _PORTRAITS_PATH = os.path.join(_ROOT, "data", "portraits.json")
 _PORTRETE_LIBERE: dict[str, dict] | None = None
+_PORTRETE_CERUTE: set[str] = set()
 _CREDIT_FREE_RE = re.compile(r"^(cc0|cc[ -]?zero|public domain|pd([ -]|$))", re.I)
 
 
@@ -319,8 +320,12 @@ def _portrete_libere() -> dict[str, dict]:
 
     Doar activele `Public domain` si `CC0` pot aparea pe carduri si pe prima pagina, unde nu
     exista legenda de atribuire (`content/legal/images.md`, `tests/test_image_policy.py`).
-    Fisierele sunt deja copiate in `output/portraits/` de `render._load_portraits()`, deci nu
-    adauga niciun fisier suplimentar la bugetul Cloudflare Workers Free.
+
+    Fisierul NU e copiat aici: `_portret_liber` il inscrie in `_PORTRETE_CERUTE`, iar
+    `render.build()` copiaza exact ce s-a cerut, la finalul randarii. Invariantul vechi
+    („portretele sunt deja in output, copytree-ul le-a adus pe toate") a fost inlocuit
+    pentru ca publica 1.789 de fisiere din care doar 661 erau referite — 1.128 de fisiere
+    (6,3% din plafonul Workers Free de 20.000) platite pentru nimic.
     """
     global _PORTRETE_LIBERE
     if _PORTRETE_LIBERE is None:
@@ -355,8 +360,30 @@ def _portret_liber(a: dict) -> dict | None:
     for e in ents:
         key = re.sub(r"\s+", " ", strip_diacritics((e or "").strip().lower()))
         if key in libere:
+            # Inscriere, nu copiere: acest modul nu stie OUT_DIR-ul randarii.
+            _PORTRETE_CERUTE.add(libere[key]["img"])
             return libere[key]
     return None
+
+
+def portrete_cerute() -> set[str]:
+    """Caile relative (sub `media/`) ale portretelor pe care arta inline le afiseaza.
+
+    Le citeste `render.build()` la finalul randarii ca sa copieze in `output/portraits/`
+    EXACT atat. Fara asta, un `<img class="art-portret">` desenat de `_art.html` ar arata
+    o imagine sparta — portretul e referit din grafica, nu din sablonul de articol.
+    """
+    return set(_PORTRETE_CERUTE)
+
+
+def reset_portrete_cerute() -> None:
+    """Goleste registrul la inceputul unei randari.
+
+    Necesar pentru ca a doua randare din acelasi proces (teste, sau `--render-only` dupa
+    pipeline) sa nu copieze portretele cerute de randarea anterioara: ar ramane fisiere
+    nereferite in output, exact risipa pe care registrul o elimina.
+    """
+    _PORTRETE_CERUTE.clear()
 
 
 def _harta_inline(cod: str | None) -> dict | None:

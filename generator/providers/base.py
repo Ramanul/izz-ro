@@ -29,6 +29,17 @@ class Provider:
             self.last_error = f"{type(exc).__name__}: {exc}"
             raise
 
+    def numar_provideri(self) -> int:
+        """Cate COTE distincte stau in spatele acestui obiect. Unu, pentru un provider singur.
+
+        DE CE EXISTA: bugetul de apeluri al pipeline-ului (`MAX_AI_CALLS_PER_RUN`) era o cifra
+        globala, deci adaugarea unui al doilea provider gratuit nu adauga capacitate — doar
+        rezilienta. Fiecare provider are propria cota free (Gemini RPD/TPM, Cerebras 1M
+        tokeni/zi, Groq rate-limit — `ai_gateway/registry.yaml`), deci bugetul real al unei
+        rulari e suma lor. Vezi `main.buget_apeluri_ai`.
+        """
+        return 1
+
     def _complete(self, system: str, user: str) -> str:
         """Implementarea reala a providerului. Returneaza textul raspunsului (de obicei JSON)."""
         raise NotImplementedError

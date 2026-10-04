@@ -222,6 +222,37 @@ def upgradable(articles: list) -> list:
                 or a.get("prompt_version") != config.PROMPT_VERSION)]
 
 
+FARA_BUGET = 10 ** 9
+
+
+def buget_apeluri_ai(provider) -> int:
+    """Cate apeluri AI are voie sa cheltuiasca rularea asta.
+
+    INAINTE: `MAX_AI_CALLS_PER_RUN` era o cifra globala, deci cei trei provideri gratuiti ai
+    unei cascade (Gemini + Groq + Cerebras) imparteau ACEEASI 40 de apeluri. Adaugarea unui
+    provider nou adauga rezilienta — cand primul da 429, al doilea preia — dar nu si
+    capacitate. Bugetul e saturat la fiecare rulare (`specs/ai-budget-ordering.md`: „ce
+    ajunge la coada e infometat"), deci rezilienta fara capacitate nu rezolva problema.
+
+    ACUM: cu `AI_CALLS_PER_PROVIDER` setat, bugetul e cota pe provider × numarul de cote
+    disponibile (`provider.numar_provideri()`). Fiecare provider free are plafon propriu —
+    Gemini RPD/TPM, Cerebras 1M tokeni/zi, Groq rate-limit (`ai_gateway/registry.yaml`),
+    niciunul nu factureaza depasirea, deci insumarea lor e gratuita prin constructie.
+
+    Fara `AI_CALLS_PER_PROVIDER` comportamentul e IDENTIC cu cel vechi (o cifra globala),
+    ca activarea sa fie explicita si reversibila din mediu, nu din cod.
+
+    Fara provider (nicio cheie, nici Ollama) bugetul ramane nelimitat ca inainte: apelurile
+    cad oricum pe fallback-ul determinist, care nu costa nimic si nu are cota.
+    """
+    if provider is None:
+        return FARA_BUGET
+    per_provider = os.getenv("AI_CALLS_PER_PROVIDER", "").strip()
+    if not per_provider:
+        return int(os.getenv("MAX_AI_CALLS_PER_RUN", "12"))
+    return int(per_provider) * max(1, provider.numar_provideri())
+
+
 def ai_reserve(existing: list, budget: int) -> int:
     """Cate apeluri se tin deoparte din buget pentru `upgrade_fallbacks`.
 
@@ -394,7 +425,7 @@ def run(dry_run: bool = False) -> dict:
     provider = get_provider()
     provider_name = provider.name if provider else "fallback (fara cheie/SDK AI)"
 
-    budget = int(os.getenv("MAX_AI_CALLS_PER_RUN", "12")) if provider else 10 ** 9
+    budget = buget_apeluri_ai(provider)
     # rezerva apeluri garantate pentru upgrade-ul fallback-urilor vechi, ca sa nu fie
     # infometate cand exista mereu articole noi (umplerea initiala) -- dar DOAR cat exista
     # de upgradat. Vezi `ai_reserve`: neplafonata, tinea 8 din 18 apeluri pentru o coada goala.

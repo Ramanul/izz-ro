@@ -133,16 +133,47 @@ def _load_leadphotos() -> dict:
 
 
 def _load_portraits() -> dict:
-    """Portretele Wikimedia comise de tools/fetch_portraits.py; copiaza thumbs in output."""
+    """Portretele Wikimedia comise de tools/fetch_portraits.py.
+
+    NU mai copiaza directorul intreg in output (vezi `_portret` pentru cine copiaza):
+    copytree-ul aducea la fiecare randare toate cele 1.789 de portrete comise, dintre care
+    MASURAT doar 661 ajungeau referite in HTML (scan pe cele 11.114 pagini, 2026-10-03).
+    Restul de 1.128 = 6,3% din plafonul de 20.000 de fisiere al Workers Free, platite pentru
+    nimic — si plafonul ala e exact ce tine `ARTICLE_TTL_DAYS` jos.
+    """
     try:
         import json as _json
         cache = _json.load(open(PORTRAITS_JSON, encoding="utf-8"))
     except (OSError, ValueError):
         return {}
-    src = os.path.join(MEDIA_DIR, "portraits")
-    if os.path.isdir(src):
-        shutil.copytree(src, os.path.join(OUT_DIR, "portraits"), dirs_exist_ok=True)
     return {k: v for k, v in cache.items() if not v.get("miss")}
+
+
+def _portret(portraits: dict, name: str) -> dict | None:
+    """Portretul lui `name` (nume normalizat) + copia fisierului in output, LA CERERE.
+
+    Copia se face aici, nu la incarcare, ca output-ul sa contina doar portretele pe care o
+    pagina chiar le arata.
+
+    FARA cache de proces: testele fac `monkeypatch.setattr(render, "OUT_DIR", tmp_path)`
+    (`tests/test_buget_fisiere.py`, `test_release_metadata.py`), deci un set module-level ar
+    face a doua randare din acelasi proces sa sara copia intr-un OUT_DIR gol — output
+    nedeterminism in functie de ordinea testelor. Verificarea destinatiei e fara stare si
+    costa un `exists`.
+
+    Fisierul sursa lipseste sau e sub pragul de validitate -> None, iar pagina ramane fara
+    portret in loc sa arate un `<img>` care da 404 (regula 'No mangled output').
+    """
+    rec = portraits.get(_norm_name(name))
+    if not rec:
+        return None
+    rel = rec.get("img") or ""
+    if not rel:
+        return None
+    dst = os.path.join(OUT_DIR, rel)
+    if os.path.exists(dst) or _use_media(os.path.join(MEDIA_DIR, rel), dst):
+        return rec
+    return None
 
 
 def _norm_name(s: str) -> str:
@@ -792,6 +823,10 @@ def build(articles: list, mod: dict | None = None) -> None:
         p = os.path.join(OUT_DIR, entry)
         shutil.rmtree(p) if os.path.isdir(p) else os.remove(p)
     shutil.copytree(STATIC_DIR, os.path.join(OUT_DIR, "static"))
+    # Registrul portretelor cerute de arta inline se goleste la inceputul randarii, nu la
+    # sfarsit: a doua randare din acelasi proces (teste, `--render-only` dupa pipeline)
+    # trebuie sa copieze doar ce cere ea.
+    htmlart.reset_portrete_cerute()
 
     # Run build_entities in-process (validate YAML -> entities.json)
     try:
@@ -1034,7 +1069,7 @@ def build(articles: list, mod: dict | None = None) -> None:
                                                               key=lambda a: a.get("published") or "",
                                                               reverse=True),
                                               connections=connections,
-                                              portrait=portraits.get(_norm_name(d["name"])),
+                                              portrait=_portret(portraits, d["name"]),
                                               has_feed=has_feed)))
         if has_feed:
             _write(os.path.join(OUT_DIR, "subiect", s, "feed.xml"),
@@ -1064,7 +1099,7 @@ def build(articles: list, mod: dict | None = None) -> None:
                       if slugify(e)[:60] in ents]
             people = []
             for e in (a.get("entities") or []):
-                p = portraits.get(_norm_name(e))
+                p = _portret(portraits, e)
                 if p:
                     s = slugify(e)[:60]
                     people.append({**p, "slug": s if s in ents else None})
@@ -1161,6 +1196,12 @@ def build(articles: list, mod: dict | None = None) -> None:
     _write_redirects()
     _write_feed(by_date)
     _write_search(env, by_date)
+    # Portretele cerute de arta inline (`_art.html` deseneaza <img class="art-portret">).
+    # Aici, nu mai devreme: `stil_inline` ruleaza pentru fiecare articol in bucla de mai sus,
+    # deci abia acum registrul e complet. Copiem la final si NU printr-un copytree la
+    # inceput — vezi `htmlart._portrete_libere` pentru masuratoarea care a impins schimbarea.
+    for rel in sorted(htmlart.portrete_cerute()):
+        _use_media(os.path.join(MEDIA_DIR, rel), os.path.join(OUT_DIR, rel))
     # ULTIMUL: numara ce s-a scris efectiv, deci trebuie sa vina dupa toate scrierile.
     _write_build_metadata(len(by_date))
 
