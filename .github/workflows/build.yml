@@ -137,6 +137,8 @@ jobs:
         continue-on-error: true
         env:
           MAX_PORTRAIT_LOOKUPS: "20"
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          AI_PROVIDER: gemini
         run: python tools/fetch_portraits.py
 
       - name: Fotografii lead per articol (Wikidata P18 landscape+PD, best-effort)
