@@ -165,8 +165,11 @@ Pe homepage-ul randat azi: **65 de carduri, 2 taguri `<img>`, 0 imagini fără a
   tabindex="-1"` — e decorativă, iar `alt=""` e exact ce cere WCAG. Un `alt` descriptiv
   acolo ar dubla cititul pentru cine folosește un cititor de ecran.
 
-**Ce e valid din observație:** în share-uri și pe Google Images, ~87% din articole au ca
-`og:image` **coperta categoriei** — mii de pagini arată identic. Codul o știe deja
+**Ce e valid din observație:** în share-uri și pe Google Images, articolele din afara ferestrei
+recente au ca `og:image` **coperta categoriei** — mii de pagini arată identic. Fereastra e
+`OG_COVER_MAX_ARTICLES = 1200`: primele 1200 de articole (cele mai noi) își plătesc o
+copertă proprie, restul — 8.295 din 9.495 la randarea de azi, adică 87% — cad pe coperta de
+categorie. Deci problema e în arhivă, nu pe prima pagină; P1.3 se citește cu asta în față. Codul o știe deja
 (comentariul din `render.py` spune de ce `sitemap-images.xml` listează doar imaginile
 proprii). Fix-ul nu e „mai multe poze”, e **og:image propriu per articol** (P1.3), dimensionat
 în bugetul de fișiere.

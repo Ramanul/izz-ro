@@ -166,8 +166,9 @@ Nu trebuie să fie literatură — trebuie să fie al tău.
 ### D1. Imaginea de share: mii de articole arată identic
 
 **Problema, în viață reală.** Când cineva dă un articol pe WhatsApp sau Facebook, se vede o
-imagine. Azi, ~87% din articole folosesc **aceeași** copertă de categorie — mii de articole
-arată la fel în feed. Oamenii dau mai puțin click, deși textul e bun.
+imagine. Primele ~1200 de articole (cele mai noi) au coperta lor; restul — 8.295 din 9.495
+azi, adică 87% — folosesc **aceeași** copertă de categorie. Articolele mai vechi arată la fel
+în feed, iar oamenii dau mai puțin click.
 
 **De ce nu e simplu.** Site-ul are un plafon de fișiere al gazdei (20.000 pe versiune; noi
 folosim 13.480 din bugetul intern de 17.000). Tocmai de aceea ilustrațiile se desenează în
