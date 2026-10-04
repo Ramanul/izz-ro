@@ -138,7 +138,87 @@ aceluiași dispozitiv nu scrie a doua oară.
 
 ---
 
-## 6. Cum verifici că merge, înainte de a anunța pe nimeni
+## 6. Cine are voie la ce (autorizare)
+
+Cinci rute, două niveluri. Regula după care sînt împărțite: **tot ce ține de cititor e
+deschis** (altfel opt-in-ul n-ar funcționa — browserul telefonului nu are și nici nu poate
+avea o cheie de admin), iar **tot ce poate consuma cota zilnică sau poate scrie în numele
+site-ului e sub token**.
+
+| Rută | Metodă | Autorizare | De ce |
+|---|---|---|---|
+| `/push/cheie` | GET | **public** | e cheia publică VAPID; browserul o cere înainte de abonare. N-are nevoie de KV, deci funcționează și pe un deployment neconfigurat. |
+| `/push/abonare` | POST | **public, prin design** | e însuși opt-in-ul cititorului. O cheie de admin aici ar însemna ca tot site-ul să poarte secretul. |
+| `/push/dezabonare` | POST | **public** | șterge doar cheia endpointului primit: nu poți dezabona pe altcineva fără să-i ai endpointul. |
+| `/push/stare` | GET | `Authorization: Bearer <PUSH_ADMIN_TOKEN>` | numărul de abonați e o cifră de business, nu una publică. |
+| `/push/trimite` | POST | `Authorization: Bearer <PUSH_ADMIN_TOKEN>` | singura acțiune care consumă ziua și scrie în KV. `uscat: true` tot cu token: repetiția arată exact ce ar pleca. |
+
+Cum se compară tokenul (`infra/push.js::tokenCorect`):
+
+- se ia headerul `authorization`, i se taie prefixul `Bearer ` (insensibil la majuscule) și se compară cu secretul, **în timp constant în lungimea maximă** — nu cu `===`, ca să nu lase scurtcircuitul de la primul octet să cronometreze răspunsul;
+- lipsa sau greșeala lui → `401 {"eroare":"lipsa autorizare"}`, **fără** să spună ce anume a fost greșit (lungime, prefix, conținut);
+- secretul lipsă cu totul → `503` cu lista cheilor care lipsesc (configLipsa), pentru că aici problema e de configurare, nu de autorizare;
+- nu e JWT și n-are expirare: e o cheie simetrică de admin. Rotația = `wrangler secret put PUSH_ADMIN_TOKEN` + aceeași valoare în `.env`-ul de pe mașina de lucru.
+
+**Ce NU protejează, asumat:** abonarea e deschisă oricui. Cine vrea poate chema
+`/push/abonare` în buclă și poate goli plafonul de scrieri KV (1.000/zi pe Free) — simptomul
+e `503` la abonări, nu scurgeri de date. Ce limitează paguba: validarea strictă de mai jos,
+faptul că re-abonarea **nu rescrie** (deci același endpoint nu consumă decît o singură
+scriere, oricîte cereri ar face), și faptul că un endpoint fals nu primește nimic — moare
+prima dată cînd serviciul de push răspunde `404/410` și e șters atunci.
+
+## 7. Ce se validează, și ce se respinge cu ce cod
+
+La abonare (`/push/abonare`, în `valideazaAbonament`):
+
+| Verificare | Respins cu |
+|---|---|
+| corpul e JSON | `400 corp JSON invalid` |
+| `subscription` e obiect | `400 abonament lipsa` |
+| `endpoint` e URL `https:` | `400 endpoint de push neacceptat` |
+| gazda e un serviciu de push cunoscut (10 gazde: FCM, Mozilla, Apple, Windows) | `400 endpoint de push neacceptat` |
+| `keys.p256dh` și `keys.auth` sînt șiruri | `400 cheile abonamentului lipsesc` |
+| `p256dh` decodifică base64url și are **65 de octeți** (punct P-256 necomprimat) | `400 cheia publica a abonamentului are lungimea gresita` |
+| `auth` decodifică și are **cel puțin 16 octeți** | `400 secretul de autentificare e prea scurt` |
+| altfel | `201 {"ok":true,"nou":true}` |
+
+Cheia din KV e `sub:` + SHA-256(endpoint), deci re-abonarea aceluiași dispozitiv găsește
+înregistrarea și răspunde `200 {"ok":true,"nou":false}` **fără scriere**.
+
+La trimitere (`/push/trimite`, în `verificaAlerta` + `trimiteLot`):
+
+| Situație | Cod |
+|---|---|
+| politica «Zgomot zero» refuză | `422` + `motive` în română |
+| azi s-a trimis deja (cheia `cap:<data>` există) | `409` + ziua |
+| lipsește KV / cheile VAPID | `503` + ce anume lipsește |
+| lipsă sau greșit tokenul | `401` |
+| ok | `200` + `{trimise, esecuri, sterse, cursor_urmator}` |
+
+La dezabonare: același `gazdaAcceptata` ca la abonare; nu se verifică dacă endpointul
+există deja — ștergerea unei chei inexistente e un no-op, nu o eroare.
+
+**Politica «Zgomot zero», în cifre** (toate în `verificaAlerta`, toate refuză cu `422` și
+motive în română): titlul între 12 și 90 de caractere; textul între 30 și 200; textul nu are
+voie să repete titlul; niciun `!` sau `?`, niciun `…`, niciun emoji în vreunul din cele două;
+niciun cuvînt de peste 3 majuscule care nu e acronim (SUA, UE, BNR… sînt trecute în lista de
+scutiri); niciun cuvînt-momitor (echivalat fără diacritice, deci „șoc" și „soc" sar amîndouă);
+adresa trebuie să fie `https://izz.ro/{categorie}/{slug}/`, fără parametri de urmărire.
+
+La trimiterea propriu-zisă, răspunsurile serviciului de push sînt citite, nu ignorate:
+
+| răspunsul serviciului | ce face Workerul |
+|---|---|
+| `200`/`201` | succes |
+| `404`/`410` | abonamentul e **șters** din KV — aplicația a fost dezinstalată sau permisiunea a fost retrasă; altfel KV crește cu morți și fiecare alertă plătește cîte o cerere pentru ei |
+| `429` sau alt cod | eșec, iar abonamentul **rămîne** (limitat nu înseamnă mort). `Retry-After` nu e citit, pentru că reluarea se face a doua zi: plafonul de o alertă pe zi face inutilă reîncercarea în aceeași zi. |
+
+**Ce NU se validează, și de ce:** nu cerem și nu putem cere dovada că un endpoint aparține
+cuiva anume — Web Push n-are un astfel de mecanism la nivel de aplicație (legătura e între
+browser și serviciul de push; noi primim doar un URL și două chei). Protecția e economică și
+prin curățare, nu criptografică.
+
+## 8. Cum verifici că merge, înainte de a anunța pe nimeni
 
 1. `python tools/alerta_push.py --stare` → `Abonamente: 0` (nu eroare).
 2. Deschide site-ul pe telefon, footer → **„Alerte de ultimă oră"** → **Activează**.
@@ -150,7 +230,7 @@ aceluiași dispozitiv nu scrie a doua oară.
 
 ---
 
-## 7. Ce NU e verificat încă (spus ca să nu pară mai mult decât e)
+## 9. Ce NU e verificat încă (spus ca să nu pară mai mult decât e)
 
 - **Nicio alertă nu a plecat printr-un serviciu de push real.** Criptarea e verificată pe
   vectorul de test din RFC 8291 și prin decriptare cu cheia clientului

@@ -233,3 +233,121 @@ def test_push_js_nu_cere_permisiunea_fara_click():
     assert "porneste.addEventListener('click', activeaza)" in js
     assert "userVisibleOnly: true" in js, (
         "fara el, unele browsere refuza abonarea cu totul")
+
+
+# --- instalare: manifest ↔ service worker, iconițe, actualizare -------------------
+#
+# Secțiunea asta leagă DOUĂ fișiere care altfel se pot dezminți unul pe altul fără ca
+# vreun test să observe: `site.webmanifest` promite ce va arăta aplicația instalată, iar
+# `static/sw.js` decide ce există în telefon când nu e net. O iconiță declarată și
+# neprecache-uită, sau un `start_url` în afara `scope`-ului, nu pice niciun test de Python
+# și niciun build — pice doar în mâna omului, la instalare.
+
+def _manifest() -> dict:
+    return json.loads(_citeste(os.path.join(STATIC, "site.webmanifest")))
+
+
+def _precache() -> list[str]:
+    """Intrările din PRECACHE, cu constantele rezolvate (ex. OFFLINE)."""
+    sw = _sw()
+    constante = dict(re.findall(r"const (OFFLINE) = '([^']+)'", sw))
+    lista = re.search(r"const PRECACHE = \[(.*?)\];", sw, re.S).group(1)
+    return [constante.get(m, m) for m in re.findall(r"'([^']+)'", lista)]
+
+
+def _dimensiuni_png(cale: str) -> tuple[int, int]:
+    """Lățime și înălțime din antetul PNG — fără Pillow, ca testul să nu depindă de ea."""
+    with open(cale, "rb") as fh:
+        antet = fh.read(24)
+    assert antet[:8] == b"\x89PNG\r\n\x1a\n", f"{cale} nu e PNG"
+    assert antet[12:16] == b"IHDR", f"{cale} n-are IHDR la început"
+    return int.from_bytes(antet[16:20], "big"), int.from_bytes(antet[20:24], "big")
+
+
+def test_scope_si_start_url_ii_dau_sw_ului_tot_siteul():
+    """Un `start_url` în afara `scope`-ului face instalarea să pice, tăcut."""
+    m = _manifest()
+    assert m["scope"] == "/", "scope îngust => articolele ies din aplicația instalată"
+    assert m["start_url"].startswith("/"), "start_url relativ se rezolvă față de manifest"
+    assert m["start_url"].startswith(m["scope"]), (
+        f"start_url={m['start_url']} e în afara scope={m['scope']}")
+    assert m["id"] == "/", "fără id, două instalări pot ajunge două aplicații"
+
+
+def test_start_url_e_in_precache():
+    """Aplicația instalată se deschide la `start_url` — și offline. Dacă nu e precache-uit,
+    prima deschidere fără net arată eroarea browserului, nu site-ul."""
+    m = _manifest()
+    assert m["start_url"] in _precache(), (
+        f"{m['start_url']} e start_url, dar nu e în PRECACHE: aplicația moare offline")
+
+
+def test_iconitele_de_interfata_sunt_in_precache():
+    """Iconițele cu purpose „any" le folosește SITE-UL (notificarea, ecranul de pornire).
+    Cea `maskable` e treaba sistemului de operare, care o citește la instalare — atunci
+    omul e online prin definiție, deci n-are ce căuta în precache."""
+    m = _manifest()
+    precache = _precache()
+    interfata = [i for i in m["icons"] if "maskable" not in i.get("purpose", "")]
+    assert interfata, "manifestul n-are nicio iconiță cu purpose „any”"
+    for ico in interfata:
+        assert ico["src"] in precache, (
+            f"{ico['src']} e în manifest, dar nu în PRECACHE: notificarea rămâne fără iconiță")
+
+
+def test_iconitele_au_dimensiunea_declarata_in_manifest():
+    """Dimensiunea declarată mincinoasă nu oprește instalarea: doar o face cu o iconiță
+    întinsă sau tăiată, pe care nimeni n-o leagă de manifest."""
+    m = _manifest()
+    for ico in m["icons"]:
+        if not ico["src"].endswith(".png"):
+            continue
+        cale = os.path.join(ROOT, ico["src"].lstrip("/"))
+        lat, inalt = _dimensiuni_png(cale)
+        assert f"{lat}x{inalt}" == ico["sizes"], (
+            f"{ico['src']} declară {ico['sizes']}, dar fișierul are {lat}x{inalt}")
+        assert ico["type"] == "image/png", ico
+
+
+def test_contractul_de_actualizare_al_sw_ului():
+    """Cum ajunge un service worker nou la om, în patru puncte care se pot strica separat."""
+    sw = _sw()
+    # 1. Numele cache-urilor sînt VERSIUNI: altfel „curățarea" de la activate nu are ce șterge
+    #    și un articol șters din PRECACHE rămîne în telefon pe vecie.
+    assert re.search(r"const SHELL = 'izz-shell-v\d+'", sw), (
+        "numele cache-ului shellului nu e versionat: o schimbare de PRECACHE lasă resturi")
+    assert re.search(r"const ARTICOLE = 'izz-articole-v\d+'", sw)
+    # 2. Preluarea imediată, fără „așteaptă să închizi toate taburile".
+    assert "skipWaiting()" in sw and "clients.claim()" in sw
+    # 3. Activate șterge versiunile vechi, altfel cota se umple cu cache-uri orfane.
+    assert "caches.delete" in sw
+    # 4. Instalarea nu APELEAZĂ `addAll`: un singur fișier lipsă arunca TOT. (Cuvîntul
+    #    apare și în comentariul care explică de ce — de aia se caută apelul, nu numele.)
+    assert "addAll(" not in sw
+
+
+def test_sw_nu_cacheaza_nimic_in_afara_de_static_si_navigari():
+    """Orice categorie nouă de cache trebuie adăugată DELIBERAT, nu strecurată.
+
+    Două `respondWith` = două categorii: `/static/` și navigări. Restul (POST, /push/*,
+    domenii străine, `/pagefind/*`, `search-index.json`, `/build.json`, `/feed.xml`,
+    sitemapuri) trece prin rețea neclintit. Asta apără și coexistența cu PR-ul de căutare
+    (#435): indexul de 2 MB și fragmentele lui NU ajung în cache-ul SW-ului, deci un deploy
+    nu lasă un index vechi să răspundă la o căutare nouă.
+    """
+    sw = _sw()
+    handler = sw.split("self.addEventListener('fetch'")[1]
+    assert handler.count("respondWith") == 2, (
+        "handlerul de fetch cache-uieste mai mult de /static/ și navigări")
+    for cale in ("/pagefind", "search-index", "/build.json", "/feed.xml", "sitemap"):
+        assert cale not in handler, (
+            f"«{cale}» apare în handlerul de fetch: datele vii nu se cache-uiesc")
+
+
+def test_butonul_de_instalare_dispare_definitiv_dupa_instalare_sau_refuz():
+    """Întrebarea pusă a doua oară nu e discreție, e insistență."""
+    js = _citeste(os.path.join(STATIC, "pwa.js"))
+    assert "appinstalled" in js, "după instalare butonul trebuie să nu mai apară niciodată"
+    assert js.count("refuza()") >= 2, (
+        "refuzul trebuie consemnat și la ×, și la dismiss, nu doar la unul din ele")
+    assert "dejaInstalata()" in js, "în aplicația deja instalată butonul n-are ce căuta"
