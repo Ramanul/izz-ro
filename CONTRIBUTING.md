@@ -30,3 +30,9 @@ e ambiguu, întreabă — nu improviza scope.
 
 Nu publica niciodată nimic singur. Vulnerabilitățile se raportează privat (butonul
 „Privately report a vulnerability" al repo-ului) sau la `/.well-known/security.txt`.
+
+## Colaborare Arena ↔ PC local
+
+Predarea standard se face prin ramuri Git și PR-uri. Pentru pașii de sincronizare și workflow-ul
+Windows self-hosted, inclusiv limitele de securitate ale repo-ului public, vezi
+[`handoff/arena-pc-collaboration.md`](handoff/arena-pc-collaboration.md).

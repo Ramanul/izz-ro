@@ -50,3 +50,6 @@ data/raport_copiere.jsonl
 node_modules/
 package.json
 package-lock.json
+
+# Probă efemeră creată de workflow-ul Windows local; se livrează ca artifact, nu se comite.
+handoff/.local-runner-proof/

@@ -1,0 +1,113 @@
+name: local-pc-runner
+
+# Deliberately manual and narrowly scoped. Never add pull_request/push/schedule triggers here.
+on:
+  workflow_dispatch:
+    inputs:
+      task:
+        description: Fixed task to run on the registered Windows runner
+        type: choice
+        required: true
+        default: proof
+        options:
+          - proof
+          - tests
+      confirm_local_execution:
+        description: Explicitly approve running this job on the personal Windows PC
+        type: boolean
+        required: true
+        default: false
+
+# Default-deny. The job overrides only the read permission it needs for checkout.
+permissions: {}
+
+concurrency:
+  group: local-pc-runner-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  guard:
+    name: Verify explicit local-runner opt-in
+    runs-on: ubuntu-latest
+    permissions: {}
+    steps:
+      - name: Require main, dispatch confirmation, and repository opt-in
+        env:
+          DISPATCH_REF: ${{ github.ref }}
+          CONFIRM_LOCAL_EXECUTION: ${{ inputs.confirm_local_execution }}
+          LOCAL_RUNNER_ENABLED: ${{ vars.LOCAL_RUNNER_ENABLED }}
+        run: |
+          set -euo pipefail
+          if [[ "$DISPATCH_REF" != "refs/heads/main" ]]; then
+            echo "::error::Dispatch this workflow from main only."
+            exit 1
+          fi
+          if [[ "$CONFIRM_LOCAL_EXECUTION" != "true" ]]; then
+            echo "::error::Set confirm_local_execution to true to authorize the local run."
+            exit 1
+          fi
+          if [[ "$LOCAL_RUNNER_ENABLED" != "true" ]]; then
+            echo "::error::Create the LOCAL_RUNNER_ENABLED=true repository variable only after configuring the local-runner environment protections."
+            exit 1
+          fi
+
+  execute:
+    name: Run allowlisted task on the Windows PC
+    needs: guard
+    runs-on: [self-hosted, Windows, X64, izz-ro-local]
+    environment:
+      name: local-runner
+    timeout-minutes: 30
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout trusted main
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          ref: main
+          fetch-depth: 1
+          persist-credentials: false
+
+      - name: Write local-runner proof
+        if: inputs.task == 'proof'
+        shell: powershell
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $relativePath = "handoff/.local-runner-proof/proof-$env:GITHUB_RUN_ID.txt"
+          $proofPath = Join-Path $env:GITHUB_WORKSPACE $relativePath
+          $proofDirectory = Split-Path -Parent $proofPath
+          New-Item -ItemType Directory -Path $proofDirectory -Force | Out-Null
+          @(
+            'result=executed-on-self-hosted-windows-runner'
+            "repository=$env:GITHUB_REPOSITORY"
+            "commit=$env:GITHUB_SHA"
+            "run_id=$env:GITHUB_RUN_ID"
+            "created_utc=$([DateTime]::UtcNow.ToString('o'))"
+          ) | Set-Content -LiteralPath $proofPath -Encoding utf8
+          "Generated a local-runner proof file; it contains no hostname, username, or local path." >> $env:GITHUB_STEP_SUMMARY
+
+      - name: Upload proof for Arena-side verification
+        if: inputs.task == 'proof'
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: local-runner-proof-${{ github.run_id }}
+          path: handoff/.local-runner-proof/proof-${{ github.run_id }}.txt
+          if-no-files-found: error
+          retention-days: 1
+
+      - name: Run repository tests on the Windows PC
+        if: inputs.task == 'tests'
+        shell: powershell
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $python = (Get-Command python -ErrorAction Stop).Source
+          $venv = Join-Path $env:RUNNER_TEMP "izz-ro-tests-$env:GITHUB_RUN_ID"
+          & $python -m venv $venv
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          $venvPython = Join-Path $venv 'Scripts\python.exe'
+          & $venvPython -m pip install --disable-pip-version-check -r requirements.txt -r requirements-dev.txt
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          & $venvPython -m ruff check .
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          & $venvPython -m pytest tests/ -q
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
