@@ -262,6 +262,10 @@
         // aici, raspunsul acela si-ar gasi contorul neschimbat si ar redesena lista pe care
         // tocmai am golit-o — rezultate care reapar dupa ce ai sters textul, adica zgomot.
         cerere++;
+        // Si `aria-busy`, din acelasi motiv: raspunsul invalidat de mai sus iese prin
+        // `idCerere !== cerere` FARA sa curete atributul (il curata abia dupa garda), deci
+        // fara linia asta lista ramane anuntata ca „in lucru" pana la urmatoarea cautare.
+        out.setAttribute("aria-busy", "false");
         status.textContent = "";
         return;
       }

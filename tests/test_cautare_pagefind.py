@@ -184,6 +184,12 @@ def test_golirea_campului_anuleaza_cererea_in_drum():
     golita — 50 de titluri care apar din senin intr-o pagina pe care ai lasat-o goala.
     Masurat in happy-dom, pe motorul Pagefind real servit din output/_pagefind/: inainte de
     fix, scenariul „camp golit, fara filtre" afisa 1100 de rezultate vechi; dupa fix, 0.
+
+    A doua jumatate a ramurii, semnalata in review pe #435: raspunsul invalidat iese prin
+    `idCerere !== cerere` INAINTE de `out.setAttribute("aria-busy", "false")`, deci fara a
+    doua linie lista ramane anuntata ca „in lucru" pana la urmatoarea cautare. Masurat cu
+    raspunsul motorului intarziat 400 ms: fara linie, `aria-busy` ramane „true" si dupa ce
+    raspunsul soseste; cu linie, „false" imediat dupa debounce.
     """
     js = open(os.path.join(ROOT, "static", "search.js"), encoding="utf-8").read()
     inceput = js.index("if (!termeni.length && !areFiltre) {")
@@ -195,6 +201,9 @@ def test_golirea_campului_anuleaza_cererea_in_drum():
     assert "cerere++;" in cod, (
         "ramura care goleste lista nu mai anuleaza cererile in drum; un raspuns intarziat "
         "va redesena rezultate peste pagina goala")
+    assert 'setAttribute("aria-busy", "false")' in cod, (
+        "ramura care goleste lista nu mai curata aria-busy; un cititor de ecran anunta "
+        "lista ca „in lucru” dupa ce ai sters textul")
     assert "return;" in ramura   # altfel am citit alt bloc decat cel verificat
 
 
