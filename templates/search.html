@@ -2,18 +2,30 @@
 {% block title %}Caută — {{ site.name }}{% endblock %}
 {% block description %}Caută în știrile {{ site.name }} — {{ site.tagline }}.{% endblock %}
 {% block content %}
-<article class="static-page search-page">
+{# `data-pagefind` / `data-index` duc la indexul generat la build (generator/pagefind_index.py)
+   si la mapa de rezultate. Atribute, nu cai fixe in search.js: pe preview-urile cu SITE_BASE
+   setat, o cale absoluta ar trimite cautarea pe domeniul gresit. #}
+<article class="static-page search-page" id="search-app"
+         data-pagefind="{{ base }}/_pagefind/"
+         data-index="{{ base }}/search-index.json">
   <h1>Caută în știri</h1>
-  <p class="search-hint">Caută în titlurile celor {{ search_count }} știri păstrate în ultimele {{ search_days }} zile. Diacriticele nu contează.</p>
+  <p class="search-hint">Caută în titlurile și rezumatele celor {{ search_count }} știri păstrate în ultimele {{ search_days }} zile. Diacriticele nu contează: „inundatii” găsește „inundații”.</p>
   {# submit-ul e anulat in search.js (CSP fara 'unsafe-inline' pe scripturi) #}
   <form id="search-form" role="search">
     <label class="visually-hidden" for="q">Termen de căutare</label>
     <input id="q" type="search" placeholder="ex.: buget, inundații, Wimbledon…" autocomplete="off" autofocus>
-    <label class="search-filter-label" for="search-category">Categorie</label>
-    <select id="search-category" class="search-filter">
-      <option value="">Toate categoriile</option>
-      {% for cat in categories %}<option value="{{ cat }}">{{ cat | cat_label }}</option>{% endfor %}
-    </select>
+    <div class="search-controls">
+      <label class="search-filter-label" for="search-category">Categorie</label>
+      <select id="search-category" class="search-filter">
+        <option value="">Toate categoriile</option>
+        {% for cat in categories %}<option value="{{ cat }}">{{ cat | cat_label }}</option>{% endfor %}
+      </select>
+      <span class="search-filter-label" id="search-sort-label">Ordonează</span>
+      <span class="search-sort" role="group" aria-labelledby="search-sort-label">
+        <button type="button" class="search-quick-filter" data-sort="" aria-pressed="true">după relevanță</button>
+        <button type="button" class="search-quick-filter" data-sort="data" aria-pressed="false">cele mai noi</button>
+      </span>
+    </div>
   </form>
   <nav class="search-quick-filters" aria-label="Filtre rapide pentru anunțuri oficiale">
     <span class="search-quick-label">Acces rapid:</span>
@@ -23,7 +35,10 @@
     <button type="button" class="search-quick-filter" data-quick-filter="achizitii" aria-pressed="false">Achiziții</button>
     <button type="button" class="search-quick-filter" data-quick-filter="oficiale" aria-pressed="false">Toate anunțurile oficiale</button>
   </nav>
-  <p class="search-scope">Indexul conține titluri și categorii, nu textul integral al surselor. Tastează un termen sau alege un filtru rapid; categoria editorială poate fi combinată cu filtrele de mai sus.</p>
+  <p class="search-scope">Căutarea acoperă textul scris de noi — titlul și rezumatul fiecărei știri — nu textul integral al surselor. Rezultatele apar pe măsură ce tastezi și sunt ordonate după relevanță; nu completăm lista cu rezultate aproximative.</p>
+  <noscript>
+    <p class="search-scope">Căutarea rulează în browser, dintr-un index generat la publicare, deci are nevoie de JavaScript activat. Fără JavaScript poți naviga pe categorii din meniul de sus sau pe <a href="{{ base }}/sectiuni/">toate secțiunile</a>.</p>
+  </noscript>
   <p id="search-status" role="status" aria-live="polite" data-result-limit="50"></p>
   <ul id="search-results" class="search-results"></ul>
 </article>

@@ -19,7 +19,7 @@ from xml.sax.saxutils import escape as xml_escape
 from jinja2 import Environment, FileSystemLoader, select_autoescape
 from slugify import slugify
 
-from . import config, covers, geo, htmlart
+from . import config, covers, geo, htmlart, pagefind_index
 from .select import (_dedup, _dedup_sources, _diversify, _entity_index,
                      _pick_hero, _quality_gate, anunt_oficial_fara_corp, filtru_cautare_rapida,
                      publicitar_la_sursa, titlu_afisare)
@@ -799,6 +799,11 @@ def build(articles: list, mod: dict | None = None) -> None:
         # poarta literal "Detalii pe sursa.", deci un simplu `{% if a.teaser %}` in sablon
         # l-ar tipari. Marcajul `anunt_fara_corp` e ce citesc sabloanele.
         a["anunt_fara_corp"] = anunt_oficial_fara_corp(a)
+        # Calculat O DATA, aici, si citit de doua suprafete care trebuie sa spuna acelasi
+        # lucru: filtrul Pagefind din `article.html` (cautarea server-side a indexului) si
+        # mapa de rezultate din `_write_search_index`. Doua apeluri separate ar putea sa se
+        # desparta la prima schimbare de regula in `select.filtru_cautare_rapida`.
+        a["tip_anunt"] = filtru_cautare_rapida(a)
         a["display_title"] = titlu_afisare(a)
         if a["anunt_fara_corp"]:
             a["teaser"] = ""
@@ -1221,11 +1226,20 @@ def build(articles: list, mod: dict | None = None) -> None:
     # inceput — vezi `htmlart._portrete_libere` pentru masuratoarea care a impins schimbarea.
     for rel in sorted(htmlart.portrete_cerute()):
         _use_media(os.path.join(MEDIA_DIR, rel), os.path.join(OUT_DIR, rel))
+    # Cautarea: indexul se construieste DUPA ce tot HTML-ul e pe disc (Pagefind indexeaza ce
+    # gaseste in output/) si INAINTE de numaratoarea de fisiere, fiindca bundle-ul face parte
+    # din bugetul gazdei. Mapa de rezultate are nevoie de id-urile din index, deci vine dupa.
+    # Vine dupa copierea portretelor, nu inaintea ei: Pagefind citeste doar HTML, deci
+    # ordinea nu schimba ce intra in index, dar amandoua preced numaratoarea.
+    cautare = pagefind_index.ruleaza(OUT_DIR)
+    cautare["mapate"] = _write_search_index(by_date, cautare.get("harta"))
+    # `harta` e material de lucru (10k perechi url->id), nu diagnostic: nu intra in build.json.
+    cautare.pop("harta", None)
     # ULTIMUL: numara ce s-a scris efectiv, deci trebuie sa vina dupa toate scrierile.
-    _write_build_metadata(len(by_date))
+    _write_build_metadata(len(by_date), cautare)
 
 
-def _write_build_metadata(article_count: int) -> None:
+def _write_build_metadata(article_count: int, cautare: dict | None = None) -> None:
     """Emite amprenta necache-uită a release-ului pentru verificarea post-deploy.
 
     Fiecare gazdă expune SHA-ul și ramura sub ALT nume: Workers Builds injectează
@@ -1259,6 +1273,13 @@ def _write_build_metadata(article_count: int) -> None:
         "article_count": article_count,
         "file_count": file_count,
     }
+    if cautare:
+        # Starea cautarii, citibila pe live (/build.json), nu doar in logul rularii. Daca
+        # indexul inceteaza sa se mai construiasca in Cloudflare Builds — binar lipsa,
+        # versiune schimbata — randarea continua si site-ul ramane sus, deci semnul ca
+        # /cauta/ a cazut pe varianta simplificata trebuie sa existe undeva verificabil.
+        payload["search"] = {cheie: cautare.get(cheie) for cheie in
+                             ("ok", "pagini", "mapate", "fisiere", "sterse", "motiv")}
     # Cheile JSON raman stabile pentru ca probele externe sa nu depinda de ordinea dict-ului Python.
     _write(os.path.join(OUT_DIR, "build.json"), json.dumps(payload, ensure_ascii=False, sort_keys=True) + "\n")
 
@@ -1734,20 +1755,59 @@ def _write_sitemap(articles: list, now: datetime = None) -> None:
 
 
 def _write_search(env: Environment, articles: list) -> None:
-    """Pagina /cauta/ + index JSON mic (titluri) pentru cautarea client-side.
+    """Pagina /cauta/.
 
-    Limita indexului este aceeasi cu retentia editoriala, nu o promisiune vaga de
-    "arhiva completa". Valorile sunt randate in HTML, astfel incat functioneaza fara JS
-    si raman sincronizate cu datele pe care le poate interoga clientul.
+    Limita afisata e retentia editoriala, nu o promisiune vaga de „arhiva completa", si e
+    randata in HTML ca sa ramana sincronizata cu datele pe care le poate interoga clientul.
+    Mapa de rezultate (`search-index.json`) NU se scrie aici: ea are nevoie de id-urile
+    Pagefind, care exista abia dupa ce indexul a fost construit — vezi `_write_search_index`.
     """
-    import json as _json
-    idx = [{"t": a.get("display_title") or a.get("title", ""), "u": f"/{a['category']}/{a['slug']}/",
-            "c": a.get("category", ""), "d": a.get("published_human", ""),
-            "f": filtru_cautare_rapida(a)} for a in articles]
-    _write(os.path.join(OUT_DIR, "search-index.json"), _json.dumps(idx, ensure_ascii=False))
     _write(os.path.join(OUT_DIR, "cauta", "index.html"),
            env.get_template("search.html").render(**_base_ctx(
-               "/cauta/", search_count=len(idx), search_days=config.ARTICLE_TTL_DAYS)))
+               "/cauta/", search_count=len(articles),
+               search_days=config.ARTICLE_TTL_DAYS)))
+
+
+def _write_search_index(articles: list, harta: dict | None = None) -> int:
+    """Mapa de rezultate a cautarii: `search-index.json`.
+
+    CE E SI DE CE EXISTA. Pagefind gaseste paginile si le ierarhizeaza, dar `search()`
+    intoarce doar id-ul intern al paginii (`ro_1a2b3c4`); titlul, categoria si data stau in
+    fragment, iar fragmentele sunt sterse la build (`pagefind_index.curata_bundle`) fiindca
+    unul per pagina ar duce output-ul la 23.941 de fisiere, cu 19,7% peste plafonul de
+    20.000 al Workers Free (masurat 2026-10-03; vezi specs/cautare-pagefind.md). Mapa asta inlocuieste fragmentul: un singur fisier, citit o data si tinut
+    in cache, din care clientul compune rezultatul fara nicio cerere in plus.
+
+    FORMA, compacta deliberat (masurat pe randarea din 2026-10-03, 9.451 de articole:
+    2,04 MB brut / 683 KB comprimat — brut mai mica decat vechea forma cu chei repetate in
+    fiecare obiect, 2,20 MB / 638 KB, adica +45 KB comprimat platite pe id-urile Pagefind,
+    care sunt amprente si nu se comprima):
+
+        {"v": 2, "a": [["/local/slug/", "Titlu", "local", "1 octombrie 2026, 14:06",
+                        "concursuri", "ro_1a2b3c4"], ...]}
+                   u      t       c        d                   f             id
+
+    `id` e `null` pentru articolele care n-au intrat in index (indexul n-a putut fi
+    construit, sau pagina n-a fost scrisa). Clientul le sare la rezultatele Pagefind, dar
+    le poate folosi in cautarea simplificata — care e exact drumul de cadere cand lipseste
+    `_pagefind/`. Ordinea campurilor e contract cu `static/search.js`; se schimba impreuna
+    cu `v`.
+    """
+    import json as _json
+    harta = harta or {}
+    intrari = []
+    indexate = 0
+    for a in articles:
+        cale = f"/{a['category']}/{a['slug']}/"
+        id_pagina = harta.get(cale)
+        if id_pagina:
+            indexate += 1
+        intrari.append([cale, a.get("display_title") or a.get("title", ""),
+                        a.get("category", ""), a.get("published_human", ""),
+                        a.get("tip_anunt", ""), id_pagina])
+    _write(os.path.join(OUT_DIR, "search-index.json"),
+           _json.dumps({"v": 2, "a": intrari}, ensure_ascii=False, separators=(",", ":")))
+    return indexate
 
 
 def _write_robots() -> None:
@@ -1850,6 +1910,20 @@ def _write_headers() -> None:
            # instead of the more specific rule replacing the general one; "!" is the
            # documented way to unset the inherited value before setting the real one.
            "/static/harta-stiri/*\n  ! Cache-Control\n  Cache-Control: public, max-age=300, must-revalidate\n"
+           # Indexul de cautare (Pagefind). Fisierul de intrare si `pagefind.js` poarta
+           # versiunea si numele bucatilor de index; amandoua se schimba la fiecare build,
+           # iar bucatile vechi NU mai exista pe noua versiune. Un browser care tine in cache
+           # un entry vechi ar cere fisiere `.pf_index` care dau 404, deci cautarea s-ar
+           # strica exact dupa un deploy. `max-age=0, must-revalidate` = revalidare ieftina
+           # (304) in loc de continut vechi. Restul bundle-ului e nume-amprentat, dar 300 s
+           # e suficient si nu risca nimic.
+           "/_pagefind/*\n  Cache-Control: public, max-age=300, must-revalidate\n"
+           "/_pagefind/pagefind-entry.json\n  ! Cache-Control\n"
+           "  Cache-Control: public, max-age=0, must-revalidate\n"
+           "/_pagefind/pagefind.js\n  ! Cache-Control\n"
+           "  Cache-Control: public, max-age=0, must-revalidate\n"
+           "/search-index.json\n  ! Cache-Control\n"
+           "  Cache-Control: public, max-age=300, must-revalidate\n"
            "/favicon.svg\n  Cache-Control: public, max-age=2592000\n"
            "/*.jpg\n  Cache-Control: public, max-age=86400\n"
            "/*.png\n  Cache-Control: public, max-age=86400\n"
