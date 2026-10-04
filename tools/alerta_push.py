@@ -102,6 +102,17 @@ def trimite(titlu: str, text: str, url: str, uscat: bool, limita: int | None) ->
 
     loturi = 0
     total = {"trimise": 0, "esecuri": 0, "sterse": 0}
+    # Tăierea se face și aici, nu doar pe server: mai ieftin să audă omul refuzul acum
+    # decît după ce a plecat primul lot. Valorile vin din măsurătoarea din push.js.
+    if limita is not None:
+        if limita < 1:
+            print("!! --limita trebuie să fie cel puțin 1.", file=sys.stderr)
+            return 2
+        if limita > 50:
+            print(f"!! --limita {limita} trece de 50: Workers Free permite 50 de subrequest-uri "
+                  "externe per invocare. Trimit cu 50.", file=sys.stderr)
+            limita = 50
+
     cursor = None
     while True:
         corp = {"titlu": titlu, "text": text, "url": url, "uscat": uscat}
@@ -155,7 +166,10 @@ def main(argv: list[str] | None = None) -> int:
     ap.add_argument("--url", help="pagina articolului: https://izz.ro/{categorie}/{slug}/")
     ap.add_argument("--uscat", action="store_true",
                     help="repetiție: validează și numără, dar NU trimite și NU consumă ziua")
-    ap.add_argument("--limita", type=int, help="abonamente per lot (implicit 40, maxim 100)")
+    ap.add_argument("--limita", type=int, metavar="N",
+                    help="abonamente per lot: implicit 10 (cît încape în cei 10 ms de CPU ai "
+                         "planului Free), maxim 50 (subrequest-uri externe per invocare; "
+                         "serverul taie oricum la 50)")
     ap.add_argument("--stare", action="store_true", help="câți abonați sunt și când s-a trimis ultima dată")
     args = ap.parse_args(argv)
 

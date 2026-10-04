@@ -28,10 +28,26 @@ const PREFIX_ABONARE = 'sub:';
 const PREFIX_CAP = 'cap:';
 const CHEIE_STARE = 'stare:ultima';
 
-// Un lot mic dinadins: cei 10 ms de CPU ai planului Free nu cuprind sute de perechi
-// ECDH + AES-GCM. Limita se poate ridica pana la LIMITA_MAXIMA, nu peste.
-const LIMITA_IMPLICITA = 40;
-const LIMITA_MAXIMA = 100;
+// DOUA plafoane, din doua motive DIFERITE — si cel care te opreste primul e CPU-ul, nu reteaua.
+//
+// LIMITA_MAXIMA = 50 e o limita de PLATFORMA, nu o preferinta: Workers Free permite 50 de
+// subrequest-uri externe per invocare, iar fiecare alerta e cate un `fetch()` catre serviciul
+// de push (redirecturile consuma si ele). Peste 50, invocarea cade la mijloc, DUPA ce plafonul
+// zilei a fost scris — adica pierdem abonati fara sa stim cati.
+//
+// LIMITA_IMPLICITA = 10 e o limita de CPU, masurata. Pe aceasta masina, in Node:
+//   · `generateKey(ECDH P-256)`            ~109 µs
+//   · `cripteaza` cu pereche+sare noi      ~828 µs   (din care ~700 µs si cu chei refolosite)
+//   · `semnVapid` (ECDSA)                  ~137 µs   -> acum memorat per audienta, deci platit
+//                                                       o singura data pe lot, nu per abonat
+//   => ~0,83 ms de CPU per abonat. La 10 ms cat da planul Free, 40 de abonati ar insemna
+//      ~33 ms: de trei ori peste. 10 abonati inseamna ~8,3 ms, cu loc si pentru KV si JSON.
+//
+// Masuratoarea e in Node pe o masina de lucru, NU pe un Workers real: ordinul de marime e cel
+// care conteaza, nu zecimala. Scumpirea vine din criptare, care e obligatorie; nu din retea,
+// care e I/O si nu se trece la CPU.
+const LIMITA_IMPLICITA = 10;
+const LIMITA_MAXIMA = 50;
 
 // Cat timp tine un push in coada serviciului daca dispozitivul e offline (secunde).
 const TTL_SECUNDE = 24 * 3600;
@@ -331,7 +347,15 @@ export async function cripteaza(mesaj, abonament, perecheServer, sare) {
 export async function trimiteUnuia(abonament, jwt, publicaB64, mesaj, perecheServer, sare) {
   const corp = await cripteaza(mesaj, abonament, perecheServer, sare);
   const audienta = new URL(abonament.endpoint).origin;
-  const semnatura = await semnVapid(jwt.cheie, publicaB64, audienta, jwt.subiect, jwt.acum);
+  // Semnatura VAPID depinde de (cheie, audienta, subiect, acum) — iar intr-un lot `acum` e
+  // acelasi, deci toti abonatii ACELEIASI audiente (toti cei de pe FCM, de pilda) primesc
+  // acelasi JWT. Semnarea e ECDSA, ~137 µs masurati, si se platea de N ori pentru acelasi
+  // rezultat. Memoizarea nu schimba ce trimitem: schimba de cate ori il calculam.
+  let semnatura = jwt.semnaturi && jwt.semnaturi.get(audienta);
+  if (!semnatura) {
+    semnatura = await semnVapid(jwt.cheie, publicaB64, audienta, jwt.subiect, jwt.acum);
+    if (jwt.semnaturi) jwt.semnaturi.set(audienta, semnatura);
+  }
   const raspuns = await fetch(abonament.endpoint, {
     method: 'POST',
     headers: {
@@ -515,16 +539,21 @@ export async function trimiteLot(corp, env, ctx) {
     cheie: await importaCheieVapid(env.VAPID_PUBLIC_KEY, env.VAPID_PRIVATE_KEY),
     subiect: env.VAPID_SUBJECT || SUBIECT_IMPLICIT,
     acum: Date.now(),
+    semnaturi: new Map(),   // o semnatura per audienta, nu per abonat (vezi trimiteUnuia)
   };
-  const perecheServer = await crypto.subtle.generateKey(
-    { name: 'ECDH', namedCurve: 'P-256' }, false, ['deriveBits']);
-  const sare = crypto.getRandomValues(new Uint8Array(16));
 
   if (uscat) {
     return json({ uscat: true, arFiPlecat: pagina.keys.length, cursor_urmator: cursorUrmator(pagina) });
   }
 
-  await kv.put(cap, new Date().toISOString(), { expirationTtl: CAP_TTL_SECUNDE });
+  // Plafonul zilei se scrie O SINGURA DATA, pe primul lot, si se ASTEAPTA (nu in
+  // `waitUntil`): daca scrierea pica — cota de 1.000 de scrieri KV pe zi, de pilda —
+  // aflam INAINTE sa fi plecat vreun mesaj, nu dupa. Inainte se scria pe FIECARE lot: la
+  // 5.000 de abonati in loturi de 10 erau 500 de scrieri, adica jumatate din plafonul
+  // zilnic, pentru o cheie care oricum exista deja.
+  if (primul) {
+    await kv.put(cap, new Date().toISOString(), { expirationTtl: CAP_TTL_SECUNDE });
+  }
 
   let trimise = 0;
   let esecuri = 0;
@@ -535,6 +564,17 @@ export async function trimiteLot(corp, env, ctx) {
     if (!abonament) continue;
     let status;
     try {
+      // Perechea ECDH si sarea se genereaza AICI, pentru FIECARE abonat in parte — nu o
+      // singura data inainte de bucla. RFC 8291 §3.1 e explicit: serverul genereaza o
+      // pereche noua la trimiterea fiecarui mesaj, iar §2 cere sare noua per mesaj. Codul
+      // de dinainte refolosea aceeasi pereche si aceeasi sare pentru pana la 40 de POST-uri
+      // independente: corect din punct de vedere aritmetic (secretul DH difera per
+      // destinatar, deci nu se refoloseste un nonce cu aceeasi cheie), dar NU conform, si
+      // exact genul de scurtatura pe care n-o vrei in singurul loc unde greselile nu se vad.
+      // Costul masurat: +128 µs per abonat (+18%).
+      const perecheServer = await crypto.subtle.generateKey(
+        { name: 'ECDH', namedCurve: 'P-256' }, false, ['deriveBits']);
+      const sare = crypto.getRandomValues(new Uint8Array(16));
       status = await trimiteUnuia(abonament, jwt, env.VAPID_PUBLIC_KEY, mesaj, perecheServer, sare);
     } catch {
       esecuri++;
@@ -551,9 +591,15 @@ export async function trimiteLot(corp, env, ctx) {
     }
   }
   if (stergeri.length) await Promise.all(stergeri);
-  // `waitUntil`: raportul nu trebuie sa astepte o scriere in KV ca sa ajunga la cel care
-  // a declansat alerta.
-  if (ctx && ctx.waitUntil) {
+
+  // Raportul de stare se scrie O SINGURA DATA, pe ultimul lot. Inainte se scria pe fiecare
+  // lot: la 5.000 de abonati in loturi de 10 erau 500 de scrieri, adica JUMATATE din
+  // plafonul zilnic de 1.000, pe un raport pe care lotul urmator il suprascria. Observatia
+  // e din review; plata ei e o singura comparatie.
+  const ultimulLot = cursorUrmator(pagina) === null;
+  if (ultimulLot && ctx && ctx.waitUntil) {
+    // `waitUntil`: raportul nu trebuie sa astepte o scriere in KV ca sa ajunga la cel care
+    // a declansat alerta.
     ctx.waitUntil(kv.put(CHEIE_STARE, JSON.stringify({
       la: new Date().toISOString(),
       titlu: corp.titlu.trim(),

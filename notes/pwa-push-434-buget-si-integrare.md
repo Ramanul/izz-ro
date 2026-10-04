@@ -67,9 +67,13 @@ să recapete excerptul din corp, plafonul sare — și o va face pe un deploy ca
 
 Costul de rulare pe care-l adaugă `run_worker_first`: fiecare navigare a unui vizitator care
 are deja service workerul cere `/sw.js`, iar Workerul răspunde cu un `fetch` către activ și îl
-reconstruiește cu antetul nou. Pe Free avem 10 milioane de cereri/lună; la traficul măsurat
-al site-ului, ordinul de mărime e zecii de mii — dar **nu e zero**, și e bine să fie scris:
-e prețul pentru ca un SW schimbat să ajungă la oameni într-o vizită, nu într-o lună.
+reconstruiește cu antetul nou.
+
+**Corecție din review (2026-10-04):** scrisesem aici „10 milioane de cereri pe lună". Cifra e
+greșită pentru acest plan — **Workers Free înseamnă 100.000 de invocări pe zi**, nu un plafon
+lunar de 10 milioane. Concluzia rămîne (la traficul măsurat al site-ului sîntem departe de
+plafon), dar numărul de care trebuie să ne apropiem e 100.000/zi, și e o cifră suficient de
+jos încît să merite măsurată, nu presupusă: vezi §10 din `infra/PUSH-SETUP.md`.
 
 ## 4. Coexistență cu #435 (căutare Pagefind)
 

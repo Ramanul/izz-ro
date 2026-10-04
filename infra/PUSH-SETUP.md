@@ -4,24 +4,34 @@ Totul e **gratuit**: Cloudflare Workers Free + Workers KV Free, zero servicii te
 costuri pe abonat. Codul e deja în repo; ce lipsește sunt niște **chei pe care doar tu le
 poți pune** (nu au ce căuta în git).
 
-Până nu sunt puse, **nimic nu se strică**: rutele răspund `503` cu un mesaj în română,
-butonul de alerte arată „Alertele nu sunt pornite pe server în acest moment", iar site-ul
-funcționează exact ca înainte. Poți face merge liniștit și configura după aceea.
+> **Stare la 2026-10-04:** pașii 1 și 2 sînt **făcuți de proprietar** — namespace-ul KV
+> există (`PUSH_SUBS`) și e deja legat în `wrangler.jsonc`, iar cele trei secrete VAPID sînt
+> setate pe worker. **Nu le mai crea și nu le roti.** Mai lipsește o singură cheie, mai jos.
 
 ---
 
 ## 1. Lista scurtă — ce lipsește ACUM
 
-| # | Ce | Unde se pune | Obligatoriu pentru |
+| # | Ce | Unde se pune | Stare |
 |---|---|---|---|
-| 1 | namespace KV `PUSH_SUBS` | `wrangler.jsonc` (blocul comentat) | abonări, trimitere |
-| 2 | `VAPID_PUBLIC_KEY` | `wrangler secret put` | orice alertă |
-| 3 | `VAPID_PRIVATE_KEY` | `wrangler secret put` | orice alertă |
-| 4 | `VAPID_SUBJECT` | `wrangler secret put` | orice alertă |
-| 5 | `PUSH_ADMIN_TOKEN` | `wrangler secret put` + `.env` local | trimiterea (nu abonarea) |
+| 1 | namespace KV `PUSH_SUBS` | `wrangler.jsonc` | ✅ **făcut** — id `4cc469142f264228942aeac7d4406aba`, binding activ |
+| 2 | `VAPID_PUBLIC_KEY` | `wrangler secret put` | ✅ **făcut** de proprietar |
+| 3 | `VAPID_PRIVATE_KEY` | `wrangler secret put` | ✅ **făcut** de proprietar |
+| 4 | `VAPID_SUBJECT` | `wrangler secret put` | ✅ **făcut** de proprietar |
+| 5 | `PUSH_ADMIN_TOKEN` | `wrangler secret put` + `.env` local | ⏳ **de făcut** — cheia de trimitere |
 
-Fără 1: `/push/abonare` și `/push/trimite` → `503`. Fără 2–4: toate rutele → `503`.
-Fără 5: abonările merg, trimiterea refuză cu `401`.
+Un singur pas rămas:
+
+```bash
+npx wrangler secret put PUSH_ADMIN_TOKEN     # pe worker
+echo "PUSH_ADMIN_TOKEN=aceeasi-valoare" >> .env   # și local, pentru tools/alerta_push.py
+```
+
+Fără 5: abonările merg (sînt publice prin design — e însuși opt-in-ul), iar `/push/stare`
+și `/push/trimite` refuză cu `401`.
+
+Secțiunile 2 și 3 de mai jos rămîn ca **documentație a pașilor deja făcuți** — dacă trebuie
+vreodată refăcuți pe alt deployment, comenzile sînt acelea.
 
 ---
 
@@ -40,9 +50,10 @@ Comanda întoarce un `id`. Apoi, în `wrangler.jsonc`, **decomentează** blocul 
 ],
 ```
 
-De ce e comentat în PR și nu scris direct: un `id` de placeholder face **deploy-ul să
-pice** (namespace inexistent), iar PR-ul trebuia să poată fi publicat înainte să faci tu
-pasul ăsta.
+Blocul fusese lăsat comentat în PR dintr-un motiv real: un `id` de placeholder face
+**deploy-ul să pice** (namespace inexistent). Motivul a dispărut în momentul în care
+namespace-ul a fost creat, și atunci blocul a fost decomentat cu id-ul real, în
+`wrangler.jsonc`.
 
 În KV ajung **doar datele tehnice ale abonamentului**: endpointul de push și cele două
 chei ale lui. Niciun nume, niciun e-mail, niciun IP (nu e scris în cod), niciun profil de
@@ -117,24 +128,83 @@ poate fi ocolit cu un `curl`):
 
 Refuzul vine cu motive în română și cod `422` (politică) sau `409` (zi deja consumată).
 
+Unealta reia singură loturile pînă la epuizarea cursorului, și taie `--limita` la 50 (vezi
+§5 pentru de ce). Implicit lasă serverul să decidă: 10 per lot.
+
 ---
 
-## 5. Cât încape, pe planul Free
+## 5. Cât încape, pe planul Free — cotele, și cît consumă o alertă
 
-Cifrele sunt de pe `developers.cloudflare.com/workers/platform/pricing/` și
-`/kv/platform/limits/`, citite la 2026-10-03. De ele depinde forma codului:
+Cifrele de mai jos sînt cele corecte pentru planul Free (verificate de reviewer și
+corectate: versiunea anterioară a acestui document scria greșit „10 milioane de cereri pe
+lună", care e o limită a altor planuri — **Workers Free înseamnă 100.000 de invocări pe
+zi**).
 
-| Limită (Free) | Valoare | Ce înseamnă pentru alerte |
+| Limită (Workers Free) | Valoare |
+|---|---|
+| **Invocări Worker** | **100.000 pe zi** (nu există plafon lunar de 10 M pe Free) |
+| CPU per invocare | **10 ms** |
+| Subrequest-uri externe per invocare | **50** |
+| KV citiri | 100.000 pe zi |
+| KV **scrieri** | **1.000 pe zi** |
+| KV **listări** (`list`) | **1.000 pe zi** |
+| KV ștergeri | 1.000 pe zi |
+| KV stocare | 1 GB |
+
+**Operațiile peste cotă eșuează cu eroare — nu se facturează și nu continuă.** Depășirea nu
+costă bani: costă o eroare. Simptomul unui abuz pe `/push/abonare` e un `503`, nu o factură.
+
+### Cît consumă o alertă (N abonați, lot de B)
+
+Aceasta e formula implementării **curente**, nu a variantei inițiale. Două optimizări cerute
+în review au schimbat-o: plafonul zilei se scrie o singură dată (nu pe fiecare lot) și
+raportul de stare la fel.
+
+| Operație KV | Consum pentru o alertă întreagă |
+|---|---|
+| citiri | `N + 1` (cîte un `get` per abonament + citirea plafonului pe primul lot) |
+| **listări** | `⌈N / B⌉` — una per lot |
+| **scrieri** | `2` — plafonul zilei (primul lot) + raportul de stare (ultimul lot) |
+| ștergeri | cîte abonamente moarte (`404`/`410`) s-au găsit; cotă proprie |
+
+Cu `S` abonări noi în aceeași zi, scrierile devin `S + 2`.
+
+**Unde e pragul.** Cu lotul implicit `B = 10`:
+
+| resursă | pragul de saturare |
+|---|---|
+| listări (1.000/zi) | **10.000 de abonați per alertă** — aici se oprește întîi |
+| citiri (100.000/zi) | 99.999 abonați |
+| scrieri (1.000/zi) | **nu se mai atinge**: 2 scrieri per alertă, indiferent de N |
+| invocări (100.000/zi) | `⌈N/B⌉` invocări de trimitere + cele de trafic |
+
+Pragul de scrieri — cel care te strîngea înainte (`1 + ⌈N/40⌉`, adică 12,6% din cotă la
+5.000 de abonați) — **a dispărut** odată cu scrierea unică. Rămîne pragul de **listări**,
+care e funcție de lot: `⌈N/B⌉ ≤ 1.000`. Cu `B = 10` încap 10.000 de abonați; cu `B = 40`
+ar încăpea 40.000, dar CPU-ul nu permite 40 (mai jos).
+
+### De ce lotul implicit e 10 și maximul 50
+
+Două limite diferite, iar **CPU-ul te oprește primul**:
+
+| limită | valoare | de unde vine |
 |---|---|---|
-| CPU per invocare Worker | **10 ms** | trimiterea e **pe loturi de 40**, cu cursor — unealta reia singură |
-| Cereri Worker | 100.000/zi | rutele de push sunt neglijabile pe lângă trafic; activele statice nu se numără |
-| KV citiri / scrieri / ștergeri / listări | 100.000 / 1.000 / 1.000 / 1.000 pe zi | o alertă pe zi = 1 listare + N citiri + 1 scriere; abonările NU rescriu dacă există deja |
-| KV stocare | 1 GB | ~1 KB per abonament → sute de mii de abonați |
+| `LIMITA_MAXIMA` | **50** | platforma: 50 de subrequest-uri externe per invocare. Un `limita` mai mare e tăiat la 50 — altfel invocarea cade la mijloc, după ce plafonul zilei fusese scris |
+| `LIMITA_IMPLICITA` | **10** | CPU: ~0,83 ms per abonat ⇒ 10 abonați ≈ 8,3 ms din cei 10 ms ai planului Free |
+
+Măsurătoarea de CPU (Node 22, această mașină — **nu** un Workers real; ordinul de mărime e
+cel care contează): `generateKey(ECDH P-256)` ~109 µs · `cripteaza` cu pereche și sare noi
+~828 µs (din care ~700 µs chiar și cu chei refolosite) · `semnVapid` ~137 µs, **memorat acum
+per audiență**, deci plătit o singură dată pe lot, nu per abonat. La 40 de abonați ar fi
+~33 ms: de peste trei ori peste plafon.
+
+Dacă vrei mai mult decît 10 per lot, ridică `--limita` pînă la 50 — dar atunci supraveghează
+CPU-ul raportat în dashboard, fiindcă acolo te apropii de limita reală.
 
 **Riscul real pe planul Free nu e traficul, e cineva care golește plafonul de 1.000 de
-scrieri/zi** cu POST-uri repetitive. De aceea endpointurile de push sunt validate contra
-unei liste de servicii cunoscute (FCM, Mozilla, Apple, Windows) și de aceea re-abonarea
-aceluiași dispozitiv nu scrie a doua oară.
+scrieri/zi** cu POST-uri repetitive. De aceea endpointurile de push sînt validate contra unei
+liste de servicii cunoscute (FCM, Mozilla, Apple, Windows) și de aceea re-abonarea aceluiași
+dispozitiv nu scrie a doua oară.
 
 ---
 
@@ -242,4 +312,41 @@ prin curățare, nu criptografică.
   Ce s-a putut verifica: `output/sw.js` există la rădăcină, `/offline/` se randează,
   manifestul e valid, iar `tools/html_check.py` trece curat pe output-ul construit.
 
+- **Cei 10 ms de CPU nu au fost măsurați pe un Workers real.** Măsurătoarea din §5 e făcută
+  în Node 22 pe o mașină de lucru: ordinul de mărime e cel care a decis lotul de 10, nu
+  zecimala. Primul push real către mai mult de cîțiva abonați trebuie urmărit în
+  dashboard-ul Workers (CPU per invocare), nu presupus.
+
 Ambele se închid într-o tură următoare, pe preview-ul Workerului.
+
+---
+
+## 10. Cum afli cît de departe ești de 100.000 de invocări/zi (fără niciun cost)
+
+Întrebare pusă de coordonator, răspunsul e: **nu trebuie activat nimic, există deja**.
+
+`.github/workflows/trafic.yml` rulează `tools/trafic_cloudflare.py` prin
+`workflow_dispatch` — adică **manual, din Actions → „Run workflow"**, fără cron, fără
+`pip install` (scriptul folosește doar biblioteca standard). Interoghează GraphQL Analytics
+al Cloudflare și întoarce cererile pe zi.
+
+Cost: **zero lei și zero risc.**
+
+- Cloudflare: interogarea de analytics e gratuită; nu consumă invocări, nu consumă KV.
+- GitHub Actions: repo-ul e public, deci minutele sînt nelimitate; o rulare ține ~1 minut.
+- Fără cron: nu se consumă nimic cît timp nu apeși tu.
+
+Dacă tokenul existent (`CLOUDFLARE_API_TOKEN`, folosit și de `deploy-worker.yml`) **nu** are
+scope de analytics, scriptul spune exact ce lipsește — API-ul numește permisiunea în eroare,
+iar unealta o printează, deci răspunsul e măsurat, nu dedus. În acel caz:
+
+1. creezi un token **separat**, doar cu `Account Analytics:Read` și `Zone Analytics:Read`
+   — **nu lărgi tokenul de deploy**, principiul e să nu pui drepturi de scriere acolo unde
+   ai nevoie doar de citire;
+2. îl pui ca secret de repo (nume nou) și îl folosești în `trafic.yml`;
+3. rulezi o dată și citești cifra.
+
+Ce cauți în răspuns: invocările pe zi vs. **100.000/zi** (plafonul Free). Singura rută a
+acestui PR care intră acolo e `run_worker_first` pe `/sw.js` — o invocare per navigare a
+unui vizitator care are deja service workerul instalat. Restul rămîne pe active statice,
+care sînt gratuite și nelimitate.

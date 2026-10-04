@@ -139,7 +139,9 @@ globalThis.fetch = async (intrare, optiuni) => {
   // ar arunca in interiorul buclei de trimitere — si atunci testul ar numara ESECURI in
   // loc de trimiteri, adica ar verifică altceva.
   const cerere = intrare instanceof Request ? intrare : new Request(intrare, optiuni);
-  cereri.push({ url: cerere.url, headers: Object.fromEntries(cerere.headers) });
+  const octeti = new Uint8Array(await cerere.arrayBuffer());
+  cereri.push({ url: cerere.url, headers: Object.fromEntries(cerere.headers),
+    corp: Buffer.from(octeti).toString('base64') });
   const r = typeof raspunsuri === 'function' ? raspunsuri(cerere) : raspunsuri;
   return new Response('', { status: (r && r.status) || 201 });
 };
@@ -272,6 +274,63 @@ iesire.dezabonare_ramase = (await cheama('push', '/push/stare',
 iesire.dezabonare_straina = await cheama('push', '/push/dezabonare',
   post({ endpoint: 'https://exemplu.rau/push' }), env3);
 
+/* 11. CHEI PER MESAJ (RFC 8291 §2, §3.1): perechea ECDH si sarea se genereaza pentru
+       FIECARE abonat, nu o data pentru tot lotul. Antetul aes128gcm e
+       salt(16) || rs(4) || idlen(1) || as_public(65), deci se vad ambele in corp. */
+const envK = mediu();
+for (let i = 1; i <= 4; i++) {
+  await cheama('push', '/push/abonare', post({ subscription: ABONAMENT(i) }), envK);
+}
+raspunsuri = { status: 201 };
+cereri = [];
+iesire.per_mesaj = await cheama('push', '/push/trimite', post({ ...ALERTA, limita: 10 }), envK);
+iesire.per_mesaj_antet = cereri.map((c) => {
+  const b = Buffer.from(c.corp, 'base64');
+  return { sare: b.subarray(0, 16).toString('hex'),
+           asPublica: b.subarray(21, 86).toString('hex') };
+});
+iesire.per_mesaj_cereri = cereri.length;
+
+/* 12. PLAFONUL DE SUBREQUEST-URI: Workers Free da 50 de subrequest-uri externe per
+       invocare. Un `limita` mai mare trebuie taiat la 50, nu onorat. */
+const envP = mediu();
+for (let i = 1; i <= 60; i++) {
+  await cheama('push', '/push/abonare', post({ subscription: ABONAMENT(i) }), envP);
+}
+raspunsuri = { status: 201 };
+cereri = [];
+iesire.plafon = await cheama('push', '/push/trimite', post({ ...ALERTA, limita: 500 }), envP);
+iesire.plafon_cereri = cereri.length;
+iesire.plafon_ramase = (await cheama('push', '/push/stare',
+  { headers: { authorization: 'Bearer token-de-proba' } }, envP)).corp.abonati;
+
+/* 13. RAPORTUL DE STARE se scrie O SINGURA DATA, pe ultimul lot — nu cite unul per lot,
+       ca sa nu arda plafonul de 1.000 de scrieri KV pe un raport suprascris. */
+const envS = mediu();
+for (let i = 1; i <= 6; i++) {
+  await cheama('push', '/push/abonare', post({ subscription: ABONAMENT(i) }), envS);
+}
+raspunsuri = { status: 201 };
+iesire.raport_scrieri_inainte = envS.PUSH_SUBS.scrieri;
+iesire.raport_lot1 = await cheama('push', '/push/trimite', post({ ...ALERTA, limita: 3 }), envS);
+iesire.raport_scrieri_dupa_lot1 = envS.PUSH_SUBS.scrieri;
+iesire.raport_stare_lot1 = await envS.PUSH_SUBS.get('stare:ultima');
+iesire.raport_lot2 = await cheama('push', '/push/trimite',
+  post({ ...ALERTA, limita: 3, cursor: iesire.raport_lot1.corp.cursor_urmator }), envS);
+iesire.raport_scrieri_dupa_lot2 = envS.PUSH_SUBS.scrieri;
+iesire.raport_stare_lot2 = await envS.PUSH_SUBS.get('stare:ultima');
+
+/* 14. LOTUL IMPLICIT e 10, nu 40: cei 10 ms de CPU ai planului Free nu cuprind mai mult
+       (masuratoarea e in comentariul lui LIMITA_IMPLICITA din push.js). */
+const envD = mediu();
+for (let i = 1; i <= 25; i++) {
+  await cheama('push', '/push/abonare', post({ subscription: ABONAMENT(i) }), envD);
+}
+raspunsuri = { status: 201 };
+cereri = [];
+iesire.implicit = await cheama('push', '/push/trimite', post(ALERTA), envD);
+iesire.implicit_cereri = cereri.length;
+
 /* 10. compozitia Workerului: pushul ajunge la push.js, restul la oglinda, /sw.js cu antet */
 const ASSETS = { fetch: async (r) => (r.url.endsWith('/sw.js')
   ? new Response('// sw', { status: 200, headers: { 'content-type': 'text/javascript' } })
@@ -371,3 +430,75 @@ def test_workerul_compune_rutele(rulat):
     # Restul trece prin oglinda: aici activul lipseste si oglinda e 404, deci 404.
     assert rulat["worker_oglinda_status"] == 404
     assert rulat["worker_ruta_necunoscuta"]["status"] == 404
+
+
+def test_pereche_ecdh_si_sare_sint_noi_pentru_fiecare_abonat(rulat):
+    """RFC 8291 §2 și §3.1: pereche ECDH și sare NOI la fiecare mesaj, nu una per lot.
+
+    Codul de dinainte genera perechea și sarea o singură dată, înainte de buclă, și le
+    refolosea pentru pînă la 40 de POST-uri independente. Aritmetic supraviețuiește
+    (secretul DH diferă per destinatar, deci nu se refolosește un nonce cu aceeași cheie),
+    dar nu e conform — și e exact genul de scurtătură care nu se vede nicăieri pînă în
+    ziua în care cineva citește RFC-ul cu creionul în mînă.
+
+    Se verifică pe CORP, nu pe intenție: antetul aes128gcm e
+    `salt(16) || rs(4) || idlen(1) || as_public(65)`, deci ambele valori sînt vizibile în
+    primii 86 de octeți ai fiecărei cereri.
+    """
+    antete = rulat["per_mesaj_antet"]
+    assert len(antete) == 4, f"au plecat {len(antete)} cereri, nu 4"
+    assert rulat["per_mesaj"]["corp"]["trimise"] == 4
+    sari = [a["sare"] for a in antete]
+    chei = [a["asPublica"] for a in antete]
+    assert len(set(sari)) == 4, f"sarea s-a refolosit: {sari}"
+    assert len(set(chei)) == 4, "perechea ECDH s-a refolosit pentru mai mulți abonați"
+    # Și nu sînt doar distincte, sînt și de dimensiunea din RFC: 16 octeți de sare,
+    # 65 de octeți de cheie P-256 necomprimată.
+    assert all(len(bytes.fromhex(s)) == 16 for s in sari)
+    assert all(len(bytes.fromhex(c)) == 65 for c in chei)
+
+
+def test_lotul_e_taiat_la_50_de_subrequesturi(rulat):
+    """Workers Free: 50 de subrequest-uri externe per invocare, nu 100.
+
+    Fiecare alertă e cîte un `fetch()` către serviciul de push. Cu `limita` 500 și 60 de
+    abonați, un lot netăiat ar porni 60 de cereri, iar invocarea ar cădea la a 51-a — DUPĂ
+    ce plafonul zilei fusese scris. Adică: ziua consumată, o parte din abonați pierduți și
+    niciun raport care să spună cîți.
+    """
+    assert rulat["plafon_cereri"] == 50, (
+        f"au plecat {rulat['plafon_cereri']} cereri într-o singură invocare; "
+        "plafonul Free e 50")
+    assert rulat["plafon"]["corp"]["trimise"] == 50
+    # Din cei 60 de abonați au rămas 10 de trimis: lotul s-a oprit, nu s-a încurcat.
+    assert rulat["plafon"]["corp"]["cursor_urmator"], (
+        "lotul tăiat trebuie să lase un cursor de continuare")
+    assert rulat["plafon_ramase"] == 60, "abonații rămași nu s-au pierdut din KV"
+
+
+def test_raportul_de_stare_se_scrie_doar_pe_ultimul_lot(rulat):
+    """O singură scriere KV per alertă, nu una per lot.
+
+    Observație din review: raportul se scria la fiecare lot, iar la 5.000 de abonați
+    (125 de loturi de 40) ardea 12,6% din plafonul zilnic de 1.000 de scrieri pe un raport
+    pe care lotul următor îl suprascria. Acum se scrie doar cînd cursorul s-a terminat.
+    """
+    assert rulat["raport_stare_lot1"] is None, (
+        "raportul s-a scris pe primul lot, deși mai urma unul")
+    assert rulat["raport_stare_lot2"] is not None, (
+        "raportul nu s-a scris pe ultimul lot: `/push/stare` rămîne orb")
+    assert rulat["raport_scrieri_dupa_lot2"] - rulat["raport_scrieri_dupa_lot1"] == 1, (
+        "ultimul lot a scris mai mult de o cheie în KV")
+    assert rulat["raport_stare_lot2"].endswith("}"), "raportul trebuie să fie JSON"
+
+
+def test_lotul_implicit_e_10(rulat):
+    """Implicitul e 10, nu 40, și cifra vine din măsurătoare, nu din prudență.
+
+    ~0,83 ms de CPU per abonat (generateKey + ECDH + HKDF + AES-GCM + semnătură VAPID
+    memorată) înseamnă ~33 ms la 40 de abonați, adică de peste trei ori peste cei 10 ms ai
+    planului Free. La 10 abonați sîntem pe la 8,3 ms, cu loc pentru KV și JSON.
+    """
+    assert rulat["implicit_cereri"] == 10, (
+        f"lotul implicit a trimis {rulat['implicit_cereri']} cereri; "
+        "măsurătoarea de CPU zice 10")
