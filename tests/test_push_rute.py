@@ -104,13 +104,18 @@ import * as worker from './infra/worker.mjs';
 class KV {
   constructor() {
     this.date = new Map(); this.scrieri = 0; this.stergeri = 0; this.listari = 0;
+    this.scrieri_pe_cheie = new Map();   // ca testele sa poata numara SCRIERILE PER CHEIE
   }
   async get(cheie, tip) {
     const v = this.date.get(cheie);
     if (v === undefined) return null;
     return tip === 'json' ? JSON.parse(v) : v;
   }
-  async put(cheie, valoare) { this.scrieri++; this.date.set(cheie, valoare); }
+  async put(cheie, valoare) {
+    this.scrieri++;
+    this.scrieri_pe_cheie.set(cheie, (this.scrieri_pe_cheie.get(cheie) || 0) + 1);
+    this.date.set(cheie, valoare);
+  }
   async delete(cheie) { this.stergeri++; return this.date.delete(cheie); }
   async list({ prefix = '', cursor, limit = 1000 } = {}) {
     this.listari++;
@@ -320,6 +325,17 @@ iesire.raport_lot2 = await cheama('push', '/push/trimite',
 iesire.raport_scrieri_dupa_lot2 = envS.PUSH_SUBS.scrieri;
 iesire.raport_stare_lot2 = await envS.PUSH_SUBS.get('stare:ultima');
 
+/* 15. CIT COSTA O ALERTA, in scrieri KV. Documentatia spune „2 scrieri, indiferent de N":
+       una pentru plafonul zilei (pe primul lot) si una pentru raportul de stare (pe
+       ultimul). Aici e proba: numaram pe cheie, nu doar in total, ca sa prindem si
+       varianta in care plafonul se rescrie la fiecare lot (caz in care totalul ar creste,
+       dar si cheia `cap:` ar aparea de mai multe ori). */
+iesire.alerta_scrieri_total = envS.PUSH_SUBS.scrieri - iesire.raport_scrieri_inainte;
+iesire.cap_scrieri = [...envS.PUSH_SUBS.scrieri_pe_cheie.entries()]
+  .filter(([k]) => k.startsWith('cap:'))
+  .reduce((s, [, n]) => s + n, 0);
+iesire.stare_scrieri = envS.PUSH_SUBS.scrieri_pe_cheie.get('stare:ultima') || 0;
+
 /* 14. LOTUL IMPLICIT e 10, nu 40: cei 10 ms de CPU ai planului Free nu cuprind mai mult
        (masuratoarea e in comentariul lui LIMITA_IMPLICITA din push.js). */
 const envD = mediu();
@@ -502,3 +518,22 @@ def test_lotul_implicit_e_10(rulat):
     assert rulat["implicit_cereri"] == 10, (
         f"lotul implicit a trimis {rulat['implicit_cereri']} cereri; "
         "măsurătoarea de CPU zice 10")
+
+
+def test_o_alerta_costa_doua_scrieri_kv_si_atit(rulat):
+    """O alertă = 2 scrieri KV: plafonul zilei pe primul lot, raportul pe ultimul.
+
+    Ăsta e numărul pe care se sprijină toată socoteala de cote din `PUSH-SETUP.md` §5:
+    că pragul de scrieri (1.000/zi pe KV Free) NU mai leagă, oricîți abonați ar fi, pentru
+    că o alertă scrie de două ori, nu de `1 + ⌈N/40⌉` ori. Numărul e afirmat și pe cheie,
+    nu doar în total: dacă plafonul s-ar rescrie la fiecare lot, totalul ar crește, dar
+    testul trebuie să spună și UNDE s-a dus diferența.
+    """
+    assert rulat["cap_scrieri"] == 1, (
+        f"plafonul zilei s-a scris de {rulat['cap_scrieri']} ori; trebuie o singură dată, "
+        "pe primul lot — celelalte loturi ale aceleiași alerte îl găsesc deja scris")
+    assert rulat["stare_scrieri"] == 1, (
+        f"raportul de stare s-a scris de {rulat['stare_scrieri']} ori")
+    assert rulat["alerta_scrieri_total"] == 2, (
+        f"o alertă a scris {rulat['alerta_scrieri_total']} chei în KV, nu 2 "
+        "(cap + raport); restul sînt scrieri care nu-și au locul aici")
