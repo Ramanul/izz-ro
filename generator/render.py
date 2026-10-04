@@ -459,12 +459,25 @@ def _logo_jsonld() -> dict:
 
 
 def _org_jsonld() -> dict:
+    """Nodul Organization — dublu tipat: e o organizatie SI o redactie (NewsMediaOrganization).
+
+    Cele trei politici de mai jos sunt semnalele pe care Google le cere de la un editor de stiri
+    si pe care un site care declara deschis „textul e generat automat" are nevoie sa le dea mai
+    mult decat unul care nu declara nimic: CINE raspunde de ce se publica, UNDE se contesta o
+    eroare si CUM se trimite o sesizare. Toate trei trimit catre pagini care existau deja —
+    nu s-a adaugat continut nou, doar legatura dintre el si entitate.
+    Vezi notes/analiza-audit-extern-2026-10-04.md (punctul P0.3).
+    """
     return {
-        "@type": "Organization", "@id": _abs_id("/", "organization"),
+        "@type": ["Organization", "NewsMediaOrganization"], "@id": _abs_id("/", "organization"),
         "name": config.SITE["name"], "url": config.SITE["url"],
         "logo": _logo_jsonld(),
         "email": config.SITE["contact"],
         "description": config.SITE["tagline"],
+        # Regulile dupa care se produce si se corecteaza continutul.
+        "publishingPrinciples": config.SITE["url"] + "/legal/method/",
+        "correctionsPolicy": config.SITE["url"] + "/legal/corrections/",
+        "actionableFeedbackPolicy": config.SITE["url"] + "/legal/contact/",
     }
 
 
