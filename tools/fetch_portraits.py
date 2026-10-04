@@ -2,13 +2,19 @@
 """Fotografii oficiale pentru entitatile publice din articole (Wikidata P18).
 
 Ruleaza in GitHub Actions (are internet; sandbox-urile nu). Pentru entitatile AI
-din articolele publicate cauta pe Wikidata o potrivire STRICTA si, doar daca
-entitatea e "photo-worthy" -- fie persoana publica (om P31=Q5 cu functie P39 sau
-notorietate), fie o entitate notorie dintr-un tip sigur din SAFE_TYPES (institutie,
-oras, tara, club, universitate, cladire) -- si are imagine reprezentativa (P18) sub
-licenta libera, descarca o miniatura mica in media/portraits/ (auto-gazduita ->
-browserul cititorilor nu atinge servere terte) si scrie creditul in
-data/portraits.json (comis). Negativele se cacheaza ca sa nu re-interogam.
+din articolele publicate genereaza pe Wikidata TOTI candidatii cu nume exact
+potrivit si, doar daca entitatea e "photo-worthy" -- fie persoana publica (om
+P31=Q5 cu functie P39 sau notorietate), fie o entitate notorie dintr-un tip sigur
+din SAFE_TYPES (institutie, oras, tara, club, universitate, cladire) -- si are
+imagine reprezentativa (P18) sub licenta libera, descarca o miniatura mica in
+media/portraits/ (auto-gazduita -> browserul cititorilor nu atinge servere terte)
+si scrie creditul in data/portraits.json (comis). Negativele se cacheaza ca sa nu
+re-interogam.
+
+Omonime: la >=2 candidati foto-worthy faima NU decide. Judecatorul AI
+(generator/photojudge.pick_candidate) primeste etichetele+descrierile lor impreuna
+cu titlul si rezumatul articolului si alege persoana; neclar -> fara portret.
+Fara provider AI (rulari locale): omonimele raman la fel, fara portret.
 
   python tools/fetch_portraits.py          # incremental, plafonat
 
@@ -24,7 +30,8 @@ import urllib.request
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, ROOT)
-from generator import state  # noqa: E402
+from generator import photojudge, state  # noqa: E402
+from generator.process import get_provider  # noqa: E402
 from generator.util import strip_diacritics  # noqa: E402
 
 CACHE = os.path.join(ROOT, "data", "portraits.json")
@@ -55,17 +62,29 @@ def _get(url: str) -> dict:
         return json.load(r)
 
 
-def wd_match(name: str) -> str | None:
-    """Cauta entitatea; accepta DOAR potrivire exacta (normalizata) pe label/alias."""
+def wd_candidates(name: str) -> list:
+    """TOTI itemii Wikidata cu potrivire exacta (normalizata) pe label/alias.
+    Inlocuieste wd_match, care lua primul potrivit: la nume-omonime primul rezultat
+    e mereu cel mai celebru (JFK inaintea senatorului John Kennedy), adica faima
+    decidea identitatea. Ordinea popularitatii NU mai alege — doar genereaza."""
     q = urllib.parse.quote(name)
     d = _get(f"https://www.wikidata.org/w/api.php?action=wbsearchentities&search={q}"
-             f"&language=ro&uselang=ro&type=item&limit=5&format=json")
+             f"&language=ro&uselang=ro&type=item&limit=10&format=json")
     want = norm(name)
+    out: list = []
     for hit in d.get("search", []):
         labels = [hit.get("label", "")] + (hit.get("aliases") or [])
-        if any(norm(l) == want for l in labels):
-            return hit["id"]
-    return None
+        if any(norm(l) == want for l in labels) and hit["id"] not in out:
+            out.append(hit["id"])
+    return out
+
+
+def wd_match(name: str) -> str | None:
+    """Compat: primul candidat exact (semantica veche). Ramane folosit de
+    fetch_leadphotos; fluxul de portrete NU il mai foloseste — acolo alegerea
+    se face pe context (photojudge), nu pe ordinea popularitatii."""
+    cands = wd_candidates(name)
+    return cands[0] if cands else None
 
 
 def wd_entity(qid: str) -> dict:
@@ -166,17 +185,39 @@ def slugish(name: str) -> str:
     return re.sub(r"[^a-z0-9]+", "-", norm(name)).strip("-")[:60] or "persoana"
 
 
+def _worthy_candidates(name: str) -> list:
+    """Toti candidatii foto-worthy cu nume exact identic, ca (qid, fisier P18,
+    eticheta+descriere pt. judecator). 0 -> miss; 1 -> sigur; >=2 -> omonime,
+    alegerea se face pe CONTEXTUL articolului (photojudge), nu pe faima."""
+    out: list = []
+    for cid in wd_candidates(name):
+        ent = wd_entity(cid)
+        claims = ent.get("claims", {})
+        if not is_photo_worthy(claims, len(ent.get("sitelinks", {}))):
+            continue
+        f = portrait_file(claims)
+        if not f:
+            continue
+        descs = ent.get("descriptions", {})
+        desc = (descs.get("ro") or descs.get("en") or {}).get("value", "")
+        labels = ent.get("labels", {})
+        label = (labels.get("ro") or labels.get("en") or {}).get("value") or name
+        out.append((cid, f, f"{label} ({desc})" if desc else label))
+    return out
+
+
 def main() -> int:
     arts = [a for a in state.load() if a.get("title")]
-    names: list = []
+    ctx: dict = {}   # nume -> (titlu, teaser) ale PRIMULUI articol care-l mentioneaza
     for a in arts:
         for e in a.get("entities") or []:
-            if e and e not in names and len(e.split()) >= 2:   # >=2 cuvinte: nume/denumiri specifice (evita omonime dintr-un cuvant)
-                names.append(e)
+            if e and e not in ctx and len(e.split()) >= 2:
+                ctx[e] = (a.get("title") or "", a.get("teaser") or "")
     cache = json.load(open(CACHE)) if os.path.exists(CACHE) else {}
     os.makedirs(OUTDIR, exist_ok=True)
+    provider = None   # construit lenes, doar daca apare un caz de omonime
     done = 0
-    for name in names:
+    for name, (title, summary) in ctx.items():
         key = norm(name)
         if key in cache:
             continue
@@ -185,23 +226,27 @@ def main() -> int:
         done += 1
         entry: dict = {"miss": True}
         try:
-            qid = wd_match(name)
-            if qid:
-                ent = wd_entity(qid)
-                claims = ent.get("claims", {})
-                sitelinks = len(ent.get("sitelinks", {}))
-                f = portrait_file(claims)
-                if is_photo_worthy(claims, sitelinks) and f:
-                    info = commons_info(f)
-                    if info and info.get("thumb"):
-                        fn = f"{slugish(name)}.jpg"
-                        req = urllib.request.Request(info["thumb"], headers=UA)
-                        data = urllib.request.urlopen(req, timeout=30).read()
-                        if len(data) > 2000:
-                            open(os.path.join(OUTDIR, fn), "wb").write(data)
-                            entry = {"name": name, "qid": qid, "img": f"portraits/{fn}",
-                                     "artist": info["artist"], "license": info["license"],
-                                     "page": info["page"]}
+            worthy = _worthy_candidates(name)
+            pick = worthy[0] if len(worthy) == 1 else None
+            if len(worthy) > 1:
+                if provider is None:
+                    provider = get_provider()
+                idx = photojudge.pick_candidate(
+                    provider, title, summary, [d for _, _, d in worthy])
+                pick = worthy[idx] if idx >= 0 else None
+                if pick is None:
+                    entry = {"miss": True, "why": f"omonim: {len(worthy)} candidati"}
+            if pick:
+                info = commons_info(pick[1])
+                if info and info.get("thumb"):
+                    fn = f"{slugish(name)}.jpg"
+                    req = urllib.request.Request(info["thumb"], headers=UA)
+                    data = urllib.request.urlopen(req, timeout=30).read()
+                    if len(data) > 2000:
+                        open(os.path.join(OUTDIR, fn), "wb").write(data)
+                        entry = {"name": name, "qid": pick[0], "img": f"portraits/{fn}",
+                                 "artist": info["artist"], "license": info["license"],
+                                 "page": info["page"]}
         except Exception as exc:  # o entitate esuata nu opreste restul
             print(f"  ! {name}: {exc}")
             done -= 1              # eroare de retea -> nu consuma plafonul, reincearca alta data

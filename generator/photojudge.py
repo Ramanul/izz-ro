@@ -55,3 +55,63 @@ def photo_fits(provider, title: str, summary: str, entity: str, caption: str) ->
     except Exception:
         return False
     return parse_verdict(raw)
+
+
+# === Dezambiguizare omonime =====================================================
+# Nume-omonime (ex. "John Kennedy": presedintele decedat 1963 vs. senatorul de
+# Louisiana in viata) NU se rezolva prin popularitate -- primul rezultat Wikidata
+# e mereu cel mai celebru, deci identitatea ar fi data de faima. Candidatii
+# (generati de tools/fetch_portraits.py) se dau judecatorului IMPREUNA cu
+# contextul articolului; el alege persoana sau renunta.
+
+_SYSTEM_PICK = (
+    "You are a careful fact-checker for a Romanian news site. Several DIFFERENT real "
+    "entities (people or organisations) share the same name. Decide which candidate "
+    "the ARTICLE is actually about, using the article context (who appears alongside, "
+    "the roles and actions described, dates, living vs deceased) and each candidate's "
+    "label and description. If two candidates are equally plausible or you are unsure, "
+    "choose none. Respond with ONLY a JSON object of the form "
+    '{"pick": <0-based index>, "reason": "<=12 words"} or, when no candidate clearly '
+    'matches, {"pick": -1, "reason": "<=12 words"}.'
+)
+
+
+def build_pick_user(title: str, summary: str, candidates: list) -> str:
+    lines = [f"ARTICLE TITLE: {title}",
+             f"ARTICLE SUMMARY: {(summary or '')[:600]}", "",
+             "CANDIDATES (same name, different real entities):"]
+    for i, c in enumerate(candidates):
+        lines.append(f"[{i}] {c}")
+    lines.append("")
+    lines.append("Which candidate is the article about? Index only, or -1 if none clearly matches.")
+    return "\n".join(lines)
+
+
+def parse_pick(raw: str) -> int:
+    """Index valid (>=0) sau -1. Orice altceva -> -1 (fail-safe: nimeni)."""
+    try:
+        cleaned = re.sub(r"^```(?:json)?|```$", "", (raw or "").strip(), flags=re.MULTILINE).strip()
+        v = json.loads(cleaned).get("pick")
+        if isinstance(v, bool):
+            return -1
+        if isinstance(v, str) and v.strip().lstrip("-").isdigit():
+            v = int(v.strip())
+        if isinstance(v, int) and v >= -1:
+            return v
+    except (ValueError, AttributeError, TypeError):
+        pass
+    return -1
+
+
+def pick_candidate(provider, title: str, summary: str, candidates: list) -> int:
+    """Indexul candidatului despre care e articolul, sau -1 (niciunul/neclar).
+    Acelasi fail-safe ca photo_fits: provider None -> -1 (offline: omonimele raman
+    fara portret), apel esuat sau raspuns ambiguu -> -1, index invalid -> -1."""
+    if provider is None or not candidates:
+        return -1
+    try:
+        raw = provider.complete(_SYSTEM_PICK, build_pick_user(title, summary, candidates))
+    except Exception:
+        return -1
+    idx = parse_pick(raw)
+    return idx if 0 <= idx < len(candidates) else -1
