@@ -5,9 +5,19 @@
    python -m http.server 8765
    MAP_URL=http://localhost:8765/static/harta-stiri/ python tools/harta_dom_check.py
 
-Asserteaza pe STRUCTURA VIZIBILA si pe COMPORTAMENT OBSERVAT (id-uri, taguri, pixeli, clickuri),
+Asserteaza pe STRUCTURA VIZIBILA si pe COMPORTAMENT OBSERVAT (id-uri, taguri, clickuri, geometrie),
 nu pe clase CSS si nu pe identificatori din sursa -- de doua ori in repo-ul asta o garda a stat
-verde/rosie pe un identificator care nu mai exista in codul livrat (IZZ-0177, IZZ-0182)."""
+verde/rosie pe un identificator care nu mai exista in codul livrat (IZZ-0177, IZZ-0182).
+
+ADAPTAT LA SUBSTRATUL SVG/DOM (2026-10-04, F1 din notes/harta-revolutie-proposal-2026-10-04.md):
+harta nu mai are canvas, deci verificarea nu mai citeste pixeli si nu mai reface transformarea
+manual. Geometria o da chiar elementul (`getBBox`, `isPointInFill`, `getScreenCTM`), iar hit-testul
+il confirma browserul (`elementFromPoint`) -- deci nu mai exista o a doua implementare care poate
+diverga de cea livrata. Verificarile pastreaza aceleasi INTREBARI ca inainte: se poate atinge un
+judet, clickul nu fura selectia, hoverul previzualizeaza, zoomul mareste si panul misca scena.
+[NEVERIFICAT LA SCRIERE]: fisierul cere Playwright/Chromium, care nu exista in mediul in care s-a
+facut adaptarea; prima rulare reala se face de pe masina cu browser si poate cere ajustari de
+tolerante (nu de logica)."""
 import os, sys, io
 sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
 sys.stderr = io.TextIOWrapper(sys.stderr.buffer, encoding='utf-8')
@@ -28,11 +38,59 @@ def skip(label):
 
 # --- ajutoare de interactiune -------------------------------------------------
 
-def canvas_rect(p):
+def stage_rect(p):
     return p.evaluate("""() => {
-      const r = document.querySelector('#map canvas.map-canvas').getBoundingClientRect();
+      const r = document.querySelector('#map svg.map-svg').getBoundingClientRect();
       return { x: r.x, y: r.y, w: r.width, h: r.height };
     }""")
+
+INTERIOR_POINT = """async (mode) => {
+  const d = await (await fetch('./data/map.json')).json();
+  const svg = document.querySelector('#map svg.map-svg');
+  if (!svg) return null;
+  const withNews = new Set((d.articles || []).map((a) => a.county).filter(Boolean));
+  const nodes = new Map([...svg.querySelectorAll('.layer-counties path')].map((n) => [n.dataset.judet, n]));
+  const box = (n) => { const b = n.getBBox(); return b.width * b.height; };
+  let keys = Object.keys(d.map.judete);
+  if (mode === 'empty') keys = keys.filter((k) => !withNews.has(k));
+  else if (mode === 'news') keys = keys.filter((k) => withNews.has(k));
+  keys = keys.filter((k) => nodes.has(k)).sort((a, b) => box(nodes.get(b)) - box(nodes.get(a)));
+  const ctm = svg.getScreenCTM();
+  if (!ctm) return null;
+  for (const key of keys) {
+    const node = nodes.get(key);
+    const b = node.getBBox();
+    for (let row = 1; row < 12; row += 1) {
+      for (let col = 1; col < 12; col += 1) {
+        const local = new DOMPoint(b.x + b.width * col / 12, b.y + b.height * row / 12);
+        if (!node.isPointInFill(local)) continue;
+        const screen = local.matrixTransform(ctm);
+        const at = document.elementFromPoint(screen.x, screen.y);
+        if (!at || at.closest('[data-judet]') !== node) continue;
+        return { county: key, x: screen.x, y: screen.y };
+      }
+    }
+  }
+  return null;
+}"""
+
+def interior_point(p, mode="news"):
+    """Un punct de ECRAN verificat in interiorul unui judet (mode: 'news' / 'empty' / 'any').
+
+    Inlocuieste replica manuala de transformare + Path2D din era canvas: geometria o da chiar
+    elementul SVG (`getBBox` + `isPointInFill`), iar punctul e acceptat doar daca si hit-testul
+    browserului (`elementFromPoint`) confirma ACELASI judet -- altfel testul ar rula pe o harta
+    imaginara, nu pe cea livrata.
+    """
+    return p.evaluate(INTERIOR_POINT, mode)
+
+def county_label(p, code):
+    """Eticheta afisata a unui judet, din tabelul paginii (nu din codul brut)."""
+    return p.evaluate("""(code) => {
+      const el = document.querySelector('#judete-etichete');
+      const table = JSON.parse((el && el.dataset.etichete) || '{}');
+      return table[code] || code;
+    }""", code)
 
 def county_selected(p):
     """Butonul '<- Toate judetele' e ascuns exact cand state.selectedCounty e null."""
@@ -63,18 +121,16 @@ def swipe_touch(p, x, y, dy, steps=8):
     send("touchEnd", [])
     cdp.detach()
 
-EDGE_SCAN = """(yCss) => {
-  const c = document.querySelector('#map canvas.map-canvas');
-  const rect = c.getBoundingClientRect();
-  const sx = c.width / rect.width, sy = c.height / rect.height;
-  const py = Math.round(yCss * sy);
-  if (py < 0 || py >= c.height) return null;
-  const row = c.getContext('2d').getImageData(0, py, c.width, 1).data;
-  for (let px = 0; px < c.width; px++) {
-    const i = px * 4;
-    const opaque = row[i + 3] > 8;
-    const white = row[i] > 248 && row[i + 1] > 248 && row[i + 2] > 248;
-    if (opaque && !white) return { edgeCss: px / sx, rectX: rect.x, rectY: rect.y };
+EDGE_SCAN = """(offsetY) => {
+  const svg = document.querySelector('#map svg.map-svg');
+  const rect = svg.getBoundingClientRect();
+  const y = rect.top + offsetY;
+  if (y < rect.top || y > rect.bottom) return null;
+  for (let x = Math.floor(rect.left); x < rect.right; x += 1) {
+    const at = document.elementFromPoint(x, y);
+    if (at && at.closest('[data-judet]')) {
+      return { edgeCss: x - rect.left, rectX: rect.left, rectY: rect.top };
+    }
   }
   return null;
 }"""
@@ -84,7 +140,7 @@ def edge_tolerance_px(p, max_px=8):
     Cauta marginea din stanga a uscatului pe cateva linii orizontale, apoi se departeaza pas cu
     pas si returneaza cea mai mare distanta la care inca s-a selectat un judet. None daca nu s-a
     gasit nicio margine utilizabila -- se raporteaza ca NEVERIFICAT, nu ca reusita."""
-    r = canvas_rect(p)
+    r = stage_rect(p)
     best = None
     for frac in (0.40, 0.50, 0.60):
         hit = p.evaluate(EDGE_SCAN, r["h"] * frac)
@@ -102,16 +158,12 @@ def edge_tolerance_px(p, max_px=8):
     return best
 
 def bright_fill_pixels(p):
-    """Numara pixelii de umplere NEestompata (--map-fill #e8e6de). Judetele estompate sunt
-    desenate cu globalAlpha .32 peste alb, deci ajung pe la #f7f6f4 -- distincte clar."""
+    """Cate judete sunt APRINSE (fara estompare). In era canvas se numarau pixelii de umplere
+    neestompata; acum estomparea e o clasa (`is-dim`, opacity .28), deci se numara direct
+    nodurile -- aceeasi intrebare („harta nu se contrazice cu lista?"), fara pixeli."""
     return p.evaluate("""() => {
-      const c = document.querySelector('#map canvas.map-canvas');
-      const d = c.getContext('2d').getImageData(0, 0, c.width, c.height).data;
-      let n = 0;
-      for (let i = 0; i < d.length; i += 4 * 7) {  // esantion 1 din 7 pixeli
-        if (Math.abs(d[i]-232) <= 6 && Math.abs(d[i+1]-230) <= 6 && Math.abs(d[i+2]-222) <= 6) n++;
-      }
-      return n;
+      const nodes = [...document.querySelectorAll('#map svg.map-svg .layer-counties path')];
+      return nodes.filter((n) => Number(getComputedStyle(n).opacity) > 0.99).length;
     }""")
 
 # --- verificari ---------------------------------------------------------------
@@ -174,13 +226,13 @@ def felia7_cautare(p):
     reset(p)
     p.wait_for_timeout(150)
     bright_all = bright_fill_pixels(p)
-    check(bright_query > 0,
-          f"harta pastreaza judete aprinse la cautare non-geografica ({bright_query} px vs {bright_all} fara filtru)")
+    check(0 < bright_query <= bright_all,
+          f"harta pastreaza judete aprinse la cautare non-geografica ({bright_query} judete vs {bright_all} fara filtru)")
 
 def felia4_hittest(p):
     print("\nFELIA 4 -- apasarea pe judet, nu doar pe bulina")
-    r = canvas_rect(p)
-    # Grila 8x8 peste canvas. Inainte de felia 4 erau apasabile doar ~35 buline de ~12px, deci
+    r = stage_rect(p)
+    # Grila 8x8 peste scena. Inainte de felia 4 erau apasabile doar ~35 buline de ~12px, deci
     # o grila atat de rara ar fi nimerit 0-3 puncte. Pragul de 25 e imposibil de atins fara
     # hit-test pe poligon -- de-aia e un discriminator, nu o masuratoare vaga.
     hits, tried = 0, 0
@@ -196,7 +248,7 @@ def felia4_hittest(p):
                 reset(p)
     check(hits >= 25, f"apasarea in interiorul judetelor selecteaza ({hits}/{tried} puncte de grila)")
 
-    # In afara tarii: coltul din stanga-sus al canvasului e mare/exterior.
+    # In afara tarii: coltul din stanga-sus al scenei e mare/exterior.
     p.mouse.click(r["x"] + 3, r["y"] + 3)
     p.wait_for_timeout(120)
     check(not county_selected(p), "apasarea in afara conturului tarii nu selecteaza nimic")
@@ -213,174 +265,92 @@ def felia4_hittest(p):
     reset(p)
 
 def hit_ordin_fara_furt(p):
-    """Ordinea cascadei (audit harta, P0): un click clar primit in interiorul poligonului unui
-    judet nu poate fi furat de bulina unui vecin ajunsa in raza de toleranta peste granita.
-    Ground truth = geometria din map.json, calculata in pagina cu acelasi Path2D + isPointInPath
-    pe care le foloseste aplicatia, in acelasi spatiu (px de canvas, transformarea aplicata --
-    IZZ-0193). Daca in datele curente nu exista niciun punct in care vechea ordine greseA,
-    verificarea se raporteaza NEVERIFICAT, nu verde -- nu se inventeaza o reusita."""
-    print("\nHIT-TEST ORDINE -- bulina nu fura poligonul clar atins")
-    # Bucuresti/Ilfov stau in JUMATATEA DE SUD a canvasului: la 1280x900 punctele lor cad sub
-    # fold, iar un click in afara viewportului nu atinge canvasul (elementFromPoint -> none).
-    # Aducem harta in viewport INAINTE de a captura rect si de a calcula coordonatele.
-    p.locator("#map canvas.map-canvas").scroll_into_view_if_needed()
+    """Hit-testul e EXACT, iar geometria si browserul sunt de acord (audit harta, P0).
+
+    In era canvas exista o cascada proprie de candidati (poligonul, apoi bulinele din raza de
+    toleranta", iar bugul era ca bulina unui vecin putea fura un click clar in interiorul altui
+    judet. Acum tinta clickului e chiar elementul de sub cursor, deci cascada nu mai exista in
+    cod -- ce ramane de verificat e ca elementul returnat de browser (`elementFromPoint`) e exact
+    poligonul care contine punctul (`isPointInFill`), pe o grila de puncte, si ca enclava
+    Bucuresti nu e inghitita de Ilfov. Daca verificarea nu se poate face, se raporteaza
+    NEVERIFICAT, nu verde.
+    """
+    print("\nHIT-TEST EXACT -- elementul de sub cursor = poligonul care contine punctul")
+    p.locator("#map svg.map-svg").scroll_into_view_if_needed()
     p.wait_for_timeout(150)
-    truth = p.evaluate("""async () => {
-      const d = await (await fetch('./data/map.json')).json();
-      const vb = String(d.map.viewbox).trim().split(/\\s+/).map(Number);
-      const c = document.querySelector('#map canvas.map-canvas');
-      const scratch = document.createElement('canvas');
-      scratch.width = c.width; scratch.height = c.height;
-      const ctx = scratch.getContext('2d');
-      ctx.setTransform(c.width / vb[2], 0, 0, c.height / vb[3],
-                       -vb[0] * c.width / vb[2], -vb[1] * c.height / vb[3]);
-      const paths = {}, bounds = {};
-      for (const [county, pd] of Object.entries(d.map.judete)) {
-        try { paths[county] = new Path2D(pd); } catch { continue; }
-        const nums = String(pd).match(/-?\\d+(?:\\.\\d+)?/g).map(Number);
-        let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
-        for (let i = 0; i + 1 < nums.length; i += 2) {
-          minX = Math.min(minX, nums[i]); minY = Math.min(minY, nums[i + 1]);
-          maxX = Math.max(maxX, nums[i]); maxY = Math.max(maxY, nums[i + 1]);
-        }
-        bounds[county] = { minX, minY, maxX, maxY };
-      }
-      // Numarul de EVENIMENTE pe judet, identic cu itemsForView la nivel "all" -- raza bulinei
-      // se calculeaza din el, nu din articolele brute.
-      const keys = new Map(), counts = {};
-      for (const a of d.articles || []) {
-        if (!a.county) continue;
-        const k = a.event_id || `${a.slug || a.title}|${a.county}|${a.published}`;
-        if (!keys.has(k)) keys.set(k, a.county);
-      }
-      for (const county of keys.values()) counts[county] = (counts[county] || 0) + 1;
-      const rect = c.getBoundingClientRect();
-      const tolVb = 10 * (vb[2] / rect.width);  // 10px CSS -> unitati viewBox, ca in hitDistance
-      const markers = {};
-      for (const [county, b] of Object.entries(bounds)) {
-        if (!counts[county]) continue;
-        const radius = Math.max(7, Math.min(18, 6 + Math.sqrt(counts[county]) * 1.8));
-        markers[county] = {
-          x: (b.minX + b.maxX) / 2, y: (b.minY + b.maxY) / 2, radius,
-        };
-      }
-      const area = (b) => (b.maxX - b.minX) * (b.maxY - b.minY);
-      const found = [];
-      const NX = 48, NY = 30;
-      for (let i = 1; i < NX && found.length < 3; i += 1) {
-        for (let j = 1; j < NY && found.length < 3; j += 1) {
-          const xd = Math.round(c.width * i / NX), yd = Math.round(c.height * j / NY);
-          const pv = { x: vb[0] + (xd / c.width) * vb[2], y: vb[1] + (yd / c.height) * vb[3] };
-          let inside = null;
-          for (const [county, path] of Object.entries(paths)) {
-            if (!ctx.isPointInPath(path, xd, yd)) continue;
-            if (!inside || area(bounds[county]) < area(bounds[inside])) inside = county;
+    out = p.evaluate("""() => {
+      const svg = document.querySelector('#map svg.map-svg');
+      const r = svg.getBoundingClientRect();
+      const ctm = svg.getScreenCTM();
+      if (!ctm) return null;
+      const inv = ctm.inverse();
+      const paths = [...svg.querySelectorAll('.layer-counties path')];
+      let checked = 0, agree = 0;
+      const bad = [];
+      for (let i = 1; i < 10; i += 1) {
+        for (let j = 1; j < 10; j += 1) {
+          const x = r.left + r.width * i / 10, y = r.top + r.height * j / 10;
+          const at = document.elementFromPoint(x, y);
+          const node = at && at.closest('[data-judet]');
+          const local = new DOMPoint(x, y).matrixTransform(inv);
+          let owner = null, ownerArea = Infinity;
+          for (const cand of paths) {
+            if (!cand.isPointInFill(local)) continue;
+            const b = cand.getBBox();
+            const area = b.width * b.height;
+            if (area < ownerArea) { ownerArea = area; owner = cand; }
           }
-          if (!inside || !counts[inside]) continue;
-          let steal = null, bestDist = Infinity;
-          for (const [county, m] of Object.entries(markers)) {
-            if (county === inside) continue;
-            const dist = Math.hypot(pv.x - m.x, pv.y - m.y);
-            if (dist <= m.radius + tolVb && dist < bestDist) { bestDist = dist; steal = county; }
-          }
-          // Cazul discriminator: vechea ordine (bulina intai) ar fi selectat `steal`,
-          // desi punctul e clar in interiorul lui `inside`.
-          if (steal) found.push({
-            xCss: rect.x + (xd / c.width) * rect.width,
-            yCss: rect.y + (yd / c.height) * rect.height,
-            inside, steal,
-          });
+          checked += 1;
+          if (node === owner) { agree += 1; continue; }
+          bad.push({ x: Math.round(x), y: Math.round(y),
+                     tinta: node ? node.dataset.judet : null,
+                     geometrie: owner ? owner.dataset.judet : null });
         }
       }
-      // Enclavele: centrul Bucurestiului trebuie sa intoarca BUCURESTI, nu Ilfov, chiar daca
-      // poligonul Ilfovului il contine geometric.
-      let enclave = null;
-      if (bounds.BUCURESTI && counts.BUCURESTI) {
-        const b = bounds.BUCURESTI;
-        const xd = Math.round(((b.minX + b.maxX) / 2 - vb[0]) * c.width / vb[2]);
-        const yd = Math.round(((b.minY + b.maxY) / 2 - vb[1]) * c.height / vb[3]);
-        enclave = {
-          xCss: rect.x + (xd / c.width) * rect.width,
-          yCss: rect.y + (yd / c.height) * rect.height,
-          inBuc: !!paths.BUCURESTI && ctx.isPointInPath(paths.BUCURESTI, xd, yd),
-          inIlfov: !!paths.ILFOV && ctx.isPointInPath(paths.ILFOV, xd, yd),
-        };
-      }
-      return { found, enclave };
+      return { checked, agree, bad: bad.slice(0, 5) };
     }""")
-
-    if truth["enclave"] and truth["enclave"]["inBuc"]:
-        p.mouse.click(truth["enclave"]["xCss"], truth["enclave"]["yCss"])
-        p.wait_for_timeout(120)
-        url = p.evaluate("() => location.search")
-        check("judet=BUCURESTI" in url,
-              f"click in centrul Bucurestiului selecteaza BUCURESTI, nu Ilfov ('{url}')")
-        reset(p)
-    elif truth["enclave"]:
-        skip(f"enclava Bucuresti: punctul de test nu e in poligonul lui (inBuc={truth['enclave']['inBuc']})")
+    if out is None:
+        skip("hit-test exact: scena nu are CTM (nu se poate converti punctul in spatiul hartii)")
+    elif out["agree"] != out["checked"]:
+        check(False, f"hit-testul si geometria sunt de acord ({out['agree']}/{out['checked']}; "
+                     f"diferente: {out['bad']})")
     else:
-        skip("enclava Bucuresti: BUCURESTI nu are stiri in datele curente")
+        check(True, f"hit-testul si geometria sunt de acord pe toata grila ({out['agree']}/{out['checked']})")
 
-    if not truth["found"]:
-        skip("niciun punct de furt in grila curenta: nicio bulina de vecin nu ajunge in raza de "
-             "toleranta peste un poligon clar atins -- vechea ordine n-ar fi gresit niciunde azi")
-        return
-    for case in truth["found"]:
-        p.mouse.click(case["xCss"], case["yCss"])
-        p.wait_for_timeout(120)
-        url = p.evaluate("() => location.search")
-        check(f"judet={case['inside']}" in url,
-              f"click clar in {case['inside']} (bulina lui {case['steal']} e in raza) selecteaza "
-              f"{case['inside']}, nu {case['steal']} ('{url}')")
-        reset(p)
+    enclave = p.evaluate("""() => {
+      const svg = document.querySelector('#map svg.map-svg');
+      const buc = svg.querySelector('[data-judet=\"BUCURESTI\"]');
+      if (!buc) return null;
+      const ctm = svg.getScreenCTM();
+      const b = buc.getBBox();
+      for (let row = 1; row < 12; row += 1) {
+        for (let col = 1; col < 12; col += 1) {
+          const local = new DOMPoint(b.x + b.width * col / 12, b.y + b.height * row / 12);
+          if (!buc.isPointInFill(local)) continue;
+          const screen = local.matrixTransform(ctm);
+          const at = document.elementFromPoint(screen.x, screen.y);
+          const node = at && at.closest('[data-judet]');
+          return { hit: node ? node.dataset.judet : null };
+        }
+      }
+      return null;
+    }""")
+    if enclave is None:
+        skip("enclava Bucuresti: poligonul nu are niciun punct interior verificabil in vedere")
+    else:
+        check(enclave["hit"] == "BUCURESTI",
+              f"centrul Bucurestiului loveste BUCURESTI, nu Ilfov (a lovit {enclave['hit']})")
+    reset(p)
 
 
 def hover_preview(p):
     """hover = previzualizare peste tot (audit harta, P1): la nivel national, numele si cifra
     judetului apar sub cursor INAINTE de click, la fel ca la UAT-uri."""
     print("\nHOVER PREVIEW -- numele zonei de sub cursor, inainte de click")
-    p.locator("#map canvas.map-canvas").scroll_into_view_if_needed()
+    p.locator("#map svg.map-svg").scroll_into_view_if_needed()
     p.wait_for_timeout(150)
-    pt = p.evaluate("""async () => {
-      const d = await (await fetch('./data/map.json')).json();
-      const vb = String(d.map.viewbox).trim().split(/\\s+/).map(Number);
-      const c = document.querySelector('#map canvas.map-canvas');
-      const scratch = document.createElement('canvas');
-      scratch.width = c.width; scratch.height = c.height;
-      const ctx = scratch.getContext('2d');
-      ctx.setTransform(c.width / vb[2], 0, 0, c.height / vb[3],
-                       -vb[0] * c.width / vb[2], -vb[1] * c.height / vb[3]);
-      const rect = c.getBoundingClientRect();
-      // Cel mai mare judet, cu un punct VERIFICAT in interior: centroidul unui poligon
-      // concav poate iesi in exterior -- acelasi motiv pentru care exista uatBadgePlacement.
-      let best = null;
-      for (const [county, pd] of Object.entries(d.map.judete)) {
-        const nums = String(pd).match(/-?\\d+(?:\\.\\d+)?/g).map(Number);
-        let minX = 1e9, minY = 1e9, maxX = -1e9, maxY = -1e9;
-        for (let i = 0; i + 1 < nums.length; i += 2) {
-          minX = Math.min(minX, nums[i]); minY = Math.min(minY, nums[i + 1]);
-          maxX = Math.max(maxX, nums[i]); maxY = Math.max(maxY, nums[i + 1]);
-        }
-        const area = (maxX - minX) * (maxY - minY);
-        if (!best || area > best.area) best = { county, minX, minY, maxX, maxY, area };
-      }
-      const path = new Path2D(d.map.judete[best.county]);
-      let hit = null;
-      for (let row = 1; row < 12 && !hit; row += 1) {
-        for (let col = 1; col < 12 && !hit; col += 1) {
-          const x = best.minX + (best.maxX - best.minX) * col / 12;
-          const y = best.minY + (best.maxY - best.minY) * row / 12;
-          const xd = Math.round((x - vb[0]) * c.width / vb[2]);
-          const yd = Math.round((y - vb[1]) * c.height / vb[3]);
-          if (ctx.isPointInPath(path, xd, yd)) {
-            hit = { x: rect.x + (xd / c.width) * rect.width,
-                    y: rect.y + (yd / c.height) * rect.height };
-          }
-        }
-      }
-      return hit ? { county: best.county, ...hit } : { county: best.county, x: null, y: null };
-    }""")
-    if pt.get("x") is None:
+    pt = interior_point(p, "news")
+    if not pt or pt.get("x") is None:
         skip("nu am gasit un punct interior verificat -- hoverul nu a putut fi testat")
         return
     p.mouse.move(pt["x"], pt["y"], steps=3)
@@ -391,10 +361,11 @@ def hover_preview(p):
     }""")
     check(bool(tip["text"]) and not tip["hidden"],
           f"tooltipul arata zona de sub cursor inainte de click ('{tip['text']}')")
-    check(pt["county"] in tip["text"].upper(),
-          f"numele e cel al judetului tintit ({pt['county']})")
-    # Click = selectare; hover = doar previzualizare. La iesirea de pe canvas, totul dispare.
-    r = canvas_rect(p)
+    label = county_label(p, pt["county"])
+    check(label in tip["text"],
+          f"numele e cel al judetului tintit ({label}, cod {pt['county']})")
+    # Click = selectare; hover = doar previzualizare. La iesirea de pe scena, totul dispare.
+    r = stage_rect(p)
     p.mouse.move(r["x"] + r["w"] + 12, r["y"] + r["h"] / 2, steps=2)
     p.wait_for_timeout(200)
     check(p.evaluate("() => document.querySelector('.map-tip').hidden"),
@@ -406,44 +377,9 @@ def click_zona_fara_stiri(p):
     zonă vizibilă a fost sesizare directă de pe live (5 sep 2026). Alege un județ cu 0
     articole din date, calculează un punct interior verificat și dă click real."""
     print("\nCLICK PE ZONA FARA STIRI -- raspuns explicit, nu moarte")
-    p.locator("#map canvas.map-canvas").scroll_into_view_if_needed()
+    p.locator("#map svg.map-svg").scroll_into_view_if_needed()
     p.wait_for_timeout(150)
-    target = p.evaluate("""async () => {
-      const d = await (await fetch('./data/map.json')).json();
-      const counties = {};
-      for (const a of d.articles || []) counties[a.county] = (counties[a.county] || 0) + 1;
-      const empty = Object.keys(d.map.judete).filter((c) => !counties[c]);
-      if (!empty.length) return null;
-      const vb = String(d.map.viewbox).trim().split(/\\s+/).map(Number);
-      const c = document.querySelector('#map canvas.map-canvas');
-      const scratch = document.createElement('canvas');
-      scratch.width = c.width; scratch.height = c.height;
-      const ctx = scratch.getContext('2d');
-      ctx.setTransform(c.width / vb[2], 0, 0, c.height / vb[3],
-                       -vb[0] * c.width / vb[2], -vb[1] * c.height / vb[3]);
-      const path = new Path2D(d.map.judete[empty[0]]);
-      const nums = String(d.map.judete[empty[0]]).match(/-?\\d+(?:\\.\\d+)?/g).map(Number);
-      let minX = 1e9, minY = 1e9, maxX = -1e9, maxY = -1e9;
-      for (let i = 0; i + 1 < nums.length; i += 2) {
-        minX = Math.min(minX, nums[i]); minY = Math.min(minY, nums[i + 1]);
-        maxX = Math.max(maxX, nums[i]); maxY = Math.max(maxY, nums[i + 1]);
-      }
-      const rect = c.getBoundingClientRect();
-      for (let row = 1; row < 12; row += 1) {
-        for (let col = 1; col < 12; col += 1) {
-          const x = minX + (maxX - minX) * col / 12;
-          const y = minY + (maxY - minY) * row / 12;
-          const xd = Math.round((x - vb[0]) * c.width / vb[2]);
-          const yd = Math.round((y - vb[1]) * c.height / vb[3]);
-          if (ctx.isPointInPath(path, xd, yd)) {
-            return { county: empty[0],
-                     x: rect.x + (xd / c.width) * rect.width,
-                     y: rect.y + (yd / c.height) * rect.height };
-          }
-        }
-      }
-      return null;
-    }""")
+    target = interior_point(p, "empty")
     if not target:
         skip("toate judetele au stiri in datele curente -- scenariul nu se poate declansa")
         return
@@ -459,9 +395,118 @@ def click_zona_fara_stiri(p):
     p.wait_for_timeout(150)
 
 
+def scara_si_numitor(p):
+    """Aceeași culoare = același număr, în AMBELE scări (F3).
+
+    Verificarea nu are încredere în ce spune pagina despre ea însăși: ia pragurile din legendă,
+    numerele din `aria-label` (adică exact cifra citită și de cititorul de ecran) și clasa de
+    culoare de pe fiecare nod, apoi le pune față în față. În modul „pe locuitor" recalculează
+    independent raportul din `populatie.json` + `map.json`, deci o rotunjire greșită sau un
+    numitor nepotrivit iese la iveală.
+    """
+    print("\nSCARA SI NUMITOR -- aceeasi culoare = acelasi numar, in ambele scari")
+    p.wait_for_selector("#map svg.map-svg .layer-counties path", timeout=15000)
+
+    def praguri(nume):
+        return p.evaluate("""(nume) => {
+          const at = nume === 'locuitori' ? 'praguriLocuitor' : 'praguri';
+          const raw = document.querySelector('#map-legend').dataset[at] || '';
+          return raw.split(',').map(Number).filter((n) => n > 0);
+        }""", nume)
+
+    def verifica(nume, toleranta=1e-9):
+        return p.evaluate("""({praguri, toleranta}) => {
+          const node = (v) => {
+            if (!v) return 'h0';
+            return 'h' + Math.min(4, praguri.filter((q) => v >= q).length);
+          };
+          const rele = [];
+          let n = 0;
+          for (const el of document.querySelectorAll('#map svg.map-svg .layer-counties path')) {
+            const aria = el.getAttribute('aria-label') || '';
+            const m = aria.match(/:(\\s*)(\\d+(?:[.,]\\d)?)/);
+            if (!m) continue;
+            const valoare = Number(m[2].replace(',', '.'));
+            const clase = [...el.classList].filter((c) => /^h\\d$/.test(c));
+            n++;
+            if (clase.length !== 1 || clase[0] !== node(valoare)) {
+              rele.push(el.dataset.judet + '=' + valoare + '->' + clase.join('/'));
+            }
+          }
+          return { n, rele: rele.slice(0, 5), releCount: rele.length };
+        }""", {"praguri": praguri(nume), "toleranta": toleranta})
+
+    # (a) modul implicit: volum
+    volum = verifica("volum")
+    check(volum["n"] >= 40, f"scara de volum: cifra si culoarea coincid pe {volum['n']} județe")
+    if volum["releCount"]:
+        check(False, f"scara de volum: {volum['releCount']} județe cu culoarea nepotrivita ({volum['rele']})")
+
+    # (b) comutarea pe „pe locuitor": o singura cerere de numitor
+    cereri = []
+    p.on("request", lambda r: cereri.append(r.url) if "populatie.json" in r.url else None)
+    p.click('.segmented [data-scale="locuitori"]')
+    p.wait_for_timeout(600)
+    check(len(cereri) == 1, f"numitorul se cere o singura data ({len(cereri)} cereri)")
+    rate = verifica("locuitori")
+    check(rate["n"] >= 40, f"scara pe locuitor: cifra si culoarea coincid pe {rate['n']} județe")
+    if rate["releCount"]:
+        check(False, f"scara pe locuitor: {rate['releCount']} județe cu culoarea nepotrivita ({rate['rele']})")
+
+    # (c) cifra afisata = raportul recalculat din date (independent de JS-ul paginii)
+    abateri = p.evaluate("""async () => {
+      const pop = (await (await fetch('./data/populatie.json')).json()).judete;
+      const date = await (await fetch('./data/map.json')).json();
+      const peEveniment = new Map();
+      for (const a of date.articles || []) {
+        if (!a.county) continue;
+        const k = a.event_id || a.slug || a.title;
+        if (!peEveniment.has(k)) peEveniment.set(k, a.county);
+      }
+      const counts = {};
+      for (const c of peEveniment.values()) counts[c] = (counts[c] || 0) + 1;
+      const rele = [];
+      for (const el of document.querySelectorAll('#map svg.map-svg .layer-counties path')) {
+        const code = el.dataset.judet;
+        if (!pop[code]) continue;
+        const asteptat = Math.round((counts[code] || 0) / pop[code] * 100000 * 10) / 10;
+        const m = (el.getAttribute('aria-label') || '').match(/:(\\s*)(\\d+(?:[.,]\\d)?)/);
+        if (!m) continue;
+        if (Math.abs(Number(m[2].replace(',', '.')) - asteptat) > 0.001) {
+          rele.push(code + ': ' + m[2] + ' vs ' + asteptat);
+        }
+      }
+      return rele.slice(0, 5);
+    }""")
+    check(not abateri, f"cifra afisata = numarator/numitor recalculat din date ({abateri})")
+
+    # (d) legenda: titlul si benzile modului, fara text rupt
+    stare = p.evaluate("""() => {
+      const l = document.querySelector('#map-legend');
+      return {
+        titlu: (l.querySelector('[data-title=\"locuitori\"]') || {}).hidden,
+        benzi: (l.querySelector('[data-bands=\"locuitori\"]') || {}).hidden,
+        text: l.textContent.replace(/\\s+/g, ' ').trim(),
+        vizibila: !l.hidden,
+      };
+    }""")
+    check(stare["vizibila"] and stare["titlu"] is False and stare["benzi"] is False,
+          "legenda arata benzile de rate cand scara e pe locuitor")
+    check("NaN" not in stare["text"] and "undefined" not in stare["text"],
+          f"legenda nu contine text rupt ('{stare['text'][:70]}')")
+
+    # (e) revenirea e curata
+    p.click('.segmented [data-scale="volum"]')
+    p.wait_for_timeout(400)
+    revenit = verifica("volum")
+    check(revenit["releCount"] == 0 and revenit["n"] >= 40, "revenirea pe volum pastreaza invariant")
+    check("scara=" not in (p.evaluate("() => location.search") or ""),
+          "adresa nu mai contine modul dupa revenire")
+
+
 def felia2_localitate(p):
     print("\nFELIA 2 -- click pe localitate nu fura campul de cautare")
-    r = canvas_rect(p)
+    r = stage_rect(p)
     # Intra pe un judet, apoi cauta un marker de localitate scanand o grila in starea marita.
     entered = None
     for i in range(1, 9):
@@ -478,7 +523,7 @@ def felia2_localitate(p):
         return
 
     before = panel_count(p)
-    zr = canvas_rect(p)
+    zr = stage_rect(p)
     found = False
     for i in range(1, 13):
         for j in range(1, 13):
@@ -502,7 +547,7 @@ def felia2_localitate(p):
     # celorlalte dispar tacut). Gruparea se face pe cheie de coordonate EXACTA, deci daca setul de
     # date curent nu contine niciun punct partajat, comportamentul nu se poate declansa -- si atunci
     # se raporteaza NEVERIFICAT, nu verde. Cand apar grupuri, tinta se poate calcula din map.json
-    # (`map.viewbox` + dreptunghiul canvasului) si atunci verificarea devine: lista rezultata dintr-un
+    # (`map.viewbox` + geometria elementelor) si atunci verificarea devine: lista rezultata dintr-un
     # singur tap contine >= 2 localitati distincte.
     groups = p.evaluate("""async () => {
       const d = await (await fetch('./data/map.json')).json();
@@ -735,20 +780,33 @@ def breadcrumb(p):
 
 
 def gold_pixels(p):
-    """Numara pixelii de umplutura aurie (judetele/zonele pline, tema deschisa) si centroidul
-    lor. La zoom, aceleasi umpluturi ocupa mai multi pixeli -- marimea e proxima pentru scara."""
+    """Aria VIZIBILA a hartii in pixeli patrati de ecran + centroidul ei -- inlocuieste
+    numaratoarea de px² de harta din era canvas. Se insumeaza cutiile judetelor proiectate in
+    spatiul ecranului, limitate la fereastra scenei: la zoom aceleasi forme ocupa mai mult, la
+    pan centrul de masa se muta. Exact ce masura inainte numaratoarea de pixeli, dar fara
+    dependenta de nuanta (garda de culoare e `tools/harta_contrast.py`)."""
     return p.evaluate("""() => {
-      const c = document.querySelector('#map canvas.map-canvas');
-      const d = c.getContext('2d').getImageData(0, 0, c.width, c.height).data;
+      const svg = document.querySelector('#map svg.map-svg');
+      const r = svg.getBoundingClientRect();
+      const ctm = svg.getScreenCTM();
+      if (!ctm) return { n: 0, cx: 0, cy: 0 };
       let n = 0, sx = 0, sy = 0;
-      for (let i = 0; i < d.length; i += 16) {
-        const r = d[i], g = d[i + 1], b = d[i + 2];
-        if (r > 150 && r < 245 && g > 95 && g < 205 && b < 130 && r > g && g > b) {
-          const idx = i / 4;
-          n++; sx += idx % c.width; sy += Math.floor(idx / c.width);
-        }
+      for (const node of svg.querySelectorAll('.layer-counties path')) {
+        const b = node.getBBox();
+        if (!b.width || !b.height) continue;
+        const a = new DOMPoint(b.x, b.y).matrixTransform(ctm);
+        const c = new DOMPoint(b.x + b.width, b.y + b.height).matrixTransform(ctm);
+        const x0 = Math.max(Math.min(a.x, c.x), r.left), x1 = Math.min(Math.max(a.x, c.x), r.right);
+        const y0 = Math.max(Math.min(a.y, c.y), r.top), y1 = Math.min(Math.max(a.y, c.y), r.bottom);
+        const w = Math.max(0, x1 - x0), h = Math.max(0, y1 - y0);
+        if (!w || !h) continue;
+        const area = w * h;
+        n += area;
+        sx += area * (x0 + w / 2);
+        sy += area * (y0 + h / 2);
       }
-      return n ? { n, cx: sx / n, cy: sy / n } : { n: 0, cx: 0, cy: 0 };
+      if (!n) return { n: 0, cx: 0, cy: 0 };
+      return { n: Math.round(n / 1000), cx: sx / n, cy: sy / n };
     }""")
 
 
@@ -757,7 +815,7 @@ def zoom_interactiv(p):
     e penibil"). Verifica: rotita mareste, dublu-click mareste, butoanele +/− si reset,
     starea dezactivata expusa, pan-ul prin tragere la zoom, fara selectie accidentala."""
     print("\nZOOM/PAN -- harta interactiva")
-    r = canvas_rect(p)
+    r = stage_rect(p)
     cx, cy = r["x"] + r["w"] / 2, r["y"] + r["h"] / 2
     p.wait_for_function("() => document.querySelector('#news-list li a') !== null", timeout=15000)
     before = gold_pixels(p)
@@ -768,7 +826,7 @@ def zoom_interactiv(p):
     p.wait_for_timeout(300)
     zoomed = gold_pixels(p)
     check(zoomed["n"] >= before["n"] * 1.5,
-          f"rotita mareste harta ({before['n']} -> {zoomed['n']} pixeli aurii)")
+          f"rotita mareste harta ({before['n']} -> {zoomed['n']} px² de harta)")
 
     # (b) pan prin tragere misca scena, fara sa selecteze nimic. Pan MIC (48px) ca compozitia
     # de buline sa ramana stabila: centroidul se translazeaza proportional cu drag-ul, dar
@@ -844,47 +902,16 @@ def tastatura_pan_zoom(p):
     check("mărită" in status, f"schimbarea de scara e anuntata aria-live ('{status}')")
 
     # Punct interior intr-un judet (oricare cu stiri), in coordonate de ecran.
-    pt = p.evaluate("""async () => {
-      const d = await (await fetch('./data/map.json')).json();
-      const vb = String(d.map.viewbox).trim().split(/\\s+/).map(Number);
-      const c = document.querySelector('#map canvas.map-canvas');
-      const scratch = document.createElement('canvas');
-      scratch.width = c.width; scratch.height = c.height;
-      const ctx = scratch.getContext('2d');
-      ctx.setTransform(c.width / vb[2], 0, 0, c.height / vb[3],
-                       -vb[0] * c.width / vb[2], -vb[1] * c.height / vb[3]);
-      const withNews = new Set((d.articles || []).map(a => a.county).filter(Boolean));
-      const county = Object.keys(d.map.judete).find(k => withNews.has(k));
-      const nums = String(d.map.judete[county]).match(/-?\\d+(?:\\.\\d+)?/g).map(Number);
-      let minX = 1e9, minY = 1e9, maxX = -1e9, maxY = -1e9;
-      for (let i = 0; i + 1 < nums.length; i += 2) {
-        minX = Math.min(minX, nums[i]); minY = Math.min(minY, nums[i + 1]);
-        maxX = Math.max(maxX, nums[i]); maxY = Math.max(maxY, nums[i + 1]);
-      }
-      const path = new Path2D(d.map.judete[county]);
-      const rect = c.getBoundingClientRect();
-      for (let row = 1; row < 12; row += 1) {
-        for (let col = 1; col < 12; col += 1) {
-          const x = minX + (maxX - minX) * col / 12;
-          const y = minY + (maxY - minY) * row / 12;
-          const xd = Math.round((x - vb[0]) * c.width / vb[2]);
-          const yd = Math.round((y - vb[1]) * c.height / vb[3]);
-          if (ctx.isPointInPath(path, xd, yd)) {
-            return { county, x: rect.x + (xd / c.width) * rect.width,
-                     y: rect.y + (yd / c.height) * rect.height };
-          }
-        }
-      }
-      return null;
-    }""")
+    pt = interior_point(p, "news")
     if not pt:
         skip("nu am gasit punct interior pentru testul de pan din tastatura")
         return
     p.mouse.move(pt["x"], pt["y"], steps=2)
     p.wait_for_timeout(200)
     tip_before = p.evaluate("() => document.querySelector('.map-tip')?.textContent || ''")
-    check(pt["county"] in tip_before.upper(),
-          f"cursorul porneste peste {pt['county']} (tooltip: '{tip_before}')")
+    label_pt = county_label(p, pt["county"])
+    check(label_pt in tip_before,
+          f"cursorul porneste peste {label_pt} (tooltip: '{tip_before}')")
 
     # Sageata dreapta = vederea spre est; 6 apasari x ~39 unitati ≈ 232 -- mai mult decat
     # latimea oricarui judet, deci sub cursor NU poate ramane aceeasi zona.
@@ -922,10 +949,10 @@ def mobil_390(p):
 
     # Pe ecranul Android harta începe sub introducere; o atingere cu y din afara viewportului
     # nu testează produsul, ci doar o coordonată imposibilă. O aducem în viewport înainte de tap.
-    p.locator("#map canvas.map-canvas").scroll_into_view_if_needed()
+    p.locator("#map svg.map-svg").scroll_into_view_if_needed()
     p.wait_for_timeout(150)
-    r = canvas_rect(p)
-    print(f"   canvas real: {r['w']:.0f}x{r['h']:.0f}px")
+    r = stage_rect(p)
+    print(f"   scena reala: {r['w']:.0f}x{r['h']:.0f}px")
     hits, tried = 0, 0
     for i in range(1, 7):
         for j in range(1, 7):
@@ -970,6 +997,7 @@ def main():
         hit_ordin_fara_furt(p)
         hover_preview(p)
         click_zona_fara_stiri(p)
+        scara_si_numitor(p)
         felia2_localitate(p)
         felia5_county_picker(p)
         felia6_url(p)
