@@ -181,16 +181,22 @@ def _norm_name(s: str) -> str:
     return re.sub(r"\s+", " ", strip_diacritics((s or "").strip().lower()))
 
 
-def _use_media(src: str, dst: str) -> bool:
-    """Copiaza imaginea comisa (HTML/Chromium) daca exista si e valida. False -> fallback Pillow."""
+def _use_media(src: str, dst: str, min_size: int = 3000) -> bool:
+    """Copiază imaginea comisă dacă există și trece pragul; altfel, fallback pentru sursa veche."""
     try:
-        if os.path.exists(src) and os.path.getsize(src) > 3000:
+        if os.path.exists(src) and os.path.getsize(src) > min_size:
             os.makedirs(os.path.dirname(dst), exist_ok=True)
             shutil.copyfile(src, dst)
             return True
     except OSError:
         pass
     return False
+
+
+def _use_avif_media(jpeg_rel: str, dst: str) -> bool:
+    """Copiază varianta AVIF cu același nume de bază; JPEG-ul rămâne fallback obligatoriu."""
+    avif_rel = os.path.splitext(jpeg_rel)[0] + ".avif"
+    return _use_media(os.path.join(MEDIA_DIR, avif_rel), dst, min_size=0)
 
 
 def _content_ver(path: str) -> str:
@@ -973,6 +979,10 @@ def build(articles: list, mod: dict | None = None) -> None:
                         and _spend(_use_media(os.path.join(MEDIA_DIR, lp["webp"]), photo_webp_dst))):
                     a["photo_webp"] = (f"/{a['category']}/{a['slug']}/photo.webp"
                                        f"?v={_content_ver(photo_webp_dst)}")
+                photo_avif_dst = os.path.join(cdir, "photo.avif")
+                if _spend(_use_avif_media(lp["art"], photo_avif_dst)):
+                    a["photo_avif"] = (f"/{a['category']}/{a['slug']}/photo.avif"
+                                       f"?v={_content_ver(photo_avif_dst)}")
                 a["lead_credit"] = lp   # legenda obligatorie -- fara ea poza n-are voie sa apara
         elif lp and _spend(_use_media(os.path.join(MEDIA_DIR, lp["art"]), art_dst)):
             # Fotografie reala de lead, fara obligatie de credit: inlocuieste arta generata
@@ -982,6 +992,9 @@ def build(articles: list, mod: dict | None = None) -> None:
             if (lp.get("webp")
                     and _spend(_use_media(os.path.join(MEDIA_DIR, lp["webp"]), webp_dst))):
                 a["art_webp"] = f"/{a['category']}/{a['slug']}/art.webp?v={_content_ver(webp_dst)}"
+            art_avif_dst = os.path.join(cdir, "art.avif")
+            if _spend(_use_avif_media(lp["art"], art_avif_dst)):
+                a["art_avif"] = f"/{a['category']}/{a['slug']}/art.avif?v={_content_ver(art_avif_dst)}"
         elif a.get("event_chart"):
             # Imagine DIN DATE (harta epicentrului, graficul meteo): nu e decor derivat din
             # seed, e continut, deci nu se poate desena din `art_style`. Ramane fisier cat
@@ -990,6 +1003,9 @@ def build(articles: list, mod: dict | None = None) -> None:
                 a["art_path"] = f"/{a['category']}/{a['slug']}/art.jpg?v={_content_ver(art_dst)}"
                 if _spend(_use_media(os.path.join(MEDIA_DIR, f"{aid}.webp"), webp_dst)):
                     a["art_webp"] = f"/{a['category']}/{a['slug']}/art.webp?v={_content_ver(webp_dst)}"
+                art_avif_dst = os.path.join(cdir, "art.avif")
+                if _spend(_use_avif_media(f"{aid}.jpg", art_avif_dst)):
+                    a["art_avif"] = f"/{a['category']}/{a['slug']}/art.avif?v={_content_ver(art_avif_dst)}"
         if idx < n_cover:
             _scrie_coperta(a, cdir, aid, lp)
 
@@ -1933,6 +1949,7 @@ def _write_headers() -> None:
            "/*.jpg\n  Cache-Control: public, max-age=86400\n"
            "/*.png\n  Cache-Control: public, max-age=86400\n"
            "/*.webp\n  Cache-Control: public, max-age=86400\n"
+           "/*.avif\n  Cache-Control: public, max-age=86400\n"
            "/feed.xml\n  Cache-Control: public, max-age=1800\n"
            "/build.json\n  Cache-Control: public, max-age=0, must-revalidate\n")
 

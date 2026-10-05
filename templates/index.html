@@ -22,6 +22,7 @@
       <aside class="lead-aside">
         {% if top.art_path %}
         <picture>
+          {% if top.art_avif %}<source srcset="{{ base }}{{ top.art_avif }}" type="image/avif">{% endif %}
           {% if top.art_webp %}<source srcset="{{ base }}{{ top.art_webp }}" type="image/webp">{% endif %}
           <img class="lead-art" src="{{ base }}{{ top.art_path }}" alt="" width="960" height="504" sizes="(min-width: 1000px) 430px, 100vw" fetchpriority="high">
         </picture>

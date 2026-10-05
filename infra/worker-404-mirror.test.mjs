@@ -17,7 +17,9 @@ test("pagina de articol iese din fereastra TTL -> oglinda", () => {
 });
 
 test("imaginile articolului servit de pe oglinda vin tot de acolo", () => {
-  for (const f of ["cover.jpg", "art.jpg", "art.webp", "photo.jpg", "photo.webp"]) {
+  for (const f of [
+    "cover.jpg", "art.jpg", "art.webp", "art.avif", "photo.jpg", "photo.webp", "photo.avif",
+  ]) {
     assert.equal(e_cale_de_oglinda(`/local/un-articol/${f}`), true, f);
   }
 });

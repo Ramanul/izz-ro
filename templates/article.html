@@ -62,10 +62,12 @@
   {# `photo_path` = fotografie CC BY / CC BY-SA, admisa DOAR aici, fiindca doar pagina de articol
      poarta legenda completa de mai jos. Nu exista pe carduri, in hero sau in og:image. #}
   {% set art_src = a.photo_path or a.art_path %}
+  {% set art_src_avif = a.photo_avif if a.photo_path else a.art_avif %}
   {% set art_src_webp = a.photo_webp if a.photo_path else a.art_webp %}
   {% if art_src %}
   <figure class="article-art-fig">
     <picture>
+      {% if art_src_avif %}<source srcset="{{ base }}{{ art_src_avif }}" type="image/avif">{% endif %}
       {% if art_src_webp %}<source srcset="{{ base }}{{ art_src_webp }}" type="image/webp">{% endif %}
       <img class="article-art" src="{{ base }}{{ art_src }}" alt="{% if a.lead_credit %}{{ a.lead_credit.name }}{% endif %}" width="960" height="504" sizes="(min-width: 770px) 729px, calc(100vw - 42px)" fetchpriority="high">
     </picture>

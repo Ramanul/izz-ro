@@ -24,9 +24,9 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 OUT = os.path.join(ROOT, "output")
 # Ce mai poate exista ca FISIER intr-un director de articol dupa 2026-09-09: coperta og a
 # ferestrei recente si fotografiile reale (Wikimedia/Commons). Arta generata se deseneaza in
-# pagina, deci `art-card.webp` a disparut, iar `art.jpg`/`art.webp` raman doar pentru
+# pagina, deci `art-card.webp` a disparut, iar `art.*`/`photo.*` raman doar pentru
 # fotografii reale si pentru imaginile din date (`event_chart`).
-IMAGINI = {"art.jpg", "art.webp", "cover.jpg", "photo.jpg", "photo.webp"}
+IMAGINI = {"art.jpg", "art.webp", "art.avif", "cover.jpg", "photo.jpg", "photo.webp", "photo.avif"}
 
 
 def _slugs_de_articol() -> set[tuple[str, str]]:

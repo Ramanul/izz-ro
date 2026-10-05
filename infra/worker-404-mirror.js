@@ -58,7 +58,8 @@ const SECTIUNI_COADA = new Set([
 // de pe oglinda si-ar cere coperta de la primar — care nu o are, pentru ca articolul nu e
 // al lui — si cititorul ar primi articolul cu imaginea sparta.
 const IMAGINI_ARTICOL = new Set([
-  "cover.jpg", "art.jpg", "art.webp", "photo.jpg", "photo.webp",
+  "cover.jpg", "art.jpg", "art.webp", "art.avif",
+  "photo.jpg", "photo.webp", "photo.avif",
 ]);
 
 // Al doilea segment al unei paginari de categorie e numar (`/politic/2/`). Un slug de articol

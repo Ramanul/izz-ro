@@ -1,0 +1,12 @@
+{
+  "name": "izz-ro-image-pipeline",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "images:build": "node tools/optimize_images.mjs",
+    "test:images": "node --test tests/image-pipeline.test.mjs"
+  },
+  "dependencies": {
+    "sharp": "0.35.5"
+  }
+}

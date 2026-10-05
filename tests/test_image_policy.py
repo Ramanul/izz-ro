@@ -71,3 +71,32 @@ def test_article_template_prefers_credited_photo_and_keeps_it_off_cards():
         article = fh.read()
     assert "a.photo_path or a.art_path" in article
     assert "decupat de IZZ.ro" in article
+    assert article.index('type="image/avif"') < article.index('type="image/webp"')
+    assert article.index('type="image/webp"') < article.index('<img class="article-art"')
+    for path in ("templates/_card.html", "templates/index.html"):
+        with open(path, encoding="utf-8") as fh:
+            template = fh.read()
+        assert "art_avif" in template, path
+        assert "photo_avif" not in template, path
+
+
+def test_avif_media_helper_copies_only_the_adjacent_nonempty_derivative(tmp_path, monkeypatch):
+    media = tmp_path / "media"
+    source = media / "leads" / "sample.avif"
+    source.parent.mkdir(parents=True)
+    source.write_bytes(b"validated-avif-output")
+    monkeypatch.setattr(render, "MEDIA_DIR", str(media))
+
+    destination = tmp_path / "output" / "article" / "art.avif"
+    assert render._use_avif_media("leads/sample.jpg", str(destination))
+    assert destination.read_bytes() == source.read_bytes()
+    assert not render._use_avif_media(
+        "leads/missing.jpg", str(tmp_path / "output" / "article" / "missing.avif")
+    )
+
+
+def test_avif_assets_receive_the_image_cache_policy(tmp_path, monkeypatch):
+    monkeypatch.setattr(render, "OUT_DIR", str(tmp_path))
+    render._write_headers()
+    headers = (tmp_path / "_headers").read_text(encoding="utf-8")
+    assert "/*.avif\n  Cache-Control: public, max-age=86400" in headers

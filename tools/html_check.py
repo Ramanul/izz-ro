@@ -63,7 +63,7 @@ class _Pagina(HTMLParser):
             if ad.get("src"):
                 self.surse.append(ad["src"])
         elif tag in ("script", "source") and (ad.get("src") or ad.get("srcset")):
-            # srcset poate purta mai multi candidati; aici e mereu unul singur (format webp)
+            # srcset poate purta mai multi candidati; sabloanele emit acum un singur candidat per format.
             self.surse.append((ad.get("src") or ad["srcset"]).split(",")[0].strip().split(" ")[0])
 
 

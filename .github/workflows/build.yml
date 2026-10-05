@@ -62,6 +62,15 @@ jobs:
 
       - run: pip install -r requirements.txt
 
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+        with:
+          node-version: "22"
+          cache: npm
+      - name: Instaleaza Sharp si verifica pipeline-ul de imagini
+        run: |
+          npm ci
+          npm run test:images
+
       # Suita rapida (~1 min de la IZZ-0415: fixtura randeaza un esantion de 200 articole)
       # inainte de cheltuirea bugetului AI, ca un cod regresat sa nu consume 40 de apeluri
       # si sa nu comite stare deasupra unui defect. RAPORT-ONLY la aterizare: content job-ul
@@ -154,6 +163,9 @@ jobs:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           AI_PROVIDER: gemini
         run: python tools/fetch_eventphotos.py
+
+      - name: Genereaza variantele WebP si AVIF (Sharp, 960x504)
+        run: npm run images:build
 
       - name: IndexNow — ce s-a schimbat (scrie manifestul, NU trimite inca)
         continue-on-error: true
