@@ -137,7 +137,7 @@
   // schimb, aprinde doar potrivirile de LOC -- o harta care aprinde Maramuresul fiindca un
   // titlu pomeneste Clujul minte prin constructie.
   function matchesPlace(item, query) {
-    return norm(`${item.county} ${item.locality}`).includes(query);
+    return norm(`${item.county} ${item.locality} ${item.region}`).includes(query);
   }
 
   function matchesText(item, query) {
@@ -272,7 +272,7 @@
           path2d: new Path2D(unit.path || ""),
           count: 0,
           localities: [],
-        items: [],
+          items: [],
         })) : [];
         state.uatCache.set(county, uats);
         state.uatOutlineCache.set(county, buildCountyOutline(uats, county));
@@ -292,6 +292,7 @@
           // posibila), apoi renderList o prezinta in panou.
           buildMap();
           renderList();
+          updateStats();
           announceState();
         }
       });
@@ -323,10 +324,12 @@
         }
       }
       if (!uat) continue;
-      uat.count += 1;
       uat.items.push(item);
       if (item.locality && !uat.localities.includes(item.locality)) uat.localities.push(item.locality);
     }
+    // Harta, legenda, selectorul și lista trebuie să numere același tip de rezultat.
+    // `uat.items` păstrează relatările brute pentru filtrare; cifra respectă modul activ.
+    for (const uat of state.uats) uat.count = itemsForView(uat.items).length;
   }
 
   function uatContainsMapPoint(ctx, canvas, view, uat, x, y) {
@@ -495,7 +498,7 @@
     // formulă ca la nivel național și ca mini-harta (praguriFor/rampClassFor).
     const uatMax = Math.max(0, ...state.uats.map((unit) => unit.count));
     const uatPraguri = praguriFor(uatMax);
-    updateLegend(uatPraguri, uatMax, { show: Boolean(state.uats.length) });
+    updateLegend(uatPraguri, uatMax, { show: Boolean(state.uats.length), scope: "uat" });
     for (const uat of state.uats) {
       // UAT-ul de sub cursor/deget se ingroasa si prinde contur de accent: fara asta,
       // tooltipul spune un nume dar nu se vede CARE forma de pe harta il poarta.
@@ -588,7 +591,7 @@
     return Math.min(4, 1 + praguri.filter((p) => count > p).length);
   }
 
-  function updateLegend(praguri, max, { show = true } = {}) {
+  function updateLegend(praguri, max, { show = true, scope = "county" } = {}) {
     const legend = $("#map-legend");
     if (!legend) return;
     if (!show) {
@@ -596,6 +599,43 @@
       legend.replaceChildren();
       return;
     }
+    const mode = state.viewMode === "events" ? "evenimente" : "relatări";
+    const makeItem = (className, label, background = "") => {
+      const cell = document.createElement("span");
+      cell.className = "legend-step";
+      const swatch = document.createElement("span");
+      swatch.className = `swatch ${className}`;
+      swatch.setAttribute("aria-hidden", "true");
+      if (background) swatch.style.backgroundColor = background;
+      cell.append(swatch, document.createTextNode(label));
+      return cell;
+    };
+    const addSelectionKey = () => {
+      if (state.selectedRegion || state.selectedCounty || state.selectedUat) {
+        legend.appendChild(makeItem("selected", "zonă selectată"));
+      }
+    };
+
+    if (state.level === "regional" && scope === "county") {
+      const title = document.createElement("span");
+      title.className = "legend-title";
+      title.textContent = "Culorile regiunilor editoriale";
+      legend.replaceChildren(title);
+      const palette = colors();
+      const regions = Object.keys(state.map?.regiuni || {}).sort((a, b) => a.localeCompare(b, "ro"));
+      for (const region of regions) {
+        legend.appendChild(makeItem("region", region, regionFill(region, palette.fill)));
+      }
+      addSelectionKey();
+      const caption = document.createElement("span");
+      caption.className = "legend-caption";
+      caption.textContent = "Culoarea județului identifică regiunea; numărul arată rezultatele filtrate.";
+      legend.appendChild(caption);
+      legend.setAttribute("aria-label", "Culorile regiunilor editoriale; numărul arată rezultatele filtrate");
+      legend.hidden = false;
+      return;
+    }
+
     const p = praguri.length === 3 ? praguri : praguriFor(max);
     const steps = [{ cls: "h0", label: "0" }];
     if (max > 0) {
@@ -609,27 +649,26 @@
         });
       }
     }
-    const mode = state.viewMode === "events" ? "evenimente" : "relatări";
     const title = document.createElement("span");
     title.className = "legend-title";
-    title.textContent = `Număr de ${mode}`;
+    title.textContent = `Număr de ${mode}${scope === "uat" ? " în orașe și comune" : " pe județe"}`;
     legend.replaceChildren(title);
     for (const step of steps) {
-      const cell = document.createElement("span");
-      cell.className = "legend-step";
-      const swatch = document.createElement("span");
-      swatch.className = `swatch ${step.cls}`;
-      swatch.setAttribute("aria-hidden", "true");
-      cell.append(swatch, document.createTextNode(step.label));
-      legend.appendChild(cell);
+      legend.appendChild(makeItem(step.cls, step.label));
     }
+    const hasLocalityPoints = state.zoomCounty && state.visible.some((item) =>
+      item.county === state.zoomCounty && item.geo_level === "local" && item.locality
+      && item.x != null && item.y != null);
+    if (hasLocalityPoints) legend.appendChild(makeItem("point", "reper de localitate"));
+    addSelectionKey();
     const caption = document.createElement("span");
     caption.className = "legend-caption";
     caption.textContent = max > 0
-      ? "Intervale pentru rezultatele filtrate; 0 înseamnă fără rezultate potrivite."
+      ? "0 = fără rezultate; nuanțele mai închise indică mai multe. Intervalele urmează filtrele active."
       : "0 = fără rezultate potrivite în filtrul curent.";
     legend.appendChild(caption);
-    legend.setAttribute("aria-label", `Scara numărului de ${mode} după filtrele active`);
+    const unit = scope === "uat" ? "orașe și comune" : "județe";
+    legend.setAttribute("aria-label", `Număr de ${mode} pe ${unit}, după filtrele active`);
     legend.hidden = false;
   }
 
@@ -1271,7 +1310,7 @@
     // scara urmareste ce priveste omul, nu corpusul intreg. Legenda spune acelasi lucru.
     const maxCount = Math.max(0, ...paths.map((e) => e.count));
     const praguri = praguriFor(maxCount);
-    updateLegend(praguri, maxCount, { show: state.level !== "regional" });
+    updateLegend(praguri, maxCount, { show: true });
 
     // Trei treceri, nu una: (1) contur lat deschis sub fiecare judet; (2) umplerea
     // choropleth; (3) bordura fina intre judete. Umplerea din trecerea 2 acopera haloul
@@ -1345,15 +1384,15 @@
 
     drawUats(ctx, palette, canvas, view);
 
-    // Selectia de UAT devine continut abia cand asignarea geometrica e posibila (UAT-urile
-    // incarcate + canvas dimensionat). Pana atunci `pendingUat` tine intentia, iar panoul
-    // arata lista judetului -- nu o lista inselatoare. Cheia dintr-un link vechi, care nu
-    // mai exista in date, se renunta in loc sa blocheze filtrarea.
-    if (state.pendingUat && state.uats.length && !state.uatLoading) {
-      const wanted = state.uats.find((unit) => String(unit.id || unit.name) === state.pendingUat);
+    // Selectia de UAT devine filtru al listei abia cand asignarea geometrica e posibila
+    // (UAT-urile incarcate + canvas dimensionat). Reaplicam filtrul la fiecare buildMap,
+    // astfel incat o cautare sau schimbare de mod sa nu-l desprinda de lista. Pana atunci,
+    // `pendingUat` tine intentia, iar panoul arata lista judetului. O cheie veche se anuleaza.
+    if (state.selectedUat && state.uats.length && !state.uatLoading) {
+      const wanted = state.uats.find((unit) => String(unit.id || unit.name) === state.selectedUat);
       state.pendingUat = null;
       if (wanted) {
-        state.visible = state.selectedUat ? itemsForView(wanted.items) : state.visible;
+        state.visible = itemsForView(wanted.items);
       } else {
         state.selectedUat = null;
       }
@@ -1371,7 +1410,10 @@
     if (state.zoomCounty) {
       const groups = new Map();
       for (const item of state.visible) {
-        if (item.county !== state.zoomCounty || item.x == null || item.y == null) continue;
+        // Un punct nu este o coordonată de incident: îl afișăm numai pentru o relatare
+        // încadrată local, cu localitate și coordonata publicată a reperului ei.
+        if (item.county !== state.zoomCounty || item.geo_level !== "local" || !item.locality
+            || item.x == null || item.y == null) continue;
         const x = Number(item.x);
         const y = Number(item.y);
         if (!Number.isFinite(x) || !Number.isFinite(y)) continue;
@@ -1409,18 +1451,28 @@
 
       const markerScale = rect.width > 0 ? view.width / rect.width : 1;
       const radius = 3.6 * markerScale;
+      const haloRadius = 9 * markerScale;
       const hovered = state.hoverLocalityMarker;
       for (const group of byCoordinate.values()) {
         group.localities = [...new Set(group.localities.filter(Boolean))];
         const isHovered = hovered && hovered.coordinateKey === group.coordinateKey;
+        const pointRadius = radius * (isHovered ? 1.25 : 1);
+        // Haloul spune „reper de localitate”, nu țintă GPS. Precizia metrică nu există
+        // în dataset, așa că marcajul nu pretinde o rază geografică măsurată.
         ctx.beginPath();
-        ctx.arc(group.x, group.y, isHovered ? radius * 1.3 : radius, 0, Math.PI * 2);
+        ctx.arc(group.x, group.y, haloRadius * (isHovered ? 1.1 : 1), 0, Math.PI * 2);
         ctx.fillStyle = isHovered ? palette.hot : palette.locality;
+        ctx.globalAlpha = isHovered ? 0.24 : 0.16;
         ctx.fill();
-        ctx.lineWidth = 1.25 * markerScale;
-        ctx.strokeStyle = palette.surface;
+        ctx.globalAlpha = 1;
+        ctx.beginPath();
+        ctx.arc(group.x, group.y, pointRadius, 0, Math.PI * 2);
+        ctx.fillStyle = palette.surface;
+        ctx.fill();
+        ctx.lineWidth = 1.5 * markerScale;
+        ctx.strokeStyle = isHovered ? palette.hot : palette.locality;
         ctx.stroke();
-        localityMarkers.push({ ...group, radius: radius * (isHovered ? 1.3 : 1) });
+        localityMarkers.push({ ...group, radius: pointRadius });
       }
     }
 
@@ -1822,7 +1874,8 @@
     // După alegerea unui județ, selectorul devine lista UAT-urilor acelui județ care au
     // știri în filtrul curent. Fiecare buton deschide aceeași listă de știri ca badge-ul de hartă.
     if (state.zoomCounty && state.uats.length) {
-      const uats = state.uats.filter((uat) => uat.count > 0)
+      const uats = state.uats.filter((uat) => uat.count > 0
+        || String(uat.id || uat.name) === state.selectedUat)
         .sort((a, b) => String(a.label).localeCompare(String(b.label), "ro"));
       picker.setAttribute("aria-label", `Orașe și comune cu știri în ${state.zoomCounty}`);
       if (!uats.length) {
@@ -2021,13 +2074,13 @@
     if (target.localityMarker) {
       const note = document.createElement("div");
       note.className = "tip-note";
-      note.textContent = "Localitatea este un reper, nu locul exact al evenimentului; precizia punctului de referință nu este verificată.";
+      note.textContent = "Punct de referință al localității, nu locul exact al evenimentului; precizia în metri nu este disponibilă.";
       tip.appendChild(note);
     }
     // Previzualizare: primele trei titluri din zona atinsă. UAT-urile au asignarea
     // proprie (uat.items); județele le scot din lista vizibilă; regiunile, la fel.
     let titles = [];
-    if (Array.isArray(target.items)) titles = target.items.slice(0, 3);
+    if (Array.isArray(target.items)) titles = itemsForView(target.items).slice(0, 3);
     else if (target.county) titles = state.visible.filter((it) => it.county === target.county).slice(0, 3);
     else if (target.region) titles = state.visible.filter((it) => it.region === target.region).slice(0, 3);
     if (titles.length) {
@@ -2193,7 +2246,7 @@
       const shown = all.length > items.length
         ? `${items.length} din ${all.length} ${itemLabel()}`
         : `${items.length} ${itemLabel()}`;
-      const places = query ? state.rawVisible.filter((item) => matchesPlace(item, query)).length : 0;
+      const places = query ? all.filter((item) => matchesPlace(item, query)).length : 0;
       const matchNote = places ? `${places} potriviri de loc` : "potriviri în titlu sau sursă";
       count.textContent = query ? `${shown} · ${matchNote}` : shown;
     }
@@ -2209,19 +2262,34 @@
   function updateStats() {
     const stats = $("#map-stats");
     if (!stats) return;
-    const counties = new Set(state.rawVisible.map((item) => item.county).filter(Boolean)).size;
-    const regions = new Set(state.rawVisible.map((item) => item.region).filter(Boolean)).size;
-    const localities = new Set(state.rawVisible
+    const items = state.visible;
+    const filteredCount = items.length;
+    const rawTotal = state.viewMode === "events"
+      ? state.data?.stats?.events
+      : state.data?.stats?.total;
+    const fallbackTotal = state.viewMode === "events"
+      ? itemsForView(state.articles).length
+      : state.articles.length;
+    const overallCount = rawTotal != null && Number.isFinite(Number(rawTotal))
+      ? Number(rawTotal)
+      : fallbackTotal;
+    const reports = state.viewMode === "events"
+      ? items.reduce((sum, item) => sum + (Number(item.eventArticleCount) || 1), 0)
+      : items.length;
+    const counties = new Set(items.map((item) => item.county).filter(Boolean)).size;
+    const regions = new Set(items.map((item) => item.region).filter(Boolean)).size;
+    const localities = new Set(items
       .filter((item) => item.locality)
       .map((item) => item.siruta || `${norm(item.locality)}|${norm(item.county)}`)).size;
     const latest = state.data?.latest_article_at ? dateLabel(state.data.latest_article_at) : "dată indisponibilă";
+    const number = (value) => new Intl.NumberFormat("ro-RO").format(value);
     stats.replaceChildren();
     const strong = document.createElement("strong");
-    strong.textContent = state.viewMode === "events"
-      ? `${itemsForView(state.rawVisible).length} evenimente`
-      : `${state.rawVisible.length} relatări`;
+    strong.textContent = `${number(filteredCount)} din ${number(overallCount)} ${itemLabel()} pe hartă`;
+    strong.setAttribute("aria-label", `${filteredCount} ${itemLabel()} potrivite din ${overallCount} ${itemLabel()} localizate în setul hărții`);
     const span = document.createElement("span");
-    span.textContent = `${state.rawVisible.length} relatări · ${regions} regiuni · ${counties} județe · ${localities} localități confirmate · actualizat ${latest}`;
+    span.className = "map-coverage";
+    span.textContent = `Filtrul curent: ${number(reports)} relatări · ${regions} regiuni · ${counties} județe · ${localities} localități confirmate · actualizat ${latest}`;
     stats.append(strong, span);
   }
 

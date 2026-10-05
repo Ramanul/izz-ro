@@ -62,8 +62,14 @@ def test_map_has_progressive_loading_and_accessible_status():
     assert "function announceState()" in js
 
 
-def test_map_stats_use_confirmed_localities_and_freshness_metadata():
+def test_map_stats_use_visible_counts_and_the_general_map_total():
     js = Path("static/harta-stiri/harta-stiri.js").read_text(encoding="utf-8")
+    assert "const items = state.visible;" in js
+    assert "state.data?.stats?.events" in js
+    assert "state.data?.stats?.total" in js
+    assert "din ${number(overallCount)} ${itemLabel()} pe hartă" in js
+    html = Path("static/harta-stiri/index.html").read_text(encoding="utf-8")
+    assert "totalul localizat al setului hărții" in html
     assert '.filter((item) => item.locality)' in js
     assert "state.data?.latest_article_at" in js
     assert "localități confirmate" in js
@@ -104,14 +110,16 @@ def test_openfreemap_basemap_is_decorative_and_uses_published_projection():
     assert "state.basemapReady ? THEMATIC_FILL_ALPHA : 1" in js
 
 
-def test_locality_markers_keep_only_published_coordinates_and_explain_precision():
+def test_locality_markers_show_only_locality_references_and_explain_precision():
     html = Path("static/harta-stiri/index.html").read_text(encoding="utf-8")
     js = Path("static/harta-stiri/harta-stiri.js").read_text(encoding="utf-8")
+    assert 'item.geo_level !== "local"' in js
     assert "item.x == null || item.y == null" in js
-    assert "ctx.arc(group.x, group.y" in js
-    assert "precizia punctului de referință nu este verificată" in js
+    assert "const haloRadius = 9 * markerScale" in js
+    assert "precizia în metri nu este disponibilă" in js
     assert "nu locurile exacte ale evenimentelor" in html
     assert "Relatările fără coordonate nu primesc puncte inventate" in html
+    assert "Localități România punct" in html
 
 
 def test_openfreemap_csp_allows_only_needed_tile_host_and_worker_bootstrap():
@@ -128,6 +136,22 @@ def test_legend_handles_deduplicated_thresholds_and_zero_results():
     assert 'const steps = [{ cls: "h0", label: "0" }];' in js
     assert "caption.textContent = max > 0" in js
     assert "Număr de ${mode}" in js
+    assert "Culorile regiunilor editoriale" in js
+    assert "updateLegend(praguri, maxCount, { show: true })" in js
+    assert "nuanțele mai închise indică mai multe" in js
+
+
+def test_uat_counts_tooltips_and_search_notes_match_the_active_list():
+    js = Path("static/harta-stiri/harta-stiri.js").read_text(encoding="utf-8")
+    assert 'uat.count = itemsForView(uat.items).length' in js
+    assert 'titles = itemsForView(target.items).slice(0, 3)' in js
+    assert 'all.filter((item) => matchesPlace(item, query)).length' in js
+    assert 'norm(`${item.county} ${item.locality} ${item.region}`)' in js
+    assert 'scope: "uat"' in js
+    assert "if (state.selectedUat && state.uats.length && !state.uatLoading)" in js
+    assert "=== state.selectedUat);" in js
+    assert "String(uat.id || uat.name) === state.selectedUat" in js
+    assert "updateStats();\n          announceState();" in js
 
 
 def test_map_clears_uat_loading_state_on_cache_hit():
