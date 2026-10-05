@@ -2,34 +2,44 @@ import json
 from pathlib import Path
 
 
-def test_map_has_single_canvas_creation_path():
-    # ensureCanvas() e singurul loc care creeaza <canvas> -- reutilizeaza nodul existent
-    # (state.canvas) cat timp e inca in DOM, ceea ce e fix-ul din e3832692 pentru
-    # dedublarea vizuala pe scroll real (vezi STATE.md A2).
+def test_map_has_single_stage_creation_path():
+    # ensureStage() e singurul loc care construieste suprafata de desenare -- reutilizeaza nodul
+    # existent (state.stage) cat timp e inca in DOM, ceea ce e fix-ul din e3832692 pentru
+    # dedublarea vizuala pe scroll real (vezi STATE.md A2). Substratul e SVG din 2026-10-04
+    # (F1 din notes/harta-revolutie-proposal-2026-10-04.md): nu exista canvas nicaieri.
     js = Path("static/harta-stiri/harta-stiri.js").read_text(encoding="utf-8")
-    assert js.count('document.createElement("canvas")') == 1
-    assert "if (state.canvas && host.contains(state.canvas)) return state.canvas;" in js
-    assert "clearRect" in js
+    assert js.count('svgNode("svg"') == 1
+    assert 'document.createElement("canvas")' not in js
+    assert "getContext(" not in js
+    assert "if (state.stage && host.contains(state.stage)) return state.stage;" in js
 
 
 def test_map_deduplicates_locality_markers():
     # Doua grupuri cu aceleasi coordonate (SIRUTA diferit, punct identic) se combina intr-un
-    # singur marker vizual prin `byCoordinate`, pastrand toate identitatile in `localities`
-    # (fix A3 -- clickul pe un marker suprapus alegea mereu primul, nu cel mai apropiat).
+    # singur marker vizual (cheie pe coordonate rotunjite), pastrand toate identitatile in
+    # `localities` (fix A3 -- clickul pe un marker suprapus alegea mereu primul).
     js = Path("static/harta-stiri/harta-stiri.js").read_text(encoding="utf-8")
-    assert "byCoordinate" in js
-    assert "existing.localities.push(group.locality)" in js
+    assert "const groups = new Map();" in js
+    assert "x.toFixed(4)" in js and "y.toFixed(4)" in js
+    assert "if (!group.localities.includes(locality)) group.localities.push(locality);" in js
 
 
-def test_map_rebuild_replaces_old_canvas():
+def test_map_rebuild_replaces_old_stage():
     js = Path("static/harta-stiri/harta-stiri.js").read_text(encoding="utf-8")
     assert "host.replaceChildren();" in js
+    assert 'stage.className = "map-stage";' in js
 
 
 def test_map_redraw_is_transform_safe():
+    # Randarea e DERIVATA din stare (viewBox scris din `state.view`), nu acumulata pe un context:
+    # nu exista transformari imperative care sa se adune la fiecare cadru, nici hit-test pe
+    # cai parsate manual -- clasa de buguri a canvasului (IZZ-0193/0194).
     js = Path("static/harta-stiri/harta-stiri.js").read_text(encoding="utf-8")
-    assert "setTransform(1, 0, 0, 1, 0, 0)" in js
-    assert "clearRect(0, 0" in js
+    assert 'state.svg.setAttribute("viewBox"' in js
+    assert "setTransform(" not in js
+    # Cuvantul apare doar in comentariul care documenteaza ce s-a sters; interogarea, nu.
+    assert ".isPointInPath(" not in js and ".isPointInStroke(" not in js
+    assert "let node = byKey.get(key);" in js
 
 
 def test_map_resize_observer_is_present():
@@ -78,11 +88,14 @@ def test_map_has_bounded_loading_and_retry_state():
 
 
 def test_map_can_load_uat_boundaries_and_render_count_badges():
+    # O singura cerere per judet (clip-path-ul a eliminat si siluetele vecinilor), UAT-urile ca
+    # <path> native, cifra pe unitatile cu stiri, iar asignarea geometrica o face browserul.
     js = Path("static/harta-stiri/harta-stiri.js").read_text(encoding="utf-8")
-    assert 'fetch(`./data/uat/${encodeURIComponent(county)}.json`' in js
-    assert "function drawUats(" in js
-    assert "ctx.isPointInPath(unit.path2d" in js
-    assert "ctx.fillText(String(uat.count)" in js
+    assert 'fetch(`./data/uat/${encodeURIComponent(county)}.json`)' in js
+    assert "function renderUats(" in js
+    assert "node.isPointInFill(new DOMPoint(x, y))" in js
+    assert "function countUatNews(" in js
+    assert "function uatAtMapPoint(" in js
     assert "state.zoomCounty && !state.uats.length" in js
 
 
@@ -99,10 +112,13 @@ def test_map_ignores_stale_uat_requests_after_reselection():
 
 
 def test_map_visually_delimits_editorial_regions():
+    # Culorile regiunilor au trecut din canvas in CSS (`.map-stage.is-regional`): un singur loc
+    # pentru toata paleta hartii; eticheta de regiune e agregata (o data per regiune, nu 14).
     js = Path("static/harta-stiri/harta-stiri.js").read_text(encoding="utf-8")
-    assert "const REGION_FILLS" in js
-    assert 'state.level === "regional" ? regionFill' in js
-    assert "ctx.fillText(region" in js
+    css = Path("static/harta-stiri/harta-stiri.css").read_text(encoding="utf-8")
+    assert '.map-stage.is-regional .map-county[data-regiune="Transilvania"]' in css
+    assert '"data-regiune": regionForCounty(county)' in js
+    assert 'kind: "regiune"' in js
 
 
 def test_timis_uat_geometry_is_published():
@@ -137,11 +153,16 @@ def test_uat_picker_selects_in_panel_after_county_selection():
     assert 'button.setAttribute("aria-pressed", state.selectedUat === uatKey ? "true" : "false")' in js
 
 
-def test_uat_badge_radius_is_constrained_to_polygon_interior():
+def test_uat_label_anchor_is_inside_the_polygon():
+    # Pastila nu mai e cautata cu zeci de mii de point-in-polygon per cadru (uatBadgePlacement:
+    # 79.831 interogari la TIMIS per redesenare): ancorarea vine din `center`-ul UAT-ului
+    # (centroid de arie, calculat la build), e validata O SINGURA DATA cu isPointInFill pe o
+    # grila 9x9 si tinuta minte in state.anchors.
     js = Path("static/harta-stiri/harta-stiri.js").read_text(encoding="utf-8")
-    assert "function uatBadgePlacement" in js
-    assert "uatContainsMapPoint" in js
-    assert "placement.clearance * 0.72" in js
+    assert "function anchorFor(node, key, fallback)" in js
+    assert "for (let row = 1; row <= 9; row += 1)" in js
+    assert "state.anchors.set(key, point)" in js
+    assert "anchorFor(node, `uat:${key}`, uat.center)" in js
 
 
 def test_uat_selection_is_url_navigable_state():
@@ -188,3 +209,56 @@ def test_lista_harti_nu_linkuieste_inregistrarile_fara_slug():
     js = Path("static/harta-stiri/harta-stiri.js").read_text(encoding="utf-8")
     assert 'item.slug ? "a" : "span"' in js
     assert "a.href = articleUrl(item);" not in js
+
+
+def test_map_substrate_has_no_third_party_scripts():
+    # 0 lei si fara biblioteci: un singur script, al nostru; fara import-uri externe, fara
+    # framework de harti. Contractul cere ≤ 70 KB gzip pe client (vezi propunerea, 4.7).
+    html = Path("static/harta-stiri/index.html").read_text(encoding="utf-8")
+    js = Path("static/harta-stiri/harta-stiri.js").read_text(encoding="utf-8")
+    assert html.count("<script") == 1
+    assert "/static/harta-stiri/harta-stiri.js" in html
+    assert "from \"https://" not in js and "from 'https://" not in js
+    assert "import(" not in js
+
+
+def test_map_labels_are_real_text_with_minimum_pixel_sizes():
+    # Pe telefon, textul desenat in unitati de viewBox ajungea la ~3 px (masurat 2026-10-03).
+    # Acum etichetele sunt <text> in grupuri contrascarate (`.label-fit`), cu marimi in PIXELI
+    # de ecran, iar liniile au latime de ecran indiferent de zoom (non-scaling-stroke).
+    js = Path("static/harta-stiri/harta-stiri.js").read_text(encoding="utf-8")
+    css = Path("static/harta-stiri/harta-stiri.css").read_text(encoding="utf-8")
+    assert "const LABEL_PX = { judet: 13, regiune: 14, uat: 11, cifra: 12 };" in js
+    assert 'class: "label-fit"' in js
+    assert ".label-fit" in css
+    assert "vector-effect:non-scaling-stroke" in css
+
+
+def test_map_polygons_are_keyboard_and_screen_reader_reachable():
+    # Calea accesibila se PASTREAZA, nu se sacrifica pentru grafica: fiecare poligon e un
+    # element focusabil cu rol de buton si stare, deci se poate naviga si fara mouse.
+    js = Path("static/harta-stiri/harta-stiri.js").read_text(encoding="utf-8")
+    assert 'role: "button"' in js
+    assert 'tabindex: "0"' in js
+    assert '"aria-pressed", selected ? "true" : "false"' in js
+    # Textul citit de cititorul de ecran vine din ACEEASI functie care da cifra de pe ecran
+    # (inclusiv unitatea, in modul „pe locuitor"), deci vocea si harta nu pot spune altceva.
+    assert "node.setAttribute(\"aria-label\", `${judetLabel(county)}: ${cifra.bucata}`)" in js
+    assert "function cifraJudet(county)" in js
+    assert "la 100.000 de locuitori" in js
+
+
+def test_map_outline_lives_in_its_own_layer():
+    # Conturul județului deschis NU are voie sa stea in stratul de UAT-uri: acela e golit la
+    # revenirea la nivel național (`replaceChildren`), iar un <use> adaugat o singura data in
+    # ensureStage ar disparea definitiv -- exact bugul prins de verificarea de DOM la scrierea
+    # feliei (2026-10-04). Strat propriu = nici tăiat de clip-path, deci nu-si pierde jumatate
+    # din grosime la marginea județului.
+    js = Path("static/harta-stiri/harta-stiri.js").read_text(encoding="utf-8")
+    css = Path("static/harta-stiri/harta-stiri.css").read_text(encoding="utf-8")
+    assert 'for (const name of ["counties", "uats", "outline", "points", "labels"])' in js
+    assert 'class: "map-outline"' in js
+    assert "state.layers.outline.hidden = !showUats;" in js
+    assert ".map-outline{fill:none;stroke:var(--map-stroke)" in css
+    # Silueta e un singur <path> in <defs>, referit de doua ori: de clip-path si de contur.
+    assert 'id: "clip-judet-silueta"' in js

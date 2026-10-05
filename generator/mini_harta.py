@@ -78,7 +78,15 @@ def _counts_din_dataset(ore: int = 24) -> dict | None:
 
 
 def mini_harta(pe_judet: dict | None) -> dict | None:
-    """Mini-harta „puls": SVG static, trepte h0-h4 pe cuartele volumului.
+    """Mini-harta „puls": SVG static, trepte h0-h4 pe sferturile volumului ZILEI.
+
+    De ce NU pragurile absolute ale hartii mari (1/6/15/30, vezi `PRAGURI` din
+    harta-stiri.js): fereastra e de 24 de ore, iar pe un interval atat de scurt aproape
+    toate județele cad sub 6 stiri -- scara absoluta ar face harta aproape uniforma si
+    inutila. Intrebarea pulsului e „cine e sus azi", deci treapta e RELATIVA la ziua
+    curenta (cuartile), iar captionul paginii spune asta explicit. Culorile sunt insa
+    identice (`.puls-map path.h0..h4` = `--map-h0..h4`), ca cele doua harti sa se citeasca
+    ca un singur sistem.
 
     None cand nu exista stiri judetene sau lipseste conturul.
     """
