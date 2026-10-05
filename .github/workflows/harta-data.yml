@@ -65,6 +65,7 @@ jobs:
           from pathlib import Path
           data = json.loads(Path('static/harta-stiri/data/map.json').read_text(encoding='utf-8'))
           points = json.loads(Path('data/harta_localitati.json').read_text(encoding='utf-8'))
+          projection = json.loads(Path('static/harta-stiri/data/projection.json').read_text(encoding='utf-8'))
           counties = data['map']['judete']
           articles = data['articles']
           stats = data['stats']
@@ -83,6 +84,14 @@ jobs:
           assert stats['geocoded_localities'] <= stats['localities']
           assert stats['events'] == len({a.get('event_id') for a in articles})
           assert points['localities'], 'Nu există puncte de localități.'
+          assert projection['source_crs'] == 'EPSG:4326'
+          assert projection['projection'] == points['projection']
+          assert projection['projection']['method'] == 'equirectangular_cos_latitude_reference'
+          assert projection['projection']['width'] == 1000.0
+          assert projection['projection']['height'] == 703.53
+          viewbox = [float(value) for value in data['map']['viewbox'].split()]
+          assert len(viewbox) == 4
+          assert viewbox[2:] == [projection['projection']['width'], projection['projection']['height']]
           for key, p in points['localities'].items():
               assert 0 <= float(p['x']) <= 1000, (key, p['x'])
               assert 0 <= float(p['y']) <= 703.53, (key, p['y'])
@@ -106,7 +115,7 @@ jobs:
           set -euo pipefail
           git config user.name "izz-bot"
           git config user.email "bot@izz.ro"
-          git add data/harta_localitati.json static/harta-stiri/data/map.json
+          git add data/harta_localitati.json static/harta-stiri/data/map.json static/harta-stiri/data/projection.json
           if git diff --cached --quiet; then
             echo "Dataseturile hărții sunt deja sincronizate."
             exit 0

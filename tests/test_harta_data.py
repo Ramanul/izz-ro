@@ -82,6 +82,21 @@ def test_generated_dataset_has_coherent_quality_metrics():
     assert all(article.get("geo_level") in {"local", "judetean", "regional"} for article in articles)
     assert stats["coordinates"] == sum(article.get("x") is not None and article.get("y") is not None for article in articles)
     assert stats["geocoded_localities"] <= stats["localities"]
+    projection = json.loads(Path("static/harta-stiri/data/projection.json").read_text(encoding="utf-8"))
+    assert projection["source_crs"] == "EPSG:4326"
+    assert projection["projection"] == json.loads(
+        Path("data/harta_localitati.json").read_text(encoding="utf-8")
+    )["projection"]
+    assert projection["projection"]["width"] == 1000.0
+    assert projection["projection"]["height"] == 703.53
+    viewbox = [float(value) for value in data["map"]["viewbox"].split()]
+    assert len(viewbox) == 4
+    assert viewbox[2:] == [projection["projection"]["width"], projection["projection"]["height"]]
+    for article in articles:
+        if article.get("x") is not None or article.get("y") is not None:
+            assert article.get("x") is not None and article.get("y") is not None
+            assert 0 <= article["x"] <= viewbox[2]
+            assert 0 <= article["y"] <= viewbox[3]
 
 
 def test_ambiguous_locality_requires_an_independent_county_confirmation():

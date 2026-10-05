@@ -1874,16 +1874,21 @@ def _write_headers() -> None:
     # Nu folosim `unsafe-inline`: cele doua hash-uri sunt variantele observate ale acelui
     # bootstrap, permise explicit si nimic altceva. Daca Cloudflare il schimba din nou,
     # Lighthouse va semnala incidentul, ceea ce e preferabil deschiderii globale a CSP-ului.
+    # MapLibre ramane vendorizat same-origin; tiles/stilul si sprite-urile vin de la unicul
+    # host OpenFreeMap, iar worker-src blob: acopera bootstrapul workerului ESM.
     csp = ("default-src 'self'; "
            "script-src 'self' 'sha256-DzqzfYrgtaakHyuPGKa5knFv5IoTaJszzL9Fca3521M=' "
            "'sha256-LXd89R0ZNPfUJLyGqvxXmhTIA1mSPILGag0zh9noF7U=' "
            "https://static.cloudflareinsights.com https://www.googletagmanager.com "
            "https://*.clarity.ms; "
            "style-src 'self' 'unsafe-inline'; "
-           "img-src 'self' data: https://*.google-analytics.com https://*.googletagmanager.com; "
+           "img-src 'self' data: https://tiles.openfreemap.org "
+           "https://*.google-analytics.com https://*.googletagmanager.com; "
            "font-src 'self'; "
-           "connect-src 'self' https://cloudflareinsights.com https://*.google-analytics.com "
-           "https://*.analytics.google.com https://*.googletagmanager.com https://*.clarity.ms; "
+           "connect-src 'self' https://tiles.openfreemap.org https://cloudflareinsights.com "
+           "https://*.google-analytics.com https://*.analytics.google.com "
+           "https://*.googletagmanager.com https://*.clarity.ms; "
+           "worker-src 'self' blob:; "
            "object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; "
            "upgrade-insecure-requests")
     _write(os.path.join(OUT_DIR, "_headers"),

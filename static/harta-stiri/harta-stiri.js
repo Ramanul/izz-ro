@@ -2,9 +2,21 @@
   "use strict";
 
   const DATA_URL = "./data/map.json";
+  const PROJECTION_URL = "./data/projection.json";
+  const BASEMAP_STYLE = "https://tiles.openfreemap.org/styles/positron";
+  const THEMATIC_FILL_ALPHA = 0.76;
   const state = {
     map: null,
     data: null,
+    projection: null,
+    basemap: null,
+    basemapContainer: null,
+    basemapReady: false,
+    basemapStarted: false,
+    basemapLoadTimer: null,
+    basemapSize: null,
+    basemapCamera: null,
+    basemapStatus: "loading",
     counties: {},
     articles: [],
     rawVisible: [],
@@ -29,6 +41,7 @@
     // Silueta judetului derivata din UAT-urile lui. Vezi buildCountyOutline().
     uatOutlineCache: new Map(),
     hoverUat: null,
+    hoverLocalityMarker: null,
     // Județul de sub cursor la nivel național: același contract „hover = previzualizare"
     // ca la UAT-uri (audit harta, P1) -- până acum doar UAT-urile spuneau numele înainte
     // de click, deși suprafața de județ e ținta cea mai des atinsă.
@@ -470,6 +483,7 @@
 
   function drawUats(ctx, palette, canvas, view) {
     if (!state.zoomCounty || !state.uats.length) return;
+    const fillAlpha = state.basemapReady ? THEMATIC_FILL_ALPHA : 1;
     // Asignarea item-UAT e INVARIANTA la zoom/pan (geometria nu se misca): se recalculeaza
     // doar cand se schimba datele (filtre, UAT-uri nou incarcate). Fara garda asta,
     // fiecare frame de pan ar rerula sute de isPointInPath si panul ar sacada.
@@ -494,7 +508,7 @@
       // doua stari adiacente (1.08:1 pe alb, sesizat de proprietar pe live). Pe choropleth
       // umplerea duce volumul pe toata forma — de la h0 (hartie rece) la h4 (brun inchis).
       const strongFill = Boolean(uat.count);
-      ctx.globalAlpha = dimmedBySelection ? 0.12 : 1;
+      ctx.globalAlpha = fillAlpha * (dimmedBySelection ? 0.12 : 1);
       ctx.fillStyle = strongFill ? palette.h[rampClassFor(uat.count, uatPraguri)]
         : hovered ? palette.accentSoft : palette.h[0];
       ctx.fill(uat.path2d, "evenodd");
@@ -577,22 +591,28 @@
   function updateLegend(praguri, max, { show = true } = {}) {
     const legend = $("#map-legend");
     if (!legend) return;
-    if (!show || !(max > 0)) {
+    if (!show) {
       legend.hidden = true;
       legend.replaceChildren();
       return;
     }
     const p = praguri.length === 3 ? praguri : praguriFor(max);
-    const steps = [
-      { cls: "h0", label: "0" },
-      { cls: "h1", label: p[0] > 1 ? `1–${p[0] - 1}` : "1" },
-      { cls: "h2", label: `${p[0] + 1}–${p[1]}` },
-      { cls: "h3", label: `${p[1] + 1}–${p[2]}` },
-      { cls: "h4", label: `${p[2] + 1}+` },
-    ];
+    const steps = [{ cls: "h0", label: "0" }];
+    if (max > 0) {
+      for (let index = 0; index <= p.length; index += 1) {
+        const low = index === 0 ? 1 : p[index - 1] + 1;
+        const high = index < p.length ? p[index] : max;
+        if (low > high) continue;
+        steps.push({
+          cls: `h${index + 1}`,
+          label: low === high ? String(low) : `${low}–${high}`,
+        });
+      }
+    }
+    const mode = state.viewMode === "events" ? "evenimente" : "relatări";
     const title = document.createElement("span");
     title.className = "legend-title";
-    title.textContent = "Volum de știri";
+    title.textContent = `Număr de ${mode}`;
     legend.replaceChildren(title);
     for (const step of steps) {
       const cell = document.createElement("span");
@@ -603,6 +623,13 @@
       cell.append(swatch, document.createTextNode(step.label));
       legend.appendChild(cell);
     }
+    const caption = document.createElement("span");
+    caption.className = "legend-caption";
+    caption.textContent = max > 0
+      ? "Intervale pentru rezultatele filtrate; 0 înseamnă fără rezultate potrivite."
+      : "0 = fără rezultate potrivite în filtrul curent.";
+    legend.appendChild(caption);
+    legend.setAttribute("aria-label", `Scara numărului de ${mode} după filtrele active`);
     legend.hidden = false;
   }
 
@@ -733,6 +760,180 @@
     return Math.hypot(point.x - marker.x, point.y - marker.y) <= marker.radius + toleranceInViewBox;
   }
 
+  function setBasemapStatus(status) {
+    state.basemapStatus = status;
+    const host = $("#map");
+    if (host) host.dataset.basemapStatus = status;
+    const message = $("#map-basemap-status");
+    if (message) {
+      message.hidden = status !== "unavailable";
+      if (status === "unavailable") {
+        message.textContent = "Basemapul OpenFreeMap nu este disponibil acum; harta tematică și filtrele rămân active.";
+      }
+    }
+    document.documentElement.style.setProperty(
+      "--map-thematic-opacity",
+      state.basemapReady ? String(THEMATIC_FILL_ALPHA) : "1",
+    );
+  }
+
+  function failBasemap(error) {
+    if (state.basemapLoadTimer) window.clearTimeout(state.basemapLoadTimer);
+    state.basemapLoadTimer = null;
+    state.basemapReady = false;
+    if (state.basemapContainer) state.basemapContainer.style.visibility = "hidden";
+    const map = state.basemap;
+    state.basemap = null;
+    if (map) {
+      try { map.remove(); } catch { /* harta Canvas rămâne fallback-ul */ }
+    }
+    console.warn("Basemap OpenFreeMap indisponibil; folosesc harta tematică fără fundal.", error || "");
+    setBasemapStatus("unavailable");
+    if (state.canvas && state.map) buildMap();
+  }
+
+  function projectionForView() {
+    const projection = state.projection?.projection;
+    const viewBox = String(state.map?.viewbox || "").trim().split(/\s+/).map(Number);
+    if (state.projection?.source_crs !== "EPSG:4326" || !projection || viewBox.length !== 4) return null;
+    const [vx, vy, viewWidth, viewHeight] = viewBox;
+    const values = [projection.lon_min, projection.lon_max, projection.lat_min,
+      projection.lat_max, projection.width, projection.height, vx, vy, viewWidth, viewHeight];
+    if (!values.every(Number.isFinite) || projection.method !== "equirectangular_cos_latitude_reference") return null;
+    if (projection.lon_max <= projection.lon_min || projection.lat_max <= projection.lat_min
+        || projection.width <= 0 || projection.height <= 0) return null;
+    if (Math.abs(vx) > 0.02 || Math.abs(vy) > 0.02
+        || Math.abs(viewWidth - projection.width) > 0.02
+        || Math.abs(viewHeight - projection.height) > 0.02) return null;
+    return { ...projection, vx, vy, viewWidth, viewHeight };
+  }
+
+  function syncBasemapToView(view, canvas, host) {
+    const container = state.basemapContainer;
+    if (!container || !canvas || !host) return;
+    const canvasRect = canvas.getBoundingClientRect();
+    const hostRect = host.getBoundingClientRect();
+    if (!canvasRect.width || !canvasRect.height) return;
+
+    container.style.left = `${canvasRect.left - hostRect.left}px`;
+    container.style.top = `${canvasRect.top - hostRect.top}px`;
+    container.style.width = `${canvasRect.width}px`;
+    container.style.height = `${canvasRect.height}px`;
+
+    const geo = projectionForView();
+    if (!geo) {
+      container.style.visibility = "hidden";
+      return;
+    }
+    const lonRange = geo.lon_max - geo.lon_min;
+    const latRange = geo.lat_max - geo.lat_min;
+    const xRatio = (view.x + view.width / 2 - geo.vx) / geo.viewWidth;
+    const yRatio = (view.y + view.height / 2 - geo.vy) / geo.viewHeight;
+    const centerLon = geo.lon_min + xRatio * lonRange;
+    const centerLat = geo.lat_max - yRatio * latRange;
+    const lonSpan = view.width / geo.viewWidth * lonRange;
+    if (![centerLon, centerLat, lonSpan].every(Number.isFinite) || lonSpan <= 0) {
+      container.style.visibility = "hidden";
+      return;
+    }
+    const zoom = Math.max(2, Math.min(19,
+      Math.log2(canvasRect.width * 360 / (512 * lonSpan))));
+    // Canvasul e liniar în latitudine; Mercator se dilată cu sec(lat). O scalare CSS
+    // în jurul centrului aliniază panta locală fără să reproiecteze sau să mute căile SVG.
+    const localYPerX = (geo.height / latRange) / (geo.width / lonRange);
+    const scaleY = Math.max(0.85, Math.min(1.15,
+      localYPerX * Math.cos(centerLat * Math.PI / 180)));
+    container.style.transform = `scaleY(${scaleY})`;
+    container.style.visibility = state.basemapReady ? "visible" : "hidden";
+
+    const map = state.basemap;
+    if (!map) return;
+    const sizeKey = `${Math.round(canvasRect.width)}x${Math.round(canvasRect.height)}`;
+    try {
+      if (state.basemapSize !== sizeKey) {
+        state.basemapSize = sizeKey;
+        map.resize();
+      }
+      const previous = state.basemapCamera;
+      if (!previous || Math.abs(previous.lon - centerLon) > 0.00001
+          || Math.abs(previous.lat - centerLat) > 0.00001
+          || Math.abs(previous.zoom - zoom) > 0.0001) {
+        map.jumpTo({ center: [centerLon, centerLat], zoom, bearing: 0, pitch: 0 });
+        state.basemapCamera = { lon: centerLon, lat: centerLat, zoom };
+      }
+    } catch (error) {
+      failBasemap(error);
+    }
+  }
+
+  function startBasemap(container) {
+    if (state.basemapStarted) return;
+    state.basemapStarted = true;
+    state.basemapContainer = container;
+    setBasemapStatus("loading");
+    const geo = projectionForView();
+    if (!geo) {
+      failBasemap(new Error("Proiecția geografică lipsește sau nu corespunde viewBox-ului."));
+      return;
+    }
+    const dark = window.matchMedia?.("(prefers-color-scheme: dark)")?.matches;
+    const style = dark ? "https://tiles.openfreemap.org/styles/dark" : BASEMAP_STYLE;
+    state.basemapLoadTimer = window.setTimeout(() => {
+      if (!state.basemapReady) failBasemap(new Error("OpenFreeMap nu a încărcat stilul și dalele la timp."));
+    }, 15000);
+
+    import("./vendor/maplibre/maplibre-gl.mjs").then(({ Map: MapLibreMap }) => {
+      if (!container.isConnected || state.basemapStatus === "unavailable") return;
+      try {
+        const map = new MapLibreMap({
+          container,
+          style,
+          center: [(geo.lon_min + geo.lon_max) / 2, (geo.lat_min + geo.lat_max) / 2],
+          zoom: 5.8,
+          interactive: false,
+          attributionControl: false,
+          trackResize: false,
+          renderWorldCopies: false,
+          maxPitch: 0,
+          pitch: 0,
+          bearing: 0,
+          fadeDuration: 0,
+        });
+        state.basemap = map;
+        const mapCanvas = map.getCanvas();
+        mapCanvas.setAttribute("aria-hidden", "true");
+        mapCanvas.tabIndex = -1;
+        mapCanvas.addEventListener("webglcontextlost", (event) => {
+          event.preventDefault();
+          failBasemap(new Error("Contextul WebGL a fost pierdut."));
+        }, { once: true });
+        map.once("load", () => {
+          if (state.basemap !== map) return;
+          if (state.basemapLoadTimer) window.clearTimeout(state.basemapLoadTimer);
+          state.basemapLoadTimer = null;
+          state.basemapReady = true;
+          state.basemapCamera = null;
+          setBasemapStatus("ready");
+          if (state.view && state.canvas) syncBasemapToView(state.view, state.canvas, $("#map"));
+          buildMap();
+        });
+        map.on("error", (event) => {
+          if (state.basemap !== map) return;
+          const error = event?.error || new Error("MapLibre a raportat o eroare.");
+          const message = String(error.message || error);
+          const status = Number(error.status || error.statusCode || 0);
+          if (!state.basemapReady || status >= 400
+              || /webgl|context lost|worker|failed to initialize|failed to load|failed to fetch|network|timeout/i.test(message)) {
+            failBasemap(error);
+          }
+        });
+        if (state.view && state.canvas) syncBasemapToView(state.view, state.canvas, $("#map"));
+      } catch (error) {
+        failBasemap(error);
+      }
+    }).catch(failBasemap);
+  }
+
   function ensureCanvas() {
     const host = $("#map");
     if (!host) return null;
@@ -743,6 +944,13 @@
     // timp ce pagina e in mijlocul unui scroll tactil real -- asta produce dedublarea
     // verticala observata pe dispozitiv (confirmata pe video 2026-08-12).
     host.replaceChildren();
+    const basemapContainer = document.createElement("div");
+    basemapContainer.className = "map-basemap";
+    basemapContainer.setAttribute("aria-hidden", "true");
+    basemapContainer.style.visibility = "hidden";
+    host.appendChild(basemapContainer);
+    state.basemapContainer = basemapContainer;
+    startBasemap(basemapContainer);
     const canvas = document.createElement("canvas");
     canvas.className = "map-canvas";
     canvas.setAttribute("role", "img");
@@ -999,16 +1207,16 @@
     canvas.style.height = `${cssHeight}px`;
     canvas.width = Math.max(1, Math.round(cssWidth * dpr));
     canvas.height = Math.max(1, Math.round(cssHeight * dpr));
+    syncBasemapToView(view, canvas, host);
 
-    const ctx = canvas.getContext("2d", { alpha: false });
+    const ctx = canvas.getContext("2d", { alpha: true });
     if (!ctx) throw new Error("Canvas 2D nu este disponibil.");
     const palette = colors();
+    const fillAlpha = state.basemapReady ? THEMATIC_FILL_ALPHA : 1;
     ctx.setTransform(1, 0, 0, 1, 0, 0);
     ctx.globalAlpha = 1;
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     applyViewTransform(ctx, canvas, view);
-    ctx.fillStyle = palette.surface;
-    ctx.fillRect(view.x, view.y, view.width, view.height);
 
     const counts = new Map();
     for (const item of state.visible) {
@@ -1063,7 +1271,7 @@
     // scara urmareste ce priveste omul, nu corpusul intreg. Legenda spune acelasi lucru.
     const maxCount = Math.max(0, ...paths.map((e) => e.count));
     const praguri = praguriFor(maxCount);
-    updateLegend(praguri, maxCount, { show: !state.zoomCounty && state.level !== "regional" });
+    updateLegend(praguri, maxCount, { show: state.level !== "regional" });
 
     // Trei treceri, nu una: (1) contur lat deschis sub fiecare judet; (2) umplerea
     // choropleth; (3) bordura fina intre judete. Umplerea din trecerea 2 acopera haloul
@@ -1086,7 +1294,7 @@
     for (const entry of paths) {
       // Județele fără știri nu mai sunt „stinse" (alpha 0.32 inainte): primesc h0, hartia
       // rece a scalei — absența de știri e informație, nu defect de randare.
-      ctx.globalAlpha = entry.dim;
+      ctx.globalAlpha = entry.dim * fillAlpha;
       // În modul regional, culorile distincte și etichetele fac vizibilă delimitarea
       // regiunilor editoriale; în celelalte moduri umplerea duce volumul de știri.
       ctx.fillStyle = entry.selected ? palette.accentSoft
@@ -1158,9 +1366,9 @@
     // click nu le simte lipsa: cascada rămâne pe interiorul poligonului, apoi margine.
 
     const localityMarkers = [];
-    // UAT-urile au prioritate vizuală: când geometria lor este disponibilă, cifra de pe
-    // poligon este informația relevantă; markerii de localitate ar dubla aceeași valoare.
-    if (state.zoomCounty && !state.uats.length) {
+    // Markerii apar doar în vederea de județ, la punctul publicat al localității. Ei nu
+    // codifică volumul și nu înlocuiesc cifrele UAT-urilor; un hover/click deschide filtrul.
+    if (state.zoomCounty) {
       const groups = new Map();
       for (const item of state.visible) {
         if (item.county !== state.zoomCounty || item.x == null || item.y == null) continue;
@@ -1172,9 +1380,10 @@
         const locality = item.locality || item.county;
         const key = siruta || `${norm(locality)}|${norm(item.county)}`;
         const group = groups.get(key) || {
-          x, y, locality, county: item.county, siruta, count: 0, coordinateKey,
+          x, y, locality, county: item.county, siruta, count: 0, coordinateKey, items: [],
         };
         group.count += 1;
+        group.items.push(item);
         groups.set(key, group);
       }
 
@@ -1187,33 +1396,31 @@
           existing.count += group.count;
           existing.localities.push(group.locality);
           existing.sirutas.push(group.siruta);
+          existing.items.push(...group.items);
         } else {
           byCoordinate.set(group.coordinateKey, {
             ...group,
             localities: [group.locality],
             sirutas: [group.siruta],
+            items: [...group.items],
           });
         }
       }
 
+      const markerScale = rect.width > 0 ? view.width / rect.width : 1;
+      const radius = 3.6 * markerScale;
+      const hovered = state.hoverLocalityMarker;
       for (const group of byCoordinate.values()) {
-        const radius = Math.max(5, Math.min(14, 4 + Math.sqrt(group.count) * 1.7));
+        group.localities = [...new Set(group.localities.filter(Boolean))];
+        const isHovered = hovered && hovered.coordinateKey === group.coordinateKey;
         ctx.beginPath();
-        ctx.arc(group.x, group.y, radius, 0, Math.PI * 2);
-        // Același badge invers ca la UAT-uri: pastilă albă, cifră închisă, lizibilă pe
-        // orice treaptă a rampei (auriu plin cu cifră închisă masura 5.70:1, dar nu se mai
-        // potrivește cu limbajul choropleth).
-        ctx.fillStyle = palette.surface;
+        ctx.arc(group.x, group.y, isHovered ? radius * 1.3 : radius, 0, Math.PI * 2);
+        ctx.fillStyle = isHovered ? palette.hot : palette.locality;
         ctx.fill();
-        ctx.lineWidth = 1.2;
-        ctx.strokeStyle = palette.halo;
+        ctx.lineWidth = 1.25 * markerScale;
+        ctx.strokeStyle = palette.surface;
         ctx.stroke();
-        ctx.fillStyle = palette.text;
-        ctx.font = "800 9px sans-serif";
-        ctx.textAlign = "center";
-        ctx.textBaseline = "middle";
-        ctx.fillText(String(group.count), group.x, group.y);
-        localityMarkers.push({ ...group, radius });
+        localityMarkers.push({ ...group, radius: radius * (isHovered ? 1.3 : 1) });
       }
     }
 
@@ -1713,12 +1920,36 @@
   // esti: aflai abia dupa ce dadeai click si se deschidea dialogul.
   function onCanvasHover(event) {
     if (state.zoomCounty) {
+      const point = state.canvas && state.view
+        ? pointForEvent(state.canvas, state.view, event) : null;
+      const marker = point
+        ? closestHit(point, state.localityMarkers, (candidate) => candidate) : null;
+      if (marker) {
+        const changed = !state.hoverLocalityMarker
+          || state.hoverLocalityMarker.coordinateKey !== marker.coordinateKey
+          || Boolean(state.hoverUat);
+        state.hoverLocalityMarker = marker;
+        if (state.hoverUat) {
+          state.hoverUat = null;
+          syncUatHighlight();
+        }
+        if (changed) buildMap();
+        showMapTip({
+          ...marker,
+          label: marker.localities.join(" · "),
+          localityMarker: true,
+        }, event);
+        return;
+      }
+      let changed = Boolean(state.hoverLocalityMarker);
+      state.hoverLocalityMarker = null;
       const uat = uatAtPoint(event);
       if (uat !== state.hoverUat) {
         state.hoverUat = uat;
         syncUatHighlight();
-        buildMap();
+        changed = true;
       }
+      if (changed) buildMap();
       showMapTip(uat, event);
       return;
     }
@@ -1742,15 +1973,21 @@
   }
 
   function clearCanvasHover() {
+    let redraw = false;
     if (state.hoverUat) {
       state.hoverUat = null;
       syncUatHighlight();
-      buildMap();
+      redraw = true;
+    }
+    if (state.hoverLocalityMarker) {
+      state.hoverLocalityMarker = null;
+      redraw = true;
     }
     if (state.hoverCounty) {
       state.hoverCounty = null;
-      buildMap();
+      redraw = true;
     }
+    if (redraw) buildMap();
     showMapTip(null, null);
   }
 
@@ -1781,6 +2018,12 @@
       head.appendChild(figure);
     }
     tip.appendChild(head);
+    if (target.localityMarker) {
+      const note = document.createElement("div");
+      note.className = "tip-note";
+      note.textContent = "Localitatea este un reper, nu locul exact al evenimentului; precizia punctului de referință nu este verificată.";
+      tip.appendChild(note);
+    }
     // Previzualizare: primele trei titluri din zona atinsă. UAT-urile au asignarea
     // proprie (uat.items); județele le scot din lista vizibilă; regiunile, la fel.
     let titles = [];
@@ -2126,14 +2369,31 @@
     bindControls();
     const controller = new AbortController();
     const timeout = window.setTimeout(() => controller.abort(), 12000);
-    let response;
+    let results;
     try {
-      response = await fetch(DATA_URL, { cache: "no-store", signal: controller.signal });
+      results = await Promise.allSettled([
+        fetch(DATA_URL, { cache: "no-store", signal: controller.signal }),
+        fetch(PROJECTION_URL, { cache: "no-store", signal: controller.signal }),
+      ]);
     } finally {
       window.clearTimeout(timeout);
     }
+    const dataResult = results[0];
+    if (dataResult.status !== "fulfilled") throw dataResult.reason;
+    const response = dataResult.value;
     if (!response.ok) throw new Error(`map.json HTTP ${response.status}`);
     const data = await response.json();
+    const projectionResult = results[1];
+    if (projectionResult.status === "fulfilled" && projectionResult.value.ok) {
+      try {
+        state.projection = await projectionResult.value.json();
+      } catch (error) {
+        console.warn("Metadatele proiecției nu pot fi citite; folosesc harta fără basemap.", error);
+      }
+    } else {
+      console.warn("Metadatele proiecției lipsesc; folosesc harta fără basemap.",
+        projectionResult.status === "rejected" ? projectionResult.reason : projectionResult.value.status);
+    }
     state.data = data;
     state.map = data.map || {};
     state.counties = state.map.judete || {};

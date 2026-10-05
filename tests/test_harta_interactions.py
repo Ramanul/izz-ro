@@ -83,7 +83,51 @@ def test_map_can_load_uat_boundaries_and_render_count_badges():
     assert "function drawUats(" in js
     assert "ctx.isPointInPath(unit.path2d" in js
     assert "ctx.fillText(String(uat.count)" in js
-    assert "state.zoomCounty && !state.uats.length" in js
+    assert "if (state.zoomCounty) {\n      const groups = new Map();" in js
+    assert "state.localityMarkers = localityMarkers;" in js
+
+
+def test_openfreemap_basemap_is_decorative_and_uses_published_projection():
+    html = Path("static/harta-stiri/index.html").read_text(encoding="utf-8")
+    js = Path("static/harta-stiri/harta-stiri.js").read_text(encoding="utf-8")
+    css = Path("static/harta-stiri/harta-stiri.css").read_text(encoding="utf-8")
+    assert "/static/harta-stiri/vendor/maplibre/maplibre-gl.css" in html
+    assert 'import("./vendor/maplibre/maplibre-gl.mjs")' in js
+    assert 'fetch(PROJECTION_URL' in js
+    assert r'.trim().split(/\s+/).map(Number)' in js
+    assert "interactive: false" in js
+    assert "OpenMapTiles" in html
+    assert "Data from" in html
+    assert 'basemapContainer.setAttribute("aria-hidden", "true")' in js
+    assert ".map-canvas{position:relative;z-index:1;background:transparent;}" in css
+    assert "function failBasemap(error)" in js
+    assert "state.basemapReady ? THEMATIC_FILL_ALPHA : 1" in js
+
+
+def test_locality_markers_keep_only_published_coordinates_and_explain_precision():
+    html = Path("static/harta-stiri/index.html").read_text(encoding="utf-8")
+    js = Path("static/harta-stiri/harta-stiri.js").read_text(encoding="utf-8")
+    assert "item.x == null || item.y == null" in js
+    assert "ctx.arc(group.x, group.y" in js
+    assert "precizia punctului de referință nu este verificată" in js
+    assert "nu locurile exacte ale evenimentelor" in html
+    assert "Relatările fără coordonate nu primesc puncte inventate" in html
+
+
+def test_openfreemap_csp_allows_only_needed_tile_host_and_worker_bootstrap():
+    source = Path("generator/render.py").read_text(encoding="utf-8")
+    csp = source.split("csp =", 1)[1].split("_write(", 1)[0]
+    assert "img-src 'self' data: https://tiles.openfreemap.org" in csp
+    assert "connect-src 'self' https://tiles.openfreemap.org" in csp
+    assert "worker-src 'self' blob:" in csp
+
+
+def test_legend_handles_deduplicated_thresholds_and_zero_results():
+    js = Path("static/harta-stiri/harta-stiri.js").read_text(encoding="utf-8")
+    assert "if (low > high) continue;" in js
+    assert 'const steps = [{ cls: "h0", label: "0" }];' in js
+    assert "caption.textContent = max > 0" in js
+    assert "Număr de ${mode}" in js
 
 
 def test_map_clears_uat_loading_state_on_cache_hit():
