@@ -114,11 +114,11 @@ def main():
     with sync_playwright() as pw:
         br = pw.chromium.launch(args=['--no-sandbox', '--disable-dev-shm-usage'])
         p = br.new_page(viewport={'width': 1280, 'height': 900})
-        goto(p, BASE + '/static/harta-stiri/', 'harta', 'domcontentloaded')
+        goto(p, BASE + '/harta/', 'harta', 'domcontentloaded')
         check_map(p)
         p.screenshot(path=f'{SHOT_DIR}/harta-regression.png', full_page=True)
         mob = br.new_page(viewport={'width': 390, 'height': 844}, is_mobile=True, has_touch=True)
-        goto(mob, BASE + '/static/harta-stiri/', 'mobile', 'domcontentloaded')
+        goto(mob, BASE + '/harta/', 'mobile', 'domcontentloaded')
         # screenshot must come BEFORE check_map(), which contains a resize loop that leaves viewport at 1024px
         mob.screenshot(path=f'{SHOT_DIR}/harta-mobile-regression.png', full_page=True)
         check_map(mob, True)

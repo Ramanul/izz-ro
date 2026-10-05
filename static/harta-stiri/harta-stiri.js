@@ -1,7 +1,9 @@
 (() => {
   "use strict";
 
-  const DATA_URL = "./data/map.json";
+  const DATA_BASE = (document.querySelector('meta[name="harta-data-base"]')?.content || "./data")
+    .replace(/\/+$/, "");
+  const DATA_URL = `${DATA_BASE}/map.json`;
   const state = {
     map: null,
     data: null,
@@ -14,6 +16,10 @@
     listLimit: 120,
     selectedRegion: null,
     selectedCounty: null,
+    // `selectedCounty` e previzualizarea (lista filtrata); `countyView` devine "detail"
+    // doar la o a doua activare sau la butonul explicit. Fara separarea asta, prima
+    // atingere si prima cerere de geometrie erau aceeasi tranzactie.
+    countyView: null,
     selectedLocality: null,
     zoomCounty: null,
     level: "all",
@@ -87,7 +93,15 @@
   }
 
   function articleUrl(article) {
-    return `../../${encodeURIComponent(article.category)}/${encodeURIComponent(article.slug)}/`;
+    return `/${encodeURIComponent(article.category)}/${encodeURIComponent(article.slug)}/`;
+  }
+
+  function countySlug(code) {
+    return norm(judetLabel(code)).toLowerCase().replace(/\s+/g, "-");
+  }
+
+  function countyPage(code) {
+    return `/harta/${countySlug(code)}/`;
   }
 
   function dateLabel(value) {
@@ -767,7 +781,9 @@
       tip.appendChild(list);
       const hint = document.createElement("div");
       hint.className = "tip-hint";
-      hint.textContent = "Click pentru lista completă";
+      hint.textContent = target.kind === "county"
+        ? "Selectează pentru previzualizare"
+        : "Selectează pentru lista filtrată";
       tip.appendChild(hint);
     }
     tip.hidden = false;
@@ -1107,7 +1123,7 @@
       return;
     }
     state.uatLoading = true;
-    fetch(`./data/uat/${encodeURIComponent(county)}.json`)
+    fetch(`${DATA_BASE}/uat/${encodeURIComponent(county)}.json`)
       .then((response) => response.ok ? response.json() : null)
       .then((data) => {
         if (state.uatCounty !== county || state.uatRequestId !== requestId) return;
@@ -1245,7 +1261,7 @@
   function incarcaPopulatii() {
     if (state.populatii) return Promise.resolve(state.populatii);
     if (state.populatiiPromise) return state.populatiiPromise;
-    state.populatiiPromise = fetch("./data/populatie.json")
+    state.populatiiPromise = fetch(`${DATA_BASE}/populatie.json`)
       .then((response) => {
         if (!response.ok) throw new Error(`HTTP ${response.status}`);
         return response.json();
@@ -1420,7 +1436,7 @@
       state.zoomOut.setAttribute("aria-disabled", z.k <= ZOOM_MIN ? "true" : "false");
       state.zoomReset.hidden = z.k <= ZOOM_MIN;
     }
-    
+
   }
 
   // Schimbările de scară se anunta in regiunea live (#map-status), dar DOAR la acțiuni
@@ -1515,15 +1531,26 @@
   }
 
   function selectCounty(county) {
-    // Starea se aplica IMMEDIAT; fly-to-ul ramane doar decorul vederii. Aplicarea amanata
-    // pana la finalul animatiei (380 ms) facea ca orice citire din timpul zborului sa
-    // vada starea veche (adresa, panou, aria-pressed), iar un reset din acel interval era
-    // suprascris la final de animatie, care isi re-aplica singura judetul abandonat --
-    // selectie fantoma, cauza comuna a FAIL-urilor gardii DOM.
+    if (!county) return;
+    // Prima activare e numai previzualizare: filtreaza panoul si actualizeaza URL-ul, fara
+    // zoom, fara fetch de geometrie. Activarea repetata a aceleiasi forme confirma intrarea.
+    if (state.selectedCounty === county && !state.zoomCounty
+        && !["judetean", "regional"].includes(state.level)) {
+      enterCounty(county);
+      return;
+    }
+    if (state.selectedCounty === county) return;
+    applyState({ region: null, county, locality: null, countyView: "preview" });
+  }
+
+  function enterCounty(county = state.selectedCounty) {
+    if (!county || !state.counties[county]) return;
+    if (state.zoomCounty === county) return;
+    // Starea si panoul se aplica IMEDIAT; zborul e doar decorul vederii. Abia acest pas
+    // stabilește `zoomCounty`, iar `syncUats()` cere atunci geometria, o singura data.
     const from = state.view;
-    const willFly = county && !state.zoomCounty && county !== state.selectedCounty && !state.flyView;
-    const target = willFly ? peekViewFor(county) : null;
-    applyState({ region: null, county, locality: null });
+    const target = !state.zoomCounty && !state.flyView ? peekViewFor(county) : null;
+    applyState({ region: null, county, locality: null, countyView: "detail" });
     if (target) animateViewTo(target, from);
   }
 
@@ -1666,7 +1693,12 @@
     if (state.level && state.level !== "all") params.set("nivel", state.level);
     if (state.viewMode !== "events") params.set("mod", state.viewMode);
     if (state.selectedRegion) params.set("regiune", state.selectedRegion);
-    if (state.selectedCounty) params.set("judet", state.selectedCounty);
+    const countyInPath = Boolean(state.selectedCounty && state.countyView === "detail"
+      && !["judetean", "regional"].includes(state.level));
+    if (state.selectedCounty && !countyInPath) params.set("judet", state.selectedCounty);
+    // Previzualizarea e linkuibilă, dar nu o confundăm cu intrarea în județ. Linkurile
+    // istorice ?judet=X rămân compatibile; intrarea angajată devine /harta/<județ>/.
+    if (state.selectedCounty && state.countyView === "preview") params.set("preview", "1");
     // Selectia de UAT, ca orice filtru: instant in adresa (nu asteapta asignarea geometrica,
     // care doar determina CONTINUTUL panoului, nu starea).
     if (state.selectedUat) params.set("uat", state.selectedUat);
@@ -1679,17 +1711,21 @@
     if (state.search) params.set("q", state.search);
     if (state.scaleMode === "locuitori") params.set("scara", "locuitori");
     const query = params.toString();
-    return query ? `${location.pathname}?${query}` : location.pathname;
+    const pathname = countyInPath ? countyPage(state.selectedCounty) : "/harta/";
+    return query ? `${pathname}?${query}` : pathname;
   }
 
   function stateFromUrl() {
     const params = new URLSearchParams(location.search);
     const loc = params.get("loc");
+    const pathCounty = document.querySelector('meta[name="harta-county"]')?.content?.trim() || null;
+    const county = params.get("judet") || pathCounty || null;
     return {
       level: params.get("nivel") || "all",
       viewMode: params.get("mod") === "articles" ? "articles" : "events",
       region: params.get("regiune") || null,
-      county: params.get("judet") || null,
+      county,
+      countyView: county ? (params.get("preview") === "1" ? "preview" : "detail") : null,
       locality: loc ? loc.split("|").filter(Boolean) : null,
       uat: params.get("uat") || null,
       query: params.get("q") || "",
@@ -1697,11 +1733,90 @@
     };
   }
 
+  function syncPageMetadata() {
+    const countyPageActive = Boolean(state.selectedCounty && state.countyView === "detail"
+      && !["judetean", "regional"].includes(state.level));
+    const label = countyPageActive ? judetLabel(state.selectedCounty) : "";
+    const title = countyPageActive
+      ? `Știri din ${label} — Harta știrilor IZZ.ro`
+      : "Harta știrilor — IZZ.ro";
+    const description = countyPageActive
+      ? `Știri locale și județene localizate în ${label}, afișate pe harta IZZ.ro. Numărul indică evenimentele sau relatările afișate, nu statistica oficială a incidentelor.`
+      : "Harta interactivă a știrilor localizate din România. Explorează evenimentele și relatările pe județe, orașe și comune. Numărul nu este o statistică oficială a incidentelor.";
+    const canonicalPath = countyPageActive ? countyPage(state.selectedCounty) : "/harta/";
+    const canonical = $("link[rel=\"canonical\"]");
+    const origin = canonical ? new URL(canonical.href, location.href).origin : location.origin;
+    const canonicalUrl = `${origin}${canonicalPath}`;
+    document.title = title;
+    if (canonical) canonical.href = canonicalUrl;
+    const countyMeta = $("meta[name=\"harta-county\"]");
+    if (countyMeta) countyMeta.content = countyPageActive ? state.selectedCounty : "";
+    const descriptionMeta = $("meta[name=\"description\"]");
+    if (descriptionMeta) descriptionMeta.content = description;
+    const ogTitle = $("meta[property=\"og:title\"]");
+    if (ogTitle) ogTitle.content = title;
+    const ogDescription = $("meta[property=\"og:description\"]");
+    if (ogDescription) ogDescription.content = description;
+    const ogUrl = $("meta[property=\"og:url\"]");
+    if (ogUrl) ogUrl.content = canonicalUrl;
+    const heading = $(".map-intro h1");
+    if (heading) heading.textContent = countyPageActive ? `Știri din ${label}` : "Harta știrilor";
+    const map = $("#map");
+    if (map) map.setAttribute("aria-label", countyPageActive
+      ? `Harta știrilor din ${label}` : "Harta României cu știri pe județe");
+
+    const jsonld = $("#harta-jsonld");
+    if (!jsonld) return;
+    try {
+      const graph = JSON.parse(jsonld.textContent || "{}");
+      const nodes = Array.isArray(graph["@graph"]) ? graph["@graph"] : [];
+      const page = nodes.find((node) => node["@type"] === "WebPage");
+      const dataset = nodes.find((node) => node["@type"] === "Dataset");
+      let place = nodes.find((node) => node["@type"] === "Country"
+        || node["@type"] === "AdministrativeArea");
+      const pageId = `${canonicalUrl}#webpage`;
+      const datasetId = `${canonicalUrl}#dataset`;
+      const placeId = `${canonicalUrl}#place`;
+      if (page) {
+        page["@id"] = pageId;
+        page.url = canonicalUrl;
+        page.name = title;
+        page.description = description;
+        page.about = { "@id": placeId };
+        page.mainEntity = { "@id": datasetId };
+      }
+      if (dataset) {
+        dataset["@id"] = datasetId;
+        dataset.name = `Harta știrilor${countyPageActive ? ` — ${label}` : " — România"}`;
+        dataset.url = canonicalUrl;
+        dataset.description = description;
+        dataset.spatialCoverage = { "@id": placeId };
+      }
+      if (place) {
+        place["@type"] = countyPageActive ? "AdministrativeArea" : "Country";
+        place["@id"] = placeId;
+        place.name = countyPageActive ? label : "România";
+        if (countyPageActive) place.containedInPlace = { "@type": "Country", name: "România" };
+        else delete place.containedInPlace;
+      }
+      jsonld.textContent = JSON.stringify(graph);
+    } catch (error) {
+      console.warn("[harta] JSON-LD nu a putut fi sincronizat cu ruta:", error);
+    }
+  }
+
   function applyState(patch, { push = true, replace = false } = {}) {
     if ("level" in patch) state.level = patch.level || "all";
     if ("viewMode" in patch) state.viewMode = patch.viewMode === "articles" ? "articles" : "events";
     if ("region" in patch) state.selectedRegion = patch.region || null;
     if ("county" in patch) state.selectedCounty = patch.county || null;
+    if ("countyView" in patch) {
+      state.countyView = state.selectedCounty
+        ? (patch.countyView === "preview" ? "preview" : "detail") : null;
+    } else if ("county" in patch) {
+      // Compatibilitate: un link istoric ?judet=X a insemnat pana acum vederea de detaliu.
+      state.countyView = state.selectedCounty ? "detail" : null;
+    }
     if ("locality" in patch) state.selectedLocality = patch.locality || null;
     if ("query" in patch) state.search = patch.query || "";
     if ("uat" in patch) {
@@ -1715,10 +1830,10 @@
       state.selectedUat = null;
       state.pendingUat = null;
     }
-    // `zoomCounty` nu e stare independenta, e derivata: la nivel Judetean click-ul filtreaza
-    // fara sa mareasca (decizie proprietar, 13 aug). Tinuta separat, se desincroniza.
-    state.zoomCounty = state.selectedCounty && !["judetean", "regional"].includes(state.level)
-      ? state.selectedCounty : null;
+    // Intrarea geometrica este un angajament separat de selectia/previzualizarea filtrata.
+    // Nivelul regional/judetean continua sa nu deschida geometria UAT (decizia proprietarului).
+    state.zoomCounty = state.selectedCounty && state.countyView === "detail"
+      && !["judetean", "regional"].includes(state.level) ? state.selectedCounty : null;
     // Evidentierea de hover e a VECHII vederi: dupa zoom sau schimbare de filtru, un contur
     // ramas aprins ar arata o selectie care nu exista; urmatoarea miscare de mouse o repune.
     state.hoverCounty = null;
@@ -1751,13 +1866,18 @@
     updateStats();
     announceState();
 
-    if (!push && !replace) return;
+    if (!push && !replace) {
+      syncPageMetadata();
+      return;
+    }
     const url = urlForState();
-    if (url === `${location.pathname}${location.search}`) return;
-    // `replaceState` la tastare: altfel fiecare litera ar lasa o intrare in istoric si Back ar
-    // trebui apasat de zece ori ca sa iasa dintr-o cautare de zece caractere.
-    if (replace) history.replaceState(null, "", url);
-    else history.pushState(null, "", url);
+    if (url !== `${location.pathname}${location.search}`) {
+      // `replaceState` la tastare: altfel fiecare litera ar lasa o intrare in istoric si Back ar
+      // trebui apasat de zece ori ca sa iasa dintr-o cautare de zece caractere.
+      if (replace) history.replaceState(null, "", url);
+      else history.pushState(null, "", url);
+    }
+    syncPageMetadata();
   }
 
   // Firul ierarhic de deasupra hartii (NN/g "Breadcrumbs": pozitia in IERARHIE, nu istoricul
@@ -1907,7 +2027,11 @@
     const title = $("#panel-title");
     const panelContext = $("#panel-context");
     if (title) title.textContent = `${state.viewMode === "events" ? "Evenimente" : "Relatări"} în ${context}`;
-    if (panelContext) panelContext.textContent = state.level === "all" ? "Toate nivelurile" : `Nivel ${state.level}`;
+    if (panelContext) {
+      const nivel = state.level === "all" ? "Toate nivelurile" : `Nivel ${state.level}`;
+      panelContext.textContent = state.countyView === "preview" && state.selectedCounty
+        ? `Previzualizare · ${nivel}` : nivel;
+    }
     const count = $("#panel-count");
     if (count) {
       const query = norm(state.search);
@@ -1925,6 +2049,22 @@
     }
     updateCountyPicker();
     updateBreadcrumb();
+    updateCountyPreview();
+  }
+
+  function updateCountyPreview() {
+    const panel = $("#county-preview");
+    const button = $("#enter-county");
+    const text = $("#county-preview-text");
+    if (!panel || !button || !text) return;
+    const canEnter = Boolean(state.selectedCounty && !state.zoomCounty
+      && !["judetean", "regional"].includes(state.level));
+    panel.hidden = !canEnter;
+    if (!canEnter) return;
+    const label = judetLabel(state.selectedCounty);
+    text.textContent = `Previzualizare pentru ${label}. Intră în județ ca să explorezi orașele și comunele.`;
+    button.textContent = `Intră în ${label}`;
+    button.setAttribute("aria-label", `Intră în județul ${label} și încarcă orașele și comunele`);
   }
 
   function updateStats() {
@@ -1975,11 +2115,13 @@
   function announceState() {
     const place = contextName();
     const levelLabel = { all: "toate nivelurile", regional: "nivel regional", judetean: "nivel județean", local: "nivel local" }[state.level] || "nivelul ales";
-    const message = `${state.visible.length} ${itemLabel()} afișate pentru ${place}, la ${levelLabel}.`;
+    const preview = state.selectedCounty && state.countyView === "preview";
+    const verb = preview ? "Previzualizezi" : "Afișezi";
+    const message = `${preview ? "Previzualizare" : ""} ${state.visible.length} ${itemLabel()} afișate pentru ${place}, la ${levelLabel}.`.trim();
     const status = $("#map-status");
     if (status) status.textContent = message;
     const context = $("#active-context");
-    if (context) context.textContent = `Afișezi ${itemLabel()} pentru ${place}, la ${levelLabel}.`;
+    if (context) context.textContent = `${verb} ${itemLabel()} pentru ${place}, la ${levelLabel}.`;
     const clear = $("#clear-selection");
     if (clear) {
       const hasSelection = Boolean(state.selectedRegion || state.selectedCounty || state.selectedLocality);
@@ -2045,6 +2187,7 @@
     if (push) {
       const url = urlForState();
       history.pushState({}, "", url);
+      syncPageMetadata();
     }
   }
 
@@ -2060,6 +2203,8 @@
     const search = $("#map-search");
     const clear = $("#clear-selection");
     const reset = $("#reset-all");
+    const enter = $("#enter-county");
+    if (enter) enter.addEventListener("click", () => enterCounty());
     if (search) search.addEventListener("input", () => {
       applyState({ query: search.value }, { replace: true });
     });

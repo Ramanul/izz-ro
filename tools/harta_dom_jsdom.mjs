@@ -30,18 +30,23 @@ const rezultate = [];
 const erori = [];
 const check = (ok, label) => rezultate.push([Boolean(ok), label]);
 
-async function bootstrap(query = "") {
+async function bootstrap(query = "", pathname = "/harta/") {
   const vc = new VirtualConsole();
   vc.on("jsdomError", (e) => erori.push(String((e && e.message) || e)));
   vc.on("error", (...a) => erori.push(a.map(String).join(" ")));
   vc.on("warn", () => {});
   const dom = new JSDOM(read(HTML_REL), {
-    url: "http://localhost/static/harta-stiri/" + query,
+    url: "http://localhost" + pathname + query,
     runScripts: "outside-only",
     pretendToBeVisual: true,
     virtualConsole: vc,
   });
   const { window } = dom;
+  const countyRoute = pathname.match(/^\/harta\/([^/]+)\/$/);
+  if (countyRoute) {
+    const meta = window.document.querySelector('meta[name="harta-county"]');
+    if (meta) meta.content = countyRoute[1] === "timis" ? "TIMIS" : "";
+  }
   // Orice încercare de a desena pe canvas e un defect: substratul e SVG din 2026-10-04.
   window.HTMLCanvasElement.prototype.getContext = () => {
     throw new Error("canvas interzis: substratul hartii este SVG");
@@ -51,7 +56,10 @@ async function bootstrap(query = "") {
   const cereri = [];
   window.fetch = async (url) => {
     cereri.push(String(url));
-    const fisier = path.join(ROOT, "static", "harta-stiri", String(url).replace(/^\.\//, ""));
+    const parsed = new URL(String(url), window.location.href);
+    const prefix = "/static/harta-stiri/data/";
+    const rel = parsed.pathname.startsWith(prefix) ? parsed.pathname.slice(prefix.length) : "";
+    const fisier = path.join(ROOT, "static", "harta-stiri", "data", rel);
     if (!fs.existsSync(fisier)) return { ok: false, status: 404, json: async () => ({}) };
     return { ok: true, status: 200, json: async () => JSON.parse(fs.readFileSync(fisier, "utf8")) };
   };
@@ -110,11 +118,26 @@ async function verificariStructura() {
   check($("#map .layer-outline").hidden === true && $("#map .layer-uats").hidden === true,
     "fără UAT-uri, conturul și stratul lor se ascund (nu rămân orfane)");
 
-  // intrare pe un județ: O singura cerere de geometrie, contur pe silueta lui
+  // Prima activare e previzualizare (fara zoom/retea); actiunea explicita angajeaza intrarea.
   const timis = judete.find((n) => n.dataset.judet === "TIMIS");
   click(window, timis);
+  await asteapta(120);
+  check(window.location.search.includes("judet=TIMIS") && window.location.search.includes("preview=1"),
+    `prima atingere păstrează previzualizarea în adresă: ${window.location.search}`);
+  check($("#county-preview").hidden === false && $("#enter-county") !== null,
+    "prima atingere arată panoul de previzualizare și acțiunea explicită");
+  check($$("#map .layer-uats path").length === 0
+      && cereri.filter((u) => u.includes("/data/uat/")).length === 0,
+    "prima atingere nu face zoom și nu cere geometria UAT");
+  click(window, $("#enter-county"));
   await asteapta(500);
-  check(window.location.search.includes("judet=TIMIS"), `click pe județ -> adresa: ${window.location.search}`);
+  check(!window.location.search.includes("preview=1"),
+    `angajarea scoate markerul de previzualizare din adresă: ${window.location.search}`);
+  check(window.location.pathname === "/harta/timis/"
+      && window.document.title.includes("Timiș")
+      && window.document.querySelector(".map-intro h1").textContent === "Știri din Timiș"
+      && window.document.querySelector('link[rel="canonical"]').href === "https://izz.ro/harta/timis/",
+    `angajarea sincronizează ruta, titlul și canonicalul: ${window.location.pathname}`);
   check($$("#map .layer-uats path").length > 0, `UAT-uri randează ca <path> (${$$("#map .layer-uats path").length})`);
   check($("#clip-judet-silueta").getAttribute("d") === timis.getAttribute("d"),
     "UAT-urile sunt tăiate pe silueta județului (clip-path)");
@@ -128,6 +151,31 @@ async function verificariStructura() {
     `trepte h0..h4 aplicate prin clase (h4: ${$$("#map .layer-counties path.h4").length}, h0: ${$$("#map .layer-counties path.h0").length})`);
   check((($("#map svg.map-svg").getAttribute("viewBox") || "").split(" ").length) === 4,
     `viewBox scris de JS: ${$("#map svg.map-svg").getAttribute("viewBox")}`);
+
+  const repeat = await bootstrap();
+  const rCounty = repeat.window.document.querySelector('[data-judet="TIMIS"]');
+  click(repeat.window, rCounty);
+  await asteapta(80);
+  click(repeat.window, rCounty);
+  await asteapta(450);
+  check(repeat.cereri.filter((u) => u.includes("/data/uat/")).length === 1,
+    "a doua atingere pe același județ angajează intrarea cu un singur fetch");
+
+  const deepPreview = await bootstrap("?judet=TIMIS&preview=1");
+  check(deepPreview.window.document.querySelector("#county-preview").hidden === false
+      && !deepPreview.cereri.some((u) => u.includes("/data/uat/")),
+    "linkul direct cu preview=1 restabilește previzualizarea fără fetch");
+  const legacyDetail = await bootstrap("?judet=TIMIS");
+  check(legacyDetail.window.document.querySelector("#county-picker button[data-uat]") !== null
+      && legacyDetail.cereri.filter((u) => u.includes("/data/uat/")).length === 1,
+    "linkul istoric ?judet= rămâne angajat și compatibil");
+
+  const route = await bootstrap("", "/harta/timis/");
+  check(route.window.location.pathname === "/harta/timis/"
+      && route.window.document.title.includes("Timiș")
+      && route.window.document.querySelectorAll("#map .layer-uats path").length > 0
+      && route.cereri.filter((u) => u.includes("/data/uat/TIMIS.json")).length === 1,
+    "ruta județeană /harta/timis/ deschide detaliul cu titlu corect și un singur fetch UAT");
 }
 
 // ---------------------------------------------------------------------------------------------
@@ -234,10 +282,18 @@ async function verificariInteractiune() {
     pointer("pointerup", n);
     await asteapta(60);
   });
-  await pas("intrare pe județ (click)", async () => {
+  await pas("previzualizare apoi angajare județ (buton)", async () => {
     click(window, $$("#map .layer-counties path")[3]);
+    await asteapta(80);
+    if (!window.location.search.includes("preview=1") || $("#county-preview").hidden) {
+      throw new Error("prima atingere nu a rămas în previzualizare");
+    }
+    click(window, $("#enter-county"));
     await asteapta(400);
-    if (!/judet=/.test(window.location.search)) throw new Error("adresa nu s-a schimbat");
+    if (!/^\/harta\/[a-z0-9-]+\/$/.test(window.location.pathname)
+        || window.location.search.includes("preview=1")) {
+      throw new Error("butonul nu a angajat intrarea pe URL-ul de județ: " + window.location.href);
+    }
   });
   for (const nivel of ["regional", "judetean", "local", "all"]) {
     await pas(`nivel ${nivel}`, async () => { click(window, $(`[data-level="${nivel}"]`)); await asteapta(150); });
@@ -282,7 +338,12 @@ async function verificariInteractiune() {
     await asteapta(150);
   });
   await pas("buton înapoi", async () => { click(window, $(".map-back")); await asteapta(300); });
-  await pas("selector județ", async () => { click(window, $$("#county-picker button")[1]); await asteapta(400); });
+  await pas("selector județ", async () => {
+    click(window, $$("#county-picker button")[1]);
+    await asteapta(80);
+    click(window, $("#enter-county"));
+    await asteapta(400);
+  });
   await pas("UAT din listă", async () => {
     const uat = $$("#county-picker button[data-uat]")[0];
     if (!uat) throw new Error("niciun buton de UAT");

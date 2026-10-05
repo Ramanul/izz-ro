@@ -91,7 +91,7 @@ def test_map_can_load_uat_boundaries_and_render_count_badges():
     # O singura cerere per judet (clip-path-ul a eliminat si siluetele vecinilor), UAT-urile ca
     # <path> native, cifra pe unitatile cu stiri, iar asignarea geometrica o face browserul.
     js = Path("static/harta-stiri/harta-stiri.js").read_text(encoding="utf-8")
-    assert 'fetch(`./data/uat/${encodeURIComponent(county)}.json`)' in js
+    assert 'fetch(`${DATA_BASE}/uat/${encodeURIComponent(county)}.json`)' in js
     assert "function renderUats(" in js
     assert "node.isPointInFill(new DOMPoint(x, y))" in js
     assert "function countUatNews(" in js
@@ -262,3 +262,40 @@ def test_map_outline_lives_in_its_own_layer():
     assert ".map-outline{fill:none;stroke:var(--map-stroke)" in css
     # Silueta e un singur <path> in <defs>, referit de doua ori: de clip-path si de contur.
     assert 'id: "clip-judet-silueta"' in js
+
+
+def test_county_activation_is_preview_then_explicit_commitment():
+    # Contract F2: prima atingere filtreaza/previzualizeaza fara zoom sau fetch; numai
+    # reactivarea aceleiasi zone ori butonul explicit deschide UAT-urile. Linkurile istorice
+    # `?judet=X` raman in modul angajat; `preview=1` partajeaza previzualizarea.
+    html = Path("static/harta-stiri/index.html").read_text(encoding="utf-8")
+    js = Path("static/harta-stiri/harta-stiri.js").read_text(encoding="utf-8")
+    css = Path("static/harta-stiri/harta-stiri.css").read_text(encoding="utf-8")
+    assert 'id="county-preview"' in html and 'id="enter-county"' in html
+    assert "Prima atingere previzualizează știrile" in html
+    assert "fără zoom și fără încărcare de geometrie" in html
+    assert 'applyState({ region: null, county, locality: null, countyView: "preview" })' in js
+    assert 'applyState({ region: null, county, locality: null, countyView: "detail" })' in js
+    assert 'params.set("preview", "1")' in js
+    assert 'params.get("preview") === "1" ? "preview" : "detail"' in js
+    assert 'enter.addEventListener("click", () => enterCounty())' in js
+    assert 'fetch(`${DATA_BASE}/uat/${encodeURIComponent(county)}.json`)' in js
+    assert "#county-preview[hidden]{display:none}" in css
+    assert "#enter-county{min-height:44px" in css
+
+
+def test_county_detail_route_updates_shareable_url_and_metadata():
+    # URL-ul de județ e adresa canonică a vederii angajate, nu un query tehnic; când intrarea
+    # se face fără încărcare nouă, document.title/canonical/JSON-LD urmăresc pushState.
+    html = Path("static/harta-stiri/index.html").read_text(encoding="utf-8")
+    js = Path("static/harta-stiri/harta-stiri.js").read_text(encoding="utf-8")
+    assert 'name="harta-data-base" content="/static/harta-stiri/data"' in html
+    assert 'name="harta-county" content=""' in html
+    assert 'rel="canonical" href="https://izz.ro/harta/"' in html
+    assert "function countySlug(code)" in js
+    assert 'return `/harta/${countySlug(code)}/`' in js
+    assert 'const pathCounty = document.querySelector(\'meta[name="harta-county"]\')' in js
+    assert 'const pathname = countyInPath ? countyPage(state.selectedCounty) : "/harta/"' in js
+    assert 'function syncPageMetadata()' in js
+    assert 'jsonld.textContent = JSON.stringify(graph)' in js
+    assert "<footer class=\"map-footer\">" in html

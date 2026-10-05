@@ -554,6 +554,13 @@ Recomand opțiunea 2: zero pagini noi, zero conținut duplicat, zero risc SEO, i
 care există deja de luni de zile. Oglinzile OG per județ (42 imagini, generate cu `tools/gen_images.py` care
 există deja) se adaugă **după** ce se măsoară partajările, nu înainte.
 
+**Decizie de implementare F4 (manager, 2026-10-05):** cererea a fost explicită pentru URL-uri proprii
+`/harta/<județ>/`, deci nu folosim redirectul recomandat mai sus către `/subiect/`. Generatorul emite 42
+de pagini statice sub `output/harta/` (plus `/harta/`), cu același shell și dataset; ruta deschide harta
+județului, nu o pagină editorială care s-ar putea să nu existe pentru toate codurile. Cost măsurat la build:
+43 fișiere; fără pachet nou, backend sau date duplicate. Titlul, canonicalul, `og:title`/`og:description` și
+JSON-LD sunt per județ; imaginea OG rămâne comună. Paginile intră în sitemap.
+
 ### 4.5 Semantica: ce măsoară harta, spus pe față
 
 Moduri de scară, comutabile, cu legenda rescrisă pentru fiecare:
@@ -789,5 +796,85 @@ realitate), livrat ca document, fără implementare.
 **livrat:** documentul de față — diagnostic cu cifre și dovezi (§1), patru direcții cu cost/risc/pierderi/
 dependențe și recomandarea explicită A+D (§3), specificația recomandării (§4) și contractul de realitate (§5),
 plus limitele asumate (§5.2, §6) și cele trei decizii care îmi lipsesc (§7).
-**neatins:** codul de produs (zero linii), `main`, `tools/`, `generator/`, `static/harta-stiri/`, `data/`,
-`moderation.yaml`, ramura `feat/harta-vizibilitate`; nicio schimbare de schemă, niciun test modificat.
+**neatins la livrarea studiului:** codul de produs (zero linii), `main`, `tools/`, `generator/`,
+`static/harta-stiri/`, `data/`, `moderation.yaml`, ramura `feat/harta-vizibilitate`; nicio schimbare de
+schemă, niciun test modificat. *(Rând scris pentru commitul de document; implementarea a început pe aceeași
+ramură imediat după — stadiul real e în §9.)*
+
+---
+
+## 9. Stadiu la implementare (2026-10-04)
+
+Studiul rămâne planul de referință; secțiunea asta spune ce s-a livrat pe ramura
+`arena/01a10582-izz-ro` și ce rămâne. Fiecare rând are dovada lui, nu o promisiune.
+
+| Cerut de diagnostic | Stadiu | Dovadă / comandă |
+|---|---|---|
+| F0.1 legenda care nu mai minte (`NaN`, benzi inventate) | **livrat** | praguri absolute `1/6/15/30` în `#map-legend[data-praguri]`, benzi scrise static în HTML, JS doar citește și arată/ascunde; `pytest tests/test_harta_scara.py` (acoperire 0..∞, fără goluri, fără suprapuneri) |
+| F0.2 nume de județe, nu coduri (`TIMIS`) | **livrat** | `judetLabel()` + `#judete-etichete` (42 de etichete == `generator.geo.eticheta_judet`), folosite în panou, tooltip, selector, fir de navigare |
+| F0.3 cache-ul care pierdea 90 KB gzip la fiecare încărcare | **livrat** | `cache:"no-store"` scos din fetch-ul de date; rămâne regula `/static/harta-stiri/*` = `max-age=300, must-revalidate` (`generator/render.py:_write_headers`) |
+| F0.4 furtuna de prefetch | **livrat** | plafon 6 fișiere, alese după suprapunerea cu view-box-ul: TIMIS 8→6, ALBA 15→6 (1.017→435 KB), BRAȘOV 13→6 |
+| F1 substrat de desenare (canvas → SVG/DOM, fără biblioteci) | **livrat** | `pytest tests/ -q` → 1907 passed / 4 skipped / 8 xfailed; `ruff check .` curat |
+| F1 hit-test nativ în locul cascadei de toleranțe | **livrat** | `event.target` + `isPointInFill`; dispare costul de 43.000–80.000 point-in-polygon per redesenare (măsurat: 79.831 la TIMIS) |
+| F1 etichete-text în pixeli de ecran (≥ 11 px), linii cu `non-scaling-stroke` | **livrat** | `LABEL_PX { judet 13, regiune 14, uat 11, cifra 12 }`, grupuri `.label-fit` contrascarate; `tests/test_harta_interactions.py::test_map_labels_are_real_text_with_minimum_pixel_sizes` |
+| F1 paletă: `h0` neutru, trepte echidistante, graniță vizibilă | **livrat** | `python tools/harta_contrast.py` → 24/24 pe ambele teme (ΔL* 8,3–11,3; ΔE* ≥ 11,7; contur 3,98:1 pe alb; înainte `#ffffff` pe `#ffffff` = 1,00:1) |
+| F1 calea accesibilă păstrată | **livrat** | poligoane cu `role="button"`, `tabindex="0"`, `aria-pressed`, `aria-label` cu nume + cifră |
+| „un singur sistem vizual" (pulsul de pe prima pagină) | **livrat** | `.puls-map path.h0..h4` == `--map-h0..h4`; gardă de egalitate în `tests/test_mini_harta.py`; captionul spune explicit că scara pulsului e relativă la zi |
+| F5 gardurile mutate pe substratul nou | **livrat** | `tools/visual_check.py` (rulează în CI pe `main`) citește semnătura din DOM + `viewBox`, nu din pixeli; `tools/harta_dom_check.py` folosește `getBBox`/`isPointInFill`/`getScreenCTM` + `elementFromPoint`, fără replică manuală a transformării; testele de canvas rescrise pe invarianții noi |
+| F2 previzualizare → angajare (județ) | **livrat** | prima activare filtrează și partajează `?judet=X&preview=1`, fără zoom și 0 cereri UAT; „Intră în [județ]” sau a doua activare face angajarea și cere o singură geometrie; `?judet=X` istoric rămâne modul detaliu. Acoperit de `tests/test_harta_interactions.py`, `tools/harta_dom_jsdom.mjs` (fără browser) și `tools/harta_dom_check.py` (**[NEVERIFICAT] fără Playwright/Chromium**) |
+| F3 control de timp (12 zile) | **urmează** (fereastra e acum în footnote, calculată din date) | `#map-window` = „22 sept. – 4 oct. (13 zile)”, scris de `updateWindow()` |
+| F3 filtre pe categorii / straturi | **urmează** — `category` din `map.json` v4 este `local`/`judetean`/`regional` (606/53/3), adică exact nivelul geografic care există deja ca filtru; un strat „pe categorii editoriale” ar cere categorii noi în dataset, deci nu se poate livra doar din client (rămâne pe F4, cu schemă v5) | — |
+| F3 deep-link pe eveniment (`?e=`) + card partajabil | **urmează** | — |
+| F3 comparație județ-județ | **urmează** | — |
+| F3 moduri de scară (volum / pe locuitor) + numitorul cu sursă și dată | **livrat** | `tools/build_harta_populatie.py` → `data/populatie.json` (42 de județe, total 19.080.476, +0,14 % față de INS 2021); 7 verificări noi în `tests/test_harta_scara.py`; `tools/harta_dom_jsdom.mjs` |
+| F4 /harta/ + /harta/<slug>/ pentru toate județele | **livrat** | `generator.render._write_harta_pages()` emite 43 de shell-uri statice din aceeași pagină + același `map.json`; 42 de slug-uri validate fără coliziuni, canonicale/OG/JSON-LD WebPage+Dataset+Place locale, sitemap și redirect `/harta-stiri/` → `/harta/`. `python -m generator.main --render-only`: 13.505/17.000 fișiere (marjă 3.495). Linkurile nav/home folosesc `/harta/`; detaliul se angajează pe `/harta/timis/`. OG image rămâne cea comună — 42 imagini OG nu fac parte din felia asta. |
+
+**Cum a fost verificat (și ce NU s-a putut verifica).** Browserul real nu există în mediul în care s-a
+lucrat (Playwright/Chromium nu se pot instala), deci dovada vine din trei straturi: (1) suita de teste
+Python; (2) verificări de DOM în jsdom — 23 de verificări de structură (`clip-path` legat de siluetă,
+conturul în strat propriu, o singură cerere de geometrie, `h0..h4` aplicate, etichete text) plus o
+plimbare prin toate cele 26 de căi de interacțiune (hover, click, zoom, tastatură, selector, UAT, fir,
+căutare), cu 0 erori; (3) `tools/harta_contrast.py`, determinist. **jsdom nu are layout**, deci nu ține
+loc de browser: `tools/harta_dom_check.py` și `tools/visual_check.py` rămân de rulat pe o mașină cu
+Playwright, iar primele rulări pot cere ajustări de toleranțe (nu de logică). Cifrele de pixeli din §1
+sunt calculate, nu capturate.
+
+**F3a — moduri de scară, livrat (2026-10-04).** Ce era diagnosticat ca „lipsă de semnificație"
+(cifra spunea cât de mare e județul, nu cât de multe știri are pe cap de locuitor) are acum un
+comutator în bara de unelte: **Volum** (ce era) / **Pe locuitor** (evenimente la 100.000 de
+locuitori, fereastra hărții). Ce s-a livrat concret:
+
+- **Numitorul are sursă și dată**: `data/populatie.json` (42 de județe, generat de
+  `tools/build_harta_populatie.py` din `data/localities.json`; total 19.080.476 = +0,14 % față de
+  recensământul INS 2021 de 19.053.815). Instrumentul refuză să scrie dacă abaterea depășește 2 %,
+  iar testul citește cifrele din footnote și le compară cu fișierul, ca să nu poată diverge.
+- **Scara e o a doua scară, nu o înlocuire**: praguri absolute proprii `[0,1 / 1 / 2 / 4]`, scrise
+  în pagină (`data-praguri-locuitor`) lângă benzi, pe grila de afișare a ratei (o zecimală). Testul
+  verifică pentru ambele scări că benzile acoperă 0..∞ contiguu, pe grila proprie, și că prima bandă
+  nu poate înghiți un eveniment real (cel mai mic județ, 193.355 de locuitori → o știre = 0,52).
+- **Invarianta „aceeași culoare = același număr" e păstrată prin construcție**: clasa de culoare se
+  calculează din chiar valoarea afișată (rotunjită la o zecimală), deci ce vede cititorul și ce
+  colorează harta sunt același număr. Verificat pe toate 42 de județe, în jsdom și în garda de DOM.
+- **Footnote-ul spune numărătorul, numitorul și fereastra** — cu totaluri și cu propoziția care
+  lipsește cel mai des într-o hartă: „diferențele de sub un eveniment nu sunt semnificative".
+- **UAT-urile rămân pe volum și o spun**: populația există doar pe județe în datele publicate, deci
+  în interiorul unui județ scara e numărătoarea, iar legenda are un titlu propriu pentru asta
+  („Volum de știri (pe orașe și comune)"), plus o notă în pagina hărții.
+- **Legenda se vede și după intrarea într-un județ** — acolo se schimbă exact ce explică ea. Înainte
+  era ascunsă la zoom, deci cititorul cu un județ deschis nu avea nicio scară pe ecran.
+- **Costul**: `populatie.json` = 942 B, cerut **lenes**, o singură dată, doar dacă cititorul comută
+  scara (sau dacă linkul o cere). Modul implicit nu face nicio cerere în plus.
+- **Gardă nouă, în repo**: `tools/harta_dom_jsdom.mjs` — 46 de verificări de structură/scară plus o
+  plimbare prin toate cele 26 de căi de interacțiune, în jsdom (fără browser). A prins două defecte
+  reale înainte de livrare: un `use` de siluetă lăsat în afara arborelui (ar fi tăiat toate UAT-urile
+  din vedere) și un mod „pe locuitor" care afișa tăcut numărătoarea (în stare intra fișierul de
+  populație întreg, nu dicționarul de județe). `tools/harta_dom_check.py` a primit secțiunea
+  „SCARA SI NUMITOR", care recalculează raportul din `map.json` + `populatie.json`, independent de
+  JS-ul paginii.
+
+**Notă operațională (actualizată 2026-10-05).** Managerul a transmis că exportul a reușit și că
+PR #440 are CI 11/11 verde, cu feliile F0–F3 salvate pe GitHub. Nu am reverificat remote (sesiunea e
+închisă pentru operații GitHub și nu am încercat niciun fetch/push). F2 preview→angajare, rutele F4 și
+felia F3 comparație/grafic lucrate după export sunt **doar în workspace-ul acestei sesiuni** până când
+managerul exportă din nou. Hash-urile locale pot dispărea la reprovisionarea sandbox-ului; fișierele din
+workspace sunt sursa de adevăr pentru următorul export.

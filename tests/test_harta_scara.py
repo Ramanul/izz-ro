@@ -254,7 +254,7 @@ def test_modul_de_scara_este_stare_din_adresa():
 
 def test_numitorul_se_incarca_lene_si_o_singura_data():
     js = _js()
-    assert js.count('fetch("./data/populatie.json")') == 1
+    assert js.count('fetch(`${DATA_BASE}/populatie.json`)') == 1
     assert "function incarcaPopulatii()" in js
     assert "if (state.populatii) return Promise.resolve(state.populatii);" in js, (
         "lipsa memoizării: fiecare comutare ar cere din nou fișierul")

@@ -1,9 +1,9 @@
 #!/usr/bin/env python
-"""Verificare DOM randat pentru harta stirilor. Ruleaza cu serverul local pornit DIN RADACINA
-   repo-ului -- index.html foloseste cai absolute (/static/...), deci un server din
-   static/harta-stiri ar lasa JS-ul si CSS-ul pe 404 si pagina blocata in "Se încarcă…":
-   python -m http.server 8765
-   MAP_URL=http://localhost:8765/static/harta-stiri/ python tools/harta_dom_check.py
+"""Verificare DOM randat pentru harta stirilor. Genereaza mai intai site-ul static, apoi serveste
+   directorul output (HTML-ul rutei si toate activele au cai absolute /harta/ si /static/...):
+   python -m generator.main --render-only
+   python -m http.server 8765 --directory output
+   MAP_URL=http://localhost:8765/harta/ python tools/harta_dom_check.py
 
 Asserteaza pe STRUCTURA VIZIBILA si pe COMPORTAMENT OBSERVAT (id-uri, taguri, clickuri, geometrie),
 nu pe clase CSS si nu pe identificatori din sursa -- de doua ori in repo-ul asta o garda a stat
@@ -23,7 +23,7 @@ sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
 sys.stderr = io.TextIOWrapper(sys.stderr.buffer, encoding='utf-8')
 from playwright.sync_api import sync_playwright
 
-BASE = os.getenv("MAP_URL", "http://localhost:8765/")
+BASE = os.getenv("MAP_URL", "http://localhost:8765/harta/")
 fails = []
 skipped = []
 
@@ -45,7 +45,7 @@ def stage_rect(p):
     }""")
 
 INTERIOR_POINT = """async (mode) => {
-  const d = await (await fetch('./data/map.json')).json();
+  const d = await (await fetch(document.querySelector('meta[name=\"harta-data-base\"]').content + '/map.json')).json();
   const svg = document.querySelector('#map svg.map-svg');
   if (!svg) return null;
   const withNews = new Set((d.articles || []).map((a) => a.county).filter(Boolean));
@@ -455,8 +455,8 @@ def scara_si_numitor(p):
 
     # (c) cifra afisata = raportul recalculat din date (independent de JS-ul paginii)
     abateri = p.evaluate("""async () => {
-      const pop = (await (await fetch('./data/populatie.json')).json()).judete;
-      const date = await (await fetch('./data/map.json')).json();
+      const pop = (await (await fetch(document.querySelector('meta[name=\"harta-data-base\"]').content + '/populatie.json')).json()).judete;
+      const date = await (await fetch(document.querySelector('meta[name=\"harta-data-base\"]').content + '/map.json')).json();
       const peEveniment = new Map();
       for (const a of date.articles || []) {
         if (!a.county) continue;
@@ -522,6 +522,14 @@ def felia2_localitate(p):
         skip("nu s-a putut intra pe niciun judet -- verificarea localitatii nu a rulat")
         return
 
+    # Prima selectie e previzualizare; intrarea este o actiune explicita si abia aici
+    # incepe fetch-ul geometriei necesare pentru hit-testul UAT.
+    if p.locator("#county-preview").is_visible():
+        p.click("#enter-county")
+        p.wait_for_timeout(350)
+    if p.locator("#county-preview").is_visible():
+        p.click("#enter-county")
+        p.wait_for_timeout(350)
     before = panel_count(p)
     zr = stage_rect(p)
     found = False
@@ -550,7 +558,7 @@ def felia2_localitate(p):
     # (`map.viewbox` + geometria elementelor) si atunci verificarea devine: lista rezultata dintr-un
     # singur tap contine >= 2 localitati distincte.
     groups = p.evaluate("""async () => {
-      const d = await (await fetch('./data/map.json')).json();
+      const d = await (await fetch(document.querySelector('meta[name=\"harta-data-base\"]').content + '/map.json')).json();
       const byPoint = new Map();
       for (const a of d.articles || []) {
         if (a.x == null || a.y == null) continue;
@@ -598,11 +606,17 @@ def felia5_county_picker(p):
 
     before = panel_count(p)
     buttons_before = p.evaluate("() => document.querySelectorAll('#county-picker button').length")
-    # ENTER, nu click: click-ul ar testa mouse-ul, adica fix ce felia asta NU rezolva.
+    # ENTER, nu click: primul pas filtreaza/previzualizeaza fara sa ceara UAT.
+    uat_requests = []
+    p.on("request", lambda r: uat_requests.append(r.url) if "/data/uat/" in r.url else None)
     p.keyboard.press("Enter")
     p.wait_for_timeout(200)
     after = panel_count(p)
-    check(after != before, f"Enter pe buton filtreaza lista ('{before}' -> '{after}')")
+    check(after != before, f"Enter pe buton previzualizeaza lista ('{before}' -> '{after}')")
+    preview_state = p.evaluate("() => ({preview: new URLSearchParams(location.search).get('preview'), visible: !document.querySelector('#county-preview').hidden})")
+    check(preview_state["preview"] == "1" and preview_state["visible"],
+          "Enter marcheaza previzualizarea si expune actiunea de angajare")
+    check(not uat_requests, "previzualizarea cu tastatura nu incarca geometria UAT")
     # Starea vizibila de selectie are doua forme legitime: butonul de judet cu aria-pressed
     # (daca UAT-urile județului nu s-au incarcat inca) sau pickerul deja trecut pe lista de
     # UAT-uri (comportament proaspat implementat -- butoanele UAT au aria-haspopup, nu
@@ -633,6 +647,42 @@ def felia5_county_picker(p):
     pressed = p.evaluate("() => document.querySelectorAll('#county-picker button[aria-pressed=\"true\"]').length")
     check(pressed == 0, f"dupa reset niciun buton nu e selectat ({pressed} inca selectate)")
 
+def preview_angajare(p):
+    """F2: primul click este previzualizare fara request; butonul sau al doilea click intra."""
+    print("\nF2 PREVIZUALIZARE -> ANGAJARE -- fara fetch la prima atingere")
+    p.goto(BASE, wait_until="networkidle")
+    p.wait_for_selector('#county-picker button[data-county="TIMIS"]', timeout=15000)
+    requests = []
+    p.on("request", lambda r: requests.append(r.url) if "/data/uat/" in r.url else None)
+
+    p.click('#county-picker button[data-county="TIMIS"]')
+    p.wait_for_selector("#county-preview", state="visible", timeout=5000)
+    state = p.evaluate("() => ({preview: new URLSearchParams(location.search).get('preview'), county: new URLSearchParams(location.search).get('judet'), uats: document.querySelectorAll('#map .layer-uats path').length})")
+    check(state["county"] == "TIMIS" and state["preview"] == "1" and state["uats"] == 0,
+          f"prima activare doar previzualizeaza TIMIS ('{state}')")
+    check(not requests, f"prima activare nu cere geometrie ({len(requests)} cereri)")
+
+    p.click("#enter-county")
+    p.wait_for_function("() => document.querySelectorAll('#map .layer-uats path').length > 0", timeout=8000)
+    p.wait_for_timeout(100)
+    check(len(requests) == 1 and "TIMIS.json" in requests[0],
+          f"angajarea incarca exact geometria judetului ({requests})")
+    check("preview=1" not in p.evaluate("() => location.search"),
+          "URL-ul nu mai spune preview dupa angajare")
+
+    p.goto(BASE, wait_until="networkidle")
+    p.wait_for_selector('#map .layer-counties path[data-judet="TIMIS"]', timeout=15000)
+    requests.clear()
+    shape = p.locator('#map .layer-counties path[data-judet="TIMIS"]')
+    shape.click()
+    p.wait_for_selector("#county-preview", state="visible", timeout=5000)
+    shape.click()
+    p.wait_for_function("() => document.querySelectorAll('#map .layer-uats path').length > 0", timeout=8000)
+    check(len(requests) == 1,
+          f"a doua activare a aceleiasi forme angajeaza intrarea o singura data ({len(requests)} cereri)")
+    p.goto(BASE, wait_until="networkidle")
+
+
 def felia6_url(p):
     """Starea in adresa. Se verifica in ambele sensuri -- stare -> adresa SI adresa -> stare --
     fiindca o singura directie poate fi corecta izolat: un link care se scrie dar nu se citeste
@@ -647,7 +697,8 @@ def felia6_url(p):
     p.click("#county-picker button")
     p.wait_for_timeout(250)
     search = p.evaluate("() => location.search")
-    check("judet=" in search, f"selectia de judet ajunge in adresa ('{search}')")
+    check("judet=" in search and "preview=1" in search,
+          f"previzualizarea de judet ajunge in adresa ('{search}')")
     check(panel_count(p) != start_count, f"selectia chiar a filtrat lista ('{panel_count(p)}')")
 
     # (b) Back anuleaza selectia in loc sa iasa de pe pagina
@@ -683,8 +734,10 @@ def uat_selectie(p):
     p.goto(BASE, wait_until="networkidle")
     p.wait_for_selector("#county-picker button", timeout=15000)
     p.wait_for_timeout(200)
-    # Intra intr-un judet prin picker: cale garantata, nu tap precis pe harta.
+    # Previzualizeaza, apoi confirma explicit intrarea: tapul initial nu cere geometria.
     p.click("#county-picker button")
+    p.wait_for_selector("#enter-county", state="visible", timeout=5000)
+    p.click("#enter-county")
     try:
         p.wait_for_selector("#county-picker button[data-uat]", timeout=5000)
     except Exception:
@@ -698,7 +751,9 @@ def uat_selectie(p):
     p.wait_for_timeout(350)
     url = p.evaluate("() => location.search")
     check("uat=" in url, f"selectia de UAT ajunge in adresa ('{url}')")
-    check("judet=" in url, f"adresa pastreaza si județul ('{url}')")
+    county_path = p.evaluate("() => location.pathname")
+    check("judet=" in url or county_path.startswith("/harta/") and county_path.count("/") >= 3,
+          f"adresa pastreaza ruta județului ('{county_path}{url}')")
     after = panel_count(p)
     check(after != before, f"panoul filtreaza la selectia de UAT ('{before}' -> '{after}')")
     pressed = p.evaluate(
@@ -715,7 +770,7 @@ def uat_selectie(p):
     # Back, de la selectie activa, anuleaza selectia in loc sa iasa de pe pagina.
     p.click("#county-picker button[data-uat]")
     p.wait_for_timeout(350)
-    opened_url = p.evaluate("() => location.search")
+    opened_url = p.evaluate("() => location.pathname + location.search")
     check("uat=" in opened_url, "selectia s-a refacut pentru testul Back")
     p.go_back()
     p.wait_for_timeout(350)
@@ -723,7 +778,8 @@ def uat_selectie(p):
           f"Back anuleaza selectia de UAT ('{p.evaluate('() => location.search')}')")
 
     # Link direct: cine prinde adresa cu uat= vede UAT-ul deja selectat, fara niciun click.
-    p.goto(BASE + opened_url, wait_until="networkidle")
+    direct_url = p.evaluate("(path) => location.origin + path", opened_url)
+    p.goto(direct_url, wait_until="networkidle")
     try:
         p.wait_for_selector("#county-picker button[data-uat][aria-pressed=\"true\"]", timeout=8000)
     except Exception:
@@ -746,6 +802,8 @@ def breadcrumb(p):
     check(crumb0 == "România", f"la start firul arata România ca pozitie ('{crumb0}')")
 
     p.click("#county-picker button")
+    p.wait_for_selector("#enter-county", state="visible", timeout=5000)
+    p.click("#enter-county")
     try:
         p.wait_for_selector("#county-picker button[data-uat]", timeout=5000)
     except Exception:
@@ -767,8 +825,9 @@ def breadcrumb(p):
     p.evaluate("() => [...document.querySelectorAll('#map-breadcrumb button')].pop().click()")
     p.wait_for_timeout(300)
     search = p.evaluate("() => location.search")
-    check("uat=" not in search and "judet=" in search,
-          f"click pe nivelul judet din fir anuleaza unitatea, pastreaza judetul ('{search}')")
+    county_path = p.evaluate("() => location.pathname")
+    check("uat=" not in search and county_path.startswith("/harta/") and county_path.count("/") >= 3,
+          f"click pe nivelul judet din fir anuleaza unitatea, pastreaza ruta ('{county_path}{search}')")
     # Nivelul curent revine la judet, iar România e din nou buton clickabil.
     current2 = p.evaluate("() => document.querySelector('#map-breadcrumb .crumb-current')?.textContent?.trim()")
     check(current2 == county, f"firul revine pe judet ca pozitie curenta ('{current2}')")
@@ -997,6 +1056,7 @@ def main():
         hit_ordin_fara_furt(p)
         hover_preview(p)
         click_zona_fara_stiri(p)
+        preview_angajare(p)
         scara_si_numitor(p)
         felia2_localitate(p)
         felia5_county_picker(p)
