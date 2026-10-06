@@ -43,6 +43,7 @@
     populatii: null,
     populatiiPromise: null,
     localityMarkers: new Map(),
+    countyTargets: new Map(),
     uatNodes: new Map(),
     labelPool: new Map(),
     counts: new Map(),
@@ -97,6 +98,25 @@
   // egalitatea), deci URL-urile si datele raman pe coduri, iar interfata vorbeste romana.
   function judetLabel(code) {
     return (code && state.etichete && state.etichete[code]) || code || "";
+  }
+
+  function slugSegment(value) {
+    return String(value || "")
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, "-")
+      .replace(/^-+|-+$/g, "");
+  }
+
+  function countyRoute(county) {
+    const slug = slugSegment(judetLabel(county));
+    return slug ? `/harta/${slug}/` : "/harta/";
+  }
+
+  function openCountyRoute(county) {
+    if (!county) return;
+    window.location.assign(countyRoute(county));
   }
 
   function articleUrl(article) {
@@ -217,8 +237,8 @@
   //     fiecare eticheta sta intr-un grup contrascarat, deci are marime de ecran la orice zoom
   //     (si e text adevarat: selectabil, cautabil cu Ctrl+F, citit de cititoarele de ecran).
   //   * liniile folosesc `vector-effect: non-scaling-stroke` -> 1 px pe ecran la orice zoom.
-  //   * fiecare poligon e un element focusabil (`tabindex`, `role="button"`, `aria-pressed`),
-  //     deci calea accesibila nu depinde de un hit-test propriu.
+  //   * fiecare județ are cale focusabilă (`tabindex`, `role="link"`) și țintă tactilă
+  //     de minimum 24px, deci angajarea nu depinde de precizia pe poligon.
   // Ce s-a STERS odata cu canvasul: ensureCanvas, applyViewTransform, devicePointFromMap,
   // devicePointForEvent, pointForEvent, countyFillAtPoint, countyEdgeAtPoint, smallestUatAt,
   // uatContainsMapPoint, uatBadgePlacement, closestHit, hitDistance, path2d-ul re-parsat la
@@ -516,7 +536,7 @@
     // Ordinea conteaza: conturul județului deschis sta INTRE UAT-uri si puncte, ca sa nu fie
     // nici tăiat de clip (jumatate din grosime s-ar pierde), nici sters cand stratul de UAT-uri
     // e golit la revenirea la nivel national (prins de verificarea de DOM, 2026-10-04).
-    for (const name of ["counties", "uats", "outline", "points", "labels"]) {
+    for (const name of ["counties", "targets", "uats", "outline", "points", "labels"]) {
       layers[name] = svgNode("g", { class: `layer layer-${name}` });
       svg.appendChild(layers[name]);
     }
@@ -711,7 +731,7 @@
   }
 
   function onStagePointerDown(event) {
-    state.pointerDown = { x: event.clientX, y: event.clientY, moved: false };
+    state.pointerDown = { x: event.clientX, y: event.clientY, moved: false, pointerId: event.pointerId };
     if (event.pointerType === "mouse" && state.userZoom.k > 1) {
       state.panFrom = { x: event.clientX, y: event.clientY };
       state.stage.classList.add("is-panning");
@@ -719,6 +739,13 @@
   }
 
   function onStagePointerMove(event) {
+    // Tap-vs-drag: orice pointer care s-a miscat peste prag nu mai activeaza zona la click.
+    // Vechea garda marca `moved` doar pe pan cu mouse-ul; pe telefon o derulare putea ajunge
+    // la click-ul sintetic de la final si deschidea județul atins accidental.
+    if (state.pointerDown
+        && Math.hypot(event.clientX - state.pointerDown.x, event.clientY - state.pointerDown.y) >= 10) {
+      state.pointerDown.moved = true;
+    }
     // Pan: doar cand harta e marita si un buton e apasat; sub 10 px e in continuare click
     // (acelasi prag ca garda tap-vs-drag de pe telefon).
     if (state.panFrom && (event.buttons & 1)) {
@@ -758,10 +785,11 @@
     showMapTip(target, event);
   }
 
-  function onStagePointerUp(event) {
+  function onStagePointerUp() {
     state.panFrom = null;
     if (state.stage) state.stage.classList.remove("is-panning");
-    if (event && event.pointerType !== "mouse") state.pointerDown = null;
+    // `click` se emite dupa pointerup; pastram pointerDown pana acolo ca pragul moved sa
+    // poata anula navigarea dupa un swipe. Urmatorul pointerdown il inlocuieste oricum.
   }
 
   function onStagePointerCancel() {
@@ -783,8 +811,7 @@
       return;
     }
     if (node.dataset.judet) {
-      if (state.level === "regional") selectRegion(regionForCounty(node.dataset.judet));
-      else selectCounty(node.dataset.judet);
+      openCountyRoute(node.dataset.judet);
       return;
     }
     if (node.dataset.regiune) selectRegion(node.dataset.regiune);
@@ -846,8 +873,9 @@
         "data-harta": "judet",
         "data-judet": county,
         "data-regiune": regionForCounty(county),
+        "data-href": countyRoute(county),
         tabindex: "0",
-        role: "button",
+        role: "link",
       });
       layer.appendChild(node);
     }
@@ -1007,7 +1035,7 @@
       tip.appendChild(list);
       const hint = document.createElement("div");
       hint.className = "tip-hint";
-      hint.textContent = "Click pentru lista completă";
+      hint.textContent = target.kind === "county" ? "Click pentru pagina județului" : "Click pentru lista completă";
       tip.appendChild(hint);
     }
     tip.hidden = false;
@@ -1021,6 +1049,46 @@
     const top = Math.max(4, y - h - 14);
     tip.style.left = `${left}px`;
     tip.style.top = `${top}px`;
+  }
+
+  function renderCountyTargets(view) {
+    const layer = state.layers.targets;
+    if (!layer || !view) return;
+    const scale = screenScale(view);
+    if (!scale) return;
+    const radius = 12 / scale; // 24px diametru în ecran, minimul WCAG 2.5.8.
+    const byKey = state.countyTargets || new Map();
+    const seen = new Set();
+    // În detaliul de județ, UAT-urile sunt țintele active; cercurile naționale ar fura
+    // tap-uri de pe orașe/comune. Poligonul rămâne sub ele pentru click pe zonele libere.
+    layer.hidden = Boolean(state.zoomCounty && state.uats.length);
+    for (const node of state.layers.counties.children) {
+      const county = node.dataset.judet;
+      seen.add(county);
+      const anchor = anchorFor(node, `judet:${county}`, null);
+      let hit = byKey.get(county);
+      if (!hit) {
+        hit = svgNode("circle", {
+          class: "map-county-hit",
+          "data-harta": "judet",
+          "data-judet": county,
+          "data-regiune": regionForCounty(county),
+          "data-href": countyRoute(county),
+          "aria-hidden": "true",
+        });
+        byKey.set(county, hit);
+        layer.appendChild(hit);
+      }
+      hit.setAttribute("cx", String(fmt(anchor[0])));
+      hit.setAttribute("cy", String(fmt(anchor[1])));
+      hit.setAttribute("r", String(fmt(radius)));
+    }
+    for (const [county, node] of byKey) {
+      if (seen.has(county)) continue;
+      node.remove();
+      byKey.delete(county);
+    }
+    state.countyTargets = byKey;
   }
 
   function renderLabels(view) {
@@ -1268,9 +1336,11 @@
       const klass = state.level === "regional" || cifra.valoare == null
         ? 0 : rampClassFor(cifra.valoare);
       for (let i = 0; i < 5; i += 1) node.classList.toggle(`h${i}`, state.level === "regional" ? i === 0 : klass === i);
-      node.setAttribute("aria-label", `${judetLabel(county)}: ${cifra.bucata}`);
-      node.setAttribute("aria-pressed", selected ? "true" : "false");
+      node.setAttribute("aria-label", `${judetLabel(county)}: ${cifra.bucata}. Deschide pagina județului.`);
+      if (selected) node.setAttribute("aria-current", "page");
+      else node.removeAttribute("aria-current");
     }
+    renderCountyTargets(view);
 
     // UAT-urile județului deschis, taiate pe silueta lui (clip-path), fara siluetele vecinilor.
     const showUats = Boolean(state.zoomCounty && state.uats.length);

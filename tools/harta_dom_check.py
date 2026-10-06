@@ -3,7 +3,9 @@
    repo-ului -- index.html foloseste cai absolute (/static/...), deci un server din
    static/harta-stiri ar lasa JS-ul si CSS-ul pe 404 si pagina blocata in "Se încarcă…":
    python -m http.server 8765
-   MAP_URL=http://localhost:8765/static/harta-stiri/ python tools/harta_dom_check.py
+   python -m generator.main --render-only
+   python -m http.server 8765 --directory output
+   MAP_URL=http://localhost:8765/harta/ python tools/harta_dom_check.py
 
 Asserteaza pe STRUCTURA VIZIBILA si pe COMPORTAMENT OBSERVAT (id-uri, taguri, clickuri, geometrie),
 nu pe clase CSS si nu pe identificatori din sursa -- de doua ori in repo-ul asta o garda a stat
@@ -23,7 +25,7 @@ sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
 sys.stderr = io.TextIOWrapper(sys.stderr.buffer, encoding='utf-8')
 from playwright.sync_api import sync_playwright
 
-BASE = os.getenv("MAP_URL", "http://localhost:8765/")
+BASE = os.getenv("MAP_URL", "http://localhost:8765/harta/")
 fails = []
 skipped = []
 
@@ -45,7 +47,7 @@ def stage_rect(p):
     }""")
 
 INTERIOR_POINT = """async (mode) => {
-  const d = await (await fetch('./data/map.json')).json();
+  const d = await (await fetch('/static/harta-stiri/data/map.json')).json();
   const svg = document.querySelector('#map svg.map-svg');
   if (!svg) return null;
   const withNews = new Set((d.articles || []).map((a) => a.county).filter(Boolean));
@@ -66,7 +68,8 @@ INTERIOR_POINT = """async (mode) => {
         if (!node.isPointInFill(local)) continue;
         const screen = local.matrixTransform(ctm);
         const at = document.elementFromPoint(screen.x, screen.y);
-        if (!at || at.closest('[data-judet]') !== node) continue;
+        const hit = at && at.closest('[data-judet]');
+        if (!hit || hit.dataset.judet !== key) continue;
         return { county: key, x: screen.x, y: screen.y };
       }
     }
@@ -123,6 +126,28 @@ def reset(p):
     p.wait_for_timeout(120)
 
 
+def county_route_targets(p):
+    """Țintele SVG pentru angajarea pe județ: centru, rută și dimensiune în pixeli CSS."""
+    return p.evaluate("""() => {
+      const svg = document.querySelector('#map svg.map-svg');
+      const ctm = svg && svg.getScreenCTM();
+      if (!svg || !ctm) return [];
+      return [...svg.querySelectorAll('.layer-targets .map-county-hit')].map((n) => {
+        const local = new DOMPoint(Number(n.getAttribute('cx')), Number(n.getAttribute('cy')));
+        const screen = local.matrixTransform(ctm);
+        const b = n.getBoundingClientRect();
+        return { county: n.dataset.judet, href: n.dataset.href,
+                 x: screen.x, y: screen.y, width: b.width, height: b.height };
+      }).sort((a, b) => a.county.localeCompare(b.county));
+    }""")
+
+
+def goto_base(p):
+    p.goto(BASE, wait_until="networkidle")
+    p.wait_for_selector("#map svg.map-svg .layer-counties path", timeout=15000)
+    p.wait_for_timeout(150)
+
+
 def swipe_touch(p, x, y, dy, steps=8):
     """Derulare cu un deget real (touchStart/touchMove/touchEnd prin CDP). Playwright nu are
     swipe tactil; `mouse.down/move/up` ar trimite evenimente de mouse, care pe telefon nu exista."""
@@ -142,7 +167,8 @@ EDGE_SCAN = """(offsetY) => {
   if (y < rect.top || y > rect.bottom) return null;
   for (let x = Math.floor(rect.left); x < rect.right; x += 1) {
     const at = document.elementFromPoint(x, y);
-    if (at && at.closest('[data-judet]')) {
+    const hit = at && at.closest('[data-judet]');
+    if (hit) {
       return { edgeCss: x - rect.left, rectX: rect.left, rectY: rect.top };
     }
   }
@@ -244,39 +270,59 @@ def felia7_cautare(p):
           f"harta pastreaza judete aprinse la cautare non-geografica ({bright_query} judete vs {bright_all} fara filtru)")
 
 def felia4_hittest(p):
-    print("\nFELIA 4 -- apasarea pe judet, nu doar pe bulina")
+    print("\nFELIA 2 #448 -- click/tap pe județ deschide ruta statică")
+    goto_base(p)
+    targets = county_route_targets(p)
+    check(len(targets) == 42, f"există câte o țintă tactilă pentru toate cele 42 de județe ({len(targets)})")
+    mici = [t for t in targets if t.get("width", 0) < 24 or t.get("height", 0) < 24]
+    check(not mici, "toate țintele de atingere au cel puțin 24×24px" if not mici
+          else f"ținte sub 24px: {[(t['county'], round(t.get('width', 0), 1), round(t.get('height', 0), 1)) for t in mici[:5]]}")
+
+    # Click real pe centrul țintei fiecărui județ. Validăm ruta și HTTP 200, nu doar faptul că
+    # un handler a rulat local. Asta apără exact contractul „previzualizare -> angajare”.
+    for target in targets:
+        goto_base(p)
+        fresh = [t for t in county_route_targets(p) if t["county"] == target["county"]][0]
+        with p.expect_navigation(wait_until="networkidle", timeout=8000) as nav:
+            p.mouse.click(fresh["x"], fresh["y"])
+        response = nav.value
+        path = p.evaluate("() => location.pathname")
+        check(path == fresh["href"] and response and response.status == 200,
+              f"click pe {fresh['county']} -> {path} (status {response.status if response else 'fără răspuns'})")
+
+    # Tastatura: poligonul însuși rămâne focusabil; Enter/Space activează aceeași rută.
+    for county, key in (("TIMIS", "Enter"), ("BUCURESTI", "Space")):
+        goto_base(p)
+        href = p.evaluate("""(county) => {
+          const n = document.querySelector(`.layer-counties path[data-judet="${county}"]`);
+          n && n.focus();
+          return n ? n.dataset.href : null;
+        }""", county)
+        with p.expect_navigation(wait_until="networkidle", timeout=8000) as nav:
+            p.keyboard.press(key)
+        response = nav.value
+        path = p.evaluate("() => location.pathname")
+        check(path == href and response and response.status == 200,
+              f"tastatura {key!r} pe {county} -> {path} (status {response.status if response else 'fără răspuns'})")
+
+    # În afara țării: un punct clar din colțul scenei nu are voie să navigheze.
+    goto_base(p)
     r = stage_rect(p)
-    # Grila 8x8 peste scena. Inainte de felia 4 erau apasabile doar ~35 buline de ~12px, deci
-    # o grila atat de rara ar fi nimerit 0-3 puncte. Pragul de 25 e imposibil de atins fara
-    # hit-test pe poligon -- de-aia e un discriminator, nu o masuratoare vaga.
-    hits, tried = 0, 0
-    for i in range(1, 9):
-        for j in range(1, 9):
-            x = r["x"] + r["w"] * i / 9
-            y = r["y"] + r["h"] * j / 9
-            tried += 1
-            p.mouse.click(x, y)
-            p.wait_for_timeout(45)
-            if county_selected(p):
-                hits += 1
-                reset(p)
-    check(hits >= 25, f"apasarea in interiorul judetelor selecteaza ({hits}/{tried} puncte de grila)")
-
-    # In afara tarii: coltul din stanga-sus al scenei e mare/exterior.
+    before = p.evaluate("() => location.pathname")
     p.mouse.click(r["x"] + 3, r["y"] + 3)
-    p.wait_for_timeout(120)
-    check(not county_selected(p), "apasarea in afara conturului tarii nu selecteaza nimic")
-    reset(p)
+    p.wait_for_timeout(250)
+    check(p.evaluate("() => location.pathname") == before,
+          "apasarea departe de conturul țării nu deschide nicio rută")
 
-    # Garda tap-vs-drag: o derulare care incepe pe harta nu trebuie sa selecteze.
+    # Garda tap-vs-drag: o derulare care începe pe hartă nu trebuie să angajeze județul.
     cx, cy = r["x"] + r["w"] / 2, r["y"] + r["h"] / 2
     p.mouse.move(cx, cy)
     p.mouse.down()
     p.mouse.move(cx, cy + 120, steps=6)
     p.mouse.up()
-    p.wait_for_timeout(150)
-    check(not county_selected(p), "derularea cu degetul pe harta NU selecteaza un judet")
-    reset(p)
+    p.wait_for_timeout(250)
+    check(p.evaluate("() => location.pathname") == before,
+          "derularea/tragerea pe hartă NU deschide ruta unui județ")
 
 def hit_ordin_fara_furt(p):
     """Hit-testul e EXACT, iar geometria si browserul sunt de acord (audit harta, P0).
@@ -304,8 +350,8 @@ def hit_ordin_fara_furt(p):
       for (let i = 1; i < 10; i += 1) {
         for (let j = 1; j < 10; j += 1) {
           const x = r.left + r.width * i / 10, y = r.top + r.height * j / 10;
-          const at = document.elementFromPoint(x, y);
-          const node = at && at.closest('[data-judet]');
+          const stack = document.elementsFromPoint(x, y);
+          const node = stack.find((el) => el.matches && el.matches('.layer-counties path[data-judet]')) || null;
           const local = new DOMPoint(x, y).matrixTransform(inv);
           let owner = null, ownerArea = Infinity;
           for (const cand of paths) {
@@ -342,8 +388,8 @@ def hit_ordin_fara_furt(p):
           const local = new DOMPoint(b.x + b.width * col / 12, b.y + b.height * row / 12);
           if (!buc.isPointInFill(local)) continue;
           const screen = local.matrixTransform(ctm);
-          const at = document.elementFromPoint(screen.x, screen.y);
-          const node = at && at.closest('[data-judet]');
+          const stack = document.elementsFromPoint(screen.x, screen.y);
+          const node = stack.find((el) => el.matches && el.matches('.layer-counties path[data-judet]')) || null;
           return { hit: node ? node.dataset.judet : null };
         }
       }
@@ -387,27 +433,27 @@ def hover_preview(p):
 
 
 def click_zona_fara_stiri(p):
-    """Județele/UAT-urile fără știri răspund la click cu mesaj explicit -- clickul mort pe o
-    zonă vizibilă a fost sesizare directă de pe live (5 sep 2026). Alege un județ cu 0
-    articole din date, calculează un punct interior verificat și dă click real."""
-    print("\nCLICK PE ZONA FARA STIRI -- raspuns explicit, nu moarte")
-    p.locator("#map svg.map-svg").scroll_into_view_if_needed()
-    p.wait_for_timeout(150)
+    """Județele fără știri nu sunt click mort: angajarea lor deschide pagina județului,
+    unde starea inițială arată mesajul de gol dacă filtrul curent nu are articole."""
+    print("\nCLICK PE ZONA FARA STIRI -- deschide ruta județului, nu moare")
+    goto_base(p)
     target = interior_point(p, "empty")
     if not target:
         skip("toate judetele au stiri in datele curente -- scenariul nu se poate declansa")
         return
-    p.mouse.click(target["x"], target["y"])
-    p.wait_for_timeout(300)
-    got = p.evaluate("() => new URLSearchParams(location.search).get('judet')")
-    check(got == target["county"],
-          f"județul fara stiri ({target['county']}) se selecteaza din click (URL judet='{got}')")
+    href = p.evaluate("""(county) => document.querySelector(`.layer-counties path[data-judet="${county}"]`)?.dataset.href""",
+                      target["county"])
+    with p.expect_navigation(wait_until="networkidle", timeout=8000) as nav:
+        p.mouse.click(target["x"], target["y"])
+    response = nav.value
+    path = p.evaluate("() => location.pathname")
+    check(path == href and response and response.status == 200,
+          f"județul fără știri ({target['county']}) deschide {path} (status {response.status if response else 'fără răspuns'})")
     empty_text = p.evaluate("() => document.querySelector('#news-list li.empty')?.textContent || ''")
     check("Nu există știri localizate" in empty_text,
-          f"panoul raspunde cu mesaj explicit de gol ('{empty_text[:80]}')")
-    reset(p)
+          f"panoul rutei răspunde cu mesaj explicit de gol ('{empty_text[:80]}')")
+    goto_base(p)
     p.wait_for_timeout(150)
-
 
 def scara_si_numitor(p):
     """Aceeași culoare = același număr, în AMBELE scări (F3).
@@ -469,8 +515,8 @@ def scara_si_numitor(p):
 
     # (c) cifra afisata = raportul recalculat din date (independent de JS-ul paginii)
     abateri = p.evaluate("""async () => {
-      const pop = (await (await fetch('./data/populatie.json')).json()).judete;
-      const date = await (await fetch('./data/map.json')).json();
+      const pop = (await (await fetch('/static/harta-stiri/data/populatie.json')).json()).judete;
+      const date = await (await fetch('/static/harta-stiri/data/map.json')).json();
       const peEveniment = new Map();
       for (const a of date.articles || []) {
         if (!a.county) continue;
@@ -520,20 +566,13 @@ def scara_si_numitor(p):
 
 def felia2_localitate(p):
     print("\nFELIA 2 -- click pe localitate nu fura campul de cautare")
-    r = stage_rect(p)
-    # Intra pe un judet, apoi cauta un marker de localitate scanand o grila in starea marita.
-    entered = None
-    for i in range(1, 9):
-        for j in range(1, 9):
-            p.mouse.click(r["x"] + r["w"] * i / 9, r["y"] + r["h"] * j / 9)
-            p.wait_for_timeout(45)
-            if county_selected(p):
-                entered = (i, j)
-                break
-        if entered:
-            break
-    if not entered:
-        skip("nu s-a putut intra pe niciun judet -- verificarea localitatii nu a rulat")
+    goto_base(p)
+    # Intrarea în județ se face prin selectorul HTML: clickul pe poligon angajează acum ruta
+    # statică, deci nu mai este calea de filtrare în același document.
+    p.click("#county-picker button[data-county]")
+    p.wait_for_timeout(45)
+    if not county_selected(p):
+        skip("nu s-a putut intra pe niciun judet din picker -- verificarea localitatii nu a rulat")
         return
 
     before = panel_count(p)
@@ -564,7 +603,7 @@ def felia2_localitate(p):
     # (`map.viewbox` + geometria elementelor) si atunci verificarea devine: lista rezultata dintr-un
     # singur tap contine >= 2 localitati distincte.
     groups = p.evaluate("""async () => {
-      const d = await (await fetch('./data/map.json')).json();
+      const d = await (await fetch('/static/harta-stiri/data/map.json')).json();
       const byPoint = new Map();
       for (const a of d.articles || []) {
         if (a.x == null || a.y == null) continue;
@@ -960,51 +999,44 @@ def tastatura_pan_zoom(p):
 
 
 def mobil_390(p):
-    """Android: harta e ~359x256px la 390 latime, deci ea e cazul greu pentru zona de atins.
-    Aici se verifica si ca garda tap-vs-drag chiar tine cu EVENIMENTE TACTILE, nu doar cu mouse-ul
-    -- pe desktop `pointerdown` vine de la mouse, pe telefon de la deget, si nu e acelasi drum."""
+    """Android: la 390px verificăm overflow-ul, țintele de 24px și tap-vs-drag tactil."""
     print("\nMOBIL 390px (Android emulat) -- zona de atins si garda de derulare")
     p.wait_for_function("() => document.querySelector('#news-list li a') !== null", timeout=15000)
     over = p.evaluate("document.documentElement.scrollWidth - document.documentElement.clientWidth")
     check(over <= 0, f"fara overflow orizontal la 390px ({over}px)")
 
-    # Pe ecranul Android harta începe sub introducere; o atingere cu y din afara viewportului
-    # nu testează produsul, ci doar o coordonată imposibilă. O aducem în viewport înainte de tap.
     p.locator("#map svg.map-svg").scroll_into_view_if_needed()
     p.wait_for_timeout(150)
     r = stage_rect(p)
     print(f"   scena reala: {r['w']:.0f}x{r['h']:.0f}px")
-    hits, tried = 0, 0
-    for i in range(1, 7):
-        for j in range(1, 7):
-            x, y = r["x"] + r["w"] * i / 7, r["y"] + r["h"] * j / 7
-            tried += 1
-            p.touchscreen.tap(x, y)
-            p.wait_for_timeout(60)
-            if county_selected(p):
-                hits += 1
-                reset(p)
-    check(hits >= 12, f"atingerea cu degetul in interiorul judetelor selecteaza ({hits}/{tried})")
+    targets = county_route_targets(p)
+    mici = [t for t in targets if t.get("width", 0) < 24 or t.get("height", 0) < 24]
+    check(len(targets) == 42 and not mici,
+          "toate cele 42 de ținte tactile rămân >=24px pe 390px" if not mici
+          else f"ținte mobile sub 24px: {[(t['county'], round(t.get('width', 0), 1), round(t.get('height', 0), 1)) for t in mici[:5]]}")
 
+    buc = next((t for t in targets if t["county"] == "BUCURESTI"), targets[0] if targets else None)
+    if not buc:
+        skip("tap mobil pe județ: nu există ținte de județ")
+    else:
+        with p.expect_navigation(wait_until="networkidle", timeout=8000) as nav:
+            p.touchscreen.tap(buc["x"], buc["y"])
+        response = nav.value
+        path = p.evaluate("() => location.pathname")
+        check(path == buc["href"] and response and response.status == 200,
+              f"tap pe ținta mobilă {buc['county']} -> {path} (status {response.status if response else 'fără răspuns'})")
+
+    goto_base(p)
+    p.locator("#map svg.map-svg").scroll_into_view_if_needed()
+    p.wait_for_timeout(150)
+    r = stage_rect(p)
+    before = p.evaluate("() => location.pathname")
     # Derulare peste harta cu DEGETUL. `page.mouse` ar produce evenimente de mouse chiar si pe o
     # pagina cu has_touch -- adica ar retesta desktopul si ar raporta verde pentru telefon.
-    # Playwright expune doar `touchscreen.tap`, fara swipe, deci gestul se trimite prin CDP.
     swipe_touch(p, r["x"] + r["w"] / 2, r["y"] + r["h"] / 2, dy=-140)
-    p.wait_for_timeout(200)
-    check(not county_selected(p), "derularea cu degetul peste harta NU selecteaza un judet")
-    reset(p)
-
-    # Zona de atins pe langa contur, masurata in PIXELI CSS. Toleranta era exprimata in unitati
-    # viewBox, deci se evapora pe ecran mic: ~1.8px pe telefon fata de ~4px pe desktop, exact
-    # invers decat trebuie. Pragul de 3px e ales ca discriminator: sub vechea implementare e
-    # imposibil de atins, sub cea noua (10px CSS => +-5px) e comod.
-    tol = edge_tolerance_px(p)
-    if tol is None:
-        skip("toleranta de atins pe langa contur: nu am gasit o margine de judet utilizabila")
-    else:
-        check(tol >= 3, f"atingerea la {tol}px CSS in afara conturului inca selecteaza (prag 3px)")
-    reset(p)
-
+    p.wait_for_timeout(250)
+    check(p.evaluate("() => location.pathname") == before,
+          "derularea cu degetul peste harta NU deschide ruta unui județ")
 
 def main():
     with sync_playwright() as pw:

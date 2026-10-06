@@ -268,15 +268,21 @@ def test_map_labels_are_real_text_with_minimum_pixel_sizes():
 
 
 def test_map_polygons_are_keyboard_and_screen_reader_reachable():
-    # Calea accesibila se PASTREAZA, nu se sacrifica pentru grafica: fiecare poligon e un
-    # element focusabil cu rol de buton si stare, deci se poate naviga si fara mouse.
+    # Calea accesibila se PASTREAZA, nu se sacrifica pentru grafica: fiecare județ este
+    # focusabil ca link spre pagina lui statică, iar tap-ul are o țintă transparentă >=24px.
     js = Path("static/harta-stiri/harta-stiri.js").read_text(encoding="utf-8")
-    assert 'role: "button"' in js
+    css = Path("static/harta-stiri/harta-stiri.css").read_text(encoding="utf-8")
+    assert 'role: "link"' in js
     assert 'tabindex: "0"' in js
-    assert '"aria-pressed", selected ? "true" : "false"' in js
+    assert '"data-href": countyRoute(county)' in js
+    assert "function openCountyRoute(county)" in js
+    assert "window.location.assign(countyRoute(county))" in js
+    assert "function renderCountyTargets(view)" in js
+    assert "const radius = 12 / scale" in js
+    assert ".map-county-hit" in css and "pointer-events:all" in css
     # Textul citit de cititorul de ecran vine din ACEEASI functie care da cifra de pe ecran
     # (inclusiv unitatea, in modul „pe locuitor"), deci vocea si harta nu pot spune altceva.
-    assert "node.setAttribute(\"aria-label\", `${judetLabel(county)}: ${cifra.bucata}`)" in js
+    assert "node.setAttribute(\"aria-label\", `${judetLabel(county)}: ${cifra.bucata}. Deschide pagina județului.`)" in js
     assert "function cifraJudet(county)" in js
     assert "la 100.000 de locuitori" in js
 
@@ -289,7 +295,7 @@ def test_map_outline_lives_in_its_own_layer():
     # din grosime la marginea județului.
     js = Path("static/harta-stiri/harta-stiri.js").read_text(encoding="utf-8")
     css = Path("static/harta-stiri/harta-stiri.css").read_text(encoding="utf-8")
-    assert 'for (const name of ["counties", "uats", "outline", "points", "labels"])' in js
+    assert 'for (const name of ["counties", "targets", "uats", "outline", "points", "labels"])' in js
     assert 'class: "map-outline"' in js
     assert "state.layers.outline.hidden = !showUats;" in js
     assert ".map-outline{fill:none;stroke:var(--map-stroke)" in css
