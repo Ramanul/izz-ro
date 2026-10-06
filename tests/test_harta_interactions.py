@@ -91,7 +91,7 @@ def test_map_can_load_uat_boundaries_and_render_count_badges():
     # O singura cerere per judet (clip-path-ul a eliminat si siluetele vecinilor), UAT-urile ca
     # <path> native, cifra pe unitatile cu stiri, iar asignarea geometrica o face browserul.
     js = Path("static/harta-stiri/harta-stiri.js").read_text(encoding="utf-8")
-    assert 'fetch(`./data/uat/${encodeURIComponent(county)}.json`)' in js
+    assert 'fetch(`/static/harta-stiri/data/uat/${encodeURIComponent(county)}.json`)' in js
     assert "function renderUats(" in js
     assert "node.isPointInFill(new DOMPoint(x, y))" in js
     assert "function countUatNews(" in js
