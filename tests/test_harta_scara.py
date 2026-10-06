@@ -155,7 +155,7 @@ def test_js_foloseste_pragurile_din_pagina_nu_alternative():
         "cuartilele per filtru au revenit — scara nu mai e comparabilă între ecrane")
     # clasa = câte praguri sunt acoperite (>=), nu câte sunt strict sub
     assert "praguri.filter((p) => valoare >= p).length" in js
-    assert "> p" not in js
+    assert "valoare > p" not in js
     # grila de afișare a ratei (o zecimală) e chiar cea pe care o descriu etichetele
     assert "Math.round((count / pop) * 100000 * 10) / 10" in js, (
         "valoarea afișată a ratei nu mai e rotunjită la grila din legendă (0,1)")

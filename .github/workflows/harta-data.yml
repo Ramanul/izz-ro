@@ -12,6 +12,7 @@ on:
       - "tools/build_harta_data.py"
       - "tools/build_harta_localitati.py"
       - "static/harta-stiri/harta-stiri.js"
+      - "static/harta-stiri/basemap-camera.mjs"
       - ".github/workflows/harta-data.yml"
   workflow_dispatch:
 
@@ -50,7 +51,10 @@ jobs:
         run: pip install -r requirements.txt
 
       - name: Verifica sintaxa frontend-ului hărții
-        run: node --check static/harta-stiri/harta-stiri.js
+        run: |
+          node --check static/harta-stiri/harta-stiri.js
+          node --check static/harta-stiri/basemap-camera.mjs
+          node --test tests/harta_basemap_camera.test.mjs
 
       - name: Descarca si precompileaza coordonatele localitatilor
         run: python tools/build_harta_localitati.py
@@ -65,6 +69,7 @@ jobs:
           from pathlib import Path
           data = json.loads(Path('static/harta-stiri/data/map.json').read_text(encoding='utf-8'))
           points = json.loads(Path('data/harta_localitati.json').read_text(encoding='utf-8'))
+          projection = json.loads(Path('static/harta-stiri/data/projection.json').read_text(encoding='utf-8'))
           counties = data['map']['judete']
           articles = data['articles']
           stats = data['stats']
@@ -83,6 +88,14 @@ jobs:
           assert stats['geocoded_localities'] <= stats['localities']
           assert stats['events'] == len({a.get('event_id') for a in articles})
           assert points['localities'], 'Nu există puncte de localități.'
+          assert projection['source_crs'] == points['source_crs'] == 'EPSG:4326'
+          assert projection['projection'] == points['projection']
+          assert projection['projection']['method'] == 'equirectangular_cos_latitude_reference'
+          assert projection['projection']['width'] == 1000.0
+          assert projection['projection']['height'] == 703.53
+          viewbox = [float(value) for value in data['map']['viewbox'].split()]
+          assert len(viewbox) == 4
+          assert viewbox[2:] == [projection['projection']['width'], projection['projection']['height']]
           for key, p in points['localities'].items():
               assert 0 <= float(p['x']) <= 1000, (key, p['x'])
               assert 0 <= float(p['y']) <= 703.53, (key, p['y'])
@@ -106,7 +119,7 @@ jobs:
           set -euo pipefail
           git config user.name "izz-bot"
           git config user.email "bot@izz.ro"
-          git add data/harta_localitati.json static/harta-stiri/data/map.json
+          git add data/harta_localitati.json static/harta-stiri/data/map.json static/harta-stiri/data/projection.json
           if git diff --cached --quiet; then
             echo "Dataseturile hărții sunt deja sincronizate."
             exit 0
@@ -162,12 +175,18 @@ jobs:
             page=$(curl -A 'Mozilla/5.0' --connect-timeout 5 --max-time 10 -fsSL -o /tmp/map.html -w '%{http_code}' "$ALT_ORIGIN/static/harta-stiri/" || true)
             data=$(curl -A 'Mozilla/5.0' --connect-timeout 5 --max-time 10 -fsSL -o /tmp/map.json -w '%{http_code}' "$ALT_ORIGIN/static/harta-stiri/data/map.json" || true)
             js=$(curl -A 'Mozilla/5.0' --connect-timeout 5 --max-time 10 -fsSL -o /tmp/map.js -w '%{http_code}' "$ALT_ORIGIN/static/harta-stiri/harta-stiri.js" || true)
-            echo "încercarea $i: page=$page data=$data js=$js"
-            if [ "$page" = "200" ] && [ "$data" = "200" ] && [ "$js" = "200" ]; then
+            projection=$(curl -A 'Mozilla/5.0' --connect-timeout 5 --max-time 10 -fsSL -o /tmp/projection.json -w '%{http_code}' "$ALT_ORIGIN/static/harta-stiri/data/projection.json" || true)
+            echo "încercarea $i: page=$page data=$data projection=$projection js=$js"
+            if [ "$page" = "200" ] && [ "$data" = "200" ] && [ "$projection" = "200" ] && [ "$js" = "200" ]; then
               if python - <<'PY'
           import json
           from pathlib import Path
           d=json.loads(Path('/tmp/map.json').read_text(encoding='utf-8'))
+          projection=json.loads(Path('/tmp/projection.json').read_text(encoding='utf-8'))
+          assert projection['source_crs'] == 'EPSG:4326'
+          assert projection['projection']['method'] == 'equirectangular_cos_latitude_reference'
+          assert [float(v) for v in d['map']['viewbox'].split()][2:] == [
+              projection['projection']['width'], projection['projection']['height']]
           assert len(d['map']['judete']) == 42
           assert d.get('articles')
           assert d.get('version', 0) >= 3
@@ -183,7 +202,7 @@ jobs:
           PY
               then
                 node --check /tmp/map.js
-                echo 'Smoke test public hartă: OK'
+                echo 'Smoke test public hartă + proiecție: OK'
                 exit 0
               fi
             fi
