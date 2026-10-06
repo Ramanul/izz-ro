@@ -17,9 +17,10 @@ Verificat 2026-10-06, în sandbox-ul sesiunii Arena (comenzi și rezultate, nu i
 Deci Arena nu poate atinge UI-ul Battle nici cu un browser instalat: ținta e blocată. Nu poate
 scrie în compozitor, nu poate citi răspunsurile, nu poate vota.
 
-Singurul actor care poate ține un buton este **ZCode**, pe mașina lui Alexandru, cu profilul
-logat (exact mecanismul care citea deja chatul Arena prin `domSnapshot`). Canalul de față
-transportă conținutul între cele două, prin fișiere din repo:
+Mâna care poate ajunge la Battle este a unui om cu profil logat. Canalul de față transportă
+conținutul prin fișiere din repo — iar cine lipește textul în Battle e o decizie de risc, nu
+una tehnică: **automatizarea e interzisă explicit de ToS-ul Arena** (vezi §ToS mai jos).
+Jurnalul, tool-ul și verificările rămân valabile indiferent de sursa răspunsurilor:
 
 ```
   ARENA (capul)            ZCODE (mâna)                  BATTLE (UI Arena)
@@ -49,10 +50,40 @@ transportă conținutul între cele două, prin fișiere din repo:
 6. **Escaladare, nu ocolire.** Perete de reCAPTCHA, termeni de utilizare, selector dispărut
    din UI → se consemnează ca atare (`status`) și se raportează. Nu se forțează.
 
-> **Risc asumat, numit explicit:** automatizarea interacțiunii cu Battle Mode poate încălca
-> termenii Arena (Battle e gândit pentru vot uman). Decizia e a lui Alexandru, e trecută în
-> istoric, iar varianta minimă — o rundă per „execută" — e cea recomandată. Alternativa fără
-> risc de ToS e `ai_gateway/` (duel de modele prin API, pe mașina locală).
+## ToS — clauza exactă (citită 2026-10-06)
+
+Arena, *Terms of Use* (Last Updated 2026-02-23), §5 *User Conduct and Certain Restrictions*:
+
+> „You shall not (and shall not permit any third party) to: … (ii) manipulate the Service's
+> leaderboard or ranking functions, including through submission of false, misleading,
+> excessive, or bad-faith votes … (vi) **access the Services through programmatic or automated
+> means or automatically query the Services**, (vii) use any manual or automated software,
+> devices or other processes (including but not limited to spiders, robots, scrapers, crawlers,
+> avatars, data mining tools, or the like) to „scrape", extract, or download data … from any
+> web pages contained in the Service"
+
+Consecința e scrisă tot acolo: *„Any unauthorized use of the Service terminates the access
+rights granted by Company"*, iar §6.1(e) le dă dreptul să *„terminate or suspend your access
+to all or part of the Service for any or no reason"*.
+
+**Tradus în ce înseamnă pentru canalul ăsta:** pompa automată (ZCode citește pagina Battle și
+scrie în compozitor) intră fix sub §5(vi)+(vii). Nu e „probabil o încălcare", e o interdicție
+explicită, cu suspendarea contului ca sancțiune prevăzută. **Deci pompa NU se rulează** —
+secțiunea de mai jos se păstrează ca descriere a mecanismului, nu ca recomandare.
+
+Variantele care rămân în picioare:
+
+| variantă | cine atinge UI-ul Arena | risc de ToS |
+|---|---|---|
+| **A. mâna omului** | Alexandru, manual: lipește promptul, copiază răspunsurile în `sonde/battle/tura-NNN-{A,B}.txt` | zero — e folosirea normală a Serviciului de către un om |
+| **B. duel prin API** | nimeni: două modele chemate prin `ai_gateway/` (OpenRouter etc.), pe mașina locală | zero față de Arena (nu atinge Serviciul) |
+| C. pompa automată | ZCode, în browserul logat | **interzisă de ToS**; contul `andifreelancer2` e cel expus |
+
+Canalul (jurnalul `turns.jsonl`, tool-ul, `validate`) rămâne util și în A și în B: transportă
+întrebările și răspunsurile verbatim, indiferent de unde vin. Doar sursa răspunsurilor diferă.
+
+> **Decizia e a lui Alexandru**, și e o decizie de risc, nu de tehnică: varianta C se poate
+> oricând, dar cu suspendarea contului pe masă și împotriva recomandării scrise aici.
 
 ## Fișiere
 
@@ -87,7 +118,22 @@ Pentru `blocked`/`timeout`/`page_changed` **nu se atașează text de model** —
 `name` rămâne `null` până când Battle dezvăluie modelul; dezvăluirea ulterioară intră ca
 `--correction` pe aceeași tură, cu numele completate.
 
-## Pompa — ce rulează ZCode (copy-paste)
+## Cum ajung răspunsurile în jurnal (varianta aleasă: A sau B)
+
+**A. Mâna omului** (zero risc de ToS): Alexandru deschide Battle, lipește promptul din
+`next`, copiază cele două răspunsuri în `sonde/battle/tura-001-A.txt` / `-B.txt`, apoi rulează
+cineva (el, ZCode sau Arena, local) comanda `reply` de mai jos. Fișierele se scriu **fără** a
+citi pagina Arena cu un program — copierea o face omul.
+
+**B. Duel prin API** (zero contact cu Arena): `ai_gateway/` trimite același prompt la două
+modele (OpenRouter/OmniRoute, cheile locale), scrie cele două răspunsuri în aceleași fișiere,
+`reply` le înregistrează. Aceeași conversație, fără UI.
+
+## Pompa automată — OPRIȚĂ (păstrată doar ca referință tehnică)
+
+> **Nu rula rețeta asta.** Citește/scrie pagina Battle cu un program = §5(vi)+(vii) din ToS-ul
+> Arena („programmatic or automated means", „scrapers … to extract … data"). Rămâne aici
+> documentată pentru cazul în care proprietarul decide explicit altfel, cu riscul asumat.
 
 ```bash
 cd C:/Users/cw_26/izz-ro
@@ -101,7 +147,7 @@ Dacă a ieșit un prompt: deschide `arena.ai` → **Battle**, pornește un battl
 termine streamingul (butonul de stop dispare; nu compara lungimi), apoi:
 
 ```bash
-# textele verbatim în fișiere separate (copy din UI sau DOM), nu transcrise de mână
+# textele verbatim, puse în fișiere de OM (copy/paste), nu extrase de un program
 python tools/battle_bridge.py reply --turn 1 --status ok \
     --a-file sonde/battle/tura-001-A.txt --b-file sonde/battle/tura-001-B.txt \
     --summary "o frază: pe ce cad de acord, unde se contrazic, care e mai concretă" \
@@ -139,6 +185,6 @@ valorează (aceeași lecție ca la sesiunile grase, `AGENTS.md` § Economie de c
 
 ## Ce NU face canalul
 
-Nu votează automat · nu ocolește reCAPTCHA/login · nu rulează în buclă sau pe cron · nu
+Nu automatizează UI-ul Arena (ToS §5(vi), (vii)) · nu votează automat · nu ocolește reCAPTCHA/login · nu rulează în buclă sau pe cron · nu
 transformă răspunsurile în articole pe izz.ro (orice text care ajunge în produs trece prin
 regulile editoriale obișnuite: „Zero Zgomot", diacritice, sursă) · nu atinge `main`.
