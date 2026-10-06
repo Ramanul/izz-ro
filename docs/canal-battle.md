@@ -52,6 +52,27 @@ Jurnalul, tool-ul și verificările rămân valabile indiferent de sursa răspun
 
 ## ToS — clauza exactă (citită 2026-10-06)
 
+### Pe scurt, fără limbaj de avocat
+
+Arena are o regulă simplă: **site-ul se folosește cu mâna, nu cu un program.** Un om poate
+scrie în Battle, poate citi răspunsurile, poate vota. Un script care deschide pagina singur,
+scrie în căsuța de chat și citește ce au răspuns modelele — nu. Regula spune asta de două ori,
+în două feluri: „acces prin mijloace automate" și „roboți (spiders, scrapers) care extrag date
+din paginile Serviciului".
+
+Ce se întâmplă dacă totuși o faci: ei își rezervă dreptul să **închidă accesul** (adică
+contul). E scris în aceeași secțiune, fără excepții de tipul „doar pentru teste" sau „doar
+câteva turnuri".
+
+De ce ne pasă direct: contul care ar rula automatizarea e al lui Alexandru
+(`andifreelancer2`) — deci el e cel care rămâne fără cont dacă platforma reacționează. Nu e
+un risc abstract la adresa „agentului".
+
+Ce rămâne permis: exact ce face un om normal pe site — să scrie el întrebarea, să copieze el
+răspunsurile. Canalul nostru nu are nevoie de mai mult.
+
+### Clauza, pentru cine vrea să o citească singur
+
 Arena, *Terms of Use* (Last Updated 2026-02-23), §5 *User Conduct and Certain Restrictions*:
 
 > „You shall not (and shall not permit any third party) to: … (ii) manipulate the Service's
