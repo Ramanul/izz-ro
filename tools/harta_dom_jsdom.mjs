@@ -50,8 +50,12 @@ async function bootstrap(query = "") {
   window.matchMedia = window.matchMedia || (() => ({ matches: false, addEventListener() {} }));
   const cereri = [];
   window.fetch = async (url) => {
-    cereri.push(String(url));
-    const fisier = path.join(ROOT, "static", "harta-stiri", String(url).replace(/^\.\//, ""));
+    const raw = String(url);
+    cereri.push(raw);
+    const rel = raw.startsWith("/static/harta-stiri/")
+      ? raw.replace(/^\//, "")
+      : path.join("static", "harta-stiri", raw.replace(/^\.\//, ""));
+    const fisier = path.join(ROOT, rel);
     if (!fs.existsSync(fisier)) return { ok: false, status: 404, json: async () => ({}) };
     return { ok: true, status: 200, json: async () => JSON.parse(fs.readFileSync(fisier, "utf8")) };
   };
@@ -111,8 +115,11 @@ async function verificariStructura() {
     "fallbackul păstrează umplerea SVG opacă");
   check(judete.length === 42, `42 de județe ca <path> (${judete.length})`);
   check(judete.every((n) => n.getAttribute("tabindex") === "0"
-      && n.getAttribute("role") === "button" && n.getAttribute("aria-pressed") !== null),
-    "fiecare județ e focusabil, role=button, cu aria-pressed");
+      && n.getAttribute("role") === "link" && /^\/harta\/.+\/$/.test(n.dataset.href || "")),
+    "fiecare județ e focusabil ca link spre ruta lui statică");
+  const tinte = $$("#map svg.map-svg .layer-targets .map-county-hit");
+  check(tinte.length === 42 && tinte.every((n) => Number(n.getAttribute("r")) > 0 && n.dataset.href),
+    `42 de ținte tactile transparente pentru județe (${tinte.length})`);
   check($$("#map .layer-labels text").length > 10,
     `etichete <text> la nivel național (${$$("#map .layer-labels text").length})`);
   check($("#map .layer-labels .label-value") !== null, "cifra apare în eticheta de județ");
@@ -122,11 +129,13 @@ async function verificariStructura() {
   check($("#map .layer-outline").hidden === true && $("#map .layer-uats").hidden === true,
     "fără UAT-uri, conturul și stratul lor se ascund (nu rămân orfane)");
 
-  // intrare pe un județ: O singura cerere de geometrie, contur pe silueta lui
+  // intrare pe un județ: selectorul HTML rămâne calea de filtrare; poligonul SVG este link.
   const timis = judete.find((n) => n.dataset.judet === "TIMIS");
-  click(window, timis);
+  const timisButton = [...$$("#county-picker button[data-county]")].find((n) => n.dataset.county === "TIMIS");
+  click(window, timisButton);
   await asteapta(500);
-  check(window.location.search.includes("judet=TIMIS"), `click pe județ -> adresa: ${window.location.search}`);
+  check(window.location.search.includes("judet=TIMIS"), `picker județ -> adresa: ${window.location.search}`);
+  check(timis.dataset.href === "/harta/timis/", `poligonul TIMIS trimite la ruta statică (${timis.dataset.href})`);
   check($$("#map .layer-uats path").length > 0, `UAT-uri randează ca <path> (${$$("#map .layer-uats path").length})`);
   check($("#clip-judet-silueta").getAttribute("d") === timis.getAttribute("d"),
     "UAT-urile sunt tăiate pe silueta județului (clip-path)");
@@ -246,8 +255,8 @@ async function verificariInteractiune() {
     pointer("pointerup", n);
     await asteapta(60);
   });
-  await pas("intrare pe județ (click)", async () => {
-    click(window, $$("#map .layer-counties path")[3]);
+  await pas("intrare pe județ din picker (click)", async () => {
+    click(window, $("#county-picker button[data-county]"));
     await asteapta(400);
     if (!/judet=/.test(window.location.search)) throw new Error("adresa nu s-a schimbat");
   });

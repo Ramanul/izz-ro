@@ -42,6 +42,16 @@ def test_map_redraw_is_transform_safe():
     assert "let node = byKey.get(key);" in js
 
 
+def test_map_hit_test_prefers_a_containing_svg_shape():
+    js = Path("static/harta-stiri/harta-stiri.js").read_text(encoding="utf-8")
+    resolver = js.split("function shapeFromEvent(event) {", 1)[1].split("\n  function shapeKey", 1)[0]
+    assert "candidate.getScreenCTM()" in resolver
+    assert "candidate.isPointInFill(point)" in resolver
+    assert "anchorFor(candidate, anchorKey, null)" in resolver
+    assert "if (!hits.length) return top;" in resolver
+    assert "return hits[0].node;" in resolver
+
+
 def test_map_resize_observer_is_present():
     js = Path("static/harta-stiri/harta-stiri.js").read_text(encoding="utf-8")
     assert "ResizeObserver" in js
@@ -121,6 +131,12 @@ def test_map_visually_delimits_editorial_regions():
     assert 'kind: "regiune"' in js
 
 
+def test_judetean_selection_keeps_national_context_and_neighbors():
+    js = Path("static/harta-stiri/harta-stiri.js").read_text(encoding="utf-8")
+    assert 'state.level === "judetean" && Boolean(state.selectedCounty)' in js
+    assert 'outside && !keepNationalCountyContext' in js
+
+
 def test_timis_uat_geometry_is_published():
     data = Path("static/harta-stiri/data/uat/TIMIS.json").read_text(encoding="utf-8")
     assert '"county":"TIMIS"' in data
@@ -151,6 +167,21 @@ def test_uat_picker_selects_in_panel_after_county_selection():
     assert "openUatDialog" not in js
     assert "button.dataset.uat" in js
     assert 'button.setAttribute("aria-pressed", state.selectedUat === uatKey ? "true" : "false")' in js
+
+
+def test_all_uats_remain_in_the_collision_aware_labels_and_picker():
+    js = Path("static/harta-stiri/harta-stiri.js").read_text(encoding="utf-8")
+    labels = js.split("if (state.zoomCounty && state.uats.length) {", 1)[1].split("candidates.sort", 1)[0]
+    picker = js.split("function updateCountyPicker()", 1)[1].split("function ", 1)[0]
+    assert "for (const uat of state.uats)" in labels
+    assert "if (!uat.count) continue;" not in labels
+    assert 'labelText(entry, "name", "label-name"' in js
+    assert "const nameWidth = estimateWidth(name, LABEL_PX.uat) + 8;" in labels
+    assert "offsetY: hasCount ? 7 : -3" in labels
+    assert "const offsetY = candidate.offsetY || 0;" in js
+    assert "state.uats.filter((uat) => uat.count > 0)" not in picker
+    assert "const uats = [...state.uats]" in picker
+    assert "if (collides) continue;" in js
 
 
 def test_uat_label_anchor_is_inside_the_polygon():
@@ -185,7 +216,7 @@ def test_map_has_location_breadcrumb_and_plain_language():
     assert 'id="map-breadcrumb"' in html
     assert "function updateBreadcrumb(" in js
     assert 'aria-current", "location"' in js
-    assert 'Orașe și comune cu știri în' in js
+    assert 'Orașe și comune din' in js
     assert 'UAT-uri cu știri în' not in js
     # Text unic de revenire (audit P2: trei texte diferite au devenit unul).
     assert 'state.backButton.textContent = "← Înapoi la România"' in js
@@ -268,15 +299,21 @@ def test_map_labels_are_real_text_with_minimum_pixel_sizes():
 
 
 def test_map_polygons_are_keyboard_and_screen_reader_reachable():
-    # Calea accesibila se PASTREAZA, nu se sacrifica pentru grafica: fiecare poligon e un
-    # element focusabil cu rol de buton si stare, deci se poate naviga si fara mouse.
+    # Calea accesibila se PASTREAZA, nu se sacrifica pentru grafica: fiecare județ este
+    # focusabil ca link spre pagina lui statică, iar tap-ul are o țintă transparentă >=24px.
     js = Path("static/harta-stiri/harta-stiri.js").read_text(encoding="utf-8")
-    assert 'role: "button"' in js
+    css = Path("static/harta-stiri/harta-stiri.css").read_text(encoding="utf-8")
+    assert 'role: "link"' in js
     assert 'tabindex: "0"' in js
-    assert '"aria-pressed", selected ? "true" : "false"' in js
+    assert '"data-href": countyRoute(county)' in js
+    assert "function openCountyRoute(county)" in js
+    assert "window.location.assign(countyRoute(county))" in js
+    assert "function renderCountyTargets(view)" in js
+    assert "const radius = 12 / scale" in js
+    assert ".map-county-hit" in css and "pointer-events:all" in css
     # Textul citit de cititorul de ecran vine din ACEEASI functie care da cifra de pe ecran
     # (inclusiv unitatea, in modul „pe locuitor"), deci vocea si harta nu pot spune altceva.
-    assert "node.setAttribute(\"aria-label\", `${judetLabel(county)}: ${cifra.bucata}`)" in js
+    assert "node.setAttribute(\"aria-label\", `${judetLabel(county)}: ${cifra.bucata}. Deschide pagina județului.`)" in js
     assert "function cifraJudet(county)" in js
     assert "la 100.000 de locuitori" in js
 
@@ -289,7 +326,7 @@ def test_map_outline_lives_in_its_own_layer():
     # din grosime la marginea județului.
     js = Path("static/harta-stiri/harta-stiri.js").read_text(encoding="utf-8")
     css = Path("static/harta-stiri/harta-stiri.css").read_text(encoding="utf-8")
-    assert 'for (const name of ["counties", "uats", "outline", "points", "labels"])' in js
+    assert 'for (const name of ["counties", "targets", "uats", "outline", "points", "labels"])' in js
     assert 'class: "map-outline"' in js
     assert "state.layers.outline.hidden = !showUats;" in js
     assert ".map-outline{fill:none;stroke:var(--map-stroke)" in css
