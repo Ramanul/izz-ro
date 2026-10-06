@@ -42,6 +42,10 @@
 - **Sesiune de LUCRU** (cod pe branch/PR): Alexandru o conectează la creare prin
   *Add files and connections* → `Ramanul/izz-ro`. Fără conectare, sesiunea are doar citire
   publică — atunci spune explicit în raport „nu am drept de scriere", nu improviza.
+  **Conectare automată la nivel de cont NU există pe platformă** (verificat 6 oct 2026:
+  UI + documentația Agent Mode + Arena). Continuările aceleiași lucrări merg pe sesiunea
+  existentă conectată („Keep working"); după merge/închiderea unui PR, sesiunea pierde
+  dreptul de push — reconectare sau sesiune nouă.
 - **Sesiune de ANALIZĂ/cercetare**: rămâne doar-citire publică — nu are nevoie de acces de
   scriere.
 - Dacă un livrabil rămâne blocat în workspace (fără push posibil): listează în raport
