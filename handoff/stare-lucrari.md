@@ -60,11 +60,8 @@ Arderea principală: cron pe sesiuni-grase (480k input × fiecare tură).
 Sesiunile noi citesc oricum memoria proiectului, deci textele sunt scurte:
 popun scop + pasul următor + garduri.
 
-### Sarcina D — Upgrade Windows 11 în VM Hyper-V „ZCode-VM"
-COPIAZĂ DIN AICI PÂNĂ LA SFÂRȘIT:
----
-Reiei upgrade-ul Windows 11 în VM-ul Hyper-V „ZCode-VM" (istoric complet în memory hv-vm-instalare-2026-10-04.md: 4 lansări eșuate cu coduri 0xC1900200/010E/010A; ISO-ul Win11 24H2 26100.8972 ro-ro e deja în guest; vTPM+SecureBoot ON; checkpoint „pre-win11-upgrade" există; taskul Win11Upgrade e dezarmat). Verifică întâi starea cu Get-VM pe host și dacă guest-ul pornește; apoi pasul următor din istoric: rulează setupprep /SkipSystemRequirementScans în guest (PS Direct sau sesiune interactivă). NU șterge checkpoint-ul, nu reformează VM-ul; dacă pică din nou, diagnostică cu codul exact înainte de orice altă încercare și raportează cu antet R4.
---- SARCINA D SE TERMINĂ AICI.
+### Sarcina D — Upgrade Windows 11 în VM Hyper-V „ZCode-VM" — ÎNCHISĂ 6 oct
+VM-ul „ZCode-VM" a fost ȘTERS complet la decizia explicită a lui Alexandru (6 oct: oprire + ștergere checkpoint-uri + Remove-VM + ștergere disc 38 GB; ~60 GB eliberați pe C:). Nu mai există nimic de upgrade-uit; NU recrea VM-ul și NU reiei această sarcină.
 
 ### Sarcina E — Portrete omonime (urmașii)
 COPIAZĂ DIN AICI PÂNĂ LA SFÂRȘIT:
