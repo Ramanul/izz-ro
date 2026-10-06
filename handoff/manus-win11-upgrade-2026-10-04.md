@@ -8,8 +8,9 @@ capturi de ecran** — totul prin PowerShell Direct. Host: ASUS X99 + Xeon E5-26
 (Broadwell, hardware NESUPORTAT oficial de Win11), 16 GB RAM, Hyper-V activ.
 
 ## Credențiale + acces
-- PS Direct: `Invoke-Command -VMName ZCode-VM -Credential Alexandru` — parola: `Alexandru2026`
-  (cont local, grup Administrators).
+- PS Direct: `Invoke-Command -VMName ZCode-VM -Credential Alexandru`
+  (cont local, grup Administrators). Parola NU se scrie în repo public —
+  redactată 6 oct (intrase în clar prin PR #458).
 - VM-ul rulează acum (nu o opri decât dacă procedura cere explicit).
 
 ## Config VM (setat și VERIFICAT azi)
