@@ -33,7 +33,8 @@
 
 ## 4. Sistemul din guest
 - **Windows 10 Pro 22H2, build 19045**, limba română.
-- Cont local: **Alexandru**, parola `Alexandru2026` (grup Administrators).
+- Cont local: **Alexandru** (grup Administrators). Parola NU se scrie în repo public —
+  redactată 6 oct (intrase în clar prin PR #458); o are Alexandru / memoria proiectului.
 - **Autologon permanent**: `HKLM\...\Winlogon` → AutoAdminLogon=1, DefaultUserName=Alexandru,
   DefaultDomainName=ZCode-VM, DefaultPassword stocat (reparat 4 oct seara — cel din instalare
   era cu contor și se epuizase; simptom: VM pornită, dar nimeni logat).
