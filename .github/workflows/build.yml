@@ -204,7 +204,10 @@ jobs:
             fi
             echo "::warning::push respins (incercarea $i) - reaplic peste origin/main"
             git fetch origin main
-            if ! git rebase --autostash origin/main; then
+            # -X theirs: la race cu alte push-uri, fisierele GENERATE (map.json e scris
+            # si de harta-data.yml) le castiga versiunea acestei rulari — e cea proaspata
+            # si consecventa cu articles.json ei; urmatoarea rulare le regenereaza oricum.
+            if ! git rebase --autostash -X theirs origin/main; then
               git rebase --abort
               echo "::error::conflict la rebase peste origin/main - continutul acestei rulari NU a fost publicat"
               exit 1
