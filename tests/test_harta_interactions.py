@@ -192,14 +192,18 @@ def test_map_has_location_breadcrumb_and_plain_language():
 def test_zoom_and_pan_are_keyboard_operable_and_documented():
     # Ghidurile de harti accesibile cer zoom+pan pe TOATE input-urile: sagețile deplaseaza
     # vederea pe grupul de controale, +/- schimba scara, iar nota de sub harta documenta
-    # interactiunile (rotita, dublu-click, tragere, tastatura, gesturi).
+    # interactiunile (rotita, dublu-click, tragere, tastatura). Nota mobila documenteaza
+    # doar ce exista: un deget deruleaza, mărirea e din butoane — textul vechi promitea
+    # pinch («două degete») pe care JS-ul nu-l implementeaza (plan D3, Arena 6 oct).
     js = Path("static/harta-stiri/harta-stiri.js").read_text(encoding="utf-8")
     html = Path("static/harta-stiri/index.html").read_text(encoding="utf-8")
     assert 'zoomBox.addEventListener("keydown"' in js
     assert 'zoomBox.setAttribute("role", "group")' in js
     assert "function announceZoom(" in js
     assert "săgețile" in html
-    assert "două degete" in html
+    assert "două degete" not in html
+    assert "un deget derulează pagina" in html
+    assert "butoanele + și −" in html
 
 
 def test_lista_harti_nu_linkuieste_inregistrarile_fara_slug():

@@ -627,6 +627,14 @@
       const p = mapPointFromEvent(event);
       zoomTo(state.userZoom.k * Math.exp(-event.deltaY * 0.0016), p);
     }, { passive: false });
+    // Escape inchide tooltipul, nimic altceva: hover-ul nu are focus (vine din
+    // pointermove), deci prindem la nivel de document. Selectia si URL-ul raman neatinse.
+    document.addEventListener("keydown", (event) => {
+      if (event.key !== "Escape") return;
+      const tip = state.tip;
+      if (!tip || tip.hidden) return;
+      clearShapeHover();
+    });
   }
 
   function shapeFromEvent(event) {
@@ -2234,7 +2242,17 @@
   }
 
   function resetAll() {
-    applyState({ level: "all", viewMode: "events", region: null, county: null, locality: null, query: "" });
+    // „Resetează filtrele" revine la starea canonică completă, inclusiv scara:
+    // culoarea hărții e parte din filtre (scara=locuitori schimbă semnificația
+    // culorilor), deci un reset care o lasă pe „locuitori" lasă harta altfel decât
+    // la o intrare proaspătă. O singură intrare de istoric: applyState fără push,
+    // scara fără push, apoi un singur push cu starea finală.
+    // Plan de remediere D4 (Arena, 6 oct).
+    const eraPeLocuitori = state.scaleMode === "locuitori";
+    applyState({ level: "all", viewMode: "events", region: null, county: null,
+                 locality: null, query: "" }, { push: false });
+    if (eraPeLocuitori) setScaleMode("volum", { push: false });
+    history.pushState({}, "", urlForState());
   }
 
   // Comutarea pe „pe locuitor" are nevoie de numitor: se incarca o singura data, iar daca
