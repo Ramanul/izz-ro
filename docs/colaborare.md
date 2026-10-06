@@ -56,7 +56,8 @@
 
 - **Șablon de brief** (prima linie obligatorie, scrisă în `AGENTS.md` § Arena):
   „Citește mai întâi `docs/colaborare.md` din `Ramanul/izz-ro`; citează SHA-ul fișierului
-  în răspuns." URL direct:
+  în răspuns." SHA-ul citat = **SHA-ul complet al commitului** (și blob-ul fișierului, dacă
+  e disponibil), împreună cu **data verificării**. URL direct:
   `https://github.com/Ramanul/izz-ro/blob/main/docs/colaborare.md`
 - **Fallback**: dacă citirea publică e blocată în sesiunea ta, ceri textul condensat;
   răspunsul marchează „bazat pe paste, neverificat contra repo". Dacă nu ai nici textul,
