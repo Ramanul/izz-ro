@@ -1924,6 +1924,16 @@
     return query ? `${location.pathname}?${query}` : location.pathname;
   }
 
+  // Cheia judetului din URL se normalizeaza la forma canonica din date (majuscule,
+  // fara spatii) si se accepta doar daca judetul exista: un link partajat cu
+  // judet=alba (minuscule) sau judet=nu-exista deschide harta nefiltrata, nu tace
+  // selectand nimic. Plan de remediere D5 (Arena, 6 oct).
+  function judetDinUrl(valoare) {
+    const cheie = (valoare || "").trim().toUpperCase();
+    if (!cheie) return null;
+    return state.counties && cheie in state.counties ? cheie : null;
+  }
+
   function stateFromUrl() {
     const params = new URLSearchParams(location.search);
     const loc = params.get("loc");
@@ -1931,7 +1941,7 @@
       level: params.get("nivel") || "all",
       viewMode: params.get("mod") === "articles" ? "articles" : "events",
       region: params.get("regiune") || null,
-      county: params.get("judet") || null,
+      county: judetDinUrl(params.get("judet")),
       locality: loc ? loc.split("|").filter(Boolean) : null,
       uat: params.get("uat") || null,
       query: params.get("q") || "",
@@ -2020,6 +2030,19 @@
         action: () => applyState({ region: state.selectedRegion, county: null, locality: null, uat: null }),
         current: !state.selectedCounty && !state.selectedUat,
       });
+    }
+    if (state.selectedCounty && !state.selectedRegion) {
+      // Intrare directa pe județ (link cu judet=, fara regiune in adresa): firul arata
+      // ierarhia completa România › Regiune › Județ, cu regiunea inferata din date si
+      // clickabila. Plan de remediere D5 (Arena, 6 oct).
+      const regiune = regionForCounty(state.selectedCounty);
+      if (regiune) {
+        trail.push({
+          label: regiune,
+          action: () => applyState({ region: regiune, county: null, locality: null, uat: null }),
+          current: false,
+        });
+      }
     }
     if (state.selectedCounty) {
       trail.push({
