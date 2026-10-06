@@ -92,6 +92,20 @@ def county_label(p, code):
       return table[code] || code;
     }""", code)
 
+def _vb(p):
+    """viewBox-ul scenei ca [x, y, w, h], asteptand randarea: renderMap poate rescrie
+    svg-ul asincron dupa reset/zoom, iar citirea oarba prinde un svg fara viewBox.
+    Despartirea se face in Python — String.split() fara separator in JS intoarce tot
+    sirul, nu fragmentele (capcana prinsa live la aceasta garda)."""
+    p.wait_for_function(
+        "() => { const s = document.querySelector('#map svg.map-svg');"
+        " return s && s.getAttribute('viewBox'); }", timeout=5000)
+    raw = p.evaluate(
+        "() => { const s = document.querySelector('#map svg.map-svg');"
+        " return s ? s.getAttribute('viewBox') : ''; }")
+    return [float(v) for v in str(raw).split()]
+
+
 def county_selected(p):
     """Butonul '<- Toate judetele' e ascuns exact cand state.selectedCounty e null."""
     return p.evaluate("() => { const b = document.querySelector('.map-back'); return !!b && !b.hidden; }")
@@ -755,7 +769,10 @@ def breadcrumb(p):
     county = p.evaluate("() => new URLSearchParams(location.search).get('judet')")
     current1 = p.evaluate("() => document.querySelector('#map-breadcrumb .crumb-current')?.textContent?.trim()")
     buttons1 = p.evaluate("() => [...document.querySelectorAll('#map-breadcrumb button')].map(b => b.textContent.trim())")
-    check(current1 == county and "România" in buttons1,
+    # URL-ul poarta cheia canonica (ALBA), firul eticheta umana (Alba) — comparatie
+    # key->label, nu key->key (G3, plan de remediere Arena 6 oct).
+    eticheta = county_label(p, county) if county else None
+    check(bool(county) and current1 == eticheta and "România" in buttons1,
           f"firul arata traseul: România clickabil, judetul e pozitia curenta (butone={buttons1}, curent='{current1}')")
 
     p.click("#county-picker button[data-uat]")
@@ -771,7 +788,8 @@ def breadcrumb(p):
           f"click pe nivelul judet din fir anuleaza unitatea, pastreaza judetul ('{search}')")
     # Nivelul curent revine la judet, iar România e din nou buton clickabil.
     current2 = p.evaluate("() => document.querySelector('#map-breadcrumb .crumb-current')?.textContent?.trim()")
-    check(current2 == county, f"firul revine pe judet ca pozitie curenta ('{current2}')")
+    check(current2 == county_label(p, county),
+          f"firul revine pe judet ca pozitie curenta ('{current2}')")
     # Limbaj de utilizator in etichete, nu jargon administrativ (audit harta, P2).
     picker_label = p.evaluate("() => document.querySelector('#county-picker')?.getAttribute('aria-label') || ''")
     check("UAT" not in picker_label, f"eticheta selectorului nu mai foloseste jargonul ('{picker_label}')")
@@ -828,20 +846,20 @@ def zoom_interactiv(p):
     check(zoomed["n"] >= before["n"] * 1.5,
           f"rotita mareste harta ({before['n']} -> {zoomed['n']} px² de harta)")
 
-    # (b) pan prin tragere misca scena, fara sa selecteze nimic. Pan MIC (48px) ca compozitia
-    # de buline sa ramana stabila: centroidul se translazeaza proportional cu drag-ul, dar
-    # marginea de zgomot e reala (buline schimba setul la margini), deci fereastra 15-95px.
+    # (b) pan prin tragere misca vederea (viewBox), fara sa selecteze nimic. La zoom aproape
+    # de 1:1 clamp-ul limiteaza legal deplasarea, deci masuram viewBox (unitati hartă), nu
+    # pixeli de ecran cu fereastra de zgomot — garda veche astepta 15-95px indiferent de
+    # zoom (G1, plan de remediere Arena 6 oct).
+    vb0 = _vb(p)
     p.mouse.move(cx, cy)
     p.mouse.down()
     p.mouse.move(cx - 48, cy - 24, steps=6)
     p.mouse.up()
     p.wait_for_timeout(300)
-    panned = gold_pixels(p)
-    dx = panned["cx"] - zoomed["cx"]
-    dy = panned["cy"] - zoomed["cy"]
-    shift = (dx * dx + dy * dy) ** 0.5
-    check(15 < shift < 95,
-          f"pan-ul misca scena la zoom (centroid mutat cu {shift:.0f}px la drag de 54px)")
+    vb1 = _vb(p)
+    misca = abs(vb1[0] - vb0[0]) + abs(vb1[1] - vb0[1])
+    check(misca > 0.5,
+          f"pan-ul misca vederea la zoom (viewBox x+y mutat cu {misca:.1f} unitati la drag)")
     check(not county_selected(p), "pan-ul prin tragere NU selecteaza un judet")
 
     # (c) butonul reset revine la scara de baza
@@ -855,15 +873,18 @@ def zoom_interactiv(p):
     check(p.evaluate("() => document.querySelector('.map-zoom button[aria-label=\"Resetează zoom-ul hărții\"]').hidden"),
           "resetul dispare la scara 1:1")
 
-    # (d) dublu-click mareste; butonul minus scade
+    # (d) dublu-click mareste; butonul minus scade. Masura: latimea viewBox-ului —
+    # gold_pixels artefacteaza la zoom extrem (barele judetelor ies/limiteaza la fereastra
+    # scenei), viewBox-ul e metrica obiectiva (G2, plan de remediere Arena 6 oct).
+    w0 = _vb(p)[2]
     p.mouse.dblclick(cx, cy)
     p.wait_for_timeout(300)
-    dbl = gold_pixels(p)
-    check(dbl["n"] >= before["n"] * 1.5, f"dublu-click mareste ({before['n']} -> {dbl['n']})")
+    w1 = _vb(p)[2]
+    check(w1 < w0 * 0.9, f"dublu-click mareste (viewBox latime {w0:.0f} -> {w1:.0f})")
     p.click(".map-zoom button[aria-label=\"Îndepărtează harta\"]")
     p.wait_for_timeout(300)
-    minus = gold_pixels(p)
-    check(minus["n"] < dbl["n"], f"butonul minus micsoreaza ({dbl['n']} -> {minus['n']})")
+    w2 = _vb(p)[2]
+    check(w2 > w1 * 1.05, f"butonul minus micsoreaza zoom-ul (viewBox latime {w1:.0f} -> {w2:.0f})")
 
     # (e) starea dezactivata e expusa programatic: minus la scara 1:1
     p.click(".map-zoom button[aria-label=\"Resetează zoom-ul hărții\"]")
