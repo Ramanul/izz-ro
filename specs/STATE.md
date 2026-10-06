@@ -11,6 +11,11 @@
 **Updated:** 2026-10-03 (IZZ-0415 CI pe eșantion prin #407; IZZ-0416 media cardurilor PD/CC0 prin #414; IZZ-0420 marcaj AI Act în #411; protecțiile main verificate prin API [IZZ-0417]; audit extern triat + rezolvat prin #425, #426 [IZZ-0426])
 
 ## Open
+- **Harta: OpenFreeMap sub SVG, fallback fără WebGL (#445 DESCHIS):** implementare Arena (patch),
+  aplicat + verificat de ZCode (78 pytest, jsdom 26/26, render-only, Chrome real incl. fallback).
+  Următorul pas: merge → live.
+- **Audit extern 4 oct — gardă diacritice, semnătură editorială (#438 DESCHIS de 38h):** de triat:
+  merge sau închidere, la decizia proprietarului.
 - **Audit extern 3 oct — ÎNCHIS [IZZ-0426]** (#425 merged, #426 merged) · **`ai_gateway` pe main** (#390 merged, #387 merged): $0, cheile în `.env`.
 - **PWA + alerte push [IZZ-0430, IZZ-0431] — PR DESCHIS, fără merge:** SW la `/sw.js`, buton instalare fix, alerte VAPID în KV. **Blochează pe tine:** namespace KV + 4 secrete (`infra/PUSH-SETUP.md`); fără ele rutele dau 503 și site-ul merge ca azi.
 - **Pages `izz-ro` ZOMBI — CONFIRMAT ȘTERS [IZZ-0411]:** `izz-ro.pages.dev` returnează `000` [IZZ-0366, 0395].
