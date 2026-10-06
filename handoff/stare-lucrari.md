@@ -159,3 +159,19 @@ Citește răspunsul Arenei la review-ul sistemului de economie de context (chatu
   de diagnosticat în Sarcina G cu toate piesele pregătite.
 - Curl direct pe Gemini funcționează perfect cu cheile noi (200 pe
   gemini-flash-latest) — doar integrarea în CLI zcode mai cere o diagnoză.
+
+## 12. INCENDIU 6 OCT DIMINEAȚĂ — 85,6M tokeni în 3 ore (investigat cu date din model_usage)
+- Focar 1: senzorul „subțire" RECREAT de automatizarea veche (a00c540f, creat 06:37)
+  pe sesiune grasă ~370k/tură + buclă auto-continuare (re-încercări la fiecare ~20s,
+  370k × N). ȘTERS. Amplificatorul (hook Stop auto-continuare) DEZACTIVAT în
+  setting.json + config.json (re-activare doar conștientă).
+- Focar 2: sesiunea managerului (aceasta) — 29,5M toată noaptea, ~400k/tură.
+  SE ÎNCHEIE AICI: orice lucru continuu merge prin Sarcinele A-G din fișier, în
+  sesiuni noi. Sesiunea managerului = doar decizii, maxim 2-3 ture.
+- Focar 3: sesiunea „întreabă arena ce lucrează" — 24,9M (127 cereri). Nu o pot
+  opri din cod (e a lui Alexandru); fără auto-continuare, bucla moare singură.
+- LECȚIA SISTEMICĂ: garda pe praguri nu prinde clasa „automatizare se recreează
+  singură moștenind sesiune grasă" + „amplificator de retry". Reguli noi scrise:
+  (a) automatizările NU se recreează niciodată dintr-o tură de automatizare;
+  (b) orice sarcină mecanică => script determinist, nu agent AI;
+  (c) sesiunile interactive de management = max ~5-6 ture apoi New task.
