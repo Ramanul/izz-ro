@@ -582,6 +582,15 @@ def felia2_localitate(p):
         for j in range(1, 13):
             p.mouse.click(zr["x"] + zr["w"] * i / 13, zr["y"] + zr["h"] * j / 13)
             p.wait_for_timeout(35)
+            if p.evaluate("() => location.pathname") != "/harta/":
+                # felia 2 #448: un click din grila a nimerit un judet vecin vizibil si a angajat
+                # ruta; revenim pe harta nationala si reluam cautarea, nu abandonam verificarea.
+                goto_base(p)
+                p.click("#county-picker button[data-county]")
+                p.wait_for_timeout(45)
+                before = panel_count(p)
+                zr = stage_rect(p)
+                continue
             if panel_count(p) != before:
                 found = True
                 break
@@ -916,18 +925,23 @@ def zoom_interactiv(p):
     # gold_pixels artefacteaza la zoom extrem (barele judetelor ies/limiteaza la fereastra
     # scenei), viewBox-ul e metrica obiectiva (G2, plan de remediere Arena 6 oct).
     w0 = _vb(p)[2]
-    p.mouse.dblclick(cx, cy)
+    # felia 2 #448: dublu-clickul pe harta nationala nu mai ajunge la zoom -- primul click
+    # angajeaza ruta judetului, deci masuram marirea pe butonul plus (aceeasi intrebare:
+    # scena poate fi marita de utilizator).
+    p.click(".map-zoom button[aria-label=\"Apropie harta\"]")
     p.wait_for_timeout(300)
     w1 = _vb(p)[2]
-    check(w1 < w0 * 0.9, f"dublu-click mareste (viewBox latime {w0:.0f} -> {w1:.0f})")
+    check(w1 < w0 * 0.9, f"butonul plus mareste (viewBox latime {w0:.0f} -> {w1:.0f})")
     p.click(".map-zoom button[aria-label=\"Îndepărtează harta\"]")
     p.wait_for_timeout(300)
     w2 = _vb(p)[2]
     check(w2 > w1 * 1.05, f"butonul minus micsoreaza zoom-ul (viewBox latime {w1:.0f} -> {w2:.0f})")
 
-    # (e) starea dezactivata e expusa programatic: minus la scara 1:1
-    p.click(".map-zoom button[aria-label=\"Resetează zoom-ul hărții\"]")
-    p.wait_for_timeout(250)
+    # (e) starea dezactivata e expusa programatic: minus la scara 1:1. Dupa pasul plus+minus
+    # hartaa poate fi deja la scara 1:1 (resetul ascuns), deci nu mai clickuim un buton disparut.
+    if not p.evaluate("() => document.querySelector('.map-zoom button[aria-label=\"Resetează zoom-ul hărții\"]').hidden"):
+        p.click(".map-zoom button[aria-label=\"Resetează zoom-ul hărții\"]")
+        p.wait_for_timeout(250)
     out = p.evaluate("""() => {
       const b = document.querySelector('.map-zoom button[aria-label=\"Îndepărtează harta\"]');
       return { disabled: b.disabled, aria: b.getAttribute('aria-disabled') };
@@ -1041,23 +1055,20 @@ def mobil_390(p):
 def main():
     with sync_playwright() as pw:
         br = pw.chromium.launch(args=["--no-sandbox"])
-        p = br.new_page(viewport={"width": 1280, "height": 900})
+        p = br.new_page(viewport={"width": 1280, "height": 1200})
         p.goto(BASE, wait_until="networkidle")
         p.wait_for_selector("#news-list li", timeout=15000)
         felia1_lista(p)
         felia7_cautare(p)
         felia4_hittest(p)
-        hit_ordin_fara_furt(p)
-        hover_preview(p)
-        click_zona_fara_stiri(p)
-        scara_si_numitor(p)
-        felia2_localitate(p)
-        felia5_county_picker(p)
-        felia6_url(p)
-        zoom_interactiv(p)
-        tastatura_pan_zoom(p)
-        uat_selectie(p)
-        breadcrumb(p)
+        # felia 2 #448: clickul pe poligon angajează ruta județului, deci orice secțiune care
+        # clipează harta poate schimba documentul. Fiecare secțiune pornește deci de pe harta
+        # națională; navigarea intenționată (felia 2, click_zona) are goto_base propriu la final.
+        for sec in (hit_ordin_fara_furt, hover_preview, click_zona_fara_stiri, scara_si_numitor,
+                    felia2_localitate, felia5_county_picker, felia6_url, zoom_interactiv,
+                    tastatura_pan_zoom, uat_selectie, breadcrumb):
+            goto_base(p)
+            sec(p)
 
         mob = br.new_page(viewport={"width": 390, "height": 844}, is_mobile=True, has_touch=True)
         mob.goto(BASE, wait_until="networkidle")
