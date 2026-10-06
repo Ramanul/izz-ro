@@ -2027,12 +2027,15 @@ def _write_headers() -> None:
     # ad_Storage:'denied'; lasandu-l in afara CSP, browserul il blocheaza si daca
     # flagul ala regreseaza. NU-l adauga la img-src "ca sa nu mai dea eroare".
     # Cloudflare Bot Fight Mode injecteaza pe live un bootstrap inline `__CF$cv$params`.
-    # Nu folosim `unsafe-inline`: cele doua hash-uri sunt variantele observate ale acelui
-    # bootstrap, permise explicit si nimic altceva. Daca Cloudflare il schimba din nou,
-    # Lighthouse va semnala incidentul, ceea ce e preferabil deschiderii globale a CSP-ului.
+    # Nu folosim `unsafe-inline`: hash-urile de mai jos sunt variantele observate ale
+    # acelui bootstrap, permise explicit si nimic altceva. Daca Cloudflare il schimba
+    # din nou, Lighthouse va semnala incidentul, ceea ce e preferabil deschiderii
+    # globale a CSP-ului.
     csp = ("default-src 'self'; "
            "script-src 'self' 'sha256-DzqzfYrgtaakHyuPGKa5knFv5IoTaJszzL9Fca3521M=' "
            "'sha256-LXd89R0ZNPfUJLyGqvxXmhTIA1mSPILGag0zh9noF7U=' "
+           # varianta 3, observata live 2026-10-06 (semnalata de errors-in-console)
+           "'sha256-u+Sixs2Pv/bm51HGgEAqEWUEVmE93Ud0CG0uijDq2GI=' "
            "https://static.cloudflareinsights.com https://www.googletagmanager.com "
            "https://*.clarity.ms; "
            "style-src 'self' 'unsafe-inline'; "
