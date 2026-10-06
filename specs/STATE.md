@@ -11,6 +11,7 @@
 **Updated:** 2026-10-03 (IZZ-0415 CI pe eșantion prin #407; IZZ-0416 media cardurilor PD/CC0 prin #414; IZZ-0420 marcaj AI Act în #411; protecțiile main verificate prin API [IZZ-0417]; audit extern triat + rezolvat prin #425, #426 [IZZ-0426])
 
 ## Open
+- **PR-uri deschise: #445 harta OpenFreeMap sub SVG (implementare Arena, verificat ZCode — așteaptă merge); #438 audit extern, deschis de 38h (de triat: merge sau închidere).**
 - **Audit extern 3 oct — ÎNCHIS [IZZ-0426]** (#425 merged, #426 merged) · **`ai_gateway` pe main** (#390 merged, #387 merged): $0, cheile în `.env`.
 - **PWA + alerte push [IZZ-0430, IZZ-0431] — PR DESCHIS, fără merge:** SW la `/sw.js`, buton instalare fix, alerte VAPID în KV. **Blochează pe tine:** namespace KV + 4 secrete (`infra/PUSH-SETUP.md`); fără ele rutele dau 503 și site-ul merge ca azi.
 - **Pages `izz-ro` ZOMBI — CONFIRMAT ȘTERS [IZZ-0411]:** `izz-ro.pages.dev` returnează `000` [IZZ-0366, 0395].
@@ -18,10 +19,9 @@
   `covers.py` editorial. **Marcaj AI Act la prima expunere [IZZ-0420]:** trust-label «generat automat» pe card +
   meta digitalSourceType + pictograma UE Basic — amendament §4.3 adoptat, veto neexercitat [IZZ-0423].
 - **PRODUS P3 — harta: markere fără ierarhie vizuală [IZZ-0405]:** 482 evenimente, clickuri cablate; e afordanța, nu funcția.
-- **FEREASTRA TTL — DECIZIE EXECUTATĂ [IZZ-0421, 0424, 3 oct]:** tripwire-ul a crapat pe starea reală
-  (20.543 în fereastră vs 12.600, după ce #408 (merged) a adus datele reale); TTL 20 → 11, apoi 12 după
-  tăietura a 4 surse tech-en fără vizitatori măsurați (Q5). Marja actuală: 10.665 în fereastră (~2 zile).
-  Se re-evaluează la 13 când ingestul median coboară sub ~900/zi (automatizare lunară activă).
+- **FEREASTRA TTL — DECIZIE EXECUTATĂ [IZZ-0421, 0424, 3 oct]:** TTL 20 → 11 → 12 (tripwire crăpat pe
+  starea reală + tăietura a 4 surse tech-en, Q5). Marja: 10.665 (~2 zile). Re-evaluare la 13 când
+  ingestul median coboară sub ~900/zi (automatizare lunară activă).
 - **Free-readiness — gazda ÎNCĂ PAID până 22 sep [IZZ-0313]:** [IZZ-0386, 0391, 0399] [IZZ-0421, 0424].
 - **`izz-failover` — KEEP [IZZ-0362]; marja NECUNOSCUTĂ [IZZ-0367, 0369]:** ambele cifre publicate retrase.
 - **REDUNDANȚA — ÎNCHISĂ [IZZ-0370 → IZZ-0373]:** `BUILD_COMMIT_SHA` în jobul `mirror`, #347 merged. **RECIDIVE —

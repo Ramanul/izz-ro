@@ -151,6 +151,7 @@ def test_buildul_atentioneaza_dar_nu_cade_pe_sluguri_gole(tmp_path, monkeypatch,
     """Dupa IZZ-0422, moderarea se aplica inainte de localizare, deci un articol cu URL
     dar fara slug e abatere moderare/assign_slugs, nu o stare legitima. Build-ul o
     raporteaza, dar NU esueaza: harta-stiri.js o randeaza ca text simplu, nu ca ancora."""
+    import json
     harta_data.OUT = str(tmp_path / "map.json")
     real_load = harta_data.load_json
 
@@ -165,6 +166,10 @@ def test_buildul_atentioneaza_dar_nu_cade_pe_sluguri_gole(tmp_path, monkeypatch,
     assert harta_data.main() == 0
     assert "fara slug" in capsys.readouterr().out
     assert (tmp_path / "map.json").exists()
+    published_projection = json.loads((tmp_path / "projection.json").read_text(encoding="utf-8"))
+    source_projection = json.loads(Path(harta_data.LOCALITIES).read_text(encoding="utf-8"))
+    assert published_projection["source_crs"] == source_projection["source_crs"] == "EPSG:4326"
+    assert published_projection["projection"] == source_projection["projection"]
 
 
 def test_buildul_exclude_articolele_ascunse_de_moderare(tmp_path, monkeypatch, capsys):

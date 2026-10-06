@@ -97,6 +97,18 @@ async function verificariStructura() {
   const judete = $$("#map svg.map-svg .layer-counties path");
 
   check($("#map svg.map-svg") !== null, "scena e un <svg> (nu <canvas>)");
+  const stageChildren = [...$(".map-stage").children];
+  check(stageChildren[0]?.classList.contains("map-basemap-viewport")
+      && stageChildren[1]?.classList.contains("map-svg"),
+    "viewportul MapLibre stă sub SVG, fără să schimbe straturile tematice");
+  check($(".map-basemap-viewport")?.getAttribute("aria-hidden") === "true",
+    "basemapul decorativ este ascuns tehnologiilor asistive");
+  check(cereri.filter((url) => url.includes("/data/projection.json")).length === 1,
+    "metadatele proiecției sunt cerute o singură dată");
+  check($("#map-basemap-status")?.hidden === false,
+    "fără WebGL în jsdom, mesajul de fallback apare iar harta rămâne randată");
+  check(!$(".map-stage").classList.contains("has-basemap"),
+    "fallbackul păstrează umplerea SVG opacă");
   check(judete.length === 42, `42 de județe ca <path> (${judete.length})`);
   check(judete.every((n) => n.getAttribute("tabindex") === "0"
       && n.getAttribute("role") === "button" && n.getAttribute("aria-pressed") !== null),

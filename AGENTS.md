@@ -89,6 +89,6 @@ in ZCode's in-app browser (login: his `andifreelancer2` account). Agreed roles (
   Fallback: dacă citirea publică e blocată în sesiunea ei, trimite protocolul condensat
   în brief. Protocolul complet (roluri, 4 stări de verificare, handoff, poarta de merge,
   procedura de repo-conectare): `docs/colaborare.md` pe main.
-- Channel mechanics + sensor state: see memory files `arena-chat-channel-live.md` and
-  `arena-zcode-live-sensor-2026-10-05.md`, plus `sonde/arena-chat-state.json`. A ZCode
-  restart kills the Arena tab + sensor + beacon server — remount on Alexandru's "reinjectează".
+- Channel mechanics + sensor state: protocolul e în `docs/colaborare.md`; starea live a canalului
+  o ține sesiunea principală ZCode (memoria ei locală, nu repo-ul). A ZCode restart kills the
+  Arena tab + sensor + beacon server — remount on Alexandru's "reinjectează".

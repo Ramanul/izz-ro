@@ -211,15 +211,44 @@ def test_lista_harti_nu_linkuieste_inregistrarile_fara_slug():
     assert "a.href = articleUrl(item);" not in js
 
 
-def test_map_substrate_has_no_third_party_scripts():
-    # 0 lei si fara biblioteci: un singur script, al nostru; fara import-uri externe, fara
-    # framework de harti. Contractul cere ≤ 70 KB gzip pe client (vezi propunerea, 4.7).
+def test_map_substrate_has_local_basemap_modules_only():
+    # Basemapul este decorativ: codul MapLibre rămâne same-origin, iar numai dalele
+    # vectoriale sunt cerute de la OpenFreeMap. Nu se adaugă script CDN.
     html = Path("static/harta-stiri/index.html").read_text(encoding="utf-8")
     js = Path("static/harta-stiri/harta-stiri.js").read_text(encoding="utf-8")
     assert html.count("<script") == 1
     assert "/static/harta-stiri/harta-stiri.js" in html
+    assert "/static/harta-stiri/vendor/maplibre/maplibre-gl.css" in html
+    assert 'import("./basemap-camera.mjs")' in js
+    assert 'import("./vendor/maplibre/maplibre-gl.mjs")' in js
     assert "from \"https://" not in js and "from 'https://" not in js
-    assert "import(" not in js
+
+
+def test_openfreemap_is_behind_svg_and_falls_back_without_webgl():
+    html = Path("static/harta-stiri/index.html").read_text(encoding="utf-8")
+    js = Path("static/harta-stiri/harta-stiri.js").read_text(encoding="utf-8")
+    css = Path("static/harta-stiri/harta-stiri.css").read_text(encoding="utf-8")
+    assert 'basemapViewport.className = "map-basemap-viewport"' in js
+    assert 'basemapViewport.setAttribute("aria-hidden", "true")' in js
+    assert js.index("stage.appendChild(basemapViewport)") < js.index("stage.appendChild(svg)")
+    assert "interactive: false" in js
+    assert "function failBasemap(error)" in js
+    assert 'typeof window.WebGLRenderingContext === "undefined"' in js
+    assert 'state.stage.classList.toggle("has-basemap"' in js
+    assert "Math.min(rect.width / view.width, rect.height / view.height)" in js
+    assert 'viewport.style.right = "auto"' in js
+    assert "fill-opacity:var(--map-thematic-opacity)" in css
+    assert 'id="map-basemap-status"' in html
+    assert 'class="map-basemap-attribution"' in html
+    assert "basemapContainer.appendChild" not in js
+
+
+def test_openfreemap_csp_allows_only_the_tile_host_and_local_worker_bootstrap():
+    source = Path("generator/render.py").read_text(encoding="utf-8")
+    csp = source.split("csp =", 1)[1].split("_write(", 1)[0]
+    assert "img-src 'self' data: https://tiles.openfreemap.org" in csp
+    assert "connect-src 'self' https://tiles.openfreemap.org" in csp
+    assert "worker-src 'self' blob:" in csp
 
 
 def test_map_labels_are_real_text_with_minimum_pixel_sizes():
