@@ -50,3 +50,11 @@ data/raport_copiere.jsonl
 node_modules/
 package.json
 package-lock.json
+
+# Freelancing NISHIAI — date de prospectare private (lead-uri, preturi, contacte). NICIODATA pe repo public.
+freelancing/
+
+# Artefacte locale de lucru: build de pipeline, capturi de verificare, sonde (continua chei API) — NICIODATA pe repo public.
+build/
+shots/
+sonde/

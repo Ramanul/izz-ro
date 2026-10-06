@@ -214,7 +214,7 @@ Citește răspunsul Arenei la review-ul sistemului de economie de context (chatu
 
 ### Sarcini deschise reale, extrase din cele 15 sesiuni arhivate + 4 grase (ordine recomandată: întâi ce se vede la cititor)
 1. **Audit web-perf pe izz.ro** (Core Web Vitals + Lighthouse) — singurul task deschis de substanță, neacoperit altundeva. Propun: rularea directă cu skill-ul `web-perf` + audit local (`source-command-audit`), raport cu scoruri vs baseline; ~30 min, cost = contextul turei.
-2. **VM ZCode-VM: Guest Additions + configurare finală „ca un om"** — ZCode în VM e deja conectat (memorie 4 oct, 16:09); de verificat dacă Guest Additions s-au instalat (rezoluție/clipboard/mouse) și restul listei; ~20 min dacă e totul bun.
+2. (ÎNCHIS 6 oct — Alexandru confirmă că funcționează, nu se mai verifică) **VM ZCode-VM: Guest Additions + configurare finală „ca un om"** — ZCode în VM e deja conectat (memorie 4 oct, 16:09); de verificat dacă Guest Additions s-au instalat (rezoluție/clipboard/mouse) și restul listei; ~20 min dacă e totul bun.
 3. **Decizie de produs (a lui Alexandru, nu task): nota tooltip pentru exclavele ANCPI** (Mărașu/Brăila „de 2 ori") — diagnosticul e închis (poligoane oficiale); rămâne doar dacă/nota apare în tooltip.
 - Depășite (de nu le reia nimeni): todo-urile din „Raport 10 ore" (harta #440 + basemap #445 merged, portrete confirmate live, raportul livrat), „Verificare live pipeline Kennedy" (poze 200 confirmate § 13), diagnosticul Mărașu (închis — nu e defect), „bloc paste-ready Arena" (livrat 4 oct), „raport final consolidat" (senzorul e șters, înlocuit de mecanismele de sus).
 
@@ -244,3 +244,82 @@ Citește răspunsul Arenei la review-ul sistemului de economie de context (chatu
 - `.env` (chei AI, copiat temporar din wt-gw pt. rulare locala) a fost STERS dupa
   utilizare. `.gitignore`-ul modificat de Alexandru (regula `freelancing/`) ramane
   neatins, necomitat.
+
+## 15. plecare 3 ore (6 oct ~09:50) — ce merge singur + ce a fost construit
+
+### Cererea lui Alexandru: situația Google trimisă Arenei → plan comun → implementare (APROBAT ciclul)
+- Issue **#449** (https://github.com/Ramanul/izz-ro/issues/449): inventar Google gratuit + prioritate propusă (1 cercetare grounding, 2 extracție structured output pipeline, 3 veghe Apps Script în nor, 4 BigQuery+GSC) + problema compozitorului blocat. Ping trimis și în chat.
+- **Veghe armată `ArenaPlan-Watcher`** (Task Scheduler, 15 min, 0 tokeni): la răspuns nou de la Arena pe #449 → extrage în `sonde/arena-plan-449.md` → pornește O CONTINUARE HEADLESS unică (`sonde/prompt-continuare-449.txt`, agent proaspăt pe mediul principal `node zcode.cjs -p`, timeout 25 min, buget ~200k, branch nou, fără main fără Google account) → toast. Se dezarmează singură (`sonde/veghe-449-state.json`). Log: `sonde/veghe-449.log`, output continuare: `sonde/continuare-449.log`.
+- Dacă la întoarcere toast/flag: citește `sonde/arena-plan-449.md` + `sonde/continuare-449.log` + § 16 (dacă există) — implementarea e făcută sau parțial făcută de agentul headless; decizia de merge rămâne a ta.
+
+### Construit și testat în fereastra asta (piese de plumb, indiferent de planul Arenei)
+- `sonde/cercetare_gemini.py` — cercetare prin grounding Google Search pe API gratuit; **transport pe curl.exe** (urllib e spart de un filtru de sistem: „virtual_file.log"; curl.exe merge, HTTP 200 confirmat). Fail-closed pe chei multiple.
+- `sonde/extragere_structurata.py` — JSON garantat prin responseSchema (titlu/sumar/etichete/data/localități/importanță), același transport.
+- STARE COTĂ la testare (~09:40): text = 200 OK la test simplu, apoi 503 „high demand"; grounding = 429 „quota exceeded" pe ambele chei. Sondele sunt corecte dar NEPROBATE cap-coadă pe un apel de succes — prima rulare reușită calibrează cotele reale.
+- Descoperit: headless CLI pe mediu izolat (`.zcode-headless`) e căzut (AI_APICallError — re-confirmat 6 oct dimineața); continuarea merge pe mediul principal cu sesiune proaspătă.
+- Soluția compozitorului blocat: click real la coordonate (CUA) pe „Keep working"; click DOM sintetic + Escape NU funcționează; reload nu ajută (stare server). Documentat în #449 + stare canal.
+
+### Interzis în continuare (disciplină)
+- Apps Script/BigQuery pe contul Google al lui Alexandru — abia la întoarcere, cu acord (am promis).
+- Nicio automatizare ZCode din sesiuni grase (cea curentă a ars ~22M/2h — regula <150k se aplică sieși).
+
+## 16. Sesiunea 6 oct, reluare taskuri întrerupte (după-amiaza)
+- **Gărzi harta G1-G3** (plan remediere Arena): comise pe `fix/harta-garzi-viewbox` (778fb588),
+  verificat local cap-coadă (Playwright desktop+mobil, toate ok) → **PR #453** deschis; merge după CI.
+- **Issue #454**: hit-test vs geometrie dezacord 2/81 pe ultimul rând al grilei (ILFOV/DAMBOVITA,
+  CONSTANTA/None) — preexistent pe main, defect de precizie a verificării, nu de comportament.
+- **Audit web-perf live izz.ro** (chrome-devtools MCP headless): LCP 597ms (TTFB 12ms), CLS 0.00
+  netrottled, DOM 1902 elemente ok. Lighthouse: a11y 96, best-practices 92, SEO 100, agentic 92.
+  Failuri: (1) `target-size` = regresia cunoscută, încă deschisă (`details.subnav-more > summary`);
+  (2) CSP blochează varianta 3 a bootstrap-ului `__CF$cv$params` (hash `sha256-u+Sixs2Pv/bm51HGgEAqEWUEVmE93Ud0CG0uijDq2GI=`
+  de adăugat în `generator/render.py:1891` — fix 1 linie, incidentul era anticipat în comentariul de
+  acolo); (3) CLS 0.119 doar cu throttling simulat, fără culprit clar (N4, doar de monitorizat).
+  Auditul local source-command-audit NU a rulat (live-ul a acoperit substanța).
+- **VM ZCode-VM: Guest Additions NEVERIFICAT** — VM-ul e oprit (VBoxManage list runningvms gol);
+  bootarea pe 16GB RAM în timp ce Alexandru folosește mașina = decizia lui.
+- **PR #453 MERGED** (a332eb9c, 10/10 CI verde) — gărzi G1-G3 pe main; modificarea atinge doar
+  tool-ul de verificare, nu conținutul publicat.
+- **Audit local (source-command-audit) pe 778fb588** (Lighthouse 13.4.1, pa11y 10.0.0, Chrome 154,
+  mobil): home Perf 88 / articol 95 (baseline 80/88 = fără regresie), BP 100, SEO 100, pa11y 0.
+  A11y 96 vs baseline 100 = regresia `target-size` cunoscută, încă deschisă. Local lipsește
+  `pagefind` (index de căutare neb construit — doar efect local, CI îl are).
+- **VM Guest Additions: ÎNCHIS** (6 oct, după-amiaza) — Alexandru confirmă că funcționează;
+  nu se mai boot-ează și nu se mai verifică nimic. Taskul iese din lista de sarcini deschise.
+
+## 17. Ciclul complet cu Arena 6 oct (~12:40–13:15) — plan #449 + implementare #448, MERGED
+- **Brief trimis Arenei** în thread 01a10f2d (aprobare lui Alexandru: „atunci rezolva
+  taskurile cu arena"): re-ping plan #449 + felierea 1 din #448. Compozitor deblocat cu
+  `cua.click` pe „Keep working"; livrare verificată (bula + compozitor gol).
+- **Arena a livrat în 5m37s**: (a) planul Google pentru #449 — nu-l putuse posta pe
+  issue (sandbox fără credențiale), l-a lăsat în chat; (b) **felierea 1 din #448
+  implementată**: branch `arena/harta-rute-statice`, commit `085d8b32`, patch în
+  workspace, testele ei: 2031 passed / 4 skipped / 8 xfailed.
+- **Veghea ArenaPlan-Watcher DEZARMATĂ** (Task Scheduler → Disabled + `--accepta` la
+  watchdog-ul de integritate) ÎNAINTE de postarea planului — evitată dubla implementare.
+- **Planul Arenei postat pe #449** (comentariu 6013741137, cu atribuire): grounding
+  shadow → extracție structurată cu fallback → Apps Script observator → BigQuery+GSC;
+  wrapper cu buget/kill-switch; nimic pe contul Google fără acord explicit.
+- **Verificare ZCode locală**: patch descărcat din CAS (`sonde/arena-patch-448/`),
+  `git am -3` pe main actual `a332eb9c` (include #453) → `48319859`, autoria Arenei
+  păstrată. Local: 167 harta/SEO passed, `node --check` + node basemap OK,
+  **full suite 2029 passed / 6 skipped / 8 xfailed** (diferența față de 2031/4 a ei =
+  skip-uri dependente de mediu, total identic).
+- **PR #455 deschis și MERGED la CI 10/10 verde** → main `9810e09e`. Closes #448
+  felierea 1; felierea 2 (interacțiunea) rămâne de planificat. **Confirmat LIVE
+  (curl, 6 oct ~13:20): `/harta/` 200, `/harta/braila/` 200 cu H1 „Știri din
+  Brăila" + meta `harta-county` + JSON-LD Dataset; `/harta-stiri/` 200.**
+- Artefacte: patch `sonde/arena-patch-448/448-harta-rute-statice.patch`; body PR
+  `sonde/pr-448-body.md`; plan `sonde/arena-plan-449.md`. Raport către Arena trimis
+  în chat, livrare verificată (bula + compozitor gol).
+- **Consult Arena + implementat (după-amiaza, ordonat de Alexandru: verifică→consultă→implementează)**:
+  opinia Arenei pe fir 01a10f2d (în ~2 min): min-height pe ținte, nu gap; CSP mecanic; ambele într-un PR mic.
+  **PR #456 MERGED** (668d8826) — CSP varianta 3 + a11y subnav. Trei capcane depistate pe parcurs:
+  (1) tinte ~30px; (2) ținte imbricate summary+<a> (cercurile WCAG se suprapun indiferent de padding);
+  (3) LATENT PREEXISTENT: .subnav-more-list (absolut) e tăiat de overflow-x al benzii sub 1200px →
+  pe mobil «Mai multe secțiuni» = link /sectiuni/ la 44px, pe desktop dropdown cu /sectiuni/ primul element.
+  LIVE: Lighthouse mobil Acce 100 (era 96), target-size 1.0, pa11y 0, vizual 390+360px.
+  **PR #457 MERGED** (c9a7b0c3) — Cloudflare a rotit bootstrap-ul a 2-a oară AZI (varianta 4 ...NTXI=,
+ confirmată live în header). DECIZIE DESCHISĂ pentru Alexandru: dacă rotațiile continuă, fie Bot Fight Mode
+  off din dashboard CF, fie se acceptă zgomotul de consolă (N3, alarma Lighthouse funcționează ca design).
+  Capcană de extragere: hash-ul din errors-in-console e TRUNCHIAT în JSON-ul Lighthouse — nu completa
+  prin ghicire (prins în timp: finalul real NTXI=, nu NTXw=).
