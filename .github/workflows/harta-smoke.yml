@@ -13,7 +13,13 @@ on:
     branches: [main]
     paths:
       - "static/harta-stiri/data/map.json"
+      - "static/harta-stiri/data/projection.json"
       - "static/harta-stiri/harta-stiri.js"
+      - "static/harta-stiri/basemap-camera.mjs"
+      - "static/harta-stiri/harta-stiri.css"
+      - "static/harta-stiri/index.html"
+      - "static/harta-stiri/vendor/maplibre/**"
+      - "generator/render.py"
       - ".github/workflows/harta-smoke.yml"
   workflow_dispatch:
 
@@ -33,12 +39,18 @@ jobs:
             page=$(curl -A 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/151 Safari/537.36' --connect-timeout 5 --max-time 10 -fsSL -o /tmp/map.html -w '%{http_code}' "$ALT_ORIGIN/static/harta-stiri/" || true)
             data=$(curl -A 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/151 Safari/537.36' --connect-timeout 5 --max-time 10 -fsSL -o /tmp/map.json -w '%{http_code}' "$ALT_ORIGIN/static/harta-stiri/data/map.json" || true)
             js=$(curl -A 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/151 Safari/537.36' --connect-timeout 5 --max-time 10 -fsSL -o /tmp/map.js -w '%{http_code}' "$ALT_ORIGIN/static/harta-stiri/harta-stiri.js" || true)
-            echo "încercarea $i: page=$page data=$data js=$js"
-            if [ "$page" = "200" ] && [ "$data" = "200" ] && [ "$js" = "200" ]; then
+            projection=$(curl -A 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/151 Safari/537.36' --connect-timeout 5 --max-time 10 -fsSL -o /tmp/projection.json -w '%{http_code}' "$ALT_ORIGIN/static/harta-stiri/data/projection.json" || true)
+            echo "încercarea $i: page=$page data=$data projection=$projection js=$js"
+            if [ "$page" = "200" ] && [ "$data" = "200" ] && [ "$projection" = "200" ] && [ "$js" = "200" ]; then
               if python - <<'PY'
           import json
           from pathlib import Path
           data = json.loads(Path('/tmp/map.json').read_text(encoding='utf-8'))
+          projection = json.loads(Path('/tmp/projection.json').read_text(encoding='utf-8'))
+          assert projection['source_crs'] == 'EPSG:4326'
+          assert projection['projection']['method'] == 'equirectangular_cos_latitude_reference'
+          assert [float(v) for v in data['map']['viewbox'].split()][2:] == [
+              projection['projection']['width'], projection['projection']['height']]
           counties = data['map']['judete']
           articles = data.get('articles') or []
           stats = data.get('stats') or {}
@@ -73,7 +85,7 @@ jobs:
           PY
               then
                 node --check /tmp/map.js
-                echo 'Smoke test public hartă: OK'
+                echo 'Smoke test public hartă + proiecție: OK'
                 exit 0
               fi
               echo 'Răspunsul public este încă vechi/incoerent; reîncerc după propagare.'

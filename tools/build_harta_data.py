@@ -491,6 +491,17 @@ def main() -> int:
     points = load_locality_points()
     if not points:
         raise RuntimeError("harta_localitati.json nu contine puncte de localitati.")
+    # Publicăm doar metadatele proiecției, nu dicționarul mare de localități: browserul
+    # sincronizează fundalul decorativ cu viewBox-ul SVG, iar geometria tematică rămâne sursa.
+    locality_meta = load_json(LOCALITIES)
+    raw_projection = locality_meta.get("projection") if isinstance(locality_meta, dict) else None
+    projection_payload = {
+        "version": 1,
+        "source": locality_meta.get("source", "") if isinstance(locality_meta, dict) else "",
+        "source_url": locality_meta.get("source_url", "") if isinstance(locality_meta, dict) else "",
+        "source_crs": locality_meta.get("source_crs", "") if isinstance(locality_meta, dict) else "",
+        "projection": raw_projection if isinstance(raw_projection, dict) else None,
+    }
     uat_ids = load_uat_ids()
 
     articles = sorted(articles, key=lambda a: str(a.get("published") or ""), reverse=True)
@@ -588,7 +599,10 @@ def main() -> int:
     os.makedirs(os.path.dirname(OUT), exist_ok=True)
     with open(OUT, "w", encoding="utf-8") as fh:
         json.dump(payload, fh, ensure_ascii=False, separators=(",", ":"))
-    print(f"harta-stiri: {len(located)} articole, {payload['stats']['events']} evenimente, {payload['stats']['localities']} localități confirmate, {payload['stats']['coordinates']} coordonate -> {OUT}")
+    projection_out = os.path.join(os.path.dirname(OUT), "projection.json")
+    with open(projection_out, "w", encoding="utf-8") as fh:
+        json.dump(projection_payload, fh, ensure_ascii=False, separators=(",", ":"))
+    print(f"harta-stiri: {len(located)} articole, {payload['stats']['events']} evenimente, {payload['stats']['localities']} localități confirmate, {payload['stats']['coordinates']} coordonate -> {OUT}; proiecție -> {projection_out}")
     return 0
 
 

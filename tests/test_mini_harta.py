@@ -82,3 +82,29 @@ def test_base_leaga_faza2_css():
         html = fh.read()
     assert "faza2.css" in html
     assert "site.css" in html
+
+
+def test_rampa_pulsului_este_identica_cu_rampa_hartii_mari():
+    """Un singur sistem vizual: cele cinci trepte de pe homepage sunt EXACT cele de pe
+    harta mare. Pagina hărții e standalone (nu incarca foaia site-ului), deci valorile sunt
+    copiate deliberat -- testul e garda care impiedica divergenta tacuta (diagnostic
+    4 oct 2026: patru harti in patru limbi)."""
+    import re
+
+    harta_css = open(os.path.join(ROOT, "static", "harta-stiri", "harta-stiri.css"),
+                     encoding="utf-8").read()
+    bloc = re.search(r":root \{(.*?)\}", harta_css, re.S).group(1)
+    harta = []
+    for i in range(5):
+        m = re.search(r"--map-h" + str(i) + r":\s*(#[0-9a-fA-F]{6})", bloc)
+        assert m, f"harta-stiri.css: lipseste --map-h{i}"
+        harta.append(m.group(1).lower())
+
+    faza2 = open(os.path.join(ROOT, "static", "faza2.css"), encoding="utf-8").read()
+    puls = []
+    for i in range(5):
+        m = re.search(r"\.puls-map path\.h" + str(i) + r"\s*\{\s*fill:\s*(#[0-9a-fA-F]{6})", faza2)
+        assert m, f"faza2.css: lipseste .puls-map path.h{i}"
+        puls.append(m.group(1).lower())
+
+    assert puls == harta, f"rampa pulsului {puls} difera de rampa hartii {harta}"

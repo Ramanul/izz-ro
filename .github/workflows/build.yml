@@ -137,6 +137,8 @@ jobs:
         continue-on-error: true
         env:
           MAX_PORTRAIT_LOOKUPS: "20"
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          AI_PROVIDER: gemini
         run: python tools/fetch_portraits.py
 
       - name: Fotografii lead per articol (Wikidata P18 landscape+PD, best-effort)
@@ -179,7 +181,7 @@ jobs:
           git config user.name "izz-bot"
           git config user.email "bot@izz.ro"
           git add data/articles.json data/feed_cache.json
-          git add static/harta-stiri/data/map.json 2>/dev/null || true
+          git add static/harta-stiri/data/map.json static/harta-stiri/data/projection.json 2>/dev/null || true
           git add data/takedown_log.jsonl 2>/dev/null || true
           git add data/triage_log.jsonl 2>/dev/null || true
           git add data/indexnow_seen.json 2>/dev/null || true

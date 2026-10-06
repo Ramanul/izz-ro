@@ -70,3 +70,25 @@ Tasks may arrive through the Devin Desktop UI or headlessly via the `devin` CLI
 - Never publish/deploy anything. Never touch `.github/workflows/` unless the spec says so.
 - Never edit `data/articles.json` by hand (pipeline state) or `moderation.yaml` (human-owned).
 - Domain rule: never allow raw/truncated headlines to reach output — skip broken items ("Zero Zgomot").
+
+## Arena — agent AI de dezvoltare, colaborator pe izz.ro (for the MAIN ZCode session; executors may ignore)
+
+"Arena" = an AI development agent (Fable 5.1 Max) that Alexandru works with through chat
+in ZCode's in-app browser (login: his `andifreelancer2` account). Agreed roles (5 oct 2026):
+
+- **Arena** = executor on GitHub: branches, code, tests, PRs.
+- **Main ZCode session** = Alexandru's representative: verify Arena's work locally, merge to
+  `main` (CI deploys), report back to Arena in chat, web research ONLY at Arena's request.
+- Flow: Alexandru decides → Arena writes on a branch → ZCode verifies + merges → CI deploys
+  → ZCode reports to Arena in chat. Arena's tasks are NEVER executed automatically — they
+  wait for an explicit "execută" from Alexandru.
+- Limits: Arena's sandbox has NO internet egress; she cannot attach files; she reads only
+  api.github.com (no logs).
+- **Brief template for NEW Arena tasks — first line mandatory**: „Citește mai întâi
+  `docs/colaborare.md` din `Ramanul/izz-ro`; citează SHA-ul fișierului în răspuns."
+  Fallback: dacă citirea publică e blocată în sesiunea ei, trimite protocolul condensat
+  în brief. Protocolul complet (roluri, 4 stări de verificare, handoff, poarta de merge,
+  procedura de repo-conectare): `docs/colaborare.md` pe main.
+- Channel mechanics + sensor state: protocolul e în `docs/colaborare.md`; starea live a canalului
+  o ține sesiunea principală ZCode (memoria ei locală, nu repo-ul). A ZCode restart kills the
+  Arena tab + sensor + beacon server — remount on Alexandru's "reinjectează".

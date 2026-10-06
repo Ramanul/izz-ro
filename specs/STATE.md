@@ -8,20 +8,19 @@
 > Where the rest lives: `specs/regim-reguli.md` — unified audit closure ·
 > `specs/registru.tsv` — decisions · `CLAUDE.md` — canonical contract.
 
-**Updated:** 2026-10-04 (PWA+push pe `main` prin #434 [IZZ-0430/0431]; audit extern 4 oct verificat mecanic [IZZ-0432]; A1+A2 pe `arena/01a10634-izz-ro`)
+**Updated:** 2026-10-06 (harta: basemap OpenFreeMap pe `main` prin #445; audit extern 4 oct pe `main` prin #438 [IZZ-0432])
 
 ## Open
-- **Audite externe:** 3 oct ÎNCHIS [IZZ-0426] (#425 merged, #426 merged; `ai_gateway` pe main, $0, cheile în `.env`) · 4 oct verificat mecanic [IZZ-0432] — 3 confirmate / 2 parțiale / 2 false pozitive (bara de consimțământ și manifestul PWA existau): `notes/analiza-audit-extern-2026-10-04.md`; livrat A1 garda de diacritice + A2 semnătura editorială/E-E-A-T.
-- **PWA + alerte push [IZZ-0430/0431] — PE MAIN (#434 merged):** SW la `/sw.js`, buton instalare, alerte VAPID; fără namespace KV + 4 secrete (`infra/PUSH-SETUP.md`) rutele dau 503. **Lipsește doar** verificarea Content-Type a manifestului pe live (sandboxul n-are egress).
+- **Audite externe:** 3 oct ÎNCHIS [IZZ-0426] (#425 merged, #426 merged; `ai_gateway` pe main, $0, cheile în `.env`) · 4 oct verificat mecanic [IZZ-0432] — 3 confirmate / 2 parțiale / 2 false pozitive (bara de consimțământ și manifestul PWA existau): `notes/analiza-audit-extern-2026-10-04.md`; pe main prin #438 (6 oct): A1 gardă de diacritice + A2 semnătura editorială/E-E-A-T.
+- **PWA + alerte push [IZZ-0430/0431] — PE MAIN (#434 merged):** SW la `/sw.js`, buton instalare, alerte VAPID; fără namespace KV + 4 secrete (`infra/PUSH-SETUP.md`) rutele dau 503. Verificarea Content-Type a manifestului e mecanizată (P0.1 în #438) — de rulat pe live.
 - **Pages `izz-ro` ZOMBI — CONFIRMAT ȘTERS [IZZ-0411]:** `izz-ro.pages.dev` returnează `000` [IZZ-0366, 0395].
 - **PRODUS P1/P2 — media pe carduri [IZZ-0403, 0404 → IZZ-0416; #414 merged]:** portrete PD/CC0 + siluete județ,
   `covers.py` editorial. **Marcaj AI Act la prima expunere [IZZ-0420]:** trust-label «generat automat» pe card +
   meta digitalSourceType + pictograma UE Basic — amendament §4.3 adoptat, veto neexercitat [IZZ-0423].
 - **PRODUS P3 — harta: markere fără ierarhie vizuală [IZZ-0405]:** 482 evenimente, clickuri cablate; e afordanța, nu funcția.
-- **FEREASTRA TTL — DECIZIE EXECUTATĂ [IZZ-0421, 0424, 3 oct]:** tripwire-ul a crapat pe starea reală
-  (20.543 în fereastră vs 12.600, după ce #408 (merged) a adus datele reale); TTL 20 → 11, apoi 12 după
-  tăietura a 4 surse tech-en fără vizitatori măsurați (Q5). Marja actuală: 10.665 în fereastră (~2 zile).
-  Se re-evaluează la 13 când ingestul median coboară sub ~900/zi (automatizare lunară activă).
+- **FEREASTRA TTL — DECIZIE EXECUTATĂ [IZZ-0421, 0424, 3 oct]:** TTL 20 → 11 → 12 (tripwire crăpat pe
+  starea reală + tăietura a 4 surse tech-en, Q5). Marja: 10.665 (~2 zile). Re-evaluare la 13 când
+  ingestul median coboară sub ~900/zi (automatizare lunară activă).
 - **Free-readiness — gazda ÎNCĂ PAID până 22 sep [IZZ-0313]:** [IZZ-0386, 0391, 0399] [IZZ-0421, 0424].
 - **`izz-failover` — KEEP [IZZ-0362]; marja NECUNOSCUTĂ [IZZ-0367, 0369]:** ambele cifre publicate retrase.
 - **REDUNDANȚA — ÎNCHISĂ [IZZ-0370 → IZZ-0373]:** `BUILD_COMMIT_SHA` în jobul `mirror`, #347 merged. **RECIDIVE —

@@ -1893,10 +1893,13 @@ def _write_headers() -> None:
            "https://static.cloudflareinsights.com https://www.googletagmanager.com "
            "https://*.clarity.ms; "
            "style-src 'self' 'unsafe-inline'; "
-           "img-src 'self' data: https://*.google-analytics.com https://*.googletagmanager.com; "
+           "img-src 'self' data: https://tiles.openfreemap.org "
+           "https://*.google-analytics.com https://*.googletagmanager.com; "
            "font-src 'self'; "
-           "connect-src 'self' https://cloudflareinsights.com https://*.google-analytics.com "
-           "https://*.analytics.google.com https://*.googletagmanager.com https://*.clarity.ms; "
+           "connect-src 'self' https://tiles.openfreemap.org https://cloudflareinsights.com "
+           "https://*.google-analytics.com https://*.analytics.google.com "
+           "https://*.googletagmanager.com https://*.clarity.ms; "
+           "worker-src 'self' blob:; "
            "object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; "
            "upgrade-insecure-requests")
     _write(os.path.join(OUT_DIR, "_headers"),
