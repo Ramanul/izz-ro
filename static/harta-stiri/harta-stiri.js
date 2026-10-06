@@ -658,8 +658,50 @@
   }
 
   function shapeFromEvent(event) {
-    const node = event.target;
-    return node && node.closest ? node.closest("[data-harta]") : null;
+    const target = event.target;
+    const top = target && target.closest ? target.closest("[data-harta]") : null;
+    if (!top || !Number.isFinite(event.clientX) || !Number.isFinite(event.clientY)
+      || typeof DOMPoint !== "function") return top;
+    const layer = top.parentElement;
+    if (!layer) return top;
+
+    const hits = [];
+    for (const candidate of layer.children) {
+      if (!candidate.hasAttribute("data-harta") || typeof candidate.isPointInFill !== "function") continue;
+      try {
+        // Cutia de ecran elimina majoritatea formelor inaintea testului geometric exact.
+        const rect = candidate.getBoundingClientRect();
+        if (event.clientX < rect.left || event.clientX > rect.right
+          || event.clientY < rect.top || event.clientY > rect.bottom) continue;
+        const ctm = candidate.getScreenCTM();
+        if (!ctm) continue;
+        const point = new DOMPoint(event.clientX, event.clientY).matrixTransform(ctm.inverse());
+        if (!candidate.isPointInFill(point)) continue;
+        const anchorKey = candidate.dataset.judet
+          ? `judet:${candidate.dataset.judet}`
+          : candidate.dataset.uat ? `uat:${candidate.dataset.uat}` : null;
+        const anchor = anchorKey ? anchorFor(candidate, anchorKey, null) : null;
+        const bounds = candidate.getBBox();
+        const x = anchor ? anchor[0] : bounds.x + bounds.width / 2;
+        const y = anchor ? anchor[1] : bounds.y + bounds.height / 2;
+        hits.push({
+          node: candidate,
+          distance: (point.x - x) ** 2 + (point.y - y) ** 2,
+          area: bounds.width * bounds.height,
+        });
+      } catch (err) {
+        // O forma fara geometrie utilizabila nu invalideaza hit-testul pentru celelalte.
+      }
+    }
+    if (!hits.length) return top;
+    hits.sort((a, b) => {
+      const delta = a.distance - b.distance;
+      if (Math.abs(delta) > 1e-9) return delta;
+      if (a.node === top) return -1;
+      if (b.node === top) return 1;
+      return a.area - b.area;
+    });
+    return hits[0].node;
   }
 
   function shapeKey(node) {
@@ -926,9 +968,11 @@
     for (const candidate of candidates) {
       const point = screenPoint(view, candidate.x, candidate.y);
       // width/height sunt in pixeli de ecran (asa se estimeaza textul), deci nu se scaleaza.
+      const offsetY = candidate.offsetY || 0;
       const box = {
         left: point.x - candidate.width / 2, right: point.x + candidate.width / 2,
-        top: point.y - candidate.height / 2, bottom: point.y + candidate.height / 2,
+        top: point.y + offsetY - candidate.height / 2,
+        bottom: point.y + offsetY + candidate.height / 2,
       };
       if (box.right < 0 || box.left > rect.width || box.bottom < 0 || box.top > rect.height) continue;
       const collides = placed.some((other) => !(box.right < other.left || box.left > other.right
@@ -1145,19 +1189,21 @@
 
     if (state.zoomCounty && state.uats.length) {
       for (const uat of state.uats) {
-        if (!uat.count) continue;
         const key = String(uat.id || uat.name);
         const node = state.uatNodes && state.uatNodes.get(key);
         const anchor = node ? anchorFor(node, `uat:${key}`, uat.center) : uat.center;
         if (!anchor) continue;
-        const radius = Math.max(9, Math.min(15, 8 + Math.sqrt(uat.count) * 1.4));
+        const hasCount = uat.count > 0;
+        const radius = hasCount ? Math.max(9, Math.min(15, 8 + Math.sqrt(uat.count) * 1.4)) : 0;
         const name = uat.label || uat.name;
+        const nameWidth = estimateWidth(name, LABEL_PX.uat) + 8;
         candidates.push({
           kind: "uat", key,
           x: anchor[0], y: anchor[1],
           text: name, count: uat.count, radius,
-          width: Math.max(radius * 2, compact ? 0 : estimateWidth(name, LABEL_PX.uat)),
-          height: radius * 2 + (compact ? 0 : 14),
+          width: hasCount ? Math.max(radius * 2, nameWidth) : nameWidth,
+          height: hasCount ? radius * 2 + 14 : 14,
+          offsetY: hasCount ? 7 : -3,
           priority: uat.count,
         });
       }
@@ -1170,18 +1216,21 @@
       entry.group.setAttribute("transform", `translate(${fmt(candidate.x)} ${fmt(candidate.y)})`);
       entry.fit.setAttribute("transform", `scale(${fmt(1 / screenScale(view))})`);
       if (candidate.kind === "uat") {
-        // Pastila inversa (disc alb, cifra inchisa): lizibila pe orice treapta a rampei.
-        labelDisc(entry).setAttribute("r", String(fmt(candidate.radius)));
-        labelText(entry, "num", "label-count", {
-          y: "0", "text-anchor": "middle", "dominant-baseline": "central",
-        }).textContent = String(candidate.count);
-        if (compact) {
-          if (entry.parts.name) { entry.parts.name.remove(); delete entry.parts.name; }
+        if (candidate.count > 0) {
+          // Pastila inversa (disc alb, cifra inchisa): lizibila pe orice treapta a rampei.
+          labelDisc(entry).setAttribute("r", String(fmt(candidate.radius)));
+          labelText(entry, "num", "label-count", {
+            y: "0", "text-anchor": "middle", "dominant-baseline": "central",
+          }).textContent = String(candidate.count);
         } else {
-          labelText(entry, "name", "label-name", {
-            y: String(fmt(candidate.radius + 11)), "text-anchor": "middle",
-          }).textContent = candidate.text;
+          // UAT-urile fara rezultate raman numite, dar fara bulina care ar aglomera harta.
+          if (entry.parts.disc) { entry.parts.disc.remove(); delete entry.parts.disc; }
+          if (entry.parts.num) { entry.parts.num.remove(); delete entry.parts.num; }
         }
+        labelText(entry, "name", "label-name", {
+          y: candidate.count > 0 ? String(fmt(candidate.radius + 11)) : "0",
+          "text-anchor": "middle",
+        }).textContent = candidate.text;
       } else {
         if (entry.parts.disc) { entry.parts.disc.remove(); delete entry.parts.disc; }
         const text = labelText(entry, "num", candidate.kind === "regiune" ? "label-region" : "label-county", {
@@ -1314,6 +1363,7 @@
     state.counts = counts;
 
     ensureCountyPaths();
+    const keepNationalCountyContext = state.level === "judetean" && Boolean(state.selectedCounty);
     for (const node of state.layers.counties.children) {
       const county = node.dataset.judet;
       const region = node.dataset.regiune || regionForCounty(county);
@@ -1323,11 +1373,11 @@
       const outside = (state.selectedCounty && county !== state.selectedCounty)
         || (state.selectedRegion && region !== state.selectedRegion);
       const isZoomedCounty = county === state.zoomCounty;
-      // Estomparea: in vederea de județ vecinii rămân vizibili (decizie proprietar, 5 sep);
-      // se estompeaza doar cand un UAT e selectat, ca alegerea sa iasa in fata.
+      // La nivel județean cadrul rămâne național: selectarea unui județ nu estompează
+      // vecinii. La zoom local, doar UAT-ul activ poate estompa restul formelor.
       const dim = isZoomedCounty ? false
         : state.zoomCounty ? Boolean(state.selectedUat)
-        : Boolean(outside);
+        : Boolean(outside && !keepNationalCountyContext);
       node.classList.toggle("is-selected", Boolean(selected));
       node.classList.toggle("is-dim", dim);
       node.classList.toggle("is-empty", count === 0);
@@ -1880,12 +1930,12 @@
       return;
     }
 
-    // După alegerea unui județ, selectorul devine lista UAT-urilor acelui județ care au
-    // știri în filtrul curent. Fiecare buton deschide aceeași listă de știri ca badge-ul de hartă.
+    // Lista păstrează toate UAT-urile județului, inclusiv când filtrul curent nu găsește
+    // articole în ele; astfel, schimbarea filtrului nu face numele sau zonele inaccesibile.
     if (state.zoomCounty && state.uats.length) {
-      const uats = state.uats.filter((uat) => uat.count > 0)
-        .sort((a, b) => String(a.label).localeCompare(String(b.label), "ro"));
-      picker.setAttribute("aria-label", `Orașe și comune cu știri în ${judetLabel(state.zoomCounty)}`);
+      const uats = [...state.uats]
+        .sort((a, b) => String(a.label || a.name).localeCompare(String(b.label || b.name), "ro"));
+      picker.setAttribute("aria-label", `Orașe și comune din ${judetLabel(state.zoomCounty)}`);
       if (!uats.length) {
         const empty = document.createElement("p");
         empty.className = "picker-empty";
