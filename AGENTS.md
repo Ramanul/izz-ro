@@ -92,3 +92,20 @@ in ZCode's in-app browser (login: his `andifreelancer2` account). Agreed roles (
 - Channel mechanics + sensor state: protocolul e în `docs/colaborare.md`; starea live a canalului
   o ține sesiunea principală ZCode (memoria ei locală, nu repo-ul). A ZCode restart kills the
   Arena tab + sensor + beacon server — remount on Alexandru's "reinjectează".
+
+## Economie de context — sesiuni grase (5 oct 2026, după arderea a ~4,8M tokeni/zi)
+
+- Într-o sesiune veche, FIECARE tură re-trimite tot contextul (măsurat: 480k
+  tokeni input per rulare la sesiunea senzorului Arena). Continuarea muncii
+  "acolo unde a rămas" e operațiunea cea mai scumpă posibilă.
+- **Regulă:** sesiune cu tokens.input > 150k NU se mai continuă. Lucrarea se
+  transferă prin `handoff/stare-lucrari.md` + memoria proiectului într-o sesiune
+  NOUĂ (New task). Sesiunile grase se arhivează din UI (right-click → Archive).
+- **Gardian automat:** hook `SessionStart` (~/.zcode/hooks/context_gardian.py,
+  în ~/.zcode/cli/config.json) avertizează la orice pornire/reluare despre
+  sesiuni > 250k. Raport manual: `Desktop\gardian-context.cmd`.
+- **Cronuri recurente:** interval minim orar; munca delegată la subagent ca
+  host-ul să rămână subțire; clauză de auto-distrugere la tokens.input > 80k
+  (CronDelete pe sine + re-înarmare din sesiune nouă). Niciodată cron < 60 min.
+- **Interzis:** scrierea de sesiuni direct în db.sqlite — aplicația le ignoră
+  (testat); sesiunile noi se creează doar din UI.
