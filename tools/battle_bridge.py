@@ -42,6 +42,9 @@ SOURCES = ("arena", "alexandru", "zcode")
 SLOTS = ("A", "B")
 STATUSES = ("ok", "partial", "blocked", "timeout", "page_changed")
 VOTES = ("a", "b", "tie", "bad")
+# Literalul e scris de doua ori intentionat: `ruff` (DTZ007) accepta doar un format care
+# contine `%z` VIZIBIL in apel, iar %z chiar e necesar — un ts naiv ar face ordinea turelor
+# sa depinda de fusul masinii care citeste.
 TS_FORMAT = "%Y-%m-%dT%H:%M:%S%z"
 
 # Peste MAX_INLINE, textul verbatim iese in `captures/` si in linia JSONL ramane doar
@@ -106,7 +109,7 @@ def validate(records: list[dict]) -> list[str]:
             continue
         ts = record.get("ts", "")
         try:
-            datetime.strptime(ts, TS_FORMAT)
+            datetime.strptime(ts, "%Y-%m-%dT%H:%M:%S%z")
         except (TypeError, ValueError):
             errors.append(f"{where}: ts nu e UTC in formatul {TS_FORMAT}: {ts!r}")
         turn = record.get("turn")

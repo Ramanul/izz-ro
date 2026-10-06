@@ -5,11 +5,17 @@
 
 ## De ce exista
 
-Verificat 2026-10-06, în sandbox-ul sesiunii Arena: **fără browser** (nici chromium, nici
-playwright) și **fără ieșire în rețea** (`curl https://arena.ai` → `000`; nici `example.com`
-nu termină TLS-ul). `fetch_page` vede doar pagina publică, iar Battle Mode cere **sesiune
-logată + reCAPTCHA**. Deci Arena nu poate atinge UI-ul Battle: nu poate scrie în compozitor,
-nu poate citi răspunsurile, nu poate vota.
+Verificat 2026-10-06, în sandbox-ul sesiunii Arena (comenzi și rezultate, nu impresii):
+
+- **fără browser**: nici chromium, nici firefox, nici playwright instalat;
+- **arena.ai e inaccesibil de aici**: DNS-ul rezolvă (IP-uri Cloudflare), dar conexiunea se
+  închide — `curl https://arena.ai` → `000`, `urllib` → `URLError: TLS/SSL connection has been
+  closed`. Egress-ul e pe **allowlist**, nu zero cum spune `AGENTS.md` § Arena: `pypi.org` →
+  `200`, `api.github.com` → `200`. Arena nu e pe listă;
+- `fetch_page` vede doar pagina publică, iar Battle Mode cere **sesiune logată + reCAPTCHA**.
+
+Deci Arena nu poate atinge UI-ul Battle nici cu un browser instalat: ținta e blocată. Nu poate
+scrie în compozitor, nu poate citi răspunsurile, nu poate vota.
 
 Singurul actor care poate ține un buton este **ZCode**, pe mașina lui Alexandru, cu profilul
 logat (exact mecanismul care citea deja chatul Arena prin `domSnapshot`). Canalul de față
