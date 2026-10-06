@@ -11,7 +11,7 @@
 **Updated:** 2026-10-06 (harta: basemap OpenFreeMap pe `main` prin #445; audit extern 4 oct pe `main` prin #438 [IZZ-0432])
 
 ## Open
-- **Audite externe:** 3 oct ÎNCHIS [IZZ-0426] (#425 merged, #426 merged; `ai_gateway` pe main, $0, cheile în `.env`) · 4 oct verificat mecanic [IZZ-0432] — 3 confirmate / 2 parțiale / 2 false pozitive (bara de consimțământ și manifestul PWA existau): `notes/analiza-audit-extern-2026-10-04.md`; pe main prin #438 (6 oct): A1 gardă de diacritice + A2 semnătura editorială/E-E-A-T.
+- **Audite externe:** 3 oct ÎNCHIS [IZZ-0426] (#425 merged, #426 merged; `ai_gateway` pe main, $0, cheile în `.env`) · 4 oct verificat mecanic [IZZ-0432] — 3 confirmate / 2 parțiale / 2 false pozitive (bara de consimțământ și manifestul PWA existau): `notes/analiza-audit-extern-2026-10-04.md`; pe main prin #438 (merged, 6 oct): A1 gardă de diacritice + A2 semnătura editorială/E-E-A-T.
 - **PWA + alerte push [IZZ-0430/0431] — PE MAIN (#434 merged):** SW la `/sw.js`, buton instalare, alerte VAPID; fără namespace KV + 4 secrete (`infra/PUSH-SETUP.md`) rutele dau 503. Verificarea Content-Type a manifestului e mecanizată (P0.1 în #438) — de rulat pe live.
 - **Pages `izz-ro` ZOMBI — CONFIRMAT ȘTERS [IZZ-0411]:** `izz-ro.pages.dev` returnează `000` [IZZ-0366, 0395].
 - **PRODUS P1/P2 — media pe carduri [IZZ-0403, 0404 → IZZ-0416; #414 merged]:** portrete PD/CC0 + siluete județ,
