@@ -19,19 +19,27 @@ Lantul de incredere, care nu se negociaza:
 
 Comenzi:
     python tools/battle_bridge.py prompt --text "intrebarea"      # Arena scrie
-    python tools/battle_bridge.py next                            # pompa citeste
+    python tools/battle_bridge.py next                            # cine raspunde citeste
     python tools/battle_bridge.py reply --turn 1 --status ok \
-        --a-file /tmp/a.txt --b-file /tmp/b.txt --summary "..."  # pompa scrie
+        --a-file /tmp/a.txt --b-file /tmp/b.txt --summary "..."  # raspuns adus de un om
+    python tools/battle_bridge.py duel --turn 1                   # raspuns luat prin API
     python tools/battle_bridge.py status                          # oricine citeste
     python tools/battle_bridge.py show --turn 1 [--full]
     python tools/battle_bridge.py validate
-"""
+
+`duel` e varianta B din `docs/canal-battle.md`: intreaba DOUA modele prin `ai_gateway`
+(localhost, cheile din .env-ul masinii pe care ruleaza) si scrie raspunsurile in jurnal.
+NU atinge site-ul Arena si nu automateaza niciun UI — de aceea e varianta permisa de ToS.
+
+Lantul de incredere, care nu se negociaza:"""
 from __future__ import annotations
 
 import argparse
 import json
 import os
 import sys
+import urllib.error
+import urllib.request
 from datetime import datetime, timezone
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -39,6 +47,14 @@ DEFAULT_LOG = os.path.join(ROOT, "handoff", "battle", "turns.jsonl")
 
 KINDS = ("prompt", "reply")
 SOURCES = ("arena", "alexandru", "zcode")
+# Cine poate semna un raspuns: „zcode" = adus din UI-ul Arena de cineva cu browser logat,
+# „gateway" = duel prin API local (ai_gateway), „alexandru" = copiat de mana. Sursa se
+# consemneaza, ca sa se stie peste o luna DE UNDE a venit un text, nu doar ca a venit.
+REPLY_SOURCES = ("zcode", "alexandru", "gateway")
+
+# Duelul API (varianta B): gateway-ul local, OpenAI-compatibil, cu cheile din .env.
+GATEWAY_URL = "http://127.0.0.1:20129/v1/chat/completions"
+DUEL_MODELS = ("groq/openai/gpt-oss-120b", "gemini/gemini-2.5-flash")
 SLOTS = ("A", "B")
 STATUSES = ("ok", "partial", "blocked", "timeout", "page_changed")
 VOTES = ("a", "b", "tie", "bad")
@@ -139,8 +155,11 @@ def validate(records: list[dict]) -> list[str]:
             errors.append(f"{where}: reply fara summary (obligatoriu pentru citire ieftina)")
         elif len(summary) > MAX_SUMMARY:
             errors.append(f"{where}: summary peste {MAX_SUMMARY} caractere ({len(summary)})")
-        if record.get("from") != "zcode":
-            errors.append(f"{where}: reply scris de {record.get('from')!r}, doar zcode scrie reply")
+        if record.get("from") not in REPLY_SOURCES:
+            errors.append(
+                f"{where}: reply scris de {record.get('from')!r}, "
+                f"acceptat: {', '.join(REPLY_SOURCES)}"
+            )
         models = record.get("models", [])
         if not isinstance(models, list) or len(models) > 2:
             errors.append(f"{where}: models trebuie sa fie lista de maximum 2")
@@ -234,22 +253,48 @@ def build_prompt(text: str, source: str) -> dict:
     return {"kind": "prompt", "turn": 1, "from": source, "ts": utc_now(), "text": text}
 
 
-def build_reply(args, records: list[dict], log_path: str) -> dict:
-    prompt = next(
-        (r for r in records if r.get("kind") == "prompt" and r.get("turn") == args.turn), None
-    )
-    if prompt is None:
-        raise BridgeError(f"tura {args.turn}: nu exista prompt cu acest turn")
-    if latest_reply(records, args.turn) and not args.correction:
-        raise BridgeError(
-            f"tura {args.turn}: are deja reply — pentru indreptare foloseste --correction"
-        )
-    if args.vote != "none" and args.approved_by != "alexandru":
+def _make_reply(records: list[dict], turn: int, status: str, models: list[dict], summary: str,
+                source: str = "zcode", notes: str | None = None, screen: str | None = None,
+                vote: str = "none", approved_by: str | None = None,
+                correction: bool = False) -> dict:
+    """Recordul de reply, cu toate gardurile intr-un singur loc (reply din fisiere si duel)."""
+    if not any(r.get("kind") == "prompt" and r.get("turn") == turn for r in records):
+        raise BridgeError(f"tura {turn}: nu exista prompt cu acest turn")
+    if latest_reply(records, turn) and not correction:
+        raise BridgeError(f"tura {turn}: are deja reply — pentru indreptare foloseste --correction")
+    if vote != "none" and approved_by != "alexandru":
         raise BridgeError(
             "votul in Battle e al omului (docs/canal-battle.md). Un vot se inregistreaza doar "
             "daca l-a exprimat Alexandru: --vote <valoare> --approved-by alexandru"
         )
+    if status == "ok" and len(models) < 2:
+        raise BridgeError("status ok cere ambele raspunsuri")
+    if status in ("blocked", "timeout", "page_changed") and models:
+        raise BridgeError(f"status {status}: nu trimite text de model, doar notes")
+    if source not in REPLY_SOURCES:
+        raise BridgeError(f"sursa {source!r} nu e acceptata pentru un reply")
+    if not summary.strip():
+        raise BridgeError("reply fara summary")
 
+    record = {
+        "kind": "reply",
+        "turn": turn,
+        "from": source,
+        "ts": utc_now(),
+        "status": status,
+        "models": models,
+        "summary": summary.strip(),
+        "vote": None if vote == "none" else vote,
+        "vote_approved_by": None if vote == "none" else approved_by,
+        "screen_path": screen,
+        "notes": notes,
+    }
+    if correction:
+        record["correction_of"] = turn
+    return record
+
+
+def build_reply(args, records: list[dict], log_path: str) -> dict:
     captures_dir = os.path.join(os.path.dirname(os.path.abspath(log_path)), "captures")
     models = []
     for slot, text_arg, file_arg in (("A", args.a_text, args.a_file), ("B", args.b_text, args.b_file)):
@@ -259,28 +304,83 @@ def build_reply(args, records: list[dict], log_path: str) -> dict:
         inline, text_ref = _externalize(raw.strip(), captures_dir, args.turn, slot)
         models.append({"slot": slot, "name": args.a_name if slot == "A" else args.b_name,
                        "text": inline, "text_ref": text_ref})
+    return _make_reply(records, args.turn, args.status, models, args.summary,
+                       source="zcode", notes=args.notes, screen=args.screen, vote=args.vote,
+                       approved_by=args.approved_by, correction=args.correction)
 
-    if args.status == "ok" and len(models) < 2:
-        raise BridgeError("status ok cere ambele raspunsuri (--a-file/--a-text si --b-file/--b-text)")
-    if args.status in ("blocked", "timeout", "page_changed") and models:
-        raise BridgeError(f"status {args.status}: nu trimite text de model, doar notes")
 
-    record = {
-        "kind": "reply",
-        "turn": args.turn,
-        "from": "zcode",
-        "ts": utc_now(),
-        "status": args.status,
-        "models": models,
-        "summary": args.summary.strip(),
-        "vote": None if args.vote == "none" else args.vote,
-        "vote_approved_by": None if args.vote == "none" else args.approved_by,
-        "screen_path": args.screen,
-        "notes": args.notes,
-    }
-    if args.correction:
-        record["correction_of"] = args.turn
-    return record
+# ---- duelul prin API (varianta B: fara Arena, fara UI) -------------------------------
+
+def ask_gateway(endpoint: str, model: str, question: str, timeout: int = 120,
+                token: str | None = None) -> str:
+    """O intrebare, un model, prin gateway-ul local (OpenAI-compatibil). Fara secrete aici:
+    cheile providerilor stau in .env-ul masinii care ruleaza gateway-ul, nu in cod."""
+    body = json.dumps({"model": model, "messages": [{"role": "user", "content": question}]})
+    headers = {"Content-Type": "application/json", "Accept": "application/json"}
+    if token:
+        headers["Authorization"] = f"Bearer {token}"
+    request = urllib.request.Request(endpoint, data=body.encode("utf-8"), headers=headers)
+    try:
+        with urllib.request.urlopen(request, timeout=timeout) as response:
+            payload = json.loads(response.read().decode("utf-8"))
+    except urllib.error.HTTPError as exc:
+        detail = exc.read().decode("utf-8", errors="replace")[:300]
+        raise BridgeError(f"{model}: HTTP {exc.code} de la gateway: {detail}") from exc
+    except urllib.error.URLError as exc:
+        raise BridgeError(
+            f"{model}: gateway-ul nu raspunde la {endpoint} ({exc.reason}). "
+            "Porneste-l intai: python -m ai_gateway serve"
+        ) from exc
+    except (ValueError, UnicodeDecodeError) as exc:
+        raise BridgeError(f"{model}: raspuns care nu e JSON: {exc}") from exc
+    try:
+        choices = payload["choices"]
+        content = choices[0]["message"]["content"]
+    except (KeyError, IndexError, TypeError) as exc:
+        raise BridgeError(f"{model}: raspuns fara choices[0].message.content ({exc})") from exc
+    if not isinstance(content, str) or not content.strip():
+        raise BridgeError(f"{model}: continut gol")
+    return content
+
+
+def cmd_duel(args) -> int:
+    records = read_records(args.log)
+    prompt = next(
+        (r for r in records if r.get("kind") == "prompt" and r.get("turn") == args.turn), None
+    )
+    if prompt is None:
+        raise BridgeError(f"tura {args.turn}: nu exista prompt cu acest turn")
+
+    captures_dir = os.path.join(os.path.dirname(os.path.abspath(args.log)), "captures")
+    models, errors = [], []
+    for slot, model in (("A", args.a), ("B", args.b)):
+        try:
+            text = ask_gateway(args.gateway, model, prompt["text"], args.timeout, args.token)
+        except BridgeError as exc:
+            errors.append(str(exc))
+            print(f"slot {slot} ({model}): {exc}", file=sys.stderr)
+            continue
+        inline, text_ref = _externalize(text.strip(), captures_dir, args.turn, slot)
+        models.append({"slot": slot, "name": model, "text": inline, "text_ref": text_ref})
+
+    if len(models) == 2:
+        status = "ok"
+    elif len(models) == 1:
+        status = "partial"
+    else:
+        status = "blocked"
+    summary = args.summary or (
+        f"duel API ({args.a} vs {args.b}): "
+        + (", ".join(f"{m['slot']}={len(m['text'])} caractere" for m in models) or "niciun raspuns")
+        + ("; erori: " + " | ".join(errors) if errors else "")
+        + " — textul verbatim in model.text/text_ref, nu in summary"
+    )
+    record = _make_reply(records, args.turn, status, models, summary, source="gateway",
+                         notes=args.notes or ("; ".join(errors) or None), screen=args.screen,
+                         correction=args.correction)
+    _write_checked(args.log, records, record)
+    print(f"tura {args.turn}: duel incheiat cu status {status} ({len(models)}/2 raspunsuri)")
+    return 0
 
 
 def _write_checked(path: str, records: list[dict], record: dict) -> None:
@@ -406,6 +506,20 @@ def build_parser() -> argparse.ArgumentParser:
     reply.add_argument("--approved-by", default=None,
                        help="cine a exprimat votul; singura valoare acceptata: alexandru")
     reply.set_defaults(func=cmd_reply)
+
+    duel = sub.add_parser("duel", help="doua modele prin ai_gateway local, fara Arena (varianta B)")
+    duel.add_argument("--turn", type=int, required=True)
+    duel.add_argument("--a", default=DUEL_MODELS[0], help="modelul pentru slotul A (provider/model)")
+    duel.add_argument("--b", default=DUEL_MODELS[1], help="modelul pentru slotul B (provider/model)")
+    duel.add_argument("--gateway", default=GATEWAY_URL, help="endpoint-ul local, OpenAI-compatibil")
+    duel.add_argument("--timeout", type=int, default=120, help="secunde per model")
+    duel.add_argument("--token", default=None,
+                      help="Bearer pentru gateway, doar daca GATEWAY_API_KEY e setata in .env")
+    duel.add_argument("--summary", help="daca lipseste, se scrie unul mecanic (dimensiuni + erori)")
+    duel.add_argument("--notes")
+    duel.add_argument("--screen")
+    duel.add_argument("--correction", action="store_true")
+    duel.set_defaults(func=cmd_duel)
 
     sub.add_parser("next", help="urmatorul prompt fara reply (pentru pompa)").set_defaults(func=cmd_next)
     sub.add_parser("status", help="tabelul canalului").set_defaults(func=cmd_status)

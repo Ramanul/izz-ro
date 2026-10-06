@@ -110,9 +110,9 @@ Canalul (jurnalul `turns.jsonl`, tool-ul, `validate`) rămâne util și în A ș
 
 | cale | ce e | cine scrie |
 |---|---|---|
-| `handoff/battle/turns.jsonl` | jurnalul conversației, o linie JSON per eveniment, append-only | Arena (prompturi), ZCode (răspunsuri) |
-| `handoff/battle/captures/tura-NNN-X.md` | text verbatim peste 8000 de caractere | ZCode (automat, prin tool) |
-| `sonde/battle/` | screenshot-uri și fișiere temporare de lucru (gitignored) | ZCode |
+| `handoff/battle/turns.jsonl` | jurnalul conversației, o linie JSON per eveniment, append-only | Arena (prompturi), tool-ul (răspunsuri) |
+| `handoff/battle/captures/tura-NNN-X.md` | text verbatim peste 8000 de caractere | tool-ul (automat) |
+| `sonde/battle/` | fișiere de lucru: texte copiate de om, screenshot-uri (gitignored) | om / ZCode |
 
 ## Schema (o linie = un obiect JSON)
 
@@ -122,16 +122,20 @@ Prompt (Arena):
 {"kind": "prompt", "turn": 1, "from": "arena", "ts": "2026-10-06T12:00:00Z", "text": "întrebarea"}
 ```
 
-Reply (ZCode, după ce Battle a terminat ambele răspunsuri):
+Reply (cine a adus răspunsurile: un om în browser, `duel`-ul prin API sau copiere manuală):
 
 ```json
-{"kind": "reply", "turn": 1, "from": "zcode", "ts": "2026-10-06T12:09:31Z", "status": "ok",
+{"kind": "reply", "turn": 1, "from": "gateway", "ts": "2026-10-06T12:09:31Z", "status": "ok",
  "models": [{"slot": "A", "name": null, "text": "<verbatim>", "text_ref": null},
             {"slot": "B", "name": null, "text": "<verbatim>", "text_ref": null}],
  "summary": "≤ 900 caractere: ce susțin cele două și unde se contrazic — câmpul pe care îl citește Arena",
  "vote": null, "vote_approved_by": null,
  "screen_path": "sonde/battle/tura-001.png", "notes": null}
 ```
+
+`from` spune **de unde** a venit textul, și se consemnează: `zcode` = adus de cineva cu
+browser logat din UI-ul Arena · `gateway` = duel prin `ai_gateway` local (varianta B, fără
+Arena) · `alexandru` = copiat de mână. Peste o lună, „de unde" e la fel de important ca „ce".
 
 `status`: `ok` (ambele răspunsuri) · `partial` (unul singur) · `blocked` (reCAPTCHA/login/ToS)
 · `timeout` (n-a terminat în buget) · `page_changed` (selectori lipsă → recon înainte de rerulare).
@@ -146,9 +150,25 @@ Pentru `blocked`/`timeout`/`page_changed` **nu se atașează text de model** —
 cineva (el, ZCode sau Arena, local) comanda `reply` de mai jos. Fișierele se scriu **fără** a
 citi pagina Arena cu un program — copierea o face omul.
 
-**B. Duel prin API** (zero contact cu Arena): `ai_gateway/` trimite același prompt la două
-modele (OpenRouter/OmniRoute, cheile locale), scrie cele două răspunsuri în aceleași fișiere,
-`reply` le înregistrează. Aceeași conversație, fără UI.
+**B. Duel prin API** (zero contact cu Arena) — comandă, nu teorie:
+
+```bash
+# pe mașina care are cheile în .env (gateway-ul ascultă doar pe localhost)
+python -m ai_gateway serve                     # o dată, într-un terminal
+
+python tools/battle_bridge.py duel --turn 1    # implicit: groq/openai/gpt-oss-120b vs gemini/gemini-2.5-flash
+python tools/battle_bridge.py duel --turn 1 \
+    --a cerebras/gpt-oss-120b --b mistral/mistral-medium-latest   # sau ce vrei, din registry.yaml
+```
+
+Ce face `duel`: ia promptul turei din jurnal, îl trimite **identic** la două modele prin
+`http://127.0.0.1:20129/v1/chat/completions`, scrie răspunsurile verbatim în `models[].text`
+(sau în `captures/`, dacă sunt lungi) și pune `from: "gateway"` + erorile în `notes`. Dacă
+gateway-ul e oprit → `status: blocked`, cu instrucțiunea de pornire în `notes`, fără text
+inventat. Dacă un model cade → `status: partial`, cu eroarea lui în `notes`. Dacă
+`GATEWAY_API_KEY` e setată în `.env`, adaugi `--token <cheie>` (nu se scrie nicăieri).
+Numele modelelor sunt cele din `ai_gateway/registry.yaml`; `python -m ai_gateway status`
+arată cotele rămase.
 
 ## Pompa automată — OPRIȚĂ (păstrată doar ca referință tehnică)
 
@@ -200,8 +220,10 @@ valorează (aceeași lecție ca la sesiunile grase, `AGENTS.md` § Economie de c
 - `validate` — mecanica întregului jurnal: numerotare strict crescătoare a turelor, `ts` UTC,
   reply fără prompt, reply dublu fără `correction_of`, `status` invalid, `models` fără text,
   vot fără aprobare numită, `summary` lipsă sau peste 900 de caractere.
-- `tests/test_battle_bridge.py` — 12 teste pe exact cazurile care ar produce tăcut conținut
-  valabil-dar-fals (rulat local 2026-10-06: 12/12 PASS; în CI rulează cu `pytest`).
+- `tests/test_battle_bridge.py` — 18 teste pe exact cazurile care ar produce tăcut conținut
+  valabil-dar-fals: reply dublu, vot neasumat, tură fără prompt, text uriaș, jurnal stricat de
+  mână, plus duelul verificat cu un `ai_gateway` de carton pe 127.0.0.1 (fără rețea, fără
+  chei, fără provideri reali). Rulat local 2026-10-06: 18/18 PASS.
 - Screenshot-ul din `screen_path` rămâne dovada că răspunsurile chiar au venit din Battle.
 
 ## Ce NU face canalul
