@@ -28,6 +28,17 @@ Nu vindem și nu închiriem date personale.
 - Alertele de ultimă oră: **consimțământul tău** (art. 6 alin. (1) lit. a GDPR și art. 4 din Legea nr. 506/2004), exprimat prin apăsarea „Activează alertele" și confirmat în dialogul browserului. Retragerea se face din același buton sau direct din setările site-ului în browser; la retragere, abonamentul se șterge de pe server.
 - Personalizarea în browser: **consimțământul tău** (art. 4 din Legea nr. 506/2004), exprimat prin butonul „Activează" și reactivabil/retractabil din panoul ◎; refuzul înseamnă zero stocare.
 
+## Consimțământ: cum îl dai și cum îl retragi {#consimtamant}
+
+Statisticile de audiență (Google Analytics) și înregistrarea navigării (Microsoft Clarity) pornesc **numai dacă apeși „Activează"** în bara care apare la prima vizită. Dacă alegi „Nu, mulțumesc" sau închizi pagina fără să răspunzi, **nu se încarcă niciun script și nu pleacă nicio cerere** către Google sau Microsoft.
+
+**Retragerea este la fel de simplă ca acordarea**, oricând, fără să ne scrii:
+
+1. apasă butonul **◎** (colțul paginii), apoi „Dezactivează personalizarea și statisticile"; măsurarea se oprește imediat, iar la următoarea vizită scripturile nu se mai încarcă deloc;
+2. sau șterge datele site-ului din browser — alegerea dispare, iar bara te întreabă din nou.
+
+Poți ajunge la această secțiune oricând din linkul **„Setări consimțământ"** din subsolul fiecărei pagini.
+
 ## Transfer de date în afara UE
 Pentru a reformula titlurile și a sintetiza știrile folosim un serviciu de inteligență artificială (Google Gemini și/sau Anthropic Claude), care poate prelucra textul pe servere din **Statele Unite**. Acest transfer se face în baza **clauzelor contractuale standard** aprobate de Comisia Europeană. Procesăm doar texte publice de știri, nu datele tale personale.
 

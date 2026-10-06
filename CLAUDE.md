@@ -97,6 +97,7 @@ Spec îndeplinită · comanda relevantă trecută · lint/test/type-check dispon
 
 ## 7. Reguli de domeniu — Zero Zgomot
 - **Fără output stricat.** Fallback-ul care nu atinge bara de calitate sare itemul; nu publică titlu brut/trunchiat.
+- **Diacriticele se apără mecanic** (`generator/diacritice.py`): reformularea care pierde diacriticele pe care sursa le are primește O reîncercare (un apel-lot, consumat din buget); ce rămâne nereparat se numără în log și în QA — un provider degradat nu are voie să golească site-ul, dar nici să scrie „romanesc" tăcut.
 - **O axă, o casă.** Nu cross-posta același item între axa geo și tematică.
 - **Schimbările de clustering se verifică empiric.** Probează over-merge și under-merge pe eșantioane reale.
 - **Diversitatea surselor.** Nu agrava concentrarea pe familia Digi / RCS-RDS.

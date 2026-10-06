@@ -122,7 +122,14 @@ def test_organizatia_e_declarata_o_data_si_referita(pagini):
     Daca ar fi copii, testul de mai jos ar gasi Organization de mai multe ori in acelasi graf."""
     for f, b in pagini:
         g = json.loads(b[0])["@graph"]
-        orgs = [n for n in g if n.get("@type") == "Organization"]
+        # `@type` poate fi si LISTA, de la A2 (2026-10-04): nodul e
+        # ["Organization", "NewsMediaOrganization"], ca sa poarte `publishingPrinciples` /
+        # `correctionsPolicy` / `actionableFeedbackPolicy`, care sunt proprietati de
+        # NewsMediaOrganization. Proprietatea aparata aici ramane aceeasi: UN SINGUR nod,
+        # nu trei copii — de-aia filtrul accepta ambele forme.
+        orgs = [n for n in g
+                if "Organization" in ([n.get("@type")] if isinstance(n.get("@type"), str)
+                                      else (n.get("@type") or []))]
         assert len(orgs) == 1, f"{f}: {len(orgs)} noduri Organization in acelasi graf"
         art = next((n for n in g if n.get("@type") == "NewsArticle"), None)
         if art:
@@ -136,3 +143,22 @@ def test_fara_searchaction(pagini):
     iar reintroducerea lui ar fi re-litigare a unei decizii deja documentate cu sursa."""
     rele = [f for f, b in pagini if "SearchAction" in b[0]]
     assert not rele, f"SearchAction reintrodus in {len(rele)} pagini: {rele[:2]}"
+
+
+def test_organizatia_isi_declara_politicile_publice(pagini):
+    """A2 (2026-10-04): nodul Organization poarta regulile de publicare, de corectie si de
+    sesizare. Testul nu verifica „exista cheile in JSON", ci ca fiecare cale declarata
+    CHIAR exista in output — o politica care trimite intr-un 404 e mai rea decat absenta:
+    spune ca regulile sunt publice acolo unde nu e nimic. Aceeasi regula ca la K8 pentru
+    caile citate in CLAUDE.md."""
+    import os
+    for f, b in pagini[:40]:
+        g = json.loads(b[0])["@graph"]
+        org = next(n for n in g if "Organization" in (
+            [n.get("@type")] if isinstance(n.get("@type"), str) else (n.get("@type") or [])))
+        for camp in ("publishingPrinciples", "correctionsPolicy", "actionableFeedbackPolicy"):
+            assert org.get(camp), f"{f}: Organization fara `{camp}`"
+            cale = org[camp].replace("https://izz.ro", "")
+            assert os.path.exists(os.path.join(os.path.dirname(
+                os.path.dirname(os.path.abspath(__file__))), "output", cale.strip("/"), "index.html")), \
+                f"{f}: `{camp}` trimite la {cale}, care nu exista in output"

@@ -15,8 +15,9 @@ except ImportError:
     pass
 
 from . import fetch, state, cluster, moderation, config, guard, eventdata
-from . import jurnal_triage, raport_copiere
-from .process import get_provider, process_single, process_clusters_batch, process_batch, process_official, OFFICIAL_PREFIXES
+from . import diacritice, jurnal_triage, raport_copiere
+from .process import (get_provider, process_single, process_clusters_batch, process_batch,
+                      process_official, repara_diacritice, OFFICIAL_PREFIXES)
 from .util import domain_of, fara_titluri_data
 from .claude_orchestrator import ClaudeCodeValidator
 
@@ -180,6 +181,11 @@ def process_new(new_items: list, provider, budget: int, existing: list | None = 
     # MASURAT 2026-08-16: cate un apel per cluster epuiza bugetul la 17-18 clustere/rulare,
     # lasand 0 apeluri pentru model B -- amanate a crescut monoton 0->84->152->220 in 8 ore.
     # Vezi config.CLUSTER_BATCH_SIZE si process.py:process_clusters_batch.
+    # textul BRUT al sursei per URL, pentru garda de diacritice. La rep-ul C, textul sursei
+    # e al grupului (rep-ul insusi poate sa vina dintr-un articol deja procesat, caruia i s-au
+    # sters `original_title`/`description` la salvare) — se strange aici, cat timp grupul e viu.
+    surse_brute: dict[str, str] = {}
+
     cbs = config.CLUSTER_BATCH_SIZE if provider else (len(syn) or 1)
     for i in range(0, len(syn), cbs):
         if used >= budget:
@@ -191,6 +197,7 @@ def process_new(new_items: list, provider, budget: int, existing: list | None = 
             if rep is None:
                 continue  # esec/nemapat -> cluster amanat; membrii raman nefolded si se reiau data viitoare
             processed.append(rep)
+            surse_brute[rep.get("url") or ""] = diacritice.text_grup(g)
             if not rep.get("skip"):
                 folded.update(a["url"] for a in g if a["url"] != rep["url"])
 
@@ -201,6 +208,25 @@ def process_new(new_items: list, provider, budget: int, existing: list | None = 
             break  # restul loturilor -> reluate la rularea urmatoare
         processed.extend(process_batch(singles[i:i + bs], provider))
         used += 1
+
+    # Diacriticele pierdute la reformulare: se MASOARA pe fiecare rulare si se repara cu UN
+    # singur apel-lot suplimentar, consumat din buget (de aceea `used += 1`). Anunturile
+    # oficiale nu trec prin AI, deci nu au ce pierde. Ce nu se repara ramane publicat, dar
+    # numarat — un provider care pierde diacriticele in masa nu are voie sa goleasca site-ul.
+    perechi_diacritice = []
+    for a in processed:
+        if a.get("processed_by") == "official":
+            continue
+        sursa = surse_brute.get(a.get("url") or "") or diacritice.text_sursa(a)
+        if sursa and (a.get("title") or ""):
+            diacritice.noteaza_verificate(1)
+            if diacritice.lipsesc_diacriticele(sursa, diacritice.text_generat(a)):
+                perechi_diacritice.append((a, sursa))
+    diacritice.noteaza_semnalate(len(perechi_diacritice))
+    if perechi_diacritice and used < budget:
+        reparate = repara_diacritice(perechi_diacritice, provider)
+        used += 1
+        diacritice.noteaza_reparate(reparate)
 
     if official:
         processed.extend(process_official(official))
@@ -424,6 +450,7 @@ def run(dry_run: bool = False) -> dict:
 
     provider = get_provider()
     provider_name = provider.name if provider else "fallback (fara cheie/SDK AI)"
+    diacritice.goleste()          # contoarele gardei: per rulare, nu per proces
 
     budget = buget_apeluri_ai(provider)
     # rezerva apeluri garantate pentru upgrade-ul fallback-urilor vechi, ca sa nu fie
@@ -432,6 +459,10 @@ def run(dry_run: bool = False) -> dict:
     pending_upgrades = len(upgradable(existing)) if provider else 0
     reserve = ai_reserve(existing, budget) if provider else 0
     processed_new, folded, used = process_new(new_items, provider, budget - reserve, existing=existing)
+    # Garda de diacritice scrie o linie DOAR cand a gasit ceva (altfel ar fi zgomot in log).
+    linie_diacritice = diacritice.raport()
+    if linie_diacritice:
+        print(linie_diacritice)
     # Cate iteme noi n-au primit AI in rularea asta. Nu se salveaza in state, deci revin
     # „noi” la rularea urmatoare — masura reala a presiunii pe buget, invizibila pana acum:
     # raportul spunea cate articole au IESIT, niciodata cate au fost lasate afara.

@@ -9,6 +9,7 @@ import re
 from datetime import datetime, timezone
 
 from . import config, geo, raport_copiere
+from . import diacritice
 from .verifica_sinteza import slug_din_link
 from .util import truncate_words, domain_of, strip_diacritics
 
@@ -64,6 +65,87 @@ Reguli: SCRIE IN ROMANA — daca sursele sunt in alta limba, tradu; pastreaza id
 SYSTEM_BATCH = ("Esti editor de stiri. Pentru FIECARE stire primita, titlul reda ESENTA faptului, "
                 "iar teaserul comprima faptele de baza, cu cuvintele tale. Concret, nu vag. "
                 "Raspunzi EXCLUSIV cu un array JSON valid.")
+
+# Prompt DEDICAT pentru diacritice pierdute (vezi `diacritice.py`). De ce nu s-a pus regula
+# direct in SYSTEM_B/USER_B: orice schimbare de prompt cere bump de `PROMPT_VERSION`, iar un
+# bump face ~1100 de articole vechi sa fie reprocesate (vezi `upgradable`), adica exact
+# opusul a ce vrem aici — la problema asta raspund ~13 iteme pe zi, nu 11.000.
+SYSTEM_DIACRITICE = ("Esti corector de limba romana. Primesti texte deja scrise carora le-au "
+                     "lipsit diacriticele. Le rescrii cu diacriticele corecte, fara sa schimbi "
+                     "nimic altceva. Raspunzi EXCLUSIV cu un array JSON valid.")
+
+USER_DIACRITICE = """Ai mai multe texte (titlu + rezumat) carora le-au lipsit diacriticele la o reformulare automata.
+
+Texte:
+{block}
+
+Pentru FIECARE text, rescrie titlul si rezumatul adaugand DIACRITICELE CORECTE ale limbii romane.
+Returneaza EXCLUSIV un array JSON, cate UN obiect per text, cu acelasi id primit:
+[{{"id": <id>, "title": "<titlul, cu diacritice>", "teaser": "<rezumatul, cu diacritice>"}}]
+Reguli: schimba DOAR diacriticele (a -> ă/â, i -> î, s -> ș, t -> ț unde cuvantul o cere); pastreaza EXACT sensul, cifrele, numele proprii, ordinea cuvintelor si lungimea; nu adaugi si nu scoti nicio informatie; nu reformula propozitiile."""
+
+
+def repara_diacritice(perechi: list, provider) -> int:
+    """Un singur apel AI (in LOT) pentru textele care au pierdut diacriticele fata de sursa.
+
+    `perechi` = [(articol, text_sursa)], asa cum le da `diacritice.de_ne_reparat`. Modifica
+    articolul pe loc, doar cand rezultatul e acceptabil, si intoarce cate texte au fost
+    reparate. Un esec (apel picat, id nemapat, text tot fara diacritice) NU strica textul
+    existent: articolul ramane exact cum era, iar cifra nereparatelor se vede in log.
+
+    Cele trei conditii de acceptare, fiecare pentru alt mod de a strica:
+      · textul intors chiar are diacritice (altfel n-are rost sa inlocuim ceva cu la fel);
+      · titlul ramane sustinut de context (`_titlu_sustinut_de_context`, aceeasi garda ca la C):
+        un corector care „corecteaza" si fapte nu are ce cauta pe site;
+      · lungimea nu sare (max(3, 30%) cuvinte in plus/minus): o rescriere care dubleaza textul
+        nu mai e corectura de diacritice, e alt articol, si se ignora.
+    """
+    if not perechi or provider is None:
+        return 0
+    bloc = "\n".join(
+        f"[{i}] Titlu: {a.get('title') or ''} | Rezumat: "
+        f"{(a.get('synthesis') if a.get('model') == 'C' else a.get('teaser')) or ''}"
+        for i, (a, _) in enumerate(perechi))
+    try:
+        raw = provider.complete(SYSTEM_DIACRITICE, USER_DIACRITICE.format(block=bloc))
+        arr = _parse_json_array(raw)
+    except Exception:
+        return 0                               # corectura e optionala: textul ramane cum era
+
+    by_id = {}
+    for obj in arr:
+        try:
+            by_id[int(obj.get("id"))] = obj
+        except (TypeError, ValueError, AttributeError):
+            continue
+
+    reparate = 0
+    for i, (a, sursa) in enumerate(perechi):
+        obj = by_id.get(i)
+        if not isinstance(obj, dict):
+            continue
+        titlu = (obj.get("title") or "").strip()
+        corp = (obj.get("teaser") or "").strip()
+        if not (titlu and corp) or not diacritice.are_diacritice(f"{titlu} {corp}"):
+            continue
+        vechi_titlu = a.get("title") or ""
+        vechi_corp = (a.get("synthesis") if a.get("model") == "C" else a.get("teaser")) or ""
+        if (len(titlu.split()) > len(vechi_titlu.split()) + max(3, int(0.3 * len(vechi_titlu.split())))
+                or len(corp.split()) > len(vechi_corp.split()) + max(4, int(0.3 * len(vechi_corp.split())))):
+            continue
+        if not _titlu_sustinut_de_context(titlu, sursa):
+            continue
+        a["title"] = titlu
+        if a.get("model") == "C":
+            a["synthesis"] = truncate_words(corp, config.SYNTHESIS_MAX_WORDS)
+        else:
+            a["teaser"] = truncate_words(corp, config.TEASER_MAX_WORDS)
+        # Textul publicat s-a schimbat DUPA procesare: fara asta, `updated` ar minti despre
+        # cand a fost atins articolul (acelasi motiv ca la sinteza care absoarbe o stire noua).
+        if not a.get("updated"):
+            a["updated"] = datetime.now(timezone.utc).isoformat()
+        reparate += 1
+    return reparate
 
 USER_BATCH = """Ai mai multe stiri (fiecare cu un id). Pentru FIECARE, scrie titlu (esenta) + teaser (rezumat comprimat), cu cuvintele tale.
 

@@ -62,6 +62,21 @@ def main() -> int:
           "/", "numele surselor sunt linkuri externe pe fiecare card")
     check(">Citește<" not in home and "read-more" not in home, "/", "fara CTA 'Citește' pe carduri")
 
+    # PWA: un audit extern (4 oct 2026) a raportat „manifest.json lipseste, PWA rupt". In cod
+    # manifestul exista, e linkat in <head> si e testat (`tests/test_pwa.py`), iar `/manifest.json`
+    # nu e o cale standard — deci raportul era o masuratoare a altei intrebari. Intrebarea REALA,
+    # singura care nu se poate verifica din sandboxul de dev (fara egress catre izz.ro): serveste
+    # Cloudflare tipul corect de continut? Un `Content-Type` generic face Chromium sa ignore
+    # manifestul TACUT — instalarea nu merge, dar nimic nu se plange.
+    print("PWA / manifest:")
+    try:
+        headers, _ = head("/static/site.webmanifest")
+        ct = headers.get("Content-Type", "")
+        check("manifest" in ct, "/static/site.webmanifest",
+              f"Content-Type e de manifest (primit: {ct or 'lipsa'})")
+    except Exception as e:
+        check(False, "/static/site.webmanifest", f"manifestul se descarca ({e})")
+
     print("prospetime:")
     sitemap = get("/sitemap.xml")
     # cel mai nou lastmod de articol (data publicarii) -> deploy-ul chiar publica

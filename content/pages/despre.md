@@ -66,6 +66,12 @@ Lista completă și informațiile despre modul în care sunt folosite sursele su
 
 Agențiile de presă sunt în afara fluxului de surse urmărit de IZZ.ro, având în vedere regimul distinct de licențiere al materialelor lor.
 
+## Cine răspunde editorial
+
+Răspunderea editorială pentru tot ce rămâne publicat aparține **Redacției IZZ.ro**. Regulile de selecție, de sinteză și de corecție sunt stabilite de un om și verificate zilnic; articolele generate automat sunt citite, corectate sau retrase după publicare, după procedura din pagina [Corecții](/legal/corrections/).
+
+Operatorul proiectului este Alexandru Nicolae Stanciu (persoană fizică, România). Pentru semnalări, corecții sau întrebări: **contact@izz.ro**.
+
 ## Despre proiect
 
 **IZZ.ro este un proiect independent, creat și operat de Alexandru Nicolae Stanciu, persoană fizică din România.**
