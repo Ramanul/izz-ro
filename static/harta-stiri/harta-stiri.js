@@ -814,11 +814,24 @@
     return Math.round(value * 100) / 100;
   }
 
+  // Enclavele (Bucuresti in inelul Ilfovului) se picteaza DUPA judetul parinte: SVG
+  // picteaza in ordinea DOM, iar Ilfov — venit dupa in date — acoperea complet
+  // enclavea, care nu mai era nici vizibila, nici accesibila click-ului (hit-testul
+  // livreaza mereu parintele). Vezi garda "centrul Bucurestiului" din
+  // tools/harta_dom_check.py si planul de remediere D1 (Arena, 6 oct).
+  const COUNTIES_DRAW_LAST = ["BUCURESTI"];
+
   function ensureCountyPaths() {
     const layer = state.layers.counties;
     if (layer.childElementCount === Object.keys(state.counties).length) return;
     layer.replaceChildren();
-    for (const [county, pathData] of Object.entries(state.counties)) {
+    const chei = Object.keys(state.counties);
+    const ordonate = [
+      ...chei.filter((county) => !COUNTIES_DRAW_LAST.includes(county)),
+      ...chei.filter((county) => COUNTIES_DRAW_LAST.includes(county)),
+    ];
+    for (const county of ordonate) {
+      const pathData = state.counties[county];
       const node = svgNode("path", {
         class: "map-county h0",
         d: pathData,
