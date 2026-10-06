@@ -1,8 +1,8 @@
 (() => {
   "use strict";
 
-  const DATA_URL = "./data/map.json";
-  const PROJECTION_URL = "./data/projection.json";
+  const DATA_URL = "/static/harta-stiri/data/map.json";
+  const PROJECTION_URL = "/static/harta-stiri/data/projection.json";
   const BASEMAP_STYLE = "https://tiles.openfreemap.org/styles/positron";
   const state = {
     map: null,
@@ -1349,7 +1349,7 @@
       return;
     }
     state.uatLoading = true;
-    fetch(`./data/uat/${encodeURIComponent(county)}.json`)
+    fetch(`/static/harta-stiri/data/uat/${encodeURIComponent(county)}.json`)
       .then((response) => response.ok ? response.json() : null)
       .then((data) => {
         if (state.uatCounty !== county || state.uatRequestId !== requestId) return;
@@ -1487,7 +1487,7 @@
   function incarcaPopulatii() {
     if (state.populatii) return Promise.resolve(state.populatii);
     if (state.populatiiPromise) return state.populatiiPromise;
-    state.populatiiPromise = fetch("./data/populatie.json")
+    state.populatiiPromise = fetch("/static/harta-stiri/data/populatie.json")
       .then((response) => {
         if (!response.ok) throw new Error(`HTTP ${response.status}`);
         return response.json();
@@ -1937,11 +1937,12 @@
   function stateFromUrl() {
     const params = new URLSearchParams(location.search);
     const loc = params.get("loc");
+    const countyFromPage = document.querySelector('meta[name="harta-county"]')?.content || null;
     return {
       level: params.get("nivel") || "all",
       viewMode: params.get("mod") === "articles" ? "articles" : "events",
       region: params.get("regiune") || null,
-      county: judetDinUrl(params.get("judet")),
+      county: judetDinUrl(params.get("judet") || countyFromPage),
       locality: loc ? loc.split("|").filter(Boolean) : null,
       uat: params.get("uat") || null,
       query: params.get("q") || "",

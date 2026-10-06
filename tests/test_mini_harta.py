@@ -41,7 +41,7 @@ def test_sablonul_are_blocul_puls():
     with open(os.path.join(ROOT, "templates", "index.html"), encoding="utf-8") as fh:
         html = fh.read()
     assert "mini_harta" in html and 'class="puls"' in html
-    assert 'class="puls-map"' in html and "/static/harta-stiri/" in html
+    assert 'class="puls-map"' in html and "/harta/" in html
 
 
 def test_css_are_treptele_h0_h4():

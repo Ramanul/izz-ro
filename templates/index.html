@@ -59,13 +59,13 @@
   <section class="puls" aria-labelledby="puls-title">
     <h2 class="section-title" id="puls-title">România în ultimele 24 de ore</h2>
     <div class="puls-layout">
-      <a class="puls-map" href="{{ base }}/static/harta-stiri/"
+      <a class="puls-map" href="{{ base }}/harta/"
          aria-label="Harta știrilor locale: {{ mini_harta.total }} știri în ultimele 24 de ore. Deschide harta completă.">
         <svg viewBox="{{ mini_harta.viewbox }}" focusable="false" aria-hidden="true">
           {% for f in mini_harta.forme %}<path class="h{{ f.treapta }}" d="{{ f.d }}"/>{% endfor %}
         </svg>
       </a>
-      <p class="puls-caption">Căldura arată câte știri locale și județene a publicat fiecare județ în ultimele 24 de ore, după județul sursei. Treptele sunt <strong>relative la ziua curentă</strong> (sferturi din maximul zilei), ca să se vadă cine e sus azi; pe <a href="{{ base }}/static/harta-stiri/">harta completă</a>, aceleași culori înseamnă praguri absolute (1–5, 6–14, 15–29, 30+), pe un interval de 12 zile.</p>
+      <p class="puls-caption">Căldura arată câte știri locale și județene a publicat fiecare județ în ultimele 24 de ore, după județul sursei. Treptele sunt <strong>relative la ziua curentă</strong> (sferturi din maximul zilei), ca să se vadă cine e sus azi; pe <a href="{{ base }}/harta/">harta completă</a>, aceleași culori înseamnă praguri absolute (1–5, 6–14, 15–29, 30+), pe un interval de 12 zile.</p>
     </div>
   </section>
   {% endif %}

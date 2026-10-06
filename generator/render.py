@@ -8,6 +8,7 @@ import shutil
 import sys
 from datetime import datetime, timedelta, timezone
 from email.utils import format_datetime
+from html import escape as html_escape
 # `saxutils.escape` NU parseaza nimic: primeste un str si intoarce un str cu &<> inlocuite.
 # Regula semgrep marcheaza modulul `xml.sax`, nu apelul, iar `defusedxml` nici macar nu ofera
 # un inlocuitor pentru functia asta. ID-ul e scris COMPLET intentionat: forma scurta
@@ -521,6 +522,147 @@ def _graph_jsonld(canonical_path: str, nodes: list, page: dict | None = None) ->
             "@graph": [_org_jsonld(), _website_jsonld(), wp, *nodes]}
 
 
+
+# --- Harta publică: /harta/ și pagini statice pe județ ------------------------------------
+
+def _harta_rute_judetene() -> list[tuple[str, str, str]]:
+    """(cod, slug URL, etichetă) pentru fiecare județ publicat în datasetul hărții."""
+    path = os.path.join(STATIC_DIR, "harta-stiri", "data", "map.json")
+    with open(path, encoding="utf-8") as fh:
+        payload = json.load(fh)
+    counties = (payload.get("map") or {}).get("judete") or {}
+    routes: list[tuple[str, str, str]] = []
+    used: dict[str, str] = {}
+    for code in sorted(counties):
+        label = geo.eticheta_judet(code)
+        slug = slugify(label).strip("-").lower()
+        if not slug:
+            raise ValueError(f"slug gol pentru județul {code!r}")
+        if slug in used:
+            raise ValueError(f"slug de județ duplicat: {slug!r} pentru {used[slug]!r} și {code!r}")
+        used[slug] = code
+        routes.append((code, slug, label))
+    if len(routes) != len(counties):
+        raise ValueError("nu s-a putut genera câte o rută pentru fiecare județ din map.json")
+    return routes
+
+
+def _harta_jsonld(canonical_path: str, title: str, description: str, county: str | None) -> str:
+    canonical = config.SITE["url"] + canonical_path
+    page_id = canonical + "#webpage"
+    dataset_id = canonical + "#dataset"
+    place_id = canonical + "#place"
+    place = ({"@type": "AdministrativeArea", "@id": place_id, "name": county,
+              "containedInPlace": {"@type": "Country", "name": "România"}}
+             if county else {"@type": "Country", "@id": place_id, "name": "România"})
+    graph = {
+        "@context": "https://schema.org",
+        "@graph": [
+            _org_jsonld(),
+            _website_jsonld(),
+            {"@type": "WebPage", "@id": page_id, "url": canonical, "name": title,
+             "description": description, "inLanguage": config.SITE["lang"],
+             "isPartOf": {"@id": _abs_id("/", "website")},
+             "about": {"@id": place_id}, "mainEntity": {"@id": dataset_id}},
+            {"@type": "Dataset", "@id": dataset_id,
+             "name": "Harta știrilor" + (f" — {county}" if county else " — România"),
+             "description": description, "url": canonical, "inLanguage": config.SITE["lang"],
+             "spatialCoverage": {"@id": place_id},
+             "creator": {"@id": _abs_id("/", "organization")}},
+            place,
+        ],
+    }
+    return json.dumps(graph, ensure_ascii=False, separators=(",", ":")).replace("<", "\\u003c")
+
+
+def _harta_insert_head(text: str, html: str) -> str:
+    if "</head>" not in text:
+        raise ValueError("shell-ul hărții nu are </head>")
+    return text.replace("</head>", html + "\n</head>", 1)
+
+
+def _render_harta_shell(source: str, canonical_path: str, county_code: str | None = None,
+                        county_label: str | None = None) -> str:
+    """Personalizează shell-ul hărții pentru ruta publică; datele rămân un singur dataset."""
+    county_label = county_label or (geo.eticheta_judet(county_code) if county_code else "")
+    title = (f"Știri din {county_label} — Harta știrilor IZZ.ro"
+             if county_code else "Harta știrilor — IZZ.ro")
+    description = (
+        f"Știri locale și județene localizate în {county_label}, afișate pe harta IZZ.ro. "
+        "Numărul indică evenimentele sau relatările afișate, nu statistica oficială a incidentelor."
+        if county_code else
+        "Harta interactivă a știrilor localizate din România. Explorează evenimentele și relatările "
+        "pe județe, orașe și comune. Numărul nu este o statistică oficială a incidentelor."
+    )
+    canonical = config.SITE["url"] + canonical_path
+    text = source
+
+    def replace_once(pattern: str, replacement: str, label: str) -> None:
+        nonlocal text
+        text, count = re.subn(pattern, lambda _m: replacement, text, count=1, flags=re.S)
+        if count != 1:
+            raise ValueError(f"shell-ul hărții nu are un singur {label} (găsite {count})")
+
+    replace_once(r"<title>.*?</title>", f"<title>{html_escape(title)}</title>", "title")
+    replace_once(r'<meta name="description" content="[^"]*">',
+                 f'<meta name="description" content="{html_escape(description, quote=True)}">',
+                 "meta description")
+    if '<link rel="canonical"' in text:
+        replace_once(r'<link rel="canonical" href="[^"]*">',
+                     f'<link rel="canonical" href="{html_escape(canonical, quote=True)}">', "canonical")
+    else:
+        text = _harta_insert_head(text, f'  <link rel="canonical" href="{html_escape(canonical, quote=True)}">')
+    if '<meta property="og:title"' in text:
+        replace_once(r'<meta property="og:title" content="[^"]*">',
+                     f'<meta property="og:title" content="{html_escape(title, quote=True)}">', "og:title")
+    else:
+        text = _harta_insert_head(text, f'  <meta property="og:title" content="{html_escape(title, quote=True)}">')
+    if '<meta property="og:description"' in text:
+        replace_once(r'<meta property="og:description" content="[^"]*">',
+                     f'<meta property="og:description" content="{html_escape(description, quote=True)}">',
+                     "og:description")
+    else:
+        text = _harta_insert_head(text, f'  <meta property="og:description" content="{html_escape(description, quote=True)}">')
+    if '<meta property="og:url"' in text:
+        replace_once(r'<meta property="og:url" content="[^"]*">',
+                     f'<meta property="og:url" content="{html_escape(canonical, quote=True)}">', "og:url")
+    else:
+        text = _harta_insert_head(text, f'  <meta property="og:url" content="{html_escape(canonical, quote=True)}">')
+    county_meta = html_escape(county_code or "", quote=True)
+    if '<meta name="harta-county"' in text:
+        replace_once(r'<meta name="harta-county" content="[^"]*">',
+                     f'<meta name="harta-county" content="{county_meta}">', "codul județului")
+    else:
+        text = _harta_insert_head(text, f'  <meta name="harta-county" content="{county_meta}">')
+
+    if county_code:
+        replace_once(r"<h1>Harta știrilor</h1>",
+                     f"<h1>Știri din {html_escape(county_label)}</h1>", "h1 de județ")
+        replace_once(r'aria-label="Harta României cu știri pe județe"',
+                     f'aria-label="Harta știrilor din {html_escape(county_label, quote=True)}"',
+                     "eticheta hărții")
+        replace_once(r'<p class="map-task">.*?</p>',
+                     f'<p class="map-task">Explorează știrile localizate din {html_escape(county_label)}. '
+                     'Harta pornește filtrată pe județ; poți reveni oricând la România.</p>',
+                     "instrucțiunea de județ")
+    jsonld = _harta_jsonld(canonical_path, title, description, county_label or None)
+    text = _harta_insert_head(text, '  <script id="harta-jsonld" type="application/ld+json">' + jsonld + '</script>')
+    return text
+
+
+def _write_harta_pages() -> None:
+    """Emite `/harta/` și `/harta/<judet>/`; asseturile rămân sub `/static/harta-stiri/`."""
+    source_path = os.path.join(STATIC_DIR, "harta-stiri", "index.html")
+    with open(source_path, encoding="utf-8") as fh:
+        source = fh.read()
+    _write(os.path.join(OUT_DIR, "static", "harta-stiri", "index.html"),
+           _render_harta_shell(source, "/harta/"))
+    _write(os.path.join(OUT_DIR, "harta", "index.html"),
+           _render_harta_shell(source, "/harta/"))
+    for code, slug, label in _harta_rute_judetene():
+        _write(os.path.join(OUT_DIR, "harta", slug, "index.html"),
+               _render_harta_shell(source, f"/harta/{slug}/", code, label))
+
 def _article_jsonld(a: dict) -> dict:
     body = a.get("synthesis") if a.get("model") == "C" else a.get("teaser")
     path = f"/{a['category']}/{a['slug']}/"
@@ -853,6 +995,7 @@ def build(articles: list, mod: dict | None = None) -> None:
         p = os.path.join(OUT_DIR, entry)
         shutil.rmtree(p) if os.path.isdir(p) else os.remove(p)
     _copy_static()
+    _write_harta_pages()
     # Registrul portretelor cerute de arta inline se goleste la inceputul randarii, nu la
     # sfarsit: a doua randare din acelasi proces (teste, `--render-only` dupa pipeline)
     # trebuie sa copieze doar ce cere ea.
@@ -1560,7 +1703,7 @@ def _render_legal(env: Environment) -> None:
 # Sectiunile editoriale care intra in sitemap. NU tot ce se randeaza: `subiect/` are ~300 de
 # pagini de agregare subtiri (decizie de proprietar daca merita indexate), `cauta/` e o unealta,
 # iar `static/`, `data/`, `leads/`, `portraits/` nu sunt pagini.
-_SITEMAP_SECTIONS = ("ghiduri", "instrumente", "calendar", "surse", "legal", "sectiuni")
+_SITEMAP_SECTIONS = ("ghiduri", "instrumente", "calendar", "surse", "legal", "sectiuni", "harta")
 
 
 def _content_page_slugs() -> set:
@@ -1958,7 +2101,8 @@ def _write_redirects() -> None:
     sociale) s-ar rupe. Wildcard, nu o linie per articol: acopera si pagina de categorie
     (`/zonal/`, `/zonal/2/`) si orice viitor request catre calea veche, nu doar ce exista azi."""
     redirects = (
-        "/harta-stiri/ /static/harta-stiri/ 301\n"
+        "/harta-stiri /harta/ 301\n"
+        "/harta-stiri/ /harta/ 301\n"
         "/zonal/* /judetean/:splat 301\n"
     )
     redirects += _redirects_migrare()
