@@ -2036,6 +2036,11 @@ def _write_headers() -> None:
            "'sha256-LXd89R0ZNPfUJLyGqvxXmhTIA1mSPILGag0zh9noF7U=' "
            # varianta 3, observata live 2026-10-06 (semnalata de errors-in-console)
            "'sha256-u+Sixs2Pv/bm51HGgEAqEWUEVmE93Ud0CG0uijDq2GI=' "
+           # varianta 4, observata live 2026-10-06 dupa-amiaza — A DOUA rotatie in aceeasi
+           # zi (fata de 2 variante stabile din august). Cadența în acceleratie: daca
+           # continua, administrarea pe hashuri devine bandă rulantă și decizia
+           # devine a ownerului (Bot Fight Mode off din dashboard vs zgomot de consolă).
+           "'sha256-tH1iUavg7BOliAkIYWZz8c/fP4WG2ND/YJ0+dwfNTXI=' "
            "https://static.cloudflareinsights.com https://www.googletagmanager.com "
            "https://*.clarity.ms; "
            "style-src 'self' 'unsafe-inline'; "

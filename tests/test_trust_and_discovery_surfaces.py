@@ -89,5 +89,6 @@ def test_csp_allows_only_observed_cloudflare_bootstrap_variants(tmp_path, monkey
     assert "sha256-DzqzfYrgtaakHyuPGKa5knFv5IoTaJszzL9Fca3521M=" in headers
     assert "sha256-LXd89R0ZNPfUJLyGqvxXmhTIA1mSPILGag0zh9noF7U=" in headers
     assert "sha256-u+Sixs2Pv/bm51HGgEAqEWUEVmE93Ud0CG0uijDq2GI=" in headers
+    assert "sha256-tH1iUavg7BOliAkIYWZz8c/fP4WG2ND/YJ0+dwfNTXI=" in headers
     script_policy = headers.split("script-src ", 1)[1].split(";", 1)[0]
     assert "unsafe-inline" not in script_policy
