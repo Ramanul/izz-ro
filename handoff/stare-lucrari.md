@@ -175,3 +175,31 @@ Citește răspunsul Arenei la review-ul sistemului de economie de context (chatu
   (a) automatizările NU se recreează niciodată dintr-o tură de automatizare;
   (b) orice sarcină mecanică => script determinist, nu agent AI;
   (c) sesiunile interactive de management = max ~5-6 ture apoi New task.
+
+## 13. Sesiunea 6 oct, dimineața — repo reparat, audit pornit (raport ZCode)
+- **CI main roșu** (garda PR fantomă: #438 merge-uit dar în `## Open` fără adnotare)
+  → reparat: `specs/STATE.md` adnotat, push `15aeb6c2`; CI verde pe `b06776af`.
+- **Pipeline de conținut blocat** (2 rulări nepublicate: 22:37 + 02:58 — push respins,
+  rebase cu conflict pe `static/harta-stiri/data/map.json`, fișier generat de două
+  workflow-uri) → reparat minimal: `-X theirs` la rebase-ul din retry (`5dd36c28`),
+  pipeline re-dispatch-at (run 37413011349). De confirmat: conținutul publicat.
+- **Checkout local realiniat**: branch `fix/portrete-omonime` (merge-uit) lăsat în urmă;
+  `main` e ocupat de worktree-ul `izz-wt-main` — sesiunile noi lucrează pe branch
+  din `origin/main`, nu `git switch main`. `AGENTS.md`/`docs/colaborare.md` locale
+  erau identice cu main (verify byte-level înainte de înlocuire).
+- **`git am` abandonat întrerupt** (patch „keep article retention within file budget",
+  bază 667dc510 inexistentă în clone) → sesiune închisă cu `git am --quit`, patch
+  salvat la `sonde/patch-retention-pending.patch`. NU e pe main; neevaluat față de
+  main actual (atinge generator/config, render, state, arhiva) — decizie separată.
+- **Template-uri .github (P2-B Arena) comise**: `ed9f8c29` (PR template + issue
+  template arena_task) — existau necomitate local de la 5 oct; Arena le-a reconfirmat.
+- **Canal Arena**: citite 2 mesaje noi (analiza P1/P2 + triaj PR-uri #438/#443/#442);
+  raport de confirmare trimis în chat, livrare verificată. Stare: `sonde/arena-chat-state.json`.
+  Panoul „Was this task successful?" închis cu locator „Keep working" (a funcționat).
+- **Sarcina E (portrete)**: pas 0 verificat — cache 10.393 intrări (1.823 hits cu qid,
+  8.570 miss, 0 miss-omonim înregistrate post-fix), poze live 200 pe `https://izz.ro/portraits/`.
+  Pas 1: audit report-only `tools/audit_portrete_omonime.py` (4 workers) →
+  `notes/audit-portrete-omonime-2026-10-06.md`, pe branch `audit/portrete-omonime`, fără merge.
+- **Rămân**: verdict Alexandru pe #443 (închidere + PR E2E nou) și #442 (issue nou);
+  leadphotos (shim wd_match); decizia cache/judecată pe nume nu pe primul articol;
+  re-înarmare senzor chat Arena (referință: P1-B al Arenei — FSM + LLM fallback batched).
