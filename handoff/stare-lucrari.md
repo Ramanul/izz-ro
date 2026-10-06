@@ -203,3 +203,27 @@ Citește răspunsul Arenei la review-ul sistemului de economie de context (chatu
 - **Rămân**: verdict Alexandru pe #443 (închidere + PR E2E nou) și #442 (issue nou);
   leadphotos (shim wd_match); decizia cache/judecată pe nume nu pe primul articol;
   re-înarmare senzor chat Arena (referință: P1-B al Arenei — FSM + LLM fallback batched).
+
+## 14. Siguranță de cost MONTATĂ + inventarul sarcinilor din sesiunile arhivate (6 oct, 08:10)
+
+### Mecanismele noi (deterministe, 0 tokeni, nivel OS — detalii și reguli în `~\.zcode\AGENTS.md` § Siguranță de cost)
+- `Desktop\panic.cmd` — buton roșu: oprește ZCode + dezarmează taskul de reluare; `panic.cmd dur` adaugă blocare firewall. Reversibil (undo în antet).
+- Task `Siguranta-Fuzibil` (5 min): citește `model_usage` din db.sqlite; WARN >25M/h (toast), ALARM la combinatul 15min>12M + 1h>40M („buclă suspectă"); fail-closed la 2 citiri eșuate. Praguri calibrate pe 111 buckete măsurate (median 2,6M/15min, p95 13M, varf legitim 14,3M).
+- Task `Siguranta-Integritate` (15 min): hash pe `config.json`/`setting.json`/`auto-continuare.py`/`watchdog-continuare.py` + diff pe lista task-urilor non-Microsoft; toast la orice schimbare neanunțată, repetat la 60 min până la `--accepta`.
+- `ZCodeAutoContinuare` DEZARMAT (Disabled) — era singura cale vie de resurecție rămasă.
+
+### Sarcini deschise reale, extrase din cele 15 sesiuni arhivate + 4 grase (ordine recomandată: întâi ce se vede la cititor)
+1. **Audit web-perf pe izz.ro** (Core Web Vitals + Lighthouse) — singurul task deschis de substanță, neacoperit altundeva. Propun: rularea directă cu skill-ul `web-perf` + audit local (`source-command-audit`), raport cu scoruri vs baseline; ~30 min, cost = contextul turei.
+2. **VM ZCode-VM: Guest Additions + configurare finală „ca un om"** — ZCode în VM e deja conectat (memorie 4 oct, 16:09); de verificat dacă Guest Additions s-au instalat (rezoluție/clipboard/mouse) și restul listei; ~20 min dacă e totul bun.
+3. **Decizie de produs (a lui Alexandru, nu task): nota tooltip pentru exclavele ANCPI** (Mărașu/Brăila „de 2 ori") — diagnosticul e închis (poligoane oficiale); rămâne doar dacă/nota apare în tooltip.
+- Depășite (de nu le reia nimeni): todo-urile din „Raport 10 ore" (harta #440 + basemap #445 merged, portrete confirmate live, raportul livrat), „Verificare live pipeline Kennedy" (poze 200 confirmate § 13), diagnosticul Mărașu (închis — nu e defect), „bloc paste-ready Arena" (livrat 4 oct), „raport final consolidat" (senzorul e șters, înlocuit de mecanismele de sus).
+
+## 14. Sesiunea 6 oct — confirmări finale
+- Pipeline REÎNTRUP: conținut `65f4a897` pe main; deploy worker dispatch-at manual
+  (cronul :53 de siguranță NU a bătut la 05:53 — GitHub schedule drop); publicare
+  confirmată LIVE prin artifacts noi (`/portraits/mario-draghi.jpg` etc. = 200).
+- Auditul portrete COMPLET (0 erori): 1.823 decizii, 1.749 determinate (95,9%),
+  **71 omonime (3,9%)** — toate cu alegerea cached = candidatul cel mai celebru,
+  deci exact setul de risc clasa-JFK, listat pentru revizuire în
+  `notes/audit-portrete-omonime-2026-10-06.md` (branch `audit/portrete-omonime`,
+  pushed, FĂRĂ merge — decizia e a lui Alexandru).
