@@ -143,7 +143,20 @@ def county_route_targets(p):
 
 
 def goto_base(p):
-    p.goto(BASE, wait_until="networkidle")
+    # felia 2 #448: clickul pe harta poate porni o navigatie catre o ruta de judet cateva
+    # zeci de ms DUPA actiune, deci goto-ul spre baza poate fi intrerupt. Reincercam:
+    # lasam navigatia in curs sa se termine si reluam goto-ul, de pana la 3 ori.
+    for _ in range(3):
+        try:
+            p.goto(BASE, wait_until="networkidle")
+            break
+        except Exception:
+            try:
+                p.wait_for_load_state("load", timeout=8000)
+            except Exception:
+                p.wait_for_timeout(250)
+    else:
+        p.goto(BASE, wait_until="networkidle")
     p.wait_for_selector("#map svg.map-svg .layer-counties path", timeout=15000)
     p.wait_for_timeout(150)
 
@@ -403,6 +416,49 @@ def hit_ordin_fara_furt(p):
     reset(p)
 
 
+def ilfov_click_geometric(p):
+    """Punctul de ancorare ILFOV cade si in poligonul BUCURESTI (desenat deasupra).
+    Clickul trebuie rezolvat dupa geometria formelor, nu doar dupa elementFromPoint.
+    Cu felia 2 #448, angajarea ILFOV deschide ruta /harta/ilfov/ (navigare)."""
+    print("\nILFOV / BUCURESTI -- click geometric pe ancora suprapusa")
+    p.goto(BASE, wait_until="networkidle")
+    p.wait_for_selector("#map svg.map-svg .layer-counties path[data-judet='ILFOV']", timeout=15000)
+    p.locator("#map svg.map-svg").scroll_into_view_if_needed()
+    p.wait_for_timeout(100)
+    pt = p.evaluate("""() => {
+      const svg = document.querySelector('#map svg.map-svg');
+      const ilfov = svg.querySelector('[data-judet="ILFOV"]');
+      const bucuresti = svg.querySelector('[data-judet="BUCURESTI"]');
+      if (!ilfov || !bucuresti) return null;
+      const b = ilfov.getBBox();
+      const local = new DOMPoint(b.x + b.width / 2, b.y + b.height / 2);
+      const ctm = ilfov.getScreenCTM();
+      if (!ctm) return null;
+      const screen = local.matrixTransform(ctm);
+      const inBucuresti = new DOMPoint(screen.x, screen.y)
+        .matrixTransform(bucuresti.getScreenCTM().inverse());
+      const at = document.elementFromPoint(screen.x, screen.y);
+      const top = at && at.closest('[data-judet]');
+      return {
+        x: screen.x, y: screen.y,
+        inIlfov: ilfov.isPointInFill(local),
+        inBucuresti: bucuresti.isPointInFill(inBucuresti),
+        top: top ? top.dataset.judet : null,
+      };
+    }""")
+    if not pt or not pt["inIlfov"] or not pt["inBucuresti"]:
+        skip("ancora ILFOV nu este simultan in ambele poligoane in randarea curenta")
+        return
+    check(pt["top"] == "BUCURESTI",
+          f"punctul ILFOV este acoperit de hit-testul DOM Bucuresti ({pt['top']})")
+    with p.expect_navigation(wait_until="networkidle", timeout=8000) as nav:
+        p.mouse.click(pt["x"], pt["y"])
+    response = nav.value
+    path = p.evaluate("() => location.pathname")
+    check(path == "/harta/ilfov/" and response and response.status == 200,
+          f"clickul pe ancora ILFOV angajeaza /harta/ilfov/ (a ajuns pe {path}, status {response.status if response else 'fara raspuns'})")
+
+
 def hover_preview(p):
     """hover = previzualizare peste tot (audit harta, P1): la nivel national, numele si cifra
     judetului apar sub cursor INAINTE de click, la fel ca la UAT-uri."""
@@ -582,18 +638,40 @@ def felia2_localitate(p):
         for j in range(1, 13):
             p.mouse.click(zr["x"] + zr["w"] * i / 13, zr["y"] + zr["h"] * j / 13)
             p.wait_for_timeout(35)
-            if p.evaluate("() => location.pathname") != "/harta/":
+            try:
+                path_now = p.evaluate("() => location.pathname")
+            except Exception:
+                path_now = None  # navigatie in curs (felie 2): tratam ca iesire din document
+            if path_now != "/harta/":
                 # felia 2 #448: un click din grila a nimerit un judet vecin vizibil si a angajat
-                # ruta; revenim pe harta nationala si reluam cautarea, nu abandonam verificarea.
+                # ruta; lasam navigatia sa se termine, revenim pe nationala si reluam cautarea.
+                try:
+                    p.wait_for_load_state("load", timeout=8000)
+                except Exception:
+                    pass
                 goto_base(p)
                 p.click("#county-picker button[data-county]")
                 p.wait_for_timeout(45)
                 before = panel_count(p)
                 zr = stage_rect(p)
                 continue
-            if panel_count(p) != before:
-                found = True
-                break
+            try:
+                if panel_count(p) != before:
+                    found = True
+                    break
+            except Exception:
+                try:
+                    p.wait_for_load_state("load", timeout=8000)
+                    path_now = p.evaluate("() => location.pathname")
+                except Exception:
+                    path_now = None
+                if path_now != "/harta/":
+                    goto_base(p)
+                    p.click("#county-picker button[data-county]")
+                    p.wait_for_timeout(45)
+                    before = panel_count(p)
+                    zr = stage_rect(p)
+                continue
         if found:
             break
     if not found:
@@ -673,14 +751,19 @@ def felia5_county_picker(p):
     sel = p.evaluate("""() => {
       const a = document.activeElement;
       const inPicker = !!(a && a.closest && a.closest('#county-picker'));
+      const picker = document.querySelector('#county-picker');
       return {
         pressed: inPicker && a.getAttribute('aria-pressed') === 'true',
         uats: inPicker && a.hasAttribute('data-uat'),
         popup: inPicker ? a.getAttribute('aria-haspopup') : null,
+        label: picker ? (picker.getAttribute('aria-label') || '') : '',
       };
     }""")
-    check(sel["pressed"] or sel["uats"],
-          f"selectia e vizibila pe buton (aria-pressed={sel['pressed']}, buton UAT={sel['uats']}, haspopup={sel['popup']})")
+    # A treia forma legitima: dupa Enter pickerul se reconstruieste pe lista UAT a judetului
+    # si focusul se pierde in replaceChildren; eticheta pickerului („Orașe și comune din X")
+    # este dovada stabila a selectiei in fereastra aceea de cursa.
+    check(sel["pressed"] or sel["uats"] or sel["label"].startswith("Orașe și comune din"),
+          f"selectia e vizibila pe buton sau in eticheta pickerului (aria-pressed={sel['pressed']}, buton UAT={sel['uats']}, haspopup={sel['popup']}, label='{sel['label']}')")
 
     # Capcana de blocare: picker-ul se reconstruieste din stirile VIZIBILE, iar dupa selectie
     # vizibile sunt doar ale judetului ales. Daca ar ramane un singur buton, utilizatorul de
@@ -795,6 +878,96 @@ def uat_selectie(p):
               f"link direct ({opened_url}) restabileste selectia")
     p.goto(BASE, wait_until="networkidle")
     p.wait_for_selector("#news-list li", timeout=15000)
+
+
+def context_national_si_nume_uat(p):
+    """Selectia la nivel judetean pastreaza harta nationala si vecinii neestompati;
+    la zoom local, toate UAT-urile raman in selector, iar numele vizibile sunt collision-aware."""
+    print("\nCONTEXT NATIONAL + NUME UAT -- vecini vizibili, lista completa, etichete fara coliziuni")
+    p.goto(BASE + "?nivel=judetean&judet=TIMIS", wait_until="networkidle")
+    p.wait_for_selector("#map svg.map-svg .layer-counties path[data-judet='TIMIS']", timeout=15000)
+    national = p.evaluate("""async () => {
+      const svg = document.querySelector('#map svg.map-svg');
+      const data = await (await fetch('/static/harta-stiri/data/map.json')).json();
+      const expected = data.map.viewbox.trim().split(/\s+/).map(Number);
+      const actual = svg.getAttribute('viewBox').trim().split(/\s+/).map(Number);
+      const counties = [...svg.querySelectorAll('.layer-counties path')];
+      const neighbors = counties.filter((n) => n.dataset.judet !== 'TIMIS');
+      return {
+        fullFrame: actual.length === 4 && actual.every((v, i) => Math.abs(v - expected[i]) < 0.02),
+        selected: counties.some((n) => n.dataset.judet === 'TIMIS' && n.classList.contains('is-selected')),
+        neighbors: neighbors.length,
+        dimmed: neighbors.filter((n) => getComputedStyle(n).opacity !== '1').length,
+      };
+    }""")
+    check(national["fullFrame"] and national["selected"],
+          f"nivelul județean păstrează cadrul național cu TIMIȘ selectat ({national})")
+    check(national["neighbors"] > 0 and national["dimmed"] == 0,
+          f"toți vecinii rămân vizibili/neestompați în cadrul național ({national})")
+
+    p.goto(BASE + "?judet=TIMIS", wait_until="networkidle")
+    p.wait_for_function("() => document.querySelectorAll('#map svg.map-svg .layer-uats path').length > 0",
+                        timeout=15000)
+    uats = p.evaluate("""() => {
+      const paths = [...document.querySelectorAll('#map svg.map-svg .layer-uats path')];
+      const buttons = [...document.querySelectorAll('#county-picker button[data-uat]')];
+      const names = [...document.querySelectorAll('#map svg.map-svg .label-name')]
+        .map((n) => n.textContent.trim()).filter(Boolean);
+      const pickerNames = new Set(buttons.map((b) => b.textContent.split(' · ')[0].trim()));
+      const boxes = [...document.querySelectorAll('#map svg.map-svg .map-label.label-uat')]
+        .map((n) => n.getBoundingClientRect());
+      let overlaps = 0;
+      for (let i = 0; i < boxes.length; i += 1) {
+        for (let j = i + 1; j < boxes.length; j += 1) {
+          const dx = Math.min(boxes[i].right, boxes[j].right) - Math.max(boxes[i].left, boxes[j].left);
+          const dy = Math.min(boxes[i].bottom, boxes[j].bottom) - Math.max(boxes[i].top, boxes[j].top);
+          if (dx > 2 && dy > 2) overlaps += 1;
+        }
+      }
+      return {
+        paths: paths.length,
+        buttons: buttons.length,
+        names,
+        matchedNames: names.filter((name) => pickerNames.has(name)).length,
+        overlaps,
+      };
+    }""")
+    check(uats["paths"] > 0 and uats["buttons"] == uats["paths"],
+          f"selectorul oferă toate UAT-urile geometrice, inclusiv cele cu 0 rezultate ({uats['buttons']}/{uats['paths']})")
+    check(uats["matchedNames"] > 0 and uats["overlaps"] == 0,
+          f"etichetele UAT vizibile se potrivesc cu pickerul și nu se suprapun (nume={uats['matchedNames']}/{len(uats['names'])}, coliziuni={uats['overlaps']})")
+    p.goto(BASE, wait_until="networkidle")
+
+
+def nume_uat_mobil(p):
+    """La 390px, zoomul local păstrează textul real pentru etichetele care trec culling-ul;
+    numele ascunse prin coliziune rămân în selectorul complet."""
+    print("\nNUME UAT PE MOBIL -- etichete SVG cu culling, selector accesibil")
+    p.goto(BASE + "?judet=TIMIS", wait_until="networkidle")
+    p.wait_for_function("() => document.querySelectorAll('#map svg.map-svg .layer-uats path').length > 0",
+                        timeout=15000)
+    p.wait_for_timeout(100)
+    uats = p.evaluate("""() => {
+      const names = [...document.querySelectorAll('#map svg.map-svg .label-name')]
+        .map((n) => n.textContent.trim()).filter(Boolean);
+      const buttons = [...document.querySelectorAll('#county-picker button[data-uat]')];
+      const pickerNames = new Set(buttons.map((b) => b.textContent.split(' · ')[0].trim()));
+      const boxes = [...document.querySelectorAll('#map svg.map-svg .map-label.label-uat')]
+        .map((n) => n.getBoundingClientRect());
+      let overlaps = 0;
+      for (let i = 0; i < boxes.length; i += 1) {
+        for (let j = i + 1; j < boxes.length; j += 1) {
+          const dx = Math.min(boxes[i].right, boxes[j].right) - Math.max(boxes[i].left, boxes[j].left);
+          const dy = Math.min(boxes[i].bottom, boxes[j].bottom) - Math.max(boxes[i].top, boxes[j].top);
+          if (dx > 2 && dy > 2) overlaps += 1;
+        }
+      }
+      return { visible: names.length, matched: names.filter((name) => pickerNames.has(name)).length,
+               picker: buttons.length, overlaps };
+    }""")
+    check(uats["visible"] > 0 and uats["matched"] > 0 and uats["overlaps"] == 0,
+          f"pe mobil apar nume UAT SVG fără coliziuni și corespondente în lista completă ({uats})")
+    p.goto(BASE, wait_until="networkidle")
 
 
 def breadcrumb(p):
@@ -1064,9 +1237,10 @@ def main():
         # felia 2 #448: clickul pe poligon angajează ruta județului, deci orice secțiune care
         # clipează harta poate schimba documentul. Fiecare secțiune pornește deci de pe harta
         # națională; navigarea intenționată (felia 2, click_zona) are goto_base propriu la final.
-        for sec in (hit_ordin_fara_furt, hover_preview, click_zona_fara_stiri, scara_si_numitor,
+        for sec in (hit_ordin_fara_furt, ilfov_click_geometric, hover_preview, click_zona_fara_stiri, scara_si_numitor,
                     felia2_localitate, felia5_county_picker, felia6_url, zoom_interactiv,
-                    tastatura_pan_zoom, uat_selectie, breadcrumb):
+                    tastatura_pan_zoom, uat_selectie, context_national_si_nume_uat,
+                    breadcrumb):
             goto_base(p)
             sec(p)
 
@@ -1074,6 +1248,7 @@ def main():
         mob.goto(BASE, wait_until="networkidle")
         mob.wait_for_selector("#news-list li", timeout=15000)
         mobil_390(mob)
+        nume_uat_mobil(mob)
         br.close()
     print("")
     if fails:
