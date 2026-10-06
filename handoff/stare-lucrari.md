@@ -227,3 +227,20 @@ Citește răspunsul Arenei la review-ul sistemului de economie de context (chatu
   deci exact setul de risc clasa-JFK, listat pentru revizuire în
   `notes/audit-portrete-omonime-2026-10-06.md` (branch `audit/portrete-omonime`,
   pushed, FĂRĂ merge — decizia e a lui Alexandru).
+
+## 15. Implementare aprobata 6 oct (ambele sarcini de la Alexandru) — EXECUTAT
+- **Re-adjudicarea celor 71 de omonime**: rulata real (photojudge/Gemini, 0 erori).
+  Rezultat: **0 schimbari necesare** — 19 confirmate, 10 neclar (nemodificate
+  intentionat: stergerea ar pierde poze legitime pe contextul unui singur articol),
+  42 fara context (TTL). Tool: `tools/readjudica_omonime.py`; raport:
+  `notes/readjudicare-omonime-raport.md`. PR #446 MERGED (8d446dea). Cache-ul de
+  portrete NESCHIMBAT (nu era nimic de reparat).
+- **Verdictul Arenei #443/#442 executat**: #443 era deja inchisa (de Arenă dupa
+  verdict) — comentariu de evidenta adaugat; bucata E2E portata si VERIFICATA LIVE
+  (parcurs vizitator desktop+mobil pe izz.ro, tot `ok`) → PR #447 MERGED (2a593b8b);
+  issue nou **#448** cu inventarul exact pentru rutele `/harta/<judet>/` (42 județi,
+  felierea 1: rute+SEO+teste; felierea 2: interactiunea, dupa).
+- Deploy pe main: CI verde, deploy-worker in curs la raport; visual-live verde.
+- `.env` (chei AI, copiat temporar din wt-gw pt. rulare locala) a fost STERS dupa
+  utilizare. `.gitignore`-ul modificat de Alexandru (regula `freelancing/`) ramane
+  neatins, necomitat.
