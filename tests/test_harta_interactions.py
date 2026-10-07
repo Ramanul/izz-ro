@@ -177,11 +177,28 @@ def test_all_uats_remain_in_the_collision_aware_labels_and_picker():
     assert "if (!uat.count) continue;" not in labels
     assert 'labelText(entry, "name", "label-name"' in js
     assert "const nameWidth = estimateWidth(name, LABEL_PX.uat) + 8;" in labels
-    assert "offsetY: hasCount ? 7 : -3" in labels
+    assert "offsetY: 7," in labels
+    assert "hasCount" not in labels
     assert "const offsetY = candidate.offsetY || 0;" in js
     assert "state.uats.filter((uat) => uat.count > 0)" not in picker
     assert "const uats = [...state.uats]" in picker
     assert "if (collides) continue;" in js
+
+
+def test_zero_news_areas_get_a_visible_zero_label():
+    # Cerinta editorului (7 oct): judetele si UAT-urile fara stiri afiseaza „0", nu dispar
+    # de pe harta; culling-ul ramane in seama lui placeLabels (prioritatea = volumul).
+    js = Path("static/harta-stiri/harta-stiri.js").read_text(encoding="utf-8")
+    counties = js.split('} else if (!state.zoomCounty || !state.uats.length) {', 1)[1]
+    counties = counties.split("if (state.zoomCounty && state.uats.length) {", 1)[0]
+    assert "for (const node of state.layers.counties.children)" in counties
+    assert "if (!count) continue;" not in counties
+    assert "if (compact && count < 6) continue;" not in counties
+    assert "const compact = stageRect().width < 420;" not in js
+    render = js.split("candidates.sort", 1)[1].split("pruneLabels", 1)[0]
+    uat_render = render.split('if (candidate.kind === "uat") {', 1)[1].split("} else {", 1)[0]
+    assert 'labelDisc(entry).setAttribute("r"' in uat_render
+    assert ".textContent = String(candidate.count)" in uat_render
 
 
 def test_uat_label_anchor_is_inside_the_polygon():
