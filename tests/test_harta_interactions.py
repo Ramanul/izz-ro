@@ -201,6 +201,16 @@ def test_zero_news_areas_get_a_visible_zero_label():
     assert ".textContent = String(candidate.count)" in uat_render
 
 
+def test_map_is_excluded_from_browser_scroll_anchoring():
+    # Patch Arena (7 oct, raport cititor: „pagina sare inapoi la harta" la derulare):
+    # scroll anchoring-ul browserului alege harta ca ancora; .map-card/.news-panel si
+    # .map-stage primesc overflow-anchor: none, ca ancorarea sa ramana pe continut.
+    css = Path("static/harta-stiri/harta-stiri.css").read_text(encoding="utf-8")
+    assert css.count("overflow-anchor:none") == 2
+    assert ".map-card,.news-panel{" in css
+    assert ".map-stage{" in css
+
+
 def test_uat_label_anchor_is_inside_the_polygon():
     # Pastila nu mai e cautata cu zeci de mii de point-in-polygon per cadru (uatBadgePlacement:
     # 79.831 interogari la TIMIS per redesenare): ancorarea vine din `center`-ul UAT-ului
