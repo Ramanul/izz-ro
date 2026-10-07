@@ -371,7 +371,7 @@ def hit_ordin_fara_furt(p):
         return owner;
       };
       let checked = 0, agree = 0, frontiera = 0;
-      const bad = [];
+      const bad = [], frontBad = [];
       for (let i = 1; i < 10; i += 1) {
         for (let j = 1; j < 10; j += 1) {
           const x = r.left + r.width * i / 10, y = r.top + r.height * j / 10;
@@ -394,20 +394,28 @@ def hit_ordin_fara_furt(p):
               }
             }
           }
-          if (vecinAgree) { frontiera += 1; continue; }
+          if (vecinAgree) {
+            frontiera += 1;
+            if (frontBad.length < 5) {
+              frontBad.push({ x: Math.round(x), y: Math.round(y),
+                             tinta: node.dataset.judet,
+                             geometrie: owner ? owner.dataset.judet : null });
+            }
+            continue;
+          }
           bad.push({ x: Math.round(x), y: Math.round(y),
                      tinta: node ? node.dataset.judet : null,
                      geometrie: owner ? owner.dataset.judet : null });
         }
       }
-      return { checked, agree, frontiera, bad: bad.slice(0, 5) };
+      return { checked, agree, frontiera, frontBad, bad: bad.slice(0, 5) };
     }""")
     if out is None:
         skip("hit-test exact: scena nu are CTM (nu se poate converti punctul in spatiul hartii)")
     elif out["agree"] != out["checked"]:
-        extra = f"; {out['frontiera']} frontiera ambigua (explicate, nu reale)" if out["frontiera"] else ""
+        extra = f"; {out['frontiera']} frontiera ambigua {out['frontBad']}" if out["frontiera"] else ""
         check(False, f"hit-testul si geometria sunt de acord ({out['agree']}/{out['checked']}{extra}; "
-                     f"diferente: {out['bad']})")
+                     f"diferente reale: {out['bad']})")
     else:
         check(True, f"hit-testul si geometria sunt de acord pe toata grila ({out['agree']}/{out['checked']})")
 
