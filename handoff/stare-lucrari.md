@@ -320,3 +320,14 @@ Citește răspunsul Arenei la review-ul sistemului de economie de context (chatu
   off din dashboard CF, fie se acceptă zgomotul de consolă (N3, alarma Lighthouse funcționează ca design).
   Capcană de extragere: hash-ul din errors-in-console e TRUNCHIAT în JSON-ul Lighthouse — nu completa
   prin ghicire (prins în timp: finalul real NTXI=, nu NTXw=).
+
+## 18. NISHIAI pdf-batch-excel v0.2 (7 oct, continuat în sesiune nouă, fără sesiunea grasă)
+- Hot-folder watcher implementat și comis (`e79fd11` pe master local, repo separat
+  `C:/Users/cw_26/nishiai-apps/pdf-batch-excel`): `python -m pdfbatch watch <folder> -o out.xlsx
+  [--interval 2] [--once]` — procesează incremental, stare pe disc, foaia se înlocuiește la fișier
+  schimbat; verificat: pytest 9/9 + rulare reală 3 ture. Detalii în memoria
+  nishiai-plan-prospectare-2026-10-06.md + README/SPEC din repo.
+- Fix de mediu: `fontTools/varLib/iup.cp314-win_amd64.pyd` din user-site blocat de Application
+  Control → redenumit `.pyd.disabled`, pachetul cade pe fallback-ul pure-Python `iup.py` (reversibil).
+- Rămân v0.3+ (profiluri per furnizor, OCR, GUI) la „continuă" explicit; publicarea/conturile de
+  magazin = pașii lui Alexandru conform DOSAR-MAGAZINE.md.
