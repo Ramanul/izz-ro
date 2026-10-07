@@ -999,6 +999,25 @@ def nume_uat_mobil(p):
     p.goto(BASE, wait_until="networkidle")
 
 
+def scroll_anchoring_harta(p):
+    """Garda anti-salt la scroll (raport cititor 7 oct, diagnostic Arena): scroll anchoring-ul
+    browserului poate alege harta ca ancora si „trage" pagina inapoi la ea cand lista de sub
+    ea se redeseneaza. .map-card si .map-stage trebuie sa aiba overflow-anchor: none."""
+    print("\nSCROLL ANCHORING -- harta exclusa din ancorarea browserului")
+    res = p.evaluate("""() => {
+      const stage = document.querySelector('.map-stage');
+      const card = document.querySelector('.map-card');
+      if (!stage || !card) return null;
+      return { stage: getComputedStyle(stage).overflowAnchor,
+               card: getComputedStyle(card).overflowAnchor };
+    }""")
+    if res is None:
+        skip("overflow-anchor: elementele .map-stage/.map-card lipsesc")
+    else:
+        check(res["stage"] == "none" and res["card"] == "none",
+              f"overflow-anchor este 'none' pe scena și cardul hartii ({res})")
+
+
 def breadcrumb(p):
     """Firul ierarhic (NN/g 'Breadcrumbs': pozitie in IERARHIE, nu istoric; nivelul curent e
     text simplu, nu link; toti stramosii clickabili) + limbaj de utilizator, nu jargon
@@ -1278,6 +1297,7 @@ def main():
         mob.wait_for_selector("#news-list li", timeout=15000)
         mobil_390(mob)
         nume_uat_mobil(mob)
+        scroll_anchoring_harta(mob)
         br.close()
     print("")
     if fails:
