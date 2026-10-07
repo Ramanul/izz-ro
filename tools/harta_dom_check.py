@@ -358,35 +358,64 @@ def hit_ordin_fara_furt(p):
       if (!ctm) return null;
       const inv = ctm.inverse();
       const paths = [...svg.querySelectorAll('.layer-counties path')];
-      let checked = 0, agree = 0;
-      const bad = [];
+      // owner = poligonul cu aria-bbox minima care contine exact punctul (enclava bate invelisul).
+      const ownerAt = (sx, sy) => {
+        const local = new DOMPoint(sx, sy).matrixTransform(inv);
+        let owner = null, ownerArea = Infinity;
+        for (const cand of paths) {
+          if (!cand.isPointInFill(local)) continue;
+          const b = cand.getBBox();
+          const area = b.width * b.height;
+          if (area < ownerArea) { ownerArea = area; owner = cand; }
+        }
+        return owner;
+      };
+      let checked = 0, agree = 0, frontiera = 0;
+      const bad = [], frontBad = [];
       for (let i = 1; i < 10; i += 1) {
         for (let j = 1; j < 10; j += 1) {
           const x = r.left + r.width * i / 10, y = r.top + r.height * j / 10;
           const stack = document.elementsFromPoint(x, y);
           const node = stack.find((el) => el.matches && el.matches('.layer-counties path[data-judet]')) || null;
-          const local = new DOMPoint(x, y).matrixTransform(inv);
-          let owner = null, ownerArea = Infinity;
-          for (const cand of paths) {
-            if (!cand.isPointInFill(local)) continue;
-            const b = cand.getBBox();
-            const area = b.width * b.height;
-            if (area < ownerArea) { ownerArea = area; owner = cand; }
-          }
+          const owner = ownerAt(x, y);
           checked += 1;
           if (node === owner) { agree += 1; continue; }
+          // Frontiera ambigua (issue #454, verdict Arena — sonde/arena-raspuns-454.txt): pe
+          // pixelul de granita, pictura browserului si geometria exacta se contrazic legitim.
+          // Vecinatatea 3x3 px explica punctul, dar NU-l transforma in PASS — o fâșie de județ
+          // sau o exclavă la 1px ar masca un bug real. Se raporteaza ca numar separat; esecul
+          // ramane esec, cu diferentele reale separate de cele explicabile.
+          let vecinAgree = false;
+          if (node) {
+            for (let dx = -1; dx <= 1 && !vecinAgree; dx += 1) {
+              for (let dy = -1; dy <= 1 && !vecinAgree; dy += 1) {
+                if (!dx && !dy) continue;
+                if (ownerAt(x + dx, y + dy) === node) vecinAgree = true;
+              }
+            }
+          }
+          if (vecinAgree) {
+            frontiera += 1;
+            if (frontBad.length < 5) {
+              frontBad.push({ x: Math.round(x), y: Math.round(y),
+                             tinta: node.dataset.judet,
+                             geometrie: owner ? owner.dataset.judet : null });
+            }
+            continue;
+          }
           bad.push({ x: Math.round(x), y: Math.round(y),
                      tinta: node ? node.dataset.judet : null,
                      geometrie: owner ? owner.dataset.judet : null });
         }
       }
-      return { checked, agree, bad: bad.slice(0, 5) };
+      return { checked, agree, frontiera, frontBad, bad: bad.slice(0, 5) };
     }""")
     if out is None:
         skip("hit-test exact: scena nu are CTM (nu se poate converti punctul in spatiul hartii)")
     elif out["agree"] != out["checked"]:
-        check(False, f"hit-testul si geometria sunt de acord ({out['agree']}/{out['checked']}; "
-                     f"diferente: {out['bad']})")
+        extra = f"; {out['frontiera']} frontiera ambigua {out['frontBad']}" if out["frontiera"] else ""
+        check(False, f"hit-testul si geometria sunt de acord ({out['agree']}/{out['checked']}{extra}; "
+                     f"diferente reale: {out['bad']})")
     else:
         check(True, f"hit-testul si geometria sunt de acord pe toata grila ({out['agree']}/{out['checked']})")
 
