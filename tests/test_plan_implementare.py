@@ -6,7 +6,7 @@ from datetime import datetime, timedelta, timezone
 
 import pytest
 
-from generator import config, process, render, state
+from generator import process, render, state
 
 
 def test_gridul_nu_depaseste_ecranul_de_320():
