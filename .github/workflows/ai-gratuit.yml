@@ -35,15 +35,18 @@ jobs:
     # NU au regex (matches() nu există; verificat cu actionlint 1.7.7), iar "@ai" e prefix
     # al multor cuvinte. Straturile 2: pasul "Declanșator valid?" verifică granița reală
     # de cuvânt cu grep -E și taie totul dacă textul era un fals pozitiv (ex. "@aiurea").
+    # Aliasurile stau într-un singur grup, între paranteze, ÎNAINTE de verificarea de autor.
+    # && leagă mai strâns decât ||. Fără parantezele alea, un @qwen (sau @ai pe
+    # issue_comment) de la oricine pornea jobul cu OPENROUTER_API_KEY.
     if: |
       (github.event_name == 'issue_comment'
-        && contains(github.event.comment.body, '@ai') || contains(github.event.comment.body, '@deepseek') || contains(github.event.comment.body, '@qwen') || contains(github.event.comment.body, '@kimi') || contains(github.event.comment.body, '@glm') || contains(github.event.comment.body, '@grok') || contains(github.event.comment.body, '@nemotron') || contains(github.event.comment.body, '@gemma') || contains(github.event.comment.body, '@inkling')
+        && (contains(github.event.comment.body, '@ai') || contains(github.event.comment.body, '@deepseek') || contains(github.event.comment.body, '@qwen') || contains(github.event.comment.body, '@kimi') || contains(github.event.comment.body, '@glm') || contains(github.event.comment.body, '@grok') || contains(github.event.comment.body, '@nemotron') || contains(github.event.comment.body, '@gemma') || contains(github.event.comment.body, '@inkling'))
         && contains(fromJSON('["OWNER","COLLABORATOR"]'), github.event.comment.author_association)) ||
       (github.event_name == 'pull_request_review_comment'
-        && contains(github.event.comment.body, '@ai') || contains(github.event.comment.body, '@deepseek') || contains(github.event.comment.body, '@qwen') || contains(github.event.comment.body, '@kimi') || contains(github.event.comment.body, '@glm') || contains(github.event.comment.body, '@grok') || contains(github.event.comment.body, '@nemotron') || contains(github.event.comment.body, '@gemma') || contains(github.event.comment.body, '@inkling')
+        && (contains(github.event.comment.body, '@ai') || contains(github.event.comment.body, '@deepseek') || contains(github.event.comment.body, '@qwen') || contains(github.event.comment.body, '@kimi') || contains(github.event.comment.body, '@glm') || contains(github.event.comment.body, '@grok') || contains(github.event.comment.body, '@nemotron') || contains(github.event.comment.body, '@gemma') || contains(github.event.comment.body, '@inkling'))
         && contains(fromJSON('["OWNER","COLLABORATOR"]'), github.event.comment.author_association)) ||
       (github.event_name == 'issues'
-        && contains(github.event.issue.body, '@ai') || contains(github.event.issue.body, '@deepseek') || contains(github.event.issue.body, '@qwen') || contains(github.event.issue.body, '@kimi') || contains(github.event.issue.body, '@glm') || contains(github.event.issue.body, '@grok') || contains(github.event.issue.body, '@nemotron') || contains(github.event.issue.body, '@gemma') || contains(github.event.issue.body, '@inkling')
+        && (contains(github.event.issue.body, '@ai') || contains(github.event.issue.body, '@deepseek') || contains(github.event.issue.body, '@qwen') || contains(github.event.issue.body, '@kimi') || contains(github.event.issue.body, '@glm') || contains(github.event.issue.body, '@grok') || contains(github.event.issue.body, '@nemotron') || contains(github.event.issue.body, '@gemma') || contains(github.event.issue.body, '@inkling'))
         && contains(fromJSON('["OWNER","COLLABORATOR"]'), github.event.issue.author_association))
     runs-on: ubuntu-latest
     timeout-minutes: 15
@@ -56,7 +59,17 @@ jobs:
         # Fără declanșator adevărat, totul se taie aici — fără checkout, fără API.
         env:
           COMMENT_BODY: ${{ github.event.comment.body || github.event.issue.body }}
+          AUTHOR_ASSOCIATION: ${{ github.event.comment.author_association || github.event.issue.author_association }}
         run: |
+          # Al doilea strat nu înlocuiește `if:`-ul. Dacă expresia se strică din nou,
+          # jobul tot nu cheamă upstream-ul și nu comentează.
+          case "$AUTHOR_ASSOCIATION" in
+            OWNER|COLLABORATOR) ;;
+            *)
+              echo "Autor neautorizat ($AUTHOR_ASSOCIATION) — niciun secret, niciun apel."
+              exit 0
+              ;;
+          esac
           if printf '%s' "$COMMENT_BODY" | grep -qE '@(ai|deepseek|qwen|kimi|glm|grok|nemotron|gemma|inkling)([^a-z0-9-]|$)'; then
             echo "HAS_TRIGGER=true" >> "$GITHUB_ENV"
           else
@@ -143,5 +156,6 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
           NUMAR: ${{ github.event.issue.number || github.event.pull_request.number }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
         run: |
-          gh issue comment "$NUMAR" --body "❌ Botul AI gratuit a eșuat (catalogul :free poate fi congestionat azi). Vezi logurile: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+          gh issue comment "$NUMAR" --body "❌ Botul AI gratuit a eșuat (catalogul :free poate fi congestionat azi). Vezi logurile: $RUN_URL"

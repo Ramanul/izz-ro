@@ -27,4 +27,13 @@ jobs:
           python-version: "3.11"
           cache: "pip"
       - run: pip install -r requirements.txt
-      - run: python tools/scrape_probe.py "${{ inputs.url }}"
+      - name: Probe
+        env:
+          TARGET_URL: ${{ inputs.url }}
+        run: |
+          set -euo pipefail
+          case "$TARGET_URL" in
+            http://*|https://*) ;;
+            *) echo "::error::URL-ul trebuie să înceapă cu http:// sau https://"; exit 1 ;;
+          esac
+          python tools/scrape_probe.py "$TARGET_URL"

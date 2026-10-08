@@ -26,7 +26,18 @@
 const PREFIX = '/push/';
 const PREFIX_ABONARE = 'sub:';
 const PREFIX_CAP = 'cap:';
+const PREFIX_RATA_ZI = 'rata:zi:';
+const PREFIX_RATA_IP = 'rata:ip:';
 const CHEIE_STARE = 'stare:ultima';
+
+// Un abonament real e câteva sute de octeți. Peste atât nu e un browser, e un corp
+// menit să consume CPU sau să ocolească Content-Length.
+export const LIMITA_CORP = 4096;
+// 30 pe oră de la același IP lasă loc unui NAT de operator și tot oprește un script
+// secvențial înainte să ardă cele 1.000 de scrieri KV. KV nu e atomic: două cereri
+// simultane pot trece amândouă de citire. Plafonul zilnic e plasa de sub ele.
+export const LIMITA_ABONARI_PE_IP = 30;
+export const LIMITA_ABONARI_PE_ZI = 200;
 
 // DOUA plafoane, din doua motive DIFERITE — si cel care te opreste primul e CPU-ul, nu reteaua.
 //
@@ -57,8 +68,9 @@ const TTL_SECUNDE = 24 * 3600;
 const CAP_TTL_SECUNDE = 48 * 3600;
 
 // Serviciile de push acceptate. Filtrul NU e cosmetica: o abonare scrie in KV, iar KV are
-// 1.000 de scrieri pe zi pe planul Free. Fara el, oricine poate goli plafonul zilnic cu un
-// sir de POST-uri catre /push/abonare, iar alertele reale nu se mai pot inregistra.
+// 1.000 de scrieri pe zi pe planul Free. Lista scurteaza spatiul de endpointuri; cota din
+// refuzCotaAbonare e cea care opreste bucla. Fara amandoua, un sir de POST-uri catre
+// /push/abonare umple plafonul si alertele reale nu se mai pot inregistra.
 const GAZDE_PUSH = [
   'fcm.googleapis.com',
   'fcm.googleapis.cn',
@@ -417,6 +429,64 @@ export function cheieZi(azi = new Date()) {
   return azi.toISOString().slice(0, 10);
 }
 
+export function cheieOra(azi = new Date()) {
+  return azi.toISOString().slice(0, 13);
+}
+
+export function ipClient(request) {
+  const primit = request.headers.get('cf-connecting-ip');
+  return typeof primit === 'string' ? primit.trim() : '';
+}
+
+/** Citește corpul doar dacă încape. Content-Length mincinos nu sare peste măsurarea textului. */
+export async function citesteJsonLimitat(request, max = LIMITA_CORP) {
+  const declarat = request.headers.get('content-length');
+  if (declarat !== null && declarat !== '') {
+    const n = Number(declarat);
+    if (!Number.isFinite(n) || n < 0 || n > max) {
+      return { eroare: 'corp prea mare', status: 413 };
+    }
+  }
+  let text;
+  try { text = await request.text(); }
+  catch { return { eroare: 'corp JSON invalid', status: 400 }; }
+  if (text.length > max) return { eroare: 'corp prea mare', status: 413 };
+  try { return { corp: JSON.parse(text) }; }
+  catch { return { eroare: 'corp JSON invalid', status: 400 }; }
+}
+
+async function amprenta(text) {
+  const urme = await crypto.subtle.digest('SHA-256', enc.encode(text));
+  return Array.from(new Uint8Array(urme)).map((b) => b.toString(16).padStart(2, '0')).join('').slice(0, 32);
+}
+
+/**
+ * Refuză înainte de scrierea abonamentului. Fără IP (teste, sau un apel care nu trece
+ * prin edge) rămâne doar plafonul zilnic. Pe Cloudflare headerul e pus de platformă.
+ */
+export async function refuzCotaAbonare(kv, request, acum = new Date()) {
+  const zi = PREFIX_RATA_ZI + cheieZi(acum);
+  const folosite = Number(await kv.get(zi)) || 0;
+  if (folosite >= LIMITA_ABONARI_PE_ZI) return 's-a atins plafonul zilnic de abonări';
+  const ip = ipClient(request);
+  if (!ip) return null;
+  const cheie = PREFIX_RATA_IP + await amprenta(ip) + ':' + cheieOra(acum);
+  const peIp = Number(await kv.get(cheie)) || 0;
+  if (peIp >= LIMITA_ABONARI_PE_IP) return 'prea multe abonări de la aceeași adresă';
+  return null;
+}
+
+async function noteazaAbonare(kv, request, acum = new Date()) {
+  const zi = PREFIX_RATA_ZI + cheieZi(acum);
+  const folosite = Number(await kv.get(zi)) || 0;
+  await kv.put(zi, String(folosite + 1), { expirationTtl: CAP_TTL_SECUNDE });
+  const ip = ipClient(request);
+  if (!ip) return;
+  const cheie = PREFIX_RATA_IP + await amprenta(ip) + ':' + cheieOra(acum);
+  const peIp = Number(await kv.get(cheie)) || 0;
+  await kv.put(cheie, String(peIp + 1), { expirationTtl: 2 * 3600 });
+}
+
 export async function idAbonament(endpoint) {
   const urme = await crypto.subtle.digest('SHA-256', enc.encode(endpoint));
   return PREFIX_ABONARE + Array.from(new Uint8Array(urme))
@@ -454,27 +524,32 @@ export async function raspunsPush(request, env, url, ctx) {
   if (cale === '/push/abonare' && request.method === 'POST') {
     if (!env.VAPID_PUBLIC_KEY) return configLipsa();
     if (!kv) return faraKV();
-    let corp;
-    try { corp = await request.json(); } catch { return json({ eroare: 'corp JSON invalid' }, 400); }
+    const citit = await citesteJsonLimitat(request);
+    if (citit.eroare) return json({ eroare: citit.eroare }, citit.status);
+    const corp = citit.corp;
     const problema = valideazaAbonament(corp && corp.subscription);
     if (problema) return json({ eroare: problema }, 400);
     const sub = corp.subscription;
     const id = await idAbonament(sub.endpoint);
     // Re-abonarea aceluiasi dispozitiv NU rescrie: scrierile in KV sunt 1.000 pe zi, iar
-    // browserul re-abona la fiecare vizita daca i s-ar cere.
+    // browserul re-abona la fiecare vizita daca i s-ar cere. Nici cota nu se consumă.
     if (await kv.get(id)) return json({ ok: true, nou: false });
+    const refuz = await refuzCotaAbonare(kv, request);
+    if (refuz) return json({ eroare: refuz }, 429);
     await kv.put(id, JSON.stringify({
       endpoint: sub.endpoint,
       keys: { p256dh: sub.keys.p256dh, auth: sub.keys.auth },
       la: new Date().toISOString(),
     }));
+    await noteazaAbonare(kv, request);
     return json({ ok: true, nou: true }, 201);
   }
 
   if (cale === '/push/dezabonare' && request.method === 'POST') {
     if (!kv) return faraKV();
-    let corp;
-    try { corp = await request.json(); } catch { return json({ eroare: 'corp JSON invalid' }, 400); }
+    const citit = await citesteJsonLimitat(request);
+    if (citit.eroare) return json({ eroare: citit.eroare }, citit.status);
+    const corp = citit.corp;
     const endpoint = corp && corp.endpoint;
     if (typeof endpoint !== 'string' || !gazdaAcceptata(endpoint)) {
       return json({ eroare: 'endpoint de push neacceptat' }, 400);
@@ -493,9 +568,9 @@ export async function raspunsPush(request, env, url, ctx) {
     if (!admin(request, env)) return json({ eroare: 'lipsa autorizare' }, 401);
     if (!env.VAPID_PUBLIC_KEY || !env.VAPID_PRIVATE_KEY) return configLipsa();
     if (!kv) return faraKV();
-    let corp;
-    try { corp = await request.json(); } catch { return json({ eroare: 'corp JSON invalid' }, 400); }
-    return trimiteLot(corp, env, ctx);
+    const citit = await citesteJsonLimitat(request);
+    if (citit.eroare) return json({ eroare: citit.eroare }, citit.status);
+    return trimiteLot(citit.corp, env, ctx);
   }
 
   return json({ eroare: 'ruta de push necunoscuta' }, 404);

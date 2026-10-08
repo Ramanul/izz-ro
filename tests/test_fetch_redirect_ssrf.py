@@ -24,6 +24,7 @@ from __future__ import annotations
 
 import http.server
 import re
+import socket
 import threading
 import urllib.error
 import urllib.request
@@ -155,6 +156,98 @@ def test_location_relativ_ajunge_absolut_la_garda(server, monkeypatch):
     assert vazute, "handlerul nu a fost chemat deloc"
     assert vazute[0].startswith("http://"), f"Location nerezolvat: {vazute[0]!r}"
     assert vazute[0].endswith("/intern")
+
+
+def test_downgrade_https_catre_http_e_refuzat():
+    handler = fetch._RedirectVerificat()
+    req = urllib.request.Request("https://exemplu.ro/a")
+    with pytest.raises(urllib.error.HTTPError) as exc:
+        handler.redirect_request(req, None, 302, "Found", {}, "http://exemplu.ro/b")
+    assert "downgrade" in str(exc.value)
+
+
+def _blocheaza_conectarea(monkeypatch):
+    apeluri = []
+
+    def create_connection(adresa, *args, **kwargs):
+        apeluri.append(adresa)
+        raise AssertionError(f"socket deschis catre {adresa}")
+
+    monkeypatch.setattr(socket, "create_connection", create_connection)
+    return apeluri
+
+
+def test_nume_care_rezolva_intern_nu_deschide_socket(monkeypatch):
+    apeluri = _blocheaza_conectarea(monkeypatch)
+
+    def getaddrinfo(host, port, *args, **kwargs):
+        return [(socket.AF_INET, socket.SOCK_STREAM, 6, "", ("169.254.169.254", port))]
+
+    monkeypatch.setattr(fetch.socket, "getaddrinfo", getaddrinfo)
+    with pytest.raises(urllib.error.URLError, match="169.254.169.254"):
+        fetch._deschide(urllib.request.Request("http://public.example/x"), timeout=2)
+    assert apeluri == []
+
+
+@pytest.mark.parametrize("ip", [
+    "127.0.0.1", "10.1.1.1", "100.64.1.1", "192.168.0.8", "::1", "fc00::1", "::ffff:127.0.0.1",
+])
+def test_dns_catre_adrese_interne_nu_conecteaza(monkeypatch, ip):
+    apeluri = _blocheaza_conectarea(monkeypatch)
+    familie = socket.AF_INET6 if ":" in ip else socket.AF_INET
+
+    def getaddrinfo(host, port, *args, **kwargs):
+        return [(familie, socket.SOCK_STREAM, 6, "", (ip, port))]
+
+    monkeypatch.setattr(fetch.socket, "getaddrinfo", getaddrinfo)
+    with pytest.raises(urllib.error.URLError):
+        fetch._deschide(urllib.request.Request("http://public.example/x"), timeout=2)
+    assert apeluri == []
+
+
+def test_dns_amestecat_public_si_privat_nu_conecteaza(monkeypatch):
+    apeluri = _blocheaza_conectarea(monkeypatch)
+
+    def getaddrinfo(host, port, *args, **kwargs):
+        return [
+            (socket.AF_INET, socket.SOCK_STREAM, 6, "", ("8.8.8.8", port)),
+            (socket.AF_INET, socket.SOCK_STREAM, 6, "", ("10.0.0.5", port)),
+        ]
+
+    monkeypatch.setattr(fetch.socket, "getaddrinfo", getaddrinfo)
+    with pytest.raises(urllib.error.URLError, match="10.0.0.5"):
+        fetch._deschide(urllib.request.Request("http://public.example/x"), timeout=2)
+    assert apeluri == []
+
+
+def test_nume_public_se_conecteaza_la_ipul_validat_nu_la_nume(monkeypatch):
+    apeluri = []
+
+    def getaddrinfo(host, port, *args, **kwargs):
+        return [(socket.AF_INET, socket.SOCK_STREAM, 6, "", ("1.2.3.4", port))]
+
+    def create_connection(adresa, *args, **kwargs):
+        apeluri.append(adresa)
+        raise OSError("oprit dupa dovada")
+
+    monkeypatch.setattr(fetch.socket, "getaddrinfo", getaddrinfo)
+    monkeypatch.setattr(socket, "create_connection", create_connection)
+    with pytest.raises(OSError, match="oprit dupa dovada"):
+        fetch._deschide(urllib.request.Request("http://public.example/x"), timeout=2)
+    assert apeluri == [("1.2.3.4", 80)]
+
+
+def test_port_neasteptat_pe_nume_nu_se_rezolva(monkeypatch):
+    vazut = []
+
+    def getaddrinfo(*args, **kwargs):
+        vazut.append(args)
+        raise AssertionError("nu trebuia rezolvat")
+
+    monkeypatch.setattr(fetch.socket, "getaddrinfo", getaddrinfo)
+    with pytest.raises(urllib.error.URLError, match="port nepermis"):
+        fetch._deschide(urllib.request.Request("http://public.example:8080/x"), timeout=2)
+    assert vazut == []
 
 
 def test_nicio_iesire_in_retea_nu_ocoleste_cusatura():

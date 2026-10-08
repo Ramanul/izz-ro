@@ -643,36 +643,8 @@ def process_cluster(group: list, provider) -> dict | None:
     item-ul NU se publica brut, ci se reia la rularea urmatoare (regula 'No mangled
     output'). Doar in modul fara cheie (provider None) se face fallback determinist.
     """
-    # Reprezentantul: un membru DEJA PUBLICAT daca grupul contine unul, altfel cel mai vechi.
-    # Un cluster poate absorbi o stire din stare (`cluster.attach_recent`), iar de la IZZ-0151
-    # inclusiv o sinteza C — si atunci url-ul aceluia e permalink-ul public deja indexat. Daca
-    # rep-ul ar fi un item nou doar fiindca a aparut cu un minut mai devreme, pagina publicata
-    # ar fi inlocuita cu alta. `processed_by` e marcajul: itemele proaspat citite nu-l au.
-    # In interiorul fiecarei clase ordinea ramane cronologica: cine a publicat primul deschide
-    # lista de surse (scor de originalitate).
-    group = sorted(group, key=lambda a: (not a.get("processed_by"), a.get("published") or ""))
-    actualizare = bool(group[0].get("processed_by"))
-    rep = dict(group[0])
-    rep["model"] = "C"
-    # dedup dupa domeniu, nu dupa nume: 2 feed-uri RSS ale aceluiasi site
-    # (ex. "Digi24" si "Digi24 Extern") nu sunt 2 surse independente.
-    # Un membru poate fi el insusi o sinteza, cu mai multe surse: se preiau TOATE ale lui,
-    # altfel coroborarea deja publicata s-ar reduce la un singur link la prima actualizare.
-    _seen_domain = set()
-    surse = []
-    for a in group:
-        for s in (a.get("sources")
-                  or [{"name": a.get("source_name"), "url": a.get("original_link")}]):
-            dom = domain_of(s.get("url") or "")
-            if dom in _seen_domain:
-                continue
-            _seen_domain.add(dom)
-            surse.append({"name": s.get("name"), "url": s.get("url")})
-    rep["sources"] = surse
-    rep["first_source"] = group[0].get("source_name")
-    if actualizare:
-        # acelasi permalink, alt continut -> `dateModified` din JSON-LD trebuie sa spuna asta
-        rep["updated"] = datetime.now(timezone.utc).isoformat()
+    # Aceeasi pregatire ca lotul: members si story_id nu mai depind de calea de apel.
+    group, rep = _prep_cluster_rep(group)
 
     if provider is None:
         if (rep.get("source_lang") or "ro") != "ro":
@@ -722,6 +694,28 @@ def process_cluster(group: list, provider) -> dict | None:
     except Exception:
         return None                            # esec AI -> amanat, reluat data viitoare
     return rep
+
+
+def repara_identitate_cluster(articles: list) -> int:
+    """Umple story_id si members pe sintezele C vechi, fara timeline inventat.
+
+    Un C fara membri primeste un singur membru: el insusi. story_id lipsă se
+    deriveaza din articol, cu aceeasi functie ca la formare. Nu redenumeste
+    un id deja scris. Intoarce cate campuri a completat.
+    """
+    n = 0
+    for a in articles:
+        if not isinstance(a, dict) or a.get("model") != "C":
+            continue
+        if not a.get("story_id"):
+            a["story_id"] = _story_id([a])
+            n += 1
+        if not a.get("members"):
+            membri = _membri_din_grup([a])
+            if membri:
+                a["members"] = membri
+                n += 1
+    return n
 
 
 def _membri_din_grup(group: list) -> list:

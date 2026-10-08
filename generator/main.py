@@ -596,7 +596,9 @@ def run(dry_run: bool = False) -> dict:
             # stare, ca sa nu se recalculeze din titlu la fiecare randare. Titlul se schimba
             # dupa publicare (upgrade de PROMPT_VERSION, sinteza care absoarbe o stire noua —
             # IZZ-0151); slug-ul nu are voie. Vezi render.assign_slugs.
-            render.assign_slugs(visible)
+            # Pe tot corpusul salvat, nu doar pe vizibile: un articol tinut de moderare
+            # isi pastreaza slugul cand revine, si nu il recalculeaza din titlu.
+            render.assign_slugs(combined)
         state.save(combined)
         if render is not None:
             render.build(visible, mod)

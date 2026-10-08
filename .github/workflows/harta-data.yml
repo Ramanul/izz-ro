@@ -115,8 +115,17 @@ jobs:
           PY
 
       - name: Publica dataseturile dacă s-au schimbat
+        env:
+          REF: ${{ github.ref }}
         run: |
           set -euo pipefail
+          case "$REF" in
+            refs/heads/main|refs/heads/feature/harta-stiri) ;;
+            *)
+              echo "::error::refuz push în main de pe $REF. Dispatch-ul de pe un branch arbitrar nu publică datasetul."
+              exit 1
+              ;;
+          esac
           git config user.name "izz-bot"
           git config user.email "bot@izz.ro"
           git add data/harta_localitati.json static/harta-stiri/data/map.json static/harta-stiri/data/projection.json

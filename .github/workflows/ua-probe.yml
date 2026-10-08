@@ -27,4 +27,17 @@ jobs:
           python-version: "3.11"
           cache: "pip"
       - run: pip install -r requirements.txt
-      - run: python tools/ua_probe.py ${{ inputs.keys }}
+      - name: Probe
+        env:
+          KEYS: ${{ inputs.keys }}
+        run: |
+          set -euo pipefail
+          if [ -n "$KEYS" ]; then
+            case "$KEYS" in
+              *[!A-Za-z0-9_\ -]*) echo "::error::chei invalide — doar litere, cifre, _ și spațiu"; exit 1 ;;
+            esac
+          fi
+          # Impărțirea pe spații e intenționată (câte o cheie). Validarea de mai sus
+          # a scos metacaracterele; valoarea vine din env, nu interpolată în script.
+          # shellcheck disable=SC2086
+          python tools/ua_probe.py $KEYS

@@ -387,7 +387,8 @@ def test_abonarea_se_scrie_o_singura_data(rulat):
     assert rulat["abonare_noua"]["corp"]["nou"] is True
     # Re-abonarea aceluiasi dispozitiv NU consuma o scriere: KV are 1.000 de scrieri pe zi.
     assert rulat["abonare_rescrisa"]["corp"]["nou"] is False
-    assert rulat["scrieri_dupa_abonare"] == 1
+    # O scriere pentru abonament, una pentru plafonul zilnic. Re-abonarea nu adaugă.
+    assert rulat["scrieri_dupa_abonare"] == 2
     assert rulat["abonare_straina"]["status"] == 400
     assert rulat["abonare_fara_chei"]["status"] == 400
 
@@ -537,3 +538,80 @@ def test_o_alerta_costa_doua_scrieri_kv_si_atit(rulat):
     assert rulat["alerta_scrieri_total"] == 2, (
         f"o alertă a scris {rulat['alerta_scrieri_total']} chei în KV, nu 2 "
         "(cap + raport); restul sînt scrieri care nu-și au locul aici")
+
+
+def test_abonarea_are_plafon_de_corp_si_de_ip():
+    """Un corp de 5 KB și a noua abonare de la același IP nu scriu un abonament."""
+    script = r"""
+import { raspunsPush, citesteJsonLimitat, LIMITA_ABONARI_PE_IP, LIMITA_ABONARI_PE_ZI } from './infra/push.mjs';
+
+class KV {
+  constructor() { this.date = new Map(); this.scrieri = 0; }
+  async get(k) { return this.date.has(k) ? this.date.get(k) : null; }
+  async put(k, v) { this.date.set(k, v); this.scrieri++; }
+  async delete(k) { this.date.delete(k); }
+  async list({ prefix } = {}) {
+    const keys = [...this.date.keys()].filter(k => !prefix || k.startsWith(prefix)).map(name => ({ name }));
+    return { keys, list_complete: true };
+  }
+}
+
+const client = await crypto.subtle.generateKey({ name: 'ECDH', namedCurve: 'P-256' }, true, ['deriveBits']);
+const p256dh = Buffer.from(new Uint8Array(await crypto.subtle.exportKey('raw', client.publicKey)))
+  .toString('base64').replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+const abonament = (n) => ({
+  endpoint: 'https://updates.push.services.mozilla.com/wpush/v2/cota-' + n,
+  keys: { p256dh, auth: 'B'.repeat(22) },
+});
+const env = { VAPID_PUBLIC_KEY: 'x', PUSH_SUBS: new KV() };
+
+async function post(cale, corp, ip, extra = {}) {
+  const headers = { 'content-type': 'application/json', ...(ip ? { 'cf-connecting-ip': ip } : {}) };
+  const cerere = new Request('https://izz.ro' + cale, {
+    method: 'POST', headers, body: corp, ...extra,
+  });
+  const r = await raspunsPush(cerere, env, new URL(cerere.url));
+  return { status: r.status, corp: await r.json() };
+}
+
+const mare = JSON.stringify({ subscription: abonament('mare'), umplutura: 'x'.repeat(5000) });
+const preaMare = await post('/push/abonare', mare, '203.0.113.9');
+// Content-Length mic, corp mare: Request() rescrie headerul, deci măsurăm textul citit.
+const mincinos = await citesteJsonLimitat({
+  headers: { get(n) { return n === 'content-length' ? '12' : null; } },
+  text: async () => mare,
+});
+
+const statuses = [];
+for (let i = 0; i < LIMITA_ABONARI_PE_IP + 1; i++) {
+  statuses.push((await post('/push/abonare', JSON.stringify({ subscription: abonament('ip-' + i) }), '203.0.113.7')).status);
+}
+const altIp = await post('/push/abonare', JSON.stringify({ subscription: abonament('alt') }), '203.0.113.8');
+const rescris = await post('/push/abonare', JSON.stringify({ subscription: abonament('ip-0') }), '203.0.113.7');
+
+env.PUSH_SUBS.date.set('rata:zi:' + new Date().toISOString().slice(0, 10), String(LIMITA_ABONARI_PE_ZI));
+const plafon = await post('/push/abonare', JSON.stringify({ subscription: abonament('zi') }), '198.51.100.1');
+
+console.log(JSON.stringify({
+  preaMare: preaMare.status,
+  mincinos: mincinos.status,
+  limitaIp: LIMITA_ABONARI_PE_IP,
+  statuses,
+  altIp: altIp.status,
+  rescris: rescris.status,
+  rescrisNou: rescris.corp.nou,
+  plafon: plafon.status,
+  abonamente: [...env.PUSH_SUBS.date.keys()].filter(k => k.startsWith('sub:')).length,
+}));
+"""
+    rezultat = _ruleaza(script)
+    assert rezultat["preaMare"] == 413
+    assert rezultat["mincinos"] == 413
+    limita = rezultat["limitaIp"]
+    assert rezultat["statuses"] == [201] * limita + [429]
+    assert rezultat["altIp"] == 201
+    assert rezultat["rescris"] == 200
+    assert rezultat["rescrisNou"] is False
+    assert rezultat["plafon"] == 429
+    # Câte una nouă până la plafonul de IP, plus una de la alt IP. Refuzurile nu scriu sub:.
+    assert rezultat["abonamente"] == limita + 1

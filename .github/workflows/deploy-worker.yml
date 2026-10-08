@@ -32,13 +32,17 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Poarta - confirmare (manual) + ramura
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          CONFIRMARE: ${{ inputs.confirmare }}
+          REF: ${{ github.ref }}
         run: |
-          if [ "${{ github.event_name }}" = "workflow_dispatch" ] && [ "${{ inputs.confirmare }}" != "deploy" ]; then
+          if [ "$EVENT_NAME" = "workflow_dispatch" ] && [ "$CONFIRMARE" != "deploy" ]; then
             echo "::error::Confirmare lipsa sau gresita - scrie exact 'deploy' in casuta."
             exit 1
           fi
-          if [ "${{ github.ref }}" != "refs/heads/main" ]; then
-            echo "::error::Rulat pe ${{ github.ref }}. Publicarea in productie se face DOAR de pe main."
+          if [ "$REF" != "refs/heads/main" ]; then
+            echo "::error::Rulat pe $REF. Publicarea in productie se face DOAR de pe main."
             exit 1
           fi
 

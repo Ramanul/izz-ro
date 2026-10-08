@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block title %}Ce s-a întâmplat azi — {{ site.name }}{% endblock %}
+{% block description %}Titlurile publicate azi pe IZZ.ro, cu link și numărul surselor. Fără un text nou.{% endblock %}
+{% block content %}
+<nav class="breadcrumbs" aria-label="Breadcrumb">
+  <a href="{{ base }}/">{{ site.name }}</a>
+  <span class="sep">/</span>
+  <span>Azi</span>
+</nav>
+<section class="briefing-azi" aria-labelledby="azi-title">
+  <h1 class="section-title" id="azi-title">Ce s-a întâmplat azi</h1>
+  <p class="section-intro">Doar titluri deja publicate, linkul către știre și câte surse stau în spate. Nu e un rezumat nou și nu e un e-mail: pagina se reface la fiecare publicare.</p>
+  {% if items %}
+  <ol>
+    {% for a in items %}
+    <li>
+      <a href="{{ base }}/{{ a.category }}/{{ a.slug }}/">{{ a.title }}</a>
+      <span>{{ a.category | cat_label }} · {{ a.n_surse }} {{ 'sursă' if a.n_surse == 1 else 'surse' }}</span>
+    </li>
+    {% endfor %}
+  </ol>
+  {% else %}
+  <p class="empty">Încă nu e nicio știre publicată azi, ora Bucureștiului.</p>
+  {% endif %}
+  <p class="cat-feed"><a href="{{ base }}/feed.xml">Flux RSS</a> · <a href="{{ base }}/">Înapoi la prima pagină</a></p>
+</section>
+{% endblock %}

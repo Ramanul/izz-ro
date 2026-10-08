@@ -1,5 +1,7 @@
 """Citire RSS robusta (Atom-safe) + filtru de agentii de presa + scraper HTML pentru surse fara RSS."""
 import collections
+import http.client
+import ipaddress
 import json
 import os
 import re
@@ -48,35 +50,114 @@ class _RedirectVerificat(urllib.request.HTTPRedirectHandler):
     `guard._gazda_interna`: ruleaza de mii de ori per rulare si o rezolvare de nume acolo ar
     lega ingestia de retea. Golul pe care il lasa deliberat e numit tot acolo: „un domeniu
     public care REZOLVA catre o adresa interna trece de aici; ala e treaba lui
-    `fetch._deschizator_sigur`, care verifica fiecare salt de redirectare".
+    `fetch._deschizator_sigur`".
 
-    Functia aceea NU EXISTA pana la 2026-09-11 (`grep -rn deschizator_sigur` peste tot repo-ul:
-    o singura aparitie, chiar citarea din `guard.py:202`), si nu exista niciun opener sau
-    handler de redirectare in acest fisier. `urllib.request.urlopen` urmeaza redirecturile
-    IMPLICIT, deci compensarea declarata era un mecanism fantoma: exact clasa de defect gasita
-    la randul 32 al matricei de audit, dar de data asta pe un control de securitate.
-
-    Calea reala: `_parse_sitemap_news` valideaza `<loc>`-ul unui sitemap TERT cu `url_ostil`
-    (fetch.py, pasul de garda), apoi `_fetch_meta_description` il cere. Un `<loc>` catre un
-    domeniu public care raspunde `302 -> http://169.254.169.254/…` trecea de garda si era urmat,
-    iar continutul intra in `description`, adica in corpusul publicabil.
-
-    CE NU REZOLVA, spus pe fata: ramane verificare lexicala, la fel ca `url_ostil`. Un domeniu
-    public al carui DNS rezolva direct catre o adresa interna, FARA redirect, trece in
-    continuare — pentru asta ar trebui validare la nivel de socket, nu de URL. Se inchide
-    golul „redirect catre intern", nu intreaga clasa SSRF.
+    La conectare, un nume de domeniu se rezolva si se refuza daca ORICE adresa intoarsa nu e
+    unicast globala (inclusiv un raspuns amestecat public+privat). Socketul se deschide catre
+    IP-ul deja verificat, nu catre nume, ca o schimbare de DNS intre rezolvare si connect sa
+    nu mute cererea. Redirectul https→http si portul neasteptat se refuza aici. IP-ul literal
+    ramane treaba lui `url_ostil`: testele lovesc 127.0.0.1, iar productia nu ii da
+    opener-ului un literal intern.
     """
 
+    max_redirections = 4
+
     def redirect_request(self, req, fp, code, msg, headers, newurl):
+        if getattr(req, "type", "") == "https" and str(newurl).lower().startswith("http://"):
+            raise urllib.error.HTTPError(
+                newurl, code, "redirectare refuzata de garda: downgrade https→http", headers, fp)
         if (motiv := guard.url_ostil(newurl)):
             raise urllib.error.HTTPError(
                 newurl, code, f"redirectare refuzata de garda: {motiv}", headers, fp)
         return super().redirect_request(req, fp, code, msg, headers, newurl)
 
 
+def _host_literal(host: str) -> bool:
+    curat = host.strip("[]").rstrip(".")
+    try:
+        ipaddress.ip_address(curat)
+    except ValueError:
+        return False
+    return True
+
+
+def _alege_ip_public(host: str, port: int) -> str:
+    """Prima adresa unicast globala, sau eroare daca vreuna din raspuns e interna.
+
+    Amestecul public+privat se refuza intreg. Altfel atacatorul pune 8.8.8.8 langa
+    169.254.169.254 si noi am alege-o pe cea publica la test, iar la conectarea
+    urmatoare pe cea privata.
+    """
+    try:
+        infos = socket.getaddrinfo(host, port, type=socket.SOCK_STREAM)
+    except socket.gaierror as exc:
+        raise urllib.error.URLError(f"rezolvare esuata pentru {host}: {exc}") from exc
+    if not infos:
+        raise urllib.error.URLError(f"nicio adresa pentru {host}")
+    vazute: list[str] = []
+    for info in infos:
+        ip_txt = info[4][0]
+        try:
+            ip = ipaddress.ip_address(ip_txt)
+        except ValueError as exc:
+            raise urllib.error.URLError(f"adresa ilegibila {ip_txt}") from exc
+        if motiv := guard.ip_nepermis(ip):
+            raise urllib.error.URLError(f"{host} rezolva catre {ip_txt}: {motiv}")
+        vazute.append(ip_txt)
+    return vazute[0]
+
+
+def _conecteaza(conn, *, https: bool) -> None:
+    """Inlocuieste `HTTPConnection.connect` pentru nume de domeniu."""
+    import errno
+
+    host = conn.host.strip("[]")
+    port = conn.port
+    if _host_literal(host):
+        tinta = host
+    else:
+        asteptat = 443 if https else 80
+        if port != asteptat:
+            raise urllib.error.URLError(f"port nepermis {port} pentru {host}")
+        tinta = _alege_ip_public(host, port)
+    conn.sock = conn._create_connection((tinta, port), conn.timeout, conn.source_address)
+    try:
+        conn.sock.setsockopt(socket.IPPROTO_TCP, socket.TCP_NODELAY, 1)
+    except OSError as exc:
+        if exc.errno != errno.ENOPROTOOPT:
+            raise
+    if conn._tunnel_host:
+        conn._tunnel()
+
+
+class _HTTPConnectionFixat(http.client.HTTPConnection):
+    def connect(self) -> None:
+        _conecteaza(self, https=False)
+
+
+class _HTTPSConnectionFixat(http.client.HTTPSConnection):
+    def connect(self) -> None:
+        _conecteaza(self, https=True)
+        nume = self._tunnel_host or self.host
+        self.sock = self._context.wrap_socket(self.sock, server_hostname=nume)
+
+
+class _HTTPHandlerFixat(urllib.request.HTTPHandler):
+    def http_open(self, req):
+        return self.do_open(_HTTPConnectionFixat, req)
+
+
+class _HTTPSHandlerFixat(urllib.request.HTTPSHandler):
+    def https_open(self, req):
+        return self.do_open(
+            _HTTPSConnectionFixat, req,
+            context=self._context, check_hostname=self._check_hostname)
+
+
 def _deschizator_sigur() -> urllib.request.OpenerDirector:
-    """Opener care refuza redirectarile catre gazde interne. Vezi `_RedirectVerificat`."""
-    return urllib.request.build_opener(_RedirectVerificat)
+    """Opener care refuza redirectarile si destinatiile DNS interne."""
+    return urllib.request.build_opener(
+        _RedirectVerificat, _HTTPHandlerFixat, _HTTPSHandlerFixat)
 
 
 def _deschide(req, timeout):

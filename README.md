@@ -111,8 +111,9 @@ Arhitectura separă **munca grea** de **publicare**:
 
 1. **GitHub Actions** — `.github/workflows/build.yml`, cron `13 * * * *`: rulează pipeline-ul (fetch + AI, cu buget per rulare) și comite `data/articles.json` în repo. Secret necesar: `GEMINI_API_KEY`.
    **Încearcă orar, publică la ~2h:** un job de poartă taie rularea dacă ultimul conținut e mai proaspăt de 105 minute. Cron-ul orar dens acoperă firings-urile sărite de planificatorul GitHub; pragul ține și numărul de build-uri Cloudflare la ~12/zi. *(Plafonul de 500 build-uri/lună era al lui Pages și nu se mai aplică — vezi IZZ-0305.)*
-2. **Cloudflare Workers Static Assets** (Workers Builds, conectat la repo, auto-deploy la fiecare commit): rulează doar **render-only** și servește `output/`. Configurația versionată stă în `wrangler.jsonc`:
-   - `assets.directory: ./output` — proiect assets-only, fără `main`;
+2. **Cloudflare Workers** (Workers Builds, conectat la repo, auto-deploy la fiecare commit): rulează doar **render-only** și servește `output/`. Configurația versionată stă în `wrangler.jsonc`:
+   - `main: infra/worker.js` — nu mai e proiect assets-only. Workerul răspunde la `/push/*` și `/sw.js`, iar un 404 de articol expirat cade pe oglinda gh-pages;
+   - `assets.directory: ./output`;
    - `not_found_handling: "404-page"` — fără linia asta, `output/404.html` nu ar fi servit niciodată;
    - `preview_urls: true` — preview per ramură.
 

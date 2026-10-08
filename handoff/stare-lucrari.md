@@ -4,10 +4,14 @@
 > mută într-o sesiune nouă (New task) care citește FIȘIERUL ASTA, nu istoricul vechi.
 > Raportul curent al gardianului: `handoff/context-gardian-raport.txt`
 > (se poate regenera oricând: dublu-click pe `Desktop\gardian-context.cmd`).
-> Versiune: 2026-10-05 21:45, revizuit după review-ul de design al Arenei.
+> Versiune: 2026-10-08, după planul de implementare. Verificat local: testele de plan, stare, feed, căutare, 404, paginare, marcaj AI, push și redirect. Nu e verificat live: oglinda izz.ro (rețeaua de aici nu ajunge acolo). Rămâne: checks din Settings, `continue-on-error`, extrasul sitemapului, proba de oglindă, embed Brevo. Nu se urcă TTL-ul.
 > Actualizare = RESCRIERE atomică a fișierului întreg (fără append-uri concurente),
 > fără secrete și fără transcripturi; re-înarmarea unei automatizări cere
 > revizuirea textului de către cine o pornește.
+
+## 0. 8 octombrie — planul de implementare, pe ramura sesiunii
+
+Codul e pe `arena/4773b8d6-izz-ro`, două commituri: porțile de workflow și plafonul de abonare, apoi planul (primul ecran, contractul de articol, `/azi/`, județul ales, timeline doar pe C cu cel puțin 3 domenii). Publicarea se face prin merge în `main`, care pornește `deploy-worker.yml`. Nu se face deploy local cu wrangler.
 
 ## 1. Sesiuni grase de arhivat (right-click în bara laterală → Archive)
 Lista exactă o dă gardianul. Cunoscute grase la 5 oct seara: Senzor Arena (566
