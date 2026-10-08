@@ -331,3 +331,80 @@ Citește răspunsul Arenei la review-ul sistemului de economie de context (chatu
   Control → redenumit `.pyd.disabled`, pachetul cade pe fallback-ul pure-Python `iup.py` (reversibil).
 - Rămân v0.3+ (profiluri per furnizor, OCR, GUI) la „continuă" explicit; publicarea/conturile de
   magazin = pașii lui Alexandru conform DOSAR-MAGAZINE.md.
+
+## 19. NISHIAI verificare independentă — runda 1 (7 oct, continuat în aceeași sesiune)
+- Alexandru a aprobat planul Arenei de verificare INTEGRAL + „împreună implementați".
+  Planul ei (bare măsurabile, cercetat pe web, `sonde/arena-verificare-plan-2026-10-07.txt`)
+  e comis și ca `docs/VERIFICARE-PLAN.md` în repo.
+- **Repo public creat: https://github.com/Ramanul/nishiai-apps** (monorepo, main `3595a20f…`),
+  scanare secrete înainte de push; excludere: DOSAR-MAGAZINE.md, profiluri de test, binare.
+- **pdf-batch-excel**: suită adversarială 16/16 (local `7cd000f`) — fix-uri: celule `=` rămân
+  text literal în XLSX; 0-ok → doar errors.csv (fără crash). pip-audit/bandit curate.
+- **cookie-decliner v1.1**: activare explicită (default OFF); **E2E COMPLET trecut pe Edge
+  headful** (default OFF = banner neatins; enable = „Reject all" + banner eliminat; test comis
+  `test_activation.py`, push `c69f318`). **CfT blocat de Windows Application Control
+  (chrome.dll 0x11C7) din 7 oct** — Edge (semnat, headful) = browserul de test permanent;
+  headless Edge nu injectează content scripts; măsurătorile se fac din main-world
+  (`__rejectClicked` + banner dispărut), nu din lumea izolată a content script-ului.
+- **Runda 1 Arenei trimisă** (contract verificare înghețat + audit permisiuni + manifest
+  corpus + flag-uri P0/P1) — livrare verificată; răspuns PENDING, se preia din chatul
+  01a1113f la următoarea tură.
+- **Lecții de testare institutionalizate (7 oct, push `fe70806`)**: `nishiai-apps/docs/
+  LECTII-TESTARE.md` (playbook E1-E8/F1-F4, proces recursiv 3 pași la final de sesiune) +
+  `chrome-extensions/test_preflight.py` (verificare mecanică mediu). La orice testare
+  nishiai viitoare: preflight ÎNTÂI, playbook citit, lecții noi înapoi în ele.
+- **Arena a analizat sistemul (thread NOU 01a115c6)**: a găsit P0 (verde fals la proba CfT)
+  → **preflight v3 implementat + verificat (`c5a4219`, `--browser auto|edge|cft`, fail-closed,
+  probă CDP)**; P1/P2 + registru LECTII-ARENA.md rămân pentru următoarea felie (detalii
+  `sonde/arena-lectii-raspuns-2026-10-07.txt`). Ack trimis Arenei.
+
+## 20. Sesiunea 7 oct seara — canal Arena JOS, P1 nishiai implementate, handoff predat (ZCode)
+- **Canalul chat Arena: DELOGAT** în browserul intern ZCode (paginii firului 01a1113f îi apare
+  butonul „Log In"; verificat de 2x). Loginul e al lui Alexandru — tab-ul e deschis de ZCode în
+  panoul din dreapta. **Până la login, nimic nu se poate trimite Arenei pe chat**; GitHub rămâne
+  canal de încredere (ea citește api.github.com în sesiunile ei).
+- **Roluri re-fixate de Alexandru (7 oct seara)**: Arena = testează, analizează, implementează,
+  face totul în repo; cere ajutor ZCode pe fir ce nu poate rula. ZCode NU mai rulează testele
+  în locul ei (corecție mid-sesiune).
+- **P1 din Runda 1 Arenei (nishiai) implementate de ZCode și ÎMPINSE pe main**:
+  `Ramanul/nishiai-apps` `5ecfeb52dd674a4b6592784df1e379b0a4825d53` —
+  `debccbd` pdf watcher race (stat before/after → retry) + errors.csv neutralizare formule +
+  10 valori adversariale (pytest 18/18 OK); `21cfe0c` table-exporter toCSV neutralizează
+  = + - @ (download+clipboard; NEVERIFICAT în browser — bench-ul a picat la lansare, proba e
+  a Arenei); `3bb4b4c` cookie-decliner storage.sync→local + versiune 1.1.0 (E2E Edge headful
+  OK); `0fb4883` igienă (__pycache__ din tracking, .gitignore profiluri); `5ecfeb5` docs.
+  Mediu repointat pe monorepo (pip editable + căile din testele E2E).
+- **Handoff complet pentru Arena**: https://github.com/Ramanul/nishiai-apps/issues/1
+  (9 câmpuri, ce rămâne la ea, ce e blocat pe decizii).
+- **GO pentru planul comun hartă — DRAFTĂT, netrimis** (canalul e jos):
+  `sonde/arena-pack-2026-10-07-seara.md` — mesaj 1 = handoff nishiai, mesaj 2 = GO Runda 1
+  (F1 partajare + S2 scurtături) → Runda 2 (S1 titluri + F2 RSS geografic); F3/D2 blocate pe
+  decizia lui Alexandru; transport = patch text. Se lipește după loginul lui.
+- **Decizii deschise (ale lui Alexandru)**: F3 embed iframe (CSP/XFO), D2, csv-viewer profil
+  ngust vs matrice, permisiuni per-site cookie-decliner, arhivarea copiilor vechi
+  `~/nishiai-apps/` (risc de drift — mediul points acum pe monorepo), BFM on/off (vechi).
+- **Ordinea la întoarcere**: (1) login arena.ai în panoul din dreapta; (2) „reia" → ZCode
+  trimite cele 2 mesaje din pack; (3) Arena rulează.
+
+## 21. Curățarea celor 4 sesiuni grase vechi (8 oct) — REZOLVAT, zero taskuri noi
+- Cele 4 sesiuni raportate de gardian, evaluate MINIMAL (titlu + ultima replică,
+  fără lectură integrală), apoi ARHIVATE în DB (time_archived; UI le ascunde la
+  restart): tura Arena 2h (~638k), instalare VirtualBox (~453k), rebase PWA
+  #434 (~375k), clarificare RO (~374k). Sesiunea curățătoare s-a auto-arhivat.
+- Verdict pe fiecare: tura Arena — rol înlocuit de stiva deterministă 0-tokeni
+  (beacon + străjer + IZZ-HartaHourly, verificate Ready în Task Scheduler);
+  VirtualBox — mortă (VM șters 6 oct); PWA #434 — încheiată (pe producție);
+  clarificare RO — doar aștepta răspunsul Arenei, iar canalul chat e oricum JOS
+  (delogat, §20) — nimic de continuat până la loginul lui Alexandru.
+- NICIUN task nou deschis: nicio sesiune nu mai avea muncă vie, iar deschiderea
+  lor (posibilă doar din UI) ar fi ars tokeni degeaba. Re-înarmarea senzorului
+  de chat Arena rămâne Sarcina A (§2, manual 90 sec, doar la cererea lui) și
+  oricum așteaptă loginul (§20).
+
+## 22. Livrare pachet Arena (8 oct) — REZOLVAT, 2 mesaje confirmate
+- MESAJ 1 (handoff nishiai) — verificat livrat în firul `01a117f0`, Arena lucrează activ acolo
+- MESAJ 2 (GO hartă) — verificat livrat în firele `01a117ec` și `01a117eb`, confirmat de Arena cu SHA
+- Dublura firelor GO (`01a117eb`) identificată — aceeași problemă ca la tab-ul `/agent` gol (dublare firuri)
+- Contul `stanciunalexandru@gmail.com` confirmat în ambele tab-uri
+- Folosit Chrome debug port 9222 (IAB delogat)
+- Nu s-a necesitat screenshot (livrarea confirmată prin citire CDP)
