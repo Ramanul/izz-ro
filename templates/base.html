@@ -8,17 +8,17 @@
   {# Discover nu ia in considerare paginile fara max-image-preview:large — imaginea din feed
      e limitata la un thumbnail, iar feedul nu serveste thumbnailuri. Bloc, nu valoare fixa,
      ca paginile de subiect sa-si poata pune `noindex` fara sa iasa doua meta `robots`. #}
-  <meta name="robots" content="{% block robots %}max-image-preview:large{% endblock %}">
-  <link rel="canonical" href="{{ canonical }}">
+  <meta name="robots" content="{% block robots %}{% if noindex %}noindex, follow{% else %}max-image-preview:large{% endif %}{% endblock %}">
+  {% if canonical %}<link rel="canonical" href="{{ canonical }}">{% endif %}
 
   <!-- Open Graph / Twitter -->
   <meta property="og:type" content="{% block og_type %}website{% endblock %}">
   <meta property="og:site_name" content="{{ site.name }}">
   <meta property="og:title" content="{{ self.title() }}">
   <meta property="og:description" content="{{ self.description() }}">
-  <meta property="og:url" content="{{ canonical }}">
+  {% if canonical %}<meta property="og:url" content="{{ canonical }}">{% endif %}
   <meta property="og:locale" content="ro_RO">
-  <link rel="alternate" hreflang="ro" href="{{ canonical }}">
+  {% if canonical %}<link rel="alternate" hreflang="ro" href="{{ canonical }}">{% endif %}
   <meta property="og:image" content="{{ og_image or (site.url ~ '/static/og-image.png') }}">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
@@ -77,17 +77,17 @@
       <span class="brand-descriptor">{{ site.descriptor }}</span>
     </a>
     <nav class="nav" aria-label="Secțiuni principale">
-      <a href="{{ base }}/"{% if nav_section == 'stiri' %} class="active"{% endif %}>Știri</a>
-      <a href="{{ base }}/harta/"{% if nav_section == 'harta' %} class="active"{% endif %}>Harta știrilor</a>
-      <a href="{{ base }}/ghiduri/"{% if nav_section == 'ghiduri' %} class="active"{% endif %}>Ai nevoie să știi</a>
-      <a href="{{ base }}/calendar/"{% if nav_section == 'calendar' %} class="active"{% endif %}>Ce urmează</a>
-      <a href="{{ base }}/instrumente/"{% if nav_section == 'instrumente' %} class="active"{% endif %}>Instrumente</a>
+      <a href="{{ base }}/"{% if nav_section == 'stiri' %} class="active" aria-current="page"{% endif %}>Știri</a>
+      <a href="{{ base }}/harta/"{% if nav_section == 'harta' %} class="active" aria-current="page"{% endif %}>Harta știrilor</a>
+      <a href="{{ base }}/ghiduri/"{% if nav_section == 'ghiduri' %} class="active" aria-current="page"{% endif %}>Ai nevoie să știi</a>
+      <a href="{{ base }}/calendar/"{% if nav_section == 'calendar' %} class="active" aria-current="page"{% endif %}>Ce urmează</a>
+      <a href="{{ base }}/instrumente/"{% if nav_section == 'instrumente' %} class="active" aria-current="page"{% endif %}>Instrumente</a>
       <a href="{{ base }}/cauta/">caută</a>
       <button class="theme-toggle" type="button" aria-label="Comută tema"></button>
     </nav>
   </header>
   <nav class="subnav" aria-label="Categorii de știri">
-    {% for cat in categories[:11] %}<a href="{{ base }}/{{ cat }}/" data-cat="{{ cat }}"{% if cat == active_cat %} class="active"{% endif %}>{{ cat | cat_label }}</a>{% endfor %}
+    {% for cat in categories[:11] %}<a href="{{ base }}/{{ cat }}/" data-cat="{{ cat }}"{% if cat == active_cat %} class="active" aria-current="page"{% endif %}>{{ cat | cat_label }}</a>{% endfor %}
     {% if categories | length > 11 %}
     <!-- Două variante: pe mobil (<640px) link simplu spre /sectiuni/ — dropdown-ul e
          tăiat de overflow-x al benzii (listă absolută într-un container cu scroll),
@@ -98,7 +98,7 @@
       <summary>Mai multe secțiuni</summary>
       <div class="subnav-more-list">
         <a href="{{ base }}/sectiuni/">Toate secțiunile</a>
-        {% for cat in categories[11:] %}<a href="{{ base }}/{{ cat }}/" data-cat="{{ cat }}"{% if cat == active_cat %} class="active"{% endif %}>{{ cat | cat_label }}</a>{% endfor %}
+        {% for cat in categories[11:] %}<a href="{{ base }}/{{ cat }}/" data-cat="{{ cat }}"{% if cat == active_cat %} class="active" aria-current="page"{% endif %}>{{ cat | cat_label }}</a>{% endfor %}
       </div>
     </details>
     {% endif %}
@@ -129,6 +129,13 @@
        dispare in functie de ce suporta browserul, iar un element care isi schimba dimensiunea
        la coada documentului NU poate muta nimic din ce e deja pictat. In header, acelasi
        mecanism a produs 0.272 CLS (specs/masuratori-frontend.md). #}
+    <div class="izz-citire" id="izz-citire">
+      <span>Citire</span>
+      <button type="button" data-text="normal">Text normal</button>
+      <button type="button" data-text="mare">Text mare</button>
+      <button type="button" data-text="spatiu">Spațiere</button>
+      <button type="button" data-text="print">Tipărește</button>
+    </div>
     <div class="izz-alerte" id="izz-alerte" hidden>
       <button class="izz-alerte-btn" id="izz-alerte-btn" type="button" aria-expanded="false" aria-controls="izz-alerte-panou">Alerte de ultimă oră</button>
       <div class="izz-alerte-panou" id="izz-alerte-panou" hidden>

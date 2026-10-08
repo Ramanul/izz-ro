@@ -109,6 +109,21 @@
   {% endif %}
 
   {% set srcs = a.sources if (a.model == 'C' and a.sources) else [{'name': a.source_name, 'url': a.original_link}] %}
+  {% if a.ghid %}
+  <aside class="ghid-legat">
+    <p>Ghid permanent: <a href="{{ base }}/ghiduri/{{ a.ghid.id }}/">{{ a.ghid.nume }}</a>. Pagina rămâne după ce știrea iese din fereastra de actualitate.</p>
+  </aside>
+  {% endif %}
+  {% if a.timeline %}
+  <section class="timeline" aria-labelledby="timeline-title">
+    <h2 id="timeline-title">Cum a evoluat subiectul</h2>
+    <ol>
+      {% for m in a.timeline %}
+      <li>{% if m.published %}<time datetime="{{ m.published }}">{{ m.published }}</time> — {% endif %}{{ m.title or m.url }}{% if m.source %} · {{ m.source }}{% endif %}{% if m.url %} · <a href="{{ m.url }}" target="_blank" rel="noopener noreferrer">sursa</a>{% endif %}</li>
+      {% endfor %}
+    </ol>
+  </section>
+  {% endif %}
   <div class="sources-box">
     <h2>{{ 'Sursă' if srcs | length == 1 else 'Surse' }}</h2>
     <ul>

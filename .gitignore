@@ -1,4 +1,7 @@
 .env
+.venv/
+.coverage
+static/styles.dark.bak.css
 # FreeQuotaGuard (ai_gateway): baza SQLite cu consumul local — stare de mașină, nu conținut
 ai_gateway_data/
 output/

@@ -5,8 +5,19 @@
 {% block description %}Știri din România și din lume, grupate din surse publice, cu proveniență afișată și rezumate clare. Actualizat automat.{% endblock %}
 {% block content %}
   <h1 class="visually-hidden">{{ site.name }} — {{ site.tagline }}</h1>
+  {% if briefing %}
+  <section class="briefing-azi" aria-labelledby="briefing-azi-title">
+    <h2 class="section-title" id="briefing-azi-title">Ce s-a întâmplat azi</h2>
+    <ol>
+      {% for a in briefing %}
+      <li><a href="{{ base }}/{{ a.category }}/{{ a.slug }}/">{{ a.display_title or a.title }}</a> <span>{{ a.category | cat_label }}</span></li>
+      {% endfor %}
+    </ol>
+    <p class="cat-feed"><a href="{{ base }}/azi/">Briefingul complet, doar titluri și surse</a></p>
+  </section>
+  {% endif %}
   {% if not articles %}
-    <p class="empty">Încă nu sunt știri publicate. Robotul rulează la fiecare 30 de minute.</p>
+    <p class="empty">Încă nu sunt știri publicate. Robotul încearcă în fiecare oră și publică cam la două ore.</p>
   {% else %}
     {% if hero %}
     {% set top = hero[0] %}
@@ -44,12 +55,21 @@
     {% endif %}
     {% endif %}
 
+    <section id="din-judet" class="din-judet" hidden></section>
     {% for cat, items in by_category.items() %}
       {% if items %}
       <h2 class="section-title">{{ cat | cat_label }}</h2>
+      {# Două carduri în DOM. Restul, până la 4, stau într-un template inert:
+         nu ajung la cititorul de ecran și nici în Pagefind pe mobil.
+         theme.js le mută în grilă doar de la 641px. #}
       <section class="grid">
-        {% for a in items %}{{ card(a) }}{% endfor %}
+        {% for a in items[:2] %}{{ card(a) }}{% endfor %}
       </section>
+      {% if items|length > 2 %}
+      <template class="home-wide" data-pagefind-ignore>
+        {% for a in items[2:] %}{{ card(a) }}{% endfor %}
+      </template>
+      {% endif %}
       <a class="see-all" href="{{ base }}/{{ cat }}/">Vezi toate din {{ cat | cat_label }} &rarr;</a>
       {% endif %}
     {% endfor %}
@@ -77,6 +97,15 @@
       <p>Poți folosi fluxul RSS pentru actualizări sau poți vedea publicațiile pe care le monitorizăm.</p>
     </div>
     <p class="reader-briefing-actions"><a href="{{ base }}/feed.xml">Abonează-te prin RSS</a><a href="{{ base }}/surse/">Vezi sursele monitorizate</a></p>
+    {% if judete %}
+    <form class="judet-pin" id="judet-pin">
+      <label for="judet-meu">Localitatea mea</label>
+      <select id="judet-meu" name="judet">
+        <option value="">Toată țara</option>
+        {% for j in judete %}<option value="{{ j.code }}" data-slug="{{ j.slug }}">{{ j.label }}</option>{% endfor %}
+      </select>
+    </div>
+    {% endif %}
   </aside>
 
   {% if newsletter_html %}

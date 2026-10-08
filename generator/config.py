@@ -451,6 +451,8 @@ MAX_PER_SOURCE = 8             # redus de la 12 ca sa scada apelurile AI/rulare
 # orientarea larga, iar restul raman accesibile prin pagina de categorie. Limita reduce DOM-ul
 # si timpul de citire initial, fara a taia acoperirea editoriala sau indexarea individuala.
 HOME_CARDS_PER_CATEGORY = 4
+# Sub prag, rubrica nu e o secțiune de homepage. Rămâne în nav. Reversibil.
+HOME_MIN_SECTIUNE = 8
 
 AI_PROVIDER = os.getenv("AI_PROVIDER", "gemini")  # "gemini" | "anthropic" | "ollama" (local, gratuit — vezi generator/providers/ollama.py)
 # Fallback AUTOMAT pe Qwen local cand providerul de mai sus (gemini/anthropic) esueaza (429,

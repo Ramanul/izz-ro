@@ -31,7 +31,7 @@ from .select import (_dedup, _dedup_sources, _diversify, _entity_index,
 # suita. Instructiune separata pentru ca o exceptie de lint pusa pe prima linie a unui import
 # in paranteze NU acopera numele de pe continuari — verificat, nu presupus.
 from .select import _slug_stems, sources_coherent  # noqa: F401
-from .util import domain_of
+from .util import domain_of, strip_diacritics
 from .home_fresh import home_fresh
 
 ROOT = config.ROOT
@@ -581,8 +581,42 @@ def _harta_insert_head(text: str, html: str) -> str:
     return text.replace("</head>", html + "\n</head>", 1)
 
 
+
+def _stiri_pentru_judet(articles: list, code: str, limita: int = 8) -> list:
+    """Aceleasi judete ca pe harta mica: local/judetean, judetul sursei."""
+    gasite = []
+    for a in articles:
+        if a.get("category") not in ("judetean", "local"):
+            continue
+        if geo.judet_sursa(a.get("source")) != code:
+            continue
+        if not a.get("slug"):
+            continue
+        gasite.append(a)
+        if len(gasite) >= limita:
+            break
+    return gasite
+
+
+def _html_lista_stiri(stiri: list) -> str:
+    if not stiri:
+        return '<li class="empty">Nicio știre localizată în fereastra curentă.</li>'
+    parti = []
+    for a in stiri:
+        href = html_escape(f"/{a['category']}/{a['slug']}/", quote=True)
+        titlu = html_escape(a.get("display_title") or a.get("title") or "")
+        sursa = html_escape(a.get("source_name") or "")
+        data = html_escape(a.get("published_human") or "")
+        meta = " · ".join(p for p in (sursa, data) if p)
+        parti.append(
+            f'<li><a href="{href}">{titlu}</a>'
+            + (f" <span>{meta}</span>" if meta else "")
+            + "</li>")
+    return "\n".join(parti)
+
+
 def _render_harta_shell(source: str, canonical_path: str, county_code: str | None = None,
-                        county_label: str | None = None) -> str:
+                        county_label: str | None = None, stiri_html: str | None = None) -> str:
     """Personalizează shell-ul hărții pentru ruta publică; datele rămân un singur dataset."""
     county_label = county_label or (geo.eticheta_judet(county_code) if county_code else "")
     title = (f"Știri din {county_label} — Harta știrilor IZZ.ro"
@@ -645,13 +679,16 @@ def _render_harta_shell(source: str, canonical_path: str, county_code: str | Non
                      f'<p class="map-task">Explorează știrile localizate din {html_escape(county_label)}. '
                      'Harta pornește filtrată pe județ; poți reveni oricând la România.</p>',
                      "instrucțiunea de județ")
+    if stiri_html is not None:
+        replace_once(r'<li class="loading">Se încarcă…</li>', stiri_html, "lista de știri")
     jsonld = _harta_jsonld(canonical_path, title, description, county_label or None)
     text = _harta_insert_head(text, '  <script id="harta-jsonld" type="application/ld+json">' + jsonld + '</script>')
     return text
 
 
-def _write_harta_pages() -> None:
+def _write_harta_pages(articles: list | None = None) -> None:
     """Emite `/harta/` și `/harta/<judet>/`; asseturile rămân sub `/static/harta-stiri/`."""
+    articles = articles or []
     source_path = os.path.join(STATIC_DIR, "harta-stiri", "index.html")
     with open(source_path, encoding="utf-8") as fh:
         source = fh.read()
@@ -660,8 +697,9 @@ def _write_harta_pages() -> None:
     _write(os.path.join(OUT_DIR, "harta", "index.html"),
            _render_harta_shell(source, "/harta/"))
     for code, slug, label in _harta_rute_judetene():
+        lista = _html_lista_stiri(_stiri_pentru_judet(articles, code))
         _write(os.path.join(OUT_DIR, "harta", slug, "index.html"),
-               _render_harta_shell(source, f"/harta/{slug}/", code, label))
+               _render_harta_shell(source, f"/harta/{slug}/", code, label, lista))
 
 def _article_jsonld(a: dict) -> dict:
     body = a.get("synthesis") if a.get("model") == "C" else a.get("teaser")
@@ -995,7 +1033,6 @@ def build(articles: list, mod: dict | None = None) -> None:
         p = os.path.join(OUT_DIR, entry)
         shutil.rmtree(p) if os.path.isdir(p) else os.remove(p)
     _copy_static()
-    _write_harta_pages()
     # Registrul portretelor cerute de arta inline se goleste la inceputul randarii, nu la
     # sfarsit: a doua randare din acelasi proces (teste, `--render-only` dupa pipeline)
     # trebuie sa copieze doar ce cere ea.
@@ -1029,6 +1066,11 @@ def build(articles: list, mod: dict | None = None) -> None:
                       incap, len(by_date), config.OUTPUT_FILE_BUDGET,
                       config.OUTPUT_NON_ARTICLE_RESERVE, config.ARTICLE_TTL_DAYS)
         by_date = by_date[:incap]
+
+    _ataseaza_legaturi(by_date)
+
+    # Dupa taierea ferestrei: lista de judet trebuie sa fie exact ce se publica.
+    _write_harta_pages(by_date)
 
     # coperti: share (og, cu titlu) + arta fara text pentru site -- generate O DATA,
     # INAINTE de orice randare, ca hero-ul si paginile de articol sa le poata folosi.
@@ -1172,8 +1214,11 @@ def build(articles: list, mod: dict | None = None) -> None:
     for cat in config.CATEGORIES:
         # Homepage-ul ramane un tablou de bord: limita configurabila pastreaza orientarea
         # rapida, iar arhiva completa ramane pe pagina categoriei.
-        items = [a for a in by_date
-                 if a.get("category") == cat and a["url"] not in hero_urls and home_fresh(a)]
+        in_fereastra = [a for a in by_date if a.get("category") == cat]
+        if len(in_fereastra) < config.HOME_MIN_SECTIUNE:
+            continue
+        items = [a for a in in_fereastra
+                 if a["url"] not in hero_urls and home_fresh(a)]
         by_category[cat] = _diversify(items)[:config.HOME_CARDS_PER_CATEGORY]
 
     # homepage
@@ -1189,7 +1234,10 @@ def build(articles: list, mod: dict | None = None) -> None:
     _write(os.path.join(OUT_DIR, "index.html"),
            env.get_template("index.html").render(**_base_ctx(
                "/", nav_section="stiri", articles=by_date, hero=hero, by_category=by_category,
-               jsonld_nodes=[item_list], newsletter_html=_newsletter_html(), zi=zi)))
+               jsonld_nodes=[item_list], newsletter_html=_newsletter_html(), zi=zi,
+               briefing=by_date[:7],
+               judete=[{"code": c, "slug": s, "label": l}
+                       for c, s, l in _harta_rute_judetene()])))
 
     src_catalog, total_sources, stats_sources = _source_catalog(by_date)
     _write(os.path.join(OUT_DIR, "surse", "index.html"),
@@ -1267,7 +1315,15 @@ def build(articles: list, mod: dict | None = None) -> None:
                    cat_tpl.render(**_base_ctx(
                        _cat_page_path(cat, page_num),
                        category=cat, articles=page_items, active_cat=cat,
-                       pagination=_pagination(cat, page_num, total_pages))))
+                       pagination=_pagination(cat, page_num, total_pages),
+                       noindex=page_num > 1)))
+        if items:
+            eticheta = config.CATEGORY_LABELS.get(cat, cat)
+            _write(os.path.join(OUT_DIR, cat, "feed.xml"),
+                   _feed_xml(items, f"{eticheta} — {config.SITE['name']}",
+                             f"{config.SITE['url']}/{cat}/",
+                             f"Știri din {eticheta} pe {config.SITE['name']}",
+                             feed_url=f"{config.SITE['url']}/{cat}/feed.xml"))
         for a in items:
             topics = [(slugify(e)[:60], e) for e in (a.get("entities") or [])
                       if slugify(e)[:60] in ents]
@@ -1342,8 +1398,10 @@ def build(articles: list, mod: dict | None = None) -> None:
     # Pagina 404 nu e o categorie goala, e capatul unui link mort — si cel mai frecvent motiv
     # NU e o adresa gresita, ci un articol EXPIRAT. `config.ARTICLE_TTL_DAYS` (vezi config), iar
     # `state.expire()` scoate articolul din stare, deci pagina lui nu se mai randeaza:
-    # orice permalink partajat moare in douazeci de zile. (Era o saptamana pana la #197, ridicat
-    # la 30 fiindca Google raportase 193 de pagini indexate care dadeau 404.) Masurat pe live 8/8, cu control pozitiv
+    # orice permalink partajat iese din fereastra de ARTICLE_TTL_DAYS (12). Oglinda gh-pages
+    # e plasa, nu o a doua arhiva construita aici. (Era o saptamana pana la #197, ridicat
+    # la 30 fiindca Google raportase 193 de pagini indexate care dadeau 404, apoi coborat
+    # la 12 din cauza plafonului de fisiere.) Masurat pe live 8/8, cu control pozitiv
     # (articol viu -> 200) si negativ (articol expirat -> 404) — vezi
     # handoff/arhiva/2026-08-06-handoff-integral.md.
     #
@@ -1360,13 +1418,14 @@ def build(articles: list, mod: dict | None = None) -> None:
            env.get_template("category.html").render(**_base_ctx(
                "/404.html", category="Pagina negăsită",
                intro="Adresa nu există sau articolul a expirat. Între timp, ce e nou:",
-               articles=by_date[:12])))
+               articles=by_date[:12], noindex=True, canonical="")))
     # Pagina de offline a aplicatiei instalate: o precache-uieste service workerul si o
     # serveste cand nu e net si nici articolul cerut nu e in cache. Nu intra in sitemap
     # (`_SITEMAP_SECTIONS` n-o acopera) si nici in navigatie: e un raspuns de eroare, nu o
     # pagina pe care cineva vrea sa ajunga din Google.
     _write(os.path.join(OUT_DIR, "offline", "index.html"),
            env.get_template("offline.html").render(**_base_ctx("/offline/")))
+    _render_azi(env, by_date)
     _write_sitemap(by_date)
     _write_robots()
     _write_security_txt()
@@ -1461,6 +1520,143 @@ def _write_build_metadata(article_count: int, cautare: dict | None = None) -> No
     else:
         print(f">> output: {file_count} fisiere "
               f"(buget {config.OUTPUT_FILE_BUDGET}, marja {config.OUTPUT_FILE_BUDGET - file_count})")
+
+
+def _fraza_in_text(fraza: str, text: str) -> bool:
+    """Potrivire pe cuvinte, cu cel mult două cuvinte între ele.
+
+    „alocația de stat" trebuie să prindă ghidul al cărui nume începe cu
+    „Alocația … stat", fără să cerem fraza lipită.
+    """
+    if fraza in text:
+        return True
+    cuvinte = fraza.split()
+    if len(cuvinte) < 2:
+        return False
+    parti = [re.escape(c) for c in cuvinte]
+    model = r"\b" + r"(?:\W+\w+){0,2}\W+".join(parti) + r"\b"
+    return re.search(model, text) is not None
+
+
+def _index_ghiduri() -> list[tuple[str, str, str]]:
+    """Fraze din numele ghidurilor, ca o știre să poată trimite la pagina permanentă."""
+    try:
+        import yaml
+    except ImportError:
+        return []
+    folder = os.path.join(ROOT, "data", "entities")
+    if not os.path.isdir(folder):
+        return []
+    index = []
+    vazute: set[tuple[str, str]] = set()
+    for nume_fisier in sorted(os.listdir(folder)):
+        if not nume_fisier.endswith(".yaml"):
+            continue
+        with open(os.path.join(folder, nume_fisier), encoding="utf-8") as fh:
+            ent = yaml.safe_load(fh) or {}
+        eid = str(ent.get("id") or nume_fisier[:-5])
+        nume = str(ent.get("nume") or eid)
+        cuvinte = [w for w in re.findall(r"[a-z0-9]+", strip_diacritics(nume).lower())
+                   if len(w) > 3]
+        candidati = []
+        if len(cuvinte) >= 2:
+            candidati.append(" ".join(cuvinte[:2]))
+        id_cuv = [w for w in eid.split("-") if len(w) > 3]
+        if len(id_cuv) >= 2:
+            candidati.append(" ".join(id_cuv[:2]))
+        for fraza in candidati:
+            cheie = (fraza, eid)
+            if len(fraza) >= 8 and cheie not in vazute:
+                vazute.add(cheie)
+                index.append((fraza, eid, nume))
+    return index
+
+
+def _ghid_pentru(articol: dict, index: list[tuple[str, str, str]]) -> dict | None:
+    text = strip_diacritics(" ".join([
+        articol.get("title") or "",
+        articol.get("display_title") or "",
+        articol.get("teaser") or "",
+        articol.get("synthesis") or "",
+    ])).lower()
+    for fraza, eid, nume in index:
+        if _fraza_in_text(fraza, text):
+            return {"id": eid, "nume": nume}
+    return None
+
+
+def _timeline(articol: dict) -> list | None:
+    """Doar pe modelul C, și doar cu cel puțin trei domenii. Altfel lista ar minți."""
+    if articol.get("model") != "C":
+        return None
+    membri = [m for m in (articol.get("members") or []) if isinstance(m, dict) and m.get("url")]
+    domenii = {domain_of(m.get("url") or "") for m in membri}
+    domenii.discard("")
+    if len(domenii) < 3:
+        return None
+    return sorted(membri, key=lambda m: m.get("published") or "")
+
+
+def _ataseaza_legaturi(articole: list) -> None:
+    """Județul sursei, ghidul permanent și timeline-ul, doar pentru randare."""
+    index = _index_ghiduri()
+    for a in articole:
+        if not isinstance(a, dict):
+            continue
+        a["judet"] = geo.judet_sursa(a.get("source")) or ""
+        a["ghid"] = _ghid_pentru(a, index)
+        a["timeline"] = _timeline(a)
+
+
+def _nr_surse(articol: dict) -> int:
+    surse = articol.get("sources") or []
+    if articol.get("model") == "C" and surse:
+        return len([s for s in surse if isinstance(s, dict) and (s.get("url") or s.get("name"))])
+    return 1
+
+
+def _briefing_de_azi(articole: list) -> list:
+    """Titlurile zilei, în ora Bucureștiului. Fără text nou: doar ce e deja publicat."""
+    try:
+        from zoneinfo import ZoneInfo
+        tz = ZoneInfo("Europe/Bucharest")
+    except Exception:
+        tz = timezone(timedelta(hours=2))
+    azi = datetime.now(tz).date().isoformat()
+    alese = []
+    for a in articole:
+        publicat = a.get("published") or ""
+        try:
+            moment = datetime.fromisoformat(publicat.replace("Z", "+00:00"))
+        except (ValueError, TypeError):
+            continue
+        if moment.tzinfo is None:
+            moment = moment.replace(tzinfo=timezone.utc)
+        if moment.astimezone(tz).date().isoformat() != azi:
+            continue
+        alese.append(a)
+        if len(alese) >= 40:
+            break
+    return alese
+
+
+def _render_azi(env: Environment, articole: list) -> None:
+    """Pagina /azi/: briefingul promis, fără cont Brevo și fără un rezumat inventat."""
+    items = []
+    for a in _briefing_de_azi(articole):
+        if not a.get("slug") or not a.get("category"):
+            continue
+        items.append({
+            "title": a.get("display_title") or a.get("title") or "",
+            "category": a.get("category"),
+            "slug": a.get("slug"),
+            "n_surse": _nr_surse(a),
+            "published": a.get("published") or "",
+        })
+    _write(os.path.join(OUT_DIR, "azi", "index.html"),
+           env.get_template("azi.html").render(**_base_ctx(
+               "/azi/", nav_section="stiri", items=items,
+               jsonld_page={"name": "Ce s-a întâmplat azi"})))
 
 
 def _newsletter_html() -> str:
@@ -1845,7 +2041,7 @@ def _write_priority_sitemap(articles: list) -> None:
     """
     url = config.SITE["url"]
     locs = [
-        (f"{url}/{a['category']}/{a['slug']}/", (a.get("updated") or a.get("published") or "")[:10])
+        (f"{url}/{a['category']}/{a['slug']}/", _zi_modificare(a))
         for a in _priority_articles(articles)
     ]
     locs += [(url + p, "") for p in _editorial_paths()]
@@ -1861,6 +2057,11 @@ def _write_priority_sitemap(articles: list) -> None:
     _SITEMAPS_WRITTEN.append("sitemap-priority.xml")
 
 
+def _zi_modificare(a: dict) -> str:
+    """Ziua pe care o vad si sitemapul, si JSON-LD: actualizarea, altfel publicarea."""
+    return (a.get("updated") or a.get("published") or "")[:10]
+
+
 def _write_sitemap(articles: list, now: datetime = None) -> None:
     # `now` injectabil: fereastra de stiri se masoara fata de el, iar un test cu date
     # fixe si ceas real ar trece azi si ar pica peste doua zile, fara nicio schimbare de cod.
@@ -1871,13 +2072,15 @@ def _write_sitemap(articles: list, now: datetime = None) -> None:
     cat_lastmod = {}
     for a in articles:
         c = a.get("category", "")
-        d = (a.get("published") or "")[:10]
+        d = _zi_modificare(a)
         if c and d and d > cat_lastmod.get(c, ""):
             cat_lastmod[c] = d
     locs = [(f"{url}/", today)]
     locs += [(f"{url}/{c}/", cat_lastmod.get(c, today)) for c in config.CATEGORIES]
-    locs += [(f"{url}/{a['category']}/{a['slug']}/", (a.get("published") or "")[:10]) for a in articles]
+    locs += [(f"{url}/{a['category']}/{a['slug']}/", _zi_modificare(a)) for a in articles]
     locs += [(url + p, "") for p in _editorial_paths()]
+    if "/azi/" in _PAGES_WRITTEN:
+        locs.append((f"{url}/azi/", today))
     items = "\n".join(
         f"  <url><loc>{xml_escape(l)}</loc>" + (f"<lastmod>{lm}</lastmod>" if lm else "") + "</url>"
         for l, lm in locs)
@@ -2096,6 +2299,8 @@ def _write_headers() -> None:
            "/*.png\n  Cache-Control: public, max-age=86400\n"
            "/*.webp\n  Cache-Control: public, max-age=86400\n"
            "/feed.xml\n  Cache-Control: public, max-age=1800\n"
+           "/*/feed.xml\n  Cache-Control: public, max-age=1800\n"
+           "/*/*/feed.xml\n  Cache-Control: public, max-age=1800\n"
            "/build.json\n  Cache-Control: public, max-age=0, must-revalidate\n")
 
 
@@ -2192,12 +2397,29 @@ def _feed_xml(articles: list, title: str, link: str, description: str,
         # inutilizabil. Se OMITE cand data nu se poate parsa (si se logheaza acolo): o data
         # inventata ar urca un articol vechi in capul oricarui cititor care sorteaza pe ea.
         pub = _rfc2822(a.get("published") or "", alink)
+        surse = a.get("sources") or []
+        if a.get("model") == "C" and surse:
+            nume = ", ".join(s.get("name") or "" for s in surse[:6] if s.get("name"))
+            sursa_url = surse[0].get("url") or ""
+        else:
+            nume = a.get("source_name") or ""
+            sursa_url = a.get("original_link") or ""
+        extra = ""
+        if a.get("category"):
+            extra += f"      <category>{xml_escape(a['category'])}</category>\n"
+        if nume:
+            url_attr = f' url="{xml_escape(sursa_url)}"' if sursa_url else ""
+            extra += f"      <source{url_attr}>{xml_escape(nume)}</source>\n"
+        if a.get("cover_propriu") and a.get("cover_url"):
+            extra += (f'      <media:content url="{xml_escape(a["cover_url"])}" '
+                      'medium="image" type="image/jpeg"/>\n')
         entries.append(
             "    <item>\n"
             f"      <title>{xml_escape(a.get('title',''))}</title>\n"
             f"      <link>{xml_escape(alink)}</link>\n"
             f"      <guid>{xml_escape(alink)}</guid>\n"
             + (f"      <pubDate>{xml_escape(pub)}</pubDate>\n" if pub else "")
+            + extra
             + f"      <description>{xml_escape(body or '')}</description>\n"
             "    </item>")
     # `atom:link rel="self"` = adresa canonica a FEEDULUI (nu a paginii din `<link>`). O cer
@@ -2207,7 +2429,8 @@ def _feed_xml(articles: list, title: str, link: str, description: str,
     self_link = (f'  <atom:link href="{xml_escape(feed_url)}" rel="self" '
                  'type="application/rss+xml"/>\n') if feed_url else ""
     return ('<?xml version="1.0" encoding="UTF-8"?>\n'
-            '<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel>\n'
+            '<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"'
+            ' xmlns:media="http://search.yahoo.com/mrss/"><channel>\n'
             f"  <title>{xml_escape(title)}</title>\n"
             f"  <link>{xml_escape(link)}</link>\n"
             + self_link

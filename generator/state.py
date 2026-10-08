@@ -4,7 +4,7 @@ import os
 from datetime import datetime, timezone, timedelta
 
 from . import config, geo
-from .util import iso_utc
+from .util import iso_utc, normalize_url
 
 # Override pentru testele care randeaza pe un esantion al starii (fixtura `output_randat`,
 # IZZ-0415): subprocesul primeste IZZ_STATE_PATH catre o copie trunchiata. In afara testelor
@@ -151,15 +151,23 @@ def _parse_iso(value: str) -> datetime:
 
 
 def merge(existing: list, new_items: list) -> list:
-    """Adauga doar URL-urile nevazute; pastreaza cele existente (cu procesarea lor)."""
-    by_url = {a["url"]: a for a in existing if a.get("url")}
+    """Adauga doar URL-urile nevazute; pastreaza cele existente (cu procesarea lor).
+
+    Compara dupa `normalize_url`, nu dupa sirul brut. Nu e calea de productie:
+    dedup-ul care publica e in `main.py`, pe url-ul deja normalizat la ingestie.
+    """
+    by_url = {}
+    for a in existing:
+        cheie = normalize_url(a.get("url") or "")
+        if cheie:
+            by_url[cheie] = a
     now_iso = datetime.now(timezone.utc).isoformat()
     for item in new_items:
-        url = item.get("url")
-        if not url or url in by_url:
+        cheie = normalize_url(item.get("url") or "")
+        if not cheie or cheie in by_url:
             continue
         item.setdefault("first_seen", now_iso)
-        by_url[url] = item
+        by_url[cheie] = item
     return list(by_url.values())
 
 
@@ -238,6 +246,14 @@ def _impune_published_utc(articles: list) -> int:
 def save(articles: list) -> None:
     _refuza_colapsul(articles)
     articles_to_save = [dict(a) for a in articles]
+    from . import process
+    if (completate := process.repara_identitate_cluster(articles_to_save)):
+        print(f"   ~~ identitate de cluster completata pe {completate} campuri")
+    fara_id = [a.get("url") or "?" for a in articles_to_save
+               if isinstance(a, dict) and a.get("model") == "C" and not a.get("story_id")]
+    if fara_id:
+        raise RuntimeError(
+            "sinteza C fara story_id dupa reparare: " + ", ".join(fara_id[:5]))
     _scrub_processed(articles_to_save)
     if (reparate := _impune_published_utc(articles_to_save)):
         print(f"   ~~ published normalizat la UTC pentru {reparate} articole")
