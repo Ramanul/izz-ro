@@ -1,29 +1,24 @@
 name: cua-remote
-permissions:
-  contents: write
+
+# OPRIT. Înainte: orice push care atingea .cua/commands.cmd pornea scriptul pe
+# runnerul Windows persistent și împingea rezultatul înapoi, cu contents: write
+# și checkout nefixat. Push-ul dintr-un fork nu aprindea evenimentul, dar orice
+# drept de scriere (sau un token furat) ajungea pe PC. Triggerul de push a fost
+# scos ca un commit pe fișierul ăsta să nu mai programeze jobul pe runner.
+# Înregistrarea veche cua-poll-test nu mai are fișier pe main; se șterge din
+# Settings → Actions → Runners / workflow-uri, nu din YAML.
+
 on:
-  push:
-    paths:
-      - '.cua/commands.cmd'
+  workflow_dispatch:
+
+permissions: {}
+
 jobs:
-  local:
-    runs-on: [self-hosted, windows-local]
-    timeout-minutes: 15
+  refuzat:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
     steps:
-      - uses: actions/checkout@v4
-      - name: Executa comenzi pe PC-ul local si salveaza rezultatul
-        shell: cmd
+      - name: Execuția arbitrară este oprită
         run: |
-          .cua\commands.cmd > .cua\result.txt 2>&1
-          echo. >> .cua\result.txt
-          echo EXIT=%ERRORLEVEL% SHA=%GITHUB_SHA% >> .cua\result.txt
-      - name: Comite rezultatul inapoi in branch
-        shell: cmd
-        if: always()
-        run: |
-          git config --global user.name cua-runner
-          git config --global user.email cua@users.noreply.github.com
-          git add .cua\result.txt
-          git commit -m "cua: rezultat rulare" || exit /b 0
-          git pull --rebase origin %GITHUB_REF_NAME% || echo rebase_skip
-          git push origin HEAD:%GITHUB_REF_NAME%
+          echo "::error::cua-remote este oprit. .cua/commands.cmd nu se mai execută."
+          exit 1

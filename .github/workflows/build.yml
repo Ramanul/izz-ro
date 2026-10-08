@@ -53,6 +53,16 @@ jobs:
     outputs:
       content_sha: ${{ steps.commit.outputs.sha }}
     steps:
+      - name: Poarta - dispatch doar de pe main
+        if: github.event_name == 'workflow_dispatch'
+        env:
+          REF: ${{ github.ref }}
+        run: |
+          if [ "$REF" != "refs/heads/main" ]; then
+            echo "::error::Pipeline-ul manual rulează workflow-ul de pe branch-ul ales, cu chei AI și contents: write. Refuz $REF. Pornește-l de pe main."
+            exit 1
+          fi
+
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
 
       - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7
@@ -237,6 +247,7 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
         with:
           ref: ${{ needs.pipeline.outputs.content_sha }}
+          persist-credentials: false
       - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7
         with:
           python-version: "3.11"
@@ -290,6 +301,7 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
         with:
           ref: ${{ needs.pipeline.outputs.content_sha }}
+          persist-credentials: false
       - name: Verifica release-ul public pe originea Workers si pe izz.ro
         env:
           EXPECTED_COMMIT: ${{ needs.pipeline.outputs.content_sha }}

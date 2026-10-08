@@ -167,7 +167,10 @@ raportul de stare la fel.
 | **scrieri** | `2` — plafonul zilei (primul lot) + raportul de stare (ultimul lot) |
 | ștergeri | cîte abonamente moarte (`404`/`410`) s-au găsit; cotă proprie |
 
-Cu `S` abonări noi în aceeași zi, scrierile devin `S + 2`.
+Cu `S` abonări noi în aceeași zi, scrierile de abonare sînt `3S` cînd Cloudflare
+pune `cf-connecting-ip` (abonament + contor zilnic + contor de IP) și `2S` cînd
+headerul lipsește. Plus cele 2 ale alertei. `S` e plafonat la 200, deci abonarea
+nu poate umple singură cele 1.000 de scrieri: tavanul e 602.
 
 **Unde e pragul.** Cu lotul implicit `B = 10`:
 
@@ -230,12 +233,13 @@ Cum se compară tokenul (`infra/push.js::tokenCorect`):
 - secretul lipsă cu totul → `503` cu lista cheilor care lipsesc (configLipsa), pentru că aici problema e de configurare, nu de autorizare;
 - nu e JWT și n-are expirare: e o cheie simetrică de admin. Rotația = `wrangler secret put PUSH_ADMIN_TOKEN` + aceeași valoare în `.env`-ul de pe mașina de lucru.
 
-**Ce NU protejează, asumat:** abonarea e deschisă oricui. Cine vrea poate chema
-`/push/abonare` în buclă și poate goli plafonul de scrieri KV (1.000/zi pe Free) — simptomul
-e `503` la abonări, nu scurgeri de date. Ce limitează paguba: validarea strictă de mai jos,
-faptul că re-abonarea **nu rescrie** (deci același endpoint nu consumă decît o singură
-scriere, oricîte cereri ar face), și faptul că un endpoint fals nu primește nimic — moare
-prima dată cînd serviciul de push răspunde `404/410` și e șters atunci.
+**Ce NU protejează, asumat:** abonarea e deschisă oricui. Un script secvențial se
+oprește la 200 de abonări noi pe zi (429), și la 30 pe oră de la același
+`cf-connecting-ip`. KV nu e atomic: două cereri simultane pot citi același contor
+și să treacă amîndouă. Nu e un Durable Object. Re-abonarea **nu rescrie** și nu
+consumă cotă. Un endpoint fals nu primește nimic — moare prima dată cînd serviciul
+de push răspunde `404/410` și e șters atunci. Corpul peste 4096 de octeți ia 413
+înainte de `JSON.parse`.
 
 ## 7. Ce se validează, și ce se respinge cu ce cod
 

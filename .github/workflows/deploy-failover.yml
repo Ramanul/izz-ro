@@ -24,6 +24,15 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
+      - name: Poarta - doar main
+        env:
+          REF: ${{ github.ref }}
+        run: |
+          if [ "$REF" != "refs/heads/main" ]; then
+            echo "::error::Failover-ul se publică doar de pe main (acum $REF). Dispatch-ul de pe alt branch rulează workflow-ul de pe branch, cu secretul de deploy."
+            exit 1
+          fi
+
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
         with:
           persist-credentials: false

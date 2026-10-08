@@ -213,13 +213,30 @@ def _gazda_interna(autoritate: str) -> str | None:
         return "URL fara gazda"
     if gazda in _GAZDE_REZERVATE or gazda.endswith(".localhost") or gazda.endswith(".internal"):
         return "gazda rezervata (adresa interna)"
+    if re.fullmatch(r"(0x[0-9a-f]+|\d+)", gazda) or re.fullmatch(r"\d+(\.\d+){1,2}", gazda):
+        return "adresa IP in forma ne-canonica"
     try:
         ip = ipaddress.ip_address(gazda)
     except ValueError:
         return None                            # nume de domeniu obisnuit
-    if (ip.is_private or ip.is_loopback or ip.is_link_local or ip.is_reserved
-            or ip.is_multicast or ip.is_unspecified):
-        return "adresa IP interna (loopback/privata/link-local)"
+    if (motiv := ip_nepermis(ip)):
+        return motiv
+    return None
+
+
+def ip_nepermis(ip: ipaddress.IPv4Address | ipaddress.IPv6Address) -> str | None:
+    """`None` dacă adresa e unicast globală. Altfel motivul.
+
+    `ip.is_private` nu prinde spațiul CGNAT 100.64.0.0/10. `is_global` nu prinde
+    multicast. IPv4-ul mapat în IPv6 se judecă după adresa IPv4, altfel
+    `::ffff:127.0.0.1` poate părea rezervat sau, pe alte versiuni, public.
+    """
+    mapat = getattr(ip, "ipv4_mapped", None)
+    if mapat is not None:
+        return ip_nepermis(mapat)
+    if (ip.is_multicast or ip.is_unspecified or ip.is_loopback or ip.is_link_local
+            or ip.is_private or ip.is_reserved or not ip.is_global):
+        return "adresa IP interna (loopback/privata/link-local/rezervata)"
     return None
 
 
@@ -464,6 +481,11 @@ _CORPUS_URL_OSTIL = [
     "http://[::1]/",
     "http://metadata.google.internal/computeMetadata/v1/",
     "http://0.0.0.0/",
+    "http://100.64.1.1/",
+    "http://2130706433/",
+    "http://127.1/",
+    "http://[::ffff:127.0.0.1]/",
+    "http://[::ffff:169.254.169.254]/",
 ]
 
 _CORPUS_URL_CURAT = [

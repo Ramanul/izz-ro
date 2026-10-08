@@ -1,17 +1,23 @@
 name: cua-local
+
+# OPRIT. Workflow-ul rula text liber ca cmd pe runnerul Windows persistent
+# [self-hosted, windows-local]. Un workflow_dispatch cere drept de scriere, dar
+# un token de scriere furat ajungea pe PC-ul local, iar un job compromis poate
+# supraviețui următorului. Nu se mai programează pe runnerul acela.
+# Ca să revină, înlocuiește textul liber cu o alegere dintr-o listă fixă, din
+# codul de pe main, pe un runner care se aruncă după rulare.
+
 on:
   workflow_dispatch:
-    inputs:
-      commands:
-        description: 'Comenzi Windows (cmd), cate una pe linie, rulate pe PC-ul local'
-        required: true
-        type: string
+
+permissions: {}
+
 jobs:
-  local:
-    runs-on: [self-hosted, windows-local]
-    timeout-minutes: 15
+  refuzat:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
     steps:
-      - name: Executa pe PC-ul local
-        shell: cmd
+      - name: Execuția arbitrară este oprită
         run: |
-          ${{ github.event.inputs.commands }}
+          echo "::error::cua-local este oprit. Nu se execută comenzi pe runnerul Windows."
+          exit 1

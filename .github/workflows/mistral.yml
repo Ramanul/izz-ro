@@ -216,19 +216,24 @@ jobs:
         if: always()
         env:
           GH_TOKEN: ${{ github.token }}
+          NUMBER: ${{ github.event.issue.number || github.event.pull_request.number }}
+          JOB_STATUS: ${{ job.status }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
         run: |
           set -euo pipefail
-          NUMBER="${{ github.event.issue.number || github.event.pull_request.number }}"
           if [ -z "$NUMBER" ]; then
             echo "nu pot determina issue/PR number — sar peste comentariul de status"
             exit 0
           fi
-          if [ "${{ job.status }}" = "success" ]; then
+          case "$NUMBER" in
+            *[!0-9]*) echo "număr invalid — nu comentez"; exit 0 ;;
+          esac
+          if [ "$JOB_STATUS" = "success" ]; then
             if [ "${HAS_CHANGES:-}" = "false" ]; then
               gh issue comment "$NUMBER" --body "✅ @mistralai a verificat task-ul; nu au fost necesare modificări."
             else
               gh issue comment "$NUMBER" --body "✅ @mistralai a terminat. Vezi commit-urile / PR-ul de mai sus."
             fi
           else
-            gh issue comment "$NUMBER" --body "❌ @mistralai a eșuat. Verifică [logurile](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})."
+            gh issue comment "$NUMBER" --body "❌ @mistralai a eșuat. Verifică [logurile]($RUN_URL)."
           fi
