@@ -1,5 +1,495 @@
 [
   {
+    "url": "https://adevarul.ro/stiri-interne/societate/scolile-romanesti-raman-fara-profesori-la-2562300.html",
+    "original_link": "https://adevarul.ro/stiri-interne/societate/scolile-romanesti-raman-fara-profesori-la-2562300.html",
+    "source": "adevarul",
+    "source_name": "Adevărul",
+    "source_lang": "ro",
+    "title": "Școlile din România se confruntă cu un deficit grav de profesori la științe exacte",
+    "category": "general",
+    "published": "2026-10-08T02:00:25+00:00",
+    "model": "B",
+    "src_extra": 39,
+    "teaser": "Sistemul de învățământ românesc suferă din cauza îmbătrânirii corpului profesoral și a lipsei candidaților la discipline precum Matematică, Fizică și Chimie, punând în pericol ocuparea catedrelor cu personal calificat.",
+    "entities": [
+      "România",
+      "Uniunea Europeană"
+    ],
+    "ai_cat": "social",
+    "icon": "school",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "scolile-din-romania-se-confrunta-cu-un-deficit-grav-de-profesori-la-stiinte"
+  },
+  {
+    "url": "https://politico.eu/article/zack-polanski-greens-final-pitch-in-holborn-by-election-ill-keep-labour-andy-burnham-honest",
+    "original_link": "https://www.politico.eu/article/zack-polanski-greens-final-pitch-in-holborn-by-election-ill-keep-labour-andy-burnham-honest/?utm_source=RSS_Feed&utm_medium=RSS&utm_campaign=RSS_Syndication",
+    "source": "politico_eu",
+    "source_name": "Politico EU",
+    "source_lang": "en",
+    "title": "Zack Polanski își propune să schimbe sistemul politic britanic în alegerile parțiale",
+    "category": "politic",
+    "published": "2026-10-08T02:00:00+00:00",
+    "model": "B",
+    "src_extra": 803,
+    "teaser": "Liderul Verzilor din Marea Britanie candidează în circumscripția Holborn și St. Pancras, poziționându-se ca o alternativă de protest pentru alegătorii laburiști și promițând să îl tragă la răspundere pe premier.",
+    "entities": [
+      "Zack Polanski",
+      "Holborn",
+      "St. Pancras",
+      "Marea Britanie"
+    ],
+    "ai_cat": "politic",
+    "icon": "podium",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "zack-polanski-isi-propune-sa-schimbe-sistemul-politic-britanic-in-alegerile"
+  },
+  {
+    "url": "https://politico.eu/article/spain-election-2026-polls-far-right-vox-santiago-abascal",
+    "original_link": "https://www.politico.eu/article/spain-election-2026-polls-far-right-vox-santiago-abascal/?utm_source=RSS_Feed&utm_medium=RSS&utm_campaign=RSS_Syndication",
+    "source": "politico_eu",
+    "source_name": "Politico EU",
+    "source_lang": "en",
+    "title": "Partidul de extremă-dreaptă Vox vede alegerile anticipate din Spania ca pe o oportunitate majoră",
+    "category": "extern",
+    "published": "2026-10-08T02:00:00+00:00",
+    "model": "B",
+    "src_extra": 1198,
+    "teaser": "Formațiunea anti-imigrație Vox speră să obțină funcții ministeriale cheie în urma scrutinului anticipat convocat de premierul Pedro Sánchez, vizând o schimbare radicală a direcției politice a țării.",
+    "entities": [
+      "Vox",
+      "Pedro Sánchez",
+      "Spania"
+    ],
+    "ai_cat": "extern",
+    "icon": "flag",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "partidul-de-extrema-dreapta-vox-vede-alegerile-anticipate-din-spania-ca-pe-o"
+  },
+  {
+    "url": "https://adevarul.ro/economie/atacurile-cu-drone-din-marea-neagra-si-taxa-de-2562443.html",
+    "original_link": "https://adevarul.ro/economie/atacurile-cu-drone-din-marea-neagra-si-taxa-de-2562443.html",
+    "source": "adevarul",
+    "source_name": "Adevărul",
+    "source_lang": "ro",
+    "title": "Atacurile cu drone din Marea Neagră pot scumpi transportul și mărfurile în România",
+    "category": "economic",
+    "published": "2026-10-08T01:37:25+00:00",
+    "model": "B",
+    "src_extra": 28,
+    "teaser": "Incidente recente care au vizat nave comerciale în Marea Neagră riscă să majoreze tarifele de transport și asigurare, afectând negativ economia națională și activitatea din Portul Constanța.",
+    "entities": [
+      "Marea Neagră",
+      "Portul Constanța",
+      "România"
+    ],
+    "ai_cat": "economic",
+    "icon": "ship",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "atacurile-cu-drone-din-marea-neagra-pot-scumpi-transportul-si-marfurile-in"
+  },
+  {
+    "url": "https://bizbrasov.ro/2026/10/08/de-ce-trebuie-sa-iti-opresti-telefonul-saptamanal-motivul-nu-are-legatura-cu-bateria-sau-stocarea",
+    "original_link": "https://bizbrasov.ro/2026/10/08/de-ce-trebuie-sa-iti-opresti-telefonul-saptamanal-motivul-nu-are-legatura-cu-bateria-sau-stocarea/",
+    "source": "bizbrasov",
+    "source_name": "BizBrașov",
+    "source_lang": "ro",
+    "title": "Specialiștii recomandă repornirea săptămânală a telefoanelor pentru securitatea datelor",
+    "category": "tech",
+    "published": "2026-10-08T01:13:00+00:00",
+    "model": "B",
+    "src_extra": 37,
+    "teaser": "Utilizatorii de smartphone-uri reprezintă ținte frecvente pentru hackeri, dispozitivele fiind vulnerabile la atacuri cibernetice din cauza datelor personale și bancare stocate, motiv pentru care igiena digitală este esențială.",
+    "entities": [],
+    "ai_cat": "tech",
+    "icon": "device-mobile",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "specialistii-recomanda-repornirea-saptamanala-a-telefoanelor-pentru-securitatea"
+  },
+  {
+    "url": "https://adevarul.ro/economie/cat-ar-putea-ajunge-factura-la-energie-in-aceasta-2562361.html",
+    "original_link": "https://adevarul.ro/economie/cat-ar-putea-ajunge-factura-la-energie-in-aceasta-2562361.html",
+    "source": "adevarul",
+    "source_name": "Adevărul",
+    "source_lang": "ro",
+    "title": "Facturile la energie din România ar putea crește semnificativ în sezonul rece",
+    "category": "economic",
+    "published": "2026-10-08T01:05:25+00:00",
+    "model": "B",
+    "src_extra": 41,
+    "teaser": "Problemele din sistemul energetic, generate de secetă, producția redusă și cotațiile ridicate de pe piața angro, ar putea determina o scumpire a ofertelor pentru consumatorii casnici cu până la 50 de bani pe kWh.",
+    "entities": [
+      "România",
+      "Dumitru Chisăliță",
+      "Dunărea"
+    ],
+    "ai_cat": "economic",
+    "icon": "receipt-tax",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "facturile-la-energie-din-romania-ar-putea-creste-semnificativ-in-sezonul-rece"
+  },
+  {
+    "url": "https://fcinter1908.it/news/interviste/aquilani-roma-forte-e-completa-puo-lottare-per-lo-scudetto-gasperini-un-innovatore",
+    "original_link": "https://www.fcinter1908.it/news/interviste/aquilani-roma-forte-e-completa-puo-lottare-per-lo-scudetto-gasperini-un-innovatore/",
+    "source": "fcinter1908",
+    "source_name": "FC Inter 1908",
+    "source_lang": "it",
+    "title": "Alberto Aquilani consideră că AS Roma poate lupta pentru titlul în Serie A",
+    "category": "sport",
+    "published": "2026-10-08T01:00:56+00:00",
+    "model": "B",
+    "src_extra": 129,
+    "teaser": "Antrenorul echipei Sassuolo a lăudat formația pregătită de Gian Piero Gasperini, descriind-o drept un ansamblu complet și puternic, capabil să se bată pentru primele poziții din campionat.",
+    "entities": [
+      "Alberto Aquilani",
+      "AS Roma",
+      "Gian Piero Gasperini",
+      "Sassuolo"
+    ],
+    "ai_cat": "sport",
+    "icon": "ball-football",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "alberto-aquilani-considera-ca-as-roma-poate-lupta-pentru-titlul-in-serie-a"
+  },
+  {
+    "url": "https://adevarul.ro/stiri-externe/europa/iranul-ar-fi-planuit-un-atac-cu-drone-asupra-bazei-2562449.html",
+    "original_link": "https://adevarul.ro/stiri-externe/europa/iranul-ar-fi-planuit-un-atac-cu-drone-asupra-bazei-2562449.html",
+    "source": "adevarul",
+    "source_name": "Adevărul",
+    "source_lang": "ro",
+    "title": "Iranul ar fi planificat un atac cu drone împotriva unei baze militare britanice",
+    "category": "extern",
+    "published": "2026-10-08T00:35:25+00:00",
+    "model": "B",
+    "src_extra": 16,
+    "teaser": "Gărzile Revoluționare iraniene ar fi recrutat cetățeni din Marea Britanie pentru a organiza un raid aerian asupra bazei Fairford, folosind tactici similare celor utilizate de Ucraina în operațiunile recente.",
+    "entities": [
+      "Iran",
+      "Marea Britanie",
+      "Fairford",
+      "Ucraina"
+    ],
+    "ai_cat": "extern",
+    "icon": "plane",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "iranul-ar-fi-planificat-un-atac-cu-drone-impotriva-unei-baze-militare-britanice"
+  },
+  {
+    "url": "https://fcinter1908.it/news/interviste/palladini-solo-la-roma-puo-essere-lanti-inter-per-lo-scudetto-nella-gara-dellolimpico",
+    "original_link": "https://www.fcinter1908.it/news/interviste/palladini-solo-la-roma-puo-essere-lanti-inter-per-lo-scudetto-nella-gara-dellolimpico/",
+    "source": "fcinter1908",
+    "source_name": "FC Inter 1908",
+    "source_lang": "it",
+    "title": "Jurnalistul Enzo Palladini analizează lupta pentru titlu în Serie A",
+    "category": "sport",
+    "published": "2026-10-08T00:00:33+00:00",
+    "model": "B",
+    "src_extra": 201,
+    "teaser": "Înaintea reluării campionatului italian, analiștii sportivi anticipează o lună octombrie dificilă pentru echipele angrenate în cupele europene, situație ce ar putea avantaja formațiile fără angajamente internaționale.",
+    "entities": [
+      "Enzo Palladini",
+      "Serie A"
+    ],
+    "ai_cat": "sport",
+    "icon": "ball-football",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "jurnalistul-enzo-palladini-analizeaza-lupta-pentru-titlu-in-serie-a"
+  },
+  {
+    "url": "https://adevarul.ro/stiri-externe/europa/ue-se-pregateste-discret-pentru-scenariul-cel-mai-2562453.html",
+    "original_link": "https://adevarul.ro/stiri-externe/europa/ue-se-pregateste-discret-pentru-scenariul-cel-mai-2562453.html",
+    "source": "adevarul",
+    "source_name": "Adevărul",
+    "source_lang": "ro",
+    "title": "Uniunea Europeană pregătește măsuri secrete pentru un atac hibrid major",
+    "category": "extern",
+    "published": "2026-10-08T00:00:25+00:00",
+    "model": "B",
+    "src_extra": 25,
+    "teaser": "Diplomații europeni negociază crearea unor echipe speciale de urgență și alocarea de fonduri pentru gestionarea crizelor, în timp ce unele state avertizează că aceste demersuri s-ar suprapune peste atribuțiile NATO.",
+    "entities": [
+      "Uniunea Europeană",
+      "NATO"
+    ],
+    "ai_cat": "extern",
+    "icon": "shield",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "uniunea-europeana-pregateste-masuri-secrete-pentru-un-atac-hibrid-major"
+  },
+  {
+    "url": "https://politico.com/news/2026/10/07/disinformation-conference-europe-us-pressure-01111134",
+    "original_link": "https://www.politico.com/news/2026/10/07/disinformation-conference-europe-us-pressure-01111134?utm_source=RSS_Feed&utm_medium=RSS&utm_campaign=RSS_Syndication",
+    "source": "politico_eu",
+    "source_name": "Politico EU",
+    "source_lang": "en",
+    "title": "Mai multe state s-au retras de la o conferință internațională anti-dezinformare la presiunea SUA",
+    "category": "extern",
+    "published": "2026-10-07T23:54:08+00:00",
+    "model": "B",
+    "src_extra": 903,
+    "teaser": "Reprezentanții diplomatici din Uniunea Europeană, Canada și Lituania au abandonat participarea la conferința #Disinfo2026 după ce administrația de la Washington a intervenit ca urmare a unor critici aduse politicilor americane.",
+    "entities": [
+      "SUA",
+      "UE",
+      "Canada",
+      "Lituania"
+    ],
+    "ai_cat": "extern",
+    "icon": "globe",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "mai-multe-state-s-au-retras-de-la-o-conferinta-internationala-anti-dezinformare"
+  },
+  {
+    "url": "https://adevarul.ro/economie/masurile-care-au-scos-romania-din-junk-in-2014-2561859.html",
+    "original_link": "https://adevarul.ro/economie/masurile-care-au-scos-romania-din-junk-in-2014-2561859.html",
+    "source": "adevarul",
+    "source_name": "Adevărul",
+    "source_lang": "ro",
+    "title": "România a revenit în categoria de investment grade în mai 2014",
+    "category": "economic",
+    "published": "2026-10-07T23:35:25+00:00",
+    "model": "B",
+    "src_extra": 33,
+    "teaser": "Standard & Poor's a majorat ratingul suveran al României de la BB+ la BBB-, cu perspectivă stabilă, scoțând economia țării din zona speculativă cunoscută drept junk după aproape șase ani.",
+    "entities": [
+      "România",
+      "Standard & Poor's"
+    ],
+    "ai_cat": "economic",
+    "icon": "chart-line",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "romania-a-revenit-in-categoria-de-investment-grade-in-mai-2014"
+  },
+  {
+    "url": "https://adevarul.ro/economie/black-friday-2026-se-schimba-in-romania-2562388.html",
+    "original_link": "https://adevarul.ro/economie/black-friday-2026-se-schimba-in-romania-2562388.html",
+    "source": "adevarul",
+    "source_name": "Adevărul",
+    "source_lang": "ro",
+    "title": "Campaniile de Black Friday 2026 din România încep încă din luna octombrie",
+    "category": "discounturi",
+    "published": "2026-10-07T23:08:25+00:00",
+    "model": "B",
+    "src_extra": 31,
+    "teaser": "Ediția din acest an a evenimentului aduce reduceri timpurii în România. Primele oferte comerciale sunt programate să apară în a doua jumătate a lunii octombrie, valul principal desfășurându-se în noiembrie.",
+    "entities": [
+      "România"
+    ],
+    "ai_cat": "discounturi",
+    "icon": "shopping-cart",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "campaniile-de-black-friday-2026-din-romania-incep-inca-din-luna-octombrie"
+  },
+  {
+    "url": "https://dobrogeaonline.ro/gara-constanta-va-fi-mutata-sau-nu",
+    "original_link": "https://www.dobrogeaonline.ro/gara-constanta-va-fi-mutata-sau-nu/",
+    "source": "dobrogeaonline",
+    "source_name": "Dobrogea Online",
+    "source_lang": "ro",
+    "title": "Primăria Constanța avansează cu documentația pentru reconversia urbană a zonelor industriale",
+    "category": "local",
+    "published": "2026-10-07T23:04:31+00:00",
+    "model": "B",
+    "src_extra": 368,
+    "teaser": "Proiectul urbanistic Anghel Saligny din Constanța a trecut la faza de PUZ preliminar și urmează să fie analizat de comisiile de specialitate, vizând revitalizarea fostelor platforme industriale degradate.",
+    "entities": [
+      "Constanța"
+    ],
+    "ai_cat": "regional",
+    "icon": "building-monument",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "primaria-constanta-avanseaza-cu-documentatia-pentru-reconversia-urbana-a"
+  },
+  {
+    "url": "https://libertatea.ro/entertainment/ioana-si-ilie-nastase-scandal-in-fata-blocului-din-mamaia-4990171",
+    "original_link": "https://www.libertatea.ro/entertainment/ioana-si-ilie-nastase-scandal-in-fata-blocului-din-mamaia-4990171",
+    "source": "libertatea",
+    "source_name": "Libertatea",
+    "source_lang": "ro",
+    "title": "Ilie Năstase și soția sa, Ioana, implicați într-un conflict în stațiunea Mamaia",
+    "category": "lifestyle",
+    "published": "2026-10-07T23:01:15+00:00",
+    "model": "B",
+    "src_extra": 407,
+    "teaser": "Fostul tenismen și partenera sa de viață au atras atenția trecătorilor printr-o dispută vocală izbucnită în fața imobilului în care locuiesc, pe fondul unor suspiciuni de infidelitate.",
+    "entities": [
+      "Ilie Năstase",
+      "Ioana Năstase",
+      "Mamaia"
+    ],
+    "ai_cat": "lifestyle",
+    "icon": "alert-triangle",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "ilie-nastase-si-sotia-sa-ioana-implicati-intr-un-conflict-in-statiunea-mamaia"
+  },
+  {
+    "url": "https://fcinter1908.it/news/interviste/braglia-esposito-patrimonio-nazionale-pio-esposito-coppia-dattacco-dellinter",
+    "original_link": "https://www.fcinter1908.it/news/interviste/braglia-esposito-patrimonio-nazionale-pio-esposito-coppia-dattacco-dellinter/",
+    "source": "fcinter1908",
+    "source_name": "FC Inter 1908",
+    "source_lang": "it",
+    "title": "Specialistul Simone Braglia îl consideră pe Pio Esposito un jucător esențial pentru Italia",
+    "category": "sport",
+    "published": "2026-10-07T23:00:50+00:00",
+    "model": "B",
+    "src_extra": 145,
+    "teaser": "Într-o analiză privind ofensiva echipei Inter Milano, fostul fotbalist Simone Braglia a evidențiat calitățile atacantului Pio Esposito, numindu-l un veritabil patrimoniu național sportiv.",
+    "entities": [
+      "Simone Braglia",
+      "Pio Esposito",
+      "Inter Milano"
+    ],
+    "ai_cat": "sport",
+    "icon": "ball-football",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "specialistul-simone-braglia-il-considera-pe-pio-esposito-un-jucator-esential"
+  },
+  {
+    "url": "https://b365.ro/bucuresti-de-weekend-spotlight-strazi-deschise-barbati-pe-matasari-octobor-fest-petreceri-expozitii-si-altele-au-loc-in-oras-intre-9-si-11-octombrie-622972",
+    "original_link": "https://b365.ro/bucuresti-de-weekend-spotlight-strazi-deschise-barbati-pe-matasari-octobor-fest-petreceri-expozitii-si-altele-au-loc-in-oras-intre-9-si-11-octombrie-622972/",
+    "source": "b365",
+    "source_name": "B365",
+    "source_lang": "ro",
+    "title": "Bucureștiul Găzduiește multiple evenimente culturale și festivaluri în acest weekend",
+    "category": "local",
+    "published": "2026-10-07T23:00:29+00:00",
+    "model": "B",
+    "src_extra": 29,
+    "teaser": "Locuitorii capitalei se pot bucura între 9 și 11 octombrie de ultima ediție Străzi Deschise, festivalul Spotlight, târguri de bere și alte numeroase manifestări artistice și recreative organizate în oraș.",
+    "entities": [
+      "București"
+    ],
+    "ai_cat": "cultura",
+    "icon": "music",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "bucurestiul-gazduieste-multiple-evenimente-culturale-si-festivaluri-in-acest"
+  },
+  {
+    "url": "https://urban.ro/primul-film-realizat-cu-inteligenta-artificiala-in-cursa-pentru-oscar",
+    "original_link": "https://www.urban.ro/primul-film-realizat-cu-inteligenta-artificiala-in-cursa-pentru-oscar/",
+    "source": "urban",
+    "source_name": "Urban.ro",
+    "source_lang": "ro",
+    "title": "Un lungmetraj creat integral cu inteligență artificială intră în cursa pentru Oscar",
+    "category": "ai",
+    "published": "2026-10-07T22:12:11+00:00",
+    "model": "B",
+    "src_extra": 18,
+    "teaser": "Pelicula „Gods Don’t Give Gifts”, realizată de creatorul de conținut cunoscut ca Gossip Goblin, a lansat trailerul oficial și candidează pentru o nominalizare la premiile Academiei Americane de Film.",
+    "entities": [
+      "Gossip Goblin"
+    ],
+    "ai_cat": "ai",
+    "icon": "movie",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "un-lungmetraj-creat-integral-cu-inteligenta-artificiala-intra-in-cursa-pentru"
+  },
+  {
+    "url": "https://theguardian.com/us-news/2026/oct/07/rubio-greece-trump-america-first-speech",
+    "original_link": "https://www.theguardian.com/us-news/2026/oct/07/rubio-greece-trump-america-first-speech",
+    "source": "guardian_eu",
+    "source_name": "The Guardian",
+    "source_lang": "en",
+    "title": "Secretarul de stat american Marco Rubio a susținut un discurs despre politica externă la Atena",
+    "category": "extern",
+    "published": "2026-10-07T22:05:51+00:00",
+    "model": "B",
+    "src_extra": 116,
+    "teaser": "Oficialul Washingtonului a pledat în Grecia pentru doctrina „America First”, îndemnând națiunile europene să își reconsidere abordările strategice în fața noilor provocări globale actuale.",
+    "entities": [
+      "Marco Rubio",
+      "Atena",
+      "SUA"
+    ],
+    "ai_cat": "extern",
+    "icon": "podium",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "secretarul-de-stat-american-marco-rubio-a-sustinut-un-discurs-despre-politica"
+  },
+  {
+    "url": "https://adevarul.ro/stiri-interne/societate/baietii-sunt-baieti-una-dintre-cele-mai-2561936.html",
+    "original_link": "https://adevarul.ro/stiri-interne/societate/baietii-sunt-baieti-una-dintre-cele-mai-2561936.html",
+    "source": "adevarul",
+    "source_name": "Adevărul",
+    "source_lang": "ro",
+    "title": "Cazul „Cornell 7” readuce în discuție limitele și consimțământul în campusurile universitare",
+    "category": "extern",
+    "published": "2026-10-07T22:05:25+00:00",
+    "model": "B",
+    "src_extra": 38,
+    "teaser": "Acuzațiile de agresiune sexuală formulate de o fostă studentă împotriva unor membri ai unei fraternități provoacă dezbateri aprinse privind responsabilitatea și educația despre consimțământ în rândul tinerilor.",
+    "entities": [
+      "Cornell 7"
+    ],
+    "ai_cat": "extern",
+    "icon": "gavel",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "cazul-cornell-7-readuce-in-discutie-limitele-si-consimtamantul-in-campusurile"
+  },
+  {
+    "url": "https://fcinter1908.it/social/vaciago-infortuni-nazionale-con-chi-prendono-club",
+    "original_link": "https://www.fcinter1908.it/social/vaciago-infortuni-nazionale-con-chi-prendono-club/",
+    "source": "fcinter1908",
+    "source_name": "FC Inter 1908",
+    "source_lang": "it",
+    "title": "Cluburile de fotbal protestează față de riscul accidentărilor jucătorilor la echipele naționale",
+    "category": "sport",
+    "published": "2026-10-07T21:50:50+00:00",
+    "model": "B",
+    "src_extra": 35,
+    "teaser": "Directorul Tuttosport, Guido Vaciago, a comentat la Radio Sportiva nemulțumirile cluburilor legate de pauza competițională dedicată meciurilor echipelor naționale și riscurile medicale implicate.",
+    "entities": [
+      "Guido Vaciago",
+      "Tuttosport",
+      "Radio Sportiva"
+    ],
+    "ai_cat": "sport",
+    "icon": "ball-football",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "cluburile-de-fotbal-protesteaza-fata-de-riscul-accidentarilor-jucatorilor-la"
+  },
+  {
     "url": "https://ziuadevest.ro/parteneriat-strategic-pentru-cultura-la-timisoara-profi-sustine-noua-stagiune-a-filarmonicii-banatul",
     "original_link": "https://www.ziuadevest.ro/parteneriat-strategic-pentru-cultura-la-timisoara-profi-sustine-noua-stagiune-a-filarmonicii-banatul/",
     "source": "ziuadevest",
@@ -182,6 +672,28 @@
     "prompt_version": "v2-esenta",
     "featured": false,
     "slug": "sannicolau-mare-organizeaza-editia-din-2026-a-sarbatorii-orasului-dedicata"
+  },
+  {
+    "url": "https://urban.ro/cele-mai-bune-zece-regiuni-viticole-din-europa-pentru-o-mini-vacanta-in-toamna-lui-2025",
+    "original_link": "https://www.urban.ro/cele-mai-bune-zece-regiuni-viticole-din-europa-pentru-o-mini-vacanta-in-toamna-lui-2025/",
+    "source": "urban",
+    "source_name": "Urban.ro",
+    "source_lang": "ro",
+    "title": "Zece regiuni viticole din Europa oferă destinații ideale pentru vacanțele de toamnă",
+    "category": "lifestyle",
+    "published": "2026-10-07T21:14:47+00:00",
+    "model": "B",
+    "src_extra": 29,
+    "teaser": "Sezonul de toamnă transformă peisajele viticole europene în destinații perfecte pentru minivacanțe relaxante, datorită temperaturilor blânde, atmosferei liniștite și peisajelor spectaculoase.",
+    "entities": [
+      "Europa"
+    ],
+    "ai_cat": "lifestyle",
+    "icon": "trees",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "zece-regiuni-viticole-din-europa-ofera-destinatii-ideale-pentru-vacantele-de"
   },
   {
     "url": "https://prosport.ro/fotbal-extern/liga-natiunilor/edi-iordanescu-lovitura-oferta-vecini-debut-noiembrie-banca-nationala-europa-20542386",
@@ -551,6 +1063,31 @@
     "slug": "compania-de-transport-girteka-recruteaza-soferi-in-romania-cu-salarii-de-pana"
   },
   {
+    "url": "https://spotmedia.ro/stiri/opinii-si-analize/la-ccr-s-a-format-noul-usl-un-miliard-de-euro-de-la-cetatenii-romaniei-pentru-magistrati",
+    "original_link": "https://spotmedia.ro/stiri/opinii-si-analize/la-ccr-s-a-format-noul-usl-un-miliard-de-euro-de-la-cetatenii-romaniei-pentru-magistrati",
+    "source": "spotmedia",
+    "source_name": "Spotmedia",
+    "source_lang": "ro",
+    "title": "Curtea Constituțională a respins plângerea Guvernului privind compensațiile financiare ale magistraților",
+    "category": "politic",
+    "published": "2026-10-07T21:06:00+00:00",
+    "model": "B",
+    "src_extra": 789,
+    "teaser": "Contribuabilii români vor achita un miliard de euro pentru restanțe salariale destinate judecătorilor, după ce CCR a declarat inadmisibilă acțiunea formulată de executivul condus de Ilie Bolojan.",
+    "entities": [
+      "Curtea Constituțională",
+      "Guvernul României",
+      "Ilie Bolojan",
+      "Lia Savonea"
+    ],
+    "ai_cat": "politic",
+    "icon": "gavel",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "curtea-constitutionala-a-respins-plangerea-guvernului-privind-compensatiile"
+  },
+  {
     "url": "https://digi24.ro/stiri/externe/washingtonul-pune-o-noua-conditie-iranului-ce-a-cerut-jd-vance-pentru-un-acord-care-sa-puna-capat-razboiului-3983013",
     "original_link": "https://www.digi24.ro/stiri/externe/washingtonul-pune-o-noua-conditie-iranului-ce-a-cerut-jd-vance-pentru-un-acord-care-sa-puna-capat-razboiului-3983013",
     "source": "extern",
@@ -649,6 +1186,29 @@
     "slug": "aniversarea-nasterii-violonistului-ion-voicu-si-alte-evenimente-istorice-din-8"
   },
   {
+    "url": "https://tion.ro/azi-in-timisoara/ce-facem-astazi-8-octombrie-2026-in-timisoara-2367912",
+    "original_link": "https://www.tion.ro/azi-in-timisoara/ce-facem-astazi-8-octombrie-2026-in-timisoara-2367912/?utm_source=rss&utm_medium=referral&utm_campaign=hiraggregator",
+    "source": "tion",
+    "source_name": "Timiș Online",
+    "source_lang": "ro",
+    "title": "Evenimentele culturale și expozițiile programate astăzi în Timișoara",
+    "category": "local",
+    "published": "2026-10-07T21:00:34+00:00",
+    "model": "B",
+    "src_extra": 226,
+    "teaser": "Agenda orașului Timișoara include astăzi expoziții inedite cu animale și fluturi, ateliere creative pentru copii, proiecții de filme și piese de teatru destinate publicului larg.",
+    "entities": [
+      "Timișoara",
+      "Iulius Town"
+    ],
+    "ai_cat": "regional",
+    "icon": "movie",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "evenimentele-culturale-si-expozitiile-programate-astazi-in-timisoara"
+  },
+  {
     "url": "https://fcinter1908.it/inter-under-23/news-inter-under-23/designazione-savoia-interu23",
     "original_link": "https://www.fcinter1908.it/inter-under-23/news-inter-under-23/designazione-savoia-interu23/",
     "source": "fcinter1908",
@@ -672,6 +1232,29 @@
     "prompt_version": "v2-esenta",
     "featured": false,
     "slug": "echipa-inter-u23-intalneste-formatia-savoia-in-etapa-a-noua-din-serie-c"
+  },
+  {
+    "url": "https://spotmedia.ro/stiri/opinii-si-analize/cine-poarta-cea-mai-scumpa-casca-din-lume-video",
+    "original_link": "https://spotmedia.ro/stiri/opinii-si-analize/cine-poarta-cea-mai-scumpa-casca-din-lume-video",
+    "source": "spotmedia",
+    "source_name": "Spotmedia",
+    "source_lang": "ro",
+    "title": "România va achiziționa avioane F-35 echipate cu cele mai scumpe căști de luptă din lume",
+    "category": "tech",
+    "published": "2026-10-07T21:00:00+00:00",
+    "model": "B",
+    "src_extra": 239,
+    "teaser": "Forțele Aeriene Române vor primi în jurul anului 2030 primele aparate din cele 32 contractate, valoroasele aeronave fiind dotate cu sisteme de zbor de ultimă generație și echipamente performante.",
+    "entities": [
+      "România",
+      "Forțele Aeriene Române"
+    ],
+    "ai_cat": "tech",
+    "icon": "plane",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "romania-va-achizitiona-avioane-f-35-echipate-cu-cele-mai-scumpe-casti-de-lupta"
   },
   {
     "url": "https://digi24.ro/stiri/economie/energie/cand-va-fi-repornita-centrala-de-la-cernavoda-secretar-de-stat-nu-putem-risca-sa-se-deterioreze-pompele-3983015",
@@ -834,6 +1417,30 @@
     "processed_by": "official",
     "featured": false,
     "slug": "breaking-news-ccr-da-dreptate-inaltei-curti-in-disputa-pentru-restantele"
+  },
+  {
+    "url": "https://sport.ro/fotbal-extern/cristiano-ronaldo-mesaj-pentru-rivalul-lionel-messi-ce-i-a-spus-dupa-retragerea-din-nationala-argentinei.html",
+    "original_link": "https://www.sport.ro/fotbal-extern/cristiano-ronaldo-mesaj-pentru-rivalul-lionel-messi-ce-i-a-spus-dupa-retragerea-din-nationala-argentinei.html",
+    "source": "sportro",
+    "source_name": "Sport.ro",
+    "source_lang": "ro",
+    "title": "Cristiano Ronaldo i-a transmis un mesaj lui Lionel Messi după retragerea din naționala Argentinei",
+    "category": "sport",
+    "published": "2026-10-07T20:54:24+00:00",
+    "model": "B",
+    "src_extra": 7,
+    "teaser": "Starul portughez Cristiano Ronaldo a reacționat public și i-a adresat un mesaj rivalului său argentinian Lionel Messi, în urma deciziei acestuia de a renunța la reprezentativa țării sale.",
+    "entities": [
+      "Cristiano Ronaldo",
+      "Lionel Messi",
+      "Argentina"
+    ],
+    "ai_cat": "sport",
+    "icon": "ball-football",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "cristiano-ronaldo-i-a-transmis-un-mesaj-lui-lionel-messi-dupa-retragerea-din"
   },
   {
     "url": "https://adevarul.ro/politica/intrebarile-lui-ctp-pentru-calin-georgescu-cu-ce-2562557.html",
@@ -1143,6 +1750,29 @@
     "slug": "gerhard-schroder-a-fost-aplaudat-in-supermarket-din-moscova"
   },
   {
+    "url": "https://sport.ro/liga-1/dinamo-dubla-lovitura-anuntul-facut-de-andrei-nicolescu.html",
+    "original_link": "https://www.sport.ro/liga-1/dinamo-dubla-lovitura-anuntul-facut-de-andrei-nicolescu.html",
+    "source": "sportro",
+    "source_name": "Sport.ro",
+    "source_lang": "ro",
+    "title": "Președintele Andrei Nicolescu a oferit detalii despre situația clubului Dinamo",
+    "category": "sport",
+    "published": "2026-10-07T20:37:06+00:00",
+    "model": "B",
+    "src_extra": 20,
+    "teaser": "Conducătorul clubului Dinamo București a acordat un interviu exclusiv în care a dezvăluit cele mai recente noutăți și planuri de viitor din cadrul echipei de fotbal.",
+    "entities": [
+      "Andrei Nicolescu",
+      "Dinamo"
+    ],
+    "ai_cat": "sport",
+    "icon": "ball-football",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "presedintele-andrei-nicolescu-a-oferit-detalii-despre-situatia-clubului-dinamo"
+  },
+  {
     "url": "https://gsp.ro/sporturi/baschet/dupa-victoria-cu-venetia-mihai-silvasan-a-reluat-o-tema-abordata-in-trecut-de-legendarul-mircea-lucescu-eu-incurajez-si-pe-viitor-985641.html",
     "original_link": "https://www.gsp.ro/sporturi/baschet/dupa-victoria-cu-venetia-mihai-silvasan-a-reluat-o-tema-abordata-in-trecut-de-legendarul-mircea-lucescu-eu-incurajez-si-pe-viitor-985641.html",
     "source": "gsp",
@@ -1355,6 +1985,30 @@
     "slug": "informatii-despre-o-presupusa-imixtiune-a-lui-donald-trump-in-politica-interna"
   },
   {
+    "url": "https://prosport.ro/fotbal-intern/marius-baciu-cacacios-florin-lovin-didi-prodan-mormant-20542344",
+    "original_link": "https://www.prosport.ro/fotbal-intern/marius-baciu-cacacios-florin-lovin-didi-prodan-mormant-20542344",
+    "source": "prosport",
+    "source_name": "ProSport",
+    "source_lang": "ro",
+    "title": "Marius Baciu a reluat criticile dure la adresa lui Florin Lovin după zece ani",
+    "category": "sport",
+    "published": "2026-10-07T20:29:32+00:00",
+    "model": "B",
+    "src_extra": 41,
+    "teaser": "Fostul antrenor Marius Baciu a rememorat un conflict vechi de un deceniu și a folosit din nou apelative jignitoare la adresa lui Florin Lovin, generând controverse în lumea fotbalului.",
+    "entities": [
+      "Marius Baciu",
+      "Florin Lovin",
+      "Didi Prodan"
+    ],
+    "ai_cat": "sport",
+    "icon": "ball-football",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "marius-baciu-a-reluat-criticile-dure-la-adresa-lui-florin-lovin-dupa-zece-ani"
+  },
+  {
     "url": "https://antena3.ro/externe/marco-rubio-a-lansat-un-avertisment-pentru-europa-din-atena-de-pe-acropole-urmatorul-deceniu-va-scrie-istoria-secolului-urmator-806248.html",
     "original_link": "https://www.antena3.ro/externe/marco-rubio-a-lansat-un-avertisment-pentru-europa-din-atena-de-pe-acropole-urmatorul-deceniu-va-scrie-istoria-secolului-urmator-806248.html",
     "source": "antena3",
@@ -1404,6 +2058,30 @@
     "slug": "marius-baciu-poarta-discutii-pentru-o-noua-echipa-dupa-despartirea-de-fcsb"
   },
   {
+    "url": "https://g4media.ro/eurodeputatul-nicu-stefanuta-ales-copresedinte-al-grupului-verzilor-ale-din-parlamentul-european.html",
+    "original_link": "https://www.g4media.ro/eurodeputatul-nicu-stefanuta-ales-copresedinte-al-grupului-verzilor-ale-din-parlamentul-european.html",
+    "source": "g4media",
+    "source_name": "G4Media",
+    "source_lang": "ro",
+    "title": "Eurodeputatul Nicu Ștefănuță a fost ales copreședinte al Grupului Verzilor din Parlamentul European",
+    "category": "politic",
+    "published": "2026-10-07T20:26:31+00:00",
+    "model": "B",
+    "src_extra": 42,
+    "teaser": "Politicianul român Nicu Ștefănuță va conduce Grupul Verzilor/ALE din Parlamentul European alături de europarlamentarul german Terry Reintke, în urma unui scrutin câștigat în fața unor contracandidate puternice.",
+    "entities": [
+      "Nicu Ștefănuță",
+      "Terry Reintke",
+      "Parlamentul European"
+    ],
+    "ai_cat": "politic",
+    "icon": "flag",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "eurodeputatul-nicu-stefanuta-a-fost-ales-copresedinte-al-grupului-verzilor-din"
+  },
+  {
     "url": "https://antena3.ro/politica/luca-niculescu-a-stabilit-calendarul-negocierilor-cu-partidele-se-va-intalni-prima-data-cu-psd-806213.html",
     "original_link": "https://www.antena3.ro/politica/luca-niculescu-a-stabilit-calendarul-negocierilor-cu-partidele-se-va-intalni-prima-data-cu-psd-806213.html",
     "source": "antena3",
@@ -1447,6 +2125,55 @@
     "prompt_version": "v2-esenta",
     "featured": false,
     "slug": "doua-treimi-din-mecanismul-de-la-antikythera-raman-ascunse-pe-fundul-marii"
+  },
+  {
+    "url": "https://libertatea.ro/lifestyle/turism-europa-crestere-2026-raport-wttc-malta-p5klz7l",
+    "original_link": "https://www.libertatea.ro/lifestyle/turism-europa-crestere-2026-raport-wttc-malta-p5klz7l",
+    "source": "libertatea",
+    "source_name": "Libertatea",
+    "source_lang": "ro",
+    "title": "Turismul european va crește cu 3,1% în 2026",
+    "category": "economic",
+    "published": "2026-10-07T20:19:09+00:00",
+    "model": "B",
+    "src_extra": 394,
+    "teaser": "Sectorul turistic din Europa va înregistra o expansiune de 3,1% până la finalul anului 2026, depășind ritmul economiei globale și media mondială a industriei, conform datelor publicate la summitul din Malta.",
+    "entities": [
+      "Malta",
+      "World Travel & Tourism Council",
+      "Euronews"
+    ],
+    "ai_cat": "economic",
+    "icon": "globe",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "turismul-european-va-creste-cu-31-in-2026"
+  },
+  {
+    "url": "https://libertatea.ro/stiri/danemarca-acuza-rusia-de-operatiuni-de-sabotaj-la-fabricile-sale-militare-si-semnaleaza-o-noua-strategie-6ywvqln",
+    "original_link": "https://www.libertatea.ro/stiri/danemarca-acuza-rusia-de-operatiuni-de-sabotaj-la-fabricile-sale-militare-si-semnaleaza-o-noua-strategie-6ywvqln",
+    "source": "libertatea",
+    "source_name": "Libertatea",
+    "source_lang": "ro",
+    "title": "Danemarca acuză Rusia de sabotaj la fabricile militare",
+    "category": "extern",
+    "published": "2026-10-07T20:18:54+00:00",
+    "model": "B",
+    "src_extra": 304,
+    "teaser": "Serviciile secrete daneze avertizează că Rusia a inițiat operațiuni de sabotaj în zona gri împotriva companiilor locale din apărare care furnizează echipamente militare Ucrainei.",
+    "entities": [
+      "Danemarca",
+      "Rusia",
+      "Ucraina",
+      "PET"
+    ],
+    "ai_cat": "extern",
+    "icon": "swords",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "danemarca-acuza-rusia-de-sabotaj-la-fabricile-militare"
   },
   {
     "url": "https://sfatulparintilor.ro/familie-parinti/sanatate-fizica-si-mentala/ce-se-intampla-in-corpul-tau-cand-faci-dusuri-cu-apa-rece-timp-de-7-zile",
@@ -1539,6 +2266,78 @@
     "prompt_version": "v2-esenta",
     "featured": false,
     "slug": "marius-sumudica-implicat-intr-un-incident-bizar-pe-o-strada-din-cluj"
+  },
+  {
+    "url": "https://libertatea.ro/stiri/marfa-contrafacuta-vama-isaccea-incaltaminte-de-marca-de-milioane-lei-confiscata-6mq9yvg",
+    "original_link": "https://www.libertatea.ro/stiri/marfa-contrafacuta-vama-isaccea-incaltaminte-de-marca-de-milioane-lei-confiscata-6mq9yvg",
+    "source": "libertatea",
+    "source_name": "Libertatea",
+    "source_lang": "ro",
+    "title": "Vameșii de la Isaccea au confiscat încălțăminte contrafăcută",
+    "category": "local",
+    "published": "2026-10-07T20:15:44+00:00",
+    "model": "B",
+    "src_extra": 231,
+    "teaser": "Autoritățile vamale au interceptat în Punctul de Trecere a Frontierei Isaccea un tir cu 1.300 de perechi de pantofi contrafăcuți, transportați din China către Odesa, cu o valoare estimată de 4,9 milioane de lei.",
+    "entities": [
+      "Isaccea",
+      "Odesa",
+      "China",
+      "Constanța"
+    ],
+    "ai_cat": "regional",
+    "icon": "shopping-cart",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "vamesii-de-la-isaccea-au-confiscat-incaltaminte-contrafacuta"
+  },
+  {
+    "url": "https://libertatea.ro/lifestyle/cum-se-bea-cafeaua-pentru-longevitate-regula-de-la-pranz-explicata-de-un-expert-3xd2y9j",
+    "original_link": "https://www.libertatea.ro/lifestyle/cum-se-bea-cafeaua-pentru-longevitate-regula-de-la-pranz-explicata-de-un-expert-3xd2y9j",
+    "source": "libertatea",
+    "source_name": "Libertatea",
+    "source_lang": "ro",
+    "title": "Expertul Dan Buettner recomandă trei băuturi pentru longevitate",
+    "category": "lifestyle",
+    "published": "2026-10-07T20:13:36+00:00",
+    "model": "B",
+    "src_extra": 481,
+    "teaser": "Specialistul în longevitate Dan Buettner a analizat obiceiurile din zonele albastre ale planetei și a identificat trei băuturi zilnice consumate frecvent de persoanele care depășesc un secol de viață.",
+    "entities": [
+      "Dan Buettner",
+      "Okinawa",
+      "Sardinia"
+    ],
+    "ai_cat": "lifestyle",
+    "icon": "stethoscope",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "expertul-dan-buettner-recomanda-trei-bauturi-pentru-longevitate"
+  },
+  {
+    "url": "https://digi24.ro/stiri/sport/fotbal/romania-a-coborat-6-locuri-in-clasamentul-fifa-dupa-infrangerile-din-liga-natiunilor-3982989",
+    "original_link": "https://www.digi24.ro/stiri/sport/fotbal/romania-a-coborat-6-locuri-in-clasamentul-fifa-dupa-infrangerile-din-liga-natiunilor-3982989",
+    "source": "digi24",
+    "source_name": "Digi24",
+    "source_lang": "ro",
+    "title": "România a coborât pe locul 58 în clasamentul FIFA",
+    "category": "sport",
+    "published": "2026-10-07T20:12:04+00:00",
+    "model": "B",
+    "src_extra": 18,
+    "teaser": "Reprezentativa de fotbal a României a pierdut șase poziții în ierarhia FIFA, ajungând pe locul 58 cu 1428,88 puncte, după rezultatele înregistrate în primele patru etape din Liga Națiunilor.",
+    "entities": [
+      "România",
+      "FIFA"
+    ],
+    "ai_cat": "sport",
+    "icon": "ball-football",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "romania-a-coborat-pe-locul-58-in-clasamentul-fifa"
   },
   {
     "url": "https://spotmedia.ro/stiri/eveniment/ziua-1687-rusia-se-dezlantuie-de-ziua-tarului-11-morti-bloc-facut-zob-de-o-racheta-video-cadoul-ucrainei-trump-vrea-sa-vorbeasca-cu-putin-despre-ciuma",
@@ -1707,6 +2506,30 @@
     "slug": "laurentiu-reghecampf-a-revenit-ca-antrenor-principal-la-fcsb-dupa-demiterea-lui"
   },
   {
+    "url": "https://spotmedia.ro/stiri/eveniment/marco-rubio-cere-europei-sa-se-trezeasca-din-somn-occidentul-este-la-rascruce",
+    "original_link": "https://spotmedia.ro/stiri/eveniment/marco-rubio-cere-europei-sa-se-trezeasca-din-somn-occidentul-este-la-rascruce",
+    "source": "spotmedia",
+    "source_name": "Spotmedia",
+    "source_lang": "ro",
+    "title": "Marco Rubio cere Europei să își consolideze poziția globală",
+    "category": "extern",
+    "published": "2026-10-07T20:04:32+00:00",
+    "model": "B",
+    "src_extra": 747,
+    "teaser": "Secretarul de stat american Marco Rubio a declarat în cadrul unui discurs susținut la Atena că Europa trebuie să acționeze decisiv în următorul deceniu pentru a evita declinul geopolitic al Occidentului.",
+    "entities": [
+      "Marco Rubio",
+      "Atena",
+      "Europa"
+    ],
+    "ai_cat": "extern",
+    "icon": "podium",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "marco-rubio-cere-europei-sa-isi-consolideze-pozitia-globala"
+  },
+  {
     "url": "https://theguardian.com/world/2026/oct/07/french-police-suspend-use-stun-grenades-high-school-protester-loses-hand",
     "original_link": "https://www.theguardian.com/world/2026/oct/07/french-police-suspend-use-stun-grenades-high-school-protester-loses-hand",
     "source": "guardian_eu",
@@ -1758,7 +2581,7 @@
     "source": "adevarul",
     "source_name": "Adevărul",
     "source_lang": "ro",
-    "title": "Donald Trump a declarat că incidentul cu ciumă din Rusia nu reprezintă o armă biologică",
+    "title": "Donald Trump a declarat că incidentul legat de ciumă din Rusia nu implică arme biologice",
     "category": "extern",
     "published": "2026-10-07T20:02:13+00:00",
     "model": "C",
@@ -1777,7 +2600,7 @@
     "members": [
       {
         "published": "2026-10-07T20:02:13+00:00",
-        "title": "Trump nu crede că incidentul legat de ciumă din Rusia este o armă biologică. „Ei spun că au situația complet sub control”",
+        "title": "Donald Trump a declarat că incidentul cu ciumă din Rusia nu reprezintă o armă biologică",
         "source": "Adevărul",
         "url": "https://adevarul.ro/stiri-externe/sua/trump-nu-crede-ca-incidentul-legat-de-ciuma-din-2562552.html"
       },
@@ -1789,18 +2612,19 @@
       }
     ],
     "story_id": "st-4849bd7ffe4d",
-    "synthesis": "Președintele american Donald Trump a afirmat că Statele Unite nu consideră că decesul unei angajate a unui laborator de cercetare din Siberia, legat de un caz suspect de ciumă, ar fi rezultatul utilizării unei arme biologice. Administrația de la Washington menționează că autoritățile ruse au situația complet sub control.",
+    "synthesis": "Președintele american Donald Trump a anunțat că Statele Unite nu consideră că decesul unei angajate de la un centru de cercetare a ciumei din Siberia, Rusia, ar avea vreo legătură cu o armă biologică.",
     "entities": [
       "Donald Trump",
       "Rusia",
       "Statele Unite"
     ],
     "ai_cat": "extern",
-    "icon": "globe",
+    "icon": "virus",
     "processed_by": "gemini",
     "prompt_version": "v2-esenta",
     "featured": false,
-    "slug": "donald-trump-a-declarat-ca-incidentul-cu-ciuma-din-rusia-nu-reprezinta-o-arma"
+    "slug": "donald-trump-a-declarat-ca-incidentul-cu-ciuma-din-rusia-nu-reprezinta-o-arma",
+    "updated": "2026-10-08T02:05:14.227745+00:00"
   },
   {
     "url": "https://g4media.ro/pe-fondul-protestelor-studentilor-si-al-presiunii-exercitate-asupra-gospodariilor-de-preturile-la-combustibili-premierul-lecornu-a-promis-noi-masuri-pentru-a-face-fata-crizei-multiple-din-franta.html",
@@ -1946,6 +2770,30 @@
     "slug": "echipele-romanesti-au-inregistrat-o-victorie-si-doua-esecuri-in-fiba-europe-cup"
   },
   {
+    "url": "https://libertatea.ro/stiri/preturi-apartamente-romania-2026-cat-costa-metrul-patrat-cluj-bucuresti-qmf3bcy",
+    "original_link": "https://www.libertatea.ro/stiri/preturi-apartamente-romania-2026-cat-costa-metrul-patrat-cluj-bucuresti-qmf3bcy",
+    "source": "libertatea",
+    "source_name": "Libertatea",
+    "source_lang": "ro",
+    "title": "Cluj-Napoca a depășit 3.000 de euro pe metrul pătrat rezidențial",
+    "category": "local",
+    "published": "2026-10-07T19:54:35+00:00",
+    "model": "B",
+    "src_extra": 651,
+    "teaser": "Piața imobiliară din Cluj-Napoca a stabilit un nou record în prima jumătate a anului 2026, depășind pragul de 3.000 de euro pe metrul pătrat util, în timp ce alte județe mențin prețuri mai scăzute.",
+    "entities": [
+      "Cluj-Napoca",
+      "Satu Mare",
+      "Teleorman"
+    ],
+    "ai_cat": "economic",
+    "icon": "home",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "cluj-napoca-a-depasit-3-000-de-euro-pe-metrul-patrat-rezidential"
+  },
+  {
     "url": "https://dobrogeaonline.ro/intreruperi-de-curent-in-judetul-constanta-zonele-afectate-pe-8-octombrie",
     "original_link": "https://www.dobrogeaonline.ro/intreruperi-de-curent-in-judetul-constanta-zonele-afectate-pe-8-octombrie/",
     "source": "dobrogeaonline",
@@ -1991,54 +2839,28 @@
     "slug": "airsoft-club-constanta-promoveaza-sportul-impotriva-consumului-de-droguri"
   },
   {
-    "url": "https://stirileprotv.ro/stiri/actualitate/mirabela-gradinaru-vizita-la-sec-ia-de-terapie-intensiva-nou-nascu-i-de-la-marie-curie-foto.html",
-    "original_link": "https://stirileprotv.ro/stiri/actualitate/mirabela-gradinaru-vizita-la-sec-ia-de-terapie-intensiva-nou-nascu-i-de-la-marie-curie-foto.html",
-    "source": "protv",
-    "source_name": "Știrile ProTV",
+    "url": "https://hotnews.ro/cu-cat-estimeaza-ministerul-energiei-ca-se-vor-mari-facturile-la-curent-electric-nu-vor-fi-duble-2370047",
+    "original_link": "https://hotnews.ro/cu-cat-estimeaza-ministerul-energiei-ca-se-vor-mari-facturile-la-curent-electric-nu-vor-fi-duble-2370047",
+    "source": "hotnews",
+    "source_name": "HotNews",
     "source_lang": "ro",
-    "title": "Mirabela Grădinaru a vizitat Secția de Terapie Intensivă nou-născuți de la Marie Curie",
-    "category": "general",
-    "published": "2026-10-07T19:49:03+00:00",
-    "model": "C",
-    "src_extra": 18,
-    "sources": [
-      {
-        "name": "Știrile ProTV",
-        "url": "https://stirileprotv.ro/stiri/actualitate/mirabela-gradinaru-vizita-la-sec-ia-de-terapie-intensiva-nou-nascu-i-de-la-marie-curie-foto.html"
-      },
-      {
-        "name": "Digi24",
-        "url": "https://www.digi24.ro/stiri/actualitate/social/mirabela-gradinaru-a-vizitat-sectia-de-terapie-intensiva-nou-nascuti-de-la-spitalul-marie-curie-3982973"
-      }
-    ],
-    "first_source": "Știrile ProTV",
-    "members": [
-      {
-        "published": "2026-10-07T19:49:03+00:00",
-        "title": "Mirabela Grădinaru, vizită la Secţia de Terapie Intensivă nou-născuţi de la „Marie Curie”. FOTO",
-        "source": "Știrile ProTV",
-        "url": "https://stirileprotv.ro/stiri/actualitate/mirabela-gradinaru-vizita-la-sec-ia-de-terapie-intensiva-nou-nascu-i-de-la-marie-curie-foto.html"
-      },
-      {
-        "published": "2026-10-07T20:01:23+00:00",
-        "title": "Mirabela Grădinaru a vizitat Secţia de Terapie Intensivă nou-născuţi de la Spitalul Marie Curie",
-        "source": "Digi24",
-        "url": "https://digi24.ro/stiri/actualitate/social/mirabela-gradinaru-a-vizitat-sectia-de-terapie-intensiva-nou-nascuti-de-la-spitalul-marie-curie-3982973"
-      }
-    ],
-    "story_id": "st-328ac0e3f760",
-    "synthesis": "Mirabela Grădinaru, partenera președintelui Nicușor Dan, a efectuat o vizită la Secția de Terapie Intensivă pentru nou-născuți din cadrul Spitalului Clinic de Urgență pentru Copii „Marie Curie” din București. Unitatea medicală vizitată a fost construită în anul 2013 prin implicarea asociației Inima Copiilor.",
+    "title": "Ministerul Energiei estimează scumpirea facturilor la curent",
+    "category": "economic",
+    "published": "2026-10-07T19:47:01+00:00",
+    "model": "B",
+    "src_extra": 48,
+    "teaser": "Secretarul de stat Cristian Bușoi a anunțat că simulările oficiale indică o majorare estimată între 20% și 22% a facturilor la energie electrică pentru perioada iernii și a primăverii viitoare.",
     "entities": [
-      "Mirabela Grădinaru",
-      "Nicușor Dan",
-      "Spitalul Marie Curie"
+      "Cristian Bușoi",
+      "Ministerul Energiei",
+      "Cernavodă"
     ],
-    "ai_cat": "general",
-    "icon": "building-hospital",
+    "ai_cat": "economic",
+    "icon": "bolt",
     "processed_by": "gemini",
     "prompt_version": "v2-esenta",
     "featured": false,
-    "slug": "mirabela-gradinaru-a-vizitat-sectia-de-terapie-intensiva-nou-nascuti-de-la"
+    "slug": "ministerul-energiei-estimeaza-scumpirea-facturilor-la-curent"
   },
   {
     "url": "https://prosport.ro/fotbal-extern/stranieri/gigi-becali-acuzat-frontal-fost-antrenor-prabusire-tavi-popescu-marius-baciu-20542314",
@@ -2269,6 +3091,30 @@
     "slug": "politistii-italieni-au-vizitat-un-pensionar-de-84-de-ani-care-se-simtea-singur"
   },
   {
+    "url": "https://as.ro/extra/tanarul-milionar-roman-care-s-a-plans-ca-a-trait-in-saracie-cu-3-000-de-euro-a-plecat-din-tara-unde-s-a-dus-viata-de-sef-695617.html",
+    "original_link": "https://as.ro/extra/tanarul-milionar-roman-care-s-a-plans-ca-a-trait-in-saracie-cu-3-000-de-euro-a-plecat-din-tara-unde-s-a-dus-viata-de-sef-695617.html",
+    "source": "as_ro",
+    "source_name": "Antena Sport",
+    "source_lang": "ro",
+    "title": "Adrian Mititelu Jr s-a mutat în Statele Unite",
+    "category": "lifestyle",
+    "published": "2026-10-07T19:36:00+00:00",
+    "model": "B",
+    "src_extra": 38,
+    "teaser": "Tânărul antreprenor român Adrian Mititelu Jr a părăsit țara și s-a stabilit în Statele Unite, publicând pe rețelele de socializare imagini din zona Beverly Hills din California.",
+    "entities": [
+      "Adrian Mititelu Jr",
+      "Statele Unite",
+      "Beverly Hills"
+    ],
+    "ai_cat": "lifestyle",
+    "icon": "plane",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "adrian-mititelu-jr-s-a-mutat-in-statele-unite"
+  },
+  {
     "url": "https://comunatarlungeni.ro/oferta-de-vanzare-teren-extravilan-nr-2632-2026",
     "original_link": "https://comunatarlungeni.ro/oferta-de-vanzare-teren-extravilan-nr-2632-2026/",
     "source": "pl_brasov_tarlungeni",
@@ -2449,6 +3295,66 @@
     "prompt_version": "v2-esenta",
     "featured": false,
     "slug": "ghidul-cristalelor-recomandate-pentru-sezonul-rece-2026"
+  },
+  {
+    "url": "https://digi24.ro/stiri/externe/maricarmen-femeia-de-87-de-ani-a-carei-evacuare-din-locuinta-a-dus-la-proteste-si-alegeri-anticipate-in-spania-a-murit-3982957",
+    "original_link": "https://www.digi24.ro/stiri/externe/maricarmen-femeia-de-87-de-ani-a-carei-evacuare-din-locuinta-a-dus-la-proteste-si-alegeri-anticipate-in-spania-a-murit-3982957",
+    "source": "extern",
+    "source_name": "Digi24 Extern",
+    "source_lang": "ro",
+    "title": "A murit Maricarmen Abascal, pensionara a cărei evacuare a generat o criză politică în Spania",
+    "category": "extern",
+    "published": "2026-10-07T19:22:48+00:00",
+    "model": "C",
+    "src_extra": 23,
+    "sources": [
+      {
+        "name": "Digi24 Extern",
+        "url": "https://www.digi24.ro/stiri/externe/maricarmen-femeia-de-87-de-ani-a-carei-evacuare-din-locuinta-a-dus-la-proteste-si-alegeri-anticipate-in-spania-a-murit-3982957"
+      },
+      {
+        "name": "HotNews",
+        "url": "https://hotnews.ro/maricarmen-femeia-devenita-simbol-al-crizei-locuintelor-din-spania-a-murit-2370052"
+      },
+      {
+        "name": "Spotmedia",
+        "url": "https://spotmedia.ro/stiri/eveniment/a-murit-maricarmen-femeia-de-87-de-ani-a-carei-evacuare-a-scos-mii-de-spanioli-in-strada-cazul-ei-a-dus-pana-la-alegeri-anticipate"
+      }
+    ],
+    "first_source": "Digi24 Extern",
+    "members": [
+      {
+        "published": "2026-10-07T19:22:48+00:00",
+        "title": "Maricarmen, femeia de 87 de ani a cărei evacuare din locuință a dus la proteste și alegeri anticipate în Spania, a murit",
+        "source": "Digi24 Extern",
+        "url": "https://digi24.ro/stiri/externe/maricarmen-femeia-de-87-de-ani-a-carei-evacuare-din-locuinta-a-dus-la-proteste-si-alegeri-anticipate-in-spania-a-murit-3982957"
+      },
+      {
+        "published": "2026-10-07T19:29:09+00:00",
+        "title": "Maricarmen a murit. Femeia a cărei evacuare din casă a declanșat proteste în toată Spania s-a stins în spital",
+        "source": "HotNews",
+        "url": "https://hotnews.ro/maricarmen-femeia-devenita-simbol-al-crizei-locuintelor-din-spania-a-murit-2370052"
+      },
+      {
+        "published": "2026-10-07T21:01:01+00:00",
+        "title": "A murit Maricarmen, femeia de 87 de ani a cărei evacuare a scos mii de spanioli în stradă. Cazul ei a dus până la alegeri anticipate",
+        "source": "Spotmedia",
+        "url": "https://spotmedia.ro/stiri/eveniment/a-murit-maricarmen-femeia-de-87-de-ani-a-carei-evacuare-a-scos-mii-de-spanioli-in-strada-cazul-ei-a-dus-pana-la-alegeri-anticipate"
+      }
+    ],
+    "story_id": "st-a4972984db89",
+    "synthesis": "Maricarmen Abascal, în vârstă de 87 de ani, a decedat într-un spital din Madrid la două săptămâni după ce a fost evacuată din locuința în care a trăit peste șapte decenii. Cazul ei a provocat proteste masive și o dispută politică ce a condus la convocarea de alegeri anticipate în Spania. Deși reprezentanții săi conveniseră asupra unui nou contract de închiriere, femeia nu a mai apucat să se întoarcă acasă.",
+    "entities": [
+      "Maricarmen Abascal",
+      "Madrid",
+      "Sindicatul Chiriașilor din Madrid"
+    ],
+    "ai_cat": "extern",
+    "icon": "home",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "a-murit-maricarmen-abascal-pensionara-a-carei-evacuare-a-generat-o-criza"
   },
   {
     "url": "https://as.ro/fotbal/liga-1/ovidiu-burca-intrebat-cine-e-mai-bun-inainte-de-sepsi-dinamo-zeljko-kopic-sau-nuno-campos-695603.html",
@@ -3005,6 +3911,31 @@
     "slug": "platforma-spotify-a-lansat-oficial-sectiunea-de-carti-audio-la-nivel-global"
   },
   {
+    "url": "https://economica.net/luca-niculescu-se-va-intalni-joi-cu-psd-pnl-si-udmr-discutiile-vor-avea-loc-la-sediile-partidelor_983728.html",
+    "original_link": "https://www.economica.net/luca-niculescu-se-va-intalni-joi-cu-psd-pnl-si-udmr-discutiile-vor-avea-loc-la-sediile-partidelor_983728.html",
+    "source": "economica",
+    "source_name": "Economica",
+    "source_lang": "ro",
+    "title": "Luca Niculescu va avea consultări cu PSD, PNL și UDMR",
+    "category": "politic",
+    "published": "2026-10-07T18:59:13+00:00",
+    "model": "B",
+    "src_extra": 771,
+    "teaser": "Reprezentantul va purta discuții oficiale la sediile partidelor parlamentare, întâlnirile începând de la ora 11:00 cu PSD, continuând cu PNL și finalizându-se cu UDMR.",
+    "entities": [
+      "Luca Niculescu",
+      "PSD",
+      "PNL",
+      "UDMR"
+    ],
+    "ai_cat": "politic",
+    "icon": "building-bank",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "luca-niculescu-va-avea-consultari-cu-psd-pnl-si-udmr"
+  },
+  {
     "url": "https://comunabalabanesti.ro/08-10-2026-oferta-vanzare-teren",
     "original_link": "https://comunabalabanesti.ro/08-10-2026-oferta-vanzare-teren/",
     "source": "pl_galati_balabanesti",
@@ -3184,66 +4115,6 @@
     "prompt_version": "v2-esenta",
     "featured": false,
     "slug": "premierul-frantei-promite-masuri-pentru-scoli-si-ieftinirea-carburantilor"
-  },
-  {
-    "url": "https://g4media.ro/nicusor-dan-la-biserica-palatului-cotroceni-e-important-sa-avem-tot-timpul-in-minte-ca-istoria-nu-incepe-cu-noi.html",
-    "original_link": "https://www.g4media.ro/nicusor-dan-la-biserica-palatului-cotroceni-e-important-sa-avem-tot-timpul-in-minte-ca-istoria-nu-incepe-cu-noi.html",
-    "source": "g4media",
-    "source_name": "G4Media",
-    "source_lang": "ro",
-    "title": "Nicușor Dan a participat la Liturghia de la Biserica Palatului Cotroceni",
-    "category": "politic",
-    "published": "2026-10-07T18:44:22+00:00",
-    "model": "C",
-    "src_extra": 36,
-    "sources": [
-      {
-        "name": "G4Media",
-        "url": "https://www.g4media.ro/nicusor-dan-la-biserica-palatului-cotroceni-e-important-sa-avem-tot-timpul-in-minte-ca-istoria-nu-incepe-cu-noi.html"
-      },
-      {
-        "name": "HotNews",
-        "url": "https://hotnews.ro/indemnul-transmis-de-nicusor-dan-dupa-ce-a-participat-la-liturghia-de-la-biserica-palatului-cotroceni-2370081"
-      },
-      {
-        "name": "Adevărul",
-        "url": "https://adevarul.ro/politica/nicusor-dan-mesaj-de-la-biserica-palatului-2562554.html"
-      }
-    ],
-    "first_source": "G4Media",
-    "members": [
-      {
-        "published": "2026-10-07T18:44:22+00:00",
-        "title": "Nicuşor Dan, la Biserica Palatului Cotroceni: E important să avem tot timpul în minte că istoria nu începe cu noi",
-        "source": "G4Media",
-        "url": "https://g4media.ro/nicusor-dan-la-biserica-palatului-cotroceni-e-important-sa-avem-tot-timpul-in-minte-ca-istoria-nu-incepe-cu-noi.html"
-      },
-      {
-        "published": "2026-10-07T20:05:08+00:00",
-        "title": "Mesajul transmis de Nicușor Dan, după ce a participat la Liturghia de la Biserica Palatului Cotroceni",
-        "source": "HotNews",
-        "url": "https://hotnews.ro/indemnul-transmis-de-nicusor-dan-dupa-ce-a-participat-la-liturghia-de-la-biserica-palatului-cotroceni-2370081"
-      },
-      {
-        "published": "2026-10-07T20:29:25+00:00",
-        "title": "Nicușor Dan, mesaj de la Biserica Palatului Cotroceni: „Tot timpul o să avem opinii diferite”",
-        "source": "Adevărul",
-        "url": "https://adevarul.ro/politica/nicusor-dan-mesaj-de-la-biserica-palatului-2562554.html"
-      }
-    ],
-    "story_id": "st-8c66d87d06d4",
-    "synthesis": "Președintele Nicușor Dan a participat, miercuri, la Sfânta Liturghie oficiată la Biserica Palatului Cotroceni, cu prilejul cinstirii ocrotitorilor lăcașului. La eveniment au luat parte și angajați din Administrația Prezidențială și de la Muzeul Național Cotroceni. Cu acest prilej, șeful statului a subliniat importanța moderației și a amintit că istoria nu începe cu prezentul.",
-    "entities": [
-      "Nicușor Dan",
-      "Biserica Palatului Cotroceni",
-      "Timotei Prahoveanul"
-    ],
-    "ai_cat": "politic",
-    "icon": "building-church",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false,
-    "slug": "nicusor-dan-a-participat-la-liturghia-de-la-biserica-palatului-cotroceni"
   },
   {
     "url": "https://alba24.ro/incendiu-in-ocna-mures-o-locuinta-ar-fi-fost-cuprinsa-de-flacari-1161582.html",
@@ -3963,6 +4834,31 @@
     "featured": false
   },
   {
+    "url": "https://politico.eu/article/eu-parliament-defends-secret-ballots-that-kept-far-right-out-of-top-committee-jobs",
+    "original_link": "https://www.politico.eu/article/eu-parliament-defends-secret-ballots-that-kept-far-right-out-of-top-committee-jobs/?utm_source=RSS_Feed&utm_medium=RSS&utm_campaign=RSS_Syndication",
+    "source": "politico_eu",
+    "source_name": "Politico EU",
+    "source_lang": "en",
+    "title": "Parlamentul European refuză renumărarea voturilor secrete împotriva extremei drepte",
+    "category": "politic",
+    "published": "2026-10-07T17:12:13+00:00",
+    "model": "B",
+    "src_extra": 415,
+    "teaser": "Reprezentanții juridici ai Parlamentului European au susținut în instanță că votul secret prin care extrema dreaptă a fost blocată din funcțiile importante nu poate fi contestat sau refăcut, neexistând o procedură legală în acest sens.",
+    "entities": [
+      "Parlamentul European",
+      "Luxemburg",
+      "Patriots for Europe",
+      "Niklas Görlitz"
+    ],
+    "ai_cat": "politic",
+    "icon": "gavel",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "parlamentul-european-refuza-renumararea-voturilor-secrete-impotriva-extremei"
+  },
+  {
     "url": "https://cursdeguvernare.ro/mecanism-franco-german-anti-china-bazooka-comerciala-strategie-comert-arma-mercantilism-beijing.html",
     "original_link": "https://cursdeguvernare.ro/mecanism-franco-german-anti-china-bazooka-comerciala-strategie-comert-arma-mercantilism-beijing.html",
     "source": "cursdeguv",
@@ -4340,23 +5236,76 @@
     "source": "dw_europe",
     "source_name": "DW Europe",
     "source_lang": "en",
-    "title": "Gerhard Schröder a vizitat un magazin Hyperglobus din Moscova",
-    "category": "extern",
+    "title": "Fostul cancelar german Gerhard Schröder a vizitat un magazin Hyperglobus în Moscova",
+    "category": "politic",
     "published": "2026-10-07T16:39:00+00:00",
-    "model": "B",
+    "model": "C",
     "src_extra": 29,
     "teaser": "Fostul cancelar german Gerhard Schröder s-a deplasat la Moscova în cadrul noilor sale atribuții la conducerea companiei ruse Hyperglobus, continuând implicarea sa în afacerile energetice și economice din Rusia.",
     "entities": [
       "Gerhard Schröder",
       "Hyperglobus",
-      "Moscova"
+      "Moscova",
+      "Vladimir Putin"
     ],
-    "ai_cat": "extern",
-    "icon": "globe",
+    "ai_cat": "politic",
+    "icon": "building-bank",
     "processed_by": "gemini",
     "prompt_version": "v2-esenta",
     "featured": false,
-    "slug": "gerhard-schroder-a-vizitat-un-magazin-hyperglobus-din-moscova"
+    "slug": "gerhard-schroder-a-vizitat-un-magazin-hyperglobus-din-moscova",
+    "sources": [
+      {
+        "name": "DW Europe",
+        "url": "https://www.dw.com/en/gerhard-schröder-visits-latest-russian-employer-hyperglobus/a-79583018?maca=en-rss-en-eu-2092-rdf"
+      },
+      {
+        "name": "Libertatea",
+        "url": "https://www.libertatea.ro/stiri/gerhard-schroder-la-moscova-fostul-cancelar-german-numit-in-consiliul-de-supraveghere-al-hyperglobus-6d68969"
+      }
+    ],
+    "first_source": "DW Europe",
+    "members": [
+      {
+        "published": "2026-10-07T16:39:00+00:00",
+        "title": "Gerhard Schröder a vizitat un magazin Hyperglobus din Moscova",
+        "source": "DW Europe",
+        "url": "https://dw.com/en/gerhard-schröder-visits-latest-russian-employer-hyperglobus/a-79583018?maca=en-rss-en-eu-2092-rdf"
+      },
+      {
+        "published": "2026-10-07T19:46:10+00:00",
+        "title": "Gerhard Schröder, șef de supermarketuri în Rusia. Fostul cancelar german a vizitat magazinele din Moscova",
+        "source": "Libertatea",
+        "url": "https://libertatea.ro/stiri/gerhard-schroder-la-moscova-fostul-cancelar-german-numit-in-consiliul-de-supraveghere-al-hyperglobus-6d68969"
+      }
+    ],
+    "story_id": "st-58735c265c9e",
+    "updated": "2026-10-08T02:05:20.329588+00:00",
+    "synthesis": "Gerhard Schröder, fostul cancelar al Germaniei, a vizitat o filială a lanțului de supermarketuri Hyperglobus din Moscova, la scurt timp după numirea sa în consiliul de supraveghere al companiei. În cadrul vizitei, acesta a pledat pentru reluarea legăturilor economice dintre Rusia și Europa, în pofida sancțiunilor internaționale. Evenimentul subliniază menținerea legăturilor economice ale fostului oficial cu Rusia, relație intens criticată în Germania. Nu există contraziceri între surse."
+  },
+  {
+    "url": "https://economedia.ro/video-cristian-pistol-cnair-am-parcurs-varianta-ocolitoare-a-autostrazii-a1-sibiu-boita-in-doar-19-minute.html",
+    "original_link": "https://economedia.ro/video-cristian-pistol-cnair-am-parcurs-varianta-ocolitoare-a-autostrazii-a1-sibiu-boita-in-doar-19-minute.html",
+    "source": "economedia",
+    "source_name": "Economedia",
+    "source_lang": "ro",
+    "title": "CNAIR anunță că noua variantă ocolitoare a autostrăzii A1 Sibiu-Boița se parcurge în 19 minute",
+    "category": "local",
+    "published": "2026-10-07T16:38:49+00:00",
+    "model": "B",
+    "src_extra": 44,
+    "teaser": "Șeful CNAIR, Cristian Pistol, a declarat că traficul redirecționat de pe autostrada A1 se desfășoară fluent, fără aglomerație, parcurgerea variantei ocolitoare luând doar 19 minute, cu zece minute mai mult decât pe traseul inițial.",
+    "entities": [
+      "Cristian Pistol",
+      "CNAIR",
+      "A1 Sibiu - Boița"
+    ],
+    "ai_cat": "auto",
+    "icon": "car",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "cnair-anunta-ca-noua-varianta-ocolitoare-a-autostrazii-a1-sibiu-boita-se"
   },
   {
     "url": "https://gazetadecluj.ro/cine-putea-fi-interesat-sa-creeze-in-romania-o-asemenea-harababura-politica",
@@ -6136,22 +7085,51 @@
     "source": "politico_eu",
     "source_name": "Politico EU",
     "source_lang": "en",
-    "title": "Statele UE cer evaluarea IEA înainte de eliberarea rezervelor petroliere",
-    "category": "extern",
+    "title": "Statele IEA pregătesc eliberarea a 100 de milioane de barili din rezervele strategice",
+    "category": "economic",
     "published": "2026-10-07T15:51:13+00:00",
-    "model": "B",
+    "model": "C",
     "src_extra": 360,
     "teaser": "Diplomații europeni au confirmat că rezervele de țiței și motorină ale blocului comunitar vor fi deblocate doar după o analiză prealabilă a Agenției Internaționale a Energiei, în urma deciziei luate de G7 privind stocurile.",
     "entities": [
+      "Agenția Internațională pentru Energie",
       "G7",
-      "Agenția Internațională a Energiei"
+      "Donald Trump"
     ],
-    "ai_cat": "extern",
+    "ai_cat": "economic",
     "icon": "gas-station",
     "processed_by": "gemini",
     "prompt_version": "v2-esenta",
     "featured": false,
-    "slug": "statele-ue-cer-evaluarea-iea-inainte-de-eliberarea-rezervelor-petroliere"
+    "slug": "statele-ue-cer-evaluarea-iea-inainte-de-eliberarea-rezervelor-petroliere",
+    "sources": [
+      {
+        "name": "Politico EU",
+        "url": "https://www.politico.eu/article/eu-countries-will-release-fresh-oil-stocks-only-after-iea-assessment/?utm_source=RSS_Feed&utm_medium=RSS&utm_campaign=RSS_Syndication"
+      },
+      {
+        "name": "Libertatea",
+        "url": "https://www.libertatea.ro/stiri/100-de-milioane-de-barili-de-petrol-din-rezervele-strategice-vor-fi-eliberate-pe-piata-a-decis-iea-7dt77rg"
+      }
+    ],
+    "first_source": "Politico EU",
+    "members": [
+      {
+        "published": "2026-10-07T15:51:13+00:00",
+        "title": "Statele UE cer evaluarea IEA înainte de eliberarea rezervelor petroliere",
+        "source": "Politico EU",
+        "url": "https://politico.eu/article/eu-countries-will-release-fresh-oil-stocks-only-after-iea-assessment"
+      },
+      {
+        "published": "2026-10-07T19:46:20+00:00",
+        "title": "100 de milioane de barili de petrol din rezervele strategice ale statelor IEA vor fi eliberate pe piață",
+        "source": "Libertatea",
+        "url": "https://libertatea.ro/stiri/100-de-milioane-de-barili-de-petrol-din-rezervele-strategice-vor-fi-eliberate-pe-piata-a-decis-iea-7dt77rg"
+      }
+    ],
+    "story_id": "st-baaa0dff0970",
+    "updated": "2026-10-08T02:05:20.329571+00:00",
+    "synthesis": "Statele membre ale Agenției Internaționale pentru Energie vor debloca aproximativ 100 de milioane de barili de țiței și motorină din rezervele strategice, în urma deciziei luate de grupul G7. O reuniune a IEA a fost convocată pentru săptămâna viitoare spre a analiza situația pieței. Diplomații europeni au confirmat că eliberarea rezervelor va avea loc după evaluarea prealabilă a agenției energetice. Nu există contradicții majore între relatări."
   },
   {
     "url": "https://digi24.ro/stiri/externe/candidatii-la-premiul-nobel-pentru-pace-care-l-ar-putea-invinge-pe-trump-anul-acesta-de-la-papa-leon-pana-la-mark-carney-3982757",
@@ -7514,58 +8492,6 @@
     "slug": "fotbalistul-pedro-si-a-anuntat-retragerea-din-activitatea-sportiva"
   },
   {
-    "url": "https://economica.net/19-noiembrie-ziua-nationala-a-antreprenoriatului-feminin-parlamentul-a-adoptat-proiectul-de-lege-propus-de-conaf-si-initiat-de-deputata-geanina-pistru-popa_983669.html",
-    "original_link": "https://www.economica.net/19-noiembrie-ziua-nationala-a-antreprenoriatului-feminin-parlamentul-a-adoptat-proiectul-de-lege-propus-de-conaf-si-initiat-de-deputata-geanina-pistru-popa_983669.html",
-    "source": "economica",
-    "source_name": "Economica",
-    "source_lang": "ro",
-    "title": "Parlamentul a instituit data de 19 noiembrie ca Ziua Națională a Antreprenoriatului Feminin",
-    "category": "politic",
-    "published": "2026-10-07T15:11:12+00:00",
-    "model": "C",
-    "src_extra": 898,
-    "teaser": "Deputații au aprobat legea propusă de CONAF pentru a stabili data de 19 noiembrie ca zi națională dedicată femeilor antreprenor, după luni de demersuri legislative.",
-    "entities": [
-      "CONAF",
-      "Camera Deputaților",
-      "Geanina Pistru-Popa"
-    ],
-    "ai_cat": "politic",
-    "icon": "building-bank",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false,
-    "slug": "parlamentul-a-instituit-ziua-nationala-a-antreprenoriatului-feminin",
-    "sources": [
-      {
-        "name": "Economica",
-        "url": "https://www.economica.net/19-noiembrie-ziua-nationala-a-antreprenoriatului-feminin-parlamentul-a-adoptat-proiectul-de-lege-propus-de-conaf-si-initiat-de-deputata-geanina-pistru-popa_983669.html"
-      },
-      {
-        "name": "Economedia",
-        "url": "https://economedia.ro/19-noiembrie-ziua-nationala-a-antreprenoriatului-deminin-parlamentul-a-adoptat-proiectul-de-lege-propus-de-conaf.html"
-      }
-    ],
-    "first_source": "Economica",
-    "members": [
-      {
-        "published": "2026-10-07T15:11:12+00:00",
-        "title": "Parlamentul a instituit Ziua Națională a Antreprenoriatului Feminin",
-        "source": "Economica",
-        "url": "https://economica.net/19-noiembrie-ziua-nationala-a-antreprenoriatului-feminin-parlamentul-a-adoptat-proiectul-de-lege-propus-de-conaf-si-initiat-de-deputata-geanina-pistru-popa_983669.html"
-      },
-      {
-        "published": "2026-10-07T17:01:50+00:00",
-        "title": "19 noiembrie, Ziua Națională a antreprenoriatului feminin / Parlamentul a adoptat proiectul de lege propus de CONAF",
-        "source": "Economedia",
-        "url": "https://economedia.ro/19-noiembrie-ziua-nationala-a-antreprenoriatului-deminin-parlamentul-a-adoptat-proiectul-de-lege-propus-de-conaf.html"
-      }
-    ],
-    "story_id": "st-69cf2be12a27",
-    "updated": "2026-10-07T22:08:42.096014+00:00",
-    "synthesis": "Camera Deputaților a adoptat proiectul de lege inițiat de CONAF și susținut de parlamentari, stabilind oficial ziua de 19 noiembrie drept Ziua Națională a Antreprenoriatului Feminin. Demersul legislativ a fost finalizat după luni de dezbateri și eforturi pentru recunoașterea contribuției femeilor în mediul de afaceri românesc."
-  },
-  {
     "url": "https://fcinter1908.it/calciomercato/mercato-inter/palacios-debutto-argentina-ancora-inter-tutta-verita-cessione",
     "original_link": "https://www.fcinter1908.it/calciomercato/mercato-inter/palacios-debutto-argentina-ancora-inter-tutta-verita-cessione/",
     "source": "fcinter1908",
@@ -8499,6 +9425,55 @@
     "slug": "rezultatul-probei-scrise-din-cadrul-examenului-concursului-de-ocupare-a-unei"
   },
   {
+    "url": "https://mytex.ro/112/brasovean-fara-permis-cu-071-mg-l-alcool-in-aerul-expirat-retinut-dupa-ce-a-lovit-doua-masini",
+    "original_link": "https://mytex.ro/112/brasovean-fara-permis-cu-071-mg-l-alcool-in-aerul-expirat-retinut-dupa-ce-a-lovit-doua-masini/",
+    "source": "mytex",
+    "source_name": "MyTex",
+    "source_lang": "ro",
+    "title": "Un șofer băut și fără permis a fost reținut în Brașov după ce a accidentat două mașini",
+    "category": "local",
+    "published": "2026-10-07T14:38:52+00:00",
+    "model": "C",
+    "src_extra": 252,
+    "sources": [
+      {
+        "name": "MyTex",
+        "url": "https://mytex.ro/112/brasovean-fara-permis-cu-071-mg-l-alcool-in-aerul-expirat-retinut-dupa-ce-a-lovit-doua-masini/"
+      },
+      {
+        "name": "News Brașov",
+        "url": "https://newsbv.ro/sofer-fara-permis-brasov/"
+      }
+    ],
+    "first_source": "MyTex",
+    "members": [
+      {
+        "published": "2026-10-07T14:38:52+00:00",
+        "title": "Brașovean fără permis, cu 0,71 mg/l alcool în aerul expirat, reținut după ce a lovit două mașini",
+        "source": "MyTex",
+        "url": "https://mytex.ro/112/brasovean-fara-permis-cu-071-mg-l-alcool-in-aerul-expirat-retinut-dupa-ce-a-lovit-doua-masini"
+      },
+      {
+        "published": "2026-10-07T16:08:51+00:00",
+        "title": "Șofer fără permis și cu 0,71 mg/l alcool în aerul expirat, reținut în Brașov",
+        "source": "News Brașov",
+        "url": "https://newsbv.ro/sofer-fara-permis-brasov"
+      }
+    ],
+    "story_id": "st-73fef076fbce",
+    "synthesis": "Un bărbat în vârstă de 38 de ani din Brașov a fost reținut pentru 24 de ore după ce a condus fără permis și sub influența alcoolului pe strada Zorilor, avariind două autoturisme parcate. Incidentul a avut loc în seara de 6 octombrie, șoferul înregistrând o alcoolemie de 0,71 mg/l în aerul expirat și refuzând ulterior recoltarea probelor biologice.",
+    "entities": [
+      "Brașov",
+      "Parchetul de pe lângă Judecătoria Brașov"
+    ],
+    "ai_cat": "judetean",
+    "icon": "car",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "un-sofer-baut-si-fara-permis-a-fost-retinut-in-brasov-dupa-ce-a-accidentat-doua"
+  },
+  {
     "url": "https://turnulsfatului.ro/2026/10/07/lifturile-pentru-persoanele-cu-dizabilitati-din-gara-cf-sibiu-pot-fi-folosite-numai-in-baza-unei-cereri-scrise-trebuie-depusa-cu-cateva-zile-inainte",
     "original_link": "https://www.turnulsfatului.ro/2026/10/07/lifturile-pentru-persoanele-cu-dizabilitati-din-gara-cf-sibiu-pot-fi-folosite-numai-in-baza-unei-cereri-scrise-trebuie-depusa-cu-cateva-zile-inainte/",
     "source": "turnulsfatului",
@@ -8568,6 +9543,29 @@
     "prompt_version": "v2-esenta",
     "featured": false,
     "slug": "terenurile-omului-de-afaceri-bogdan-stefanel-chimisliu-scoase-la-licitatie-de"
+  },
+  {
+    "url": "https://mytex.ro/sanatate/a-aparut-gripa-in-judetul-brasov-sute-de-cazuri-de-pneumonie-si-infectii-respiratorii-raportate-intr-o-singura-saptamana",
+    "original_link": "https://mytex.ro/sanatate/a-aparut-gripa-in-judetul-brasov-sute-de-cazuri-de-pneumonie-si-infectii-respiratorii-raportate-intr-o-singura-saptamana/",
+    "source": "mytex",
+    "source_name": "MyTex",
+    "source_lang": "ro",
+    "title": "DSP Brașov raportează primele cazuri de gripă și mii de infecții respiratorii",
+    "category": "local",
+    "published": "2026-10-07T14:35:11+00:00",
+    "model": "B",
+    "src_extra": 223,
+    "teaser": "Autoritățile medicale din județul Brașov au înregistrat primele îmbolnăviri de gripă clinică din acest sezon și aproape două mii de cazuri de infecții respiratorii acute, alături de o creștere a numărului de pneumonii față de anul trecut.",
+    "entities": [
+      "DSP Brașov",
+      "Brașov"
+    ],
+    "ai_cat": "sanatate",
+    "icon": "virus",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "dsp-brasov-raporteaza-primele-cazuri-de-gripa-si-mii-de-infectii-respiratorii"
   },
   {
     "url": "https://zch.ro/anunt-important-al-primariei-piatra-neamt-strada-stefan-cel-mare-va-fi-inchisa-joi-pentru-lucrari-de-asfaltare",
@@ -8866,23 +9864,52 @@
     "source": "cursdeguv",
     "source_name": "Curs de Guvernare",
     "source_lang": "ro",
-    "title": "Premierul desemnat Luca Niculescu începe negocierile politice pentru majoritate",
+    "title": "Premierul desemnat Luca Niculescu a început negocierile pentru formarea unei majorități parlamentare",
     "category": "politic",
     "published": "2026-10-07T14:20:02+00:00",
-    "model": "B",
+    "model": "C",
     "src_extra": 43,
     "teaser": "Premierul desemnat Luca Niculescu pregătește programul de guvernare și poartă consultări oficiale cu liderii partidelor parlamentare, inclusiv întâlniri programate cu reprezentanții UDMR și Sorin Grindeanu.",
     "entities": [
       "Luca Niculescu",
       "Sorin Grindeanu",
-      "UDMR"
+      "Kelemen Hunor",
+      "Dominic Fritz"
     ],
     "ai_cat": "politic",
-    "icon": "gavel",
+    "icon": "building-monument",
     "processed_by": "gemini",
     "prompt_version": "v2-esenta",
     "featured": false,
-    "slug": "premierul-desemnat-luca-niculescu-incepe-negocierile-politice-pentru-majoritate"
+    "slug": "premierul-desemnat-luca-niculescu-incepe-negocierile-politice-pentru-majoritate",
+    "sources": [
+      {
+        "name": "Curs de Guvernare",
+        "url": "https://cursdeguvernare.ro/premierul-desemnat-incepe-negocierile-cu-partidele.html"
+      },
+      {
+        "name": "Timiș Online",
+        "url": "https://www.tion.ro/romania/luca-niculescu-incepe-joi-negocierile-pentru-formarea-guvernului-2367900/?utm_source=rss&utm_medium=referral&utm_campaign=hiraggregator"
+      }
+    ],
+    "first_source": "Curs de Guvernare",
+    "members": [
+      {
+        "published": "2026-10-07T14:20:02+00:00",
+        "title": "Premierul desemnat Luca Niculescu începe negocierile politice pentru majoritate",
+        "source": "Curs de Guvernare",
+        "url": "https://cursdeguvernare.ro/premierul-desemnat-incepe-negocierile-cu-partidele.html"
+      },
+      {
+        "published": "2026-10-07T16:42:42+00:00",
+        "title": "Luca Niculescu începe joi negocierile pentru formarea Guvernului",
+        "source": "Timiș Online",
+        "url": "https://tion.ro/romania/luca-niculescu-incepe-joi-negocierile-pentru-formarea-guvernului-2367900"
+      }
+    ],
+    "story_id": "st-e946613984d1",
+    "updated": "2026-10-08T02:05:33.320726+00:00",
+    "synthesis": "Premierul desemnat Luca Niculescu a demarat consultările oficiale cu partidele parlamentare pentru a asigura o majoritate care să susțină noul Guvern și programul său de guvernare. PSD solicită clarificări economice înainte de a decide sprijinul, PNL așteaptă lista miniștrilor, UDMR cere un compromis politic, iar USR și AUR au exprimat rezerve sau opoziție față de formula guvernamentală."
   },
   {
     "url": "https://zcj.ro/educatie/257-de-candidati-intra-in-cursa-pentru-sefia-scolilor-din-cluj-cate-posturi-de-directori-au-ramas-fara-concurenti--302552.html",
@@ -10621,6 +11648,31 @@
     "slug": "brandul-auto-icaur-s-a-lansat-in-romania-prin-suv-ul-hibrid-v27"
   },
   {
+    "url": "https://mytex.ro/expres/guvernul-romaniei-cumpara-12-elicoptere-airbus-h225m-care-vor-interactiona-cu-platforma-iar-ghimbav-brasov",
+    "original_link": "https://mytex.ro/expres/guvernul-romaniei-cumpara-12-elicoptere-airbus-h225m-care-vor-interactiona-cu-platforma-iar-ghimbav-brasov/",
+    "source": "mytex",
+    "source_name": "MyTex",
+    "source_lang": "ro",
+    "title": "Guvernul României achiziționează 12 elicoptere militare Airbus pentru 757 de milioane de euro",
+    "category": "economic",
+    "published": "2026-10-07T12:43:58+00:00",
+    "model": "B",
+    "src_extra": 289,
+    "teaser": "Executivul român a semnat contractul pentru cumpărarea a 12 elicoptere de transport Airbus H225M, o investiție derulată prin intermediul Franței și al Comisiei Europene care va sprijini activitatea platformei IAR din Ghimbav.",
+    "entities": [
+      "Guvernul României",
+      "Airbus",
+      "IAR Ghimbav",
+      "Franța"
+    ],
+    "ai_cat": "economic",
+    "icon": "helicopter",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "guvernul-romaniei-achizitioneaza-12-elicoptere-militare-airbus-pentru-757-de"
+  },
+  {
     "url": "https://primariabuzau.ro/anunt-colectiv-si-proces-verbal-nr-156914-05-10-2026",
     "original_link": "https://primariabuzau.ro/anunt-colectiv-si-proces-verbal-nr-156914-05-10-2026/",
     "source": "pr_buzau",
@@ -10850,69 +11902,6 @@
     "prompt_version": "v2-esenta",
     "featured": false,
     "slug": "fundatia-medicis-ofera-doua-burse-pentru-studentii-din-timisoara"
-  },
-  {
-    "url": "https://bizbrasov.ro/2026/10/07/armata-elicoptere-militar-airbus-brasov",
-    "original_link": "https://bizbrasov.ro/2026/10/07/armata-elicoptere-militar-airbus-brasov/",
-    "source": "bizbrasov",
-    "source_name": "BizBrașov",
-    "source_lang": "ro",
-    "title": "România a semnat contractul pentru achiziția a 12 elicoptere Airbus H225M",
-    "category": "general",
-    "published": "2026-10-07T12:30:49+00:00",
-    "model": "C",
-    "src_extra": 39,
-    "teaser": "Ministerul Apărării a contractat cumpărarea a 12 elicoptere militare Airbus H225M printr-un parteneriat european gestionat de Franța, colaborarea incluzând și implicarea companiei IAR Brașov pentru consolidarea apărării regionale.",
-    "entities": [
-      "Airbus",
-      "IAR Brașov",
-      "România",
-      "Franța"
-    ],
-    "ai_cat": "regional",
-    "icon": "helicopter",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false,
-    "slug": "armata-romana-va-achizitiona-12-elicoptere-multirol-airbus-h225m",
-    "sources": [
-      {
-        "name": "BizBrașov",
-        "url": "https://bizbrasov.ro/2026/10/07/armata-elicoptere-militar-airbus-brasov/"
-      },
-      {
-        "name": "MyTex",
-        "url": "https://mytex.ro/expres/guvernul-romaniei-cumpara-12-elicoptere-airbus-h225m-care-vor-interactiona-cu-platforma-iar-ghimbav-brasov/"
-      },
-      {
-        "name": "Ziarul de Ploiești",
-        "url": "https://www.zdp.ro/airbus-a-anuntat-ca-romania-a-semnat-contractul-pentru-achizitia-a-12-elicoptere-h225m.html"
-      }
-    ],
-    "first_source": "BizBrașov",
-    "members": [
-      {
-        "published": "2026-10-07T12:30:49+00:00",
-        "title": "Armata Română va achiziționa 12 elicoptere multirol Airbus H225M",
-        "source": "BizBrașov",
-        "url": "https://bizbrasov.ro/2026/10/07/armata-elicoptere-militar-airbus-brasov"
-      },
-      {
-        "published": "2026-10-07T12:43:58+00:00",
-        "title": "Guvernul României a achiziționat 12 elicoptere Airbus H225M pentru armată",
-        "source": "MyTex",
-        "url": "https://mytex.ro/expres/guvernul-romaniei-cumpara-12-elicoptere-airbus-h225m-care-vor-interactiona-cu-platforma-iar-ghimbav-brasov"
-      },
-      {
-        "published": "2026-10-07T19:35:11+00:00",
-        "title": "AIRBUS a anunțat că România a semnat contractul pentru achiziția a 12 elicoptere H225M",
-        "source": "Ziarul de Ploiești",
-        "url": "https://zdp.ro/airbus-a-anuntat-ca-romania-a-semnat-contractul-pentru-achizitia-a-12-elicoptere-h225m.html"
-      }
-    ],
-    "story_id": "st-641af2e0928f",
-    "updated": "2026-10-07T22:08:03.558953+00:00",
-    "synthesis": "Guvernul României a semnat un contract în valoare de 757 de milioane de euro pentru achiziționarea a 12 elicoptere militare multirol Airbus H225M, destinate înnoirii flotei Forțelor Aeriene. Achiziția este finanțată prin programul european SAFE și include un parteneriat strategic cu platforma industrială IAR Brașov pentru asamblare, integrare și mentenanță locală."
   },
   {
     "url": "https://emaramures.ro/colinde-si-emotie-la-viseu-de-sus-morosenii-va-colinda-aduc-magia-craciunului",
@@ -11679,6 +12668,57 @@
     "slug": "noul-suv-hibrid-lepas-l6-a-fost-lansat-in-romania-cu-un-pret-de-pornire-de-40"
   },
   {
+    "url": "https://pressalert.ro/2026/10/da-vinci-si-rembrandt-doua-noi-spectacole-imersive-la-mina-museum-din-iulius-town-timisoara",
+    "original_link": "https://www.pressalert.ro/2026/10/da-vinci-si-rembrandt-doua-noi-spectacole-imersive-la-mina-museum-din-iulius-town-timisoara/",
+    "source": "pressalert",
+    "source_name": "PressAlert Timișoara",
+    "source_lang": "ro",
+    "title": "Două noi spectacole imersive, „Da Vinci” și „Rembrandt”, la Mina Museum Timișoara",
+    "category": "local",
+    "published": "2026-10-07T11:41:11+00:00",
+    "model": "C",
+    "src_extra": 48,
+    "sources": [
+      {
+        "name": "PressAlert Timișoara",
+        "url": "https://www.pressalert.ro/2026/10/da-vinci-si-rembrandt-doua-noi-spectacole-imersive-la-mina-museum-din-iulius-town-timisoara/"
+      },
+      {
+        "name": "Opinia Timișoarei",
+        "url": "https://www.opiniatimisoarei.ro/da-vinci-si-rembrandt-doua-noi-spectacole-imersive-la-mina-museum-din-iulius-town-timisoara/07/10/2026"
+      }
+    ],
+    "first_source": "PressAlert Timișoara",
+    "members": [
+      {
+        "published": "2026-10-07T11:41:11+00:00",
+        "title": "„Da Vinci” și „Rembrandt”, două noi spectacole imersive la MINA MUSEUM din Iulius Town Timișoara",
+        "source": "PressAlert Timișoara",
+        "url": "https://pressalert.ro/2026/10/da-vinci-si-rembrandt-doua-noi-spectacole-imersive-la-mina-museum-din-iulius-town-timisoara"
+      },
+      {
+        "published": "2026-10-07T17:17:42+00:00",
+        "title": "‘Da Vinci’ și ‘Rembrandt’, două noi spectacole imersive la MINA MUSEUM din Iulius Town Timișoara",
+        "source": "Opinia Timișoarei",
+        "url": "https://opiniatimisoarei.ro/da-vinci-si-rembrandt-doua-noi-spectacole-imersive-la-mina-museum-din-iulius-town-timisoara/07/10/2026"
+      }
+    ],
+    "story_id": "st-6e6c8015b90f",
+    "synthesis": "Mina Museum din Iulius Town Timișoara organizează două noi spectacole imersive, intitulate „Da Vinci” și „Rembrandt”. Proiectul este realizat de Mina Studios și propune publicului vizualizări digitale bazate pe tehnologie modernă pentru a explora patrimoniul artistic universal și opera celor doi pictori celebri.",
+    "entities": [
+      "Mina Museum",
+      "Iulius Town",
+      "Timișoara",
+      "Mina Studios"
+    ],
+    "ai_cat": "cultura",
+    "icon": "movie",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "doua-noi-spectacole-imersive-da-vinci-si-rembrandt-la-mina-museum-timisoara"
+  },
+  {
     "url": "https://politico.eu/article/berlin-und-paris-diesel-versprechen-an-trump-erfordert-keine-neue-freigabe",
     "original_link": "https://www.politico.eu/article/berlin-und-paris-diesel-versprechen-an-trump-erfordert-keine-neue-freigabe/?utm_source=RSS_Feed&utm_medium=RSS&utm_campaign=RSS_Syndication",
     "source": "politico_eu",
@@ -12277,6 +13317,57 @@
     "slug": "politia-a-stabilit-circumstantele-accidentului-rutier-produs-la-motatei"
   },
   {
+    "url": "https://gazetadecluj.ro/proiect-legislativ-la-senat-pentru-dezincriminarea-detinerii-de-droguri-in-vederea-consumului-propriu",
+    "original_link": "https://gazetadecluj.ro/proiect-legislativ-la-senat-pentru-dezincriminarea-detinerii-de-droguri-in-vederea-consumului-propriu/",
+    "source": "gazetadecluj",
+    "source_name": "Gazeta de Cluj",
+    "source_lang": "ro",
+    "title": "Proiect de lege la Senat pentru dezincriminarea deținerii de droguri pentru consum propriu",
+    "category": "politic",
+    "published": "2026-10-07T10:58:58+00:00",
+    "model": "C",
+    "src_extra": 252,
+    "sources": [
+      {
+        "name": "Gazeta de Cluj",
+        "url": "https://gazetadecluj.ro/proiect-legislativ-la-senat-pentru-dezincriminarea-detinerii-de-droguri-in-vederea-consumului-propriu/"
+      },
+      {
+        "name": "Bihon",
+        "url": "https://www.bihon.ro/stirile-judetului-bihor/detinerea-de-droguri-pentru-propriul-consum-ar-putea-deveni-contraventie-masura-propusa-intr-un-proiect-de-lege-5422884/?utm_source=rss&utm_medium=referral&utm_campaign=hiraggregator"
+      }
+    ],
+    "first_source": "Gazeta de Cluj",
+    "members": [
+      {
+        "published": "2026-10-07T10:58:58+00:00",
+        "title": "Proiect legislativ la Senat pentru dezincriminarea deținerii de droguri în vederea consumului propriu",
+        "source": "Gazeta de Cluj",
+        "url": "https://gazetadecluj.ro/proiect-legislativ-la-senat-pentru-dezincriminarea-detinerii-de-droguri-in-vederea-consumului-propriu"
+      },
+      {
+        "published": "2026-10-07T12:26:36+00:00",
+        "title": "Deținerea de droguri pentru propriul consum ar putea deveni contravenție. Măsura, propusă într-un proiect de lege",
+        "source": "Bihon",
+        "url": "https://bihon.ro/stirile-judetului-bihor/detinerea-de-droguri-pentru-propriul-consum-ar-putea-deveni-contraventie-masura-propusa-intr-un-proiect-de-lege-5422884"
+      }
+    ],
+    "story_id": "st-f1f18285a52c",
+    "synthesis": "Un nou proiect legislativ depus la Senat propune ca deținerea de droguri pentru consum propriu să fie sancționată contravențional cu amenzi între 1.000 și 3.000 de lei, eliminând pedeapsa cu închisoarea. Inițiativa urmărește eliberarea instanțelor și redirecționarea resurselor către combaterea traficului major și asistența medicală a consumatorilor, priviți ca pacienți.",
+    "entities": [
+      "Victoria Stoiciu",
+      "Cristian Ghinea",
+      "Daniel Fenechiu",
+      "Senat"
+    ],
+    "ai_cat": "politic",
+    "icon": "gavel",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "proiect-de-lege-la-senat-pentru-dezincriminarea-detinerii-de-droguri-pentru"
+  },
+  {
     "url": "https://expressdebanat.ro/marius-isac-psd-accepta-dialogul-dar-cere-masuri-concrete-pentru-populatie",
     "original_link": "https://expressdebanat.ro/marius-isac-psd-accepta-dialogul-dar-cere-masuri-concrete-pentru-populatie/",
     "source": "expressdebanat",
@@ -12457,6 +13548,29 @@
     "prompt_version": "v2-esenta",
     "featured": false,
     "slug": "asociatia-energia-inteligenta-estimeaza-o-scumpire-a-facturilor-la-energie-de"
+  },
+  {
+    "url": "https://cvlpress.ro/07.10.2026/romania-mai-jos-ca-oricand-in-ierarhia-fifa",
+    "original_link": "https://cvlpress.ro/07.10.2026/romania-mai-jos-ca-oricand-in-ierarhia-fifa/",
+    "source": "cvlpress",
+    "source_name": "Cuvântul Libertății",
+    "source_lang": "ro",
+    "title": "Naționala României de fotbal atinge cel mai slab loc din istoria clasamentului FIFA",
+    "category": "sport",
+    "published": "2026-10-07T10:48:06+00:00",
+    "model": "B",
+    "src_extra": 55,
+    "teaser": "În urma seriei de patru înfrângeri suferite în Liga Națiunilor, reprezentativa României a coborât pe poziția 58 în ierarhia mondială FIFA, înregistrând astfel cea mai slabă clasare din istoria sa sportivă.",
+    "entities": [
+      "România",
+      "FIFA"
+    ],
+    "ai_cat": "sport",
+    "icon": "ball-football",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "nationala-romaniei-de-fotbal-atinge-cel-mai-slab-loc-din-istoria-clasamentului"
   },
   {
     "url": "https://emaramures.ro/sofer-baut-implicat-intr-un-accident-in-valea-viseului-a-lovit-masina-politiei-si-un-copac",
@@ -18954,6 +20068,54 @@
     "slug": "programul-meciurilor-din-etapa-a-saptea-a-ligii-a-iv-a-constanteana"
   },
   {
+    "url": "https://automarket.ro/stiri/jaguar-prezinta-noul-type-01-trei-motoare-electrice-1030-cp-si-720-km-128947.html",
+    "original_link": "https://www.automarket.ro/stiri/jaguar-prezinta-noul-type-01-trei-motoare-electrice-1030-cp-si-720-km-128947.html",
+    "source": "automarket",
+    "source_name": "AutoMarket",
+    "source_lang": "ro",
+    "title": "Jaguar a prezentat noul model electric Type 01, cu 1.030 de cai-putere și autonomie de 720 km",
+    "category": "auto",
+    "published": "2026-10-07T07:19:00+00:00",
+    "model": "C",
+    "src_extra": 72,
+    "sources": [
+      {
+        "name": "AutoMarket",
+        "url": "https://www.automarket.ro/stiri/jaguar-prezinta-noul-type-01-trei-motoare-electrice-1030-cp-si-720-km-128947.html"
+      },
+      {
+        "name": "AutoCritica",
+        "url": "https://www.autocritica.ro/live-news/noul-jaguar-type-01-trei-motoare-electrice-peste-1-000-cp-si-autonomie-de-720-km/"
+      }
+    ],
+    "first_source": "AutoMarket",
+    "members": [
+      {
+        "published": "2026-10-07T07:19:00+00:00",
+        "title": "Jaguar prezintă noul Type 01: trei motoare electrice, 1.030 CP și 720 km autonomie",
+        "source": "AutoMarket",
+        "url": "https://automarket.ro/stiri/jaguar-prezinta-noul-type-01-trei-motoare-electrice-1030-cp-si-720-km-128947.html"
+      },
+      {
+        "published": "2026-10-07T07:27:20+00:00",
+        "title": "Noul Jaguar Type 01: trei motoare electrice, peste 1.000 CP și autonomie de 720 km",
+        "source": "AutoCritica",
+        "url": "https://autocritica.ro/live-news/noul-jaguar-type-01-trei-motoare-electrice-peste-1-000-cp-si-autonomie-de-720-km"
+      }
+    ],
+    "story_id": "st-ed4711d386e6",
+    "synthesis": "Producătorul britanic Jaguar a revenit pe piața auto prin prezentarea noului model electric Type 01, un GT echipat cu trei motoare care dezvoltă 1.030 CP și 1.365 Nm. Mașina dispune de o baterie de 118 kWh, oferă o autonomie de 720 de kilometri și marchează o premieră prin lipsa lunetei și utilizarea unui soundbar panoramic.",
+    "entities": [
+      "Jaguar",
+      "Type 01"
+    ],
+    "ai_cat": "auto",
+    "icon": "car",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false
+  },
+  {
     "url": "https://primariasector1.ro/pajura-devine-timp-de-doua-luni-un-spatiu-pentru-povesti-fotografie-desen-muzica-si-gravura",
     "original_link": "https://primariasector1.ro/pajura-devine-timp-de-doua-luni-un-spatiu-pentru-povesti-fotografie-desen-muzica-si-gravura/",
     "source": "pl_bucuresti_bucuresti_sectorul_1",
@@ -18984,58 +20146,6 @@
     "processed_by": "official",
     "featured": false,
     "slug": "anunt-colectiv-nr-158154-06-10-2026-si-proces-verbal-nr-158148-06-10-2026"
-  },
-  {
-    "url": "https://bizbrasov.ro/2026/10/07/perchezitii-mitingul-oierilor-violente",
-    "original_link": "https://bizbrasov.ro/2026/10/07/perchezitii-mitingul-oierilor-violente/",
-    "source": "bizbrasov",
-    "source_name": "BizBrașov",
-    "source_lang": "ro",
-    "title": "Percheziții în București și 11 județe în dosarul violențelor de la protestul oierilor",
-    "category": "local",
-    "published": "2026-10-07T07:17:08+00:00",
-    "model": "C",
-    "src_extra": 22,
-    "teaser": "Polițiștii Capitalei au efectuat percheziții în Brașov în cadrul anchetei privind incidentele violente din Piața Victoriei, petrecute în timpul mitingului din 15 septembrie, fiind vizate fapte de ultraj și distrugere.",
-    "entities": [
-      "Piața Victoriei",
-      "Jandarmeria Română",
-      "Parchetul de pe lângă Tribunalul București"
-    ],
-    "ai_cat": "regional",
-    "icon": "gavel",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false,
-    "slug": "perchezitii-in-judetul-brasov-in-dosarul-protestului-violent-al-oierilor",
-    "sources": [
-      {
-        "name": "BizBrașov",
-        "url": "https://bizbrasov.ro/2026/10/07/perchezitii-mitingul-oierilor-violente/"
-      },
-      {
-        "name": "MyTex",
-        "url": "https://mytex.ro/delicte/perchezitii-si-in-brasov-in-dosarul-violentelor-de-la-protestul-oierilor-din-piata-victoriei/"
-      }
-    ],
-    "first_source": "BizBrașov",
-    "members": [
-      {
-        "published": "2026-10-07T07:17:08+00:00",
-        "title": "Percheziții în județul Brașov în dosarul protestului violent al oierilor",
-        "source": "BizBrașov",
-        "url": "https://bizbrasov.ro/2026/10/07/perchezitii-mitingul-oierilor-violente"
-      },
-      {
-        "published": "2026-10-07T17:33:19+00:00",
-        "title": "Percheziții și în Brașov, în dosarul violențelor de la protestul oierilor din Piața Victoriei",
-        "source": "MyTex",
-        "url": "https://mytex.ro/delicte/perchezitii-si-in-brasov-in-dosarul-violentelor-de-la-protestul-oierilor-din-piata-victoriei"
-      }
-    ],
-    "story_id": "st-825e8de700d8",
-    "updated": "2026-10-07T22:08:42.096001+00:00",
-    "synthesis": "Polițiștii Capitalei, sub coordonarea Parchetului de pe lângă Tribunalul București, au efectuat 21 de percheziții domiciliare în București și 11 județe, inclusiv Brașov, vizând fapte de ultraj, distrugere și tulburarea ordinii publice. Investigația vizează incidentele violente din 15 septembrie din Piața Victoriei, când protestatarii au atacat jandarmii și o autospecială. În cauză au fost dispuse anterior 38 de măsuri preventive."
   },
   {
     "url": "https://tion.ro/sanatate/ce-trebuie-facut-in-cazul-unei-crize-epileptice-cum-trebuie-intervenit-si-ce-greseli-trebuie-evitate-2367336",
@@ -21389,6 +22499,30 @@
     "slug": "decizii-insolvabili-popriri-si-somatii-septembrie-2026"
   },
   {
+    "url": "https://transilvaniaon.ro/harta-firmelor-ro-platforma-gratuita-care-arata-cine-se-afla-in-spatele-companiilor-din-romania",
+    "original_link": "https://transilvaniaon.ro/harta-firmelor-ro-platforma-gratuita-care-arata-cine-se-afla-in-spatele-companiilor-din-romania/",
+    "source": "ziarultransilvaniei",
+    "source_name": "Ziarul Transilvaniei",
+    "source_lang": "ro",
+    "title": "O nouă platformă online centralizează gratuit date despre companiile din România",
+    "category": "tech",
+    "published": "2026-10-07T05:09:52+00:00",
+    "model": "B",
+    "src_extra": 433,
+    "teaser": "Site-ul harta-firmelor.ro reunește informații oficiale preluate de la Registrul Comerțului, ANAF și alte instituții, oferind publicului posibilitatea de a verifica rapid acționarii, istoricul și litigiile firmelor dintr-un singur loc.",
+    "entities": [
+      "harta-firmelor.ro",
+      "Oficiul Național al Registrului Comerțului",
+      "ANAF"
+    ],
+    "ai_cat": "tech",
+    "icon": "database",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "o-noua-platforma-online-centralizeaza-gratuit-date-despre-companiile-din-romania"
+  },
+  {
     "url": "https://actualmm.ro/atentie-baimareni-din-ferneziu-furnizarea-apei-afectata-de-lipsa-alimentarii-cu-energie-electrica-astazi-7-octombrie-nu-va-fi-apa-la-robinete-intre-orele-09-00-15-00",
     "original_link": "https://actualmm.ro/atentie-baimareni-din-ferneziu-furnizarea-apei-afectata-de-lipsa-alimentarii-cu-energie-electrica-astazi-7-octombrie-nu-va-fi-apa-la-robinete-intre-orele-09-00-15-00/",
     "source": "actualmm",
@@ -22694,6 +23828,30 @@
     "prompt_version": "v2-esenta",
     "featured": false,
     "slug": "inginerii-olandezi-au-instalat-un-pod-prefabricat-basculant-in-amsterdam"
+  },
+  {
+    "url": "https://piataauto.md/Stiri/2026/10/Cel-mai-mare-parc-fotovoltaic-din-Romania-va-costa-peste-jumatate-miliard-euro-va-ocupa-peste-1000-hectare-si-va-fi-comparabil-Cernavoda",
+    "original_link": "https://piataauto.md/Stiri/2026/10/Cel-mai-mare-parc-fotovoltaic-din-Romania-va-costa-peste-jumatate-miliard-euro-va-ocupa-peste-1000-hectare-si-va-fi-comparabil-Cernavoda/",
+    "source": "piataauto",
+    "source_name": "Piata Auto MD",
+    "source_lang": "ro",
+    "title": "A fost aprobat cel mai mare parc fotovoltaic din România, o investiție de peste jumătate de miliard de euro",
+    "category": "local",
+    "published": "2026-10-07T00:00:00+00:00",
+    "model": "B",
+    "src_extra": 52,
+    "teaser": "Autoritățile au dat undă verde finanțării pentru cel mai amplu parc solar din țară, care va acoperi o mie de hectare și va genera o putere energetică uriașă, comparabilă cu producția unei unități de la Cernavodă.",
+    "entities": [
+      "România",
+      "Cernavodă",
+      "Ogrezeni"
+    ],
+    "ai_cat": "economic",
+    "icon": "sun",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "a-fost-aprobat-cel-mai-mare-parc-fotovoltaic-din-romania-o-investitie-de-peste"
   },
   {
     "url": "https://baita.ro/hisky-lanseaza-campania-de-promotii-pentru-sezonul-de-iarna",
@@ -24506,6 +25664,28 @@
     "prompt_version": "v2-esenta",
     "featured": false,
     "slug": "noi-imagini-din-satelit-dezvaluie-detalii-despre-portavionul-nuclear-construit"
+  },
+  {
+    "url": "https://saptamanagiurgiuveana.ro/wp/2026/10/06/doi-varstnici-au-ajuns-cu-tricicleta-electrica-intr-un-canal-la-calugareni",
+    "original_link": "https://saptamanagiurgiuveana.ro/wp/2026/10/06/doi-varstnici-au-ajuns-cu-tricicleta-electrica-intr-un-canal-la-calugareni/",
+    "source": "sptgiurgiu",
+    "source_name": "Săptămâna Giurgiuveană",
+    "source_lang": "ro",
+    "title": "Doi vârstnici din Călugăreni au ajuns la spital după ce tricicleta lor electrică s-a răsturnat în canal",
+    "category": "local",
+    "published": "2026-10-06T20:32:50+00:00",
+    "model": "B",
+    "src_extra": 386,
+    "teaser": "Un bărbat de 75 de ani și o femeie de 73 de ani au fost transportați la spital în urma unui accident produs pe un drum agricol din Călugăreni, unde vehiculul lor electric a căzut într-un canal de irigații plin...",
+    "entities": [
+      "Călugăreni"
+    ],
+    "ai_cat": "regional",
+    "icon": "ambulance",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "doi-varstnici-din-calugareni-au-ajuns-la-spital-dupa-ce-tricicleta-lor"
   },
   {
     "url": "https://adevarul.ro/stiri-externe/sua/trump-analizeaza-cererea-lituaniei-privind-o-baza-2562306.html",
@@ -272574,615 +273754,5 @@
     "prompt_version": "v2-esenta",
     "featured": false,
     "slug": "istoria-zbuciumata-a-casei-principesei-elisabeta-de-pe-calea-victoriei-din"
-  },
-  {
-    "url": "https://theguardian.com/world/2026/sep/26/british-climber-28-dies-fall-spain-torrecerredo-mountain",
-    "original_link": "https://www.theguardian.com/world/2026/sep/26/british-climber-28-dies-fall-spain-torrecerredo-mountain",
-    "source": "guardian_eu",
-    "source_name": "The Guardian",
-    "source_lang": "en",
-    "title": "Un alpinist britanic de 28 de ani a murit după o cădere în masivul Picos de Europa din Spania",
-    "category": "extern",
-    "published": "2026-09-26T02:02:50+00:00",
-    "model": "B",
-    "src_extra": 81,
-    "teaser": "Un cetățean britanic a decedat joi după ce s-a prăbușit aproximativ 61 de metri în timpul coborârii de pe vârful Torrecerredo din nordul Spaniei, trupul acestuia fiind recuperat de Garda Civilă spaniolă.",
-    "entities": [
-      "Picos de Europa",
-      "Torrecerredo",
-      "Spania"
-    ],
-    "ai_cat": "extern",
-    "icon": null,
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false,
-    "slug": "un-alpinist-britanic-de-28-de-ani-a-murit-dupa-o-cadere-in-masivul-picos-de"
-  },
-  {
-    "url": "https://xda-developers.com/qualcomm-could-be-planning-to-supercharge-pc-game-emulation-on-android",
-    "original_link": "https://www.xda-developers.com/qualcomm-could-be-planning-to-supercharge-pc-game-emulation-on-android/",
-    "source": "xda",
-    "source_name": "XDA Developers",
-    "source_lang": "en",
-    "title": "Qualcomm pregătește îmbunătățiri pentru emularea jocurilor PC pe sistemele Android",
-    "category": "tech",
-    "published": "2026-09-26T01:48:52+00:00",
-    "model": "B",
-    "src_extra": 69,
-    "teaser": "Deși noile procesoare Snapdragon 8 Elite Gen 6 oferă performanțe de top cu nuclee Oryon tactate la 5GHz, zvonurile indică faptul că producătorul american va adăuga în curând suport nativ pentru rularea cerințelor DirectX 12.",
-    "entities": [
-      "Qualcomm",
-      "Snapdragon"
-    ],
-    "ai_cat": "tech",
-    "icon": "device-mobile",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false,
-    "slug": "qualcomm-pregateste-imbunatatiri-pentru-emularea-jocurilor-pc-pe-sistemele"
-  },
-  {
-    "url": "https://fcinter1908.it/news/interviste/toscano-scudetto-inter-e-roma-sono-le-piu-accreditate-ma-napoli-e-juve-se-la-giocheranno",
-    "original_link": "https://www.fcinter1908.it/news/interviste/toscano-scudetto-inter-e-roma-sono-le-piu-accreditate-ma-napoli-e-juve-se-la-giocheranno/",
-    "source": "fcinter1908",
-    "source_name": "FC Inter 1908",
-    "source_lang": "it",
-    "title": "Inter și Roma sunt favorite la titlu, dar Juventus și Napoli luptă",
-    "category": "sport",
-    "published": "2026-09-26T01:00:01+00:00",
-    "model": "B",
-    "src_extra": 98,
-    "teaser": "Domenico Toscano analizează startul campionatului de fotbal, considerând că Inter și Roma conduc ierarhia, în timp ce echipe precum Juventus, Milan și Napoli rămân implicate în lupta pentru trofeu.",
-    "entities": [
-      "Domenico Toscano",
-      "Inter",
-      "Roma",
-      "Napoli"
-    ],
-    "ai_cat": "sport",
-    "icon": "ball-football",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false,
-    "slug": "inter-si-roma-sunt-favorite-la-titlu-dar-juventus-si-napoli-lupta"
-  },
-  {
-    "url": "https://adevarul.ro/stiri-interne/sanatate/boala-care-si-a-dublat-numarul-de-cazuri-in-2559772.html",
-    "original_link": "https://adevarul.ro/stiri-interne/sanatate/boala-care-si-a-dublat-numarul-de-cazuri-in-2559772.html",
-    "source": "adevarul",
-    "source_name": "Adevărul",
-    "source_lang": "ro",
-    "title": "O afecțiune globală gravă își dublează cazurile în zece ani",
-    "category": "sanatate",
-    "published": "2026-09-26T00:40:25+00:00",
-    "model": "B",
-    "src_extra": 29,
-    "teaser": "Medicii avertizează asupra creșterii alarmante a cazurilor unei boli răspândite la nivel mondial, recomandând controale preventive și evaluări clinice încă de la vârsta de 55 de ani.",
-    "entities": [],
-    "ai_cat": "sanatate",
-    "icon": "stethoscope",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false,
-    "slug": "o-afectiune-globala-grava-isi-dubleaza-cazurile-in-zece-ani"
-  },
-  {
-    "url": "https://fcinter1908.it/nazionali/mbappe-infortunio-salta-italia-nations",
-    "original_link": "https://www.fcinter1908.it/nazionali/mbappe-infortunio-salta-italia-nations/",
-    "source": "fcinter1908",
-    "source_name": "FC Inter 1908",
-    "source_lang": "it",
-    "title": "Kylian Mbappé ratează meciul cu Italia din cauza unei accidentări",
-    "category": "sport",
-    "published": "2026-09-26T00:00:46+00:00",
-    "model": "B",
-    "src_extra": 97,
-    "teaser": "Atacantul francez a suferit o accidentare la genunchi în partida contra Turciei și va părăsi cantonamentul naționalei, ratând astfel confruntările programate împotriva Italiei și Belgiei.",
-    "entities": [
-      "Kylian Mbappé",
-      "Zinedine Zidane",
-      "Franta",
-      "Italia"
-    ],
-    "ai_cat": "sport",
-    "icon": "ball-football",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false,
-    "slug": "kylian-mbappe-rateaza-meciul-cu-italia-din-cauza-unei-accidentari"
-  },
-  {
-    "url": "https://b365.ro/pana-se-intoarce-tramvaiul-in-piata-unirii-facem-o-calatorie-cu-el-prin-vechiul-bucuresti-cand-trecea-prin-inima-orasului-621326",
-    "original_link": "https://b365.ro/pana-se-intoarce-tramvaiul-in-piata-unirii-facem-o-calatorie-cu-el-prin-vechiul-bucuresti-cand-trecea-prin-inima-orasului-621326/",
-    "source": "b365",
-    "source_name": "B365",
-    "source_lang": "ro",
-    "title": "Istoria tramvaiului din București înainte de desființarea liniilor din Piața Unirii",
-    "category": "local",
-    "published": "2026-09-26T00:00:44+00:00",
-    "model": "B",
-    "src_extra": 29,
-    "teaser": "Reamintim perioada în care tramvaiele traversau centrul vechi al Capitalei, înainte ca șinele să fie scoase în anii '80 pentru lucrările la magistrala de metrou.",
-    "entities": [
-      "Piatast Unirii",
-      "Bucuresti"
-    ],
-    "ai_cat": "regional",
-    "icon": "train",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false,
-    "slug": "istoria-tramvaiului-din-bucuresti-inainte-de-desfiintarea-liniilor-din-piata"
-  },
-  {
-    "url": "https://xda-developers.com/i-installed-powertoys-for-one-feature-but-these-tools-made-me-keep-it",
-    "original_link": "https://www.xda-developers.com/i-installed-powertoys-for-one-feature-but-these-tools-made-me-keep-it/",
-    "source": "xda",
-    "source_name": "XDA Developers",
-    "source_lang": "en",
-    "title": "Un utilizator renunță parțial la PowerToys în favoarea altor instrumente",
-    "category": "tech",
-    "published": "2026-09-26T00:00:17+00:00",
-    "model": "B",
-    "src_extra": 73,
-    "teaser": "Deși a instalat inițial pachetul PowerToys pentru funcția Command Palette destinată căutării, autorul a migrat ulterior către Raycast datorită integrării avansate cu inteligența artificială.",
-    "entities": [
-      "PowerToys",
-      "Windows",
-      "Raycast"
-    ],
-    "ai_cat": "tech",
-    "icon": "device-mobile",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false,
-    "slug": "un-utilizator-renunta-partial-la-powertoys-in-favoarea-altor-instrumente"
-  },
-  {
-    "url": "https://piataauto.md/Stiri/2026/09/Un-belgian-a-atins-1000000-km-cu-un-Audi-80-dar-a-avut-nevoie-de-35-de-ani-pentru-a-face-asta-fara-graba",
-    "original_link": "https://piataauto.md/Stiri/2026/09/Un-belgian-a-atins-1000000-km-cu-un-Audi-80-dar-a-avut-nevoie-de-35-de-ani-pentru-a-face-asta-fara-graba/",
-    "source": "piataauto",
-    "source_name": "Piata Auto MD",
-    "source_lang": "ro",
-    "title": "Un șofer belgian a parcurs un milion de kilometri cu un Audi 80",
-    "category": "auto",
-    "published": "2026-09-26T00:00:00+00:00",
-    "model": "B",
-    "src_extra": 64,
-    "teaser": "Un cetățean din Belgia, Martin Lefevere, a reușit performanța de a atinge pragul de un milion de kilometri la volanul aceleiași mașini Audi 80, pe care a întreținut-o și a condus-o timp de treizeci și cinci de ani.",
-    "entities": [
-      "Martin Lefevere",
-      "Audi"
-    ],
-    "ai_cat": "auto",
-    "icon": "car",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false,
-    "slug": "un-sofer-belgian-a-parcurs-un-milion-de-kilometri-cu-un-audi-80"
-  },
-  {
-    "url": "https://piataauto.md/Stiri/2026/09/Inginerii-danezi-si-olandezi-au-derulat-prima-operatiune-transport-agabaritic-platforme-multiaxiale-alimentate-electric-tub-monopil-turbina-eoliana",
-    "original_link": "https://piataauto.md/Stiri/2026/09/Inginerii-danezi-si-olandezi-au-derulat-prima-operatiune-transport-agabaritic-platforme-multiaxiale-alimentate-electric-tub-monopil-turbina-eoliana/",
-    "source": "piataauto",
-    "source_name": "Piata Auto MD",
-    "source_lang": "ro",
-    "title": "Inginerii din Danemarca și Olanda au realizat primul transport eolian electric agabaritic",
-    "category": "tech",
-    "published": "2026-09-26T00:00:00+00:00",
-    "model": "B",
-    "src_extra": 92,
-    "teaser": "Specialiștii danezi și olandezi au efectuat o premieră mondială transportând un tub de turbină eoliană folosind platforme multiaxiale alimentate electric, reducând astfel amprenta de carbon a operațiunilor logistice complexe.",
-    "entities": [
-      "Danemarca",
-      "Olanda"
-    ],
-    "ai_cat": "tech",
-    "icon": "truck",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false,
-    "slug": "inginerii-din-danemarca-si-olanda-au-realizat-primul-transport-eolian-electric"
-  },
-  {
-    "url": "https://piataauto.md/Stiri/2026/09/VIDEO-Trei-modele-legendare-Honda-au-fost-comparate-pe-circuit-de-acelasi-pilot-britanic-amintind-de-perioada-glorioasa-a-marcii-japoneze",
-    "original_link": "https://piataauto.md/Stiri/2026/09/VIDEO-Trei-modele-legendare-Honda-au-fost-comparate-pe-circuit-de-acelasi-pilot-britanic-amintind-de-perioada-glorioasa-a-marcii-japoneze/",
-    "source": "piataauto",
-    "source_name": "Piata Auto MD",
-    "source_lang": "ro",
-    "title": "Trei modele legendare Honda au fost testate pe circuit de un pilot britanic",
-    "category": "auto",
-    "published": "2026-09-26T00:00:00+00:00",
-    "model": "B",
-    "src_extra": 78,
-    "teaser": "Un celebru pilot din Marea Britanie a pus la încercare pe pistă trei automobile emblematice ale mărcii japoneze din perioada de aur a anilor 1990 și 2000, reamintind performanțele motoarelor VTEC și ale edițiilor Type R.",
-    "entities": [
-      "Honda"
-    ],
-    "ai_cat": "auto",
-    "icon": "car",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false,
-    "slug": "trei-modele-legendare-honda-au-fost-testate-pe-circuit-de-un-pilot-britanic"
-  },
-  {
-    "url": "https://bihon.ro/stirile-judetului-bihor/cultura/vin-si-ciocolata-fotografii-jazz-si-comedie-neagra-spaniola-la-gala-de-deschidere-a-celei-de-a-9-a-editii-tiff-oradea-5411733",
-    "original_link": "https://www.bihon.ro/stirile-judetului-bihor/cultura/vin-si-ciocolata-fotografii-jazz-si-comedie-neagra-spaniola-la-gala-de-deschidere-a-celei-de-a-9-a-editii-tiff-oradea-5411733/?utm_source=rss&utm_medium=referral&utm_campaign=hiraggregator",
-    "source": "bihon",
-    "source_name": "Bihon",
-    "source_lang": "ro",
-    "title": "Ediția a noua a festivalului TIFF Oradea a debutat cu o gală festivă",
-    "category": "local",
-    "published": "2026-09-25T23:42:21+00:00",
-    "model": "B",
-    "src_extra": 1456,
-    "teaser": "Teatrul de Stat din Oradea a găzduit deschiderea oficială a festivalului de film, eveniment care a reunit invitați într-o atmosferă elegantă presărată cu muzică jazz, vin și socializare.",
-    "entities": [
-      "TIFF Oradea",
-      "Teatrul de Stat Oradea"
-    ],
-    "ai_cat": "cultura",
-    "icon": "movie",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false,
-    "slug": "editia-a-noua-a-festivalului-tiff-oradea-a-debutat-cu-o-gala-festiva"
-  },
-  {
-    "url": "https://adevarul.ro/stil-de-viata/vitamina-d-luata-fara-sa-fie-nevoie-asociata-cu-2559860.html",
-    "original_link": "https://adevarul.ro/stil-de-viata/vitamina-d-luata-fara-sa-fie-nevoie-asociata-cu-2559860.html",
-    "source": "adevarul",
-    "source_name": "Adevărul",
-    "source_lang": "ro",
-    "title": "Supradozajul cu vitamina D corelat cu un declin cognitiv accelerat",
-    "category": "sanatate",
-    "published": "2026-09-25T23:19:25+00:00",
-    "model": "B",
-    "src_extra": 26,
-    "teaser": "Un studiu desfășurat pe parcursul a șase ani arată că administrarea excesivă de suplimente cu vitamina D, în absența unei deficiențe reale, poate afecta negativ funcțiile cognitive.",
-    "entities": [],
-    "ai_cat": "sanatate",
-    "icon": "pill",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false,
-    "slug": "supradozajul-cu-vitamina-d-corelat-cu-un-declin-cognitiv-accelerat"
-  },
-  {
-    "url": "https://adevarul.ro/sport/hagi-dupa-esecul-cu-suedia-este-o-infrangere-nu-2559943.html",
-    "original_link": "https://adevarul.ro/sport/hagi-dupa-esecul-cu-suedia-este-o-infrangere-nu-2559943.html",
-    "source": "adevarul",
-    "source_name": "Adevărul",
-    "source_lang": "ro",
-    "title": "România a pierdut meciul de debut din Liga Națiunilor împotriva Suediei",
-    "category": "sport",
-    "published": "2026-09-25T23:18:34+00:00",
-    "model": "B",
-    "src_extra": 49,
-    "teaser": "Selecționata României a fost învinsă de Suedia cu scorul de 2-1 la Solna, tehnicianul Gheorghe Hagi criticând erorile din defensivă și ineficiența ofensivă a echipei tricolore.",
-    "entities": [
-      "Gheorghe Hagi",
-      "Romania",
-      "Suedia"
-    ],
-    "ai_cat": "sport",
-    "icon": "ball-football",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false,
-    "slug": "romania-a-pierdut-meciul-de-debut-din-liga-natiunilor-impotriva-suediei"
-  },
-  {
-    "url": "https://marktechpost.com/2026/09/25/liquid-ai-releases-lfm2-5-vl-3b-dspark-speculative-decoding-for-vision-language-models-with-up-to-3-13x-faster-decoding",
-    "original_link": "https://www.marktechpost.com/2026/09/25/liquid-ai-releases-lfm2-5-vl-3b-dspark-speculative-decoding-for-vision-language-models-with-up-to-3-13x-faster-decoding/",
-    "source": "marktechpost",
-    "source_name": "MarkTechPost",
-    "source_lang": "en",
-    "title": "Liquid AI lansează un model avansat pentru accelerarea decodării vizuale",
-    "category": "ai",
-    "published": "2026-09-25T23:11:59+00:00",
-    "model": "B",
-    "src_extra": 830,
-    "teaser": "Compania a prezentat noul model experimental LFM2.5-VL-3B-DSpark, care crește viteza de generare a datelor de până la trei ori pe diverse arhitecturi hardware, fiind deja disponibil pe platforme de profil.",
-    "entities": [
-      "Liquid AI",
-      "Hugging Face"
-    ],
-    "ai_cat": "ai",
-    "icon": "cpu",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false,
-    "slug": "liquid-ai-lanseaza-un-model-avansat-pentru-accelerarea-decodarii-vizuale"
-  },
-  {
-    "url": "https://fcinter1908.it/news/interviste/zielinski-gol-mancato-polonia-wow",
-    "original_link": "https://www.fcinter1908.it/news/interviste/zielinski-gol-mancato-polonia-wow/",
-    "source": "fcinter1908",
-    "source_name": "FC Inter 1908",
-    "source_lang": "it",
-    "title": "Piotr Zielinski a ratat șansa victoriei pentru Polonia în minutul final",
-    "category": "sport",
-    "published": "2026-09-25T23:10:25+00:00",
-    "model": "B",
-    "src_extra": 220,
-    "teaser": "Mijlocașul polonez a fost aproape de un gol decisiv în partida încheiată la egalitate cu Bosnia, exprimându-și regretul pentru șutul care a trecut milimetric pe lângă poartă.",
-    "entities": [
-      "Piotr Zielinski",
-      "Polonia",
-      "Bosnia"
-    ],
-    "ai_cat": "sport",
-    "icon": "ball-football",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false,
-    "slug": "piotr-zielinski-a-ratat-sansa-victoriei-pentru-polonia-in-minutul-final"
-  },
-  {
-    "url": "https://dobrogeaonline.ro/actualizari-in-cazul-decesului-unei-tinere-mame-care-a-avut-loc-in-2018-dupa-nasterea-la-un-spital-privat-din-constanta",
-    "original_link": "https://www.dobrogeaonline.ro/actualizari-in-cazul-decesului-unei-tinere-mame-care-a-avut-loc-in-2018-dupa-nasterea-la-un-spital-privat-din-constanta/",
-    "source": "dobrogeaonline",
-    "source_name": "Dobrogea Online",
-    "source_lang": "ro",
-    "title": "Dosarul privind decesul Teodorei Mocanu rămâne în Camera preliminară",
-    "category": "local",
-    "published": "2026-09-25T23:04:30+00:00",
-    "model": "B",
-    "src_extra": 453,
-    "teaser": "Justiția analizează în continuare dosarul penal deschis după moartea Teodorei Mocanu, survenită în 2018 la un spital privat din Constanța. Instanța a exclus recent o declarație din probe, fără a stabili data începerii judecății.",
-    "entities": [
-      "Teodora Mocanu",
-      "Constanța"
-    ],
-    "ai_cat": "general",
-    "icon": "gavel",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false,
-    "slug": "dosarul-privind-decesul-teodorei-mocanu-ramane-in-camera-preliminara"
-  },
-  {
-    "url": "https://xda-developers.com/ditched-google-one-for-self-hosted-immich-on-mini-pc-photo-backup-instant",
-    "original_link": "https://www.xda-developers.com/ditched-google-one-for-self-hosted-immich-on-mini-pc-photo-backup-instant/",
-    "source": "xda",
-    "source_name": "XDA Developers",
-    "source_lang": "en",
-    "title": "Un utilizator a renunțat la Google One pentru serverul casnic Immich",
-    "category": "tech",
-    "published": "2026-09-25T23:00:17+00:00",
-    "model": "B",
-    "src_extra": 59,
-    "teaser": "Nemulțumit de creșterea tarifelor cloud și de vitezele limitate de Google, un pasionat de tehnologie a trecut la o soluție proprie pe mini PC pentru stocarea instantanee a fotografiilor personale la calitate originală.",
-    "entities": [
-      "Google One",
-      "Immich"
-    ],
-    "ai_cat": "tech",
-    "icon": "device-mobile",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false,
-    "slug": "un-utilizator-a-renuntat-la-google-one-pentru-serverul-casnic-immich"
-  },
-  {
-    "url": "https://prosport.ro/fotbal-intern/nationala/parere-specialist-florin-prunea-ionut-radu-suedia-romania-20533174",
-    "original_link": "https://www.prosport.ro/fotbal-intern/nationala/parere-specialist-florin-prunea-ionut-radu-suedia-romania-20533174",
-    "source": "prosport",
-    "source_name": "ProSport",
-    "source_lang": "ro",
-    "title": "Florin Prunea îl absolvă de vină pe portarul Ionuț Radu",
-    "category": "sport",
-    "published": "2026-09-25T22:50:56+00:00",
-    "model": "B",
-    "src_extra": 46,
-    "teaser": "După înfrângerea României cu Suedia, scor 1-2 în Liga Națiunilor, fostul internațional Florin Prunea a analizat faza celui de-al doilea gol primit și a explicat că portarul Ionuț Radu nu poate fi considerat vinovat pentru acea respingere.",
-    "entities": [
-      "Ionuț Radu",
-      "Florin Prunea",
-      "România",
-      "Suedia"
-    ],
-    "ai_cat": "sport",
-    "icon": "ball-football",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false,
-    "slug": "florin-prunea-il-absolva-de-vina-pe-portarul-ionut-radu"
-  },
-  {
-    "url": "https://prosport.ro/fotbal-intern/nationala/gabi-balint-a-pus-tunurile-pe-jucatorii-nationalei-20533146",
-    "original_link": "https://www.prosport.ro/fotbal-intern/nationala/gabi-balint-a-pus-tunurile-pe-jucatorii-nationalei-20533146",
-    "source": "prosport",
-    "source_name": "ProSport",
-    "source_lang": "ro",
-    "title": "Gabi Balint l-a criticat dur pe Gică Hagi și echipa națională",
-    "category": "sport",
-    "published": "2026-09-25T22:31:55+00:00",
-    "model": "B",
-    "src_extra": 47,
-    "teaser": "Echipa națională a României a debutat cu o eșec în Liga Națiunilor, 1-2 împotriva Suediei. În urma rezultatului negativ, Gabi Balint a lansat critici dure la adresa evoluției jucătorilor de la mijlocul terenului conduși de selecționerul Gică Hagi.",
-    "entities": [
-      "Gabi Balint",
-      "Gică Hagi",
-      "România",
-      "Suedia"
-    ],
-    "ai_cat": "sport",
-    "icon": "ball-football",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false,
-    "slug": "gabi-balint-l-a-criticat-dur-pe-gica-hagi-si-echipa-nationala"
-  },
-  {
-    "url": "https://fcinter1908.it/nazionali/esposito-adani-rifugio-sicuro-italia",
-    "original_link": "https://www.fcinter1908.it/nazionali/esposito-adani-rifugio-sicuro-italia/",
-    "source": "fcinter1908",
-    "source_name": "FC Inter 1908",
-    "source_lang": "it",
-    "title": "Lele Adani a analizat evoluția Italiei împotriva Belgiei",
-    "category": "sport",
-    "published": "2026-09-25T22:30:25+00:00",
-    "model": "B",
-    "src_extra": 172,
-    "teaser": "Cunoscutul comentator sportiv Lele Adani a comentat înfrângerea Italiei cu 2-0 în fața Belgiei, analizând alegerile tactice făcute de selecționerul Roberto Mancini în privința jucătorilor utilizați în compartimentul ofensiv.",
-    "entities": [
-      "Lele Adani",
-      "Italia",
-      "Belgia",
-      "Roberto Mancini"
-    ],
-    "ai_cat": "sport",
-    "icon": "ball-football",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false,
-    "slug": "lele-adani-a-analizat-evolutia-italiei-impotriva-belgiei"
-  },
-  {
-    "url": "https://digi24.ro/stiri/sport/fotbal/liga-natiunilor-clasamentul-grupei-romaniei-si-programul-urmatoarelor-meciuri-3965377",
-    "original_link": "https://www.digi24.ro/stiri/sport/fotbal/liga-natiunilor-clasamentul-grupei-romaniei-si-programul-urmatoarelor-meciuri-3965377",
-    "source": "digi24",
-    "source_name": "Digi24",
-    "source_lang": "ro",
-    "title": "România a debutat cu o înfrângere în Liga Națiunilor",
-    "category": "sport",
-    "published": "2026-09-25T22:28:13+00:00",
-    "model": "B",
-    "src_extra": 46,
-    "teaser": "Reprezentativa de fotbal a României a pierdut meciul din deplasare cu Suedia, scor 1-2, în prima partidă din Grupa B4 a Ligii Națiunilor. În celălalt meci al grupei, Polonia și Bosnia au remizat alb.",
-    "entities": [
-      "România",
-      "Suedia",
-      "Liga Națiunilor"
-    ],
-    "ai_cat": "sport",
-    "icon": "ball-football",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false,
-    "slug": "romania-a-debutat-cu-o-infrangere-in-liga-natiunilor"
-  },
-  {
-    "url": "https://xda-developers.com/claude-now-lets-you-manually-trigger-your-own-weekly-reset",
-    "original_link": "https://www.xda-developers.com/claude-now-lets-you-manually-trigger-your-own-weekly-reset/",
-    "source": "xda",
-    "source_name": "XDA Developers",
-    "source_lang": "en",
-    "title": "Utilizatorii Claude pot reseta manual limita săptămânală o singură dată",
-    "category": "ai",
-    "published": "2026-09-25T22:26:40+00:00",
-    "model": "B",
-    "src_extra": 58,
-    "teaser": "Compania dezvoltatoare a asistentului AI Claude oferă utilizatorilor posibilitatea de a reseta limita săptămânală de utilizare printr-un buton dedicat. Funcția este însă valabilă doar pentru o lună și poate fi utilizată o singură dată.",
-    "entities": [
-      "Claude",
-      "AI"
-    ],
-    "ai_cat": "ai",
-    "icon": "cpu",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false,
-    "slug": "utilizatorii-claude-pot-reseta-manual-limita-saptamanala-o-singura-data"
-  },
-  {
-    "url": "https://prosport.ro/fotbal-extern/liga-natiunilor/mihai-stoica-reactie-suedia-romania-20533143",
-    "original_link": "https://www.prosport.ro/fotbal-extern/liga-natiunilor/mihai-stoica-reactie-suedia-romania-20533143",
-    "source": "prosport",
-    "source_name": "ProSport",
-    "source_lang": "ro",
-    "title": "Mihai Stoica a criticat evoluția României după meciul cu Suedia",
-    "category": "sport",
-    "published": "2026-09-25T22:24:37+00:00",
-    "model": "B",
-    "src_extra": 42,
-    "teaser": "Oficialul FCSB, Mihai Stoica, a avut o reacție surprinzătoare și critică după eșecul suferit de naționala României în fața Suediei, scor 1-2, în prima etapă din noua ediție a Ligii Națiunilor.",
-    "entities": [
-      "Mihai Stoica",
-      "România",
-      "Suedia",
-      "FCSB"
-    ],
-    "ai_cat": "sport",
-    "icon": "ball-football",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false,
-    "slug": "mihai-stoica-a-criticat-evolutia-romaniei-dupa-meciul-cu-suedia"
-  },
-  {
-    "url": "https://prosport.ro/fotbal-intern/nationala/radu-dragusin-a-spus-clar-de-ce-a-pierdut-romania-lui-gica-hagi-meciul-cu-suedia-la-asta-trebuie-sa-muncim-mai-mult-20533156",
-    "original_link": "https://www.prosport.ro/fotbal-intern/nationala/radu-dragusin-a-spus-clar-de-ce-a-pierdut-romania-lui-gica-hagi-meciul-cu-suedia-la-asta-trebuie-sa-muncim-mai-mult-20533156",
-    "source": "prosport",
-    "source_name": "ProSport",
-    "source_lang": "ro",
-    "title": "Radu Drăgușin a explicat cauzele înfrângerii României în Suedia",
-    "category": "sport",
-    "published": "2026-09-25T22:19:56+00:00",
-    "model": "B",
-    "src_extra": 39,
-    "teaser": "Fundașul central Radu Drăgușin a analizat eșecul reprezentativei României, scor 1-2 pe terenul Suediei, subliniind aspectele la care tricolorii trebuie să lucreze mult mai intens pentru a obține rezultate pozitive viitoare.",
-    "entities": [
-      "Radu Drăgușin",
-      "România",
-      "Suedia",
-      "Fiorentina"
-    ],
-    "ai_cat": "sport",
-    "icon": "ball-football",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false,
-    "slug": "radu-dragusin-a-explicat-cauzele-infrangerii-romaniei-in-suedia"
-  },
-  {
-    "url": "https://adevarul.ro/stil-de-viata/magazin/locul-de-pe-pamant-unde-s-au-nascut-printre-cele-2558616.html",
-    "original_link": "https://adevarul.ro/stil-de-viata/magazin/locul-de-pe-pamant-unde-s-au-nascut-printre-cele-2558616.html",
-    "source": "adevarul",
-    "source_name": "Adevărul",
-    "source_lang": "ro",
-    "title": "Istoria regiunilor care au dat naștere celor mai feroce triburi de războinici",
-    "category": "lifestyle",
-    "published": "2026-09-25T22:14:25+00:00",
-    "model": "B",
-    "src_extra": 28,
-    "teaser": "Un anumit teritoriu de pe Terra este considerat leagănul unor populații extrem de letale, formate din vânători și războinici capabili să supraviețuiască în medii ostile și să schimbe cursul istoriei umane.",
-    "entities": [
-      "Terra"
-    ],
-    "ai_cat": "lifestyle",
-    "icon": "globe",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false,
-    "slug": "istoria-regiunilor-care-au-dat-nastere-celor-mai-feroce-triburi-de-razboinici"
-  },
-  {
-    "url": "https://gsp.ro/opinii/opinie-george-nistor-pamantul-lui-hagi-982314.html",
-    "original_link": "https://www.gsp.ro/opinii/opinie-george-nistor-pamantul-lui-hagi-982314.html",
-    "source": "gsp",
-    "source_name": "GSP",
-    "source_lang": "ro",
-    "title": "Echipa națională a României a pierdut în Suedia la debutul sub comanda lui Hagi",
-    "category": "sport",
-    "published": "2026-09-25T22:13:46+00:00",
-    "model": "B",
-    "src_extra": 59,
-    "teaser": "Debutul noului ciclu al naționalei de fotbal sub conducerea lui Gheorghe Hagi a adus un eșec pe terenul Suediei. Tricolorii au lăsat momente bune în teren, dar punctele au fost obținute de gazde.",
-    "entities": [
-      "România",
-      "Suedia",
-      "Gheorghe Hagi"
-    ],
-    "ai_cat": "sport",
-    "icon": "ball-football",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false,
-    "slug": "echipa-nationala-a-romaniei-a-pierdut-in-suedia-la-debutul-sub-comanda-lui-hagi"
   }
 ]
