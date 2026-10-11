@@ -23,6 +23,15 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 indexnow = importlib.import_module("tools.indexnow_submit")
 
 
+@pytest.fixture(autouse=True)
+def _preflight_fara_retea(monkeypatch):
+    """Testele nu ating reteaua: preflight-ul (GET pe cheia publica) se stubuieste implicit.
+
+    Testele care verifica EȘECUL preflight-ului il supra-scriu cu monkeypatch-ul lor.
+    """
+    monkeypatch.setattr(indexnow, "_preflight", lambda: (True, "ok (stub de test)"))
+
+
 @pytest.fixture
 def izolat(tmp_path, monkeypatch):
     """Redirecteaza starea, manifestul si coada in tmp — nimic din `data/` real nu e atins."""
@@ -144,3 +153,93 @@ def test_hash_ul_ignora_campurile_interne(izolat):
     a = _art("x")
     assert indexnow._hash(a) == indexnow._hash(dict(a, first_seen="2026-01-01", prompt_version="v9"))
     assert indexnow._hash(a) != indexnow._hash(dict(a, teaser="alt corp"))
+
+
+# --- preflight + redeschidere (IZZ: 403 real pe 84 de URL-uri, 2026-10-10) ------------------
+def test_plan_nu_marcheaza_nimic_cand_cheia_nu_e_publica(izolat, monkeypatch, capsys):
+    """Motorul verifica cheia inainte de a accepta lista; daca n-o poate citi, raspunde 403 si
+    trimiterea e pierduta. Cand preflight-ul cade, `plan` NU are voie sa marcheze transa ca
+    vazuta (URL-urile ar fi ingropate definitiv) si nu scrie coada de trimis."""
+    _scrie(indexnow.STATE, [_art("proaspat", ore_in_urma=1)])
+    monkeypatch.setattr(indexnow, "_preflight",
+                        lambda: (False, "HTTP 403 + bot challenge pe https://izz.ro/cheie.txt"))
+
+    assert indexnow.plan() == 0
+
+    assert _coada(izolat) == [], "nu se trimite nimic cand cheia nu e verificabila"
+    assert not (izolat / "indexnow_seen.json").exists(), \
+        "nimic marcat ca vazut -> URL-urile revin la urmatoarea rulare"
+    assert "Skip" in capsys.readouterr().out, "mesajul trebuie sa dea pasul de reparare (regula WAF)"
+
+
+def test_send_fara_preflight_nu_atinge_reteaua(izolat, monkeypatch):
+    _scrie(indexnow.QUEUE, ["https://izz.ro/extern/a/"])
+    apelat = {"post": 0}
+    monkeypatch.setattr(indexnow, "_preflight", lambda: (False, "HTTP 503"))
+    monkeypatch.setattr(indexnow, "_http_post", lambda url, payload: apelat.__setitem__("post", 1))
+
+    cod = indexnow.send()
+
+    assert cod == 1, "un send care nu poate pleca raporteaza esec (workflow-ul redeschide)"
+    assert apelat["post"] == 0
+    assert json.loads((izolat / "queue.json").read_text(encoding="utf-8")) == ["https://izz.ro/extern/a/"], \
+        "coada rămâne pe disc pentru --reopen"
+
+
+def test_send_reusit_goleste_coada(izolat, monkeypatch):
+    _scrie(indexnow.QUEUE, ["https://izz.ro/extern/a/"])
+    monkeypatch.setattr(indexnow, "_preflight", lambda: (True, "ok"))
+    monkeypatch.setattr(indexnow, "_http_post", lambda url, payload: (200, ""))
+
+    assert indexnow.send() == 0
+    assert not (izolat / "queue.json").exists()
+
+
+def test_refuzul_de_domeniu_e_tradus_ca_pas_de_reparare(izolat, monkeypatch, capsys):
+    """Al doilea tip de 403: cheia se citeste, dar motorul refuza domeniul pentru ea
+    („UserForbiddedToAccessSite”, masurat real pe izz.ro pe 2026-10-11). Mesajul trebuie sa
+    spuna ce e de facut, nu doar codul HTTP."""
+    _scrie(indexnow.QUEUE, ["https://izz.ro/extern/a/"])
+    monkeypatch.setattr(indexnow, "_preflight", lambda: (True, "cheia publica raspunde"))
+    monkeypatch.setattr(indexnow, "_http_post", lambda url, payload: (
+        403, '{"errorCode":"UserForbiddedToAccessSite","message":"User is unauthorized"}'))
+
+    assert indexnow.send() == 1
+
+    out = capsys.readouterr().out
+    assert "UserForbiddedToAccessSite" not in out, "codul brut nu e un mesaj"
+    assert "Bing Webmaster" in out, "pasul de reparare (verificarea domeniului) e numit"
+    assert "coada rămâne pe disc" in out
+
+
+def test_send_esuat_pastreaza_coada_si_iese_cu_1(izolat, monkeypatch):
+    _scrie(indexnow.QUEUE, ["https://izz.ro/extern/a/"])
+    monkeypatch.setattr(indexnow, "_preflight", lambda: (True, "ok"))
+
+    def explozie(url, payload):
+        raise OSError("conexiune intrerupta")
+
+    monkeypatch.setattr(indexnow, "_http_post", explozie)
+
+    assert indexnow.send() == 1
+    assert (izolat / "queue.json").exists()
+
+
+def test_reopen_scoate_din_manifest_exact_url_urile_din_coada(izolat):
+    """Fara redeschidere, URL-urile din transa rămân „vazute" si nu mai sunt anuntate NICIODATA
+    (runnerul e stateless, coada efemera moare cu el). Cu ea, revin in coada la rularea urmatoare."""
+    _scrie(indexnow.STATE, [_art("a", ore_in_urma=50), _art("b", ore_in_urma=50)])
+    indexnow.plan()                                    # seed: manifestul primeste ambele
+    _scrie(indexnow.QUEUE, ["https://izz.ro/extern/a/"])
+
+    assert indexnow.reopen() == 0
+
+    manifest = _manifest()
+    assert "https://izz.ro/extern/a/" not in manifest, "URL-ul care n-a plecat iese din manifest"
+    assert "https://izz.ro/extern/b/" in manifest, "restul manifestului NU se atinge"
+    assert not (izolat / "queue.json").exists()
+
+    # Si dovada ca mecanismul chiar il readuce in coada la rularea urmatoare:
+    _scrie(indexnow.STATE, [_art("a", ore_in_urma=50), _art("b", ore_in_urma=50)])
+    indexnow.plan()
+    assert "https://izz.ro/extern/a/" in _coada(izolat)
