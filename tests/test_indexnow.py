@@ -169,7 +169,9 @@ def test_plan_nu_marcheaza_nimic_cand_cheia_nu_e_publica(izolat, monkeypatch, ca
     assert _coada(izolat) == [], "nu se trimite nimic cand cheia nu e verificabila"
     assert not (izolat / "indexnow_seen.json").exists(), \
         "nimic marcat ca vazut -> URL-urile revin la urmatoarea rulare"
-    assert "Skip" in capsys.readouterr().out, "mesajul trebuie sa dea pasul de reparare (regula WAF)"
+    out = capsys.readouterr().out
+    assert "distin" in out or "browser" in out, "mesajul trebuie sa dea pasul de diagnostic"
+    assert "IP Access" in out or "Bot Fight" in out, "mesajul trebuie sa dea pasul de reparare"
 
 
 def test_send_fara_preflight_nu_atinge_reteaua(izolat, monkeypatch):

@@ -24,12 +24,15 @@ comis — deci URL-urile revin ca „schimbate" la rularea urmatoare. Invariantu
 Cheia e publica prin protocol (motorul o citeste de la https://izz.ro/<cheie>.txt ca dovada
 ca detinem domeniul); render.py scrie fisierul.
 
-DE CE PREFLIGHT. Motorul nu accepta lista fara sa poata citi cheia, iar cand n-o poate citi
-raspunde 403 — un cod care nu spune NIMIC despre cauza. S-a intamplat real (2026-10-10, 84 de
-URL-uri): zona izz.ro are bot challenge, iar un client non-browser din datacenter primeste
-interstitialul in locul fisierului cu cheia. Fara verificarea de mai jos, esecul arata ca o
-eroare de protocol; cu ea, arata ca „WAF-ul zonei blocheaza verificarea cheii" + ce e de facut.
-Preflight-ul ruleaza inaintea POST-ului si NU trimite nimic cand cheia nu e citibila public.
+DE CE PREFLIGHT. „403" de la IndexNow are doua cauze complet diferite, iar codul singur nu le
+distinge: (a) motorul nu poate citi cheia publica — zona izz.ro are bot protection, iar
+runnerilor GitHub li s-a servit deja `cf-mitigated: challenge` (observat de deploy-failover);
+(b) motorul citeste cheia, dar refuza domeniul pentru ea — „UserForbiddedToAccessSite". Masurat
+2026-10-11: fisierul cu cheia raspunde 200 cu cheia in corp din trei clienti independenti
+(inclusiv alte retele de datacenter), dar api.indexnow.org raspunde 403
+UserForbiddedToAccessSite, adica (b) e activ ACUM si se vede abia din corpul raspunsului.
+Preflight-ul acopera (a) inainte de POST: nu trimite nimic si nu marcheaza nimic cand cheia nu
+e citibila de aici, iar mesajul spune care e pasul urmator.
 
 DE CE `--reopen`. `--plan` marcheaza transa ca vazuta INAINTE de commit, iar `--send` ruleaza
 dupa. Daca POST-ul esueaza, URL-urile ar ramane „vazute" si nu ar mai fi anuntate niciodata
@@ -95,11 +98,14 @@ def _motiv(status: int, corp: str) -> str:
     """Textul care transforma un cod de eroare intr-o cauza si un pas urmator."""
     if "UserForbiddedToAccessSite" in corp:
         return (" — motorul refuza DOMENIUL pentru cheia asta („User is unauthorized to access "
-                "the site”), desi preflight-ul tocmai a citit cheia publica. Deci cheia si "
-                "fisierul sunt in regula; refuzul e la legatura cheie↔domeniu, in contul "
-                "motorului. Rezolvarea (o singura data, de catre proprietar): verificarea "
-                "domeniului izz.ro in Bing Webmaster Tools sau generarea unei chei noi acolo "
-                "(si inlocuirea ei in config.INDEXNOW_KEY)")
+                "the site”), desi preflight-ul tocmai a citit cheia publica. Doua cauze ramase, "
+                "distinse de o singura observatie: in Cloudflare, Security -> Events, filtreaza "
+                f"pe calea /{config.INDEXNOW_KEY}.txt — daca acolo apare un challenge/block pe "
+                "cererea motorului, vina e la bot protection (pe planul Free, Bot Fight Mode NU "
+                "poate fi sărit de reguli WAF: fie IP Access Rule de tip Allow, fie oprirea lui "
+                "— decizie de proprietar); daca nu apare nimic, fisierul chiar e servit si "
+                "refuzul e legatura cheie↔domeniu, in contul motorului (verificarea site-ului "
+                "in Bing Webmaster Tools sau o cheie noua generata acolo)")
     if status == 422:
         return " — lista contine URL-uri respinse (host diferit de cheie sau format invalid)"
     if status == 429:
@@ -136,9 +142,10 @@ def _remediation(detaliu: str) -> None:
           f"({detaliu}). Motoarele citesc {_key_location()} inainte sa accepte lista, deci "
           "orice trimitere primeste 403. Primul lucru de facut e sa distingi cauza: deschide "
           f"{_key_location()} intr-un browser obisnuit — daca raspunde 200 cu cheia in corp, "
-          "fisierul e public si blocajul e pe clasa de client (WAF/Bot Fight Mode; in "
-          "dashboard-ul Cloudflare se adauga o regula 'Skip' pentru calea exacta /"
-          + config.INDEXNOW_KEY + ".txt), nu pe fisier. Daca nici browserul nu-l vede, "
+          "fisierul e public si blocajul e pe clasa de client, adica pe bot protection "
+          "(regula custom de User-Agent se poate excepta; Bot Fight Mode, pe planul Free, NU "
+          "poate fi sărit de reguli WAF — se foloseste o IP Access Rule de tip Allow sau se "
+          "opreste Bot Fight Mode, decizie de proprietar). Daca nici browserul nu-l vede, "
           "deploy-ul e vinovat si se repara in repo. Pana atunci nu se pierde nimic: "
           "URL-urile rămân neanuntate si reintra in coada la rularea urmatoare.")
 
