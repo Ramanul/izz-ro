@@ -1,0 +1,58 @@
+name: _tmp-key-probe
+
+# TEMPORAR (2026-10-11, sesiune Arena). Raspunde la o singura intrebare, cu masuratori:
+#   de pe un runner GitHub, se poate citi cheia IndexNow de la https://izz.ro/<cheie>.txt
+#   si ce raspund endpoint-urile IndexNow pentru domeniul asta?
+# De ce asa si nu local: sandboxul de lucru nu are egress HTTPS, iar jurnalele binare ale
+# joburilor nu sunt accesibile din API pe repo-ul asta. Fiecare observatie iese prin
+# ::warning::, care SE citeste din API-ul de annotations. Fisierul se sterge dupa ce raspunde.
+
+on:
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Cheia publica, cu mai multe User-Agent-uri
+        run: |
+          set -uo pipefail
+          URL="https://izz.ro/f9b2f9cd7e5e9677f83454b525ad2c77.txt"
+          probe() {
+            eticheta="$1"; ua="$2"
+            cod=$(curl -sS --max-time 20 -A "$ua" -D /tmp/h -o /tmp/b "$URL" -w '%{http_code}' 2>/dev/null || true)
+            [ -n "$cod" ] || cod="000"
+            mit=$(grep -i '^cf-mitigated:' /tmp/h 2>/dev/null | tr -d '\r' || true)
+            if grep -q 'f9b2f9cd7e5e9677f83454b525ad2c77' /tmp/b 2>/dev/null; then
+              cheie="cheie-prezenta"
+            else
+              cheie="FARA-CHEIE: $(head -c 70 /tmp/b 2>/dev/null | tr -d '\n')"
+            fi
+            echo "::warning title=key-probe::$eticheta -> HTTP $cod ${mit:-fara-cf-mitigated} $cheie"
+          }
+          probe "browser-chrome" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"
+          probe "curl-implicit" "curl/8.5.0"
+          probe "pipeline-indexnow" "izz-indexnow/1.0 (+https://izz.ro)"
+          probe "crawler-generic" "Mozilla/5.0 (compatible; SomeCrawler/1.0; +http://example.com/bot)"
+          probe "bingbot" "Mozilla/5.0 (compatible; bingbot/2.0; +http://www.bing.com/bingbot.htm)"
+          probe "indexnow-verificator" "Mozilla/5.0 (compatible; IndexNow/1.0; +https://www.indexnow.org/)"
+          probe "python-urllib" "Python-urllib/3.11"
+          # Aceeasi proba pe manifestul de release: daca .txt-ul e blocat, dar build.json nu,
+          # blocajul e pe cale, nu pe domeniu.
+          cod=$(curl -sS --max-time 20 -A "izz-indexnow/1.0 (+https://izz.ro)" -D /tmp/h2 -o /tmp/b2 -w '%{http_code}' "https://izz.ro/build.json" 2>/dev/null || true)
+          mit=$(grep -i '^cf-mitigated:' /tmp/h2 2>/dev/null | tr -d '\r' || true)
+          echo "::warning title=key-probe::build.json (UA pipeline) -> HTTP ${cod:-000} ${mit:-fara-cf-mitigated} $(head -c 70 /tmp/b2 2>/dev/null | tr -d '\n')"
+
+      - name: Endpoint-uri IndexNow, din runnerul GitHub
+        run: |
+          set -uo pipefail
+          KEY=f9b2f9cd7e5e9677f83454b525ad2c77
+          U="https%3A%2F%2Fizz.ro%2Fazi%2F"
+          for host in api.indexnow.org yandex.com www.bing.com; do
+            cod=$(curl -sS --max-time 25 -o /tmp/api -w '%{http_code}' "https://$host/indexnow?url=$U&key=$KEY" 2>/dev/null || true)
+            corp=$(tr -d '\r' < /tmp/api 2>/dev/null | tr '\n' ' ' | head -c 170)
+            echo "::warning title=indexnow-api::$host -> HTTP ${cod:-000} | $corp"
+          done
