@@ -43,21 +43,14 @@ TIMEOUT_SECONDS = int(os.getenv("RELEASE_TIMEOUT_SECONDS", "1500"))
 # el. Adica exact originea pe care comutam cand primarul cade era singura despre care nu
 # stiam daca serveste continut vechi — chiar esecul descris in docstring-ul de sus.
 #
-# De ce dupa TIMESTAMP, nu dupa commit ca originile primare. Jobul `mirror` face checkout pe
-# `content_sha`, dar manifestul ia commitul din `GITHUB_SHA` (SHA-ul care a declansat rularea,
-# un STRAMOS al continutului), fiindca in `render._write_build_metadata` `GITHUB_SHA` are
-# precedenta peste `BUILD_COMMIT_SHA`. Deci o comparatie de commit ar raporta „vechi" la
-# fiecare rulare, corect tehnic si inutil practic. `generated_at` masoara direct ce conteaza:
-# cat de veche e copia.
-#
-# Remediul curat cere DOUA schimbari, nu una — prima versiune a acestui comentariu prescria doar
-# a doua, care singura n-ar fi facut nimic:
-#   (a) `BUILD_COMMIT_SHA` trebuie sa BATA `GITHUB_SHA` in `render._write_build_metadata`.
-#       Facut: e acum primul in lant, fiindca e override EXPLICIT, iar celelalte sunt valori
-#       deduse din mediu. Fara asta, pasul (b) e inert: `GITHUB_SHA` e mereu setat in Actions.
-#   (b) o linie `BUILD_COMMIT_SHA: ${{ needs.pipeline.outputs.content_sha }}` in pasul de render
-#       al jobului `mirror`. Blocata in sesiune de hook-ul de control-plane, verificat incercand:
-#       `DENY: direct agent edit blocked for .github/workflows/build.yml`.
+# De ce dupa TIMESTAMP, nu dupa commit ca originile primare. Cand a fost scrisa sonda, jobul
+# `mirror` facea checkout pe `content_sha` dar randa cu `GITHUB_SHA` (un STRAMOS al
+# continutului), deci manifestul oglinzii raporta un commit mai vechi, iar o comparatie de
+# commit ar fi raportat „vechi" la fiecare rulare. Intre timp ambele reparatii s-au facut
+# (2026-10-11: `BUILD_COMMIT_SHA` e primul in `render._write_build_metadata`, iar `mirror` il
+# seteaza), deci manifestul oglinzii are commitul corect. Comparatia rămâne TOTUSI pe
+# `generated_at`: publicarea pe gh-pages nu e instanta, iar sonda asta e neblocanta, deci
+# varsta copiei e masura care conta — o intarziere de propagare nu trebuie sa devina „esec".
 #
 # De ce NEBLOCANT. Cand sonda asta ruleaza, primarul a servit deja release-ul cerut; site-ul
 # public functioneaza. Un mirror ramas in urma degradeaza redundanta, nu publicarea, si a face

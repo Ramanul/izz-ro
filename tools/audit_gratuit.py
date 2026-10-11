@@ -9,7 +9,9 @@ scanere externe, gratuite, pe ce serveste izz.ro acum:
   - W3C Nu HTML validator   (markup pe esantion)          [keyless, volum mic si politicos]
   - W3C CSS validator       (styles.css)                  [keyless]
   - JSON-LD schema.org      (NewsArticle minim)           [local, fara retea catre validator]
-  - lychee                  (linkuri rupte)               [ruleaza ca step de Actions, nu aici]
+  - lychee                  (linkuri rupte)               [scanarea ruleaza ca step de Actions;
+                                                             subcomanda `lychee` normalizeaza
+                                                             raportul brut in formatul casei]
 
 IndexNow NU e aici: exista deja in pipeline (cheia in config, render.py scrie fisierul
 root, tools/indexnow_submit.py anunta URL-urile noi la fiecare rulare) — nu se dubleaza.
@@ -337,6 +339,89 @@ def jsonld() -> None:
                  {"tipuri": tipuri, "campuri_lipsa": lipsa})
 
 
+def lychee() -> None:
+    """Converteste iesirea CRUDA a actiunii lychee in formatul casei (`reports/lychee.json`).
+
+    De ce exista: actiunea scrie raportul ei in `reports/lychee-raw.json`, cu schema ei
+    (versiune-dependenta), iar `sumar` citeste doar formatul casei (`stare` + `detaliu`).
+    Fara conversie, linia din sumar iesea „lychee | ? |" — raportul exista, dar nu spunea nimic.
+    Ambele forme cunoscute sunt acceptate (lista de rezultate pe link / obiect cu `fail_map`
+    si numaratori), pentru ca schema difera intre versiunile de lychee.
+    """
+    path = reports_path("lychee-raw.json")
+    if not os.path.exists(path):
+        write_report("lychee", STARE_SARIT, "actiunea lychee nu a produs raportul brut", {})
+        return
+    with open(path, encoding="utf-8") as fh:
+        raw = json.load(fh)
+
+    total = ok = rupte = 0
+    exemple: list[str] = []
+
+    def _cod_numeric(valoare):
+        try:
+            return int(valoare)
+        except (TypeError, ValueError):
+            return None
+
+    def _nota(entry) -> tuple[bool, str]:
+        """(e_ok, detaliu) pentru un rezultat de link, oricare ar fi forma lui."""
+        if not isinstance(entry, dict):
+            return True, ""
+        status = entry.get("status")
+        cod = _cod_numeric(entry.get("code")
+                           or (status.get("code") if isinstance(status, dict) else None))
+        text = status.get("text") if isinstance(status, dict) else (status or "")
+        url = str(entry.get("url") or "")[:120]
+        if str(status).lower() in ("ok", "success", "successful") or (cod is not None and cod < 400):
+            return True, ""
+        return False, f"{url} -> {text or cod or 'fara detaliu'}"
+
+    if isinstance(raw, list):                       # forma veche: lista de rezultate
+        total = len(raw)
+        for entry in raw:
+            e_ok, nota = _nota(entry)
+            if e_ok:
+                ok += 1
+            else:
+                rupte += 1
+                if len(exemple) < 10:
+                    exemple.append(nota)
+    elif isinstance(raw, dict):                     # forma noua: numaratori + harti
+        total = int(raw.get("total") or 0)
+        ok = int(raw.get("successful") or raw.get("success") or 0)
+        rupte = int(raw.get("errors") or raw.get("failures") or 0) + int(raw.get("timeouts") or 0)
+        for harta in ("fail_map", "error_map", "timeout_map"):
+            for _fisier, intrari in (raw.get(harta) or {}).items():
+                for entry in (intrari if isinstance(intrari, list) else []):
+                    _e_ok, nota = _nota(entry)
+                    if nota and len(exemple) < 10:
+                        exemple.append(nota)
+        if not total:
+            total = ok + rupte
+        elif rupte == 0 and raw.get("fail_map") is None and raw.get("error_map") is None:
+            rupte = max(0, total - ok)
+    else:
+        write_report("lychee", STARE_ESUAT, f"raport brut cu forma necunoscuta: {type(raw).__name__}", {})
+        return
+
+    # Schema noua (v0.24.x, verificata in sursa lychee) are si `unknown`/`unsupported`
+    # (status nedeterminat) si `excluded` (excluse intentionat). Nu intra in verdictul de
+    # „rupte" — un link nedeterminat de la un site care filtreaza boții nu e un link rupt —
+    # dar se raporteaza, ca sa nu se piarda informatia.
+    nedescis = 0
+    if isinstance(raw, dict):
+        nedescis = int(raw.get("unknown") or 0) + int(raw.get("unsupported") or 0)
+    detaliu = f"{rupte} linkuri rupte din {total} verificate (ok: {ok}"
+    if nedescis:
+        detaliu += f", nedeterminate: {nedescis}"
+    detaliu += "); exemple: " + ("; ".join(exemple) if exemple else "niciunul")
+    stare = STARE_OK if rupte == 0 else STARE_ATENTIE
+    write_report("lychee", stare, detaliu,
+                 {"total": total, "ok": ok, "rupte": rupte, "nedeterminate": nedescis,
+                  "exemple": exemple})
+
+
 def sumar() -> None:
     surse = ["psi", "observatory", "ssllabs", "css", "nu_html", "jsonld", "lychee"]
     randuri = []
@@ -381,10 +466,11 @@ def main() -> int:
     sub.add_parser("css", help="W3C CSS validator pe styles.css")
     sub.add_parser("nu", help="W3C Nu HTML validator pe esantion")
     sub.add_parser("jsonld", help="JSON-LD schema.org minim pe esantion")
+    sub.add_parser("lychee", help="converteste raportul brut lychee in formatul casei")
     sub.add_parser("sumar", help="agrega rapoartele in markdown")
     args = parser.parse_args()
     comenzi = {"esantion": esantion, "psi": psi, "observatory": observatory, "ssllabs": ssllabs,
-               "css": css, "nu": nu, "jsonld": jsonld, "sumar": sumar}
+               "css": css, "nu": nu, "jsonld": jsonld, "lychee": lychee, "sumar": sumar}
     try:
         comenzi[args.comanda]()
     except Exception as exc:  # un esec de scan nu blocheaza niciodata workflow-ul

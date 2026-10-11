@@ -11,6 +11,12 @@ on:
   # Deploy orar de siguranta: comiturile de continut ale build.yml folosesc GITHUB_TOKEN,
   # care NU declanseaza workflow-uri pe push (anti-recursivitate GitHub). Fara acest cron,
   # continutul publicat de pipeline ar ramane nerealizat dupa deconectarea Workers Builds.
+  #
+  # Calea NORMALA de declansare dupa un commit de continut este acum `gh workflow run` din
+  # `build.yml` (imediat dupa push, cu `-f confirmare=deploy`): `workflow_dispatch` este
+  # exceptia documentata de la anti-recursivitate. Cronul ramane plasa de siguranta pentru
+  # cazul in care dispatch-ul nu ajunge — masurat 2026-10-10, GitHub livreaza cererea `:53`
+  # la ~3h30m, nu orar, deci singur nu putea publica la timp.
   schedule:
     - cron: "53 * * * *"
   workflow_dispatch:

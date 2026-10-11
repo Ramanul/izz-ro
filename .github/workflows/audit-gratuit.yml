@@ -56,19 +56,38 @@ jobs:
       - name: SSL Labs
         run: python tools/audit_gratuit.py ssllabs
 
+      # ATENTIE la `--output`/`--format` in `args`: entrypoint-ul actiunii (v2, pinul de mai
+      # jos) iese cu 1 si cu mesajul „Error: 'output' is set in args as well as in the action
+      # configuration" cand `--output` apare in args, fiindca inputul `output` are deja o
+      # valoare implicita (`lychee/out.md`). Asa a picat rularea 37298110785 (2026-10-05):
+      # pasul de lychee a esuat, iar sumarul si artifactul au fost sarite — auditul saptamanal
+      # nu a produs niciun raport. Calea corecta e prin inputuri. `format: json` e obligatoriu
+      # si el: cu formatul implicit (markdown) actiunea lipeste o linie de markdown in fisierul
+      # JSON si scrie si in job summary. `failIfEmpty: false` pentru cazul in care esantionul
+      # iese gol (altfel actiunea pica indiferent de `fail`).
       - name: Linkuri rupte (lychee)
         uses: lycheeverse/lychee-action@e7477775783ea5526144ba13e8db5eec57747ce8 # v2
         with:
           args: >-
             --max-retries 2 --max-concurrency 8 --timeout 20s --no-progress
             --user-agent 'izz-ro-audit/1.0 (+https://github.com/Ramanul/izz-ro)'
-            --format json --output reports/lychee.json reports/urls.txt
+            reports/urls.txt
+          format: json
+          output: reports/lychee-raw.json
           fail: false
+          failIfEmpty: false
+
+      - name: Linkuri rupte (normalizare raport lychee)
+        run: python tools/audit_gratuit.py lychee
 
       - name: Sumar in job summary
+        if: always()
         run: python tools/audit_gratuit.py sumar
 
+      # `if: always()`: rapoartele sunt DOVADA, iar un pas de scan picat (lychee a picat exact
+      # asa pe 2026-10-05) nu are voie sa arunce si dovezile celorlalte scanuri.
       - name: Artifact rapoarte (90 zile)
+        if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
           name: audit-gratuit-reports

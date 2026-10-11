@@ -16,20 +16,28 @@ import subprocess
 from datetime import datetime, timezone
 from pathlib import Path
 
-# (workflow, plafon_ore): cât maxim poate tăcea un mecanism viu. Plafoanele pentru
-# workflow-uri planificate sunt calibrate pe CADENȚA MĂSURATĂ, nu pe cron-ul scris:
-# GitHub întârzie/omite rulările programate la vârf, iar o alertă permanentă e o alertă
-# ignorată. Măsurat 2026-09-05 (gh run list): monitor.yml cu cron */10 a rulat efectiv la
-# 01:16 / 05:51 / 10:03 (≈4,5h) => plafon 6h. build.yml orar cu poartă ~2h => 6h.
-# smoke.yml: cron orar, dar măsurat 2026-09-05 rulase la 23:18 / 01:23 / 06:18 / 10:54
-# (goluri de până la ~5h — aceleași întârzieri GitHub) => plafon 6h. feedcheck.yml zilnic => 26h.
+# (workflow, plafon_ore): cât maxim poate tăcea un mecanism viu. Plafoanele sunt calibrate pe
+# CADENȚA MĂSURATĂ (gh run list, 100 de rulări per workflow, 2026-10-11), nu pe cron-ul scris:
+# GitHub livrează cererile `schedule` rarite, iar cron-ul de pe hârtie nu spune nimic despre
+# ce se întâmplă în realitate. Măsurat atunci — median / p90 / maxim, în ore:
+#   build.yml   5,1 / 7,0 / 9,0      monitor.yml 4,8 / 6,8 / 8,9
+#   smoke.yml   0,8 / 4,5 / 7,6      feedcheck   23,8 / ~25 / 25 (fără golurile de dinainte
+#                                                          de activarea programării)
+# Vechile plafoane erau 6h pentru primele trei: 20% dintre intervalele NORMALE ale build.yml
+# depășeau 6h, deci detectorul suna la fiecare ~a cincea rulare — și a sunat: două alerte în
+# două zile (9 și 10 octombrie), ambele pe mecanisme care rulau normal, doar târziu. O alertă
+# care sună pe normal e o alertă ignorată. 12h = maximul măsurat + ~30% marjă; feedcheck 30h.
 MECANISME = [
-    ("build.yml", 6),
-    ("monitor.yml", 6),
-    ("smoke.yml", 6),
-    ("feedcheck.yml", 26),
+    ("build.yml", 12),
+    ("monitor.yml", 12),
+    ("smoke.yml", 12),
+    ("feedcheck.yml", 30),
 ]
-PLAFON_CONTINUT_ORE = 6  # cadența de conținut e ~2h; 6h fără commit de conținut = înghețat
+# Cadența de conținut: măsurată pe ultimele 200 de commituri ale `data/articles.json`
+# (2026-09-01 → 2026-10-11): mediană 4,7h, p90 6,9h, maxim 15,0h. Plafonul vechi de 6h cădea
+# sub p90, deci alerga pe gol; 12h prinde o înghețare reală (inclusiv cele două ferestre de
+# 14-15h din istoric) fără să confunde o întârziere de planificator cu o avarie.
+PLAFON_CONTINUT_ORE = 12
 
 
 def _gh(*args: str) -> str:

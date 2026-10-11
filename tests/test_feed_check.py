@@ -24,6 +24,7 @@ def _run(monkeypatch, sources, results, argv=()):
     """`results`: {key: (arts, err)} -- ce ar intoarce _fetch_one_guarded pentru fiecare sursa."""
     monkeypatch.setattr(config, "SOURCES", sources)
     monkeypatch.setattr(sys, "argv", ["feed_check.py", *argv])
+    monkeypatch.setattr(feed_check, "RETRY_PAUZA_S", 0.0)  # suita nu doarme intre incercari
 
     def fake_guarded(key, source, cache=None):
         return results[key]
@@ -109,3 +110,60 @@ def test_category_filter_still_works(monkeypatch):
 
     assert code == 1
     assert "alive" in out and "empty" in out
+
+
+def test_challenge_servit_cu_200_nu_e_sursa_moarta(monkeypatch):
+    """Textul „challenge anti-bot servit cu 200 (sursa NU e moarta)" venea din fetch.py, dar
+    feed_check il numara DEAD — verificatorul contrazicea sursa de adevar pe care o cheama.
+    Efectul masurat: feedcheck rosu la fiecare rulare programata (46 din 46, 25 iul - 10 oct).
+    """
+    sources = {"challenged": _SOURCES["alive"]}
+    results = {"challenged": ([], "challenged: challenge anti-bot servit cu 200 (sursa NU e moarta)")}
+
+    code, out = _run(monkeypatch, sources, results)
+
+    assert code == 0, "un challenge de pe IP de datacenter nu e un esec de sursa"
+    assert "BLOCAT challenged" in out
+    assert "NEVERIFICABIL de aici" in out
+    assert "DEAD" not in out
+
+
+def test_a_doua_incercare_scapa_de_o_pana_tranzitorie(monkeypatch):
+    """Prima incercare poate cadea pe o pana de moment; a doua, pe acelasi cod, raspunde."""
+    sources = {"puls": _SOURCES["alive"]}
+    apeluri = {"n": 0}
+
+    def fake_guarded(key, source, cache=None):
+        apeluri["n"] += 1
+        if apeluri["n"] == 1:
+            # Pana de ROUTING (nu rate-limit — ala nu se reincearca imediat, gazda limiteaza
+            # dupa frecventa si o a doua cerere o incalca din nou).
+            return [], f"{key}: <urlopen error timed out>"
+        return [{"published": "2026-10-11T00:00:00+00:00"}], None
+
+    monkeypatch.setattr(config, "SOURCES", sources)
+    monkeypatch.setattr(sys, "argv", ["feed_check.py"])
+    monkeypatch.setattr(feed_check, "_fetch_one_guarded", fake_guarded)
+    monkeypatch.setattr(feed_check, "RETRY_PAUZA_S", 0.0)
+
+    import contextlib
+    import io
+    buf = io.StringIO()
+    with contextlib.redirect_stdout(buf):
+        code = feed_check.main()
+
+    assert apeluri["n"] == 2, "sursa a fost reincercata o data"
+    assert code == 0
+    assert "ok   puls" in buf.getvalue()
+
+
+def test_esecul_este_adnotat_cu_numele_surselor(monkeypatch, capsys):
+    """Jurnalele binare nu sunt accesibile din sandbox; adnotarea da verdictul in UI/API."""
+    sources = {"moarta": _SOURCES["dead"], "goala": _SOURCES["empty"]}
+    results = {"moarta": ([], "moarta: HTTP Error 404: Not Found"), "goala": ([], None)}
+
+    code, out = _run(monkeypatch, sources, results)
+
+    assert code == 1
+    assert "::error title=feed check::" in out
+    assert "moarta" in out.split("::error title=feed check::")[1]

@@ -313,9 +313,23 @@ class GatewayHandler(BaseHTTPRequestHandler):
         self.wfile.write(data)
 
 
+class GatewayServer(ThreadingHTTPServer):
+    """Serverul gate-ului, cu un backlog de accept care nu cade pe cereri simultane.
+
+    `socketserver` are `request_queue_size = 5`, iar `listen()` se cheama in `__init__`:
+    valoarea trebuie sa fie atribut de CLASA, pusa dupa construire nu mai ajunge in `listen`.
+    Sub ea, o rafala de cereri simultane (testul de concurenta: 16 fire; un editor care isi
+    reia cererile dupa timeout) umple coada de accept si clientul primeste
+    `ConnectionResetError` inainte sa apuce sa primeasca raspunsul — masurat in sandbox:
+    4-6 resetari din 32 de conexiuni pe backlog 5, zero pe 128.
+    """
+
+    request_queue_size = 128
+    daemon_threads = True
+
+
 def make_server(app: GatewayApp) -> ThreadingHTTPServer:
-    server = ThreadingHTTPServer((app.settings.host, app.settings.port), GatewayHandler)
-    server.daemon_threads = True
+    server = GatewayServer((app.settings.host, app.settings.port), GatewayHandler)
     server.app = app  # type: ignore[attr-defined]
     return server
 
