@@ -9,7 +9,9 @@ scanere externe, gratuite, pe ce serveste izz.ro acum:
   - W3C Nu HTML validator   (markup pe esantion)          [keyless, volum mic si politicos]
   - W3C CSS validator       (styles.css)                  [keyless]
   - JSON-LD schema.org      (NewsArticle minim)           [local, fara retea catre validator]
-  - lychee                  (linkuri rupte)               [ruleaza ca step de Actions, nu aici]
+  - lychee                  (linkuri rupte)               [scanarea ruleaza ca step de Actions;
+                                                             subcomanda `lychee` normalizeaza
+                                                             raportul brut in formatul casei]
 
 IndexNow NU e aici: exista deja in pipeline (cheia in config, render.py scrie fisierul
 root, tools/indexnow_submit.py anunta URL-urile noi la fiecare rulare) — nu se dubleaza.
@@ -403,11 +405,21 @@ def lychee() -> None:
         write_report("lychee", STARE_ESUAT, f"raport brut cu forma necunoscuta: {type(raw).__name__}", {})
         return
 
+    # Schema noua (v0.24.x, verificata in sursa lychee) are si `unknown`/`unsupported`
+    # (status nedeterminat) si `excluded` (excluse intentionat). Nu intra in verdictul de
+    # „rupte" — un link nedeterminat de la un site care filtreaza boții nu e un link rupt —
+    # dar se raporteaza, ca sa nu se piarda informatia.
+    nedescis = 0
+    if isinstance(raw, dict):
+        nedescis = int(raw.get("unknown") or 0) + int(raw.get("unsupported") or 0)
+    detaliu = f"{rupte} linkuri rupte din {total} verificate (ok: {ok}"
+    if nedescis:
+        detaliu += f", nedeterminate: {nedescis}"
+    detaliu += "); exemple: " + ("; ".join(exemple) if exemple else "niciunul")
     stare = STARE_OK if rupte == 0 else STARE_ATENTIE
-    write_report("lychee", stare,
-                 f"{rupte} linkuri rupte din {total} verificate (ok: {ok}); exemple: "
-                 + ("; ".join(exemple) if exemple else "niciunul"),
-                 {"total": total, "ok": ok, "rupte": rupte, "exemple": exemple})
+    write_report("lychee", stare, detaliu,
+                 {"total": total, "ok": ok, "rupte": rupte, "nedeterminate": nedescis,
+                  "exemple": exemple})
 
 
 def sumar() -> None:
