@@ -111,15 +111,15 @@ Arhitectura separă **munca grea** de **publicare**:
 
 1. **GitHub Actions** — `.github/workflows/build.yml`, cron `13 * * * *`: rulează pipeline-ul (fetch + AI, cu buget per rulare) și comite `data/articles.json` în repo. Secret necesar: `GEMINI_API_KEY`.
    **Încearcă orar, publică la ~2h:** un job de poartă taie rularea dacă ultimul conținut e mai proaspăt de 105 minute. Cron-ul orar dens acoperă firings-urile sărite de planificatorul GitHub; pragul ține și numărul de build-uri Cloudflare la ~12/zi. *(Plafonul de 500 build-uri/lună era al lui Pages și nu se mai aplică — vezi IZZ-0305.)*
-2. **Cloudflare Workers** (Workers Builds, conectat la repo, auto-deploy la fiecare commit): rulează doar **render-only** și servește `output/`. Configurația versionată stă în `wrangler.jsonc`:
+2. **Publicarea pe Worker** — `.github/workflows/deploy-worker.yml`: randează **render-only**, verifică output-ul înainte de producție (minim 1.000 de fișiere, bugetul de redirecte) și publică prin `wrangler deploy`. **Workers Builds (integrarea git din Cloudflare) nu mai e pe cale:** factura minutele de build (7.407 minute peste plafon, 22 aug – 21 sep 2026, $37,04), iar randarea a fost mutată pe runnerul GitHub (IZZ-0326). Configurația versionată stă în `wrangler.jsonc`:
    - `main: infra/worker.js` — nu mai e proiect assets-only. Workerul răspunde la `/push/*` și `/sw.js`, iar un 404 de articol expirat cade pe oglinda gh-pages;
    - `assets.directory: ./output`;
    - `not_found_handling: "404-page"` — fără linia asta, `output/404.html` nu ar fi servit niciodată;
    - `preview_urls: true` — preview per ramură.
 
-   Comanda de build și variabilele de mediu (`PYTHON_VERSION`, `SITE_BASE`) stau în Workers Builds → Settings. GEMINI nu e necesar aici — render-only nu apelează AI.
+   Variabilele de mediu ale randării se pun din workflow-uri, nu dintr-un ecran Cloudflare: `SITE_BASE` doar pentru preview-uri, `BUILD_COMMIT_SHA` / `BUILD_BRANCH` pentru amprenta servită la `/build.json` (citită de `tools/verify_release.py`), iar `PYTHON_VERSION` vine din `actions/setup-python`. GEMINI nu e necesar aici — render-only nu apelează AI.
 
-Fluxul: Actions face fetch + AI și salvează starea → commit-ul declanșează Cloudflare → Cloudflare randează rapid (fără AI/quota) și publică pe **izz.ro**. *(Migrat de pe Cloudflare Pages pe Workers în august 2026.)*
+Fluxul: Actions face fetch + AI și salvează starea → comite pe `main` → **declanșează explicit** `deploy-worker.yml` (`workflow_dispatch` e singurul eveniment care mai pornește workflow-uri din `GITHUB_TOKEN`) → jobul de deploy randează fără AI, publică pe **izz.ro** și compară `/build.json` cu commitul așteptat. Cronul `:53` al lui `deploy-worker` rămâne plasă de siguranță, nu calea normală. *(Migrat de pe Cloudflare Pages pe Workers în august 2026.)*
 
 ### Bugetul de fișiere (plan Workers Free)
 
