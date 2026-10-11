@@ -41,15 +41,27 @@ fails: list = []
 
 
 def _e_challenge(exc: Exception) -> bool:
-    """True daca exceptia e un challenge anti-bot Cloudflare, nu un raspuns de site."""
+    """True daca exceptia e un challenge anti-bot Cloudflare, nu un raspuns de site.
+
+    Corpul se citeste O SINGURA data si se tine minte pe obiectul exceptiei: acelasi
+    `HTTPError` trece de doua ori pe aici (o data in reincercare, o data la alegerea
+    originii), iar `exc.read()` consuma stream-ul — la a doua citire ar iesi b'' si un
+    challenge servit fara antet `cf-mitigated` ar fi ratat exact cand conta.
+    """
     if not isinstance(exc, urllib.error.HTTPError):
         return False
     if str((exc.headers or {}).get("cf-mitigated", "")).lower() == "challenge":
         return True
-    try:
-        corp = exc.read(4096)
-    except Exception:  # noqa: BLE001 - daca nu pot citi corpul, nu e challenge dovedit
-        return False
+    corp = getattr(exc, "_izz_corp", None)
+    if corp is None:
+        try:
+            corp = exc.read(4096)
+        except Exception:  # noqa: BLE001 - daca nu pot citi corpul, nu e challenge dovedit
+            return False
+        try:
+            exc._izz_corp = corp
+        except Exception:  # noqa: BLE001 - obiect fara __dict__: fara cache, dar corect
+            pass
     return any(marca in corp for marca in _CHALLENGE_MARKS)
 
 
