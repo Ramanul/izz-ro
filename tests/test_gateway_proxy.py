@@ -187,3 +187,21 @@ def test_cereri_concurente(stack):
     assert results == [200] * n
     totals = app.store.totals("groq", "groq", scope="daily")
     assert totals.requests == n  # SQLite consistent sub concurență
+
+
+def test_serverul_are_backlog_pentru_rafale(stack):
+    """Regresie: `listen()` se face la construcție, cu `request_queue_size` al CLASEI.
+
+    Implicitul `socketserver` este 5. Cu el, o rafală de conexiuni simultane (16 fire aici)
+    umple coada de accept și clientul primește `ConnectionResetError` înainte de răspuns —
+    reprodus în sandbox cu 4-6 resetări din 32 de conexiuni pe backlog 5, zero pe 128.
+    Testul verifică atributul, nu reușește/ratează un răspuns la întâmplare: o scădere a
+    backlog-ului trebuie să pice aici, nu intermitent în `test_cereri_concurente`.
+    """
+    base, app, settings = stack
+    server = make_server(app)
+    try:
+        assert server.request_queue_size >= 64
+        assert server.daemon_threads is True
+    finally:
+        server.server_close()
