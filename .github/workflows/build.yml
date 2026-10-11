@@ -1,7 +1,11 @@
 name: pipeline
 
 # Munca grea: fetch RSS + AI (buget per rulare) + salveaza starea in git.
-# Commit-ul pe main declanseaza deploy-worker.yml din GitHub Actions, care randeaza si publica output-ul in Workers Static Assets.
+# Commit-ul pe main NU poate declansa singur deploy-worker.yml: e impins cu GITHUB_TOKEN, iar
+# evenimentele declansate de el nu pornesc workflow-uri (anti-recursivitate GitHub). De aceea
+# jobul `pipeline` cheama explicit `gh workflow run deploy-worker.yml` dupa push (workflow_dispatch
+# e exceptia documentata), iar cronul `:53` al deploy-worker-ului rămâne plasa de siguranta.
+# deploy-worker randeaza si publica output-ul in Workers Static Assets.
 
 on:
   # Incercare orara; poarta de cadenta mentine aproximativ 2 ore intre commituri de continut.
@@ -50,6 +54,14 @@ jobs:
     needs: cadenta
     if: github.event_name != 'schedule' || needs.cadenta.outputs.ruleaza == 'true'
     runs-on: ubuntu-latest
+    # `actions: write` NU e pentru pipeline-ul insusi: e pentru `gh workflow run` de la final,
+    # care porneste deploy-worker imediat dupa commit. Fara permisiunea asta, dispatch-ul
+    # raspunde 403 ("Resource not accessible by integration") si publicarea cade inapoi pe
+    # cronul rar al deploy-worker-ului. `contents: write` trebuie repetat: permisiunile pe job
+    # inlocuiesc complet blocul de la nivel de workflow, nu se aduna cu el.
+    permissions:
+      contents: write
+      actions: write
     outputs:
       content_sha: ${{ steps.commit.outputs.sha }}
     steps:
@@ -184,7 +196,7 @@ jobs:
         # la schimbarile de cod hartii.
         run: python tools/build_harta_data.py
 
-      - name: Comite starea (declanseaza deploy-worker.yml)
+      - name: Comite starea (publicarea o porneste pasul de dispatch de mai jos)
         id: commit
         run: |
           set -euo pipefail
@@ -203,6 +215,7 @@ jobs:
           if git diff --cached --quiet; then
             echo "::warning::nimic de comis - pipeline-ul nu a schimbat niciun fisier"
             echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+            echo "pushed=false" >> "$GITHUB_OUTPUT"
             exit 0
           fi
           git commit -m "update content"
@@ -210,6 +223,7 @@ jobs:
             if git push; then
               echo "push OK la incercarea $i"
               echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+              echo "pushed=true" >> "$GITHUB_OUTPUT"
               exit 0
             fi
             echo "::warning::push respins (incercarea $i) - reaplic peste origin/main"
@@ -227,9 +241,63 @@ jobs:
           echo "::error::push esuat dupa 5 incercari - continutul NU a ajuns pe main, deploy-ul GitHub Actions NU s-a declansat"
           exit 1
 
-      - name: IndexNow — trimite coada (dupa deploy, best-effort)
+      # Publicarea NU mai asteapta cronul de la :53 al deploy-worker. Motivul e MASURAT:
+      # GitHub livreaza cererile `schedule` rarite (deploy-worker a rulat la 3h30m in medie,
+      # deci continutul comis acum ajungea pe site dupa ore), iar sonda `release-probe` de la
+      # finalul acestui workflow astepta degeaba 65 de minute si pica pe fiecare rulare
+      # (patru esecuri consecutive pe 9-10 octombrie). `workflow_dispatch` pornit cu
+      # GITHUB_TOKEN este EXCEPTIA documentata de la regula anti-recursivitate (push-urile cu
+      # GITHUB_TOKEN nu aprind workflow-uri, dispatch-ul da) si e singura cale de a publica
+      # imediat fara un PAT. Cronul ramane plasa de siguranta.
+      - name: Declanseaza deploy-ul imediat (workflow_dispatch)
+        if: steps.commit.outputs.pushed == 'true'
+        # NU pica jobul daca dispatch-ul nu pleaca: publicarea are si cronul :53 ca plasa, iar
+        # `release-probe` de la final e cel care decide daca intarzierea chiar a stricat ceva.
+        # Un esec aici se vede ca adnotare, nu ca pipeline rosu.
+        continue-on-error: true
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPO: ${{ github.repository }}
+        run: |
+          set -uo pipefail
+          if gh workflow run deploy-worker.yml --repo "$REPO" --ref main -f confirmare=deploy; then
+            echo "deploy-worker declansat pentru $(git rev-parse HEAD)"
+          else
+            echo "::warning::dispatch-ul deploy-worker a eșuat — publicarea rămâne pe cronul :53; sonda de release decide dacă întârzierea contează"
+          fi
+
+      - name: IndexNow — trimite coada (dupa commit, best-effort)
+        id: indexnow
         continue-on-error: true
         run: python tools/indexnow_submit.py --send
+
+      # Daca POST-ul nu a plecat (cheie neverificabila, rate limit, retea), manifestul deja
+      # comis ar ingropa URL-urile: hash-ul lor e marcat „vazut", runnerul e stateless, iar
+      # coada efemera moare cu el. Le redeschidem si comitem manifestul, deci revin in coada
+      # la rularea urmatoare — exact invariantul de la push-ul esuat.
+      - name: IndexNow — redeschide ce n-a plecat
+        if: steps.indexnow.outcome == 'failure'
+        run: |
+          set -euo pipefail
+          python tools/indexnow_submit.py --reopen
+          if git diff --quiet -- data/indexnow_seen.json; then
+            echo ">> nimic de redeschis (manifestul nu s-a schimbat)"
+            exit 0
+          fi
+          git config user.name "izz-bot"
+          git config user.email "bot@izz.ro"
+          git add data/indexnow_seen.json
+          git commit -m "indexnow: redeschid coada pentru reincercare"
+          for i in 1 2 3; do
+            if git push; then
+              echo "URL-urile redeschise au ajuns pe main (incercarea $i)"
+              exit 0
+            fi
+            git fetch origin main
+            git rebase --autostash origin/main || { git rebase --abort; true; }
+            sleep $((i * 5))
+          done
+          echo "::warning::nu am putut impinge manifestul redeschis - URL-urile din transa raman 'vazute' pana la urmatoarea modificare a continutului lor"
 
   mirror:
     needs: pipeline
@@ -305,10 +373,12 @@ jobs:
       - name: Verifica release-ul public pe originea Workers si pe izz.ro
         env:
           EXPECTED_COMMIT: ${{ needs.pipeline.outputs.content_sha }}
-          # 25 de minute nu acoperea decalajul structur al lantului: commiturile de continut
-          # impinse cu GITHUB_TOKEN NU declanseaza push-workflows, deci release-ul asteapta
-          # cronul :53 al deploy-worker — in cazul rau, probe moare cu ~17 minute inainte sa
-          # fie verificabil (rosul din 3 oct). 65 de minute acopera urmatorul ciclu de cron.
+          # Istoric: 25 de minute nu acopereau decalajul (rosul din 3 oct), apoi 65 de minute
+          # s-au dovedit tot insuficiente — cronul `:53` al deploy-worker e livrat de GitHub
+          # la ~3h30m in practica, nu orar, deci sonda cadea pe fiecare rulare (patru esecuri
+          # consecutive pe 9-10 octombrie). De aceea pipeline-ul porneste acum deploy-ul prin
+          # `gh workflow run` imediat dupa commit; 65 de minute raman o plasa pentru cazul in
+          # care dispatch-ul nu ajunge (atunci publicarea chiar e intarziata si rosu e corect).
           RELEASE_TIMEOUT_SECONDS: "3900"
           RELEASE_POLL_SECONDS: "30"
           RELEASE_ALT_ORIGIN: ${{ vars.ALT_ORIGIN || 'https://izz-ro.andifreelancer2.workers.dev' }}

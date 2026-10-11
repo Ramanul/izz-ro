@@ -27,11 +27,25 @@ def test_totul_viul_daca_toate_mecanismele_au_rulat_curand(monkeypatch):
 
 def test_continut_inghetat_este_constatare(monkeypatch):
     acum = datetime.now(timezone.utc)
-    monkeypatch.setattr(dt, "ultimul_commit_continut", lambda acum, repo: 9.5)
+    monkeypatch.setattr(dt, "ultimul_commit_continut", lambda acum, repo: 99.0)
     monkeypatch.setattr(dt, "ultima_rulare", lambda wf, acum, repo: 0.2)
     probleme = dt.constata("Ramanul/izz-ro", acum)
     assert len(probleme) == 1
     assert "înghețat" in probleme[0]
+
+
+def test_intarzierea_normala_a_planificatorului_nu_e_alerta(monkeypatch):
+    """Regresia care a produs doua alerte false in doua zile (9-10 oct 2026).
+
+    Masurat pe 200 de commituri de continut si 100 de rulari per workflow: median 4,7h / p90
+    6,9h la continut, 5,1h / 7,0h la build.yml. Un gol de 9h e NORMAL (planificatorul GitHub
+    livreaza rar) si nu are voie sa deschida un issue — altfel alerta isi pierde sensul.
+    """
+    acum = datetime.now(timezone.utc)
+    monkeypatch.setattr(dt, "ultimul_commit_continut", lambda acum, repo: 9.0)
+    monkeypatch.setattr(dt, "ultima_rulare",
+                        lambda wf, acum, repo: 9.0 if wf == "build.yml" else 0.2)
+    assert dt.constata("Ramanul/izz-ro", acum) == []
 
 
 def test_workflow_niciodata_rulat_si_tacut_este_constatare(monkeypatch):
