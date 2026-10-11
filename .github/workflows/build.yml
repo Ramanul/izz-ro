@@ -277,8 +277,6 @@ jobs:
       # la rularea urmatoare — exact invariantul de la push-ul esuat.
       - name: IndexNow — redeschide ce n-a plecat
         if: steps.indexnow.outcome == 'failure'
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           set -euo pipefail
           python tools/indexnow_submit.py --reopen
