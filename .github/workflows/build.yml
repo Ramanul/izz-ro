@@ -247,13 +247,20 @@ jobs:
       # imediat fara un PAT. Cronul ramane plasa de siguranta.
       - name: Declanseaza deploy-ul imediat (workflow_dispatch)
         if: steps.commit.outputs.pushed == 'true'
+        # NU pica jobul daca dispatch-ul nu pleaca: publicarea are si cronul :53 ca plasa, iar
+        # `release-probe` de la final e cel care decide daca intarzierea chiar a stricat ceva.
+        # Un esec aici se vede ca adnotare, nu ca pipeline rosu.
+        continue-on-error: true
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           REPO: ${{ github.repository }}
         run: |
-          set -euo pipefail
-          gh workflow run deploy-worker.yml --repo "$REPO" --ref main -f confirmare=deploy
-          echo "deploy-worker declansat pentru $(git rev-parse HEAD)"
+          set -uo pipefail
+          if gh workflow run deploy-worker.yml --repo "$REPO" --ref main -f confirmare=deploy; then
+            echo "deploy-worker declansat pentru $(git rev-parse HEAD)"
+          else
+            echo "::warning::dispatch-ul deploy-worker a eșuat — publicarea rămâne pe cronul :53; sonda de release decide dacă întârzierea contează"
+          fi
 
       - name: IndexNow — trimite coada (dupa commit, best-effort)
         id: indexnow
