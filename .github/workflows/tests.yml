@@ -43,7 +43,10 @@ jobs:
         with:
           python-version: "3.11"
           cache: "pip"
-      - run: pip install -r requirements.txt pytest ruff pytest-randomly
+      # Aceeasi lista ca în `ci.yml` („Install runtime and test dependencies"): uneltele de
+      # test vin din `requirements-dev.txt` (versiuni fixate), nu din nume libere — altfel
+      # cele două joburi puteau rula pe versiuni diferite de pytest/ruff.
+      - run: pip install -r requirements.txt -r requirements-dev.txt
       - name: Lint (ruff)
         run: python -m ruff check .
       - name: Pytest

@@ -1,7 +1,14 @@
 # Unelte de dezvoltare și testare (nu de runtime).
 # Runtime-ul depinde de requirements.txt.
 # Instalare: pip install -r requirements.txt -r requirements-dev.txt
+#
+# Versiuni FIXATE (audit 2026-10-08, M2): nefixate, fiecare rulare CI instala „ultima"
+# versiune de pytest / ruff / pytest-randomly, iar o lansare nouă putea înroși poarta
+# fără nicio schimbare în repo — exact clasa de eșec greu de diagnosticat fără jurnal.
+# Dependabot (`.github/dependabot.yml`, ecosistemul pip) le ridică săptămânal, prin PR.
+# Pasul următor din audit, nefăcut aici: hash-uri (`--require-hashes`), după ce se
+# stabilește un lock.
 
-pytest
-ruff
-pytest-randomly
+pytest==9.1.1
+ruff==0.17.0
+pytest-randomly==5.0.0
