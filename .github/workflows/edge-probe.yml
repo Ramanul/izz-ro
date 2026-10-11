@@ -1,11 +1,28 @@
-name: _tmp-key-probe
+name: edge-probe
 
-# TEMPORAR (2026-10-11, sesiune Arena). Raspunde la o singura intrebare, cu masuratori:
-#   de pe un runner GitHub, se poate citi cheia IndexNow de la https://izz.ro/<cheie>.txt
-#   si ce raspund endpoint-urile IndexNow pentru domeniul asta?
-# De ce asa si nu local: sandboxul de lucru nu are egress HTTPS, iar jurnalele binare ale
-# joburilor nu sunt accesibile din API pe repo-ul asta. Fiecare observatie iese prin
-# ::warning::, care SE citeste din API-ul de annotations. Fisierul se sterge dupa ce raspunde.
+# De ce exista: IndexNow anunta 84 de URL-uri si primeste 403, iar intrebarea care decide ce
+# facem mai departe nu se poate raspunde din sandbox (fara egress) si nici din jurnalele
+# binare ale joburilor (inaccesibile din API pe repo-ul asta). Proba asta raspunde, in ~30 de
+# secunde, la doua intrebari MASURABILE, si scrie fiecare observatie ca adnotare `::warning::`
+# (adnotarile SE citesc din API: `gh api .../check-runs/<id>/annotations`):
+#
+#   1. Cine poate citi cheia publica https://izz.ro/<cheie>.txt: un client de browser, curl
+#      simplu, clientul pipeline-ului si unul care se da drept bot. Daca doar unii trec, cauza
+#      e pe CLASA DE CLIENT (bot protection in zona), nu pe fisier. Ambasadorii cunoscuti
+#      (Googlebot/bingbot/Applebot/Twitterbot) sunt exceptati explicit de regula custom de
+#      blocare a boților din zona, deci o cheie pe care nici bingbot n-o citeste e o problema
+#      de fisier/deploy, nu de WAF.
+#   2. Ce raspund endpoint-urile IndexNow pentru domeniu: api.indexnow.org (Bing),
+#      yandex.com/indexnow si www.bing.com/indexnow. Raspunsul e corp JSON (acceptat = 200/202;
+#      refuz = 4xx cu errorCode). Diferenta dintre ele e exact cea care spune daca o a doua
+#      cale de trimitere ar ajuta sau nu.
+#
+# Se ruleaza manual (workflow_dispatch), nu consuma AI/quota, nu scrie nimic in repo, nu
+# foloseste secrete. Toate cererile sunt GET-uri (protocolul IndexNow accepta si GET, nu doar
+# POST), iar cele doua endpoint-uri primesc exact URL-ul pe care il trimite si pipeline-ul
+# (/azi/), ca proba sa fie comparabila cu un `--send` real.
+#
+# Se sterge fara efecte: niciun alt workflow nu depinde de el.
 
 on:
   workflow_dispatch: {}
@@ -41,10 +58,11 @@ jobs:
           probe "indexnow-verificator" "Mozilla/5.0 (compatible; IndexNow/1.0; +https://www.indexnow.org/)"
           probe "python-urllib" "Python-urllib/3.11"
           # Aceeasi proba pe manifestul de release: daca .txt-ul e blocat, dar build.json nu,
-          # blocajul e pe cale, nu pe domeniu.
+          # blocajul e pe cale, nu pe domeniu. Header-ele complete ajuta la Content-Type.
           cod=$(curl -sS --max-time 20 -A "izz-indexnow/1.0 (+https://izz.ro)" -D /tmp/h2 -o /tmp/b2 -w '%{http_code}' "https://izz.ro/build.json" 2>/dev/null || true)
           mit=$(grep -i '^cf-mitigated:' /tmp/h2 2>/dev/null | tr -d '\r' || true)
           echo "::warning title=key-probe::build.json (UA pipeline) -> HTTP ${cod:-000} ${mit:-fara-cf-mitigated} $(head -c 70 /tmp/b2 2>/dev/null | tr -d '\n')"
+          echo "  antete cheie:"; grep -iE '^(content-type|cache-control|server|cf-cache-status):' /tmp/h 2>/dev/null | tr -d '\r' || true
 
       - name: Endpoint-uri IndexNow, din runnerul GitHub
         run: |
