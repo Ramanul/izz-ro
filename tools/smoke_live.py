@@ -17,16 +17,46 @@ import datetime as dt
 import os
 import random
 import re
+import socket
 import sys
+import time
+import urllib.error
 import urllib.request
 
 FRESH_MAX_HOURS = 48   # cel mai nou articol de pe live trebuie sa fie mai recent de-atat
 
 BASE = os.getenv("BASE_URL", "https://izz.ro").rstrip("/")
+# Originea de build, fara WAF-ul zonei. `deploy-failover.yml` si `monitor.yml` folosesc deja
+# acelasi principiu: un challenge servit runnerului e INCONCLUIENT, nu un defect de continut.
+# Se foloseste DOAR cand primarul ne-a servit un challenge — altfel verificam exact domeniul.
+FALLBACK = os.getenv("SMOKE_FALLBACK_BASE",
+                     "https://izz-ro.andifreelancer2.workers.dev").rstrip("/")
 N_ARTICLES = 5
 UA = {"User-Agent": "izz-smoke/1.0 (+https://izz.ro)"}
+# Semnele interstitialului anti-bot Cloudflare (corp sau antet). „Just a moment" e titlul
+# paginii de challenge; `cf-chl`/`challenge-platform` sunt in markup-ul si JS-ul ei.
+_CHALLENGE_MARKS = (b"cf-chl", b"challenge-platform", b"Just a moment", b"__cf_chl")
 
 fails: list = []
+
+
+def _e_challenge(exc: Exception) -> bool:
+    """True daca exceptia e un challenge anti-bot Cloudflare, nu un raspuns de site."""
+    if not isinstance(exc, urllib.error.HTTPError):
+        return False
+    if str((exc.headers or {}).get("cf-mitigated", "")).lower() == "challenge":
+        return True
+    try:
+        corp = exc.read(4096)
+    except Exception:  # noqa: BLE001 - daca nu pot citi corpul, nu e challenge dovedit
+        return False
+    return any(marca in corp for marca in _CHALLENGE_MARKS)
+
+
+def _interstitial(html: str) -> bool:
+    """Acelasi challenge, dar servit cu 200 (Cloudflare o face cand clientul nu e „browser")."""
+    cap = html[:4000].encode("utf-8", "replace")
+    return any(marca in cap for marca in _CHALLENGE_MARKS)
 
 
 def get(path: str) -> str:
@@ -42,17 +72,60 @@ def head(path: str):
         return r.headers, r
 
 
+def _get_cu_reincercare(path: str, incercari: int = 2, pauza: float = 5.0) -> str:
+    """`get` cu o a doua incercare pe erori TRANZITORII (retea, 5xx).
+
+    `monitor.yml` reincearca de trei ori din exact acelasi motiv: o singura eroare de retea pe
+    un esantion de cinci articole transforma un site sanatos in job rosu.
+    """
+    ultima: Exception | None = None
+    for i in range(incercari):
+        try:
+            return get(path)
+        except urllib.error.HTTPError as exc:
+            ultima = exc
+            if exc.code < 500 or _e_challenge(exc):
+                raise
+        except (urllib.error.URLError, socket.timeout, TimeoutError) as exc:
+            ultima = exc
+        if i + 1 < incercari:
+            time.sleep(pauza)
+    raise ultima  # type: ignore[misc]
+
+
 def check(cond: bool, page: str, rule: str) -> None:
     print(f"  {'ok ' if cond else 'FAIL'} {rule}")
     if not cond:
         fails.append(f"{page}: {rule}")
 
 
+def _alege_originea() -> str:
+    """Primarul sau, la challenge, originea de build. Nu ridica: daca ambele cad, primul `get`
+    din `main` pica la fel ca inainte (rosul ramane semnalul corect pentru un site jos)."""
+    global BASE
+    try:
+        home = _get_cu_reincercare("/")
+        if not _interstitial(home):
+            return home
+    except Exception as exc:  # noqa: BLE001
+        if not _e_challenge(exc):
+            raise
+        print(f"::warning::izz.ro a servit un bot challenge runnerului ({exc})")
+    else:
+        print("::warning::izz.ro a servit interstitialul de challenge cu HTTP 200")
+    if not FALLBACK:
+        raise urllib.error.URLError("challenge pe izz.ro si SMOKE_FALLBACK_BASE e gol")
+    print(f"reiau probele pe originea de build {FALLBACK} — ACELASI build, fara WAF-ul zonei "
+          f"(stratul public rămâne acoperit de uptime-monitor, care trateaza challenge-ul separat)")
+    BASE = FALLBACK
+    return get("/")
+
+
 def main() -> int:
     print(f"=== smoke live pe {BASE} ===")
 
     print("home:")
-    home = get("/")
+    home = _alege_originea()
     cards = re.findall(r'<article class="card.*?</article>', home, re.S)
     check("Portalul știrilor tale" in home, "/", "descriptorul brand prezent")
     check(len(cards) >= 10, "/", f"minim 10 carduri (gasite: {len(cards)})")
@@ -205,6 +278,14 @@ def main() -> int:
         print(f"\nFAIL — {len(fails)} incalcari pe live:")
         for f in fails:
             print("  -", f)
+        # Adnotarile se citesc din API-ul de check-runs; jurnalele binare ale jobului nu sunt
+        # intotdeauna accesibile (masurat 2026-10-11: `gh run view --log-failed` -> EOF pe
+        # repo-ul asta, iar adnotarea automata spune doar „exit code 1"). Fara astea, un esec
+        # de smoke e nediagnosticabil din afara browserului.
+        for f in fails[:10]:
+            print(f"::error title=smoke live::{f}")
+        if len(fails) > 10:
+            print(f"::error title=smoke live::... si alte {len(fails) - 10} incalcari (jurnalul)")
         return 1
     print("\nOK: site-ul live respecta formatul.")
     return 0
