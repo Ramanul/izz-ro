@@ -16,7 +16,7 @@
       {% for evidence in a.editorial.evidence %}
       <li id="editorial-evidence-{{ evidence.id }}">
         <p>{{ evidence.role }}. Locul examinat: {{ evidence.locator }}.</p>
-        <p><a href="{{ evidence.url }}" target="_blank" rel="noopener noreferrer">Deschide pagina examinată</a> · examinată la <time datetime="{{ evidence.verified_at }}">{{ evidence.verified_at[:10] }}</time>.</p>
+        <p>{% if evidence.scheme == 'https' %}<a href="https://{{ evidence.destination }}" target="_blank" rel="noopener noreferrer">Deschide pagina examinată</a>{% elif evidence.scheme == 'http' %}<a href="http://{{ evidence.destination }}" target="_blank" rel="noopener noreferrer">Deschide pagina examinată</a>{% endif %} · examinată la <time datetime="{{ evidence.verified_at }}">{{ evidence.verified_at[:10] }}</time>.</p>
       </li>
       {% endfor %}
     </ol>

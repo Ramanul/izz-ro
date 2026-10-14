@@ -113,7 +113,8 @@ def test_review_metadata_is_explicit(article, record, field, value):
 
 
 @pytest.mark.parametrize("url", ["javascript:alert(1)", "data:text/html,unsafe", "//example.com/a",
-                                 "https://user:password@example.com/", "https://example.com/ bad", "https://["])
+                                 "https://user:password@example.com/", "https://example.com/ bad", "https://[",
+                                 "\x01https://example.com/"])
 def test_unsafe_evidence_url_blocks(article, record, url):
     record["evidence"][0]["url"] = url
     with pytest.raises(editorial.EditorialError):
@@ -177,6 +178,15 @@ def test_text_is_escaped_and_claim_anchor_reaches_examined_url(article, record):
     assert any(attrs.get("id") == "editorial-evidence-e1" for tag, attrs in elements)
     assert any(tag == "a" and attrs.get("href") == article["original_link"] for tag, attrs in elements)
     assert all("open" not in attrs for tag, attrs in elements if tag == "details")
+
+
+@pytest.mark.parametrize("url,expected", [("https://example.com/a?x=1&y=2#part", "https://example.com/a?x=1&y=2#part"),
+                                         ("http://example.com/a", "http://example.com/a"),
+                                         ("HTTPS://example.com/a", "https://example.com/a")])
+def test_examined_http_destination_is_preserved(article, record, url, expected):
+    record["evidence"][0]["url"] = url
+    elements = Elements(context_html(article, record)).elements
+    assert any(tag == "a" and attrs.get("href") == expected for tag, attrs in elements)
 
 
 def test_model_c_uses_persisted_identity_and_b_uses_public_path(article):

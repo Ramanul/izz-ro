@@ -98,7 +98,7 @@ def _date(value):
 
 
 def _url(value):
-    if not _text(value) or any(c.isspace() for c in value):
+    if not _text(value) or any(c.isspace() or ord(c) < 32 or ord(c) == 127 for c in value):
         return False
     try:
         parsed = urlsplit(value)
@@ -229,6 +229,9 @@ def apply_view(article, index):
     context = {k: copy.deepcopy(record.get(k, [])) for k in ("claims", "evidence", "uncertainties")}
     context["review_kind"] = record["review"]["kind"]
     context["reviewed_at"] = record["review"]["reviewed_at"]
+    for evidence in context["evidence"]:
+        evidence["scheme"] = urlsplit(evidence["url"]).scheme
+        evidence["destination"] = evidence["url"][len(evidence["scheme"]) + 3:]
     for claim in context["claims"]:
         claim["label"] = CLAIM_LABELS[claim["status"]]
     view["editorial"] = context
