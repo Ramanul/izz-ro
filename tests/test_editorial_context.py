@@ -4,12 +4,25 @@ import json
 import os
 import subprocess
 import sys
+from html.parser import HTMLParser
 from pathlib import Path
 
 import pytest
-from bs4 import BeautifulSoup
 
 from generator import config, editorial, render
+
+
+class Elements(HTMLParser):
+    """Inspect rendered tags with the standard library, without a new dependency."""
+
+    def __init__(self, html):
+        super().__init__()
+        self.elements = []
+        self.feed(html)
+        self.close()
+
+    def handle_starttag(self, tag, attrs):
+        self.elements.append((tag, dict(attrs)))
 
 
 @pytest.fixture
@@ -158,11 +171,12 @@ def test_conflicting_reports_and_forecast_remain_attributed(article, record):
 def test_text_is_escaped_and_claim_anchor_reaches_examined_url(article, record):
     record["claims"][0]["text"] = '<script>alert("unsafe")</script>'
     html = context_html(article, record)
-    soup = BeautifulSoup(html, "html.parser")
-    assert not soup.select("script")
-    claim_link = soup.select_one('a[href="#editorial-evidence-e1"]')
-    assert claim_link and soup.select_one("#editorial-evidence-e1 a")["href"] == article["original_link"]
-    assert not soup.select_one("details").has_attr("open")
+    elements = Elements(html).elements
+    assert not any(tag == "script" for tag, attrs in elements)
+    assert any(tag == "a" and attrs.get("href") == "#editorial-evidence-e1" for tag, attrs in elements)
+    assert any(attrs.get("id") == "editorial-evidence-e1" for tag, attrs in elements)
+    assert any(tag == "a" and attrs.get("href") == article["original_link"] for tag, attrs in elements)
+    assert all("open" not in attrs for tag, attrs in elements if tag == "details")
 
 
 def test_model_c_uses_persisted_identity_and_b_uses_public_path(article):
