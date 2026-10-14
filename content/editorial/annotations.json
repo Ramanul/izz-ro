@@ -1,0 +1,45 @@
+{
+  "schema_version": 1,
+  "records": [
+    {
+      "key": "article:/local/registrul-de-evidenta-a-garantiilor-locale-a-unitatii-administrativ-teritoriale/",
+      "public_paths": ["/local/registrul-de-evidenta-a-garantiilor-locale-a-unitatii-administrativ-teritoriale/"],
+      "review": {
+        "state": "approved",
+        "kind": "documentary",
+        "reviewer": "Codex documentary pilot",
+        "reviewed_at": "2026-10-14T17:53:34Z",
+        "input_fingerprint": "ec4411f19efa8c2b68c5c5712d5f16f2ecd5fae6b9afce50f6a2d025d2d677ca"
+      },
+      "claims": [
+        {
+          "id": "page-publication",
+          "text": "Pagina Primăriei Ineu prezintă registrul garanțiilor locale pentru trimestrul III 2026.",
+          "status": "reported",
+          "evidence_ids": ["municipality-page"]
+        },
+        {
+          "id": "download-link",
+          "text": "În conținutul paginii examinate există o legătură de descărcare către un fișier PDF cu acest registru. Aceasta confirmă prezența legăturii, fără să confirme valorile din fișier.",
+          "status": "documented",
+          "evidence_ids": ["municipality-page"]
+        }
+      ],
+      "evidence": [
+        {
+          "id": "municipality-page",
+          "url": "https://primariaineu.ro/registrul-de-evidenta-a-garantiilor-locale-a-unitatii-administrativ-teritoriale-trimestrul-iii-2026/",
+          "locator": "Titlul principal al paginii și legătura Descarcă din corpul anunțului, către registrul trimestrului III 2026.",
+          "role": "Pagina instituției emitente; o singură origine, fără confirmare independentă",
+          "verified_at": "2026-10-14T17:53:34Z"
+        }
+      ],
+      "uncertainties": [
+        {
+          "question": "Conținutul registrului și valorile garanțiilor nu au fost examinate în acest bloc de context.",
+          "needed": "Lectura documentului atașat și verificarea separată a valorilor înainte de orice concluzie despre ele."
+        }
+      ]
+    }
+  ]
+}

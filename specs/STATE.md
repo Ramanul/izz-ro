@@ -11,7 +11,7 @@
 **Updated:** 2026-10-06 (harta: basemap OpenFreeMap pe `main` prin #445; audit extern 4 oct pe `main` prin #438 [IZZ-0432])
 
 ## Open
-- **Editorial transformation, 14 Oct:** three-source reading and 12-point reconciliation complete. Principles/About slice is locally implemented; context, dossiers, corrections, selection and reader controls remain unfinished. Release evidence belongs in `specs/editorial-principles.md`; no claim of full live transformation.
+- **Editorial transformation, 14 Oct:** three-source reading and 12-point reconciliation complete. Principles/About published via #476. Slice B implements a limited documentary context pilot; release evidence and limits in `specs/editorial-context.md`. Dossiers, corrections, selection and reader controls remain unfinished; no claim of full live transformation.
 - **Audite externe:** 3 oct ÎNCHIS [IZZ-0426] (#425 merged, #426 merged; `ai_gateway` pe main, $0, cheile în `.env`) · 4 oct verificat mecanic [IZZ-0432] — 3 confirmate / 2 parțiale / 2 false pozitive (bara de consimțământ și manifestul PWA existau): `notes/analiza-audit-extern-2026-10-04.md`; pe main prin #438 (merged, 6 oct): A1 gardă de diacritice + A2 semnătura editorială/E-E-A-T.
 - **PWA + alerte push [IZZ-0430/0431] — PE MAIN (#434 merged):** SW la `/sw.js`, buton instalare, alerte VAPID; fără namespace KV + 4 secrete (`infra/PUSH-SETUP.md`) rutele dau 503. Verificarea Content-Type a manifestului e mecanizată (P0.1 în #438) — de rulat pe live.
 - **Pages `izz-ro` ZOMBI — CONFIRMAT ȘTERS [IZZ-0411]:** `izz-ro.pages.dev` returnează `000` [IZZ-0366, 0395].
