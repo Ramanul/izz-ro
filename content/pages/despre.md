@@ -1,12 +1,12 @@
 # Despre IZZ.ro
 
-**IZZ.ro este un loc în care poți vedea, într-o singură privire, cum este relatat un eveniment în mai multe surse.**
+**IZZ.ro te ajută să înțelegi ce se întâmplă, din surse pe care le poți examina, în ritmul pe care îl alegi.**
 
 Adunăm informații din publicațiile pe care le urmărim, identificăm articolele care se referă la același subiect și le reunim într-o singură știre IZZ.ro.
 
 Fiecare subiect are un titlu clar, un rezumat scris în cuvinte proprii și sursele care au relatat informația, cu link direct către articolele originale.
 
-Ideea este simplă: **un subiect, toate sursele relevante într-un singur loc.**
+Ideea este simplă: **un subiect, relatările disponibile într-un singur loc.** Nu urmărim toate publicațiile și nu garantăm o imagine completă a fiecărui eveniment. Principiile și limitele serviciului sunt explicate în pagina [Principiile IZZ](/principii/).
 
 ## Cum funcționează
 
@@ -42,6 +42,8 @@ IZZ.ro urmărește aceste relatări și le grupează în funcție de subiect, as
 
 Pentru ilustrarea articolelor folosim grafică generată pentru IZZ.ro.
 
+Această grafică ilustrează subiectul; nu este o fotografie documentară a evenimentului și nu dovedește faptele relatate.
+
 Pentru portretele persoanelor publice folosim imagini disponibile prin Wikimedia Commons, în condițiile licențelor aplicabile, cu credit vizibil.
 
 ## Inteligența artificială
@@ -50,7 +52,9 @@ O parte importantă din procesul IZZ.ro este automatizată și folosește instru
 
 Acestea ne ajută să colectăm și să organizăm un volum mare de informații, să identificăm relatările despre același subiect și să pregătim variante inițiale pentru titluri și rezumate.
 
-Regulile după care funcționează sistemul sunt stabilite de un om. Criteriile de selecție, grupare, sintetizare și publicare sunt definite în cadrul proiectului și sunt verificate editorial.
+Regulile după care funcționează sistemul sunt stabilite de un om. Colectarea, gruparea, redactarea inițială și publicarea pot fi automate; existența acestor reguli nu dovedește că fiecare articol a fost citit de un om înainte de publicare. Instrumentele AI pot greși și nu acordă singure aprobarea editorială.
+
+Transformarea editorială este în lucru. Contextul suplimentar aprobat, dosarele cu istoric și marcajele detaliate de revizie sunt direcții de implementare; nu le prezentăm ca disponibile pe toate știrile. Pilotul va examina un lot delimitat, iar orice viitor marcaj de revizie trebuie să arate ce a fost efectiv examinat. Aprobarea unui bloc nu va certifica automat întregul articol sau toate afirmațiile surselor.
 
 Mai multe detalii despre proces sunt prezentate în pagina [Cum sintetizăm](/legal/method/).
 
@@ -68,7 +72,9 @@ Agențiile de presă sunt în afara fluxului de surse urmărit de IZZ.ro, având
 
 ## Cine răspunde editorial
 
-Răspunderea editorială pentru tot ce rămâne publicat aparține **Redacției IZZ.ro**. Regulile de selecție, de sinteză și de corecție sunt stabilite de un om și verificate zilnic; articolele generate automat sunt citite, corectate sau retrase după publicare, după procedura din pagina [Corecții](/legal/corrections/).
+Răspunderea editorială pentru tot ce rămâne publicat aparține **Redacției IZZ.ro**, operată de Alexandru Nicolae Stanciu. Proprietarul stabilește regulile și răspunde pentru aprobarea contextului editorial și pentru deciziile de corecție sau retragere. Procedura este explicată în pagina [Corecții](/legal/corrections/).
+
+Nu promitem revizie umană zilnică a fiecărui articol automat și nu prezentăm întregul flux drept verificat integral. Capacitatea de examinare este limitată. Existența surselor sau a unei reguli editoriale nu înseamnă că întregul material a fost verificat de un om.
 
 Operatorul proiectului este Alexandru Nicolae Stanciu (persoană fizică, România). Pentru semnalări, corecții sau întrebări: **contact@izz.ro**.
 
@@ -88,4 +94,4 @@ Pentru întrebări, sugestii, corectarea unor erori sau sesizări privind dreptu
 
 **contact@izz.ro**
 
-Mai multe informații sunt disponibile în paginile [Cum sintetizăm](/legal/method/), [Surse & originalitate](/surse/), [Contact](/legal/contact/) și [Drepturi de autor](/legal/takedown/).
+Mai multe informații sunt disponibile în paginile [Principiile IZZ](/principii/), [Cum sintetizăm](/legal/method/), [Surse & originalitate](/surse/), [Contact](/legal/contact/) și [Drepturi de autor](/legal/takedown/).
