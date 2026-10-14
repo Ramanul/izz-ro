@@ -20,7 +20,7 @@ from xml.sax.saxutils import escape as xml_escape
 from jinja2 import Environment, FileSystemLoader, select_autoescape
 from slugify import slugify
 
-from . import config, covers, geo, htmlart, pagefind_index
+from . import config, covers, editorial, geo, htmlart, pagefind_index
 from .select import (_dedup, _dedup_sources, _diversify, _entity_index,
                      _pick_hero, _quality_gate, anunt_oficial_fara_corp, filtru_cautare_rapida,
                      publicitar_la_sursa, titlu_afisare)
@@ -1017,6 +1017,11 @@ def build(articles: list, mod: dict | None = None) -> None:
         # articolul. Computat o dată aici, citit de article.html.
         a["publicitar_la_sursa"] = publicitar_la_sursa(a)
     assign_slugs(articles)
+    # Validate the catalog before deleting any previously generated output.
+    annotations = editorial.load_annotations()
+    editorial_errors = editorial.validate_annotations(annotations, articles)
+    if editorial_errors:
+        raise editorial.EditorialError("\n".join(editorial_errors))
     # data formatata e artefact de AFISARE, nu identitate: se recalculeaza la fiecare randare
     # si nu are ce cauta in stare (`assign_slugs` ruleaza acum si inainte de `state.save`).
     for a in articles:
@@ -1068,6 +1073,10 @@ def build(articles: list, mod: dict | None = None) -> None:
         by_date = by_date[:incap]
 
     _ataseaza_legaturi(by_date)
+    by_date = [editorial.apply_view(a, annotations) for a in by_date]
+    _write(os.path.join(OUT_DIR, "editorial-report.json"),
+           json.dumps(editorial.catalog_report(annotations, by_date),
+                      ensure_ascii=False, sort_keys=True, indent=2))
 
     # Dupa taierea ferestrei: lista de judet trebuie sa fie exact ce se publica.
     _write_harta_pages(by_date)

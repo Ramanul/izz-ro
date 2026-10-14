@@ -1,0 +1,28 @@
+<section aria-labelledby="editorial-context-title">
+  <h2 id="editorial-context-title">Context documentat · pilot</h2>
+  <p>{% if a.editorial.review_kind == 'human' %}Acest bloc de context a fost revizuit de un editor uman{% else %}Acest bloc de context a fost documentat cu asistență AI; nu reprezintă o revizie umană{% endif %} · <time datetime="{{ a.editorial.reviewed_at }}">{{ a.editorial.reviewed_at[:10] }}</time>. Revizia privește numai afirmațiile și probele de mai jos.</p>
+  <details class="source-title">
+    <summary>Afirmații, probe și ce rămâne neclar</summary>
+    <h3>Afirmații și calificări</h3>
+    <ul>
+      {% for claim in a.editorial.claims %}
+      <li><strong>{{ claim.label }}:</strong> {{ claim.text }}
+        {% for ref in claim.evidence_ids %}<a href="#editorial-evidence-{{ ref }}">Proba {{ loop.index }}</a>{% endfor %}
+      </li>
+      {% endfor %}
+    </ul>
+    <h3>Probe examinate</h3>
+    <ol>
+      {% for evidence in a.editorial.evidence %}
+      <li id="editorial-evidence-{{ evidence.id }}">
+        <p>{{ evidence.role }}. Locul examinat: {{ evidence.locator }}.</p>
+        <p>{% if evidence.scheme == 'https' %}<a href="https://{{ evidence.destination }}" target="_blank" rel="noopener noreferrer">Deschide pagina examinată</a>{% elif evidence.scheme == 'http' %}<a href="http://{{ evidence.destination }}" target="_blank" rel="noopener noreferrer">Deschide pagina examinată</a>{% endif %} · examinată la <time datetime="{{ evidence.verified_at }}">{{ evidence.verified_at[:10] }}</time>.</p>
+      </li>
+      {% endfor %}
+    </ol>
+    {% if a.editorial.uncertainties %}
+    <h3>Ce nu știm</h3>
+    <ul>{% for item in a.editorial.uncertainties %}<li>{{ item.question }} Ce ar clarifica: {{ item.needed }}</li>{% endfor %}</ul>
+    {% endif %}
+  </details>
+</section>

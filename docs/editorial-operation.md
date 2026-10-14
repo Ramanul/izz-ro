@@ -78,3 +78,22 @@ protecție spirituală sau transformarea personală a cititorului.
 La închiderea fiecărei felii se raportează separat: scris în cod, verificat local și
 confirmat pe live. O funcție se trece din angajament în comportament disponibil doar
 după verificarea ei efectivă și actualizarea explicației publice.
+
+## Pilotul de context documentat
+
+`content/editorial/annotations.json` este un catalog manual. Pentru fiecare bloc se
+consemnează articolul, tipul real al reviziei, data, amprenta intrării, afirmațiile,
+adresa și locul exact al probelor examinate, plus ce lipsește. `kind=documentary`
+este documentare asistată de AI și nu se etichetează ca revizie umană. Identitatea
+internă a revizorului nu se exportă în HTML sau în raportul public.
+
+Înainte de randare: `python tools/validate_editorial.py`. Raport fără colectare sau
+apeluri AI: `python tools/editorial_report.py`. Randarea emite și
+`/editorial-report.json`, cu acoperire numărător/numitor din articolele publicabile.
+O amprentă schimbată ascunde contextul și este numărată la `needs_review`; nu
+modificăm aprobarea automat. Un catalog invalid oprește randarea înainte de golirea
+rezultatului anterior. Articolele fără adnotări își păstrează prezentarea.
+
+Pilotul inițial examinează numai pagina Primăriei Ineu și prezența legăturii spre
+registrul trimestrului III 2026, fără a verifica valorile din PDF. Nu se promite
+documentare continuă, confirmare independentă sau revizia umană a întregii știri.
