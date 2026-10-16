@@ -108,3 +108,30 @@ def test_judetul_numit_in_text_ramane_mai_tare_decat_localitatea():
     item = _locate(source="alba24", processed_by="gemini",
                    title="Investiții în județul Alba", teaser="Un furnizor din Mediaș a câștigat.")
     assert item["county"] == "ALBA"
+
+
+# --- 3. judetul DECLARAT in catalog bate subsirul din id (2026-10-16) ----------------
+
+def test_judetul_declarat_in_catalog_bate_idul_fara_judet():
+    """14 din 20 de ziare judetene nu-si au judetul in id: harta le trata ca surse nationale."""
+    for sursa, judet in (("bihon", "BIHOR"), ("pressalert", "TIMIS"), ("tion", "TIMIS"),
+                         ("zcj", "CLUJ"), ("turnulsfatului", "SIBIU"), ("opiniatm", "TIMIS")):
+        assert bhd.source_county(sursa, KEYS) == judet, sursa
+
+
+def test_harta_si_pipeline_au_acelasi_judet_al_sursei():
+    """Harta nu are voie sa aiba alt contract decat `geo.judet_sursa` pentru acelasi id."""
+    from generator import config, geo
+    chei = list(bhd.load_json(bhd.MAP).get("judete") or {})
+    for sursa, meta in config.SOURCES.items():
+        if meta.get("judet"):
+            assert bhd.source_county(sursa, chei) == geo.judet_sursa(sursa), sursa
+
+
+def test_orice_ziar_judetean_are_judet():
+    """Garda de clasa: un ziar JUDETEAN fara judet (nici declarat, nici in id) cade pe harta
+    pe orice cuvant care seamana cu o localitate — cazul b365 („Berceni" -> SIBIU)."""
+    from generator import config, geo
+    fara = [k for k, v in config.SOURCES.items()
+            if v.get("category") == "judetean" and not geo.judet_sursa(k)]
+    assert not fara, f"surse judetene fara judet in config.SOURCES: {fara}"
