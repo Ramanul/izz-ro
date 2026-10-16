@@ -351,3 +351,25 @@ def test_butonul_de_instalare_dispare_definitiv_dupa_instalare_sau_refuz():
     assert js.count("refuza()") >= 2, (
         "refuzul trebuie consemnat și la ×, și la dismiss, nu doar la unul din ele")
     assert "dejaInstalata()" in js, "în aplicația deja instalată butonul n-are ce căuta"
+
+
+def test_activele_versionate_nu_sunt_servite_din_alta_versiune():
+    """Regresia din 2026-10-16: cheia FARA `?v=` facea SW-ul sa raspunda la styles.css?v=NOU
+    cu copia VECHE — HTML nou peste CSS vechi (coperta cu portret rupta pe /extern/)."""
+    sw = _sw()
+    cheie = sw.split("function cheie(request)")[1].split("}")[0]
+    assert "pathname" not in cheie, "cheia de cache taie query-ul: ?v= nu mai sparge nimic"
+    handler = sw.split("self.addEventListener('fetch'")[1]
+    assert "searchParams.has('v')" in handler and "activVersionat" in handler
+    activ = sw.split("async function activVersionat")[1].split("\n}\n")[0]
+    # alta versiune DOAR fara retea: ignoreSearch apare dupa fetch, nu inainte
+    assert activ.index("fetch(request)") < activ.index("ignoreSearch")
+
+
+def test_paginile_merg_pe_retea_intai_cu_termen():
+    sw = _sw()
+    assert re.search(r"const TERMEN_RETEA = \d+;", sw)
+    handler = sw.split("self.addEventListener('fetch'")[1]
+    assert "reteaIntai(request" in handler, (
+        "o pagina servita intai din cache arata stirile de la vizita trecuta")
+    assert "const SHELL = 'izz-shell-v1'" not in sw, "cache-urile v1 tin CSS amestecat: se sterg"

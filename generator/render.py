@@ -171,9 +171,14 @@ def _portret(portraits: dict, name: str) -> dict | None:
     rel = rec.get("img") or ""
     if not rel:
         return None
+    inc = htmlart.incadrare_portrete().get(rel) or {}
+    if inc.get("respins"):
+        # poza de grup sau fata de cativa pixeli: sub numele unui om, ar arata pe altcineva
+        # sau pe nimeni (tools/incadrare_portrete.py)
+        return None
     dst = os.path.join(OUT_DIR, rel)
     if os.path.exists(dst) or _use_media(os.path.join(MEDIA_DIR, rel), dst):
-        return rec
+        return {**rec, "poz": inc.get("poz")} if inc.get("poz") else rec
     return None
 
 
@@ -1338,6 +1343,14 @@ def build(articles: list, mod: dict | None = None) -> None:
                       if slugify(e)[:60] in ents]
             people = []
             for e in (a.get("entities") or []):
+                # „In imagini" arata oamenii din stire, nu omonimii lor: entitatea AI
+                # „Jair Bolsonaro" pe o stire despre Flavio Bolsonaro iese de aici
+                # (htmlart.persoana_potrivita). Spre deosebire de coperta, aici ajunge
+                # ca persoana sa fie in corp, nu neaparat in titlu.
+                rec = portraits.get(_norm_name(e)) or {}
+                if not (htmlart.persoana_potrivita(a, e, in_titlu=False)
+                        or htmlart.persoana_potrivita(a, rec.get("name") or "", in_titlu=False)):
+                    continue
                 p = _portret(portraits, e)
                 if p:
                     s = slugify(e)[:60]

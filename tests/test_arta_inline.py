@@ -191,7 +191,8 @@ def test_stil_inline_include_doar_portrete_fara_obligatie_de_credit(monkeypatch)
         "_PORTRETE_LIBERE",
         {"donald trump": {"img": "portraits/donald-trump.jpg", "name": "Donald Trump"}},
     )
-    a_pd = _art(category="externe", entities=["Donald Trump"])
+    # Persoana e in TITLU: coperta poarta chipul celui despre care e stirea (persoana_potrivita).
+    a_pd = _art(category="externe", title="Donald Trump anunță tarife noi", entities=["Donald Trump"])
     s_pd = htmlart.stil_inline(a_pd)
     assert s_pd.get("portret") == {"img": "portraits/donald-trump.jpg", "name": "Donald Trump"}
     html = str(_macro()({"art_style": s_pd}))

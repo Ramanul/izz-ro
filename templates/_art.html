@@ -42,7 +42,7 @@
   <span class="art-brand art-brand--jos">izz.ro</span>
   {%- endif %}
   {%- if s.harta %}<div class="art-harta"><svg viewBox="0 0 330 300" aria-hidden="true" focusable="false"><g transform="{{ s.harta.transform }}"><path d="{{ s.harta.d }}" stroke-width="{{ s.harta.sw }}" stroke-linejoin="round"/></g></svg></div>
-  {%- elif s.portret %}<div class="art-portret-wrap"><img class="art-portret" src="/{{ s.portret.img }}" alt="{{ s.portret.name }}" loading="lazy" decoding="async" width="160" height="160"></div>{% endif %}
+  {%- elif s.portret %}{% set t = s.portret.taiere %}<div class="art-portret-wrap"><img class="art-portret{% if t %} art-portret--fata{% endif %}" src="/{{ s.portret.img }}" alt="{{ s.portret.name }}" loading="lazy" decoding="async" width="160" height="160"{% if t %} style="--pw:{{ t.pw }}%;--px:{{ t.px }}%;--py:{{ t.py }}%"{% endif %}></div>{% endif %}
   <div class="art-grain"></div>
 </div>
 {%- endif %}{% endmacro %}
