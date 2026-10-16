@@ -15,7 +15,7 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 if ROOT not in sys.path:
     sys.path.insert(0, ROOT)
 
-from generator import geo, moderation
+from generator import config, geo, moderation
 from generator.util import title_tokens
 
 ARTICLES = os.path.join(ROOT, "data", "articles.json")
@@ -45,6 +45,8 @@ AMBIGUE = {
     "LUNA", "SAMBATA", "ROMAN", "BALA", "BANCA", "CURTEA", "VOLUNTARI", "TRAIAN",
     "VLADIMIR", "OVIDIU", "CRISTIAN", "BACIU", "DRAGUS", "CIOBANU", "FLORICA",
     "CATALINA", "MAIA", "AVRAM IANCU", "GEORGE ENESCU", "MIHAI BRAVU", "GRADINARI",
+    # „Brigada 2 Vanatori de Munte" (Brasov) ajungea in MEHEDINTI — masurat 2026-10-16.
+    "VANATORI",
 }
 # Cuvinte care pot fi localități în SIRUTA, dar apar frecvent în textele jurnalistice.
 # Fără un județ deja confirmat prin titlu sau sursă, nu reprezintă o bază suficientă pentru
@@ -231,8 +233,93 @@ _RE_REGIUNI = re.compile("|".join(
 
 
 def source_county(source: str, county_keys: list[str]) -> str | None:
+    # Judetul DECLARAT in catalog (`config.SOURCES[...]["judet"]`) castiga: e acelasi contract
+    # ca `geo.judet_sursa`, pe care il folosesc restul pipeline-ului. Subsirul din id ramane
+    # doar fallback, pentru sursele care isi codeaza judetul in nume (`pl_cluj_...`, `alba24`).
+    # MASURAT pe starea din 2026-10-16 (598 de articole pe harta): 14 din cele 20 de ziare cu
+    # judet declarat (bihon, pressalert, tion, zcj, opiniatm...) nu-l aveau in id, deci harta
+    # le trata ca surse fara judet si le plasa dupa orice nume de localitate din text —
+    # „spitalul din Oradea" (bihon) ajungea in DAMBOVITA prin cuvantul „ferestrelor".
+    # Cu catalogul: 4 articole se muta, toate 4 corecte, si 6 revin pe harta.
+    declarat = norm(str((config.SOURCES.get(source) or {}).get("judet") or ""))
+    if declarat:
+        potrivit = next((c for c in county_keys if norm(c) == declarat), None)
+        if potrivit:
+            return potrivit
     t = _RE_REGIUNI.sub(" ", norm(source))
     return next((c for c in sorted(county_keys, key=len, reverse=True) if norm(c) in t), None)
+
+
+# Context in fata numelui potrivit. Doar in fata: in romana marca de loc precede numele
+# („Primaria X", „din X", „strada X"). MASURAT pe starea din 2026-10-16: fara context,
+# candidatul cu numele cel mai lung castiga, si 9 din 82 de plasari facute doar din numele
+# localitatii erau gresite — numele era de fapt o strada (Decebal), o persoana (primarul
+# Baluta) sau un cuvant comun (Ferestre, din „ferestrelor"), iar localitatea reala, numita
+# cu marca administrativa („Primaria Giroc", „Municipiul Lugoj"), pierdea fiindca era mai scurta.
+_MARCA_ADMIN = re.compile(
+    r"(?:PRIMARIA|PRIMARIEI|MUNICIPIUL|MUNICIPIULUI|ORASUL|ORASULUI|COMUNA|COMUNEI|"
+    r"LOCALITATEA|LOCALITATII|SATUL|SATULUI|CONSILIUL LOCAL|CONSILIULUI LOCAL) $")
+TITLU_BONUS = 1
+_MARCA_LOC = re.compile(r"(?:\bDIN|\bLA|\bIN|\bSPRE|\bLANGA|\bDE LANGA|\bDINSPRE) $")
+# Dupa aceste cuvinte urmeaza o strada, un cartier sau o persoana, nu un UAT.
+_MARCA_NELOC = re.compile(
+    r"(?:STRADA|STRAZII|STR|BULEVARDUL|BULEVARDULUI|BD|CALEA|CALEII|SOSEAUA|SOSELEI|ALEEA|"
+    r"PARCUL|PARCULUI|PIATA|PIETEI|SPLAIUL|INTRAREA|CARTIERUL|CARTIERULUI|"
+    r"RAUL|RAULUI|PARAUL|PARAULUI|LACUL|LACULUI|MUNTII|MUNTILOR|MASIVUL|MASIVULUI|"
+    r"PRIMARUL|PRIMARULUI|PRIMARITA|PREFECTUL|PREFECTULUI|MINISTRUL|MINISTRULUI|DEPUTATUL|"
+    r"SENATORUL|DIRECTORUL|PRESEDINTELE|PRESEDINTELUI|DOMNUL|DOAMNA|PREOTUL|PARINTELE) $")
+
+
+def _marca(name: str, padded: str) -> int:
+    """Marca numelui, peste toate aparitiile: cea mai buna marca POZITIVA (+2 administrativ,
+    +1 loc) daca exista; altfel -2 daca macar o aparitie e non-loc („primarului Daniel Baluta"
+    nu devine loc doar fiindca a doua mentiune n-are marca); altfel 0."""
+    best = None
+    neloc = False
+    start = 0
+    needle = f" {name} "
+    while (i := padded.find(needle, start)) != -1:
+        before = padded[max(0, i - 24):i + 1]
+        if _MARCA_ADMIN.search(before):
+            scor = 2
+        elif _MARCA_NELOC.search(before):
+            scor = -2
+            neloc = True
+        elif _MARCA_LOC.search(before):
+            scor = 1
+        else:
+            scor = 0
+        best = scor if best is None else max(best, scor)
+        start = i + 1
+    if best and best > 0:
+        return best
+    return -2 if neloc else 0
+
+
+def plat_cu_majuscule(value: str) -> str:
+    """Ca `norm`, dar pastreaza majusculele: „Primăria Giroc" -> „ Primaria Giroc "."""
+    value = unicodedata.normalize("NFKD", value or "")
+    value = "".join(ch for ch in value if not unicodedata.combining(ch))
+    return f" {re.sub(r'[^A-Za-z0-9]+', ' ', value).strip()} "
+
+
+def _ca_nume_propriu(name: str, cased: str) -> bool:
+    """Numele apare macar o data cu majuscula initiala. Romana scrie titlurile cu litera mica
+    (sentence case), deci un cuvant comun care coincide cu o localitate — „un foisor",
+    „ferestre", „sarbatoarea" — e scris cu litera mica, iar localitatea reala, cu majuscula."""
+    if not cased:
+        return True
+    for m in re.finditer(rf"(?i)(?<= ){re.escape(name)}(?= )", cased):
+        if m.group(0)[0].isupper():
+            return True
+    return False
+
+
+def _scor_context(name: str, padded: str, padded_title: str = "", cased: str = "") -> int:
+    """Marca + TITLU_BONUS daca numele e in titlu: titlul spune despre ce e stirea, teaserul
+    adauga context („Uzina IAR Ghimbav" in titlu bate „producatorul ... din Brasov")."""
+    scor = _marca(name, padded) + (TITLU_BONUS if padded_title and f" {name} " in padded_title else 0)
+    return scor if _ca_nume_propriu(name, cased) else scor - 2
 
 
 def locality_from_text(
@@ -240,8 +327,11 @@ def locality_from_text(
     source_county: str | None,
     by_name: dict[str, list[dict]],
     points: dict[str, dict] | None = None,
+    title: str = "",
 ) -> dict | None:
     padded = f" {norm(text)} "
+    padded_title = f" {norm(title)} " if title else ""
+    cased = plat_cu_majuscule(text)
     candidates = []
     for name, records in by_name.items():
         if len(name) < 4 or f" {name} " not in padded:
@@ -269,7 +359,11 @@ def locality_from_text(
         if len(mapped) == 1:
             candidates.append(mapped[0])
             continue
-    candidates.sort(key=lambda r: len(r["name"]), reverse=True)
+    # Contextul primeaza asupra lungimii numelui: „Primaria Giroc ... strada Decebal" e despre
+    # Giroc, desi DECEBAL e mai lung. Lungimea ramane departajarea la scor egal (comportamentul
+    # de dinainte), deci un text fara nicio marca se rezolva exact ca inainte.
+    candidates.sort(key=lambda r: (_scor_context(r["name"], padded, padded_title, cased), len(r["name"])),
+                    reverse=True)
     return candidates[0] if candidates else None
 
 
@@ -345,7 +439,8 @@ def locate(
     # Gasita de `tools/integration_check.py`, recuperat din 7749e192 (Manus AI) in aceeasi trecere.
     oficial = article.get("processed_by") == "official"
     county = (sc or tc) if oficial else (tc or sc)
-    locality = locality_from_text(text, county, by_name, points)
+    titlu = str(article.get("title") or "")
+    locality = locality_from_text(text, county, by_name, points, title=titlu)
     # Judetul dedus DOAR din numele sursei este cea mai slaba dovada disponibila: spune unde e
     # redactia, nu unde s-a intamplat fapta. Cand textul nu numeste niciun judet SI nicio
     # localitate din judetul sursei, dar numeste una neambigua din alt judet, aceea decide.
@@ -357,8 +452,13 @@ def locate(
     # Sursele OFICIALE sunt excluse deliberat: o primarie scrie despre teritoriul ei, iar alt
     # oras numit in text e context (echipa oaspete, firma contractanta) — exact regula de mai sus.
     if not oficial and sc and not tc and not locality:
-        alta = locality_from_text(text, None, by_name, points)
-        if alta and norm(alta["county"]) != norm(sc):
+        alta = locality_from_text(text, None, by_name, points, title=titlu)
+        # Sa muti o stire din judetul DECLARAT al redactiei cere o marca de loc („din X",
+        # „Primaria X") sau numele scris ca nume propriu („IRUM Reghin"), nu un cuvant comun:
+        # „un foisor" (gazebo) mutase in DOLJ o stire b365 din Berceni (masurat 2026-10-16).
+        marca_alta = _marca(alta["name"], f" {norm(text)} ") if alta else -1
+        if alta and norm(alta["county"]) != norm(sc) and marca_alta >= 0 and (
+                marca_alta > 0 or _ca_nume_propriu(alta["name"], plat_cu_majuscule(text))):
             county, locality = alta["county"], alta
             # Judetul nu mai vine de la sursa, ci de la localitatea din text: si eticheta de
             # incredere trebuie sa spuna asta, altfel `stats` raporteaza o certitudine falsa.

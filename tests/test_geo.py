@@ -214,7 +214,12 @@ def test_toate_ziarele_judetene_declara_un_judet_cunoscut():
         if not declarat:
             continue
         judet = geo.judet_sursa(cheie)
-        assert judet in geo._sate(), f"{cheie}: judetul '{declarat}' nu exista in sate_judet.csv"
+        # Codul canonic e cel din `_judete_normalizate` (acelasi pe care il dau sursele
+        # `pl_bucuresti_*`). Bucurestiul n-are sate, iar gazetteerul il cheama „MUNICIPIUL
+        # BUCURESTI", deci verificarea doar pe `_sate()` respingea un judet real (b365).
+        cunoscute = set(geo._judete_normalizate().values())
+        assert judet in cunoscute, f"{cheie}: judetul '{declarat}' nu e un cod de judet cunoscut"
+        assert judet in geo._sate() or judet == "BUCURESTI", f"{cheie}: '{declarat}' lipseste din sate_judet.csv"
 
 
 def test_gazetteerul_de_sate_acopera_toate_judetele():

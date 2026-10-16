@@ -83,7 +83,7 @@ SOURCES = {
     # sate — iar `test_toate_ziarele_judetene_declara_un_judet_cunoscut` interzice exact asta, pe
     # buna dreptate: un `judet` care nu deschide nimic e o declaratie pe care datele n-o sustin,
     # si tace in loc sa dea eroare. Nu-l „completa" ca sa arate ca celelalte; testul pica.
-            "b365":         {"name": "B365",                 "url": "https://b365.ro/feed/",                  "category": "judetean"},
+            "b365":         {"name": "B365",                 "url": "https://b365.ro/feed/",                  "category": "judetean", "judet": "BUCURESTI"},
     # Saptamanale cerute explicit de owner. `gazetadecluj` e SINGURUL feed din val cu bozo=1
     # (SAXParseException); feedparser recupereaza 9 intrari si fetch.py tolereaza asta, dar e la
     # o modificare de XML distanta de zero. Daca apare vreodata ca „200 dar 0 articole ...
