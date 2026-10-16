@@ -10,7 +10,7 @@ grup, Luca Marchegiani avea fata la marginea dreapta (x=0.75). Ochiul nu poate r
 in CSS fara sa stie unde e fata; detectorul da exact informatia care lipsea.
 
 Iesire: `data/portrete_incadrare.json`, cheiat pe calea relativa a imaginii (`portraits/x.jpg`):
-  {"sha1": ..., "fete": n,
+  {"sha256": ..., "fete": n,
    "taiere": {"pw": 245.3, "px": -12.1, "py": -20.4},   # medalion: decupaj exact, in %
    "poz": "50% 31%",                                       # `object-position` pt. cover
    "respins": "grup" | "fata-mica"}                        # nu se arata deloc
@@ -46,8 +46,9 @@ COBORARE = 0.10           # centrul decupajului coboara 10% din inaltimea fetei 
 SCOR_MIN = 0.6
 
 
-def _sha1(path: str) -> str:
-    h = hashlib.sha1()
+def _sha(path: str) -> str:
+    """Amprenta fisierului: detecteaza un portret inlocuit sub acelasi nume."""
+    h = hashlib.sha256()
     with open(path, "rb") as fh:
         for bloc in iter(lambda: fh.read(65536), b""):
             h.update(bloc)
@@ -81,10 +82,10 @@ def _incarca() -> dict:
 
 
 def de_incadrat(tot: bool = False) -> dict[str, str]:
-    """Portretele fara incadrare sau al caror fisier s-a schimbat (alt sha1)."""
+    """Portretele fara incadrare sau al caror fisier s-a schimbat (alta amprenta)."""
     gata = {} if tot else _incarca()
     return {rel: p for rel, p in _imagini().items()
-            if (gata.get(rel) or {}).get("sha1") != _sha1(p)}
+            if (gata.get(rel) or {}).get("sha256") != _sha(p)}
 
 
 def decide(W: int, H: int, fete: list[tuple[float, float, float, float]]) -> dict:
@@ -151,7 +152,7 @@ def main(argv: list[str]) -> int:
         if d is None:
             continue
         rez = decide(*d)
-        rez["sha1"] = _sha1(p)
+        rez["sha256"] = _sha(p)
         gata[rel] = rez
         respinse += "respins" in rez
     # Doar cheile care mai au fisier: un portret sters nu lasa incadrare orfana.
