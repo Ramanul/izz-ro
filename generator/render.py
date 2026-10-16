@@ -686,6 +686,14 @@ def _render_harta_shell(source: str, canonical_path: str, county_code: str | Non
                      "instrucțiunea de județ")
     if stiri_html is not None:
         replace_once(r'<li class="loading">Se încarcă…</li>', stiri_html, "lista de știri")
+    # ?v=<hash> pe JS/CSS-ul hartii, ca la restul activelor (`_asset_ver`): nevesionate,
+    # service workerul le servea stale-while-revalidate, deci HTML-ul nou al hartii pleca
+    # la primul load cu JS-ul de dinainte de deploy (citit in static/sw.js, 2026-10-16).
+    for nume in ("harta-stiri.js", "harta-stiri.css"):
+        ver = _content_ver(os.path.join(STATIC_DIR, "harta-stiri", nume))
+        if ver:
+            replace_once(rf'"/static/harta-stiri/{re.escape(nume)}"',
+                         f'"/static/harta-stiri/{nume}?v={ver}"', f"referința la {nume}")
     jsonld = _harta_jsonld(canonical_path, title, description, county_label or None)
     text = _harta_insert_head(text, '  <script id="harta-jsonld" type="application/ld+json">' + jsonld + '</script>')
     return text

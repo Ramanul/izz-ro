@@ -373,3 +373,20 @@ def test_paginile_merg_pe_retea_intai_cu_termen():
     assert "reteaIntai(request" in handler, (
         "o pagina servita intai din cache arata stirile de la vizita trecuta")
     assert "const SHELL = 'izz-shell-v1'" not in sw, "cache-urile v1 tin CSS amestecat: se sterg"
+
+
+def test_datele_hartii_nu_trec_prin_cache_ul_service_workerului():
+    """map.json e nevesionat si se schimba la fiecare rulare: prin stale-while-revalidate,
+    harta arata la prima deschidere datele de la vizita trecuta."""
+    sw = _citeste(os.path.join(STATIC, "sw.js"))
+    garda = sw.index("'/static/harta-stiri/data/'")
+    assert garda < sw.index("url.pathname.startsWith('/static/')"), (
+        "excluderea datelor hartii trebuie sa preceada ramura /static/ (altfel n-are efect)")
+
+
+def test_activele_hartii_sunt_versionate_in_pagina_randata():
+    from generator import render
+    sursa = _citeste(os.path.join(STATIC, "harta-stiri", "index.html"))
+    pagina = render._render_harta_shell(sursa, "/harta/")
+    for nume in ("harta-stiri.js", "harta-stiri.css"):
+        assert re.search(rf'"/static/harta-stiri/{re.escape(nume)}\?v=[0-9a-f]{{8}}"', pagina), nume

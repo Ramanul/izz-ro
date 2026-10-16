@@ -29,7 +29,10 @@
      · domenii straine (n-avem ce cache-ui, si am deveni o problema de confidentialitate);
      · /push/* — abonarea e o operatiune, nu un document;
      · /build.json, /feed.xml, sitemapuri: sunt date vii, citite de unelte, si un raspuns
-       servit din cache ar minti despre versiunea publicata.
+       servit din cache ar minti despre versiunea publicata;
+     · /static/harta-stiri/data/*: datele hartii (map.json, UAT-uri) sunt date vii ale
+       ultimei rulari, nevesionate — prin stale-while-revalidate, harta arata la prima
+       deschidere stirile de la vizita trecuta (citit 2026-10-16).
 
    LIMITA ASUMATA: cache-ul de articole e plafonat la MAX_ARTICOLE intrari, taiate de la cea
    mai veche. Nu e o arhiva: e „ce ai mai citit". Articolele expirate din fereastra TTL nu
@@ -201,6 +204,7 @@ self.addEventListener('fetch', (event) => {
   const url = new URL(request.url);
   if (url.origin !== self.location.origin) return;
   if (url.pathname.startsWith('/push/')) return;
+  if (url.pathname.startsWith('/static/harta-stiri/data/')) return;
 
   if (url.pathname.startsWith('/static/')) {
     // Versionat -> URL exact; nevesionat (fonturi, iconite: nume stabile) -> din cache,
