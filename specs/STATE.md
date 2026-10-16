@@ -8,7 +8,7 @@
 > Where the rest lives: `specs/regim-reguli.md` — unified audit closure ·
 > `specs/registru.tsv` — decisions · `CLAUDE.md` — canonical contract.
 
-**Updated:** 2026-10-06 (harta: basemap OpenFreeMap pe `main` prin #445; audit extern 4 oct pe `main` prin #438 [IZZ-0432])
+**Updated:** 2026-10-16 (harta: atribuire geo + nivel = precizie + map.json în afara SW [IZZ-0433])
 
 ## Open
 - **Editorial transformation, 14 Oct:** three-source reading and 12-point reconciliation complete. Principles/About published via #476 (merged). Slice B implements a limited documentary context pilot; release evidence and limits in `specs/editorial-context.md`. Dossiers, corrections, selection and reader controls remain unfinished; no claim of full live transformation.
@@ -18,7 +18,7 @@
 - **PRODUS P1/P2 — media pe carduri [IZZ-0403, 0404 → IZZ-0416; #414 merged]:** portrete PD/CC0 + siluete județ,
   `covers.py` editorial; 16 oct: portret doar pt. omul din titlu, decupat pe față, `sw.js` v2 (`specs/istoric-executie.md`). **Marcaj AI Act la prima expunere [IZZ-0420]:** trust-label «generat automat» pe card +
   meta digitalSourceType + pictograma UE Basic — amendament §4.3 adoptat, veto neexercitat [IZZ-0423].
-- **PRODUS P3 — harta: markere fără ierarhie vizuală [IZZ-0405]:** 482 evenimente, clickuri cablate; e afordanța, nu funcția.
+- **PRODUS P3 — harta: markere fără ierarhie vizuală [IZZ-0405]:** 482 evenimente, clickuri cablate; e afordanța, nu funcția. **Atribuire geo, 16 oct [IZZ-0433]:** județul declarat al sursei + localitatea după context (A/B: 8/8 județe mutate corect); nivel = precizia localizării; JS/CSS versionate, `map.json` în afara SW. **Deschis:** decizia proprietarului pe „două cifre pe județ" (re-măsurat: flux 4,1%, 9/42 județe). `harta_dom_check`: FAIL hit-test pe 2 puncte de frontieră, identic pe HEAD (#454).
 - **FEREASTRA TTL — DECIZIE EXECUTATĂ [IZZ-0421, 0424, 3 oct]:** TTL 20 → 11 → 12 (tripwire crăpat pe
   starea reală + tăietura a 4 surse tech-en, Q5). Marja: 10.665 (~2 zile). Re-evaluare la 13 când
   ingestul median coboară sub ~900/zi (automatizare lunară activă).
