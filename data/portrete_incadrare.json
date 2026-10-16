@@ -935,6 +935,11 @@
 "fete": 0,
 "sha256": "379c46ab77f2e3dcc24c57e10b72c16dd379a2754b040b40bd036ff94464d68a"
 },
+"portraits/alica-schmidt.jpg": {
+"fete": 2,
+"respins": "grup",
+"sha256": "ed04f13a5bb826fb9e95f4df55754b6f6572b0842148edcdcb0ff09b855cff77"
+},
 "portraits/alice-walton.jpg": {
 "fete": 1,
 "poz": "50% 0%",
@@ -2538,6 +2543,16 @@
 "pw": 100.0,
 "px": -0.0,
 "py": -3.32
+}
+},
+"portraits/bogdan-stancu.jpg": {
+"fete": 1,
+"poz": "50% 0%",
+"sha256": "a18b0332fc883cf11a10d6353783b82b9801e0ce3c921b0ee850ae8d446d4e25",
+"taiere": {
+"pw": 165.47,
+"px": -65.47,
+"py": -3.36
 }
 },
 "portraits/bogdan-stelea.jpg": {
@@ -10152,6 +10167,10 @@
 "py": -0.0
 }
 },
+"portraits/le-mans.jpg": {
+"fete": 0,
+"sha256": "fa3c83a1a856d7c042188a808fc55723186f11385fb18fadc315fae87c5f6711"
+},
 "portraits/leandro-paredes.jpg": {
 "fete": 1,
 "poz": "50% 0%",
@@ -16278,6 +16297,16 @@
 "py": -12.18
 }
 },
+"portraits/steven-soderbergh.jpg": {
+"fete": 3,
+"poz": "50% 0%",
+"sha256": "a788791a3cbbd2be3975312bf900e177cb40599c063c64a1a9e8e5ad4a2caf72",
+"taiere": {
+"pw": 216.38,
+"px": -57.74,
+"py": -23.37
+}
+},
 "portraits/steven-spielberg.jpg": {
 "fete": 1,
 "poz": "50% 0%",
@@ -17615,6 +17644,16 @@
 "pw": 100.0,
 "px": 0.0,
 "py": -15.21
+}
+},
+"portraits/wang-yi.jpg": {
+"fete": 1,
+"poz": "50% 16%",
+"sha256": "cf723d00db71d8f9cca6d5154597db80c4f3fa9addc0f31f0a1e7ae5cebcd31e",
+"taiere": {
+"pw": 100.0,
+"px": 0.0,
+"py": -8.3
 }
 },
 "portraits/washington-dc.jpg": {
