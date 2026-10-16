@@ -310,7 +310,24 @@ _HARTA_INLINE_CACHE: dict[str, dict | None] = {}
 _NUM = re.compile(r"-?\d+(?:\.\d+)?")
 
 _PORTRAITS_PATH = os.path.join(_ROOT, "data", "portraits.json")
+_INCADRARE_PATH = os.path.join(_ROOT, "data", "portrete_incadrare.json")
+_INCADRARE: dict[str, dict] | None = None
 _PORTRETE_LIBERE: dict[str, dict] | None = None
+
+
+def incadrare_portrete() -> dict[str, dict]:
+    """Unde e fata in fiecare portret (`tools/incadrare_portrete.py`), cheiat pe `img`.
+
+    Lipsa fisierului nu opreste nimic: fara incadrare, medalionul cade pe `center 20%` din
+    CSS — comportamentul de dinainte de 2026-10-16, deci o degradare, nu o pagina stricata."""
+    global _INCADRARE
+    if _INCADRARE is None:
+        try:
+            with open(_INCADRARE_PATH, encoding="utf-8") as f:
+                _INCADRARE = json.load(f) or {}
+        except (OSError, ValueError):
+            _INCADRARE = {}
+    return _INCADRARE
 _PORTRETE_CERUTE: set[str] = set()
 _CREDIT_FREE_RE = re.compile(r"^(cc0|cc[ -]?zero|public domain|pd([ -]|$))", re.I)
 
@@ -330,6 +347,7 @@ def _portrete_libere() -> dict[str, dict]:
     global _PORTRETE_LIBERE
     if _PORTRETE_LIBERE is None:
         out: dict[str, dict] = {}
+        incadrare = incadrare_portrete()
         try:
             with open(_PORTRAITS_PATH, encoding="utf-8") as f:
                 raw = json.load(f) or {}
@@ -340,16 +358,155 @@ def _portrete_libere() -> dict[str, dict]:
                 lic = (v.get("license") or "").strip()
                 if not img or not _CREDIT_FREE_RE.match(lic):
                     continue
+                inc = incadrare.get(img) or {}
+                if inc.get("respins"):
+                    # poza de grup / fata de cativa pixeli: coperta generata e mai onesta
+                    continue
                 if os.path.exists(os.path.join(_ROOT, "media", img)):
-                    out[k] = {"img": img, "name": (v.get("name") or k).strip()}
+                    out[k] = {"img": img, "name": (v.get("name") or k).strip(),
+                              "taiere": inc.get("taiere")}
         except (OSError, ValueError):
             out = {}
         _PORTRETE_LIBERE = out
     return _PORTRETE_LIBERE
 
 
+# ---- persoana potrivita stirii --------------------------------------------------
+# Sesizarea proprietarului 2026-10-16 pe /extern/: copertile purtau chipul primei entitati
+# care avea portret, oricat de marginala. Masurat pe `data/articles.json`, in aceeasi zi:
+# Trump pe „Ucraina ar fi epuizat stocul de rachete Patriot…” (numit doar in rezumat), Trump
+# pe „Presedintele Zelenski cere sprijin…” (alt om in titlu), Jair Bolsonaro pe o stire despre
+# FIUL lui, Flavio. O fotografie pe coperta spune „despre EL e vorba"; daca nu e adevarat,
+# minte mai tare decat orice eticheta. Regula de mai jos poate doar SCOATE portrete — eroarea
+# ei cade pe coperta generata, niciodata pe o fata gresita.
+_PARTICULE = frozenset({"da", "de", "del", "der", "di", "dos", "du", "la", "le", "van", "von", "bin", "al", "el"})
+# Cuvinte care stau cu majuscula inaintea unui nume fara sa fie prenumele altcuiva: functii
+# si substantive la inceput de propozitie („Administratia Trump…"). Inceputul de propozitie
+# NU e scutit altfel: masurat pe titlurile din `data/articles.json` (2026-10-16), cuvintele cu
+# majuscula din fata unui nume de familie, la inceput de titlu, erau „Administratia" (6) si
+# prenumele ALTOR oameni — „Cristela Georgescu", „North West", „Flavio Bolsonaro".
+_FUNCTII = frozenset({
+    "presedintele", "presedinta", "premierul", "premiera", "liderul", "lidera", "ministrul",
+    "ministra", "fostul", "fosta", "regele", "regina", "printul", "printesa", "papa",
+    "cancelarul", "senatorul", "senatoarea", "generalul", "miliardarul", "antrenorul",
+    "jucatorul", "jucatoarea", "candidatul", "candidata", "ambasadorul", "secretarul",
+    "guvernatorul", "primarul", "primarita", "deputatul", "deputata", "comisarul", "seful",
+    "sefa", "directorul", "fondatorul", "actorul", "actrita", "cantaretul", "cantareata",
+    "liderii", "omul", "afaceristul", "magnatul", "oligarhul", "dictatorul", "vicepresedintele",
+    "purtatorul", "sportivul", "tenismanul", "tenismena", "atacantul", "portarul", "pilotul",
+    "administratia", "guvernul", "regimul", "echipa", "clubul", "familia", "era", "epoca",
+})
+_CUV = re.compile(r"[A-Za-z0-9]+(?:['’-][A-Za-z0-9]+)*")
+# `portraits.json` tine si entitati NEUMANE (SAFE_TYPES din tools/fetch_portraits.py: tari,
+# companii, aeroporturi). Pentru ele „numele de familie" nu exista: „Transilvania" dintr-un
+# titlu despre vreme nu e Banca Transilvania. Un nume care incepe cu un substantiv comun de
+# institutie sau de stat se cere INTREG, contiguu.
+_PREFIX_NEUMAN = frozenset({
+    "banca", "aeroportul", "organizatia", "universitatea", "partidul", "ministerul", "muzeul",
+    "compania", "grupul", "uniunea", "consiliul", "curtea", "fundatia", "institutul",
+    "agentia", "republica", "regatul", "federatia", "asociatia", "spitalul", "teatrul",
+    "primaria", "guvernul", "parlamentul", "biserica", "catedrala", "palatul", "castelul",
+    "stadionul", "clubul", "liga", "academia", "colegiul", "liceul", "societatea", "fondul",
+    "comisia", "autoritatea", "inspectoratul", "politia", "jandarmeria", "statele",
+    "emiratele", "arabia", "noua", "marea", "insulele", "orasul", "municipiul", "comuna",
+})
+_GEO_CATEGORII = frozenset({"local", "judetean", "regional"})
+# Numele unui om pus pe un loc sau o institutie: „strada Maica Domnului", „Liceul Mihai
+# Viteazul", „Aeroportul Henri Coanda". Stirea e despre loc — chipul omului ar minti.
+_MARCAJ_LOC = frozenset({
+    "strada", "str", "strazii", "bulevardul", "bd", "bdul", "calea", "aleea", "piata", "soseaua",
+    "intrarea", "splaiul", "cartierul", "comuna", "comunei", "satul", "orasul", "orasului",
+    "municipiul", "liceul", "liceului", "colegiul", "colegiului", "scoala", "scolii",
+    "universitatea", "universitatii", "spitalul", "spitalului", "parcul", "parcului",
+    "aeroportul", "aeroportului", "stadionul", "stadionului", "biserica", "catedrala",
+    "manastirea", "fundatia", "baza", "portul", "statia", "statiei", "podul", "sala",
+})
+
+
+def _cuvinte(text: str) -> list[tuple[str, int, int]]:
+    """(cuvant, start, end) pe textul fara diacritice — pozitii in acelasi sir."""
+    return [(m.group(0), m.start(), m.end()) for m in _CUV.finditer(text)]
+
+
+def _inceput_de_propozitie(text: str, start: int) -> bool:
+    prefix = text[:start].rstrip(" \t ")
+    return not prefix or prefix[-1] in ".!?:;\"«„“”—–(\n"
+
+
+def _tokeni_nume(nume: str) -> tuple[set[str], set[str]]:
+    """(tot numele, partea care il identifica in text). Prenumele singur NU identifica
+    („Donald" nu e Trump), deci pentru 2+ tokeni identificatorii sunt cei de dupa primul."""
+    from .util import strip_diacritics
+    tok = [t for t in _CUV.findall(strip_diacritics(nume or "")) if t]
+    toti = {t.lower() for t in tok}
+    sens = [t for t in tok if t.lower() not in _PARTICULE]
+    ident = sens[1:] if len(sens) >= 2 else sens
+    return toti, {t.lower() for t in ident if len(t) >= 3}
+
+
+def persoana_potrivita(a: dict, nume: str, *, in_titlu: bool) -> bool:
+    """`nume` e chiar persoana despre care e stirea `a`?
+
+    `in_titlu=True` (coperta): numele trebuie sa fie in TITLU — persoana pomenita doar in
+    rezumat e context, nu subiect. `in_titlu=False` (caseta „In imagini" de pe articol):
+    ajunge sa fie in titlu sau in corp.
+
+    In ambele cazuri, un nume de familie lipit de ALT prenume („Flavio Bolsonaro" pentru
+    entitatea Jair Bolsonaro) sau urmat de alt nume („Dan Barna" pentru Nicusor Dan,
+    „Trump Jr." pentru Donald Trump) inseamna omonim: niciun portret, nu o ghicire.
+    """
+    from .util import strip_diacritics
+    toti, ident = _tokeni_nume(nume)
+    if not ident:
+        return False
+    titlu = strip_diacritics(a.get("display_title") or a.get("title") or "")
+    corp = strip_diacritics(" ".join(x for x in (a.get("teaser"), a.get("synthesis")) if x))
+    plin = " ".join(_CUV.findall(strip_diacritics(nume or "")))
+    # Omonim geografic: „Mihail Kogalniceanu", „Avram Iancu", „Nicolae Balcescu" sunt si
+    # comune. Pe o stire locala/judeteana numele e, practic mereu, localitatea.
+    if (a.get("category") in _GEO_CATEGORII or a.get("judet")) \
+            and geo._index().get(plin.upper()) == "local":
+        return False
+    if plin.split(" ", 1)[0].lower() in _PREFIX_NEUMAN:
+        tipar = re.compile(r"\b" + r"\s+".join(map(re.escape, plin.split())) + r"\b", re.I)
+        return bool(tipar.search(titlu) or (not in_titlu and tipar.search(corp)))
+    gasit_in_titlu = False
+    gasit = False
+    for camp, text in (("titlu", titlu), ("corp", corp)):
+        cuv = _cuvinte(text)
+        for i, (w, st, _en) in enumerate(cuv):
+            if w.lower() not in ident:
+                continue
+            # inceputul numelui (primul token al lui, daca e lipit inainte): cine sta in fata lui?
+            j = i
+            while j > 0 and cuv[j - 1][0].lower() in toti:
+                j -= 1
+            if j > 0 and cuv[j - 1][0].lower() in _MARCAJ_LOC:
+                return False
+            # vecinul din stanga: alt prenume = alt om
+            if i > 0:
+                pw, _pst, pen = cuv[i - 1]
+                lipit = text[pen:st].strip() == ""
+                if lipit and pw[:1].isupper() and pw.lower() not in toti and pw.lower() not in _FUNCTII:
+                    return False
+            # vecinul din dreapta: „Dan Barna", „Trump Jr"
+            if i + 1 < len(cuv):
+                nw, nst, _nen = cuv[i + 1]
+                lipit = text[_en:nst].strip() == ""
+                if (lipit and nw[:1].isupper() and nw.lower() not in toti
+                        and not _inceput_de_propozitie(text, nst)):
+                    return False
+            gasit = True
+            if camp == "titlu":
+                gasit_in_titlu = True
+    return gasit_in_titlu if in_titlu else gasit
+
+
 def _portret_liber(a: dict) -> dict | None:
-    """Primul portret Public domain / CC0 potrivit unei entitati din articol, sau None."""
+    """Portretul Public domain / CC0 al persoanei despre care e stirea, sau None.
+
+    Nu „prima entitate cu portret": entitatile vin in ordinea extragerii AI, nu a importantei,
+    iar o persoana pomenita in treacat nu are ce cauta pe coperta (`persoana_potrivita`)."""
     ents = a.get("entities") or []
     if not ents:
         return None
@@ -359,7 +516,10 @@ def _portret_liber(a: dict) -> dict | None:
         return None
     for e in ents:
         key = re.sub(r"\s+", " ", strip_diacritics((e or "").strip().lower()))
-        if key in libere:
+        # Entitatea AI e scrisa ca in articolul romanesc („Zelenski"), numele din Wikidata
+        # adesea altfel („Zelensky") — oricare din doua identifica persoana in text.
+        if key in libere and (persoana_potrivita(a, e, in_titlu=True)
+                              or persoana_potrivita(a, libere[key]["name"], in_titlu=True)):
             # Inscriere, nu copiere: acest modul nu stie OUT_DIR-ul randarii.
             _PORTRETE_CERUTE.add(libere[key]["img"])
             return libere[key]

@@ -2004,3 +2004,12 @@ Contra-verificate cap-coada, ca sa nu fie re-masurate:
   la plafonul de 40 de linii: `agents.py` STERS (`IZZ-0289`). Decizii proprietar:
   `process_cluster` §10 (`IZZ-0294`), 272 KB orfane masurate dar necuratate (`IZZ-0301`),
   §12 (`IZZ-0295`), F4 (`IZZ-0296`), Axa 3 (`IZZ-0297`), arhiva (`IZZ-0298`).
+
+- **Coperți cu portret — context, încadrare, service worker (2026-10-16, sesizare proprietar pe `/extern/`).**
+  (1) `sw.js` cheia `/static/*` fără `?v=` și răspundea întâi din cache → HTML nou peste `styles.css` vechi;
+  reprodus pixel cu pixel în Chromium (pagina live + CSS de dinainte de 3 oct = captura proprietarului). Acum
+  activ versionat pe URL exact, pagini rețea-întâi 2,5 s, cache-uri v2. (2) `_portret_liber` lua prima entitate
+  cu portret: Trump pe știrea Patriot, Jair în loc de Flavio Bolsonaro, comuna Mihail Kogălniceanu, strada
+  Maica Domnului → `htmlart.persoana_potrivita` (717 → 396 coperți cu portret pe corpus). (3) Medalionul tăia
+  orb `center 20%` → `tools/incadrare_portrete.py` (YuNet): decupaj cap+umeri; 72 poze de grup și 98 fețe
+  sub 48 px nu se mai arată. OpenCV doar în pasul de build, doar când există portrete neîncadrate.

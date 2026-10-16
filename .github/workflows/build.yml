@@ -163,6 +163,18 @@ jobs:
           AI_PROVIDER: gemini
         run: python tools/fetch_portraits.py
 
+      # Unde e fata in fiecare portret nou (medalionul o decupeaza; grupurile si fetele de
+      # cativa pixeli nu se mai arata). OpenCV se instaleaza DOAR cand exista portrete
+      # neincadrate: --verifica iese 1 atunci, iar rularile fara portrete noi nu platesc
+      # wheel-ul de ~60 MB. Fara incadrare, medalionul cade pe decupajul implicit din CSS.
+      - name: Incadrare portrete pe fata (YuNet, best-effort)
+        continue-on-error: true
+        run: |
+          if ! python tools/incadrare_portrete.py --verifica; then
+            pip install -q "opencv-python-headless>=4.8,<6"
+            python tools/incadrare_portrete.py
+          fi
+
       - name: Fotografii lead per articol (Wikidata P18 landscape+PD, best-effort)
         continue-on-error: true
         env:
@@ -208,6 +220,7 @@ jobs:
           git add data/triage_log.jsonl 2>/dev/null || true
           git add data/indexnow_seen.json 2>/dev/null || true
           git add data/portraits.json 2>/dev/null || true
+          git add data/portrete_incadrare.json 2>/dev/null || true
           git add data/leadphotos.json 2>/dev/null || true
           git add data/eventphotos-miss.json 2>/dev/null || true
           git add data/localities_coords.json 2>/dev/null || true
