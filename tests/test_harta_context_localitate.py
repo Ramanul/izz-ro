@@ -106,3 +106,24 @@ def test_cuvantul_comun_scris_cu_litera_mica_nu_e_nume_propriu():
     assert bhd._ca_nume_propriu("BERCENI", cased)
     # textele oficiale scrise integral cu majuscule raman nume proprii
     assert bhd._ca_nume_propriu("HUSI", bhd.plat_cu_majuscule("SUCURSALA HUŞI ANUNȚĂ"))
+
+
+# --- nivelul geografic = precizia localizarii, nu rubrica (2026-10-16) ----------------
+
+def test_nivelul_e_precizia_nu_rubrica():
+    """Rubrica /local/ fara localitate pe harta nu are ce cauta la „Local": acolo nu se poate
+    desena. Masurat pe live: 288 din 712 articole „locale" (40%) n-aveau localitate."""
+    cu_loc = _locate("tion", "Primăria Dumbrăvița investește în iluminatul public", "")
+    assert cu_loc["locality"] and cu_loc["geo_level"] == "local"
+    fara_loc = _locate("tion", "Ședință extraordinară la Consiliul Județean", "Consilierii votează bugetul.")
+    assert fara_loc["county"] == "TIMIS" and not fara_loc["locality"]
+    assert fara_loc["geo_level"] == "judetean"
+    assert fara_loc["category"] == "local", "rubrica ramane neatinsa: linkul articolului depinde de ea"
+
+
+def test_eticheta_localitatii_are_diacritice():
+    assert bhd.locality_label("TIMISOARA", "TIMIS") == "Timișoara"
+    assert bhd.locality_label("GIROC", "TIMIS") == "Giroc"
+    assert bhd.locality_label("CARANSEBES", "CARAS-SEVERIN") == "Caransebeș"
+    # sat absent din gazetteer: majuscula initiala, fara diacritice inventate
+    assert bhd.locality_label("SAT INEXISTENT", "TIMIS") == "Sat Inexistent"

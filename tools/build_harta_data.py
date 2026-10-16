@@ -146,6 +146,41 @@ def load_json(path: str):
         return json.load(fh)
 
 
+LOCALITY_LABELS = os.path.join(ROOT, "data", "localities.json")
+_ETICHETE_LOCALITATI: tuple[dict, dict] | None = None
+
+
+def locality_label(name: str, county: str) -> str:
+    """Numele de afisare al localitatii, cu diacritice („GIROC" -> „Giroc", „TIMISOARA" ->
+    „Timișoara"), din gazetteerul Wikidata (`data/localities.json`). Lista hartii tiparea pana
+    acum codul din date, cu majuscule si fara diacritice. Satele lipsa din gazetteer cad pe
+    forma cu majuscula initiala — mai lizibila decat un cod, fara sa inventeze diacritice."""
+    global _ETICHETE_LOCALITATI
+    if not name:
+        return ""
+    if _ETICHETE_LOCALITATI is None:
+        pe_judet: dict = {}
+        pe_nume: dict = {}
+        if os.path.exists(LOCALITY_LABELS):
+            for cheie, intrari in (load_json(LOCALITY_LABELS).get("by_name") or {}).items():
+                for e in intrari:
+                    eticheta = str(e.get("label") or "").strip()
+                    if not eticheta:
+                        continue
+                    judet = re.sub(r"^(JUDETUL|MUNICIPIUL) ", "", norm(e.get("judet") or ""))
+                    pe_judet[(norm(cheie), judet)] = eticheta
+                    pe_nume.setdefault(norm(cheie), set()).add(eticheta)
+        _ETICHETE_LOCALITATI = (pe_judet, pe_nume)
+    pe_judet, pe_nume = _ETICHETE_LOCALITATI
+    eticheta = pe_judet.get((norm(name), norm(county)))
+    if eticheta:
+        return eticheta
+    variante = pe_nume.get(norm(name)) or set()
+    if len(variante) == 1:
+        return next(iter(variante))
+    return " ".join(w.capitalize() for w in name.split(" "))
+
+
 def load_locality_points() -> dict[str, dict]:
     """{siruta_normalizat|nume|judet: punct}. `harta_localitati.json` e cheiat cu SIRUTA brut
     din campul GeoJSON/WFS sursa (`tools/build_harta_localitati.py:141`), care vine ca float
@@ -492,9 +527,16 @@ def locate(
                 uat_code = parent
     return {
         **base,
+        # Nivelul geografic e PRECIZIA localizarii, nu rubrica: „Local" promite o localitate
+        # pe harta. MASURAT pe live 2026-10-16: 288 din 712 articole din rubrica /local/ (40%)
+        # n-aveau nicio localitate, iar 14 din /judetean/ aveau — de aici totalurile care se
+        # micsorau „inexplicabil" intre niveluri (645 -> 640 -> 596). Rubrica ramane in
+        # `category` (linkul articolului depinde de ea).
+        "geo_level": "local" if locality else "judetean",
         "region": geo.ETICHETE_REGIUNI.get(geo.regiune_afisare(county), ""),
         "county": county,
         "locality": locality["name"] if locality else "",
+        "locality_label": locality_label(locality["name"], county) if locality else "",
         "siruta": loc_siruta,
         "uat": uat_code,
         "x": point.get("x") if point else None,
