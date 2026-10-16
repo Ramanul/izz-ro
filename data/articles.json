@@ -1,5 +1,576 @@
 [
   {
+    "url": "https://bbc.co.uk/news/articles/cwvgdn3d656vo?at_medium=RSS&at_campaign=rss",
+    "original_link": "https://www.bbc.co.uk/news/articles/cwvgdn3d656vo?at_medium=RSS&at_campaign=rss",
+    "source": "bbc_europe",
+    "source_name": "BBC Europe",
+    "source_lang": "en",
+    "title": "Moștenitoarea unui restaurant german este judecată pentru răpirea copiilor",
+    "category": "extern",
+    "published": "2026-10-16T23:07:18+00:00",
+    "model": "B",
+    "src_extra": 21,
+    "teaser": "Tribunalul din Hamburg judecă de 15 luni cazul lui Christina Block, acuzată că a comandat răpirea propriilor copii, declanșând un scandal uriaș.",
+    "entities": [
+      "Christina Block",
+      "Hamburg"
+    ],
+    "ai_cat": "extern",
+    "icon": "gavel",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "mostenitoarea-unui-restaurant-german-este-judecata-pentru-rapirea-copiilor"
+  },
+  {
+    "url": "https://adevarul.ro/stiri-externe/europa/de-la-brexit-la-elvetia-plus-cum-au-ajuns-2564463.html",
+    "original_link": "https://adevarul.ro/stiri-externe/europa/de-la-brexit-la-elvetia-plus-cum-au-ajuns-2564463.html",
+    "source": "adevarul",
+    "source_name": "Adevărul",
+    "source_lang": "ro",
+    "title": "Marea Britanie negociază un acord comercial cu Uniunea Europeană bazat pe vehicule electrice",
+    "category": "politic",
+    "published": "2026-10-16T23:05:25+00:00",
+    "model": "B",
+    "src_extra": 36,
+    "teaser": "Parisul și Berlinul susțin includerea producătorilor britanici în programul european pentru mașini chinezești, dacă Londra se aliniează regulilor comunitare.",
+    "entities": [
+      "Marea Britanie",
+      "Uniunea Europeană",
+      "Paris",
+      "Berlin"
+    ],
+    "ai_cat": "politic",
+    "icon": "currency-euro",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "marea-britanie-negociaza-un-acord-comercial-cu-uniunea-europeana-bazat-pe"
+  },
+  {
+    "url": "https://bzi.ro/ce-fac-doctoritele-de-la-spiridon-5625001",
+    "original_link": "https://www.bzi.ro/ce-fac-doctoritele-de-la-spiridon-5625001",
+    "source": "bzi",
+    "source_name": "BZI Iași",
+    "source_lang": "ro",
+    "title": "Doctorițe de la Spitalul Spiridon din Iași, surprinse la cumpărături în timpul programului",
+    "category": "local",
+    "published": "2026-10-16T23:01:09+00:00",
+    "model": "B",
+    "src_extra": 48,
+    "teaser": "Două cadre medicale au fost observate într-un mall din Iași în orele de program, în timp ce pacienții își așteptau consultațiile în salon.",
+    "entities": [
+      "Spitalul Spiridon",
+      "Iași"
+    ],
+    "ai_cat": "sanatate",
+    "icon": "building-hospital",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "doctorite-de-la-spitalul-spiridon-din-iasi-surprinse-la-cumparaturi-in-timpul"
+  },
+  {
+    "url": "https://bzi.ro/cinci-firme-se-lupta-sa-semneze-contractul-pentru-serviciile-de-paza-de-la-aeroportul-international-din-iasi-valoarea-depaseste-7-milioane-de-lei-5625104",
+    "original_link": "https://www.bzi.ro/cinci-firme-se-lupta-sa-semneze-contractul-pentru-serviciile-de-paza-de-la-aeroportul-international-din-iasi-valoarea-depaseste-7-milioane-de-lei-5625104",
+    "source": "bzi",
+    "source_name": "BZI Iași",
+    "source_lang": "ro",
+    "title": "Cinci companii concurează pentru contractul de pază al Aeroportului Iași",
+    "category": "local",
+    "published": "2026-10-16T23:00:55+00:00",
+    "model": "B",
+    "src_extra": 29,
+    "teaser": "Conducerea aerogării a publicat lista ofertanților pentru serviciile de securitate, valoarea contractului scos la licitație depășind pragul de șapte milioane de lei.",
+    "entities": [
+      "Aeroportul Internațional Iași"
+    ],
+    "ai_cat": "regional",
+    "icon": "receipt-tax",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "cinci-companii-concureaza-pentru-contractul-de-paza-al-aeroportului-iasi"
+  },
+  {
+    "url": "https://bzi.ro/cum-a-ajuns-acolo-praf-5624982",
+    "original_link": "https://www.bzi.ro/cum-a-ajuns-acolo-praf-5624982",
+    "source": "bzi",
+    "source_name": "BZI Iași",
+    "source_lang": "ro",
+    "title": "Controverse în mediul muzical ieșean legate de fosta profesoară Belia Paraschivas",
+    "category": "cultura",
+    "published": "2026-10-16T23:00:50+00:00",
+    "model": "B",
+    "src_extra": 56,
+    "teaser": "Discuțiile din spațiul public vizând activitatea fostei profesoare de pian de la Colegiul de Arte din Iași au stârnit reacții aprinse.",
+    "entities": [
+      "Belia Paraschivas",
+      "Colegiul Național de Arte Băncile"
+    ],
+    "ai_cat": "cultura",
+    "icon": "writing",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "controverse-in-mediul-muzical-iesean-legate-de-fosta-profesoara-belia"
+  },
+  {
+    "url": "https://bzi.ro/pornelia-se-adanceste-5624998",
+    "original_link": "https://www.bzi.ro/pornelia-se-adanceste-5624998",
+    "source": "bzi",
+    "source_name": "BZI Iași",
+    "source_lang": "ro",
+    "title": "Tensiuni la o grădiniță din Iași privind gestionarea posturilor didactice",
+    "category": "local",
+    "published": "2026-10-16T23:00:41+00:00",
+    "model": "B",
+    "src_extra": 53,
+    "teaser": "Părinții de la Grădinița Întâia acuză conducerea instituției, reprezentată de directoarea Pornelia Popița Apopei, de nereguli în numirea cadrelor didactice.",
+    "entities": [
+      "Grădinița Întâia",
+      "Pornelia Popița Apopei",
+      "Iași"
+    ],
+    "ai_cat": "regional",
+    "icon": "school",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "tensiuni-la-o-gradinita-din-iasi-privind-gestionarea-posturilor-didactice"
+  },
+  {
+    "url": "https://bzi.ro/doua-tinere-au-lasat-un-barbat-fara-un-lant-de-10-000-de-lei-pe-bulevardul-stefan-cel-mare-iata-cum-au-procedat-5625003",
+    "original_link": "https://www.bzi.ro/doua-tinere-au-lasat-un-barbat-fara-un-lant-de-10-000-de-lei-pe-bulevardul-stefan-cel-mare-iata-cum-au-procedat-5625003",
+    "source": "bzi",
+    "source_name": "BZI Iași",
+    "source_lang": "ro",
+    "title": "Două tinere au fost reținute pentru tâlhărirea unui bărbat în Iași",
+    "category": "local",
+    "published": "2026-10-16T23:00:38+00:00",
+    "model": "B",
+    "src_extra": 24,
+    "teaser": "Polițiștii au reținut două fete de 16 și 20 de ani, acuzate că au smuls un lanț în valoare de 10.000 de lei de pe bulevardul Ștefan cel Mare.",
+    "entities": [
+      "Iași",
+      "bulevardul Ștefan cel Mare"
+    ],
+    "ai_cat": "regional",
+    "icon": "alert-triangle",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "doua-tinere-au-fost-retinute-pentru-talharirea-unui-barbat-in-iasi"
+  },
+  {
+    "url": "https://bzi.ro/patronii-unei-afaceri-din-iasi-disputa-cu-soferii-de-camion-politistii-au-intervenit-cu-amenzi-si-masuri-suplimentare-5625008",
+    "original_link": "https://www.bzi.ro/patronii-unei-afaceri-din-iasi-disputa-cu-soferii-de-camion-politistii-au-intervenit-cu-amenzi-si-masuri-suplimentare-5625008",
+    "source": "bzi",
+    "source_name": "BZI Iași",
+    "source_lang": "ro",
+    "title": "Intervenția poliției în Iași pentru parcările ilegale ale camioanelor",
+    "category": "local",
+    "published": "2026-10-16T23:00:32+00:00",
+    "model": "B",
+    "src_extra": 43,
+    "teaser": "Administratorul unei firme locale a cerut măsuri împotriva șoferilor care blochează vizibilitatea pe șoseaua Iași-Tomești, punând în pericol siguranța rutieră.",
+    "entities": [
+      "Best Choice SRL",
+      "Iași",
+      "Tomești"
+    ],
+    "ai_cat": "regional",
+    "icon": "truck",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "interventia-politiei-in-iasi-pentru-parcarile-ilegale-ale-camioanelor"
+  },
+  {
+    "url": "https://bzi.ro/scandal-monstru-intre-doi-ieseni-dupa-ce-un-cal-a-avariat-un-autoturism-oricum-calul-meu-e-mai-scump-decat-masina-ta-5625056",
+    "original_link": "https://www.bzi.ro/scandal-monstru-intre-doi-ieseni-dupa-ce-un-cal-a-avariat-un-autoturism-oricum-calul-meu-e-mai-scump-decat-masina-ta-5625056",
+    "source": "bzi",
+    "source_name": "BZI Iași",
+    "source_lang": "ro",
+    "title": "Conflict violent între doi bărbați din Iași după ce un cal a lovit o mașină",
+    "category": "local",
+    "published": "2026-10-16T23:00:29+00:00",
+    "model": "B",
+    "src_extra": 41,
+    "teaser": "O despăgubire neînțeleasă a provocat un scandal între doi localnici din Dumbrava, după ce un animal a avariat un autoturism fără a produce victime.",
+    "entities": [
+      "Dumbrava",
+      "Iași"
+    ],
+    "ai_cat": "regional",
+    "icon": "swords",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "conflict-violent-intre-doi-barbati-din-iasi-dupa-ce-un-cal-a-lovit-o-masina"
+  },
+  {
+    "url": "https://bzi.ro/muncitorii-asiatici-s-au-apucat-de-cursuri-pentru-a-deveni-soferi-o-scoala-din-iasi-a-facut-o-clasa-de-cursanti-din-nepal-si-pakistan-5625092",
+    "original_link": "https://www.bzi.ro/muncitorii-asiatici-s-au-apucat-de-cursuri-pentru-a-deveni-soferi-o-scoala-din-iasi-a-facut-o-clasa-de-cursanti-din-nepal-si-pakistan-5625092",
+    "source": "bzi",
+    "source_name": "BZI Iași",
+    "source_lang": "ro",
+    "title": "Muncitori asiatici din Iași au început cursurile pentru obținerea permisului auto",
+    "category": "local",
+    "published": "2026-10-16T23:00:25+00:00",
+    "model": "B",
+    "src_extra": 32,
+    "teaser": "Șase cetățeni din Nepal și Pakistan care lucrează în România s-au înscris la o școală de șoferi locală pentru a se integra profesional.",
+    "entities": [
+      "Nepal",
+      "Pakistan",
+      "Școala Auto Iordache",
+      "Iași"
+    ],
+    "ai_cat": "regional",
+    "icon": "car",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "muncitori-asiatici-din-iasi-au-inceput-cursurile-pentru-obtinerea-permisului"
+  },
+  {
+    "url": "https://fcinter1908.it/ultimora/pedulla-chivu-presi-schiaffi-da-bodo-e-bruges-inter-zero-tenuta-il-suo-peggior-nemico",
+    "original_link": "https://www.fcinter1908.it/ultimora/pedulla-chivu-presi-schiaffi-da-bodo-e-bruges-inter-zero-tenuta-il-suo-peggior-nemico/",
+    "source": "fcinter1908",
+    "source_name": "FC Inter 1908",
+    "source_lang": "it",
+    "title": "Alfredo Pedullà critică parcursul slab al Interului în Liga Campionilor",
+    "category": "sport",
+    "published": "2026-10-16T23:00:16+00:00",
+    "model": "B",
+    "src_extra": 92,
+    "teaser": "Jurnalistul italian a analizat parcursul slab al echipei conduse de Chivu, subliniind numărul mare de înfrângeri recente din cea mai importantă competiție europeană intercluburi.",
+    "entities": [
+      "Alfredo Pedullà",
+      "Inter",
+      "Chivu"
+    ],
+    "ai_cat": "sport",
+    "icon": "ball-football",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "alfredo-pedulla-critica-parcursul-slab-al-interului-in-liga-campionilor"
+  },
+  {
+    "url": "https://adevarul.ro/dezvoltare-personala/relatii/banii-ascunsi-de-partener-pot-costa-mai-mult-decat-2564280.html",
+    "original_link": "https://adevarul.ro/dezvoltare-personala/relatii/banii-ascunsi-de-partener-pot-costa-mai-mult-decat-2564280.html",
+    "source": "adevarul",
+    "source_name": "Adevărul",
+    "source_lang": "ro",
+    "title": "Banii ascunși față de partener pot distruge o relație de cuplu",
+    "category": "lifestyle",
+    "published": "2026-10-16T22:10:25+00:00",
+    "model": "B",
+    "src_extra": 42,
+    "teaser": "Conturile bancare secrete și creditoarele ascunse generează probleme majore în cuplu, depășind simple neînțelegeri, conform unui studiu recent din International Journal of Research in Marketing.",
+    "entities": [
+      "International Journal of Research in Marketing"
+    ],
+    "ai_cat": "lifestyle",
+    "icon": "pig-money",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "banii-ascunsi-fata-de-partener-pot-distruge-o-relatie-de-cuplu"
+  },
+  {
+    "url": "https://libertatea.ro/stiri/bolojan-a-rabufnit-la-adresa-psd-cand-au-fost-bauti-cand-nu-au-votat-legea-salarizarii-sau-acum-dupa-ce-am-pierdut-770-de-milioane-de-euro-lfpqd6f",
+    "original_link": "https://www.libertatea.ro/stiri/bolojan-a-rabufnit-la-adresa-psd-cand-au-fost-bauti-cand-nu-au-votat-legea-salarizarii-sau-acum-dupa-ce-am-pierdut-770-de-milioane-de-euro-lfpqd6f",
+    "source": "libertatea",
+    "source_name": "Libertatea",
+    "source_lang": "ro",
+    "title": "Ilie Bolojan critică PSD pentru pierderea a 770 de milioane de euro",
+    "category": "politic",
+    "published": "2026-10-16T22:02:27+00:00",
+    "model": "B",
+    "src_extra": 564,
+    "teaser": "Fostul premier l-a criticat dur pe Sorin Grindeanu și formațiunea sa politică pentru neadoptarea la timp a legii salarizării, ceea ce a dus la ratarea fondurilor europene din PNRR.",
+    "entities": [
+      "Ilie Bolojan",
+      "PSD",
+      "Sorin Grindeanu",
+      "Luca Niculescu"
+    ],
+    "ai_cat": "politic",
+    "icon": "gavel",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "ilie-bolojan-critica-psd-pentru-pierderea-a-770-de-milioane-de-euro"
+  },
+  {
+    "url": "https://gsp.ro/international/stranieri/daniel-birligea-frosinone-serie-a-antonio-raimondo-988984.html",
+    "original_link": "https://www.gsp.ro/international/stranieri/daniel-birligea-frosinone-serie-a-antonio-raimondo-988984.html",
+    "source": "gsp",
+    "source_name": "GSP",
+    "source_lang": "ro",
+    "title": "Atacantul Antonio Raimondo a marcat o triplă pentru Frosinone în Serie A",
+    "category": "sport",
+    "published": "2026-10-16T22:02:10+00:00",
+    "model": "B",
+    "src_extra": 59,
+    "teaser": "Fotbalistul italian a înscris trei goluri în partida câștigată de Frosinone împotriva Sassuolo, ajungând la un total de șapte reușite în actualul sezon din campionat.",
+    "entities": [
+      "Antonio Raimondo",
+      "Frosinone",
+      "Sassuolo",
+      "Daniel Bîrligea"
+    ],
+    "ai_cat": "sport",
+    "icon": "ball-football",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "atacantul-antonio-raimondo-a-marcat-o-tripla-pentru-frosinone-in-serie-a"
+  },
+  {
+    "url": "https://libertatea.ro/stiri/cum-a-raspuns-luca-niculescu-la-intrebarea-despre-marian-neacsu-propus-de-psd-la-ministerul-de-interne-hk4l1k5",
+    "original_link": "https://www.libertatea.ro/stiri/cum-a-raspuns-luca-niculescu-la-intrebarea-despre-marian-neacsu-propus-de-psd-la-ministerul-de-interne-hk4l1k5",
+    "source": "libertatea",
+    "source_name": "Libertatea",
+    "source_lang": "ro",
+    "title": "Luca Niculescu susține competența lui Marian Neacșu pentru funcția de ministru",
+    "category": "politic",
+    "published": "2026-10-16T22:01:42+00:00",
+    "model": "B",
+    "src_extra": 301,
+    "teaser": "Premierul desemnat a declarat că Marian Neacșu este un administrator competent și va prelua portofoliul Ministerului de Interne și funcția de vicepremier în viitorul guvern.",
+    "entities": [
+      "Luca Niculescu",
+      "Marian Neacșu",
+      "Sorin Costreie"
+    ],
+    "ai_cat": "politic",
+    "icon": "building-monument",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "luca-niculescu-sustine-competenta-lui-marian-neacsu-pentru-functia-de-ministru"
+  },
+  {
+    "url": "https://fcinter1908.it/news/interviste/bonanni-questa-inter-prende-sempre-gol-esposito-ha-dimostrato-di-essere-il-futuro",
+    "original_link": "https://www.fcinter1908.it/news/interviste/bonanni-questa-inter-prende-sempre-gol-esposito-ha-dimostrato-di-essere-il-futuro/",
+    "source": "fcinter1908",
+    "source_name": "FC Inter 1908",
+    "source_lang": "it",
+    "title": "Massimo Bonanni analizează fragilitatea defensivă a echipelor Inter și Roma",
+    "category": "sport",
+    "published": "2026-10-16T22:00:38+00:00",
+    "model": "B",
+    "src_extra": 246,
+    "teaser": "Fostul fotbalist a comentat evoluțiile defensive ale formațiilor antrenate de Chivu și Gasperini în competițiile europene, evidențiind problemele din apărare.",
+    "entities": [
+      "Massimo Bonanni",
+      "Inter",
+      "Roma",
+      "Chivu",
+      "Gasperini"
+    ],
+    "ai_cat": "sport",
+    "icon": "ball-football",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "massimo-bonanni-analizeaza-fragilitatea-defensiva-a-echipelor-inter-si-roma"
+  },
+  {
+    "url": "https://b365.ro/sens-unic-pe-bd-dimitrie-pompeiu-spre-petricani-de-azi-si-pana-la-sfarsitul-anului-pentru-santierul-la-sinele-de-tramvai-rutele-ocolitoare-si-impactul-asupra-stb-624349",
+    "original_link": "https://b365.ro/sens-unic-pe-bd-dimitrie-pompeiu-spre-petricani-de-azi-si-pana-la-sfarsitul-anului-pentru-santierul-la-sinele-de-tramvai-rutele-ocolitoare-si-impactul-asupra-stb-624349/",
+    "source": "b365",
+    "source_name": "B365",
+    "source_lang": "ro",
+    "title": "Bulevardul Dimitrie Pompeiu din Capitală devine cu sens unic pentru lucrări",
+    "category": "local",
+    "published": "2026-10-16T22:00:35+00:00",
+    "model": "B",
+    "src_extra": 22,
+    "teaser": "Trafic restricționat pe o porțiune de 600 de metri din Bulevardul Dimitrie Pompeiu spre Petricani, din cauza lucrărilor la infrastructura de tramvai programate până la finalul anului.",
+    "entities": [
+      "Bulevardul Dimitrie Pompeiu",
+      "Petricani",
+      "STB"
+    ],
+    "ai_cat": "regional",
+    "icon": "car",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "bulevardul-dimitrie-pompeiu-din-capitala-devine-cu-sens-unic-pentru-lucrari"
+  },
+  {
+    "url": "https://fcinter1908.it/news/interviste/prandelli-inter-ossa-rotte-ripercussioni",
+    "original_link": "https://www.fcinter1908.it/news/interviste/prandelli-inter-ossa-rotte-ripercussioni/",
+    "source": "fcinter1908",
+    "source_name": "FC Inter 1908",
+    "source_lang": "it",
+    "title": "Cesare Prandelli avertizează asupra consecințelor eșecurilor din Liga Campionilor",
+    "category": "sport",
+    "published": "2026-10-16T21:45:00+00:00",
+    "model": "B",
+    "src_extra": 248,
+    "teaser": "Fostul selecționer a declarat că rezultatele slabe ale echipelor italiene în Europa vor lăsa urme adânce și în meciurile din campionatul intern.",
+    "entities": [
+      "Cesare Prandelli",
+      "Bruges",
+      "Villarreal",
+      "Napoli"
+    ],
+    "ai_cat": "sport",
+    "icon": "trophy",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "cesare-prandelli-avertizeaza-asupra-consecintelor-esecurilor-din-liga"
+  },
+  {
+    "url": "https://digi24.ro/stiri/actualitate/politica/cum-a-ajuns-mesajul-despre-gay-din-guvern-pe-grupul-comisiei-conduse-de-diana-stoica-la-camera-deputatilor-o-sa-fiu-mai-atenta-3996269",
+    "original_link": "https://www.digi24.ro/stiri/actualitate/politica/cum-a-ajuns-mesajul-despre-gay-din-guvern-pe-grupul-comisiei-conduse-de-diana-stoica-la-camera-deputatilor-o-sa-fiu-mai-atenta-3996269",
+    "source": "digi24",
+    "source_name": "Digi24",
+    "source_lang": "ro",
+    "title": "Deputata Diana Stoica explică mesajul controversat trimis pe grupul parlamentar",
+    "category": "politic",
+    "published": "2026-10-16T21:39:14+00:00",
+    "model": "B",
+    "src_extra": 24,
+    "teaser": "Parlamentara USR a recunoscut că a redirecționat dintr-o eroare un mesaj nepotrivit către grupul de lucru al Comisiei pentru Afaceri Europene pe care o conduce.",
+    "entities": [
+      "Diana Stoica",
+      "Camera Deputaților"
+    ],
+    "ai_cat": "politic",
+    "icon": "speakerphone",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "deputata-diana-stoica-explica-mesajul-controversat-trimis-pe-grupul-parlamentar"
+  },
+  {
+    "url": "https://tion.ro/azi-in-timisoara/ce-facem-astazi-17-octombrie-2026-in-timisoara-2372358",
+    "original_link": "https://www.tion.ro/azi-in-timisoara/ce-facem-astazi-17-octombrie-2026-in-timisoara-2372358/?utm_source=rss&utm_medium=referral&utm_campaign=hiraggregator",
+    "source": "tion",
+    "source_name": "Timiș Online",
+    "source_lang": "ro",
+    "title": "Evenimente culturale și festivaluri programate la Timișoara",
+    "category": "local",
+    "published": "2026-10-16T21:31:51+00:00",
+    "model": "B",
+    "src_extra": 338,
+    "teaser": "Orașa Găurește diverse manifestări publice, inclusiv Festivalul Medieval de la Castelul Huniade, târguri ecologice, proiecții cinematografice și expoziții de artă dedicate publicului.",
+    "entities": [
+      "Timișoara",
+      "Castelul Huniade",
+      "Conacul Mocioni"
+    ],
+    "ai_cat": "cultura",
+    "icon": "movie",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "evenimente-culturale-si-festivaluri-programate-la-timisoara"
+  },
+  {
+    "url": "https://fcinter1908.it/ultimora/marianella-oltre-porta-vero-problema-inter",
+    "original_link": "https://www.fcinter1908.it/ultimora/marianella-oltre-porta-vero-problema-inter/",
+    "source": "fcinter1908",
+    "source_name": "FC Inter 1908",
+    "source_lang": "it",
+    "title": "Massimo Marianella critică defensiva echipei Inter Milano",
+    "category": "sport",
+    "published": "2026-10-16T21:26:56+00:00",
+    "model": "B",
+    "src_extra": 178,
+    "teaser": "Jurnalistul sportiv susține că trupa pregătită de Cristian Chivu încasează un număr mult prea mare de goluri, această problemă defensivă fiind accentuată și de absența căpitanului Lautaro Martinez.",
+    "entities": [
+      "Massimo Marianella",
+      "Cristian Chivu",
+      "Inter Milano",
+      "Lautaro Martinez"
+    ],
+    "ai_cat": "sport",
+    "icon": "ball-football",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "massimo-marianella-critica-defensiva-echipei-inter-milano"
+  },
+  {
+    "url": "https://sfatulparintilor.ro/horoscop-3/horoscop-lunar/4-zodii-care-atrag-miracolele-in-viata-lor-in-aceasta-toamna-vezi-cui-asculta-universul-dorintele",
+    "original_link": "https://sfatulparintilor.ro/horoscop-3/horoscop-lunar/4-zodii-care-atrag-miracolele-in-viata-lor-in-aceasta-toamna-vezi-cui-asculta-universul-dorintele/",
+    "source": "sfatulparintilor",
+    "source_name": "Sfatul Părinților",
+    "source_lang": "ro",
+    "title": "Patru zodii vor avea parte de miracole în această toamnă",
+    "category": "lifestyle",
+    "published": "2026-10-16T21:22:00+00:00",
+    "model": "B",
+    "src_extra": 27,
+    "teaser": "Astrologii anunță o perioadă extrem de favorabilă pentru patru semne zodiacale, acestea beneficiind de o energie astrală puternică și de susținerea Universului în îndeplinirea dorințelor.",
+    "entities": [],
+    "ai_cat": "lifestyle",
+    "icon": "sun",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "patru-zodii-vor-avea-parte-de-miracole-in-aceasta-toamna"
+  },
+  {
+    "url": "https://sannicolau-mare.ro/legatum-spectacol-sarbesc-la-sannicolau-mare",
+    "original_link": "https://www.sannicolau-mare.ro/legatum-spectacol-sarbesc-la-sannicolau-mare/",
+    "source": "pl_timis_oras_sannicolau_mare",
+    "source_name": "Primăria Sânnicolau Mare",
+    "source_lang": "ro",
+    "title": "Sânnicolau Mare găzduiește spectacolul sârbesc „Legatum” în octombrie 2026",
+    "category": "local",
+    "published": "2026-10-16T21:20:08+00:00",
+    "model": "B",
+    "src_extra": 40,
+    "teaser": "Centrul Cultural al Uniunii Sârbilor din Sânnicolau Mare va găzdui pe 17 octombrie 2026 spectacolul „Legatum”. Evenimentul este organizat de Asociația AKUD „Mladost” din Timișoara pentru promovarea patrimoniului cultural sârbesc.",
+    "processed_by": "gemini",
+    "entities": [
+      "Sânnicolau Mare",
+      "Timisoara",
+      "AKUD Mladost",
+      "Uniunea Sarbilor din Romania"
+    ],
+    "ai_cat": "cultura",
+    "icon": "movie",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "sannicolau-mare-gazduieste-spectacolul-sarbesc-legatum-in-octombrie-2026"
+  },
+  {
+    "url": "https://sannicolau-mare.ro/caravana-despre-calitatea-aerului-la-castelul-nako",
+    "original_link": "https://www.sannicolau-mare.ro/caravana-despre-calitatea-aerului-la-castelul-nako/",
+    "source": "pl_timis_oras_sannicolau_mare",
+    "source_name": "Primăria Sânnicolau Mare",
+    "source_lang": "ro",
+    "title": "Consiliul Județean Timiș a organizat o caravană despre calitatea aerului la Sânnicolau Mare",
+    "category": "local",
+    "published": "2026-10-16T21:20:08+00:00",
+    "model": "B",
+    "src_extra": 42,
+    "teaser": "Castelul Nakó din Sânnicolau Mare a găzduit în 13 octombrie o sesiune de informare dedicată calității aerului. Evenimentul face parte dintr-o serie de caravane inițiate de autoritățile județene pentru conștientizarea mediului în județul Timiș.",
+    "processed_by": "gemini",
+    "entities": [
+      "Castelul Nakó",
+      "Sânnicolau Mare",
+      "Consiliul Județean Timiș"
+    ],
+    "ai_cat": "regional",
+    "icon": "building-monument",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "consiliul-judetean-timis-a-organizat-o-caravana-despre-calitatea-aerului-la"
+  },
+  {
     "url": "https://fcinter1908.it/news/interviste/orlando-martinez-si-rischia-la-mazzata-piu-che-del-portiere-chivu-deve-preoccuparsi-di",
     "original_link": "https://www.fcinter1908.it/news/interviste/orlando-martinez-si-rischia-la-mazzata-piu-che-del-portiere-chivu-deve-preoccuparsi-di/",
     "source": "fcinter1908",
@@ -47,6 +618,31 @@
     "prompt_version": "v2-esenta",
     "featured": false,
     "slug": "real-madrid-cere-demiterea-sefului-laliga-javier-tebas"
+  },
+  {
+    "url": "https://gsp.ro/international/campionate/real-madrid-cere-capul-lui-javier-tebas-pentru-trimiterea-la-regimul-nazist-seful-ligii-poate-fi-demis-de-consiliul-sportului-988843.html",
+    "original_link": "https://www.gsp.ro/international/campionate/real-madrid-cere-capul-lui-javier-tebas-pentru-trimiterea-la-regimul-nazist-seful-ligii-poate-fi-demis-de-consiliul-sportului-988843.html",
+    "source": "gsp",
+    "source_name": "GSP",
+    "source_lang": "ro",
+    "title": "Real Madrid cere demiterea șefului LaLiga, Javier Tebas",
+    "category": "sport",
+    "published": "2026-10-16T21:12:02+00:00",
+    "model": "B",
+    "src_extra": 31,
+    "teaser": "Clubul madrilen a reacționat vehement după ce președintele ligii spaniole a comparat metodele de comunicare ale grupării cu tacticile propagandistice naziste utilizate de Joseph Goebbels.",
+    "entities": [
+      "Real Madrid",
+      "Javier Tebas",
+      "LaLiga",
+      "Joseph Goebbels"
+    ],
+    "ai_cat": "sport",
+    "icon": "gavel",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "real-madrid-cere-demiterea-sefului-laliga-javier-tebas-2"
   },
   {
     "url": "https://adevarul.ro/stiri-locale/oradea/marile-proiecte-de-infrastructura-care-transforma-2564210.html",
@@ -416,6 +1012,30 @@
     "slug": "chery-va-folosi-componente-produse-la-timisoara-pentru-masinile-sale"
   },
   {
+    "url": "https://adevarul.ro/istoria-zilei/17-octombrie-ziua-in-care-a-murit-frederic-2563595.html",
+    "original_link": "https://adevarul.ro/istoria-zilei/17-octombrie-ziua-in-care-a-murit-frederic-2563595.html",
+    "source": "adevarul",
+    "source_name": "Adevărul",
+    "source_lang": "ro",
+    "title": "Se împlinesc ani de la moartea compozitorului Frédéric Chopin",
+    "category": "cultura",
+    "published": "2026-10-16T21:01:26+00:00",
+    "model": "B",
+    "src_extra": 35,
+    "teaser": "La data de 17 octombrie este comemorată dispariția marelui muzician care a transformat radical arta interpretării la pian, fiind evocat alături de alte evenimente istorice și personalități marcante.",
+    "entities": [
+      "Frédéric Chopin",
+      "Iancu de Hunedoara",
+      "Rita Hayworth"
+    ],
+    "ai_cat": "cultura",
+    "icon": "music",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "se-implinesc-ani-de-la-moartea-compozitorului-frederic-chopin"
+  },
+  {
     "url": "https://gsp.ro/fotbal/liga-1/dinamo-fc-botosani-superliga-catalin-cirjan-988951.html",
     "original_link": "https://www.gsp.ro/fotbal/liga-1/dinamo-fc-botosani-superliga-catalin-cirjan-988951.html",
     "source": "gsp",
@@ -506,6 +1126,31 @@
     "prompt_version": "v2-esenta",
     "featured": false,
     "slug": "horoscopul-weekendului-aduce-surprize-sentimentale-si-tensiuni-familiale"
+  },
+  {
+    "url": "https://gsp.ro/fotbal/liga-1/notele-gsp-la-dinamo-botosani-danny-regele-serii-si-o-colectie-de-repetenti-988978.html",
+    "original_link": "https://www.gsp.ro/fotbal/liga-1/notele-gsp-la-dinamo-botosani-danny-regele-serii-si-o-colectie-de-repetenti-988978.html",
+    "source": "gsp",
+    "source_name": "GSP",
+    "source_lang": "ro",
+    "title": "Dinamo București a învins FC Botoșani în Liga 1",
+    "category": "sport",
+    "published": "2026-10-16T20:58:41+00:00",
+    "model": "B",
+    "src_extra": 56,
+    "teaser": "Gruparea alb-roșie s-a impus cu scorul de două la zero pe teren propriu, ambele reușite venind din lovituri de pedeapsă transformate în finalul confruntării din runda a douăsprezecea.",
+    "entities": [
+      "Dinamo București",
+      "FC Botoșani",
+      "Armstrong",
+      "Cîrjan"
+    ],
+    "ai_cat": "sport",
+    "icon": "ball-football",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "dinamo-bucuresti-a-invins-fc-botosani-in-liga-1"
   },
   {
     "url": "https://horodnicdejos.ro/dispozitie-de-convocare-a-consiliului-local-pentru-data-de-22-octombrie-2026",
@@ -857,6 +1502,79 @@
     "slug": "miliardarii-chinei-isi-lichideaza-activele-externe-pentru-a-evita-noile"
   },
   {
+    "url": "https://as.ro/fotbal/liga-1/nuno-campos-exulta-dupa-a-cincea-victorie-la-rand-cu-dinamo-unul-dintre-cele-mai-bune-meciuri-din-acest-sezon-698639.html",
+    "original_link": "https://as.ro/fotbal/liga-1/nuno-campos-exulta-dupa-a-cincea-victorie-la-rand-cu-dinamo-unul-dintre-cele-mai-bune-meciuri-din-acest-sezon-698639.html",
+    "source": "as_ro",
+    "source_name": "Antena Sport",
+    "source_lang": "ro",
+    "title": "Dinamo a învins FC Botoșani cu 2-0 și s-a desprins în fruntea clasamentului",
+    "category": "sport",
+    "published": "2026-10-16T20:44:11+00:00",
+    "model": "C",
+    "src_extra": 46,
+    "sources": [
+      {
+        "name": "Antena Sport",
+        "url": "https://as.ro/fotbal/liga-1/nuno-campos-exulta-dupa-a-cincea-victorie-la-rand-cu-dinamo-unul-dintre-cele-mai-bune-meciuri-din-acest-sezon-698639.html"
+      },
+      {
+        "name": "GSP",
+        "url": "https://www.gsp.ro/fotbal/liga-1/nuno-campos-dupa-victoria-cu-botosani-unul-dintre-cele-mai-bune-meciuri-din-acest-sezon-988981.html"
+      }
+    ],
+    "first_source": "Antena Sport",
+    "members": [
+      {
+        "published": "2026-10-16T20:44:11+00:00",
+        "title": "Nuno Campos exultă după a cincea victorie la rând cu Dinamo: „Unul dintre cele mai bune meciuri din acest sezon”",
+        "source": "Antena Sport",
+        "url": "https://as.ro/fotbal/liga-1/nuno-campos-exulta-dupa-a-cincea-victorie-la-rand-cu-dinamo-unul-dintre-cele-mai-bune-meciuri-din-acest-sezon-698639.html"
+      },
+      {
+        "published": "2026-10-16T21:19:29+00:00",
+        "title": "Nuno Campos, după victoria cu Botoșani: „Unul dintre cele mai bune meciuri din acest sezon”",
+        "source": "GSP",
+        "url": "https://gsp.ro/fotbal/liga-1/nuno-campos-dupa-victoria-cu-botosani-unul-dintre-cele-mai-bune-meciuri-din-acest-sezon-988981.html"
+      }
+    ],
+    "story_id": "st-62feb3056173",
+    "synthesis": "Dinamo București s-a impus pe teren propriu în fața celor de la FC Botoșani cu scorul de 2-0, ambele goluri fiind înscrise din lovituri de la 11 metri. În urma acestui succes obținut pe Arena Națională, echipa condusă de Nuno Campos a ajuns la a cincea victorie consecutivă și și-a majorat la cinci puncte avansul în clasament față de Rapid București.",
+    "entities": [
+      "Dinamo București",
+      "FC Botoșani",
+      "Nuno Campos"
+    ],
+    "ai_cat": "sport",
+    "icon": "ball-football",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "dinamo-a-invins-fc-botosani-cu-2-0-si-s-a-desprins-in-fruntea-clasamentului"
+  },
+  {
+    "url": "https://as.ro/fotbal/dinamo/armstrong-a-dezvaluit-ce-a-gandit-in-momentul-penalty-ului-cu-botosani-nu-e-asa-usor-cum-cred-oamenii-698644.html",
+    "original_link": "https://as.ro/fotbal/dinamo/armstrong-a-dezvaluit-ce-a-gandit-in-momentul-penalty-ului-cu-botosani-nu-e-asa-usor-cum-cred-oamenii-698644.html",
+    "source": "as_ro",
+    "source_name": "Antena Sport",
+    "source_lang": "ro",
+    "title": "Dinamo obține a cincea victorie consecutivă în campionat",
+    "category": "sport",
+    "published": "2026-10-16T20:42:26+00:00",
+    "model": "B",
+    "src_extra": 46,
+    "teaser": "Formația bucureșteană rămâne lider în clasamentul primei ligi de fotbal după succesul obținut în fața botoșănenilor, marcatorii partidei subliniind dificultatea obținerii acestor puncte.",
+    "entities": [
+      "Dinamo",
+      "FC Botoșani"
+    ],
+    "ai_cat": "sport",
+    "icon": "medal",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "dinamo-obtine-a-cincea-victorie-consecutiva-in-campionat"
+  },
+  {
     "url": "https://antena3.ro/politica/ilie-bolojan-vrea-o-alianta-pnl-usr-pentru-alegerile-din-2028-nu-mai-putem-merge-pe-fragmentari-pulverizari-807567.html",
     "original_link": "https://www.antena3.ro/politica/ilie-bolojan-vrea-o-alianta-pnl-usr-pentru-alegerile-din-2028-nu-mai-putem-merge-pe-fragmentari-pulverizari-807567.html",
     "source": "antena3",
@@ -976,6 +1694,30 @@
     "prompt_version": "v2-esenta",
     "featured": false,
     "slug": "premierul-polonez-donald-tusk-avertizeaza-asupra-unui-razboi-hibrid-rus"
+  },
+  {
+    "url": "https://digi24.ro/stiri/actualitate/politica/luca-niculescu-despre-propunerea-lui-marian-neacsu-la-mai-in-ciuda-condamnarii-penale-este-un-om-competent-in-administratia-romana-3996341",
+    "original_link": "https://www.digi24.ro/stiri/actualitate/politica/luca-niculescu-despre-propunerea-lui-marian-neacsu-la-mai-in-ciuda-condamnarii-penale-este-un-om-competent-in-administratia-romana-3996341",
+    "source": "digi24",
+    "source_name": "Digi24",
+    "source_lang": "ro",
+    "title": "Premierul desemnat susține menținerea lui Marian Neacșu la MAI",
+    "category": "politic",
+    "published": "2026-10-16T20:36:03+00:00",
+    "model": "B",
+    "src_extra": 39,
+    "teaser": "Luca Niculescu a declarat că viitorul executiv reprezintă întreaga coaliție și a calificat drept competentă persoana propusă la Ministerul Afacerilor Interne, în ciuda condamnării sale penale anterioare.",
+    "entities": [
+      "Luca Niculescu",
+      "Marian Neacșu",
+      "Ministerul Afacerilor Interne"
+    ],
+    "ai_cat": "politic",
+    "icon": "building-bank",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "premierul-desemnat-sustine-mentinerea-lui-marian-neacsu-la-mai"
   },
   {
     "url": "https://profit.ro/povesti-cu-profit/auto-transporturi/video-haos-pe-aeroporturi-toate-zborurile-au-fost-oprite-in-italia-22847101",
@@ -1265,6 +2007,30 @@
     "slug": "dinamo-il-pierde-pe-fundasul-martin-pascual-in-meciul-cu-cfr-cluj"
   },
   {
+    "url": "https://libertatea.ro/stiri/sorin-ionescu-propus-ministru-delegat-pentru-invatamantul-preuniversitar-nota-la-prima-proba-concurs-pentru-directori-ny456ef",
+    "original_link": "https://www.libertatea.ro/stiri/sorin-ionescu-propus-ministru-delegat-pentru-invatamantul-preuniversitar-nota-la-prima-proba-concurs-pentru-directori-ny456ef",
+    "source": "libertatea",
+    "source_name": "Libertatea",
+    "source_lang": "ro",
+    "title": "Sorin Ionescu a susținut prima probă pentru conducerea școlară",
+    "category": "politic",
+    "published": "2026-10-16T20:25:26+00:00",
+    "model": "B",
+    "src_extra": 153,
+    "teaser": "Directorul liceului timișorean, propus pentru funcția de ministru delegat pentru învățământul preuniversitar, a trecut prin evaluarea competențelor în cadrul concursului oficial organizat pentru directori.",
+    "entities": [
+      "Sorin-Gabriel Ionescu",
+      "Colegiul Național Bănățean",
+      "Guvernul"
+    ],
+    "ai_cat": "politic",
+    "icon": "school",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "sorin-ionescu-a-sustinut-prima-proba-pentru-conducerea-scolara"
+  },
+  {
     "url": "https://gsp.ro/fotbal/liga-1/andrei-dumiter-reactie-dinamo-fc-botosani-988966.html",
     "original_link": "https://www.gsp.ro/fotbal/liga-1/andrei-dumiter-reactie-dinamo-fc-botosani-988966.html",
     "source": "gsp",
@@ -1361,6 +2127,31 @@
     "slug": "fc-botosani-acuza-arbitrajul-dupa-esecul-suferit-in-deplasarea-cu-dinamo"
   },
   {
+    "url": "https://libertatea.ro/stiri/rusia-nu-se-intelege-cu-china-asupra-gazoductului-puterea-siberiei-2-si-se-roaga-de-tarile-africane-ca-sa-i-cumpere-gazele-0rv9rxe",
+    "original_link": "https://www.libertatea.ro/stiri/rusia-nu-se-intelege-cu-china-asupra-gazoductului-puterea-siberiei-2-si-se-roaga-de-tarile-africane-ca-sa-i-cumpere-gazele-0rv9rxe",
+    "source": "libertatea",
+    "source_name": "Libertatea",
+    "source_lang": "ro",
+    "title": "Rusia caută noi piețe pentru gaze în Africa",
+    "category": "economic",
+    "published": "2026-10-16T20:12:46+00:00",
+    "model": "B",
+    "src_extra": 352,
+    "teaser": "Eșecul negocierilor cu Beijingul privind gazoductul Puterea Siberiei 2 determină Moscova să reorienteze exporturile companiei Gazprom către continentul african, după pierderea clienților europeni.",
+    "entities": [
+      "Rusia",
+      "China",
+      "Gazprom",
+      "Serghei Țivilev"
+    ],
+    "ai_cat": "economic",
+    "icon": "gas-station",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "rusia-cauta-noi-piete-pentru-gaze-in-africa"
+  },
+  {
     "url": "https://sport.ro/fotbal-extern/gianni-infantino-nevoit-sa-isi-ceara-scuze-in-fata-sefilor-din-fotbal-greseala-recunoscuta-de-seful-fifa.html",
     "original_link": "https://www.sport.ro/fotbal-extern/gianni-infantino-nevoit-sa-isi-ceara-scuze-in-fata-sefilor-din-fotbal-greseala-recunoscuta-de-seful-fifa.html",
     "source": "sportro",
@@ -1453,6 +2244,31 @@
     "prompt_version": "v2-esenta",
     "featured": false,
     "slug": "consumatorii-romani-pot-apela-la-anpc-pentru-probleme-la-cumparaturi-online"
+  },
+  {
+    "url": "https://libertatea.ro/stiri/italia-risca-proteste-ca-in-franta-ciocniri-intre-studenti-si-politie-la-roma-si-torino-rj9v0t5",
+    "original_link": "https://www.libertatea.ro/stiri/italia-risca-proteste-ca-in-franta-ciocniri-intre-studenti-si-politie-la-roma-si-torino-rj9v0t5",
+    "source": "libertatea",
+    "source_name": "Libertatea",
+    "source_lang": "ro",
+    "title": "Proteste și tensiuni sociale în creștere pe teritoriul Italiei",
+    "category": "extern",
+    "published": "2026-10-16T20:03:27+00:00",
+    "model": "B",
+    "src_extra": 353,
+    "teaser": "Cetățenii italieni au blocat mai multe artere rutiere din cauza scumpirilor majore la carburanți și alimente, manifestațiile violente din marile orașe amintind de mișcările ample din Franța.",
+    "entities": [
+      "Italia",
+      "Roma",
+      "Torino",
+      "Franța"
+    ],
+    "ai_cat": "extern",
+    "icon": "alert-triangle",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "proteste-si-tensiuni-sociale-in-crestere-pe-teritoriul-italiei"
   },
   {
     "url": "https://fcinter1908.it/ultimora/scontro-durissimo-tebas-real-madrid",
@@ -2080,65 +2896,6 @@
     "slug": "atacurile-din-marea-neagra-afecteaza-turismul-litoral-din-bulgaria"
   },
   {
-    "url": "https://economica.net/executia-bugetara-deficitul-a-ajuns-la-382-din-pib-dupa-primele-noua-luni-din-2026_986603.html",
-    "original_link": "https://www.economica.net/executia-bugetara-deficitul-a-ajuns-la-382-din-pib-dupa-primele-noua-luni-din-2026_986603.html",
-    "source": "economica",
-    "source_name": "Economica",
-    "source_lang": "ro",
-    "title": "Ministerul Finanțelor: Deficitul bugetar al României a scăzut la 3,82% din PIB după primele nouă luni din 2026",
-    "category": "economic",
-    "published": "2026-10-16T19:09:44+00:00",
-    "model": "C",
-    "src_extra": 1410,
-    "sources": [
-      {
-        "name": "Economica",
-        "url": "https://www.economica.net/executia-bugetara-deficitul-a-ajuns-la-382-din-pib-dupa-primele-noua-luni-din-2026_986603.html"
-      },
-      {
-        "name": "Spotmedia",
-        "url": "https://spotmedia.ro/stiri/economie/deficitul-bugetar-a-scazut-la-382-din-pib-dupa-primele-noua-luni-din-2026"
-      },
-      {
-        "name": "Antena 3 CNN",
-        "url": "https://www.antena3.ro/economic/ministerul-finantelor-anunta-ca-deficitul-bugetar-a-scazut-la-3-82-din-pib-in-primele-9-luni-807554.html"
-      }
-    ],
-    "first_source": "Economica",
-    "members": [
-      {
-        "published": "2026-10-16T19:09:44+00:00",
-        "title": "Execuția bugetară. Deficitul a ajuns la 3,82% din PIB după primele nouă luni din 2026",
-        "source": "Economica",
-        "url": "https://economica.net/executia-bugetara-deficitul-a-ajuns-la-382-din-pib-dupa-primele-noua-luni-din-2026_986603.html"
-      },
-      {
-        "published": "2026-10-16T20:05:33+00:00",
-        "title": "Deficitul bugetar a scăzut la 3,82% din PIB după primele nouă luni din 2026",
-        "source": "Spotmedia",
-        "url": "https://spotmedia.ro/stiri/economie/deficitul-bugetar-a-scazut-la-382-din-pib-dupa-primele-noua-luni-din-2026"
-      },
-      {
-        "published": "2026-10-16T20:08:00+00:00",
-        "title": "Ministerul Finanțelor anunță că deficitul bugetar a scăzut la 3,82% din PIB în primele 9 luni",
-        "source": "Antena 3 CNN",
-        "url": "https://antena3.ro/economic/ministerul-finantelor-anunta-ca-deficitul-bugetar-a-scazut-la-3-82-din-pib-in-primele-9-luni-807554.html"
-      }
-    ],
-    "story_id": "st-6b39ed88f851",
-    "synthesis": "Ministerul Finanțelor a anunțat că deficitul bugetar a coborât la 3,82% din PIB în primele nouă luni ale anului 2026, reprezentând 78,52 miliarde de lei. Veniturile totale au crescut cu 11,8% până la 522,07 miliarde de lei, impulsionate de TVA și fondurile europene, în timp ce cheltuielile totale au ajuns la 600,59 miliarde de lei. Investițiile publice au crescut semnificativ, ajungând la aproape 108 miliarde de lei.",
-    "entities": [
-      "Alexandru Nazare",
-      "Ministerul Finanțelor"
-    ],
-    "ai_cat": "economic",
-    "icon": "percentage",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false,
-    "slug": "ministerul-finantelor-deficitul-bugetar-al-romaniei-a-scazut-la-382-din-pib"
-  },
-  {
     "url": "https://as.ro/formula-1/masina-zburatoare-a-lui-musk-poate-intra-direct-in-formula-1-cum-se-compara-roadster-cu-un-bolid-condus-de-verstappen-698619.html",
     "original_link": "https://as.ro/formula-1/masina-zburatoare-a-lui-musk-poate-intra-direct-in-formula-1-cum-se-compara-roadster-cu-un-bolid-condus-de-verstappen-698619.html",
     "source": "as_ro",
@@ -2354,6 +3111,31 @@
     "slug": "danemarca-italia-si-polonia-cer-masuri-drastice-impotriva-imigratiei-ilegale-in"
   },
   {
+    "url": "https://libertatea.ro/stiri/vladimir-putin-sustine-ca-armata-sa-a-ocupat-o-suprafata-de-45-de-ori-mai-mare-decat-cea-reala-si-va-crea-in-teritoriul-ucrainei-o-zona-tampon-nenegociabila-mnm0lxf",
+    "original_link": "https://www.libertatea.ro/stiri/vladimir-putin-sustine-ca-armata-sa-a-ocupat-o-suprafata-de-45-de-ori-mai-mare-decat-cea-reala-si-va-crea-in-teritoriul-ucrainei-o-zona-tampon-nenegociabila-mnm0lxf",
+    "source": "libertatea",
+    "source_name": "Libertatea",
+    "source_lang": "ro",
+    "title": "Vladimir Putin exagerează teritoriile ucrainene cucerite și anunță o zonă tampon",
+    "category": "extern",
+    "published": "2026-10-16T19:03:36+00:00",
+    "model": "B",
+    "src_extra": 366,
+    "teaser": "Liderul rus a afirmat în haine militare că armata sa a capturat o suprafață enormă în Ucraina și intenționează crearea unei zone tampon nenegociabile, în timp ce estimările reale contrazic cifrele oficiale prezentate de la Kremlin.",
+    "entities": [
+      "Vladimir Putin",
+      "Ucraina",
+      "Donețk",
+      "Zaporojjia"
+    ],
+    "ai_cat": "extern",
+    "icon": "swords",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "vladimir-putin-exagereaza-teritoriile-ucrainene-cucerite-si-anunta-o-zona-tampon"
+  },
+  {
     "url": "https://alba24.ro/castanele-ce-beneficii-au-si-cum-le-gatesti-retete-simple-de-preparat-acasa-1162930.html",
     "original_link": "https://alba24.ro/castanele-ce-beneficii-au-si-cum-le-gatesti-retete-simple-de-preparat-acasa-1162930.html",
     "source": "alba24",
@@ -2394,6 +3176,30 @@
     "prompt_version": "v2-esenta",
     "featured": false,
     "slug": "grecia-acorda-fonduri-de-10-000-de-euro-persoanelor-care-se-muta-in-anumite"
+  },
+  {
+    "url": "https://observatornews.ro/extern/putin-a-acceptat-sa-coopereze-dupa-ce-papa-leon-la-sunat-de-pe-patul-de-spital-ce-ia-cerut-liderului-rus-669417.html",
+    "original_link": "https://observatornews.ro/extern/putin-a-acceptat-sa-coopereze-dupa-ce-papa-leon-la-sunat-de-pe-patul-de-spital-ce-ia-cerut-liderului-rus-669417.html",
+    "source": "observator",
+    "source_name": "Observator",
+    "source_lang": "ro",
+    "title": "Vladimir Putin promite cooperare umanitară în urma apelului telefonic de la Papa Leon",
+    "category": "extern",
+    "published": "2026-10-16T18:58:00+00:00",
+    "model": "B",
+    "src_extra": 22,
+    "teaser": "Președintele rus a acceptat să sprijine livrarea de ajutoare esențiale în orașul ucrainean Oleșkî, aflat sub ocupație rusă, după ce solicitarea a fost făcută direct de către suveranul pontif de pe patul de spital.",
+    "entities": [
+      "Vladimir Putin",
+      "Papa Leon",
+      "Oleșkî"
+    ],
+    "ai_cat": "extern",
+    "icon": "globe",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "vladimir-putin-promite-cooperare-umanitara-in-urma-apelului-telefonic-de-la"
   },
   {
     "url": "https://g4media.ro/amenzile-cna-se-dubleaza-guvernul-a-aprobat-actualizarea-amenzilor-din-audiovizual-neindexate-din-2009.html",
@@ -2466,6 +3272,31 @@
     "slug": "un-italian-a-gasit-miliarde-vechi-in-peretii-casei-mostenite-dar-risca-sa"
   },
   {
+    "url": "https://observatornews.ro/politic/reactia-lui-bolojan-dupa-ce-pnl-a-pierdut-procesul-cu-aep-trebuie-sa-dea-statului-inapoi-14-mil-de-lei-669414.html",
+    "original_link": "https://observatornews.ro/politic/reactia-lui-bolojan-dupa-ce-pnl-a-pierdut-procesul-cu-aep-trebuie-sa-dea-statului-inapoi-14-mil-de-lei-669414.html",
+    "source": "observator",
+    "source_name": "Observator",
+    "source_lang": "ro",
+    "title": "Ilie Bolojan confirmă datoriile PNL și restituirea a 14 milioane de lei către AEP",
+    "category": "politic",
+    "published": "2026-10-16T18:42:00+00:00",
+    "model": "B",
+    "src_extra": 43,
+    "teaser": "Liderul liberal a explicat că partidul a preluat obligații financiare substanțiale de la fosta conducere, fiind obligat acum să achite statului suma de 14 milioane de lei cheltuită pentru promovarea cărții lui Nicolae Ciucă.",
+    "entities": [
+      "Ilie Bolojan",
+      "PNL",
+      "AEP",
+      "Nicolae Ciucă"
+    ],
+    "ai_cat": "politic",
+    "icon": "receipt-tax",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "ilie-bolojan-confirma-datoriile-pnl-si-restituirea-a-14-milioane-de-lei-catre"
+  },
+  {
     "url": "https://g4media.ro/luca-niculescu-despre-marian-neacsu-la-interne-e-un-om-competent-neacsu-a-fost-condamnat-cu-suspendare-pentru-ca-si-a-angajat-fiica-la-cabinetul-parlamentar-apoi-reabilitat.html",
     "original_link": "https://www.g4media.ro/luca-niculescu-despre-marian-neacsu-la-interne-e-un-om-competent-neacsu-a-fost-condamnat-cu-suspendare-pentru-ca-si-a-angajat-fiica-la-cabinetul-parlamentar-apoi-reabilitat.html",
     "source": "g4media",
@@ -2523,56 +3354,6 @@
     "prompt_version": "v2-esenta",
     "featured": false,
     "slug": "premierul-desemnat-luca-niculescu-il-considera-competent-pe-marian-neacsu"
-  },
-  {
-    "url": "https://stirileprotv.ro/stiri/international/donald-trump-si-a-demis-purtatoarea-de-cuvant-dupa-doar-cinci-zile-presa-ce-a-dus-la-un-mandat-atat-de-scurt-la-casa-alba.html",
-    "original_link": "https://stirileprotv.ro/stiri/international/donald-trump-si-a-demis-purtatoarea-de-cuvant-dupa-doar-cinci-zile-presa-ce-a-dus-la-un-mandat-atat-de-scurt-la-casa-alba.html",
-    "source": "protv",
-    "source_name": "Știrile ProTV",
-    "source_lang": "ro",
-    "title": "Donald Trump a demis-o pe purtătoarea de cuvânt a Casei Albe după doar cinci zile de la numire",
-    "category": "extern",
-    "published": "2026-10-16T18:33:37+00:00",
-    "model": "C",
-    "src_extra": 19,
-    "sources": [
-      {
-        "name": "Știrile ProTV",
-        "url": "https://stirileprotv.ro/stiri/international/donald-trump-si-a-demis-purtatoarea-de-cuvant-dupa-doar-cinci-zile-presa-ce-a-dus-la-un-mandat-atat-de-scurt-la-casa-alba.html"
-      },
-      {
-        "name": "Spotmedia",
-        "url": "https://spotmedia.ro/stiri/eveniment/trump-si-a-demis-purtatoarea-de-cuvant-la-cinci-zile-de-la-instalarea-ei-in-functie"
-      }
-    ],
-    "first_source": "Știrile ProTV",
-    "members": [
-      {
-        "published": "2026-10-16T18:33:37+00:00",
-        "title": "Donald Trump și-a demis purtătoarea de cuvânt după doar cinci zile – presă. Ce a dus la un mandat atât de scurt la Casa Albă",
-        "source": "Știrile ProTV",
-        "url": "https://stirileprotv.ro/stiri/international/donald-trump-si-a-demis-purtatoarea-de-cuvant-dupa-doar-cinci-zile-presa-ce-a-dus-la-un-mandat-atat-de-scurt-la-casa-alba.html"
-      },
-      {
-        "published": "2026-10-16T19:29:05+00:00",
-        "title": "Trump și-a demis purtătoarea de cuvânt, la cinci zile de la instalarea ei în funcție",
-        "source": "Spotmedia",
-        "url": "https://spotmedia.ro/stiri/eveniment/trump-si-a-demis-purtatoarea-de-cuvant-la-cinci-zile-de-la-instalarea-ei-in-functie"
-      }
-    ],
-    "story_id": "st-0181de796f58",
-    "synthesis": "Președintele american Donald Infrastructure a demis-o pe Katie Zacharia din funcția de purtător de cuvânt al Casei Albe la doar cinci zile de la preluarea mandatului, informație confirmată de Casa Albă pentru BBC. Mandatul scurt a fost marcat de un debut ezitant în fața presei, întrebări legate de trecutul său profesional și lipsa de experiență, deși Trump a lăudat-o anterior pentru loialitate.",
-    "entities": [
-      "Donald Trump",
-      "Katie Zacharia",
-      "Casa Albă"
-    ],
-    "ai_cat": "extern",
-    "icon": "podium",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false,
-    "slug": "donald-trump-a-demis-o-pe-purtatoarea-de-cuvant-a-casei-albe-dupa-doar-cinci"
   },
   {
     "url": "https://observatornews.ro/politic/bolojan-despre-lipsa-unui-guvern-cu-puteri-depline-serviciile-publice-de-baza-nu-vor-mai-putea-functiona-669415.html",
@@ -2665,56 +3446,6 @@
     "prompt_version": "v2-esenta",
     "featured": false,
     "slug": "papa-leon-i-a-cerut-telefonic-lui-putin-incetarea-focului-in-oleshky"
-  },
-  {
-    "url": "https://observatornews.ro/extern/katie-zacharia-a-fost-demisa-dupa-doar-5-zile-ca-purtatoare-de-cuvant-a-casei-albe-669412.html",
-    "original_link": "https://observatornews.ro/extern/katie-zacharia-a-fost-demisa-dupa-doar-5-zile-ca-purtatoare-de-cuvant-a-casei-albe-669412.html",
-    "source": "observator",
-    "source_name": "Observator",
-    "source_lang": "ro",
-    "title": "Katie Zacharia a fost demisă din funcția de purtător de cuvânt al Casei Albe",
-    "category": "politic",
-    "published": "2026-10-16T18:25:00+00:00",
-    "model": "C",
-    "src_extra": 45,
-    "sources": [
-      {
-        "name": "Observator",
-        "url": "https://observatornews.ro/extern/katie-zacharia-a-fost-demisa-dupa-doar-5-zile-ca-purtatoare-de-cuvant-a-casei-albe-669412.html"
-      },
-      {
-        "name": "G4Media",
-        "url": "https://www.g4media.ro/katie-zacharia-a-fost-demisa-dupa-cinci-zile-din-functia-de-secretar-de-presa-al-casei-albe-mintise-cu-privire-la-cariera-juridica.html"
-      }
-    ],
-    "first_source": "Observator",
-    "members": [
-      {
-        "published": "2026-10-16T18:25:00+00:00",
-        "title": "Katie Zacharia a fost demisă după doar 5 zile ca purtătoare de cuvânt a Casei Albe",
-        "source": "Observator",
-        "url": "https://observatornews.ro/extern/katie-zacharia-a-fost-demisa-dupa-doar-5-zile-ca-purtatoare-de-cuvant-a-casei-albe-669412.html"
-      },
-      {
-        "published": "2026-10-16T18:45:39+00:00",
-        "title": "Katie Zacharia a fost demisă după cinci zile din funcția de secretar de presă al Casei Albe / Mințise cu privire la cariera juridică",
-        "source": "G4Media",
-        "url": "https://g4media.ro/katie-zacharia-a-fost-demisa-dupa-cinci-zile-din-functia-de-secretar-de-presa-al-casei-albe-mintise-cu-privire-la-cariera-juridica.html"
-      }
-    ],
-    "story_id": "st-034cd54e6838",
-    "synthesis": "Katie Zacharia a fost înlăturată din funcția de secretar de presă al Casei Albe după doar cinci zile de activitate. Decizia președintelui Donald Trump a survenit în urma unui debut marcat de controverse privind prestația publică, modul de gestionare a conferințelor de presă și suspiciuni legate de prezentarea propriei cariere juridice.",
-    "entities": [
-      "Katie Zacharia",
-      "Donald Trump",
-      "Casa Albă"
-    ],
-    "ai_cat": "politic",
-    "icon": "building-monument",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false,
-    "slug": "katie-zacharia-a-fost-demisa-din-functia-de-purtator-de-cuvant-al-casei-albe"
   },
   {
     "url": "https://economica.net/casa-alba-dezminte-ca-trump-ar-fi-dat-ordinul-de-limitare-a-retelei-militare-de-satelit-starshield-in-ucraina-afp_986596.html",
@@ -2970,15 +3701,16 @@
     "source": "economica",
     "source_name": "Economica",
     "source_lang": "ro",
-    "title": "USR va vota în unanimitate împotriva învestirii Guvernului Niculescu în Parlament",
+    "title": "USR a decis în unanimitate să voteze împotriva învestirii Guvernului Luca Niculescu",
     "category": "politic",
     "published": "2026-10-16T17:58:17+00:00",
-    "model": "B",
+    "model": "C",
     "src_extra": 200,
     "teaser": "Uniunea Salvați România a decis oficial că parlamentarii săi se vor opune instalării noului Executiv, acuzând o alianță toxică între PSD și AUR care blochează modernizarea țării.",
     "entities": [
       "USR",
-      "Guvernul Niculescu",
+      "Luca Niculescu",
+      "Dominic Fritz",
       "PSD",
       "AUR"
     ],
@@ -2987,7 +3719,45 @@
     "processed_by": "gemini",
     "prompt_version": "v2-esenta",
     "featured": false,
-    "slug": "usr-va-vota-in-unanimitate-impotriva-investirii-guvernului-niculescu-in"
+    "slug": "usr-va-vota-in-unanimitate-impotriva-investirii-guvernului-niculescu-in",
+    "sources": [
+      {
+        "name": "Economica",
+        "url": "https://www.economica.net/comitetul-politic-al-usr-a-decis-in-unanimitate-ca-parlamentarii-partidului-sa-voteze-impotriva-investirii-guvernului-niculescu_986584.html"
+      },
+      {
+        "name": "Express de Banat",
+        "url": "https://expressdebanat.ro/usr-voteaza-impotriva-investirii-guvernului-luca-niculescu/"
+      },
+      {
+        "name": "Timiș Online",
+        "url": "https://www.tion.ro/romania/usr-va-vota-impotriva-investirii-guvernului-luca-niculescu-2373015/?utm_source=rss&utm_medium=referral&utm_campaign=hiraggregator"
+      }
+    ],
+    "first_source": "Economica",
+    "members": [
+      {
+        "published": "2026-10-16T16:53:54+00:00",
+        "title": "USR votează împotriva învestirii Guvernului Luca Niculescu",
+        "source": "Express de Banat",
+        "url": "https://expressdebanat.ro/usr-voteaza-impotriva-investirii-guvernului-luca-niculescu"
+      },
+      {
+        "published": "2026-10-16T16:56:58+00:00",
+        "title": "USR va vota împotriva învestirii Guvernului Luca Niculescu",
+        "source": "Timiș Online",
+        "url": "https://tion.ro/romania/usr-va-vota-impotriva-investirii-guvernului-luca-niculescu-2373015"
+      },
+      {
+        "published": "2026-10-16T17:58:17+00:00",
+        "title": "USR va vota în unanimitate împotriva învestirii Guvernului Niculescu în Parlament",
+        "source": "Economica",
+        "url": "https://economica.net/comitetul-politic-al-usr-a-decis-in-unanimitate-ca-parlamentarii-partidului-sa-voteze-impotriva-investirii-guvernului-niculescu_986584.html"
+      }
+    ],
+    "story_id": "st-e229d0bf337c",
+    "updated": "2026-10-16T23:45:04.253702+00:00",
+    "synthesis": "Comitetul Politic al USR a stabilit în mod unitar că parlamentarii formațiunii se vor opune învestirii noului Executiv condus de premierul desemnat Luca Niculescu. Liderul partidului, Dominic criticat dur alianța considerată toxică dintre PSD și AUR, anunțând că USR va rămâne în opoziție. Votul din Parlament este programat pentru marți, 20 octombrie, după finalizarea audierilor miniștrilor propuși."
   },
   {
     "url": "https://dobrogeaonline.ro/verificarea-centralei-termice-inainte-de-sezonul-rece",
@@ -3179,7 +3949,7 @@
     "source": "dobrogeaonline",
     "source_name": "Dobrogea Online",
     "source_lang": "ro",
-    "title": "Bărbat de 33 de ani căutat de poliție după ce a evadat de sub escortă la Tecuci",
+    "title": "Un bărbat de 33 de ani a evadat de sub escortă la Judecătoria Tecuci",
     "category": "local",
     "published": "2026-10-16T17:36:21+00:00",
     "model": "C",
@@ -3198,7 +3968,7 @@
     "members": [
       {
         "published": "2026-10-16T17:36:21+00:00",
-        "title": "Poliția caută un bărbat care a fugit de sub escortă. Sunați la 112 dacă îl vedeți!",
+        "title": "Bărbat de 33 de ani căutat de poliție după ce a evadat de sub escortă la Tecuci",
         "source": "Dobrogea Online",
         "url": "https://dobrogeaonline.ro/politia-cauta-un-barbat-care-a-fugit-de-sub-escorta-sunati-la-112-daca-il-vedeti"
       },
@@ -3210,7 +3980,7 @@
       }
     ],
     "story_id": "st-f204e1165f99",
-    "synthesis": "Un bărbat în vârstă de 33 de ani, originar din județul Galați și cercetat pentru furt calificat, a evadat la 16 octombrie 2026 de sub escorta polițiștilor în timpul ieșirii de la Judecătoria Tecuci. Autoritățile au demarat acțiuni de căutare și fac apel la populație să sune la numărul de urgență 112 în cazul în care dețin informații despre locul unde s-ar afla acesta.",
+    "synthesis": "Un bărbat în vârstă de 33 de ani, originar din localitatea Brăhășești, județul Galați, a reușit să fugă de sub escorta polițiștilor în timpul procedurii de părăsire a sediului Judecătoriei Tecuci. Autoritățile au pornit imediat în căutarea suspectului, care a fost ulterior prins de forțele de ordine.",
     "entities": [
       "Tecuci",
       "Brăhășești",
@@ -3221,7 +3991,8 @@
     "processed_by": "gemini",
     "prompt_version": "v2-esenta",
     "featured": false,
-    "slug": "barbat-de-33-de-ani-cautat-de-politie-dupa-ce-a-evadat-de-sub-escorta-la-tecuci"
+    "slug": "barbat-de-33-de-ani-cautat-de-politie-dupa-ce-a-evadat-de-sub-escorta-la-tecuci",
+    "updated": "2026-10-16T23:45:10.724602+00:00"
   },
   {
     "url": "https://ziuadevest.ro/academia-romana-si-uzpr-au-marcat-la-timisoara-255-de-ani-de-presa-in-banat",
@@ -4938,29 +5709,6 @@
     "slug": "antrenorul-peter-bosz-explica-motivele-titularizarii-reduse-pentru-dennis-man"
   },
   {
-    "url": "https://profit.ro/taxe-si-consultanta/ultima-ora-deficitul-bugetar-a-prins-viteza-a-crescut-semnificativ-in-septembrie-din-cauza-platilor-pentru-dobanzi-bunuri-si-servicii-pentru-primele-noua-luni-a-ajuns-la-3-82-22845401",
-    "original_link": "https://www.profit.ro/taxe-si-consultanta/ultima-ora-deficitul-bugetar-a-prins-viteza-a-crescut-semnificativ-in-septembrie-din-cauza-platilor-pentru-dobanzi-bunuri-si-servicii-pentru-primele-noua-luni-a-ajuns-la-3-82-22845401?utm_source=Rss&utm_medium=Referral&utm_campaign=Cross",
-    "source": "profit",
-    "source_name": "Profit.ro",
-    "source_lang": "ro",
-    "title": "Deficitul bugetar al României a urcat la 3,82% din PIB după primele nouă luni",
-    "category": "economic",
-    "published": "2026-10-16T16:33:00+00:00",
-    "model": "B",
-    "src_extra": 35,
-    "teaser": "Ministerul Finanțelor a anunțat că deficitul bugetar a crescut semnificativ până la finalul lunii septembrie, fiind influențat de plățile ridicate pentru dobânzi, bunuri și servicii.",
-    "entities": [
-      "Ministerul Finanțelor",
-      "Ilie Bolojan"
-    ],
-    "ai_cat": "economic",
-    "icon": "chart-line",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false,
-    "slug": "deficitul-bugetar-al-romaniei-a-urcat-la-382-din-pib-dupa-primele-noua-luni"
-  },
-  {
     "url": "https://tion.ro/cinema/filmul-saptamanii-primetime-un-thriller-psihologic-cu-robert-pattinson-despre-un-jurnalist-care-vaneaza-suspecti-de-abuzuri-asupra-minorilor-2373000",
     "original_link": "https://www.tion.ro/cinema/filmul-saptamanii-primetime-un-thriller-psihologic-cu-robert-pattinson-despre-un-jurnalist-care-vaneaza-suspecti-de-abuzuri-asupra-minorilor-2373000/?utm_source=rss&utm_medium=referral&utm_campaign=hiraggregator",
     "source": "tion",
@@ -5100,6 +5848,30 @@
     "slug": "platforma-digitala-radarul-balastierelor-va-fi-receptionata-la-sfarsitul-lunii"
   },
   {
+    "url": "https://expressdebanat.ro/celula-3-de-la-ghizela-este-gata-de-aproape-un-an-gunoiul-din-timis-ajunge-in-alte-judete",
+    "original_link": "https://expressdebanat.ro/celula-3-de-la-ghizela-este-gata-de-aproape-un-an-gunoiul-din-timis-ajunge-in-alte-judete/",
+    "source": "expressdebanat",
+    "source_name": "Express de Banat",
+    "source_lang": "ro",
+    "title": "Noua celulă de deșeuri de la Ghizela este finalizată și pregătită pentru recepție",
+    "category": "local",
+    "published": "2026-10-16T16:23:01+00:00",
+    "model": "B",
+    "src_extra": 290,
+    "teaser": "Investiția în valoare de 46 de milioane de lei de la depozitul din Timiș a fost finalizată după opt luni de lucrări, urmând ca autorizarea acesteia să poată reduce tarifele locale de salubrizare în curând.",
+    "entities": [
+      "Ghizela",
+      "Timiș",
+      "Alfred Simonis"
+    ],
+    "ai_cat": "judetean",
+    "icon": "building-monument",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "noua-celula-de-deseuri-de-la-ghizela-este-finalizata-si-pregatita-pentru"
+  },
+  {
     "url": "https://b365.ro/evenimente-gratuite-in-sectorul-1-muzica-clasica-si-stand-up-comedy-in-piata-matache-plus-o-vanatoare-de-comori-pentru-copii-in-padurea-baneasa-624380",
     "original_link": "https://b365.ro/evenimente-gratuite-in-sectorul-1-muzica-clasica-si-stand-up-comedy-in-piata-matache-plus-o-vanatoare-de-comori-pentru-copii-in-padurea-baneasa-624380/",
     "source": "b365",
@@ -5153,22 +5925,79 @@
     "source": "economedia",
     "source_name": "Economedia",
     "source_lang": "ro",
-    "title": "Deficitul bugetar a urcat la 3,82% după primele nouă luni ale anului",
+    "title": "Deficitul bugetar al României a ajuns la 3,82% din PIB după primele nouă luni",
     "category": "economic",
     "published": "2026-10-16T16:18:34+00:00",
-    "model": "B",
+    "model": "C",
     "src_extra": 31,
     "teaser": "Ministerul Finanțelor a publicat execuția bugetară la finalul mandatului Guvernului Bolojan. Nivelul este mai mic față de anul trecut, dar a înregistrat o creștere accelerată în luna septembrie.",
     "entities": [
-      "Ministerul Finanțelor",
-      "Guvernul Bolojan"
+      "Ministerul Finanțelor"
     ],
     "ai_cat": "economic",
     "icon": "percentage",
     "processed_by": "gemini",
     "prompt_version": "v2-esenta",
     "featured": false,
-    "slug": "deficitul-bugetar-a-urcat-la-382-dupa-primele-noua-luni-ale-anului"
+    "slug": "deficitul-bugetar-a-urcat-la-382-dupa-primele-noua-luni-ale-anului",
+    "sources": [
+      {
+        "name": "Economedia",
+        "url": "https://economedia.ro/breaking-deficit-bugetar-de-382-dupa-primele-noua-luni-la-finalul-guvernarii-bolojan-scadere-de-153-puncte-fata-de-anul-trecut.html"
+      },
+      {
+        "name": "Profit.ro",
+        "url": "https://www.profit.ro/taxe-si-consultanta/ultima-ora-deficitul-bugetar-a-prins-viteza-a-crescut-semnificativ-in-septembrie-din-cauza-platilor-pentru-dobanzi-bunuri-si-servicii-pentru-primele-noua-luni-a-ajuns-la-3-82-22845401?utm_source=Rss&utm_medium=Referral&utm_campaign=Cross"
+      },
+      {
+        "name": "Economica",
+        "url": "https://www.economica.net/executia-bugetara-deficitul-a-ajuns-la-382-din-pib-dupa-primele-noua-luni-din-2026_986603.html"
+      },
+      {
+        "name": "Spotmedia",
+        "url": "https://spotmedia.ro/stiri/economie/deficitul-bugetar-a-scazut-la-382-din-pib-dupa-primele-noua-luni-din-2026"
+      },
+      {
+        "name": "Antena 3 CNN",
+        "url": "https://www.antena3.ro/economic/ministerul-finantelor-anunta-ca-deficitul-bugetar-a-scazut-la-3-82-din-pib-in-primele-9-luni-807554.html"
+      }
+    ],
+    "first_source": "Economedia",
+    "members": [
+      {
+        "published": "2026-10-16T16:18:34+00:00",
+        "title": "Deficitul bugetar a urcat la 3,82% după primele nouă luni ale anului",
+        "source": "Economedia",
+        "url": "https://economedia.ro/breaking-deficit-bugetar-de-382-dupa-primele-noua-luni-la-finalul-guvernarii-bolojan-scadere-de-153-puncte-fata-de-anul-trecut.html"
+      },
+      {
+        "published": "2026-10-16T16:33:00+00:00",
+        "title": "Deficitul bugetar al României a urcat la 3,82% din PIB după primele nouă luni",
+        "source": "Profit.ro",
+        "url": "https://profit.ro/taxe-si-consultanta/ultima-ora-deficitul-bugetar-a-prins-viteza-a-crescut-semnificativ-in-septembrie-din-cauza-platilor-pentru-dobanzi-bunuri-si-servicii-pentru-primele-noua-luni-a-ajuns-la-3-82-22845401"
+      },
+      {
+        "published": "2026-10-16T19:09:44+00:00",
+        "title": "Ministerul Finanțelor: Deficitul bugetar al României a scăzut la 3,82% din PIB după primele nouă luni din 2026",
+        "source": "Economica",
+        "url": "https://economica.net/executia-bugetara-deficitul-a-ajuns-la-382-din-pib-dupa-primele-noua-luni-din-2026_986603.html"
+      },
+      {
+        "published": "2026-10-16T20:05:33+00:00",
+        "title": "Deficitul bugetar a scăzut la 3,82% din PIB după primele nouă luni din 2026",
+        "source": "Spotmedia",
+        "url": "https://spotmedia.ro/stiri/economie/deficitul-bugetar-a-scazut-la-382-din-pib-dupa-primele-noua-luni-din-2026"
+      },
+      {
+        "published": "2026-10-16T20:08:00+00:00",
+        "title": "Ministerul Finanțelor anunță că deficitul bugetar a scăzut la 3,82% din PIB în primele 9 luni",
+        "source": "Antena 3 CNN",
+        "url": "https://antena3.ro/economic/ministerul-finantelor-anunta-ca-deficitul-bugetar-a-scazut-la-3-82-din-pib-in-primele-9-luni-807554.html"
+      }
+    ],
+    "story_id": "st-6b39ed88f851",
+    "updated": "2026-10-16T23:45:04.253623+00:00",
+    "synthesis": "Ministerul Finanțelor a publicat execuția bugetară, indicând un deficit de 3,82% din PIB la finalul primelor nouă luni ale anului. Nivelul este mai redus comparativ cu aceeași perioadă a anului anterior, însă datele arată o creștere accelerată în luna septembrie, influențată de plățile ridicate pentru dobânzi, bunuri și servicii. Unele surse din presă au relatat eronat în titluri că indicatorul a scăzut, deși textul aceluiași comunicat a confirmat nivelul procentual înregistrat."
   },
   {
     "url": "https://economedia.ro/one-united-properties-are-un-nou-cfo-catalin-jaloba-devine-director-financiar-al-dezvoltatorului-imobiliar.html",
@@ -5232,6 +6061,30 @@
     "prompt_version": "v2-esenta",
     "featured": false,
     "slug": "documentarul-recorder-despre-copiii-abandonati-va-fi-proiectat-la-astra-film"
+  },
+  {
+    "url": "https://tion.ro/stirile-judetului-timis/pnl-timis-ii-raspunde-lui-simonis-fiecare-partid-sa-se-preocupe-de-propria-ograda-liberalii-isi-vor-desemna-singuri-candidatul-la-primaria-timisoara-2372979",
+    "original_link": "https://www.tion.ro/stirile-judetului-timis/pnl-timis-ii-raspunde-lui-simonis-fiecare-partid-sa-se-preocupe-de-propria-ograda-liberalii-isi-vor-desemna-singuri-candidatul-la-primaria-timisoara-2372979/?utm_source=rss&utm_medium=referral&utm_campaign=hiraggregator",
+    "source": "tion",
+    "source_name": "Timiș Online",
+    "source_lang": "ro",
+    "title": "PNL Timiș respinge interferențele și își va stabili singur candidatul la primărie",
+    "category": "judetean",
+    "published": "2026-10-16T16:10:47+00:00",
+    "model": "B",
+    "src_extra": 369,
+    "teaser": "Reprezentanții organizației liberale județene au subliniat că toate deciziile politice locale sunt luate exclusiv în forurile proprii, în acord cu strategia națională stabilită de președintele partidului, Ilie Bolojan.",
+    "entities": [
+      "PNL Timiș",
+      "Timișoara",
+      "Ilie Bolojan"
+    ],
+    "ai_cat": "politic",
+    "icon": "gavel",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "pnl-timis-respinge-interferentele-si-isi-va-stabili-singur-candidatul-la"
   },
   {
     "url": "https://prosport.ro/alte-sporturi/baschet/plan-8-miliarde-euro-razboi-baschet-european-euroleague-nba-20548845",
@@ -6127,6 +6980,30 @@
     "slug": "elevi-din-botosani-participa-la-un-concurs-national-de-produse-traditionale"
   },
   {
+    "url": "https://nwradu.ro/2026/10/iphone-duo-deschis-precomenzile-pret-romania",
+    "original_link": "https://www.nwradu.ro/2026/10/iphone-duo-deschis-precomenzile-pret-romania/",
+    "source": "nwradu",
+    "source_name": "NwRadu",
+    "source_lang": "ro",
+    "title": "Magazinele și operatorii au lansat precomenzile pentru noul model iPhone Duo în România",
+    "category": "tech",
+    "published": "2026-10-16T15:08:36+00:00",
+    "model": "B",
+    "src_extra": 255,
+    "teaser": "Cel mai nou smartphone de la Apple poate fi deja rezervat pe piața românească, prețurile pornind de la 12.199 lei pentru versiunea de bază și ajungând până la variantele de top cu capacități mari de stocare.",
+    "entities": [
+      "Apple",
+      "iPhone Duo",
+      "România"
+    ],
+    "ai_cat": "tech",
+    "icon": "device-mobile",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "magazinele-si-operatorii-au-lansat-precomenzile-pentru-noul-model-iphone-duo-in"
+  },
+  {
     "url": "https://dobrogeaonline.ro/incendiu-intr-un-apartament-din-constanta-pompierii-au-intervenit-in-forta",
     "original_link": "https://www.dobrogeaonline.ro/incendiu-intr-un-apartament-din-constanta-pompierii-au-intervenit-in-forta/",
     "source": "dobrogeaonline",
@@ -6311,6 +7188,30 @@
     "slug": "papa-fotografiat-pentru-prima-data-dupa-operatie-si-diagnosticul-de-cancer"
   },
   {
+    "url": "https://unica.ro/vedete/romanesti/cine-este-nattasha-black-de-la-insula-iubirii-832710",
+    "original_link": "https://www.unica.ro/vedete/romanesti/cine-este-nattasha-black-de-la-insula-iubirii-832710",
+    "source": "unica",
+    "source_name": "Unica",
+    "source_lang": "ro",
+    "title": "Nattasha Black participă în noul sezon al emisiunii Insula Iubirii 2026",
+    "category": "lifestyle",
+    "published": "2026-10-16T14:32:46+00:00",
+    "model": "B",
+    "src_extra": 447,
+    "teaser": "Concurenta în vârstă de 31 de ani, cunoscută pentru activitatea sa profesională din Marea Britanie ca dominatoare, a intrat în competiție alături de partenerul său pentru a-și testa relația de cuplu la televizor.",
+    "entities": [
+      "Nattasha Black",
+      "Insula Iubirii",
+      "Marea Britanie"
+    ],
+    "ai_cat": "lifestyle",
+    "icon": "movie",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "nattasha-black-participa-in-noul-sezon-al-emisiunii-insula-iubirii-2026"
+  },
+  {
     "url": "https://csid.ro/stiri-sanatate-frumusete-dieta/mananci-tarziu-seara-ce-au-descoperit-cercetatorii-despre-legatura-dintre-ora-meselor-si-sanatatea-ficatului-21336754",
     "original_link": "https://www.csid.ro/stiri-sanatate-frumusete-dieta/mananci-tarziu-seara-ce-au-descoperit-cercetatorii-despre-legatura-dintre-ora-meselor-si-sanatatea-ficatului-21336754/",
     "source": "csid",
@@ -6329,6 +7230,30 @@
     "prompt_version": "v2-esenta",
     "featured": false,
     "slug": "mesele-tarzii-cresc-riscul-aparitiei-bolilor-hepatice-indica-un-studiu"
+  },
+  {
+    "url": "https://unica.ro/vedete/cine-este-oana-tomoiaga-830583",
+    "original_link": "https://www.unica.ro/vedete/cine-este-oana-tomoiaga-830583",
+    "source": "unica",
+    "source_name": "Unica",
+    "source_lang": "ro",
+    "title": "Oana Tomoiagă a concurat alături de Mirela Vaida în cadrul emisiunii Asia Express 2026",
+    "category": "lifestyle",
+    "published": "2026-10-16T14:28:22+00:00",
+    "model": "B",
+    "src_extra": 441,
+    "teaser": "Cunoscuta interpretă de muzică populară originară din Maramureș a făcut echipă cu prezentatoarea TV în torentul de provocări din Uzbekistan și China, depășindu-și limitele în competiția televizată.",
+    "entities": [
+      "Oana Tomoiagă",
+      "Mirela Vaida",
+      "Asia Express"
+    ],
+    "ai_cat": "lifestyle",
+    "icon": "plane",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "oana-tomoiaga-a-concurat-alaturi-de-mirela-vaida-in-cadrul-emisiunii-asia"
   },
   {
     "url": "https://scena9.ro/article/recomandari-documentare-astra-film-festival-2026",
@@ -6429,6 +7354,30 @@
     "slug": "tensiuni-politice-la-timisoara-alfred-simonis-lanseaza-acuzatii-privind"
   },
   {
+    "url": "https://unica.ro/vedete/romanesti/cine-este-mirela-retegan-de-la-asia-express-833617",
+    "original_link": "https://www.unica.ro/vedete/romanesti/cine-este-mirela-retegan-de-la-asia-express-833617",
+    "source": "unica",
+    "source_name": "Unica",
+    "source_lang": "ro",
+    "title": "Mirela Retegan participă ca concurentă în cel mai nou sezon Asia Express",
+    "category": "lifestyle",
+    "published": "2026-10-16T14:24:01+00:00",
+    "model": "B",
+    "src_extra": 740,
+    "teaser": "Fondatricea proiectului pentru copii Gașca Zurli și fostă jurnalistă în vârstă de 56 de ani a acceptat provocarea de a ieși din zona de confort participând la celebra emisiune de aventură.",
+    "entities": [
+      "Mirela Retegan",
+      "Gașca Zurli",
+      "Asia Express"
+    ],
+    "ai_cat": "lifestyle",
+    "icon": "globe",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "mirela-retegan-participa-ca-concurenta-in-cel-mai-nou-sezon-asia-express"
+  },
+  {
     "url": "https://dw.com/en/albania-students-demand-political-change-and-resignation-of-prime-minister-edi-rama/a-79682217?maca=en-rss-en-eu-2092-rdf",
     "original_link": "https://www.dw.com/en/albania-students-demand-political-change-and-resignation-of-prime-minister-edi-rama/a-79682217?maca=en-rss-en-eu-2092-rdf",
     "source": "dw_europe",
@@ -6475,6 +7424,30 @@
     "prompt_version": "v2-esenta",
     "featured": false,
     "slug": "un-politist-in-varsta-de-27-de-ani-din-teleorman-a-fost-gasit-decedat"
+  },
+  {
+    "url": "https://unica.ro/vedete/minodora-i-a-cerut-divortul-sotului-ei-ce-a-convins-o-sa-se-razgandeasca-839641",
+    "original_link": "https://www.unica.ro/vedete/minodora-i-a-cerut-divortul-sotului-ei-ce-a-convins-o-sa-se-razgandeasca-839641",
+    "source": "unica",
+    "source_name": "Unica",
+    "source_lang": "ro",
+    "title": "Minodora a renunțat la divorțul de soțul său după mai bine de două decenii de căsnicie",
+    "category": "lifestyle",
+    "published": "2026-10-16T14:21:49+00:00",
+    "model": "B",
+    "src_extra": 423,
+    "teaser": "Cântăreața a recunoscut în cadrul unui podcast că a intenționat să se despartă de partenerul ei la scurt timp după venirea pe lume a fiului lor, însă un gest emoționant a făcut-o să se răzgândească.",
+    "entities": [
+      "Minodora",
+      "Liviu Mihon",
+      "Teo Trandafir"
+    ],
+    "ai_cat": "lifestyle",
+    "icon": "music",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "minodora-a-renuntat-la-divortul-de-sotul-sau-dupa-mai-bine-de-doua-decenii-de"
   },
   {
     "url": "https://zcj.ro/promo/weekend-pentru-intreaga-familie-la-iulius-mall-cluj-teatru-de-papusi-plimbari-cu-cateii-si-targ-de-arta-si-antichitati--302996.html",
@@ -6666,6 +7639,29 @@
     "prompt_version": "v2-esenta",
     "featured": false,
     "slug": "cartea-femeile-si-nebunia-a-dr-phyllis-chesler-este-reeditata-pentru-a-expune"
+  },
+  {
+    "url": "https://newsbucovina.ro/subiectul-zilei/452438/bucovina-desemnata-cea-mai-subestimata-destinatie-turistica-din-lume-pentru-2027-de-revista-time-out",
+    "original_link": "https://www.newsbucovina.ro/subiectul-zilei/452438/bucovina-desemnata-cea-mai-subestimata-destinatie-turistica-din-lume-pentru-2027-de-revista-time-out",
+    "source": "newsbucovina",
+    "source_name": "NewsBucovina",
+    "source_lang": "ro",
+    "title": "Bucovina a fost desemnată cea mai subestimată destinație turistică mondială pentru 2027",
+    "category": "regional",
+    "published": "2026-10-16T14:04:44+00:00",
+    "model": "B",
+    "src_extra": 220,
+    "teaser": "Publicația internațională Time Out a clasat regiunea Bucovina pe primul loc în topul destinațiilor globale subestimate pentru anul 2027, devansând zone turistice din Statele Unite și Spania datorită autenticității și peisajelor.",
+    "entities": [
+      "Bucovina",
+      "Time Out"
+    ],
+    "ai_cat": "lifestyle",
+    "icon": "globe",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "bucovina-a-fost-desemnata-cea-mai-subestimata-destinatie-turistica-mondiala-2"
   },
   {
     "url": "https://csid.ro/stiri/p-ritualul-cafelei-ce-alegi-sa-bei-in-fiecare-dimineata-21337067",
@@ -7621,6 +8617,29 @@
     "slug": "probleme-cu-furnizarea-caldurii-in-mai-multe-cartiere-din-oradea"
   },
   {
+    "url": "https://newsbucovina.ro/actualitate/452435/stafeta-veteranilor-invictus-a-ajuns-in-judetul-suceava-mesaj-de-recunostinta-pentru-eroii-romaniei",
+    "original_link": "https://www.newsbucovina.ro/actualitate/452435/stafeta-veteranilor-invictus-a-ajuns-in-judetul-suceava-mesaj-de-recunostinta-pentru-eroii-romaniei",
+    "source": "newsbucovina",
+    "source_name": "NewsBucovina",
+    "source_lang": "ro",
+    "title": "Ștafeta Veteranilor Invictus a ajuns în județul Suceava pe Traseul Roșu",
+    "category": "judetean",
+    "published": "2026-10-16T13:16:43+00:00",
+    "model": "B",
+    "src_extra": 225,
+    "teaser": "Cea de-a XIII-a ediție a Ștafetei Veteranilor Invictus a ajuns în județul Suceava, pe Traseul Roșu, un proiect dedicat omagierii militarilor căzuți la datorie și susținerii celor răniți în teatrele de operații.",
+    "entities": [
+      "Suceava",
+      "Invictus"
+    ],
+    "ai_cat": "regional",
+    "icon": "flag",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "stafeta-veteranilor-invictus-a-ajuns-in-judetul-suceava-pe-traseul-rosu"
+  },
+  {
     "url": "https://cursdeguvernare.ro/romania-va-incasa-14-mld-e-fonduri-pnrr-si-de-coeziune-in-2026-mipe-propune-trei-directii-de-dezvoltare-pentru-fondurile-europene-in-viitorul-exercitiu-bugetar-ue-2028-2034.html",
     "original_link": "https://cursdeguvernare.ro/romania-va-incasa-14-mld-e-fonduri-pnrr-si-de-coeziune-in-2026-mipe-propune-trei-directii-de-dezvoltare-pentru-fondurile-europene-in-viitorul-exercitiu-bugetar-ue-2028-2034.html",
     "source": "cursdeguv",
@@ -8277,6 +9296,30 @@
     "slug": "politia-brasov-a-confiscat-sute-de-metri-cubi-de-lemn-si-a-dat-amenzi-record"
   },
   {
+    "url": "https://unica.ro/vedete/romanesti/ce-urmeaza-pentru-irina-rimes-dupa-plecarea-de-la-pro-tv-schimbarile-majore-din-viata-ei-la-35-de-ani-839615",
+    "original_link": "https://www.unica.ro/vedete/romanesti/ce-urmeaza-pentru-irina-rimes-dupa-plecarea-de-la-pro-tv-schimbarile-majore-din-viata-ei-la-35-de-ani-839615",
+    "source": "unica",
+    "source_name": "Unica",
+    "source_lang": "ro",
+    "title": "Irina Rimes renunță la rolul de antrenor la Vocea României după opt ani",
+    "category": "cultura",
+    "published": "2026-10-16T12:53:02+00:00",
+    "model": "B",
+    "src_extra": 532,
+    "teaser": "Cântăreața Irina Rimes a decis să părăsească emisiunea Vocea României de la Pro TV pentru a se concentra asupra vieții personale, a familiei și a unor noi proiecte muzicale, la vârsta de 35 de ani.",
+    "entities": [
+      "Irina Rimes",
+      "Pro TV",
+      "Vocea României"
+    ],
+    "ai_cat": "cultura",
+    "icon": "movie",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "irina-rimes-renunta-la-rolul-de-antrenor-la-vocea-romaniei-dupa-opt-ani"
+  },
+  {
     "url": "https://zonait.ro/consola-rog-xbox-ally-x20-romania",
     "original_link": "https://zonait.ro/consola-rog-xbox-ally-x20-romania/",
     "source": "zonait",
@@ -8373,6 +9416,29 @@
     "slug": "tribunalul-bihor-a-respins-contestatia-unui-politist-de-frontiera-cercetat"
   },
   {
+    "url": "https://unica.ro/vedete/violeta-banica-stralucitoare-la-gala-nu-exista-nu-se-poate-organizata-de-andreea-marin-839582",
+    "original_link": "https://www.unica.ro/vedete/violeta-banica-stralucitoare-la-gala-nu-exista-nu-se-poate-organizata-de-andreea-marin-839582",
+    "source": "unica",
+    "source_name": "Unica",
+    "source_lang": "ro",
+    "title": "Violeta Bănică a participat la gala organizată de mama sa, Andreea Marin",
+    "category": "lifestyle",
+    "published": "2026-10-16T12:45:44+00:00",
+    "model": "B",
+    "src_extra": 416,
+    "teaser": "Violeta Bănică a revenit temporar din America pentru a fi alături de mama sa, Andreea Marin, la gala „Nu există nu se poate!”, un eveniment care a adus în prim-plan povești de viață impresionante.",
+    "entities": [
+      "Violeta Bănică",
+      "Andreea Marin"
+    ],
+    "ai_cat": "lifestyle",
+    "icon": "podium",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "violeta-banica-a-participat-la-gala-organizata-de-mama-sa-andreea-marin"
+  },
+  {
     "url": "https://bizbrasov.ro/2026/10/16/cersetor-masina-lux-pelerinaj-parascheva",
     "original_link": "https://bizbrasov.ro/2026/10/16/cersetor-masina-lux-pelerinaj-parascheva/",
     "source": "bizbrasov",
@@ -8464,6 +9530,29 @@
     "prompt_version": "v2-esenta",
     "featured": false,
     "slug": "primaria-tulcea-organizeaza-gala-fidelitatii-pentru-cuplurile-cu-50-de-ani-de"
+  },
+  {
+    "url": "https://avantaje.ro/articol/horoscop-urania-zile-de-cosmar-pentru-o-zodie-6-opozitii-planetare-provoaca-tensiuni-in-familie",
+    "original_link": "https://www.avantaje.ro/articol/horoscop-urania-zile-de-cosmar-pentru-o-zodie-6-opozitii-planetare-provoaca-tensiuni-in-familie",
+    "source": "avantaje",
+    "source_name": "Avantaje",
+    "source_lang": "ro",
+    "title": "Horoscopul Uraniei anunță tensiuni majore și opoziții planetare pentru nativii din Scorpion",
+    "category": "lifestyle",
+    "published": "2026-10-16T12:37:06+00:00",
+    "model": "B",
+    "src_extra": 445,
+    "teaser": "Astrologul Urania avertizează că săptămâna 17–23 octombrie 2026 aduce șase opoziții planetare, provocând crize familiale, nemulțumiri profesionale și decizii dificile, în special pentru zodia Scorpion.",
+    "entities": [
+      "Urania",
+      "Scorpion"
+    ],
+    "ai_cat": "lifestyle",
+    "icon": "sun",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "horoscopul-uraniei-anunta-tensiuni-majore-si-opozitii-planetare-pentru-nativii"
   },
   {
     "url": "https://g4media.ro/ghetarul-apocalipsei-se-topeste-mai-rapid-decat-estimau-oamenii-de-stiinta-impactul-asupra-nivelului-marii-ar-putea-fi-dublu.html",
@@ -9781,6 +10870,29 @@
     "slug": "transilvania-este-desemnata-cea-mai-buna-destinatie-mondiala-pentru-turistii"
   },
   {
+    "url": "https://avantaje.ro/articol/singurul-barbat-din-zodiac-care-pastreaza-pasiunea-vie-toata-viata",
+    "original_link": "https://www.avantaje.ro/articol/singurul-barbat-din-zodiac-care-pastreaza-pasiunea-vie-toata-viata",
+    "source": "avantaje",
+    "source_name": "Avantaje",
+    "source_lang": "ro",
+    "title": "Bărbații născuți în zodia Leu mențin pasiunea vie pe parcursul întregii vieți",
+    "category": "lifestyle",
+    "published": "2026-10-16T12:09:57+00:00",
+    "model": "B",
+    "src_extra": 1187,
+    "teaser": "Conform astrologiei, bărbatul Leu reușește să evite rutina și să păstreze romantismul viu în cuplu mulți ani la rând, fiind urmat în acest sens și de nativi din zodiile Săgetător și Berbec.",
+    "entities": [
+      "Leu",
+      "Săgetător"
+    ],
+    "ai_cat": "lifestyle",
+    "icon": "sun",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "barbatii-nascuti-in-zodia-leu-mentin-pasiunea-vie-pe-parcursul-intregii-vieti"
+  },
+  {
     "url": "https://stirileprotv.ro/divers/alarma-falsa-in-japonia-cetatenii-ingroziti-de-avertizarea-unui-cutremur-fara-precedent-de-magnitudine-9.html",
     "original_link": "https://stirileprotv.ro/divers/alarma-falsa-in-japonia-cetatenii-ingroziti-de-avertizarea-unui-cutremur-fara-precedent-de-magnitudine-9.html",
     "source": "protv",
@@ -10467,6 +11579,57 @@
     "slug": "federatia-spaniola-de-fotbal-amendata-de-fifa-pentru-scandari-xenofobe"
   },
   {
+    "url": "https://avantaje.ro/articol/educatia-next-scoala-viitorului-prin-ochii-copiilor-de-ce-nu-poate-inteligenta-artificiala-sa-inlocuiasca-un-profesor",
+    "original_link": "https://www.avantaje.ro/articol/educatia-next-scoala-viitorului-prin-ochii-copiilor-de-ce-nu-poate-inteligenta-artificiala-sa-inlocuiasca-un-profesor",
+    "source": "avantaje",
+    "source_name": "Avantaje",
+    "source_lang": "ro",
+    "title": "Evenimentul „Educația NEXT” a analizat rolul tehnologiei și al profesorilor în școala viitorului",
+    "category": "ai",
+    "published": "2026-10-16T11:54:10+00:00",
+    "model": "C",
+    "src_extra": 1163,
+    "sources": [
+      {
+        "name": "Avantaje",
+        "url": "https://www.avantaje.ro/articol/educatia-next-scoala-viitorului-prin-ochii-copiilor-de-ce-nu-poate-inteligenta-artificiala-sa-inlocuiasca-un-profesor"
+      },
+      {
+        "name": "Unica",
+        "url": "https://www.unica.ro/stiri/cum-vad-copiii-scoala-viitorului-educatia-next-un-dialog-despre-scoala-de-maine-839630"
+      }
+    ],
+    "first_source": "Avantaje",
+    "members": [
+      {
+        "published": "2026-10-16T11:54:10+00:00",
+        "title": "Educația Next. Școala viitorului, prin ochii copiilor. De ce nu poate inteligența artificială să înlocuiască un profesor",
+        "source": "Avantaje",
+        "url": "https://avantaje.ro/articol/educatia-next-scoala-viitorului-prin-ochii-copiilor-de-ce-nu-poate-inteligenta-artificiala-sa-inlocuiasca-un-profesor"
+      },
+      {
+        "published": "2026-10-16T13:17:53+00:00",
+        "title": "Cum văd copiii școala viitorului: „Un robot nu poate să ofere iubirea ca profesorul”. Educația NEXT, un dialog despre școala de mâine",
+        "source": "Unica",
+        "url": "https://unica.ro/stiri/cum-vad-copiii-scoala-viitorului-educatia-next-un-dialog-despre-scoala-de-maine-839630"
+      }
+    ],
+    "story_id": "st-ece10f07cf12",
+    "synthesis": "Bucureștiul a găzduit evenimentul „Educația NEXT”, organizat de Libertatea și British Council, unde copii, părinți și profesori au dezbătut impactul inteligenței artificiale în școli. Participanții au subliniat că tehnologia și instrumentele digitale sunt esențiale pentru meseriile viitorului, însă elevii au atras atenția că roboții nu pot înlocui empatia, sprijinul emoțional și relația directă cu profesorii.",
+    "entities": [
+      "Libertatea",
+      "British Council",
+      "Alice Istrate",
+      "Ariadna Șerbănescu"
+    ],
+    "ai_cat": "ai",
+    "icon": "school",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "evenimentul-educatia-next-a-analizat-rolul-tehnologiei-si-al-profesorilor-in"
+  },
+  {
     "url": "https://politico.eu/article/spain-is-not-for-sale-feijoo-calls-for-navy-to-be-deployed-in-ceuta",
     "original_link": "https://www.politico.eu/article/spain-is-not-for-sale-feijoo-calls-for-navy-to-be-deployed-in-ceuta/?utm_source=RSS_Feed&utm_medium=RSS&utm_campaign=RSS_Syndication",
     "source": "politico_eu",
@@ -10734,6 +11897,28 @@
     "slug": "simona-radis-acuza-statul-roman-ca-nu-a-platit-premierile-sportivilor"
   },
   {
+    "url": "https://avantaje.ro/articol/daniela-nane-confesiuni-despre-succes-si-credinta-intrebarea-pe-care-si-o-pune-cand-nu-stie-ce-decizie-sa-ia",
+    "original_link": "https://www.avantaje.ro/articol/daniela-nane-confesiuni-despre-succes-si-credinta-intrebarea-pe-care-si-o-pune-cand-nu-stie-ce-decizie-sa-ia",
+    "source": "avantaje",
+    "source_name": "Avantaje",
+    "source_lang": "ro",
+    "title": "Actrița Daniela Nane a făcut confesiuni despre succes, carieră și credință",
+    "category": "cultura",
+    "published": "2026-10-16T11:49:14+00:00",
+    "model": "B",
+    "src_extra": 725,
+    "teaser": "Invitată într-o emisiune online, actrița Daniela Nane a vorbit despre evoluția sa profesională, renunțarea la nevoia constantă de validare externă și ghidarea alegerilor prin iubire, bunătate și credință.",
+    "entities": [
+      "Daniela Nane"
+    ],
+    "ai_cat": "cultura",
+    "icon": "writing",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "actrita-daniela-nane-a-facut-confesiuni-despre-succes-cariera-si-credinta"
+  },
+  {
     "url": "https://as.ro/fotbal/liga-1/dinamo-fc-botosani-live-text-2100-liderul-din-liga-1-cauta-a-cincea-victorie-la-rand-echipele-probabile-698457.html",
     "original_link": "https://as.ro/fotbal/liga-1/dinamo-fc-botosani-live-text-2100-liderul-din-liga-1-cauta-a-cincea-victorie-la-rand-echipele-probabile-698457.html",
     "source": "as_ro",
@@ -10983,6 +12168,30 @@
     "slug": "antrenorul-emil-sandoi-are-incredere-in-parcursul-european-al-universitatii"
   },
   {
+    "url": "https://avantaje.ro/articol/printul-harry-nu-va-petrece-craciunul-alaturi-de-regele-charles",
+    "original_link": "https://www.avantaje.ro/articol/printul-harry-nu-va-petrece-craciunul-alaturi-de-regele-charles",
+    "source": "avantaje",
+    "source_name": "Avantaje",
+    "source_lang": "ro",
+    "title": "Prințul Harry și Meghan Markle nu vor petrece Crăciunul alături de familia regală britanică",
+    "category": "extern",
+    "published": "2026-10-16T11:43:19+00:00",
+    "model": "B",
+    "src_extra": 514,
+    "teaser": "Surse apropiate cuplului regal indică faptul că Prințul Harry și Meghan Markle au decis să nu își petreacă sărbătorile de iarnă împreună cu Regele Charles și ceilalți membri ai familiei regale.",
+    "entities": [
+      "Prințul Harry",
+      "Meghan Markle",
+      "Regele Charles"
+    ],
+    "ai_cat": "extern",
+    "icon": "globe",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "printul-harry-si-meghan-markle-nu-vor-petrece-craciunul-alaturi-de-familia"
+  },
+  {
     "url": "https://opiniatimisoarei.ro/clasicul-rugby-ului-romanesc-se-joaca-in-ronat-scm-timisoara-incepe-drumul-spre-al-patrulea-trofeu-al-anului/16/10/2026",
     "original_link": "https://www.opiniatimisoarei.ro/clasicul-rugby-ului-romanesc-se-joaca-in-ronat-scm-timisoara-incepe-drumul-spre-al-patrulea-trofeu-al-anului/16/10/2026",
     "source": "opiniatm",
@@ -11077,6 +12286,30 @@
     "prompt_version": "v2-esenta",
     "featured": false,
     "slug": "tridex-a-deschis-o-reprezentanta-si-service-dacia-la-botosani"
+  },
+  {
+    "url": "https://avantaje.ro/articol/in-emisiune-sunt-prietene-dar-ce-nu-se-vede-la-tv-din-relatia-lui-teo-trandafir-cu-ilinca-vandici",
+    "original_link": "https://www.avantaje.ro/articol/in-emisiune-sunt-prietene-dar-ce-nu-se-vede-la-tv-din-relatia-lui-teo-trandafir-cu-ilinca-vandici",
+    "source": "avantaje",
+    "source_name": "Avantaje",
+    "source_lang": "ro",
+    "title": "Teo Trandafir a vorbit despre culisele relației profesionale cu Ilinca Vandici",
+    "category": "cultura",
+    "published": "2026-10-16T11:39:57+00:00",
+    "model": "B",
+    "src_extra": 307,
+    "teaser": "Prezentatoarele emisiunii matinale de la Kanal D, Teo Trandafir și Ilinca Vandici, au dezvăluit detalii despre dinamica parteneriatului lor profesional, recunoscând atât calitățile, cât și micile divergențe din timpul filmărilor.",
+    "entities": [
+      "Teo Trandafir",
+      "Ilinca Vandici",
+      "Kanal D"
+    ],
+    "ai_cat": "cultura",
+    "icon": "movie",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "teo-trandafir-a-vorbit-despre-culisele-relatiei-profesionale-cu-ilinca-vandici"
   },
   {
     "url": "https://hotnews.ro/ce-spune-comandantul-suprem-al-nato-despre-posibilitatea-unui-atac-al-rusiei-asupra-europei-putin-joaca-un-joc-periculos-2377966",
@@ -11852,6 +13085,51 @@
     "prompt_version": "v2-esenta",
     "featured": false,
     "slug": "afacerile-firmelor-din-cluj-au-depasit-130-de-miliarde-de-lei"
+  },
+  {
+    "url": "https://avantaje.ro/articol/fructule-recomandate-pentru-o-viata-mai-lunga-ce-ar-trebui-sa-mananci-in-fiecare-zi-pentru-a-imbatrani-sanatos",
+    "original_link": "https://www.avantaje.ro/articol/fructule-recomandate-pentru-o-viata-mai-lunga-ce-ar-trebui-sa-mananci-in-fiecare-zi-pentru-a-imbatrani-sanatos",
+    "source": "avantaje",
+    "source_name": "Avantaje",
+    "source_lang": "ro",
+    "title": "Cercetătorii recomandă consumul zilnic de fructe de pădure pentru longevitate",
+    "category": "sanatate",
+    "published": "2026-10-16T11:26:21+00:00",
+    "model": "B",
+    "src_extra": 577,
+    "teaser": "Specialista în nutriție Emily Johnston susține că afinele, zmeura, murele și căpșunile previn bolile cronice datorită fibrelor și antioxidanților conținuți, susținând îmbătrânirea sănătoasă.",
+    "entities": [
+      "Emily Johnston"
+    ],
+    "ai_cat": "sanatate",
+    "icon": "stethoscope",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "cercetatorii-recomanda-consumul-zilnic-de-fructe-de-padure-pentru-longevitate"
+  },
+  {
+    "url": "https://unica.ro/vedete/romanesti/adriana-bahmuteanu-nu-si-a-mai-vazut-sotul-de-doua-luni-ce-se-intampla-in-viata-ei-839608",
+    "original_link": "https://www.unica.ro/vedete/romanesti/adriana-bahmuteanu-nu-si-a-mai-vazut-sotul-de-doua-luni-ce-se-intampla-in-viata-ei-839608",
+    "source": "unica",
+    "source_name": "Unica",
+    "source_lang": "ro",
+    "title": "Adriana Bahmuțeanu pleacă în SUA după două luni fără să-și vadă soțul",
+    "category": "lifestyle",
+    "published": "2026-10-16T11:24:59+00:00",
+    "model": "B",
+    "src_extra": 459,
+    "teaser": "Vedeta TV a decis să călătorească în America pentru a fi alături de partenerul ei, marcând astfel o aniversare importantă de cuplu după o perioadă încărcată emoțional.",
+    "entities": [
+      "Adriana Bahmuțeanu",
+      "Statele Unite ale Americii"
+    ],
+    "ai_cat": "lifestyle",
+    "icon": "globe",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "adriana-bahmuteanu-pleaca-in-sua-dupa-doua-luni-fara-sa-si-vada-sotul"
   },
   {
     "url": "https://hotnews.ro/evolutia-analizei-de-risc-in-materia-preturilor-de-transfer-raportul-anaf-semestrul-i-2026-releva-progrese-dar-si-aspecte-care-necesita-clarificari-2377978",
@@ -12888,6 +14166,53 @@
     "processed_by": "official",
     "featured": false,
     "slug": "lista-titluri-executorii-4"
+  },
+  {
+    "url": "https://cronicaolteniei.ro/craiova-sarbatoreste-ziua-armatei-romaniei-demonstratii-militare-si-retragere-cu-torte-pe-25-octombrie",
+    "original_link": "https://cronicaolteniei.ro/craiova-sarbatoreste-ziua-armatei-romaniei-demonstratii-militare-si-retragere-cu-torte-pe-25-octombrie/",
+    "source": "cronicaolteniei",
+    "source_name": "Cronica Olteniei",
+    "source_lang": "ro",
+    "title": "Craiova organizează demonstrații militare de Ziua Armatei României",
+    "category": "local",
+    "published": "2026-10-16T10:47:58+00:00",
+    "model": "B",
+    "src_extra": 491,
+    "teaser": "Autoritățile locale și Brigada Multinațională Sud-Est pregătesc pentru perioada 18-25 octombrie expoziții de tehnică militară, exerciții demonstrative și o retragere cu torțe în oraș.",
+    "entities": [
+      "Craiova",
+      "Brigada Multinațională Sud-Est"
+    ],
+    "ai_cat": "regional",
+    "icon": "flag",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "craiova-organizeaza-demonstratii-militare-de-ziua-armatei-romaniei"
+  },
+  {
+    "url": "https://zch.ro/botosani-perchezitii-la-bucecea-sunt-vizate-infractiuni-de-fals-referitoare-la-atestarea-lipsei-datoriilor-catre-autoritatile-locale",
+    "original_link": "https://zch.ro/botosani-perchezitii-la-bucecea-sunt-vizate-infractiuni-de-fals-referitoare-la-atestarea-lipsei-datoriilor-catre-autoritatile-locale/?utm_medium=Feed&utm_source=Syndication",
+    "source": "zch",
+    "source_name": "ZCH News",
+    "source_lang": "ro",
+    "title": "Percheziții la Botoșani în dosarul privind falsificarea atestatelor fiscale",
+    "category": "local",
+    "published": "2026-10-16T10:47:18+00:00",
+    "model": "B",
+    "src_extra": 62,
+    "teaser": "Polițiștii au efectuat șase descinderi domiciliare în Bucecea și Blândești, vizând infracțiuni de fals și uz de fals referitoare la lipsa datoriilor către bugetul local.",
+    "entities": [
+      "Botoșani",
+      "Bucecea",
+      "Blândești"
+    ],
+    "ai_cat": "judetean",
+    "icon": "gavel",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "perchezitii-la-botosani-in-dosarul-privind-falsificarea-atestatelor-fiscale"
   },
   {
     "url": "https://expressdebanat.ro/cristian-toader-manager-cu-acte-n-regula-la-spitalul-din-resita-hurduzeu-sunt-optimist-ca-vom-putea-face-echipa-buna-in-continuare",
@@ -14568,7 +15893,7 @@
     "source": "ziuadevest",
     "source_name": "Ziua de Vest",
     "source_lang": "ro",
-    "title": "Lucrările pentru noul Institut Regional Oncologic din Timișoara vor începe săptămâna viitoare",
+    "title": "Lucrările pentru noul Institut Regional Oncologic din Timișoara ar putea începe în curând",
     "category": "local",
     "published": "2026-10-16T09:55:21+00:00",
     "model": "C",
@@ -14599,7 +15924,7 @@
     "members": [
       {
         "published": "2026-10-16T09:55:21+00:00",
-        "title": "Încep lucrările pentru noul Institut Regional Oncologic din Timișoara",
+        "title": "Lucrările pentru noul Institut Regional Oncologic din Timișoara vor începe săptămâna viitoare",
         "source": "Ziua de Vest",
         "url": "https://ziuadevest.ro/au-disparut-ruinele-de-pe-calea-torontalului-incep-pregatirile-pentru-construirea-institutului-regional-oncologic-timisoara"
       },
@@ -14611,8 +15936,8 @@
       }
     ],
     "story_id": "st-96d572b5c494",
-    "updated": "2026-10-16T21:19:09.712198+00:00",
-    "synthesis": "După finalizarea demolării ruinelor de pe Calea Torontalului, lucrările de construcție pentru noul Institut Regional de Oncologie din Timișoara vor demara în curând. Investiția este estimată la aproximativ 1,7 miliarde de lei, finanțarea fiind transferată pe Programul Sănătate, iar termenul de finalizare fiind stabilit pentru anul 2030. Viitorul spital va deservi regiunea de vest a țării cu 250 de paturi, secții specializate și facilități de cercetare."
+    "updated": "2026-10-16T23:45:10.724622+00:00",
+    "synthesis": "După finalizarea demolării ruinelor de pe Calea Torontalului, lucrările de construcție pentru noul Institut Regional de Oncologie din Timișoara ar putea demara săptămâna viitoare. Investiția estimată la circa 1,7 miliarde de lei va beneficia de finanțare europeană prin Programul Sănătate, iar unitatea medicală va include 250 de paturi, săli de operație și centre specializate, având termen de finalizare în anul 2030."
   },
   {
     "url": "https://criticarad.ro/dosar-penal-pentru-lucrari-neautorizate-la-arad",
@@ -15101,58 +16426,6 @@
     "prompt_version": "v2-esenta",
     "featured": false,
     "slug": "teatrul-national-din-timisoara-sarbatoreste-150-de-ani-de-teatru-romanesc-in-fnt"
-  },
-  {
-    "url": "https://opiniatimisoarei.ro/in-3-ani-va-putea-trata-primii-pacienti-pornesc-lucrarile-la-institutul-regional-oncologic-de-la-timisoara/16/10/2026",
-    "original_link": "https://www.opiniatimisoarei.ro/in-3-ani-va-putea-trata-primii-pacienti-pornesc-lucrarile-la-institutul-regional-oncologic-de-la-timisoara/16/10/2026",
-    "source": "opiniatm",
-    "source_name": "Opinia Timișoarei",
-    "source_lang": "ro",
-    "title": "Finalizarea demolărilor pentru noul Institut Regional Oncologic din Timișoara",
-    "category": "local",
-    "published": "2026-10-16T09:34:20+00:00",
-    "model": "C",
-    "src_extra": 50,
-    "teaser": "Timișoara a marcat startul unuia dintre cele mai importante proiecte sanitare din vestul țării, noul Institut Regional Oncologic urmând să devină funcțional pentru tratarea pacienților în termen de trei ani.",
-    "entities": [
-      "Timișoara",
-      "Alfred Simonis",
-      "Institutul Regional Oncologic"
-    ],
-    "ai_cat": "sanatate",
-    "icon": "building-hospital",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false,
-    "slug": "au-inceput-lucrarile-la-institutul-regional-oncologic-din-timisoara",
-    "sources": [
-      {
-        "name": "Opinia Timișoarei",
-        "url": "https://www.opiniatimisoarei.ro/in-3-ani-va-putea-trata-primii-pacienti-pornesc-lucrarile-la-institutul-regional-oncologic-de-la-timisoara/16/10/2026"
-      },
-      {
-        "name": "Timiș Online",
-        "url": "https://www.tion.ro/stirile-judetului-timis/institutul-regional-de-oncologie-din-timisoara-tot-mai-aproape-de-constructie-s-au-incheiat-demolarile-2372889/?utm_source=rss&utm_medium=referral&utm_campaign=hiraggregator"
-      }
-    ],
-    "first_source": "Opinia Timișoarei",
-    "members": [
-      {
-        "published": "2026-10-16T09:34:20+00:00",
-        "title": "S-au încheiat demolările pentru noul Institut Regional Oncologic din Timișoara",
-        "source": "Opinia Timișoarei",
-        "url": "https://opiniatimisoarei.ro/in-3-ani-va-putea-trata-primii-pacienti-pornesc-lucrarile-la-institutul-regional-oncologic-de-la-timisoara/16/10/2026"
-      },
-      {
-        "published": "2026-10-16T13:58:16+00:00",
-        "title": "Institutul Regional de Oncologie din Timișoara, tot mai aproape de construcție. S-au încheiat demolările",
-        "source": "Timiș Online",
-        "url": "https://tion.ro/stirile-judetului-timis/institutul-regional-de-oncologie-din-timisoara-tot-mai-aproape-de-constructie-s-au-incheiat-demolarile-2372889"
-      }
-    ],
-    "story_id": "st-861b784bd2b1",
-    "updated": "2026-10-16T21:19:18.689615+00:00",
-    "synthesis": "Autoritățile din Timișoara au anunțat încheierea lucrărilor de demolare pe Calea Torontalului, pregătind terenul pentru construcția viitorului Institut Regional Oncologic. Proiectul, estimat la peste 1,6 miliarde de lei și transferat în Programul Sănătate, va include o unitate modernă de aproximativ 65.000 de metri pătrați și 250 de paturi. Recepția etapei actuale va fi urmată în scurt timp de demararea efectivă a lucrărilor de construcție, unitatea urmând să devină funcțională în termen de trei ani."
   },
   {
     "url": "https://zch.ro/iasi-pelerinajul-sfintei-cuvioase-parascheva-sute-de-mii-de-romani-au-cautat-speranta-in-rugaciune",
@@ -276588,476 +277861,5 @@
     "prompt_version": "v2-esenta",
     "featured": false,
     "slug": "piesa-de-teatru-mesterul-solness-a-avut-premiera-cu-serban-pavlu"
-  },
-  {
-    "url": "https://dobrogeaonline.ro/proxenet-din-navodari-prins-la-volan-fara-permis-matusa-mea-era-pe-jos-in-sange",
-    "original_link": "https://www.dobrogeaonline.ro/proxenet-din-navodari-prins-la-volan-fara-permis-matusa-mea-era-pe-jos-in-sange/",
-    "source": "dobrogeaonline",
-    "source_name": "Dobrogea Online",
-    "source_lang": "ro",
-    "title": "Proxenet din Năvodari, condamnat la 5 ani după ce a condus fără permis",
-    "category": "local",
-    "published": "2026-10-04T23:04:39+00:00",
-    "model": "B",
-    "src_extra": 521,
-    "teaser": "Un bărbat din Năvodari, anterior condamnat pentru proxenetism, a primit o nouă sentință de 5 ani de închisoare. El a fost prins la volan fără permis și a motivat polițiștilor că își căuta mătușa rănită.",
-    "entities": [
-      "Năvodari"
-    ],
-    "ai_cat": "judetean",
-    "icon": "gavel",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false,
-    "slug": "proxenet-din-navodari-condamnat-la-5-ani-dupa-ce-a-condus-fara-permis"
-  },
-  {
-    "url": "https://fcinter1908.it/ultimora/cilli-sportitalia-la-roma-ha-dimostrato-fin-qui-di-poter-contendere-lo-scudetto-allinter",
-    "original_link": "https://www.fcinter1908.it/ultimora/cilli-sportitalia-la-roma-ha-dimostrato-fin-qui-di-poter-contendere-lo-scudetto-allinter/",
-    "source": "fcinter1908",
-    "source_name": "FC Inter 1908",
-    "source_lang": "it",
-    "title": "AS Roma poate concura cu Inter pentru titlul din Serie A, consideră Luca Cilli",
-    "category": "sport",
-    "published": "2026-10-04T23:00:11+00:00",
-    "model": "B",
-    "src_extra": 86,
-    "teaser": "Jurnalistul Luca Cilli susține că AS Roma și-a demonstrat potențialul în primele cinci etape din Serie A, având capacitatea de a lupta pentru titlul de campioană împotriva celor de la Inter Milano.",
-    "entities": [
-      "AS Roma",
-      "Inter Milano",
-      "Luca Cilli"
-    ],
-    "ai_cat": "sport",
-    "icon": "ball-football",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false,
-    "slug": "as-roma-poate-concura-cu-inter-pentru-titlul-din-serie-a-considera-luca-cilli"
-  },
-  {
-    "url": "https://dw.com/en/nationalists-top-bosnia-herzegovina-s-divisive-election/a-79535336?maca=en-rss-en-eu-2092-rdf",
-    "original_link": "https://www.dw.com/en/nationalists-top-bosnia-herzegovina-s-divisive-election/a-79535336?maca=en-rss-en-eu-2092-rdf",
-    "source": "dw_europe",
-    "source_name": "DW Europe",
-    "source_lang": "en",
-    "title": "Naționaliștii au câștigat alegerile din Bosnia-Herțegovina",
-    "category": "extern",
-    "published": "2026-10-04T22:55:00+00:00",
-    "model": "B",
-    "src_extra": 26,
-    "teaser": "Președinția tripartită din Bosnia-Herțegovina va fi condusă de candidați naționaliști din cele trei grupuri etnice principale, printre care se află și Zeljka Cvijanovic, susținută de Milorad Dodik.",
-    "entities": [
-      "Bosnia-Herțegovina",
-      "Zeljka Cvijanovic",
-      "Milorad Dodik"
-    ],
-    "ai_cat": "extern",
-    "icon": "globe",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false,
-    "slug": "nationalistii-au-castigat-alegerile-din-bosnia-hertegovina"
-  },
-  {
-    "url": "https://baita.ro/mircea-ioan-savin-despre-creierele-tiktokizate-ale-calingeorgistilor",
-    "original_link": "https://baita.ro/mircea-ioan-savin-despre-creierele-tiktokizate-ale-calingeorgistilor/",
-    "source": "pl_hunedoara_baita",
-    "source_name": "Primăria Băița",
-    "source_lang": "ro",
-    "title": "Susținătorii lui Călin Georgescu au interpretat greșit o declarație a lui Cristian Tudor Popescu",
-    "category": "politic",
-    "published": "2026-10-04T22:38:39+00:00",
-    "model": "B",
-    "src_extra": 337,
-    "teaser": "Simpatizanții lui Călin Georgescu au protestat violent după ce au trucat declarațiile jurnalistului Cristian Tudor Popescu. Ac Acesta avertizase că un eventual deces al politicianului ar aduce avantaje electorale partidului AUR.",
-    "processed_by": "gemini",
-    "entities": [
-      "Călin Georgescu",
-      "Cristian Tudor Popescu",
-      "AUR"
-    ],
-    "ai_cat": "politic",
-    "icon": "alert-triangle",
-    "prompt_version": "v2-esenta",
-    "featured": false,
-    "slug": "sustinatorii-lui-calin-georgescu-au-interpretat-gresit-o-declaratie-a-lui"
-  },
-  {
-    "url": "https://agenda.liternet.ro/articol/31844/Cristian-Caloian/Subiectivitate-monocroma-Tangles-la-Animest-2026.html",
-    "original_link": "https://agenda.liternet.ro/articol/31844/Cristian-Caloian/Subiectivitate-monocroma-Tangles-la-Animest-2026.html",
-    "source": "liternet",
-    "source_name": "Liternet",
-    "source_lang": "ro",
-    "title": "Proiecția animației Tangles a avut loc în cadrul festivalului Animest 2026",
-    "category": "cultura",
-    "published": "2026-10-04T22:37:00+00:00",
-    "model": "B",
-    "src_extra": 58,
-    "teaser": "Festivalul Animest din 2026 prezintă povestea lui Sarah, o tânără din California ale cărei ilustrații îndrăznețe și viziuni progresiste îi influențează cariera artistică și viața personală.",
-    "entities": [
-      "Sarah",
-      "Animest",
-      "California"
-    ],
-    "ai_cat": "cultura",
-    "icon": "movie",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false,
-    "slug": "proiectia-animatiei-tangles-a-avut-loc-in-cadrul-festivalului-animest-2026"
-  },
-  {
-    "url": "https://politico.com/newsletters/canberra-playbook",
-    "original_link": "https://www.politico.com/newsletters/canberra-playbook?utm_source=RSS_Feed&utm_medium=RSS&utm_campaign=RSS_Syndication",
-    "source": "politico_eu",
-    "source_name": "Politico EU",
-    "source_lang": "en",
-    "title": "Firma KPMG a primit 38 de milioane de dolari de la guvernul federal în timpul unei interdicții",
-    "category": "economic",
-    "published": "2026-10-04T22:30:32+00:00",
-    "model": "B",
-    "src_extra": 3092,
-    "teaser": "Compania KPMG a continuat să încaseze milioane de dolari din fonduri guvernamentale federale, în ciuda unei interdicții oficiale care viza atribuirea de noi contracte de lucru.",
-    "entities": [
-      "KPMG"
-    ],
-    "ai_cat": "economic",
-    "icon": "building-bank",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false,
-    "slug": "firma-kpmg-a-primit-38-de-milioane-de-dolari-de-la-guvernul-federal-in-timpul"
-  },
-  {
-    "url": "https://adevarul.ro/stil-de-viata/bucatarie/bauturile-putin-cunoscute-in-romania-care-pot-2561613.html",
-    "original_link": "https://adevarul.ro/stil-de-viata/bucatarie/bauturile-putin-cunoscute-in-romania-care-pot-2561613.html",
-    "source": "adevarul",
-    "source_name": "Adevărul",
-    "source_lang": "ro",
-    "title": "Băuturile naturale alternative care pot ameliora durerile de gât în sezonul rece",
-    "category": "sanatate",
-    "published": "2026-10-04T22:24:25+00:00",
-    "model": "B",
-    "src_extra": 30,
-    "teaser": "Specialiștii recomandă consumul unor preparate naturiste precum oțetul de foc sau diverse cocktailuri tradiționale pentru a combate răcelile, virozele și durerile în gât specifice sezonului rece.",
-    "entities": [],
-    "ai_cat": "sanatate",
-    "icon": "umbrella",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false,
-    "slug": "bauturile-naturale-alternative-care-pot-ameliora-durerile-de-gat-in-sezonul-rece"
-  },
-  {
-    "url": "https://fcinter1908.it/news/interviste/damiani-inter-favorita-scudetto-due-squadre-stesso-livello",
-    "original_link": "https://www.fcinter1908.it/news/interviste/damiani-inter-favorita-scudetto-due-squadre-stesso-livello/",
-    "source": "fcinter1908",
-    "source_name": "FC Inter 1908",
-    "source_lang": "it",
-    "title": "Oscar Damiani consideră Inter Milano favorită la câștigarea campionatului",
-    "category": "sport",
-    "published": "2026-10-04T22:00:20+00:00",
-    "model": "B",
-    "src_extra": 176,
-    "teaser": "Agentul și expertul pe piața transferurilor Oscar Damiani a declarat că Inter Milano deține prima șansă la cucerirea titlului în Serie A, având un lot format din două echipe de valoare egală.",
-    "entities": [
-      "Inter Milano",
-      "Oscar Damiani"
-    ],
-    "ai_cat": "sport",
-    "icon": "ball-football",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false,
-    "slug": "oscar-damiani-considera-inter-milano-favorita-la-castigarea-campionatului"
-  },
-  {
-    "url": "https://digi24.ro/stiri/externe/politicianul-pro-rus-milorad-dodik-victorie-la-alegerile-din-bosnia-pe-fondul-tensiunilor-etnice-si-al-sperantelor-de-aderare-la-ue-3977433",
-    "original_link": "https://www.digi24.ro/stiri/externe/politicianul-pro-rus-milorad-dodik-victorie-la-alegerile-din-bosnia-pe-fondul-tensiunilor-etnice-si-al-sperantelor-de-aderare-la-ue-3977433",
-    "source": "extern",
-    "source_name": "Digi24 Extern",
-    "source_lang": "ro",
-    "title": "Politicianul pro-rus Milorad Dodik a obținut victoria la alegerile din Bosnia",
-    "category": "extern",
-    "published": "2026-10-04T21:56:26+00:00",
-    "model": "B",
-    "src_extra": 35,
-    "teaser": "Liderul naționalist sârb Milorad Dodik a anunțat câștigarea scrutinului din Bosnia-Herțegovina, desfășurat pe fondul tensiunilor etnice și al dezbaterilor privind integrarea europeană a statului balcanic.",
-    "entities": [
-      "Milorad Dodik",
-      "Bosnia"
-    ],
-    "ai_cat": "extern",
-    "icon": "globe",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false,
-    "slug": "politicianul-pro-rus-milorad-dodik-a-obtinut-victoria-la-alegerile-din-bosnia"
-  },
-  {
-    "url": "https://adevarul.ro/stil-de-viata/magazin/victoria-care-a-transformat-rusia-din-stat-vasal-2561137.html",
-    "original_link": "https://adevarul.ro/stil-de-viata/magazin/victoria-care-a-transformat-rusia-din-stat-vasal-2561137.html",
-    "source": "adevarul",
-    "source_name": "Adevărul",
-    "source_lang": "ro",
-    "title": "Cucerirea cetății Kazan din 1552 a transformat Rusia într-o mare putere",
-    "category": "cultura",
-    "published": "2026-10-04T21:48:25+00:00",
-    "model": "B",
-    "src_extra": 36,
-    "teaser": "La data de 2 octombrie 1552, armata rusă a cucerit cetatea Kazan după un asediu prelungit, deschizând calea spre expansiunea teritorială în Siberia și resursele din Munții Ural.",
-    "entities": [
-      "Kazan",
-      "Rusia",
-      "Siberia"
-    ],
-    "ai_cat": "cultura",
-    "icon": "building-monument",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false,
-    "slug": "cucerirea-cetatii-kazan-din-1552-a-transformat-rusia-intr-o-mare-putere"
-  },
-  {
-    "url": "https://agenda.liternet.ro/articol/31845/Andrei-Bulboaca/Cataclismul-violentei-Dezastre-naturale.html",
-    "original_link": "https://agenda.liternet.ro/articol/31845/Andrei-Bulboaca/Cataclismul-violentei-Dezastre-naturale.html",
-    "source": "liternet",
-    "source_name": "Liternet",
-    "source_lang": "ro",
-    "title": "Andrei Bulboacă analizează comportamentul uman în scenarii de criză și violență extremă",
-    "category": "cultura",
-    "published": "2026-10-04T21:48:00+00:00",
-    "model": "B",
-    "src_extra": 58,
-    "teaser": "Autorul propune un experiment mental despre supraviețuire într-un spațiu izolat, analizând modul în care oamenii reacționează când se adăpostească pentru a se proteja de pericole fizice majore.",
-    "entities": [
-      "Andrei Bulboacă"
-    ],
-    "ai_cat": "cultura",
-    "icon": "alert-triangle",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false,
-    "slug": "andrei-bulboaca-analizeaza-comportamentul-uman-in-scenarii-de-criza-si-violenta"
-  },
-  {
-    "url": "https://digi24.ro/stiri/sci-tech/natura-si-mediu/care-sunt-cele-mai-zgomotoase-pasari-din-lume-cea-mai-apropiata-comparatie-cu-viata-de-zi-cu-zi-ar-fi-un-ciocan-pneumatic-3970485",
-    "original_link": "https://www.digi24.ro/stiri/sci-tech/natura-si-mediu/care-sunt-cele-mai-zgomotoase-pasari-din-lume-cea-mai-apropiata-comparatie-cu-viata-de-zi-cu-zi-ar-fi-un-ciocan-pneumatic-3970485",
-    "source": "digi24",
-    "source_name": "Digi24",
-    "source_lang": "ro",
-    "title": "Pasărea-clopot și seriema sunt cele mai zgomotoase păsări din lume",
-    "category": "lifestyle",
-    "published": "2026-10-04T21:46:57+00:00",
-    "model": "B",
-    "src_extra": 46,
-    "teaser": "Un studiu recent realizat de cercetătorii americani arată că pasărea-clopot cu gât golaș și seriema emit sunete a căror intensitate depășește 120 de decibeli, fiind comparabile cu un ciocan pneumatic.",
-    "entities": [
-      "Universitatea din Massachusetts Amherst"
-    ],
-    "ai_cat": "lifestyle",
-    "icon": "speakerphone",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false,
-    "slug": "pasarea-clopot-si-seriema-sunt-cele-mai-zgomotoase-pasari-din-lume"
-  },
-  {
-    "url": "https://fcinter1908.it/news/interviste/bezzi-scudetto-vedo-roma-inter-e-como-la-juventus-dovra-fare-attenzione",
-    "original_link": "https://www.fcinter1908.it/news/interviste/bezzi-scudetto-vedo-roma-inter-e-como-la-juventus-dovra-fare-attenzione/",
-    "source": "fcinter1908",
-    "source_name": "FC Inter 1908",
-    "source_lang": "it",
-    "title": "Gianni Bezzi vede Roma, Inter și Como drept candidate la titlu",
-    "category": "sport",
-    "published": "2026-10-04T21:45:07+00:00",
-    "model": "B",
-    "src_extra": 123,
-    "teaser": "Jurnalistul Gianni Bezzi a analizat situația din campionatul italian, menționând că Roma, Inter și Como se numără printre formațiile cu ambiții mari, în timp ce Juventus trebuie să evite orice pas greșit.",
-    "entities": [
-      "Gianni Bezzi",
-      "AS Roma",
-      "Inter Milano",
-      "Juventus"
-    ],
-    "ai_cat": "sport",
-    "icon": "ball-football",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false,
-    "slug": "gianni-bezzi-vede-roma-inter-si-como-drept-candidate-la-titlu"
-  },
-  {
-    "url": "https://fcinter1908.it/video/video-gattuso-nazionale-ferita-aperta-ma-ho-ringraziato-pure-bastoni-mica",
-    "original_link": "https://www.fcinter1908.it/video/video-gattuso-nazionale-ferita-aperta-ma-ho-ringraziato-pure-bastoni-mica/",
-    "source": "fcinter1908",
-    "source_name": "FC Inter 1908",
-    "source_lang": "it",
-    "title": "Gennaro Gattuso a comentat situația dificilă a echipei naționale de fotbal",
-    "category": "sport",
-    "published": "2026-10-04T21:34:43+00:00",
-    "model": "B",
-    "src_extra": 6,
-    "teaser": "Fostul internațional italian a vorbit deschis despre problemele echipei naționale și a menționat un mesaj de mulțumire adresat lui Bastoni, subliniind tensiunile din fotbalul italian.",
-    "entities": [
-      "Gennaro Gattuso",
-      "Bastoni"
-    ],
-    "ai_cat": "sport",
-    "icon": "ball-football",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false,
-    "slug": "gennaro-gattuso-a-comentat-situatia-dificila-a-echipei-nationale-de-fotbal"
-  },
-  {
-    "url": "https://fcinter1908.it/news/interviste/de-rossi-la-puo-insidiare-linter-nella-lotta-scudetto-e-una-squadra-molto-forte",
-    "original_link": "https://www.fcinter1908.it/news/interviste/de-rossi-la-puo-insidiare-linter-nella-lotta-scudetto-e-una-squadra-molto-forte/",
-    "source": "fcinter1908",
-    "source_name": "FC Inter 1908",
-    "source_lang": "it",
-    "title": "Daniele De Rossi analizează șansele la titlu în Serie A și situația Genoa",
-    "category": "sport",
-    "published": "2026-10-04T21:30:28+00:00",
-    "model": "B",
-    "src_extra": 40,
-    "teaser": "Antrenorul Daniele De Rossi a analizat parcursul formației Inter Milano în actualul sezon din Serie A și a discutat despre perspectivele echipei AS Roma, în cadrul unui interviu recent.",
-    "entities": [
-      "Daniele De Rossi",
-      "Inter",
-      "Genoa",
-      "Roma"
-    ],
-    "ai_cat": "sport",
-    "icon": "ball-football",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false,
-    "slug": "daniele-de-rossi-analizeaza-sansele-la-titlu-in-serie-a-si-situatia-genoa"
-  },
-  {
-    "url": "https://prosport.ro/fotbal-extern/liga-natiunilor/seara-meciuri-spectaculoase-liga-natiunilor-portugalia-erling-haaland-cristiano-ronaldo-jurgen-klopp-blocat-germania-grecia-20540090",
-    "original_link": "https://www.prosport.ro/fotbal-extern/liga-natiunilor/seara-meciuri-spectaculoase-liga-natiunilor-portugalia-erling-haaland-cristiano-ronaldo-jurgen-klopp-blocat-germania-grecia-20540090",
-    "source": "prosport",
-    "source_name": "ProSport",
-    "source_lang": "ro",
-    "title": "Portugalia a învins Norvegia și și-a adjudecat primul loc în grupă",
-    "category": "sport",
-    "published": "2026-10-04T21:29:29+00:00",
-    "model": "C",
-    "src_extra": 40,
-    "teaser": "Fără Cristiano Ronaldo în lot, reprezentativa Portugaliei s-a impus pe teren propriu cu scorul de 2-1 în fața Norvegiei. Această victorie aduce maximum de puncte și asigură echipei primul loc în grupa din Liga Națiunilor.",
-    "entities": [
-      "Portugalia",
-      "Norvegia",
-      "Cristiano Ronaldo",
-      "Joao Cancelo"
-    ],
-    "ai_cat": "sport",
-    "icon": "ball-football",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false,
-    "slug": "portugalia-a-invins-norvegia-in-liga-natiunilor-si-a-castigat-grupa",
-    "sources": [
-      {
-        "name": "ProSport",
-        "url": "https://www.prosport.ro/fotbal-extern/liga-natiunilor/seara-meciuri-spectaculoase-liga-natiunilor-portugalia-erling-haaland-cristiano-ronaldo-jurgen-klopp-blocat-germania-grecia-20540090"
-      },
-      {
-        "name": "Cuvântul Libertății",
-        "url": "https://cvlpress.ro/05.10.2026/liga-natiunilor-portugalia-revine-si-castiga-cu-norvegia/"
-      }
-    ],
-    "first_source": "ProSport",
-    "members": [
-      {
-        "published": "2026-10-04T21:15:31+00:00",
-        "title": "Liga Naţiunilor: Portugalia revine şi câştigă cu Norvegia",
-        "source": "Cuvântul Libertății",
-        "url": "https://cvlpress.ro/05.10.2026/liga-natiunilor-portugalia-revine-si-castiga-cu-norvegia"
-      },
-      {
-        "published": "2026-10-04T21:29:29+00:00",
-        "title": "Portugalia a învins Norvegia în Liga Națiunilor și a câștigat grupa",
-        "source": "ProSport",
-        "url": "https://prosport.ro/fotbal-extern/liga-natiunilor/seara-meciuri-spectaculoase-liga-natiunilor-portugalia-erling-haaland-cristiano-ronaldo-jurgen-klopp-blocat-germania-grecia-20540090"
-      }
-    ],
-    "story_id": "st-4e968a3dfd7a",
-    "updated": "2026-10-04T23:28:52.489339+00:00",
-    "synthesis": "Reprezentativa Portugaliei a învins pe teren propriu echipa Norvegiei cu scorul de 2-1, fără Cristiano Ronaldo în lot, în etapa a patra din Liga Națiunilor. Golurile gazdelor au fost marcate de Joao Cancelo și G. Ramos, în timp ce pentru oaspeți a înscris Ajer. Această victorie aduce maximum de puncte și asigură echipei prima poziție în grupa din Divizia A."
-  },
-  {
-    "url": "https://sport.ro/nationala/radu-dragusin-a-pus-mana-pe-telefon-imediat-dupa-cartonasul-rosu-din-polonia-romania-m-a-sunat-din-vestiar-in-minutul-27.html",
-    "original_link": "https://www.sport.ro/nationala/radu-dragusin-a-pus-mana-pe-telefon-imediat-dupa-cartonasul-rosu-din-polonia-romania-m-a-sunat-din-vestiar-in-minutul-27.html",
-    "source": "sportro",
-    "source_name": "Sport.ro",
-    "source_lang": "ro",
-    "title": "Radu Drăgușin a sunat din vestiar imediat după eliminarea din meciul cu Polonia",
-    "category": "sport",
-    "published": "2026-10-04T21:28:34+00:00",
-    "model": "B",
-    "src_extra": 9,
-    "teaser": "Fundașul român Radu Drăgușin a reacționat prompt după cartonașul roșu primit în partida dintre Polonia și România, contactând telefonic apropiații imediat ce a ajuns în vestiar.",
-    "entities": [
-      "Radu Drăgușin",
-      "Polonia",
-      "România"
-    ],
-    "ai_cat": "sport",
-    "icon": "ball-football",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false,
-    "slug": "radu-dragusin-a-sunat-din-vestiar-imediat-dupa-eliminarea-din-meciul-cu-polonia"
-  },
-  {
-    "url": "https://prosport.ro/diverse/valeriu-iftime-fiu-candidat-primaria-botosani-20540084",
-    "original_link": "https://www.prosport.ro/diverse/valeriu-iftime-fiu-candidat-primaria-botosani-20540084",
-    "source": "prosport",
-    "source_name": "ProSport",
-    "source_lang": "ro",
-    "title": "Valeriu Iftime respinge categoric zvonurile privind candidatura fiului său la Botoșani",
-    "category": "local",
-    "published": "2026-10-04T21:25:36+00:00",
-    "model": "B",
-    "src_extra": 26,
-    "teaser": "Omul de afaceri Valeriu Iftime a negat vehement informațiile conform cărora fiul său ar urma să candideze la Primătria Botoșani. Acesta a subliniat că fiul său obține venituri mult mai mari activând în mediul privat.",
-    "entities": [
-      "Valeriu Iftime",
-      "Șerban Iftime",
-      "Botoșani"
-    ],
-    "ai_cat": "politic",
-    "icon": "gavel",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false,
-    "slug": "valeriu-iftime-respinge-categoric-zvonurile-privind-candidatura-fiului-sau-la"
-  },
-  {
-    "url": "https://urban.ro/ai-incepe-sa-i-angajeze-pe-actorii-morti-greta-garbo",
-    "original_link": "https://www.urban.ro/ai-incepe-sa-i-angajeze-pe-actorii-morti-greta-garbo/",
-    "source": "urban",
-    "source_name": "Urban.ro",
-    "source_lang": "ro",
-    "title": "Actrița Greta Garbo, readusă la viață digital pentru o reclamă publicitară",
-    "category": "ai",
-    "published": "2026-10-04T21:25:00+00:00",
-    "model": "B",
-    "src_extra": 29,
-    "teaser": "Utilizarea inteligenței artificiale pentru a o recrea pe celebrul star Hollywoodian într-o reclamă stârnește controverse majore privind drepturile de imagine ale actorilor decedați și limitele etice ale tehnologiei.",
-    "entities": [
-      "Greta Garbo",
-      "Hollywood"
-    ],
-    "ai_cat": "ai",
-    "icon": "movie",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false,
-    "slug": "actrita-greta-garbo-readusa-la-viata-digital-pentru-o-reclama-publicitara"
   }
 ]

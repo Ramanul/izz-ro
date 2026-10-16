@@ -296,6 +296,10 @@
 "fete": 0,
 "sha256": "e80f68011ec8ada2b6f1dfa47dd71b7568dabfdf5ee2fd0caf18505b4d57f677"
 },
+"portraits/aeroportul-international-iasi.jpg": {
+"fete": 0,
+"sha256": "2e52adb20fd766a7b37f7caa000f6217e08a5d8efebb97c56f50754cee78f661"
+},
 "portraits/aeroportul-international-sibiu.jpg": {
 "fete": 0,
 "sha256": "91e4897e30c2d96642c2f1dcc03001aa7e81e9c686f721177f0d63543d32971b"
@@ -3120,6 +3124,11 @@
 "px": -0.0,
 "py": -0.14
 }
+},
+"portraits/cesare-prandelli.jpg": {
+"fete": 2,
+"respins": "grup",
+"sha256": "392196fc3a5295a9b0de46ea03ee6954fb590f5952492c7738052b46762bca40"
 },
 "portraits/cesc-fabregas.jpg": {
 "fete": 1,
@@ -6128,6 +6137,16 @@
 "pw": 200.13,
 "px": -56.9,
 "py": -12.44
+}
+},
+"portraits/frederic-chopin.jpg": {
+"fete": 1,
+"poz": "50% 0%",
+"sha256": "39ace1c51d707c5a88ef22fbf85cd8a2abdc3779eb3164a6eaf61914f93ab65a",
+"taiere": {
+"pw": 171.43,
+"px": -35.0,
+"py": -20.92
 }
 },
 "portraits/frederic-vasseur.jpg": {
@@ -14823,6 +14842,16 @@
 "fete": 0,
 "sha256": "bff6a1bebb571befd5773389e3d7bc223fdb92eb2d4ff57fd92f4d3234af992a"
 },
+"portraits/rita-hayworth.jpg": {
+"fete": 1,
+"poz": "50% 33%",
+"sha256": "ad7ba956e5e84bdfb7d7fafc15cc1298b8bbc97ddf39ed700fe03390aea194e3",
+"taiere": {
+"pw": 100.0,
+"px": -0.0,
+"py": -8.32
+}
+},
 "portraits/riyad-mahrez.jpg": {
 "fete": 2,
 "poz": "50% 1%",
@@ -15850,6 +15879,16 @@
 "pw": 102.53,
 "px": -0.0,
 "py": -0.0
+}
+},
+"portraits/serghei-tivilev.jpg": {
+"fete": 1,
+"poz": "50% 37%",
+"sha256": "dbbe5e6705b8828ec5e685022e58ae0ec2514f2dcbc75e8bb8aa90c22f4ae991",
+"taiere": {
+"pw": 100.0,
+"px": -0.0,
+"py": -12.44
 }
 },
 "portraits/sergi-roberto.jpg": {
