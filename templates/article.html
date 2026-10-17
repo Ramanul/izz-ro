@@ -47,10 +47,10 @@
      mai mare pe titlu face ca o potrivire in titlu sa iasa deasupra uneia din corp. -#}
   <h1 data-pagefind-body data-pagefind-weight="3">{{ a.display_title or a.title }}</h1>
   {% if a.correction %}
-  <aside class="trust-label" aria-label="Corecție editorială">
-    <strong>Corectat la {{ a.correction.reviewed_at }}.</strong> {{ a.correction.notice }}
-    {% if a.correction.scheme == 'https' %}<a href="https://{{ a.correction.destination }}" target="_blank" rel="noopener noreferrer">Documentul corecției</a>{% elif a.correction.scheme == 'http' %}<a href="http://{{ a.correction.destination }}" target="_blank" rel="noopener noreferrer">Documentul corecției</a>{% endif %}
-    {% if a.correction.kind == 'documentary' %}Documentare cu asistență AI; nu reprezintă revizie umană.{% endif %}
+  <aside class="notice" aria-label="Corecție editorială">
+    <p><strong>Corectat la <time datetime="{{ a.correction.reviewed_at }}">{{ a.correction.reviewed_at }}</time>.</strong> {{ a.correction.notice }}</p>
+    <p>{% if a.correction.scheme == 'https' %}<a href="https://{{ a.correction.destination }}" target="_blank" rel="noopener noreferrer">Documentul corecției</a>{% elif a.correction.scheme == 'http' %}<a href="http://{{ a.correction.destination }}" target="_blank" rel="noopener noreferrer">Documentul corecției</a>{% endif %}</p>
+    {% if a.correction.kind == 'documentary' %}<p>Documentare cu asistență AI; nu reprezintă revizie umană.</p>{% endif %}
   </aside>
   {% endif %}
   <div class="meta">

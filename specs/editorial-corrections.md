@@ -45,3 +45,8 @@ Release verification continuation:
   permissions; no secrets, deployment or periodic trigger. Reports and medians
   are retained as artifacts so performance validation can finish despite the
   local shell limitation. Scores remain unmeasured until that job succeeds.
+- Desktop and 390px mobile browser checks cover the corrected article,
+  withdrawal explanation and expired correction. The correction notice now
+  uses the existing notice design with separate paragraphs rather than the
+  small monospaced trust label. The focused suite passed again: 13 tests in
+  15.69 s. Synthetic pages were served only from a local temporary QA folder.
