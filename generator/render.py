@@ -182,6 +182,35 @@ def _portret(portraits: dict, name: str) -> dict | None:
     return None
 
 
+def _foto_arhiva(a: dict, portraits: dict, ents: dict) -> dict | None:
+    """Fotografia de ARHIVA a persoanei din titlu, pentru pagina de articol, sau None.
+
+    Pagina de articol nu mai deseneaza decorul generat (auditul vizual din 2026-10-17, sect. 6.2:
+    blocul de 340-383px repeta categoria si data si impinge textul cu un ecran in jos). In locul
+    lui, cand titlul numeste un om cu portret liber, apare portretul — compact, etichetat „Foto
+    de arhivă", cu credit complet: poza NU e de la eveniment si nu are voie sa para.
+
+    Licenta: Public domain / CC0 sau CC BY / CC BY-SA cu versiune — aceleasi doua niveluri ca la
+    fotografiile lead. Aici creditul complet e mereu langa poza, deci ambele sunt permise
+    (`content/legal/images.md`). Orice alta licenta -> None.
+    """
+    ales = htmlart.subiect_titlu(a, portraits)
+    if not ales:
+        return None
+    key, rec = ales
+    lic = (rec.get("license") or "").strip()
+    if not (_is_credit_free_license(lic) or _is_credit_required_license(lic)):
+        return None
+    p = _portret(portraits, key)
+    if not p or not p.get("page"):
+        return None
+    # pagina de subiect e cheiata pe entitatea AI din articol („Zelenski"), nu pe numele Wikidata
+    ent = next((e for e in a.get("entities") or [] if _norm_name(e) == key), key)
+    s = slugify(ent)[:60]
+    return {**p, "key": key, "license_url": _license_url(lic),
+            "slug": s if s in ents else None}
+
+
 def _norm_name(s: str) -> str:
     from .util import strip_diacritics
     return re.sub(r"\s+", " ", strip_diacritics((s or "").strip().lower()))
@@ -1351,8 +1380,12 @@ def build(articles: list, mod: dict | None = None) -> None:
         for a in items:
             topics = [(slugify(e)[:60], e) for e in (a.get("entities") or [])
                       if slugify(e)[:60] in ents]
+            arhiva = None if (a.get("photo_path") or a.get("art_path")) \
+                else _foto_arhiva(a, portraits, ents)
             people = []
             for e in (a.get("entities") or []):
+                if arhiva and _norm_name(e) == arhiva["key"]:
+                    continue   # e deja fotografia de sus a paginii; o a doua copie e zgomot
                 # „In imagini" arata oamenii din stire, nu omonimii lor: entitatea AI
                 # „Jair Bolsonaro" pe o stire despre Flavio Bolsonaro iese de aici
                 # (htmlart.persoana_potrivita). Spre deosebire de coperta, aici ajunge
@@ -1364,7 +1397,9 @@ def build(articles: list, mod: dict | None = None) -> None:
                 p = _portret(portraits, e)
                 if p:
                     s = slugify(e)[:60]
-                    people.append({**p, "slug": s if s in ents else None})
+                    # CC BY 4.0 par.3(a)(1)(C): langa credit sta si LINKUL licentei, nu doar numele
+                    people.append({**p, "slug": s if s in ents else None,
+                                   "license_url": _license_url(p.get("license"))})
                 if len(people) >= 2:
                     break
             # articole conectate: minim RELATED_MIN_SHARED entitati comune (o singura
@@ -1420,7 +1455,7 @@ def build(articles: list, mod: dict | None = None) -> None:
             _write(os.path.join(OUT_DIR, cat, a['slug'], "index.html"),
                    article_tpl.render(**_base_ctx(
                        f"/{cat}/{a['slug']}/", a=a, active_cat=cat, topics=topics,
-                       people=people, related=related, og_image=og_image,
+                       people=people, arhiva=arhiva, related=related, og_image=og_image,
                        jsonld_nodes=[jsonld, breadcrumb_jsonld],
                        jsonld_page={"name": a.get("title", "")})))
 

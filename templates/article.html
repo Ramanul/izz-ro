@@ -1,5 +1,4 @@
 {% extends "base.html" %}
-{% from "_art.html" import art with context %}
 {% block title %}{{ a.display_title or a.title }} — {{ site.name }}{% endblock %}
 {# meta/og description taiata la limita SERP (~158c, la cuvant); corpul ramane intreg #}
 {# anuntul oficial n-are corp: meta description ar iesi GOALA (regresie SEO masurabila), asa ca
@@ -73,9 +72,19 @@
     <figcaption class="art-credit">{% if a.lead_credit.kind == 'locality' %}Ilustrație: {{ a.lead_credit.name }}. {% endif %}Foto: {% if a.lead_credit.artist %}{{ a.lead_credit.artist }} · {% endif %}<a href="{{ a.lead_credit.page }}" target="_blank" rel="noopener noreferrer">Wikimedia Commons</a> · {% if a.lead_credit.license_url %}<a href="{{ a.lead_credit.license_url }}" target="_blank" rel="noopener noreferrer">{{ a.lead_credit.license }}</a>{% else %}{{ a.lead_credit.license }}{% endif %}{% if a.photo_path %} · decupat de IZZ.ro{% endif %}</figcaption>
     {% endif %}
   </figure>
-  {% elif a.art_style %}
-  {#- Fara fotografie reala: arta se deseneaza in pagina. Nicio cerere, niciun fisier. -#}
-  {{ art(a, 'art--articol') }}
+  {% elif arhiva %}
+  {#- Fara fotografie de la eveniment: portretul de ARHIVA al omului din titlu, compact si
+      etichetat ca atare (render._foto_arhiva). Decorul generat nu se mai deseneaza pe pagina
+      de articol — auditul din 2026-10-17, sect. 6.2: repeta categoria si data si impinge
+      textul cu un ecran in jos. Fara poza, titlul respira. -#}
+  <figure class="arhiva-foto">
+    <img src="{{ base }}/{{ arhiva.img }}" alt="{{ arhiva.name }}" width="168" height="210" decoding="async"{% if arhiva.poz %} style="object-position: {{ arhiva.poz }}"{% endif %}>
+    <figcaption>
+      <span class="arhiva-eticheta">Foto de arhivă</span>
+      <span class="arhiva-nume">{% if arhiva.slug %}<a href="{{ base }}/subiect/{{ arhiva.slug }}/">{{ arhiva.name }}</a>{% else %}{{ arhiva.name }}{% endif %}</span>
+      <span class="credit">Foto: {% if arhiva.artist %}{{ arhiva.artist }} · {% endif %}<a href="{{ arhiva.page }}" target="_blank" rel="noopener noreferrer">Wikimedia Commons</a> · {% if arhiva.license_url %}<a href="{{ arhiva.license_url }}" target="_blank" rel="noopener noreferrer">{{ arhiva.license }}</a>{% else %}{{ arhiva.license }}{% endif %}</span>
+    </figcaption>
+  </figure>
   {% endif %}
 
   {% if a.anunt_fara_corp %}
@@ -149,7 +158,7 @@
       <img src="{{ base }}/{{ p.img }}" alt="{{ p.name }}" width="96" height="96" loading="lazy"{% if p.poz %} style="object-position: {{ p.poz }}"{% endif %}>
       <figcaption>
         {% if p.slug %}<a href="{{ base }}/subiect/{{ p.slug }}/">{{ p.name }}</a>{% else %}{{ p.name }}{% endif %}
-        <span class="credit">Foto: {% if p.artist %}{{ p.artist }} · {% endif %}<a href="{{ p.page }}" target="_blank" rel="noopener noreferrer">Wikimedia Commons</a> · {{ p.license }}</span>
+        <span class="credit">Foto: {% if p.artist %}{{ p.artist }} · {% endif %}<a href="{{ p.page }}" target="_blank" rel="noopener noreferrer">Wikimedia Commons</a> · {% if p.license_url %}<a href="{{ p.license_url }}" target="_blank" rel="noopener noreferrer">{{ p.license }}</a>{% else %}{{ p.license }}{% endif %}</span>
       </figcaption>
     </figure>
     {% endfor %}
