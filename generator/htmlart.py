@@ -767,28 +767,48 @@ def _norm_aliniat(text: str) -> str:
     return "".join(out)
 
 
-def _uat_din_text(a: dict, cod: str):
+_UAT_RE: dict[str, re.Pattern | None] = {}
+
+
+def _uat_re(cod: str):
+    """Un singur regex pe judet, cu toate numele de UAT (cel mai lung intai). Cautarea pe
+    toata tara ruleaza pe fiecare stire locala de la o sursa nationala; nume-cu-nume costa ~110 s
+    pe starea reala, un regex compilat pe judet costa cat o trecere."""
+    if cod not in _UAT_RE:
+        nume = sorted((k for k, d in _uat_judet(cod).items() if d and len(k) >= 4), key=len, reverse=True)
+        alt = "|".join(re.escape(k).replace(r"\ ", " +") for k in nume)
+        _UAT_RE[cod] = re.compile(rf"(?<![A-Z0-9])({alt})(?![A-Z0-9])") if alt else None
+    return _UAT_RE[cod]
+
+
+def _uat_din_text(a: dict, cod: str, strict: bool = False):
     """(cheie, contur, nume afisat) al UAT-ului din judetul `cod` numit in titlu, teaser sau
     sinteza; altfel None. In titlu ajunge numele; in teaser/sinteza trebuie precedat de un
     cuvant de loc („din", „comuna"...), ca „Victoria" sau „Unirea" sa nu devina localitati.
-    Numele precedat de „județul" e judetul, nu orasul omonim („din județul Iași")."""
-    uats = {k: d for k, d in _uat_judet(cod).items() if d and len(k) >= 4}
-    if not uats:
+    Numele precedat de „județul" e judetul, nu orasul omonim („din județul Iași").
+    `strict` (cautarea pe toata tara): cuvant de loc si in titlu, nume scris cu majuscula, fara
+    sinteza si fara omonimele straine — acolo judetul nu mai e o ancora."""
+    rx = _uat_re(cod)
+    if rx is None:
         return None
-    for camp in ("title", "teaser", "synthesis"):
+    uats = _uat_judet(cod)
+    for camp in (("title", "teaser") if strict else ("title", "teaser", "synthesis")):
         orig = a.get(camp) or ""
         t = _norm_aliniat(orig)
         gasite = []
-        for k in uats:
-            for m in re.finditer(rf"(?<![A-Z0-9]){re.escape(k).replace(' ', ' +')}(?![A-Z0-9])", t):
-                inainte = t[:m.start()].split()
-                prec = inainte[-1] if inainte else ""
-                if prec in _JUDET_CUV:
-                    continue
-                locativ = prec in _LOCATIV
-                if camp != "title" and not locativ:
-                    continue
-                gasite.append((locativ, len(k), k, orig[m.start():m.end()]))
+        for m in rx.finditer(t):
+            k = re.sub(" +", " ", m.group(1))
+            inainte = t[:m.start()].split()
+            prec = inainte[-1] if inainte else ""
+            if prec in _JUDET_CUV:
+                continue
+            locativ = prec in _LOCATIV
+            if (strict or camp != "title") and not locativ:
+                continue
+            afisat = orig[m.start():m.end()]
+            if strict and (k in _OMONIME_STRAINE or not afisat[:1].isupper()):
+                continue
+            gasite.append((locativ, len(k), k, afisat))
         if gasite:
             _loc, _n, k, afisat = max(gasite)
             return k, uats[k], afisat
@@ -807,8 +827,17 @@ def _loc_local(a: dict):
     if et and not cod:
         return None   # eticheta e deja o localitate (sau altceva): o lasa pe ea
     cod = cod or _judet(a)
-    if not cod or cod == "BUCURESTI":
+    if cod == "BUCURESTI":
         return None
+    if not cod:
+        # sursa nationala, fara loc in eticheta („LOCAL"): o localitate numita DUPA un cuvant de
+        # loc, intr-un singur judet din toata tara; altfel nimic (Afumati IF/DJ ramane ambiguu)
+        gasite = [(c, g) for c in judete if c != "BUCURESTI"
+                  for g in [_uat_din_text(a, c, strict=True)] if g]
+        if len(gasite) != 1:
+            return None
+        cod, gasit = gasite[0]
+        return cod, gasit[0], gasit[1], gasit[2]
     gasit = _uat_din_text(a, cod)
     return (cod, gasit[0], gasit[1], gasit[2]) if gasit else None
 
