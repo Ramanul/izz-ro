@@ -103,3 +103,17 @@ def test_foto_oficiala_cap_coada(tmp_path, monkeypatch):
     assert e["page"] == WH["page"] and e["data_poza"] == "2026-10-12"
     _e2, _m2, retea2 = ev.foto_oficiala({**a, "url": "u2"}, None, memo)
     assert not retea2, "acelasi om, aceeasi zi: a doua stire nu mai cere retea"
+
+
+def test_NEGATIV_thumb_fara_https_nu_se_descarca(tmp_path, monkeypatch):
+    """Semgrep dynamic-urllib (#493): urlopen primeste doar https absolut (nu file:, ftp:)."""
+    apeluri = []
+    monkeypatch.setattr(ev.lp, "OUTDIR", str(tmp_path))
+    monkeypatch.setattr(ev, "cauta", lambda q, recente=False, limita=8:
+                        [{**WH, "thumb": "file:///etc/passwd"}])
+    monkeypatch.setattr(ev.urllib.request, "urlopen", lambda *a, **k: apeluri.append(a))
+    monkeypatch.setattr(ev.htmlart, "subiect_titlu", lambda a, *r: ("donald trump", {"name": "Donald Trump"}))
+    monkeypatch.setattr(ev.photojudge, "photo_fits", lambda *a, **k: True)
+    a = {"title": "Donald Trump a plecat spre Ohio", "url": "u", "published": "2026-10-13T08:00:00+00:00"}
+    e, _motiv, _retea = ev.foto_oficiala(a, None, {})
+    assert e is None and apeluri == []

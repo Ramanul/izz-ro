@@ -71,3 +71,11 @@ def test_article_template_prefers_credited_photo_and_keeps_it_off_cards():
         article = fh.read()
     assert "a.photo_path or a.art_path" in article
     assert "decupat de IZZ.ro" in article
+
+
+def test_NEGATIV_lead_cu_pagina_fara_https_nu_se_publica():
+    """Semgrep var-in-href (#493): `page` din cache ajunge in href-ul legendei."""
+    for rau in ("javascript:alert(1)", "http://commons.wikimedia.org/x", "//x.ro/y"):
+        rec = {**_lead("Public domain"), "page": rau}
+        assert not render._leadphoto_is_publication_safe(rec), rau
+        assert not render._leadphoto_is_article_only({**rec, "license": "CC BY 4.0"}), rau

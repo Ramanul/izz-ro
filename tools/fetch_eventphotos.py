@@ -42,6 +42,7 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, ROOT)
 from generator import eventdata, geo, htmlart, photojudge, state  # noqa: E402
 from generator.process import get_provider  # noqa: E402
+from generator.util import url_https  # noqa: E402
 
 _spec = importlib.util.spec_from_file_location(
     "fetch_leadphotos", os.path.join(ROOT, "tools", "fetch_leadphotos.py"))
@@ -341,6 +342,8 @@ def foto_oficiala(a: dict, provider, memo: dict) -> tuple[dict | None, str, bool
         if not photojudge.photo_fits(provider, a.get("title", ""), summary, nume,
                                      lp._caption(c["filename"])):
             continue
+        if not url_https(c.get("thumb")):
+            continue   # doar https absolut de la Commons; nu file:, nu ftp: (Semgrep dynamic-urllib)
         try:
             data = urllib.request.urlopen(
                 urllib.request.Request(c["thumb"], headers=lp.UA), timeout=30).read()
