@@ -1,0 +1,33 @@
+{
+  "schema_version": 1,
+  "records": [
+    {
+      "id": "sector1-payment-notice",
+      "name": "Primăria Sectorului 1",
+      "url": "https://primariasector1.ro/intrerupere-temporara-a-serviciilor-de-plata-online-in-perioada-16-18-octombrie/",
+      "role": "Anunț oficial al autorității locale; nu este o verificare independentă a funcționării serviciilor",
+      "locator": "Corpul anunțului, paragrafele 1–3 și 5; data vizibilă a publicării: 13.10.2026",
+      "verified_at": "2026-10-17T09:07:00Z",
+      "origin": {
+        "url": "https://primariasector1.ro/intrerupere-temporara-a-serviciilor-de-plata-online-in-perioada-16-18-octombrie/",
+        "relation": "original",
+        "locator": "Anunț publicat de Primăria Sectorului 1 despre lucrările și serviciile sale; emitentul este identificat în pagină",
+        "verified_at": "2026-10-17T09:07:00Z"
+      }
+    }
+  ],
+  "resources": [
+    {
+      "id": "sector1-payment-information",
+      "article_key": "article:/local/intrerupere-temporara-a-serviciilor-de-plata-online-in-perioada-16-18-octombrie/",
+      "title": "Anunțul oficial privind întreruperea serviciilor de plată",
+      "url": "https://primariasector1.ro/intrerupere-temporara-a-serviciilor-de-plata-online-in-perioada-16-18-octombrie/",
+      "organizer": "Primăria Sectorului 1",
+      "area": "Sectorul 1, municipiul București",
+      "locator": "Paragraful 1: intervalul; paragraful 2: serviciile vizate; paragraful 5: revenirea anunțată",
+      "verified_at": "2026-10-17T09:07:00Z",
+      "expires_at": "2026-10-18T18:00:00+03:00",
+      "deadline_basis": "Ora este interpretată ca ora locală a Bucureștiului; anunțul nu precizează fusul orar"
+    }
+  ]
+}

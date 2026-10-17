@@ -2,7 +2,7 @@
   <h2 id="editorial-context-title">Context documentat · pilot</h2>
   <p>{% if a.editorial.review_kind == 'human' %}Acest bloc de context a fost revizuit de un editor uman{% else %}Acest bloc de context a fost documentat cu asistență AI; nu reprezintă o revizie umană{% endif %} · <time datetime="{{ a.editorial.reviewed_at }}">{{ a.editorial.reviewed_at[:10] }}</time>. Revizia privește numai afirmațiile și probele de mai jos.</p>
   <details class="source-title">
-    <summary>Afirmații, probe și ce rămâne neclar</summary>
+    <summary>Afirmații, probe{% if a.editorial.actions %}, informații practice{% endif %} și ce rămâne neclar</summary>
     <h3>Afirmații și calificări</h3>
     <ul>
       {% for claim in a.editorial.claims %}
@@ -11,6 +11,25 @@
       </li>
       {% endfor %}
     </ul>
+    {% if a.editorial.comparison %}{% include '_source_comparison.html' %}{% endif %}
+    {% if a.editorial.impacts %}
+    <h3>Cine este afectat, conform surselor</h3>
+    <ul>{% for impact in a.editorial.impacts %}<li><strong>{{ impact.group }}</strong>: {{ impact.effect }} · {{ 'efect observat în document' if impact.status == 'observed' else 'efect anunțat sau prognozat; nu confirmă rezultatul' }} · {{ impact.horizon }}.
+      {% for ref in impact.evidence_ids %}<a href="#editorial-evidence-{{ ref }}">Proba efectului</a>{% endfor %}
+    </li>{% endfor %}</ul>
+    {% endif %}
+    {% if a.editorial.actions %}
+    <h3>Informații practice documentate</h3>
+    <p>Intervalul este cel anunțat de organizator; starea lui este calculată la generarea paginii. Consultă sursa pentru eventuale modificări.</p>
+    <ul>{% for resource in a.editorial.actions %}<li>
+      <strong>{% if resource.state == 'expired' %}Interval încheiat · informație istorică{% elif resource.state == 'current' %}Interval anunțat încă neîncheiat{% else %}Termen neprecizat{% endif %}</strong>:
+      {% if resource.scheme == 'https' %}<a href="https://{{ resource.destination }}" target="_blank" rel="noopener noreferrer">{{ resource.title }}</a>{% elif resource.scheme == 'http' %}<a href="http://{{ resource.destination }}" target="_blank" rel="noopener noreferrer">{{ resource.title }}</a>{% endif %}.
+      Organizator: {{ resource.organizer }}. Arie: {{ resource.area }}.
+      {% if resource.expires_at %}Sfârșitul intervalului anunțat: <time datetime="{{ resource.expires_at }}">{{ resource.expires_label }}</time>. {{ resource.deadline_basis }}.{% endif %}
+      Verificare documentară: <time datetime="{{ resource.verified_at }}">{{ resource.verified_at[:10] }}</time>; locul examinat: {{ resource.locator }}.
+      {% for ref in resource.evidence_ids %}<a href="#editorial-evidence-{{ ref }}">Proba resursei</a>{% endfor %}
+    </li>{% endfor %}</ul>
+    {% endif %}
     <h3>Probe examinate</h3>
     <ol>
       {% for evidence in a.editorial.evidence %}

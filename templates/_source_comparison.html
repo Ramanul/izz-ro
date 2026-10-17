@@ -1,0 +1,22 @@
+<h3>Proveniența documentelor examinate</h3>
+<p>{{ a.editorial.known_origins }} {{ 'origine documentată' if a.editorial.known_origins == 1 else 'origini documentate' }}{% if a.editorial.unknown_origins %}; pentru {{ a.editorial.unknown_origins }} {{ 'document originea rămâne necunoscută' if a.editorial.unknown_origins == 1 else 'documente originea rămâne necunoscută' }}{% endif %}. Aceste numere nu reprezintă verificări independente.</p>
+<ul>
+  {% for source in a.editorial.comparison %}
+  <li><strong>{{ source.name }}</strong> · {{ source.role }}.
+    {% if source.origin %}
+      {{ 'Document original identificat' if source.origin.relation == 'original' else 'Preluare cu origine comună documentată' }}:
+      {% if source.origin.scheme == 'https' %}<a href="https://{{ source.origin.destination }}" target="_blank" rel="noopener noreferrer">originea examinată</a>{% elif source.origin.scheme == 'http' %}<a href="http://{{ source.origin.destination }}" target="_blank" rel="noopener noreferrer">originea examinată</a>{% endif %}.
+      Baza atribuirii: {{ source.origin.locator }} · examinată la <time datetime="{{ source.origin.verified_at }}">{{ source.origin.verified_at[:10] }}</time>.
+    {% else %}Origine necunoscută; independența nu a fost verificată.{% endif %}
+    <a href="#editorial-evidence-{{ source.evidence_id }}">Vezi proba</a>
+  </li>
+  {% endfor %}
+</ul>
+{% if a.editorial.differences %}
+<h3>Diferențe între relatări</h3>
+{% for difference in a.editorial.differences %}
+<p><strong>{{ difference.topic }}</strong></p>
+<ul>{% for position in difference.positions %}<li>{{ position.text }} <a href="#editorial-evidence-{{ position.evidence_id }}">Proba relatării</a></li>{% endfor %}</ul>
+{% endfor %}
+<p>Valorile rămân atribuite documentelor; o medie între relatări nu stabilește ce s-a întâmplat.</p>
+{% endif %}

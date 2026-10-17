@@ -14,12 +14,13 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--articles", type=Path, default=Path(config.ROOT) / "data/articles.json")
     parser.add_argument("--annotations", type=Path, default=Path(config.ROOT) / "content/editorial/annotations.json")
+    parser.add_argument("--provenance", type=Path, default=Path(config.ROOT) / "content/editorial/source-provenance.json")
     args = parser.parse_args()
     try:
-        index, articles = load_validated(args.articles, args.annotations)
+        index, articles = load_validated(args.articles, args.annotations, args.provenance)
         articles = render._fara_date_viitoare(sorted(articles, key=lambda a: a.get("published") or "", reverse=True))
         articles = articles[:render._articole_publicabile(len(articles))]
-        report = editorial.catalog_report(index, articles)
+        report = editorial.catalog_report(index, articles, editorial.load_provenance(args.provenance))
     except (editorial.EditorialError, OSError, ValueError) as exc:
         print(str(exc), file=sys.stderr)
         return 1
