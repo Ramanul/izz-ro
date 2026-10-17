@@ -756,6 +756,9 @@ def _forma_loc(a: dict) -> tuple[str | None, str | None, str]:
       2. eticheta e o localitate dintr-un singur judet (sau din judetul sursei, la omonime) ->
          conturul UAT-ului, cand localitatea e chiar un UAT; altfel silueta judetului ei;
       3. altfel judetul sursei, ca inainte (`_judet`), cu UAT-ul primariei daca sursa e una.
+    La o stire LOCALA, pasul 1 deseneaza UAT-ul resedintei (`geo.RESEDINTE`): „IAȘI" pe /local/
+    e orasul; doar /judetean/ pastreaza conturul judetului (sesizarea proprietarului 2026-10-17:
+    105 din 159 de carduri locale cu eticheta-judet aratau judetul).
     Subtitlul e judetul cand eticheta e o localitate, si nimic cand eticheta e chiar judetul:
     „LOCAL" sub nume repeta badge-ul cardului (auditul din 2026-10-17, sect. 5.2).
     """
@@ -768,6 +771,9 @@ def _forma_loc(a: dict) -> tuple[str | None, str | None, str]:
         if _uat_nume(geo.eticheta_judet(c)) == cheie:
             cod = c
             break
+    if cod and a.get("category") == "local" and cod in geo.RESEDINTE:
+        # stire LOCALA cu eticheta = numele judetului: e orasul, nu judetul -> UAT-ul resedintei
+        d = _uat_judet(cod).get(_uat_nume(geo.RESEDINTE[cod])) or None
     if not cod and cheie:
         cand = {j for j in geo.judetele_localitatii(cheie) if j in judete}
         if sursa in cand:

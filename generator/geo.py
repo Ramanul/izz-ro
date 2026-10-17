@@ -850,3 +850,22 @@ def eticheta_copertei(a: dict) -> str:
     return (loc_din_titlu(a.get("title") or "", judet)
             or loc_din_sursa(a.get("source"))
             or eticheta_judet(judet))
+
+
+# Resedintele de judet, pe cheia judetului din `data/harta_judete.json` / `static/harta-stiri/data/uat/`.
+# O stire LOCALA etichetata cu numele judetului („IAȘI", „CLUJ") e, in practica, despre oras:
+# arta ei deseneaza UAT-ul resedintei, nu conturul judetului (sesizarea proprietarului 2026-10-17).
+# Bucurestiul lipseste deliberat: municipiul ESTE unitatea de pe harta, iar sectoarele sunt UAT-uri.
+RESEDINTE = {
+    "ALBA": "Alba Iulia", "ARAD": "Arad", "ARGES": "Pitești", "BACAU": "Bacău", "BIHOR": "Oradea",
+    "BISTRITA-NASAUD": "Bistrița", "BOTOSANI": "Botoșani", "BRAILA": "Brăila", "BRASOV": "Brașov",
+    "BUZAU": "Buzău", "CALARASI": "Călărași", "CARAS-SEVERIN": "Reșița", "CLUJ": "Cluj-Napoca",
+    "CONSTANTA": "Constanța", "COVASNA": "Sfântu Gheorghe", "DAMBOVITA": "Târgoviște",
+    "DOLJ": "Craiova", "GALATI": "Galați", "GIURGIU": "Giurgiu", "GORJ": "Târgu Jiu",
+    "HARGHITA": "Miercurea Ciuc", "HUNEDOARA": "Deva", "IALOMITA": "Slobozia", "IASI": "Iași",
+    "ILFOV": "Buftea", "MARAMURES": "Baia Mare", "MEHEDINTI": "Drobeta-Turnu Severin",
+    "MURES": "Târgu Mureș", "NEAMT": "Piatra Neamț", "OLT": "Slatina", "PRAHOVA": "Ploiești",
+    "SALAJ": "Zalău", "SATU MARE": "Satu Mare", "SIBIU": "Sibiu", "SUCEAVA": "Suceava",
+    "TELEORMAN": "Alexandria", "TIMIS": "Timișoara", "TULCEA": "Tulcea", "VALCEA": "Râmnicu Vâlcea",
+    "VASLUI": "Vaslui", "VRANCEA": "Focșani",
+}
