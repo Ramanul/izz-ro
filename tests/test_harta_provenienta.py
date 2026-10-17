@@ -95,3 +95,10 @@ def test_datele_poarta_judetul_redactiei_separat_de_al_faptei():
 def test_panoul_de_provenienta_exista_in_pagina():
     pagina = (ROOT / "static" / "harta-stiri" / "index.html").read_text(encoding="utf-8")
     assert 'id="panel-provenance"' in pagina
+
+
+def test_panoul_tace_pe_date_fara_judetul_redactiei():
+    """JS nou + map.json vechi (fara `source_county`) = panou mincinos („toate din presa
+    nationala"). Garda: fara camp in date, panoul si randul din tooltip nu apar."""
+    js = CALE_JS.read_text(encoding="utf-8")
+    assert js.count('state.articles.some((item) => "source_county" in item)') >= 2
