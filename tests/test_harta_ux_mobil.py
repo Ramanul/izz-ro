@@ -53,3 +53,14 @@ def test_acordul_numeralului(tmp_path):
         "0 județe", "1 județ", "2 județe", "19 județe", "20 de județe", "46 de județe",
         "100 de județe", "101 județe", "119 județe", "120 de județe", "668 de județe",
         "1001 județe", "1020 de județe"]
+
+
+def test_harta_nu_deruleaza_pagina_din_cod():
+    """`scrollIntoView` pe butoanele listei derula FEREASTRA la fiecare trecere a mouse-ului
+    peste o localitate (17 oct). Lista se deruleaza doar pe ea (`revealInPicker`)."""
+    cod = "\n".join(l for l in JS.splitlines() if not l.strip().startswith("//"))
+    assert ".scrollIntoView(" not in cod
+    assert "function revealInPicker(" in JS
+    for apel in re.findall(r"\.focus\(([^)]*)\)", cod):
+        if apel.strip():
+            assert "preventScroll: true" in apel, f"focus({apel}) poate derula pagina"
