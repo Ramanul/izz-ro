@@ -655,7 +655,21 @@ def eticheta_localitate(nume: str | None) -> str:
         return ""
     if _ETICHETE_LOCALITATI is None:
         _incarca_etichete()
-    return _ETICHETE_LOCALITATI.get(nume, "")
+    # Indexul scrie numele compuse cu SPATIU („cluj napoca"), scanerul de titluri le gaseste cu
+    # CRATIMA („CLUJ-NAPOCA") — fara a doua cheie, 51 de titluri locale cu Cluj-Napoca, Drobeta-
+    # Turnu Severin etc. cadeau pe eticheta judetului sau a rubricii (masurat 2026-10-17).
+    return _ETICHETE_LOCALITATI.get(nume) or _ETICHETE_LOCALITATI.get(nume.replace("-", " "), "")
+
+
+def judetele_localitatii(nume: str | None) -> set:
+    """Judetele (cod, majuscule fara diacritice) in care exista o localitate cu acest nume.
+
+    Multime, nu valoare: „Alunu" exista si in Valcea, si in Olt — cine o foloseste decide
+    singur ce face cu omonimele. Indexul e acelasi pe care il folosesc etichetele de coperta."""
+    if _JUDETUL_LOCALITATII is None:
+        _incarca_etichete()
+    cheie = re.sub(r"[\s-]+", " ", strip_diacritics(nume or "").upper()).strip()
+    return set((_JUDETUL_LOCALITATII or {}).get(cheie, ()))
 
 
 def eticheta_judet(judet: str | None) -> str:
@@ -712,7 +726,7 @@ def loc_din_titlu(titlu: str, judet: str | None = None) -> str:
     # maramuresean. Specificitatea decide abia cand niciun candidat nu e din judetul sursei.
     if judet:
         for nume in localitati:
-            if judet in _JUDETUL_LOCALITATII.get(nume, ()):
+            if judet in judetele_localitatii(nume):
                 return eticheta_localitate(nume)
         if judet in judete:
             return eticheta_judet(judet)

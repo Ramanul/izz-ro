@@ -52,6 +52,12 @@ _PALETE = [
     ("#4a3244", "#f5f0f4"),   # prun
 ]
 GOLD = "#c9a227"
+# Compozitia calma a stirilor locale/judetene (`.art--geo` in styles.css, aceleasi valori):
+# cerneala pe hartie calda, forma locului in aur luminos. NU `#8b6918` — tonul acela, pe
+# suprafete mari, se citea maroniu (sesizarea proprietarului 2026-10-17).
+GEO_INK = "#1d1f24"
+GEO_BG = "#faf6ec"
+GEO_AUR = "#dcb84e"
 GOLD_STRONG = "#8b6918"  # --gold-strong din styles.css (§8)
 GOLD_INCHIS = "#8b6918"  # --gold-strong din static/styles.css (§8)
 
@@ -546,26 +552,117 @@ def reset_portrete_cerute() -> None:
     _PORTRETE_CERUTE.clear()
 
 
-def _harta_inline(cod: str | None) -> dict | None:
-    """Geometria scalata a judetului `cod` pentru cutia 330x300 din `_art.html` (cache per judet)."""
+def _harta_inline(cod: str | None, d: str | None = None) -> dict | None:
+    """Geometria scalata pentru cutia 330x300 din `_art.html` (cache per forma).
+
+    Implicit e judetul `cod`; cu `d` dat (conturul unei localitati, vezi `_uat_path`) se scaleaza
+    acel contur, dupa bbox-ul LUI — o comuna cat un punct pe harta judetului umple acum cutia.
+    """
     if not cod:
         return None
-    if cod not in _HARTA_INLINE_CACHE:
-        d = _harta().get(cod)
+    key = f"{cod}|{d}" if d else cod   # calea insasi e cheia: fara hash, fara coliziuni
+    if key not in _HARTA_INLINE_CACHE:
+        d = d or _harta().get(cod)
         b = _bbox(d) if d else None
         if not b:
-            _HARTA_INLINE_CACHE[cod] = None
+            _HARTA_INLINE_CACHE[key] = None
         else:
             x0, y0, x1, y1 = b
             lw, lh = max(x1 - x0, 0.01), max(y1 - y0, 0.01)
             s = min(330.0 / lw, 300.0 / lh)
             tx, ty = (330.0 - lw * s) / 2 - x0 * s, (300.0 - lh * s) / 2 - y0 * s
-            _HARTA_INLINE_CACHE[cod] = {
+            _HARTA_INLINE_CACHE[key] = {
                 "d": d,
                 "transform": f"translate({tx:.2f} {ty:.2f}) scale({s:.4f})",
                 "sw": f"{2.2 / s:.2f}",
             }
-    return _HARTA_INLINE_CACHE[cod]
+    return _HARTA_INLINE_CACHE[key]
+
+
+# ---- conturul LOCALITATII (UAT) pentru stirile primariilor -----------------------
+# Cerere proprietar 2026-10-17: pe stirile locale/judetene ramane FORMA locului, nu data.
+# Conturul UAT-ului e mai precis decat judetul, dar il folosim DOAR unde e sigur: sursa e
+# primaria acelei localitati (`pl_<judet>_<localitate>`), deci cheia sursei numeste locul in
+# clar. Orice altceva (nume negasit, sursa de presa) cade pe silueta judetului, ca pana acum —
+# o forma gresita e mai rea decat una mai larga (§7).
+_UAT_DIR = os.path.join(_ROOT, "static", "harta-stiri", "data", "uat")
+_UAT_CACHE: dict[str, dict[str, str]] = {}
+
+
+def _uat_nume(s: str) -> str:
+    from .util import strip_diacritics
+    return re.sub(r"[\s-]+", " ", strip_diacritics(s or "").upper()).strip()
+
+
+def _uat_judet(cod: str) -> dict[str, str]:
+    """`{NUME UAT: path}` pentru judetul `cod`, citit o data. Lipsa fisierului -> `{}`."""
+    if cod not in _UAT_CACHE:
+        out: dict[str, str] = {}
+        try:
+            with open(os.path.join(_UAT_DIR, f"{cod}.json"), encoding="utf-8") as f:
+                for u in json.load(f).get("uats") or []:
+                    nume, d = _uat_nume(u.get("name") or ""), u.get("path") or ""
+                    if nume and d:
+                        # nume dublat in acelasi judet -> ambiguu, deci nefolosibil
+                        out[nume] = "" if nume in out else d
+        except (OSError, ValueError):
+            out = {}
+        _UAT_CACHE[cod] = out
+    return _UAT_CACHE[cod]
+
+
+def _uat_path(a: dict, cod: str | None) -> str | None:
+    """Conturul localitatii a carei primarie a publicat stirea `a`, sau None."""
+    if not cod:
+        return None
+    from .localities import parse_source_slug
+    parsed = parse_source_slug(a.get("source") or "")
+    if not parsed:
+        return None
+    return _uat_judet(cod).get(_uat_nume(parsed[1])) or None
+
+
+def _forma_loc(a: dict) -> tuple[str | None, str | None, str]:
+    """(judet, contur de localitate sau None, subtitlu) pentru arta unei stiri locale/judetene.
+
+    Forma urmeaza ETICHETA afisata (`geo.eticheta_copertei`), nu alt semnal: cardul care scrie
+    „IAȘI" desenează Iasiul. Pana acum silueta venea doar din cheia sursei, deci 13 din 20 de
+    carduri locale (masurat pe /local/, 2026-10-17) aratau numele locului langa o cutie goala,
+    iar eticheta si forma puteau sa nu spuna acelasi lucru. Riscul de eroare e al etichetei, nu
+    unul nou: forma doar il face vizibil, nu il adauga.
+
+    Ordinea, de la sigur la mai putin sigur:
+      1. eticheta e un judet -> silueta judetului;
+      2. eticheta e o localitate dintr-un singur judet (sau din judetul sursei, la omonime) ->
+         conturul UAT-ului, cand localitatea e chiar un UAT; altfel silueta judetului ei;
+      3. altfel judetul sursei, ca inainte (`_judet`), cu UAT-ul primariei daca sursa e una.
+    Subtitlul e judetul cand eticheta e o localitate, si nimic cand eticheta e chiar judetul:
+    „LOCAL" sub nume repeta badge-ul cardului (auditul din 2026-10-17, sect. 5.2).
+    """
+    et = _eticheta(a).strip()
+    cheie = _uat_nume(et)
+    sursa = _judet(a)
+    cod = d = None
+    judete = _harta()
+    for c in judete:
+        if _uat_nume(geo.eticheta_judet(c)) == cheie:
+            cod = c
+            break
+    if not cod and cheie:
+        cand = {j for j in geo.judetele_localitatii(cheie) if j in judete}
+        if sursa in cand:
+            cod = sursa
+        elif len(cand) == 1:
+            cod = next(iter(cand))
+        if cod:
+            d = _uat_judet(cod).get(cheie) or None
+    if not cod and sursa:
+        cod, d = sursa, _uat_path(a, sursa)
+    if not cod:
+        return None, None, ""
+    jud = geo.eticheta_judet(cod) or ""
+    sub = "" if _uat_nume(jud) == cheie else jud
+    return cod, d, sub
 
 
 def _harta() -> dict:
@@ -604,6 +701,12 @@ def _silueta(cod: str | None, latime: float, inaltime: float, culoare: str, op: 
     Grosimea conturului se imparte la scara, ca sa ramana constanta in pixeli pe toate judetele.
     """
     d = _harta().get(cod or "")
+    return _silueta_d(d, latime, inaltime, culoare, op)
+
+
+def _silueta_d(d: str | None, latime: float, inaltime: float, culoare: str, op: float,
+               contur_op: float = .5) -> str:
+    """Ca `_silueta`, pentru un path dat (judet sau localitate)."""
     b = _bbox(d) if d else None
     if not b:
         return ""
@@ -615,7 +718,7 @@ def _silueta(cod: str | None, latime: float, inaltime: float, culoare: str, op: 
             f'viewBox="0 0 {latime:.0f} {inaltime:.0f}" aria-hidden="true" focusable="false">'
             f'<g transform="translate({tx:.2f} {ty:.2f}) scale({s:.4f})">'
             f'<path d="{d}" fill="{culoare}" fill-opacity="{op}" stroke="{GOLD}" '
-            f'stroke-opacity=".5" stroke-width="{2.2 / s:.2f}" stroke-linejoin="round"/>'
+            f'stroke-opacity="{contur_op}" stroke-width="{2.2 / s:.2f}" stroke-linejoin="round"/>'
             f'</g></svg>')
 
 
@@ -660,20 +763,21 @@ def _t_harta(a, acc, bg, k):
     660 la `editorial`), ca numele lungi sa nu intre peste silueta (masurat: la 520px si 104px, „FLOREȘTI"
     ajungea la 14px de ea).
     """
-    cod = _judet(a)
-    et, sb = _eticheta(a), _sub_harta(a, cod)
-    dt = _data_copertei(a)
+    cod, d, sb = _forma_loc(a)
+    et = _eticheta(a)
     et_px = _et_px(et, ((8, 92), (13, 76), (18, 62), (99, 48)), k)
-    sus = f"{dt['wk']} {dt['zi_n']} {dt['luna']} {dt['an']}" if dt else ""
+    # Fara data (cerere proprietar 2026-10-17: pe local/judetean ramane forma locului) si cu
+    # forma in AUR, nu in culoarea textului: aceeasi compozitie ca arta din pagina (`.art--geo`).
+    acc, bg = GEO_INK, GEO_BG
+    forma = _silueta_d(d or _harta().get(cod or ""), 330 * k, 300 * k, GEO_AUR, 1, contur_op=1)
     return (
         f'<div class="stage" style="background:{bg};color:{acc}">'
         f'<div style="position:absolute;right:{40 * k:.0f}px;top:{104 * k:.0f}px;'
         f'bottom:{72 * k:.0f}px;display:flex;align-items:center;line-height:0">'
-        f'{_silueta(cod, 330 * k, 300 * k, acc, 0.15)}</div>'
+        f'{forma}</div>'
         f'<div style="position:absolute;left:{56 * k:.0f}px;right:{56 * k:.0f}px;top:{30 * k:.0f}px;'
         f'display:flex;justify-content:space-between;align-items:baseline">'
-        f'<span class="marca" style="position:static;font-size:{15 * k:.0f}px;opacity:.65">izz.ro</span>'
-        f'<span class="marca" style="position:static;font-size:{13 * k:.0f}px">{sus}</span></div>'
+        f'<span class="marca" style="position:static;font-size:{15 * k:.0f}px;opacity:.65">izz.ro</span></div>'
         f'<div style="position:absolute;left:{56 * k:.0f}px;right:{56 * k:.0f}px;top:{68 * k:.0f}px;'
         f'height:{3 * k:.0f}px;background:{GOLD}"></div>'
         f'<div style="position:absolute;left:{56 * k:.0f}px;top:{92 * k:.0f}px;bottom:{96 * k:.0f}px;'
@@ -864,7 +968,8 @@ def build_html(a: dict, cover: bool = False, sablon: str | None = None) -> str:
     # cutremur spun ce s-a intamplat, harta spune doar unde, iar copertile de categorie
     # (`sablon`) n-au judet prin constructie. Peste rotatia generica trece insa, fiindca e
     # singurul strat ramas care spune ceva despre ARTICOL, nu despre rubrica.
-    elif _judet(a):
+    elif (a.get("category") or "") in _GEO_CALM:
+        # local/judetean fara judet cunoscut primeste aceeasi compozitie calma, doar fara forma
         body = _t_harta(a, acc, bg, w / ART_W)
     else:
         body = _TEMPLATES[seed[4] % len(_TEMPLATES)](a, acc, bg, w / ART_W)
@@ -911,20 +1016,36 @@ def stil_inline(a: dict) -> dict:
     """Descrierea artei desenate in pagina pentru `a` (compozitie, paleta, texte, data, harta/portret)."""
     seed = _seed(a)
     et = _eticheta(a)
-    cod = _judet(a)
-    sub = _sub_harta(a, cod) if cod else _subtitlu(a)
-    harta = _harta_inline(cod) if cod else None
-    portret = None if harta else _portret_liber(a)
+    # Local/judetean: forma si subtitlul urmeaza eticheta afisata (`_forma_loc`).
+    geo_cat = (a.get("category") or "") in _GEO_CALM
+    if geo_cat:
+        cod, d, sub = _forma_loc(a)
+        harta = _harta_inline(cod, d) if cod else None
+    else:
+        sub, harta = _subtitlu(a), None
+    # Local/judetean: o singura compozitie calma, fara data (cerere proprietar 2026-10-17;
+    # auditul din aceeasi zi, sect. 5.2 — ziua lunii repeta meta-ul, iar patru compozitii
+    # alternate faceau din lista un colaj). `arc` e baza fiindca, fara sigiliu, ramane exact
+    # eticheta + forma; calibrarea treptelor de eticheta se pastreaza.
+    geo = geo_cat
+    portret = None if (harta or geo) else _portret_liber(a)
     res = {
-        "tpl": _NUME_TEMPLATE[seed[4] % len(_NUME_TEMPLATE)],
+        "tpl": "arc" if geo else _NUME_TEMPLATE[seed[4] % len(_NUME_TEMPLATE)],
         "pal": seed[0] % len(_PALETE),
         "eticheta": et,
         "sub": sub,
         "treapta": _treapta_eticheta(et),
-        "data": _data_copertei(a),
+        "data": None if geo else _data_copertei(a),
     }
+    if geo:
+        res["geo"] = True
     if harta:
         res["harta"] = harta
     elif portret:
         res["portret"] = portret
     return res
+
+
+# Categoriile cu compozitia calma (`.art--geo`). Aceleasi doua ca la `_judet`: sunt stirile
+# a caror imagine spune UNDE, nu ziua.
+_GEO_CALM = frozenset({"local", "judetean"})

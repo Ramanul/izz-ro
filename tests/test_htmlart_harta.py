@@ -31,10 +31,13 @@ def test_articol_local_primeste_silueta():
     assert "<svg" in html and "<path" in html
 
 
-def test_silueta_e_a_judetului_cerut():
-    """Path-ul injectat e chiar geometria CLUJ, nu a altui judet."""
+def test_silueta_e_a_locului_cerut():
+    """Path-ul injectat e conturul localitatii primariei (Florești, din judetul Cluj), nu al
+    altui loc. Pana pe 2026-10-17 era silueta intregului judet; UAT-ul e mai precis si sigur
+    aici, fiindca sursa e chiar primaria lui (`htmlart._forma_loc`)."""
     html = htmlart.build_html(LOCAL_CU_JUDET)
-    assert htmlart._harta()["CLUJ"] in html
+    assert htmlart._uat_judet("CLUJ")["FLORESTI"] in html
+    assert htmlart._harta()["CLUJ"] not in html
 
 
 @pytest.mark.parametrize("articol", [
@@ -55,11 +58,20 @@ def test_regional_e_exclus_desi_sursa_are_judet():
     assert htmlart._judet(a) is None
 
 
-def test_sursa_nationala_nu_ghiceste_judetul():
-    """Fara judet in cheia sursei nu se deduce nimic din titlu: o silueta gresita e mai rea
-    decat niciuna. Articolul isi pastreaza template-ul din rotatia veche."""
+def test_sursa_nationala_deseneaza_locul_din_eticheta():
+    """Schimbat 2026-10-17 (cererea proprietarului: pe local/judetean ramane forma locului).
+    Eticheta copertei vine deja din titlu din 2026-08-08 (`geo.eticheta_copertei`), deci cardul
+    scria „CLUJ-NAPOCA" langa o cutie goala. Forma urmeaza acum eticheta: riscul unei potriviri
+    gresite e al etichetei, iar forma il face vizibil, nu il adauga. `_judet` ramane DOAR pe
+    cheia sursei — el decide in continuare judetul sursei, nu forma."""
     a = {"category": "local", "source": "protv", "title": "Accident la Cluj-Napoca"}
     assert htmlart._judet(a) is None
+    html = htmlart.build_html(a)
+    assert htmlart._uat_judet("CLUJ")["CLUJ NAPOCA"] in html
+
+
+def test_NEGATIV_sursa_nationala_fara_loc_in_titlu_nu_primeste_forma():
+    a = {"category": "local", "source": "protv", "title": "Prețul pâinii crește din nou"}
     assert "<svg" not in htmlart.build_html(a)
 
 
