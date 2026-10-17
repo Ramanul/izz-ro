@@ -793,7 +793,7 @@ body:has(#izz-consent) { padding-bottom: 4.5rem; }
    ===================================================================== */
 :root {
   /* perechile (accent, fond) din generator/htmlart.py `_PALETE`, in aceeasi ordine */
-  --art-a0: #8b6918; --art-b0: #faf5e6;   /* aur inchis pe spalare aurie */
+  --art-a0: #1f2a44; --art-b0: #faf5e6;   /* cerneala albastra pe spalare aurie (nu #8b6918: maroniu) */
   --art-a1: #15171c; --art-b1: #f6f7f9;   /* cerneala pe hartie */
   --art-a2: #3d4a3a; --art-b2: #f1f4ee;   /* masliniu */
   --art-a3: #4a3b32; --art-b3: #f7f2ed;   /* pamant ars */

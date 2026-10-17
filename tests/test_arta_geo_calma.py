@@ -129,3 +129,19 @@ def test_localitatile_cu_cratima_isi_primesc_eticheta_si_forma():
     s = htmlart.stil_inline(a)
     assert s["sub"] == "Cluj"
     assert s["harta"]["d"] == htmlart._uat_judet("CLUJ")["CLUJ NAPOCA"]
+
+
+def test_afisele_nu_mai_folosesc_tonul_maro_mustar():
+    """Sesizarea proprietarului 2026-10-17: `#8b6918` se citea maroniu pe TOATE afisele, nu
+    doar pe cele locale. Aurul ramane `GOLD` in decor; textul ia accentul paletei."""
+    css = _css()
+    bloc = css[css.index("--art-a0:"):css.index(".art--p0")]
+    assert "#8b6918" not in bloc.split("/*")[0].lower()
+    assert all(acc.lower() != "#8b6918" for acc, _bg in htmlart._PALETE)
+    for f in ("generator/htmlart.py", "generator/covers.py"):
+        cod = open(os.path.join(os.path.dirname(__file__), "..", f), encoding="utf-8").read()
+        linii = [ln for ln in cod.splitlines() if not ln.lstrip().startswith("#")]
+        assert not any(re.search(r"8b6918|\(154, 114, 9\)", ln.split("#  ")[0].split("  # ")[0])
+                       for ln in linii), f
+    m = re.search(r"--art-a0:\s*(#[0-9a-fA-F]{6})", css)
+    assert m and m.group(1).lower() == htmlart._PALETE[0][0].lower(), "CSS si _PALETE difera"

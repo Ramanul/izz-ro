@@ -20,7 +20,6 @@ from . import htmlart
 
 W, H = 1200, 630
 GOLD = (201, 162, 39)
-GOLD_STRONG = (154, 114, 9)
 INK = (17, 17, 17)
 INK2 = (82, 82, 91)
 
@@ -139,7 +138,7 @@ def _draw_cover(a: dict):
     eyebrow = htmlart._eticheta(a)
     sub = htmlart._subtitlu(a)
     head_txt = f"{eyebrow.upper()}  ·  {sub.upper()}" if sub else eyebrow.upper()
-    d.text((64, 54), head_txt, font=mono, fill=GOLD_STRONG)
+    d.text((64, 54), head_txt, font=mono, fill=acc)   # nu aur inchis: iesea maroniu
     d.line([(64, 96), (380, 96)], fill=GOLD, width=3)
 
     # Data in dreapta (sau pe banda intunecata la split)
@@ -159,7 +158,7 @@ def _draw_cover(a: dict):
         y += 72
 
     foot_col = (240, 236, 226) if layout == "horizon" else INK2
-    code_col = GOLD if layout in ("horizon", "split") else GOLD_STRONG
+    code_col = GOLD if layout in ("horizon", "split") else acc
     d.text((64, H - 56), "IZZ.ro — Informația Zero Zgomot", font=mono_s, fill=foot_col, anchor="ls")
     d.text((W - 64, H - 56), f"Nº {seed.hex()[:6]}", font=mono_s, fill=code_col, anchor="rs")
     return img

@@ -45,7 +45,7 @@ _FONT_B64 = None
 # (accent inchis, fundal deschis). Saturatie joasa deliberat: diferentiaza cardurile intre
 # ele fara sa iasa din identitatea editoriala. Aurul ramane constanta care leaga totul.
 _PALETE = [
-    ("#8b6918", "#faf5e6"),   # --gold-strong pe --gold-wash
+    ("#1f2a44", "#faf5e6"),   # cerneala albastra pe --gold-wash (pana in 2026-10-17: #8b6918, maroniu)
     ("#15171c", "#f6f7f9"),   # --ink pe --paper
     ("#3d4a3a", "#f1f4ee"),   # masliniu
     ("#4a3b32", "#f7f2ed"),   # pamant ars
@@ -55,12 +55,12 @@ _PALETE = [
 GOLD = "#c9a227"
 # Compozitia calma a stirilor locale/judetene (`.art--geo` in styles.css, aceleasi valori):
 # cerneala pe hartie calda, forma locului in aur luminos. NU `#8b6918` — tonul acela, pe
-# suprafete mari, se citea maroniu (sesizarea proprietarului 2026-10-17).
+# suprafete mari, se citea maroniu (sesizarea proprietarului 2026-10-17). Din aceeasi zi
+# arta nu-l mai foloseste deloc: aurul e doar `GOLD` (decor), textul ia accentul paletei —
+# un aur care trece 3:1 ca text pe hartie deschisa ajunge inapoi la mustar.
 GEO_INK = "#1d1f24"
 GEO_BG = "#faf6ec"
 GEO_AUR = "#dcb84e"
-GOLD_STRONG = "#8b6918"  # --gold-strong din styles.css (§8)
-GOLD_INCHIS = "#8b6918"  # --gold-strong din static/styles.css (§8)
 
 
 def _font() -> str:
@@ -276,7 +276,7 @@ def _t_arc(a, acc, bg, k):
                f'border:{1 * k:.0f}px solid {GOLD};opacity:.35"></div>'
                f'<div style="position:absolute;left:{cx - r}px;top:{cy - int(58 * k)}px;width:{2 * r}px;'
                f'text-align:center;line-height:1">'
-               f'<div style="font-weight:800;font-size:{96 * k:.0f}px;color:{GOLD_INCHIS}">{dt["zi"]}</div>'
+               f'<div style="font-weight:800;font-size:{96 * k:.0f}px;color:{acc}">{dt["zi"]}</div>'
                f'<div style="font-weight:800;font-size:{15 * k:.0f}px;letter-spacing:{5 * k:.0f}px;'
                f'text-transform:uppercase;opacity:.55;margin-top:{6 * k:.0f}px">{dt["wk"]}</div>'
                f'<div style="font-weight:800;font-size:{13 * k:.0f}px;letter-spacing:{4 * k:.0f}px;'
@@ -971,7 +971,7 @@ def _t_cutremur(a, ch, acc, bg, k):
         f'<div class="eticheta" style="font-size:{40 * k:.0f}px;margin-top:{26 * k:.0f}px">{et}</div>'
         f'<div class="sub" style="margin-top:{10 * k:.0f}px">CUTREMUR</div></div>'
         f'<div style="position:absolute;left:{44 * k:.0f}px;bottom:{96 * k:.0f}px;line-height:1">'
-        f'<div style="font-weight:800;font-size:{84 * k:.0f}px;color:{GOLD_STRONG}">{mag_ro}</div>'
+        f'<div style="font-weight:800;font-size:{84 * k:.0f}px;color:{acc}">{mag_ro}</div>'
         f'<div style="font-weight:800;font-size:{16 * k:.0f}px;opacity:.7;margin-top:{10 * k:.0f}px">'
         f'{data_txt}{adanc}</div></div>'
         f'<div class="marca" style="left:{44 * k:.0f}px;bottom:{34 * k:.0f}px">izz.ro</div>'
