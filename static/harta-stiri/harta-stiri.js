@@ -2128,8 +2128,24 @@
       const on = key !== null && button.dataset.uat === key;
       button.classList.toggle("is-hovered", on);
       button.setAttribute("aria-current", on ? "true" : "false");
-      // `nearest` nu face nimic daca randul e deja vizibil, deci lista nu sare degeaba.
-      if (on) button.scrollIntoView({ block: "nearest", inline: "nearest" });
+      if (on) revealInPicker(picker, button);
+    }
+  }
+
+  // Aduce butonul in vedere DERULAND DOAR LISTA, niciodata pagina. `scrollIntoView` derula
+  // fereastra ori de cate ori lista era sub ecran: pe desktop, mouse-ul plimbat peste
+  // localitatile unui judet trimitea pagina in jos si harta disparea in sus (raportat de
+  // proprietar 17 oct; masurat pe /harta/cluj/: +108 px la doua treceri de mouse).
+  function revealInPicker(picker, button) {
+    const box = picker.getBoundingClientRect();
+    const own = button.getBoundingClientRect();
+    if (picker.scrollWidth > picker.clientWidth + 1) {
+      if (own.left < box.left) picker.scrollLeft -= box.left - own.left + 8;
+      else if (own.right > box.right) picker.scrollLeft += own.right - box.right + 8;
+    }
+    if (picker.scrollHeight > picker.clientHeight + 1) {
+      if (own.top < box.top) picker.scrollTop -= box.top - own.top + 8;
+      else if (own.bottom > box.bottom) picker.scrollTop += own.bottom - box.bottom + 8;
     }
   }
 
@@ -2194,7 +2210,7 @@
         button.addEventListener("focus", () => setHover(uat));
         button.addEventListener("blur", () => setHover(null));
         picker.appendChild(button);
-        if (button.dataset.uat === focusedKey) button.focus();
+        if (button.dataset.uat === focusedKey) button.focus({ preventScroll: true });
       }
       // Tastatura nu trebuie sa-si piarda locul cand pickerul se schimba din judete in UAT-uri:
       // niciun buton UAT nu poarta cheia judetului (dataset.uat e cod SIRUTA), deci
@@ -2203,7 +2219,7 @@
       // e o tinta sigura; pentru utilizatorul de mouse focusedKey e null si nu i se fura focusul.
       if (focusedKey && !picker.contains(document.activeElement)) {
         const first = picker.querySelector("button[data-uat]");
-        if (first) first.focus();
+        if (first) first.focus({ preventScroll: true });
       }
       syncUatHighlight();
       return;
@@ -2239,7 +2255,7 @@
       button.setAttribute("aria-pressed", selected ? "true" : "false");
       button.addEventListener("click", () => (isRegional ? selectRegion(key) : selectCounty(key)));
       picker.appendChild(button);
-      if (key === focusedKey) button.focus();
+      if (key === focusedKey) button.focus({ preventScroll: true });
     }
   }
 

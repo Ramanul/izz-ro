@@ -1274,6 +1274,24 @@ def mobil_390(p):
     check(p.evaluate("() => location.pathname") == before,
           "derularea cu degetul peste harta NU deschide ruta unui județ")
 
+def hover_fara_salt(p):
+    """Mouse-ul plimbat peste harta unui judet nu are voie sa derulze pagina (17 oct: fiecare
+    trecere peste o localitate aducea in ecran butonul ei din lista de sub harta, deci pagina
+    cobora si harta disparea in sus; +108 px masurat pe /harta/cluj/)."""
+    print("\nHOVER FARA SALT -- mouse-ul peste localitati nu muta pagina")
+    p.goto(BASE.rstrip("/") + "/cluj/", wait_until="networkidle")
+    p.wait_for_timeout(1200)
+    p.evaluate("document.querySelector('.map-stage').scrollIntoView({block:'center'})")
+    p.wait_for_timeout(300)
+    y0 = p.evaluate("scrollY")
+    r = stage_rect(p)
+    for i in range(40):
+        p.mouse.move(r["x"] + r["w"] * (0.05 + 0.9 * (i % 10) / 9), r["y"] + r["h"] * (0.1 + 0.8 * (i // 10) / 4), steps=3)
+        p.wait_for_timeout(30)
+    y1 = p.evaluate("scrollY")
+    check(y1 == y0, f"40 de pozitii ale mouse-ului peste localitati: pagina ramane pe loc ({y0} -> {y1})")
+
+
 def gesturi_tactile(mob):
     """Gesturile de telefon, cu degete reale prin CDP (17 oct: pe Android doua degete nu faceau
     nimic, iar atingerea unei forme lasa un chenar negru de focus). Contractul:
@@ -1348,7 +1366,7 @@ def main():
         for sec in (hit_ordin_fara_furt, ilfov_click_geometric, hover_preview, click_zona_fara_stiri, scara_si_numitor,
                     felia2_localitate, felia5_county_picker, felia6_url, zoom_interactiv,
                     tastatura_pan_zoom, uat_selectie, context_national_si_nume_uat,
-                    breadcrumb):
+                    breadcrumb, hover_fara_salt):
             goto_base(p)
             sec(p)
 
