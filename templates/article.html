@@ -69,7 +69,7 @@
       <img class="article-art" src="{{ base }}{{ art_src }}" alt="{% if a.lead_credit %}{{ a.lead_credit.name }}{% endif %}" width="960" height="504" sizes="(min-width: 770px) 729px, calc(100vw - 42px)" fetchpriority="high">
     </picture>
     {% if a.lead_credit %}
-    <figcaption class="art-credit">{% if a.lead_credit.kind == 'locality' %}Ilustrație: {{ a.lead_credit.name }}. {% endif %}Foto: {% if a.lead_credit.artist %}{{ a.lead_credit.artist }} · {% endif %}<a href="{{ a.lead_credit.page }}" target="_blank" rel="noopener noreferrer">Wikimedia Commons</a> · {% if a.lead_credit.license_url %}<a href="{{ a.lead_credit.license_url }}" target="_blank" rel="noopener noreferrer">{{ a.lead_credit.license }}</a>{% else %}{{ a.lead_credit.license }}{% endif %}{% if a.photo_path %} · decupat de IZZ.ro{% endif %}</figcaption>
+    <figcaption class="art-credit">{% if a.lead_credit.kind == 'locality' %}Ilustrație: {{ a.lead_credit.name }}. {% elif a.lead_credit.kind == 'oficial' %}Fotografie oficială{% if a.lead_credit.sursa %} ({{ a.lead_credit.sursa }}{% if a.lead_credit.data_poza %}, {{ a.lead_credit.data_poza }}{% endif %}){% endif %}. {% endif %}Foto: {% if a.lead_credit.artist %}{{ a.lead_credit.artist }} · {% endif %}<a href="{{ a.lead_credit.page }}" target="_blank" rel="noopener noreferrer">Wikimedia Commons</a> · {% if a.lead_credit.license_url %}<a href="{{ a.lead_credit.license_url }}" target="_blank" rel="noopener noreferrer">{{ a.lead_credit.license }}</a>{% else %}{{ a.lead_credit.license }}{% endif %}{% if a.photo_path %} · decupat de IZZ.ro{% endif %}</figcaption>
     {% endif %}
   </figure>
   {% elif arhiva %}
