@@ -262,31 +262,34 @@ def lead_for_article(a: dict, provider=None):
     trece SI de judecatorul AI de potrivire (photojudge) -> intrare LEAD; altfel (None, motiv)."""
     summary = a.get("synthesis") or a.get("teaser") or ""
     etapa = 0
+    # `etapa` se ridica INAINTE de fiecare poarta: numeste poarta la care s-a oprit candidatul,
+    # nu ultima trecuta (constatare Gemini pe #492 — motivele erau decalate cu o pozitie).
     for name in a.get("entities") or []:
         if not name or len(name.split()) < 2:
             continue
+        etapa = max(etapa, 1)
         qid = fp.wd_match(name)
         if not qid:
             continue
-        etapa = max(etapa, 1)
+        etapa = max(etapa, 2)
         ent = fp.wd_entity(qid)
         claims = ent.get("claims", {})
         if not fp.is_photo_worthy(claims, len(ent.get("sitelinks", {}))):
             continue
-        etapa = max(etapa, 2)
+        etapa = max(etapa, 3)
         f = fp.portrait_file(claims)
         if not f:
             continue
-        etapa = max(etapa, 3)
+        etapa = max(etapa, 4)
         info = commons_lead_info(f)
         if not info or not info.get("thumb") or not qualifies(info):
             continue
-        etapa = max(etapa, 4)
+        etapa = max(etapa, 5)
         # ultima poarta: AI verifica potrivirea foto<->articol (nu partea care a pierdut,
         # nu un rezultat fals). provider None -> True; eroare -> False (fail-safe).
         if not photojudge.photo_fits(provider, a.get("title", ""), summary, name, _caption(f)):
             continue
-        etapa = max(etapa, 5)
+        etapa = max(etapa, 6)
         data = urllib.request.urlopen(urllib.request.Request(info["thumb"], headers=UA), timeout=30).read()
         if len(data) < 3000:
             continue
@@ -296,7 +299,7 @@ def lead_for_article(a: dict, provider=None):
             continue
         return {**rend, "artist": info["artist"], "license": info["license"],
                 "page": info["page"], "name": name}, "ent_ok"
-    return None, _ETAPE_ENT[min(etapa, len(_ETAPE_ENT) - 1)]
+    return None, _ETAPE_ENT[etapa]
 
 
 def curata_cache(cache: dict, aids_actuale: set) -> int:

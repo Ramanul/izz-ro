@@ -139,3 +139,33 @@ def test_curatarea_pastreaza_memoria_localitatilor():
     }
     assert lp.curata_cache(cache, {"viu"}) == 2
     assert set(cache) == {"viu", "mort_localitate"}
+
+
+def _ent_pana_la(monkeypatch, poarta):
+    """Ruta pe entitati, cu fiecare poarta trecuta pana la `poarta` (exclusiv), care cade."""
+    ordine = ["qid", "notabil", "p18", "licenta", "judecator", "descarcare"]
+    trece = {k: ordine.index(k) < ordine.index(poarta) for k in ordine}
+    monkeypatch.setattr(lp.fp, "wd_match", lambda n: "Q1" if trece["qid"] else None)
+    monkeypatch.setattr(lp.fp, "wd_entity", lambda q: {"claims": {}, "sitelinks": {}})
+    monkeypatch.setattr(lp.fp, "is_photo_worthy", lambda c, s: trece["notabil"])
+    monkeypatch.setattr(lp.fp, "portrait_file", lambda c: "X.jpg" if trece["p18"] else None)
+    monkeypatch.setattr(lp, "commons_lead_info", lambda f: _info("CC BY 4.0"))
+    monkeypatch.setattr(lp, "qualifies", lambda i: trece["licenta"])
+    monkeypatch.setattr(lp.photojudge, "photo_fits", lambda *a: trece["judecator"])
+    monkeypatch.setattr(lp.urllib.request, "urlopen", lambda *a, **k: _Resp(b"mic"))
+
+
+def test_motivul_numeste_poarta_care_a_cazut_nu_ultima_trecuta(monkeypatch):
+    """Constatarea Gemini pe #492: 'Ion Popescu' fara QID raporta `ent_fara_entitati`."""
+    art = {"title": "t", "entities": ["Ion Popescu"]}
+    asteptat = {"qid": "ent_fara_qid", "notabil": "ent_nenotabila", "p18": "ent_fara_p18",
+                "licenta": "ent_licenta_sau_format", "judecator": "ent_respinsa_de_judecator",
+                "descarcare": "ent_descarcare"}
+    for poarta, motiv in asteptat.items():
+        _ent_pana_la(monkeypatch, poarta)
+        assert lp.lead_for_article(art) == (None, motiv), poarta
+
+
+def test_NEGATIV_fara_entitate_de_doua_cuvinte_ramane_fara_entitati(monkeypatch):
+    _ent_pana_la(monkeypatch, "qid")
+    assert lp.lead_for_article({"entities": ["Popescu", ""]}) == (None, "ent_fara_entitati")
