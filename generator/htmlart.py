@@ -31,6 +31,7 @@ import os
 import re
 
 from . import config, geo
+from .util import url_https
 
 _ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 _ASSETS = os.path.join(os.path.dirname(os.path.abspath(__file__)), "assets")
@@ -586,9 +587,9 @@ def _portrete_toate() -> dict[str, dict]:
                            "taiere": (incadrare.get(img) or {}).get("taiere"),
                            "credit_required": not _CREDIT_FREE_RE.match(lic)}
                     if rec["credit_required"]:
-                        page = (v.get("page") or "").strip()
+                        page = url_https(v.get("page"))
                         if not page:
-                            continue   # fara pagina-sursa creditul ar fi incomplet -> nu se afiseaza
+                            continue   # fara pagina-sursa https creditul ar fi incomplet sau nesigur
                         rec["credit"] = {"artist": (v.get("artist") or "").strip(), "page": page,
                                          "license": lic, "license_url": license_url_cc(lic)}
                     out[k] = rec

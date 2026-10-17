@@ -186,3 +186,21 @@ def test_coperta_og_nu_poarta_niciodata_portrete():
 def test_url_ul_licentei_e_acelasi_in_htmlart_si_render():
     for lic in ("CC BY 4.0", "CC BY-SA 3.0", "CC BY-SA 3.0 ro", "CC BY 2.0", "CC-BY-SA-4.0", "Public domain"):
         assert htmlart.license_url_cc(lic) == render._license_url(lic), lic
+
+
+def test_NEGATIV_cardul_nu_ia_credit_cu_link_nesigur(tmp_path, monkeypatch):
+    """Semgrep var-in-href (#494): creditul cardului intra in href; doar https absolut."""
+    (tmp_path / "media" / "portraits").mkdir(parents=True)
+    (tmp_path / "media" / "portraits" / "z.jpg").write_bytes(b"\xff\xd8" + b"0" * 5000)
+    reg = {"volodimir zelenski": {"img": "portraits/z.jpg", "license": "CC BY 4.0",
+                                  "page": "javascript:alert(1)", "artist": "A"},
+           "marine le pen": {"img": "portraits/z.jpg", "license": "CC BY 4.0",
+                             "page": "https://commons.wikimedia.org/wiki/File:Z.jpg"}}
+    (tmp_path / "portraits.json").write_text(json.dumps(reg), encoding="utf-8")
+    monkeypatch.setattr(htmlart, "_PORTRAITS_PATH", str(tmp_path / "portraits.json"))
+    monkeypatch.setattr(htmlart, "_ROOT", str(tmp_path))
+    monkeypatch.setattr(htmlart, "_PORTRETE_TOATE", None)
+    monkeypatch.setattr(htmlart, "incadrare_portrete", lambda: {})
+    toate = htmlart._portrete_toate()
+    assert "volodimir zelenski" not in toate
+    assert toate["marine le pen"]["credit"]["page"].startswith("https://")
