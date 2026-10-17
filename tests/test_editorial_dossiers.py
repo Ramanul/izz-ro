@@ -235,6 +235,19 @@ def test_corrected_views_use_preserved_input_fingerprint(catalog, article):
     assert dossiers.prepare_dossiers(catalog, [article], now=NOW)[1]
 
 
+def test_material_correction_of_relation_target_requires_new_target_review(article):
+    target = {**article, "slug": "target", "title": "Ținta originală"}
+    approved_target = editorial.source_fingerprint(target)
+    record = annotation(article, [relation(editorial.annotation_key(target), approved_target)])
+    target.update(title="Ținta corectată material", editorial_input_fingerprint=approved_target,
+                  publication={"state": "corrected"})
+    pages, links, _, report = dossiers.prepare_dossiers({}, [article, target], {record["key"]: record}, NOW)
+    assert pages == [] and links == {}
+    assert report["suppressed"][0]["reason"] == "article_target_absent_or_changed"
+    record["relations"][0]["target_fingerprint"] = editorial.source_fingerprint(target)
+    assert dossiers.prepare_dossiers({}, [article, target], {record["key"]: record}, NOW)[1]
+
+
 @pytest.mark.parametrize("kind", list(dossiers.RELATION_LABELS))
 def test_relation_types_explain_evidence_and_cooccurrence_is_noncausal(catalog, article, kind):
     target = {**article, "slug": "target"}

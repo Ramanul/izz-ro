@@ -344,8 +344,11 @@ def prepare_dossiers(catalog, articles, annotations=None, now=None):
             path, title = page["path"], page["title"]
         else:
             article = article_index.get(target)
+            # Target approval concerns the facts the reader will see, including a
+            # material presentation correction; the preserved raw hash is only
+            # appropriate for identifying the annotation's own source input.
             if (article is None or withdrawn(article)
-                    or relation["target_fingerprint"] != article_fingerprint(article)):
+                    or relation["target_fingerprint"] != source_fingerprint(article)):
                 suppress(owner, "article_target_absent_or_changed")
                 return None
             path, title = public_path(article), article["title"]

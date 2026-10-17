@@ -18,6 +18,8 @@ Boundaries: `documentary` identifies assisted documentary examination, never hum
 
 Relations require type, target, explanation, document/evidence IDs, documentary/human review metadata and `identity_basis`. `affects` additionally requires `effect_status=observed|projected` and `effect_evidence_ids`. Article targets require `target_fingerprint`; dossier targets require the target dossier content fingerprint. Changing substantive target content demands renewed review. `co_occurrence` is a separate type with a fixed visible noncausal disclaimer.
 
+For corrected article views, annotation source identity and dossier source-article links use the preserved `editorial_input_fingerprint` when supplied. A relation's target instead compares its fingerprint to the actual displayed article fields (`source_fingerprint` of the corrected copy), so a material presentation correction cannot retain an obsolete target assertion merely because the raw collection state is unchanged.
+
 Dossier article references keep the approved article key, fingerprint, and explanation. An article may expire; its reference is then omitted from navigation while the dossier's document references remain. Events retain an optional `event_at` independently of `published_at`; events with missing event dates never inherit publication dates. Only an approved evidence-backed history item may change the current summary, and the latest correction must equal the dossier summary.
 
 ## Documentary examination
