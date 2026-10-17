@@ -1,5 +1,796 @@
 [
   {
+    "url": "https://prosport.ro/fotbal-extern/stranieri/reactie-turci-andrei-borza-umilit-antrenor-corum-stil-gigi-becali-20549782",
+    "original_link": "https://www.prosport.ro/fotbal-extern/stranieri/reactie-turci-andrei-borza-umilit-antrenor-corum-stil-gigi-becali-20549782",
+    "source": "prosport",
+    "source_name": "ProSport",
+    "source_lang": "ro",
+    "title": "Andrei Borza a fost schimbat în prima repriză de Burak Yilmaz",
+    "category": "sport",
+    "published": "2026-10-17T20:27:18+00:00",
+    "model": "B",
+    "src_extra": 42,
+    "teaser": "În partida din campionatul Turciei dintre Corum și Rizespor, antrenorul Burak Yilmaz l-a înlocuit pe fundașul român Andrei Borza încă din prima repriză, decizie comparată cu metodele patronului FCSB, Gigi Becali.",
+    "entities": [
+      "Andrei Borza",
+      "Burak Yilmaz",
+      "Gigi Becali",
+      "Corum"
+    ],
+    "ai_cat": "sport",
+    "icon": "ball-football",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "andrei-borza-a-fost-schimbat-in-prima-repriza-de-burak-yilmaz"
+  },
+  {
+    "url": "https://sport.ro/liga-1/rapid-bucuresti-corvinul-hunedoara-live-text-pe-sport-ro-de-la-21-30-ultima-intalnire-directa-a-avut-loc-in-1992.html",
+    "original_link": "https://www.sport.ro/liga-1/rapid-bucuresti-corvinul-hunedoara-live-text-pe-sport-ro-de-la-21-30-ultima-intalnire-directa-a-avut-loc-in-1992.html",
+    "source": "sportro",
+    "source_name": "Sport.ro",
+    "source_lang": "ro",
+    "title": "Rapid București a învins Corumarea Hunedoara cu 2-0 prin dubla lui Alex Dobre",
+    "category": "sport",
+    "published": "2026-10-17T20:25:14+00:00",
+    "model": "B",
+    "src_extra": 16,
+    "teaser": "Formația Rapid București s-a impus cu scorul de 2-0 în fața Corvinului Hunedoara, meci transmis pe Sport.ro, în care atacantul Alex Dobre a marcat ambele goluri ale partidei.",
+    "entities": [
+      "Rapid București",
+      "Corvinul Hunedoara",
+      "Alex Dobre"
+    ],
+    "ai_cat": "sport",
+    "icon": "ball-football",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "rapid-bucuresti-a-invins-corumarea-hunedoara-cu-2-0-prin-dubla-lui-alex-dobre"
+  },
+  {
+    "url": "https://hotnews.ro/este-complet-iresponsabil-oameni-din-tabara-lui-trump-ataca-decizia-care-scuteste-rusia-de-sanctiuni-2378918",
+    "original_link": "https://hotnews.ro/este-complet-iresponsabil-oameni-din-tabara-lui-trump-ataca-decizia-care-scuteste-rusia-de-sanctiuni-2378918",
+    "source": "hotnews",
+    "source_name": "HotNews",
+    "source_lang": "ro",
+    "title": "Republicanii critică decizia lui Donald Trump de a scuti Rusia de sancțiuni",
+    "category": "politic",
+    "published": "2026-10-17T20:24:00+00:00",
+    "model": "B",
+    "src_extra": 44,
+    "teaser": "Mai mulți politicieni republicani din SUA au contestat ferm hotărârea președintelui Donald Trump de a exclude Rusia de la noile sancțiuni adoptate de Congres pentru a sprijini Ucraina, calificând gestul drept iresponsabil.",
+    "entities": [
+      "Donald Trump",
+      "Rusia",
+      "Congresul SUA",
+      "Thom Tillis"
+    ],
+    "ai_cat": "politic",
+    "icon": "gavel",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "republicanii-critica-decizia-lui-donald-trump-de-a-scuti-rusia-de-sanctiuni"
+  },
+  {
+    "url": "https://gsp.ro/fotbal/liga-1/ce-s-a-intamplat-in-giulesti-la-rapid-corvinul-hunedoara-989318.html",
+    "original_link": "https://www.gsp.ro/fotbal/liga-1/ce-s-a-intamplat-in-giulesti-la-rapid-corvinul-hunedoara-989318.html",
+    "source": "gsp",
+    "source_name": "GSP",
+    "source_lang": "ro",
+    "title": "Meciul Rapid - Corvinul a înregistrat cea mai slabă asistență din Giulești",
+    "category": "sport",
+    "published": "2026-10-17T20:23:45+00:00",
+    "model": "B",
+    "src_extra": 39,
+    "teaser": "Doar 7.328 de spectatori au asistat în stadionul Giulești la primul duel oficial dintre Rapid și Corvinul Hunedoara după mai bine de 34 de ani, reprezentând cel mai redus public al gazdelor în acest sezon.",
+    "entities": [
+      "Rapid București",
+      "Corvinul Hunedoara"
+    ],
+    "ai_cat": "sport",
+    "icon": "ball-football",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "meciul-rapid-corvinul-a-inregistrat-cea-mai-slaba-asistenta-din-giulesti"
+  },
+  {
+    "url": "https://sport.ro/spania/cum-arata-ierarhia-din-la-liga-dupa-ce-barcelona-a-facut-spectacol-cu-betis.html",
+    "original_link": "https://www.sport.ro/spania/cum-arata-ierarhia-din-la-liga-dupa-ce-barcelona-a-facut-spectacol-cu-betis.html",
+    "source": "sportro",
+    "source_name": "Sport.ro",
+    "source_lang": "ro",
+    "title": "FC Barcelona a învținut-o pe Betis Sevilia cu 5-2 în La Liga",
+    "category": "sport",
+    "published": "2026-10-17T20:21:46+00:00",
+    "model": "B",
+    "src_extra": 8,
+    "teaser": "Partida disputată la Sevilla între Real Betis și FC Barcelona s-a încheiat cu scorul spectaculos de 2-5, influențând semnificativ clasamentul provizoriu din prima ligă spaniolă.",
+    "entities": [
+      "FC Barcelona",
+      "Betis Sevilia",
+      "La Liga"
+    ],
+    "ai_cat": "sport",
+    "icon": "ball-football",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "fc-barcelona-a-invtinut-o-pe-betis-sevilia-cu-5-2-in-la-liga"
+  },
+  {
+    "url": "https://dobrogeaonline.ro/eduard-david-din-constanta-obtine-o-victorie-impresionanta-la-gala-confruntarea-titanilor-dupa-ce-arbitrii-il-declara-castigator-in-unanimitate",
+    "original_link": "https://www.dobrogeaonline.ro/eduard-david-din-constanta-obtine-o-victorie-impresionanta-la-gala-confruntarea-titanilor-dupa-ce-arbitrii-il-declara-castigator-in-unanimitate/",
+    "source": "dobrogeaonline",
+    "source_name": "Dobrogea Online",
+    "source_lang": "ro",
+    "title": "Luptătorul Eduard David a câștigat în unanimitate la gala Confruntarea Titanilor",
+    "category": "sport",
+    "published": "2026-10-17T20:21:22+00:00",
+    "model": "B",
+    "src_extra": 133,
+    "teaser": "Sportivul constănțean Eduard David, legitimat la CSM Constanța, și-a adjudecat o victorie clară împotriva unui adversar experimentat în cadrul galei desfășurate la Târgoviște.",
+    "entities": [
+      "Eduard David",
+      "Alex Filip Team",
+      "CSM Constanța"
+    ],
+    "ai_cat": "sport",
+    "icon": "medal",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "luptatorul-eduard-david-a-castigat-in-unanimitate-la-gala-confruntarea-titanilor"
+  },
+  {
+    "url": "https://as.ro/fotbal/primul-gol-pentru-laurentiu-reghecampf-jr-este-un-sentiment-extraordinar-698915.html",
+    "original_link": "https://as.ro/fotbal/primul-gol-pentru-laurentiu-reghecampf-jr-este-un-sentiment-extraordinar-698915.html",
+    "source": "as_ro",
+    "source_name": "Antena Sport",
+    "source_lang": "ro",
+    "title": "Laurențiu Reghecampf Jr. a marcat primul său gol în Liga 3 pentru Voința Crevedia",
+    "category": "sport",
+    "published": "2026-10-17T20:20:28+00:00",
+    "model": "B",
+    "src_extra": 48,
+    "teaser": "În vârstă de 18 ani, fiul antrenorului Laurențiu Reghecampf a înscris prima sa reușită stagională în eșantionul al treilea, contribuind la victoria obținută de Voința Crevedia pe terenul celor de la CS Păulești.",
+    "entities": [
+      "Laurențiu Reghecampf Jr",
+      "Voința Crevedia",
+      "Gabi Manu",
+      "CS Păulești"
+    ],
+    "ai_cat": "sport",
+    "icon": "ball-football",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "laurentiu-reghecampf-jr-a-marcat-primul-sau-gol-in-liga-3-pentru-vointa-crevedia"
+  },
+  {
+    "url": "https://digi24.ro/stiri/externe/ue/zelenski-acuza-o-operatiune-planificata-dupa-restrictiile-impuse-starlink-in-ucraina-ne-va-costa-vietile-multora-dintre-noi-3997137",
+    "original_link": "https://www.digi24.ro/stiri/externe/ue/zelenski-acuza-o-operatiune-planificata-dupa-restrictiile-impuse-starlink-in-ucraina-ne-va-costa-vietile-multora-dintre-noi-3997137",
+    "source": "extern",
+    "source_name": "Digi24 Extern",
+    "source_lang": "ro",
+    "title": "Zelenski acuză o operațiune planificată privind restricțiile Starlink în Ucraina",
+    "category": "extern",
+    "published": "2026-10-17T20:19:08+00:00",
+    "model": "B",
+    "src_extra": 73,
+    "teaser": "Președintele ucrainean Volodimir Zelenski susține că limitarea vitezei pentru serviciul Starlink în Ucraina reprezintă o acțiune deliberată care afectează negativ operațiunile militare și pune în pericol numeroase vieți.",
+    "entities": [
+      "Volodimir Zelenski",
+      "Starlink",
+      "Ucraina",
+      "Uniunea Europeană"
+    ],
+    "ai_cat": "extern",
+    "icon": "globe",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "zelenski-acuza-o-operatiune-planificata-privind-restrictiile-starlink-in-ucraina"
+  },
+  {
+    "url": "https://gsp.ro/international/campionate/betis-barcelona-manuel-pellegrini-la-liga-989319.html",
+    "original_link": "https://www.gsp.ro/international/campionate/betis-barcelona-manuel-pellegrini-la-liga-989319.html",
+    "source": "gsp",
+    "source_name": "GSP",
+    "source_lang": "ro",
+    "title": "Manuel Pellegrini l-a criticat dur pe arbitrul central după eșecul cu Barcelona",
+    "category": "sport",
+    "published": "2026-10-17T20:17:45+00:00",
+    "model": "B",
+    "src_extra": 56,
+    "teaser": "Antrenorul echipei Betis, Manuel Pellegrini, și-a exprimat furia față de brigada de arbitri după înfrângerea cu 2-5 în fața Barcelonei, acuzând decizii eronate care au influențat decisiv rezultatul final.",
+    "entities": [
+      "Manuel Pellegrini",
+      "Ricardo Bengoetxea",
+      "FC Barcelona",
+      "Betis"
+    ],
+    "ai_cat": "sport",
+    "icon": "gavel",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "manuel-pellegrini-l-a-criticat-dur-pe-arbitrul-central-dupa-esecul-cu-barcelona"
+  },
+  {
+    "url": "https://fcinter1908.it/ultimora/inter-dato-opta-19-punti",
+    "original_link": "https://www.fcinter1908.it/ultimora/inter-dato-opta-19-punti/",
+    "source": "fcinter1908",
+    "source_name": "FC Inter 1908",
+    "source_lang": "it",
+    "title": "Inter Milano a acumulat 19 puncte în primele șapte etape din Serie A",
+    "category": "sport",
+    "published": "2026-10-17T20:15:49+00:00",
+    "model": "B",
+    "src_extra": 218,
+    "teaser": "În ciuda problemelor recente din Liga Campionilor și a accidentărilor suferite de Lautaro și Pavard, Inter Milano a reușit o nouă victorie în campionatul italian pe terenul Bolognei, menținând un bilanț excelent de start.",
+    "entities": [
+      "Inter Milano",
+      "Bologna",
+      "Lautaro",
+      "Pavard"
+    ],
+    "ai_cat": "sport",
+    "icon": "ball-football",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "inter-milano-a-acumulat-19-puncte-in-primele-sapte-etape-din-serie-a"
+  },
+  {
+    "url": "https://adevarul.ro/stiri-interne/societate/tara-in-care-fiecare-locuitor-arunca-260-de-2564676.html",
+    "original_link": "https://adevarul.ro/stiri-interne/societate/tara-in-care-fiecare-locuitor-arunca-260-de-2564676.html",
+    "source": "adevarul",
+    "source_name": "Adevărul",
+    "source_lang": "ro",
+    "title": "Miliarde de tone de alimente risipite anual pe plan mondial",
+    "category": "economic",
+    "published": "2026-10-17T20:15:25+00:00",
+    "model": "B",
+    "src_extra": 19,
+    "teaser": "La nivel global se pierd anual peste un miliard de tone de alimente, în timp ce sute de milioane de oameni suferă de foame, situație care reflectă o criză profundă de distribuție și consum.",
+    "entities": [
+      "România"
+    ],
+    "ai_cat": "economic",
+    "icon": "pig-money",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "miliarde-de-tone-de-alimente-risipite-anual-pe-plan-mondial"
+  },
+  {
+    "url": "https://antena3.ro/mediu/fenomenul-el-nino-a-provocat-o-invazie-de-specii-exotice-pe-plajele-din-california-aproape-de-tarm-au-ajuns-si-rechinul-balena-807602.html",
+    "original_link": "https://www.antena3.ro/mediu/fenomenul-el-nino-a-provocat-o-invazie-de-specii-exotice-pe-plajele-din-california-aproape-de-tarm-au-ajuns-si-rechinul-balena-807602.html",
+    "source": "antena3",
+    "source_name": "Antena 3 CNN",
+    "source_lang": "ro",
+    "title": "Fenomenul El Nino aduce specii marine exotice pe plajele californiene",
+    "category": "extern",
+    "published": "2026-10-17T20:13:00+00:00",
+    "model": "B",
+    "src_extra": 24,
+    "teaser": "Manifestările climatice extreme generate de curentul El Nino au modificat radical ecosistemul marin din California, facilitând apariția unor specii rare de pești și rechini aproape de țărm.",
+    "entities": [
+      "California",
+      "El Nino"
+    ],
+    "ai_cat": "extern",
+    "icon": "globe",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "fenomenul-el-nino-aduce-specii-marine-exotice-pe-plajele-californiene"
+  },
+  {
+    "url": "https://sport.ro/liga-1/surpriza-antrenorul-nou-promovatei-propune-un-fotbalist-la-echipa-nationala-sunt-rari-acesti-jucatori.html",
+    "original_link": "https://www.sport.ro/liga-1/surpriza-antrenorul-nou-promovatei-propune-un-fotbalist-la-echipa-nationala-sunt-rari-acesti-jucatori.html",
+    "source": "sportro",
+    "source_name": "Sport.ro",
+    "source_lang": "ro",
+    "title": "Un antrenor din SuperLiga propune un jucător pentru naționala României",
+    "category": "sport",
+    "published": "2026-10-17T20:11:35+00:00",
+    "model": "B",
+    "src_extra": 9,
+    "teaser": "Tehnicianul unei formații din prima ligă fotbalistică internă a lansat o propunere directă către Gică Hagi, evidențiind calitățile rare ale unui fotbalist român tânăr.",
+    "entities": [
+      "SuperLiga",
+      "Gică Hagi"
+    ],
+    "ai_cat": "sport",
+    "icon": "ball-football",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "un-antrenor-din-superliga-propune-un-jucator-pentru-nationala-romaniei"
+  },
+  {
+    "url": "https://sport.ro/sporturi/are-61-de-ani-dar-arata-ca-la-20-si-e-curtata-in-sala-de-forta-de-barbati-mult-mai-tineri-cum-reactioneaza-sotul-ei.html",
+    "original_link": "https://www.sport.ro/sporturi/are-61-de-ani-dar-arata-ca-la-20-si-e-curtata-in-sala-de-forta-de-barbati-mult-mai-tineri-cum-reactioneaza-sotul-ei.html",
+    "source": "sportro",
+    "source_name": "Sport.ro",
+    "source_lang": "ro",
+    "title": "O femeie de 61 de ani din Texas atrage atenția prin forma fizică",
+    "category": "lifestyle",
+    "published": "2026-10-17T20:08:52+00:00",
+    "model": "B",
+    "src_extra": 23,
+    "teaser": "Gina Kinsley, o mamă în vârstă de 61 de ani stabilită în SUA, impresionează prin musculatura dezvoltată la sală, stârnind interesul bărbaților mult mai tineri și menținând o relație stabilă.",
+    "entities": [
+      "Gina Kinsley",
+      "Texas",
+      "SUA"
+    ],
+    "ai_cat": "lifestyle",
+    "icon": "run",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "o-femeie-de-61-de-ani-din-texas-atrage-atentia-prin-forma-fizica"
+  },
+  {
+    "url": "https://as.ro/nhl/new-jersey-devils-washington-capitals-2-4-victorie-categorica-pentru-caps-cu-logan-thompson-in-mare-forma-698901.html",
+    "original_link": "https://as.ro/nhl/new-jersey-devils-washington-capitals-2-4-victorie-categorica-pentru-caps-cu-logan-thompson-in-mare-forma-698901.html",
+    "source": "as_ro",
+    "source_name": "Antena Sport",
+    "source_lang": "ro",
+    "title": "Washington Capitals a învins formația New Jersey Devils în NHL",
+    "category": "sport",
+    "published": "2026-10-17T20:02:40+00:00",
+    "model": "B",
+    "src_extra": 41,
+    "teaser": "Gruparea Washington Capitals s-a impus cu scorul de 4-2 în partida de pe teren propriu disputată împotriva rivalilor de la New Jersey Devils, beneficiind de o evoluție excelentă a portarului Logan Thompson.",
+    "entities": [
+      "Washington Capitals",
+      "New Jersey Devils",
+      "Logan Thompson",
+      "AntenaPLAY"
+    ],
+    "ai_cat": "sport",
+    "icon": "trophy",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "washington-capitals-a-invins-formatia-new-jersey-devils-in-nhl"
+  },
+  {
+    "url": "https://g4media.ro/adrian-vestea-care-a-negociat-cu-liderul-extremist-george-simion-postul-de-premier-peste-capul-partidului-sustine-ca-pnl-risca-sa-dispara-din-politica-precum-pntcd.html",
+    "original_link": "https://www.g4media.ro/adrian-vestea-care-a-negociat-cu-liderul-extremist-george-simion-postul-de-premier-peste-capul-partidului-sustine-ca-pnl-risca-sa-dispara-din-politica-precum-pntcd.html",
+    "source": "g4media",
+    "source_name": "G4Media",
+    "source_lang": "ro",
+    "title": "Adrian Veștea avertizează că PNL riscă să urmeze declinul PNȚCD",
+    "category": "politic",
+    "published": "2026-10-17T20:00:53+00:00",
+    "model": "B",
+    "src_extra": 37,
+    "teaser": "Fostul premier desemnat Adrian Veștea critică dur conducerea liberală pentru strategia adoptată privind noul Guvern, avertizând că partidul riscă să piardă total sprijinul electoratului și să dispară de pe scena politică.",
+    "entities": [
+      "Adrian Veștea",
+      "George Simion",
+      "PNL",
+      "PNȚCD",
+      "G4Media.ro"
+    ],
+    "ai_cat": "politic",
+    "icon": "gavel",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "adrian-vestea-avertizeaza-ca-pnl-risca-sa-urmeze-declinul-pntcd"
+  },
+  {
+    "url": "https://fcinter1908.it/social/biasin-inter-critiche-per-la-champions-giuste-ma-vale-per-chi-non-ha-memoria-che",
+    "original_link": "https://www.fcinter1908.it/social/biasin-inter-critiche-per-la-champions-giuste-ma-vale-per-chi-non-ha-memoria-che/",
+    "source": "fcinter1908",
+    "source_name": "FC Inter 1908",
+    "source_lang": "it",
+    "title": "Inter Milano a învins Bologna în Serie A după un meci dificil",
+    "category": "sport",
+    "published": "2026-10-17T20:00:37+00:00",
+    "model": "B",
+    "src_extra": 100,
+    "teaser": "După un eșec în Liga Campionilor, echipa condusă de Chivu a revenit pe tabela de marcaj și s-a impus cu 3-1 pe terenul Bolognei, consolidându-și poziția fruntașă în clasamentul din Serie A.",
+    "entities": [
+      "Inter Milano",
+      "Bologna",
+      "Chivu",
+      "Serie A",
+      "Fabrizio Biasin"
+    ],
+    "ai_cat": "sport",
+    "icon": "ball-football",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "inter-milano-a-invins-bologna-in-serie-a-dupa-un-meci-dificil"
+  },
+  {
+    "url": "https://hotnews.ro/pnl-risca-sa-repete-destinul-politic-al-pntcd-adrian-vestea-critica-decizia-de-a-vota-guvernul-niculescu-2378910",
+    "original_link": "https://hotnews.ro/pnl-risca-sa-repete-destinul-politic-al-pntcd-adrian-vestea-critica-decizia-de-a-vota-guvernul-niculescu-2378910",
+    "source": "hotnews",
+    "source_name": "HotNews",
+    "source_lang": "ro",
+    "title": "Adrian Veștea critică decizia PNL de a susține Guvernul Niculescu",
+    "category": "politic",
+    "published": "2026-10-17T19:58:10+00:00",
+    "model": "C",
+    "src_extra": 45,
+    "sources": [
+      {
+        "name": "HotNews",
+        "url": "https://hotnews.ro/pnl-risca-sa-repete-destinul-politic-al-pntcd-adrian-vestea-critica-decizia-de-a-vota-guvernul-niculescu-2378910"
+      },
+      {
+        "name": "Antena 3 CNN",
+        "url": "https://www.antena3.ro/politica/adrian-vestea-atac-dur-la-bolojan-dupa-decizia-pnl-de-a-vota-guvernul-niculescu-riscam-destinul-pntcd-807618.html"
+      }
+    ],
+    "first_source": "HotNews",
+    "members": [
+      {
+        "published": "2026-10-17T19:58:10+00:00",
+        "title": "„PNL riscă să repete destinul politic al PNŢCD”. Adrian Veștea critică decizia de a vota Guvernul Niculescu",
+        "source": "HotNews",
+        "url": "https://hotnews.ro/pnl-risca-sa-repete-destinul-politic-al-pntcd-adrian-vestea-critica-decizia-de-a-vota-guvernul-niculescu-2378910"
+      },
+      {
+        "published": "2026-10-17T20:04:00+00:00",
+        "title": "Adrian Veștea, atac dur la Bolojan după decizia PNL de a vota Guvernul Niculescu: „Riscăm destinul PNȚCD”",
+        "source": "Antena 3 CNN",
+        "url": "https://antena3.ro/politica/adrian-vestea-atac-dur-la-bolojan-dupa-decizia-pnl-de-a-vota-guvernul-niculescu-riscam-destinul-pntcd-807618.html"
+      }
+    ],
+    "story_id": "st-d546d5badd65",
+    "synthesis": "Liberalul Adrian Veștea a criticat conducerea PNL, în special pe liderul Ilie Bolojan, în urma deciziei partidului de a vota Cabinetul Niculescu, deși formațiunea nu face parte din noul Executiv. Veștea a avertizat că această orientare a conducerii riscă să ducă PNL spre un declin politic major, asemănător destinului istoric al PNȚCD.",
+    "entities": [
+      "Adrian Veștea",
+      "Ilie Bolojan",
+      "Guvernul Niculescu",
+      "PNL"
+    ],
+    "ai_cat": "politic",
+    "icon": "gavel",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "adrian-vestea-critica-decizia-pnl-de-a-sustine-guvernul-niculescu"
+  },
+  {
+    "url": "https://sport.ro/stranieri/nota-lui-ianis-hagi-dupa-ce-a-jucat-in-fenerbahce-alanyaspor.html",
+    "original_link": "https://www.sport.ro/stranieri/nota-lui-ianis-hagi-dupa-ce-a-jucat-in-fenerbahce-alanyaspor.html",
+    "source": "sportro",
+    "source_name": "Sport.ro",
+    "source_lang": "ro",
+    "title": "Fenerbahce s-a impus în fața celor de la Alanyaspor în campionatul Turciei",
+    "category": "sport",
+    "published": "2026-10-17T19:55:46+00:00",
+    "model": "C",
+    "src_extra": 23,
+    "sources": [
+      {
+        "name": "Sport.ro",
+        "url": "https://www.sport.ro/stranieri/nota-lui-ianis-hagi-dupa-ce-a-jucat-in-fenerbahce-alanyaspor.html"
+      },
+      {
+        "name": "Antena Sport",
+        "url": "https://as.ro/fotbal/fotbal-extern/ianis-hagi-introdus-in-repriza-a-doua-a-partidei-cu-fenerbahce-ce-nota-a-primit-internationalul-roman-698904.html"
+      }
+    ],
+    "first_source": "Sport.ro",
+    "members": [
+      {
+        "published": "2026-10-17T19:55:46+00:00",
+        "title": "Nota lui Ianis Hagi după ce a jucat în Fenerbahce - Alanyaspor",
+        "source": "Sport.ro",
+        "url": "https://sport.ro/stranieri/nota-lui-ianis-hagi-dupa-ce-a-jucat-in-fenerbahce-alanyaspor.html"
+      },
+      {
+        "published": "2026-10-17T20:01:22+00:00",
+        "title": "Ianis Hagi, introdus în repriza a doua a partidei cu Fenerbahce. Ce notă a primit internaționalul român",
+        "source": "Antena Sport",
+        "url": "https://as.ro/fotbal/fotbal-extern/ianis-hagi-introdus-in-repriza-a-doua-a-partidei-cu-fenerbahce-ce-nota-a-primit-internationalul-roman-698904.html"
+      }
+    ],
+    "story_id": "st-0d3d187da50f",
+    "synthesis": "Echipa Fenerbahce a învins-o clar pe Alanyaspor cu scorul de 3-0, într-o partidă contând pentru etapa a opta din Superliga Turciei. Internaționalul român Ianis Hagi a început meciul pe banca de rezerve și a fost introdus pe teren de tehnician abia în repriza a doua a confruntării.",
+    "entities": [
+      "Ianis Hagi",
+      "Fenerbahce",
+      "Alanyaspor"
+    ],
+    "ai_cat": "sport",
+    "icon": "ball-football",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "fenerbahce-s-a-impus-in-fata-celor-de-la-alanyaspor-in-campionatul-turciei"
+  },
+  {
+    "url": "https://dobrogeaonline.ro/la-poarta-alba-si-nazarcea-copiii-invata-despre-igiena-si-alimentatie-sanatoasa",
+    "original_link": "https://www.dobrogeaonline.ro/la-poarta-alba-si-nazarcea-copiii-invata-despre-igiena-si-alimentatie-sanatoasa/",
+    "source": "dobrogeaonline",
+    "source_name": "Dobrogea Online",
+    "source_lang": "ro",
+    "title": "Copiii din Poarta Albă au participat la cursuri de igienă și nutriție",
+    "category": "local",
+    "published": "2026-10-17T19:51:23+00:00",
+    "model": "B",
+    "src_extra": 349,
+    "teaser": "Elevii și preșcolarii din comuna constănțeană au fost implicați în activități interactive dedicate promovării unui stil de viață sănătos, învățând reguli elementare de igienă personală și alimentație echilibrată.",
+    "entities": [
+      "Poarta Albă",
+      "Nazarcea",
+      "Liceul Agricol Poarta Albă"
+    ],
+    "ai_cat": "judetean",
+    "icon": "school",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "copiii-din-poarta-alba-au-participat-la-cursuri-de-igiena-si-nutritie"
+  },
+  {
+    "url": "https://gsp.ro/international/campionate/betis-barcelona-hansi-flick-la-liga-989307.html",
+    "original_link": "https://www.gsp.ro/international/campionate/betis-barcelona-hansi-flick-la-liga-989307.html",
+    "source": "gsp",
+    "source_name": "GSP",
+    "source_lang": "ro",
+    "title": "Hansi Flick a lăudat prestația Barcelonei după victoria cu Betis",
+    "category": "sport",
+    "published": "2026-10-17T19:48:55+00:00",
+    "model": "B",
+    "src_extra": 53,
+    "teaser": "Tehnicianul german al Barcelonei s-a declarat impresionat de jocul prestat de elevii săi în deplasarea de la Betis, unde catalanii s-au impus categoric cu scorul de 5-2 în etapa a noua din La Liga.",
+    "entities": [
+      "Hansi Flick",
+      "Betis",
+      "Barcelona",
+      "La Liga"
+    ],
+    "ai_cat": "sport",
+    "icon": "trophy",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "hansi-flick-a-laudat-prestatia-barcelonei-dupa-victoria-cu-betis"
+  },
+  {
+    "url": "https://prosport.ro/fotbal-intern/liga-3/laurentiu-reghecampf-jr-gol-vointa-crevedia-20549758",
+    "original_link": "https://www.prosport.ro/fotbal-intern/liga-3/laurentiu-reghecampf-jr-gol-vointa-crevedia-20549758",
+    "source": "prosport",
+    "source_name": "ProSport",
+    "source_lang": "ro",
+    "title": "Laurențiu Reghecampf jr. a marcat primul său gol în Liga a III-a",
+    "category": "sport",
+    "published": "2026-10-17T19:46:05+00:00",
+    "model": "B",
+    "src_extra": 36,
+    "teaser": "În vârstă de 18 ani, fiul tehnicianului de la FCSB a înscris prima reușită din acest sezon pentru formația Voința Crevedia, având o contribuție decisivă la succesul obținut în deplasarea cu CS Păulești.",
+    "entities": [
+      "Laurențiu Reghecampf jr",
+      "FCSB",
+      "Voința Crevedia",
+      "CS Păulești"
+    ],
+    "ai_cat": "sport",
+    "icon": "ball-football",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "laurentiu-reghecampf-jr-a-marcat-primul-sau-gol-in-liga-a-iii-a"
+  },
+  {
+    "url": "https://profit.ro/stiri/social/video-politia-atacata-magazinele-si-au-tras-obloanele-turistii-au-parasit-zona-centrala-lupte-de-strada-in-fata-catedralei-din-milano-22852124",
+    "original_link": "https://www.profit.ro/stiri/social/video-politia-atacata-magazinele-si-au-tras-obloanele-turistii-au-parasit-zona-centrala-lupte-de-strada-in-fata-catedralei-din-milano-22852124?utm_source=Rss&utm_medium=Referral&utm_campaign=Cross",
+    "source": "profit",
+    "source_name": "Profit.ro",
+    "source_lang": "ro",
+    "title": "Proteste violente în centrul Milanului",
+    "category": "extern",
+    "published": "2026-10-17T19:46:00+00:00",
+    "model": "B",
+    "src_extra": 11,
+    "teaser": "Manifestanții au atacat forțele de ordine cu violență în fața catedralei din Milano, determinând poliția să riposteze cu gaze lacrimogene, în timp ce turiștii și magazinele au părăsit zona.",
+    "entities": [
+      "Milano"
+    ],
+    "ai_cat": "extern",
+    "icon": "alert-triangle",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "proteste-violente-in-centrul-milanului"
+  },
+  {
+    "url": "https://fcinter1908.it/social/inter-bologna-frecciata-varriale",
+    "original_link": "https://www.fcinter1908.it/social/inter-bologna-frecciata-varriale/",
+    "source": "fcinter1908",
+    "source_name": "FC Inter 1908",
+    "source_lang": "it",
+    "title": "Enrico Varriale critică Inter după victorie",
+    "category": "sport",
+    "published": "2026-10-17T19:45:30+00:00",
+    "model": "B",
+    "src_extra": 58,
+    "teaser": "Jurnalistul italian a analizat succesul obținut de Inter împotriva Bolognei și, în ciuda celor trei puncte cucerite, a lansat o serie de ironii la adresa echipei nerazzurre.",
+    "entities": [
+      "Inter",
+      "Bologna",
+      "Enrico Varriale"
+    ],
+    "ai_cat": "sport",
+    "icon": "ball-football",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "enrico-varriale-critica-inter-dupa-victorie"
+  },
+  {
+    "url": "https://adevarul.ro/stil-de-viata/magazin/marul-de-la-livezile-salbatice-din-asia-centrala-2564568.html",
+    "original_link": "https://adevarul.ro/stil-de-viata/magazin/marul-de-la-livezile-salbatice-din-asia-centrala-2564568.html",
+    "source": "adevarul",
+    "source_name": "Adevărul",
+    "source_lang": "ro",
+    "title": "Istoria culturală și biologică a mărului",
+    "category": "cultura",
+    "published": "2026-10-17T19:45:25+00:00",
+    "model": "B",
+    "src_extra": 44,
+    "teaser": "Fructul cu peste 7.500 de soiuri își are originile în Asia Centrală și a marcat istoria umanității, fiind asociat cu diverse mituri, legende, dar și cu celebra figură a fructului interzis.",
+    "entities": [
+      "Asia Centrală"
+    ],
+    "ai_cat": "cultura",
+    "icon": "trees",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "istoria-culturala-si-biologica-a-marului"
+  },
+  {
+    "url": "https://adevarul.ro/politica/regreta-victoria-stoiciu-plecarea-din-psd-2564738.html",
+    "original_link": "https://adevarul.ro/politica/regreta-victoria-stoiciu-plecarea-din-psd-2564738.html",
+    "source": "adevarul",
+    "source_name": "Adevărul",
+    "source_lang": "ro",
+    "title": "Declarații politice despre Guvernul Niculescu",
+    "category": "politic",
+    "published": "2026-10-17T19:44:36+00:00",
+    "model": "B",
+    "src_extra": 23,
+    "teaser": "Senatoarea neafiliată Victoria Stoiciu a explicat culisele negocierilor din Parlament pentru învestirea noului executiv, menționând poziția formațiunii AUR în aceste negocieri legislative.",
+    "entities": [
+      "Victoria Stoiciu",
+      "Guvernul Niculescu",
+      "AUR"
+    ],
+    "ai_cat": "politic",
+    "icon": "gavel",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "declaratii-politice-despre-guvernul-niculescu"
+  },
+  {
+    "url": "https://gsp.ro/international/campionate/elias-charalambous-reactie-levadiakos-7-meciuri-consecutive-fara-gol-marcat-989298.html",
+    "original_link": "https://www.gsp.ro/international/campionate/elias-charalambous-reactie-levadiakos-7-meciuri-consecutive-fara-gol-marcat-989298.html",
+    "source": "gsp",
+    "source_name": "GSP",
+    "source_lang": "ro",
+    "title": "Elias Charalambous îngrijorat de forma echipei",
+    "category": "sport",
+    "published": "2026-10-17T19:43:52+00:00",
+    "model": "B",
+    "src_extra": 56,
+    "teaser": "Antrenorul a exprimat îngrijorare după ce formația sa a ajuns la un număr record de meciuri consecutive fără gol marcat în campionatul Greciei, ratând victoria cu Volos.",
+    "entities": [
+      "Elias Charalambous",
+      "Levadiakos",
+      "Volos"
+    ],
+    "ai_cat": "sport",
+    "icon": "ball-football",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "elias-charalambous-ingrijorat-de-forma-echipei"
+  },
+  {
+    "url": "https://adevarul.ro/stil-de-viata/horoscop/zodiile-norocoase-ale-zilei-de-18-octombrie-cine-2564710.html",
+    "original_link": "https://adevarul.ro/stil-de-viata/horoscop/zodiile-norocoase-ale-zilei-de-18-octombrie-cine-2564710.html",
+    "source": "adevarul",
+    "source_name": "Adevărul",
+    "source_lang": "ro",
+    "title": "Zodii favorizate la data de 18 octombrie",
+    "category": "lifestyle",
+    "published": "2026-10-17T19:42:09+00:00",
+    "model": "B",
+    "src_extra": 12,
+    "teaser": "Trei semne zodiacale se pregătesc să treacă printr-o etapă de transformare majoră și să beneficieze de rezultatele unor experiențe recente de viață.",
+    "entities": [],
+    "ai_cat": "lifestyle",
+    "icon": "sun",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "zodii-favorizate-la-data-de-18-octombrie"
+  },
+  {
+    "url": "https://hotnews.ro/cum-raspunde-alexandru-rogobete-dupa-ce-ilie-boloajan-a-spus-ca-unele-spitale-a-ramas-fara-bani-din-cauza-modului-in-care-a-fost-facut-bugetul-2378898",
+    "original_link": "https://hotnews.ro/cum-raspunde-alexandru-rogobete-dupa-ce-ilie-boloajan-a-spus-ca-unele-spitale-a-ramas-fara-bani-din-cauza-modului-in-care-a-fost-facut-bugetul-2378898",
+    "source": "hotnews",
+    "source_name": "HotNews",
+    "source_lang": "ro",
+    "title": "Alexandru Rogobete explică bugetul pentru sănătate",
+    "category": "sanatate",
+    "published": "2026-10-17T19:40:41+00:00",
+    "model": "B",
+    "src_extra": 40,
+    "teaser": "Ministrul desemnat a afirmat că solicitase fonduri mai mari pentru zona de urgență în bugetul pe 2026, primind însă o sumă inferioară față de cea cerută inițial.",
+    "entities": [
+      "Alexandru Rogobete",
+      "Ilie Bolojan"
+    ],
+    "ai_cat": "sanatate",
+    "icon": "building-hospital",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "alexandru-rogobete-explica-bugetul-pentru-sanatate"
+  },
+  {
+    "url": "https://prosport.ro/diverse/gabriela-ruse-iubita-jucator-de-tenis-portughez-microfoane-cuvinte-20549773",
+    "original_link": "https://www.prosport.ro/diverse/gabriela-ruse-iubita-jucator-de-tenis-portughez-microfoane-cuvinte-20549773",
+    "source": "prosport",
+    "source_name": "ProSport",
+    "source_lang": "ro",
+    "title": "Relația dintre Gabriela Ruse și Nuno Borges",
+    "category": "sport",
+    "published": "2026-10-17T19:35:38+00:00",
+    "model": "B",
+    "src_extra": 42,
+    "teaser": "Jucătoarea română de tenis formează un cuplu cu sportivul portughez Nuno Borges de aproximativ trei luni, preferând să își protejeze viața personală în fața presei.",
+    "entities": [
+      "Gabriela Ruse",
+      "Nuno Borges"
+    ],
+    "ai_cat": "sport",
+    "icon": "ball-tennis",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "relatia-dintre-gabriela-ruse-si-nuno-borges"
+  },
+  {
+    "url": "https://adevarul.ro/dezvoltare-personala/relatii/trebuie-sa-i-spun-eu-tot-ce-are-de-facut-povara-2564258.html",
+    "original_link": "https://adevarul.ro/dezvoltare-personala/relatii/trebuie-sa-i-spun-eu-tot-ce-are-de-facut-povara-2564258.html",
+    "source": "adevarul",
+    "source_name": "Adevărul",
+    "source_lang": "ro",
+    "title": "Povara invizibilă a sarcinilor casnice în cuplu",
+    "category": "lifestyle",
+    "published": "2026-10-17T19:33:25+00:00",
+    "model": "B",
+    "src_extra": 40,
+    "teaser": "Responsabilitatea de a planifica și anticipa nevoile familiei revine adesea unui singur partener, generând în timp un dezechilibru emoțional și tensiuni profunde în relație.",
+    "entities": [],
+    "ai_cat": "lifestyle",
+    "icon": "home",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "povara-invizibila-a-sarcinilor-casnice-in-cuplu"
+  },
+  {
     "url": "https://antena3.ro/high-tech/starlink-varianta-europeana-ue-isi-construieste-propria-retea-de-sateliti-ce-este-iris-si-ce-rol-are-germania-807616.html",
     "original_link": "https://www.antena3.ro/high-tech/starlink-varianta-europeana-ue-isi-construieste-propria-retea-de-sateliti-ce-este-iris-si-ce-rol-are-germania-807616.html",
     "source": "antena3",
@@ -73,6 +864,31 @@
     "prompt_version": "v2-esenta",
     "featured": false,
     "slug": "inter-milano-a-invatat-o-pe-bologna-antrenorul-palladino-recunoscand"
+  },
+  {
+    "url": "https://as.ro/fotbal/serie-a/motivul-incredibil-pentru-care-cristi-chivu-nu-s-a-prezentat-la-interviuri-dupa-inca-o-remontada-cu-inter-698890.html",
+    "original_link": "https://as.ro/fotbal/serie-a/motivul-incredibil-pentru-care-cristi-chivu-nu-s-a-prezentat-la-interviuri-dupa-inca-o-remontada-cu-inter-698890.html",
+    "source": "as_ro",
+    "source_name": "Antena Sport",
+    "source_lang": "ro",
+    "title": "Cristi Chivu a absentat de la interviuri",
+    "category": "sport",
+    "published": "2026-10-17T19:24:15+00:00",
+    "model": "B",
+    "src_extra": 36,
+    "teaser": "Tehnicianul nu a putut participa la conferința de presă de după partida câștigată de Inter împotriva Bolognei din cauza unei răgușeli puternice, locul său fiind preluat de secund.",
+    "entities": [
+      "Cristi Chivu",
+      "Inter",
+      "Bologna",
+      "Aleksandar Kolarov"
+    ],
+    "ai_cat": "sport",
+    "icon": "ball-football",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "cristi-chivu-a-absentat-de-la-interviuri"
   },
   {
     "url": "https://as.ro/fotbal/serie-a/cristi-chivu-elogiat-de-presa-din-italia-dupa-schimbarile-de-geniu-care-au-adus-victoria-lui-inter-la-bologna-698887.html",
@@ -272,7 +1088,7 @@
     "source": "g4media",
     "source_name": "G4Media",
     "source_lang": "ro",
-    "title": "Congresmeni republicani și democrați critică decizia lui Donald Trump de a suspenda sancțiunile împotriva Rusiei",
+    "title": "Congresul SUA critică decizia lui Donald Trump de a suspenda sancțiunile împotriva Rusiei",
     "category": "politic",
     "published": "2026-10-17T19:11:48+00:00",
     "model": "C",
@@ -295,7 +1111,7 @@
     "members": [
       {
         "published": "2026-10-17T19:11:48+00:00",
-        "title": "Congresmeni din tabăra lui Trump critică suspendarea noilor sancţiuni împotriva Rusiei de către președintele SUA",
+        "title": "Congresmeni republicani și democrați critică decizia lui Donald Trump de a suspenda sancțiunile împotriva Rusiei",
         "source": "G4Media",
         "url": "https://g4media.ro/congresmeni-din-tabara-lui-trump-critica-suspendarea-noilor-sanctiuni-impotriva-rusiei-de-catre-presedintele-sua.html"
       },
@@ -313,19 +1129,20 @@
       }
     ],
     "story_id": "st-90ad1cc61106",
-    "synthesis": "Mai mulți parlamentari americani, atât din opoziția democrată cât și din tabăra republicană, au criticat vehement decizia președintelui Donald Trump de a emite un ordin executiv care scutește Rusia de noile sancțiuni adoptate de Congres în septembrie. Măsura vizează în special sectorul energetic rus și a stârnit nemulțumiri majore înaintea alegerilor parțiale din noiembrie, criticii considerând-o iresponsabilă și o eroare diplomatică gravă.",
+    "synthesis": "Mai mulți parlamentari americani, aparținând atât Partidului Republican, cât și celui Democrat, au criticat decizia președintelui Donald Trump de a suspenda noile sancțiuni economice împotriva Rusiei. Măsura fusese adoptată anterior de Congres în luna septembrie pentru a sprijini Ucraina în contextul conflictului actual.",
     "entities": [
       "Donald Trump",
       "Rusia",
-      "Congresul SUA",
-      "Thom Tillis"
+      "Ucraina",
+      "Congresul SUA"
     ],
     "ai_cat": "politic",
-    "icon": "gavel",
+    "icon": "alert-triangle",
     "processed_by": "gemini",
     "prompt_version": "v2-esenta",
     "featured": false,
-    "slug": "congresmeni-republicani-si-democrati-critica-decizia-lui-donald-trump-de-a"
+    "slug": "congresmeni-republicani-si-democrati-critica-decizia-lui-donald-trump-de-a",
+    "updated": "2026-10-17T20:28:43.625698+00:00"
   },
   {
     "url": "https://gsp.ro/fotbal/liga-1/denis-alibec-anca-surdu-copil-989295.html",
@@ -776,22 +1593,50 @@
     "source": "protv",
     "source_name": "Știrile ProTV",
     "source_lang": "ro",
-    "title": "Emmanuel Macron a promis pedepsirea celor care au provocat violențe la proteste",
-    "category": "extern",
+    "title": "Emmanuel Macron a condamnat ferm violențele și vandalismul de la protestele din Franța",
+    "category": "politic",
     "published": "2026-10-17T18:59:19+00:00",
-    "model": "B",
+    "model": "C",
     "src_extra": 30,
     "teaser": "Președintele Franței a condamnat ferm actele de vandalism și jaf comise în timpul manifestațiilor recente, afirmând că statul va opri ferm elementele destabilizatoare.",
     "entities": [
       "Emmanuel Macron",
       "Franța"
     ],
-    "ai_cat": "extern",
-    "icon": "shield",
+    "ai_cat": "politic",
+    "icon": "gavel",
     "processed_by": "gemini",
     "prompt_version": "v2-esenta",
     "featured": false,
-    "slug": "emmanuel-macron-a-promis-pedepsirea-celor-care-au-provocat-violente-la-proteste"
+    "slug": "emmanuel-macron-a-promis-pedepsirea-celor-care-au-provocat-violente-la-proteste",
+    "sources": [
+      {
+        "name": "Știrile ProTV",
+        "url": "https://stirileprotv.ro/stiri/international/macron-mesaj-ferm-in-timpul-manifestatiilor-din-franta-vom-face-bloc-in-fata-celor-care-seamana-haos.html"
+      },
+      {
+        "name": "Antena 3 CNN",
+        "url": "https://www.antena3.ro/externe/emmanuel-macron-furios-dupa-violentele-de-la-protestele-din-franta-cei-care-au-jefuit-pana-si-primariile-vor-fi-pedepsiti-807617.html"
+      }
+    ],
+    "first_source": "Știrile ProTV",
+    "members": [
+      {
+        "published": "2026-10-17T18:59:19+00:00",
+        "title": "Emmanuel Macron a promis pedepsirea celor care au provocat violențe la proteste",
+        "source": "Știrile ProTV",
+        "url": "https://stirileprotv.ro/stiri/international/macron-mesaj-ferm-in-timpul-manifestatiilor-din-franta-vom-face-bloc-in-fata-celor-care-seamana-haos.html"
+      },
+      {
+        "published": "2026-10-17T19:41:00+00:00",
+        "title": "Emmanuel Macron, furios după violențele de la protestele din Franța: „Cei care au jefuit până și primăriile vor fi pedepsiți”",
+        "source": "Antena 3 CNN",
+        "url": "https://antena3.ro/externe/emmanuel-macron-furios-dupa-violentele-de-la-protestele-din-franta-cei-care-au-jefuit-pana-si-primariile-vor-fi-pedepsiti-807617.html"
+      }
+    ],
+    "story_id": "st-37ff029ad928",
+    "updated": "2026-10-17T20:28:43.625667+00:00",
+    "synthesis": "Președintele Franței, Emmanuel Macron, a condamnat vehement actele de vandalism și jaf comise în timpul manifestațiilor de sâmbătă din mai multe orașe franceze. Șeful statului a dat asigurări că autoritățile vor lua măsuri ferme și că persoanele care au devastat instituții, precum primăriile, vor fi pedepsite conform legii."
   },
   {
     "url": "https://fcinter1908.it/ultimora/brocchi-bisseck-fa-errore-clamoroso-vi-racconto-un-retroscena-su-carlos-augusto",
@@ -3815,22 +4660,52 @@
     "source": "adevarul",
     "source_name": "Adevărul",
     "source_lang": "ro",
-    "title": "Proteste masive de stradă în Roma și confruntări violente cu poliția la Milano",
+    "title": "Proteste masive împotriva scumpirilor în Italia au degenerat în violențe stradale",
     "category": "local",
     "published": "2026-10-17T16:28:10+00:00",
-    "model": "B",
+    "model": "C",
     "src_extra": 28,
     "teaser": "Peste 100.000 de cetățeni au protestat sâmbătă la Roma împotriva scumpirilor, cerând salarii mai mari și taxe reduse. La Milano, manifestațiile au degenerat în ciocniri directe cu forțele de ordine.",
     "entities": [
       "Roma",
-      "Milano"
+      "Milano",
+      "Bologna",
+      "Italia"
     ],
     "ai_cat": "extern",
-    "icon": "globe",
+    "icon": "swords",
     "processed_by": "gemini",
     "prompt_version": "v2-esenta",
     "featured": false,
-    "slug": "proteste-masive-de-strada-in-roma-si-confruntari-violente-cu-politia-la-milano"
+    "slug": "proteste-masive-de-strada-in-roma-si-confruntari-violente-cu-politia-la-milano",
+    "sources": [
+      {
+        "name": "Adevărul",
+        "url": "https://adevarul.ro/stiri-externe/europa/europa-fierbe-peste-100000-de-oameni-sunt-in-2564717.html"
+      },
+      {
+        "name": "Digi24 Extern",
+        "url": "https://www.digi24.ro/stiri/externe/manifestatii-violente-in-italia-confruntari-intre-politie-si-protestatari-la-milano-si-bologna-3997125"
+      }
+    ],
+    "first_source": "Adevărul",
+    "members": [
+      {
+        "published": "2026-10-17T16:28:10+00:00",
+        "title": "Proteste masive de stradă în Roma și confruntări violente cu poliția la Milano",
+        "source": "Adevărul",
+        "url": "https://adevarul.ro/stiri-externe/europa/europa-fierbe-peste-100000-de-oameni-sunt-in-2564717.html"
+      },
+      {
+        "published": "2026-10-17T19:51:44+00:00",
+        "title": "Manifestaţii violente în Italia: Confruntări între poliţie şi protestatari la Milano şi Bologna",
+        "source": "Digi24 Extern",
+        "url": "https://digi24.ro/stiri/externe/manifestatii-violente-in-italia-confruntari-intre-politie-si-protestatari-la-milano-si-bologna-3997125"
+      }
+    ],
+    "story_id": "st-78b417856c90",
+    "updated": "2026-10-17T20:28:43.625650+00:00",
+    "synthesis": "Sâmbătă, zeci de mii de cetățeni au ieșit pe străzile din Italia pentru a protesta față de costul ridicat al vieții, cerând salarii mai mari și taxe reduse. La Milano și Bologna, manifestațiile au degenerat în confruntări directe cu forțele de ordine. Poliția a intervenit cu gaze lacrimogene după ce a fost atacată cu pietre de protestatari în zona catedralei din Milano."
   },
   {
     "url": "https://stirileprotv.ro/stiri/actualitate/drepturi-noi-pentru-pasageri-din-2027-ce-modificari-vor-implementa-companiile-aeriene.html",
@@ -4769,6 +5644,76 @@
     "prompt_version": "v2-esenta",
     "featured": false,
     "slug": "primarul-mihai-chirica-anunta-termenul-de-reluare-a-agentului-termic-dupa"
+  },
+  {
+    "url": "https://profit.ro/stiri/social/ultima-ora-drone-doborate-deasupra-marii-negre-de-pilotii-romani-22850863",
+    "original_link": "https://www.profit.ro/stiri/social/ultima-ora-drone-doborate-deasupra-marii-negre-de-pilotii-romani-22850863?utm_source=Rss&utm_medium=Referral&utm_campaign=Cross",
+    "source": "profit",
+    "source_name": "Profit.ro",
+    "source_lang": "ro",
+    "title": "Avioane F-16 ale României au doborât două drone deasupra Mării Negre",
+    "category": "local",
+    "published": "2026-10-17T15:40:00+00:00",
+    "model": "C",
+    "src_extra": 13,
+    "sources": [
+      {
+        "name": "Profit.ro",
+        "url": "https://www.profit.ro/stiri/social/ultima-ora-drone-doborate-deasupra-marii-negre-de-pilotii-romani-22850863?utm_source=Rss&utm_medium=Referral&utm_campaign=Cross"
+      },
+      {
+        "name": "BizBrașov",
+        "url": "https://bizbrasov.ro/2026/10/17/pilotii-romani-drone/"
+      },
+      {
+        "name": "Ziua de Cluj",
+        "url": "https://zcj.ro/eveniment/doua-drone-au-intrat-in-spatiul-aerian-al-romaniei-si-au-fost-doborate-de-piloti-romani-de-f-16--303030.html"
+      },
+      {
+        "name": "Antena 3 CNN",
+        "url": "https://www.antena3.ro/actualitate/avioanele-f-16-ale-romaniei-au-doborat-doua-drone-deasupra-marii-negre-anuntul-mapn-807606.html"
+      }
+    ],
+    "first_source": "Profit.ro",
+    "members": [
+      {
+        "published": "2026-10-17T15:40:00+00:00",
+        "title": "ULTIMA ORĂ Drone doborâte deasupra Mării Negre de piloții români",
+        "source": "Profit.ro",
+        "url": "https://profit.ro/stiri/social/ultima-ora-drone-doborate-deasupra-marii-negre-de-pilotii-romani-22850863"
+      },
+      {
+        "published": "2026-10-17T16:37:44+00:00",
+        "title": "Piloții români au doborât sâmbătă seara două drone deasupra Mării Negre, anunță Ministerul Apărării",
+        "source": "BizBrașov",
+        "url": "https://bizbrasov.ro/2026/10/17/pilotii-romani-drone"
+      },
+      {
+        "published": "2026-10-17T17:07:00+00:00",
+        "title": "Două drone au intrat în spațiul aerian al României și au fost doborâte de piloți români de F-16",
+        "source": "Ziua de Cluj",
+        "url": "https://zcj.ro/eveniment/doua-drone-au-intrat-in-spatiul-aerian-al-romaniei-si-au-fost-doborate-de-piloti-romani-de-f-16--303030.html"
+      },
+      {
+        "published": "2026-10-17T18:45:00+00:00",
+        "title": "Avioanele F-16 ale României au doborât două drone Geran deasupra Mării Negre. Anunțul MApN",
+        "source": "Antena 3 CNN",
+        "url": "https://antena3.ro/actualitate/avioanele-f-16-ale-romaniei-au-doborat-doua-drone-deasupra-marii-negre-anuntul-mapn-807606.html"
+      }
+    ],
+    "story_id": "st-3450a281a7e9",
+    "synthesis": "Ministerul Apărării Naționale a confirmat că avioane F-16 ale Forțelor Aeriene Române au interceptat și doborât sâmbătă două drone care au pătruns în spațiul aerian național. Incidentul a avut loc deasupra Mării Negre, în zona localității Sulina, prima aparat intrând în teritoriu în jurul orei 17:59.",
+    "entities": [
+      "Ministerul Apărării Naționale",
+      "Sulina",
+      "Marea Neagră"
+    ],
+    "ai_cat": "general",
+    "icon": "plane",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "avioane-f-16-ale-romaniei-au-doborat-doua-drone-deasupra-marii-negre-2"
   },
   {
     "url": "https://adevarul.ro/stiri-externe/europa/castelul-cocotat-pe-o-stanca-si-bantuit-de-o-2564705.html",
@@ -7140,23 +8085,52 @@
     "source": "protv",
     "source_name": "Știrile ProTV",
     "source_lang": "ro",
-    "title": "Ilie Bolojan explică votul condiționat dat de PNL pentru Guvernul Niculescu",
+    "title": "Ilie Bolojan explică motivele trecerii PNL în opoziție și refuzul portofoliilor ministeriale",
     "category": "politic",
     "published": "2026-10-17T13:40:28+00:00",
-    "model": "B",
+    "model": "C",
     "src_extra": 21,
     "teaser": "Liderul liberal Ilie Bolojan a detaliat motivele pentru care formațiunea sa a decis trecerea în opoziție și sprijinul condiționat acordat noului executiv condus de Luca Niculescu.",
     "entities": [
       "Ilie Bolojan",
+      "Luca Niculescu",
       "PNL",
-      "Luca Niculescu"
+      "PSD"
     ],
     "ai_cat": "politic",
-    "icon": "gavel",
+    "icon": "podium",
     "processed_by": "gemini",
     "prompt_version": "v2-esenta",
     "featured": false,
-    "slug": "ilie-bolojan-explica-votul-conditionat-dat-de-pnl-pentru-guvernul-niculescu"
+    "slug": "ilie-bolojan-explica-votul-conditionat-dat-de-pnl-pentru-guvernul-niculescu",
+    "sources": [
+      {
+        "name": "Știrile ProTV",
+        "url": "https://stirileprotv.ro/stiri/politic/reactia-lui-ilie-bolojan-dupa-ce-pnl-a-decis-sa-voteze-executivul-niculescu-si-sa-intre-in-opozitie-un-vot-conditionat.html"
+      },
+      {
+        "name": "Ziua de Cluj",
+        "url": "https://zcj.ro/politica/ilie-bolojan-explica-de-ce-pnl-nu-a-negociat-ministere-in-guvernul-niculescu-nu-faci-decat-sa-te-compromiti--303026.html"
+      }
+    ],
+    "first_source": "Știrile ProTV",
+    "members": [
+      {
+        "published": "2026-10-17T13:40:28+00:00",
+        "title": "Ilie Bolojan explică votul condiționat dat de PNL pentru Guvernul Niculescu",
+        "source": "Știrile ProTV",
+        "url": "https://stirileprotv.ro/stiri/politic/reactia-lui-ilie-bolojan-dupa-ce-pnl-a-decis-sa-voteze-executivul-niculescu-si-sa-intre-in-opozitie-un-vot-conditionat.html"
+      },
+      {
+        "published": "2026-10-17T15:08:00+00:00",
+        "title": "Ilie Bolojan explică de ce PNL nu a negociat ministere în Guvernul Niculescu: \"Nu faci decât să te compromiți”",
+        "source": "Ziua de Cluj",
+        "url": "https://zcj.ro/politica/ilie-bolojan-explica-de-ce-pnl-nu-a-negociat-ministere-in-guvernul-niculescu-nu-faci-decat-sa-te-compromiti--303026.html"
+      }
+    ],
+    "story_id": "st-d65e29da7b84",
+    "updated": "2026-10-17T20:28:49.425746+00:00",
+    "synthesis": "Președintele PNL, Ilie Bolojan, a explicat decizia partidului de a trece în opoziție și de a oferi un sprijin condiționat noului Guvern condus de Luca Niculescu. Liderul liberal a precizat că formațiunea sa a refuzat negocierea unor portofolii ministeriale în contextul prezenței PSD la guvernare, considerând că un astfel de demers ar compromite partidul."
   },
   {
     "url": "https://prosport.ro/fotbal-intern/superliga/rasturnare-de-situatie-florinel-coman-transfer-fcsb-20549476",
@@ -16947,6 +17921,29 @@
     "slug": "programul-ierarhilor-maramureseni-pentru-slujbele-din-acest-sfarsit-de-saptamana"
   },
   {
+    "url": "https://zch.ro/nou-amenzi-de-pana-la-440-000-de-lei-in-audiovizual-aprobate-de-guvern",
+    "original_link": "https://zch.ro/nou-amenzi-de-pana-la-440-000-de-lei-in-audiovizual-aprobate-de-guvern/?utm_medium=Feed&utm_source=Syndication",
+    "source": "zch",
+    "source_name": "ZCH News",
+    "source_lang": "ro",
+    "title": "Guvernul a aprobat dublarea amenzilor în audiovizual, ajungând până la 440.000 de lei",
+    "category": "politic",
+    "published": "2026-10-17T06:22:47+00:00",
+    "model": "B",
+    "src_extra": 69,
+    "teaser": "Cabinetul de la București a decis majorarea sancțiunilor pentru încălcarea legislației audiovizuale, în urma unei propuneri transmise de CNA. Aceasta este prima actualizare a amenzilor din ultimii 17 ani, stabilind plafoane maxime considerabile pentru posturile TV și radio.",
+    "entities": [
+      "Guvernul României",
+      "CNA"
+    ],
+    "ai_cat": "politic",
+    "icon": "gavel",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "guvernul-a-aprobat-dublarea-amenzilor-in-audiovizual-ajungand-pana-la-440-000"
+  },
+  {
     "url": "https://monitorulbt.ro/local/2026/10/17/doliu-in-sanatatea-din-botosani-a-murit-un-fost-director-de-ingrijiri-la-spitalul-judetean-mesajul-sfasietor-al-sotiei",
     "original_link": "https://www.monitorulbt.ro/local/2026/10/17/doliu-in-sanatatea-din-botosani-a-murit-un-fost-director-de-ingrijiri-la-spitalul-judetean-mesajul-sfasietor-al-sotiei/",
     "source": "monitorulbt",
@@ -17335,6 +18332,49 @@
     "prompt_version": "v2-esenta",
     "featured": false,
     "slug": "belarus-elimina-statutul-de-zona-contaminata-pentru-regiuni-de-la-cernobil"
+  },
+  {
+    "url": "https://unica.ro/vedete/romanesti/cum-arata-casa-in-care-locuieste-mugur-mihaescu-838960",
+    "original_link": "https://www.unica.ro/vedete/romanesti/cum-arata-casa-in-care-locuieste-mugur-mihaescu-838960",
+    "source": "unica",
+    "source_name": "Unica",
+    "source_lang": "ro",
+    "title": "Vila lui Mugur Mihăescu din Pipera este evaluată la 800.000 de euro",
+    "category": "lifestyle",
+    "published": "2026-10-17T06:00:00+00:00",
+    "model": "B",
+    "src_extra": 497,
+    "teaser": "Actorul Mugur Mihăescu locuiește alături de soția sa într-o reședință impresionantă situată în zona Pipera. Locuința se remarcă prin dotări moderne și soluții arhitecturale inedite, incluzând o piscină interioară, o grădină bogată și un acoperiș acoperit cu gazon.",
+    "entities": [
+      "Mugur Mihăescu",
+      "Pipera"
+    ],
+    "ai_cat": "lifestyle",
+    "icon": "home",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "vila-lui-mugur-mihaescu-din-pipera-este-evaluata-la-800-000-de-euro"
+  },
+  {
+    "url": "https://unica.ro/moda/culoarea-vedeta-a-toamnei-2026-839664",
+    "original_link": "https://www.unica.ro/moda/culoarea-vedeta-a-toamnei-2026-839664",
+    "source": "unica",
+    "source_name": "Unica",
+    "source_lang": "ro",
+    "title": "Movul a devenit culoarea vedetă a sezonului de toamnă 2026",
+    "category": "lifestyle",
+    "published": "2026-10-17T06:00:00+00:00",
+    "model": "B",
+    "src_extra": 1265,
+    "teaser": "Specialiștii în modă anunță că nuanțele de mov, de la lavandă delicată până la tonuri profunde de prună, domină tendințele vestimentare din această toamnă. Această culoare aduce un plus de eleganță și oferă o alternativă versatilă la tonurile clasice de...",
+    "entities": [],
+    "ai_cat": "lifestyle",
+    "icon": "umbrella",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "movul-a-devenit-culoarea-vedeta-a-sezonului-de-toamna-2026"
   },
   {
     "url": "https://newsbv.ro/turneul-international-regina-si-compozitorii",
@@ -19164,6 +20204,30 @@
     "prompt_version": "v2-esenta",
     "featured": false,
     "slug": "un-tata-i-a-cumparat-fiului-sau-major-o-mazda-mx-5-rf"
+  },
+  {
+    "url": "https://piataauto.md/Stiri/2026/10/Germanii-au-lansat-noul-Mercedes-AMG-GT-SUV-model-electric-performanta-cu-o-inginerie-care-lasa-chinezii-in-urma-Porsche-Cayenne-electric",
+    "original_link": "https://piataauto.md/Stiri/2026/10/Germanii-au-lansat-noul-Mercedes-AMG-GT-SUV-model-electric-performanta-cu-o-inginerie-care-lasa-chinezii-in-urma-Porsche-Cayenne-electric/",
+    "source": "piataauto",
+    "source_name": "Piata Auto MD",
+    "source_lang": "ro",
+    "title": "Mercedes-AMG a lansat noul SUV electric de performanță superioară",
+    "category": "auto",
+    "published": "2026-10-17T00:00:00+00:00",
+    "model": "B",
+    "src_extra": 139,
+    "teaser": "Constructorul german a prezentat un vehicul electric avansat tehnologic, proiectat să întreacă performanțele mașinilor similare produse în China și ale modelelor concurente de la Porsche. Noul model se remarcă printr-un sistem superior de răcire și eficiență energetică pe termen lung.",
+    "entities": [
+      "Mercedes-AMG",
+      "Porsche",
+      "China"
+    ],
+    "ai_cat": "auto",
+    "icon": "car",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "mercedes-amg-a-lansat-noul-suv-electric-de-performanta-superioara"
   },
   {
     "url": "https://bbc.co.uk/news/articles/c64g18ljjd8do?at_medium=RSS&at_campaign=rss",
@@ -29654,6 +30718,31 @@
     "prompt_version": "v2-esenta",
     "featured": false,
     "slug": "anm-deblocheaza-activitatea-administrativa-prin-numirea-unui-nou-membru"
+  },
+  {
+    "url": "https://connect.ro/2026/10/16/iphone-duo-precomanda-romania-pret",
+    "original_link": "https://www.connect.ro/2026/10/16/iphone-duo-precomanda-romania-pret/",
+    "source": "connect",
+    "source_name": "Connect.ro",
+    "source_lang": "ro",
+    "title": "Noile modele iPhone Duo pot fi comandate în avans în rețelele de telecomunicații și magazine",
+    "category": "tech",
+    "published": "2026-10-16T12:32:42+00:00",
+    "model": "B",
+    "src_extra": 383,
+    "teaser": "Operatorii și retailerii din România au afișat prețurile pentru noua serie de telefoane Apple, care este disponibilă la precomandă în patru variante de stocare. Prețul de pornire este de 12.199 lei pentru versiunea de 256 GB, livrările urmând să înceapă...",
+    "entities": [
+      "Apple",
+      "eMAG",
+      "Altex",
+      "România"
+    ],
+    "ai_cat": "tech",
+    "icon": "device-mobile",
+    "processed_by": "gemini",
+    "prompt_version": "v2-esenta",
+    "featured": false,
+    "slug": "noile-modele-iphone-duo-pot-fi-comandate-in-avans-in-retelele-de"
   },
   {
     "url": "https://sport.ro/fotbal-intern/costel-pantilimon-si-robert-nita-sunt-invitatii-lui-andrei-grecu-de-la-16-00-la-voyo-sport-live-pe-voyo-sport-1.html",
@@ -277224,507 +278313,5 @@
     "prompt_version": "v2-esenta",
     "featured": false,
     "slug": "lituania-estimeaza-un-milion-de-refugiati-in-polonia-in-caz-de-conflict"
-  },
-  {
-    "url": "https://hotnews.ro/un-sustinator-al-lui-calin-georgescu-acuzat-ca-a-agresat-doi-cameramani-in-fata-diicot-a-fost-retinut-pentru-24-de-ore-2368032",
-    "original_link": "https://hotnews.ro/un-sustinator-al-lui-calin-georgescu-acuzat-ca-a-agresat-doi-cameramani-in-fata-diicot-a-fost-retinut-pentru-24-de-ore-2368032",
-    "source": "hotnews",
-    "source_name": "HotNews",
-    "source_lang": "ro",
-    "title": "Un susținător al lui Călin Georgescu, reținut după agresarea unor cameramani",
-    "category": "politic",
-    "published": "2026-10-05T20:23:25+00:00",
-    "model": "B",
-    "src_extra": 32,
-    "teaser": "Un simpatizant al lui Călin Georgescu a fost reținut pentru 24 de ore de polițiști, fiind acuzat de lovire, amenințare și tulburarea ordinii publice după incidente la sediul DIICOT.",
-    "entities": [
-      "Călin Georgescu",
-      "DIICOT"
-    ],
-    "ai_cat": "politic",
-    "icon": "gavel",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false,
-    "slug": "un-sustinator-al-lui-calin-georgescu-retinut-dupa-agresarea-unor-cameramani"
-  },
-  {
-    "url": "https://politico.eu/article/diplomat-is-romania-fourth-prime-ministerial-candidate-in-5-months",
-    "original_link": "https://www.politico.eu/article/diplomat-is-romania-fourth-prime-ministerial-candidate-in-5-months/?utm_source=RSS_Feed&utm_medium=RSS&utm_campaign=RSS_Syndication",
-    "source": "politico_eu",
-    "source_name": "Politico EU",
-    "source_lang": "en",
-    "title": "Luca Niculescu este al patrulea candidat de premier al României în cinci luni",
-    "category": "politic",
-    "published": "2026-10-05T20:12:40+00:00",
-    "model": "B",
-    "src_extra": 447,
-    "teaser": "Președintele Nicușor Dan l-a desemnat pe diplomatul Luca Niculescu să formeze un nou guvern, în încercarea de a depăși criza politică și economică prelungită din ultimele luni.",
-    "entities": [
-      "Nicușor Dan",
-      "Luca Niculescu",
-      "România"
-    ],
-    "ai_cat": "politic",
-    "icon": "building-monument",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false,
-    "slug": "luca-niculescu-este-al-patrulea-candidat-de-premier-al-romaniei-in-cinci-luni"
-  },
-  {
-    "url": "https://digi24.ro/stiri/radu-miruta-in-timp-ce-in-alte-tari-pleaca-militari-americani-in-romania-au-venit-vreo-440-450-suplimentar-eu-zic-ca-e-semnificativ-3979541",
-    "original_link": "https://www.digi24.ro/stiri/radu-miruta-in-timp-ce-in-alte-tari-pleaca-militari-americani-in-romania-au-venit-vreo-440-450-suplimentar-eu-zic-ca-e-semnificativ-3979541",
-    "source": "digi24",
-    "source_name": "Digi24",
-    "source_lang": "ro",
-    "title": "Ministerul Apărării confirmă suplimentarea trupelor americane în România",
-    "category": "politic",
-    "published": "2026-10-05T20:12:16+00:00",
-    "model": "B",
-    "src_extra": 33,
-    "teaser": "Ministrul interimar Radu Miruță a afirmat că prezența militară a Statelor Unite în România a crescut cu aproximativ 450 de militari, o evoluție considerată importantă de oficial.",
-    "entities": [
-      "Radu Miruță",
-      "România",
-      "Statele Unite"
-    ],
-    "ai_cat": "politic",
-    "icon": "swords",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false,
-    "slug": "ministerul-apararii-confirma-suplimentarea-trupelor-americane-in-romania"
-  },
-  {
-    "url": "https://bzi.ro/cum-s-a-produs-tragedia-de-la-spitalul-din-brasov-pacienta-era-singura-si-nu-s-ar-fi-putut-ridica-din-pat-5617010",
-    "original_link": "https://www.bzi.ro/cum-s-a-produs-tragedia-de-la-spitalul-din-brasov-pacienta-era-singura-si-nu-s-ar-fi-putut-ridica-din-pat-5617010",
-    "source": "bzi",
-    "source_name": "BZI Iași",
-    "source_lang": "ro",
-    "title": "O pacientă imobilizată a murit carbonizată în patul său la un spital din Brașov",
-    "category": "local",
-    "published": "2026-10-05T20:10:52+00:00",
-    "model": "B",
-    "src_extra": 41,
-    "teaser": "Ancheta autorităților din Brașov încearcă să stabilească circumstanțele în care o pacientă imobilizată a ars de vie în salon, după ce salteaua a luat foc, cel mai probabil de la o țigară aprinsă, în lipsa supravegherii medicale.",
-    "entities": [
-      "Brașov"
-    ],
-    "ai_cat": "sanatate",
-    "icon": "building-hospital",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false,
-    "slug": "o-pacienta-imobilizata-a-murit-carbonizata-in-patul-sau-la-un-spital-din-brasov"
-  },
-  {
-    "url": "https://g4media.ro/sondaj-reuters-cota-de-incredere-a-lui-donald-trump-atinge-un-minim-istoric.html",
-    "original_link": "https://www.g4media.ro/sondaj-reuters-cota-de-incredere-a-lui-donald-trump-atinge-un-minim-istoric.html",
-    "source": "g4media",
-    "source_name": "G4Media",
-    "source_lang": "ro",
-    "title": "Cota de încredere a președintelui Donald Trump a atins un minim de 32%",
-    "category": "extern",
-    "published": "2026-10-05T20:07:48+00:00",
-    "model": "B",
-    "src_extra": 44,
-    "teaser": "Un sondaj efectuat de Reuters și Ipsos arată că popularitatea liderului american a coborât la 32%, în timp ce sprijinul din partea alegătorilor hispanici s-a redus la 24%.",
-    "entities": [
-      "Donald Trump",
-      "Reuters",
-      "Ipsos"
-    ],
-    "ai_cat": "extern",
-    "icon": "percentage",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false,
-    "slug": "cota-de-incredere-a-presedintelui-donald-trump-a-atins-un-minim-de-32"
-  },
-  {
-    "url": "https://hotnews.ro/romania-suedia-live-de-la-2145-in-liga-natiunilor-surpriza-uriasa-in-primul-11-ce-s-a-intamplat-cu-ianis-hagi-2367783",
-    "original_link": "https://hotnews.ro/romania-suedia-live-de-la-2145-in-liga-natiunilor-surpriza-uriasa-in-primul-11-ce-s-a-intamplat-cu-ianis-hagi-2367783",
-    "source": "hotnews",
-    "source_name": "HotNews",
-    "source_lang": "ro",
-    "title": "România a rămas fără niciun punct după patru etape în Liga Națiunilor",
-    "category": "sport",
-    "published": "2026-10-05T20:05:00+00:00",
-    "model": "C",
-    "src_extra": 47,
-    "sources": [
-      {
-        "name": "HotNews",
-        "url": "https://hotnews.ro/romania-suedia-live-de-la-2145-in-liga-natiunilor-surpriza-uriasa-in-primul-11-ce-s-a-intamplat-cu-ianis-hagi-2367783"
-      },
-      {
-        "name": "Digi24",
-        "url": "https://www.digi24.ro/stiri/sport/fotbal/romania-zero-puncte-in-liga-natiunilor-dupa-patru-partide-clasamentul-grupei-b4-si-meciurile-ramase-de-disputat-3979603"
-      }
-    ],
-    "first_source": "HotNews",
-    "members": [
-      {
-        "published": "2026-10-05T20:05:00+00:00",
-        "title": "România – Suedia 0-1. Coșmar pentru Gică Hagi! Zero puncte pentru „tricolori” după 4 meciuri în Liga Națiunilor",
-        "source": "HotNews",
-        "url": "https://hotnews.ro/romania-suedia-live-de-la-2145-in-liga-natiunilor-surpriza-uriasa-in-primul-11-ce-s-a-intamplat-cu-ianis-hagi-2367783"
-      },
-      {
-        "published": "2026-10-05T22:15:40+00:00",
-        "title": "România, zero puncte în Liga Națiunilor după patru partide. Clasamentul grupei B4 și meciurile rămase de disputat",
-        "source": "Digi24",
-        "url": "https://digi24.ro/stiri/sport/fotbal/romania-zero-puncte-in-liga-natiunilor-dupa-patru-partide-clasamentul-grupei-b4-si-meciurile-ramase-de-disputat-3979603"
-      }
-    ],
-    "story_id": "st-56cdce252845",
-    "synthesis": "Reprezentativa României a înregistrat o nouă înfrângere în Grupa B4 din Liga Națiunilor, cedând pe teren propriu în fața Suediei cu scorul de 0-1. În urma acestui rezultat înregistrat pe Arena Națională, „tricolorii” ocupă ultimul loc în clasament, având zero puncte acumulate după primele patru partide disputate în această campanie.",
-    "entities": [
-      "România",
-      "Suedia"
-    ],
-    "ai_cat": "sport",
-    "icon": "ball-football",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false,
-    "slug": "romania-a-ramas-fara-niciun-punct-dupa-patru-etape-in-liga-natiunilor"
-  },
-  {
-    "url": "https://spotmedia.ro/stiri/eveniment/popularitatea-lui-donald-trump-a-ajuns-la-un-minim-istoric",
-    "original_link": "https://spotmedia.ro/stiri/eveniment/popularitatea-lui-donald-trump-a-ajuns-la-un-minim-istoric",
-    "source": "spotmedia",
-    "source_name": "Spotmedia",
-    "source_lang": "ro",
-    "title": "Popularitatea președintelui american Donald Trump a atins un minim istoric",
-    "category": "politic",
-    "published": "2026-10-05T20:04:15+00:00",
-    "model": "C",
-    "src_extra": 225,
-    "sources": [
-      {
-        "name": "Spotmedia",
-        "url": "https://spotmedia.ro/stiri/eveniment/popularitatea-lui-donald-trump-a-ajuns-la-un-minim-istoric"
-      },
-      {
-        "name": "G4Media",
-        "url": "https://www.g4media.ro/sondaj-reuters-cota-de-incredere-a-lui-donald-trump-atinge-un-minim-istoric.html"
-      }
-    ],
-    "first_source": "Spotmedia",
-    "members": [
-      {
-        "published": "2026-10-05T20:04:15+00:00",
-        "title": "Popularitatea lui Donald Trump a ajuns la un minim istoric",
-        "source": "Spotmedia",
-        "url": "https://spotmedia.ro/stiri/eveniment/popularitatea-lui-donald-trump-a-ajuns-la-un-minim-istoric"
-      },
-      {
-        "published": "2026-10-05T20:07:48+00:00",
-        "title": "Sondaj Reuters: Cota de încredere a lui Donald Trump atinge un minim istoric",
-        "source": "G4Media",
-        "url": "https://g4media.ro/sondaj-reuters-cota-de-incredere-a-lui-donald-trump-atinge-un-minim-istoric.html"
-      }
-    ],
-    "story_id": "st-d07056bb8114",
-    "synthesis": "Un sondaj Reuters/Ipsos arată că popularitatea președintelui american Donald Trump a ajuns la cel mai scăzut nivel, doar 32% dintre cetățeni aprobându-i activitatea. De asemenea, sprijinul în rândul alegătorilor hispanici a scăzut la 24%, influențat de inflația ridicată și deciziile politice recente, afectând totodată intențiile de vot pentru Partidul Republican.",
-    "entities": [
-      "Donald Trump",
-      "Reuters",
-      "Ipsos"
-    ],
-    "ai_cat": "politic",
-    "icon": "chart-line",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false,
-    "slug": "popularitatea-presedintelui-american-donald-trump-a-atins-un-minim-istoric"
-  },
-  {
-    "url": "https://hotnews.ro/una-dintre-cele-mai-in-voga-trupe-din-romania-tocmai-a-anuntat-ca-isi-opreste-activitatea-dupa-19-ani-2367540",
-    "original_link": "https://hotnews.ro/una-dintre-cele-mai-in-voga-trupe-din-romania-tocmai-a-anuntat-ca-isi-opreste-activitatea-dupa-19-ani-2367540",
-    "source": "hotnews",
-    "source_name": "HotNews",
-    "source_lang": "ro",
-    "title": "Trupa The Mono Jacks își încetează activitatea după aproape două decenii de scenă",
-    "category": "cultura",
-    "published": "2026-10-05T20:04:02+00:00",
-    "model": "B",
-    "src_extra": 41,
-    "teaser": "Cunoscuta formație rock românească The Mono Jacks a anunțat oficial că se destramă, concertul programat pe 11 noiembrie urmând să fie ultimul din istoria trupei care a activat timp de 19 ani.",
-    "entities": [
-      "The Mono Jacks"
-    ],
-    "ai_cat": "cultura",
-    "icon": "music",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false,
-    "slug": "trupa-the-mono-jacks-isi-inceteaza-activitatea-dupa-aproape-doua-decenii-de"
-  },
-  {
-    "url": "https://profit.ro/profitul-tau/foto-gigi-netoiu-amendat-pentru-ferma-de-vite-black-angus-22804782",
-    "original_link": "https://www.profit.ro/profitul-tau/foto-gigi-netoiu-amendat-pentru-ferma-de-vite-black-angus-22804782?utm_source=Rss&utm_medium=Referral&utm_campaign=Cross",
-    "source": "profit",
-    "source_name": "Profit.ro",
-    "source_lang": "ro",
-    "title": "Ferma Black Angus a lui Gigi Nețoiu, amendată de Apele Române",
-    "category": "economic",
-    "published": "2026-10-05T20:04:00+00:00",
-    "model": "C",
-    "src_extra": 8,
-    "sources": [
-      {
-        "name": "Profit.ro",
-        "url": "https://www.profit.ro/profitul-tau/foto-gigi-netoiu-amendat-pentru-ferma-de-vite-black-angus-22804782?utm_source=Rss&utm_medium=Referral&utm_campaign=Cross"
-      },
-      {
-        "name": "Adevărul",
-        "url": "https://adevarul.ro/stiri-interne/evenimente/ferma-black-angus-a-lui-gigi-netoiu-amendata-cu-2562034.html"
-      }
-    ],
-    "first_source": "Profit.ro",
-    "members": [
-      {
-        "published": "2026-10-05T20:04:00+00:00",
-        "title": "FOTO Gigi Nețoiu, amendat pentru ferma de vite Black Angus",
-        "source": "Profit.ro",
-        "url": "https://profit.ro/profitul-tau/foto-gigi-netoiu-amendat-pentru-ferma-de-vite-black-angus-22804782"
-      },
-      {
-        "published": "2026-10-05T21:10:39+00:00",
-        "title": "Ferma Black Angus a lui Gigi Nețoiu, amendată cu 40.000 de lei de Apele Române. Ce au constatat inspectorii",
-        "source": "Adevărul",
-        "url": "https://adevarul.ro/stiri-interne/evenimente/ferma-black-angus-a-lui-gigi-netoiu-amendata-cu-2562034.html"
-      }
-    ],
-    "story_id": "st-871c55a1a95f",
-    "synthesis": "Societatea care administrează ferma de bovine Black Angus din comuna Cetate, județul Dolj, controlată de omul de afaceri Gigi Nețoiu, a fost sancționată de inspectorii Administrației Bazinale de Apă Jiu. Unitatea a primit o amendă de 40.000 de lei din cauza nerespectării unor măsuri dispuse în urma unui control anterior.",
-    "entities": [
-      "Gigi Nețoiu",
-      "Apele Române",
-      "Ferma Black Angus"
-    ],
-    "ai_cat": "economic",
-    "icon": "tractor",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false,
-    "slug": "ferma-black-angus-a-lui-gigi-netoiu-amendata-de-apele-romane"
-  },
-  {
-    "url": "https://g4media.ro/arabia-saudita-turcia-si-pakistanul-pun-in-aplicare-un-pact-de-aparare-in-urma-atacurilor-gruparii-houthi.html",
-    "original_link": "https://www.g4media.ro/arabia-saudita-turcia-si-pakistanul-pun-in-aplicare-un-pact-de-aparare-in-urma-atacurilor-gruparii-houthi.html",
-    "source": "g4media",
-    "source_name": "G4Media",
-    "source_lang": "ro",
-    "title": "Arabia Saudită, Turcia și Pakistanul activează un pact militar defensiv împotriva rebelilor Houthi",
-    "category": "extern",
-    "published": "2026-10-05T20:03:18+00:00",
-    "model": "B",
-    "src_extra": 41,
-    "teaser": "Cele trei state au pus în aplicare măsuri de apărare colectivă și trimit trupe în Arabia Saudită, ca răspuns la atacurile repetate ale rebelilor Houthi din Yemen susținuți de Iran, în urma unei reuniuni de urgență.",
-    "entities": [
-      "Arabia Saudită",
-      "Turcia",
-      "Pakistan",
-      "Houthi"
-    ],
-    "ai_cat": "extern",
-    "icon": "shield",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false,
-    "slug": "arabia-saudita-turcia-si-pakistanul-activeaza-un-pact-militar-defensiv"
-  },
-  {
-    "url": "https://digi24.ro/stiri/externe/ue/ue-urmareste-cu-atentie-posibila-aparitie-a-ciumei-in-rusia-suntem-mult-mai-bine-pregatiti-de-eventuale-pandemii-3979509",
-    "original_link": "https://www.digi24.ro/stiri/externe/ue/ue-urmareste-cu-atentie-posibila-aparitie-a-ciumei-in-rusia-suntem-mult-mai-bine-pregatiti-de-eventuale-pandemii-3979509",
-    "source": "extern",
-    "source_name": "Digi24 Extern",
-    "source_lang": "ro",
-    "title": "Comisia Europeană monitorizează situația privind un posibil caz de ciumă în Rusia",
-    "category": "extern",
-    "published": "2026-10-05T20:02:50+00:00",
-    "model": "B",
-    "src_extra": 45,
-    "teaser": "UE urmărește îndeaproape evoluțiile din Siberia, unde o angajată a unui laborator a decedat după un incident cu agentul patogen al ciumei, iar circa 200 de persoane au fost izolate și plasate sub supraveghere medicală.",
-    "entities": [
-      "Comisia Europeană",
-      "Rusia",
-      "Siberia"
-    ],
-    "ai_cat": "extern",
-    "icon": "virus",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false,
-    "slug": "comisia-europeana-monitorizeaza-situatia-privind-un-posibil-caz-de-ciuma-in"
-  },
-  {
-    "url": "https://stirileprotv.ro/stiri/politic/diana-sosoaca-anun-a-ca-s-o-s-romania-nu-voteaza-guvernul-niculescu-romania-are-nevoie-de-alegeri-anticipate.html",
-    "original_link": "https://stirileprotv.ro/stiri/politic/diana-sosoaca-anun-a-ca-s-o-s-romania-nu-voteaza-guvernul-niculescu-romania-are-nevoie-de-alegeri-anticipate.html",
-    "source": "protv",
-    "source_name": "Știrile ProTV",
-    "source_lang": "ro",
-    "title": "Partidul S.O.S. România anunță că nu va vota Guvernul propus de Luca Niculescu",
-    "category": "politic",
-    "published": "2026-10-05T20:00:16+00:00",
-    "model": "C",
-    "src_extra": 18,
-    "sources": [
-      {
-        "name": "Știrile ProTV",
-        "url": "https://stirileprotv.ro/stiri/politic/diana-sosoaca-anun-a-ca-s-o-s-romania-nu-voteaza-guvernul-niculescu-romania-are-nevoie-de-alegeri-anticipate.html"
-      },
-      {
-        "name": "News Brașov",
-        "url": "https://newsbv.ro/diana-sosoaca-luca-niculescu-agentul-frantei/"
-      }
-    ],
-    "first_source": "Știrile ProTV",
-    "members": [
-      {
-        "published": "2026-10-05T20:00:16+00:00",
-        "title": "Diana Şoşoacă anunţă că S.O.S. România nu votează Guvernul Niculescu: România are nevoie de alegeri anticipate",
-        "source": "Știrile ProTV",
-        "url": "https://stirileprotv.ro/stiri/politic/diana-sosoaca-anun-a-ca-s-o-s-romania-nu-voteaza-guvernul-niculescu-romania-are-nevoie-de-alegeri-anticipate.html"
-      },
-      {
-        "published": "2026-10-06T03:10:45+00:00",
-        "title": "Diana Şoşoacă susține că Luca Niculescu este „agentul Franţei” și că SOS România nu îl votează. „Francezii să ne dea apa înapoi”",
-        "source": "News Brașov",
-        "url": "https://newsbv.ro/diana-sosoaca-luca-niculescu-agentul-frantei"
-      }
-    ],
-    "story_id": "st-5cf4f468b4fc",
-    "synthesis": "Diana Șoşoacă, preşedinta partidului S.O.S. România, a declarat că formațiunea sa nu va acorda votul de învestitură Guvernului condus de Luca Niculescu, desemnat de președintele Nicușor Dan. Șooșacă a criticat numirea și a cerut organizarea de alegeri anticipate, invocând lipsa de legitimitate a actualei puteri.",
-    "entities": [
-      "Diana Şoşoacă",
-      "Luca Niculescu",
-      "Nicușor Dan",
-      "S.O.S. România"
-    ],
-    "ai_cat": "politic",
-    "icon": "gavel",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false,
-    "slug": "partidul-s-o-s-romania-anunta-ca-nu-va-vota-guvernul-propus-de-luca-niculescu"
-  },
-  {
-    "url": "https://g4media.ro/actrita-rodica-ana-luca-a-murit-singura-intr-o-comuna-din-sibiu-a-jucat-in-brigada-diverse-in-alerta-vecinii-au-contribuit-la-inmormantare.html",
-    "original_link": "https://www.g4media.ro/actrita-rodica-ana-luca-a-murit-singura-intr-o-comuna-din-sibiu-a-jucat-in-brigada-diverse-in-alerta-vecinii-au-contribuit-la-inmormantare.html",
-    "source": "g4media",
-    "source_name": "G4Media",
-    "source_lang": "ro",
-    "title": "Actrița Rodica Ana Luca a decedat în județul Sibiu, fiind înmormântată cu ajutorul comunității",
-    "category": "local",
-    "published": "2026-10-05T19:53:46+00:00",
-    "model": "B",
-    "src_extra": 37,
-    "teaser": "Cunoscută pentru rolul din seria „Brigada Diverse”, actrița a murit singură în comuna Mihăileni, cheltuielile pentru funeralii fiind asigurate de vecini și autoritățile locale.",
-    "entities": [
-      "Rodica Ana Luca",
-      "Mihăileni",
-      "Sibiu"
-    ],
-    "ai_cat": "cultura",
-    "icon": "building-church",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false,
-    "slug": "actrita-rodica-ana-luca-a-decedat-in-judetul-sibiu-fiind-inmormantata-cu"
-  },
-  {
-    "url": "https://sfatulparintilor.ro/horoscop-3/horoscop-lunar/ce-tip-de-inteligenta-ai-in-functie-de-zodie",
-    "original_link": "https://sfatulparintilor.ro/horoscop-3/horoscop-lunar/ce-tip-de-inteligenta-ai-in-functie-de-zodie/",
-    "source": "sfatulparintilor",
-    "source_name": "Sfatul Părinților",
-    "source_lang": "ro",
-    "title": "Corelația dintre elementele zodiacale și tipurile principale de inteligență umană",
-    "category": "lifestyle",
-    "published": "2026-10-05T19:53:00+00:00",
-    "model": "B",
-    "src_extra": 30,
-    "teaser": "Studiul clasificării cognitive scoate în evidență modul în care trăsăturile astrale se leagă de cele două mari forme de inteligență recunoscute: cea analitică, măsurată prin IQ, și cea emoțională, definită prin EQ.",
-    "entities": [],
-    "ai_cat": "lifestyle",
-    "icon": "globe",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false,
-    "slug": "corelatia-dintre-elementele-zodiacale-si-tipurile-principale-de-inteligenta"
-  },
-  {
-    "url": "https://bzi.ro/cristian-tudor-popescu-luca-niculescu-este-un-oportunist-care-doreste-cu-orice-pret-o-functie-mare-acum-5617073",
-    "original_link": "https://www.bzi.ro/cristian-tudor-popescu-luca-niculescu-este-un-oportunist-care-doreste-cu-orice-pret-o-functie-mare-acum-5617073",
-    "source": "bzi",
-    "source_name": "BZI Iași",
-    "source_lang": "ro",
-    "title": "Cristian Tudor Popescu îl critică dur pe premierul desemnat Luca Niculescu",
-    "category": "politic",
-    "published": "2026-10-05T19:50:28+00:00",
-    "model": "B",
-    "src_extra": 42,
-    "teaser": "Jurnalistul a lansat acuzații publice la adresa lui Luca Niculescu, desemnat de Nicușor Dan pentru conducerea Guvernului, catalogându-l drept un oportunist interesat exclusiv de obținerea unei funcții publice importante.",
-    "entities": [
-      "Cristian Tudor Popescu",
-      "Luca Niculescu",
-      "Nicușor Dan"
-    ],
-    "ai_cat": "politic",
-    "icon": "gavel",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false,
-    "slug": "cristian-tudor-popescu-il-critica-dur-pe-premierul-desemnat-luca-niculescu"
-  },
-  {
-    "url": "https://hotnews.ro/violente-la-protestele-elevilor-din-belgia-tactica-inedita-folosita-de-liceenii-nemultumiti-2368006",
-    "original_link": "https://hotnews.ro/violente-la-protestele-elevilor-din-belgia-tactica-inedita-folosita-de-liceenii-nemultumiti-2368006",
-    "source": "hotnews",
-    "source_name": "HotNews",
-    "source_lang": "ro",
-    "title": "Protestele elevilor din Belgia au degenerat în violențe și zeci de arestări",
-    "category": "extern",
-    "published": "2026-10-05T19:50:21+00:00",
-    "model": "B",
-    "src_extra": 45,
-    "teaser": "Manifestațiile liceenilor belgieni au provocat acte de vandalism și ciocniri cu forțele de ordine în mai multe localități, soldate cu 18 polițiști răniți ușor la Liege și numeroase rețeri efectuate de autorități.",
-    "entities": [
-      "Belgia",
-      "Liege"
-    ],
-    "ai_cat": "extern",
-    "icon": "alert-triangle",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false,
-    "slug": "protestele-elevilor-din-belgia-au-degenerat-in-violente-si-zeci-de-arestari"
-  },
-  {
-    "url": "https://stirileprotv.ro/stiri/politic/declaratia-de-avere-a-lui-luca-niculescu-imobile-terenuri-si-zeci-de-mii-de-euro-in-conturi-bancare.html",
-    "original_link": "https://stirileprotv.ro/stiri/politic/declaratia-de-avere-a-lui-luca-niculescu-imobile-terenuri-si-zeci-de-mii-de-euro-in-conturi-bancare.html",
-    "source": "protv",
-    "source_name": "Știrile ProTV",
-    "source_lang": "ro",
-    "title": "Averea declarată de premierul desemnat Luca Niculescu include imobile și economii substanțiale",
-    "category": "politic",
-    "published": "2026-10-05T19:43:18+00:00",
-    "model": "B",
-    "src_extra": 26,
-    "teaser": "Conform declarației de avere completate anul trecut, politicianul propus pentru funcția de prim-ministru deține în proprietate două apartamente, o casă de vacanță, terenuri forestiere și conturi bancare cu zeci de mii de euro.",
-    "entities": [
-      "Luca Niculescu",
-      "Nicușor Dan"
-    ],
-    "ai_cat": "politic",
-    "icon": "certificate",
-    "processed_by": "gemini",
-    "prompt_version": "v2-esenta",
-    "featured": false,
-    "slug": "averea-declarata-de-premierul-desemnat-luca-niculescu-include-imobile-si"
   }
 ]
