@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% block title %}{{ dossier.title }} — dosar {{ site.name }}{% endblock %}
+{% block description %}{{ dossier.summary | truncate(154, False, '…', 0) }}{% endblock %}
+{% block robots %}{% if dossier.indexable %}max-image-preview:large{% else %}noindex,follow{% endif %}{% endblock %}
+{% block content %}
+<nav class="breadcrumbs" aria-label="Breadcrumb"><a href="{{ base }}/">{{ site.name }}</a><span class="sep">/</span><span>Dosar documentar</span></nav>
+<article class="article"{% if dossier.indexable %} data-pagefind-body{% endif %}>
+  <span class="badge">Dosar documentar · pilot</span>
+  <h1 data-pagefind-meta="title">{{ dossier.title }}</h1>
+  <p>{{ dossier.question }}</p>
+  <p>Examinat la <time datetime="{{ dossier.reviewed_at }}">{{ dossier.reviewed_at[:10] }}</time>.
+    {% if dossier.review_kind == 'human' %}Revizie umană declarată pentru acest dosar.{% else %}Documentat cu asistență AI; nu reprezintă o revizie umană.{% endif %}</p>
+  <p>Perioada documentată: {{ dossier.period.start }} – {{ dossier.period.end }}. {{ dossier.period.scope }} Dosarul nu pretinde o istorie completă sau actualizare continuă.</p>
+  {% if dossier.state == 'withdrawn' %}
+  <h2>Dosar retras</h2><p>{{ dossier.summary }}</p>
+  {% elif dossier.state == 'needs_review' %}
+  <h2>Este necesară o nouă examinare</h2><p>{{ dossier.summary }}</p><p>Documentele rămân referințe istorice; conținutul dependent nu este prezentat ca fiind actual.</p>
+  {% else %}
+  <h2>Sinteza documentată</h2><p>{{ dossier.summary }}</p>
+  <p>{% for ref in dossier.summary_evidence_ids %}<a href="#document-{{ ref }}">Documentul sintezei</a>{{ ' · ' if not loop.last }}{% endfor %}</p>
+  {% if dossier.history|length > 1 %}
+  <h2>Ce s-a schimbat</h2><p>{{ dossier.history[-1].reason }} · <time datetime="{{ dossier.history[-1].at }}">{{ dossier.history[-1].at[:10] }}</time></p>
+  {% endif %}
+  <h2>Cronologia documentată</h2>
+  <p>Data faptului și data publicării sunt prezentate separat. Un termen anunțat nu dovedește că evenimentul s-a produs.</p>
+  <ol class="timeline">{% for event in dossier.events %}<li>
+    <p><strong>{{ 'Prognoză sau termen anunțat' if event.status == 'forecast' else ('Fapt consemnat în document' if event.status == 'documented' else 'Relatarea sursei') }}</strong>: {{ event.text }}</p>
+    <p>{% if event.event_at %}Data faptului sau termenului: <time datetime="{{ event.event_at }}">{{ event.event_at }}</time>. {{ event.event_date_basis }}{% else %}Data faptului nu este stabilită.{% endif %}
+      {% if event.published_at %} Publicarea relatării: <time datetime="{{ event.published_at }}">{{ event.published_at }}</time>.{% endif %}</p>
+    {% if event.evidence_inactive %}<p>Proba acestui reper este indisponibilă sau retrasă; reperul este păstrat numai ca istoric, fără reconfirmare.</p>{% endif %}
+    <p>{% for ref in event.evidence_ids %}<a href="#document-{{ ref }}">Documentul reperului</a>{{ ' · ' if not loop.last }}{% endfor %}</p>
+  </li>{% endfor %}</ol>
+  {% if dossier.uncertainties %}<h2>Ce rămâne neclar</h2><ul>{% for item in dossier.uncertainties %}<li>{{ item.question }} Ce ar clarifica: {{ item.needed }}</li>{% endfor %}</ul>{% endif %}
+  {% if dossier.article_links %}<h2>Relatări disponibile pe izz</h2><ul>{% for link in dossier.article_links %}<li><a href="{{ base }}{{ link.path }}">{{ link.title }}</a></li>{% endfor %}</ul>{% endif %}
+  {% set editorial_relations = dossier.relations %}{% include '_editorial_relations.html' %}
+  {% endif %}
+  {% if dossier.documents %}
+  <section class="sources-box" aria-labelledby="dossier-sources-title">
+    <h2 id="dossier-sources-title">Surse și documente examinate</h2>
+    <p>O singură origine documentată nu reprezintă o confirmare independentă. Disponibilitatea unei pagini nu confirmă funcționarea serviciilor descrise în ea.</p>
+    <ol>{% for document in dossier.documents %}<li id="document-{{ document.id }}">
+      {% if document.scheme == 'https' %}<a href="https://{{ document.destination }}" target="_blank" rel="noopener noreferrer">{{ document.title }}</a>{% elif document.scheme == 'http' %}<a href="http://{{ document.destination }}" target="_blank" rel="noopener noreferrer">{{ document.title }}</a>{% endif %}
+      <p><strong>{{ 'Document examinat' if document.status == 'active' else ('Document retras' if document.status == 'withdrawn' else 'Document indisponibil') }}</strong>. {{ document.note or '' }}</p>
+      <p>Locul examinat: {{ document.locator }}. Examinat la <time datetime="{{ document.verified_at }}">{{ document.verified_at[:10] }}</time>.{% if document.published_at %} Publicat la <time datetime="{{ document.published_at }}">{{ document.published_at }}</time>.{% endif %}</p>
+    </li>{% endfor %}</ol>
+  </section>
+  {% endif %}
+  {% if dossier.history %}<details><summary>Istoricul sintezei și al corecțiilor</summary><ol>{% for entry in dossier.history %}<li>Versiunea {{ entry.version }} · <time datetime="{{ entry.at }}">{{ entry.at[:10] }}</time><p>{{ entry.summary }}</p><p>{{ entry.reason }}</p>{% for ref in entry.evidence_ids %}<a href="#document-{{ ref }}">Documentul versiunii</a>{% endfor %}</li>{% endfor %}</ol></details>{% endif %}
+</article>
+{% endblock %}
