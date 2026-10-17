@@ -79,7 +79,9 @@ def _license_url(license_name: str | None) -> str | None:
 
 def _leadphoto_has_files(rec: dict) -> bool:
     required = ("cover", "art", "webp", "license", "page", "name")
-    return bool(rec) and not rec.get("miss") and all(rec.get(key) for key in required)
+    # `page` ajunge in href-ul legendei (Semgrep var-in-href pe #493): doar https absolut
+    return (bool(rec) and not rec.get("miss") and all(rec.get(key) for key in required)
+            and url_https(rec.get("page")) is not None)
 
 
 def _leadphoto_is_publication_safe(rec: dict) -> bool:

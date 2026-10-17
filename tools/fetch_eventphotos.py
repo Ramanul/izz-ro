@@ -14,6 +14,12 @@ eveniment, filtrate pe fereastra de timp a stirii:
               intrarea in data/leadphotos.json — render.py le consuma NEschimbat,
               cu porile lui de credit si bugetul lui de fisiere.
 
+Clasa D (2026-10-17): pentru stirile fara substantiv de eveniment, dar cu un om in titlu,
+o fotografie OFICIALA de la eveniment (Casa Alba, kremlin.ru, Parlamentul European, Comisia
+Europeana — lista alba cu dovezi la `SURSE_OFICIALE`), luata in [publicat-3, publicat+1] zile,
+DOAR neutra si factuala (decizie proprietar: fara propaganda — parade, mitinguri, militari,
+teritorii ocupate). CC BY ajunge doar pe pagina de articol, sub legenda (render.py, #205).
+
 Fail-safe: orice veriga lipseste (nu e stire de eveniment, loc nerezolvabil, zero
 rezultate in fereastra, retea) -> articolul ramane pe coperta curenta. Miss-urile
 se tin in data/eventphotos-miss.json (SEPARAT de cache-ul leadphotos, ca sa nu
@@ -36,6 +42,7 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, ROOT)
 from generator import eventdata, geo, htmlart, photojudge, state  # noqa: E402
 from generator.process import get_provider  # noqa: E402
+from generator.util import url_https  # noqa: E402
 
 _spec = importlib.util.spec_from_file_location(
     "fetch_leadphotos", os.path.join(ROOT, "tools", "fetch_leadphotos.py"))
@@ -153,16 +160,38 @@ def event_noun(text: str) -> str | None:
     return None
 
 
+_LUNI_EN = {m: i for i, m in enumerate(
+    ("january", "february", "march", "april", "may", "june", "july", "august", "september",
+     "october", "november", "december"), 1)}
+
+
 def _meta_date(meta: dict) -> str:
-    return (meta.get("DateTimeOriginal", {}).get("value") or "")[:10]
+    """`YYYY-MM-DD` din DateTimeOriginal. Accepta si forma importurilor Flickr („Taken on 12
+    October 2026, 17:25") — masurat 2026-10-17 pe pozele Casei Albe si ale Comisiei: altfel
+    fereastra le respingea pe toate, desi data e acolo."""
+    v = re.sub(r"<[^>]+>", " ", meta.get("DateTimeOriginal", {}).get("value") or "")
+    m = re.search(r"(\d{4})-(\d{2})-(\d{2})", v)
+    if m:
+        return m.group(0)
+    m = re.search(r"\b(\d{1,2})\s+([A-Za-z]+)\s+(\d{4})\b", v)
+    if m and m.group(2).lower() in _LUNI_EN:
+        return f"{m.group(3)}-{_LUNI_EN[m.group(2).lower()]:02d}-{int(m.group(1)):02d}"
+    return ""
 
 
-def cauta(q: str) -> list[dict]:
-    """Rezultate Commons pentru query, cu metadatele de care au nevoie portile."""
-    qs = urllib.parse.urlencode({
+def cauta(q: str, recente: bool = False, limita: int = 8) -> list[dict]:
+    """Rezultate Commons pentru query, cu metadatele de care au nevoie portile.
+
+    `recente=True` sorteaza dupa data incarcarii (cele mai noi intai): fotografiile oficiale
+    ajung pe Commons la una-doua zile dupa eveniment, iar relevanta textuala le-ar ingropa sub
+    portretele vechi ale aceluiasi om."""
+    params = {
         "action": "query", "generator": "search", "gsrsearch": q,
-        "gsrnamespace": 6, "gsrlimit": 8, "prop": "imageinfo",
-        "iiprop": "url|size|extmetadata", "iiurlwidth": lp.LEAD_W, "format": "json"})
+        "gsrnamespace": 6, "gsrlimit": limita, "prop": "imageinfo",
+        "iiprop": "url|size|extmetadata", "iiurlwidth": lp.LEAD_W, "format": "json"}
+    if recente:
+        params["gsrsort"] = "create_timestamp_desc"
+    qs = urllib.parse.urlencode(params)
     d = lp.fp._get(f"https://commons.wikimedia.org/w/api.php?{qs}")
     out = []
     for p in (d.get("query", {}).get("pages") or {}).values():
@@ -177,7 +206,9 @@ def cauta(q: str) -> list[dict]:
                         "license": meta.get("LicenseShortName", {}).get("value", ""),
                         "artist": lp.fp.clean_html(meta.get("Artist", {}).get("value", "")),
                         "page": ii.get("descriptionurl"),
-                        "data": _meta_date(meta)})
+                        "data": _meta_date(meta),
+                        "descriere": lp.fp.clean_html(meta.get("ImageDescription", {}).get("value", "")),
+                        "categorii": meta.get("Categories", {}).get("value", "")})
     return out
 
 
@@ -189,6 +220,146 @@ def _in_fereastra(data: str, f: tuple[datetime.date, datetime.date]) -> bool:
     return f[0] <= d <= f[1]
 
 
+# ---- clasa D: fotografii OFICIALE de la eveniment, doar neutre ---------------------
+# Decizie proprietar 2026-10-17: „nu promovam propaganda pe site; daca sunt poze neutre,
+# factuale, da". Regula L1 (.claude/reguli/18-imagini.md) cere ca sursa sa publice o licenta
+# care acopera imaginile, CONSEMNATA. Lista de mai jos e lista alba, cu dovada fiecareia:
+#   - Casa Alba: lucrare a guvernului federal SUA, domeniu public (17 U.S.C. §105); pe Commons
+#     in categoriile „Executive Office of the President files" / „White House Flickr files".
+#   - kremlin.ru: CC BY 4.0, atribuire „www.kremlin.ru" (Commons, Template:Kremlin.ru).
+#   - Parlamentul European: CC BY 4.0, „© European Union – Source: EP" (descrierile pozelor EP
+#     de pe Flickr). Pozele cu licenta proprie „European Parliament" (Multimedia Centre) NU intra.
+#   - Comisia Europeana: CC BY 4.0 implicit din 2019 (decizia de reutilizare); pe Commons doar
+#     cele verificate de administratori, categoria „Media from the European Commission".
+# Neconfirmate si deci ABSENTE: president.gov.ua, presidency.ro, gov.ro, NATO (interzice uzul
+# comercial), OGL UK. Sonda pe Commons din 2026-10-17 a aratat de ce lista alba e pe SURSA,
+# nu pe nume: cautarea „Putin" intorcea si o poza CC BY-SA „own work" cu un graffiti.
+_LIC_PD = re.compile(r"^(public domain|pd([ -]|$)|cc0)", re.I)
+_LIC_CCBY = re.compile(r"^cc[ -]?by[ -](3\.0|4\.0)$", re.I)
+SURSE_OFICIALE = (
+    {"id": "casa-alba", "eticheta": "Casa Albă", "licenta": _LIC_PD,
+     "categorii": ("executive office of the president files", "white house flickr files")},
+    {"id": "kremlin", "eticheta": "kremlin.ru", "licenta": _LIC_CCBY,
+     "categorii": ("files from kremlin.ru",)},
+    {"id": "parlamentul-european", "eticheta": "Parlamentul European", "licenta": _LIC_CCBY,
+     "autor": ("european parliament",)},
+    {"id": "comisia-europeana", "eticheta": "Comisia Europeană", "licenta": _LIC_CCBY,
+     "categorii": ("media from the european commission",)},
+)
+# Ce NU intra, oricat de oficiala ar fi sursa: parade si demonstratii de forta, campanii si
+# mitinguri, militarii, si evenimentele din teritorii ocupate sau anexate prezentate ca normale
+# (sonda: „Meeting with Acting President of South Ossetia" pe kremlin.ru). Plus fisierele
+# contestate pe Commons (cerere de stergere).
+_NE_NEUTRU = re.compile(
+    r"parad|victory day|ziua victoriei|rally|campaign|mitin|miting|military|militar|troops|"
+    r"soldier|soldat|army|armat|weapon|arm[ae]ment|missile|rachet|\btank|drill|exercis|"
+    r"occupied|ocupat|annex|anexat|crimea|crimeea|sevastopol|donetsk|luhansk|lugansk|"
+    r"zaporizh|zaporoj|kherson|herson|mariupol|abkhaz|abhaz|ossetia|osetia|transnistr|"
+    r"novorossi|special military operation|deletion request", re.I)
+# Ce face o poza „factuala": un eveniment public documentat — intalnire, summit, conferinta,
+# vizita, semnare, plen, declaratie, sosire/plecare.
+_FACTUAL = re.compile(
+    r"\bmeet|meeting|\bmet\b|talks|summit|conference|plenary|session|\bvisit|signing|\bsigns\b|"
+    r"bilateral|participation|welcomes|address|remarks|press|briefing|departure|departs|"
+    r"arriv|boards|disembarks|delivers|speaks|statement", re.I)
+_FEREASTRA_OFICIAL = (datetime.timedelta(days=-3), datetime.timedelta(days=1))
+_REINCERCARE_ZILE = 3   # pozele oficiale urca pe Commons la 1-2 zile dupa eveniment
+
+
+def sursa_oficiala(c: dict) -> dict | None:
+    """Sursa din lista alba a unui candidat Commons, sau None. Licenta e verificata PE SURSA."""
+    cat = (c.get("categorii") or "").lower()
+    autor = (c.get("artist") or "").lower()
+    lic = (c.get("license") or "").strip()
+    for src in SURSE_OFICIALE:
+        if not src["licenta"].match(lic):
+            continue
+        if any(k in cat for k in src.get("categorii", ())) or \
+                any(autor.startswith(k) for k in src.get("autor", ())):
+            return src
+    return None
+
+
+def e_neutra(c: dict, nume: str) -> bool:
+    """Poza documenteaza un eveniment factual in care apare `nume` — si nimic din lista neagra."""
+    text = " ".join((c.get("filename") or "", c.get("descriere") or "", c.get("categorii") or ""))
+    from generator.util import strip_diacritics
+    plat = strip_diacritics(text)
+    if _NE_NEUTRU.search(plat) or not _FACTUAL.search(plat):
+        return False
+    _toti, ident = htmlart._tokeni_nume(nume)
+    return any(re.search(r"\b" + re.escape(t) + r"\b", plat, re.I) for t in ident)
+
+
+def candidati_oficiali(cands: list[dict], nume: str, pub: str) -> list[dict]:
+    """Filtrul complet al clasei D, pur (testat offline): sursa, licenta, fereastra,
+    landscape >= 1200px, neutralitate, omul din titlu in poza."""
+    try:
+        d = datetime.date.fromisoformat((pub or "")[:10])
+    except ValueError:
+        return []
+    f = (d + _FEREASTRA_OFICIAL[0], d + _FEREASTRA_OFICIAL[1])
+    out = []
+    for c in cands:
+        src = sursa_oficiala(c)
+        if not src or not _in_fereastra(c.get("data") or "", f):
+            continue
+        if not (lp.is_big_enough(c.get("width", 0)) and lp.is_landscape(c.get("width", 0), c.get("height", 0))):
+            continue
+        if not e_neutra(c, nume):
+            continue
+        out.append({**c, "sursa": src})
+    return out
+
+
+def _poate_reincerca_oficial(m: dict | None, a: dict, azi: datetime.date) -> bool:
+    """Miss-ul clasei D se reincearca o data pe zi, cat stirea are cel mult 3 zile."""
+    try:
+        pub = datetime.date.fromisoformat((a.get("published") or "")[:10])
+    except ValueError:
+        return False
+    if (azi - pub).days > _REINCERCARE_ZILE:
+        return False
+    return not m or m.get("incercat") != azi.isoformat()
+
+
+def foto_oficiala(a: dict, provider, memo: dict) -> tuple[dict | None, str, bool]:
+    """(intrare, motiv, a_consumat_retea) pentru clasa D."""
+    ales = htmlart.subiect_titlu(a, htmlart._portrete_toate())
+    if not ales:
+        return None, "fara_subiect_in_titlu", False
+    nume = ales[1].get("name") or ales[0]
+    q = f'"{nume}" filetype:bitmap'
+    retea = q not in memo
+    if retea:
+        memo[q] = cauta(q, recente=True, limita=20)
+    cands = candidati_oficiali(memo[q], nume, a.get("published") or "")
+    if not cands:
+        return None, "fara_poza_oficiala_neutra", retea
+    summary = a.get("synthesis") or a.get("teaser") or ""
+    aid = htmlart.art_id(a)
+    for c in cands:
+        if not photojudge.photo_fits(provider, a.get("title", ""), summary, nume,
+                                     lp._caption(c["filename"])):
+            continue
+        if not url_https(c.get("thumb")):
+            continue   # doar https absolut de la Commons; nu file:, nu ftp: (Semgrep dynamic-urllib)
+        try:
+            data = urllib.request.urlopen(
+                urllib.request.Request(c["thumb"], headers=lp.UA), timeout=30).read()
+        except OSError:
+            continue
+        if len(data) < 3000:
+            continue
+        rend = lp._save_renditions(data, f"of-{aid}")
+        if rend:
+            return ({**rend, "artist": c["artist"] or c["sursa"]["eticheta"],
+                     "license": c["license"], "page": c["page"], "name": nume,
+                     "kind": "oficial", "sursa": c["sursa"]["eticheta"],
+                     "data_poza": c["data"]}, "oficial_ok", retea)
+    return None, "respinsa_de_judecator_sau_descarcare", retea
+
+
 def main() -> int:
     arts = [a for a in state.load() if a.get("slug")]
     arts.sort(key=lambda a: a.get("published") or "", reverse=True)
@@ -198,6 +369,8 @@ def main() -> int:
     buget = MAX_LOOKUPS
     atasate = 0
     memo_query: dict[str, list[dict]] = {}  # acelasi eveniment din 3 surse = 1 cautare
+    memo_oficial: dict[str, list[dict]] = {}  # acelasi om in 5 stiri de azi = 1 cautare
+    azi = datetime.datetime.now(datetime.timezone.utc).date()
     for a in arts:
         if buget <= 0:
             break
@@ -209,6 +382,19 @@ def main() -> int:
         noun = event_noun(text)
         fereastra = _fereastra(a.get("published"))
         if not noun or not fereastra:
+            # clasa D: omul din titlu fotografiat de o sursa oficiala, la eveniment, neutru
+            m = miss_cache.get(aid)
+            if (m and m.get("r") != "oficial") or not _poate_reincerca_oficial(m, a, azi):
+                continue
+            gasit, motiv, retea = foto_oficiala(a, provider, memo_oficial)
+            buget -= 1 if retea else 0
+            if gasit:
+                lead_cache[aid] = gasit
+                atasate += 1
+                print(f">> foto-oficiala: {aid} <- {gasit['sursa']} {gasit['data_poza']} ({gasit['license']})")
+            elif motiv != "fara_subiect_in_titlu":
+                miss_cache[aid] = {"miss": True, "v": MISS_VERSION, "r": "oficial",
+                                   "motiv": motiv, "incercat": azi.isoformat()}
             continue
         loc = geo.eticheta_copertei(a) or ""
         loc_query, loc_badge = loc, loc
