@@ -84,7 +84,13 @@ def _eticheta_categorie(cat: str) -> str:
 
 
 def _eticheta(a: dict) -> str:
-    """Textul etichetei: locul la stirile de loc, altfel categoria (vezi geo.eticheta_copertei)."""
+    """Textul etichetei: locul la stirile de loc, altfel categoria (vezi geo.eticheta_copertei).
+
+    La o stire LOCALA eticheta nu are voie sa fie judetul cand textul numeste localitatea
+    (sesizarea proprietarului 2026-10-17: „TIMIȘ" pe un incendiu din Gottlob, numit in teaser)."""
+    loc = _loc_local(a)
+    if loc:
+        return loc[3]
     return geo.eticheta_copertei(a) or _eticheta_categorie(a.get("category")) or "Știri"
 
 
@@ -742,6 +748,100 @@ def _uat_path(a: dict, cod: str | None) -> str | None:
     return _uat_judet(cod).get(_uat_nume(parsed[1])) or None
 
 
+# Cuvintele dupa care un nume de UAT e chiar un loc („din Gottlob", „Primăria Băicoi").
+_LOCATIV = frozenset({"DIN", "IN", "LA", "LANGA", "SPRE", "LOCALITATEA", "LOCALITATII", "COMUNA",
+                      "COMUNEI", "ORASUL", "ORASULUI", "MUNICIPIUL", "MUNICIPIULUI", "SATUL",
+                      "SATULUI", "PRIMARIA", "PRIMARIEI", "ZONA"})
+_JUDET_CUV = frozenset({"JUDETUL", "JUDETULUI", "JUD", "JUDETUL"})
+
+
+def _norm_aliniat(text: str) -> str:
+    """Textul normalizat CARACTER CU CARACTER (aceeasi lungime): litera fara diacritice, mare;
+    orice alt semn -> spatiu. Pozitiile raman aliniate cu originalul, ca numele afisat sa se
+    poata lua din text cu diacriticele lui."""
+    from .util import strip_diacritics
+    out = []
+    for ch in text:
+        b = strip_diacritics(ch).upper()
+        out.append(b if len(b) == 1 and b.isalnum() else " ")
+    return "".join(out)
+
+
+_UAT_RE: dict[str, re.Pattern | None] = {}
+
+
+def _uat_re(cod: str):
+    """Un singur regex pe judet, cu toate numele de UAT (cel mai lung intai). Cautarea pe
+    toata tara ruleaza pe fiecare stire locala de la o sursa nationala; nume-cu-nume costa ~110 s
+    pe starea reala, un regex compilat pe judet costa cat o trecere."""
+    if cod not in _UAT_RE:
+        nume = sorted((k for k, d in _uat_judet(cod).items() if d and len(k) >= 4), key=len, reverse=True)
+        alt = "|".join(re.escape(k).replace(r"\ ", " +") for k in nume)
+        _UAT_RE[cod] = re.compile(rf"(?<![A-Z0-9])({alt})(?![A-Z0-9])") if alt else None
+    return _UAT_RE[cod]
+
+
+def _uat_din_text(a: dict, cod: str, strict: bool = False):
+    """(cheie, contur, nume afisat) al UAT-ului din judetul `cod` numit in titlu, teaser sau
+    sinteza; altfel None. In titlu ajunge numele; in teaser/sinteza trebuie precedat de un
+    cuvant de loc („din", „comuna"...), ca „Victoria" sau „Unirea" sa nu devina localitati.
+    Numele precedat de „județul" e judetul, nu orasul omonim („din județul Iași").
+    `strict` (cautarea pe toata tara): cuvant de loc si in titlu, nume scris cu majuscula, fara
+    sinteza si fara omonimele straine — acolo judetul nu mai e o ancora."""
+    rx = _uat_re(cod)
+    if rx is None:
+        return None
+    uats = _uat_judet(cod)
+    for camp in (("title", "teaser") if strict else ("title", "teaser", "synthesis")):
+        orig = a.get(camp) or ""
+        t = _norm_aliniat(orig)
+        gasite = []
+        for m in rx.finditer(t):
+            k = re.sub(" +", " ", m.group(1))
+            inainte = t[:m.start()].split()
+            prec = inainte[-1] if inainte else ""
+            if prec in _JUDET_CUV:
+                continue
+            locativ = prec in _LOCATIV
+            if (strict or camp != "title") and not locativ:
+                continue
+            afisat = orig[m.start():m.end()]
+            if strict and (k in _OMONIME_STRAINE or not afisat[:1].isupper()):
+                continue
+            gasite.append((locativ, len(k), k, afisat))
+        if gasite:
+            _loc, _n, k, afisat = max(gasite)
+            return k, uats[k], afisat
+    return None
+
+
+def _loc_local(a: dict):
+    """(judet, cheie UAT, contur, nume afisat) pentru o stire `local` care numeste o localitate
+    din judetul etichetei sau al sursei; altfel None. Doar `local`: la `judetean` judetul E
+    subiectul."""
+    if a.get("category") != "local":
+        return None
+    et = _uat_nume(geo.eticheta_copertei(a) or "")
+    judete = _harta()
+    cod = next((c for c in judete if _uat_nume(geo.eticheta_judet(c)) == et), None)
+    if et and not cod:
+        return None   # eticheta e deja o localitate (sau altceva): o lasa pe ea
+    cod = cod or _judet(a)
+    if cod == "BUCURESTI":
+        return None
+    if not cod:
+        # sursa nationala, fara loc in eticheta („LOCAL"): o localitate numita DUPA un cuvant de
+        # loc, intr-un singur judet din toata tara; altfel nimic (Afumati IF/DJ ramane ambiguu)
+        gasite = [(c, g) for c in judete if c != "BUCURESTI"
+                  for g in [_uat_din_text(a, c, strict=True)] if g]
+        if len(gasite) != 1:
+            return None
+        cod, gasit = gasite[0]
+        return cod, gasit[0], gasit[1], gasit[2]
+    gasit = _uat_din_text(a, cod)
+    return (cod, gasit[0], gasit[1], gasit[2]) if gasit else None
+
+
 # Localitati al caror nume, intr-o sursa care NU e din judetul lor, inseamna aproape mereu
 # altceva: o capitala straina sau un prenume. Masurat 2026-10-17 pe ultimele 400 de stiri
 # locale/judetene: „Roma" (2 stiri despre Italia -> comuna Roma, BT), „Matei" (actorul Matei
@@ -769,6 +869,10 @@ def _forma_loc(a: dict) -> tuple[str | None, str | None, str]:
     Subtitlul e judetul cand eticheta e o localitate, si nimic cand eticheta e chiar judetul:
     „LOCAL" sub nume repeta badge-ul cardului (auditul din 2026-10-17, sect. 5.2).
     """
+    loc = _loc_local(a)
+    if loc:
+        jud = geo.eticheta_judet(loc[0]) or ""
+        return loc[0], loc[2], "" if _uat_nume(jud) == loc[1] else jud   # „IAȘI" fara „Iași" sub
     et = _eticheta(a).strip()
     cheie = _uat_nume(et)
     sursa = _judet(a)
@@ -779,8 +883,12 @@ def _forma_loc(a: dict) -> tuple[str | None, str | None, str]:
             cod = c
             break
     if cod and a.get("category") == "local" and cod in geo.RESEDINTE:
-        # stire LOCALA cu eticheta = numele judetului: e orasul, nu judetul -> UAT-ul resedintei
-        d = _uat_judet(cod).get(_uat_nume(geo.RESEDINTE[cod])) or None
+        # stire LOCALA cu eticheta = numele judetului si nicio localitate in text: resedinta
+        # DOAR cand eticheta o numeste („Iași", „Cluj" -> Cluj-Napoca). „Timiș" nu inseamna
+        # Timisoara: acolo ramane judetul, nu un oras ghicit.
+        res = _uat_nume(geo.RESEDINTE[cod])
+        if res == cheie or res.startswith(cheie + " "):
+            d = _uat_judet(cod).get(res) or None
     if not cod and cheie:
         cand = {j for j in geo.judetele_localitatii(cheie) if j in judete}
         if sursa in cand:

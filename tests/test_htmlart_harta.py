@@ -180,3 +180,46 @@ def test_NEGATIV_roma_din_sursa_nationala_nu_e_comuna_din_botosani():
          "title": "Proteste masive de stradă în Roma și confruntări violente cu poliția"}
     if htmlart._uat_nume(htmlart._eticheta(a)) == "ROMA":
         assert htmlart._forma_loc(a)[0] is None
+
+
+def test_stirea_locala_numeste_comuna_din_teaser_nu_judetul():
+    """Sesizarea proprietarului 2026-10-17 (captura): „TIMIȘ" + conturul judetului pe un incendiu
+    din Gottlob, numit doar in teaser. Eticheta si forma trebuie sa fie ale comunei."""
+    a = {"category": "local", "source": "opiniatimisoarei",
+         "title": "Incendiu violent izbucnit la o locuință din județul Timiș",
+         "teaser": "O casă din localitatea Gottlob a fost cuprinsă de flăcări."}
+    if htmlart._uat_nume(htmlart.geo.eticheta_copertei(a)) != "TIMIS":
+        return   # eticheta de baza s-a schimbat; testul de mai jos acopera regula
+    assert htmlart._eticheta(a) == "Gottlob"
+    cod, d, sub = htmlart._forma_loc(a)
+    assert cod == "TIMIS" and d == htmlart._uat_judet("TIMIS")["GOTTLOB"] and sub == "Timiș"
+
+
+def test_NEGATIV_judetul_omonim_si_cuvintele_fara_loc_nu_devin_localitate():
+    from generator import htmlart as h
+    # „din județul Iași" e judetul, nu municipiul Iasi
+    assert h._uat_din_text({"title": "Accident in judetul Iasi", "teaser": ""}, "IASI") is None
+    # in teaser, un nume de UAT fara cuvant de loc inainte nu conteaza
+    assert h._uat_din_text({"title": "x", "teaser": "Gottlob a fost primul"}, "TIMIS") is None
+    # la /judetean/ judetul ramane subiectul
+    assert h._loc_local({"category": "judetean", "title": "Incendiu din Gottlob"}) is None
+
+
+def test_sursa_nationala_fara_loc_gaseste_localitatea_unica_din_tara():
+    from generator import htmlart as h
+    a = {"category": "local", "source": "observator", "title": "Incendiu puternic noaptea trecută",
+         "teaser": "O casă din comuna Gottlob a ars complet."}
+    if h._judet(a) or h.geo.eticheta_copertei(a):
+        return   # sursa sau eticheta s-au schimbat; regula de mai jos ramane acoperita
+    loc = h._loc_local(a)
+    assert loc and loc[0] == "TIMIS" and loc[3] == "Gottlob"
+
+
+def test_NEGATIV_cautarea_pe_toata_tara_cere_nume_propriu_si_cuvant_de_loc():
+    from generator import htmlart as h
+    # substantiv comun („în curtea casei"), nu comuna Curtea
+    assert h._uat_din_text({"title": "x", "teaser": "s-au mutat în curtea casei"}, "TIMIS", strict=True) is None
+    # fara cuvant de loc, nici in titlu
+    assert h._uat_din_text({"title": "Gottlob a castigat", "teaser": ""}, "TIMIS", strict=True) is None
+    # omonimele straine nu intra in cautarea nationala
+    assert h._uat_din_text({"title": "Proteste din Roma", "teaser": ""}, "BOTOSANI", strict=True) is None
