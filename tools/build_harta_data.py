@@ -770,7 +770,7 @@ def main(articles=None, out=None, publication_digest=None) -> int:
     projection_out = os.path.join(os.path.dirname(out), "projection.json")
     with open(projection_out, "w", encoding="utf-8") as fh:
         json.dump(projection_payload, fh, ensure_ascii=False, separators=(",", ":"))
-    print(f"harta-stiri: {len(located)} articole, {payload['stats']['events']} evenimente, {payload['stats']['localities']} localități confirmate, {payload['stats']['coordinates']} coordonate -> {OUT}; proiecție -> {projection_out}")
+    print(f"harta-stiri: {len(located)} articole, {payload['stats']['events']} evenimente, {payload['stats']['localities']} localități confirmate, {payload['stats']['coordinates']} coordonate -> {out}; proiecție -> {projection_out}")
     return 0
 
 

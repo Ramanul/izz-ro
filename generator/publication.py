@@ -119,7 +119,8 @@ def manifest(articles, index):
                "county": a.get("editorial_county", "")} for a in articles]
     withdrawals = [{"paths": row["public_paths"], **public_notice(row)}
                    for _, row in sorted(index.items()) if row["state"] == "withdrawn"]
-    body = {"schema_version": 1, "active": active, "withdrawals": withdrawals}
+    history = [{"paths": row["public_paths"], **public_notice(row)} for _, row in sorted(index.items())]
+    body = {"schema_version": 1, "active": active, "withdrawals": withdrawals, "history": history}
     body["digest"] = hashlib.sha256(json.dumps(body, ensure_ascii=False, sort_keys=True,
                                               separators=(",", ":")).encode()).hexdigest()
     return body

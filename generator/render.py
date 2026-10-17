@@ -1091,7 +1091,7 @@ def build(articles: list, mod: dict | None = None) -> None:
         raise editorial.EditorialError("\n".join(editorial_errors))
     corrections = publication.load()
     articles = publication.apply(articles, corrections)
-    tombstones = sum(len(row["public_paths"]) for row in corrections.values() if row["state"] == "withdrawn")
+    tombstones = sum(len(row["public_paths"]) for row in corrections.values())
     if tombstones > config.OUTPUT_NON_ARTICLE_RESERVE:
         raise editorial.EditorialError("withdrawal archive exceeds reserved file budget; retention decision required")
     for a in articles:
@@ -1164,9 +1164,10 @@ def build(articles: list, mod: dict | None = None) -> None:
     build_harta_data.main(articles=by_date,
                          out=os.path.join(OUT_DIR, "static/harta-stiri/data/map.json"),
                          publication_digest=publication_manifest["digest"])
+    active_paths = {editorial.public_path(a) for a in by_date}
     for row in corrections.values():
-        if row["state"] == "withdrawn":
-            for path in row["public_paths"]:
+        for path in row["public_paths"]:
+            if path not in active_paths:
                 _write(os.path.join(OUT_DIR, path.strip("/"), "index.html"),
                        env.get_template("withdrawn.html").render(
                            **_base_ctx(path), correction=publication.public_notice(row)))

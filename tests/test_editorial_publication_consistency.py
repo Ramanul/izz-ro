@@ -1,7 +1,7 @@
 """Synthetic correction/withdrawal contracts, never production editorial records."""
 import copy
 import json
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 
 import pytest
 
@@ -77,6 +77,19 @@ def test_county_list_and_map_agree_after_correction(article):
     assert item["county"] == "TIMIS" and item["confidence"] == "editorial"
 
 
+def test_expired_corrected_article_keeps_explanation(tmp_path, monkeypatch, article):
+    out = tmp_path / "output"
+    rows = correction(article)
+    monkeypatch.setattr(render, "OUT_DIR", str(out))
+    monkeypatch.setattr(publication, "load", lambda: rows)
+    monkeypatch.setattr(editorial, "load_annotations", lambda: {})
+    render.build([])
+    page = (out / "local/synthetic-correction/index.html").read_text(encoding="utf-8")
+    assert "Istoricul corecției" in page and "Localitatea menționată" in page
+    manifest = json.loads((out / "editorial-publication.json").read_text(encoding="utf-8"))
+    assert manifest["active"] == [] and manifest["history"][0]["state"] == "corrected"
+
+
 def test_invalid_correction_preserves_previous_build(tmp_path, monkeypatch, article):
     out = tmp_path / "output"
     out.mkdir()
@@ -90,6 +103,27 @@ def test_invalid_correction_preserves_previous_build(tmp_path, monkeypatch, arti
     with pytest.raises(editorial.EditorialError, match="source changed"):
         render.build([article])
     assert sentinel.read_text() == "previous release"
+
+
+def test_map_and_manifest_share_future_and_budget_exclusions(tmp_path, monkeypatch, article):
+    out = tmp_path / "output"
+    future = {**article, "slug": "future-only", "url": "https://institutie.example/future/",
+              "title": "Primăria anunță un calendar pentru lucrările viitoare",
+              "published": (datetime.now(timezone.utc) + timedelta(days=3)).isoformat()}
+    older = {**article, "slug": "budget-excluded", "url": "https://institutie.example/older/",
+             "title": "Primăria publică un alt calendar pentru lucrările locale",
+             "published": (datetime.now(timezone.utc) - timedelta(days=1)).isoformat()}
+    monkeypatch.setattr(render, "OUT_DIR", str(out))
+    monkeypatch.setattr(publication, "load", lambda: {})
+    monkeypatch.setattr(editorial, "load_annotations", lambda: {})
+    monkeypatch.setattr(render, "_articole_publicabile", lambda n: 1)
+    render.build([article, older, future])
+    manifest = json.loads((out / "editorial-publication.json").read_text(encoding="utf-8"))
+    map_data = json.loads((out / "static/harta-stiri/data/map.json").read_text(encoding="utf-8"))
+    assert [row["path"] for row in manifest["active"]] == [editorial.public_path(article)]
+    assert all(row["slug"] == article["slug"] for row in map_data["articles"])
+    assert not (out / "local/future-only").exists()
+    assert not (out / "local/budget-excluded").exists()
 
 
 @pytest.mark.parametrize("withdrawn", [False, True])

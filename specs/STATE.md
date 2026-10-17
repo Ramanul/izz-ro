@@ -11,7 +11,7 @@
 **Updated:** 2026-10-17 (imagini coordonate cu articolul: #490–#494 merged, paleta #495)
 
 ## Open
-- **Editorial transformation, 17 Oct:** A/B/C published via #476 (merged), #477 (merged) and #489 (merged); 5/12 points and 3/8 slices at pilot scale. D implements approved corrections/withdrawals, a publication manifest, map generation from active copies and offline freshness disclosure; specification: `specs/editorial-corrections.md`. D remains under validation, not confirmed live. Production corrections catalog is empty; synthetic cases are test-only. Dossiers, selection, reader controls and broad coverage remain unfinished.
+- **Editorial transformation, 17 Oct:** A/B/C published via #476 (merged), #477 (merged) and #489 (merged); 5/12 points and 3/8 slices at pilot scale. D (#497, draft) implements approved corrections/withdrawals, a publication manifest, map generation from active copies and offline freshness disclosure; specification: `specs/editorial-corrections.md`. D remains under validation, not confirmed live. Production corrections catalog is empty; synthetic cases are test-only. Dossiers, selection, reader controls and broad coverage remain unfinished.
 - **Audite externe:** 3 oct ÎNCHIS [IZZ-0426] (#425 merged, #426 merged; `ai_gateway` pe main, $0, cheile în `.env`) · 4 oct verificat mecanic [IZZ-0432] — 3 confirmate / 2 parțiale / 2 false pozitive (bara de consimțământ și manifestul PWA existau): `notes/analiza-audit-extern-2026-10-04.md`; pe main prin #438 (merged, 6 oct): A1 gardă de diacritice + A2 semnătura editorială/E-E-A-T.
 - **PWA + alerte push [IZZ-0430/0431] — PE MAIN (#434 merged):** SW la `/sw.js`, buton instalare, alerte VAPID; fără namespace KV + 4 secrete (`infra/PUSH-SETUP.md`) rutele dau 503. Verificarea Content-Type a manifestului e mecanizată (P0.1 în #438) — de rulat pe live.
 - **Pages `izz-ro` ZOMBI — CONFIRMAT ȘTERS [IZZ-0411]:** `izz-ro.pages.dev` returnează `000` [IZZ-0366, 0395].
@@ -53,4 +53,3 @@
 - Do not use old task journals as normative coordination channels.
 - Every measurement gets its window and its command, or it is not a measurement [IZZ-0367].
 - Do not mark live, GitHub settings, or Cloudflare facts as solved based only on repository code.
-
