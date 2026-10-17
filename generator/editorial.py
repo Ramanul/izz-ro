@@ -155,7 +155,7 @@ def load_provenance(path=None):
                     raise EditorialError(f"provenance.{iid}.origin: original must identify this artifact")
             result[target][iid] = item
     originals = {source["url"] for source in result["sources"].values()
-                 if source.get("origin", {}).get("relation") == "original"}
+                 if (source.get("origin") or {}).get("relation") == "original"}
     for source in result["sources"].values():
         origin = source.get("origin")
         if origin and origin["relation"] == "republication" and origin["url"] not in originals:

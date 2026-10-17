@@ -150,6 +150,31 @@ def test_examined_catalog_roundtrip_and_no_unexamined_deadline(tmp_path, examine
         editorial.load_provenance(path)
 
 
+def test_null_origin_remains_unknown(tmp_path, examined):
+    provenance = examined[2]
+    provenance["sources"]["s1"]["origin"] = None
+    path = tmp_path / "sources.json"
+    path.write_text(json.dumps({"schema_version": 1,
+                                "records": list(provenance["sources"].values()),
+                                "resources": []}), encoding="utf-8")
+    assert editorial.load_provenance(path)["sources"]["s1"]["origin"] is None
+
+
+@pytest.mark.parametrize("value", [None, "invalid", {}])
+def test_invalid_evidence_returns_validation_errors(examined, value):
+    article, record, provenance = examined
+    record["evidence"] = value
+    errors = editorial.validate_annotations({record["key"]: record}, [article], provenance)
+    assert any("evidence: array required" in error for error in errors)
+
+
+def test_missing_evidence_returns_validation_errors(examined):
+    article, record, provenance = examined
+    record.pop("evidence")
+    errors = editorial.validate_annotations({record["key"]: record}, [article], provenance)
+    assert any("evidence: array required" in error for error in errors)
+
+
 def test_changed_article_hides_practical_resource(examined):
     examined[0]["title"] = "Changed material needs another review"
     assert "editorial" not in view(examined)
