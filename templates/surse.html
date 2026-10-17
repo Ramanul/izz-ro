@@ -5,11 +5,13 @@
   <h1 class="section-title">Surse</h1>
   <p class="page-intro">Tragem din <b>{{ total_sources }} surse</b> cu RSS oficial: publicații
   naționale, regionale, ziare de județ și primării. La evenimentele relatate de mai multe
-  publicații, măsurăm și cine a publicat <b>primul</b> și cine a preluat, pe sintezele
+  publicații, măsurăm și prima publicare <b>observată</b> în setul monitorizat, pe sintezele
   multi-sursă din ultimele {{ ttl_days }} zile: {{ stats_sources }} surse au strâns destule
   apariții pentru statistica de mai jos. Restul apar doar cu numele și linkul — asta
   <b>nu</b> înseamnă performanță slabă, ci doar că nu au intrat încă într-un cluster
   multi-sursă (o primărie cu un anunț unic, de exemplu, n-o să intre niciodată).</p>
+
+  <p>Ordinea observată nu dovedește autorul informației sau o preluare. În articolele cu context documentat, proveniența se atribuie numai după examinarea documentelor: anunț oficial, document original ori preluare cu origine cunoscută. O origine necunoscută nu înseamnă sursă independentă; statisticile de mai jos nu măsoară adevărul unei afirmații.</p>
 
   {% if harta %}
   <figure class="harta-judete">

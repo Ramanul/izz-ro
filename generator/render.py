@@ -1032,7 +1032,8 @@ def build(articles: list, mod: dict | None = None) -> None:
     assign_slugs(articles)
     # Validate the catalog before deleting any previously generated output.
     annotations = editorial.load_annotations()
-    editorial_errors = editorial.validate_annotations(annotations, articles)
+    provenance = editorial.load_provenance()
+    editorial_errors = editorial.validate_annotations(annotations, articles, provenance)
     if editorial_errors:
         raise editorial.EditorialError("\n".join(editorial_errors))
     # data formatata e artefact de AFISARE, nu identitate: se recalculeaza la fiecare randare
@@ -1086,9 +1087,10 @@ def build(articles: list, mod: dict | None = None) -> None:
         by_date = by_date[:incap]
 
     _ataseaza_legaturi(by_date)
-    by_date = [editorial.apply_view(a, annotations) for a in by_date]
+    editorial_now = datetime.now(timezone.utc)
+    by_date = [editorial.apply_view(a, annotations, provenance, editorial_now) for a in by_date]
     _write(os.path.join(OUT_DIR, "editorial-report.json"),
-           json.dumps(editorial.catalog_report(annotations, by_date),
+           json.dumps(editorial.catalog_report(annotations, by_date, provenance, editorial_now),
                       ensure_ascii=False, sort_keys=True, indent=2))
 
     # Dupa taierea ferestrei: lista de judet trebuie sa fie exact ce se publica.

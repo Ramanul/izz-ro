@@ -26,10 +26,10 @@ def prepared_articles(path):
     return articles
 
 
-def load_validated(articles_path, annotations_path):
+def load_validated(articles_path, annotations_path, provenance_path=None):
     articles = prepared_articles(articles_path)
     annotations = editorial.load_annotations(annotations_path)
-    errors = editorial.validate_annotations(annotations, articles)
+    errors = editorial.validate_annotations(annotations, articles, editorial.load_provenance(provenance_path))
     if errors:
         raise editorial.EditorialError("\n".join(errors))
     return annotations, articles
@@ -39,9 +39,10 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--articles", type=Path, default=Path(config.ROOT) / "data/articles.json")
     parser.add_argument("--annotations", type=Path, default=Path(config.ROOT) / "content/editorial/annotations.json")
+    parser.add_argument("--provenance", type=Path, default=Path(config.ROOT) / "content/editorial/source-provenance.json")
     args = parser.parse_args()
     try:
-        index, articles = load_validated(args.articles, args.annotations)
+        index, articles = load_validated(args.articles, args.annotations, args.provenance)
     except (editorial.EditorialError, OSError, ValueError) as exc:
         print(str(exc), file=sys.stderr)
         return 1
