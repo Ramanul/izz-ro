@@ -560,7 +560,7 @@ def _harta_inline(cod: str | None, d: str | None = None) -> dict | None:
     """
     if not cod:
         return None
-    key = f"{cod}|{hashlib.sha1(d.encode()).hexdigest()[:12]}" if d else cod
+    key = f"{cod}|{d}" if d else cod   # calea insasi e cheia: fara hash, fara coliziuni
     if key not in _HARTA_INLINE_CACHE:
         d = d or _harta().get(cod)
         b = _bbox(d) if d else None
