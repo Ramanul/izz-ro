@@ -1031,6 +1031,15 @@ body:has(#izz-consent) { padding-bottom: 4.5rem; }
 
 /* Locurile in care intra arta. `--radius`/marginile raman ale locului, nu ale artei. */
 .card-media > .art { height: 100%; border-radius: inherit; }
+/* Creditul COMPLET al portretului cu atribuire obligatorie (CC BY / CC BY-SA), lipit de imagine:
+   fara el portretul n-are voie pe card (content/legal/images.md). Previzualizarea sociala nu-l
+   primeste niciodata — acolo nu exista legenda. */
+.card-credit {
+  margin: calc(-1 * var(--s-5)) 0 0; color: var(--ink-3);
+  font-family: var(--font-mono); font-size: var(--fs-eyebrow); line-height: 1.4;
+  overflow-wrap: anywhere;
+}
+.card-credit a { color: inherit; text-decoration: underline; }
 .art--hero { border: 1px solid var(--line); margin-bottom: var(--s-5); }
 .art--articol {
   border: 1px solid var(--line); max-width: var(--measure); margin: var(--s-8) 0 var(--s-21);

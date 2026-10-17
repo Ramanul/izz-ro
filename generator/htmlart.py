@@ -31,6 +31,7 @@ import os
 import re
 
 from . import config, geo
+from .util import url_https
 
 _ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 _ASSETS = os.path.join(os.path.dirname(os.path.abspath(__file__)), "assets")
@@ -582,12 +583,51 @@ def _portrete_toate() -> dict[str, dict]:
                 if (incadrare.get(img) or {}).get("respins"):
                     continue
                 if os.path.exists(os.path.join(_ROOT, "media", img)):
-                    out[k] = {"img": img, "name": (v.get("name") or k).strip(),
-                              "credit_required": not _CREDIT_FREE_RE.match(lic)}
+                    rec = {"img": img, "name": (v.get("name") or k).strip(),
+                           "taiere": (incadrare.get(img) or {}).get("taiere"),
+                           "credit_required": not _CREDIT_FREE_RE.match(lic)}
+                    if rec["credit_required"]:
+                        page = url_https(v.get("page"))
+                        if not page:
+                            continue   # fara pagina-sursa https creditul ar fi incomplet sau nesigur
+                        rec["credit"] = {"artist": (v.get("artist") or "").strip(), "page": page,
+                                         "license": lic, "license_url": license_url_cc(lic)}
+                    out[k] = rec
         except (OSError, ValueError):
             out = {}
         _PORTRETE_TOATE = out
     return _PORTRETE_TOATE
+
+
+def license_url_cc(license_name: str | None) -> str | None:
+    """URI-ul licentei CC BY / CC BY-SA, ca `render._license_url` (paritate testata)."""
+    m = _CREDIT_REQ_RE.match((license_name or "").strip())
+    if not m:
+        return None
+    sa = "-sa" if re.search(r"[ -]sa[ -]", " " + (license_name or "").strip().lower() + " ") else ""
+    url = f"https://creativecommons.org/licenses/by{sa}/{m.group(1)}.{m.group(2)}/"
+    return f"{url}{m.group(3).lower()}/" if m.group(3) else url
+
+
+def _portret_card(a: dict) -> dict | None:
+    """Portretul omului din titlu pentru CARD si hero, sau None.
+
+    Domeniu public / CC0 ca pana acum, plus CC BY / CC BY-SA DOAR cu creditul complet atasat
+    (`rec["credit"]`): cardul il afiseaza vizibil sub imagine (`_card.html`, `.card-credit`), deci
+    imaginea nu ajunge niciodata intr-o zona fara legenda (`content/legal/images.md`). Coperta og
+    (previzualizarea sociala) nu foloseste functia asta: acolo nu exista loc de credit.
+    """
+    if not (a.get("entities") or []):
+        return None
+    libere, toate = _portrete_libere(), _portrete_toate()
+    ales = subiect_titlu(a, libere, toate)
+    if not ales:
+        return None
+    rec = libere.get(ales[0]) or toate.get(ales[0])
+    if not rec or (rec.get("credit_required") and not rec.get("credit")):
+        return None
+    _PORTRETE_CERUTE.add(rec["img"])
+    return rec
 
 
 def _portret_liber(a: dict) -> dict | None:
@@ -1108,7 +1148,7 @@ def stil_inline(a: dict) -> dict:
     # alternate faceau din lista un colaj). `arc` e baza fiindca, fara sigiliu, ramane exact
     # eticheta + forma; calibrarea treptelor de eticheta se pastreaza.
     geo = geo_cat
-    portret = None if (harta or geo) else _portret_liber(a)
+    portret = None if (harta or geo) else _portret_card(a)
     res = {
         "tpl": "arc" if geo else _NUME_TEMPLATE[seed[4] % len(_NUME_TEMPLATE)],
         "pal": seed[0] % len(_PALETE),

@@ -1,4 +1,7 @@
 {% from "_art.html" import art with context %}
+{% macro credit_foto(pr) -%}
+<p class="card-credit">Foto: {% if pr.credit.artist %}{{ pr.credit.artist }} · {% endif %}<a href="{{ pr.credit.page }}" target="_blank" rel="noopener noreferrer">Wikimedia Commons</a> · <a href="{{ pr.credit.license_url }}" target="_blank" rel="noopener noreferrer">{{ pr.credit.license }}</a></p>
+{%- endmacro %}
 {% macro card(a, lead=False, extra='') %}
 {#- NOT "data-src": crawlers (Screaming Frog, Googlebot) treat data-src as a lazy-load
     image URL, so a source name there becomes a fake internal 404 per card. -#}
@@ -6,7 +9,15 @@
   {#- Fotografia REALA ramane fisier (`art_path`); arta generata se deseneaza in pagina
       (`_art.html`), fara fisier si fara cerere HTTP — vezi specs/cloudflare-free-2026-09.md. -#}
   {% if a.art_path %}<a class="card-media" href="{{ base }}/{{ a.category }}/{{ a.slug }}/" tabindex="-1" aria-hidden="true"><picture>{% if a.art_webp %}<source srcset="{{ base }}{{ a.art_webp }}" type="image/webp">{% endif %}<img src="{{ base }}{{ a.art_path }}" alt="" loading="lazy" decoding="async" width="960" height="504" sizes="(min-width: 1000px) 360px, (min-width: 640px) 45vw, 100vw"></picture></a>
-  {%- elif a.art_style %}<a class="card-media" href="{{ base }}/{{ a.category }}/{{ a.slug }}/" tabindex="-1" aria-hidden="true">{{ art(a) }}</a>{% endif %}
+  {%- elif a.art_style %}
+  {#- Acelasi chip o singura data pe pagina (`portret_nou`, din render._base_ctx): pe homepage
+      Trump aparea pe zeci de carduri. Portretul cu atribuire obligatorie poarta creditul COMPLET
+      vizibil sub imagine — fara el n-are voie pe card (content/legal/images.md). -#}
+  {%- set pr = a.art_style.portret %}
+  {%- set pr_ok = pr and (portret_nou is not defined or portret_nou(pr.img)) %}
+  <a class="card-media" href="{{ base }}/{{ a.category }}/{{ a.slug }}/" tabindex="-1" aria-hidden="true">{{ art(a, portret=pr_ok) }}</a>
+  {%- if pr_ok and pr.credit %}{{ credit_foto(pr) }}{% endif %}
+  {%- endif %}
   {#- `anunt_fara_corp` = anunt oficial publicat ca titlu + link, fara teaser (decizie proprietar
       2026-08-04, specs/sinteza-fara-substanta.md). Elementele fara continut NU se emit deloc:
       `.card` e flex cu `gap`, deci un `<p>` gol ar lasa exact o gaura in card. -#}

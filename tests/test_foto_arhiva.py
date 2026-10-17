@@ -129,3 +129,78 @@ def test_allowlist_de_licente_e_acelasi_in_htmlart_si_render():
     lic |= {"CC BY 4.0", "CC BY-SA 3.0 ro", "CC BY-NC 4.0", "CC BY", "Copyrighted", ""}
     for x in lic:
         assert bool(htmlart._CREDIT_REQ_RE.match(x.strip())) == render._is_credit_required_license(x), x
+
+
+# --- cardul: portret cu credit vizibil, o singura data pe pagina -----------------------
+
+ZEL_CC = {"img": "portraits/zel.jpg", "name": "Volodymyr Zelensky", "credit_required": True,
+          "credit": {"artist": "President.gov.ua", "page": "https://commons.wikimedia.org/wiki/File:Z.jpg",
+                     "license": "CC BY 4.0", "license_url": "https://creativecommons.org/licenses/by/4.0/"}}
+
+
+def _card_html(articles):
+    env = render._env()
+    tpl = env.from_string('{% from "_card.html" import card with context %}'
+                          '{% for a in arts %}{{ card(a) }}{% endfor %}')
+    return tpl.render(arts=articles, base="", portret_nou=render._UnicPePagina())
+
+
+def test_cardul_cu_portret_cc_by_poarta_creditul_complet(monkeypatch):
+    monkeypatch.setattr(htmlart, "_PORTRETE_LIBERE", {})
+    monkeypatch.setattr(htmlart, "_PORTRETE_TOATE", {"volodimir zelenski": ZEL_CC})
+    a = {**ART, "slug": "z", "published": "2026-10-17T10:00:00+00:00"}
+    a["art_style"] = htmlart.stil_inline(a)
+    assert a["art_style"]["portret"] is ZEL_CC
+    html = _card_html([a])
+    assert 'class="card-credit"' in html and "President.gov.ua" in html
+    assert 'href="https://creativecommons.org/licenses/by/4.0/"' in html
+    assert 'href="https://commons.wikimedia.org/wiki/File:Z.jpg"' in html
+
+
+def test_NEGATIV_portret_cc_by_fara_pagina_sursa_nu_ajunge_pe_card(monkeypatch):
+    fara = {**ZEL_CC, "credit": None}
+    monkeypatch.setattr(htmlart, "_PORTRETE_LIBERE", {})
+    monkeypatch.setattr(htmlart, "_PORTRETE_TOATE", {"volodimir zelenski": fara})
+    assert htmlart._portret_card(ART) is None
+
+
+def test_acelasi_chip_o_singura_data_pe_pagina(monkeypatch):
+    monkeypatch.setattr(htmlart, "_PORTRETE_LIBERE", {})
+    monkeypatch.setattr(htmlart, "_PORTRETE_TOATE", {"volodimir zelenski": ZEL_CC})
+    arts = []
+    for i in range(3):
+        a = {**ART, "slug": f"z{i}", "url": f"u{i}", "published": "2026-10-17T10:00:00+00:00"}
+        a["art_style"] = htmlart.stil_inline(a)
+        arts.append(a)
+    html = _card_html(arts)
+    assert html.count('src="/portraits/zel.jpg"') == 1
+    assert html.count('class="card-credit"') == 1, "creditul trebuie sa insoteasca doar chipul afisat"
+
+
+def test_coperta_og_nu_poarta_niciodata_portrete():
+    """Previzualizarea sociala n-are loc de legenda: rasterul nu deseneaza portrete deloc."""
+    a = {**ART, "published": "2026-10-17T10:00:00+00:00"}
+    assert "portraits/" not in htmlart.build_html(a, cover=True)
+
+
+def test_url_ul_licentei_e_acelasi_in_htmlart_si_render():
+    for lic in ("CC BY 4.0", "CC BY-SA 3.0", "CC BY-SA 3.0 ro", "CC BY 2.0", "CC-BY-SA-4.0", "Public domain"):
+        assert htmlart.license_url_cc(lic) == render._license_url(lic), lic
+
+
+def test_NEGATIV_cardul_nu_ia_credit_cu_link_nesigur(tmp_path, monkeypatch):
+    """Semgrep var-in-href (#494): creditul cardului intra in href; doar https absolut."""
+    (tmp_path / "media" / "portraits").mkdir(parents=True)
+    (tmp_path / "media" / "portraits" / "z.jpg").write_bytes(b"\xff\xd8" + b"0" * 5000)
+    reg = {"volodimir zelenski": {"img": "portraits/z.jpg", "license": "CC BY 4.0",
+                                  "page": "javascript:alert(1)", "artist": "A"},
+           "marine le pen": {"img": "portraits/z.jpg", "license": "CC BY 4.0",
+                             "page": "https://commons.wikimedia.org/wiki/File:Z.jpg"}}
+    (tmp_path / "portraits.json").write_text(json.dumps(reg), encoding="utf-8")
+    monkeypatch.setattr(htmlart, "_PORTRAITS_PATH", str(tmp_path / "portraits.json"))
+    monkeypatch.setattr(htmlart, "_ROOT", str(tmp_path))
+    monkeypatch.setattr(htmlart, "_PORTRETE_TOATE", None)
+    monkeypatch.setattr(htmlart, "incadrare_portrete", lambda: {})
+    toate = htmlart._portrete_toate()
+    assert "volodimir zelenski" not in toate
+    assert toate["marine le pen"]["credit"]["page"].startswith("https://")
