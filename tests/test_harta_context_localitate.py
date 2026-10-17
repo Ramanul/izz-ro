@@ -125,5 +125,6 @@ def test_eticheta_localitatii_are_diacritice():
     assert bhd.locality_label("TIMISOARA", "TIMIS") == "Timișoara"
     assert bhd.locality_label("GIROC", "TIMIS") == "Giroc"
     assert bhd.locality_label("CARANSEBES", "CARAS-SEVERIN") == "Caransebeș"
-    # sat absent din gazetteer: majuscula initiala, fara diacritice inventate
+    # sat absent din gazetteer: forma scrisa in stire, altfel majuscula initiala (fara diacritice inventate)
+    assert bhd.locality_label("ZALAN", "COVASNA", "atacată de urs pe o stradă din satul Zălan") == "Zălan"
     assert bhd.locality_label("SAT INEXISTENT", "TIMIS") == "Sat Inexistent"

@@ -150,7 +150,7 @@ LOCALITY_LABELS = os.path.join(ROOT, "data", "localities.json")
 _ETICHETE_LOCALITATI: tuple[dict, dict] | None = None
 
 
-def locality_label(name: str, county: str) -> str:
+def locality_label(name: str, county: str, text: str = "") -> str:
     """Numele de afisare al localitatii, cu diacritice („GIROC" -> „Giroc", „TIMISOARA" ->
     „Timișoara"), din gazetteerul Wikidata (`data/localities.json`). Lista hartii tiparea pana
     acum codul din date, cu majuscule si fara diacritice. Satele lipsa din gazetteer cad pe
@@ -178,6 +178,14 @@ def locality_label(name: str, county: str) -> str:
     variante = pe_nume.get(norm(name)) or set()
     if len(variante) == 1:
         return next(iter(variante))
+    # Satele lipsesc din gazetteer (14 din 475 pe 17 oct.), dar stirea care le-a numit le scrie
+    # corect: „din satul Zălan" -> „Zălan". Se ia forma din text, daca e scrisa ca nume propriu.
+    cuvinte = re.findall(r"[^\W\d_]+(?:-[^\W\d_]+)*", text or "")
+    lungime = len(name.split(" "))
+    for i in range(len(cuvinte) - lungime + 1):
+        grup = " ".join(cuvinte[i:i + lungime])
+        if grup[:1].isupper() and norm(grup) == norm(name):
+            return grup
     return " ".join(w.capitalize() for w in name.split(" "))
 
 
@@ -453,6 +461,10 @@ def locate(
             "confidence": "text",
         }
     sc = source_county(str(article.get("source") or ""), county_keys)
+    # Judetul REDACTIEI, pastrat separat de judetul faptei: `sc` de mai jos poate fi golit
+    # cand localitatea din text muta stirea. Harta se coloreaza dupa locul stirii (IZZ-0433);
+    # redactia explica in panou de unde vine numarul, fara sa-l schimbe.
+    redactie = sc
     tc = explicit_county(text, county_keys)
     # Cine castiga cand sursa si textul numesc judete DIFERITE depinde de ce fel de sursa e.
     #
@@ -536,7 +548,9 @@ def locate(
         "region": geo.ETICHETE_REGIUNI.get(geo.regiune_afisare(county), ""),
         "county": county,
         "locality": locality["name"] if locality else "",
-        "locality_label": locality_label(locality["name"], county) if locality else "",
+        "locality_label": locality_label(locality["name"], county, text) if locality else "",
+        # Gol = sursa nu are judet de sediu (presa regionala sau nationala), nu „necunoscut".
+        "source_county": redactie or "",
         "siruta": loc_siruta,
         "uat": uat_code,
         "x": point.get("x") if point else None,
@@ -728,6 +742,12 @@ def main() -> int:
             "local": sum(a["category"] == "local" for a in located),
             "judetean": sum(a["category"] == "judetean" for a in located),
             "regional": sum(a["category"] == "regional" for a in located),
+            # Fluxul intre judete (IZZ-0433): relatari despre un judet scrise de presa altuia,
+            # si cate vin din presa fara judet de sediu. Masurat la decizie: 4,1% si 23%.
+            "cross_county": sum(bool(a.get("source_county")) and bool(a.get("county"))
+                                and a["source_county"] != a["county"] for a in located),
+            "source_county_unknown": sum(bool(a.get("county")) and not a.get("source_county")
+                                         for a in located),
             "counties": len({a["county"] for a in located if a.get("county")}),
             "regions": len({a["region"] for a in located if a.get("region")}),
             "localities": len(named_localities),
