@@ -485,7 +485,7 @@ def locate(
     # Regula inversa, „sursa castiga mereu", ar fi stricat 24 de atribuiri corecte ca sa repare 2.
     # Gasita de `tools/integration_check.py`, recuperat din 7749e192 (Manus AI) in aceeasi trecere.
     oficial = article.get("processed_by") == "official"
-    county = (sc or tc) if oficial else (tc or sc)
+    county = article.get("editorial_county") or ((sc or tc) if oficial else (tc or sc))
     titlu = str(article.get("title") or "")
     locality = locality_from_text(text, county, by_name, points, title=titlu)
     # Judetul dedus DOAR din numele sursei este cea mai slaba dovada disponibila: spune unde e
@@ -498,7 +498,7 @@ def locate(
     #
     # Sursele OFICIALE sunt excluse deliberat: o primarie scrie despre teritoriul ei, iar alt
     # oras numit in text e context (echipa oaspete, firma contractanta) — exact regula de mai sus.
-    if not oficial and sc and not tc and not locality:
+    if not article.get("editorial_county") and not oficial and sc and not tc and not locality:
         alta = locality_from_text(text, None, by_name, points, title=titlu)
         # Sa muti o stire din judetul DECLARAT al redactiei cere o marca de loc („din X",
         # „Primaria X") sau numele scris ca nume propriu („IRUM Reghin"), nu un cuvant comun:
@@ -518,7 +518,9 @@ def locate(
     # pe care regula de mai sus le repara. Cand cele doua sunt de acord (63 de articole in corpusul
     # masurat), eticheta ramane cea dinainte: reeticheta lor ar muta 24 de articole din „text" in
     # „source" fara ca atribuirea sa se fi schimbat, iar cifra din `stats` ar parea o regresie.
-    if oficial and sc and tc and sc != tc:
+    if article.get("editorial_county"):
+        confidence = "editorial"
+    elif oficial and sc and tc and sc != tc:
         confidence = "source"
     else:
         confidence = "text" if tc else "source" if sc else "siruta"
@@ -635,9 +637,11 @@ def annotate_events(items: list[dict]) -> list[dict]:
     return items
 
 
-def main() -> int:
+def main(articles=None, out=None, publication_digest=None) -> int:
     map_data = load_json(MAP)
-    articles = load_json(ARTICLES)
+    supplied = articles is not None
+    articles = articles if supplied else load_json(ARTICLES)
+    out = out or OUT
     if not isinstance(articles, list):
         articles = articles.get("articles") or articles.get("items") or []
     counties = map_data.get("judete") or {}
@@ -668,7 +672,8 @@ def main() -> int:
     # colecta ca evenimente fara link (masurat 2026-10-03: 22 in fereastra de 1.500).
     # Acelasi filtru, inainte de fereastra, ca sloturile sa ramana pentru ce e vizibil.
     inainte_filtru = len(articles)
-    articles = moderation.apply(articles, moderation.load())
+    if not supplied:
+        articles = moderation.apply(articles, moderation.load())
     ascunse = inainte_filtru - len(articles)
     if ascunse:
         print(f"harta-stiri: moderarea a ascuns {ascunse} articole — nu ajung pe harta.")
@@ -732,6 +737,7 @@ def main() -> int:
     event_count = len({a.get("event_id") for a in located if a.get("event_id")})
     payload = {
         "version": 4,
+        "publication_digest": publication_digest,
         "generated_at": datetime.now(timezone.utc).isoformat(),
         "latest_article_at": latest_article_at,
         "map": {"viewbox": map_data.get("viewbox", ""), "judete": counties, "regiuni": regions},
@@ -758,10 +764,10 @@ def main() -> int:
             "backfill": sum(1 for a in located if a.get("backfill")),
         },
     }
-    os.makedirs(os.path.dirname(OUT), exist_ok=True)
-    with open(OUT, "w", encoding="utf-8") as fh:
+    os.makedirs(os.path.dirname(out), exist_ok=True)
+    with open(out, "w", encoding="utf-8") as fh:
         json.dump(payload, fh, ensure_ascii=False, separators=(",", ":"))
-    projection_out = os.path.join(os.path.dirname(OUT), "projection.json")
+    projection_out = os.path.join(os.path.dirname(out), "projection.json")
     with open(projection_out, "w", encoding="utf-8") as fh:
         json.dump(projection_payload, fh, ensure_ascii=False, separators=(",", ":"))
     print(f"harta-stiri: {len(located)} articole, {payload['stats']['events']} evenimente, {payload['stats']['localities']} localități confirmate, {payload['stats']['coordinates']} coordonate -> {OUT}; proiecție -> {projection_out}")
@@ -778,3 +784,4 @@ if __name__ == "__main__":
         if hasattr(_stream, "reconfigure"):
             _stream.reconfigure(encoding="utf-8", errors="replace")
     raise SystemExit(main())
+

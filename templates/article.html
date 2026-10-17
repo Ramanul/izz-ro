@@ -46,6 +46,13 @@
   {# `data-pagefind-body` marcheaza CE se indexeaza: titlul si rezumatul, nimic altceva. Greutatea
      mai mare pe titlu face ca o potrivire in titlu sa iasa deasupra uneia din corp. -#}
   <h1 data-pagefind-body data-pagefind-weight="3">{{ a.display_title or a.title }}</h1>
+  {% if a.correction %}
+  <aside class="trust-label" aria-label="Corecție editorială">
+    <strong>Corectat la {{ a.correction.reviewed_at }}.</strong> {{ a.correction.notice }}
+    {% if a.correction.scheme == 'https' %}<a href="https://{{ a.correction.destination }}" target="_blank" rel="noopener noreferrer">Documentul corecției</a>{% elif a.correction.scheme == 'http' %}<a href="http://{{ a.correction.destination }}" target="_blank" rel="noopener noreferrer">Documentul corecției</a>{% endif %}
+    {% if a.correction.kind == 'documentary' %}Documentare cu asistență AI; nu reprezintă revizie umană.{% endif %}
+  </aside>
+  {% endif %}
   <div class="meta">
     <time datetime="{{ a.published }}">{{ a.published_human }}</time>
     {% if not a.anunt_fara_corp %}
@@ -184,3 +191,4 @@
   {% endif %}
 </article>
 {% endblock %}
+
