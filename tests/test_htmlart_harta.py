@@ -173,3 +173,10 @@ def test_stirea_locala_cu_eticheta_judetului_deseneaza_orasul_nu_judetul():
     # fiecare resedinta exista in datele UAT — altfel orasul ar cadea tacut inapoi pe judet
     for c, oras in geo.RESEDINTE.items():
         assert htmlart._uat_nume(oras) in htmlart._uat_judet(c), (c, oras)
+
+
+def test_NEGATIV_roma_din_sursa_nationala_nu_e_comuna_din_botosani():
+    a = {"category": "local", "source": "adevarul",
+         "title": "Proteste masive de stradă în Roma și confruntări violente cu poliția"}
+    if htmlart._uat_nume(htmlart._eticheta(a)) == "ROMA":
+        assert htmlart._forma_loc(a)[0] is None

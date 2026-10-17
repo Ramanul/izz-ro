@@ -742,6 +742,13 @@ def _uat_path(a: dict, cod: str | None) -> str | None:
     return _uat_judet(cod).get(_uat_nume(parsed[1])) or None
 
 
+# Localitati al caror nume, intr-o sursa care NU e din judetul lor, inseamna aproape mereu
+# altceva: o capitala straina sau un prenume. Masurat 2026-10-17 pe ultimele 400 de stiri
+# locale/judetene: „Roma" (2 stiri despre Italia -> comuna Roma, BT), „Matei" (actorul Matei
+# Dima -> comuna Matei, BN). O sursa din judetul lor le deseneaza in continuare.
+_OMONIME_STRAINE = frozenset({"ROMA", "MATEI"})
+
+
 def _forma_loc(a: dict) -> tuple[str | None, str | None, str]:
     """(judet, contur de localitate sau None, subtitlu) pentru arta unei stiri locale/judetene.
 
@@ -778,6 +785,8 @@ def _forma_loc(a: dict) -> tuple[str | None, str | None, str]:
         cand = {j for j in geo.judetele_localitatii(cheie) if j in judete}
         if sursa in cand:
             cod = sursa
+        elif cheie in _OMONIME_STRAINE:
+            pass   # „Roma" dintr-o sursa nationala e Italia, nu comuna din Botosani
         elif len(cand) == 1:
             cod = next(iter(cand))
         if cod:
