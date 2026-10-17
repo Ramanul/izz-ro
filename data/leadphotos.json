@@ -6179,7 +6179,9 @@
  },
  "f527b2c903d9dfa3": {
   "miss": true,
-  "v": 2
+  "v": 3,
+  "motiv_loc": "loc_negasit_sau_fara_imagine",
+  "motiv_ent": "ent_fara_entitati"
  },
  "c739b5ac565167ee": {
   "miss": true,
@@ -6203,11 +6205,15 @@
  },
  "4d49014e6f7df6db": {
   "miss": true,
-  "v": 2
+  "v": 3,
+  "motiv_loc": "loc_negasit_sau_fara_imagine",
+  "motiv_ent": "ent_fara_entitati"
  },
  "eb939ff4087f5259": {
   "miss": true,
-  "v": 2
+  "v": 3,
+  "motiv_loc": "loc_negasit_sau_fara_imagine",
+  "motiv_ent": "ent_fara_entitati"
  },
  "d2e7e3f23159e705": {
   "miss": true,
@@ -6233,7 +6239,9 @@
  },
  "a89040f656dc0148": {
   "miss": true,
-  "v": 2
+  "v": 3,
+  "motiv_loc": "loc_negasit_sau_fara_imagine",
+  "motiv_ent": "ent_fara_entitati"
  },
  "aa6f9de61d6133d9": {
   "miss": true,
@@ -6241,7 +6249,9 @@
  },
  "0fba616d39704e4a": {
   "miss": true,
-  "v": 2
+  "v": 3,
+  "motiv_loc": "loc_dimensiune_sau_format",
+  "motiv_ent": "ent_fara_entitati"
  },
  "f125ff74c523839d": {
   "miss": true,
@@ -10117,5 +10127,281 @@
   "name": "Curtici",
   "kind": "locality",
   "qid": "Q850982"
+ },
+ "1268cdfec4a3c3f6": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_negasit_sau_fara_imagine",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "cd57da0d8f17712c": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_dimensiune_sau_format",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "36ca1287bab1ac35": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_negasit_sau_fara_imagine",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "dc08c6162ef4584f": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_negasit_sau_fara_imagine",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "1557aef0db5af51e": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_licenta",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "8485322f56124a87": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_negasit_sau_fara_imagine",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "a72bef2f99f2d808": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_negasit_sau_fara_imagine",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "e800e9e3f01d4d16": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_negasit_sau_fara_imagine",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "4d2e4707db8462ea": {
+  "cover": "leads/loc-Q685857.c.jpg",
+  "art": "leads/loc-Q685857.jpg",
+  "webp": "leads/loc-Q685857.webp",
+  "artist": "Rotaru Florin",
+  "license": "CC BY-SA 4.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Vedere_generala_(centru).jpg",
+  "name": "Medgidia",
+  "kind": "locality",
+  "qid": "Q685857"
+ },
+ "04c93c36f82dd8c0": {
+  "cover": "leads/loc-Q685857.c.jpg",
+  "art": "leads/loc-Q685857.jpg",
+  "webp": "leads/loc-Q685857.webp",
+  "artist": "Rotaru Florin",
+  "license": "CC BY-SA 4.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Vedere_generala_(centru).jpg",
+  "name": "Medgidia",
+  "kind": "locality",
+  "qid": "Q685857"
+ },
+ "605e3e964c43f3c4": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_negasit_sau_fara_imagine",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "5f8a68a816e80cc4": {
+  "cover": "leads/loc-Q518992.c.jpg",
+  "art": "leads/loc-Q518992.jpg",
+  "webp": "leads/loc-Q518992.webp",
+  "artist": "Țetcu Mircea Rareș",
+  "license": "CC BY-SA 4.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Uzina_C%C4%83lan.jpg",
+  "name": "Călan",
+  "kind": "locality",
+  "qid": "Q518992"
+ },
+ "1ca71c9539266457": {
+  "cover": "leads/loc-Q12724790.c.jpg",
+  "art": "leads/loc-Q12724790.jpg",
+  "webp": "leads/loc-Q12724790.webp",
+  "artist": "Jan Pešula (Sapfan)",
+  "license": "Public domain",
+  "page": "https://commons.wikimedia.org/wiki/File:Falciu_train_station.JPG",
+  "name": "Fălciu",
+  "kind": "locality",
+  "qid": "Q12724790"
+ },
+ "fa777253f96cc15c": {
+  "cover": "leads/loc-Q756578.c.jpg",
+  "art": "leads/loc-Q756578.jpg",
+  "webp": "leads/loc-Q756578.webp",
+  "artist": "O mores",
+  "license": "CC BY-SA 3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:The%27ESPLANADE%27Tg.Frumos.ROMANIA.JPG",
+  "name": "Târgu Frumos",
+  "kind": "locality",
+  "qid": "Q756578"
+ },
+ "ae74ec38d869330b": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_dimensiune_sau_format",
+  "motiv_ent": "ent_fara_qid"
+ },
+ "a6d79d93ee48443b": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_dimensiune_sau_format",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "08904d5511725237": {
+  "cover": "leads/loc-Q685857.c.jpg",
+  "art": "leads/loc-Q685857.jpg",
+  "webp": "leads/loc-Q685857.webp",
+  "artist": "Rotaru Florin",
+  "license": "CC BY-SA 4.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Vedere_generala_(centru).jpg",
+  "name": "Medgidia",
+  "kind": "locality",
+  "qid": "Q685857"
+ },
+ "b8070cea8abdd1d1": {
+  "cover": "leads/loc-Q685857.c.jpg",
+  "art": "leads/loc-Q685857.jpg",
+  "webp": "leads/loc-Q685857.webp",
+  "artist": "Rotaru Florin",
+  "license": "CC BY-SA 4.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Vedere_generala_(centru).jpg",
+  "name": "Medgidia",
+  "kind": "locality",
+  "qid": "Q685857"
+ },
+ "2e32103a8d3d675e": {
+  "cover": "leads/loc-Q685857.c.jpg",
+  "art": "leads/loc-Q685857.jpg",
+  "webp": "leads/loc-Q685857.webp",
+  "artist": "Rotaru Florin",
+  "license": "CC BY-SA 4.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Vedere_generala_(centru).jpg",
+  "name": "Medgidia",
+  "kind": "locality",
+  "qid": "Q685857"
+ },
+ "40b0a98886d7d8e9": {
+  "cover": "leads/loc-Q685857.c.jpg",
+  "art": "leads/loc-Q685857.jpg",
+  "webp": "leads/loc-Q685857.webp",
+  "artist": "Rotaru Florin",
+  "license": "CC BY-SA 4.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Vedere_generala_(centru).jpg",
+  "name": "Medgidia",
+  "kind": "locality",
+  "qid": "Q685857"
+ },
+ "6cb4b68a4c5b4aea": {
+  "cover": "leads/loc-Q685857.c.jpg",
+  "art": "leads/loc-Q685857.jpg",
+  "webp": "leads/loc-Q685857.webp",
+  "artist": "Rotaru Florin",
+  "license": "CC BY-SA 4.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Vedere_generala_(centru).jpg",
+  "name": "Medgidia",
+  "kind": "locality",
+  "qid": "Q685857"
+ },
+ "0971e44e7ef68977": {
+  "cover": "leads/loc-Q685857.c.jpg",
+  "art": "leads/loc-Q685857.jpg",
+  "webp": "leads/loc-Q685857.webp",
+  "artist": "Rotaru Florin",
+  "license": "CC BY-SA 4.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Vedere_generala_(centru).jpg",
+  "name": "Medgidia",
+  "kind": "locality",
+  "qid": "Q685857"
+ },
+ "2b444a874fe2168f": {
+  "cover": "leads/loc-Q518992.c.jpg",
+  "art": "leads/loc-Q518992.jpg",
+  "webp": "leads/loc-Q518992.webp",
+  "artist": "Țetcu Mircea Rareș",
+  "license": "CC BY-SA 4.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Uzina_C%C4%83lan.jpg",
+  "name": "Călan",
+  "kind": "locality",
+  "qid": "Q518992"
+ },
+ "50cae38e77bf422a": {
+  "cover": "leads/loc-Q12724790.c.jpg",
+  "art": "leads/loc-Q12724790.jpg",
+  "webp": "leads/loc-Q12724790.webp",
+  "artist": "Jan Pešula (Sapfan)",
+  "license": "Public domain",
+  "page": "https://commons.wikimedia.org/wiki/File:Falciu_train_station.JPG",
+  "name": "Fălciu",
+  "kind": "locality",
+  "qid": "Q12724790"
+ },
+ "1433c5da3bd813f5": {
+  "cover": "leads/loc-Q518992.c.jpg",
+  "art": "leads/loc-Q518992.jpg",
+  "webp": "leads/loc-Q518992.webp",
+  "artist": "Țetcu Mircea Rareș",
+  "license": "CC BY-SA 4.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Uzina_C%C4%83lan.jpg",
+  "name": "Călan",
+  "kind": "locality",
+  "qid": "Q518992"
+ },
+ "2697871e0edc535d": {
+  "cover": "leads/loc-Q685857.c.jpg",
+  "art": "leads/loc-Q685857.jpg",
+  "webp": "leads/loc-Q685857.webp",
+  "artist": "Rotaru Florin",
+  "license": "CC BY-SA 4.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Vedere_generala_(centru).jpg",
+  "name": "Medgidia",
+  "kind": "locality",
+  "qid": "Q685857"
+ },
+ "87a5144474088c03": {
+  "cover": "leads/loc-Q12724790.c.jpg",
+  "art": "leads/loc-Q12724790.jpg",
+  "webp": "leads/loc-Q12724790.webp",
+  "artist": "Jan Pešula (Sapfan)",
+  "license": "Public domain",
+  "page": "https://commons.wikimedia.org/wiki/File:Falciu_train_station.JPG",
+  "name": "Fălciu",
+  "kind": "locality",
+  "qid": "Q12724790"
+ },
+ "1a311fd20c9fc155": {
+  "cover": "leads/loc-Q12724790.c.jpg",
+  "art": "leads/loc-Q12724790.jpg",
+  "webp": "leads/loc-Q12724790.webp",
+  "artist": "Jan Pešula (Sapfan)",
+  "license": "Public domain",
+  "page": "https://commons.wikimedia.org/wiki/File:Falciu_train_station.JPG",
+  "name": "Fălciu",
+  "kind": "locality",
+  "qid": "Q12724790"
+ },
+ "d111c9c9600ee8a0": {
+  "cover": "leads/loc-Q12724790.c.jpg",
+  "art": "leads/loc-Q12724790.jpg",
+  "webp": "leads/loc-Q12724790.webp",
+  "artist": "Jan Pešula (Sapfan)",
+  "license": "Public domain",
+  "page": "https://commons.wikimedia.org/wiki/File:Falciu_train_station.JPG",
+  "name": "Fălciu",
+  "kind": "locality",
+  "qid": "Q12724790"
+ },
+ "f565de8f78517751": {
+  "cover": "leads/of-f565de8f78517751.c.jpg",
+  "art": "leads/of-f565de8f78517751.jpg",
+  "webp": "leads/of-f565de8f78517751.webp",
+  "artist": "The White House",
+  "license": "Public domain",
+  "page": "https://commons.wikimedia.org/wiki/File:P202601013MR-2544_(55589266349).jpg",
+  "name": "Donald Trump",
+  "kind": "oficial",
+  "sursa": "Casa Albă",
+  "data_poza": "2026-10-14"
  }
 }
