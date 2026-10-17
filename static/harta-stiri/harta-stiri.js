@@ -1266,7 +1266,7 @@
       head.appendChild(figure);
     }
     tip.appendChild(head);
-    if (esteJudet) {
+    if (esteJudet && state.articles.some((item) => "source_county" in item)) {
       const intrari = provenienta(state.rawVisible, target.county);
       const dinAfara = [...intrari.alteJudete.values()].reduce((suma, n) => suma + n, 0);
       if (dinAfara) {
@@ -2573,7 +2573,10 @@
     if (!box) return;
     const county = state.selectedCounty;
     box.replaceChildren();
-    if (!county) {
+    // Un map.json mai vechi decat JS-ul (deploy de cod inaintea datelor, oglinda de failover)
+    // n-are `source_county` deloc: fara garda, panoul ar spune fals ca TOATE relatarile vin din
+    // presa regionala sau nationala (vazut pe live 17 oct., in ora dintre cele doua deploy-uri).
+    if (!county || !state.articles.some((item) => "source_county" in item)) {
       box.hidden = true;
       return;
     }
