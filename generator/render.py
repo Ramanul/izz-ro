@@ -783,9 +783,29 @@ def _fonts_css() -> str:
     return _FONTS_CSS
 
 
+class _UnicPePagina:
+    """Registru PE PAGINA: acelasi portret apare o singura data pe o lista de stiri.
+
+    Masurat pe randarea locala, 2026-10-17: pe homepage acelasi chip se repeta pe zeci de
+    carduri (Trump e in titlul a 116 articole din fereastra). Primul card il pastreaza, restul
+    cad pe compozitia fara chip. O instanta noua la fiecare `_base_ctx`, deci fiecare pagina
+    porneste de la zero — starea nu trece de la o pagina la alta.
+    """
+
+    def __init__(self) -> None:
+        self._vazute: set[str] = set()
+
+    def __call__(self, img: str) -> bool:
+        if not img or img in self._vazute:
+            return False
+        self._vazute.add(img)
+        return True
+
+
 def _base_ctx(canonical_path: str, jsonld_nodes: list | None = None,
               jsonld_page: dict | None = None, **extra) -> dict:
     ctx = {
+        "portret_nou": _UnicPePagina(),
         "site": config.SITE,
         "base": os.getenv("SITE_BASE", "").rstrip("/"),
         "categories": config.CATEGORIES,

@@ -184,8 +184,10 @@ def test_stil_inline_include_silueta_judetului_pentru_stire_locala():
         assert f".{cls}" in css
 
 
-def test_stil_inline_include_doar_portrete_fara_obligatie_de_credit(monkeypatch):
-    """Pe carduri si pe prima pagina apar doar portrete Public domain / CC0, niciodata CC BY / CC BY-SA."""
+def test_stil_inline_include_portretul_subiectului_cu_licenta_permisa(monkeypatch):
+    """Pe carduri si pe prima pagina: Public domain / CC0 fara credit; CC BY / CC BY-SA DOAR cu
+    creditul complet atasat, pe care cardul il afiseaza sub imagine (2026-10-17,
+    tests/test_foto_arhiva.py). O entitate fara portret publicabil nu primeste nimic."""
     monkeypatch.setattr(
         htmlart,
         "_PORTRETE_LIBERE",
