@@ -839,10 +839,11 @@ def felia6_url(p):
     check(direct != start_count, f"link direct cu ?judet= arata lista filtrata ('{direct}')")
     # Filtrat NU e acelasi lucru cu filtrat pe judetul CERUT: un cod care citeste parametrul si
     # apoi aplica altceva ar trece un test care se uita doar la numarul de rezultate.
-    # Doar span-urile de META, nu si cele de context-eveniment ("N relatări · M surse"),
+    # Doar span-urile de META, nu si cele de context-eveniment ("N relatări · M surse") sau de
+    # provenienta ("Relatare a presei din X", IZZ-0433: judetul REDACTIEI, nu al stirii),
     # care nu contin judet prin constructie. Pe datele vechi cele doua selectoare coincideau;
     # din 5 sep 2026, 2 evenimente CLUJ au relatări multiple si le dezvaluie (falsa alarma).
-    metas = p.evaluate("() => [...document.querySelectorAll('#news-list li span:not(.event-context)')].map(s => s.textContent.toUpperCase())")
+    metas = p.evaluate("() => [...document.querySelectorAll('#news-list li span:not(.event-context):not(.source-origin)')].map(s => s.textContent.toUpperCase())")
     off = [m for m in metas if "CLUJ" not in m]
     check(bool(metas) and not off,
           f"toate cele {len(metas)} rezultate sunt din CLUJ ({len(off)} din alt judet)")
@@ -1273,6 +1274,65 @@ def mobil_390(p):
     check(p.evaluate("() => location.pathname") == before,
           "derularea cu degetul peste harta NU deschide ruta unui județ")
 
+def gesturi_tactile(mob):
+    """Gesturile de telefon, cu degete reale prin CDP (17 oct: pe Android doua degete nu faceau
+    nimic, iar atingerea unei forme lasa un chenar negru de focus). Contractul:
+    nemarita, un deget deruleaza pagina; doua degete maresc si muta harta, cu punctul de sub
+    degete fix; marita, un deget muta harta fara sa derulze pagina; atingerea nu lasa chenar."""
+    print("\nGESTURI TACTILE -- doua degete maresc, un deget muta harta marita, fara chenar")
+    goto_base(mob)
+    mob.evaluate("document.querySelector('.map-stage').scrollIntoView({block:'center'})")
+    mob.wait_for_timeout(300)
+    cdp = mob.context.new_cdp_session(mob)
+    def send(t, pts):
+        cdp.send("Input.dispatchTouchEvent", {"type": t, "touchPoints": [{"x": x, "y": y, "id": i} for i, (x, y) in enumerate(pts)]})
+    def drag(p0, p1, steps=12):
+        send("touchStart", p0)
+        for i in range(1, steps + 1):
+            f = i / steps
+            send("touchMove", [(a[0] + (b[0] - a[0]) * f, a[1] + (b[1] - a[1]) * f) for a, b in zip(p0, p1)])
+            mob.wait_for_timeout(16)
+        send("touchEnd", [])
+        mob.wait_for_timeout(400)
+    vb = lambda: mob.get_attribute("#map svg.map-svg", "viewBox")
+    r = stage_rect(mob)
+    cx, cy = r["x"] + r["w"] * 0.45, r["y"] + r["h"] / 2
+    # Punctul hartii (coordonate viewBox) aflat sub (cx, cy): trebuie sa ramana acelasi dupa gest.
+    under = lambda: mob.evaluate(f"""(() => {{ const svg = document.querySelector('#map svg.map-svg');
+      const p = new DOMPoint({cx}, {cy}).matrixTransform(svg.getScreenCTM().inverse()); return [p.x, p.y]; }})()""")
+    start, before = vb(), under()
+    drag([(cx - 25, cy), (cx + 25, cy)], [(cx - 100, cy), (cx + 100, cy)])
+    zoomed = vb()
+    check(zoomed != start, f"doua degete care se departeaza maresc harta ({start} -> {zoomed})")
+    after = under()
+    drift = ((after[0] - before[0]) ** 2 + (after[1] - before[1]) ** 2) ** 0.5
+    check(drift < 3, f"punctul de sub degete ramane sub degete (deriva {drift:.1f} unitati de harta)")
+    y0 = mob.evaluate("scrollY")
+    drag([(cx, cy)], [(cx + 70, cy + 40)])
+    check(vb() != zoomed, "marita, un deget muta harta")
+    check(mob.evaluate("scrollY") == y0, "marita, un deget NU deruleaza pagina")
+    drag([(cx - 110, cy + 30), (cx + 40, cy - 30)], [(cx - 30, cy + 5), (cx - 5, cy - 5)])
+    check(vb() == start, f"doua degete care se apropie readuc harta intreaga ({vb()})")
+    mob.wait_for_timeout(500)
+    cdp.detach()
+    # Atingere pe o localitate, pe pagina unui judet: selectie fara chenarul de focus.
+    mob.goto(BASE.rstrip("/") + "/brasov/", wait_until="networkidle")
+    mob.wait_for_timeout(1200)
+    mob.evaluate("document.querySelector('.map-stage').scrollIntoView({block:'center'})")
+    mob.wait_for_timeout(300)
+    u = mob.evaluate("""() => { const n = [...document.querySelectorAll('.map-uat')].find(e => !e.classList.contains('is-empty'));
+      if (!n) return null; const r = n.getBoundingClientRect(); return { x: r.x + r.width / 2, y: r.y + r.height / 2 }; }""")
+    if not u:
+        skip("chenarul de focus: judetul n-are localitati cu stiri in datele curente")
+        return
+    mob.touchscreen.tap(u["x"], u["y"])
+    mob.wait_for_timeout(700)
+    st = mob.evaluate("""() => { const a = document.activeElement; return { cls: a.getAttribute('class') || '',
+      outline: getComputedStyle(a).outlineStyle, uat: new URLSearchParams(location.search).get('uat') }; }""")
+    check(bool(st["uat"]), f"atingerea unei localitati o selecteaza (uat={st['uat']})")
+    check(st["outline"] == "none", f"forma atinsa nu primeste chenar de focus (outline: {st['outline']})")
+
+
 def main():
     with sync_playwright() as pw:
         br = pw.chromium.launch(args=["--no-sandbox"])
@@ -1298,6 +1358,7 @@ def main():
         mobil_390(mob)
         nume_uat_mobil(mob)
         scroll_anchoring_harta(mob)
+        gesturi_tactile(mob)
         br.close()
     print("")
     if fails:

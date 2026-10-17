@@ -251,16 +251,19 @@ def test_zoom_and_pan_are_keyboard_operable_and_documented():
     # Ghidurile de harti accesibile cer zoom+pan pe TOATE input-urile: sagețile deplaseaza
     # vederea pe grupul de controale, +/- schimba scara, iar nota de sub harta documenta
     # interactiunile (rotita, dublu-click, tragere, tastatura). Nota mobila documenteaza
-    # doar ce exista: un deget deruleaza, mărirea e din butoane — textul vechi promitea
-    # pinch («două degete») pe care JS-ul nu-l implementeaza (plan D3, Arena 6 oct).
+    # doar ce exista. Pe 6 oct (plan D3) „două degete" era interzis fiindca JS-ul nu avea
+    # pinch; din 17 oct pinch-ul exista (applyPinch + touch cu passive:false), deci nota il
+    # promite — iar garda verifica acum ca promisiunea are cod in spate, nu absenta ei.
     js = Path("static/harta-stiri/harta-stiri.js").read_text(encoding="utf-8")
     html = Path("static/harta-stiri/index.html").read_text(encoding="utf-8")
     assert 'zoomBox.addEventListener("keydown"' in js
     assert 'zoomBox.setAttribute("role", "group")' in js
     assert "function announceZoom(" in js
     assert "săgețile" in html
-    assert "două degete" not in html
-    assert "un deget derulează pagina" in html
+    assert "două degete" in html
+    assert "function applyPinch(" in js
+    assert 'addEventListener("touchmove", onTouchMove, { passive: false })' in js
+    assert "Un deget pe harta nemărită derulează pagina" in html
     assert "butoanele + și −" in html
 
 
