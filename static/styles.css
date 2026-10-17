@@ -1135,6 +1135,36 @@ body:has(#izz-consent) { padding-bottom: 4.5rem; }
 .person .credit { color: var(--ink-3); font-size: var(--fs-eyebrow); font-family: var(--font-mono); }
 .person .credit a { text-decoration: underline; }
 
+/* Fotografia de ARHIVA a omului din titlu, pe pagina de articol (`render._foto_arhiva`), in locul
+   decorului generat (auditul vizual 2026-10-17, sect. 6.2). Compacta si etichetata: nu e de la
+   eveniment si nu are voie sa para; titlul ramane elementul dominant. 168x210 = 4:5, cat acopera
+   rendita de 330px a portretului la 2x fara interpolare vizibila. */
+.arhiva-foto {
+  display: flex; align-items: flex-end; gap: var(--s-21);
+  max-width: var(--measure); margin: var(--s-21) 0 var(--s-34);
+}
+.arhiva-foto img {
+  flex: none; width: 168px; height: 210px; object-fit: cover; object-position: center 20%;
+  border-radius: var(--radius); border: 1px solid var(--line); background: var(--paper-2);
+}
+.arhiva-foto figcaption {
+  display: flex; flex-direction: column; gap: var(--s-5); min-width: 0; font-size: var(--fs-xs);
+}
+.arhiva-eticheta {
+  font-family: var(--font-mono); font-size: var(--fs-eyebrow); font-weight: 700;
+  letter-spacing: 2px; text-transform: uppercase; color: var(--ink-2);
+}
+.arhiva-nume { font-family: var(--font-display); font-size: var(--fs-md); font-weight: 700; }
+.arhiva-foto .credit {
+  color: var(--ink-3); font-size: var(--fs-eyebrow); font-family: var(--font-mono);
+  overflow-wrap: anywhere;
+}
+.arhiva-foto .credit a { text-decoration: underline; }
+@media (max-width: 480px) {
+  .arhiva-foto { gap: var(--s-13); }
+  .arhiva-foto img { width: 120px; height: 150px; }
+}
+
 /* fotografia reala a entitatii pe pagina de subiect (hero, auto-gazduita, cu credit) */
 .subject-photo { margin: var(--s-21) 0 var(--s-34); max-width: 160px; }
 .subject-photo img {

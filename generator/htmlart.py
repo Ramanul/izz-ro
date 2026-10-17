@@ -508,28 +508,108 @@ def persoana_potrivita(a: dict, nume: str, *, in_titlu: bool) -> bool:
     return gasit_in_titlu if in_titlu else gasit
 
 
+def _cheie_nume(s: str) -> str:
+    from .util import strip_diacritics
+    return re.sub(r"\s+", " ", strip_diacritics((s or "").strip().lower()))
+
+
+def _pozitie_in_titlu(a: dict, *nume: str) -> int:
+    """Indexul primului cuvant identificator al numelui in titlu; foarte mare daca lipseste."""
+    from .util import strip_diacritics
+    titlu = strip_diacritics(a.get("display_title") or a.get("title") or "").lower()
+    poz = 10 ** 6
+    for n in nume:
+        _toti, ident = _tokeni_nume(n)
+        for t in ident:
+            m = re.search(r"\b" + re.escape(t) + r"\b", titlu)
+            if m:
+                poz = min(poz, m.start())
+    return poz
+
+
+def subiect_titlu(a: dict, *registre: dict) -> tuple[str, dict] | None:
+    """(cheie, inregistrare) pentru persoana despre care e stirea, sau None.
+
+    Dintre entitatile cu portret (cautate in `registre`, in ordine) care trec
+    `persoana_potrivita(in_titlu=True)`, castiga cea numita PRIMA in titlu — subiectul
+    gramatical, nu ordinea extragerii AI. Inainte se lua prima entitate cu portret LIBER:
+    pe „Volodimir Zelenski îi răspunde Marinei Le Pen…" coperta purta chipul lui Le Pen,
+    fiindca doar ea avea portret Public domain (masurat pe randarea locala, 2026-10-17).
+    """
+    best: tuple[int, int, str, dict] | None = None
+    for i, e in enumerate(a.get("entities") or []):
+        key = _cheie_nume(e)
+        rec = next((r[key] for r in registre if r and key in r), None)
+        if not rec:
+            continue
+        nume_rec = rec.get("name") or ""
+        # Entitatea AI e scrisa ca in articolul romanesc („Zelenski"), numele din Wikidata
+        # adesea altfel („Zelensky") — oricare din doua identifica persoana in text.
+        if not (persoana_potrivita(a, e, in_titlu=True)
+                or persoana_potrivita(a, nume_rec, in_titlu=True)):
+            continue
+        cand = (_pozitie_in_titlu(a, e, nume_rec), i, key, rec)
+        if best is None or cand[:2] < best[:2]:
+            best = cand
+    return (best[2], best[3]) if best else None
+
+
+# CC BY / CC BY-SA cu versiune — aceeasi allowlist POZITIVA ca `render._CREDIT_REQUIRED_LICENSE`
+# (paritatea e verificata in tests/test_foto_arhiva.py). Duplicata, nu importata: modulul asta
+# ruleaza si fara render (tools/gen_images.py).
+_CREDIT_REQ_RE = re.compile(r"^cc[ -]?by(?:[ -]sa)?[ -](\d)\.(\d)(?:[ -](\w+))?", re.I)
+_PORTRETE_TOATE: dict[str, dict] | None = None
+
+
+def _portrete_toate() -> dict[str, dict]:
+    """Toate portretele publicabile: fara credit (PD/CC0) SI cu credit (CC BY / CC BY-SA).
+
+    Serveste DOAR alegerii subiectului (`subiect_titlu`): cine e omul din titlu nu depinde de
+    licenta pozei lui. Ce se afiseaza unde decide in continuare licenta (`_portret_liber`)."""
+    global _PORTRETE_TOATE
+    if _PORTRETE_TOATE is None:
+        out: dict[str, dict] = {}
+        incadrare = incadrare_portrete()
+        try:
+            with open(_PORTRAITS_PATH, encoding="utf-8") as f:
+                raw = json.load(f) or {}
+            for k, v in raw.items():
+                if not isinstance(v, dict) or v.get("miss"):
+                    continue
+                img, lic = (v.get("img") or "").strip(), (v.get("license") or "").strip()
+                if not img or not (_CREDIT_FREE_RE.match(lic) or _CREDIT_REQ_RE.match(lic)):
+                    continue
+                if (incadrare.get(img) or {}).get("respins"):
+                    continue
+                if os.path.exists(os.path.join(_ROOT, "media", img)):
+                    out[k] = {"img": img, "name": (v.get("name") or k).strip(),
+                              "credit_required": not _CREDIT_FREE_RE.match(lic)}
+        except (OSError, ValueError):
+            out = {}
+        _PORTRETE_TOATE = out
+    return _PORTRETE_TOATE
+
+
 def _portret_liber(a: dict) -> dict | None:
     """Portretul Public domain / CC0 al persoanei despre care e stirea, sau None.
 
     Nu „prima entitate cu portret": entitatile vin in ordinea extragerii AI, nu a importantei,
-    iar o persoana pomenita in treacat nu are ce cauta pe coperta (`persoana_potrivita`)."""
-    ents = a.get("entities") or []
-    if not ents:
+    iar o persoana pomenita in treacat nu are ce cauta pe coperta (`persoana_potrivita`).
+    Subiectul se alege intai (`subiect_titlu`, peste TOATE portretele), apoi licenta: daca omul
+    din titlu are doar poza cu credit obligatoriu, cardul ramane fara chip — nu primeste chipul
+    altcuiva care se intampla sa aiba poza libera."""
+    if not (a.get("entities") or []):
         return None
-    from .util import strip_diacritics
     libere = _portrete_libere()
     if not libere:
         return None
-    for e in ents:
-        key = re.sub(r"\s+", " ", strip_diacritics((e or "").strip().lower()))
-        # Entitatea AI e scrisa ca in articolul romanesc („Zelenski"), numele din Wikidata
-        # adesea altfel („Zelensky") — oricare din doua identifica persoana in text.
-        if key in libere and (persoana_potrivita(a, e, in_titlu=True)
-                              or persoana_potrivita(a, libere[key]["name"], in_titlu=True)):
-            # Inscriere, nu copiere: acest modul nu stie OUT_DIR-ul randarii.
-            _PORTRETE_CERUTE.add(libere[key]["img"])
-            return libere[key]
-    return None
+    ales = subiect_titlu(a, libere, _portrete_toate())
+    if not ales or ales[0] not in libere:
+        return None
+    rec = libere[ales[0]]
+    # Inscriere, nu copiere: acest modul nu stie OUT_DIR-ul randarii.
+    _PORTRETE_CERUTE.add(rec["img"])
+    return rec
 
 
 def portrete_cerute() -> set[str]:

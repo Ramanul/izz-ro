@@ -40,10 +40,11 @@ def test_copytree_pe_portrete_nu_se_intoarce():
     # Functia care copiaza la cerere trebuie sa existe — altfel garda de sus trece
     # trivial prin stergerea feature-ului.
     assert "def _portret(" in sursa
-    assert sursa.count("_portret(portraits, ") == 2, (
-        "ambele locuri care folosesc portrete (pagina de subiect + 'In imagini' pe articol) "
-        "trebuie sa treaca prin `_portret`, altfel unul dintre ele publica portretul "
-        "fara sa-i copieze fisierul")
+    assert sursa.count("_portret(portraits, ") == 3, (
+        "toate cele trei locuri care folosesc portrete (pagina de subiect, 'In imagini' pe "
+        "articol si fotografia de arhiva de sus a articolului, `_foto_arhiva`) trebuie sa "
+        "treaca prin `_portret`, altfel unul dintre ele publica portretul fara sa-i copieze "
+        "fisierul")
 
 
 def test_portret_copiaza_doar_fisierul_cerut(tmp_path, monkeypatch):
