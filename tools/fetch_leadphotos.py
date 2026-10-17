@@ -17,9 +17,12 @@ verifica potrivirea foto<->articol (respinge partea care a pierdut / subiectul g
 un rezultat fals). Cu GEMINI_API_KEY activ e pornit; fara cheie ramane pe regulile
 deterministe. Fail-safe: apel esuat -> se sare candidatul.
 
-Fotografiile CC-BY (atribuire obligatorie) NU intra aici -- raman in strip-ul cu
-credit gestionat de fetch_portraits.py. Fara potrivire -> articolul pastreaza
-coperta generata (pictograma). Orice eroare pe o entitate nu opreste restul.
+Ruta pe ENTITATI ramane doar Public domain / CC0. Ruta de LOCALITATE (stirile primariilor)
+accepta si CC BY / CC BY-SA (`localities.usable`): render.py le tine doar pe pagina de
+articol, sub legenda completa, niciodata pe card sau in og:image (#205, 2026-08-29).
+Fara potrivire -> articolul pastreaza coperta generata. Orice eroare pe o entitate nu
+opreste restul. Fiecare miss pastreaza MOTIVUL (`motiv_loc`, `motiv_ent`), iar poza unei
+localitati deja cunoscute se refoloseste fara retea si fara plafon (`index_localitati`).
 
   python tools/fetch_leadphotos.py          # incremental, plafonat
 
@@ -55,7 +58,12 @@ MAX_LOOKUPS = int(os.getenv("MAX_LEAD_LOOKUPS", "20"))
 # Versiunea REGULILOR care produc un `miss`. Creste cand apare o ruta noua de cautare:
 # miss-urile scrise sub o versiune mai veche se reincearca o data (vezi `_needs_lookup`).
 # v2 = adaugarea rutei de localitate (2026-08-01).
-MISS_VERSION = 2
+# v3 = poarta rutei de localitate trece pe `localities.usable` (CC BY permis, doar pe pagina de
+#      articol — render.py separa nivelurile din #205) + motivul fiecarui miss (2026-10-17).
+MISS_VERSION = 3
+# Sub atatea articole in stare, curatarea cache-ului se sare: o stare partiala ar sterge
+# intrari valide si ar retrimite sute de interogari. Starea reala are ~10.000 de articole.
+MIN_ARTICOLE_CURATARE = 500
 UA = fp.UA
 LEAD_W = 1400                       # rendite sursa: acopera 1200x630 la calitate buna
 COVER_W, COVER_H = 1200, 630        # og / share (fara text: foto curata)
@@ -160,68 +168,125 @@ def _needs_lookup(aid: str, a: dict, cache: dict) -> bool:
     return bool(localities.eligible(a))
 
 
-def lead_for_locality(a: dict, by_name: dict) -> dict | None:
-    """Fotografia LOCALITATII pentru o stire venita de la primaria acelei localitati.
+def _qid_din_intrare(e: dict) -> str | None:
+    """QID-ul localitatii unei intrari hit (campul `qid`, sau din numele fisierului `loc-Q…`)."""
+    if e.get("qid"):
+        return e["qid"]
+    m = re.search(r"loc-(Q\d+)\.", e.get("art") or "")
+    return m.group(1) if m else None
+
+
+def index_localitati(cache: dict) -> dict:
+    """`{qid: intrare hit}` din cache — fotografia unei localitati, refolosibila FARA retea.
+
+    Cheia de fisier e deja QID-ul (`loc-Q….jpg`), deci 15 stiri de la aceeasi primarie aveau
+    aceeasi poza, dar fiecare platea o interogare Commons si o descarcare din plafonul de 20.
+    Masurat 2026-10-17: 212 articole actuale fara poza tin de 33 de localitati a caror poza
+    exista deja in cache. Se refolosesc doar intrarile cu licenta inca acceptata."""
+    idx = {}
+    for e in cache.values():
+        if not e or e.get("miss") or e.get("kind") != "locality":
+            continue
+        q = _qid_din_intrare(e)
+        if q and localities.license_free(e.get("license", "")):
+            idx.setdefault(q, e)
+    return idx
+
+
+def lead_for_locality(a: dict, by_name: dict, memo: dict | None = None):
+    """(intrare, motiv) pentru fotografia LOCALITATII unei stiri venite de la primaria ei.
 
     Se incearca INAINTEA rutei pe entitati, fiindca e mult mai fiabila: cheia e slug-ul
     determinist al sursei (`pl_<judet>_<localitate>`), nu entitatile extrase din text.
 
-    Poarta de licență este `qualifies`, nu `localities.usable`: o fotografie LEAD
-    ajunge și în carduri, hero și previzualizări sociale, unde creditul complet nu este
-    garantat. Din acest motiv acceptăm numai domeniul public sau CC0; CC-BY și CC-BY-SA
-    rămân excluse din fluxul de copertă, chiar dacă ar putea fi folosite într-un context
-    separat cu legendă completă.
+    Poarta de licenta e `localities.usable` (CC0/PD si CC BY/BY-SA, NC/ND respinse), nu
+    `qualifies` (doar PD/CC0). Bariera stricta din 2026-08-19 (01d6107) exista fiindca atunci
+    orice poza lead ajungea si pe carduri si in previzualizarea sociala, fara credit. Din
+    2026-08-29 (ef398cd, #205) render-ul tine CC BY separat: doar pe pagina de articol, sub
+    legenda completa, niciodata pe card sau in og:image. Bariera ramasese mai stricta decat
+    tine politica (`content/legal/images.md`).
 
-    NU trece prin `photojudge`: acela întreabă dacă poza e o ilustrație EXACTĂ a
-    subiectului, test potrivit pentru „poza persoanei X pe știrea despre X”, dar greșit
-    aici — poza de localitate este declarată ILUSTRAȚIE, nu document al evenimentului.
-    Garanțiile rămân deterministe: localitatea corectă din județul corect, licență fără
-    obligație de atribuire și dimensiune suficientă.
+    NU trece prin `photojudge`: acela intreaba daca poza e o ilustratie EXACTA a subiectului,
+    test potrivit pentru „poza persoanei X pe stirea despre X", dar gresit aici — poza de
+    localitate e declarata ILUSTRATIE, nu document al evenimentului. Garantiile raman
+    deterministe: localitatea corecta din judetul corect, licenta permisa si dimensiune.
+
+    `memo` (`{qid: intrare | motiv}`) tine rezultatul per LOCALITATE in rulare: a doua stire
+    din aceeasi localitate nu mai face nicio cerere de retea.
     """
     rec = localities.locality_for_article(a, by_name)
     if not rec:
-        return None
+        if not localities.eligible(a):
+            return None, "loc_neeligibil"
+        return None, "loc_negasit_sau_fara_imagine"
+    memo = {} if memo is None else memo
+    q = rec["qid"]
+    if q in memo:
+        hit = memo[q]
+        if isinstance(hit, dict):
+            return {**hit, "name": rec["display"]}, "loc_refolosit"
+        return None, hit
     info = commons_lead_info(rec["img"])
-    if not info or not info.get("thumb") or not qualifies(info):
-        return None
+    if not info or not info.get("thumb"):
+        memo[q] = "loc_fara_info_commons"
+        return None, memo[q]
+    if not localities.usable(info):
+        memo[q] = ("loc_licenta" if not localities.license_free(info.get("license", ""))
+                   else "loc_dimensiune_sau_format")
+        return None, memo[q]
     data = urllib.request.urlopen(
         urllib.request.Request(info["thumb"], headers=UA), timeout=30).read()
     if len(data) < 3000:
-        return None
+        return None, "loc_descarcare"
     # cheia de fisier e QID-ul, NU numele: 4 comune Costesti, 3 Ungheni, 2 Zarnesti si
     # 2 Faurei distincte au poze diferite si ar scrie toate in acelasi `loc-costesti.jpg`,
     # ultima descarcare suprascriind-o pe precedenta -> poza altui judet pe stirea locala.
-    rend = _save_renditions(data, f"loc-{rec['qid']}")
+    rend = _save_renditions(data, f"loc-{q}")
     if not rend:
-        return None
-    return {**rend, "artist": info["artist"], "license": info["license"],
-            "page": info["page"], "name": rec["display"], "kind": "locality"}
+        return None, "loc_descarcare"
+    hit = {**rend, "artist": info["artist"], "license": info["license"],
+           "page": info["page"], "name": rec["display"], "kind": "locality", "qid": q}
+    memo[q] = hit
+    return hit, "loc_ok"
 
 
-def lead_for_article(a: dict, provider=None) -> dict | None:
-    """Prima entitate a articolului cu P18 landscape + atribuire-libera care trece SI
-    de judecatorul AI de potrivire (photojudge) -> intrare LEAD. None (miss) altfel."""
+# Etapele rutei pe entitati, in ordinea in care un candidat le parcurge. Un miss pastreaza
+# etapa CEA MAI AVANSATA atinsa de vreun candidat: raportul spune unde se pierd pozele, nu
+# doar ca s-au pierdut (pana in 2026-10-17 miss-ul era `{"miss": true, "v": 2}`, fara motiv).
+_ETAPE_ENT = ("ent_fara_entitati", "ent_fara_qid", "ent_nenotabila", "ent_fara_p18",
+              "ent_licenta_sau_format", "ent_respinsa_de_judecator", "ent_descarcare")
+
+
+def lead_for_article(a: dict, provider=None):
+    """(intrare, motiv): prima entitate a articolului cu P18 landscape + atribuire-libera care
+    trece SI de judecatorul AI de potrivire (photojudge) -> intrare LEAD; altfel (None, motiv)."""
     summary = a.get("synthesis") or a.get("teaser") or ""
+    etapa = 0
     for name in a.get("entities") or []:
         if not name or len(name.split()) < 2:
             continue
         qid = fp.wd_match(name)
         if not qid:
             continue
+        etapa = max(etapa, 1)
         ent = fp.wd_entity(qid)
         claims = ent.get("claims", {})
         if not fp.is_photo_worthy(claims, len(ent.get("sitelinks", {}))):
             continue
+        etapa = max(etapa, 2)
         f = fp.portrait_file(claims)
         if not f:
             continue
+        etapa = max(etapa, 3)
         info = commons_lead_info(f)
         if not info or not info.get("thumb") or not qualifies(info):
             continue
+        etapa = max(etapa, 4)
         # ultima poarta: AI verifica potrivirea foto<->articol (nu partea care a pierdut,
         # nu un rezultat fals). provider None -> True; eroare -> False (fail-safe).
         if not photojudge.photo_fits(provider, a.get("title", ""), summary, name, _caption(f)):
             continue
+        etapa = max(etapa, 5)
         data = urllib.request.urlopen(urllib.request.Request(info["thumb"], headers=UA), timeout=30).read()
         if len(data) < 3000:
             continue
@@ -230,8 +295,22 @@ def lead_for_article(a: dict, provider=None) -> dict | None:
         if not rend:
             continue
         return {**rend, "artist": info["artist"], "license": info["license"],
-                "page": info["page"], "name": name}
-    return None
+                "page": info["page"], "name": name}, "ent_ok"
+    return None, _ETAPE_ENT[min(etapa, len(_ETAPE_ENT) - 1)]
+
+
+def curata_cache(cache: dict, aids_actuale: set) -> int:
+    """Scoate intrarile articolelor care nu mai exista. Intoarce cate a scos.
+
+    Masurat 2026-10-17: 11.793 din cele 12.833 de intrari erau pentru articole expirate.
+    RAMAN hit-urile de LOCALITATE, chiar daca articolul lor a expirat: ele sunt memoria per
+    QID (`index_localitati`) — urmatoarea stire de la aceeasi primarie isi ia poza din ele,
+    fara retea. Sunt cateva sute, nu mii. Fisierele din media/ nu se ating aici."""
+    moarte = [k for k, v in cache.items()
+              if k not in aids_actuale and not (v and not v.get("miss") and v.get("kind") == "locality")]
+    for k in moarte:
+        del cache[k]
+    return len(moarte)
 
 
 def main() -> int:
@@ -245,27 +324,57 @@ def main() -> int:
     by_name = localities.load_dataset()
     print(f">> localitati: {len(by_name)} nume in dataset"
           f"{' — LIPSA, ruta localitate inactiva' if not by_name else ''}")
-    done = 0
-    for a in arts:
+    memo = index_localitati(cache)
+    print(f">> localitati cu poza deja in cache: {len(memo)}")
+    done = refolosite = 0
+    motive: dict = {}
+    # Stirile primariilor INTAI (stabil: in rest ramane ordinea starii, cele mai noi primele).
+    # O interogare de localitate rezolva apoi, fara retea, toate stirile acelei localitati;
+    # o interogare pe entitati rezolva cel mult un articol (3 hit-uri din ~10.000, masurat
+    # 2026-10-17). Plafonul merge deci intai acolo unde o cerere aduce cele mai multe poze.
+    for a in sorted(arts, key=lambda x: 0 if localities.eligible(x) else 1):
         aid = htmlart.art_id(a)
-        if not _needs_lookup(aid, a, cache) or done >= MAX_LOOKUPS:
+        if not _needs_lookup(aid, a, cache):
+            continue
+        # Localitatea cu poza deja cunoscuta se rezolva FARA retea, deci fara plafon.
+        rec = localities.locality_for_article(a, by_name)
+        if rec and isinstance(memo.get(rec["qid"]), dict):
+            cache[aid] = {**memo[rec["qid"]], "name": rec["display"]}
+            refolosite += 1
+            continue
+        if done >= MAX_LOOKUPS:
             continue
         done += 1
         try:
             # intai localitatea (determinista, acoperire mare), apoi entitatile din text
-            entry = lead_for_locality(a, by_name) or lead_for_article(a, provider)
+            entry, m_loc = lead_for_locality(a, by_name, memo)
+            m_ent = None
+            if not entry:
+                entry, m_ent = lead_for_article(a, provider)
         except Exception as exc:  # o entitate/retea esuata nu opreste restul
             print(f"  ! {aid}: {exc}")
             done -= 1              # eroare de retea -> nu consuma plafonul
             continue
-        cache[aid] = entry or {"miss": True, "v": MISS_VERSION}
+        if entry:
+            cache[aid] = entry
+        else:
+            cache[aid] = {"miss": True, "v": MISS_VERSION, "motiv_loc": m_loc, "motiv_ent": m_ent}
+            for m in (m_loc, m_ent):
+                motive[m] = motive.get(m, 0) + 1
         print(f"  {'ok  ' if entry else 'miss'} {aid} "
-              f"{entry['name'] + ' [' + entry.get('kind', 'entity') + ']' if entry else ''}")
+              f"{entry['name'] + ' [' + entry.get('kind', 'entity') + ']' if entry else m_loc + ' / ' + str(m_ent)}")
         time.sleep(1)             # politete API
+    if len(arts) >= MIN_ARTICOLE_CURATARE:
+        scoase = curata_cache(cache, {htmlart.art_id(a) for a in arts})
+        print(f">> cache curatat: {scoase} intrari ale articolelor expirate")
+    if motive:
+        print(">> motivele miss-urilor din rularea asta: "
+              + ", ".join(f"{k}={v}" for k, v in sorted(motive.items(), key=lambda kv: -kv[1])))
     # scriem doar hit-urile in fisierul consumat de render (miss-urile raman doar in memorie/cache-disk)
     hits = {k: v for k, v in cache.items() if not (v or {}).get("miss")}
     json.dump(cache, open(CACHE, "w"), ensure_ascii=False, indent=0)
-    print(f">> leadphotos: {done} interogari noi, {len(hits)} lead-uri, {len(cache)} intrari cache")
+    print(f">> leadphotos: {done} interogari noi, {refolosite} refolosite fara retea, "
+          f"{len(hits)} lead-uri, {len(cache)} intrari cache")
     return 0
 
 
