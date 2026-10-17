@@ -31,7 +31,7 @@ from .select import (_dedup, _dedup_sources, _diversify, _entity_index,
 # suita. Instructiune separata pentru ca o exceptie de lint pusa pe prima linie a unui import
 # in paranteze NU acopera numele de pe continuari — verificat, nu presupus.
 from .select import _slug_stems, sources_coherent  # noqa: F401
-from .util import domain_of, strip_diacritics
+from .util import domain_of, strip_diacritics, url_https
 from .home_fresh import home_fresh
 
 ROOT = config.ROOT
@@ -168,6 +168,8 @@ def _portret(portraits: dict, name: str) -> dict | None:
     rec = portraits.get(_norm_name(name))
     if not rec:
         return None
+    if rec.get("page") and not url_https(rec["page"]):
+        return None   # creditul ar duce intr-un href nesigur; fara credit valid, fara poza
     rel = rec.get("img") or ""
     if not rel:
         return None

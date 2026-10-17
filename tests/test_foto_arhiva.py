@@ -82,6 +82,29 @@ def test_NEGATIV_licenta_necunoscuta_nu_produce_foto_de_arhiva(tmp_path, monkeyp
         assert render._foto_arhiva(ART, _portraits(lic), {}) is None, lic
 
 
+def test_NEGATIV_creditul_cu_schema_nesigura_scoate_poza(tmp_path, monkeypatch):
+    """Semgrep var-in-href (#491): `page` ajunge in href; doar https absolut trece."""
+    media = tmp_path / "media" / "portraits"
+    media.mkdir(parents=True)
+    (media / "zel.jpg").write_bytes(b"\xff\xd8" + b"0" * 5000)
+    monkeypatch.setattr(render, "MEDIA_DIR", str(tmp_path / "media"))
+    monkeypatch.setattr(render, "OUT_DIR", str(tmp_path / "out"))
+    for rau in ("javascript:alert(1)", " JavaScript:x", "http://commons.wikimedia.org/x",
+                "//evil.example/x", "data:text/html,x", "https:///fara-host"):
+        p = _portraits("CC BY 4.0")
+        p["volodimir zelenski"]["page"] = rau
+        assert render._foto_arhiva(ART, p, {}) is None, rau
+        assert render._portret(p, "volodimir zelenski") is None, rau
+
+
+def test_url_https_accepta_doar_https_absolut():
+    from generator.util import url_https
+    assert url_https(" https://commons.wikimedia.org/wiki/File:Z.jpg ") == \
+        "https://commons.wikimedia.org/wiki/File:Z.jpg"
+    for rau in (None, 3, "", "javascript:alert(1)", "http://x.ro", "/relativ", "https://"):
+        assert url_https(rau) is None, rau
+
+
 def test_pagina_de_articol_nu_mai_deseneaza_decorul_generat():
     with open(os.path.join(ROOT, "templates", "article.html"), encoding="utf-8") as fh:
         tpl = fh.read()

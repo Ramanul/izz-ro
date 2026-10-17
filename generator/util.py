@@ -89,6 +89,24 @@ def normalize_url(url: str) -> str:
     return urlunsplit((scheme, netloc, path, query, ""))
 
 
+def url_https(url) -> str | None:
+    """`url` daca e https absolut cu host, altfel None.
+
+    Garda pentru valorile puse in `href` din date externe (pagina Commons, licenta, sursa
+    oficiala): Jinja escapeaza ghilimelele, dar nu schema, deci `javascript:` ar trece
+    (Semgrep var-in-href pe #491/#493/#494). Creditul fara link valid nu se afiseaza —
+    chemantul scoate poza cu tot cu el, nu o publica fara atribuire.
+    """
+    if not isinstance(url, str):
+        return None
+    u = url.strip()
+    try:
+        parti = urlsplit(u)
+    except ValueError:
+        return None
+    return u if parti.scheme == "https" and parti.netloc else None
+
+
 def domain_of(url: str) -> str:
     try:
         netloc = urlsplit(url).netloc.lower()
