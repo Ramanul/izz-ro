@@ -8,7 +8,7 @@
 > Where the rest lives: `specs/regim-reguli.md` — unified audit closure ·
 > `specs/registru.tsv` — decisions · `CLAUDE.md` — canonical contract.
 
-**Updated:** 2026-10-17 (harta: proveniență + utilizare pe telefon [IZZ-0434])
+**Updated:** 2026-10-17 (imagini coordonate cu articolul: #490–#494 merged, paleta #495)
 
 ## Open
 - **Editorial transformation, 17 Oct:** three-source reading is complete and was not repeated. A is published via #476 (merged); B via #477 (merged), reconfirmed live17Oct. C completes examined provenance, attributed practical impact and expiring resources on one real Sector1 notice; scope and acceptance in `specs/editorial-sources-practical.md`. C release is pending current-head checks. Dossiers, corrections, selection, reader controls and full coverage remain unfinished; no claim of full live transformation.
@@ -16,7 +16,7 @@
 - **PWA + alerte push [IZZ-0430/0431] — PE MAIN (#434 merged):** SW la `/sw.js`, buton instalare, alerte VAPID; fără namespace KV + 4 secrete (`infra/PUSH-SETUP.md`) rutele dau 503. Verificarea Content-Type a manifestului e mecanizată (P0.1 în #438) — de rulat pe live.
 - **Pages `izz-ro` ZOMBI — CONFIRMAT ȘTERS [IZZ-0411]:** `izz-ro.pages.dev` returnează `000` [IZZ-0366, 0395].
 - **PRODUS P1/P2 — media pe carduri [IZZ-0403, 0404 → IZZ-0416; #414 merged]:** portrete PD/CC0 + siluete județ,
-  `covers.py` editorial; 16 oct: portret doar pt. omul din titlu, decupat pe față, `sw.js` v2 (`specs/istoric-executie.md`). **Marcaj AI Act la prima expunere [IZZ-0420]:** trust-label «generat automat» pe card +
+  `covers.py` editorial; 16 oct: portret doar pt. omul din titlu, decupat pe față, `sw.js` v2 (`specs/istoric-executie.md`). **17 oct:** #490 merged · #491 merged · #492 merged · #493 merged · #494 merged — local/județean fără ziua lunii, forma UAT/județului în aur; articol cu foto de arhivă a omului din titlu; card cu CC BY + credit complet, o dată pe pagină; lead de localitate CC BY per QID cu motiv de miss; poze oficiale doar neutre (listă albă pe sursă). Href-urile de credit cer https absolut. Pozele noi apar pe măsură ce `fetch_leadphotos`/`fetch_eventphotos` rulează în build. **Marcaj AI Act la prima expunere [IZZ-0420]:** trust-label «generat automat» pe card +
   meta digitalSourceType + pictograma UE Basic — amendament §4.3 adoptat, veto neexercitat [IZZ-0423].
 - **PRODUS P3 — harta: markere fără ierarhie vizuală [IZZ-0405]:** 482 evenimente, clickuri cablate; e afordanța, nu funcția. **Atribuire geo, 16 oct [IZZ-0433]** + **17 oct [IZZ-0434]:** pini corecți, nivel = precizie; o culoare după locul știrii, proveniența în panoul județului; telefon: pinch, fără chenar de focus, harta în primul ecran, filtrele în sheet. `harta_dom_check`: GESTURI TACTILE verde; FAIL rămas = 2 puncte de frontieră, identic pe HEAD (#454).
 - **FEREASTRA TTL — DECIZIE EXECUTATĂ [IZZ-0421, 0424, 3 oct]:** TTL 20 → 11 → 12 (tripwire crăpat pe
