@@ -31,3 +31,17 @@ Browser verification could not reach localhost (ERR_CONNECTION_TIMED_OUT); in-ap
 browser also failed with a session error. Git Bash fails with NtCreateDirectoryObject
 access denied; Lighthouse/pa11y before/after measurements are not completed.
 No fictional corrections are present in the production catalog.
+
+Release verification continuation:
+- The connected Chrome browser can now reach the local output on port 8873.
+  The expired-correction explanation renders with its notice, review date,
+  evidence link and AI-assistance disclosure, without expired article text.
+- Terminal loopback still fails with WinError 10013 and Git Bash still fails
+  with NtCreateDirectoryObject access denied. Browser reachability does not
+  establish terminal audit capability.
+- `.github/workflows/editorial-frontend-audit.yml` runs the canonical audit
+  on the PR base and exact head, three times each on one Linux runner, with a
+  fixed article path and pinned Lighthouse/pa11y versions. Read-only repository
+  permissions; no secrets, deployment or periodic trigger. Reports and medians
+  are retained as artifacts so performance validation can finish despite the
+  local shell limitation. Scores remain unmeasured until that job succeeds.
