@@ -73,8 +73,22 @@ def lipsesc_diacriticele(sursa: str, generat: str, prag: int = PRAG_CUVINTE) -> 
 
 def text_generat(art: dict) -> str:
     """Textul care se publica: titlul + corpul (sinteza la C, teaser la B)."""
+    return f"{art.get('title') or ''} {corp_generat(art)}"
+
+
+def corp_generat(art: dict) -> str:
+    """Corpul publicat separat de titlu: sinteza la C, teaser la B."""
     corp = art.get("synthesis") if art.get("model") == "C" else art.get("teaser")
-    return f"{art.get('title') or ''} {corp or ''}"
+    return corp or ""
+
+
+def articolul_a_pierdut_diacriticele(sursa: str, art: dict) -> bool:
+    """Semnaleaza pierderea in titlu, corp sau textul combinat."""
+    titlu = art.get("title") or ""
+    corp = corp_generat(art)
+    return (lipsesc_diacriticele(sursa, titlu)
+            or lipsesc_diacriticele(sursa, corp)
+            or lipsesc_diacriticele(sursa, f"{titlu} {corp}"))
 
 
 def text_sursa(art: dict) -> str:
