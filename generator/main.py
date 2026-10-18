@@ -220,7 +220,7 @@ def process_new(new_items: list, provider, budget: int, existing: list | None = 
         sursa = surse_brute.get(a.get("url") or "") or diacritice.text_sursa(a)
         if sursa and (a.get("title") or ""):
             diacritice.noteaza_verificate(1)
-            if diacritice.lipsesc_diacriticele(sursa, diacritice.text_generat(a)):
+            if diacritice.articolul_a_pierdut_diacriticele(sursa, a):
                 perechi_diacritice.append((a, sursa))
     diacritice.noteaza_semnalate(len(perechi_diacritice))
     if perechi_diacritice and used < budget:

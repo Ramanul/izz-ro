@@ -34,6 +34,12 @@ def test_gate_rejects_an_empty_or_whitespace_title():
     assert not render._quality_gate(_ok(title="   "))
 
 
+def test_gate_rejects_mixed_latin_han_tokens_but_allows_separate_scripts():
+    assert not render._quality_gate(_ok(title="p计划 a fost aprobat"))
+    assert not render._quality_gate(_ok(teaser="Compania p计划 a lansat produsul"))
+    assert render._quality_gate(_ok(teaser="Compania 東京 a lansat produsul"))
+
+
 def test_gate_reads_synthesis_for_model_c_and_teaser_otherwise():
     # Un cluster C are `synthesis`; `teaser` nu-l salveaza daca sinteza lipseste.
     assert render._quality_gate(_ok(model="C", synthesis="Sinteza din trei surse.",

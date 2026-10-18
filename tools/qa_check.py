@@ -17,6 +17,7 @@ sys.path.insert(0, ROOT)
 from generator import config                                   # noqa: E402
 from generator.cluster import _strict_match                    # noqa: E402
 from generator.render import _quality_gate, _dedup, sources_coherent  # noqa: E402
+from generator.select import anunt_oficial_fara_corp           # noqa: E402
 from generator.util import title_tokens                        # noqa: E402
 from tools.title_quality_audit import audit as audit_title_quality  # noqa: E402
 
@@ -24,24 +25,34 @@ STATE = os.path.join(ROOT, "data", "articles.json")
 INCOHERENT_MAX = 0          # niciun C incoerent NU trebuie sa scape de gate
 DUP_WARN_RATE = 0.08        # peste 8% duplicate -> doar avertisment
 
-# Diacriticele: MASURA PROXY, pe starea publicabila. Garda exacta ruleaza in pipeline, pe
-# itemele proaspete, unde textul brut al sursei mai exista (`generator/diacritice.py`) — in
-# `articles.json` el e sters la salvare (`state._scrub_processed`), deci aici se poate numara
-# doar „titlu + corp fara NICIO diacritica". Cifra include si texte corecte care n-au nevoie
-# de diacritice („Cancelarul german Friedrich Merz a vizitat Kievul"), de aceea e avertisment
-# cu prag, nu FAIL: un FAIL ar opri publicarea pe o masuratoare care nu distinge cauza.
-# Referinta la introducere (2026-10-04, fereastra 24h): 13/747 = 1,7%, din care 9 erau output
-# AI cu diacritice pierdute si 4 anunturi oficiale (textul institutiei, care nu trece prin AI).
+# Diacriticele: MASURI PROXY separate pentru titlu si corp. Garda exacta ruleaza pe itemele
+# proaspete, unde textul sursei mai exista; dupa scrub, QA nu poate confirma pierderea fata de
+# sursa. Corpul e proxy-ul de avertizare, titlul e raportat separat fiindca multe titluri corecte
+# nu contin cuvinte care cer diacritice. Anunturile oficiale fara corp sunt excluse din proxy-ul
+# corpului: placeholder-ul nu e o sinteza degradabila. Referinta din 2026-10-04 (13/747) folosea
+# proxy-ul combinat vechi, deci nu e direct comparabila cu masuratorile separate de acum.
 DIAC_WARN_RATE = 0.05
 DIAC_FEREASTRA_ORE = 72
 
 
 def _fara_diacritice(a: dict) -> bool:
-    """Titlul SI corpul, amandoua fara nicio diacritica (proxy pentru „a pierdut diacriticele")."""
+    """True daca corpul publicabil nu are diacritice (proxy pentru text degradat)."""
+    if anunt_oficial_fara_corp(a):
+        return False
     diac = "ăâîșțĂÂÎȘȚ"
-    corp = (a.get("synthesis") if a.get("model") == "C" else a.get("teaser")) or ""
-    text = f"{a.get('title') or ''} {corp}"
-    return bool(text.strip()) and not any(ch in diac for ch in text)
+    corp = _corp(a)
+    return bool(corp.strip()) and not any(ch in diac for ch in corp)
+
+
+def _corp(a: dict) -> str:
+    return (a.get("synthesis") if a.get("model") == "C" else a.get("teaser")) or ""
+
+
+def _titlu_fara_diacritice(a: dict) -> bool:
+    """Proxy raport-only: multe titluri corecte nu au nevoie de diacritice."""
+    diac = "ăâîșțĂÂÎȘȚ"
+    title = a.get("title") or ""
+    return bool(title.strip()) and not any(ch in diac for ch in title)
 
 
 def _published() -> list:
@@ -102,9 +113,15 @@ def main() -> int:
     from datetime import datetime, timedelta, timezone
     cut = (datetime.now(timezone.utc) - timedelta(hours=DIAC_FEREASTRA_ORE)).isoformat()
     recente = [a for a in pub if (a.get("published") or "") >= cut]
-    fara = [a for a in recente if _fara_diacritice(a)]
-    print(f"texte recente fara diacritice     : {len(fara)}/{len(recente)}"
-          f" ({len(fara)/max(len(recente),1)*100:.1f}%)"
+    titluri_cu_text = [a for a in recente if (a.get("title") or "").strip()]
+    corpuri_cu_text = [a for a in recente
+                       if not anunt_oficial_fara_corp(a) and _corp(a).strip()]
+    fara = [a for a in corpuri_cu_text if _fara_diacritice(a)]
+    titluri_fara = [a for a in titluri_cu_text if _titlu_fara_diacritice(a)]
+    print(f"titluri recente fara diacritice  : {len(titluri_fara)}/{len(titluri_cu_text)}"
+          f" ({len(titluri_fara)/max(len(titluri_cu_text),1)*100:.1f}%)  (proxy, report-only)")
+    print(f"corpuri recente fara diacritice   : {len(fara)}/{len(corpuri_cu_text)}"
+          f" ({len(fara)/max(len(corpuri_cu_text),1)*100:.1f}%)"
           + (f"  (warn > {DIAC_WARN_RATE*100:.0f}%)" if fara else ""))
 
     print(f"sinteze C strict-asemanatoare    : {len(perechi_story)} perechi "
@@ -131,8 +148,8 @@ def main() -> int:
         )
     if dup / n > DUP_WARN_RATE:
         print(f"!! AVERTISMENT: {dup/n*100:.0f}% duplicate (peste {DUP_WARN_RATE*100:.0f}%)")
-    if recente and len(fara) / len(recente) > DIAC_WARN_RATE:
-        print(f"!! AVERTISMENT: {len(fara)/len(recente)*100:.0f}% texte recente fara diacritice "
+    if corpuri_cu_text and len(fara) / len(corpuri_cu_text) > DIAC_WARN_RATE:
+        print(f"!! AVERTISMENT: {len(fara)/len(corpuri_cu_text)*100:.0f}% corpuri recente fara diacritice "
               f"(peste {DIAC_WARN_RATE*100:.0f}%) — vezi linia «>> diacritice:» din logul de build "
               "pentru cate au fost semnalate si cate reparate")
 

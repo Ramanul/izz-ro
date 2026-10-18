@@ -187,6 +187,16 @@ def _dedup_sources(a: dict) -> None:
 
 _BODY_PLACEHOLDERS = {"Detalii pe sursa.", "Detalii pe surse.", ""}
 _OFFICIAL_DISPLAY_TITLE_MAX = 110
+_LATIN_LETTER = r"A-Za-z\u00C0-\u024F\u1E00-\u1EFF"
+_HAN_IDEOGRAPH = r"\u3400-\u4DBF\u4E00-\u9FFF\uF900-\uFAFF\U00020000-\U0002FA1F"
+_MIXED_LATIN_HAN = re.compile(
+    rf"(?:[{_LATIN_LETTER}]+[{_HAN_IDEOGRAPH}]|[{_HAN_IDEOGRAPH}]+[{_LATIN_LETTER}])"
+)
+
+
+def has_mixed_latin_han(text: str) -> bool:
+    """Detecta tokenuri care amesteca litere latine si ideograme Han."""
+    return bool(_MIXED_LATIN_HAN.search(text or ""))
 
 
 def _titlu_scurt(text: str, limit: int = 84) -> str:
@@ -392,6 +402,8 @@ def _quality_gate(a: dict) -> bool:
         body = (a.get("synthesis") or "").strip()
     else:
         body = (a.get("teaser") or "").strip()
+    if has_mixed_latin_han(f"{title} {body}"):
+        return False
 
     # Anuntul oficial fara corp e SINGURA forma publicabila fara body: titlu original + link.
     # Exceptia e strict pe `processed_by == "official"`, adica pe itemele care nu trec prin AI

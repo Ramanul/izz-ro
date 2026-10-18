@@ -32,7 +32,7 @@
 
 ## Audit closure status
 
-- D release: #497 implements corrections/withdrawals, persistent history, shared publication/map selection, offline disclosure and a reader-controlled reload offer. Local regressions: 20 Python/7 Node contracts; browser checks passed, final CI/performance and live gates pending. Empty production corrections catalog; synthetic cases test-only. Evidence: specs/editorial-corrections.md.
+- D release: #497 implements corrections/withdrawals, persistent history, shared publication/map selection, offline disclosure and a reader-controlled reload offer. Local regressions: 20 Python/7 Node contracts; browser checks passed, final CI/performance and live gates pending. Empty production corrections catalog; synthetic cases test-only. Google AI follow-up (18 Oct, local): B/C Latin–Han guard + publication gate; title/body diacritics checked separately and repaired once; corpus scan: 0/11042 mixed tokens. QA title proxy report-only; body warning excludes official no-body items (16/2165, 0.7%). Targeted 72 passed; full suite last: 2590 passed, 8 failed (one STATE line-cap failure fixed here; seven untouched paths). Render-only built 9867; Pagefind unavailable. `articles.json` untouched; no PR/live verification. Evidence: specs/editorial-corrections.md.
 - **K1–K14:** re-verified in `specs/regim-reguli.md` — a reconciliation register, not a substitute
   for passing tests. **Grounding:** blocks invented quotes and foreign numbers, fails closed.
 - **Coordination:** `handoff/` + `specs/STATE.md`. **Containment:** git destructiv și Edit pe control-plane

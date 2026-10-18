@@ -10,6 +10,7 @@ from datetime import datetime, timezone
 
 from . import config, geo, raport_copiere
 from . import diacritice
+from .select import has_mixed_latin_han
 from .verifica_sinteza import slug_din_link
 from .util import truncate_words, domain_of, strip_diacritics
 
@@ -126,10 +127,15 @@ def repara_diacritice(perechi: list, provider) -> int:
             continue
         titlu = (obj.get("title") or "").strip()
         corp = (obj.get("teaser") or "").strip()
-        if not (titlu and corp) or not diacritice.are_diacritice(f"{titlu} {corp}"):
-            continue
         vechi_titlu = a.get("title") or ""
         vechi_corp = (a.get("synthesis") if a.get("model") == "C" else a.get("teaser")) or ""
+        titlu_pierdut = diacritice.lipsesc_diacriticele(sursa, vechi_titlu)
+        corp_pierdut = diacritice.lipsesc_diacriticele(sursa, vechi_corp)
+        if (not titlu or not corp or not diacritice.are_diacritice(f"{titlu} {corp}")
+                or has_mixed_latin_han(f"{titlu} {corp}")
+                or (titlu_pierdut and not diacritice.are_diacritice(titlu))
+                or (corp_pierdut and not diacritice.are_diacritice(corp))):
+            continue
         if (len(titlu.split()) > len(vechi_titlu.split()) + max(3, int(0.3 * len(vechi_titlu.split())))
                 or len(corp.split()) > len(vechi_corp.split()) + max(4, int(0.3 * len(vechi_corp.split())))):
             continue
@@ -558,6 +564,8 @@ def process_batch(items: list, provider) -> list:
         title = (obj.get("title") or "").strip() if isinstance(obj, dict) else ""
         teaser = (obj.get("teaser") or "").strip() if isinstance(obj, dict) else ""
         if title and teaser:
+            if has_mixed_latin_han(f"{title} {teaser}"):
+                continue
             candidate = f"{title} {teaser}"
             peers = source_texts[:i] + source_texts[i + 1:]
             if _cross_item_contamination(candidate, source_texts[i], peers):
@@ -620,10 +628,14 @@ def process_single(item: dict, provider) -> dict | None:
         data = _parse_json(raw)
     except Exception:
         return None                            # esec AI -> amanat, item-ul ramane intact
+    title = (data.get("title") or item.get("original_title", "")).strip()
+    teaser = truncate_words(data.get("teaser", "") or "Detalii pe sursa.",
+                            config.TEASER_MAX_WORDS)
+    if has_mixed_latin_han(f"{title} {teaser}"):
+        return None
     item["model"] = "B"
-    item["title"] = (data.get("title") or item.get("original_title", "")).strip()
-    item["teaser"] = truncate_words(data.get("teaser", "") or "Detalii pe sursa.",
-                                    config.TEASER_MAX_WORDS)
+    item["title"] = title
+    item["teaser"] = teaser
     item["entities"] = _clean_entities(data.get("entities"))   # inaintea categoriei, vezi mai sus
     item["ai_cat"] = data.get("category", "")                  # tema bruta, vezi process_batch
     item["category"] = _resolve_category(item, item["ai_cat"], item["entities"])
@@ -677,11 +689,13 @@ def process_cluster(group: list, provider) -> dict | None:
             data.get("title") or rep.get("original_title") or rep.get("title") or "",
             context,
         )
-        if not _titlu_sustinut_de_context(candidat, context):
+        synthesis = truncate_words(data.get("synthesis", "") or "Detalii pe surse.",
+                                   config.SYNTHESIS_MAX_WORDS)
+        if (has_mixed_latin_han(f"{candidat} {synthesis}")
+                or not _titlu_sustinut_de_context(candidat, context)):
             return None                        # deformare semantica -> amanat, ca la esecul AI
         rep["title"] = candidat
-        rep["synthesis"] = truncate_words(data.get("synthesis", "") or "Detalii pe surse.",
-                                          config.SYNTHESIS_MAX_WORDS)
+        rep["synthesis"] = synthesis
         rep["entities"] = _clean_entities(data.get("entities"))   # inaintea categoriei, vezi mai sus
         rep["ai_cat"] = data.get("category", "")                  # tema bruta, vezi process_batch
         rep["category"] = _resolve_category(rep, rep["ai_cat"], rep["entities"])
@@ -836,6 +850,9 @@ def process_clusters_batch(groups: list, provider) -> list:
         synthesis = (obj.get("synthesis") or "").strip() if isinstance(obj, dict) else ""
         if not (title and synthesis):
             out.append(None)                   # nemapat -> amanat, ca la esecul unui apel singur
+            continue
+        if has_mixed_latin_han(f"{title} {synthesis}"):
+            out.append(None)
             continue
         context = " ".join(
             f"{a.get('original_title') or a.get('title') or ''} "
