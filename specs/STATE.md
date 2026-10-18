@@ -12,7 +12,7 @@
 
 ## Open
 - **Editorial transformation:** A/B/C published via #476 (merged), #477 (merged) and #489 (merged); 5/12 points and 3/8 slices at pilot scale. D release validation is recorded below. Dossiers, selection, reader controls and broad coverage remain unfinished.
-- **Audite externe:** 3 oct ÎNCHIS [IZZ-0426] (#425 merged, #426 merged; `ai_gateway` pe main, $0, cheile în `.env`) · 4 oct verificat mecanic [IZZ-0432] — 3 confirmate / 2 parțiale / 2 false pozitive; #438 merged (6 oct): A1 gardă de diacritice + A2 semnătură editorială. **#499 deschis:** gărzi output B/C + diacritice, în așteptarea review și CI; deploy numai prin fluxul CI după merge.
+- **Audite externe:** 3 oct ÎNCHIS [IZZ-0426] (#425 merged, #426 merged; `ai_gateway` pe main, $0, cheile în `.env`) · 4 oct verificat mecanic [IZZ-0432] — 3 confirmate / 2 parțiale / 2 false pozitive; #438 merged (6 oct): A1 gardă de diacritice + A2 semnătură editorială. **#499 deschis:** gărzi output B/C + diacritice; CI verde pe 0bc076eb, așteaptă review manager și merge; deploy doar prin CI.
 - **PWA + alerte push [IZZ-0430/0431] — PE MAIN (#434 merged):** SW la `/sw.js`, buton instalare, alerte VAPID; fără namespace KV + 4 secrete (`infra/PUSH-SETUP.md`) rutele dau 503. Verificarea Content-Type a manifestului e mecanizată (P0.1 în #438) — de rulat pe live.
 - **Pages `izz-ro` ZOMBI — CONFIRMAT ȘTERS [IZZ-0411]:** `izz-ro.pages.dev` returnează `000` [IZZ-0366, 0395].
 - **PRODUS P1/P2 — media pe carduri [IZZ-0403, 0404 → IZZ-0416; #414 merged]:** portrete PD/CC0 + siluete județ,
@@ -32,7 +32,7 @@
 
 ## Audit closure status
 
-- D release: #497 implements corrections/withdrawals, persistent history, shared publication/map selection, offline disclosure and a reader-controlled reload offer. Local: 20 Python/7 Node contracts; browser passed; final CI/performance/live pending. Empty production corrections catalog; synthetic tests only. Google AI follow-up (18 Oct): B/C Latin–Han guard + publication gate; diacritics validated per title/body; scan 0/11042. QA title proxy report-only; body warning 16/2165 (0.7%). Targeted 72 passed; full suite 2590 passed/8 failed (line-cap failure fixed; 7 untouched Windows paths remain). Render-only built 9867; Pagefind unavailable. `articles.json` untouched; #499 open, CI/review pending; no live verification. Evidence: specs/editorial-corrections.md.
+- D release: #497 implements corrections/withdrawals, persistent history, shared publication/map selection, offline disclosure and a reader-controlled reload offer. Local: 20 Python/7 Node contracts; browser passed; final CI/performance/live pending. Empty production corrections catalog; synthetic tests only. Google AI follow-up (18 Oct): B/C Latin–Han guard + publication gate; diacritics validated per title/body; scan 0/11042. QA title proxy report-only; body warning 16/2165 (0.7%). Targeted 72 passed; full suite 2590 passed/8 failed (line-cap failure fixed; 7 untouched Windows paths remain). Render-only built 9867; Pagefind unavailable. `articles.json` untouched; #499 CI green on 0bc076eb, manager review/merge pending; no live verification. Evidence: specs/editorial-corrections.md.
 - **K1–K14:** re-verified in `specs/regim-reguli.md` — a reconciliation register, not a substitute
   for passing tests. **Grounding:** blocks invented quotes and foreign numbers, fails closed.
 - **Coordination:** `handoff/` + `specs/STATE.md`. **Containment:** git destructiv și Edit pe control-plane
