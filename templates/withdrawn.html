@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block title %}{% if correction.state == 'withdrawn' %}Material retras{% else %}Istoricul corecției{% endif %} — {{ site.name }}{% endblock %}
+{% block head_extra %}<meta name="robots" content="noindex,follow">{% endblock %}
+{% block content %}
+<article class="article">
+  <h1>{% if correction.state == 'withdrawn' %}Material retras{% else %}Istoricul corecției{% endif %}</h1>
+  <p>{{ correction.notice }}</p>
+  <p>{% if correction.state == 'withdrawn' %}Retras{% else %}Corectat{% endif %} la <time datetime="{{ correction.reviewed_at }}">{{ correction.reviewed_at }}</time>.</p>
+  {% if active_path %}<p><a href="/{{ active_path.lstrip('/') }}">Citește versiunea corectată a articolului</a>.</p>
+  {% elif correction.state != 'withdrawn' %}<p>Articolul nu este disponibil în fereastra curentă. Păstrăm explicația corecției fără a republica textul expirat.</p>{% endif %}
+  <p>{% if correction.scheme == 'https' %}<a href="https://{{ correction.destination }}" target="_blank" rel="noopener noreferrer">Documentul modificării</a>{% elif correction.scheme == 'http' %}<a href="http://{{ correction.destination }}" target="_blank" rel="noopener noreferrer">Documentul modificării</a>{% endif %}</p>
+  {% if correction.kind == 'documentary' %}<p>Documentare cu asistență AI; nu reprezintă revizie umană.</p>{% endif %}
+  <p><a href="{{ base }}/">Știrile curente</a></p>
+</article>
+{% endblock %}

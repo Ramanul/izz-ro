@@ -1,0 +1,87 @@
+name: editorial-frontend-audit
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'generator/publication.py'
+      - 'templates/withdrawn.html'
+      - '.github/workflows/editorial-frontend-audit.yml'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: editorial-audit-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  compare:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7
+        with:
+          python-version: '3.11'
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
+        with:
+          node-version: '22'
+      - name: Install audit dependencies
+        run: |
+          python -m pip install -r requirements.txt
+          npm install --global lighthouse@13.4.1 pa11y@10.0.0
+      - name: Compare three runs per revision
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          ARTICLE_PATH: /local/intrerupere-temporara-a-serviciilor-de-plata-online-in-perioada-16-18-octombrie/
+          CHROME_PATH: /usr/bin/google-chrome
+        run: |
+          git worktree add --detach "$RUNNER_TEMP/izz-before" "$BASE_SHA"
+          mkdir -p "$GITHUB_WORKSPACE/audit-results"
+          for revision in before after; do
+            root="$GITHUB_WORKSPACE"
+            if [ "$revision" = before ]; then root="$RUNNER_TEMP/izz-before"; fi
+            for repeat in 1 2 3; do
+              export AUDIT_OUT="$GITHUB_WORKSPACE/audit-results/$revision-$repeat"
+              (cd "$root" && bash tools/audit.sh)
+            done
+          done
+      - name: Summarize medians
+        run: |
+          python - <<'PY'
+          import csv
+          import json
+          import os
+          import statistics
+          from pathlib import Path
+
+          root = Path('audit-results')
+          lines = ['## Editorial frontend audit', '', '| Revision | Page | Perf | A11y | Best practices | SEO |', '|---|---|---|---|---|---|']
+          for revision in ('before', 'after'):
+              for page in ('home', 'article'):
+                  reports = [json.loads((root / f'{revision}-{i}' / f'lh-{page}.json').read_text()) for i in (1, 2, 3)]
+                  scores = [statistics.median(r['categories'][key]['score'] * 100 for r in reports) for key in ('performance', 'accessibility', 'best-practices', 'seo')]
+                  lines.append('| ' + ' | '.join([revision, page, *(str(round(s, 1)) for s in scores)]) + ' |')
+              counts = []
+              for i in (1, 2, 3):
+                  with (root / f'{revision}-{i}' / 'pa11y-home.csv').open() as stream:
+                      counts.append(max(0, len(list(csv.reader(stream))) - 1))
+              lines.append(f'\n{revision}: WCAG2AA home error counts {counts}.\n')
+          summary = '\n'.join(lines)
+          (root / 'summary.md').write_text(summary)
+          with open(os.environ['GITHUB_STEP_SUMMARY'], 'a') as stream:
+              stream.write(summary)
+          print(summary)
+          PY
+      - name: Preserve evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: editorial-frontend-audit
+          path: audit-results/
+          retention-days: 14

@@ -8,10 +8,10 @@
 > Where the rest lives: `specs/regim-reguli.md` — unified audit closure ·
 > `specs/registru.tsv` — decisions · `CLAUDE.md` — canonical contract.
 
-**Updated:** 2026-10-17 (imagini coordonate cu articolul: #490–#494 merged, paleta #495)
+**Updated:** 2026-10-18 (editorial correction release validation)
 
 ## Open
-- **Editorial transformation, 17 Oct:** three-source reading is complete and was not repeated. A is published via #476 (merged); B via #477 (merged), reconfirmed live17Oct. C completes examined provenance, attributed practical impact and expiring resources on one real Sector1 notice; scope and acceptance in `specs/editorial-sources-practical.md`. C release is pending current-head checks. Dossiers, corrections, selection, reader controls and full coverage remain unfinished; no claim of full live transformation.
+- **Editorial transformation:** A/B/C published via #476 (merged), #477 (merged) and #489 (merged); 5/12 points and 3/8 slices at pilot scale. D release validation is recorded below. Dossiers, selection, reader controls and broad coverage remain unfinished.
 - **Audite externe:** 3 oct ÎNCHIS [IZZ-0426] (#425 merged, #426 merged; `ai_gateway` pe main, $0, cheile în `.env`) · 4 oct verificat mecanic [IZZ-0432] — 3 confirmate / 2 parțiale / 2 false pozitive (bara de consimțământ și manifestul PWA existau): `notes/analiza-audit-extern-2026-10-04.md`; pe main prin #438 (merged, 6 oct): A1 gardă de diacritice + A2 semnătura editorială/E-E-A-T.
 - **PWA + alerte push [IZZ-0430/0431] — PE MAIN (#434 merged):** SW la `/sw.js`, buton instalare, alerte VAPID; fără namespace KV + 4 secrete (`infra/PUSH-SETUP.md`) rutele dau 503. Verificarea Content-Type a manifestului e mecanizată (P0.1 în #438) — de rulat pe live.
 - **Pages `izz-ro` ZOMBI — CONFIRMAT ȘTERS [IZZ-0411]:** `izz-ro.pages.dev` returnează `000` [IZZ-0366, 0395].
@@ -32,6 +32,7 @@
 
 ## Audit closure status
 
+- D release: #497 implements corrections/withdrawals, persistent history, shared publication/map selection, offline disclosure and a reader-controlled reload offer. Local regressions: 20 Python/7 Node contracts; browser checks passed, final CI/performance and live gates pending. Empty production corrections catalog; synthetic cases test-only. Evidence: specs/editorial-corrections.md.
 - **K1–K14:** re-verified in `specs/regim-reguli.md` — a reconciliation register, not a substitute
   for passing tests. **Grounding:** blocks invented quotes and foreign numbers, fails closed.
 - **Coordination:** `handoff/` + `specs/STATE.md`. **Containment:** git destructiv și Edit pe control-plane
@@ -50,6 +51,5 @@
 - Cadence is the GitHub scheduler, not the 105-min gate: 25% firing, ~6 starts/day, median ~4h.
   Re-measure with `tools/cadenta_reala.py`; do not quote the number from memory. [IZZ-0364]
 - Do not treat retired static-host origins as live origins; Worker origin is the fallback path.
-- Do not use old task journals as normative coordination channels.
-- Every measurement gets its window and its command, or it is not a measurement [IZZ-0367].
+- Use current handoff for coordination; every measurement needs its window and command [IZZ-0367].
 - Do not mark live, GitHub settings, or Cloudflare facts as solved based only on repository code.

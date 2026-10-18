@@ -20,7 +20,7 @@ from xml.sax.saxutils import escape as xml_escape
 from jinja2 import Environment, FileSystemLoader, select_autoescape
 from slugify import slugify
 
-from . import config, covers, editorial, geo, htmlart, pagefind_index
+from . import config, covers, editorial, geo, htmlart, pagefind_index, publication
 from .select import (_dedup, _dedup_sources, _diversify, _entity_index,
                      _pick_hero, _quality_gate, anunt_oficial_fara_corp, filtru_cautare_rapida,
                      publicitar_la_sursa, titlu_afisare)
@@ -257,7 +257,8 @@ def _asset_ver() -> dict:
     if _ASSET_VER is None:
         _ASSET_VER = {name: _content_ver(os.path.join(STATIC_DIR, name))
                       for name in ("styles.css", "personalize.js", "search.js", "theme.js", "fonts.css",
-                                   "calc-salariu.js", "site.webmanifest", "pwa.js", "push.js")}
+                                   "calc-salariu.js", "site.webmanifest", "pwa.js", "push.js",
+                                   "editorial-updates.js")}
     return _ASSET_VER
 
 
@@ -626,7 +627,7 @@ def _stiri_pentru_judet(articles: list, code: str, limita: int = 8) -> list:
     for a in articles:
         if a.get("category") not in ("judetean", "local"):
             continue
-        if geo.judet_sursa(a.get("source")) != code:
+        if (a.get("editorial_county") or geo.judet_sursa(a.get("source"))) != code:
             continue
         if not a.get("slug"):
             continue
@@ -1089,6 +1090,20 @@ def build(articles: list, mod: dict | None = None) -> None:
     editorial_errors = editorial.validate_annotations(annotations, articles, provenance)
     if editorial_errors:
         raise editorial.EditorialError("\n".join(editorial_errors))
+    corrections = publication.load()
+    articles = publication.apply(articles, corrections)
+    editorial_revisions = publication.revisions(corrections)
+    env.globals["editorial_version"] = editorial_revisions["version"]
+    tombstones = sum(len(row["public_paths"]) for row in corrections.values())
+    if tombstones > config.OUTPUT_NON_ARTICLE_RESERVE:
+        raise editorial.EditorialError("withdrawal archive exceeds reserved file budget; retention decision required")
+    for a in articles:
+        if a.get("correction"):
+            if not _quality_gate(a):
+                raise editorial.EditorialError("corrected presentation fails publication quality gate")
+            a["anunt_fara_corp"] = anunt_oficial_fara_corp(a)
+            a["tip_anunt"] = filtru_cautare_rapida(a)
+            a["display_title"] = titlu_afisare(a)
     # data formatata e artefact de AFISARE, nu identitate: se recalculeaza la fiecare randare
     # si nu are ce cauta in stare (`assign_slugs` ruleaza acum si inainte de `state.save`).
     for a in articles:
@@ -1130,7 +1145,8 @@ def build(articles: list, mod: dict | None = None) -> None:
 
     # Supapa de siguranta a plafonului gazdei. Taie ACUM, inainte de orice scriere, ca
     # paginile de subiect, paginarea, sitemapurile si feedul sa vada exact ce se publica.
-    incap = _articole_publicabile(len(by_date))
+    incap = (_articole_publicabile(len(by_date), reserve=config.OUTPUT_NON_ARTICLE_RESERVE + tombstones)
+             if tombstones else _articole_publicabile(len(by_date)))
     if incap < len(by_date):
         logging.error("!! ingestul depaseste bugetul de fisiere: public %d din %d articole "
                       "(buget %d, rezerva %d). Fereastra efectiva scade sub ARTICLE_TTL_DAYS=%d "
@@ -1142,6 +1158,26 @@ def build(articles: list, mod: dict | None = None) -> None:
     _ataseaza_legaturi(by_date)
     editorial_now = datetime.now(timezone.utc)
     by_date = [editorial.apply_view(a, annotations, provenance, editorial_now) for a in by_date]
+    publication_manifest = publication.manifest(by_date, corrections)
+    _write(os.path.join(OUT_DIR, "editorial-publication.json"),
+           json.dumps(publication_manifest, ensure_ascii=False, sort_keys=True))
+    _write(os.path.join(OUT_DIR, "editorial-revisions.json"),
+           json.dumps(editorial_revisions, sort_keys=True))
+    # Generate the delivered map from the exact active publication copies, including
+    # corrections, future-date and file-budget exclusions. Never reuse a stale map asset.
+    from tools import build_harta_data
+    build_harta_data.main(articles=by_date,
+                         out=os.path.join(OUT_DIR, "static/harta-stiri/data/map.json"),
+                         publication_digest=publication_manifest["digest"])
+    active_paths = {editorial.public_path(a) for a in by_date}
+    active_keys = {editorial.annotation_key(a): editorial.public_path(a) for a in by_date}
+    for row in corrections.values():
+        for path in row["public_paths"]:
+            if path not in active_paths:
+                _write(os.path.join(OUT_DIR, path.strip("/"), "index.html"),
+                       env.get_template("withdrawn.html").render(
+                           **_base_ctx(path), correction=publication.public_notice(row),
+                           active_path=active_keys.get(row["key"])))
     _write(os.path.join(OUT_DIR, "editorial-report.json"),
            json.dumps(editorial.catalog_report(annotations, by_date, provenance, editorial_now),
                       ensure_ascii=False, sort_keys=True, indent=2))
@@ -1215,7 +1251,7 @@ def build(articles: list, mod: dict | None = None) -> None:
         ok = (bool(lp) and not lp.get("credit_required")
               and _spend(_use_media(os.path.join(MEDIA_DIR, lp["cover"]), cover_dst)))
         if not ok:
-            ok = _spend(_use_media(os.path.join(MEDIA_DIR, f"{aid}.c.jpg"), cover_dst)
+            ok = _spend((not a.get("correction") and _use_media(os.path.join(MEDIA_DIR, f"{aid}.c.jpg"), cover_dst))
                         or covers.generate(a, cover_dst))
         if ok:
             a["cover_url"] = (f"{config.SITE['url']}/{a['category']}/{a['slug']}/cover.jpg"
@@ -1235,7 +1271,7 @@ def build(articles: list, mod: dict | None = None) -> None:
         aid = htmlart.art_id(a)
         art_dst = os.path.join(cdir, "art.jpg")
         webp_dst = os.path.join(cdir, "art.webp")
-        lp = leadphotos.get(aid)
+        lp = None if a.get("correction") else leadphotos.get(aid)
         if lp and lp.get("credit_required"):
             # CC BY / CC BY-SA: fisier si variabile SEPARATE de art.jpg/art_path, ca poza sa
             # nu poata ajunge pe card, hero sau og:image nici din greseala -- cardurile citesc
@@ -1257,7 +1293,7 @@ def build(articles: list, mod: dict | None = None) -> None:
             if (lp.get("webp")
                     and _spend(_use_media(os.path.join(MEDIA_DIR, lp["webp"]), webp_dst))):
                 a["art_webp"] = f"/{a['category']}/{a['slug']}/art.webp?v={_content_ver(webp_dst)}"
-        elif a.get("event_chart"):
+        elif a.get("event_chart") and not a.get("correction"):
             # Imagine DIN DATE (harta epicentrului, graficul meteo): nu e decor derivat din
             # seed, e continut, deci nu se poate desena din `art_style`. Ramane fisier cat
             # timp exista randarea Chromium comisa; altfel articolul cade pe arta inline.
@@ -1694,9 +1730,10 @@ def _ataseaza_legaturi(articole: list) -> None:
     for a in articole:
         if not isinstance(a, dict):
             continue
-        a["judet"] = geo.judet_sursa(a.get("source")) or ""
+        a["judet"] = a.get("editorial_county") or geo.judet_sursa(a.get("source")) or ""
         a["ghid"] = _ghid_pentru(a, index)
-        a["timeline"] = _timeline(a)
+        # Source headlines may repeat the very statement that was corrected.
+        a["timeline"] = None if a.get("correction") else _timeline(a)
 
 
 def _nr_surse(articol: dict) -> int:
@@ -2371,6 +2408,9 @@ def _write_headers() -> None:
            # instead of the more specific rule replacing the general one; "!" is the
            # documented way to unset the inherited value before setting the real one.
            "/static/harta-stiri/*\n  ! Cache-Control\n  Cache-Control: public, max-age=300, must-revalidate\n"
+           "/static/harta-stiri/data/*\n  ! Cache-Control\n  Cache-Control: public, max-age=0, must-revalidate\n"
+           "/editorial-publication.json\n  Cache-Control: public, max-age=0, must-revalidate\n"
+           "/editorial-revisions.json\n  Cache-Control: public, max-age=0, must-revalidate\n"
            # Indexul de cautare (Pagefind). Fisierul de intrare si `pagefind.js` poarta
            # versiunea si numele bucatilor de index; amandoua se schimba la fiecare build,
            # iar bucatile vechi NU mai exista pe noua versiune. Un browser care tine in cache
@@ -2384,14 +2424,14 @@ def _write_headers() -> None:
            "/_pagefind/pagefind.js\n  ! Cache-Control\n"
            "  Cache-Control: public, max-age=0, must-revalidate\n"
            "/search-index.json\n  ! Cache-Control\n"
-           "  Cache-Control: public, max-age=300, must-revalidate\n"
+           "  Cache-Control: public, max-age=0, must-revalidate\n"
            "/favicon.svg\n  Cache-Control: public, max-age=2592000\n"
            "/*.jpg\n  Cache-Control: public, max-age=86400\n"
            "/*.png\n  Cache-Control: public, max-age=86400\n"
            "/*.webp\n  Cache-Control: public, max-age=86400\n"
-           "/feed.xml\n  Cache-Control: public, max-age=1800\n"
-           "/*/feed.xml\n  Cache-Control: public, max-age=1800\n"
-           "/*/*/feed.xml\n  Cache-Control: public, max-age=1800\n"
+           "/feed.xml\n  Cache-Control: public, max-age=0, must-revalidate\n"
+           "/*/feed.xml\n  Cache-Control: public, max-age=0, must-revalidate\n"
+           "/*/*/feed.xml\n  Cache-Control: public, max-age=0, must-revalidate\n"
            "/build.json\n  Cache-Control: public, max-age=0, must-revalidate\n")
 
 
@@ -2536,3 +2576,4 @@ def _write_feed(articles: list) -> None:
     _write(os.path.join(OUT_DIR, "feed.xml"),
            _feed_xml(articles, config.SITE["name"], config.SITE["url"], config.SITE["tagline"],
                      feed_url=f"{config.SITE['url']}/feed.xml"))
+
