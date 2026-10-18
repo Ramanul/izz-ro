@@ -339,4 +339,4 @@ Citește răspunsul Arenei la review-ul sistemului de economie de context (chatu
 ## 19. izz.ro — gărzi pentru output AI (18 octombrie)
 - Local, pe branch `ramanul-ai-output-quality`: tokenuri Latin–Han respinse pe căile B/C și la quality gate; verificarea diacriticelor tratează separat titlul/corpul și QA raportează proxy-urile distinct. Corpus scan: 0/11042 tokenuri mixte. 72 teste țintite + Ruff trecute; full suite: 2590 passed, 8 failed (7 în căi neatinse/limitări Windows; testul plafonului STATE a fost corectat și trecut separat).
 - QA: 16/2165 corpuri eligibile fără diacritice (0,7%). Render-only a construit 9867 articole; Pagefind lipsește local. `data/articles.json` neatins.
-- PR în pregătire la cererea proprietarului. Nu se face deploy manual; live rămâne neconfirmat până la review/merge și CI/CD.
+- PR #499 deschis la cererea proprietarului; checks/review în curs. Nu se face deploy manual; live rămâne neconfirmat până la review/merge și CI/CD.
