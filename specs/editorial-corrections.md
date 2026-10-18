@@ -66,8 +66,17 @@ Release verification continuation:
   stories now withhold that timeline. Historical aliases link to their active
   corrected article rather than claiming it expired. Multiple active articles
   sharing one story_id remain rejected as ambiguous by the existing validator.
-- Focused local regression: 18 Python tests and 7 Node contracts passed; Ruff
-  and whitespace checks pass. Full suite and final-head audits remain pending.
+- Full local suite on the resumed release: 2581 passed, 6 skipped, 8 xfailed
+  in311.88seconds; GitHub combined-main suite2592passed/1skipped/8xfailed48.92s.
+  Ruff and whitespace checks pass. Final-head repeated audit remains pending.
+- Actual browser on the updated implementation: the delayed revision signal
+  offered a reload while retaining the old page; clicking loaded the corrected
+  title/date/explanation. Offline reload disclosed unverified freshness; alias
+  and withdrawal pages were inspected. At390px, content width and scroll width
+  both375px. Test networking/viewport overrides were restored after the checks.
+- Semgrep flagged the new active alias href. The template now enforces a literal
+  same-site slash prefix, additionally tested with javascript: and //host inputs;
+  no rule suppression or security-setting change is used.
 - Earlier head audit39068580080: three runs each, home85->85/article96->96,
   other Lighthouse categories100; Pa11y home1->1 (existing #judet-pin finding).
   These are historical baseline measurements, not proof of the updated head.

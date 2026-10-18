@@ -107,6 +107,15 @@ def test_corrected_alias_links_to_active_article(tmp_path, monkeypatch, article)
     assert f'content="{signal["version"]}"' in page
 
 
+@pytest.mark.parametrize("path", ["javascript:alert(1)", "//foreign.example/page/"])
+def test_history_link_has_literal_same_site_prefix(article, path):
+    notice = publication.public_notice(next(iter(correction(article).values())))
+    page = render._env().get_template("withdrawn.html").render(
+        **render._base_ctx("/local/old-address/"), correction=notice, active_path=path)
+    assert f'href="/{path.lstrip(chr(47))}"' in page
+    assert 'href="javascript:' not in page and 'href="//foreign.example' not in page
+
+
 def test_county_list_and_map_agree_after_correction(article):
     view = publication.apply([article], correction(article))[0]
     assert render._stiri_pentru_judet([view], "TIMIS") == [view]

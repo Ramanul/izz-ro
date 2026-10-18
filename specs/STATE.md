@@ -32,7 +32,7 @@
 
 ## Audit closure status
 
-- D release: #497 implements corrections/withdrawals, persistent history, shared publication/map selection, offline disclosure and a reader-controlled reload offer. Local regressions: 18 Python/7 Node contracts; final CI, browser/performance and live gates pending. Empty production corrections catalog; synthetic cases test-only. Evidence: specs/editorial-corrections.md.
+- D release: #497 implements corrections/withdrawals, persistent history, shared publication/map selection, offline disclosure and a reader-controlled reload offer. Local regressions: 20 Python/7 Node contracts; browser checks passed, final CI/performance and live gates pending. Empty production corrections catalog; synthetic cases test-only. Evidence: specs/editorial-corrections.md.
 - **K1–K14:** re-verified in `specs/regim-reguli.md` — a reconciliation register, not a substitute
   for passing tests. **Grounding:** blocks invented quotes and foreign numbers, fails closed.
 - **Coordination:** `handoff/` + `specs/STATE.md`. **Containment:** git destructiv și Edit pe control-plane
