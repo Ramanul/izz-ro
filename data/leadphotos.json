@@ -2618,11 +2618,15 @@
  },
  "ef30c64a849209c2": {
   "miss": true,
-  "v": 2
+  "v": 3,
+  "motiv_loc": "loc_dimensiune_sau_format",
+  "motiv_ent": "ent_fara_entitati"
  },
  "30f5ad8a879ed691": {
   "miss": true,
-  "v": 2
+  "v": 3,
+  "motiv_loc": "loc_dimensiune_sau_format",
+  "motiv_ent": "ent_fara_entitati"
  },
  "80490fe6a80bffcc": {
   "cover": "leads/loc-Q202458.c.jpg",
@@ -2646,82 +2650,6 @@
   "qid": "Q837161"
  },
  "04df2ced8fd5e33c": {
-  "miss": true,
-  "v": 2
- },
- "a5afe3af4341f85c": {
-  "miss": true,
-  "v": 2
- },
- "6244b835d23868ae": {
-  "miss": true,
-  "v": 2
- },
- "a1322a01efaa20ae": {
-  "miss": true,
-  "v": 2
- },
- "0bb3c8320929337c": {
-  "miss": true,
-  "v": 2
- },
- "6d9e39ab04283e84": {
-  "miss": true,
-  "v": 2
- },
- "e0537c78f845b415": {
-  "miss": true,
-  "v": 2
- },
- "c16133bbb0a45dbc": {
-  "miss": true,
-  "v": 2
- },
- "b8c5151aa64a7eca": {
-  "miss": true,
-  "v": 2
- },
- "811ac0ce7e36fb37": {
-  "miss": true,
-  "v": 2
- },
- "3891920f5b526d87": {
-  "miss": true,
-  "v": 2
- },
- "4356d3303fb8e6ad": {
-  "miss": true,
-  "v": 2
- },
- "01d004b3a81ba54b": {
-  "miss": true,
-  "v": 2
- },
- "e610fe6fd9a9ad00": {
-  "miss": true,
-  "v": 2
- },
- "138f8909f90e8819": {
-  "miss": true,
-  "v": 2
- },
- "15440adce2a91c98": {
-  "miss": true,
-  "v": 2
- },
- "aaf9ca9cc306bdf2": {
-  "miss": true,
-  "v": 2
- },
- "83ed3bbe7c8978d6": {
-  "miss": true,
-  "v": 2
- },
- "dd2dcb9430963cf6": {
-  "miss": true,
-  "v": 2
- },
- "b19256dd3a08f415": {
   "miss": true,
   "v": 2
  },
@@ -4866,8 +4794,15 @@
   "v": 2
  },
  "83883950cebc1fcc": {
-  "miss": true,
-  "v": 2
+  "cover": "leads/loc-Q16427725.c.jpg",
+  "art": "leads/loc-Q16427725.jpg",
+  "webp": "leads/loc-Q16427725.webp",
+  "artist": "Dan Mihai Pitea",
+  "license": "CC BY-SA 3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Timisoara_-_Aerial_view.jpg",
+  "name": "Dumbrăvița",
+  "kind": "locality",
+  "qid": "Q16427725"
  },
  "18a26440b64afba5": {
   "miss": true,
@@ -6762,10 +6697,6 @@
   "v": 2
  },
  "978fdc1c5aeab1c3": {
-  "miss": true,
-  "v": 2
- },
- "10a4e217dda28632": {
   "miss": true,
   "v": 2
  },
@@ -10392,10 +10323,737 @@
   "kind": "locality",
   "qid": "Q12724790"
  },
- "f565de8f78517751": {
-  "cover": "leads/of-f565de8f78517751.c.jpg",
-  "art": "leads/of-f565de8f78517751.jpg",
-  "webp": "leads/of-f565de8f78517751.webp",
+ "ece8716b0fc3b7b0": {
+  "cover": "leads/loc-Q841511.c.jpg",
+  "art": "leads/loc-Q841511.jpg",
+  "webp": "leads/loc-Q841511.webp",
+  "artist": "Andrei Stroe",
+  "license": "CC BY-SA 4.0",
+  "page": "https://commons.wikimedia.org/wiki/File:RO_HD_Brad_1.jpg",
+  "name": "Brad",
+  "kind": "locality",
+  "qid": "Q841511"
+ },
+ "65423b7da51fbac1": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_negasit_sau_fara_imagine",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "3a90983dae55d652": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_negasit_sau_fara_imagine",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "54370a6f6b49dbfe": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_licenta",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "249f63ecc39d247a": {
+  "cover": "leads/loc-Q16427725.c.jpg",
+  "art": "leads/loc-Q16427725.jpg",
+  "webp": "leads/loc-Q16427725.webp",
+  "artist": "Dan Mihai Pitea",
+  "license": "CC BY-SA 3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Timisoara_-_Aerial_view.jpg",
+  "name": "Dumbrăvița",
+  "kind": "locality",
+  "qid": "Q16427725"
+ },
+ "3352ea67e34c202c": {
+  "cover": "leads/loc-Q16427725.c.jpg",
+  "art": "leads/loc-Q16427725.jpg",
+  "webp": "leads/loc-Q16427725.webp",
+  "artist": "Dan Mihai Pitea",
+  "license": "CC BY-SA 3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Timisoara_-_Aerial_view.jpg",
+  "name": "Dumbrăvița",
+  "kind": "locality",
+  "qid": "Q16427725"
+ },
+ "0fe1460dd98afff1": {
+  "cover": "leads/loc-Q3793904.c.jpg",
+  "art": "leads/loc-Q3793904.jpg",
+  "webp": "leads/loc-Q3793904.webp",
+  "artist": "Atelierelealbe",
+  "license": "CC BY-SA 3.0 ro",
+  "page": "https://commons.wikimedia.org/wiki/File:Biserica_Cuvioasa_Paraschiva.tif",
+  "name": "Ciulnița",
+  "kind": "locality",
+  "qid": "Q3793904"
+ },
+ "430227a257d52c7b": {
+  "cover": "leads/loc-Q16427725.c.jpg",
+  "art": "leads/loc-Q16427725.jpg",
+  "webp": "leads/loc-Q16427725.webp",
+  "artist": "Dan Mihai Pitea",
+  "license": "CC BY-SA 3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Timisoara_-_Aerial_view.jpg",
+  "name": "Dumbrăvița",
+  "kind": "locality",
+  "qid": "Q16427725"
+ },
+ "c928324aa731bf28": {
+  "cover": "leads/loc-Q1653578.c.jpg",
+  "art": "leads/loc-Q1653578.jpg",
+  "webp": "leads/loc-Q1653578.webp",
+  "artist": "Andrei Stroe",
+  "license": "CC BY-SA 3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:RO_IF_Dobroesti_panorama.jpg",
+  "name": "Dobroești",
+  "kind": "locality",
+  "qid": "Q1653578"
+ },
+ "f8f76352c8a50c63": {
+  "cover": "leads/loc-Q83404.c.jpg",
+  "art": "leads/loc-Q83404.jpg",
+  "webp": "leads/loc-Q83404.webp",
+  "artist": "Frentescu.adrian",
+  "license": "CC BY-SA 4.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Festivalul_Florilor_TimFloralis.jpg",
+  "name": "Timișoara",
+  "kind": "locality",
+  "qid": "Q83404"
+ },
+ "c85ecf5d30ded7d7": {
+  "cover": "leads/loc-Q83404.c.jpg",
+  "art": "leads/loc-Q83404.jpg",
+  "webp": "leads/loc-Q83404.webp",
+  "artist": "Frentescu.adrian",
+  "license": "CC BY-SA 4.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Festivalul_Florilor_TimFloralis.jpg",
+  "name": "Timișoara",
+  "kind": "locality",
+  "qid": "Q83404"
+ },
+ "a1c64c3204c3e995": {
+  "cover": "leads/loc-Q83404.c.jpg",
+  "art": "leads/loc-Q83404.jpg",
+  "webp": "leads/loc-Q83404.webp",
+  "artist": "Frentescu.adrian",
+  "license": "CC BY-SA 4.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Festivalul_Florilor_TimFloralis.jpg",
+  "name": "Timișoara",
+  "kind": "locality",
+  "qid": "Q83404"
+ },
+ "100cba41d620d267": {
+  "cover": "leads/loc-Q83404.c.jpg",
+  "art": "leads/loc-Q83404.jpg",
+  "webp": "leads/loc-Q83404.webp",
+  "artist": "Frentescu.adrian",
+  "license": "CC BY-SA 4.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Festivalul_Florilor_TimFloralis.jpg",
+  "name": "Timișoara",
+  "kind": "locality",
+  "qid": "Q83404"
+ },
+ "b2c9dd3895e6efc7": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_negasit_sau_fara_imagine",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "34feb76bf0dcd82c": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_negasit_sau_fara_imagine",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "3ca89acff7893fa5": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_dimensiune_sau_format",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "565f246195572f09": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_dimensiune_sau_format",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "e143369725c0b611": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_dimensiune_sau_format",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "4f7a886a79dac6e1": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_dimensiune_sau_format",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "0404b4b09c417067": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_negasit_sau_fara_imagine",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "13f0eb2b3e71c610": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_negasit_sau_fara_imagine",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "622daa12814e9e21": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_negasit_sau_fara_imagine",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "87c41f7895eb73a3": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_dimensiune_sau_format",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "9ff48b0dcb35b57a": {
+  "cover": "leads/loc-Q16427725.c.jpg",
+  "art": "leads/loc-Q16427725.jpg",
+  "webp": "leads/loc-Q16427725.webp",
+  "artist": "Dan Mihai Pitea",
+  "license": "CC BY-SA 3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Timisoara_-_Aerial_view.jpg",
+  "name": "Dumbrăvița",
+  "kind": "locality",
+  "qid": "Q16427725"
+ },
+ "b7a75c3f83898f84": {
+  "cover": "leads/loc-Q1653578.c.jpg",
+  "art": "leads/loc-Q1653578.jpg",
+  "webp": "leads/loc-Q1653578.webp",
+  "artist": "Andrei Stroe",
+  "license": "CC BY-SA 3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:RO_IF_Dobroesti_panorama.jpg",
+  "name": "Dobroești",
+  "kind": "locality",
+  "qid": "Q1653578"
+ },
+ "d5c8a3be3c84edce": {
+  "cover": "leads/loc-Q1653578.c.jpg",
+  "art": "leads/loc-Q1653578.jpg",
+  "webp": "leads/loc-Q1653578.webp",
+  "artist": "Andrei Stroe",
+  "license": "CC BY-SA 3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:RO_IF_Dobroesti_panorama.jpg",
+  "name": "Dobroești",
+  "kind": "locality",
+  "qid": "Q1653578"
+ },
+ "437c428c7334ad6a": {
+  "cover": "leads/loc-Q1653578.c.jpg",
+  "art": "leads/loc-Q1653578.jpg",
+  "webp": "leads/loc-Q1653578.webp",
+  "artist": "Andrei Stroe",
+  "license": "CC BY-SA 3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:RO_IF_Dobroesti_panorama.jpg",
+  "name": "Dobroești",
+  "kind": "locality",
+  "qid": "Q1653578"
+ },
+ "fa56b39ffe222191": {
+  "cover": "leads/loc-Q16427725.c.jpg",
+  "art": "leads/loc-Q16427725.jpg",
+  "webp": "leads/loc-Q16427725.webp",
+  "artist": "Dan Mihai Pitea",
+  "license": "CC BY-SA 3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Timisoara_-_Aerial_view.jpg",
+  "name": "Dumbrăvița",
+  "kind": "locality",
+  "qid": "Q16427725"
+ },
+ "55fe2b8578ebaec4": {
+  "cover": "leads/loc-Q83404.c.jpg",
+  "art": "leads/loc-Q83404.jpg",
+  "webp": "leads/loc-Q83404.webp",
+  "artist": "Frentescu.adrian",
+  "license": "CC BY-SA 4.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Festivalul_Florilor_TimFloralis.jpg",
+  "name": "Timișoara",
+  "kind": "locality",
+  "qid": "Q83404"
+ },
+ "426fe8e5f805aea6": {
+  "cover": "leads/loc-Q83404.c.jpg",
+  "art": "leads/loc-Q83404.jpg",
+  "webp": "leads/loc-Q83404.webp",
+  "artist": "Frentescu.adrian",
+  "license": "CC BY-SA 4.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Festivalul_Florilor_TimFloralis.jpg",
+  "name": "Timișoara",
+  "kind": "locality",
+  "qid": "Q83404"
+ },
+ "77d3c5de1a2c0bf7": {
+  "cover": "leads/loc-Q1653578.c.jpg",
+  "art": "leads/loc-Q1653578.jpg",
+  "webp": "leads/loc-Q1653578.webp",
+  "artist": "Andrei Stroe",
+  "license": "CC BY-SA 3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:RO_IF_Dobroesti_panorama.jpg",
+  "name": "Dobroești",
+  "kind": "locality",
+  "qid": "Q1653578"
+ },
+ "83d16b15ee875cf0": {
+  "cover": "leads/loc-Q16427725.c.jpg",
+  "art": "leads/loc-Q16427725.jpg",
+  "webp": "leads/loc-Q16427725.webp",
+  "artist": "Dan Mihai Pitea",
+  "license": "CC BY-SA 3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Timisoara_-_Aerial_view.jpg",
+  "name": "Dumbrăvița",
+  "kind": "locality",
+  "qid": "Q16427725"
+ },
+ "2e1eae8c098131bd": {
+  "cover": "leads/loc-Q16427725.c.jpg",
+  "art": "leads/loc-Q16427725.jpg",
+  "webp": "leads/loc-Q16427725.webp",
+  "artist": "Dan Mihai Pitea",
+  "license": "CC BY-SA 3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Timisoara_-_Aerial_view.jpg",
+  "name": "Dumbrăvița",
+  "kind": "locality",
+  "qid": "Q16427725"
+ },
+ "19718c5daae7502a": {
+  "cover": "leads/loc-Q841511.c.jpg",
+  "art": "leads/loc-Q841511.jpg",
+  "webp": "leads/loc-Q841511.webp",
+  "artist": "Andrei Stroe",
+  "license": "CC BY-SA 4.0",
+  "page": "https://commons.wikimedia.org/wiki/File:RO_HD_Brad_1.jpg",
+  "name": "Brad",
+  "kind": "locality",
+  "qid": "Q841511"
+ },
+ "ab92bcdee817f0f4": {
+  "cover": "leads/loc-Q1653578.c.jpg",
+  "art": "leads/loc-Q1653578.jpg",
+  "webp": "leads/loc-Q1653578.webp",
+  "artist": "Andrei Stroe",
+  "license": "CC BY-SA 3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:RO_IF_Dobroesti_panorama.jpg",
+  "name": "Dobroești",
+  "kind": "locality",
+  "qid": "Q1653578"
+ },
+ "ac56d88d885868f8": {
+  "cover": "leads/loc-Q83404.c.jpg",
+  "art": "leads/loc-Q83404.jpg",
+  "webp": "leads/loc-Q83404.webp",
+  "artist": "Frentescu.adrian",
+  "license": "CC BY-SA 4.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Festivalul_Florilor_TimFloralis.jpg",
+  "name": "Timișoara",
+  "kind": "locality",
+  "qid": "Q83404"
+ },
+ "92abdd3e6b94be38": {
+  "cover": "leads/loc-Q841511.c.jpg",
+  "art": "leads/loc-Q841511.jpg",
+  "webp": "leads/loc-Q841511.webp",
+  "artist": "Andrei Stroe",
+  "license": "CC BY-SA 4.0",
+  "page": "https://commons.wikimedia.org/wiki/File:RO_HD_Brad_1.jpg",
+  "name": "Brad",
+  "kind": "locality",
+  "qid": "Q841511"
+ },
+ "7780ebbaa321d1d5": {
+  "cover": "leads/loc-Q16427725.c.jpg",
+  "art": "leads/loc-Q16427725.jpg",
+  "webp": "leads/loc-Q16427725.webp",
+  "artist": "Dan Mihai Pitea",
+  "license": "CC BY-SA 3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Timisoara_-_Aerial_view.jpg",
+  "name": "Dumbrăvița",
+  "kind": "locality",
+  "qid": "Q16427725"
+ },
+ "fae27766a0b708e2": {
+  "cover": "leads/loc-Q16427725.c.jpg",
+  "art": "leads/loc-Q16427725.jpg",
+  "webp": "leads/loc-Q16427725.webp",
+  "artist": "Dan Mihai Pitea",
+  "license": "CC BY-SA 3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Timisoara_-_Aerial_view.jpg",
+  "name": "Dumbrăvița",
+  "kind": "locality",
+  "qid": "Q16427725"
+ },
+ "c87804f076b86c38": {
+  "cover": "leads/loc-Q16427725.c.jpg",
+  "art": "leads/loc-Q16427725.jpg",
+  "webp": "leads/loc-Q16427725.webp",
+  "artist": "Dan Mihai Pitea",
+  "license": "CC BY-SA 3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Timisoara_-_Aerial_view.jpg",
+  "name": "Dumbrăvița",
+  "kind": "locality",
+  "qid": "Q16427725"
+ },
+ "4d06a8b2f05092f5": {
+  "cover": "leads/loc-Q83404.c.jpg",
+  "art": "leads/loc-Q83404.jpg",
+  "webp": "leads/loc-Q83404.webp",
+  "artist": "Frentescu.adrian",
+  "license": "CC BY-SA 4.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Festivalul_Florilor_TimFloralis.jpg",
+  "name": "Timișoara",
+  "kind": "locality",
+  "qid": "Q83404"
+ },
+ "a59d1cde3bdcbab6": {
+  "cover": "leads/loc-Q83404.c.jpg",
+  "art": "leads/loc-Q83404.jpg",
+  "webp": "leads/loc-Q83404.webp",
+  "artist": "Frentescu.adrian",
+  "license": "CC BY-SA 4.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Festivalul_Florilor_TimFloralis.jpg",
+  "name": "Timișoara",
+  "kind": "locality",
+  "qid": "Q83404"
+ },
+ "8023fb7989875ed7": {
+  "cover": "leads/loc-Q1653578.c.jpg",
+  "art": "leads/loc-Q1653578.jpg",
+  "webp": "leads/loc-Q1653578.webp",
+  "artist": "Andrei Stroe",
+  "license": "CC BY-SA 3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:RO_IF_Dobroesti_panorama.jpg",
+  "name": "Dobroești",
+  "kind": "locality",
+  "qid": "Q1653578"
+ },
+ "11a4061f0306af90": {
+  "cover": "leads/loc-Q16427725.c.jpg",
+  "art": "leads/loc-Q16427725.jpg",
+  "webp": "leads/loc-Q16427725.webp",
+  "artist": "Dan Mihai Pitea",
+  "license": "CC BY-SA 3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Timisoara_-_Aerial_view.jpg",
+  "name": "Dumbrăvița",
+  "kind": "locality",
+  "qid": "Q16427725"
+ },
+ "5fed7c868e0e2d27": {
+  "cover": "leads/loc-Q16427725.c.jpg",
+  "art": "leads/loc-Q16427725.jpg",
+  "webp": "leads/loc-Q16427725.webp",
+  "artist": "Dan Mihai Pitea",
+  "license": "CC BY-SA 3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Timisoara_-_Aerial_view.jpg",
+  "name": "Dumbrăvița",
+  "kind": "locality",
+  "qid": "Q16427725"
+ },
+ "95349ade2737d376": {
+  "cover": "leads/loc-Q16427725.c.jpg",
+  "art": "leads/loc-Q16427725.jpg",
+  "webp": "leads/loc-Q16427725.webp",
+  "artist": "Dan Mihai Pitea",
+  "license": "CC BY-SA 3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Timisoara_-_Aerial_view.jpg",
+  "name": "Dumbrăvița",
+  "kind": "locality",
+  "qid": "Q16427725"
+ },
+ "33fec0e9248b2641": {
+  "cover": "leads/loc-Q83404.c.jpg",
+  "art": "leads/loc-Q83404.jpg",
+  "webp": "leads/loc-Q83404.webp",
+  "artist": "Frentescu.adrian",
+  "license": "CC BY-SA 4.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Festivalul_Florilor_TimFloralis.jpg",
+  "name": "Timișoara",
+  "kind": "locality",
+  "qid": "Q83404"
+ },
+ "b688cd4622317812": {
+  "cover": "leads/loc-Q83404.c.jpg",
+  "art": "leads/loc-Q83404.jpg",
+  "webp": "leads/loc-Q83404.webp",
+  "artist": "Frentescu.adrian",
+  "license": "CC BY-SA 4.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Festivalul_Florilor_TimFloralis.jpg",
+  "name": "Timișoara",
+  "kind": "locality",
+  "qid": "Q83404"
+ },
+ "85146d08c806766b": {
+  "cover": "leads/loc-Q83404.c.jpg",
+  "art": "leads/loc-Q83404.jpg",
+  "webp": "leads/loc-Q83404.webp",
+  "artist": "Frentescu.adrian",
+  "license": "CC BY-SA 4.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Festivalul_Florilor_TimFloralis.jpg",
+  "name": "Timișoara",
+  "kind": "locality",
+  "qid": "Q83404"
+ },
+ "e6ed588d72372cf5": {
+  "cover": "leads/loc-Q16427725.c.jpg",
+  "art": "leads/loc-Q16427725.jpg",
+  "webp": "leads/loc-Q16427725.webp",
+  "artist": "Dan Mihai Pitea",
+  "license": "CC BY-SA 3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Timisoara_-_Aerial_view.jpg",
+  "name": "Dumbrăvița",
+  "kind": "locality",
+  "qid": "Q16427725"
+ },
+ "02ab260ee38bf2bb": {
+  "cover": "leads/loc-Q16427725.c.jpg",
+  "art": "leads/loc-Q16427725.jpg",
+  "webp": "leads/loc-Q16427725.webp",
+  "artist": "Dan Mihai Pitea",
+  "license": "CC BY-SA 3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Timisoara_-_Aerial_view.jpg",
+  "name": "Dumbrăvița",
+  "kind": "locality",
+  "qid": "Q16427725"
+ },
+ "84b273953a61e0f5": {
+  "cover": "leads/loc-Q16427725.c.jpg",
+  "art": "leads/loc-Q16427725.jpg",
+  "webp": "leads/loc-Q16427725.webp",
+  "artist": "Dan Mihai Pitea",
+  "license": "CC BY-SA 3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Timisoara_-_Aerial_view.jpg",
+  "name": "Dumbrăvița",
+  "kind": "locality",
+  "qid": "Q16427725"
+ },
+ "087de45376ab2df6": {
+  "cover": "leads/loc-Q16427725.c.jpg",
+  "art": "leads/loc-Q16427725.jpg",
+  "webp": "leads/loc-Q16427725.webp",
+  "artist": "Dan Mihai Pitea",
+  "license": "CC BY-SA 3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Timisoara_-_Aerial_view.jpg",
+  "name": "Dumbrăvița",
+  "kind": "locality",
+  "qid": "Q16427725"
+ },
+ "283244d1de86371b": {
+  "cover": "leads/loc-Q83404.c.jpg",
+  "art": "leads/loc-Q83404.jpg",
+  "webp": "leads/loc-Q83404.webp",
+  "artist": "Frentescu.adrian",
+  "license": "CC BY-SA 4.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Festivalul_Florilor_TimFloralis.jpg",
+  "name": "Timișoara",
+  "kind": "locality",
+  "qid": "Q83404"
+ },
+ "b567d4be5ed703d2": {
+  "cover": "leads/loc-Q1653578.c.jpg",
+  "art": "leads/loc-Q1653578.jpg",
+  "webp": "leads/loc-Q1653578.webp",
+  "artist": "Andrei Stroe",
+  "license": "CC BY-SA 3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:RO_IF_Dobroesti_panorama.jpg",
+  "name": "Dobroești",
+  "kind": "locality",
+  "qid": "Q1653578"
+ },
+ "b1e5780225ee570f": {
+  "cover": "leads/loc-Q83404.c.jpg",
+  "art": "leads/loc-Q83404.jpg",
+  "webp": "leads/loc-Q83404.webp",
+  "artist": "Frentescu.adrian",
+  "license": "CC BY-SA 4.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Festivalul_Florilor_TimFloralis.jpg",
+  "name": "Timișoara",
+  "kind": "locality",
+  "qid": "Q83404"
+ },
+ "3733a9eb8789395f": {
+  "cover": "leads/loc-Q83404.c.jpg",
+  "art": "leads/loc-Q83404.jpg",
+  "webp": "leads/loc-Q83404.webp",
+  "artist": "Frentescu.adrian",
+  "license": "CC BY-SA 4.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Festivalul_Florilor_TimFloralis.jpg",
+  "name": "Timișoara",
+  "kind": "locality",
+  "qid": "Q83404"
+ },
+ "4ac1adf105e1f29b": {
+  "cover": "leads/loc-Q83404.c.jpg",
+  "art": "leads/loc-Q83404.jpg",
+  "webp": "leads/loc-Q83404.webp",
+  "artist": "Frentescu.adrian",
+  "license": "CC BY-SA 4.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Festivalul_Florilor_TimFloralis.jpg",
+  "name": "Timișoara",
+  "kind": "locality",
+  "qid": "Q83404"
+ },
+ "841ebf5a16d5a8f5": {
+  "cover": "leads/loc-Q83404.c.jpg",
+  "art": "leads/loc-Q83404.jpg",
+  "webp": "leads/loc-Q83404.webp",
+  "artist": "Frentescu.adrian",
+  "license": "CC BY-SA 4.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Festivalul_Florilor_TimFloralis.jpg",
+  "name": "Timișoara",
+  "kind": "locality",
+  "qid": "Q83404"
+ },
+ "00d4f25b55cc7e01": {
+  "cover": "leads/loc-Q16427725.c.jpg",
+  "art": "leads/loc-Q16427725.jpg",
+  "webp": "leads/loc-Q16427725.webp",
+  "artist": "Dan Mihai Pitea",
+  "license": "CC BY-SA 3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Timisoara_-_Aerial_view.jpg",
+  "name": "Dumbrăvița",
+  "kind": "locality",
+  "qid": "Q16427725"
+ },
+ "b259e48b533823b3": {
+  "cover": "leads/loc-Q3793904.c.jpg",
+  "art": "leads/loc-Q3793904.jpg",
+  "webp": "leads/loc-Q3793904.webp",
+  "artist": "Atelierelealbe",
+  "license": "CC BY-SA 3.0 ro",
+  "page": "https://commons.wikimedia.org/wiki/File:Biserica_Cuvioasa_Paraschiva.tif",
+  "name": "Ciulnița",
+  "kind": "locality",
+  "qid": "Q3793904"
+ },
+ "49820f071dc645b9": {
+  "cover": "leads/loc-Q3793904.c.jpg",
+  "art": "leads/loc-Q3793904.jpg",
+  "webp": "leads/loc-Q3793904.webp",
+  "artist": "Atelierelealbe",
+  "license": "CC BY-SA 3.0 ro",
+  "page": "https://commons.wikimedia.org/wiki/File:Biserica_Cuvioasa_Paraschiva.tif",
+  "name": "Ciulnița",
+  "kind": "locality",
+  "qid": "Q3793904"
+ },
+ "61cd673e905c9975": {
+  "cover": "leads/loc-Q3793904.c.jpg",
+  "art": "leads/loc-Q3793904.jpg",
+  "webp": "leads/loc-Q3793904.webp",
+  "artist": "Atelierelealbe",
+  "license": "CC BY-SA 3.0 ro",
+  "page": "https://commons.wikimedia.org/wiki/File:Biserica_Cuvioasa_Paraschiva.tif",
+  "name": "Ciulnița",
+  "kind": "locality",
+  "qid": "Q3793904"
+ },
+ "5af7f93ab657a3b8": {
+  "cover": "leads/loc-Q83404.c.jpg",
+  "art": "leads/loc-Q83404.jpg",
+  "webp": "leads/loc-Q83404.webp",
+  "artist": "Frentescu.adrian",
+  "license": "CC BY-SA 4.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Festivalul_Florilor_TimFloralis.jpg",
+  "name": "Timișoara",
+  "kind": "locality",
+  "qid": "Q83404"
+ },
+ "e2ba3de962632167": {
+  "cover": "leads/loc-Q83404.c.jpg",
+  "art": "leads/loc-Q83404.jpg",
+  "webp": "leads/loc-Q83404.webp",
+  "artist": "Frentescu.adrian",
+  "license": "CC BY-SA 4.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Festivalul_Florilor_TimFloralis.jpg",
+  "name": "Timișoara",
+  "kind": "locality",
+  "qid": "Q83404"
+ },
+ "e1f9914e6e0b88c3": {
+  "cover": "leads/loc-Q83404.c.jpg",
+  "art": "leads/loc-Q83404.jpg",
+  "webp": "leads/loc-Q83404.webp",
+  "artist": "Frentescu.adrian",
+  "license": "CC BY-SA 4.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Festivalul_Florilor_TimFloralis.jpg",
+  "name": "Timișoara",
+  "kind": "locality",
+  "qid": "Q83404"
+ },
+ "31b134b28e5067d2": {
+  "cover": "leads/loc-Q83404.c.jpg",
+  "art": "leads/loc-Q83404.jpg",
+  "webp": "leads/loc-Q83404.webp",
+  "artist": "Frentescu.adrian",
+  "license": "CC BY-SA 4.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Festivalul_Florilor_TimFloralis.jpg",
+  "name": "Timișoara",
+  "kind": "locality",
+  "qid": "Q83404"
+ },
+ "6b7510c57aaa8450": {
+  "cover": "leads/loc-Q16427725.c.jpg",
+  "art": "leads/loc-Q16427725.jpg",
+  "webp": "leads/loc-Q16427725.webp",
+  "artist": "Dan Mihai Pitea",
+  "license": "CC BY-SA 3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Timisoara_-_Aerial_view.jpg",
+  "name": "Dumbrăvița",
+  "kind": "locality",
+  "qid": "Q16427725"
+ },
+ "c0d1156dde3ab3cb": {
+  "cover": "leads/loc-Q16427725.c.jpg",
+  "art": "leads/loc-Q16427725.jpg",
+  "webp": "leads/loc-Q16427725.webp",
+  "artist": "Dan Mihai Pitea",
+  "license": "CC BY-SA 3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Timisoara_-_Aerial_view.jpg",
+  "name": "Dumbrăvița",
+  "kind": "locality",
+  "qid": "Q16427725"
+ },
+ "2d10a93e91821e16": {
+  "cover": "leads/loc-Q1653578.c.jpg",
+  "art": "leads/loc-Q1653578.jpg",
+  "webp": "leads/loc-Q1653578.webp",
+  "artist": "Andrei Stroe",
+  "license": "CC BY-SA 3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:RO_IF_Dobroesti_panorama.jpg",
+  "name": "Dobroești",
+  "kind": "locality",
+  "qid": "Q1653578"
+ },
+ "7df0e6136821b554": {
+  "cover": "leads/loc-Q16427725.c.jpg",
+  "art": "leads/loc-Q16427725.jpg",
+  "webp": "leads/loc-Q16427725.webp",
+  "artist": "Dan Mihai Pitea",
+  "license": "CC BY-SA 3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Timisoara_-_Aerial_view.jpg",
+  "name": "Dumbrăvița",
+  "kind": "locality",
+  "qid": "Q16427725"
+ },
+ "38e7be8fa3999d3f": {
+  "cover": "leads/loc-Q16427725.c.jpg",
+  "art": "leads/loc-Q16427725.jpg",
+  "webp": "leads/loc-Q16427725.webp",
+  "artist": "Dan Mihai Pitea",
+  "license": "CC BY-SA 3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Timisoara_-_Aerial_view.jpg",
+  "name": "Dumbrăvița",
+  "kind": "locality",
+  "qid": "Q16427725"
+ },
+ "1fcee284f6819e8b": {
+  "cover": "leads/of-1fcee284f6819e8b.c.jpg",
+  "art": "leads/of-1fcee284f6819e8b.jpg",
+  "webp": "leads/of-1fcee284f6819e8b.webp",
   "artist": "The White House",
   "license": "Public domain",
   "page": "https://commons.wikimedia.org/wiki/File:P202601013MR-2544_(55589266349).jpg",
