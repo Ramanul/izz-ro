@@ -649,9 +649,6 @@
   "name": "Buhuși",
   "kind": "locality"
  },
- "8907511b35ff147c": {
-  "miss": true
- },
  "286ff6db4c52c900": {
   "miss": true,
   "v": 2
@@ -2649,66 +2646,6 @@
   "kind": "locality",
   "qid": "Q837161"
  },
- "04df2ced8fd5e33c": {
-  "miss": true,
-  "v": 2
- },
- "58655b47733e7ad1": {
-  "miss": true,
-  "v": 2
- },
- "51eaa3b329024a6d": {
-  "miss": true,
-  "v": 2
- },
- "0973bb6306040f24": {
-  "miss": true,
-  "v": 2
- },
- "c571f1f4765b2d37": {
-  "miss": true,
-  "v": 2
- },
- "ae8a55eaf0c15081": {
-  "miss": true,
-  "v": 2
- },
- "727c21c0ed714fac": {
-  "miss": true,
-  "v": 2
- },
- "30eb16bc4a0ca05d": {
-  "miss": true,
-  "v": 2
- },
- "cccf8c9092ab4f9f": {
-  "miss": true,
-  "v": 2
- },
- "a8ad38feabe69dd9": {
-  "miss": true,
-  "v": 2
- },
- "78072ee7304bfca9": {
-  "miss": true,
-  "v": 2
- },
- "a3066ba946dc192d": {
-  "miss": true,
-  "v": 2
- },
- "5c506894c8d1e5c7": {
-  "miss": true,
-  "v": 2
- },
- "f6cd5e06a6028ed1": {
-  "miss": true,
-  "v": 2
- },
- "38e1072f4e4e81b7": {
-  "miss": true,
-  "v": 2
- },
  "e6cac312d79231d4": {
   "cover": "leads/loc-Q3878982.c.jpg",
   "art": "leads/loc-Q3878982.jpg",
@@ -2719,10 +2656,6 @@
   "name": "Ion Creangă",
   "kind": "locality"
  },
- "fb4ba509a5d32239": {
-  "miss": true,
-  "v": 2
- },
  "be594309734416ef": {
   "cover": "leads/loc-Q3878982.c.jpg",
   "art": "leads/loc-Q3878982.jpg",
@@ -2732,10 +2665,6 @@
   "page": "https://commons.wikimedia.org/wiki/File:Biserica_Ion_Creang%C4%83.jpg",
   "name": "Ion Creangă",
   "kind": "locality"
- },
- "2edef0f1d6198f16": {
-  "miss": true,
-  "v": 2
  },
  "452df107e596f3ed": {
   "miss": true,
@@ -5199,8 +5128,15 @@
   "v": 2
  },
  "5d5ae77d19f9e744": {
-  "miss": true,
-  "v": 2
+  "cover": "leads/loc-Q5114003.c.jpg",
+  "art": "leads/loc-Q5114003.jpg",
+  "webp": "leads/loc-Q5114003.webp",
+  "artist": "Losy",
+  "license": "CC BY-SA 3.0 ro",
+  "page": "https://commons.wikimedia.org/wiki/File:Biserica_Sf_Ilie_Solonet_01.JPG",
+  "name": "Bivolari",
+  "kind": "locality",
+  "qid": "Q5114003"
  },
  "276e9a178d19a229": {
   "miss": true,
@@ -5227,8 +5163,15 @@
   "v": 2
  },
  "49bab3096989a139": {
-  "miss": true,
-  "v": 2
+  "cover": "leads/loc-Q5114003.c.jpg",
+  "art": "leads/loc-Q5114003.jpg",
+  "webp": "leads/loc-Q5114003.webp",
+  "artist": "Losy",
+  "license": "CC BY-SA 3.0 ro",
+  "page": "https://commons.wikimedia.org/wiki/File:Biserica_Sf_Ilie_Solonet_01.JPG",
+  "name": "Bivolari",
+  "kind": "locality",
+  "qid": "Q5114003"
  },
  "6aea8e14ea8c8bce": {
   "miss": true,
@@ -11600,5 +11543,398 @@
   "name": "Cozieni",
   "kind": "locality",
   "qid": "Q2536132"
+ },
+ "af354962f6069f04": {
+  "cover": "leads/loc-Q12724689.c.jpg",
+  "art": "leads/loc-Q12724689.jpg",
+  "webp": "leads/loc-Q12724689.webp",
+  "artist": "Cezar Suceveanu. Original uploader was Cezarika1 at ro.wikipedia",
+  "license": "CC BY 2.5",
+  "page": "https://commons.wikimedia.org/wiki/File:M%C4%83n%C4%83stirea_Agafton.jpg",
+  "name": "Curtești",
+  "kind": "locality",
+  "qid": "Q12724689"
+ },
+ "e736da6fac755894": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_dimensiune_sau_format",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "9169afc431a194ac": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_negasit_sau_fara_imagine",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "7c9256630beee1ff": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_negasit_sau_fara_imagine",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "51e8ccb7fe5507e4": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_dimensiune_sau_format",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "a91ccdd1654e4b74": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_dimensiune_sau_format",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "2708a931199e7c54": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_dimensiune_sau_format",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "2dacc66d32f07b65": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_dimensiune_sau_format",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "a452325b5b978ef5": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_dimensiune_sau_format",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "5782619d2464c3f7": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_dimensiune_sau_format",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "34cef013ff70b234": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_dimensiune_sau_format",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "d48480fa108d60ee": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_negasit_sau_fara_imagine",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "805841a6aeadd765": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_dimensiune_sau_format",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "7762186d0221837a": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_dimensiune_sau_format",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "c990c175d0dd8b8e": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_negasit_sau_fara_imagine",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "4e09e508f18959d4": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_negasit_sau_fara_imagine",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "e48e659b6c529f7c": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_negasit_sau_fara_imagine",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "a5ed65a888477c8c": {
+  "cover": "leads/loc-Q226000.c.jpg",
+  "art": "leads/loc-Q226000.jpg",
+  "webp": "leads/loc-Q226000.webp",
+  "artist": "Radufan",
+  "license": "CC BY-SA 3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Statuia_Sf._Florian_Jimbolia.jpg",
+  "name": "Jimbolia",
+  "kind": "locality",
+  "qid": "Q226000"
+ },
+ "2558a3d8b1da66c3": {
+  "cover": "leads/loc-Q609044.c.jpg",
+  "art": "leads/loc-Q609044.jpg",
+  "webp": "leads/loc-Q609044.webp",
+  "artist": "Andrei Stroe",
+  "license": "CC BY-SA 3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:RO_OT_Caracal_national_theatre.jpg",
+  "name": "Caracal",
+  "kind": "locality",
+  "qid": "Q609044"
+ },
+ "e40b46f30312bb44": {
+  "cover": "leads/loc-Q609044.c.jpg",
+  "art": "leads/loc-Q609044.jpg",
+  "webp": "leads/loc-Q609044.webp",
+  "artist": "Andrei Stroe",
+  "license": "CC BY-SA 3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:RO_OT_Caracal_national_theatre.jpg",
+  "name": "Caracal",
+  "kind": "locality",
+  "qid": "Q609044"
+ },
+ "fcc1220d55653626": {
+  "cover": "leads/loc-Q609044.c.jpg",
+  "art": "leads/loc-Q609044.jpg",
+  "webp": "leads/loc-Q609044.webp",
+  "artist": "Andrei Stroe",
+  "license": "CC BY-SA 3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:RO_OT_Caracal_national_theatre.jpg",
+  "name": "Caracal",
+  "kind": "locality",
+  "qid": "Q609044"
+ },
+ "78fd8f496286694e": {
+  "cover": "leads/loc-Q5114003.c.jpg",
+  "art": "leads/loc-Q5114003.jpg",
+  "webp": "leads/loc-Q5114003.webp",
+  "artist": "Losy",
+  "license": "CC BY-SA 3.0 ro",
+  "page": "https://commons.wikimedia.org/wiki/File:Biserica_Sf_Ilie_Solonet_01.JPG",
+  "name": "Bivolari",
+  "kind": "locality",
+  "qid": "Q5114003"
+ },
+ "632b2cfeb05d7fe7": {
+  "cover": "leads/loc-Q609044.c.jpg",
+  "art": "leads/loc-Q609044.jpg",
+  "webp": "leads/loc-Q609044.webp",
+  "artist": "Andrei Stroe",
+  "license": "CC BY-SA 3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:RO_OT_Caracal_national_theatre.jpg",
+  "name": "Caracal",
+  "kind": "locality",
+  "qid": "Q609044"
+ },
+ "455511dee1c9d573": {
+  "cover": "leads/loc-Q609044.c.jpg",
+  "art": "leads/loc-Q609044.jpg",
+  "webp": "leads/loc-Q609044.webp",
+  "artist": "Andrei Stroe",
+  "license": "CC BY-SA 3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:RO_OT_Caracal_national_theatre.jpg",
+  "name": "Caracal",
+  "kind": "locality",
+  "qid": "Q609044"
+ },
+ "6f61b546fbb9b37f": {
+  "cover": "leads/loc-Q609044.c.jpg",
+  "art": "leads/loc-Q609044.jpg",
+  "webp": "leads/loc-Q609044.webp",
+  "artist": "Andrei Stroe",
+  "license": "CC BY-SA 3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:RO_OT_Caracal_national_theatre.jpg",
+  "name": "Caracal",
+  "kind": "locality",
+  "qid": "Q609044"
+ },
+ "77a0f532530841de": {
+  "cover": "leads/loc-Q226000.c.jpg",
+  "art": "leads/loc-Q226000.jpg",
+  "webp": "leads/loc-Q226000.webp",
+  "artist": "Radufan",
+  "license": "CC BY-SA 3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Statuia_Sf._Florian_Jimbolia.jpg",
+  "name": "Jimbolia",
+  "kind": "locality",
+  "qid": "Q226000"
+ },
+ "99b053cdc3a3258d": {
+  "cover": "leads/loc-Q609044.c.jpg",
+  "art": "leads/loc-Q609044.jpg",
+  "webp": "leads/loc-Q609044.webp",
+  "artist": "Andrei Stroe",
+  "license": "CC BY-SA 3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:RO_OT_Caracal_national_theatre.jpg",
+  "name": "Caracal",
+  "kind": "locality",
+  "qid": "Q609044"
+ },
+ "0adfbca30392ebff": {
+  "cover": "leads/loc-Q609044.c.jpg",
+  "art": "leads/loc-Q609044.jpg",
+  "webp": "leads/loc-Q609044.webp",
+  "artist": "Andrei Stroe",
+  "license": "CC BY-SA 3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:RO_OT_Caracal_national_theatre.jpg",
+  "name": "Caracal",
+  "kind": "locality",
+  "qid": "Q609044"
+ },
+ "53a691af537604ee": {
+  "cover": "leads/loc-Q609044.c.jpg",
+  "art": "leads/loc-Q609044.jpg",
+  "webp": "leads/loc-Q609044.webp",
+  "artist": "Andrei Stroe",
+  "license": "CC BY-SA 3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:RO_OT_Caracal_national_theatre.jpg",
+  "name": "Caracal",
+  "kind": "locality",
+  "qid": "Q609044"
+ },
+ "d2e9e868620147c8": {
+  "cover": "leads/loc-Q226000.c.jpg",
+  "art": "leads/loc-Q226000.jpg",
+  "webp": "leads/loc-Q226000.webp",
+  "artist": "Radufan",
+  "license": "CC BY-SA 3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Statuia_Sf._Florian_Jimbolia.jpg",
+  "name": "Jimbolia",
+  "kind": "locality",
+  "qid": "Q226000"
+ },
+ "0730db6ef8ea3d03": {
+  "cover": "leads/loc-Q609044.c.jpg",
+  "art": "leads/loc-Q609044.jpg",
+  "webp": "leads/loc-Q609044.webp",
+  "artist": "Andrei Stroe",
+  "license": "CC BY-SA 3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:RO_OT_Caracal_national_theatre.jpg",
+  "name": "Caracal",
+  "kind": "locality",
+  "qid": "Q609044"
+ },
+ "594c8b476a8207bf": {
+  "cover": "leads/loc-Q226000.c.jpg",
+  "art": "leads/loc-Q226000.jpg",
+  "webp": "leads/loc-Q226000.webp",
+  "artist": "Radufan",
+  "license": "CC BY-SA 3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Statuia_Sf._Florian_Jimbolia.jpg",
+  "name": "Jimbolia",
+  "kind": "locality",
+  "qid": "Q226000"
+ },
+ "ab5c23d6f8860949": {
+  "cover": "leads/loc-Q609044.c.jpg",
+  "art": "leads/loc-Q609044.jpg",
+  "webp": "leads/loc-Q609044.webp",
+  "artist": "Andrei Stroe",
+  "license": "CC BY-SA 3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:RO_OT_Caracal_national_theatre.jpg",
+  "name": "Caracal",
+  "kind": "locality",
+  "qid": "Q609044"
+ },
+ "878a6fc35f7dc68a": {
+  "cover": "leads/loc-Q609044.c.jpg",
+  "art": "leads/loc-Q609044.jpg",
+  "webp": "leads/loc-Q609044.webp",
+  "artist": "Andrei Stroe",
+  "license": "CC BY-SA 3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:RO_OT_Caracal_national_theatre.jpg",
+  "name": "Caracal",
+  "kind": "locality",
+  "qid": "Q609044"
+ },
+ "6555b16bb5a193f6": {
+  "cover": "leads/loc-Q609044.c.jpg",
+  "art": "leads/loc-Q609044.jpg",
+  "webp": "leads/loc-Q609044.webp",
+  "artist": "Andrei Stroe",
+  "license": "CC BY-SA 3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:RO_OT_Caracal_national_theatre.jpg",
+  "name": "Caracal",
+  "kind": "locality",
+  "qid": "Q609044"
+ },
+ "92e2270d2e5ffeff": {
+  "cover": "leads/loc-Q226000.c.jpg",
+  "art": "leads/loc-Q226000.jpg",
+  "webp": "leads/loc-Q226000.webp",
+  "artist": "Radufan",
+  "license": "CC BY-SA 3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Statuia_Sf._Florian_Jimbolia.jpg",
+  "name": "Jimbolia",
+  "kind": "locality",
+  "qid": "Q226000"
+ },
+ "93ee8b7fe98b5246": {
+  "cover": "leads/loc-Q12724689.c.jpg",
+  "art": "leads/loc-Q12724689.jpg",
+  "webp": "leads/loc-Q12724689.webp",
+  "artist": "Cezar Suceveanu. Original uploader was Cezarika1 at ro.wikipedia",
+  "license": "CC BY 2.5",
+  "page": "https://commons.wikimedia.org/wiki/File:M%C4%83n%C4%83stirea_Agafton.jpg",
+  "name": "Curtești",
+  "kind": "locality",
+  "qid": "Q12724689"
+ },
+ "bb5ab7e289b82613": {
+  "cover": "leads/loc-Q12724689.c.jpg",
+  "art": "leads/loc-Q12724689.jpg",
+  "webp": "leads/loc-Q12724689.webp",
+  "artist": "Cezar Suceveanu. Original uploader was Cezarika1 at ro.wikipedia",
+  "license": "CC BY 2.5",
+  "page": "https://commons.wikimedia.org/wiki/File:M%C4%83n%C4%83stirea_Agafton.jpg",
+  "name": "Curtești",
+  "kind": "locality",
+  "qid": "Q12724689"
+ },
+ "a1b9d9a2a7b23c07": {
+  "cover": "leads/loc-Q609044.c.jpg",
+  "art": "leads/loc-Q609044.jpg",
+  "webp": "leads/loc-Q609044.webp",
+  "artist": "Andrei Stroe",
+  "license": "CC BY-SA 3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:RO_OT_Caracal_national_theatre.jpg",
+  "name": "Caracal",
+  "kind": "locality",
+  "qid": "Q609044"
+ },
+ "6be08d9e2445b32a": {
+  "cover": "leads/loc-Q609044.c.jpg",
+  "art": "leads/loc-Q609044.jpg",
+  "webp": "leads/loc-Q609044.webp",
+  "artist": "Andrei Stroe",
+  "license": "CC BY-SA 3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:RO_OT_Caracal_national_theatre.jpg",
+  "name": "Caracal",
+  "kind": "locality",
+  "qid": "Q609044"
+ },
+ "c2e69e83baf44f71": {
+  "cover": "leads/loc-Q12724689.c.jpg",
+  "art": "leads/loc-Q12724689.jpg",
+  "webp": "leads/loc-Q12724689.webp",
+  "artist": "Cezar Suceveanu. Original uploader was Cezarika1 at ro.wikipedia",
+  "license": "CC BY 2.5",
+  "page": "https://commons.wikimedia.org/wiki/File:M%C4%83n%C4%83stirea_Agafton.jpg",
+  "name": "Curtești",
+  "kind": "locality",
+  "qid": "Q12724689"
+ },
+ "5ddd96967e0bd990": {
+  "cover": "leads/loc-Q609044.c.jpg",
+  "art": "leads/loc-Q609044.jpg",
+  "webp": "leads/loc-Q609044.webp",
+  "artist": "Andrei Stroe",
+  "license": "CC BY-SA 3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:RO_OT_Caracal_national_theatre.jpg",
+  "name": "Caracal",
+  "kind": "locality",
+  "qid": "Q609044"
+ },
+ "630d94e52c46efdf": {
+  "cover": "leads/loc-Q609044.c.jpg",
+  "art": "leads/loc-Q609044.jpg",
+  "webp": "leads/loc-Q609044.webp",
+  "artist": "Andrei Stroe",
+  "license": "CC BY-SA 3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:RO_OT_Caracal_national_theatre.jpg",
+  "name": "Caracal",
+  "kind": "locality",
+  "qid": "Q609044"
  }
 }
