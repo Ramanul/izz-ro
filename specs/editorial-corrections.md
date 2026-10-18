@@ -6,7 +6,8 @@ Inputs: immutable collected articles and versioned corrections catalog (empty in
 Outputs: corrected publication copies, explanatory withdrawal pages, deterministic public
 manifest, map generated from those exact active copies, offline freshness notice.
 Files: generator/publication.py, generator/render.py, tools/build_harta_data.py,
-templates/article.html, templates/withdrawn.html, static/sw.js, corrections catalog and tests.
+templates/article.html, templates/withdrawn.html, templates/base.html, static/sw.js,
+static/editorial-updates.js, corrections catalog and tests.
 Acceptance: stale approval fails before output cleanup; no withdrawn item in active assets;
 corrected location agrees in county list/map; expired withdrawal retains its observed path;
 same input yields same manifest digest; cached pages declare unverified freshness.
@@ -50,3 +51,23 @@ Release verification continuation:
   uses the existing notice design with separate paragraphs rather than the
   small monospaced trust label. The focused suite passed again: 13 tests in
   15.69 s. Synthetic pages were served only from a local temporary QA folder.
+
+18 October continuation (supersedes pending browser access above):
+- Recovered PR head 3e2b9795 in an isolated release worktree. Its two failed jobs
+  have one cause: STATE contained 42 content lines against its declared 40 limit.
+  Condensed STATE while retaining the limit; local rule regression passes.
+- Reproduced the missing reload offer for an online page served from saved HTML.
+  A small deterministic editorial-revisions.json and page metadata now expose
+  catalog changes; an external, versioned client offers a reader-controlled reload
+  on load, reconnection or returning to the page. Offline/check failure never
+  certifies freshness. This is a site-level revision signal, not a per-article
+  judgment; it contains no active-news payload, personal data or tracking.
+- Reproduced a model C timeline regenerating an old corrected number; corrected
+  stories now withhold that timeline. Historical aliases link to their active
+  corrected article rather than claiming it expired. Multiple active articles
+  sharing one story_id remain rejected as ambiguous by the existing validator.
+- Focused local regression: 18 Python tests and 7 Node contracts passed; Ruff
+  and whitespace checks pass. Full suite and final-head audits remain pending.
+- Earlier head audit39068580080: three runs each, home85->85/article96->96,
+  other Lighthouse categories100; Pa11y home1->1 (existing #judet-pin finding).
+  These are historical baseline measurements, not proof of the updated head.

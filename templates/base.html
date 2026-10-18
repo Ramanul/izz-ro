@@ -3,6 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="izz-editorial-version" content="{{ editorial_version | default('original') }}">
   <title>{% block title %}{{ site.name }}{% endblock %}</title>
   <meta name="description" content="{% block description %}{{ site.tagline }}{% endblock %}">
   {# Discover nu ia in considerare paginile fara max-image-preview:large — imaginea din feed
@@ -59,6 +60,7 @@
      acelasi `navigator.serviceWorker` si ordinea conteaza -- pwa.js inregistreaza,
      push.js asteapta inregistrarea prin `serviceWorker.ready`. #}
   <script defer src="{{ base }}/static/pwa.js?v={{ asset_ver['pwa.js'] }}"></script>
+  <script defer src="{{ base }}/static/editorial-updates.js?v={{ asset_ver['editorial-updates.js'] }}"></script>
   <script defer src="{{ base }}/static/push.js?v={{ asset_ver['push.js'] }}"></script>
 </head>
 <body{% block body_attrs %}{% endblock %}>
@@ -106,6 +108,7 @@
   </div>
 
   <main>
+    <aside id="editorial-copy-status" class="notice" role="status" hidden></aside>
     {% block content %}{% endblock %}
   </main>
 

@@ -216,6 +216,7 @@ self.addEventListener('fetch', (event) => {
   const url = new URL(request.url);
   if (url.origin !== self.location.origin) return;
   if (url.pathname.startsWith('/push/')) return;
+  if (url.pathname.startsWith('/editorial-') && url.pathname.endsWith('.json')) return;
   if (url.pathname.startsWith('/static/harta-stiri/data/')) return;
 
   if (url.pathname.startsWith('/static/')) {

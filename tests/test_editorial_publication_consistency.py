@@ -69,6 +69,44 @@ def test_deterministic_manifest_and_expired_withdrawal(article):
     assert "test-only" not in json.dumps(manifest)
 
 
+def test_revision_signal_changes_with_correction_and_not_news(article):
+    rows = correction(article)
+    signal = publication.revisions(rows)
+    assert signal == publication.revisions(copy.deepcopy(rows))
+    assert len(json.dumps(signal)) < 150
+    assert publication.revisions({})["version"] == "original"
+    next(iter(rows.values()))["presentation"]["title"] += " cu date revizuite"
+    assert publication.revisions(rows)["version"] != signal["version"]
+
+
+def test_corrected_story_cannot_recreate_known_wrong_timeline(article):
+    article.update(model="C", story_id="synthetic-group", synthesis="Au fost anunțate 50 de lucrări.",
+                   members=[{"url": f"https://source-{n}.example/notice/", "title": "Au fost anunțate 50 de lucrări.",
+                             "published": article["published"]} for n in range(3)])
+    rows = correction(article)
+    next(iter(rows.values()))["presentation"]["synthesis"] = "Au fost anunțate 5 lucrări."
+    view = publication.apply([article], rows)[0]
+    render._ataseaza_legaturi([view])
+    assert view["timeline"] is None
+    assert "50 de lucrări" not in view["synthesis"]
+
+
+def test_corrected_alias_links_to_active_article(tmp_path, monkeypatch, article):
+    out = tmp_path / "output"
+    rows = correction(article)
+    next(iter(rows.values()))["public_paths"].append("/local/previous-address/")
+    monkeypatch.setattr(render, "OUT_DIR", str(out))
+    monkeypatch.setattr(publication, "load", lambda: rows)
+    monkeypatch.setattr(editorial, "load_annotations", lambda: {})
+    render.build([article])
+    page = (out / "local/previous-address/index.html").read_text(encoding="utf-8")
+    assert 'href="/local/synthetic-correction/"' in page
+    assert "Citește versiunea corectată" in page
+    assert "Articolul nu este disponibil" not in page
+    signal = json.loads((out / "editorial-revisions.json").read_text(encoding="utf-8"))
+    assert f'content="{signal["version"]}"' in page
+
+
 def test_county_list_and_map_agree_after_correction(article):
     view = publication.apply([article], correction(article))[0]
     assert render._stiri_pentru_judet([view], "TIMIS") == [view]

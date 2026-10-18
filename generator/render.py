@@ -257,7 +257,8 @@ def _asset_ver() -> dict:
     if _ASSET_VER is None:
         _ASSET_VER = {name: _content_ver(os.path.join(STATIC_DIR, name))
                       for name in ("styles.css", "personalize.js", "search.js", "theme.js", "fonts.css",
-                                   "calc-salariu.js", "site.webmanifest", "pwa.js", "push.js")}
+                                   "calc-salariu.js", "site.webmanifest", "pwa.js", "push.js",
+                                   "editorial-updates.js")}
     return _ASSET_VER
 
 
@@ -1091,6 +1092,8 @@ def build(articles: list, mod: dict | None = None) -> None:
         raise editorial.EditorialError("\n".join(editorial_errors))
     corrections = publication.load()
     articles = publication.apply(articles, corrections)
+    editorial_revisions = publication.revisions(corrections)
+    env.globals["editorial_version"] = editorial_revisions["version"]
     tombstones = sum(len(row["public_paths"]) for row in corrections.values())
     if tombstones > config.OUTPUT_NON_ARTICLE_RESERVE:
         raise editorial.EditorialError("withdrawal archive exceeds reserved file budget; retention decision required")
@@ -1158,6 +1161,8 @@ def build(articles: list, mod: dict | None = None) -> None:
     publication_manifest = publication.manifest(by_date, corrections)
     _write(os.path.join(OUT_DIR, "editorial-publication.json"),
            json.dumps(publication_manifest, ensure_ascii=False, sort_keys=True))
+    _write(os.path.join(OUT_DIR, "editorial-revisions.json"),
+           json.dumps(editorial_revisions, sort_keys=True))
     # Generate the delivered map from the exact active publication copies, including
     # corrections, future-date and file-budget exclusions. Never reuse a stale map asset.
     from tools import build_harta_data
@@ -1165,12 +1170,14 @@ def build(articles: list, mod: dict | None = None) -> None:
                          out=os.path.join(OUT_DIR, "static/harta-stiri/data/map.json"),
                          publication_digest=publication_manifest["digest"])
     active_paths = {editorial.public_path(a) for a in by_date}
+    active_keys = {editorial.annotation_key(a): editorial.public_path(a) for a in by_date}
     for row in corrections.values():
         for path in row["public_paths"]:
             if path not in active_paths:
                 _write(os.path.join(OUT_DIR, path.strip("/"), "index.html"),
                        env.get_template("withdrawn.html").render(
-                           **_base_ctx(path), correction=publication.public_notice(row)))
+                           **_base_ctx(path), correction=publication.public_notice(row),
+                           active_path=active_keys.get(row["key"])))
     _write(os.path.join(OUT_DIR, "editorial-report.json"),
            json.dumps(editorial.catalog_report(annotations, by_date, provenance, editorial_now),
                       ensure_ascii=False, sort_keys=True, indent=2))
@@ -1725,7 +1732,8 @@ def _ataseaza_legaturi(articole: list) -> None:
             continue
         a["judet"] = a.get("editorial_county") or geo.judet_sursa(a.get("source")) or ""
         a["ghid"] = _ghid_pentru(a, index)
-        a["timeline"] = _timeline(a)
+        # Source headlines may repeat the very statement that was corrected.
+        a["timeline"] = None if a.get("correction") else _timeline(a)
 
 
 def _nr_surse(articol: dict) -> int:
@@ -2402,6 +2410,7 @@ def _write_headers() -> None:
            "/static/harta-stiri/*\n  ! Cache-Control\n  Cache-Control: public, max-age=300, must-revalidate\n"
            "/static/harta-stiri/data/*\n  ! Cache-Control\n  Cache-Control: public, max-age=0, must-revalidate\n"
            "/editorial-publication.json\n  Cache-Control: public, max-age=0, must-revalidate\n"
+           "/editorial-revisions.json\n  Cache-Control: public, max-age=0, must-revalidate\n"
            # Indexul de cautare (Pagefind). Fisierul de intrare si `pagefind.js` poarta
            # versiunea si numele bucatilor de index; amandoua se schimba la fiecare build,
            # iar bucatile vechi NU mai exista pe noua versiune. Un browser care tine in cache

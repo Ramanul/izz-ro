@@ -112,6 +112,16 @@ def public_notice(row):
             "reviewed_at": row["review"]["reviewed_at"], "kind": row["review"]["kind"]}
 
 
+def revisions(index):
+    """Small, deterministic version signal; never download the active news manifest."""
+    records = [{"paths": row["public_paths"], "presentation": row["presentation"],
+                **public_notice(row)} for _, row in sorted(index.items())]
+    version = (hashlib.sha256(json.dumps(records, ensure_ascii=False, sort_keys=True,
+                                       separators=(",", ":")).encode()).hexdigest()
+               if records else "original")
+    return {"schema_version": 1, "version": version}
+
+
 def manifest(articles, index):
     active = [{"path": editorial.public_path(a), "title": a["title"],
                "fingerprint": editorial.source_fingerprint(a),

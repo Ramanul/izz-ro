@@ -8,7 +8,7 @@
 > Where the rest lives: `specs/regim-reguli.md` — unified audit closure ·
 > `specs/registru.tsv` — decisions · `CLAUDE.md` — canonical contract.
 
-**Updated:** 2026-10-17 (imagini coordonate cu articolul: #490–#494 merged, paleta #495)
+**Updated:** 2026-10-18 (editorial correction release validation)
 
 ## Open
 - **Editorial transformation:** A/B/C published via #476 (merged), #477 (merged) and #489 (merged); 5/12 points and 3/8 slices at pilot scale. D release validation is recorded below. Dossiers, selection, reader controls and broad coverage remain unfinished.
@@ -30,12 +30,9 @@
 - **Issues triate 09-13 [IZZ-0381…0383]:** #83 închis. **#198 arhiva = decizie de proprietar**
   (R2 singura structurală). #233 canal · #271 scope — deschise prin design.
 
-## Editorial correction release
-
-- D: #497 implements approved corrections/withdrawals, persistent history, shared publication/map selection and offline disclosure. Desktop/mobile visual checks passed after improving notice readability; 13 focused tests passed. Final CI/performance and live verification are release gates, not yet claimed. Empty production corrections catalog; synthetic cases test-only. Evidence: specs/editorial-corrections.md.
-
 ## Audit closure status
 
+- D release: #497 implements corrections/withdrawals, persistent history, shared publication/map selection, offline disclosure and a reader-controlled reload offer. Local regressions: 18 Python/7 Node contracts; final CI, browser/performance and live gates pending. Empty production corrections catalog; synthetic cases test-only. Evidence: specs/editorial-corrections.md.
 - **K1–K14:** re-verified in `specs/regim-reguli.md` — a reconciliation register, not a substitute
   for passing tests. **Grounding:** blocks invented quotes and foreign numbers, fails closed.
 - **Coordination:** `handoff/` + `specs/STATE.md`. **Containment:** git destructiv și Edit pe control-plane
@@ -54,6 +51,5 @@
 - Cadence is the GitHub scheduler, not the 105-min gate: 25% firing, ~6 starts/day, median ~4h.
   Re-measure with `tools/cadenta_reala.py`; do not quote the number from memory. [IZZ-0364]
 - Do not treat retired static-host origins as live origins; Worker origin is the fallback path.
-- Do not use old task journals as normative coordination channels.
-- Every measurement gets its window and its command, or it is not a measurement [IZZ-0367].
+- Use current handoff for coordination; every measurement needs its window and command [IZZ-0367].
 - Do not mark live, GitHub settings, or Cloudflare facts as solved based only on repository code.
