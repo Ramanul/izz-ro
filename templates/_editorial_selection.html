@@ -1,16 +1,16 @@
 {% if editorial_selection %}
 <section class="briefing-azi" aria-labelledby="editorial-selection-title" data-pagefind-ignore>
-  <h2 class="section-title" id="editorial-selection-title">Selec?ie explicata � pilot</h2>
-  <p>Context documentat cu asisten?a AI, cu motivul selec?iei la vedere.</p>
+  <h2 class="section-title" id="editorial-selection-title">Selecție explicată · pilot</h2>
+  <p>Context documentat cu asistență AI, cu motivul selecției la vedere.</p>
   <ul>
     {% for item in editorial_selection %}
     <li>
       <h3><a href="{{ base }}/{{ item.article.category }}/{{ item.article.slug }}/">{{ item.article.display_title or item.article.title }}</a></h3>
       <p>{{ item.reason }}</p>
-      <p>Arie: {{ item.area }}. <a href="{{ base }}/{{ item.article.category }}/{{ item.article.slug }}/#editorial-context-title">Vezi documentele ?i limitele examinarii</a>.</p>
+      <p>Arie: {{ item.area }}. <a href="{{ base }}/{{ item.article.category }}/{{ item.article.slug }}/#editorial-context-title">Vezi documentele și limitele examinării</a>.</p>
     </li>
     {% endfor %}
   </ul>
-  <p><a href="{{ base }}/principii/#cum-alegem-materialele-din-pilot">Cum alegem</a> � <a href="{{ base }}/azi/">Vezi ordinea cronologica</a></p>
+  <p><a href="{{ base }}/principii/#cum-alegem-materialele-din-pilot">Cum alegem</a> · <a href="{{ base }}/azi/">Vezi ordinea cronologică</a></p>
 </section>
 {% endif %}
