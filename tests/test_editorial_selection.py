@@ -4,7 +4,7 @@ from datetime import datetime, timezone
 
 import pytest
 
-from generator import editorial
+from generator import editorial, render
 from generator.select import editorial_selection_comparison
 import test_editorial_context as fixtures
 import test_editorial_sources_practical as practical
@@ -82,3 +82,22 @@ def test_malformed_evidence_extensions_return_errors(examined, field, value):  #
         area="Locality A", expires_at="2026-10-18T18:00:00+03:00", impact_index=0)
     annotation[field] = value
     assert editorial.validate_annotations({annotation["key"]: annotation}, [item], provenance)
+
+
+def test_pilot_template_explains_reason_and_keeps_chronology(article):  # noqa: F811
+    template = render._env().get_template("_editorial_selection.html")
+    assert not template.render(editorial_selection=[], base="").strip()
+    html = template.render(editorial_selection=[{
+        "article": article, "reason": "<script>unsafe()</script>", "area": "Locality A"}], base="")
+    assert "&lt;script&gt;" in html and "<script>" not in html
+    assert '/azi/' in html and '/principii/#cum-alegem-materialele-din-pilot' in html
+    assert '/local/anunt-pilot/#editorial-context-title' in html
+    assert 'data-pagefind-ignore' in html
+
+
+def test_featured_and_ties_are_explicit_and_deterministic(article):  # noqa: F811
+    rows = [{**article, "slug": slug, "featured": featured,
+             "editorial": {"selection": selection()}}
+            for slug, featured in [("z", False), ("a", False), ("f", True)]]
+    chosen = editorial_selection_comparison(rows, NOW)["selected"]
+    assert [row["path"] for row in chosen] == ["/local/f/", "/local/a/", "/local/z/"]

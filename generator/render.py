@@ -1335,9 +1335,14 @@ def build(articles: list, mod: dict | None = None) -> None:
     print(f">> imagini: {spent} fisiere pentru {n} articole ({n_cover} coperti proprii, "
           f"{fara_coperta} pe coperta de categorie); arta se deseneaza in pagina")
 
+    selection_report = editorial_selection_comparison(by_date, editorial_now)
+    selection_enabled = os.environ.get("IZZ_EDITORIAL_SELECTION_ENABLED", "1") != "0"
+    selection_report["mode"] = "pilot" if selection_enabled else "shadow"
+    selected_by_path = {editorial.public_path(a): a for a in by_date}
+    editorial_selection = [dict(row, article=selected_by_path[row["path"]])
+                           for row in selection_report["selected"]] if selection_enabled else []
     _write(os.path.join(OUT_DIR, "editorial-selection-comparison.json"),
-           json.dumps(editorial_selection_comparison(by_date, editorial_now),
-                      ensure_ascii=False, sort_keys=True))
+           json.dumps(selection_report, ensure_ascii=False, sort_keys=True))
     hero = _pick_hero(by_date)
     hero_urls = {a["url"] for a in hero}
 
@@ -1366,7 +1371,7 @@ def build(articles: list, mod: dict | None = None) -> None:
            env.get_template("index.html").render(**_base_ctx(
                "/", nav_section="stiri", articles=by_date, hero=hero, by_category=by_category,
                jsonld_nodes=[item_list], newsletter_html=_newsletter_html(), zi=zi,
-               briefing=by_date[:7],
+               briefing=by_date[:7], editorial_selection=editorial_selection,
                judete=[{"code": c, "slug": s, "label": l}
                        for c, s, l in _harta_rute_judetene()])))
 

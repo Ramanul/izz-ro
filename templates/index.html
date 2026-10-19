@@ -60,6 +60,8 @@
     {% endif %}
     {% endif %}
 
+    {% include "_editorial_selection.html" %}
+
     <section id="din-judet" class="din-judet" hidden></section>
     {% for cat, items in by_category.items() %}
       {% if items %}

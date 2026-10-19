@@ -1,95 +1,104 @@
 # Principiile IZZ
 
-**Înțelege ce se întâmplă, din surse pe care le poți examina, în ritmul pe care îl alegi.**
+**In?elege ce se �nt�mpla, din surse pe care le po?i examina, �n ritmul pe care �l alegi.**
 
-IZZ adună și sintetizează relatări publice pentru a face informația mai ușor de urmărit. „Zero Zgomot” înseamnă claritate, atribuire și limite vizibile, nu acces infailibil la adevăr. Poți folosi știrile fără să accepți credințele sau interpretările filosofice prezentate mai jos.
+IZZ aduna ?i sintetizeaza relatari publice pentru a face informa?ia mai u?or de urmarit. ,Zero Zgomot" �nseamna claritate, atribuire ?i limite vizibile, nu acces infailibil la adevar. Po?i folosi ?tirile fara sa accep?i credin?ele sau interpretarile filosofice prezentate mai jos.
 
-**Starea acestei direcții.** Colectarea, gruparea și redactarea inițială folosesc automatizare. Transformarea editorială este în lucru: contextul suplimentar aprobat, dosarele cu istoric, legăturile explicate și marcajele detaliate de revizie sunt direcții de implementare, nu funcții pe care această pagină le certifică drept disponibile pe toate știrile. Pilotul va examina un lot delimitat; nu promitem citirea umană zilnică a întregului flux. Principiile de mai jos sunt angajamente după care evaluăm rezultatul, nu un certificat automat pentru fiecare articol.
+**Starea acestei direc?ii.** Colectarea, gruparea ?i redactarea ini?iala folosesc automatizare. Contextul documentat, un dosar persistent, legaturile explicate ?i selec?ia motivata sunt disponibile �ntr-un pilot limitat, nu pe toate ?tirile. [Dosarul despre serviciile de plata din Sectorul 1](/dosar/sectorul-1-plati-octombrie-2026/) arata documentele, perioada ?i limitele examinarii. Nu promitem citirea umana zilnica a �ntregului flux; un bloc documentat nu certifica automat �ntreaga ?tire. Controalele suplimentare pentru cititor ?i extinderea acoperirii ram�n �n lucru.
 
-## Ce poți cere de la noi
+## Ce po?i cere de la noi
 
-### 1. Demnitate, fără responsabilități confundate
+### 1. Demnitate, fara responsabilita?i confundate
 
-Descriem persoanele cu respect și numim precis faptele, consecințele și responsabilitățile documentate. Respectul pentru o persoană nu scuză o conduită și nu pune victima și agresorul pe același plan. Nu interpretăm suferința unei persoane ca alegere spirituală.
+Descriem persoanele cu respect ?i numim precis faptele, consecin?ele ?i responsabilita?ile documentate. Respectul pentru o persoana nu scuza o conduita ?i nu pune victima ?i agresorul pe acela?i plan. Nu interpretam suferin?a unei persoane ca alegere spirituala.
 
-### 2. Informație potrivită nevoii
+### 2. Informa?ie potrivita nevoii
 
-Un rezumat trebuie să ajute la înțelegerea evenimentului. Pentru contextul editorial suplimentar aflat în lucru, cerem separarea informației documentate, a efectelor observate, a estimărilor și a resurselor practice verificate. Nu inventăm ajutor, termene sau sfaturi pentru a umple o secțiune. O resursă cu termen depășit nu trebuie prezentată ca acțiune curentă.
+Un rezumat trebuie sa ajute la �n?elegerea evenimentului. Pentru contextul editorial suplimentar aflat �n lucru, cerem separarea informa?iei documentate, a efectelor observate, a estimarilor ?i a resurselor practice verificate. Nu inventam ajutor, termene sau sfaturi pentru a umple o sec?iune. O resursa cu termen depa?it nu trebuie prezentata ca ac?iune curenta.
 
-### 3. Libertate reală de alegere
+### 3. Libertate reala de alegere
 
-Poți consulta sursele și poți refuza opțiunile de personalizare fără să accepți o doctrină. Filtrele schimbă ce informație găsești mai ușor, nu adevărul unei știri. Nu impunem pauze, limite de articole sau un program de lectură „corect” și nu clasificăm cititorii după nivel spiritual.
+Po?i consulta sursele ?i po?i refuza op?iunile de personalizare fara sa accep?i o doctrina. Filtrele schimba ce informa?ie gase?ti mai u?or, nu adevarul unei ?tiri. Nu impunem pauze, limite de articole sau un program de lectura ,corect" ?i nu clasificam cititorii dupa nivel spiritual.
 
-### 4. Discernământ, nu încredere oarbă
+### 4. Discernam�nt, nu �ncredere oarba
 
-O relatare atribuită, un fapt documentat, o interpretare și o prognoză nu sunt același lucru. Când introducem marcaje de revizie, ele trebuie să numească doar conținutul efectiv examinat; nu vor certifica automat întreaga știre. Mai multe publicații pot avea aceeași origine, iar lipsa unei confirmări independente rămâne o limită. Numărul de surse, popularitatea și rezonanța emoțională nu sunt probe de adevăr. O ilustrație generată nu trebuie prezentată ca fotografie documentară a evenimentului.
+O relatare atribuita, un fapt documentat, o interpretare ?i o prognoza nu sunt acela?i lucru. C�nd introducem marcaje de revizie, ele trebuie sa numeasca doar con?inutul efectiv examinat; nu vor certifica automat �ntreaga ?tire. Mai multe publica?ii pot avea aceea?i origine, iar lipsa unei confirmari independente ram�ne o limita. Numarul de surse, popularitatea ?i rezonan?a emo?ionala nu sunt probe de adevar. O ilustra?ie generata nu trebuie prezentata ca fotografie documentara a evenimentului.
 
-### 5. Memorie și legături explicate
+### 5. Memorie ?i legaturi explicate
 
-Contextul trebuie să arate ce s-a schimbat și de ce sunt legate două materiale. Data publicării unei relatări nu devine automat data evenimentului. O legătură tematică nu dovedește cauzalitate, iar o cronologie incompletă nu este prezentată ca istorie exhaustivă.
+Contextul trebuie sa arate ce s-a schimbat ?i de ce sunt legate doua materiale. Data publicarii unei relatari nu devine automat data evenimentului. O legatura tematica nu dovede?te cauzalitate, iar o cronologie incompleta nu este prezentata ca istorie exhaustiva.
 
 ### 6. Autoritatea admite eroarea
 
-Automatizarea și redacția pot greși. Corecțiile materiale trebuie să arate ce s-a schimbat, când și de ce; o obiecție justificată nu este respinsă pentru că majoritatea nu o susține. Inteligența artificială poate ajuta la organizare și formulare, dar nu este judecătorul adevărului și nu acordă singură aprobarea editorială.
+Automatizarea ?i redac?ia pot gre?i. Corec?iile materiale trebuie sa arate ce s-a schimbat, c�nd ?i de ce; o obiec?ie justificata nu este respinsa pentru ca majoritatea nu o sus?ine. Inteligen?a artificiala poate ajuta la organizare ?i formulare, dar nu este judecatorul adevarului ?i nu acorda singura aprobarea editoriala.
 
-### 7. Atenție și capacitate limitată
+### 7. Aten?ie ?i capacitate limitata
 
-Îți oferim puncte de intrare pentru orientare, nu o obligație de a urmări tot. Ritmul este al tău. Harta arată aria relatărilor disponibile, nu o măsurătoare a siguranței ori prosperității unui loc. Lipsa știrilor dintr-o zonă nu înseamnă lipsa evenimentelor. Nu pretindem verificare umană zilnică a fiecărui articol sau acoperire completă a tuturor subiectelor.
+I?i oferim puncte de intrare pentru orientare, nu o obliga?ie de a urmari tot. Ritmul este al tau. Harta arata aria relatarilor disponibile, nu o masuratoare a siguran?ei ori prosperita?ii unui loc. Lipsa ?tirilor dintr-o zona nu �nseamna lipsa evenimentelor. Nu pretindem verificare umana zilnica a fiecarui articol sau acoperire completa a tuturor subiectelor.
 
-## Două exemple de aplicare
+## Doua exemple de aplicare
 
-**Exemplu ilustrativ: întreruperea unui serviciu public.** Dacă trei publicații preiau același anunț, le putem arăta împreună, dar nu le numim trei confirmări independente. Un context aprobat ar indica aria și intervalul din document, ar separa ora estimată a reluării de un rezultat deja observat și ar păstra doar resursele practice încă valabile. Exemplul nu descrie un eveniment real verificat aici.
+**Exemplu ilustrativ: �ntreruperea unui serviciu public.** Daca trei publica?ii preiau acela?i anun?, le putem arata �mpreuna, dar nu le numim trei confirmari independente. Un context aprobat ar indica aria ?i intervalul din document, ar separa ora estimata a reluarii de un rezultat deja observat ?i ar pastra doar resursele practice �nca valabile. Exemplul nu descrie un eveniment real verificat aici.
 
-**Exemplu ilustrativ: o cifră contestată.** O sesizare însoțită de un document poate justifica o corecție chiar fără voturi sau popularitate. Se verifică afirmația și pasajul relevant, apoi se consemnează schimbarea și se controlează prezentările afectate. Când două surse documentate se contrazic, diferența nu este ștearsă pentru a produce un consens artificial. Exemplul este o regulă de lucru, nu o garanție de răspuns instantaneu.
+**Exemplu ilustrativ: o cifra contestata.** O sesizare �nso?ita de un document poate justifica o corec?ie chiar fara voturi sau popularitate. Se verifica afirma?ia ?i pasajul relevant, apoi se consemneaza schimbarea ?i se controleaza prezentarile afectate. C�nd doua surse documentate se contrazic, diferen?a nu este ?tearsa pentru a produce un consens artificial. Exemplul este o regula de lucru, nu o garan?ie de raspuns instantaneu.
 
-## Cărțile care au inspirat această direcție
+## Car?ile care au inspirat aceasta direc?ie
 
-Direcția este inspirată numai din *Contactul Ra*, volumele 1 și 2, și *AlienMind*. Notele de mai jos sunt interpretări editoriale ale unor pasaje selectate, nu o recenzie integrală și nu o verificare empirică a cosmologiilor descrise. Cele două volume Ra au un cadru comun; cele trei fișiere nu sunt trei confirmări independente ale aceleiași doctrine.
+Direc?ia este inspirata numai din *Contactul Ra*, volumele 1 ?i 2, ?i *AlienMind*. Notele de mai jos sunt interpretari editoriale ale unor pasaje selectate, nu o recenzie integrala ?i nu o verificare empirica a cosmologiilor descrise. Cele doua volume Ra au un cadru comun; cele trei fi?iere nu sunt trei confirmari independente ale aceleia?i doctrine.
 
-În *Contactul Ra*, întrebările intervievatorului, răspunsurile atribuite lui Ra și notele editorilor ori traducătorului au roluri diferite. O ipoteză din întrebare nu este automat învățătura răspunsului. În *AlienMind*, relatările și concluziile autorului sunt prezentate ca atare. Alegerea unor reguli pentru IZZ este interpretarea noastră; dovada unei știri trebuie să vină din documentele și relatările acelui eveniment.
+In *Contactul Ra*, �ntrebarile intervievatorului, raspunsurile atribuite lui Ra ?i notele editorilor ori traducatorului au roluri diferite. O ipoteza din �ntrebare nu este automat �nva?atura raspunsului. In *AlienMind*, relatarile ?i concluziile autorului sunt prezentate ca atare. Alegerea unor reguli pentru IZZ este interpretarea noastra; dovada unei ?tiri trebuie sa vina din documentele ?i relatarile acelui eveniment.
 
-Referințele de pagină de mai jos indică **pagina fișierului PDF analizat**, incluzând paginile introductive, nu presupusa paginare a tuturor edițiilor. La *Contactul Ra*, sesiunea și întrebarea identifică mai precis pasajul. Pentru *AlienMind*, paragrafele sunt numerotate în extracția traducerii analizate; ele nu sunt numere de pagină Word și pot diferi de alte ediții. Nu publicăm aici fișierele furnizate pentru analiză.
+Referin?ele de pagina de mai jos indica **pagina fi?ierului PDF analizat**, incluz�nd paginile introductive, nu presupusa paginare a tuturor edi?iilor. La *Contactul Ra*, sesiunea ?i �ntrebarea identifica mai precis pasajul. Pentru *AlienMind*, paragrafele sunt numerotate �n extrac?ia traducerii analizate; ele nu sunt numere de pagina Word ?i pot diferi de alte edi?ii. Nu publicam aici fi?ierele furnizate pentru analiza.
 
-### Contactul Ra — volumul 1
+### Contactul Ra - volumul 1
 
-**Gen și cadru.** Dialoguri spirituale prezentate ca mesaje primite prin channeling, adică printr-un intermediar, și atribuite unei entități numite Ra. Textul descrie un Unic Creator, pentru care întreaga existență este una, iar creația este o formă de autocunoaștere. În acest cadru, Liberul Arbitru, Logosul — principiul creator asociat Iubirii — și Lumina au roluri cosmologice. Evoluția este descrisă prin „densități”, niveluri spirituale ale existenței, și prin polarizarea către serviciul altora ori serviciul sinelui. Acestea sunt idei ale cărții, nu fapte stabilite de IZZ.
+**Gen ?i cadru.** Dialoguri spirituale prezentate ca mesaje primite prin channeling, adica printr-un intermediar, ?i atribuite unei entita?i numite Ra. Textul descrie un Unic Creator, pentru care �ntreaga existen?a este una, iar crea?ia este o forma de autocunoa?tere. In acest cadru, Liberul Arbitru, Logosul - principiul creator asociat Iubirii - ?i Lumina au roluri cosmologice. Evolu?ia este descrisa prin ,densita?i", niveluri spirituale ale existen?ei, ?i prin polarizarea catre serviciul altora ori serviciul sinelui. Acestea sunt idei ale car?ii, nu fapte stabilite de IZZ.
 
-**Pasaje selectate.** Sesiunea 1, întrebarea 7, p. 27, oferă cadrul unității. Sesiunea 17, întrebarea 30, pp. 154–155, tratează serviciul ca adaptat împrejurărilor, nu ca formulă universală. Sesiunea 27, întrebările 8–10, pp. 235–236, acordă un rol central alegerii. Sesiunea 42, întrebările 7–8, p. 335, păstrează prioritatea hranei și medicamentelor necesare față de instruirea spirituală.
+**Pasaje selectate.** Sesiunea 1, �ntrebarea 7, p. 27, ofera cadrul unita?ii. Sesiunea 17, �ntrebarea 30, pp. 154-155, trateaza serviciul ca adaptat �mprejurarilor, nu ca formula universala. Sesiunea 27, �ntrebarile 8-10, pp. 235-236, acorda un rol central alegerii. Sesiunea 42, �ntrebarile 7-8, p. 335, pastreaza prioritatea hranei ?i medicamentelor necesare fa?a de instruirea spirituala.
 
-**Aplicarea în IZZ.** Alegem respectul pentru persoane, accesul la surse și informația practică documentată. Nu substituim reflecția ajutorului concret. „Serviciul” Ra are însă și un sens spiritual, legat de Creator; utilitatea unui site nu îi epuizează înțelesul.
+**Aplicarea �n IZZ.** Alegem respectul pentru persoane, accesul la surse ?i informa?ia practica documentata. Nu substituim reflec?ia ajutorului concret. ,Serviciul" Ra are �nsa ?i un sens spiritual, legat de Creator; utilitatea unui site nu �i epuizeaza �n?elesul.
 
-**Tensiune și limită.** Unitatea tuturor coexistă în text cu distincții între căi și niveluri spirituale. Nu echivalăm de aici afirmațiile adevărate și false ori responsabilitatea victimei și a agresorului. Nu folosim interpretările suferinței pentru a explica de ce o victimă a suferit și nu convertim pragurile spirituale în scoruri morale pentru știri sau oameni.
+**Tensiune ?i limita.** Unitatea tuturor coexista �n text cu distinc?ii �ntre cai ?i niveluri spirituale. Nu echivalam de aici afirma?iile adevarate ?i false ori responsabilitatea victimei ?i a agresorului. Nu folosim interpretarile suferin?ei pentru a explica de ce o victima a suferit ?i nu convertim pragurile spirituale �n scoruri morale pentru ?tiri sau oameni.
 
-### Contactul Ra — volumul 2
+### Contactul Ra - volumul 2
 
-**Gen și cadru.** Continuarea acelorași dialoguri dezvoltă „voalul” dintre mintea conștientă și cea inconștientă, uitarea în timpul încarnării și Sinele Superior, descris ca o versiune viitoare a sinelui care poate ajuta căutarea. Arhetipurile sunt modele simbolice ale minții, corpului și spiritului, iar Alegerea privește polarizarea spirituală, nu orice alegere dintr-un meniu. Compasiunea și înțelepciunea se echilibrează în context; nici intenția bună, nici un simbol nu sunt o rețetă universală.
+**Gen ?i cadru.** Continuarea acelora?i dialoguri dezvolta ,voalul" dintre mintea con?tienta ?i cea incon?tienta, uitarea �n timpul �ncarnarii ?i Sinele Superior, descris ca o versiune viitoare a sinelui care poate ajuta cautarea. Arhetipurile sunt modele simbolice ale min?ii, corpului ?i spiritului, iar Alegerea prive?te polarizarea spirituala, nu orice alegere dintr-un meniu. Compasiunea ?i �n?elepciunea se echilibreaza �n context; nici inten?ia buna, nici un simbol nu sunt o re?eta universala.
 
-**Pasaje selectate.** Sesiunea 73, întrebarea 12, p. 147, critică încercarea de a schimba conștiința cuiva fără respectarea alegerii sale. Sesiunea 85, întrebările 12–14, p. 257, recunoaște și corectează o eroare din dialog. Sesiunea 88, întrebările 10–12, pp. 280–281, cere fotografii autentice, clare și datate. Sesiunea 97, întrebarea 9, p. 366, pune unitatea înaintea imaginilor și arată limitele arhetipurilor. Sesiunea 99, întrebarea 9, pp. 380–381, admite supraestimarea capacității fizice de refacere a intermediarului.
+**Pasaje selectate.** Sesiunea 73, �ntrebarea 12, p. 147, critica �ncercarea de a schimba con?tiin?a cuiva fara respectarea alegerii sale. Sesiunea 85, �ntrebarile 12-14, p. 257, recunoa?te ?i corecteaza o eroare din dialog. Sesiunea 88, �ntrebarile 10-12, pp. 280-281, cere fotografii autentice, clare ?i datate. Sesiunea 97, �ntrebarea 9, p. 366, pune unitatea �naintea imaginilor ?i arata limitele arhetipurilor. Sesiunea 99, �ntrebarea 9, pp. 380-381, admite supraestimarea capacita?ii fizice de refacere a intermediarului.
 
-**Aplicarea în IZZ.** Ascultăm obiecții, cerem dovezi și urmărim corecții explicate. Cerința de documentare sinceră inspiră distincția dintre dovadă și ilustrație. Respectăm refuzul unei doctrine și planificăm revizia după capacitatea reală. Serviciul față de cititor nu presupune aprobarea oricărei acuzații sau tolerarea hărțuirii.
+**Aplicarea �n IZZ.** Ascultam obiec?ii, cerem dovezi ?i urmarim corec?ii explicate. Cerin?a de documentare sincera inspira distinc?ia dintre dovada ?i ilustra?ie. Respectam refuzul unei doctrine ?i planificam revizia dupa capacitatea reala. Serviciul fa?a de cititor nu presupune aprobarea oricarei acuza?ii sau tolerarea har?uirii.
 
-**Tensiune și limită.** Recunoașterea erorii și a capacității supraestimate nu validează celelalte afirmații metafizice sau medicale. Epilogul, pp. 428–429, relatează deteriorarea sănătății membrilor grupului și sinuciderea lui Don Elkins; explicațiile spirituale ale autorului nu stabilesc cauza acestor evenimente. Inspirația nu promite vindecare ori protecție. Cele 22 de imagini nu sunt iconografie obligatorie pentru IZZ, etape de parcurs sau teste pentru cititori. Notele ediției nu garantează precizia traducerii; un pasaj neclar cere corectarea atribuirii, nu o interpretare sigură inventată.
+**Tensiune ?i limita.** Recunoa?terea erorii ?i a capacita?ii supraestimate nu valideaza celelalte afirma?ii metafizice sau medicale. Epilogul, pp. 428-429, relateaza deteriorarea sanata?ii membrilor grupului ?i sinuciderea lui Don Elkins; explica?iile spirituale ale autorului nu stabilesc cauza acestor evenimente. Inspira?ia nu promite vindecare ori protec?ie. Cele 22 de imagini nu sunt iconografie obligatorie pentru IZZ, etape de parcurs sau teste pentru cititori. Notele edi?iei nu garanteaza precizia traducerii; un pasaj neclar cere corectarea atribuirii, nu o interpretare sigura inventata.
 
-### AlienMind — traducerea română analizată
+### AlienMind - traducerea rom�na analizata
 
-**Gen și cadru.** Lucrare argumentativă care descrie presupuse contacte extraterestre, o minte relațională și comunicare non-locală, adică dincolo de apropierea fizică obișnuită. Autorul leagă memoria și comunitățile de o cosmologie energetică, de ecologie și de folosirea resurselor comune. Relatările și mecanismele extraordinare rămân afirmații ale autorului. Textul distinge polemic telepatia de channeling; nu îl tratăm drept confirmare a contactului Ra. Traducerea furnizată declară o revizie prin AI; fidelitatea față de original nu a fost verificată integral.
+**Gen ?i cadru.** Lucrare argumentativa care descrie presupuse contacte extraterestre, o minte rela?ionala ?i comunicare non-locala, adica dincolo de apropierea fizica obi?nuita. Autorul leaga memoria ?i comunita?ile de o cosmologie energetica, de ecologie ?i de folosirea resurselor comune. Relatarile ?i mecanismele extraordinare ram�n afirma?ii ale autorului. Textul distinge polemic telepatia de channeling; nu �l tratam drept confirmare a contactului Ra. Traducerea furnizata declara o revizie prin AI; fidelitatea fa?a de original nu a fost verificata integral.
 
-**Pasaje selectate.** În capitolul *Un model mental mai asemănător celui extraterestru*, paragrafele 539–542 cer examinare critică. Paragraful 529 critică infailibilitatea pretinsă a colectivului. Paragrafele 517 și 520–523 leagă învățarea de memorie și de relațiile urmărite în timp; paragrafele 1335–1336 privesc valoarea persoanelor și consecințele comune.
+**Pasaje selectate.** In capitolul *Un model mental mai asemanator celui extraterestru*, paragrafele 539-542 cer examinare critica. Paragraful 529 critica infailibilitatea pretinsa a colectivului. Paragrafele 517 ?i 520-523 leaga �nva?area de memorie ?i de rela?iile urmarite �n timp; paragrafele 1335-1336 privesc valoarea persoanelor ?i consecin?ele comune.
 
-**Aplicarea în IZZ.** Păstrăm întrebări deschise și dezvoltăm contextul și istoricul cu documente. Un interes instituțional documentat este separat de o intenție doar presupusă. Relațiile dintre știri și arhivele unui site nu sunt memoria colectivă ori mintea non-locală descrise în carte.
+**Aplicarea �n IZZ.** Pastram �ntrebari deschise ?i dezvoltam contextul ?i istoricul cu documente. Un interes institu?ional documentat este separat de o inten?ie doar presupusa. Rela?iile dintre ?tiri ?i arhivele unui site nu sunt memoria colectiva ori mintea non-locala descrise �n carte.
 
-**Tensiune și limită.** Îndemnul la discernământ coexistă cu afirmații extraordinare exprimate categoric, iar utilitatea colectivului poate intra în tensiune cu intimitatea și dreptul de retragere. Telepatia, presupusele semnături și mecanismele fizice relatate nu sunt metode de verificare pentru știrile IZZ. Nu preluăm acuzații nominale fără documente și nici generalizări biologice sau etnice drept criterii editoriale.
+**Tensiune ?i limita.** Indemnul la discernam�nt coexista cu afirma?ii extraordinare exprimate categoric, iar utilitatea colectivului poate intra �n tensiune cu intimitatea ?i dreptul de retragere. Telepatia, presupusele semnaturi ?i mecanismele fizice relatate nu sunt metode de verificare pentru ?tirile IZZ. Nu preluam acuza?ii nominale fara documente ?i nici generalizari biologice sau etnice drept criterii editoriale.
 
 ## Ce nu pretindem
 
-Nu pretindem confirmarea channeling-ului, telepatiei sau densităților spirituale și nu folosim aceste concepte drept explicații factuale ale știrilor. Nu atribuim oamenilor un grad de „trezire” din clicuri. Nu măsurăm adevărul ori moralitatea prin voturi, culori sau scoruri AI.
+Nu pretindem confirmarea channeling-ului, telepatiei sau densita?ilor spirituale ?i nu folosim aceste concepte drept explica?ii factuale ale ?tirilor. Nu atribuim oamenilor un grad de ,trezire" din clicuri. Nu masuram adevarul ori moralitatea prin voturi, culori sau scoruri AI.
 
-Această inspirație nu cere acceptarea unei doctrine. Regulile practice trebuie să rămână criticabile și utile chiar pentru un cititor care respinge complet cărțile. Un articol automat fără context editorial aprobat nu primește implicit statut de material verificat de un om.
+Aceasta inspira?ie nu cere acceptarea unei doctrine. Regulile practice trebuie sa ram�na criticabile ?i utile chiar pentru un cititor care respinge complet car?ile. Un articol automat fara context editorial aprobat nu prime?te implicit statut de material verificat de un om.
 
-## Cum poți contesta o decizie
+## Cum po?i contesta o decizie
 
-Scrie la [contact@izz.ro](mailto:contact@izz.ro) sau folosește legătura de raportare a erorilor de pe articol. Ajută să incluzi adresa paginii IZZ, afirmația exactă contestată, documentul relevant și locul precis din el. Nu este nevoie să îți publici datele personale.
+Scrie la [contact@izz.ro](mailto:contact@izz.ro) sau folose?te legatura de raportare a erorilor de pe articol. Ajuta sa incluzi adresa paginii IZZ, afirma?ia exacta contestata, documentul relevant ?i locul precis din el. Nu este nevoie sa �?i publici datele personale.
 
-O eroare în această pagină poate fi semnalată cu titlul cărții, ediția și pasajul care contrazice interpretarea. Nu promitem confirmare automată sau un termen garantat de răspuns pentru această cale de contact.
+O eroare �n aceasta pagina poate fi semnalata cu titlul car?ii, edi?ia ?i pasajul care contrazice interpretarea. Nu promitem confirmare automata sau un termen garantat de raspuns pentru aceasta cale de contact.
 
-Vezi [politica de corecții](/legal/corrections/), [cum sintetizăm](/legal/method/) și [sursele și originalitatea](/surse/). [Pagina Despre](/despre/) explică rolul automatizării și cine răspunde pentru proiect.
+Vezi [politica de corec?ii](/legal/corrections/), [cum sintetizam](/legal/method/) ?i [sursele ?i originalitatea](/surse/). [Pagina Despre](/despre/) explica rolul automatizarii ?i cine raspunde pentru proiect.
+
+
+## Cum alegem materialele din pilot {#cum-alegem-materialele-din-pilot}
+
+Selec?ia explicata folose?te numai articole publicabile cu adnotari documentate, valabile pentru versiunea afi?ata. Fiecare material are un motiv �n limbaj normal ?i o arie explicita. Un termen prime?te prioritate numai daca este legat de o resursa examinata ?i nu a expirat; un impact public are nevoie de grupul afectat, efect ?i document. Contextul poate ram�ne util pentru �n?elegerea unei perioade trecute, fara sa fie prezentat drept serviciu disponibil acum.
+
+Ordinea ?ine cont de aria aleasa, de selec?iile editoriale explicite existente, de prioritatea documentata ?i de noutate. Egalita?ile se rezolva dupa adresa paginii. Diversificarea limiteaza repetarea aceleia?i surse c�nd exista alternative; domenii diferite nu �nseamna automat origini independente. Nu folosim scoruri de adevar sau cote de ,ve?ti bune".
+
+Pilotul nu �nlocuie?te ?tirile ?i categoriile existente. Po?i consulta oric�nd [ordinea cronologica](/azi/). Lipsa adnotarilor nu elimina ?tirile obi?nuite. Explica?iile din pilot sunt documentate cu asisten?a AI ?i nu reprezinta o revizie umana a �ntregului flux. Efectul lor asupra utilita?ii pentru cititor nu a fost �nca masurat.

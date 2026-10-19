@@ -3,7 +3,9 @@
   "records": [
     {
       "key": "article:/local/registrul-de-evidenta-a-garantiilor-locale-a-unitatii-administrativ-teritoriale/",
-      "public_paths": ["/local/registrul-de-evidenta-a-garantiilor-locale-a-unitatii-administrativ-teritoriale/"],
+      "public_paths": [
+        "/local/registrul-de-evidenta-a-garantiilor-locale-a-unitatii-administrativ-teritoriale/"
+      ],
       "review": {
         "state": "approved",
         "kind": "documentary",
@@ -14,36 +16,50 @@
       "claims": [
         {
           "id": "page-publication",
-          "text": "Pagina Primăriei Ineu prezintă registrul garanțiilor locale pentru trimestrul III 2026.",
+          "text": "Pagina Primariei Ineu prezinta registrul garan?iilor locale pentru trimestrul III 2026.",
           "status": "reported",
-          "evidence_ids": ["municipality-page"]
+          "evidence_ids": [
+            "municipality-page"
+          ]
         },
         {
           "id": "download-link",
-          "text": "În conținutul paginii examinate există o legătură de descărcare către un fișier PDF cu acest registru. Aceasta confirmă prezența legăturii, fără să confirme valorile din fișier.",
+          "text": "In con?inutul paginii examinate exista o legatura de descarcare catre un fi?ier PDF cu acest registru. Aceasta confirma prezen?a legaturii, fara sa confirme valorile din fi?ier.",
           "status": "documented",
-          "evidence_ids": ["municipality-page"]
+          "evidence_ids": [
+            "municipality-page"
+          ]
         }
       ],
       "evidence": [
         {
           "id": "municipality-page",
           "url": "https://primariaineu.ro/registrul-de-evidenta-a-garantiilor-locale-a-unitatii-administrativ-teritoriale-trimestrul-iii-2026/",
-          "locator": "Titlul principal al paginii și legătura Descarcă din corpul anunțului, către registrul trimestrului III 2026.",
-          "role": "Pagina instituției emitente; o singură origine, fără confirmare independentă",
+          "locator": "Titlul principal al paginii ?i legatura Descarca din corpul anun?ului, catre registrul trimestrului III 2026.",
+          "role": "Pagina institu?iei emitente; o singura origine, fara confirmare independenta",
           "verified_at": "2026-10-14T17:53:34Z"
         }
       ],
       "uncertainties": [
         {
-          "question": "Conținutul registrului și valorile garanțiilor nu au fost examinate în acest bloc de context.",
-          "needed": "Lectura documentului atașat și verificarea separată a valorilor înainte de orice concluzie despre ele."
+          "question": "Con?inutul registrului ?i valorile garan?iilor nu au fost examinate �n acest bloc de context.",
+          "needed": "Lectura documentului ata?at ?i verificarea separata a valorilor �nainte de orice concluzie despre ele."
         }
-      ]
+      ],
+      "selection": {
+        "priority": "context",
+        "reason": "Pagina institu?iei ofera acces la registrul garan?iilor locale pentru trimestrul III 2026. Valorile din documentul ata?at nu au fost examinate �n acest context.",
+        "area": "Ineu, jude?ul Arad",
+        "evidence_ids": [
+          "municipality-page"
+        ]
+      }
     },
     {
       "key": "article:/local/intrerupere-temporara-a-serviciilor-de-plata-online-in-perioada-16-18-octombrie/",
-      "public_paths": ["/local/intrerupere-temporara-a-serviciilor-de-plata-online-in-perioada-16-18-octombrie/"],
+      "public_paths": [
+        "/local/intrerupere-temporara-a-serviciilor-de-plata-online-in-perioada-16-18-octombrie/"
+      ],
       "review": {
         "state": "approved",
         "kind": "documentary",
@@ -54,49 +70,66 @@
       "claims": [
         {
           "id": "announced-interruption",
-          "text": "Primăria Sectorului 1 anunță întreruperea serviciilor de plată enumerate în comunicat între 16 octombrie 2026, ora 19:00, și 18 octombrie 2026, ora 18:00. Intervalul anunțat nu confirmă starea efectivă a fiecărei platforme.",
+          "text": "Primaria Sectorului 1 anun?a �ntreruperea serviciilor de plata enumerate �n comunicat �ntre 16 octombrie 2026, ora 19:00, ?i 18 octombrie 2026, ora 18:00. Intervalul anun?at nu confirma starea efectiva a fiecarei platforme.",
           "status": "reported",
-          "evidence_ids": ["sector1-notice"]
+          "evidence_ids": [
+            "sector1-notice"
+          ]
         },
         {
           "id": "announced-return",
-          "text": "Instituția anunță reluarea după finalizarea lucrărilor, cel târziu la 18 octombrie, ora 18:00; acesta este termenul comunicat, nu un rezultat verificat independent.",
+          "text": "Institu?ia anun?a reluarea dupa finalizarea lucrarilor, cel t�rziu la 18 octombrie, ora 18:00; acesta este termenul comunicat, nu un rezultat verificat independent.",
           "status": "forecast",
-          "evidence_ids": ["sector1-notice"]
+          "evidence_ids": [
+            "sector1-notice"
+          ]
         }
       ],
       "evidence": [
         {
           "id": "sector1-notice",
           "url": "https://primariasector1.ro/intrerupere-temporara-a-serviciilor-de-plata-online-in-perioada-16-18-octombrie/",
-          "locator": "Corpul anunțului: paragraful 1 (interval), 2 (AVANSIS, Ghișeul.ro, SelfPay, SelfPoint, parcări și încasări prin Poșta Română), 3 (lucrări tehnice) și 5 (revenire anunțată)",
-          "role": "Anunț oficial al Primăriei Sectorului 1; o singură origine documentată",
+          "locator": "Corpul anun?ului: paragraful 1 (interval), 2 (AVANSIS, Ghi?eul.ro, SelfPay, SelfPoint, parcari ?i �ncasari prin Po?ta Rom�na), 3 (lucrari tehnice) ?i 5 (revenire anun?ata)",
+          "role": "Anun? oficial al Primariei Sectorului 1; o singura origine documentata",
           "verified_at": "2026-10-17T09:07:00Z",
           "provenance_id": "sector1-payment-notice"
         }
       ],
       "impacts": [
         {
-          "group": "Persoanele care folosesc serviciile de plată menționate de Primăria Sectorului 1",
-          "effect": "Instituția anunță indisponibilitatea temporară pentru lucrări tehnice; comunicatul nu stabilește o întrerupere la nivel național",
+          "group": "Persoanele care folosesc serviciile de plata men?ionate de Primaria Sectorului 1",
+          "effect": "Institu?ia anun?a indisponibilitatea temporara pentru lucrari tehnice; comunicatul nu stabile?te o �ntrerupere la nivel na?ional",
           "status": "projected",
-          "horizon": "16 octombrie, ora 19:00 – 18 octombrie 2026, ora 18:00, în interpretarea orei locale a Bucureștiului",
-          "evidence_ids": ["sector1-notice"]
+          "horizon": "16 octombrie, ora 19:00 - 18 octombrie 2026, ora 18:00, �n interpretarea orei locale a Bucure?tiului",
+          "evidence_ids": [
+            "sector1-notice"
+          ]
         }
       ],
       "actions": [
         {
           "resource_id": "sector1-payment-information",
-          "area": "Sectorul 1, municipiul București",
-          "evidence_ids": ["sector1-notice"]
+          "area": "Sectorul 1, municipiul Bucure?ti",
+          "evidence_ids": [
+            "sector1-notice"
+          ]
         }
       ],
       "uncertainties": [
         {
-          "question": "Funcționarea efectivă și ora reală a revenirii serviciilor nu au fost testate. Ora comunicată este interpretată ca ora Bucureștiului; sursa nu numește fusul orar.",
-          "needed": "O actualizare explicită a instituției sau o verificare ulterioară a disponibilității, fără efectuarea de plăți."
+          "question": "Func?ionarea efectiva ?i ora reala a revenirii serviciilor nu au fost testate. Ora comunicata este interpretata ca ora Bucure?tiului; sursa nu nume?te fusul orar.",
+          "needed": "O actualizare explicita a institu?iei sau o verificare ulterioara a disponibilita?ii, fara efectuarea de pla?i."
         }
-      ]
+      ],
+      "selection": {
+        "priority": "time_sensitive",
+        "reason": "Anun?ul institu?iei precizeaza un interval de �ntrerupere a serviciilor de plata. Prioritatea se aplica numai p�na la sf�r?itul intervalului anun?at, fara confirmarea func?ionarii platformelor.",
+        "area": "Sectorul 1, municipiul Bucure?ti",
+        "evidence_ids": [
+          "sector1-notice"
+        ],
+        "expires_at": "2026-10-18T18:00:00+03:00"
+      }
     }
   ]
 }
