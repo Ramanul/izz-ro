@@ -7,9 +7,11 @@ import pytest
 from generator import editorial
 from generator.select import editorial_selection_comparison
 import test_editorial_context as fixtures
+import test_editorial_sources_practical as practical
 
 article = fixtures.article
 record = fixtures.record
+examined = practical.examined
 
 NOW = datetime(2026, 10, 19, tzinfo=timezone.utc)
 
@@ -56,3 +58,27 @@ def test_expired_scope_and_stale_views(article, record):  # noqa: F811
     article["title"] += " changed"
     view = editorial.apply_view(article, {record["key"]: record}, {"sources": {}, "resources": {}}, NOW)
     assert not editorial_selection_comparison([view], NOW)["selected"]
+
+
+@pytest.mark.parametrize("priority", ["time_sensitive", "public_impact"])
+def test_documented_service_or_impact_is_eligible(examined, priority):  # noqa: F811
+    item, annotation, provenance = examined
+    annotation["selection"] = selection(priority=priority, area="Locality A")
+    if priority == "time_sensitive":
+        annotation["selection"]["expires_at"] = provenance["resources"]["r1"]["expires_at"]
+    else:
+        annotation["selection"]["impact_index"] = 0
+    now = datetime(2026, 10, 17, tzinfo=timezone.utc)
+    view = editorial.apply_view(item, {annotation["key"]: annotation}, provenance, now)
+    assert editorial_selection_comparison([view], now)["selected"]
+
+
+@pytest.mark.parametrize("field,value", [("actions", None), ("impacts", None),
+    ("actions", [{"evidence_ids": [{}]}]), ("impacts", [{"evidence_ids": [{}]}])])
+def test_malformed_evidence_extensions_return_errors(examined, field, value):  # noqa: F811
+    item, annotation, provenance = examined
+    annotation["selection"] = selection(
+        priority="time_sensitive" if field == "actions" else "public_impact",
+        area="Locality A", expires_at="2026-10-18T18:00:00+03:00", impact_index=0)
+    annotation[field] = value
+    assert editorial.validate_annotations({annotation["key"]: annotation}, [item], provenance)
