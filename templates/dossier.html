@@ -4,10 +4,10 @@
 {% block robots %}{% if dossier.indexable %}max-image-preview:large{% else %}noindex,follow{% endif %}{% endblock %}
 {% block content %}
 <nav class="breadcrumbs" aria-label="Breadcrumb"><a href="{{ base }}/">{{ site.name }}</a><span class="sep">/</span><span>Dosar documentar</span></nav>
-<article class="article"{% if dossier.indexable %} data-pagefind-body{% else %} data-pagefind-ignore{% endif %}>
+<article class="article"{% if not dossier.indexable %} data-pagefind-ignore{% endif %}>
   <span class="badge">Dosar documentar · pilot</span>
-  <h1 data-pagefind-meta="title">{{ dossier.title }}</h1>
-  {% if dossier.state != 'withdrawn' %}<p>{{ dossier.question }}</p>{% endif %}
+  <h1 data-pagefind-meta="title"{% if dossier.indexable %} data-pagefind-body{% endif %}>{{ dossier.title }}</h1>
+  {% if dossier.state != 'withdrawn' %}<p{% if dossier.indexable %} data-pagefind-body{% endif %}>{{ dossier.question }}</p>{% endif %}
   <p>Examinat la <time datetime="{{ dossier.reviewed_at }}">{{ dossier.reviewed_at[:10] }}</time>.
     {% if dossier.review_kind == 'human' %}Revizie umană declarată pentru acest dosar.{% else %}Documentat cu asistență AI; nu reprezintă o revizie umană.{% endif %}</p>
   {% if dossier.state != 'withdrawn' %}<p>Perioada documentată: {{ dossier.period.start }} – {{ dossier.period.end }}. {{ dossier.period.scope }} Dosarul nu pretinde o istorie completă sau actualizare continuă.</p>{% endif %}
@@ -16,7 +16,7 @@
   {% elif dossier.state == 'needs_review' %}
   <h2>Este necesară o nouă examinare</h2><p>{{ dossier.summary }}</p><p>Documentele rămân referințe istorice; conținutul dependent nu este prezentat ca fiind actual.</p>
   {% else %}
-  <h2>Sinteza documentată</h2><p>{{ dossier.summary }}</p>
+  <h2>Sinteza documentată</h2><p data-pagefind-body>{{ dossier.summary }}</p>
   <p>{% for ref in dossier.summary_evidence_ids %}<a href="#document-{{ ref }}">Documentul sintezei</a>{{ ' · ' if not loop.last }}{% endfor %}</p>
   {% if dossier.history|length > 1 %}
   <h2>Ce s-a schimbat</h2><p>{{ dossier.history[-1].reason }} · <time datetime="{{ dossier.history[-1].at }}">{{ dossier.history[-1].at[:10] }}</time></p>
@@ -24,13 +24,13 @@
   <h2>Cronologia documentată</h2>
   <p>Data faptului și data publicării sunt prezentate separat. Un termen anunțat nu dovedește că evenimentul s-a produs.</p>
   <ol class="timeline">{% for event in dossier.events %}<li>
-    <p><strong>{{ 'Prognoză sau termen anunțat' if event.status == 'forecast' else ('Fapt consemnat în document' if event.status == 'documented' else 'Relatarea sursei') }}</strong>: {{ event.text }}</p>
+    <p><strong>{{ 'Prognoză sau termen anunțat' if event.status == 'forecast' else ('Fapt consemnat în document' if event.status == 'documented' else 'Relatarea sursei') }}</strong>: <span data-pagefind-body>{{ event.text }}</span></p>
     <p>{% if event.event_at %}Data faptului sau termenului: <time datetime="{{ event.event_at }}">{{ event.event_at }}</time>. {{ event.event_date_basis }}{% else %}Data faptului nu este stabilită.{% endif %}
       {% if event.published_at %} Publicarea relatării: <time datetime="{{ event.published_at }}">{{ event.published_at }}</time>.{% endif %}</p>
     {% if event.evidence_inactive %}<p>Proba acestui reper este indisponibilă sau retrasă; reperul este păstrat numai ca istoric, fără reconfirmare.</p>{% endif %}
     <p>{% for ref in event.evidence_ids %}<a href="#document-{{ ref }}">Documentul reperului</a>{{ ' · ' if not loop.last }}{% endfor %}</p>
   </li>{% endfor %}</ol>
-  {% if dossier.uncertainties %}<h2>Ce rămâne neclar</h2><ul>{% for item in dossier.uncertainties %}<li>{{ item.question }} Ce ar clarifica: {{ item.needed }}</li>{% endfor %}</ul>{% endif %}
+  {% if dossier.uncertainties %}<h2>Ce rămâne neclar</h2><ul>{% for item in dossier.uncertainties %}<li><span data-pagefind-body>{{ item.question }}</span> Ce ar clarifica: <span data-pagefind-body>{{ item.needed }}</span></li>{% endfor %}</ul>{% endif %}
   {% if dossier.article_links %}<h2>Relatări disponibile pe izz</h2><ul>{% for link in dossier.article_links %}<li><a href="{{ base }}/{{ link.path.lstrip('/') }}">{{ link.title }}</a></li>{% endfor %}</ul>{% endif %}
   {% set editorial_relations = dossier.relations %}{% include '_editorial_relations.html' %}
   {% endif %}

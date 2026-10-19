@@ -1,6 +1,7 @@
 """Dossier persistence, plain-text schemas, target freshness and explained relationships."""
 import copy
 import json
+import re
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -394,7 +395,8 @@ def test_relation_template_keeps_internal_links_on_site(path):
     assert 'href="javascript:' not in rendered and 'href="//foreign.example' not in rendered
 
 
-@pytest.mark.parametrize("unsafe", [{"category": "foreign"}, {"slug": "//foreign.example"}])
+@pytest.mark.parametrize("unsafe", [{"category": "foreign"}, {"slug": "//foreign.example"},
+                                    {"slug": r"/\foreign.example"}, {"slug": "/\t/foreign.example"}])
 def test_article_relation_target_requires_safe_published_path(article, unsafe):
     target = {**article, "model": "C", "story_id": "unsafe-target", **unsafe}
     edge = relation("unsafe-target", editorial.source_fingerprint(target))
@@ -538,3 +540,36 @@ def test_dossier_navigation_templates_keep_internal_links_on_site(catalog, path,
         rendered = html(template, name="Test", slug="test", articles=[], subject_dossiers=[link])
     assert f'href="/{path.lstrip(chr(47))}"' in rendered
     assert 'href="javascript:' not in rendered and 'href="//foreign.example' not in rendered
+
+
+@pytest.mark.parametrize("owner", ["dossier", "relation"])
+def test_dossier_reviewers_are_public_identifiers_not_email_addresses(catalog, article, owner):
+    record = catalog["public-service"]
+    if owner == "dossier":
+        record["review"]["reviewer"] = "editor@example.com"
+    else:
+        edge = relation(editorial.annotation_key(article), editorial.source_fingerprint(article))
+        edge["review"]["reviewer"] = "editor@example.com"
+        record["relations"] = [edge]
+    with pytest.raises(editorial.EditorialError, match="reviewer"):
+        dossiers.validate_dossiers(catalog)
+
+
+def test_dossier_search_scope_excludes_boilerplate_and_historical_summaries(catalog):
+    record = catalog["public-service"]
+    record["history"] = [
+        {"version": 1, "at": "2026-10-17T09:00:00Z", "summary": "Obsolete historical wording.",
+         "reason": "Initial version.", "evidence_ids": ["notice"]},
+        {"version": 2, "at": "2026-10-17T13:00:00Z", "summary": record["summary"],
+         "reason": "Current version.", "evidence_ids": ["notice"]},
+    ]
+    refresh(catalog)
+    page = dossiers.prepare_dossiers(catalog, [], now=NOW)[0][0]
+    rendered = html("dossier.html", dossier=page)
+    bodies = re.findall(r'<([a-z0-9]+)\b[^>]*\bdata-pagefind-body\b[^>]*>(.*?)</\1>', rendered, re.S)
+    indexed = " ".join(re.sub(r"<[^>]+>", " ", body) for _, body in bodies)
+    for content in [record["title"], record["question"], record["summary"], record["events"][0]["text"]]:
+        assert content in indexed
+    for noise in ["Documentat cu asistență AI", "Un termen anunțat nu dovedește", "Documentul sintezei",
+                  "Obsolete historical wording.", record["documents"][0]["locator"]]:
+        assert noise not in indexed

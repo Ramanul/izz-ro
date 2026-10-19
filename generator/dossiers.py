@@ -98,6 +98,8 @@ def _review(item, field, fingerprint=False):
     if item.get("kind") not in {"documentary", "human"}:
         _fail(field, "documentary or human review kind required")
     _texts(item, ("reviewer",), field)
+    if "@" in item["reviewer"]:
+        _fail(field, "reviewer must be a public identifier, not an email address")
     if not _instant(item.get("reviewed_at")):
         _fail(field, "zoned reviewed_at required")
     if fingerprint or "input_fingerprint" in item:
