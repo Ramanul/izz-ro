@@ -9,7 +9,7 @@
          data-pagefind="{{ base }}/_pagefind/"
          data-index="{{ base }}/search-index.json">
   <h1>Caută în știri și dosare</h1>
-  <p class="search-hint">Caută în știrile și dosarele documentare păstrate pe site. Diacriticele nu contează: „inundatii” găsește „inundații”.</p>
+  <p class="search-hint">Caută în titlurile și rezumatele celor {{ search_count }} știri păstrate în ultimele {{ search_days }} zile. Sunt incluse și dosarele documentare. Diacriticele nu contează: „inundatii” găsește „inundații”.</p>
   {# submit-ul e anulat in search.js (CSP fara 'unsafe-inline' pe scripturi) #}
   <form id="search-form" role="search">
     <label class="visually-hidden" for="q">Termen de căutare</label>
