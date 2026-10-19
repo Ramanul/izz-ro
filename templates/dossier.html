@@ -31,7 +31,7 @@
     <p>{% for ref in event.evidence_ids %}<a href="#document-{{ ref }}">Documentul reperului</a>{{ ' · ' if not loop.last }}{% endfor %}</p>
   </li>{% endfor %}</ol>
   {% if dossier.uncertainties %}<h2>Ce rămâne neclar</h2><ul>{% for item in dossier.uncertainties %}<li>{{ item.question }} Ce ar clarifica: {{ item.needed }}</li>{% endfor %}</ul>{% endif %}
-  {% if dossier.article_links %}<h2>Relatări disponibile pe izz</h2><ul>{% for link in dossier.article_links %}<li><a href="{{ base }}{{ link.path }}">{{ link.title }}</a></li>{% endfor %}</ul>{% endif %}
+  {% if dossier.article_links %}<h2>Relatări disponibile pe izz</h2><ul>{% for link in dossier.article_links %}<li><a href="{{ base }}/{{ link.path.lstrip('/') }}">{{ link.title }}</a></li>{% endfor %}</ul>{% endif %}
   {% set editorial_relations = dossier.relations %}{% include '_editorial_relations.html' %}
   {% endif %}
   {% if dossier.documents %}

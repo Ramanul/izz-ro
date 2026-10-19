@@ -20,7 +20,7 @@
   {% if subject_dossiers %}
   <section aria-label="Dosare documentare pentru acest subiect">
     <h2>Context păstrat în dosare</h2>
-    <ul>{% for dossier_link in subject_dossiers %}<li><a href="{{ base }}{{ dossier_link.path }}">{{ dossier_link.title }}</a><p>{{ dossier_link.identity_basis }}</p></li>{% endfor %}</ul>
+    <ul>{% for dossier_link in subject_dossiers %}<li><a href="{{ base }}/{{ dossier_link.path.lstrip('/') }}">{{ dossier_link.title }}</a><p>{{ dossier_link.identity_basis }}</p></li>{% endfor %}</ul>
   </section>
   {% endif %}
   {% if connections %}

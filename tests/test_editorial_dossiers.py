@@ -61,6 +61,7 @@ def html(template, **ctx):
         DictLoader({"base.html": "<!doctype html><html lang='ro'><title>{% block title %}{% endblock %}</title><main>{% block content %}{% endblock %}</main></html>"}),
         FileSystemLoader(ROOT / "templates"),
     ]), autoescape=select_autoescape(["html"]))
+    env.filters["cat_label"] = lambda category: category
     return env.get_template(template).render(base="", site={"name": "izz.ro"}, **ctx)
 
 
@@ -523,3 +524,17 @@ def test_withdrawal_does_not_repeat_original_question_or_coverage(catalog):
     assert record["question"] not in rendered
     assert record["period"]["scope"] not in rendered
     assert "Perioada documentată:" not in rendered
+
+
+@pytest.mark.parametrize("path", ["//foreign.example/path/", "javascript:alert(1)", "/dosar/valid/"])
+@pytest.mark.parametrize("template", ["dossier.html", "subject.html"])
+def test_dossier_navigation_templates_keep_internal_links_on_site(catalog, path, template):
+    link = {"path": path, "title": "Synthetic navigation probe", "identity_basis": "Test only"}
+    if template == "dossier.html":
+        page = dossiers.prepare_dossiers(catalog, [], now=NOW)[0][0]
+        page["article_links"] = [link]
+        rendered = html(template, dossier=page)
+    else:
+        rendered = html(template, name="Test", slug="test", articles=[], subject_dossiers=[link])
+    assert f'href="/{path.lstrip(chr(47))}"' in rendered
+    assert 'href="javascript:' not in rendered and 'href="//foreign.example' not in rendered
