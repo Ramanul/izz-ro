@@ -5,7 +5,9 @@ on:
     branches: [main]
     paths:
       - 'generator/publication.py'
+      - 'generator/dossiers.py'
       - 'templates/withdrawn.html'
+      - 'templates/dossier.html'
       - '.github/workflows/editorial-frontend-audit.yml'
 
 permissions:
@@ -42,6 +44,8 @@ jobs:
           CHROME_PATH: /usr/bin/google-chrome
         run: |
           git worktree add --detach "$RUNNER_TEMP/izz-before" "$BASE_SHA"
+          # Both revisions render the exact PR-head article snapshot; news churn is not a code delta.
+          cp "$GITHUB_WORKSPACE/data/articles.json" "$RUNNER_TEMP/izz-before/data/articles.json"
           mkdir -p "$GITHUB_WORKSPACE/audit-results"
           for revision in before after; do
             root="$GITHUB_WORKSPACE"

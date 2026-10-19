@@ -7,7 +7,7 @@ from pathlib import Path
 import pytest
 from jinja2 import ChoiceLoader, DictLoader, Environment, FileSystemLoader, select_autoescape
 
-from generator import dossiers, editorial
+from generator import dossiers, editorial, publication, render
 
 ROOT = Path(__file__).resolve().parents[1]
 NOW = datetime(2026, 10, 19, tzinfo=timezone.utc)
@@ -75,12 +75,27 @@ def relation(target, fingerprint, kind="context"):
 
 def annotation(article, relations):
     return {"key": editorial.annotation_key(article),
+            "public_paths": [editorial.public_path(article)],
             "review": {"state": "approved", "kind": "documentary", "reviewer": "documentary test",
                        "reviewed_at": "2026-10-17T09:00:00Z",
                        "input_fingerprint": editorial.source_fingerprint(article)},
             "evidence": [{"id": "notice", "url": article["original_link"], "locator": "Paragraful 1",
                           "role": "Emitent", "verified_at": "2026-10-17T09:00:00Z"}],
+            "claims": [{"id": "announcement", "text": "Instituția a publicat anunțul.",
+                        "status": "documented", "evidence_ids": ["notice"]}],
             "relations": relations}
+
+
+def correction(article, state="corrected", presentation=None):
+    row = {"key": editorial.annotation_key(article), "public_paths": [editorial.public_path(article)],
+           "state": state, "notice": "Datele prezentate anterior au fost revizuite.",
+           "evidence_url": "https://institution.example/correction/",
+           "review": {"state": "approved", "kind": "documentary", "reviewer": "test-only",
+                      "reviewed_at": "2026-10-17T18:00:00Z",
+                      "input_fingerprint": editorial.source_fingerprint(article)},
+           "presentation": (presentation or {"title": "Instituția publică informațiile corectate despre calendar"})
+           if state == "corrected" else {}}
+    return {row["key"]: row}
 
 
 def test_real_pilot_is_current_catalog_and_missing_catalog_is_empty(tmp_path):
@@ -220,27 +235,30 @@ def test_article_and_dossier_targets_are_fingerprint_bound(catalog, article):
 def test_source_change_and_withdrawn_target_hide_relations(catalog, article):
     target = {**article, "slug": "target"}
     record = annotation(article, [relation(editorial.annotation_key(target), editorial.source_fingerprint(target))])
-    target["publication"] = {"state": "withdrawn"}
-    links = dossiers.prepare_dossiers(catalog, [article, target], {record["key"]: record}, NOW)[1]
+    active = publication.apply([article, target], correction(target, "withdrawn"))
+    links = dossiers.prepare_dossiers(catalog, active, {record["key"]: record}, NOW)[1]
     assert len(links[record["key"]]) == 1  # only the separate dossier context link
     article["title"] = "Sursa a fost schimbată material."
-    assert dossiers.prepare_dossiers(catalog, [article, target], {record["key"]: record}, NOW)[1] == {}
+    assert dossiers.prepare_dossiers(catalog, [article], {record["key"]: record}, NOW)[1] == {}
 
 
-def test_corrected_views_use_preserved_input_fingerprint(catalog, article):
-    original = editorial.source_fingerprint(article)
-    article["title"] = "Titlul corectat pentru cititor"
-    article["editorial_input_fingerprint"] = original
-    article["publication"] = {"state": "corrected"}
-    assert dossiers.prepare_dossiers(catalog, [article], now=NOW)[1]
+def test_corrected_article_link_requires_current_presentation_review(catalog, article):
+    active = publication.apply([article], correction(article))
+    assert dossiers.prepare_dossiers(catalog, active, now=NOW)[1] == {}
+    catalog["public-service"]["article_links"][0]["input_fingerprint"] = editorial.source_fingerprint(active[0])
+    refresh(catalog)
+    assert dossiers.prepare_dossiers(catalog, active, now=NOW)[1]
 
 
-def test_material_correction_of_relation_target_requires_new_target_review(article):
+@pytest.mark.parametrize("presentation", [
+    {"title": "Instituția publică informațiile corectate despre calendar"}, {"county": "TIMIS"},
+])
+def test_material_correction_of_relation_target_requires_new_target_review(article, presentation):
     target = {**article, "slug": "target", "title": "Ținta originală"}
     approved_target = editorial.source_fingerprint(target)
     record = annotation(article, [relation(editorial.annotation_key(target), approved_target)])
-    target.update(title="Ținta corectată material", editorial_input_fingerprint=approved_target,
-                  publication={"state": "corrected"})
+    active = publication.apply([article, target], correction(target, presentation=presentation))
+    target = active[1]
     pages, links, _, report = dossiers.prepare_dossiers({}, [article, target], {record["key"]: record}, NOW)
     assert pages == [] and links == {}
     assert report["suppressed"][0]["reason"] == "article_target_absent_or_changed"
@@ -297,3 +315,211 @@ def test_duplicate_catalog_ids_and_noninteger_version_are_rejected(tmp_path, cat
     path.write_text(json.dumps({"schema_version": True, "records": []}), encoding="utf-8")
     with pytest.raises(editorial.EditorialError, match="schema_version"):
         dossiers.load_dossiers(path)
+
+
+@pytest.mark.parametrize("relations", [None, "", {}, False])
+def test_relations_require_array_even_when_empty(article, relations):
+    record = annotation(article, relations)
+    with pytest.raises(editorial.EditorialError, match="array required"):
+        dossiers.prepare_dossiers({}, [article], {record["key"]: record}, NOW)
+
+
+@pytest.mark.parametrize("kind", ["catalog", "relation"])
+def test_invalid_dossier_data_preserves_previous_build(tmp_path, monkeypatch, catalog, article, kind):
+    out = tmp_path / "output"
+    out.mkdir()
+    sentinel = out / "previous.html"
+    sentinel.write_text("previous release", encoding="utf-8")
+    records = {}
+    if kind == "catalog":
+        catalog["public-service"]["documents"][0]["url"] = "javascript:alert(1)"
+    else:
+        edge = relation(editorial.annotation_key(article), "0" * 64)
+        edge["evidence_ids"] = ["missing"]
+        record = annotation(article, [edge])
+        records[record["key"]] = record
+    monkeypatch.setattr(render, "OUT_DIR", str(out))
+    monkeypatch.setattr(dossiers, "load_dossiers", lambda: catalog)
+    monkeypatch.setattr(editorial, "load_annotations", lambda: records)
+    monkeypatch.setattr(publication, "load", lambda: {})
+    with pytest.raises(editorial.EditorialError):
+        render.build([article])
+    assert sentinel.read_text(encoding="utf-8") == "previous release"
+
+
+@pytest.mark.parametrize("state", ["approved", "withdrawn", "needs_review"])
+def test_build_dossier_search_and_sitemap_follow_review_state(tmp_path, monkeypatch, catalog, article, state):
+    out = tmp_path / "output"
+    record = catalog["public-service"]
+    if state == "withdrawn":
+        record["review"]["state"] = "withdrawn"
+        record["withdrawal_note"] = "Dosarul a fost retras: documentul nu mai susține sinteza."
+    elif state == "needs_review":
+        record["summary"] = "Sinteză schimbată, încă neexaminată."
+    monkeypatch.setattr(render, "OUT_DIR", str(out))
+    monkeypatch.setattr(dossiers, "load_dossiers", lambda: catalog)
+    monkeypatch.setattr(editorial, "load_annotations", lambda: {})
+    monkeypatch.setattr(publication, "load", lambda: {})
+    # No active article is needed: the dossier/document route survives article expiration.
+    render.build([])
+    path = "/dosar/public-service-history/"
+    page = (out / "dosar/public-service-history/index.html").read_text(encoding="utf-8")
+    report = json.loads((out / "editorial-report.json").read_text(encoding="utf-8"))["dossiers"]
+    search = json.loads((out / "search-index.json").read_text(encoding="utf-8"))["a"]
+    assert report["emitted"] == 1
+    assert (path in (out / "sitemap.xml").read_text(encoding="utf-8")) == (state == "approved")
+    assert (path in (out / "sitemap-priority.xml").read_text(encoding="utf-8")) == (state == "approved")
+    assert any(row[0] == path for row in search) == (state == "approved")
+    if state == "approved":
+        assert 'data-pagefind-body' in page and report["indexable"] == 1
+        assert article["original_link"] in page
+        assert editorial.public_path(article) not in page
+        assert "nu reprezintă o revizie umană" in page
+    else:
+        assert 'data-pagefind-ignore' in page and 'noindex,follow' in page
+        assert report["indexable"] == 0
+        assert record["summary"] not in page
+    metadata = json.loads((out / "build.json").read_text(encoding="utf-8"))
+    assert metadata["article_count"] == 0
+
+
+@pytest.mark.parametrize("path", ["//foreign.example/page/", "javascript:alert(1)"])
+def test_relation_template_keeps_internal_links_on_site(path):
+    relation_view = {"path": path, "title": "Unsafe supplied path", "label": "Context",
+                     "explanation": "Synthetic direct template probe", "identity_basis": "Test only",
+                     "evidence": [{"anchor": path}]}
+    rendered = html("_editorial_relations.html", editorial_relations=[relation_view])
+    assert f'href="/{path.lstrip(chr(47))}"' in rendered
+    assert 'href="javascript:' not in rendered and 'href="//foreign.example' not in rendered
+
+
+@pytest.mark.parametrize("unsafe", [{"category": "foreign"}, {"slug": "//foreign.example"}])
+def test_article_relation_target_requires_safe_published_path(article, unsafe):
+    target = {**article, "model": "C", "story_id": "unsafe-target", **unsafe}
+    edge = relation("unsafe-target", editorial.source_fingerprint(target))
+    record = annotation(article, [edge])
+    with pytest.raises(editorial.EditorialError, match="unsafe category/slug"):
+        dossiers.prepare_dossiers({}, [article, target], {record["key"]: record}, NOW)
+
+
+@pytest.mark.parametrize("count", [1, 2])
+def test_dossier_source_label_matches_examined_document_count(catalog, count):
+    record = catalog["public-service"]
+    if count == 2:
+        record["documents"].append({**record["documents"][0], "id": "second-notice"})
+        refresh(catalog)
+    page = dossiers.prepare_dossiers(catalog, [], now=NOW)[0][0]
+    rendered = html("dossier.html", dossier=page)
+    assert f"<h2>{'Sursă' if count == 1 else 'Surse'}</h2>" in rendered
+    assert rendered.count('class="sources-box"') == 1
+
+
+@pytest.mark.parametrize("field", ["withdrawal_note", "document_note", "event_date_basis"])
+@pytest.mark.parametrize("invalid", ["", {}, [], None, "<em>unsafe</em>", "\x01"])
+def test_optional_catalog_prose_is_plain_text_when_present(catalog, field, invalid):
+    record = catalog["public-service"]
+    if field == "withdrawal_note":
+        record[field] = invalid
+    elif field == "document_note":
+        record["documents"][0]["note"] = invalid
+    else:
+        record["events"][0]["event_at"] = None
+        record["events"][0][field] = invalid
+    with pytest.raises(editorial.EditorialError, match="plain text"):
+        dossiers.validate_dossiers(catalog)
+
+
+@pytest.mark.parametrize("owner", ["article", "dossier"])
+@pytest.mark.parametrize("overlapping", [False, True])
+def test_effect_relation_displays_every_distinct_proof_and_hides_inactive_effect(catalog, article, owner, overlapping):
+    target = {**article, "slug": "affected-service"}
+    edge = relation(editorial.annotation_key(target), editorial.source_fingerprint(target), "affects")
+    edge.update(effect_status="observed", effect_evidence_ids=["notice", "effect"] if overlapping else ["effect"])
+    effect = {**catalog["public-service"]["documents"][0], "id": "effect",
+              "title": "Constatarea efectului", "url": "https://institution.example/effect/"}
+    annotations = {}
+    if owner == "dossier":
+        catalog["public-service"]["documents"].append(effect)
+        catalog["public-service"]["relations"] = [edge]
+        refresh(catalog)
+    else:
+        record = annotation(article, [edge])
+        effect = {**record["evidence"][0], "id": "effect", "url": "https://institution.example/effect/"}
+        record["evidence"].append(effect)
+        annotations = {record["key"]: record}
+        catalog = {}
+
+    def prepared_relations():
+        pages, links, _, report = dossiers.prepare_dossiers(catalog, [article, target], annotations, NOW)
+        return (pages[0]["relations"] if owner == "dossier" else links.get(record["key"], [])), report
+
+    relations, _ = prepared_relations()
+    assert [proof["id"] for proof in relations[0]["evidence"]] == ["notice", "effect"]
+    rendered = html("_editorial_relations.html", editorial_relations=relations)
+    assert "Efect observat în probele citate." in rendered
+    for proof in relations[0]["evidence"]:
+        assert f'href="{proof["anchor"] or proof["scheme"] + "://" + proof["destination"]}"' in rendered
+    assert rendered.count("Proba legăturii</a>") == 2
+
+    effect["status"] = "withdrawn"
+    if owner == "dossier":
+        effect["note"] = "Constatarea efectului a fost retrasă."
+    refresh(catalog)
+    relations, report = prepared_relations()
+    assert relations == []
+    assert any(item["reason"] == "relation_review_or_evidence_inactive" for item in report["suppressed"])
+
+
+@pytest.mark.parametrize("invalid", ["", None, {}, [], "f" * 63, "g" * 64, 1, int("1" * 64)])
+def test_optional_relation_review_fingerprint_is_valid_sha256_when_present(catalog, article, invalid):
+    edge = relation(editorial.annotation_key(article), editorial.source_fingerprint(article))
+    edge["review"]["input_fingerprint"] = invalid
+    catalog["public-service"]["relations"] = [edge]
+    with pytest.raises(editorial.EditorialError, match="input_fingerprint"):
+        dossiers.validate_dossiers(catalog)
+
+
+def test_optional_valid_relation_review_fingerprint_is_accepted(catalog, article):
+    edge = relation(editorial.annotation_key(article), editorial.source_fingerprint(article))
+    edge["review"]["input_fingerprint"] = "a" * 64
+    catalog["public-service"]["relations"] = [edge]
+    assert dossiers.validate_dossiers(catalog) is catalog
+
+
+def test_history_version_proof_links_are_visibly_separated(catalog):
+    record = catalog["public-service"]
+    record["documents"].append({**record["documents"][0], "id": "second-notice"})
+    record["history"] = [{"version": 1, "at": "2026-10-17T09:00:00Z", "summary": record["summary"],
+                          "reason": "Prima versiune documentată.", "evidence_ids": ["notice", "second-notice"]}]
+    refresh(catalog)
+    page = dossiers.prepare_dossiers(catalog, [], now=NOW)[0][0]
+    rendered = html("dossier.html", dossier=page)
+    assert 'Documentul versiunii</a> · <a href="#document-second-notice"' in rendered
+
+
+def test_single_history_version_is_initial_baseline_not_a_correction(catalog):
+    record = catalog["public-service"]
+    record["history"] = [{"version": 1, "at": "2026-10-17T09:00:00Z", "summary": record["summary"],
+                          "reason": "Prima versiune documentată.", "evidence_ids": ["notice"]}]
+    refresh(catalog)
+    page = dossiers.prepare_dossiers(catalog, [], now=NOW)[0][0]
+    rendered = html("dossier.html", dossier=page)
+    assert "Istoricul sintezei și al corecțiilor" in rendered
+    assert "Prima versiune documentată." in rendered
+    assert "Versiunea 1" in rendered
+    assert "Ce s-a schimbat" not in rendered
+    assert record["summary"] in rendered
+
+
+def test_withdrawal_does_not_repeat_original_question_or_coverage(catalog):
+    record = catalog["public-service"]
+    record.update(question="Premisă greșită ce trebuie retrasă.", withdrawal_note="Încadrarea documentară a fost retrasă.")
+    record["period"]["scope"] = "Domeniu documentar atribuit greșit."
+    record["review"]["state"] = "withdrawn"
+    page = dossiers.prepare_dossiers(catalog, [], now=NOW)[0][0]
+    rendered = html("dossier.html", dossier=page)
+    assert "Dosar retras" in rendered and record["withdrawal_note"] in rendered
+    assert record["title"] in rendered and "Examinat la" in rendered
+    assert record["question"] not in rendered
+    assert record["period"]["scope"] not in rendered
+    assert "Perioada documentată:" not in rendered

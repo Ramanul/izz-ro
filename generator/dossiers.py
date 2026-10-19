@@ -100,8 +100,10 @@ def _review(item, field, fingerprint=False):
     _texts(item, ("reviewer",), field)
     if not _instant(item.get("reviewed_at")):
         _fail(field, "zoned reviewed_at required")
-    if fingerprint and not _HASH.fullmatch(str(item.get("input_fingerprint", ""))):
-        _fail(field, "SHA-256 input_fingerprint required")
+    if fingerprint or "input_fingerprint" in item:
+        value = item.get("input_fingerprint")
+        if not isinstance(value, str) or not _HASH.fullmatch(value):
+            _fail(field, "SHA-256 input_fingerprint required")
 
 
 def _refs(value, evidence, field):
@@ -113,7 +115,7 @@ def _refs(value, evidence, field):
 
 
 def dossier_fingerprint(record):
-    """Bind review to substantive dossier content, independent of navigation edges."""
+    """Bind review to dossier content and approved navigation; relations have own review."""
     fields = ("id", "slug", "title", "question", "summary", "summary_evidence_ids",
               "period", "documents", "events", "uncertainties", "history", "withdrawal_note",
               "article_links", "subjects")
@@ -184,6 +186,8 @@ def validate_dossiers(catalog):
         slugs.add(slug)
         _texts(record, ("title", "question", "summary"), field)
         _review(record.get("review"), field + ".review", fingerprint=True)
+        if "withdrawal_note" in record and not _text(record["withdrawal_note"]):
+            _fail(field, "withdrawal_note must be non-empty plain text when present")
         if record["review"]["state"] == "withdrawn" and not _text(record.get("withdrawal_note")):
             _fail(field, "withdrawal_note required for withdrawn dossier")
         period = record.get("period")
@@ -204,6 +208,8 @@ def validate_dossiers(catalog):
                 _fail(field, "separate valid document publication date required")
             if doc.get("status") not in {"active", "unavailable", "withdrawn"}:
                 _fail(field, "explicit document status required")
+            if "note" in doc and not _text(doc["note"]):
+                _fail(field, "document note must be non-empty plain text when present")
             if doc["status"] != "active" and not _text(doc.get("note")):
                 _fail(field, "unavailable/withdrawn document explanation required")
             documents[did] = doc
@@ -218,6 +224,8 @@ def validate_dossiers(catalog):
             _texts(event, ("text",), field + ".event")
             if event.get("status") not in {"reported", "documented", "forecast"}:
                 _fail(field, "explicit event status required")
+            if "event_date_basis" in event and not _text(event["event_date_basis"]):
+                _fail(field, "event_date_basis must be non-empty plain text when present")
             if event.get("event_at") is not None:
                 if not (_day(event["event_at"]) or _instant(event["event_at"])) or not _text(event.get("event_date_basis")):
                     _fail(field, "known event date requires explicit date basis")
@@ -266,7 +274,7 @@ def validate_dossiers(catalog):
 
 
 def prepare_dossiers(catalog, articles, annotations=None, now=None):
-    """Prepare persistent pages/navigation before deleting output; all inputs immutable."""
+    """Prepare pages/navigation immutably; article annotations must be validated first."""
     validate_dossiers(catalog)
     now = now or datetime.now(timezone.utc)
     if now.tzinfo is None:
@@ -275,12 +283,6 @@ def prepare_dossiers(catalog, articles, annotations=None, now=None):
     annotations = annotations or {}
     pages, article_relations, subjects = [], {}, {}
     report = {"emitted": 0, "indexable": 0, "withdrawn": 0, "suppressed": []}
-
-    def article_fingerprint(article):
-        return article.get("editorial_input_fingerprint") or source_fingerprint(article)
-
-    def withdrawn(article):
-        return (article.get("publication") or {}).get("state") == "withdrawn"
 
     def suppress(key, reason):
         report["suppressed"].append({"key": key, "reason": reason})
@@ -330,7 +332,7 @@ def prepare_dossiers(catalog, articles, annotations=None, now=None):
 
     def relation_view(relation, evidence, owner, dossier_path=None):
         _validate_relation(relation, evidence, catalog, owner + ".relation")
-        refs = relation["evidence_ids"] + relation.get("effect_evidence_ids", [])
+        refs = list(dict.fromkeys(relation["evidence_ids"] + relation.get("effect_evidence_ids", [])))
         if relation["review"]["state"] != "approved" or not evidence_active(refs, evidence):
             suppress(owner, "relation_review_or_evidence_inactive")
             return None
@@ -345,9 +347,8 @@ def prepare_dossiers(catalog, articles, annotations=None, now=None):
         else:
             article = article_index.get(target)
             # Target approval concerns the facts the reader will see, including a
-            # material presentation correction; the preserved raw hash is only
-            # appropriate for identifying the annotation's own source input.
-            if (article is None or withdrawn(article)
+            # material presentation or geographic correction.
+            if (article is None
                     or relation["target_fingerprint"] != source_fingerprint(article)):
                 suppress(owner, "article_target_absent_or_changed")
                 return None
@@ -356,7 +357,7 @@ def prepare_dossiers(catalog, articles, annotations=None, now=None):
                 "type": relation["type"], "explanation": relation["explanation"],
                 "effect_status": relation.get("effect_status"),
                 "identity_basis": relation["identity_basis"],
-                "evidence": proof_links(relation["evidence_ids"], evidence, dossier_path)}
+                "evidence": proof_links(refs, evidence, dossier_path)}
 
     for key, page in ready.items():
         record = catalog[key]
@@ -367,8 +368,8 @@ def prepare_dossiers(catalog, articles, annotations=None, now=None):
                 page["relations"].append(view)
         for link in record.get("article_links", []):
             article = article_index.get(link["key"])
-            if (article is None or withdrawn(article)
-                    or article_fingerprint(article) != link["input_fingerprint"]
+            if (article is None
+                    or source_fingerprint(article) != link["input_fingerprint"]
                     or not evidence_active(link["evidence_ids"], documents)):
                 suppress(link["key"], "dossier_article_absent_or_changed")
                 continue
@@ -383,16 +384,16 @@ def prepare_dossiers(catalog, articles, annotations=None, now=None):
             subjects.setdefault(subject["slug"], []).append({"path": page["path"], "title": page["title"],
                                                            "identity_basis": subject["identity_basis"]})
     for key, annotation in annotations.items():
-        relations = annotation.get("relations", [])
+        relations = _list(annotation.get("relations", []), key + ".relations")
         if not relations:
             continue
         evidence = {e["id"]: e for e in annotation.get("evidence", [])}
-        for relation in _list(relations, key + ".relations"):
+        for relation in relations:
             _validate_relation(relation, evidence, catalog, key + ".relation")
         article = article_index.get(key)
         review = annotation.get("review", {})
         if (article is None or review.get("state") != "approved"
-                or withdrawn(article) or review.get("input_fingerprint") != article_fingerprint(article)):
+                or review.get("input_fingerprint") != source_fingerprint(article)):
             suppress(key, "relation_source_absent_or_changed")
             continue
         for relation in relations:
