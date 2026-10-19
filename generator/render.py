@@ -20,7 +20,7 @@ from xml.sax.saxutils import escape as xml_escape
 from jinja2 import Environment, FileSystemLoader, select_autoescape
 from slugify import slugify
 
-from . import config, covers, editorial, geo, htmlart, pagefind_index, publication
+from . import config, covers, dossiers, editorial, geo, htmlart, pagefind_index, publication
 from .select import (_dedup, _dedup_sources, _diversify, _entity_index,
                      _pick_hero, _quality_gate, anunt_oficial_fara_corp, filtru_cautare_rapida,
                      publicitar_la_sursa, titlu_afisare)
@@ -1092,6 +1092,10 @@ def build(articles: list, mod: dict | None = None) -> None:
         raise editorial.EditorialError("\n".join(editorial_errors))
     corrections = publication.load()
     articles = publication.apply(articles, corrections)
+    dossier_catalog = dossiers.load_dossiers()
+    # Reject malformed relations/catalogs while the previous good output still exists.
+    # Publication.apply has already removed withdrawals and applied presentation corrections.
+    dossiers.prepare_dossiers(dossier_catalog, articles, annotations)
     editorial_revisions = publication.revisions(corrections)
     env.globals["editorial_version"] = editorial_revisions["version"]
     tombstones = sum(len(row["public_paths"]) for row in corrections.values())
@@ -1158,6 +1162,10 @@ def build(articles: list, mod: dict | None = None) -> None:
     _ataseaza_legaturi(by_date)
     editorial_now = datetime.now(timezone.utc)
     by_date = [editorial.apply_view(a, annotations, provenance, editorial_now) for a in by_date]
+    dossier_pages, relation_index, subject_dossiers, dossier_report = dossiers.prepare_dossiers(
+        dossier_catalog, by_date, annotations, editorial_now)
+    for a in by_date:
+        a["editorial_relations"] = relation_index.get(editorial.annotation_key(a), [])
     publication_manifest = publication.manifest(by_date, corrections)
     _write(os.path.join(OUT_DIR, "editorial-publication.json"),
            json.dumps(publication_manifest, ensure_ascii=False, sort_keys=True))
@@ -1178,9 +1186,10 @@ def build(articles: list, mod: dict | None = None) -> None:
                        env.get_template("withdrawn.html").render(
                            **_base_ctx(path), correction=publication.public_notice(row),
                            active_path=active_keys.get(row["key"])))
+    editorial_report = editorial.catalog_report(annotations, by_date, provenance, editorial_now)
+    editorial_report["dossiers"] = dossier_report
     _write(os.path.join(OUT_DIR, "editorial-report.json"),
-           json.dumps(editorial.catalog_report(annotations, by_date, provenance, editorial_now),
-                      ensure_ascii=False, sort_keys=True, indent=2))
+           json.dumps(editorial_report, ensure_ascii=False, sort_keys=True, indent=2))
 
     # Dupa taierea ferestrei: lista de judet trebuie sa fie exact ce se publica.
     _write_harta_pages(by_date)
@@ -1404,6 +1413,7 @@ def build(articles: list, mod: dict | None = None) -> None:
                                                               key=lambda a: a.get("published") or "",
                                                               reverse=True),
                                               connections=connections,
+                                              subject_dossiers=subject_dossiers.get(s, []),
                                               portrait=_portret(portraits, d["name"]),
                                               has_feed=has_feed)))
         if has_feed:
@@ -1519,6 +1529,12 @@ def build(articles: list, mod: dict | None = None) -> None:
                        jsonld_nodes=[jsonld, breadcrumb_jsonld],
                        jsonld_page={"name": a.get("title", "")})))
 
+    for page in dossier_pages:
+        _write(os.path.join(OUT_DIR, "dosar", page["slug"], "index.html"),
+               env.get_template("dossier.html").render(**_base_ctx(
+                   page["path"], dossier=page, noindex=not page["indexable"])))
+        if not page["indexable"]:
+            _PAGES_WRITTEN.discard(page["path"])
     _render_legal(env)
     _render_sections(env)
     _render_ghiduri(env, by_date)
@@ -1574,7 +1590,9 @@ def build(articles: list, mod: dict | None = None) -> None:
     # Vine dupa copierea portretelor, nu inaintea ei: Pagefind citeste doar HTML, deci
     # ordinea nu schimba ce intra in index, dar amandoua preced numaratoarea.
     cautare = pagefind_index.ruleaza(OUT_DIR)
-    cautare["mapate"] = _write_search_index(by_date, cautare.get("harta"))
+    dossier_search = [{"category": "dosar", "slug": page["slug"], "title": page["title"],
+                       "published_human": page["reviewed_at"][:10]} for page in dossier_pages if page["indexable"]]
+    cautare["mapate"] = _write_search_index(by_date + dossier_search, cautare.get("harta"))
     # `harta` e material de lucru (10k perechi url->id), nu diagnostic: nu intra in build.json.
     cautare.pop("harta", None)
     # ULTIMUL: numara ce s-a scris efectiv, deci trebuie sa vina dupa toate scrierile.
@@ -2027,7 +2045,7 @@ def _render_legal(env: Environment) -> None:
 # Sectiunile editoriale care intra in sitemap. NU tot ce se randeaza: `subiect/` are ~300 de
 # pagini de agregare subtiri (decizie de proprietar daca merita indexate), `cauta/` e o unealta,
 # iar `static/`, `data/`, `leads/`, `portraits/` nu sunt pagini.
-_SITEMAP_SECTIONS = ("ghiduri", "instrumente", "calendar", "surse", "legal", "sectiuni", "harta")
+_SITEMAP_SECTIONS = ("ghiduri", "instrumente", "calendar", "surse", "legal", "sectiuni", "harta", "dosar")
 
 
 def _content_page_slugs() -> set:

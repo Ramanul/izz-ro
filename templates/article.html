@@ -146,6 +146,7 @@
       {% for s in srcs %}<li><a href="{{ s.url }}" target="_blank" rel="noopener noreferrer">{{ s.name }} &rarr;</a>{% if a.first_source and s.name == a.first_source and srcs | length > 1 %} <span class="first-badge" title="Prima publicare observată în setul de surse monitorizate">publicată prima</span>{% endif %}</li>{% endfor %}
     </ul>
     {% if a.editorial %}{% include '_editorial_context.html' %}{% endif %}
+    {% set editorial_relations = a.editorial_relations %}{% include '_editorial_relations.html' %}
   </div>
   <aside class="article-accountability" aria-labelledby="article-accountability-title">
     <h2 id="article-accountability-title">Transparență și corecții</h2>

@@ -1,0 +1,97 @@
+{
+  "schema_version": 1,
+  "records": [
+    {
+      "id": "sector1-plati-octombrie-2026",
+      "slug": "sectorul-1-plati-octombrie-2026",
+      "title": "Plățile din Sectorul 1: anunțul pentru 16–18 octombrie 2026",
+      "question": "Ce interval a anunțat instituția și ce nu este încă verificat?",
+      "summary": "Primăria Sectorului 1 anunță suspendarea temporară a serviciilor de plată enumerate în comunicatul său, de la 16 octombrie, ora 19:00, până la 18 octombrie 2026, ora 18:00. Revenirea este un termen anunțat. Dosarul păstrează anunțul, fără să confirme disponibilitatea efectivă a platformelor sau o întrerupere națională.",
+      "summary_evidence_ids": [
+        "anunt-sector1"
+      ],
+      "review": {
+        "state": "approved",
+        "kind": "documentary",
+        "reviewer": "Codex documentary pilot",
+        "reviewed_at": "2026-10-17T15:32:59+00:00",
+        "input_fingerprint": "07263655f2a9b11da001e4f71644f493da69a254f66680fc831344dd9ed01176"
+      },
+      "period": {
+        "start": "2026-10-13",
+        "end": "2026-10-18",
+        "scope": "Un anunț oficial; fără verificarea funcționării platformelor."
+      },
+      "documents": [
+        {
+          "id": "anunt-sector1",
+          "title": "Anunțul Primăriei Sectorului 1 despre serviciile de plată",
+          "url": "https://primariasector1.ro/intrerupere-temporara-a-serviciilor-de-plata-online-in-perioada-16-18-octombrie/",
+          "locator": "Titlul, data publicării și paragrafele 1–5 din corpul anunțului.",
+          "verified_at": "2026-10-17T15:32:59+00:00",
+          "published_at": "2026-10-13",
+          "status": "active"
+        }
+      ],
+      "events": [
+        {
+          "id": "publicare-anunt",
+          "text": "Instituția publică anunțul; data afișată nu stabilește ora publicării.",
+          "event_at": null,
+          "published_at": "2026-10-13",
+          "status": "documented",
+          "evidence_ids": [
+            "anunt-sector1"
+          ]
+        },
+        {
+          "id": "inceput-anuntat",
+          "text": "Începutul intervalului de întrerupere anunțat pentru serviciile enumerate.",
+          "event_at": "2026-10-16T19:00:00+03:00",
+          "event_date_basis": "Ora Bucureștiului, dedusă din localizarea instituției; sursa nu precizează fusul orar.",
+          "published_at": "2026-10-13",
+          "status": "forecast",
+          "evidence_ids": [
+            "anunt-sector1"
+          ]
+        },
+        {
+          "id": "revenire-anuntata",
+          "text": "Termenul comunicat pentru revenire; rezultatul nu a fost testat.",
+          "event_at": "2026-10-18T18:00:00+03:00",
+          "event_date_basis": "Ora Bucureștiului, dedusă din localizarea instituției; sursa nu precizează fusul orar.",
+          "published_at": "2026-10-13",
+          "status": "forecast",
+          "evidence_ids": [
+            "anunt-sector1"
+          ]
+        }
+      ],
+      "uncertainties": [
+        {
+          "question": "Disponibilitatea efectivă și ora revenirii nu au fost verificate.",
+          "needed": "O actualizare oficială ori o verificare separată, fără efectuarea unei plăți."
+        }
+      ],
+      "history": [],
+      "relations": [],
+      "article_links": [
+        {
+          "key": "article:/local/intrerupere-temporara-a-serviciilor-de-plata-online-in-perioada-16-18-octombrie/",
+          "input_fingerprint": "3a9dbe58ccf2aebef82c7aef0f67c6c8ddf0f3bd6b3fc0f0795577878dae4f5a",
+          "explanation": "Dosarul păstrează reperele și documentul anunțului prezentat în această pagină.",
+          "identity_basis": "Aceeași adresă oficială a comunicatului; Sectorul 1 din București este instituția emitentă.",
+          "evidence_ids": [
+            "anunt-sector1"
+          ]
+        }
+      ],
+      "subjects": [
+        {
+          "slug": "primaria-sectorului-1",
+          "identity_basis": "Instituția emitentă identificată de domeniul oficial primariasector1.ro, în București."
+        }
+      ]
+    }
+  ]
+}

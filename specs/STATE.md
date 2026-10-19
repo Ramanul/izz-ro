@@ -8,10 +8,10 @@
 > Where the rest lives: `specs/regim-reguli.md` — unified audit closure ·
 > `specs/registru.tsv` — decisions · `CLAUDE.md` — canonical contract.
 
-**Updated:** 2026-10-18 (editorial correction release validation)
+**Updated:** 2026-10-19 (editorial dossier release validation)
 
 ## Open
-- **Editorial transformation:** A/B/C published via #476 (merged), #477 (merged) and #489 (merged); 5/12 points and 3/8 slices at pilot scale. D release validation is recorded below. Dossiers, selection, reader controls and broad coverage remain unfinished.
+- **Editorial transformation:** A/B/C/D published via #476 (merged), #477 (merged), #489 (merged) and #497 (merged); E persistent dossiers and explained relations are included in this release at pilot scale. Live release requires the exact build SHA plus the visible dossier/search checks. Selection, reader controls and broad coverage remain unfinished.
 - **Audite externe:** 3 oct ÎNCHIS [IZZ-0426] (#425 merged, #426 merged; `ai_gateway` pe main, $0, cheile în `.env`) · 4 oct verificat mecanic [IZZ-0432] — 3 confirmate / 2 parțiale / 2 false pozitive (bara de consimțământ și manifestul PWA existau): `notes/analiza-audit-extern-2026-10-04.md`; pe main prin #438 (merged, 6 oct): A1 gardă de diacritice + A2 semnătura editorială/E-E-A-T.
 - **PWA + alerte push [IZZ-0430/0431] — PE MAIN (#434 merged):** SW la `/sw.js`, buton instalare, alerte VAPID; fără namespace KV + 4 secrete (`infra/PUSH-SETUP.md`) rutele dau 503. Verificarea Content-Type a manifestului e mecanizată (P0.1 în #438) — de rulat pe live.
 - **Pages `izz-ro` ZOMBI — CONFIRMAT ȘTERS [IZZ-0411]:** `izz-ro.pages.dev` returnează `000` [IZZ-0366, 0395].
@@ -32,7 +32,7 @@
 
 ## Audit closure status
 
-- D release: #497 implements corrections/withdrawals, persistent history, shared publication/map selection, offline disclosure and a reader-controlled reload offer. Local regressions: 20 Python/7 Node contracts; browser checks passed, final CI/performance and live gates pending. Empty production corrections catalog; synthetic cases test-only. Evidence: specs/editorial-corrections.md.
+- D release: #497 merged, CI and release verifier passed; exact build SHA and versioned update script confirmed on izz.ro/www. Empty production corrections catalog; synthetic cases test-only. E adds persistent documentary dossiers with evidence-backed relations; Gemini Argon Maximum and Google Search AI Argon reviews produced reproduced regressions. Release evidence belongs to the current PR checks and the release verifier; a model opinion is not execution evidence. Evidence: specs/editorial-corrections.md and specs/editorial-dossiers.md.
 - **K1–K14:** re-verified in `specs/regim-reguli.md` — a reconciliation register, not a substitute
   for passing tests. **Grounding:** blocks invented quotes and foreign numbers, fails closed.
 - **Coordination:** `handoff/` + `specs/STATE.md`. **Containment:** git destructiv și Edit pe control-plane

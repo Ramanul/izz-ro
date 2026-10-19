@@ -13,7 +13,7 @@ from .select import _dedup_sources, anunt_oficial_fara_corp
 PATH_RE = re.compile(r"^/[a-z0-9-]+/[a-z0-9-]+/$")
 ID_RE = re.compile(r"^[a-zA-Z0-9_-]+$")
 RECORD_FIELDS = {"key", "public_paths", "review", "claims", "evidence", "uncertainties",
-                 "impacts", "actions", "differences"}
+                 "impacts", "actions", "differences", "relations"}
 REVIEW_FIELDS = {"state", "kind", "reviewer", "reviewed_at", "input_fingerprint"}
 EVIDENCE_FIELDS = {"id", "url", "locator", "role", "verified_at", "published_at", "status", "provenance_id"}
 CLAIM_FIELDS = {"id", "text", "status", "evidence_ids"}
@@ -56,6 +56,10 @@ def source_fingerprint(article):
     fields = ("model", "category", "slug", "story_id", "title", "teaser", "synthesis",
               "original_link", "url", "sources", "members", "entities", "processed_by")
     material = {k: item.get(k) for k in fields}
+    # A reviewed geographic relationship must also match a corrected visible location.
+    # Keep historical source hashes identical when no publication override exists.
+    if "editorial_county" in item:
+        material["editorial_county"] = item["editorial_county"]
     if anunt_oficial_fara_corp(item):
         material["teaser"] = ""
     raw = json.dumps(_canonical(material), sort_keys=True, ensure_ascii=False,
