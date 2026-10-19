@@ -2725,82 +2725,6 @@
   "kind": "locality",
   "qid": "Q835227"
  },
- "76c8a984e94fb561": {
-  "miss": true,
-  "v": 2
- },
- "10c1a259bd5778e1": {
-  "miss": true,
-  "v": 2
- },
- "6fc3b0a866024361": {
-  "miss": true,
-  "v": 2
- },
- "d42cee7d64b37729": {
-  "miss": true,
-  "v": 2
- },
- "58c7219b38b8b41a": {
-  "miss": true,
-  "v": 2
- },
- "4b691688b280dc2d": {
-  "miss": true,
-  "v": 2
- },
- "3c0bea30c55e3d6c": {
-  "miss": true,
-  "v": 2
- },
- "457d598c97716515": {
-  "miss": true,
-  "v": 2
- },
- "fdc8dad79de7ac32": {
-  "miss": true,
-  "v": 2
- },
- "c43a5e8c885b8944": {
-  "miss": true,
-  "v": 2
- },
- "9c88928509e6c992": {
-  "miss": true,
-  "v": 2
- },
- "ce98c58d6114997e": {
-  "miss": true,
-  "v": 2
- },
- "b97e7991754def71": {
-  "miss": true,
-  "v": 2
- },
- "bb4a715789ab7a60": {
-  "miss": true,
-  "v": 2
- },
- "adae525195113593": {
-  "miss": true,
-  "v": 2
- },
- "648f0854d01cd9c1": {
-  "miss": true,
-  "v": 2
- },
- "4a625203e2d0a489": {
-  "miss": true,
-  "v": 2
- },
- "4dfdaf6666178fff": {
-  "miss": true,
-  "v": 2
- },
- "f5fb8c48a9be1295": {
-  "miss": true,
-  "v": 2
- },
  "01c60931f4202578": {
   "miss": true,
   "v": 2
@@ -2821,14 +2745,6 @@
   "miss": true,
   "v": 2
  },
- "962bc61d98ea460d": {
-  "miss": true,
-  "v": 2
- },
- "a8615d13460ad10c": {
-  "miss": true,
-  "v": 2
- },
  "4ea001271e80f376": {
   "cover": "leads/loc-Q837161.c.jpg",
   "art": "leads/loc-Q837161.jpg",
@@ -2839,54 +2755,6 @@
   "name": "Sânnicolau Mare",
   "kind": "locality",
   "qid": "Q837161"
- },
- "b35f677bced7025a": {
-  "miss": true,
-  "v": 2
- },
- "18953d8ce08c6ced": {
-  "miss": true,
-  "v": 2
- },
- "adfd8a30843e1823": {
-  "miss": true,
-  "v": 2
- },
- "992a72e5bec7b8b9": {
-  "miss": true,
-  "v": 2
- },
- "a05bde9204e470de": {
-  "miss": true,
-  "v": 2
- },
- "2f7fda8ddab30a53": {
-  "miss": true,
-  "v": 2
- },
- "9ba9c643b130f693": {
-  "miss": true,
-  "v": 2
- },
- "47f00c3a6c402661": {
-  "miss": true,
-  "v": 2
- },
- "ea0015cc2072e10b": {
-  "miss": true,
-  "v": 2
- },
- "911a1af9f4ed7d07": {
-  "miss": true,
-  "v": 2
- },
- "7608cec41c50750a": {
-  "miss": true,
-  "v": 2
- },
- "ce074428ad4e69bb": {
-  "miss": true,
-  "v": 2
  },
  "a1f4e379cf94e291": {
   "miss": true,
@@ -13483,5 +13351,140 @@
   "name": "Sărata",
   "kind": "locality",
   "qid": "Q2621188"
+ },
+ "e6e047ac489d7307": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_negasit_sau_fara_imagine",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "c23abda6ccea314b": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_negasit_sau_fara_imagine",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "576a5283c3109744": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_negasit_sau_fara_imagine",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "56b70cd49a366247": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_negasit_sau_fara_imagine",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "116d58baf5b57db4": {
+  "cover": "leads/loc-Q423441.c.jpg",
+  "art": "leads/loc-Q423441.jpg",
+  "webp": "leads/loc-Q423441.webp",
+  "artist": "Andrei Stroe",
+  "license": "CC BY-SA 3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:RO_IL_Tandarei_town_hall.jpg",
+  "name": "Țăndărei",
+  "kind": "locality"
+ },
+ "66728c10d80c9290": {
+  "cover": "leads/loc-Q12724758.c.jpg",
+  "art": "leads/loc-Q12724758.jpg",
+  "webp": "leads/loc-Q12724758.webp",
+  "artist": "Țetcu Mircea Rareș",
+  "license": "CC BY-SA 4.0",
+  "page": "https://commons.wikimedia.org/wiki/File:RO_GJ_Biserica_de_lemn_din_Valea_Bratuii_(8).jpg",
+  "name": "Dănești",
+  "kind": "locality",
+  "qid": "Q12724758"
+ },
+ "dfe9b41fbb90b94c": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_licenta",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "faab919106634ae4": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_licenta",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "d55c37eb1299550c": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_dimensiune_sau_format",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "c24ff40b78f88aee": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_negasit_sau_fara_imagine",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "4f9c70589de889a3": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_negasit_sau_fara_imagine",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "0ddf074a11058b88": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_dimensiune_sau_format",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "3accc4e1819f72e9": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_negasit_sau_fara_imagine",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "964d481b00b820d2": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_negasit_sau_fara_imagine",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "8daff9273ce51c7b": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_dimensiune_sau_format",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "f35c07bffb9a786d": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_licenta",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "bb41a177b9a33996": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_negasit_sau_fara_imagine",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "b4026a96faa868e2": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_dimensiune_sau_format",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "55734b6dae31a2e2": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_negasit_sau_fara_imagine",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "2f7f5c9469b9d1fa": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_negasit_sau_fara_imagine",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "34300c54c93630c3": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_negasit_sau_fara_imagine",
+  "motiv_ent": "ent_fara_entitati"
  }
 }
