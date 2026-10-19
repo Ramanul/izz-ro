@@ -26,9 +26,6 @@
  "a433b9f1e3c63ada": {
   "miss": true
  },
- "c1926f19c4217de6": {
-  "miss": true
- },
  "01b483ff4fa9763b": {
   "cover": "leads/loc-Q253872.c.jpg",
   "art": "leads/loc-Q253872.jpg",
@@ -648,9 +645,6 @@
   "page": "https://commons.wikimedia.org/wiki/File:Monument_Buhu%C5%9Fi.jpg",
   "name": "Buhuși",
   "kind": "locality"
- },
- "8907511b35ff147c": {
-  "miss": true
  },
  "286ff6db4c52c900": {
   "miss": true,
@@ -1325,10 +1319,6 @@
   "page": "https://commons.wikimedia.org/wiki/File:Biserica_Sf._Arhangheli_din_Cajvana3.jpg",
   "name": "Cajvana",
   "kind": "locality"
- },
- "4c398edb03b9ce7e": {
-  "miss": true,
-  "v": 2
  },
  "536808f1af80fde9": {
   "cover": "leads/loc-Q207196.c.jpg",
@@ -2522,10 +2512,6 @@
   "miss": true,
   "v": 2
  },
- "500feb4c70d59e15": {
-  "miss": true,
-  "v": 2
- },
  "12deb06b36921d8d": {
   "cover": "leads/loc-Q2534604.c.jpg",
   "art": "leads/loc-Q2534604.jpg",
@@ -2572,39 +2558,87 @@
  },
  "e2e6035563b5abd4": {
   "miss": true,
-  "v": 2
+  "v": 3,
+  "motiv_loc": "loc_negasit_sau_fara_imagine",
+  "motiv_ent": "ent_fara_entitati"
  },
  "c41d8d6f5eb14b42": {
   "miss": true,
-  "v": 2
+  "v": 3,
+  "motiv_loc": "loc_negasit_sau_fara_imagine",
+  "motiv_ent": "ent_fara_entitati"
  },
  "151a34448c5ca4fc": {
   "miss": true,
-  "v": 2
+  "v": 3,
+  "motiv_loc": "loc_negasit_sau_fara_imagine",
+  "motiv_ent": "ent_fara_entitati"
  },
  "e9382e6d44e58f47": {
-  "miss": true,
-  "v": 2
+  "cover": "leads/loc-Q2716103.c.jpg",
+  "art": "leads/loc-Q2716103.jpg",
+  "webp": "leads/loc-Q2716103.webp",
+  "artist": "Macreanu Iulian",
+  "license": "CC BY-SA 4.0",
+  "page": "https://commons.wikimedia.org/wiki/File:2014_-_Imagine_din_Bordei_Verde.png",
+  "name": "Bordei Verde",
+  "kind": "locality",
+  "qid": "Q2716103"
  },
  "273562ac03ff049a": {
-  "miss": true,
-  "v": 2
+  "cover": "leads/loc-Q2716103.c.jpg",
+  "art": "leads/loc-Q2716103.jpg",
+  "webp": "leads/loc-Q2716103.webp",
+  "artist": "Macreanu Iulian",
+  "license": "CC BY-SA 4.0",
+  "page": "https://commons.wikimedia.org/wiki/File:2014_-_Imagine_din_Bordei_Verde.png",
+  "name": "Bordei Verde",
+  "kind": "locality",
+  "qid": "Q2716103"
  },
  "1bb877a7067a57f8": {
-  "miss": true,
-  "v": 2
+  "cover": "leads/loc-Q2716103.c.jpg",
+  "art": "leads/loc-Q2716103.jpg",
+  "webp": "leads/loc-Q2716103.webp",
+  "artist": "Macreanu Iulian",
+  "license": "CC BY-SA 4.0",
+  "page": "https://commons.wikimedia.org/wiki/File:2014_-_Imagine_din_Bordei_Verde.png",
+  "name": "Bordei Verde",
+  "kind": "locality",
+  "qid": "Q2716103"
  },
  "b1c0b0b59e0c902a": {
-  "miss": true,
-  "v": 2
+  "cover": "leads/loc-Q2716103.c.jpg",
+  "art": "leads/loc-Q2716103.jpg",
+  "webp": "leads/loc-Q2716103.webp",
+  "artist": "Macreanu Iulian",
+  "license": "CC BY-SA 4.0",
+  "page": "https://commons.wikimedia.org/wiki/File:2014_-_Imagine_din_Bordei_Verde.png",
+  "name": "Bordei Verde",
+  "kind": "locality",
+  "qid": "Q2716103"
  },
  "5b36ec8bf49f5031": {
-  "miss": true,
-  "v": 2
+  "cover": "leads/loc-Q188673.c.jpg",
+  "art": "leads/loc-Q188673.jpg",
+  "webp": "leads/loc-Q188673.webp",
+  "artist": "fusion-of-horizons",
+  "license": "CC BY 2.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Biserica_Domneasc%C4%83_Adormirea_Maicii_Domnului_(2).jpg",
+  "name": "Târgoviște",
+  "kind": "locality",
+  "qid": "Q188673"
  },
  "06c7e6771884fdeb": {
-  "miss": true,
-  "v": 2
+  "cover": "leads/loc-Q188673.c.jpg",
+  "art": "leads/loc-Q188673.jpg",
+  "webp": "leads/loc-Q188673.webp",
+  "artist": "fusion-of-horizons",
+  "license": "CC BY 2.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Biserica_Domneasc%C4%83_Adormirea_Maicii_Domnului_(2).jpg",
+  "name": "Târgoviște",
+  "kind": "locality",
+  "qid": "Q188673"
  },
  "159e2020c1ca3301": {
   "cover": "leads/loc-Q2719260.c.jpg",
@@ -2649,66 +2683,6 @@
   "kind": "locality",
   "qid": "Q837161"
  },
- "04df2ced8fd5e33c": {
-  "miss": true,
-  "v": 2
- },
- "58655b47733e7ad1": {
-  "miss": true,
-  "v": 2
- },
- "51eaa3b329024a6d": {
-  "miss": true,
-  "v": 2
- },
- "0973bb6306040f24": {
-  "miss": true,
-  "v": 2
- },
- "c571f1f4765b2d37": {
-  "miss": true,
-  "v": 2
- },
- "ae8a55eaf0c15081": {
-  "miss": true,
-  "v": 2
- },
- "727c21c0ed714fac": {
-  "miss": true,
-  "v": 2
- },
- "30eb16bc4a0ca05d": {
-  "miss": true,
-  "v": 2
- },
- "cccf8c9092ab4f9f": {
-  "miss": true,
-  "v": 2
- },
- "a8ad38feabe69dd9": {
-  "miss": true,
-  "v": 2
- },
- "78072ee7304bfca9": {
-  "miss": true,
-  "v": 2
- },
- "a3066ba946dc192d": {
-  "miss": true,
-  "v": 2
- },
- "5c506894c8d1e5c7": {
-  "miss": true,
-  "v": 2
- },
- "f6cd5e06a6028ed1": {
-  "miss": true,
-  "v": 2
- },
- "38e1072f4e4e81b7": {
-  "miss": true,
-  "v": 2
- },
  "e6cac312d79231d4": {
   "cover": "leads/loc-Q3878982.c.jpg",
   "art": "leads/loc-Q3878982.jpg",
@@ -2719,10 +2693,6 @@
   "name": "Ion Creangă",
   "kind": "locality"
  },
- "fb4ba509a5d32239": {
-  "miss": true,
-  "v": 2
- },
  "be594309734416ef": {
   "cover": "leads/loc-Q3878982.c.jpg",
   "art": "leads/loc-Q3878982.jpg",
@@ -2732,122 +2702,6 @@
   "page": "https://commons.wikimedia.org/wiki/File:Biserica_Ion_Creang%C4%83.jpg",
   "name": "Ion Creangă",
   "kind": "locality"
- },
- "2edef0f1d6198f16": {
-  "miss": true,
-  "v": 2
- },
- "452df107e596f3ed": {
-  "miss": true,
-  "v": 2
- },
- "3291bb944ca0feb4": {
-  "miss": true,
-  "v": 2
- },
- "1ea28d3e15b9fc7a": {
-  "miss": true,
-  "v": 2
- },
- "94a16086cadf89d4": {
-  "miss": true,
-  "v": 2
- },
- "d983de5104c3de16": {
-  "miss": true,
-  "v": 2
- },
- "eedd4578b1f1bf92": {
-  "miss": true,
-  "v": 2
- },
- "1eb089bb20136107": {
-  "miss": true,
-  "v": 2
- },
- "72d60f1365560d78": {
-  "miss": true,
-  "v": 2
- },
- "ad638abd5d74ec51": {
-  "miss": true,
-  "v": 2
- },
- "727538cb6ca6944d": {
-  "miss": true,
-  "v": 2
- },
- "2f53835bca7b5198": {
-  "miss": true,
-  "v": 2
- },
- "1185fbee71d98a47": {
-  "miss": true,
-  "v": 2
- },
- "d4a81eb61cc7a274": {
-  "miss": true,
-  "v": 2
- },
- "ce8b20a4412e1e69": {
-  "miss": true,
-  "v": 2
- },
- "c418816a02c24a13": {
-  "miss": true,
-  "v": 2
- },
- "39f25f777dc0eb65": {
-  "miss": true,
-  "v": 2
- },
- "5e5c232ac3be167c": {
-  "miss": true,
-  "v": 2
- },
- "d6b150446e9175f7": {
-  "miss": true,
-  "v": 2
- },
- "6db0271e2583d41e": {
-  "miss": true,
-  "v": 2
- },
- "8c150e4484c9bd70": {
-  "miss": true,
-  "v": 2
- },
- "f8dab9aacd2ed208": {
-  "miss": true,
-  "v": 2
- },
- "adba0e3e6bfba36a": {
-  "miss": true,
-  "v": 2
- },
- "2b135e111aa7405f": {
-  "miss": true,
-  "v": 2
- },
- "439e3aa3f819ff11": {
-  "miss": true,
-  "v": 2
- },
- "5376e0ea35355531": {
-  "miss": true,
-  "v": 2
- },
- "71100bf706052464": {
-  "miss": true,
-  "v": 2
- },
- "6db04d80011f518b": {
-  "miss": true,
-  "v": 2
- },
- "9371e0547defefe2": {
-  "miss": true,
-  "v": 2
  },
  "fa32a2bd747f994d": {
   "cover": "leads/loc-Q837161.c.jpg",
@@ -2860,137 +2714,7 @@
   "kind": "locality",
   "qid": "Q837161"
  },
- "76de05def0895eba": {
-  "miss": true,
-  "v": 2
- },
- "6798def6d305d4fc": {
-  "miss": true,
-  "v": 2
- },
- "20aa9bf86bc8fce6": {
-  "miss": true,
-  "v": 2
- },
- "7c993266c19e1bf0": {
-  "miss": true,
-  "v": 2
- },
- "9a3e9cb760a91432": {
-  "miss": true,
-  "v": 2
- },
- "abff8961a38063b4": {
-  "miss": true,
-  "v": 2
- },
- "2ac003844138189c": {
-  "miss": true,
-  "v": 2
- },
- "bf158339d3d41415": {
-  "cover": "leads/banca-transilvania.c.jpg",
-  "art": "leads/banca-transilvania.jpg",
-  "webp": "leads/banca-transilvania.webp",
-  "artist": "",
-  "license": "Public domain",
-  "page": "https://commons.wikimedia.org/wiki/File:CJROBanci.jpg",
-  "name": "Banca Transilvania"
- },
- "a2c11e21dfa8e4fd": {
-  "miss": true,
-  "v": 2
- },
- "662d2ea26689583b": {
-  "cover": "leads/banca-transilvania.c.jpg",
-  "art": "leads/banca-transilvania.jpg",
-  "webp": "leads/banca-transilvania.webp",
-  "artist": "",
-  "license": "Public domain",
-  "page": "https://commons.wikimedia.org/wiki/File:CJROBanci.jpg",
-  "name": "Banca Transilvania"
- },
- "c62e43c665e81321": {
-  "miss": true,
-  "v": 2
- },
  "8bb79a0e49118988": {
-  "miss": true,
-  "v": 2
- },
- "373d9e6840d2726d": {
-  "miss": true,
-  "v": 2
- },
- "687a7edb2886654d": {
-  "miss": true,
-  "v": 2
- },
- "5b235d14fe72a177": {
-  "miss": true,
-  "v": 2
- },
- "45b8f34eec4930fb": {
-  "miss": true,
-  "v": 2
- },
- "50c29dbaa2d16d47": {
-  "miss": true,
-  "v": 2
- },
- "91f80a23aa5cf87b": {
-  "miss": true,
-  "v": 2
- },
- "dfeeedbd65bc2709": {
-  "miss": true,
-  "v": 2
- },
- "48f441cee38a31e7": {
-  "miss": true,
-  "v": 2
- },
- "075782e0f0e9d4b8": {
-  "miss": true,
-  "v": 2
- },
- "9ad69ff89c5956e2": {
-  "miss": true,
-  "v": 2
- },
- "fab456c67b41dc80": {
-  "miss": true,
-  "v": 2
- },
- "2ab65fc23f81a23f": {
-  "miss": true,
-  "v": 2
- },
- "10d07b022e60b408": {
-  "miss": true,
-  "v": 2
- },
- "0f1246ffb87e55e8": {
-  "miss": true,
-  "v": 2
- },
- "2f3ed96d8fee2ae0": {
-  "miss": true,
-  "v": 2
- },
- "b93b43761b04a03f": {
-  "miss": true,
-  "v": 2
- },
- "bb5c2e2d69be833e": {
-  "miss": true,
-  "v": 2
- },
- "4f92211e110bcba7": {
-  "miss": true,
-  "v": 2
- },
- "b4ce4dbabe020eb4": {
   "miss": true,
   "v": 2
  },
@@ -5031,8 +4755,15 @@
   "v": 2
  },
  "40065a994ee2fd7d": {
-  "miss": true,
-  "v": 2
+  "cover": "leads/loc-Q2716103.c.jpg",
+  "art": "leads/loc-Q2716103.jpg",
+  "webp": "leads/loc-Q2716103.webp",
+  "artist": "Macreanu Iulian",
+  "license": "CC BY-SA 4.0",
+  "page": "https://commons.wikimedia.org/wiki/File:2014_-_Imagine_din_Bordei_Verde.png",
+  "name": "Bordei Verde",
+  "kind": "locality",
+  "qid": "Q2716103"
  },
  "6ba7310f3dc8b608": {
   "miss": true,
@@ -5199,8 +4930,15 @@
   "v": 2
  },
  "5d5ae77d19f9e744": {
-  "miss": true,
-  "v": 2
+  "cover": "leads/loc-Q5114003.c.jpg",
+  "art": "leads/loc-Q5114003.jpg",
+  "webp": "leads/loc-Q5114003.webp",
+  "artist": "Losy",
+  "license": "CC BY-SA 3.0 ro",
+  "page": "https://commons.wikimedia.org/wiki/File:Biserica_Sf_Ilie_Solonet_01.JPG",
+  "name": "Bivolari",
+  "kind": "locality",
+  "qid": "Q5114003"
  },
  "276e9a178d19a229": {
   "miss": true,
@@ -5227,8 +4965,15 @@
   "v": 2
  },
  "49bab3096989a139": {
-  "miss": true,
-  "v": 2
+  "cover": "leads/loc-Q5114003.c.jpg",
+  "art": "leads/loc-Q5114003.jpg",
+  "webp": "leads/loc-Q5114003.webp",
+  "artist": "Losy",
+  "license": "CC BY-SA 3.0 ro",
+  "page": "https://commons.wikimedia.org/wiki/File:Biserica_Sf_Ilie_Solonet_01.JPG",
+  "name": "Bivolari",
+  "kind": "locality",
+  "qid": "Q5114003"
  },
  "6aea8e14ea8c8bce": {
   "miss": true,
@@ -5663,8 +5408,15 @@
   "v": 2
  },
  "0fd741eaf6d95de7": {
-  "miss": true,
-  "v": 2
+  "cover": "leads/loc-Q16427550.c.jpg",
+  "art": "leads/loc-Q16427550.jpg",
+  "webp": "leads/loc-Q16427550.webp",
+  "artist": "AlexanderKlink",
+  "license": "CC BY 4.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Romania_Putna_Drone_20191222.jpg",
+  "name": "Putna",
+  "kind": "locality",
+  "qid": "Q16427550"
  },
  "fb18b88fba3e107e": {
   "miss": true,
@@ -11600,5 +11352,1354 @@
   "name": "Cozieni",
   "kind": "locality",
   "qid": "Q2536132"
+ },
+ "af354962f6069f04": {
+  "cover": "leads/loc-Q12724689.c.jpg",
+  "art": "leads/loc-Q12724689.jpg",
+  "webp": "leads/loc-Q12724689.webp",
+  "artist": "Cezar Suceveanu. Original uploader was Cezarika1 at ro.wikipedia",
+  "license": "CC BY 2.5",
+  "page": "https://commons.wikimedia.org/wiki/File:M%C4%83n%C4%83stirea_Agafton.jpg",
+  "name": "Curtești",
+  "kind": "locality",
+  "qid": "Q12724689"
+ },
+ "e736da6fac755894": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_dimensiune_sau_format",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "9169afc431a194ac": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_negasit_sau_fara_imagine",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "7c9256630beee1ff": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_negasit_sau_fara_imagine",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "51e8ccb7fe5507e4": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_dimensiune_sau_format",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "a91ccdd1654e4b74": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_dimensiune_sau_format",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "2708a931199e7c54": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_dimensiune_sau_format",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "2dacc66d32f07b65": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_dimensiune_sau_format",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "a452325b5b978ef5": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_dimensiune_sau_format",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "5782619d2464c3f7": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_dimensiune_sau_format",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "34cef013ff70b234": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_dimensiune_sau_format",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "d48480fa108d60ee": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_negasit_sau_fara_imagine",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "805841a6aeadd765": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_dimensiune_sau_format",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "7762186d0221837a": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_dimensiune_sau_format",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "c990c175d0dd8b8e": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_negasit_sau_fara_imagine",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "4e09e508f18959d4": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_negasit_sau_fara_imagine",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "e48e659b6c529f7c": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_negasit_sau_fara_imagine",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "a5ed65a888477c8c": {
+  "cover": "leads/loc-Q226000.c.jpg",
+  "art": "leads/loc-Q226000.jpg",
+  "webp": "leads/loc-Q226000.webp",
+  "artist": "Radufan",
+  "license": "CC BY-SA 3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Statuia_Sf._Florian_Jimbolia.jpg",
+  "name": "Jimbolia",
+  "kind": "locality",
+  "qid": "Q226000"
+ },
+ "2558a3d8b1da66c3": {
+  "cover": "leads/loc-Q609044.c.jpg",
+  "art": "leads/loc-Q609044.jpg",
+  "webp": "leads/loc-Q609044.webp",
+  "artist": "Andrei Stroe",
+  "license": "CC BY-SA 3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:RO_OT_Caracal_national_theatre.jpg",
+  "name": "Caracal",
+  "kind": "locality",
+  "qid": "Q609044"
+ },
+ "e40b46f30312bb44": {
+  "cover": "leads/loc-Q609044.c.jpg",
+  "art": "leads/loc-Q609044.jpg",
+  "webp": "leads/loc-Q609044.webp",
+  "artist": "Andrei Stroe",
+  "license": "CC BY-SA 3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:RO_OT_Caracal_national_theatre.jpg",
+  "name": "Caracal",
+  "kind": "locality",
+  "qid": "Q609044"
+ },
+ "fcc1220d55653626": {
+  "cover": "leads/loc-Q609044.c.jpg",
+  "art": "leads/loc-Q609044.jpg",
+  "webp": "leads/loc-Q609044.webp",
+  "artist": "Andrei Stroe",
+  "license": "CC BY-SA 3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:RO_OT_Caracal_national_theatre.jpg",
+  "name": "Caracal",
+  "kind": "locality",
+  "qid": "Q609044"
+ },
+ "78fd8f496286694e": {
+  "cover": "leads/loc-Q5114003.c.jpg",
+  "art": "leads/loc-Q5114003.jpg",
+  "webp": "leads/loc-Q5114003.webp",
+  "artist": "Losy",
+  "license": "CC BY-SA 3.0 ro",
+  "page": "https://commons.wikimedia.org/wiki/File:Biserica_Sf_Ilie_Solonet_01.JPG",
+  "name": "Bivolari",
+  "kind": "locality",
+  "qid": "Q5114003"
+ },
+ "632b2cfeb05d7fe7": {
+  "cover": "leads/loc-Q609044.c.jpg",
+  "art": "leads/loc-Q609044.jpg",
+  "webp": "leads/loc-Q609044.webp",
+  "artist": "Andrei Stroe",
+  "license": "CC BY-SA 3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:RO_OT_Caracal_national_theatre.jpg",
+  "name": "Caracal",
+  "kind": "locality",
+  "qid": "Q609044"
+ },
+ "455511dee1c9d573": {
+  "cover": "leads/loc-Q609044.c.jpg",
+  "art": "leads/loc-Q609044.jpg",
+  "webp": "leads/loc-Q609044.webp",
+  "artist": "Andrei Stroe",
+  "license": "CC BY-SA 3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:RO_OT_Caracal_national_theatre.jpg",
+  "name": "Caracal",
+  "kind": "locality",
+  "qid": "Q609044"
+ },
+ "6f61b546fbb9b37f": {
+  "cover": "leads/loc-Q609044.c.jpg",
+  "art": "leads/loc-Q609044.jpg",
+  "webp": "leads/loc-Q609044.webp",
+  "artist": "Andrei Stroe",
+  "license": "CC BY-SA 3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:RO_OT_Caracal_national_theatre.jpg",
+  "name": "Caracal",
+  "kind": "locality",
+  "qid": "Q609044"
+ },
+ "77a0f532530841de": {
+  "cover": "leads/loc-Q226000.c.jpg",
+  "art": "leads/loc-Q226000.jpg",
+  "webp": "leads/loc-Q226000.webp",
+  "artist": "Radufan",
+  "license": "CC BY-SA 3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Statuia_Sf._Florian_Jimbolia.jpg",
+  "name": "Jimbolia",
+  "kind": "locality",
+  "qid": "Q226000"
+ },
+ "99b053cdc3a3258d": {
+  "cover": "leads/loc-Q609044.c.jpg",
+  "art": "leads/loc-Q609044.jpg",
+  "webp": "leads/loc-Q609044.webp",
+  "artist": "Andrei Stroe",
+  "license": "CC BY-SA 3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:RO_OT_Caracal_national_theatre.jpg",
+  "name": "Caracal",
+  "kind": "locality",
+  "qid": "Q609044"
+ },
+ "0adfbca30392ebff": {
+  "cover": "leads/loc-Q609044.c.jpg",
+  "art": "leads/loc-Q609044.jpg",
+  "webp": "leads/loc-Q609044.webp",
+  "artist": "Andrei Stroe",
+  "license": "CC BY-SA 3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:RO_OT_Caracal_national_theatre.jpg",
+  "name": "Caracal",
+  "kind": "locality",
+  "qid": "Q609044"
+ },
+ "53a691af537604ee": {
+  "cover": "leads/loc-Q609044.c.jpg",
+  "art": "leads/loc-Q609044.jpg",
+  "webp": "leads/loc-Q609044.webp",
+  "artist": "Andrei Stroe",
+  "license": "CC BY-SA 3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:RO_OT_Caracal_national_theatre.jpg",
+  "name": "Caracal",
+  "kind": "locality",
+  "qid": "Q609044"
+ },
+ "d2e9e868620147c8": {
+  "cover": "leads/loc-Q226000.c.jpg",
+  "art": "leads/loc-Q226000.jpg",
+  "webp": "leads/loc-Q226000.webp",
+  "artist": "Radufan",
+  "license": "CC BY-SA 3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Statuia_Sf._Florian_Jimbolia.jpg",
+  "name": "Jimbolia",
+  "kind": "locality",
+  "qid": "Q226000"
+ },
+ "0730db6ef8ea3d03": {
+  "cover": "leads/loc-Q609044.c.jpg",
+  "art": "leads/loc-Q609044.jpg",
+  "webp": "leads/loc-Q609044.webp",
+  "artist": "Andrei Stroe",
+  "license": "CC BY-SA 3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:RO_OT_Caracal_national_theatre.jpg",
+  "name": "Caracal",
+  "kind": "locality",
+  "qid": "Q609044"
+ },
+ "594c8b476a8207bf": {
+  "cover": "leads/loc-Q226000.c.jpg",
+  "art": "leads/loc-Q226000.jpg",
+  "webp": "leads/loc-Q226000.webp",
+  "artist": "Radufan",
+  "license": "CC BY-SA 3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Statuia_Sf._Florian_Jimbolia.jpg",
+  "name": "Jimbolia",
+  "kind": "locality",
+  "qid": "Q226000"
+ },
+ "ab5c23d6f8860949": {
+  "cover": "leads/loc-Q609044.c.jpg",
+  "art": "leads/loc-Q609044.jpg",
+  "webp": "leads/loc-Q609044.webp",
+  "artist": "Andrei Stroe",
+  "license": "CC BY-SA 3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:RO_OT_Caracal_national_theatre.jpg",
+  "name": "Caracal",
+  "kind": "locality",
+  "qid": "Q609044"
+ },
+ "878a6fc35f7dc68a": {
+  "cover": "leads/loc-Q609044.c.jpg",
+  "art": "leads/loc-Q609044.jpg",
+  "webp": "leads/loc-Q609044.webp",
+  "artist": "Andrei Stroe",
+  "license": "CC BY-SA 3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:RO_OT_Caracal_national_theatre.jpg",
+  "name": "Caracal",
+  "kind": "locality",
+  "qid": "Q609044"
+ },
+ "6555b16bb5a193f6": {
+  "cover": "leads/loc-Q609044.c.jpg",
+  "art": "leads/loc-Q609044.jpg",
+  "webp": "leads/loc-Q609044.webp",
+  "artist": "Andrei Stroe",
+  "license": "CC BY-SA 3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:RO_OT_Caracal_national_theatre.jpg",
+  "name": "Caracal",
+  "kind": "locality",
+  "qid": "Q609044"
+ },
+ "92e2270d2e5ffeff": {
+  "cover": "leads/loc-Q226000.c.jpg",
+  "art": "leads/loc-Q226000.jpg",
+  "webp": "leads/loc-Q226000.webp",
+  "artist": "Radufan",
+  "license": "CC BY-SA 3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Statuia_Sf._Florian_Jimbolia.jpg",
+  "name": "Jimbolia",
+  "kind": "locality",
+  "qid": "Q226000"
+ },
+ "93ee8b7fe98b5246": {
+  "cover": "leads/loc-Q12724689.c.jpg",
+  "art": "leads/loc-Q12724689.jpg",
+  "webp": "leads/loc-Q12724689.webp",
+  "artist": "Cezar Suceveanu. Original uploader was Cezarika1 at ro.wikipedia",
+  "license": "CC BY 2.5",
+  "page": "https://commons.wikimedia.org/wiki/File:M%C4%83n%C4%83stirea_Agafton.jpg",
+  "name": "Curtești",
+  "kind": "locality",
+  "qid": "Q12724689"
+ },
+ "bb5ab7e289b82613": {
+  "cover": "leads/loc-Q12724689.c.jpg",
+  "art": "leads/loc-Q12724689.jpg",
+  "webp": "leads/loc-Q12724689.webp",
+  "artist": "Cezar Suceveanu. Original uploader was Cezarika1 at ro.wikipedia",
+  "license": "CC BY 2.5",
+  "page": "https://commons.wikimedia.org/wiki/File:M%C4%83n%C4%83stirea_Agafton.jpg",
+  "name": "Curtești",
+  "kind": "locality",
+  "qid": "Q12724689"
+ },
+ "a1b9d9a2a7b23c07": {
+  "cover": "leads/loc-Q609044.c.jpg",
+  "art": "leads/loc-Q609044.jpg",
+  "webp": "leads/loc-Q609044.webp",
+  "artist": "Andrei Stroe",
+  "license": "CC BY-SA 3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:RO_OT_Caracal_national_theatre.jpg",
+  "name": "Caracal",
+  "kind": "locality",
+  "qid": "Q609044"
+ },
+ "6be08d9e2445b32a": {
+  "cover": "leads/loc-Q609044.c.jpg",
+  "art": "leads/loc-Q609044.jpg",
+  "webp": "leads/loc-Q609044.webp",
+  "artist": "Andrei Stroe",
+  "license": "CC BY-SA 3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:RO_OT_Caracal_national_theatre.jpg",
+  "name": "Caracal",
+  "kind": "locality",
+  "qid": "Q609044"
+ },
+ "c2e69e83baf44f71": {
+  "cover": "leads/loc-Q12724689.c.jpg",
+  "art": "leads/loc-Q12724689.jpg",
+  "webp": "leads/loc-Q12724689.webp",
+  "artist": "Cezar Suceveanu. Original uploader was Cezarika1 at ro.wikipedia",
+  "license": "CC BY 2.5",
+  "page": "https://commons.wikimedia.org/wiki/File:M%C4%83n%C4%83stirea_Agafton.jpg",
+  "name": "Curtești",
+  "kind": "locality",
+  "qid": "Q12724689"
+ },
+ "5ddd96967e0bd990": {
+  "cover": "leads/loc-Q609044.c.jpg",
+  "art": "leads/loc-Q609044.jpg",
+  "webp": "leads/loc-Q609044.webp",
+  "artist": "Andrei Stroe",
+  "license": "CC BY-SA 3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:RO_OT_Caracal_national_theatre.jpg",
+  "name": "Caracal",
+  "kind": "locality",
+  "qid": "Q609044"
+ },
+ "630d94e52c46efdf": {
+  "cover": "leads/loc-Q609044.c.jpg",
+  "art": "leads/loc-Q609044.jpg",
+  "webp": "leads/loc-Q609044.webp",
+  "artist": "Andrei Stroe",
+  "license": "CC BY-SA 3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:RO_OT_Caracal_national_theatre.jpg",
+  "name": "Caracal",
+  "kind": "locality",
+  "qid": "Q609044"
+ },
+ "ddd23f5c81980871": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_licenta",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "3f1bdacfb8dc54b3": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_negasit_sau_fara_imagine",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "557bed0a5258e4df": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_negasit_sau_fara_imagine",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "f663c20eccbca477": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_negasit_sau_fara_imagine",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "b8ddae913e39c861": {
+  "cover": "leads/loc-Q837152.c.jpg",
+  "art": "leads/loc-Q837152.jpg",
+  "webp": "leads/loc-Q837152.webp",
+  "artist": "A.Catalina",
+  "license": "CC BY-SA 4.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Ocna_Mure%C8%99_city_hall_(2007).jpg",
+  "name": "Ocna Mureș",
+  "kind": "locality",
+  "qid": "Q837152"
+ },
+ "e2c3ce21be70ca62": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_negasit_sau_fara_imagine",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "209d5b26f5896f74": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_negasit_sau_fara_imagine",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "31e7d200aedaaa8f": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_dimensiune_sau_format",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "366fb296fbb54b90": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_dimensiune_sau_format",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "0aab544410e7cba6": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_dimensiune_sau_format",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "1dfd54c849bf7b63": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_dimensiune_sau_format",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "ceadb25278c96069": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_dimensiune_sau_format",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "0d7eaa429473750b": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_negasit_sau_fara_imagine",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "aeeea06486288e5b": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_negasit_sau_fara_imagine",
+  "motiv_ent": "ent_fara_qid"
+ },
+ "6a807150313ed227": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_negasit_sau_fara_imagine",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "5fc7a4665361fa62": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_negasit_sau_fara_imagine",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "adb7f8d3890a5d45": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_negasit_sau_fara_imagine",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "6f55638e94d9d158": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_dimensiune_sau_format",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "0ab7172d7303071e": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_negasit_sau_fara_imagine",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "ce78838e97c49d24": {
+  "cover": "leads/loc-Q16427550.c.jpg",
+  "art": "leads/loc-Q16427550.jpg",
+  "webp": "leads/loc-Q16427550.webp",
+  "artist": "AlexanderKlink",
+  "license": "CC BY 4.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Romania_Putna_Drone_20191222.jpg",
+  "name": "Putna",
+  "kind": "locality",
+  "qid": "Q16427550"
+ },
+ "4ac1b3785010d23e": {
+  "cover": "leads/loc-Q16427550.c.jpg",
+  "art": "leads/loc-Q16427550.jpg",
+  "webp": "leads/loc-Q16427550.webp",
+  "artist": "AlexanderKlink",
+  "license": "CC BY 4.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Romania_Putna_Drone_20191222.jpg",
+  "name": "Putna",
+  "kind": "locality",
+  "qid": "Q16427550"
+ },
+ "330ffc57627c0220": {
+  "cover": "leads/loc-Q12089397.c.jpg",
+  "art": "leads/loc-Q12089397.jpg",
+  "webp": "leads/loc-Q12089397.webp",
+  "artist": "Bogdan Ilieş",
+  "license": "CC BY-SA 3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Biserica_de_lemn_Sf_Voievozi-Sihastria01.jpg",
+  "name": "Vânători-Neamț",
+  "kind": "locality"
+ },
+ "313ca437f38865cc": {
+  "cover": "leads/loc-Q12089397.c.jpg",
+  "art": "leads/loc-Q12089397.jpg",
+  "webp": "leads/loc-Q12089397.webp",
+  "artist": "Bogdan Ilieş",
+  "license": "CC BY-SA 3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Biserica_de_lemn_Sf_Voievozi-Sihastria01.jpg",
+  "name": "Vânători-Neamț",
+  "kind": "locality"
+ },
+ "d8fb9d89a4123367": {
+  "cover": "leads/loc-Q850992.c.jpg",
+  "art": "leads/loc-Q850992.jpg",
+  "webp": "leads/loc-Q850992.webp",
+  "artist": "Cristi Vladescu",
+  "license": "CC BY-SA 3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Fant%C3%A2na_Coste%C8%99ti.JPG",
+  "name": "Costești",
+  "kind": "locality",
+  "qid": "Q850992"
+ },
+ "db34768fe71f3117": {
+  "cover": "leads/loc-Q850992.c.jpg",
+  "art": "leads/loc-Q850992.jpg",
+  "webp": "leads/loc-Q850992.webp",
+  "artist": "Cristi Vladescu",
+  "license": "CC BY-SA 3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Fant%C3%A2na_Coste%C8%99ti.JPG",
+  "name": "Costești",
+  "kind": "locality",
+  "qid": "Q850992"
+ },
+ "e7cb5e300c36e946": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_negasit_sau_fara_imagine",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "8506162f74e747e2": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_dimensiune_sau_format",
+  "motiv_ent": "ent_nenotabila"
+ },
+ "b7d432cc4b3abb96": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_licenta",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "3fe0528fa3022098": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_licenta",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "767380da678e6dbd": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_negasit_sau_fara_imagine",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "30ad83787fdafc91": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_negasit_sau_fara_imagine",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "f717c6b631416c57": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_negasit_sau_fara_imagine",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "adcfb79d42d4d007": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_negasit_sau_fara_imagine",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "5eff9740a35bea12": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_negasit_sau_fara_imagine",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "a297704a09db6ebe": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_licenta",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "fe3ad61fcc0670e3": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_negasit_sau_fara_imagine",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "c3051b8165f99889": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_dimensiune_sau_format",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "1ca62fde6d6f6b4d": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_negasit_sau_fara_imagine",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "54bc6fcd31847b44": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_dimensiune_sau_format",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "09d2706c91121d64": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_negasit_sau_fara_imagine",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "ff89626734e6dc37": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_dimensiune_sau_format",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "47f874456e956428": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_negasit_sau_fara_imagine",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "b1044a63846a7dd3": {
+  "cover": "leads/loc-Q10737004.c.jpg",
+  "art": "leads/loc-Q10737004.jpg",
+  "webp": "leads/loc-Q10737004.webp",
+  "artist": "NicoletaTudor",
+  "license": "CC BY-SA 3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Prefectura_Bacau.jpg",
+  "name": "Bacău",
+  "kind": "locality",
+  "qid": "Q10737004"
+ },
+ "9d86e0c47ffa6a9d": {
+  "cover": "leads/loc-Q568376.c.jpg",
+  "art": "leads/loc-Q568376.jpg",
+  "webp": "leads/loc-Q568376.webp",
+  "artist": "Andrei Stroe",
+  "license": "CC BY 3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:RO_PH_Breaza_railway_station.jpeg",
+  "name": "Breaza",
+  "kind": "locality",
+  "qid": "Q568376"
+ },
+ "bb0f95af43d88809": {
+  "cover": "leads/loc-Q10737004.c.jpg",
+  "art": "leads/loc-Q10737004.jpg",
+  "webp": "leads/loc-Q10737004.webp",
+  "artist": "NicoletaTudor",
+  "license": "CC BY-SA 3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Prefectura_Bacau.jpg",
+  "name": "Bacău",
+  "kind": "locality",
+  "qid": "Q10737004"
+ },
+ "b934edb519b269a6": {
+  "cover": "leads/loc-Q10737004.c.jpg",
+  "art": "leads/loc-Q10737004.jpg",
+  "webp": "leads/loc-Q10737004.webp",
+  "artist": "NicoletaTudor",
+  "license": "CC BY-SA 3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Prefectura_Bacau.jpg",
+  "name": "Bacău",
+  "kind": "locality",
+  "qid": "Q10737004"
+ },
+ "c8dec6c4e06c6bc3": {
+  "cover": "leads/loc-Q10737004.c.jpg",
+  "art": "leads/loc-Q10737004.jpg",
+  "webp": "leads/loc-Q10737004.webp",
+  "artist": "NicoletaTudor",
+  "license": "CC BY-SA 3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Prefectura_Bacau.jpg",
+  "name": "Bacău",
+  "kind": "locality",
+  "qid": "Q10737004"
+ },
+ "0138147cdb8ec8b0": {
+  "cover": "leads/loc-Q10737004.c.jpg",
+  "art": "leads/loc-Q10737004.jpg",
+  "webp": "leads/loc-Q10737004.webp",
+  "artist": "NicoletaTudor",
+  "license": "CC BY-SA 3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Prefectura_Bacau.jpg",
+  "name": "Bacău",
+  "kind": "locality",
+  "qid": "Q10737004"
+ },
+ "abbd4089363cdea8": {
+  "cover": "leads/loc-Q10737004.c.jpg",
+  "art": "leads/loc-Q10737004.jpg",
+  "webp": "leads/loc-Q10737004.webp",
+  "artist": "NicoletaTudor",
+  "license": "CC BY-SA 3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Prefectura_Bacau.jpg",
+  "name": "Bacău",
+  "kind": "locality",
+  "qid": "Q10737004"
+ },
+ "f56561ba3b672e74": {
+  "cover": "leads/loc-Q10737004.c.jpg",
+  "art": "leads/loc-Q10737004.jpg",
+  "webp": "leads/loc-Q10737004.webp",
+  "artist": "NicoletaTudor",
+  "license": "CC BY-SA 3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Prefectura_Bacau.jpg",
+  "name": "Bacău",
+  "kind": "locality",
+  "qid": "Q10737004"
+ },
+ "cffcf3f0c5de0be5": {
+  "cover": "leads/loc-Q10737004.c.jpg",
+  "art": "leads/loc-Q10737004.jpg",
+  "webp": "leads/loc-Q10737004.webp",
+  "artist": "NicoletaTudor",
+  "license": "CC BY-SA 3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Prefectura_Bacau.jpg",
+  "name": "Bacău",
+  "kind": "locality",
+  "qid": "Q10737004"
+ },
+ "0e48065a5a3bcf61": {
+  "cover": "leads/loc-Q16427563.c.jpg",
+  "art": "leads/loc-Q16427563.jpg",
+  "webp": "leads/loc-Q16427563.webp",
+  "artist": "Bernd Schade",
+  "license": "CC BY-SA 3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Sucevita-Totale.JPG",
+  "name": "Sucevița",
+  "kind": "locality",
+  "qid": "Q16427563"
+ },
+ "ba5a330e143cda03": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_dimensiune_sau_format",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "f8dca363c52f2e18": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_dimensiune_sau_format",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "86db6c4ae947aeb7": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_negasit_sau_fara_imagine",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "9a3d89ad2d921a2d": {
+  "cover": "leads/loc-Q16425258.c.jpg",
+  "art": "leads/loc-Q16425258.jpg",
+  "webp": "leads/loc-Q16425258.webp",
+  "artist": "The original uploader was Țetcu Mircea Rareș at Romanian Wikipedia .",
+  "license": "CC BY 2.5",
+  "page": "https://commons.wikimedia.org/wiki/File:Biserica_de_lemn_din_F%C4%83r%C4%83u,_Alba_14.JPG",
+  "name": "Fărău",
+  "kind": "locality",
+  "qid": "Q16425258"
+ },
+ "5fe78c5025548eb9": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_dimensiune_sau_format",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "3b5d087a0332e9ca": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_dimensiune_sau_format",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "665e37332d846475": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_negasit_sau_fara_imagine",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "be8b1bd45a26a9e3": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_negasit_sau_fara_imagine",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "53f9b7b85904bde7": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_dimensiune_sau_format",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "a07097d7ca337a64": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_licenta",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "499303a86157f0af": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_negasit_sau_fara_imagine",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "144c6aa8a506c821": {
+  "cover": "leads/loc-Q276004.c.jpg",
+  "art": "leads/loc-Q276004.jpg",
+  "webp": "leads/loc-Q276004.webp",
+  "artist": "Felix O",
+  "license": "CC BY-SA 2.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Murgeni,_Romania_March_2001.jpg",
+  "name": "Murgeni",
+  "kind": "locality",
+  "qid": "Q276004"
+ },
+ "09b0f910dbd9dfd1": {
+  "cover": "leads/loc-Q1094548.c.jpg",
+  "art": "leads/loc-Q1094548.jpg",
+  "webp": "leads/loc-Q1094548.webp",
+  "artist": "Zsolt deak",
+  "license": "CC BY-SA 4.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Ansamblul_bisericii_evanghelice_fortificat-vedere_aeriana.JPG",
+  "name": "Feldioara",
+  "kind": "locality",
+  "qid": "Q1094548"
+ },
+ "7e55a125b4c1d375": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_dimensiune_sau_format",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "c618869fd2cd9b56": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_dimensiune_sau_format",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "43d5eb4d88a26f41": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_dimensiune_sau_format",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "0a3995fe65c43c75": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_negasit_sau_fara_imagine",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "90f22faf877bb6b9": {
+  "cover": "leads/loc-Q899448.c.jpg",
+  "art": "leads/loc-Q899448.jpg",
+  "webp": "leads/loc-Q899448.webp",
+  "artist": "Bogdan Muraru",
+  "license": "CC BY-SA 4.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Imagine_central%C4%83,ng,vs.jpg",
+  "name": "Negrești",
+  "kind": "locality",
+  "qid": "Q899448"
+ },
+ "c6ba999340f39210": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_negasit_sau_fara_imagine",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "a91e391f47f28587": {
+  "cover": "leads/loc-Q899448.c.jpg",
+  "art": "leads/loc-Q899448.jpg",
+  "webp": "leads/loc-Q899448.webp",
+  "artist": "Bogdan Muraru",
+  "license": "CC BY-SA 4.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Imagine_central%C4%83,ng,vs.jpg",
+  "name": "Negrești",
+  "kind": "locality",
+  "qid": "Q899448"
+ },
+ "efaaa3804a22d616": {
+  "cover": "leads/loc-Q16427563.c.jpg",
+  "art": "leads/loc-Q16427563.jpg",
+  "webp": "leads/loc-Q16427563.webp",
+  "artist": "Bernd Schade",
+  "license": "CC BY-SA 3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Sucevita-Totale.JPG",
+  "name": "Sucevița",
+  "kind": "locality",
+  "qid": "Q16427563"
+ },
+ "142bed82c9a13d10": {
+  "cover": "leads/loc-Q16427563.c.jpg",
+  "art": "leads/loc-Q16427563.jpg",
+  "webp": "leads/loc-Q16427563.webp",
+  "artist": "Bernd Schade",
+  "license": "CC BY-SA 3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Sucevita-Totale.JPG",
+  "name": "Sucevița",
+  "kind": "locality",
+  "qid": "Q16427563"
+ },
+ "11610794bb3f1100": {
+  "cover": "leads/loc-Q16427563.c.jpg",
+  "art": "leads/loc-Q16427563.jpg",
+  "webp": "leads/loc-Q16427563.webp",
+  "artist": "Bernd Schade",
+  "license": "CC BY-SA 3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Sucevita-Totale.JPG",
+  "name": "Sucevița",
+  "kind": "locality",
+  "qid": "Q16427563"
+ },
+ "cf4070f0238910ef": {
+  "cover": "leads/loc-Q16427563.c.jpg",
+  "art": "leads/loc-Q16427563.jpg",
+  "webp": "leads/loc-Q16427563.webp",
+  "artist": "Bernd Schade",
+  "license": "CC BY-SA 3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Sucevita-Totale.JPG",
+  "name": "Sucevița",
+  "kind": "locality",
+  "qid": "Q16427563"
+ },
+ "f96220755160f0a4": {
+  "cover": "leads/loc-Q837161.c.jpg",
+  "art": "leads/loc-Q837161.jpg",
+  "webp": "leads/loc-Q837161.webp",
+  "artist": "Turbojet",
+  "license": "CC BY-SA 4.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Sannicolau_Mare_2008.jpg",
+  "name": "Sânnicolau Mare",
+  "kind": "locality",
+  "qid": "Q837161"
+ },
+ "4d617ff313d9442c": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_negasit_sau_fara_imagine",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "171ecc0dc1d8c525": {
+  "cover": "leads/loc-Q5113783.c.jpg",
+  "art": "leads/loc-Q5113783.jpg",
+  "webp": "leads/loc-Q5113783.webp",
+  "artist": "Cezar Suceveanu. Original uploader was Cezarika1 at ro.wikipedia",
+  "license": "CC BY 2.5",
+  "page": "https://commons.wikimedia.org/wiki/File:M%C4%83n%C4%83stirea_Had%C3%A2mbu0.jpg",
+  "name": "Mironeasa",
+  "kind": "locality",
+  "qid": "Q5113783"
+ },
+ "a85492f19cc58897": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_dimensiune_sau_format",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "d9fb71a3eacc4588": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_dimensiune_sau_format",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "2ebd15b75af81d1a": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_dimensiune_sau_format",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "e1bf06a7a1011107": {
+  "cover": "leads/loc-Q240473.c.jpg",
+  "art": "leads/loc-Q240473.jpg",
+  "webp": "leads/loc-Q240473.webp",
+  "artist": "TheMalvinka",
+  "license": "CC BY-SA 4.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Soft_Curvature.jpg",
+  "name": "Ormeniș",
+  "kind": "locality",
+  "qid": "Q240473"
+ },
+ "aa7630d1d8437f8a": {
+  "cover": "leads/loc-Q10760347.c.jpg",
+  "art": "leads/loc-Q10760347.jpg",
+  "webp": "leads/loc-Q10760347.webp",
+  "artist": "Curcan Ionel. Original uploader was Cezarika1 at ro.wikipedia",
+  "license": "Public domain",
+  "page": "https://commons.wikimedia.org/wiki/File:Biserica_de_lemn_din_B%C4%83ne%C5%9Fti1.jpg",
+  "name": "Fântânele",
+  "kind": "locality",
+  "qid": "Q10760347"
+ },
+ "65b914943492ab26": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_negasit_sau_fara_imagine",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "f0272554e82ca2ba": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_dimensiune_sau_format",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "2c38161620ee68fa": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_dimensiune_sau_format",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "dd1713350d01ac05": {
+  "cover": "leads/loc-Q12724951.c.jpg",
+  "art": "leads/loc-Q12724951.jpg",
+  "webp": "leads/loc-Q12724951.webp",
+  "artist": "Brianwebnet",
+  "license": "CC BY-SA 4.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Moravita2024.jpg",
+  "name": "Moravița",
+  "kind": "locality",
+  "qid": "Q12724951"
+ },
+ "24b527cf433dcf3e": {
+  "cover": "leads/loc-Q12724951.c.jpg",
+  "art": "leads/loc-Q12724951.jpg",
+  "webp": "leads/loc-Q12724951.webp",
+  "artist": "Brianwebnet",
+  "license": "CC BY-SA 4.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Moravita2024.jpg",
+  "name": "Moravița",
+  "kind": "locality",
+  "qid": "Q12724951"
+ },
+ "8257e6ff8633c661": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_negasit_sau_fara_imagine",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "7ea5e27227df31d1": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_negasit_sau_fara_imagine",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "0ebb89dd5e08618d": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_negasit_sau_fara_imagine",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "e9c77a13732e523d": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_negasit_sau_fara_imagine",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "5ac6b0e6f147b2a8": {
+  "cover": "leads/loc-Q12724951.c.jpg",
+  "art": "leads/loc-Q12724951.jpg",
+  "webp": "leads/loc-Q12724951.webp",
+  "artist": "Brianwebnet",
+  "license": "CC BY-SA 4.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Moravita2024.jpg",
+  "name": "Moravița",
+  "kind": "locality",
+  "qid": "Q12724951"
+ },
+ "f002f48379aadde5": {
+  "cover": "leads/loc-Q12724951.c.jpg",
+  "art": "leads/loc-Q12724951.jpg",
+  "webp": "leads/loc-Q12724951.webp",
+  "artist": "Brianwebnet",
+  "license": "CC BY-SA 4.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Moravita2024.jpg",
+  "name": "Moravița",
+  "kind": "locality",
+  "qid": "Q12724951"
+ },
+ "48bdf8ee6d17450c": {
+  "cover": "leads/loc-Q10760347.c.jpg",
+  "art": "leads/loc-Q10760347.jpg",
+  "webp": "leads/loc-Q10760347.webp",
+  "artist": "Curcan Ionel. Original uploader was Cezarika1 at ro.wikipedia",
+  "license": "Public domain",
+  "page": "https://commons.wikimedia.org/wiki/File:Biserica_de_lemn_din_B%C4%83ne%C5%9Fti1.jpg",
+  "name": "Fântânele",
+  "kind": "locality",
+  "qid": "Q10760347"
+ },
+ "b0c59e23576f165b": {
+  "cover": "leads/loc-Q10760347.c.jpg",
+  "art": "leads/loc-Q10760347.jpg",
+  "webp": "leads/loc-Q10760347.webp",
+  "artist": "Curcan Ionel. Original uploader was Cezarika1 at ro.wikipedia",
+  "license": "Public domain",
+  "page": "https://commons.wikimedia.org/wiki/File:Biserica_de_lemn_din_B%C4%83ne%C5%9Fti1.jpg",
+  "name": "Fântânele",
+  "kind": "locality",
+  "qid": "Q10760347"
+ },
+ "569baa07c7f02f00": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_negasit_sau_fara_imagine",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "44e560067031c022": {
+  "cover": "leads/loc-Q1065609.c.jpg",
+  "art": "leads/loc-Q1065609.jpg",
+  "webp": "leads/loc-Q1065609.webp",
+  "artist": "Kunok Kipcsak",
+  "license": "CC BY-SA 4.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Panorama_Satu_Nou_(Pargaresti),_Bacau_si_Onesti.jpg",
+  "name": "Pârgărești",
+  "kind": "locality",
+  "qid": "Q1065609"
+ },
+ "becb415115b3de32": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_dimensiune_sau_format",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "d1271b7a2eaed5f8": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_dimensiune_sau_format",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "1b02f43bad6abe28": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_dimensiune_sau_format",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "e698296ef7cb138c": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_dimensiune_sau_format",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "f88c7ef0502ae456": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_dimensiune_sau_format",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "45207803c5a8a4ea": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_negasit_sau_fara_imagine",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "26702cd402141208": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_negasit_sau_fara_imagine",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "a26a4a910eb9c6e0": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_negasit_sau_fara_imagine",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "7a2081fc331c4834": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_negasit_sau_fara_imagine",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "af37623697f17e92": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_negasit_sau_fara_imagine",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "f054fbb28031e5e7": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_negasit_sau_fara_imagine",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "8110043bfa4af218": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_dimensiune_sau_format",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "2e94d9466c829e56": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_negasit_sau_fara_imagine",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "cf3e5ab2713e0269": {
+  "cover": "leads/loc-Q837154.c.jpg",
+  "art": "leads/loc-Q837154.jpg",
+  "webp": "leads/loc-Q837154.webp",
+  "artist": "Oguszt",
+  "license": "CC BY-SA 3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Center_Simeria.jpg",
+  "name": "Simeria",
+  "kind": "locality",
+  "qid": "Q837154"
+ },
+ "cffcb41aeea9ee63": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_dimensiune_sau_format",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "0370ede2b6be06d5": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_dimensiune_sau_format",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "0991a470c071fa8e": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_negasit_sau_fara_imagine",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "5e014dd6ea810436": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_negasit_sau_fara_imagine",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "6d9020f41e43e281": {
+  "cover": "leads/loc-Q1065609.c.jpg",
+  "art": "leads/loc-Q1065609.jpg",
+  "webp": "leads/loc-Q1065609.webp",
+  "artist": "Kunok Kipcsak",
+  "license": "CC BY-SA 4.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Panorama_Satu_Nou_(Pargaresti),_Bacau_si_Onesti.jpg",
+  "name": "Pârgărești",
+  "kind": "locality",
+  "qid": "Q1065609"
+ },
+ "dbbaad9050c8d5e8": {
+  "cover": "leads/loc-Q1065609.c.jpg",
+  "art": "leads/loc-Q1065609.jpg",
+  "webp": "leads/loc-Q1065609.webp",
+  "artist": "Kunok Kipcsak",
+  "license": "CC BY-SA 4.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Panorama_Satu_Nou_(Pargaresti),_Bacau_si_Onesti.jpg",
+  "name": "Pârgărești",
+  "kind": "locality",
+  "qid": "Q1065609"
+ },
+ "ccc7dd7d8a633188": {
+  "cover": "leads/loc-Q1065609.c.jpg",
+  "art": "leads/loc-Q1065609.jpg",
+  "webp": "leads/loc-Q1065609.webp",
+  "artist": "Kunok Kipcsak",
+  "license": "CC BY-SA 4.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Panorama_Satu_Nou_(Pargaresti),_Bacau_si_Onesti.jpg",
+  "name": "Pârgărești",
+  "kind": "locality",
+  "qid": "Q1065609"
+ },
+ "a46ad72c55ac230c": {
+  "cover": "leads/loc-Q1065609.c.jpg",
+  "art": "leads/loc-Q1065609.jpg",
+  "webp": "leads/loc-Q1065609.webp",
+  "artist": "Kunok Kipcsak",
+  "license": "CC BY-SA 4.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Panorama_Satu_Nou_(Pargaresti),_Bacau_si_Onesti.jpg",
+  "name": "Pârgărești",
+  "kind": "locality",
+  "qid": "Q1065609"
+ },
+ "4c803357d49157a3": {
+  "cover": "leads/loc-Q837154.c.jpg",
+  "art": "leads/loc-Q837154.jpg",
+  "webp": "leads/loc-Q837154.webp",
+  "artist": "Oguszt",
+  "license": "CC BY-SA 3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Center_Simeria.jpg",
+  "name": "Simeria",
+  "kind": "locality",
+  "qid": "Q837154"
+ },
+ "5613be22e40b2419": {
+  "cover": "leads/loc-Q837154.c.jpg",
+  "art": "leads/loc-Q837154.jpg",
+  "webp": "leads/loc-Q837154.webp",
+  "artist": "Oguszt",
+  "license": "CC BY-SA 3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Center_Simeria.jpg",
+  "name": "Simeria",
+  "kind": "locality",
+  "qid": "Q837154"
  }
 }
