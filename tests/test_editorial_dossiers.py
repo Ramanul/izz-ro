@@ -573,3 +573,10 @@ def test_dossier_search_scope_excludes_boilerplate_and_historical_summaries(cata
     for noise in ["Documentat cu asistență AI", "Un termen anunțat nu dovedește", "Documentul sintezei",
                   "Obsolete historical wording.", record["documents"][0]["locator"]]:
         assert noise not in indexed
+
+
+def test_indexable_dossier_exposes_search_category_and_date_sort_metadata(catalog):
+    page = dossiers.prepare_dossiers(catalog, [], now=NOW)[0][0]
+    rendered = html("dossier.html", dossier=page)
+    assert 'data-pagefind-filter="categorie: dosar"' in rendered
+    assert f'data-pagefind-sort="data: {page["reviewed_at"][:19]}"' in rendered

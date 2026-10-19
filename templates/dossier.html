@@ -5,6 +5,10 @@
 {% block content %}
 <nav class="breadcrumbs" aria-label="Breadcrumb"><a href="{{ base }}/">{{ site.name }}</a><span class="sep">/</span><span>Dosar documentar</span></nav>
 <article class="article"{% if not dossier.indexable %} data-pagefind-ignore{% endif %}>
+  {% if dossier.indexable %}
+  <span data-pagefind-filter="categorie: dosar"></span>
+  <span data-pagefind-sort="data: {{ dossier.reviewed_at[:19] }}"></span>
+  {% endif %}
   <span class="badge">Dosar documentar · pilot</span>
   <h1 data-pagefind-meta="title"{% if dossier.indexable %} data-pagefind-body{% endif %}>{{ dossier.title }}</h1>
   {% if dossier.state != 'withdrawn' %}<p{% if dossier.indexable %} data-pagefind-body{% endif %}>{{ dossier.question }}</p>{% endif %}
