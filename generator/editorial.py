@@ -13,7 +13,7 @@ from .select import _dedup_sources, anunt_oficial_fara_corp
 PATH_RE = re.compile(r"^/[a-z0-9-]+/[a-z0-9-]+/$")
 ID_RE = re.compile(r"^[a-zA-Z0-9_-]+$")
 RECORD_FIELDS = {"key", "public_paths", "review", "claims", "evidence", "uncertainties",
-                 "impacts", "actions", "differences", "relations"}
+                 "impacts", "actions", "differences", "relations", "selection"}
 REVIEW_FIELDS = {"state", "kind", "reviewer", "reviewed_at", "input_fingerprint"}
 EVIDENCE_FIELDS = {"id", "url", "locator", "role", "verified_at", "published_at", "status", "provenance_id"}
 CLAIM_FIELDS = {"id", "text", "status", "evidence_ids"}
@@ -173,6 +173,38 @@ def _validate_extensions(record, provenance, error):
     def refs_valid(refs):
         return (isinstance(refs, list) and bool(refs)
                 and all(isinstance(r, str) and r in evidence and evidence[r].get("status", "active") == "active" for r in refs))
+
+    selection = record.get("selection")
+    if selection is not None:
+        required = {"priority", "reason", "area", "evidence_ids"}
+        if (not isinstance(selection, dict)
+                or set(selection) - (required | {"expires_at", "impact_index"})
+                or not required <= set(selection)
+                or selection.get("priority") not in {"time_sensitive", "public_impact", "context"}
+                or not all(_text(selection.get(k)) for k in ("reason", "area"))
+                or not refs_valid(selection.get("evidence_ids"))):
+            error("selection", "explicit priority, reason, area and active evidence required")
+        else:
+            expires = selection.get("expires_at")
+            if expires is not None and not _date(expires):
+                error("selection.expires_at", "timezone-aware date required")
+            if selection["priority"] == "time_sensitive":
+                if not expires or not any(
+                        a.get("area") == selection["area"]
+                        and refs_valid(a.get("evidence_ids"))
+                        and set(a["evidence_ids"]) & set(selection["evidence_ids"])
+                        and provenance["resources"].get(a.get("resource_id"), {}).get("expires_at") == expires
+                        for a in (record.get("actions") if isinstance(record.get("actions"), list) else [])
+                        if isinstance(a, dict) and isinstance(a.get("evidence_ids"), list)):
+                    error("selection", "deadline and area must match an examined resource")
+            if selection["priority"] == "public_impact":
+                idx = selection.get("impact_index")
+                impacts = record.get("impacts", [])
+                if (not isinstance(impacts, list) or type(idx) is not int or idx < 0 or idx >= len(impacts)
+                        or not isinstance(impacts[idx], dict)
+                        or not refs_valid(impacts[idx].get("evidence_ids"))
+                        or not set(selection["evidence_ids"]) & set(impacts[idx]["evidence_ids"])):
+                    error("selection", "documented affected group and effect required")
 
     for item in evidence.values():
         sid = item.get("provenance_id")
@@ -344,6 +376,8 @@ def apply_view(article, index, provenance=None, now=None):
         return view
     # No reviewer identity or internal metadata in the public context.
     context = {k: copy.deepcopy(record.get(k, [])) for k in ("claims", "evidence", "uncertainties", "impacts", "differences")}
+    if record.get("selection") is not None:
+        context["selection"] = copy.deepcopy(record["selection"])
     context["review_kind"] = record["review"]["kind"]
     context["reviewed_at"] = record["review"]["reviewed_at"]
     for evidence in context["evidence"]:

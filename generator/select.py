@@ -437,3 +437,52 @@ def _quality_gate(a: dict) -> bool:
         return False
 
     return True
+
+
+def editorial_selection_comparison(articles, now, area=None, limit=3):
+    """Shadow-only pilot over publication copies; never replace the existing hero.
+
+    Editorial views must already have passed editorial.apply_view. This function
+    does not approve records, infer importance, or count independent confirmations.
+    """
+    from datetime import datetime
+
+    if now.tzinfo is None or limit < 1:
+        raise ValueError("aware now and positive limit required")
+    candidates, excluded = [], []
+    for article in articles:
+        selection = (article.get("editorial") or {}).get("selection")
+        if not selection:
+            continue
+        path = f"/{article['category']}/{article['slug']}/"
+        expires = selection.get("expires_at")
+        if expires and datetime.fromisoformat(expires.replace("Z", "+00:00")) <= now:
+            excluded.append({"path": path, "reason": "expired"})
+            continue
+        if area and selection["area"] not in {area, "national"}:
+            excluded.append({"path": path, "reason": "outside_area"})
+            continue
+        candidates.append(article)
+    # Stable path resolves equal publication dates independent of input order.
+    candidates.sort(key=lambda a: (a["category"], a["slug"]))
+    candidates.sort(key=lambda a: a.get("published") or "", reverse=True)
+    priorities = {"time_sensitive": 0, "public_impact": 1, "context": 2}
+    candidates.sort(key=lambda a: (
+        bool(area and a["editorial"]["selection"]["area"] != area),
+        not bool(a.get("featured")),
+        priorities[a["editorial"]["selection"]["priority"]]))
+    selected = _diversify(candidates)[:limit]
+    selected_paths = {f"/{a['category']}/{a['slug']}/" for a in selected}
+    for article in candidates:
+        path = f"/{article['category']}/{article['slug']}/"
+        if path not in selected_paths:
+            excluded.append({"path": path, "reason": "capacity_or_diversity"})
+    def paths(items):
+        return [f"/{a['category']}/{a['slug']}/" for a in items]
+    return {"schema_version": 1, "mode": "shadow", "area": area,
+            "publishable_articles": len(articles), "annotated_candidates": len(candidates),
+            "selected": [{"path": f"/{a['category']}/{a['slug']}/",
+                          **a["editorial"]["selection"]} for a in selected],
+            "excluded": sorted(excluded, key=lambda a: a["path"]),
+            "existing_hero": paths(_pick_hero(articles)),
+            "existing_diversified": paths(_diversify(articles)[:limit])}

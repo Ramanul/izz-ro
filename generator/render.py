@@ -23,7 +23,7 @@ from slugify import slugify
 from . import config, covers, dossiers, editorial, geo, htmlart, pagefind_index, publication
 from .select import (_dedup, _dedup_sources, _diversify, _entity_index,
                      _pick_hero, _quality_gate, anunt_oficial_fara_corp, filtru_cautare_rapida,
-                     publicitar_la_sursa, titlu_afisare)
+                     publicitar_la_sursa, titlu_afisare, editorial_selection_comparison)
 # Re-export DELIBERAT, nu import mort: `tests/test_render_editorial.py` le cheama ca
 # `render._slug_stems` / `render.sources_coherent` (9 apeluri), iar `tools/qa_check.py:18`
 # importa `sources_coherent` din `generator.render`, nu din `generator.select` — si scriptul
@@ -1335,6 +1335,9 @@ def build(articles: list, mod: dict | None = None) -> None:
     print(f">> imagini: {spent} fisiere pentru {n} articole ({n_cover} coperti proprii, "
           f"{fara_coperta} pe coperta de categorie); arta se deseneaza in pagina")
 
+    _write(os.path.join(OUT_DIR, "editorial-selection-comparison.json"),
+           json.dumps(editorial_selection_comparison(by_date, editorial_now),
+                      ensure_ascii=False, sort_keys=True))
     hero = _pick_hero(by_date)
     hero_urls = {a["url"] for a in hero}
 
