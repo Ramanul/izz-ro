@@ -29,6 +29,7 @@
 - **Audit og:image #431 (merged) [IZZ-0429]:** 11.114/11.114 pe randarea declarată, fix static pentru hartă; CI main verde (runs 37150541651, 37150541665). Fără probă HTTP live; auditul dă 0 la output lipsă — follow-up deschis. Coada: `gh pr list`.
 - **Issues triate 09-13 [IZZ-0381…0383]:** #83 închis. **#198 arhiva = decizie de proprietar**
   (R2 singura structurală). #233 canal · #271 scope — deschise prin design.
+- **Coada PR — deschise, cu motiv:** #499 «fix: guard degraded AI output and diacritics» (altă sesiune, așteaptă review/aterizare) · #501 «Editorial F: explain selection» (altă sesiune; după aterizarea paginii metodă din sesiunea curentă, ia la rebase `content/legal/method.md` din main — direcția proprietarului, 20 oct).
 
 ## Audit closure status
 
