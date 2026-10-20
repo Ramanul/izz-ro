@@ -8,7 +8,7 @@
 > Where the rest lives: `specs/regim-reguli.md` — unified audit closure ·
 > `specs/registru.tsv` — decisions · `CLAUDE.md` — canonical contract.
 
-**Updated:** 2026-10-19 (editorial dossier release validation)
+**Updated:** 2026-10-20 (method page → «Cum devin ideile funcții», direcție proprietar din ChatGPT)
 
 ## Open
 - **Editorial transformation:** A/B/C/D published via #476 (merged), #477 (merged), #489 (merged) and #497 (merged); E persistent dossiers and explained relations are included in this release at pilot scale. Live release requires the exact build SHA plus the visible dossier/search checks. Selection, reader controls and broad coverage remain unfinished.
