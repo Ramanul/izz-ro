@@ -8,11 +8,11 @@
 > Where the rest lives: `specs/regim-reguli.md` — unified audit closure ·
 > `specs/registru.tsv` — decisions · `CLAUDE.md` — canonical contract.
 
-**Updated:** 2026-10-19 (editorial dossier release validation)
+**Updated:** 2026-10-20 (method page → «Cum devin ideile funcții», direcție proprietar din ChatGPT)
 
 ## Open
-- **Editorial transformation:** A/B/C/D published via #476 (merged), #477 (merged), #489 (merged) and #497 (merged); E persistent dossiers and explained relations are included in this release at pilot scale. Live release requires the exact build SHA plus the visible dossier/search checks. Selection, reader controls and broad coverage remain unfinished.
-- **Audite externe:** 3 oct ÎNCHIS [IZZ-0426] (#425 merged, #426 merged; `ai_gateway` pe main, $0, cheile în `.env`) · 4 oct verificat mecanic [IZZ-0432] — 3 confirmate / 2 parțiale / 2 false pozitive (bara de consimțământ și manifestul PWA existau): `notes/analiza-audit-extern-2026-10-04.md`; pe main prin #438 (merged, 6 oct): A1 gardă de diacritice + A2 semnătura editorială/E-E-A-T.
+- **Editorial transformation:** A/B/C/D published via #476 (merged), #477 (merged), #489 (merged) and #497 (merged); E persistent dossiers and explained relations are included in this release at pilot scale. Live release requires the exact build SHA plus the visible dossier/search checks. Selection, reader controls and broad coverage remain unfinished. F (explained selection) = #501, deschis 19 oct, altă sesiune — la rebase după aterizarea paginii metodă ia `content/legal/method.md` din main (direcția proprietarului, 20 oct).
+- **Audite externe:** 3 oct ÎNCHIS [IZZ-0426] (#425 merged, #426 merged; `ai_gateway` pe main, $0, cheile în `.env`) · 4 oct verificat mecanic [IZZ-0432] — 3 confirmate / 2 parțiale / 2 false pozitive (bara de consimțământ și manifestul PWA existau): `notes/analiza-audit-extern-2026-10-04.md`; pe main prin #438 (merged, 6 oct): A1 gardă de diacritice + A2 semnătura editorială/E-E-A-T. #499 «guard degraded AI output and diacritics» deschis 18 oct (altă sesiune, așteaptă review).
 - **PWA + alerte push [IZZ-0430/0431] — PE MAIN (#434 merged):** SW la `/sw.js`, buton instalare, alerte VAPID; fără namespace KV + 4 secrete (`infra/PUSH-SETUP.md`) rutele dau 503. Verificarea Content-Type a manifestului e mecanizată (P0.1 în #438) — de rulat pe live.
 - **Pages `izz-ro` ZOMBI — CONFIRMAT ȘTERS [IZZ-0411]:** `izz-ro.pages.dev` returnează `000` [IZZ-0366, 0395].
 - **PRODUS P1/P2 — media pe carduri [IZZ-0403, 0404 → IZZ-0416; #414 merged]:** portrete PD/CC0 + siluete județ,

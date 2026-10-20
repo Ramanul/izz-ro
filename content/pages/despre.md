@@ -56,7 +56,7 @@ Regulile după care funcționează sistemul sunt stabilite de un om. Colectarea,
 
 Transformarea editorială este în lucru. Contextul suplimentar aprobat, dosarele cu istoric și marcajele detaliate de revizie sunt direcții de implementare; nu le prezentăm ca disponibile pe toate știrile. Pilotul va examina un lot delimitat, iar orice viitor marcaj de revizie trebuie să arate ce a fost efectiv examinat. Aprobarea unui bloc nu va certifica automat întregul articol sau toate afirmațiile surselor.
 
-Mai multe detalii despre proces sunt prezentate în pagina [Cum sintetizăm](/legal/method/).
+Mai multe detalii despre proces sunt prezentate în pagina [Cum devin ideile funcții](/legal/method/).
 
 ## Sursele
 
@@ -94,4 +94,4 @@ Pentru întrebări, sugestii, corectarea unor erori sau sesizări privind dreptu
 
 **contact@izz.ro**
 
-Mai multe informații sunt disponibile în paginile [Principiile IZZ](/principii/), [Cum sintetizăm](/legal/method/), [Surse & originalitate](/surse/), [Contact](/legal/contact/) și [Drepturi de autor](/legal/takedown/).
+Mai multe informații sunt disponibile în paginile [Principiile IZZ](/principii/), [Cum devin ideile funcții](/legal/method/), [Surse & originalitate](/surse/), [Contact](/legal/contact/) și [Drepturi de autor](/legal/takedown/).
