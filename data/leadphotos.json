@@ -2739,86 +2739,6 @@
   "kind": "locality",
   "qid": "Q835227"
  },
- "54b9ee9a7abc8e15": {
-  "miss": true,
-  "v": 2
- },
- "fc6f3345ff779bf6": {
-  "miss": true,
-  "v": 2
- },
- "c79f9979f110edc0": {
-  "miss": true,
-  "v": 2
- },
- "2b2aeb3c2b59db77": {
-  "miss": true,
-  "v": 2
- },
- "addc3f54a56505f6": {
-  "miss": true,
-  "v": 2
- },
- "266635f8a87461d5": {
-  "miss": true,
-  "v": 2
- },
- "eb8885d65d4b2ca7": {
-  "miss": true,
-  "v": 2
- },
- "fad8d8a4e4adbf93": {
-  "miss": true,
-  "v": 2
- },
- "b9747cdae6478878": {
-  "miss": true,
-  "v": 2
- },
- "fc77bc40c22267d4": {
-  "miss": true,
-  "v": 2
- },
- "bd5eea3aecbf281b": {
-  "miss": true,
-  "v": 2
- },
- "00f011eb4303c6a1": {
-  "miss": true,
-  "v": 2
- },
- "7a2a06158a5888fe": {
-  "miss": true,
-  "v": 2
- },
- "292b79a537f4ad69": {
-  "miss": true,
-  "v": 2
- },
- "bcd750c515bbf5cf": {
-  "miss": true,
-  "v": 2
- },
- "8fa0035712779e6d": {
-  "miss": true,
-  "v": 2
- },
- "6655dd1e66d139d9": {
-  "miss": true,
-  "v": 2
- },
- "c18f2efa1912a681": {
-  "miss": true,
-  "v": 2
- },
- "762685cf7ed761ea": {
-  "miss": true,
-  "v": 2
- },
- "e7d51ad4714cfef6": {
-  "miss": true,
-  "v": 2
- },
  "ad2bf718e8b9d2ff": {
   "miss": true,
   "v": 2
@@ -2848,54 +2768,6 @@
   "v": 2
  },
  "b0f95803233015a0": {
-  "miss": true,
-  "v": 2
- },
- "65131edde4c3730a": {
-  "miss": true,
-  "v": 2
- },
- "fb44205a2bfdf94b": {
-  "miss": true,
-  "v": 2
- },
- "1ef7d816212b2c0d": {
-  "miss": true,
-  "v": 2
- },
- "2646a312403486c8": {
-  "miss": true,
-  "v": 2
- },
- "6212b5b9f932e59c": {
-  "miss": true,
-  "v": 2
- },
- "98bade346976f609": {
-  "miss": true,
-  "v": 2
- },
- "dc6379054daa6989": {
-  "miss": true,
-  "v": 2
- },
- "3a63c10435a863f7": {
-  "miss": true,
-  "v": 2
- },
- "6703bf6fac00a652": {
-  "miss": true,
-  "v": 2
- },
- "9422d4b1e8fb7dfd": {
-  "miss": true,
-  "v": 2
- },
- "0d58527f706bd436": {
-  "miss": true,
-  "v": 2
- },
- "525e7fc835b90773": {
   "miss": true,
   "v": 2
  },
@@ -15691,6 +15563,136 @@
   "motiv_ent": "ent_fara_entitati"
  },
  "3ddb0c83098092b4": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_negasit_sau_fara_imagine",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "aa70ba2d616e93ab": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_dimensiune_sau_format",
+  "motiv_ent": "ent_nenotabila"
+ },
+ "de9c827d05a52413": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_dimensiune_sau_format",
+  "motiv_ent": "ent_nenotabila"
+ },
+ "bf0d08ad21e7db6f": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_negasit_sau_fara_imagine",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "643ba537238ef4d5": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_dimensiune_sau_format",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "0ba1c26ff76eae79": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_negasit_sau_fara_imagine",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "364d7726d6ec79eb": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_negasit_sau_fara_imagine",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "afa022f1ac8d1972": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_negasit_sau_fara_imagine",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "4d9afada0564b63d": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_negasit_sau_fara_imagine",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "dab5b8b0907780ae": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_dimensiune_sau_format",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "aa72acaa7c0849c3": {
+  "cover": "leads/loc-Q248018.c.jpg",
+  "art": "leads/loc-Q248018.jpg",
+  "webp": "leads/loc-Q248018.webp",
+  "artist": "Trygve W Nodeland",
+  "license": "CC BY-SA 3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Town_hall_of_Isaccea.jpg",
+  "name": "Isaccea",
+  "kind": "locality",
+  "qid": "Q248018"
+ },
+ "21023cc9249e97d8": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_dimensiune_sau_format",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "2d895a15b767b5a7": {
+  "cover": "leads/loc-Q2716829.c.jpg",
+  "art": "leads/loc-Q2716829.jpg",
+  "webp": "leads/loc-Q2716829.webp",
+  "artist": "Andrei Stroe",
+  "license": "CC BY-SA 4.0",
+  "page": "https://commons.wikimedia.org/wiki/File:RO_BZ_Maxenu_3.jpg",
+  "name": "Țintești",
+  "kind": "locality",
+  "qid": "Q2716829"
+ },
+ "b0e01f792ace54fd": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_negasit_sau_fara_imagine",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "259f93790ee29032": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_negasit_sau_fara_imagine",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "3d79f7c78f97598c": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_negasit_sau_fara_imagine",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "073f9ff32f0c867b": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_negasit_sau_fara_imagine",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "2217d52e9ffbede9": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_negasit_sau_fara_imagine",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "95985cc3a04e53d2": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_dimensiune_sau_format",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "a028d0dde85e6c3f": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_licenta",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "f058ae39e2c34b16": {
   "miss": true,
   "v": 3,
   "motiv_loc": "loc_negasit_sau_fara_imagine",
