@@ -8,7 +8,7 @@
 > Where the rest lives: `specs/regim-reguli.md` — unified audit closure ·
 > `specs/registru.tsv` — decisions · `CLAUDE.md` — canonical contract.
 
-**Updated:** 2026-10-20 (method page → «Cum devin ideile funcții», direcție proprietar din ChatGPT)
+**Updated:** 2026-10-21 (E0 fetch_deep — materia primă pe clusterele selectate; planul «prin prisma cărților» E0–E4 pornit, verdict Argon PORNIM · 20 oct: method page → «Cum devin ideile funcții»)
 
 ## Open
 - **Editorial transformation:** A/B/C/D published via #476 (merged), #477 (merged), #489 (merged) and #497 (merged); E persistent dossiers and explained relations are included in this release at pilot scale. Live release requires the exact build SHA plus the visible dossier/search checks. Selection, reader controls and broad coverage remain unfinished. F (explained selection) = #501, deschis 19 oct, altă sesiune — la rebase după aterizarea paginii metodă ia `content/legal/method.md` din main (direcția proprietarului, 20 oct).

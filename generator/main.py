@@ -15,7 +15,7 @@ except ImportError:
     pass
 
 from . import fetch, state, cluster, moderation, config, guard, eventdata
-from . import diacritice, jurnal_triage, raport_copiere
+from . import diacritice, jurnal_triage, raport_copiere, fetch_deep
 from .process import (get_provider, process_single, process_clusters_batch, process_batch,
                       process_official, repara_diacritice, OFFICIAL_PREFIXES)
 from .util import domain_of, fara_titluri_data
@@ -116,7 +116,8 @@ def numara_amanate(new_items: list, handled: set) -> int:
     return sum(1 for i in new_items if i["url"] not in handled and i["url"] not in respinse)
 
 
-def process_new(new_items: list, provider, budget: int, existing: list | None = None) -> tuple[list, set, int]:
+def process_new(new_items: list, provider, budget: int, existing: list | None = None,
+                dry_run: bool = False) -> tuple[list, set, int]:
     """Returneaza (articole_procesate, url_uri_inglobate_in_cluster_C, apeluri_AI_folosite).
 
     `budget` = numarul de APELURI AI (free-tier are limita). Model B se proceseaza in
@@ -176,6 +177,16 @@ def process_new(new_items: list, provider, budget: int, existing: list | None = 
     # prospetimea. Vezi specs/ai-budget-ordering.md.
     syn.sort(key=_cluster_rank, reverse=True)
     singles.sort(key=lambda a: (a.get("published") or "", _tie(a.get("url", ""))), reverse=True)
+
+    # E0 — materia primă pe clusterele selectate (plan-paradigma-izz.md §3): text integral
+    # cu validator anti-paywall/consent, 3,5 s/URL prin `fetch._deschide`, SHA-256 + ancore
+    # în data/deep_meta.json (prune la TTL). Fundal, fără UI, fără apeluri AI: propozițiile
+    # S1.1 le consumă sinteza dialectică (E2), driftul pe ancore îl consumă E1.
+    # IZZ_FETCH_DEEP=0 oprește etapa (testele îl setează din conftest — proces_new e chemat
+    # direct de suite, iar un cârlig care ar face rețea și ar scrie stare în teste ar strica
+    # izolarea suitei; în producție și la --dry-run rămâne implicit PORNIT).
+    if os.environ.get("IZZ_FETCH_DEEP", "1") != "0":
+        fetch_deep.fetch_deep(syn, persist=not dry_run)
 
     # clusterele C intai, in LOTURI (1 apel per CLUSTER_BATCH_SIZE clustere, nu per cluster).
     # MASURAT 2026-08-16: cate un apel per cluster epuiza bugetul la 17-18 clustere/rulare,
@@ -458,7 +469,8 @@ def run(dry_run: bool = False) -> dict:
     # de upgradat. Vezi `ai_reserve`: neplafonata, tinea 8 din 18 apeluri pentru o coada goala.
     pending_upgrades = len(upgradable(existing)) if provider else 0
     reserve = ai_reserve(existing, budget) if provider else 0
-    processed_new, folded, used = process_new(new_items, provider, budget - reserve, existing=existing)
+    processed_new, folded, used = process_new(new_items, provider, budget - reserve,
+                                              existing=existing, dry_run=dry_run)
     # Garda de diacritice scrie o linie DOAR cand a gasit ceva (altfel ar fi zgomot in log).
     linie_diacritice = diacritice.raport()
     if linie_diacritice:
@@ -573,6 +585,9 @@ def run(dry_run: bool = False) -> dict:
         # urma in build.json. Gol cand nu exista cascada sau n-a cazut nimic (`IZZ-0282`).
         "ai_caderi_acoperite": (provider.caderi_pe_provider()
                                 if hasattr(provider, "caderi_pe_provider") else {}),
+        # E0 fetch_deep (plan-paradigma-izz.md §3): contorii materiei prime pe clusterele
+        # selectate — FULL_TEXT vs RSS_FALLBACK plus marcajele SILENT_EDIT_DIRTY (E1).
+        "deep": fetch_deep.stats(),
     }
     caderi = stats.get("ai_caderi_acoperite") or {}
     if caderi:
