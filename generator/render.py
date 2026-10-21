@@ -1294,6 +1294,12 @@ def build(articles: list, mod: dict | None = None) -> None:
                     a["photo_webp"] = (f"/{a['category']}/{a['slug']}/photo.webp"
                                        f"?v={_content_ver(photo_webp_dst)}")
                 a["lead_credit"] = lp   # legenda obligatorie -- fara ea poza n-are voie sa apara
+                # 2026-10-21: cardul si hero pot folosi ACEeasi fotografie, fiindca sablonul
+                # afiseaza creditul complet sub imagine. `cover_url` ramane separat, deci
+                # og:image nu primeste niciodata o poza CC BY/SA.
+                a["art_path"] = a["photo_path"]
+                a["art_webp"] = a.get("photo_webp")
+                a["art_credit"] = lp
         elif lp and _spend(_use_media(os.path.join(MEDIA_DIR, lp["art"]), art_dst)):
             # Fotografie reala de lead, fara obligatie de credit: inlocuieste arta generata
             # pe card, pe hero si pe og:image.

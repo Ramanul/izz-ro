@@ -36,6 +36,7 @@
           {% if top.art_webp %}<source srcset="{{ base }}{{ top.art_webp }}" type="image/webp">{% endif %}
           <img class="lead-art" src="{{ base }}{{ top.art_path }}" alt="" width="960" height="504" sizes="(min-width: 1000px) 430px, 100vw" fetchpriority="high">
         </picture>
+        {% if top.art_credit %}{{ credit_foto({'credit': top.art_credit}) }}{% endif %}
         {% elif top.art_style %}
         {%- set pr = top.art_style.portret %}
         {%- set pr_ok = pr and (portret_nou is not defined or portret_nou(pr.img)) %}

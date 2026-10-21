@@ -9,6 +9,7 @@
   {#- Fotografia REALA ramane fisier (`art_path`); arta generata se deseneaza in pagina
       (`_art.html`), fara fisier si fara cerere HTTP — vezi specs/cloudflare-free-2026-09.md. -#}
   {% if a.art_path %}<a class="card-media" href="{{ base }}/{{ a.category }}/{{ a.slug }}/" tabindex="-1" aria-hidden="true"><picture>{% if a.art_webp %}<source srcset="{{ base }}{{ a.art_webp }}" type="image/webp">{% endif %}<img src="{{ base }}{{ a.art_path }}" alt="" loading="lazy" decoding="async" width="960" height="504" sizes="(min-width: 1000px) 360px, (min-width: 640px) 45vw, 100vw"></picture></a>
+  {% if a.art_credit %}{{ credit_foto({'credit': a.art_credit}) }}{% endif %}
   {%- elif a.art_style %}
   {#- Acelasi chip o singura data pe pagina (`portret_nou`, din render._base_ctx): pe homepage
       Trump aparea pe zeci de carduri. Portretul cu atribuire obligatorie poarta creditul COMPLET
