@@ -26,6 +26,13 @@ import poarta_stare
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 OUT = os.path.join(ROOT, "output")
 
+# E0 fetch_deep (plan-paradigma-izz.md §3): suitele care cheamă `process_new` direct nu
+# trebuie să facă rețea pe URL-urile de fixture și să scrie `data/deep_meta.json`. Cârligul
+# citește comutatorul la fiecare apel, deci un test care chiar vrea etapa o poate porni cu
+# monkeypatch.setenv("IZZ_FETCH_DEEP", "1"). Verificarea reală a etapei rămâne la
+# test_fetch_deep.py (care parchează granita `fetch._deschide`) și la `--dry-run`.
+os.environ.setdefault("IZZ_FETCH_DEEP", "0")
+
 
 # --- garzile care citesc stare COMISA si MUTABILA -----------------------------------
 # Motivatia, cifrele si invariantul sunt in `tests/poarta_stare.py`. Aici e doar cablajul.

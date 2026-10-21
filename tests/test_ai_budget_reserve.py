@@ -168,7 +168,7 @@ def _run_cu_stare(monkeypatch, stare: list) -> tuple:
     monkeypatch.setattr(main, "process_single", lambda a, p: a)
     primit = []
 
-    def _fals_process_new(items, provider, budget, existing=None):
+    def _fals_process_new(items, provider, budget, existing=None, dry_run=False):
         primit.append(budget)
         return [], set(), 0
 
