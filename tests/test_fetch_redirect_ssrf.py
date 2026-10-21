@@ -265,3 +265,47 @@ def test_nicio_iesire_in_retea_nu_ocoleste_cusatura():
         and not linie.lstrip().startswith("#")
     ]
     assert not linii, "apel direct in retea, in afara lui _deschide:\n" + "\n".join(linii)
+
+
+def test_https_open_merge_pe_handler_fara_check_hostname(monkeypatch):
+    """Python 3.14 NU mai pune `_check_hostname` pe HTTPSHandler, iar
+    HTTPSConnection nu-l mai accepta deloc (măsurat local: TypeError
+    „unexpected keyword argument”). `https_open` nu are voie să crape de
+    asta — se simulează handlerul de 3.14 și se interceptează `do_open`."""
+    handler = fetch._HTTPSHandlerFixat()
+    vazut = {}
+
+    def _do_open_fals(cls, req, **kwargs):
+        vazut.update(kwargs)
+        return "ok"
+
+    monkeypatch.setattr(handler, "do_open", _do_open_fals)
+    if hasattr(handler, "_check_hostname"):
+        del handler._check_hostname          # simularea Python 3.14
+
+    class _Req:
+        pass
+
+    assert handler.https_open(_Req()) == "ok"
+    assert "context" in vazut
+    assert "check_hostname" not in vazut      # fără atribut → nu se trimite deloc
+
+
+def test_https_open_trimite_check_hostname_cand_exista(monkeypatch):
+    """Contra-proba pe Python <= 3.11: când handlerul ARE atributul, valoarea
+    ajunge intactă la conexiune — comportamentul de pe CI nu se schimbă."""
+    handler = fetch._HTTPSHandlerFixat()
+    handler._check_hostname = "sentinel"
+    vazut = {}
+
+    def _do_open_fals(cls, req, **kwargs):
+        vazut.update(kwargs)
+        return "ok"
+
+    monkeypatch.setattr(handler, "do_open", _do_open_fals)
+
+    class _Req:
+        pass
+
+    assert handler.https_open(_Req()) == "ok"
+    assert vazut.get("check_hostname") == "sentinel"
