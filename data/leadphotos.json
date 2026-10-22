@@ -2736,82 +2736,6 @@
   "kind": "locality",
   "qid": "Q835227"
  },
- "e359700c498bcd46": {
-  "miss": true,
-  "v": 2
- },
- "e489a1edae488e5b": {
-  "miss": true,
-  "v": 2
- },
- "6feb503da8e72ec9": {
-  "miss": true,
-  "v": 2
- },
- "9e35b65bee929502": {
-  "miss": true,
-  "v": 2
- },
- "5053a6db8a29c0e7": {
-  "miss": true,
-  "v": 2
- },
- "7428f922a87ac0a8": {
-  "miss": true,
-  "v": 2
- },
- "45739f765eb79762": {
-  "miss": true,
-  "v": 2
- },
- "4777e977ac4db1da": {
-  "miss": true,
-  "v": 2
- },
- "2b4629d9e2658a6c": {
-  "miss": true,
-  "v": 2
- },
- "bf96ae6081764f1d": {
-  "miss": true,
-  "v": 2
- },
- "577471d0e3e27116": {
-  "miss": true,
-  "v": 2
- },
- "ad77f236866f5980": {
-  "miss": true,
-  "v": 2
- },
- "affcee5b0c5719ea": {
-  "miss": true,
-  "v": 2
- },
- "c0846c78782b5270": {
-  "miss": true,
-  "v": 2
- },
- "76cd8346e8f4f36f": {
-  "miss": true,
-  "v": 2
- },
- "64553a414af32736": {
-  "miss": true,
-  "v": 2
- },
- "9e60fb0c9157bacb": {
-  "miss": true,
-  "v": 2
- },
- "4bb3ab6c6d8f56b1": {
-  "miss": true,
-  "v": 2
- },
- "67c5485d038826e7": {
-  "miss": true,
-  "v": 2
- },
  "6cb5d780ec880114": {
   "miss": true,
   "v": 2
@@ -16598,5 +16522,125 @@
   "v": 3,
   "motiv_loc": "loc_negasit_sau_fara_imagine",
   "motiv_ent": "ent_fara_entitati"
+ },
+ "c46dae5ef2d58260": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_dimensiune_sau_format",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "136c38a127b41493": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_dimensiune_sau_format",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "2c26dc6a69a3c861": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_dimensiune_sau_format",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "b2601c5f01d1cd62": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_dimensiune_sau_format",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "7b59513d703b9ccb": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_dimensiune_sau_format",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "6ac71d2a706b9293": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_negasit_sau_fara_imagine",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "81ae547a35a78144": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_dimensiune_sau_format",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "d9cb1f89628128db": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_negasit_sau_fara_imagine",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "3fbcab1a5515e101": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_dimensiune_sau_format",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "7c3853bb8b2eee5b": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_negasit_sau_fara_imagine",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "e7a91b2fccabee79": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_negasit_sau_fara_imagine",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "04c38b44055822f5": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_negasit_sau_fara_imagine",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "d97be0e222eee53c": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_neeligibil",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "1f6ada1c03eebb61": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_neeligibil",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "6fa09847fe04e3c3": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_neeligibil",
+  "motiv_ent": "ent_fara_qid"
+ },
+ "b0b27a41ea5b8423": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_neeligibil",
+  "motiv_ent": "ent_licenta_sau_format"
+ },
+ "46bdc71efd6b8a5d": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_neeligibil",
+  "motiv_ent": "ent_nenotabila"
+ },
+ "dc198c3c9953ef23": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_neeligibil",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "24a2d951f53d8579": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_neeligibil",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "047633ebb6d2d80e": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_neeligibil",
+  "motiv_ent": "ent_fara_qid"
  }
 }
