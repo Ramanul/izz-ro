@@ -477,6 +477,43 @@ def source_roles(block: Block) -> dict:
     return {s.name: s.role for s in block.sources if s.mode != "PREV"}
 
 
+def _cuvinte_titluri(group: list) -> set:
+    words = set()
+    for it in group:
+        t = _norm(" ".join(filter(None, (it.get("original_title"), it.get("title")))))
+        words |= {w for w in re.findall(r"[a-z0-9]{4,}", t)}
+    return words
+
+
+VECINI_JACCARD = 0.2
+
+
+def loturi(groups: list, size: int) -> list[list]:
+    """Împarte clusterele în loturi de `size`, păstrând ordinea de prioritate, dar fără două
+    clustere „vecine" (cuvintele titlurilor, Jaccard ≥ VECINI_JACCARD) în același lot.
+
+    MĂSURAT 23.10.2026: trei clustere despre ACELAȘI meci (sub-unire la clustering) au căzut
+    în același lot, iar modelul a citat firesc propozițiile unuia în altul — 13 din 40 de
+    citări respinse ca străine, clusterul amânat. Respingerea e corectă (o citare trebuie să
+    fie a evenimentului ei); separarea vecinilor în loturi diferite îi elimină cauza. Un fals
+    pozitiv aici costă doar o reordonare, deci pragul e generos."""
+    sigs = [_cuvinte_titluri(g) for g in groups]
+    rest = list(range(len(groups)))
+    out = []
+    while rest:
+        lot, amanat = [], []
+        for i in rest:
+            vecin = any(len(sigs[i] & sigs[j]) / max(1, len(sigs[i] | sigs[j])) >= VECINI_JACCARD
+                        for j in lot)
+            if len(lot) < size and not vecin:
+                lot.append(i)
+            else:
+                amanat.append(i)
+        out.append([groups[i] for i in lot])
+        rest = amanat
+    return out
+
+
 def build_blocks(groups_roles: list) -> list:
     """Blocurile unui lot, cu numerotarea surselor continuă între evenimente."""
     blocks, offset = [], 0

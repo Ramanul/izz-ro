@@ -313,3 +313,21 @@ def test_promptul_dialectic_poarta_propozitiile_si_regulile():
     assert "[S1.1] Consiliul Județean Bihor a aprobat" in seen["user"]
     assert "cel putin DOUA publicatii" in seen["user"]
     assert "SCRIE IN ROMANA" in seen["user"]
+
+
+def test_loturile_separa_clusterele_vecine_si_pastreaza_ordinea():
+    meci = lambda n: [{"original_title": f"Universitatea Craiova a învins Inter Escaldes {n}"}]
+    buget = [{"original_title": "Bugetul Bihorului aprobat în consiliu"}]
+    alt = [{"original_title": "Tom Skerritt a murit la 93 de ani"}]
+    g = [meci(1), meci(2), buget, meci(3), alt]
+    lots = dialectic.loturi(g, 3)
+    for lot in lots:
+        assert sum(1 for x in lot if "Craiova" in x[0]["original_title"]) <= 1
+    assert lots[0][0] is g[0]                              # prioritatea primului se păstrează
+    assert sorted(id(x) for lot in lots for x in lot) == sorted(id(x) for x in g)
+
+
+def test_parsarea_tolerata_pierde_doar_obiectul_stricat():
+    text = '[{"id": 0, "title": "a",\n  - "entities": []},\n {"id": 1, "title": "b",},\n {"id": 2 "x"}]'
+    arr = process._parse_json_array_tolerant(text)
+    assert [o["id"] for o in arr] == [0, 1]

@@ -199,10 +199,11 @@ def process_new(new_items: list, provider, budget: int, existing: list | None = 
     surse_brute: dict[str, str] = {}
 
     cbs = config.CLUSTER_BATCH_SIZE if provider else (len(syn) or 1)
-    for i in range(0, len(syn), cbs):
+    # Loturi fără clustere vecine (același subiect, sub-unit la clustering): în același lot,
+    # modelul citează propozițiile unuia în celălalt, iar E2 le respinge ca străine.
+    for chunk in dialectic.loturi(syn, cbs):
         if used >= budget:
             break  # restul clusterelor -> reluate la rularea urmatoare
-        chunk = syn[i:i + cbs]
         reps = process_clusters_batch(chunk, provider)
         used += 1
         for g, rep in zip(chunk, reps):

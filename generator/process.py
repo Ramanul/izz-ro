@@ -529,6 +529,69 @@ def _parse_json_array(text: str) -> list:
     return []
 
 
+def _obiecte_de_nivel_unu(text: str) -> list[str]:
+    """Textele obiectelor `{...}` de pe primul nivel al unui array, cu adâncimea numărată în
+    afara șirurilor — ca un obiect stricat să nu-i ia cu el și pe vecinii lui."""
+    out, depth, start, in_str, esc = [], 0, None, False, False
+    inside_array = False
+    for i, ch in enumerate(text):
+        if in_str:
+            if esc:
+                esc = False
+            elif ch == "\\":
+                esc = True
+            elif ch == '"':
+                in_str = False
+            continue
+        if ch == '"':
+            in_str = True
+        elif ch == "[" and not inside_array and depth == 0:
+            inside_array = True
+        elif ch == "{":
+            if depth == 0:
+                start = i
+            depth += 1
+        elif ch == "}" and depth:
+            depth -= 1
+            if depth == 0 and start is not None:
+                out.append(text[start:i + 1])
+                start = None
+    return out
+
+
+_REPARATII_JSON = (
+    (re.compile(r'^(\s*)-\s+(")', re.M), r"\1\2"),     # „- "entities": [...]" — liniuță rătăcită
+    (re.compile(r",(\s*[}\]])"), r"\1"),                  # virgulă înainte de închidere
+)
+
+
+def _parse_json_array_tolerant(text: str) -> list:
+    """Ca `_parse_json_array`, dar când array-ul întreg nu se parsează, încearcă fiecare
+    obiect separat, cu două reparații mecanice sigure. MĂSURAT 23.10.2026 pe Gemini Flash
+    Lite, formatul dialectic: o liniuță rătăcită înaintea unei chei a pierdut toate cele 3
+    clustere ale lotului. Un obiect care tot nu se parsează rămâne pierdut SINGUR — clusterul
+    lui se amână, ceilalți se publică."""
+    arr = _parse_json_array(text)
+    if arr:
+        return arr
+    cleaned = re.sub(r"^```(?:json)?|```$", "", (text or "").strip(), flags=re.MULTILINE)
+    out = []
+    for frag in _obiecte_de_nivel_unu(cleaned):
+        for attempt in (frag, None):
+            cand = frag
+            if attempt is None:
+                for rx, rep in _REPARATII_JSON:
+                    cand = rx.sub(rep, cand)
+            try:
+                obj = json.loads(cand)
+            except json.JSONDecodeError:
+                continue
+            if isinstance(obj, dict):
+                out.append(obj)
+            break
+    return out
+
+
 OFFICIAL_PREFIXES = ("pl_", "cj_", "pr_")
 
 
@@ -863,7 +926,7 @@ def process_clusters_batch(groups: list, provider) -> list:
     events_block = "\n\n".join(f"[{b.cid}]\n{b.text}" for b in blocks)
     try:
         raw = provider.complete(SYSTEM_C_DIALECTIC, USER_C_DIALECTIC.format(events_block=events_block))
-        arr = _parse_json_array(raw)
+        arr = _parse_json_array_tolerant(raw)
     except Exception:
         return [None] * len(preps)             # tot lotul a esuat -> reluat data viitoare (vezi docstring)
 
