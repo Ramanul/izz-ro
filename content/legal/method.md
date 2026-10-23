@@ -82,7 +82,7 @@ Pagina [Principii](/principii/) explică de ce există IZZ.ro. Aceasta arată **
 
 **Ce face site-ul:** antetul primei pagini arată câte relatări ale surselor stau în spatele subiectelor publicate în ultimele 24 de ore (relatările despre același eveniment devin un singur subiect). Lista de pe [/azi/](/azi/) se încheie cu un rând care spune că ai parcurs toate subiectele zilei. Nu există derulare infinită și nici notificări repetate: alertele sunt opționale, cel mult una pe zi.
 
-**Unde verifici:** prima pagină, rândul de sub dată (pe ecran lat); capătul listei de pe [/azi/](/azi/).
+**Unde verifici:** prima pagină, rândul de sub dată (pe ecran lat); capătul listei de pe [/azi/](/azi/); registrul [Ce nu ajunge pe site](/sub-prag/), cu câte relatări a oprit fiecare filtru la ultima publicare.
 
 **Limită:** cifra relatărilor numără doar sursele din fluxurile urmărite și doar relatările unite într-o sinteză; duplicatele eliminate înainte de publicare nu sunt încă numărate public.
 

@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block title %}Ce nu ajunge pe site — {{ site.name }}{% endblock %}
+{% block description %}Câte relatări a oprit fiecare filtru mecanic al IZZ.ro la ultima publicare și de ce. Fără titluri și fără nume de publicații.{% endblock %}
+{% block content %}
+<nav class="breadcrumbs" aria-label="Breadcrumb">
+  <a href="{{ base }}/">{{ site.name }}</a>
+  <span class="sep">/</span>
+  <span>Ce nu ajunge pe site</span>
+</nav>
+<section class="sub-prag" aria-labelledby="sub-prag-title">
+  <h1 class="section-title" id="sub-prag-title">Ce nu ajunge pe site</h1>
+  {#- E3 (specs/plan-paradigma-izz.md §3, §5): coșul filtrelor e la vedere. Doar CÂTE a oprit
+      fiecare filtru, niciodată CE: o listă de titluri respinse ar republica exact momeala pe care
+      filtrul o oprește, iar numele unei publicații lângă un motiv ar fi o judecată publică. -#}
+  <p class="section-intro">Fiecare filtru de mai jos e mecanic și are o regulă publică. Arătăm câte relatări a oprit fiecare, nu care: o listă de titluri respinse ar republica tocmai ce filtrul a oprit. Nimic nu e tăiat pe ascuns după temă — sportul, divertismentul sau subiectele „mărunte" trec prin aceleași reguli ca restul.</p>
+  {% for grup in grupuri %}
+  <h2 class="dialectic-h">{{ grup.titlu }}</h2>
+  {% if grup.nota %}<p class="dialectic-note">{{ grup.nota }}</p>{% endif %}
+  <table class="sub-prag-tabel">
+    <tbody>
+      {% for r in grup.randuri %}<tr><th scope="row">{{ r.eticheta }}</th><td>{{ r.n }}</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% endfor %}
+  {% if not grupuri %}<p class="empty">Încă nu există o rulare consemnată.</p>{% endif %}
+  <p class="cat-feed"><a href="{{ base }}/legal/method/">Cum devin ideile funcții</a> · <a href="{{ base }}/legal/corrections/">Corecții</a> · <a href="{{ base }}/">Prima pagină</a></p>
+</section>
+{% endblock %}

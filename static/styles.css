@@ -1347,6 +1347,10 @@ body:has(#izz-consent) { padding-bottom: 5rem; }
 .briefing-azi ol { margin: 0; padding-left: 1.2rem; }
 .briefing-azi li { margin: var(--s-8) 0; }
 .briefing-azi span { color: var(--ink-3); font-family: var(--font-mono); font-size: var(--fs-eyebrow); }
+/* registrul /sub-prag/: contoare, nu liste — tabel simplu, cifra aliniată la dreapta */
+.sub-prag-tabel { width: 100%; border-collapse: collapse; margin: 0 0 var(--s-21); font-size: var(--fs-xs); }
+.sub-prag-tabel th { text-align: left; font-weight: 400; color: var(--ink-2); padding: var(--s-5) var(--s-8) var(--s-5) 0; border-bottom: 1px solid var(--line-strong); }
+.sub-prag-tabel td { text-align: right; font-family: var(--font-mono); font-weight: 700; padding: var(--s-5) 0; border-bottom: 1px solid var(--line-strong); white-space: nowrap; }
 /* punctul de oprire al listei zilei (E3): lista are un capăt și îl spune, fără îndemn */
 .briefing-azi .azi-end {
   margin: var(--s-21) 0 0; padding-top: var(--s-13); border-top: 1px solid var(--line-strong);

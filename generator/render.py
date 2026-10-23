@@ -1579,6 +1579,7 @@ def build(articles: list, mod: dict | None = None) -> None:
     _write(os.path.join(OUT_DIR, "offline", "index.html"),
            env.get_template("offline.html").render(**_base_ctx("/offline/")))
     _render_azi(env, by_date)
+    _render_sub_prag(env)
     _write_sitemap(by_date)
     _write_robots()
     _write_security_txt()
@@ -1843,6 +1844,65 @@ def _render_azi(env: Environment, articole: list) -> None:
            env.get_template("azi.html").render(**_base_ctx(
                "/azi/", nav_section="stiri", items=items,
                jsonld_page={"name": "Ce s-a întâmplat azi"})))
+
+
+# Etichetele civice ale motivelor de ingestie (cheile vin din `fetch` / `guard`, fără diacritice).
+_MOTIVE_INGESTIE = {
+    "garda de continut ostil": "Conținut ostil: spam, pagini compromise, jocuri de noroc",
+    "item incomplet (fara link sau titlu)": "Relatare incompletă: fără link sau fără titlu",
+}
+
+
+def _sub_prag(triage: dict | None, moderare: dict | None) -> list:
+    """Grupurile registrului /sub-prag/, din ultima rulare consemnată și din ultima aplicare a
+    moderării. Doar contoare; rândurile cu zero nu se arată (nu sunt informație)."""
+    grupuri = []
+    if triage:
+        randuri = [{"eticheta": "Fără conținut dincolo de titlu (sub 5 cuvinte noi)",
+                    "n": int(triage.get("fara_substanta") or 0)}]
+        for k, v in sorted((triage.get("ingestie") or {}).items()):
+            randuri.append({"eticheta": _MOTIVE_INGESTIE.get(k, k[:1].upper() + k[1:]), "n": int(v)})
+        grupuri.append({"titlu": "Oprite la citirea fluxurilor",
+                        "nota": f"Ultima rulare: {str(triage.get('cand') or '')[:16].replace('T', ' ')} UTC. "
+                                "O relatare fără conținut revine în flux și e oprită din nou la fiecare rulare.",
+                        "randuri": [r for r in randuri if r["n"]]})
+        sin = triage.get("sinteze") or {}
+        if sin:
+            amanate = sum(int(v) for k, v in sin.items() if k.startswith("amanate"))
+            randuri = [
+                {"eticheta": "Publicate: fapte confirmate de cel puțin două origini", "n": int(sin.get("stare_SYNTHESIS_VALID") or 0)},
+                {"eticheta": "Publicate: o singură origine", "n": int(sin.get("stare_SINGLE_ORIGIN") or 0)},
+                {"eticheta": "Publicate: relatări care se exclud, fiecare atribuită", "n": int(sin.get("stare_ASSUMED_SILENCE") or 0)},
+                {"eticheta": "Amânate: verificarea afirmațiilor n-a trecut (se reiau la rularea următoare)", "n": amanate},
+                {"eticheta": "Afirmații scoase: cifră absentă din propozițiile citate", "n": int(sin.get("respinse_cifra") or 0)},
+                {"eticheta": "Afirmații scoase: citare inexistentă sau din alt eveniment", "n": int(sin.get("respinse_citare") or 0)},
+                {"eticheta": "Afirmații scoase: text copiat din sursă", "n": int(sin.get("respinse_copiat") or 0)},
+            ]
+            grupuri.append({"titlu": "Sintezele din mai multe surse, la ultima rulare",
+                            "nota": "Fiecare afirmație a unei sinteze trebuie să trimită la propozițiile din "
+                                    "care provine; ce nu trece verificarea nu se publică.",
+                            "randuri": [r for r in randuri if r["n"]]})
+    if moderare:
+        randuri = [
+            {"eticheta": "Duplicate ale unui eveniment deja publicat", "n": int(moderare.get("dedup") or 0)},
+            {"eticheta": "Ascunse de garda de conținut (spam, alfabete amestecate)", "n": int(moderare.get("garda") or 0)},
+            {"eticheta": "Retrase la cerere temeinică", "n": int(moderare.get("retrase") or 0)},
+            {"eticheta": "Reținute pentru aprobare umană", "n": int(moderare.get("retinute") or 0)},
+        ]
+        grupuri.append({"titlu": f"La publicare, în fereastra de {config.ARTICLE_TTL_DAYS} zile",
+                        "nota": "Duplicatele nu se pierd: relatările despre același eveniment rămân "
+                                "în sinteza lui, cu sursele lor.",
+                        "randuri": [r for r in randuri if r["n"]]})
+    return [g for g in grupuri if g["randuri"]]
+
+
+def _render_sub_prag(env: Environment) -> None:
+    from . import jurnal_triage, moderation
+    grupuri = _sub_prag(jurnal_triage.ultimul_rand(), dict(moderation.ULTIMA_APLICARE) or None)
+    _write(os.path.join(OUT_DIR, "sub-prag", "index.html"),
+           env.get_template("sub_prag.html").render(**_base_ctx(
+               "/sub-prag/", nav_section="stiri", grupuri=grupuri,
+               jsonld_page={"name": "Ce nu ajunge pe site"})))
 
 
 def _newsletter_html() -> str:

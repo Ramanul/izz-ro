@@ -493,7 +493,8 @@ def run(dry_run: bool = False) -> dict:
     # iar decizia „merita batching pentru Model C?" se ia tocmai pe ea.
     respinse_substanta = {i["url"] for i in itemele_fara_substanta(new_items)}
     if not dry_run:
-        jurnal_triage.inregistreaza(pierderi, respinse_substanta, stale_skipped)
+        jurnal_triage.inregistreaza(pierderi, respinse_substanta, stale_skipped,
+                                    sinteze=dialectic.stats())
     deferred = numara_amanate(new_items, handled)
     processed_new = [a for a in processed_new if not a.get("skip")]
     # PLAN UNIFICAT #1: prag de blocare/DEFER. Itemele cu incalcari deterministe de

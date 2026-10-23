@@ -118,3 +118,22 @@ def test_sinteza_veche_fara_structura_ramane_ca_inainte():
 def test_cardul_spune_cate_confirmari_nu_doar_ca_e_multi_sursa(state, eticheta):
     card = render._env().get_template("_card.html").module.card
     assert eticheta in str(card(_articol(state)))
+
+
+def test_registrul_sub_prag_arata_contoare_fara_titluri_si_fara_publicatii():
+    triage = {"cand": "2026-10-23T05:03:42+00:00", "fara_substanta": 118, "expirate": 2459,
+              "fara_substanta_exemple": ["https://exemplu.ro/titlu-momeala"],
+              "ingestie": {"garda de continut ostil": 33, "item incomplet (fara link sau titlu)": 0},
+              "sinteze": {"stare_SYNTHESIS_VALID": 7, "amanate_peste_prag": 1, "amanate_nemapat": 1,
+                          "respinse_cifra": 2}}
+    grupuri = render._sub_prag(triage, {"dedup": 1245, "garda": 5, "retrase": 0, "retinute": 0})
+    toate = {r["eticheta"]: r["n"] for g in grupuri for r in g["randuri"]}
+    assert toate["Fără conținut dincolo de titlu (sub 5 cuvinte noi)"] == 118
+    assert toate["Amânate: verificarea afirmațiilor n-a trecut (se reiau la rularea următoare)"] == 2
+    assert toate["Duplicate ale unui eveniment deja publicat"] == 1245
+    assert 0 not in toate.values()                       # zero nu e informație
+    tpl = render._env().get_template("sub_prag.html")
+    html = tpl.render(**render._base_ctx("/sub-prag/", nav_section="stiri", grupuri=grupuri))
+    corp = html[html.find('<section class="sub-prag"'):html.find("</section>")]
+    assert "exemplu.ro" not in corp and "titlu-momeala" not in corp
+    assert "1245" in corp
