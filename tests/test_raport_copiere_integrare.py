@@ -12,6 +12,7 @@ explicit ca sa nu se mai piarda.
 """
 import json
 
+import dialectic_fake
 import pytest
 
 from generator import process
@@ -29,6 +30,17 @@ class ProviderFals:
 
     def complete(self, system, user):        # noqa: ARG002 - semnatura impusa de apelant
         return self._raspuns
+
+
+class _ProviderDialectic(ProviderFals):
+    """Calea C (E2): raspunsul dialectic se construieste din propozitiile din prompt."""
+
+    def __init__(self, titlu: str, afirmatie: str):
+        self._titlu, self._afirmatie = titlu, afirmatie
+
+    def complete(self, system, user):        # noqa: ARG002 - semnatura impusa de apelant
+        return dialectic_fake.raspuns(user, self._titlu, self._afirmatie,
+                                      category="administratie")
 
 
 @pytest.fixture
@@ -77,10 +89,8 @@ def test_model_B_in_lot_scrie_in_jurnal(jurnal):
 
 
 def test_model_C_singur_scrie_in_jurnal(jurnal):
-    raspuns = json.dumps({"title": "Stadionul intra in renovare",
-                          "synthesis": f"Autoritatile spun ca {COPIAT}.",
-                          "entities": [], "category": "administratie", "icon": None})
-    process.process_cluster([_item()], ProviderFals(raspuns))
+    process.process_cluster([_item()], _ProviderDialectic(
+        "Stadionul intra in renovare", f"Autoritatile spun ca {COPIAT}."))
     r = jurnal()
     assert len(r) == 1, "calea C singura nu a scris nimic"
     assert r[0]["model"] == "C"
@@ -89,10 +99,8 @@ def test_model_C_singur_scrie_in_jurnal(jurnal):
 
 def test_model_C_in_lot_scrie_in_jurnal(jurnal):
     """Calea pe care auditul o ratase. Fara test, s-ar pierde din nou la urmatorul refactor."""
-    raspuns = json.dumps([{"id": 0, "title": "Stadionul intra in renovare",
-                           "synthesis": f"Autoritatile spun ca {COPIAT}.",
-                           "entities": [], "category": "administratie", "icon": None}])
-    process.process_clusters_batch([[_item()]], ProviderFals(raspuns))
+    process.process_clusters_batch([[_item()]], _ProviderDialectic(
+        "Stadionul intra in renovare", f"Autoritatile spun ca {COPIAT}."))
     r = jurnal()
     assert len(r) == 1, "calea C in lot nu a scris nimic"
     assert r[0]["model"] == "C"

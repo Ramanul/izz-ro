@@ -15,7 +15,7 @@ except ImportError:
     pass
 
 from . import fetch, state, cluster, moderation, config, guard, eventdata
-from . import diacritice, jurnal_triage, raport_copiere, fetch_deep
+from . import dialectic, diacritice, jurnal_triage, raport_copiere, fetch_deep
 from .process import (get_provider, process_single, process_clusters_batch, process_batch,
                       process_official, repara_diacritice, OFFICIAL_PREFIXES)
 from .util import domain_of, fara_titluri_data
@@ -187,6 +187,7 @@ def process_new(new_items: list, provider, budget: int, existing: list | None = 
     # izolarea suitei; în producție și la --dry-run rămâne implicit PORNIT).
     if os.environ.get("IZZ_FETCH_DEEP", "1") != "0":
         fetch_deep.fetch_deep(syn, persist=not dry_run)
+    dialectic.reset_stats()
 
     # clusterele C intai, in LOTURI (1 apel per CLUSTER_BATCH_SIZE clustere, nu per cluster).
     # MASURAT 2026-08-16: cate un apel per cluster epuiza bugetul la 17-18 clustere/rulare,
@@ -588,6 +589,9 @@ def run(dry_run: bool = False) -> dict:
         # E0 fetch_deep (plan-paradigma-izz.md §3): contorii materiei prime pe clusterele
         # selectate — FULL_TEXT vs RSS_FALLBACK plus marcajele SILENT_EDIT_DIRTY (E1).
         "deep": fetch_deep.stats(),
+        # E2 (plan-paradigma-izz.md §3, §5): stările sintezelor dialectice și motivele
+        # respingerii afirmațiilor — aici se calibrează SILENCE_REJECTION_THRESHOLD.
+        "dialectic": dialectic.stats(),
     }
     caderi = stats.get("ai_caderi_acoperite") or {}
     if caderi:
