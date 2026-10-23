@@ -951,6 +951,7 @@ def _aplica_dialectic(rep: dict, obj, block, provider) -> dict | None:
     exact când modelul n-a putut separa ce confirmă sursele, un text liber ar reintroduce
     amestecul pe care E2 îl elimină."""
     if not isinstance(obj, dict):
+        dialectic.numara("amanate_nemapat")
         return None                            # nemapat -> amanat, ca la esecul unui apel singur
     d = dialectic.validate(obj, block)
     if d is None:
@@ -958,9 +959,14 @@ def _aplica_dialectic(rep: dict, obj, block, provider) -> dict | None:
     context = " ".join(t for _, t in block.chunks.values())
     candidat = _repair_synthesis_title((obj.get("title") or "").strip(), context)
     if not _titlu_sustinut_de_context(candidat, context):
+        dialectic.numara("amanate_titlu_deformat")
         return None                            # deformare semantica -> amanat
-    if titlu_copiat(candidat, context) or cifre_straine(candidat, context):
-        return None                            # titlu transcris sau cifra fara sursa -> amanat
+    if titlu_copiat(candidat, context):
+        dialectic.numara("amanate_titlu_copiat")
+        return None                            # titlu transcris -> amanat (gate-ul l-ar bloca)
+    if cifre_straine(candidat, context):
+        dialectic.numara("amanate_titlu_cifra")
+        return None                            # cifra fara sursa in titlu -> amanat
     rep["title"] = candidat
     rep["synthesis"] = dialectic.derive_synthesis(d, candidat, config.SYNTHESIS_MAX_WORDS)
     if not rep["synthesis"]:

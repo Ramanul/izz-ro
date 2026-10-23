@@ -79,6 +79,10 @@ def reset_stats() -> None:
     _STATISTICI.clear()
 
 
+def numara(cheie: str, n: int = 1) -> None:
+    _numara(cheie, n)
+
+
 def _numara(cheie: str, n: int = 1) -> None:
     _STATISTICI[cheie] = _STATISTICI.get(cheie, 0) + n
 
@@ -318,7 +322,12 @@ def validate(obj: dict, block: Block) -> dict | None:
         names, cited_text = _cited(ids, block)
         motiv = _fails_grounding(text, cited_text, all_text)
         if motiv:
-            rejected += 1
+            # copierea e o problemă de FORMĂ (drept de autor), nu de temei: faptul cade, dar
+            # nu numără la pragul care măsoară cât a inventat modelul (Argon R4)
+            if motiv != "copiat":
+                rejected += 1
+            else:
+                total -= 1
             _numara(f"respinse_{motiv}")
             return
         hedged_src = _has_any(cited_text, _INCERTITUDINE)
@@ -364,7 +373,10 @@ def validate(obj: dict, block: Block) -> dict | None:
             names, cited_text = _cited(ids, block)
             motiv = _fails_grounding(claim, cited_text, all_text)
             if motiv:
-                rejected += 1
+                if motiv != "copiat":
+                    rejected += 1
+                else:
+                    total -= 1
                 _numara(f"respinse_{motiv}")
                 continue
             positions.append({"text": claim, "src": sorted(names)})
@@ -489,13 +501,15 @@ def _ancore_titluri(group: list) -> set:
     return out
 
 
-VECINI_JACCARD = 0.34
 VECINI_MIN_COMUNE = 2
 
 
 def _vecini(a: set, b: set) -> bool:
-    comune = len(a & b)
-    return comune >= VECINI_MIN_COMUNE and comune / max(1, len(a | b)) >= VECINI_JACCARD
+    """Două entități comune în titluri ajung: un raport (Jaccard) pe uniunea titlurilor a
+    cinci membri se diluează sub orice prag — măsurat: două clustere despre același meci,
+    „Inter Escaldes" în ambele, ieșeau nevecine la Jaccard 0,34."""
+    comune = {x for x in a & b if not x.startswith("NUM:")}
+    return len(comune) >= VECINI_MIN_COMUNE
 
 
 def loturi(groups: list, size: int) -> list[list]:

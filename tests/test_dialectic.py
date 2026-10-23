@@ -179,8 +179,10 @@ def test_afirmatia_copiata_e_respinsa_inainte_de_gate():
     d = dialectic.validate(_obj(common_facts=_bune(b) + [
         {"statement": copiat, "chunk_ids": [_ids(b, "Alfa")[0], _ids(b, "Beta")[0]]},
     ]), b)
-    assert d["rejected"] == 1
+    # faptul copiat cade, dar copierea e problemă de formă, nu temei: nu urcă rata de respingere
+    assert d["rejected"] == 0 and d["total"] == 3
     assert all(copiat != f["text"] for f in d["common"])
+    assert dialectic.stats().get("respinse_copiat", 0) >= 1
 
 
 def test_rezerva_de_la_sursa_nu_dispare_tacut():
