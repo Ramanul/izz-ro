@@ -121,7 +121,7 @@
     <h2 class="dialectic-h">Unde diferă relatările</h2>
     {% for dv in dz.diverg %}
     <div class="dialectic-diverg">
-      <p class="dialectic-axis">{{ dv.axis }}</p>
+      <p class="dialectic-axis">{{ dv.axis[:1] | upper }}{{ dv.axis[1:] }}</p>
       <ul class="dialectic-list">
         {% for p in dv.pos %}<li>{{ p.text }} <span class="dialectic-src">— {{ p.src | join(', ') }}</span></li>
         {% endfor %}
