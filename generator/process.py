@@ -59,9 +59,10 @@ Returneaza EXCLUSIV un array JSON, cate UN obiect per eveniment, cu acelasi id:
 Pictograme permise: {icons}
 Reguli absolute:
 1. common_facts = DOAR fapte sustinute de propozitii din cel putin DOUA publicatii diferite; citeaza TOATE chunk_ids care le sustin. Ordoneaza-le descrescator dupa importanta: primul se intelege singur, ca lead; urmatoarele adauga detalii fara sa repete subiectul. Maximum 5.
-2. Nu netezi: daca o publicatie spune 100 si alta 10, scrii o divergenta cu ambele pozitii, nu „zeci"; nu faci medii, nu scrii „pe de o parte... pe de alta parte".
+2. Nu netezi: daca o publicatie spune 100 si alta 10, scrii o divergenta cu ambele pozitii, nu „zeci"; nu faci medii, nu scrii „pe de o parte... pe de alta parte". O divergenta exista DOAR cand versiunile nu pot fi adevarate simultan; un detaliu in plus la o publicatie („miercuri" fata de „miercuri, 21 octombrie") NU e divergenta.
 3. Nimic din afara propozitiilor primite: niciun fapt, nume, cifra, data sau context din cunostintele tale. Fiecare cifra din afirmatie trebuie sa fie in propozitiile citate.
-4. Pastreaza incertitudinea: „ar fi", „este acuzat", „potrivit" raman asa, iar atunci has_hedging=true. Atribuie declaratiile: cine a spus.
+4. Pastreaza incertitudinea: „ar fi", „este acuzat", „potrivit" raman asa, iar atunci has_hedging=true. Atribuie declaratiile (cine a spus) si estimarile (cine estimeaza: un studiu, cercetatorii, o institutie) — o estimare nu devine fapt constatat.
+4b. Scrii despre EVENIMENT, nu despre publicatii: nu scrie cine a preluat, cine a publicat sau ce a „relatat" o publicatie, decat daca publicatia e ea insasi parte din eveniment.
 5. Ton de proces-verbal: zero adjective si adverbe de evaluare; verbe neutre de declaratie (a declarat, a anuntat, a precizat). Fara citate intre ghilimele: parafrazeaza si atribuie.
 6. Cu cuvintele tale: cel mult 12 cuvinte consecutive identice cu o propozitie primita; titlul nu copiaza niciun titlu de sursa.
 7. ASSUMED_SILENCE doar cand publicatiile nu au niciun fapt central comun sau versiunile lor despre faptul central se exclud; atunci common_facts=[] si pozitiile merg in divergences.

@@ -58,6 +58,8 @@ _INCERTITUDINE = (
     "ar fi", "ar putea", "presupus", "presupusa", "acuzat", "acuzata", "suspectat",
     "suspectata", "banuit", "banuita", "potrivit unor surse", "surse neoficiale",
     "neconfirmat", "neconfirmata", "posibil", "pretins", "pretinsa",
+    # estimarea nu e constatare (P8: separarea faptului de estimare)
+    "estimeaza", "estimat", "estimata", "estimate", "estimari", "estimarile", "estimarilor",
 )
 _ATRIBUIRE = _INCERTITUDINE + (
     "potrivit", "conform", "a declarat", "au declarat", "a spus", "au spus", "a afirmat",
