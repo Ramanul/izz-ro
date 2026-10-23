@@ -8,7 +8,7 @@ import json
 import re
 from datetime import datetime, timezone
 
-from . import config, geo, raport_copiere
+from . import config, fetch_deep, geo, raport_copiere
 from . import diacritice
 from .verifica_sinteza import slug_din_link
 from .util import truncate_words, domain_of, strip_diacritics
@@ -749,15 +749,37 @@ def _story_id(group: list) -> str:
     return "st-" + hashlib.sha1(sambure.encode("utf-8")).hexdigest()[:12]
 
 
+_ROLE_PRIORITY = {
+    "ROOT": 4,
+    "INDEPENDENT_CONTRIBUTOR": 3,
+    "ECHO": 2,
+    "DERIVED": 1,
+}
+
+
 def _prep_cluster_rep(group: list) -> tuple:
     """Partea din process_cluster care NU cere AI: alege reprezentantul, aduna sursele,
-    marcheaza actualizarea. Extrasa ca sa fie identica intre calea single (process_cluster)
-    si cea in lot (process_clusters_batch) -- doua copii ale conditiei „cine e rep-ul" s-ar
-    putea departe fara sa para stricat nimic, acelasi risc numit la `upgradable()` mai sus."""
+    calculeaza rolurile epistemice E1 si marcheaza actualizarea. Extrasa ca sa fie identica
+    intre calea single (process_cluster) si cea in lot (process_clusters_batch) -- doua
+    copii ale conditiei „cine e rep-ul" s-ar putea departe fara sa para stricat nimic,
+    acelasi risc numit la `upgradable()` mai sus."""
     group = sorted(group, key=lambda a: (not a.get("processed_by"), a.get("published") or ""))
     actualizare = bool(group[0].get("processed_by"))
     rep = dict(group[0])
     rep["model"] = "C"
+
+    roles_by_url = fetch_deep.classify_cluster_epistemic_roles(group)
+    epistemic_roles: dict[str, str] = {}
+    for a in group:
+        for dom_k, r_val in (a.get("epistemic_roles") or {}).items():
+            if _ROLE_PRIORITY.get(r_val, 0) > _ROLE_PRIORITY.get(epistemic_roles.get(dom_k, ""), 0):
+                epistemic_roles[dom_k] = r_val
+        u = a.get("original_link") or a.get("url") or ""
+        dom = domain_of(u)
+        role = a.get("_epistemic_role") or roles_by_url.get(u, "ECHO")
+        if dom and _ROLE_PRIORITY.get(role, 0) > _ROLE_PRIORITY.get(epistemic_roles.get(dom, ""), 0):
+            epistemic_roles[dom] = role
+
     _seen_domain = set()
     surse = []
     for a in group:
@@ -769,7 +791,26 @@ def _prep_cluster_rep(group: list) -> tuple:
             _seen_domain.add(dom)
             surse.append({"name": s.get("name"), "url": s.get("url")})
     rep["sources"] = surse
-    rep["first_source"] = group[0].get("source_name")
+
+    if actualizare and group[0].get("first_source"):
+        rep["first_source"] = group[0].get("first_source")
+    else:
+        root_member = next(
+            (a for a in group
+             if roles_by_url.get(a.get("original_link") or a.get("url") or "") == "ROOT"),
+            group[0],
+        )
+        rep["first_source"] = root_member.get("source_name")
+
+    rep["epistemic_roles"] = epistemic_roles
+    rep["cross_confirmations"] = max(
+        int(group[0].get("cross_confirmations") or 0) if actualizare else 0,
+        fetch_deep.cluster_cross_confirmations(group, roles_by_url),
+        sum(
+            1 for r in epistemic_roles.values()
+            if r in ("ROOT", "INDEPENDENT_CONTRIBUTOR", "ECHO")
+        ),
+    )
     rep["members"] = _membri_din_grup(group)
     rep.setdefault("story_id", _story_id(group))
     if actualizare:

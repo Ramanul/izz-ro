@@ -42,9 +42,16 @@ DEEP_BATCH_TIMEOUT_S = float(os.environ.get("DEEP_BATCH_TIMEOUT_S", "120"))
 MIN_FULL_TEXT_CHARS = 280      # sub asta, pagina e ciot, paywall sau consent — nu articol
 MIN_TITLE_OVERLAP_RATIO = 0.25 # măcar 25% din cuvintele lungi ale titlului trebuie să apară în corp
 ANCHOR_DRIFT_THRESHOLD = 0.20  # E1: peste 20% diferență pe ancore la re-fetch → cluster dirty
-MAX_SENTENCES = 25            # buget de context per sursă în promptul E2
+MAX_SENTENCES = 25            # buget de context per sursă ROOT/INDEPENDENT în promptul E2
+MAX_SENTENCES_ECHO = 4        # Argon calib.: sursele ECHO/DERIVED rămân scurte în promptul E2
 MIN_SENTENCE_CHARS = 18       # fragmentele mai scurte (cioate de titlu) se lipesc de următoarea
 MAX_ANCHORS_STORED = 80       # plafon de stocare per articol; Jaccard-ul e stabil mult sub atât
+
+# E1-core & E3 (plan-paradigma-izz.md §3): graful de noutate și first-publisher după densitate
+FIRST_PUBLISHER_WINDOW_MIN = 15      # fereastră glisantă 15 min pentru promovarea investigației dense peste alertă
+FIRST_PUBLISHER_DENSITY_RATIO = 1.5  # prag 1,5× numărul de ancore față de primul alert scurt
+NOVELTY_MIN_ANCHORS = 2              # minimum 2 ancore noi pentru INDEPENDENT_CONTRIBUTOR
+NOVELTY_MIN_RATIO = 0.30             # și minimum 30% rată de noutate în propriul set de ancore
 
 META_PATH = os.path.join(config.ROOT, "data", "deep_meta.json")
 
@@ -165,11 +172,53 @@ def split_romanian_sentences(text: str, source_id: str,
 
 
 # ---------------------------------------------------------------------------
-# 2. ANCORE, SHA-256 ȘI DRIFT (baza pentru E1: modificările tăcute)
+# 2. ANCORE, SHA-256, DRIFT ȘI GRAFUL DE NOUTATE E1-CORE
 # ---------------------------------------------------------------------------
 
 _NUM_ANCHOR_RE = re.compile(r"\b\d+(?:[.,]\d+)?%?\b")
 _MID_CAPS_RE = re.compile(r"(?<![.!?]\s)(?<!^)\b[A-ZĂÂÎȘȚ][a-zăâîșțA-ZĂÂÎȘȚ]{3,}\b")
+_ACRONYM_ANCHOR_RE = re.compile(r"\b(?:[A-ZĂÂÎȘȚ]{3,10}|(?:[A-ZĂÂÎȘȚ][a-zăâîșț]?\.){2,})\b")
+_NOISE_ACRONYMS = frozenset({
+    "UPDATE", "VIDEO", "FOTO", "LIVE", "BREAKING", "EXCLUSIV", "ALERTA", "ALERTE", "SURSE",
+})
+
+# Glosar de entități frecvente RO (plan-paradigma-izz.md §3 E3): extrase ca ancore
+# chiar și când se află la început de propoziție (remediul punctului orb _MID_CAPS_RE).
+KNOWN_RO_ENTITIES = frozenset({
+    "guvern", "parlament", "senat", "presedint", "minister", "primari", "consiliu",
+    "curtea", "inalta", "tribunal", "parchet", "politia", "jandarmeri", "pompieri",
+    "spital", "universitat", "inspectorat", "directia", "agentia", "autoritat",
+    "comisia", "banca", " buget", "koaliti", "coaliti", "opoziti",
+    "psd", "pnl", "usr", "aur", "udmr", "sos", "pot", "reper", "sens", "pmp", "fd",
+    "bnr", "anaf", "dna", "diicot", "ccr", "csat", "csm", "cnair", "anpc", "anre",
+    "igsu", "smurd", "isu", "mai", "mapn", "mae", "ms", "mec", "mipe", "madr",
+    "cnas", "casa", "ins", "bec", "aep", "cna", "ancom", "asf", "consiliul",
+    "bucurest", "cluj", "timis", "iasi", "constant", "brasov", "craiova", "galati",
+    "ploiest", "oradea", "braila", "arad", "pitest", "sibiu", "bacau", "mures",
+    "baia", "buzau", "botosan", "satu", "ramnicu", "drobeta", "suceava", "piatra",
+    "targovist", "focsan", "bistrit", "resita", "tulcea", "calarasi", "giurgiu",
+    "alba", "deva", "hunedoar", "zalau", "sfantu", "slatina", "vaslui", "slobozia",
+    "alexandria", "miercurea", "ilfov", "prahova", "dolj", "bihor", "arges",
+    "neamt", "maramures", "vrancea", "gorj", "olt", "teleorman", "ialomita",
+    "covasna", "harghita", "salaj", "mehedint", "caras", "dambovit", "valcea",
+    "romani", "moldov", "ucrain", "rusia", "bruxelles", "nato", "ue", "onu", "fmi",
+})
+
+_QUOTE_ANCHOR_RE = re.compile(r"[„\"«]([^”\"»]{12,120})[”\"»]")
+
+# Citări explicite către agenții de presă sau alte publicații (plan-paradigma-izz.md §3 E3: DERIVED)
+_DERIVED_ATTRIBUTION_RE = re.compile(
+    r"\b(?:potrivit|conform|transmite|informeaza|scrie|citeaza|relat(?:eaza|at\s+de)|"
+    r"dupa\s+cum\s+(?:arata|scrie)|sursa\s*:)\s+"
+    r"(agerpres|mediafax|news\.ro|reuters|afp|efe|associated\s+press|dpa|bloomberg|"
+    r"hotnews(?:\.ro)?|g4media(?:\.ro)?|digi24(?:\.ro)?|profit(?:\.ro)?|"
+    r"zf(?:\.ro)?|ziarul\s+financiar|libertatea(?:\.ro)?|adevarul(?:\.ro)?|"
+    r"euronews|europa\s+libera|spotmedia|golazo|fanatik|gsp|prosport|stirileprotv|"
+    r"observatornews|antena3|romaniatv|b1tv|cotidianul|economica(?:\.net)?|"
+    r"cursdeguvernare|edupedu|economedia|defenseromania|turnulsfatului|ziaruldeiasi|"
+    r"monitorulcj|bihon|tion|aradon|ebihoreanul|gazetadesud|vremeanoastra)\b",
+    re.IGNORECASE,
+)
 
 
 def strip_diacritics(s: str) -> str:
@@ -178,15 +227,36 @@ def strip_diacritics(s: str) -> str:
     )
 
 
+def _stem_ro(word: str) -> str:
+    norm = strip_diacritics(word.lower()).strip(".")
+    if len(norm) >= 6:
+        norm = re.sub(r"(?:ului|ilor|lor|ul|le)$", "", norm)
+    return norm[:8]
+
+
 def extract_quick_anchors(text: str) -> set:
-    """Ancore factuale (cifre + entități cu majusculă) pentru calculul de drift."""
+    """Ancore factuale (cifre, entități la mijloc sau din glosar la început de frază,
+    acronime și citate scurte) pentru calculul de drift și graful de noutate E1/E3."""
+    if not text:
+        return set()
     anchors: set = set()
     for num in _NUM_ANCHOR_RE.findall(text):
         anchors.add(f"NUM:{num.replace(',', '.')}")
     for ent in _MID_CAPS_RE.findall(text):
-        norm = strip_diacritics(ent.lower())
-        stem = norm[:-2] if len(norm) > 6 else norm   # pseudo-stemming RO (Guvernului -> guvern)
-        anchors.add(f"ENT:{stem}")
+        anchors.add(f"ENT:{_stem_ro(ent)}")
+    for acr in _ACRONYM_ANCHOR_RE.findall(text):
+        clean_acr = acr.replace(".", "").upper()
+        if clean_acr not in _NOISE_ACRONYMS and len(clean_acr) >= 3:
+            anchors.add(f"ACR:{strip_diacritics(clean_acr.lower())}")
+    # Entitățile din glosar sunt recunoscute și la început de propoziție (ex. „Guvernul a aprobat...”)
+    for word in re.findall(r"\b[A-ZĂÂÎȘȚ][a-zăâîșțA-ZĂÂÎȘȚ]{2,}\b", text):
+        norm = strip_diacritics(word.lower()).strip(".")
+        if any(norm.startswith(p) for p in KNOWN_RO_ENTITIES):
+            anchors.add(f"ENT:{_stem_ro(word)}")
+    for q in _QUOTE_ANCHOR_RE.findall(text):
+        q_norm = re.sub(r"\s+", " ", strip_diacritics(q.lower()).strip())
+        if len(q_norm) >= 8:
+            anchors.add(f"Q:{q_norm[:32]}")
     return anchors
 
 
@@ -200,9 +270,8 @@ def check_if_silent_edit_causes_dirty(role: str, old_sha: str | None, new_sha: s
                                       old_anchors: set | None, new_anchors: set) -> bool:
     """O sursă cu rol epistemic greu (ROOT / INDEPENDENT_CONTRIBUTOR) care își schimbă
     conținutul cu peste 20% drift pe ancore, după ce a fost procesată, murdărește
-    clusterul — sinteza înghecată ar publica minciuna veche (Argon, «Silent Edit
-    Desync»). Rolul vine de la E1; până atunci apelantul E0 trece „ROOT" pentru
-    toate — conservator, iar flagul nu e consumat încă de nicio decizie.
+    clusterul — sinteza înghețată ar publica minciuna veche (Argon, «Silent Edit
+    Desync»).
     """
     if role not in ("ROOT", "INDEPENDENT_CONTRIBUTOR"):
         return False
@@ -214,6 +283,158 @@ def check_if_silent_edit_causes_dirty(role: str, old_sha: str | None, new_sha: s
     if union_len == 0:
         return False
     return len(old_anchors ^ new_anchors) / union_len >= ANCHOR_DRIFT_THRESHOLD
+
+
+def is_derived_attribution(text: str, own_domain: str = "", own_source_name: str = "") -> bool:
+    """Detectează dacă textul își atribuie explicit informația unei agenții de presă
+    sau altei publicații decât propria redacție (rol epistemic DERIVED în E1/E3)."""
+    if not text:
+        return False
+    norm_text = strip_diacritics(text.lower())
+    own_norm = strip_diacritics(f"{own_domain} {own_source_name}".lower())
+    for m in _DERIVED_ATTRIBUTION_RE.finditer(norm_text):
+        cited = re.sub(r"\s+", "", m.group(1).lower().split(".")[0])
+        if cited and cited not in own_norm:
+            return True
+    return False
+
+
+def _parse_pub_ts(value: str | None) -> datetime:
+    try:
+        dt = datetime.fromisoformat(value or "")
+        return dt if dt.tzinfo else dt.replace(tzinfo=timezone.utc)
+    except (ValueError, TypeError):
+        return datetime.max.replace(tzinfo=timezone.utc)
+
+
+def _item_text_and_anchors(it: dict, results_by_url: dict | None = None) -> tuple[str, set]:
+    url = it.get("url") or it.get("original_link") or ""
+    if results_by_url and url in results_by_url:
+        r = results_by_url[url]
+        return r.raw_text, set(r.anchors)
+    if it.get("_deep_anchors") is not None:
+        txt = " ".join(filter(None, (
+            it.get("original_title") or it.get("title"),
+            it.get("description") or it.get("teaser") or it.get("synthesis"),
+        )))
+        return txt, set(it.get("_deep_anchors") or [])
+    txt = " ".join(filter(None, (
+        it.get("original_title") or it.get("title"),
+        it.get("description") or it.get("teaser") or it.get("synthesis"),
+    )))
+    return txt, extract_quick_anchors(txt)
+
+
+def classify_cluster_epistemic_roles(group: list,
+                                     results_by_url: dict | None = None) -> dict[str, str]:
+    """Graful determinist de noutate (plan-paradigma-izz.md §3, E1 & E3, 0 apeluri AI):
+    clasifică fiecare articol din `group` ca ROOT, INDEPENDENT_CONTRIBUTOR, ECHO sau DERIVED.
+
+    - DERIVED: atribuire explicită către agenție sau altă publicație;
+    - ROOT: primul publicant ne-derivat, dar cu fereastră glisantă de 15 minute în care
+      un articol cu ≥1,5× (și cel puțin +2) mai multe ancore factuale câștigă ROOT în
+      fața unui alert scurt de 2 rânduri;
+    - INDEPENDENT_CONTRIBUTOR: aduce ≥2 ancore noi ȘI ≥30% rată de noutate față de
+      ancorele deja acoperite în cluster;
+    - ECHO: repetă faptele deja prezente fără prag de noutate proprie.
+    """
+    if not group:
+        return {}
+
+    entries = []
+    for idx, it in enumerate(group):
+        url = it.get("url") or it.get("original_link") or f"__idx_{idx}"
+        dom = domain_of(it.get("original_link") or url)
+        sname = it.get("source_name") or it.get("source") or ""
+        txt, anchors = _item_text_and_anchors(it, results_by_url)
+        derived = is_derived_attribution(txt, own_domain=dom, own_source_name=sname)
+        entries.append({
+            "idx": idx,
+            "url": url,
+            "domain": dom,
+            "published_dt": _parse_pub_ts(it.get("published")),
+            "anchors": anchors,
+            "derived": derived,
+        })
+
+    roles: dict[str, str] = {}
+    non_derived = [e for e in entries if not e["derived"]]
+    pool = non_derived if non_derived else entries
+    for e in entries:
+        if e["derived"] and non_derived:
+            roles[e["url"]] = "DERIVED"
+
+    # Sortare cronologică stabilă pentru alegerea ROOT în fereastra de 15 minute
+    pool_chrono = sorted(pool, key=lambda e: (e["published_dt"], e["idx"]))
+    earliest = pool_chrono[0]
+    t0 = earliest["published_dt"]
+    n0 = len(earliest["anchors"])
+    root_entry = earliest
+
+    if t0 != datetime.max.replace(tzinfo=timezone.utc):
+        window_end = t0 + timedelta(minutes=FIRST_PUBLISHER_WINDOW_MIN)
+        in_window = [e for e in pool_chrono if e["published_dt"] <= window_end]
+        best_in_window = max(in_window, key=lambda e: (len(e["anchors"]), -e["idx"]))
+        if (best_in_window["url"] != earliest["url"]
+                and len(best_in_window["anchors"]) >= max(n0 + 2, int(n0 * FIRST_PUBLISHER_DENSITY_RATIO + 0.9999))):
+            root_entry = best_in_window
+
+    roles[root_entry["url"]] = "ROOT"
+    seen_anchors = set(root_entry["anchors"])
+    seen_domains = {root_entry["domain"]} if root_entry["domain"] else set()
+
+    # Greedy set cover pe restul candidaților ne-derivați (cei mai bogați în ancore întâi)
+    remaining = [e for e in pool if e["url"] != root_entry["url"]]
+    remaining.sort(key=lambda e: (-len(e["anchors"]), e["published_dt"], e["idx"]))
+    for e in remaining:
+        anc = e["anchors"]
+        new_anc = anc - seen_anchors
+        novelty_ratio = (len(new_anc) / len(anc)) if anc else 0.0
+        is_new_domain = not e["domain"] or e["domain"] not in seen_domains
+        if (is_new_domain
+                and len(new_anc) >= NOVELTY_MIN_ANCHORS
+                and novelty_ratio >= NOVELTY_MIN_RATIO):
+            roles[e["url"]] = "INDEPENDENT_CONTRIBUTOR"
+            seen_anchors |= new_anc
+            if e["domain"]:
+                seen_domains.add(e["domain"])
+        else:
+            roles[e["url"]] = "ECHO"
+
+    return roles
+
+
+def cluster_cross_confirmations(group: list,
+                                roles_by_url: dict[str, str] | None = None,
+                                results_by_url: dict | None = None) -> int:
+    """Numărul de Confirmări Încrucișate (plan-paradigma-izz.md §3 E3): domenii distincte
+    ne-derivate (fără preluare explicită de agenție) care fie aduc contribuție proprie
+    (ROOT / INDEPENDENT_CONTRIBUTOR), fie coroborează cel puțin 2 ancore factuale comune
+    cu ROOT fără a fi simple preluări DERIVED."""
+    if not group:
+        return 0
+    roles = roles_by_url or classify_cluster_epistemic_roles(group, results_by_url)
+    root_anchors: set = set()
+    for it in group:
+        url = it.get("url") or it.get("original_link") or ""
+        if roles.get(url) == "ROOT":
+            _, root_anchors = _item_text_and_anchors(it, results_by_url)
+            break
+
+    confirmed_domains: set[str] = set()
+    for idx, it in enumerate(group):
+        url = it.get("url") or it.get("original_link") or f"__idx_{idx}"
+        role = roles.get(url, "ECHO")
+        if role == "DERIVED":
+            continue
+        dom = domain_of(it.get("original_link") or url) or url
+        if role in ("ROOT", "INDEPENDENT_CONTRIBUTOR"):
+            confirmed_domains.add(dom)
+        elif root_anchors:
+            _, anc = _item_text_and_anchors(it, results_by_url)
+            if len(anc & root_anchors) >= 2:
+                confirmed_domains.add(dom)
+    return max(1, len(confirmed_domains))
 
 
 # ---------------------------------------------------------------------------
@@ -290,7 +511,7 @@ def validate_extracted_body(body: str, rss_title: str) -> tuple[bool, str | None
 
 @dataclass
 class DeepResult:
-    """Rezultatul E0 pentru un articol membru al unui cluster selectat."""
+    """Rezultatul E0/E1 pentru un articol membru al unui cluster selectat."""
     url: str
     domain: str
     published: str
@@ -300,6 +521,7 @@ class DeepResult:
     content_sha256: str
     anchors: set = field(default_factory=set)
     sentences: dict = field(default_factory=dict)   # {"S1.1": ...} — consumate de E2
+    epistemic_role: str = "ROOT"                    # ROOT | INDEPENDENT_CONTRIBUTOR | ECHO | DERIVED
     caused_dirty: bool = False
 
 
@@ -352,7 +574,7 @@ def _fetch_single(item: dict, prev: dict | None, domain_sems: dict, sems_lock: t
     anchors = extract_quick_anchors(usable)
     prev_meta = prev or {}
     dirty = check_if_silent_edit_causes_dirty(
-        "ROOT",                            # E1 va trece rolul epistemic real
+        "ROOT",
         prev_meta.get("sha256"), new_sha,
         set(prev_meta.get("anchors") or []), anchors,
     )
@@ -366,10 +588,11 @@ def _fetch_single(item: dict, prev: dict | None, domain_sems: dict, sems_lock: t
 
 
 def fetch_deep(groups: list, meta_path: str | None = None, persist: bool = True) -> dict:
-    """E0 pe clusterele selectate. `groups` = clusterele `syn` din `process_new`
+    """E0 + E1-core pe clusterele selectate. `groups` = clusterele `syn` din `process_new`
     (liste de articole). Returnează rezultatele per URL — propozițiile S1.1 pentru
-    promptul E2 + contorii în `stats()`. Meta (sha + ancore) se salvează în
-    `data/deep_meta.json` doar când `persist` (dry-run nu scrie stare).
+    promptul E2 + rolurile epistemice + contorii în `stats()`. Atașează pe fiecare item
+    în memorie câmpurile temporare `_deep_*` (curățate de `state._scrub_processed`).
+    Meta (sha + ancore) se salvează în `data/deep_meta.json` doar când `persist`.
     """
     _STATISTICI.clear()
     meta_path = meta_path or META_PATH
@@ -386,12 +609,14 @@ def fetch_deep(groups: list, meta_path: str | None = None, persist: bool = True)
             _meta_save(meta, meta_path)   # prune-ul se perpetuă chiar și fără clustere noi
         return {}
 
+    prev_snapshot = {u: dict(meta[u]) for u in uniq if u in meta}
+
     domain_sems: dict[str, threading.Semaphore] = {}
     sems_lock = threading.Lock()
     results: dict[str, DeepResult] = {}
     with ThreadPoolExecutor(max_workers=MAX_CONCURRENT) as pool:
         futures = {
-            pool.submit(_fetch_single, item, meta.get(item.get("url")), domain_sems, sems_lock):
+            pool.submit(_fetch_single, item, prev_snapshot.get(item.get("url")), domain_sems, sems_lock):
                 item.get("url")
             for item in uniq.values()
         }
@@ -405,13 +630,35 @@ def fetch_deep(groups: list, meta_path: str | None = None, persist: bool = True)
                 if url not in results:
                     results[url] = _fallback_result(uniq[url])
 
-    # numerotarea S1..Sn e PER CLUSTER (formatul promptului E2), deci propozițiile
-    # se calculează după fetch, în contextul clusterului.
+    # E1-core: clasificarea rolurilor epistemice per cluster (ROOT / INDEPENDENT_CONTRIBUTOR /
+    # ECHO / DERIVED), evaluarea driftului pe rolul real și numerotarea propozițiilor S1..Sn.
     for g in groups:
+        roles = classify_cluster_epistemic_roles(g, results)
         for idx, it in enumerate(g, start=1):
-            r = results.get(it.get("url"))
-            if r is not None:
-                r.sentences = split_romanian_sentences(r.raw_text, source_id=f"S{idx}")
+            url = it.get("url")
+            r = results.get(url)
+            if r is None:
+                continue
+            role = roles.get(url, "ROOT")
+            r.epistemic_role = role
+            prev_meta = prev_snapshot.get(url) or {}
+            role_for_dirty = prev_meta.get("role") or role
+            r.caused_dirty = check_if_silent_edit_causes_dirty(
+                role_for_dirty,
+                prev_meta.get("sha256"), r.content_sha256,
+                set(prev_meta.get("anchors") or []), r.anchors,
+            )
+            max_sents = MAX_SENTENCES if role in ("ROOT", "INDEPENDENT_CONTRIBUTOR") else MAX_SENTENCES_ECHO
+            r.sentences = split_romanian_sentences(
+                r.raw_text, source_id=f"S{idx}", max_sentences=max_sents
+            )
+            # Atașare temporară în memorie pentru consumatorii din aceeași rulare (E1/E2);
+            # `state._scrub_processed` le șterge înainte de scrierea în `data/articles.json`.
+            it["_deep_sentences"] = dict(r.sentences)
+            it["_deep_mode"] = r.extraction_mode
+            it["_deep_anchors"] = sorted(r.anchors)[:MAX_ANCHORS_STORED]
+            it["_epistemic_role"] = role
+            it["_caused_dirty"] = r.caused_dirty
 
     for r in results.values():
         _STATISTICI[r.extraction_mode] += 1
@@ -421,6 +668,7 @@ def fetch_deep(groups: list, meta_path: str | None = None, persist: bool = True)
             "sha256": r.content_sha256,
             "anchors": sorted(r.anchors)[:MAX_ANCHORS_STORED],
             "mode": r.extraction_mode,
+            "role": r.epistemic_role,
             "published": r.published,
             "fetched_at": datetime.now(timezone.utc).isoformat(),
         }
@@ -432,6 +680,35 @@ def fetch_deep(groups: list, meta_path: str | None = None, persist: bool = True)
     print(f">> E0 fetch_deep: {len(results)} articole în {len(groups)} clustere selectate — "
           f"{full} text integral, {fb} fallback RSS")
     return results
+
+
+def format_cluster_for_llm_prompt(cluster_id: str, group: list,
+                                  results_by_url: dict | None = None) -> str:
+    """Generează blocul indexat `[S1] Dom: ... | Ora: ... | Rol: ... | Mod: ...` cu
+    propozițiile `[S1.1] ...` pentru promptul sintezei dialectice (E2)."""
+    roles = classify_cluster_epistemic_roles(group, results_by_url)
+    lines = [
+        f"CLUSTER_ID: {cluster_id}",
+        f"SURSE ÎN CLUSTER ({len(group)}):",
+        "",
+    ]
+    for idx, it in enumerate(group, start=1):
+        url = it.get("url") or it.get("original_link") or ""
+        dom = domain_of(it.get("original_link") or url)
+        pub = (it.get("published") or "")[:16]
+        r = (results_by_url or {}).get(url)
+        role = (r.epistemic_role if r else None) or it.get("_epistemic_role") or roles.get(url, "ECHO")
+        mode = (r.extraction_mode if r else None) or it.get("_deep_mode") or "RSS_FALLBACK"
+        sents = (r.sentences if r and r.sentences else None) or it.get("_deep_sentences")
+        if not sents:
+            txt, _ = _item_text_and_anchors(it, results_by_url)
+            max_s = MAX_SENTENCES if role in ("ROOT", "INDEPENDENT_CONTRIBUTOR") else MAX_SENTENCES_ECHO
+            sents = split_romanian_sentences(txt, source_id=f"S{idx}", max_sentences=max_s)
+        lines.append(f"[S{idx}] Dom: {dom} | Ora: {pub} | Rol: {role} | Mod: {mode}")
+        for chunk_id, sentence_text in sents.items():
+            lines.append(f"  [{chunk_id}] {sentence_text}")
+        lines.append("")
+    return "\n".join(lines).strip()
 
 
 def _fallback_result(item: dict) -> DeepResult:

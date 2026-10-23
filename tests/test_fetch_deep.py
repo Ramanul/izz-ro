@@ -250,3 +250,195 @@ def test_fetch_deep_fara_clustere_curata_contorii(tmp_path):
     fetch_deep._STATISTICI["FULL_TEXT"] = 99   # eventual rest dintr-un apel anterior
     assert fetch_deep.fetch_deep([], meta_path=str(tmp_path / "m.json"), persist=False) == {}
     assert fetch_deep.stats() == {}
+
+
+# ---------------------------------------------------------------------------
+# 6. E1-core: ancore extinse, atribuire derivată, fereastră 15 min, roluri epistemice
+# ---------------------------------------------------------------------------
+
+def test_ancore_acronime_citate_si_entitati_la_inceput_de_propozitie():
+    text = (
+        "Parlamentul a adoptat legea fiscală. BNR și ANAF vor aplica noile reguli "
+        "la Timișoara din 15 noiembrie, deoarece „deficitul trebuie redus rapid”."
+    )
+    anchors = fetch_deep.extract_quick_anchors(text)
+    assert any(a.startswith("ENT:parlamen") for a in anchors)
+    assert any(a.startswith("ENT:timisoar") for a in anchors)
+    assert "ACR:bnr" in anchors
+    assert "ACR:anaf" in anchors
+    assert "NUM:15" in anchors
+    assert any(a.startswith("Q:deficitul trebuie redus") for a in anchors)
+
+
+def test_detectie_atribuire_derivata_si_excludere_proprie():
+    assert fetch_deep.is_derived_attribution(
+        "Potrivit Agerpres, ședința a început la ora 10.",
+        own_domain="digi24.ro",
+        own_source_name="Digi24",
+    )
+    assert fetch_deep.is_derived_attribution(
+        "Conform G4Media.ro, documentul a fost semnat azi.",
+        own_domain="libertatea.ro",
+        own_source_name="Libertatea",
+    )
+    # auto-referința NU este preluare derivată
+    assert not fetch_deep.is_derived_attribution(
+        "Potrivit Digi24, ședința a început la ora 10.",
+        own_domain="digi24.ro",
+        own_source_name="Digi24",
+    )
+
+
+def test_fereastra_densitate_15_min_promoveaza_investigatia_ca_root():
+    from generator import process
+
+    t0 = datetime(2026, 10, 22, 10, 0, tzinfo=timezone.utc)
+    alerta = {
+        "url": "https://alerta.ro/stire",
+        "original_link": "https://alerta.ro/stire",
+        "source": "alerta",
+        "source_name": "AlertaRapida",
+        "title": "Guvernul adoptă bugetul pe 2027",
+        "original_title": "Guvernul adoptă bugetul pe 2027",
+        "description": "Ministerul Finanțelor a prezentat bugetul pe 2027.",
+        "published": t0.isoformat(),
+    }
+    investigatie = {
+        "url": "https://investigatie.ro/analiza",
+        "original_link": "https://investigatie.ro/analiza",
+        "source": "inv",
+        "source_name": "InvestigatieCompleta",
+        "title": "Guvernul adoptă bugetul pe 2027 cu 14,5 miliarde lei pentru autostrăzi",
+        "original_title": "Guvernul adoptă bugetul pe 2027 cu 14,5 miliarde lei pentru autostrăzi",
+        "description": (
+            "Ministerul Finanțelor, BNR și CNAIR au alocat 14,5 miliarde lei pentru "
+            "Timișoara, Cluj-Napoca și Iași în 3 tranșe trimestriale, conform „planului "
+            "multianual de investiții”."
+        ),
+        "published": (t0 + timedelta(minutes=8)).isoformat(),
+    }
+
+    roles = fetch_deep.classify_cluster_epistemic_roles([alerta, investigatie])
+    assert roles[investigatie["url"]] == "ROOT"
+    assert roles[alerta["url"]] == "ECHO"
+
+    _, rep = process._prep_cluster_rep([alerta, investigatie])
+    # URL-ul rep-ului rămâne stabil pe primul membru, dar first_source recompensează ROOT-ul dens
+    assert rep["url"] == alerta["url"]
+    assert rep["first_source"] == "InvestigatieCompleta"
+    assert rep["epistemic_roles"]["investigatie.ro"] == "ROOT"
+    assert rep["epistemic_roles"]["alerta.ro"] == "ECHO"
+    assert rep["cross_confirmations"] == 2
+
+
+def test_graf_noutate_epistemica_si_confirmari_incrucisate():
+    t0 = datetime(2026, 10, 22, 12, 0, tzinfo=timezone.utc)
+    s_root = {
+        "url": "https://s1.ro/a",
+        "original_link": "https://s1.ro/a",
+        "source_name": "Sursa1",
+        "title": "Guvernul alocă 100 milioane lei pentru Timișoara",
+        "description": "BNR și Ministerul Finanțelor au confirmat suma de 100 milioane lei la Timișoara.",
+        "published": t0.isoformat(),
+    }
+    s_contrib = {
+        "url": "https://s2.ro/b",
+        "original_link": "https://s2.ro/b",
+        "source_name": "Sursa2",
+        "title": "Guvernul alocă 100 milioane lei: Cluj-Napoca și Oradea primesc 45 milioane",
+        "description": "Primăria Cluj-Napoca și CNAIR primesc încă 45 milioane euro prin PNRR în 2027.",
+        "published": (t0 + timedelta(minutes=25)).isoformat(),
+    }
+    s_echo = {
+        "url": "https://s3.ro/c",
+        "original_link": "https://s3.ro/c",
+        "source_name": "Sursa3",
+        "title": "Guvernul alocă 100 milioane lei pentru Timișoara",
+        "description": "Ministerul Finanțelor a confirmat suma de 100 milioane lei.",
+        "published": (t0 + timedelta(minutes=30)).isoformat(),
+    }
+    s_derived = {
+        "url": "https://s4.ro/d",
+        "original_link": "https://s4.ro/d",
+        "source_name": "Sursa4",
+        "title": "Guvernul alocă 100 milioane lei pentru Timișoara",
+        "description": "Potrivit Agerpres, Guvernul a alocat 100 milioane lei pentru Timișoara și Arad.",
+        "published": (t0 + timedelta(minutes=35)).isoformat(),
+    }
+
+    group = [s_root, s_contrib, s_echo, s_derived]
+    roles = fetch_deep.classify_cluster_epistemic_roles(group)
+    assert roles[s_root["url"]] == "ROOT"
+    assert roles[s_contrib["url"]] == "INDEPENDENT_CONTRIBUTOR"
+    assert roles[s_echo["url"]] == "ECHO"
+    assert roles[s_derived["url"]] == "DERIVED"
+    # DERIVED nu numără drept confirmare încrucișată independentă
+    assert fetch_deep.cluster_cross_confirmations(group, roles) == 3
+
+
+def test_silent_edit_ignorat_pe_echo_dar_activ_pe_root(tmp_path, monkeypatch):
+    meta_path = str(tmp_path / "deep_meta.json")
+    t0 = datetime(2026, 10, 22, 9, 0, tzinfo=timezone.utc)
+    root_it = {
+        "url": "https://root.ro/a",
+        "original_link": "https://root.ro/a",
+        "source_name": "Root",
+        "title": ARTICLE_TITLE,
+        "original_title": ARTICLE_TITLE,
+        "description": "Guvernul și BNR au aprobat 100 miliarde pentru Timișoara și Cluj-Napoca.",
+        "published": t0.isoformat(),
+    }
+    echo_it = {
+        "url": "https://echo.ro/b",
+        "original_link": "https://echo.ro/b",
+        "source_name": "Echo",
+        "title": ARTICLE_TITLE,
+        "original_title": ARTICLE_TITLE,
+        "description": "Guvernul a aprobat 100 miliarde pentru Timișoara.",
+        "published": (t0 + timedelta(minutes=30)).isoformat(),
+    }
+    html_root = ("<html><body>" + "<p>Guvernul și BNR au aprobat bugetul cu 100 miliarde de lei "
+                 "pentru Timișoara și Cluj-Napoca în ședința de azi.</p>" * 6 + "</body></html>").encode("utf-8")
+    html_echo_v1 = ("<html><body>" + "<p>Guvernul a aprobat bugetul cu 100 miliarde de lei "
+                    "pentru Timișoara în ședința de azi.</p>" * 6 + "</body></html>").encode("utf-8")
+    html_echo_v2 = ("<html><body>" + "<p>Guvernul a aprobat bugetul cu 250 miliarde de lei "
+                    "pentru București și Iași în ședința de azi.</p>" * 6 + "</body></html>").encode("utf-8")
+
+    raspunsuri = {
+        root_it["url"]: html_root,
+        echo_it["url"]: html_echo_v1,
+    }
+
+    def fake_deschide(req, timeout=None):
+        u = getattr(req, "full_url", str(req))
+        return _Raspuns(raspunsuri[u])
+
+    monkeypatch.setattr(fetch, "_deschide", fake_deschide)
+    fetch_deep.fetch_deep([[root_it, echo_it]], meta_path=meta_path)
+    assert fetch_deep.stats().get("SILENT_EDIT_DIRTY", 0) == 0
+
+    # Modificăm DOAR articolul ECHO -> nu trebuie să declanșeze SILENT_EDIT_DIRTY
+    raspunsuri[echo_it["url"]] = html_echo_v2
+    fetch_deep.fetch_deep([[root_it, echo_it]], meta_path=meta_path)
+    assert fetch_deep.stats().get("SILENT_EDIT_DIRTY", 0) == 0
+
+
+def test_scrub_processed_curata_cheile_tranzitorii_deep():
+    from generator import state
+
+    art = {
+        "url": "https://s1.ro/a",
+        "title": "Titlu",
+        "processed_by": "gemini",
+        "original_title": "Orig",
+        "description": "Desc",
+        "_deep_sentences": {"S1.1": "Propoziție."},
+        "_deep_mode": "FULL_TEXT",
+        "_deep_anchors": ["NUM:10"],
+        "_epistemic_role": "ROOT",
+        "_caused_dirty": False,
+    }
+    state._scrub_processed([art])
+    for k in ("_deep_sentences", "_deep_mode", "_deep_anchors", "_epistemic_role", "_caused_dirty"):
+        assert k not in art
+
