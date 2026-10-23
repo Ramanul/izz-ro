@@ -278,7 +278,7 @@ def _hash_quote(q_norm: str) -> str:
     """Ancora de citat se stochează ca hash: `data/deep_meta.json` e comis într-un repo
     PUBLIC, iar comparația (drift, noutate) e oricum pe egalitate exactă — deci textul
     citatului nu trebuie să existe nicăieri în stare (aceeași regulă ca `_scrub_processed`)."""
-    return hashlib.sha1(q_norm[:64].encode("utf-8")).hexdigest()[:12]
+    return hashlib.sha256(q_norm[:64].encode("utf-8")).hexdigest()[:12]
 
 
 def extract_quick_anchors(text: str) -> set:
@@ -320,7 +320,7 @@ def anchor_sample(anchors: set) -> list:
     schimbare de SHA (un widget, un contor), deși faptele erau aceleași. Bottom-k pe hash e
     un eșantion stabil: aceleași ancore produc același eșantion, iar Jaccard-ul pe eșantioane
     estimează Jaccard-ul pe seturile întregi."""
-    return sorted(sorted(anchors, key=lambda a: hashlib.md5(a.encode("utf-8")).hexdigest())
+    return sorted(sorted(anchors, key=lambda a: hashlib.sha256(a.encode("utf-8")).hexdigest())
                   [:MAX_ANCHORS_STORED])
 
 
