@@ -957,7 +957,8 @@ def _aplica_dialectic(rep: dict, obj, block, provider) -> dict | None:
     if d is None:
         return None
     context = " ".join(t for _, t in block.chunks.values())
-    candidat = _repair_synthesis_title((obj.get("title") or "").strip(), context)
+    # titlurile nu poartă punct final (convenția site-ului); modelul îl pune uneori din obișnuință
+    candidat = _repair_synthesis_title((obj.get("title") or "").strip().rstrip("."), context)
     if not _titlu_sustinut_de_context(candidat, context):
         dialectic.numara("amanate_titlu_deformat")
         return None                            # deformare semantica -> amanat

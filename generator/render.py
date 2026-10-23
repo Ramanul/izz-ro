@@ -940,13 +940,17 @@ def _numerele_zilei(articles: list) -> dict | None:
     if not fereastra:
         return None
     surse = {a.get("source_name") or a.get("source") or "" for a in fereastra} - {""}
+    # Contorul de subtracție (E3): câte relatări ale surselor stau în spatele subiectelor
+    # publicate. O sinteză C absoarbe toate relatările membre; un rezumat B e o relatare.
+    relatari = sum(max(1, len([m for m in (a.get("members") or []) if isinstance(m, dict)]))
+                   if a.get("model") == "C" else 1 for a in fereastra)
     pe_judet: dict = {}
     for a in fereastra:
         if a.get("category") in ("judetean", "local"):
             j = geo.judet_sursa(a.get("source"))
             if j:
                 pe_judet[j] = pe_judet.get(j, 0) + 1
-    return {"stiri": len(fereastra), "surse": len(surse),
+    return {"stiri": len(fereastra), "surse": len(surse), "relatari": relatari,
             "judete": len(pe_judet), "pe_judet": pe_judet}
 
 
@@ -1748,6 +1752,35 @@ def _timeline(articol: dict) -> list | None:
     return sorted(membri, key=lambda m: m.get("published") or "")
 
 
+# Radiografia surselor (E1/E3, specs/plan-paradigma-izz.md): cum a intrat fiecare publicație
+# în sinteză, în cuvinte civice — fără verdict de calitate. Formulările „detalii suplimentare"
+# și „text comun (posibil comunicat)" sunt corecția Argon R4: „fapte proprii" ar fi sunat a
+# certificare de adevăr, iar „text aproape identic" a acuzație de plagiat, când ambele
+# redacții au preluat legal același comunicat.
+_ROL_SURSA = {
+    "ROOT": "prima relatare observată",
+    "INDEPENDENT_CONTRIBUTOR": "detalii suplimentare",
+    "ECHO": "aceleași fapte, alte cuvinte",
+    "CLONE": "text comun cu altă publicație (posibil comunicat)",
+    "DERIVED": "preia explicit de la altă publicație",
+}
+
+
+def _roluri_surse(articol: dict) -> dict | None:
+    """{nume publicație: rol în cuvinte} pentru sursele unei sinteze C cu roluri E1."""
+    roluri = articol.get("epistemic_roles") or {}
+    if articol.get("model") != "C" or not roluri:
+        return None
+    out = {}
+    for s in articol.get("sources") or []:
+        if not isinstance(s, dict):
+            continue
+        rol = roluri.get(domain_of(s.get("url") or ""))
+        if rol in _ROL_SURSA and s.get("name"):
+            out[s["name"]] = _ROL_SURSA[rol]
+    return out or None
+
+
 def _ataseaza_legaturi(articole: list) -> None:
     """Județul sursei, ghidul permanent și timeline-ul, doar pentru randare."""
     index = _index_ghiduri()
@@ -1758,6 +1791,7 @@ def _ataseaza_legaturi(articole: list) -> None:
         a["ghid"] = _ghid_pentru(a, index)
         # Source headlines may repeat the very statement that was corrected.
         a["timeline"] = None if a.get("correction") else _timeline(a)
+        a["surse_roluri"] = _roluri_surse(a)
 
 
 def _nr_surse(articol: dict) -> int:

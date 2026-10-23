@@ -69,7 +69,10 @@
     {#- Numerele zilei (doar prima pagina are `zi` in context): starea reala a
         pipeline-ului in ultimele 24h, calculata in render._numerele_zilei. Pe mobil
         se ascund in CSS — primul ecran ramane al stirilor. -#}
-    {% if zi %}<span class="day-numbers"><b>{{ zi.stiri }}</b> știri · <b>{{ zi.surse }}</b> surse · <b>{{ zi.judete }}</b> județe în ultimele 24 de ore</span>{% endif %}
+    {#- Contorul de subtracție (E3): relatările citate de surse -> subiectele publicate după
+        unirea relatărilor despre același eveniment. Arată ce a eliminat sistemul, nu doar ce a
+        adunat. Fără `relatari` (context vechi), rămâne forma veche. -#}
+    {% if zi %}<span class="day-numbers">{% if zi.relatari and zi.relatari > zi.stiri %}<b>{{ zi.relatari }}</b> relatări → {% endif %}<b>{{ zi.stiri }}</b> {{ 'subiecte' if zi.relatari and zi.relatari > zi.stiri else 'știri' }} · <b>{{ zi.surse }}</b> surse · <b>{{ zi.judete }}</b> județe în ultimele 24 de ore</span>{% endif %}
   </p>
   <div class="site-header-group">
   <header class="site-header">
