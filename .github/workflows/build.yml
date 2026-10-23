@@ -228,6 +228,8 @@ jobs:
           # driftul pe ancore porneste gol la fiecare runner nou si o modificare tacuta a
           # sursei nu poate fi vazuta niciodata intre doua rulari.
           git add data/deep_meta.json 2>/dev/null || true
+          # E4: memoria subiectelor (decizii incheiate, 12 luni, fara text de presa)
+          git add data/memory_ledger.json 2>/dev/null || true
           git add media 2>/dev/null || true
           if git diff --cached --quiet; then
             echo "::warning::nimic de comis - pipeline-ul nu a schimbat niciun fisier"

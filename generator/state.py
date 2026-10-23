@@ -188,6 +188,7 @@ _TRANSIENT_DEEP_KEYS = (
     "_deep_anchors",
     "_epistemic_role",
     "_caused_dirty",
+    "_surse_noi",
 )
 
 

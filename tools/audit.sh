@@ -21,7 +21,9 @@ mkdir -p "$OUT"
 
 # Locate a Chromium/Chrome binary (pre-installed in CI/cloud, or system install).
 if [ -z "${CHROME_PATH:-}" ]; then
-  CHROME_PATH="$(ls -d /opt/pw-browsers/chromium-*/chrome-linux/chrome 2>/dev/null | head -1 || true)"
+  # Playwright a redenumit directorul în `chrome-linux64` (măsurat 23.10.2026, chromium-1243);
+  # vechiul glob nu mai găsea nimic și auditul ieșea cu „no browser found" în container.
+  CHROME_PATH="$(ls -d /opt/pw-browsers/chromium-*/chrome-linux*/chrome 2>/dev/null | head -1 || true)"
   [ -z "$CHROME_PATH" ] && CHROME_PATH="$(command -v google-chrome chromium chromium-browser chrome 2>/dev/null | head -1 || true)"
   # Windows/Git-Bash: none of the above exist, so the script used to abort unless the caller
   # exported CHROME_PATH by hand. Only GOOGLE CHROME's default install locations are probed:

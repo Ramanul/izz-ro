@@ -224,3 +224,53 @@ sesiunii Antigravity, cu Argon runda 4 (chat `9d6abed40b448b65`). Abateri de la 
   subiect, pe pagină doar pozițiile atribuite (parafraze), niciodată propoziții-sursă.
 - JSON dialectic invalid pentru un cluster → clusterul se amână (ca la eșecul AI de azi); celelalte
   din lot se publică. Nu există cădere pe sinteza narativă veche.
+
+**Felia 2 — E2, ce a schimbat măsurătoarea** (probe reale pe PC: text integral real + Gemini
+Flash Lite real, 3 runde pe 9 + 12 + 15 clustere, 23.10.2026):
+- **Etichete de propoziție unice în lot** (`S{n}.{k}`, numerotarea surselor continuă între
+  evenimente), nu prefixe de cluster compuse de model: cu `C{i}S{j}.{k}`, 10 din 33 de citări ale
+  unui lot ieșeau greșite. Modelul copiază etichete pe care le vede; apartenența la eveniment o
+  decide dicționarul blocului.
+- **Peste pragul de respingere → amânare, nu Tăcere Asumată.** Prima rundă a declarat
+  „ireconciliabil" un meci relatat identic de toate sursele, din cauza citărilor greșite ale
+  modelului. Tăcerea e o afirmație despre presă: se publică doar când există poziții divergente
+  validate și niciun fapt comun. Starea o decide conținutul validat, nu declarația modelului.
+- **A treia stare, `SINGLE_ORIGIN`**: zero fapte comune fără divergențe = o singură origine
+  (ROOT + clonele/preluările lui), nu Tăcere. E rezultatul onest „N articole, 1 origine".
+- **Copierea scoate faptul, dar nu numără la prag** (e formă, nu temei — Argon R4).
+- **Loturi fără clustere vecine** (≥2 entități comune în titluri): sub-unirea la clustering
+  punea trei clustere despre același meci în același lot, iar modelul cita firesc între ele.
+- **Parsare tolerantă per obiect**: o liniuță rătăcită înaintea unei chei a pierdut un lot întreg.
+- Rezultat pe ultimele două runde (27 de clustere): 23 publicate (85%), 4 amânate (reluate la
+  rularea următoare); 0 citări străine acceptate; afirmații scoase: 5 copiate, 2 citări greșite.
+
+**Felia 3 — E3 livrat**: etichetele cardului („Sinteză din N publicații · K confirmări
+încrucișate" / „o singură origine" / „Relatări divergente"); rolul fiecărei surse în
+`sources-box`; contorul de subtracție în antet („X relatări → Y subiecte"); linia de final pe
+/azi/; registrul public /sub-prag/ (contoare per filtru, fără titluri și fără nume de
+publicații — Argon R4: o listă de linkuri oarbe ar fi fost momeală, iar un motiv lângă un brand,
+o judecată publică). Amânat: comutatorul de lentilă pe hartă (volum ↔ confirmări) și „rata de
+stabilitate" pe /surse/ — au nevoie de câteva zile de date `cross_confirmed`/`deep_meta` acumulate.
+
+**Conținut**: /principii/ și /legal/method/ descriu mecanismele, nu doctrina (decizia
+proprietarului, 23.10: „să nu amintim în diverse locuri de acele idei"; Argon R4: și nota de
+proveniență cu titlurile cărților iese). Rezumatele cosmologice au fost scoase; rămâne trimiterea
+la depozitul public de cod, unde stă acest document. Garda e mecanică:
+`tests/test_garda_anti_doctrina.py` scanează tot textul public scris de mână.
+
+**Argon R5 (23.10.2026, seara; chat `54dc9bd7a5b6d75f`) — aplicat înainte de merge:**
+- `SINGLE_ORIGIN` se desparte după numărul ORIGINILOR din afirmații (`dialectic.origini`): una
+  singură → „o singură origine" (prima relatare + clonele/preluările ei); două sau mai multe →
+  „fapte neconfirmate reciproc" (redacții independente, fapte diferite). Textul vechi ar fi
+  afirmat fals „aceeași origine" despre redacții independente.
+- Memoria subiectelor: vocabularul exclus cuprinde și faza pre-penală, contravențiile și
+  integritatea (audiat, percheziție, plângere, amendă, conflict de interese, incompatibilitate,
+  plagiat, corupție); deciziile CCR rămân. Legătura cere ≥2 entități NE-generice („Guvernul",
+  „România", partidele, județele nu se numără) + un cuvânt-cheie comun (rădăcină de 6 litere).
+  Data intrării = `updated` (ziua deciziei), nu prima publicare a sintezei.
+- Nota de actualizare NU mai listează „fapte care nu mai apar" (o reformulare a modelului ar fi
+  apărut drept retragere); spune doar ce publicații au intrat și starea anterioară — ambele
+  deterministe. Eticheta driftului: „actualizat de redacție după prima citire"; coloana de pe
+  /surse/: „Actualizate ulterior", cu explicația că include actualizările firești ale știrilor
+  în curs. Contorul din antet: „X articole → Y subiecte".
+- Respins din R5: incrementarea unui număr de versiune (nu există; `v` e versiunea schemei).

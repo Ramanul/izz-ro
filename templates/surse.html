@@ -11,7 +11,7 @@
   <b>nu</b> înseamnă performanță slabă, ci doar că nu au intrat încă într-un cluster
   multi-sursă (o primărie cu un anunț unic, de exemplu, n-o să intre niciodată).</p>
 
-  <p>Ordinea observată nu dovedește autorul informației sau o preluare. În articolele cu context documentat, proveniența se atribuie numai după examinarea documentelor: anunț oficial, document original ori preluare cu origine cunoscută. O origine necunoscută nu înseamnă sursă independentă; statisticile de mai jos nu măsoară adevărul unei afirmații.</p>
+  <p>Ordinea observată nu dovedește autorul informației sau o preluare. În articolele cu context documentat, proveniența se atribuie numai după examinarea documentelor: anunț oficial, document original ori preluare cu origine cunoscută. O origine necunoscută nu înseamnă sursă independentă; statisticile de mai jos nu măsoară adevărul unei afirmații. „A publicat prima" ține cont de câte fapte aduce relatarea: una cu mult mai multe fapte, publicată în aceleași 15 minute, bate o alertă de două rânduri. „Actualizate ulterior" numără sintezele în care faptele din textul publicației s-au schimbat cu peste 20% după prima citire. Include actualizările firești ale știrilor în curs (completări, live-text) și revizuirile editoriale; nu e un verdict de corectitudine, ci contextul în care se citește „a publicat prima".</p>
 
   {% if harta %}
   <figure class="harta-judete">
@@ -41,12 +41,12 @@
         <div class="table-wrap">
         <table class="stats-table">
           <caption class="visually-hidden">{{ group.label }} — surse cu statistici de originalitate</caption>
-          <thead><tr><th>Sursă</th><th>A publicat prima</th><th>Apariții în sinteze</th><th>Rată de inițiativă</th></tr></thead>
+          <thead><tr><th>Sursă</th><th>A publicat prima</th><th>Apariții în sinteze</th><th>Rată de inițiativă</th><th>Actualizate ulterior</th></tr></thead>
           <tbody>
             {% for s in group.with_stats %}
             <tr>
               <td><a href="{{ s.url }}" target="_blank" rel="noopener noreferrer">{{ s.name }}</a></td>
-              <td>{{ s.first }}</td><td>{{ s.total }}</td><td>{{ s.rate }}%</td>
+              <td>{{ s.first }}</td><td>{{ s.total }}</td><td>{{ s.rate }}%</td><td>{{ s.tacute }}</td>
             </tr>
             {% endfor %}
           </tbody>
@@ -79,12 +79,12 @@
             <div class="table-wrap">
             <table class="stats-table">
               <caption class="visually-hidden">{{ county.label }} — surse cu statistici de originalitate</caption>
-              <thead><tr><th>Sursă</th><th>A publicat prima</th><th>Apariții în sinteze</th><th>Rată de inițiativă</th></tr></thead>
+              <thead><tr><th>Sursă</th><th>A publicat prima</th><th>Apariții în sinteze</th><th>Rată de inițiativă</th><th>Actualizate ulterior</th></tr></thead>
               <tbody>
                 {% for s in county.with_stats %}
                 <tr>
                   <td><a href="{{ s.url }}" target="_blank" rel="noopener noreferrer">{{ s.name }}</a></td>
-                  <td>{{ s.first }}</td><td>{{ s.total }}</td><td>{{ s.rate }}%</td>
+                  <td>{{ s.first }}</td><td>{{ s.total }}</td><td>{{ s.rate }}%</td><td>{{ s.tacute }}</td>
                 </tr>
                 {% endfor %}
               </tbody>

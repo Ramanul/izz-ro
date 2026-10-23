@@ -4,6 +4,10 @@ import os
 from .base import Provider
 
 MODEL = os.getenv("ANTHROPIC_MODEL", "claude-haiku-4-5-20251001")
+# Același plafon ca Gemini (`gemini.py`): un lot dialectic de 3 clustere (E2) are ~1.500 de
+# tokeni măsurați pe Gemini, iar 1024 l-ar fi trunchiat pe ORICE comutare la Anthropic —
+# parserul tolerant ar fi salvat doar obiectele întregi, restul s-ar fi amânat tăcut.
+MAX_TOKENS = int(os.getenv("ANTHROPIC_MAX_TOKENS", "4096"))
 
 
 class AnthropicProvider(Provider):
@@ -32,7 +36,7 @@ class AnthropicProvider(Provider):
         client = self._ensure()
         msg = client.messages.create(
             model=MODEL,
-            max_tokens=1024,
+            max_tokens=MAX_TOKENS,
             system=system,
             messages=[{"role": "user", "content": user}],
         )

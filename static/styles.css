@@ -346,6 +346,30 @@ picture { display: contents; }
   color: var(--ink-2); font-family: var(--font-mono); font-size: var(--fs-eyebrow);
   border-bottom: 1px dotted var(--line-strong); white-space: nowrap;
 }
+/* Sinteza dialectică (E2): faptele sunt corpul articolului, deci au mărimea corpului; sursa
+   fiecărui fapt e metadată, deci mono + ton secundar, pe același rând (atribuire, nu link). */
+.dialectic { margin: var(--s-21) 0; }
+.dialectic-h {
+  margin: var(--s-21) 0 var(--s-8); font-family: var(--font-mono); font-size: var(--fs-eyebrow);
+  text-transform: uppercase; letter-spacing: 1.2px; color: var(--ink-3); font-weight: 700;
+}
+.dialectic-list { margin: 0; padding-left: var(--s-21); }
+.dialectic-list li { font-size: var(--fs-md); line-height: 1.6; color: var(--ink); margin: 0 0 var(--s-8); }
+.dialectic-single li { font-size: var(--fs-base); color: var(--ink-2); }
+.dialectic-src {
+  font-family: var(--font-mono); font-size: var(--fs-eyebrow); color: var(--ink-3);
+  overflow-wrap: anywhere;
+}
+.dialectic-diverg { border-left: 2px solid var(--line-strong); padding-left: var(--s-13); margin: 0 0 var(--s-13); }
+.dialectic-axis { margin: 0 0 var(--s-5); font-weight: 700; color: var(--ink-2); font-size: var(--fs-xs); }
+.dialectic-diverg .dialectic-list li { font-size: var(--fs-base); }
+.dialectic-note { font-size: var(--fs-xs); color: var(--ink-3); margin: var(--s-5) 0 var(--s-13); line-height: 1.55; }
+.dialectic-silence { color: var(--ink-2); }
+.source-role {
+  color: var(--ink-3); font-family: var(--font-mono); font-size: var(--fs-eyebrow);
+  border-bottom: 1px dotted var(--line-strong);
+}
+.source-roles-note { margin: var(--s-13) 0 0; font-size: var(--fs-xs); color: var(--ink-3); line-height: 1.55; }
 .article-accountability {
   margin: var(--s-34) 0; padding: var(--s-21); border-left: 3px solid var(--gold);
   background: var(--gold-wash); color: var(--ink-2); font-size: var(--fs-xs); line-height: 1.55;
@@ -1323,6 +1347,15 @@ body:has(#izz-consent) { padding-bottom: 5rem; }
 .briefing-azi ol { margin: 0; padding-left: 1.2rem; }
 .briefing-azi li { margin: var(--s-8) 0; }
 .briefing-azi span { color: var(--ink-3); font-family: var(--font-mono); font-size: var(--fs-eyebrow); }
+/* registrul /sub-prag/: contoare, nu liste — tabel simplu, cifra aliniată la dreapta */
+.sub-prag-tabel { width: 100%; border-collapse: collapse; margin: 0 0 var(--s-21); font-size: var(--fs-xs); }
+.sub-prag-tabel th { text-align: left; font-weight: 400; color: var(--ink-2); padding: var(--s-5) var(--s-8) var(--s-5) 0; border-bottom: 1px solid var(--line-strong); }
+.sub-prag-tabel td { text-align: right; font-family: var(--font-mono); font-weight: 700; padding: var(--s-5) 0; border-bottom: 1px solid var(--line-strong); white-space: nowrap; }
+/* punctul de oprire al listei zilei (E3): lista are un capăt și îl spune, fără îndemn */
+.briefing-azi .azi-end {
+  margin: var(--s-21) 0 0; padding-top: var(--s-13); border-top: 1px solid var(--line-strong);
+  color: var(--ink-2); font-size: var(--fs-xs);
+}
 .judet-pin { display: flex; flex-wrap: wrap; gap: var(--s-8); align-items: center; margin-top: var(--s-13); }
 .judet-pin label { font-family: var(--font-mono); font-size: var(--fs-eyebrow); color: var(--gold-strong); }
 .judet-pin select { font: inherit; color: var(--ink); background: var(--paper); border: 1px solid var(--line-strong); border-radius: 4px; padding: var(--s-5) var(--s-8); }

@@ -90,3 +90,28 @@ def test_stats_are_preserved_when_present():
     assert with_stats_names["Digi24"]["first"] == 0
     # inca acopera si sursele fara statistici din acelasi grup
     assert total_sources == len(config.SOURCES)
+
+
+def test_prima_publicare_e_cuplata_cu_modificarile_ulterioare():
+    """E1 (plan-paradigma-izz.md §3): „a publicat prima" nu stă singură — o redacție care
+    publică prima și apoi își schimbă tăcut faptele trebuie să se vadă și ca atare."""
+    alfa, beta = [v["name"] for v in list(config.SOURCES.values())[:2]]
+    arts = [{"model": "C", "first_source": alfa, "modificari_tacute": [alfa],
+             "sources": [{"name": alfa, "url": "https://a.ro/1"}, {"name": beta, "url": "https://b.ro/1"}]},
+            {"model": "C", "first_source": alfa,
+             "sources": [{"name": alfa, "url": "https://a.ro/2"}, {"name": beta, "url": "https://b.ro/2"}]}]
+    catalog, _, _ = render._source_catalog(arts)
+    toate = {s["name"]: s for g in catalog for s in _all_sources(g)}
+    assert toate[alfa]["first"] == 2 and toate[alfa]["tacute"] == 1
+    assert toate[beta]["first"] == 0 and toate[beta]["tacute"] == 0
+
+
+def test_ancorele_judetelor_sunt_unice_pe_pagina():
+    """pa11y F77 pe /surse/: un județ prezent în două grupuri dădea două id-uri identice."""
+    catalog, _, _ = render._source_catalog([])
+    ancore = [c["anchor"] for g in catalog for r in g.get("regions", []) for c in r["counties"]]
+    assert len(ancore) == len(set(ancore))
+    harta = render._harta_judete(catalog)
+    if harta:
+        valide = set(ancore)
+        assert all(f["anchor"] in valide for f in harta["forme"] if f["anchor"])

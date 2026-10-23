@@ -23,7 +23,9 @@
       2026-08-04, specs/sinteza-fara-substanta.md). Elementele fara continut NU se emit deloc:
       `.card` e flex cu `gap`, deci un `<p>` gol ar lasa exact o gaura in card. -#}
   <span class="badge{% if a.model == 'C' %} c{% endif %}">{{ a.category | cat_label }}{% if a.anunt_fara_corp %} · Anunț oficial{% endif %}</span>
-  <p class="trust-label" title="Cum este construită această informație">{% if a.anunt_fara_corp %}Anunț oficial · citește textul integral la sursă{% elif a.model == 'C' %}Sinteză multi-sursă · generată automat{% else %}Rezumat dintr-o sursă · generat automat{% endif %}</p>
+  {%- set dz = a.dialectic if a.model == 'C' else none %}
+  {%- set n_pub = (a.sources | length) if a.sources else 1 %}
+  <p class="trust-label" title="Cum este construită această informație">{% if a.anunt_fara_corp %}Anunț oficial · citește textul integral la sursă{% elif dz and dz.state == 'ASSUMED_SILENCE' %}Relatări divergente · {{ n_pub }} publicații · generată automat{% elif dz and dz.state == 'SINGLE_ORIGIN' and (dz.origini or 1) > 1 %}{{ n_pub }} publicații · fapte neconfirmate reciproc · generată automat{% elif dz and dz.state == 'SINGLE_ORIGIN' %}Sinteză din {{ n_pub }} publicații · o singură origine · generată automat{% elif dz %}Sinteză din {{ n_pub }} publicații · {{ a.cross_confirmations or 1 }} {{ 'confirmare încrucișată' if (a.cross_confirmations or 1) == 1 else 'confirmări încrucișate' }} · generată automat{% elif a.model == 'C' %}Sinteză multi-sursă · generată automat{% else %}Rezumat dintr-o sursă · generat automat{% endif %}</p>
   <h2 class="card-title"><a href="{{ base }}/{{ a.category }}/{{ a.slug }}/">{{ a.display_title or a.title }}</a></h2>
   <div class="meta">
     <time datetime="{{ a.published }}">{{ a.published_human }}</time>
