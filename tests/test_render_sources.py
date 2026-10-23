@@ -104,3 +104,14 @@ def test_prima_publicare_e_cuplata_cu_modificarile_ulterioare():
     toate = {s["name"]: s for g in catalog for s in _all_sources(g)}
     assert toate[alfa]["first"] == 2 and toate[alfa]["tacute"] == 1
     assert toate[beta]["first"] == 0 and toate[beta]["tacute"] == 0
+
+
+def test_ancorele_judetelor_sunt_unice_pe_pagina():
+    """pa11y F77 pe /surse/: un județ prezent în două grupuri dădea două id-uri identice."""
+    catalog, _, _ = render._source_catalog([])
+    ancore = [c["anchor"] for g in catalog for r in g.get("regions", []) for c in r["counties"]]
+    assert len(ancore) == len(set(ancore))
+    harta = render._harta_judete(catalog)
+    if harta:
+        valide = set(ancore)
+        assert all(f["anchor"] in valide for f in harta["forme"] if f["anchor"])

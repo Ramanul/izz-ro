@@ -922,6 +922,16 @@ def _source_catalog(by_date: list) -> tuple[list, int, int]:
             "count": len(entries), "with_stats": with_stats, "without_stats": without_stats,
             "regions": _grupeaza_pe_regiuni(pe_judet),
         })
+    # Același județ în două grupuri (ex. ziare de județ și primării) dădea două `id="jud-cluj"`
+    # pe aceeași pagină — HTML invalid (pa11y F77, 8 erori măsurate pe main, 23.10.2026) și o
+    # ancoră care nu știi unde duce. Prima apariție păstrează ancora (harta trimite acolo).
+    vazute: set = set()
+    for group in catalog:
+        for region in group.get("regions", []):
+            for county in region["counties"]:
+                if county["anchor"] in vazute:
+                    county["anchor"] = f"{county['anchor']}-{group['key']}"
+                vazute.add(county["anchor"])
     return catalog, len(config.SOURCES), len(src_stats)
 
 
@@ -986,13 +996,18 @@ def _harta_judete(catalog: list) -> dict | None:
     if not _HARTA_CACHE.get("judete"):
         return None
 
-    # Ancorele exista doar pentru judetele care chiar au o sectiune in pagina.
+    # Ancorele exista doar pentru judetele care chiar au o sectiune in pagina. Un judet apare
+    # in mai multe grupuri (ziare de judet, primarii): harta duce la PRIMA sectiune si numara
+    # sursele din toate — inainte ducea la ultima si numara doar grupul ei.
     ancore: dict = {}
     for group in catalog:
         for region in group.get("regions", []):
             for county in region["counties"]:
                 if county.get("judet"):
-                    ancore[county["judet"]] = county
+                    j = county["judet"]
+                    if j not in ancore:
+                        ancore[j] = {"anchor": county["anchor"], "count": 0}
+                    ancore[j]["count"] += county.get("count") or 0
 
     forme = []
     for judet, d in _HARTA_CACHE["judete"].items():
