@@ -103,11 +103,11 @@
     </div>
     <p class="reader-briefing-actions"><a href="{{ base }}/feed.xml">Abonează-te prin RSS</a><a href="{{ base }}/surse/">Vezi sursele monitorizate</a></p>
     {% if judete %}
-    {#- `div`, nu `form`: alegerea se aplică la `change` (static/personalize.js), nu se trimite
+    {#- `div`, nu `form`: alegerea se aplică la `change` (static/judet.js), nu se trimite
         nicăieri. Era un `<form>` închis cu `</div>` — HTML invalid, iar pa11y îl raporta
         (H32.2, formular fără buton de trimitere), măsurat pe main la 23.10.2026. -#}
     <div class="judet-pin" id="judet-pin">
-      <label for="judet-meu">Localitatea mea</label>
+      <label for="judet-meu">Județul meu</label>
       <select id="judet-meu" name="judet">
         <option value="">Toată țara</option>
         {% for j in judete %}<option value="{{ j.code }}" data-slug="{{ j.slug }}">{{ j.label }}</option>{% endfor %}

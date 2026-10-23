@@ -256,7 +256,7 @@ def _asset_ver() -> dict:
     global _ASSET_VER
     if _ASSET_VER is None:
         _ASSET_VER = {name: _content_ver(os.path.join(STATIC_DIR, name))
-                      for name in ("styles.css", "personalize.js", "search.js", "theme.js", "fonts.css",
+                      for name in ("styles.css", "judet.js", "search.js", "theme.js", "fonts.css",
                                    "calc-salariu.js", "site.webmanifest", "pwa.js", "push.js",
                                    "editorial-updates.js")}
     return _ASSET_VER
@@ -820,7 +820,6 @@ def _base_ctx(canonical_path: str, jsonld_nodes: list | None = None,
         "canonical": config.SITE["url"] + canonical_path,
         # UN singur bloc `application/ld+json` per pagina, emis din base.html
         "jsonld": _graph_jsonld(canonical_path, jsonld_nodes or [], jsonld_page),
-        "analytics_token": os.getenv("CF_ANALYTICS_TOKEN", "").strip() or None,
         "fonts_css": _fonts_css(),
         "asset_ver": _asset_ver(),
         "active_cat": None,
@@ -2501,14 +2500,12 @@ def _write_headers() -> None:
     Activele imutabile tin mult; imaginile o zi; HTML-ul NU se cache-uieste agresiv
     (stiri proaspete). Pattern-urile de cale TREBUIE sa inceapa cu '/' -- altfel
     Pages le ignora si imaginile cad pe TTL-ul implicit de 4h."""
-    # clarity.ms: wildcard, nu hosturi exacte -- hostul de colectare variaza
-    # (configul tagului declara k.clarity.ms, rularea reala din 2026-08-13 a
-    # urcat pe n.clarity.ms). Un CSP stramtat la hosturi exacte rupe Clarity in
-    # tacere. DELIBERAT absent din img-src: singura imagine pe care o cere
-    # Clarity e c.clarity.ms/c.gif, pixelul care sincronizeaza MUID (identificatorul
-    # de publicitate Microsoft). personalize.js il refuza deja prin
-    # ad_Storage:'denied'; lasandu-l in afara CSP, browserul il blocheaza si daca
-    # flagul ala regreseaza. NU-l adauga la img-src "ca sa nu mai dea eroare".
+    # Nicio gazda de masurare in CSP (2026-10-23, specs/plan-paradigma-izz.md §5 D6): site-ul
+    # nu ruleaza cod de statistica in browserul cititorului. Google, Clarity si beaconul
+    # Cloudflare Web Analytics au iesit DELIBERAT: daca cineva porneste injectarea automata a
+    # beaconului din dashboard, browserul il blocheaza si consola o semnaleaza -- o prelucrare
+    # noua de date se decide in cod, prin PR, nu dintr-un comutator. NU le adauga inapoi
+    # "ca sa nu mai dea eroare".
     # Cloudflare Bot Fight Mode injecteaza pe live un bootstrap inline `__CF$cv$params`.
     # Nu folosim `unsafe-inline`: hash-urile de mai jos sunt variantele observate ale
     # acelui bootstrap, permise explicit si nimic altceva. Daca Cloudflare il schimba
@@ -2523,16 +2520,11 @@ def _write_headers() -> None:
            # zi (fata de 2 variante stabile din august). Cadența în acceleratie: daca
            # continua, administrarea pe hashuri devine bandă rulantă și decizia
            # devine a ownerului (Bot Fight Mode off din dashboard vs zgomot de consolă).
-           "'sha256-tH1iUavg7BOliAkIYWZz8c/fP4WG2ND/YJ0+dwfNTXI=' "
-           "https://static.cloudflareinsights.com https://www.googletagmanager.com "
-           "https://*.clarity.ms; "
+           "'sha256-tH1iUavg7BOliAkIYWZz8c/fP4WG2ND/YJ0+dwfNTXI='; "
            "style-src 'self' 'unsafe-inline'; "
-           "img-src 'self' data: https://tiles.openfreemap.org "
-           "https://*.google-analytics.com https://*.googletagmanager.com; "
+           "img-src 'self' data: https://tiles.openfreemap.org; "
            "font-src 'self'; "
-           "connect-src 'self' https://tiles.openfreemap.org https://cloudflareinsights.com "
-           "https://*.google-analytics.com https://*.analytics.google.com "
-           "https://*.googletagmanager.com https://*.clarity.ms; "
+           "connect-src 'self' https://tiles.openfreemap.org; "
            "worker-src 'self' blob:; "
            "object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; "
            "upgrade-insecure-requests")
