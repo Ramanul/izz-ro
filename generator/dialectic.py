@@ -452,6 +452,25 @@ def all_text_of(d: dict) -> str:
     return " ".join(flat_texts(d))
 
 
+def schimbari(vechi: dict | None, nou: dict) -> dict | None:
+    """Faptele adăugate și cele care nu mai apar, între versiunea publicată și cea nouă
+    (comparate normalizat). None la prima publicare sau când nu s-a schimbat nimic. Doar
+    numărătoarea și textele noastre — versiunea veche rămâne citibilă, nimic nu se șterge tăcut."""
+    if not isinstance(vechi, dict) or not vechi.get("v"):
+        return None
+
+    def _texte(x):
+        return {_norm(f.get("text", "")): f.get("text", "")
+                for f in (x.get("common") or []) + (x.get("single") or []) if f.get("text")}
+    a, b = _texte(vechi), _texte(nou)
+    adaugate = [b[k] for k in b if k not in a]
+    scoase = [a[k] for k in a if k not in b]
+    if not adaugate and not scoase and vechi.get("state") == nou.get("state"):
+        return None
+    return {"adaugate": adaugate[:MAX_FACTS], "scoase": scoase[:MAX_FACTS],
+            "stare_anterioara": vechi.get("state") if vechi.get("state") != nou.get("state") else None}
+
+
 FLAT_SEP = " ¶ "
 
 

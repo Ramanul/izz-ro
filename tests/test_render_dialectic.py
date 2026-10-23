@@ -73,7 +73,7 @@ def test_faptele_poarta_publicatiile_iar_linkurile_raman_in_sources_box():
     assert "Confirmat de mai multe publicații" in sec
     assert "— Alfa, Beta" in sec
     assert "cu rezervă la sursă" in sec
-    assert "Unde diferă relatările" in sec and "numărul voturilor pentru" in sec
+    assert "Unde diferă relatările" in sec and "Numărul voturilor pentru" in sec
     assert "Dintr-o singură origine" in sec
     assert "<a " not in sec                         # atribuire în text, nu un al doilea „Surse"
     assert len(re.findall(r'class="sources-box"', html)) == 1
@@ -137,3 +137,12 @@ def test_registrul_sub_prag_arata_contoare_fara_titluri_si_fara_publicatii():
     corp = html[html.find('<section class="sub-prag"'):html.find("</section>")]
     assert "exemplu.ro" not in corp and "titlu-momeala" not in corp
     assert "1245" in corp
+
+
+def test_actualizarea_si_modificarea_tacuta_se_vad_pe_pagina():
+    a = _articol("SYNTHESIS_VALID", modificari_tacute=["Beta"], updated_human="23 octombrie, 09:00")
+    a["dialectic"]["schimbari"] = {"adaugate": ["x"], "scoase": ["Votul a fost joi."], "stare_anterioara": None}
+    html = _articol_html(_pagina(a))
+    assert "Actualizare sinteză" in html and "Votul a fost joi." in html
+    box = html[html.find('class="sources-box"'):]
+    assert "a modificat ulterior textul" in box

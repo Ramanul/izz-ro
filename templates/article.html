@@ -138,6 +138,15 @@
     </ul>
     <p class="dialectic-note">{% if dz.state == 'SINGLE_ORIGIN' %}Publicațiile care relatează aceste fapte pornesc de la aceeași origine — aceeași primă relatare, o preluare declarată sau un text comun —, deci nu sunt confirmări independente.{% else %}Neconfirmat de celelalte publicații din acest set; asta nu înseamnă că e fals.{% endif %}</p>
     {% endif %}
+    {% if dz.schimbari %}
+    {#- E4: actualizarea e publică — ce a intrat nou și ce nu mai apare față de versiunea
+        anterioară; nimic nu dispare tăcut dintr-o sinteză deja citită. -#}
+    <aside class="notice dialectic-update" aria-label="Actualizare sinteză">
+      <p><strong>Actualizare sinteză{% if a.updated_human %} · {{ a.updated_human }}{% endif %}.</strong>{% if dz.schimbari.adaugate %} Fapte noi față de versiunea anterioară: {{ dz.schimbari.adaugate | length }}.{% endif %}{% if dz.schimbari.stare_anterioara == 'ASSUMED_SILENCE' %} Versiunea anterioară nu avea fapte comune; acum are.{% elif dz.schimbari.stare_anterioara == 'SINGLE_ORIGIN' %} Versiunea anterioară avea o singură origine.{% endif %}</p>
+      {% if dz.schimbari.scoase %}<p>Nu mai apar în versiunea actuală:</p>
+      <ul class="dialectic-list dialectic-single">{% for t in dz.schimbari.scoase %}<li>{{ t }}</li>{% endfor %}</ul>{% endif %}
+    </aside>
+    {% endif %}
   </section>
   {% else %}
   <p class="body" data-pagefind-body>{% if a.model == 'C' %}{{ a.synthesis }}{% else %}{{ a.teaser }}{% endif %}</p>
@@ -191,7 +200,7 @@
   <div class="sources-box">
     <h2>{{ 'Sursă' if srcs | length == 1 else 'Surse' }}</h2>
     <ul>
-      {% for s in srcs %}<li><a href="{{ s.url }}" target="_blank" rel="noopener noreferrer">{{ s.name }} &rarr;</a>{% if a.surse_roluri and a.surse_roluri[s.name] %} <span class="source-role">{{ a.surse_roluri[s.name] }}</span>{% elif a.first_source and s.name == a.first_source and srcs | length > 1 %} <span class="first-badge" title="Prima publicare observată în setul de surse monitorizate">publicată prima</span>{% endif %}</li>{% endfor %}
+      {% for s in srcs %}<li><a href="{{ s.url }}" target="_blank" rel="noopener noreferrer">{{ s.name }} &rarr;</a>{% if a.surse_roluri and a.surse_roluri[s.name] %} <span class="source-role">{{ a.surse_roluri[s.name] }}</span>{% if a.modificari_tacute and s.name in a.modificari_tacute %} <span class="source-role" title="Faptele din textul publicației s-au schimbat cu peste 20% după prima citire">a modificat ulterior textul</span>{% endif %}{% elif a.first_source and s.name == a.first_source and srcs | length > 1 %} <span class="first-badge" title="Prima publicare observată în setul de surse monitorizate">publicată prima</span>{% endif %}</li>{% endfor %}
     </ul>
     {% if a.surse_roluri %}
     <p class="source-roles-note">Rolul fiecărei publicații e calculat mecanic din textul articolelor: cine a relatat primul (o relatare densă publicată în aceleași 15 minute bate o alertă de două rânduri), cine aduce detalii noi, cine repetă aceleași fapte, cine preia un text comun sau citează explicit altă redacție. Confirmări încrucișate — publicații care coroborează faptele fără să preia același text: {{ a.cross_confirmations or 1 }} din {{ srcs | length }}. Ordinea observată nu dovedește cine e autorul informației.</p>

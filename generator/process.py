@@ -882,6 +882,12 @@ def _prep_cluster_rep(group: list) -> tuple:
     confirmate -= {d for d, r in epistemic_roles.items() if r in fetch_deep.NON_CONFIRMING_ROLES}
     rep["cross_confirmed"] = sorted(confirmate)
     rep["cross_confirmations"] = max(1, len(confirmate))
+    # E1: o sursă cu rol greu care și-a schimbat faptele după prima citire (drift >20% pe
+    # ancore, `fetch_deep`) — se consemnează pe sinteză, la vedere, nu doar în contor.
+    tacute = set(group[0].get("modificari_tacute") or []) if actualizare else set()
+    tacute |= {a.get("source_name") for a in group if a.get("_caused_dirty") and a.get("source_name")}
+    if tacute:
+        rep["modificari_tacute"] = sorted(tacute)
     rep["members"] = _membri_din_grup(group)
     rep.setdefault("story_id", _story_id(group))
     if actualizare:
@@ -972,6 +978,10 @@ def _aplica_dialectic(rep: dict, obj, block, provider) -> dict | None:
     rep["synthesis"] = dialectic.derive_synthesis(d, candidat, config.SYNTHESIS_MAX_WORDS)
     if not rep["synthesis"]:
         return None
+    # E4: la actualizare, ce s-a schimbat față de versiunea publicată — public, nu tăcut
+    schimbari = dialectic.schimbari(rep.get("dialectic"), d)
+    if schimbari:
+        d["schimbari"] = schimbari
     rep["dialectic"] = d
     rep["entities"] = _clean_entities(obj.get("entities"))
     rep["ai_cat"] = obj.get("category", "")

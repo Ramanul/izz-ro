@@ -337,3 +337,23 @@ def test_parsarea_tolerata_pierde_doar_obiectul_stricat():
     text = '[{"id": 0, "title": "a",\n  - "entities": []},\n {"id": 1, "title": "b",},\n {"id": 2 "x"}]'
     arr = process._parse_json_array_tolerant(text)
     assert [o["id"] for o in arr] == [0, 1]
+
+
+def test_actualizarea_spune_ce_e_nou_si_ce_nu_mai_apare():
+    vechi = {"v": "e2-v1", "state": "SINGLE_ORIGIN", "common": [],
+             "single": [{"text": "Bugetul este de 820 de milioane."}, {"text": "Votul a fost joi."}]}
+    nou = {"v": "e2-v1", "state": "SYNTHESIS_VALID",
+           "common": [{"text": "Bugetul este de 820 de milioane."}], "single": [{"text": "Opoziția a cerut rectificare."}]}
+    s = dialectic.schimbari(vechi, nou)
+    assert s["adaugate"] == ["Opoziția a cerut rectificare."]
+    assert s["scoase"] == ["Votul a fost joi."]
+    assert s["stare_anterioara"] == "SINGLE_ORIGIN"
+    assert dialectic.schimbari(None, nou) is None            # prima publicare
+    assert dialectic.schimbari({"synthesis": "narativ vechi"}, nou) is None   # sinteză veche
+    assert dialectic.schimbari(nou, json.loads(json.dumps(nou))) is None     # nimic schimbat
+
+
+def test_modificarea_tacuta_a_unei_surse_se_consemneaza_pe_sinteza():
+    a = dict(A, _caused_dirty=True)
+    _, rep = process._prep_cluster_rep([a, dict(B)])
+    assert rep["modificari_tacute"] == ["Alfa"]
