@@ -2736,26 +2736,6 @@
   "kind": "locality",
   "qid": "Q835227"
  },
- "e81faabace163bf5": {
-  "miss": true,
-  "v": 2
- },
- "40e7dfc3525ee523": {
-  "miss": true,
-  "v": 2
- },
- "1fd2bcaa4e7d685a": {
-  "miss": true,
-  "v": 2
- },
- "e70eda6c7074b989": {
-  "miss": true,
-  "v": 2
- },
- "691e288a0c03dfc1": {
-  "miss": true,
-  "v": 2
- },
  "31496ea587089de6": {
   "cover": "leads/loc-Q851037.c.jpg",
   "art": "leads/loc-Q851037.jpg",
@@ -2778,10 +2758,6 @@
   "kind": "locality",
   "qid": "Q851037"
  },
- "b068e67c1aeaa5f0": {
-  "miss": true,
-  "v": 2
- },
  "eddc7e925fb07a61": {
   "cover": "leads/loc-Q851037.c.jpg",
   "art": "leads/loc-Q851037.jpg",
@@ -2792,50 +2768,6 @@
   "name": "Comarnic",
   "kind": "locality",
   "qid": "Q851037"
- },
- "1e5315f99adaa9ef": {
-  "miss": true,
-  "v": 2
- },
- "c0a2c0ebc8c99f20": {
-  "miss": true,
-  "v": 2
- },
- "e17779ca5f336903": {
-  "miss": true,
-  "v": 2
- },
- "a234fd5c5fd0d2ec": {
-  "miss": true,
-  "v": 2
- },
- "5a12cfeaf9b188ce": {
-  "miss": true,
-  "v": 2
- },
- "287dd135540ea298": {
-  "miss": true,
-  "v": 2
- },
- "f28ae9b9bbfbd991": {
-  "miss": true,
-  "v": 2
- },
- "fe6b9386f644bdcf": {
-  "miss": true,
-  "v": 2
- },
- "44002e88fb826675": {
-  "miss": true,
-  "v": 2
- },
- "058a01e8ca24ad5c": {
-  "miss": true,
-  "v": 2
- },
- "ee676c673b4400ac": {
-  "miss": true,
-  "v": 2
  },
  "85534347a82f533b": {
   "miss": true,
@@ -2866,54 +2798,6 @@
   "v": 2
  },
  "6d757bf24be29915": {
-  "miss": true,
-  "v": 2
- },
- "6a2610b6c607d612": {
-  "miss": true,
-  "v": 2
- },
- "4968cd85c997e416": {
-  "miss": true,
-  "v": 2
- },
- "eb32787734e69fd6": {
-  "miss": true,
-  "v": 2
- },
- "8122a7eec9880320": {
-  "miss": true,
-  "v": 2
- },
- "2c1adcef2a326c72": {
-  "miss": true,
-  "v": 2
- },
- "46fba2fa0b585ffe": {
-  "miss": true,
-  "v": 2
- },
- "86d74b1d4ff5d45a": {
-  "miss": true,
-  "v": 2
- },
- "6d4780e896c8ecba": {
-  "miss": true,
-  "v": 2
- },
- "0dac135e80169ee4": {
-  "miss": true,
-  "v": 2
- },
- "3277f4c466d5961e": {
-  "miss": true,
-  "v": 2
- },
- "3ed47f58bb4e83bf": {
-  "miss": true,
-  "v": 2
- },
- "b975664dfbeefd68": {
   "miss": true,
   "v": 2
  },
@@ -15164,18 +15048,6 @@
   "motiv_loc": "loc_negasit_sau_fara_imagine",
   "motiv_ent": "ent_fara_entitati"
  },
- "67badec2fac19fcc": {
-  "miss": true,
-  "v": 3,
-  "motiv_loc": "loc_negasit_sau_fara_imagine",
-  "motiv_ent": "ent_fara_entitati"
- },
- "303d5007d02b89f9": {
-  "miss": true,
-  "v": 3,
-  "motiv_loc": "loc_negasit_sau_fara_imagine",
-  "motiv_ent": "ent_fara_entitati"
- },
  "c7287b6ee9077c3f": {
   "miss": true,
   "v": 3,
@@ -16926,12 +16798,6 @@
   "motiv_loc": "loc_neeligibil",
   "motiv_ent": "ent_nenotabila"
  },
- "dc13fee1a044d67a": {
-  "miss": true,
-  "v": 3,
-  "motiv_loc": "loc_dimensiune_sau_format",
-  "motiv_ent": "ent_fara_entitati"
- },
  "cc8cc2733b38113d": {
   "miss": true,
   "v": 3,
@@ -17653,12 +17519,6 @@
   "motiv_loc": "loc_dimensiune_sau_format",
   "motiv_ent": "ent_fara_entitati"
  },
- "f683ebb0a46a0a24": {
-  "miss": true,
-  "v": 3,
-  "motiv_loc": "loc_negasit_sau_fara_imagine",
-  "motiv_ent": "ent_fara_entitati"
- },
  "4745d7a8fe9b309a": {
   "miss": true,
   "v": 3,
@@ -17823,6 +17683,126 @@
   "motiv_ent": "ent_licenta_sau_format"
  },
  "3aea5487925988f2": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_neeligibil",
+  "motiv_ent": "ent_fara_qid"
+ },
+ "a78924f680823d23": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_neeligibil",
+  "motiv_ent": "ent_nenotabila"
+ },
+ "ed4eb8508918240c": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_neeligibil",
+  "motiv_ent": "ent_nenotabila"
+ },
+ "3fdcfe617fd98647": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_neeligibil",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "f9bba02a814a7952": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_neeligibil",
+  "motiv_ent": "ent_licenta_sau_format"
+ },
+ "a4a758df85ccb9e0": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_neeligibil",
+  "motiv_ent": "ent_fara_qid"
+ },
+ "df4ce62bbe1d1da3": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_neeligibil",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "0331feec81b7db34": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_neeligibil",
+  "motiv_ent": "ent_nenotabila"
+ },
+ "87d5948d48eebea1": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_neeligibil",
+  "motiv_ent": "ent_licenta_sau_format"
+ },
+ "a1ba5fe892353e3d": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_neeligibil",
+  "motiv_ent": "ent_licenta_sau_format"
+ },
+ "955a649ce2f6bd00": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_neeligibil",
+  "motiv_ent": "ent_licenta_sau_format"
+ },
+ "a5f9a7e3500d7acc": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_neeligibil",
+  "motiv_ent": "ent_nenotabila"
+ },
+ "f8d99cda724430d9": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_neeligibil",
+  "motiv_ent": "ent_licenta_sau_format"
+ },
+ "b33a79a33a028985": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_neeligibil",
+  "motiv_ent": "ent_nenotabila"
+ },
+ "bfd802964def86bb": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_neeligibil",
+  "motiv_ent": "ent_licenta_sau_format"
+ },
+ "9fea45f06fbbd502": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_neeligibil",
+  "motiv_ent": "ent_fara_qid"
+ },
+ "0117b1f14f9f62b9": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_neeligibil",
+  "motiv_ent": "ent_nenotabila"
+ },
+ "492eba560d91fa6a": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_neeligibil",
+  "motiv_ent": "ent_fara_qid"
+ },
+ "64b8a0b86ea05af4": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_neeligibil",
+  "motiv_ent": "ent_fara_qid"
+ },
+ "8ff32190588eb728": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_neeligibil",
+  "motiv_ent": "ent_nenotabila"
+ },
+ "d33dd01849d825fc": {
   "miss": true,
   "v": 3,
   "motiv_loc": "loc_neeligibil",
