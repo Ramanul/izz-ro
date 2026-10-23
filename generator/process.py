@@ -8,7 +8,7 @@ import json
 import re
 from datetime import datetime, timezone
 
-from . import config, geo, raport_copiere
+from . import config, fetch_deep, geo, raport_copiere
 from . import diacritice
 from .verifica_sinteza import slug_din_link
 from .util import truncate_words, domain_of, strip_diacritics
@@ -749,15 +749,56 @@ def _story_id(group: list) -> str:
     return "st-" + hashlib.sha1(sambure.encode("utf-8")).hexdigest()[:12]
 
 
+_ROLE_PRIORITY = {
+    "ROOT": 5,
+    "INDEPENDENT_CONTRIBUTOR": 4,
+    "ECHO": 3,
+    "CLONE": 2,
+    "DERIVED": 1,
+}
+
+
+def _roluri_grup(group: list) -> dict[str, str]:
+    """Rolul epistemic per URL. Sursa de adevăr e clasificarea făcută de `fetch_deep` pe
+    TEXTUL INTEGRAL (`_epistemic_role`, atașat în memorie în aceeași rulare); doar membrii
+    fără el (fetch_deep oprit, item adăugat după) se clasifică aici, pe titlu + descriere.
+    O a doua clasificare, independentă, pe text mai sărac, ar putea contrazice prima —
+    alt ROOT pe /surse/ decât cel din driftul E1."""
+    lipsa = [a for a in group if not a.get("_epistemic_role")]
+    calculate = fetch_deep.classify_cluster_epistemic_roles(group) if lipsa else {}
+    roluri = {}
+    for a in group:
+        u = a.get("url") or a.get("original_link") or ""
+        roluri[u] = a.get("_epistemic_role") or calculate.get(u, "ECHO")
+    return roluri
+
+
 def _prep_cluster_rep(group: list) -> tuple:
     """Partea din process_cluster care NU cere AI: alege reprezentantul, aduna sursele,
-    marcheaza actualizarea. Extrasa ca sa fie identica intre calea single (process_cluster)
-    si cea in lot (process_clusters_batch) -- doua copii ale conditiei „cine e rep-ul" s-ar
-    putea departe fara sa para stricat nimic, acelasi risc numit la `upgradable()` mai sus."""
+    calculeaza rolurile epistemice E1 si marcheaza actualizarea. Extrasa ca sa fie identica
+    intre calea single (process_cluster) si cea in lot (process_clusters_batch) -- doua
+    copii ale conditiei „cine e rep-ul" s-ar putea departe fara sa para stricat nimic,
+    acelasi risc numit la `upgradable()` mai sus."""
     group = sorted(group, key=lambda a: (not a.get("processed_by"), a.get("published") or ""))
     actualizare = bool(group[0].get("processed_by"))
     rep = dict(group[0])
     rep["model"] = "C"
+
+    roles_by_url = _roluri_grup(group)
+    # Rolurile per DOMENIU, unite cu cele din rularea anterioară: membrii vechi ai unei
+    # sinteze actualizate nu mai au text în stare, deci rolul lor de atunci e singura memorie.
+    epistemic_roles: dict[str, str] = {}
+    for a in group:
+        for dom_k, r_val in (a.get("epistemic_roles") or {}).items():
+            if _ROLE_PRIORITY.get(r_val, 0) > _ROLE_PRIORITY.get(epistemic_roles.get(dom_k, ""), 0):
+                epistemic_roles[dom_k] = r_val
+    for a in group:
+        u = a.get("original_link") or a.get("url") or ""
+        dom = domain_of(u)
+        role = roles_by_url.get(a.get("url") or a.get("original_link") or "", "ECHO")
+        if dom and _ROLE_PRIORITY.get(role, 0) > _ROLE_PRIORITY.get(epistemic_roles.get(dom, ""), 0):
+            epistemic_roles[dom] = role
+
     _seen_domain = set()
     surse = []
     for a in group:
@@ -769,7 +810,26 @@ def _prep_cluster_rep(group: list) -> tuple:
             _seen_domain.add(dom)
             surse.append({"name": s.get("name"), "url": s.get("url")})
     rep["sources"] = surse
-    rep["first_source"] = group[0].get("source_name")
+
+    if actualizare and group[0].get("first_source"):
+        rep["first_source"] = group[0].get("first_source")
+    else:
+        root_member = next(
+            (a for a in group
+             if roles_by_url.get(a.get("url") or a.get("original_link") or "") == "ROOT"),
+            group[0],
+        )
+        rep["first_source"] = root_member.get("source_name")
+
+    rep["epistemic_roles"] = epistemic_roles
+    # Confirmările Încrucișate: domeniile ne-derivate, ne-clonate, care coroborează. Setul se
+    # UNEȘTE peste rulări (membrii vechi nu mai au text în stare), iar cifra e mărimea lui —
+    # deci nu poate crește prin simpla numărare a publicațiilor care repetă același comunicat.
+    confirmate = set(group[0].get("cross_confirmed") or []) if actualizare else set()
+    confirmate |= fetch_deep.cross_confirmed_domains(group, roles_by_url)
+    confirmate -= {d for d, r in epistemic_roles.items() if r in fetch_deep.NON_CONFIRMING_ROLES}
+    rep["cross_confirmed"] = sorted(confirmate)
+    rep["cross_confirmations"] = max(1, len(confirmate))
     rep["members"] = _membri_din_grup(group)
     rep.setdefault("story_id", _story_id(group))
     if actualizare:
