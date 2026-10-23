@@ -183,3 +183,44 @@ Liniile roșii Argon R1 (interzise expres):
 **Dovada citirii complete**: distilările celor 8 intervale de lectură, cu citate-ancoră exacte (sesiune.întrebare pentru Ra, număr de linie pentru AlienMind), stau în `carti/distilari-8-intervale.md`, alături de extrasele integrale ale cărților (`carti/ra_vol1.txt`, `carti/ra_vol2.txt`, `carti/alienmind.txt`). Orice afirmație din acest document poate fi verificată contra lor și contra surselor PDF/DOCX de pe Desktop.
 
 **Consultările cu Argon** (modelul de top al contului, gândire la maxim, setată de proprietar): chatul „Arhitectura izz.ro: Filosofie și Practică" din Gemini — runda 1 (lentilele de revizuire + 4 mecanisme + liniile roșii) și runda 2 (validarea planului + schema JSON + promptul de sistem + algoritmul de independență + cele 3 capcane) sunt persistate acolo integral, cu artefactele de implementare. Runda 3 — verdictul final (21 octombrie 2026, 13:55): o singură eroare fatală rămasă (Capcana Memoriei Eterne — reparata integrată la E4), permutarea tactică E1-UI/E2, flagul `is_milestone`, `SILENCE_REJECTION_THRESHOLD` calibrabil și regula celor 3,5 s la `fetch_deep`; E4 declarată singura etapă amânabilă. Încheierea Argon: „Arhitectura este completă, etanșă, imună la derapaje doctrinare și perfect încadrată în bugetul tehnic. Nu mai este nevoie de nicio rundă de proiectare; orice minut în plus petrecut pe planificare de aici înainte este amânare a execuției." **PORNIM.**
+
+## 5. Jurnal de execuție (23 octombrie 2026)
+
+**Felia 1 — E0-fix + E1-core** (`oc/e1-core-epistemic-roles`). Review peste munca necomisă a
+sesiunii Antigravity, cu Argon runda 4 (chat `9d6abed40b448b65`). Abateri de la §3, cu motiv:
+- **Rol nou `CLONE`** (al cincilea): conținerea shingle-urilor de 4 cuvinte de conținut ≥0,65 față
+  de o sursă anterioară, fără atribuire — „text comun cu alte publicații (posibil comunicat)".
+  Nici CLONE, nici DERIVED nu se numără drept confirmare. Motiv: §3 E3 cere numărarea faptelor
+  din „publicații ne-clonate"; fără detecția clonei, ECHO-ul unui comunicat preluat de trei
+  redacții refăcea exact iluzia „3 publicații = 3 confirmări" pe care pagina metodei o declară limită.
+- **`cross_confirmations` = mărimea setului `cross_confirmed`** (domenii), unit peste rulări —
+  versiunea preluată număra orice ECHO drept confirmare, anulând garda de ≥2 ancore comune.
+- **Glosarul de entități**: rădăcini ≥5 litere pe prefix, acronime/nume scurte doar exact (≤3
+  litere doar cu majuscule) — prefixele scurte făceau din „Potrivit"/„Mai mult" ancore universale.
+- **Ancorele de citat se stochează ca hash** (deep_meta.json e comis într-un repo public).
+- **Eșantion bottom-k pe hash** pentru cele 80 de ancore stocate: driftul compara un set trunchiat
+  alfabetic (stocat) cu unul întreg (proaspăt) → orice articol lung ieșea „modificat tăcut".
+- **build.yml comite `data/deep_meta.json`**, altfel driftul pornea gol pe fiecare runner.
+- Măsurat pe 14 sinteze reale (29 de articole, rețea reală, 3,8 s): 29/29 text integral; roluri
+  ROOT 14 · INDEPENDENT_CONTRIBUTOR 12 · ECHO 3 · DERIVED 3 · CLONE 1.
+
+**Felia 2 — E2, decizii luate înainte de cod** (Argon R4, revizuind B.3–B.7):
+- Rămâne lotul de 3 clustere/apel (bugetul de 40 nu suportă 1 apel/cluster — măsurat aug.).
+  ID-urile de propoziție poartă indicele clusterului (`C1S2.3`), ca o citare din alt cluster al
+  lotului să fie respinsă mecanic, nu „crezută".
+- Plafon de context per cluster pe propoziții întregi, distribuit round-robin între surse (o sursă
+  lungă nu le lasă pe celelalte fără nicio propoziție în prompt).
+- Afirmațiile modelului NU conțin citate directe (parafrază atribuită; L69/2022); Python verifică
+  cifrele (normalizate) și existența chunk-urilor citate.
+- Rata de respingere numără DOAR chunk inexistent/străin și cifră absentă din chunk-urile citate.
+  Faptul „comun" citat dintr-o singură sursă e retrogradat (nu respins); faptul fără rezervă
+  citat din chunk-uri cu rezervă e marcat `has_hedging` (nu respins, nu rescris gramatical).
+- **Tăcerea Asumată** (abatere de la cele 4 praguri din §3): modelul o declară · zero fapte comune
+  valide DUPĂ grounding · respinse/total > `SILENCE_REJECTION_THRESHOLD` (0,34). Criteriul
+  „mai multe divergențe decât fapte comune" e scos: o știre cu un fapt cert și două detalii
+  divergente (ora, numărul) ar fi ascuns miezul cert — eșec de utilitate, nu prudență.
+- `synthesis` (card, RSS, meta) devine DERIVAT DETERMINIST din faptele comune valide, ordonate de
+  model după importanță; faptele cu rezervă nu intră în el. La Tăcere: text neutru prefixat de
+  subiect, pe pagină doar pozițiile atribuite (parafraze), niciodată propoziții-sursă.
+- JSON dialectic invalid pentru un cluster → clusterul se amână (ca la eșecul AI de azi); celelalte
+  din lot se publică. Nu există cădere pe sinteza narativă veche.
