@@ -257,3 +257,20 @@ proprietarului, 23.10: „să nu amintim în diverse locuri de acele idei"; Argo
 proveniență cu titlurile cărților iese). Rezumatele cosmologice au fost scoase; rămâne trimiterea
 la depozitul public de cod, unde stă acest document. Garda e mecanică:
 `tests/test_garda_anti_doctrina.py` scanează tot textul public scris de mână.
+
+**Argon R5 (23.10.2026, seara; chat `54dc9bd7a5b6d75f`) — aplicat înainte de merge:**
+- `SINGLE_ORIGIN` se desparte după numărul ORIGINILOR din afirmații (`dialectic.origini`): una
+  singură → „o singură origine" (prima relatare + clonele/preluările ei); două sau mai multe →
+  „fapte neconfirmate reciproc" (redacții independente, fapte diferite). Textul vechi ar fi
+  afirmat fals „aceeași origine" despre redacții independente.
+- Memoria subiectelor: vocabularul exclus cuprinde și faza pre-penală, contravențiile și
+  integritatea (audiat, percheziție, plângere, amendă, conflict de interese, incompatibilitate,
+  plagiat, corupție); deciziile CCR rămân. Legătura cere ≥2 entități NE-generice („Guvernul",
+  „România", partidele, județele nu se numără) + un cuvânt-cheie comun (rădăcină de 6 litere).
+  Data intrării = `updated` (ziua deciziei), nu prima publicare a sintezei.
+- Nota de actualizare NU mai listează „fapte care nu mai apar" (o reformulare a modelului ar fi
+  apărut drept retragere); spune doar ce publicații au intrat și starea anterioară — ambele
+  deterministe. Eticheta driftului: „actualizat de redacție după prima citire"; coloana de pe
+  /surse/: „Actualizate ulterior", cu explicația că include actualizările firești ale știrilor
+  în curs. Contorul din antet: „X articole → Y subiecte".
+- Respins din R5: incrementarea unui număr de versiune (nu există; `v` e versiunea schemei).

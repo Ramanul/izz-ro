@@ -862,6 +862,10 @@ def _prep_cluster_rep(group: list) -> tuple:
             _seen_domain.add(dom)
             surse.append({"name": s.get("name"), "url": s.get("url")})
     rep["sources"] = surse
+    if actualizare:
+        # pentru nota publică de actualizare (E4): publicațiile intrate de la versiunea anterioară
+        vechi = {s.get("name") for s in (group[0].get("sources") or []) if isinstance(s, dict)}
+        rep["_surse_noi"] = [s["name"] for s in surse if s.get("name") and s["name"] not in vechi]
 
     if actualizare and group[0].get("first_source"):
         rep["first_source"] = group[0].get("first_source")
@@ -979,7 +983,7 @@ def _aplica_dialectic(rep: dict, obj, block, provider) -> dict | None:
     if not rep["synthesis"]:
         return None
     # E4: la actualizare, ce s-a schimbat față de versiunea publicată — public, nu tăcut
-    schimbari = dialectic.schimbari(rep.get("dialectic"), d)
+    schimbari = dialectic.schimbari(rep.get("dialectic"), d, rep.pop("_surse_noi", None))
     if schimbari:
         d["schimbari"] = schimbari
     rep["dialectic"] = d

@@ -141,8 +141,21 @@ def test_registrul_sub_prag_arata_contoare_fara_titluri_si_fara_publicatii():
 
 def test_actualizarea_si_modificarea_tacuta_se_vad_pe_pagina():
     a = _articol("SYNTHESIS_VALID", modificari_tacute=["Beta"], updated_human="23 octombrie, 09:00")
-    a["dialectic"]["schimbari"] = {"adaugate": ["x"], "scoase": ["Votul a fost joi."], "stare_anterioara": None}
+    a["dialectic"]["schimbari"] = {"surse_noi": ["Gama"], "stare_anterioara": "SINGLE_ORIGIN"}
     html = _articol_html(_pagina(a))
-    assert "Actualizare sinteză" in html and "Votul a fost joi." in html
+    assert "Actualizare sinteză" in html and "A intrat o publicație nouă: Gama." in html
+    assert "nu avea confirmări încrucișate" in html
     box = html[html.find('class="sources-box"'):]
-    assert "a modificat ulterior textul" in box
+    assert "actualizat de redacție după prima citire" in box
+
+
+def test_origini_independente_fara_suprapunere_nu_sunt_numite_o_singura_origine():
+    a = _articol("SINGLE_ORIGIN")
+    a["dialectic"]["origini"] = 2
+    html = _articol_html(_pagina(a))
+    assert "fapte neconfirmate reciproc" in html
+    assert "Fiecare fapt, la o singură publicație" in html
+    assert "aceeași relatare inițială" not in html
+    a["dialectic"]["origini"] = 1
+    html = _articol_html(_pagina(a))
+    assert "cu o singură origine" in html and "aceeași relatare inițială" in html

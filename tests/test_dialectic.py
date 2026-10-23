@@ -339,21 +339,41 @@ def test_parsarea_tolerata_pierde_doar_obiectul_stricat():
     assert [o["id"] for o in arr] == [0, 1]
 
 
-def test_actualizarea_spune_ce_e_nou_si_ce_nu_mai_apare():
-    vechi = {"v": "e2-v1", "state": "SINGLE_ORIGIN", "common": [],
-             "single": [{"text": "Bugetul este de 820 de milioane."}, {"text": "Votul a fost joi."}]}
-    nou = {"v": "e2-v1", "state": "SYNTHESIS_VALID",
-           "common": [{"text": "Bugetul este de 820 de milioane."}], "single": [{"text": "Opoziția a cerut rectificare."}]}
-    s = dialectic.schimbari(vechi, nou)
-    assert s["adaugate"] == ["Opoziția a cerut rectificare."]
-    assert s["scoase"] == ["Votul a fost joi."]
-    assert s["stare_anterioara"] == "SINGLE_ORIGIN"
-    assert dialectic.schimbari(None, nou) is None            # prima publicare
-    assert dialectic.schimbari({"synthesis": "narativ vechi"}, nou) is None   # sinteză veche
-    assert dialectic.schimbari(nou, json.loads(json.dumps(nou))) is None     # nimic schimbat
+def test_actualizarea_spune_ce_publicatii_au_intrat_nu_ce_fapte_au_disparut():
+    """Argon R5: sinteza se regenerează; o reformulare ar apărea fals „scoasă". Doar publicațiile
+    intrate și starea anterioară sunt deterministe."""
+    vechi = {"v": "e2-v1", "state": "SINGLE_ORIGIN", "common": [], "single": [{"text": "x"}]}
+    nou = {"v": "e2-v1", "state": "SYNTHESIS_VALID", "common": [{"text": "x, reformulat"}], "single": []}
+    s = dialectic.schimbari(vechi, nou, ["Gama"])
+    assert s == {"surse_noi": ["Gama"], "stare_anterioara": "SINGLE_ORIGIN"}
+    assert "scoase" not in s and "adaugate" not in s
+    assert dialectic.schimbari(None, nou, ["Gama"]) is None                    # prima publicare
+    assert dialectic.schimbari({"synthesis": "narativ vechi"}, nou, ["Gama"]) is None
+    assert dialectic.schimbari(nou, json.loads(json.dumps(nou)), []) is None   # nimic determinist schimbat
+
+
+def test_rep_actualizat_stie_ce_surse_au_intrat():
+    vechi = dict(A, processed_by="gemini", model="C", sources=[{"name": "Alfa", "url": "https://a.ro/1"}])
+    _, rep = process._prep_cluster_rep([vechi, dict(B)])
+    assert rep["_surse_noi"] == ["Beta"]
 
 
 def test_modificarea_tacuta_a_unei_surse_se_consemneaza_pe_sinteza():
     a = dict(A, _caused_dirty=True)
     _, rep = process._prep_cluster_rep([a, dict(B)])
     assert rep["modificari_tacute"] == ["Alfa"]
+
+
+def test_o_origine_vs_origini_independente_care_nu_se_suprapun():
+    """SINGLE_ORIGIN cu o clonă = o origine; cu două redacții independente care relatează
+    fapte diferite = două origini neconfirmate reciproc — pagina le spune diferit."""
+    b = _block(A, C)
+    d = dialectic.validate(_obj(uncorroborated_claims=[
+        {"statement": "Bugetul Bihorului a fost aprobat la 820 de milioane de lei.",
+         "chunk_ids": [_ids(b, "Alfa")[0], _ids(b, "Gama")[0]]}]), b)
+    assert d["state"] == dialectic.STATE_SINGLE and d["origini"] == 1
+    b = _block(A, B)
+    d = dialectic.validate(_obj(uncorroborated_claims=[
+        {"statement": "Opoziția a cerut o rectificare în martie.", "chunk_ids": [_ids(b, "Alfa")[2]]},
+        {"statement": "Din buget, 120 de milioane merg la drumuri.", "chunk_ids": [_ids(b, "Beta")[2]]}]), b)
+    assert d["state"] == dialectic.STATE_SINGLE and d["origini"] == 2

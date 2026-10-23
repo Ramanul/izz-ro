@@ -414,12 +414,17 @@ def validate(obj: dict, block: Block) -> dict | None:
         return None
 
     _numara(f"stare_{state}")
+    # Câte ORIGINI distincte stau în spatele afirmațiilor neconfirmate reciproc: una singură
+    # (o primă relatare + clonele/preluările ei) e altceva decât două redacții independente
+    # care relatează fapte diferite fără să se suprapună — pagina nu are voie să le confunde.
+    origini_single = len({n for f in single for n in f["src"]} & origins)
     return {
         "v": DIALECTIC_VERSION,
         "state": state,
         "common": common,
         "diverg": diverg,
         "single": single,
+        "origini": origini_single,
         "rejected": rejected,
         "total": total,
         "milestone": bool(obj.get("is_milestone")) and state == STATE_VALID
@@ -452,23 +457,21 @@ def all_text_of(d: dict) -> str:
     return " ".join(flat_texts(d))
 
 
-def schimbari(vechi: dict | None, nou: dict) -> dict | None:
-    """Faptele adăugate și cele care nu mai apar, între versiunea publicată și cea nouă
-    (comparate normalizat). None la prima publicare sau când nu s-a schimbat nimic. Doar
-    numărătoarea și textele noastre — versiunea veche rămâne citibilă, nimic nu se șterge tăcut."""
+def schimbari(vechi: dict | None, nou: dict, surse_noi: list | None = None) -> dict | None:
+    """Ce s-a schimbat la actualizarea unei sinteze dialectice deja publicate: publicațiile
+    intrate între timp și starea anterioară, dacă diferă. None la prima publicare (sau peste
+    o sinteză veche, narativă) și când nu s-a schimbat nimic din astea.
+
+    NU listează „fapte dispărute" (Argon R5): sinteza se regenerează, iar o reformulare a
+    aceluiași fapt ar ieși „scoasă" + „adăugată" — o afirmație falsă despre surse. Publicațiile
+    noi și starea sunt deterministe; textul faptelor, nu."""
     if not isinstance(vechi, dict) or not vechi.get("v"):
         return None
-
-    def _texte(x):
-        return {_norm(f.get("text", "")): f.get("text", "")
-                for f in (x.get("common") or []) + (x.get("single") or []) if f.get("text")}
-    a, b = _texte(vechi), _texte(nou)
-    adaugate = [b[k] for k in b if k not in a]
-    scoase = [a[k] for k in a if k not in b]
-    if not adaugate and not scoase and vechi.get("state") == nou.get("state"):
+    stare = vechi.get("state") if vechi.get("state") != nou.get("state") else None
+    noi = [n for n in (surse_noi or []) if n]
+    if not noi and not stare:
         return None
-    return {"adaugate": adaugate[:MAX_FACTS], "scoase": scoase[:MAX_FACTS],
-            "stare_anterioara": vechi.get("state") if vechi.get("state") != nou.get("state") else None}
+    return {"surse_noi": noi[:8], "stare_anterioara": stare}
 
 
 FLAT_SEP = " ¶ "

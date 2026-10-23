@@ -72,7 +72,7 @@
     {#- Contorul de subtracție (E3): relatările citate de surse -> subiectele publicate după
         unirea relatărilor despre același eveniment. Arată ce a eliminat sistemul, nu doar ce a
         adunat. Fără `relatari` (context vechi), rămâne forma veche. -#}
-    {% if zi %}<span class="day-numbers">{% if zi.relatari and zi.relatari > zi.stiri %}<b>{{ zi.relatari }}</b> relatări → {% endif %}<b>{{ zi.stiri }}</b> {{ 'subiecte' if zi.relatari and zi.relatari > zi.stiri else 'știri' }} · <b>{{ zi.surse }}</b> surse · <b>{{ zi.judete }}</b> județe în ultimele 24 de ore</span>{% endif %}
+    {% if zi %}<span class="day-numbers">{% if zi.relatari and zi.relatari > zi.stiri %}<b>{{ zi.relatari }}</b> articole → {% endif %}<b>{{ zi.stiri }}</b> {{ 'subiecte' if zi.relatari and zi.relatari > zi.stiri else 'știri' }} · <b>{{ zi.surse }}</b> surse · <b>{{ zi.judete }}</b> județe în ultimele 24 de ore</span>{% endif %}
   </p>
   <div class="site-header-group">
   <header class="site-header">

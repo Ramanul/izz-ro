@@ -44,7 +44,7 @@
   <span class="badge{% if a.model == 'C' %} c{% endif %}">{{ a.category | cat_label }}{% if a.anunt_fara_corp %} · Anunț oficial{% endif %}</span>
   {%- set dz = a.dialectic if a.model == 'C' else none %}
   {%- set n_pub = (a.sources | length) if a.sources else 1 %}
-  <p class="trust-label article-trust">{% if a.anunt_fara_corp %}Anunț oficial · verifică textul integral la instituția emitentă{% elif dz and dz.state == 'ASSUMED_SILENCE' %}Relatări divergente din {{ n_pub }} publicații · fiecare versiune e atribuită mai jos{% elif dz and dz.state == 'SINGLE_ORIGIN' %}Sinteză din {{ n_pub }} publicații cu o singură origine · compară sursele de mai jos{% elif dz %}Sinteză din {{ n_pub }} publicații · {{ a.cross_confirmations or 1 }} {{ 'confirmare încrucișată' if (a.cross_confirmations or 1) == 1 else 'confirmări încrucișate' }} · compară sursele de mai jos{% elif a.model == 'C' %}Sinteză multi-sursă · compară sursele de mai jos{% else %}Rezumat dintr-o sursă · verifică informația în articolul original{% endif %}{% if a.publicitar_la_sursa %} · <strong>Material publicitar la sursă</strong> (advertorial){% endif %}</p>
+  <p class="trust-label article-trust">{% if a.anunt_fara_corp %}Anunț oficial · verifică textul integral la instituția emitentă{% elif dz and dz.state == 'ASSUMED_SILENCE' %}Relatări divergente din {{ n_pub }} publicații · fiecare versiune e atribuită mai jos{% elif dz and dz.state == 'SINGLE_ORIGIN' and (dz.origini or 1) > 1 %}{{ n_pub }} publicații · fapte neconfirmate reciproc · compară sursele de mai jos{% elif dz and dz.state == 'SINGLE_ORIGIN' %}Sinteză din {{ n_pub }} publicații cu o singură origine · compară sursele de mai jos{% elif dz %}Sinteză din {{ n_pub }} publicații · {{ a.cross_confirmations or 1 }} {{ 'confirmare încrucișată' if (a.cross_confirmations or 1) == 1 else 'confirmări încrucișate' }} · compară sursele de mai jos{% elif a.model == 'C' %}Sinteză multi-sursă · compară sursele de mai jos{% else %}Rezumat dintr-o sursă · verifică informația în articolul original{% endif %}{% if a.publicitar_la_sursa %} · <strong>Material publicitar la sursă</strong> (advertorial){% endif %}</p>
   {# `data-pagefind-body` marcheaza CE se indexeaza: titlul si rezumatul, nimic altceva. Greutatea
      mai mare pe titlu face ca o potrivire in titlu sa iasa deasupra uneia din corp. -#}
   <h1 data-pagefind-body data-pagefind-weight="3">{{ a.display_title or a.title }}</h1>
@@ -131,20 +131,20 @@
     <p class="dialectic-note">Versiunile rămân atribuite; o medie între ele nu stabilește ce s-a întâmplat.</p>
     {% endif %}
     {% if dz.single %}
-    <h2 class="dialectic-h">{{ 'Relatat dintr-o singură origine' if dz.state == 'SINGLE_ORIGIN' else 'Dintr-o singură origine' }}</h2>
+    {%- set multe_origini = dz.state == 'SINGLE_ORIGIN' and (dz.origini or 1) > 1 %}
+    <h2 class="dialectic-h">{% if multe_origini %}Fiecare fapt, la o singură publicație{% elif dz.state == 'SINGLE_ORIGIN' %}Relatat dintr-o singură origine{% else %}Dintr-o singură origine{% endif %}</h2>
     <ul class="dialectic-list dialectic-single">
       {% for f in dz.single %}<li>{{ f.text }} <span class="dialectic-src">— {{ f.src | join(', ') }}{% if f.hedged %} · <em>cu rezervă la sursă</em>{% endif %}</span></li>
       {% endfor %}
     </ul>
-    <p class="dialectic-note">{% if dz.state == 'SINGLE_ORIGIN' %}Publicațiile care relatează aceste fapte pornesc de la aceeași origine — aceeași primă relatare, o preluare declarată sau un text comun —, deci nu sunt confirmări independente.{% else %}Neconfirmat de celelalte publicații din acest set; asta nu înseamnă că e fals.{% endif %}</p>
+    <p class="dialectic-note">{% if multe_origini %}Publicațiile abordează subiectul din unghiuri diferite: fiecare prezintă fapte distincte, fără ca detaliile să fie confirmate de o a doua sursă independentă.{% elif dz.state == 'SINGLE_ORIGIN' %}Publicațiile din acest grup pornesc de la aceeași relatare inițială sau de la o sursă comună (comunicat, agenție), deci nu sunt confirmări independente.{% else %}Neconfirmat de celelalte publicații din acest set; asta nu înseamnă că e fals.{% endif %}</p>
     {% endif %}
     {% if dz.schimbari %}
-    {#- E4: actualizarea e publică — ce a intrat nou și ce nu mai apare față de versiunea
-        anterioară; nimic nu dispare tăcut dintr-o sinteză deja citită. -#}
+    {#- E4: actualizarea e publică — ce publicații au intrat și, dacă s-a schimbat, ce stare avea
+        sinteza înainte. Nu listăm „fapte dispărute": sinteza se regenerează, iar o reformulare
+        ar apărea fals drept retragere (Argon R5). -#}
     <aside class="notice dialectic-update" aria-label="Actualizare sinteză">
-      <p><strong>Actualizare sinteză{% if a.updated_human %} · {{ a.updated_human }}{% endif %}.</strong>{% if dz.schimbari.adaugate %} Fapte noi față de versiunea anterioară: {{ dz.schimbari.adaugate | length }}.{% endif %}{% if dz.schimbari.stare_anterioara == 'ASSUMED_SILENCE' %} Versiunea anterioară nu avea fapte comune; acum are.{% elif dz.schimbari.stare_anterioara == 'SINGLE_ORIGIN' %} Versiunea anterioară avea o singură origine.{% endif %}</p>
-      {% if dz.schimbari.scoase %}<p>Nu mai apar în versiunea actuală:</p>
-      <ul class="dialectic-list dialectic-single">{% for t in dz.schimbari.scoase %}<li>{{ t }}</li>{% endfor %}</ul>{% endif %}
+      <p><strong>Actualizare sinteză{% if a.updated_human %} · {{ a.updated_human }}{% endif %}.</strong>{% if dz.schimbari.surse_noi %} {{ 'A intrat o publicație nouă' if dz.schimbari.surse_noi | length == 1 else 'Au intrat ' ~ (dz.schimbari.surse_noi | length) ~ ' publicații noi' }}: {{ dz.schimbari.surse_noi | join(', ') }}.{% endif %}{% if dz.schimbari.stare_anterioara == 'ASSUMED_SILENCE' %} Versiunea anterioară nu avea fapte confirmate de mai multe publicații; acum are.{% elif dz.schimbari.stare_anterioara == 'SINGLE_ORIGIN' %} Versiunea anterioară nu avea confirmări încrucișate.{% elif dz.schimbari.stare_anterioara == 'SYNTHESIS_VALID' %} Versiunea anterioară avea fapte confirmate de mai multe publicații.{% endif %}</p>
     </aside>
     {% endif %}
   </section>
@@ -211,7 +211,7 @@
   <div class="sources-box">
     <h2>{{ 'Sursă' if srcs | length == 1 else 'Surse' }}</h2>
     <ul>
-      {% for s in srcs %}<li><a href="{{ s.url }}" target="_blank" rel="noopener noreferrer">{{ s.name }} &rarr;</a>{% if a.surse_roluri and a.surse_roluri[s.name] %} <span class="source-role">{{ a.surse_roluri[s.name] }}</span>{% if a.modificari_tacute and s.name in a.modificari_tacute %} <span class="source-role" title="Faptele din textul publicației s-au schimbat cu peste 20% după prima citire">a modificat ulterior textul</span>{% endif %}{% elif a.first_source and s.name == a.first_source and srcs | length > 1 %} <span class="first-badge" title="Prima publicare observată în setul de surse monitorizate">publicată prima</span>{% endif %}</li>{% endfor %}
+      {% for s in srcs %}<li><a href="{{ s.url }}" target="_blank" rel="noopener noreferrer">{{ s.name }} &rarr;</a>{% if a.surse_roluri and a.surse_roluri[s.name] %} <span class="source-role">{{ a.surse_roluri[s.name] }}</span>{% if a.modificari_tacute and s.name in a.modificari_tacute %} <span class="source-role" title="Faptele din textul publicației s-au schimbat cu peste 20% după prima citire — de regulă o știre în curs, completată">actualizat de redacție după prima citire</span>{% endif %}{% elif a.first_source and s.name == a.first_source and srcs | length > 1 %} <span class="first-badge" title="Prima publicare observată în setul de surse monitorizate">publicată prima</span>{% endif %}</li>{% endfor %}
     </ul>
     {% if a.surse_roluri %}
     <p class="source-roles-note">Rolul fiecărei publicații e calculat mecanic din textul articolelor: cine a relatat primul (o relatare densă publicată în aceleași 15 minute bate o alertă de două rânduri), cine aduce detalii noi, cine repetă aceleași fapte, cine preia un text comun sau citează explicit altă redacție. Confirmări încrucișate — publicații care coroborează faptele fără să preia același text: {{ a.cross_confirmations or 1 }} din {{ srcs | length }}. Ordinea observată nu dovedește cine e autorul informației.</p>
