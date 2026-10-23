@@ -4,12 +4,19 @@
 > mută într-o sesiune nouă (New task) care citește FIȘIERUL ASTA, nu istoricul vechi.
 > Raportul curent al gardianului: `handoff/context-gardian-raport.txt`
 > (se poate regenera oricând: dublu-click pe `Desktop\gardian-context.cmd`).
-> Versiune: 2026-10-08, după planul de implementare. Verificat local: testele de plan, stare, feed, căutare, 404, paginare, marcaj AI, push și redirect. Nu e verificat live: oglinda izz.ro (rețeaua de aici nu ajunge acolo). Rămâne: checks din Settings, `continue-on-error`, extrasul sitemapului, proba de oglindă, embed Brevo. Nu se urcă TTL-ul.
+> Versiune: 2026-10-23, după aterizarea transformării E1–E4 (#511, #512). Anterior: 2026-10-08, după planul de implementare. Verificat local: testele de plan, stare, feed, căutare, 404, paginare, marcaj AI, push și redirect. Nu e verificat live: oglinda izz.ro (rețeaua de aici nu ajunge acolo). Rămâne: checks din Settings, `continue-on-error`, extrasul sitemapului, proba de oglindă, embed Brevo. Nu se urcă TTL-ul.
 > Actualizare = RESCRIERE atomică a fișierului întreg (fără append-uri concurente),
 > fără secrete și fără transcripturi; re-înarmarea unei automatizări cere
 > revizuirea textului de către cine o pornește.
 
-## 0. 8 octombrie — planul de implementare, pe ramura sesiunii
+## 0. 23 octombrie — transformarea «prin prisma cărților» e PE MAIN (#511, #512)
+
+E1-core → E4 aterizate: roluri epistemice (ROOT / detalii suplimentare / aceleași fapte / text comun / preluare declarată), sinteza dialectică verificată per propoziție (3 stări + „fapte neconfirmate reciproc"), confirmări încrucișate pe card, roluri în `sources-box`, /sub-prag/, contor „X articole → Y subiecte", capăt pe /azi/, nota de actualizare, memoria subiectelor (12 luni, fără stări judiciare), /principii/ și /legal/method/ fără doctrină (garda `tests/test_garda_anti_doctrina.py`). Jurnalul complet, abaterile de la plan și rundele Argon R4–R5: `specs/plan-paradigma-izz.md` §5.
+- Worktree-ul `C:\Users\cw_26\izz-e1-core` (ramura `oc/e1-core-epistemic-roles`) e DEPĂȘIT: munca lui e pe main, revizuită. Nu se mai continuă din el.
+- De urmărit la primele rulări CI: `build.json` → `dialectic` (amânări, respingeri) și `deep`; pragul `SILENCE_REJECTION_THRESHOLD=0.34` se calibrează de acolo. Semnal de alarmă: peste 30% sinteze amânate sau rulare peste 45 de minute.
+- Rămase: comutatorul de lentilă pe hartă (volum ↔ confirmări) — după câteva zile de date `cross_confirmed`/`deep_meta`.
+
+## 0b. 8 octombrie — planul de implementare, pe ramura sesiunii
 
 Codul e pe `arena/4773b8d6-izz-ro`, două commituri: porțile de workflow și plafonul de abonare, apoi planul (primul ecran, contractul de articol, `/azi/`, județul ales, timeline doar pe C cu cel puțin 3 domenii). Publicarea se face prin merge în `main`, care pornește `deploy-worker.yml`. Nu se face deploy local cu wrangler.
 
