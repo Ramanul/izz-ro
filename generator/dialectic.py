@@ -143,13 +143,19 @@ def _sentences_of(it: dict) -> list[str]:
 
 
 def build_block(cid: int, group: list, roles_by_url: dict | None = None,
-                char_budget: int = CONTEXT_CHARS) -> Block:
+                char_budget: int = CONTEXT_CHARS, src_offset: int = 0) -> Block:
     """Blocul promptului pentru un cluster: o linie de antet per publicație și propozițiile ei,
-    `[C{cid}S{j}.{k}]`. Propozițiile se iau ROUND-ROBIN între surse, întregi, până la plafon:
-    o sursă lungă nu le lasă pe celelalte fără nicio propoziție. Prima propoziție a fiecărei
-    surse intră mereu. Faptele din versiunea anterioară a sintezei (la actualizare) intră ca
-    `[C{cid}P.{k}]`, cu publicațiile lor — altfel o actualizare ar pierde tăcut faptele surselor
-    absorbite în rulările trecute."""
+    `[S{j}.{k}]`. Numerotarea surselor e UNICĂ în tot lotul (`src_offset`): modelul copiază
+    doar etichete pe care le vede, iar o etichetă aparține unui singur eveniment — deci o
+    citare din alt eveniment al lotului e prinsă mecanic (măsurat 23.10: cu prefixe de
+    cluster pe care modelul trebuia să le compună, 10 din 33 de citări ale unui lot au ieșit
+    greșite, iar un meci pe care toate sursele îl relatau identic a fost declarat „ireconciliabil").
+
+    Propozițiile se iau ROUND-ROBIN între surse, întregi, până la plafon: o sursă lungă nu le
+    lasă pe celelalte fără nicio propoziție. Prima propoziție a fiecărei surse intră mereu.
+    Faptele din versiunea anterioară a sintezei (la actualizare) intră ca `[P{cid}.{k}]`, cu
+    publicațiile lor — altfel o actualizare ar pierde tăcut faptele surselor absorbite în
+    rulările trecute."""
     roles_by_url = roles_by_url or {}
     by_name: dict[str, dict] = {}
     for it in group:
@@ -165,7 +171,7 @@ def build_block(cid: int, group: list, roles_by_url: dict | None = None,
                                                        kv[1]["it"].get("published") or ""))
     block = Block(cid=cid, text="")
     picked: dict[int, list] = {}
-    for j, (name, info) in enumerate(ordered, start=1):
+    for j, (name, info) in enumerate(ordered, start=src_offset + 1):
         it = info["it"]
         block.sources.append(Source(j, name, domain_of(it.get("original_link") or it.get("url") or ""),
                                     info["role"], info["mode"]))
@@ -174,7 +180,7 @@ def build_block(cid: int, group: list, roles_by_url: dict | None = None,
     rnd = 0
     while True:
         progressed = False
-        for j, (_, info) in enumerate(ordered, start=1):
+        for j, (_, info) in enumerate(ordered, start=src_offset + 1):
             sents = info["sents"]
             if rnd >= len(sents):
                 continue
@@ -190,11 +196,11 @@ def build_block(cid: int, group: list, roles_by_url: dict | None = None,
 
     lines = []
     for src in block.sources:
-        it = ordered[src.idx - 1][1]["it"]
+        it = ordered[src.idx - src_offset - 1][1]["it"]
         ora = (it.get("published") or "")[11:16]
-        lines.append(f"[C{cid}S{src.idx}] {src.name} · ora {ora or '?'} · {_ROLE_LABEL.get(src.role, src.role)}")
+        lines.append(f"[S{src.idx}] {src.name} · ora {ora or '?'} · {_ROLE_LABEL.get(src.role, src.role)}")
         for k, s in enumerate(picked[src.idx], start=1):
-            chunk_id = f"C{cid}S{src.idx}.{k}"
+            chunk_id = f"S{src.idx}.{k}"
             block.chunks[chunk_id] = (frozenset({src.name}), s)
             lines.append(f"  [{chunk_id}] {s}")
 
@@ -206,19 +212,19 @@ def build_block(cid: int, group: list, roles_by_url: dict | None = None,
     if prev:
         prev_facts = list(prev.get("common") or []) + list(prev.get("single") or [])
         if prev_facts:
-            lines.append(f"[C{cid}P] fapte din versiunea anterioară a acestei sinteze, deja atribuite")
+            lines.append(f"[P{cid}] fapte din versiunea anterioară a acestei sinteze, deja atribuite")
             for k, f in enumerate(prev_facts[:MAX_FACTS + MAX_SINGLE], start=1):
                 names = frozenset(n for n in (f.get("src") or []) if n)
                 if not names or not f.get("text"):
                     continue
-                chunk_id = f"C{cid}P.{k}"
+                chunk_id = f"P{cid}.{k}"
                 block.chunks[chunk_id] = (names, f["text"])
                 lines.append(f"  [{chunk_id}] ({', '.join(sorted(names))}) {f['text']}")
                 # publicațiile din versiunea anterioară rămân origini dacă nu sunt clone/preluări
                 for n in names:
                     if n not in {s.name for s in block.sources}:
                         role = "ECHO"
-                        block.sources.append(Source(len(block.sources) + 1, n, "", role, "PREV"))
+                        block.sources.append(Source(-1, n, "", role, "PREV"))
     block.text = "\n".join(lines)
     return block
 
@@ -227,7 +233,9 @@ def build_block(cid: int, group: list, roles_by_url: dict | None = None,
 # 2. VALIDAREA: ce propune modelul vs. ce rămâne
 # ---------------------------------------------------------------------------
 
-_CHUNK_RE = re.compile(r"^\[?(?:C(\d+))?((?:S\d+|P)\.\d+)\]?$")
+# Eticheta exactă din prompt; un prefix „C<n>" pus de model din obișnuință se ignoră — eticheta
+# însăși e unică în lot, deci apartenența la eveniment o decide dicționarul blocului, nu prefixul.
+_CHUNK_RE = re.compile(r"^\[?(?:C\d+)?((?:S\d+|P\d+)\.\d+)\]?$")
 
 
 def _resolve_ids(raw_ids, block: Block) -> tuple[list[str], bool]:
@@ -238,16 +246,12 @@ def _resolve_ids(raw_ids, block: Block) -> tuple[list[str], bool]:
         if not m:
             bad = True
             continue
-        cid, rest = m.group(1), m.group(2)
-        if cid is not None and int(cid) != block.cid:
-            bad = True                       # citare din alt cluster al lotului: contaminare
-            continue
-        key = f"C{block.cid}{rest}"
+        key = m.group(1)
         if key in block.chunks:
             if key not in ok:
                 ok.append(key)
         else:
-            bad = True
+            bad = True                       # inexistentă sau a altui eveniment din lot
     return ok, bad
 
 
@@ -376,19 +380,21 @@ def validate(obj: dict, block: Block) -> dict | None:
     diverg = diverg[:MAX_DIVERGENCES]
 
     ratio = (rejected / total) if total else 1.0
-    declared_silence = str(obj.get("epistemic_state") or "").upper() == STATE_SILENCE
-    if declared_silence or ratio > SILENCE_REJECTION_THRESHOLD or (not common and diverg):
-        state = STATE_SILENCE
-    elif common:
+    if ratio > SILENCE_REJECTION_THRESHOLD:
+        # Peste prag, problema e a MODELULUI (citări greșite, cifre fără temei), nu a surselor:
+        # a publica „datele sunt ireconciliabile" ar fi o afirmație falsă despre presă. Nu se
+        # publică nimic din răspunsul ăsta — clusterul se reia la rularea următoare.
+        _numara("amanate_peste_prag")
+        return None
+    # Starea o decide conținutul VALIDAT, nu declarația modelului: Tăcerea Asumată se spune
+    # doar când există poziții divergente, atribuite și verificate, și niciun fapt comun.
+    if common:
         state = STATE_VALID
+    elif diverg:
+        state = STATE_SILENCE
     elif single:
         state = STATE_SINGLE
     else:
-        return None
-
-    if state == STATE_SILENCE and not (diverg or single):
-        # Tăcere fără nicio poziție atribuibilă = nimic de arătat cititorului: se amână
-        _numara("amanate_tacere_goala")
         return None
     if state != STATE_SILENCE and not any(not f["forced"] for f in (common if state == STATE_VALID else single)):
         # nu există niciun fapt care să poată sta, fără rezervă pierdută, în textul scurt
@@ -469,3 +475,13 @@ def source_roles(block: Block) -> dict:
     """{nume publicație: rol} pentru Radiografia surselor (fără sursele din versiunea
     anterioară, care își păstrează rolul de atunci în `epistemic_roles`)."""
     return {s.name: s.role for s in block.sources if s.mode != "PREV"}
+
+
+def build_blocks(groups_roles: list) -> list:
+    """Blocurile unui lot, cu numerotarea surselor continuă între evenimente."""
+    blocks, offset = [], 0
+    for cid, (group, roles) in enumerate(groups_roles):
+        b = build_block(cid, group, roles, src_offset=offset)
+        offset += sum(1 for s in b.sources if s.mode != "PREV")
+        blocks.append(b)
+    return blocks

@@ -39,8 +39,8 @@ SYSTEM_C_DIALECTIC = ("Esti grefier de stiri. Din propozitiile numerotate ale ma
                       "Raspunzi EXCLUSIV cu un array JSON valid.")
 
 USER_C_DIALECTIC = """Ai mai multe evenimente, fiecare cu un id. Pentru fiecare primesti propozitiile publicatiilor:
-[C<id>S<n>] = antetul publicatiei n a evenimentului <id>; [C<id>S<n>.<k>] = propozitia k a ei.
-[C<id>P.<k>] = fapt din versiunea anterioara a sintezei, cu publicatiile lui intre paranteze.
+[S<n>] = antetul publicatiei n; [S<n>.<k>] = propozitia k a ei. Numerele surselor sunt UNICE in tot mesajul: fiecare eticheta apartine unui singur eveniment.
+[P<id>.<k>] = fapt din versiunea anterioara a sintezei evenimentului <id>, cu publicatiile lui intre paranteze.
 
 Evenimente:
 {events_block}
@@ -49,9 +49,9 @@ Returneaza EXCLUSIV un array JSON, cate UN obiect per eveniment, cu acelasi id:
 [{{"id": <id>,
   "title": "<faptul central, 6-16 cuvinte, strict factual, cu cuvintele tale; la ASSUMED_SILENCE: doar subiectul, fara afirmatie>",
   "epistemic_state": "SYNTHESIS_VALID sau ASSUMED_SILENCE",
-  "common_facts": [{{"statement": "<o propozitie, cu cuvintele tale>", "chunk_ids": ["C0S1.2", "C0S2.1"], "has_hedging": false}}],
-  "divergences": [{{"axis": "<ce difera: cifra, ora, cine, cauza, locul>", "positions": [{{"claim": "<versiunea unei publicatii, cu cuvintele tale>", "chunk_ids": ["C0S1.3"]}}]}}],
-  "uncorroborated_claims": [{{"statement": "<detaliu prezent intr-o singura publicatie>", "chunk_ids": ["C0S3.4"]}}],
+  "common_facts": [{{"statement": "<o propozitie, cu cuvintele tale>", "chunk_ids": ["<etichetele exacte, ex. S1.2>", "<ex. S2.1>"], "has_hedging": false}}],
+  "divergences": [{{"axis": "<ce difera: cifra, ora, cine, cauza, locul>", "positions": [{{"claim": "<versiunea unei publicatii, cu cuvintele tale>", "chunk_ids": ["<ex. S1.3>"]}}]}}],
+  "uncorroborated_claims": [{{"statement": "<detaliu prezent intr-o singura publicatie>", "chunk_ids": ["<ex. S3.4>"]}}],
   "is_milestone": false,
   "category": "<una din: {cats}>",
   "entities": ["<1-4 nume proprii cheie, forma scurta canonica>"],
@@ -67,7 +67,7 @@ Reguli absolute:
 6. Cu cuvintele tale: cel mult 12 cuvinte consecutive identice cu o propozitie primita; titlul nu copiaza niciun titlu de sursa.
 7. ASSUMED_SILENCE doar cand publicatiile nu au niciun fapt central comun sau versiunile lor despre faptul central se exclud; atunci common_facts=[] si pozitiile merg in divergences.
 8. is_milestone=true DOAR pentru o decizie finala sau un eveniment incheiat (lege promulgata, buget aprobat, hotarare definitiva, dezastru produs); niciodata pentru anchete, acuzatii, propuneri sau declaratii.
-9. SCRIE IN ROMANA (tradu daca sursele sunt in alta limba). Foloseste doar chunk_ids ale ACELUIASI eveniment; nu amesteca evenimentele, chiar daca par legate.
+9. SCRIE IN ROMANA (tradu daca sursele sunt in alta limba). Copiaza etichetele exact cum apar (ex. S4.2) si foloseste DOAR etichetele din blocul ACELUIASI eveniment; nu amesteca evenimentele, chiar daca par legate.
 10. Verifica semantic fiecare verb: nu transforma „au pretins", „s-au dat drept" sau „au oprit" intr-un verb de perceptie precum „au simtit"."""
 
 SYSTEM_BATCH = ("Esti editor de stiri. Pentru FIECARE stire primita, titlul reda ESENTA faptului, "
@@ -856,11 +856,10 @@ def process_clusters_batch(groups: list, provider) -> list:
             out.append(rep)
         return out
 
-    # E2: fiecare eveniment e un bloc de propoziții numerotate `[C{i}S{j}.{k}]` (textul integral
-    # din E0, lead-ul RSS doar ca rezervă). ID-ul clusterului e în fiecare citare, deci o
-    # afirmație care citează alt eveniment al lotului e respinsă mecanic în `dialectic.validate`.
-    blocks = [dialectic.build_block(i, group, _roluri_grup(group))
-              for i, (group, _) in enumerate(preps)]
+    # E2: fiecare eveniment e un bloc de propoziții numerotate `[S{j}.{k}]` (textul integral din
+    # E0, lead-ul RSS doar ca rezervă). Numerotarea e unică în tot lotul, deci o afirmație care
+    # citează alt eveniment al lotului e respinsă mecanic în `dialectic.validate`.
+    blocks = dialectic.build_blocks([(group, _roluri_grup(group)) for group, _ in preps])
     events_block = "\n\n".join(f"[{b.cid}]\n{b.text}" for b in blocks)
     try:
         raw = provider.complete(SYSTEM_C_DIALECTIC, USER_C_DIALECTIC.format(events_block=events_block))

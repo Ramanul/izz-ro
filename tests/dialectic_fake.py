@@ -13,9 +13,11 @@ import re
 
 def raspuns(user: str, title: str, statement: str, category: str = "general", **extra) -> str:
     out = []
-    for ev in re.findall(r"^\[(\d+)\]$", user, re.M):
+    parts = re.split(r"^\[(\d+)\]$", user, flags=re.M)
+    # parts = [preambul, id0, sectiune0, id1, sectiune1, ...]
+    for ev, sect in zip(parts[1::2], parts[2::2]):
         prime: dict[str, str] = {}
-        for chunk, src in re.findall(rf"\[(C{ev}S(\d+)\.\d+)\]", user):
+        for chunk, src in re.findall(r"\[((S\d+)\.\d+)\]", sect):
             prime.setdefault(src, chunk)
         obj = {"id": int(ev), "title": title, "epistemic_state": "SYNTHESIS_VALID",
                "common_facts": [{"statement": statement, "chunk_ids": list(prime.values())[:2],
@@ -28,4 +30,4 @@ def raspuns(user: str, title: str, statement: str, category: str = "general", **
 
 
 def e_prompt_dialectic(user: str) -> bool:
-    return "[C0S1]" in user or bool(re.search(r"\[C\d+S\d+\]", user))
+    return bool(re.search(r"^\s*\[S\d+\.\d+\]", user, re.M))

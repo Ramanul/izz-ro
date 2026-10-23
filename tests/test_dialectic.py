@@ -43,16 +43,19 @@ def _block(*items, cid=0):
 
 def _ids(block, name):
     src = next(s for s in block.sources if s.name == name)
-    return [k for k in block.chunks if k.startswith(f"C{block.cid}S{src.idx}.")]
+    return [k for k in block.chunks if k.startswith(f"S{src.idx}.")]
 
 
 # --- 1. contextul -------------------------------------------------------------------------
 
-def test_blocul_numeroteaza_cu_id_de_cluster_si_ordoneaza_dupa_rol():
+def test_blocul_ordoneaza_dupa_rol_si_numeroteaza_unic_in_lot():
     b = _block(C, B, A, cid=2)
     assert [s.name for s in b.sources] == ["Alfa", "Beta", "Gama"]    # ROOT, IC, CLONE
-    assert all(k.startswith("C2S") for k in b.chunks)
-    assert "[C2S1] Alfa" in b.text and "prima relatare" in b.text
+    assert "[S1] Alfa" in b.text and "prima relatare" in b.text
+    b0, b1 = dialectic.build_blocks([([A, B], {}), ([A, C], {})])
+    assert {k.split(".")[0] for k in b0.chunks} == {"S1", "S2"}
+    assert {k.split(".")[0] for k in b1.chunks} == {"S3", "S4"}      # continuă, nu repornește
+    assert not set(b0.chunks) & set(b1.chunks)
 
 
 def test_plafonul_ia_propozitii_intregi_round_robin_si_prima_mereu():
@@ -72,8 +75,8 @@ def test_faptele_versiunii_anterioare_intra_ca_P_cu_publicatiile_lor():
                  dialectic={"common": [{"text": "Bugetul este de 820 de milioane de lei.", "src": ["Alfa", "Delta"]}],
                             "single": [], "diverg": []})
     b = dialectic.build_block(0, [vechi, B])
-    assert "C0P.1" in b.chunks
-    assert b.chunks["C0P.1"][0] == frozenset({"Alfa", "Delta"})
+    assert "P0.1" in b.chunks
+    assert b.chunks["P0.1"][0] == frozenset({"Alfa", "Delta"})
     # sinteza noastră veche NU devine „textul sursei": sursa fără text integral are titlul ei
     assert any(t == "Bugetul aprobat" for _, t in b.chunks.values())
 
@@ -118,31 +121,40 @@ def _bune(b, n=3):
 
 
 def test_citarea_inexistenta_sau_din_alt_cluster_e_respinsa():
-    b = _block(A, B, cid=1)
-    d = dialectic.validate(_obj(common_facts=_bune(b) + [
-        {"statement": "Bugetul este de 820 de milioane de lei.", "chunk_ids": ["C0S1.1", "C0S2.1"]},
-    ]), b)
+    b0, b1 = dialectic.build_blocks([([A, B], {}), ([dict(A), dict(B)], {})])
+    strain = sorted(b0.chunks)[:2]                         # etichete ale evenimentului 0
+    d = dialectic.validate(_obj(common_facts=_bune(b1) + [
+        {"statement": "Bugetul este de 820 de milioane de lei.", "chunk_ids": strain},
+    ]), b1)
     assert d["rejected"] == 1 and d["total"] == 4
     assert d["state"] == dialectic.STATE_VALID
-    d = dialectic.validate(_obj(common_facts=_bune(b) + [
-        {"statement": "Bugetul este de 820 de milioane de lei.", "chunk_ids": ["C1S9.9"]},
-    ]), b)
+    d = dialectic.validate(_obj(common_facts=_bune(b1) + [
+        {"statement": "Bugetul este de 820 de milioane de lei.", "chunk_ids": ["S99.9"]},
+    ]), b1)
     assert d["rejected"] == 1
+    # prefixul „C1" adăugat de model din obișnuință nu strică o etichetă corectă
+    ok = dialectic.validate(_obj(common_facts=[
+        {"statement": "Bugetul Bihorului este de 820 de milioane de lei.",
+         "chunk_ids": ["C1" + k for k in (_ids(b1, "Alfa")[0], _ids(b1, "Beta")[0])]}]), b1)
+    assert ok["rejected"] == 0 and ok["state"] == dialectic.STATE_VALID
 
 
-def test_peste_prag_de_respingeri_e_tacere_si_fara_pozitii_se_amana():
-    """2 din 3 afirmații fără temei: restul nu mai e credibil ca „sinteză"."""
+def test_peste_prag_de_respingeri_se_amana_nu_se_declara_tacere():
+    """2 din 3 afirmații fără temei: problema e a modelului, nu a surselor. A publica
+    „datele sunt ireconciliabile" ar fi o afirmație falsă despre presă (măsurat 23.10:
+    un meci relatat identic de toate sursele, declarat astfel)."""
     b = _block(A, B, cid=1)
-    obj = _obj(common_facts=_bune(b, 1) + [
-        {"statement": "Bugetul este de 820 de milioane de lei.", "chunk_ids": ["C0S1.1", "C0S2.1"]},
-        {"statement": "Bugetul este de 820 de milioane de lei.", "chunk_ids": ["C1S9.9"]},
+    obj = _obj(epistemic_state="ASSUMED_SILENCE", common_facts=_bune(b, 1) + [
+        {"statement": "Bugetul este de 820 de milioane de lei.", "chunk_ids": ["S98.1", "S99.1"]},
+        {"statement": "Bugetul este de 820 de milioane de lei.", "chunk_ids": ["S99.9"]},
     ])
     assert dialectic.validate(obj, b) is None
-    obj["divergences"] = [{"axis": "numărul voturilor pentru", "positions": [
-        {"claim": "Alfa: 21 de voturi pentru.", "chunk_ids": [_ids(b, "Alfa")[1]]},
-        {"claim": "Beta: 19 consilieri pentru.", "chunk_ids": [_ids(b, "Beta")[1]]}]}]
-    d = dialectic.validate(obj, b)
-    assert d["state"] == dialectic.STATE_SILENCE and d["diverg"]
+
+
+def test_declaratia_de_tacere_a_modelului_nu_decide_starea():
+    b = _block(A, B)
+    d = dialectic.validate(_obj(epistemic_state="ASSUMED_SILENCE", common_facts=_bune(b, 1)), b)
+    assert d["state"] == dialectic.STATE_VALID
 
 
 def test_cifra_absenta_din_propozitiile_citate_e_respinsa():
@@ -274,7 +286,7 @@ class _Lot:
     def complete(self, system, user):
         valid = json.loads(dialectic_fake.raspuns(user, "Bihorul are buget aprobat pentru anul viitor",
                                                   "Bugetul Bihorului este de 820 de milioane de lei."))
-        valid[1]["common_facts"] = [{"statement": "Altceva.", "chunk_ids": ["C7S1.1"]}]
+        valid[1]["common_facts"] = [{"statement": "Altceva.", "chunk_ids": ["S77.1"]}]
         return json.dumps(valid)
 
 
@@ -298,6 +310,6 @@ def test_promptul_dialectic_poarta_propozitiile_si_regulile():
             return "[]"
 
     process.process_clusters_batch([[dict(A), dict(B)]], _Spion())
-    assert "[C0S1.1] Consiliul Județean Bihor a aprobat" in seen["user"]
+    assert "[S1.1] Consiliul Județean Bihor a aprobat" in seen["user"]
     assert "cel putin DOUA publicatii" in seen["user"]
     assert "SCRIE IN ROMANA" in seen["user"]
