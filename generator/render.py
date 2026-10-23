@@ -878,16 +878,22 @@ def _source_catalog(by_date: list) -> tuple[list, int, int]:
     linkuri fara coloane goale/zerouri care ar sugera fals performanta slaba.
     Returneaza (catalog, total_surse, surse_cu_statistici)."""
     # scor de originalitate: cine initiaza vs. cine preia (din sintezele C cu first_source)
+    # Cuplat cu „modificate ulterior" (E1): viteza fără stabilitate nu e un merit — o redacție
+    # care publică prima și își schimbă apoi faptele tăcut nu are voie să apară doar „rapidă".
     counts: dict = {}
     for a in by_date:
         if a.get("model") != "C" or not a.get("first_source"):
             continue
+        tacute = set(a.get("modificari_tacute") or [])
         for s in a.get("sources") or []:
-            d = counts.setdefault(s["name"], {"first": 0, "total": 0})
+            d = counts.setdefault(s["name"], {"first": 0, "total": 0, "tacute": 0})
             d["total"] += 1
             if s["name"] == a["first_source"]:
                 d["first"] += 1
-    src_stats = {n: {"first": d["first"], "total": d["total"], "rate": round(d["first"] / d["total"] * 100)}
+            if s["name"] in tacute:
+                d["tacute"] += 1
+    src_stats = {n: {"first": d["first"], "total": d["total"], "rate": round(d["first"] / d["total"] * 100),
+                     "tacute": d["tacute"]}
                  for n, d in counts.items() if d["total"] >= 2}
 
     catalog = []

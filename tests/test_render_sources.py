@@ -90,3 +90,17 @@ def test_stats_are_preserved_when_present():
     assert with_stats_names["Digi24"]["first"] == 0
     # inca acopera si sursele fara statistici din acelasi grup
     assert total_sources == len(config.SOURCES)
+
+
+def test_prima_publicare_e_cuplata_cu_modificarile_ulterioare():
+    """E1 (plan-paradigma-izz.md §3): „a publicat prima" nu stă singură — o redacție care
+    publică prima și apoi își schimbă tăcut faptele trebuie să se vadă și ca atare."""
+    alfa, beta = [v["name"] for v in list(config.SOURCES.values())[:2]]
+    arts = [{"model": "C", "first_source": alfa, "modificari_tacute": [alfa],
+             "sources": [{"name": alfa, "url": "https://a.ro/1"}, {"name": beta, "url": "https://b.ro/1"}]},
+            {"model": "C", "first_source": alfa,
+             "sources": [{"name": alfa, "url": "https://a.ro/2"}, {"name": beta, "url": "https://b.ro/2"}]}]
+    catalog, _, _ = render._source_catalog(arts)
+    toate = {s["name"]: s for g in catalog for s in _all_sources(g)}
+    assert toate[alfa]["first"] == 2 and toate[alfa]["tacute"] == 1
+    assert toate[beta]["first"] == 0 and toate[beta]["tacute"] == 0
