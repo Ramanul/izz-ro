@@ -20,7 +20,7 @@ from xml.sax.saxutils import escape as xml_escape
 from jinja2 import Environment, FileSystemLoader, select_autoescape
 from slugify import slugify
 
-from . import config, covers, dossiers, editorial, geo, htmlart, pagefind_index, publication
+from . import config, covers, dossiers, editorial, geo, htmlart, memorie, pagefind_index, publication
 from .select import (_dedup, _dedup_sources, _diversify, _entity_index,
                      _pick_hero, _quality_gate, anunt_oficial_fara_corp, filtru_cautare_rapida,
                      publicitar_la_sursa, titlu_afisare)
@@ -1767,6 +1767,17 @@ _ROL_SURSA = {
 }
 
 
+_MEMORIE_CACHE: list | None = None
+
+
+def _registru_memorie() -> list:
+    """Registrul E4, citit o dată per proces de randare."""
+    global _MEMORIE_CACHE
+    if _MEMORIE_CACHE is None:
+        _MEMORIE_CACHE = memorie.incarca()
+    return _MEMORIE_CACHE
+
+
 def _roluri_surse(articol: dict) -> dict | None:
     """{nume publicație: rol în cuvinte} pentru sursele unei sinteze C cu roluri E1."""
     roluri = articol.get("epistemic_roles") or {}
@@ -1793,6 +1804,8 @@ def _ataseaza_legaturi(articole: list) -> None:
         # Source headlines may repeat the very statement that was corrected.
         a["timeline"] = None if a.get("correction") else _timeline(a)
         a["surse_roluri"] = _roluri_surse(a)
+        a["din_memorie"] = memorie.din_memorie(a, _registru_memorie(), config.ARTICLE_TTL_DAYS) \
+            if a.get("model") == "C" else []
 
 
 def _nr_surse(articol: dict) -> int:
