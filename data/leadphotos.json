@@ -2736,86 +2736,6 @@
   "kind": "locality",
   "qid": "Q835227"
  },
- "ef986ad1dbe5fc5c": {
-  "miss": true,
-  "v": 2
- },
- "3403c22391b4ffb3": {
-  "miss": true,
-  "v": 2
- },
- "6d109a643adb6fba": {
-  "miss": true,
-  "v": 2
- },
- "08af5dc11916ea64": {
-  "miss": true,
-  "v": 2
- },
- "c65f94b2d768ba74": {
-  "miss": true,
-  "v": 2
- },
- "db45844a3b65bcfb": {
-  "miss": true,
-  "v": 2
- },
- "dda223f343c616a0": {
-  "miss": true,
-  "v": 2
- },
- "e7e611bb601e90fd": {
-  "miss": true,
-  "v": 2
- },
- "3c6384638dab98e4": {
-  "miss": true,
-  "v": 2
- },
- "f0532b850ef0534a": {
-  "miss": true,
-  "v": 2
- },
- "1507b105d3f9e8b1": {
-  "miss": true,
-  "v": 2
- },
- "4d7d2553fee7089f": {
-  "miss": true,
-  "v": 2
- },
- "08bd4e05db191b82": {
-  "miss": true,
-  "v": 2
- },
- "c030b4d5ad4cd9c9": {
-  "miss": true,
-  "v": 2
- },
- "ba083bd150ac29e9": {
-  "miss": true,
-  "v": 2
- },
- "313d9501186dd378": {
-  "miss": true,
-  "v": 2
- },
- "629fd0b253aaac39": {
-  "miss": true,
-  "v": 2
- },
- "f960ac711347e667": {
-  "miss": true,
-  "v": 2
- },
- "e5be3159d8df7aee": {
-  "miss": true,
-  "v": 2
- },
- "4201e5ab9e950e30": {
-  "miss": true,
-  "v": 2
- },
  "f0158b5fff94fd46": {
   "miss": true,
   "v": 2
@@ -17077,5 +16997,681 @@
   "v": 3,
   "motiv_loc": "loc_neeligibil",
   "motiv_ent": "ent_nenotabila"
+ },
+ "dc13fee1a044d67a": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_dimensiune_sau_format",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "cc8cc2733b38113d": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_dimensiune_sau_format",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "3a3ec6eb7764b594": {
+  "cover": "leads/loc-Q12089397.c.jpg",
+  "art": "leads/loc-Q12089397.jpg",
+  "webp": "leads/loc-Q12089397.webp",
+  "artist": "Bogdan Ilieş",
+  "license": "CC BY-SA 3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Biserica_de_lemn_Sf_Voievozi-Sihastria01.jpg",
+  "name": "Vânători-Neamț",
+  "kind": "locality"
+ },
+ "2a6e121ca9f91967": {
+  "cover": "leads/loc-Q12089397.c.jpg",
+  "art": "leads/loc-Q12089397.jpg",
+  "webp": "leads/loc-Q12089397.webp",
+  "artist": "Bogdan Ilieş",
+  "license": "CC BY-SA 3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Biserica_de_lemn_Sf_Voievozi-Sihastria01.jpg",
+  "name": "Vânători-Neamț",
+  "kind": "locality"
+ },
+ "306466cae382bf3f": {
+  "cover": "leads/loc-Q837960.c.jpg",
+  "art": "leads/loc-Q837960.jpg",
+  "webp": "leads/loc-Q837960.webp",
+  "artist": "Aisano",
+  "license": "CC BY-SA 3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:N%C4%83vodari,_Buna_Vestire,_1.jpeg",
+  "name": "Năvodari",
+  "kind": "locality"
+ },
+ "7f22a3af918fd88e": {
+  "cover": "leads/loc-Q386091.c.jpg",
+  "art": "leads/loc-Q386091.jpg",
+  "webp": "leads/loc-Q386091.webp",
+  "artist": "Utilizator:Țetcu Mircea Rareș at ro.wikipedia",
+  "license": "CC BY-SA 2.5",
+  "page": "https://commons.wikimedia.org/wiki/File:RO_GJ_Novaci-Romani_church_8.jpg",
+  "name": "Novaci",
+  "kind": "locality",
+  "qid": "Q386091"
+ },
+ "3d61c53798b4c4ba": {
+  "cover": "leads/loc-Q386091.c.jpg",
+  "art": "leads/loc-Q386091.jpg",
+  "webp": "leads/loc-Q386091.webp",
+  "artist": "Utilizator:Țetcu Mircea Rareș at ro.wikipedia",
+  "license": "CC BY-SA 2.5",
+  "page": "https://commons.wikimedia.org/wiki/File:RO_GJ_Novaci-Romani_church_8.jpg",
+  "name": "Novaci",
+  "kind": "locality",
+  "qid": "Q386091"
+ },
+ "b5b19005073c0351": {
+  "cover": "leads/loc-Q1076947.c.jpg",
+  "art": "leads/loc-Q1076947.jpg",
+  "webp": "leads/loc-Q1076947.webp",
+  "artist": "Thaler Tamas",
+  "license": "CC BY-SA 3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:PurkerecFotoThalerTamas.jpg",
+  "name": "Tărlungeni",
+  "kind": "locality",
+  "qid": "Q1076947"
+ },
+ "3b3c4f3f05a39f83": {
+  "cover": "leads/loc-Q1076947.c.jpg",
+  "art": "leads/loc-Q1076947.jpg",
+  "webp": "leads/loc-Q1076947.webp",
+  "artist": "Thaler Tamas",
+  "license": "CC BY-SA 3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:PurkerecFotoThalerTamas.jpg",
+  "name": "Tărlungeni",
+  "kind": "locality",
+  "qid": "Q1076947"
+ },
+ "84fc7b8ae9c0e235": {
+  "cover": "leads/loc-Q2605173.c.jpg",
+  "art": "leads/loc-Q2605173.jpg",
+  "webp": "leads/loc-Q2605173.webp",
+  "artist": "Albacore70 - Famille Toma T. Socolescu",
+  "license": "CC BY 3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:TomaTSocolescu-Paulesti-Primaria.jpg",
+  "name": "Păulești",
+  "kind": "locality",
+  "qid": "Q2605173"
+ },
+ "4567bab9896aacfd": {
+  "cover": "leads/loc-Q2605173.c.jpg",
+  "art": "leads/loc-Q2605173.jpg",
+  "webp": "leads/loc-Q2605173.webp",
+  "artist": "Albacore70 - Famille Toma T. Socolescu",
+  "license": "CC BY 3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:TomaTSocolescu-Paulesti-Primaria.jpg",
+  "name": "Păulești",
+  "kind": "locality",
+  "qid": "Q2605173"
+ },
+ "ac6af25e63103722": {
+  "cover": "leads/loc-Q5066556.c.jpg",
+  "art": "leads/loc-Q5066556.jpg",
+  "webp": "leads/loc-Q5066556.webp",
+  "artist": "Țetcu Mircea Rareș",
+  "license": "CC BY-SA 4.0",
+  "page": "https://commons.wikimedia.org/wiki/File:RO_NT_Biserica_de_lemn_din_Br%C4%83%C8%99%C4%83u%C8%9Bi_(7).jpg",
+  "name": "Dumbrava Roșie",
+  "kind": "locality",
+  "qid": "Q5066556"
+ },
+ "802af60ecdb291c4": {
+  "cover": "leads/loc-Q16427563.c.jpg",
+  "art": "leads/loc-Q16427563.jpg",
+  "webp": "leads/loc-Q16427563.webp",
+  "artist": "Bernd Schade",
+  "license": "CC BY-SA 3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Sucevita-Totale.JPG",
+  "name": "Sucevița",
+  "kind": "locality",
+  "qid": "Q16427563"
+ },
+ "201340bce505adf5": {
+  "cover": "leads/loc-Q16427563.c.jpg",
+  "art": "leads/loc-Q16427563.jpg",
+  "webp": "leads/loc-Q16427563.webp",
+  "artist": "Bernd Schade",
+  "license": "CC BY-SA 3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Sucevita-Totale.JPG",
+  "name": "Sucevița",
+  "kind": "locality",
+  "qid": "Q16427563"
+ },
+ "09b274c96202b306": {
+  "cover": "leads/loc-Q3878969.c.jpg",
+  "art": "leads/loc-Q3878969.jpg",
+  "webp": "leads/loc-Q3878969.webp",
+  "artist": "Bogdan29roman",
+  "license": "CC BY-SA 4.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Horia_Roman.JPG",
+  "name": "Horia",
+  "kind": "locality",
+  "qid": "Q3878969"
+ },
+ "ab0f987022bcd93a": {
+  "cover": "leads/loc-Q2719260.c.jpg",
+  "art": "leads/loc-Q2719260.jpg",
+  "webp": "leads/loc-Q2719260.webp",
+  "artist": "Bogdan29roman",
+  "license": "CC0",
+  "page": "https://commons.wikimedia.org/wiki/File:Monument_G%C3%A2din%C5%A3i.jpg",
+  "name": "Gâdinți",
+  "kind": "locality"
+ },
+ "eade54915970f057": {
+  "cover": "leads/loc-Q248959.c.jpg",
+  "art": "leads/loc-Q248959.jpg",
+  "webp": "leads/loc-Q248959.webp",
+  "artist": "DimiTalen",
+  "license": "CC0",
+  "page": "https://commons.wikimedia.org/wiki/File:Town_square,_Z%C4%83rne%C8%99ti,_2017.jpg",
+  "name": "Zărnești",
+  "kind": "locality"
+ },
+ "a908afde2d4c09ec": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_negasit_sau_fara_imagine",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "7f214e105dfbe6fa": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_dimensiune_sau_format",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "400b4eb4a4bf5cf2": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_dimensiune_sau_format",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "4f8fd7218f9535ce": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_dimensiune_sau_format",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "1d8647099002f88a": {
+  "cover": "leads/loc-Q1018204.c.jpg",
+  "art": "leads/loc-Q1018204.jpg",
+  "webp": "leads/loc-Q1018204.webp",
+  "artist": "Andrei Stroe",
+  "license": "CC BY 3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Slanic_Unirea_mine_entrance.jpg",
+  "name": "Slănic",
+  "kind": "locality"
+ },
+ "eb7e428d63200a27": {
+  "cover": "leads/loc-Q850962.c.jpg",
+  "art": "leads/loc-Q850962.jpg",
+  "webp": "leads/loc-Q850962.webp",
+  "artist": "Țetcu Mircea Rareș",
+  "license": "CC BY-SA 4.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Platforma_industrial%C4%83_Cop%C8%99a_Mic%C4%83_(3).jpg",
+  "name": "Copșa Mică",
+  "kind": "locality",
+  "qid": "Q850962"
+ },
+ "8f3aa37849ce96ff": {
+  "cover": "leads/loc-Q12724689.c.jpg",
+  "art": "leads/loc-Q12724689.jpg",
+  "webp": "leads/loc-Q12724689.webp",
+  "artist": "Cezar Suceveanu. Original uploader was Cezarika1 at ro.wikipedia",
+  "license": "CC BY 2.5",
+  "page": "https://commons.wikimedia.org/wiki/File:M%C4%83n%C4%83stirea_Agafton.jpg",
+  "name": "Curtești",
+  "kind": "locality",
+  "qid": "Q12724689"
+ },
+ "737143d7f8b57d43": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_negasit_sau_fara_imagine",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "d0b610dd1d1977fd": {
+  "cover": "leads/loc-Q12724689.c.jpg",
+  "art": "leads/loc-Q12724689.jpg",
+  "webp": "leads/loc-Q12724689.webp",
+  "artist": "Cezar Suceveanu. Original uploader was Cezarika1 at ro.wikipedia",
+  "license": "CC BY 2.5",
+  "page": "https://commons.wikimedia.org/wiki/File:M%C4%83n%C4%83stirea_Agafton.jpg",
+  "name": "Curtești",
+  "kind": "locality",
+  "qid": "Q12724689"
+ },
+ "275d44bdf92e20a7": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_dimensiune_sau_format",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "e911388cb06f4360": {
+  "cover": "leads/loc-Q16427725.c.jpg",
+  "art": "leads/loc-Q16427725.jpg",
+  "webp": "leads/loc-Q16427725.webp",
+  "artist": "Dan Mihai Pitea",
+  "license": "CC BY-SA 3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Timisoara_-_Aerial_view.jpg",
+  "name": "Dumbrăvița",
+  "kind": "locality",
+  "qid": "Q16427725"
+ },
+ "d5284f7dd38732f1": {
+  "cover": "leads/loc-Q617624.c.jpg",
+  "art": "leads/loc-Q617624.jpg",
+  "webp": "leads/loc-Q617624.webp",
+  "artist": "Jbudlong",
+  "license": "Public domain",
+  "page": "https://commons.wikimedia.org/wiki/File:RSCityHall.JPG",
+  "name": "Râmnicu Sărat",
+  "kind": "locality",
+  "qid": "Q617624"
+ },
+ "5c6948540f4748da": {
+  "cover": "leads/loc-Q617624.c.jpg",
+  "art": "leads/loc-Q617624.jpg",
+  "webp": "leads/loc-Q617624.webp",
+  "artist": "Jbudlong",
+  "license": "Public domain",
+  "page": "https://commons.wikimedia.org/wiki/File:RSCityHall.JPG",
+  "name": "Râmnicu Sărat",
+  "kind": "locality",
+  "qid": "Q617624"
+ },
+ "828e4b510d8cf5d7": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_dimensiune_sau_format",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "e02fdfe43d483bfb": {
+  "cover": "leads/loc-Q2534604.c.jpg",
+  "art": "leads/loc-Q2534604.jpg",
+  "webp": "leads/loc-Q2534604.webp",
+  "artist": "Bogdan29roman",
+  "license": "CC0",
+  "page": "https://commons.wikimedia.org/wiki/File:Castel_Hemeiu%C8%99.jpg",
+  "name": "Hemeiuș",
+  "kind": "locality"
+ },
+ "a105cbf5d3e000ac": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_dimensiune_sau_format",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "a6466d39bc66bc64": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_dimensiune_sau_format",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "f2b9668b3e5b7909": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_dimensiune_sau_format",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "e27ab8b4f10361fe": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_negasit_sau_fara_imagine",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "bbcaaaf3987d614c": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_negasit_sau_fara_imagine",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "e69c838afeba539e": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_negasit_sau_fara_imagine",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "43256a39ebd6de8a": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_negasit_sau_fara_imagine",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "d799d9ac2134ea75": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_negasit_sau_fara_imagine",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "c5a97dcfbf95309f": {
+  "cover": "leads/loc-Q276009.c.jpg",
+  "art": "leads/loc-Q276009.jpg",
+  "webp": "leads/loc-Q276009.webp",
+  "artist": "Maryusss2011",
+  "license": "CC BY-SA 3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Amara01.JPG",
+  "name": "Amara",
+  "kind": "locality"
+ },
+ "c10e89e75ee6dffc": {
+  "cover": "leads/loc-Q16427550.c.jpg",
+  "art": "leads/loc-Q16427550.jpg",
+  "webp": "leads/loc-Q16427550.webp",
+  "artist": "AlexanderKlink",
+  "license": "CC BY 4.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Romania_Putna_Drone_20191222.jpg",
+  "name": "Putna",
+  "kind": "locality",
+  "qid": "Q16427550"
+ },
+ "f38fc3e58c9d6f3c": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_dimensiune_sau_format",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "f07c247f5c6a7150": {
+  "cover": "leads/loc-Q12724758.c.jpg",
+  "art": "leads/loc-Q12724758.jpg",
+  "webp": "leads/loc-Q12724758.webp",
+  "artist": "Țetcu Mircea Rareș",
+  "license": "CC BY-SA 4.0",
+  "page": "https://commons.wikimedia.org/wiki/File:RO_GJ_Biserica_de_lemn_din_Valea_Bratuii_(8).jpg",
+  "name": "Dănești",
+  "kind": "locality",
+  "qid": "Q12724758"
+ },
+ "193c4410c21fdabc": {
+  "cover": "leads/loc-Q732376.c.jpg",
+  "art": "leads/loc-Q732376.jpg",
+  "webp": "leads/loc-Q732376.webp",
+  "artist": "Levente Nuber",
+  "license": "CC BY-SA 4.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Ansamblul_bisericii_evanghelice_din_Sebe%C8%99_4.jpg",
+  "name": "Sebeș",
+  "kind": "locality"
+ },
+ "fe37e35d8a17bf76": {
+  "cover": "leads/loc-Q12724758.c.jpg",
+  "art": "leads/loc-Q12724758.jpg",
+  "webp": "leads/loc-Q12724758.webp",
+  "artist": "Țetcu Mircea Rareș",
+  "license": "CC BY-SA 4.0",
+  "page": "https://commons.wikimedia.org/wiki/File:RO_GJ_Biserica_de_lemn_din_Valea_Bratuii_(8).jpg",
+  "name": "Dănești",
+  "kind": "locality",
+  "qid": "Q12724758"
+ },
+ "7e5249edd92f6d01": {
+  "cover": "leads/loc-Q837167.c.jpg",
+  "art": "leads/loc-Q837167.jpg",
+  "webp": "leads/loc-Q837167.webp",
+  "artist": "Oguszt",
+  "license": "CC BY-SA 3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Hatszeg_latkepe.jpg",
+  "name": "Hațeg",
+  "kind": "locality",
+  "qid": "Q837167"
+ },
+ "151f1e40d6620e8d": {
+  "cover": "leads/loc-Q837167.c.jpg",
+  "art": "leads/loc-Q837167.jpg",
+  "webp": "leads/loc-Q837167.webp",
+  "artist": "Oguszt",
+  "license": "CC BY-SA 3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Hatszeg_latkepe.jpg",
+  "name": "Hațeg",
+  "kind": "locality",
+  "qid": "Q837167"
+ },
+ "0f12d6ba4c9894eb": {
+  "cover": "leads/loc-Q837167.c.jpg",
+  "art": "leads/loc-Q837167.jpg",
+  "webp": "leads/loc-Q837167.webp",
+  "artist": "Oguszt",
+  "license": "CC BY-SA 3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Hatszeg_latkepe.jpg",
+  "name": "Hațeg",
+  "kind": "locality",
+  "qid": "Q837167"
+ },
+ "914c5a485436ec26": {
+  "cover": "leads/loc-Q837167.c.jpg",
+  "art": "leads/loc-Q837167.jpg",
+  "webp": "leads/loc-Q837167.webp",
+  "artist": "Oguszt",
+  "license": "CC BY-SA 3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Hatszeg_latkepe.jpg",
+  "name": "Hațeg",
+  "kind": "locality",
+  "qid": "Q837167"
+ },
+ "012692d500373ad2": {
+  "cover": "leads/loc-Q837960.c.jpg",
+  "art": "leads/loc-Q837960.jpg",
+  "webp": "leads/loc-Q837960.webp",
+  "artist": "Aisano",
+  "license": "CC BY-SA 3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:N%C4%83vodari,_Buna_Vestire,_1.jpeg",
+  "name": "Năvodari",
+  "kind": "locality"
+ },
+ "34b640f26f091171": {
+  "cover": "leads/loc-Q609044.c.jpg",
+  "art": "leads/loc-Q609044.jpg",
+  "webp": "leads/loc-Q609044.webp",
+  "artist": "Andrei Stroe",
+  "license": "CC BY-SA 3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:RO_OT_Caracal_national_theatre.jpg",
+  "name": "Caracal",
+  "kind": "locality",
+  "qid": "Q609044"
+ },
+ "863f6b0d1ea90b8c": {
+  "cover": "leads/loc-Q187205.c.jpg",
+  "art": "leads/loc-Q187205.jpg",
+  "webp": "leads/loc-Q187205.webp",
+  "artist": "Adrianflamind",
+  "license": "CC BY-SA 4.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Bistri%C8%9Ba_de_sus.jpg",
+  "name": "Bistrița",
+  "kind": "locality"
+ },
+ "c370d311fef857ee": {
+  "cover": "leads/loc-Q609044.c.jpg",
+  "art": "leads/loc-Q609044.jpg",
+  "webp": "leads/loc-Q609044.webp",
+  "artist": "Andrei Stroe",
+  "license": "CC BY-SA 3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:RO_OT_Caracal_national_theatre.jpg",
+  "name": "Caracal",
+  "kind": "locality",
+  "qid": "Q609044"
+ },
+ "7955ef9b66382e9b": {
+  "cover": "leads/loc-Q837167.c.jpg",
+  "art": "leads/loc-Q837167.jpg",
+  "webp": "leads/loc-Q837167.webp",
+  "artist": "Oguszt",
+  "license": "CC BY-SA 3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Hatszeg_latkepe.jpg",
+  "name": "Hațeg",
+  "kind": "locality",
+  "qid": "Q837167"
+ },
+ "c7113c00c252d2a3": {
+  "cover": "leads/loc-Q837167.c.jpg",
+  "art": "leads/loc-Q837167.jpg",
+  "webp": "leads/loc-Q837167.webp",
+  "artist": "Oguszt",
+  "license": "CC BY-SA 3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Hatszeg_latkepe.jpg",
+  "name": "Hațeg",
+  "kind": "locality",
+  "qid": "Q837167"
+ },
+ "08635241a1bc5f73": {
+  "cover": "leads/loc-Q837167.c.jpg",
+  "art": "leads/loc-Q837167.jpg",
+  "webp": "leads/loc-Q837167.webp",
+  "artist": "Oguszt",
+  "license": "CC BY-SA 3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Hatszeg_latkepe.jpg",
+  "name": "Hațeg",
+  "kind": "locality",
+  "qid": "Q837167"
+ },
+ "3218af0fec7d4672": {
+  "cover": "leads/loc-Q12724758.c.jpg",
+  "art": "leads/loc-Q12724758.jpg",
+  "webp": "leads/loc-Q12724758.webp",
+  "artist": "Țetcu Mircea Rareș",
+  "license": "CC BY-SA 4.0",
+  "page": "https://commons.wikimedia.org/wiki/File:RO_GJ_Biserica_de_lemn_din_Valea_Bratuii_(8).jpg",
+  "name": "Dănești",
+  "kind": "locality",
+  "qid": "Q12724758"
+ },
+ "9ae4c4b2b53f76f8": {
+  "cover": "leads/loc-Q837167.c.jpg",
+  "art": "leads/loc-Q837167.jpg",
+  "webp": "leads/loc-Q837167.webp",
+  "artist": "Oguszt",
+  "license": "CC BY-SA 3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Hatszeg_latkepe.jpg",
+  "name": "Hațeg",
+  "kind": "locality",
+  "qid": "Q837167"
+ },
+ "0ab7c34fb803d710": {
+  "cover": "leads/loc-Q1070967.c.jpg",
+  "art": "leads/loc-Q1070967.jpg",
+  "webp": "leads/loc-Q1070967.webp",
+  "artist": "Xulescu g",
+  "license": "CC BY-SA 4.0",
+  "page": "https://commons.wikimedia.org/wiki/File:S%C3%A2npetru_prim%C4%83vara.jpg",
+  "name": "Sânpetru",
+  "kind": "locality"
+ },
+ "abb7e20f86c7c4f2": {
+  "cover": "leads/loc-Q16427725.c.jpg",
+  "art": "leads/loc-Q16427725.jpg",
+  "webp": "leads/loc-Q16427725.webp",
+  "artist": "Dan Mihai Pitea",
+  "license": "CC BY-SA 3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Timisoara_-_Aerial_view.jpg",
+  "name": "Dumbrăvița",
+  "kind": "locality",
+  "qid": "Q16427725"
+ },
+ "69529c0cea4b9837": {
+  "cover": "leads/loc-Q5112567.c.jpg",
+  "art": "leads/loc-Q5112567.jpg",
+  "webp": "leads/loc-Q5112567.webp",
+  "artist": "Bogdan29roman",
+  "license": "CC BY-SA 3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Biserica_Valea_Ursului_N%C5%A2.jpg",
+  "name": "Valea Ursului",
+  "kind": "locality",
+  "qid": "Q5112567"
+ },
+ "d76846aa18568512": {
+  "cover": "leads/loc-Q186719.c.jpg",
+  "art": "leads/loc-Q186719.jpg",
+  "webp": "leads/loc-Q186719.webp",
+  "artist": "Renardo la vulpo",
+  "license": "CC BY-SA 3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Salzburg_von_Osten_gesehen_1.jpeg",
+  "name": "Ocna Sibiului",
+  "kind": "locality"
+ },
+ "025f220040133739": {
+  "cover": "leads/loc-Q16427487.c.jpg",
+  "art": "leads/loc-Q16427487.jpg",
+  "webp": "leads/loc-Q16427487.webp",
+  "artist": "Cezar Suceveanu",
+  "license": "CC BY 3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Casa_Dorna_Candreni.jpg",
+  "name": "Dorna Candrenilor",
+  "kind": "locality",
+  "qid": "Q16427487"
+ },
+ "be5bbe77851b3d1f": {
+  "cover": "leads/loc-Q2536132.c.jpg",
+  "art": "leads/loc-Q2536132.jpg",
+  "webp": "leads/loc-Q2536132.webp",
+  "artist": "Andrei Stroe",
+  "license": "CC BY-SA 4.0",
+  "page": "https://commons.wikimedia.org/wiki/File:RO_BZ_Cozieni_town_hall.JPG",
+  "name": "Cozieni",
+  "kind": "locality",
+  "qid": "Q2536132"
+ },
+ "60c31ce61999b58f": {
+  "cover": "leads/loc-Q1070967.c.jpg",
+  "art": "leads/loc-Q1070967.jpg",
+  "webp": "leads/loc-Q1070967.webp",
+  "artist": "Xulescu g",
+  "license": "CC BY-SA 4.0",
+  "page": "https://commons.wikimedia.org/wiki/File:S%C3%A2npetru_prim%C4%83vara.jpg",
+  "name": "Sânpetru",
+  "kind": "locality"
+ },
+ "e646a629a58b1846": {
+  "cover": "leads/loc-Q1070967.c.jpg",
+  "art": "leads/loc-Q1070967.jpg",
+  "webp": "leads/loc-Q1070967.webp",
+  "artist": "Xulescu g",
+  "license": "CC BY-SA 4.0",
+  "page": "https://commons.wikimedia.org/wiki/File:S%C3%A2npetru_prim%C4%83vara.jpg",
+  "name": "Sânpetru",
+  "kind": "locality"
+ },
+ "c01e63334edd618d": {
+  "cover": "leads/loc-Q3793904.c.jpg",
+  "art": "leads/loc-Q3793904.jpg",
+  "webp": "leads/loc-Q3793904.webp",
+  "artist": "Atelierelealbe",
+  "license": "CC BY-SA 3.0 ro",
+  "page": "https://commons.wikimedia.org/wiki/File:Biserica_Cuvioasa_Paraschiva.tif",
+  "name": "Ciulnița",
+  "kind": "locality",
+  "qid": "Q3793904"
+ },
+ "449f7858e5aab2c6": {
+  "cover": "leads/loc-Q3878969.c.jpg",
+  "art": "leads/loc-Q3878969.jpg",
+  "webp": "leads/loc-Q3878969.webp",
+  "artist": "Bogdan29roman",
+  "license": "CC BY-SA 4.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Horia_Roman.JPG",
+  "name": "Horia",
+  "kind": "locality",
+  "qid": "Q3878969"
+ },
+ "9792977cb22a25b0": {
+  "cover": "leads/loc-Q2716829.c.jpg",
+  "art": "leads/loc-Q2716829.jpg",
+  "webp": "leads/loc-Q2716829.webp",
+  "artist": "Andrei Stroe",
+  "license": "CC BY-SA 4.0",
+  "page": "https://commons.wikimedia.org/wiki/File:RO_BZ_Maxenu_3.jpg",
+  "name": "Țintești",
+  "kind": "locality",
+  "qid": "Q2716829"
+ },
+ "f048fe2485ed474f": {
+  "cover": "leads/loc-Q16427487.c.jpg",
+  "art": "leads/loc-Q16427487.jpg",
+  "webp": "leads/loc-Q16427487.webp",
+  "artist": "Cezar Suceveanu",
+  "license": "CC BY 3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Casa_Dorna_Candreni.jpg",
+  "name": "Dorna Candrenilor",
+  "kind": "locality",
+  "qid": "Q16427487"
  }
 }
