@@ -316,7 +316,8 @@ def test_promptul_dialectic_poarta_propozitiile_si_regulile():
 
 
 def test_loturile_separa_clusterele_vecine_si_pastreaza_ordinea():
-    meci = lambda n: [{"original_title": f"Universitatea Craiova a învins Inter Escaldes {n}"}]
+    def meci(n):
+        return [{"original_title": f"Universitatea Craiova a învins Inter Escaldes în Andorra, {n}"}]
     buget = [{"original_title": "Bugetul Bihorului aprobat în consiliu"}]
     alt = [{"original_title": "Tom Skerritt a murit la 93 de ani"}]
     g = [meci(1), meci(2), buget, meci(3), alt]
@@ -325,6 +326,9 @@ def test_loturile_separa_clusterele_vecine_si_pastreaza_ordinea():
         assert sum(1 for x in lot if "Craiova" in x[0]["original_title"]) <= 1
     assert lots[0][0] is g[0]                              # prioritatea primului se păstrează
     assert sorted(id(x) for lot in lots for x in lot) == sorted(id(x) for x in g)
+    # titluri fără entități comune nu sunt vecine: lotul rămâne plin (bugetul nu se sparge)
+    generice = [[{"original_title": f"eveniment {n} pentru anul acesta"}] for n in range(5)]
+    assert [len(x) for x in dialectic.loturi(generice, 3)] == [3, 2]
 
 
 def test_parsarea_tolerata_pierde_doar_obiectul_stricat():
