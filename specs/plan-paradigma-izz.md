@@ -274,3 +274,26 @@ la depozitul public de cod, unde stă acest document. Garda e mecanică:
   /surse/: „Actualizate ulterior", cu explicația că include actualizările firești ale știrilor
   în curs. Contorul din antet: „X articole → Y subiecte".
 - Respins din R5: incrementarea unui număr de versiune (nu există; `v` e versiunea schemei).
+
+**D6 — fără profilare (23.10.2026, noaptea; decizie delegată de proprietar: „acționează în
+spiritul legii lui unu și decide"; Argon R6, chat `cf93386d7c82a410`).** Ancorele, din
+distilările existente (`carti/distilari-8-intervale.md`), nu dintr-o recitire: a citi
+„programarea" cuiva fără cerere e încălcare (Ra 33.9); serviciul e posibil doar la nivelul la
+care e cerut (89.30); indiferență față de numărul celor care urmăresc (48.5, 17.2); spațiul
+mental umplut cu distrageri (AlienMind 889).
+- **Scos:** profilul dedus din clicuri și timp de lectură, „Pentru tine", reordonarea rubricilor
+  (sursa bug-ului raportat de proprietar pe 2026-09-09), îndemnul „Mai citește N articole",
+  GA4, Clarity, bara de consimțământ (un singur buton pentru trei prelucrări diferite), panoul ◎,
+  gazdele de măsurare din CSP și ramura `analytics_token` a beaconului Cloudflare — token-ul nu
+  era setat în CI, deci politica de confidențialitate afirma o măsurare care nu rula (măsurat pe
+  live: 0 apariții `cloudflareinsights` în HTML).
+- **Rămas:** județul, ales explicit (scris doar la `change`, „Toată țara" îl șterge); alertele push
+  și newsletterul, doar la cerere.
+- **Curățenie:** cheile `izz_profile*`/`izz_consent*` și cookie-urile `_ga*`, `_gid`, `_gat*`,
+  `_clck`, `_clsk` se șterg la prima vizită (Argon R6: cookie-urile orfane ar fi rămas până la doi
+  ani). **De scos după 2027-01-31.**
+- **Respins din R6:** scoaterea alertelor push. Sunt cerute explicit, cel mult una pe zi, aceeași
+  pentru toți: servire la nivelul cererii; a le scoate ar anula cererea cititorului, nu ar proteja-o.
+  **Amânat:** un filtru explicit de rubrici (nu l-a cerut nimeni; meniul deschide deja o rubrică).
+- **Rămâne al proprietarului (§10, plan de control):** scriptul Bot Fight Mode injectat de Cloudflare.
+  Dacă s-ar porni din dashboard injectarea automată a Web Analytics, CSP-ul o blochează deliberat.

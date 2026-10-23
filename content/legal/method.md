@@ -68,11 +68,11 @@ Pagina [Principii](/principii/) explică de ce există IZZ.ro. Aceasta arată **
 
 **Regulă adoptată:** accesul e liber, fără cont și fără paywall; canalele sunt deschise și standard.
 
-**Ce face site-ul:** flux RSS complet ([/feed.xml](/feed.xml)), abonare la notificări web push prin protocol standard (VAPID), fără cont și fără colectare de email, căutare liberă pe site, setări de consimțământ pe categorii ([/legal/privacy/#consimtamant](/legal/privacy/)) și acces la știrile expirate printr-o arhivă oglindă.
+**Ce face site-ul:** flux RSS complet ([/feed.xml](/feed.xml)), abonare la notificări web push prin protocol standard (VAPID), fără cont și fără colectare de email, căutare liberă pe site și acces la știrile expirate printr-o arhivă oglindă. Nu există bară de consimțământ, pentru că nu există nimic care să o ceară: niciun profil de lectură, niciun cookie de urmărire, niciun script de statistică în browserul cititorului. Singura alegere care schimbă prima pagină e județul, făcută explicit de cititor și păstrată doar în browserul lui.
 
-**Unde verifici:** deschide direct [/feed.xml](/feed.xml) sau panoul de consimțământ din [/legal/privacy/#consimtamant](/legal/privacy/#consimtamant).
+**Unde verifici:** deschide direct [/feed.xml](/feed.xml); în instrumentele de dezvoltator ale browserului, fila de rețea arată că o pagină nu cere nimic de la terți în afara găzduirii și a hărții, iar `localStorage` e gol până alegi un județ. Ce rămâne în browser e descris în [/legal/privacy/#consimtamant](/legal/privacy/#consimtamant).
 
-**Limită:** fără profilare, zero personalizare: toți cititorii văd același flux.
+**Limită:** toți cititorii văd același flux, deci nimeni nu primește o ordine potrivită lui; cine vrea doar o rubrică o deschide din meniu. Găzduirea (Cloudflare) primește, ca orice server, cererile browserului și adaugă un script propriu de protecție împotriva roboților; acela nu e codul nostru și nu-l folosim pentru statistici.
 
 ## 7. Atenția are un capăt
 

@@ -18,7 +18,7 @@ Un rezumat trebuie să ajute la înțelegerea evenimentului. Pentru contextul ed
 
 ### 3. Libertate reală de alegere
 
-Poți consulta sursele și poți refuza opțiunile de personalizare fără să accepți o doctrină. Filtrele schimbă ce informație găsești mai ușor, nu adevărul unei știri. Nu impunem pauze, limite de articole sau un program de lectură „corect” și nu clasificăm cititorii.
+Poți consulta sursele fără să accepți o doctrină. Nu deducem ce te interesează din ce citești: toți cititorii văd același flux, iar singura alegere care îl schimbă — județul — o faci tu, explicit. Filtrele schimbă ce informație găsești mai ușor, nu adevărul unei știri. Nu impunem pauze, limite de articole sau un program de lectură „corect” și nu clasificăm cititorii.
 
 ### 4. Discernământ, nu încredere oarbă
 
