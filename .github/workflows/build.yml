@@ -224,6 +224,10 @@ jobs:
           git add data/leadphotos.json 2>/dev/null || true
           git add data/eventphotos-miss.json 2>/dev/null || true
           git add data/localities_coords.json 2>/dev/null || true
+          # E0/E1: amprentele SHA-256 + ancorele articolelor din sinteze (fara text). Fara el,
+          # driftul pe ancore porneste gol la fiecare runner nou si o modificare tacuta a
+          # sursei nu poate fi vazuta niciodata intre doua rulari.
+          git add data/deep_meta.json 2>/dev/null || true
           git add media 2>/dev/null || true
           if git diff --cached --quiet; then
             echo "::warning::nimic de comis - pipeline-ul nu a schimbat niciun fisier"

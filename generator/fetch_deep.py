@@ -52,6 +52,22 @@ FIRST_PUBLISHER_WINDOW_MIN = 15      # fereastră glisantă 15 min pentru promov
 FIRST_PUBLISHER_DENSITY_RATIO = 1.5  # prag 1,5× numărul de ancore față de primul alert scurt
 NOVELTY_MIN_ANCHORS = 2              # minimum 2 ancore noi pentru INDEPENDENT_CONTRIBUTOR
 NOVELTY_MIN_RATIO = 0.30             # și minimum 30% rată de noutate în propriul set de ancore
+# Clonă = același text (comunicat, depeșă) rescris minimal, FĂRĂ atribuire explicită. Se
+# măsoară prin conținerea shingle-urilor de 4 cuvinte de conținut (fără cuvinte de legătură):
+# |A∩B| / min(|A|,|B|). Conținerea, nu Jaccard-ul: un lead RSS scurt copiat dintr-un articol
+# lung are Jaccard mic, dar e integral conținut în el; iar un paragraf de context adăugat de
+# redacție deasupra comunicatului nu „diluează” copia (Argon, review 23.10.2026). Sub
+# CLONE_MIN_WORDS cuvinte de conținut nu există destule shingle-uri ca măsura să însemne
+# ceva, deci nu se declară nicio clonă — prezumția e de independență.
+CLONE_SHINGLE_N = 4
+CLONE_CONTAINMENT = 0.65
+CLONE_MIN_WORDS = 10
+_STOPWORDS_RO = frozenset("""
+a ai al ale am ar are as asta acest aceasta aceste acesti acum ar au ca cand care cat ce cea
+cei cel cele cu cum da dar de deci din dintre doar dupa e ea ei el este eu fi fie fost iar
+il in inca intr intre ii isi la le li lui mai ma mi ne nici nu o or ori pe pentru prin sa sau
+se si sunt te tot toti un una unei unor unui va vor
+""".split())
 
 META_PATH = os.path.join(config.ROOT, "data", "deep_meta.json")
 
@@ -176,33 +192,47 @@ def split_romanian_sentences(text: str, source_id: str,
 # ---------------------------------------------------------------------------
 
 _NUM_ANCHOR_RE = re.compile(r"\b\d+(?:[.,]\d+)?%?\b")
-_MID_CAPS_RE = re.compile(r"(?<![.!?]\s)(?<!^)\b[A-ZĂÂÎȘȚ][a-zăâîșțA-ZĂÂÎȘȚ]{3,}\b")
+_MID_CAPS_RE = re.compile(r"(?<![.!?]\s)(?<!^)\b[A-ZĂÂÎȘȚ][a-zăâîșț][a-zăâîșțA-ZĂÂÎȘȚ]{2,}\b")
 _ACRONYM_ANCHOR_RE = re.compile(r"\b(?:[A-ZĂÂÎȘȚ]{3,10}|(?:[A-ZĂÂÎȘȚ][a-zăâîșț]?\.){2,})\b")
 _NOISE_ACRONYMS = frozenset({
     "UPDATE", "VIDEO", "FOTO", "LIVE", "BREAKING", "EXCLUSIV", "ALERTA", "ALERTE", "SURSE",
+    "ULTIMA", "URGENT", "OFICIAL", "GALERIE", "INTERVIU", "AUDIO", "DOCUMENT", "CITESTE",
 })
 
-# Glosar de entități frecvente RO (plan-paradigma-izz.md §3 E3): extrase ca ancore
-# chiar și când se află la început de propoziție (remediul punctului orb _MID_CAPS_RE).
-KNOWN_RO_ENTITIES = frozenset({
-    "guvern", "parlament", "senat", "presedint", "minister", "primari", "consiliu",
+# Glosar de entități frecvente RO (plan-paradigma-izz.md §3 E3): extrase ca ancore chiar și
+# când stau la început de propoziție — remediul punctului orb al `_MID_CAPS_RE`, care sare
+# peste primul cuvânt al frazei ca să nu prindă majuscula gramaticală.
+#
+# DOUĂ clase, deliberat separate (review 23.10.2026): o rădăcină scurtă potrivită pe PREFIX
+# prinde cuvinte de început de frază — „pot” → „Potrivit…”, „Poate…”; „mai” → „Mai mult…”;
+# „sens” → „Sensul…”. Acele „ancore” ar fi comune aproape tuturor articolelor și ar umfla
+# suprapunerea pe care se calculează noutatea și confirmările. Deci: rădăcinile de ≥5 litere
+# se potrivesc pe prefix (flexiunea românească: Guvernul/Guvernului), iar acronimele și
+# numele scurte se potrivesc DOAR pe cuvânt exact (sunt oricum prinse și de `_ACRONYM_ANCHOR_RE`
+# când apar cu majuscule).
+_GLOSSARY_PREFIX_STEMS = frozenset({
+    "guvern", "parlament", "senatul", "presedint", "minister", "ministr", "primar", "consiliu",
+    "premier", "prefect", "procuror",
     "curtea", "inalta", "tribunal", "parchet", "politia", "jandarmeri", "pompieri",
     "spital", "universitat", "inspectorat", "directia", "agentia", "autoritat",
-    "comisia", "banca", " buget", "koaliti", "coaliti", "opoziti",
-    "psd", "pnl", "usr", "aur", "udmr", "sos", "pot", "reper", "sens", "pmp", "fd",
-    "bnr", "anaf", "dna", "diicot", "ccr", "csat", "csm", "cnair", "anpc", "anre",
-    "igsu", "smurd", "isu", "mai", "mapn", "mae", "ms", "mec", "mipe", "madr",
-    "cnas", "casa", "ins", "bec", "aep", "cna", "ancom", "asf", "consiliul",
-    "bucurest", "cluj", "timis", "iasi", "constant", "brasov", "craiova", "galati",
-    "ploiest", "oradea", "braila", "arad", "pitest", "sibiu", "bacau", "mures",
-    "baia", "buzau", "botosan", "satu", "ramnicu", "drobeta", "suceava", "piatra",
-    "targovist", "focsan", "bistrit", "resita", "tulcea", "calarasi", "giurgiu",
-    "alba", "deva", "hunedoar", "zalau", "sfantu", "slatina", "vaslui", "slobozia",
-    "alexandria", "miercurea", "ilfov", "prahova", "dolj", "bihor", "arges",
-    "neamt", "maramures", "vrancea", "gorj", "olt", "teleorman", "ialomita",
-    "covasna", "harghita", "salaj", "mehedint", "caras", "dambovit", "valcea",
-    "romani", "moldov", "ucrain", "rusia", "bruxelles", "nato", "ue", "onu", "fmi",
+    "comisia", "banca", "bugetul", "coalitia", "opozitia", "camera", "deputat", "senator",
+    "bucurest", "timis", "constant", "brasov", "craiova", "galati", "ploiest", "oradea",
+    "braila", "pitest", "sibiu", "bacau", "mures", "buzau", "botosan", "ramnicu", "drobeta",
+    "suceava", "piatra", "targovist", "focsan", "bistrit", "resita", "tulcea", "calarasi",
+    "giurgiu", "hunedoar", "zalau", "sfantu", "slatina", "vaslui", "slobozia", "alexandria",
+    "miercurea", "ilfov", "prahova", "bihor", "arges", "neamt", "maramures", "vrancea",
+    "teleorman", "ialomita", "covasna", "harghita", "salaj", "mehedint", "dambovit",
+    "valcea", "romania", "moldov", "ucrain", "rusia", "bruxelles", "europe",
 })
+_GLOSSARY_EXACT = frozenset({
+    "psd", "pnl", "usr", "aur", "udmr", "sos", "pot", "reper", "pmp", "bnr", "anaf", "dna",
+    "diicot", "ccr", "csat", "csm", "cnair", "anpc", "anre", "igsu", "smurd", "isu", "mai",
+    "mapn", "mae", "ms", "mec", "mipe", "madr", "cnas", "ins", "bec", "aep", "cna", "ancom",
+    "asf", "nato", "ue", "onu", "fmi", "cluj", "iasi", "arad", "alba", "deva", "gorj",
+    "olt", "dolj", "satu", "baia", "caras", "senat",
+})
+# Compatibilitate: numele vechi rămâne valabil pentru importuri (uniunea celor două clase).
+KNOWN_RO_ENTITIES = _GLOSSARY_PREFIX_STEMS | _GLOSSARY_EXACT
 
 _QUOTE_ANCHOR_RE = re.compile(r"[„\"«]([^”\"»]{12,120})[”\"»]")
 
@@ -234,6 +264,23 @@ def _stem_ro(word: str) -> str:
     return norm[:8]
 
 
+def _glossary_hit(norm: str, raw: str) -> bool:
+    """Cuvântul de început de frază e o entitate din glosar? Exact pentru scurte, prefix
+    pentru rădăcinile de ≥5 litere. Acronimele exacte cer forma cu majusculă inițială
+    („PSD”, „Psd”), nu verbul omograf la început de frază („Pot”, „Mai”): acolo acceptăm
+    doar forma integral majusculă."""
+    if norm in _GLOSSARY_EXACT:
+        return len(norm) > 3 or raw.isupper()
+    return any(norm.startswith(p) for p in _GLOSSARY_PREFIX_STEMS)
+
+
+def _hash_quote(q_norm: str) -> str:
+    """Ancora de citat se stochează ca hash: `data/deep_meta.json` e comis într-un repo
+    PUBLIC, iar comparația (drift, noutate) e oricum pe egalitate exactă — deci textul
+    citatului nu trebuie să existe nicăieri în stare (aceeași regulă ca `_scrub_processed`)."""
+    return hashlib.sha1(q_norm[:64].encode("utf-8")).hexdigest()[:12]
+
+
 def extract_quick_anchors(text: str) -> set:
     """Ancore factuale (cifre, entități la mijloc sau din glosar la început de frază,
     acronime și citate scurte) pentru calculul de drift și graful de noutate E1/E3."""
@@ -249,14 +296,19 @@ def extract_quick_anchors(text: str) -> set:
         if clean_acr not in _NOISE_ACRONYMS and len(clean_acr) >= 3:
             anchors.add(f"ACR:{strip_diacritics(clean_acr.lower())}")
     # Entitățile din glosar sunt recunoscute și la început de propoziție (ex. „Guvernul a aprobat...”)
-    for word in re.findall(r"\b[A-ZĂÂÎȘȚ][a-zăâîșțA-ZĂÂÎȘȚ]{2,}\b", text):
+    for word in re.findall(r"\b[A-ZĂÂÎȘȚ][a-zăâîșțA-ZĂÂÎȘȚ]{1,}\b", text):
         norm = strip_diacritics(word.lower()).strip(".")
-        if any(norm.startswith(p) for p in KNOWN_RO_ENTITIES):
-            anchors.add(f"ENT:{_stem_ro(word)}")
+        if _glossary_hit(norm, word):
+            if norm in _GLOSSARY_EXACT and word.isupper():
+                anchors.add(f"ACR:{norm}")
+            else:
+                anchors.add(f"ENT:{_stem_ro(word)}")
     for q in _QUOTE_ANCHOR_RE.findall(text):
-        q_norm = re.sub(r"\s+", " ", strip_diacritics(q.lower()).strip())
+        # normalizare agresivă înainte de hash: o virgulă sau un spațiu în plus între două
+        # redacții nu trebuie să facă din același citat două ancore diferite
+        q_norm = " ".join(re.findall(r"\w+", strip_diacritics(q.lower())))
         if len(q_norm) >= 8:
-            anchors.add(f"Q:{q_norm[:32]}")
+            anchors.add(f"Q:{_hash_quote(q_norm)}")
     return anchors
 
 
@@ -325,18 +377,39 @@ def _item_text_and_anchors(it: dict, results_by_url: dict | None = None) -> tupl
     return txt, extract_quick_anchors(txt)
 
 
+def _shingles(text: str, n: int = CLONE_SHINGLE_N) -> set:
+    words = [w for w in re.findall(r"\w+", strip_diacritics((text or "").lower()))
+             if w not in _STOPWORDS_RO]
+    if len(words) < max(n, CLONE_MIN_WORDS):
+        return set()
+    return {" ".join(words[i:i + n]) for i in range(len(words) - n + 1)}
+
+
+def shingle_containment(a: set, b: set) -> float:
+    """Cât din textul mai scurt se regăsește, ca secvențe de 5 cuvinte, în celălalt."""
+    if not a or not b:
+        return 0.0
+    return len(a & b) / min(len(a), len(b))
+
+
 def classify_cluster_epistemic_roles(group: list,
                                      results_by_url: dict | None = None) -> dict[str, str]:
     """Graful determinist de noutate (plan-paradigma-izz.md §3, E1 & E3, 0 apeluri AI):
-    clasifică fiecare articol din `group` ca ROOT, INDEPENDENT_CONTRIBUTOR, ECHO sau DERIVED.
+    clasifică fiecare articol din `group` ca ROOT, INDEPENDENT_CONTRIBUTOR, ECHO, CLONE
+    sau DERIVED.
 
     - DERIVED: atribuire explicită către agenție sau altă publicație;
+    - CLONE: textul e conținut în proporție ≥60% (shingle-uri de 5 cuvinte) într-un text
+      deja clasificat al altei publicații — aceeași origine, fără atribuire declarată;
     - ROOT: primul publicant ne-derivat, dar cu fereastră glisantă de 15 minute în care
       un articol cu ≥1,5× (și cel puțin +2) mai multe ancore factuale câștigă ROOT în
       fața unui alert scurt de 2 rânduri;
     - INDEPENDENT_CONTRIBUTOR: aduce ≥2 ancore noi ȘI ≥30% rată de noutate față de
       ancorele deja acoperite în cluster;
-    - ECHO: repetă faptele deja prezente fără prag de noutate proprie.
+    - ECHO: relatează aceleași fapte, fără prag de noutate proprie și fără să fie clonă.
+
+    CLONE și DERIVED nu se numără niciodată drept confirmări (`cluster_cross_confirmations`):
+    trei publicații care preiau același comunicat sunt o singură origine, nu trei.
     """
     if not group:
         return {}
@@ -355,6 +428,7 @@ def classify_cluster_epistemic_roles(group: list,
             "published_dt": _parse_pub_ts(it.get("published")),
             "anchors": anchors,
             "derived": derived,
+            "shingles": _shingles(txt),
         })
 
     roles: dict[str, str] = {}
@@ -382,11 +456,19 @@ def classify_cluster_epistemic_roles(group: list,
     roles[root_entry["url"]] = "ROOT"
     seen_anchors = set(root_entry["anchors"])
     seen_domains = {root_entry["domain"]} if root_entry["domain"] else set()
+    originals = [root_entry]          # textele față de care se măsoară clonarea
 
-    # Greedy set cover pe restul candidaților ne-derivați (cei mai bogați în ancore întâi)
+    # Greedy set cover pe restul candidaților ne-derivați (cei mai bogați în ancore întâi).
+    # Clonarea se verifică ÎNAINTEA noutății: un comunicat rescris poate aduce „ancore noi”
+    # doar prin zgomot de formatare, iar originea lui rămâne aceeași.
     remaining = [e for e in pool if e["url"] != root_entry["url"]]
     remaining.sort(key=lambda e: (-len(e["anchors"]), e["published_dt"], e["idx"]))
     for e in remaining:
+        if any(o["domain"] != e["domain"]
+               and shingle_containment(e["shingles"], o["shingles"]) >= CLONE_CONTAINMENT
+               for o in originals):
+            roles[e["url"]] = "CLONE"
+            continue
         anc = e["anchors"]
         new_anc = anc - seen_anchors
         novelty_ratio = (len(new_anc) / len(anc)) if anc else 0.0
@@ -400,19 +482,23 @@ def classify_cluster_epistemic_roles(group: list,
                 seen_domains.add(e["domain"])
         else:
             roles[e["url"]] = "ECHO"
+        originals.append(e)
 
     return roles
 
 
-def cluster_cross_confirmations(group: list,
-                                roles_by_url: dict[str, str] | None = None,
-                                results_by_url: dict | None = None) -> int:
-    """Numărul de Confirmări Încrucișate (plan-paradigma-izz.md §3 E3): domenii distincte
-    ne-derivate (fără preluare explicită de agenție) care fie aduc contribuție proprie
+NON_CONFIRMING_ROLES = frozenset({"DERIVED", "CLONE"})
+
+
+def cross_confirmed_domains(group: list,
+                            roles_by_url: dict[str, str] | None = None,
+                            results_by_url: dict | None = None) -> set:
+    """Domeniile care contează ca Confirmări Încrucișate (plan-paradigma-izz.md §3 E3):
+    publicații distincte, ne-derivate și ne-clonate, care fie aduc contribuție proprie
     (ROOT / INDEPENDENT_CONTRIBUTOR), fie coroborează cel puțin 2 ancore factuale comune
-    cu ROOT fără a fi simple preluări DERIVED."""
+    cu ROOT (ECHO). Întoarce setul, ca apelantul să-l poată uni peste rulări."""
     if not group:
-        return 0
+        return set()
     roles = roles_by_url or classify_cluster_epistemic_roles(group, results_by_url)
     root_anchors: set = set()
     for it in group:
@@ -421,20 +507,29 @@ def cluster_cross_confirmations(group: list,
             _, root_anchors = _item_text_and_anchors(it, results_by_url)
             break
 
-    confirmed_domains: set[str] = set()
+    confirmed: set[str] = set()
     for idx, it in enumerate(group):
         url = it.get("url") or it.get("original_link") or f"__idx_{idx}"
         role = roles.get(url, "ECHO")
-        if role == "DERIVED":
+        if role in NON_CONFIRMING_ROLES:
             continue
         dom = domain_of(it.get("original_link") or url) or url
         if role in ("ROOT", "INDEPENDENT_CONTRIBUTOR"):
-            confirmed_domains.add(dom)
+            confirmed.add(dom)
         elif root_anchors:
             _, anc = _item_text_and_anchors(it, results_by_url)
             if len(anc & root_anchors) >= 2:
-                confirmed_domains.add(dom)
-    return max(1, len(confirmed_domains))
+                confirmed.add(dom)
+    return confirmed
+
+
+def cluster_cross_confirmations(group: list,
+                                roles_by_url: dict[str, str] | None = None,
+                                results_by_url: dict | None = None) -> int:
+    """Numărul de Confirmări Încrucișate pentru `group` (minimum 1 — prima relatare)."""
+    if not group:
+        return 0
+    return max(1, len(cross_confirmed_domains(group, roles_by_url, results_by_url)))
 
 
 # ---------------------------------------------------------------------------

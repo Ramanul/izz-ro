@@ -267,7 +267,51 @@ def test_ancore_acronime_citate_si_entitati_la_inceput_de_propozitie():
     assert "ACR:bnr" in anchors
     assert "ACR:anaf" in anchors
     assert "NUM:15" in anchors
-    assert any(a.startswith("Q:deficitul trebuie redus") for a in anchors)
+    # citatul e prezent ca ancoră, dar DOAR ca hash: deep_meta.json e comis în repo public
+    q = [a for a in anchors if a.startswith("Q:")]
+    assert len(q) == 1 and "deficit" not in q[0] and len(q[0]) == 2 + 12
+
+
+def test_glosarul_nu_prinde_cuvinte_de_inceput_de_fraza():
+    """„Potrivit…”, „Poate…”, „Mai mult…”, „Sensul…” nu sunt entități: o rădăcină scurtă
+    potrivită pe prefix le transforma în ancore comune tuturor articolelor."""
+    text = ("Potrivit sursei, ședința s-a amânat. Poate fi reluată. Mai mult, se amână. "
+            "Sensul giratoriu rămâne închis. Pot apărea întârzieri.")
+    anchors = fetch_deep.extract_quick_anchors(text)
+    assert not any(a.startswith(("ENT:pot", "ENT:mai", "ENT:sens")) for a in anchors), anchors
+
+
+def test_glosarul_prinde_acronimele_exacte_si_flexiunea():
+    anchors = fetch_deep.extract_quick_anchors(
+        "PSD a anunțat. Guvernului i s-a cerut avizul. Ministrul a semnat. Cluj e gazdă.")
+    assert "ACR:psd" in anchors
+    assert "ENT:guvern" in anchors
+    assert any(a.startswith("ENT:ministr") for a in anchors)
+    assert "ENT:cluj" in anchors
+
+
+def test_clona_fara_atribuire_nu_e_confirmare():
+    """Trei publicații care preiau același comunicat sunt o singură origine."""
+    comunicat = ("Consiliul Județean Bihor a aprobat bugetul de 820 de milioane de lei pentru "
+                 "anul viitor, cu investiții în drumuri, spitale și școli din tot județul.")
+    group = [
+        {"url": "https://a.ro/1", "source_name": "A", "published": "2026-10-20T10:00:00+00:00",
+         "title": "Buget aprobat", "description": comunicat},
+        {"url": "https://b.ro/1", "source_name": "B", "published": "2026-10-20T10:20:00+00:00",
+         "title": "Bihor: buget", "description": "Azi. " + comunicat},
+        {"url": "https://c.ro/1", "source_name": "C", "published": "2026-10-20T10:40:00+00:00",
+         "title": "Bugetul Bihorului",
+         "description": ("Consilierii județeni din Bihor au votat 820 de milioane de lei; "
+                         "opoziția PNL a criticat lipsa fondurilor pentru transportul "
+                         "public din Oradea și a cerut o rectificare în martie.")},
+    ]
+    roles = fetch_deep.classify_cluster_epistemic_roles(group)
+    assert roles["https://a.ro/1"] == "ROOT"
+    assert roles["https://b.ro/1"] == "CLONE"
+    assert roles["https://c.ro/1"] in ("INDEPENDENT_CONTRIBUTOR", "ECHO")
+    confirmate = fetch_deep.cross_confirmed_domains(group, roles)
+    assert "b.ro" not in confirmate
+    assert "a.ro" in confirmate
 
 
 def test_detectie_atribuire_derivata_si_excludere_proprie():
@@ -353,8 +397,10 @@ def test_graf_noutate_epistemica_si_confirmari_incrucisate():
         "url": "https://s3.ro/c",
         "original_link": "https://s3.ro/c",
         "source_name": "Sursa3",
-        "title": "Guvernul alocă 100 milioane lei pentru Timișoara",
-        "description": "Ministerul Finanțelor a confirmat suma de 100 milioane lei.",
+        # aceleași fapte, cu alte cuvinte — ECHO; titlul identic cu al ROOT ar fi fost
+        # CLONE (text comun, posibil comunicat), iar asta e alt caz, testat separat
+        "title": "Timișoara primește de la Guvern o alocare de 100 de milioane",
+        "description": "Suma, confirmată de Ministerul Finanțelor, ajunge la 100 milioane lei.",
         "published": (t0 + timedelta(minutes=30)).isoformat(),
     }
     s_derived = {
