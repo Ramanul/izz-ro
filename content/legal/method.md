@@ -8,7 +8,7 @@ Pagina [Principii](/principii/) explică de ce există IZZ.ro. Aceasta arată **
 
 **Regulă adoptată:** informația grea la început. Fără momeală de anticipare, fără adjective evaluative, fără titluri care nu se înțeleg singure.
 
-**Ce face site-ul:** promptul de sinteză rescrie titlul și rezumatul de la zero, mută subiectul și acțiunea în față, elimină adjectivele de opinie și păstrează verbele de rezervă din textul-sursă („ar fi declarat", „conform documentului"). Pagina [/azi/](/azi/) afișează ziua curentă exclusiv ca listă de titluri și surse.
+**Ce face site-ul:** promptul de sinteză rescrie titlul de la zero, mută subiectul și acțiunea în față, elimină adjectivele de opinie și păstrează verbele de rezervă din textul-sursă („ar fi declarat", „conform documentului"); o afirmație care pierde rezerva pe care sursa o avea nu intră în textul scurt de pe card. Pagina [/azi/](/azi/) afișează ziua curentă exclusiv ca listă de titluri și surse.
 
 **Unde verifici:** deschide [/azi/](/azi/) și caută un titlu-întrebare sau un „Șocant!".
 
@@ -26,17 +26,17 @@ Pagina [Principii](/principii/) explică de ce există IZZ.ro. Aceasta arată **
 
 **Limită:** dacă pagina sursei dispare sau stă în spatele unui paywall, linkul rămâne și nu servim copie a textului lor.
 
-## 3. Contradicțiile se arată, nu se netezesc
+## 3. Ce confirmă publicațiile, unde diferă, ce vine dintr-o singură origine
 
-**Problemă:** preluarea în masă creează iluzia consensului, iar citirea a cinci articole despre același subiect consumă timpul cititorului.
+**Problemă:** preluarea în masă creează iluzia consensului: trei redacții care publică același comunicat par trei confirmări, iar citirea a cinci articole despre același subiect consumă timpul cititorului.
 
-**Regulă adoptată:** la un eveniment relatat de mai multe publicații generăm o singură sinteză care separă faptele confirmate din mai multe surse de afirmațiile divergente și reține ordinea apariției în flux.
+**Regulă adoptată:** o sinteză nu redactează un text liber peste surse. Separă ce confirmă cel puțin două publicații care nu preiau același text, ce versiuni diferă (atribuite fiecărei publicații) și ce apare la o singură origine. Când relatările se exclud, nu scriem o versiune comună.
 
-**Ce face site-ul:** sintezele marchează explicit unde sursele se contrazic (cifre diferite, versiuni opuse). Pagina [/surse/](/surse/) publică, pe o fereastră de 12 zile, cine a publicat prima fiecare subiect devenit sinteză.
+**Ce face site-ul:** pentru fiecare eveniment relatat de mai multe publicații, sistemul citește textul integral al articolelor și îl împarte în propoziții numerotate. Modelul de limbaj propune faptele comune, diferențele și afirmațiile izolate, fiecare cu propozițiile din care provine; apoi un program le verifică pe rând: propoziția citată trebuie să existe și să aparțină acelui eveniment, fiecare cifră trebuie să fie în propozițiile citate, iar „confirmat" înseamnă cel puțin două origini distincte. Ce nu trece verificarea nu se publică; dacă prea multe afirmații pică, sinteza se amână. Rolul fiecărei publicații e calculat mecanic, fără model de limbaj: prima relatare observată (o relatare densă publicată în aceleași 15 minute bate o alertă de două rânduri), detalii suplimentare, aceleași fapte cu alte cuvinte, text comun cu altă publicație (posibil comunicat) sau preluare declarată. Cardul arată câte confirmări încrucișate are subiectul, iar [/surse/](/surse/) publică, pe 12 zile, cine a relatat primul.
 
-**Unde verifici:** deschide o sinteză multi-sursă pentru marcarea diferențelor, apoi tabelul de inițiativă de pe [/surse/](/surse/).
+**Unde verifici:** deschide o sinteză cu eticheta „Sinteză din N publicații": fiecare fapt poartă numele publicațiilor, iar lângă fiecare sursă stă rolul ei. Deschide sursele și caută faptul.
 
-**Limită:** două publicații care preiau același comunicat sunt tratate tehnic drept două confirmări, iar o sursă aflată în afara fluxurilor RSS pe care le urmărim nu intră în calculul primei apariții — de aceea pagina poartă avertismentul că ordinea observată nu dovedește autorul informației.
+**Limită:** o preluare rescrisă integral, fără atribuire, nu poate fi deosebită de o relatare independentă; textul comun e recunoscut doar când secvențele de cuvinte coincid. Când textul integral nu poate fi citit (paywall, pagină de consimțământ), se folosește doar descrierea din fluxul RSS, deci diferențele fine se pot pierde. Modelul poate clasa greșit un fapt, iar verificarea prinde citarea și cifra greșită, nu sensul greșit al unei propoziții corect citate. Prima relatare e prima observată în fluxurile pe care le urmărim, nu dovada autorului informației. Sintezele publicate înainte de 23 octombrie 2026 păstrează forma veche, narativă, până la actualizare sau expirare.
 
 ## 4. Proporție geografică și proveniența relatării
 
@@ -74,16 +74,28 @@ Pagina [Principii](/principii/) explică de ce există IZZ.ro. Aceasta arată **
 
 **Limită:** fără profilare, zero personalizare: toți cititorii văd același flux.
 
+## 7. Atenția are un capăt
+
+**Problemă:** fluxurile fără sfârșit, contoarele de noutăți și notificările repetate transformă informarea în reținere.
+
+**Regulă adoptată:** ziua are o listă finită, care își spune capătul; sistemul arată ce a eliminat, nu doar ce a adunat.
+
+**Ce face site-ul:** antetul primei pagini arată câte relatări ale surselor stau în spatele subiectelor publicate în ultimele 24 de ore (relatările despre același eveniment devin un singur subiect). Lista de pe [/azi/](/azi/) se încheie cu un rând care spune că ai parcurs toate subiectele zilei. Nu există derulare infinită și nici notificări repetate: alertele sunt opționale, cel mult una pe zi.
+
+**Unde verifici:** prima pagină, rândul de sub dată (pe ecran lat); capătul listei de pe [/azi/](/azi/).
+
+**Limită:** cifra relatărilor numără doar sursele din fluxurile urmărite și doar relatările unite într-o sinteză; duplicatele eliminate înainte de publicare nu sunt încă numărate public.
+
 ## Transparență scurtă: drepturi și conținut
 
 - Modele utilizate: Google Gemini și Anthropic Claude. Răspunderea editorială pentru ce rămâne publicat aparține IZZ.ro.
 - Corecțiile materiale sunt publicate cu ce s-a schimbat, când și de ce, pe [/legal/corrections/](/legal/corrections/). Retragerea materialelor la cerere temeinică: [/legal/takedown/](/legal/takedown/).
 - Imaginile **nu** sunt extrase din surse: coperțile sunt, de regulă, grafică proprie generată programatic; o fotografie de terț apare numai cu temei de licență documentat și credit vizibil. Detalii: [/legal/images/](/legal/images/).
-- Nu folosim conținut de agenții de presă și nu republicăm articolele integrale.
+- Nu folosim conținut de agenții de presă și nu republicăm articolele integrale. Textul integral al surselor e citit doar în timpul generării și nu se păstrează nicăieri; în starea publică rămân doar amprentele lui (cifre, nume, hash-uri), pentru a observa modificările ulterioare.
 
-## Notă de arhitectură
+## Codul e public
 
-Cele șase mecanisme de mai sus sunt traducerea în reguli, filtre și interfețe a unor idei din _Contactul Ra_ (volumele 1 și 2) și _AlienMind_: atenția ca resursă finită, verificabilitatea în locul autorității, limita asumată a oricărui sistem, corecția admisă. Fundamentul, pasajele și tensiunile acestei adaptări sunt documentate pe [/principii/](/principii/).
+Regulile, filtrele și verificările descrise aici sunt cod, nu declarații: [depozitul public al site-ului](https://github.com/Ramanul/izz-ro) conține programul care le aplică, testele care le fixează și specificațiile de proiectare. Mecanismele trebuie să rămână utile și pentru un cititor care nu împărtășește nicio convingere a celor care le-au construit.
 
 ## Dacă ceva nu se confirmă
 
