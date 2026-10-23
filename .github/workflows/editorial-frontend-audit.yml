@@ -4,6 +4,16 @@ on:
   pull_request:
     branches: [main]
     paths:
+      - 'generator/render.py'
+      - 'generator/select.py'
+      - 'generator/editorial.py'
+      - 'templates/base.html'
+      - 'content/legal/method.md'
+      - 'templates/index.html'
+      - 'templates/_editorial_selection.html'
+      - 'content/pages/despre.md'
+      - 'content/pages/principii.md'
+      - 'content/editorial/annotations.json'
       - 'generator/publication.py'
       - 'generator/dossiers.py'
       - 'templates/withdrawn.html'

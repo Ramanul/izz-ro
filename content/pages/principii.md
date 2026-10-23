@@ -4,7 +4,7 @@
 
 IZZ adună și sintetizează relatări publice pentru a face informația mai ușor de urmărit. „Zero Zgomot” înseamnă claritate, atribuire și limite vizibile, nu acces infailibil la adevăr. Poți folosi știrile fără să accepți credințele sau interpretările filosofice prezentate mai jos.
 
-**Starea acestei direcții.** Colectarea, gruparea și redactarea inițială folosesc automatizare. Transformarea editorială este în lucru: contextul suplimentar aprobat, dosarele cu istoric, legăturile explicate și marcajele detaliate de revizie sunt direcții de implementare, nu funcții pe care această pagină le certifică drept disponibile pe toate știrile. Pilotul va examina un lot delimitat; nu promitem citirea umană zilnică a întregului flux. Principiile de mai jos sunt angajamente după care evaluăm rezultatul, nu un certificat automat pentru fiecare articol.
+**Starea acestei direcții.** Colectarea, gruparea și redactarea inițială folosesc automatizare. Contextul documentat, un dosar persistent, legăturile explicate și selecția motivată sunt disponibile într-un pilot limitat, nu pe toate știrile. [Dosarul despre serviciile de plată din Sectorul 1](/dosar/sectorul-1-plati-octombrie-2026/) arată documentele, perioada și limitele examinării. Nu promitem citirea umană zilnică a întregului flux; un bloc documentat nu certifică automat întreaga știre. Controalele suplimentare pentru cititor și extinderea acoperirii rămân în lucru.
 
 ## Ce poți cere de la noi
 
@@ -93,3 +93,12 @@ Scrie la [contact@izz.ro](mailto:contact@izz.ro) sau folosește legătura de rap
 O eroare în această pagină poate fi semnalată cu titlul cărții, ediția și pasajul care contrazice interpretarea. Nu promitem confirmare automată sau un termen garantat de răspuns pentru această cale de contact.
 
 Vezi [politica de corecții](/legal/corrections/), [cum sintetizăm](/legal/method/) și [sursele și originalitatea](/surse/). [Pagina Despre](/despre/) explică rolul automatizării și cine răspunde pentru proiect.
+
+
+## Cum alegem materialele din pilot {#cum-alegem-materialele-din-pilot}
+
+Selecția explicată folosește numai articole publicabile cu adnotări documentate, valabile pentru versiunea afișată. Fiecare material are un motiv în limbaj normal și o arie explicită. Un termen primește prioritate numai dacă este legat de o resursă examinată și nu a expirat; un impact public are nevoie de grupul afectat, efect și document. Contextul poate rămâne util pentru înțelegerea unei perioade trecute, fără să fie prezentat drept serviciu disponibil acum.
+
+Ordinea ține cont de aria aleasă, de selecțiile editoriale explicite existente, de prioritatea documentată și de noutate. Egalitățile se rezolvă după adresa paginii. Diversificarea limitează repetarea aceleiași surse când există alternative; domenii diferite nu înseamnă automat origini independente. Nu folosim scoruri de adevăr sau cote de „vești bune”.
+
+Pilotul nu înlocuiește știrile și categoriile existente. Poți consulta oricând [ordinea cronologică](/azi/). Lipsa adnotărilor nu elimină știrile obișnuite. Explicațiile din pilot sunt documentate cu asistență AI și nu reprezintă o revizie umană a întregului flux. Efectul lor asupra utilității pentru cititor nu a fost încă măsurat.

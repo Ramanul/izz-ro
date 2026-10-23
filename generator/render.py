@@ -23,7 +23,7 @@ from slugify import slugify
 from . import config, covers, dossiers, editorial, geo, htmlart, pagefind_index, publication
 from .select import (_dedup, _dedup_sources, _diversify, _entity_index,
                      _pick_hero, _quality_gate, anunt_oficial_fara_corp, filtru_cautare_rapida,
-                     publicitar_la_sursa, titlu_afisare)
+                     publicitar_la_sursa, titlu_afisare, editorial_selection_comparison)
 # Re-export DELIBERAT, nu import mort: `tests/test_render_editorial.py` le cheama ca
 # `render._slug_stems` / `render.sources_coherent` (9 apeluri), iar `tools/qa_check.py:18`
 # importa `sources_coherent` din `generator.render`, nu din `generator.select` — si scriptul
@@ -1335,6 +1335,14 @@ def build(articles: list, mod: dict | None = None) -> None:
     print(f">> imagini: {spent} fisiere pentru {n} articole ({n_cover} coperti proprii, "
           f"{fara_coperta} pe coperta de categorie); arta se deseneaza in pagina")
 
+    selection_report = editorial_selection_comparison(by_date, editorial_now)
+    selection_enabled = os.environ.get("IZZ_EDITORIAL_SELECTION_ENABLED", "1") != "0"
+    selection_report["mode"] = "pilot" if selection_enabled else "shadow"
+    selected_by_path = {editorial.public_path(a): a for a in by_date}
+    editorial_selection = [dict(row, article=selected_by_path[row["path"]])
+                           for row in selection_report["selected"]] if selection_enabled else []
+    _write(os.path.join(OUT_DIR, "editorial-selection-comparison.json"),
+           json.dumps(selection_report, ensure_ascii=False, sort_keys=True))
     hero = _pick_hero(by_date)
     hero_urls = {a["url"] for a in hero}
 
@@ -1363,7 +1371,7 @@ def build(articles: list, mod: dict | None = None) -> None:
            env.get_template("index.html").render(**_base_ctx(
                "/", nav_section="stiri", articles=by_date, hero=hero, by_category=by_category,
                jsonld_nodes=[item_list], newsletter_html=_newsletter_html(), zi=zi,
-               briefing=by_date[:7],
+               briefing=by_date[:7], editorial_selection=editorial_selection,
                judete=[{"code": c, "slug": s, "label": l}
                        for c, s, l in _harta_rute_judetene()])))
 
