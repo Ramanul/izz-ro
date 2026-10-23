@@ -488,3 +488,19 @@ def test_scrub_processed_curata_cheile_tranzitorii_deep():
     for k in ("_deep_sentences", "_deep_mode", "_deep_anchors", "_epistemic_role", "_caused_dirty"):
         assert k not in art
 
+
+
+def test_drift_compara_esantion_cu_esantion_nu_trunchiat_cu_intreg():
+    """Un articol lung (peste plafonul de 80 de ancore), cu SHA schimbat dar aceleași fapte,
+    NU e „modificare tăcută”: înainte, setul stocat (trunchiat alfabetic) era comparat cu
+    setul proaspăt întreg și orice widget schimbat murdărea clusterul."""
+    anchors = {f"NUM:{i}" for i in range(150)} | {f"ENT:e{i}" for i in range(60)}
+    stocat = set(fetch_deep.anchor_sample(anchors))
+    assert len(stocat) == fetch_deep.MAX_ANCHORS_STORED
+    assert set(fetch_deep.anchor_sample(set(anchors))) == stocat      # stabil
+    assert not fetch_deep.check_if_silent_edit_causes_dirty(
+        "ROOT", "sha-vechi", "sha-nou", stocat, set(fetch_deep.anchor_sample(anchors)))
+    # o schimbare reală de fapte (jumătate din cifre înlocuite) rămâne detectată
+    schimbat = {f"NUM:{i}" for i in range(75, 225)} | {f"ENT:e{i}" for i in range(60)}
+    assert fetch_deep.check_if_silent_edit_causes_dirty(
+        "ROOT", "sha-vechi", "sha-nou", stocat, set(fetch_deep.anchor_sample(schimbat)))

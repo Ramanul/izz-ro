@@ -312,6 +312,18 @@ def extract_quick_anchors(text: str) -> set:
     return anchors
 
 
+def anchor_sample(anchors: set) -> list:
+    """Eșantionul stocat al ancorelor: cele MAX_ANCHORS_STORED cu cel mai mic hash (bottom-k),
+    sortate. NU primele în ordine alfabetică: trunchierea alfabetică ținea doar ACR:/ENT: și
+    pierdea NUM:/Q:, iar driftul compara un set trunchiat (cel stocat) cu unul întreg (cel
+    proaspăt) — orice articol cu peste 80 de ancore ieșea „modificat tăcut” la prima
+    schimbare de SHA (un widget, un contor), deși faptele erau aceleași. Bottom-k pe hash e
+    un eșantion stabil: aceleași ancore produc același eșantion, iar Jaccard-ul pe eșantioane
+    estimează Jaccard-ul pe seturile întregi."""
+    return sorted(sorted(anchors, key=lambda a: hashlib.md5(a.encode("utf-8")).hexdigest())
+                  [:MAX_ANCHORS_STORED])
+
+
 def compute_sha256(text: str) -> str:
     """Hash determinist pe textul normalizat (ignoră variații de whitespace)."""
     norm = re.sub(r"\s+", " ", text.strip().lower())
@@ -671,7 +683,7 @@ def _fetch_single(item: dict, prev: dict | None, domain_sems: dict, sems_lock: t
     dirty = check_if_silent_edit_causes_dirty(
         "ROOT",
         prev_meta.get("sha256"), new_sha,
-        set(prev_meta.get("anchors") or []), anchors,
+        set(prev_meta.get("anchors") or []), set(anchor_sample(anchors)),
     )
     return DeepResult(
         url=item.get("url") or url, domain=dom,
@@ -741,7 +753,7 @@ def fetch_deep(groups: list, meta_path: str | None = None, persist: bool = True)
             r.caused_dirty = check_if_silent_edit_causes_dirty(
                 role_for_dirty,
                 prev_meta.get("sha256"), r.content_sha256,
-                set(prev_meta.get("anchors") or []), r.anchors,
+                set(prev_meta.get("anchors") or []), set(anchor_sample(r.anchors)),
             )
             max_sents = MAX_SENTENCES if role in ("ROOT", "INDEPENDENT_CONTRIBUTOR") else MAX_SENTENCES_ECHO
             r.sentences = split_romanian_sentences(
@@ -751,7 +763,7 @@ def fetch_deep(groups: list, meta_path: str | None = None, persist: bool = True)
             # `state._scrub_processed` le șterge înainte de scrierea în `data/articles.json`.
             it["_deep_sentences"] = dict(r.sentences)
             it["_deep_mode"] = r.extraction_mode
-            it["_deep_anchors"] = sorted(r.anchors)[:MAX_ANCHORS_STORED]
+            it["_deep_anchors"] = anchor_sample(r.anchors)
             it["_epistemic_role"] = role
             it["_caused_dirty"] = r.caused_dirty
 
@@ -761,7 +773,7 @@ def fetch_deep(groups: list, meta_path: str | None = None, persist: bool = True)
             _STATISTICI["SILENT_EDIT_DIRTY"] += 1
         meta[r.url] = {
             "sha256": r.content_sha256,
-            "anchors": sorted(r.anchors)[:MAX_ANCHORS_STORED],
+            "anchors": anchor_sample(r.anchors),
             "mode": r.extraction_mode,
             "role": r.epistemic_role,
             "published": r.published,
