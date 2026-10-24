@@ -8,7 +8,7 @@ import json
 import re
 from datetime import datetime, timezone
 
-from . import config, dialectic, fetch_deep, geo, raport_copiere
+from . import config, dialectic, fetch_deep, geo, guard, raport_copiere
 from . import diacritice
 from .verifica_sinteza import cifre_straine, slug_din_link, titlu_copiat
 from .util import truncate_words, domain_of, strip_diacritics
@@ -747,6 +747,15 @@ def process_batch(items: list, provider) -> list:
     return done
 
 
+def _publicabil_in_romana(item: dict) -> bool:
+    """Un anunț dintr-o sursă `ro_hu` se poate publica fără traducere dacă textul are măcar un
+    marker românesc (diacritice ă/â/î/ș/ț sau cuvinte funcționale) ori niciun marker maghiar.
+    Anunțurile bilingve trec; cele exclusiv maghiare se sar — n-are cine să le traducă."""
+    text = f"{item.get('original_title') or ''} {item.get('description') or ''}"
+    ro, _en = guard._scor_limba(text)
+    return bool(ro) or not guard._scor_hu(text)
+
+
 def process_single(item: dict, provider) -> dict | None:
     """Model B. Modifica item-ul pe loc: title/teaser/category/model/processed_by.
 
@@ -759,7 +768,13 @@ def process_single(item: dict, provider) -> dict | None:
         # Orice sursa care NU e in romana: fara provider AI nu exista cine sa traduca, deci
         # itemul se sare, nu se publica in limba originala. Testul era cablat pe "en" si
         # lasa sa treaca brut orice alta limba (it/de/fr) — vezi `lang` din config.SOURCES.
-        if (item.get("source_lang") or "ro") != "ro":
+        # `ro_hu` (primăriile din cele 8 județe cu populație maghiară, din 2026-09-06) NU e o
+        # limbă străină: publică în română, în maghiară sau în ambele. Cu `!= "ro"`, TOATE
+        # cele 101 surse erau sărite la fiecare rulare — 0 articole din ele în starea din
+        # 24.10.2026 (1348 de articole oficiale, toate din surse `ro`). Se sare doar textul
+        # exclusiv maghiar.
+        lang = item.get("source_lang") or "ro"
+        if lang != "ro" and not (lang == "ro_hu" and _publicabil_in_romana(item)):
             item["skip"] = True
             return item
         item["title"] = item.get("original_title", "")
