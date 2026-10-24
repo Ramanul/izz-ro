@@ -19,6 +19,7 @@ from . import dialectic, diacritice, jurnal_triage, memorie, raport_copiere, fet
 from .providers import gemini as gemini_prov
 from .process import (get_provider, process_single, process_clusters_batch, process_batch,
                       process_official, repara_diacritice, reset_stats_b, stats_b,
+                      MOTIVE_REINCERCABILE,
                       OFFICIAL_PREFIXES)
 from .util import domain_of, fara_titluri_data
 from .claude_orchestrator import ClaudeCodeValidator
@@ -238,18 +239,26 @@ def process_new(new_items: list, provider, budget: int, existing: list | None = 
     cbs = config.CLUSTER_BATCH_SIZE if provider else (len(syn) or 1)
     # Loturi fără clustere vecine (același subiect, sub-unit la clustering): în același lot,
     # modelul citează propozițiile unuia în celălalt, iar E2 le respinge ca străine.
+    def _accepta(g, rep):
+        processed.append(rep)
+        surse_brute[rep.get("url") or ""] = diacritice.text_grup(g)
+        if not rep.get("skip"):
+            folded.update(a["url"] for a in g if a["url"] != rep["url"])
+
+    de_reluat: list = []                       # (grup, motiv, titlu respins) — vezi mai jos
     for chunk in dialectic.loturi(syn, cbs):
         if used >= budget:
             break  # restul clusterelor -> reluate la rularea urmatoare
-        reps = process_clusters_batch(chunk, provider)
+        motive: list = []
+        reps = process_clusters_batch(chunk, provider, motive=motive)
         used += 1
-        for g, rep in zip(chunk, reps):
+        for g, rep, motiv in zip(chunk, reps, motive or [None] * len(chunk)):
             if rep is None:
-                continue  # esec/nemapat -> cluster amanat; membrii raman nefolded si se reiau data viitoare
-            processed.append(rep)
-            surse_brute[rep.get("url") or ""] = diacritice.text_grup(g)
-            if not rep.get("skip"):
-                folded.update(a["url"] for a in g if a["url"] != rep["url"])
+                # esec/nemapat -> cluster amanat; membrii raman nefolded si se reiau data viitoare
+                if provider is not None and motiv and motiv[0] in MOTIVE_REINCERCABILE:
+                    de_reluat.append((g, motiv[0], motiv[1]))
+                continue
+            _accepta(g, rep)
 
     # model B in LOTURI (1 apel per BATCH_SIZE articole)
     bs = config.BATCH_SIZE if provider else (len(singles) or 1)
@@ -258,6 +267,42 @@ def process_new(new_items: list, provider, budget: int, existing: list | None = 
             break  # restul loturilor -> reluate la rularea urmatoare
         processed.extend(process_batch(singles[i:i + bs], provider))
         used += 1
+
+    # A doua incercare, in ACEEASI rulare, pentru clusterele amanate din cauza raspunsului
+    # modelului (obiect lipsa din lot, titlu transcris sau deformat) — doar din bugetul ramas
+    # dupa B, deci nu ia nimic din ce s-ar fi publicat sigur, si cu UN apel lasat deoparte
+    # pentru reparatia de diacritice de mai jos (§7). Masurat pe rularea CI din 24.10.2026:
+    # 14 din 43 de clustere amanate, din care 11 pentru motivele astea (titlu copiat 6,
+    # nemapat 5); un cluster amanat revine identic peste ~4 h, iar modelul, la temperatura
+    # 0,2, tinde sa scrie acelasi titlu — de aceea titlul respins intra in prompt, numit.
+    if de_reluat:
+        dupa_grup = {id(g): (m, t) for g, m, t in de_reluat}
+        recuperate: list = []
+        with dialectic.a_doua_incercare():
+            for chunk in dialectic.loturi([g for g, _, _ in de_reluat], cbs):
+                if used >= budget - 1:
+                    break
+                respinse = {i: dupa_grup[id(g)] for i, g in enumerate(chunk)
+                            if dupa_grup[id(g)][1]}
+                motive2: list = []
+                reps = process_clusters_batch(chunk, provider, respinse=respinse,
+                                              motive=motive2)
+                used += 1
+                dialectic.numara("reincercate", len(chunk))
+                for g, rep, m2 in zip(chunk, reps, motive2 or [None] * len(chunk)):
+                    if rep is not None:
+                        recuperate.append(dupa_grup[id(g)][0])
+                        _accepta(g, rep)
+                    elif m2 and m2[1] and (m2[1].casefold()
+                                           == (dupa_grup[id(g)][1] or "").casefold()):
+                        # modelul a ignorat nota: același titlu, scris din nou
+                        dialectic.numara("reincercare_titlu_identic")
+        # in afara contextului: se scade din amanarea PRIMEI incercari, care nu mai pleaca
+        # la rularea urmatoare (sub context, cheia ar fi primit prefixul `reincercare_`)
+        for motiv in recuperate:
+            dialectic.numara(f"amanate_{motiv}", -1)
+        if recuperate:
+            dialectic.numara("recuperate_la_reincercare", len(recuperate))
 
     # Diacriticele pierdute la reformulare: se MASOARA pe fiecare rulare si se repara cu UN
     # singur apel-lot suplimentar, consumat din buget (de aceea `used += 1`). Anunturile
@@ -714,6 +759,13 @@ def _print_report(stats: dict, processed_new: list, dry_run: bool):
     if oprire:
         print("Raspunsuri AI oprite altfel decat normal: "
               + ", ".join(f"{k} {v}" for k, v in sorted(oprire.items())))
+    # Sintezele C pe stări, amânări și reîncercare — în log, nu doar în jurnalul de triaj, ca
+    # o rulare CI (sau un dry-run) să arate direct cât a recuperat a doua încercare.
+    sin = {k: v for k, v in (stats.get("dialectic") or {}).items()
+           if v and k.startswith(("stare_", "amanate_", "reincercare_", "reincercate",
+                                  "recuperate_"))}
+    if sin:
+        print("Sinteze C: " + ", ".join(f"{k} {v}" for k, v in sorted(sin.items())))
     pierderi_b = {k: v for k, v in (stats.get("model_b") or {}).items() if k != "publicate"}
     if pierderi_b:
         print("Model B, ce n-a iesit din loturi: "

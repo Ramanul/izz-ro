@@ -16,6 +16,8 @@ intră doar parafrazele modelului care au trecut verificările și NUMELE public
 """
 from __future__ import annotations
 
+from contextlib import contextmanager
+
 import os
 import re
 from dataclasses import dataclass, field
@@ -83,7 +85,25 @@ def numara(cheie: str, n: int = 1) -> None:
     _numara(cheie, n)
 
 
+# În timpul celei de-a doua încercări (main.process_new), amânările se numără sub
+# `reincercare_amanate_*`: `amanate_*` înseamnă „clustere care pleacă la rularea următoare”, iar
+# /sub-prag/ le adună. Un cluster care pică de două ori ar fi altfel numărat de două ori.
+_PREFIX_REINCERCARE = ""
+
+
+@contextmanager
+def a_doua_incercare():
+    global _PREFIX_REINCERCARE
+    _PREFIX_REINCERCARE = "reincercare_"
+    try:
+        yield
+    finally:
+        _PREFIX_REINCERCARE = ""
+
+
 def _numara(cheie: str, n: int = 1) -> None:
+    if _PREFIX_REINCERCARE and cheie.startswith("amanate_"):
+        cheie = _PREFIX_REINCERCARE + cheie
     _STATISTICI[cheie] = _STATISTICI.get(cheie, 0) + n
 
 
@@ -413,7 +433,8 @@ def validate(obj: dict, block: Block) -> dict | None:
         _numara("amanate_doar_rezerva")
         return None
 
-    _numara(f"stare_{state}")
+    # `stare_*` NU se numără aici: validarea nu înseamnă publicare — titlul poate încă amâna
+    # clusterul (process._aplica_dialectic), iar o reîncercare l-ar număra a doua oară.
     # Câte ORIGINI distincte stau în spatele afirmațiilor neconfirmate reciproc: una singură
     # (o primă relatare + clonele/preluările ei) e altceva decât două redacții independente
     # care relatează fapte diferite fără să se suprapună — pagina nu are voie să le confunde.
