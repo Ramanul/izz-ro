@@ -641,8 +641,8 @@ def process_official(items: list) -> list:
     return done
 
 
-# Motivele pentru care un articol B NU iese dintr-un lot, numărate pe rulare (build.json →
-# `model_b`, jurnalul de triaj). Fără ele, „Amânate (buget NEepuizat — altă cauză)" — 87–112
+# Motivele pentru care un articol B NU iese dintr-un lot, numărate pe rulare (rezumatul
+# rulării și jurnalul de triaj, `data/triage_log.jsonl` → `sinteze`, chei `b_*`). Fără ele, „Amânate (buget NEepuizat — altă cauză)" — 87–112
 # din 415–486 de iteme noi pe rulările din 22–23.10.2026 — nu se putea despărți pe cauze.
 _STAT_B: dict = {}
 

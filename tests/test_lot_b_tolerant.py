@@ -102,3 +102,15 @@ def test_reparatia_liniutei_atinge_doar_chei():
     # ghilimea neescapată dintr-un citat: fragmentul e stricat, dar textul nu se rescrie
     citat = '{"id": 1, "teaser": "A declarat, - "Nu plec" și a ieșit"}'
     assert repara(citat) == citat
+
+
+def test_amanarile_se_despart_pe_locul_in_care_au_ramas(monkeypatch):
+    from generator import main
+    monkeypatch.setattr(main, "itemele_fara_substanta", lambda items: [items[4]])
+    main._COMPOZITIE.clear()
+    main._COMPOZITIE.update(sinteza={"u0", "u1"}, b={"u2", "u3"}, oficial={"u5"})
+    iteme = [{"url": f"u{i}"} for i in range(7)]
+    out = main.motive_amanare(iteme, handled={"u1", "u3"})
+    # u4 e respins definitiv (nu e amânat); u6 n-a fost repartizat nicăieri
+    assert out == {"sinteza_amanata": 1, "b_neiesit": 1, "oficial_sarit": 1, "nerepartizat": 1}
+    assert sum(out.values()) == main.numara_amanate(iteme, {"u1", "u3"})
