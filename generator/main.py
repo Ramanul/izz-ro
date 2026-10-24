@@ -753,6 +753,13 @@ def _print_report(stats: dict, processed_new: list, dry_run: bool):
     if oprire:
         print("Raspunsuri AI oprite altfel decat normal: "
               + ", ".join(f"{k} {v}" for k, v in sorted(oprire.items())))
+    # Sintezele C pe stări, amânări și reîncercare — în log, nu doar în jurnalul de triaj, ca
+    # o rulare CI (sau un dry-run) să arate direct cât a recuperat a doua încercare.
+    sin = {k: v for k, v in (stats.get("dialectic") or {}).items()
+           if v and k.startswith(("stare_", "amanate_", "reincercare_", "reincercate",
+                                  "recuperate_"))}
+    if sin:
+        print("Sinteze C: " + ", ".join(f"{k} {v}" for k, v in sorted(sin.items())))
     pierderi_b = {k: v for k, v in (stats.get("model_b") or {}).items() if k != "publicate"}
     if pierderi_b:
         print("Model B, ce n-a iesit din loturi: "
