@@ -20,7 +20,7 @@ from xml.sax.saxutils import escape as xml_escape
 from jinja2 import Environment, FileSystemLoader, select_autoescape
 from slugify import slugify
 
-from . import config, covers, dossiers, editorial, geo, htmlart, memorie, pagefind_index, publication
+from . import config, covers, dossiers, editorial, geo, guard, htmlart, memorie, pagefind_index, publication
 from .select import (_dedup, _dedup_sources, _diversify, _entity_index,
                      _pick_hero, _quality_gate, anunt_oficial_fara_corp, filtru_cautare_rapida,
                      publicitar_la_sursa, titlu_afisare)
@@ -267,6 +267,27 @@ _RO_MONTHS = ["", "ianuarie", "februarie", "martie", "aprilie", "mai", "iunie",
 _RO_DAYS = ["Luni", "Marți", "Miercuri", "Joi", "Vineri", "Sâmbătă", "Duminică"]
 
 
+def _href_extern(url) -> str:
+    """Ultima barieră pentru un `href` cu date venite din afară: întoarce URL-ul doar dacă
+    `guard.url_ostil` îl acceptă (http/https, fără caractere de control, fără credențiale,
+    fără gazdă internă), altfel `#`.
+
+    De ce la locul folosirii, deși `moderation.apply` ascunde deja articolele cu URL ostil:
+    nu orice `href` trece prin ea — memoria subiectelor (rânduri scrise în rulări vechi,
+    înainte ca garda să se fi înăsprit), catalogul de surse, creditele de imagine. Escaparea
+    Jinja2 nu oprește `javascript:`: e HTML valid. Constatarea Semgrep `var-in-href` de pe
+    #512 a cerut-o; `tests/test_href_extern.py` cere filtrul pe orice `href` din șabloane
+    care nu începe cu `{{ base }}`."""
+    u = url.strip() if isinstance(url, str) else ""
+    if not u:
+        return "#"
+    motiv = guard.url_ostil(u)
+    if motiv:
+        logging.warning("href extern respins la randare (%s): %.80r", motiv, u)
+        return "#"
+    return u
+
+
 def _env() -> Environment:
     env = Environment(
         loader=FileSystemLoader(TPL_DIR),
@@ -275,6 +296,7 @@ def _env() -> Environment:
     )
     # eticheta afisata a unei categorii (slug URL neschimbat); fallback = capitalizat
     env.filters["cat_label"] = lambda slug: config.CATEGORY_LABELS.get(slug, (slug or "").capitalize())
+    env.filters["href_extern"] = _href_extern
     return env
 
 

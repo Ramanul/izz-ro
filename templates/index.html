@@ -46,7 +46,7 @@
         <div>
           {% set top_srcs = top.sources[:6] if (top.model == 'C' and top.sources) else [{'name': top.source_name, 'url': top.original_link}] %}
           <h3>{{ 'Sursă' if top_srcs | length == 1 else 'Surse' }}</h3>
-          <ul>{% for s in top_srcs %}<li><a href="{{ s.url }}" target="_blank" rel="noopener noreferrer">{{ s.name }}</a></li>{% endfor %}</ul>
+          <ul>{% for s in top_srcs %}<li><a href="{{ s.url | href_extern }}"{# nosemgrep: generic.html-templates.security.var-in-href.var-in-href #} target="_blank" rel="noopener noreferrer">{{ s.name }}</a></li>{% endfor %}</ul>
         </div>
         <div><h3>Publicat</h3><time datetime="{{ top.published }}">{{ top.published_human }}</time></div>
       </aside>
