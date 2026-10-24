@@ -8,7 +8,7 @@ import json
 import re
 from datetime import datetime, timezone
 
-from . import config, dialectic, fetch_deep, geo, raport_copiere
+from . import config, dialectic, fetch_deep, geo, guard, raport_copiere
 from . import diacritice
 from .verifica_sinteza import cifre_straine, slug_din_link, titlu_copiat
 from .util import truncate_words, domain_of, strip_diacritics
@@ -509,14 +509,16 @@ def _cross_item_contamination(candidate: str, own_source: str, peer_sources: lis
 def _parse_json_array(text: str) -> list:
     """Extrage un array JSON din raspuns (tolerant la ```json fences si la wrapping)."""
     cleaned = re.sub(r"^```(?:json)?|```$", "", text.strip(), flags=re.MULTILINE).strip()
+    # `strict=False`: un Enter literal într-un șir (frecvent în rezumate pe mai multe rânduri)
+    # e „Invalid control character" pentru parserul strict, dar conținutul e intact (Argon R7).
     try:
-        data = json.loads(cleaned)
+        data = json.loads(cleaned, strict=False)
     except json.JSONDecodeError:
         m = re.search(r"\[.*\]", cleaned, re.DOTALL)
         if not m:
             return []
         try:
-            data = json.loads(m.group(0))
+            data = json.loads(m.group(0), strict=False)
         except json.JSONDecodeError:
             return []
     if isinstance(data, list):
@@ -561,6 +563,10 @@ def _obiecte_de_nivel_unu(text: str) -> list[str]:
 
 _REPARATII_JSON = (
     (re.compile(r'^(\s*)-\s+(")', re.M), r"\1\2"),     # „- "entities": [...]" — liniuță rătăcită
+    # aceeași liniuță pe un obiect scris pe un singur rând („…, - "teaser": …"). Doar înaintea
+    # unei CHEI (`"nume":`), nu a oricărei ghilimele: într-un fragment deja stricat de ghilimele
+    # neescapate, „a declarat, - "Nu plec"" ar fi altfel rescris (Argon R7).
+    (re.compile(r'([,{]\s*)-\s+("[A-Za-z_][A-Za-z0-9_]*"\s*:)'), r"\1\2"),
     (re.compile(r",(\s*[}\]])"), r"\1"),                  # virgulă înainte de închidere
 )
 
@@ -583,13 +589,42 @@ def _parse_json_array_tolerant(text: str) -> list:
                 for rx, rep in _REPARATII_JSON:
                     cand = rx.sub(rep, cand)
             try:
-                obj = json.loads(cand)
+                obj = json.loads(cand, strict=False)
             except json.JSONDecodeError:
                 continue
             if isinstance(obj, dict):
                 out.append(obj)
             break
     return out
+
+
+def _pe_id(arr: list, n: int) -> tuple[dict, int, int]:
+    """Obiectele răspunsului indexate pe `id`, plus (id-uri duplicate, id-uri străine).
+
+    Un id care apare de două ori e ambiguu: cu „ultimul câștigă", o știre ar primi titlul
+    scris pentru vecina ei. Se aruncă AMBELE obiecte (Argon R7); un id în afara lotului nu
+    corespunde niciunei știri trimise."""
+    by_id: dict = {}
+    duplicate: set = set()
+    straine = 0
+    for obj in arr:
+        try:
+            v = obj.get("id")
+            if isinstance(v, bool):
+                continue
+            i = int(v) if isinstance(v, (int, float)) and float(v).is_integer() \
+                else int(str(v).strip())
+        except (TypeError, ValueError, AttributeError):
+            continue
+        if not 0 <= i < n:
+            straine += 1
+        elif i in by_id:
+            duplicate.add(i)
+        else:
+            by_id[i] = obj
+    for i in duplicate:
+        by_id.pop(i, None)
+    return by_id, len(duplicate), straine
 
 
 OFFICIAL_PREFIXES = ("pl_", "cj_", "pr_")
@@ -606,11 +641,33 @@ def process_official(items: list) -> list:
     return done
 
 
+# Motivele pentru care un articol B NU iese dintr-un lot, numărate pe rulare (rezumatul
+# rulării și jurnalul de triaj, `data/triage_log.jsonl` → `sinteze`, chei `b_*`). Fără ele, „Amânate (buget NEepuizat — altă cauză)" — 87–112
+# din 415–486 de iteme noi pe rulările din 22–23.10.2026 — nu se putea despărți pe cauze.
+_STAT_B: dict = {}
+
+
+def stats_b() -> dict:
+    return dict(_STAT_B)
+
+
+def reset_stats_b() -> None:
+    _STAT_B.clear()
+
+
+def _numara_b(cheie: str, n: int = 1) -> None:
+    if n:
+        _STAT_B[cheie] = _STAT_B.get(cheie, 0) + n
+
+
 def process_batch(items: list, provider) -> list:
     """Model B in LOT: un singur apel AI pentru `items`. Mapeaza raspunsul pe id (= index).
     Returneaza DOAR articolele procesate corect; cele nemapate NU se publica brute
     (regula 'No mangled output') -> raman in afara starii si sunt reluate la rularea urmatoare.
-    """
+
+    Parsarea e tolerantă per obiect, ca la sinteza dialectică: cu parserul strict, UN obiect
+    stricat (o liniuță rătăcită, o virgulă înainte de acoladă — măsurat pe Gemini Flash Lite
+    în formatul C, 23.10.2026) amâna toate cele `BATCH_SIZE` articole ale lotului."""
     if not items:
         return []
     if provider is None:                       # fara AI -> fallback determinist per item
@@ -621,16 +678,21 @@ def process_batch(items: list, provider) -> list:
         for i, it in enumerate(items))
     try:
         raw = provider.complete(SYSTEM_BATCH, USER_BATCH.format(items_block=block))
-        arr = _parse_json_array(raw)
     except Exception:
+        _numara_b("lot_esuat_apel", len(items))
         return []                              # tot lotul a esuat -> reluat data viitoare
+    arr = _parse_json_array(raw)
+    if not arr:
+        arr = _parse_json_array_tolerant(raw)
+        if arr:
+            _numara_b("loturi_reparate")       # strict ar fi pierdut tot lotul
+        else:
+            _numara_b("lot_esuat_json", len(items))
+            return []
 
-    by_id = {}
-    for obj in arr:
-        try:
-            by_id[int(obj.get("id"))] = obj
-        except (TypeError, ValueError, AttributeError):
-            continue
+    by_id, duplicate, straine = _pe_id(arr, len(items))
+    _numara_b("id_duplicat", duplicate)
+    _numara_b("id_strain", straine)
 
     done = []
     source_texts = [
@@ -639,14 +701,21 @@ def process_batch(items: list, provider) -> list:
     ]
     for i, it in enumerate(items):
         obj = by_id.get(i)
-        title = (obj.get("title") or "").strip() if isinstance(obj, dict) else ""
-        teaser = (obj.get("teaser") or "").strip() if isinstance(obj, dict) else ""
+        if not isinstance(obj, dict):
+            _numara_b("nemapate")
+            continue
+        title = (obj.get("title") or "").strip()
+        teaser = (obj.get("teaser") or "").strip()
+        if not (title and teaser):
+            _numara_b("fara_titlu_sau_rezumat")
+            continue
         if title and teaser:
             candidate = f"{title} {teaser}"
             peers = source_texts[:i] + source_texts[i + 1:]
             if _cross_item_contamination(candidate, source_texts[i], peers):
                 # Nu publicăm un candidat care pare să fi împrumutat fapte din alt
                 # articol al aceluiași lot; itemul va fi reluat la rularea următoare.
+                _numara_b("contaminare_lot")
                 continue
             it["model"] = "B"
             it["title"] = title
@@ -674,8 +743,17 @@ def process_batch(items: list, provider) -> list:
                                    it["teaser"], source_texts[i],
                                    slug_original=slug_din_link(it.get("original_link")))
             done.append(it)
-        # nemapat/invalid -> nu il adaugam (reluat la rularea urmatoare)
+    _numara_b("publicate", len(done))
     return done
+
+
+def _publicabil_in_romana(item: dict) -> bool:
+    """Un anunț dintr-o sursă `ro_hu` se poate publica fără traducere dacă textul are măcar un
+    marker românesc (diacritice ă/â/î/ș/ț sau cuvinte funcționale) ori niciun marker maghiar.
+    Anunțurile bilingve trec; cele exclusiv maghiare se sar — n-are cine să le traducă."""
+    text = f"{item.get('original_title') or ''} {item.get('description') or ''}"
+    ro, _en = guard._scor_limba(text)
+    return bool(ro) or not guard._scor_hu(text)
 
 
 def process_single(item: dict, provider) -> dict | None:
@@ -690,7 +768,13 @@ def process_single(item: dict, provider) -> dict | None:
         # Orice sursa care NU e in romana: fara provider AI nu exista cine sa traduca, deci
         # itemul se sare, nu se publica in limba originala. Testul era cablat pe "en" si
         # lasa sa treaca brut orice alta limba (it/de/fr) — vezi `lang` din config.SOURCES.
-        if (item.get("source_lang") or "ro") != "ro":
+        # `ro_hu` (primăriile din cele 8 județe cu populație maghiară, din 2026-09-06) NU e o
+        # limbă străină: publică în română, în maghiară sau în ambele. Cu `!= "ro"`, TOATE
+        # cele 101 surse erau sărite la fiecare rulare — 0 articole din ele în starea din
+        # 24.10.2026 (1348 de articole oficiale, toate din surse `ro`). Se sare doar textul
+        # exclusiv maghiar.
+        lang = item.get("source_lang") or "ro"
+        if lang != "ro" and not (lang == "ro_hu" and _publicabil_in_romana(item)):
             item["skip"] = True
             return item
         item["title"] = item.get("original_title", "")
@@ -940,12 +1024,11 @@ def process_clusters_batch(groups: list, provider) -> list:
     except Exception:
         return [None] * len(preps)             # tot lotul a esuat -> reluat data viitoare (vezi docstring)
 
-    by_id = {}
-    for obj in arr:
-        try:
-            by_id[int(obj.get("id"))] = obj
-        except (TypeError, ValueError, AttributeError):
-            continue
+    by_id, duplicate, straine = _pe_id(arr, len(preps))
+    if duplicate:
+        dialectic.numara("id_duplicat", duplicate)
+    if straine:
+        dialectic.numara("id_strain", straine)
 
     out = []
     for i, (_, rep) in enumerate(preps):

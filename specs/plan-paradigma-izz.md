@@ -297,3 +297,9 @@ mental umplut cu distrageri (AlienMind 889).
   **Amânat:** un filtru explicit de rubrici (nu l-a cerut nimeni; meniul deschide deja o rubrică).
 - **Rămâne al proprietarului (§10, plan de control):** scriptul Bot Fight Mode injectat de Cloudflare.
   Dacă s-ar porni din dashboard injectarea automată a Web Analytics, CSP-ul o blochează deliberat.
+
+**Măsurat pe primele 3 rulări CI cu E2 (23–24.10.2026, `data/triage_log.jsonl` → `sinteze`).**
+Publicate: 41 `SYNTHESIS_VALID`, 14 `SINGLE_ORIGIN`, 2 `ASSUMED_SILENCE`; amânate 17 din 74
+(23%): nemapate 9, titlu copiat 4, doar rezervă 3, **peste prag 1**. `SILENCE_REJECTION_THRESHOLD`
+nu leagă (1 din 74), deci rămâne 0,34; o recalibrare ar avea nevoie de altă cauză decât pragul.
+Pe live (24.10): 6 din 23 de articole de pe prima pagină au secțiunea dialectică.
