@@ -17,7 +17,8 @@ except ImportError:
 from . import fetch, state, cluster, moderation, config, guard, eventdata
 from . import dialectic, diacritice, jurnal_triage, memorie, raport_copiere, fetch_deep
 from .process import (get_provider, process_single, process_clusters_batch, process_batch,
-                      process_official, repara_diacritice, OFFICIAL_PREFIXES)
+                      process_official, repara_diacritice, reset_stats_b, stats_b,
+                      OFFICIAL_PREFIXES)
 from .util import domain_of, fara_titluri_data
 from .claude_orchestrator import ClaudeCodeValidator
 
@@ -188,6 +189,7 @@ def process_new(new_items: list, provider, budget: int, existing: list | None = 
     if os.environ.get("IZZ_FETCH_DEEP", "1") != "0":
         fetch_deep.fetch_deep(syn, persist=not dry_run)
     dialectic.reset_stats()
+    reset_stats_b()
 
     # clusterele C intai, in LOTURI (1 apel per CLUSTER_BATCH_SIZE clustere, nu per cluster).
     # MASURAT 2026-08-16: cate un apel per cluster epuiza bugetul la 17-18 clustere/rulare,
@@ -494,7 +496,8 @@ def run(dry_run: bool = False) -> dict:
     respinse_substanta = {i["url"] for i in itemele_fara_substanta(new_items)}
     if not dry_run:
         jurnal_triage.inregistreaza(pierderi, respinse_substanta, stale_skipped,
-                                    sinteze=dialectic.stats())
+                                    sinteze={**dialectic.stats(),
+                                             **{f"b_{k}": v for k, v in stats_b().items()}})
     deferred = numara_amanate(new_items, handled)
     processed_new = [a for a in processed_new if not a.get("skip")]
     # PLAN UNIFICAT #1: prag de blocare/DEFER. Itemele cu incalcari deterministe de
@@ -594,6 +597,8 @@ def run(dry_run: bool = False) -> dict:
         # E2 (plan-paradigma-izz.md §3, §5): stările sintezelor dialectice și motivele
         # respingerii afirmațiilor — aici se calibrează SILENCE_REJECTION_THRESHOLD.
         "dialectic": dialectic.stats(),
+        # de ce iese sau nu un articol B dintr-un lot (process.process_batch)
+        "model_b": stats_b(),
     }
     caderi = stats.get("ai_caderi_acoperite") or {}
     if caderi:
@@ -659,6 +664,10 @@ def _print_report(stats: dict, processed_new: list, dry_run: bool):
                                stats.get("upgrade_reserve", 0))
         print(f"Amanate ({cauza}): {stats['deferred']} din {stats['new']} "
               f"— revin la rularea urmatoare, apeluri folosite: {stats['ai_calls']}")
+    pierderi_b = {k: v for k, v in (stats.get("model_b") or {}).items() if k != "publicate"}
+    if pierderi_b:
+        print("Model B, ce n-a iesit din loturi: "
+              + ", ".join(f"{k} {v}" for k, v in sorted(pierderi_b.items())))
     if stats.get("respinse_substanta"):
         print(f"Respinse DEFINITIV (fara substanta): {stats['respinse_substanta']} "
               "— nu revin, sunt respinse din nou la fiecare rulare; nu se numara ca amanate")

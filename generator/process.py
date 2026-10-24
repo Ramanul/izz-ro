@@ -561,6 +561,10 @@ def _obiecte_de_nivel_unu(text: str) -> list[str]:
 
 _REPARATII_JSON = (
     (re.compile(r'^(\s*)-\s+(")', re.M), r"\1\2"),     # „- "entities": [...]" — liniuță rătăcită
+    # aceeași liniuță pe un obiect scris pe un singur rând („…, - "teaser": …"). Rulează doar
+    # pe obiectele care oricum nu se parsează; în interiorul unui șir ghilimeaua e escapată
+    # (`\"`), deci singurul conținut atins ar fi un șir terminat în „, - " — un text deja stricat.
+    (re.compile(r'([,{]\s*)-\s+(")'), r"\1\2"),
     (re.compile(r",(\s*[}\]])"), r"\1"),                  # virgulă înainte de închidere
 )
 
@@ -606,11 +610,33 @@ def process_official(items: list) -> list:
     return done
 
 
+# Motivele pentru care un articol B NU iese dintr-un lot, numărate pe rulare (build.json →
+# `model_b`, jurnalul de triaj). Fără ele, „Amânate (buget NEepuizat — altă cauză)" — 87–112
+# din 415–486 de iteme noi pe rulările din 22–23.10.2026 — nu se putea despărți pe cauze.
+_STAT_B: dict = {}
+
+
+def stats_b() -> dict:
+    return dict(_STAT_B)
+
+
+def reset_stats_b() -> None:
+    _STAT_B.clear()
+
+
+def _numara_b(cheie: str, n: int = 1) -> None:
+    if n:
+        _STAT_B[cheie] = _STAT_B.get(cheie, 0) + n
+
+
 def process_batch(items: list, provider) -> list:
     """Model B in LOT: un singur apel AI pentru `items`. Mapeaza raspunsul pe id (= index).
     Returneaza DOAR articolele procesate corect; cele nemapate NU se publica brute
     (regula 'No mangled output') -> raman in afara starii si sunt reluate la rularea urmatoare.
-    """
+
+    Parsarea e tolerantă per obiect, ca la sinteza dialectică: cu parserul strict, UN obiect
+    stricat (o liniuță rătăcită, o virgulă înainte de acoladă — măsurat pe Gemini Flash Lite
+    în formatul C, 23.10.2026) amâna toate cele `BATCH_SIZE` articole ale lotului."""
     if not items:
         return []
     if provider is None:                       # fara AI -> fallback determinist per item
@@ -621,9 +647,17 @@ def process_batch(items: list, provider) -> list:
         for i, it in enumerate(items))
     try:
         raw = provider.complete(SYSTEM_BATCH, USER_BATCH.format(items_block=block))
-        arr = _parse_json_array(raw)
     except Exception:
+        _numara_b("lot_esuat_apel", len(items))
         return []                              # tot lotul a esuat -> reluat data viitoare
+    arr = _parse_json_array(raw)
+    if not arr:
+        arr = _parse_json_array_tolerant(raw)
+        if arr:
+            _numara_b("loturi_reparate")       # strict ar fi pierdut tot lotul
+        else:
+            _numara_b("lot_esuat_json", len(items))
+            return []
 
     by_id = {}
     for obj in arr:
@@ -639,14 +673,21 @@ def process_batch(items: list, provider) -> list:
     ]
     for i, it in enumerate(items):
         obj = by_id.get(i)
-        title = (obj.get("title") or "").strip() if isinstance(obj, dict) else ""
-        teaser = (obj.get("teaser") or "").strip() if isinstance(obj, dict) else ""
+        if not isinstance(obj, dict):
+            _numara_b("nemapate")
+            continue
+        title = (obj.get("title") or "").strip()
+        teaser = (obj.get("teaser") or "").strip()
+        if not (title and teaser):
+            _numara_b("fara_titlu_sau_rezumat")
+            continue
         if title and teaser:
             candidate = f"{title} {teaser}"
             peers = source_texts[:i] + source_texts[i + 1:]
             if _cross_item_contamination(candidate, source_texts[i], peers):
                 # Nu publicăm un candidat care pare să fi împrumutat fapte din alt
                 # articol al aceluiași lot; itemul va fi reluat la rularea următoare.
+                _numara_b("contaminare_lot")
                 continue
             it["model"] = "B"
             it["title"] = title
@@ -674,7 +715,7 @@ def process_batch(items: list, provider) -> list:
                                    it["teaser"], source_texts[i],
                                    slug_original=slug_din_link(it.get("original_link")))
             done.append(it)
-        # nemapat/invalid -> nu il adaugam (reluat la rularea urmatoare)
+    _numara_b("publicate", len(done))
     return done
 
 
