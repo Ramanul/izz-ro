@@ -16,6 +16,7 @@ except ImportError:
 
 from . import fetch, state, cluster, moderation, config, guard, eventdata
 from . import dialectic, diacritice, jurnal_triage, memorie, raport_copiere, fetch_deep
+from .providers import gemini as gemini_prov
 from .process import (get_provider, process_single, process_clusters_batch, process_batch,
                       process_official, repara_diacritice, reset_stats_b, stats_b,
                       OFFICIAL_PREFIXES)
@@ -497,7 +498,9 @@ def run(dry_run: bool = False) -> dict:
     if not dry_run:
         jurnal_triage.inregistreaza(pierderi, respinse_substanta, stale_skipped,
                                     sinteze={**dialectic.stats(),
-                                             **{f"b_{k}": v for k, v in stats_b().items()}})
+                                             **{f"b_{k}": v for k, v in stats_b().items()},
+                                             **{f"oprire_{k}": v for k, v
+                                                in gemini_prov.MOTIVE_OPRIRE.items()}})
     deferred = numara_amanate(new_items, handled)
     processed_new = [a for a in processed_new if not a.get("skip")]
     # PLAN UNIFICAT #1: prag de blocare/DEFER. Itemele cu incalcari deterministe de
@@ -599,6 +602,8 @@ def run(dry_run: bool = False) -> dict:
         "dialectic": dialectic.stats(),
         # de ce iese sau nu un articol B dintr-un lot (process.process_batch)
         "model_b": stats_b(),
+        # finishReason-ul fiecărui răspuns Gemini (STOP = normal)
+        "ai_oprire": dict(gemini_prov.MOTIVE_OPRIRE),
     }
     caderi = stats.get("ai_caderi_acoperite") or {}
     if caderi:
@@ -664,6 +669,10 @@ def _print_report(stats: dict, processed_new: list, dry_run: bool):
                                stats.get("upgrade_reserve", 0))
         print(f"Amanate ({cauza}): {stats['deferred']} din {stats['new']} "
               f"— revin la rularea urmatoare, apeluri folosite: {stats['ai_calls']}")
+    oprire = {k: v for k, v in (stats.get("ai_oprire") or {}).items() if k != "STOP"}
+    if oprire:
+        print("Raspunsuri AI oprite altfel decat normal: "
+              + ", ".join(f"{k} {v}" for k, v in sorted(oprire.items())))
     pierderi_b = {k: v for k, v in (stats.get("model_b") or {}).items() if k != "publicate"}
     if pierderi_b:
         print("Model B, ce n-a iesit din loturi: "

@@ -73,3 +73,32 @@ def test_obiect_fara_rezumat_si_raspuns_valid_numarate_separat():
     out = process.process_batch([_item(0), _item(1)], _Raw(raw))
     assert len(out) == 1
     assert process.stats_b() == {"fara_titlu_sau_rezumat": 1, "publicate": 1}
+
+
+def test_id_duplicat_arunca_ambele_obiecte_si_id_strain_se_numara():
+    """„Ultimul câștigă" ar da unei știri titlul scris pentru vecina ei (Argon R7)."""
+    raw = json.dumps([_obj(0), _obj(1), {**_obj(1), "title": "Alt titlu pentru același id"},
+                      {**_obj(2), "id": 2.0}, {**_obj(3), "id": " 3 "}, _obj(17)],
+                     ensure_ascii=False)
+    out = process.process_batch([_item(i) for i in range(4)], _Raw(raw))
+    assert sorted(int(a["url"].rsplit("/", 1)[1]) for a in out) == [0, 2, 3]
+    st = process.stats_b()
+    assert st["id_duplicat"] == 1 and st["id_strain"] == 1 and st["nemapate"] == 1
+
+
+def test_enter_literal_intr_un_sir_nu_mai_pierde_lotul():
+    raw = json.dumps([_obj(0), _obj(1)], ensure_ascii=False).replace(
+        "drumuri județene.", "drumuri\njudețene.", 1)
+    out = process.process_batch([_item(0), _item(1)], _Raw(raw))
+    assert len(out) == 2 and "loturi_reparate" not in process.stats_b()
+
+
+def test_reparatia_liniutei_atinge_doar_chei():
+    def repara(text):
+        for rx, rep in process._REPARATII_JSON:
+            text = rx.sub(rep, text)
+        return text
+    assert repara('{"id": 1, - "teaser": "x"}') == '{"id": 1, "teaser": "x"}'
+    # ghilimea neescapată dintr-un citat: fragmentul e stricat, dar textul nu se rescrie
+    citat = '{"id": 1, "teaser": "A declarat, - "Nu plec" și a ieșit"}'
+    assert repara(citat) == citat

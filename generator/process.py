@@ -509,14 +509,16 @@ def _cross_item_contamination(candidate: str, own_source: str, peer_sources: lis
 def _parse_json_array(text: str) -> list:
     """Extrage un array JSON din raspuns (tolerant la ```json fences si la wrapping)."""
     cleaned = re.sub(r"^```(?:json)?|```$", "", text.strip(), flags=re.MULTILINE).strip()
+    # `strict=False`: un Enter literal într-un șir (frecvent în rezumate pe mai multe rânduri)
+    # e „Invalid control character" pentru parserul strict, dar conținutul e intact (Argon R7).
     try:
-        data = json.loads(cleaned)
+        data = json.loads(cleaned, strict=False)
     except json.JSONDecodeError:
         m = re.search(r"\[.*\]", cleaned, re.DOTALL)
         if not m:
             return []
         try:
-            data = json.loads(m.group(0))
+            data = json.loads(m.group(0), strict=False)
         except json.JSONDecodeError:
             return []
     if isinstance(data, list):
@@ -561,10 +563,10 @@ def _obiecte_de_nivel_unu(text: str) -> list[str]:
 
 _REPARATII_JSON = (
     (re.compile(r'^(\s*)-\s+(")', re.M), r"\1\2"),     # „- "entities": [...]" — liniuță rătăcită
-    # aceeași liniuță pe un obiect scris pe un singur rând („…, - "teaser": …"). Rulează doar
-    # pe obiectele care oricum nu se parsează; în interiorul unui șir ghilimeaua e escapată
-    # (`\"`), deci singurul conținut atins ar fi un șir terminat în „, - " — un text deja stricat.
-    (re.compile(r'([,{]\s*)-\s+(")'), r"\1\2"),
+    # aceeași liniuță pe un obiect scris pe un singur rând („…, - "teaser": …"). Doar înaintea
+    # unei CHEI (`"nume":`), nu a oricărei ghilimele: într-un fragment deja stricat de ghilimele
+    # neescapate, „a declarat, - "Nu plec"" ar fi altfel rescris (Argon R7).
+    (re.compile(r'([,{]\s*)-\s+("[A-Za-z_][A-Za-z0-9_]*"\s*:)'), r"\1\2"),
     (re.compile(r",(\s*[}\]])"), r"\1"),                  # virgulă înainte de închidere
 )
 
@@ -587,13 +589,42 @@ def _parse_json_array_tolerant(text: str) -> list:
                 for rx, rep in _REPARATII_JSON:
                     cand = rx.sub(rep, cand)
             try:
-                obj = json.loads(cand)
+                obj = json.loads(cand, strict=False)
             except json.JSONDecodeError:
                 continue
             if isinstance(obj, dict):
                 out.append(obj)
             break
     return out
+
+
+def _pe_id(arr: list, n: int) -> tuple[dict, int, int]:
+    """Obiectele răspunsului indexate pe `id`, plus (id-uri duplicate, id-uri străine).
+
+    Un id care apare de două ori e ambiguu: cu „ultimul câștigă", o știre ar primi titlul
+    scris pentru vecina ei. Se aruncă AMBELE obiecte (Argon R7); un id în afara lotului nu
+    corespunde niciunei știri trimise."""
+    by_id: dict = {}
+    duplicate: set = set()
+    straine = 0
+    for obj in arr:
+        try:
+            v = obj.get("id")
+            if isinstance(v, bool):
+                continue
+            i = int(v) if isinstance(v, (int, float)) and float(v).is_integer() \
+                else int(str(v).strip())
+        except (TypeError, ValueError, AttributeError):
+            continue
+        if not 0 <= i < n:
+            straine += 1
+        elif i in by_id:
+            duplicate.add(i)
+        else:
+            by_id[i] = obj
+    for i in duplicate:
+        by_id.pop(i, None)
+    return by_id, len(duplicate), straine
 
 
 OFFICIAL_PREFIXES = ("pl_", "cj_", "pr_")
@@ -659,12 +690,9 @@ def process_batch(items: list, provider) -> list:
             _numara_b("lot_esuat_json", len(items))
             return []
 
-    by_id = {}
-    for obj in arr:
-        try:
-            by_id[int(obj.get("id"))] = obj
-        except (TypeError, ValueError, AttributeError):
-            continue
+    by_id, duplicate, straine = _pe_id(arr, len(items))
+    _numara_b("id_duplicat", duplicate)
+    _numara_b("id_strain", straine)
 
     done = []
     source_texts = [
@@ -981,12 +1009,11 @@ def process_clusters_batch(groups: list, provider) -> list:
     except Exception:
         return [None] * len(preps)             # tot lotul a esuat -> reluat data viitoare (vezi docstring)
 
-    by_id = {}
-    for obj in arr:
-        try:
-            by_id[int(obj.get("id"))] = obj
-        except (TypeError, ValueError, AttributeError):
-            continue
+    by_id, duplicate, straine = _pe_id(arr, len(preps))
+    if duplicate:
+        dialectic.numara("id_duplicat", duplicate)
+    if straine:
+        dialectic.numara("id_strain", straine)
 
     out = []
     for i, (_, rep) in enumerate(preps):

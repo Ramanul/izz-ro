@@ -13,7 +13,7 @@
 
 E1-core → E4 aterizate: roluri epistemice (ROOT / detalii suplimentare / aceleași fapte / text comun / preluare declarată), sinteza dialectică verificată per propoziție (3 stări + „fapte neconfirmate reciproc"), confirmări încrucișate pe card, roluri în `sources-box`, /sub-prag/, contor „X articole → Y subiecte", capăt pe /azi/, nota de actualizare, memoria subiectelor (12 luni, fără stări judiciare), /principii/ și /legal/method/ fără doctrină (garda `tests/test_garda_anti_doctrina.py`). Jurnalul complet, abaterile de la plan și rundele Argon R4–R5: `specs/plan-paradigma-izz.md` §5.
 - Worktree-ul `C:\Users\cw_26\izz-e1-core` (ramura `oc/e1-core-epistemic-roles`) e DEPĂȘIT: munca lui e pe main, revizuită. Nu se mai continuă din el.
-- De urmărit la primele rulări CI: `build.json` → `dialectic` (amânări, respingeri) și `deep`; pragul `SILENCE_REJECTION_THRESHOLD=0.34` se calibrează de acolo. Semnal de alarmă: peste 30% sinteze amânate sau rulare peste 45 de minute.
+- De urmărit pe rulările CI: `data/triage_log.jsonl` → `sinteze` (stările dialectice, motivele amânării, `b_*` pentru loturile B, `oprire_*` pentru finishReason Gemini) — NU `/build.json`, care e doar manifestul de release. Pragul `SILENCE_REJECTION_THRESHOLD=0.34` măsurat 24.10: leagă 1 din 74, rămâne. Semnal de alarmă: peste 30% sinteze amânate sau rulare peste 45 de minute.
 - Rămase: comutatorul de lentilă pe hartă (volum ↔ confirmări) — după câteva zile de date `cross_confirmed`/`deep_meta`.
 - **D6 (#515):** cititorul nu mai e profilat și nu mai rulează măsurare la el (fără „Pentru tine", GA4, Clarity, bară de consimțământ, ◎); rămâne județul ales explicit (`static/judet.js`, fostul `personalize.js`). Curățenia urmelor vechi din browser se scoate după 2027-01-31 [IZZ-0437].
 
