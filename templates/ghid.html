@@ -44,7 +44,7 @@
     <p class="utility-note">ℹ️ {{ ent.valoare_curenta.scutiri }}</p>
     {% endif %}
     <p class="utility-meta">
-      <span>🔗 Sursă: <a href="{{ ent.valoare_curenta.sursa_url | href_extern }}" target="_blank" rel="noopener noreferrer">{{ ent.valoare_curenta.sursa_url | domain_from_url }}</a></span>
+      <span>🔗 Sursă: <a href="{{ ent.valoare_curenta.sursa_url | href_extern }}"{# nosemgrep: generic.html-templates.security.var-in-href.var-in-href #} target="_blank" rel="noopener noreferrer">{{ ent.valoare_curenta.sursa_url | domain_from_url }}</a></span>
       {% if ent.verificat %}
       <span>✅ Verificat: {{ ent.ultima_verificare }}</span>
       {% endif %}
@@ -57,7 +57,7 @@
   <p class="utility-unverified" role="note">
     <strong>Valori neconfirmate.</strong> Cifrele de mai sus nu au fost încă verificate pe sursa
     oficială. Nu le folosi ca bază pentru o decizie — confirmă-le la
-    <a href="{{ ent.valoare_curenta.sursa_url | href_extern }}" target="_blank" rel="noopener noreferrer">{{ ent.valoare_curenta.sursa_url | domain_from_url }}</a>.
+    <a href="{{ ent.valoare_curenta.sursa_url | href_extern }}"{# nosemgrep: generic.html-templates.security.var-in-href.var-in-href #} target="_blank" rel="noopener noreferrer">{{ ent.valoare_curenta.sursa_url | domain_from_url }}</a>.
   </p>
   {% endif %}
 

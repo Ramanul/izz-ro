@@ -78,7 +78,7 @@
       <img class="article-art" src="{{ base }}{{ art_src }}" alt="{% if a.lead_credit %}{{ a.lead_credit.name }}{% endif %}" width="960" height="504" sizes="(min-width: 770px) 729px, calc(100vw - 42px)" fetchpriority="high">
     </picture>
     {% if a.lead_credit %}
-    <figcaption class="art-credit">{% if a.lead_credit.kind == 'locality' %}Ilustrație: {{ a.lead_credit.name }}. {% elif a.lead_credit.kind == 'oficial' %}Fotografie oficială{% if a.lead_credit.sursa %} ({{ a.lead_credit.sursa }}{% if a.lead_credit.data_poza %}, {{ a.lead_credit.data_poza }}{% endif %}){% endif %}. {% endif %}Foto: {% if a.lead_credit.artist %}{{ a.lead_credit.artist }} · {% endif %}<a href="{{ a.lead_credit.page | href_extern }}" target="_blank" rel="noopener noreferrer">Wikimedia Commons</a> · {% if a.lead_credit.license_url %}<a href="{{ a.lead_credit.license_url | href_extern }}" target="_blank" rel="noopener noreferrer">{{ a.lead_credit.license }}</a>{% else %}{{ a.lead_credit.license }}{% endif %}{% if a.photo_path %} · decupat de IZZ.ro{% endif %}</figcaption>
+    <figcaption class="art-credit">{% if a.lead_credit.kind == 'locality' %}Ilustrație: {{ a.lead_credit.name }}. {% elif a.lead_credit.kind == 'oficial' %}Fotografie oficială{% if a.lead_credit.sursa %} ({{ a.lead_credit.sursa }}{% if a.lead_credit.data_poza %}, {{ a.lead_credit.data_poza }}{% endif %}){% endif %}. {% endif %}Foto: {% if a.lead_credit.artist %}{{ a.lead_credit.artist }} · {% endif %}<a href="{{ a.lead_credit.page | href_extern }}"{# nosemgrep: generic.html-templates.security.var-in-href.var-in-href #} target="_blank" rel="noopener noreferrer">Wikimedia Commons</a> · {% if a.lead_credit.license_url %}<a href="{{ a.lead_credit.license_url | href_extern }}" target="_blank" rel="noopener noreferrer">{{ a.lead_credit.license }}</a>{% else %}{{ a.lead_credit.license }}{% endif %}{% if a.photo_path %} · decupat de IZZ.ro{% endif %}</figcaption>
     {% endif %}
   </figure>
   {% elif arhiva %}
@@ -91,7 +91,7 @@
     <figcaption>
       <span class="arhiva-eticheta">Foto de arhivă</span>
       <span class="arhiva-nume">{% if arhiva.slug %}<a href="{{ base }}/subiect/{{ arhiva.slug }}/">{{ arhiva.name }}</a>{% else %}{{ arhiva.name }}{% endif %}</span>
-      <span class="credit">Foto: {% if arhiva.artist %}{{ arhiva.artist }} · {% endif %}<a href="{{ arhiva.page | href_extern }}" target="_blank" rel="noopener noreferrer">Wikimedia Commons</a> · {% if arhiva.license_url %}<a href="{{ arhiva.license_url | href_extern }}" target="_blank" rel="noopener noreferrer">{{ arhiva.license }}</a>{% else %}{{ arhiva.license }}{% endif %}</span>
+      <span class="credit">Foto: {% if arhiva.artist %}{{ arhiva.artist }} · {% endif %}<a href="{{ arhiva.page | href_extern }}"{# nosemgrep: generic.html-templates.security.var-in-href.var-in-href #} target="_blank" rel="noopener noreferrer">Wikimedia Commons</a> · {% if arhiva.license_url %}<a href="{{ arhiva.license_url | href_extern }}" target="_blank" rel="noopener noreferrer">{{ arhiva.license }}</a>{% else %}{{ arhiva.license }}{% endif %}</span>
     </figcaption>
   </figure>
   {% endif %}
@@ -203,7 +203,7 @@
     <h2 id="timeline-title">Cum a evoluat subiectul</h2>
     <ol>
       {% for m in a.timeline %}
-      <li>{% if m.published %}<time datetime="{{ m.published }}">{{ m.published }}</time> — {% endif %}{{ m.title or m.url }}{% if m.source %} · {{ m.source }}{% endif %}{% if m.url %} · <a href="{{ m.url | href_extern }}" target="_blank" rel="noopener noreferrer">sursa</a>{% endif %}</li>
+      <li>{% if m.published %}<time datetime="{{ m.published }}">{{ m.published }}</time> — {% endif %}{{ m.title or m.url }}{% if m.source %} · {{ m.source }}{% endif %}{% if m.url %} · <a href="{{ m.url | href_extern }}"{# nosemgrep: generic.html-templates.security.var-in-href.var-in-href #} target="_blank" rel="noopener noreferrer">sursa</a>{% endif %}</li>
       {% endfor %}
     </ol>
   </section>
@@ -211,7 +211,7 @@
   <div class="sources-box">
     <h2>{{ 'Sursă' if srcs | length == 1 else 'Surse' }}</h2>
     <ul>
-      {% for s in srcs %}<li><a href="{{ s.url | href_extern }}" target="_blank" rel="noopener noreferrer">{{ s.name }} &rarr;</a>{% if a.surse_roluri and a.surse_roluri[s.name] %} <span class="source-role">{{ a.surse_roluri[s.name] }}</span>{% if a.modificari_tacute and s.name in a.modificari_tacute %} <span class="source-role" title="Faptele din textul publicației s-au schimbat cu peste 20% după prima citire — de regulă o știre în curs, completată">actualizat de redacție după prima citire</span>{% endif %}{% elif a.first_source and s.name == a.first_source and srcs | length > 1 %} <span class="first-badge" title="Prima publicare observată în setul de surse monitorizate">publicată prima</span>{% endif %}</li>{% endfor %}
+      {% for s in srcs %}<li><a href="{{ s.url | href_extern }}"{# nosemgrep: generic.html-templates.security.var-in-href.var-in-href #} target="_blank" rel="noopener noreferrer">{{ s.name }} &rarr;</a>{% if a.surse_roluri and a.surse_roluri[s.name] %} <span class="source-role">{{ a.surse_roluri[s.name] }}</span>{% if a.modificari_tacute and s.name in a.modificari_tacute %} <span class="source-role" title="Faptele din textul publicației s-au schimbat cu peste 20% după prima citire — de regulă o știre în curs, completată">actualizat de redacție după prima citire</span>{% endif %}{% elif a.first_source and s.name == a.first_source and srcs | length > 1 %} <span class="first-badge" title="Prima publicare observată în setul de surse monitorizate">publicată prima</span>{% endif %}</li>{% endfor %}
     </ul>
     {% if a.surse_roluri %}
     <p class="source-roles-note">Rolul fiecărei publicații e calculat mecanic din textul articolelor: cine a relatat primul (o relatare densă publicată în aceleași 15 minute bate o alertă de două rânduri), cine aduce detalii noi, cine repetă aceleași fapte, cine preia un text comun sau citează explicit altă redacție. Confirmări încrucișate — publicații care coroborează faptele fără să preia același text: {{ a.cross_confirmations or 1 }} din {{ srcs | length }}. Ordinea observată nu dovedește cine e autorul informației.</p>
@@ -237,7 +237,7 @@
       <img src="{{ base }}/{{ p.img }}" alt="{{ p.name }}" width="96" height="96" loading="lazy"{% if p.poz %} style="object-position: {{ p.poz }}"{% endif %}>
       <figcaption>
         {% if p.slug %}<a href="{{ base }}/subiect/{{ p.slug }}/">{{ p.name }}</a>{% else %}{{ p.name }}{% endif %}
-        <span class="credit">Foto: {% if p.artist %}{{ p.artist }} · {% endif %}<a href="{{ p.page | href_extern }}" target="_blank" rel="noopener noreferrer">Wikimedia Commons</a> · {% if p.license_url %}<a href="{{ p.license_url | href_extern }}" target="_blank" rel="noopener noreferrer">{{ p.license }}</a>{% else %}{{ p.license }}{% endif %}</span>
+        <span class="credit">Foto: {% if p.artist %}{{ p.artist }} · {% endif %}<a href="{{ p.page | href_extern }}"{# nosemgrep: generic.html-templates.security.var-in-href.var-in-href #} target="_blank" rel="noopener noreferrer">Wikimedia Commons</a> · {% if p.license_url %}<a href="{{ p.license_url | href_extern }}" target="_blank" rel="noopener noreferrer">{{ p.license }}</a>{% else %}{{ p.license }}{% endif %}</span>
       </figcaption>
     </figure>
     {% endfor %}

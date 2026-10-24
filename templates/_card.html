@@ -1,6 +1,6 @@
 {% from "_art.html" import art with context %}
 {% macro credit_foto(pr) -%}
-<p class="card-credit">Foto: {% if pr.credit.artist %}{{ pr.credit.artist }} · {% endif %}<a href="{{ pr.credit.page | href_extern }}" target="_blank" rel="noopener noreferrer">Wikimedia Commons</a> · <a href="{{ pr.credit.license_url | href_extern }}" target="_blank" rel="noopener noreferrer">{{ pr.credit.license }}</a></p>
+<p class="card-credit">Foto: {% if pr.credit.artist %}{{ pr.credit.artist }} · {% endif %}<a href="{{ pr.credit.page | href_extern }}"{# nosemgrep: generic.html-templates.security.var-in-href.var-in-href #} target="_blank" rel="noopener noreferrer">Wikimedia Commons</a> · <a href="{{ pr.credit.license_url | href_extern }}" target="_blank" rel="noopener noreferrer">{{ pr.credit.license }}</a></p>
 {%- endmacro %}
 {% macro card(a, lead=False, extra='') %}
 {#- NOT "data-src": crawlers (Screaming Frog, Googlebot) treat data-src as a lazy-load
@@ -44,6 +44,6 @@
   {% endif %}
   {% set card_srcs = a.sources if (a.model == 'C' and a.sources) else [{'name': a.source_name, 'url': a.original_link}] %}
   <p class="sources-inline"><b>{{ 'Sursă:' if card_srcs | length == 1 else 'Surse:' }}</b>
-    {% for s in card_srcs %}<a href="{{ s.url | href_extern }}" target="_blank" rel="noopener noreferrer">{{ s.name }}</a>{{ ', ' if not loop.last }}{% endfor %}</p>
+    {% for s in card_srcs %}<a href="{{ s.url | href_extern }}"{# nosemgrep: generic.html-templates.security.var-in-href.var-in-href #} target="_blank" rel="noopener noreferrer">{{ s.name }}</a>{{ ', ' if not loop.last }}{% endfor %}</p>
 </article>
 {% endmacro %}

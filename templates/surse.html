@@ -45,7 +45,7 @@
           <tbody>
             {% for s in group.with_stats %}
             <tr>
-              <td><a href="{{ s.url | href_extern }}" target="_blank" rel="noopener noreferrer">{{ s.name }}</a></td>
+              <td><a href="{{ s.url | href_extern }}"{# nosemgrep: generic.html-templates.security.var-in-href.var-in-href #} target="_blank" rel="noopener noreferrer">{{ s.name }}</a></td>
               <td>{{ s.first }}</td><td>{{ s.total }}</td><td>{{ s.rate }}%</td><td>{{ s.tacute }}</td>
             </tr>
             {% endfor %}
@@ -60,7 +60,7 @@
         {% endif %}
         <ul class="source-list">
           {% for s in group.without_stats %}
-          <li><a href="{{ s.url | href_extern }}" target="_blank" rel="noopener noreferrer">{{ s.name }}</a></li>
+          <li><a href="{{ s.url | href_extern }}"{# nosemgrep: generic.html-templates.security.var-in-href.var-in-href #} target="_blank" rel="noopener noreferrer">{{ s.name }}</a></li>
           {% endfor %}
         </ul>
         {% endif %}
@@ -83,7 +83,7 @@
               <tbody>
                 {% for s in county.with_stats %}
                 <tr>
-                  <td><a href="{{ s.url | href_extern }}" target="_blank" rel="noopener noreferrer">{{ s.name }}</a></td>
+                  <td><a href="{{ s.url | href_extern }}"{# nosemgrep: generic.html-templates.security.var-in-href.var-in-href #} target="_blank" rel="noopener noreferrer">{{ s.name }}</a></td>
                   <td>{{ s.first }}</td><td>{{ s.total }}</td><td>{{ s.rate }}%</td><td>{{ s.tacute }}</td>
                 </tr>
                 {% endfor %}
@@ -94,7 +94,7 @@
             {% if county.without_stats %}
             <ul class="source-list">
               {% for s in county.without_stats %}
-              <li><a href="{{ s.url | href_extern }}" target="_blank" rel="noopener noreferrer">{{ s.name }}</a></li>
+              <li><a href="{{ s.url | href_extern }}"{# nosemgrep: generic.html-templates.security.var-in-href.var-in-href #} target="_blank" rel="noopener noreferrer">{{ s.name }}</a></li>
               {% endfor %}
             </ul>
             {% endif %}

@@ -48,3 +48,18 @@ def test_url_legitim_trece_neschimbat_si_escapat():
         '<a href="https://www.digi24.ro/stiri/a?b=1&amp;c=2">x</a>'
     assert tpl.render(u="") == '<a href="#">x</a>'
     assert tpl.render(u=None) == '<a href="#">x</a>'
+
+
+def test_suprimarea_semgrep_sta_doar_langa_filtru():
+    """Semgrep nu recunoaște filtrul, deci liniile filtrate poartă `nosemgrep` pentru regula
+    `var-in-href`. Suprimarea e justificată DOAR de filtru: copiată pe un `href` nefiltrat, ar
+    ascunde exact constatarea pe care regula există s-o facă."""
+    gresite = []
+    for cale in glob.glob(os.path.join(ROOT, "templates", "*.html")):
+        for nr, linie in enumerate(open(cale, encoding="utf-8"), 1):
+            if "nosemgrep" not in linie:
+                continue
+            hrefs = re.findall(r'href="\{\{([^}]*)\}\}', linie)
+            if not hrefs or any("href_extern" not in h for h in hrefs):
+                gresite.append(f"{os.path.basename(cale)}:{nr}")
+    assert not gresite, gresite

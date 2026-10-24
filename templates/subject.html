@@ -11,7 +11,7 @@
   {% if portrait %}
   <figure class="subject-photo">
     <img src="{{ base }}/{{ portrait.img }}" alt="{{ name }}" width="160" height="160"{% if portrait.poz %} style="object-position: {{ portrait.poz }}"{% endif %}>
-    <figcaption class="credit">Foto: {% if portrait.artist %}{{ portrait.artist }} · {% endif %}<a href="{{ portrait.page | href_extern }}" target="_blank" rel="noopener noreferrer">Wikimedia Commons</a> · {{ portrait.license }}</figcaption>
+    <figcaption class="credit">Foto: {% if portrait.artist %}{{ portrait.artist }} · {% endif %}<a href="{{ portrait.page | href_extern }}"{# nosemgrep: generic.html-templates.security.var-in-href.var-in-href #} target="_blank" rel="noopener noreferrer">Wikimedia Commons</a> · {{ portrait.license }}</figcaption>
   </figure>
   {% endif %}
   {% if has_feed %}
