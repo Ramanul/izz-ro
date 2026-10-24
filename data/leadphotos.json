@@ -2769,38 +2769,6 @@
   "kind": "locality",
   "qid": "Q851037"
  },
- "85534347a82f533b": {
-  "miss": true,
-  "v": 2
- },
- "3dbfaf6b91b260b0": {
-  "miss": true,
-  "v": 2
- },
- "991f821ac161fa66": {
-  "miss": true,
-  "v": 2
- },
- "80709e4651ce1a51": {
-  "miss": true,
-  "v": 2
- },
- "4d2c0e34f9b5923c": {
-  "miss": true,
-  "v": 2
- },
- "86269a992e1ab0c2": {
-  "miss": true,
-  "v": 2
- },
- "eed7dc44e503e1d0": {
-  "miss": true,
-  "v": 2
- },
- "6d757bf24be29915": {
-  "miss": true,
-  "v": 2
- },
  "b54e34afbef192b1": {
   "cover": "leads/loc-Q192265.c.jpg",
   "art": "leads/loc-Q192265.jpg",
@@ -15024,30 +14992,6 @@
   "motiv_loc": "loc_negasit_sau_fara_imagine",
   "motiv_ent": "ent_fara_entitati"
  },
- "8795c41920863d41": {
-  "miss": true,
-  "v": 3,
-  "motiv_loc": "loc_negasit_sau_fara_imagine",
-  "motiv_ent": "ent_fara_entitati"
- },
- "88c6052c7811ce03": {
-  "miss": true,
-  "v": 3,
-  "motiv_loc": "loc_negasit_sau_fara_imagine",
-  "motiv_ent": "ent_fara_entitati"
- },
- "d6fd646886cd55bc": {
-  "miss": true,
-  "v": 3,
-  "motiv_loc": "loc_negasit_sau_fara_imagine",
-  "motiv_ent": "ent_fara_entitati"
- },
- "935e6cfc381dd194": {
-  "miss": true,
-  "v": 3,
-  "motiv_loc": "loc_negasit_sau_fara_imagine",
-  "motiv_ent": "ent_fara_entitati"
- },
  "c7287b6ee9077c3f": {
   "miss": true,
   "v": 3,
@@ -17694,12 +17638,6 @@
   "motiv_loc": "loc_neeligibil",
   "motiv_ent": "ent_nenotabila"
  },
- "ed4eb8508918240c": {
-  "miss": true,
-  "v": 3,
-  "motiv_loc": "loc_neeligibil",
-  "motiv_ent": "ent_nenotabila"
- },
  "3fdcfe617fd98647": {
   "miss": true,
   "v": 3,
@@ -17807,5 +17745,125 @@
   "v": 3,
   "motiv_loc": "loc_neeligibil",
   "motiv_ent": "ent_fara_qid"
+ },
+ "dc13fee1a044d67a": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_dimensiune_sau_format",
+  "motiv_ent": "ent_fara_qid"
+ },
+ "6959c9fae8a48041": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_neeligibil",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "65b39ea15bda84ba": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_neeligibil",
+  "motiv_ent": "ent_licenta_sau_format"
+ },
+ "08083f954de2c0e9": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_neeligibil",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "68c4369b9477509f": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_neeligibil",
+  "motiv_ent": "ent_fara_qid"
+ },
+ "1fd2c585ac8cd7f6": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_neeligibil",
+  "motiv_ent": "ent_fara_qid"
+ },
+ "8382ef89e5fd08c4": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_neeligibil",
+  "motiv_ent": "ent_nenotabila"
+ },
+ "813580bf5daac5f6": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_neeligibil",
+  "motiv_ent": "ent_nenotabila"
+ },
+ "b20814f5b2e0729b": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_neeligibil",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "a29aac3002c35708": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_neeligibil",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "92cd5e0832330ce4": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_neeligibil",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "f98b3a76181beb0a": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_neeligibil",
+  "motiv_ent": "ent_nenotabila"
+ },
+ "2206d181b7edf84d": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_neeligibil",
+  "motiv_ent": "ent_licenta_sau_format"
+ },
+ "4690bc6379028b19": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_neeligibil",
+  "motiv_ent": "ent_licenta_sau_format"
+ },
+ "936eb118a8b580d7": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_neeligibil",
+  "motiv_ent": "ent_licenta_sau_format"
+ },
+ "b6b522c6c526d78e": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_neeligibil",
+  "motiv_ent": "ent_licenta_sau_format"
+ },
+ "0536b42e0499bb8d": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_neeligibil",
+  "motiv_ent": "ent_fara_p18"
+ },
+ "3037fe0ad416e0cd": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_neeligibil",
+  "motiv_ent": "ent_fara_p18"
+ },
+ "c69986f2a631426f": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_neeligibil",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "00346a2b80fe32b8": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_neeligibil",
+  "motiv_ent": "ent_fara_entitati"
  }
 }
