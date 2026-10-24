@@ -17,9 +17,6 @@
  "aa78a90268159fd9": {
   "miss": true
  },
- "414d3f7784a0fc31": {
-  "miss": true
- },
  "a433b9f1e3c63ada": {
   "miss": true
  },
@@ -2541,10 +2538,6 @@
   "name": "Roman",
   "kind": "locality"
  },
- "042e69555e49aaff": {
-  "miss": true,
-  "v": 2
- },
  "e2e6035563b5abd4": {
   "miss": true,
   "v": 3,
@@ -2789,86 +2782,6 @@
   "name": "Dumbrăvița",
   "kind": "locality",
   "qid": "Q16427725"
- },
- "c2be30565d1e6562": {
-  "miss": true,
-  "v": 2
- },
- "d4a88422528e988b": {
-  "miss": true,
-  "v": 2
- },
- "b02009fc58aab5db": {
-  "miss": true,
-  "v": 2
- },
- "00df7af3f00a401a": {
-  "miss": true,
-  "v": 2
- },
- "5592df23b6b339b5": {
-  "miss": true,
-  "v": 2
- },
- "1e51865efb6876e2": {
-  "miss": true,
-  "v": 2
- },
- "02ad514b95194291": {
-  "miss": true,
-  "v": 2
- },
- "e8544f29e17d7485": {
-  "miss": true,
-  "v": 2
- },
- "0568e645bf26c248": {
-  "miss": true,
-  "v": 2
- },
- "3d4c57f0821845cb": {
-  "miss": true,
-  "v": 2
- },
- "d6a08c6d1ddf4dc3": {
-  "miss": true,
-  "v": 2
- },
- "48978a8b8e1b5a26": {
-  "miss": true,
-  "v": 2
- },
- "47dbe11ce2b49937": {
-  "miss": true,
-  "v": 2
- },
- "dc0f654deb26bb8d": {
-  "miss": true,
-  "v": 2
- },
- "74c8031c90f4e3f8": {
-  "miss": true,
-  "v": 2
- },
- "e89b78eb16700149": {
-  "miss": true,
-  "v": 2
- },
- "3095f5fbc187f0ff": {
-  "miss": true,
-  "v": 2
- },
- "24ba5e91de17f5a5": {
-  "miss": true,
-  "v": 2
- },
- "ea1cf220df2ab131": {
-  "miss": true,
-  "v": 2
- },
- "ddc07139c12e834d": {
-  "miss": true,
-  "v": 2
  },
  "da91f4eaeec8475e": {
   "miss": true,
@@ -13394,12 +13307,6 @@
   "motiv_loc": "loc_negasit_sau_fara_imagine",
   "motiv_ent": "ent_fara_entitati"
  },
- "94c714e6586fbb2d": {
-  "miss": true,
-  "v": 3,
-  "motiv_loc": "loc_negasit_sau_fara_imagine",
-  "motiv_ent": "ent_fara_entitati"
- },
  "5edb5211837b2650": {
   "cover": "leads/loc-Q5052624.c.jpg",
   "art": "leads/loc-Q5052624.jpg",
@@ -19039,5 +18946,190 @@
   "name": "Negreni",
   "kind": "locality",
   "qid": "Q5059779"
+ },
+ "c45766dc3e2bc601": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_negasit_sau_fara_imagine",
+  "motiv_ent": "ent_fara_qid"
+ },
+ "6cc92d5d833ee404": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_negasit_sau_fara_imagine",
+  "motiv_ent": "ent_fara_qid"
+ },
+ "48ebd036e40609f0": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_negasit_sau_fara_imagine",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "7b9c2d42809b9348": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_negasit_sau_fara_imagine",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "39c4b51973819369": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_negasit_sau_fara_imagine",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "fc30e6e28f1dd01b": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_dimensiune_sau_format",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "c5d6013f3515135d": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_dimensiune_sau_format",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "c1385b9dc306cde6": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_dimensiune_sau_format",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "d5141beace2801d7": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_negasit_sau_fara_imagine",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "c9621461da840b96": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_dimensiune_sau_format",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "551c359f829e5609": {
+  "cover": "leads/loc-Q338066.c.jpg",
+  "art": "leads/loc-Q338066.jpg",
+  "webp": "leads/loc-Q338066.webp",
+  "artist": "",
+  "license": "CC BY 2.5",
+  "page": "https://commons.wikimedia.org/wiki/File:Kezdi_centre3.JPG",
+  "name": "Târgu Secuiesc",
+  "kind": "locality",
+  "qid": "Q338066"
+ },
+ "37b39a0f8bb9293f": {
+  "cover": "leads/loc-Q16426139.c.jpg",
+  "art": "leads/loc-Q16426139.jpg",
+  "webp": "leads/loc-Q16426139.webp",
+  "artist": "Gheorghe Tare",
+  "license": "Public domain",
+  "page": "https://commons.wikimedia.org/wiki/File:Apahida,Cluj-DSCF2074.JPG",
+  "name": "Apahida",
+  "kind": "locality",
+  "qid": "Q16426139"
+ },
+ "11ac581f08ccded3": {
+  "cover": "leads/loc-Q16426139.c.jpg",
+  "art": "leads/loc-Q16426139.jpg",
+  "webp": "leads/loc-Q16426139.webp",
+  "artist": "Gheorghe Tare",
+  "license": "Public domain",
+  "page": "https://commons.wikimedia.org/wiki/File:Apahida,Cluj-DSCF2074.JPG",
+  "name": "Apahida",
+  "kind": "locality",
+  "qid": "Q16426139"
+ },
+ "03fbcaad4423b2a8": {
+  "cover": "leads/loc-Q16426139.c.jpg",
+  "art": "leads/loc-Q16426139.jpg",
+  "webp": "leads/loc-Q16426139.webp",
+  "artist": "Gheorghe Tare",
+  "license": "Public domain",
+  "page": "https://commons.wikimedia.org/wiki/File:Apahida,Cluj-DSCF2074.JPG",
+  "name": "Apahida",
+  "kind": "locality",
+  "qid": "Q16426139"
+ },
+ "aae4b6ac3afab6a8": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_negasit_sau_fara_imagine",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "cb128fd7afc040da": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_negasit_sau_fara_imagine",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "4a6be1ac627859e5": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_dimensiune_sau_format",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "9581274b58f79595": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_negasit_sau_fara_imagine",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "ea585fba4f713198": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_negasit_sau_fara_imagine",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "d0a1578cbc640017": {
+  "cover": "leads/loc-Q16426139.c.jpg",
+  "art": "leads/loc-Q16426139.jpg",
+  "webp": "leads/loc-Q16426139.webp",
+  "artist": "Gheorghe Tare",
+  "license": "Public domain",
+  "page": "https://commons.wikimedia.org/wiki/File:Apahida,Cluj-DSCF2074.JPG",
+  "name": "Apahida",
+  "kind": "locality",
+  "qid": "Q16426139"
+ },
+ "d5d6fe20249ef9ac": {
+  "cover": "leads/loc-Q16426139.c.jpg",
+  "art": "leads/loc-Q16426139.jpg",
+  "webp": "leads/loc-Q16426139.webp",
+  "artist": "Gheorghe Tare",
+  "license": "Public domain",
+  "page": "https://commons.wikimedia.org/wiki/File:Apahida,Cluj-DSCF2074.JPG",
+  "name": "Apahida",
+  "kind": "locality",
+  "qid": "Q16426139"
+ },
+ "51a617a1120f8776": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_negasit_sau_fara_imagine",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "557b4a083d71ae0b": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_negasit_sau_fara_imagine",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "8c34b084afead9b9": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_negasit_sau_fara_imagine",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "f4721f7dd843828e": {
+  "cover": "leads/loc-Q16426139.c.jpg",
+  "art": "leads/loc-Q16426139.jpg",
+  "webp": "leads/loc-Q16426139.webp",
+  "artist": "Gheorghe Tare",
+  "license": "Public domain",
+  "page": "https://commons.wikimedia.org/wiki/File:Apahida,Cluj-DSCF2074.JPG",
+  "name": "Apahida",
+  "kind": "locality",
+  "qid": "Q16426139"
  }
 }
