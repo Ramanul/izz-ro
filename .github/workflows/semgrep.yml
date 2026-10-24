@@ -58,6 +58,30 @@ jobs:
             --exclude output --exclude 'output.*' --exclude data \
             . || true
 
+      # Suprimarile din sursa (`nosemgrep: <regula>`) RAMAN in SARIF, marcate
+      # `"suppressions": [{"kind": "inSource"}]` — masurat 2026-10-24 cu semgrep 1.182.1 pe
+      # tot repo-ul: 103 rezultate, 20 suprimate. Lasate acolo, ele (1) deschideau alerte
+      # code-scanning si comentarii pe PR exact pe liniile deja tratate (#516: 14 fire pe
+      # href-uri trecute prin `href_extern`) si (2) intrau la socoteala portii de mai jos.
+      # Se scot inainte de upload; suprimarea ramane vizibila in cod, iar
+      # `tests/test_href_extern.py` cere ca `nosemgrep` sa stea doar langa filtrul care o
+      # justifica.
+      - name: Scoate constatarile suprimate in sursa
+        run: |
+          python3 - <<'PY'
+          import json
+          with open("semgrep.sarif", encoding="utf-8") as f:
+              sarif = json.load(f)
+          scoase = 0
+          for run in sarif.get("runs", []):
+              ramase = [r for r in run.get("results", []) if not r.get("suppressions")]
+              scoase += len(run.get("results", [])) - len(ramase)
+              run["results"] = ramase
+          with open("semgrep.sarif", "w", encoding="utf-8") as f:
+              json.dump(sarif, f)
+          print("Constatari suprimate in sursa, scoase din SARIF: %d" % scoase)
+          PY
+
       - name: Upload SARIF
         uses: github/codeql-action/upload-sarif@24c54180a607b1449ed407dd24f251e4e9147c8d # v4.38.3
         with:
@@ -86,20 +110,18 @@ jobs:
       # rularea de CI 31142963934 pe ramura asta, care a tiparit textual
       # "Constatari totale: 60 | ERROR: 2" si a cerut ea insasi coborarea pragului.
       #
-      # Ce ramane tolerat:
-      #   generator/render.py:16         use-defused-xml
+      # Ce ramane tolerat (coborat 2 -> 1 pe 2026-10-24):
       #   tools/devin_headless.py:74     dangerous-subprocess-use-tainted-env-args
       #
-      # ATENTIE la primul: `render.py:15` are un `# nosemgrep` cu ID-ul complet, iar
-      # comentariul de acolo sustine ca suprimarea a fost "verificata prin rulare". Rularea
-      # de mai sus o contrazice — constatarea e in continuare NUMARATA de poarta. Nu stim
-      # inca daca SARIF-ul include constatarile suprimate (poarta n-ar citi `suppressions`)
-      # sau daca suprimarea nu se potriveste deloc; nedistins prin masurare, fiindca repo-ul
-      # n-are alerte code-scanning de interogat si semgrep local e rupt. Pana se lamureste,
-      # `render.py` sta in baseline ca oricare alta constatare, nu ca exceptie suprimata.
+      # LAMURIT 2026-10-24: `generator/render.py:18` (use-defused-xml) are un `nosemgrep` care
+      # FUNCTIONEAZA; poarta il numara totusi fiindca SARIF-ul pastreaza rezultatele suprimate
+      # cu `suppressions` si poarta nu citea campul. Masurat local, semgrep 1.182.1, aceleasi
+      # trei seturi: ERROR nesuprimate 1 (devin_headless), ERROR suprimate 1 (render.py).
+      # Pasul de deasupra le scoate din SARIF; poarta le sare si ea, ca aparare daca pasul
+      # dispare.
       - name: Poarta (clichet pe ERROR)
         env:
-          BASELINE_ERROR: "2"
+          BASELINE_ERROR: "1"
         run: |
           python3 - <<'PY'
           import json, os, sys
@@ -112,6 +134,8 @@ jobs:
           errors = []
           for run in sarif.get("runs", []):
               for res in run.get("results", []):
+                  if res.get("suppressions"):
+                      continue
                   if rules.get(res.get("ruleId"), "warning") != "error":
                       continue
                   loc = res["locations"][0]["physicalLocation"]
