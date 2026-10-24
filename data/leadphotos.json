@@ -14944,54 +14944,6 @@
   "kind": "locality",
   "qid": "Q2716829"
  },
- "b0e01f792ace54fd": {
-  "miss": true,
-  "v": 3,
-  "motiv_loc": "loc_negasit_sau_fara_imagine",
-  "motiv_ent": "ent_fara_entitati"
- },
- "259f93790ee29032": {
-  "miss": true,
-  "v": 3,
-  "motiv_loc": "loc_negasit_sau_fara_imagine",
-  "motiv_ent": "ent_fara_entitati"
- },
- "3d79f7c78f97598c": {
-  "miss": true,
-  "v": 3,
-  "motiv_loc": "loc_negasit_sau_fara_imagine",
-  "motiv_ent": "ent_fara_entitati"
- },
- "073f9ff32f0c867b": {
-  "miss": true,
-  "v": 3,
-  "motiv_loc": "loc_negasit_sau_fara_imagine",
-  "motiv_ent": "ent_fara_entitati"
- },
- "2217d52e9ffbede9": {
-  "miss": true,
-  "v": 3,
-  "motiv_loc": "loc_negasit_sau_fara_imagine",
-  "motiv_ent": "ent_fara_entitati"
- },
- "95985cc3a04e53d2": {
-  "miss": true,
-  "v": 3,
-  "motiv_loc": "loc_dimensiune_sau_format",
-  "motiv_ent": "ent_fara_entitati"
- },
- "a028d0dde85e6c3f": {
-  "miss": true,
-  "v": 3,
-  "motiv_loc": "loc_licenta",
-  "motiv_ent": "ent_fara_entitati"
- },
- "f058ae39e2c34b16": {
-  "miss": true,
-  "v": 3,
-  "motiv_loc": "loc_negasit_sau_fara_imagine",
-  "motiv_ent": "ent_fara_entitati"
- },
  "c7287b6ee9077c3f": {
   "miss": true,
   "v": 3,
@@ -16162,18 +16114,6 @@
   "motiv_ent": "ent_fara_entitati"
  },
  "7c3853bb8b2eee5b": {
-  "miss": true,
-  "v": 3,
-  "motiv_loc": "loc_negasit_sau_fara_imagine",
-  "motiv_ent": "ent_fara_entitati"
- },
- "e7a91b2fccabee79": {
-  "miss": true,
-  "v": 3,
-  "motiv_loc": "loc_negasit_sau_fara_imagine",
-  "motiv_ent": "ent_fara_entitati"
- },
- "04c38b44055822f5": {
   "miss": true,
   "v": 3,
   "motiv_loc": "loc_negasit_sau_fara_imagine",
@@ -17865,5 +17805,957 @@
   "v": 3,
   "motiv_loc": "loc_neeligibil",
   "motiv_ent": "ent_fara_entitati"
+ },
+ "1681c414a28f43ea": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_dimensiune_sau_format",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "b428006876741786": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_dimensiune_sau_format",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "c7986df0e126a0b0": {
+  "cover": "leads/loc-Q754729.c.jpg",
+  "art": "leads/loc-Q754729.jpg",
+  "webp": "leads/loc-Q754729.webp",
+  "artist": "Țetcu Mircea Rareș",
+  "license": "CC BY-SA 3.0 ro",
+  "page": "https://commons.wikimedia.org/wiki/File:OrTarnaveniMS_(32).JPG",
+  "name": "Târnăveni",
+  "kind": "locality",
+  "qid": "Q754729"
+ },
+ "92543d448b133bf2": {
+  "cover": "leads/loc-Q16426185.c.jpg",
+  "art": "leads/loc-Q16426185.jpg",
+  "webp": "leads/loc-Q16426185.webp",
+  "artist": "Utilizator:Țetcu Mircea Rareș at ro.wikipedia",
+  "license": "CC BY-SA 3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:RO_CJ_Cojocna_2011.1.6.jpg",
+  "name": "Cojocna",
+  "kind": "locality",
+  "qid": "Q16426185"
+ },
+ "d054dccce4ece82e": {
+  "cover": "leads/loc-Q838838.c.jpg",
+  "art": "leads/loc-Q838838.jpg",
+  "webp": "leads/loc-Q838838.webp",
+  "artist": "Utilizator:Țetcu Mircea Rareș at ro.wikipedia",
+  "license": "CC BY-SA 3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:RO_SJ_Uileacu_Simleului_2.jpg",
+  "name": "Măeriște",
+  "kind": "locality",
+  "qid": "Q838838"
+ },
+ "a5ed673a981ea77d": {
+  "cover": "leads/loc-Q209809.c.jpg",
+  "art": "leads/loc-Q209809.jpg",
+  "webp": "leads/loc-Q209809.webp",
+  "artist": "Ana Maria Catalina",
+  "license": "CC BY-SA 4.0",
+  "page": "https://commons.wikimedia.org/wiki/File:2010-IMG_1840.jpg",
+  "name": "Turda",
+  "kind": "locality",
+  "qid": "Q209809"
+ },
+ "7650a472a3b5ac91": {
+  "cover": "leads/loc-Q209809.c.jpg",
+  "art": "leads/loc-Q209809.jpg",
+  "webp": "leads/loc-Q209809.webp",
+  "artist": "Ana Maria Catalina",
+  "license": "CC BY-SA 4.0",
+  "page": "https://commons.wikimedia.org/wiki/File:2010-IMG_1840.jpg",
+  "name": "Turda",
+  "kind": "locality",
+  "qid": "Q209809"
+ },
+ "dde844891f0a0009": {
+  "cover": "leads/loc-Q209809.c.jpg",
+  "art": "leads/loc-Q209809.jpg",
+  "webp": "leads/loc-Q209809.webp",
+  "artist": "Ana Maria Catalina",
+  "license": "CC BY-SA 4.0",
+  "page": "https://commons.wikimedia.org/wiki/File:2010-IMG_1840.jpg",
+  "name": "Turda",
+  "kind": "locality",
+  "qid": "Q209809"
+ },
+ "79322e86b773c600": {
+  "cover": "leads/loc-Q209809.c.jpg",
+  "art": "leads/loc-Q209809.jpg",
+  "webp": "leads/loc-Q209809.webp",
+  "artist": "Ana Maria Catalina",
+  "license": "CC BY-SA 4.0",
+  "page": "https://commons.wikimedia.org/wiki/File:2010-IMG_1840.jpg",
+  "name": "Turda",
+  "kind": "locality",
+  "qid": "Q209809"
+ },
+ "3f08fd0a963c91f9": {
+  "cover": "leads/loc-Q458422.c.jpg",
+  "art": "leads/loc-Q458422.jpg",
+  "webp": "leads/loc-Q458422.webp",
+  "artist": "Ana Maria Catalina",
+  "license": "CC BY-SA 3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:C%C3%A2mpia_Turzii-Parcul_Central-IMG_6685.jpg",
+  "name": "Câmpia Turzii",
+  "kind": "locality",
+  "qid": "Q458422"
+ },
+ "1c9ac0088123f385": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_dimensiune_sau_format",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "a1b42302bbbf46d9": {
+  "cover": "leads/loc-Q12724776.c.jpg",
+  "art": "leads/loc-Q12724776.jpg",
+  "webp": "leads/loc-Q12724776.webp",
+  "artist": "Mieresch",
+  "license": "CC0",
+  "page": "https://commons.wikimedia.org/wiki/File:Viev_of_Flore%C8%99ti,_Cluj_County.jpg",
+  "name": "Florești",
+  "kind": "locality",
+  "qid": "Q12724776"
+ },
+ "3a019ecc5ae16ad2": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_dimensiune_sau_format",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "332fd3f7acb6bc05": {
+  "cover": "leads/loc-Q666373.c.jpg",
+  "art": "leads/loc-Q666373.jpg",
+  "webp": "leads/loc-Q666373.webp",
+  "artist": "Dan1967",
+  "license": "CC BY-SA 3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Primaria_Seini.jpg",
+  "name": "Seini",
+  "kind": "locality",
+  "qid": "Q666373"
+ },
+ "7cede52ec17fc279": {
+  "cover": "leads/loc-Q12724776.c.jpg",
+  "art": "leads/loc-Q12724776.jpg",
+  "webp": "leads/loc-Q12724776.webp",
+  "artist": "Mieresch",
+  "license": "CC0",
+  "page": "https://commons.wikimedia.org/wiki/File:Viev_of_Flore%C8%99ti,_Cluj_County.jpg",
+  "name": "Florești",
+  "kind": "locality",
+  "qid": "Q12724776"
+ },
+ "75095fe9d28673bf": {
+  "cover": "leads/loc-Q209809.c.jpg",
+  "art": "leads/loc-Q209809.jpg",
+  "webp": "leads/loc-Q209809.webp",
+  "artist": "Ana Maria Catalina",
+  "license": "CC BY-SA 4.0",
+  "page": "https://commons.wikimedia.org/wiki/File:2010-IMG_1840.jpg",
+  "name": "Turda",
+  "kind": "locality",
+  "qid": "Q209809"
+ },
+ "6943996e470ffaf5": {
+  "cover": "leads/loc-Q5058792.c.jpg",
+  "art": "leads/loc-Q5058792.jpg",
+  "webp": "leads/loc-Q5058792.webp",
+  "artist": "Sie",
+  "license": "CC BY-SA 3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Maroskereszt%C3%BAr_1.JPG",
+  "name": "Cristești",
+  "kind": "locality",
+  "qid": "Q5058792"
+ },
+ "5580f8c3d67c993a": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_dimensiune_sau_format",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "fef99d9b4edf2e0c": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_dimensiune_sau_format",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "971196c5ae9ad209": {
+  "cover": "leads/loc-Q252061.c.jpg",
+  "art": "leads/loc-Q252061.jpg",
+  "webp": "leads/loc-Q252061.webp",
+  "artist": "Nicu farcas",
+  "license": "CC BY-SA 3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:RO_BH_Valea_lui_Mihai.jpg",
+  "name": "Valea lui Mihai",
+  "kind": "locality"
+ },
+ "4418386588473d4d": {
+  "cover": "leads/loc-Q267708.c.jpg",
+  "art": "leads/loc-Q267708.jpg",
+  "webp": "leads/loc-Q267708.webp",
+  "artist": "Sie",
+  "license": "CC BY-SA 3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Medve-t%C3%B3_l%C3%A9gi.jpg",
+  "name": "Sovata",
+  "kind": "locality"
+ },
+ "c698608056eb86b3": {
+  "cover": "leads/loc-Q186349.c.jpg",
+  "art": "leads/loc-Q186349.jpg",
+  "webp": "leads/loc-Q186349.webp",
+  "artist": "Sie",
+  "license": "CC BY-SA 3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Ady_negyed1.jpg",
+  "name": "Târgu Mureș",
+  "kind": "locality",
+  "qid": "Q186349"
+ },
+ "9a968c40083d1c0c": {
+  "cover": "leads/loc-Q12080772.c.jpg",
+  "art": "leads/loc-Q12080772.jpg",
+  "webp": "leads/loc-Q12080772.webp",
+  "artist": "Utilizator:Țetcu Mircea Rareș at ro.wikipedia",
+  "license": "CC BY-SA 2.5",
+  "page": "https://commons.wikimedia.org/wiki/File:RO_MS_Oroiu_87.jpg",
+  "name": "Band",
+  "kind": "locality",
+  "qid": "Q12080772"
+ },
+ "c434db6b4ecaf3d0": {
+  "cover": "leads/loc-Q167792.c.jpg",
+  "art": "leads/loc-Q167792.jpg",
+  "webp": "leads/loc-Q167792.webp",
+  "artist": "Utilizator:Țetcu Mircea Rareș at ro.wikipedia",
+  "license": "CC BY-SA 2.5",
+  "page": "https://commons.wikimedia.org/wiki/File:RO_MS_Sarmasu_64.jpg",
+  "name": "Sărmașu",
+  "kind": "locality",
+  "qid": "Q167792"
+ },
+ "5bed98e092867ad9": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_dimensiune_sau_format",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "219c5eceb1055336": {
+  "cover": "leads/loc-Q5058792.c.jpg",
+  "art": "leads/loc-Q5058792.jpg",
+  "webp": "leads/loc-Q5058792.webp",
+  "artist": "Sie",
+  "license": "CC BY-SA 3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Maroskereszt%C3%BAr_1.JPG",
+  "name": "Cristești",
+  "kind": "locality",
+  "qid": "Q5058792"
+ },
+ "bc058b796bab79eb": {
+  "cover": "leads/loc-Q12725199.c.jpg",
+  "art": "leads/loc-Q12725199.jpg",
+  "webp": "leads/loc-Q12725199.webp",
+  "artist": "Utilizator:Țetcu Mircea Rareș at ro.wikipedia",
+  "license": "CC BY-SA 3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:RO_CJ_Stolna_2.85.jpg",
+  "name": "Săvădisla",
+  "kind": "locality",
+  "qid": "Q12725199"
+ },
+ "5fcd9ab97369a60e": {
+  "cover": "leads/loc-Q12080772.c.jpg",
+  "art": "leads/loc-Q12080772.jpg",
+  "webp": "leads/loc-Q12080772.webp",
+  "artist": "Utilizator:Țetcu Mircea Rareș at ro.wikipedia",
+  "license": "CC BY-SA 2.5",
+  "page": "https://commons.wikimedia.org/wiki/File:RO_MS_Oroiu_87.jpg",
+  "name": "Band",
+  "kind": "locality",
+  "qid": "Q12080772"
+ },
+ "05e6e40a375553b7": {
+  "cover": "leads/loc-Q167121.c.jpg",
+  "art": "leads/loc-Q167121.jpg",
+  "webp": "leads/loc-Q167121.webp",
+  "artist": "Sie",
+  "license": "CC BY-SA 3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Ny%C3%A1r%C3%A1dt%C5%91_reform%C3%A1tus_templom1.JPG",
+  "name": "Ungheni",
+  "kind": "locality"
+ },
+ "b70b1cae6cca4432": {
+  "cover": "leads/loc-Q167121.c.jpg",
+  "art": "leads/loc-Q167121.jpg",
+  "webp": "leads/loc-Q167121.webp",
+  "artist": "Sie",
+  "license": "CC BY-SA 3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Ny%C3%A1r%C3%A1dt%C5%91_reform%C3%A1tus_templom1.JPG",
+  "name": "Ungheni",
+  "kind": "locality"
+ },
+ "7dfecceba1aca2f2": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_negasit_sau_fara_imagine",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "d19abb67a2830eaa": {
+  "cover": "leads/loc-Q16426185.c.jpg",
+  "art": "leads/loc-Q16426185.jpg",
+  "webp": "leads/loc-Q16426185.webp",
+  "artist": "Utilizator:Țetcu Mircea Rareș at ro.wikipedia",
+  "license": "CC BY-SA 3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:RO_CJ_Cojocna_2011.1.6.jpg",
+  "name": "Cojocna",
+  "kind": "locality",
+  "qid": "Q16426185"
+ },
+ "1746847ceaded665": {
+  "cover": "leads/loc-Q666373.c.jpg",
+  "art": "leads/loc-Q666373.jpg",
+  "webp": "leads/loc-Q666373.webp",
+  "artist": "Dan1967",
+  "license": "CC BY-SA 3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Primaria_Seini.jpg",
+  "name": "Seini",
+  "kind": "locality",
+  "qid": "Q666373"
+ },
+ "2cb60180f4ebd2e5": {
+  "cover": "leads/loc-Q167792.c.jpg",
+  "art": "leads/loc-Q167792.jpg",
+  "webp": "leads/loc-Q167792.webp",
+  "artist": "Utilizator:Țetcu Mircea Rareș at ro.wikipedia",
+  "license": "CC BY-SA 2.5",
+  "page": "https://commons.wikimedia.org/wiki/File:RO_MS_Sarmasu_64.jpg",
+  "name": "Sărmașu",
+  "kind": "locality",
+  "qid": "Q167792"
+ },
+ "4342d427722e2243": {
+  "cover": "leads/loc-Q167792.c.jpg",
+  "art": "leads/loc-Q167792.jpg",
+  "webp": "leads/loc-Q167792.webp",
+  "artist": "Utilizator:Țetcu Mircea Rareș at ro.wikipedia",
+  "license": "CC BY-SA 2.5",
+  "page": "https://commons.wikimedia.org/wiki/File:RO_MS_Sarmasu_64.jpg",
+  "name": "Sărmașu",
+  "kind": "locality",
+  "qid": "Q167792"
+ },
+ "396a41318ab15345": {
+  "cover": "leads/loc-Q267708.c.jpg",
+  "art": "leads/loc-Q267708.jpg",
+  "webp": "leads/loc-Q267708.webp",
+  "artist": "Sie",
+  "license": "CC BY-SA 3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Medve-t%C3%B3_l%C3%A9gi.jpg",
+  "name": "Sovata",
+  "kind": "locality"
+ },
+ "69b28f2a0c8ad163": {
+  "cover": "leads/loc-Q209809.c.jpg",
+  "art": "leads/loc-Q209809.jpg",
+  "webp": "leads/loc-Q209809.webp",
+  "artist": "Ana Maria Catalina",
+  "license": "CC BY-SA 4.0",
+  "page": "https://commons.wikimedia.org/wiki/File:2010-IMG_1840.jpg",
+  "name": "Turda",
+  "kind": "locality",
+  "qid": "Q209809"
+ },
+ "4298a5f3705e9d08": {
+  "cover": "leads/loc-Q458422.c.jpg",
+  "art": "leads/loc-Q458422.jpg",
+  "webp": "leads/loc-Q458422.webp",
+  "artist": "Ana Maria Catalina",
+  "license": "CC BY-SA 3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:C%C3%A2mpia_Turzii-Parcul_Central-IMG_6685.jpg",
+  "name": "Câmpia Turzii",
+  "kind": "locality",
+  "qid": "Q458422"
+ },
+ "363aa8ed59a18dc3": {
+  "cover": "leads/loc-Q167121.c.jpg",
+  "art": "leads/loc-Q167121.jpg",
+  "webp": "leads/loc-Q167121.webp",
+  "artist": "Sie",
+  "license": "CC BY-SA 3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Ny%C3%A1r%C3%A1dt%C5%91_reform%C3%A1tus_templom1.JPG",
+  "name": "Ungheni",
+  "kind": "locality"
+ },
+ "1e441cb050522a5b": {
+  "cover": "leads/loc-Q12724776.c.jpg",
+  "art": "leads/loc-Q12724776.jpg",
+  "webp": "leads/loc-Q12724776.webp",
+  "artist": "Mieresch",
+  "license": "CC0",
+  "page": "https://commons.wikimedia.org/wiki/File:Viev_of_Flore%C8%99ti,_Cluj_County.jpg",
+  "name": "Florești",
+  "kind": "locality",
+  "qid": "Q12724776"
+ },
+ "eee4395a9c4e3b51": {
+  "cover": "leads/loc-Q838838.c.jpg",
+  "art": "leads/loc-Q838838.jpg",
+  "webp": "leads/loc-Q838838.webp",
+  "artist": "Utilizator:Țetcu Mircea Rareș at ro.wikipedia",
+  "license": "CC BY-SA 3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:RO_SJ_Uileacu_Simleului_2.jpg",
+  "name": "Măeriște",
+  "kind": "locality",
+  "qid": "Q838838"
+ },
+ "502078b1bf0797c9": {
+  "cover": "leads/loc-Q167121.c.jpg",
+  "art": "leads/loc-Q167121.jpg",
+  "webp": "leads/loc-Q167121.webp",
+  "artist": "Sie",
+  "license": "CC BY-SA 3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Ny%C3%A1r%C3%A1dt%C5%91_reform%C3%A1tus_templom1.JPG",
+  "name": "Ungheni",
+  "kind": "locality"
+ },
+ "f1c3f7f2d530504d": {
+  "cover": "leads/loc-Q267708.c.jpg",
+  "art": "leads/loc-Q267708.jpg",
+  "webp": "leads/loc-Q267708.webp",
+  "artist": "Sie",
+  "license": "CC BY-SA 3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Medve-t%C3%B3_l%C3%A9gi.jpg",
+  "name": "Sovata",
+  "kind": "locality"
+ },
+ "8c02d6b0a242537c": {
+  "cover": "leads/loc-Q12724776.c.jpg",
+  "art": "leads/loc-Q12724776.jpg",
+  "webp": "leads/loc-Q12724776.webp",
+  "artist": "Mieresch",
+  "license": "CC0",
+  "page": "https://commons.wikimedia.org/wiki/File:Viev_of_Flore%C8%99ti,_Cluj_County.jpg",
+  "name": "Florești",
+  "kind": "locality",
+  "qid": "Q12724776"
+ },
+ "1aed8b0c9dc9d32f": {
+  "cover": "leads/loc-Q754729.c.jpg",
+  "art": "leads/loc-Q754729.jpg",
+  "webp": "leads/loc-Q754729.webp",
+  "artist": "Țetcu Mircea Rareș",
+  "license": "CC BY-SA 3.0 ro",
+  "page": "https://commons.wikimedia.org/wiki/File:OrTarnaveniMS_(32).JPG",
+  "name": "Târnăveni",
+  "kind": "locality",
+  "qid": "Q754729"
+ },
+ "db953d55059afd4d": {
+  "cover": "leads/loc-Q16426185.c.jpg",
+  "art": "leads/loc-Q16426185.jpg",
+  "webp": "leads/loc-Q16426185.webp",
+  "artist": "Utilizator:Țetcu Mircea Rareș at ro.wikipedia",
+  "license": "CC BY-SA 3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:RO_CJ_Cojocna_2011.1.6.jpg",
+  "name": "Cojocna",
+  "kind": "locality",
+  "qid": "Q16426185"
+ },
+ "9f61e39530905783": {
+  "cover": "leads/loc-Q3846983.c.jpg",
+  "art": "leads/loc-Q3846983.jpg",
+  "webp": "leads/loc-Q3846983.webp",
+  "artist": "Nicu Farcaș",
+  "license": "CC BY-SA 3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:RO_SJ_Simleu_Silvaniei_004.jpg",
+  "name": "Șimleu Silvaniei",
+  "kind": "locality"
+ },
+ "a0393e59503a792d": {
+  "cover": "leads/loc-Q12724776.c.jpg",
+  "art": "leads/loc-Q12724776.jpg",
+  "webp": "leads/loc-Q12724776.webp",
+  "artist": "Mieresch",
+  "license": "CC0",
+  "page": "https://commons.wikimedia.org/wiki/File:Viev_of_Flore%C8%99ti,_Cluj_County.jpg",
+  "name": "Florești",
+  "kind": "locality",
+  "qid": "Q12724776"
+ },
+ "575d897da28d01e8": {
+  "cover": "leads/loc-Q209809.c.jpg",
+  "art": "leads/loc-Q209809.jpg",
+  "webp": "leads/loc-Q209809.webp",
+  "artist": "Ana Maria Catalina",
+  "license": "CC BY-SA 4.0",
+  "page": "https://commons.wikimedia.org/wiki/File:2010-IMG_1840.jpg",
+  "name": "Turda",
+  "kind": "locality",
+  "qid": "Q209809"
+ },
+ "5765630bf8353e7b": {
+  "cover": "leads/loc-Q16426185.c.jpg",
+  "art": "leads/loc-Q16426185.jpg",
+  "webp": "leads/loc-Q16426185.webp",
+  "artist": "Utilizator:Țetcu Mircea Rareș at ro.wikipedia",
+  "license": "CC BY-SA 3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:RO_CJ_Cojocna_2011.1.6.jpg",
+  "name": "Cojocna",
+  "kind": "locality",
+  "qid": "Q16426185"
+ },
+ "7379f08f6fe5c3aa": {
+  "cover": "leads/loc-Q209809.c.jpg",
+  "art": "leads/loc-Q209809.jpg",
+  "webp": "leads/loc-Q209809.webp",
+  "artist": "Ana Maria Catalina",
+  "license": "CC BY-SA 4.0",
+  "page": "https://commons.wikimedia.org/wiki/File:2010-IMG_1840.jpg",
+  "name": "Turda",
+  "kind": "locality",
+  "qid": "Q209809"
+ },
+ "a2f238b706078b21": {
+  "cover": "leads/loc-Q838838.c.jpg",
+  "art": "leads/loc-Q838838.jpg",
+  "webp": "leads/loc-Q838838.webp",
+  "artist": "Utilizator:Țetcu Mircea Rareș at ro.wikipedia",
+  "license": "CC BY-SA 3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:RO_SJ_Uileacu_Simleului_2.jpg",
+  "name": "Măeriște",
+  "kind": "locality",
+  "qid": "Q838838"
+ },
+ "2a5e50ea84fe44a1": {
+  "cover": "leads/loc-Q458422.c.jpg",
+  "art": "leads/loc-Q458422.jpg",
+  "webp": "leads/loc-Q458422.webp",
+  "artist": "Ana Maria Catalina",
+  "license": "CC BY-SA 3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:C%C3%A2mpia_Turzii-Parcul_Central-IMG_6685.jpg",
+  "name": "Câmpia Turzii",
+  "kind": "locality",
+  "qid": "Q458422"
+ },
+ "578bbc5d7976550a": {
+  "cover": "leads/loc-Q458422.c.jpg",
+  "art": "leads/loc-Q458422.jpg",
+  "webp": "leads/loc-Q458422.webp",
+  "artist": "Ana Maria Catalina",
+  "license": "CC BY-SA 3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:C%C3%A2mpia_Turzii-Parcul_Central-IMG_6685.jpg",
+  "name": "Câmpia Turzii",
+  "kind": "locality",
+  "qid": "Q458422"
+ },
+ "fa01120cd6b96df5": {
+  "cover": "leads/loc-Q458422.c.jpg",
+  "art": "leads/loc-Q458422.jpg",
+  "webp": "leads/loc-Q458422.webp",
+  "artist": "Ana Maria Catalina",
+  "license": "CC BY-SA 3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:C%C3%A2mpia_Turzii-Parcul_Central-IMG_6685.jpg",
+  "name": "Câmpia Turzii",
+  "kind": "locality",
+  "qid": "Q458422"
+ },
+ "0d17f5ca72d06a13": {
+  "cover": "leads/loc-Q754729.c.jpg",
+  "art": "leads/loc-Q754729.jpg",
+  "webp": "leads/loc-Q754729.webp",
+  "artist": "Țetcu Mircea Rareș",
+  "license": "CC BY-SA 3.0 ro",
+  "page": "https://commons.wikimedia.org/wiki/File:OrTarnaveniMS_(32).JPG",
+  "name": "Târnăveni",
+  "kind": "locality",
+  "qid": "Q754729"
+ },
+ "e8cbda9c42d9f237": {
+  "cover": "leads/loc-Q252061.c.jpg",
+  "art": "leads/loc-Q252061.jpg",
+  "webp": "leads/loc-Q252061.webp",
+  "artist": "Nicu farcas",
+  "license": "CC BY-SA 3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:RO_BH_Valea_lui_Mihai.jpg",
+  "name": "Valea lui Mihai",
+  "kind": "locality"
+ },
+ "ab21d8a57cb8a7cb": {
+  "cover": "leads/loc-Q12724776.c.jpg",
+  "art": "leads/loc-Q12724776.jpg",
+  "webp": "leads/loc-Q12724776.webp",
+  "artist": "Mieresch",
+  "license": "CC0",
+  "page": "https://commons.wikimedia.org/wiki/File:Viev_of_Flore%C8%99ti,_Cluj_County.jpg",
+  "name": "Florești",
+  "kind": "locality",
+  "qid": "Q12724776"
+ },
+ "291c33bd5c1da22c": {
+  "cover": "leads/loc-Q12724776.c.jpg",
+  "art": "leads/loc-Q12724776.jpg",
+  "webp": "leads/loc-Q12724776.webp",
+  "artist": "Mieresch",
+  "license": "CC0",
+  "page": "https://commons.wikimedia.org/wiki/File:Viev_of_Flore%C8%99ti,_Cluj_County.jpg",
+  "name": "Florești",
+  "kind": "locality",
+  "qid": "Q12724776"
+ },
+ "1cd1670fc9594c80": {
+  "cover": "leads/loc-Q666373.c.jpg",
+  "art": "leads/loc-Q666373.jpg",
+  "webp": "leads/loc-Q666373.webp",
+  "artist": "Dan1967",
+  "license": "CC BY-SA 3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Primaria_Seini.jpg",
+  "name": "Seini",
+  "kind": "locality",
+  "qid": "Q666373"
+ },
+ "d0ccae1619a507e8": {
+  "cover": "leads/loc-Q12724776.c.jpg",
+  "art": "leads/loc-Q12724776.jpg",
+  "webp": "leads/loc-Q12724776.webp",
+  "artist": "Mieresch",
+  "license": "CC0",
+  "page": "https://commons.wikimedia.org/wiki/File:Viev_of_Flore%C8%99ti,_Cluj_County.jpg",
+  "name": "Florești",
+  "kind": "locality",
+  "qid": "Q12724776"
+ },
+ "2cee728251537ba4": {
+  "cover": "leads/loc-Q458422.c.jpg",
+  "art": "leads/loc-Q458422.jpg",
+  "webp": "leads/loc-Q458422.webp",
+  "artist": "Ana Maria Catalina",
+  "license": "CC BY-SA 3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:C%C3%A2mpia_Turzii-Parcul_Central-IMG_6685.jpg",
+  "name": "Câmpia Turzii",
+  "kind": "locality",
+  "qid": "Q458422"
+ },
+ "38fc258b98661d6d": {
+  "cover": "leads/loc-Q252061.c.jpg",
+  "art": "leads/loc-Q252061.jpg",
+  "webp": "leads/loc-Q252061.webp",
+  "artist": "Nicu farcas",
+  "license": "CC BY-SA 3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:RO_BH_Valea_lui_Mihai.jpg",
+  "name": "Valea lui Mihai",
+  "kind": "locality"
+ },
+ "98c1fb8a0a2ec541": {
+  "cover": "leads/loc-Q458422.c.jpg",
+  "art": "leads/loc-Q458422.jpg",
+  "webp": "leads/loc-Q458422.webp",
+  "artist": "Ana Maria Catalina",
+  "license": "CC BY-SA 3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:C%C3%A2mpia_Turzii-Parcul_Central-IMG_6685.jpg",
+  "name": "Câmpia Turzii",
+  "kind": "locality",
+  "qid": "Q458422"
+ },
+ "5fbeeea73b29ed38": {
+  "cover": "leads/loc-Q186349.c.jpg",
+  "art": "leads/loc-Q186349.jpg",
+  "webp": "leads/loc-Q186349.webp",
+  "artist": "Sie",
+  "license": "CC BY-SA 3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Ady_negyed1.jpg",
+  "name": "Târgu Mureș",
+  "kind": "locality",
+  "qid": "Q186349"
+ },
+ "df8f7d2a6768fc22": {
+  "cover": "leads/loc-Q3846983.c.jpg",
+  "art": "leads/loc-Q3846983.jpg",
+  "webp": "leads/loc-Q3846983.webp",
+  "artist": "Nicu Farcaș",
+  "license": "CC BY-SA 3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:RO_SJ_Simleu_Silvaniei_004.jpg",
+  "name": "Șimleu Silvaniei",
+  "kind": "locality"
+ },
+ "3529c53b99e3a3d0": {
+  "cover": "leads/loc-Q458422.c.jpg",
+  "art": "leads/loc-Q458422.jpg",
+  "webp": "leads/loc-Q458422.webp",
+  "artist": "Ana Maria Catalina",
+  "license": "CC BY-SA 3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:C%C3%A2mpia_Turzii-Parcul_Central-IMG_6685.jpg",
+  "name": "Câmpia Turzii",
+  "kind": "locality",
+  "qid": "Q458422"
+ },
+ "cab3096d42f3fa4f": {
+  "cover": "leads/loc-Q12080772.c.jpg",
+  "art": "leads/loc-Q12080772.jpg",
+  "webp": "leads/loc-Q12080772.webp",
+  "artist": "Utilizator:Țetcu Mircea Rareș at ro.wikipedia",
+  "license": "CC BY-SA 2.5",
+  "page": "https://commons.wikimedia.org/wiki/File:RO_MS_Oroiu_87.jpg",
+  "name": "Band",
+  "kind": "locality",
+  "qid": "Q12080772"
+ },
+ "442309f305a3b208": {
+  "cover": "leads/loc-Q12080772.c.jpg",
+  "art": "leads/loc-Q12080772.jpg",
+  "webp": "leads/loc-Q12080772.webp",
+  "artist": "Utilizator:Țetcu Mircea Rareș at ro.wikipedia",
+  "license": "CC BY-SA 2.5",
+  "page": "https://commons.wikimedia.org/wiki/File:RO_MS_Oroiu_87.jpg",
+  "name": "Band",
+  "kind": "locality",
+  "qid": "Q12080772"
+ },
+ "06f5d2f837b0f122": {
+  "cover": "leads/loc-Q186349.c.jpg",
+  "art": "leads/loc-Q186349.jpg",
+  "webp": "leads/loc-Q186349.webp",
+  "artist": "Sie",
+  "license": "CC BY-SA 3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Ady_negyed1.jpg",
+  "name": "Târgu Mureș",
+  "kind": "locality",
+  "qid": "Q186349"
+ },
+ "9c49395189a77476": {
+  "cover": "leads/loc-Q12725199.c.jpg",
+  "art": "leads/loc-Q12725199.jpg",
+  "webp": "leads/loc-Q12725199.webp",
+  "artist": "Utilizator:Țetcu Mircea Rareș at ro.wikipedia",
+  "license": "CC BY-SA 3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:RO_CJ_Stolna_2.85.jpg",
+  "name": "Săvădisla",
+  "kind": "locality",
+  "qid": "Q12725199"
+ },
+ "a03ce4e38a38c57c": {
+  "cover": "leads/loc-Q666373.c.jpg",
+  "art": "leads/loc-Q666373.jpg",
+  "webp": "leads/loc-Q666373.webp",
+  "artist": "Dan1967",
+  "license": "CC BY-SA 3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Primaria_Seini.jpg",
+  "name": "Seini",
+  "kind": "locality",
+  "qid": "Q666373"
+ },
+ "549682dd6bf5a0b4": {
+  "cover": "leads/loc-Q838838.c.jpg",
+  "art": "leads/loc-Q838838.jpg",
+  "webp": "leads/loc-Q838838.webp",
+  "artist": "Utilizator:Țetcu Mircea Rareș at ro.wikipedia",
+  "license": "CC BY-SA 3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:RO_SJ_Uileacu_Simleului_2.jpg",
+  "name": "Măeriște",
+  "kind": "locality",
+  "qid": "Q838838"
+ },
+ "2b5d5cac6ea8cb30": {
+  "cover": "leads/loc-Q838838.c.jpg",
+  "art": "leads/loc-Q838838.jpg",
+  "webp": "leads/loc-Q838838.webp",
+  "artist": "Utilizator:Țetcu Mircea Rareș at ro.wikipedia",
+  "license": "CC BY-SA 3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:RO_SJ_Uileacu_Simleului_2.jpg",
+  "name": "Măeriște",
+  "kind": "locality",
+  "qid": "Q838838"
+ },
+ "faa9008d7519278d": {
+  "cover": "leads/loc-Q167121.c.jpg",
+  "art": "leads/loc-Q167121.jpg",
+  "webp": "leads/loc-Q167121.webp",
+  "artist": "Sie",
+  "license": "CC BY-SA 3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Ny%C3%A1r%C3%A1dt%C5%91_reform%C3%A1tus_templom1.JPG",
+  "name": "Ungheni",
+  "kind": "locality"
+ },
+ "7fcee52ba14dccd9": {
+  "cover": "leads/loc-Q5058792.c.jpg",
+  "art": "leads/loc-Q5058792.jpg",
+  "webp": "leads/loc-Q5058792.webp",
+  "artist": "Sie",
+  "license": "CC BY-SA 3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Maroskereszt%C3%BAr_1.JPG",
+  "name": "Cristești",
+  "kind": "locality",
+  "qid": "Q5058792"
+ },
+ "4bb39d62a958e15a": {
+  "cover": "leads/loc-Q10811999.c.jpg",
+  "art": "leads/loc-Q10811999.jpg",
+  "webp": "leads/loc-Q10811999.webp",
+  "artist": "Utilizator:Țetcu Mircea Rareș at ro.wikipedia",
+  "license": "CC BY-SA 3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:RO_CJ_Rasca_5.jpg",
+  "name": "Rișca",
+  "kind": "locality"
+ },
+ "8e4fb96365b26f3f": {
+  "cover": "leads/loc-Q167121.c.jpg",
+  "art": "leads/loc-Q167121.jpg",
+  "webp": "leads/loc-Q167121.webp",
+  "artist": "Sie",
+  "license": "CC BY-SA 3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Ny%C3%A1r%C3%A1dt%C5%91_reform%C3%A1tus_templom1.JPG",
+  "name": "Ungheni",
+  "kind": "locality"
+ },
+ "79a129739cf32b0c": {
+  "cover": "leads/loc-Q186349.c.jpg",
+  "art": "leads/loc-Q186349.jpg",
+  "webp": "leads/loc-Q186349.webp",
+  "artist": "Sie",
+  "license": "CC BY-SA 3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Ady_negyed1.jpg",
+  "name": "Târgu Mureș",
+  "kind": "locality",
+  "qid": "Q186349"
+ },
+ "d1ca3206d2db1614": {
+  "cover": "leads/loc-Q167121.c.jpg",
+  "art": "leads/loc-Q167121.jpg",
+  "webp": "leads/loc-Q167121.webp",
+  "artist": "Sie",
+  "license": "CC BY-SA 3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Ny%C3%A1r%C3%A1dt%C5%91_reform%C3%A1tus_templom1.JPG",
+  "name": "Ungheni",
+  "kind": "locality"
+ },
+ "4200f6c5ed7c48e3": {
+  "cover": "leads/loc-Q666373.c.jpg",
+  "art": "leads/loc-Q666373.jpg",
+  "webp": "leads/loc-Q666373.webp",
+  "artist": "Dan1967",
+  "license": "CC BY-SA 3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Primaria_Seini.jpg",
+  "name": "Seini",
+  "kind": "locality",
+  "qid": "Q666373"
+ },
+ "11432aecf99b692a": {
+  "cover": "leads/loc-Q186349.c.jpg",
+  "art": "leads/loc-Q186349.jpg",
+  "webp": "leads/loc-Q186349.webp",
+  "artist": "Sie",
+  "license": "CC BY-SA 3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Ady_negyed1.jpg",
+  "name": "Târgu Mureș",
+  "kind": "locality",
+  "qid": "Q186349"
+ },
+ "ab7978a5a37b7352": {
+  "cover": "leads/loc-Q186349.c.jpg",
+  "art": "leads/loc-Q186349.jpg",
+  "webp": "leads/loc-Q186349.webp",
+  "artist": "Sie",
+  "license": "CC BY-SA 3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Ady_negyed1.jpg",
+  "name": "Târgu Mureș",
+  "kind": "locality",
+  "qid": "Q186349"
+ },
+ "5a534a595e2f47e6": {
+  "cover": "leads/loc-Q167121.c.jpg",
+  "art": "leads/loc-Q167121.jpg",
+  "webp": "leads/loc-Q167121.webp",
+  "artist": "Sie",
+  "license": "CC BY-SA 3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Ny%C3%A1r%C3%A1dt%C5%91_reform%C3%A1tus_templom1.JPG",
+  "name": "Ungheni",
+  "kind": "locality"
+ },
+ "860f62daa446676b": {
+  "cover": "leads/loc-Q750220.c.jpg",
+  "art": "leads/loc-Q750220.jpg",
+  "webp": "leads/loc-Q750220.webp",
+  "artist": "Fmvh",
+  "license": "CC BY-SA 3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Banffyhunyad.jpg",
+  "name": "Huedin",
+  "kind": "locality"
+ },
+ "fbec3377dbb5a145": {
+  "cover": "leads/loc-Q750220.c.jpg",
+  "art": "leads/loc-Q750220.jpg",
+  "webp": "leads/loc-Q750220.webp",
+  "artist": "Fmvh",
+  "license": "CC BY-SA 3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Banffyhunyad.jpg",
+  "name": "Huedin",
+  "kind": "locality"
+ },
+ "b71f96423f385396": {
+  "cover": "leads/loc-Q12080772.c.jpg",
+  "art": "leads/loc-Q12080772.jpg",
+  "webp": "leads/loc-Q12080772.webp",
+  "artist": "Utilizator:Țetcu Mircea Rareș at ro.wikipedia",
+  "license": "CC BY-SA 2.5",
+  "page": "https://commons.wikimedia.org/wiki/File:RO_MS_Oroiu_87.jpg",
+  "name": "Band",
+  "kind": "locality",
+  "qid": "Q12080772"
+ },
+ "27942e4db0dfc729": {
+  "cover": "leads/loc-Q12725199.c.jpg",
+  "art": "leads/loc-Q12725199.jpg",
+  "webp": "leads/loc-Q12725199.webp",
+  "artist": "Utilizator:Țetcu Mircea Rareș at ro.wikipedia",
+  "license": "CC BY-SA 3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:RO_CJ_Stolna_2.85.jpg",
+  "name": "Săvădisla",
+  "kind": "locality",
+  "qid": "Q12725199"
+ },
+ "7d8660d09edb10ae": {
+  "cover": "leads/loc-Q838838.c.jpg",
+  "art": "leads/loc-Q838838.jpg",
+  "webp": "leads/loc-Q838838.webp",
+  "artist": "Utilizator:Țetcu Mircea Rareș at ro.wikipedia",
+  "license": "CC BY-SA 3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:RO_SJ_Uileacu_Simleului_2.jpg",
+  "name": "Măeriște",
+  "kind": "locality",
+  "qid": "Q838838"
+ },
+ "62deefbf6b589875": {
+  "cover": "leads/loc-Q12080772.c.jpg",
+  "art": "leads/loc-Q12080772.jpg",
+  "webp": "leads/loc-Q12080772.webp",
+  "artist": "Utilizator:Țetcu Mircea Rareș at ro.wikipedia",
+  "license": "CC BY-SA 2.5",
+  "page": "https://commons.wikimedia.org/wiki/File:RO_MS_Oroiu_87.jpg",
+  "name": "Band",
+  "kind": "locality",
+  "qid": "Q12080772"
+ },
+ "aebf85449b9a8c60": {
+  "cover": "leads/loc-Q252061.c.jpg",
+  "art": "leads/loc-Q252061.jpg",
+  "webp": "leads/loc-Q252061.webp",
+  "artist": "Nicu farcas",
+  "license": "CC BY-SA 3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:RO_BH_Valea_lui_Mihai.jpg",
+  "name": "Valea lui Mihai",
+  "kind": "locality"
+ },
+ "6de3d1ca0327d091": {
+  "cover": "leads/loc-Q754729.c.jpg",
+  "art": "leads/loc-Q754729.jpg",
+  "webp": "leads/loc-Q754729.webp",
+  "artist": "Țetcu Mircea Rareș",
+  "license": "CC BY-SA 3.0 ro",
+  "page": "https://commons.wikimedia.org/wiki/File:OrTarnaveniMS_(32).JPG",
+  "name": "Târnăveni",
+  "kind": "locality",
+  "qid": "Q754729"
  }
 }
