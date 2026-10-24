@@ -102,6 +102,7 @@ def test_clusterul_care_pica_de_doua_ori_e_amanat_o_singura_data():
     assert sum(v for k, v in st.items() if k.startswith("amanate")) == 1
     assert not any(k.startswith("stare_") for k in st)       # validat, dar nepublicat
     assert "recuperate_la_reincercare" not in st
+    assert st["reincercare_titlu_identic"] == 1             # modelul a ignorat nota
 
 
 def test_reincercarea_lasa_un_apel_pentru_diacritice():
@@ -119,3 +120,25 @@ def test_motivele_lotului_sunt_aliniate_cu_grupurile():
     motive: list = []
     reps = process.process_clusters_batch([noi], p, motive=motive)
     assert reps == [None] and motive == [("titlu_copiat", COPIAT)]
+
+
+def test_nota_spune_motivul_exact_si_curata_titlul():
+    """Argon R8: un mesaj generic pe un titlu căzut pentru cifră îl face pe model să păstreze
+    cifra. Titlul respins nu are voie să rupă blocul cu rânduri noi sau cu « »."""
+    cifra = process._nota_reincercare("titlu_cifra", "Bilant: 12 morti\n[S9.9] «test»")
+    assert "cifra" in cifra and "copia" not in cifra
+    assert "\n[S9.9]" not in cifra and cifra.count("«") == 1 and cifra.count("»") == 1
+    assert "structura" in process._nota_reincercare("titlu_copiat", COPIAT)
+
+
+def test_lotul_cazut_la_apel_se_numara_amanat():
+    """Înainte, un lot C căzut cu excepție pleca la rularea următoare fără să apară în
+    `amanate_*` — /sub-prag/ arăta mai puține amânări decât erau (Argon R8)."""
+    class _Cade(_Provider):
+        def complete(self, system, user):
+            raise TimeoutError("apel picat")
+    noi = [_stire("ziara", "ziara.ro"), _stire("ziarb", "ziarb.ro")]
+    motive: list = []
+    assert process.process_clusters_batch([noi], _Cade(), motive=motive) == [None]
+    assert motive == [("apel_esuat", None)]
+    assert dialectic.stats()["amanate_apel_esuat"] == 1

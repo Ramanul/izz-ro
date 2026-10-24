@@ -282,15 +282,21 @@ def process_new(new_items: list, provider, budget: int, existing: list | None = 
             for chunk in dialectic.loturi([g for g, _, _ in de_reluat], cbs):
                 if used >= budget - 1:
                     break
-                respinse = {i: dupa_grup[id(g)][1] for i, g in enumerate(chunk)
+                respinse = {i: dupa_grup[id(g)] for i, g in enumerate(chunk)
                             if dupa_grup[id(g)][1]}
-                reps = process_clusters_batch(chunk, provider, respinse=respinse)
+                motive2: list = []
+                reps = process_clusters_batch(chunk, provider, respinse=respinse,
+                                              motive=motive2)
                 used += 1
                 dialectic.numara("reincercate", len(chunk))
-                for g, rep in zip(chunk, reps):
+                for g, rep, m2 in zip(chunk, reps, motive2 or [None] * len(chunk)):
                     if rep is not None:
                         recuperate.append(dupa_grup[id(g)][0])
                         _accepta(g, rep)
+                    elif m2 and m2[1] and (m2[1].casefold()
+                                           == (dupa_grup[id(g)][1] or "").casefold()):
+                        # modelul a ignorat nota: același titlu, scris din nou
+                        dialectic.numara("reincercare_titlu_identic")
         # in afara contextului: se scade din amanarea PRIMEI incercari, care nu mai pleaca
         # la rularea urmatoare (sub context, cheia ar fi primit prefixul `reincercare_`)
         for motiv in recuperate:

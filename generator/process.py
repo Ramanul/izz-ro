@@ -988,6 +988,26 @@ def _prep_cluster_rep(group: list) -> tuple:
 # afirmațiilor contra surselor — acolo o reîncercare ar cere doar să treacă de gardă.
 MOTIVE_REINCERCABILE = frozenset({"nemapat", "titlu_copiat", "titlu_deformat", "titlu_cifra"})
 
+# Nota de la reîncercare spune motivul EXACT al căderii (Argon R8): un mesaj generic („copia
+# sau deforma") pus pe un titlu căzut pentru o cifră fără sursă îl face pe model să schimbe
+# topica și să păstreze cifra — deci să pice identic a doua oară.
+_MESAJ_MOTIV = {
+    "titlu_copiat": "copia prea fidel o formulare dintr-o sursa; spune ideea centrala cu alta "
+                    "structura a frazei",
+    "titlu_deformat": "spunea mai mult decat sustin propozitiile [S…]; ramai strict la faptele "
+                      "din ele",
+    "titlu_cifra": "continea o cifra care nu apare in propozitiile citate; scoate cifra sau "
+                   "foloseste doar numere prezente literal in surse",
+}
+
+
+def _nota_reincercare(motiv: str, titlu: str) -> str:
+    """Nota pentru UN eveniment la a doua încercare. Titlul respins e curățat de rânduri noi și
+    de ghilimele, ca să nu poată rupe blocul `[i]` sau delimitarea « »."""
+    curat = re.sub(r"\s+", " ", titlu).replace("«", "").replace("»", "").strip()
+    return (f"\n  NOTA: titlul propus anterior, «{curat}», a fost respins: "
+            f"{_MESAJ_MOTIV.get(motiv, 'nu a trecut verificarea')}. Scrie un titlu nou.")
+
 
 def process_clusters_batch(groups: list, provider, respinse: dict | None = None,
                            motive: list | None = None) -> list:
@@ -1027,17 +1047,17 @@ def process_clusters_batch(groups: list, provider, respinse: dict | None = None,
     # La reîncercare: titlul respins la prima încercare, numit explicit — la temperatura 0,2,
     # fără el modelul tinde să scrie același titlu. Nota stă în blocul evenimentului, fără
     # etichetă de propoziție `[S…]`, deci nu poate fi citată ca sursă.
-    respinse = respinse or {}
+    respinse = respinse or {}                  # {index în lot: (motiv, titlu respins)}
     events_block = "\n\n".join(
-        f"[{b.cid}]\n{b.text}" + (
-            f"\n  NOTA: titlul propus anterior, «{respinse[i]}», a fost respins (copia o "
-            f"propozitie a unei surse sau o deforma). Scrie un titlu nou, cu cuvintele tale."
-            if respinse.get(i) else "")
+        f"[{b.cid}]\n{b.text}" + (_nota_reincercare(*respinse[i]) if respinse.get(i) else "")
         for i, b in enumerate(blocks))
     try:
         raw = provider.complete(SYSTEM_C_DIALECTIC, USER_C_DIALECTIC.format(events_block=events_block))
         arr = _parse_json_array_tolerant(raw)
     except Exception:
+        # numărat: altfel clusterele pleacă la rularea următoare fără să apară în `amanate_*`
+        # (/sub-prag/ le arăta mai puține decât erau — Argon R8)
+        dialectic.numara("amanate_apel_esuat", len(preps))
         if motive is not None:
             motive.extend([("apel_esuat", None)] * len(preps))
         return [None] * len(preps)             # tot lotul a esuat -> reluat data viitoare (vezi docstring)
@@ -1053,7 +1073,7 @@ def process_clusters_batch(groups: list, provider, respinse: dict | None = None,
         out.append(_aplica_dialectic(rep, by_id.get(i), blocks[i], provider))
         if motive is not None:
             motive.append(None if out[-1] is not None
-                          else (rep.get("_motiv_amanare"), rep.get("_titlu_respins")))
+                          else (rep.pop("_motiv_amanare", None), rep.pop("_titlu_respins", None)))
     return out
 
 
