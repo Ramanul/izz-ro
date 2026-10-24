@@ -983,7 +983,14 @@ def _prep_cluster_rep(group: list) -> tuple:
     return group, rep
 
 
-def process_clusters_batch(groups: list, provider) -> list:
+# Motivele de amânare la care o a doua încercare, în aceeași rulare, are sens: țin de
+# RĂSPUNSUL modelului (obiect lipsă din lot, titlu transcris sau deformat), nu de verificarea
+# afirmațiilor contra surselor — acolo o reîncercare ar cere doar să treacă de gardă.
+MOTIVE_REINCERCABILE = frozenset({"nemapat", "titlu_copiat", "titlu_deformat", "titlu_cifra"})
+
+
+def process_clusters_batch(groups: list, provider, respinse: dict | None = None,
+                           motive: list | None = None) -> list:
     """Model C in LOT: UN apel AI pentru mai multe clustere deodata, in loc de unul per
     cluster (vezi config.CLUSTER_BATCH_SIZE pentru motiv si cifre masurate).
 
@@ -1017,11 +1024,22 @@ def process_clusters_batch(groups: list, provider) -> list:
     # E0, lead-ul RSS doar ca rezervă). Numerotarea e unică în tot lotul, deci o afirmație care
     # citează alt eveniment al lotului e respinsă mecanic în `dialectic.validate`.
     blocks = dialectic.build_blocks([(group, _roluri_grup(group)) for group, _ in preps])
-    events_block = "\n\n".join(f"[{b.cid}]\n{b.text}" for b in blocks)
+    # La reîncercare: titlul respins la prima încercare, numit explicit — la temperatura 0,2,
+    # fără el modelul tinde să scrie același titlu. Nota stă în blocul evenimentului, fără
+    # etichetă de propoziție `[S…]`, deci nu poate fi citată ca sursă.
+    respinse = respinse or {}
+    events_block = "\n\n".join(
+        f"[{b.cid}]\n{b.text}" + (
+            f"\n  NOTA: titlul propus anterior, «{respinse[i]}», a fost respins (copia o "
+            f"propozitie a unei surse sau o deforma). Scrie un titlu nou, cu cuvintele tale."
+            if respinse.get(i) else "")
+        for i, b in enumerate(blocks))
     try:
         raw = provider.complete(SYSTEM_C_DIALECTIC, USER_C_DIALECTIC.format(events_block=events_block))
         arr = _parse_json_array_tolerant(raw)
     except Exception:
+        if motive is not None:
+            motive.extend([("apel_esuat", None)] * len(preps))
         return [None] * len(preps)             # tot lotul a esuat -> reluat data viitoare (vezi docstring)
 
     by_id, duplicate, straine = _pe_id(arr, len(preps))
@@ -1033,6 +1051,9 @@ def process_clusters_batch(groups: list, provider) -> list:
     out = []
     for i, (_, rep) in enumerate(preps):
         out.append(_aplica_dialectic(rep, by_id.get(i), blocks[i], provider))
+        if motive is not None:
+            motive.append(None if out[-1] is not None
+                          else (rep.get("_motiv_amanare"), rep.get("_titlu_respins")))
     return out
 
 
@@ -1045,6 +1066,7 @@ def _aplica_dialectic(rep: dict, obj, block, provider) -> dict | None:
     amestecul pe care E2 îl elimină."""
     if not isinstance(obj, dict):
         dialectic.numara("amanate_nemapat")
+        rep["_motiv_amanare"] = "nemapat"
         return None                            # nemapat -> amanat, ca la esecul unui apel singur
     d = dialectic.validate(obj, block)
     if d is None:
@@ -1054,17 +1076,22 @@ def _aplica_dialectic(rep: dict, obj, block, provider) -> dict | None:
     candidat = _repair_synthesis_title((obj.get("title") or "").strip().rstrip("."), context)
     if not _titlu_sustinut_de_context(candidat, context):
         dialectic.numara("amanate_titlu_deformat")
+        rep["_motiv_amanare"], rep["_titlu_respins"] = "titlu_deformat", candidat
         return None                            # deformare semantica -> amanat
     if titlu_copiat(candidat, context):
         dialectic.numara("amanate_titlu_copiat")
+        rep["_motiv_amanare"], rep["_titlu_respins"] = "titlu_copiat", candidat
         return None                            # titlu transcris -> amanat (gate-ul l-ar bloca)
     if cifre_straine(candidat, context):
         dialectic.numara("amanate_titlu_cifra")
+        rep["_motiv_amanare"], rep["_titlu_respins"] = "titlu_cifra", candidat
         return None                            # cifra fara sursa in titlu -> amanat
     rep["title"] = candidat
     rep["synthesis"] = dialectic.derive_synthesis(d, candidat, config.SYNTHESIS_MAX_WORDS)
     if not rep["synthesis"]:
+        dialectic.numara("amanate_fara_rezumat")
         return None
+    dialectic.numara(f"stare_{d['state']}")     # aici, nu în validate: abia acum se publică
     # E4: la actualizare, ce s-a schimbat față de versiunea publicată — public, nu tăcut
     schimbari = dialectic.schimbari(rep.get("dialectic"), d, rep.pop("_surse_noi", None))
     if schimbari:
