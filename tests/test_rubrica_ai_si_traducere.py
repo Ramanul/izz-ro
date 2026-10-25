@@ -27,7 +27,7 @@ def test_rubrica_ai_intra_automat_in_prompturile_AI():
     cats = "|".join(config.CATEGORIES)
     assert "|ai|" in cats, "„ai” nu e inconjurat de alte categorii — lista s-a schimbat"
     for nume, prompt in (("USER_B", process.USER_B), ("USER_BATCH", process.USER_BATCH),
-                         ("USER_C", process.USER_C), ("USER_C_BATCH", process.USER_C_BATCH)):
+                         ("USER_C_DIALECTIC", process.USER_C_DIALECTIC)):
         assert cats in prompt, f"{nume} nu contine lista de categorii cu rubrica noua"
 
 
@@ -123,7 +123,7 @@ def test_toate_prompturile_cer_explicit_romana():
     """USER_BATCH avea instructiunea; celelalte trei nu. Un item care ajunge pe calea B
     ne-batch, sau orice sinteza C dintr-un cluster cu surse straine, ramanea netradus."""
     for nume, prompt in (("USER_B", process.USER_B), ("USER_BATCH", process.USER_BATCH),
-                         ("USER_C", process.USER_C), ("USER_C_BATCH", process.USER_C_BATCH)):
+                         ("USER_C_DIALECTIC", process.USER_C_DIALECTIC)):
         assert re.search(r"[Ii]N ROMANA|in romana", prompt), f"{nume} nu cere romana"
 
 

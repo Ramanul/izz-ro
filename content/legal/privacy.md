@@ -1,6 +1,6 @@
 # Politica de confidențialitate
 
-**Ultima actualizare:** 3 octombrie 2026
+**Ultima actualizare:** 23 octombrie 2026
 
 IZZ.ro („noi") respectă confidențialitatea vizitatorilor. Această politică explică ce date prelucrăm, în ce scop și ce drepturi ai, în conformitate cu Regulamentul (UE) 2016/679 (**GDPR**) și **Legea nr. 190/2018**.
 
@@ -11,41 +11,33 @@ Operatorul site-ului IZZ.ro este o **persoană fizică** din **România**, ident
 
 IZZ.ro este construit deliberat ca să colecteze cât mai puține date:
 
-- **Statistici de trafic fără cookie-uri.** Folosim Cloudflare Web Analytics, care măsoară numărul de vizite **fără** a seta cookie-uri de urmărire și **fără** a crea profiluri individuale. Nu te identificăm.
-- **Statistici de trafic cu consimțământ (Google Analytics 4).** Doar dacă accepți bara de consimțământ, activăm Google Analytics 4 pentru statistici agregate de audiență. Folosim „Consent Mode": fără acceptul tău, scriptul **nu se încarcă deloc** și nicio cerere nu pleacă spre Google. Funcțiile de publicitate și de personalizare a reclamelor rămân **dezactivate permanent**. Datele pot fi prelucrate de Google pe servere din afara UE, în baza clauzelor contractuale standard.
-- **Hărți de click și înregistrarea navigării, cu consimțământ (Microsoft Clarity).** Doar dacă accepți bara de consimțământ, activăm Microsoft Clarity, care înregistrează **anonim** modul în care se navighează pe pagină: mișcarea cursorului, click-urile, derularea și dimensiunea ecranului. Îl folosim exclusiv ca să vedem ce părți din site sunt greu de folosit. Clarity setează cookie-uri proprii (`_clck`, `_clsk`). **Funcțiile de publicitate rămân dezactivate**: transmitem explicit `ad_Storage: denied`, așa că sincronizarea cu identificatorul publicitar Microsoft (MUID) nu se declanșează, iar adresa care ar face-o este blocată suplimentar de politica de securitate a site-ului. Fără acceptul tău, scriptul **nu se încarcă deloc** și nicio cerere nu pleacă spre Microsoft. Datele pot fi prelucrate pe servere din afara UE, în baza clauzelor contractuale standard.
+- **Nicio măsurare în browserul tău.** Site-ul nu rulează niciun script de statistică sau de analiză a comportamentului: nu numără ce citești, cât timp stai pe o pagină sau unde dai click, și nu trimite asemenea date nimănui. Toți cititorii văd același flux de știri.
+- **Ce vede găzduirea.** Site-ul e servit de **Cloudflare**, care, ca orice server, primește cererile browserului tău (adresa IP, tipul de browser, pagina cerută) ca să ți le poată livra și ca să blocheze traficul automat abuziv. Din aceste cereri putem vedea doar **totaluri agregate** (de exemplu, câte pagini s-au servit într-o zi), nu persoane. Pentru protecția împotriva roboților, Cloudflare adaugă paginii un script propriu de securitate; el ține de funcționarea în siguranță a serviciului, nu de statistici.
 - **Adresa de e-mail — doar dacă te abonezi la newsletter.** Înscrierea este voluntară și o gestionează **Brevo** (Sendinblue), cu confirmare dublă (double opt-in). Folosim adresa exclusiv pentru a-ți trimite buletinul informativ.
 - **Alerte de ultimă oră (notificări push), doar dacă le ceri.** Dacă apeși „Activează alertele" din subsol, browserul tău creează un abonament de notificare, iar noi păstrăm doar **datele lui tehnice**: adresa de push și cele două chei criptografice asociate. Nu colectăm nume, adresă de e-mail, identificatori de dispozitiv sau locație, iar alerta e aceeași pentru toți abonații — nu se construiește niciun profil. Primești **cel mult o alertă pe zi**, iar dezactivarea e la fel de simplă ca activarea, din același loc. Fără apăsarea ta, nu se cere nicio permisiune și nu se transmite nimic.
-- **Personalizare opțională, doar în browserul tău.** Dacă accepți întrebarea din bara de consimțământ, preferințele tale de lectură (categorii, surse, cuvinte-cheie) se salvează în `localStorage`-ul browserului tău. Aceste date **nu ne sunt transmise** nouă sau altcuiva — rămân exclusiv pe dispozitivul tău. Fără acordul tău explicit, funcția rămâne complet dezactivată. Poți șterge profilul oricând din panoul „Profilul tău" (butonul ◎ → „Resetează preferințele") sau din setările browserului. Butonul ◎ apare pe orice pagină și pentru utilizatorii care au refuzat, ca poartă de re-activare.
+- **Județul ales de tine, doar în browserul tău.** Dacă alegi un județ în caseta „Județul meu" de pe prima pagină, alegerea se salvează în `localStorage`-ul browserului tău (cheia `izz_judet`), ca să-ți arătăm și data viitoare știrile din acel județ. Nu ne este transmisă nouă sau altcuiva. Nu se scrie nimic până nu alegi tu; „Toată țara" șterge alegerea. Nu deducem preferințe din ce citești.
 
 Nu vindem și nu închiriem date personale.
 
 ## Temeiul legal
-- Statisticile cookieless: interesul nostru legitim de a înțelege traficul (art. 6 alin. (1) lit. f GDPR), fără a-ți afecta drepturile, întrucât nu te identificăm.
-- Statisticile Google Analytics: **consimțământul tău** (art. 6 alin. (1) lit. a GDPR și art. 4 din Legea nr. 506/2004), exprimat prin butonul „Activează". Îl poți retrage oricând, la fel de ușor: butonul ◎ → „Dezactivează personalizarea și statisticile" (sau ștergând datele site-ului din browser). La retragere, măsurarea se oprește imediat, iar la următoarea vizită scriptul nu se mai încarcă deloc.
-- Hărțile de click și înregistrarea navigării (Microsoft Clarity): **consimțământul tău** (art. 6 alin. (1) lit. a GDPR și art. 4 din Legea nr. 506/2004), exprimat prin butonul „Activează". Îl poți retrage oricând din același loc: butonul ◎ → „Dezactivează personalizarea și statisticile". La retragere, înregistrarea se oprește, iar la următoarea vizită scriptul nu se mai încarcă deloc.
+- Livrarea paginilor și protecția împotriva traficului automat: interesul nostru legitim de a furniza un serviciu funcțional și sigur (art. 6 alin. (1) lit. f GDPR).
+- Județul ales: stocarea e strict necesară pentru serviciul pe care îl ceri explicit (art. 4 alin. (5) din Legea nr. 506/2004), deci nu are nevoie de o bară de consimțământ.
 - Newsletter: **consimțământul tău** (art. 6 alin. (1) lit. a GDPR), pe care îl poți retrage oricând.
 - Alertele de ultimă oră: **consimțământul tău** (art. 6 alin. (1) lit. a GDPR și art. 4 din Legea nr. 506/2004), exprimat prin apăsarea „Activează alertele" și confirmat în dialogul browserului. Retragerea se face din același buton sau direct din setările site-ului în browser; la retragere, abonamentul se șterge de pe server.
-- Personalizarea în browser: **consimțământul tău** (art. 4 din Legea nr. 506/2004), exprimat prin butonul „Activează" și reactivabil/retractabil din panoul ◎; refuzul înseamnă zero stocare.
 
-## Consimțământ: cum îl dai și cum îl retragi {#consimtamant}
+## Ce rămâne în browserul tău și cum ștergi {#consimtamant}
 
-Statisticile de audiență (Google Analytics) și înregistrarea navigării (Microsoft Clarity) pornesc **numai dacă apeși „Activează"** în bara care apare la prima vizită. Dacă alegi „Nu, mulțumesc" sau închizi pagina fără să răspunzi, **nu se încarcă niciun script și nu pleacă nicio cerere** către Google sau Microsoft.
+Site-ul nu are bară de consimțământ, pentru că nu folosește nimic care să o ceară: nu există cookie-uri de urmărire, profil de lectură sau statistici externe.
 
-**Retragerea este la fel de simplă ca acordarea**, oricând, fără să ne scrii:
+În browserul tău rămân doar lucruri care țin de funcționarea site-ului pentru tine și nu ne sunt trimise: județul ales (îl ștergi alegând „Toată țara"), abonamentul la alerte, dacă l-ai cerut (îl oprești din același buton din subsol), răspunsul tău la propunerea de instalare a aplicației și o copie locală a ultimelor pagini deschise, ca să le poți citi și fără internet — la fel ca memoria cache obișnuită a browserului. Toate dispar dacă ștergi datele site-ului din setările browserului.
 
-1. apasă butonul **◎** (colțul paginii), apoi „Dezactivează personalizarea și statisticile"; măsurarea se oprește imediat, iar la următoarea vizită scripturile nu se mai încarcă deloc;
-2. sau șterge datele site-ului din browser — alegerea dispare, iar bara te întreabă din nou.
-
-Poți ajunge la această secțiune oricând din linkul **„Setări consimțământ"** din subsolul fiecărei pagini.
+Până la 23 octombrie 2026, site-ul oferea, după acceptul tău, un profil de lectură în browser și statistici de audiență prin Google Analytics și Microsoft Clarity. Le-am scos. Dacă le acceptaseși, la prima vizită de acum încolo ștergem automat ce lăsaseră pe dispozitivul tău (profilul local și cookie-urile `_ga`, `_gid`, `_clck`, `_clsk`). Datele trimise deja către Google și Microsoft înainte de această dată rămân la ei conform propriilor reguli de păstrare; pentru ele ne poți scrie oricând.
 
 ## Transfer de date în afara UE
 Pentru a reformula titlurile și a sintetiza știrile folosim un serviciu de inteligență artificială (Google Gemini și/sau Anthropic Claude), care poate prelucra textul pe servere din **Statele Unite**. Acest transfer se face în baza **clauzelor contractuale standard** aprobate de Comisia Europeană. Procesăm doar texte publice de știri, nu datele tale personale.
 
-Dacă ai acceptat bara de consimțământ, statisticile de audiență (Google) și hărțile de click (Microsoft) pot fi prelucrate de asemenea pe servere din afara UE, tot în baza clauzelor contractuale standard. Fără acest accept, niciun astfel de transfer nu are loc.
-
 ## Cât păstrăm datele
-Adresa de e-mail pentru newsletter o păstrăm până te dezabonezi. Abonamentul de notificări îl păstrăm până îl dezactivezi sau până când browserul ori serviciul de push ne spune că nu mai e valabil — moment în care îl ștergem automat. Statisticile de trafic sunt agregate și anonime.
+Adresa de e-mail pentru newsletter o păstrăm până te dezabonezi. Abonamentul de notificări îl păstrăm până îl dezactivezi sau până când browserul ori serviciul de push ne spune că nu mai e valabil — moment în care îl ștergem automat. Totalurile de trafic de la găzduire sunt agregate și nu identifică pe nimeni.
 
 ## Drepturile tale (GDPR)
 Ai dreptul de acces, rectificare, ștergere, restricționare, opoziție și portabilitate, precum și dreptul de a-ți retrage consimțământul. Le poți exercita scriind la **contact@izz.ro**. Ai, de asemenea, dreptul de a depune o plângere la **ANSPDCP** (Autoritatea Națională de Supraveghere a Prelucrării Datelor cu Caracter Personal).

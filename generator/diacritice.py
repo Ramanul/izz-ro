@@ -72,8 +72,13 @@ def lipsesc_diacriticele(sursa: str, generat: str, prag: int = PRAG_CUVINTE) -> 
 
 
 def text_generat(art: dict) -> str:
-    """Textul care se publica: titlul + corpul (sinteza la C, teaser la B)."""
+    """Textul care se publica: titlul + corpul (sinteza la C, teaser la B). La sinteza
+    dialectica (E2) corpul paginii sunt faptele, divergentele si afirmatiile atribuite —
+    toate se publica, deci toate intra in masuratoare."""
     corp = art.get("synthesis") if art.get("model") == "C" else art.get("teaser")
+    if art.get("model") == "C" and isinstance(art.get("dialectic"), dict):
+        from .dialectic import all_text_of
+        corp = f"{corp or ''} {all_text_of(art['dialectic'])}"
     return f"{art.get('title') or ''} {corp or ''}"
 
 

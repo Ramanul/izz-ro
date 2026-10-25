@@ -2027,3 +2027,4 @@ Contra-verificate cap-coada, ca sa nu fie re-masurate:
   linkul de metodologie îndreptat spre /legal/method/). Verificat: render-only verde (9965 articole),
   pytest 2698 passed / 6 skip / 8 xfail, ruff curat.
 
+- (mutat din STATE.md la 2026-10-23, închis) **Pages `izz-ro` ZOMBI — CONFIRMAT ȘTERS [IZZ-0411]:** `izz-ro.pages.dev` returnează `000` [IZZ-0366, 0395].

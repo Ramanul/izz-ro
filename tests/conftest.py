@@ -70,7 +70,17 @@ STARE_COMISA = (
     "data/takedown_log.jsonl",
     "data/articles.json",
     "data/feed_cache.json",
+    "data/deep_meta.json",
+    "data/memory_ledger.json",
 )
+
+
+@pytest.fixture(autouse=True)
+def _memoria_subiectelor_in_tmp(tmp_path, monkeypatch):
+    """E4: `memorie.CALE` stă în `data/`, comis de `build.yml`. Orice test care trece prin
+    `main.run` ar scrie acolo — garda e pe clasă (toate testele), nu pe testele găsite azi."""
+    from generator import memorie
+    monkeypatch.setattr(memorie, "CALE", str(tmp_path / "memory_ledger.json"))
 
 
 def _amprenta_stare() -> dict[str, tuple[int, float] | None]:

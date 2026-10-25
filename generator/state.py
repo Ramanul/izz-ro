@@ -182,13 +182,26 @@ def expire(articles: list) -> list:
     return kept
 
 
+_TRANSIENT_DEEP_KEYS = (
+    "_deep_sentences",
+    "_deep_mode",
+    "_deep_anchors",
+    "_epistemic_role",
+    "_caused_dirty",
+    "_surse_noi",
+)
+
+
 def _scrub_processed(articles: list) -> None:
     """Dupa procesarea AI, textele brute preluate din surse (titlu original,
     descriere) nu mai sunt necesare si NU trebuie sa ramana intr-un repo public:
     dreptul editorilor de presa (L8/1996 mod. L69/2022) permite doar 'extrase
     foarte scurte'. Se pastreaza DOAR pe itemele fallback/neprocesate, unde sunt
-    necesare pentru upgrade-ul la AI."""
+    necesare pentru upgrade-ul la AI. Cheile tranzitorii E0/E1 (`_deep_*`) se
+    sterg intotdeauna inainte de persistare."""
     for a in articles:
+        for k in _TRANSIENT_DEEP_KEYS:
+            a.pop(k, None)
         if a.get("processed_by") and a.get("processed_by") != "fallback":
             a.pop("original_title", None)
             a.pop("description", None)

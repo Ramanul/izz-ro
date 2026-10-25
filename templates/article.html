@@ -42,7 +42,9 @@
      ar depinde de punct, nu de timp. -#}
   <span data-pagefind-sort="data: {{ a.published[:19] }}"></span>
   <span class="badge{% if a.model == 'C' %} c{% endif %}">{{ a.category | cat_label }}{% if a.anunt_fara_corp %} · Anunț oficial{% endif %}</span>
-  <p class="trust-label article-trust">{% if a.anunt_fara_corp %}Anunț oficial · verifică textul integral la instituția emitentă{% elif a.model == 'C' %}Sinteză multi-sursă · compară sursele de mai jos{% else %}Rezumat dintr-o sursă · verifică informația în articolul original{% endif %}{% if a.publicitar_la_sursa %} · <strong>Material publicitar la sursă</strong> (advertorial){% endif %}</p>
+  {%- set dz = a.dialectic if a.model == 'C' else none %}
+  {%- set n_pub = (a.sources | length) if a.sources else 1 %}
+  <p class="trust-label article-trust">{% if a.anunt_fara_corp %}Anunț oficial · verifică textul integral la instituția emitentă{% elif dz and dz.state == 'ASSUMED_SILENCE' %}Relatări divergente din {{ n_pub }} publicații · fiecare versiune e atribuită mai jos{% elif dz and dz.state == 'SINGLE_ORIGIN' and (dz.origini or 1) > 1 %}{{ n_pub }} publicații · fapte neconfirmate reciproc · compară sursele de mai jos{% elif dz and dz.state == 'SINGLE_ORIGIN' %}Sinteză din {{ n_pub }} publicații cu o singură origine · compară sursele de mai jos{% elif dz %}Sinteză din {{ n_pub }} publicații · {{ a.cross_confirmations or 1 }} {{ 'confirmare încrucișată' if (a.cross_confirmations or 1) == 1 else 'confirmări încrucișate' }} · compară sursele de mai jos{% elif a.model == 'C' %}Sinteză multi-sursă · compară sursele de mai jos{% else %}Rezumat dintr-o sursă · verifică informația în articolul original{% endif %}{% if a.publicitar_la_sursa %} · <strong>Material publicitar la sursă</strong> (advertorial){% endif %}</p>
   {# `data-pagefind-body` marcheaza CE se indexeaza: titlul si rezumatul, nimic altceva. Greutatea
      mai mare pe titlu face ca o potrivire in titlu sa iasa deasupra uneia din corp. -#}
   <h1 data-pagefind-body data-pagefind-weight="3">{{ a.display_title or a.title }}</h1>
@@ -76,7 +78,7 @@
       <img class="article-art" src="{{ base }}{{ art_src }}" alt="{% if a.lead_credit %}{{ a.lead_credit.name }}{% endif %}" width="960" height="504" sizes="(min-width: 770px) 729px, calc(100vw - 42px)" fetchpriority="high">
     </picture>
     {% if a.lead_credit %}
-    <figcaption class="art-credit">{% if a.lead_credit.kind == 'locality' %}Ilustrație: {{ a.lead_credit.name }}. {% elif a.lead_credit.kind == 'oficial' %}Fotografie oficială{% if a.lead_credit.sursa %} ({{ a.lead_credit.sursa }}{% if a.lead_credit.data_poza %}, {{ a.lead_credit.data_poza }}{% endif %}){% endif %}. {% endif %}Foto: {% if a.lead_credit.artist %}{{ a.lead_credit.artist }} · {% endif %}<a href="{{ a.lead_credit.page }}" target="_blank" rel="noopener noreferrer">Wikimedia Commons</a> · {% if a.lead_credit.license_url %}<a href="{{ a.lead_credit.license_url }}" target="_blank" rel="noopener noreferrer">{{ a.lead_credit.license }}</a>{% else %}{{ a.lead_credit.license }}{% endif %}{% if a.photo_path %} · decupat de IZZ.ro{% endif %}</figcaption>
+    <figcaption class="art-credit">{% if a.lead_credit.kind == 'locality' %}Ilustrație: {{ a.lead_credit.name }}. {% elif a.lead_credit.kind == 'oficial' %}Fotografie oficială{% if a.lead_credit.sursa %} ({{ a.lead_credit.sursa }}{% if a.lead_credit.data_poza %}, {{ a.lead_credit.data_poza }}{% endif %}){% endif %}. {% endif %}Foto: {% if a.lead_credit.artist %}{{ a.lead_credit.artist }} · {% endif %}<a href="{{ a.lead_credit.page | href_extern }}"{# nosemgrep: generic.html-templates.security.var-in-href.var-in-href #} target="_blank" rel="noopener noreferrer">Wikimedia Commons</a> · {% if a.lead_credit.license_url %}<a href="{{ a.lead_credit.license_url | href_extern }}" target="_blank" rel="noopener noreferrer">{{ a.lead_credit.license }}</a>{% else %}{{ a.lead_credit.license }}{% endif %}{% if a.photo_path %} · decupat de IZZ.ro{% endif %}</figcaption>
     {% endif %}
   </figure>
   {% elif arhiva %}
@@ -89,7 +91,7 @@
     <figcaption>
       <span class="arhiva-eticheta">Foto de arhivă</span>
       <span class="arhiva-nume">{% if arhiva.slug %}<a href="{{ base }}/subiect/{{ arhiva.slug }}/">{{ arhiva.name }}</a>{% else %}{{ arhiva.name }}{% endif %}</span>
-      <span class="credit">Foto: {% if arhiva.artist %}{{ arhiva.artist }} · {% endif %}<a href="{{ arhiva.page }}" target="_blank" rel="noopener noreferrer">Wikimedia Commons</a> · {% if arhiva.license_url %}<a href="{{ arhiva.license_url }}" target="_blank" rel="noopener noreferrer">{{ arhiva.license }}</a>{% else %}{{ arhiva.license }}{% endif %}</span>
+      <span class="credit">Foto: {% if arhiva.artist %}{{ arhiva.artist }} · {% endif %}<a href="{{ arhiva.page | href_extern }}"{# nosemgrep: generic.html-templates.security.var-in-href.var-in-href #} target="_blank" rel="noopener noreferrer">Wikimedia Commons</a> · {% if arhiva.license_url %}<a href="{{ arhiva.license_url | href_extern }}" target="_blank" rel="noopener noreferrer">{{ arhiva.license }}</a>{% else %}{{ arhiva.license }}{% endif %}</span>
     </figcaption>
   </figure>
   {% endif %}
@@ -98,6 +100,54 @@
   {# fara <p class="body"> gol: nota spune de ce nu exista rezumat. Fara link aici — provenienta
      ramane un singur element, `sources-box` de mai jos (CLAUDE.md §7). #}
   <p class="official-note">Anunț oficial. Titlul a fost scurtat pentru orientare; textul integral și condițiile sunt la sursa instituției.</p>
+  {% elif dz %}
+  {#- Sinteza dialectică (E2): faptele confirmate de mai multe ORIGINI, versiunile care diferă,
+      ce vine dintr-o singură origine — fiecare afirmație cu publicațiile din care provine.
+      Numele publicațiilor sunt atribuire în text, nu un al doilea element „Surse": linkurile
+      rămân doar în `sources-box` (CLAUDE.md §7). Fiecare afirmație a trecut verificarea
+      mecanică din generator/dialectic.py. -#}
+  <section class="dialectic" aria-label="Ce relatează publicațiile" data-pagefind-body>
+    {% if dz.state == 'ASSUMED_SILENCE' %}
+    <p class="body dialectic-silence">Datele din surse sunt în acest moment ireconciliabile. Nu redactăm o versiune comună; mai jos, versiunea fiecărei publicații, atribuită.</p>
+    {% endif %}
+    {% if dz.common %}
+    <h2 class="dialectic-h">Confirmat de mai multe publicații</h2>
+    <ul class="dialectic-list dialectic-common">
+      {% for f in dz.common %}<li>{{ f.text }} <span class="dialectic-src">— {{ f.src | join(', ') }}{% if f.hedged %} · <em>cu rezervă la sursă</em>{% endif %}</span></li>
+      {% endfor %}
+    </ul>
+    {% endif %}
+    {% if dz.diverg %}
+    <h2 class="dialectic-h">Unde diferă relatările</h2>
+    {% for dv in dz.diverg %}
+    <div class="dialectic-diverg">
+      <p class="dialectic-axis">{{ dv.axis[:1] | upper }}{{ dv.axis[1:] }}</p>
+      <ul class="dialectic-list">
+        {% for p in dv.pos %}<li>{{ p.text }} <span class="dialectic-src">— {{ p.src | join(', ') }}</span></li>
+        {% endfor %}
+      </ul>
+    </div>
+    {% endfor %}
+    <p class="dialectic-note">Versiunile rămân atribuite; o medie între ele nu stabilește ce s-a întâmplat.</p>
+    {% endif %}
+    {% if dz.single %}
+    {%- set multe_origini = dz.state == 'SINGLE_ORIGIN' and (dz.origini or 1) > 1 %}
+    <h2 class="dialectic-h">{% if multe_origini %}Fiecare fapt, la o singură publicație{% elif dz.state == 'SINGLE_ORIGIN' %}Relatat dintr-o singură origine{% else %}Dintr-o singură origine{% endif %}</h2>
+    <ul class="dialectic-list dialectic-single">
+      {% for f in dz.single %}<li>{{ f.text }} <span class="dialectic-src">— {{ f.src | join(', ') }}{% if f.hedged %} · <em>cu rezervă la sursă</em>{% endif %}</span></li>
+      {% endfor %}
+    </ul>
+    <p class="dialectic-note">{% if multe_origini %}Publicațiile abordează subiectul din unghiuri diferite: fiecare prezintă fapte distincte, fără ca detaliile să fie confirmate de o a doua sursă independentă.{% elif dz.state == 'SINGLE_ORIGIN' %}Publicațiile din acest grup pornesc de la aceeași relatare inițială sau de la o sursă comună (comunicat, agenție), deci nu sunt confirmări independente.{% else %}Neconfirmat de celelalte publicații din acest set; asta nu înseamnă că e fals.{% endif %}</p>
+    {% endif %}
+    {% if dz.schimbari %}
+    {#- E4: actualizarea e publică — ce publicații au intrat și, dacă s-a schimbat, ce stare avea
+        sinteza înainte. Nu listăm „fapte dispărute": sinteza se regenerează, iar o reformulare
+        ar apărea fals drept retragere (Argon R5). -#}
+    <aside class="notice dialectic-update" aria-label="Actualizare sinteză">
+      <p><strong>Actualizare sinteză{% if a.updated_human %} · {{ a.updated_human }}{% endif %}.</strong>{% if dz.schimbari.surse_noi %} {{ 'A intrat o publicație nouă' if dz.schimbari.surse_noi | length == 1 else 'Au intrat ' ~ (dz.schimbari.surse_noi | length) ~ ' publicații noi' }}: {{ dz.schimbari.surse_noi | join(', ') }}.{% endif %}{% if dz.schimbari.stare_anterioara == 'ASSUMED_SILENCE' %} Versiunea anterioară nu avea fapte confirmate de mai multe publicații; acum are.{% elif dz.schimbari.stare_anterioara == 'SINGLE_ORIGIN' %} Versiunea anterioară nu avea confirmări încrucișate.{% elif dz.schimbari.stare_anterioara == 'SYNTHESIS_VALID' %} Versiunea anterioară avea fapte confirmate de mai multe publicații.{% endif %}</p>
+    </aside>
+    {% endif %}
+  </section>
   {% else %}
   <p class="body" data-pagefind-body>{% if a.model == 'C' %}{{ a.synthesis }}{% else %}{{ a.teaser }}{% endif %}</p>
   {% endif %}
@@ -117,7 +167,25 @@
      element, `sources-box` de mai jos (aceeasi regula ca la nota de anunt oficial). -#}
   <p class="verification-note"><strong>Notă pentru cititor:</strong> IZZ.ro te ajută să descoperi și să înțelegi rapid subiectul. Pentru decizii medicale, juridice sau financiare, consultă întotdeauna sursa originală și instituția competentă.</p>
 
-  {% if a.ai_generat %}
+  {% if a.din_memorie %}
+  {#- E4: memoria subiectului — decizii încheiate de dinaintea ferestrei de actualitate, despre
+      aceleași entități. Doar faptul confirmat atunci și publicațiile lui; fără stări judiciare. -#}
+  <aside class="memorie" aria-labelledby="memorie-title">
+    <h2 class="dialectic-h" id="memorie-title">Mai demult, pe același subiect</h2>
+    <ul class="dialectic-list dialectic-single">
+      {% for e in a.din_memorie %}<li><time datetime="{{ e.d }}">{{ e.d }}</time>: {{ e.fapt }} <span class="dialectic-src">— {{ e.surse | join(', ') }}</span></li>
+      {% endfor %}
+    </ul>
+  </aside>
+  {% endif %}
+  {% if a.ai_generat and dz %}
+  <p class="ai-note">Titlul și afirmațiile de mai sus au fost extrase automat de un model de limbaj
+    din textul articolelor publicate de sursele de mai jos, apoi verificate mecanic: fiecare
+    afirmație trimite la propozițiile din care provine, iar cele fără temei în acele propoziții
+    (o cifră absentă, o citare greșită, un text copiat) au fost eliminate. „Confirmat" înseamnă
+    că afirmația apare la cel puțin două publicații care nu preiau același text. Faptele aparțin
+    surselor; formularea ne aparține și nu a fost recitită de un editor uman înainte de publicare.</p>
+  {% elif a.ai_generat %}
   <p class="ai-note">Titlul și rezumatul de mai sus au fost redactate automat de un model de
     limbaj, pornind de la {{ 'articolele publicate de sursele' if a.model == 'C' else 'articolul publicat de sursa' }}
     de mai jos. Faptele aparțin sursei; formularea ne aparține și nu a fost recitită de un editor
@@ -135,7 +203,7 @@
     <h2 id="timeline-title">Cum a evoluat subiectul</h2>
     <ol>
       {% for m in a.timeline %}
-      <li>{% if m.published %}<time datetime="{{ m.published }}">{{ m.published }}</time> — {% endif %}{{ m.title or m.url }}{% if m.source %} · {{ m.source }}{% endif %}{% if m.url %} · <a href="{{ m.url }}" target="_blank" rel="noopener noreferrer">sursa</a>{% endif %}</li>
+      <li>{% if m.published %}<time datetime="{{ m.published }}">{{ m.published }}</time> — {% endif %}{{ m.title or m.url }}{% if m.source %} · {{ m.source }}{% endif %}{% if m.url %} · <a href="{{ m.url | href_extern }}"{# nosemgrep: generic.html-templates.security.var-in-href.var-in-href #} target="_blank" rel="noopener noreferrer">sursa</a>{% endif %}</li>
       {% endfor %}
     </ol>
   </section>
@@ -143,8 +211,11 @@
   <div class="sources-box">
     <h2>{{ 'Sursă' if srcs | length == 1 else 'Surse' }}</h2>
     <ul>
-      {% for s in srcs %}<li><a href="{{ s.url }}" target="_blank" rel="noopener noreferrer">{{ s.name }} &rarr;</a>{% if a.first_source and s.name == a.first_source and srcs | length > 1 %} <span class="first-badge" title="Prima publicare observată în setul de surse monitorizate">publicată prima</span>{% endif %}</li>{% endfor %}
+      {% for s in srcs %}<li><a href="{{ s.url | href_extern }}"{# nosemgrep: generic.html-templates.security.var-in-href.var-in-href #} target="_blank" rel="noopener noreferrer">{{ s.name }} &rarr;</a>{% if a.surse_roluri and a.surse_roluri[s.name] %} <span class="source-role">{{ a.surse_roluri[s.name] }}</span>{% if a.modificari_tacute and s.name in a.modificari_tacute %} <span class="source-role" title="Faptele din textul publicației s-au schimbat cu peste 20% după prima citire — de regulă o știre în curs, completată">actualizat de redacție după prima citire</span>{% endif %}{% elif a.first_source and s.name == a.first_source and srcs | length > 1 %} <span class="first-badge" title="Prima publicare observată în setul de surse monitorizate">publicată prima</span>{% endif %}</li>{% endfor %}
     </ul>
+    {% if a.surse_roluri %}
+    <p class="source-roles-note">Rolul fiecărei publicații e calculat mecanic din textul articolelor: cine a relatat primul (o relatare densă publicată în aceleași 15 minute bate o alertă de două rânduri), cine aduce detalii noi, cine repetă aceleași fapte, cine preia un text comun sau citează explicit altă redacție. Confirmări încrucișate — publicații care coroborează faptele fără să preia același text: {{ a.cross_confirmations or 1 }} din {{ srcs | length }}. Ordinea observată nu dovedește cine e autorul informației.</p>
+    {% endif %}
     {% if a.editorial %}{% include '_editorial_context.html' %}{% endif %}
     {% set editorial_relations = a.editorial_relations %}{% include '_editorial_relations.html' %}
   </div>
@@ -166,7 +237,7 @@
       <img src="{{ base }}/{{ p.img }}" alt="{{ p.name }}" width="96" height="96" loading="lazy"{% if p.poz %} style="object-position: {{ p.poz }}"{% endif %}>
       <figcaption>
         {% if p.slug %}<a href="{{ base }}/subiect/{{ p.slug }}/">{{ p.name }}</a>{% else %}{{ p.name }}{% endif %}
-        <span class="credit">Foto: {% if p.artist %}{{ p.artist }} · {% endif %}<a href="{{ p.page }}" target="_blank" rel="noopener noreferrer">Wikimedia Commons</a> · {% if p.license_url %}<a href="{{ p.license_url }}" target="_blank" rel="noopener noreferrer">{{ p.license }}</a>{% else %}{{ p.license }}{% endif %}</span>
+        <span class="credit">Foto: {% if p.artist %}{{ p.artist }} · {% endif %}<a href="{{ p.page | href_extern }}"{# nosemgrep: generic.html-templates.security.var-in-href.var-in-href #} target="_blank" rel="noopener noreferrer">Wikimedia Commons</a> · {% if p.license_url %}<a href="{{ p.license_url | href_extern }}" target="_blank" rel="noopener noreferrer">{{ p.license }}</a>{% else %}{{ p.license }}{% endif %}</span>
       </figcaption>
     </figure>
     {% endfor %}

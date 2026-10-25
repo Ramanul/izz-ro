@@ -46,7 +46,7 @@
         <div>
           {% set top_srcs = top.sources[:6] if (top.model == 'C' and top.sources) else [{'name': top.source_name, 'url': top.original_link}] %}
           <h3>{{ 'Sursă' if top_srcs | length == 1 else 'Surse' }}</h3>
-          <ul>{% for s in top_srcs %}<li><a href="{{ s.url }}" target="_blank" rel="noopener noreferrer">{{ s.name }}</a></li>{% endfor %}</ul>
+          <ul>{% for s in top_srcs %}<li><a href="{{ s.url | href_extern }}"{# nosemgrep: generic.html-templates.security.var-in-href.var-in-href #} target="_blank" rel="noopener noreferrer">{{ s.name }}</a></li>{% endfor %}</ul>
         </div>
         <div><h3>Publicat</h3><time datetime="{{ top.published }}">{{ top.published_human }}</time></div>
       </aside>
@@ -105,8 +105,11 @@
     </div>
     <p class="reader-briefing-actions"><a href="{{ base }}/feed.xml">Abonează-te prin RSS</a><a href="{{ base }}/surse/">Vezi sursele monitorizate</a></p>
     {% if judete %}
-    <form class="judet-pin" id="judet-pin">
-      <label for="judet-meu">Localitatea mea</label>
+    {#- `div`, nu `form`: alegerea se aplică la `change` (static/judet.js), nu se trimite
+        nicăieri. Era un `<form>` închis cu `</div>` — HTML invalid, iar pa11y îl raporta
+        (H32.2, formular fără buton de trimitere), măsurat pe main la 23.10.2026. -#}
+    <div class="judet-pin" id="judet-pin">
+      <label for="judet-meu">Județul meu</label>
       <select id="judet-meu" name="judet">
         <option value="">Toată țara</option>
         {% for j in judete %}<option value="{{ j.code }}" data-slug="{{ j.slug }}">{{ j.label }}</option>{% endfor %}

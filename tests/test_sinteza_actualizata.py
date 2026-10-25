@@ -12,7 +12,8 @@ fi unit daca ar fi fost eligibile. Pragul NU s-a atins: se schimba doar cine e c
 Costul masurat pe aceeasi arhiva: +1.1 apeluri AI pe rulare (buget 12-18), fiindca 182 din
 cele 470 de atasari cad in grupuri care erau deja candidat de sinteza, deci apelul e platit.
 """
-import json
+
+import dialectic_fake
 from datetime import datetime, timedelta, timezone
 
 from generator import main, process, render
@@ -36,10 +37,10 @@ class _Provider:
     last_error = None
 
     def complete(self, system, user):
-        return json.dumps([{"id": 0,
-                            "title": "Incendiul de la depozitul din Constanta, stins dupa opt ore",
-                            "synthesis": "Pompierii au stins incendiul dupa opt ore de interventie.",
-                            "category": "extern"}])
+        # formatul dialectic (E2), construit din prompt: citeaza propozitiile primite
+        return dialectic_fake.raspuns(
+            user, "Incendiul de la depozitul din Constanta, stins dupa opt ore",
+            "Pompierii au stins incendiul dupa opt ore de interventie.", category="extern")
 
 
 def _sinteza_publicata(**kw) -> dict:

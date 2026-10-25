@@ -63,6 +63,7 @@ def html(template, **ctx):
         FileSystemLoader(ROOT / "templates"),
     ]), autoescape=select_autoescape(["html"]))
     env.filters["cat_label"] = lambda category: category
+    env.filters["href_extern"] = render._href_extern
     return env.get_template(template).render(base="", site={"name": "izz.ro"}, **ctx)
 
 

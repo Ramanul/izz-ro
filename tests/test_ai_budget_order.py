@@ -43,13 +43,16 @@ def _fals_ai(monkeypatch, vazute: list):
     `_cluster_batch` inlocuieste `process_clusters_batch` (2026-08-16, batching Model C):
     UN apel poate acoperi mai multe clustere deodata, deci inregistreaza cate o intrare "C"
     per APEL, cu tuplul de urluri per cluster din lot -- nu mai e 1:1 apel<->cluster."""
-    def _cluster_batch(groups, provider):
+    def _cluster_batch(groups, provider, respinse=None, motive=None):
+        # aceeași semnătură ca `process_clusters_batch` (reîncercarea din 2026-10-24)
         vazute.append(("C", tuple(tuple(a["url"] for a in g) for g in groups)))
         out = []
         for g in groups:
             rep = dict(g[0])
             rep.update(model="C", synthesis="sinteza", processed_by="fake")
             out.append(rep)
+        if motive is not None:
+            motive.extend([None] * len(groups))
         return out
 
     def _batch(items, provider):

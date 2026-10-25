@@ -295,6 +295,7 @@ def apply(articles: list, mod: dict) -> list:
     out = []
     held = []
     retrase = []
+    garda_ascunse = 0
     for a in articles:
         url = a.get("url", "")
         norm_url = normalize_url(url)
@@ -318,6 +319,7 @@ def apply(articles: list, mod: dict) -> list:
                                    a.get("source_lang") or "ro"))
         if motiv:
             print(f"   !! garda moderare: ascund {(a.get('title') or '')[:60]!r} — {motiv}")
+            garda_ascunse += 1
             continue
         title_l = (a.get("title", "") + " " + a.get("original_title", "")).lower()
         if any(kw in title_l for kw in keywords):
@@ -349,4 +351,12 @@ def apply(articles: list, mod: dict) -> list:
     removed = len(out) - len(deduped)
     if removed:
         print(f"   >> dedup editorial: elimina {removed} duplicate de eveniment inainte de publicare")
+    ULTIMA_APLICARE.clear()
+    ULTIMA_APLICARE.update({"garda": garda_ascunse, "dedup": removed, "retrase": len(retrase),
+                            "retinute": len(held), "total": len(articles)})
     return deduped
+
+
+# Contoarele ultimei aplicări, pentru registrul public /sub-prag/ (E3, ecologia atenției):
+# CÂTE a oprit fiecare filtru, niciodată CE — fără titluri, fără nume de publicații.
+ULTIMA_APLICARE: dict = {}
