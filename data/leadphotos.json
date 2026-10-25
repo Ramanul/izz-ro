@@ -10473,24 +10473,6 @@
   "kind": "locality",
   "qid": "Q10760347"
  },
- "65b914943492ab26": {
-  "miss": true,
-  "v": 3,
-  "motiv_loc": "loc_negasit_sau_fara_imagine",
-  "motiv_ent": "ent_fara_entitati"
- },
- "f0272554e82ca2ba": {
-  "miss": true,
-  "v": 3,
-  "motiv_loc": "loc_dimensiune_sau_format",
-  "motiv_ent": "ent_fara_entitati"
- },
- "2c38161620ee68fa": {
-  "miss": true,
-  "v": 3,
-  "motiv_loc": "loc_dimensiune_sau_format",
-  "motiv_ent": "ent_fara_entitati"
- },
  "dd1713350d01ac05": {
   "cover": "leads/loc-Q12724951.c.jpg",
   "art": "leads/loc-Q12724951.jpg",
@@ -10512,30 +10494,6 @@
   "name": "Moravița",
   "kind": "locality",
   "qid": "Q12724951"
- },
- "8257e6ff8633c661": {
-  "miss": true,
-  "v": 3,
-  "motiv_loc": "loc_negasit_sau_fara_imagine",
-  "motiv_ent": "ent_fara_entitati"
- },
- "7ea5e27227df31d1": {
-  "miss": true,
-  "v": 3,
-  "motiv_loc": "loc_negasit_sau_fara_imagine",
-  "motiv_ent": "ent_fara_entitati"
- },
- "0ebb89dd5e08618d": {
-  "miss": true,
-  "v": 3,
-  "motiv_loc": "loc_negasit_sau_fara_imagine",
-  "motiv_ent": "ent_fara_entitati"
- },
- "e9c77a13732e523d": {
-  "miss": true,
-  "v": 3,
-  "motiv_loc": "loc_negasit_sau_fara_imagine",
-  "motiv_ent": "ent_fara_entitati"
  },
  "5ac6b0e6f147b2a8": {
   "cover": "leads/loc-Q12724951.c.jpg",
@@ -10581,12 +10539,6 @@
   "kind": "locality",
   "qid": "Q10760347"
  },
- "569baa07c7f02f00": {
-  "miss": true,
-  "v": 3,
-  "motiv_loc": "loc_negasit_sau_fara_imagine",
-  "motiv_ent": "ent_fara_entitati"
- },
  "44e560067031c022": {
   "cover": "leads/loc-Q1065609.c.jpg",
   "art": "leads/loc-Q1065609.jpg",
@@ -10597,48 +10549,6 @@
   "name": "Pârgărești",
   "kind": "locality",
   "qid": "Q1065609"
- },
- "becb415115b3de32": {
-  "miss": true,
-  "v": 3,
-  "motiv_loc": "loc_dimensiune_sau_format",
-  "motiv_ent": "ent_fara_entitati"
- },
- "d1271b7a2eaed5f8": {
-  "miss": true,
-  "v": 3,
-  "motiv_loc": "loc_dimensiune_sau_format",
-  "motiv_ent": "ent_fara_entitati"
- },
- "1b02f43bad6abe28": {
-  "miss": true,
-  "v": 3,
-  "motiv_loc": "loc_dimensiune_sau_format",
-  "motiv_ent": "ent_fara_entitati"
- },
- "e698296ef7cb138c": {
-  "miss": true,
-  "v": 3,
-  "motiv_loc": "loc_dimensiune_sau_format",
-  "motiv_ent": "ent_fara_entitati"
- },
- "f88c7ef0502ae456": {
-  "miss": true,
-  "v": 3,
-  "motiv_loc": "loc_dimensiune_sau_format",
-  "motiv_ent": "ent_fara_entitati"
- },
- "45207803c5a8a4ea": {
-  "miss": true,
-  "v": 3,
-  "motiv_loc": "loc_negasit_sau_fara_imagine",
-  "motiv_ent": "ent_fara_entitati"
- },
- "26702cd402141208": {
-  "miss": true,
-  "v": 3,
-  "motiv_loc": "loc_negasit_sau_fara_imagine",
-  "motiv_ent": "ent_fara_entitati"
  },
  "cf3e5ab2713e0269": {
   "cover": "leads/loc-Q837154.c.jpg",
@@ -19284,6 +19194,246 @@
   "motiv_ent": "ent_licenta_sau_format"
  },
  "1af046e08e31e670": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_neeligibil",
+  "motiv_ent": "ent_nenotabila"
+ },
+ "d88c72eb9ac212e0": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_negasit_sau_fara_imagine",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "a78166dd077cf8fb": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_neeligibil",
+  "motiv_ent": "ent_licenta_sau_format"
+ },
+ "fd6ffc1d66f67931": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_neeligibil",
+  "motiv_ent": "ent_nenotabila"
+ },
+ "b701e5ef4d6b6b6e": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_neeligibil",
+  "motiv_ent": "ent_nenotabila"
+ },
+ "1cf81469be2a9f8c": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_neeligibil",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "dde9d088a1afb0f4": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_neeligibil",
+  "motiv_ent": "ent_licenta_sau_format"
+ },
+ "1732638d95544145": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_neeligibil",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "1a50fc07c969d5f5": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_neeligibil",
+  "motiv_ent": "ent_licenta_sau_format"
+ },
+ "d6366540f4745b1b": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_neeligibil",
+  "motiv_ent": "ent_nenotabila"
+ },
+ "38db29a9f65cceae": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_neeligibil",
+  "motiv_ent": "ent_licenta_sau_format"
+ },
+ "fd3c40a8ce80953a": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_neeligibil",
+  "motiv_ent": "ent_nenotabila"
+ },
+ "43371df4a5319a9c": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_neeligibil",
+  "motiv_ent": "ent_nenotabila"
+ },
+ "5a6eed4b689c5cab": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_neeligibil",
+  "motiv_ent": "ent_nenotabila"
+ },
+ "1e3c795e6b649364": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_neeligibil",
+  "motiv_ent": "ent_nenotabila"
+ },
+ "651dfedc40a51a9c": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_neeligibil",
+  "motiv_ent": "ent_fara_qid"
+ },
+ "c4cc45f0fb2b2dda": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_neeligibil",
+  "motiv_ent": "ent_fara_qid"
+ },
+ "571194fb7f6e8463": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_neeligibil",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "4cd42816c25d3eae": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_neeligibil",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "b3ac073a3482deff": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_neeligibil",
+  "motiv_ent": "ent_nenotabila"
+ },
+ "57180acec5c1b888": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_neeligibil",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "1f171013c146ecf7": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_neeligibil",
+  "motiv_ent": "ent_licenta_sau_format"
+ },
+ "7dfe1f0096de9215": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_neeligibil",
+  "motiv_ent": "ent_nenotabila"
+ },
+ "c6ac742ff7bd268f": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_neeligibil",
+  "motiv_ent": "ent_fara_qid"
+ },
+ "f2bb3c3bcffaa2f6": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_neeligibil",
+  "motiv_ent": "ent_licenta_sau_format"
+ },
+ "d7ea9ab76e210cf4": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_neeligibil",
+  "motiv_ent": "ent_nenotabila"
+ },
+ "baf2f4879b35f018": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_neeligibil",
+  "motiv_ent": "ent_licenta_sau_format"
+ },
+ "6cf461028917152e": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_neeligibil",
+  "motiv_ent": "ent_licenta_sau_format"
+ },
+ "3e983483ae188df4": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_neeligibil",
+  "motiv_ent": "ent_nenotabila"
+ },
+ "d4e080e5d4bb4e20": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_neeligibil",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "699a9839ad746c6b": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_neeligibil",
+  "motiv_ent": "ent_licenta_sau_format"
+ },
+ "21df679f7f37b89e": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_neeligibil",
+  "motiv_ent": "ent_nenotabila"
+ },
+ "4df53ada1cd646a3": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_neeligibil",
+  "motiv_ent": "ent_nenotabila"
+ },
+ "906e19dc1f14ffb7": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_neeligibil",
+  "motiv_ent": "ent_licenta_sau_format"
+ },
+ "90ab0c9bee6459aa": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_neeligibil",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "873b04de70e88076": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_neeligibil",
+  "motiv_ent": "ent_licenta_sau_format"
+ },
+ "befa7340f08ec7b6": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_neeligibil",
+  "motiv_ent": "ent_nenotabila"
+ },
+ "b36eb0cc9c24286a": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_neeligibil",
+  "motiv_ent": "ent_fara_qid"
+ },
+ "5461cc11770828b4": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_neeligibil",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "ba64e3ec44be1995": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_neeligibil",
+  "motiv_ent": "ent_fara_qid"
+ },
+ "9e08c53ce783efe1": {
   "miss": true,
   "v": 3,
   "motiv_loc": "loc_neeligibil",
