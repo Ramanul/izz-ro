@@ -2840,78 +2840,6 @@
   "kind": "locality",
   "qid": "Q2716103"
  },
- "6ba7310f3dc8b608": {
-  "miss": true,
-  "v": 2
- },
- "63adbe2ba9fc09a1": {
-  "miss": true,
-  "v": 2
- },
- "25bf80bf0f8f6223": {
-  "miss": true,
-  "v": 2
- },
- "3165b1e4a2abfc92": {
-  "miss": true,
-  "v": 2
- },
- "af4187e4e4cec6a9": {
-  "miss": true,
-  "v": 2
- },
- "94a3568a06ba989f": {
-  "miss": true,
-  "v": 2
- },
- "4205eab25c67463e": {
-  "miss": true,
-  "v": 2
- },
- "fbf1f1aededb456a": {
-  "miss": true,
-  "v": 2
- },
- "ddd6fc64929675c4": {
-  "miss": true,
-  "v": 2
- },
- "493f699e5a181379": {
-  "miss": true,
-  "v": 2
- },
- "89d4a66075ff4c2d": {
-  "miss": true,
-  "v": 2
- },
- "965eee47f7bdac1e": {
-  "miss": true,
-  "v": 2
- },
- "cdfc64dfe8b8bf49": {
-  "miss": true,
-  "v": 2
- },
- "9e4d754fab7f3f4b": {
-  "miss": true,
-  "v": 2
- },
- "ba2c3993fb69c4e2": {
-  "miss": true,
-  "v": 2
- },
- "139eda521087e68c": {
-  "miss": true,
-  "v": 2
- },
- "eac9a39841934a50": {
-  "miss": true,
-  "v": 2
- },
- "f058c2949ad03ace": {
-  "miss": true,
-  "v": 2
- },
  "eec4a6fb213752ac": {
   "miss": true,
   "v": 2
@@ -2965,30 +2893,6 @@
   "v": 2
  },
  "e150a815f456456b": {
-  "miss": true,
-  "v": 2
- },
- "64bdeb5e2beada26": {
-  "miss": true,
-  "v": 2
- },
- "d6576dc494dc6d1e": {
-  "miss": true,
-  "v": 2
- },
- "7e41be6b9e2b7d1f": {
-  "miss": true,
-  "v": 2
- },
- "2f36ce93bfbc0c19": {
-  "miss": true,
-  "v": 2
- },
- "26ad0a4552f6eb02": {
-  "miss": true,
-  "v": 2
- },
- "ee3e6474303a28fd": {
   "miss": true,
   "v": 2
  },
@@ -19397,12 +19301,6 @@
   "motiv_loc": "loc_neeligibil",
   "motiv_ent": "ent_licenta_sau_format"
  },
- "90ab0c9bee6459aa": {
-  "miss": true,
-  "v": 3,
-  "motiv_loc": "loc_neeligibil",
-  "motiv_ent": "ent_fara_entitati"
- },
  "873b04de70e88076": {
   "miss": true,
   "v": 3,
@@ -19434,6 +19332,126 @@
   "motiv_ent": "ent_fara_qid"
  },
  "9e08c53ce783efe1": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_neeligibil",
+  "motiv_ent": "ent_nenotabila"
+ },
+ "bd5e2d716658e2c3": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_neeligibil",
+  "motiv_ent": "ent_licenta_sau_format"
+ },
+ "4c47a722809e6306": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_neeligibil",
+  "motiv_ent": "ent_fara_qid"
+ },
+ "b1540215b94ba0d0": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_neeligibil",
+  "motiv_ent": "ent_fara_qid"
+ },
+ "e2c6d853fd8a1cee": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_neeligibil",
+  "motiv_ent": "ent_licenta_sau_format"
+ },
+ "ae1ee2acea5afe4e": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_neeligibil",
+  "motiv_ent": "ent_nenotabila"
+ },
+ "e467aa54710d165d": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_neeligibil",
+  "motiv_ent": "ent_nenotabila"
+ },
+ "c0069205fb3884ed": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_neeligibil",
+  "motiv_ent": "ent_licenta_sau_format"
+ },
+ "5d7743797cd43959": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_neeligibil",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "81ec1a806fbb227a": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_neeligibil",
+  "motiv_ent": "ent_licenta_sau_format"
+ },
+ "e1809fb23601c047": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_neeligibil",
+  "motiv_ent": "ent_licenta_sau_format"
+ },
+ "2a90c53d0dd39360": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_neeligibil",
+  "motiv_ent": "ent_nenotabila"
+ },
+ "febcf4d203b053b1": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_neeligibil",
+  "motiv_ent": "ent_nenotabila"
+ },
+ "ba1cb27f8d4686e3": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_neeligibil",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "889894c54eacff6b": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_neeligibil",
+  "motiv_ent": "ent_nenotabila"
+ },
+ "9aa9207473eae31d": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_neeligibil",
+  "motiv_ent": "ent_licenta_sau_format"
+ },
+ "0b21bc7f383ef07b": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_neeligibil",
+  "motiv_ent": "ent_licenta_sau_format"
+ },
+ "9eea586ae90803d5": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_neeligibil",
+  "motiv_ent": "ent_licenta_sau_format"
+ },
+ "5b8f6d9b967c94f7": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_neeligibil",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "400c90ef01065732": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_neeligibil",
+  "motiv_ent": "ent_nenotabila"
+ },
+ "18fd1b2cc22ab092": {
   "miss": true,
   "v": 3,
   "motiv_loc": "loc_neeligibil",
