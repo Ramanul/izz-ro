@@ -14,6 +14,7 @@ Reguli verificate (CLAUDE.md sectiunea 7, decizia ownerului):
            exact un sources-box cu linkuri externe; fara btn-source
 """
 import datetime as dt
+from html.parser import HTMLParser
 import os
 import random
 import re
@@ -38,6 +39,47 @@ UA = {"User-Agent": "izz-smoke/1.0 (+https://izz.ro)"}
 _CHALLENGE_MARKS = (b"cf-chl", b"challenge-platform", b"Just a moment", b"__cf_chl")
 
 fails: list = []
+
+
+class _ArticleMarkup(HTMLParser):
+    """Distinguish the retired notice paragraph from functional correction notices."""
+
+    def __init__(self, html: str):
+        super().__init__()
+        self.legacy_notice = False
+        self.images: list[str] = []
+        self._archive_figure = False
+        self.feed(html)
+
+    def handle_starttag(self, tag, attrs):
+        attrs = dict(attrs)
+        classes = (attrs.get("class") or "").split()
+        if tag == "p" and "notice" in classes:
+            self.legacy_notice = True
+        if tag == "figure":
+            self._archive_figure = "arhiva-foto" in classes
+        if tag == "img" and ("article-art" in classes or self._archive_figure):
+            self.images.append(attrs.get("src") or "")
+
+    def handle_endtag(self, tag):
+        if tag == "figure":
+            self._archive_figure = False
+
+
+def _check_article_images(markup: _ArticleMarkup, page: str) -> None:
+    """Photos are optional; every photo actually emitted must load as an image."""
+    for src in markup.images:
+        apath = re.sub(r"^https?://[^/]+", "", src)
+        ok_art = False
+        if apath:
+            try:
+                req = urllib.request.Request(BASE + apath, headers=UA)
+                with urllib.request.urlopen(req, timeout=30) as r:
+                    ok_art = (r.headers.get("Content-Type", "").startswith("image/")
+                              and len(r.read()) > 5000)
+            except Exception:
+                ok_art = False
+        check(ok_art, page, "fotografia de pe pagina se incarca real (>5KB)")
 
 
 def _e_challenge(exc: Exception) -> bool:
@@ -182,12 +224,15 @@ def main() -> int:
     paths = [re.sub(r"^https?://[^/]+", "", u) for u in re.findall(r"<loc>([^<]+)</loc>", sitemap)]
     arts = [p for p in paths if p.count("/") >= 3 and "/legal/" not in p]
     random.shuffle(arts)
+    check(len(arts) >= N_ARTICLES, "articole", "esantionul are suficiente articole")
     with_cover = 0
     with_art = 0
+    first_art = ""
     for p in arts[:N_ARTICLES]:
         html = get(p)
         page = p[:60]
-        check('class="notice"' not in html, page, "fara disclaimer metodologic pe articol")
+        markup = _ArticleMarkup(html)
+        check(not markup.legacy_notice, page, "fara disclaimer metodologic pe articol")
         check(html.count('class="sources-box"') == 1, page, "exact un sources-box")
         check(re.search(r'sources-box.*?<a href="http', html, re.S) is not None,
               page, "sursele din box sunt linkuri externe")
@@ -211,27 +256,13 @@ def main() -> int:
             except Exception:
                 ok_img = False
             check(ok_img, page, "og:image exista si e imagine reala (>5KB)")
-        # Arta pe pagina. Din 2026-09-09 arta generata se DESENEAZA in pagina (`.art`), deci
-        # de regula nu mai exista fisier de verificat; raman fisiere doar fotografiile reale
-        # si imaginile din date. Verificam ca articolul are una din cele doua, iar cand are
-        # fisier verificam ca acesta chiar se incarca (un `<img>` cu 404 arata gol pe ecran,
-        # dar trece orice verificare care se uita doar la HTML).
-        am = re.search(r'class="article-art"[^>]*\ssrc="([^"]+)"', html)
-        if am:
-            apath = re.sub(r"^https?://[^/]+", "", am.group(1))
-            try:
-                req = urllib.request.Request(BASE + apath, headers=UA)
-                with urllib.request.urlopen(req, timeout=30) as r:
-                    ok_art = (r.headers.get("Content-Type", "").startswith("image/")
-                              and len(r.read()) > 5000)
-            except Exception:
-                ok_art = False
-            check(ok_art, page, "fotografia de pe pagina se incarca real (>5KB)")
+        # Since 17 Oct the article deliberately omits generated decoration when no photo
+        # exists. Check real photos, including archive portraits, without requiring one.
+        _check_article_images(markup, page)
+        if markup.images:
             with_art += 1
-        elif re.search(r'class="art art--', html):
-            with_art += 1
-    check(with_art == N_ARTICLES, "articole",
-          f"fiecare articol are arta (desenata sau fotografie): {with_art}/{N_ARTICLES}")
+            first_art = first_art or markup.images[0]
+    print(f"  .. {with_art}/{N_ARTICLES} din esantion au fotografie (optional)")
     print(f"  .. {with_cover}/{N_ARTICLES} din esantion au coperta og proprie "
           f"(restul folosesc coperta categoriei -- normal pe arhiva)")
 
@@ -249,9 +280,8 @@ def main() -> int:
 
     # cache pe o imagine reala de articol: trebuie sa fie lung (max-age >= 1 zi),
     # nu TTL-ul implicit de 4h (regula ignorata daca pattern-ul n-are '/' -- fix 2026-07-12)
-    img = re.search(r'class="article-art"[^>]*\ssrc="([^"]+)"', get(arts[0]) if arts else "")
-    if img:
-        ipath = re.sub(r"^https?://[^/]+", "", img.group(1))
+    if first_art:
+        ipath = re.sub(r"^https?://[^/]+", "", first_art)
         try:
             hd, _ = head(ipath)
             cc = hd.get("Cache-Control", "")
