@@ -24,7 +24,28 @@ def cale() -> str:
     return os.path.join(config.ROOT, "data", "triage_log.jsonl")
 
 
-def inregistreaza(pierderi: dict | None, respinse_substanta: set | None, stale_skipped: int) -> None:
+def ultimul_rand() -> dict | None:
+    """Ultima rulare consemnată, pentru registrul public /sub-prag/. None dacă lipsește."""
+    try:
+        with open(cale(), "rb") as fh:
+            fh.seek(0, os.SEEK_END)
+            size = fh.tell()
+            fh.seek(max(0, size - 65536))
+            linii = fh.read().decode("utf-8", "replace").strip().splitlines()
+    except OSError:
+        return None
+    for linie in reversed(linii):
+        try:
+            rand = json.loads(linie)
+        except json.JSONDecodeError:
+            continue
+        if isinstance(rand, dict):
+            return rand
+    return None
+
+
+def inregistreaza(pierderi: dict | None, respinse_substanta: set | None, stale_skipped: int,
+                  sinteze: dict | None = None) -> None:
     rand = {
         "cand": datetime.now(timezone.utc).isoformat(timespec="seconds"),
         "ingestie": {str(k): int(v) for k, v in (pierderi or {}).items()},
@@ -32,6 +53,9 @@ def inregistreaza(pierderi: dict | None, respinse_substanta: set | None, stale_s
         "fara_substanta_exemple": sorted(respinse_substanta or set())[:10],
         "expirate": int(stale_skipped or 0),
     }
+    if sinteze:
+        # E2: starea sintezelor dialectice și motivele amânării — doar contoare
+        rand["sinteze"] = {str(k): int(v) for k, v in sinteze.items()}
     try:
         os.makedirs(os.path.dirname(cale()), exist_ok=True)
         with open(cale(), "a", encoding="utf-8") as fh:

@@ -15,6 +15,7 @@ import pytest
 
 from generator import config, process, select
 from generator.util import cuvinte_adaugate
+import dialectic_fake
 
 # Itemul REAL, copiat din feedul digisport (fetch._fetch_one_guarded, 2026-08-04).
 TITLU_DIGISPORT = ('”Sigur nu ai mai văzut așa ceva!” Toată lumea a rămas ”mască”, '
@@ -122,8 +123,11 @@ def test_process_cluster_pastreaza_src_extra_de_pe_reprezentant():
                        published="2026-08-04T05:00:00+00:00", src_extra=12)
     nou = _item_brut(url="https://b.ro/2", original_link="https://b.ro/2",
                      source_name="B", published="2026-08-04T06:00:00+00:00", src_extra=30)
-    rep = process.process_cluster([nou, vechi], _ProviderFals(
-        {"title": "Titlu AI", "synthesis": "Sinteza din doua surse.", "category": "general"}))
+    class _Dialectic(_ProviderFals):
+        # calea C cere formatul dialectic (E2), construit din propozitiile din prompt
+        def complete(self, system, user):
+            return dialectic_fake.raspuns(user, "Titlu AI despre eveniment", "Sinteza din doua surse.")
+    rep = process.process_cluster([nou, vechi], _Dialectic(None))
     assert rep["src_extra"] == 12
 
 

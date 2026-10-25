@@ -19,6 +19,8 @@ MODEL = os.getenv("GEMINI_MODEL", "gemini-flash-lite-latest")
 # produce ~2000 de tokeni de JSON, iar un array trunchiat e pierdut TACUT de _parse_json_array
 # (regex-ul nu gaseste `]` de inchidere -> []). 4096 da spatiu pentru 10 articole + model C.
 MAX_OUTPUT_TOKENS = int(os.getenv("GEMINI_MAX_OUTPUT_TOKENS", "4096"))
+# finishReason al fiecărui răspuns 200, pe rulare (main.py îl pune în jurnalul de triaj).
+MOTIVE_OPRIRE: dict = {}
 # Baza URL a API-ului. Poti ruta prin Cloudflare AI Gateway (cache, retry,
 # rate-limit, observabilitate) setand GEMINI_BASE_URL la URL-ul gateway-ului:
 #   https://gateway.ai.cloudflare.com/v1/<account_id>/<gateway>/google-ai-studio
@@ -73,6 +75,12 @@ class GeminiProvider(Provider):
                     req = urllib.request.Request(url, data=body, headers={"Content-Type": "application/json"})
                     with urllib.request.urlopen(req, timeout=40) as resp:
                         data = json.load(resp)
+                    # De ce s-a oprit modelul, numărat pe rulare: MAX_TOKENS taie coada unui
+                    # lot (obiectele lipsă ies „nemapate"), SAFETY/RECITATION întorc 200 fără
+                    # text (lotul cade întreg). Fără contor, ambele se văd doar ca amânări.
+                    motiv = ((data.get("candidates") or [{}])[0].get("finishReason")
+                             or "NECUNOSCUT")
+                    MOTIVE_OPRIRE[motiv] = MOTIVE_OPRIRE.get(motiv, 0) + 1
                     return data["candidates"][0]["content"]["parts"][0]["text"].strip()
                 except urllib.error.HTTPError as exc:
                     # corpul raspunsului contine motivul exact (ex. ce camp e refuzat
