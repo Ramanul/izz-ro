@@ -15,6 +15,7 @@ Reguli verificate (CLAUDE.md sectiunea 7, decizia ownerului):
 """
 import datetime as dt
 from html.parser import HTMLParser
+import http.client
 import os
 import random
 import re
@@ -23,6 +24,7 @@ import sys
 import time
 import urllib.error
 import urllib.request
+from urllib.parse import urlsplit
 
 FRESH_MAX_HOURS = 48   # cel mai nou articol de pe live trebuie sa fie mai recent de-atat
 
@@ -69,16 +71,29 @@ class _ArticleMarkup(HTMLParser):
 def _check_article_images(markup: _ArticleMarkup, page: str) -> None:
     """Photos are optional; every photo actually emitted must load as an image."""
     for src in markup.images:
-        apath = re.sub(r"^https?://[^/]+", "", src)
+        media = urlsplit(src)
+        base = urlsplit(BASE)
         ok_art = False
-        if apath:
+        # A photo probe only needs HTTP(S). The explicit transport cannot open local
+        # files or any of urllib's other URL schemes, even with malformed page markup.
+        if (src and media.scheme in ("", "http", "https") and media.path
+                and base.scheme in ("http", "https") and base.hostname):
+            connection = None
             try:
-                req = urllib.request.Request(BASE + apath, headers=UA)
-                with urllib.request.urlopen(req, timeout=30) as r:
-                    ok_art = (r.headers.get("Content-Type", "").startswith("image/")
-                              and len(r.read()) > 5000)
+                transport = (http.client.HTTPSConnection if base.scheme == "https"
+                             else http.client.HTTPConnection)
+                connection = transport(base.hostname, base.port, timeout=30)
+                apath = media.path + ("?" + media.query if media.query else "")
+                connection.request("GET", apath, headers=UA)
+                response = connection.getresponse()
+                ok_art = (response.status == 200
+                          and response.getheader("Content-Type", "").startswith("image/")
+                          and len(response.read()) > 5000)
             except Exception:
                 ok_art = False
+            finally:
+                if connection is not None:
+                    connection.close()
         check(ok_art, page, "fotografia de pe pagina se incarca real (>5KB)")
 
 

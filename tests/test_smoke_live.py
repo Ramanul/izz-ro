@@ -214,7 +214,7 @@ def test_article_without_optional_photo_does_not_request_or_fail(monkeypatch):
     def unexpected_request(*args, **kwargs):
         pytest.fail("A text-only article must not require a decorative image")
 
-    monkeypatch.setattr(smoke.urllib.request, "urlopen", unexpected_request)
+    monkeypatch.setattr(smoke.http.client, "HTTPSConnection", unexpected_request)
     smoke._check_article_images(smoke._ArticleMarkup('<p class="body">Știre</p>'), "/text/")
     assert smoke.fails == []
 
@@ -230,15 +230,28 @@ def test_present_article_and_archive_photos_must_load(monkeypatch, html, result,
     monkeypatch.setattr(smoke, "fails", [])
     requested = []
 
-    def response(req, timeout):
-        requested.append(req.full_url)
-        if result == "404":
-            raise _http_error(404)
-        body = io.BytesIO(b"x" * (100 if result == "small" else 6000))
-        body.headers = {"Content-Type": "text/html" if result == "html" else "image/jpeg"}
-        return body
+    class Connection:
+        def __init__(self, host, port, timeout):
+            assert host == "izz.ro"
+            self.status = 404 if result == "404" else 200
 
-    monkeypatch.setattr(smoke.urllib.request, "urlopen", response)
+        def request(self, method, path, headers):
+            assert method == "GET"
+            requested.append(smoke.BASE + path)
+
+        def getresponse(self):
+            return self
+
+        def getheader(self, name, default):
+            return "text/html" if result == "html" else "image/jpeg"
+
+        def read(self):
+            return b"x" * (100 if result == "small" else 6000)
+
+        def close(self):
+            pass
+
+    monkeypatch.setattr(smoke.http.client, "HTTPSConnection", Connection)
     smoke._check_article_images(smoke._ArticleMarkup(html), "/photo/")
     assert requested == [smoke.BASE + "/photo.jpg"]
     assert (not smoke.fails) is passes
@@ -251,4 +264,17 @@ def test_empty_photo_src_fails_and_unrelated_images_are_ignored(monkeypatch):
     )
     assert markup.images == [""]
     smoke._check_article_images(markup, "/broken/")
+    assert len(smoke.fails) == 1
+
+
+@pytest.mark.parametrize("source", ["file:///etc/passwd", "ftp://host/photo.jpg"])
+def test_photo_probe_rejects_non_http_schemes(monkeypatch, source):
+    monkeypatch.setattr(smoke, "fails", [])
+
+    def unexpected_connection(*args, **kwargs):
+        pytest.fail("Unsupported schemes must not start a connection")
+
+    monkeypatch.setattr(smoke.http.client, "HTTPSConnection", unexpected_connection)
+    smoke._check_article_images(smoke._ArticleMarkup(f'<img class="article-art" src="{source}">'),
+                                "/unsupported/")
     assert len(smoke.fails) == 1
