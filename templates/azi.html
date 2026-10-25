@@ -19,6 +19,8 @@
     </li>
     {% endfor %}
   </ol>
+  {#- Punctul de oprire (E3, ecologia atenției): lista are un capăt și îl spune. -#}
+  <p class="azi-end">Ai parcurs toate cele {{ items | length }} subiecte publicate azi. Lista se completează la următoarea publicare.</p>
   {% else %}
   <p class="empty">Încă nu e nicio știre publicată azi, ora Bucureștiului.</p>
   {% endif %}

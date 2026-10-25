@@ -20,7 +20,7 @@ from xml.sax.saxutils import escape as xml_escape
 from jinja2 import Environment, FileSystemLoader, select_autoescape
 from slugify import slugify
 
-from . import config, covers, editorial, geo, htmlart, pagefind_index, publication
+from . import config, covers, dossiers, editorial, geo, guard, htmlart, memorie, pagefind_index, publication
 from .select import (_dedup, _dedup_sources, _diversify, _entity_index,
                      _pick_hero, _quality_gate, anunt_oficial_fara_corp, filtru_cautare_rapida,
                      publicitar_la_sursa, titlu_afisare)
@@ -256,7 +256,7 @@ def _asset_ver() -> dict:
     global _ASSET_VER
     if _ASSET_VER is None:
         _ASSET_VER = {name: _content_ver(os.path.join(STATIC_DIR, name))
-                      for name in ("styles.css", "personalize.js", "search.js", "theme.js", "fonts.css",
+                      for name in ("styles.css", "judet.js", "search.js", "theme.js", "fonts.css",
                                    "calc-salariu.js", "site.webmanifest", "pwa.js", "push.js",
                                    "editorial-updates.js")}
     return _ASSET_VER
@@ -267,6 +267,27 @@ _RO_MONTHS = ["", "ianuarie", "februarie", "martie", "aprilie", "mai", "iunie",
 _RO_DAYS = ["Luni", "Marți", "Miercuri", "Joi", "Vineri", "Sâmbătă", "Duminică"]
 
 
+def _href_extern(url) -> str:
+    """Ultima barieră pentru un `href` cu date venite din afară: întoarce URL-ul doar dacă
+    `guard.url_ostil` îl acceptă (http/https, fără caractere de control, fără credențiale,
+    fără gazdă internă), altfel `#`.
+
+    De ce la locul folosirii, deși `moderation.apply` ascunde deja articolele cu URL ostil:
+    nu orice `href` trece prin ea — memoria subiectelor (rânduri scrise în rulări vechi,
+    înainte ca garda să se fi înăsprit), catalogul de surse, creditele de imagine. Escaparea
+    Jinja2 nu oprește `javascript:`: e HTML valid. Constatarea Semgrep `var-in-href` de pe
+    #512 a cerut-o; `tests/test_href_extern.py` cere filtrul pe orice `href` din șabloane
+    care nu începe cu `{{ base }}`."""
+    u = url.strip() if isinstance(url, str) else ""
+    if not u:
+        return "#"
+    motiv = guard.url_ostil(u)
+    if motiv:
+        logging.warning("href extern respins la randare (%s): %.80r", motiv, u)
+        return "#"
+    return u
+
+
 def _env() -> Environment:
     env = Environment(
         loader=FileSystemLoader(TPL_DIR),
@@ -275,6 +296,7 @@ def _env() -> Environment:
     )
     # eticheta afisata a unei categorii (slug URL neschimbat); fallback = capitalizat
     env.filters["cat_label"] = lambda slug: config.CATEGORY_LABELS.get(slug, (slug or "").capitalize())
+    env.filters["href_extern"] = _href_extern
     return env
 
 
@@ -820,7 +842,6 @@ def _base_ctx(canonical_path: str, jsonld_nodes: list | None = None,
         "canonical": config.SITE["url"] + canonical_path,
         # UN singur bloc `application/ld+json` per pagina, emis din base.html
         "jsonld": _graph_jsonld(canonical_path, jsonld_nodes or [], jsonld_page),
-        "analytics_token": os.getenv("CF_ANALYTICS_TOKEN", "").strip() or None,
         "fonts_css": _fonts_css(),
         "asset_ver": _asset_ver(),
         "active_cat": None,
@@ -878,16 +899,22 @@ def _source_catalog(by_date: list) -> tuple[list, int, int]:
     linkuri fara coloane goale/zerouri care ar sugera fals performanta slaba.
     Returneaza (catalog, total_surse, surse_cu_statistici)."""
     # scor de originalitate: cine initiaza vs. cine preia (din sintezele C cu first_source)
+    # Cuplat cu „modificate ulterior" (E1): viteza fără stabilitate nu e un merit — o redacție
+    # care publică prima și își schimbă apoi faptele tăcut nu are voie să apară doar „rapidă".
     counts: dict = {}
     for a in by_date:
         if a.get("model") != "C" or not a.get("first_source"):
             continue
+        tacute = set(a.get("modificari_tacute") or [])
         for s in a.get("sources") or []:
-            d = counts.setdefault(s["name"], {"first": 0, "total": 0})
+            d = counts.setdefault(s["name"], {"first": 0, "total": 0, "tacute": 0})
             d["total"] += 1
             if s["name"] == a["first_source"]:
                 d["first"] += 1
-    src_stats = {n: {"first": d["first"], "total": d["total"], "rate": round(d["first"] / d["total"] * 100)}
+            if s["name"] in tacute:
+                d["tacute"] += 1
+    src_stats = {n: {"first": d["first"], "total": d["total"], "rate": round(d["first"] / d["total"] * 100),
+                     "tacute": d["tacute"]}
                  for n, d in counts.items() if d["total"] >= 2}
 
     catalog = []
@@ -916,6 +943,16 @@ def _source_catalog(by_date: list) -> tuple[list, int, int]:
             "count": len(entries), "with_stats": with_stats, "without_stats": without_stats,
             "regions": _grupeaza_pe_regiuni(pe_judet),
         })
+    # Același județ în două grupuri (ex. ziare de județ și primării) dădea două `id="jud-cluj"`
+    # pe aceeași pagină — HTML invalid (pa11y F77, 8 erori măsurate pe main, 23.10.2026) și o
+    # ancoră care nu știi unde duce. Prima apariție păstrează ancora (harta trimite acolo).
+    vazute: set = set()
+    for group in catalog:
+        for region in group.get("regions", []):
+            for county in region["counties"]:
+                if county["anchor"] in vazute:
+                    county["anchor"] = f"{county['anchor']}-{group['key']}"
+                vazute.add(county["anchor"])
     return catalog, len(config.SOURCES), len(src_stats)
 
 
@@ -940,13 +977,17 @@ def _numerele_zilei(articles: list) -> dict | None:
     if not fereastra:
         return None
     surse = {a.get("source_name") or a.get("source") or "" for a in fereastra} - {""}
+    # Contorul de subtracție (E3): câte relatări ale surselor stau în spatele subiectelor
+    # publicate. O sinteză C absoarbe toate relatările membre; un rezumat B e o relatare.
+    relatari = sum(max(1, len([m for m in (a.get("members") or []) if isinstance(m, dict)]))
+                   if a.get("model") == "C" else 1 for a in fereastra)
     pe_judet: dict = {}
     for a in fereastra:
         if a.get("category") in ("judetean", "local"):
             j = geo.judet_sursa(a.get("source"))
             if j:
                 pe_judet[j] = pe_judet.get(j, 0) + 1
-    return {"stiri": len(fereastra), "surse": len(surse),
+    return {"stiri": len(fereastra), "surse": len(surse), "relatari": relatari,
             "judete": len(pe_judet), "pe_judet": pe_judet}
 
 
@@ -976,13 +1017,18 @@ def _harta_judete(catalog: list) -> dict | None:
     if not _HARTA_CACHE.get("judete"):
         return None
 
-    # Ancorele exista doar pentru judetele care chiar au o sectiune in pagina.
+    # Ancorele exista doar pentru judetele care chiar au o sectiune in pagina. Un judet apare
+    # in mai multe grupuri (ziare de judet, primarii): harta duce la PRIMA sectiune si numara
+    # sursele din toate — inainte ducea la ultima si numara doar grupul ei.
     ancore: dict = {}
     for group in catalog:
         for region in group.get("regions", []):
             for county in region["counties"]:
                 if county.get("judet"):
-                    ancore[county["judet"]] = county
+                    j = county["judet"]
+                    if j not in ancore:
+                        ancore[j] = {"anchor": county["anchor"], "count": 0}
+                    ancore[j]["count"] += county.get("count") or 0
 
     forme = []
     for judet, d in _HARTA_CACHE["judete"].items():
@@ -1092,6 +1138,10 @@ def build(articles: list, mod: dict | None = None) -> None:
         raise editorial.EditorialError("\n".join(editorial_errors))
     corrections = publication.load()
     articles = publication.apply(articles, corrections)
+    dossier_catalog = dossiers.load_dossiers()
+    # Reject malformed relations/catalogs while the previous good output still exists.
+    # Publication.apply has already removed withdrawals and applied presentation corrections.
+    dossiers.prepare_dossiers(dossier_catalog, articles, annotations)
     editorial_revisions = publication.revisions(corrections)
     env.globals["editorial_version"] = editorial_revisions["version"]
     tombstones = sum(len(row["public_paths"]) for row in corrections.values())
@@ -1158,6 +1208,10 @@ def build(articles: list, mod: dict | None = None) -> None:
     _ataseaza_legaturi(by_date)
     editorial_now = datetime.now(timezone.utc)
     by_date = [editorial.apply_view(a, annotations, provenance, editorial_now) for a in by_date]
+    dossier_pages, relation_index, subject_dossiers, dossier_report = dossiers.prepare_dossiers(
+        dossier_catalog, by_date, annotations, editorial_now)
+    for a in by_date:
+        a["editorial_relations"] = relation_index.get(editorial.annotation_key(a), [])
     publication_manifest = publication.manifest(by_date, corrections)
     _write(os.path.join(OUT_DIR, "editorial-publication.json"),
            json.dumps(publication_manifest, ensure_ascii=False, sort_keys=True))
@@ -1178,9 +1232,10 @@ def build(articles: list, mod: dict | None = None) -> None:
                        env.get_template("withdrawn.html").render(
                            **_base_ctx(path), correction=publication.public_notice(row),
                            active_path=active_keys.get(row["key"])))
+    editorial_report = editorial.catalog_report(annotations, by_date, provenance, editorial_now)
+    editorial_report["dossiers"] = dossier_report
     _write(os.path.join(OUT_DIR, "editorial-report.json"),
-           json.dumps(editorial.catalog_report(annotations, by_date, provenance, editorial_now),
-                      ensure_ascii=False, sort_keys=True, indent=2))
+           json.dumps(editorial_report, ensure_ascii=False, sort_keys=True, indent=2))
 
     # Dupa taierea ferestrei: lista de judet trebuie sa fie exact ce se publica.
     _write_harta_pages(by_date)
@@ -1285,6 +1340,12 @@ def build(articles: list, mod: dict | None = None) -> None:
                     a["photo_webp"] = (f"/{a['category']}/{a['slug']}/photo.webp"
                                        f"?v={_content_ver(photo_webp_dst)}")
                 a["lead_credit"] = lp   # legenda obligatorie -- fara ea poza n-are voie sa apara
+                # 2026-10-21: cardul si hero pot folosi ACEeasi fotografie, fiindca sablonul
+                # afiseaza creditul complet sub imagine. `cover_url` ramane separat, deci
+                # og:image nu primeste niciodata o poza CC BY/SA.
+                a["art_path"] = a["photo_path"]
+                a["art_webp"] = a.get("photo_webp")
+                a["art_credit"] = lp
         elif lp and _spend(_use_media(os.path.join(MEDIA_DIR, lp["art"]), art_dst)):
             # Fotografie reala de lead, fara obligatie de credit: inlocuieste arta generata
             # pe card, pe hero si pe og:image.
@@ -1404,6 +1465,7 @@ def build(articles: list, mod: dict | None = None) -> None:
                                                               key=lambda a: a.get("published") or "",
                                                               reverse=True),
                                               connections=connections,
+                                              subject_dossiers=subject_dossiers.get(s, []),
                                               portrait=_portret(portraits, d["name"]),
                                               has_feed=has_feed)))
         if has_feed:
@@ -1519,6 +1581,12 @@ def build(articles: list, mod: dict | None = None) -> None:
                        jsonld_nodes=[jsonld, breadcrumb_jsonld],
                        jsonld_page={"name": a.get("title", "")})))
 
+    for page in dossier_pages:
+        _write(os.path.join(OUT_DIR, "dosar", page["slug"], "index.html"),
+               env.get_template("dossier.html").render(**_base_ctx(
+                   page["path"], dossier=page, noindex=not page["indexable"])))
+        if not page["indexable"]:
+            _PAGES_WRITTEN.discard(page["path"])
     _render_legal(env)
     _render_sections(env)
     _render_ghiduri(env, by_date)
@@ -1553,6 +1621,7 @@ def build(articles: list, mod: dict | None = None) -> None:
     _write(os.path.join(OUT_DIR, "offline", "index.html"),
            env.get_template("offline.html").render(**_base_ctx("/offline/")))
     _render_azi(env, by_date)
+    _render_sub_prag(env)
     _write_sitemap(by_date)
     _write_robots()
     _write_security_txt()
@@ -1574,7 +1643,9 @@ def build(articles: list, mod: dict | None = None) -> None:
     # Vine dupa copierea portretelor, nu inaintea ei: Pagefind citeste doar HTML, deci
     # ordinea nu schimba ce intra in index, dar amandoua preced numaratoarea.
     cautare = pagefind_index.ruleaza(OUT_DIR)
-    cautare["mapate"] = _write_search_index(by_date, cautare.get("harta"))
+    dossier_search = [{"category": "dosar", "slug": page["slug"], "title": page["title"],
+                       "published_human": page["reviewed_at"][:10]} for page in dossier_pages if page["indexable"]]
+    cautare["mapate"] = _write_search_index(by_date + dossier_search, cautare.get("harta"))
     # `harta` e material de lucru (10k perechi url->id), nu diagnostic: nu intra in build.json.
     cautare.pop("harta", None)
     # ULTIMUL: numara ce s-a scris efectiv, deci trebuie sa vina dupa toate scrierile.
@@ -1724,6 +1795,46 @@ def _timeline(articol: dict) -> list | None:
     return sorted(membri, key=lambda m: m.get("published") or "")
 
 
+# Radiografia surselor (E1/E3, specs/plan-paradigma-izz.md): cum a intrat fiecare publicație
+# în sinteză, în cuvinte civice — fără verdict de calitate. Formulările „detalii suplimentare"
+# și „text comun (posibil comunicat)" sunt corecția Argon R4: „fapte proprii" ar fi sunat a
+# certificare de adevăr, iar „text aproape identic" a acuzație de plagiat, când ambele
+# redacții au preluat legal același comunicat.
+_ROL_SURSA = {
+    "ROOT": "prima relatare observată",
+    "INDEPENDENT_CONTRIBUTOR": "detalii suplimentare",
+    "ECHO": "aceleași fapte, alte cuvinte",
+    "CLONE": "text comun cu altă publicație (posibil comunicat)",
+    "DERIVED": "preia explicit de la altă publicație",
+}
+
+
+_MEMORIE_CACHE: list | None = None
+
+
+def _registru_memorie() -> list:
+    """Registrul E4, citit o dată per proces de randare."""
+    global _MEMORIE_CACHE
+    if _MEMORIE_CACHE is None:
+        _MEMORIE_CACHE = memorie.incarca()
+    return _MEMORIE_CACHE
+
+
+def _roluri_surse(articol: dict) -> dict | None:
+    """{nume publicație: rol în cuvinte} pentru sursele unei sinteze C cu roluri E1."""
+    roluri = articol.get("epistemic_roles") or {}
+    if articol.get("model") != "C" or not roluri:
+        return None
+    out = {}
+    for s in articol.get("sources") or []:
+        if not isinstance(s, dict):
+            continue
+        rol = roluri.get(domain_of(s.get("url") or ""))
+        if rol in _ROL_SURSA and s.get("name"):
+            out[s["name"]] = _ROL_SURSA[rol]
+    return out or None
+
+
 def _ataseaza_legaturi(articole: list) -> None:
     """Județul sursei, ghidul permanent și timeline-ul, doar pentru randare."""
     index = _index_ghiduri()
@@ -1734,6 +1845,9 @@ def _ataseaza_legaturi(articole: list) -> None:
         a["ghid"] = _ghid_pentru(a, index)
         # Source headlines may repeat the very statement that was corrected.
         a["timeline"] = None if a.get("correction") else _timeline(a)
+        a["surse_roluri"] = _roluri_surse(a)
+        a["din_memorie"] = memorie.din_memorie(a, _registru_memorie(), config.ARTICLE_TTL_DAYS) \
+            if a.get("model") == "C" else []
 
 
 def _nr_surse(articol: dict) -> int:
@@ -1785,6 +1899,72 @@ def _render_azi(env: Environment, articole: list) -> None:
            env.get_template("azi.html").render(**_base_ctx(
                "/azi/", nav_section="stiri", items=items,
                jsonld_page={"name": "Ce s-a întâmplat azi"})))
+
+
+# Etichetele civice ale motivelor de ingestie (cheile vin din `fetch` / `guard`, fără diacritice).
+_MOTIVE_INGESTIE = {
+    "garda de continut ostil": "Conținut ostil: spam, pagini compromise, jocuri de noroc",
+    "item incomplet (fara link sau titlu)": "Relatare incompletă: fără link sau fără titlu",
+}
+
+
+def _sub_prag(triage: dict | None, moderare: dict | None) -> list:
+    """Grupurile registrului /sub-prag/, din ultima rulare consemnată și din ultima aplicare a
+    moderării. Doar contoare; rândurile cu zero nu se arată (nu sunt informație)."""
+    grupuri = []
+    if triage:
+        randuri = [{"eticheta": "Fără conținut dincolo de titlu (sub 5 cuvinte noi)",
+                    "n": int(triage.get("fara_substanta") or 0)}]
+        for k, v in sorted((triage.get("ingestie") or {}).items()):
+            randuri.append({"eticheta": _MOTIVE_INGESTIE.get(k, k[:1].upper() + k[1:]), "n": int(v)})
+        grupuri.append({"titlu": "Oprite la citirea fluxurilor",
+                        "nota": f"Ultima rulare: {str(triage.get('cand') or '')[:16].replace('T', ' ')} UTC. "
+                                "O relatare fără conținut revine în flux și e oprită din nou la fiecare rulare.",
+                        "randuri": [r for r in randuri if r["n"]]})
+        sin = triage.get("sinteze") or {}
+        if sin:
+            # Amânările pe cauză: „modelul n-a răspuns" (obiect lipsă, apel căzut) nu e „n-a trecut
+            # verificarea" — o pagină de transparență nu are voie să le confunde (25.10.2026: singura
+            # amânare a rulării era un obiect lipsă, afișat ca verificare picată).
+            _fara_raspuns = ("amanate_nemapat", "amanate_apel_esuat", "amanate_hibrid")
+            amanate_model = sum(int(sin.get(k) or 0) for k in _fara_raspuns)
+            amanate = sum(int(v) for k, v in sin.items()
+                          if k.startswith("amanate") and k not in _fara_raspuns)
+            randuri = [
+                {"eticheta": "Publicate: fapte confirmate de cel puțin două origini", "n": int(sin.get("stare_SYNTHESIS_VALID") or 0)},
+                {"eticheta": "Publicate: o singură origine", "n": int(sin.get("stare_SINGLE_ORIGIN") or 0)},
+                {"eticheta": "Publicate: relatări care se exclud, fiecare atribuită", "n": int(sin.get("stare_ASSUMED_SILENCE") or 0)},
+                {"eticheta": "Amânate: n-au trecut verificarea contra surselor (se reiau la rularea următoare)", "n": amanate},
+                {"eticheta": "Amânate: modelul n-a dat un răspuns folosibil (se reiau la rularea următoare)", "n": amanate_model},
+                {"eticheta": "Afirmații scoase: cifră absentă din propozițiile citate", "n": int(sin.get("respinse_cifra") or 0)},
+                {"eticheta": "Afirmații scoase: citare inexistentă sau din alt eveniment", "n": int(sin.get("respinse_citare") or 0)},
+                {"eticheta": "Afirmații scoase: text copiat din sursă", "n": int(sin.get("respinse_copiat") or 0)},
+            ]
+            grupuri.append({"titlu": "Sintezele din mai multe surse, la ultima rulare",
+                            "nota": "Fiecare afirmație a unei sinteze trebuie să trimită la propozițiile din "
+                                    "care provine; ce nu trece verificarea nu se publică.",
+                            "randuri": [r for r in randuri if r["n"]]})
+    if moderare:
+        randuri = [
+            {"eticheta": "Duplicate ale unui eveniment deja publicat", "n": int(moderare.get("dedup") or 0)},
+            {"eticheta": "Ascunse de garda de conținut (spam, alfabete amestecate)", "n": int(moderare.get("garda") or 0)},
+            {"eticheta": "Retrase la cerere temeinică", "n": int(moderare.get("retrase") or 0)},
+            {"eticheta": "Reținute pentru aprobare umană", "n": int(moderare.get("retinute") or 0)},
+        ]
+        grupuri.append({"titlu": f"La publicare, în fereastra de {config.ARTICLE_TTL_DAYS} zile",
+                        "nota": "Duplicatele nu se pierd: relatările despre același eveniment rămân "
+                                "în sinteza lui, cu sursele lor.",
+                        "randuri": [r for r in randuri if r["n"]]})
+    return [g for g in grupuri if g["randuri"]]
+
+
+def _render_sub_prag(env: Environment) -> None:
+    from . import jurnal_triage, moderation
+    grupuri = _sub_prag(jurnal_triage.ultimul_rand(), dict(moderation.ULTIMA_APLICARE) or None)
+    _write(os.path.join(OUT_DIR, "sub-prag", "index.html"),
+           env.get_template("sub_prag.html").render(**_base_ctx(
+               "/sub-prag/", nav_section="stiri", grupuri=grupuri,
+               jsonld_page={"name": "Ce nu ajunge pe site"})))
 
 
 def _newsletter_html() -> str:
@@ -2027,7 +2207,7 @@ def _render_legal(env: Environment) -> None:
 # Sectiunile editoriale care intra in sitemap. NU tot ce se randeaza: `subiect/` are ~300 de
 # pagini de agregare subtiri (decizie de proprietar daca merita indexate), `cauta/` e o unealta,
 # iar `static/`, `data/`, `leads/`, `portraits/` nu sunt pagini.
-_SITEMAP_SECTIONS = ("ghiduri", "instrumente", "calendar", "surse", "legal", "sectiuni", "harta")
+_SITEMAP_SECTIONS = ("ghiduri", "instrumente", "calendar", "surse", "legal", "sectiuni", "harta", "dosar")
 
 
 def _content_page_slugs() -> set:
@@ -2349,14 +2529,12 @@ def _write_headers() -> None:
     Activele imutabile tin mult; imaginile o zi; HTML-ul NU se cache-uieste agresiv
     (stiri proaspete). Pattern-urile de cale TREBUIE sa inceapa cu '/' -- altfel
     Pages le ignora si imaginile cad pe TTL-ul implicit de 4h."""
-    # clarity.ms: wildcard, nu hosturi exacte -- hostul de colectare variaza
-    # (configul tagului declara k.clarity.ms, rularea reala din 2026-08-13 a
-    # urcat pe n.clarity.ms). Un CSP stramtat la hosturi exacte rupe Clarity in
-    # tacere. DELIBERAT absent din img-src: singura imagine pe care o cere
-    # Clarity e c.clarity.ms/c.gif, pixelul care sincronizeaza MUID (identificatorul
-    # de publicitate Microsoft). personalize.js il refuza deja prin
-    # ad_Storage:'denied'; lasandu-l in afara CSP, browserul il blocheaza si daca
-    # flagul ala regreseaza. NU-l adauga la img-src "ca sa nu mai dea eroare".
+    # Nicio gazda de masurare in CSP (2026-10-23, specs/plan-paradigma-izz.md §5 D6): site-ul
+    # nu ruleaza cod de statistica in browserul cititorului. Google, Clarity si beaconul
+    # Cloudflare Web Analytics au iesit DELIBERAT: daca cineva porneste injectarea automata a
+    # beaconului din dashboard, browserul il blocheaza si consola o semnaleaza -- o prelucrare
+    # noua de date se decide in cod, prin PR, nu dintr-un comutator. NU le adauga inapoi
+    # "ca sa nu mai dea eroare".
     # Cloudflare Bot Fight Mode injecteaza pe live un bootstrap inline `__CF$cv$params`.
     # Nu folosim `unsafe-inline`: hash-urile de mai jos sunt variantele observate ale
     # acelui bootstrap, permise explicit si nimic altceva. Daca Cloudflare il schimba
@@ -2371,16 +2549,11 @@ def _write_headers() -> None:
            # zi (fata de 2 variante stabile din august). Cadența în acceleratie: daca
            # continua, administrarea pe hashuri devine bandă rulantă și decizia
            # devine a ownerului (Bot Fight Mode off din dashboard vs zgomot de consolă).
-           "'sha256-tH1iUavg7BOliAkIYWZz8c/fP4WG2ND/YJ0+dwfNTXI=' "
-           "https://static.cloudflareinsights.com https://www.googletagmanager.com "
-           "https://*.clarity.ms; "
+           "'sha256-tH1iUavg7BOliAkIYWZz8c/fP4WG2ND/YJ0+dwfNTXI='; "
            "style-src 'self' 'unsafe-inline'; "
-           "img-src 'self' data: https://tiles.openfreemap.org "
-           "https://*.google-analytics.com https://*.googletagmanager.com; "
+           "img-src 'self' data: https://tiles.openfreemap.org; "
            "font-src 'self'; "
-           "connect-src 'self' https://tiles.openfreemap.org https://cloudflareinsights.com "
-           "https://*.google-analytics.com https://*.analytics.google.com "
-           "https://*.googletagmanager.com https://*.clarity.ms; "
+           "connect-src 'self' https://tiles.openfreemap.org; "
            "worker-src 'self' blob:; "
            "object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; "
            "upgrade-insecure-requests")

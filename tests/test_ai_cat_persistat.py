@@ -23,6 +23,7 @@ Ce apara testele de mai jos, concret:
 """
 import json
 
+import dialectic_fake
 import pytest
 
 from generator import process, state
@@ -77,9 +78,14 @@ def test_process_batch_salveaza_tema_bruta():
 def test_process_cluster_salveaza_tema_bruta():
     grup = [_item(), dict(_item(), url="https://alt.ro/b", original_link="https://alt.ro/b",
                           source="zcj", source_name="Ziar de Cluj")]
-    payload = dict(_raspuns())
-    payload["synthesis"] = "Sinteza pe doua surse."
-    out = process.process_cluster(grup, _Provider(payload))
+    class _Dialectic(_Provider):
+        """Calea C cere formatul dialectic (E2), construit din propozitiile din prompt; titlul
+        e o parafraza — titlul-sursa copiat (>=6 cuvinte) amana clusterul, ca in productie."""
+        def complete(self, system, user):
+            return dialectic_fake.raspuns(
+                user, "Politisti din Brasov au sprijinit standul de limonada al unor copii",
+                "O patrula din Brasov a cumparat limonada de la copii.", category="social")
+    out = process.process_cluster(grup, _Dialectic(None))
     assert out is not None
     assert out["ai_cat"] == "social"
 

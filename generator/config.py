@@ -110,7 +110,34 @@ SOURCES = {
     #   ocolire. Adaugat asa, ar fi permanent `dead`. De testat pe un runner inainte, nu aici.
     # · `dobrogeanoua.ro` — mort definitiv, nu e o problema de cale: e o pagina statica index.php
     #   cu 13 linkuri si ani 2010-2016, fara robots/sitemap. CONSTANTA e oricum acoperita.
-    # regional — publicatii MULTI-JUDET pe regiuni istorice (cercetare agenti + feedcheck
+                "aradon": {"name": "ARADON", "url": "https://www.aradon.ro/feed/", "category": "judetean", "judet": "ARAD"},
+            "argesulonline": {"name": "Argeș Online", "url": "https://argesulonline.ro/feed/", "category": "judetean", "judet": "ARGES"},
+            "desteptarea": {"name": "Desteptarea.ro", "url": "https://www.desteptarea.ro/feed/", "category": "judetean", "judet": "BACAU"},
+            "bistriteanul": {"name": "Bistrițeanul.ro", "url": "https://bistriteanul.ro/feed/", "category": "judetean", "judet": "BISTRITA-NASAUD"},
+            "rasunetul": {"name": "Răsunetul", "url": "https://rasunetul.ro/rss.xml", "category": "judetean", "judet": "BISTRITA-NASAUD"},
+            "timponline": {"name": "TimpOnline.ro", "url": "https://timponline.ro/feed/", "category": "judetean", "judet": "BISTRITA-NASAUD"},
+            "stiridebuzau": {"name": "Știri de Buzău", "url": "https://stiridebuzau.ro/feed/", "category": "judetean", "judet": "BUZAU"},
+            "caon": {"name": "Caon.ro", "url": "https://caon.ro/feed/", "category": "judetean", "judet": "CARAS-SEVERIN"},
+            "resita": {"name": "Reșița.ro", "url": "https://resita.ro/feed/", "category": "judetean", "judet": "CARAS-SEVERIN"},
+            "focuspress": {"name": "FocusPress", "url": "https://focuspress.ro/feed/", "category": "judetean", "judet": "CONSTANTA"},
+            "haromszek": {"name": "Háromszék", "url": "https://feeds.feedburner.com/3szekHirek", "category": "judetean", "judet": "COVASNA"},
+            "damboviteanul": {"name": "Dâmbovițeanul", "url": "https://damboviteanul.ro/feed/", "category": "judetean", "judet": "DAMBOVITA"},
+            "monitoruldegalati": {"name": "Monitorul de Galați", "url": "https://www.monitoruldegalati.ro/feed", "category": "judetean", "judet": "GALATI"},
+            "gorjeanul": {"name": "Gorjeanul", "url": "https://www.gorjeanul.ro/feed/", "category": "judetean", "judet": "GORJ"},
+            "pandurul": {"name": "Pandurul", "url": "https://www.pandurul.ro/rss.php", "category": "judetean", "judet": "GORJ"},
+            "szekelyhon": {"name": "Székelyhon", "url": "https://szekelyhon.ro/rss/szekelyhon_hirek.xml", "category": "judetean", "judet": "HARGHITA"},
+            "servuspress": {"name": "Servuspress", "url": "https://servuspress.ro/feed", "category": "judetean", "judet": "HUNEDOARA"},
+            "monitorulneamt": {"name": "Monitorul de Neamț", "url": "https://monitorulneamt.ro/feed/", "category": "judetean", "judet": "NEAMT"},
+            "olt": {"name": "Olt.ro", "url": "https://olt.ro/feed/", "category": "judetean", "judet": "OLT"},
+            "observatorulph": {"name": "Observatorul Prahovean", "url": "https://www.observatorulph.ro/feed", "category": "judetean", "judet": "PRAHOVA"},
+            "presasm": {"name": "PresaSM", "url": "https://www.presasm.ro/feed", "category": "judetean", "judet": "SATU MARE"},
+            "magazinsalajean": {"name": "Magazin Sălăjean", "url": "https://www.magazinsalajean.ro/feed", "category": "judetean", "judet": "SALAJ"},
+            "deltanews": {"name": "DeltaNews.ro", "url": "https://www.deltanews.ro/feed/", "category": "judetean", "judet": "TULCEA"},
+            "estnews": {"name": "Est News", "url": "https://estnews.ro/feed/", "category": "judetean", "judet": "VASLUI"},
+            "vremeanoua": {"name": "Vremea Nouă", "url": "https://vremeanoua.ro/feed/", "category": "judetean", "judet": "VASLUI"},
+            "monitoruldevrancea": {"name": "Monitorul de Vrancea", "url": "https://www.monitoruldevrancea.ro/feed/", "category": "judetean", "judet": "VRANCEA"},
+            "curierul": {"name": "Curierul de Vâlcea", "url": "https://www.curierul.ro/feed/", "category": "judetean", "judet": "VALCEA"},
+# regional — publicatii MULTI-JUDET pe regiuni istorice (cercetare agenti + feedcheck
     # run 29776432687, 2026-07-20). 16 cu feed VIU. Cazuti (nu re-adauga fara re-test):
     # transilvaniareporter=timeout (posibil lent, re-testabil), crisanaonline=301 loop,
     # ziarulevenimentul=404, bucovinamedia/dobrogeatv=0 intrari. Exclusi motivat: TransilvaniaON

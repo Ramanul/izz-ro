@@ -15,9 +15,12 @@ except ImportError:
     pass
 
 from . import fetch, state, cluster, moderation, config, guard, eventdata
-from . import diacritice, jurnal_triage, raport_copiere
+from . import dialectic, diacritice, jurnal_triage, memorie, raport_copiere, fetch_deep
+from .providers import gemini as gemini_prov
 from .process import (get_provider, process_single, process_clusters_batch, process_batch,
-                      process_official, repara_diacritice, OFFICIAL_PREFIXES)
+                      process_official, repara_diacritice, reset_stats_b, stats_b,
+                      MOTIVE_REINCERCABILE,
+                      OFFICIAL_PREFIXES)
 from .util import domain_of, fara_titluri_data
 from .claude_orchestrator import ClaudeCodeValidator
 
@@ -102,6 +105,36 @@ def cauza_amanarii(ai_calls: int, ai_budget: int, upgrade_reserve: int) -> str:
     return f"buget NEepuizat ({ai_calls}/{plafon}) — alta cauza"
 
 
+# Unde a ajuns fiecare item nou în `process_new` (url-uri), ca amânările să se poată despărți
+# pe cauze. Pe rulările din 22–23.10, „altă cauză" a fost 87–112 de iteme, iar o probă locală
+# reală (24.10) a arătat 0 pierderi în loturile B și 29 de amânări tot „din altă cauză" —
+# deci cifra trebuie defalcată, nu ghicită.
+_COMPOZITIE: dict = {}
+
+
+def motive_amanare(new_items: list, handled: set) -> dict:
+    """Itemele amânate (aceeași mulțime ca `numara_amanate`), pe locul în care au rămas:
+    `sinteza_amanata` (membru al unui cluster C fără sinteză în rularea asta), `b_neiesit`
+    (lot B neajuns la buget sau pierdut în lot — vezi `model_b`), `oficial_sarit`,
+    `nerepartizat` (n-ar trebui să existe; dacă apare, e un drum necunoscut)."""
+    respinse = {i["url"] for i in itemele_fara_substanta(new_items)}
+    out: dict = {}
+    for i in new_items:
+        u = i["url"]
+        if u in handled or u in respinse:
+            continue
+        if u in _COMPOZITIE.get("sinteza", ()):
+            k = "sinteza_amanata"
+        elif u in _COMPOZITIE.get("b", ()):
+            k = "b_neiesit"
+        elif u in _COMPOZITIE.get("oficial", ()):
+            k = "oficial_sarit"
+        else:
+            k = "nerepartizat"
+        out[k] = out.get(k, 0) + 1
+    return out
+
+
 def numara_amanate(new_items: list, handled: set) -> int:
     """Cate iteme noi chiar se INTORC la rularea urmatoare.
 
@@ -116,7 +149,8 @@ def numara_amanate(new_items: list, handled: set) -> int:
     return sum(1 for i in new_items if i["url"] not in handled and i["url"] not in respinse)
 
 
-def process_new(new_items: list, provider, budget: int, existing: list | None = None) -> tuple[list, set, int]:
+def process_new(new_items: list, provider, budget: int, existing: list | None = None,
+                dry_run: bool = False) -> tuple[list, set, int]:
     """Returneaza (articole_procesate, url_uri_inglobate_in_cluster_C, apeluri_AI_folosite).
 
     `budget` = numarul de APELURI AI (free-tier are limita). Model B se proceseaza in
@@ -174,8 +208,24 @@ def process_new(new_items: list, provider, budget: int, existing: list | None = 
     # publica: sursele din capul listei mereu, cele de la coada niciodata. Doua
     # criterii neutre, calculabile fara AI: coroborarea (domenii distincte) si
     # prospetimea. Vezi specs/ai-budget-ordering.md.
+    _COMPOZITIE.clear()
+    _COMPOZITIE.update(sinteza={a["url"] for g in syn for a in g if a["url"] in new_urls},
+                       b={a["url"] for a in singles},
+                       oficial={a["url"] for a in official})
     syn.sort(key=_cluster_rank, reverse=True)
     singles.sort(key=lambda a: (a.get("published") or "", _tie(a.get("url", ""))), reverse=True)
+
+    # E0 — materia primă pe clusterele selectate (plan-paradigma-izz.md §3): text integral
+    # cu validator anti-paywall/consent, 3,5 s/URL prin `fetch._deschide`, SHA-256 + ancore
+    # în data/deep_meta.json (prune la TTL). Fundal, fără UI, fără apeluri AI: propozițiile
+    # S1.1 le consumă sinteza dialectică (E2), driftul pe ancore îl consumă E1.
+    # IZZ_FETCH_DEEP=0 oprește etapa (testele îl setează din conftest — proces_new e chemat
+    # direct de suite, iar un cârlig care ar face rețea și ar scrie stare în teste ar strica
+    # izolarea suitei; în producție și la --dry-run rămâne implicit PORNIT).
+    if os.environ.get("IZZ_FETCH_DEEP", "1") != "0":
+        fetch_deep.fetch_deep(syn, persist=not dry_run)
+    dialectic.reset_stats()
+    reset_stats_b()
 
     # clusterele C intai, in LOTURI (1 apel per CLUSTER_BATCH_SIZE clustere, nu per cluster).
     # MASURAT 2026-08-16: cate un apel per cluster epuiza bugetul la 17-18 clustere/rulare,
@@ -187,19 +237,28 @@ def process_new(new_items: list, provider, budget: int, existing: list | None = 
     surse_brute: dict[str, str] = {}
 
     cbs = config.CLUSTER_BATCH_SIZE if provider else (len(syn) or 1)
-    for i in range(0, len(syn), cbs):
+    # Loturi fără clustere vecine (același subiect, sub-unit la clustering): în același lot,
+    # modelul citează propozițiile unuia în celălalt, iar E2 le respinge ca străine.
+    def _accepta(g, rep):
+        processed.append(rep)
+        surse_brute[rep.get("url") or ""] = diacritice.text_grup(g)
+        if not rep.get("skip"):
+            folded.update(a["url"] for a in g if a["url"] != rep["url"])
+
+    de_reluat: list = []                       # (grup, motiv, titlu respins) — vezi mai jos
+    for chunk in dialectic.loturi(syn, cbs):
         if used >= budget:
             break  # restul clusterelor -> reluate la rularea urmatoare
-        chunk = syn[i:i + cbs]
-        reps = process_clusters_batch(chunk, provider)
+        motive: list = []
+        reps = process_clusters_batch(chunk, provider, motive=motive)
         used += 1
-        for g, rep in zip(chunk, reps):
+        for g, rep, motiv in zip(chunk, reps, motive or [None] * len(chunk)):
             if rep is None:
-                continue  # esec/nemapat -> cluster amanat; membrii raman nefolded si se reiau data viitoare
-            processed.append(rep)
-            surse_brute[rep.get("url") or ""] = diacritice.text_grup(g)
-            if not rep.get("skip"):
-                folded.update(a["url"] for a in g if a["url"] != rep["url"])
+                # esec/nemapat -> cluster amanat; membrii raman nefolded si se reiau data viitoare
+                if provider is not None and motiv and motiv[0] in MOTIVE_REINCERCABILE:
+                    de_reluat.append((g, motiv[0], motiv[1]))
+                continue
+            _accepta(g, rep)
 
     # model B in LOTURI (1 apel per BATCH_SIZE articole)
     bs = config.BATCH_SIZE if provider else (len(singles) or 1)
@@ -208,6 +267,42 @@ def process_new(new_items: list, provider, budget: int, existing: list | None = 
             break  # restul loturilor -> reluate la rularea urmatoare
         processed.extend(process_batch(singles[i:i + bs], provider))
         used += 1
+
+    # A doua incercare, in ACEEASI rulare, pentru clusterele amanate din cauza raspunsului
+    # modelului (obiect lipsa din lot, titlu transcris sau deformat) — doar din bugetul ramas
+    # dupa B, deci nu ia nimic din ce s-ar fi publicat sigur, si cu UN apel lasat deoparte
+    # pentru reparatia de diacritice de mai jos (§7). Masurat pe rularea CI din 24.10.2026:
+    # 14 din 43 de clustere amanate, din care 11 pentru motivele astea (titlu copiat 6,
+    # nemapat 5); un cluster amanat revine identic peste ~4 h, iar modelul, la temperatura
+    # 0,2, tinde sa scrie acelasi titlu — de aceea titlul respins intra in prompt, numit.
+    if de_reluat:
+        dupa_grup = {id(g): (m, t) for g, m, t in de_reluat}
+        recuperate: list = []
+        with dialectic.a_doua_incercare():
+            for chunk in dialectic.loturi([g for g, _, _ in de_reluat], cbs):
+                if used >= budget - 1:
+                    break
+                respinse = {i: dupa_grup[id(g)] for i, g in enumerate(chunk)
+                            if dupa_grup[id(g)][1]}
+                motive2: list = []
+                reps = process_clusters_batch(chunk, provider, respinse=respinse,
+                                              motive=motive2)
+                used += 1
+                dialectic.numara("reincercate", len(chunk))
+                for g, rep, m2 in zip(chunk, reps, motive2 or [None] * len(chunk)):
+                    if rep is not None:
+                        recuperate.append(dupa_grup[id(g)][0])
+                        _accepta(g, rep)
+                    elif m2 and m2[1] and (m2[1].casefold()
+                                           == (dupa_grup[id(g)][1] or "").casefold()):
+                        # modelul a ignorat nota: același titlu, scris din nou
+                        dialectic.numara("reincercare_titlu_identic")
+        # in afara contextului: se scade din amanarea PRIMEI incercari, care nu mai pleaca
+        # la rularea urmatoare (sub context, cheia ar fi primit prefixul `reincercare_`)
+        for motiv in recuperate:
+            dialectic.numara(f"amanate_{motiv}", -1)
+        if recuperate:
+            dialectic.numara("recuperate_la_reincercare", len(recuperate))
 
     # Diacriticele pierdute la reformulare: se MASOARA pe fiecare rulare si se repara cu UN
     # singur apel-lot suplimentar, consumat din buget (de aceea `used += 1`). Anunturile
@@ -458,7 +553,8 @@ def run(dry_run: bool = False) -> dict:
     # de upgradat. Vezi `ai_reserve`: neplafonata, tinea 8 din 18 apeluri pentru o coada goala.
     pending_upgrades = len(upgradable(existing)) if provider else 0
     reserve = ai_reserve(existing, budget) if provider else 0
-    processed_new, folded, used = process_new(new_items, provider, budget - reserve, existing=existing)
+    processed_new, folded, used = process_new(new_items, provider, budget - reserve,
+                                              existing=existing, dry_run=dry_run)
     # Garda de diacritice scrie o linie DOAR cand a gasit ceva (altfel ar fi zgomot in log).
     linie_diacritice = diacritice.raport()
     if linie_diacritice:
@@ -478,8 +574,15 @@ def run(dry_run: bool = False) -> dict:
     # presiunea reala era 107-29=78 si 254-30=224. Cifra veche amesteca doua marimi opuse,
     # iar decizia „merita batching pentru Model C?" se ia tocmai pe ea.
     respinse_substanta = {i["url"] for i in itemele_fara_substanta(new_items)}
+    amanare = motive_amanare(new_items, handled)
     if not dry_run:
-        jurnal_triage.inregistreaza(pierderi, respinse_substanta, stale_skipped)
+        jurnal_triage.inregistreaza(pierderi, respinse_substanta, stale_skipped,
+                                    sinteze={**dialectic.stats(),
+                                             **{f"b_{k}": v for k, v in stats_b().items()},
+                                             **{f"oprire_{k}": v for k, v
+                                                in gemini_prov.MOTIVE_OPRIRE.items()},
+                                             **{f"amanare_{k}": v for k, v
+                                                in amanare.items()}})
     deferred = numara_amanate(new_items, handled)
     processed_new = [a for a in processed_new if not a.get("skip")]
     # PLAN UNIFICAT #1: prag de blocare/DEFER. Itemele cu incalcari deterministe de
@@ -546,6 +649,7 @@ def run(dry_run: bool = False) -> dict:
         # „doua surse din config aduc acelasi lucru" — semnal pentru portofoliul de surse.
         "exemplare_duplicate": exemplare_duplicate,
         "deferred": deferred,
+        "deferred_cauze": amanare,
         "respinse_substanta": len(respinse_substanta),
         "model_B": sum(1 for a in processed_new if a.get("model") == "B"),
         "model_C": sum(1 for a in processed_new if a.get("model") == "C"),
@@ -573,6 +677,16 @@ def run(dry_run: bool = False) -> dict:
         # urma in build.json. Gol cand nu exista cascada sau n-a cazut nimic (`IZZ-0282`).
         "ai_caderi_acoperite": (provider.caderi_pe_provider()
                                 if hasattr(provider, "caderi_pe_provider") else {}),
+        # E0 fetch_deep (plan-paradigma-izz.md §3): contorii materiei prime pe clusterele
+        # selectate — FULL_TEXT vs RSS_FALLBACK plus marcajele SILENT_EDIT_DIRTY (E1).
+        "deep": fetch_deep.stats(),
+        # E2 (plan-paradigma-izz.md §3, §5): stările sintezelor dialectice și motivele
+        # respingerii afirmațiilor — aici se calibrează SILENCE_REJECTION_THRESHOLD.
+        "dialectic": dialectic.stats(),
+        # de ce iese sau nu un articol B dintr-un lot (process.process_batch)
+        "model_b": stats_b(),
+        # finishReason-ul fiecărui răspuns Gemini (STOP = normal)
+        "ai_oprire": dict(gemini_prov.MOTIVE_OPRIRE),
     }
     caderi = stats.get("ai_caderi_acoperite") or {}
     if caderi:
@@ -600,6 +714,11 @@ def run(dry_run: bool = False) -> dict:
             # isi pastreaza slugul cand revine, si nu il recalculeaza din titlu.
             render.assign_slugs(combined)
         state.save(combined)
+        # E4: deciziile încheiate, confirmate de ≥2 origini, intră în memoria subiectelor
+        # (12 luni, separată de fereastra TTL); corecțiile și retragerile o curăță.
+        mem = memorie.actualizeaza([a for a in processed_new if a.get("model") == "C"], mod)
+        if mem["adaugate"] or mem["scoase"]:
+            print(f">> memoria subiectelor: +{mem['adaugate']} / -{mem['scoase']} (total {mem['total']})")
         if render is not None:
             render.build(visible, mod)
             print(">> Randare completa in output/")
@@ -633,6 +752,24 @@ def _print_report(stats: dict, processed_new: list, dry_run: bool):
                                stats.get("upgrade_reserve", 0))
         print(f"Amanate ({cauza}): {stats['deferred']} din {stats['new']} "
               f"— revin la rularea urmatoare, apeluri folosite: {stats['ai_calls']}")
+        if stats.get("deferred_cauze"):
+            print("   pe locul in care au ramas: " + ", ".join(
+                f"{k} {v}" for k, v in sorted(stats["deferred_cauze"].items())))
+    oprire = {k: v for k, v in (stats.get("ai_oprire") or {}).items() if k != "STOP"}
+    if oprire:
+        print("Raspunsuri AI oprite altfel decat normal: "
+              + ", ".join(f"{k} {v}" for k, v in sorted(oprire.items())))
+    # Sintezele C pe stări, amânări și reîncercare — în log, nu doar în jurnalul de triaj, ca
+    # o rulare CI (sau un dry-run) să arate direct cât a recuperat a doua încercare.
+    sin = {k: v for k, v in (stats.get("dialectic") or {}).items()
+           if v and k.startswith(("stare_", "amanate_", "reincercare_", "reincercate",
+                                  "recuperate_"))}
+    if sin:
+        print("Sinteze C: " + ", ".join(f"{k} {v}" for k, v in sorted(sin.items())))
+    pierderi_b = {k: v for k, v in (stats.get("model_b") or {}).items() if k != "publicate"}
+    if pierderi_b:
+        print("Model B, ce n-a iesit din loturi: "
+              + ", ".join(f"{k} {v}" for k, v in sorted(pierderi_b.items())))
     if stats.get("respinse_substanta"):
         print(f"Respinse DEFINITIV (fara substanta): {stats['respinse_substanta']} "
               "— nu revin, sunt respinse din nou la fiecare rulare; nu se numara ca amanate")

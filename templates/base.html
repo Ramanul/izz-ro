@@ -54,8 +54,7 @@
      necorelate (Organization aparea de trei ori pe o pagina de articol). #}
   <script type="application/ld+json">{{ jsonld | tojson }}</script>
   {% block head_extra %}{% endblock %}
-  {% if analytics_token %}<script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "{{ analytics_token }}"}'></script>{% endif %}
-  <script defer src="{{ base }}/static/personalize.js?v={{ asset_ver['personalize.js'] }}"></script>
+  <script defer src="{{ base }}/static/judet.js?v={{ asset_ver['judet.js'] }}"></script>
   {# Service workerul si butonul de instalare. `defer`, nu `async`: cele doua se cearta pe
      acelasi `navigator.serviceWorker` si ordinea conteaza -- pwa.js inregistreaza,
      push.js asteapta inregistrarea prin `serviceWorker.ready`. #}
@@ -69,7 +68,10 @@
     {#- Numerele zilei (doar prima pagina are `zi` in context): starea reala a
         pipeline-ului in ultimele 24h, calculata in render._numerele_zilei. Pe mobil
         se ascund in CSS — primul ecran ramane al stirilor. -#}
-    {% if zi %}<span class="day-numbers"><b>{{ zi.stiri }}</b> știri · <b>{{ zi.surse }}</b> surse · <b>{{ zi.judete }}</b> județe în ultimele 24 de ore</span>{% endif %}
+    {#- Contorul de subtracție (E3): relatările citate de surse -> subiectele publicate după
+        unirea relatărilor despre același eveniment. Arată ce a eliminat sistemul, nu doar ce a
+        adunat. Fără `relatari` (context vechi), rămâne forma veche. -#}
+    {% if zi %}<span class="day-numbers">{% if zi.relatari and zi.relatari > zi.stiri %}<b>{{ zi.relatari }}</b> articole → {% endif %}<b>{{ zi.stiri }}</b> {{ 'subiecte' if zi.relatari and zi.relatari > zi.stiri else 'știri' }} · <b>{{ zi.surse }}</b> surse · <b>{{ zi.judete }}</b> județe în ultimele 24 de ore</span>{% endif %}
   </p>
   <div class="site-header-group">
   <header class="site-header">
@@ -119,14 +121,14 @@
       <a href="{{ base }}/principii/">Principii</a>
       <a href="{{ base }}/legal/contact/">Contact</a>
       <a href="{{ base }}/legal/privacy/">Confidențialitate</a>
-      <a href="{{ base }}/legal/privacy/#consimtamant">Setări consimțământ</a>
       <a href="{{ base }}/legal/terms/">Termeni</a>
       <a href="{{ base }}/legal/accessibility/">Accesibilitate</a>
-      <a href="{{ base }}/legal/method/">Cum sintetizăm</a>
+      <a href="{{ base }}/legal/method/">Cum devin ideile funcții</a>
       <a href="{{ base }}/legal/corrections/">Corecții</a>
       <a href="{{ base }}/legal/security/">Securitate</a>
       <a href="{{ base }}/legal/images/">Politica imaginilor</a>
       <a href="{{ base }}/surse/">Surse & originalitate</a>
+      <a href="{{ base }}/sub-prag/">Ce nu ajunge pe site</a>
       <a href="{{ base }}/legal/takedown/">Drepturi de autor</a>
     </nav>
     {# Alertele stau ULTIMUL element din footer, dintr-un motiv masurabil: blocul apare si

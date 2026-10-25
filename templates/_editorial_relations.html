@@ -1,0 +1,21 @@
+{% if editorial_relations %}
+<section aria-label="Legături explicate">
+  <h2>De ce sunt legate aceste pagini</h2>
+  {% macro explained_relation(relation) %}
+    <li>
+      <a href="{{ base }}/{{ relation.path.lstrip('/') }}">{{ relation.title }}</a> · <strong>{{ relation.label }}</strong>.
+      <p>{{ relation.explanation }}</p>
+      {% if relation.type == 'co_occurrence' %}<p>Asociere în relatările examinate; nu demonstrează cauzalitate, responsabilitate sau identitatea unor persoane cu același nume.</p>{% endif %}
+      {% if relation.type == 'affects' %}<p>{{ 'Efect observat în probele citate.' if relation.effect_status == 'observed' else 'Efect anunțat sau prognozat; rezultatul nu este confirmat.' }}</p>{% endif %}
+      <p>Cum distingem identitatea: {{ relation.identity_basis }}</p>
+      <p>{% for proof in relation.evidence %}{% if proof.anchor %}<a href="{{ base }}/{{ proof.anchor.lstrip('/') }}">Proba legăturii</a>{% elif proof.scheme == 'https' %}<a href="https://{{ proof.destination }}" target="_blank" rel="noopener noreferrer">Proba legăturii</a>{% elif proof.scheme == 'http' %}<a href="http://{{ proof.destination }}" target="_blank" rel="noopener noreferrer">Proba legăturii</a>{% endif %}{{ ' · ' if not loop.last }}{% endfor %}</p>
+    </li>
+  {% endmacro %}
+  <ul>{% for relation in editorial_relations[:3] %}{{ explained_relation(relation) }}{% endfor %}</ul>
+  {% if editorial_relations|length > 3 %}
+  <details><summary>Alte legături documentate ({{ editorial_relations|length - 3 }})</summary>
+    <ul>{% for relation in editorial_relations[3:] %}{{ explained_relation(relation) }}{% endfor %}</ul>
+  </details>
+  {% endif %}
+</section>
+{% endif %}

@@ -11,15 +11,22 @@
   {% if portrait %}
   <figure class="subject-photo">
     <img src="{{ base }}/{{ portrait.img }}" alt="{{ name }}" width="160" height="160"{% if portrait.poz %} style="object-position: {{ portrait.poz }}"{% endif %}>
-    <figcaption class="credit">Foto: {% if portrait.artist %}{{ portrait.artist }} · {% endif %}<a href="{{ portrait.page }}" target="_blank" rel="noopener noreferrer">Wikimedia Commons</a> · {{ portrait.license }}</figcaption>
+    <figcaption class="credit">Foto: {% if portrait.artist %}{{ portrait.artist }} · {% endif %}<a href="{{ portrait.page | href_extern }}"{# nosemgrep: generic.html-templates.security.var-in-href.var-in-href #} target="_blank" rel="noopener noreferrer">Wikimedia Commons</a> · {{ portrait.license }}</figcaption>
   </figure>
   {% endif %}
   {% if has_feed %}
   <p class="follow"><a href="{{ base }}/subiect/{{ slug }}/feed.xml">Urmărește acest subiect (RSS) &rarr;</a></p>
   {% endif %}
+  {% if subject_dossiers %}
+  <section aria-label="Dosare documentare pentru acest subiect">
+    <h2>Context păstrat în dosare</h2>
+    <ul>{% for dossier_link in subject_dossiers %}<li><a href="{{ base }}/{{ dossier_link.path.lstrip('/') }}">{{ dossier_link.title }}</a><p>{{ dossier_link.identity_basis }}</p></li>{% endfor %}</ul>
+  </section>
+  {% endif %}
   {% if connections %}
   <p class="connections">Conexiuni:
     {% for cs, cn, k in connections %}<a href="{{ base }}/subiect/{{ cs }}/">{{ cn }}</a>{{ ' · ' if not loop.last }}{% endfor %}</p>
+  <p>Aceste conexiuni arată coapariția entităților în relatările disponibile, fără să demonstreze cauzalitate, responsabilitate sau identitatea unor persoane cu același nume.</p>
   {% endif %}
   {% if articles %}
   {# cronologia subiectului: evolutia in timp, nu un simplu grid #}

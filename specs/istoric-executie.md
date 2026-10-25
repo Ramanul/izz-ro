@@ -2013,3 +2013,18 @@ Contra-verificate cap-coada, ca sa nu fie re-masurate:
   Maica Domnului → `htmlart.persoana_potrivita` (717 → 396 coperți cu portret pe corpus). (3) Medalionul tăia
   orb `center 20%` → `tools/incadrare_portrete.py` (YuNet): decupaj cap+umeri; 72 poze de grup și 98 fețe
   sub 48 px nu se mai arată. OpenCV doar în pasul de build, doar când există portrete neîncadrate.
+
+- **Pagina metodă «Cum devin ideile funcții» — rescriere pe direcția proprietarului (2026-10-20).**
+  /legal/method/ trece din «Cum sintetizăm» (justificare editorială) la 6 mecanisme cu șablon unic
+  Problemă → Regulă adoptată → Ce face site-ul → Unde verifici → Limită, toate funcționale azi;
+  AI/sursele rămân într-o secțiune scurtă separată, ideile din lucrări doar într-o notă de arhitectură
+  cu trimitere la /principii/. Direcția: proprietar, în ChatGPT (20 oct, «uite asta e ideea»); critică
+  de draft + trecere finală cu Gemini Argon (K1–K7 aplicate). Fapte corectate pe cod înainte de
+  publicare: cifra neverificabilă «630 fluxuri RSS» tăiată (cache real 496; /surse/ afișează numărul
+  dinamic), «notificări web push» → «abonare» (PUSH_ADMIN_TOKEN încă «de făcut» în infra/PUSH-SETUP.md),
+  «clicuri» unificat, «poate ajunge într-un context greșit», ancora #consimtamant la rândul «Unde
+  verifici». Redenumire propagată: terms.md, despre.md (2×), footer (base.html), README (3×, inclusiv
+  linkul de metodologie îndreptat spre /legal/method/). Verificat: render-only verde (9965 articole),
+  pytest 2698 passed / 6 skip / 8 xfail, ruff curat.
+
+- (mutat din STATE.md la 2026-10-23, închis) **Pages `izz-ro` ZOMBI — CONFIRMAT ȘTERS [IZZ-0411]:** `izz-ro.pages.dev` returnează `000` [IZZ-0366, 0395].

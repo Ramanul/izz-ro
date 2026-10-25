@@ -26,6 +26,13 @@ import poarta_stare
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 OUT = os.path.join(ROOT, "output")
 
+# E0 fetch_deep (plan-paradigma-izz.md §3): suitele care cheamă `process_new` direct nu
+# trebuie să facă rețea pe URL-urile de fixture și să scrie `data/deep_meta.json`. Cârligul
+# citește comutatorul la fiecare apel, deci un test care chiar vrea etapa o poate porni cu
+# monkeypatch.setenv("IZZ_FETCH_DEEP", "1"). Verificarea reală a etapei rămâne la
+# test_fetch_deep.py (care parchează granita `fetch._deschide`) și la `--dry-run`.
+os.environ.setdefault("IZZ_FETCH_DEEP", "0")
+
 
 # --- garzile care citesc stare COMISA si MUTABILA -----------------------------------
 # Motivatia, cifrele si invariantul sunt in `tests/poarta_stare.py`. Aici e doar cablajul.
@@ -63,7 +70,17 @@ STARE_COMISA = (
     "data/takedown_log.jsonl",
     "data/articles.json",
     "data/feed_cache.json",
+    "data/deep_meta.json",
+    "data/memory_ledger.json",
 )
+
+
+@pytest.fixture(autouse=True)
+def _memoria_subiectelor_in_tmp(tmp_path, monkeypatch):
+    """E4: `memorie.CALE` stă în `data/`, comis de `build.yml`. Orice test care trece prin
+    `main.run` ar scrie acolo — garda e pe clasă (toate testele), nu pe testele găsite azi."""
+    from generator import memorie
+    monkeypatch.setattr(memorie, "CALE", str(tmp_path / "memory_ledger.json"))
 
 
 def _amprenta_stare() -> dict[str, tuple[int, float] | None]:

@@ -5,7 +5,9 @@ on:
     branches: [main]
     paths:
       - 'generator/publication.py'
+      - 'generator/dossiers.py'
       - 'templates/withdrawn.html'
+      - 'templates/dossier.html'
       - '.github/workflows/editorial-frontend-audit.yml'
 
 permissions:
@@ -28,7 +30,7 @@ jobs:
       - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7
         with:
           python-version: '3.11'
-      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7
         with:
           node-version: '22'
       - name: Install audit dependencies
@@ -42,6 +44,8 @@ jobs:
           CHROME_PATH: /usr/bin/google-chrome
         run: |
           git worktree add --detach "$RUNNER_TEMP/izz-before" "$BASE_SHA"
+          # Both revisions render the exact PR-head article snapshot; news churn is not a code delta.
+          cp "$GITHUB_WORKSPACE/data/articles.json" "$RUNNER_TEMP/izz-before/data/articles.json"
           mkdir -p "$GITHUB_WORKSPACE/audit-results"
           for revision in before after; do
             root="$GITHUB_WORKSPACE"
@@ -80,7 +84,7 @@ jobs:
           PY
       - name: Preserve evidence
         if: always()
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: editorial-frontend-audit
           path: audit-results/

@@ -8,10 +8,10 @@ import json
 import re
 from datetime import datetime, timezone
 
-from . import config, geo, raport_copiere
+from . import config, dialectic, fetch_deep, geo, guard, raport_copiere
 from . import diacritice
 from .select import has_mixed_latin_han
-from .verifica_sinteza import slug_din_link
+from .verifica_sinteza import cifre_straine, slug_din_link, titlu_copiat
 from .util import truncate_words, domain_of, strip_diacritics
 
 # ---- Prompturi calibrate juridic (zero propozitii copiate din original) ----
@@ -31,37 +31,45 @@ Returneaza JSON:
   "icon": "<pictograma care surprinde cel mai bine subiectul, UN slug din: {icons}; null daca niciuna nu se potriveste>"}}
 Reguli: SCRIE IN ROMANA — daca stirea primita e in alta limba, tradu-o, nu o reda in original; titlul trebuie sa se inteleaga singur si sa contina faptul real, nu o intrebare/teaser; NU copia nicio propozitie din original; zero opinii; foloseste DOAR fapte prezente in textul primit — daca un fapt (cine, unde, cand) nu apare acolo, nu-l inventa si nu-l inlocui cu o formulare vaga."""
 
-SYSTEM_C = ("Esti editor care sintetizeaza un eveniment din MAI MULTE surse, cu cuvintele tale. "
-            "Titlul reda esenta evenimentului; sinteza comprima faptele confirmate. Raspunzi exclusiv JSON valid.")
+# E2 — sinteza dialectică (specs/plan-paradigma-izz.md §3 E2, §5). Modelul PROPUNE structura;
+# `generator/dialectic.py` verifică fiecare citare și decide ce rămâne. De aceea regulile de mai
+# jos nu sunt singura apărare: o regulă încălcată aici e o afirmație respinsă acolo.
+SYSTEM_C_DIALECTIC = ("Esti grefier de stiri. Din propozitiile numerotate ale mai multor publicatii "
+                      "extragi ce confirma ele impreuna, unde difera si ce apare intr-o singura "
+                      "publicatie. Nu judeci, nu mediezi, nu completezi din cunostintele tale. "
+                      "Raspunzi EXCLUSIV cu un array JSON valid.")
 
-USER_C = """Eveniment, relatat de surse:
-{sources_block}
-
-Scrie titlu + sinteza care REDAU ESENTA evenimentului, cu cuvintele tale.
-Returneaza JSON:
-{{"title": "<esenta evenimentului: ce s-a intamplat, concret; 6-16 cuvinte; fara clickbait>",
-  "synthesis": "<sinteza COMPRIMATA in 40-80 de cuvinte: faptele confirmate de mai multe surse (cine, ce, cand, unde, cat), reformulate 100%; marcheaza daca sursele se contrazic>",
-  "category": "<una din: {cats}>",
-  "entities": ["<1-4 nume proprii cheie din eveniment (persoane, organizatii, locuri), forma scurta canonica>"],
-  "icon": "<pictograma care surprinde cel mai bine evenimentul, UN slug din: {icons}; null daca niciuna nu se potriveste>"}}
-Reguli: SCRIE IN ROMANA — daca sursele sunt in alta limba, tradu; trianguleaza faptele comune; ZERO propozitii copiate; titlul contine faptul real, nu un teaser; zero opinii. Verifica semantic fiecare verb: nu transforma „au pretins”, „s-au dat drept” sau „au oprit” într-un verb de percepție precum „au simțit”; dacă sursele spun că suspecții s-au dat drept polițiști, formulează explicit acest fapt."""
-
-
-SYSTEM_C_BATCH = ("Esti editor care sintetizeaza MAI MULTE evenimente, fiecare din mai multe surse, "
-                   "cu cuvintele tale. Titlul reda esenta evenimentului; sinteza comprima faptele "
-                   "confirmate. Raspunzi EXCLUSIV cu un array JSON valid.")
-
-USER_C_BATCH = """Ai mai multe evenimente (fiecare cu un id), fiecare relatat de mai multe surse.
+USER_C_DIALECTIC = """Ai mai multe evenimente, fiecare cu un id. Pentru fiecare primesti propozitiile publicatiilor:
+[S<n>] = antetul publicatiei n; [S<n>.<k>] = propozitia k a ei. Numerele surselor sunt UNICE in tot mesajul: fiecare eticheta apartine unui singur eveniment.
+[P<id>.<k>] = fapt din versiunea anterioara a sintezei evenimentului <id>, cu publicatiile lui intre paranteze.
 
 Evenimente:
 {events_block}
 
-Pentru FIECARE eveniment, scrie titlu + sinteza care REDAU ESENTA, cu cuvintele tale.
-Returneaza EXCLUSIV un array JSON, cate UN obiect per eveniment, cu acelasi id primit:
-[{{"id": <id>, "title": "<esenta evenimentului: ce s-a intamplat, concret; 6-16 cuvinte; fara clickbait>", "synthesis": "<sinteza COMPRIMATA in 40-80 de cuvinte: faptele confirmate de mai multe surse (cine, ce, cand, unde, cat), reformulate 100%; marcheaza daca sursele se contrazic>", "category": "<{cats}>", "entities": ["<1-4 nume proprii cheie din eveniment>"], "icon": "<UN slug din lista de la final sau null>"}}]
+Returneaza EXCLUSIV un array JSON, cate UN obiect per eveniment, cu acelasi id:
+[{{"id": <id>,
+  "title": "<faptul central, 6-16 cuvinte, strict factual, cu cuvintele tale; la ASSUMED_SILENCE: doar subiectul, fara afirmatie>",
+  "epistemic_state": "SYNTHESIS_VALID sau ASSUMED_SILENCE",
+  "common_facts": [{{"statement": "<o propozitie, cu cuvintele tale>", "chunk_ids": ["<etichetele exacte, ex. S1.2>", "<ex. S2.1>"], "has_hedging": false}}],
+  "divergences": [{{"axis": "<ce difera: cifra, ora, cine, cauza, locul>", "positions": [{{"claim": "<versiunea unei publicatii, cu cuvintele tale>", "chunk_ids": ["<ex. S1.3>"]}}]}}],
+  "uncorroborated_claims": [{{"statement": "<detaliu prezent intr-o singura publicatie>", "chunk_ids": ["<ex. S3.4>"]}}],
+  "is_milestone": false,
+  "category": "<una din: {cats}>",
+  "entities": ["<1-4 nume proprii cheie, forma scurta canonica>"],
+  "icon": "<UN slug din lista de la final sau null>"}}]
 Pictograme permise: {icons}
-Reguli: SCRIE IN ROMANA — daca sursele sunt in alta limba, tradu; pastreaza id-ul EXACT (numar); un obiect per id; trianguleaza faptele comune DOAR din sursele evenimentului cu acelasi id -- NU amesteca fapte intre evenimente diferite, chiar daca par legate; ZERO propozitii copiate; titlul contine faptul real, nu un teaser; zero opinii. Verifica semantic verbele: nu transforma „au pretins”, „s-au dat drept” sau „au oprit” în „au simțit”; când sursele descriu o identitate falsă, scrie explicit „s-au dat drept polițiști”."""
-
+Reguli absolute:
+1. common_facts = DOAR fapte sustinute de propozitii din cel putin DOUA publicatii diferite; citeaza TOATE chunk_ids care le sustin. Ordoneaza-le descrescator dupa importanta: primul se intelege singur, ca lead; urmatoarele adauga detalii fara sa repete subiectul. Maximum 5.
+2. Nu netezi: daca o publicatie spune 100 si alta 10, scrii o divergenta cu ambele pozitii, nu „zeci"; nu faci medii, nu scrii „pe de o parte... pe de alta parte". O divergenta exista DOAR cand versiunile nu pot fi adevarate simultan; un detaliu in plus la o publicatie („miercuri" fata de „miercuri, 21 octombrie") NU e divergenta.
+3. Nimic din afara propozitiilor primite: niciun fapt, nume, cifra, data sau context din cunostintele tale. Fiecare cifra din afirmatie trebuie sa fie in propozitiile citate.
+4. Pastreaza incertitudinea: „ar fi", „este acuzat", „potrivit" raman asa, iar atunci has_hedging=true. Atribuie declaratiile (cine a spus) si estimarile (cine estimeaza: un studiu, cercetatorii, o institutie) — o estimare nu devine fapt constatat.
+4b. Scrii despre EVENIMENT, nu despre publicatii: nu scrie cine a preluat, cine a publicat sau ce a „relatat" o publicatie, decat daca publicatia e ea insasi parte din eveniment.
+5. Ton de proces-verbal: zero adjective si adverbe de evaluare; verbe neutre de declaratie (a declarat, a anuntat, a precizat). Fara citate intre ghilimele: parafrazeaza si atribuie.
+6. Cu cuvintele tale: cel mult 12 cuvinte consecutive identice cu o propozitie primita; titlul nu copiaza niciun titlu de sursa.
+7. ASSUMED_SILENCE doar cand publicatiile nu au niciun fapt central comun sau versiunile lor despre faptul central se exclud; atunci common_facts=[] si pozitiile merg in divergences.
+8. is_milestone=true DOAR pentru o decizie finala sau un eveniment incheiat (lege promulgata, buget aprobat, hotarare definitiva, dezastru produs); niciodata pentru anchete, acuzatii, propuneri sau declaratii.
+9. SCRIE IN ROMANA (tradu daca sursele sunt in alta limba). Copiaza etichetele exact cum apar (ex. S4.2) si foloseste DOAR etichetele din blocul ACELUIASI eveniment; nu amesteca evenimentele, chiar daca par legate.
+10. Verifica semantic fiecare verb: nu transforma „au pretins", „s-au dat drept" sau „au oprit" intr-un verb de perceptie precum „au simtit"."""
 
 SYSTEM_BATCH = ("Esti editor de stiri. Pentru FIECARE stire primita, titlul reda ESENTA faptului, "
                 "iar teaserul comprima faptele de baza, cu cuvintele tale. Concret, nu vag. "
@@ -103,9 +111,16 @@ def repara_diacritice(perechi: list, provider) -> int:
     """
     if not perechi or provider is None:
         return 0
+    def _corp(a: dict) -> str:
+        # Sinteza dialectica: corpul paginii sunt faptele (rezumatul e derivat din ele), deci
+        # se corecteaza faptele, cu separator fix, iar rezumatul se rederiva — altfel cardul
+        # ar avea diacritice si pagina nu.
+        if a.get("model") == "C" and isinstance(a.get("dialectic"), dict):
+            return dialectic.FLAT_SEP.join(dialectic.flat_texts(a["dialectic"]))
+        return (a.get("synthesis") if a.get("model") == "C" else a.get("teaser")) or ""
+
     bloc = "\n".join(
-        f"[{i}] Titlu: {a.get('title') or ''} | Rezumat: "
-        f"{(a.get('synthesis') if a.get('model') == 'C' else a.get('teaser')) or ''}"
+        f"[{i}] Titlu: {a.get('title') or ''} | Rezumat: {_corp(a)}"
         for i, (a, _) in enumerate(perechi))
     try:
         raw = provider.complete(SYSTEM_DIACRITICE, USER_DIACRITICE.format(block=bloc))
@@ -128,10 +143,12 @@ def repara_diacritice(perechi: list, provider) -> int:
         titlu = (obj.get("title") or "").strip()
         corp = (obj.get("teaser") or "").strip()
         vechi_titlu = a.get("title") or ""
-        vechi_corp = (a.get("synthesis") if a.get("model") == "C" else a.get("teaser")) or ""
+        vechi_corp = _corp(a)
+        # Reparația se acceptă doar dacă repară PARTEA care a pierdut diacriticele (titlul sau
+        # corpul, măsurate separat) și nu aduce tokenuri hibride latin–Han (#499).
         titlu_pierdut = diacritice.lipsesc_diacriticele(sursa, vechi_titlu)
         corp_pierdut = diacritice.lipsesc_diacriticele(sursa, vechi_corp)
-        if (not titlu or not corp or not diacritice.are_diacritice(f"{titlu} {corp}")
+        if (not (titlu and corp) or not diacritice.are_diacritice(f"{titlu} {corp}")
                 or has_mixed_latin_han(f"{titlu} {corp}")
                 or (titlu_pierdut and not diacritice.are_diacritice(titlu))
                 or (corp_pierdut and not diacritice.are_diacritice(corp))):
@@ -141,10 +158,17 @@ def repara_diacritice(perechi: list, provider) -> int:
             continue
         if not _titlu_sustinut_de_context(titlu, sursa):
             continue
-        a["title"] = titlu
-        if a.get("model") == "C":
+        if a.get("model") == "C" and isinstance(a.get("dialectic"), dict):
+            d = a["dialectic"]
+            if not dialectic.assign_flat(d, corp.split(dialectic.FLAT_SEP.strip())):
+                continue                       # separatorii nu s-au pastrat -> textul ramane cum era
+            a["title"] = titlu
+            a["synthesis"] = dialectic.derive_synthesis(d, titlu, config.SYNTHESIS_MAX_WORDS)
+        elif a.get("model") == "C":
+            a["title"] = titlu
             a["synthesis"] = truncate_words(corp, config.SYNTHESIS_MAX_WORDS)
         else:
+            a["title"] = titlu
             a["teaser"] = truncate_words(corp, config.TEASER_MAX_WORDS)
         # Textul publicat s-a schimbat DUPA procesare: fara asta, `updated` ar minti despre
         # cand a fost atins articolul (acelasi motiv ca la sinteza care absoarbe o stire noua).
@@ -418,8 +442,7 @@ _ICON_SET = set(_ICON_SLUGS.split())
 _CATS = "|".join(config.CATEGORIES)
 
 USER_B = USER_B.replace("{icons}", _ICON_SLUGS).replace("{cats}", _CATS)
-USER_C = USER_C.replace("{icons}", _ICON_SLUGS).replace("{cats}", _CATS)
-USER_C_BATCH = USER_C_BATCH.replace("{icons}", _ICON_SLUGS).replace("{cats}", _CATS)
+USER_C_DIALECTIC = USER_C_DIALECTIC.replace("{icons}", _ICON_SLUGS).replace("{cats}", _CATS)
 USER_BATCH = USER_BATCH.replace("{icons}", _ICON_SLUGS).replace("{cats}", _CATS)
 
 
@@ -494,14 +517,16 @@ def _cross_item_contamination(candidate: str, own_source: str, peer_sources: lis
 def _parse_json_array(text: str) -> list:
     """Extrage un array JSON din raspuns (tolerant la ```json fences si la wrapping)."""
     cleaned = re.sub(r"^```(?:json)?|```$", "", text.strip(), flags=re.MULTILINE).strip()
+    # `strict=False`: un Enter literal într-un șir (frecvent în rezumate pe mai multe rânduri)
+    # e „Invalid control character" pentru parserul strict, dar conținutul e intact (Argon R7).
     try:
-        data = json.loads(cleaned)
+        data = json.loads(cleaned, strict=False)
     except json.JSONDecodeError:
         m = re.search(r"\[.*\]", cleaned, re.DOTALL)
         if not m:
             return []
         try:
-            data = json.loads(m.group(0))
+            data = json.loads(m.group(0), strict=False)
         except json.JSONDecodeError:
             return []
     if isinstance(data, list):
@@ -512,6 +537,102 @@ def _parse_json_array(text: str) -> list:
                 return v
         return [data]
     return []
+
+
+def _obiecte_de_nivel_unu(text: str) -> list[str]:
+    """Textele obiectelor `{...}` de pe primul nivel al unui array, cu adâncimea numărată în
+    afara șirurilor — ca un obiect stricat să nu-i ia cu el și pe vecinii lui."""
+    out, depth, start, in_str, esc = [], 0, None, False, False
+    inside_array = False
+    for i, ch in enumerate(text):
+        if in_str:
+            if esc:
+                esc = False
+            elif ch == "\\":
+                esc = True
+            elif ch == '"':
+                in_str = False
+            continue
+        if ch == '"':
+            in_str = True
+        elif ch == "[" and not inside_array and depth == 0:
+            inside_array = True
+        elif ch == "{":
+            if depth == 0:
+                start = i
+            depth += 1
+        elif ch == "}" and depth:
+            depth -= 1
+            if depth == 0 and start is not None:
+                out.append(text[start:i + 1])
+                start = None
+    return out
+
+
+_REPARATII_JSON = (
+    (re.compile(r'^(\s*)-\s+(")', re.M), r"\1\2"),     # „- "entities": [...]" — liniuță rătăcită
+    # aceeași liniuță pe un obiect scris pe un singur rând („…, - "teaser": …"). Doar înaintea
+    # unei CHEI (`"nume":`), nu a oricărei ghilimele: într-un fragment deja stricat de ghilimele
+    # neescapate, „a declarat, - "Nu plec"" ar fi altfel rescris (Argon R7).
+    (re.compile(r'([,{]\s*)-\s+("[A-Za-z_][A-Za-z0-9_]*"\s*:)'), r"\1\2"),
+    (re.compile(r",(\s*[}\]])"), r"\1"),                  # virgulă înainte de închidere
+)
+
+
+def _parse_json_array_tolerant(text: str) -> list:
+    """Ca `_parse_json_array`, dar când array-ul întreg nu se parsează, încearcă fiecare
+    obiect separat, cu două reparații mecanice sigure. MĂSURAT 23.10.2026 pe Gemini Flash
+    Lite, formatul dialectic: o liniuță rătăcită înaintea unei chei a pierdut toate cele 3
+    clustere ale lotului. Un obiect care tot nu se parsează rămâne pierdut SINGUR — clusterul
+    lui se amână, ceilalți se publică."""
+    arr = _parse_json_array(text)
+    if arr:
+        return arr
+    cleaned = re.sub(r"^```(?:json)?|```$", "", (text or "").strip(), flags=re.MULTILINE)
+    out = []
+    for frag in _obiecte_de_nivel_unu(cleaned):
+        for attempt in (frag, None):
+            cand = frag
+            if attempt is None:
+                for rx, rep in _REPARATII_JSON:
+                    cand = rx.sub(rep, cand)
+            try:
+                obj = json.loads(cand, strict=False)
+            except json.JSONDecodeError:
+                continue
+            if isinstance(obj, dict):
+                out.append(obj)
+            break
+    return out
+
+
+def _pe_id(arr: list, n: int) -> tuple[dict, int, int]:
+    """Obiectele răspunsului indexate pe `id`, plus (id-uri duplicate, id-uri străine).
+
+    Un id care apare de două ori e ambiguu: cu „ultimul câștigă", o știre ar primi titlul
+    scris pentru vecina ei. Se aruncă AMBELE obiecte (Argon R7); un id în afara lotului nu
+    corespunde niciunei știri trimise."""
+    by_id: dict = {}
+    duplicate: set = set()
+    straine = 0
+    for obj in arr:
+        try:
+            v = obj.get("id")
+            if isinstance(v, bool):
+                continue
+            i = int(v) if isinstance(v, (int, float)) and float(v).is_integer() \
+                else int(str(v).strip())
+        except (TypeError, ValueError, AttributeError):
+            continue
+        if not 0 <= i < n:
+            straine += 1
+        elif i in by_id:
+            duplicate.add(i)
+        else:
+            by_id[i] = obj
+    for i in duplicate:
+        by_id.pop(i, None)
+    return by_id, len(duplicate), straine
 
 
 OFFICIAL_PREFIXES = ("pl_", "cj_", "pr_")
@@ -528,11 +649,33 @@ def process_official(items: list) -> list:
     return done
 
 
+# Motivele pentru care un articol B NU iese dintr-un lot, numărate pe rulare (rezumatul
+# rulării și jurnalul de triaj, `data/triage_log.jsonl` → `sinteze`, chei `b_*`). Fără ele, „Amânate (buget NEepuizat — altă cauză)" — 87–112
+# din 415–486 de iteme noi pe rulările din 22–23.10.2026 — nu se putea despărți pe cauze.
+_STAT_B: dict = {}
+
+
+def stats_b() -> dict:
+    return dict(_STAT_B)
+
+
+def reset_stats_b() -> None:
+    _STAT_B.clear()
+
+
+def _numara_b(cheie: str, n: int = 1) -> None:
+    if n:
+        _STAT_B[cheie] = _STAT_B.get(cheie, 0) + n
+
+
 def process_batch(items: list, provider) -> list:
     """Model B in LOT: un singur apel AI pentru `items`. Mapeaza raspunsul pe id (= index).
     Returneaza DOAR articolele procesate corect; cele nemapate NU se publica brute
     (regula 'No mangled output') -> raman in afara starii si sunt reluate la rularea urmatoare.
-    """
+
+    Parsarea e tolerantă per obiect, ca la sinteza dialectică: cu parserul strict, UN obiect
+    stricat (o liniuță rătăcită, o virgulă înainte de acoladă — măsurat pe Gemini Flash Lite
+    în formatul C, 23.10.2026) amâna toate cele `BATCH_SIZE` articole ale lotului."""
     if not items:
         return []
     if provider is None:                       # fara AI -> fallback determinist per item
@@ -543,16 +686,21 @@ def process_batch(items: list, provider) -> list:
         for i, it in enumerate(items))
     try:
         raw = provider.complete(SYSTEM_BATCH, USER_BATCH.format(items_block=block))
-        arr = _parse_json_array(raw)
     except Exception:
+        _numara_b("lot_esuat_apel", len(items))
         return []                              # tot lotul a esuat -> reluat data viitoare
+    arr = _parse_json_array(raw)
+    if not arr:
+        arr = _parse_json_array_tolerant(raw)
+        if arr:
+            _numara_b("loturi_reparate")       # strict ar fi pierdut tot lotul
+        else:
+            _numara_b("lot_esuat_json", len(items))
+            return []
 
-    by_id = {}
-    for obj in arr:
-        try:
-            by_id[int(obj.get("id"))] = obj
-        except (TypeError, ValueError, AttributeError):
-            continue
+    by_id, duplicate, straine = _pe_id(arr, len(items))
+    _numara_b("id_duplicat", duplicate)
+    _numara_b("id_strain", straine)
 
     done = []
     source_texts = [
@@ -561,16 +709,25 @@ def process_batch(items: list, provider) -> list:
     ]
     for i, it in enumerate(items):
         obj = by_id.get(i)
-        title = (obj.get("title") or "").strip() if isinstance(obj, dict) else ""
-        teaser = (obj.get("teaser") or "").strip() if isinstance(obj, dict) else ""
+        if not isinstance(obj, dict):
+            _numara_b("nemapate")
+            continue
+        title = (obj.get("title") or "").strip()
+        teaser = (obj.get("teaser") or "").strip()
+        if not (title and teaser):
+            _numara_b("fara_titlu_sau_rezumat")
+            continue
+        if has_mixed_latin_han(f"{title} {teaser}"):
+            # token hibrid latin–Han (ex. „roman鲜"): model degradat, nu text publicabil (#499)
+            _numara_b("hibrid")
+            continue
         if title and teaser:
-            if has_mixed_latin_han(f"{title} {teaser}"):
-                continue
             candidate = f"{title} {teaser}"
             peers = source_texts[:i] + source_texts[i + 1:]
             if _cross_item_contamination(candidate, source_texts[i], peers):
                 # Nu publicăm un candidat care pare să fi împrumutat fapte din alt
                 # articol al aceluiași lot; itemul va fi reluat la rularea următoare.
+                _numara_b("contaminare_lot")
                 continue
             it["model"] = "B"
             it["title"] = title
@@ -598,8 +755,17 @@ def process_batch(items: list, provider) -> list:
                                    it["teaser"], source_texts[i],
                                    slug_original=slug_din_link(it.get("original_link")))
             done.append(it)
-        # nemapat/invalid -> nu il adaugam (reluat la rularea urmatoare)
+    _numara_b("publicate", len(done))
     return done
+
+
+def _publicabil_in_romana(item: dict) -> bool:
+    """Un anunț dintr-o sursă `ro_hu` se poate publica fără traducere dacă textul are măcar un
+    marker românesc (diacritice ă/â/î/ș/ț sau cuvinte funcționale) ori niciun marker maghiar.
+    Anunțurile bilingve trec; cele exclusiv maghiare se sar — n-are cine să le traducă."""
+    text = f"{item.get('original_title') or ''} {item.get('description') or ''}"
+    ro, _en = guard._scor_limba(text)
+    return bool(ro) or not guard._scor_hu(text)
 
 
 def process_single(item: dict, provider) -> dict | None:
@@ -614,7 +780,13 @@ def process_single(item: dict, provider) -> dict | None:
         # Orice sursa care NU e in romana: fara provider AI nu exista cine sa traduca, deci
         # itemul se sare, nu se publica in limba originala. Testul era cablat pe "en" si
         # lasa sa treaca brut orice alta limba (it/de/fr) — vezi `lang` din config.SOURCES.
-        if (item.get("source_lang") or "ro") != "ro":
+        # `ro_hu` (primăriile din cele 8 județe cu populație maghiară, din 2026-09-06) NU e o
+        # limbă străină: publică în română, în maghiară sau în ambele. Cu `!= "ro"`, TOATE
+        # cele 101 surse erau sărite la fiecare rulare — 0 articole din ele în starea din
+        # 24.10.2026 (1348 de articole oficiale, toate din surse `ro`). Se sare doar textul
+        # exclusiv maghiar.
+        lang = item.get("source_lang") or "ro"
+        if lang != "ro" and not (lang == "ro_hu" and _publicabil_in_romana(item)):
             item["skip"] = True
             return item
         item["title"] = item.get("original_title", "")
@@ -629,10 +801,9 @@ def process_single(item: dict, provider) -> dict | None:
     except Exception:
         return None                            # esec AI -> amanat, item-ul ramane intact
     title = (data.get("title") or item.get("original_title", "")).strip()
-    teaser = truncate_words(data.get("teaser", "") or "Detalii pe sursa.",
-                            config.TEASER_MAX_WORDS)
+    teaser = truncate_words(data.get("teaser", "") or "Detalii pe sursa.", config.TEASER_MAX_WORDS)
     if has_mixed_latin_han(f"{title} {teaser}"):
-        return None
+        return None                            # token hibrid latin–Han -> amanat (#499)
     item["model"] = "B"
     item["title"] = title
     item["teaser"] = teaser
@@ -672,42 +843,8 @@ def process_cluster(group: list, provider) -> dict | None:
         _marcheaza_fallback(rep)
         return rep
 
-    # membrii deja procesati (scrubbed) nu mai au textul original -> folosim versiunea AI
-    block = "\n".join(
-        f"- {a['source_name']}: {a.get('original_title') or a.get('title') or ''}"
-        f" - {a.get('description') or a.get('teaser') or ''}"
-        for a in group)
-    try:
-        raw = provider.complete(SYSTEM_C, USER_C.format(sources_block=block))
-        data = _parse_json(raw)
-        context = " ".join(
-            f"{a.get('original_title') or a.get('title') or ''} "
-            f"{a.get('description') or a.get('teaser') or a.get('synthesis') or ''}"
-            for a in group
-        )
-        candidat = _repair_synthesis_title(
-            data.get("title") or rep.get("original_title") or rep.get("title") or "",
-            context,
-        )
-        synthesis = truncate_words(data.get("synthesis", "") or "Detalii pe surse.",
-                                   config.SYNTHESIS_MAX_WORDS)
-        if (has_mixed_latin_han(f"{candidat} {synthesis}")
-                or not _titlu_sustinut_de_context(candidat, context)):
-            return None                        # deformare semantica -> amanat, ca la esecul AI
-        rep["title"] = candidat
-        rep["synthesis"] = synthesis
-        rep["entities"] = _clean_entities(data.get("entities"))   # inaintea categoriei, vezi mai sus
-        rep["ai_cat"] = data.get("category", "")                  # tema bruta, vezi process_batch
-        rep["category"] = _resolve_category(rep, rep["ai_cat"], rep["entities"])
-        rep["icon"] = _clean_icon(data.get("icon"))
-        rep["processed_by"] = provider.name
-        rep["prompt_version"] = config.PROMPT_VERSION
-        raport_copiere.noteaza("C", rep.get("original_link"), rep["title"],
-                               rep["synthesis"], block,
-                               slug_original=slug_din_link(rep.get("original_link")))
-    except Exception:
-        return None                            # esec AI -> amanat, reluat data viitoare
-    return rep
+    # Aceeași cale ca lotul (E2 dialectic): un singur loc unde se decide ce se publică.
+    return process_clusters_batch([group], provider)[0]
 
 
 def repara_identitate_cluster(articles: list) -> int:
@@ -763,15 +900,56 @@ def _story_id(group: list) -> str:
     return "st-" + hashlib.sha1(sambure.encode("utf-8")).hexdigest()[:12]
 
 
+_ROLE_PRIORITY = {
+    "ROOT": 5,
+    "INDEPENDENT_CONTRIBUTOR": 4,
+    "ECHO": 3,
+    "CLONE": 2,
+    "DERIVED": 1,
+}
+
+
+def _roluri_grup(group: list) -> dict[str, str]:
+    """Rolul epistemic per URL. Sursa de adevăr e clasificarea făcută de `fetch_deep` pe
+    TEXTUL INTEGRAL (`_epistemic_role`, atașat în memorie în aceeași rulare); doar membrii
+    fără el (fetch_deep oprit, item adăugat după) se clasifică aici, pe titlu + descriere.
+    O a doua clasificare, independentă, pe text mai sărac, ar putea contrazice prima —
+    alt ROOT pe /surse/ decât cel din driftul E1."""
+    lipsa = [a for a in group if not a.get("_epistemic_role")]
+    calculate = fetch_deep.classify_cluster_epistemic_roles(group) if lipsa else {}
+    roluri = {}
+    for a in group:
+        u = a.get("url") or a.get("original_link") or ""
+        roluri[u] = a.get("_epistemic_role") or calculate.get(u, "ECHO")
+    return roluri
+
+
 def _prep_cluster_rep(group: list) -> tuple:
     """Partea din process_cluster care NU cere AI: alege reprezentantul, aduna sursele,
-    marcheaza actualizarea. Extrasa ca sa fie identica intre calea single (process_cluster)
-    si cea in lot (process_clusters_batch) -- doua copii ale conditiei „cine e rep-ul" s-ar
-    putea departe fara sa para stricat nimic, acelasi risc numit la `upgradable()` mai sus."""
+    calculeaza rolurile epistemice E1 si marcheaza actualizarea. Extrasa ca sa fie identica
+    intre calea single (process_cluster) si cea in lot (process_clusters_batch) -- doua
+    copii ale conditiei „cine e rep-ul" s-ar putea departe fara sa para stricat nimic,
+    acelasi risc numit la `upgradable()` mai sus."""
     group = sorted(group, key=lambda a: (not a.get("processed_by"), a.get("published") or ""))
     actualizare = bool(group[0].get("processed_by"))
     rep = dict(group[0])
     rep["model"] = "C"
+
+    roles_by_url = _roluri_grup(group)
+    # Rolurile per DOMENIU, unite cu cele din rularea anterioară: membrii vechi ai unei
+    # sinteze actualizate nu mai au text în stare, deci rolul lor de atunci e singura memorie.
+    epistemic_roles: dict[str, str] = {}
+    for a in group:
+        for dom_k, r_val in (a.get("epistemic_roles") or {}).items():
+            if _ROLE_PRIORITY.get(r_val, 0) > _ROLE_PRIORITY.get(epistemic_roles.get(dom_k, ""), 0):
+                epistemic_roles[dom_k] = r_val
+    for a in group:
+        u = a.get("original_link") or a.get("url") or ""
+        dom = domain_of(u)
+        role = roles_by_url.get(a.get("url") or a.get("original_link") or "", "ECHO")
+        if dom and _ROLE_PRIORITY.get(role, 0) > _ROLE_PRIORITY.get(epistemic_roles.get(dom, ""), 0):
+            epistemic_roles[dom] = role
+
     _seen_domain = set()
     surse = []
     for a in group:
@@ -783,7 +961,36 @@ def _prep_cluster_rep(group: list) -> tuple:
             _seen_domain.add(dom)
             surse.append({"name": s.get("name"), "url": s.get("url")})
     rep["sources"] = surse
-    rep["first_source"] = group[0].get("source_name")
+    if actualizare:
+        # pentru nota publică de actualizare (E4): publicațiile intrate de la versiunea anterioară
+        vechi = {s.get("name") for s in (group[0].get("sources") or []) if isinstance(s, dict)}
+        rep["_surse_noi"] = [s["name"] for s in surse if s.get("name") and s["name"] not in vechi]
+
+    if actualizare and group[0].get("first_source"):
+        rep["first_source"] = group[0].get("first_source")
+    else:
+        root_member = next(
+            (a for a in group
+             if roles_by_url.get(a.get("url") or a.get("original_link") or "") == "ROOT"),
+            group[0],
+        )
+        rep["first_source"] = root_member.get("source_name")
+
+    rep["epistemic_roles"] = epistemic_roles
+    # Confirmările Încrucișate: domeniile ne-derivate, ne-clonate, care coroborează. Setul se
+    # UNEȘTE peste rulări (membrii vechi nu mai au text în stare), iar cifra e mărimea lui —
+    # deci nu poate crește prin simpla numărare a publicațiilor care repetă același comunicat.
+    confirmate = set(group[0].get("cross_confirmed") or []) if actualizare else set()
+    confirmate |= fetch_deep.cross_confirmed_domains(group, roles_by_url)
+    confirmate -= {d for d, r in epistemic_roles.items() if r in fetch_deep.NON_CONFIRMING_ROLES}
+    rep["cross_confirmed"] = sorted(confirmate)
+    rep["cross_confirmations"] = max(1, len(confirmate))
+    # E1: o sursă cu rol greu care și-a schimbat faptele după prima citire (drift >20% pe
+    # ancore, `fetch_deep`) — se consemnează pe sinteză, la vedere, nu doar în contor.
+    tacute = set(group[0].get("modificari_tacute") or []) if actualizare else set()
+    tacute |= {a.get("source_name") for a in group if a.get("_caused_dirty") and a.get("source_name")}
+    if tacute:
+        rep["modificari_tacute"] = sorted(tacute)
     rep["members"] = _membri_din_grup(group)
     rep.setdefault("story_id", _story_id(group))
     if actualizare:
@@ -791,7 +998,34 @@ def _prep_cluster_rep(group: list) -> tuple:
     return group, rep
 
 
-def process_clusters_batch(groups: list, provider) -> list:
+# Motivele de amânare la care o a doua încercare, în aceeași rulare, are sens: țin de
+# RĂSPUNSUL modelului (obiect lipsă din lot, titlu transcris sau deformat), nu de verificarea
+# afirmațiilor contra surselor — acolo o reîncercare ar cere doar să treacă de gardă.
+MOTIVE_REINCERCABILE = frozenset({"nemapat", "hibrid", "titlu_copiat", "titlu_deformat", "titlu_cifra"})
+
+# Nota de la reîncercare spune motivul EXACT al căderii (Argon R8): un mesaj generic („copia
+# sau deforma") pus pe un titlu căzut pentru o cifră fără sursă îl face pe model să schimbe
+# topica și să păstreze cifra — deci să pice identic a doua oară.
+_MESAJ_MOTIV = {
+    "titlu_copiat": "copia prea fidel o formulare dintr-o sursa; spune ideea centrala cu alta "
+                    "structura a frazei",
+    "titlu_deformat": "spunea mai mult decat sustin propozitiile [S…]; ramai strict la faptele "
+                      "din ele",
+    "titlu_cifra": "continea o cifra care nu apare in propozitiile citate; scoate cifra sau "
+                   "foloseste doar numere prezente literal in surse",
+}
+
+
+def _nota_reincercare(motiv: str, titlu: str) -> str:
+    """Nota pentru UN eveniment la a doua încercare. Titlul respins e curățat de rânduri noi și
+    de ghilimele, ca să nu poată rupe blocul `[i]` sau delimitarea « »."""
+    curat = re.sub(r"\s+", " ", titlu).replace("«", "").replace("»", "").strip()
+    return (f"\n  NOTA: titlul propus anterior, «{curat}», a fost respins: "
+            f"{_MESAJ_MOTIV.get(motiv, 'nu a trecut verificarea')}. Scrie un titlu nou.")
+
+
+def process_clusters_batch(groups: list, provider, respinse: dict | None = None,
+                           motive: list | None = None) -> list:
     """Model C in LOT: UN apel AI pentru mai multe clustere deodata, in loc de unul per
     cluster (vezi config.CLUSTER_BATCH_SIZE pentru motiv si cifre masurate).
 
@@ -821,58 +1055,98 @@ def process_clusters_batch(groups: list, provider) -> list:
             out.append(rep)
         return out
 
-    # membrii deja procesati (scrubbed) nu mai au textul original -> folosim versiunea AI,
-    # exact ca in process_cluster. Fiecare eveniment e un bloc separat, cu id -- gardat
-    # explicit in prompt ca sursele unui id sa nu se amestece cu alt id.
+    # E2: fiecare eveniment e un bloc de propoziții numerotate `[S{j}.{k}]` (textul integral din
+    # E0, lead-ul RSS doar ca rezervă). Numerotarea e unică în tot lotul, deci o afirmație care
+    # citează alt eveniment al lotului e respinsă mecanic în `dialectic.validate`.
+    blocks = dialectic.build_blocks([(group, _roluri_grup(group)) for group, _ in preps])
+    # La reîncercare: titlul respins la prima încercare, numit explicit — la temperatura 0,2,
+    # fără el modelul tinde să scrie același titlu. Nota stă în blocul evenimentului, fără
+    # etichetă de propoziție `[S…]`, deci nu poate fi citată ca sursă.
+    respinse = respinse or {}                  # {index în lot: (motiv, titlu respins)}
     events_block = "\n\n".join(
-        f"[{i}] " + " | ".join(
-            f"{a['source_name']}: {a.get('original_title') or a.get('title') or ''}"
-            f" - {a.get('description') or a.get('teaser') or ''}"
-            for a in group)
-        for i, (group, _) in enumerate(preps))
+        f"[{b.cid}]\n{b.text}" + (_nota_reincercare(*respinse[i]) if respinse.get(i) else "")
+        for i, b in enumerate(blocks))
     try:
-        raw = provider.complete(SYSTEM_C_BATCH, USER_C_BATCH.format(events_block=events_block))
-        arr = _parse_json_array(raw)
+        raw = provider.complete(SYSTEM_C_DIALECTIC, USER_C_DIALECTIC.format(events_block=events_block))
+        arr = _parse_json_array_tolerant(raw)
     except Exception:
+        # numărat: altfel clusterele pleacă la rularea următoare fără să apară în `amanate_*`
+        # (/sub-prag/ le arăta mai puține decât erau — Argon R8)
+        dialectic.numara("amanate_apel_esuat", len(preps))
+        if motive is not None:
+            motive.extend([("apel_esuat", None)] * len(preps))
         return [None] * len(preps)             # tot lotul a esuat -> reluat data viitoare (vezi docstring)
 
-    by_id = {}
-    for obj in arr:
-        try:
-            by_id[int(obj.get("id"))] = obj
-        except (TypeError, ValueError, AttributeError):
-            continue
+    by_id, duplicate, straine = _pe_id(arr, len(preps))
+    if duplicate:
+        dialectic.numara("id_duplicat", duplicate)
+    if straine:
+        dialectic.numara("id_strain", straine)
 
     out = []
     for i, (_, rep) in enumerate(preps):
-        obj = by_id.get(i)
-        title = (obj.get("title") or "").strip() if isinstance(obj, dict) else ""
-        synthesis = (obj.get("synthesis") or "").strip() if isinstance(obj, dict) else ""
-        if not (title and synthesis):
-            out.append(None)                   # nemapat -> amanat, ca la esecul unui apel singur
-            continue
-        if has_mixed_latin_han(f"{title} {synthesis}"):
-            out.append(None)
-            continue
-        context = " ".join(
-            f"{a.get('original_title') or a.get('title') or ''} "
-            f"{a.get('description') or a.get('teaser') or a.get('synthesis') or ''}"
-            for a in preps[i][0]
-        )
-        candidat = _repair_synthesis_title(title, context)
-        if not _titlu_sustinut_de_context(candidat, context):
-            out.append(None)                   # deformare semantica -> amanat, ca la nemapat
-            continue
-        rep["title"] = candidat
-        rep["synthesis"] = truncate_words(synthesis, config.SYNTHESIS_MAX_WORDS)
-        rep["entities"] = _clean_entities(obj.get("entities"))
-        rep["ai_cat"] = obj.get("category", "")
-        rep["category"] = _resolve_category(rep, rep["ai_cat"], rep["entities"])
-        rep["icon"] = _clean_icon(obj.get("icon"))
-        rep["processed_by"] = provider.name
-        rep["prompt_version"] = config.PROMPT_VERSION
-        raport_copiere.noteaza("C", rep.get("original_link"), rep["title"],
-                               rep["synthesis"], context,
-                               slug_original=slug_din_link(rep.get("original_link")))
-        out.append(rep)
+        out.append(_aplica_dialectic(rep, by_id.get(i), blocks[i], provider))
+        if motive is not None:
+            motive.append(None if out[-1] is not None
+                          else (rep.pop("_motiv_amanare", None), rep.pop("_titlu_respins", None)))
     return out
+
+
+def _aplica_dialectic(rep: dict, obj, block, provider) -> dict | None:
+    """Propunerea modelului pentru UN cluster → reprezentantul publicabil, sau None (amânat).
+
+    Un cluster al cărui JSON e invalid sau nu supraviețuiește verificărilor se amână SINGUR;
+    celelalte din lot se publică (Argon R4). Nu există cădere pe vechea sinteză narativă:
+    exact când modelul n-a putut separa ce confirmă sursele, un text liber ar reintroduce
+    amestecul pe care E2 îl elimină."""
+    if not isinstance(obj, dict):
+        dialectic.numara("amanate_nemapat")
+        rep["_motiv_amanare"] = "nemapat"
+        return None                            # nemapat -> amanat, ca la esecul unui apel singur
+    d = dialectic.validate(obj, block)
+    if d is None:
+        return None
+    context = " ".join(t for _, t in block.chunks.values())
+    # titlurile nu poartă punct final (convenția site-ului); modelul îl pune uneori din obișnuință
+    candidat = _repair_synthesis_title((obj.get("title") or "").strip().rstrip("."), context)
+    if has_mixed_latin_han(f"{candidat} {dialectic.all_text_of(d)}"):
+        # token hibrid latin–Han oriunde în textul publicat: răspuns degradat, nu verificare picată
+        dialectic.numara("amanate_hibrid")
+        rep["_motiv_amanare"] = "hibrid"
+        return None
+    if not _titlu_sustinut_de_context(candidat, context):
+        dialectic.numara("amanate_titlu_deformat")
+        rep["_motiv_amanare"], rep["_titlu_respins"] = "titlu_deformat", candidat
+        return None                            # deformare semantica -> amanat
+    if titlu_copiat(candidat, context):
+        dialectic.numara("amanate_titlu_copiat")
+        rep["_motiv_amanare"], rep["_titlu_respins"] = "titlu_copiat", candidat
+        return None                            # titlu transcris -> amanat (gate-ul l-ar bloca)
+    if cifre_straine(candidat, context):
+        dialectic.numara("amanate_titlu_cifra")
+        rep["_motiv_amanare"], rep["_titlu_respins"] = "titlu_cifra", candidat
+        return None                            # cifra fara sursa in titlu -> amanat
+    rep["title"] = candidat
+    rep["synthesis"] = dialectic.derive_synthesis(d, candidat, config.SYNTHESIS_MAX_WORDS)
+    if not rep["synthesis"]:
+        dialectic.numara("amanate_fara_rezumat")
+        return None
+    dialectic.numara(f"stare_{d['state']}")     # aici, nu în validate: abia acum se publică
+    # E4: la actualizare, ce s-a schimbat față de versiunea publicată — public, nu tăcut
+    schimbari = dialectic.schimbari(rep.get("dialectic"), d, rep.pop("_surse_noi", None))
+    if schimbari:
+        d["schimbari"] = schimbari
+    rep["dialectic"] = d
+    rep["entities"] = _clean_entities(obj.get("entities"))
+    rep["ai_cat"] = obj.get("category", "")
+    rep["category"] = _resolve_category(rep, rep["ai_cat"], rep["entities"])
+    rep["icon"] = _clean_icon(obj.get("icon"))
+    rep["processed_by"] = provider.name
+    rep["prompt_version"] = config.PROMPT_VERSION
+    # Gate-ul vede TOT textul publicat (rezumatul și fiecare fapt, divergență, afirmație),
+    # contra TOT contextul văzut de model — un fapt copiat sau o cifră fără sursă, oriunde
+    # pe pagină, amână articolul prin mecanismul existent (`raport_copiere.aplica_defer`).
+    raport_copiere.noteaza("C", rep.get("original_link"), rep["title"],
+                           f"{rep['synthesis']} {dialectic.all_text_of(d)}", context,
+                           slug_original=slug_din_link(rep.get("original_link")))
+    return rep

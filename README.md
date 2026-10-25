@@ -18,7 +18,7 @@ Site-ul este **100% static (SSG)**, publicat serverless: pipeline-ul rulează î
 - **Căutare instantă** (`/cauta/`) — index [Pagefind](https://pagefind.app) construit la fiecare build: rezultate pe măsură ce tastezi, în titluri și în rezumate, cu diacritice opționale („inundatii” găsește „inundații”), termeni marcați în rezultat, filtre pe categorie și pe tip de anunț oficial. Fără serviciu extern, fără chei. **RSS** (`/feed.xml`).
 - **PWA instalabilă** (manifest `static/site.webmanifest`, service worker la `/sw.js`) cu **citire offline**: shellul se precachează la instalare, iar articolele se servesc *stale-while-revalidate* — ce ai mai citit rămâne disponibil fără net. Butonul de instalare apare discret, jos-stânga, și dispare definitiv după instalare sau după refuz.
 - **Alerte de ultimă oră** (Web Push cu VAPID, pe planul Cloudflare gratuit): **maximum una pe zi**, doar pentru știri de ultimă oră, cu politica «Zero zgomot» aplicată mecanic pe server. Activate exclusiv la cererea cititorului, din subsolul site-ului; configurarea e descrisă în `infra/PUSH-SETUP.md`.
-- **Pagini publice de transparență:** Cum sintetizăm (metodologia), Surse & originalitate, Corecții, Securitate, Politica imaginilor, Drepturi de autor.
+- **Pagini publice de transparență:** Cum devin ideile funcții (metodologia), Surse & originalitate, Corecții, Securitate, Politica imaginilor, Drepturi de autor.
 
 ## Arhitectura pipeline-ului
 
@@ -67,7 +67,7 @@ templates/   Jinja2 (autoescape ON): base · index · article · category · leg
 static/      styles.css (temă auriu-dark) · logo · favicon · og-image · pictograme
              PWA · site.webmanifest · theme.js · search.js · calc-salariu.js
              fonts/ · harta-stiri/
-content/     pagini legale și metodologice (markdown): method (Cum sintetizăm),
+content/     pagini legale și metodologice (markdown): method (Cum devin ideile funcții),
              terms, privacy, corrections, security, images, takedown,
              accessibility, contact
 data/        articles.json — starea comisă în repo
@@ -190,5 +190,5 @@ Nu este necesară nicio acțiune la rulările verzi. Dacă un workflow devine ro
 
 - **Independent**, operat de o persoană fizică din România; nu aparține niciunui trust de presă, fără afilieri politice sau comerciale, fără publicitate.
 - Agregă exclusiv **publicații cu flux RSS public**; agențiile de presă (conținut licențiat) sunt excluse.
-- **Metodologia este publică:** [Cum sintetizăm](https://izz.ro/despre/) și [Surse & originalitate](https://izz.ro/surse/).
+- **Metodologia este publică:** [Cum devin ideile funcții](https://izz.ro/legal/method/) și [Surse & originalitate](https://izz.ro/surse/).
 - Contact: **contact@izz.ro** sau pagina [Contact](https://izz.ro/contact/).

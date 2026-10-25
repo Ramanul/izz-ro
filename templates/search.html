@@ -8,8 +8,8 @@
 <article class="static-page search-page" id="search-app"
          data-pagefind="{{ base }}/_pagefind/"
          data-index="{{ base }}/search-index.json">
-  <h1>Caută în știri</h1>
-  <p class="search-hint">Caută în titlurile și rezumatele celor {{ search_count }} știri păstrate în ultimele {{ search_days }} zile. Diacriticele nu contează: „inundatii” găsește „inundații”.</p>
+  <h1>Caută în știri și dosare</h1>
+  <p class="search-hint">Caută în titlurile și rezumatele celor {{ search_count }} știri păstrate în ultimele {{ search_days }} zile. Sunt incluse și dosarele documentare. Diacriticele nu contează: „inundatii” găsește „inundații”.</p>
   {# submit-ul e anulat in search.js (CSP fara 'unsafe-inline' pe scripturi) #}
   <form id="search-form" role="search">
     <label class="visually-hidden" for="q">Termen de căutare</label>
@@ -19,6 +19,7 @@
       <select id="search-category" class="search-filter">
         <option value="">Toate categoriile</option>
         {% for cat in categories %}<option value="{{ cat }}">{{ cat | cat_label }}</option>{% endfor %}
+        <option value="dosar">Dosare documentare</option>
       </select>
       <span class="search-filter-label" id="search-sort-label">Ordonează</span>
       <span class="search-sort" role="group" aria-labelledby="search-sort-label">

@@ -4,7 +4,7 @@ feedparser==6.0.14
 Jinja2==3.1.6
 PyYAML==6.0.3
 python-slugify==9.1.3
-Markdown==3.11
+Markdown==3.11.1
 # Binarul Pagefind (indexul de cautare, generator/pagefind_index.py). E in requirements.txt,
 # nu in requirements-dev.txt, fiindca il ruleaza randarea de productie: comanda de build din
 # Cloudflare Workers Builds sta in Settings, nu in repo, deci asta e singurul loc din care
@@ -14,4 +14,4 @@ Markdown==3.11
 # specs/cautare-pagefind.md.
 pagefind-bin==1.5.2
 python-dotenv==1.2.4
-Pillow==12.3.0
+Pillow==13.0.0

@@ -149,9 +149,17 @@ class _HTTPHandlerFixat(urllib.request.HTTPHandler):
 
 class _HTTPSHandlerFixat(urllib.request.HTTPSHandler):
     def https_open(self, req):
-        return self.do_open(
-            _HTTPSConnectionFixat, req,
-            context=self._context, check_hostname=self._check_hostname)
+        # Python <= 3.11 pune `_check_hostname` pe handler și HTTPSConnection îl
+        # acceptă; 3.14 îl ȘTERGE din ambele — măsurat local: AttributeError
+        # „no attribute '_check_hostname'” pe handler și TypeError „unexpected
+        # keyword argument 'check_hostname'” la conexiune (CI rulează 3.11, deci
+        # producția nu era atinsă; rulările locale 3.14 pierdeau TOATE sursele
+        # https). Se trimite doar ce există: pe 3.14 contextul decide singur
+        # verificarea de hostname.
+        kwargs = {"context": getattr(self, "_context", None)}
+        if hasattr(self, "_check_hostname"):
+            kwargs["check_hostname"] = self._check_hostname
+        return self.do_open(_HTTPSConnectionFixat, req, **kwargs)
 
 
 def _deschizator_sigur() -> urllib.request.OpenerDirector:

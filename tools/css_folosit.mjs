@@ -6,7 +6,7 @@
  * Asta masoara ALTCEVA: din cei ~51 KB de CSS, ce parte atinge o pagina de articol.
  *
  * De ce nu e un singur procent: o regula neatinsa la prima randare nu e o regula moarta.
- * Poate fi pentru tema intunecata, pentru panoul de personalizare injectat din JS, pentru
+ * Poate fi pentru tema intunecata, pentru un `<details>` inchis, pentru
  * un breakpoint mobil, sau pentru hover. Unealta conduce STARILE alea explicit si le
  * raporteaza separat. Doar ultima galeata — "neatins de nicio stare" — e actionabila,
  * si nici aia nu inseamna "mort": inseamna "neexercitat de starile conduse aici".
@@ -240,13 +240,10 @@ const STARI = [
     async condu(page) { await page.waitForTimeout(400); },
   },
   {
-    id: 'S1', nume: 'personalizare (consimtamant + panou)',
+    // Pana la 2026-10-23, S1 apasa si bara de consimtamant + butonul ◎; amandoua au iesit
+    // (specs/plan-paradigma-izz.md §5 D6), deci starea a ramas doar dropdownurile deschise.
+    id: 'S1', nume: 'detalii deschise',
     async condu(page) {
-      // bara de consimtamant e injectata din personalize.js; butonul profil apare dupa
-      for (const sel of ['.consent-yes', '.izz-profile-btn']) {
-        const el = await page.$(sel);
-        if (el) { await el.click({ timeout: 2000 }).catch(() => {}); await page.waitForTimeout(300); }
-      }
       await page.evaluate(() => document.querySelectorAll('details').forEach((d) => (d.open = true)));
       await page.waitForTimeout(200);
     },
