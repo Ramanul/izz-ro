@@ -12,7 +12,7 @@
 - **Fii proactiv** — propune următorul pas util, dar nu transforma propunerea în acțiune autonomă pe `main`.
 - **Problema constatată se rezolvă, nu se raportează — REGULĂ TARE.** Când dai peste un defect real
   în timp ce lucrezi la altceva: îi găsești cauza, verifici bunele practici, planifici, implementezi
-  și verifici rulând — în aceeași tură, pe branch + PR (§5), niciodată pe `main`. Repari clasa, nu
+  și verifici rulând — în aceeași tură, pe `main` sau prin PR (§5.3). Repari clasa, nu
   doar instanța, și lași o gardă mecanică unde se poate. Închizi și ce ai semnalat singur mai devreme
   în sesiune. Un raport care îi lasă proprietarului execuția **nu e livrare**. Excepția, îngustă: ce
   cere decizie de proprietar (§10, ireversibil, cost, editorial) — acolo un rând scurt cu fix-ul
@@ -54,7 +54,7 @@ CI rulează testele și lint-ul. Numărul de teste este doar reper, nu contract.
 0. **Nu arma nicio buclă autonomă / CronCreate recurent** care se conduce singură prin backlog.
 1. **Cine face merge în `main`** decide proprietarul; executorul îl execută sub mandatul permanent de la §5.4.
 2. **După orice merge, anunță celălalt cont** prin canalul operațional agreat și actualizează starea.
-3. **Nu face curse pe `main`.** Lucrează prin branch + PR.
+3. **Nu face curse pe `main`.** Push direct pe `main` permis (proprietar, 2026-10-25) după teste+ruff verzi și fetch+rebase; PR când trebuie CI complet. PR-urile deschise se rezolvă primele.
 4. **Mandat PERMANENT de merge, pe verde — REGULĂ TARE.** Decizie proprietar 2026-09-13
    [IZZ-0382]: executorul face merge în `main` FĂRĂ să ceară acordul per PR. Acoperă PR-urile
    deschise de el; unul deschis de altă sesiune vie rămâne al ei — exact asta a costat [IZZ-0140].
