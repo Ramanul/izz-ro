@@ -129,7 +129,9 @@ def test_registrul_sub_prag_arata_contoare_fara_titluri_si_fara_publicatii():
     grupuri = render._sub_prag(triage, {"dedup": 1245, "garda": 5, "retrase": 0, "retinute": 0})
     toate = {r["eticheta"]: r["n"] for g in grupuri for r in g["randuri"]}
     assert toate["Fără conținut dincolo de titlu (sub 5 cuvinte noi)"] == 118
-    assert toate["Amânate: verificarea afirmațiilor n-a trecut (se reiau la rularea următoare)"] == 2
+    # pe cauză: peste prag = verificare picată; obiect lipsă = modelul n-a răspuns
+    assert toate["Amânate: n-au trecut verificarea contra surselor (se reiau la rularea următoare)"] == 1
+    assert toate["Amânate: modelul n-a dat un răspuns folosibil (se reiau la rularea următoare)"] == 1
     assert toate["Duplicate ale unui eveniment deja publicat"] == 1245
     assert 0 not in toate.values()                       # zero nu e informație
     tpl = render._env().get_template("sub_prag.html")

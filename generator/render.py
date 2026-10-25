@@ -1923,12 +1923,19 @@ def _sub_prag(triage: dict | None, moderare: dict | None) -> list:
                         "randuri": [r for r in randuri if r["n"]]})
         sin = triage.get("sinteze") or {}
         if sin:
-            amanate = sum(int(v) for k, v in sin.items() if k.startswith("amanate"))
+            # Amânările pe cauză: „modelul n-a răspuns" (obiect lipsă, apel căzut) nu e „n-a trecut
+            # verificarea" — o pagină de transparență nu are voie să le confunde (25.10.2026: singura
+            # amânare a rulării era un obiect lipsă, afișat ca verificare picată).
+            _fara_raspuns = ("amanate_nemapat", "amanate_apel_esuat")
+            amanate_model = sum(int(sin.get(k) or 0) for k in _fara_raspuns)
+            amanate = sum(int(v) for k, v in sin.items()
+                          if k.startswith("amanate") and k not in _fara_raspuns)
             randuri = [
                 {"eticheta": "Publicate: fapte confirmate de cel puțin două origini", "n": int(sin.get("stare_SYNTHESIS_VALID") or 0)},
                 {"eticheta": "Publicate: o singură origine", "n": int(sin.get("stare_SINGLE_ORIGIN") or 0)},
                 {"eticheta": "Publicate: relatări care se exclud, fiecare atribuită", "n": int(sin.get("stare_ASSUMED_SILENCE") or 0)},
-                {"eticheta": "Amânate: verificarea afirmațiilor n-a trecut (se reiau la rularea următoare)", "n": amanate},
+                {"eticheta": "Amânate: n-au trecut verificarea contra surselor (se reiau la rularea următoare)", "n": amanate},
+                {"eticheta": "Amânate: modelul n-a dat un răspuns folosibil (se reiau la rularea următoare)", "n": amanate_model},
                 {"eticheta": "Afirmații scoase: cifră absentă din propozițiile citate", "n": int(sin.get("respinse_cifra") or 0)},
                 {"eticheta": "Afirmații scoase: citare inexistentă sau din alt eveniment", "n": int(sin.get("respinse_citare") or 0)},
                 {"eticheta": "Afirmații scoase: text copiat din sursă", "n": int(sin.get("respinse_copiat") or 0)},
