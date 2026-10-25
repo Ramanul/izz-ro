@@ -10,6 +10,7 @@ from datetime import datetime, timezone
 
 from . import config, dialectic, fetch_deep, geo, guard, raport_copiere
 from . import diacritice
+from .select import has_mixed_latin_han
 from .verifica_sinteza import cifre_straine, slug_din_link, titlu_copiat
 from .util import truncate_words, domain_of, strip_diacritics
 
@@ -141,10 +142,17 @@ def repara_diacritice(perechi: list, provider) -> int:
             continue
         titlu = (obj.get("title") or "").strip()
         corp = (obj.get("teaser") or "").strip()
-        if not (titlu and corp) or not diacritice.are_diacritice(f"{titlu} {corp}"):
-            continue
         vechi_titlu = a.get("title") or ""
         vechi_corp = _corp(a)
+        # Reparația se acceptă doar dacă repară PARTEA care a pierdut diacriticele (titlul sau
+        # corpul, măsurate separat) și nu aduce tokenuri hibride latin–Han (#499).
+        titlu_pierdut = diacritice.lipsesc_diacriticele(sursa, vechi_titlu)
+        corp_pierdut = diacritice.lipsesc_diacriticele(sursa, vechi_corp)
+        if (not (titlu and corp) or not diacritice.are_diacritice(f"{titlu} {corp}")
+                or has_mixed_latin_han(f"{titlu} {corp}")
+                or (titlu_pierdut and not diacritice.are_diacritice(titlu))
+                or (corp_pierdut and not diacritice.are_diacritice(corp))):
+            continue
         if (len(titlu.split()) > len(vechi_titlu.split()) + max(3, int(0.3 * len(vechi_titlu.split())))
                 or len(corp.split()) > len(vechi_corp.split()) + max(4, int(0.3 * len(vechi_corp.split())))):
             continue
@@ -709,6 +717,10 @@ def process_batch(items: list, provider) -> list:
         if not (title and teaser):
             _numara_b("fara_titlu_sau_rezumat")
             continue
+        if has_mixed_latin_han(f"{title} {teaser}"):
+            # token hibrid latin–Han (ex. „roman鲜"): model degradat, nu text publicabil (#499)
+            _numara_b("hibrid")
+            continue
         if title and teaser:
             candidate = f"{title} {teaser}"
             peers = source_texts[:i] + source_texts[i + 1:]
@@ -788,10 +800,13 @@ def process_single(item: dict, provider) -> dict | None:
         data = _parse_json(raw)
     except Exception:
         return None                            # esec AI -> amanat, item-ul ramane intact
+    title = (data.get("title") or item.get("original_title", "")).strip()
+    teaser = truncate_words(data.get("teaser", "") or "Detalii pe sursa.", config.TEASER_MAX_WORDS)
+    if has_mixed_latin_han(f"{title} {teaser}"):
+        return None                            # token hibrid latin–Han -> amanat (#499)
     item["model"] = "B"
-    item["title"] = (data.get("title") or item.get("original_title", "")).strip()
-    item["teaser"] = truncate_words(data.get("teaser", "") or "Detalii pe sursa.",
-                                    config.TEASER_MAX_WORDS)
+    item["title"] = title
+    item["teaser"] = teaser
     item["entities"] = _clean_entities(data.get("entities"))   # inaintea categoriei, vezi mai sus
     item["ai_cat"] = data.get("category", "")                  # tema bruta, vezi process_batch
     item["category"] = _resolve_category(item, item["ai_cat"], item["entities"])
@@ -986,7 +1001,7 @@ def _prep_cluster_rep(group: list) -> tuple:
 # Motivele de amânare la care o a doua încercare, în aceeași rulare, are sens: țin de
 # RĂSPUNSUL modelului (obiect lipsă din lot, titlu transcris sau deformat), nu de verificarea
 # afirmațiilor contra surselor — acolo o reîncercare ar cere doar să treacă de gardă.
-MOTIVE_REINCERCABILE = frozenset({"nemapat", "titlu_copiat", "titlu_deformat", "titlu_cifra"})
+MOTIVE_REINCERCABILE = frozenset({"nemapat", "hibrid", "titlu_copiat", "titlu_deformat", "titlu_cifra"})
 
 # Nota de la reîncercare spune motivul EXACT al căderii (Argon R8): un mesaj generic („copia
 # sau deforma") pus pe un titlu căzut pentru o cifră fără sursă îl face pe model să schimbe
@@ -1094,6 +1109,11 @@ def _aplica_dialectic(rep: dict, obj, block, provider) -> dict | None:
     context = " ".join(t for _, t in block.chunks.values())
     # titlurile nu poartă punct final (convenția site-ului); modelul îl pune uneori din obișnuință
     candidat = _repair_synthesis_title((obj.get("title") or "").strip().rstrip("."), context)
+    if has_mixed_latin_han(f"{candidat} {dialectic.all_text_of(d)}"):
+        # token hibrid latin–Han oriunde în textul publicat: răspuns degradat, nu verificare picată
+        dialectic.numara("amanate_hibrid")
+        rep["_motiv_amanare"] = "hibrid"
+        return None
     if not _titlu_sustinut_de_context(candidat, context):
         dialectic.numara("amanate_titlu_deformat")
         rep["_motiv_amanare"], rep["_titlu_respins"] = "titlu_deformat", candidat

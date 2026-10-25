@@ -90,6 +90,25 @@ def test_process_cluster_salveaza_tema_bruta():
     assert out["ai_cat"] == "social"
 
 
+def test_cai_b_respinge_tokenuri_latine_si_han_mistelate():
+    raspuns = _raspuns()
+    raspuns["title"] = "p计划 a fost aprobat"
+    assert process.process_single(_item(), _Provider(raspuns)) is None
+
+    lot = [dict(_raspuns(), id=0, teaser="Compania p计划 a lansat produsul")]
+    assert process.process_batch([_item()], _Provider(lot)) == []
+
+
+def test_cai_c_resping_tokenuri_latine_si_han_mistelate():
+    grup = [_item(), dict(_item(), url="https://alt.ro/b", original_link="https://alt.ro/b",
+                          source="zcj", source_name="Ziar de Cluj")]
+    raspuns = dict(_raspuns(), synthesis="Compania p计划 a lansat produsul.")
+    assert process.process_cluster(grup, _Provider(raspuns)) is None
+
+    batch = [dict(_raspuns(), id=0, synthesis="Compania p计划 a lansat produsul.")]
+    assert process.process_clusters_batch([grup], _Provider(batch)) == [None]
+
+
 # --- si e BRUTA, adica poate sa difere de categoria finala --------------------------------
 
 def test_tema_bruta_difera_de_categoria_rezolvata():

@@ -1926,7 +1926,7 @@ def _sub_prag(triage: dict | None, moderare: dict | None) -> list:
             # Amânările pe cauză: „modelul n-a răspuns" (obiect lipsă, apel căzut) nu e „n-a trecut
             # verificarea" — o pagină de transparență nu are voie să le confunde (25.10.2026: singura
             # amânare a rulării era un obiect lipsă, afișat ca verificare picată).
-            _fara_raspuns = ("amanate_nemapat", "amanate_apel_esuat")
+            _fara_raspuns = ("amanate_nemapat", "amanate_apel_esuat", "amanate_hibrid")
             amanate_model = sum(int(sin.get(k) or 0) for k in _fara_raspuns)
             amanate = sum(int(v) for k, v in sin.items()
                           if k.startswith("amanate") and k not in _fara_raspuns)

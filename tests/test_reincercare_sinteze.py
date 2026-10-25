@@ -142,3 +142,21 @@ def test_lotul_cazut_la_apel_se_numara_amanat():
     assert process.process_clusters_batch([noi], _Cade(), motive=motive) == [None]
     assert motive == [("apel_esuat", None)]
     assert dialectic.stats()["amanate_apel_esuat"] == 1
+
+
+def test_token_hibrid_latin_han_amana_sinteza_si_se_reincearca():
+    """#499 portat pe sinteza dialectică: un token hibrid („roman鲜") oriunde în textul publicat
+    amână sinteza (răspuns degradat al modelului), apoi se reîncearcă în aceeași rulare."""
+    class _Hibrid(_Provider):
+        def complete(self, system, user):
+            if system != process.SYSTEM_C_DIALECTIC:
+                return "[]"
+            self.prompturi_c.append(user)
+            titlu = "Incendiul de la depozitul din Constanta, stins de pompieri鲜" \
+                if len(self.prompturi_c) == 1 else NOU
+            return dialectic_fake.raspuns(user, titlu, "Pompierii au lichidat focul dupa opt ore.")
+    procesate, _, _ = _ruleaza(_Hibrid())
+    assert [a["title"] for a in _sinteze(procesate)] == [NOU]
+    st = dialectic.stats()
+    assert st["recuperate_la_reincercare"] == 1
+    assert sum(v for k, v in st.items() if k.startswith("amanate")) == 0

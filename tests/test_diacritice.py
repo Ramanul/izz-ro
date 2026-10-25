@@ -16,6 +16,7 @@ Corpusul de mai jos e luat din datele reale ale pipeline-ului (masurat pe `data/
 """
 from generator import diacritice
 from generator.process import repara_diacritice
+from tools import qa_check
 
 # --- 1. predicatul: cand semnaleaza si cand NU ---------------------------------------------
 
@@ -73,6 +74,33 @@ def test_sursa_fara_diacritice_nu_produce_semnal():
 def test_text_generat_alege_corpul_dupa_model():
     assert diacritice.text_generat({"model": "B", "title": "T", "teaser": "te"}) == "T te"
     assert diacritice.text_generat({"model": "C", "title": "T", "synthesis": "si"}) == "T si"
+
+
+def test_pierderea_diacriticelor_din_corp_nu_e_ascunsa_de_un_titlu_bun():
+    art = {"model": "B", "title": "Știrea cu diacritice", "teaser": "fara explicatii"}
+    sursa = "Știrea cu diacritice. Descriere fără explicații."
+    assert not diacritice.lipsesc_diacriticele(sursa, diacritice.text_generat(art))
+    assert diacritice.articolul_a_pierdut_diacriticele(sursa, art)
+
+
+def test_pierderea_diacriticelor_din_titlu_e_detectata_cand_corpul_e_bun():
+    art = {"model": "B", "title": "Stirea fara explicatii",
+           "teaser": "Descriere fără explicații."}
+    sursa = "Știrea fără explicații. Descriere fără explicații."
+    assert diacritice.articolul_a_pierdut_diacriticele(sursa, art)
+
+
+def test_qa_proxy_masoara_corpul_independent_de_titlu():
+    assert qa_check._fara_diacritice(
+        {"model": "B", "title": "Știrea cu diacritice", "teaser": "fara explicatii"})
+    assert not qa_check._fara_diacritice(
+        {"model": "B", "title": "Stirea fara diacritice", "teaser": "Descriere fără explicații"})
+    assert qa_check._titlu_fara_diacritice(
+        {"title": "Stirea fara diacritice", "teaser": "Descriere fără explicații"})
+    assert not qa_check._titlu_fara_diacritice(
+        {"title": "Știrea cu diacritice", "teaser": "fara explicatii"})
+    assert not qa_check._fara_diacritice(
+        {"processed_by": "official", "title": "Anunț", "teaser": "Detalii pe sursa."})
 
 
 def test_text_sursa_si_text_grup():
@@ -137,6 +165,23 @@ def test_reparatia_nu_accepta_un_raspuns_tot_fara_diacritice():
     p = _Provider(lambda self, u: '[{"id": 0, "title": "Titlu romanesc", "teaser": "Rezumat"}]')
     assert repara_diacritice([(a, diacritice.text_sursa(a))], p) == 0
     assert a["title"] == "Titlu romanesc fara diacritice"       # textul vechi, neatins
+
+
+def test_reparatia_nu_marca_reusita_daca_lasa_corpul_stricat():
+    a = _articol(title="Știrea cu diacritice", teaser="fara explicatii")
+    sursa = "Știrea cu diacritice. Descriere fără explicații."
+    p = _Provider(lambda self, u: '[{"id": 0, "title": "Știrea cu diacritice", '
+                                  '"teaser": "fara explicatii"}]')
+    assert repara_diacritice([(a, sursa)], p) == 0
+    assert a["teaser"] == "fara explicatii"
+
+
+def test_reparatia_respinge_tokenuri_latine_si_han_mistelate():
+    a = _articol()
+    p = _Provider(lambda self, u: '[{"id": 0, "title": "Titlu românesc", '
+                                  '"teaser": "Rezumat p计划 cu diacritice"}]')
+    assert repara_diacritice([(a, diacritice.text_sursa(a))], p) == 0
+    assert a["teaser"] == "Rezumat fara diacritice"
 
 
 def test_reparatia_respinge_o_rescriere_care_schimba_lungimea():
@@ -225,11 +270,35 @@ def _item_diacritice():
 
 def test_pipeline_repara_diacriticele_si_plateste_un_apel_in_plus(monkeypatch):
     from generator import main
+    diacritice.goleste()
     p = _ProviderPipeline()
     out, _, used = main.process_new([_item_diacritice()], p, budget=5)
     assert used == 2                                   # lotul B + corectura
     a = [x for x in out if x.get("model") == "B"][0]
     assert "românesc" in a["title"], a
+    assert diacritice.statistici()["reparate"] == 1
+
+
+def test_pipeline_repara_corpul_chiar_cand_titlul_are_diacritice():
+    from generator import main
+    diacritice.goleste()
+
+    class _TitluBunCorpStricat(_ProviderPipeline):
+        def complete(self, system, user):
+            import json
+            self.calls.append(system)
+            if system.startswith("Esti corector"):
+                return json.dumps([{"id": 0, "title": "Titlu românesc, cu diacritice și șiruri",
+                                    "teaser": "Descriere cu diacritice, fără explicații."}])
+            return json.dumps([{"id": 0, "title": "Titlu românesc, cu diacritice și șiruri",
+                                "teaser": "Descriere cu diacritice fara explicatii",
+                                "category": "extern", "entities": [], "icon": None}])
+
+    out, _, used = main.process_new([_item_diacritice()], _TitluBunCorpStricat(), budget=5)
+    art = next(x for x in out if x.get("model") == "B")
+    assert used == 2
+    assert art["teaser"] == "Descriere cu diacritice, fără explicații."
+    assert diacritice.statistici()["semnalate"] == 1
     assert diacritice.statistici()["reparate"] == 1
 
 

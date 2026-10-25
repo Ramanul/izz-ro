@@ -343,3 +343,8 @@ Citește răspunsul Arenei la review-ul sistemului de economie de context (chatu
   Control → redenumit `.pyd.disabled`, pachetul cade pe fallback-ul pure-Python `iup.py` (reversibil).
 - Rămân v0.3+ (profiluri per furnizor, OCR, GUI) la „continuă" explicit; publicarea/conturile de
   magazin = pașii lui Alexandru conform DOSAR-MAGAZINE.md.
+
+## 19. izz.ro — gărzi pentru output AI (18 octombrie)
+- Local, pe branch `ramanul-ai-output-quality`: tokenuri Latin–Han respinse pe căile B/C și la quality gate; verificarea diacriticelor tratează separat titlul/corpul și QA raportează proxy-urile distinct. Corpus scan: 0/11042 tokenuri mixte. 72 teste țintite + Ruff trecute; full suite: 2590 passed, 8 failed (7 în căi neatinse/limitări Windows; testul plafonului STATE a fost corectat și trecut separat).
+- QA: 16/2165 corpuri eligibile fără diacritice (0,7%). Render-only a construit 9867 articole; Pagefind lipsește local. `data/articles.json` neatins.
+- PR #499 deschis la cererea proprietarului; checks CI verzi pe 0bc076eb, așteaptă review/merge manager. Nu se face deploy manual; live rămâne neconfirmat până la merge și CI/CD.

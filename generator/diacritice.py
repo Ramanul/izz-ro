@@ -75,11 +75,27 @@ def text_generat(art: dict) -> str:
     """Textul care se publica: titlul + corpul (sinteza la C, teaser la B). La sinteza
     dialectica (E2) corpul paginii sunt faptele, divergentele si afirmatiile atribuite —
     toate se publica, deci toate intra in masuratoare."""
+    return f"{art.get('title') or ''} {corp_generat(art)}"
+
+
+def corp_generat(art: dict) -> str:
+    """Corpul publicat separat de titlu: sinteza la C (plus faptele, divergențele și afirmațiile
+    sintezei dialectice, care se publică și ele), teaser la B."""
     corp = art.get("synthesis") if art.get("model") == "C" else art.get("teaser")
     if art.get("model") == "C" and isinstance(art.get("dialectic"), dict):
         from .dialectic import all_text_of
         corp = f"{corp or ''} {all_text_of(art['dialectic'])}"
-    return f"{art.get('title') or ''} {corp or ''}"
+    return (corp or "").strip()
+
+
+def articolul_a_pierdut_diacriticele(sursa: str, art: dict) -> bool:
+    """Pierderea se caută separat în titlu și în corp, apoi în textul combinat: un titlu fără
+    diacritice lângă un corp corect trecea neobservat când se măsura doar textul combinat (#499)."""
+    titlu = art.get("title") or ""
+    corp = corp_generat(art)
+    return (lipsesc_diacriticele(sursa, titlu)
+            or lipsesc_diacriticele(sursa, corp)
+            or lipsesc_diacriticele(sursa, f"{titlu} {corp}"))
 
 
 def text_sursa(art: dict) -> str:
