@@ -2538,24 +2538,6 @@
   "name": "Roman",
   "kind": "locality"
  },
- "e2e6035563b5abd4": {
-  "miss": true,
-  "v": 3,
-  "motiv_loc": "loc_negasit_sau_fara_imagine",
-  "motiv_ent": "ent_fara_entitati"
- },
- "c41d8d6f5eb14b42": {
-  "miss": true,
-  "v": 3,
-  "motiv_loc": "loc_negasit_sau_fara_imagine",
-  "motiv_ent": "ent_fara_entitati"
- },
- "151a34448c5ca4fc": {
-  "miss": true,
-  "v": 3,
-  "motiv_loc": "loc_negasit_sau_fara_imagine",
-  "motiv_ent": "ent_fara_entitati"
- },
  "e9382e6d44e58f47": {
   "cover": "leads/loc-Q2716103.c.jpg",
   "art": "leads/loc-Q2716103.jpg",
@@ -2839,26 +2821,6 @@
   "name": "Bordei Verde",
   "kind": "locality",
   "qid": "Q2716103"
- },
- "eec4a6fb213752ac": {
-  "miss": true,
-  "v": 2
- },
- "3c6283eb323fec7d": {
-  "miss": true,
-  "v": 2
- },
- "a4bfe9c2939e1ebc": {
-  "miss": true,
-  "v": 2
- },
- "b3fe2b30f6268db2": {
-  "miss": true,
-  "v": 2
- },
- "5f6fff6db9459054": {
-  "miss": true,
-  "v": 2
  },
  "02a115af2cfd2b59": {
   "miss": true,
@@ -10195,12 +10157,6 @@
   "motiv_loc": "loc_dimensiune_sau_format",
   "motiv_ent": "ent_fara_entitati"
  },
- "0a3995fe65c43c75": {
-  "miss": true,
-  "v": 3,
-  "motiv_loc": "loc_negasit_sau_fara_imagine",
-  "motiv_ent": "ent_fara_entitati"
- },
  "90f22faf877bb6b9": {
   "cover": "leads/loc-Q899448.c.jpg",
   "art": "leads/loc-Q899448.jpg",
@@ -10211,12 +10167,6 @@
   "name": "Negrești",
   "kind": "locality",
   "qid": "Q899448"
- },
- "c6ba999340f39210": {
-  "miss": true,
-  "v": 3,
-  "motiv_loc": "loc_negasit_sau_fara_imagine",
-  "motiv_ent": "ent_fara_entitati"
  },
  "a91e391f47f28587": {
   "cover": "leads/loc-Q899448.c.jpg",
@@ -10284,12 +10234,6 @@
   "kind": "locality",
   "qid": "Q837161"
  },
- "4d617ff313d9442c": {
-  "miss": true,
-  "v": 3,
-  "motiv_loc": "loc_negasit_sau_fara_imagine",
-  "motiv_ent": "ent_fara_entitati"
- },
  "171ecc0dc1d8c525": {
   "cover": "leads/loc-Q5113783.c.jpg",
   "art": "leads/loc-Q5113783.jpg",
@@ -10300,24 +10244,6 @@
   "name": "Mironeasa",
   "kind": "locality",
   "qid": "Q5113783"
- },
- "a85492f19cc58897": {
-  "miss": true,
-  "v": 3,
-  "motiv_loc": "loc_dimensiune_sau_format",
-  "motiv_ent": "ent_fara_entitati"
- },
- "d9fb71a3eacc4588": {
-  "miss": true,
-  "v": 3,
-  "motiv_loc": "loc_dimensiune_sau_format",
-  "motiv_ent": "ent_fara_entitati"
- },
- "2ebd15b75af81d1a": {
-  "miss": true,
-  "v": 3,
-  "motiv_loc": "loc_dimensiune_sau_format",
-  "motiv_ent": "ent_fara_entitati"
  },
  "e1bf06a7a1011107": {
   "cover": "leads/loc-Q240473.c.jpg",
@@ -11604,12 +11530,6 @@
   "motiv_ent": "ent_fara_entitati"
  },
  "2fb973b1aa13dd24": {
-  "miss": true,
-  "v": 3,
-  "motiv_loc": "loc_negasit_sau_fara_imagine",
-  "motiv_ent": "ent_fara_entitati"
- },
- "b89e6e2b5a115145": {
   "miss": true,
   "v": 3,
   "motiv_loc": "loc_negasit_sau_fara_imagine",
@@ -19373,12 +19293,6 @@
   "motiv_loc": "loc_neeligibil",
   "motiv_ent": "ent_nenotabila"
  },
- "ba1cb27f8d4686e3": {
-  "miss": true,
-  "v": 3,
-  "motiv_loc": "loc_neeligibil",
-  "motiv_ent": "ent_fara_entitati"
- },
  "889894c54eacff6b": {
   "miss": true,
   "v": 3,
@@ -19540,5 +19454,128 @@
   "v": 3,
   "motiv_loc": "loc_neeligibil",
   "motiv_ent": "ent_licenta_sau_format"
+ },
+ "7b8ea28f482a98b0": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_neeligibil",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "a32d19e8287dad1d": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_neeligibil",
+  "motiv_ent": "ent_fara_qid"
+ },
+ "83fa9e10a12335d8": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_neeligibil",
+  "motiv_ent": "ent_licenta_sau_format"
+ },
+ "1981996bd61b67d8": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_neeligibil",
+  "motiv_ent": "ent_licenta_sau_format"
+ },
+ "2af89296c6e703cd": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_neeligibil",
+  "motiv_ent": "ent_nenotabila"
+ },
+ "be342b395cf9993c": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_neeligibil",
+  "motiv_ent": "ent_fara_p18"
+ },
+ "b78516744a61859c": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_neeligibil",
+  "motiv_ent": "ent_licenta_sau_format"
+ },
+ "b581c43f6ba37436": {
+  "cover": "leads/banca-transilvania.c.jpg",
+  "art": "leads/banca-transilvania.jpg",
+  "webp": "leads/banca-transilvania.webp",
+  "artist": "",
+  "license": "Public domain",
+  "page": "https://commons.wikimedia.org/wiki/File:CJROBanci.jpg",
+  "name": "Banca Transilvania"
+ },
+ "55c76679f9409698": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_neeligibil",
+  "motiv_ent": "ent_licenta_sau_format"
+ },
+ "22dcc8feb7336077": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_neeligibil",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "103e7e9816acbf06": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_neeligibil",
+  "motiv_ent": "ent_nenotabila"
+ },
+ "cf382b3905cf2393": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_neeligibil",
+  "motiv_ent": "ent_fara_qid"
+ },
+ "5791866ae916e52a": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_neeligibil",
+  "motiv_ent": "ent_nenotabila"
+ },
+ "21249f9da39f1cf5": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_neeligibil",
+  "motiv_ent": "ent_nenotabila"
+ },
+ "6017aef6eebcbc4d": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_neeligibil",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "0e8bc1e8bbb58317": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_neeligibil",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "4f43c552fd9d507a": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_neeligibil",
+  "motiv_ent": "ent_nenotabila"
+ },
+ "24ee56c6625a50eb": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_neeligibil",
+  "motiv_ent": "ent_licenta_sau_format"
+ },
+ "c89fae016b8f9f92": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_neeligibil",
+  "motiv_ent": "ent_nenotabila"
+ },
+ "d9fa19e3b4cb70f3": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_neeligibil",
+  "motiv_ent": "ent_fara_entitati"
  }
 }
