@@ -1601,7 +1601,7 @@ def build(articles: list, mod: dict | None = None) -> None:
     # Pagina 404 nu e o categorie goala, e capatul unui link mort — si cel mai frecvent motiv
     # NU e o adresa gresita, ci un articol EXPIRAT. `config.ARTICLE_TTL_DAYS` (vezi config), iar
     # `state.expire()` scoate articolul din stare, deci pagina lui nu se mai randeaza:
-    # orice permalink partajat iese din fereastra de ARTICLE_TTL_DAYS (12). Oglinda gh-pages
+    # orice permalink partajat iese din fereastra de ARTICLE_TTL_DAYS (11). Oglinda gh-pages
     # e plasa, nu o a doua arhiva construita aici. (Era o saptamana pana la #197, ridicat
     # la 30 fiindca Google raportase 193 de pagini indexate care dadeau 404, apoi coborat
     # la 12 din cauza plafonului de fisiere.) Masurat pe live 8/8, cu control pozitiv

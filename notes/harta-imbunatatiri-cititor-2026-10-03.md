@@ -31,7 +31,7 @@ paginile publice în aceeași zi. Ce n-am putut verifica e marcat **[NEVERIFICAT
 |---|---|
 | există 4.307 pagini de subiect; feedurile de subiect au fost tăiate la un prag pentru că 2.118 feeduri = 11% din plafonul de 20.000 | comentariu `generator/render.py:1005-1015` |
 | `OUTPUT_FILE_BUDGET = 17000`, plafon real Workers Free 20.000, live ~17.122 fișiere, marjă ~2.900 | `generator/config.py:414`; `notes/decizie-arhiva-seo-2026-10-01.md` |
-| `ARTICLE_TTL_DAYS = 12` | `generator/config.py:394` |
+| `ARTICLE_TTL_DAYS = 11` (actualizat 26 octombrie, aprobat de proprietar) | `generator/config.py:394` |
 | pagina de newsletter există în cod dar **`content/newsletter.html` lipsește** → secțiunea nu se randează niciodată | `generator/render.py:1229-1237`, `templates/index.html:82` |
 | `/instrumente/` promite în meta description „salariu net, TVA, dobândă”, dar `tools` are o singură intrare | `templates/instrumente.html:4`, `generator/render.py:1386-1389` |
 | `templates/article.html` conține share, `article-accountability` cu mailto de eroare, `related`, `people` — deci **live-ul e în urma lui main** | `templates/article.html` |

@@ -278,3 +278,49 @@ def test_photo_probe_rejects_non_http_schemes(monkeypatch, source):
     smoke._check_article_images(smoke._ArticleMarkup(f'<img class="article-art" src="{source}">'),
                                 "/unsupported/")
     assert len(smoke.fails) == 1
+
+
+def test_sitemap_sample_excludes_maps_topics_and_other_non_article_routes():
+    from generator import config
+
+    assert smoke.ARTICLE_CATEGORIES == set(config.CATEGORIES)
+    paths = ["/local/stire/", "/sport/meci/", "/harta/sibiu/", "/subiect/romania/",
+             "/dosare/proiect/", "/legal/method/", "/local/", "/instrumente/calculator/"]
+    sitemap = "".join(f"<loc>https://izz.ro{path}</loc>" for path in paths)
+    assert smoke._article_paths(sitemap) == paths[:2]
+
+
+@pytest.mark.parametrize("location,passes", [
+    ("https://izz.ro/photo.jpg", True), ("file:///etc/passwd", False),
+    ("https://other.example/photo.jpg", False),
+])
+def test_photo_probe_follows_only_bounded_site_redirects(monkeypatch, location, passes):
+    monkeypatch.setattr(smoke, "fails", [])
+    monkeypatch.setattr(smoke, "BASE", "https://www.izz.ro")
+    requested = []
+
+    class Connection:
+        def __init__(self, host, port, timeout):
+            self.host = host
+            self.status = 301 if host == "www.izz.ro" else 200
+
+        def request(self, method, path, headers):
+            requested.append(self.host)
+
+        def getresponse(self):
+            return self
+
+        def getheader(self, name, default):
+            return location if name == "Location" else "image/jpeg"
+
+        def read(self):
+            return b"x" * 6000
+
+        def close(self):
+            pass
+
+    monkeypatch.setattr(smoke.http.client, "HTTPSConnection", Connection)
+    smoke._check_article_images(smoke._ArticleMarkup('<img class="article-art" src="/photo.jpg">'),
+                                "/redirect/")
+    assert requested == (["www.izz.ro", "izz.ro"] if passes else ["www.izz.ro"])
+    assert (not smoke.fails) is passes

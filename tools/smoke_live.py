@@ -24,7 +24,7 @@ import sys
 import time
 import urllib.error
 import urllib.request
-from urllib.parse import urlsplit
+from urllib.parse import urljoin, urlsplit
 
 FRESH_MAX_HOURS = 48   # cel mai nou articol de pe live trebuie sa fie mai recent de-atat
 
@@ -35,6 +35,10 @@ BASE = os.getenv("BASE_URL", "https://izz.ro").rstrip("/")
 FALLBACK = os.getenv("SMOKE_FALLBACK_BASE",
                      "https://izz-ro.andifreelancer2.workers.dev").rstrip("/")
 N_ARTICLES = 5
+# Standalone probe: the contract test keeps these route prefixes in sync with config.
+ARTICLE_CATEGORIES = {"general", "regional", "judetean", "local", "politic", "economic",
+                      "extern", "sport", "ai", "tech", "auto", "sanatate", "cultura",
+                      "lifestyle", "discounturi"}
 UA = {"User-Agent": "izz-smoke/1.0 (+https://izz.ro)"}
 # Semnele interstitialului anti-bot Cloudflare (corp sau antet). „Just a moment" e titlul
 # paginii de challenge; `cf-chl`/`challenge-platform` sunt in markup-ul si JS-ul ei.
@@ -68,6 +72,16 @@ class _ArticleMarkup(HTMLParser):
             self._archive_figure = False
 
 
+def _article_paths(sitemap: str) -> list[str]:
+    paths = []
+    for url in re.findall(r"<loc>([^<]+)</loc>", sitemap):
+        path = urlsplit(url).path
+        parts = path.strip("/").split("/")
+        if len(parts) == 2 and parts[0] in ARTICLE_CATEGORIES:
+            paths.append(path)
+    return paths
+
+
 def _check_article_images(markup: _ArticleMarkup, page: str) -> None:
     """Photos are optional; every photo actually emitted must load as an image."""
     for src in markup.images:
@@ -76,25 +90,40 @@ def _check_article_images(markup: _ArticleMarkup, page: str) -> None:
         ok_art = False
         # A photo probe only needs HTTP(S). The explicit transport cannot open local
         # files or any of urllib's other URL schemes, even with malformed page markup.
+        detail = ""
         if (src and media.scheme in ("", "http", "https") and media.path
                 and base.scheme in ("http", "https") and base.hostname):
-            connection = None
-            try:
-                transport = (http.client.HTTPSConnection if base.scheme == "https"
-                             else http.client.HTTPConnection)
-                connection = transport(base.hostname, base.port, timeout=30)
-                apath = media.path + ("?" + media.query if media.query else "")
-                connection.request("GET", apath, headers=UA)
-                response = connection.getresponse()
-                ok_art = (response.status == 200
-                          and response.getheader("Content-Type", "").startswith("image/")
-                          and len(response.read()) > 5000)
-            except Exception:
-                ok_art = False
-            finally:
-                if connection is not None:
-                    connection.close()
-        check(ok_art, page, "fotografia de pe pagina se incarca real (>5KB)")
+            allowed_hosts = {base.hostname}
+            if base.hostname in {"izz.ro", "www.izz.ro"}:
+                allowed_hosts.update({"izz.ro", "www.izz.ro"})
+            target = BASE + media.path + ("?" + media.query if media.query else "")
+            for _ in range(5):
+                address = urlsplit(target)
+                if address.scheme not in {"http", "https"} or address.hostname not in allowed_hosts:
+                    break
+                connection = None
+                try:
+                    transport = (http.client.HTTPSConnection if address.scheme == "https"
+                                 else http.client.HTTPConnection)
+                    connection = transport(address.hostname, address.port, timeout=30)
+                    apath = address.path + ("?" + address.query if address.query else "")
+                    connection.request("GET", apath, headers=UA)
+                    response = connection.getresponse()
+                    if response.status in {301, 302, 303, 307, 308}:
+                        target = urljoin(target, response.getheader("Location", ""))
+                        continue
+                    content_type = response.getheader("Content-Type", "")
+                    size = len(response.read())
+                    detail = f" (HTTP {response.status}, {content_type}, {size} bytes)"
+                    ok_art = response.status == 200 and content_type.startswith("image/") and size > 5000
+                    break
+                except Exception as exc:
+                    detail = f" ({type(exc).__name__})"
+                    break
+                finally:
+                    if connection is not None:
+                        connection.close()
+        check(ok_art, page, "fotografia de pe pagina se incarca real (>5KB)" + detail)
 
 
 def _e_challenge(exc: Exception) -> bool:
@@ -236,8 +265,7 @@ def main() -> int:
           f"cel mai nou articol e recent (lastmod {newest}, prag {FRESH_MAX_HOURS}h)")
 
     print(f"articole (esantion {N_ARTICLES} din sitemap):")
-    paths = [re.sub(r"^https?://[^/]+", "", u) for u in re.findall(r"<loc>([^<]+)</loc>", sitemap)]
-    arts = [p for p in paths if p.count("/") >= 3 and "/legal/" not in p]
+    arts = _article_paths(sitemap)
     random.shuffle(arts)
     check(len(arts) >= N_ARTICLES, "articole", "esantionul are suficiente articole")
     with_cover = 0
