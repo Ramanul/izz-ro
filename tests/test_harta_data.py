@@ -306,3 +306,39 @@ def test_evenimentul_numara_si_sursele_unite_de_dedup():
     assert result[0]["event_id"] == result[1]["event_id"]
     assert result[0]["event_article_count"] == 2
     assert result[0]["event_source_count"] == 4  # sursa-test, Agerpres, Digi24, sursa-doi
+
+
+def test_map_carries_only_measured_confirmation_domains():
+    article = {"title": "Lucrări în Banat", "category": "regional", "slug": "lucrari",
+               "cross_confirmed": ["Publicatie.ro", "publicatie.ro", " Alta.ro "],
+               "cross_confirmations": 99}
+    result = harta_data.locate(article, [], {}, {})
+    assert result is not None
+    assert result["cross_confirmations"] == 2
+    assert "cross_confirmed" not in result  # no unnecessary domain lists in the payload
+
+
+def test_map_one_measured_domain_is_the_first_report():
+    article = {"title": "Lucrări în Banat", "category": "regional",
+               "cross_confirmed": ["publicatie.ro"]}
+    assert harta_data.locate(article, [], {}, {})["cross_confirmations"] == 1
+
+
+def test_map_never_infers_confirmation_from_source_count_or_invalid_metadata():
+    article = {"title": "Lucrări în Banat", "category": "regional",
+               "sources": [{"name": "A", "url": "https://a.ro/"},
+                           {"name": "B", "url": "https://b.ro/"}],
+               "cross_confirmations": 2}
+    for metadata in (None, [], "a.ro", [""], ["a.ro", 2]):
+        result = harta_data.locate({**article, "cross_confirmed": metadata}, [], {}, {})
+        assert "cross_confirmations" not in result
+
+
+def test_geographic_grouping_does_not_create_confirmations_from_two_single_origins():
+    articles = [item("Accident rutier cu trei răniți pe DN1 în Brașov"),
+                item("Accident rutier cu trei răniți pe DN1 în Brașov")]
+    for article in articles:
+        article["cross_confirmations"] = 1
+    result = harta_data.annotate_events(articles)
+    assert result[0]["event_id"] == result[1]["event_id"]
+    assert [a["cross_confirmations"] for a in result] == [1, 1]
