@@ -272,6 +272,9 @@ def check_map(p, mobile=False):
         check(st['cssW'] > 0 and st['cssH'] > 0, f"resize {w}px pastreaza scena randabila")
         check(st['counties'] == 42, f"resize {w}px pastreaza toate judetele")
     if mobile:
+        # The resize regression ends at 1024px; measure the mobile layout itself.
+        p.set_viewport_size({'width': 390, 'height': 844})
+        p.wait_for_timeout(150)
         over = p.evaluate('document.documentElement.scrollWidth-document.documentElement.clientWidth')
         check(over <= 0, f"mobil fara overflow orizontal ({over}px)")
 
