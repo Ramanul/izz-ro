@@ -18,6 +18,8 @@ Dacă schimbarea afectează înțelegerea faptului principal, publicăm o notă 
 
 Acest jurnal este activ de la **19 august 2026**. Corecțiile materiale publicate după această dată vor fi enumerate aici cu link spre articolul afectat și explicația schimbării. Nu există încă intrări publicate în acest jurnal.
 
+Jurnalul este disponibil și ca [flux RSS pentru corecții și retrageri](/corectii/feed.xml).
+
 ## Limite
 
 Faptul că o informație este preluată dintr-o sursă publică nu o transformă într-o garanție. IZZ.ro afișează proveniența și procesul de sinteză tocmai pentru ca cititorul să poată evalua informația și să poată semnala problemele.
