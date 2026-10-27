@@ -7,6 +7,7 @@ import json
 from pathlib import Path
 import re
 from urllib.parse import urlsplit
+# nosemgrep: python.lang.security.use-defused-xml.use-defused-xml
 from xml.sax.saxutils import escape as xml_escape
 
 from . import config, editorial, geo
