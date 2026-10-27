@@ -10,7 +10,7 @@ stilurilor calculate), nu din pixeli. Ce acoperea verificarea inainte si se past
   * pe mobil nu apare overflow orizontal.
   * parcursul vizitatorului real: homepage -> articol -> sursa externa, desktop + mobil
     (portat din #443, rebazat pe substratul SVG post-#445; selectorii verificati pe
-    template-urile actuale: lead-feature h2 a / .body / .official-note / .sources-box).
+    template-urile actuale: lead-feature h2 a / .body / .official-note / .dialectic / .sources-box).
 
 Ce NU mai acopera (si de ce e ok): pixelii exacti ai umpluturilor. In lumea SVG ei sunt dati
 de CSS-ul declarat, iar garda de culoare e `tools/harta_contrast.py` -- determinist, fara
@@ -160,9 +160,9 @@ def check_visitor_journey(browser, mobile=False):
         check(article_title == story_title,
               f"{label}: articolul deschis corespunde titlului ales de pe homepage")
         content_blocks = page.locator(
-            "main article .body, main article .official-note").count()
+            "main article > .body, main article > .official-note, main article > .dialectic").count()
         check(content_blocks == 1,
-              f"{label}: articolul prezinta rezumatul sau nota oficiala ({content_blocks})")
+              f"{label}: articolul prezinta rezumatul, sinteza atribuita sau nota oficiala ({content_blocks})")
         if mobile:
             _check_mobile_overflow(page, "pagina articolului pe mobil")
 
