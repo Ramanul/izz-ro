@@ -188,3 +188,139 @@ def test_o_eroare_reala_nu_e_mascata_de_fallback(monkeypatch):
     with pytest.raises(urllib.error.HTTPError):
         smoke._alege_originea()
     assert smoke.BASE == "https://izz.ro"
+
+
+@pytest.mark.parametrize("html", [
+    '<aside id="editorial-copy-status" class="notice" role="status" hidden></aside>',
+    '<aside class="notice" aria-label="Corecție editorială">Corecție</aside>',
+    '<aside class="notice dialectic-update">Actualizare sinteză</aside>',
+    '<p class="verification-note">Notă pentru cititor</p>',
+])
+def test_functional_notices_do_not_trigger_retired_disclaimer(html):
+    assert not smoke._ArticleMarkup(html).legacy_notice
+
+
+@pytest.mark.parametrize("html", [
+    '<p class="notice">IZZ.ro reformulează titlul și extrage faptele.</p>',
+    "<p id='old-method' class='extra notice'>Pentru toate detaliile, mergi la sursă.</p>",
+])
+def test_retired_method_paragraph_still_fails(html):
+    assert smoke._ArticleMarkup(html).legacy_notice
+
+
+def test_article_without_optional_photo_does_not_request_or_fail(monkeypatch):
+    monkeypatch.setattr(smoke, "fails", [])
+
+    def unexpected_request(*args, **kwargs):
+        pytest.fail("A text-only article must not require a decorative image")
+
+    monkeypatch.setattr(smoke.http.client, "HTTPSConnection", unexpected_request)
+    smoke._check_article_images(smoke._ArticleMarkup('<p class="body">Știre</p>'), "/text/")
+    assert smoke.fails == []
+
+
+@pytest.mark.parametrize("html", [
+    '<img src="/photo.jpg" class="extra article-art">',
+    '<figure class="arhiva-foto"><img src="/photo.jpg"></figure>',
+])
+@pytest.mark.parametrize("result,passes", [
+    ("image", True), ("html", False), ("small", False), ("404", False),
+])
+def test_present_article_and_archive_photos_must_load(monkeypatch, html, result, passes):
+    monkeypatch.setattr(smoke, "fails", [])
+    requested = []
+
+    class Connection:
+        def __init__(self, host, port, timeout):
+            assert host == "izz.ro"
+            self.status = 404 if result == "404" else 200
+
+        def request(self, method, path, headers):
+            assert method == "GET"
+            requested.append(smoke.BASE + path)
+
+        def getresponse(self):
+            return self
+
+        def getheader(self, name, default):
+            return "text/html" if result == "html" else "image/jpeg"
+
+        def read(self):
+            return b"x" * (100 if result == "small" else 6000)
+
+        def close(self):
+            pass
+
+    monkeypatch.setattr(smoke.http.client, "HTTPSConnection", Connection)
+    smoke._check_article_images(smoke._ArticleMarkup(html), "/photo/")
+    assert requested == [smoke.BASE + "/photo.jpg"]
+    assert (not smoke.fails) is passes
+
+
+def test_empty_photo_src_fails_and_unrelated_images_are_ignored(monkeypatch):
+    monkeypatch.setattr(smoke, "fails", [])
+    markup = smoke._ArticleMarkup(
+        '<figure class="arhiva-foto"><img src=""></figure><img src="/logo.svg">'
+    )
+    assert markup.images == [""]
+    smoke._check_article_images(markup, "/broken/")
+    assert len(smoke.fails) == 1
+
+
+@pytest.mark.parametrize("source", ["file:///etc/passwd", "ftp://host/photo.jpg"])
+def test_photo_probe_rejects_non_http_schemes(monkeypatch, source):
+    monkeypatch.setattr(smoke, "fails", [])
+
+    def unexpected_connection(*args, **kwargs):
+        pytest.fail("Unsupported schemes must not start a connection")
+
+    monkeypatch.setattr(smoke.http.client, "HTTPSConnection", unexpected_connection)
+    smoke._check_article_images(smoke._ArticleMarkup(f'<img class="article-art" src="{source}">'),
+                                "/unsupported/")
+    assert len(smoke.fails) == 1
+
+
+def test_sitemap_sample_excludes_maps_topics_and_other_non_article_routes():
+    from generator import config
+
+    assert smoke.ARTICLE_CATEGORIES == set(config.CATEGORIES)
+    paths = ["/local/stire/", "/sport/meci/", "/harta/sibiu/", "/subiect/romania/",
+             "/dosare/proiect/", "/legal/method/", "/local/", "/instrumente/calculator/"]
+    sitemap = "".join(f"<loc>https://izz.ro{path}</loc>" for path in paths)
+    assert smoke._article_paths(sitemap) == paths[:2]
+
+
+@pytest.mark.parametrize("location,passes", [
+    ("https://izz.ro/photo.jpg", True), ("file:///etc/passwd", False),
+    ("https://other.example/photo.jpg", False),
+])
+def test_photo_probe_follows_only_bounded_site_redirects(monkeypatch, location, passes):
+    monkeypatch.setattr(smoke, "fails", [])
+    monkeypatch.setattr(smoke, "BASE", "https://www.izz.ro")
+    requested = []
+
+    class Connection:
+        def __init__(self, host, port, timeout):
+            self.host = host
+            self.status = 301 if host == "www.izz.ro" else 200
+
+        def request(self, method, path, headers):
+            requested.append(self.host)
+
+        def getresponse(self):
+            return self
+
+        def getheader(self, name, default):
+            return location if name == "Location" else "image/jpeg"
+
+        def read(self):
+            return b"x" * 6000
+
+        def close(self):
+            pass
+
+    monkeypatch.setattr(smoke.http.client, "HTTPSConnection", Connection)
+    smoke._check_article_images(smoke._ArticleMarkup('<img class="article-art" src="/photo.jpg">'),
+                                "/redirect/")
+    assert requested == (["www.izz.ro", "izz.ro"] if passes else ["www.izz.ro"])
+    assert (not smoke.fails) is passes

@@ -14,6 +14,8 @@ Reguli verificate (CLAUDE.md sectiunea 7, decizia ownerului):
            exact un sources-box cu linkuri externe; fara btn-source
 """
 import datetime as dt
+from html.parser import HTMLParser
+import http.client
 import os
 import random
 import re
@@ -22,6 +24,7 @@ import sys
 import time
 import urllib.error
 import urllib.request
+from urllib.parse import urljoin, urlsplit
 
 FRESH_MAX_HOURS = 48   # cel mai nou articol de pe live trebuie sa fie mai recent de-atat
 
@@ -32,12 +35,95 @@ BASE = os.getenv("BASE_URL", "https://izz.ro").rstrip("/")
 FALLBACK = os.getenv("SMOKE_FALLBACK_BASE",
                      "https://izz-ro.andifreelancer2.workers.dev").rstrip("/")
 N_ARTICLES = 5
+# Standalone probe: the contract test keeps these route prefixes in sync with config.
+ARTICLE_CATEGORIES = {"general", "regional", "judetean", "local", "politic", "economic",
+                      "extern", "sport", "ai", "tech", "auto", "sanatate", "cultura",
+                      "lifestyle", "discounturi"}
 UA = {"User-Agent": "izz-smoke/1.0 (+https://izz.ro)"}
 # Semnele interstitialului anti-bot Cloudflare (corp sau antet). „Just a moment" e titlul
 # paginii de challenge; `cf-chl`/`challenge-platform` sunt in markup-ul si JS-ul ei.
 _CHALLENGE_MARKS = (b"cf-chl", b"challenge-platform", b"Just a moment", b"__cf_chl")
 
 fails: list = []
+
+
+class _ArticleMarkup(HTMLParser):
+    """Distinguish the retired notice paragraph from functional correction notices."""
+
+    def __init__(self, html: str):
+        super().__init__()
+        self.legacy_notice = False
+        self.images: list[str] = []
+        self._archive_figure = False
+        self.feed(html)
+
+    def handle_starttag(self, tag, attrs):
+        attrs = dict(attrs)
+        classes = (attrs.get("class") or "").split()
+        if tag == "p" and "notice" in classes:
+            self.legacy_notice = True
+        if tag == "figure":
+            self._archive_figure = "arhiva-foto" in classes
+        if tag == "img" and ("article-art" in classes or self._archive_figure):
+            self.images.append(attrs.get("src") or "")
+
+    def handle_endtag(self, tag):
+        if tag == "figure":
+            self._archive_figure = False
+
+
+def _article_paths(sitemap: str) -> list[str]:
+    paths = []
+    for url in re.findall(r"<loc>([^<]+)</loc>", sitemap):
+        path = urlsplit(url).path
+        parts = path.strip("/").split("/")
+        if len(parts) == 2 and parts[0] in ARTICLE_CATEGORIES:
+            paths.append(path)
+    return paths
+
+
+def _check_article_images(markup: _ArticleMarkup, page: str) -> None:
+    """Photos are optional; every photo actually emitted must load as an image."""
+    for src in markup.images:
+        media = urlsplit(src)
+        base = urlsplit(BASE)
+        ok_art = False
+        # A photo probe only needs HTTP(S). The explicit transport cannot open local
+        # files or any of urllib's other URL schemes, even with malformed page markup.
+        detail = ""
+        if (src and media.scheme in ("", "http", "https") and media.path
+                and base.scheme in ("http", "https") and base.hostname):
+            allowed_hosts = {base.hostname}
+            if base.hostname in {"izz.ro", "www.izz.ro"}:
+                allowed_hosts.update({"izz.ro", "www.izz.ro"})
+            target = BASE + media.path + ("?" + media.query if media.query else "")
+            for _ in range(5):
+                address = urlsplit(target)
+                if address.scheme not in {"http", "https"} or address.hostname not in allowed_hosts:
+                    break
+                connection = None
+                try:
+                    transport = (http.client.HTTPSConnection if address.scheme == "https"
+                                 else http.client.HTTPConnection)
+                    connection = transport(address.hostname, address.port, timeout=30)
+                    apath = address.path + ("?" + address.query if address.query else "")
+                    connection.request("GET", apath, headers=UA)
+                    response = connection.getresponse()
+                    if response.status in {301, 302, 303, 307, 308}:
+                        target = urljoin(target, response.getheader("Location", ""))
+                        continue
+                    content_type = response.getheader("Content-Type", "")
+                    size = len(response.read())
+                    detail = f" (HTTP {response.status}, {content_type}, {size} bytes)"
+                    ok_art = response.status == 200 and content_type.startswith("image/") and size > 5000
+                    break
+                except Exception as exc:
+                    detail = f" ({type(exc).__name__})"
+                    break
+                finally:
+                    if connection is not None:
+                        connection.close()
+        check(ok_art, page, "fotografia de pe pagina se incarca real (>5KB)" + detail)
 
 
 def _e_challenge(exc: Exception) -> bool:
@@ -179,15 +265,17 @@ def main() -> int:
           f"cel mai nou articol e recent (lastmod {newest}, prag {FRESH_MAX_HOURS}h)")
 
     print(f"articole (esantion {N_ARTICLES} din sitemap):")
-    paths = [re.sub(r"^https?://[^/]+", "", u) for u in re.findall(r"<loc>([^<]+)</loc>", sitemap)]
-    arts = [p for p in paths if p.count("/") >= 3 and "/legal/" not in p]
+    arts = _article_paths(sitemap)
     random.shuffle(arts)
+    check(len(arts) >= N_ARTICLES, "articole", "esantionul are suficiente articole")
     with_cover = 0
     with_art = 0
+    first_art = ""
     for p in arts[:N_ARTICLES]:
         html = get(p)
         page = p[:60]
-        check('class="notice"' not in html, page, "fara disclaimer metodologic pe articol")
+        markup = _ArticleMarkup(html)
+        check(not markup.legacy_notice, page, "fara disclaimer metodologic pe articol")
         check(html.count('class="sources-box"') == 1, page, "exact un sources-box")
         check(re.search(r'sources-box.*?<a href="http', html, re.S) is not None,
               page, "sursele din box sunt linkuri externe")
@@ -211,27 +299,13 @@ def main() -> int:
             except Exception:
                 ok_img = False
             check(ok_img, page, "og:image exista si e imagine reala (>5KB)")
-        # Arta pe pagina. Din 2026-09-09 arta generata se DESENEAZA in pagina (`.art`), deci
-        # de regula nu mai exista fisier de verificat; raman fisiere doar fotografiile reale
-        # si imaginile din date. Verificam ca articolul are una din cele doua, iar cand are
-        # fisier verificam ca acesta chiar se incarca (un `<img>` cu 404 arata gol pe ecran,
-        # dar trece orice verificare care se uita doar la HTML).
-        am = re.search(r'class="article-art"[^>]*\ssrc="([^"]+)"', html)
-        if am:
-            apath = re.sub(r"^https?://[^/]+", "", am.group(1))
-            try:
-                req = urllib.request.Request(BASE + apath, headers=UA)
-                with urllib.request.urlopen(req, timeout=30) as r:
-                    ok_art = (r.headers.get("Content-Type", "").startswith("image/")
-                              and len(r.read()) > 5000)
-            except Exception:
-                ok_art = False
-            check(ok_art, page, "fotografia de pe pagina se incarca real (>5KB)")
+        # Since 17 Oct the article deliberately omits generated decoration when no photo
+        # exists. Check real photos, including archive portraits, without requiring one.
+        _check_article_images(markup, page)
+        if markup.images:
             with_art += 1
-        elif re.search(r'class="art art--', html):
-            with_art += 1
-    check(with_art == N_ARTICLES, "articole",
-          f"fiecare articol are arta (desenata sau fotografie): {with_art}/{N_ARTICLES}")
+            first_art = first_art or markup.images[0]
+    print(f"  .. {with_art}/{N_ARTICLES} din esantion au fotografie (optional)")
     print(f"  .. {with_cover}/{N_ARTICLES} din esantion au coperta og proprie "
           f"(restul folosesc coperta categoriei -- normal pe arhiva)")
 
@@ -249,9 +323,8 @@ def main() -> int:
 
     # cache pe o imagine reala de articol: trebuie sa fie lung (max-age >= 1 zi),
     # nu TTL-ul implicit de 4h (regula ignorata daca pattern-ul n-are '/' -- fix 2026-07-12)
-    img = re.search(r'class="article-art"[^>]*\ssrc="([^"]+)"', get(arts[0]) if arts else "")
-    if img:
-        ipath = re.sub(r"^https?://[^/]+", "", img.group(1))
+    if first_art:
+        ipath = re.sub(r"^https?://[^/]+", "", first_art)
         try:
             hd, _ = head(ipath)
             cc = hd.get("Cache-Control", "")

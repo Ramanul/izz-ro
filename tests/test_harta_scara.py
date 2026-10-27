@@ -43,6 +43,7 @@ def _js() -> str:
 SCARI = (
     ("volum", (1, 6, 15, 30), 1),
     ("locuitori", (0.1, 1, 2, 4), 0.1),
+    ("confirmari", (1, 3, 6, 10), 1),
 )
 
 
@@ -87,7 +88,8 @@ def _seturi() -> dict:
 
 
 def _praguri(nume: str) -> list[float]:
-    atribute = {"volum": "data-praguri", "locuitori": "data-praguri-locuitor"}[nume]
+    atribute = {"volum": "data-praguri", "locuitori": "data-praguri-locuitor",
+                "confirmari": "data-praguri-confirmari"}[nume]
     match = re.search(atribute + r'="([^"]+)"', _legenda())
     assert match, f"legenda nu declară {atribute} — JS-ul ar cădea pe o constantă paralelă"
     return [float(v) for v in match.group(1).split(",")]

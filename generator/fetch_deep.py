@@ -330,6 +330,70 @@ def compute_sha256(text: str) -> str:
     return hashlib.sha256(norm.encode("utf-8")).hexdigest()
 
 
+def _observation_time(value) -> datetime | None:
+    try:
+        stamp = datetime.fromisoformat(value)
+    except (TypeError, ValueError):
+        return None
+    return stamp.astimezone(timezone.utc) if stamp.tzinfo else None
+
+
+def text_observation_counts(entry: dict) -> dict | None:
+    """Read only valid v1 counters; absent history is unknown, never a stable result."""
+    if not isinstance(entry, dict):
+        return None
+    value = entry.get("text_observations")
+    if not isinstance(value, dict) or type(value.get("v")) is not int or value["v"] != 1:
+        return None
+    comparisons, changed = value.get("comparisons"), value.get("changed")
+    if (type(comparisons) is not int or type(changed) is not int
+            or not 0 <= changed <= comparisons):
+        return None
+    first, last = _observation_time(value.get("first_at")), _observation_time(value.get("last_at"))
+    if comparisons and (not first or not last or first >= last):
+        return None
+    return {"v": 1, "comparisons": comparisons, "changed": changed,
+            "first_at": first.isoformat() if comparisons else None,
+            "last_at": last.isoformat() if comparisons else None}
+
+
+def _advance_text_observations(previous: dict, current: dict) -> dict:
+    """Count adjacent, distinct full-text reads; legacy metadata is one baseline only.
+
+    These are observed text changes, including ordinary newsroom updates. They say
+    nothing about truth, correction quality, or what happened between our readings.
+    """
+    counts = text_observation_counts(previous) or {
+        "v": 1, "comparisons": 0, "changed": 0, "first_at": None, "last_at": None,
+    }
+    old_time = _observation_time(previous.get("fetched_at"))
+    new_time = _observation_time(current.get("fetched_at"))
+    last_time = _observation_time(counts["last_at"])
+    if (previous.get("mode") != "FULL_TEXT" or current.get("mode") != "FULL_TEXT"
+            or not old_time or not new_time or old_time >= new_time
+            or (last_time and old_time < last_time)):
+        return counts
+    old_sha, new_sha = previous.get("sha256"), current.get("sha256")
+    if not all(isinstance(s, str) and re.fullmatch(r"[0-9a-f]{64}", s) for s in (old_sha, new_sha)):
+        return counts
+    old_anchors, new_anchors = previous.get("anchors"), current.get("anchors")
+    if old_sha != new_sha and not (
+        isinstance(old_anchors, list) and old_anchors
+        and isinstance(new_anchors, list) and new_anchors
+        and all(isinstance(a, str) and re.fullmatch(r"(?:NUM|ENT|ACR|Q):\S.*", a)
+                for a in old_anchors + new_anchors)
+    ):
+        return counts
+    changed = old_sha != new_sha and check_if_silent_edit_causes_dirty(
+        "ROOT", old_sha, new_sha, set(old_anchors), set(new_anchors),
+    )
+    counts["comparisons"] += 1
+    counts["changed"] += int(changed)
+    counts["first_at"] = counts["first_at"] or old_time.isoformat()
+    counts["last_at"] = new_time.isoformat()
+    return counts
+
+
 def check_if_silent_edit_causes_dirty(role: str, old_sha: str | None, new_sha: str,
                                       old_anchors: set | None, new_anchors: set) -> bool:
     """O sursă cu rol epistemic greu (ROOT / INDEPENDENT_CONTRIBUTOR) care își schimbă
@@ -771,7 +835,7 @@ def fetch_deep(groups: list, meta_path: str | None = None, persist: bool = True)
         _STATISTICI[r.extraction_mode] += 1
         if r.caused_dirty:
             _STATISTICI["SILENT_EDIT_DIRTY"] += 1
-        meta[r.url] = {
+        entry = {
             "sha256": r.content_sha256,
             "anchors": anchor_sample(r.anchors),
             "mode": r.extraction_mode,
@@ -779,6 +843,10 @@ def fetch_deep(groups: list, meta_path: str | None = None, persist: bool = True)
             "published": r.published,
             "fetched_at": datetime.now(timezone.utc).isoformat(),
         }
+        entry["text_observations"] = _advance_text_observations(
+            meta.get(r.url) or {}, entry,
+        )
+        meta[r.url] = entry
     if persist:
         _meta_save(meta, meta_path)
 
@@ -859,7 +927,11 @@ def _prune(meta: dict) -> dict:
     iar articolele expiră prin exact acest cutoff)."""
     cutoff = datetime.now(timezone.utc) - timedelta(days=config.ARTICLE_TTL_DAYS)
     kept = {}
+    if not isinstance(meta, dict):
+        return kept
     for url, entry in meta.items():
+        if not isinstance(entry, dict):
+            continue
         try:
             ts = datetime.fromisoformat(entry.get("published") or "")
         except (ValueError, TypeError):

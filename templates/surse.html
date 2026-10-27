@@ -1,4 +1,15 @@
 {% extends "base.html" %}
+{% macro text_observations_cell(s) -%}
+  {% set o = s.text_observations %}
+  {% if o and o.comparisons %}
+  <strong>{{ o.stable }}/{{ o.comparisons }}</strong> recitiri fără schimbare materială<br>
+  <small>{{ o.articles_revisited }}/{{ o.articles_total }} articole recitite ·
+    <time datetime="{{ o.first_at }}">{{ o.first_at_human }}</time> –
+    <time datetime="{{ o.last_at }}">{{ o.last_at_human }}</time> UTC</small>
+  {% else %}
+  Nemăsurat{% if o and o.articles_total %}<br><small>0/{{ o.articles_total }} articole recitite</small>{% endif %}
+  {% endif %}
+{%- endmacro %}
 {% block title %}Surse — {{ site.name }}{% endblock %}
 {% block description %}Catalogul complet al celor {{ total_sources }} surse din care sintetizăm știri — naționale, regionale, ziare de județ și primării — plus statisticile de originalitate acolo unde există.{% endblock %}
 {% block content %}
@@ -12,6 +23,16 @@
   multi-sursă (o primărie cu un anunț unic, de exemplu, n-o să intre niciodată).</p>
 
   <p>Ordinea observată nu dovedește autorul informației sau o preluare. În articolele cu context documentat, proveniența se atribuie numai după examinarea documentelor: anunț oficial, document original ori preluare cu origine cunoscută. O origine necunoscută nu înseamnă sursă independentă; statisticile de mai jos nu măsoară adevărul unei afirmații. „A publicat prima" ține cont de câte fapte aduce relatarea: una cu mult mai multe fapte, publicată în aceleași 15 minute, bate o alertă de două rânduri. „Actualizate ulterior" numără sintezele în care faptele din textul publicației s-au schimbat cu peste 20% după prima citire. Include actualizările firești ale știrilor în curs (completări, live-text) și revizuirile editoriale; nu e un verdict de corectitudine, ci contextul în care se citește „a publicat prima".</p>
+
+  <p>„Text la recitire" arată o fracție, nu un scor: recitiri fără schimbare materială din
+  toate recitirile comparabile ale textului integral. Numărăm doar articolele în care
+  publicația a apărut prima; același articol nu intră de două ori în acoperire. O schimbare
+  materială înseamnă o amprentă diferită și cel puțin 20% diferență între ancorele textului
+  (cifre, nume și citate). Sub fracție apar articolele recitite din totalul eligibil și
+  intervalul observat, în UTC. Prima citire și revenirea doar la rezumatul RSS nu sunt
+  recitiri comparabile. „Nemăsurat" înseamnă că nu avem încă o comparație, nu că textul a
+  rămas neschimbat. Modificările pot fi completări firești; fracția nu măsoară adevărul
+  informațiilor și nu spune ce s-a întâmplat între citirile noastre.</p>
 
   {% if harta %}
   <figure class="harta-judete">
@@ -41,12 +62,12 @@
         <div class="table-wrap">
         <table class="stats-table">
           <caption class="visually-hidden">{{ group.label }} — surse cu statistici de originalitate</caption>
-          <thead><tr><th>Sursă</th><th>A publicat prima</th><th>Apariții în sinteze</th><th>Rată de inițiativă</th><th>Actualizate ulterior</th></tr></thead>
+          <thead><tr><th>Sursă</th><th>A publicat prima</th><th>Apariții în sinteze</th><th>Rată de inițiativă</th><th>Actualizate ulterior</th><th>Text la recitire</th></tr></thead>
           <tbody>
             {% for s in group.with_stats %}
             <tr>
               <td><a href="{{ s.url | href_extern }}"{# nosemgrep: generic.html-templates.security.var-in-href.var-in-href #} target="_blank" rel="noopener noreferrer">{{ s.name }}</a></td>
-              <td>{{ s.first }}</td><td>{{ s.total }}</td><td>{{ s.rate }}%</td><td>{{ s.tacute }}</td>
+              <td>{{ s.first }}</td><td>{{ s.total }}</td><td>{{ s.rate }}%</td><td>{{ s.tacute }}</td><td>{{ text_observations_cell(s) }}</td>
             </tr>
             {% endfor %}
           </tbody>
@@ -79,12 +100,12 @@
             <div class="table-wrap">
             <table class="stats-table">
               <caption class="visually-hidden">{{ county.label }} — surse cu statistici de originalitate</caption>
-              <thead><tr><th>Sursă</th><th>A publicat prima</th><th>Apariții în sinteze</th><th>Rată de inițiativă</th><th>Actualizate ulterior</th></tr></thead>
+              <thead><tr><th>Sursă</th><th>A publicat prima</th><th>Apariții în sinteze</th><th>Rată de inițiativă</th><th>Actualizate ulterior</th><th>Text la recitire</th></tr></thead>
               <tbody>
                 {% for s in county.with_stats %}
                 <tr>
                   <td><a href="{{ s.url | href_extern }}"{# nosemgrep: generic.html-templates.security.var-in-href.var-in-href #} target="_blank" rel="noopener noreferrer">{{ s.name }}</a></td>
-                  <td>{{ s.first }}</td><td>{{ s.total }}</td><td>{{ s.rate }}%</td><td>{{ s.tacute }}</td>
+                  <td>{{ s.first }}</td><td>{{ s.total }}</td><td>{{ s.rate }}%</td><td>{{ s.tacute }}</td><td>{{ text_observations_cell(s) }}</td>
                 </tr>
                 {% endfor %}
               </tbody>

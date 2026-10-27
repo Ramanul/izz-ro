@@ -20,7 +20,7 @@ from xml.sax.saxutils import escape as xml_escape
 from jinja2 import Environment, FileSystemLoader, select_autoescape
 from slugify import slugify
 
-from . import config, covers, dossiers, editorial, geo, guard, htmlart, memorie, pagefind_index, publication
+from . import config, covers, dossiers, editorial, fetch_deep, geo, guard, htmlart, memorie, pagefind_index, publication
 from .select import (_dedup, _dedup_sources, _diversify, _entity_index,
                      _pick_hero, _quality_gate, anunt_oficial_fara_corp, filtru_cautare_rapida,
                      publicitar_la_sursa, titlu_afisare, editorial_selection_comparison)
@@ -889,7 +889,29 @@ def _pagination(cat: str, page_num: int, total_pages: int) -> dict | None:
     }
 
 
-def _source_catalog(by_date: list) -> tuple[list, int, int]:
+def _source_text_observations(urls: set, metadata: dict) -> dict:
+    """First-source URL coverage and comparable reads, never an inferred reliability rate."""
+    result = {"articles_total": len(urls), "articles_revisited": 0,
+              "comparisons": 0, "changed": 0, "stable": 0,
+              "first_at": None, "last_at": None}
+    for url in sorted(urls):
+        counts = fetch_deep.text_observation_counts(metadata.get(url) or {})
+        if not counts or not counts["comparisons"]:
+            continue
+        result["articles_revisited"] += 1
+        result["comparisons"] += counts["comparisons"]
+        result["changed"] += counts["changed"]
+        result["first_at"] = min(result["first_at"] or counts["first_at"], counts["first_at"])
+        result["last_at"] = max(result["last_at"] or counts["last_at"], counts["last_at"])
+    result["stable"] = result["comparisons"] - result["changed"]
+    for key in ("first_at", "last_at"):
+        result[key + "_human"] = (
+            datetime.fromisoformat(result[key]).strftime("%Y-%m-%d %H:%M") if result[key] else None
+        )
+    return result
+
+
+def _source_catalog(by_date: list, deep_meta: dict | None = None) -> tuple[list, int, int]:
     """Catalogul /surse/: TOATE sursele din config.SOURCES, nu doar cele cu statistici de
     originalitate. O sursa (ex. o primarie) care publica un anunt unic nu intra niciodata
     intr-un cluster multi-sursa, deci n-ar aparea NICIODATA daca am lista doar din sintezele
@@ -902,6 +924,7 @@ def _source_catalog(by_date: list) -> tuple[list, int, int]:
     # Cuplat cu „modificate ulterior" (E1): viteza fără stabilitate nu e un merit — o redacție
     # care publică prima și își schimbă apoi faptele tăcut nu are voie să apară doar „rapidă".
     counts: dict = {}
+    first_urls: dict = {}
     for a in by_date:
         if a.get("model") != "C" or not a.get("first_source"):
             continue
@@ -911,10 +934,15 @@ def _source_catalog(by_date: list) -> tuple[list, int, int]:
             d["total"] += 1
             if s["name"] == a["first_source"]:
                 d["first"] += 1
+                if s.get("url"):
+                    first_urls.setdefault(s["name"], set()).add(s["url"])
             if s["name"] in tacute:
                 d["tacute"] += 1
     src_stats = {n: {"first": d["first"], "total": d["total"], "rate": round(d["first"] / d["total"] * 100),
-                     "tacute": d["tacute"]}
+                     "tacute": d["tacute"],
+                     "text_observations": _source_text_observations(
+                         first_urls.get(n, set()), deep_meta or {},
+                     )}
                  for n, d in counts.items() if d["total"] >= 2}
 
     catalog = []
@@ -1421,7 +1449,10 @@ def build(articles: list, mod: dict | None = None) -> None:
                judete=[{"code": c, "slug": s, "label": l}
                        for c, s, l in _harta_rute_judetene()])))
 
-    src_catalog, total_sources, stats_sources = _source_catalog(by_date)
+    source_meta = fetch_deep._meta_load(fetch_deep.META_PATH)
+    src_catalog, total_sources, stats_sources = _source_catalog(
+        by_date, fetch_deep._prune(source_meta) if isinstance(source_meta, dict) else {},
+    )
     _write(os.path.join(OUT_DIR, "surse", "index.html"),
            env.get_template("surse.html").render(**_base_ctx(
                "/surse/", catalog=src_catalog, total_sources=total_sources,
@@ -1601,7 +1632,7 @@ def build(articles: list, mod: dict | None = None) -> None:
     # Pagina 404 nu e o categorie goala, e capatul unui link mort — si cel mai frecvent motiv
     # NU e o adresa gresita, ci un articol EXPIRAT. `config.ARTICLE_TTL_DAYS` (vezi config), iar
     # `state.expire()` scoate articolul din stare, deci pagina lui nu se mai randeaza:
-    # orice permalink partajat iese din fereastra de ARTICLE_TTL_DAYS (12). Oglinda gh-pages
+    # orice permalink partajat iese din fereastra de ARTICLE_TTL_DAYS (11). Oglinda gh-pages
     # e plasa, nu o a doua arhiva construita aici. (Era o saptamana pana la #197, ridicat
     # la 30 fiindca Google raportase 193 de pagini indexate care dadeau 404, apoi coborat
     # la 12 din cauza plafonului de fisiere.) Masurat pe live 8/8, cu control pozitiv

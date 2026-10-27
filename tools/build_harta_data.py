@@ -434,6 +434,12 @@ def locate(
         "source": article.get("source") or "",
         "source_name": article.get("source_name") or article.get("source") or "",
     }
+    # E3: numărăm numai domeniile măsurate de pipeline, nu lista publicațiilor.
+    # Lipsa metadatelor (inclusiv o listă goală/invalidă) rămâne necunoscută.
+    confirmate = article.get("cross_confirmed")
+    if (isinstance(confirmate, list) and confirmate
+            and all(isinstance(domain, str) and domain.strip() for domain in confirmate)):
+        base["cross_confirmations"] = len({domain.strip().lower() for domain in confirmate})
     # Sursele originale unite la publicare (select._dedup uneste relatarile identice si
     # pastreaza lista) se pastreaza DOAR cand sunt mai multe: de ele depinde contorul
     # „N surse" din harta — altfel fiecare eveniment parea acoperit de o singura sursa,
