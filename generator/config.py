@@ -418,7 +418,10 @@ RELATED_MIN_SHARED = 2         # "Articole conectate": minim entitati comune. 1 
 #   spre deosebire de fcinter1908 care are 763 vizite măsurate si ramane):
 #                 TTL 12 -> 10.665 (marja 1.935 ~ 2 zile de ingest median)
 # Se revine spre 13 daca ingestul median coboara sub ~900/zi sustinut (autom. lunara).
-ARTICLE_TTL_DAYS = 12
+# 12 -> 11 (2026-10-25, owner approved in chat): a7bf06ae has 13.025 raw articles
+# in the date-based 12-day window, above the 12.600 early safety floor. Eleven days
+# retain 11.833 (767 spare); the actual publication floor/quality guards are unchanged.
+ARTICLE_TTL_DAYS = 11
 
 # Plafonul de fisiere al gazdei. Gazda e un Worker cu Static Assets de pe 2026-08-22
 # (#211, 40ac007), iar contul se intoarce pe **Workers FREE** din 2026-09-22 (decizie

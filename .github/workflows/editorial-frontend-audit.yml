@@ -50,12 +50,34 @@ jobs:
       - name: Compare three runs per revision
         env:
           BASE_SHA: ${{ github.event.pull_request.base.sha }}
-          ARTICLE_PATH: /local/intrerupere-temporara-a-serviciilor-de-plata-online-in-perioada-16-18-octombrie/
           CHROME_PATH: /usr/bin/google-chrome
         run: |
           git worktree add --detach "$RUNNER_TEMP/izz-before" "$BASE_SHA"
           # Both revisions render the exact PR-head article snapshot; news churn is not a code delta.
           cp "$GITHUB_WORKSPACE/data/articles.json" "$RUNNER_TEMP/izz-before/data/articles.json"
+          # Retention can remove a formerly pinned article. Compare an actual route
+          # present in both builds, then keep it fixed across all six measurements.
+          (cd "$RUNNER_TEMP/izz-before" && python -m generator.main --render-only >/dev/null)
+          python -m generator.main --render-only >/dev/null
+          export ARTICLE_PATH="$(python - <<'PY'
+          import os
+          from pathlib import Path
+          from generator.config import CATEGORIES
+
+          def articles(root):
+              return {str(path.relative_to(root).parent).replace('\\', '/') + '/'
+                      for category in CATEGORIES
+                      for path in (root / category).glob('*/index.html')}
+
+          before = Path(os.environ['RUNNER_TEMP']) / 'izz-before' / 'output'
+          after = Path(os.environ['GITHUB_WORKSPACE']) / 'output'
+          common = articles(before) & articles(after)
+          if not common:
+              raise SystemExit('No common rendered article exists for the frontend comparison')
+          print('/' + min(common))
+          PY
+          )"
+          test -n "$ARTICLE_PATH"
           mkdir -p "$GITHUB_WORKSPACE/audit-results"
           for revision in before after; do
             root="$GITHUB_WORKSPACE"

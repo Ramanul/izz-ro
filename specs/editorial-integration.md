@@ -16,3 +16,10 @@
 - Headless Chrome, `/harta/` and `/surse/`, **390 and 1440 px**: no page overflow or script errors; map lens preserves the 763-event count and 42 counties, with 28 unmeasured counties; regional disabling, restoration on a quantitative level, reset and direct query URLs pass. All 78 source rows have six columns and explicit unknown observations.
 - Delivered asset bytes match the local output and sources, and HTML references their content versions: map JavaScript `980be45a`, map CSS `e962a980`, common CSS `3c9a66cd`. `data/articles.json` and `data/deep_meta.json` match `c29f7e50` byte-for-byte. The 16-file scope passed a six-pattern credential scan with zero hits; this does not certify arbitrary secret formats.
 - No new functional interaction or shared style change was introduced; individual performance audits were not repeated. Their historical corpus/scoring limits remain in the two slice specifications. This integration has no full-suite CI, remote review or live-release evidence. Source observations still accumulate only when selected URLs are genuinely reread, not through periodic polling.
+
+## Publication continuation, 27 October
+
+- Combine this verified local integration with the publication repair at `b2428eec`, retaining its approved 11-day window and HTTP-only live probes. Original worktrees and commits remain preserved.
+- Reconcile `specs/STATE.md`; validate the complete combined suite, render, browser behavior, asset versions and current-head CI before integration and live release checks.
+- Repair `.github/workflows/editorial-frontend-audit.yml`: its fixed 16–18 October article returns 404 after the approved retention change (all three after-reports in run `40390123283` contain `ERRORED_DOCUMENT_REQUEST`). Render both revisions and pin one actual article route common to both outputs for all six audits. Keep null scores and missing common articles as failures.
+- This audit repair changes verification only. It must select the same existing category/slug route on both revisions, exclude map/dossier routes, and fail explicitly if none exists. No score threshold or safety test is relaxed.

@@ -134,7 +134,7 @@ Consecințe, toate versionate în cod:
   (și mai clar) din CSS. Rămân fișiere doar fotografiile reale și imaginile din date.
 - **og:image propriu** doar pentru cele mai noi `OG_COVER_MAX_ARTICLES` articole; restul folosesc
   coperta categoriei din `output/og/<categorie>.jpg`.
-- **`ARTICLE_TTL_DAYS = 12`** (din 2026-10-03: 11 întâi, apoi 12 după tăietura surselor tech-en — IZZ-0421/0422).
+- **`ARTICLE_TTL_DAYS = 11`** (aprobat la 25 octombrie 2026 pentru refacerea marjei; precedent: IZZ-0421/0422).
 - **Supapă de siguranță**: dacă ingestul sare peste ce a fost măsurat, randarea publică doar câte
   articole încap (`OUTPUT_FILE_BUDGET`) și taie de la cel mai vechi. Peste `OUTPUT_FILE_CEILING`
   randarea moare zgomotos — altfel Cloudflare ar refuza deploy-ul tăcut și site-ul ar îngheța.
