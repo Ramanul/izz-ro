@@ -1382,6 +1382,8 @@ def build(articles: list, mod: dict | None = None) -> None:
             if (lp.get("webp")
                     and _spend(_use_media(os.path.join(MEDIA_DIR, lp["webp"]), webp_dst))):
                 a["art_webp"] = f"/{a['category']}/{a['slug']}/art.webp?v={_content_ver(webp_dst)}"
+            if lp.get("kind") == "locality":
+                a["art_credit"] = lp
         elif a.get("event_chart") and not a.get("correction"):
             # Imagine DIN DATE (harta epicentrului, graficul meteo): nu e decor derivat din
             # seed, e continut, deci nu se poate desena din `art_style`. Ramane fisier cat

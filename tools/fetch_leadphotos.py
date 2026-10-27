@@ -235,11 +235,51 @@ def index_localitati(cache: dict) -> dict:
     return idx
 
 
+_TRAGIC_TERMS = re.compile(
+    r"\b("
+    r"accident(?:e|ul|ele)?|"
+    r"decedat(?:ă|i|e)?|"
+    r"deces(?:e|ul|ele)?|"
+    r"mort(?:ă|i|e|ea|ilor)?|"
+    r"mortal(?:ă|i|e)?|"
+    r"omor(?:ul|uri)?|"
+    r"omorât(?:ă|i|e)?|"
+    r"ucis(?:ă|i|e)?|"
+    r"crim(?:ă|e|a|ele)?|"
+    r"criminal(?:ă|i|e)?|"
+    r"cadavru(?:l|ri)?|"
+    r"viol(?:ul|uri)?|"
+    r"violat(?:ă|i|e)?|"
+    r"incendiu(?:l|ri)?|"
+    r"explozie|explozii|"
+    r"percheziți(?:i|e|ile)?|"
+    r"dna|"
+    r"cătușe|"
+    r"arestat(?:ă|i|e)?|"
+    r"reținut(?:ă|i|e)?|"
+    r"sinucidere|sinucideri|"
+    r"sinucis(?:ă|i|e)?|"
+    r"tragedi(?:e|i|ile)?|"
+    r"înecat(?:ă|i|e)?"
+    r")\b",
+    re.I,
+)
+
+
+def is_tragic_or_negative(text: str) -> bool:
+    """Verifica daca textul contine termeni de tragedie, accident, deces sau penal grav."""
+    return bool(_TRAGIC_TERMS.search(text or ""))
+
+
 def lead_for_locality(a: dict, by_name: dict, memo: dict | None = None):
     """(intrare, motiv) pentru fotografia LOCALITATII unei stiri venite de la primaria ei.
 
     Se incearca INAINTEA rutei pe entitati, fiindca e mult mai fiabila: cheia e slug-ul
     determinist al sursei (`pl_<judet>_<localitate>`), nu entitatile extrase din text.
+
+    Garda Negativa Epistemica (Argon): stirile locale despre tragedii, accidente, decese
+    sau fapte penale grave nu au voie sa poarte fotografia insorita a localitatii/primariei.
+    Cititorul ar asocia cladirea/reperul cu scena accidentului sau fapta penala.
 
     Poarta de licenta e `localities.usable` (CC0/PD si CC BY/BY-SA, NC/ND respinse), nu
     `qualifies` (doar PD/CC0). Bariera stricta din 2026-08-19 (01d6107) exista fiindca atunci
@@ -256,6 +296,11 @@ def lead_for_locality(a: dict, by_name: dict, memo: dict | None = None):
     `memo` (`{qid: intrare | motiv}`) tine rezultatul per LOCALITATE in rulare: a doua stire
     din aceeasi localitate nu mai face nicio cerere de retea.
     """
+    title = a.get("title", "")
+    summary = a.get("synthesis") or a.get("teaser") or ""
+    if is_tragic_or_negative(f"{title} {summary}"):
+        return None, "loc_exclus_tematic"
+
     rec = localities.locality_for_article(a, by_name)
     if not rec:
         if not localities.eligible(a):
@@ -374,17 +419,34 @@ def main() -> int:
     print(f">> localitati cu poza deja in cache: {len(memo)}")
     done = refolosite = 0
     motive: dict = {}
-    # Stirile primariilor INTAI (stabil: in rest ramane ordinea starii, cele mai noi primele).
-    # O interogare de localitate rezolva apoi, fara retea, toate stirile acelei localitati;
-    # o interogare pe entitati rezolva cel mult un articol (3 hit-uri din ~10.000, masurat
-    # 2026-10-17). Plafonul merge deci intai acolo unde o cerere aduce cele mai multe poze.
-    for a in sorted(arts, key=lambda x: 0 if localities.eligible(x) else 1):
+    # Prioritizare pe categorii (Argon): articolul #1 (cel mai recent) din fiecare
+    # categorie primeste prioritate de interogare (0), creand cate o ancora vizuala pe
+    # fiecare rubrica a primei pagini. Urmeaza restul stirilor locale (1), apoi fluxul general (2).
+    seen_cats = set()
+    first_in_cat = set()
+    for a in arts:
+        cat = a.get("category")
+        if cat and cat not in seen_cats:
+            seen_cats.add(cat)
+            first_in_cat.add(htmlart.art_id(a))
+
+    def _prioritate_articol(x: dict) -> int:
+        aid = htmlart.art_id(x)
+        if aid in first_in_cat:
+            return 0
+        if localities.eligible(x):
+            return 1
+        return 2
+
+    for a in sorted(arts, key=_prioritate_articol):
         aid = htmlart.art_id(a)
         if not _needs_lookup(aid, a, cache):
             continue
-        # Localitatea cu poza deja cunoscuta se rezolva FARA retea, deci fara plafon.
+        # Localitatea cu poza deja cunoscuta se rezolva FARA retea, deci fara plafon
+        # (cu conditia sa nu fie o stire de tragedie/accident -- Garda Negativa Argon).
         rec = localities.locality_for_article(a, by_name)
-        if rec and isinstance(memo.get(rec["qid"]), dict):
+        title_text = f"{a.get('title', '')} {a.get('synthesis') or a.get('teaser') or ''}"
+        if rec and isinstance(memo.get(rec["qid"]), dict) and not is_tragic_or_negative(title_text):
             cache[aid] = {**memo[rec["qid"]], "name": rec["display"]}
             refolosite += 1
             continue
