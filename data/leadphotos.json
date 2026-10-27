@@ -2853,18 +2853,6 @@
   "kind": "locality",
   "qid": "Q835227"
  },
- "bd70866ce5f439d5": {
-  "miss": true,
-  "v": 2
- },
- "e21a8ffae91766a0": {
-  "miss": true,
-  "v": 2
- },
- "7eefd81eb8f18c7b": {
-  "miss": true,
-  "v": 2
- },
  "71e424af42e4b880": {
   "cover": "leads/loc-Q837161.c.jpg",
   "art": "leads/loc-Q837161.jpg",
@@ -9323,42 +9311,6 @@
   "motiv_loc": "loc_negasit_sau_fara_imagine",
   "motiv_ent": "ent_fara_entitati"
  },
- "209d5b26f5896f74": {
-  "miss": true,
-  "v": 3,
-  "motiv_loc": "loc_negasit_sau_fara_imagine",
-  "motiv_ent": "ent_fara_entitati"
- },
- "31e7d200aedaaa8f": {
-  "miss": true,
-  "v": 3,
-  "motiv_loc": "loc_dimensiune_sau_format",
-  "motiv_ent": "ent_fara_entitati"
- },
- "366fb296fbb54b90": {
-  "miss": true,
-  "v": 3,
-  "motiv_loc": "loc_dimensiune_sau_format",
-  "motiv_ent": "ent_fara_entitati"
- },
- "0aab544410e7cba6": {
-  "miss": true,
-  "v": 3,
-  "motiv_loc": "loc_dimensiune_sau_format",
-  "motiv_ent": "ent_fara_entitati"
- },
- "1dfd54c849bf7b63": {
-  "miss": true,
-  "v": 3,
-  "motiv_loc": "loc_dimensiune_sau_format",
-  "motiv_ent": "ent_fara_entitati"
- },
- "ceadb25278c96069": {
-  "miss": true,
-  "v": 3,
-  "motiv_loc": "loc_dimensiune_sau_format",
-  "motiv_ent": "ent_fara_entitati"
- },
  "ce78838e97c49d24": {
   "cover": "leads/loc-Q16427550.c.jpg",
   "art": "leads/loc-Q16427550.jpg",
@@ -10927,12 +10879,6 @@
   "motiv_ent": "ent_fara_entitati"
  },
  "d242f5fa69937cb8": {
-  "miss": true,
-  "v": 3,
-  "motiv_loc": "loc_dimensiune_sau_format",
-  "motiv_ent": "ent_fara_entitati"
- },
- "4f49aa37eed0f53e": {
   "miss": true,
   "v": 3,
   "motiv_loc": "loc_dimensiune_sau_format",
@@ -20196,5 +20142,137 @@
   "name": "Cucerdea",
   "kind": "locality",
   "qid": "Q5057249"
+ },
+ "dc8a25b78f0293eb": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_neeligibil",
+  "motiv_ent": "ent_nenotabila"
+ },
+ "a3ed10aade2ea6d3": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_neeligibil",
+  "motiv_ent": "ent_fara_qid"
+ },
+ "ec4b349ec8c5361e": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_neeligibil",
+  "motiv_ent": "ent_licenta_sau_format"
+ },
+ "3cb4194a6674c80a": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_neeligibil",
+  "motiv_ent": "ent_nenotabila"
+ },
+ "815f79edb679d8d8": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_neeligibil",
+  "motiv_ent": "ent_nenotabila"
+ },
+ "059f70caa2e20396": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_neeligibil",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "c8b80c4412690170": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_neeligibil",
+  "motiv_ent": "ent_nenotabila"
+ },
+ "484d5312f452ade5": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_neeligibil",
+  "motiv_ent": "ent_fara_p18"
+ },
+ "51c525e891aeffbd": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_neeligibil",
+  "motiv_ent": "ent_licenta_sau_format"
+ },
+ "b8f5a2dc28cb4bcd": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_neeligibil",
+  "motiv_ent": "ent_nenotabila"
+ },
+ "8befcb6392dcce1f": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_neeligibil",
+  "motiv_ent": "ent_licenta_sau_format"
+ },
+ "da45a19a7ebaa48a": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_neeligibil",
+  "motiv_ent": "ent_licenta_sau_format"
+ },
+ "0fcbe8703692b06a": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_neeligibil",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "08f2c3cc1a393487": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_neeligibil",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "8e4b34cb6280e7e9": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_neeligibil",
+  "motiv_ent": "ent_licenta_sau_format"
+ },
+ "c5f3eb322913e6a0": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_neeligibil",
+  "motiv_ent": "ent_fara_qid"
+ },
+ "676320c9bfc2ff3e": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_neeligibil",
+  "motiv_ent": "ent_nenotabila"
+ },
+ "84968cb0031a1f2e": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_neeligibil",
+  "motiv_ent": "ent_licenta_sau_format"
+ },
+ "bd2477ac51fc8f40": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_neeligibil",
+  "motiv_ent": "ent_nenotabila"
+ },
+ "e89acc24ec690354": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_neeligibil",
+  "motiv_ent": "ent_licenta_sau_format"
+ },
+ "e471fb40b6e9dbb5": {
+  "cover": "leads/of-e471fb40b6e9dbb5.c.jpg",
+  "art": "leads/of-e471fb40b6e9dbb5.jpg",
+  "webp": "leads/of-e471fb40b6e9dbb5.webp",
+  "artist": "The White House",
+  "license": "Public domain",
+  "page": "https://commons.wikimedia.org/wiki/File:President_Donald_J_Trump_votes_in_West_Palm_Beach,_Florida,_October_24,_2026_(P20261024JB-0533).jpg",
+  "name": "Donald Trump",
+  "kind": "oficial",
+  "sursa": "Casa Albă",
+  "data_poza": "2026-10-24"
  }
 }
