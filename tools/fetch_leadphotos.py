@@ -38,7 +38,7 @@ import urllib.request
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, ROOT)
-from generator import state, htmlart, localities, photojudge  # noqa: E402
+from generator import state, htmlart, localities, photojudge, render  # noqa: E402
 from generator.process import get_provider  # noqa: E402
 
 # reutilizam pipeline-ul Wikidata deja validat (potrivire stricta, licenta, notorietate)
@@ -80,31 +80,73 @@ def is_public_domain(short_name: str) -> bool:
     return bool(_PD_OK.match((short_name or "").strip()))
 
 
+def is_acceptable_lead_license(short_name: str) -> bool:
+    """Public domain / CC0 sau CC BY / CC BY-SA (care se afiseaza cu credit)."""
+    return is_public_domain(short_name) or render._is_credit_required_license(short_name)
+
+
 def is_landscape(w: int, h: int) -> bool:
     return bool(w) and bool(h) and w >= h * LANDSCAPE_RATIO
 
 
-def is_big_enough(w: int) -> bool:
-    """Coperta og e 1200x630; sub atat imaginea ar fi marita si vizibil interpolata."""
-    return bool(w) and w >= localities.MIN_WIDTH
+def is_acceptable_format(w: int, h: int) -> bool:
+    """Landscape clasic sau portret vertical / patrat decupabil curat (w/h >= 0.5, latime/inaltime >= 400)."""
+    if not (w and h):
+        return False
+    if is_landscape(w, h):
+        return True
+    return w >= 400 and h >= 400 and (w / h) >= 0.5
+
+
+def is_big_enough(w: int, h: int = 0) -> bool:
+    """Coperta og e 1200x630; imaginea trebuie sa acopere dimensiunea fara interpolare excesiva."""
+    return bool(w) and (w >= localities.MIN_WIDTH or (h >= localities.MIN_WIDTH and w >= 600))
 
 
 def qualifies(info: dict) -> bool:
-    """info = {width,height,license,...}. Poate deveni LEAD (carduri/og) daca e
-    destul de mare, landscape SI atribuire-libera."""
-    return is_big_enough(info.get("width", 0)) and \
-        is_landscape(info.get("width", 0), info.get("height", 0)) and \
-        is_public_domain(info.get("license", ""))
+    """info = {width,height,license,...}. Poate deveni LEAD daca e
+    destul de mare, are format decupabil curat SI licenta compatibila (PD/CC0 sau CC BY cu credit)."""
+    return is_big_enough(info.get("width", 0), info.get("height", 0)) and \
+        is_acceptable_format(info.get("width", 0), info.get("height", 0)) and \
+        is_acceptable_lead_license(info.get("license", ""))
 
 
-def crop_to(im, w: int, h: int):
-    """Redimensioneaza + incadreaza central la exact w x h (fara deformare)."""
+def crop_to(im, w: int, h: int, focus_y: float | None = None):
+    """Redimensioneaza + incadreaza la exact w x h (fara deformare).
+    Daca focus_y este specificat (0.0 .. 1.0), centrarea verticala se orienteaza
+    in jurul punctului cerut, protejand capul si fata de decupare arbitrara.
+    """
     sw, sh = im.size
     scale = max(w / sw, h / sh)
     nw, nh = max(w, round(sw * scale)), max(h, round(sh * scale))
     im = im.resize((nw, nh), Image.LANCZOS)
-    left, top = (nw - w) // 2, (nh - h) // 2
+    left = (nw - w) // 2
+    if focus_y is not None:
+        target_y = round(nh * focus_y)
+        top = target_y - h // 2
+        top = max(0, min(top, nh - h))
+    else:
+        top = (nh - h) // 2
     return im.crop((left, top, left + w, top + h))
+
+
+def _get_focus_y(name: str, info: dict) -> float | None:
+    """Calculeaza punctul vertical de focalizare (0.0 .. 1.0) pentru incadrarea portretelor."""
+    w, h = info.get("width", 0), info.get("height", 0)
+    if is_landscape(w, h):
+        return None
+    try:
+        incadrare = htmlart.incadrare_portrete()
+        portraits = json.load(open(render.PORTRAITS_JSON, encoding="utf-8"))
+        p = portraits.get(htmlart._norm_name(name))
+        if p and p.get("img") and p["img"] in incadrare:
+            poz = incadrare[p["img"]].get("poz", "")
+            if "%" in poz:
+                py_val = float(poz.split()[1].replace("%", ""))
+                return max(0.15, min(py_val / 100.0, 0.45))
+    except Exception:
+        pass
+    return 0.28
 
 
 def commons_lead_info(filename: str) -> dict | None:
@@ -124,12 +166,12 @@ def commons_lead_info(filename: str) -> dict | None:
     return None
 
 
-def _save_renditions(data: bytes, slug: str) -> dict | None:
+def _save_renditions(data: bytes, slug: str, focus_y: float | None = None) -> dict | None:
     """Din rendite descarcata produce cover+art+webp incadrate. None daca invalida."""
     import io
     im = Image.open(io.BytesIO(data)).convert("RGB")
-    cover = crop_to(im, COVER_W, COVER_H)
-    art = crop_to(im, ART_W, ART_H)
+    cover = crop_to(im, COVER_W, COVER_H, focus_y=focus_y)
+    art = crop_to(im, ART_W, ART_H, focus_y=focus_y)
     cov_p = os.path.join(OUTDIR, f"{slug}.c.jpg")
     art_p = os.path.join(OUTDIR, f"{slug}.jpg")
     web_p = os.path.join(OUTDIR, f"{slug}.webp")
@@ -294,11 +336,12 @@ def lead_for_article(a: dict, provider=None):
         if len(data) < 3000:
             continue
         slug = fp.slugish(name)
-        rend = _save_renditions(data, slug)
+        focus_y = _get_focus_y(name, info)
+        rend = _save_renditions(data, slug, focus_y=focus_y)
         if not rend:
             continue
         return {**rend, "artist": info["artist"], "license": info["license"],
-                "page": info["page"], "name": name}, "ent_ok"
+                "page": info["page"], "name": name, "kind": "entity"}, "ent_ok"
     return None, _ETAPE_ENT[etapa]
 
 
@@ -375,7 +418,7 @@ def main() -> int:
               + ", ".join(f"{k}={v}" for k, v in sorted(motive.items(), key=lambda kv: -kv[1])))
     # scriem doar hit-urile in fisierul consumat de render (miss-urile raman doar in memorie/cache-disk)
     hits = {k: v for k, v in cache.items() if not (v or {}).get("miss")}
-    json.dump(cache, open(CACHE, "w"), ensure_ascii=False, indent=0)
+    json.dump(cache, open(CACHE, "w", encoding="utf-8"), ensure_ascii=False, indent=0)
     print(f">> leadphotos: {done} interogari noi, {refolosite} refolosite fara retea, "
           f"{len(hits)} lead-uri, {len(cache)} intrari cache")
     return 0

@@ -25,11 +25,22 @@ def test_landscape_gate():
     assert not lp.is_landscape(0, 0)
 
 
-def test_qualifies_needs_both_landscape_and_pd():
+def test_qualifies_accepts_landscape_and_vertical_with_compatible_license():
     assert lp.qualifies({"width": 1600, "height": 900, "license": "Public domain"})
-    assert not lp.qualifies({"width": 1600, "height": 900, "license": "CC BY 4.0"})   # PD lipsa
-    assert not lp.qualifies({"width": 800, "height": 1200, "license": "CC0"})         # portret
+    assert lp.qualifies({"width": 1600, "height": 900, "license": "CC BY 4.0"})       # CC BY permis
+    assert lp.qualifies({"width": 800, "height": 1200, "license": "CC0"})             # portret vertical permis
+    assert lp.qualifies({"width": 800, "height": 1200, "license": "CC BY-SA 4.0"})    # portret CC BY-SA permis
+    assert not lp.qualifies({"width": 1600, "height": 900, "license": "Copyrighted"}) # licenta interzisa
+    assert not lp.qualifies({"width": 200, "height": 1000, "license": "CC0"})         # raport extrem (<0.5)
     assert not lp.qualifies({"width": 0, "height": 0, "license": "CC0"})
+
+
+def test_crop_to_with_focus_y_centers_on_face():
+    # Imagine verticala 800x1600
+    src = Image.new("RGB", (800, 1600), (255, 255, 255))
+    # Decupaj la 960x504 cu focalizare pe treimea superioara (focus_y=0.25)
+    out = lp.crop_to(src, 960, 504, focus_y=0.25)
+    assert out.size == (960, 504)
 
 
 def test_crop_to_produces_exact_dims_without_distortion():
