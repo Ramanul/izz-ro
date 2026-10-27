@@ -2,9 +2,6 @@
  "44527016eb400d0e": {
   "miss": true
  },
- "ace44ed161c02ea3": {
-  "miss": true
- },
  "098553f5cbc05006": {
   "miss": true
  },
@@ -2438,10 +2435,6 @@
   "name": "Odobești",
   "kind": "locality"
  },
- "1aefe5e8c838b3a5": {
-  "miss": true,
-  "v": 2
- },
  "e53038f646fb7f3c": {
   "cover": "leads/loc-Q202458.c.jpg",
   "art": "leads/loc-Q202458.jpg",
@@ -2898,82 +2891,6 @@
   "page": "https://commons.wikimedia.org/wiki/File:Bistri%C8%9Ba_de_sus.jpg",
   "name": "Bistrița",
   "kind": "locality"
- },
- "660a53ac18d03f4c": {
-  "miss": true,
-  "v": 2
- },
- "1a6a01565dca66c2": {
-  "miss": true,
-  "v": 2
- },
- "ec13e2df81321bda": {
-  "miss": true,
-  "v": 2
- },
- "f6cc9fb40636b753": {
-  "miss": true,
-  "v": 2
- },
- "ef94ba5323da23c9": {
-  "miss": true,
-  "v": 2
- },
- "e25afa42664a7c52": {
-  "miss": true,
-  "v": 2
- },
- "8a33eb028f3a2df3": {
-  "miss": true,
-  "v": 2
- },
- "e7fda492dfe2a580": {
-  "miss": true,
-  "v": 2
- },
- "fdc29e99d864838a": {
-  "miss": true,
-  "v": 2
- },
- "d72ae35fc4f2dcf0": {
-  "miss": true,
-  "v": 2
- },
- "581f3dff67eb9860": {
-  "miss": true,
-  "v": 2
- },
- "1321478fe3930ca3": {
-  "miss": true,
-  "v": 2
- },
- "eb11cc6cc0a1bedc": {
-  "miss": true,
-  "v": 2
- },
- "2d7a82bec90f6ea0": {
-  "miss": true,
-  "v": 2
- },
- "d34e530ab4b902f5": {
-  "miss": true,
-  "v": 2
- },
- "ad860714a38075be": {
-  "miss": true,
-  "v": 2
- },
- "db98ad6fa5e808f7": {
-  "miss": true,
-  "v": 2
- },
- "678d33c900889937": {
-  "miss": true,
-  "v": 2
- },
- "44f1e4f27bd3c17e": {
-  "miss": true,
-  "v": 2
  },
  "fde2c1f87813b6f3": {
   "miss": true,
@@ -3600,30 +3517,6 @@
   "name": "Ocna Sibiului",
   "kind": "locality"
  },
- "f7fc5a9dda292fc9": {
-  "miss": true,
-  "v": 3,
-  "motiv_loc": "loc_dimensiune_sau_format",
-  "motiv_ent": "ent_nenotabila"
- },
- "f1b1cfb095f4c72e": {
-  "miss": true,
-  "v": 3,
-  "motiv_loc": "loc_dimensiune_sau_format",
-  "motiv_ent": "ent_fara_entitati"
- },
- "2fb25951aa926809": {
-  "miss": true,
-  "v": 3,
-  "motiv_loc": "loc_dimensiune_sau_format",
-  "motiv_ent": "ent_fara_entitati"
- },
- "4ad56960e48025eb": {
-  "miss": true,
-  "v": 3,
-  "motiv_loc": "loc_negasit_sau_fara_imagine",
-  "motiv_ent": "ent_fara_entitati"
- },
  "0a36227bb88c048a": {
   "cover": "leads/loc-Q2716490.c.jpg",
   "art": "leads/loc-Q2716490.jpg",
@@ -3634,12 +3527,6 @@
   "name": "Padina",
   "kind": "locality",
   "qid": "Q2716490"
- },
- "1365e34e7776c800": {
-  "miss": true,
-  "v": 3,
-  "motiv_loc": "loc_dimensiune_sau_format",
-  "motiv_ent": "ent_fara_entitati"
  },
  "cf3572bb3ad623d1": {
   "cover": "leads/loc-Q5066773.c.jpg",
@@ -9827,12 +9714,6 @@
   "motiv_loc": "loc_negasit_sau_fara_imagine",
   "motiv_ent": "ent_fara_entitati"
  },
- "f379a13792d3d23b": {
-  "miss": true,
-  "v": 3,
-  "motiv_loc": "loc_negasit_sau_fara_imagine",
-  "motiv_ent": "ent_fara_entitati"
- },
  "21841e579c5a212f": {
   "cover": "leads/loc-Q305182.c.jpg",
   "art": "leads/loc-Q305182.jpg",
@@ -13378,12 +13259,6 @@
   "miss": true,
   "v": 3,
   "motiv_loc": "loc_negasit_sau_fara_imagine",
-  "motiv_ent": "ent_fara_entitati"
- },
- "3fbcab1a5515e101": {
-  "miss": true,
-  "v": 3,
-  "motiv_loc": "loc_dimensiune_sau_format",
   "motiv_ent": "ent_fara_entitati"
  },
  "d97be0e222eee53c": {
@@ -19733,5 +19608,336 @@
   "name": "Petreștii de Jos",
   "kind": "locality",
   "qid": "Q12725032"
+ },
+ "ef30c64a849209c2": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_dimensiune_sau_format",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "30f5ad8a879ed691": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_dimensiune_sau_format",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "eddedf2ee451a0cb": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_negasit_sau_fara_imagine",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "1e22855425f9b7fb": {
+  "cover": "leads/loc-Q1654950.c.jpg",
+  "art": "leads/loc-Q1654950.jpg",
+  "webp": "leads/loc-Q1654950.webp",
+  "artist": "Costinlfc",
+  "license": "CC BY-SA 3.0 ro",
+  "page": "https://commons.wikimedia.org/wiki/File:Jilava_Church_Front.JPG",
+  "name": "Jilava",
+  "kind": "locality"
+ },
+ "e3ce750443805dbd": {
+  "cover": "leads/loc-Q167121.c.jpg",
+  "art": "leads/loc-Q167121.jpg",
+  "webp": "leads/loc-Q167121.webp",
+  "artist": "Sie",
+  "license": "CC BY-SA 3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Ny%C3%A1r%C3%A1dt%C5%91_reform%C3%A1tus_templom1.JPG",
+  "name": "Ungheni",
+  "kind": "locality"
+ },
+ "78bd9897c73bbb57": {
+  "cover": "leads/loc-Q215723.c.jpg",
+  "art": "leads/loc-Q215723.jpg",
+  "webp": "leads/loc-Q215723.webp",
+  "artist": "Marius-Ionut",
+  "license": "CC BY-SA 3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Bulevardul_Unirii_-_panoramio_(3).jpg",
+  "name": "Slobozia",
+  "kind": "locality"
+ },
+ "08a059af1bc19767": {
+  "cover": "leads/loc-Q11585.c.jpg",
+  "art": "leads/loc-Q11585.jpg",
+  "webp": "leads/loc-Q11585.webp",
+  "artist": "Diego Delso",
+  "license": "CC BY-SA 4.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Puerto_de_Tulcea,_Ruman%C3%ADa,_2016-05-28,_DD_42.jpg",
+  "name": "Tulcea",
+  "kind": "locality",
+  "qid": "Q11585"
+ },
+ "b19ea9841eb2e57e": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_negasit_sau_fara_imagine",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "98d45a1bd068f4fe": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_negasit_sau_fara_imagine",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "b867e99811777d43": {
+  "cover": "leads/loc-Q179585.c.jpg",
+  "art": "leads/loc-Q179585.jpg",
+  "webp": "leads/loc-Q179585.webp",
+  "artist": "Razvan Socol",
+  "license": "CC BY-SA 3.0 ro",
+  "page": "https://commons.wikimedia.org/wiki/File:Casa_Luca_Elefterescu,_azi_Muzeul_Ceasului_%22Nicolae_Simache%22_(2).JPG",
+  "name": "Ploiești",
+  "kind": "locality"
+ },
+ "fd4bd02f18d53663": {
+  "cover": "leads/loc-Q12089397.c.jpg",
+  "art": "leads/loc-Q12089397.jpg",
+  "webp": "leads/loc-Q12089397.webp",
+  "artist": "Bogdan Ilieş",
+  "license": "CC BY-SA 3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Biserica_de_lemn_Sf_Voievozi-Sihastria01.jpg",
+  "name": "Vânători-Neamț",
+  "kind": "locality"
+ },
+ "3305e3c9e699910e": {
+  "cover": "leads/loc-Q851048.c.jpg",
+  "art": "leads/loc-Q851048.jpg",
+  "webp": "leads/loc-Q851048.webp",
+  "artist": "Strainu",
+  "license": "CC BY-SA 3.0 ro",
+  "page": "https://commons.wikimedia.org/wiki/File:Cassina_F%C4%83get_-_lateral_01.JPG",
+  "name": "Făget",
+  "kind": "locality"
+ },
+ "44ae8202c05d4d9f": {
+  "cover": "leads/loc-Q837170.c.jpg",
+  "art": "leads/loc-Q837170.jpg",
+  "webp": "leads/loc-Q837170.webp",
+  "artist": "Cezar Suceveanu",
+  "license": "CC BY 3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Primaria_din_Gura_Humorului3.jpg",
+  "name": "Gura Humorului",
+  "kind": "locality"
+ },
+ "8c2284247d3a96f9": {
+  "cover": "leads/loc-Q11585.c.jpg",
+  "art": "leads/loc-Q11585.jpg",
+  "webp": "leads/loc-Q11585.webp",
+  "artist": "Diego Delso",
+  "license": "CC BY-SA 4.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Puerto_de_Tulcea,_Ruman%C3%ADa,_2016-05-28,_DD_42.jpg",
+  "name": "Tulcea",
+  "kind": "locality",
+  "qid": "Q11585"
+ },
+ "07c05dfd04ff55ba": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_dimensiune_sau_format",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "0b9cdff021241e30": {
+  "cover": "leads/loc-Q458422.c.jpg",
+  "art": "leads/loc-Q458422.jpg",
+  "webp": "leads/loc-Q458422.webp",
+  "artist": "Ana Maria Catalina",
+  "license": "CC BY-SA 3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:C%C3%A2mpia_Turzii-Parcul_Central-IMG_6685.jpg",
+  "name": "Câmpia Turzii",
+  "kind": "locality",
+  "qid": "Q458422"
+ },
+ "1b53fd4d777e954f": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_negasit_sau_fara_imagine",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "371a49eff8fda46a": {
+  "cover": "leads/loc-Q207196.c.jpg",
+  "art": "leads/loc-Q207196.jpg",
+  "webp": "leads/loc-Q207196.webp",
+  "artist": "Jan Pešula",
+  "license": "CC0",
+  "page": "https://commons.wikimedia.org/wiki/File:Zlatna_panorama.jpg",
+  "name": "Zlatna",
+  "kind": "locality"
+ },
+ "f87e9fefcbf9b2c1": {
+  "cover": "leads/loc-Q209809.c.jpg",
+  "art": "leads/loc-Q209809.jpg",
+  "webp": "leads/loc-Q209809.webp",
+  "artist": "Ana Maria Catalina",
+  "license": "CC BY-SA 4.0",
+  "page": "https://commons.wikimedia.org/wiki/File:2010-IMG_1840.jpg",
+  "name": "Turda",
+  "kind": "locality",
+  "qid": "Q209809"
+ },
+ "d3226162da1dfe8d": {
+  "cover": "leads/loc-Q12724758.c.jpg",
+  "art": "leads/loc-Q12724758.jpg",
+  "webp": "leads/loc-Q12724758.webp",
+  "artist": "Țetcu Mircea Rareș",
+  "license": "CC BY-SA 4.0",
+  "page": "https://commons.wikimedia.org/wiki/File:RO_GJ_Biserica_de_lemn_din_Valea_Bratuii_(8).jpg",
+  "name": "Dănești",
+  "kind": "locality",
+  "qid": "Q12724758"
+ },
+ "e9c885a6f8778922": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_dimensiune_sau_format",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "174d807bfa85f8f1": {
+  "cover": "leads/loc-Q930102.c.jpg",
+  "art": "leads/loc-Q930102.jpg",
+  "webp": "leads/loc-Q930102.webp",
+  "artist": "Defrenrokorit",
+  "license": "CC BY-SA 3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Primaria-tautii.jpg",
+  "name": "Tăuții-Măgherăuș",
+  "kind": "locality",
+  "qid": "Q930102"
+ },
+ "3e1b28e8252f0b6e": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_negasit_sau_fara_imagine",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "db34ae4613aa6c62": {
+  "cover": "leads/loc-Q209809.c.jpg",
+  "art": "leads/loc-Q209809.jpg",
+  "webp": "leads/loc-Q209809.webp",
+  "artist": "Ana Maria Catalina",
+  "license": "CC BY-SA 4.0",
+  "page": "https://commons.wikimedia.org/wiki/File:2010-IMG_1840.jpg",
+  "name": "Turda",
+  "kind": "locality",
+  "qid": "Q209809"
+ },
+ "e799caea5f42370b": {
+  "cover": "leads/loc-Q209809.c.jpg",
+  "art": "leads/loc-Q209809.jpg",
+  "webp": "leads/loc-Q209809.webp",
+  "artist": "Ana Maria Catalina",
+  "license": "CC BY-SA 4.0",
+  "page": "https://commons.wikimedia.org/wiki/File:2010-IMG_1840.jpg",
+  "name": "Turda",
+  "kind": "locality",
+  "qid": "Q209809"
+ },
+ "769e8b9e27791754": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_dimensiune_sau_format",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "cea835e394df41b1": {
+  "cover": "leads/loc-Q666373.c.jpg",
+  "art": "leads/loc-Q666373.jpg",
+  "webp": "leads/loc-Q666373.webp",
+  "artist": "Dan1967",
+  "license": "CC BY-SA 3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Primaria_Seini.jpg",
+  "name": "Seini",
+  "kind": "locality",
+  "qid": "Q666373"
+ },
+ "bc7d3aec936032be": {
+  "cover": "leads/loc-Q685857.c.jpg",
+  "art": "leads/loc-Q685857.jpg",
+  "webp": "leads/loc-Q685857.webp",
+  "artist": "Rotaru Florin",
+  "license": "CC BY-SA 4.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Vedere_generala_(centru).jpg",
+  "name": "Medgidia",
+  "kind": "locality",
+  "qid": "Q685857"
+ },
+ "bc9ca09d396a6f37": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_dimensiune_sau_format",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "b30f67c2b0e231d2": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_dimensiune_sau_format",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "6191924044bf808f": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_dimensiune_sau_format",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "0023a5ff2644ed35": {
+  "cover": "leads/loc-Q803706.c.jpg",
+  "art": "leads/loc-Q803706.jpg",
+  "webp": "leads/loc-Q803706.webp",
+  "artist": "Cristi",
+  "license": "CC BY 2.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Baia_Sprie.jpg",
+  "name": "Baia Sprie",
+  "kind": "locality",
+  "qid": "Q803706"
+ },
+ "f3d81debee1ea69b": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_negasit_sau_fara_imagine",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "6ae942ef01ccf4bb": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_dimensiune_sau_format",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "de95340b106c7635": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_dimensiune_sau_format",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "ffdc38bfbfb5e900": {
+  "cover": "leads/loc-Q508313.c.jpg",
+  "art": "leads/loc-Q508313.jpg",
+  "webp": "leads/loc-Q508313.webp",
+  "artist": "Patrik Kunec",
+  "license": "CC BY-SA 4.0",
+  "page": "https://commons.wikimedia.org/wiki/File:N%C4%83dlac_-_view_from_the_church_tower_I.jpg",
+  "name": "Nădlac",
+  "kind": "locality",
+  "qid": "Q508313"
+ },
+ "4b452757659e60c9": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_dimensiune_sau_format",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "140da24cda9b25b0": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_negasit_sau_fara_imagine",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "d666896b6195c607": {
+  "cover": "leads/loc-Q16426237.c.jpg",
+  "art": "leads/loc-Q16426237.jpg",
+  "webp": "leads/loc-Q16426237.webp",
+  "artist": "E.Coman",
+  "license": "CC BY-SA 4.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Sandulesti_Panorama.jpg",
+  "name": "Săndulești",
+  "kind": "locality",
+  "qid": "Q16426237"
  }
 }
