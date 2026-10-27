@@ -92,6 +92,12 @@ def apply(articles, index):
         if row:
             if row["state"] == "withdrawn":
                 continue
+            view["initial_version"] = {
+                "title": article.get("title", ""),
+                "teaser": article.get("teaser", ""),
+                "synthesis": article.get("synthesis", ""),
+                "county": article.get("county", ""),
+            }
             view.update({k: v for k, v in row["presentation"].items() if k != "county"})
             if "county" in row["presentation"]:
                 view["editorial_county"] = row["presentation"]["county"]

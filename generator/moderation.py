@@ -71,7 +71,7 @@ def _validate(mod: dict) -> dict:
                 f"{MOD_PATH}: fiecare entry din corrections trebuie sa fie URL -> obiect."
             )
         for field in change:
-            if field not in {"title", "teaser", "synthesis"} or not isinstance(change[field], str):
+            if field not in {"title", "teaser", "synthesis", "reason", "motiv"} or not isinstance(change[field], str):
                 raise ModerationConfigCorrupt(
                     f"{MOD_PATH}: corrections[{url!r}] are un camp invalid: {field!r}."
                 )
@@ -325,9 +325,21 @@ def apply(articles: list, mod: dict) -> list:
         if any(kw in title_l for kw in keywords):
             continue
         if norm_url in corrections:
+            change = corrections[norm_url]
+            initial = {
+                "title": a.get("title", ""),
+                "teaser": a.get("teaser", ""),
+                "synthesis": a.get("synthesis", ""),
+            }
+            applied = False
             for field in ("title", "teaser", "synthesis"):
-                if field in corrections[norm_url]:
-                    a[field] = corrections[norm_url][field]
+                if field in change:
+                    a[field] = change[field]
+                    applied = True
+            if applied:
+                a["initial_version"] = initial
+                motiv = change.get("motiv") or change.get("reason") or "ajustare manuală confirmată"
+                a["moderation_note"] = f"cluster ajustat manual: {motiv}"
         a["featured"] = norm_url in featured
         if hold and a.get("model") == "C" and norm_url not in approved:
             held.append(a)

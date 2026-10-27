@@ -48,6 +48,11 @@
   {# `data-pagefind-body` marcheaza CE se indexeaza: titlul si rezumatul, nimic altceva. Greutatea
      mai mare pe titlu face ca o potrivire in titlu sa iasa deasupra uneia din corp. -#}
   <h1 data-pagefind-body data-pagefind-weight="3">{{ a.display_title or a.title }}</h1>
+  {% if a.moderation_note %}
+  <aside class="notice moderation-notice" aria-label="Moderare manuală">
+    <p><strong>{{ a.moderation_note }}</strong></p>
+  </aside>
+  {% endif %}
   {% if a.correction %}
   <aside class="notice" aria-label="Corecție editorială">
     <p><strong>Corectat la <time datetime="{{ a.correction.reviewed_at }}">{{ a.correction.reviewed_at }}</time>.</strong> {{ a.correction.notice }}</p>
