@@ -162,3 +162,51 @@ def test_homonym_localities_have_distinct_qids():
 
 def test_dataset_missing_file_is_fail_safe():
     assert L.load_dataset("/nonexistent/localities.json") == {}
+
+
+# --- Regresii geometrice UAT / Județ ---------------------------------------------
+
+def test_valcea_lowercase_county_normalization():
+    """Regresie: 'județul Vâlcea' din Wikidata scris cu j mic trebuie normalizat la 'VALCEA',
+    altfel localitatile din Valcea primesc 'JUDETUL VALCEA' si pica la potrivirea cu harta."""
+    from generator import geo
+    judete = geo.judetele_localitatii("BUJORENI")
+    assert "VALCEA" in judete
+    assert "JUDETUL VALCEA" not in judete
+
+
+def test_all_primarii_have_valid_uat_paths():
+    """Toate sursele de primarii din config.SOURCES (537) trebuie sa aiba contur UAT valid
+    in static/harta-stiri/data/uat/ (inclusiv redenumirile istorice Ciuhoi->Saniob si Risca->Rasca)."""
+    from generator import config, htmlart, localities
+    townhalls = [s for s in config.SOURCES.keys() if s.startswith("pl_")]
+    missing = []
+    for s in townhalls:
+        parsed = localities.parse_source_slug(s)
+        assert parsed is not None, f"Slug invalid: {s}"
+        j_slug, _loc_slug = parsed
+        cod = htmlart._uat_nume(j_slug)
+        if cod not in htmlart._harta():
+            cod = cod.replace(" ", "-")
+        path = htmlart._uat_path({"source": s}, cod)
+        if not path:
+            missing.append(s)
+    assert missing == [], f"Primarii fara UAT: {missing}"
+
+
+def test_balan_vama_ambigue_no_false_locality_match():
+    """'Balan' si 'Vama' sunt in _AMBIGUE: fara particula de loc nu se clasifica drept localitati."""
+    from generator import geo
+    t_persoana = "HCL nr. 71 din 29.09.2026 act aditional contract de concesiune Balan Andreea Ana"
+    assert geo.loc_din_titlu(t_persoana, "SUCEAVA") == ""
+
+    t_trupa = "West Side Fest: Andra, Vama, Zdob si Zdub la Lacul Morii"
+    assert geo.loc_din_titlu(t_trupa, "BUCURESTI") == ""
+
+    # Cu marca geografica / locativ, raman localitati valide
+    t_oras = "Investitii in orasul Balan din judetul Harghita"
+    assert geo.loc_din_titlu(t_oras, "HARGHITA") == "Bălan"
+
+    t_comuna = "Festival in comuna Vama din judetul Suceava"
+    assert geo.loc_din_titlu(t_comuna, "SUCEAVA") == "Vama"
+

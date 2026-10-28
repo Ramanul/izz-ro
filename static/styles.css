@@ -916,6 +916,53 @@ picture { display: contents; }
 
 .art-brand--jos { position: absolute; }
 
+/* -- indicator cantitativ financiar (stat callout 2.5D pe stiri economice) -- */
+.art--callout-mode {}
+.art-callout {
+  position: absolute; display: flex; align-items: center; justify-content: flex-end;
+  font-family: var(--font-title); font-weight: 700; line-height: .95; text-align: right;
+  pointer-events: none;
+}
+.art-callout-val {
+  display: inline-block; white-space: nowrap;
+  color: var(--art-gold);
+  text-shadow: 0 .4cqw 1.2cqw rgba(29, 31, 36, 0.45), 0 .1cqw .3cqw rgba(250, 232, 162, 0.55);
+}
+.art-callout--inversat {
+  right: 5.83cqw; bottom: 4.5cqw; max-width: 42cqw;
+}
+.art-callout--banda {
+  right: 6.67cqw; top: 50%; transform: translateY(-50%); max-width: 60cqw;
+}
+.art--banda .art-callout-val {
+  color: var(--art-acc);
+  text-shadow: 0 .3cqw .8cqw rgba(29, 31, 36, 0.16), 0 .1cqw .2cqw rgba(184, 134, 11, 0.35);
+}
+.art-callout--editorial {
+  right: 7.5cqw; top: 50%; transform: translateY(-50%); max-width: 38cqw;
+}
+.art-seal--callout {
+  display: flex; align-items: center; justify-content: center; text-align: center;
+}
+.art-seal--callout .art-callout-val {
+  color: var(--art-acc);
+  text-shadow: 0 .2cqw .6cqw rgba(29, 31, 36, 0.18), 0 .1cqw .2cqw rgba(184, 134, 11, 0.4);
+}
+
+/* Trepte dimensionale cqw pentru callout — scalare proportionala fara trunchiere arbitrara */
+.art-callout--c0 .art-callout-val { font-size: 14.5cqw; }
+.art-callout--c1 .art-callout-val { font-size: 8.4cqw; }
+.art-callout--c2 .art-callout-val { font-size: 5.4cqw; letter-spacing: -.05cqw; }
+
+/* In cadrul sigiliului rotund (art-seal), spatiul e calibrat usor mai compact */
+.art-seal.art-callout--c0 .art-callout-val { font-size: 11cqw; }
+.art-seal.art-callout--c1 .art-callout-val { font-size: 6.5cqw; }
+.art-seal.art-callout--c2 .art-callout-val { font-size: 4.6cqw; }
+
+/* Cand nu avem callout pe cardurile tematice (fara data), corpul textului se extinde armonios */
+.art--inversat:not(.art--callout-mode) .art-body { max-width: 86cqw; }
+.art--arc:not(.art--callout-mode):not(.art--geo) .art-body { max-width: 86cqw; }
+
 /* -- silueta cartografica a judetului (Natural Earth, domeniu public) si medalionul portret (PD/CC0) -- */
 .art--harta.art--editorial, .art--portret.art--editorial { --art-et-base: 9.58cqw; }
 .art--harta.art--editorial .art-body, .art--portret.art--editorial .art-body { max-width: 54cqw; }
@@ -945,9 +992,27 @@ picture { display: contents; }
 .art--geo:not(.art--harta) .art-body { max-width: 84cqw; }
 .art--geo .art-subrow { margin-top: 3.2cqw; }  /* sub-linia mai mare nu mai atinge diacriticele (Ș, Ț) */
 .art--geo .art-subrow .art-sub { font-size: 3.1cqw; letter-spacing: .3cqw; opacity: .72; }
+.art--geo .art-harta {
+  filter: drop-shadow(0 6px 14px rgba(29, 31, 36, 0.16)) drop-shadow(0 1.5px 3px rgba(184, 134, 11, 0.28));
+  transition: filter .25s ease, transform .25s ease;
+}
+.card:hover .art--geo .art-harta {
+  filter: drop-shadow(0 8px 18px rgba(29, 31, 36, 0.22)) drop-shadow(0 2px 5px rgba(201, 162, 39, 0.38));
+  transform: translateY(-1px);
+}
+.art--geo .art-harta svg { overflow: visible; }
+.art:not(.art--geo) .art-harta-soclu { display: none; }
 .art--geo .art-harta path {
   fill: var(--art-geo-aur); fill-opacity: 1;
   stroke: var(--art-gold); stroke-opacity: 1;
+}
+.art--geo .art-harta .art-harta-soclu {
+  fill: #9b7825; fill-opacity: .92;
+  stroke: #7a5e18; stroke-opacity: .8;
+}
+.art--geo .art-harta .art-harta-fata {
+  fill: url(#art-gold-grad, var(--art-geo-aur));
+  stroke: #f7df8b; stroke-opacity: .95;
 }
 .art-portret-wrap {
   position: absolute; right: 6.25cqw; top: 50%; transform: translateY(-50%);
