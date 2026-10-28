@@ -19,6 +19,11 @@
     card si pe pagina. Anuntat la cititorul de ecran ar fi repetitie, nu informatie. -#}
 {% macro art(a, extra='', portret=True) %}
 {%- set s = a.art_style %}{% if s %}{% set d = s.data %}{% set pr = s.portret if portret else None -%}
+{%- if s.full_bleed or s.image_url -%}
+<div class="art art--fullbleed{% if extra %} {{ extra }}{% endif %}" aria-hidden="true">
+  <img class="art-fullbleed-img" src="{{ s.image_url }}" alt="" loading="lazy" decoding="async" width="960" height="504">
+</div>
+{%- else -%}
 <div class="art art--{{ s.tpl }} art--p{{ s.pal }} art--t{{ s.treapta }}{% if s.harta %} art--harta{% elif pr %} art--portret{% endif %}{% if s.geo %} art--geo{% endif %}{% if s.callout %} art--callout-mode{% endif %}{% if extra %} {{ extra }}{% endif %}" aria-hidden="true">
   {%- if s.tpl == 'editorial' %}
   <div class="art-head"><span class="art-brand">izz.ro</span><span class="art-when">{% if d %}{{ d.wk }} {{ d.zi_n }} {{ d.luna }} {{ d.an }}{% else %}izz.ro{% endif %}</span></div>
@@ -91,4 +96,5 @@
   </div>{% endif %}
   <div class="art-grain"></div>
 </div>
+{%- endif %}
 {%- endif %}{% endmacro %}

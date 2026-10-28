@@ -200,12 +200,21 @@ def _carlig_tematic(a: dict) -> str:
             return ent_clean
 
     # 3. Tipare dinamice de institutii publice si autoritati din titlu
+    # re.IGNORECASE pe intregul regex, cu suport extins pentru diacritice romane si maghiare
+    # (á, é, í, ó, ö, ő, ú, ü, ű) si adjective institutionale in minuscule (ex: 'poliția rutieră')
     m_inst = re.search(
-        r"\b((?i:Ministerul|Consiliul|Inspectoratul|Curtea|Direc[tț]ia|Agen[tț]ia|Autoritatea|Prim[aă]ria|Prefectura|Tribunalul|Judec[aă]toria|Parchetul|Poli[tț]ia|Spitalul|Universitatea|Academia|Comisia|Organiza[tț]ia|Federa[tț]ia|Alian[tț]a)(?:\s+(?:de|pentru|al|a|și|si|în|in))?\s+[A-ZĂÂÎȘȚ][a-zăâîșț0-9&._-]+(?:\s+(?:de|pentru|al|a|și|si|în|in)\s+[A-ZĂÂÎȘȚ][a-zăâîșț0-9&._-]+|\s+[A-ZĂÂÎȘȚ][a-zăâîșț0-9&._-]+)?)\b",
+        r"\b((?:Ministerul|Consiliul|Inspectoratul|Curtea|Direc[tț]ia|Agen[tț]ia|Autoritatea|Prim[aă]ria|Prefectura|Tribunalul|Judec[aă]toria|Parchetul|Poli[tț]ia|Spitalul|Universitatea|Academia|Comisia|Organiza[tț]ia|Federa[tț]ia|Alian[tț]a)(?:\s+(?:de|pentru|al|a|și|si|în|in|din))?\s+[a-zăâîșțáéíóöőúüű0-9&._-]+(?:\s+(?:de|pentru|al|a|și|si|în|in|din)\s+[a-zăâîșțáéíóöőúüű0-9&._-]+|\s+[a-zăâîșțáéíóöőúüű0-9&._-]+)?)\b",
         titlu,
+        re.IGNORECASE,
     )
     if m_inst:
         inst_nume = m_inst.group(1).strip()
+        # Curatam verbele auxiliare sau predicative daca au fost capturate accidental la final (ex. ' a publicat', ' a anuntat')
+        inst_nume = re.sub(r"\s+(?:a|au|va|vor|a\s+fost|au\s+fost)\s+[a-zăâîșțáéíóöőúüű]+$", "", inst_nume, flags=re.I)
+        inst_nume = re.sub(r"\s+(?:a|au|va|vor)$", "", inst_nume, flags=re.I).strip()
+        # Daca incepe cu minuscula, capitalizam primul caracter pentru lizibilitate editoriala
+        if inst_nume and inst_nume[0].islower():
+            inst_nume = inst_nume[0].upper() + inst_nume[1:]
         if inst_nume.lower() not in _IGNORE_ENTITIES and len(inst_nume) <= 36:
             return inst_nume
 
@@ -217,7 +226,20 @@ def _carlig_tematic(a: dict) -> str:
     if m_acr:
         return m_acr.group(1)
 
-    # 5. Companii, branduri, platforme semnalate lexical
+    # 5. Localitati si toponime specifice cu diacritice (ex. maghiare)
+    m_loc_hu = re.search(r"\b(Gyergy[oó]szentmikl[oó]s|Cs[ií]kszereda|Sepsiszentgy[oö]rgy)\b", titlu, re.IGNORECASE)
+    if m_loc_hu:
+        hu_map = {
+            "gyergyoszentmiklos": "Gyergyószentmiklós",
+            "gyergyószentmiklós": "Gyergyószentmiklós",
+            "csikszereda": "Csíkszereda",
+            "csíkszereda": "Csíkszereda",
+            "sepsiszentgyorgy": "Sepsiszentgyörgy",
+            "sepsiszentgyörgy": "Sepsiszentgyörgy",
+        }
+        return hu_map.get(m_loc_hu.group(1).lower(), m_loc_hu.group(1).capitalize())
+
+    # 6. Companii, branduri, platforme semnalate lexical
     m_comp = re.search(
         r"\b(?:platforma|aplicația|aplicatia|jocul|compania|societatea|firma|grupul|start-up-ul|startup-ul|producătorul|producatorul|brandul|serviciul|rețeaua|reteaua)\s+([A-Z0-9ĂÂÎȘȚ][a-zA-Z0-9ĂÂÎȘȚ._-]+)\b",
         titlu,
@@ -1562,6 +1584,20 @@ def _treapta_eticheta(et: str) -> int:
 
 def stil_inline(a: dict) -> dict:
     """Descrierea artei desenate in pagina pentru `a` (compozitie, paleta, texte, data, harta/portret)."""
+    # Forțare randare full-bleed când articolul dispune de o fotografie reală validă în 'image_url'
+    img_url = (a.get("image_url") or "").strip()
+    if img_url and img_url.startswith(("http://", "https://", "/")):
+        return {
+            "tpl": "fullbleed",
+            "pal": 0,
+            "eticheta": "",
+            "sub": "",
+            "treapta": 0,
+            "data": None,
+            "full_bleed": True,
+            "image_url": img_url,
+        }
+
     seed = _seed(a)
     et = _eticheta(a)
     cat = (a.get("category") or "").strip()
@@ -1597,8 +1633,12 @@ def stil_inline(a: dict) -> dict:
     elif portret:
         res["portret"] = portret
     else:
+        titlu = (a.get("title") or "").strip()
+        sumar = (a.get("summary") or a.get("lead") or a.get("teaser") or a.get("synthesis") or "").strip()
         from generator.art_generativ import genereaza_scena_generativa
-        res["scena_3d"] = genereaza_scena_generativa(a, seed)
+        res["scena_3d"] = genereaza_scena_generativa(
+            a, seed, title=titlu, category=cat, summary=sumar
+        )
     return res
 
 
