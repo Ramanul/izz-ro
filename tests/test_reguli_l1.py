@@ -105,7 +105,7 @@ def _ruleaza(payload: dict, temp: Path) -> str:
     mediu = {**os.environ, "TMPDIR": str(temp), "TEMP": str(temp), "TMP": str(temp)}
     return subprocess.run([sys.executable, str(HOOK)], input=json.dumps(payload),
                           capture_output=True, text=True, check=True,
-                          cwd=ROOT, env=mediu).stdout
+                          cwd=ROOT, env=mediu, encoding="utf-8").stdout
 
 
 def test_hook_ul_livreaza_regula_pe_o_cale_de_frontend(tmp_path):
@@ -133,7 +133,7 @@ def test_hook_ul_nu_repeta_regula_in_aceeasi_sesiune(tmp_path):
 def test_hook_ul_nu_crapa_pe_intrare_stricata():
     """Ultima plasa: orice ar primi, iese 0 si nu scrie nimic."""
     p = subprocess.run([sys.executable, str(HOOK)], input="{ nu e json",
-                       capture_output=True, text=True, cwd=ROOT)
+                       capture_output=True, text=True, cwd=ROOT, encoding="utf-8")
     assert p.returncode == 0 and p.stdout == ""
 
 

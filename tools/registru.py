@@ -173,6 +173,7 @@ def ids_din_toate_refurile() -> set[int]:
         refs = subprocess.run(
             ["git", "for-each-ref", "--format=%(refname)", "refs/heads", "refs/remotes"],
             cwd=ROOT, capture_output=True, text=True, check=False, timeout=60,
+            encoding="utf-8", errors="replace",
         )
     except (OSError, subprocess.SubprocessError):
         return set()
@@ -183,8 +184,9 @@ def ids_din_toate_refurile() -> set[int]:
         fisier = subprocess.run(
             ["git", "show", f"{ref}:specs/registru.tsv"],
             cwd=ROOT, capture_output=True, text=True, check=False, timeout=60,
+            encoding="utf-8", errors="replace",
         )
-        if fisier.returncode == 0:
+        if fisier.returncode == 0 and fisier.stdout:
             gasite |= _numere(fisier.stdout)
     return gasite
 
@@ -230,6 +232,7 @@ def titluri_din_toate_refurile() -> dict[str, dict[str, str]]:
         refs = subprocess.run(
             ["git", "for-each-ref", "--format=%(refname)", "refs/heads", "refs/remotes"],
             cwd=ROOT, capture_output=True, text=True, check=False, timeout=60,
+            encoding="utf-8", errors="replace",
         )
     except (OSError, subprocess.SubprocessError):
         return {}
@@ -240,8 +243,9 @@ def titluri_din_toate_refurile() -> dict[str, dict[str, str]]:
         fisier = subprocess.run(
             ["git", "show", f"{ref}:specs/registru.tsv"],
             cwd=ROOT, capture_output=True, text=True, check=False, timeout=60,
+            encoding="utf-8", errors="replace",
         )
-        if fisier.returncode == 0:
+        if fisier.returncode == 0 and fisier.stdout:
             out[ref] = _titluri_pe_ref(fisier.stdout)
     return out
 
@@ -253,8 +257,9 @@ def titluri_pe_refuri(refuri: tuple[str, ...]) -> dict[str, dict[str, str]]:
         fisier = subprocess.run(
             ["git", "show", f"{ref}:specs/registru.tsv"],
             cwd=ROOT, capture_output=True, text=True, check=False, timeout=60,
+            encoding="utf-8", errors="replace",
         )
-        if fisier.returncode == 0:
+        if fisier.returncode == 0 and fisier.stdout:
             out[ref] = _titluri_pe_ref(fisier.stdout)
     return out
 
@@ -311,7 +316,8 @@ def cmd_sync(_args) -> int:
         raw = subprocess.run(
             ["gh", "pr", "list", "--state", "all", "--limit", "500", "--json",
              "number,title,state,mergedAt,closedAt,createdAt,mergeCommit,author"],
-            capture_output=True, text=True, check=True, cwd=ROOT).stdout
+            capture_output=True, text=True, check=True, cwd=ROOT,
+            encoding="utf-8", errors="replace").stdout
     except (subprocess.CalledProcessError, FileNotFoundError) as exc:
         print(f"!! `gh` a esuat: {exc}", file=sys.stderr)
         return 1
