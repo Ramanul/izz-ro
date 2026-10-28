@@ -84,6 +84,7 @@ def _eticheta_categorie(cat: str) -> str:
 
 
 _CURATED_ENTITIES = (
+    # Programe, finante si concepte economice
     ("Noua Casă", r"\b(?:noua\s+cas[aă]|prima\s+cas[aă])\b"),
     ("IMM Invest", r"\bimm\s+invest\b"),
     ("Black Friday", r"\bblack\s+friday\b"),
@@ -96,6 +97,9 @@ _CURATED_ENTITIES = (
     ("Bursa de Valori", r"\b(?:bursa\s+de\s+valori|bvb)\b"),
     ("Fondul Proprietatea", r"\bfondul\s+proprietatea\b"),
     ("BNR", r"\b(?:bnr|banc[aă]\s+na[tț]ional[aă])\b"),
+    ("Banca Transilvania", r"\bbanca\s+transilvania\b"),
+    ("CEC Bank", r"\bcec\s+bank\b"),
+    ("Revolut", r"\brevolut\b"),
     ("ANAF", r"\banaf\b"),
     ("ANRE", r"\banre\b"),
     ("Transelectrica", r"\btranselectrica\b"),
@@ -103,18 +107,59 @@ _CURATED_ENTITIES = (
     ("Romgaz", r"\bromgaz\b"),
     ("OMV Petrom", r"\b(?:omv\s+petrom|petrom)\b"),
     ("Hidroelectrica", r"\bhidroelectrica\b"),
+    ("E.ON", r"\be\.on\b"),
+    ("Delgaz Grid", r"\bdelgaz\s+grid\b"),
     ("eMAG", r"\bemag\b"),
     ("Altex", r"\baltex\b"),
-    ("Dacia", r"\bdacia\b"),
     ("RetuRo", r"\breturo\b"),
-    ("Guvernul", r"\bguvern(?:ul|ului)?\b"),
-    ("Senatul", r"\bsenat(?:ul|ului)?\b"),
-    ("Comisia Europeană", r"\bcomisi[ai]\s+european[aă]\b"),
-    ("Banca Transilvania", r"\bbanca\s+transilvania\b"),
-    ("CEC Bank", r"\bcec\s+bank\b"),
     ("Temu", r"\btemu\b"),
     ("CFR Marfă", r"\bcfr\s+marf[aă]\b"),
     ("Tarom", r"\btarom\b"),
+    # Tehnologie si AI
+    ("Apple", r"\bapple\b"),
+    ("Samsung", r"\bsamsung\b"),
+    ("Google", r"\bgoogle\b"),
+    ("Microsoft", r"\bmicrosoft\b"),
+    ("Meta", r"\bmeta\b"),
+    ("OpenAI", r"\bopenai\b"),
+    ("NVIDIA", r"\bnvidia\b"),
+    ("AMD", r"\bamd\b"),
+    ("Intel", r"\bintel\b"),
+    ("Starlink", r"\bstarlink\b"),
+    ("SpaceX", r"\bspacex\b"),
+    ("Ubisoft", r"\bubisoft\b"),
+    ("Hitachi", r"\bhitachi\b"),
+    ("Sony", r"\bsony\b"),
+    ("PlayStation", r"\bplaystation\b"),
+    ("Nintendo", r"\bnintendo\b"),
+    ("TikTok", r"\btiktok\b"),
+    ("YouTube", r"\byoutube\b"),
+    ("WhatsApp", r"\bwhatsapp\b"),
+    # Auto
+    ("Dacia", r"\bdacia\b"),
+    ("Renault", r"\brenault\b"),
+    ("Volkswagen", r"\bvolkswagen\b"),
+    ("Audi", r"\baudi\b"),
+    ("BMW", r"\bbmw\b"),
+    ("Mercedes", r"\bmercedes(?:-benz)?\b"),
+    ("Tesla", r"\btesla\b"),
+    ("Ferrari", r"\bferrari\b"),
+    ("Porsche", r"\bporsche\b"),
+    ("BYD", r"\bbyd\b"),
+    ("Volvo", r"\bvolvo\b"),
+    # Sport
+    ("FCSB", r"\bfcsb\b"),
+    ("CFR Cluj", r"\bcfr\s+cluj\b"),
+    ("Rapid", r"\b(?:fc\s+rapid|rapid\s+bucure[sș]ti)\b"),
+    ("Dinamo", r"\b(?:fc\s+dinamo|dinamo\s+bucure[sș]ti)\b"),
+    ("Universitatea Craiova", r"\buniversitatea\s+craiova\b"),
+    ("Real Madrid", r"\breal\s+madrid\b"),
+    ("Barcelona", r"\bbarcelona\b"),
+    # Institutii
+    ("Guvernul", r"\bguvern(?:ul|ului)?\b"),
+    ("Senatul", r"\bsenat(?:ul|ului)?\b"),
+    ("Comisia Europeană", r"\bcomisi[ai]\s+european[aă]\b"),
+    ("Curtea Constituțională", r"\b(?:curtea\s+constitu[tț]ional[aă]|ccr)\b"),
 )
 
 _IGNORE_ENTITIES = frozenset({
@@ -125,14 +170,22 @@ _IGNORE_ENTITIES = frozenset({
 
 
 def _carlig_tematic(a: dict) -> str:
-    """Carlig tematic pentru stiri economice (entitati consacrate sau fallback 'Economie')."""
+    """Carlig tematic pentru stiri tematice (entitati consacrate sau fallback pe eticheta categoriei)."""
+    cat = (a.get("category") or "").strip()
+    fallback = _eticheta_categorie(cat) or "Știri"
     titlu = (a.get("title") or "").strip()
     if not titlu:
-        return "Economie"
+        return fallback
 
     for name, pattern in _CURATED_ENTITIES:
         if re.search(pattern, titlu, re.I):
             return name
+
+    if cat == "sport":
+        if re.search(r"\brapid\b", titlu, re.I):
+            return "Rapid"
+        if re.search(r"\bdinamo\b", titlu, re.I):
+            return "Dinamo"
 
     entities = a.get("entities") or []
     for ent in entities:
@@ -144,7 +197,17 @@ def _carlig_tematic(a: dict) -> str:
         if re.search(r"\b" + re.escape(ent_clean) + r"\b", titlu, re.I):
             return ent_clean
 
-    return "Economie"
+    m = re.search(
+        r"\b(?:platforma|aplicația|aplicatia|jocul|compania|start-up-ul|startup-ul|producătorul|producatorul|brandul|serviciul|rețeaua|reteaua)\s+([A-Z0-9][a-zA-Z0-9._-]+)\b",
+        titlu,
+        re.I,
+    )
+    if m:
+        c = m.group(1).strip()
+        if c.lower() not in _IGNORE_ENTITIES and len(c) >= 3:
+            return c
+
+    return fallback
 
 
 def _cifra_cheie(titlu: str) -> str | None:
@@ -278,7 +341,7 @@ def _treapta_callout(val: str) -> int:
 
 
 def _eticheta(a: dict) -> str:
-    """Textul etichetei: locul la stirile de loc, carlig tematic la economie, altfel categoria (vezi geo.eticheta_copertei).
+    """Textul etichetei: locul la stirile de loc, carlig tematic la stirile tematice, altfel categoria (vezi geo.eticheta_copertei).
 
     La o stire LOCALA eticheta nu are voie sa fie judetul cand textul numeste localitatea
     (sesizarea proprietarului 2026-10-17: „TIMIȘ" pe un incendiu din Gottlob, numit in teaser)."""
@@ -286,7 +349,7 @@ def _eticheta(a: dict) -> str:
     if loc:
         return loc[3]
     cat = (a.get("category") or "").strip()
-    if cat == "economic":
+    if cat not in _GEO_CALM:
         return _carlig_tematic(a)
     return geo.eticheta_copertei(a) or _eticheta_categorie(cat) or "Știri"
 
@@ -1468,7 +1531,6 @@ def stil_inline(a: dict) -> dict:
     seed = _seed(a)
     et = _eticheta(a)
     cat = (a.get("category") or "").strip()
-    is_econ = cat == "economic"
     # Local/judetean: forma si subtitlul urmeaza eticheta afisata (`_forma_loc`).
     geo_cat = cat in _GEO_CALM
     if geo_cat:
@@ -1482,14 +1544,14 @@ def stil_inline(a: dict) -> dict:
     # eticheta + forma; calibrarea treptelor de eticheta se pastreaza.
     geo = geo_cat
     portret = None if (harta or geo) else _portret_card(a)
-    callout = _cifra_cheie(a.get("title") or "") if is_econ else None
+    callout = None if geo else _cifra_cheie(a.get("title") or "")
     res = {
         "tpl": "arc" if geo else _NUME_TEMPLATE[seed[4] % len(_NUME_TEMPLATE)],
         "pal": seed[0] % len(_PALETE),
         "eticheta": et,
         "sub": sub,
         "treapta": _treapta_eticheta(et),
-        "data": None if (geo or is_econ) else _data_copertei(a),
+        "data": None,
     }
     if callout:
         res["callout"] = callout
