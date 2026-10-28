@@ -39,7 +39,7 @@ CARLIG_CASES = [
     ("BNR", {"title": "BNR anticipează menținerea dobânzii de referință"}, "BNR"),
     ("Guvernul", {"title": "Guvernul analizează menținerea taxei pe colete"}, "Guvernul"),
     ("Entity match", {"title": "Proiectul de infrastructură ANIF derulat rapid", "entities": ["ANIF"]}, "ANIF"),
-    ("Fallback", {"category": "economic", "title": "Tranziția economiei către inovație"}, "Economie"),
+    ("Fallback tematic specific", {"category": "economic", "title": "Tranziția economiei către inovație"}, "FINANȚE ȘI ECONOMIE"),
     # Screenshot tests from user
     ("Tech Revolut", {"category": "tech", "title": "Platforma financiară Revolut a înregistrat noi probleme de conectare pentru utilizatori"}, "Revolut"),
     ("Tech Samsung", {"category": "tech", "title": "Samsung pregătește extinderea gamei de pliabile după succesul înregistrat de Galaxy Z Fold 8"}, "Samsung"),

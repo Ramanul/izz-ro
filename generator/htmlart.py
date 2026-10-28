@@ -169,95 +169,197 @@ _IGNORE_ENTITIES = frozenset({
 })
 
 
+_FORBIDDEN_FALLBACK_LABELS = frozenset({
+    "național", "national", "politică", "politica", "economie", "economic",
+    "auto", "sport", "tech", "tehnologie", "inteligență artificială", "inteligenta artificiala",
+    "ai", "local", "știri", "stiri", "general", "extern"
+})
+
+
+def extrage_sumar_articol(a: dict) -> str:
+    """Extrage rezumatul canonic al articolului conform modelului:
+    - Model C: synthesis (fallback: description, teaser, summary, lead)
+    - Model B / altul: teaser (fallback: description, synthesis, summary, lead)
+    """
+    model = (a.get("model") or "").upper()
+    if model == "C":
+        return (a.get("synthesis") or a.get("description") or a.get("teaser") or a.get("summary") or a.get("lead") or "").strip()
+    return (a.get("teaser") or a.get("description") or a.get("synthesis") or a.get("summary") or a.get("lead") or "").strip()
+
+
 def _carlig_tematic(a: dict) -> str:
-    """Carlig tematic pentru stiri tematice (entitati consacrate, institutii, organizatii sau fallback)."""
-    cat = (a.get("category") or "").strip()
-    fallback = _eticheta_categorie(cat) or "Știri"
+    """Cârlig tematic specific articolului:
+    1. Entitate / instituție / localitate sigură din titlu.
+    2. Entitate / localitate sigură din rezumat.
+    3. Expresie tematică scurtă derivată din titlu clarificată de rezumat.
+    4. Fallback editorial neutru (niciodată numele secțiunii/categoriei).
+    """
     titlu = (a.get("title") or "").strip()
-    if not titlu:
-        return fallback
+    sumar = extrage_sumar_articol(a)
+    cat = (a.get("category") or "").strip()
+    if not titlu and not sumar:
+        return _eticheta_categorie(cat) or "Știri"
 
-    # 1. Entitati consacrate / programe recunoscute
-    for name, pattern in _CURATED_ENTITIES:
-        if re.search(pattern, titlu, re.I):
-            return name
+    def _gaseste_entitate_in_text(text: str, in_titlu: bool = True) -> str | None:
+        if not text:
+            return None
 
-    if cat == "sport":
-        if re.search(r"\brapid\b", titlu, re.I):
-            return "Rapid"
-        if re.search(r"\bdinamo\b", titlu, re.I):
-            return "Dinamo"
+        # 1. Entități consacrate / programe recunoscute
+        for name, pattern in _CURATED_ENTITIES:
+            if re.search(pattern, text, re.I):
+                return name
 
-    # 2. Entitati extrase din pipeline (NER) prezente in titlu (fara plafonul artificial de 22 car)
-    entities = a.get("entities") or []
-    for ent in entities:
-        ent_clean = str(ent).strip()
-        if not ent_clean or len(ent_clean) > 36 or len(ent_clean) < 3:
-            continue
-        if ent_clean.lower() in _IGNORE_ENTITIES:
-            continue
-        if re.search(r"\b" + re.escape(ent_clean) + r"\b", titlu, re.I):
-            return ent_clean
+        if cat == "sport":
+            if re.search(r"\brapid\b", text, re.I):
+                return "Rapid"
+            if re.search(r"\bdinamo\b", text, re.I):
+                return "Dinamo"
 
-    # 3. Tipare dinamice de institutii publice si autoritati din titlu
-    # re.IGNORECASE pe intregul regex, cu suport extins pentru diacritice romane si maghiare
-    # (á, é, í, ó, ö, ő, ú, ü, ű) si adjective institutionale in minuscule (ex: 'poliția rutieră')
-    m_inst = re.search(
-        r"\b((?:Ministerul|Consiliul|Inspectoratul|Curtea|Direc[tț]ia|Agen[tț]ia|Autoritatea|Prim[aă]ria|Prefectura|Tribunalul|Judec[aă]toria|Parchetul|Poli[tț]ia|Spitalul|Universitatea|Academia|Comisia|Organiza[tț]ia|Federa[tț]ia|Alian[tț]a)(?:\s+(?:de|pentru|al|a|și|si|în|in|din))?\s+[a-zăâîșțáéíóöőúüű0-9&._-]+(?:\s+(?:de|pentru|al|a|și|si|în|in|din)\s+[a-zăâîșțáéíóöőúüű0-9&._-]+|\s+[a-zăâîșțáéíóöőúüű0-9&._-]+)?)\b",
-        titlu,
-        re.IGNORECASE,
-    )
-    if m_inst:
-        inst_nume = m_inst.group(1).strip()
-        # Curatam verbele auxiliare sau predicative daca au fost capturate accidental la final (ex. ' a publicat', ' a anuntat')
-        inst_nume = re.sub(r"\s+(?:a|au|va|vor|a\s+fost|au\s+fost)\s+[a-zăâîșțáéíóöőúüű]+$", "", inst_nume, flags=re.I)
-        inst_nume = re.sub(r"\s+(?:a|au|va|vor)$", "", inst_nume, flags=re.I).strip()
-        # Daca incepe cu minuscula, capitalizam primul caracter pentru lizibilitate editoriala
-        if inst_nume and inst_nume[0].islower():
-            inst_nume = inst_nume[0].upper() + inst_nume[1:]
-        if inst_nume.lower() not in _IGNORE_ENTITIES and len(inst_nume) <= 36:
-            return inst_nume
+        # 2. Tipare dinamice de instituții publice și autorități (inclusiv 'Garda', adjective minuscule și conectori)
+        m_inst = re.search(
+            r"\b((?:Ministerul|Consiliul|Inspectoratul|Curtea|Direc[tț]ia|Agen[tț]ia|Autoritatea|Prim[aă]ria|Prefectura|Tribunalul|Judec[aă]toria|Parchetul|Poli[tț]ia|Spitalul|Universitatea|Academia|Comisia|Organiza[tț]ia|Federa[tț]ia|Alian[tț]a|Garda)(?:(?:\s+(?:de|pentru|al|a|ale|și|si|în|in|din))?\s+[a-zăâîșțáéíóöőúüű0-9&._-]+){1,4})\b",
+            text,
+            re.IGNORECASE,
+        )
+        if m_inst:
+            raw_inst = m_inst.group(1).strip()
+            # Oprim capturarea înainte de verbe predicative / auxiliare (ex: ' a intensificat', ' au decis')
+            inst_nume = re.split(r"\s+(?:a|au|va|vor|a\s+fost|au\s+fost)\s+", raw_inst, flags=re.I)[0].strip()
+            inst_nume = re.sub(r"\s+(?:a|au|va|vor)$", "", inst_nume, flags=re.I).strip()
+            if inst_nume and inst_nume[0].islower():
+                inst_nume = inst_nume[0].upper() + inst_nume[1:]
+            hu_map = {
+                "gyergyoszentmiklos": "Gyergyószentmiklós",
+                "gyergyószentmiklós": "Gyergyószentmiklós",
+                "csikszereda": "Csíkszereda",
+                "csíkszereda": "Csíkszereda",
+                "sepsiszentgyorgy": "Sepsiszentgyörgy",
+                "sepsiszentgyörgy": "Sepsiszentgyörgy",
+            }
+            for k, v in hu_map.items():
+                inst_nume = re.sub(rf"\b{k}\b", v, inst_nume, flags=re.I)
+            if inst_nume.lower() not in _IGNORE_ENTITIES and len(inst_nume) <= 44:
+                return inst_nume
 
-    # 4. Acronime oficiale de institutii si organizatii recunoscute
-    m_acr = re.search(
-        r"\b(DNA|DIICOT|ANAF|ANRE|CCR|CNA|CNAIR|TAROM|CFR|SRI|SIE|MAI|MAPN|MAE|ANPC|ASF|BVB|BNR|NATO|OMS|ONU|UE|FMI|BCE|NASA|ESA|CJUE)\b",
-        titlu,
-    )
-    if m_acr:
-        return m_acr.group(1)
+        # 3. Localități specifice cu diacritice (ex. maghiare)
+        m_loc_hu = re.search(r"\b(Gyergy[oó]szentmikl[oó]s|Cs[ií]kszereda|Sepsiszentgy[oö]rgy)\b", text, re.IGNORECASE)
+        if m_loc_hu:
+            hu_map = {
+                "gyergyoszentmiklos": "Gyergyószentmiklós",
+                "gyergyószentmiklós": "Gyergyószentmiklós",
+                "csikszereda": "Csíkszereda",
+                "csíkszereda": "Csíkszereda",
+                "sepsiszentgyorgy": "Sepsiszentgyörgy",
+                "sepsiszentgyörgy": "Sepsiszentgyörgy",
+            }
+            return hu_map.get(m_loc_hu.group(1).lower(), m_loc_hu.group(1).capitalize())
 
-    # 5. Localitati si toponime specifice cu diacritice (ex. maghiare)
-    m_loc_hu = re.search(r"\b(Gyergy[oó]szentmikl[oó]s|Cs[ií]kszereda|Sepsiszentgy[oö]rgy)\b", titlu, re.IGNORECASE)
-    if m_loc_hu:
-        hu_map = {
-            "gyergyoszentmiklos": "Gyergyószentmiklós",
-            "gyergyószentmiklós": "Gyergyószentmiklós",
-            "csikszereda": "Csíkszereda",
-            "csíkszereda": "Csíkszereda",
-            "sepsiszentgyorgy": "Sepsiszentgyörgy",
-            "sepsiszentgyörgy": "Sepsiszentgyörgy",
-        }
-        return hu_map.get(m_loc_hu.group(1).lower(), m_loc_hu.group(1).capitalize())
+        # 4. Entități NER din pipeline prezente în text
+        entities = a.get("entities") or []
+        for ent in entities:
+            ent_clean = str(ent).strip()
+            if not ent_clean or len(ent_clean) > 36 or len(ent_clean) < 3:
+                continue
+            if ent_clean.lower() in _IGNORE_ENTITIES:
+                continue
+            if re.search(r"\b" + re.escape(ent_clean) + r"\b", text, re.I):
+                return ent_clean
 
-    # 6. Companii, branduri, platforme semnalate lexical
-    m_comp = re.search(
-        r"\b(?:platforma|aplicația|aplicatia|jocul|compania|societatea|firma|grupul|start-up-ul|startup-ul|producătorul|producatorul|brandul|serviciul|rețeaua|reteaua)\s+([A-Z0-9ĂÂÎȘȚ][a-zA-Z0-9ĂÂÎȘȚ._-]+)\b",
-        titlu,
-        re.I,
-    )
-    if m_comp:
-        c = m_comp.group(1).strip()
-        if c.lower() not in _IGNORE_ENTITIES and len(c) >= 3:
-            return c
+        # 5. Acronime oficiale
+        m_acr = re.search(
+            r"\b(DNA|DIICOT|ANAF|ANRE|CCR|CNA|CNAIR|TAROM|CFR|SRI|SIE|MAI|MAPN|MAE|ANPC|ASF|BVB|BNR|NATO|OMS|ONU|UE|FMI|BCE|NASA|ESA|CJUE)\b",
+            text,
+        )
+        if m_acr:
+            return m_acr.group(1)
 
-    # 6. Nume proprii / branduri intre ghilimele
-    m_ghil = re.search(r"[„\"«]([A-Z0-9ĂÂÎȘȚ][a-zA-Z0-9ĂÂÎȘȚăâîșț&._ -]{2,28})[”\"»]", titlu)
-    if m_ghil:
-        cg = m_ghil.group(1).strip()
-        if cg.lower() not in _IGNORE_ENTITIES and len(cg) >= 3:
-            return cg
+        if in_titlu:
+            # 6. Companii semnalate lexical
+            m_comp = re.search(
+                r"\b(?:platforma|aplicația|aplicatia|jocul|compania|societatea|firma|grupul|start-up-ul|startup-ul|producătorul|producatorul|brandul|serviciul|rețeaua|reteaua)\s+([A-Z0-9ĂÂÎȘȚ][a-zA-Z0-9ĂÂÎȘȚ._-]+)\b",
+                text,
+                re.I,
+            )
+            if m_comp:
+                c = m_comp.group(1).strip()
+                if c.lower() not in _IGNORE_ENTITIES and len(c) >= 3:
+                    return c
 
-    return fallback
+            # 7. Nume proprii / branduri între ghilimele
+            m_ghil = re.search(r"[„\"«]([A-Z0-9ĂÂÎȘȚ][a-zA-Z0-9ĂÂÎȘȚăâîșț&._ -]{2,28})[”\"»]", text)
+            if m_ghil:
+                cg = m_ghil.group(1).strip()
+                if cg.lower() not in _IGNORE_ENTITIES and len(cg) >= 3:
+                    return cg
+
+        return None
+
+    # Prioritate 1: din titlu
+    ent_titlu = _gaseste_entitate_in_text(titlu, in_titlu=True)
+    if ent_titlu and ent_titlu.lower() not in _FORBIDDEN_FALLBACK_LABELS:
+        return ent_titlu
+
+    # Prioritate 2: din rezumat
+    ent_sumar = _gaseste_entitate_in_text(sumar, in_titlu=False)
+    if ent_sumar and ent_sumar.lower() not in _FORBIDDEN_FALLBACK_LABELS:
+        return ent_sumar
+
+    # Prioritate 3: Expresie tematică specifică derivată din titlu clarificată de rezumat
+    from generator.art_generativ import clasifica_domeniu
+    dom = str(clasifica_domeniu(title=titlu, summary=sumar, category=cat))
+
+    t_low = f"{titlu} {sumar}".lower()
+    if dom == "cariera_educatie":
+        if any(w in t_low for w in ("cv", "recrutare", "angajare", "job", "carieră", "cariera")):
+            return "CV ȘI RECRUTARE"
+        if any(w in t_low for w in ("bacalaureat", "evaluare", "elev", "profesor", "școală", "scoala", "liceu")):
+            return "EDUCAȚIE ȘI ȘCOLI"
+        return "PIAȚA MUNCII"
+    elif dom == "sanatate":
+        if any(w in t_low for w in ("spital", "medic", "chirurg", "urgență", "urgenta")):
+            return "SPITALE ȘI MEDICI"
+        if any(w in t_low for w in ("tratament", "medicament", "terapie", "oncologie", "cancer")):
+            return "TRATAMENTE ȘI MEDICINĂ"
+        return "SĂNĂTATE PUBLICĂ"
+    elif dom == "auto_trafic":
+        if "rutier" in t_low or "accident" in t_low or "circulație" in t_low or "circulatie" in t_low:
+            return "SIGURANȚĂ RUTIERĂ"
+        if any(w in t_low for w in ("autostradă", "autostrada", "drum", "șosea", "sosea", "pod", "pasaj")):
+            return "INFRASTRUCTURĂ RUTIERĂ"
+        return "INDUSTRIA AUTO"
+    elif dom == "energie_economic":
+        if any(w in t_low for w in ("energie", "gaz", "gaze", "electric", "eolian", "solar", "nuclear")):
+            return "ENERGIE ȘI RESURSE"
+        if any(w in t_low for w in ("bancă", "banca", "dobândă", "dobanda", "credit", "bnr")):
+            return "SISTEMUL BANCAR"
+        if any(w in t_low for w in ("buget", "fiscal", "impozit", "taxe", "tva", "deficit")):
+            return "BUGET ȘI FISCALITATE"
+        return "FINANȚE ȘI ECONOMIE"
+    elif dom == "cultura_turism":
+        if any(w in t_low for w in ("turism", "hotel", "cazare", "vacanță", "vacanta", "sejur")):
+            return "DESTINAȚII ȘI TURISM"
+        if any(w in t_low for w in ("patrimoniu", "monument", "istoric", "muzeu")):
+            return "PATRIMONIU CULTURAL"
+        return "ARTĂ ȘI CULTURĂ"
+    elif dom == "tech":
+        if any(w in t_low for w in ("cibernetic", "cyber", "hacker", "malware", "ransomware", "atac")):
+            return "SECURITATE CIBERNETICĂ"
+        if any(w in t_low for w in ("inteligență", "inteligenta", "ai", "algoritm", "robot")):
+            return "INTELIGENȚĂ ARTIFICIALĂ"
+        return "TEHNOLOGIE ȘI INOVAȚIE"
+    elif dom == "politica_institutii":
+        if any(w in t_low for w in ("alegeri", "vot", "prezidențiale", "parlamentare")):
+            return "ALEGERI ȘI VOT"
+        if any(w in t_low for w in ("diplomație", "diplomatie", "ambasador", "externe", "summit")):
+            return "RELAȚII DIPLOMATICE"
+        return "DECIZII ȘI ADMINISTRAȚIE"
+    elif dom == "sport":
+        if any(w in t_low for w in ("fotbal", "meci", "gol", "campionat", "cupa")):
+            return "FOTBAL"
+        return "COMPETIȚII SPORTIVE"
+
+    # Prioritate 4: Fallback editorial neutru (NU categoria)
+    return "ACTUALITATE"
 
 
 def _cifra_cheie(titlu: str) -> str | None:
@@ -401,7 +503,7 @@ def _eticheta(a: dict) -> str:
     cat = (a.get("category") or "").strip()
     if cat not in _GEO_CALM:
         return _carlig_tematic(a)
-    return geo.eticheta_copertei(a) or _eticheta_categorie(cat) or "Știri"
+    return geo.eticheta_copertei(a) or _eticheta_categorie(cat) or "Județean"
 
 
 def _subtitlu(a: dict) -> str:
@@ -1511,15 +1613,10 @@ def _seed(a: dict) -> bytes:
 def build_html(a: dict, cover: bool = False, sablon: str | None = None) -> str:
     """HTML pentru imaginea articolului. cover=True -> 1200x630 (og); altfel 960x504 (banner).
 
-    `sablon` forteaza o compozitie anume, dupa numele ei din `_NUME_TEMPLATE`. Exista pentru
-    copertile de CATEGORIE (`tools/gen_images.py`), care n-au data publicarii: trei din cele
-    patru compozitii isi construiesc jumatatea dreapta din cifra zilei, iar fara ea raman
-    aproape goale -- exact critica „~80% spatiu alb" din reproiectarea 2026-09-06. `editorial`
-    e singura care se inchide corect fara data. Pentru articole ramane seed-ul: acolo data
-    exista intotdeauna, iar variatia e chiar scopul.
+    Păstrează paritatea strictă cu stilul inline de pe card și permalink.
     """
-    seed = _seed(a)
-    acc, bg = _PALETE[seed[0] % len(_PALETE)]
+    s = a.get("art_style") or stil_inline(a)
+    acc, bg = _PALETE[s["pal"]]
     w, h = (COVER_W, COVER_H) if cover else (ART_W, ART_H)
     ch = a.get("event_chart") or {}
     if ch.get("tip") == "meteo" and ch.get("zile"):
@@ -1528,15 +1625,11 @@ def build_html(a: dict, cover: bool = False, sablon: str | None = None) -> str:
         body = _t_cutremur(a, ch, acc, bg, w / ART_W)
     elif sablon:
         body = _TEMPLATES[_NUME_TEMPLATE.index(sablon)](a, acc, bg, w / ART_W)
-    # Silueta judetului sta SUB graficele de eveniment si SUB sablonul fortat: meteo si
-    # cutremur spun ce s-a intamplat, harta spune doar unde, iar copertile de categorie
-    # (`sablon`) n-au judet prin constructie. Peste rotatia generica trece insa, fiindca e
-    # singurul strat ramas care spune ceva despre ARTICOL, nu despre rubrica.
     elif (a.get("category") or "") in _GEO_CALM:
-        # local/judetean fara judet cunoscut primeste aceeasi compozitie calma, doar fara forma
         body = _t_harta(a, acc, bg, w / ART_W)
     else:
-        body = _TEMPLATES[seed[4] % len(_TEMPLATES)](a, acc, bg, w / ART_W)
+        tpl_name = s.get("tpl") if s.get("tpl") in _NUME_TEMPLATE else _NUME_TEMPLATE[_seed(a)[4] % len(_NUME_TEMPLATE)]
+        body = _TEMPLATES[_NUME_TEMPLATE.index(tpl_name)](a, acc, bg, w / ART_W)
     return (f"<!doctype html><html><head><meta charset='utf-8'><style>{_base_css(w, h)}</style></head>"
             f"<body>{body}</body></html>")
 
@@ -1582,8 +1675,8 @@ def _treapta_eticheta(et: str) -> int:
     return len(_ET_TREPTE)
 
 
-def stil_inline(a: dict) -> dict:
-    """Descrierea artei desenate in pagina pentru `a` (compozitie, paleta, texte, data, harta/portret)."""
+def stil_inline(a: dict, folosite: set[tuple[str, int, str]] | None = None) -> dict:
+    """Descrierea artei desenate in pagina pentru `a` (compozitie, paleta, texte, data, harta/portret/scena 3D)."""
     # Forțare randare full-bleed când articolul dispune de o fotografie reală validă în 'image_url'
     img_url = (a.get("image_url") or "").strip()
     if img_url and img_url.startswith(("http://", "https://", "/")):
@@ -1608,20 +1701,57 @@ def stil_inline(a: dict) -> dict:
         harta = _harta_inline(cod, d) if cod else None
     else:
         sub, harta = _subtitlu(a), None
-    # Local/judetean: o singura compozitie calma, fara data (cerere proprietar 2026-10-17;
-    # auditul din aceeasi zi, sect. 5.2 — ziua lunii repeta meta-ul, iar patru compozitii
-    # alternate faceau din lista un colaj). `arc` e baza fiindca, fara sigiliu, ramane exact
-    # eticheta + forma; calibrarea treptelor de eticheta se pastreaza.
+
     geo = geo_cat
     portret = None if (harta or geo) else _portret_card(a)
     callout = None if geo else _cifra_cheie(a.get("title") or "")
+
+    titlu = (a.get("title") or "").strip()
+    sumar = extrage_sumar_articol(a)
+    from generator.art_generativ import (
+        _PALETE_DOMENIU,
+        _MOTIVE_DOMENIU,
+        clasifica_domeniu,
+        genereaza_scena_generativa,
+    )
+    domeniu = str(clasifica_domeniu(title=titlu, summary=sumar, category=cat))
+
+    templates = ("arc",) if geo else _NUME_TEMPLATE
+    palettes = _PALETE_DOMENIU.get(domeniu, (0, 1, 2, 3, 4, 5))
+    motifs = _MOTIVE_DOMENIU.get(domeniu, ("warm_geometry",))
+
+    offset_tpl = seed[4] % len(templates)
+    offset_pal = seed[0] % len(palettes)
+    offset_mot = seed[2] % len(motifs)
+
+    ales_tpl = templates[offset_tpl]
+    ales_pal = palettes[offset_pal]
+    ales_mot = motifs[offset_mot]
+
+    if folosite is not None and not (harta or portret):
+        gasit = False
+        for i in range(len(templates)):
+            t_cand = templates[(offset_tpl + i) % len(templates)]
+            for j in range(len(palettes)):
+                p_cand = palettes[(offset_pal + j) % len(palettes)]
+                for k in range(len(motifs)):
+                    m_cand = motifs[(offset_mot + k) % len(motifs)]
+                    if (t_cand, p_cand, m_cand) not in folosite:
+                        ales_tpl, ales_pal, ales_mot = t_cand, p_cand, m_cand
+                        gasit = True
+                        break
+                if gasit:
+                    break
+            if gasit:
+                break
+
     res = {
-        "tpl": "arc" if geo else _NUME_TEMPLATE[seed[4] % len(_NUME_TEMPLATE)],
-        "pal": seed[0] % len(_PALETE),
+        "tpl": ales_tpl,
+        "pal": ales_pal,
         "eticheta": et,
         "sub": sub,
         "treapta": _treapta_eticheta(et),
-        "data": None,
+        "data": None if geo else _data_copertei(a),
     }
     if callout:
         res["callout"] = callout
@@ -1633,13 +1763,26 @@ def stil_inline(a: dict) -> dict:
     elif portret:
         res["portret"] = portret
     else:
-        titlu = (a.get("title") or "").strip()
-        sumar = (a.get("summary") or a.get("lead") or a.get("teaser") or a.get("synthesis") or "").strip()
-        from generator.art_generativ import genereaza_scena_generativa
         res["scena_3d"] = genereaza_scena_generativa(
-            a, seed, title=titlu, category=cat, summary=sumar
+            a, seed, title=titlu, category=cat, summary=sumar, stil_impus=ales_mot
         )
     return res
+
+
+def aloca_stiluri_lista(articles: list[dict], limit: int = 12) -> None:
+    """Alocă stiluri în ordinea vizuală a listei și garantează că primele `limit` (12)
+    carduri care folosesc artă generată au triplete (template, paletă, motiv) unice.
+    Fotografiile reale nu consumă o tripletă de artă.
+    """
+    folosite: set[tuple[str, int, str]] = set()
+    for idx, a in enumerate(articles):
+        has_real_photo = bool(a.get("art_path") or a.get("photo_path") or a.get("image_url"))
+        track_unicitate = (idx < limit) and not has_real_photo
+        st = stil_inline(a, folosite=folosite if track_unicitate else None)
+        a["art_style"] = st
+        if track_unicitate and st and not st.get("full_bleed"):
+            motiv = st.get("scena_3d", {}).get("stil") or ("harta" if st.get("harta") else ("portret" if st.get("portret") else "default"))
+            folosite.add((st["tpl"], st["pal"], motiv))
 
 
 # Categoriile cu compozitia calma (`.art--geo`). Aceleasi doua ca la `_judet`: sunt stirile
