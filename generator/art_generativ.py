@@ -341,252 +341,378 @@ TECH_MOTIFS = frozenset({"circuit_matrix", "wireframe_mesh", "parametric_waves"}
 # ==============================================================================
 
 def _gen_warm_geometry(seed: bytes, gid: str) -> str:
-    """Grafică editorială neutră (geometrie caldă nobilă bazată pe secțiunea de aur)."""
+    """Sferă armilară celestă, orbită armonică și spirală Fibonacci (Secțiunea de Aur)."""
     elements = []
     glow_ref = f"url(#art-3d-glow-{gid})"
     fill_ref = f"url(#art-3d-fill-{gid})"
 
-    cx = W - 125 + (seed[1] % 20) - 10
+    cx = W - 120 + (seed[1] % 24) - 12
     cy = H // 2 + (seed[2] % 16) - 8
-    r_mic, r_mediu, r_mare = 42, 75, 120
 
+    # 1. Halo difuz de adâncime
     elements.append(
-        f'<circle cx="{cx}" cy="{cy}" r="{r_mare}" fill="{fill_ref}" fill-opacity="0.12" '
-        f'stroke="{glow_ref}" stroke-width="0.8" stroke-dasharray="3,5" stroke-opacity="0.35"/>'
+        f'<circle cx="{cx}" cy="{cy}" r="130" fill="{fill_ref}" fill-opacity="0.08" '
+        f'stroke="{glow_ref}" stroke-width="0.6" stroke-dasharray="2,6" stroke-opacity="0.25"/>'
     )
     elements.append(
-        f'<ellipse cx="{cx}" cy="{cy}" rx="{r_mediu}" ry="{r_mic + 8}" fill="none" '
-        f'stroke="{glow_ref}" stroke-width="1.3" stroke-opacity="0.75"/>'
-    )
-    elements.append(
-        f'<ellipse cx="{cx}" cy="{cy}" rx="{r_mic + 12}" ry="{r_mediu}" fill="none" '
-        f'stroke="{glow_ref}" stroke-width="1.1" stroke-opacity="0.55"/>'
-    )
-    elements.append(
-        f'<line x1="{cx - 150}" y1="{cy}" x2="{cx + 100}" y2="{cy}" stroke="{glow_ref}" stroke-width="0.8" stroke-opacity="0.45"/>'
-    )
-    elements.append(
-        f'<line x1="{cx - 100}" y1="{cy + 4}" x2="{cx + 60}" y2="{cy + 4}" stroke="{glow_ref}" stroke-width="0.5" stroke-opacity="0.3"/>'
-    )
-    elements.append(
-        f'<circle cx="{cx}" cy="{cy}" r="14" fill="{fill_ref}" fill-opacity="0.3" stroke="{glow_ref}" stroke-width="1.6" stroke-opacity="0.85"/>'
-    )
-    elements.append(
-        f'<circle cx="{cx}" cy="{cy}" r="3.5" fill="{glow_ref}" fill-opacity="0.95"/>'
+        f'<circle cx="{cx}" cy="{cy}" r="95" fill="{fill_ref}" fill-opacity="0.14" '
+        f'stroke="{glow_ref}" stroke-width="0.9" stroke-opacity="0.4"/>'
     )
 
-    for ang in (0, 90, 180, 270):
-        rad = math.radians(ang)
-        x1 = cx + (r_mediu - 6) * math.cos(rad)
-        y1 = cy + (r_mediu - 6) * math.sin(rad)
-        x2 = cx + (r_mediu + 6) * math.cos(rad)
-        y2 = cy + (r_mediu + 6) * math.sin(rad)
+    # 2. Inele eliptice înclinate în spațiu 3D (sferă armilară)
+    inclinations = [
+        (85, 34, (seed[3] * 5) % 180, 1.4, 0.85, "none"),
+        (48, 88, (seed[4] * 7 + 45) % 180, 1.2, 0.7, "none"),
+        (72, 55, (seed[5] * 11 + 110) % 180, 1.1, 0.6, "none"),
+        (60, 26, (seed[0] * 3 + 15) % 180, 0.9, 0.5, "3,4"),
+    ]
+    for rx, ry, rot, sw, op, dash in inclinations:
+        dash_attr = f' stroke-dasharray="{dash}"' if dash != "none" else ""
         elements.append(
-            f'<line x1="{x1:.1f}" y1="{y1:.1f}" x2="{x2:.1f}" y2="{y2:.1f}" stroke="{glow_ref}" stroke-width="1.2" stroke-opacity="0.75"/>'
+            f'<ellipse cx="{cx}" cy="{cy}" rx="{rx}" ry="{ry}" fill="none" stroke="{glow_ref}" '
+            f'stroke-width="{sw}" stroke-opacity="{op}"{dash_attr} transform="rotate({rot} {cx} {cy})"/>'
         )
+
+    # 3. Spirală Fibonacci parametrică (Golden Spiral)
+    spiral_pts = []
+    a_sp = 2.2 + (seed[6] % 5) * 0.2
+    b_sp = 0.165
+    rot_sp = (seed[7] % 60) * 0.1
+    for step in range(32):
+        theta = step * 0.22 + rot_sp
+        r_sp = a_sp * math.exp(b_sp * theta)
+        if r_sp > 115:
+            break
+        sx = cx + r_sp * math.cos(theta)
+        sy = cy + r_sp * math.sin(theta)
+        spiral_pts.append((sx, sy))
+
+    if len(spiral_pts) >= 2:
+        d_spiral = [f"M {spiral_pts[0][0]:.1f} {spiral_pts[0][1]:.1f}"]
+        for i in range(1, len(spiral_pts)):
+            p0 = spiral_pts[i - 1]
+            p1 = spiral_pts[i]
+            d_spiral.append(f"Q {p0[0]:.1f} {p0[1]:.1f} {(p0[0] + p1[0]) / 2:.1f} {(p0[1] + p1[1]) / 2:.1f}")
+        d_spiral.append(f"L {spiral_pts[-1][0]:.1f} {spiral_pts[-1][1]:.1f}")
+        elements.append(
+            f'<path d="{" ".join(d_spiral)}" fill="none" stroke="{glow_ref}" stroke-width="1.6" stroke-opacity="0.8"/>'
+        )
+
+    # 4. Axe coordonate de calibrare editorială
+    elements.append(
+        f'<line x1="{cx - 145}" y1="{cy}" x2="{cx + 105}" y2="{cy}" stroke="{glow_ref}" stroke-width="0.8" stroke-opacity="0.45"/>'
+    )
+    elements.append(
+        f'<line x1="{cx}" y1="{cy - 105}" x2="{cx}" y2="{cy + 105}" stroke="{glow_ref}" stroke-width="0.8" stroke-opacity="0.45"/>'
+    )
+
+    # 5. Marcaje radiale de precizie (ore / cadrane)
+    for ang in range(0, 360, 30):
+        rad = math.radians(ang)
+        r1 = 92 if ang % 90 == 0 else 94
+        r2 = 98 if ang % 90 == 0 else 96
+        x1 = cx + r1 * math.cos(rad)
+        y1 = cy + r1 * math.sin(rad)
+        x2 = cx + r2 * math.cos(rad)
+        y2 = cy + r2 * math.sin(rad)
+        sw = 1.4 if ang % 90 == 0 else 0.8
+        op = 0.85 if ang % 90 == 0 else 0.5
+        elements.append(f'<line x1="{x1:.1f}" y1="{y1:.1f}" x2="{x2:.1f}" y2="{y2:.1f}" stroke="{glow_ref}" stroke-width="{sw}" stroke-opacity="{op}"/>')
+
+    # 6. Nucleu luminos și noduri satelit
+    elements.append(
+        f'<circle cx="{cx}" cy="{cy}" r="18" fill="{fill_ref}" fill-opacity="0.5" stroke="{glow_ref}" stroke-width="2.0" stroke-opacity="0.95"/>'
+    )
+    elements.append(f'<circle cx="{cx}" cy="{cy}" r="5" fill="{glow_ref}" fill-opacity="0.95"/>')
+
+    for i in range(4):
+        ang_sat = (seed[i] * 37 + i * 90) % 360
+        r_dist = 45 + (seed[i + 2] % 40)
+        sat_x = cx + r_dist * math.cos(math.radians(ang_sat))
+        sat_y = cy + r_dist * math.sin(math.radians(ang_sat))
+        elements.append(f'<circle cx="{sat_x:.1f}" cy="{sat_y:.1f}" r="3" fill="{glow_ref}" fill-opacity="0.9"/>')
+        elements.append(f'<circle cx="{sat_x:.1f}" cy="{sat_y:.1f}" r="6.5" fill="none" stroke="{glow_ref}" stroke-width="0.7" stroke-opacity="0.6"/>')
+
     return "".join(elements)
 
 
 def _gen_organic_flow(seed: bytes, gid: str) -> str:
-    """Forme organice luminoase și arce vitale armonioase pentru Sănătate."""
+    """Fluxuri organice luminoase și pânze celulare dense pentru Sănătate."""
+    elements = []
+    glow_ref = f"url(#art-3d-glow-{gid})"
+    fill_ref = f"url(#art-3d-fill-{gid})"
+
+    base_y = H * 0.52 + (seed[1] % 20) - 10
+    num_ribbons = 14
+    freq1 = 0.014 + (seed[2] % 12) * 0.0006
+    freq2 = 0.022 + (seed[3] % 10) * 0.0008
+
+    # 1. Benzi fluide suprapuse
+    for r in range(num_ribbons):
+        p = (seed[4] % 50) * 0.12 + r * 0.38
+        y_shift = (r - (num_ribbons - 1) / 2) * 9.5
+        thick = 10 + (seed[r % 8] % 8)
+
+        pts_top, pts_bot = [], []
+        steps = 18
+        dx = W / steps
+        for s in range(steps + 1):
+            x = s * dx
+            wave = (
+                math.sin(x * freq1 + p) * 32.0 +
+                math.cos(x * freq2 - p * 0.6) * 16.0
+            )
+            persp = 0.75 + 0.45 * (x / W)
+            ym = base_y + wave * persp + y_shift
+            pts_top.append((x, ym - thick * persp / 2))
+            pts_bot.append((x, ym + thick * persp / 2))
+
+        d_top = [f"M {pts_top[0][0]:.1f} {pts_top[0][1]:.1f}"]
+        for i in range(1, len(pts_top)):
+            p0, p1 = pts_top[i - 1], pts_top[i]
+            d_top.append(f"Q {p0[0]:.1f} {p0[1]:.1f} {(p0[0] + p1[0]) / 2:.1f} {(p0[1] + p1[1]) / 2:.1f}")
+        d_top.append(f"L {pts_top[-1][0]:.1f} {pts_top[-1][1]:.1f}")
+
+        d_bot = []
+        for i in range(len(pts_bot) - 1, -1, -1):
+            d_bot.append(f"L {pts_bot[i][0]:.1f} {pts_bot[i][1]:.1f}")
+
+        d_path = " ".join(d_top) + " " + " ".join(d_bot) + " Z"
+        op_fill = 0.08 + (r / num_ribbons) * 0.14
+        op_stroke = 0.35 + (r / num_ribbons) * 0.55
+        sw = 1.0 if r < num_ribbons - 2 else 1.8
+        elements.append(
+            f'<path d="{d_path}" fill="{fill_ref}" fill-opacity="{op_fill:.2f}" '
+            f'stroke="{glow_ref}" stroke-width="{sw}" stroke-opacity="{op_stroke:.2f}"/>'
+        )
+
+    # 2. Noduri bio-celulare flotante cu halouri
+    for k in range(6):
+        kx = W * 0.45 + (seed[k] * 23) % int(W * 0.5)
+        ky = 40 + (seed[k + 1] * 31) % (H - 80)
+        kr = 4 + (seed[k + 2] % 6)
+        elements.append(f'<circle cx="{kx:.1f}" cy="{ky:.1f}" r="{kr + 8}" fill="{fill_ref}" fill-opacity="0.12" stroke="{glow_ref}" stroke-width="0.8" stroke-dasharray="2,3" stroke-opacity="0.4"/>')
+        elements.append(f'<circle cx="{kx:.1f}" cy="{ky:.1f}" r="{kr}" fill="{glow_ref}" fill-opacity="0.85"/>')
+
+    return "".join(elements)
+
+
+def _gen_cellular_harmony(seed: bytes, gid: str) -> str:
+    """Rețea bio-moleculară celulară și inele de armonie geodesic pentru Sănătate."""
     elements = []
     glow_ref = f"url(#art-3d-glow-{gid})"
     fill_ref = f"url(#art-3d-fill-{gid})"
     cx = W - 120 + (seed[1] % 20) - 10
     cy = H // 2 + (seed[2] % 16) - 8
 
-    # Unde vitale fluide suprapuse
-    for i in range(4):
-        rx = 60 + i * 22
-        ry = 45 + i * 18
-        rot = (seed[3] * 7 + i * 35) % 180
-        op = 0.15 + i * 0.12
+    # 1. Concentrice armonice
+    for r_ring in (110, 85, 60):
         elements.append(
-            f'<ellipse cx="{cx}" cy="{cy}" rx="{rx}" ry="{ry}" fill="{fill_ref}" fill-opacity="{op * 0.4:.2f}" '
-            f'stroke="{glow_ref}" stroke-width="1.2" stroke-opacity="{op:.2f}" transform="rotate({rot} {cx} {cy})"/>'
+            f'<circle cx="{cx}" cy="{cy}" r="{r_ring}" fill="{fill_ref}" fill-opacity="0.08" '
+            f'stroke="{glow_ref}" stroke-width="0.8" stroke-dasharray="3,4" stroke-opacity="0.45"/>'
         )
 
-    elements.append(
-        f'<circle cx="{cx}" cy="{cy}" r="16" fill="{fill_ref}" fill-opacity="0.45" stroke="{glow_ref}" stroke-width="1.8" stroke-opacity="0.9"/>'
-    )
-    elements.append(f'<circle cx="{cx}" cy="{cy}" r="5" fill="{glow_ref}" fill-opacity="0.95"/>')
-    # Ramură fluidă orizontală
-    elements.append(
-        f'<path d="M {cx - 140} {cy + 20} Q {cx - 60} {cy - 30} {cx} {cy} T {cx + 90} {cy - 10}" '
-        f'fill="none" stroke="{glow_ref}" stroke-width="1.4" stroke-opacity="0.75"/>'
-    )
-    return "".join(elements)
+    # 2. Noduri celulare și filamente de legătură
+    nodes = []
+    for tier, r_dist, count in ((1, 38, 6), (2, 70, 8), (3, 102, 10)):
+        for i in range(count):
+            ang = (i * (360 / count) + (seed[tier] * 17)) % 360
+            rad = math.radians(ang)
+            nx = cx + r_dist * math.cos(rad)
+            ny = cy + r_dist * math.sin(rad)
+            nodes.append((nx, ny, tier))
 
+    # Filamente de rețea între noduri adiacente
+    for i in range(len(nodes) - 1):
+        x1, y1, t1 = nodes[i]
+        x2, y2, t2 = nodes[i + 1]
+        dist = math.hypot(x2 - x1, y2 - y1)
+        if dist < 65:
+            elements.append(f'<line x1="{x1:.1f}" y1="{y1:.1f}" x2="{x2:.1f}" y2="{y2:.1f}" stroke="{glow_ref}" stroke-width="0.9" stroke-opacity="0.5"/>')
 
-def _gen_cellular_harmony(seed: bytes, gid: str) -> str:
-    """Structură celulară armonioasă și inele vitale pentru Sănătate."""
-    elements = []
-    glow_ref = f"url(#art-3d-glow-{gid})"
-    fill_ref = f"url(#art-3d-fill-{gid})"
-    cx = W - 115 + (seed[1] % 20) - 10
-    cy = H // 2 + (seed[2] % 16) - 8
+    # Desenează corpurile celulare
+    for nx, ny, tier in nodes:
+        rad_cell = 7.5 - tier * 1.5
+        elements.append(f'<circle cx="{nx:.1f}" cy="{ny:.1f}" r="{rad_cell * 1.8}" fill="{fill_ref}" fill-opacity="0.2" stroke="{glow_ref}" stroke-width="0.8" stroke-opacity="0.6"/>')
+        elements.append(f'<circle cx="{nx:.1f}" cy="{ny:.1f}" r="{rad_cell}" fill="{glow_ref}" fill-opacity="0.9"/>')
 
-    elements.append(
-        f'<circle cx="{cx}" cy="{cy}" r="78" fill="{fill_ref}" fill-opacity="0.12" stroke="{glow_ref}" stroke-width="0.9" stroke-dasharray="4,4" stroke-opacity="0.5"/>'
-    )
-    for ang in (30, 90, 150, 210, 270, 330):
-        rad = math.radians(ang)
-        x = cx + 46 * math.cos(rad)
-        y = cy + 46 * math.sin(rad)
-        elements.append(
-            f'<circle cx="{x:.1f}" cy="{y:.1f}" r="18" fill="{fill_ref}" fill-opacity="0.22" stroke="{glow_ref}" stroke-width="1.2" stroke-opacity="0.7"/>'
-        )
-        elements.append(f'<circle cx="{x:.1f}" cy="{y:.1f}" r="3.5" fill="{glow_ref}" fill-opacity="0.85"/>')
-
-    elements.append(
-        f'<circle cx="{cx}" cy="{cy}" r="22" fill="{fill_ref}" fill-opacity="0.5" stroke="{glow_ref}" stroke-width="1.8" stroke-opacity="0.95"/>'
-    )
-    elements.append(f'<circle cx="{cx}" cy="{cy}" r="6" fill="{glow_ref}" fill-opacity="0.95"/>')
+    # 3. Nucleu central radiant
+    elements.append(f'<circle cx="{cx}" cy="{cy}" r="22" fill="{fill_ref}" fill-opacity="0.4" stroke="{glow_ref}" stroke-width="2.0" stroke-opacity="0.95"/>')
+    elements.append(f'<circle cx="{cx}" cy="{cy}" r="7" fill="{glow_ref}" fill-opacity="0.95"/>')
     return "".join(elements)
 
 
 def _gen_road_perspective(seed: bytes, gid: str) -> str:
-    """Linii de perspectivă și marcaje rutiere pentru Auto & Trafic."""
+    """Autostradă nocturnă în perspectivă 3D infinită și flux cinetic pentru Auto & Trafic."""
     elements = []
     glow_ref = f"url(#art-3d-glow-{gid})"
     fill_ref = f"url(#art-3d-fill-{gid})"
 
-    vx = W - 110 + (seed[1] % 20) - 10
-    vy = 65 + (seed[2] % 12) - 6
+    vx = W - 110 + (seed[1] % 24) - 12
+    vy = 52 + (seed[2] % 12) - 6
+    y_bot = H + 10
 
-    # Orizont și nod radiant
-    elements.append(
-        f'<line x1="{W * 0.4}" y1="{vy}" x2="{W}" y2="{vy}" stroke="{glow_ref}" stroke-width="0.9" stroke-opacity="0.4"/>'
-    )
-    elements.append(
-        f'<circle cx="{vx}" cy="{vy}" r="7" fill="{fill_ref}" fill-opacity="0.4" stroke="{glow_ref}" stroke-width="1.5" stroke-opacity="0.9"/>'
-    )
+    # 1. Orizont luminos cu difuzie
+    elements.append(f'<line x1="{W * 0.35}" y1="{vy}" x2="{W + 20}" y2="{vy}" stroke="{glow_ref}" stroke-width="1.2" stroke-opacity="0.6"/>')
+    elements.append(f'<circle cx="{vx}" cy="{vy}" r="12" fill="{fill_ref}" fill-opacity="0.3" stroke="{glow_ref}" stroke-width="1.8" stroke-opacity="0.95"/>')
+    elements.append(f'<circle cx="{vx}" cy="{vy}" r="4" fill="{glow_ref}" fill-opacity="0.95"/>')
 
-    # Liniile carosabilului în perspectivă
-    y_bot = H - 15
-    for offset in (-140, -85, -30, 30, 85, 140):
-        x_bot = vx + offset * 1.5
-        op = 0.75 if abs(offset) in (30, 85) else 0.4
-        sw = 1.6 if abs(offset) in (30, 85) else 1.0
-        dash = ' stroke-dasharray="6,5"' if abs(offset) == 30 else ""
+    # 2. Liniile benzilor în perspectivă forțată
+    offsets = (-220, -150, -95, -45, -15, 15, 45, 95, 150, 220)
+    for off in offsets:
+        x_bot = vx + off * 1.85
+        sw = 2.2 if abs(off) in (15, 95) else 1.1
+        op = 0.85 if abs(off) in (15, 95) else 0.45
+        dash = ' stroke-dasharray="8,6"' if abs(off) in (45, 150) else ""
+        elements.append(f'<line x1="{vx}" y1="{vy}" x2="{x_bot:.1f}" y2="{y_bot}" stroke="{glow_ref}" stroke-width="{sw}" stroke-opacity="{op}"{dash}/>')
+
+    # 3. Marcaje luminoase transversale (linii de adâncime cu spacing logaritmic)
+    for step in range(1, 9):
+        t = (step / 8.0) ** 1.8
+        y_tier = vy + t * (y_bot - vy)
+        span = t * 380
         elements.append(
-            f'<line x1="{vx}" y1="{vy}" x2="{x_bot:.1f}" y2="{y_bot}" stroke="{glow_ref}" stroke-width="{sw}" stroke-opacity="{op}"{dash}/>'
+            f'<line x1="{vx - span:.1f}" y1="{y_tier:.1f}" x2="{vx + span:.1f}" y2="{y_tier:.1f}" '
+            f'stroke="{glow_ref}" stroke-width="0.8" stroke-opacity="{0.2 + t * 0.5:.2f}"/>'
         )
 
-    # Arcuri dinamice transversale de flux
-    for dy in (40, 85, 135):
-        y = vy + dy
-        span = dy * 1.4
+    # 4. Arce aerodinamice de tunel suspendat deasupra carosabilului
+    for step in range(1, 5):
+        t = (step / 4.0) ** 1.3
+        y_top = vy - t * 45
+        y_base_t = vy + t * 120
+        span = t * 240
         elements.append(
-            f'<path d="M {vx - span} {y} Q {vx} {y - 12} {vx + span} {y}" fill="none" stroke="{glow_ref}" stroke-width="1.1" stroke-opacity="0.55"/>'
+            f'<path d="M {vx - span:.1f} {y_base_t:.1f} Q {vx} {y_top:.1f} {vx + span:.1f} {y_base_t:.1f}" '
+            f'fill="none" stroke="{glow_ref}" stroke-width="1.4" stroke-opacity="{0.35 + t * 0.45:.2f}"/>'
         )
+
     return "".join(elements)
 
 
 def _gen_perspective_lines(seed: bytes, gid: str) -> str:
-    """Linii cinetice de viteză și marcaje direcționale pentru Auto & Mobilitate."""
+    """Linii cinetice de tunel aerodinamic și vectori de viteză pentru Auto & Mobilitate."""
     elements = []
     glow_ref = f"url(#art-3d-glow-{gid})"
     fill_ref = f"url(#art-3d-fill-{gid})"
 
     cx = W - 115
     cy = H // 2
+    num_lines = 18
 
-    for i in range(6):
-        y = 45 + i * 30
-        x_start = W * 0.45 + i * 15
-        x_end = W - 25
+    for i in range(num_lines):
+        t = i / (num_lines - 1)
+        y = 35 + t * (H - 70)
+        x_start = W * 0.4 + t * 35
+        x_end = W - 15
+        curve_drop = (math.sin(t * math.pi) * 28) - 14
         elements.append(
-            f'<line x1="{x_start}" y1="{y}" x2="{x_end}" y2="{y}" stroke="{glow_ref}" stroke-width="1.2" stroke-dasharray="12,8" stroke-opacity="0.6"/>'
+            f'<path d="M {x_start:.1f} {y:.1f} Q {cx - 40} {y + curve_drop:.1f} {x_end} {y:.1f}" '
+            f'fill="none" stroke="{glow_ref}" stroke-width="{1.0 + t * 0.8:.2f}" stroke-dasharray="10,6" stroke-opacity="{0.35 + t * 0.45:.2f}"/>'
         )
 
-    # Arc parabolic de viteză
+    # Arc de contur aerodinamic prim-plan
     elements.append(
-        f'<path d="M {cx - 100} {cy + 70} Q {cx + 30} {cy + 30} {cx + 70} {cy - 60}" fill="none" stroke="{glow_ref}" stroke-width="2.2" stroke-opacity="0.85"/>'
+        f'<path d="M {cx - 130} {cy + 85} Q {cx + 40} {cy + 40} {cx + 90} {cy - 75}" '
+        f'fill="none" stroke="{glow_ref}" stroke-width="2.8" stroke-opacity="0.95"/>'
     )
     elements.append(
-        f'<circle cx="{cx + 70}" cy="{cy - 60}" r="8" fill="{fill_ref}" fill-opacity="0.5" stroke="{glow_ref}" stroke-width="1.6" stroke-opacity="0.95"/>'
+        f'<path d="M {cx - 130} {cy + 75} Q {cx + 35} {cy + 30} {cx + 85} {cy - 85}" '
+        f'fill="none" stroke="{glow_ref}" stroke-width="1.2" stroke-opacity="0.5"/>'
     )
+    elements.append(f'<circle cx="{cx + 90}" cy="{cy - 75}" r="8" fill="{fill_ref}" fill-opacity="0.5" stroke="{glow_ref}" stroke-width="2.0" stroke-opacity="0.95"/>')
+    elements.append(f'<circle cx="{cx + 90}" cy="{cy - 75}" r="3.5" fill="{glow_ref}" fill-opacity="0.95"/>')
     return "".join(elements)
 
 
 def _gen_progress_steps(seed: bytes, gid: str) -> str:
-    """Pași de progres ascendenți și geometrie de carieră/educație."""
+    """Trepte monumentale de ascensiune izometrică 3D pentru Carieră & Educație."""
     elements = []
     glow_ref = f"url(#art-3d-glow-{gid})"
     fill_ref = f"url(#art-3d-fill-{gid})"
 
-    ox = W - 170
-    oy = H - 45
-    step_w = 28
+    ox = W - 185
+    oy = H - 35
+    step_w = 26
+    step_d = 20
     step_h = 24
+    num_steps = 6
 
-    for i in range(5):
-        x = ox + i * step_w
-        h_box = (i + 1) * step_h
-        y = oy - h_box
-        op = 0.2 + i * 0.14
+    cos30 = 0.866
+    sin30 = 0.5
+
+    for i in range(num_steps):
+        # Fațetă superioară, frontală și laterală pentru fiecare treaptă
+        h_total = (i + 1) * step_h
+        bx = ox + i * step_w
+        by = oy - i * 14
+
+        # Fațetă frontală
         elements.append(
-            f'<rect x="{x}" y="{y}" width="{step_w - 4}" height="{h_box}" rx="3" '
-            f'fill="{fill_ref}" fill-opacity="{op:.2f}" stroke="{glow_ref}" stroke-width="1.3" stroke-opacity="0.8"/>'
+            f'<polygon points="{bx},{by} {bx + step_w},{by - 7} {bx + step_w},{by - h_total - 7} {bx},{by - h_total}" '
+            f'fill="{fill_ref}" fill-opacity="{0.25 + i * 0.1:.2f}" stroke="{glow_ref}" stroke-width="1.3" stroke-opacity="0.85"/>'
         )
+        # Fațetă superioară
+        elements.append(
+            f'<polygon points="{bx},{by - h_total} {bx + step_w},{by - h_total - 7} {bx + step_w + step_d * cos30:.1f},{by - h_total - 7 - step_d * sin30:.1f} {bx + step_d * cos30:.1f},{by - h_total - step_d * sin30:.1f}" '
+            f'fill="{fill_ref}" fill-opacity="{0.45 + i * 0.08:.2f}" stroke="{glow_ref}" stroke-width="1.3" stroke-opacity="0.95"/>'
+        )
+        # Punct nodal pe colțul superior
+        elements.append(f'<circle cx="{bx + step_w / 2:.1f}" cy="{by - h_total - 4:.1f}" r="3" fill="{glow_ref}" fill-opacity="0.9"/>')
 
-    # Linie ascendentă de progres
+    # Fascicul ascendent de traiectorie
+    p_start = (ox - 10, oy - 15)
+    p_end = (ox + num_steps * step_w + 15, oy - num_steps * step_h - 35)
     elements.append(
-        f'<line x1="{ox - 10}" y1="{oy - 15}" x2="{ox + 4 * step_w + 24}" y2="{oy - 5 * step_h - 15}" '
-        f'stroke="{glow_ref}" stroke-width="1.8" stroke-opacity="0.9"/>'
+        f'<line x1="{p_start[0]}" y1="{p_start[1]}" x2="{p_end[0]}" y2="{p_end[1]}" '
+        f'stroke="{glow_ref}" stroke-width="2.2" stroke-opacity="0.95"/>'
     )
-    elements.append(
-        f'<circle cx="{ox + 4 * step_w + 24}" cy="{oy - 5 * step_h - 15}" r="6" fill="{glow_ref}" fill-opacity="0.95"/>'
-    )
+    elements.append(f'<circle cx="{p_end[0]}" cy="{p_end[1]}" r="6.5" fill="{glow_ref}" fill-opacity="0.95"/>')
     return "".join(elements)
 
 
 def _gen_document_lines(seed: bytes, gid: str) -> str:
-    """Structură de document, CV și diplomă pentru Carieră & Educație."""
+    """Dosare editoriale plutitoare în spațiu 3D și sigiliu monumental pentru Carieră/Educație."""
     elements = []
     glow_ref = f"url(#art-3d-glow-{gid})"
     fill_ref = f"url(#art-3d-fill-{gid})"
 
-    dx = W - 145
-    dy = 42
-    dw = 100
-    dh = 160
+    # 3 documente înclinate izometric suprapuse
+    docs = [
+        (W - 170, 65, 85, 135, -8, 0.15, 0.5),
+        (W - 150, 48, 92, 145, 4, 0.25, 0.75),
+        (W - 130, 32, 98, 155, 0, 0.4, 0.95),
+    ]
 
-    # Fila de document
-    elements.append(
-        f'<rect x="{dx}" y="{dy}" width="{dw}" height="{dh}" rx="6" fill="{fill_ref}" fill-opacity="0.2" '
-        f'stroke="{glow_ref}" stroke-width="1.6" stroke-opacity="0.85"/>'
-    )
-    # Filet antet
-    elements.append(
-        f'<line x1="{dx + 16}" y1="{dy + 24}" x2="{dx + dw - 16}" y2="{dy + 24}" stroke="{glow_ref}" stroke-width="2.4" stroke-opacity="0.9"/>'
-    )
-    # Linii de conținut
-    for i in range(5):
-        y = dy + 48 + i * 18
-        w_line = (dw - 32) * (0.85 if i % 2 == 1 else 1.0)
+    for dx, dy, dw, dh, rot, op_f, op_s in docs:
         elements.append(
-            f'<line x1="{dx + 16}" y1="{y}" x2="{dx + 16 + w_line}" y2="{y}" stroke="{glow_ref}" stroke-width="1.2" stroke-opacity="0.55"/>'
+            f'<rect x="{dx}" y="{dy}" width="{dw}" height="{dh}" rx="6" fill="{fill_ref}" fill-opacity="{op_f:.2f}" '
+            f'stroke="{glow_ref}" stroke-width="1.5" stroke-opacity="{op_s:.2f}" transform="rotate({rot} {dx + dw / 2} {dy + dh / 2})"/>'
         )
+        # Linii textuale hașurate
+        for li in range(6):
+            ly = dy + 32 + li * 18
+            elements.append(
+                f'<line x1="{dx + 16}" y1="{ly}" x2="{dx + dw - 18}" y2="{ly}" stroke="{glow_ref}" '
+                f'stroke-width="1.2" stroke-opacity="{op_s * 0.7:.2f}" transform="rotate({rot} {dx + dw / 2} {dy + dh / 2})"/>'
+            )
 
-    # Sigiliu / distincție rotundă în colțul inferior
-    elements.append(
-        f'<circle cx="{dx + dw - 24}" cy="{dy + dh - 24}" r="14" fill="{fill_ref}" fill-opacity="0.5" stroke="{glow_ref}" stroke-width="1.5" stroke-opacity="0.9"/>'
-    )
-    elements.append(
-        f'<circle cx="{dx + dw - 24}" cy="{dy + dh - 24}" r="4" fill="{glow_ref}" fill-opacity="0.95"/>'
-    )
+    # Sigiliu de absolvire / distincție cu lauri
+    sx, sy = W - 80, H - 65
+    elements.append(f'<circle cx="{sx}" cy="{sy}" r="22" fill="{fill_ref}" fill-opacity="0.55" stroke="{glow_ref}" stroke-width="2.0" stroke-opacity="0.95"/>')
+    elements.append(f'<circle cx="{sx}" cy="{sy}" r="15" fill="none" stroke="{glow_ref}" stroke-width="1.0" stroke-dasharray="3,3" stroke-opacity="0.8"/>')
+    elements.append(f'<circle cx="{sx}" cy="{sy}" r="5" fill="{glow_ref}" fill-opacity="0.95"/>')
     return "".join(elements)
 
 
 def _gen_isometric_prism(seed: bytes, gid: str) -> str:
-    """Structură geometrică izometrică 3D (prisme și blocuri arhitecturale flotante)."""
+    """Grup de prisme de cristal izometrice 3D cu refracție pentru Energie & Economic."""
     elements = []
-    cx = W * 0.74 + (seed[1] % 20) - 10
-    cy = H * 0.52 + (seed[2] % 20) - 10
     glow_ref = f"url(#art-3d-glow-{gid})"
     fill_ref = f"url(#art-3d-fill-{gid})"
+
+    cx = W * 0.74 + (seed[1] % 20) - 10
+    cy = H * 0.52 + (seed[2] % 20) - 10
 
     cos30 = 0.866
     sin30 = 0.5
@@ -601,267 +727,274 @@ def _gen_isometric_prism(seed: bytes, gid: str) -> str:
         p_bot_r = (ox + w_box * cos30, oy - w_box * sin30)
         p_bot_l = (ox - d_box * cos30, oy - d_box * sin30)
 
-        d_top_face = f"M {p_top[0]:.1f} {p_top[1]:.1f} L {p_top_r[0]:.1f} {p_top_r[1]:.1f} L {p_top_back[0]:.1f} {p_top_back[1]:.1f} L {p_top_l[0]:.1f} {p_top_l[1]:.1f} Z"
-        d_left_face = f"M {p_top[0]:.1f} {p_top[1]:.1f} L {p_top_l[0]:.1f} {p_top_l[1]:.1f} L {p_bot_l[0]:.1f} {p_bot_l[1]:.1f} L {p_bot[0]:.1f} {p_bot[1]:.1f} Z"
-        d_right_face = f"M {p_top[0]:.1f} {p_top[1]:.1f} L {p_top_r[0]:.1f} {p_top_r[1]:.1f} L {p_bot_r[0]:.1f} {p_bot_r[1]:.1f} L {p_bot[0]:.1f} {p_bot[1]:.1f} Z"
+        d_top = f"M {p_top[0]:.1f} {p_top[1]:.1f} L {p_top_r[0]:.1f} {p_top_r[1]:.1f} L {p_top_back[0]:.1f} {p_top_back[1]:.1f} L {p_top_l[0]:.1f} {p_top_l[1]:.1f} Z"
+        d_left = f"M {p_top[0]:.1f} {p_top[1]:.1f} L {p_top_l[0]:.1f} {p_top_l[1]:.1f} L {p_bot_l[0]:.1f} {p_bot_l[1]:.1f} L {p_bot[0]:.1f} {p_bot[1]:.1f} Z"
+        d_right = f"M {p_top[0]:.1f} {p_top[1]:.1f} L {p_top_r[0]:.1f} {p_top_r[1]:.1f} L {p_bot_r[0]:.1f} {p_bot_r[1]:.1f} L {p_bot[0]:.1f} {p_bot[1]:.1f} Z"
 
         return (
-            f'<path d="{d_top_face}" fill="{fill_ref}" fill-opacity="{op_top}" stroke="{glow_ref}" stroke-width="1.3" stroke-opacity="0.85"/>'
-            f'<path d="{d_left_face}" fill="{fill_ref}" fill-opacity="{op_left}" stroke="{glow_ref}" stroke-width="1.3" stroke-opacity="0.7"/>'
-            f'<path d="{d_right_face}" fill="{fill_ref}" fill-opacity="{op_right}" stroke="{glow_ref}" stroke-width="1.3" stroke-opacity="0.9"/>'
+            f'<path d="{d_top}" fill="{fill_ref}" fill-opacity="{op_top:.2f}" stroke="{glow_ref}" stroke-width="1.4" stroke-opacity="0.95"/>'
+            f'<path d="{d_left}" fill="{fill_ref}" fill-opacity="{op_left:.2f}" stroke="{glow_ref}" stroke-width="1.3" stroke-opacity="0.75"/>'
+            f'<path d="{d_right}" fill="{fill_ref}" fill-opacity="{op_right:.2f}" stroke="{glow_ref}" stroke-width="1.3" stroke-opacity="0.9"/>'
         )
 
-    elements.append(iso_box(cx, cy + 25, 48, 65, 42, 0.4, 0.25, 0.5))
-    elements.append(iso_box(cx - 45, cy - 10, 28, 40, 24, 0.25, 0.15, 0.35))
-    elements.append(
-        f'<line x1="{cx - 120}" y1="{cy + 40}" x2="{cx + 60}" y2="{cy - 50}" stroke="{glow_ref}" stroke-width="0.9" stroke-dasharray="4,4" stroke-opacity="0.4"/>'
-    )
-    elements.append(
-        f'<line x1="{cx - 80}" y1="{cy - 60}" x2="{cx + 80}" y2="{cy + 25}" stroke="{glow_ref}" stroke-width="0.9" stroke-dasharray="4,4" stroke-opacity="0.4"/>'
-    )
+    # 4 prisme izometrice interconectate
+    elements.append(iso_box(cx, cy + 35, 52, 68, 55, 0.45, 0.28, 0.55))
+    elements.append(iso_box(cx - 55, cy - 12, 32, 45, 34, 0.35, 0.20, 0.45))
+    elements.append(iso_box(cx + 42, cy - 25, 38, 30, 48, 0.40, 0.24, 0.50))
+    elements.append(iso_box(cx - 15, cy - 65, 26, 36, 28, 0.30, 0.18, 0.40))
+
+    # Conexiuni de rețea energetică între prisme
+    elements.append(f'<line x1="{cx - 135}" y1="{cy + 45}" x2="{cx + 75}" y2="{cy - 55}" stroke="{glow_ref}" stroke-width="1.1" stroke-dasharray="4,4" stroke-opacity="0.5"/>')
+    elements.append(f'<line x1="{cx - 95}" y1="{cy - 70}" x2="{cx + 95}" y2="{cy + 30}" stroke="{glow_ref}" stroke-width="1.1" stroke-dasharray="4,4" stroke-opacity="0.5"/>')
     return "".join(elements)
 
 
 def _gen_financial_bars(seed: bytes, gid: str) -> str:
-    """Diagrame volumetrice și registre financiare pentru Energie & Economic."""
+    """Histogramă izometrică 3D și spline bursier de trend pentru Energie & Finanțe."""
     elements = []
     glow_ref = f"url(#art-3d-glow-{gid})"
     fill_ref = f"url(#art-3d-fill-{gid})"
 
-    bx = W - 170
-    by = H - 45
+    bx = W - 185
+    by = H - 35
     bar_w = 22
-    heights = (35, 60, 48, 95, 125, 110)
+    bar_d = 16
+    cos30 = 0.866
+    sin30 = 0.5
+
+    heights = (45, 78, 62, 115, 148, 132, 165)
+    pts_trend = []
 
     for i, h_val in enumerate(heights):
-        x = bx + i * (bar_w + 6)
-        y = by - h_val
-        op = 0.25 + (h_val / 130) * 0.35
-        elements.append(
-            f'<rect x="{x}" y="{y}" width="{bar_w}" height="{h_val}" rx="3" fill="{fill_ref}" fill-opacity="{op:.2f}" '
-            f'stroke="{glow_ref}" stroke-width="1.3" stroke-opacity="0.85"/>'
-        )
+        x = bx + i * 24
+        y = by - i * 4
 
-    # Linie curbă de trend bursier
-    pts = [(bx + i * (bar_w + 6) + bar_w // 2, by - heights[i] - 10) for i in range(len(heights))]
-    d_line = f"M {pts[0][0]} {pts[0][1]}"
-    for p in pts[1:]:
-        d_line += f" L {p[0]} {p[1]}"
-    elements.append(f'<path d="{d_line}" fill="none" stroke="{glow_ref}" stroke-width="1.8" stroke-opacity="0.95"/>')
-    for p in pts:
-        elements.append(f'<circle cx="{p[0]}" cy="{p[1]}" r="3.5" fill="{glow_ref}" fill-opacity="0.95"/>')
+        # Fațetă frontală
+        elements.append(
+            f'<polygon points="{x},{y} {x + bar_w},{y} {x + bar_w},{y - h_val} {x},{y - h_val}" '
+            f'fill="{fill_ref}" fill-opacity="{0.25 + (h_val / 180) * 0.3:.2f}" stroke="{glow_ref}" stroke-width="1.2" stroke-opacity="0.8"/>'
+        )
+        # Fațetă laterală dreaptă
+        elements.append(
+            f'<polygon points="{x + bar_w},{y} {x + bar_w + bar_d * cos30:.1f},{y - bar_d * sin30:.1f} {x + bar_w + bar_d * cos30:.1f},{y - h_val - bar_d * sin30:.1f} {x + bar_w},{y - h_val}" '
+            f'fill="{fill_ref}" fill-opacity="{0.4 + (h_val / 180) * 0.25:.2f}" stroke="{glow_ref}" stroke-width="1.2" stroke-opacity="0.85"/>'
+        )
+        # Fațetă superioară iluminată
+        elements.append(
+            f'<polygon points="{x},{y - h_val} {x + bar_w},{y - h_val} {x + bar_w + bar_d * cos30:.1f},{y - h_val - bar_d * sin30:.1f} {x + bar_d * cos30:.1f},{y - h_val - bar_d * sin30:.1f}" '
+            f'fill="{fill_ref}" fill-opacity="0.65" stroke="{glow_ref}" stroke-width="1.4" stroke-opacity="0.95"/>'
+        )
+        pts_trend.append((x + bar_w / 2, y - h_val - 12))
+
+    # Linie curbă de trend bursier spline
+    d_trend = [f"M {pts_trend[0][0]:.1f} {pts_trend[0][1]:.1f}"]
+    for i in range(1, len(pts_trend)):
+        p0, p1 = pts_trend[i - 1], pts_trend[i]
+        d_trend.append(f"Q {p0[0]:.1f} {p0[1]:.1f} {(p0[0] + p1[0]) / 2:.1f} {(p0[1] + p1[1]) / 2:.1f}")
+    d_trend.append(f"L {pts_trend[-1][0]:.1f} {pts_trend[-1][1]:.1f}")
+    elements.append(f'<path d="{" ".join(d_trend)}" fill="none" stroke="{glow_ref}" stroke-width="2.4" stroke-opacity="0.95"/>')
+
+    for px, py in pts_trend:
+        elements.append(f'<circle cx="{px:.1f}" cy="{py:.1f}" r="4" fill="{glow_ref}" fill-opacity="0.95"/>')
     return "".join(elements)
 
 
 def _gen_architectural_arch(seed: bytes, gid: str) -> str:
-    """Arcade arhitecturale clasice și portaluri culturale pentru Cultură & Turism."""
+    """Arcadă arhitecturală monumentală în perspectivă forțată pentru Cultură & Turism."""
     elements = []
     glow_ref = f"url(#art-3d-glow-{gid})"
     fill_ref = f"url(#art-3d-fill-{gid})"
 
     cx = W - 110
-    base_y = H - 35
-    w_arch = 90
-    h_col = 80
-    r_arch = w_arch / 2
+    base_y = H - 30
+    w_arch = 110
+    h_col = 95
 
-    for layer in (1.0, 0.72, 0.46):
-        w_cur = w_arch * layer
-        h_cur = h_col * layer
+    # 5 arcade de adâncime
+    for tier in (1.0, 0.82, 0.65, 0.50, 0.36):
+        w_cur = w_arch * tier
+        h_cur = h_col * tier
         r_cur = w_cur / 2
-        d_portal = (
-            f"M {cx - r_cur} {base_y} L {cx - r_cur} {base_y - h_cur} "
-            f"A {r_cur} {r_cur} 0 0 1 {cx + r_cur} {base_y - h_cur} "
-            f"L {cx + r_cur} {base_y}"
+        d_arch = (
+            f"M {cx - r_cur:.1f} {base_y} L {cx - r_cur:.1f} {base_y - h_cur:.1f} "
+            f"A {r_cur:.1f} {r_cur:.1f} 0 0 1 {cx + r_cur:.1f} {base_y - h_cur:.1f} "
+            f"L {cx + r_cur:.1f} {base_y}"
         )
-        op = 0.2 + (1.0 - layer) * 0.4
-        elements.append(
-            f'<path d="{d_portal}" fill="none" stroke="{glow_ref}" stroke-width="1.4" stroke-opacity="{op:.2f}"/>'
-        )
+        op = 0.25 + (1.0 - tier) * 0.55
+        sw = 1.0 + (1.0 - tier) * 1.0
+        elements.append(f'<path d="{d_arch}" fill="none" stroke="{glow_ref}" stroke-width="{sw:.2f}" stroke-opacity="{op:.2f}"/>')
+        # Cheie de boltă (keystone)
+        elements.append(f'<polygon points="{cx - 5},{base_y - h_cur - r_cur - 4} {cx + 5},{base_y - h_cur - r_cur - 4} {cx + 3.5},{base_y - h_cur - r_cur + 8} {cx - 3.5},{base_y - h_cur - r_cur + 8}" fill="{fill_ref}" fill-opacity="0.6" stroke="{glow_ref}" stroke-width="1.0" stroke-opacity="0.9"/>')
 
-    # Filet soclu
-    elements.append(
-        f'<line x1="{cx - 80}" y1="{base_y}" x2="{cx + 80}" y2="{base_y}" stroke="{glow_ref}" stroke-width="1.8" stroke-opacity="0.85"/>'
-    )
-    elements.append(
-        f'<circle cx="{cx}" cy="{base_y - h_col - r_arch}" r="7" fill="{fill_ref}" fill-opacity="0.5" stroke="{glow_ref}" stroke-width="1.5" stroke-opacity="0.9"/>'
-    )
+    # Pilastri și soclu
+    elements.append(f'<line x1="{cx - 95}" y1="{base_y}" x2="{cx + 95}" y2="{base_y}" stroke="{glow_ref}" stroke-width="2.2" stroke-opacity="0.9"/>')
+    elements.append(f'<line x1="{cx - 110}" y1="{base_y + 8}" x2="{cx + 110}" y2="{base_y + 8}" stroke="{glow_ref}" stroke-width="1.4" stroke-opacity="0.7"/>')
     return "".join(elements)
 
 
 def _gen_heritage_shapes(seed: bytes, gid: str) -> str:
-    """Emblemă de patrimoniu și trandafir al vânturilor pentru Turism & Tradiție."""
+    """Rozetă de patrimoniu sacru și roză a vânturilor pentru Turism & Tradiție."""
     elements = []
     glow_ref = f"url(#art-3d-glow-{gid})"
     fill_ref = f"url(#art-3d-fill-{gid})"
 
     cx = W - 115
     cy = H // 2
-    r_ring = 65
+    r_outer = 85
 
-    elements.append(
-        f'<circle cx="{cx}" cy="{cy}" r="{r_ring}" fill="{fill_ref}" fill-opacity="0.15" '
-        f'stroke="{glow_ref}" stroke-width="1.2" stroke-opacity="0.75"/>'
-    )
-    elements.append(
-        f'<circle cx="{cx}" cy="{cy}" r="{r_ring - 14}" fill="none" '
-        f'stroke="{glow_ref}" stroke-width="0.8" stroke-dasharray="4,4" stroke-opacity="0.5"/>'
-    )
+    # 1. Inele concentrice de cadrane
+    elements.append(f'<circle cx="{cx}" cy="{cy}" r="{r_outer}" fill="{fill_ref}" fill-opacity="0.1" stroke="{glow_ref}" stroke-width="1.4" stroke-opacity="0.85"/>')
+    elements.append(f'<circle cx="{cx}" cy="{cy}" r="{r_outer - 12}" fill="none" stroke="{glow_ref}" stroke-width="0.8" stroke-dasharray="3,3" stroke-opacity="0.55"/>')
+    elements.append(f'<circle cx="{cx}" cy="{cy}" r="{r_outer - 28}" fill="{fill_ref}" fill-opacity="0.18" stroke="{glow_ref}" stroke-width="1.2" stroke-opacity="0.75"/>')
 
-    # Raze romboidale
-    for ang in (0, 45, 90, 135, 180, 225, 270, 315):
+    # 2. Stea cu 16 fațete (compass rose)
+    for ang in range(0, 360, 22):
         rad = math.radians(ang)
         rad_perp = rad + math.pi / 2
-        d_ray = 52 if ang % 90 == 0 else 36
-        tip_x = cx + d_ray * math.cos(rad)
-        tip_y = cy + d_ray * math.sin(rad)
-        w_side = 6 if ang % 90 == 0 else 4
-        s1_x = cx + w_side * math.cos(rad_perp)
-        s1_y = cy + w_side * math.sin(rad_perp)
-        s2_x = cx - w_side * math.cos(rad_perp)
-        s2_y = cy - w_side * math.sin(rad_perp)
-        elements.append(
-            f'<polygon points="{cx},{cy} {s1_x:.1f},{s1_y:.1f} {tip_x:.1f},{tip_y:.1f} {s2_x:.1f},{s2_y:.1f}" '
-            f'fill="{fill_ref}" fill-opacity="0.3" stroke="{glow_ref}" stroke-width="1.0" stroke-opacity="0.85"/>'
-        )
+        d_len = 68 if ang % 90 == 0 else (52 if ang % 45 == 0 else 38)
+        w_base = 7 if ang % 90 == 0 else 4.5
+        tip_x = cx + d_len * math.cos(rad)
+        tip_y = cy + d_len * math.sin(rad)
+        s1_x = cx + w_base * math.cos(rad_perp)
+        s1_y = cy + w_base * math.sin(rad_perp)
+        s2_x = cx - w_base * math.cos(rad_perp)
+        s2_y = cy - w_base * math.sin(rad_perp)
+
+        op = 0.55 if ang % 90 == 0 else 0.35
+        elements.append(f'<polygon points="{cx},{cy} {s1_x:.1f},{s1_y:.1f} {tip_x:.1f},{tip_y:.1f}" fill="{fill_ref}" fill-opacity="{op}" stroke="{glow_ref}" stroke-width="0.9" stroke-opacity="0.85"/>')
+        elements.append(f'<polygon points="{cx},{cy} {s2_x:.1f},{s2_y:.1f} {tip_x:.1f},{tip_y:.1f}" fill="{fill_ref}" fill-opacity="{op * 0.5:.2f}" stroke="{glow_ref}" stroke-width="0.9" stroke-opacity="0.85"/>')
+
+    elements.append(f'<circle cx="{cx}" cy="{cy}" r="14" fill="{fill_ref}" fill-opacity="0.6" stroke="{glow_ref}" stroke-width="1.8" stroke-opacity="0.95"/>')
+    elements.append(f'<circle cx="{cx}" cy="{cy}" r="4" fill="{glow_ref}" fill-opacity="0.95"/>')
     return "".join(elements)
 
 
 def _gen_civic_columns(seed: bytes, gid: str) -> str:
-    """Coloane civice și ritm instituțional nobil pentru Politică & Instituții."""
+    """Colonadă neoclasică monumentală și fronton civic pentru Politică & Instituții."""
     elements = []
     glow_ref = f"url(#art-3d-glow-{gid})"
     fill_ref = f"url(#art-3d-fill-{gid})"
 
     cx = W - 120
-    top_y = 55
-    bot_y = H - 50
-    w_architrave = 140
+    top_architrave = 62
+    bot_base = H - 42
+    w_span = 150
 
-    # Arhitravă orizontală superioară și soclu
-    elements.append(
-        f'<line x1="{cx - w_architrave // 2}" y1="{top_y}" x2="{cx + w_architrave // 2}" y2="{top_y}" stroke="{glow_ref}" stroke-width="2.5" stroke-opacity="0.85"/>'
-    )
-    elements.append(
-        f'<line x1="{cx - w_architrave // 2 - 8}" y1="{bot_y}" x2="{cx + w_architrave // 2 + 8}" y2="{bot_y}" stroke="{glow_ref}" stroke-width="2.5" stroke-opacity="0.85"/>'
-    )
+    # 1. Fronton triunghiular
+    ped_apex = 28
+    elements.append(f'<polygon points="{cx},{ped_apex} {cx - w_span / 2},{top_architrave - 8} {cx + w_span / 2},{top_architrave - 8}" fill="{fill_ref}" fill-opacity="0.22" stroke="{glow_ref}" stroke-width="1.8" stroke-opacity="0.9"/>')
+    elements.append(f'<circle cx="{cx}" cy="{ped_apex + 18}" r="8" fill="{fill_ref}" fill-opacity="0.5" stroke="{glow_ref}" stroke-width="1.4" stroke-opacity="0.95"/>')
 
-    # 4 coloane clasice
-    cols = (-48, -16, 16, 48)
-    for col_x in cols:
-        x = cx + col_x
-        elements.append(
-            f'<line x1="{x - 4}" y1="{top_y}" x2="{x - 4}" y2="{bot_y}" stroke="{glow_ref}" stroke-width="1.0" stroke-opacity="0.6"/>'
-        )
-        elements.append(
-            f'<line x1="{x + 4}" y1="{top_y}" x2="{x + 4}" y2="{bot_y}" stroke="{glow_ref}" stroke-width="1.0" stroke-opacity="0.6"/>'
-        )
+    # 2. Arhitravă dublă și soclu
+    elements.append(f'<rect x="{cx - w_span / 2}" y="{top_architrave - 8}" width="{w_span}" height="10" rx="2" fill="{fill_ref}" fill-opacity="0.35" stroke="{glow_ref}" stroke-width="1.6" stroke-opacity="0.9"/>')
+    elements.append(f'<rect x="{cx - w_span / 2 - 8}" y="{bot_base}" width="{w_span + 16}" height="12" rx="2" fill="{fill_ref}" fill-opacity="0.35" stroke="{glow_ref}" stroke-width="1.6" stroke-opacity="0.9"/>')
 
-    # Fronton triunghiular discret deasupra
-    elements.append(
-        f'<polygon points="{cx - w_architrave // 2},{top_y} {cx},{top_y - 20} {cx + w_architrave // 2},{top_y}" '
-        f'fill="{fill_ref}" fill-opacity="0.2" stroke="{glow_ref}" stroke-width="1.4" stroke-opacity="0.8"/>'
-    )
+    # 3. 5 coloane canelate
+    col_offsets = (-54, -27, 0, 27, 54)
+    for off in col_offsets:
+        x_c = cx + off
+        elements.append(f'<rect x="{x_c - 7}" y="{top_architrave + 2}" width="14" height="{bot_base - top_architrave - 2}" rx="1" fill="{fill_ref}" fill-opacity="0.28" stroke="{glow_ref}" stroke-width="1.3" stroke-opacity="0.85"/>')
+        elements.append(f'<line x1="{x_c}" y1="{top_architrave + 2}" x2="{x_c}" y2="{bot_base}" stroke="{glow_ref}" stroke-width="1.0" stroke-opacity="0.55"/>')
+
     return "".join(elements)
 
 
 def _gen_editorial_block(seed: bytes, gid: str) -> str:
-    """Bloc compozițional civic și scut instituțional pentru Politică."""
+    """Compoziție constructivistă De Stijl / Golden Ratio pentru Politică & Editorial."""
     elements = []
     glow_ref = f"url(#art-3d-glow-{gid})"
     fill_ref = f"url(#art-3d-fill-{gid})"
 
-    cx = W - 110
+    cx = W - 125
     cy = H // 2
 
-    # Scut civic rafinat
-    elements.append(
-        f'<path d="M {cx - 50} {cy - 55} L {cx + 50} {cy - 55} L {cx + 50} {cy + 10} Q {cx} {cy + 70} {cx} {cy + 70} Q {cx} {cy + 70} {cx - 50} {cy + 10} Z" '
-        f'fill="{fill_ref}" fill-opacity="0.25" stroke="{glow_ref}" stroke-width="1.6" stroke-opacity="0.85"/>'
-    )
-    elements.append(
-        f'<circle cx="{cx}" cy="{cy - 10}" r="16" fill="{fill_ref}" fill-opacity="0.4" stroke="{glow_ref}" stroke-width="1.4" stroke-opacity="0.9"/>'
-    )
-    elements.append(f'<circle cx="{cx}" cy="{cy - 10}" r="4" fill="{glow_ref}" fill-opacity="0.95"/>')
+    # Blocuri geometrice proporționale
+    blocks = [
+        (cx - 75, cy - 85, 120, 80, 0.22, 0.7),
+        (cx - 35, cy - 45, 95, 110, 0.35, 0.85),
+        (cx - 85, cy + 15, 75, 65, 0.18, 0.6),
+        (cx + 25, cy + 25, 60, 50, 0.45, 0.95),
+    ]
+
+    for bx, by, bw, bh, op_f, op_s in blocks:
+        elements.append(
+            f'<rect x="{bx}" y="{by}" width="{bw}" height="{bh}" rx="4" fill="{fill_ref}" fill-opacity="{op_f:.2f}" '
+            f'stroke="{glow_ref}" stroke-width="1.5" stroke-opacity="{op_s:.2f}"/>'
+        )
+
+    # Axe de calibrare
+    elements.append(f'<line x1="{cx - 110}" y1="{cy}" x2="{cx + 100}" y2="{cy}" stroke="{glow_ref}" stroke-width="1.8" stroke-opacity="0.9"/>')
+    elements.append(f'<line x1="{cx}" y1="{cy - 95}" x2="{cx}" y2="{cy + 95}" stroke="{glow_ref}" stroke-width="1.8" stroke-opacity="0.9"/>')
+    elements.append(f'<circle cx="{cx}" cy="{cy}" r="6" fill="{glow_ref}" fill-opacity="0.95"/>')
     return "".join(elements)
 
 
 def _gen_field_curves(seed: bytes, gid: str) -> str:
-    """Piste de stadion, ovaluri dinamice și forme atletice pentru Sport."""
-    elements = []
-    glow_ref = f"url(#art-3d-glow-{gid})"
-    fill_ref = f"url(#art-3d-fill-{gid})"
-
-    cx = W - 110
-    cy = H // 2
-
-    for i in range(4):
-        rx = 40 + i * 22
-        ry = 65 + i * 16
-        rot = -30
-        op = 0.2 + i * 0.18
-        elements.append(
-            f'<ellipse cx="{cx}" cy="{cy}" rx="{rx}" ry="{ry}" fill="none" stroke="{glow_ref}" '
-            f'stroke-width="1.3" stroke-opacity="{op:.2f}" transform="rotate({rot} {cx} {cy})"/>'
-        )
-
-    # Linie mediană de sprint
-    elements.append(
-        f'<line x1="{cx - 80}" y1="{cy + 60}" x2="{cx + 70}" y2="{cy - 60}" stroke="{glow_ref}" stroke-width="2.0" stroke-opacity="0.9"/>'
-    )
-    elements.append(
-        f'<circle cx="{cx + 70}" cy="{cy - 60}" r="7" fill="{fill_ref}" fill-opacity="0.6" stroke="{glow_ref}" stroke-width="1.5" stroke-opacity="0.95"/>'
-    )
-    return "".join(elements)
-
-
-def _gen_sport_geometry(seed: bytes, gid: str) -> str:
-    """Geometrie de teren sportiv și vectori cinetici pentru Sport."""
+    """Velodrom dinamic și arce parabolice de stadion pentru Sport."""
     elements = []
     glow_ref = f"url(#art-3d-glow-{gid})"
     fill_ref = f"url(#art-3d-fill-{gid})"
 
     cx = W - 115
     cy = H // 2
-    r_center = 42
 
-    elements.append(
-        f'<circle cx="{cx}" cy="{cy}" r="{r_center}" fill="{fill_ref}" fill-opacity="0.2" stroke="{glow_ref}" stroke-width="1.6" stroke-opacity="0.85"/>'
-    )
-    elements.append(
-        f'<line x1="{cx - 80}" y1="{cy}" x2="{cx + 80}" y2="{cy}" stroke="{glow_ref}" stroke-width="1.8" stroke-opacity="0.9"/>'
-    )
-    elements.append(
-        f'<circle cx="{cx}" cy="{cy}" r="5" fill="{glow_ref}" fill-opacity="0.95"/>'
-    )
-    elements.append(
-        f'<path d="M {cx - 70} {cy - 50} Q {cx} {cy - 75} {cx + 70} {cy - 50}" fill="none" stroke="{glow_ref}" stroke-width="1.2" stroke-opacity="0.6"/>'
-    )
-    elements.append(
-        f'<path d="M {cx - 70} {cy + 50} Q {cx} {cy + 75} {cx + 70} {cy + 50}" fill="none" stroke="{glow_ref}" stroke-width="1.2" stroke-opacity="0.6"/>'
-    )
+    # Piste eliptice suprapuse în rotație
+    for i in range(7):
+        rx = 45 + i * 16
+        ry = 28 + i * 12
+        rot = -25 + i * 6
+        elements.append(
+            f'<ellipse cx="{cx}" cy="{cy}" rx="{rx}" ry="{ry}" fill="{fill_ref}" fill-opacity="{0.06 + i * 0.04:.2f}" '
+            f'stroke="{glow_ref}" stroke-width="{1.0 + i * 0.15:.2f}" stroke-opacity="{0.35 + i * 0.09:.2f}" transform="rotate({rot} {cx} {cy})"/>'
+        )
+
+    # Axe transversale de poartă
+    elements.append(f'<line x1="{cx - 105}" y1="{cy - 45}" x2="{cx + 105}" y2="{cy + 45}" stroke="{glow_ref}" stroke-width="1.5" stroke-opacity="0.8"/>')
+    elements.append(f'<circle cx="{cx}" cy="{cy}" r="12" fill="{fill_ref}" fill-opacity="0.5" stroke="{glow_ref}" stroke-width="1.8" stroke-opacity="0.95"/>')
+    elements.append(f'<circle cx="{cx}" cy="{cy}" r="4" fill="{glow_ref}" fill-opacity="0.95"/>')
     return "".join(elements)
 
 
-# Generatoare Tech & AI
-def _gen_wireframe_mesh(seed: bytes, gid: str) -> str:
-    """Teren topografic 3D wireframe. EXCLUSIV pentru Tech & AI."""
+def _gen_sport_geometry(seed: bytes, gid: str) -> str:
+    """Traiectorii cinetice parabolice și telemetrie sportivă de precizie."""
     elements = []
-    rows = 11
-    cols = 16
-    y_start, y_end = 60, 240
+    glow_ref = f"url(#art-3d-glow-{gid})"
+    fill_ref = f"url(#art-3d-fill-{gid})"
 
-    freq_x = 0.035 + (seed[1] % 20) * 0.001
-    freq_z = 0.05 + (seed[2] % 15) * 0.002
-    phase = (seed[3] % 100) * 0.05
-    amp_base = 22.0 + (seed[5] % 12)
+    cx = W - 115
+    cy = H // 2
+
+    # Cadrane de telemetrie
+    for r_t in (75, 52, 30):
+        elements.append(f'<circle cx="{cx}" cy="{cy}" r="{r_t}" fill="{fill_ref}" fill-opacity="0.12" stroke="{glow_ref}" stroke-width="1.2" stroke-opacity="0.7"/>')
+
+    # Traiectorii parabolice cinetice
+    elements.append(f'<path d="M {cx - 130} {H - 35} Q {cx - 40} 35 {cx + 60} {cy - 30}" fill="none" stroke="{glow_ref}" stroke-width="2.5" stroke-opacity="0.95"/>')
+    elements.append(f'<path d="M {cx - 110} {H - 25} Q {cx - 20} 55 {cx + 75} {cy - 15}" fill="none" stroke="{glow_ref}" stroke-width="1.3" stroke-dasharray="4,4" stroke-opacity="0.6"/>')
+
+    elements.append(f'<circle cx="{cx + 60}" cy="{cy - 30}" r="7" fill="{fill_ref}" fill-opacity="0.6" stroke="{glow_ref}" stroke-width="1.8" stroke-opacity="0.95"/>')
+    elements.append(f'<circle cx="{cx + 60}" cy="{cy - 30}" r="3" fill="{glow_ref}" fill-opacity="0.95"/>')
+    return "".join(elements)
+
+
+def _gen_wireframe_mesh(seed: bytes, gid: str) -> str:
+    """Plasă topografică 3D densă (relief montan / grid sci-fi) — The Verge / Unsplash style. EXCLUSIV Tech & AI."""
+    elements = []
+    rows = 20
+    cols = 28
+    y_start, y_end = 45, 245
+
+    freq_x = 0.038 + (seed[1] % 20) * 0.001
+    freq_z = 0.055 + (seed[2] % 15) * 0.002
+    phase = (seed[3] % 100) * 0.06
+    amp_base = 28.0 + (seed[5] % 14)
 
     grid = []
     for r in range(rows):
         row_pts = []
         t = r / (rows - 1)
         y_base = y_start + t * (y_end - y_start)
-        span_x = 220 + t * 240
+        span_x = 240 + t * 230
         x_min = (W - span_x) / 2
         amp = amp_base * (0.35 + 0.65 * t)
 
@@ -869,8 +1002,8 @@ def _gen_wireframe_mesh(seed: bytes, gid: str) -> str:
             s = c / (cols - 1)
             x = x_min + s * span_x
             wave = (
-                math.sin(c * freq_x * 8 + phase) * 0.6 +
-                math.cos(r * freq_z * 5 + phase * 0.8) * 0.4
+                math.sin(c * freq_x * 8 + phase) * 0.55 +
+                math.cos(r * freq_z * 6 + phase * 0.7) * 0.45
             )
             elevation = wave * amp * math.sin(s * math.pi)
             y = y_base - elevation
@@ -879,98 +1012,105 @@ def _gen_wireframe_mesh(seed: bytes, gid: str) -> str:
 
     glow_ref = f"url(#art-3d-glow-{gid})"
 
+    # 1. Curbe transversale de relief
     for r in range(rows):
         row_pts = grid[r]
         t = r / (rows - 1)
-        opacity = 0.25 + 0.65 * (t ** 1.3)
-        sw = 1.0 + 0.8 * t
+        opacity = 0.2 + 0.75 * (t ** 1.3)
+        sw = 0.9 + 0.9 * t
         d_parts = [f"M {row_pts[0][0]} {row_pts[0][1]}"]
         for c in range(1, cols):
             p0 = row_pts[c - 1]
             p1 = row_pts[c]
             d_parts.append(f"Q {p0[0]} {p0[1]} {(p0[0] + p1[0]) / 2} {(p0[1] + p1[1]) / 2}")
         d_parts.append(f"L {row_pts[-1][0]} {row_pts[-1][1]}")
-        elements.append(
-            f'<path d="{" ".join(d_parts)}" fill="none" stroke="{glow_ref}" stroke-width="{sw:.2f}" stroke-opacity="{opacity:.2f}"/>'
-        )
+        elements.append(f'<path d="{" ".join(d_parts)}" fill="none" stroke="{glow_ref}" stroke-width="{sw:.2f}" stroke-opacity="{opacity:.2f}"/>')
 
+    # 2. Linii longitudinale de adâncime
     for c in range(0, cols, 2):
         d_parts = [f"M {grid[0][c][0]} {grid[0][c][1]}"]
         for r in range(1, rows):
             d_parts.append(f"L {grid[r][c][0]} {grid[r][c][1]}")
         s = c / (cols - 1)
-        op = 0.15 + 0.3 * math.sin(s * math.pi)
-        elements.append(
-            f'<path d="{" ".join(d_parts)}" fill="none" stroke="{glow_ref}" stroke-width="0.85" stroke-opacity="{op:.2f}" stroke-dasharray="3,3"/>'
-        )
+        op = 0.15 + 0.35 * math.sin(s * math.pi)
+        elements.append(f'<path d="{" ".join(d_parts)}" fill="none" stroke="{glow_ref}" stroke-width="0.8" stroke-opacity="{op:.2f}" stroke-dasharray="2,3"/>')
+
+    # 3. Noduri strălucitoare pe crestele cele mai înalte
+    for r in range(2, rows, 3):
+        for c in range(3, cols - 3, 4):
+            pt = grid[r][c]
+            elements.append(f'<circle cx="{pt[0]}" cy="{pt[1]}" r="1.8" fill="{glow_ref}" fill-opacity="0.95"/>')
+
     return "".join(elements)
 
 
 def _gen_circuit_matrix(seed: bytes, gid: str) -> str:
-    """Matrice de circuite imprimate (PCB bus traces). EXCLUSIV pentru Tech & AI."""
+    """Matrice densă de circuite imprimate (PCB bus architecture) — EXCLUSIV Tech & AI."""
     elements = []
     cx = W - 110 + (seed[1] % 20) - 10
     cy = H // 2 + (seed[2] % 20) - 10
     glow_ref = f"url(#art-3d-glow-{gid})"
     fill_ref = f"url(#art-3d-fill-{gid})"
 
-    chip_size = 54
-    elements.append(
-        f'<rect x="{cx - chip_size // 2}" y="{cy - chip_size // 2}" width="{chip_size}" height="{chip_size}" rx="8" '
-        f'fill="{fill_ref}" fill-opacity="0.25" stroke="{glow_ref}" stroke-width="2.2" stroke-opacity="0.9"/>'
-    )
-    core_size = 32
-    elements.append(
-        f'<rect x="{cx - core_size // 2}" y="{cy - core_size // 2}" width="{core_size}" height="{core_size}" rx="4" '
-        f'fill="none" stroke="{glow_ref}" stroke-width="1.2" stroke-opacity="0.6"/>'
-    )
-    elements.append(f'<circle cx="{cx}" cy="{cy}" r="4" fill="{glow_ref}" fill-opacity="0.95"/>')
+    # 1. Pătrat micro-grid fundal
+    for gx in range(cx - 160, cx + 80, 24):
+        for gy in range(cy - 90, cy + 90, 24):
+            elements.append(f'<circle cx="{gx}" cy="{gy}" r="0.8" fill="{glow_ref}" fill-opacity="0.3"/>')
 
-    num_traces = 9
+    # 2. Microcip central multistrat
+    chip_size = 58
+    elements.append(f'<rect x="{cx - chip_size // 2}" y="{cy - chip_size // 2}" width="{chip_size}" height="{chip_size}" rx="8" fill="{fill_ref}" fill-opacity="0.3" stroke="{glow_ref}" stroke-width="2.4" stroke-opacity="0.95"/>')
+    elements.append(f'<rect x="{cx - 18}" y="{cy - 18}" width="36" height="36" rx="4" fill="none" stroke="{glow_ref}" stroke-width="1.2" stroke-dasharray="3,3" stroke-opacity="0.7"/>')
+    elements.append(f'<circle cx="{cx}" cy="{cy}" r="5" fill="{glow_ref}" fill-opacity="0.95"/>')
+
+    # 3. 24 de piste de date la 45° cu via-pads
+    num_traces = 18
     for i in range(num_traces):
         slot = i - (num_traces - 1) / 2
-        y_start = cy + slot * 10
+        y_start = cy + slot * 6.5
         x0 = cx - chip_size // 2
-        len1 = 20 + (i * 7 + seed[3]) % 35
+        len1 = 18 + (i * 7 + seed[3]) % 35
         x1 = x0 - len1
-        diag_len = 14 + (i * 5 + seed[4]) % 22
+        diag_len = 16 + (i * 5 + seed[4]) % 24
         x2 = x1 - diag_len
         y2 = y_start + (diag_len if slot >= 0 else -diag_len)
-        len3 = 30 + (i * 11 + seed[5]) % 50
+        len3 = 35 + (i * 11 + seed[5]) % 65
         x3 = x2 - len3
         d_trace = f"M {x0} {y_start} L {x1} {y_start} L {x2} {y2} L {x3} {y2}"
-        op = 0.4 + (1.0 - abs(slot) / 5) * 0.5
+        op = 0.4 + (1.0 - abs(slot) / 10) * 0.55
         elements.append(f'<path d="{d_trace}" fill="none" stroke="{glow_ref}" stroke-width="1.3" stroke-opacity="{op:.2f}"/>')
         elements.append(f'<circle cx="{x3}" cy="{y2}" r="2.8" fill="{glow_ref}" fill-opacity="{op:.2f}"/>')
+        elements.append(f'<circle cx="{x3}" cy="{y2}" r="5.5" fill="none" stroke="{glow_ref}" stroke-width="0.8" stroke-opacity="{op * 0.7:.2f}"/>')
+
     return "".join(elements)
 
 
 def _gen_parametric_waves(seed: bytes, gid: str) -> str:
-    """Valuri parametrice / benzi oscilante de date. EXCLUSIV pentru Tech & AI."""
+    """Panglici fluide 3D ondulate (The Verge / The New Stack style) — EXCLUSIV Tech & AI."""
     elements = []
-    num_ribbons = 5
+    num_ribbons = 16
     base_y = H * 0.52 + (seed[0] % 16) - 8
-    freq1 = 0.016 + (seed[1] % 10) * 0.0008
-    freq2 = 0.024 + (seed[2] % 10) * 0.001
-    phase_step = 0.42 + (seed[3] % 8) * 0.03
+    freq1 = 0.015 + (seed[1] % 10) * 0.0008
+    freq2 = 0.026 + (seed[2] % 10) * 0.001
+    phase_step = 0.32 + (seed[3] % 8) * 0.025
     glow_ref = f"url(#art-3d-glow-{gid})"
     fill_ref = f"url(#art-3d-fill-{gid})"
 
     for r in range(num_ribbons):
         p = (seed[4] % 50) * 0.1 + r * phase_step
-        thickness = 14 + r * 3
-        y_offset = (r - (num_ribbons - 1) / 2) * 16
+        thickness = 12 + r * 2.2
+        y_offset = (r - (num_ribbons - 1) / 2) * 11
 
         pts_top, pts_bot = [], []
-        steps = 14
+        steps = 20
         dx = W / steps
         for s in range(steps + 1):
             x = s * dx
             wave = (
-                math.sin(x * freq1 + p) * 38.0 +
+                math.sin(x * freq1 + p) * 36.0 +
                 math.cos(x * freq2 - p * 0.7) * 18.0
             )
-            persp = 0.65 + 0.55 * (x / W)
+            persp = 0.7 + 0.5 * (x / W)
             y_mid = base_y + wave * persp + y_offset
             pts_top.append((x, y_mid - thickness * persp / 2))
             pts_bot.append((x, y_mid + thickness * persp / 2))
@@ -986,12 +1126,15 @@ def _gen_parametric_waves(seed: bytes, gid: str) -> str:
             d_bot.append(f"L {pts_bot[i][0]:.1f} {pts_bot[i][1]:.1f}")
 
         d_ribbon = " ".join(d_top) + " " + " ".join(d_bot) + " Z"
-        op_fill = 0.12 + r * 0.04
-        op_stroke = 0.55 + r * 0.08
+        op_fill = 0.08 + (r / num_ribbons) * 0.16
+        op_stroke = 0.45 + (r / num_ribbons) * 0.5
+        sw = 1.2 if r < num_ribbons - 3 else 2.2
         elements.append(
-            f'<path d="{d_ribbon}" fill="{fill_ref}" fill-opacity="{op_fill:.2f}" stroke="{glow_ref}" stroke-width="1.4" stroke-opacity="{op_stroke:.2f}"/>'
+            f'<path d="{d_ribbon}" fill="{fill_ref}" fill-opacity="{op_fill:.2f}" stroke="{glow_ref}" stroke-width="{sw}" stroke-opacity="{op_stroke:.2f}"/>'
         )
+
     return "".join(elements)
+
 
 
 # Dictionar dispecerat generatoare
