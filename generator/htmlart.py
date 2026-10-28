@@ -1518,137 +1518,6 @@ def art_id(a: dict) -> str:
 _ET_TREPTE = (8, 11, 14)
 
 
-_MOTIFS_SVG = {
-    "telefon": (
-        "M35,15 h30 a10,10 0 0 1 10,10 v70 a10,10 0 0 1 -10,10 h-30 a10,10 0 0 1 -10,-10 v-70 a10,10 0 0 1 10,-10 z M45,22 h10 M47,93 h6",
-        "0 0 100 120",
-        2.5,
-    ),
-    "card": (
-        "M15,25 h70 a8,8 0 0 1 8,8 v44 a8,8 0 0 1 -8,8 h-70 a8,8 0 0 1 -8,-8 v-44 a8,8 0 0 1 8,-8 z M7,42 h86 M22,62 h16 v10 h-16 z",
-        "0 0 100 100",
-        2.5,
-    ),
-    "cip": (
-        "M25,25 h50 v50 h-50 z M35,15 v10 M50,15 v10 M65,15 v10 M35,75 v10 M50,75 v10 M65,75 v10 M15,35 h10 M15,50 h10 M15,65 h10 M75,35 h10 M75,50 h10 M75,65 h10 M38,38 h24 v24 h-24 z",
-        "0 0 100 100",
-        2.5,
-    ),
-    "gaming": (
-        "M22,35 c-8,0 -14,10 -10,28 l6,18 c2,6 7,8 12,5 l14,-10 h12 l14,10 c5,3 10,1 12,-5 l6,-18 c4,-18 -2,-28 -10,-28 z M30,50 h10 M35,45 v10 M68,48 a3,3 0 1 1 0,0.1 M76,54 a3,3 0 1 1 0,0.1",
-        "0 0 100 100",
-        2.5,
-    ),
-    "auto": (
-        "M12,65 l6,-15 c3,-7 9,-11 17,-12 l26,-3 c6,0 12,3 16,8 l11,12 h6 c4,0 6,3 5,7 l-2,10 c-1,3 -3,5 -6,5 h-6 a10,10 0 0 1 -18,0 h-28 a10,10 0 0 1 -18,0 h-5 c-3,0 -5,-3 -4,-7 z M28,68 a6,6 0 1 0 0,-0.1 M74,68 a6,6 0 1 0 0,-0.1",
-        "0 0 100 100",
-        2.5,
-    ),
-    "energie": (
-        "M55,12 l-28,38 h22 l-10,38 l34,-44 h-24 z",
-        "0 0 100 100",
-        2.5,
-    ),
-    "justitie": (
-        "M50,15 v70 M25,90 h50 M15,30 h70 M25,30 l-12,25 h24 z M75,30 l-12,25 h24 z",
-        "0 0 100 100",
-        2.5,
-    ),
-    "institutie": (
-        "M15,35 l35,-20 l35,20 z M18,35 h64 M20,82 h60 M12,88 h76 M26,42 v38 M42,42 v38 M58,42 v38 M74,42 v38",
-        "0 0 100 100",
-        2.5,
-    ),
-    "sport": (
-        "M30,22 h40 v24 c0,14 -9,26 -20,28 c-11,-2 -20,-14 -20,-28 z M30,30 h-10 c-4,0 -7,4 -6,9 c2,10 8,15 16,16 M70,30 h10 c4,0 7,4 6,9 c-2,10 -8,15 -16,16 M50,74 v14 M35,88 h30",
-        "0 0 100 100",
-        2.5,
-    ),
-    "magazin": (
-        "M25,32 h50 l-6,48 h-38 z M36,32 v-8 a14,14 0 0 1 28,0 v8",
-        "0 0 100 100",
-        2.5,
-    ),
-    "sanatate": (
-        "M40,18 h20 v22 h22 v20 h-22 v22 h-20 v-22 h-22 v-20 h22 z",
-        "0 0 100 100",
-        2.5,
-    ),
-}
-
-_ICON_TO_MOTIF = {
-    "device-mobile": "telefon",
-    "building-bank": "card",
-    "receipt-tax": "card",
-    "chart-line": "card",
-    "pig-money": "card",
-    "currency-euro": "card",
-    "car": "auto",
-    "ball-football": "sport",
-    "medal": "sport",
-    "podium": "sport",
-    "gavel": "justitie",
-    "building-hospital": "sanatate",
-    "stethoscope": "sanatate",
-    "shopping-cart": "magazin",
-    "bolt": "energie",
-    "gas-station": "energie",
-    "building-monument": "institutie",
-    "building-church": "institutie",
-    "flag": "institutie",
-}
-
-_CAT_TO_MOTIF = {
-    "tech": "cip",
-    "ai": "cip",
-    "auto": "auto",
-    "sport": "sport",
-    "sanatate": "sanatate",
-    "economic": "card",
-    "politic": "institutie",
-}
-
-
-def _asociaza_simbol(a: dict) -> str | None:
-    titlu = (a.get("title") or "").lower()
-    icon = (a.get("icon") or "").lower()
-    cat = (a.get("category") or "").lower()
-
-    if re.search(r"\b(?:samsung|apple|iphone|galaxy|poco|xiaomi|telefon|smartphone|tableta|pixel)\b", titlu):
-        return "telefon"
-    if re.search(r"\b(?:revolut|bnr|banca|cec\s+bank|bvb|fondul|finant|banc|doband|credit|moned|valut)\b", titlu):
-        return "card"
-    if re.search(r"\b(?:amd|nvidia|intel|meta|openai|cip|procesor|inteligenta\s+artificiala|ia\b|ai\b|hardware)\b", titlu):
-        return "cip"
-    if re.search(r"\b(?:ubisoft|gaming|joc|playstation|xbox|nintendo|steam|recomplauncher)\b", titlu):
-        return "gaming"
-    if re.search(r"\b(?:dacia|tesla|renault|audi|bmw|mercedes|volkswagen|byd|ford|masin|auto|suv|vehicul)\b", titlu):
-        return "auto"
-    if re.search(r"\b(?:e\.on|delgaz|transelectrica|energie|gaze|electric|termocentral|solar|eolian|nuclear|petrom|romgaz)\b", titlu):
-        return "energie"
-    if re.search(r"\b(?:guvern|senat|parlament|anaf|anre|minister|curtea|lege|oug|hcl|primar)\b", titlu):
-        return "institutie"
-    if re.search(r"\b(?:fcsb|cluj|craiova|dinamo|rapid|fotbal|sport|meci|campionat|liga|wta|atp|aur|medali)\b", titlu):
-        return "sport"
-    if re.search(r"\b(?:emag|altex|black\s+friday|pret|reducer|magazin|cumpar|comert|returo)\b", titlu):
-        return "magazin"
-    if re.search(r"\b(?:spital|sanatat|medic|vaccin|tratament|boal|virus|pacient)\b", titlu):
-        return "sanatate"
-
-    if icon in _ICON_TO_MOTIF:
-        return _ICON_TO_MOTIF[icon]
-
-    return _CAT_TO_MOTIF.get(cat)
-
-
-def _simbol_card(a: dict) -> dict | None:
-    tip = _asociaza_simbol(a)
-    if not tip or tip not in _MOTIFS_SVG:
-        return None
-    d, vb, sw = _MOTIFS_SVG[tip]
-    return {"nume": tip, "d": d, "vb": vb, "sw": sw}
-
-
 def _treapta_eticheta(et: str) -> int:
     n = len((et or "").strip())
     for i, plafon in enumerate(_ET_TREPTE):
@@ -1658,7 +1527,7 @@ def _treapta_eticheta(et: str) -> int:
 
 
 def stil_inline(a: dict) -> dict:
-    """Descrierea artei desenate in pagina pentru `a` (compozitie, paleta, texte, data, harta/portret/simbol)."""
+    """Descrierea artei desenate in pagina pentru `a` (compozitie, paleta, texte, data, harta/portret)."""
     seed = _seed(a)
     et = _eticheta(a)
     cat = (a.get("category") or "").strip()
@@ -1676,7 +1545,6 @@ def stil_inline(a: dict) -> dict:
     geo = geo_cat
     portret = None if (harta or geo) else _portret_card(a)
     callout = None if geo else _cifra_cheie(a.get("title") or "")
-    simbol = None if (geo or harta or portret) else _simbol_card(a)
     res = {
         "tpl": "arc" if geo else _NUME_TEMPLATE[seed[4] % len(_NUME_TEMPLATE)],
         "pal": seed[0] % len(_PALETE),
@@ -1692,8 +1560,6 @@ def stil_inline(a: dict) -> dict:
         res["geo"] = True
     if harta:
         res["harta"] = harta
-    elif simbol:
-        res["simbol"] = simbol
     elif portret:
         res["portret"] = portret
     return res
