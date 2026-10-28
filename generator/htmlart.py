@@ -83,15 +83,212 @@ def _eticheta_categorie(cat: str) -> str:
     return config.CATEGORY_LABELS.get(cat, cat.capitalize())
 
 
+_CURATED_ENTITIES = (
+    ("Noua Casă", r"\b(?:noua\s+cas[aă]|prima\s+cas[aă])\b"),
+    ("IMM Invest", r"\bimm\s+invest\b"),
+    ("Black Friday", r"\bblack\s+friday\b"),
+    ("Pilonul II", r"\bpilonul\s+(?:al\s+)?(?:ii|2|doi)\b"),
+    ("Pilonul III", r"\bpilonul\s+(?:al\s+)?(?:iii|3|trei)\b"),
+    ("Neptun Deep", r"\bneptun\s+deep\b"),
+    ("Gaze naturale", r"\bgaze(?:lor)?\s+naturale\b"),
+    ("Salariul minim", r"\bsalari(?:ul|ului)?\s+minim\b"),
+    ("RO e-Factura", r"\b(?:ro\s+)?e[- ]factur[aă]\b"),
+    ("Bursa de Valori", r"\b(?:bursa\s+de\s+valori|bvb)\b"),
+    ("Fondul Proprietatea", r"\bfondul\s+proprietatea\b"),
+    ("BNR", r"\b(?:bnr|banc[aă]\s+na[tț]ional[aă])\b"),
+    ("ANAF", r"\banaf\b"),
+    ("ANRE", r"\banre\b"),
+    ("Transelectrica", r"\btranselectrica\b"),
+    ("Transgaz", r"\btransgaz\b"),
+    ("Romgaz", r"\bromgaz\b"),
+    ("OMV Petrom", r"\b(?:omv\s+petrom|petrom)\b"),
+    ("Hidroelectrica", r"\bhidroelectrica\b"),
+    ("eMAG", r"\bemag\b"),
+    ("Altex", r"\baltex\b"),
+    ("Dacia", r"\bdacia\b"),
+    ("RetuRo", r"\breturo\b"),
+    ("Guvernul", r"\bguvern(?:ul|ului)?\b"),
+    ("Senatul", r"\bsenat(?:ul|ului)?\b"),
+    ("Comisia Europeană", r"\bcomisi[ai]\s+european[aă]\b"),
+    ("Banca Transilvania", r"\bbanca\s+transilvania\b"),
+    ("CEC Bank", r"\bcec\s+bank\b"),
+    ("Temu", r"\btemu\b"),
+    ("CFR Marfă", r"\bcfr\s+marf[aă]\b"),
+    ("Tarom", r"\btarom\b"),
+)
+
+_IGNORE_ENTITIES = frozenset({
+    "românia", "romania", "bucurești", "bucuresti", "ue", "sua", "china", "rusia", "europa",
+    "cluj", "timiș", "timis", "iași", "iasi", "constanța", "constanta", "brașov", "brasov",
+    "shanghai", "beijing", "londra", "paris", "berlin", "tokyo", "new york", "washington", "moscova"
+})
+
+
+def _carlig_tematic(a: dict) -> str:
+    """Carlig tematic pentru stiri economice (entitati consacrate sau fallback 'Economie')."""
+    titlu = (a.get("title") or "").strip()
+    if not titlu:
+        return "Economie"
+
+    for name, pattern in _CURATED_ENTITIES:
+        if re.search(pattern, titlu, re.I):
+            return name
+
+    entities = a.get("entities") or []
+    for ent in entities:
+        ent_clean = str(ent).strip()
+        if not ent_clean or len(ent_clean) > 22 or len(ent_clean) < 3:
+            continue
+        if ent_clean.lower() in _IGNORE_ENTITIES:
+            continue
+        if re.search(r"\b" + re.escape(ent_clean) + r"\b", titlu, re.I):
+            return ent_clean
+
+    return "Economie"
+
+
+def _cifra_cheie(titlu: str) -> str | None:
+    """Indicator cantitativ financiar reprezentativ din titlu (procente, multiplicatori, sume, pret/unitate)."""
+    if not titlu or not isinstance(titlu, str):
+        return None
+    t = titlu.strip()
+    if not t:
+        return None
+
+    # Filtre negative: legi, decrete, articole, date, ore, topuri
+    t_clean = re.sub(
+        r"\b(?:legea|decretul|ordinul|oug|hg|hcl|articolul|art\.|nr\.)\s*(?:nr\.)?\s*[\w\d/.-]+",
+        "",
+        t,
+        flags=re.I,
+    )
+    t_clean = re.sub(r"\b\d{1,2}:\d{2}\b", "", t_clean)
+    t_clean = re.sub(
+        r"\b\d{1,2}\s+(?:ianuarie|februarie|martie|aprilie|mai|iunie|iulie|august|septembrie|octombrie|noiembrie|decembrie)\b",
+        "",
+        t_clean,
+        flags=re.I,
+    )
+    t_clean = re.sub(r"\btop\s+\d+\b", "", t_clean, flags=re.I)
+
+    # 1. Pret pe unitate (500 de lei pe MWh, 0,35 lei/kWh, 100 €/MWh)
+    m_unit = re.search(
+        r"(\d+(?:[.,]\d+)?)\s*(?:de\s+)?(lei|euro|€)\s*(?:pe|/)\s*([MmKkGg]?[Ww]h)\b",
+        t_clean,
+        re.I,
+    )
+    if m_unit:
+        val, mon, u = m_unit.group(1), m_unit.group(2).lower(), m_unit.group(3).upper()
+        mon_str = "€" if mon in ("euro", "€") else "lei"
+        return f"{val} {mon_str}/{u}"
+
+    m_unit_inv = re.search(r"(\d+(?:[.,]\d+)?)\s*€\s*/\s*([MmKkGg]?[Ww]h)\b", t_clean, re.I)
+    if m_unit_inv:
+        return f"{m_unit_inv.group(1)} €/{m_unit_inv.group(2).upper()}"
+
+    # 2. Tranzitie procentuala (de la X% la Y% -> Y%)
+    m_tranz = re.search(
+        r"\bde\s+la\s+([+-]?\d+(?:[.,]\d+)?)\s*%\s*(?:la|p[aâ]n[aă]\s+la)\s*([+-]?\d+(?:[.,]\d+)?)\s*%",
+        t_clean,
+        re.I,
+    )
+    if m_tranz:
+        return f"{m_tranz.group(2)}%"
+
+    # 3. Interval procentual (intre X% si Y%)
+    m_interv = re.search(
+        r"\b(?:intre|între)\s*([+-]?\d+(?:[.,]\d+)?)\s*%?\s*(?:si|și)\s*([+-]?\d+(?:[.,]\d+)?)\s*%",
+        t_clean,
+        re.I,
+    )
+    if m_interv:
+        return f"{m_interv.group(1)}–{m_interv.group(2)}%"
+
+    # 4. Sume compacte mari: miliarde si milioane
+    sume = []
+    for m in re.finditer(
+        r"(?:([€$])\s*)?(\d+(?:[.,]\d+)?)\s*(?:de\s+)?(?:\bmld\.|\b(?:miliarde?|mld)\b)\s*(?:de\s+)?(?:(lei|euro|dolari)\b|([€$]))?",
+        t_clean,
+        re.I,
+    ):
+        pref_mon, val, mon1, mon2 = m.group(1), m.group(2), m.group(3), m.group(4)
+        moneda = (pref_mon or mon1 or mon2 or "").lower()
+        mon_str = ""
+        if moneda in ("euro", "€"):
+            mon_str = " €"
+        elif moneda == "lei":
+            mon_str = " LEI"
+        elif moneda in ("$", "dolari"):
+            mon_str = " $"
+        sume.append(f"{val} MLD{mon_str}".strip())
+
+    for m in re.finditer(
+        r"(?:([€$])\s*)?(\d+(?:[.,]\d+)?)\s*(?:de\s+)?(?:\bmil\.|\b(?:milioane?|mil)\b)\s*(?:de\s+)?(?:(lei|euro|dolari)\b|([€$]))?",
+        t_clean,
+        re.I,
+    ):
+        pref_mon, val, mon1, mon2 = m.group(1), m.group(2), m.group(3), m.group(4)
+        moneda = (pref_mon or mon1 or mon2 or "").lower()
+        mon_str = ""
+        if moneda in ("euro", "€"):
+            mon_str = " €"
+        elif moneda == "lei":
+            mon_str = " LEI"
+        elif moneda in ("$", "dolari"):
+            mon_str = " $"
+        sume.append(f"{val} MIL{mon_str}".strip())
+
+    # 5. Procente simple
+    procente = re.findall(r"([+-]?\d+(?:[.,]\d+)?)\s*(?:%|la\s+sut[aă]\b)", t_clean, re.I)
+
+    # 6. Multiplicatori (10x, 10×, de 10 ori)
+    multis = []
+    for m in re.finditer(r"\b(?:de\s+)?(\d+(?:[.,]\d+)?)\s*(?:ori|[xX×])\b", t_clean):
+        val = m.group(1)
+        if not re.search(r"\b\d+\s*[xX]\s*\d+\b", t_clean):
+            multis.append(f"{val}×")
+
+    # Anti-ambiguitate: concurenta de valori financiare fara ierarhie clara -> None
+    total_valori = len(sume) + len(procente) + len(multis)
+    if total_valori > 1:
+        return None
+
+    if len(procente) == 1:
+        return f"{procente[0]}%"
+    if len(sume) == 1:
+        return sume[0]
+    if len(multis) == 1:
+        return multis[0]
+
+    return None
+
+
+def _treapta_callout(val: str) -> int:
+    """Trepte de marime a fontului pentru callout financiar, fara trunchiere arbitrara.
+    0: scurt (<=3 car, ex: 5%, 10x) -> 14.5cqw
+    1: mediu (4-7 car, ex: 2 MLD €, 60 MIL €) -> 8.4cqw
+    2: lung (>=8 car, ex: 500 lei/MWH, 187 MIL LEI) -> 5.4cqw
+    """
+    n = len((val or "").strip())
+    if n <= 3:
+        return 0
+    elif n <= 7:
+        return 1
+    return 2
+
+
 def _eticheta(a: dict) -> str:
-    """Textul etichetei: locul la stirile de loc, altfel categoria (vezi geo.eticheta_copertei).
+    """Textul etichetei: locul la stirile de loc, carlig tematic la economie, altfel categoria (vezi geo.eticheta_copertei).
 
     La o stire LOCALA eticheta nu are voie sa fie judetul cand textul numeste localitatea
     (sesizarea proprietarului 2026-10-17: „TIMIȘ" pe un incendiu din Gottlob, numit in teaser)."""
     loc = _loc_local(a)
     if loc:
         return loc[3]
-    return geo.eticheta_copertei(a) or _eticheta_categorie(a.get("category")) or "Știri"
+    cat = (a.get("category") or "").strip()
+    if cat == "economic":
+        return _carlig_tematic(a)
+    return geo.eticheta_copertei(a) or _eticheta_categorie(cat) or "Știri"
 
 
 def _subtitlu(a: dict) -> str:
@@ -1270,8 +1467,10 @@ def stil_inline(a: dict) -> dict:
     """Descrierea artei desenate in pagina pentru `a` (compozitie, paleta, texte, data, harta/portret)."""
     seed = _seed(a)
     et = _eticheta(a)
+    cat = (a.get("category") or "").strip()
+    is_econ = cat == "economic"
     # Local/judetean: forma si subtitlul urmeaza eticheta afisata (`_forma_loc`).
-    geo_cat = (a.get("category") or "") in _GEO_CALM
+    geo_cat = cat in _GEO_CALM
     if geo_cat:
         cod, d, sub = _forma_loc(a)
         harta = _harta_inline(cod, d) if cod else None
@@ -1283,14 +1482,18 @@ def stil_inline(a: dict) -> dict:
     # eticheta + forma; calibrarea treptelor de eticheta se pastreaza.
     geo = geo_cat
     portret = None if (harta or geo) else _portret_card(a)
+    callout = _cifra_cheie(a.get("title") or "") if is_econ else None
     res = {
         "tpl": "arc" if geo else _NUME_TEMPLATE[seed[4] % len(_NUME_TEMPLATE)],
         "pal": seed[0] % len(_PALETE),
         "eticheta": et,
         "sub": sub,
         "treapta": _treapta_eticheta(et),
-        "data": None if geo else _data_copertei(a),
+        "data": None if (geo or is_econ) else _data_copertei(a),
     }
+    if callout:
+        res["callout"] = callout
+        res["treapta_callout"] = _treapta_callout(callout)
     if geo:
         res["geo"] = True
     if harta:
