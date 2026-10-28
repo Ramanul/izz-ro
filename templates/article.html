@@ -60,6 +60,15 @@
     {% if a.correction.kind == 'documentary' %}<p>Documentare cu asistență AI; nu reprezintă revizie umană.</p>{% endif %}
   </aside>
   {% endif %}
+  {% if a.show_initial_version is sameas true and a.initial_version %}
+  <details class="version-toggle" data-pagefind-ignore="all">
+    <summary>Rezumat înainte de corecție</summary>
+    <div class="initial-version-content">
+      <p><strong>{{ a.initial_version.title }}</strong></p>
+      <p>{{ a.initial_version.synthesis if a.model == 'C' else a.initial_version.teaser }}</p>
+    </div>
+  </details>
+  {% endif %}
   <div class="meta">
     <time datetime="{{ a.published }}">{{ a.published_human }}</time>
     {% if not a.anunt_fara_corp %}
