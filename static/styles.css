@@ -762,9 +762,11 @@ picture { display: contents; }
 .art--arc.art--t0 { --art-et-k: .87; }
 .art--arc.art--t1 { --art-et-k: .67; }
 .art--arc.art--t2 { --art-et-k: .54; }
+.art--arc.art--t3 { --art-et-k: .44; }
 .art--banda.art--t0 { --art-et-k: .87; }
 .art--banda.art--t1 { --art-et-k: .66; }
 .art--banda.art--t2 { --art-et-k: .52; }
+.art--banda.art--t3 { --art-et-k: .40; }
 .art-label {
   font-size: var(--fs-lg);                                  /* cadere fara `cqw` */
   font-size: calc(var(--art-et-base) * var(--art-et-k));

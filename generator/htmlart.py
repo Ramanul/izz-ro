@@ -170,13 +170,14 @@ _IGNORE_ENTITIES = frozenset({
 
 
 def _carlig_tematic(a: dict) -> str:
-    """Carlig tematic pentru stiri tematice (entitati consacrate sau fallback pe eticheta categoriei)."""
+    """Carlig tematic pentru stiri tematice (entitati consacrate, institutii, organizatii sau fallback)."""
     cat = (a.get("category") or "").strip()
     fallback = _eticheta_categorie(cat) or "Știri"
     titlu = (a.get("title") or "").strip()
     if not titlu:
         return fallback
 
+    # 1. Entitati consacrate / programe recunoscute
     for name, pattern in _CURATED_ENTITIES:
         if re.search(pattern, titlu, re.I):
             return name
@@ -187,25 +188,52 @@ def _carlig_tematic(a: dict) -> str:
         if re.search(r"\bdinamo\b", titlu, re.I):
             return "Dinamo"
 
+    # 2. Entitati extrase din pipeline (NER) prezente in titlu (fara plafonul artificial de 22 car)
     entities = a.get("entities") or []
     for ent in entities:
         ent_clean = str(ent).strip()
-        if not ent_clean or len(ent_clean) > 22 or len(ent_clean) < 3:
+        if not ent_clean or len(ent_clean) > 36 or len(ent_clean) < 3:
             continue
         if ent_clean.lower() in _IGNORE_ENTITIES:
             continue
         if re.search(r"\b" + re.escape(ent_clean) + r"\b", titlu, re.I):
             return ent_clean
 
-    m = re.search(
-        r"\b(?:platforma|aplicația|aplicatia|jocul|compania|start-up-ul|startup-ul|producătorul|producatorul|brandul|serviciul|rețeaua|reteaua)\s+([A-Z0-9][a-zA-Z0-9._-]+)\b",
+    # 3. Tipare dinamice de institutii publice si autoritati din titlu
+    m_inst = re.search(
+        r"\b((?i:Ministerul|Consiliul|Inspectoratul|Curtea|Direc[tț]ia|Agen[tț]ia|Autoritatea|Prim[aă]ria|Prefectura|Tribunalul|Judec[aă]toria|Parchetul|Poli[tț]ia|Spitalul|Universitatea|Academia|Comisia|Organiza[tț]ia|Federa[tț]ia|Alian[tț]a)(?:\s+(?:de|pentru|al|a|și|si|în|in))?\s+[A-ZĂÂÎȘȚ][a-zăâîșț0-9&._-]+(?:\s+(?:de|pentru|al|a|și|si|în|in)\s+[A-ZĂÂÎȘȚ][a-zăâîșț0-9&._-]+|\s+[A-ZĂÂÎȘȚ][a-zăâîșț0-9&._-]+)?)\b",
+        titlu,
+    )
+    if m_inst:
+        inst_nume = m_inst.group(1).strip()
+        if inst_nume.lower() not in _IGNORE_ENTITIES and len(inst_nume) <= 36:
+            return inst_nume
+
+    # 4. Acronime oficiale de institutii si organizatii recunoscute
+    m_acr = re.search(
+        r"\b(DNA|DIICOT|ANAF|ANRE|CCR|CNA|CNAIR|TAROM|CFR|SRI|SIE|MAI|MAPN|MAE|ANPC|ASF|BVB|BNR|NATO|OMS|ONU|UE|FMI|BCE|NASA|ESA|CJUE)\b",
+        titlu,
+    )
+    if m_acr:
+        return m_acr.group(1)
+
+    # 5. Companii, branduri, platforme semnalate lexical
+    m_comp = re.search(
+        r"\b(?:platforma|aplicația|aplicatia|jocul|compania|societatea|firma|grupul|start-up-ul|startup-ul|producătorul|producatorul|brandul|serviciul|rețeaua|reteaua)\s+([A-Z0-9ĂÂÎȘȚ][a-zA-Z0-9ĂÂÎȘȚ._-]+)\b",
         titlu,
         re.I,
     )
-    if m:
-        c = m.group(1).strip()
+    if m_comp:
+        c = m_comp.group(1).strip()
         if c.lower() not in _IGNORE_ENTITIES and len(c) >= 3:
             return c
+
+    # 6. Nume proprii / branduri intre ghilimele
+    m_ghil = re.search(r"[„\"«]([A-Z0-9ĂÂÎȘȚ][a-zA-Z0-9ĂÂÎȘȚăâîșț&._ -]{2,28})[”\"»]", titlu)
+    if m_ghil:
+        cg = m_ghil.group(1).strip()
+        if cg.lower() not in _IGNORE_ENTITIES and len(cg) >= 3:
+            return cg
 
     return fallback
 
@@ -1519,9 +1547,15 @@ _ET_TREPTE = (8, 11, 14)
 
 
 def _treapta_eticheta(et: str) -> int:
-    n = len((et or "").strip())
+    s = (et or "").strip()
+    if not s:
+        return 0
+    cuvinte = s.split()
+    max_w = max(len(c) for c in cuvinte) if cuvinte else len(s)
+    total_len = len(s)
+    criteriu = max(max_w, int(total_len * 0.65))
     for i, plafon in enumerate(_ET_TREPTE):
-        if n <= plafon:
+        if criteriu <= plafon:
             return i
     return len(_ET_TREPTE)
 
