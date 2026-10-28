@@ -941,6 +941,39 @@ picture { display: contents; }
 .art--inversat:not(.art--callout-mode) .art-body { max-width: 86cqw; }
 .art--arc:not(.art--callout-mode):not(.art--geo) .art-body { max-width: 86cqw; }
 
+/* -- motive tematice 3D aurii gravate inline (telefon, card, cip, etc.) -- */
+.art--simbol {}
+.art-simbol-wrap {
+  position: absolute; right: 5.83cqw; top: 50%; transform: translateY(-50%);
+  width: 25cqw; height: 25cqw;
+  display: flex; align-items: center; justify-content: center; pointer-events: none;
+  filter: drop-shadow(0 6px 14px rgba(29, 31, 36, 0.18)) drop-shadow(0 1.5px 3px rgba(184, 134, 11, 0.32));
+  transition: filter .25s ease, transform .25s ease;
+}
+.card:hover .art-simbol-wrap {
+  filter: drop-shadow(0 10px 22px rgba(29, 31, 36, 0.26)) drop-shadow(0 3px 6px rgba(184, 134, 11, 0.48));
+  transform: translateY(calc(-50% - 2px)) scale(1.05);
+}
+.art-simbol-wrap svg { width: 100%; height: 100%; display: block; overflow: visible; }
+.art-simbol-soclu {
+  stroke: #5a420b; stroke-opacity: .9;
+}
+.art-simbol-fata {
+  stroke: url(#art-gold-simbol); stroke-opacity: .95;
+}
+.art--simbol.art--inversat .art-body { max-width: 58cqw; }
+.art--simbol.art--arc .art-body { max-width: 58cqw; }
+.art--simbol.art--banda .art-body { max-width: 28cqw; }
+.art--simbol.art--editorial .art-body { max-width: 54cqw; }
+.art--simbol.art--inversat .art-diamond { opacity: .07; }
+.art--simbol.art--arc .art-seal,
+.art--simbol.art--arc .art-hairline,
+.art--simbol.art--arc .art-dot,
+.art--simbol.art--inversat .art-num { display: none; }
+.art-simbol--telefon, .art-simbol--card, .art-simbol--cip, .art-simbol--gaming,
+.art-simbol--auto, .art-simbol--energie, .art-simbol--justitie, .art-simbol--institutie,
+.art-simbol--sport, .art-simbol--magazin, .art-simbol--sanatate {}
+
 /* -- silueta cartografica a judetului (Natural Earth, domeniu public) si medalionul portret (PD/CC0) -- */
 .art--harta.art--editorial, .art--portret.art--editorial { --art-et-base: 9.58cqw; }
 .art--harta.art--editorial .art-body, .art--portret.art--editorial .art-body { max-width: 54cqw; }
