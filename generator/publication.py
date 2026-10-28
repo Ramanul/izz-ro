@@ -154,7 +154,9 @@ def corrections_feed(index, site_url=None, now=None):
 
     entries = []
     # Sort deterministically: newest review date first, then unique record key
-    for _, row in sorted(index.items(), key=lambda item: (item[1]["review"]["reviewed_at"], item[0]), reverse=True):
+    for _, row in sorted(index.items(), key=lambda item: (
+            datetime.fromisoformat(item[1]["review"]["reviewed_at"].replace("Z", "+00:00"))
+            .astimezone(timezone.utc), item[0]), reverse=True):
         reviewed_at = row["review"]["reviewed_at"]
         try:
             dt = datetime.fromisoformat(reviewed_at.replace("Z", "+00:00"))

@@ -110,8 +110,9 @@ def test_corrections_feed_ordering_and_deterministic():
     rec2 = make_record(art2, state="withdrawn", reviewed_at="2026-10-26T18:00:00Z", notice="Retragere 2")
     combined = {**rec1, **rec2}
 
-    xml1 = publication.corrections_feed(combined, site_url="https://izz.ro")
-    xml2 = publication.corrections_feed(copy.deepcopy(combined), site_url="https://izz.ro")
+    now = datetime(2026, 10, 28, tzinfo=timezone.utc)
+    xml1 = publication.corrections_feed(combined, site_url="https://izz.ro", now=now)
+    xml2 = publication.corrections_feed(copy.deepcopy(combined), site_url="https://izz.ro", now=now)
     # Deterministic output
     assert xml1 == xml2
 
@@ -121,6 +122,34 @@ def test_corrections_feed_ordering_and_deterministic():
     # Newest reviewed_at must come first (2026-10-26 before 2026-10-24)
     assert "Retragere" in items[0].find("title").text
     assert "Corecție" in items[1].find("title").text
+
+
+@pytest.mark.parametrize("first,second", [
+    ("2026-10-28T09:30:00Z", "2026-10-28T10:00:00+02:00"),
+    ("2026-10-27T23:30:00-02:00", "2026-10-28T00:30:00Z"),
+])
+def test_corrections_feed_orders_real_instants_across_timezones(article, first, second):
+    a = {**article, "slug": "first-correction"}
+    b = {**article, "slug": "second-correction"}
+    records = {**make_record(a, reviewed_at=first), **make_record(b, reviewed_at=second)}
+    publication.validate(records, [a, b])
+    xml = publication.corrections_feed(records, now=datetime(2026, 10, 28, tzinfo=timezone.utc))
+    links = [item.findtext("link") for item in ET.fromstring(xml).findall(".//item")]
+    assert links == ["https://izz.ro/local/first-correction/",
+                     "https://izz.ro/local/second-correction/"]
+
+
+def test_corrections_feed_equal_instants_have_stable_key_order(article):
+    a = {**article, "slug": "a-correction"}
+    b = {**article, "slug": "b-correction"}
+    records = {**make_record(a, reviewed_at="2026-10-28T09:30:00Z"),
+               **make_record(b, reviewed_at="2026-10-28T11:30:00+02:00")}
+    now = datetime(2026, 10, 28, tzinfo=timezone.utc)
+    xml = publication.corrections_feed(records, now=now)
+    reversed_records = dict(reversed(list(records.items())))
+    assert publication.corrections_feed(reversed_records, now=now) == xml
+    links = [item.findtext("link") for item in ET.fromstring(xml).findall(".//item")]
+    assert links[0].endswith("/b-correction/")
 
 
 def test_render_writes_corrections_feed(tmp_path, monkeypatch):
