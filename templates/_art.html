@@ -72,7 +72,23 @@
     </g>
   </svg></div>
 
-  {%- elif pr %}{% set t = pr.taiere %}<div class="art-portret-wrap"><img class="art-portret{% if t %} art-portret--fata{% endif %}" src="/{{ pr.img }}" alt="{{ pr.name }}" loading="lazy" decoding="async" width="160" height="160"{% if t %} style="--pw:{{ t.pw }}%;--px:{{ t.px }}%;--py:{{ t.py }}%"{% endif %}></div>{% endif %}
+  {%- elif pr %}{% set t = pr.taiere %}<div class="art-portret-wrap"><img class="art-portret{% if t %} art-portret--fata{% endif %}" src="/{{ pr.img }}" alt="{{ pr.name }}" loading="lazy" decoding="async" width="160" height="160"{% if t %} style="--pw:{{ t.pw }}%;--px:{{ t.px }}%;--py:{{ t.py }}%"{% endif %}></div>
+  {%- elif s.scena_3d %}<div class="art-scena-3d art-scena--{{ s.scena_3d.stil }}">
+    <svg viewBox="{{ s.scena_3d.vb }}" aria-hidden="true" focusable="false" preserveAspectRatio="xMidYMid slice">
+      <defs>
+        <linearGradient id="art-3d-glow-{{ s.scena_3d.id }}" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stop-color="{{ s.scena_3d.c_glow[0] }}"/>
+          <stop offset="50%" stop-color="{{ s.scena_3d.c_glow[1] }}"/>
+          <stop offset="100%" stop-color="{{ s.scena_3d.c_glow[2] }}"/>
+        </linearGradient>
+        <linearGradient id="art-3d-fill-{{ s.scena_3d.id }}" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stop-color="{{ s.scena_3d.c_fill[0] }}"/>
+          <stop offset="100%" stop-color="{{ s.scena_3d.c_fill[1] }}"/>
+        </linearGradient>
+      </defs>
+      {{ s.scena_3d.markup | safe }}
+    </svg>
+  </div>{% endif %}
   <div class="art-grain"></div>
 </div>
 {%- endif %}{% endmacro %}

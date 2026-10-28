@@ -1596,6 +1596,9 @@ def stil_inline(a: dict) -> dict:
         res["harta"] = harta
     elif portret:
         res["portret"] = portret
+    else:
+        from generator.art_generativ import genereaza_scena_generativa
+        res["scena_3d"] = genereaza_scena_generativa(a, seed)
     return res
 
 
