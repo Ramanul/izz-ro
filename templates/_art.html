@@ -49,7 +49,20 @@
   <span class="art-brand art-brand--jos">izz.ro</span>
   {%- endif %}
   {%- endif %}
-  {%- if s.harta %}<div class="art-harta"><svg viewBox="0 0 330 300" aria-hidden="true" focusable="false"><g transform="{{ s.harta.transform }}"><path d="{{ s.harta.d }}" stroke-width="{{ s.harta.sw }}" stroke-linejoin="round"/></g></svg></div>
+  {%- if s.harta %}<div class="art-harta"><svg viewBox="0 0 330 300" aria-hidden="true" focusable="false">
+    <defs>
+      <linearGradient id="art-gold-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" stop-color="#fae8a2"/>
+        <stop offset="35%" stop-color="#dcb84e"/>
+        <stop offset="80%" stop-color="#b88b22"/>
+        <stop offset="100%" stop-color="#8a6512"/>
+      </linearGradient>
+    </defs>
+    <g transform="{{ s.harta.transform }}">
+      <path class="art-harta-soclu" d="{{ s.harta.d }}" transform="translate(0, 3)" stroke-width="{{ s.harta.sw }}" stroke-linejoin="round"/>
+      <path class="art-harta-fata" d="{{ s.harta.d }}" stroke-width="{{ s.harta.sw }}" stroke-linejoin="round"/>
+    </g>
+  </svg></div>
   {%- elif pr %}{% set t = pr.taiere %}<div class="art-portret-wrap"><img class="art-portret{% if t %} art-portret--fata{% endif %}" src="/{{ pr.img }}" alt="{{ pr.name }}" loading="lazy" decoding="async" width="160" height="160"{% if t %} style="--pw:{{ t.pw }}%;--px:{{ t.px }}%;--py:{{ t.py }}%"{% endif %}></div>{% endif %}
   <div class="art-grain"></div>
 </div>

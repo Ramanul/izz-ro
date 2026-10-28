@@ -737,6 +737,14 @@ def _uat_judet(cod: str) -> dict[str, str]:
     return _UAT_CACHE[cod]
 
 
+# Aliasuri deterministe pentru UAT-uri a caror denumire oficiala ANCPI difera de slug-ul
+# istoric al sursei sau de ortografierea cu a/i (CIUHOI -> SANIOB conf. Legii 139/2012, RISCA -> RASCA).
+_UAT_ALIASES: dict[tuple[str, str], str] = {
+    ("BIHOR", "CIUHOI"): "SANIOB",
+    ("CLUJ", "RISCA"): "RASCA",
+}
+
+
 def _uat_path(a: dict, cod: str | None) -> str | None:
     """Conturul localitatii a carei primarie a publicat stirea `a`, sau None."""
     if not cod:
@@ -745,7 +753,9 @@ def _uat_path(a: dict, cod: str | None) -> str | None:
     parsed = parse_source_slug(a.get("source") or "")
     if not parsed:
         return None
-    return _uat_judet(cod).get(_uat_nume(parsed[1])) or None
+    uat_k = _uat_nume(parsed[1])
+    uat_k = _UAT_ALIASES.get((cod, uat_k), uat_k)
+    return _uat_judet(cod).get(uat_k) or None
 
 
 # Cuvintele dupa care un nume de UAT e chiar un loc („din Gottlob", „Primăria Băicoi").
@@ -898,7 +908,8 @@ def _forma_loc(a: dict) -> tuple[str | None, str | None, str]:
         elif len(cand) == 1:
             cod = next(iter(cand))
         if cod:
-            d = _uat_judet(cod).get(cheie) or None
+            uat_k = _UAT_ALIASES.get((cod, cheie), cheie)
+            d = _uat_judet(cod).get(uat_k) or None
     if not cod and sursa:
         cod, d = sursa, _uat_path(a, sursa)
     if not cod:
