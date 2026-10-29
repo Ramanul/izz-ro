@@ -39,7 +39,24 @@ CARLIG_CASES = [
     ("BNR", {"title": "BNR anticipează menținerea dobânzii de referință"}, "BNR"),
     ("Guvernul", {"title": "Guvernul analizează menținerea taxei pe colete"}, "Guvernul"),
     ("Entity match", {"title": "Proiectul de infrastructură ANIF derulat rapid", "entities": ["ANIF"]}, "ANIF"),
-    ("Fallback", {"title": "Tranziția economiei către inovație"}, "Economie"),
+    ("Fallback tematic specific", {"category": "economic", "title": "Tranziția economiei către inovație"}, "FINANȚE ȘI ECONOMIE"),
+    # Screenshot tests from user
+    ("Tech Revolut", {"category": "tech", "title": "Platforma financiară Revolut a înregistrat noi probleme de conectare pentru utilizatori"}, "Revolut"),
+    ("Tech Samsung", {"category": "tech", "title": "Samsung pregătește extinderea gamei de pliabile după succesul înregistrat de Galaxy Z Fold 8"}, "Samsung"),
+    ("Tech Ubisoft", {"category": "tech", "title": "Ubisoft lansează ultimul update major pentru jocul Assassin's Creed Black Flag Resynced"}, "Ubisoft"),
+    ("Tech Starlink", {"category": "tech", "title": "Utilizatorii rețelei Starlink din peste 100 de țări ar fi monitorizați"}, "Starlink"),
+    ("Tech Apple", {"category": "tech", "title": "Apple actualizează suita Creator Studio cu funcții avansate bazate pe inteligență artificială"}, "Apple"),
+    ("Tech RecompLauncher", {"category": "tech", "title": "Platforma RecompLauncher centralizează jocurile exclusive portate pe PC"}, "RecompLauncher"),
+    # Dynamic institutions & organizations
+    ("Ministerul Finanțelor", {"category": "economic", "title": "Ministerul Finanțelor a publicat noul ghid pentru facilități"}, "Ministerul Finanțelor"),
+    ("Curtea de Apel", {"category": "justitie", "title": "Curtea de Apel a respins contestația formulată"}, "Curtea de Apel"),
+    ("Consiliul Concurenței", {"category": "economic", "title": "Consiliul Concurenței a declanșat o investigație"}, "Consiliul Concurenței"),
+    ("Tribunalul București", {"category": "justitie", "title": "Tribunalul București a admis cererea de suspendare"}, "Tribunalul București"),
+    ("DIICOT", {"category": "justitie", "title": "Acțiune de amploare a DIICOT în șase județe"}, "DIICOT"),
+    ("CNAIR", {"category": "economic", "title": "CNAIR a semnat contractul pentru un nou lot de autostradă"}, "CNAIR"),
+    ("NER Entity peste 22 car", {"category": "educatie", "title": "Universitatea Babeș-Bolyai a urcat în topul mondial", "entities": ["Universitatea Babeș-Bolyai"]}, "Universitatea Babeș-Bolyai"),
+    ("Banca Mondială", {"category": "economic", "title": "Raport publicat de Banca Mondială privind creșterea", "entities": ["Banca Mondială"]}, "Banca Mondială"),
+    ("Ghilimele", {"category": "auto", "title": "Programul „Rabla Local” demarează cu fonduri suplimentare"}, "Rabla Local"),
 ]
 
 @pytest.mark.parametrize("desc,art,expected", CARLIG_CASES)

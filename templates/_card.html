@@ -1,6 +1,6 @@
 {% from "_art.html" import art with context %}
 {% macro credit_foto(pr) -%}
-<p class="card-credit">Foto: {% if pr.credit.artist %}{{ pr.credit.artist }} · {% endif %}<a href="{{ pr.credit.page | href_extern }}"{# nosemgrep: generic.html-templates.security.var-in-href.var-in-href #} target="_blank" rel="noopener noreferrer">Wikimedia Commons</a> · <a href="{{ pr.credit.license_url | href_extern }}" target="_blank" rel="noopener noreferrer">{{ pr.credit.license }}</a></p>
+<p class="card-credit">{% if pr.credit.kind == 'locality' %}Ilustrație: Reper local · {% endif %}Foto: {% if pr.credit.artist %}{{ pr.credit.artist }} · {% endif %}<a href="{{ pr.credit.page | href_extern }}"{# nosemgrep: generic.html-templates.security.var-in-href.var-in-href #} target="_blank" rel="noopener noreferrer">Wikimedia Commons</a> · {% if pr.credit.license_url %}<a href="{{ pr.credit.license_url | href_extern }}" target="_blank" rel="noopener noreferrer">{{ pr.credit.license }}</a>{% else %}{{ pr.credit.license }}{% endif %}</p>
 {%- endmacro %}
 {% macro card(a, lead=False, extra='') %}
 {#- NOT "data-src": crawlers (Screaming Frog, Googlebot) treat data-src as a lazy-load
@@ -8,7 +8,7 @@
 <article class="card{% if lead %} lead{% endif %}{% if extra %} {{ extra }}{% endif %}{% if a.model == 'C' %} card-c{% endif %}" data-cat="{{ a.category }}" data-source="{{ a.source_name }}" data-title="{{ a.title }}"{% if a.judet %} data-judet="{{ a.judet }}"{% endif %}>
   {#- Fotografia REALA ramane fisier (`art_path`); arta generata se deseneaza in pagina
       (`_art.html`), fara fisier si fara cerere HTTP — vezi specs/cloudflare-free-2026-09.md. -#}
-  {% if a.art_path %}<a class="card-media" href="{{ base }}/{{ a.category }}/{{ a.slug }}/" tabindex="-1" aria-hidden="true"><picture>{% if a.art_webp %}<source srcset="{{ base }}{{ a.art_webp }}" type="image/webp">{% endif %}<img src="{{ base }}{{ a.art_path }}" alt="" loading="lazy" decoding="async" width="960" height="504" sizes="(min-width: 1000px) 360px, (min-width: 640px) 45vw, 100vw"></picture></a>
+  {% if a.art_path or a.image_url %}<a class="card-media card-media--fullbleed" href="{{ base }}/{{ a.category }}/{{ a.slug }}/" tabindex="-1" aria-hidden="true"><picture>{% if a.art_webp %}<source srcset="{{ base }}{{ a.art_webp }}" type="image/webp">{% endif %}<img src="{% if a.art_path %}{{ base }}{{ a.art_path }}{% else %}{{ a.image_url }}{% endif %}" alt="" loading="lazy" decoding="async" width="960" height="504" sizes="(min-width: 1000px) 360px, (min-width: 640px) 45vw, 100vw"></picture></a>
   {% if a.art_credit %}{{ credit_foto({'credit': a.art_credit}) }}{% endif %}
   {%- elif a.art_style %}
   {#- Acelasi chip o singura data pe pagina (`portret_nou`, din render._base_ctx): pe homepage

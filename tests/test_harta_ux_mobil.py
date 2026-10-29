@@ -47,7 +47,7 @@ def test_acordul_numeralului(tmp_path):
     script = fn.group(0) + f"\nconsole.log(JSON.stringify({json.dumps(cazuri)}.map(n => cate(n, 'județ', 'județe'))));"
     cale = tmp_path / "h.js"
     cale.write_text(script, encoding="utf-8")
-    rez = subprocess.run(["node", str(cale)], capture_output=True, text=True, timeout=30)
+    rez = subprocess.run(["node", str(cale)], capture_output=True, text=True, timeout=30, encoding="utf-8")
     assert rez.returncode == 0, rez.stderr
     assert json.loads(rez.stdout) == [
         "0 județe", "1 județ", "2 județe", "19 județe", "20 de județe", "46 de județe",

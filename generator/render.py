@@ -1346,10 +1346,13 @@ def build(articles: list, mod: dict | None = None) -> None:
             if lp and not a.get("lead_credit"):
                 a["lead_credit"] = lp
 
+    # Alocare deterministă a stilurilor cu unicitate garantată pe primele 12 carduri din feed
+    htmlart.aloca_stiluri_lista(by_date, limit=12)
+
     for idx, a in enumerate(by_date):
-        # Stilul se calculeaza pentru TOATE articolele: e ce deseneaza cardul si pagina cand
-        # articolul nu are fotografie proprie. Nu costa niciun fisier.
-        a["art_style"] = htmlart.stil_inline(a)
+        # Asigură că toate articolele au stil calculat
+        if not a.get("art_style"):
+            a["art_style"] = htmlart.stil_inline(a)
         cdir = os.path.join(OUT_DIR, a["category"], a["slug"])
         aid = htmlart.art_id(a)
         art_dst = os.path.join(cdir, "art.jpg")
@@ -1382,6 +1385,8 @@ def build(articles: list, mod: dict | None = None) -> None:
             if (lp.get("webp")
                     and _spend(_use_media(os.path.join(MEDIA_DIR, lp["webp"]), webp_dst))):
                 a["art_webp"] = f"/{a['category']}/{a['slug']}/art.webp?v={_content_ver(webp_dst)}"
+            if lp.get("kind") == "locality":
+                a["art_credit"] = lp
         elif a.get("event_chart") and not a.get("correction"):
             # Imagine DIN DATE (harta epicentrului, graficul meteo): nu e decor derivat din
             # seed, e continut, deci nu se poate desena din `art_style`. Ramane fisier cat
@@ -1429,7 +1434,9 @@ def build(articles: list, mod: dict | None = None) -> None:
             continue
         items = [a for a in in_fereastra
                  if a["url"] not in hero_urls and home_fresh(a)]
-        by_category[cat] = _diversify(items)[:config.HOME_CARDS_PER_CATEGORY]
+        cat_items = _diversify(items)[:config.HOME_CARDS_PER_CATEGORY]
+        htmlart.aloca_stiluri_lista(cat_items, limit=12)
+        by_category[cat] = cat_items
 
     # homepage
     item_list = {
@@ -1523,6 +1530,7 @@ def build(articles: list, mod: dict | None = None) -> None:
         # si categoriile inca goale (in insamantare) primesc pagina 1 — altfel nav-ul ar duce la 404
         for page in range(0, max(len(items), 1), PAGE_SIZE):
             page_items = _diversify(items[page:page + PAGE_SIZE])
+            htmlart.aloca_stiluri_lista(page_items, limit=12)
             page_num = page // PAGE_SIZE + 1
             page_dir = os.path.join(OUT_DIR, cat) if page_num == 1 else os.path.join(OUT_DIR, cat, str(page_num))
             _write(os.path.join(page_dir, "index.html"),

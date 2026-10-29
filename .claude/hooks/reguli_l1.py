@@ -99,6 +99,13 @@ def text_regula(radacina: Path, rid: str, catalog: dict = CATALOG) -> str:
 
 def main() -> int:
     try:
+        if hasattr(sys.stdin, "reconfigure"):
+            sys.stdin.reconfigure(encoding="utf-8")
+        if hasattr(sys.stdout, "reconfigure"):
+            sys.stdout.reconfigure(encoding="utf-8")
+    except Exception:
+        pass
+    try:
         payload = json.load(sys.stdin)
     except Exception:
         return 0  # un hook care moare nu are voie sa rupa sesiunea
