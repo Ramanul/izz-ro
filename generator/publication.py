@@ -9,6 +9,7 @@ from urllib.parse import urlsplit
 from . import config, editorial, geo
 
 FIELDS = {"key", "public_paths", "state", "review", "notice", "evidence_url", "presentation"}
+OPTIONAL_FIELDS = {"show_initial_version"}
 PRESENTATION = {"title", "teaser", "synthesis", "county"}
 
 
@@ -43,8 +44,10 @@ def validate(index, articles):
     for key, row in index.items():
         def fail(message):
             raise editorial.EditorialError(f"corrections.{key}: {message}")
-        if set(row) != FIELDS or row["key"] != key:
+        if set(row) - OPTIONAL_FIELDS != FIELDS or row["key"] != key:
             fail("exact public fields required")
+        if "show_initial_version" in row and type(row["show_initial_version"]) is not bool:
+            fail("show_initial_version must be boolean")
         if row["state"] not in {"corrected", "withdrawn"}:
             fail("corrected/withdrawn state required")
         paths = row["public_paths"]
@@ -75,11 +78,24 @@ def validate(index, articles):
             fail("corrected presentation required")
         if row["state"] == "withdrawn" and presentation:
             fail("withdrawal cannot republish article content")
+        if row["state"] == "withdrawn" and row.get("show_initial_version"):
+            fail("withdrawal cannot expose an initial version")
         if "county" in presentation and not geo.regiune_afisare(presentation["county"]):
             fail("recognized county code required")
         for other_key, article in current.items():
             if other_key != key and editorial.public_path(article) in paths:
                 fail("public path belongs to a different current article")
+
+
+def initial_snapshot(article):
+    """Keep the first title/summary, including snapshots saved by older builds."""
+    fields = {"title", "teaser", "synthesis"}
+    snapshot = (article["initial_version"] if "initial_version" in article else
+                {field: article.get(field) or "" for field in fields})
+    if (not isinstance(snapshot, dict) or set(snapshot) - {"county"} != fields
+            or any(not isinstance(value, str) for value in snapshot.values())):
+        raise editorial.EditorialError("article.initial_version: valid title/summary snapshot required")
+    return copy.deepcopy(snapshot)
 
 
 def apply(articles, index):
@@ -92,7 +108,12 @@ def apply(articles, index):
         if row:
             if row["state"] == "withdrawn":
                 continue
+            view["initial_version"] = initial_snapshot(article)
+            # A later approved correction may revoke an earlier manual opt-in.
+            view["show_initial_version"] = row.get("show_initial_version", False)
             view.update({k: v for k, v in row["presentation"].items() if k != "county"})
+            if "synthesis" in row["presentation"]:
+                view.pop("dialectic", None)
             if "county" in row["presentation"]:
                 view["editorial_county"] = row["presentation"]["county"]
             view["updated"] = row["review"]["reviewed_at"]
@@ -107,9 +128,12 @@ def apply(articles, index):
 
 def public_notice(row):
     scheme = urlsplit(row["evidence_url"]).scheme
-    return {"state": row["state"], "notice": row["notice"], "evidence_url": row["evidence_url"],
-            "scheme": scheme, "destination": row["evidence_url"][len(scheme) + 3:],
-            "reviewed_at": row["review"]["reviewed_at"], "kind": row["review"]["kind"]}
+    notice = {"state": row["state"], "notice": row["notice"], "evidence_url": row["evidence_url"],
+              "scheme": scheme, "destination": row["evidence_url"][len(scheme) + 3:],
+              "reviewed_at": row["review"]["reviewed_at"], "kind": row["review"]["kind"]}
+    if row.get("show_initial_version") is True:
+        notice["show_initial_version"] = True
+    return notice
 
 
 def revisions(index):
