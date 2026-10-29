@@ -8,7 +8,7 @@
 > Where the rest lives: `specs/regim-reguli.md` — unified audit closure ·
 > `specs/registru.tsv` — decisions · `CLAUDE.md` — canonical contract.
 
-**Updated:** 2026-10-28 (#524 prepared for integration on current main; live pending).
+**Updated:** 2026-10-29 (#524 integrates main 1a85eb5c; live pending).
 
 ## Open
 - **Transformarea «prin prisma cărților» (`specs/plan-paradigma-izz.md`):** E0–E4 pe main (#511 merged, #512 merged, 23.10) — roluri epistemice + clone, sinteza dialectică verificată per propoziție (3 stări), confirmări încrucișate pe card, roluri în `sources-box`, /sub-prag/, contor de subtracție, capăt pe /azi/, nota de actualizare, memoria subiectelor (12 luni, fără stări judiciare); /principii/ și /legal/method/ fără doctrină (garda `tests/test_garda_anti_doctrina.py`). **D6 fără profilare (#515 merged):** fără profil dedus, GA4, Clarity, bară de consimțământ; rămâne județul ales explicit; curățenia urmelor vechi se scoate după 2027-01-31 [IZZ-0437]. **href extern (#516 merged):** orice `href` cu date din afară trece prin `guard.url_ostil` la randare (filtrul `href_extern`; închide constatarea Semgrep de pe #512). **E1/E3 publicate (#521 merged):** hartă + observații prospective; limite și probe: `specs/editorial-integration.md`; pragul `SILENCE_REJECTION_THRESHOLD` MĂSURAT pe 3 rulări CI: leagă 1 din 74, rămâne 0,34 (`specs/plan-paradigma-izz.md` §5). **#517 merged:** 101 primării ro_hu reapar (sărite din 06.09); amânări pe cauze (`amanare_*`, `b_*`, `oprire_*` în `data/triage_log.jsonl`); lot B tolerant. **Reîncercare C (#518 merged):** 6/9 recuperate pe 4 rulări CI, amânări C 26%→10%; /sub-prag/ pe cauză. Măsurat 23.10 (Lighthouse 13.5 mobil, 3 rulări): articol dialectic Perf 93/95/94 vs. 93/95/95 pe main, A11y/BP/SEO 100; pa11y 0 erori pe paginile noi, home și /surse/ (2 defecte vechi reparate).
@@ -30,7 +30,7 @@
 
 ## Audit closure status
 
-- E4 initial summaries (#524): current-base integration prepared; explicit opt-in only; live pending. Evidence: `specs/editorial-moderation-versions.md`.
+- E4 initial summaries (#524): main 1a85eb5c integrated; 152 focused tests passed; opt-in only, live pending. Evidence: `specs/editorial-moderation-versions.md`.
 
 - D release: #497 merged, CI and release verifier passed; exact build SHA and versioned update script confirmed on izz.ro/www. Empty production corrections catalog; synthetic cases test-only. E adds persistent documentary dossiers with evidence-backed relations; Gemini Argon Maximum and Google Search AI Argon reviews produced reproduced regressions. Release evidence belongs to the current PR checks and the release verifier; a model opinion is not execution evidence. Evidence: specs/editorial-corrections.md and specs/editorial-dossiers.md.
 - **K1–K14:** re-verified in `specs/regim-reguli.md` — a reconciliation register, not a substitute
