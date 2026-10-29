@@ -1892,7 +1892,7 @@ def _ataseaza_legaturi(articole: list) -> None:
         a["judet"] = a.get("editorial_county") or geo.judet_sursa(a.get("source")) or ""
         a["ghid"] = _ghid_pentru(a, index)
         # Source headlines may repeat the very statement that was corrected.
-        a["timeline"] = None if a.get("correction") else _timeline(a)
+        a["timeline"] = None if a.get("correction") or a.get("moderation_note") else _timeline(a)
         a["surse_roluri"] = _roluri_surse(a)
         a["din_memorie"] = memorie.din_memorie(a, _registru_memorie(), config.ARTICLE_TTL_DAYS) \
             if a.get("model") == "C" else []
