@@ -38,11 +38,9 @@ Tasks may arrive through the Devin Desktop UI or headlessly via the `devin` CLI
 - Talk to the user (Alexandru) in Romanian. Code, commits, identifiers in English.
 
 ## Branch discipline (non-negotiable)
-- NEVER commit directly to `main`.
-- Each task = one branch, prefixed by executor: `devin/<short-task-name>` (Devin),
-  `oc/<short-task-name>` (OpenCode) — branched from fresh `origin/main`.
-- One vertical slice per branch. Commit on green, push the branch, then stop.
-- Merging is done by the manager after review — never merge or push to `main` yourself.
+- Push direct pe `main` permis (decizie proprietar, 2026-10-25 / 2026-10-28; CLAUDE.md §5.3) DOAR pe verde (teste + ruff trecute) și după `git fetch origin` + rebase.
+- Pentru sarcini ample sau când se cere CI complet: fiecare task = o ramură dedicată, prefixată de executor: `devin/<short-task-name>` (Devin), `oc/<short-task-name>` (OpenCode) — desprinsă din `origin/main` curat. Commit pe verde, push pe ramură.
+- Unirea (merge) se face conform mandatului permanent din CLAUDE.md §5.4 pe verde.
 
 ## Verify, don't claim
 - "It works" is valid only after you ran the command and saw real output pass.
