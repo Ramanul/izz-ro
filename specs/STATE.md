@@ -30,7 +30,7 @@
 
 ## Audit closure status
 
-- E4 summaries (#524) and RSS (#523): current main integrated; local suites passed separately. Initial summary opt-in only; RSS exposes approved notices at `/corectii/feed.xml`. Empty production catalog. Deployment pending; `specs/editorial-moderation-versions.md`.
+- E4 (#524/#523): current main integrated; local suites passed. Initial summary opt-in; approved RSS notices at `/corectii/feed.xml`. Empty catalog; deploy pending. `specs/editorial-moderation-versions.md`.
 
 - D release: #497 merged, CI and release verifier passed; exact build SHA and versioned update script confirmed on izz.ro/www. Empty production corrections catalog; synthetic cases test-only. E adds persistent documentary dossiers with evidence-backed relations; Gemini Argon Maximum and Google Search AI Argon reviews produced reproduced regressions. Release evidence belongs to the current PR checks and the release verifier; a model opinion is not execution evidence. Evidence: specs/editorial-corrections.md and specs/editorial-dossiers.md.
 - **K1–K14:** re-verified in `specs/regim-reguli.md` — a reconciliation register, not a substitute
