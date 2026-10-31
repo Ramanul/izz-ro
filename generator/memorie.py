@@ -109,7 +109,7 @@ def incarca(cale: str | None = None) -> list:
 
 
 def actualizeaza(procesate: list, mod: dict | None, cale: str | None = None,
-                 acum: datetime | None = None) -> dict:
+                 acum: datetime | None = None, corrections: dict | None = None) -> dict:
     """Adaugă deciziile noi, aplică garda și curăță registrul. Întoarce contoarele."""
     acum = acum or datetime.now(timezone.utc)
     reg = {e.get("story"): e for e in incarca(cale) if isinstance(e, dict) and e.get("story")}
@@ -132,14 +132,40 @@ def actualizeaza(procesate: list, mod: dict | None, cale: str | None = None,
             "surse": list(fapt.get("src") or [])[:6],
             "ent": list(rep.get("entities") or [])[:4],
         }
-    blocate = set()
+    blocate_urls = set()
+    blocate_stories = set()
     for cheie in ("corrections", "takedowns"):
         for u in ((mod or {}).get(cheie) or {}):
-            blocate.add(normalize_url(u))
+            blocate_urls.add(normalize_url(u))
+            if isinstance(u, str) and not u.startswith("http://") and not u.startswith("https://"):
+                blocate_stories.add(u)
+
+    # E4 Garda Memoriei: catalogul public de corecții și retrageri (publication.py)
+    if corrections is None:
+        try:
+            from . import publication
+            corrections = publication.load()
+        except Exception:
+            corrections = {}
+
+    for key, row in (corrections or {}).items():
+        if isinstance(key, str):
+            blocate_stories.add(key)
+            if key.startswith("http://") or key.startswith("https://"):
+                blocate_urls.add(normalize_url(key))
+        if isinstance(row, dict):
+            k = row.get("key")
+            if isinstance(k, str):
+                blocate_stories.add(k)
+                if k.startswith("http://") or k.startswith("https://"):
+                    blocate_urls.add(normalize_url(k))
+
     limita = (acum - timedelta(days=ZILE_PASTRARE)).date().isoformat()
     inainte = len(reg)
     pastrate = [e for e in reg.values()
-                if normalize_url(e.get("url") or "") not in blocate and (e.get("d") or "") >= limita]
+                if e.get("story") not in blocate_stories
+                and normalize_url(e.get("url") or "") not in blocate_urls
+                and (e.get("d") or "") >= limita]
     pastrate.sort(key=lambda e: e.get("d") or "", reverse=True)
     pastrate = pastrate[:MAX_INTRARI]
     try:

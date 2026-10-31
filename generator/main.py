@@ -15,7 +15,7 @@ except ImportError:
     pass
 
 from . import fetch, state, cluster, moderation, config, guard, eventdata
-from . import dialectic, diacritice, jurnal_triage, memorie, raport_copiere, fetch_deep
+from . import dialectic, diacritice, jurnal_triage, memorie, publication, raport_copiere, fetch_deep
 from .providers import gemini as gemini_prov
 from .process import (get_provider, process_single, process_clusters_batch, process_batch,
                       process_official, repara_diacritice, reset_stats_b, stats_b,
@@ -716,7 +716,8 @@ def run(dry_run: bool = False) -> dict:
         state.save(combined)
         # E4: deciziile încheiate, confirmate de ≥2 origini, intră în memoria subiectelor
         # (12 luni, separată de fereastra TTL); corecțiile și retragerile o curăță.
-        mem = memorie.actualizeaza([a for a in processed_new if a.get("model") == "C"], mod)
+        corrections = publication.load()
+        mem = memorie.actualizeaza([a for a in processed_new if a.get("model") == "C"], mod, corrections=corrections)
         if mem["adaugate"] or mem["scoase"]:
             print(f">> memoria subiectelor: +{mem['adaugate']} / -{mem['scoase']} (total {mem['total']})")
         if render is not None:
