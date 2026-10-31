@@ -2,6 +2,27 @@
 
 Scop: site-ul public să nu pice la un incident de deploy sau la o cădere a hostului primar.
 
+## Stare din 2026-10-31: `izz-failover` nu mai primește trafic
+
+Decizie de proprietar. Ruta `izz.ro/*` stă pe Worker-ul `izz-ro`, declarată în `wrangler.jsonc`.
+Motivul e măsurat: pe planul Free fiecare cerere prin `izz-failover` consuma din plafonul de
+100.000 de invocări/zi, ruta era fail-closed, iar vârful din 9 octombrie a ajuns la 99.170.
+Fișierele statice servite direct sunt gratuite și nelimitate. Se pierde comutarea automată, per
+cerere, pe oglindă la 5xx de la primar. Oglinda rămâne activă pentru articolele expirate, prin
+fallback-ul 404 din `infra/worker-404-mirror.js`.
+
+Secțiunile de mai jos descriu arhitectura veche și rămân ca istoric și ca plan de revenire.
+
+**Revenire pe `izz-failover`, în ordinea asta:**
+
+1. Repune scriptul pe rută, prin API:
+   `PUT /zones/{zone_id}/workers/routes/{route_id}` cu `{"pattern":"izz.ro/*","script":"izz-failover"}`.
+2. Fă revert la `routes` din `wrangler.jsonc`. Altfel, următorul deploy `izz-ro` pică cu
+   „Can't deploy routes that are assigned to another worker”.
+
+**Înainte de o revenire în timpul unui vârf de trafic:** `izz-failover` consumă o invocare pe
+fiecare cerere, deci revenirea apropie din nou site-ul de plafon.
+
 ## Arhitectură
 
 ```

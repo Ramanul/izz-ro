@@ -21,7 +21,7 @@
 - **PRODUS P3 — harta: markere fără ierarhie vizuală [IZZ-0405]:** 482 evenimente, clickuri cablate; e afordanța, nu funcția. **Atribuire geo, 16 oct [IZZ-0433]** + **17 oct [IZZ-0434]:** pini corecți, nivel = precizie; o culoare după locul știrii, proveniența în panoul județului; telefon: pinch, fără chenar de focus, harta în primul ecran, filtrele în sheet. `harta_dom_check`: GESTURI TACTILE verde; FAIL rămas = 2 puncte de frontieră, identic pe HEAD (#454).
 - **FEREASTRA TTL — 11 zile (aprobată de proprietar, 25 oct):** pe a7bf06ae garda brută scade de la 13.025 la 11.833 (plafon 12.600). Testul de siguranță rămâne neschimbat; măsurarea pierderii și precedentul sunt în config.py.
 - **Free-readiness — gazda ÎNCĂ PAID până 22 sep [IZZ-0313]:** [IZZ-0386, 0391, 0399] [IZZ-0421, 0424].
-- **`izz-failover` — KEEP [IZZ-0362]; marja NECUNOSCUTĂ [IZZ-0367, 0369]:** ambele cifre publicate retrase.
+- **`izz-failover` — SCOS DIN TRAFIC, 31 oct (decizie proprietar):** ruta `izz.ro/*` stă pe `izz-ro` (`wrangler.jsonc`); KEEP [IZZ-0362] a căzut, marja măsurată a ajuns la 0,83% (99.170 pe 9 oct). Revenire: `infra/README-failover.md`. **Audituri:** pe `izz-ro.andifreelancer2.workers.dev`, nu pe izz.ro. **Oglinda:** 3,73 GB față de 1 GB la GitHub, nerezolvat.
 - **REDUNDANȚA — ÎNCHISĂ [IZZ-0370 → IZZ-0373]:** `BUILD_COMMIT_SHA` în jobul `mirror`, #347 merged. **RECIDIVE —
   roșul de STARE separat de cel de COD [IZZ-0388…0391]; Coliziuni de ID la ALOCARE [IZZ-0392].**
 - **Audit og:image #431 (merged) [IZZ-0429]:** 11.114/11.114 pe randarea declarată, fix static pentru hartă; CI main verde (runs 37150541651, 37150541665). Fără probă HTTP live; auditul dă 0 la output lipsă — follow-up deschis. Coada: `gh pr list`.
