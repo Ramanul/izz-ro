@@ -1,16 +1,13 @@
 name: deploy-failover
 
-# Publicare pe Worker-ul izz-failover (poarta izz.ro/*) — eliminarea drift-ului dintre sursa
-# din infra/ si versiunea live (audit Codex P1.4). Se declanseaza DOAR la schimbari in infra/**
-# sau manual. NU atinge DNS; wrangler.toml doar re-afirma ruta existenta izz.ro/*.
+# Publicare pe Worker-ul izz-failover, rezerva pentru revenire (infra/README-failover.md).
+# Din 2026-10-31 worker-ul nu mai are ruta: izz.ro/* sta pe izz-ro (wrangler.jsonc). Rularea e
+# DOAR manuala, fiindca trigger-ul pe infra/** ar republica un worker fara trafic la fiecare
+# schimbare a Workerului izz-ro, cu tot cu secretul de deploy.
 # Istoric delicat: deploys vechi au picat pe migrari DO (cod 10064) — tag-ul din wrangler.toml
 # e deja aplicat live, deci re-deploy cu aceeasi sursa e no-op.
 
 on:
-  push:
-    branches: [main]
-    paths:
-      - "infra/**"
   workflow_dispatch: {}
 
 permissions:
@@ -43,7 +40,10 @@ jobs:
           grep -q 'PRIMARY = "https://' infra/failover-worker.js
           grep -q 'MIRROR = "https://' infra/failover-worker.js
           grep -q 'PRIMARY_TIMEOUT_MS' infra/failover-worker.js
-          grep -q 'pattern = "izz.ro/\*"' infra/wrangler.toml
+          if grep -q '^routes' infra/wrangler.toml; then
+            echo "::error::infra/wrangler.toml declara rute; izz.ro/* trebuie sa ramana pe izz-ro"
+            exit 1
+          fi
           echo "semnatura OK"
 
       - name: Publica izz-failover
@@ -52,29 +52,3 @@ jobs:
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           WRANGLER_SEND_METRICS: "false"
         run: npx --yes wrangler@4.125.0 deploy --config infra/wrangler.toml
-
-      # Poarta izz.ro trebuie sa raspunda prin failover dupa deploy. Bot challenge-ul zonei
-      # (cf-mitigated: challenge) e INCONCLUIENT pentru runnerii GitHub: nu fac rollback si
-      # nu pica rularea — monitor.yml si smoke-live verifica in continuare. Orice alta anomalie
-      # (5xx, fara header x-izz-origin) = esec dur cu alerta; rollback manual prin wrangler
-      # rollback <version-id> (version-id e in jurnalul pasului de deploy).
-      - name: Verifica poarta pe live (3 probe x 20s)
-        run: |
-          set -euo pipefail
-          ok=0; inconclusiv=0
-          for i in 1 2 3; do
-            resp=$(curl -s -D - -o /dev/null -H 'User-Agent: Mozilla/5.0' https://izz.ro/build.json || true)
-            code=$(echo "$resp" | head -1 | grep -o '[0-9][0-9][0-9]' | head -1 || echo "000")
-            if echo "$resp" | grep -qi '^cf-mitigated: challenge'; then
-              echo "proba $i: bot challenge (inconcluent pentru runneri)"; inconclusiv=1; break
-            fi
-            if [ "$code" = "200" ] && echo "$resp" | grep -qi '^x-izz-origin:'; then
-              echo "proba $i: 200 + x-izz-origin prezent"; ok=1; break
-            fi
-            echo "proba $i: HTTP $code fara x-izz-origin - reiau in 20s"; sleep 20
-          done
-          if [ "$ok" != "1" ] && [ "$inconclusiv" != "1" ]; then
-            echo "::error::Poarta izz.ro nu confirma dupa deploy-ul failover - VERIFICA SI ROLLBACK manual"
-            exit 1
-          fi
-          if [ "$inconclusiv" = "1" ]; then echo "::warning::verificare inconcluenta (bot challenge) - izz.ro e monitorizat separat"; fi
