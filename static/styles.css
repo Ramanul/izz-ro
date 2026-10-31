@@ -1017,9 +1017,13 @@ picture { display: contents; }
   stroke: #7a5e18; stroke-opacity: .8;
 }
 .art--geo .art-harta .art-harta-fata {
-  fill: url(#art-gold-grad, var(--art-geo-aur));
+  fill: url(#art-gold-grad) var(--art-geo-aur);
   stroke: #f7df8b; stroke-opacity: .95;
 }
+.art-aur-1 { stop-color: #fae8a2; }
+.art-aur-2 { stop-color: var(--art-geo-aur); }
+.art-aur-3 { stop-color: #b88b22; }
+.art-aur-4 { stop-color: #8a6512; }
 .art-portret-wrap {
   position: absolute; right: 6.25cqw; top: 50%; transform: translateY(-50%);
   width: 28cqw; height: 28cqw; border-radius: 50%;
@@ -1108,14 +1112,7 @@ picture { display: contents; }
   filter: drop-shadow(0 3px 10px rgba(61, 74, 58, .2));
 }
 
-/* -- randare full-bleed pentru fotografii reale valide ('image_url' sau 'art_path') -- */
-.art--fullbleed {
-  position: relative; width: 100%; height: 100%; aspect-ratio: 960 / 504; overflow: hidden;
-  background: var(--line);
-}
-.art-fullbleed-img {
-  width: 100%; height: 100%; object-fit: cover; display: block;
-}
+/* -- randare full-bleed pentru fotografii reale valide (`art_path`) -- */
 .card-media--fullbleed img {
   width: 100%; height: 100%; object-fit: cover; display: block;
 }

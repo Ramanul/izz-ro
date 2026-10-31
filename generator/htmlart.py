@@ -1677,20 +1677,6 @@ def _treapta_eticheta(et: str) -> int:
 
 def stil_inline(a: dict, folosite: set[tuple[str, int, str]] | None = None) -> dict:
     """Descrierea artei desenate in pagina pentru `a` (compozitie, paleta, texte, data, harta/portret/scena 3D)."""
-    # Forțare randare full-bleed când articolul dispune de o fotografie reală validă în 'image_url'
-    img_url = (a.get("image_url") or "").strip()
-    if img_url and img_url.startswith(("http://", "https://", "/")):
-        return {
-            "tpl": "fullbleed",
-            "pal": 0,
-            "eticheta": "",
-            "sub": "",
-            "treapta": 0,
-            "data": None,
-            "full_bleed": True,
-            "image_url": img_url,
-        }
-
     seed = _seed(a)
     et = _eticheta(a)
     cat = (a.get("category") or "").strip()
@@ -1776,11 +1762,11 @@ def aloca_stiluri_lista(articles: list[dict], limit: int = 12) -> None:
     """
     folosite: set[tuple[str, int, str]] = set()
     for idx, a in enumerate(articles):
-        has_real_photo = bool(a.get("art_path") or a.get("photo_path") or a.get("image_url"))
+        has_real_photo = bool(a.get("art_path") or a.get("photo_path"))
         track_unicitate = (idx < limit) and not has_real_photo
         st = stil_inline(a, folosite=folosite if track_unicitate else None)
         a["art_style"] = st
-        if track_unicitate and st and not st.get("full_bleed"):
+        if track_unicitate and st:
             motiv = st.get("scena_3d", {}).get("stil") or ("harta" if st.get("harta") else ("portret" if st.get("portret") else "default"))
             folosite.add((st["tpl"], st["pal"], motiv))
 

@@ -3,7 +3,6 @@
 2. Clasificator bazat pe dicționare de cuvinte-cheie (Sănătate, Auto/Trafic, Carieră/Educație, Energie/Economic, Cultură/Turism).
 3. Stilul default exclusiv pe grafică editorială neutră (geometrie caldă), INTERZICÂND circuitele PCB sau valurile sci-fi pe știri non-tech.
 4. Regex extins pentru instituții cu re.IGNORECASE și suport pentru adjective/diacritice (ex: 'poliția rutieră', 'gyergyószentmiklós').
-5. Randare full-bleed (fără șabloane tăiate) dacă articolul dispune de o fotografie reală validă în 'image_url'.
 """
 from generator import htmlart, render
 from generator.art_generativ import clasifica_domeniu, genereaza_scena_generativa
@@ -134,32 +133,18 @@ def test_nume_localitate_maghiara_direct():
 
 
 # -----------------------------------------------------------------------------
-# 5. Randare full-bleed când articolul dispune de fotografie reală în 'image_url'
+# 5. Un URL extern nu ajunge pe card: fotografia reala trece prin `art_path` si credit
 # -----------------------------------------------------------------------------
 
-def test_articol_cu_image_url_forteaza_fullbleed():
+def test_image_url_extern_nu_ajunge_pe_card():
     a = {
         "title": "Eveniment capturat în fotografie de presă",
         "category": "eveniment",
         "slug": "eveniment-foto",
-        "image_url": "https://images.unsplash.com/photo-123456789.jpg"
+        "image_url": "https://images.example.com/poza-de-la-sursa.jpg",
     }
-    s = htmlart.stil_inline(a)
-    a["art_style"] = s
-    assert s.get("full_bleed") is True
-    assert s.get("image_url") == "https://images.unsplash.com/photo-123456789.jpg"
-
-    # Verificare randare macro card
+    a["art_style"] = htmlart.stil_inline(a)
     card_macro = render._env().get_template("_card.html").module.card
     html_card = str(card_macro(a))
-    assert 'class="card-media card-media--fullbleed"' in html_card
-    assert 'https://images.unsplash.com/photo-123456789.jpg' in html_card
-    # Asigurăm că nu apar șabloanele decupate (editorial, inversat, banda, arc)
-    assert 'class="art art--' not in html_card
-
-    # Verificare randare directă macro art
-    art_macro = render._env().get_template("_art.html").module.art
-    html_art = str(art_macro(a))
-    assert 'class="art art--fullbleed' in html_art
-    assert 'class="art-fullbleed-img"' in html_art
-    assert 'https://images.unsplash.com/photo-123456789.jpg' in html_art
+    assert "images.example.com" not in html_card
+    assert 'class="art art--' in html_card
