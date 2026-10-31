@@ -40,7 +40,7 @@ jobs:
           grep -q 'PRIMARY = "https://' infra/failover-worker.js
           grep -q 'MIRROR = "https://' infra/failover-worker.js
           grep -q 'PRIMARY_TIMEOUT_MS' infra/failover-worker.js
-          if grep -q '^routes' infra/wrangler.toml; then
+          if grep -Eq '^[[:space:]]*(\[\[)?routes?\b' infra/wrangler.toml; then
             echo "::error::infra/wrangler.toml declara rute; izz.ro/* trebuie sa ramana pe izz-ro"
             exit 1
           fi
