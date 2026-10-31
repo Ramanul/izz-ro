@@ -57,14 +57,6 @@
   {%- endif %}
   {%- endif %}
   {%- if s.harta %}<div class="art-harta"><svg viewBox="0 0 330 300" aria-hidden="true" focusable="false">
-    <defs>
-      <linearGradient id="art-gold-grad" x1="0%" y1="0%" x2="100%" y2="100%">
-        <stop offset="0%" class="art-aur-1"/>
-        <stop offset="35%" class="art-aur-2"/>
-        <stop offset="80%" class="art-aur-3"/>
-        <stop offset="100%" class="art-aur-4"/>
-      </linearGradient>
-    </defs>
     <g transform="{{ s.harta.transform }}">
       <path class="art-harta-soclu" d="{{ s.harta.d }}" transform="translate(0, 3)" stroke-width="{{ s.harta.sw }}" stroke-linejoin="round"/>
       <path class="art-harta-fata" d="{{ s.harta.d }}" stroke-width="{{ s.harta.sw }}" stroke-linejoin="round"/>

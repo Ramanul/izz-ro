@@ -64,6 +64,9 @@
   <script defer src="{{ base }}/static/push.js?v={{ asset_ver['push.js'] }}"></script>
 </head>
 <body{% block body_attrs %}{% endblock %}>
+  {#- Gradientul auriu al siluetelor de judet (`.art-harta-fata`): o data pe pagina, nu per card,
+      fiindca un `id` nu are voie sa se repete. Fara el, silueta cade pe aurul plin din CSS. -#}
+  <svg class="art-defs" width="0" height="0" aria-hidden="true" focusable="false"><defs><linearGradient id="art-gold-grad" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" class="art-aur-1"/><stop offset="35%" class="art-aur-2"/><stop offset="80%" class="art-aur-3"/><stop offset="100%" class="art-aur-4"/></linearGradient></defs></svg>
   <p class="dateline">
     <span class="dateline-date">{{ today }}</span>
     {#- Numerele zilei (doar prima pagina are `zi` in context): starea reala a

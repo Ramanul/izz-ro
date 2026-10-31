@@ -11,6 +11,9 @@ Verifică conformitatea strictă cu specificația definitivă:
 7. Absența watermark-ului trunchiat/tăiat (.art-ghost).
 8. Fotografie reală full-bleed cu atribuire vizibilă când licența o cere și separare strictă de OG/social.
 """
+import re
+from pathlib import Path
+
 import pytest
 from generator import art_generativ, htmlart
 
@@ -246,3 +249,20 @@ def test_fotografie_reala_inlocuieste_arta_generata_pe_card():
         for a in articole[1:]
     ]
     assert len(set(triplete_generate)) == 11
+
+
+# ==============================================================================
+# 9. Sablonul artei: fara culori scrise direct, gradientul o singura data pe pagina
+# ==============================================================================
+
+def _sablon(nume: str) -> str:
+    return (Path(__file__).parent.parent / "templates" / nume).read_text(encoding="utf-8")
+
+
+def test_sablonul_artei_nu_scrie_culori_direct():
+    assert not re.search(r"#[0-9a-fA-F]{3,8}\b", _sablon("_art.html"))
+
+
+def test_gradientul_auriu_se_defineste_o_singura_data_pe_pagina():
+    assert 'id="art-gold-grad"' not in _sablon("_art.html")
+    assert _sablon("base.html").count('id="art-gold-grad"') == 1

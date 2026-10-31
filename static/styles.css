@@ -1020,6 +1020,7 @@ picture { display: contents; }
   fill: url(#art-gold-grad) var(--art-geo-aur);
   stroke: #f7df8b; stroke-opacity: .95;
 }
+.art-defs { position: absolute; }
 .art-aur-1 { stop-color: #fae8a2; }
 .art-aur-2 { stop-color: var(--art-geo-aur); }
 .art-aur-3 { stop-color: #b88b22; }
