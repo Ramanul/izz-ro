@@ -1,14 +1,19 @@
 """Approved corrections on publication copies, never on collected state."""
 import copy
+from datetime import datetime, timezone
+from email.utils import format_datetime
 import hashlib
 import json
-import re
 from pathlib import Path
+import re
 from urllib.parse import urlsplit
+# nosemgrep: python.lang.security.use-defused-xml.use-defused-xml
+from xml.sax.saxutils import escape as xml_escape
 
 from . import config, editorial, geo
 
 FIELDS = {"key", "public_paths", "state", "review", "notice", "evidence_url", "presentation"}
+OPTIONAL_FIELDS = {"show_initial_version"}
 PRESENTATION = {"title", "teaser", "synthesis", "county"}
 
 
@@ -43,8 +48,10 @@ def validate(index, articles):
     for key, row in index.items():
         def fail(message):
             raise editorial.EditorialError(f"corrections.{key}: {message}")
-        if set(row) != FIELDS or row["key"] != key:
+        if set(row) - OPTIONAL_FIELDS != FIELDS or row["key"] != key:
             fail("exact public fields required")
+        if "show_initial_version" in row and type(row["show_initial_version"]) is not bool:
+            fail("show_initial_version must be boolean")
         if row["state"] not in {"corrected", "withdrawn"}:
             fail("corrected/withdrawn state required")
         paths = row["public_paths"]
@@ -75,11 +82,24 @@ def validate(index, articles):
             fail("corrected presentation required")
         if row["state"] == "withdrawn" and presentation:
             fail("withdrawal cannot republish article content")
+        if row["state"] == "withdrawn" and row.get("show_initial_version"):
+            fail("withdrawal cannot expose an initial version")
         if "county" in presentation and not geo.regiune_afisare(presentation["county"]):
             fail("recognized county code required")
         for other_key, article in current.items():
             if other_key != key and editorial.public_path(article) in paths:
                 fail("public path belongs to a different current article")
+
+
+def initial_snapshot(article):
+    """Keep the first title/summary, including snapshots saved by older builds."""
+    fields = {"title", "teaser", "synthesis"}
+    snapshot = (article["initial_version"] if "initial_version" in article else
+                {field: article.get(field) or "" for field in fields})
+    if (not isinstance(snapshot, dict) or set(snapshot) - {"county"} != fields
+            or any(not isinstance(value, str) for value in snapshot.values())):
+        raise editorial.EditorialError("article.initial_version: valid title/summary snapshot required")
+    return copy.deepcopy(snapshot)
 
 
 def apply(articles, index):
@@ -92,7 +112,12 @@ def apply(articles, index):
         if row:
             if row["state"] == "withdrawn":
                 continue
+            view["initial_version"] = initial_snapshot(article)
+            # A later approved correction may revoke an earlier manual opt-in.
+            view["show_initial_version"] = row.get("show_initial_version", False)
             view.update({k: v for k, v in row["presentation"].items() if k != "county"})
+            if "synthesis" in row["presentation"]:
+                view.pop("dialectic", None)
             if "county" in row["presentation"]:
                 view["editorial_county"] = row["presentation"]["county"]
             view["updated"] = row["review"]["reviewed_at"]
@@ -107,9 +132,12 @@ def apply(articles, index):
 
 def public_notice(row):
     scheme = urlsplit(row["evidence_url"]).scheme
-    return {"state": row["state"], "notice": row["notice"], "evidence_url": row["evidence_url"],
-            "scheme": scheme, "destination": row["evidence_url"][len(scheme) + 3:],
-            "reviewed_at": row["review"]["reviewed_at"], "kind": row["review"]["kind"]}
+    notice = {"state": row["state"], "notice": row["notice"], "evidence_url": row["evidence_url"],
+              "scheme": scheme, "destination": row["evidence_url"][len(scheme) + 3:],
+              "reviewed_at": row["review"]["reviewed_at"], "kind": row["review"]["kind"]}
+    if row.get("show_initial_version") is True:
+        notice["show_initial_version"] = True
+    return notice
 
 
 def revisions(index):
@@ -134,3 +162,66 @@ def manifest(articles, index):
     body["digest"] = hashlib.sha256(json.dumps(body, ensure_ascii=False, sort_keys=True,
                                               separators=(",", ":")).encode()).hexdigest()
     return body
+
+
+def corrections_feed(index, site_url=None, now=None):
+    """Deterministic RSS 2.0 feed for approved corrections and withdrawals.
+
+    - Empty when no approved corrections exist in the catalog (clean RSS channel).
+    - Exposes review date, notice explanation, state and site explanation link.
+    - Never republishes withdrawn/old expired story bodies.
+    """
+    site_url = (site_url or config.SITE["url"]).rstrip("/")
+    feed_url = f"{site_url}/corectii/feed.xml"
+    policy_url = f"{site_url}/legal/corrections/"
+    build_date = format_datetime((now or datetime.now(timezone.utc)).astimezone(timezone.utc))
+
+    entries = []
+    # Sort deterministically: newest review date first, then unique record key
+    for _, row in sorted(index.items(), key=lambda item: (
+            datetime.fromisoformat(item[1]["review"]["reviewed_at"].replace("Z", "+00:00"))
+            .astimezone(timezone.utc), item[0]), reverse=True):
+        reviewed_at = row["review"]["reviewed_at"]
+        try:
+            dt = datetime.fromisoformat(reviewed_at.replace("Z", "+00:00"))
+            if dt.tzinfo is None:
+                dt = dt.replace(tzinfo=timezone.utc)
+            pub_date = format_datetime(dt.astimezone(timezone.utc))
+        except (ValueError, TypeError):
+            pub_date = ""
+
+        path = row["public_paths"][0] if row["public_paths"] else "/legal/corrections/"
+        item_link = f"{site_url}/{path.lstrip('/')}"
+
+        if row["state"] == "corrected":
+            title = f"Corecție: {row['presentation'].get('title', 'Articol corectat')}"
+            guid = f"{item_link}#corectie-{reviewed_at}"
+        else:
+            title = "Retragere: Material retras din publicație"
+            guid = f"{item_link}#retragere-{reviewed_at}"
+
+        pub_xml = f"      <pubDate>{xml_escape(pub_date)}</pubDate>\n" if pub_date else ""
+        entries.append(
+            "    <item>\n"
+            f"      <title>{xml_escape(title)}</title>\n"
+            f"      <link>{xml_escape(item_link)}</link>\n"
+            f"      <guid isPermaLink=\"false\">{xml_escape(guid)}</guid>\n"
+            f"{pub_xml}"
+            f"      <description>{xml_escape(row['notice'])}</description>\n"
+            "    </item>"
+        )
+
+    items_block = ("\n" + "\n".join(entries)) if entries else ""
+    return (
+        '<?xml version="1.0" encoding="UTF-8"?>\n'
+        '<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">\n'
+        '<channel>\n'
+        '  <title>Corecții și retrageri — IZZ.ro</title>\n'
+        f'  <link>{xml_escape(policy_url)}</link>\n'
+        f'  <atom:link href="{xml_escape(feed_url)}" rel="self" type="application/rss+xml"/>\n'
+        '  <description>Jurnalul public al corecțiilor materiale și retragerilor editoriale IZZ.ro.</description>\n'
+        f'  <language>{config.SITE.get("lang", "ro")}</language>\n'
+        f'  <lastBuildDate>{build_date}</lastBuildDate>{items_block}\n'
+        '</channel>\n'
+        '</rss>\n'
+    )

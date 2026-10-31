@@ -1677,6 +1677,7 @@ def build(articles: list, mod: dict | None = None) -> None:
     _write_headers()
     _write_redirects()
     _write_feed(by_date)
+    _write_corrections_feed(corrections)
     _write_search(env, by_date)
     # Portretele cerute de arta inline (`_art.html` deseneaza <img class="art-portret">).
     # Aici, nu mai devreme: `stil_inline` ruleaza pentru fiecare articol in bucla de mai sus,
@@ -1891,7 +1892,7 @@ def _ataseaza_legaturi(articole: list) -> None:
         a["judet"] = a.get("editorial_county") or geo.judet_sursa(a.get("source")) or ""
         a["ghid"] = _ghid_pentru(a, index)
         # Source headlines may repeat the very statement that was corrected.
-        a["timeline"] = None if a.get("correction") else _timeline(a)
+        a["timeline"] = None if a.get("correction") or a.get("moderation_note") else _timeline(a)
         a["surse_roluri"] = _roluri_surse(a)
         a["din_memorie"] = memorie.din_memorie(a, _registru_memorie(), config.ARTICLE_TTL_DAYS) \
             if a.get("model") == "C" else []
@@ -2668,6 +2669,7 @@ def _write_redirects() -> None:
         "/harta-stiri /harta/ 301\n"
         "/harta-stiri/ /harta/ 301\n"
         "/zonal/* /judetean/:splat 301\n"
+        "/legal/corrections/feed.xml /corectii/feed.xml 301\n"
     )
     redirects += _redirects_migrare()
     _write(os.path.join(OUT_DIR, "_redirects"), redirects)
@@ -2796,4 +2798,9 @@ def _write_feed(articles: list) -> None:
     _write(os.path.join(OUT_DIR, "feed.xml"),
            _feed_xml(articles, config.SITE["name"], config.SITE["url"], config.SITE["tagline"],
                      feed_url=f"{config.SITE['url']}/feed.xml"))
+
+
+def _write_corrections_feed(corrections: dict) -> None:
+    _write(os.path.join(OUT_DIR, "corectii", "feed.xml"),
+           publication.corrections_feed(corrections, config.SITE["url"]))
 
