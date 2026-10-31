@@ -28,6 +28,49 @@ DATASET = os.path.join(ROOT, "data", "localities.json")
 MIN_WIDTH = 1200
 LANDSCAPE_RATIO = 1.2
 
+# Garda negativa (Argon): poza insorita a localitatii nu ilustreaza o tragedie sau o fapta penala.
+# Termenii sunt scrisi FARA diacritice: textul se compara dupa `strip_diacritics`, ca un titlu
+# venit fara diacritice sa nu treaca pe langa garda. `DNA` tine cont de litere: „dna" e si „doamna".
+_TRAGIC_TERMS = re.compile(
+    r"\b(?:"
+    r"accident(?:e|ul|ele)?|"
+    r"decedat(?:a|i|e)?|"
+    r"deces(?:e|ul|ele)?|"
+    r"mort(?:a|i|e|ea|ilor)?|moart(?:a|e|ea)|"
+    r"mortal(?:a|i|e)?|"
+    r"omor(?:ul|uri)?|"
+    r"omorat(?:a|i|e)?|"
+    r"ucis(?:a|i|e)?|"
+    r"crim(?:a|e|ele)?|"
+    r"criminal(?:a|i|e)?|"
+    r"cadavr(?:u|ul|e|ele)|"
+    r"viol(?:ul|uri)?|"
+    r"violat(?:a|i|e)?|"
+    r"incendi(?:u|ul|i|ile)|"
+    r"explozi(?:e|a|i|ile)|"
+    r"perchezit(?:ie|ia|ii|iile)|"
+    r"(?-i:DNA)|"
+    r"catuse|"
+    r"arestat(?:a|i|e)?|"
+    r"retinut(?:a|i|e)?|"
+    r"sinucider(?:e|i|ea)|"
+    r"sinucis(?:a|i|e)?|"
+    r"tragedi(?:e|a|i|ile)|"
+    r"inecat(?:a|i|e)?"
+    r")\b",
+    re.I,
+)
+
+
+def is_tragic_or_negative(text: str) -> bool:
+    """Verifica daca textul contine termeni de tragedie, accident, deces sau penal grav."""
+    return bool(_TRAGIC_TERMS.search(strip_diacritics(text or "")))
+
+
+def stire_tragica(a: dict) -> bool:
+    """Garda negativa pe titlul si rezumatul articolului; `render` si fetcher-ul o impart."""
+    return is_tragic_or_negative(f"{a.get('title') or ''} {a.get('synthesis') or a.get('teaser') or ''}")
+
 # Licente acceptate. CC-BY / CC-BY-SA cer atribuire, care se face pe PAGINA DE ARTICOL
 # (`figcaption.art-credit`); CC 4.0 §3(a)(2) si CC 3.0 §4(c) permit indeplinirea obligatiei
 # printr-un link catre resursa cu informatiile, iar cardul linkuieste articolul -> cardurile

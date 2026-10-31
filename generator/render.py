@@ -20,7 +20,7 @@ from xml.sax.saxutils import escape as xml_escape
 from jinja2 import Environment, FileSystemLoader, select_autoescape
 from slugify import slugify
 
-from . import config, covers, dossiers, editorial, fetch_deep, geo, guard, htmlart, memorie, pagefind_index, publication
+from . import config, covers, dossiers, editorial, fetch_deep, geo, guard, htmlart, localities, memorie, pagefind_index, publication
 from .select import (_dedup, _dedup_sources, _diversify, _entity_index,
                      _pick_hero, _quality_gate, anunt_oficial_fara_corp, filtru_cautare_rapida,
                      publicitar_la_sursa, titlu_afisare, editorial_selection_comparison)
@@ -133,6 +133,21 @@ def _load_leadphotos() -> dict:
             rel = rec[field]
             _use_media(os.path.join(MEDIA_DIR, rel), os.path.join(OUT_DIR, rel))
     return out
+
+
+def _lead_pentru(a: dict, leadphotos: dict, aid: str) -> dict | None:
+    """Fotografia de lead a articolului, dupa gardele editoriale.
+
+    Garda negativa e si aici, nu doar in `tools/fetch_leadphotos.py`: cache-ul are poze mai
+    vechi decat ea, pe care fetcher-ul nu le mai reverifica. Se aplica DOAR pozei de localitate:
+    portretul omului din titlu sau o poza oficiala nu spun nimic despre locul faptei.
+    """
+    if a.get("correction"):
+        return None
+    lp = leadphotos.get(aid)
+    if lp and lp.get("kind") == "locality" and localities.stire_tragica(a):
+        return None
+    return lp
 
 
 def _load_portraits() -> dict:
@@ -1357,7 +1372,7 @@ def build(articles: list, mod: dict | None = None) -> None:
         aid = htmlart.art_id(a)
         art_dst = os.path.join(cdir, "art.jpg")
         webp_dst = os.path.join(cdir, "art.webp")
-        lp = None if a.get("correction") else leadphotos.get(aid)
+        lp = _lead_pentru(a, leadphotos, aid)
         if lp and lp.get("credit_required"):
             # CC BY / CC BY-SA: fisier si variabile SEPARATE de art.jpg/art_path, ca poza sa
             # nu poata ajunge pe card, hero sau og:image nici din greseala -- cardurile citesc

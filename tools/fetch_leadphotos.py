@@ -136,17 +136,12 @@ def _get_focus_y(name: str, info: dict) -> float | None:
     if is_landscape(w, h):
         return None
     try:
-        incadrare = htmlart.incadrare_portrete()
-        portraits = json.load(open(render.PORTRAITS_JSON, encoding="utf-8"))
-        p = portraits.get(htmlart._norm_name(name))
-        if p and p.get("img") and p["img"] in incadrare:
-            poz = incadrare[p["img"]].get("poz", "")
-            if "%" in poz:
-                py_val = float(poz.split()[1].replace("%", ""))
-                return max(0.15, min(py_val / 100.0, 0.45))
-    except Exception:
-        pass
-    return 0.28
+        with open(render.PORTRAITS_JSON, encoding="utf-8") as f:
+            portret = json.load(f).get(fp.norm(name)) or {}
+        poz = htmlart.incadrare_portrete().get(portret.get("img") or "", {}).get("poz", "")
+        return max(0.15, min(float(poz.split()[1].rstrip("%")) / 100.0, 0.45))
+    except (OSError, ValueError, IndexError):
+        return 0.28
 
 
 def commons_lead_info(filename: str) -> dict | None:
@@ -235,42 +230,6 @@ def index_localitati(cache: dict) -> dict:
     return idx
 
 
-_TRAGIC_TERMS = re.compile(
-    r"\b("
-    r"accident(?:e|ul|ele)?|"
-    r"decedat(?:ă|i|e)?|"
-    r"deces(?:e|ul|ele)?|"
-    r"mort(?:ă|i|e|ea|ilor)?|"
-    r"mortal(?:ă|i|e)?|"
-    r"omor(?:ul|uri)?|"
-    r"omorât(?:ă|i|e)?|"
-    r"ucis(?:ă|i|e)?|"
-    r"crim(?:ă|e|a|ele)?|"
-    r"criminal(?:ă|i|e)?|"
-    r"cadavru(?:l|ri)?|"
-    r"viol(?:ul|uri)?|"
-    r"violat(?:ă|i|e)?|"
-    r"incendiu(?:l|ri)?|"
-    r"explozie|explozii|"
-    r"percheziți(?:i|e|ile)?|"
-    r"dna|"
-    r"cătușe|"
-    r"arestat(?:ă|i|e)?|"
-    r"reținut(?:ă|i|e)?|"
-    r"sinucidere|sinucideri|"
-    r"sinucis(?:ă|i|e)?|"
-    r"tragedi(?:e|i|ile)?|"
-    r"înecat(?:ă|i|e)?"
-    r")\b",
-    re.I,
-)
-
-
-def is_tragic_or_negative(text: str) -> bool:
-    """Verifica daca textul contine termeni de tragedie, accident, deces sau penal grav."""
-    return bool(_TRAGIC_TERMS.search(text or ""))
-
-
 def lead_for_locality(a: dict, by_name: dict, memo: dict | None = None):
     """(intrare, motiv) pentru fotografia LOCALITATII unei stiri venite de la primaria ei.
 
@@ -282,7 +241,7 @@ def lead_for_locality(a: dict, by_name: dict, memo: dict | None = None):
     Cititorul ar asocia cladirea/reperul cu scena accidentului sau fapta penala.
 
     Poarta de licenta e `localities.usable` (CC0/PD si CC BY/BY-SA, NC/ND respinse), nu
-    `qualifies` (doar PD/CC0). Bariera stricta din 2026-08-19 (01d6107) exista fiindca atunci
+    `qualifies` (ruta pe entitati). Bariera stricta din 2026-08-19 (01d6107) exista fiindca atunci
     orice poza lead ajungea si pe carduri si in previzualizarea sociala, fara credit. Din
     2026-08-29 (ef398cd, #205) render-ul tine CC BY separat: doar pe pagina de articol, sub
     legenda completa, niciodata pe card sau in og:image. Bariera ramasese mai stricta decat
@@ -296,9 +255,7 @@ def lead_for_locality(a: dict, by_name: dict, memo: dict | None = None):
     `memo` (`{qid: intrare | motiv}`) tine rezultatul per LOCALITATE in rulare: a doua stire
     din aceeasi localitate nu mai face nicio cerere de retea.
     """
-    title = a.get("title", "")
-    summary = a.get("synthesis") or a.get("teaser") or ""
-    if is_tragic_or_negative(f"{title} {summary}"):
+    if localities.stire_tragica(a):
         return None, "loc_exclus_tematic"
 
     rec = localities.locality_for_article(a, by_name)
@@ -445,8 +402,7 @@ def main() -> int:
         # Localitatea cu poza deja cunoscuta se rezolva FARA retea, deci fara plafon
         # (cu conditia sa nu fie o stire de tragedie/accident -- Garda Negativa Argon).
         rec = localities.locality_for_article(a, by_name)
-        title_text = f"{a.get('title', '')} {a.get('synthesis') or a.get('teaser') or ''}"
-        if rec and isinstance(memo.get(rec["qid"]), dict) and not is_tragic_or_negative(title_text):
+        if rec and isinstance(memo.get(rec["qid"]), dict) and not localities.stire_tragica(a):
             cache[aid] = {**memo[rec["qid"]], "name": rec["display"]}
             refolosite += 1
             continue
