@@ -24,7 +24,9 @@ def _fisiere(*radacini: str) -> list[Path]:
     for r in radacini:
         d = RADACINA / r
         if d.is_dir():
-            out += [p for p in d.rglob("*") if p.is_file() and p.suffix in SUFIXE]
+            # `.claude/worktrees/` tine copii de lucru ale altor sesiuni, nu documentele repo-ului
+            out += [p for p in d.rglob("*") if p.is_file() and p.suffix in SUFIXE
+                    and "worktrees" not in p.relative_to(RADACINA).parts]
     return sorted(out)
 
 
