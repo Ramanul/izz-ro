@@ -33,30 +33,13 @@ LANDSCAPE_RATIO = 1.2
 # venit fara diacritice sa nu treaca pe langa garda. `DNA` tine cont de litere: „dna" e si „doamna".
 _TRAGIC_TERMS = re.compile(
     r"\b(?:"
-    r"accident(?:e|ul|ele)?|"
-    r"decedat(?:a|i|e)?|"
-    r"deces(?:e|ul|ele)?|"
-    r"mort(?:a|i|e|ea|ilor)?|moart(?:a|e|ea)|"
-    r"mortal(?:a|i|e)?|"
-    r"omor(?:ul|uri)?|"
-    r"omorat(?:a|i|e)?|"
-    r"ucis(?:a|i|e)?|"
-    r"crim(?:a|e|ele)?|"
-    r"criminal(?:a|i|e)?|"
-    r"cadavr(?:u|ul|e|ele)|"
-    r"viol(?:ul|uri)?|"
-    r"violat(?:a|i|e)?|"
-    r"incendi(?:u|ul|i|ile)|"
-    r"explozi(?:e|a|i|ile)|"
-    r"perchezit(?:ie|ia|ii|iile)|"
-    r"(?-i:DNA)|"
-    r"catuse|"
-    r"arestat(?:a|i|e)?|"
-    r"retinut(?:a|i|e)?|"
-    r"sinucider(?:e|i|ea)|"
-    r"sinucis(?:a|i|e)?|"
-    r"tragedi(?:e|a|i|ile)|"
-    r"inecat(?:a|i|e)?"
+    # radacini fara alt sens: orice terminatie (genitiv, participiu, plural)
+    r"accident\w*|arest\w*|cadavr\w*|deced\w*|deces\w*|exploz\w*|incendi\w*|inec(?:at\w*)?|"
+    r"omorat\w*|perchezit\w*|sinucid\w*|sinucis\w*|tragedi\w*|ucid\w*|ucig\w*|ucis\w*|violat\w*|"
+    # radacini scurte: forme enumerate, ca „Crimeea", „mortar" sau „violet" sa nu se prinda
+    r"mort(?:a|i|ii|e|ea|ul|ului|ilor)?|mortal(?:a|i|e)?|moart(?:a|e|ea)|"
+    r"crim(?:a|e|ei|ele|elor)|criminal(?:a|i|e)?|omor(?:ul|ului|uri)?|viol(?:ul|ului|uri)?|"
+    r"catuse|retinut(?:a|i|e)?|(?-i:DNA)"
     r")\b",
     re.I,
 )
@@ -69,7 +52,7 @@ def is_tragic_or_negative(text: str) -> bool:
 
 def stire_tragica(a: dict) -> bool:
     """Garda negativa pe titlul si rezumatul articolului; `render` si fetcher-ul o impart."""
-    return is_tragic_or_negative(f"{a.get('title') or ''} {a.get('synthesis') or a.get('teaser') or ''}")
+    return is_tragic_or_negative(f"{a.get('title') or ''} {a.get('synthesis') or ''} {a.get('teaser') or ''}")
 
 # Licente acceptate. CC-BY / CC-BY-SA cer atribuire, care se face pe PAGINA DE ARTICOL
 # (`figcaption.art-credit`); CC 4.0 §3(a)(2) si CC 3.0 §4(c) permit indeplinirea obligatiei

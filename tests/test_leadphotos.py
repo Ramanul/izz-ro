@@ -88,6 +88,23 @@ def test_garda_negativa_merge_si_fara_diacritice():
     assert not garda("Clădire amortizată contabil, incriminare respinsă")
 
 
+def test_garda_negativa_prinde_formele_din_titluri():
+    garda = localities.is_tragic_or_negative
+    for titlu in ("Cauza morții rămâne neclară", "Tânăr grav accidentat la Sibiu",
+                  "Dosar penal pentru ucidere din culpă", "Cauza incendiului din Brăila",
+                  "Victimele exploziei de ieri", "Ancheta crimei din Iași",
+                  "Autorul tragediei a fost prins", "Pericol de înec pe lac"):
+        assert garda(titlu), titlu
+    for titlu in ("Delegație din Crimeea la festival", "Concert cu violet și mortar decorativ",
+                  "Cinema în aer liber la Sibiu"):
+        assert not garda(titlu), titlu
+
+
+def test_garda_negativa_citeste_si_teaserul_cand_exista_sinteza():
+    a = {"title": "Eveniment în comună", "synthesis": "Text neutru.", "teaser": "Un mort pe DN1."}
+    assert localities.stire_tragica(a)
+
+
 def _poza_locala() -> dict:
     return {"kind": "locality", "art": "a.jpg", "cover": "c.jpg"}
 

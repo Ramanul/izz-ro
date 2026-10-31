@@ -138,7 +138,7 @@ def _get_focus_y(name: str, info: dict) -> float | None:
     try:
         with open(render.PORTRAITS_JSON, encoding="utf-8") as f:
             portret = json.load(f).get(fp.norm(name)) or {}
-        poz = htmlart.incadrare_portrete().get(portret.get("img") or "", {}).get("poz", "")
+        poz = htmlart.incadrare_portrete().get(portret.get("img") or "", {}).get("poz") or ""
         return max(0.15, min(float(poz.split()[1].rstrip("%")) / 100.0, 0.45))
     except (OSError, ValueError, IndexError):
         return 0.28
