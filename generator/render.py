@@ -1275,7 +1275,7 @@ def build(articles: list, mod: dict | None = None) -> None:
     # build) browserele ar servi pictograma veche din cache pana la o zi; versiunea
     # in query schimba URL-ul doar cand se schimba imaginea, deci cache-ul ramane
     # eficient dar nu mai poate fi vreodata stale.
-    leadphotos = _load_leadphotos()
+    leadphotos = _load_leadphotos() if config.ARTICLE_IMAGE_FILES else {}
     portraits = _load_portraits()   # fotografii reale P18 (auto-gazduite) cheie=nume normalizat
 
     # BUGET DE FISIERE. Pana pe 2026-08-22 randarea scria cate imagini avea de scris si
@@ -1315,7 +1315,7 @@ def build(articles: list, mod: dict | None = None) -> None:
     #      fiindca previzualizarea sociala conteaza cat timp stirea chiar se distribuie.
     # Restul articolelor primesc og:image-ul CATEGORIEI (15 fisiere, scrise o data per build).
     n = len(by_date)
-    n_cover = min(config.OG_COVER_MAX_ARTICLES, n)
+    n_cover = min(config.OG_COVER_MAX_ARTICLES, n) if config.ARTICLE_IMAGE_FILES else 0
     spent = 0
 
     def _spend(ok: bool) -> bool:
@@ -1387,7 +1387,7 @@ def build(articles: list, mod: dict | None = None) -> None:
                 a["art_webp"] = f"/{a['category']}/{a['slug']}/art.webp?v={_content_ver(webp_dst)}"
             if lp.get("kind") == "locality":
                 a["art_credit"] = lp
-        elif a.get("event_chart") and not a.get("correction"):
+        elif config.ARTICLE_IMAGE_FILES and a.get("event_chart") and not a.get("correction"):
             # Imagine DIN DATE (harta epicentrului, graficul meteo): nu e decor derivat din
             # seed, e continut, deci nu se poate desena din `art_style`. Ramane fisier cat
             # timp exista randarea Chromium comisa; altfel articolul cade pe arta inline.

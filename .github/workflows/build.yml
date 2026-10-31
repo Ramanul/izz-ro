@@ -364,6 +364,10 @@ jobs:
           # la fiecare republicare (de ~12 ori pe zi) intr-un repo cu plafon 1 GB, masurat
           # deja lunar. Pe primar indexul se construieste — vezi generator/pagefind_index.py.
           PAGEFIND_ENABLED: "0"
+          # Imaginile de articol ajunsesera la 2,88 din cei 3,73 GB publicati, plafonul fiind
+          # 1 GB (masurat 2026-10-31). Articolul activ se citeste de pe primar, care le
+          # pastreaza; pe oglinda pagina trece la text, deci expira fara imagine rupta.
+          ARTICLE_IMAGE_FILES: "0"
         run: python -m generator.main --render-only
       - name: Publica pe mirror (host independent)
         uses: peaceiris/actions-gh-pages@84c30a85c19949d7eee79c4ff27748b70285e453 # v4
@@ -374,9 +378,7 @@ jobs:
           publish_dir: ./output
           # IZZ-0423: fara force_orphan + keep_files. Paginile iesite din fereasta TTL
           # NU se sterg la republicare — oglinda devine arhiva vietii destinate (#198).
-          # Urmare acceptata: adaugare continua de fisiere vechi pe gh-pages (plafon
-          # platformei 1 GB); masuram lunar cu automation-5331e2e9 si setam taierea
-          # cand ne apropiem — NU azi. Fallback-ul 404->mirror pe primar e PR separat.
+          # Plafonul platformei e 1 GB, iar paginile cresc cu ~19 MB/zi.
           keep_files: true
           cname: ""
 
