@@ -469,6 +469,11 @@ OUTPUT_NON_ARTICLE_RESERVE = int(os.getenv("OUTPUT_NON_ARTICLE_RESERVE", "4400")
 # distribuie: la ~590 de articole/zi, 1.200 acopera ultimele ~2 zile. Pe Paid nu exista
 # motiv sa fie plafonat; pe Free, 12.600 de coperti ar fi 63% din plafonul intreg.
 OG_COVER_MAX_ARTICLES = int(os.getenv("OG_COVER_MAX_ARTICLES", "1200"))
+# Fisierele de imagine din directorul articolului (fotografie de lead, imagine din date,
+# `cover.jpg`). Oprite DOAR in jobul `mirror`: paginile raman pe oglinda si dupa expirare, iar
+# imaginile ajunsesera la 2,88 din cei 3,73 GB publicati, plafonul GitHub Pages fiind 1 GB
+# (masurat 2026-10-31). Primarul le pastreaza: articolul activ se citeste de acolo.
+ARTICLE_IMAGE_FILES = os.getenv("ARTICLE_IMAGE_FILES", "1") != "0"
 # Graful de subiecte: de la cate articole primeste o entitate pagina proprie, si de la cate
 # primeste si feed RSS. Pragul de 2 producea 3.671 de pagini din care 2.145 aveau exact
 # doua-trei articole -- thin content pentru Google si 21% din plafonul gratuit pentru noi.
