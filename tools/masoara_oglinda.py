@@ -59,9 +59,9 @@ def cere_api(cale: str) -> dict:
     raise AssertionError("bucla de mai sus iese prin return sau raise")
 
 
-def arbore(cere=cere_api) -> dict[str, int]:
+def arbore(cere=cere_api, ref: str = RAMURA) -> dict[str, int]:
     """Toate fisierele publicate, cale -> octeti. Coboara un nivel cand raspunsul e trunchiat."""
-    radacina = cere(f"repos/{REPO}/git/trees/{RAMURA}")
+    radacina = cere(f"repos/{REPO}/git/trees/{ref}")
     if radacina.get("truncated"):
         raise RuntimeError("radacina oglinzii a venit trunchiata, deci totalul ar fi fals")
     fisiere: dict[str, int] = {}

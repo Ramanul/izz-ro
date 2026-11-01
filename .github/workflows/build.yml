@@ -381,6 +381,11 @@ jobs:
           # Plafonul platformei e 1 GB, iar paginile cresc cu ~19 MB/zi.
           keep_files: true
           cname: ""
+      - name: Aplica plafonul arhivei (950 MB spre 850 MB)
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          MIRROR_DEPLOY_KEY: ${{ secrets.MIRROR_DEPLOY_KEY }}
+        run: python -m tools.curata_oglinda plafon --aplica
 
   release-probe:
     needs: [pipeline, mirror]

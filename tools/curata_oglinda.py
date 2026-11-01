@@ -18,6 +18,9 @@ push respins lasa oglinda neatinsa, iar rularea urmatoare o ia de la capat.
 
 NU STERGE niciodata pagini mai noi de `ZILE_MINIME` si nici mai mult de `MAX_FRACTIE` dintr-o
 data: o masuratoare gresita trebuie sa dea refuz, nu o arhiva golita.
+Masoara un commit fix si refuza daca ramura s-a schimbat. Refuza si orice referinta HTML/XML
+ramasa spre directoarele eliminate; URL-urile absolute izz.ro raman valide pe site-ul principal.
+In acest caz nu publica nimic: este necesara regenerarea arhivei si a legaturilor ei.
 """
 from __future__ import annotations
 
@@ -31,6 +34,8 @@ import tempfile
 import threading
 import time
 from datetime import date, datetime, timedelta, timezone
+from html.parser import HTMLParser
+from urllib.parse import unquote, urljoin, urlsplit
 
 RADACINA = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, RADACINA)
@@ -232,13 +237,51 @@ def curata_imagini(sursa: str, aplica: bool, tinta: str | None = None) -> dict:
         return {"imagini": len(imagini), "pagini": len(rescrise), "commit": commit, "sterse": imagini}
 
 
+def verifica_legaturi(continut: bytes, cale: str, directoare: set[str]) -> None:
+    """Refuza referintele ramase in HTML/XML spre directoarele eliminate din oglinda."""
+    origine = f"https://{masurare.REPO.split('/')[1]}"
+
+    class Referinte(HTMLParser):
+        def __init__(self):
+            super().__init__(convert_charrefs=True)
+            self.baza = urljoin(origine + "/", cale)
+            self.valori = []
+
+        def handle_starttag(self, tag, attrs):
+            for nume, valoare in attrs:
+                if valoare is None:
+                    continue
+                if tag == "base" and nume == "href":
+                    self.baza = urljoin(self.baza, valoare)
+                self.valori.extend(valoare.split(",") if nume == "srcset" else [valoare])
+
+        def handle_data(self, data):
+            if cale.endswith(".xml"):
+                self.valori.append(data)
+
+    parser = Referinte()
+    parser.feed(continut.decode("utf-8", errors="strict"))
+    for value in parser.valori:
+        value = value.strip()
+        if not value:
+            continue
+        target = urlsplit(urljoin(parser.baza, value.split()[0]))
+        path = unquote(target.path).lstrip("/")
+        if (target.netloc.lower() == urlsplit(origine).netloc.lower()
+                and "/".join(path.split("/")[:2]) in directoare):
+            raise Refuz(f"referinta locala ramasa in {cale}: {value}")
+
+
 def taie_la_plafon(sursa: str, aplica: bool, marimi: dict[str, int], azi: date,
-                   tinta: str | None = None) -> dict:
+                   tinta: str | None = None, parinte_asteptat: str | None = None) -> dict:
     de_eliberat = sum(marimi.values()) - masurare.TINTA_MB * masurare.MB
     with tempfile.TemporaryDirectory() as tmp:
         depozit = os.path.join(tmp, "oglinda.git")
         parinte = cloneaza(sursa, depozit)
-        articole = {c: s for c, s in listeaza(depozit, parinte).items() if ARTICOL.fullmatch(c)}
+        if parinte_asteptat is not None and parinte != parinte_asteptat:
+            raise Refuz("oglinda s-a schimbat dupa masurare; nu tai pe baza unui total invechit")
+        arbore = listeaza(depozit, parinte)
+        articole = {c: s for c, s in arbore.items() if ARTICOL.fullmatch(c)}
         aduce(depozit, sorted(set(articole.values())))
         pagini = []
         for cale, continut in citeste(depozit, articole):
@@ -247,6 +290,12 @@ def taie_la_plafon(sursa: str, aplica: bool, marimi: dict[str, int], azi: date,
                 pagini.append((data, cale, marimi.get(cale, len(continut))))
         alese, eliberat = alege_de_taiat(pagini, de_eliberat, azi)
         directoare = [cale.rsplit("/", 1)[0] for cale in alese]
+        sterse = set(directoare)
+        ramase = {c: s for c, s in arbore.items() if c.endswith((".html", ".xml"))
+                  and "/".join(c.split("/")[:2]) not in sterse}
+        aduce(depozit, sorted(set(ramase.values())))
+        for cale, continut in citeste(depozit, ramase):
+            verifica_legaturi(continut, cale, sterse)
         mesaj = f"plafon: {len(alese)} pagini vechi taiate, {eliberat / masurare.MB:.0f} MB eliberati"
         commit = comite(depozit, parinte, directoare, {}, mesaj)
         if aplica:
@@ -266,7 +315,8 @@ def comanda_imagini(aplica: bool) -> int:
 
 
 def comanda_plafon(aplica: bool) -> int:
-    marimi = masurare.arbore()
+    parinte = masurare.cere_api(f"repos/{masurare.REPO}/commits/{masurare.RAMURA}")["sha"]
+    marimi = masurare.arbore(ref=parinte)
     repo_kb = masurare.cere_api(f"repos/{masurare.REPO}")["size"]
     masurare.publica_raport(masurare.raport(marimi, repo_kb))
     masurare.semnaleaza_repo(repo_kb)
@@ -278,7 +328,8 @@ def comanda_plafon(aplica: bool) -> int:
         print(f"::warning::oglinda are {total / masurare.MB:,.0f} MB; la "
               f"{masurare.PLAFON_MB} MB se taie automat cele mai vechi pagini")
         return 0
-    rezultat = taie_la_plafon(URL_CITIRE, aplica, marimi, datetime.now(timezone.utc).date())
+    rezultat = taie_la_plafon(URL_CITIRE, aplica, marimi, datetime.now(timezone.utc).date(),
+                            parinte_asteptat=parinte)
     ramas = total - rezultat["eliberat"]
     masurare.publica_raport(f"\nDupa taiere: {ramas / masurare.MB:,.0f} MB, {rezultat['pagini']} pagini "
                             f"vechi scoase ({'publicat' if aplica else 'simulare'}).")

@@ -216,6 +216,11 @@ def test_refuza_daca_ramane_o_referinta_necunoscuta(oglinda, tmp_path):
 
 def test_plafonul_sterge_directorul_paginii_vechi(oglinda, monkeypatch):
     monkeypatch.setattr(curata, "MAX_FRACTIE", 1.0)
+    lucru = oglinda.parent / "lucru"
+    (lucru / "local/130/index.html").write_text("<p>Arhiva fara linkuri catre pagina taiata</p>")
+    _git(lucru, "add", "-A")
+    _git(lucru, "commit", "-qm", "paginare independenta")
+    _git(lucru, "push", "-q", str(oglinda), masurare.RAMURA)
     uri = oglinda.as_uri()
     marimi = {"local/a-1/index.html": 130 * masurare.MB, "local/b-2/index.html": 40 * masurare.MB,
               "portraits/x.webp": 780 * masurare.MB}
@@ -224,3 +229,72 @@ def test_plafonul_sterge_directorul_paginii_vechi(oglinda, monkeypatch):
     ramase = _git(oglinda, "ls-tree", "-r", "--name-only", masurare.RAMURA).splitlines()
     assert "local/b-2/index.html" in ramase and not [c for c in ramase if c.startswith("local/a-1/")]
     assert "local/130/index.html" in ramase    # paginarea nu e arhiva, nu se taie
+
+
+def test_plafonul_refuza_linkurile_ramase_fara_sa_publice(oglinda, monkeypatch):
+    monkeypatch.setattr(curata, "MAX_FRACTIE", 1.0)
+    inainte = _git(oglinda, "rev-parse", masurare.RAMURA)
+    uri = oglinda.as_uri()
+    marimi = {"local/a-1/index.html": 130 * masurare.MB, "portraits/x.webp": 780 * masurare.MB}
+    with pytest.raises(curata.Refuz, match="referinta locala ramasa in local/130/index.html"):
+        curata.taie_la_plafon(uri, True, marimi, AZI.replace(month=12), tinta=uri)
+    assert _git(oglinda, "rev-parse", masurare.RAMURA) == inainte
+
+
+@pytest.mark.parametrize("cale,html", [
+    ("index.html", '<a href=/local/a-1/?x=1#sus>Articol</a>'),
+    ("local/130/index.html", '<a href="../a-1/">Articol</a>'),
+    ("index.html", '<img srcset="/og/local.jpg 1x, /local/a-1/photo.webp 2x">'),
+    ("sitemap.xml", '<url><loc>https://ramanul.github.io/local/a-1/</loc></url>'),
+])
+def test_verifica_legaturi_refuza_tinte_locale(cale, html):
+    with pytest.raises(curata.Refuz, match="referinta locala ramasa"):
+        curata.verifica_legaturi(html.encode(), cale, {"local/a-1"})
+
+
+def test_legaturile_canonice_si_articolele_ramase_nu_sunt_sterse():
+    curata.verifica_legaturi(
+        b'<a href="https://izz.ro/local/a-1/">Original</a><a href="/local/b-2/">Ramas</a>',
+        "index.html", {"local/a-1"})
+
+
+def test_masurarea_poate_fixa_versiunea():
+    cereri = []
+
+    def api(cale):
+        cereri.append(cale)
+        return {"tree": [{"path": "index.html", "type": "blob", "size": 12}]}
+
+    assert masurare.arbore(api, ref="versiune-fixa") == {"index.html": 12}
+    assert cereri == [f"repos/{masurare.REPO}/git/trees/versiune-fixa"]
+
+
+def test_plafonul_refuza_masurarea_altei_versiuni(oglinda):
+    inainte = _git(oglinda, "rev-parse", masurare.RAMURA)
+    uri = oglinda.as_uri()
+    with pytest.raises(curata.Refuz, match="dupa masurare"):
+        curata.taie_la_plafon(uri, True, {"local/a-1/index.html": 960 * masurare.MB},
+                             AZI, tinta=uri, parinte_asteptat="0" * 40)
+    assert _git(oglinda, "rev-parse", masurare.RAMURA) == inainte
+
+
+def test_comanda_plafon_transmite_versiunea_masurata(monkeypatch):
+    cereri = []
+    taieri = []
+    marimi = {"local/a/index.html": 960 * masurare.MB}
+
+    def arbore(*, ref):
+        cereri.append(ref)
+        return marimi
+
+    def taie(sursa, aplica, masurate, azi, *, parinte_asteptat):
+        taieri.append((sursa, aplica, masurate, parinte_asteptat))
+        return {"eliberat": 120 * masurare.MB, "pagini": 1}
+
+    monkeypatch.setattr(masurare, "cere_api", lambda cale: {"sha": "fix", "size": 100})
+    monkeypatch.setattr(masurare, "arbore", arbore)
+    monkeypatch.setattr(masurare, "publica_raport", lambda text: None)
+    monkeypatch.setattr(curata, "taie_la_plafon", taie)
+    assert curata.comanda_plafon(True) == 0
+    assert cereri == ["fix"]
+    assert taieri == [(curata.URL_CITIRE, True, marimi, "fix")]
