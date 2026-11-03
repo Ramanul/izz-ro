@@ -1,9 +1,7 @@
 name: deploy-worker
 
-# Publicare pe Worker-ul izz-ro. Trigger automat: orice push pe main — inlocuieste Workers Builds,
-# care factura minutele de build (7.407 min peste plafon in Aug 22-Sep 21 = $37.04). Butonul manual
-# ramane, cu poarta de confirmare 'deploy'. Workflow-ul este fail-closed si publica DOAR continutul
-# din main. Tokenul este scoped pe Workers Scripts:Edit + Account Settings:Read; NU poate atinge DNS/WAF.
+# Publicare controlata pe Worker-ul izz-ro. Deploy-ul este manual si asteapta aprobarea
+# mediului GitHub production. Secretele sunt accesibile doar jobului prin environment.
 
 on:
   workflow_dispatch:
