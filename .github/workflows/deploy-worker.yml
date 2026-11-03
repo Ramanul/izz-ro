@@ -72,9 +72,9 @@ jobs:
             echo "fara output/_redirects - sar pasul"
           fi
 
-      - name: Buget assets (census + headroom, best-effort)
+      - name: Buget assets (strict, dupa randare si indexare)
         run: |
-          python tools/asset_budget.py --output-dir output || echo "::warning::census a picat - deployul ramane valid"
+          python tools/asset_budget.py --output-dir output --enforce
 
       - name: Publica pe Worker
         env:
