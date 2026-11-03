@@ -20,6 +20,7 @@ concurrency:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    environment: failover
     steps:
       - name: Poarta - doar main
         env:
