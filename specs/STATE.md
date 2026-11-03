@@ -50,9 +50,8 @@
 
 ## Standing rules
 
-- Cloudflare Free capacity: strict deployment census after rendering/search indexing blocks above 17,000 files or 25 MiB per file; full article text is unchanged. Local render/census: 11,307 files, 50 focused tests passed (2026-11-03). Production approval remains required; deployment/live confirmation pending. Scope and archive limits: `docs/cloudflare-free-capacity.md`.
 - Cadence is the GitHub scheduler, not the 105-min gate: 25% firing, ~6 starts/day, median ~4h.
   Re-measure with `tools/cadenta_reala.py`; do not quote the number from memory. [IZZ-0364]
 - Do not treat retired static-host origins as live origins; Worker origin is the fallback path.
 - Use current handoff for coordination; every measurement needs its window and command [IZZ-0367].
-- Do not mark live, GitHub settings, or Cloudflare facts as solved based only on repository code.
+- No live/GitHub/Cloudflare claim without proof. Capacity: `docs/cloudflare-free-capacity.md`.
