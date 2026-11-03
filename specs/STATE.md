@@ -54,4 +54,4 @@
   Re-measure with `tools/cadenta_reala.py`; do not quote the number from memory. [IZZ-0364]
 - Do not treat retired static-host origins as live origins; Worker origin is the fallback path.
 - Use current handoff for coordination; every measurement needs its window and command [IZZ-0367].
-- Do not mark live, GitHub settings, or Cloudflare facts as solved based only on repository code.
+- No live/GitHub/Cloudflare claim without proof. Capacity: `docs/cloudflare-free-capacity.md`.
