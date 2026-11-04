@@ -58,4 +58,4 @@ def test_deployment_guard_is_blocking_before_upload():
     assert command in workflow
     assert workflow.index("--render-only") < workflow.index(command) < workflow.index("wrangler@")
     assert "||" not in workflow.split(command, 1)[1].splitlines()[0]
-    assert "environment: production" in workflow
+    assert 'if [ "$REF" != "refs/heads/main" ]; then' in workflow
