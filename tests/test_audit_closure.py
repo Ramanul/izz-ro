@@ -139,6 +139,15 @@ def test_release_probe_points_to_workers_fallback():
     assert "izz-ro.andifreelancer2.workers.dev" in build
 
 
+def test_build_triggers_deploy_worker_automatically():
+    build = (ROOT / ".github/workflows/build.yml").read_text(encoding="utf-8")
+    deploy = (ROOT / ".github/workflows/deploy-worker.yml").read_text(encoding="utf-8")
+    assert "actions: write" in build
+    assert "gh workflow run deploy-worker.yml" in build
+    assert "push:\n    branches: [main]" in deploy
+    assert 'cron: "53 * * * *"' in deploy
+
+
 def test_feedcheck_is_scheduled_and_read_only():
     feedcheck = (ROOT / ".github/workflows/feedcheck.yml").read_text(encoding="utf-8")
     assert "schedule:" in feedcheck
