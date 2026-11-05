@@ -13732,132 +13732,6 @@
   "kind": "locality",
   "qid": "Q930102"
  },
- "4ef97be49e86c8ef": {
-  "miss": true,
-  "v": 3,
-  "motiv_loc": "loc_neeligibil",
-  "motiv_ent": "ent_nenotabila"
- },
- "6ecbd3e317867e46": {
-  "miss": true,
-  "v": 3,
-  "motiv_loc": "loc_neeligibil",
-  "motiv_ent": "ent_nenotabila"
- },
- "faf43515803bfeb1": {
-  "miss": true,
-  "v": 3,
-  "motiv_loc": "loc_neeligibil",
-  "motiv_ent": "ent_licenta_sau_format"
- },
- "5491561565c92748": {
-  "miss": true,
-  "v": 3,
-  "motiv_loc": "loc_neeligibil",
-  "motiv_ent": "ent_fara_entitati"
- },
- "d686640d42a37d39": {
-  "miss": true,
-  "v": 3,
-  "motiv_loc": "loc_neeligibil",
-  "motiv_ent": "ent_fara_entitati"
- },
- "ffb99a3782ac9c82": {
-  "miss": true,
-  "v": 3,
-  "motiv_loc": "loc_neeligibil",
-  "motiv_ent": "ent_fara_entitati"
- },
- "f318cd26166c1a81": {
-  "miss": true,
-  "v": 3,
-  "motiv_loc": "loc_neeligibil",
-  "motiv_ent": "ent_nenotabila"
- },
- "d3fabf20c1ac5cc5": {
-  "miss": true,
-  "v": 3,
-  "motiv_loc": "loc_neeligibil",
-  "motiv_ent": "ent_nenotabila"
- },
- "1aa78fe4302f8ea2": {
-  "miss": true,
-  "v": 3,
-  "motiv_loc": "loc_neeligibil",
-  "motiv_ent": "ent_fara_entitati"
- },
- "c9981f21c66770f3": {
-  "miss": true,
-  "v": 3,
-  "motiv_loc": "loc_neeligibil",
-  "motiv_ent": "ent_licenta_sau_format"
- },
- "80eba5a51eb56340": {
-  "miss": true,
-  "v": 3,
-  "motiv_loc": "loc_neeligibil",
-  "motiv_ent": "ent_licenta_sau_format"
- },
- "de2c2ad15350ba0c": {
-  "miss": true,
-  "v": 3,
-  "motiv_loc": "loc_neeligibil",
-  "motiv_ent": "ent_nenotabila"
- },
- "3aa1713dfb77d531": {
-  "miss": true,
-  "v": 3,
-  "motiv_loc": "loc_neeligibil",
-  "motiv_ent": "ent_nenotabila"
- },
- "0e9acf475074b91f": {
-  "miss": true,
-  "v": 3,
-  "motiv_loc": "loc_neeligibil",
-  "motiv_ent": "ent_fara_p18"
- },
- "3c4b2fc0971725a1": {
-  "miss": true,
-  "v": 3,
-  "motiv_loc": "loc_neeligibil",
-  "motiv_ent": "ent_fara_entitati"
- },
- "8cb401d0276a747c": {
-  "miss": true,
-  "v": 3,
-  "motiv_loc": "loc_neeligibil",
-  "motiv_ent": "ent_licenta_sau_format"
- },
- "2725833ad8470671": {
-  "miss": true,
-  "v": 3,
-  "motiv_loc": "loc_neeligibil",
-  "motiv_ent": "ent_licenta_sau_format"
- },
- "8588465fb6b1a875": {
-  "miss": true,
-  "v": 3,
-  "motiv_loc": "loc_neeligibil",
-  "motiv_ent": "ent_fara_qid"
- },
- "ae94e8a35e791853": {
-  "miss": true,
-  "v": 3,
-  "motiv_loc": "loc_neeligibil",
-  "motiv_ent": "ent_licenta_sau_format"
- },
- "7a3dd0b0cf93198f": {
-  "miss": true,
-  "v": 3,
-  "motiv_loc": "loc_neeligibil",
-  "motiv_ent": "ent_fara_entitati"
- },
- "6327488a7289d863": {
-  "miss": true,
-  "v": 3,
-  "motiv_loc": "loc_neeligibil",
-  "motiv_ent": "ent_licenta_sau_format"
- },
  "da5c8f16d995afe5": {
   "cover": "leads/loc-Q12724776.c.jpg",
   "art": "leads/loc-Q12724776.jpg",
@@ -24111,5 +23985,267 @@
   "kind": "oficial",
   "sursa": "Casa Albă",
   "data_poza": "2026-11-02"
+ },
+ "58de6ead2f112875": {
+  "cover": "leads/loc-Q1070967.c.jpg",
+  "art": "leads/loc-Q1070967.jpg",
+  "webp": "leads/loc-Q1070967.webp",
+  "artist": "Xulescu g",
+  "license": "CC BY-SA 4.0",
+  "page": "https://commons.wikimedia.org/wiki/File:S%C3%A2npetru_prim%C4%83vara.jpg",
+  "name": "Sânpetru",
+  "kind": "locality"
+ },
+ "39f8cb3b50cfa5b1": {
+  "cover": "leads/loc-Q423441.c.jpg",
+  "art": "leads/loc-Q423441.jpg",
+  "webp": "leads/loc-Q423441.webp",
+  "artist": "Andrei Stroe",
+  "license": "CC BY-SA 3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:RO_IL_Tandarei_town_hall.jpg",
+  "name": "Țăndărei",
+  "kind": "locality"
+ },
+ "cdce6dfa167e8a28": {
+  "cover": "leads/loc-Q5114759.c.jpg",
+  "art": "leads/loc-Q5114759.jpg",
+  "webp": "leads/loc-Q5114759.webp",
+  "artist": "Losy",
+  "license": "CC BY-SA 3.0 ro",
+  "page": "https://commons.wikimedia.org/wiki/File:Biserica_Sfantu_spiridon_Cogeasca_02.JPG",
+  "name": "Lețcani",
+  "kind": "locality",
+  "qid": "Q5114759"
+ },
+ "a7f27489cfdfb359": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_negasit_sau_fara_imagine",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "34deda29807e815f": {
+  "cover": "leads/loc-Q215723.c.jpg",
+  "art": "leads/loc-Q215723.jpg",
+  "webp": "leads/loc-Q215723.webp",
+  "artist": "Marius-Ionut",
+  "license": "CC BY-SA 3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Bulevardul_Unirii_-_panoramio_(3).jpg",
+  "name": "Slobozia",
+  "kind": "locality"
+ },
+ "65339e92eb4a033f": {
+  "cover": "leads/loc-Q16426185.c.jpg",
+  "art": "leads/loc-Q16426185.jpg",
+  "webp": "leads/loc-Q16426185.webp",
+  "artist": "Utilizator:Țetcu Mircea Rareș at ro.wikipedia",
+  "license": "CC BY-SA 3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:RO_CJ_Cojocna_2011.1.6.jpg",
+  "name": "Cojocna",
+  "kind": "locality",
+  "qid": "Q16426185"
+ },
+ "3ee8aa4f071a6c25": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_dimensiune_sau_format",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "8b069cd0996c92a6": {
+  "cover": "leads/loc-Q209809.c.jpg",
+  "art": "leads/loc-Q209809.jpg",
+  "webp": "leads/loc-Q209809.webp",
+  "artist": "Ana Maria Catalina",
+  "license": "CC BY-SA 4.0",
+  "page": "https://commons.wikimedia.org/wiki/File:2010-IMG_1840.jpg",
+  "name": "Turda",
+  "kind": "locality",
+  "qid": "Q209809"
+ },
+ "fa9833c0119a4bec": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_dimensiune_sau_format",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "4e83b66cca248993": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_dimensiune_sau_format",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "af80810419a2ab90": {
+  "cover": "leads/loc-Q215723.c.jpg",
+  "art": "leads/loc-Q215723.jpg",
+  "webp": "leads/loc-Q215723.webp",
+  "artist": "Marius-Ionut",
+  "license": "CC BY-SA 3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Bulevardul_Unirii_-_panoramio_(3).jpg",
+  "name": "Slobozia",
+  "kind": "locality"
+ },
+ "28b27c5a664de6ab": {
+  "cover": "leads/loc-Q215723.c.jpg",
+  "art": "leads/loc-Q215723.jpg",
+  "webp": "leads/loc-Q215723.webp",
+  "artist": "Marius-Ionut",
+  "license": "CC BY-SA 3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Bulevardul_Unirii_-_panoramio_(3).jpg",
+  "name": "Slobozia",
+  "kind": "locality"
+ },
+ "e7628c29d6a4755b": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_dimensiune_sau_format",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "cb77d4fb82d98140": {
+  "cover": "leads/loc-Q10737004.c.jpg",
+  "art": "leads/loc-Q10737004.jpg",
+  "webp": "leads/loc-Q10737004.webp",
+  "artist": "NicoletaTudor",
+  "license": "CC BY-SA 3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Prefectura_Bacau.jpg",
+  "name": "Bacău",
+  "kind": "locality",
+  "qid": "Q10737004"
+ },
+ "ed7d85579f07c091": {
+  "cover": "leads/loc-Q458422.c.jpg",
+  "art": "leads/loc-Q458422.jpg",
+  "webp": "leads/loc-Q458422.webp",
+  "artist": "Ana Maria Catalina",
+  "license": "CC BY-SA 3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:C%C3%A2mpia_Turzii-Parcul_Central-IMG_6685.jpg",
+  "name": "Câmpia Turzii",
+  "kind": "locality",
+  "qid": "Q458422"
+ },
+ "65b0204f5bf970b6": {
+  "cover": "leads/loc-Q186349.c.jpg",
+  "art": "leads/loc-Q186349.jpg",
+  "webp": "leads/loc-Q186349.webp",
+  "artist": "Sie",
+  "license": "CC BY-SA 3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Ady_negyed1.jpg",
+  "name": "Târgu Mureș",
+  "kind": "locality",
+  "qid": "Q186349"
+ },
+ "1a70b6f45dca2ff8": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_dimensiune_sau_format",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "31c6930077d8097d": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_dimensiune_sau_format",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "a1a517dcf1b0106e": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_dimensiune_sau_format",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "6885b28411ace002": {
+  "cover": "leads/loc-Q16427550.c.jpg",
+  "art": "leads/loc-Q16427550.jpg",
+  "webp": "leads/loc-Q16427550.webp",
+  "artist": "AlexanderKlink",
+  "license": "CC BY 4.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Romania_Putna_Drone_20191222.jpg",
+  "name": "Putna",
+  "kind": "locality",
+  "qid": "Q16427550"
+ },
+ "1ea6a5e14f1b3b05": {
+  "cover": "leads/loc-Q3846983.c.jpg",
+  "art": "leads/loc-Q3846983.jpg",
+  "webp": "leads/loc-Q3846983.webp",
+  "artist": "Nicu Farcaș",
+  "license": "CC BY-SA 3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:RO_SJ_Simleu_Silvaniei_004.jpg",
+  "name": "Șimleu Silvaniei",
+  "kind": "locality"
+ },
+ "a7c2f51baeaec0f1": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_negasit_sau_fara_imagine",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "c7b37b7a94618716": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_dimensiune_sau_format",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "7f6135b6856d8c3d": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_negasit_sau_fara_imagine",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "de6e4c6c86798faa": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_dimensiune_sau_format",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "5be77da368208d7c": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_negasit_sau_fara_imagine",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "7038986a8f9cd14a": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_negasit_sau_fara_imagine",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "3d4440224b882e41": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_dimensiune_sau_format",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "d1f641cc631e4e50": {
+  "cover": "leads/loc-Q5054973.c.jpg",
+  "art": "leads/loc-Q5054973.jpg",
+  "webp": "leads/loc-Q5054973.webp",
+  "artist": "Bogdan Ilieş. Original uploader was Bogdan salaj at ro.wikipedia",
+  "license": "CC BY 2.5",
+  "page": "https://commons.wikimedia.org/wiki/File:Biserica_din_Lazuri.jpg",
+  "name": "Lazuri",
+  "kind": "locality",
+  "qid": "Q5054973"
+ },
+ "443d241de9a0ee3c": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_negasit_sau_fara_imagine",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "4d07fbbe437bad9a": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_dimensiune_sau_format",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "7a16373f20f6b7cf": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_dimensiune_sau_format",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "d116405c6a5507a3": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_dimensiune_sau_format",
+  "motiv_ent": "ent_fara_entitati"
  }
 }
