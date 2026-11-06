@@ -144,6 +144,7 @@ def test_fetch_pipeline_persists_counters_without_raw_text_and_dry_run_leaves_fi
     now = datetime.now(timezone.utc)
     url = "https://example.org/news"
     previous = _entry((now - timedelta(hours=1)).isoformat())
+    previous["published"] = (now - timedelta(hours=2)).isoformat()  # relativ: TTL-ul prune-ază datele fixe
     path.write_text(json.dumps({url: previous}), encoding="utf-8")
     article = {"url": "https://example.org/normalized" if normalized else url,
                "original_link": url, "title": "Buget pentru Timiș", "published": now.isoformat()}
