@@ -122,6 +122,8 @@ _AMBIGUE = {
                      # kurde din Siria", „SUA au eliminat Siria de pe lista sponsorilor".
     "FOCURI",        # „Focuri de arma la o petrecere rave in Elvetia" — comuna in Iasi
     "BALCANI",       # „disputele istorice in Balcani" — Balcani, comuna in Bacau
+    "BALAN",         # prenume / nume de familie frecvent („Balan Andreea") — orase in HR/SJ
+    "VAMA",          # termen vamal comun, trupa rock („Vama la festival") — comune in SV/SM
 }
 
 _INDEX = None
@@ -629,7 +631,7 @@ def _incarca_etichete() -> None:
             for e in intrari:
                 brut = (e.get("judet") or "").strip()
                 if brut:
-                    curat = re.sub(r"^Jude[tț]ul\s+", "", brut).strip()
+                    curat = re.sub(r"^jude[tț]ul\s+", "", brut, flags=re.I).strip()
                     normalizat = strip_diacritics(curat).upper()
                     _ETICHETE_JUDETE.setdefault(normalizat, curat)
                     # O MULTIME, nu o valoare: „Alunu" exista si in Valcea, si in Olt.

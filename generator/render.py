@@ -1275,7 +1275,7 @@ def build(articles: list, mod: dict | None = None) -> None:
     # build) browserele ar servi pictograma veche din cache pana la o zi; versiunea
     # in query schimba URL-ul doar cand se schimba imaginea, deci cache-ul ramane
     # eficient dar nu mai poate fi vreodata stale.
-    leadphotos = _load_leadphotos()
+    leadphotos = _load_leadphotos() if config.ARTICLE_IMAGE_FILES else {}
     portraits = _load_portraits()   # fotografii reale P18 (auto-gazduite) cheie=nume normalizat
 
     # BUGET DE FISIERE. Pana pe 2026-08-22 randarea scria cate imagini avea de scris si
@@ -1315,7 +1315,7 @@ def build(articles: list, mod: dict | None = None) -> None:
     #      fiindca previzualizarea sociala conteaza cat timp stirea chiar se distribuie.
     # Restul articolelor primesc og:image-ul CATEGORIEI (15 fisiere, scrise o data per build).
     n = len(by_date)
-    n_cover = min(config.OG_COVER_MAX_ARTICLES, n)
+    n_cover = min(config.OG_COVER_MAX_ARTICLES, n) if config.ARTICLE_IMAGE_FILES else 0
     spent = 0
 
     def _spend(ok: bool) -> bool:
@@ -1346,10 +1346,13 @@ def build(articles: list, mod: dict | None = None) -> None:
             if lp and not a.get("lead_credit"):
                 a["lead_credit"] = lp
 
+    # Alocare deterministă a stilurilor cu unicitate garantată pe primele 12 carduri din feed
+    htmlart.aloca_stiluri_lista(by_date, limit=12)
+
     for idx, a in enumerate(by_date):
-        # Stilul se calculeaza pentru TOATE articolele: e ce deseneaza cardul si pagina cand
-        # articolul nu are fotografie proprie. Nu costa niciun fisier.
-        a["art_style"] = htmlart.stil_inline(a)
+        # Asigură că toate articolele au stil calculat
+        if not a.get("art_style"):
+            a["art_style"] = htmlart.stil_inline(a)
         cdir = os.path.join(OUT_DIR, a["category"], a["slug"])
         aid = htmlart.art_id(a)
         art_dst = os.path.join(cdir, "art.jpg")
@@ -1382,7 +1385,9 @@ def build(articles: list, mod: dict | None = None) -> None:
             if (lp.get("webp")
                     and _spend(_use_media(os.path.join(MEDIA_DIR, lp["webp"]), webp_dst))):
                 a["art_webp"] = f"/{a['category']}/{a['slug']}/art.webp?v={_content_ver(webp_dst)}"
-        elif a.get("event_chart") and not a.get("correction"):
+            if lp.get("kind") == "locality":
+                a["art_credit"] = lp
+        elif config.ARTICLE_IMAGE_FILES and a.get("event_chart") and not a.get("correction"):
             # Imagine DIN DATE (harta epicentrului, graficul meteo): nu e decor derivat din
             # seed, e continut, deci nu se poate desena din `art_style`. Ramane fisier cat
             # timp exista randarea Chromium comisa; altfel articolul cade pe arta inline.
@@ -1429,7 +1434,9 @@ def build(articles: list, mod: dict | None = None) -> None:
             continue
         items = [a for a in in_fereastra
                  if a["url"] not in hero_urls and home_fresh(a)]
-        by_category[cat] = _diversify(items)[:config.HOME_CARDS_PER_CATEGORY]
+        cat_items = _diversify(items)[:config.HOME_CARDS_PER_CATEGORY]
+        htmlart.aloca_stiluri_lista(cat_items, limit=12)
+        by_category[cat] = cat_items
 
     # homepage
     item_list = {
@@ -1523,6 +1530,7 @@ def build(articles: list, mod: dict | None = None) -> None:
         # si categoriile inca goale (in insamantare) primesc pagina 1 — altfel nav-ul ar duce la 404
         for page in range(0, max(len(items), 1), PAGE_SIZE):
             page_items = _diversify(items[page:page + PAGE_SIZE])
+            htmlart.aloca_stiluri_lista(page_items, limit=12)
             page_num = page // PAGE_SIZE + 1
             page_dir = os.path.join(OUT_DIR, cat) if page_num == 1 else os.path.join(OUT_DIR, cat, str(page_num))
             _write(os.path.join(page_dir, "index.html"),
@@ -1669,6 +1677,7 @@ def build(articles: list, mod: dict | None = None) -> None:
     _write_headers()
     _write_redirects()
     _write_feed(by_date)
+    _write_corrections_feed(corrections)
     _write_search(env, by_date)
     # Portretele cerute de arta inline (`_art.html` deseneaza <img class="art-portret">).
     # Aici, nu mai devreme: `stil_inline` ruleaza pentru fiecare articol in bucla de mai sus,
@@ -1883,7 +1892,7 @@ def _ataseaza_legaturi(articole: list) -> None:
         a["judet"] = a.get("editorial_county") or geo.judet_sursa(a.get("source")) or ""
         a["ghid"] = _ghid_pentru(a, index)
         # Source headlines may repeat the very statement that was corrected.
-        a["timeline"] = None if a.get("correction") else _timeline(a)
+        a["timeline"] = None if a.get("correction") or a.get("moderation_note") else _timeline(a)
         a["surse_roluri"] = _roluri_surse(a)
         a["din_memorie"] = memorie.din_memorie(a, _registru_memorie(), config.ARTICLE_TTL_DAYS) \
             if a.get("model") == "C" else []
@@ -2660,6 +2669,7 @@ def _write_redirects() -> None:
         "/harta-stiri /harta/ 301\n"
         "/harta-stiri/ /harta/ 301\n"
         "/zonal/* /judetean/:splat 301\n"
+        "/legal/corrections/feed.xml /corectii/feed.xml 301\n"
     )
     redirects += _redirects_migrare()
     _write(os.path.join(OUT_DIR, "_redirects"), redirects)
@@ -2788,4 +2798,9 @@ def _write_feed(articles: list) -> None:
     _write(os.path.join(OUT_DIR, "feed.xml"),
            _feed_xml(articles, config.SITE["name"], config.SITE["url"], config.SITE["tagline"],
                      feed_url=f"{config.SITE['url']}/feed.xml"))
+
+
+def _write_corrections_feed(corrections: dict) -> None:
+    _write(os.path.join(OUT_DIR, "corectii", "feed.xml"),
+           publication.corrections_feed(corrections, config.SITE["url"]))
 

@@ -2,11 +2,9 @@ name = "izz-failover"
 main = "failover-worker.js"
 compatibility_date = "2026-07-01"
 
-# Worker-ul intercepteaza tot traficul catre apex-ul izz.ro inaintea servirii Pages.
-# Fetch-urile catre izz-ro.pages.dev / ramanul.github.io sunt host-uri diferite -> fara bucla.
-routes = [
-  { pattern = "izz.ro/*", zone_name = "izz.ro" }
-]
+# Din 2026-10-31 worker-ul NU mai are ruta: izz.ro/* sta pe izz-ro (wrangler.jsonc), fiindca
+# aici fiecare cerere consuma din plafonul Free. Codul ramane publicat doar ca rezerva pentru
+# revenire; fara `routes`, un deploy de aici nu mai poate lua inapoi traficul.
 
 # Nota migrarilor (actualizata 2026-10-03): worker-ul deployat manual pe 2026-08-22 (nu din
 # repo) a introdus o clasa Durable Object `RateLimiter` si un Workflow, prin dashboard. Pe

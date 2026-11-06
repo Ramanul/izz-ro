@@ -10,7 +10,7 @@ from datetime import datetime, timezone, timedelta
 
 import yaml
 
-from . import config, guard, cluster
+from . import config, guard, cluster, publication
 from .select import e_anunt_oficial
 from .util import normalize_url, title_tokens
 
@@ -71,7 +71,10 @@ def _validate(mod: dict) -> dict:
                 f"{MOD_PATH}: fiecare entry din corrections trebuie sa fie URL -> obiect."
             )
         for field in change:
-            if field not in {"title", "teaser", "synthesis"} or not isinstance(change[field], str):
+            valid = (type(change[field]) is bool if field == "show_initial_version" else
+                     field in {"title", "teaser", "synthesis", "reason", "motiv"}
+                     and isinstance(change[field], str))
+            if not valid:
                 raise ModerationConfigCorrupt(
                     f"{MOD_PATH}: corrections[{url!r}] are un camp invalid: {field!r}."
                 )
@@ -297,6 +300,8 @@ def apply(articles: list, mod: dict) -> list:
     retrase = []
     garda_ascunse = 0
     for a in articles:
+        # Saved metadata cannot authorize republication after permission is removed.
+        a.pop("show_initial_version", None)
         url = a.get("url", "")
         norm_url = normalize_url(url)
         if norm_url in takedowns:
@@ -325,9 +330,17 @@ def apply(articles: list, mod: dict) -> list:
         if any(kw in title_l for kw in keywords):
             continue
         if norm_url in corrections:
-            for field in ("title", "teaser", "synthesis"):
-                if field in corrections[norm_url]:
-                    a[field] = corrections[norm_url][field]
+            change = corrections[norm_url]
+            if any(field in change for field in ("title", "teaser", "synthesis")):
+                a["initial_version"] = publication.initial_snapshot(a)
+                for field in ("title", "teaser", "synthesis"):
+                    if field in change:
+                        a[field] = change[field]
+                if "synthesis" in change:
+                    a.pop("dialectic", None)
+                a["show_initial_version"] = change.get("show_initial_version", False)
+                motiv = change.get("motiv") or change.get("reason") or "ajustare manuală confirmată"
+                a["moderation_note"] = f"cluster ajustat manual: {motiv}"
         a["featured"] = norm_url in featured
         if hold and a.get("model") == "C" and norm_url not in approved:
             held.append(a)

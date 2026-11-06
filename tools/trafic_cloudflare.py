@@ -117,7 +117,7 @@ def interogheaza(token: str, cont: str, zile: int = 7) -> dict:
 # --- IZZ-0427: vizibilitatea pe CAI (teme) -------------------------------------------------------------
 # Totalurile din INTEROGARE raspund „cat se intampla", dar nu POT borcan numarul pe subiecte:
 # workersInvocationsAdaptive nu are nici path, nici referer. Zona izz.ro trece tot traficul
-# prin proxy-ul Cloudflare (ruta `izz.ro/*` din infra/wrangler.toml), deci datasetul DE ZONA
+# prin proxy-ul Cloudflare (ruta `izz.ro/*` din wrangler.jsonc), deci datasetul DE ZONA
 # httpRequestsAdaptiveGroups vede aceleasi cereri, cu path. Sonda e BEST-EFFORT peste raportul
 # de baza: daca tokenul nu are scope de zona, eroarea API se tipareste si programul NU pica —
 # o cifra pe care n-o pot masura ramane nenotata, niciodata inventata.
