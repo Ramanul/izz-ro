@@ -375,7 +375,7 @@ def main() -> int:
               + ", ".join(f"{k}={v}" for k, v in sorted(motive.items(), key=lambda kv: -kv[1])))
     # scriem doar hit-urile in fisierul consumat de render (miss-urile raman doar in memorie/cache-disk)
     hits = {k: v for k, v in cache.items() if not (v or {}).get("miss")}
-    json.dump(cache, open(CACHE, "w"), ensure_ascii=False, indent=0)
+    json.dump(cache, open(CACHE, "w", encoding="utf-8"), ensure_ascii=False, indent=0)
     print(f">> leadphotos: {done} interogari noi, {refolosite} refolosite fara retea, "
           f"{len(hits)} lead-uri, {len(cache)} intrari cache")
     return 0
