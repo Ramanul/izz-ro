@@ -78,7 +78,7 @@ def test_header_written_for_precreated_empty_file(sandbox):
     fara antet — DictReader ar lua primul rand drept antet si jurnalul ar disparea tacit."""
     import os
     os.makedirs(os.path.dirname(log_slice.LOG), exist_ok=True)
-    open(log_slice.LOG, "w").close()          # fisier pre-creat, gol
+    open(log_slice.LOG, "w", encoding="utf-8").close()          # fisier pre-creat, gol
     log_slice.append(_Args(slice="primul"))
     with open(log_slice.LOG, encoding="utf-8") as fh:
         rows = list(csv.reader(fh))

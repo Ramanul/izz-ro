@@ -320,7 +320,7 @@ def main() -> int:
     if Image is None:
         print(">> Pillow indisponibil -- lead photos skip"); return 0
     arts = [a for a in state.load() if a.get("title")]
-    cache = json.load(open(CACHE)) if os.path.exists(CACHE) else {}
+    cache = json.load(open(CACHE, encoding="utf-8")) if os.path.exists(CACHE) else {}
     os.makedirs(OUTDIR, exist_ok=True)
     provider = get_provider()   # judecator AI foto<->articol; None fara cheie -> reguli deterministe
     print(f">> photo judge: {'ON (' + provider.name + ')' if provider else 'OFF (fara cheie AI) -> reguli deterministe'}")

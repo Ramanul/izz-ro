@@ -66,7 +66,7 @@ def main() -> int:
                        f"  font-weight: {wgt};\n  font-display: swap;\n"
                        f"  src: url(/static/fonts/{fn}) format('woff2');\n}}")
         print(f"  {fn}  {os.path.getsize(p)} bytes (subsetat)")
-    open(os.path.join(ROOT, "static", "fonts.css"), "w").write("\n".join(out_css) + "\n")
+    open(os.path.join(ROOT, "static", "fonts.css"), "w", encoding="utf-8").write("\n".join(out_css) + "\n")
     print(f">> fonts: {len(seen)} fete subsetate RO, fonts.css scris")
     return 0 if seen else 1
 

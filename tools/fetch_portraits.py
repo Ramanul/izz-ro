@@ -213,7 +213,7 @@ def main() -> int:
         for e in a.get("entities") or []:
             if e and e not in ctx and len(e.split()) >= 2:
                 ctx[e] = (a.get("title") or "", a.get("teaser") or "")
-    cache = json.load(open(CACHE)) if os.path.exists(CACHE) else {}
+    cache = json.load(open(CACHE, encoding="utf-8")) if os.path.exists(CACHE) else {}
     os.makedirs(OUTDIR, exist_ok=True)
     provider = None   # construit lenes, doar daca apare un caz de omonime
     done = 0
