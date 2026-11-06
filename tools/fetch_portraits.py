@@ -254,7 +254,7 @@ def main() -> int:
         cache[key] = entry
         print(f"  {'ok  ' if not entry.get('miss') else 'miss'} {name}")
         time.sleep(1)              # politete API
-    json.dump(cache, open(CACHE, "w"), ensure_ascii=False, indent=0)
+    json.dump(cache, open(CACHE, "w", encoding="utf-8"), ensure_ascii=False, indent=0)
     hits = sum(1 for v in cache.values() if not v.get("miss"))
     print(f">> portraits: {done} interogari noi, {hits} portrete in cache, {len(cache)} total intrari")
     return 0

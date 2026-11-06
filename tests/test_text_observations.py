@@ -8,9 +8,12 @@ import pytest
 from generator import config, fetch_deep
 
 
-T0 = "2026-10-25T10:00:00+00:00"
-T1 = "2026-10-25T11:00:00+00:00"
-T2 = "2026-10-25T12:00:00+00:00"
+# Relative to now: fetch_deep prunes entries older than ARTICLE_TTL_DAYS by `published`,
+# so a fixed date silently expires and every comparison test then fails.
+_BASE = datetime.now(timezone.utc).replace(minute=0, second=0, microsecond=0) - timedelta(days=2)
+T0 = _BASE.isoformat()
+T1 = (_BASE + timedelta(hours=1)).isoformat()
+T2 = (_BASE + timedelta(hours=2)).isoformat()
 
 
 def _entry(stamp=T0, text="first", anchors=None, mode="FULL_TEXT"):
@@ -44,8 +47,9 @@ def test_material_change_and_normal_completion_are_counted_without_truth_judgmen
     assert same_facts["text_observations"]["changed"] == 1
 
 
-@pytest.mark.parametrize("stamp", [T0, "2026-10-25T10:00:00Z", "2026-10-25T09:00:00+00:00",
-                                   "2026-10-25T11:00:00", "bad", None])
+@pytest.mark.parametrize("stamp", [
+    T0, _BASE.strftime("%Y-%m-%dT%H:%M:%SZ"), (_BASE - timedelta(hours=1)).isoformat(),
+    T1.replace("+00:00", ""), "bad", None])
 def test_same_or_invalid_or_backwards_timestamp_does_not_count(stamp):
     assert _advance(_entry(), _entry(stamp))["text_observations"]["comparisons"] == 0
 
@@ -60,7 +64,7 @@ def test_fallback_and_mode_switch_are_not_text_comparisons(old_mode, new_mode):
 def test_fallback_retains_prior_counts_but_breaks_comparison_chain():
     measured = _advance(_entry(), _entry(T1))
     fallback = _advance(measured, _entry(T2, mode="RSS_FALLBACK"))
-    resumed = _advance(fallback, _entry("2026-10-25T13:00:00+00:00"))
+    resumed = _advance(fallback, _entry((_BASE + timedelta(hours=3)).isoformat()))
     assert resumed["text_observations"] == measured["text_observations"]
 
 
@@ -119,7 +123,7 @@ def test_invalid_hash_breaks_comparison_chain():
     broken = _entry(T2)
     broken["sha256"] = "bad"
     invalid = _advance(measured, broken)
-    resumed = _advance(invalid, _entry("2026-10-25T13:00:00+00:00"))
+    resumed = _advance(invalid, _entry((_BASE + timedelta(hours=3)).isoformat()))
     assert resumed["text_observations"] == measured["text_observations"]
 
 
