@@ -21,7 +21,7 @@ from . import htmlart
 W, H = 1200, 630
 # Paleta de baza a copertei = tokenii site-ului (rebranding 2026-11-07): arama mată, tus
 # cald, tus secundar. Aurul vechi (201,162,39) aparea portocaliu pe hartie.
-GOLD = (168, 130, 58)      # #a8823a — --gold (doar decor: rama, filete)
+GOLD = (168, 130, 58)      # #a8823a — --brass (doar decor: rama, filete)
 INK = (20, 22, 26)         # #14161a — --ink
 INK2 = (74, 81, 92)        # #4a515c — --ink-2
 

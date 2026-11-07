@@ -53,7 +53,7 @@ _PALETE = [
     ("#463043", "#f8f2f5"),   # prun
 ]
 # Alama de decor (fire, filete). Era #c9a227 — aurul „viu" al vechii identitati; acum e
-# arama mată a sistemului „hartie curata" (--gold din styles.css, folosită doar ca decor).
+# arama mată a sistemului „hartie curata" (--brass din styles.css, folosită doar ca decor).
 GOLD = "#a8823a"
 # Compozitia calma a stirilor locale/judetene (`.art--geo` in styles.css, aceleasi valori):
 # cerneala pe hartie calda, forma locului in aur luminos. NU `#8b6918` — tonul acela, pe

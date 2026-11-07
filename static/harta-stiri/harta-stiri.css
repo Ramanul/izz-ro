@@ -6,8 +6,8 @@
   --text: #171717;
   --muted: #686868;
   --border: #d9d7ce;
-  --accent: #7c5f22;          /* --gold-strong din sistemul site-ului (5,97:1 pe alb) */
-  --accent-soft: #e8dcc4;     /* spalare de alama, ca --gold-wash */
+  --accent: #7c5f22;          /* --brass-deep din sistemul site-ului (5,97:1 pe alb) */
+  --accent-soft: #e8dcc4;     /* spalare de alama, ca --sunk */
   --map-fill: #e2dfd3;
   --map-stroke: #83806f;
   /* Alama de selecție/hover: aceeași valoare ca --accent (5,97:1 pe alb). */
@@ -17,10 +17,10 @@
   /* SISTEM CARTOGRAFIC — oglinda fidelă a rampei din static/styles.css (`.puls-map path.h*`).
      Pagina hărții e singura care nu încarcă foaia site-ului, deci ține aici o copie; nu are
      voie să divergă: tests/test_mini_harta.py compară cele cinci valori și pică la prima
-     diferență. Rampa e construită pe ALAMA brandului (#a8823a = --gold), la aceleași
+     diferență. Rampa e construită pe ALAMA brandului (#a8823a = --brass), la aceleași
      trepte de lumină ca rampa veche (ΔL* 8,4 / 8,3 / 11,6 măsurate), deci lizibilitatea
      rămâne identică: textul închis pe trepte dă 12,1 / 9,6 / 7,4 / 5,0:1. h4 e chiar
-     --gold; h3/h2/h1 sunt spălări din ce în ce mai deschise; h0 rămâne gri NEUTRU —
+     --brass; h3/h2/h1 sunt spălări din ce în ce mai deschise; h0 rămâne gri NEUTRU —
      „zero știri" e informație, nu un defect de randare. */
   --map-h0: #eaecf0;
   --map-h1: #e0d3ba;
