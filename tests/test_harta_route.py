@@ -54,6 +54,19 @@ def test_harta_county_pages_have_canonical_metadata_and_jsonld(output_randat):
         assert "/static/harta-stiri/vendor/maplibre/maplibre-gl.css" in html
 
 
+def test_harta_pages_declare_social_card(output_randat):
+    """`twitter:card` nu se mosteneste din `og:image` — fara el, X afiseaza cardul mic."""
+    sursa = Path("static/harta-stiri/index.html").read_text(encoding="utf-8")
+    assert '<meta name="twitter:card" content="summary_large_image">' in sursa
+    out = Path(output_randat)
+    for pagina in ("static/harta-stiri/index.html", "harta/index.html"):
+        html = (out / pagina).read_text(encoding="utf-8")
+        assert '<meta name="twitter:card" content="summary_large_image">' in html, pagina
+    for _code, slug, _label in _county_routes():
+        html = (out / "harta" / slug / "index.html").read_text(encoding="utf-8")
+        assert '<meta name="twitter:card" content="summary_large_image">' in html, slug
+
+
 def test_harta_routes_enter_sitemap(output_randat):
     sitemap = Path(output_randat, "sitemap.xml").read_text(encoding="utf-8")
     assert "https://izz.ro/harta/" in sitemap
