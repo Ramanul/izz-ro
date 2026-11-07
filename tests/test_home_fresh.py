@@ -16,12 +16,12 @@ def test_old_item_is_stale():
     assert home_fresh(a, now=now) is False
 
 
-def test_missing_date_fail_open():
-    assert home_fresh({}, now=datetime.now(timezone.utc)) is True
+def test_missing_date_not_fresh():
+    assert home_fresh({}, now=datetime.now(timezone.utc)) is False
 
 
-def test_invalid_date_fail_open():
-    assert home_fresh({"published": "nu-e-data"}, now=datetime.now(timezone.utc)) is True
+def test_invalid_date_not_fresh():
+    assert home_fresh({"published": "nu-e-data"}, now=datetime.now(timezone.utc)) is False
 
 
 def test_boundary_exactly_max_age():

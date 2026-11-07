@@ -1428,11 +1428,14 @@ def build(articles: list, mod: dict | None = None) -> None:
     selection_enabled = os.environ.get("IZZ_EDITORIAL_SELECTION_ENABLED", "1") != "0"
     selection_report["mode"] = "pilot" if selection_enabled else "shadow"
     selected_by_path = {editorial.public_path(a): a for a in by_date}
+    fresh_articles = [a for a in by_date if home_fresh(a)]
+    fresh_paths = {editorial.public_path(a) for a in fresh_articles}
     editorial_selection = [dict(row, article=selected_by_path[row["path"]])
-                           for row in selection_report["selected"]] if selection_enabled else []
+                           for row in selection_report["selected"]
+                           if row["path"] in fresh_paths] if selection_enabled else []
     _write(os.path.join(OUT_DIR, "editorial-selection-comparison.json"),
            json.dumps(selection_report, ensure_ascii=False, sort_keys=True))
-    hero = _pick_hero(by_date)
+    hero = _pick_hero(fresh_articles)
     hero_urls = {a["url"] for a in hero}
 
     by_category = {}
@@ -1470,7 +1473,9 @@ def build(articles: list, mod: dict | None = None) -> None:
            env.get_template("index.html").render(**_base_ctx(
                "/", nav_section="stiri", articles=by_date, hero=hero, by_category=by_category,
                jsonld_nodes=[item_list], newsletter_html=_newsletter_html(), zi=zi,
-               briefing=by_date[:7], editorial_selection=editorial_selection,
+               briefing=fresh_articles[:7], editorial_selection=editorial_selection,
+               latest_article=by_date[0].get("published") if by_date else "",
+               latest_article_human=by_date[0].get("published_human", "") if by_date else "",
                ttl_days=config.ARTICLE_TTL_DAYS,
                judete=[{"code": c, "slug": s, "label": l}
                        for c, s, l in _harta_rute_judetene()])))
@@ -1657,7 +1662,7 @@ def build(articles: list, mod: dict | None = None) -> None:
                    page["path"], dossier=page, noindex=not page["indexable"])))
         if not page["indexable"]:
             _PAGES_WRITTEN.discard(page["path"])
-    _render_legal(env)
+    _render_legal(env, corrections)
     _render_sections(env)
     _render_ghiduri(env, by_date)
     # Pagina 404 nu e o categorie goala, e capatul unui link mort — si cel mai frecvent motiv
@@ -1720,10 +1725,11 @@ def build(articles: list, mod: dict | None = None) -> None:
     # `harta` e material de lucru (10k perechi url->id), nu diagnostic: nu intra in build.json.
     cautare.pop("harta", None)
     # ULTIMUL: numara ce s-a scris efectiv, deci trebuie sa vina dupa toate scrierile.
-    _write_build_metadata(len(by_date), cautare)
+    _write_build_metadata(len(by_date), cautare, latest_article=by_date[0].get("published") if by_date else None)
 
 
-def _write_build_metadata(article_count: int, cautare: dict | None = None) -> None:
+def _write_build_metadata(article_count: int, cautare: dict | None = None,
+                          latest_article: str | None = None) -> None:
     """Emite amprenta necache-uită a release-ului pentru verificarea post-deploy.
 
     Fiecare gazdă expune SHA-ul și ramura sub ALT nume: Workers Builds injectează
@@ -1755,6 +1761,9 @@ def _write_build_metadata(article_count: int, cautare: dict | None = None) -> No
         "branch": branch,
         "generated_at": datetime.now(timezone.utc).isoformat(),
         "article_count": article_count,
+        # Data conținutului, nu a ceasului de build: un deploy reușit peste o stare
+        # înghețată nu trebuie să pară proaspăt doar pentru că `generated_at` e nou.
+        "latest_article": latest_article,
         "file_count": file_count,
     }
     if cautare:
@@ -2067,8 +2076,9 @@ def _md_to_html(text: str) -> str:
     return md.markdown(text or "", extensions=["extra"])
 
 
-def _render_md_dir(env: Environment, src_dir: str, url_prefix: str) -> None:
-    """Randeaza toate .md dintr-un folder la <url_prefix>/<nume>/ cu template-ul legal."""
+def _render_md_dir(env: Environment, src_dir: str, url_prefix: str,
+                   replacements: dict[str, str] | None = None) -> None:
+    """Randeaza Markdown; injected HTML must already be autoescaped by Jinja."""
     if not os.path.isdir(src_dir):
         return
     try:
@@ -2086,6 +2096,8 @@ def _render_md_dir(env: Environment, src_dir: str, url_prefix: str) -> None:
             raw = fh.read()
         title = raw.lstrip("# ").splitlines()[0].strip() if raw.startswith("#") else name
         html = md.markdown(raw, extensions=["extra"]) if md else "<pre>" + raw + "</pre>"
+        for marker, fragment in (replacements or {}).items():
+            html = html.replace(marker, fragment)
         out = os.path.join(OUT_DIR, *url_prefix.strip("/").split("/"), name, "index.html") \
             if url_prefix.strip("/") else os.path.join(OUT_DIR, name, "index.html")
         _write(out, tpl.render(**_base_ctx(f"{url_prefix}/{name}/".replace("//", "/"),
@@ -2264,8 +2276,23 @@ def _render_calc_salariu(env: Environment, ent: dict) -> str:
         salariu_minim=_salariu_minim(ent), calc_heading="Calculator salariu net")
 
 
-def _render_legal(env: Environment) -> None:
-    _render_md_dir(env, os.path.join(ROOT, "content", "legal"), "/legal")
+def _corrections_journal_html(env: Environment, corrections: dict) -> str:
+    """Render the approved catalog through Jinja autoescape, including withdrawals."""
+    rows = []
+    for _, row in sorted(corrections.items(), key=lambda item: (
+            item[1]["review"]["reviewed_at"], item[0]), reverse=True):
+        notice = publication.public_notice(row)
+        notice["path"] = row["public_paths"][0]
+        notice["title"] = row["presentation"].get("title") or "Material retras"
+        rows.append(notice)
+    return env.get_template("_corrections_journal.html").render(rows=rows, base="")
+
+
+def _render_legal(env: Environment, corrections: dict | None = None) -> None:
+    corrections = publication.load() if corrections is None else corrections
+    journal = _corrections_journal_html(env, corrections)
+    _render_md_dir(env, os.path.join(ROOT, "content", "legal"), "/legal",
+                   {"<!-- IZZ_CORRECTIONS_JOURNAL -->": journal})
     # pagini generale (ex. content/pages/despre.md -> /despre/)
     _render_md_dir(env, os.path.join(ROOT, "content", "pages"), "")
 

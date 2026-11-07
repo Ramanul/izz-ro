@@ -87,7 +87,8 @@ until curl -s -o /dev/null "http://localhost:$PORT/"; do sleep 0.3; done
 if [ -n "${ARTICLE_PATH:-}" ]; then
   ART="$ARTICLE_PATH"
 else
-  ART="$(cd "$ROOT/output" && find . -mindepth 3 -name index.html | LC_ALL=C sort | head -1 \
+  # Paginile de categorie (/ai/2/) sunt noindex intenționat; nu sunt articolul de referință.
+  ART="$(cd "$ROOT/output" && find . -mindepth 3 -name index.html | grep -Ev '/[0-9]+/index\.html$' | LC_ALL=C sort | head -1 \
          | sed 's|^\.||;s|index.html$||')"
 fi
 echo ">> article page: ${ART:-none}${ARTICLE_PATH:+  (pinned via ARTICLE_PATH)}"

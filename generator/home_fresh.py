@@ -1,7 +1,7 @@
 """Prospețime pe homepage: secțiunile nu arată știri mai vechi de HOME_MAX_AGE.
 
-Arhiva completă rămâne pe paginile de categorie. Fail-open dacă data lipsește
-sau nu e parseable — mai bine un item vechi pe home decât să pierzi totul.
+Arhiva completă rămâne pe paginile de categorie. Data lipsă, invalidă sau din
+viitor nu dovedește prospețimea: itemul rămâne în arhivă, dar nu pe prima pagină.
 """
 from __future__ import annotations
 
@@ -28,14 +28,15 @@ def _ensure_faza2_hook() -> None:
 
 def home_fresh(a: dict, *, now: datetime | None = None, max_age: timedelta = HOME_MAX_AGE) -> bool:
     _ensure_faza2_hook()
-    raw = (a.get("published") or "").strip()
-    if not raw:
-        return True
+    raw = a.get("published")
+    if not isinstance(raw, str) or not raw.strip():
+        return False
     try:
-        dt = datetime.fromisoformat(raw.replace("Z", "+00:00"))
+        dt = datetime.fromisoformat(raw.strip().replace("Z", "+00:00"))
     except ValueError:
-        return True
+        return False
     if dt.tzinfo is None:
         dt = dt.replace(tzinfo=timezone.utc)
     ref = now or datetime.now(timezone.utc)
-    return (ref - dt) <= max_age
+    age = ref - dt
+    return timedelta(0) <= age <= max_age

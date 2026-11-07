@@ -479,6 +479,57 @@ def dublari_cuvinte(text: str) -> list[str]:
     return gasite
 
 
+_PENALTY_OBJECT = r"(?:penalty(?:-?ul)?|lovitur(?:a|ea)(?: de la 11 metri)?)"
+_PENALTY_CLAIM = re.compile(
+    r"\b([a-z]+(?: [a-z]+){0,3}) (nu )?(a|au) "
+    r"(transformat|marcat|inscris|ratat) " + _PENALTY_OBJECT +
+    r"\b(?! liber(?:a|ă)| de la colt| din corner)"
+)
+_PENALTY_SUCCESS = {"transformat", "marcat", "inscris"}
+
+
+def rezultat_penalty_inversat(rezumat: str, sursa: str) -> bool:
+    """Contradicție îngustă: același executant, același tip de lovitură, rezultat opus.
+
+    Nu ghicește adevărul sportiv și nu înlocuiește verificarea sursei. Compară doar
+    afirmații explicite, cu executant numit. Dacă sursa conține ambele rezultate,
+    textul vorbește despre alte lovituri sau minutele diferă, nu avem o contradicție
+    deterministă și nu blocăm. Negația explicită inversează polaritatea verbului.
+    """
+    def claims(text):
+        normalized = _norm(text)
+        if re.search(r"\b(?:alta|un alt|o alta|doua|ambele) (?:penalty|lovituri)", normalized):
+            return set(), set()
+        out, minutes = set(), set()
+        for match in _PENALTY_CLAIM.finditer(normalized):
+            actor_words = match.group(1).split()
+            negated = bool(match.group(2))
+            if actor_words and actor_words[-1] == "nu":
+                negated = True
+                actor_words.pop()
+            if not actor_words:
+                continue
+            actor = actor_words[-1]
+            success = match.group(4) in _PENALTY_SUCCESS
+            if negated:
+                success = not success
+            out.add((actor, success))
+            sentence = normalized[max(0, match.start() - 100):match.end() + 100]
+            minutes.update(re.findall(r"minutul\s+(\d+)", sentence))
+        return out, minutes
+
+    source, source_minutes = claims(sursa)
+    output, output_minutes = claims(rezumat)
+    # O sursă care relatează și o reușită și o ratare nu este univocă.
+    if len(source) != 1 or len(output) != 1:
+        return False
+    if source_minutes and output_minutes and source_minutes != output_minutes:
+        return False
+    (source_actor, source_success), = source
+    (output_actor, output_success), = output
+    return source_actor == output_actor and source_success != output_success
+
+
 def verifica(titlu: str, rezumat: str, sursa: str, slug_sursa: str = "",
              frecventa: dict | None = None) -> list[Problema]:
     """Toate verificarile, pe titlu + rezumat impreuna.
@@ -492,6 +543,9 @@ def verifica(titlu: str, rezumat: str, sursa: str, slug_sursa: str = "",
         probleme.append(Problema("citat_inventat", c[:120]))
     for n in cifre_straine(text, sursa):
         probleme.append(Problema("cifra_straina", n))
+    if rezultat_penalty_inversat(text, sursa):
+        probleme.append(Problema("rezultat_penalty_inversat",
+                                 "rezultat opus pentru același executant și aceeași lovitură"))
     if rezerva_pierduta(text, sursa):
         probleme.append(Problema("rezerva_pierduta", ""))
     for fragment in propozitii_copiate(rezumat, sursa):

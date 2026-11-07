@@ -107,12 +107,21 @@ jobs:
           RELEASE_TIMEOUT_SECONDS: "300"
           RELEASE_POLL_SECONDS: "15"
         run: python tools/verify_release.py
-      # Dovada atomica main -> Worker -> izz.ro, CAT timp zona lasa runnerii GitHub sa citeasca.
-      # Bot challenge pe zona izz.ro (vezi wrangler.jsonc) poate bloca runnerii -> pas NEBLOCANT:
-      # verde = dovada; esec = warning, nu deploy rosu (monitor.yml si smoke-live verifica in continuare).
-      - name: Verifica si izz.ro (best-effort)
+      # Challenge-ul dovedit rămâne neconcludent pentru runner, dar o eroare HTTP sau
+      # un conținut înghețat nu mai poate fi ascunsă de «best-effort».
+      - name: Verifica izz.ro (challenge neconcludent, eroarea blochează)
         env:
           EXPECTED_COMMIT: ${{ github.sha }}
-          RELEASE_BASE_URLS: https://izz.ro
         run: |
-          python tools/verify_release.py             || echo "::warning::izz.ro nu a confirmat SHA-ul (posibil bot challenge) - deployul ramane valid"
+          set +e
+          python tools/public_probe.py https://izz.ro
+          probe=$?
+          set -e
+          if [ "$probe" -eq 2 ]; then
+            echo "::warning::izz.ro nu poate fi verificat de runner (challenge/rețea); release-ul Worker e confirmat separat"
+          elif [ "$probe" -ne 0 ]; then
+            echo "::error::izz.ro răspunde cu eroare sau conținut înghețat"
+            exit 1
+          else
+            RELEASE_BASE_URLS=https://izz.ro RELEASE_TIMEOUT_SECONDS=300 RELEASE_POLL_SECONDS=20 python tools/verify_release.py
+          fi

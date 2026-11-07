@@ -58,7 +58,8 @@ def _gate_cale() -> Path | None:
 
 
 _MAX_FRAGMENT = 120
-_BLOCKING = {"citat_inventat", "cifra_straina", "text_copiat", "titlu_copiat"}
+_BLOCKING = {"citat_inventat", "cifra_straina", "text_copiat", "titlu_copiat",
+             "rezultat_penalty_inversat"}
 
 
 def _scrie_jsonl(cale: Path, rand: dict) -> None:

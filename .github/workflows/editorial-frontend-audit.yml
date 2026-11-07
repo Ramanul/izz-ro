@@ -73,7 +73,8 @@ jobs:
           def articles(root):
               return {str(path.relative_to(root).parent).replace('\\', '/') + '/'
                       for category in CATEGORIES
-                      for path in (root / category).glob('*/index.html')}
+                      for path in (root / category).glob('*/index.html')
+                      if not path.parent.name.isdigit()}  # /ai/2/ e paginare noindex, nu articol
 
           before = Path(os.environ['RUNNER_TEMP']) / 'izz-before' / 'output'
           after = Path(os.environ['GITHUB_WORKSPACE']) / 'output'

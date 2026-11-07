@@ -18,6 +18,12 @@
   {% endif %}
   {% if not articles %}
     <p class="empty">Încă nu sunt știri publicate. Robotul încearcă în fiecare oră și publică cam la două ore.</p>
+  {% elif not hero %}
+    <section class="notice" aria-labelledby="freshness-title">
+      <h2 id="freshness-title">Nu există știri proaspete în fereastra de 72 de ore</h2>
+      <p>Ultima publicare rămasă în arhivă: {% if latest_article %}<time datetime="{{ latest_article }}">{{ latest_article_human }}</time>{% else %}dată necunoscută{% endif %}. Nu prezentăm arhiva drept știrile de azi.</p>
+      <p><a href="{{ base }}/sectiuni/">Consultă arhiva pe secțiuni</a></p>
+    </section>
   {% else %}
     {% if hero %}
     {% set top = hero[0] %}

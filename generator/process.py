@@ -800,8 +800,13 @@ def process_single(item: dict, provider) -> dict | None:
         data = _parse_json(raw)
     except Exception:
         return None                            # esec AI -> amanat, item-ul ramane intact
-    title = (data.get("title") or item.get("original_title", "")).strip()
-    teaser = truncate_words(data.get("teaser", "") or "Detalii pe sursa.", config.TEASER_MAX_WORDS)
+    raw_title, raw_teaser = data.get("title"), data.get("teaser")
+    if not isinstance(raw_title, str) or not isinstance(raw_teaser, str):
+        return None                            # câmp lipsă/neșir -> amânat, nu titlu brut
+    title, teaser = raw_title.strip(), raw_teaser.strip()
+    if not title or not teaser:
+        return None                            # gol -> amânat, nu placeholder publicat
+    teaser = truncate_words(teaser, config.TEASER_MAX_WORDS)
     if has_mixed_latin_han(f"{title} {teaser}"):
         return None                            # token hibrid latin–Han -> amanat (#499)
     item["model"] = "B"
