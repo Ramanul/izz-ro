@@ -30,7 +30,7 @@
 - **Harta [IZZ-0405, 0433, 0434]:** pini după precizie, proveniența în panoul județului, gesturi tactile. #454 merged: aria de click = umplerea (`pointer-events:fill`), la suprapunere câștigă ultimul pictat, deci browserul și geometria descriu aceeași mulțime de puncte; garda citește acum ordinea de pictare, nu aria cutiei (`tests/test_harta_arie_de_click.py`).
 - **FEREASTRA TTL — 11 zile (aprobată de proprietar, 25 oct):** garda brută 13.025 → 11.833 (plafon 12.600) pe `a7bf06ae`; testul de siguranță neschimbat. Măsurarea pierderii: `generator/config.py`.
 - **Free-readiness — gazda ÎNCĂ PAID [IZZ-0313]:** [IZZ-0386, 0391, 0399, 0421, 0424].
-- **`izz-failover` — SCOS DIN TRAFIC, 31 oct (decizie proprietar):** `izz.ro/*` stă pe `izz-ro` (`wrangler.jsonc`); revenire: `infra/README-failover.md`. Auditurile se fac pe `izz-ro.andifreelancer2.workers.dev`. Oglinda 3,73 GB vs 1 GB la GitHub — nerezolvat.
+- **`izz-failover` — SCOS DIN TRAFIC, 31 oct (decizie proprietar):** `izz.ro/*` stă pe `izz-ro` (`wrangler.jsonc`); revenire: `infra/README-failover.md`. Auditurile se fac pe `izz-ro.andifreelancer2.workers.dev`. Oglinda: arborele publicat 904 MB (7 nov; 774 MB pagini HTML), sub plafonul automat de 950 MB din jobul `mirror` — `curata_oglinda.py plafon` taie doar pagini >21 zile si cel mult 30%/rulare. Repo-ul pe disc (2,93 GB) e istoric; micsorarea lui cere rescrierea istoriei, deci ramane decizia proprietarului.
 
 ## Audit closure status
 - **K1–K14:** re-verified in `specs/regim-reguli.md` — registru, nu substitut pentru teste. **Grounding:** blochează citate inventate și cifre străine, fails closed.
