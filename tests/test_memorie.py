@@ -103,3 +103,84 @@ def test_vocabularul_contraventional_si_de_integritate_e_exclus():
         assert not memorie.eligibil(_rep("st-x", "t", fapt, ["X", "Y"])), fapt
     assert memorie.eligibil(_rep("st-ccr", "CCR a admis sesizarea",
                                  "Curtea Constituțională a admis sesizarea privind ordonanța.", ["CCR", "Guvernul"]))
+
+
+def test_litigiile_civile_si_instantele_din_entitati_sunt_excluse():
+    litigiu = _rep(
+        "st-lit",
+        "Dan Armeanu a pierdut definitiv procesele privind desființarea magazinului",
+        "Omul de afaceri a pierdut definitiv al doilea proces intentat Consiliului Local.",
+        ["Dan Armeanu", "Consiliul Local Constanța", "Tribunalul Constanța"],
+    )
+    assert not memorie.eligibil(litigiu)
+    doar_entitate = _rep(
+        "st-inst",
+        "Hotărârea privind terenul din port a rămas definitivă",
+        "Hotărârea privind regimul terenului din port a rămas definitivă.",
+        ["Portul Constanța", "Curtea de Apel Constanța"],
+    )
+    assert not memorie.eligibil(doar_entitate)
+    # „procesul" nejudiciar rămâne eligibil
+    electoral = _rep(
+        "st-el",
+        "Procesul electoral pentru consiliul studențesc s-a încheiat",
+        "Procesul electoral s-a încheiat cu validarea mandatelor.",
+        ["Universitatea București", "Consiliul Studenților"],
+    )
+    assert memorie.eligibil(electoral)
+
+
+def test_anglicismele_si_epitetele_evaluative_nu_intra_in_memorie():
+    eng = _rep(
+        "st-en",
+        "Harry Kane a câștigat Balonul de Aur 2026, surpassing pe Kylian Mbappe",
+        "Harry Kane a câștigat trofeul Balonul de Aur 2026.",
+        ["Harry Kane", "Kylian Mbappe"],
+    )
+    epitet = _rep(
+        "st-ep",
+        "Victorie categorică obținută de Corona Brașov în fața celor de la Zărnești",
+        "Corona Brașov a învins Olimpic Zărnești cu scorul de 8-0.",
+        ["CSM Corona Brașov", "Olimpic Zărnești"],
+    )
+    assert not memorie.eligibil(eng)
+    assert not memorie.eligibil(epitet)
+
+
+def test_subclusterele_aceluiasi_eveniment_se_unifica_si_url_dublu_se_repara(tmp_path):
+    cale = str(tmp_path / "m.json")
+    acum = datetime(2026, 11, 7, tzinfo=timezone.utc)
+    c1 = _rep(
+        "st-kane-1",
+        "Harry Kane a câștigat trofeul Balonul de Aur pentru anul 2026",
+        "Atacantul englez Harry Kane a câștigat Balonul de Aur 2026.",
+        ["Harry Kane", "Kylian Mbappe", "Lamine Yamal"],
+        d="2026-10-26",
+    )
+    c2 = _rep(
+        "st-kane-2",
+        "Atacantul englez Harry Kane a câștigat trofeul Balonul de Aur 2026",
+        "Atacantul Harry Kane a câștigat Balonul de Aur pentru anul 2026.",
+        ["Harry Kane", "Kylian Mbappe", "Bayern Munchen"],
+        d="2026-10-27",
+    )
+    c2["dialectic"]["common"][0]["src"] = ["Alfa", "Beta", "Gama", "Delta"]
+    c2["original_link"] = "http://www.exemplu.rohttps://www.exemplu.ro/articol/kane-2026.html"
+    memorie.actualizeaza([c1, c2], {}, cale=cale, acum=acum)
+    intrari = memorie.incarca(cale)
+    assert len(intrari) == 1
+    assert intrari[0]["story"] == "st-kane-2"
+    assert intrari[0]["d"] == "2026-10-27"
+    assert intrari[0]["url"] == "https://www.exemplu.ro/articol/kane-2026.html"
+    assert set(intrari[0]["surse"]) == {"Alfa", "Beta", "Gama", "Delta"}
+    assert "Bayern Munchen" in intrari[0]["ent"]
+
+
+def test_registrul_real_respecta_garda_memoriei():
+    intrari = memorie.incarca()
+    for e in intrari:
+        assert memorie._text_eligibil(e.get("titlu") or "", e.get("fapt") or "", e.get("ent") or []), e
+        assert e.get("url") == memorie._curata_url(e.get("url") or ""), e
+    assert len(memorie._igienizeaza(intrari)) == len(intrari)
+
+

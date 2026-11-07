@@ -167,5 +167,7 @@ def test_redirects_include_corrections_feed(tmp_path, monkeypatch):
     redirects_path = tmp_path / "_redirects"
     assert redirects_path.exists()
     content = redirects_path.read_text(encoding="utf-8")
+    assert "/corectii /legal/corrections/ 301" in content
+    assert "/corectii/ /legal/corrections/ 301" in content
     assert "/legal/corrections/feed.xml /corectii/feed.xml 301" in content
 

@@ -247,6 +247,9 @@
     {% if a.surse_roluri %}
     <p class="source-roles-note">Rolul fiecărei publicații e calculat mecanic din textul articolelor: cine a relatat primul (o relatare densă publicată în aceleași 15 minute bate o alertă de două rânduri), cine aduce detalii noi, cine repetă aceleași fapte, cine preia un text comun sau citează explicit altă redacție. Confirmări încrucișate — publicații care coroborează faptele fără să preia același text: {{ a.cross_confirmations or 1 }} din {{ srcs | length }}. Ordinea observată nu dovedește cine e autorul informației.</p>
     {% endif %}
+    {% if grupuri_comune %}
+    <p class="source-roles-note source-groups-note">Același grup media (din casetele editoriale verificate): {% for g in grupuri_comune %}{{ g.members | join(', ') }} — {{ g.group }}{% if not loop.last %}; {% endif %}{% endfor %}.</p>
+    {% endif %}
     {% if a.editorial %}{% include '_editorial_context.html' %}{% endif %}
     {% set editorial_relations = a.editorial_relations %}{% include '_editorial_relations.html' %}
   </div>

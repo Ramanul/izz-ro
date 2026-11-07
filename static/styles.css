@@ -874,6 +874,8 @@ a.chip:hover { border-color: var(--ink-3); color: var(--ink); }
 .source-list { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: var(--sp-4) var(--sp-20); }
 .source-list li { font-size: var(--fs-xs); }
 .source-list a { display: inline-block; padding: var(--sp-4) 2px; text-decoration: underline; }
+.source-publisher { display: block; color: var(--ink-3); font-family: var(--font-text); font-size: var(--fs-eyebrow); line-height: 1.45; margin-top: 2px; }
+.source-publisher-inline { color: var(--ink-3); font-family: var(--font-text); font-size: var(--fs-eyebrow); }
 
 /* /surse/ — arbore regiune istorica > judet pentru sursele institutionale (owner 2026-08-02).
    Nivel imbricat: fara chenar propriu, doar o linie-ghid la stanga, ca ierarhia sa se

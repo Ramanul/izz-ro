@@ -922,9 +922,9 @@ def _meta_save(meta: dict, path: str) -> None:
 
 
 def _prune(meta: dict) -> dict:
-    """Aceleași 12 zile ca `state.expire`: intrările fără articol viu în fereastra
-    TTL dispar, ca meta să nu crească nesfârșit (cheile sunt URL-uri de articole,
-    iar articolele expiră prin exact acest cutoff)."""
+    """Aceeași fereastră `ARTICLE_TTL_DAYS` (11 zile) ca `state.expire`: intrările fără
+    articol viu în fereastra TTL dispar, ca meta să nu crească nesfârșit (cheile sunt
+    URL-uri de articole, iar articolele expiră prin exact acest cutoff)."""
     cutoff = datetime.now(timezone.utc) - timedelta(days=config.ARTICLE_TTL_DAYS)
     kept = {}
     if not isinstance(meta, dict):

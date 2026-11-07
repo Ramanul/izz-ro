@@ -20,7 +20,8 @@ from xml.sax.saxutils import escape as xml_escape
 from jinja2 import Environment, FileSystemLoader, select_autoescape
 from slugify import slugify
 
-from . import config, covers, dossiers, editorial, fetch_deep, geo, guard, htmlart, memorie, pagefind_index, publication
+from . import (config, covers, dossiers, editorial, fetch_deep, geo, guard,
+               htmlart, memorie, pagefind_index, publication, source_publishers)
 from .select import (_dedup, _dedup_sources, _diversify, _entity_index,
                      _pick_hero, _quality_gate, anunt_oficial_fara_corp, filtru_cautare_rapida,
                      publicitar_la_sursa, titlu_afisare, editorial_selection_comparison)
@@ -914,7 +915,8 @@ def _source_text_observations(urls: set, metadata: dict) -> dict:
     return result
 
 
-def _source_catalog(by_date: list, deep_meta: dict | None = None) -> tuple[list, int, int]:
+def _source_catalog(by_date: list, deep_meta: dict | None = None,
+                    publishers: dict | None = None) -> tuple[list, int, int]:
     """Catalogul /surse/: TOATE sursele din config.SOURCES, nu doar cele cu statistici de
     originalitate. O sursa (ex. o primarie) care publica un anunt unic nu intra niciodata
     intr-un cluster multi-sursa, deci n-ar aparea NICIODATA daca am lista doar din sintezele
@@ -923,6 +925,7 @@ def _source_catalog(by_date: list, deep_meta: dict | None = None) -> tuple[list,
     sursele cu statistici raman intr-un tabel (nemodificat), restul intr-o lista simpla de
     linkuri fara coloane goale/zerouri care ar sugera fals performanta slaba.
     Returneaza (catalog, total_surse, surse_cu_statistici)."""
+    publishers = source_publishers.load() if publishers is None else publishers
     # scor de originalitate: cine initiaza vs. cine preia (din sintezele C cu first_source)
     # Cuplat cu „modificate ulterior" (E1): viteza fără stabilitate nu e un merit — o redacție
     # care publică prima și își schimbă apoi faptele tăcut nu are voie să apară doar „rapidă".
@@ -957,11 +960,15 @@ def _source_catalog(by_date: list, deep_meta: dict | None = None) -> tuple[list,
         with_stats, without_stats = [], []
         pe_judet: dict = {}
         for key, v in entries:
-            site_url = f"https://{domain_of(v['url'])}/"
+            dom = source_publishers.canonical_domain(v["url"])
+            site_url = f"https://{dom}/"
+            pub_info = publishers.get(dom)
             if v["name"] in src_stats:
                 rec, camp = {"name": v["name"], "url": site_url, **src_stats[v["name"]]}, "with_stats"
             else:
                 rec, camp = {"name": v["name"], "url": site_url}, "without_stats"
+            if pub_info:
+                rec["publisher_info"] = pub_info
             # Sursele institutionale isi codeaza judetul in cheie (`pl_<judet>_...`, `cj_<judet>`)
             # -> intra in arborele regiune/judet. Ziarele nu il codeaza si raman in lista plata.
             judet = geo.judet_din_cheie(key)
@@ -1464,12 +1471,15 @@ def build(articles: list, mod: dict | None = None) -> None:
                "/", nav_section="stiri", articles=by_date, hero=hero, by_category=by_category,
                jsonld_nodes=[item_list], newsletter_html=_newsletter_html(), zi=zi,
                briefing=by_date[:7], editorial_selection=editorial_selection,
+               ttl_days=config.ARTICLE_TTL_DAYS,
                judete=[{"code": c, "slug": s, "label": l}
                        for c, s, l in _harta_rute_judetene()])))
 
+    publishers = source_publishers.load()
     source_meta = fetch_deep._meta_load(fetch_deep.META_PATH)
     src_catalog, total_sources, stats_sources = _source_catalog(
         by_date, fetch_deep._prune(source_meta) if isinstance(source_meta, dict) else {},
+        publishers=publishers,
     )
     _write(os.path.join(OUT_DIR, "surse", "index.html"),
            env.get_template("surse.html").render(**_base_ctx(
@@ -1632,10 +1642,12 @@ def build(articles: list, mod: dict | None = None) -> None:
                     {"@type": "ListItem", "position": 3, "name": a.get("title", "")},
                 ]
             }
+            grupuri_comune = source_publishers.shared_groups(a.get("sources") or [], publishers)
             _write(os.path.join(OUT_DIR, cat, a['slug'], "index.html"),
                    article_tpl.render(**_base_ctx(
                        f"/{cat}/{a['slug']}/", a=a, active_cat=cat, topics=topics,
                        people=people, arhiva=arhiva, related=related, og_image=og_image,
+                       grupuri_comune=grupuri_comune,
                        jsonld_nodes=[jsonld, breadcrumb_jsonld],
                        jsonld_page={"name": a.get("title", "")})))
 
@@ -2675,6 +2687,8 @@ def _write_redirects() -> None:
         "/harta-stiri /harta/ 301\n"
         "/harta-stiri/ /harta/ 301\n"
         "/zonal/* /judetean/:splat 301\n"
+        "/corectii /legal/corrections/ 301\n"
+        "/corectii/ /legal/corrections/ 301\n"
         "/legal/corrections/feed.xml /corectii/feed.xml 301\n"
     )
     redirects += _redirects_migrare()
