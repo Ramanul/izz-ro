@@ -9,10 +9,10 @@
 > fără secrete și fără transcripturi; re-înarmarea unei automatizări cere
 > revizuirea textului de către cine o pornește.
 
-## 0a. 7 noiembrie — rebrandingul «Hârtie curată» e pe #542 (ÎN REVIEW, fără merge)
+## 0a. 7 noiembrie — rebrandingul «Hârtie curată» e PE MAIN (#542 merged, live)
 
-Fazele 0–7 din `analiza/rebranding/PROPUNERE.md` sunt livrate pe ramura sesiunii, într-un PR:
-`gh pr view 542`. Ce s-a schimbat, pe scurt: tokeni + tipografie (Newsreader 400/600, Inter
+Fazele 0–7 din `analiza/rebranding/PROPUNERE.md` au aterizat pe `main` ca **#542** (merge
+`d107852`, 7 nov 09:26 UTC; `deploy-worker` a rulat verde). Ce s-a schimbat, pe scurt: tokeni + tipografie (Newsreader 400/600, Inter
 400/600/700 subset RO; Playfair și JetBrains Mono au ieșit), masthead și footer, cardul de la 7
 la 4 elemente (arta generată a ieșit de pe card — 455 KB din prima pagină), pagina de articol,
 coperțile OG pe același serif, o singură foaie de stil (`site.css`/`faza2.css` retrase), rampa
