@@ -234,7 +234,7 @@
     <h2 id="timeline-title">Cum a evoluat subiectul</h2>
     <ol>
       {% for m in a.timeline %}
-      <li>{% if m.published %}<time datetime="{{ m.published }}">{{ m.published }}</time> — {% endif %}{{ m.title or m.url }}{% if m.source %} · {{ m.source }}{% endif %}{% if m.url %} · <a href="{{ m.url | href_extern }}"{# nosemgrep: generic.html-templates.security.var-in-href.var-in-href #} target="_blank" rel="noopener noreferrer">sursa</a>{% endif %}</li>
+      <li>{% if m.published %}<time datetime="{{ m.published }}">{{ m.published }}</time> — {% endif %}{{ m.title or m.url }}{% if m.source %} · {{ m.source }}{% endif %}{% if m.url %} · <a href="{{ m.url | href_extern }}"{# nosemgrep: generic.html-templates.security.var-in-href.var-in-href #} target="_blank" rel="nofollow noopener noreferrer">sursa</a>{% endif %}</li>
       {% endfor %}
     </ol>
   </section>
@@ -242,7 +242,10 @@
   <div class="sources-box">
     <h2>{{ 'Sursă' if srcs | length == 1 else 'Surse' }}</h2>
     <ul>
-      {% for s in srcs %}<li><a href="{{ s.url | href_extern }}"{# nosemgrep: generic.html-templates.security.var-in-href.var-in-href #} target="_blank" rel="noopener noreferrer">{{ s.name }} &rarr;</a>{% if a.surse_roluri and a.surse_roluri[s.name] %} <span class="source-role">{{ a.surse_roluri[s.name] }}</span>{% if a.modificari_tacute and s.name in a.modificari_tacute %} <span class="source-role" title="Faptele din textul publicației s-au schimbat cu peste 20% după prima citire — de regulă o știre în curs, completată">actualizat de redacție după prima citire</span>{% endif %}{% elif a.first_source and s.name == a.first_source and srcs | length > 1 %} <span class="first-badge" title="Prima publicare observată în setul de surse monitorizate">publicată prima</span>{% endif %}</li>{% endfor %}
+      {#- `nofollow` pe sursele de știri, DoFollow pe creditele de imagine — aceeasi regula
+          din `_card.html`: linkul rămâne vizibil și urmat, doar nu recomandă algoritmic un
+          text pe care nu l-am scris noi. -#}
+      {% for s in srcs %}<li><a href="{{ s.url | href_extern }}"{# nosemgrep: generic.html-templates.security.var-in-href.var-in-href #} target="_blank" rel="nofollow noopener noreferrer">{{ s.name }} &rarr;</a>{% if a.surse_roluri and a.surse_roluri[s.name] %} <span class="source-role">{{ a.surse_roluri[s.name] }}</span>{% if a.modificari_tacute and s.name in a.modificari_tacute %} <span class="source-role" title="Faptele din textul publicației s-au schimbat cu peste 20% după prima citire — de regulă o știre în curs, completată">actualizat de redacție după prima citire</span>{% endif %}{% elif a.first_source and s.name == a.first_source and srcs | length > 1 %} <span class="first-badge" title="Prima publicare observată în setul de surse monitorizate">publicată prima</span>{% endif %}</li>{% endfor %}
     </ul>
     {% if a.surse_roluri %}
     <p class="source-roles-note">Rolul fiecărei publicații e calculat mecanic din textul articolelor: cine a relatat primul (o relatare densă publicată în aceleași 15 minute bate o alertă de două rânduri), cine aduce detalii noi, cine repetă aceleași fapte, cine preia un text comun sau citează explicit altă redacție. Confirmări încrucișate — publicații care coroborează faptele fără să preia același text: {{ a.cross_confirmations or 1 }} din {{ srcs | length }}. Ordinea observată nu dovedește cine e autorul informației.</p>

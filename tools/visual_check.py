@@ -96,7 +96,9 @@ def check_visitor_journey(browser, mobile=False):
         if home_response is None or not home_response.ok:
             return
 
-        story_selector = "main article h2 a[href]"
+        # h2 = titlul de lead, h3 = cardurile (ierarhia de pe prima pagină: secțiune h2,
+        # articol h3, din 7 nov 2026). Ambele sunt linkul de articol căutat aici.
+        story_selector = "main article :is(h2, h3) a[href]"
         try:
             page.wait_for_selector(story_selector, state="visible", timeout=15000)
         except Exception as exc:

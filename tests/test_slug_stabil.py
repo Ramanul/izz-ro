@@ -22,10 +22,14 @@ def test_slugul_stocat_supravietuieste_schimbarii_de_titlu():
     assert arts[0]["slug"] == "titlul-de-la-prima-publicare"
 
 
-def test_articolul_fara_slug_il_primeste_din_titlu_ca_pana_acum():
+def test_articolul_fara_slug_il_primeste_din_titlu_din_prima_publicare():
+    """Așteptarea s-a schimbat o singură dată, cu intenție (7 nov 2026, audit de SEO pct. 2):
+    slug-ul se curăță de cuvintele de legătură înainte de trunchiere, deci URL-ul păstrează
+    subiect + predicat + complement și nu mai rămâne atârnat într-o prepoziție. Ce testăm
+    aici rămâne contractul vechi — slug-ul se naște din titlu la prima publicare."""
     arts = [{"title": "Guvernul a aprobat bugetul pe 2026", "category": "politic"}]
     render.assign_slugs(arts)
-    assert arts[0]["slug"] == "guvernul-a-aprobat-bugetul-pe-2026"
+    assert arts[0]["slug"] == "guvernul-aprobat-bugetul-2026"
 
 
 def test_slugul_stocat_isi_rezerva_locul_iar_noul_titlu_primeste_sufixul():
@@ -82,9 +86,12 @@ def _item(url: str, titlu: str) -> dict:
 
 
 def test_slugul_ajunge_in_articles_json_si_nu_se_mai_schimba(ruleaza):
+    """„titlu-proba", nu „un-titlu-de-proba": din 7 nov 2026 slug-ul se naște fără cuvinte de
+    legătură (audit SEO pct. 2), deci cele două articole „un"/„de" cad. Ce testăm aici e ca
+    valoarea derivată O DATA să intre în stare și să nu se mai miște, orice ar fi titlul."""
     stare = ruleaza([_item("https://x.ro/a", "Un titlu de proba")])
     assert len(stare) == 1
-    assert stare[0]["slug"] == "un-titlu-de-proba"
+    assert stare[0]["slug"] == "titlu-proba"
 
     # a doua rulare, fara iteme noi, dar cu titlul rescris in stare (cazul sintezei
     # actualizate): slug-ul trebuie sa ramana cel de la prima publicare
@@ -96,4 +103,4 @@ def test_slugul_ajunge_in_articles_json_si_nu_se_mai_schimba(ruleaza):
 
     stare2 = ruleaza([])
     assert stare2[0]["title"] == "Titlu complet diferit dupa actualizare"
-    assert stare2[0]["slug"] == "un-titlu-de-proba"
+    assert stare2[0]["slug"] == "titlu-proba"

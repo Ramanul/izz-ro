@@ -38,7 +38,9 @@ REGISTRU = ROOT / "specs" / "registru.tsv"
 ZILE_PANA_EXPIRA = 14
 
 # Cine nu e om: un rand pe care il "decide" un agent se blocheaza pe el insusi.
-DECIDENTI_NEUMANI = {"claude", "codex", "devin", "jules", "opencode", "mistral", "gemini"}
+DECIDENTI_NEUMANI = {"claude", "codex", "devin", "jules", "opencode", "mistral", "gemini",
+                       "arena"}   # Arena e executor pe repo (AGENTS.md, oct 2026): un `propus`
+                       # pe care și-l asignează ea eași imbatranește la fel ca al celorlalti.
 
 
 def randuri(text: str) -> list[dict]:
