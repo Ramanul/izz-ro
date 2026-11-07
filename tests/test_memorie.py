@@ -33,6 +33,30 @@ def test_corectia_sau_retragerea_scoate_randul_si_din_memorie(tmp_path):
     assert r["total"] == 0 and r["scoase"] == 1
 
 
+def test_garda_memoriei_purjeaza_dupa_catalog_public_si_story_id(tmp_path):
+    cale = str(tmp_path / "m.json")
+    acum = datetime(2026, 10, 23, tzinfo=timezone.utc)
+    # Adăugăm articolul în memorie
+    memorie.actualizeaza([LEGE], {}, cale=cale, acum=acum)
+    assert len(memorie.incarca(cale)) == 1
+
+    # Catalogul public conține corecție/retragere pe cheia story_id
+    catalog_public = {
+        "st-1": {
+            "key": "st-1",
+            "state": "withdrawn",
+            "public_paths": ["/articol/st-1/"],
+            "notice": "Retras",
+            "evidence_url": "https://gov.ro/dovada",
+            "review": {"reviewer": "Redacția", "approved_at": "2026-10-23T12:00:00Z"},
+            "presentation": {},
+        }
+    }
+    r = memorie.actualizeaza([], {}, cale=cale, acum=acum, corrections=catalog_public)
+    assert r["total"] == 0 and r["scoase"] == 1
+    assert memorie.incarca(cale) == []
+
+
 def test_pastrarea_e_finita_12_luni(tmp_path):
     cale = str(tmp_path / "m.json")
     memorie.actualizeaza([_rep("st-v", "t", "Bugetul a fost aprobat.", ["Bihor"], d="2025-09-01")], {},
