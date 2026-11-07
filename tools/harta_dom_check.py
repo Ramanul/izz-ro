@@ -347,6 +347,11 @@ def hit_ordin_fara_furt(p):
     poligonul care contine punctul (`isPointInFill`), pe o grila de puncte, si ca enclava
     Bucuresti nu e inghitita de Ilfov. Daca verificarea nu se poate face, se raporteaza
     NEVERIFICAT, nu verde.
+
+    Modelul verificat e cel din `harta-stiri.css`: aria de click = UMPLEREA (`pointer-events:
+    fill`), iar la suprapunere castiga ultimul poligon pictat. Pana la #454 conturul de 1,1 px
+    de ecran facea parte din arie si, pentru ca se picteaza peste vecin, intoarcea pe granita
+    celalalt judet decat geometria -- doua puncte din 81.
     """
     print("\nHIT-TEST EXACT -- elementul de sub cursor = poligonul care contine punctul")
     p.locator("#map svg.map-svg").scroll_into_view_if_needed()
@@ -358,17 +363,22 @@ def hit_ordin_fara_furt(p):
       if (!ctm) return null;
       const inv = ctm.inverse();
       const paths = [...svg.querySelectorAll('.layer-counties path')];
-      // owner = poligonul cu aria-bbox minima care contine exact punctul (enclava bate invelisul).
+      // Owner = ULTIMUL poligon pictat care contine exact punctul. In harta-stiri.css
+      // `.map-county`/`.map-uat` au `pointer-events:fill`, deci conturul nu e tinta si
+      // `elementsFromPoint` intoarce exact ultimul poligon din DOM a carui umplere acopera
+      // punctul. Regula veche (aria bbox minima) nu descria pictura browserului si rupea pe
+      // granita: acolo unde doua umpleri se ating, cea desenata deasupra castiga, oricat de
+      // mica i-ar fi cutia (issue #454).
       const ownerAt = (sx, sy) => {
         const local = new DOMPoint(sx, sy).matrixTransform(inv);
-        let owner = null, ownerArea = Infinity;
-        for (const cand of paths) {
-          if (!cand.isPointInFill(local)) continue;
-          const b = cand.getBBox();
-          const area = b.width * b.height;
-          if (area < ownerArea) { ownerArea = area; owner = cand; }
+        for (let i = paths.length - 1; i >= 0; i -= 1) {
+          try {
+            if (paths[i].isPointInFill(local)) return paths[i];
+          } catch (err) {
+            // O forma fara geometrie utilizabila nu invalideaza restul grilei.
+          }
         }
-        return owner;
+        return null;
       };
       let checked = 0, agree = 0, frontiera = 0;
       const bad = [], frontBad = [];
@@ -380,11 +390,10 @@ def hit_ordin_fara_furt(p):
           const owner = ownerAt(x, y);
           checked += 1;
           if (node === owner) { agree += 1; continue; }
-          // Frontiera ambigua (issue #454, verdict Arena — sonde/arena-raspuns-454.txt): pe
-          // pixelul de granita, pictura browserului si geometria exacta se contrazic legitim.
-          // Vecinatatea 3x3 px explica punctul, dar NU-l transforma in PASS — o fâșie de județ
-          // sau o exclavă la 1px ar masca un bug real. Se raporteaza ca numar separat; esecul
-          // ramane esec, cu diferentele reale separate de cele explicabile.
+          // Dupa alinierea ariei de click la umplere (#454) diferentele nu mai au o cauza
+          // legitima: ramane doar rotunjirea sub-pixel de pe o granita comuna. Vecinatatea
+          // 3x3 px o explica, dar NU o transforma in PASS -- o fasie de judet sau o exclava
+          // de 1px ar masca un bug real. Se raporteaza ca numar separat; esecul ramane esec.
           let vecinAgree = false;
           if (node) {
             for (let dx = -1; dx <= 1 && !vecinAgree; dx += 1) {
