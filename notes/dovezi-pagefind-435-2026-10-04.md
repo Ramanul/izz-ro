@@ -106,7 +106,7 @@ Filtrele chiar există în index (`pf.filters()`): 15 categorii, `oficial.da` 1.
 `oficiale` 854, `concursuri` 128, `hotarari` 100, `achizitii` 14. Timpul unui search:
 **6 ms** (`timings`).
 
-**Zero zgomot, cu limita lui spusă pe șleau.** Indexarea e restrânsă la titlu, rezumat și
+**filtru de calitate, cu limita lui spusă pe șleau.** Indexarea e restrânsă la titlu, rezumat și
 titlul integral al instituției; etichetele și meta-datele paginii nu intră. Măsurat:
 „Rezumat" → **1** rezultat (ar fi fost fiecare pagină), „octombrie" → 483 (toate din textul
 știrilor, nu din meta cu data), „joi" → 54, „izz.ro" → 46.
@@ -125,7 +125,7 @@ Confirmat ca mecanism, nu ghicit: „x" → 121, „xy" → 1, „xyzabc" → 1,
 „asroma" → 19, „bugetxyz" → 170. UI-ul taie deja cuvintele sub două litere (`w.length > 1`
 în `static/search.js`), dar nu poate face potrivire strictă: API-ul Pagefind nu expune
 această opțiune per interogare. Nu sunt rezultate inventate — fiecare e o pagină reală cu un
-token real potrivit — dar „zero zgomot" înseamnă „nimic fabricat", nu „niciodată rezultate
+token real potrivit — dar „filtru de calitate" înseamnă „nimic fabricat", nu „niciodată rezultate
 la un șir absurd".
 
 ---

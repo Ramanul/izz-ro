@@ -63,7 +63,7 @@ class _Handler(http.server.BaseHTTPRequestHandler):
         self.wfile.write(corp)
 
     def log_message(self, *_args):
-        pass  # fara zgomot in iesirea pytest
+        pass  # cu surse la vedere in iesirea pytest
 
 
 @pytest.fixture(scope="module")

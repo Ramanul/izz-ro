@@ -4,7 +4,7 @@ id	categorie	mecanism	dovada	pozitie	poate_bloca	autoritate	conditie_autoritate	
 3	defensive-coding	Hardening parser XML (defusedxml)	generator/fetch.py	fetch	da	efectiva	-	preventiv	inchis	nu	1	2	activ	Item exclus la exceptie; pipeline continua.
 4	fallback	Retry/backoff pe surse	generator/fetch.py	fetch	nu	niciuna	-	preventiv	deschis	nu	1	2	activ	Abandoneaza sursa dupa retry; pierderile intra in #39.
 5	fallback	Defer iteme la 429 AI	generator/main.py	process	nu	niciuna	-	recuperare	deschis	nu	1	2	activ	Valabilitate 3h; expirarea pierde itemul.
-6	guard	Filtru de substanta (Zero Zgomot)	generator/main.py;generator/config.py	process	da	efectiva	-	preventiv	inchis	nu	1	2	activ	Predicat unic folosit din doua locuri; fara desincronizare.
+6	guard	Filtru de substanta (filtru de calitate)	generator/main.py;generator/config.py	process	da	efectiva	-	preventiv	inchis	nu	1	2	activ	Predicat unic folosit din doua locuri; fara desincronizare.
 7	failover	Cascada AI (Gemini/Anthropic/Ollama)	generator/process.py	process	nu	niciuna	-	recuperare	deschis	nu	1	2	activ	Failover cu degradare de calitate; fara provider itemul se amana.
 8	quality-gate	Buget AI (order/reserve/upgrade)	generator/main.py	process	da	efectiva	-	preventiv	inchis	nu	1	2	activ	Amana cu motiv explicit; testat.
 9	defensive-coding	Parse JSON tolerant	generator/process.py	process	da	efectiva	-	preventiv	inchis	nu	1	2	activ	JSON invalid total reia itemul la rularea urmatoare.

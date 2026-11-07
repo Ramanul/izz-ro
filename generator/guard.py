@@ -41,7 +41,7 @@ Cele opt straturi si de ce fiecare
    „Hacked by Chinafans"). Vezi §5.1 din `specs/securitate-ingestie.md`.
 
 Regula de proiectare: garda RESPINGE itemul, nu incearca sa-l repare. E §7 din CLAUDE.md
-(„daca nu poate atinge bara Zero Zgomot, SARE itemul") aplicata la securitate. Un articol
+(„daca nu poate atinge bara filtru de calitate, SARE itemul") aplicata la securitate. Un articol
 pierdut e gratis; unul publicat gresit costa reputatia site-ului.
 
 Cine pazeste paznicul (LECTII L5)

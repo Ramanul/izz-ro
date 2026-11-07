@@ -4,7 +4,7 @@ Masurat pe starea din 2026-08-07 (2766 articole): 57 de perechi aveau acelasi `u
 toate 57 din aceeasi combinatie — `digi24` (RSS general) si `extern`
 (`digi24.ro/rss/stiri/externe`, submultime a aceluiasi site). 56 din 57 aveau slug-uri
 diferite, deci erau doua pagini distincte pe site, cu doua titluri scrise separat de AI.
-Pe un site al carui brand e „Zero Zgomot", asta se vede.
+Pe un site al carui brand e „filtru de calitate", asta se vede.
 
 Mecanismul: `main.run` filtra itemele noi DOAR fata de starea existenta
 (`i["url"] not in known`), niciodata intre ele. Doua iteme cu acelasi url in acelasi

@@ -201,8 +201,9 @@ def cuvinte_adaugate(title: str, description: str) -> int:
     Masura substantei unui item de RSS. Multe surse trimit `description` identica cu `title`
     (masurat 2026-08-04: 58 din 256 de iteme au 0-4 cuvinte in plus, iar sase surse sunt 100%
     asa) — pentru alea nu exista NIMIC de sintetizat, iar un model caruia i se cere totusi un
-    rezumat nu poate produce decat o parafraza a titlului. Daca titlul e clickbait, iese
-    clickbait fluent, care trece de orice verificare de forma. Vezi specs/sinteza-fara-substanta.md.
+    rezumat nu poate produce decat o parafraza a titlului. Daca titlul este senzaționalist, poate ieși
+    o reformulare fluentă, dar tot senzaționalistă, care trece de orice verificare de formă. Vezi
+    specs/sinteza-fara-substanta.md.
 
     Se numara cuvinte, nu caractere, si se ignora ordinea: o descriere care REPETA titlul si
     apoi adauga fapte trebuie sa treaca. Fara stopwords-uri scoase — la 25 de cuvinte,

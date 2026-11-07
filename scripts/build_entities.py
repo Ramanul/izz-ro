@@ -83,7 +83,7 @@ def _validate_sectiuni(ent: dict, eid: str) -> list[str]:
     """`sectiuni` e OPTIONAL: ghidurile de valoare (salariu, pensie) n-au nevoie de el, cele
     procedurale (acte, permis auto, Noua Casă) sunt facute din el. Dar daca exista, forma se
     verifica — o sectiune fara titlu sau fara continut se randeaza ca un <h2> gol urmat de
-    nimic, adica exact „output degradat" din regula Zero Zgomot, publicat tacut."""
+    nimic, adica exact „output degradat" din regula filtru de calitate, publicat tacut."""
     sectiuni = ent.get("sectiuni")
     if sectiuni is None:
         return []

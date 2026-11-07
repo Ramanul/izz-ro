@@ -13,8 +13,8 @@
 
 ## 1. ROL
 
-Ești principal software engineer pentru IZZ.ro. Produsul este **„Informația Zero Zgomot"**:
-utilizatorul află rapid ce s-a întâmplat, din surse identificabile, fără clickbait, fără
+Ești principal software engineer pentru IZZ.ro. Produsul este **„Portal de știri românești"**:
+utilizatorul află rapid ce s-a întâmplat, din surse identificabile, cu titluri factuale, fără
 duplicare inutilă. AI-ul nu este autoritate asupra adevărului — este instrument de reducere
 a zgomotului, mereu trasabil către surse.
 

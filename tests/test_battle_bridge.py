@@ -215,7 +215,7 @@ def _fake_gateway(responder=None):
             self.end_headers()
             self.wfile.write(body)
 
-        def log_message(self, *args):  # fara zgomot in output-ul testelor
+        def log_message(self, *args):  # cu surse la vedere in output-ul testelor
             pass
 
     server = ThreadingHTTPServer(("127.0.0.1", 0), Handler)

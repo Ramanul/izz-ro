@@ -1473,7 +1473,7 @@ atâtor iterații. Și „feedul răspunde" ≠ „feedul are conținut": `monit
    Nicio regulă mecanică nu-l prinde fără să arunce și publicațiile de căsătorie, care au același
    tipar nume+dată.
 
-0. **SINTEZA PRODUCE CLICKBAIT FLUENT CÂND SURSA NU TRIMITE FAPTE — raportat de proprietar
+0. **SINTEZA PRODUCE titluri senzaționaliste FLUENT CÂND SURSA NU TRIMITE FAPTE — raportat de proprietar
    2026-08-04, cu exemplu de pe live. Diagnostic complet în `specs/sinteza-fara-substanta.md`.**
    Pe scurt, fiindcă e cel mai important lucru deschis acum:
    → **DATE:** `digisport` trimite `description` **identic** cu `title`. Măsurat pe `fetch_all()`:
@@ -1481,10 +1481,10 @@ atâtor iterații. Și „feedul răspunde" ≠ „feedul are conținut": `monit
    sintetizat. Șase surse sunt 100% așa (`digisport`, `monitorulsv`, `piataauto` + 3 primării).
    Pe corpusul publicat: **62 de articole din 2130**.
    → **COD, prompt:** `process.py:27` cere explicit „*dacă descrierea e săracă, extrage esența din
-   titlul original*", în timp ce linia 22 interzice clickbait-ul. Când singura intrare e un titlu
-   clickbait, cele două se exclud și modelul nu are portiță de refuz.
+   titlul original*", în timp ce linia 22 interzice titluri senzaționaliste-ul. Când singura intrare e un titlu
+   titluri senzaționaliste, cele două se exclud și modelul nu are portiță de refuz.
    → **COD, poartă:** `_quality_gate` verifică doar FORMA IEȘIRII (titlu nevid, corp ≠ titlu, nu
-   `fallback`, netrunchiat). O parafrază fluentă a unui clickbait trece toate verificările.
+   `fallback`, netrunchiat). O parafrază fluentă a unui titluri senzaționaliste trece toate verificările.
    **De asta „atâtea iterații și fixuri" n-au prins-o: defectul nu e vizibil în cod, ci doar citind
    textul publicat, iar niciun test nu citește textul publicat.**
    → §7 conține deja regula corectă („SKIP the item, do not publish it broken"); nu e implementată

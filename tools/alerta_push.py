@@ -10,7 +10,7 @@ DE CE EXISTĂ UNEALTA, ȘI NU UN BUTON ÎN SITE. Cine apasă „trimite" decide 
 automatizează. Unealta asta doar face ca decizia să se poată executa într-o singură
 comandă, cu aceleași reguli pe care le aplică și serverul.
 
-REGULILE SUNT ALE SERVERULUI, NU ALE UNELTEI. Politica «Zgomot zero» și plafonul de o
+REGULILE SUNT ALE SERVERULUI, NU ALE UNELTEI. Politica «selecție strictă a alertelor» și plafonul de o
 alertă pe zi trăiesc în `infra/push.js::verificaAlerta` și în cheia `cap:<zi>` din KV, nu
 aici: un client care le-ar aplica singur ar putea fi ocolit cu un `curl`, iar o regulă care
 se poate ocoli nu e o regulă. Unealta doar raportează refuzul, în românește.
@@ -124,7 +124,7 @@ def trimite(titlu: str, text: str, url: str, uscat: bool, limita: int | None) ->
         if status == 0:
             return 3
         if status == 422:
-            print("REFUZAT — alerta nu trece politica «Zgomot zero»:")
+            print("REFUZAT — alerta nu trece politica «selecție strictă a alertelor»:")
             for motiv in date.get("motive", []):
                 print(f"  · {motiv}")
             return 1

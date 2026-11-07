@@ -19,7 +19,7 @@ story (model C). Two failure modes matter equally:
 - **Over-merge** (false positive): two *unrelated* events glued into one cluster. This breaks
   "One axis, one home" and publishes an incoherent synthesis.
 - **Under-merge** (false negative): the same event from two sources stays as two duplicate
-  stories. This breaks the "Zero Zgomot" promise.
+  stories. This breaks the "filtru de calitate" promise.
 
 ## How to run
 1. Read `generator/cluster.py` and note the thresholds actually in effect: `JACCARD_MIN`,

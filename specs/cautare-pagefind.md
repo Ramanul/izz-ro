@@ -104,7 +104,7 @@ microsecunde, iar Pagefind sortează lexicografic.
 - **Highlight**: termenii sunt marcați cu `<mark>` în titlu, pe fondul `--gold-wash` al temei
   (deci se inversează corect în dark mode). Marcarea se face pe șirul pliat, dar taie din
   cel original, ca textul afișat să rămână exact.
-- **Zero zgomot**: se afișează exact ce a potrivit indexul. La zero potriviri, mesajul e
+- **filtru de calitate**: se afișează exact ce a potrivit indexul. La zero potriviri, mesajul e
   „Niciun rezultat pentru „X"" plus o sugestie, nu o listă de rezervă. Un id pe care mapa nu
   îl cunoaște nu devine rezultat.
 - **Fără JavaScript**: `<noscript>` spune că e nevoie de JavaScript și trimite la secțiuni.

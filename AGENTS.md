@@ -67,7 +67,7 @@ Tasks may arrive through the Devin Desktop UI or headlessly via the `devin` CLI
 - Minimal diffs. No opportunistic refactors, no "improvements" outside the task.
 - Never publish/deploy anything. Never touch `.github/workflows/` unless the spec says so.
 - Never edit `data/articles.json` by hand (pipeline state) or `moderation.yaml` (human-owned).
-- Domain rule: never allow raw/truncated headlines to reach output — skip broken items ("Zero Zgomot").
+- Domain rule: never allow raw/truncated headlines to reach output — skip broken items ("filtru de calitate").
 
 ## Arena — agent AI de dezvoltare, colaborator pe izz.ro (for the MAIN ZCode session; executors may ignore)
 

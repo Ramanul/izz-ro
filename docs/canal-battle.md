@@ -230,4 +230,4 @@ valorează (aceeași lecție ca la sesiunile grase, `AGENTS.md` § Economie de c
 
 Nu automatizează UI-ul Arena (ToS §5(vi), (vii)) · nu votează automat · nu ocolește reCAPTCHA/login · nu rulează în buclă sau pe cron · nu
 transformă răspunsurile în articole pe izz.ro (orice text care ajunge în produs trece prin
-regulile editoriale obișnuite: „Zero Zgomot", diacritice, sursă) · nu atinge `main`.
+regulile editoriale obișnuite: „filtru de calitate", diacritice, sursă) · nu atinge `main`.

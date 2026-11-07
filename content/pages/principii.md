@@ -2,7 +2,7 @@
 
 **Înțelege ce se întâmplă, din surse pe care le poți examina, în ritmul pe care îl alegi.**
 
-IZZ adună și sintetizează relatări publice pentru a face informația mai ușor de urmărit. „Zero Zgomot” înseamnă claritate, atribuire și limite vizibile, nu acces infailibil la adevăr. Principiile de mai jos sunt reguli practice de construcție ale site-ului: nu îți cer să adopți o viziune, ci pot fi verificate în funcționarea lui, pe [Cum devin ideile funcții](/legal/method/).
+IZZ adună și sintetizează relatări publice pentru a face informația mai ușor de urmărit. Site-ul urmărește claritatea, atribuirea și limitele vizibile, nu pretinde acces infailibil la adevăr. Principiile de mai jos sunt reguli practice de construcție ale site-ului: nu îți cer să adopți o viziune, ci pot fi verificate în funcționarea lui, pe [Cum devin ideile funcții](/legal/method/).
 
 **Starea acestei direcții.** Colectarea, gruparea și redactarea inițială sunt automate. Sintezele din mai multe surse separă mecanic ce confirmă cel puțin două publicații care nu preiau același text, ce versiuni diferă și ce vine dintr-o singură origine, iar fiecare afirmație trimite la propozițiile din care provine. Contextul documentat, un dosar persistent, legăturile explicate și selecția motivată sunt disponibile într-un pilot limitat, nu pe toate știrile; [dosarul despre serviciile de plată din Sectorul 1](/dosar/sectorul-1-plati-octombrie-2026/) arată documentele, perioada și limitele examinării. Nu promitem citirea umană zilnică a întregului flux, iar un bloc documentat nu certifică automat întreaga știre. Principiile de mai jos sunt angajamente după care evaluăm rezultatul, nu un certificat automat pentru fiecare articol.
 

@@ -42,7 +42,7 @@ Mediul de execuție al sesiunii (remote, Claude Code pe web):
 | Metabolism | `build.yml`: cron orar + poartă la 105 min → publicare la ~2h |
 | Aport caloric | `max_ai_calls=18`/rulare · ~500 build-uri Cloudflare/lună · cota Claude a proprietarului |
 | Digestie | `fetch.py` → `cluster.py` → `process.py` |
-| Excreție | dedup, `select.py`, regula „SARI itemul" (§7). „Zero Zgomot" e o funcție de excreție |
+| Excreție | dedup, `select.py`, regula „SARI itemul" (§7). „filtru de calitate" e o funcție de excreție |
 | Piele | Cloudflare edge + `static/styles.css`, reînnoită prin `?v=` hash de conținut |
 | Proprioceptie | `tools/audit.sh` (Lighthouse + pa11y) — §13 |
 | Sistem nervos periferic | cele 19 workflow-uri: reflexe care se declanșează fără operator |
@@ -186,7 +186,7 @@ corecte — pentru corpuri diferite. Mediul de execuție se schimbă fără prea
 Disciplina se erodează; scriptul nu.
 
 **A2. Căutarea se mută sub tine.** Cititorii nu mai vin exclusiv din zece linkuri albastre.
-„Zero Zgomot" + atribuire curată e exact formatul pe care motoarele AI îl citează.
+„filtru de calitate" + atribuire curată e exact formatul pe care motoarele AI îl citează.
 *Propunere:* măsoară dacă ești **citat**, nu doar dacă ești indexat (Brand Radar există în unelte).
 Nu e o schimbare de produs — e o schimbare de metrică.
 

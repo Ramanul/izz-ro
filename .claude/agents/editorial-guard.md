@@ -1,7 +1,7 @@
 ---
 name: editorial-guard
 description: >-
-  Reviews templates and rendered output against the attribution, Zero Zgomot and design-token
+  Reviews templates and rendered output against the attribution, filtru de calitate and design-token
   rules. Use PROACTIVELY when `templates/*.html` or `render.py` change how sources, cards, the
   hero aside or article pages are presented.
 tools: Read, Grep, Glob
@@ -27,7 +27,7 @@ notice (methodology lives ONLY in `/legal/method/`), a wrong `Sursă`/`Surse` pl
 must reuse this exact formula.
 
 ## Other house rules
-- **Zero Zgomot / no mangled output (§7):** never a raw, truncated headline. If a fallback can't meet
+- **filtru de calitate / no mangled output (§7):** never a raw, truncated headline. If a fallback can't meet
   the quality bar the item is SKIPPED, not published broken. Flag any code path that could emit a
   truncated/raw title.
 - **One axis, one home (§7):** an article belongs to exactly one place per taxonomy axis; flag any

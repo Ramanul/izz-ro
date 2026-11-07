@@ -6,7 +6,7 @@ branch `arena/01a10582-izz-ro`, plecat din `0c01b21`
 revoluție completă a experienței — altă cartografie, alt model de interacțiune, altă structură de date — cu
 minim 3 direcții distincte (cost/risc/ce pierdem/dependențe), recomandare explicită și un contract de realitate.
 **Constrângeri:** 0 lei, static, fără backend, fără servicii plătite; biblioteci open-source permise cu țintă de
-KB mici; se păstrează regulile site-ului (numai localizări determinate, Zero Zgomot, exactitatea UAT).
+KB mici; se păstrează regulile site-ului (numai localizări determinate, filtru de calitate, exactitatea UAT).
 
 > **cerut:** studiu + propunere, fără implementare, livrat ca document + PR fără merge.
 > **fac:** citesc harta ca produs (cod, date, capturi, istoric), măsor ce se poate măsura pe starea comisă,
@@ -315,7 +315,7 @@ Onestitatea obligă: harta de azi are părți peste media pieței și o rescrier
    nu pe pagini.
 3. **KB mici.** Prima vizită costă azi **126 KB gzip**, iar un click pe județ până la **312 KB gzip** suplimentar
    (§1.1, §1.4). Orice propunere trebuie să scadă, nu să crească.
-4. **Zero Zgomot.** Nicio reprezentare nouă nu are voie să afișeze titluri brute/trunchiate; regula rămâne a
+4. **filtru de calitate.** Nicio reprezentare nouă nu are voie să afișeze titluri brute/trunchiate; regula rămâne a
    pipeline-ului, iar harta doar consumă `title` deja validat.
 5. **Exactitatea UAT.** Localizările vin din `siruta`/UAT determinist; harta nu are voie să inventeze puncte pentru
    cele 227 de articole care există doar la nivel de județ (34 %). Orice design nou trebuie să aibă o reprezentare

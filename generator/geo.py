@@ -753,7 +753,7 @@ def loc_din_sursa(sursa: str | None) -> str:
 
     Judetul din slug trebuie sa fie printre judetele in care gazetteer-ul chiar are localitatea:
     fara garda asta un slug stricat ar produce o eticheta plauzibila si falsa, iar o eticheta
-    falsa pe coperta e mai rea decat una mai putin precisa (sect. 7, „Zero Zgomot").
+    falsa pe coperta e mai rea decat una mai putin precisa (sect. 7, „filtru de calitate").
     """
     parsed = localities.parse_source_slug(sursa or "")
     if not parsed:

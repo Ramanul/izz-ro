@@ -66,7 +66,7 @@ o treabă zgomotoasă, mărginită și rezumabilă, și întoarce un verdict.
 | `generator/cluster.py` sau pragurile lui | `clustering-tuner` | §7 — verifică over-merge ȘI under-merge pe eșantioane reale. Raportează, nu editează. |
 | `templates/` · `static/styles.css` · HTML/JSON-LD din `render.py` | `frontend-auditor` | §13 — rulează `tools/audit.sh`, raportează delta Lighthouse/pa11y |
 | „mai construiește?" / verifică rulând | `pipeline-runner` | §5.4 — `--dry-run` / `--render-only` / `qa_check.py` |
-| orice schimbare pe o suprafață de știre | `editorial-guard` | §7, §8 — formula de atribuire, Zero Zgomot, o axă-o casă, tokenuri de design. Read-only. |
+| orice schimbare pe o suprafață de știre | `editorial-guard` | §7, §8 — formula de atribuire, filtru de calitate, o axă-o casă, tokenuri de design. Read-only. |
 
 ### Fluxul cu executanți (Devin, adăugat 2026-07-18)
 

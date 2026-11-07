@@ -85,7 +85,7 @@ const GAZDE_PUSH = [
 ];
 
 // Cuvinte care transforma o stire in momitor. Lista e scurta DINADINS: o lista lunga produce
-// refuzuri pe care nimeni nu le intelege, iar regula pe care o apara („zero zgomot") se
+// refuzuri pe care nimeni nu le intelege, iar regula pe care o apara („filtru de calitate") se
 // apara cu cateva interdictii clare, nu cu un dictionar de sinonime.
 //
 // LIPSESTE deliberat „bomba"/„bombă": e un obiect real in stirile romanesti (o bombă
@@ -184,7 +184,7 @@ export function strigate(titlu) {
 }
 
 /**
- * Politica «Zgomot zero», aplicata mecanic inainte ca alerta sa plece.
+ * Politica «selecție strictă a alertelor», aplicata mecanic inainte ca alerta sa plece.
  *
  * Intoarce `{ ok: true }` sau `{ ok: false, motive: [...] }` cu motive in romaneste: refuzul
  * trebuie sa fie inteligibil pentru cine a scris alerta, nu doar un cod HTTP.

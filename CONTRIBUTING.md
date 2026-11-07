@@ -18,7 +18,7 @@
   `--render-only`, `python -m pytest tests/ -q`, `python -m ruff check .`.
 - **Fișierele pe care nu le-ai creat sunt intangibile.** Fără `git restore`/`stash`/`clean`
   pe munca altcuiva; un working tree murdar nu e o problemă de reparat.
-- **Fără headline-uri trunchiate sau brute în output** — regula „Zero Zgomot".
+- **Fără headline-uri trunchiate sau brute în output** — regula „filtru de calitate".
 - **Nu edita de mână** `data/articles.json` (stare de pipeline) și `moderation.yaml`.
 
 ## Spec înainte de cod

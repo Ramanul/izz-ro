@@ -5,7 +5,7 @@ Ruleaza in GitHub Actions (are internet; sandbox-urile nu). Pentru fiecare artic
 publicat cauta prima entitate "photo-worthy" (vezi fetch_portraits.is_photo_worthy)
 a carei imagine P18 e, in acelasi timp:
   - LANDSCAPE (latime >= 1.2 x inaltime) -> se incadreaza curat in 960x504 / 1200x630
-    fara sa taie un portret vertical (bara de calitate "Zero Zgomot"), si
+    fara sa taie un portret vertical (bara de calitate "filtru de calitate"), si
   - ATRIBUIRE-LIBERA (Public domain / CC0) -> poate aparea si pe carduri/og, unde
     regula sect. 7 interzice orice eticheta de credit.
 Daca gaseste, descarca o rendite mare, o incadreaza cu Pillow in cover (1200x630) +

@@ -5,7 +5,7 @@ Cazul care a generat regula e raportat de proprietar pe 2026-08-04, de pe live: 
 „Finalul meciului disputat la scorul de 2-2 a fost marcat de un moment neobisnuit...".
 Nu spun cine, ce meci, ce gest — fiindca sursa trimisese `description` IDENTICA cu `title`.
 
-Ce e important de inteles daca modifici asta: AI-ul NU a halucinat. A primit un titlu clickbait
+Ce e important de inteles daca modifici asta: AI-ul NU a halucinat. A primit un titlu senzaționalist
 si i s-a cerut un rezumat, iar promptul ii spunea explicit „daca descrierea e saraca, extrage
 esenta din titlul original". Defectul e ca itemul a ajuns la AI si de acolo pe site.
 """

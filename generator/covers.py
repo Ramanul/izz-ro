@@ -159,7 +159,7 @@ def _draw_cover(a: dict):
 
     foot_col = (240, 236, 226) if layout == "horizon" else INK2
     code_col = GOLD if layout in ("horizon", "split") else acc
-    d.text((64, H - 56), "IZZ.ro — Informația Zero Zgomot", font=mono_s, fill=foot_col, anchor="ls")
+    d.text((64, H - 56), "IZZ.ro — Portal de știri românești", font=mono_s, fill=foot_col, anchor="ls")
     d.text((W - 64, H - 56), f"Nº {seed.hex()[:6]}", font=mono_s, fill=code_col, anchor="rs")
     return img
 

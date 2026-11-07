@@ -23,7 +23,7 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DATASET = os.path.join(ROOT, "data", "localities.json")
 
 # Latimea minima a sursei: coperta og e 1200x630. Sub 1200 px imaginea ar fi marita,
-# iar "Zero Zgomot" (sect. 7) exclude publicarea unei poze vizibil interpolate.
+# iar "filtru de calitate" (sect. 7) exclude publicarea unei poze vizibil interpolate.
 # Fara acest prag, o poza de 450x338 trece de raportul landscape si ajunge pe site.
 MIN_WIDTH = 1200
 LANDSCAPE_RATIO = 1.2

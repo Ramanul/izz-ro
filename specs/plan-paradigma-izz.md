@@ -29,7 +29,7 @@ Lipsește: nimic esențial — limita e deja declarată public pe pagina de meto
 **P3. Atenția e un buget finit și prețios.**
 Cărți: „o entitate nu trebuie să primească o cantitate de experiență mai mare… decât poate îndura" (Ra 22.6); „ignoră numărul celor care îți urmăresc lecturile" (48.5); televizorul creează „distracție și somnolență" (34.13); „umple spațiul mental al observării oamenilor cu distrageri și diversiuni" (AM 889).
 Construire: titlul spune faptul, nu momeala; nicio tactică de reținere (infinite scroll, streaks, notificări recursive); ritmul aparține cititorului.
-Azi [FAPT]: Zero Zgomot în titluri; /azi/ = doar titluri și surse; push maximum una pe zi, opt-in.
+Azi [FAPT]: filtru de calitate în titluri; /azi/ = doar titluri și surse; push maximum una pe zi, opt-in.
 Lipsește [INTERPRETARE]: un audit „buget de atenție" — verificarea sistematică că niciun element de interfață nu trage spre mai multă citire decât cere informația.
 
 **P4. Serviciul se face la chemare, nu prin împingere.**
@@ -175,7 +175,7 @@ Liniile roșii Argon R1 (interzise expres):
 
 6. **Contrabandă terminologică în UI** — interziși în interfață termenii „Legea Confuziei", „distorsiune", „catalizator", „densitate", „polaritate", „recoltă"; se traduc în limbaj civic-ingineresc: „eroare de transmisie", „bias de selecție", „autonomie", „fapte vs. interpretări", „buget de timp". „Filosofia trebuie să fie invizibilă ca scheletul într-un corp viu: susține totul, dar dacă iese prin piele, e o fractură deschisă."
 7. **Ton oracular sau moralizator al AI-ului** — interzis orice aer de superioritate („în timp ce publicațiile se întrec în titluri alarmiste…"). Tonul sintezei: plat, funcționăresc, de grefier care întocmește proces-verbal.
-8. **Paternalism „Zero Zgomot"** — interzis să tai pe ascuns (tabloide, sport, subiecte „frivole") fără cale de verificare: filtrezi strict pe criterii structurale declarate și lași coșul public (/excluse/).
+8. **Paternalism „filtru de calitate"** — interzis să tai pe ascuns (tabloide, sport, subiecte „frivole") fără cale de verificare: filtrezi strict pe criterii structurale declarate și lași coșul public (/excluse/).
 9. **Ecosistem închis** — interzis să îngroși linkurile către surse ca să ții cititorul pe izz.ro: sinteza economisește balastul de agenție, dar trimite masiv spre presa originală și prima sursă („ecologia finită", AM 859).
 
 ## Anexă

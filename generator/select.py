@@ -4,7 +4,7 @@ Extras din `render.py` (1001 linii, 52 de revizii, 4 responsabilitati amestecate
 taiere e „pur vs. cu efecte": aici intra dict/lista si iese bool/lista — fara disk, fara
 retea, fara Jinja, fara config. Restul randarii ramane in `render.py`.
 
-De ce contine exact functiile astea: ele decid CE APARE PE SITE (regula „Zero Zgomot",
+De ce contine exact functiile astea: ele decid CE APARE PE SITE (regula „filtru de calitate",
 CLAUDE.md §7), deci sunt cele care merita testate izolat. Acoperirea lor e in
 `tests/test_render_editorial.py`, scrisa INAINTE de mutare tocmai ca sa dovedeasca faptul
 ca mutarea n-a schimbat comportament.
