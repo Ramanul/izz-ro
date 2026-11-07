@@ -175,8 +175,8 @@ Fiecare fază e livrabilă separat și se poate publica independent; hash-ul de 
 | Indicator | Acum | Țintă după rebranding |
 |---|---:|---:|
 | Greutate prima pagină (gzip) | 108 KB | **≤ 45 KB** |
-| Greutate pagină articol (gzip) | 4,8 KB | ≤ 8 KB (crește conținutul, nu șablonul) |
-| Fonturi | 104 KB / 7 fișiere | **≤ 55 KB / 3 fișiere** |
+| Greutate pagină articol (gzip) | 20,5 KB | ≤ 22 KB (crește conținutul, nu șablonul) |
+| Fonturi | 86 KB / 7 fișiere (măsurat: 87.960 B) | **≤ 55 KB / 3 fișiere** |
 | Elemente cu greutate vizuală pe card | 7 | **4** |
 | Carduri pe prima pagină | 60 | ≤ 24 |
 | Pagini fără nicio imagine/context | 82% | ≤ 40% |
@@ -194,6 +194,75 @@ Măsurare: `analiza/masuratori.py` (bytes, elemente, imagini), `tools/greutate.p
 - **Nu propun pagini „revistă”.** Un singur titlu mare pe ecran, nu trei.
 - **Nu propun dark-first.** Modul întunecat rămâne o preferință, nu identitatea.
 - **Nu propun schimbarea structurii de informație.** Categoriile, harta, ghidurile, dosarele rămân exact unde sunt.
+
+---
+
+## 8. Stadiu implementare (7 noiembrie 2026)
+
+Direcția A a intrat în repo. Fazele 0 (tokeni) și 1 (tipografie) sunt livrate, cu șabloanele
+atinse doar la nivel de fonturi; restul paginilor arată deja în noua identitate pentru că totul
+trece prin tokeni.
+
+### 8.1 Ce s-a schimbat
+
+| Fișier | Schimbare |
+|---|---|
+| `static/styles.css` | `:root` rescris: culoare (hârtie caldă, tuș, navy pentru acțiuni, aramă doar decor), scară tipografică 1,22, ritm de spațiere pe 4 px, `--navy` nou, `--font-display` = Newsreader, `--font-mono` = Inter (mono scos din UI, cifre tabulare prin `font-variant-numeric`); linkuri/focus/butoane mutate din aramă în navy; titluri 800 → 600, titluri de card 700 → 400; blocul dark recalibrat |
+| `static/styles.css` (componente) | `color: #fff` fix pe fundaluri care se inversează în tema întunecată (`.btn-source`, paginare, hover pe butoane-icon) → `var(--paper)`, care se întoarce o dată cu fundalul; butonul de instalare PWA a pierdut gradientul metalic auriu (navy solid) |
+| `static/fonts.css` | 5 fețe: Newsreader 400/600 + Inter 400/600/700. Playfair și JetBrains Mono au ieșit |
+| `static/fonts/` | `Newsreader-400.ro.woff2` + `Newsreader-600.ro.woff2` (subset RO, instanțe statice din variabila OFL); cele 4 fișiere Playfair/JetBrains șterse |
+| `templates/base.html` | preload doar pe Newsreader 600 + Inter 400 (cele două fețe din primul ecran) |
+| `tools/fetch_fonts.py` | aceleași familii, ca o rulare viitoare a jobului `fonts` să nu readucă Playfair |
+| `static/sw.js` | `PRECACHE` cu fonturile noi, `SHELL` v3 → v4 (cache-urile vechi se aruncă) |
+| `static/site.css` | treptele fluide `--fs-2xl/3xl` aliniate la scara nouă |
+
+### 8.2 Măsurători față de țintă
+
+| Indicator | Înainte | Acum | Țintă | Verdict |
+|---|---:|---:|---:|---|
+| Fonturi | 87.960 B / 7 fișiere | **76.224 B / 5 fișiere** | ≤ 55 KB / 3 fișiere | −13%, ținta nu e încă atinsă |
+| Prima pagină (gzip) | 109.205 B | 109.179 B | ≤ 45 KB | neschimbat — 76% e arta inline, faza 3 |
+| Articol (gzip) | 20.563 B | 20.542 B | ≤ 22 KB | în limite |
+| Contrast minim (text mic) | 4,73:1 | **4,74:1** | ≥ 4,5:1 | AA păstrat |
+| CSS | 4 fișiere / 84 KB | 4 fișiere / 85 KB | 1 fișier / ~50 KB | faza 6 (consolidare) |
+
+Măsurătorile „înainte" sunt contrafactuale pe aceeași pagină randată (blocul de fonturi din `HEAD`
+pus înapoi în `<head>`), nu o randare separată: markup-ul e identic, deci diferența e efectul
+slice-ului. Detalii și tabelul de contrast complet: `specs/masuratori-frontend.md`.
+
+De ce fonturile nu coboară la 3 fișiere: Newsreader are nevoie de două fete (400 pentru titlurile
+de card, 600 pentru titlurile mari), iar Inter 700 nu poate fi scos fără bold sintetizat la
+`<strong>` din corpul articolelor. Câștigul vine din scoaterea Playfair (34.940 B) + JetBrains
+Mono (15.580 B), minus Newsreader (38.784 B). Sub 55 KB s-ar ajunge doar tăind din Inter
+(400/600/700 = 37.440 B) — o discuție de faza 6, cu măsurat înainte/după pe A11y.
+
+### 8.3 Verificări
+
+- `pytest`: 3100 passed, 4 skipped, 8 xfailed — inclusiv `test_arta_inline`, `test_pwa` (precache),
+  testele de randare; `ruff check .` curat; CSS validat cu `csstree-validator` (singurul avertisment
+  rămas e preexistent, `url(#art-gold-grad, var(--art-geo-aur))`).
+- Etichetele din arta generativă se desenează acum cu Newsreader, care e cu 13–30% mai îngustă
+  decât Playfair la același corp: pragurile `--art-et-k` rămân valide ca limită de sus (nimic nu
+  se mai taie), dar textul arată mai mic în același chenar. Remăsurarea pe Newsreader e treaba
+  fazei 5, împreună cu arta v2.
+
+### 8.4 Ce urmează
+
+1. **Faza 2** — masthead și footer: wordmark `izz.` construit corect (un singur weight, punct de
+   aramă), bara de sus mai subțire, footer pe 3 coloane cu mai puțin text mono-uppercase.
+2. **Faza 3** — cardul de la 7 la 4 elemente + prima pagină cu ≤ 24 de carduri; aici scade și
+   greutatea (arta inline 455 KB e ținta reală, nu fonturile).
+3. **Faza 5** — arta generativă v2 + recablarea etichetelor; opțional, aceeași instanță Newsreader
+   și pentru coperțile raster (`generator/htmlart.py`, `generator/covers.py`), ca rasterul și SVG-ul
+   din pagină să nu mai folosească două serife diferite.
+4. **Faza 6** — consolidarea CSS-urilor (`site.css`, `faza2.css` în `styles.css`), rampa hărților
+   mutată pe aramă, paginile utilitare.
+
+> Notă despre `tools/fetch_fonts.py`: sandbox-ul de lucru nu are acces la `fonts.googleapis.com`,
+> deci cele două fișiere Newsreader au fost produse local din fontul variabil OFL (instanțiere
+> `wght` 400/600, apoi subsetare pe `RO_UNICODES` + unire latin/latin-ext pentru diacritice).
+> Jobul `fonts` din Actions, rulat pe noile familii, trebuie să dea aproximativ aceleași fișiere —
+> de confirmat la prima rulare manuală.
 
 ---
 

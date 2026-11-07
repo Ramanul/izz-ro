@@ -5,7 +5,7 @@ De ce: fonts.googleapis.com era o cerere externa BLOCANTA la randare (-620ms pe
 mobil, plus IP-urile cititorilor expuse catre Google -- inconsistent cu politica
 noastra de confidentialitate). Descarcam woff2-urile o singura data in
 static/fonts/ si scriem static/fonts.css cu @font-face (font-display: swap),
-pastrand subseturile latin + latin-ext (diacriticele romanesti).
+subsetand la glifele romanești (latin + diacritice).
 
   python tools/fetch_fonts.py
 """
@@ -16,8 +16,12 @@ import urllib.request
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 OUT = os.path.join(ROOT, "static", "fonts")
-CSS_URL = ("https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800"
-           "&family=Inter:wght@400;600;700&family=JetBrains+Mono:wght@400;700&display=swap")
+# Doua familii, cinci fete (analiza/rebranding/PROPUNERE.md §Tipografie):
+#   Newsreader 400/600 — titluri (a inlocuit Playfair Display 700/800)
+#   Inter 400/600/700   — text de interfata (700 ramane pentru <strong>, nu se sintetizeaza)
+# JetBrains Mono a iesit din UI: cifrele tabulare se fac cu `font-variant-numeric`.
+CSS_URL = ("https://fonts.googleapis.com/css2?family=Newsreader:wght@400;600"
+           "&family=Inter:wght@400;600;700&display=swap")
 # UA VECHI -> Google serveste TTF-ul COMPLET per fata (fisierele woff2 per-subset
 # NU contin fontul intreg si nu pot fi sursa unei subsetari corecte)
 UA = {"User-Agent": "Wget/1.20"}
@@ -43,6 +47,8 @@ def main() -> int:
     css = urllib.request.urlopen(req, timeout=30).read().decode()
     os.makedirs(OUT, exist_ok=True)
     for f in os.listdir(OUT):                      # curata setul vechi (ne-subsetat)
+        if f.upper().startswith(("LICENSE", "LICENTE")):   # licentele OFL rămân pe loc
+            continue
         os.remove(os.path.join(OUT, f))
     seen, out_css = set(), []
     for block in re.findall(r"@font-face\s*\{[^}]+\}", css):

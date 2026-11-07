@@ -132,3 +132,61 @@ pagină de articol, +65 KiB, +0.3 s LCP. Tabelul complet înainte/după e în PR
 **Regula generală:** o cifră din fișierele astea e o măsurătoare de sandbox local, nu o promisiune
 despre izz.ro. Există ca să compare *înainte vs după un slice pe aceeași mașină*. Când un scor pare
 o regresie, măsoară commit-ul de dinainte de slice într-un worktree și compară.
+
+## Rebranding „Hârtie curată" — faza 0+1: tokeni și tipografie (2026-11-07)
+
+Slice: `static/styles.css` `:root` + blocul dark, `static/fonts.css`, `templates/base.html`
+(preload), `static/sw.js` (precache), `tools/fetch_fonts.py`. Șabloanele nu s-au atins dincolo
+de preload-uri; structura de informație e identică, deci diferențele de mai jos sunt integral
+efectul tokenilor.
+
+**Măsurat local** (`--render-only` pe `state`-ul real: `build.json` = 6496 articole / 11.089
+fișiere — verificat ÎNAINTE de citire, fiindcă `pytest` rescrie `output/` cu fixture-ul de ~190
+articole). Coloana „înainte" e contrafactualul obținut prin înlocuirea blocului de fonturi din
+`<head>` cu cel de la `HEAD`, pe aceeași pagină randată: markup-ul e identic, deci diferența e
+integral efectul acestui slice.
+
+| Indicator | Înainte | După | Δ |
+|---|---:|---:|---:|
+| Fonturi auto-găzduite (`static/fonts/*.woff2`) | 87.960 B / 7 fișiere | 76.224 B / 5 fișiere | −11.736 B (−13%), −2 fișiere |
+| `fonts.css` inlineat în `<head>` | 1.160 B | 794 B | −366 B |
+| Prima pagină, gzip | 109.205 B | 109.179 B | −26 B |
+| Articol (`/extern/slabirea-timpurie-a-vortexului-polar-…/`), gzip | 20.563 B | 20.542 B | −21 B |
+| `styles.css` | 80.768 B | 81.764 B | +996 B (comentarii + regula `tabular-nums`) |
+| Prima încărcare, mediană pe 7679 pagini (`tools/greutate.py`) | — | 155 KB | neschimbat de acest slice |
+| Fișiere în `output/` | 11.088 | 11.089 | +1 (licența OFL Newsreader) |
+
+Corecție de cifră: tabelul de ținte din `analiza/rebranding/PROPUNERE.md` §6 spunea „104 KB / 7
+fișiere" la fonturi; măsurat pe disc, cele 7 fișiere însumau 87.960 B (85,9 KiB). Ținta de ≤55 KB
+rămâne neatinsă; vezi §8.2 din propunere pentru de ce (Newsreader are nevoie de două fete, Inter
+700 nu poate fi scos fără bold sintetizat la `<strong>`).
+
+**Contrast (WCAG 2.1, text mic) — toate tokenii de text, pe cele trei fundaluri, în ambele teme.**
+Regula din acest fișier (§Contrast) cere 4,5:1 față de `--paper` **și** `--gold-wash`:
+
+| Token | pe `--paper` | pe `--paper-2` | pe `--gold-wash` | Verdict |
+|---|---:|---:|---:|---|
+| `--ink` #14161a | 17,35 | 18,11 | 16,05 | AA |
+| `--ink-2` #4a515c | 7,67 | 8,01 | 7,09 | AA |
+| `--ink-3` #6a6a73 | 5,13 | 5,35 | 4,74 | AA |
+| `--gold-strong` #7c5f22 | 5,72 | 5,97 | 5,29 | AA |
+| `--navy` #173a5e | 11,16 | 11,65 | 10,32 | AA |
+| `--live` #b23a2e | 5,69 | 5,94 | 5,26 | AA |
+| dark: `--ink` / `--ink-2` / `--ink-3` | 15,2 / 8,6 / 6,1 | 14,0 / 7,9 / 5,6 | 14,0 / 7,9 / 5,6 | AA |
+| dark: `--gold-strong` #d3b26a / `--navy` #a9c7e9 | 9,3 / 10,8 | 8,6 / 10,0 | 8,6 / 10,0 | AA |
+
+Nota de implementare: `--ink-3` a fost coborât de la #6f7683 (4,38:1 pe `--paper`, **sub AA**) la
+#6a6a73. Culorile de accent au trecut din aramă în navy pentru *acțiuni*; arama (`--gold`) rămâne
+doar decor (3,40:1 — nu se folosește pe text, exact ca înainte cu aurul viu).
+
+**Trei reparații colaterale găsite la măsurare** (ar fi fost regresii in vizibil, nu în scor):
+`color: #fff` fix pe fundal `var(--ink)` / `var(--gold)` (`.btn-source`, `.pagination .current`,
+hover pe `.theme-toggle`, `.back-to-top`, `.pagination a`, `.btn-preset`) — albul nu supraviețuiește
+inversării temelor; acum textul e `var(--paper)`, care se inversează o dată cu fundalul. Butonul de
+instalare PWA a pierdut gradientul metalic (aramă) în favoarea navy-ului solid.
+
+**Ce NU s-a putut măsura aici:** `bash tools/audit.sh` cere un Chromium și `lighthouse`/`pa11y`
+instalate; sandbox-ul de lucru nu are nici browser, nici pachetele, deci **scorurile Lighthouse și
+numărul de erori pa11y rămân nemăsurate pentru acest slice** — de rulat pe o mașină cu browser
+înainte de merge. Ce s-a rulat: `pytest` (3100 passed, 4 skipped, 8 xfailed), `ruff check .`
+(curat), `csstree-validator` (singurul avertisment e preexistent: `url(#art-gold-grad, ...)`).

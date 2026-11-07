@@ -3,8 +3,8 @@
    Se leagă DUPĂ styles.css din base.html. */
 
 :root {
-  --fs-2xl: clamp(1.85rem, 1.35rem + 2.2vw, 2.618rem);
-  --fs-3xl: clamp(2.1rem, 1.4rem + 3.2vw, 3.330rem);
+  --fs-2xl: clamp(1.9rem, 1.35rem + 2.4vw, 2.625rem);
+  --fs-3xl: clamp(2.125rem, 1.45rem + 3vw, 3rem);
 }
 
 @media (max-width: 640px) {

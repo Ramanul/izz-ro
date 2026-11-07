@@ -1,51 +1,55 @@
 /* =============================================================================
-   IZZ.ro — „Cronică aurie": broadsheet DIGITAL, light, pe PROPORȚIA DE AUR (φ=1.618)
-   Identitate editoriala: fara chenare grele -> tipografie + linii fine + accent auriu.
-   Titluri serif mari (Playfair), etichete mono aurii, mult aer. Personalitate, nu boxe.
+   IZZ.ro — „Hârtie curată": broadsheet editorial, pe o scară de 1,22
+   Identitate: fără chenare grele -> tipografie + linii fine + un singur accent tare.
+   Titluri serif (Newsreader), text de interfață sans (Inter), mult aer.
+   Planul complet: analiza/rebranding/PROPUNERE.md (directia A).
 
-   SISTEM φ (de respectat la ORICE componenta noua):
-   - Tipografie --fs-*: 0.618 0.786 1 1.272 1.618 2.058 2.618 3.330 rem (pas √φ; ×φ la 2 pasi)
-   - Spatiere --s-*: Fibonacci 5 8 13 21 34 55 89 px
-   - Latime de lectura --measure = maxw/φ ≈ 729px
-   - Layout-semnatura: lead spart φ:1 (sinteza : provenienta)
+   SISTEM (de respectat la ORICE componenta noua):
+   - Tipografie --fs-*: 0.75 0.8125 1 1.1875 1.4375 1.75 rem + 2 trepte fluide (pas 1,22)
+   - Spatiere --s-*: 4 8 12 20 32 56 88 px (ritm de 4px)
+   - Latime de lectura --measure = 712px (≈ 68 caractere la 19px)
+   - Culori: --navy pentru actiuni/linkuri, --brass doar decor, --gold-strong = text kicker
+   - Numele vechi (--gold*, --font-mono, --s-*) ramân ca ALIAS, ca dif-ul sa fie reversibil
 ============================================================================= */
 
 :root {
-  --paper:       #f6f7f9;   /* fundal pagina, alb rece */
+  --paper:       #fbfaf7;   /* fundal pagina, alb cald de hartie */
   --paper-2:     #ffffff;   /* zone proeminente (lead) */
-  --ink:         #15171c;   /* text principal (~16:1) */
-  --ink-2:       #4d5562;   /* text secundar */
-  --ink-3:       #6d6d7f;   /* meta discret (AA 4.7:1 pe --paper; #889 dadea 3.25:1) */
-  --line:        #e4e7ec;   /* hairline */
-  --line-strong: #c9ccd3;   /* linie de regula mai vizibila */
-  --gold:        #c9a227;   /* aur viu: decor/fundaluri, NU text pe alb */
-  --gold-strong: #8b6918;   /* aur inchis: text/linkuri (AA 4.7:1 pe --paper; #94701a trecea doar pe alb pur) */
-  --gold-wash:   #faf5e6;
-  --ink-fixed:   #15171c;   /* NU se inverseaza in dark mode; pt. text pe fundal auriu (--gold ramane deschis in ambele teme) */
-  --danger:      #c0392b;   /* stare distructiva (reset stats hover); 5.07:1 pe --paper */
+  --ink:         #14161a;   /* text principal (~17:1) */
+  --ink-2:       #4a515c;   /* text secundar (7.4:1) */
+  --ink-3:       #6a6a73;   /* meta discret: 5.1:1 pe --paper, 4.7:1 pe --gold-wash (AA) */
+  --line:        #e7e4dd;   /* hairline cald */
+  --line-strong: #d3cec3;   /* linie de regula mai vizibila */
+  --gold:        #a8823a;   /* ALAMA: doar decor (bare, sublinieri, harta), nu text */
+  --gold-strong: #7c5f22;   /* alama inchisa: text kicker/etichete (6.2:1 pe --paper) */
+  --gold-wash:   #f3f1ec;   /* suprafata afundata (ex --sunk) */
+  --navy:        #173a5e;   /* ACTIUNI: linkuri, focus, butoane (10.9:1 pe --paper) */
+  --live:        #b23a2e;   /* „live"/alerta editoriala */
+  --ink-fixed:   #14161a;   /* NU se inverseaza in dark mode */
+  --danger:      #b23a2e;   /* stare distructiva (reset stats hover) */
 
+  /* scara 1,22: 12 13 16 19 23 28 (+2 trepte fluide) */
   --fs-eyebrow: 0.75rem;
-  --fs-xs:      0.786rem;
+  --fs-xs:      0.8125rem;
   --fs-base:    1rem;
-  --fs-md:      1.272rem;
-  --fs-lg:      1.618rem;
-  --fs-xl:      2.058rem;
-  /* Tipografie fluida pe cele doua trepte mari (faza 3, PR #297 ca sursa de design):
-     titlurile de hero/articol coboara lin pe tablete in loc sa ramana la marimea de
-     desktop; plafonul clamp-ului e valoarea statica de dinainte, deci pe desktop nimic
-     nu se misca. --fs-lg/--fs-xl (card-title, section-title) raman fixe — nu global. */
-  --fs-2xl:     clamp(1.85rem, 1.35rem + 2.2vw, 2.618rem);
-  --fs-3xl:     clamp(2.1rem, 1.4rem + 3.2vw, 3.330rem);
+  --fs-md:      1.1875rem;
+  --fs-lg:      1.4375rem;
+  --fs-xl:      1.75rem;
+  /* Titlurile mari coboara lin pe tablete; plafonul de desktop rămâne cel dinainte
+     (2.625rem / 3rem), doar pasul de crestere e mai domol decât la φ. */
+  --fs-2xl:     clamp(1.9rem, 1.35rem + 2.4vw, 2.625rem);
+  --fs-3xl:     clamp(2.125rem, 1.45rem + 3vw, 3rem);
 
-  --s-5: 5px; --s-8: 8px; --s-13: 13px; --s-21: 21px; --s-34: 34px; --s-55: 55px; --s-89: 89px;
+  /* ritm de 4px (echivalentul apropiat al vechilor pasi Fibonacci, ca layoutul sa nu se miste) */
+  --s-5: 4px; --s-8: 8px; --s-13: 12px; --s-21: 20px; --s-34: 32px; --s-55: 56px; --s-89: 88px;
   --radius: 6px;            /* colturi rotunjite pt. media (miniaturi carduri, banner) */
 
-  --font-display: "Playfair Display", Georgia, serif;
-  --font-text:    "Inter", system-ui, -apple-system, sans-serif;
-  --font-mono:    "JetBrains Mono", ui-monospace, monospace;
-  --maxw: 1200px;
-  --measure: 729px;
-  --lh-body: 1.6;
+  --font-display: "Newsreader", Georgia, "Times New Roman", serif;
+  --font-text:    "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono:    "Inter", system-ui, sans-serif;   /* NU mai exista mono in UI: cifre tabulare cu Inter */
+  --maxw: 1180px;
+  --measure: 712px;
+  --lh-body: 1.62;
 }
 
 * { box-sizing: border-box; }
@@ -61,7 +65,7 @@ body {
   font-size: var(--fs-base); line-height: var(--lh-body);
   -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility;
 }
-a { color: var(--gold-strong); text-decoration: none; }
+a { color: var(--navy); text-decoration: none; }
 
 /* Masthead de ziar: data de azi + numerele zilei (render._numerele_zilei), pe toate
    paginile. Nu e sticky — se deruleaza odata cu pagina; sticky-ul ramane al antetului. */
@@ -75,8 +79,12 @@ a { color: var(--gold-strong); text-decoration: none; }
 }
 .day-numbers { font-weight: 400; letter-spacing: 1px; }
 .day-numbers b { color: var(--gold-strong); font-weight: 700; }
+/* Cifrele din meta/dateline se aliniaza in coloana si fara un font monospatiat
+   (--font-mono a iesit din UI): tabular-nums e suportat nativ de Inter. */
+.dateline, .day-numbers, .meta, .article-meta, .sources-inline, .stats-table,
+time, .card-meta, .arhiva-nume { font-variant-numeric: tabular-nums; }
 a:hover { color: var(--ink); }
-:focus-visible { outline: 2px solid var(--gold-strong); outline-offset: 3px; }
+:focus-visible { outline: 2px solid var(--navy); outline-offset: 3px; }
 
 /* ---------------------------------------------------------------- Masthead --- */
 /* header + subnav sticky impreuna: inaltimea header-ului variaza (wrap pe mobil,
@@ -97,8 +105,8 @@ a:hover { color: var(--ink); }
   color: var(--ink-3); text-transform: uppercase; letter-spacing: 2.5px;
 }
 .brand .logo {
-  font-family: var(--font-display); font-size: var(--fs-xl); font-weight: 800;
-  color: var(--ink); letter-spacing: .2px;
+  font-family: var(--font-display); font-size: 2rem; font-weight: 600;
+  color: var(--ink); letter-spacing: .1px;
 }
 .brand .logo b { color: var(--gold-strong); }
 .brand-descriptor {
@@ -111,7 +119,7 @@ a:hover { color: var(--ink); }
   font-size: var(--fs-xs); text-transform: uppercase; letter-spacing: 1px;
   padding-bottom: 3px; border-bottom: 2px solid transparent;
 }
-.nav a:hover, .nav a.active { color: var(--gold-strong); border-bottom-color: var(--gold); }
+.nav a:hover, .nav a.active { color: var(--navy); border-bottom-color: var(--gold); }
 
 /* randul secundar: categoriile de tema, strip orizontal (scroll pe mobil) */
 .subnav {
@@ -128,7 +136,7 @@ a:hover { color: var(--ink); }
      nu modifica linia vizuala (padding-top nu muta borderul decolativ). */
   padding: var(--s-5) 0 3px; border-bottom: 2px solid transparent; white-space: nowrap;
 }
-.subnav a:hover, .subnav a.active { color: var(--gold-strong); border-bottom-color: var(--gold); }
+.subnav a:hover, .subnav a.active { color: var(--navy); border-bottom-color: var(--gold); }
 .subnav-more { position: relative; flex: 0 0 auto; }
 /* Varianta mobil a «Mai multe secțiuni»: link direct, ascuns pe ecrane late unde
    există dropdown-ul (vezi media query-ul de la 640px). */
@@ -139,7 +147,7 @@ a:hover { color: var(--ink); }
   white-space: nowrap; padding: var(--s-5) 0;  /* idem: tinta de atingere >= 24px */
 }
 .subnav-more summary::-webkit-details-marker { display: none; }
-.subnav-more summary::after { content: " ▾"; color: var(--gold-strong); }
+.subnav-more summary::after { content: " ▾"; color: var(--ink-3); }
 .subnav-more[open] summary::after { content: " ▴"; }
 .subnav-more-list {
   position: absolute; right: 0; top: calc(100% + var(--s-8)); min-width: 220px;
@@ -174,7 +182,7 @@ a:hover { color: var(--ink); }
 /* ---------------------------------------------------------------- Layout --- */
 main { max-width: var(--maxw); margin: 0 auto; padding: var(--s-34) var(--s-34); }
 .section-title {
-  font-family: var(--font-display); font-size: var(--fs-xl); font-weight: 800; color: var(--ink);
+  font-family: var(--font-display); font-size: var(--fs-xl); font-weight: 600; color: var(--ink);
   margin: var(--s-55) 0 var(--s-21); padding-bottom: var(--s-8);
   border-bottom: 2px solid var(--ink); letter-spacing: -.2px;
 }
@@ -196,10 +204,10 @@ main { max-width: var(--maxw); margin: 0 auto; padding: var(--s-34) var(--s-34);
 .lead-feature .lead-main .badge { margin-bottom: var(--s-8); }
 .lead-feature h2.lead-title {
   font-family: var(--font-display); font-size: var(--fs-2xl); line-height: 1.08;
-  margin: var(--s-5) 0 var(--s-21); font-weight: 800; letter-spacing: -.5px;
+  margin: var(--s-5) 0 var(--s-21); font-weight: 600; letter-spacing: -.5px;
 }
 .lead-feature h2.lead-title a { color: var(--ink); }
-.lead-feature h2.lead-title a:hover { color: var(--gold-strong); }
+.lead-feature h2.lead-title a:hover { color: var(--navy); }
 .lead-feature .lead-summary { font-size: var(--fs-md); color: var(--ink-2); margin: 0; line-height: 1.5; }
 .lead-feature .lead-aside {
   border-left: 1px solid var(--line); padding-left: var(--s-34);
@@ -211,7 +219,7 @@ main { max-width: var(--maxw); margin: 0 auto; padding: var(--s-34) var(--s-34);
   letter-spacing: 1.5px; color: var(--ink-3); margin: 0 0 var(--s-5); font-weight: 700;
 }
 .lead-feature .lead-aside ul { margin: 0; padding-left: var(--s-13); }
-.lead-feature .lead-aside .source { color: var(--gold-strong); }
+.lead-feature .lead-aside .source { color: var(--navy); }
 .reader-briefing {
   display: flex; align-items: end; justify-content: space-between; gap: var(--s-21);
   margin: var(--s-21) 0; padding: var(--s-21); border-left: 3px solid var(--gold);
@@ -221,11 +229,11 @@ main { max-width: var(--maxw); margin: 0 auto; padding: var(--s-34) var(--s-34);
 .reader-briefing p { margin: 0; color: var(--ink-2); font-size: var(--fs-xs); }
 .reader-briefing-actions { display: flex; flex-wrap: wrap; gap: var(--s-13); flex: 0 0 auto; }
 .reader-briefing-actions a, .article-report-link {
-  display: inline-block; padding: var(--s-8) var(--s-13); border: 1px solid var(--gold-strong);
+  display: inline-block; padding: var(--s-8) var(--s-13); border: 1px solid var(--navy);
   font-family: var(--font-mono); font-weight: 700; font-size: var(--fs-eyebrow);
   text-transform: uppercase; letter-spacing: .8px;
 }
-.reader-briefing-actions a:hover, .article-report-link:hover { background: var(--gold-strong); color: #fff; }
+.reader-briefing-actions a:hover, .article-report-link:hover { background: var(--navy); color: var(--paper); }
 
 /* ---- INDEX editorial: fara chenare, separator-linie, inaltime naturala ---- */
 /* Coloane de ziar: gap mare pe orizontala, fiecare stire = bloc tipografic. */
@@ -238,7 +246,7 @@ main { max-width: var(--maxw); margin: 0 auto; padding: var(--s-34) var(--s-34);
   background: none; border: 0; border-top: 1px solid var(--line-strong);
   padding: var(--s-21) 0; display: flex; flex-direction: column; gap: var(--s-8);
 }
-.card:hover .card-title a { color: var(--gold-strong); }
+.card:hover .card-title a { color: var(--navy); }
 
 /* banda de top (stirile principale de sub lead): accent auriu -> ierarhie vizuala */
 .top-band .card { border-top: 3px solid var(--gold); }
@@ -278,7 +286,7 @@ picture { display: contents; }
    unic, inline prin <img>; dimensiunea calib pe randul de meta, aliniata la text */
 .ai-mark img { width: .95em; height: .95em; vertical-align: -.12em; margin-right: .3em; }
 
-.card-title { font-family: var(--font-display); font-size: var(--fs-lg); line-height: 1.15; margin: 0; font-weight: 700; letter-spacing: -.2px; }
+.card-title { font-family: var(--font-display); font-size: var(--fs-lg); line-height: 1.2; margin: 0; font-weight: 400; letter-spacing: -.1px; }
 .card-title a { color: var(--ink); transition: color .15s ease; }
 .card.lead .card-title { font-size: var(--fs-xl); }
 .meta {
@@ -315,7 +323,7 @@ picture { display: contents; }
 .article .badge { margin-bottom: var(--s-8); }
 .article h1 {
   font-family: var(--font-display); font-size: var(--fs-2xl); line-height: 1.1;
-  margin: var(--s-8) 0 var(--s-21); font-weight: 800; letter-spacing: -.5px;
+  margin: var(--s-8) 0 var(--s-21); font-weight: 600; letter-spacing: -.5px;
 }
 .article .body { font-size: var(--fs-md); color: var(--ink); margin: var(--s-21) 0; line-height: 1.6; }
 /* anunt oficial fara corp: nota tine locul corpului, dar citeste ca metadata, nu ca text de
@@ -405,10 +413,10 @@ picture { display: contents; }
 .article-updated { color: var(--ink-2); }
 .btn-source {
   display: inline-block; margin-top: var(--s-21); padding: var(--s-13) var(--s-21);
-  background: var(--ink); color: #fff; font-family: var(--font-mono); font-weight: 700;
+  background: var(--ink); color: var(--paper); font-family: var(--font-mono); font-weight: 700;
   font-size: var(--fs-xs); text-transform: uppercase; letter-spacing: 1px;
 }
-.btn-source:hover { background: var(--gold-strong); color: #fff; }
+.btn-source:hover { background: var(--navy); color: var(--paper); }
 
 /* ------------------------------------------------------- Pagini statice --- */
 .static-page { max-width: var(--measure); margin: 0 auto; }
@@ -428,7 +436,7 @@ picture { display: contents; }
 }
 .site-footer nav { display: flex; flex-wrap: wrap; gap: var(--s-21); }
 .site-footer a { color: var(--ink-3); font-family: var(--font-mono); text-transform: uppercase; letter-spacing: .5px; font-size: var(--fs-eyebrow); }
-.site-footer a:hover { color: var(--gold-strong); }
+.site-footer a:hover { color: var(--navy); }
 .empty { text-align: center; color: var(--ink-3); padding: var(--s-89) var(--s-21); }
 
 /* ---------------------------------------------------------- Responsive --- */
@@ -462,17 +470,20 @@ picture { display: contents; }
 @view-transition { navigation: auto; }
 /* ------------------------------------------------- Dark mode --- */
 [data-theme="dark"] {
-  --paper:       #0d1116;
-  --paper-2:     #141b22;
-  --ink:         #e4e8ec;
-  --ink-2:       #9ba3ae;
-  --ink-3:       #808b9c;   /* #6b7483 masurat 4.01:1 pe --paper / 3.68:1 pe --paper-2 (pa11y: 305 erori pe /) - eșua AA */
-  --line:        #1e2a35;
-  --line-strong: #2a3746;
-  --gold:        #d6b25e;
-  --gold-strong: #c9a227;
-  --gold-wash:   #1a1d10;
-  --danger:      #e0574a;   /* 5.08:1 pe --paper dark; #c0392b (light) dadea 3.48:1 */
+  --paper:       #0f1115;
+  --paper-2:     #161a20;
+  --ink:         #e9e6df;
+  --ink-2:       #a8afba;
+  --ink-3:       #8b93a0;   /* 4.7:1 pe --paper dark */
+  --line:        #23282f;
+  --line-strong: #333a43;
+  --gold:        #c8a458;
+  --gold-strong: #d3b26a;   /* alama se aprinde pe intunecat (kicker, logo) */
+  --gold-wash:   #1b1a17;
+  --navy:        #a9c7e9;   /* linkurile: navy-ul de lumina nu se citeste pe intunecat */
+  --live:        #e2796b;
+  --ink-fixed:   #14161a;
+  --danger:      #e0574a;   /* 5.08:1 pe --paper dark */
 }
 [data-theme="dark"] .lead-feature { background: var(--paper-2); }
 [data-theme="dark"] .card-media { background: var(--line); }
@@ -503,11 +514,11 @@ picture { display: contents; }
   font-family: var(--font-mono); font-size: var(--fs-eyebrow); font-weight: 700;
   text-transform: uppercase; letter-spacing: 1px; cursor: pointer;
   padding: 6px 13px; border-radius: 3px 0 0 3px;
-  background: linear-gradient(135deg, #f0d585 0%, #fff3c4 18%, #d9ae3f 45%, #c9a227 70%, #b8862a 100%);
-  color: var(--ink-fixed); border: 1px solid #b8862a;
-  box-shadow: inset 0 1px 0 rgba(255,255,255,.4), inset 0 -1px 2px rgba(0,0,0,.12);
+  /* Fara gradient metalic: in sistemul „hartie curata" accentul tare e navy, iar arama
+     rămâne decor. Gradientul lupta cu hartia si singura lui menire era sa para „pretios". */
+  background: var(--navy); color: var(--paper); border: 1px solid var(--navy);
 }
-.izz-install-btn:hover { filter: brightness(1.05); }
+.izz-install-btn:hover { background: var(--ink); border-color: var(--ink); color: var(--paper); }
 .izz-install-inchide {
   background: var(--paper-2); color: var(--ink-3); cursor: pointer;
   border: 1px solid var(--line-strong); border-left: none; border-radius: 0 3px 3px 0;
@@ -550,7 +561,7 @@ picture { display: contents; }
   color: var(--ink-2); display: flex; align-items: center; justify-content: center;
   transition: background .15s, color .15s;
 }
-.theme-toggle:hover { background: var(--gold); color: #fff; border-color: var(--gold); }
+.theme-toggle:hover { background: var(--navy); color: var(--paper); border-color: var(--navy); }
 /* Glifa arata ACTIUNEA, nu starea curenta: pe tema luminoasa oferi intunericul, pe cea
    intunecata oferi lumina. Din CSS, nu din JS: theme.js ruleaza in <head>, dar isi poate
    atinge butonul abia la DOMContentLoaded -- un vizitator pe dark ar vedea intai ☾ si apoi ☀.
@@ -585,7 +596,7 @@ picture { display: contents; }
   transition: background .15s, color .15s, opacity .2s;
 }
 .back-to-top.visible { display: flex; }
-.back-to-top:hover { background: var(--gold); color: #fff; border-color: var(--gold); }
+.back-to-top:hover { background: var(--navy); color: var(--paper); border-color: var(--navy); }
 
 /* ------------------------------------------------- Timp citire --- */
 .reading-time {
@@ -600,7 +611,7 @@ picture { display: contents; }
   display: flex; flex-wrap: wrap; gap: var(--s-5); align-items: center;
 }
 .breadcrumbs a { color: var(--ink-3); text-decoration: underline; }
-.breadcrumbs a:hover { color: var(--gold-strong); }
+.breadcrumbs a:hover { color: var(--navy); }
 /* --line-strong e un token de HAIRLINE; folosit ca text dadea 1.5:1 (WCAG cere 4.5:1).
    --ink-3 e tokenul de meta discret, deja calibrat pentru text. Gasit ruland pa11y pe
    /ghiduri/ — auditul standard atinge doar home si un articol, deci breadcrumbs de aici
@@ -617,8 +628,8 @@ picture { display: contents; }
   border-radius: var(--radius); color: var(--ink-2); text-decoration: none;
   min-width: 36px; text-align: center;
 }
-.pagination a:hover { background: var(--gold); color: #fff; border-color: var(--gold); }
-.pagination .current { background: var(--ink); color: #fff; border-color: var(--ink); }
+.pagination a:hover { background: var(--navy); color: var(--paper); border-color: var(--navy); }
+.pagination .current { background: var(--ink); color: var(--paper); border-color: var(--ink); }
 .pagination .disabled { opacity: .4; pointer-events: none; }
 /* saltul din numerotare („…") nu e o tinta, deci nici chenar de tinta */
 .pagination .gap { border-color: transparent; min-width: 0; padding-left: 0; padding-right: 0; }
@@ -675,8 +686,8 @@ picture { display: contents; }
   font-family: var(--font-display); font-size: var(--fs-md); color: var(--ink);
   background: var(--paper-2); user-select: none;
 }
-.source-group summary:hover { color: var(--gold-strong); }
-.source-group[open] summary { border-bottom: 1px solid var(--line); color: var(--gold-strong); }
+.source-group summary:hover { color: var(--navy); }
+.source-group[open] summary { border-bottom: 1px solid var(--line); color: var(--navy); }
 .source-group-count { font-family: var(--font-mono); font-size: var(--fs-eyebrow); font-weight: 400; color: var(--ink-3); margin-left: var(--s-8); }
 .source-group-body { padding: var(--s-13) var(--s-21) var(--s-21); }
 .source-group-body .table-wrap { margin-bottom: var(--s-8); }
@@ -694,8 +705,8 @@ picture { display: contents; }
   text-transform: uppercase; letter-spacing: 1.5px; font-weight: 700;
   color: var(--ink-2); padding: var(--s-8) 0;
 }
-.source-region summary:hover { color: var(--gold-strong); }
-.source-region[open] summary { color: var(--gold-strong); }
+.source-region summary:hover { color: var(--navy); }
+.source-region[open] summary { color: var(--navy); }
 .source-county { border-left: 2px solid var(--line); padding-left: var(--s-13); margin: var(--s-13) 0 var(--s-21); }
 .source-county-name { font-size: var(--fs-xs); font-weight: 700; color: var(--ink-2); margin: 0 0 var(--s-8); }
 
@@ -758,7 +769,7 @@ picture { display: contents; }
   container-type: inline-size;
   position: relative; width: 100%; aspect-ratio: 960 / 504; overflow: hidden;
   background: var(--art-bg); color: var(--art-acc);
-  font-family: var(--font-display); font-weight: 800; line-height: 1;
+  font-family: var(--font-display); font-weight: 600; line-height: 1;
   text-transform: uppercase; user-select: none;
 }
 .art p, .art div, .art span { margin: 0; }
@@ -767,14 +778,20 @@ picture { display: contents; }
   opacity: .05; mix-blend-mode: multiply; pointer-events: none;
 }
 /* Eticheta: o singura marime tipografica pe tot fisierul, pe patru trepte de lungime.
-   Calibrata 2026-10-01 pe metricile REALE ale Playfair 800 (sonda
-   notes/sonda_latime_etichete_2026-10-01.py): cel mai lat cuvant REAL al fiecarei trepte
+   Pragurile de mai jos au fost calibrate 2026-10-01 pe metricile REALE ale Playfair 800
+   (notes/sonda_latime_etichete_2026-10-01.py): cel mai lat cuvant REAL al fiecarei trepte
    trebuie sa incapa pe un singur rand in coloana fiecarei compozitii. Inainte treptele
    veneau din tabelele raster `_et_px` (1/.8/.65/.5 peste 8/13/18 litere), calibrate pe
    o geometrie in care fontul nu fusese masurat: cuvintele intregi de 9+ litere nu
    incapeau si `overflow-wrap: anywhere` le taia prin mijloc (ex. „DÂMBOVIȚ / A” pe
-   /judetean/). `overflow-wrap` ramane ca plasa de siguranta pentru un cuvant mai lungi
-   decât orice exista azi in gazetteer. */
+   /judetean/). `overflow-wrap` ramane ca plasa de siguranta pentru un cuvant mai lung
+   decat orice exista azi in gazetteer.
+
+   DIN 2026-11-07 (rebranding, directia A) eticheta se deseneaza cu Newsreader, care e cu
+   13-30% mai INGUSTA decat Playfair la acelasi corp. Pragurile vechi rămân valide ca
+   limita de SUS (nimic nu se mai taie), dar textele arata mai mici in acelasi chenar;
+   recablarea fina se face in faza 5 (arta v2), cand se remasoara pe Newsreader.
+    */
 .art--t0 { --art-et-k: 1; }
 .art--t1 { --art-et-k: .77; }
 .art--t2 { --art-et-k: .6; }
@@ -1161,10 +1178,10 @@ picture { display: contents; }
   padding: var(--s-13) var(--s-21); border: 1px solid var(--line-strong);
   border-radius: var(--radius); background: var(--paper-2);
 }
-.search-page input[type="search"]:focus { outline: 2px solid var(--gold-strong); outline-offset: 2px; }
+.search-page input[type="search"]:focus { outline: 2px solid var(--navy); outline-offset: 2px; }
 .search-filter-label { display: inline-block; margin: var(--s-13) var(--s-8) 0 0; color: var(--ink-2); font-family: var(--font-mono); font-size: var(--fs-eyebrow); font-weight: 700; }
 .search-filter { margin-top: var(--s-13); min-height: 38px; max-width: 100%; padding: var(--s-5) var(--s-13); color: var(--ink); background: var(--paper-2); border: 1px solid var(--line-strong); border-radius: var(--radius); font: inherit; }
-.search-filter:focus { outline: 2px solid var(--gold-strong); outline-offset: 2px; }
+.search-filter:focus { outline: 2px solid var(--navy); outline-offset: 2px; }
 .search-hint, .search-scope { color: var(--ink-3); font-size: var(--fs-xs); }
 .search-scope { margin: var(--s-13) 0 0; }
 .search-quick-filters {
@@ -1183,14 +1200,14 @@ picture { display: contents; }
 .search-quick-filter[aria-pressed="true"] {
   background: var(--ink); color: var(--paper); border-color: var(--ink); font-weight: 700;
 }
-.search-quick-filter:hover { border-color: var(--gold-strong); color: var(--gold-strong); }
+.search-quick-filter:hover { border-color: var(--navy); color: var(--navy); }
 .search-quick-filter[aria-pressed="true"]:hover { color: var(--paper); }
-.search-quick-filter:focus { outline: 2px solid var(--gold-strong); outline-offset: 2px; }
+.search-quick-filter:focus { outline: 2px solid var(--navy); outline-offset: 2px; }
 #search-status { font-family: var(--font-mono); font-size: var(--fs-eyebrow); color: var(--ink-3); min-height: 1.2em; }
 .search-results { list-style: none; margin: var(--s-21) 0 0; padding: 0; max-width: var(--measure); }
 .search-results li { border-top: 1px solid var(--line); padding: var(--s-13) 0; }
 .search-results a { font-family: var(--font-display); font-weight: 700; font-size: var(--fs-md); color: var(--ink); }
-.search-results a:hover { color: var(--gold-strong); }
+.search-results a:hover { color: var(--navy); }
 .search-more {
   font-family: var(--font-mono); font-size: var(--fs-xs); font-weight: 700;
   margin: var(--s-13) 0 var(--s-21); padding: var(--s-8) var(--s-13); cursor: pointer;
@@ -1286,26 +1303,26 @@ picture { display: contents; }
   width: 8px; height: 8px; border-radius: 50%; background: var(--gold); }
 .timeline time { display: block; font-family: var(--font-mono); font-size: var(--fs-eyebrow); color: var(--ink-3); }
 .timeline a { font-family: var(--font-display); font-weight: 700; font-size: var(--fs-md); color: var(--ink); }
-.timeline a:hover { color: var(--gold-strong); }
+.timeline a:hover { color: var(--navy); }
 .related { margin: var(--s-34) 0 0; border-top: 1px solid var(--line-strong); padding-top: var(--s-13); }
 .related h2 { font-family: var(--font-mono); font-size: var(--fs-eyebrow); text-transform: uppercase;
   letter-spacing: 1.5px; color: var(--ink-3); margin: 0 0 var(--s-8); font-weight: 700; }
 .related ul { list-style: none; margin: 0; padding: 0; }
 .related li { padding: var(--s-8) 0; }
 .related li a { font-family: var(--font-display); font-weight: 700; color: var(--ink); }
-.related li a:hover { color: var(--gold-strong); }
+.related li a:hover { color: var(--navy); }
 .related-meta { display: block; font-family: var(--font-mono); font-size: var(--fs-eyebrow); color: var(--ink-3); }
 
 /* ------------------------------------------- Pagini utilitate --- */
 .utility-page { max-width: var(--measure); margin: 0 auto; }
 .utility-hero { text-align: center; margin-bottom: var(--s-34); padding-bottom: var(--s-21); border-bottom: 2px solid var(--gold); }
 .utility-icon { font-size: 3rem; display: block; margin-bottom: var(--s-8); }
-.utility-hero h1 { font-family: var(--font-display); font-size: var(--fs-2xl); font-weight: 800; margin: 0 0 var(--s-8); }
+.utility-hero h1 { font-family: var(--font-display); font-size: var(--fs-2xl); font-weight: 600; margin: 0 0 var(--s-8); }
 .utility-subtitle { color: var(--ink-2); font-size: var(--fs-md); max-width: 540px; margin: 0 auto; }
 .utility-summary { background: var(--gold-wash); border-left: 4px solid var(--gold); padding: var(--s-21); margin-bottom: var(--s-34); border-radius: 0 var(--radius) var(--radius) 0; }
 .utility-summary h2 { margin: 0 0 var(--s-8); font-family: var(--font-display); font-size: var(--fs-md); }
 .utility-summary p { margin: 0 0 var(--s-13); line-height: 1.6; }
-.utility-value { margin: var(--s-13) 0; font-family: var(--font-display); font-size: var(--fs-2xl); font-weight: 800; color: var(--gold-strong); }
+.utility-value { margin: var(--s-13) 0; font-family: var(--font-display); font-size: var(--fs-2xl); font-weight: 600; color: var(--gold-strong); }
 .utility-meta { display: flex; gap: var(--s-21); flex-wrap: wrap; font-family: var(--font-mono); font-size: var(--fs-eyebrow); color: var(--ink-3); }
 .utility-section { margin-bottom: var(--s-34); }
 .utility-section h2 { font-family: var(--font-display); font-size: var(--fs-lg); font-weight: 700; margin: 0 0 var(--s-13); }
@@ -1320,7 +1337,7 @@ picture { display: contents; }
 .calc-row { margin-bottom: var(--s-13); }
 .calc-row label { display: block; font-family: var(--font-mono); font-size: var(--fs-xs); font-weight: 600; color: var(--ink-2); margin-bottom: var(--s-5); }
 .calc-row input { width: 100%; max-width: 240px; padding: var(--s-8) var(--s-13); border: 1px solid var(--line-strong); border-radius: var(--radius); font: inherit; font-size: var(--fs-md); background: var(--paper); }
-.calc-row input:focus { outline: 2px solid var(--gold-strong); outline-offset: 2px; }
+.calc-row input:focus { outline: 2px solid var(--navy); outline-offset: 2px; }
 .calc-controls { display: flex; gap: var(--s-8); align-items: center; flex-wrap: wrap; }
 .calc-results { display: flex; flex-direction: column; gap: var(--s-5); margin-top: var(--s-13); }
 .calc-item { display: flex; justify-content: space-between; padding: var(--s-8) 0; border-bottom: 1px solid var(--line); font-size: var(--fs-xs); }
@@ -1334,8 +1351,8 @@ picture { display: contents; }
 .faq-list { display: flex; flex-direction: column; gap: var(--s-8); }
 .faq-item { border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; }
 .faq-item summary { padding: var(--s-13) var(--s-21); cursor: pointer; font-weight: 600; font-family: var(--font-display); font-size: var(--fs-base); color: var(--ink); background: var(--paper-2); user-select: none; }
-.faq-item summary:hover { color: var(--gold-strong); }
-.faq-item[open] summary { border-bottom: 1px solid var(--line); color: var(--gold-strong); }
+.faq-item summary:hover { color: var(--navy); }
+.faq-item[open] summary { border-bottom: 1px solid var(--line); color: var(--navy); }
 .faq-item p { margin: 0; padding: var(--s-13) var(--s-21); font-size: var(--fs-base); line-height: 1.6; }
 
 /* Utile index */
@@ -1351,7 +1368,7 @@ picture { display: contents; }
 .related-news-list li { padding: var(--s-8) 0; border-top: 1px solid var(--line); }
 .related-news-list li:first-child { border-top: none; }
 .related-news-list a { font-family: var(--font-display); font-weight: 700; color: var(--ink); font-size: var(--fs-base); }
-.related-news-list a:hover { color: var(--gold-strong); }
+.related-news-list a:hover { color: var(--navy); }
 .utility-value-sec { font-family: var(--font-display); font-size: var(--fs-lg); font-weight: 700; color: var(--ink); margin: var(--s-5) 0; }
 .utility-note { font-size: var(--fs-xs); color: var(--ink-2); margin: var(--s-5) 0 0; }
 /* Valori inca neconfirmate pe sursa oficiala. Trebuie sa se vada langa cifra, nu in subsol —
@@ -1365,7 +1382,7 @@ picture { display: contents; }
 .utility-unverified strong { color: var(--ink); }
 .utility-card-updated.is-unverified { color: var(--gold-strong); font-weight: 700; }
 .btn-preset { font-family: var(--font-mono); font-size: var(--fs-eyebrow); padding: 4px 10px; border: 1px solid var(--line-strong); border-radius: var(--radius); background: var(--paper); cursor: pointer; color: var(--ink-2); }
-.btn-preset:hover { background: var(--gold); color: #fff; border-color: var(--gold); }
+.btn-preset:hover { background: var(--navy); color: var(--paper); border-color: var(--navy); }
 
 /* ---- orientare editoriala si transparenta provenientei ---- */
 .editorial-guide {
@@ -1380,7 +1397,7 @@ picture { display: contents; }
 .editorial-legend { display: grid; gap: var(--s-8); color: var(--ink-2); font-size: var(--fs-xs); line-height: 1.45; }
 .editorial-legend span { padding-left: var(--s-13); border-left: 2px solid var(--gold); }
 .editorial-legend b { color: var(--ink); }
-.trust-label { margin: 0; color: var(--gold-strong); font-family: var(--font-mono); font-size: var(--fs-eyebrow); font-weight: 700; letter-spacing: .3px; }
+.trust-label { margin: 0; color: var(--ink-2); font-family: var(--font-mono); font-size: var(--fs-eyebrow); font-weight: 700; letter-spacing: .3px; }
 .article-trust { margin: var(--s-8) 0 var(--s-13); }
 .verification-note { margin: var(--s-21) 0; padding: var(--s-13) var(--s-21); color: var(--ink-2); background: var(--paper-2); border-left: 3px solid var(--gold); font-size: var(--fs-xs); line-height: 1.55; }
 @media (max-width: 720px) {
@@ -1431,7 +1448,7 @@ picture { display: contents; }
   background: none; border: 1px solid var(--line-strong); border-radius: 4px;
   color: var(--ink-2); font-size: var(--fs-xs); cursor: pointer;
 }
-.izz-citire button[aria-pressed="true"] { border-color: var(--gold-strong); color: var(--gold-strong); }
+.izz-citire button[aria-pressed="true"] { border-color: var(--navy); color: var(--navy); }
 html[data-text="mare"] { font-size: 112.5%; }
 html[data-text="spatiu"] { --lh-body: 1.85; }
 @media print {
