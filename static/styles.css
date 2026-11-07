@@ -368,13 +368,49 @@ picture { display: contents; }
 }
 
 /* ----------------------------------------------------- Pagina de articol --- */
-.article { max-width: var(--measure); margin: 0 auto; }
-.article .badge { margin-bottom: var(--s-8); }
-.article h1 {
-  font-family: var(--font-display); font-size: var(--fs-2xl); line-height: 1.1;
-  margin: var(--s-8) 0 var(--s-21); font-weight: 600; letter-spacing: -.5px;
+/* Banda de context: unde se intampla si despre ce e vorba — intre doua linii fine,
+   imediat sub randul de meta, inainte de corp. */
+.context {
+  display: flex; flex-wrap: wrap; align-items: center; gap: var(--s-8);
+  margin: var(--s-21) 0 var(--s-34); padding: var(--s-13) 0;
+  border-top: 1px solid var(--line); border-bottom: 1px solid var(--line);
 }
-.article .body { font-size: var(--fs-md); color: var(--ink); margin: var(--s-21) 0; line-height: 1.6; }
+.ctx-label {
+  font-size: 0.6875rem; font-weight: 600; letter-spacing: .13em; text-transform: uppercase;
+  color: var(--ink-3); margin-right: var(--s-5);
+}
+.chip {
+  display: inline-flex; align-items: center; height: 28px; padding: 0 var(--s-13);
+  border: 1px solid var(--line-strong); border-radius: 999px;
+  font-size: 0.75rem; color: var(--ink-2); background: none;
+}
+a.chip:hover { border-color: var(--ink-3); color: var(--ink); }
+.chip--atentie { border-color: var(--gold); color: var(--gold-strong); }
+
+
+.article { max-width: var(--measure); margin: 0 auto; }
+/* Titlul articolului: cea mai mare litera din site, tight, fara chenar. */
+.article h1 {
+  font-family: var(--font-display); font-size: clamp(1.9rem, 1.3rem + 2.8vw, 2.75rem);
+  line-height: 1.07; margin: var(--s-8) 0 var(--s-21); font-weight: 600; letter-spacing: -.02em;
+  overflow-wrap: anywhere;
+}
+/* Kicker: categoria si starea, pe un rand, inaintea titlului. */
+.article-kicker {
+  margin: 0 0 var(--s-5); display: flex; flex-wrap: wrap; align-items: baseline;
+  gap: 2px var(--s-13); font-size: 0.6875rem; text-transform: uppercase; letter-spacing: .13em;
+}
+.article-kicker .badge { font-weight: 600; }
+.article-kicker .trust-label {
+  font-family: var(--font-text); font-weight: 400; letter-spacing: .04em;
+  text-transform: none; font-size: 0.75rem; color: var(--ink-3);
+}
+/* Corpul: serif la 19px. Textul de ziar se citeste in serif; faraul rămâne pentru
+   interfață (etichete, meta, butoane). */
+.article .body {
+  font-family: var(--font-display); font-size: var(--fs-md); color: var(--ink);
+  margin: var(--s-21) 0; line-height: 1.62; letter-spacing: 0;
+}
 /* anunt oficial fara corp: nota tine locul corpului, dar citeste ca metadata, nu ca text de
    articol — altfel arata ca un rezumat, exact ce nu publicam pentru itemele astea */
 .official-note {
@@ -418,8 +454,8 @@ picture { display: contents; }
   color: var(--gold);
   margin: var(--s-4) 0;
 }
-.sources-box { border-top: 2px solid var(--ink); padding-top: var(--s-13); margin: var(--s-34) 0; }
-.sources-box h2 { margin: 0 0 var(--s-8); font-family: var(--font-mono); font-size: var(--fs-eyebrow); text-transform: uppercase; letter-spacing: 1.5px; color: var(--ink-3); font-weight: 700; }
+.sources-box { border-top: 2px solid var(--ink); padding-top: var(--s-13); margin: var(--s-55) 0; }
+.sources-box h2 { margin: 0 0 var(--s-13); font-family: var(--font-text); font-size: 0.6875rem; text-transform: uppercase; letter-spacing: .13em; color: var(--ink-3); font-weight: 600; }
 .sources-box ul { margin: 0; padding-left: var(--s-21); }
 .first-badge {
   color: var(--ink-2); font-family: var(--font-mono); font-size: var(--fs-eyebrow);
@@ -429,12 +465,13 @@ picture { display: contents; }
    fiecărui fapt e metadată, deci mono + ton secundar, pe același rând (atribuire, nu link). */
 .dialectic { margin: var(--s-21) 0; }
 .dialectic-h {
-  margin: var(--s-21) 0 var(--s-8); font-family: var(--font-mono); font-size: var(--fs-eyebrow);
-  text-transform: uppercase; letter-spacing: 1.2px; color: var(--ink-3); font-weight: 700;
+  margin: var(--s-34) 0 var(--s-13); font-family: var(--font-text); font-size: 0.6875rem;
+  text-transform: uppercase; letter-spacing: .13em; color: var(--ink-3); font-weight: 600;
 }
 .dialectic-list { margin: 0; padding-left: var(--s-21); }
-.dialectic-list li { font-size: var(--fs-md); line-height: 1.6; color: var(--ink); margin: 0 0 var(--s-8); }
+.dialectic-list li { font-family: var(--font-display); font-size: var(--fs-md); line-height: 1.62; color: var(--ink); margin: 0 0 var(--s-13); }
 .dialectic-single li { font-size: var(--fs-base); color: var(--ink-2); }
+.dialectic .body { font-family: var(--font-display); }
 .dialectic-src {
   font-family: var(--font-mono); font-size: var(--fs-eyebrow); color: var(--ink-3);
   overflow-wrap: anywhere;
@@ -450,12 +487,12 @@ picture { display: contents; }
 }
 .source-roles-note { margin: var(--s-13) 0 0; font-size: var(--fs-xs); color: var(--ink-3); line-height: 1.55; }
 .article-accountability {
-  margin: var(--s-34) 0; padding: var(--s-21); border-left: 3px solid var(--gold);
-  background: var(--gold-wash); color: var(--ink-2); font-size: var(--fs-xs); line-height: 1.55;
+  margin: var(--s-55) 0 0; padding-top: var(--s-21); border-top: 1px solid var(--line);
+  color: var(--ink-3); font-size: 0.78125rem; line-height: 1.6;
 }
 .article-accountability h2 {
-  margin: 0 0 var(--s-8); color: var(--ink); font-family: var(--font-mono);
-  font-size: var(--fs-eyebrow); text-transform: uppercase; letter-spacing: 1px;
+  margin: 0 0 var(--s-8); color: var(--ink-2); font-family: var(--font-text);
+  font-size: 0.6875rem; text-transform: uppercase; letter-spacing: .13em; font-weight: 600;
 }
 .article-accountability p { margin: var(--s-8) 0; }
 .article-accountability a:not(.article-report-link) { margin-left: var(--s-13); text-decoration: underline; }

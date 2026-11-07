@@ -296,6 +296,9 @@ def _env() -> Environment:
     )
     # eticheta afisata a unei categorii (slug URL neschimbat); fallback = capitalizat
     env.filters["cat_label"] = lambda slug: config.CATEGORY_LABELS.get(slug, (slug or "").capitalize())
+    # Codul de judet din date e „CONSTANTA”, „TIMIS”; banda de context din articol are nevoie
+    # de forma cu diacritice („Constanța”), din aceeasi sursa ca etichetele de pe coperti.
+    env.filters["judet_label"] = geo.eticheta_judet
     env.filters["href_extern"] = _href_extern
     return env
 
