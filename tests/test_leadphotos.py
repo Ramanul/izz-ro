@@ -25,11 +25,22 @@ def test_landscape_gate():
     assert not lp.is_landscape(0, 0)
 
 
-def test_qualifies_needs_both_landscape_and_pd():
+def test_qualifies_accepts_landscape_and_vertical_with_compatible_license():
     assert lp.qualifies({"width": 1600, "height": 900, "license": "Public domain"})
-    assert not lp.qualifies({"width": 1600, "height": 900, "license": "CC BY 4.0"})   # PD lipsa
-    assert not lp.qualifies({"width": 800, "height": 1200, "license": "CC0"})         # portret
+    assert lp.qualifies({"width": 1600, "height": 900, "license": "CC BY 4.0"})       # CC BY permis
+    assert lp.qualifies({"width": 800, "height": 1200, "license": "CC0"})             # portret vertical permis
+    assert lp.qualifies({"width": 800, "height": 1200, "license": "CC BY-SA 4.0"})    # portret CC BY-SA permis
+    assert not lp.qualifies({"width": 1600, "height": 900, "license": "Copyrighted"}) # licenta interzisa
+    assert not lp.qualifies({"width": 200, "height": 1000, "license": "CC0"})         # raport extrem (<0.5)
     assert not lp.qualifies({"width": 0, "height": 0, "license": "CC0"})
+
+
+def test_crop_to_with_focus_y_centers_on_face():
+    # Imagine verticala 800x1600
+    src = Image.new("RGB", (800, 1600), (255, 255, 255))
+    # Decupaj la 960x504 cu focalizare pe treimea superioara (focus_y=0.25)
+    out = lp.crop_to(src, 960, 504, focus_y=0.25)
+    assert out.size == (960, 504)
 
 
 def test_crop_to_produces_exact_dims_without_distortion():
@@ -53,3 +64,32 @@ def test_save_renditions_writes_valid_cover_art_webp(tmp_path, monkeypatch):
     assert Image.open(tmp_path / "test-entity.c.jpg").size == (lp.COVER_W, lp.COVER_H)
     assert Image.open(tmp_path / "test-entity.jpg").size == (lp.ART_W, lp.ART_H)
     assert (tmp_path / "test-entity.webp").exists()
+
+
+def test_is_tragic_or_negative_detects_tragedies_and_crimes():
+    assert lp.is_tragic_or_negative("Accident grav cu două victime pe DN2")
+    assert lp.is_tragic_or_negative("Bărbat arestat după un omor în localitate")
+    assert lp.is_tragic_or_negative("Percheziții DNA la sediul primăriei")
+    assert lp.is_tragic_or_negative("Incendiu puternic izbucnit la o gospodărie")
+    assert not lp.is_tragic_or_negative("Primăria modernizează parcul central")
+    assert not lp.is_tragic_or_negative("Investiții în infrastructura rutieră și apă")
+
+
+def test_lead_for_locality_rejects_tragic_news(monkeypatch):
+    art_tragic = {"title": "Accident mortal pe șoseaua de centură", "source": "pl_cluj_floresti", "category": "local"}
+    hit, motiv = lp.lead_for_locality(art_tragic, {})
+    assert hit is None
+    assert motiv == "loc_exclus_tematic"
+
+
+def test_lead_for_locality_accepts_clean_news(monkeypatch):
+    art_curat = {"title": "Inaugurarea noului centru cultural", "source": "pl_cluj_floresti", "category": "local"}
+    rec = {"qid": "Q42", "display": "Florești", "img": "Floresti.jpg"}
+    monkeypatch.setattr(lp.localities, "locality_for_article", lambda a, by: rec)
+    monkeypatch.setattr(lp, "commons_lead_info", lambda f: {"thumb": "http://x", "width": 1400, "height": 900, "license": "CC0", "artist": "A", "page": "p"})
+    monkeypatch.setattr(lp.localities, "usable", lambda i: True)
+    monkeypatch.setattr(lp.urllib.request, "urlopen", lambda *a, **k: type("Resp", (), {"read": lambda self: b"fake-jpg-content-over-3000-bytes" * 200})())
+    monkeypatch.setattr(lp, "_save_renditions", lambda data, slug, **kw: {"art": "a", "cover": "c", "webp": "w"})
+    hit, motiv = lp.lead_for_locality(art_curat, {})
+    assert motiv == "loc_ok"
+    assert hit["name"] == "Florești"
