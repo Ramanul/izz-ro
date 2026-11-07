@@ -16,7 +16,7 @@
 **Updated:** 2026-11-07 (rebranding #542 merged și LIVE; §8.4 închis integral).
 
 ## Open
-- **Ținut deoparte (7 nov 2026):** 3 commit-uri de artă generativă (78f36f734 geo/3D, 4e59cc2c4, 2ec6ce903) NU sunt pe main: main are deja aceeași muncă (25ce11c82, 9192f2fc8). Păstrate în backup-5-commits (copie locală). Fix-ul geo 78f36f734 nu se mai aplică pe main; de verificat separat dacă problema Vâlcea/UAT mai există. Lotul local de 989 fișiere stagiate rămâne neatins (785 imagini media/ cer consimțământ).
+- **Ținut deoparte (7 nov):** 3 commit-uri de artă (78f36f734, 4e59cc2c4, 2ec6ce903) nu sunt pe main; copie în backup-5-commits. Lotul local de 989 fișiere stagiate rămâne neatins.
 - **Garda contradicțiilor penalty (eroare Mbappé, CM 2026):** sinteză spunea „transformat penalty-ul”, sursele spuneau „ratat/apărat de Bono”. Fix în `generator/verifica_sinteza.py` (`contradicție_cheie_penalty`, advisory) + teste regresie + `specs/studiu-caz-penalty-mbappe.md`; PR deschisa din `arena/e234d218-izz-ro`.
 - **Encoding la `subprocess` [#549 merged 7 nov, `2c1aa33`]:** 32 de apeluri `text=True` fără encoding primesc `encoding="utf-8", errors="replace"` (`tests/`, `tools/`; `generator/` nu are). Cele 20 fără mod text rămân neschimbate. CI pe `main` verde după merge (`ci`, `tests`, `deploy-worker` pe `649d65819` și `f0e5ce572`); live verificat pe 7 nov, ~12:36 UTC. Note: `handoff/to-claude/2026-11-07-subprocess-encoding.md` și `handoff/to-claude/2026-11-07-subprocess-encoding-confirmare.md`.
 - **Rebranding „Hârtie curată" — #542 merged 7 nov, LIVE:** fazele 0–7 (tokeni +
