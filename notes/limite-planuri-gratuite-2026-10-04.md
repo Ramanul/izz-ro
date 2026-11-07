@@ -564,7 +564,7 @@ Ordinea de mai sus nu cere niciun ban; doar disciplina de a măsura înainte de 
 - `specs/cloudflare-free-2026-09.md` — calculul 20.000 fișiere, 51.896 → 16.732, TTL 21,
   confirmarea pe live a cifrei „înainte";
 - `generator/config.py` — `OUTPUT_FILE_CEILING=20000`, `OUTPUT_FILE_BUDGET=17000`,
-  `ARTICLE_TTL_DAYS=12` și istoricul comentat 30→21→20→11→12, incidentul din 2026-08-21;
+  `ARTICLE_TTL_DAYS` (12 la data notei, 2026-10-04; 11 din 2026-10-25) și istoricul comentat 30→21→20→11→12, incidentul din 2026-08-21;
 - `wrangler.jsonc` — `run_worker_first` minimal, nota despre 100.000 invocări/zi;
 - `infra/push.js` — plafonul de 1.000 scrieri KV/zi și «maxim o alertă pe zi»;
 - `infra/worker-404-mirror.js` — oglinda ca infrastructură de producție, rute cu listă pozitivă,
