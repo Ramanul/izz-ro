@@ -32,8 +32,12 @@ hărții pe alama brandului, paginile utilitare fără emoji.
 - **Lighthouse / pa11y:** rulau deja în CI (`editorial-frontend-audit.yml`, mediană din 3 rulări ×
   2 revizii); lipsea doar ca modificările de CSS/imagini să declanșeze jobul — adăugate în `paths`.
   Scorurile stau în sumarul rulării, nu în handoff.
-- **Singurul deschis rămas:** decizia de fonturi (5 fețe / 76 KB vs ținta 3 / 55 KB) — ambele
-  variante sunt măsurate în `PROPUNERE.md` §8.4 pct. 5.
+- **Fonturile (închis 7 nov):** ținta „3 fișiere / 55 KB" s-a **retras**, cu cifre: variabilul
+  complet ar da ~58 KB (peste 55), iar a coborî sub ea cere scoaterea unei greutăți Inter, adică
+  ~30 de etichete căzute de la 600 pe 700. Rămân 5 fețe / 76.224 B, păzite de
+  `tests/test_fonturi.py` (5 fețe / 80.000 B + diacritice). Cifra „9.396 B" din documentele de
+  ieri era o eroare: `analiza/rebranding/fonts/newsreader-var.woff2` e felia latin-ext, nu fontul
+  complet — garda `test_fisierul_variabil_din_analiza_e_doar_o_felie` ține minte capcana.
 - **Bugetul de pornire (rezolvat 7 nov):** era 37.880 B din 37.888 (8 octeți liberi), iar commitul de slogan de pe `main` l-a dus la 37.901 — CI roșu pe 13 octeți. Acum plafonul declarat e **40 KB**, iar `specs/STATE.md` are propriul plafon de **6 KB** (gardă nouă în `tests/test_reguli.py`, cu caz negativ și cu numărare pe octeți, nu pe caractere). Blocul vechi din `STATE.md` e mutat verbatim în `specs/istoric-executie.md`. Măsurat după: total **33.527 B** (−4.353), hook 16.353 → **12.000 B**, `STATE.md` 8.717 → **4.364 B** (40 → 21 de linii), liber 7,3 KB. Nu mai adăuga rânduri lungi în `STATE.md`: acolo garda numără octeți.
 
 ## 0. 23 octombrie — transformarea «prin prisma cărților» e PE MAIN (#511, #512)
