@@ -24,12 +24,7 @@ hărții pe alama brandului, paginile utilitare fără emoji.
   `PROPUNERE.md` §8, `specs/masuratori-frontend.md`.
 - **Deschis înainte de merge:** `tools/audit.sh` (Lighthouse + pa11y) cere Chromium — sandboxul
   în care s-a lucrat nu a avut browser, deci scorurile lipsesc. De rulat pe mașina proprietarului.
-- **Constrângere găsită la CI:** `specs/STATE.md` are ZERO spațiu de manevră — bugetul de pornire
-  (CLAUDE.md + hook + `.claude/agents` + `.claude/commands`) stătea pe main la 37.880 din 37.888
-  de octeți, iar hook-ul tipărește și STATE.md. Orice rând adăugat acolo pică
-  `test_bugetul_de_pornire_sub_plafonul_declarat` și `test_state_md_sub_plafonul_pe_care_il_declara`.
-  De aceea starea rebrandingului stă aici, nu în STATE.md: până nu se taie din CLAUDE.md/hook,
-  STATE.md nu mai primește rânduri noi.
+- **Bugetul de pornire (rezolvat 7 nov):** era 37.880 B din 37.888 (8 octeți liberi), iar commitul de slogan de pe `main` l-a dus la 37.901 — CI roșu pe 13 octeți. Acum plafonul declarat e **40 KB**, iar `specs/STATE.md` are propriul plafon de **6 KB** (gardă nouă în `tests/test_reguli.py`, cu caz negativ și cu numărare pe octeți, nu pe caractere). Blocul vechi din `STATE.md` e mutat verbatim în `specs/istoric-executie.md`. Măsurat după: total **33.527 B** (−4.353), hook 16.353 → **12.000 B**, `STATE.md` 8.717 → **4.364 B** (40 → 21 de linii), liber 7,3 KB. Nu mai adăuga rânduri lungi în `STATE.md`: acolo garda numără octeți.
 
 ## 0. 23 octombrie — transformarea «prin prisma cărților» e PE MAIN (#511, #512)
 
