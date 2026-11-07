@@ -17,8 +17,8 @@
 
 ## Open
 - **Rebranding „Hârtie curată" — #542 (ÎN REVIEW, fără merge):** fazele 0–6 — tokeni + Newsreader/Inter, masthead, card 7→4 elemente, pagină de articol, coperți pe același serif, o singură foaie de stil, rampa hărții pe alamă, utilitare fără emoji. Prima pagină 593→139 KB brut / 109→36,7 KB gzip. Cifre: `PROPUNERE.md` §8, `specs/masuratori-frontend.md`. Deschis: Lighthouse/pa11y (sandbox fără browser), `srcset` pentru 5 portrete de 190–371 KB.
-- **Transformarea «prin prisma cărților» (`specs/plan-paradigma-izz.md`):** E0–E4 pe main (#511, #512, #521 merged); D6 fără profilare (#515); `href` extern prin `guard.url_ostil` (#516). `SILENCE_REJECTION_THRESHOLD` rămâne 0,34 (leagă 1 din 74). Curățenia urmelor vechi din browsere: după 2027-01-31 [IZZ-0437].
-- **PWA + alerte push [IZZ-0430/0431] — PE MAIN (#434):** fără namespace KV + 4 secrete (`infra/PUSH-SETUP.md`), rutele dau 503.
+- **Transformarea «prin prisma cărților» (`specs/plan-paradigma-izz.md`):** E0–E4 pe main (#511 merged · #512 merged · #521 merged); D6 fără profilare (#515 merged); `href` extern prin `guard.url_ostil` (#516 merged). `SILENCE_REJECTION_THRESHOLD` rămâne 0,34 (leagă 1 din 74). Curățenia urmelor vechi din browsere: după 2027-01-31 [IZZ-0437].
+- **PWA + alerte push [IZZ-0430/0431] — PE MAIN (#434 merged):** fără namespace KV + 4 secrete (`infra/PUSH-SETUP.md`), rutele dau 503.
 - **Media pe carduri [IZZ-0403/0404 → IZZ-0416]:** portrete PD/CC0, siluete de județ, `covers.py`; marcaj AI Act la prima expunere [IZZ-0420/0423]. Pozele noi apar pe măsură ce `fetch_leadphotos`/`fetch_eventphotos` rulează în build.
 - **Harta [IZZ-0405, 0433, 0434]:** pini după precizie, proveniența în panoul județului, gesturi tactile. FAIL rămas: 2 puncte de frontieră, identic pe HEAD (#454).
 - **FEREASTRA TTL — 11 zile (aprobată de proprietar, 25 oct):** garda brută 13.025 → 11.833 (plafon 12.600) pe `a7bf06ae`; testul de siguranță neschimbat. Măsurarea pierderii: `generator/config.py`.
