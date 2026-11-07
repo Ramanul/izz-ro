@@ -9,6 +9,10 @@
 # Pasul următor din audit, nefăcut aici: hash-uri (`--require-hashes`), după ce se
 # stabilește un lock.
 
+# Garda de fonturi (`tests/test_fonturi.py`) citește cmap-ul fiecărei fețe woff2 ca să
+# demonstreze că diacriticele românești sunt în subset. Fără ea, testul dă ImportError la
+# colectare — deci pică toată suita, nu doar garda (măsurat pe CI, 7 nov).
+fonttools==4.68.0
 pytest==9.1.1
 ruff==0.17.1
 pytest-randomly==5.0.0
