@@ -17,6 +17,6 @@ fonttools==4.68.0
 # fonturi pică la fiecare față cu `ImportError: No module named brotli` (și `fetch_fonts.py`
 # nu poate nici scrie). Ambele lipsuri au fost verzi local și roșii pe CI — de aici rândul.
 brotli==1.2.1
-pytest==9.1.1
+pytest==9.2.0
 ruff==0.17.3
 pytest-randomly==5.0.0
