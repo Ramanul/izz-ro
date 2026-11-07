@@ -9,6 +9,28 @@
 > fără secrete și fără transcripturi; re-înarmarea unei automatizări cere
 > revizuirea textului de către cine o pornește.
 
+## 0a. 7 noiembrie — rebrandingul «Hârtie curată» e pe #542 (ÎN REVIEW, fără merge)
+
+Fazele 0–6 din `analiza/rebranding/PROPUNERE.md` sunt livrate pe ramura sesiunii, într-un PR:
+`gh pr view 542`. Ce s-a schimbat, pe scurt: tokeni + tipografie (Newsreader 400/600, Inter
+400/600/700 subset RO; Playfair și JetBrains Mono au ieșit), masthead și footer, cardul de la 7
+la 4 elemente (arta generată a ieșit de pe card — 455 KB din prima pagină), pagina de articol,
+coperțile OG pe același serif, o singură foaie de stil (`site.css`/`faza2.css` retrase), rampa
+hărții pe alama brandului, paginile utilitare fără emoji.
+
+- **Cifre:** prima pagină 593.356 → 138.964 B brut (109.179 → 36.718 B gzip); articol 20.542 →
+  5.202 B gzip; CSS 3 cereri → 1; `html_check` 7.679 pagini / 399.474 legături curate; poarta nouă
+  `tools/a11y_static.py` 0 încălcări pe 7.679 pagini; `pytest` 3.110 passed. Detalii:
+  `PROPUNERE.md` §8, `specs/masuratori-frontend.md`.
+- **Deschis înainte de merge:** `tools/audit.sh` (Lighthouse + pa11y) cere Chromium — sandboxul
+  în care s-a lucrat nu a avut browser, deci scorurile lipsesc. De rulat pe mașina proprietarului.
+- **Constrângere găsită la CI:** `specs/STATE.md` are ZERO spațiu de manevră — bugetul de pornire
+  (CLAUDE.md + hook + `.claude/agents` + `.claude/commands`) stătea pe main la 37.880 din 37.888
+  de octeți, iar hook-ul tipărește și STATE.md. Orice rând adăugat acolo pică
+  `test_bugetul_de_pornire_sub_plafonul_declarat` și `test_state_md_sub_plafonul_pe_care_il_declara`.
+  De aceea starea rebrandingului stă aici, nu în STATE.md: până nu se taie din CLAUDE.md/hook,
+  STATE.md nu mai primește rânduri noi.
+
 ## 0. 23 octombrie — transformarea «prin prisma cărților» e PE MAIN (#511, #512)
 
 E1-core → E4 aterizate: roluri epistemice (ROOT / detalii suplimentare / aceleași fapte / text comun / preluare declarată), sinteza dialectică verificată per propoziție (3 stări + „fapte neconfirmate reciproc"), confirmări încrucișate pe card, roluri în `sources-box`, /sub-prag/, contor „X articole → Y subiecte", capăt pe /azi/, nota de actualizare, memoria subiectelor (12 luni, fără stări judiciare), /principii/ și /legal/method/ fără doctrină (garda `tests/test_garda_anti_doctrina.py`). Jurnalul complet, abaterile de la plan și rundele Argon R4–R5: `specs/plan-paradigma-izz.md` §5.

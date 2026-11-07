@@ -86,14 +86,9 @@ def test_eticheta_implicita_nu_e_semnalata(tmp_path):
     assert r["tari"] == [], r["tari"]
 
 
-def test_output_real_e_curat():
-    """Gardă pe build-ul din `output/`: daca apare o regresie de sablon (un alt lipsa, un
-    link fara nume), testul pica inainte de deploy. Se sare daca output/ nu e randat."""
-    if not os.path.isdir(a11y.OUT):
-        pytest.skip("output/ nu e randat")
-    fisiere = a11y.pagini(limita=40)
-    if not fisiere:
-        pytest.skip("output/ nu are pagini")
-    rele = {os.path.relpath(p, a11y.OUT): a11y.verifica(p)["tari"] for p in fisiere}
-    rele = {k: v for k, v in rele.items() if v}
-    assert not rele, f"incalcari de accesibilitate in output/: {list(rele.items())[:3]}"
+# Poarta pe build-ul REAL nu se ruleaza aici: `output/` e un efect secundar al altor teste
+# (fiecare randare de fixture il rescrie), deci un test care il citeste depinde de ordinea
+# aleatoare a `pytest-randomly` si pica pe CI exact cand o alta randare a lasat un output
+# partial. Poarta sta in jobul `html-gate` din `.github/workflows/tests.yml`, imediat dupa
+# `--render-only`, adica pe un output construit intentionat — si local, ca unealta:
+#   python tools/a11y_static.py
