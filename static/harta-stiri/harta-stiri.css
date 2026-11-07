@@ -79,6 +79,16 @@ button,input { font:inherit; }
 .is-filtered .map-county.is-empty:not(.is-selected),.is-filtered .map-uat.is-empty,.is-filtered .map-label.is-empty{opacity:.35}
 .map-uat{stroke:var(--map-line);stroke-width:.9;cursor:pointer}
 .map-county{cursor:pointer}
+/* Aria de click a unui județ/UAT = UMPLEREA, fără contur (issue #454). Cu valoarea implicită
+   (`visiblePainted`) conturul de 1,1 px de ecran (non-scaling-stroke) intra și el în aria de
+   click și se pictează PESTE vecinul, așa că un punct de graniță returna județul desenat
+   deasupra, nu județul care conține punctul: `elementsFromPoint` și `isPointInFill` se
+   contraziceau pe 2 din 81 de puncte de probă, deși clickul se rezolva deja geometric
+   (`shapeFromEvent`). Nu se pierde nicio țintă reală: fâșia de contur cade în interiorul
+   umplerii vecinului, iar pe coastă doar jumătatea de pixel din afara țării, care nu e țintă.
+   Garda `tools/harta_dom_check.py` compară browserul cu `isPointInFill`, deci cele două
+   trebuie să descrie aceeași mulțime de puncte — de aici regula. */
+.map-county,.map-uat{pointer-events:fill}
 .map-county-hit{fill:#000;fill-opacity:0;stroke:transparent;pointer-events:all;cursor:pointer}
 /* Focusul de tastatură: fiecare județ are un link SVG focusabil; conturul de focus trebuie
    să fie vizibil pe orice umplere. Țintele tactile transparente au diametru de minimum 24px

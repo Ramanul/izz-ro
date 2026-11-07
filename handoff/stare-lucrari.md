@@ -308,8 +308,12 @@ Citește răspunsul Arenei la review-ul sistemului de economie de context (chatu
 ## 16. Sesiunea 6 oct, reluare taskuri întrerupte (după-amiaza)
 - **Gărzi harta G1-G3** (plan remediere Arena): comise pe `fix/harta-garzi-viewbox` (778fb588),
   verificat local cap-coadă (Playwright desktop+mobil, toate ok) → **PR #453** deschis; merge după CI.
-- **Issue #454**: hit-test vs geometrie dezacord 2/81 pe ultimul rând al grilei (ILFOV/DAMBOVITA,
-  CONSTANTA/None) — preexistent pe main, defect de precizie a verificării, nu de comportament.
+- **Issue #454** (închis): hit-test vs geometrie dezacord 2/81 pe ultimul rând al grilei
+  (ILFOV/DAMBOVITA, CONSTANTA/None). Cauza nu era datele, ci aria de click: `.map-county` folosea
+  `visiblePainted`, deci conturul de 1,1 px de ecran (non-scaling-stroke) făcea parte din arie și,
+  pictat peste vecin, returna pe graniță județul desenat deasupra. Fix: `pointer-events:fill` pe
+  `.map-county`/`.map-uat` (aria = umplerea, ca modelul din gardă), iar garda alege acum ultimul
+  poligon pictat în loc de aria bbox minimă.
 - **Audit web-perf live izz.ro** (chrome-devtools MCP headless): LCP 597ms (TTFB 12ms), CLS 0.00
   netrottled, DOM 1902 elemente ok. Lighthouse: a11y 96, best-practices 92, SEO 100, agentic 92.
   Failuri: (1) `target-size` = regresia cunoscută, încă deschisă (`details.subnav-more > summary`);
