@@ -16,7 +16,7 @@
 **Updated:** 2026-11-07 (audit încredere: remediere pe ramură, spec `specs/audit-incredere-2026-11-07.md`).
 
 ## Open
-- **Audit încredere 7 nov (ramură `arena/7ea08ce6-izz-ro`):** model B incomplet amânat, prospețime fail-closed + `latest_article`, gardă `rezultat_penalty_inversat`, sondă publică comună (challenge≠sănătos), jurnal corecții din catalog, footer operator/cod, fără newsletter inexistent. Local: 3186 teste verzi, render/QA/HTML curate, pa11y 0. Live/403 neconfirmat din sandbox; cron-urile dezactivate rămân decizia proprietarului.
+- **Audit încredere 7 nov [#555 open, `97efc94`]:** model B incomplet amânat, prospețime fail-closed + `latest_article`, gardă `rezultat_penalty_inversat`, sondă publică comună (challenge≠sănătos), jurnal corecții din catalog, footer operator/cod, fără newsletter inexistent. Local: 3186 teste verzi, render/QA/HTML curate, pa11y 0. Live/403 neconfirmat din sandbox; cron-urile dezactivate rămân decizia proprietarului.
 - **Encoding la `subprocess` [#549 merged 7 nov, `2c1aa33`]:** 32 de apeluri `text=True` fără encoding primesc `encoding="utf-8", errors="replace"` (`tests/`, `tools/`; `generator/` nu are). Cele 20 fără mod text rămân neschimbate. CI pe `main` verde după merge (`ci`, `tests`, `deploy-worker` pe `649d65819` și `f0e5ce572`); live verificat pe 7 nov, ~12:36 UTC. Note: `handoff/to-claude/2026-11-07-subprocess-encoding.md` și `handoff/to-claude/2026-11-07-subprocess-encoding-confirmare.md`.
 - **Rebranding „Hârtie curată" — #542 merged 7 nov, LIVE:** fazele 0–7 (tokeni +
   Newsreader/Inter, masthead, card 7→4 elemente, pagină de articol, coperți pe același serif,
