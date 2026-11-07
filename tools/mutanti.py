@@ -106,7 +106,7 @@ def _testele_trec(lucru: pathlib.Path, fisiere: list) -> bool | None:
     try:
         r = subprocess.run([sys.executable, "-m", "pytest", *cai, "-q", "--no-header",
                             "-p", "no:cacheprovider"],
-                           cwd=lucru, capture_output=True, text=True, timeout=600, env=ENV)
+                           cwd=lucru, capture_output=True, text=True, encoding="utf-8", errors="replace", timeout=600, env=ENV)
     except subprocess.TimeoutExpired:
         return None
     return r.returncode == 0        # True = trec = mutantul a SUPRAVIETUIT

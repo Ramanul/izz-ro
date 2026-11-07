@@ -97,7 +97,7 @@ def test_o_singura_rulare_nu_produce_un_interval():
 def test_intrare_goala_spune_ce_lipseste():
     rez = subprocess.run(
         [sys.executable, os.path.join(ROOT, "tools", "cadenta_reala.py")],
-        input="", capture_output=True, text=True, cwd=ROOT,
+        input="", capture_output=True, text=True, encoding="utf-8", errors="replace", cwd=ROOT,
     )
     assert rez.returncode != 0
     assert "nicio intrare" in rez.stdout + rez.stderr
@@ -108,7 +108,7 @@ def test_cli_ruleaza_si_isi_declara_limitele(tmp_path):
     f.write_text(json.dumps(_runs([0, 240, 480])), encoding="utf-8")
     rez = subprocess.run(
         [sys.executable, os.path.join(ROOT, "tools", "cadenta_reala.py"), str(f)],
-        capture_output=True, text=True, cwd=ROOT,
+        capture_output=True, text=True, encoding="utf-8", errors="replace", cwd=ROOT,
     )
     assert rez.returncode == 0, rez.stdout + rez.stderr
     assert "rata de declansare" in rez.stdout
@@ -120,7 +120,7 @@ def test_json_e_parsabil_pentru_alt_consumator(tmp_path):
     f.write_text(json.dumps(_runs([0, 240])), encoding="utf-8")
     rez = subprocess.run(
         [sys.executable, os.path.join(ROOT, "tools", "cadenta_reala.py"), str(f), "--json"],
-        capture_output=True, text=True, cwd=ROOT,
+        capture_output=True, text=True, encoding="utf-8", errors="replace", cwd=ROOT,
     )
     assert json.loads(rez.stdout)["rulari"] == 2
 

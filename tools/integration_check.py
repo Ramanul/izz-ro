@@ -99,7 +99,7 @@ def assert_regenerated_map_is_committed() -> None:
     print("\n=== dataset hartă sincronizat ===", flush=True)
     path = str(MAP_PATH.relative_to(ROOT))
     committed = json.loads(
-        subprocess.check_output(["git", "show", f"HEAD:{path}"], cwd=ROOT, text=True)
+        subprocess.check_output(["git", "show", f"HEAD:{path}"], cwd=ROOT, text=True, encoding="utf-8", errors="replace")
     )
     regenerated = json.loads(MAP_PATH.read_text(encoding="utf-8"))
     if _map_without_generated_at(committed) != _map_without_generated_at(regenerated):

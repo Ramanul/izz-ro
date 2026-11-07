@@ -77,7 +77,7 @@ def _git(*args: str) -> str:
     proaspat) comenzile de log ies nenul, si atunci raspunsul corect e „git nu stie",
     nu o exceptie — chemarea de mai sus tocmai asta trebuie sa poata distinge.
     """
-    res = subprocess.run(["git", *args], capture_output=True, text=True, check=False)
+    res = subprocess.run(["git", *args], capture_output=True, text=True, encoding="utf-8", errors="replace", check=False)
     return res.stdout
 
 

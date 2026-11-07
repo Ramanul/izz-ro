@@ -103,7 +103,7 @@ def istoric_trunchiat() -> bool:
     """
     iesire = subprocess.run(
         ["git", "rev-parse", "--is-shallow-repository"],
-        cwd=ROOT, capture_output=True, text=True, check=False,
+        cwd=ROOT, capture_output=True, text=True, encoding="utf-8", errors="replace", check=False,
     )
     return iesire.returncode == 0 and iesire.stdout.strip() == "true"
 
@@ -131,7 +131,7 @@ def pr_uri_mergeuite_pe_main() -> set[int]:
                 r"--grep=\(#[0-9]+\)",
                 _FORMAT,
             ],
-            cwd=ROOT, capture_output=True, text=True, check=False,
+            cwd=ROOT, capture_output=True, text=True, encoding="utf-8", errors="replace", check=False,
         )
         if iesire.returncode == 0:
             return pr_uri_din_istoric(iesire.stdout)

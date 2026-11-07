@@ -32,7 +32,7 @@ def test_registrul_comis_e_curat(randuri):
 def test_unealta_iese_zero_pe_registrul_comis():
     rez = subprocess.run(
         [sys.executable, os.path.join(ROOT, "tools", "audit_matrice.py"), "verifica"],
-        capture_output=True, text=True, cwd=ROOT,
+        capture_output=True, text=True, encoding="utf-8", errors="replace", cwd=ROOT,
     )
     assert rez.returncode == 0, rez.stdout + rez.stderr
 
@@ -40,7 +40,7 @@ def test_unealta_iese_zero_pe_registrul_comis():
 def test_raportul_ruleaza():
     rez = subprocess.run(
         [sys.executable, os.path.join(ROOT, "tools", "audit_matrice.py"), "raport"],
-        capture_output=True, text=True, cwd=ROOT,
+        capture_output=True, text=True, encoding="utf-8", errors="replace", cwd=ROOT,
     )
     assert rez.returncode == 0, rez.stdout + rez.stderr
     assert "mecanisme_vii" in rez.stdout
@@ -224,7 +224,7 @@ def test_granularitatea_nu_e_raportata_ca_eroziune(randuri):
 def test_subcomanda_eroziune_ruleaza_si_isi_declara_limitele():
     rez = subprocess.run(
         [sys.executable, os.path.join(ROOT, "tools", "audit_matrice.py"), "eroziune"],
-        capture_output=True, text=True, cwd=ROOT,
+        capture_output=True, text=True, encoding="utf-8", errors="replace", cwd=ROOT,
     )
     assert rez.returncode == 0, rez.stdout + rez.stderr
     assert "NEMASURAT" in rez.stdout

@@ -101,7 +101,7 @@ def _module_cu_test_marcat() -> set[str]:
     iesire = subprocess.run(
         [sys.executable, "-m", "pytest", str(TESTE), "-m", poarta_stare.MARCAJ,
          "--collect-only", "-q", "-p", "no:randomly"],
-        cwd=ROOT, capture_output=True, text=True, check=False, timeout=300,
+        cwd=ROOT, capture_output=True, text=True, encoding="utf-8", errors="replace", check=False, timeout=300,
     )
     assert iesire.returncode == 0, f"colectarea marcajului a esuat:\n{iesire.stdout[-2000:]}"
     return {
