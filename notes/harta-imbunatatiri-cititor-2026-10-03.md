@@ -222,7 +222,7 @@ Acestea sunt primele nu pentru că sunt „drăguțe”, ci pentru că site-ul *
 - **Ce e.** O propoziție care traduce știrea în consecință pentru cititor. **Nu** o cerem modelului pe
   fiecare articol (bugetul e saturat, `specs/ai-budget-ordering.md`). O generăm acolo unde e calculabilă:
   articolele care ating o entitate de ghid (vezi #12), plus un eșantion fix de 20 de articole/zi.
-- **De ce contează.** E diferența dintre „a aflat” și „a înțeles” — exact promisiunea „Zero Zgomot”.
+- **De ce contează.** E diferența dintre „a aflat” și „a înțeles” — exact promisiunea „filtru de calitate”.
 - **De ce e gratuit.** Fie din date existente (determinist), fie din bugetul AI existent, realocat, nu suplimentat.
 - **Efort.** M (6-8 h), inclusiv garda de grounding (există `tools/grounding_gate.py`).
 - **Dependență reală.** Dacă vrem asta pe scară largă, întâi trebuie rezolvată ordinea bugetului AI
@@ -272,7 +272,7 @@ Acestea sunt primele nu pentru că sunt „drăguțe”, ci pentru că site-ul *
 
 ### 18. „Ce e IZZ și ce nu e” — pentru primul vizitator
 - **Ce e.** Un chenar pe prima pagină (dispare după prima vizită): trei rânduri despre ce face site-ul
-  (rezumate fără clickbait, surse afișate, generat automat) și ce **nu** face (nu are presă proprie,
+  (rezumate cu titluri factuale, surse afișate, generat automat) și ce **nu** face (nu are presă proprie,
   nu are editor uman pe fiecare articol, nu are publicitate).
 - **De ce contează.** Un vizitator nou care nu înțelege în 10 secunde de ce titlurile „sună ciudat”
   (sunt reformulate) pleacă și nu se întoarce. Conținutul există deja în `content/pages/despre.md`

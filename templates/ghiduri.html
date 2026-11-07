@@ -8,7 +8,7 @@
   <span>Ghiduri</span>
 </nav>
 
-<h1 class="section-title">📌 Ghiduri</h1>
+<h1 class="section-title">Ghiduri</h1>
 {# Promisiunea se potriveste cu starea reala a datelor. Cat timp exista ghiduri neconfirmate,
    pagina NU spune „verificate" — altfel eticheta ar contrazice continutul. #}
 {% if n_neverificate %}
@@ -28,7 +28,6 @@
   <div class="utility-grid">
     {% for ent in cat_ents %}
     <a class="utility-card" href="{{ base }}/ghiduri/{{ ent.id }}/">
-      <span class="utility-card-icon">{{ categorii_icon.get(cat_key, '📌') }}</span>
       <span class="utility-card-title">{{ ent.nume }}</span>
       <span class="utility-card-desc">{{ ent.valoare_curenta.descriere_lunga | truncate(100, False, '…') }}</span>
       {% if ent.verificat %}

@@ -1,52 +1,69 @@
-{% from "_art.html" import art with context %}
 {% macro credit_foto(pr) -%}
 <p class="card-credit">{% if pr.credit.kind == 'locality' %}Ilustrație: Reper local · {% endif %}Foto: {% if pr.credit.artist %}{{ pr.credit.artist }} · {% endif %}<a href="{{ pr.credit.page | href_extern }}"{# nosemgrep: generic.html-templates.security.var-in-href.var-in-href #} target="_blank" rel="noopener noreferrer">Wikimedia Commons</a> · {% if pr.credit.license_url %}<a href="{{ pr.credit.license_url | href_extern }}" target="_blank" rel="noopener noreferrer">{{ pr.credit.license }}</a>{% else %}{{ pr.credit.license }}{% endif %}</p>
 {%- endmacro %}
 {% macro card(a, lead=False, extra='') %}
 {#- NOT "data-src": crawlers (Screaming Frog, Googlebot) treat data-src as a lazy-load
     image URL, so a source name there becomes a fake internal 404 per card. -#}
+{#- Card = 4 elemente, nu 7 (analiza/rebranding/PROPUNERE.md §4.4): kicker, titlu, dek, meta.
+    ARTA GENERATĂ NU SE MAI DESENEAZĂ PE CARD: 58 de compoziții inline insemnau ~455 KB din
+    prima pagina (76% din greutate). Cardul fara fotografie e tipografic, ca intr-un ziar;
+    compozitiile rămân pe pagina de articol, unde cititorul chiar le priveste.
+    Fotografia REALA rămâne fisier (`art_path`), cu <picture> si lazy-load. -#}
 <article class="card{% if lead %} lead{% endif %}{% if extra %} {{ extra }}{% endif %}{% if a.model == 'C' %} card-c{% endif %}" data-cat="{{ a.category }}" data-source="{{ a.source_name }}" data-title="{{ a.title }}"{% if a.judet %} data-judet="{{ a.judet }}"{% endif %}>
-  {#- Fotografia REALA ramane fisier (`art_path`); arta generata se deseneaza in pagina
-      (`_art.html`), fara fisier si fara cerere HTTP — vezi specs/cloudflare-free-2026-09.md. -#}
   {% if a.art_path or a.image_url %}<a class="card-media card-media--fullbleed" href="{{ base }}/{{ a.category }}/{{ a.slug }}/" tabindex="-1" aria-hidden="true"><picture>{% if a.art_webp %}<source srcset="{{ base }}{{ a.art_webp }}" type="image/webp">{% endif %}<img src="{% if a.art_path %}{{ base }}{{ a.art_path }}{% else %}{{ a.image_url }}{% endif %}" alt="" loading="lazy" decoding="async" width="960" height="504" sizes="(min-width: 1000px) 360px, (min-width: 640px) 45vw, 100vw"></picture></a>
   {% if a.art_credit %}{{ credit_foto({'credit': a.art_credit}) }}{% endif %}
-  {%- elif a.art_style %}
-  {#- Acelasi chip o singura data pe pagina (`portret_nou`, din render._base_ctx): pe homepage
-      Trump aparea pe zeci de carduri. Portretul cu atribuire obligatorie poarta creditul COMPLET
-      vizibil sub imagine — fara el n-are voie pe card (content/legal/images.md). -#}
-  {%- set pr = a.art_style.portret %}
+  {%- else %}
+  {#- Portret licentiat (Wikimedia) — NU compozitia generata. Chip mic, o singura data pe
+      pagina (`portret_nou`, din render._base_ctx): fara registru, acelasi chip aparea pe zeci
+      de carduri. Portretul cu atribuire obligatorie poarta creditul COMPLET vizibil sub el —
+      fara credit n-are voie pe card (content/legal/images.md). -#}
+  {%- set pr = a.art_style.portret if a.art_style else none %}
   {%- set pr_ok = pr and (portret_nou is not defined or portret_nou(pr.img)) %}
-  <a class="card-media" href="{{ base }}/{{ a.category }}/{{ a.slug }}/" tabindex="-1" aria-hidden="true">{{ art(a, portret=pr_ok) }}</a>
-  {%- if pr_ok and pr.credit %}{{ credit_foto(pr) }}{% endif %}
+  {%- if pr_ok %}{% set t = pr.taiere %}
+  <a class="card-face" href="{{ base }}/{{ a.category }}/{{ a.slug }}/" tabindex="-1" aria-hidden="true"><img class="card-face-img{% if t %} art-portret--fata{% endif %}" src="/{{ pr.img }}" alt="{{ pr.name }}" loading="lazy" decoding="async" width="96" height="96"{% if t %} style="--pw:{{ t.pw }}%;--px:{{ t.px }}%;--py:{{ t.py }}%"{% endif %}></a>
+  {%- if pr.credit %}{{ credit_foto(pr) }}{% endif %}
   {%- endif %}
+  {%- endif %}
+  <p class="card-kicker"><span class="badge{% if a.model == 'C' %} c{% endif %}">{{ a.category | cat_label }}</span>{% if a.anunt_fara_corp %} <span class="badge-extra">Anunț oficial</span>{% endif %}</p>
+  {% if a.moderation_note %}<p class="moderation-note">{{ a.moderation_note }}</p>{% endif %}
+  <h2 class="card-title"><a href="{{ base }}/{{ a.category }}/{{ a.slug }}/">{{ a.display_title or a.title }}</a></h2>
   {#- `anunt_fara_corp` = anunt oficial publicat ca titlu + link, fara teaser (decizie proprietar
       2026-08-04, specs/sinteza-fara-substanta.md). Elementele fara continut NU se emit deloc:
       `.card` e flex cu `gap`, deci un `<p>` gol ar lasa exact o gaura in card. -#}
-  <span class="badge{% if a.model == 'C' %} c{% endif %}">{{ a.category | cat_label }}{% if a.anunt_fara_corp %} · Anunț oficial{% endif %}</span>
+  {% if not a.anunt_fara_corp %}
+  <p class="summary">{% if a.model == 'C' %}{{ a.synthesis }}{% else %}{{ a.teaser }}{% endif %}</p>
+  {% endif %}
   {%- set dz = a.dialectic if a.model == 'C' else none %}
   {%- set n_pub = (a.sources | length) if a.sources else 1 %}
-  <p class="trust-label" title="Cum este construită această informație">{% if a.anunt_fara_corp %}Anunț oficial · citește textul integral la sursă{% elif dz and dz.state == 'ASSUMED_SILENCE' %}Relatări divergente · {{ n_pub }} publicații · generată automat{% elif dz and dz.state == 'SINGLE_ORIGIN' and (dz.origini or 1) > 1 %}{{ n_pub }} publicații · fapte neconfirmate reciproc · generată automat{% elif dz and dz.state == 'SINGLE_ORIGIN' %}Sinteză din {{ n_pub }} publicații · o singură origine · generată automat{% elif dz %}Sinteză din {{ n_pub }} publicații · {{ a.cross_confirmations or 1 }} {{ 'confirmare încrucișată' if (a.cross_confirmations or 1) == 1 else 'confirmări încrucișate' }} · generată automat{% elif a.model == 'C' %}Sinteză multi-sursă · generată automat{% else %}Rezumat dintr-o sursă · generat automat{% endif %}</p>
-  {% if a.moderation_note %}
-  <p class="moderation-note">{{ a.moderation_note }}</p>
-  {% endif %}
-  <h2 class="card-title"><a href="{{ base }}/{{ a.category }}/{{ a.slug }}/">{{ a.display_title or a.title }}</a></h2>
-  <div class="meta">
+  {#- Formularile sunt CONTRACT editorial (test_render_dialectic): cardul spune cate
+      confirmari are, nu doar ca e „multi-sursa", si poarta dezvaluirea AI Act art. 50(4)
+      („generat automat") inca de la prima expunere, ca text — fara pictograma repetata
+      pe fiecare card (decizia #245 din 2026-09-02). -#}
+  {%- if a.anunt_fara_corp %}{% set stare, text = 'official', 'Anunț oficial · citește textul integral la sursă' %}
+  {%- elif dz and dz.state == 'ASSUMED_SILENCE' %}{% set stare, text = 'div', 'Relatări divergente · ' ~ n_pub ~ ' publicații · generată automat' %}
+  {%- elif dz and dz.state == 'SINGLE_ORIGIN' and (dz.origini or 1) > 1 %}{% set stare, text = 'single', n_pub ~ ' publicații · fapte neconfirmate reciproc · generată automat' %}
+  {%- elif dz and dz.state == 'SINGLE_ORIGIN' %}{% set stare, text = 'single', 'Sinteză din ' ~ n_pub ~ ' publicații · o singură origine · generată automat' %}
+  {%- elif dz %}{% set stare, text = 'ok', 'Sinteză din ' ~ n_pub ~ ' publicații · ' ~ (a.cross_confirmations or 1) ~ (' confirmare încrucișată' if (a.cross_confirmations or 1) == 1 else ' confirmări încrucișate') ~ ' · generată automat' %}
+  {%- elif a.model == 'C' %}{% set stare, text = 'ok', 'Sinteză multi-sursă · generată automat' %}
+  {%- else %}{% set stare, text = 'plain', 'Rezumat dintr-o sursă · generat automat' %}{% endif %}
+  {% set card_srcs = a.sources if (a.model == 'C' and a.sources) else [{'name': a.source_name, 'url': a.original_link}] %}
+  <p class="card-meta">
+    <span class="trust trust--{{ stare }}" title="Cum este construită această informație"><i aria-hidden="true"></i>{{ text }}</span>
+    <span class="sep" aria-hidden="true">·</span>
     <time datetime="{{ a.published }}">{{ a.published_human }}</time>
     {% if not a.anunt_fara_corp %}
     {% set body = a.synthesis if a.model == 'C' else a.teaser %}
     {% set wc = (body or '').split() | length %}
+    <span class="sep" aria-hidden="true">·</span>
     <span class="reading-time">~{{ [wc // 200, 1] | max }} min</span>
     {% endif %}
-    {#- Marcajul AI Act art. 50(4) NU e iconita repetata pe card (decizia #245 din 2026-09-02:
-        se citeste ca semnal de neincredere). Dezvaluirea la PRIMA expunere o da trust-label-ul
-        («· generat automat», IZZ-0420), pagina de articol poarta ai-mark + ai-note + meta
-        digitalSourceType, iar /legal/method/ explica metodologia. REGULI-SINTEZA.md §4.3. -#}
-  </div>
-  {% if not a.anunt_fara_corp %}
-  <p class="summary">{% if a.model == 'C' %}{{ a.synthesis }}{% else %}{{ a.teaser }}{% endif %}</p>
-  {% endif %}
-  {% set card_srcs = a.sources if (a.model == 'C' and a.sources) else [{'name': a.source_name, 'url': a.original_link}] %}
-  <p class="sources-inline"><b>{{ 'Sursă:' if card_srcs | length == 1 else 'Surse:' }}</b>
-    {% for s in card_srcs %}<a href="{{ s.url | href_extern }}"{# nosemgrep: generic.html-templates.security.var-in-href.var-in-href #} target="_blank" rel="noopener noreferrer">{{ s.name }}</a>{{ ', ' if not loop.last }}{% endfor %}</p>
+    <span class="sep" aria-hidden="true">·</span>
+    {#- Sursele stau pe acelasi rand cu meta: sursa e context, nu un paragraf separat.
+        Marcajul AI Act art. 50(4) NU e iconita repetata pe card (decizia #245 din 2026-09-02):
+        dezvaluirea o da randul de meta („generat automat"), iar pagina de articol poarta
+        ai-mark + ai-note + meta digitalSourceType. REGULI-SINTEZA.md §4.3. -#}
+    <span class="sources-inline"><b>{{ 'Sursă' if card_srcs | length == 1 else 'Surse' }}:</b>
+      {% for s in card_srcs %}<a href="{{ s.url | href_extern }}"{# nosemgrep: generic.html-templates.security.var-in-href.var-in-href #} target="_blank" rel="noopener noreferrer">{{ s.name }}</a>{{ ', ' if not loop.last }}{% endfor %}</span>
+  </p>
 </article>
 {% endmacro %}

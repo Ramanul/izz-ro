@@ -200,7 +200,7 @@ s-ar putea uni, cu exemple — inclusiv exemple greșite?
 
 **Opțiuni, pe scurt:**
 - **sponsorizări locale, marcate clar** („sponsorizat de X") — se potrivește cu nișa județeană;
-- **abonați susținători** — mică sumă lunară, fără reclame (promisiunea „zero zgomot" rămâne intactă);
+- **abonați susținători** — mică sumă lunară, fără reclame (promisiunea „filtru de calitate" rămâne intactă);
 - **vânzarea de analiză/date** — discuția din issue #271 (IZZ Intelligence).
 
 Fiecare cere o regulă clară de separare între editorial și comercial. Regula o stabilești tu —

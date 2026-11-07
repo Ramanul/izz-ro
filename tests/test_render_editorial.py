@@ -2,7 +2,7 @@
 
 Din 39 de functii, doar `_dedup` si `_grupeaza_pe_regiuni` aveau teste; `_quality_gate`,
 `_diversify`, `_pick_hero` si `sources_coherent` decid ce se publica si ce se arunca (regula
-„Zero Zgomot", CLAUDE.md §7) si nu erau acoperite deloc.
+„filtru de calitate", CLAUDE.md §7) si nu erau acoperite deloc.
 Intrari/iesiri: functii pure — dict/lista in, bool/lista out. Zero disk, zero retea.
 Acceptare: testele INGHEATA comportamentul actual. Daca unul pica dupa un refactor,
 comportament vizibil s-a schimbat — asta e o decizie, nu un detaliu.
@@ -250,7 +250,7 @@ def test_entity_index_skips_entities_that_slugify_to_nothing():
 # --- praguri de dedup si de taiere: doua granite gasite prin mutation testing ------
 #
 # DE CE EXISTA (masurat 2026-09-02): `_dedup` — functia care implementeaza chiar promisiunea
-# de brand („Zero Zgomot", deduplicat) — nu avea NICIUN test direct. Antetul acestui fisier
+# de brand („filtru de calitate", deduplicat) — nu avea NICIUN test direct. Antetul acestui fisier
 # afirma contrariul; afirmatia e veche si a devenit falsa. Dovada nu e o citire, ci un mutant:
 # schimband `inter >= 4` in `inter > 4` (select.py:37), toata suita ramanea verde. In productie
 # mutantul inseamna ca doua titluri care impart EXACT 4 cuvinte nu mai sunt vazute ca duplicat

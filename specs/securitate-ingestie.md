@@ -91,7 +91,7 @@ escaparea nu-l apără. CSP-ul (`script-src 'self'`) îl blochează în browsere
 
 ### R2 — Respinge, nu repara
 Un item suspect **se sare**, nu se cosmetizează. E §7 din `CLAUDE.md` („dacă nu poate atinge bara
-Zero Zgomot, SARE itemul") aplicată la securitate. Un articol pierdut e gratis. Motivul: orice
+filtru de calitate, SARE itemul") aplicată la securitate. Un articol pierdut e gratis. Motivul: orice
 încercare de „curățare" a conținutului ostil e o cursă în care atacatorul mută ultimul.
 
 ### R3 — Pragurile se măsoară, nu se aleg

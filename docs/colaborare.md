@@ -35,7 +35,7 @@
 8. **Fără secrete sau date sensibile** în fișiere publice — inclusiv în acest fișier și în
    notițele de handoff.
 9. Domeniu izz.ro: niciun headline brut/trunchiat în output — itemii stricați se sară
-   („Zero Zgomot").
+   („filtru de calitate").
 
 ## Accesul Arena la repo (procedura de conectare)
 

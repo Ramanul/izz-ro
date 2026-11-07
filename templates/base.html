@@ -38,13 +38,17 @@
   <link rel="alternate" type="application/rss+xml" title="Corecții {{ site.name }}" href="{{ base }}/corectii/feed.xml">
   {# fonturi AUTO-GAZDUITE (tools/fetch_fonts.py): fara cereri externe -> fara
      render-blocking cross-origin, fara IP-uri catre Google (consistent cu privacy) #}
-  <link rel="preload" href="{{ base }}/static/fonts/PlayfairDisplay-800.ro.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="preload" href="{{ base }}/static/fonts/JetBrainsMono-700.ro.woff2" as="font" type="font/woff2" crossorigin>
+  {# doar cele doua fete chiar folosite in primul ecran: serif pentru titlul lead-ului,
+     sans pentru tot restul. Restul se incarca la nevoie, din fonts.css. #}
+  <link rel="preload" href="{{ base }}/static/fonts/Newsreader-600.ro.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="{{ base }}/static/fonts/Inter-400.ro.woff2" as="font" type="font/woff2" crossorigin>
   {% if fonts_css %}<style>{{ fonts_css | safe }}</style>{% else %}<link rel="stylesheet" href="{{ base }}/static/fonts.css?v={{ asset_ver['fonts.css'] }}">{% endif %}
   <link rel="stylesheet" href="{{ base }}/static/styles.css?v={{ asset_ver['styles.css'] }}">
-  {# Delta #380: cale noua — sparge cache immutable pe styles.css (2026-10-02) #}
-  <link rel="stylesheet" href="{{ base }}/static/site.css?v=20261002b">
-  <link rel="stylesheet" href="{{ base }}/static/faza2.css?v=20261002">
+  {# O SINGURA foaie de stil (faza 6, 2026-11-07). `site.css` si `faza2.css` fusesera
+     cai „delta" inventate pe 2 octombrie doar ca sa ocoleasca Cache-Control immutable
+     pe styles.css; intre timp hash-ul din `?v=` face acelasi lucru, iar cele doua
+     fisiere erau fie duplicate (site.css), fie continut mutat in styles.css (faza2).
+     Mai putin de intretinut si zero sanse sa diveraga din nou. #}
   {# Sincron, in <head>: tema trebuie aplicata inainte de prima pictare, altfel un
      vizitator pe dark vede un flash alb. Fisier EXTERN, nu inline: CSP-ul emis de
      render._write_headers are `script-src 'self'` fara 'unsafe-inline'. #}
@@ -64,22 +68,13 @@
   <script defer src="{{ base }}/static/push.js?v={{ asset_ver['push.js'] }}"></script>
 </head>
 <body{% block body_attrs %}{% endblock %}>
-  <p class="dateline">
-    <span class="dateline-date">{{ today }}</span>
-    {#- Numerele zilei (doar prima pagina are `zi` in context): starea reala a
-        pipeline-ului in ultimele 24h, calculata in render._numerele_zilei. Pe mobil
-        se ascund in CSS — primul ecran ramane al stirilor. -#}
-    {#- Contorul de subtracție (E3): relatările citate de surse -> subiectele publicate după
-        unirea relatărilor despre același eveniment. Arată ce a eliminat sistemul, nu doar ce a
-        adunat. Fără `relatari` (context vechi), rămâne forma veche. -#}
-    {% if zi %}<span class="day-numbers">{% if zi.relatari and zi.relatari > zi.stiri %}<b>{{ zi.relatari }}</b> articole → {% endif %}<b>{{ zi.stiri }}</b> {{ 'subiecte' if zi.relatari and zi.relatari > zi.stiri else 'știri' }} · <b>{{ zi.surse }}</b> surse · <b>{{ zi.judete }}</b> județe în ultimele 24 de ore</span>{% endif %}
-  </p>
   <div class="site-header-group">
   <header class="site-header">
     <a class="brand" href="{{ base }}/">
-      <span class="brand-eyebrow">{{ site.tagline }}</span>
-      <span class="logo">IZZ<b>.ro</b></span>
-      <span class="brand-descriptor">{{ site.descriptor }}</span>
+      {# Wordmark, nu trei texte suprapuse: numele, apoi un singur rand de context.
+         Punctul de arama e singurul accent de brand din antet (restul e tus si navy). #}
+      <span class="logo">IZZ<b>.</b>ro</span>
+      <span class="brand-descriptor">{{ site.descriptor }} &middot; {{ site.tagline }}</span>
     </a>
     <nav class="nav" aria-label="Secțiuni principale">
       <a href="{{ base }}/"{% if nav_section == 'stiri' %} class="active" aria-current="page"{% endif %}>Știri</a>
@@ -110,39 +105,70 @@
   </nav>
   </div>
 
+  <p class="dateline">
+    <span class="dateline-date">{{ today }}</span>
+    {#- Numerele zilei (doar prima pagina are `zi` in context): starea reala a
+        pipeline-ului in ultimele 24h, calculata in render._numerele_zilei. Pe mobil
+        se ascund in CSS — primul ecran ramane al stirilor. -#}
+    {#- Contorul de subtracție (E3): relatările citate de surse -> subiectele publicate după
+        unirea relatărilor despre același eveniment. Arată ce a eliminat sistemul, nu doar ce a
+        adunat. Fără `relatari` (context vechi), rămâne forma veche. -#}
+    {% if zi %}<span class="day-numbers">{% if zi.relatari and zi.relatari > zi.stiri %}<b>{{ zi.relatari }}</b> articole → {% endif %}<b>{{ zi.stiri }}</b> {{ 'subiecte' if zi.relatari and zi.relatari > zi.stiri else 'știri' }} · <b>{{ zi.surse }}</b> surse · <b>{{ zi.judete }}</b> județe în ultimele 24 de ore</span>{% endif %}
+  </p>
+
   <main>
     <aside id="editorial-copy-status" class="notice" role="status" hidden></aside>
     {% block content %}{% endblock %}
   </main>
 
   <footer class="site-footer">
-    <span>&copy; {{ year }} {{ site.name }} &middot; {{ site.tagline }}</span>
-    <nav>
-      <a href="{{ base }}/despre/">Despre</a>
-      <a href="{{ base }}/principii/">Principii</a>
-      <a href="{{ base }}/legal/contact/">Contact</a>
-      <a href="{{ base }}/legal/privacy/">Confidențialitate</a>
-      <a href="{{ base }}/legal/terms/">Termeni</a>
-      <a href="{{ base }}/legal/accessibility/">Accesibilitate</a>
-      <a href="{{ base }}/legal/method/">Cum devin ideile funcții</a>
-      <a href="{{ base }}/legal/corrections/">Corecții</a>
-      <a href="{{ base }}/legal/security/">Securitate</a>
-      <a href="{{ base }}/legal/images/">Politica imaginilor</a>
-      <a href="{{ base }}/surse/">Surse & originalitate</a>
-      <a href="{{ base }}/sub-prag/">Ce nu ajunge pe site</a>
-      <a href="{{ base }}/legal/takedown/">Drepturi de autor</a>
-    </nav>
+    <div class="site-footer-in">
+      <div class="foot-brand">
+        <span class="foot-logo">IZZ<b>.</b>ro</span>
+        <p class="foot-tagline">{{ site.descriptor }} &middot; {{ site.tagline }}</p>
+        <p class="foot-note">Fără reclame, fără urmărire, fără paywall. Fiecare sinteză își arată
+          sursele, iar corecțiile rămân publice.</p>
+      </div>
+      <nav class="foot-col" aria-label="Despre IZZ">
+        <p class="foot-h">Despre</p>
+        <a href="{{ base }}/despre/">Despre</a>
+        <a href="{{ base }}/principii/">Principii</a>
+        <a href="{{ base }}/surse/">Surse &amp; originalitate</a>
+        <a href="{{ base }}/sub-prag/">Ce nu ajunge pe site</a>
+      </nav>
+      <nav class="foot-col" aria-label="Legal">
+        <p class="foot-h">Legal</p>
+        <a href="{{ base }}/legal/contact/">Contact</a>
+        <a href="{{ base }}/legal/terms/">Termeni</a>
+        <a href="{{ base }}/legal/privacy/">Confidențialitate</a>
+        <a href="{{ base }}/legal/images/">Politica imaginilor</a>
+        <a href="{{ base }}/legal/takedown/">Drepturi de autor</a>
+      </nav>
+      <nav class="foot-col" aria-label="Transparență">
+        <p class="foot-h">Transparență</p>
+        <a href="{{ base }}/legal/method/">Cum devin ideile funcții</a>
+        <a href="{{ base }}/legal/corrections/">Corecții</a>
+        <a href="{{ base }}/legal/security/">Securitate</a>
+        <a href="{{ base }}/legal/accessibility/">Accesibilitate</a>
+      </nav>
+    </div>
+    <div class="foot-base">
+      <span>&copy; {{ year }} {{ site.name }}</span>
+      {#- Controalele de citire (marime text, spatiere, tiparire). Stau in footer, nu in
+          antet: un element care isi schimba dimensiunea la coada documentului nu poate
+          muta nimic din ce e deja pictat (CLS — specs/masuratori-frontend.md). -#}
+      <div class="izz-citire" id="izz-citire">
+        <span>Citire</span>
+        <button type="button" data-text="normal">Text normal</button>
+        <button type="button" data-text="mare">Text mare</button>
+        <button type="button" data-text="spatiu">Spațiere</button>
+        <button type="button" data-text="print">Tipărește</button>
+      </div>
+    </div>
     {# Alertele stau ULTIMUL element din footer, dintr-un motiv masurabil: blocul apare si
        dispare in functie de ce suporta browserul, iar un element care isi schimba dimensiunea
        la coada documentului NU poate muta nimic din ce e deja pictat. In header, acelasi
        mecanism a produs 0.272 CLS (specs/masuratori-frontend.md). #}
-    <div class="izz-citire" id="izz-citire">
-      <span>Citire</span>
-      <button type="button" data-text="normal">Text normal</button>
-      <button type="button" data-text="mare">Text mare</button>
-      <button type="button" data-text="spatiu">Spațiere</button>
-      <button type="button" data-text="print">Tipărește</button>
-    </div>
     <div class="izz-alerte" id="izz-alerte" hidden>
       <button class="izz-alerte-btn" id="izz-alerte-btn" type="button" aria-expanded="false" aria-controls="izz-alerte-panou">Alerte de ultimă oră</button>
       <div class="izz-alerte-panou" id="izz-alerte-panou" hidden>

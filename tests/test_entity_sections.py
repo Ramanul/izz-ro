@@ -69,7 +69,7 @@ def test_sectiune_valida_trece():
     ([{"titlu": None, "continut": "text"}], "titlu"),
 ])
 def test_sectiune_malformata_blocheaza_buildul(sectiuni, asteptat):
-    """Un `<h2>` gol urmat de nimic e output degradat publicat tacit (§7 Zero Zgomot)."""
+    """Un `<h2>` gol urmat de nimic e output degradat publicat tacit (§7 filtru de calitate)."""
     erori = build_entities.validate(_ent(sectiuni=sectiuni))
     assert any(asteptat in e for e in erori), erori
 

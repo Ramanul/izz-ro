@@ -47,7 +47,6 @@ def test_sablonul_are_blocul_puls():
 def test_css_are_treptele_h0_h4():
     paths = [
         os.path.join(ROOT, "static", "styles.css"),
-        os.path.join(ROOT, "static", "faza2.css"),
     ]
     css = ""
     for p in paths:
@@ -66,7 +65,6 @@ def test_article_are_bara_de_progres():
 def test_css_are_reading_progress_cu_reduced_motion():
     paths = [
         os.path.join(ROOT, "static", "styles.css"),
-        os.path.join(ROOT, "static", "faza2.css"),
     ]
     css = ""
     for p in paths:
@@ -77,11 +75,19 @@ def test_css_are_reading_progress_cu_reduced_motion():
     assert "prefers-reduced-motion" in css
 
 
-def test_base_leaga_faza2_css():
+def test_base_leaga_o_singura_foaie_de_stil():
+    """Din faza 6 a rebrandingului (2026-11-07) exista UN singur CSS de site.
+    Inainte, `site.css`/`faza2.css` erau cai „delta" inventate pe 2 octombrie doar ca
+    sa ocoleasca Cache-Control immutable pe styles.css; hash-ul din `?v=` face acum
+    acelasi lucru, deci testul pazeste noua regula, nu numele vechi."""
+    import re
+
     with open(os.path.join(ROOT, "templates", "base.html"), encoding="utf-8") as fh:
         html = fh.read()
-    assert "faza2.css" in html
-    assert "site.css" in html
+    fara_comentarii = re.sub(r"\{#.*?#\}", "", html, flags=re.S)
+    assert "static/styles.css?v=" in fara_comentarii
+    assert "site.css" not in fara_comentarii
+    assert "faza2.css" not in fara_comentarii
 
 
 def test_rampa_pulsului_este_identica_cu_rampa_hartii_mari():
@@ -100,11 +106,11 @@ def test_rampa_pulsului_este_identica_cu_rampa_hartii_mari():
         assert m, f"harta-stiri.css: lipseste --map-h{i}"
         harta.append(m.group(1).lower())
 
-    faza2 = open(os.path.join(ROOT, "static", "faza2.css"), encoding="utf-8").read()
+    faza2 = open(os.path.join(ROOT, "static", "styles.css"), encoding="utf-8").read()
     puls = []
     for i in range(5):
         m = re.search(r"\.puls-map path\.h" + str(i) + r"\s*\{\s*fill:\s*(#[0-9a-fA-F]{6})", faza2)
-        assert m, f"faza2.css: lipseste .puls-map path.h{i}"
+        assert m, f"styles.css: lipseste .puls-map path.h{i}"
         puls.append(m.group(1).lower())
 
     assert puls == harta, f"rampa pulsului {puls} difera de rampa hartii {harta}"

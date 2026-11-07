@@ -5,7 +5,7 @@ cifrul, semnatura). Aici se verifica LOGICA DE SERVICIU, care e exact ce nu se v
 browser pana cand e prea tarziu:
 
   · plafonul de o alerta pe zi — daca nu tine, abonatii primesc doua si promisiunea
-    «Zgomot zero» e incalcata de propriul nostru cod;
+    «selecție strictă a alertelor» e incalcata de propriul nostru cod;
   · degradarea fara KV si fara chei — PR-ul asta se publica INAINTE ca tu sa creezi
     namespace-ul, deci 503-ul curat e comportamentul asteptat, nu o eroare;
   · loturile cu cursor (10 ms de CPU pe planul Free) — al doilea lot NU are voie sa se

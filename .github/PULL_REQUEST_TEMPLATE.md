@@ -3,5 +3,5 @@
 - [ ] Testele relevante au rulat local (comenzile din CLAUDE.md §4) și au trecut
 - [ ] Preview / screenshot dacă schimbarea se vede la cititor
 - [ ] `handoff/stare-lucrari.md` actualizat (status, ce e verificat, ce rămâne)
-- [ ] Domeniu: fără headline-uri brute/trunchiate în output (regula „Zero Zgomot")
+- [ ] Domeniu: fără headline-uri brute/trunchiate în output (regula „filtru de calitate")
 - [ ] NU face merge până la aprobarea explicită a proprietarului — tăcerea nu înseamnă aprobare

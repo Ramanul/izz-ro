@@ -1,4 +1,4 @@
-"""Alertele IZZ.ro: criptarea Web Push si politica «Zgomot zero», verificate RULAND codul.
+"""Alertele IZZ.ro: criptarea Web Push si politica «selecție strictă a alertelor», verificate RULAND codul.
 
 DE CE RULEAZA CODUL IN LOC SA-L CITEASCA. `infra/push.js` e JavaScript pe un repo de
 Python, deci nimic din suita nu-l putea atinge: o greseala in criptare ar fi fost invizibila
@@ -305,7 +305,7 @@ def test_politica_accepta_alerta_faptica():
 @pytest.mark.parametrize("caz", ["gol", "emoji", "exclamare", "intrebare", "suspans",
                                  "tipat", "momitor", "text_scurt", "url_strain",
                                  "url_prima", "url_cu_urmatoare", "repetat"])
-def test_politica_refuza_clickbaitul(caz):
+def test_politica_refuza_titluri_senzationaliste(caz):
     """Fiecare refuz trebuie sa si POATA sa apara: o politica ce accepta tot nu e politica."""
     r = _ruleaza(POLITICA)
     assert r[caz]["ok"] is False

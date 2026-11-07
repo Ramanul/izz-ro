@@ -1,9 +1,9 @@
-# Sinteza produce clickbait fluent când sursa nu trimite fapte
+# Sinteza produce titluri senzaționaliste fluent când sursa nu trimite fapte
 
 **Raportat de Alexandru, 2026-08-04**, cu un exemplu de pe live: titlul „Gestul neobișnuit al unui
 portar în minutul 90+3 a uimit asistența" și teaserul „Finalul meciului disputat la scorul de 2-2 a
 fost marcat de un moment neobișnuit și spectaculos al portarului…". Nu spun **cine**, **ce meci**,
-**ce gest**. E exact contrariul lui „Zero Zgomot".
+**ce gest**. E exact contrariul lui „filtru de calitate".
 
 ## Diagnostic — e în DATE *și* în COD, iar cele două se compun
 
@@ -54,8 +54,8 @@ Regula finală din `USER_B`:
 
 > „…**dacă descrierea e săracă, extrage esența din titlul original** (tot reformulat)."
 
-Iar linia 22, în același prompt, cere „*fără clickbait, fără formulări vagi precum 'iată ce'*".
-Când singura intrare e un titlu clickbait, cele două instrucțiuni **se exclud reciproc** și modelul
+Iar linia 22, în același prompt, cere „*cu titluri factuale, fără formulări vagi precum 'iată ce'*".
+Când singura intrare e un titlu titluri senzaționaliste, cele două instrucțiuni **se exclud reciproc** și modelul
 nu are ieșire: i se cere să producă, și i se interzice singurul lucru pe care l-ar putea produce.
 Nu există nicio portiță de refuz — promptul nu-i permite să întoarcă „insuficient".
 
@@ -70,7 +70,7 @@ Asta explică întrebarea „cum e posibil după atâtea iterații": **ieșirea 
 deci nicio verificare existentă n-are cum s-o distingă de un articol real.** Defectul nu e vizibil
 în cod, ci doar citind textul publicat — și niciun test nu citește textul publicat.
 
-§7 spune deja ce trebuia să se întâmple: *„If a fallback path cannot meet the «Zero Zgomot» quality
+§7 spune deja ce trebuia să se întâmple: *„If a fallback path cannot meet the «filtru de calitate» quality
 bar, SKIP the item — do not publish it broken."* Regula există; nu e implementată pentru cazul ăsta.
 
 ## Spec propus (de confirmat înainte de cod)

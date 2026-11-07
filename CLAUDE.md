@@ -3,7 +3,7 @@
 > Contract canonic pentru Claude Code / Cowork. Se citește la fiecare tură și înlocuiește comportamentul implicit.
 >
 > **Plafon: 24 KB.** Măsurat în octeți; `tests/test_reguli.py` îl verifică mecanic.
-> **Buget de pornire: 37 KB.** Include acest fișier, `SessionStart` și frontmatter-ul agenților/comenzilor; se verifică mecanic.
+> **Buget de pornire: 40 KB.** Include acest fișier, `SessionStart` și frontmatter-ul agenților/comenzilor; se verifică mecanic.
 > **Regulă de namespace:** un `§N` necalificat din documentația repo-ului înseamnă secțiunea N din acest `CLAUDE.md`. Pentru `REGULI-SINTEZA.md` se scrie explicit `REGULI-SINTEZA.md §N`.
 >
 > Cifrele istorice, măsurătorile și incidentele stau în `specs/`, nu în contract, decât dacă schimbă acțiunea imediată.
@@ -30,7 +30,7 @@
 - **Diff minim.** Nu face refactor oportunist în aceeași schimbare.
 
 ## 1. Ce este izz.ro
-Agregator românesc de știri cu AI; pipeline static: scrape → synthesize → clusterize → categorize → render. Promisiunea de brand este **Zero Zgomot**.
+Agregator românesc de știri cu AI; pipeline static: scrape → synthesize → clusterize → categorize → render. Promisiunea de brand este **filtru de calitate**.
 
 ## 2. Stack și publicare
 Python 3.11 cloud / 3.14 local; Jinja2, feedparser, PyYAML, python-slugify, markdown, python-dotenv. AI Gemini 2.5 Flash Lite prin REST, comutabil pe Anthropic. CI/CD GitHub Actions (`build.yml`): cron `13 * * * *`, cu poartă de 105 minute → publicare efectivă ~2h. Hosting: Cloudflare Workers Static Assets; `wrangler.jsonc` assets-only.
@@ -95,7 +95,7 @@ CI rulează testele și lint-ul. Numărul de teste este doar reper, nu contract.
 ## 6. Definition of done
 Spec îndeplinită · comanda relevantă trecută · lint/test/type-check disponibile trecute · site-ul încă se construiește · commit descriptiv.
 
-## 7. Reguli de domeniu — Zero Zgomot
+## 7. Reguli de domeniu — filtru de calitate
 - **Fără output stricat.** Fallback-ul care nu atinge bara de calitate sare itemul; nu publică titlu brut/trunchiat.
 - **Diacriticele se apără mecanic** (`generator/diacritice.py`): reformularea care pierde diacriticele pe care sursa le are primește O reîncercare (un apel-lot, consumat din buget); ce rămâne nereparat se numără în log și în QA — un provider degradat nu are voie să golească site-ul, dar nici să scrie „romanesc" tăcut.
 - **O axă, o casă.** Nu cross-posta același item între axa geo și tematică.

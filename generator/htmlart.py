@@ -45,28 +45,36 @@ _FONT_B64 = None
 # (accent inchis, fundal deschis). Saturatie joasa deliberat: diferentiaza cardurile intre
 # ele fara sa iasa din identitatea editoriala. Aurul ramane constanta care leaga totul.
 _PALETE = [
-    ("#1f2a44", "#faf5e6"),   # cerneala albastra pe --gold-wash (pana in 2026-10-17: #8b6918, maroniu)
-    ("#15171c", "#f6f7f9"),   # --ink pe --paper
-    ("#3d4a3a", "#f1f4ee"),   # masliniu
-    ("#4a3b32", "#f7f2ed"),   # pamant ars
-    ("#2f3d4a", "#eef1f5"),   # ardezie
-    ("#4a3244", "#f5f0f4"),   # prun
+    ("#173a5e", "#f7f1e6"),   # navy pe hartie calda (rebranding 2026-11-07: era #1f2a44/#faf5e6)
+    ("#14161a", "#fbfaf7"),   # --ink pe --paper
+    ("#39443a", "#f2f4ee"),   # masliniu
+    ("#453a31", "#faf5ef"),   # pamant ars
+    ("#2f3d4a", "#f1f3f6"),   # ardezie
+    ("#463043", "#f8f2f5"),   # prun
 ]
-GOLD = "#c9a227"
+# Alama de decor (fire, filete). Era #c9a227 — aurul „viu" al vechii identitati; acum e
+# arama mată a sistemului „hartie curata" (--brass din styles.css, folosită doar ca decor).
+GOLD = "#a8823a"
 # Compozitia calma a stirilor locale/judetene (`.art--geo` in styles.css, aceleasi valori):
 # cerneala pe hartie calda, forma locului in aur luminos. NU `#8b6918` — tonul acela, pe
 # suprafete mari, se citea maroniu (sesizarea proprietarului 2026-10-17). Din aceeasi zi
 # arta nu-l mai foloseste deloc: aurul e doar `GOLD` (decor), textul ia accentul paletei —
 # un aur care trece 3:1 ca text pe hartie deschisa ajunge inapoi la mustar.
-GEO_INK = "#1d1f24"
-GEO_BG = "#faf6ec"
-GEO_AUR = "#dcb84e"
+GEO_INK = "#14161a"
+GEO_BG = "#fbfaf7"
+GEO_AUR = "#c8a458"
 
 
 def _font() -> str:
+    """Seriful rasterului = ACELASI cu al site-ului (Newsreader).
+
+    Pana in rebranding (2026-11-07) era Playfair 800: coperta si titlul din pagina erau doua
+    serife diferite, iar cititorul le vedea una langa alta. Fisierul e o instanta statica 700,
+    subsetata la română, din variabila OFL — vezi generator/assets/LICENSES.md.
+    """
     global _FONT_B64
     if _FONT_B64 is None:
-        p = os.path.join(_ASSETS, "PlayfairDisplay_800ExtraBold.ttf")
+        p = os.path.join(_ASSETS, "Newsreader_700Bold.ttf")
         _FONT_B64 = base64.b64encode(open(p, "rb").read()).decode() if os.path.exists(p) else ""
     return _FONT_B64
 
@@ -567,7 +575,7 @@ def _base_css(w: int, h: int) -> str:
     k = w / ART_W
     return (
         "*{margin:0;padding:0;box-sizing:border-box}"
-        f"@font-face{{font-family:PF;src:url(data:font/ttf;base64,{_font()})}}"
+        f"@font-face{{font-family:PF;font-weight:700;src:url(data:font/ttf;base64,{_font()})}}"
         f"html,body{{width:{w}px;height:{h}px;overflow:hidden}}"
         f".stage{{position:relative;width:{w}px;height:{h}px;overflow:hidden;font-family:PF}}"
         f".grain{{position:absolute;inset:0;background-image:{_GRAIN};opacity:.05;"
@@ -575,12 +583,12 @@ def _base_css(w: int, h: int) -> str:
         # Eticheta: un singur tratament tipografic in tot fisierul. Pana pe 2026-08-05, un
         # template din patru isi desena propria varianta la 64px si aceeasi pagina arata
         # judetul la doua marimi diferite pe carduri alaturate.
-        f".eticheta{{font-weight:800;font-size:{44*k:.0f}px;letter-spacing:{5*k:.0f}px;"
+        f".eticheta{{font-weight:700;font-size:{44*k:.0f}px;letter-spacing:{5*k:.0f}px;"
         "text-transform:uppercase;line-height:1}"
-        f".sub{{font-weight:800;font-size:{15*k:.0f}px;letter-spacing:{4*k:.0f}px;"
+        f".sub{{font-weight:700;font-size:{15*k:.0f}px;letter-spacing:{4*k:.0f}px;"
         "text-transform:uppercase;opacity:.55;margin-top:" + f"{14*k:.0f}px}}"
         f".filet{{height:{3*k:.0f}px;background:{GOLD};border:0}}"
-        f".marca{{position:absolute;font-weight:800;font-size:{13*k:.0f}px;letter-spacing:"
+        f".marca{{position:absolute;font-weight:700;font-size:{13*k:.0f}px;letter-spacing:"
         f"{3*k:.0f}px;text-transform:uppercase;opacity:.4}}"
     )
 

@@ -4,7 +4,7 @@
 consume the AI budget. Evidence (builds 2026-07-20): they are mostly older than the
 clustering RECENT window, so they queue behind ALL fresh national news and expire (TTL 7d)
 before the 12-18 calls/run budget ever reaches them; with 1274 primării planned, per-item
-AI can never scale. These are official public announcements, not clickbait — process them
+AI can never scale. These are official public announcements, not titluri senzaționaliste — process them
 deterministically via the existing fallback path (original title + truncated teaser),
 zero AI calls. Branch: `oc/local-official-no-ai`.
 

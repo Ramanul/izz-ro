@@ -1,0 +1,764 @@
+<!doctype html>
+<html lang="ro" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>IZZ.ro — propunere de rebranding vizual</title>
+<style>
+/* ============================================================
+   TOKENS PROPUSE
+   ============================================================ */
+:root{
+  --paper:#FBFAF7; --surface:#FFFFFF; --sunk:#F3F1EC;
+  --ink:#14161A; --ink-2:#4A515C; --ink-3:#6A6A73;
+  --line:#E7E4DD; --rule:#D3CEC3;
+  --brass:#A8823A; --brass-deep:#7C5F22;
+  --navy:#173A5E; --live:#B23A2E;
+  --ok:#1F6F63; --warn:#9A7B2E;
+  --serif:"Newsreader","Iowan Old Style",Georgia,serif;
+  --sans:"Inter",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --max:1180px;
+  --r:4px;
+}
+[data-theme="dark"]{
+  --paper:#0F1115; --surface:#151920; --sunk:#12151A;
+  --ink:#E9E6DF; --ink-2:#A9B0BB; --ink-3:#8B94A2;
+  --line:#242A33; --rule:#333B47;
+  --brass:#D3B26A; --brass-deep:#D3B26A;
+  --navy:#A9C7E9; --live:#E4675A; --ok:#6FBFAF; --warn:#D3B26A;
+}
+@font-face{ font-family:"Newsreader"; src:url("fonts/newsreader-var.woff2") format("woff2");
+  font-weight:200 800; font-style:normal; font-display:swap; }
+@font-face{ font-family:"Inter"; src:url("fonts/Inter-400.woff2") format("woff2");
+  font-weight:400; font-display:swap; }
+@font-face{ font-family:"Inter"; src:url("fonts/Inter-600.woff2") format("woff2");
+  font-weight:600; font-display:swap; }
+
+*{ box-sizing:border-box; }
+html{ scroll-behavior:smooth; }
+body{
+  margin:0; background:var(--paper); color:var(--ink);
+  font-family:var(--sans); font-size:15px; line-height:1.55;
+  -webkit-font-smoothing:antialiased;
+}
+@media (prefers-reduced-motion:reduce){ *{ transition:none !important; scroll-behavior:auto !important; } }
+a{ color:var(--navy); text-decoration:none; }
+a:hover{ text-decoration:underline; text-underline-offset:3px; }
+:focus-visible{ outline:2px solid var(--navy); outline-offset:3px; border-radius:2px; }
+
+/* ============================================================
+   CHROME-UL PROPUNERII (nu face parte din site)
+   ============================================================ */
+.ui-bar{
+  position:sticky; top:0; z-index:50; backdrop-filter:blur(10px);
+  background:var(--paper);
+  background:color-mix(in srgb, var(--paper) 88%, transparent);
+  border-bottom:1px solid var(--line);
+}
+.ui-bar-in{ max-width:var(--max); margin:0 auto; padding:14px 24px; display:flex; gap:20px; align-items:center; flex-wrap:wrap; }
+.ui-name{ font-family:var(--serif); font-size:20px; letter-spacing:-.02em; }
+.ui-name b{ font-weight:600; }
+.ui-name em{ font-style:normal; color:var(--brass); }
+.ui-tabs{ display:flex; gap:4px; margin-left:auto; flex-wrap:wrap; }
+.ui-tab{
+  font:600 12.5px/1 var(--sans); letter-spacing:.04em; text-transform:uppercase;
+  padding:10px 13px; border:1px solid transparent; border-radius:999px;
+  background:none; color:var(--ink-2); cursor:pointer;
+}
+.ui-tab[aria-selected="true"]{ background:var(--ink); color:var(--paper); }
+.ui-tab:hover{ border-color:var(--rule); }
+.ui-theme{ font:600 12.5px/1 var(--sans); padding:10px 12px; border:1px solid var(--rule);
+  border-radius:999px; background:none; color:var(--ink-2); cursor:pointer; }
+.ui-wrap{ max-width:var(--max); margin:0 auto; padding:40px 24px 90px; }
+.panel[hidden]{ display:none; }
+.ui-kicker{ font:600 11px/1 var(--sans); letter-spacing:.16em; text-transform:uppercase; color:var(--brass-deep); margin:0 0 10px; }
+.ui-h1{ font-family:var(--serif); font-weight:500; font-size:clamp(30px,4vw,44px); line-height:1.08;
+  letter-spacing:-.02em; margin:0 0 14px; max-width:24ch; }
+.ui-lead{ font-size:17px; line-height:1.6; color:var(--ink-2); max-width:66ch; margin:0 0 34px; }
+.ui-h2{ font-family:var(--serif); font-weight:500; font-size:26px; letter-spacing:-.01em; margin:56px 0 6px; }
+.ui-sub{ color:var(--ink-2); margin:0 0 24px; max-width:70ch; }
+.ui-note{ font-size:13px; color:var(--ink-3); max-width:70ch; }
+.rule{ height:1px; background:var(--line); border:0; margin:0 0 24px; }
+.hr-brass{ width:34px; height:2px; background:var(--brass); border:0; margin:0 0 16px; }
+
+/* ============================================================
+   MOCK DE SITE — tot ce e sub .frame e „site-ul”
+   ============================================================ */
+.frame{
+  border:1px solid var(--line); border-radius:10px; overflow:hidden;
+  background:var(--paper); box-shadow:0 24px 60px -40px rgba(20,22,26,.35);
+}
+.frame-note{
+  display:flex; gap:10px; align-items:center; font-size:12px; color:var(--ink-3);
+  padding:10px 16px; border-bottom:1px solid var(--line); background:var(--sunk);
+}
+.dot{ width:7px; height:7px; border-radius:50%; background:var(--rule); }
+.dot.live{ background:var(--brass); }
+
+/* --- header --- */
+.site-head{ border-bottom:1px solid var(--line); background:var(--paper); }
+.site-head-in{ max-width:var(--max); margin:0 auto; padding:18px 28px 0; display:flex; align-items:flex-end; gap:28px; }
+.wordmark{ font-family:var(--serif); font-weight:500; font-size:34px; line-height:.9; letter-spacing:-.03em; color:var(--ink); }
+.wordmark em{ font-style:normal; color:var(--brass); }
+.wordmark-sub{ font-size:10.5px; letter-spacing:.14em; text-transform:uppercase; color:var(--ink-3); padding-bottom:3px; }
+.site-nav{ display:flex; gap:22px; margin-left:auto; padding-bottom:9px; }
+.site-nav a{ font-size:14px; font-weight:600; color:var(--ink-2); padding-bottom:7px; border-bottom:2px solid transparent; }
+.site-nav a[aria-current]{ color:var(--ink); border-color:var(--navy); }
+.site-nav a:hover{ color:var(--ink); text-decoration:none; }
+.catbar{ border-top:1px solid var(--line); margin-top:14px; }
+.catbar-in{ max-width:var(--max); margin:0 auto; padding:0 28px; display:flex; gap:18px; overflow-x:auto; }
+.catbar a{ font-size:12.5px; color:var(--ink-2); padding:11px 0; white-space:nowrap; }
+.catbar a[aria-current]{ color:var(--ink); font-weight:600; box-shadow:inset 0 -2px 0 var(--brass); }
+.statusline{ max-width:var(--max); margin:0 auto; padding:8px 28px; font-size:11.5px; color:var(--ink-3);
+  display:flex; gap:8px; flex-wrap:wrap; font-variant-numeric:tabular-nums; }
+.statusline b{ color:var(--ink-2); font-weight:600; }
+
+.site-main{ max-width:var(--max); margin:0 auto; padding:30px 28px 56px; }
+
+/* --- module --- */
+.mod{ margin:0 0 52px; }
+.mod-head{ display:flex; align-items:baseline; gap:14px; border-bottom:1px solid var(--rule); padding-bottom:9px; margin-bottom:20px; }
+.mod-kicker{ font:600 10.5px/1 var(--sans); letter-spacing:.14em; text-transform:uppercase; color:var(--brass-deep); }
+.mod-title{ font-family:var(--serif); font-weight:500; font-size:23px; letter-spacing:-.01em; margin:0; }
+.mod-more{ margin-left:auto; font-size:12.5px; font-weight:600; }
+
+/* --- briefing --- */
+.brief{ display:grid; grid-template-columns:repeat(2,1fr); gap:0 44px; }
+.brief ol{ margin:0; padding:0; list-style:none; counter-reset:b; }
+.brief li{ display:grid; grid-template-columns:52px 1fr; gap:10px; padding:11px 0; border-bottom:1px solid var(--line); align-items:baseline; }
+.brief li:last-child{ border-bottom:0; }
+.brief time{ font-size:11.5px; color:var(--ink-3); font-variant-numeric:tabular-nums; }
+.brief a{ font-family:var(--serif); font-size:17.5px; line-height:1.3; color:var(--ink); }
+.brief .tag{ font-size:11px; color:var(--ink-3); display:block; margin-top:2px; }
+
+/* --- hero --- */
+.hero{ display:grid; grid-template-columns:1.55fr 1fr; gap:44px; align-items:start; }
+.hero-art{ position:relative; aspect-ratio:16/9; overflow:hidden; background:var(--sunk); border-radius:var(--r); }
+.hero-art img{ width:100%; height:100%; object-fit:cover; display:block; }
+.hero-art figcaption{ position:absolute; bottom:0; left:0; right:0; padding:22px 18px 8px;
+  font-size:10.5px; color:#fff; background:linear-gradient(transparent, rgba(10,12,16,.72)); }
+.hero h1,.lead-title{ font-family:var(--serif); font-weight:500; font-size:clamp(28px,3.4vw,38px); line-height:1.1;
+  letter-spacing:-.02em; margin:14px 0 12px; }
+.hero h1 a,.lead-title a{ color:var(--ink); }
+.dek{ font-family:var(--serif); font-size:18.5px; line-height:1.5; color:var(--ink-2); margin:0 0 16px; }
+.meta{ display:flex; gap:12px; flex-wrap:wrap; align-items:center; font-size:12px; color:var(--ink-3); font-variant-numeric:tabular-nums; }
+.meta .src{ color:var(--navy); font-weight:600; }
+.meta .sep{ width:3px; height:3px; border-radius:50%; background:var(--rule); }
+
+/* --- trust chips --- */
+.trust{ display:inline-flex; align-items:center; gap:6px; font:600 11px/1 var(--sans); letter-spacing:.05em;
+  text-transform:uppercase; color:var(--ink-2); }
+.trust i{ width:7px; height:7px; border-radius:50%; background:var(--ok); }
+.trust.single i{ background:var(--warn); }
+.trust.single i{ border-radius:1px; transform:rotate(45deg); }
+.trust.div i{ background:var(--live); }
+.trust.official i{ background:var(--ink-3); border-radius:0; }
+
+/* --- card --- */
+.grid3{ display:grid; grid-template-columns:repeat(3,1fr); gap:36px 32px; }
+.card.nomedia{ border-top:1px solid var(--rule); padding-top:15px; }
+.card{ display:flex; flex-direction:column; gap:9px; }
+.card .kicker{ font:600 10.5px/1 var(--sans); letter-spacing:.14em; text-transform:uppercase; color:var(--brass-deep); }
+.card h3{ font-family:var(--serif); font-weight:500; font-size:21px; line-height:1.2; letter-spacing:-.01em; margin:0; }
+.card h3 a{ color:var(--ink); }
+.card p{ margin:0; font-size:14px; color:var(--ink-2); line-height:1.5; }
+.card .thumb{ aspect-ratio:16/9; overflow:hidden; border-radius:var(--r); background:var(--sunk); }
+.card .thumb img{ width:100%; height:100%; object-fit:cover; display:block; }
+
+/* --- rows (categorii) --- */
+.duo{ display:grid; grid-template-columns:1fr 1fr; gap:56px; }
+.rows{ display:flex; flex-direction:column; }
+.row{ display:grid; grid-template-columns:64px 1fr; gap:14px; padding:13px 0; border-bottom:1px solid var(--line); align-items:start; }
+.row:last-child{ border-bottom:0; }
+.row .thumb{ width:64px; height:64px; border-radius:var(--r); overflow:hidden; background:var(--sunk); }
+.row .thumb img{ width:100%; height:100%; object-fit:cover; display:block; }
+.row h4{ font-family:var(--serif); font-weight:500; font-size:16.5px; line-height:1.28; margin:0 0 4px; }
+.row h4 a{ color:var(--ink); }
+.row .meta{ font-size:11.5px; }
+
+/* --- utilitare --- */
+.utils{ display:grid; grid-template-columns:repeat(4,1fr); gap:16px; }
+.utility{ border:1px solid var(--line); border-radius:var(--r); padding:16px 16px 14px; background:var(--surface); }
+.utility strong{ display:block; font-family:var(--serif); font-weight:500; font-size:16px; margin-bottom:3px; }
+.utility span{ font-size:12px; color:var(--ink-3); }
+
+/* --- footer --- */
+.site-foot{ border-top:1px solid var(--rule); background:var(--sunk); }
+.site-foot-in{ max-width:var(--max); margin:0 auto; padding:28px; display:grid; grid-template-columns:1.4fr 1fr 1fr 1fr; gap:28px; }
+.site-foot h5{ font:600 10.5px/1 var(--sans); letter-spacing:.14em; text-transform:uppercase; color:var(--ink-3); margin:0 0 10px; }
+.site-foot a{ display:block; font-size:12.5px; color:var(--ink-2); padding:3px 0; }
+.site-foot p{ font-size:12px; color:var(--ink-3); margin:0; max-width:34ch; }
+.btn{ display:inline-flex; align-items:center; gap:8px; height:42px; padding:0 18px; border-radius:var(--r);
+  background:var(--ink); color:var(--paper); font:600 13.5px/1 var(--sans); border:0; cursor:pointer; }
+.btn:hover{ background:var(--navy); text-decoration:none; }
+.btn.ghost{ background:none; color:var(--ink); border:1px solid var(--rule); }
+
+/* --- articol --- */
+.art-wrap{ max-width:712px; margin:0 auto; padding:34px 28px 64px; }
+.crumbs{ font-size:11.5px; color:var(--ink-3); margin-bottom:22px; }
+.crumbs a{ color:var(--ink-2); }
+.art-kicker{ font:600 11px/1 var(--sans); letter-spacing:.14em; text-transform:uppercase; color:var(--brass-deep); margin-bottom:12px; }
+.art-h1{ font-family:var(--serif); font-weight:500; font-size:clamp(30px,4.2vw,44px); line-height:1.06; letter-spacing:-.025em; margin:0 0 16px; }
+.art-dek{ font-family:var(--serif); font-size:20px; line-height:1.45; color:var(--ink-2); margin:0 0 20px; }
+.art-fig{ margin:26px 0 28px; }
+.art-fig .img{ aspect-ratio:16/9; overflow:hidden; border-radius:var(--r); background:var(--sunk); }
+.art-fig img{ width:100%; height:100%; object-fit:cover; display:block; }
+.art-fig figcaption{ font-size:11px; color:var(--ink-3); margin-top:7px; }
+.prose{ font-family:var(--serif); font-size:19px; line-height:1.62; color:var(--ink); }
+.prose p{ margin:0 0 18px; }
+.prose a{ text-decoration:underline; text-underline-offset:3px; }
+.context{ display:flex; gap:8px; flex-wrap:wrap; align-items:center; margin:26px 0; padding:14px 0; border-top:1px solid var(--line); border-bottom:1px solid var(--line); }
+.chip{ display:inline-flex; align-items:center; gap:6px; height:30px; padding:0 11px; border:1px solid var(--rule);
+  border-radius:999px; font-size:12px; color:var(--ink-2); }
+.chip:hover{ text-decoration:none; border-color:var(--ink-3); }
+.ctx-label{ font:600 10.5px/1 var(--sans); letter-spacing:.14em; text-transform:uppercase; color:var(--ink-3); margin-right:4px; }
+.confirm{ border-left:2px solid var(--brass); padding:2px 0 2px 18px; margin:30px 0; }
+.confirm h4{ font:600 11px/1 var(--sans); letter-spacing:.12em; text-transform:uppercase; color:var(--brass-deep); margin:0 0 10px; }
+.confirm ul{ margin:0; padding:0; list-style:none; }
+.confirm li{ font-family:var(--serif); font-size:16.5px; line-height:1.5; margin-bottom:9px; }
+.confirm em{ font-style:normal; font-size:12px; color:var(--ink-3); display:block; font-family:var(--sans); margin-top:2px; }
+.srcbox{ border-top:2px solid var(--ink); padding-top:14px; margin:34px 0; }
+.srcbox h4{ font:600 11px/1 var(--sans); letter-spacing:.12em; text-transform:uppercase; margin:0 0 10px; }
+.srcbox ol{ margin:0; padding-left:18px; font-size:13.5px; color:var(--ink-2); }
+.srcbox li{ margin-bottom:6px; }
+.srcbox .role{ font-size:11px; color:var(--ink-3); }
+.disclaimer{ font-size:12px; color:var(--ink-3); line-height:1.6; margin:0 0 8px; }
+.related{ display:grid; grid-template-columns:repeat(3,1fr); gap:24px; margin-top:20px; }
+.related .card h3{ font-size:16px; }
+
+/* ============================================================
+   TABURI: DIRECȚII / SISTEM
+   ============================================================ */
+.dirs{ display:grid; grid-template-columns:repeat(3,1fr); gap:22px; }
+.dir{ border:1px solid var(--line); border-radius:10px; background:var(--surface); overflow:hidden; display:flex; flex-direction:column; }
+.dir.pick{ border-color:var(--ink); box-shadow:0 0 0 1px var(--ink); }
+.dir-head{ padding:18px 18px 12px; display:flex; align-items:start; gap:10px; }
+.dir-head h3{ font-family:var(--serif); font-weight:500; font-size:21px; margin:0; letter-spacing:-.01em; }
+.dir-badge{ margin-left:auto; font:600 10px/1 var(--sans); letter-spacing:.1em; text-transform:uppercase;
+  background:var(--ink); color:var(--paper); padding:6px 8px; border-radius:3px; white-space:nowrap; }
+.dir-body{ padding:0 18px 18px; font-size:13.5px; color:var(--ink-2); }
+.dir-prev{ border-top:1px solid var(--line); border-bottom:1px solid var(--line); padding:16px 18px; background:var(--paper); }
+.dir-prev .wm{ font-family:var(--serif); font-size:24px; letter-spacing:-.02em; }
+.dir-prev .tl{ font-family:var(--serif); font-size:15px; line-height:1.25; margin-top:8px; }
+.dir-prev .mt{ font-size:10px; color:var(--ink-3); margin-top:6px; letter-spacing:.04em; text-transform:uppercase; }
+.dir.swiss .tl{ font-family:var(--sans); font-weight:600; }
+.dir.dark{ background:#0F1115; color:#E9E6DF; border-color:#242A33; }
+.dir.dark .dir-head h3{ color:#E9E6DF; }
+.dir.dark .dir-body{ color:#A9B0BB; }
+.dir.dark .dir-prev{ background:#151920; border-color:#242A33; }
+.dir.dark .dir-badge{ background:#D3B26A; color:#0F1115; }
+.dir ul{ margin:10px 0 0; padding-left:16px; }
+.dir li{ margin-bottom:5px; }
+.dir-foot{ margin-top:auto; padding:12px 18px; border-top:1px solid var(--line); display:flex; gap:8px; flex-wrap:wrap; }
+
+.swatches{ display:grid; grid-template-columns:repeat(6,1fr); gap:14px; }
+.sw{ border:1px solid var(--line); border-radius:var(--r); overflow:hidden; background:var(--surface); }
+.sw .chipc{ height:64px; }
+.sw .lab{ padding:9px 10px; font-size:11px; color:var(--ink-2); }
+.sw .lab b{ display:block; color:var(--ink); font-size:12px; font-weight:600; }
+.sw .lab span{ color:var(--ink-3); font-variant-numeric:tabular-nums; }
+
+.spec{ display:grid; grid-template-columns:190px 1fr; gap:26px; align-items:baseline; padding:16px 0; border-bottom:1px solid var(--line); }
+.spec:last-child{ border:0; }
+.spec .n{ font-size:11.5px; color:var(--ink-3); font-variant-numeric:tabular-nums; }
+.spec .s{ font-family:var(--serif); letter-spacing:-.02em; line-height:1.1; }
+
+.two{ display:grid; grid-template-columns:1fr 1fr; gap:34px; }
+.box{ border:1px solid var(--line); border-radius:10px; padding:20px; background:var(--surface); }
+.box h3{ margin:0 0 12px; font:600 11px/1 var(--sans); letter-spacing:.12em; text-transform:uppercase; color:var(--ink-3); }
+.box ul{ margin:0; padding-left:18px; font-size:13.5px; color:var(--ink-2); }
+.box li{ margin-bottom:7px; }
+.box.ok{ border-left:2px solid var(--ok); }
+.box.no{ border-left:2px solid var(--live); }
+
+.before-after{ display:grid; grid-template-columns:1fr 1fr; gap:28px; }
+.ba{ border:1px solid var(--line); border-radius:10px; padding:20px; background:var(--paper); }
+.ba .tag{ font:600 10.5px/1 var(--sans); letter-spacing:.12em; text-transform:uppercase; color:var(--ink-3); margin-bottom:14px; }
+
+/* varianta VECHE, cu tokenii actuali (aproximare fidela) */
+.old{ --gold-strong:#8B6918; --gold:#C9A227; --ink3:#6D6D7F; }
+.old .badge{ font-family:"Courier New",monospace; font-size:12px; font-weight:700; letter-spacing:2px; text-transform:uppercase; color:var(--gold-strong); }
+.old .trust-label{ font-family:"Courier New",monospace; font-size:12px; font-weight:700; color:var(--gold-strong); margin:4px 0 8px; }
+.old h3{ font-family:"Playfair Display",Georgia,serif; font-weight:800; font-size:21px; line-height:1.15; margin:0 0 8px; }
+.old .m{ font-family:"Courier New",monospace; font-size:12px; color:var(--ink3); margin-bottom:8px; }
+.old p{ font-size:12.6px; color:#4D5562; margin:0 0 6px; }
+.old .srcs{ font-family:"Courier New",monospace; font-size:12px; color:var(--ink3); }
+.old .art{ height:96px; border-radius:6px; background:
+  radial-gradient(120% 120% at 20% 10%, #F2E6C4 0 38%, #E9D9A8 38% 60%, #D9C486 60% 100%);
+  border:1px solid #EFE3C2; display:flex; align-items:center; justify-content:center;
+  font-family:"Playfair Display",Georgia,serif; color:#6B5518; font-size:13px; letter-spacing:2px; margin-bottom:10px; }
+
+.toast{ position:fixed; left:50%; bottom:24px; transform:translateX(-50%); background:var(--ink); color:var(--paper);
+  padding:12px 18px; border-radius:999px; font-size:12.5px; opacity:0; pointer-events:none; transition:opacity .2s; }
+.toast.show{ opacity:1; }
+
+@media (max-width: 900px){
+  .hero,.duo,.two,.before-after,.dirs{ grid-template-columns:1fr; }
+  .grid3{ grid-template-columns:1fr 1fr; } .brief{ grid-template-columns:1fr; }
+  .utils{ grid-template-columns:1fr 1fr; } .swatches{ grid-template-columns:repeat(3,1fr); }
+  .site-foot-in{ grid-template-columns:1fr 1fr; } .related{ grid-template-columns:1fr; }
+  .site-nav{ display:none; } .spec{ grid-template-columns:1fr; gap:6px; }
+}
+</style>
+</head>
+<body>
+
+<div class="ui-bar">
+  <div class="ui-bar-in">
+    <div class="ui-name"><b>IZZ</b><em>.</em> rebranding</div>
+    <div class="ui-tabs" role="tablist" aria-label="Secțiunile propunerii">
+      <button class="ui-tab" role="tab" data-panel="directii" aria-selected="true">Direcții</button>
+      <button class="ui-tab" role="tab" data-panel="home" aria-selected="false">Prima pagină</button>
+      <button class="ui-tab" role="tab" data-panel="articol" aria-selected="false">Articol</button>
+      <button class="ui-tab" role="tab" data-panel="sistem" aria-selected="false">Sistem</button>
+    </div>
+    <button class="ui-theme" id="theme">Tema: lumină</button>
+  </div>
+</div>
+
+<div class="ui-wrap">
+
+  <!-- ===================== DIRECȚII ===================== -->
+  <section class="panel" id="directii">
+    <p class="ui-kicker">Propunere · 7 noiembrie 2026</p>
+    <h1 class="ui-h1">Trei direcții de rebranding vizual</h1>
+    <p class="ui-lead">Diagnosticul e simplu: identitatea actuală („cronică aurie”) este o pastiche de ziar tipărit — trei familii de fonturi, mono majuscul, sigilii, ștampile de dată și 60 de compoziții SVG pe prima pagină. Rezultatul e personal, dar obositor: ierarhia se pierde între badge, trust-label, sigiliu, dată și „~1 min”. Rebrandingul propus mută accentul de la <em>decor de ziar</em> la <em>ierarhie de citire</em>: mai puține elemente, mai mult aer, un singur accent de brand și un serif contemporan în locul lui Playfair.</p>
+
+    <div class="dirs">
+      <article class="dir pick">
+        <div class="dir-head"><h3>A. Hârtie curată</h3><span class="dir-badge">recomandat</span></div>
+        <div class="dir-prev">
+          <div class="wm">izz<em style="font-style:normal;color:var(--brass)">.</em></div>
+          <div class="tl">Guvernul a decis: taxele locale cresc de la 1 ianuarie</div>
+          <div class="mt">Local · Constanța · Acum 12 min</div>
+        </div>
+        <div class="dir-body">
+          Evoluție, nu ruptură: păstrează seriful și arama ca semnătură, dar le mută din text în structură. Un singur font nou (Newsreader), mono eliminat, accentul auriu doar pe wordmark și linii.
+          <ul><li>+ continuitate de brand</li><li>+ citește mai bine pe mobil</li><li>− mai puțin „spectacol”</li></ul>
+        </div>
+        <div class="dir-foot"><span class="chip">2 fonturi</span><span class="chip">alb cald</span><span class="chip">navy + aramă</span></div>
+      </article>
+
+      <article class="dir swiss">
+        <div class="dir-head"><h3>B. Sistem</h3></div>
+        <div class="dir-prev">
+          <div class="wm" style="font-family:var(--sans);font-weight:600;font-size:24px">izz.ro</div>
+          <div class="tl">Guvernul a decis: taxele locale cresc de la 1 ianuarie</div>
+          <div class="mt">LOCAL · CONSTANȚA · 12 MIN</div>
+        </div>
+        <div class="dir-body">
+          Școala elvețiană: totul fără serif, grilă strictă, culoarea devine informație (categorie, nivel de confirmare). Excelent pentru hartă, instrumente și briefing; mai puțin „ziar”, mai mult „serviciu”.
+          <ul><li>+ densitate și claritate</li><li>+ scalabil la unelte</li><li>− pierde autoritatea editorială</li></ul>
+        </div>
+        <div class="dir-foot"><span class="chip">1 font</span><span class="chip">culori de date</span><span class="chip">grid 12</span></div>
+      </article>
+
+      <article class="dir dark">
+        <div class="dir-head"><h3>C. Nocturn</h3></div>
+        <div class="dir-prev">
+          <div class="wm">izz<em style="font-style:normal;color:#D3B26A">.</em></div>
+          <div class="tl">Guvernul a decis: taxele locale cresc de la 1 ianuarie</div>
+          <div class="mt" style="color:#8B94A2">Local · Constanța · Acum 12 min</div>
+        </div>
+        <div class="dir-body">
+          Întâi întuneric, aramă pe negru, serif mare, imagini dominante. Foarte distinctiv și premium, dar obositor pentru cititul de dimineață și greu de susținut fără fotografii bune — or 82% din articole nu au imagine.
+          <ul><li>+ memorabil</li><li>− contrast și confort diurn</li><li>− cere imagini care nu există</li></ul>
+        </div>
+        <div class="dir-foot"><span class="chip">dark-first</span><span class="chip">aramă</span><span class="chip">imagini mari</span></div>
+      </article>
+    </div>
+
+    <h2 class="ui-h2">De ce A, și nu B sau C</h2>
+    <p class="ui-sub">Publicul IZZ.ro nu vine să admire un design; vine să înțeleagă rapid un eveniment și să plece informat. Direcția A păstrează exact ce dă credibilitate (serif, alb cald, aramă, lipsa reclamelor) și elimină exact ce obosește (mono majuscul peste tot, sigilii, badge-uri suprapuse, 60 de ilustrații pe ecran). B ar fi o schimbare de poziționare — de la ziar la dashboard — prea mare pentru un site care încă își construiește autoritatea. C ar arăta spectaculos pe un ecran de prezentare și prost pe telefon, la 7 dimineața.</p>
+
+    <div class="two" style="margin-top:26px">
+      <div class="box ok"><h3>Ce păstrăm (capital de brand)</h3><ul>
+        <li>Seriful pentru titluri — autoritate editorială.</li>
+        <li>Arama ca accent, nu ca text de interfață.</li>
+        <li>Alb cald, nu alb-albastru de dashboard.</li>
+        <li>Etichetele de încredere („o singură origine”, „confirmat de 3 publicații”).</li>
+        <li>Ritmul de spațiere pe 8 px și liniile subțiri.</li>
+      </ul></div>
+      <div class="box no"><h3>Ce eliminăm (zgomot vizual)</h3><ul>
+        <li>JetBrains Mono din badge-uri, meta, butoane, subsol.</li>
+        <li>Playfair 800 (contrast prea mare la 20 px, diacritice fragile) → Newsreader.</li>
+        <li>Sigiliul de dată și ștampila din arta generativă.</li>
+        <li>Badge + trust-label + „generat automat” ca trei elemente separate.</li>
+        <li>Ilustrațiile SVG inline pe fiecare card (455 KB pe prima pagină).</li>
+      </ul></div>
+    </div>
+  </section>
+
+  <!-- ===================== HOME ===================== -->
+  <section class="panel" id="home" hidden>
+    <p class="ui-kicker">Aplicație · direcția A</p>
+    <h1 class="ui-h1">Prima pagină, înainte și după</h1>
+    <p class="ui-lead">Aceeași informație, aceleași titluri reale din build-ul de azi. Diferă ierarhia: un singur titlu mare, un briefing scurt, cel mult 24 de carduri pe ecran (față de 60), artă doar unde există fotografie licențiată, iar eticheta de încredere se mută pe un singur rând discret.</p>
+
+    <div class="frame">
+      <div class="frame-note"><span class="dot live"></span> Propunere · 1180 px · titluri și imagini reale din build-ul din 7 noiembrie</div>
+
+      <header class="site-head">
+        <div class="site-head-in">
+          <div>
+            <div class="wordmark">izz<em>.</em></div>
+            <div class="wordmark-sub" style="margin-top:6px">Știrile tale, fără zgomot</div>
+          </div>
+          <nav class="site-nav" aria-label="Secțiuni">
+            <a href="#" aria-current="page">Știri</a><a href="#">Hartă</a><a href="#">Ghiduri</a><a href="#">Calendar</a><a href="#">Instrumente</a><a href="#">Caută</a>
+          </nav>
+        </div>
+        <div class="catbar"><div class="catbar-in">
+          <a href="#" aria-current="page">Național</a><a href="#">Local</a><a href="#">Politică</a><a href="#">Economie</a><a href="#">Externe</a><a href="#">Sport</a><a href="#">Sănătate</a><a href="#">Tech</a><a href="#">Cultură</a><a href="#">Auto</a><a href="#">Lifestyle</a><a href="#">Discounturi</a>
+        </div></div>
+        <div class="statusline">
+          <span>Sâmbătă, 7 noiembrie</span><span class="sep">·</span>
+          <span><b>1.061</b> articole → <b>975</b> subiecte</span><span class="sep">·</span>
+          <span><b>173</b> surse</span><span class="sep">·</span>
+          <span><b>37</b> județe</span><span class="sep">·</span>
+          <span>actualizat acum 6 minute</span>
+        </div>
+      </header>
+
+      <main class="site-main">
+
+        <!-- briefing -->
+        <section class="mod">
+          <div class="mod-head"><span class="mod-kicker">În 60 de secunde</span><h2 class="mod-title">Ce s-a întâmplat azi</h2><a class="mod-more" href="#">Briefingul complet →</a></div>
+          <div class="brief">
+            <ol>
+              <li><time>08:06</time><div><a href="#">Slăbirea timpurie a vortexului polar crește riscul de valuri de frig în Emisfera Nordică</a><span class="tag">Externe · G4Media</span></div></li>
+              <li><time>08:05</time><div><a href="#">România a învins Franța de la 0-2 la seturi în Campionatul European de Volei</a><span class="tag">Sport · Sport.ro</span></div></li>
+              <li><time>08:04</time><div><a href="#">Craiova a acumulat șapte puncte după primele trei etape din Conference League</a><span class="tag">Sport · Sport.ro</span></div></li>
+              <li><time>08:02</time><div><a href="#">O tânără din Constanța este cercetată penal pentru că nu a acordat primul ajutor</a><span class="tag">Local · Știrile ProTV</span></div></li>
+            </ol>
+            <ol start="5">
+              <li><time>08:00</time><div><a href="#">Hotelul rotativ de lux din Sadu va costa până la 3.500 de euro pentru un sejur</a><span class="tag">Local · Turnul Sfatului</span></div></li>
+              <li><time>07:58</time><div><a href="#">Armata americană oferă 20 de milioane de dolari pentru informații despre programul nuclear</a><span class="tag">Externe · HotNews</span></div></li>
+              <li><time>07:41</time><div><a href="#">Codurile de pe ouă indică modul în care au fost crescute găinile</a><span class="tag">Național · Adevărul</span></div></li>
+              <li><time>07:20</time><div><a href="#">Primăria Constanța a publicat proiectul de taxe locale pentru 2027</a><span class="tag">Local · Primăria Constanța</span></div></li>
+            </ol>
+          </div>
+        </section>
+
+        <!-- lead -->
+        <section class="mod">
+          <div class="mod-head"><span class="mod-kicker">Subiectul zilei</span><h2 class="mod-title">Relocarea din Henri Coandă</h2></div>
+          <div class="hero">
+            <article>
+              <figure class="hero-art" style="margin:0 0 4px">
+                <img src="img/oras.jpg" alt="Vedere a unui oraș de provincie, cu zona industrială la orizont" width="960" height="540">
+                <figcaption>Ilustrație: Reper local · Wikimedia Commons · CC0</figcaption>
+              </figure>
+              <div class="lead-title" style="margin-top:18px"><a href="#">Locuitorii din cartierul Henri Coandă cer relocarea în zona industrială</a></div>
+              <p class="dek">Documentația va fi supusă aprobării Consiliului Local până la sfârșitul anului. Mutarea ar putea avea loc în următorii doi-trei ani.</p>
+              <div class="meta">
+                <span class="trust"><i></i>2 publicații · confirmat</span><span class="sep"></span>
+                <span class="src">FocusPress, Dobrogea Online</span><span class="sep"></span>
+                <time>08:41</time><span class="sep"></span><span>1 min</span>
+              </div>
+            </article>
+            <aside>
+              <div style="display:flex;align-items:center;gap:8px;padding-bottom:9px;border-bottom:1px solid var(--rule);margin-bottom:12px">
+                <span class="mod-kicker" style="color:var(--live)">Ultima oră</span>
+                <span style="font-size:11px;color:var(--ink-3);margin-left:auto">acum 12 min</span>
+              </div>
+              <article style="margin-bottom:22px">
+                <h3 style="font-family:var(--serif);font-weight:500;font-size:21px;line-height:1.22;margin:0 0 7px"><a href="#" style="color:var(--ink)">Cercetarea judecătorească s-a încheiat în dosarul arhiepiscopului Tomisului</a></h3>
+                <div class="meta"><span>Politică</span><span class="sep"></span><span class="src">FocusPress</span></div>
+              </article>
+              <article style="margin-bottom:22px">
+                <h3 style="font-family:var(--serif);font-weight:500;font-size:19px;line-height:1.24;margin:0 0 6px"><a href="#" style="color:var(--ink)">Taxele și impozitele locale din Constanța pentru 2027, în dezbatere</a></h3>
+                <div class="meta"><span class="trust single"><i></i>o singură origine</span><span class="sep"></span><span class="src">SPIT</span></div>
+              </article>
+              <div style="border-top:1px solid var(--line);padding-top:14px">
+                <a class="btn ghost" href="#">Harta știrilor din județul tău →</a>
+              </div>
+            </aside>
+          </div>
+        </section>
+
+        <!-- ultimele -->
+        <section class="mod">
+          <div class="mod-head"><span class="mod-kicker">Flux</span><h2 class="mod-title">Ultimele știri</h2><a class="mod-more" href="#">Toate →</a></div>
+          <div class="grid3">
+            <article class="card nomedia">
+              <span class="kicker">Politică</span>
+              <h3><a href="#">Cercetarea judecătorească s-a încheiat în dosarul în care arhiepiscopul Tomisului este judecat</a></h3>
+              <p>Procurorii anticorupție îl cercetează pentru cumpărare de influență; un consilier este acuzat de complicitate.</p>
+              <div class="meta"><span class="trust"><i></i>3 publicații</span><span class="sep"></span><time>08:24</time></div>
+            </article>
+            <article class="card">
+              <div class="thumb" style="display:grid;place-items:center;background:linear-gradient(140deg,#EDE6D6,#DFD3B6)">
+                <span style="font-family:var(--serif);font-size:46px;color:#7C5F22;letter-spacing:-.03em">0–2</span>
+              </div>
+              <span class="kicker">Sport</span>
+              <h3><a href="#">România a învins Franța de la 0-2 la seturi în Campionatul European de Volei</a></h3>
+              <p>Victorie în fața dublei campioane olimpice, după o revenire spectaculoasă în turneul european.</p>
+              <div class="meta"><span class="trust single"><i></i>o sursă</span><span class="sep"></span><time>08:05</time></div>
+            </article>
+            <article class="card">
+              <span class="kicker">Economie</span>
+              <h3><a href="#">Taxele locale din Constanța pentru 2027: cât plătesc motocicletele și hibridele</a></h3>
+              <p>Tarifele pornesc de la 19,5 lei pentru non-euro și ajung la 16,2 lei pentru hibride, potrivit proiectului de hotărâre.</p>
+              <div class="meta"><span class="trust official"><i></i>anunț oficial</span><span class="sep"></span><span class="src">Primăria Constanța</span></div>
+            </article>
+          </div>
+        </section>
+
+        <!-- două categorii -->
+        <section class="mod">
+          <div class="duo">
+            <div>
+              <div class="mod-head"><span class="mod-kicker">Local</span><h2 class="mod-title">Din județe</h2><a class="mod-more" href="#">Toate →</a></div>
+              <div class="rows">
+                <div class="row"><div class="thumb"><img src="img/biserica.jpg" alt="" loading="lazy"></div><div><h4><a href="#">Biserica de lemn din satul natal al scriitorului intră în restaurare</a></h4><div class="meta"><span>Maramureș</span><span class="sep"></span><span class="src">Turnul Sfatului</span></div></div></div>
+                <div class="row"><div class="thumb" style="background:linear-gradient(150deg,#EFE9DC,#DED2B8)"></div><div><h4><a href="#">Piața de vechituri revine la Tulcea, în hala Dunărea</a></h4><div class="meta"><span>Tulcea</span><span class="sep"></span><span class="src">DobrogeaNews</span></div></div></div>
+                <div class="row"><div class="thumb"><img src="img/oras.jpg" alt="" loading="lazy"></div><div><h4><a href="#">Hotelul rotativ de lux din Sadu: 3.500 de euro pentru un sejur</a></h4><div class="meta"><span>Sibiu</span><span class="sep"></span><span class="src">Turnul Sfatului</span></div></div></div>
+              </div>
+            </div>
+            <div>
+              <div class="mod-head"><span class="mod-kicker">Sport</span><h2 class="mod-title">Rezultate și competiții</h2><a class="mod-more" href="#">Toate →</a></div>
+              <div class="rows">
+                <div class="row"><div class="thumb" style="background:linear-gradient(150deg,#E6E9EE,#CDD4DE)"></div><div><h4><a href="#">Craiova a acumulat șapte puncte după primele trei etape din Conference League</a></h4><div class="meta"><span>Conference League</span><span class="sep"></span><span class="src">Sport.ro</span></div></div></div>
+                <div class="row"><div class="thumb" style="background:linear-gradient(150deg,#E6E9EE,#CDD4DE)"></div><div><h4><a href="#">Naționala de volei, victorie istorică în fața Franței</a></h4><div class="meta"><span>Volei</span><span class="sep"></span><span class="src">ProSport</span></div></div></div>
+                <div class="row"><div class="thumb" style="background:linear-gradient(150deg,#E6E9EE,#CDD4DE)"></div><div><h4><a href="#">Etapa a 16-a din Superligă: programul complet al meciurilor</a></h4><div class="meta"><span>Superligă</span><span class="sep"></span><span class="src">GSP</span></div></div></div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- utilitare -->
+        <section class="mod">
+          <div class="mod-head"><span class="mod-kicker">Utile</span><h2 class="mod-title">Ai nevoie să știi</h2></div>
+          <div class="utils">
+            <a class="utility" href="#"><strong>Calculator salariu net</strong><span>Brut → net, cu deduceri, la zi</span></a>
+            <a class="utility" href="#"><strong>Ce urmează</strong><span>Termene și evenimente din surse oficiale</span></a>
+            <a class="utility" href="#"><strong>Harta știrilor</strong><span>Ce s-a întâmplat în județul tău</span></a>
+            <a class="utility" href="#"><strong>Ghiduri</strong><span>Buletin, pașaport, alocații — pas cu pas</span></a>
+          </div>
+        </section>
+      </main>
+
+      <footer class="site-foot">
+        <div class="site-foot-in">
+          <div>
+            <div class="wordmark" style="font-size:26px">izz<em>.</em></div>
+            <p style="margin-top:10px">Un subiect, toate sursele. Titluri reformulate faptic, rezumate proprii, link către original. Fără reclame, fără urmărire.</p>
+            <p style="margin-top:14px"><a class="btn" href="#">Susține IZZ.ro</a></p>
+          </div>
+          <div><h5>Secțiuni</h5><a href="#">Național</a><a href="#">Local</a><a href="#">Politică</a><a href="#">Economie</a><a href="#">Sport</a></div>
+          <div><h5>Transparență</h5><a href="#">Cum devin ideile funcții</a><a href="#">Surse & originalitate</a><a href="#">Corecții</a><a href="#">Politica imaginilor</a><a href="#">Confidențialitate</a></div>
+          <div><h5>Alte</h5><a href="#">Despre</a><a href="#">Contact</a><a href="#">Accesibilitate</a><a href="#">RSS</a><a href="#">Alerte</a></div>
+        </div>
+      </footer>
+    </div>
+  </section>
+
+  <!-- ===================== ARTICOL ===================== -->
+  <section class="panel" id="articol" hidden>
+    <p class="ui-kicker">Aplicație · direcția A</p>
+    <h1 class="ui-h1">Pagina de articol: de la text gol la context</h1>
+    <p class="ui-lead">Azi: 4,9 KB de text într-un șablon de 17 KB, fără imagine în 82% din cazuri, trei casete care repetă că textul e generat. Propunerea: corp în serif la 19 px, o bandă de context (județ, entități, subiect), o secțiune „ce confirmă sursele” — diferențiatorul IZZ, azi aproape invizibil — și un singur rând de divulgare.</p>
+
+    <div class="frame">
+      <div class="frame-note"><span class="dot"></span> Pagină de articol · 712 px de text · conținut real</div>
+      <header class="site-head">
+        <div class="site-head-in">
+          <div><div class="wordmark">izz<em>.</em></div></div>
+          <nav class="site-nav" aria-label="Secțiuni"><a href="#">Știri</a><a href="#">Hartă</a><a href="#">Ghiduri</a><a href="#">Calendar</a><a href="#">Instrumente</a></nav>
+        </div>
+      </header>
+
+      <article class="art-wrap">
+        <nav class="crumbs" aria-label="Breadcrumb"><a href="#">IZZ.ro</a> / <a href="#">Local</a> / <span>Relocarea din Henri Coandă</span></nav>
+        <p class="art-kicker">Local · Constanța · Sinteză din 2 publicații</p>
+        <h1 class="art-h1">Locuitorii din cartierul Henri Coandă cer relocarea în zona industrială</h1>
+        <p class="art-dek">Documentația va fi supusă aprobării Consiliului Local până la sfârșitul anului, iar mutarea ar putea avea loc în următorii doi-trei ani.</p>
+        <div class="meta" style="margin-bottom:4px">
+          <span class="trust"><i></i>2 confirmări încrucișate</span><span class="sep"></span>
+          <time>7 noiembrie 2026, 08:41</time><span class="sep"></span><span>1 min citire</span>
+        </div>
+
+        <figure class="art-fig">
+          <div class="img"><img src="img/oras.jpg" alt="Vedere a localității, cu zona industrială la orizont" width="960" height="540"></div>
+          <figcaption>Ilustrație: Reper local · Wikimedia Commons · CC0 · decupat de IZZ.ro</figcaption>
+        </figure>
+
+        <div class="prose">
+          <p>Documentația va fi supusă aprobării Consiliului Local Constanța până la sfârșitul anului. Locuitorii cartierului ar putea fi mutați în zona industrială în următorii doi-trei ani.</p>
+          <p>Mai mulți locatari susțin că vor să se mute din cauza condițiilor actuale, a zgomotului și a lipsei curățeniei. Reprezentanții municipalității nu au anunțat încă un calendar al mutărilor sau un criteriu de compensare.</p>
+        </div>
+
+        <div class="context">
+          <span class="ctx-label">Context</span>
+          <a class="chip" href="#">Constanța</a>
+          <a class="chip" href="#">Consiliul Local</a>
+          <a class="chip" href="#">Henri Coandă</a>
+          <a class="chip" href="#">Dosar: relocări urbane</a>
+        </div>
+
+        <section class="confirm">
+          <h4>Ce confirmă sursele</h4>
+          <ul>
+            <li>Documentația merge spre Consiliul Local până la finalul anului. <em>— FocusPress, Dobrogea Online</em></li>
+            <li>Mutarea este estimată la doi-trei ani. <em>— FocusPress</em></li>
+            <li>Locatarii invocă zgomotul și lipsa curățeniei. <em>— Dobrogea Online</em></li>
+          </ul>
+        </section>
+
+        <div class="srcbox">
+          <h4>Surse</h4>
+          <ol>
+            <li><a href="#">FocusPress — Locuitorii din Henri Coandă vor relocarea: „aici nu se poate trăi”</a> <span class="role">· relatare inițială</span></li>
+            <li><a href="#">Dobrogea Online — Locuitorii din Henri Coandă cer relocarea în zona industrială</a> <span class="role">· preluare</span></li>
+          </ol>
+        </div>
+
+        <p class="disclaimer">Titlul și rezumatul sunt redactate automat dintr-o sinteză de surse, sub reguli editoriale publice; faptele aparțin publicațiilor citate. <a href="#">Cum lucrăm</a> · <a href="#">Raportează o eroare</a></p>
+
+        <div class="mod-head" style="margin-top:44px"><span class="mod-kicker">Citește mai departe</span><h2 class="mod-title" style="font-size:19px">Articole conectate</h2></div>
+        <div class="related">
+          <article class="card"><span class="kicker">Local</span><h3><a href="#">Taxele și impozitele locale din Constanța pentru 2027</a></h3><div class="meta"><span class="src">Primăria Constanța</span></div></article>
+          <article class="card"><span class="kicker">Local</span><h3><a href="#">Piața de vechituri revine la Tulcea, în hala Dunărea</a></h3><div class="meta"><span class="src">DobrogeaNews</span></div></article>
+          <article class="card"><span class="kicker">Politică</span><h3><a href="#">Cercetarea judecătorească s-a încheiat în dosarul arhiepiscopului Tomisului</a></h3><div class="meta"><span class="src">FocusPress</span></div></article>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <!-- ===================== SISTEM ===================== -->
+  <section class="panel" id="sistem" hidden>
+    <p class="ui-kicker">Sistem · direcția A</p>
+    <h1 class="ui-h1">Tokenii, tipografia și componentele</h1>
+    <p class="ui-lead">Tot ce urmează se poate implementa în `static/styles.css` ca înlocuire de variabile, fără atingerea șabloanelor în prima fază: culorile, scara tipografică și ritmul sunt izolate în `:root`. Fonturile: un serif variabil (Newsreader, 86 KB latin-ext, subsetabil la ~28 KB) în locul a două tăieturi Playfair, și Inter 400/600 în locul lui Inter 400/600/700 + JetBrains Mono 400/700.</p>
+
+    <h2 class="ui-h2">Culoare</h2>
+    <p class="ui-sub">Albul cald rămâne; arama iese din text și devine semnătură (punctul din wordmark, linii, kicker). Linkurile și acțiunile trec pe navy — 11:1 pe hârtie, calm, distinct de negru. Roșul apare o singură dată: „ultima oră”.</p>
+    <div class="swatches">
+      <div class="sw"><div class="chipc" style="background:#FBFAF7"></div><div class="lab"><b>Hârtie</b><span>#FBFAF7 · 15,9:1 cu ink</span></div></div>
+      <div class="sw"><div class="chipc" style="background:#14161A"></div><div class="lab"><b>Cerneală</b><span>#14161A · 16,7:1</span></div></div>
+      <div class="sw"><div class="chipc" style="background:#4A515C"></div><div class="lab"><b>Text secundar</b><span>#4A515C · 7,6:1</span></div></div>
+      <div class="sw"><div class="chipc" style="background:#173A5E"></div><div class="lab"><b>Navy (acțiune)</b><span>#173A5E · 11,3:1</span></div></div>
+      <div class="sw"><div class="chipc" style="background:#A8823A"></div><div class="lab"><b>Aramă (brand)</b><span>#A8823A · decor</span></div></div>
+      <div class="sw"><div class="chipc" style="background:#7C5F22"></div><div class="lab"><b>Aramă text</b><span>#7C5F22 · 5,6:1</span></div></div>
+      <div class="sw"><div class="chipc" style="background:#1F6F63"></div><div class="lab"><b>Confirmat</b><span>#1F6F63 · doar punct</span></div></div>
+      <div class="sw"><div class="chipc" style="background:#9A7B2E"></div><div class="lab"><b>O singură origine</b><span>#9A7B2E · formă ◆</span></div></div>
+      <div class="sw"><div class="chipc" style="background:#B23A2E"></div><div class="lab"><b>Divergent / live</b><span>#B23A2E · folosit rar</span></div></div>
+      <div class="sw"><div class="chipc" style="background:#E7E4DD"></div><div class="lab"><b>Linie</b><span>#E7E4DD</span></div></div>
+      <div class="sw"><div class="chipc" style="background:#D3CEC3"></div><div class="lab"><b>Regulă</b><span>#D3CEC3</span></div></div>
+      <div class="sw"><div class="chipc" style="background:#F3F1EC"></div><div class="lab"><b>Fundal jos</b><span>#F3F1EC</span></div></div>
+    </div>
+
+    <h2 class="ui-h2">Tipografie</h2>
+    <p class="ui-sub">Două familii, patru tăieturi. Titlurile în Newsreader 400/500 cu tracking negativ; interfața în Inter 500/600 la 12–14 px; cifrele mereu tabulare. Scara: 12 · 13 · 14,5 · 16,5 · 19 · 21 · 26 · 32 · 44 (raport ~1,22).</p>
+    <div>
+      <div class="spec"><div class="n">44 / 1.06 · Newsreader 500<br>titlu articol</div><div class="s" style="font-size:44px;font-weight:500">România a învins Franța de la 0–2</div></div>
+      <div class="spec"><div class="n">32 / 1.10 · Newsreader 500<br>titlu secundar</div><div class="s" style="font-size:32px;font-weight:500">Locuitorii din Henri Coandă cer relocarea</div></div>
+      <div class="spec"><div class="n">26 / 1.15 · Newsreader 500<br>titlu secțiune</div><div class="s" style="font-size:26px;font-weight:500">Ce s-a întâmplat azi</div></div>
+      <div class="spec"><div class="n">19 / 1.62 · Newsreader 400<br>corp de text</div><div class="s" style="font-size:19px;font-weight:400;line-height:1.62;letter-spacing:0">Documentația va fi supusă aprobării Consiliului Local până la sfârșitul anului, iar mutarea ar putea avea loc în următorii doi-trei ani.</div></div>
+      <div class="spec"><div class="n">11 / 1 · Inter 600<br>kicker, majuscul</div><div style="font:600 11px/1 var(--sans);letter-spacing:.14em;text-transform:uppercase;color:var(--brass-deep)">Local · Constanța · Sinteză</div></div>
+      <div class="spec"><div class="n">12 / 1 · Inter 400<br>meta, cifre tabulare</div><div class="meta"><span class="src">FocusPress</span><span class="sep"></span><time>08:41</time><span class="sep"></span><span>1.061 articole</span></div></div>
+    </div>
+
+    <h2 class="ui-h2">Cardul: de la 7 elemente la 4</h2>
+    <p class="ui-sub">Aceeași știre, două tratamente. În varianta actuală, ochiul trebuie să treacă prin badge auriu, trust-label auriu, ilustrație, titlu, dată, timp de citire, rezumat și surse — toate cu greutate vizuală comparabilă.</p>
+    <div class="before-after">
+      <div class="ba old">
+        <div class="tag">Acum</div>
+        <div class="art">ARTĂ GENERATĂ · 7 KB</div>
+        <div class="badge">Local</div>
+        <div class="trust-label">Sinteză din 2 publicații · 2 confirmări încrucișate · generată automat</div>
+        <h3>Locuitorii din cartierul Henri Coandă cer relocarea în zona industrială</h3>
+        <div class="m">7 noiembrie 2026, 08:41 · ~1 min</div>
+        <p>Documentația va fi supusă aprobării Consiliului Local Constanța până la sfârșitul anului…</p>
+        <div class="srcs">Surse: FocusPress, Dobrogea Online</div>
+      </div>
+      <div class="ba">
+        <div class="tag">Propus</div>
+        <div class="card">
+          <div class="thumb"><img src="img/oras.jpg" alt="" loading="lazy"></div>
+          <span class="kicker">Local · Constanța</span>
+          <h3 style="font-family:var(--serif);font-weight:500;font-size:22px;line-height:1.2;margin:0"><a href="#" style="color:var(--ink)">Locuitorii din cartierul Henri Coandă cer relocarea în zona industrială</a></h3>
+          <p style="margin:0;font-size:14.5px;color:var(--ink-2)">Documentația merge spre Consiliul Local până la finalul anului.</p>
+          <div class="meta"><span class="trust"><i></i>2 publicații · confirmat</span><span class="sep"></span><time>08:41</time><span class="sep"></span><span class="src">FocusPress, Dobrogea Online</span></div>
+        </div>
+      </div>
+    </div>
+
+    <h2 class="ui-h2">Componente</h2>
+    <div class="two">
+      <div class="box">
+        <h3>Butoane și acțiuni</h3>
+        <p style="display:flex;gap:10px;flex-wrap:wrap;margin:0 0 14px"><a class="btn" href="#">Citește briefingul</a><a class="btn ghost" href="#">Harta județului</a></p>
+        <p class="ui-note">Înălțime 42 px (țintă ≥ 44 px cu padding vertical pe mobil), rază 4 px, fără umbre. Focus: contur navy 2 px, offset 3 px.</p>
+      </div>
+      <div class="box">
+        <h3>Etichete de încredere</h3>
+        <p style="display:flex;gap:18px;flex-wrap:wrap;margin:0 0 14px">
+          <span class="trust"><i></i>confirmat</span>
+          <span class="trust single"><i></i>o singură origine</span>
+          <span class="trust div"><i></i>relatări divergente</span>
+          <span class="trust official"><i></i>anunț oficial</span>
+        </p>
+        <p class="ui-note">Forma poartă informația (cerc = confirmat, romb = o singură origine, pătrat = oficial), culoarea doar întărește — funcționează și fără perceperea culorii.</p>
+      </div>
+    </div>
+
+    <h2 class="ui-h2">Aranjatul paginii</h2>
+    <div class="two">
+      <div class="box"><h3>Grilă</h3><ul>
+        <li>Lățime maximă 1180 px, margini 28 px (16 px pe mobil).</li>
+        <li>12 coloane, gutter 32 px; hero 1,55 : 1; două module 1 : 1.</li>
+        <li>Ritm vertical pe 8 px; secțiuni la 52 px.</li>
+        <li>Măsură de lectură 66–70 caractere (712 px la 19 px).</li>
+      </ul></div>
+      <div class="box"><h3>Ce dispare din CSS</h3><ul>
+        <li>3 fișiere CSS → 1 (+ un strat de tipografie).</li>
+        <li>`--fs-*` pe φ → scară 1,22, mai puțin „matematic”, mai ușor de citit.</li>
+        <li>Regulile de badge/trust/sigiliu/mono: ~140 de linii.</li>
+        <li>Varianta dublă de artă (inline + CSS) rămâne doar cea tipografică.</li>
+      </ul></div>
+    </div>
+
+    <h2 class="ui-h2">Mod întunecat</h2>
+    <p class="ui-sub">Aceiași tokeni, inversați controlat: hârtie #0F1115, cerneală #E9E6DF, aramă mai deschisă (#D3B26A), navy deschis pentru linkuri (#A9C7E9). Comutatorul din bara de sus demonstrează ambele teme pe toate ecranele.</p>
+    <p><button class="ui-theme" onclick="document.getElementById('theme').click()">Comută tema pentru a vedea sistemul în întuneric</button></p>
+  </section>
+
+</div>
+
+<div class="toast" id="toast">Propunere — nu este site-ul live</div>
+
+<script>
+(function(){
+  var tabs=[].slice.call(document.querySelectorAll('.ui-tab'));
+  var panels=[].slice.call(document.querySelectorAll('.panel'));
+  function show(id){
+    panels.forEach(function(p){ p.hidden = p.id!==id; });
+    tabs.forEach(function(t){ t.setAttribute('aria-selected', String(t.dataset.panel===id)); });
+    window.scrollTo({top:0,behavior:'instant'});
+    history.replaceState(null,'','#'+id);
+  }
+  tabs.forEach(function(t){ t.addEventListener('click',function(){ show(t.dataset.panel); }); });
+  if(location.hash){ var h=location.hash.slice(1); if(document.getElementById(h)) show(h); }
+
+  var root=document.documentElement, btn=document.getElementById('theme');
+  var stored=null; try{ stored=localStorage.getItem('izz-mock-theme'); }catch(e){}
+  if(stored==='dark'){ root.dataset.theme='dark'; btn.textContent='Tema: întuneric'; }
+  btn.addEventListener('click',function(){
+    var dark=root.dataset.theme!=='dark';
+    root.dataset.theme= dark?'dark':'light';
+    btn.textContent= dark?'Tema: întuneric':'Tema: lumină';
+    try{ localStorage.setItem('izz-mock-theme', dark?'dark':'light'); }catch(e){}
+  });
+
+  var toast=document.getElementById('toast');
+  document.querySelectorAll('.frame a[href="#"]').forEach(function(a){
+    a.addEventListener('click',function(e){ e.preventDefault(); toast.classList.add('show');
+      clearTimeout(window.__t); window.__t=setTimeout(function(){toast.classList.remove('show');},1400); });
+  });
+})();
+</script>
+</body>
+</html>

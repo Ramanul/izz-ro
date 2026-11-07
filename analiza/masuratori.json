@@ -1,0 +1,182 @@
+{
+ "articole": {
+  "cu_fotografie": 1186,
+  "descriere_sub_70": 649,
+  "fara_descriere": 0,
+  "fara_fotografie": 5310,
+  "h1_trunchiat": 320,
+  "img_fara_srcset": 1642,
+  "img_reale": 1642,
+  "ld_invalid": 0,
+  "linkuri_main_med": 12.0,
+  "linkuri_med": 49.0,
+  "main_bytes_med": 4920,
+  "n": 6496,
+  "noindex": 0,
+  "pondere_main_med": 28.5,
+  "titlu_med": 82.0,
+  "titlu_peste_60": 5909
+ },
+ "assets": {
+  "editorial-updates.js": {
+   "gz": 825,
+   "raw": 1926
+  },
+  "faza2.css": {
+   "gz": 1033,
+   "raw": 2034
+  },
+  "judet.js": {
+   "gz": 2272,
+   "raw": 5167
+  },
+  "push.js": {
+   "gz": 2611,
+   "raw": 7072
+  },
+  "pwa.js": {
+   "gz": 1973,
+   "raw": 4522
+  },
+  "search.js": {
+   "gz": 5642,
+   "raw": 16480
+  },
+  "site.css": {
+   "gz": 535,
+   "raw": 878
+  },
+  "styles.css": {
+   "gz": 21023,
+   "raw": 80768
+  },
+  "theme.js": {
+   "gz": 1717,
+   "raw": 4332
+  }
+ },
+ "build": {
+  "article_count": 6496,
+  "branch": "local",
+  "commit": "local",
+  "file_count": 11090,
+  "generated_at": "2026-11-07T06:42:21.057470+00:00",
+  "search": {
+   "fisiere": 45,
+   "mapate": 6497,
+   "motiv": "",
+   "ok": true,
+   "pagini": 6497,
+   "sterse": 6504
+  }
+ },
+ "duplicate": {
+  "descrieri_grupuri": 101,
+  "descrieri_suprapuse": 654,
+  "titluri_grupuri": 72,
+  "titluri_suprapuse": 421
+ },
+ "editorial": {
+  "iteme": 7528,
+  "local_oficial_pondere": 38.7,
+  "model_b": 7059,
+  "model_c": 469,
+  "oficial": 1366,
+  "pe_categorie": {
+   "ai": 43,
+   "auto": 127,
+   "cultura": 156,
+   "discounturi": 60,
+   "economic": 505,
+   "extern": 634,
+   "general": 287,
+   "judetean": 351,
+   "lifestyle": 327,
+   "local": 3371,
+   "politic": 449,
+   "regional": 6,
+   "sanatate": 172,
+   "sport": 880,
+   "tech": 160
+  },
+  "surse_distincte": 398,
+  "top10_pondere": 18.1
+ },
+ "home": {
+  "gz": 110166,
+  "links": 261,
+  "size": 594760,
+  "svg_bytes": 454924,
+  "svg_n": 60
+ },
+ "html": {
+  "pagini": 7678,
+  "pe_tip": {
+   "alta": {
+    "gz_med_kb": 3.6,
+    "n": 850,
+    "size_max_kb": 173.7,
+    "size_med_kb": 11.0,
+    "size_p95_kb": 19.6
+   },
+   "articol": {
+    "gz_med_kb": 4.8,
+    "n": 6496,
+    "size_max_kb": 32.4,
+    "size_med_kb": 16.9,
+    "size_p95_kb": 19.5
+   },
+   "categorie": {
+    "gz_med_kb": 19.7,
+    "n": 15,
+    "size_max_kb": 377.6,
+    "size_med_kb": 135.1,
+    "size_p95_kb": 370.9
+   },
+   "home": {
+    "gz_med_kb": 107.6,
+    "n": 1,
+    "size_max_kb": 580.8,
+    "size_med_kb": 580.8,
+    "size_p95_kb": 580.8
+   },
+   "paginare": {
+    "gz_med_kb": 16.6,
+    "n": 316,
+    "size_max_kb": 453.2,
+    "size_med_kb": 95.1,
+    "size_p95_kb": 156.5
+   }
+  },
+  "total_gz_mb": 43.0,
+  "total_mb": 163.7
+ },
+ "media": {
+  "jpg": {
+   "fisiere": 2369,
+   "mb": 227.8
+  },
+  "png": {
+   "fisiere": 5,
+   "mb": 0.1
+  },
+  "webp": {
+   "fisiere": 757,
+   "mb": 73.6
+  },
+  "woff2": {
+   "fisiere": 7,
+   "mb": 0.1
+  }
+ },
+ "noindex": {
+  "pe_tip": {
+   "alta": 778,
+   "articol": 0,
+   "categorie": 0,
+   "home": 0,
+   "paginare": 316
+  },
+  "total": 1094
+ }
+}

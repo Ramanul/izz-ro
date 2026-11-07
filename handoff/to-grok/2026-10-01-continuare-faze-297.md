@@ -3,7 +3,7 @@
 Predat către: orice agent fără context (Grok/altul). Scris de sesiunea ZCode GLM-5.3-Flash (cota aproape epuizată, 13%).
 
 ## Ce este proiectul
-- izz.ro = generator static de știri „Informația Zero Zgomot": Python + Jinja2 (`generator/`, `templates/`, `static/styles.css`), starea în `data/articles.json` (pipeline — NU edita manual), output în `output/` publicat pe Cloudflare **Workers Free — plafon 20.000 fișiere/versiune, acum ~17.100 (WARNING)**.
+- izz.ro = generator static de știri „Portal de știri românești": Python + Jinja2 (`generator/`, `templates/`, `static/styles.css`), starea în `data/articles.json` (pipeline — NU edita manual), output în `output/` publicat pe Cloudflare **Workers Free — plafon 20.000 fișiere/versiune, acum ~17.100 (WARNING)**.
 - Repo: `Ramanul/izz-ro`. `main` = producție, deploy automat la push. Owner: Alexandru, NU programează — rapoarte în română, pe înțelesul lui; cod și comite în engleză.
 - Reguli de aur: branch per sarcină, niciodată push direct pe main; merge doar după CI verde; diff minim; zero fișiere noi în `output/`; zero servicii plătite; nu schimba URL-uri/canonical/sitemap/TTL (20 zile); fără FORCE_REGEN.
 

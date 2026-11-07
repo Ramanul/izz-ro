@@ -44,6 +44,7 @@ ROOT = Path(__file__).resolve().parents[1]
 # nu are voie sa declanseze nimic.
 MARCAJ_KB = re.compile(r"\*\*Plafon: (\d+) KB\.\*\*")
 MARCAJ_LINII = re.compile(r"\*\*Hard cap: ~(\d+) lines of content\.\*\*")
+MARCAJ_STATE_KB = re.compile(r"\*\*Plafon de octeți: (\d+) KB\.\*\*")
 MARCAJ_BUGET = re.compile(r"\*\*Buget de pornire: (\d+) KB\.\*\*")
 MARCAJ_FAPTE = re.compile(r"\*\*Plafon: (\d+) linii de fapt\.\*\*")
 # Un fapt din specs/infrastructura.md trebuie sa fie TRASABIL la registru. Fara asta ar fi doar
@@ -117,6 +118,23 @@ def incalcari_plafon_linii(text: str) -> list[str]:
     real = len(linii_de_continut(text))
     if real > plafon:
         return [f"{real} linii de continut > plafonul declarat de {plafon}"]
+    return []
+
+
+def incalcari_plafon_octeti_state(text: str) -> list[str]:
+    """Plafonul in OCTETI al `STATE.md` — cel care contează pentru contextul de pornire.
+
+    Plafonul in linii nu prinde cazul real: rândurile din STATE.md sunt paragrafe (8,7 KB in
+    40 de linii, masurat 2026-11-07). Hook-ul `SessionStart` tipareste fisierul integral, deci
+    fiecare octet de aici se plateste la fiecare pornire de sesiune.
+    """
+    potrivire = MARCAJ_STATE_KB.search(text)
+    if not potrivire:
+        return ["STATE.md nu declara niciun plafon in octeti"]
+    plafon = int(potrivire.group(1)) * 1024
+    real = len(text.encode("utf-8"))
+    if real > plafon:
+        return [f"{real} octeti > plafonul declarat de {plafon} ({potrivire.group(1)} KB)"]
     return []
 
 
@@ -303,7 +321,9 @@ def test_claude_md_sub_plafonul_pe_care_il_declara():
 
 def test_state_md_sub_plafonul_pe_care_il_declara():
     cale = ROOT / "specs" / "STATE.md"
-    assert not incalcari_plafon_linii(cale.read_text(encoding="utf-8"))
+    text = cale.read_text(encoding="utf-8")
+    assert not incalcari_plafon_linii(text)
+    assert not incalcari_plafon_octeti_state(text)
 
 
 def test_infrastructura_md_sub_plafonul_pe_care_il_declara():
@@ -461,6 +481,24 @@ def test_garda_linii_pica_pe_fisier_prea_lung():
     antet = "# T\n> **Hard cap: ~2 lines of content.**\n\n"
     assert incalcari_plafon_linii(antet + "a\nb\nc\n")
     assert not incalcari_plafon_linii(antet + "a\nb\n")
+
+
+def test_garda_octetilor_din_state_pica_pe_fisier_prea_mare():
+    antet = "# T\n> **Plafon de octeți: 1 KB.**\n\n"
+    assert not incalcari_plafon_octeti_state(antet + "a\n" * 100)
+    assert incalcari_plafon_octeti_state(antet + "a\n" * 700)
+
+
+def test_garda_octetilor_din_state_pica_fara_plafon_declarat():
+    assert incalcari_plafon_octeti_state("# T\n\n- un rand\n")
+
+
+def test_garda_octetilor_din_state_numara_diacriticele_in_octeti():
+    """„ș\" si „ț\" sunt 2 octeti in UTF-8: numarate ca unul, plafonul ar minti cu 10%."""
+    antet = "# T\n> **Plafon de octeți: 1 KB.**\n\n"
+    text = antet + "ș" * 600
+    assert len(text) < 1024 < len(text.encode("utf-8"))
+    assert incalcari_plafon_octeti_state(text)
 
 
 def test_garda_ttl_pica_pe_cifra_veche():

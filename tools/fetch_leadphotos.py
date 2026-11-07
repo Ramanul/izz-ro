@@ -5,7 +5,7 @@ Ruleaza in GitHub Actions (are internet; sandbox-urile nu). Pentru fiecare artic
 publicat cauta prima entitate "photo-worthy" (vezi fetch_portraits.is_photo_worthy)
 a carei imagine P18 e, in acelasi timp:
   - LANDSCAPE (latime >= 1.2 x inaltime) -> se incadreaza curat in 960x504 / 1200x630
-    fara sa taie un portret vertical (bara de calitate "Zero Zgomot"), si
+    fara sa taie un portret vertical (bara de calitate "filtru de calitate"), si
   - ATRIBUIRE-LIBERA (Public domain / CC0) -> poate aparea si pe carduri/og, unde
     regula sect. 7 interzice orice eticheta de credit.
 Daca gaseste, descarca o rendite mare, o incadreaza cu Pillow in cover (1200x630) +
@@ -320,7 +320,7 @@ def main() -> int:
     if Image is None:
         print(">> Pillow indisponibil -- lead photos skip"); return 0
     arts = [a for a in state.load() if a.get("title")]
-    cache = json.load(open(CACHE)) if os.path.exists(CACHE) else {}
+    cache = json.load(open(CACHE, encoding="utf-8")) if os.path.exists(CACHE) else {}
     os.makedirs(OUTDIR, exist_ok=True)
     provider = get_provider()   # judecator AI foto<->articol; None fara cheie -> reguli deterministe
     print(f">> photo judge: {'ON (' + provider.name + ')' if provider else 'OFF (fara cheie AI) -> reguli deterministe'}")
@@ -375,7 +375,7 @@ def main() -> int:
               + ", ".join(f"{k}={v}" for k, v in sorted(motive.items(), key=lambda kv: -kv[1])))
     # scriem doar hit-urile in fisierul consumat de render (miss-urile raman doar in memorie/cache-disk)
     hits = {k: v for k, v in cache.items() if not (v or {}).get("miss")}
-    json.dump(cache, open(CACHE, "w"), ensure_ascii=False, indent=0)
+    json.dump(cache, open(CACHE, "w", encoding="utf-8"), ensure_ascii=False, indent=0)
     print(f">> leadphotos: {done} interogari noi, {refolosite} refolosite fara retea, "
           f"{len(hits)} lead-uri, {len(cache)} intrari cache")
     return 0

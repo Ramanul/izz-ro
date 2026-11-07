@@ -121,7 +121,7 @@ Regulile sunt aplicate de **server**, nu de unealtă (un client care le-ar aplic
 poate fi ocolit cu un `curl`):
 
 - **maximum o alertă pe zi** — cheia `cap:<data>` în KV, scrisă *înainte* de trimitere;
-- **politica «Zgomot zero»** (`infra/push.js::verificaAlerta`): fără `!`, `?`, `…`, emoji,
+- **politica «selecție strictă a alertelor»** (`infra/push.js::verificaAlerta`): fără `!`, `?`, `…`, emoji,
   majuscule strigate, cuvinte-momitoare; textul între 30 și 200 de caractere; URL-ul
   trebuie să fie pagina articolului, fără parametri de urmărire;
 - **abonamentele moarte** (404/410 de la serviciul de push) se șterg singure.
@@ -263,7 +263,7 @@ La trimitere (`/push/trimite`, în `verificaAlerta` + `trimiteLot`):
 
 | Situație | Cod |
 |---|---|
-| politica «Zgomot zero» refuză | `422` + `motive` în română |
+| politica «selecție strictă a alertelor» refuză | `422` + `motive` în română |
 | azi s-a trimis deja (cheia `cap:<data>` există) | `409` + ziua |
 | lipsește KV / cheile VAPID | `503` + ce anume lipsește |
 | lipsă sau greșit tokenul | `401` |
@@ -272,7 +272,7 @@ La trimitere (`/push/trimite`, în `verificaAlerta` + `trimiteLot`):
 La dezabonare: același `gazdaAcceptata` ca la abonare; nu se verifică dacă endpointul
 există deja — ștergerea unei chei inexistente e un no-op, nu o eroare.
 
-**Politica «Zgomot zero», în cifre** (toate în `verificaAlerta`, toate refuză cu `422` și
+**Politica «selecție strictă a alertelor», în cifre** (toate în `verificaAlerta`, toate refuză cu `422` și
 motive în română): titlul între 12 și 90 de caractere; textul între 30 și 200; textul nu are
 voie să repete titlul; niciun `!` sau `?`, niciun `…`, niciun emoji în vreunul din cele două;
 niciun cuvînt de peste 3 majuscule care nu e acronim (SUA, UE, BNR… sînt trecute în lista de

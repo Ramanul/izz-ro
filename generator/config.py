@@ -2,8 +2,8 @@ import os
 APP_DIR = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.dirname(APP_DIR)
 
-SITE = {"name": "IZZ.ro", "tagline": "Portalul știrilor tale",
-                "descriptor": "Informația Zilei",
+SITE = {"name": "IZZ.ro", "tagline": "Știri românești, cu surse la vedere",
+                "descriptor": "Portal de știri",
                 "url": "https://izz.ro", "lang": "ro", "contact": "contact@izz.ro"}
 
 # Surse = DOAR publicații cu RSS oficial. Agențiile de presă sunt EXCLUSE (conținut licențiat).
@@ -328,7 +328,7 @@ CATEGORY_LABELS = {
 
 # Cate cuvinte trebuie sa aduca `description` PESTE titlu ca itemul sa merite sintetizat.
 # Sub prag nu exista nimic de sintetizat, iar un model caruia i se cere totusi un rezumat nu
-# poate produce decat o parafraza a titlului — daca titlul e clickbait, iese clickbait fluent,
+# poate produce decat o parafraza a titlului — dacă titlul este senzaționalist, modelul poate produce o reformulare fluentă, dar tot senzaționalistă,
 # care trece de orice verificare de FORMA. Vezi `specs/sinteza-fara-substanta.md`.
 # Pragul 5 e ales pe distributia masurata (2026-08-04, 256 de iteme): 56 de iteme au 0 cuvinte
 # noi, 2 au 1-4, 17 au 5-9, 181 au 10+. Deci taie exact grupul imposibil (23%) si lasa in pace
@@ -488,6 +488,12 @@ MAX_PER_SOURCE = 8             # redus de la 12 ca sa scada apelurile AI/rulare
 HOME_CARDS_PER_CATEGORY = 4
 # Sub prag, rubrica nu e o secțiune de homepage. Rămâne în nav. Reversibil.
 HOME_MIN_SECTIUNE = 8
+# Cate secțiuni de categorie incap pe prima pagina. Toate rubricile rămân în bara de
+# categorii și pe /sectiuni/, iar articolele lor rămân indexate pe pagina de categorie —
+# limita taie doar DOM-ul primei pagini (rebranding 2026-11-07: 14 secțiuni × 4 carduri
+# insemnau 60+ de carduri pe un ecran; ținta e ≤24). Se aleg cele mai active din fereastra
+# curenta, apoi se afiseaza in ordinea din config.CATEGORIES. Reversibil: 10 -> 99.
+HOME_SECTIUNI = 10
 
 AI_PROVIDER = os.getenv("AI_PROVIDER", "gemini")  # "gemini" | "anthropic" | "ollama" (local, gratuit — vezi generator/providers/ollama.py)
 # Fallback AUTOMAT pe Qwen local cand providerul de mai sus (gemini/anthropic) esueaza (429,

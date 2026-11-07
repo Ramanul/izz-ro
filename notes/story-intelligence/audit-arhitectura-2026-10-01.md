@@ -38,7 +38,7 @@ de build command în `wrangler.jsonc`.
    `description`, `category` (a sursei), `published` (ISO UTC), `model: None` (fetch.py:866-878).
    Garda de conținut ostil (`generator/guard.py`, chemată la fetch.py:859-865) respinge itemul,
    nu încearcă repararea. La final `src_extra` = câte cuvinte aduce descrierea peste titlu
-   (fetch.py:1071-1072) — baza regulii Zero Zgomot (`MIN_SUBSTANTA_CUVINTE = 5`, config.py:314).
+   (fetch.py:1071-1072) — baza regulii filtru de calitate (`MIN_SUBSTANTA_CUVINTE = 5`, config.py:314).
 2. **Deduplicare la intrare** — pe URL, în `run()`: față de stare (`known`) ȘI între itemele
    proaspete (`vazute`) — main.py:358-367. Câștigă primul în ordinea din config. [FAPT]
    `state.merge()` (state.py:150) NU e apelată în producție — singurul apelant e
@@ -128,7 +128,7 @@ data/articles.json:172-182.
 | Buget AI | build.yml:74 (`MAX_AI_CALLS_PER_RUN=40`), generator/main.py:393 | plafon de apeluri/rulare (12 local default) |
 | Ingest RSS/sitemap/wp_json/html | generator/fetch.py:796 (`_fetch_one`), :965 (`fetch_all`) | aducere, parsare, gardă, `src_extra` |
 | Surse (catalog) | generator/config.py:10-256; generator/local_sources.py | catalogul + inserarea GOLD/html în ordinea bugetului |
-| Garda de conținut | generator/guard.py (verdict la fetch.py:859, moderation.py:287) | respingere item compromis/clickbait-anomalie |
+| Garda de conținut | generator/guard.py (verdict la fetch.py:859, moderation.py:287) | respingere item compromis/titluri senzaționaliste-anomalie |
 | Dedup la intrare | generator/main.py:358-367 | dedup pe URL față de stare + intra-run |
 | TTL / stare | generator/state.py:163 (`expire`), :235 (`save`), :77 (`load`), :111 (anti-colaps) | `data/articles.json`, atomic, scrub juridic |
 | Clustering intra-run | generator/cluster.py:61 (`cluster`), praguri :7-10 | leader clustering pe titluri (Jaccard+tokeni) |
@@ -140,7 +140,7 @@ data/articles.json:172-182.
 | Coperte din date | generator/eventdata.py:240 (`attach`) | meteo/cutremure atașate articolelor noi |
 | Grounding gate | generator/raport_copiere.py, tools/grounding_gate.py, main.py:451-466 | defer articole cu citate/cifre străine |
 | Moderare | generator/moderation.py:149 (`load`), :259 (`apply`), :222 (`_dedup_visible`) | control-plane `moderation.yaml`, human gate, dedup final |
-| Quality gate | generator/select.py:337 (`_quality_gate`), :310 (`sources_coherent`), apel render.py:661 | Zero Zgomot: exclude output degradat |
+| Quality gate | generator/select.py:337 (`_quality_gate`), :310 (`sources_coherent`), apel render.py:661 | filtru de calitate: exclude output degradat |
 | Slug/permalink | generator/render.py:245 (`assign_slugs`) | slug unic per categorie, atribuit o singură dată |
 | Randare | generator/render.py:657 (`build`), templates/*.html | site static în `output/` |
 | Graf de subiect | generator/select.py:98 (`_entity_index`), render.py:895-948, templates/subject.html | pagini `/subiect/` cu timeline (precedent STORY) |
@@ -255,7 +255,7 @@ imposibil de reunit retroactiv de cititor.
 Constrângerile respectate: zero API plătit, zero embeddings externe, zero apeluri AI suplimentare
 (extinderile merg ÎN răspunsul C existent), SQLite/local doar (de fapt: totul în
 `data/articles.json`, fără DB nouă — cel mai mic diff), plafonul de fișiere neatins (nu se
-adaugă pagini noi în etapele 1-3), regula Zero Zgomot neatinse (gate-urile existente rămân pe
+adaugă pagini noi în etapele 1-3), regula filtru de calitate neatinse (gate-urile existente rămân pe
 calea fiecărui articol). Ordinea recomandată: întâi ce răpește date (fără care nu se poate
 merge retroactiv — procesarea e one-shot, scrub-ul juridic sterge sursa), apoi ce se vede la
 cititor.
@@ -332,7 +332,7 @@ suplimentare, +~4 câmpuri JSON pe articol C și +1 câmp pe membri.
 - **E4:** (a) Pagina C devine mai lungă → Lighthouse/pa11y baseline (`source-command-audit`)
   poate mișca scoruri — de măsurat înainte/după. (b) Sintezele C fără `facts` (v1 sau fallback)
   trebuie să randeze IDENTIC cu azi — regresie vizibilă altfel. (c) `display_title`/`titlu_afisare`
-  nu trebuie atinse (Zero Zgomot: 6-16 cuvinte, hard ceiling 22).
+  nu trebuie atinse (filtru de calitate: 6-16 cuvinte, hard ceiling 22).
 - **E5:** (a) Fiecare relaxare a `attach_recent` = risc de over-merge (două evenimente reunite
   greșit — cel mai scump eșec editorial posibil aici); CLAUDE.md §7 cere probe empirice
   over/under-merge pe eșantioane reale ÎNAINTE de merge. (b) Garda entităților disjuncte
