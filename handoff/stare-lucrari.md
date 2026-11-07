@@ -314,6 +314,7 @@ Citește răspunsul Arenei la review-ul sistemului de economie de context (chatu
   pictat peste vecin, returna pe graniță județul desenat deasupra. Fix: `pointer-events:fill` pe
   `.map-county`/`.map-uat` (aria = umplerea, ca modelul din gardă), iar garda alege acum ultimul
   poligon pictat în loc de aria bbox minimă.
+  **Regresie proprie, aceeași zi:** subiectul commitului s-a terminat cu `(#454)` (numărul *issue*-ului), iar convenția de squash face din coada subiectului numărul *PR*-ului — garda `test_pr_fantoma` a văzut un PR #454 merge-uit și a picat `tests`/`ci` pe `main` la două minute după merge. Reparat prin adnotarea `#454 merged` în STATE.md și prin regula scrisă în `CLAUDE.md`; verificat cu `GITHUB_ACTIONS=true`, exact ca în CI.
 - **Audit web-perf live izz.ro** (chrome-devtools MCP headless): LCP 597ms (TTFB 12ms), CLS 0.00
   netrottled, DOM 1902 elemente ok. Lighthouse: a11y 96, best-practices 92, SEO 100, agentic 92.
   Failuri: (1) `target-size` = regresia cunoscută, încă deschisă (`details.subnav-more > summary`);
