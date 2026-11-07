@@ -2,7 +2,7 @@
 
 **Înțelege ce se întâmplă, din surse pe care le poți examina, în ritmul pe care îl alegi.**
 
-IZZ adună și sintetizează relatări publice pentru a face informația mai ușor de urmărit. „Zero Zgomot” înseamnă claritate, atribuire și limite vizibile, nu acces infailibil la adevăr. Principiile de mai jos sunt reguli de construcție ale site-ului, nu convingeri pe care ți le cerem: le poți verifica în funcționarea lui, pe [Cum devin ideile funcții](/legal/method/).
+IZZ adună și sintetizează relatări publice pentru a face informația mai ușor de urmărit. „Zero Zgomot” înseamnă claritate, atribuire și limite vizibile, nu acces infailibil la adevăr. Principiile de mai jos sunt reguli practice de construcție ale site-ului: nu îți cer să adopți o viziune, ci pot fi verificate în funcționarea lui, pe [Cum devin ideile funcții](/legal/method/).
 
 **Starea acestei direcții.** Colectarea, gruparea și redactarea inițială sunt automate. Sintezele din mai multe surse separă mecanic ce confirmă cel puțin două publicații care nu preiau același text, ce versiuni diferă și ce vine dintr-o singură origine, iar fiecare afirmație trimite la propozițiile din care provine. Contextul documentat, un dosar persistent, legăturile explicate și selecția motivată sunt disponibile într-un pilot limitat, nu pe toate știrile; [dosarul despre serviciile de plată din Sectorul 1](/dosar/sectorul-1-plati-octombrie-2026/) arată documentele, perioada și limitele examinării. Nu promitem citirea umană zilnică a întregului flux, iar un bloc documentat nu certifică automat întreaga știre. Principiile de mai jos sunt angajamente după care evaluăm rezultatul, nu un certificat automat pentru fiecare articol.
 
@@ -18,7 +18,7 @@ Un rezumat trebuie să ajute la înțelegerea evenimentului. Pentru contextul ed
 
 ### 3. Libertate reală de alegere
 
-Poți consulta sursele fără să accepți o doctrină. Nu deducem ce te interesează din ce citești: toți cititorii văd același flux, iar singura alegere care îl schimbă — județul — o faci tu, explicit. Filtrele schimbă ce informație găsești mai ușor, nu adevărul unei știri. Nu impunem pauze, limite de articole sau un program de lectură „corect” și nu clasificăm cititorii.
+Poți consulta sursele fără să ți se atribuie convingeri sau intenții. Nu deducem ce te interesează din ce citești: toți cititorii văd același flux, iar singura alegere care îl schimbă — județul — o faci tu, explicit. Filtrele schimbă ce informație găsești mai ușor, nu adevărul unei știri. Nu impunem pauze, limite de articole sau un program de lectură „corect” și nu clasificăm cititorii.
 
 ### 4. Discernământ, nu încredere oarbă
 
@@ -44,7 +44,7 @@ Automatizarea și redacția pot greși. Corecțiile materiale trebuie să arate 
 
 ## De unde vin aceste reguli
 
-Sunt alegerile noastre de construcție, nu o doctrină și nu o probă: dovada unei știri vine din documentele și relatările acelui eveniment, nu din principiile după care e construit site-ul. Fiecare regulă trebuie să rămână criticabilă și utilă și pentru un cititor care nu împărtășește nicio convingere a celor care au construit-o. Codul care le aplică, testele care le fixează și raționamentul de proiectare sunt publice, în [depozitul site-ului](https://github.com/Ramanul/izz-ro).
+Sunt alegeri de construcție, nu afirmații despre lume și nu probe pentru știri: dovada unui fapt vine din documentele și relatările acelui eveniment, nu din principiile după care e construit site-ul. Fiecare regulă trebuie să rămână criticabilă și utilă pentru orice cititor. Codul care le aplică, testele care le fixează și raționamentul de proiectare sunt publice, în [depozitul site-ului](https://github.com/Ramanul/izz-ro).
 
 ## Ce nu pretindem
 
