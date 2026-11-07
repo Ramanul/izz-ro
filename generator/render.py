@@ -687,11 +687,11 @@ def _render_harta_shell(source: str, canonical_path: str, county_code: str | Non
     title = (f"Știri din {county_label} — Harta știrilor IZZ.ro"
              if county_code else "Harta știrilor — IZZ.ro")
     description = (
-        f"Știri locale și județene localizate în {county_label}, afișate pe harta IZZ.ro. "
-        "Numărul indică evenimentele sau relatările afișate, nu statistica oficială a incidentelor."
+        f"Știri locale și județene localizate în {county_label}, pe harta IZZ.ro. "
+        "Numărul arată evenimentele afișate, nu o statistică oficială a incidentelor."
         if county_code else
-        "Harta interactivă a știrilor localizate din România. Explorează evenimentele și relatările "
-        "pe județe, orașe și comune. Numărul nu este o statistică oficială a incidentelor."
+        "Harta știrilor localizate din România: evenimente și relatările lor pe județe, orașe și "
+        "comune. Numărul nu e o statistică oficială a incidentelor."
     )
     canonical = config.SITE["url"] + canonical_path
     text = source

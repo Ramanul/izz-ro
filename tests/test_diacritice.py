@@ -83,6 +83,43 @@ def test_pierderea_diacriticelor_din_corp_nu_e_ascunsa_de_un_titlu_bun():
     assert diacritice.articolul_a_pierdut_diacriticele(sursa, art)
 
 
+def test_qa_distinge_titlurile_corecte_de_pierderile_dovedibile():
+    """Proxy-ul „fara nicio diacritica" e o limita superioara; a doua masuratoare e cea fina.
+
+    Masurat pe starea din 7 nov 2026 (2135 titluri in 72h): 168 fara diacritice, dar doar
+    9 cu pierderi dovedibile din lexicon. Restul sunt titluri corecte („Cancelarul german
+    Friedrich Merz a vizitat Kievul") — de aceea cifra mare nu are voie sa fie poarta.
+    """
+    corpus = [
+        {"title": "Președintele a anunțat noi măsuri pentru fermieri",
+         "teaser": "Anunțul de execuție silită a fost publicat în monitorul oficial."},
+        {"title": "Brandul românesc de apă termală", "teaser": "Afacerea a crescut."},
+    ]
+    lex = qa_check._lexicon_diacritice(corpus)
+    assert lex["presedintele"] == {"președintele"}
+    # `ă` nu intra in lexicon: „apa"/„apă" e omograf, n-ar dovedi nimic
+    assert "apa" not in lex
+
+    pierderi = qa_check._titluri_cu_pierderi(
+        [{"title": "Presedintele a anuntat noi masuri pentru fermieri"}], corpus)
+    assert pierderi and "presedintele" in pierderi[0]["cuvinte"]
+
+    # Titlu fara diacritice, dar corect: niciun cuvant nu are forma diacritizata in corpus.
+    assert qa_check._titluri_cu_pierderi(
+        [{"title": "Cancelarul german a vizitat Kievul"}], corpus) == []
+    # Un singur cuvant coincide: sub pragul de 2, nu raportam (poate fi intamplare).
+    assert qa_check._titluri_cu_pierderi(
+        [{"title": "Presedintele s-a intalnit cu jurnalistii straini"}], corpus) == []
+
+
+def test_qa_numele_proprii_fara_diacritice_nu_sunt_raportate():
+    """„Poligonul Rosu": majuscula din interiorul titlului poate fi nume, deci nu se atinge."""
+    corpus = [{"title": "Tragere pe poligonul Roșu", "teaser": "Președintele a anunțat."},
+              {"title": "Roșu e un nume de familie", "teaser": "Anunțul a fost publicat."}]
+    assert qa_check._titluri_cu_pierderi(
+        [{"title": "Instiintare tragere Poligonul Rosu"}], corpus) == []
+
+
 def test_pierderea_diacriticelor_din_titlu_e_detectata_cand_corpul_e_bun():
     art = {"model": "B", "title": "Stirea fara explicatii",
            "teaser": "Descriere fără explicații."}

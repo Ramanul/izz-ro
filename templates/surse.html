@@ -17,7 +17,9 @@
   {% endif %}
 {%- endmacro %}
 {% block title %}Surse — {{ site.name }}{% endblock %}
-{% block description %}Catalogul complet al celor {{ total_sources }} surse din care sintetizăm știri — naționale, regionale, ziare de județ și primării — plus statisticile de originalitate acolo unde există.{% endblock %}
+{# 150 de caractere la 657 de surse, 152 la 10.000 — sub limita de ~160 peste care Google taie
+   descrierea la mijlocul frazei (masurat 7 nov 2026: varianta veche avea 169). #}
+{% block description %}Catalogul celor {{ total_sources }} surse din care sintetizăm știri — naționale, regionale, ziare de județ și primării — plus statistici de originalitate unde există.{% endblock %}
 {% block content %}
   <h1 class="section-title">Surse</h1>
   <p class="page-intro">Tragem din <b>{{ total_sources }} surse</b> cu RSS oficial: publicații

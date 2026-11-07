@@ -1,5 +1,7 @@
 """Regresie pentru ruta publică intuitivă a hărții știrilor."""
+import html as html_module
 import json
+import re
 from pathlib import Path
 
 from slugify import slugify
@@ -65,6 +67,21 @@ def test_harta_pages_declare_social_card(output_randat):
     for _code, slug, _label in _county_routes():
         html = (out / "harta" / slug / "index.html").read_text(encoding="utf-8")
         assert '<meta name="twitter:card" content="summary_large_image">' in html, slug
+
+
+def test_harta_descriptions_fit_serp_limit(output_randat):
+    """Meta description peste ~160 de caractere e taiata de Google la mijlocul frazei."""
+    out = Path(output_randat)
+    pagini = [(Path("static/harta-stiri/index.html"), "static/harta-stiri/index.html"),
+              (Path("harta/index.html"), "harta/index.html")]
+    pagini += [(Path("harta", slug, "index.html"), f"harta/{slug}/") for _c, slug, _l in _county_routes()]
+    vazute = 0
+    for rel, nume in pagini:
+        html = (out / rel).read_text(encoding="utf-8")
+        for tag in re.findall(r'<meta name="description" content="([^"]*)"', html):
+            vazute += 1
+            assert len(html_module.unescape(tag)) <= 160, f"{nume}: {len(tag)} caractere"
+        assert vazute, f"{nume}: fara meta description"
 
 
 def test_harta_routes_enter_sitemap(output_randat):
