@@ -44,9 +44,11 @@
   <link rel="preload" href="{{ base }}/static/fonts/Inter-400.ro.woff2" as="font" type="font/woff2" crossorigin>
   {% if fonts_css %}<style>{{ fonts_css | safe }}</style>{% else %}<link rel="stylesheet" href="{{ base }}/static/fonts.css?v={{ asset_ver['fonts.css'] }}">{% endif %}
   <link rel="stylesheet" href="{{ base }}/static/styles.css?v={{ asset_ver['styles.css'] }}">
-  {# Delta #380: cale noua — sparge cache immutable pe styles.css (2026-10-02) #}
-  <link rel="stylesheet" href="{{ base }}/static/site.css?v=20261002b">
-  <link rel="stylesheet" href="{{ base }}/static/faza2.css?v=20261002">
+  {# O SINGURA foaie de stil (faza 6, 2026-11-07). `site.css` si `faza2.css` fusesera
+     cai „delta" inventate pe 2 octombrie doar ca sa ocoleasca Cache-Control immutable
+     pe styles.css; intre timp hash-ul din `?v=` face acelasi lucru, iar cele doua
+     fisiere erau fie duplicate (site.css), fie continut mutat in styles.css (faza2).
+     Mai putin de intretinut si zero sanse sa diveraga din nou. #}
   {# Sincron, in <head>: tema trebuie aplicata inainte de prima pictare, altfel un
      vizitator pe dark vede un flash alb. Fisier EXTERN, nu inline: CSP-ul emis de
      render._write_headers are `script-src 'self'` fara 'unsafe-inline'. #}

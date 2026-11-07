@@ -164,7 +164,7 @@ def main() -> int:
         "assets": {},
     }
 
-    for f in ("styles.css", "site.css", "faza2.css", "theme.js", "judet.js", "pwa.js",
+    for f in ("styles.css", "theme.js", "judet.js", "pwa.js",
               "push.js", "editorial-updates.js", "search.js"):
         p = os.path.join(OUT, "static", f)
         if os.path.isfile(p):

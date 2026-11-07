@@ -591,6 +591,53 @@ a.chip:hover { border-color: var(--ink-3); color: var(--ink); }
 /* View Transitions: cross-page navigation fara flash alb (Chrome 111+, Safari 18.2+).
    root = tot documentul; old page fades out, new page fades in inloc de flicker brut. */
 @view-transition { navigation: auto; }
+/* ---- Prima pagina: mini-harta pulsului + bara de progres la citire ---- */
+.puls { margin-top: var(--s-55); }
+.puls-layout {
+  display: grid; grid-template-columns: minmax(0, 1.618fr) minmax(260px, 1fr);
+  gap: var(--s-34); align-items: end; max-width: var(--measure);
+}
+.puls-map { display: block; }
+.puls-map svg { display: block; width: 100%; height: auto; aspect-ratio: 1000 / 704; }
+/* Aceeasi rampa ca harta mare (`static/harta-stiri/harta-stiri.css`, --map-h0..h4):
+   sistemul vizual al stirilor trebuie sa fie UNUL, nu patru (diagnostic 4 oct 2026).
+   Valorile sunt copiate deliberat (pagina hărții e standalone si nu incarca foaia
+   site-ului), iar `tests/test_mini_harta.py` pica la prima divergență.
+   Din faza 6 a rebrandingului (2026-11-07) blocul sta AICI, nu mai intr-un faza2.css
+   incarcat separat: cele doua fisiere „delta" erau o impachetare de cache din 2 octombrie. */
+.puls-map path { stroke: var(--paper); stroke-width: 1.2; transition: fill .2s ease, stroke .2s ease; }
+/* Aceeași rampă ca harta mare (static/harta-stiri/harta-stiri.css, --map-h0..h4), acum
+   construită pe alama brandului: h4 = --gold (#a8823a), h3/h2/h1 spălări succesive,
+   h0 gri neutru. Treptele de lumină sunt cele vechi (ΔL* 8,4 / 8,3 / 11,6), deci
+   contrastul textului rămâne 12,1 / 9,6 / 7,4 / 5,0:1. */
+.puls-map path.h0 { fill: #eaecf0; }
+.puls-map path.h1 { fill: #e0d3ba; }
+.puls-map path.h2 { fill: #cfbb93; }
+.puls-map path.h3 { fill: #bfa36d; }
+.puls-map path.h4 { fill: #a8823a; }
+/* Semnalul de link NU mai schimba umplerea: la hover, județele fara stiri deveneau aurii,
+   adica harta spunea pentru o clipa „aici sunt stiri" (o scara care minte la hover). */
+.puls-map:hover path { stroke: var(--gold-strong); stroke-width: 1.6; }
+.puls-caption {
+  font-family: var(--font-mono); font-size: var(--fs-eyebrow);
+  color: var(--ink-2); line-height: 1.6; margin: 0;
+}
+.puls-caption a { text-decoration: underline; }
+@media (max-width: 1000px) { .puls-layout { grid-template-columns: 1fr; align-items: start; } }
+
+.progress { display: none; }
+@supports (animation-timeline: scroll()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .progress {
+      display: block; position: fixed; top: 0; left: 0; z-index: 30;
+      width: 100%; height: 3px; background: var(--gold);
+      transform-origin: 0 50%; transform: scaleX(0);
+      animation: citire linear both; animation-timeline: scroll(root);
+    }
+    @keyframes citire { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+  }
+}
+
 /* ------------------------------------------------- Dark mode --- */
 [data-theme="dark"] {
   --paper:       #0f1115;
