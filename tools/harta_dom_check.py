@@ -23,7 +23,11 @@ tolerante (nu de logica)."""
 import os, sys, io
 sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
 sys.stderr = io.TextIOWrapper(sys.stderr.buffer, encoding='utf-8')
-from playwright.sync_api import sync_playwright
+try:
+    from playwright.sync_api import sync_playwright
+except ImportError:      # mediul fara browser (sau fara biblioteca) — spune ce lipseste, nu da traceback
+    sys.exit("harta_dom_check cere Playwright: pip install playwright==1.62.0 && "
+             "python -m playwright install chromium")
 
 BASE = os.getenv("MAP_URL", "http://localhost:8765/harta/")
 fails = []
