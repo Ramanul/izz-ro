@@ -27,6 +27,7 @@
 - **Felii verticale.** Livrează pe suprafețe mici, verificabile end-to-end.
 - **Verifică rulând, nu declarând.** Nu folosi simpla existență a codului drept dovadă.
 - **Commit pe verde.** Nu considera un patch închis până când verificările relevante trec.
+- **Subiectul nu se termină cu numărul unui issue.** `(#N)` la coada subiectului este convenția GitHub pentru squash și înseamnă PR-ul N: garda `tests/test_pr_fantoma.py` citește istoricul exact așa. Un commit care închide un issue pune `Closes #N` în corp (corpurile nu se citesc), nu în coadă — altfel garda raportează un PR-fantomă (întâmplat 7 nov 2026, subiectul a închis #454 și a picat `tests` pe main).
 - **Diff minim.** Nu face refactor oportunist în aceeași schimbare.
 
 ## 1. Ce este izz.ro
