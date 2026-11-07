@@ -33,6 +33,10 @@ sys.path.insert(0, ROOT)
 from generator import photojudge, state  # noqa: E402
 from generator.process import get_provider  # noqa: E402
 from generator.util import strip_diacritics  # noqa: E402
+# Aceleași reguli ca la curățenia din `usureaza_portrete.py`: Commons poate servi 380 KB
+# pentru 232x318 px, iar portretul se afișează la 96-168 px. Fără re-encodare aici, garda
+# din `tests/test_greutate_portrete.py` ar cădea la fiecare rulare de îmbogățire.
+from tools.usureaza_portrete import compacteaza_bytes  # noqa: E402
 
 CACHE = os.path.join(ROOT, "data", "portraits.json")
 OUTDIR = os.path.join(ROOT, "media", "portraits")
@@ -242,6 +246,7 @@ def main() -> int:
                     fn = f"{slugish(name)}.jpg"
                     req = urllib.request.Request(info["thumb"], headers=UA)
                     data = urllib.request.urlopen(req, timeout=30).read()
+                    data = compacteaza_bytes(data)
                     if len(data) > 2000:
                         open(os.path.join(OUTDIR, fn), "wb").write(data)
                         entry = {"name": name, "qid": pick[0], "img": f"portraits/{fn}",
