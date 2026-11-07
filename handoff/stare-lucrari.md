@@ -408,3 +408,18 @@ Citește răspunsul Arenei la review-ul sistemului de economie de context (chatu
   orice cifră LIVE — până la merge + deploy, valorile de mai sus sunt pe randare locală.
 - Rămâne la tine: merge-ul (#554) și, dacă vrei continuarea raportului, conturile de social
   (footer + `sameAs` în JSON-LD) — codul e o linie, conturile nu.
+- **Follow-up (tura 2, tot pe #554):** găzduirea de pe `compare` (editorial-frontend-audit) a
+  trecut și ea → **5/5 verde** pe `9ef0116`. În plus, corecție la clasa reparată, nu la
+  instanță: curățarea de stop-words macina abrevierile de formă juridică — „Aquaserv S.A."
+  ajungea `aquaserv-s` (litera `a` e și articol nehotărât). Garda `_e_prescurtare` protejează
+  tokenul cu vecin de o singură *literă* (21 de titluri cu „S.A." / „S.R.L." pe starea de pe
+  7 nov), dar nu și pe cel cu vecin cifră, deci invariantul „niciun slug nu se termină în
+  prepoziție" rămâne: **0 cozi atârnate** pe 7.324 de titluri, 0 slug-uri peste 80, coliziuni
+  noi 0 (103 în ambele formule). Cifrele inițiale din commit („793 / 10,8%", „194 → 4") au fost
+  re-măsurate pe o singură bază: 897 / 12,2% slug-uri stocate și 2.486 titluri peste 80, din
+  care 1.378 nu mai au nevoie de trunchiere. Suite: 3175 trec, ruff curat, `html_check` 0 /
+  392.004, `a11y_static` 0 tari pe 7.533 pagini.
+- **Un incident de mediu, ca să nu pară pierdere de date:** între cele două ture sandboxul a
+  fost recreat, `.git` local a revenit la `b14a107` (worktree intact, commiturile în siguranță
+  pe `origin/arena/1b1317c8-izz-ro`). Reconciliere fără `--hard`: `git fetch` + `git reset`
+  (mixt, nu atinge fișierele), apoi commit normal pe vârful de pe remote.

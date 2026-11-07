@@ -349,17 +349,47 @@ _SLUG_JOARDE = frozenset({
 })
 
 
+def _e_prescurtare(piese: list, i: int) -> bool:
+    """Tokenul de pe poziția `i` face parte dintr-o abreviere: are un vecin de-o singură
+    literă („S.A.\" → `s-a`, „CFR S.A.\" → `cfr-s-a`).
+
+    Fără garda asta, curățarea macină abrevierile: „Aquaserv S.A.\" ajungea `aquaserv-s`,
+    fiindcă `a` e în listă ca articol nehotărât. Măsurat pe starea de pe 7 nov 2026: 21 de
+    titluri cu „S.A.\" / „S.R.L.\", toate comunicate oficiale de utilități și hotărâri. Un
+    vecin de-o singură literă nu apare întâmplător lângă o prepoziție — apare când titlul
+    scrie o inițială, deci e semnătura unei abrevieri, nu un zgomot de sintaxă.
+
+    Cifrele NU sunt vecini eligibili: „nr. 4 din" nu e abreviere, iar coada de ordinal
+    („liga a 3-a") se taie mai departe — invariantul principal e că niciun slug nu se
+    termină într-un cuvânt de legătură, iar o inițială alăturată unei cifre nu o încalcă.
+    """
+    def o_litera(t):
+        return len(t) == 1 and t.isalpha()
+
+    din_stanga = i > 0 and o_litera(piese[i - 1])
+    din_dreapta = i + 1 < len(piese) and o_litera(piese[i + 1])
+    return din_stanga or din_dreapta
+
+
 def _curata_slug(s: str) -> str:
     """Slug fără cuvinte de legătură. Dacă zgomotul e tot slug-ul, îl lasă intact.
 
     Un slug de zece token-uri din care patru sunt prepoziții ocupă spațiu în SERP și în
-    bugetul de 80 de caractere fără să susțină nicio căutare. Curățarea se face ÎNAINTE de
-    trunchiere, deci bugetul se umple cu cuvinte care contează. Măsurat pe starea comisă de
-    7 nov 2026 (7.324 de slug-uri): media 68,2 → 58,9 caractere, slug-urile care se
-    înghesuiau de limita de 80 cad de la 194 la 4, coliziuni noi: 2 (unice prin sufixul
-    existent „-2", care e tociai mecanismul de dedup).
+    bugetul de 80 de caractere fără să susțină nicio căutare, deci curățarea vine ÎNAINTE de
+    trunchiere: ce rămâne din buget se umple cu cuvinte care contează.
+
+    Măsurat pe starea comisă de pe 7 nov 2026, pe aceleași 7.324 de titluri, formula veche
+    vs. cea nouă: medie 67,7 → 62,0 caractere, iar 1.378 din cele 2.486 de titluri care
+    treceau de limita de 80 încap acum fără trunchiere. Coliziuni noi pe categorie: 0 — 103
+    în ambele formule, toate rezolvate deja de sufixul „-2" care exista pentru dedup.
+
+    Efect colateral numit, nu ascuns: un „și" vecin cu o inițială rămâne în slug
+    („Liga I și Liga II" → `liga-i-si-liga-ii`), pentru că garda de abreviere se uită la
+    vecini. A lăsa un cuvânt în plus nu pierde informație; a tăia unul greșit, da.
     """
-    curat = "-".join(t for t in s.split("-") if t and t not in _SLUG_JOARDE)
+    piese = [t for t in s.split("-") if t]
+    curat = "-".join(t for i, t in enumerate(piese)
+                     if t not in _SLUG_JOARDE or _e_prescurtare(piese, i))
     return curat or s
 
 
@@ -367,13 +397,18 @@ def _fara_coada_joarda(s: str, minim: int) -> str:
     """Taie de la coada unui slug token-urile de legătură rămase după o tăietură.
 
     Se oprește din retragere când restul ar scădea sub `minim`: un slug care se termină
-    într-o prepoziție e mai bun decât un slug de două cuvinte.
+    într-o prepoziție e mai bun decât un slug de două cuvinte. Se oprește și pe o abreviere
+    (`...-s-a`) — aceeași regulă, aceeași funcție, ca să nu existe două definiri ale
+    „zgomotului de la coadă\" care să divergă.
     """
     while True:
-        cap, _, coada = s.rpartition("-")
-        if not coada or coada not in _SLUG_JOARDE or len(cap) < minim:
+        piese = s.split("-")
+        coada = piese[-1]
+        if coada not in _SLUG_JOARDE or len(s) - len(coada) - 1 < minim:
             return s
-        s = cap
+        if _e_prescurtare(piese, len(piese) - 1):
+            return s
+        s = "-".join(piese[:-1])
 
 
 def _taie_slug(s: str, limita: int = 80, minim: int = 40) -> str:
@@ -385,8 +420,9 @@ def _taie_slug(s: str, limita: int = 80, minim: int = 40) -> str:
     taietura brutala ramane preferabila unui slug de doua cuvinte.
 
     A doua garda e pentru coadă: o tăietură lăsată pe o prepoziție (`...-frig-in`,
-    `...-titular-la`) se citea ca o propoziție neterminată — 793 din 7.324 de slug-uri
-    (10,8%) se terminau exact așa pe starea comisă la 7 nov 2026.
+    `...-titular-la`) se citea ca o propoziție neterminată — 897 din 7.324 de slug-uri
+    stocate (12,2%) se terminau exact așa pe starea de pe 7 nov 2026, cele mai multe
+    fiind titluri deja trunchiate la sursă. Pe ce produce formula nouă: 0.
     """
     if len(s) <= limita:
         return _fara_coada_joarda(s, minim)

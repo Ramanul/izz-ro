@@ -146,9 +146,26 @@ def test_slug_nu_se_termina_in_cuvant_de_legatura():
 
 def test_slug_pastreaza_cuvintele_care_sunt_continut():
     """Lista de stop-words e închisă exact cât trebuie: aceste cuvinte NU se ating."""
-    assert render._slug_de_baza("Liga I și Liga II") == "liga-i-liga-ii"
+    # „i\" / „ii\" sunt cifre romane, nu pronume — fără excepție, „Liga I\" și „Liga II\"
+    # ar coliza pe același slug.
+    assert render._slug_de_baza("Liga I și Liga II") == "liga-i-si-liga-ii"
     assert "peste" in render._slug_de_baza("Peste 300 de tone de pește")
     assert "mai" in render._slug_de_baza("Inflația se încetinește în mai")
+
+
+def test_slug_nu_mancina_abrevierile_de_forma_juridica():
+    """Garda de clasă pentru „Aquaserv S.A.\": vecinul de o singură literă protejează tokenul.
+
+    Fără ea, `a` (articol nehotărât, dar și litera din „S.A.\") dispărea din 21 de titluri
+    de pe starea de pe 7 nov 2026 și lăsa în URL un „-s\" de unul singur. Cifrele nu
+    protejează nimic: „... nr. 4 din\" rămâne tăiat de coadă.
+    """
+    assert render._slug_de_baza("Comunicat Compania Aquaserv S.A.") == \
+        "comunicat-compania-aquaserv-s-a"
+    assert render._slug_de_baza("Primăria începe lucrările de modernizare la Școala nr. 4 din") \
+        .endswith("-nr-4")
+    assert not render._slug_de_baza("Primăria începe lucrările de modernizare la Școala nr. 4 din") \
+        .endswith("-din")
 
 
 def test_slug_din_numai_prepozitii_nu_dispare():
