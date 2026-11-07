@@ -1,4 +1,4 @@
-"""E4 — memoria subiectelor: un registru mic, separat de fereastra de 12 zile, cu DECIZIILE
+"""E4 — memoria subiectelor: un registru mic, separat de fereastra de 11 zile, cu DECIZIILE
 ÎNCHEIATE pe care sursele le-au confirmat (`specs/plan-paradigma-izz.md` §3 E4).
 
 De ce există: fereastra TTL face site-ul finit (P10), dar o lege promulgată acum patru luni
@@ -9,8 +9,10 @@ surselor. Plafon: 12 luni, câteva sute de KB pe an.
 Garda Memoriei (Argon R3 — „singura eroare fatală rămasă", reparată aici, mecanic):
 - intră DOAR ce sinteza dialectică a marcat `milestone` (decizie finală / eveniment încheiat),
   în stare validă, fără nicio rezervă la sursă;
-- NU intră nicio stare judiciară sau acuzație, oricât de „încheiată" ar părea formularea —
-  registrul ar îngheța o persoană într-o stare trecută: un cazier automat fără drept de apel;
+- NU intră nicio stare judiciară, litigiu sau acuzație (nici din text, nici din entități),
+  oricât de „încheiată" ar părea formularea — registrul ar îngheța o persoană într-o stare
+  trecută: un cazier automat fără drept de apel;
+- sub-clusterele aceluiași eveniment din zile apropiate se unifică într-o singură intrare;
 - o corecție sau o retragere (`moderation.yaml`) scoate rândul și din registru, nu doar din
   fereastra activă.
 """
@@ -19,9 +21,9 @@ from __future__ import annotations
 import json
 import os
 import re
-from datetime import datetime, timedelta, timezone
+from datetime import date, datetime, timedelta, timezone
 
-from . import config
+from . import config, guard
 from .util import normalize_url
 from .verifica_sinteza import _norm
 
@@ -29,19 +31,37 @@ CALE = os.path.join(config.ROOT, "data", "memory_ledger.json")
 ZILE_PASTRARE = 365
 MIN_ENTITATI_COMUNE = 2
 MAX_INTRARI = 3000
+FEREASTRA_DEDUP_ZILE = 3
 
-# Vocabular penal, contravențional și de integritate: un fapt care îl conține nu intră în
-# memorie, oricât de definitiv ar suna — agregarea automată a unor astfel de stări pe știri noi,
-# luni mai târziu, ar fi un cazier fără drept de apel (Argon R3; R5: „condamnat definitiv" e
-# exclus și el — GDPR art. 10, reabilitare). Deciziile CCR rămân: sunt constituționalitate, nu
-# zonă penală. Rădăcini fără diacritice, potrivite la început de cuvânt.
+# Vocabular penal, contravențional, litigios și de integritate: un fapt sau o entitate care îl
+# conține nu intră în memorie, oricât de definitiv ar suna — agregarea automată a unor astfel de
+# stări pe știri noi, luni mai târziu, ar fi un cazier fără drept de apel (Argon R3; R5:
+# „condamnat definitiv" e exclus și el — GDPR art. 10, reabilitare). Deciziile CCR rămân: sunt
+# constituționalitate, nu zonă penală ori litigiu individual. Rădăcini fără diacritice.
 _JUDICIAR = re.compile(
     r"\b(?:suspect|banuit|anchet|acuz|inculpa|imputat|arest|retinu|retinere|audiat|cercetat|"
     r"cercetare|urmarir|perchezit|flagrant|plangere|denunt|prejudici|condamn|achita|dosar|"
     r"procuror|parchet|diicot|dna\b|eppo\b|ani\b|instant|judecat|tribunal|pedeaps|penal|"
     r"infractiun|fraud|delapid|mit[aei]\b|spag|coruptie|trafic de influenta|conflict\w* de interes|"
-    r"incompatibil|plagiat|amend|sanctionat|violen|agresi|crim|omor|ucis|viol|abuz|victim|dispar)",
+    r"incompatibil|plagiat|amend|sanctionat|violen|agresi|crim|omor|ucis|viol|abuz|victim|dispar|"
+    r"litigi|intentat|chemat\w*\s+in\s+judecat|actiun\w*\s+in\s+instant|execut\w*\s+silit|"
+    r"iccj\b|inalta\s+curte|curtea\s+de\s+apel|"
+    r"(?:pierdut|castigat)\s+(?:definitiv\s+)?(?:al\s+\w+\s+)?proces(?:ul|ele|elor|ului)?\b)",
 )
+
+# Cuvinte funcționale/participii englezești rămase netraduse în ieșirea modelului și formule
+# evaluative de titlu care încalcă registrul de proces-verbal al memoriei pe termen lung.
+_ENGLEZA_SCAPATA = re.compile(
+    r"\b(?:surpassing|following|meanwhile|however|according|despite|amid|against|during|"
+    r"between|announced|defeated|winning|breaking|ahead\s+of|after\s+the)\b",
+)
+_EPITETE_EVALUATIVE = re.compile(
+    r"\b(?:victori[ae]\s+(?:categoric|zdrobitoar|spectaculoas|rasunatoar|uluitoar)|"
+    r"infranger[ea]\s+(?:usturatoar|rusinoas|umilitoar|categoric)|"
+    r"scandal\w*\s+urias|lovitur[ae]\s+de\s+teatru)",
+)
+_PREFIX_CLUB = re.compile(r"^(?:fc|ac|as|afc|cf|csm|acs|cs|sc|fk|sk|nk|ud)\s+")
+_URL_DUBLU = re.compile(r"^https?://[^/?#\s]+/?(https?://\S+)$", re.I)
 
 # Entități prea generale ca să lege singure două subiecte (Argon R5): aproape orice știre politică
 # are („Guvernul", „România") sau („PSD", „PNL"). Nu se numără la pragul de entități comune.
@@ -86,6 +106,92 @@ def _cuvinte_cheie(text: str, excluse: set) -> set:
     return {t[:6] for t in toks if t not in _COMUNE and t[:6] not in excl}
 
 
+def _curata_url(url: str) -> str:
+    """Repară URL-urile din feeduri care lipesc gazda în fața unui link deja absolut."""
+    u = (url or "").strip()
+    m = _URL_DUBLU.match(u)
+    return m.group(1) if m else u
+
+
+def _text_eligibil(titlu: str, fapt: str, entitati) -> bool:
+    ent_text = " ".join(str(e) for e in (entitati or []))
+    complet = _norm(f"{titlu or ''} {fapt or ''} {ent_text}")
+    if _JUDICIAR.search(complet):
+        return False
+    proza = _norm(f"{titlu or ''} {fapt or ''}")
+    if _ENGLEZA_SCAPATA.search(proza) or _EPITETE_EVALUATIVE.search(proza):
+        return False
+    return True
+
+
+def _ent_dedup(entitati) -> set[str]:
+    out = set()
+    for e in _specifice(entitati):
+        scurt = _PREFIX_CLUB.sub("", e).strip()
+        if scurt:
+            out.add(scurt)
+    return out
+
+
+def _acelasi_eveniment(a: dict, b: dict) -> bool:
+    """Două intrări din zile apropiate (≤3 zile) care descriu același eveniment sub-clusterizat."""
+    try:
+        da = date.fromisoformat((a.get("d") or "")[:10])
+        db = date.fromisoformat((b.get("d") or "")[:10])
+    except ValueError:
+        return False
+    if abs((da - db).days) > FEREASTRA_DEDUP_ZILE:
+        return False
+    comune = _ent_dedup(a.get("ent")) & _ent_dedup(b.get("ent"))
+    if len(comune) < MIN_ENTITATI_COMUNE:
+        return False
+    chei_a = _cuvinte_cheie(f"{a.get('titlu') or ''} {a.get('fapt') or ''}", comune)
+    chei_b = _cuvinte_cheie(f"{b.get('titlu') or ''} {b.get('fapt') or ''}", comune)
+    return len(chei_a & chei_b) >= 2
+
+
+def _igienizeaza(intrari: list) -> list:
+    """Re-aplică garda pe intrările existente, repară URL-urile duble și unifică dublurile."""
+    valide = []
+    for raw in intrari:
+        if not isinstance(raw, dict):
+            continue
+        url = _curata_url(raw.get("url") or "")
+        if url and guard.url_ostil(url) is not None:
+            continue
+        if not _text_eligibil(raw.get("titlu") or "", raw.get("fapt") or "", raw.get("ent") or []):
+            continue
+        copie = dict(raw)
+        copie["url"] = url
+        valide.append(copie)
+
+    # Intrarea susținută de cele mai multe publicații devine canonică și absoarbe sub-clusterele.
+    valide.sort(
+        key=lambda e: (len(e.get("surse") or []), e.get("d") or "", len(e.get("ent") or [])),
+        reverse=True,
+    )
+    canonice: list[dict] = []
+    for cand in valide:
+        existent = next((c for c in canonice if _acelasi_eveniment(c, cand)), None)
+        if existent is None:
+            canonice.append(cand)
+            continue
+        surse_unite = sorted(set(existent.get("surse") or []) | set(cand.get("surse") or []))
+        existent["surse"] = surse_unite[:6]
+        vazute_ent = {_canon(x) for x in (existent.get("ent") or [])}
+        ent_unite = list(existent.get("ent") or [])
+        for x in cand.get("ent") or []:
+            cx = _canon(x)
+            if cx and cx not in vazute_ent and len(ent_unite) < 4:
+                ent_unite.append(x)
+                vazute_ent.add(cx)
+        existent["ent"] = ent_unite
+        if (cand.get("d") or "") > (existent.get("d") or ""):
+            existent["d"] = cand["d"]
+    canonice.sort(key=lambda e: e.get("d") or "", reverse=True)
+    return canonice
+
+
 def eligibil(rep: dict) -> bool:
     d = rep.get("dialectic") if isinstance(rep, dict) else None
     if not isinstance(d, dict) or not d.get("milestone") or d.get("state") != "SYNTHESIS_VALID":
@@ -93,8 +199,10 @@ def eligibil(rep: dict) -> bool:
     fapt = (d.get("common") or [{}])[0]
     if not fapt.get("text") or fapt.get("hedged"):
         return False
-    text = _norm(f"{rep.get('title') or ''} {fapt.get('text') or ''}")
-    if _JUDICIAR.search(text):
+    url = _curata_url(rep.get("original_link") or rep.get("url") or "")
+    if url and guard.url_ostil(url) is not None:
+        return False
+    if not _text_eligibil(rep.get("title") or "", fapt.get("text") or "", rep.get("entities") or []):
         return False
     return len(rep.get("entities") or []) >= 1
 
@@ -126,7 +234,7 @@ def actualizeaza(procesate: list, mod: dict | None, cale: str | None = None,
             # o sinteză veche care absoarbe azi decizia o datează AZI (`updated`), nu la prima
             # ei publicare, de acum câteva zile (Argon R5)
             "d": (rep.get("updated") or rep.get("published") or acum.isoformat())[:10],
-            "url": rep.get("original_link") or rep.get("url") or "",
+            "url": _curata_url(rep.get("original_link") or rep.get("url") or ""),
             "titlu": rep.get("title") or "",
             "fapt": fapt["text"],
             "surse": list(fapt.get("src") or [])[:6],
@@ -141,7 +249,7 @@ def actualizeaza(procesate: list, mod: dict | None, cale: str | None = None,
     pastrate = [e for e in reg.values()
                 if normalize_url(e.get("url") or "") not in blocate and (e.get("d") or "") >= limita]
     pastrate.sort(key=lambda e: e.get("d") or "", reverse=True)
-    pastrate = pastrate[:MAX_INTRARI]
+    pastrate = _igienizeaza(pastrate)[:MAX_INTRARI]
     try:
         os.makedirs(os.path.dirname(cale or CALE), exist_ok=True)
         tmp = (cale or CALE) + ".tmp"
