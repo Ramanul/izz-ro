@@ -16,6 +16,7 @@
 **Updated:** 2026-11-07 (rebranding #542 merged și LIVE; §8.4 închis integral).
 
 ## Open
+- **Encoding la `subprocess` [#549 merged 7 nov, `2c1aa33`]:** 32 de apeluri `text=True` fără encoding primesc `encoding="utf-8", errors="replace"` (`tests/`, `tools/`; `generator/` nu are). Cele 20 fără mod text rămân neschimbate. Neverificat încă: verificările automate pe `main` după merge. Nota: `handoff/to-claude/2026-11-07-subprocess-encoding.md`.
 - **Rebranding „Hârtie curată" — #542 merged 7 nov, LIVE:** fazele 0–7 (tokeni +
   Newsreader/Inter, masthead, card 7→4 elemente, pagină de articol, coperți pe același serif,
   o foaie de stil, harta pe alamă, utilitare fără emoji, portrete re-encodate). Prima pagină
