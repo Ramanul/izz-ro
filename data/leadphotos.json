@@ -15133,18 +15133,6 @@
   "kind": "locality",
   "qid": "Q12725032"
  },
- "ef30c64a849209c2": {
-  "miss": true,
-  "v": 3,
-  "motiv_loc": "loc_dimensiune_sau_format",
-  "motiv_ent": "ent_fara_entitati"
- },
- "30f5ad8a879ed691": {
-  "miss": true,
-  "v": 3,
-  "motiv_loc": "loc_dimensiune_sau_format",
-  "motiv_ent": "ent_fara_entitati"
- },
  "1e22855425f9b7fb": {
   "cover": "leads/loc-Q1654950.c.jpg",
   "art": "leads/loc-Q1654950.jpg",
@@ -15367,12 +15355,6 @@
   "name": "Săndulești",
   "kind": "locality",
   "qid": "Q16426237"
- },
- "42afd7428f82096d": {
-  "miss": true,
-  "v": 3,
-  "motiv_loc": "loc_negasit_sau_fara_imagine",
-  "motiv_ent": "ent_fara_entitati"
  },
  "3f87de509df2a37b": {
   "cover": "leads/loc-Q550055.c.jpg",
@@ -25766,6 +25748,134 @@
   "miss": true,
   "v": 3,
   "motiv_loc": "loc_dimensiune_sau_format",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "bf3c6f7cd3cf2a0b": {
+  "cover": "leads/laurentiu-reghecampf.c.jpg",
+  "art": "leads/laurentiu-reghecampf.jpg",
+  "webp": "leads/laurentiu-reghecampf.webp",
+  "artist": "Biser Todorov",
+  "license": "CC BY 3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Lauren%C8%9Biu_Reghecampf_2013.jpg",
+  "name": "Laurențiu Reghecampf",
+  "kind": "entity"
+ },
+ "f691a9e8b5dd2edd": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_exclus_tematic",
+  "motiv_ent": "ent_nenotabila"
+ },
+ "d2f70ab7423be91e": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_neeligibil",
+  "motiv_ent": "ent_respinsa_de_judecator"
+ },
+ "fd7510cebeade331": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_neeligibil",
+  "motiv_ent": "ent_nenotabila"
+ },
+ "4568701260ec1b0d": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_neeligibil",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "e1a1c0baf2e39b0f": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_exclus_tematic",
+  "motiv_ent": "ent_nenotabila"
+ },
+ "7d2d5ae6c85234ac": {
+  "cover": "leads/elena-udrea.c.jpg",
+  "art": "leads/elena-udrea.jpg",
+  "webp": "leads/elena-udrea.webp",
+  "artist": "Razvan Socol",
+  "license": "CC BY-SA 3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Conventia_PD-L_2013_-_Elena_Udrea_(1)_(cropped).jpg",
+  "name": "Elena Udrea",
+  "kind": "entity"
+ },
+ "3290be83bd86b7a0": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_neeligibil",
+  "motiv_ent": "ent_nenotabila"
+ },
+ "d5cc49f7aa920d91": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_neeligibil",
+  "motiv_ent": "ent_nenotabila"
+ },
+ "0e47bf0e1b6e5390": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_neeligibil",
+  "motiv_ent": "ent_nenotabila"
+ },
+ "7fa1129f99a803db": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_neeligibil",
+  "motiv_ent": "ent_nenotabila"
+ },
+ "5b9017063b2f5a0a": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_neeligibil",
+  "motiv_ent": "ent_nenotabila"
+ },
+ "20e2a3d4ece93d8a": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_neeligibil",
+  "motiv_ent": "ent_nenotabila"
+ },
+ "c1d020c0e4a1e288": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_neeligibil",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "da89ac8d53f21616": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_neeligibil",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "b309f82f24444d2a": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_dimensiune_sau_format",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "8f9e3e64a3ca9f87": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_negasit_sau_fara_imagine",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "9b71ef90eca5b11d": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_negasit_sau_fara_imagine",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "4108344aaed1a418": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_dimensiune_sau_format",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "0b69b22f383be6ba": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_negasit_sau_fara_imagine",
   "motiv_ent": "ent_fara_entitati"
  }
 }
