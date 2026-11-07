@@ -9,7 +9,107 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 
-import { e_cale_de_oglinda } from "./worker-404-mirror.js";
+import worker, { e_cale_de_oglinda } from "./worker-404-mirror.js";
+import { webcrypto } from "node:crypto";
+
+if (!globalThis.crypto) globalThis.crypto = webcrypto;
+const HTML = "<!doctype html><html><body>Archived article</body></html>";
+
+async function serve({ method = "GET", path = "/local/old/", origin } = {}) {
+  let assetsCalls = 0;
+  let mirrorCalls = 0;
+  const originalFetch = globalThis.fetch;
+  globalThis.fetch = async (url, options) => { mirrorCalls++; return origin(url, options); };
+  try {
+    const response = await worker.fetch(new Request("https://izz.ro" + path, { method }), {
+      ASSETS: { fetch: async () => { assetsCalls++; return new Response("local missing", { status: 404 }); } },
+    });
+    return { response, assetsCalls, mirrorCalls };
+  } finally { globalThis.fetch = originalFetch; }
+}
+
+test("fallback fetches ASSETS once and applies local security headers", async () => {
+  const result = await serve({ origin: (url, options) => {
+    assert.equal(url, "https://ramanul.github.io/local/old/");
+    assert.equal(options.method, "GET");
+    assert.equal(options.redirect, "manual");
+    return new Response(HTML, { headers: { "content-type": "text/html", "set-cookie": "foreign=1", "access-control-allow-origin": "*" } });
+  } });
+  assert.equal(result.assetsCalls, 1);
+  assert.equal(result.mirrorCalls, 1);
+  assert.equal(result.response.status, 200);
+  assert.equal(await result.response.text(), HTML);
+  assert.match(result.response.headers.get("content-security-policy"), /frame-ancestors 'none'/);
+  assert.equal(result.response.headers.get("x-content-type-options"), "nosniff");
+  assert.equal(result.response.headers.get("set-cookie"), null);
+  assert.equal(result.response.headers.get("access-control-allow-origin"), null);
+});
+
+test("HEAD uses upstream HEAD and returns an empty body", async () => {
+  let cancelled = false;
+  const { response, assetsCalls } = await serve({ method: "HEAD", origin: (_, options) => {
+    assert.equal(options.method, "HEAD");
+    return new Response(new ReadableStream({ cancel() { cancelled = true; } }), { headers: { "content-type": "text/html" } });
+  } });
+  assert.equal(response.status, 200);
+  assert.equal(await response.text(), "");
+  assert.equal(assetsCalls, 1);
+  assert.equal(cancelled, true);
+});
+
+test("methods and fresh-only routes never query the mirror", async () => {
+  for (const args of [{ method: "POST" }, { path: "/" }, { path: "/feed.xml" }, { path: "/local/3/" }]) {
+    const result = await serve({ ...args, origin: () => { throw new Error("must not query mirror"); } });
+    assert.equal(result.response.status, 404);
+    assert.equal(result.assetsCalls, 1);
+    assert.equal(result.mirrorCalls, 0);
+  }
+});
+
+test("only the mirror's trailing-slash redirect is honored, as a local 301", async () => {
+  const ok = await serve({ path: "/local/old", origin: () => new Response(null, { status: 301, headers: { location: "https://ramanul.github.io/local/old/" } }) });
+  assert.equal(ok.response.status, 301);
+  assert.equal(ok.response.headers.get("location"), "/local/old/");
+  for (const location of ["https://evil.example/local/old/", "https://ramanul.github.io/other/"]) {
+    const bad = await serve({ path: "/local/old", origin: () => new Response(null, { status: 301, headers: { location } }) });
+    assert.equal(bad.response.status, 404);
+    assert.equal(bad.response.headers.get("cache-control"), "no-store");
+  }
+});
+
+test("only confirmed absence has a short negative cache", async () => {
+  for (const status of [404, 403, 429, 500, 503]) {
+    const { response } = await serve({ origin: () => new Response("missing", { status }) });
+    assert.equal(response.status, 404);
+    assert.equal(response.headers.get("cache-control"), status === 404 ? "public, max-age=0, s-maxage=60, must-revalidate" : "no-store");
+  }
+});
+
+test("bad MIME, malformed, empty and truncated HTML fail closed", async () => {
+  for (const [body, headers] of [
+    [HTML, { "content-type": "application/json" }],
+    ["upstream error", { "content-type": "text/html" }],
+    ["", { "content-type": "text/html" }],
+    [HTML, { "content-type": "text/html", "content-length": "999" }],
+    [HTML, { "content-type": "text/html", "content-length": "1048577" }],
+  ]) {
+    const { response } = await serve({ origin: () => new Response(body, { headers }) });
+    assert.equal(response.status, 404);
+    assert.equal(response.headers.get("cache-control"), "no-store");
+  }
+});
+
+test("header and body stalls have finite deadlines and cancel bodies", async () => {
+  for (const stall of ["headers", "body"]) {
+    let cancelled = false;
+    const start = performance.now();
+    const { response } = await serve({ origin: () => stall === "headers" ? new Promise(() => {}) : new Response(new ReadableStream({ cancel() { cancelled = true; } }), { headers: { "content-type": "text/html" } }) });
+    assert.equal(response.status, 404);
+    assert.equal(response.headers.get("cache-control"), "no-store");
+    assert.ok(performance.now() - start < 3500);
+    if (stall === "body") assert.equal(cancelled, true);
+  }
+});
 
 test("pagina de articol iese din fereastra TTL -> oglinda", () => {
   assert.equal(e_cale_de_oglinda("/local/un-articol-vechi/"), true);

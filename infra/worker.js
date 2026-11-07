@@ -31,7 +31,9 @@ async function cuAntete(request, env, cacheControl) {
   // Raspunsul unui asset e imuabil: se reconstruieste cu antetele noi, nu se modifica.
   const antete = new Headers(sursa.headers);
   antete.set('cache-control', cacheControl);
-  return new Response(sursa.body, { status: sursa.status, statusText: sursa.statusText, headers: antete });
+  if (request.method === 'HEAD' && sursa.body) void sursa.body.cancel().catch(() => {});
+  return new Response(request.method === 'HEAD' ? null : sursa.body,
+    { status: sursa.status, statusText: sursa.statusText, headers: antete });
 }
 
 export default {

@@ -75,8 +75,8 @@ def test_oglinda_primeste_doar_lista_pozitiva():
     sursa = _sursa()
     assert "SECTIUNI_COADA" in sursa and "CATEGORII" in sursa
     assert "e_cale_de_oglinda" in sursa
-    # intoarce 404-ul local cand regula zice nu, si cand oglinda raspunde non-2xx
-    assert sursa.count("return raspuns") >= 3
+    # Network behavior is exercised in the Node suite, not inferred from return counts.
+    assert "local404" in sursa
 
 
 @pytest.mark.skipif(shutil.which("node") is None, reason="node nu e disponibil")

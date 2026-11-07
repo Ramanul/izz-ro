@@ -1,18 +1,7 @@
-// Fallback 404 -> oglinda gh-pages, pentru paginile iesite din fereastra TTL (IZZ-0425, #198).
-//
-// DE CE EXISTA: primarul (Workers Static Assets, `not_found_handling: 404-page`) serveste
-// doar fereastra TTL — un permalink mai veche de `ARTICLE_TTL_DAYS` zile moare definitiv
-// desi continutul continua sa existe pe oglinda (izolata de plafonul de 20.000 fisiere al
-// planului Free). Cu acest Worker, un 404 pe un URL de articol NU se mai duce in intuneric:
-// cerem aceeasi cale la oglinda gh-pages (care din 2026-10-03 acumuleaza paginile pensionate
-// — `keep_files: true` in jobul `mirror`) si o livram sub canonica izz.ro.
-//
-// DOUA ORIGINI, O SINGURA ADRESA (2026-10-03). Oglinda nu mai e doar plasa de siguranta a
-// articolului expirat: ea randeaza setul COMPLET (jobul `mirror` ruleaza cu
-// OUTPUT_FILE_BUDGET=100000, deci nu taie nimic din fereastra TTL), in timp ce primarul e
-// limitat la 20.000 de fisiere si taie. Diferenta dintre ele — pagini de subiect, ghiduri,
-// paginare adinca, portrete ale articolelor care n-au incaput pe primar — se serveste de
-// aici. Cititorul vede in continuare izz.ro; originea a doua e invizibila.
+// Bounded fallback 404 -> gh-pages mirror (IZZ-0425, #198).
+// The primary serves the TTL window; articles that left it, and long-tail routes the
+// primary cuts, are served from the mirror (`keep_files: true`, full render). A mirror
+// response is not generation-bound proof of an archived body.
 //
 // LISTA POZITIVA, NU NEGATIVA. `e_cale_de_oglinda()` enumera ce POATE veni de pe oglinda si
 // respinge tot restul. Invers (o lista de exceptii) ar fi lasat prima pagina, paginile de
@@ -20,14 +9,13 @@
 // continutul care trebuie sa fie cel mai proaspat. Un 404 pe ceva ce nu e in lista ramane
 // 404 local, ca inainte.
 //
-// NO-WORSE. Orice raspuns de oglinda care nu e 2xx — inclusiv 5xx si erori de retea —
-// intoarce 404-ul local: a publica pagina de eroare a oglinzii drept articol (200 cu gunoi)
-// ar fi mai rau decat status quo, iar promisiunea fallback-ului e no-worse.
+// A successful fallback requires a bounded, validated response. A network or archive
+// failure returns the local 404 without negative caching. This preserves status
+// semantics but does not prove availability of every historical URL.
 //
-// CANARY LIPSESTE pe Free: nu se porneste — cine „merge” aplică transita dintre
-// `keep_files`-mirror si fallback deja verificate prin `verify_release.py` (care confirma
-// sha-ul pe ambele origini). Amestecul de risc: daca oglinda e jos, paginile vechi treceau
-// oricum — fallback-ul atunci e NO-WORSE decat status quo, doar o dare in plus.
+// Cache-Control on a Worker response does not bypass Worker invocations. Existing
+// mirror release probes compare freshness; they do not attest exact archived body
+// hashes or dependencies. Retention/eviction must have a separate integrity gate.
 const MIRROR = "https://ramanul.github.io";
 
 // Categoriile editoriale, din `generator/config.py:CATEGORIES`. Sincronizarea e verificata
@@ -69,7 +57,7 @@ export function e_cale_de_oglinda(pathname) {
   if (typeof pathname !== "string" || !pathname.startsWith("/")) return false;
   // Traversare si cai percent-codate: nu le trimitem mai departe nicioadata. Oglinda e un
   // host public, iar `fetch(MIRROR + pathname)` concateneaza textual.
-  if (pathname.includes("%") || pathname.includes("..")) return false;
+  if (/[ %\\\x00-\x20\x7f]/.test(pathname) || pathname.includes("..") || pathname.includes("//")) return false;
 
   const seg = pathname.split("/").filter(Boolean);
   if (seg.length === 0) return false;   // radacina ramane a primarului, mereu
@@ -93,23 +81,133 @@ export function e_cale_de_oglinda(pathname) {
   return false;
 }
 
+// Response caching saves origin traffic, not Worker invocations. Only a confirmed
+// absence may be cached briefly; an unavailable archive must never poison a URL.
+const CSP = "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; " +
+  "img-src 'self' data: https://tiles.openfreemap.org https://upload.wikimedia.org; " +
+  "font-src 'self'; connect-src 'self' https://tiles.openfreemap.org; worker-src 'self' blob:; " +
+  "object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; upgrade-insecure-requests";
+const MIME = new Map([
+  ["jpg", "image/jpeg"], ["jpeg", "image/jpeg"], ["webp", "image/webp"],
+  ["png", "image/png"], ["xml", "application/xml"], ["ics", "text/calendar"],
+]);
+
+function headersFor(type, cache) {
+  return new Headers({
+    "content-type": type, "cache-control": cache,
+    "content-security-policy": CSP, "x-content-type-options": "nosniff",
+    "x-frame-options": "DENY", "referrer-policy": "strict-origin-when-cross-origin",
+    "strict-transport-security": "max-age=31536000; includeSubDomains",
+    "permissions-policy": "camera=(), microphone=(), geolocation=(), interest-cohort=()",
+  });
+}
+
+function discard(response) {
+  if (response?.body) void response.body.cancel().catch(() => {});
+}
+
+function local404(response, method, confirmed = false) {
+  const headers = headersFor("text/html; charset=utf-8", confirmed
+    ? "public, max-age=0, s-maxage=60, must-revalidate" : "no-store");
+  if (method === "HEAD") discard(response);
+  return new Response(method === "HEAD" ? null : response.body, { status: 404, headers });
+}
+
+// A deadline covers both response headers and every byte of the body. Abort alone
+// is insufficient for an upstream/mock that ignores its signal.
+async function withinDeadline(action, ms) {
+  const controller = new AbortController();
+  let timer;
+  try {
+    return await Promise.race([
+      action(controller.signal),
+      new Promise((_, reject) => {
+        timer = setTimeout(() => { controller.abort(); reject(new Error("archive deadline")); }, ms);
+      }),
+    ]);
+  } finally { clearTimeout(timer); }
+}
+
+async function readBounded(response, limit, signal) {
+  if (Number(response.headers.get("content-length")) > limit) throw new Error("archive too large");
+  const reader = response.body?.getReader();
+  if (!reader) throw new Error("empty archive");
+  const abort = () => { void reader.cancel().catch(() => {}); };
+  signal.addEventListener("abort", abort, { once: true });
+  const chunks = [];
+  let size = 0;
+  try {
+    for (;;) {
+      const { done, value } = await reader.read();
+      if (done) break;
+      size += value.byteLength;
+      if (size > limit) throw new Error("archive too large");
+      chunks.push(value);
+    }
+    if (!size || signal.aborted) throw new Error("empty or interrupted archive");
+    const declared = response.headers.get("content-length");
+    if (declared !== null && Number(declared) !== size) throw new Error("truncated archive");
+    const body = new Uint8Array(size);
+    let offset = 0;
+    for (const chunk of chunks) { body.set(chunk, offset); offset += chunk.byteLength; }
+    return body;
+  } finally {
+    signal.removeEventListener("abort", abort);
+    void reader.cancel().catch(() => {});
+  }
+}
+
+function validHtml(bytes) {
+  const html = new TextDecoder("utf-8", { fatal: true }).decode(bytes);
+  return /<html[\s>]/i.test(html) && /<\/html\s*>/i.test(html);
+}
+
 export default {
   async fetch(request, env) {
     const raspuns = await env.ASSETS.fetch(request);
     if (raspuns.status !== 404) return raspuns;
     const pathname = new URL(request.url).pathname;
-    if (!e_cale_de_oglinda(pathname)) return raspuns;
-    let din_oglinda;
+    if (!["GET", "HEAD"].includes(request.method) || !e_cale_de_oglinda(pathname)) return raspuns;
+    const ext = pathname.split("/").pop()?.split(".").slice(1).pop();
+    const expectedType = MIME.get(ext) || "text/html";
     try {
-      din_oglinda = await fetch(MIRROR + pathname, {
-        cf: { cacheEverything: true, cacheTtl: 3600 },
+      const result = await withinDeadline(async (signal) => {
+        const upstream = await fetch(MIRROR + pathname, {
+          method: request.method, signal, redirect: "manual",
+          cf: { cacheEverything: true, cacheTtlByStatus: { "200-299": 300, "404": 60, "500-599": 0 } },
+        });
+        try {
+          // GitHub Pages adds the trailing slash with a 301. Only that exact redirect is
+          // honored, as a local relative redirect; any other one fails closed (no loops).
+          if ([301, 308].includes(upstream.status)) {
+            const target = upstream.headers.get("location");
+            if (!pathname.endsWith("/") && target === MIRROR + pathname + "/") return { redirect: pathname + "/" };
+            throw new Error("archive redirect rejected");
+          }
+          if (upstream.status !== 200) return { absent: upstream.status === 404 };
+          const type = (upstream.headers.get("content-type") || "").split(";")[0].trim().toLowerCase();
+          if (type !== expectedType && !(expectedType === "application/xml" && ["text/xml", "application/rss+xml"].includes(type))) {
+            throw new Error("archive MIME mismatch");
+          }
+          if (request.method === "HEAD") return { body: null, type };
+          const body = await readBounded(upstream, type.startsWith("image/") ? 8388608 : 1048576, signal);
+          if (type === "text/html" && !validHtml(body)) throw new Error("invalid archive HTML");
+          return { body, type };
+        } finally { discard(upstream); }
+      }, 2000);
+      if (result.redirect) {
+        discard(raspuns);
+        const headers = headersFor("text/plain; charset=utf-8", "public, max-age=0, s-maxage=300, must-revalidate");
+        headers.set("location", result.redirect);
+        return new Response(null, { status: 301, headers });
+      }
+      if (!result.type) return local404(raspuns, request.method, result.absent);
+      discard(raspuns);
+      return new Response(result.body, {
+        headers: headersFor(result.type, "public, max-age=0, s-maxage=300, must-revalidate"),
       });
     } catch {
-      return raspuns; // oglinda jos/timeout: 404 local, nu 500
+      return local404(raspuns, request.method);
     }
-    if (!din_oglinda.ok) return raspuns;
-    const headers = new Headers(din_oglinda.headers);
-    headers.set("cache-control", "public, max-age=300");
-    return new Response(din_oglinda.body, { status: 200, headers });
   },
 };
