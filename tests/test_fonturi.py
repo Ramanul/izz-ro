@@ -53,8 +53,12 @@ def test_plafonul_de_octeti_si_de_fete():
 def test_fiecare_fata_are_diacriticele_romanesti(fata):
     from fontTools.ttLib import TTFont
 
-    with TTFont(os.path.join(FONTURI, fata)) as font:
-        cmap = font.getBestCmap()
+    try:
+        with TTFont(os.path.join(FONTURI, fata)) as font:
+            cmap = font.getBestCmap()
+    except ImportError as exc:      # woff2 are nevoie de brotli ca să fie decodat
+        pytest.fail(f"nu pot decoda {fata} ({exc}): lipsește brotli? "
+                    "Instalează `pip install -r requirements-dev.txt`.")
     lipsa = [c for c in DIACRITICE if ord(c) not in cmap]
     assert not lipsa, f"{fata} nu acoperă: {''.join(lipsa)}"
 
