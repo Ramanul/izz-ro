@@ -200,8 +200,8 @@ Măsurare: `analiza/masuratori.py` (bytes, elemente, imagini), `tools/greutate.p
 ## 8. Stadiu implementare (7 noiembrie 2026)
 
 Direcția A e **livrată integral**: fazele 0–1 (tokeni, tipografie), 2 (masthead, footer),
-3 (card, prima pagină), 4 (pagina de articol), 5 (coperți + arta v2) și 6 (consolidare CSS,
-rampa hărților, paginile utilitare). Nu a fost nevoie de nicio schimbare de conținut: textele
+3 (card, prima pagină), 4 (pagina de articol), 5 (coperți + arta v2), 6 (consolidare CSS,
+rampa hărților, paginile utilitare) și 7 (greutatea portretelor, numele finale din CSS). Nu a fost nevoie de nicio schimbare de conținut: textele
 editoriale (dezvăluirea AI Act, creditele, confirmările din sinteză) au trecut prin redesign
 neatinse, iar testele care le păzesc sunt verzi.
 
@@ -209,7 +209,7 @@ neatinse, iar testele care le păzesc sunt verzi.
 
 | Fișier | Schimbare |
 |---|---|
-| `static/styles.css` | `:root` rescris: culoare (hârtie caldă, tuș, navy pentru acțiuni, aramă doar decor), scară tipografică 1,22, ritm de spațiere pe 4 px, `--navy` nou, `--font-display` = Newsreader, `--font-mono` = Inter; linkuri/focus/butoane mutate din aramă în navy; titluri 800 → 600, titluri de card 700 → 400; blocul dark recalibrat |
+| `static/styles.css` | `:root` rescris: culoare (hârtie caldă, tuș, navy pentru acțiuni, aramă doar decor), scară tipografică 1,22, ritm de spațiere pe 4 px, `--navy` nou, `--font-display` = Newsreader, `--font-text` = Inter; linkuri/focus/butoane mutate din aramă în navy; titluri 800 → 600, titluri de card 700 → 400; blocul dark recalibrat |
 | `static/styles.css` (componente) | `color: #fff` fix pe fundaluri care se inversează în tema întunecată → `var(--paper)`; butonul de instalare PWA a pierdut gradientul metalic auriu. Faza 2: antet fără bara aurie de 4 px, wordmark `izz.` cu un singur weight și punct de aramă, navigație fără majuscule, banda de stare sub masthead ca linie de sumar, footer pe coloane. Faza 4: blocul de articol (kicker, bandă de context, corp pe serif 19 px/1,62) |
 | `static/fonts.css`, `static/fonts/` | 5 fețe: Newsreader 400/600 + Inter 400/600/700, subset RO; Playfair și JetBrains Mono au ieșit |
 | `templates/_card.html`, `templates/index.html` | Cardul trece de la 7 la 4 elemente (kicker, titlu, dek, un rând de meta); arta generată iese de pe card (rămâne pe articol, pe lead și pe coperta OG); portretele licențiate rămân chip mic, cu credit complet, o singură dată pe pagină |
@@ -217,7 +217,7 @@ neatinse, iar testele care le păzesc sunt verzi.
 | `generator/htmlart.py`, `generator/covers.py`, `generator/assets/` | Arta generativă și coperțile raster trec pe Newsreader 700 (nu mai există două serife diferite); paleta artei mutată pe sistemul nou; etichetele mici de pe copertă trec de pe mono pe Inter 600; titlul copertei coboară în corp până încape în 4 rânduri, pe lățimea sigură a geometriei desenate |
 | `static/site.css`, `static/faza2.css` | **Șterse.** Erau „căi delta" inventate pe 2026-10-02 ca să ocolească `Cache-Control: immutable`; `?v=<hash>` face acum același lucru. Conținutul lor e în `styles.css` |
 | `static/sw.js` | `PRECACHE` fără cele două fișiere, `SHELL` v4 → v5 |
-| `static/harta-stiri/harta-stiri.css` | Rampa celor cinci trepte reconstruită pe alama brandului (`--map-h4` = `--gold`), la aceleași trepte de lumină; `--accent` = `--gold-strong`; în tema deschisă textul de pe accent devine alb (negru pe arama închisă dă 3,0:1, sub AA) |
+| `static/harta-stiri/harta-stiri.css` | Rampa celor cinci trepte reconstruită pe alama brandului (`--map-h4` = `--brass`), la aceleași trepte de lumină; `--accent` = `--brass-deep`; în tema deschisă textul de pe accent devine alb (negru pe arama închisă dă 3,0:1, sub AA) |
 | `templates/ghid.html`, `ghiduri`, `instrumente`, `calculator`, `calendar` | Emoji scoase din titluri și meta (🕐, 📜, ℹ️, 🔗, ✅, 📌, 🧮, 📅): etichetele sunt acum cuvinte, iar iconițele de categorie au dispărut din `render.py`. Antetul paginilor utilitare e aliniat la stânga, ca restul site-ului |
 | `tools/a11y_static.py` + `tests/test_a11y_static.py` | Poartă nouă de accesibilitate statică (fără browser): nume accesibil, un singur `h1`, `alt`, etichete de formular, id-uri duplicate, `tabindex` pozitiv. Testele sunt de mutație, ca poarta să poată pica |
 
@@ -230,6 +230,8 @@ neatinse, iar testele care le păzesc sunt verzi.
 | Articol, gzip | 20.542 B | **5.202 B** | ≤ 22 KB | atins (−75%) |
 | CSS la prima pictare | 4 fișiere / 85 KB / 3 cereri | **1 fișier / 89.668 B (23.773 B gzip) / 1 cerere** | 1 fișier / ~50 KB | 1 fișier atins; kilo-octeții nu (vezi nota) |
 | Fonturi | 87.960 B / 7 fișiere | 76.224 B / 5 fișiere | ≤ 55 KB / 3 fișiere | −13%, ținta nu e atinsă |
+| Portrete servite (368 de fișiere) | 15.516 KB | **12.417 KB** | — | −20% (faza 7) |
+| Articolul cel mai greu, prima încărcare | 552,6 KB | **192,5 KB** | — | −65% (faza 7) |
 | Contrast minim (text mic) | 4,73:1 | **4,74:1** | ≥ 4,5:1 | AA păstrat, inclusiv pe rampa hărții |
 | Coperți OG | Playfair 800, al doilea serif | **Newsreader 700** | un singur serif | atins (1.200 coperți, mediană 98 KB) |
 | Legături/active rupte în build | nemăsurat | **0** (399.474 legături, 8.040 imagini) | 0 | `tools/html_check.py` curat |
@@ -260,20 +262,42 @@ atunci e reconstruit din `git show`, deci diferența e efectul feliei, nu al tra
   același corp, deci pragurile `--art-et-k` au fost strânse iar titlul copertei coboară în corp
   până încape în 4 rânduri. Sonde verificate vizual: `analiza/rebranding/img/proba-cover-*.jpg`.
 
-### 8.4 Ce rămâne deschis (nu blochează redesignul)
+### 8.4 Ce s-a închis în faza 7 și ce rămâne deschis
 
-1. **Scorurile Lighthouse / pa11y rămân nemăsurate.** `tools/audit.sh` are nevoie de Chromium și
-   de `lighthouse`/`pa11y`; sandboxul în care s-a lucrat nu are nici browser, nici rețea. De rulat
-   pe o mașină cu browser înainte de merge — cifrele din tabelele de mai sus sunt octeți, nu scoruri.
-2. **Fonturile: 5 fișiere / 76 KB, ținta era 3 / 55 KB.** Sub 55 KB s-ar ajunge doar tăind din Inter
-   (400/600/700) — o decizie cu efect vizibil pe `strong`, de luat cu A11y măsurat.
-3. **Portrete mari.** 368 de portrete, mediana 33 KB, dar cinci fișiere între 190 și 371 KB
-   (cel mai greu articol din build: 532 KB prima încărcare). Variante `srcset` ar scuti ~1,5 MB în
-   total; nu s-au făcut aici, pentru că ating pipeline-ul de media și bugetul de fișiere.
-4. **Cronul săptămânal de verificare a deltei CSS** (`handoff/stare-lucrari.md`, sarcina F) nu mai
-   are obiect: fișierele delta au fost retrase, deci garda se poate șterge.
-5. **Numele vechi din CSS** (`--gold*`, `--font-mono`, `--s-*`) rămân intenționat alias-uri, ca
-   dif-ul să fie reversibil; de curățat într-o felie separată, când niciun șablon nu le mai cere.
+Faza 7 (7 nov) a luat lista de mai jos punct cu punct. Detaliile măsurate, cu comenzi, sunt în
+`specs/masuratori-frontend.md` §„faza 7".
+
+**Închise:**
+
+1. **Portretele mari — premisa era greșită.** Nu erau supradimensionate, erau supracodificate:
+   `ciprian-deac.jpg` avea 232×318 px la 379.742 B (5,15 B/px) și se afișează la 168 px. `srcset`
+   ar fi servit tot un fișier prost comprimat. `tools/usureaza_portrete.py` a rescris 220 de
+   fișiere (98,8 → 78,2 MB); cele 368 de portrete servite: 15.516 → 12.417 KB; cel mai greu
+   379.742 → 19.635 B (34,1 dB PSNR). `fetch_portraits.py` re-encodează acum la descărcare, iar
+   `tests/test_greutate_portrete.py` ține bugetul la 0,75 B/px.
+2. **Cronul săptămânal de verificare a deltei CSS** nu mai avea obiect (fișierele delta au fost
+   retrase în faza 6); blocul de re-înarmare a fost șters din `handoff/stare-lucrari.md`, ca să nu
+   fie copiat din greșeală.
+3. **Numele vechi din CSS** au fost retrase: `--gold` → `--brass`, `--gold-strong` → `--brass-deep`,
+   `--gold-wash` → `--sunk`, `--s-5/8/13/21/34/55/89` → `--sp-4/8/12/20/32/56/88`, `--font-mono`
+   șters (era al doilea nume al lui `--font-text`). 465 de referințe; cele 7.679 de pagini randate
+   sunt identice înainte/după (o singură diferență: contoarele pe 24 de ore). Inventarul a scos
+   trei tokeni folosiți fără definiție — punctul de încredere `--ok`/`--warn` rămânea transparent —
+   reparați și păziți de `tests/test_css_tokeni.py`.
+4. **Lighthouse / pa11y** rulau deja în CI (`editorial-frontend-audit.yml`, trei rulări pe revizie,
+   mediană pe patru categorii plus erori WCAG2AA); ce lipsea era ca modificările de CSS și de
+   imagini să declanșeze măsurătoarea. Adăugate în `paths:`. Scorurile trăiesc în sumarul rulării
+   (și, de acum, într-o adnotare `notice` citibilă din API), nu în acest document.
+
+**Rămâne deschis — și e o decizie, nu o lipsă:**
+
+5. **Fonturile: 5 fișiere / 76.224 B, ținta 3 / 55 KB.** Ambele drumuri au fost măsurate:
+   Newsreader variabil ar da un fișier de 9.396 B în locul celor două statice de 38.784 B, dar
+   fontul variabil din `analiza/rebranding/fonts/` are 14 acoperiri de kerning față de 305 câte au
+   staticele — o schimbare de spațiere în titluri, nemăsurabilă fără browser; renunțarea la Inter
+   600 ar da exact 3 fișiere / ~47 KB, cu ~30 de etichete căzând de la 600 pe 700. Ambele sunt
+   schimbări vizibile: se aleg cu A11y măsurat, nu cu o cifră de octeți. Până atunci,
+   `tests/test_fonturi.py` ține plafonul la 5 fețe / 80.000 B și verifică diacriticele.
 
 ## Anexă: fișierele propunerii
 

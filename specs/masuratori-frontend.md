@@ -276,14 +276,101 @@ Ambele reparate în `tools/greutate.py`, cu motivul scris în docstring. Cifrele
 anterioare ale acestui fișier, măsurate cu unealta veche, sunt deci **ușor umflate** pe paginile cu
 `<picture>` (articolele).
 
-### Ce rămâne nemăsurat / neatins
+### Ce rămâne nemăsurat / neatins (starea la finalul fazei 6)
 
-- **Lighthouse și pa11y**: fără browser, fără scoruri. Nu se inventează.
+- **Lighthouse și pa11y**: fără browser în sandbox, fără scoruri. Nu se inventează — dar vezi
+  faza 7 mai jos: ele rulează deja în CI, pe runner.
 - **CLS/LCP reale**: necesită randare. Ce se știe static: toate `<img>` au `width`+`height`
   (0 imagini fără dimensiuni pe 7.679 pagini), deci spațiul e rezervat înainte de descărcare.
-- **Portrete mari**: 368 de portrete, mediană 33 KB, cinci fișiere între 190 și 371 KB
-  (`ciprian-deac.jpg` 371 KB). Articolul cu cel mai greu portret e și cea mai grea pagină din build
-  (532 KB). Variante `srcset` ar scuti ~1,5 MB; atinge pipeline-ul de media și bugetul de fișiere,
-  deci e listat ca următor pas, nu făcut aici.
-- **Fonturi**: 76.224 B / 5 fișiere, ținta era ≤55 KB / 3 fișiere. Diferența se poate lua doar din
-  Inter (bold sintetizat la `<strong>` dacă iese 700).
+- **Portrete mari** — *închis în faza 7*, cu o corecție de premisă: fișierele nu erau
+  supradimensionate, erau supracodificate.
+- **Fonturi**: 76.224 B / 5 fișiere, ținta era ≤55 KB / 3 fișiere — *decizie de design, cu
+  variantele măsurate în faza 7*.
+
+## Rebranding „Hârtie curată" — faza 7: greutate, nume, portrete, fonturi (2026-11-07)
+
+Trei „rămâne deschis" din §8.4 s-au închis, unul s-a dovedit o premisă greșită, iar inventarul
+de tokeni a scos la iveală trei bug-uri reale. Toate cifrele de mai jos sunt măsurate local pe
+build-ul real (6.496 articole, 11.087 fișiere), cu comenzile citate.
+
+### Portretele: nu erau mari, erau prost comprimate
+
+Premisa din faza 6 („cinci portrete de 190–371 KB, `srcset` ar scuti 1,5 MB") era greșită în
+cauză, nu în cifră. `media/portraits/ciprian-deac.jpg` avea **232×318 px** la 379.742 B, adică
+**5,15 B/px**, iar în pagină se afișează la maximum **168 px**. Un `srcset` ar fi servit tot un
+fișier prost comprimat, doar mai mic: problema era codificarea. `tools/fetch_portraits.py`
+scria pe disc octeții primiți de la Commons, fără re-encodare.
+
+| Măsurătoare | Înainte | După |
+|---|---|---|
+| Cel mai greu portret servit | 379.742 B (5,15 B/px) | 19.635 B (0,27 B/px) |
+| Cele 368 de portrete servite, în total | 15.516 KB | 12.417 KB (−20%) |
+| `media/portraits/` pe disc | 98,8 MB | 78,2 MB (−20,6 MB, 220 fișiere rescrise) |
+| PSNR pe cel mai greu fișier (q85) | — | 34,1 dB |
+| `sport/ciprian-deac-…`, prima încărcare | 552,6 KB | 192,5 KB |
+
+Unealta: `python tools/usureaza_portrete.py [--apply]`. Reguli deterministe (ca fișierul comis să
+fie reproductibil): EXIF-ul se arde în pixeli și apoi se aruncă, latura mare ≤ 640 px, JPEG
+progresiv q85, rescriere doar dacă scade ≥15% și fișierul trece de 20 KB. Același
+`compacteaza_bytes` e chemat acum de `fetch_portraits.py` pe fiecare descărcare, deci regula se
+aplică și în viitor. Garda: `tests/test_greutate_portrete.py` — buget **0,75 B/px** (podea 6 KB),
+plus proba că unealta nu mai are ce rescrie; 220 din 394 de fișiere erau peste buget, acum 0
+(maximul e 0,71 B/px).
+
+Un efect secundar de plătit o dată: `data/portrete_incadrare.json` e cheiat pe `sha256`-ul
+fișierului, deci re-encodarea a invalidat 220 de intrări. `tools/incadrare_portrete.py` le-a
+recalculat (OpenCV YuNet, 5,6 s) — decupajul a ieșit practic identic: 179 de intrări diferă doar în
+a patra zecimală, iar abaterea maximă a lățimii medalionului e sub 4% (`abdoulaye-seye` 170,42% →
+166,73%). Detectorul citește aceiași pixeli cu o diferență de compresie, nu altă față.
+
+### Numele din CSS: 465 de referințe redenumite, zero pixeli mișcați
+
+`--gold` → `--brass`, `--gold-strong` → `--brass-deep`, `--gold-wash` → `--sunk`, iar scara de
+spațiere `--s-5/8/13/21/34/55/89` → `--sp-4/8/12/20/32/56/88` (numele = valoarea în px; vechiul
+`--s-13` era 12px). `--font-mono` a fost șters: avea exact valoarea lui `--font-text`, deci era
+un al doilea nume pentru același font.
+
+Dovada că nu s-a mișcat nimic vizual: cele **7.679 de pagini randate** au fost comparate înainte/după
+(cu `?v=` normalizat) — **o singură diferență**, contoarele pe 24 de ore din banda zilei
+(976 → 973 articole), adică timpul, nu CSS-ul.
+
+Inventarul de tokeni (`var(--x)` fără `--x:` în fișier) a scos trei bug-uri tăcute, toate
+reparate:
+
+| Token | Efectul real | Reparația |
+|---|---|---|
+| `--ok`, `--warn` | punctul de încredere din card (`background: var(--ok)`) rămânea **transparent**: verde = confirmat și ocru = o singură origine erau invizibile | definite (`#2f6b46` 6,07:1; `#8a6414` 5,14:1) + variantă de temă întunecată (8,57:1 / 9,07:1) |
+| `--font-title` | nume dinainte de rebranding: cifra din callout-ul financiar se desena cu Inter, nu cu seriful de titluri | → `--font-display` |
+| `--s-4` | pas de spațiere inexistent (seria veche era 5/8/13/21/…) → marginea dispărea cu totul | → `--sp-4` |
+
+Garda: `tests/test_css_tokeni.py` (niciun `var()` fără definiție; whitelist-ul de tokeni puși din
+JS e dovedit, nu declarat; numele vechi nu au voie să reapară; `--sp-N` trebuie să fie N px).
+
+### Fonturile: două variante măsurate, niciuna aleasă în locul proprietarului
+
+Ținta din propunere era 3 fișiere / 55 KB; livrate sunt 5 / 76.224 B. Am măsurat exact ce ar
+însemna fiecare drum:
+
+1. **Newsreader variabil, un singur fișier pentru 400–800.** Subsetat la aceleași 212 codepoint-uri:
+   **9.396 B** cu ambele axe (`wght` + `opsz`) sau **4.044 B** cu `opsz` fixat — adică ar înlocui
+   38.784 B cu 9.396 B. **Respins**: fontul variabil din `analiza/rebranding/fonts/` are acoperire
+   de kerning mult mai mică decât cele două statice livrate (14 acoperiri de perechi față de 305),
+   iar o schimbare de spațiere în titluri nu se poate verifica fără browser. Câștigul de 29 KB nu
+   plătește un risc vizual nemăsurabil.
+2. **Renunțarea la Inter 600** (care ar da exact 3 fișiere / ~47 KB): toate cele ~30 de etichete
+   scrise cu 600 ar cădea pe 700, adică exact „efectul vizibil pe `strong`" din §8.4. Nu se face
+   fără A11y măsurat.
+
+Deci fonturile rămân cum sunt, cu o gardă: `tests/test_fonturi.py` — plafon 80.000 B / 5 fețe,
+zero fișiere fără `@font-face`, fiecare față acoperă diacriticele românești, iar `RO_UNICODES` din
+`tools/fetch_fonts.py` trebuie să acopere tot ce cere testul.
+
+### Lighthouse / pa11y: rulau deja, doar că nu se știa
+
+`tools/audit.sh` are nevoie de Chromium, iar sandboxul nu are; dar `.github/workflows/editorial-frontend-audit.yml`
+rulează **exact acest script** pe fiecare PR care atinge `generator/render.py` sau șabloanele:
+trei rulări pentru revizia de bază și trei pentru cea de pe PR, cu mediană pe patru categorii
+Lighthouse plus numărul de erori WCAG2AA din pa11y. Pe ramura rebrandingului a trecut verde
+(rularea `42357330249`, 7 nov 08:52). Ce lipsea era ca schimbările de **CSS și imagini** să
+declanșeze și ele măsurătoarea — un redesign se judecă pe ele, nu pe `render.py`. Adăugate în
+`paths:`, alături de `static/**` și `media/portraits/**`.

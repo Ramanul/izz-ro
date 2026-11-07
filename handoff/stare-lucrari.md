@@ -11,7 +11,7 @@
 
 ## 0a. 7 noiembrie — rebrandingul «Hârtie curată» e pe #542 (ÎN REVIEW, fără merge)
 
-Fazele 0–6 din `analiza/rebranding/PROPUNERE.md` sunt livrate pe ramura sesiunii, într-un PR:
+Fazele 0–7 din `analiza/rebranding/PROPUNERE.md` sunt livrate pe ramura sesiunii, într-un PR:
 `gh pr view 542`. Ce s-a schimbat, pe scurt: tokeni + tipografie (Newsreader 400/600, Inter
 400/600/700 subset RO; Playfair și JetBrains Mono au ieșit), masthead și footer, cardul de la 7
 la 4 elemente (arta generată a ieșit de pe card — 455 KB din prima pagină), pagina de articol,
@@ -22,8 +22,18 @@ hărții pe alama brandului, paginile utilitare fără emoji.
   5.202 B gzip; CSS 3 cereri → 1; `html_check` 7.679 pagini / 399.474 legături curate; poarta nouă
   `tools/a11y_static.py` 0 încălcări pe 7.679 pagini; `pytest` 3.110 passed. Detalii:
   `PROPUNERE.md` §8, `specs/masuratori-frontend.md`.
-- **Deschis înainte de merge:** `tools/audit.sh` (Lighthouse + pa11y) cere Chromium — sandboxul
-  în care s-a lucrat nu a avut browser, deci scorurile lipsesc. De rulat pe mașina proprietarului.
+- **Faza 7 (7 nov), după review:** portretele mari nu erau mari, erau supracodificate (232×318 px
+  la 379.742 B) — `tools/usureaza_portrete.py` a rescris 220 de fișiere (98,8 → 78,2 MB), cele 368
+  servite −20%, cel mai greu 379.742 → 19.635 B, iar `fetch_portraits.py` re-encodează acum la
+  descărcare. Numele de tokeni au fost finalizate (465 referințe, `--sp-N` = N px), cu trei tokeni
+  orfani reparați pe drum (punctul de încredere `--ok`/`--warn` rămânea invizibil). Cele 7.679 de
+  pagini randate sunt identice înainte/după. Garda nouă: `tests/test_css_tokeni.py`,
+  `tests/test_greutate_portrete.py`, `tests/test_fonturi.py`.
+- **Lighthouse / pa11y:** rulau deja în CI (`editorial-frontend-audit.yml`, mediană din 3 rulări ×
+  2 revizii); lipsea doar ca modificările de CSS/imagini să declanșeze jobul — adăugate în `paths`.
+  Scorurile stau în sumarul rulării, nu în handoff.
+- **Singurul deschis rămas:** decizia de fonturi (5 fețe / 76 KB vs ținta 3 / 55 KB) — ambele
+  variante sunt măsurate în `PROPUNERE.md` §8.4 pct. 5.
 - **Bugetul de pornire (rezolvat 7 nov):** era 37.880 B din 37.888 (8 octeți liberi), iar commitul de slogan de pe `main` l-a dus la 37.901 — CI roșu pe 13 octeți. Acum plafonul declarat e **40 KB**, iar `specs/STATE.md` are propriul plafon de **6 KB** (gardă nouă în `tests/test_reguli.py`, cu caz negativ și cu numărare pe octeți, nu pe caractere). Blocul vechi din `STATE.md` e mutat verbatim în `specs/istoric-executie.md`. Măsurat după: total **33.527 B** (−4.353), hook 16.353 → **12.000 B**, `STATE.md` 8.717 → **4.364 B** (40 → 21 de linii), liber 7,3 KB. Nu mai adăuga rânduri lungi în `STATE.md`: acolo garda numără octeți.
 
 ## 0. 23 octombrie — transformarea «prin prisma cărților» e PE MAIN (#511, #512)
@@ -98,17 +108,15 @@ COPIAZĂ DIN AICI PÂNĂ LA SFÂRȘIT:
 Reiei etapa următoare din episoadele portrete-omonime (istoric: memory portrete-omonime-jfk-2026-10-04.md — fixul e merged, PR #439, JFK dispărut de pe live, confirmat curl). PASUL 1 (dispatch pipeline) e ACOPERIT: pipeline-ul rulează programat zilnic și a reușit la 07:02 și 16:00 pe 5 oct (eșecul de ieri = rate limit GitHub, tranzitoriu) — verifică doar rezultatul verificării pozelor din ultima rulare pipeline. Rămân: (1) auditul report-only pe ~2.800 potriviri (raport cu rata de ambiguitate); (2) leadphotos (shim wd_match); (3) cache pe nume, nu pe articol. Lucrezi pe branch nou de la origin/main, fără merge (decizia e a managerului). Raport R4 la final.
 --- SARCINA E SE TERMINĂ AICI.
 
-### Sarcina F — Verificare săptămânală styles.css (re-înarmare înainte de luni)
-> **ÎNCHISĂ la 2026-11-07.** Cronul nu mai are obiect: `site.css` și `faza2.css` au fost
-> retrase din repo (faza 6 a rebrandingului, commit `28ba52d`), tot CSS-ul de site stă acum
-> într-un singur `static/styles.css`, iar `?v=<hash>` rezolvă problema de cache pe care
-> deltele o ocoleau. Nu recrea cronul; șterge-l dacă mai există.
-COPIAZĂ DIN AICI PÂNĂ LA SFÂRȘIT:
----
-Recreează în sesiunea asta cronul săptămânal: CronCreate, title="Verificare săptămânală styles.css (gardă cotă)", cron="0 9 * * 1", recurring=true, prompt: "Rulează: curl -sL https://izz.ro/static/styles.css | grep -c 'clamp(' și grep -c 'animation-timeline'. Ambele > 0 => raportează că delta site.css e devenită redundantă și propune PR de retragere (nu-l deschide fără acordul lui Alexandru). Ambele 0 => un singur rând: 'styles.css încă vechi pe edge, nimic de făcut'. După 5 săptămâni consecutive vechi => propune investigarea purge-ului Cloudflare. GARDĂ COTĂ: la context 80k => CronDelete pe propria automatizare + o singură notă 'retrasă, re-înarmează din sesiune nouă'."
---- SARCINA F SE TERMINĂ AICI.
-(IMPORTANT: vechea sesiune gazdă „Verificare săptămânală styles.css" e grasă —
-arhiveaz-o DOAR după ce cronul de mai sus e recreat, ca să nu pierzi tura de luni 09:00)
+### Sarcina F — Verificare săptămânală styles.css — ÎNCHISĂ 7 nov
+> **Nu recrea cronul.** `site.css` și `faza2.css` au fost retrase din repo (faza 6 a
+> rebrandingului, commit `28ba52d`): tot CSS-ul de site stă într-un singur `static/styles.css`,
+> livrat cu `?v=<hash de conținut>` — exact cache-busting-ul pe care deltele îl ocoleau prin
+> cron. Un `curl | grep` săptămânal pe un fișier care nu mai are cum să fie „vechi pe edge"
+> ar fi cost pur. Blocul de re-înarmare a fost șters pe 7 nov, ca să nu fie copiat din greșeală.
+>
+> Ce rămâne din ea: nimic de făcut. Dacă `styles.css` chiar ajunge desincronizat pe edge,
+> simptomul se vede în `visual.yml` (rulează pe CSS), nu într-un cron de grep.
 
 ## 6. Lucrări din sesiunile grase care sunt ÎNCHISE — nu le reia
 - Auditul hărții UAT (Mărașu, primării, granițe) — complet, confirmat live.

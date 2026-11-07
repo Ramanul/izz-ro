@@ -16,7 +16,14 @@
 **Updated:** 2026-11-07 (rebranding pe #542, în review).
 
 ## Open
-- **Rebranding „Hârtie curată" — #542 (ÎN REVIEW, fără merge):** fazele 0–6 — tokeni + Newsreader/Inter, masthead, card 7→4 elemente, pagină de articol, coperți pe același serif, o singură foaie de stil, rampa hărții pe alamă, utilitare fără emoji. Prima pagină 593→139 KB brut / 109→36,7 KB gzip. Cifre: `PROPUNERE.md` §8, `specs/masuratori-frontend.md`. Deschis: Lighthouse/pa11y (sandbox fără browser), `srcset` pentru 5 portrete de 190–371 KB.
+- **Rebranding „Hârtie curată" — #542 (ÎN REVIEW, fără merge):** fazele 0–7 — tokeni +
+  Newsreader/Inter, masthead, card 7→4 elemente, pagină de articol, coperți pe același serif,
+  o singură foaie de stil, rampa hărții pe alamă, utilitare fără emoji; faza 7: portrete
+  re-encodate (cel mai greu 379.742→19.635 B, cele 368 servite −20%), nume de tokeni finale
+  (465 referințe, zero pixeli mișcați) și 3 tokeni orfani reparați. Prima pagină 593→139 KB
+  brut / 109→36,7 KB gzip; articolul cel mai greu 553→193 KB. Cifre: `PROPUNERE.md` §8,
+  `specs/masuratori-frontend.md`. Deschis: doar decizia de fonturi (5 fețe/76 KB vs ținta
+  3/55 KB — ambele variante măsurate în §8.4); Lighthouse/pa11y rulează în CI.
 - **Transformarea «prin prisma cărților» (`specs/plan-paradigma-izz.md`):** E0–E4 pe main (#511 merged · #512 merged · #521 merged); D6 fără profilare (#515 merged); `href` extern prin `guard.url_ostil` (#516 merged). `SILENCE_REJECTION_THRESHOLD` rămâne 0,34 (leagă 1 din 74). Curățenia urmelor vechi din browsere: după 2027-01-31 [IZZ-0437].
 - **PWA + alerte push [IZZ-0430/0431] — PE MAIN (#434 merged):** fără namespace KV + 4 secrete (`infra/PUSH-SETUP.md`), rutele dau 503.
 - **Media pe carduri [IZZ-0403/0404 → IZZ-0416]:** portrete PD/CC0, siluete de județ, `covers.py`; marcaj AI Act la prima expunere [IZZ-0420/0423]. Pozele noi apar pe măsură ce `fetch_leadphotos`/`fetch_eventphotos` rulează în build.
