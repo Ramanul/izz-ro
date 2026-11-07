@@ -36,7 +36,7 @@ def _log_path() -> Path:
 def _run(log: Path, *args: str) -> subprocess.CompletedProcess:
     return subprocess.run(
         [sys.executable, str(SCRIPT), "--log", str(log), *args],
-        capture_output=True, text=True, check=False, cwd=ROOT,
+        capture_output=True, text=True, encoding="utf-8", errors="replace", check=False, cwd=ROOT,
     )
 
 

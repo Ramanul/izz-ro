@@ -41,7 +41,7 @@ PLAFON_CONTINUT_ORE = 12
 
 
 def _gh(*args: str) -> str:
-    rezultat = subprocess.run(["gh", *args], capture_output=True, text=True, check=False)
+    rezultat = subprocess.run(["gh", *args], capture_output=True, text=True, encoding="utf-8", errors="replace", check=False)
     if rezultat.returncode != 0:
         raise RuntimeError(f"gh {' '.join(args[:2])} a eșuat: {rezultat.stderr.strip()[:200]}")
     return rezultat.stdout

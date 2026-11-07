@@ -77,7 +77,7 @@ SCUTITE_TTL = frozenset({"tests/test_reguli.py"})
 def fisiere_urmarite(*sufixe: str) -> dict[str, str]:
     """Doar ce e in git — evita `output/`, `__pycache__` si copiile de lucru."""
     iesire = subprocess.run(["git", "ls-files", *sufixe], cwd=ROOT,
-                            capture_output=True, text=True, check=True).stdout
+                            capture_output=True, text=True, encoding="utf-8", errors="replace", check=True).stdout
     citite = {}
     for cale in filter(None, iesire.split("\n")):
         try:
@@ -746,7 +746,7 @@ def test_fiecare_cron_citat_e_unul_care_ruleaza():
 def test_fiecare_cale_citata_exista():
     """K8: un fisier mutat lasa in urma comenzi care trimit in gol."""
     urmarite = set(subprocess.run(["git", "ls-files"], cwd=ROOT, capture_output=True,
-                                  text=True, check=True).stdout.split("\n")) - {""}
+                                  text=True, encoding="utf-8", errors="replace", check=True).stdout.split("\n")) - {""}
     assert not incalcari_cai(fisiere_normative(), urmarite)
 
 

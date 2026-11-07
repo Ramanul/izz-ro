@@ -232,7 +232,7 @@ def _zile_de_la_ultima_atingere(cale: str) -> int | None:
     from datetime import datetime, timezone
     try:
         ies = subprocess.run(["git", "log", "-1", "--format=%cI", "--", cale],
-                             capture_output=True, text=True, cwd=ROOT, timeout=20).stdout.strip()
+                             capture_output=True, text=True, encoding="utf-8", errors="replace", cwd=ROOT, timeout=20).stdout.strip()
         if not ies:
             return None
         return (datetime.now(timezone.utc) - datetime.fromisoformat(ies)).days

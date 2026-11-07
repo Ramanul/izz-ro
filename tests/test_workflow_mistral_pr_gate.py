@@ -70,7 +70,7 @@ def _ruleaza_pasul_de_commit(tmp_path: Path, *, cu_modificari: bool) -> dict[str
         env={"PATH": "/usr/bin:/bin:/usr/local/bin:/mingw64/bin", "HOME": str(tmp_path),
              "GITHUB_ENV": str(github_env)},
         capture_output=True,
-        text=True,
+        text=True, encoding="utf-8", errors="replace",
     )
     assert rezultat.returncode == 0, rezultat.stderr
     return dict(

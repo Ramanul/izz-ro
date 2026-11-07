@@ -137,9 +137,9 @@ def test_iesirea_e_non_zero_doar_cand_exista_defecte(output_fals):
     _pagina(output_fals, "ok/index.html", _meta(f"{ORIGINE}/static/og-image.png"))
     cmd = [sys.executable, str(ROOT / "tools" / "og_image_audit.py"),
            "--output-dir", str(output_fals), "--origine", ORIGINE]
-    assert subprocess.run(cmd, capture_output=True, text=True).returncode == 0
+    assert subprocess.run(cmd, capture_output=True, text=True, encoding="utf-8", errors="replace").returncode == 0
     _pagina(output_fals, "rau/index.html", _meta("/static/og-image.png"))
-    r = subprocess.run(cmd, capture_output=True, text=True)
+    r = subprocess.run(cmd, capture_output=True, text=True, encoding="utf-8", errors="replace")
     assert r.returncode == 1 and "rau/index.html" in r.stdout
 
 

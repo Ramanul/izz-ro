@@ -101,6 +101,6 @@ def test_suitea_js_de_rutare_e_verde(tmp_path):
         test_src.replace('"./worker-404-mirror.js"', '"./worker-404-mirror.mjs"'),
         encoding="utf-8")
 
-    r = subprocess.run(["node", "--test", str(test_dst)], capture_output=True, text=True,
+    r = subprocess.run(["node", "--test", str(test_dst)], capture_output=True, text=True, encoding="utf-8", errors="replace",
                        cwd=str(tmp_path), timeout=120)
     assert r.returncode == 0, f"testele JS de rutare au picat:\n{r.stdout[-3000:]}\n{r.stderr[-1500:]}"

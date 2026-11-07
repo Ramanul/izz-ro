@@ -14,7 +14,7 @@ def _run(payload: dict) -> int:
     return subprocess.run(
         [sys.executable, str(SCRIPT), str(ROOT)],
         input=json.dumps(payload),
-        text=True,
+        text=True, encoding="utf-8", errors="replace",
         capture_output=True,
         check=False,
         cwd=ROOT,

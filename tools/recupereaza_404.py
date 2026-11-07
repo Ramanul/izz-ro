@@ -108,7 +108,7 @@ def main() -> int:
 
     refs = subprocess.run(
         ["git", "log", "--format=%H", f"--since={ZILE_ISTORIC} days ago", "--", "data/articles.json"],
-        capture_output=True, text=True, cwd=ROOT).stdout.split()
+        capture_output=True, text=True, encoding="utf-8", errors="replace", cwd=ROOT).stdout.split()
     print(f"commituri scanate: {len(refs)}")
 
     gasit = {}
