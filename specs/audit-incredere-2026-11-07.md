@@ -43,7 +43,8 @@
 
 - `ruff check .` = curat; `pytest -q` = **3186 passed, 4 skipped, 8 xfailed**; `node --test infra/*.test.mjs` = 7/7.
 - Render complet din stare: 11.099 fișiere, 6496 articole în manifest; QA = OK (avertisment preexistent: 17% duplicate eveniment); `html_check` = 7679 pagini, 0 legături/active/alt-uri rupte.
-- Browser local (Chromium 133, Lighthouse 13.4.1, pa11y 10.0.0): home Perf 91 / A11y 96 / Best 100 / SEO 100; articol Perf 97 / A11y 96 / Best 100 / SEO 100; pa11y home = 0 erori. Mobile/desktop: footer operator + cod public, fără formular newsletter, jurnal de corecții gol, fără erori de consolă.
+- Browser local (Chromium 133, Lighthouse 13.4.1, pa11y 10.0.0): home Perf 91 / A11y 100 / Best 100 / SEO 100; articol Perf 97 / A11y 100 / Best 100 / SEO 100; pa11y home = 0 erori. Mobile/desktop: footer operator + cod public, fără formular newsletter, jurnal de corecții gol, fără erori de consolă.
+- CI `editorial-frontend-audit` pe PR #555 (3 rulări/revizie): before home 91/100/100/100, articol 96/100/100/100, pa11y 135; after primul head home 91/96/100/100, articol 97/96/100/100, pa11y 0. Regresia A11y 100→96 era `link-in-text-block` pe linkurile noi din footer; sublinierea explicită din `.foot-note a` o repară (local 100/100).
 - `public_probe` pe output-ul local = OK, ultimul articol 7 nov 06:06 UTC.
 
 ### Limite și pași rămași

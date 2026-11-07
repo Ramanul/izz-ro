@@ -543,6 +543,8 @@ a.chip:hover { border-color: var(--ink-3); color: var(--ink); }
   text-transform: uppercase; letter-spacing: .13em; color: var(--ink-3);
 }
 .foot-note { margin: 0; max-width: 34ch; font-size: 0.78125rem; color: var(--ink-3); line-height: 1.55; }
+/* Linkurile din blocul de text al subsolului se disting și fără culoare (Lighthouse link-in-text-block). */
+.foot-note a { color: var(--navy); text-decoration: underline; text-underline-offset: 2px; }
 .foot-h {
   margin: 0 0 var(--sp-12); font-size: 0.6875rem; font-weight: 600;
   text-transform: uppercase; letter-spacing: .13em; color: var(--ink-3);
