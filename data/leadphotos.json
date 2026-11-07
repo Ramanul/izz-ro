@@ -14689,126 +14689,6 @@
   "kind": "locality",
   "qid": "Q5057249"
  },
- "dc8a25b78f0293eb": {
-  "miss": true,
-  "v": 3,
-  "motiv_loc": "loc_neeligibil",
-  "motiv_ent": "ent_nenotabila"
- },
- "a3ed10aade2ea6d3": {
-  "miss": true,
-  "v": 3,
-  "motiv_loc": "loc_neeligibil",
-  "motiv_ent": "ent_fara_qid"
- },
- "ec4b349ec8c5361e": {
-  "miss": true,
-  "v": 3,
-  "motiv_loc": "loc_neeligibil",
-  "motiv_ent": "ent_licenta_sau_format"
- },
- "3cb4194a6674c80a": {
-  "miss": true,
-  "v": 3,
-  "motiv_loc": "loc_neeligibil",
-  "motiv_ent": "ent_nenotabila"
- },
- "815f79edb679d8d8": {
-  "miss": true,
-  "v": 3,
-  "motiv_loc": "loc_neeligibil",
-  "motiv_ent": "ent_nenotabila"
- },
- "059f70caa2e20396": {
-  "miss": true,
-  "v": 3,
-  "motiv_loc": "loc_neeligibil",
-  "motiv_ent": "ent_fara_entitati"
- },
- "c8b80c4412690170": {
-  "miss": true,
-  "v": 3,
-  "motiv_loc": "loc_neeligibil",
-  "motiv_ent": "ent_nenotabila"
- },
- "484d5312f452ade5": {
-  "miss": true,
-  "v": 3,
-  "motiv_loc": "loc_neeligibil",
-  "motiv_ent": "ent_fara_p18"
- },
- "51c525e891aeffbd": {
-  "miss": true,
-  "v": 3,
-  "motiv_loc": "loc_neeligibil",
-  "motiv_ent": "ent_licenta_sau_format"
- },
- "b8f5a2dc28cb4bcd": {
-  "miss": true,
-  "v": 3,
-  "motiv_loc": "loc_neeligibil",
-  "motiv_ent": "ent_nenotabila"
- },
- "8befcb6392dcce1f": {
-  "miss": true,
-  "v": 3,
-  "motiv_loc": "loc_neeligibil",
-  "motiv_ent": "ent_licenta_sau_format"
- },
- "da45a19a7ebaa48a": {
-  "miss": true,
-  "v": 3,
-  "motiv_loc": "loc_neeligibil",
-  "motiv_ent": "ent_licenta_sau_format"
- },
- "0fcbe8703692b06a": {
-  "miss": true,
-  "v": 3,
-  "motiv_loc": "loc_neeligibil",
-  "motiv_ent": "ent_fara_entitati"
- },
- "08f2c3cc1a393487": {
-  "miss": true,
-  "v": 3,
-  "motiv_loc": "loc_neeligibil",
-  "motiv_ent": "ent_fara_entitati"
- },
- "8e4b34cb6280e7e9": {
-  "miss": true,
-  "v": 3,
-  "motiv_loc": "loc_neeligibil",
-  "motiv_ent": "ent_licenta_sau_format"
- },
- "c5f3eb322913e6a0": {
-  "miss": true,
-  "v": 3,
-  "motiv_loc": "loc_neeligibil",
-  "motiv_ent": "ent_fara_qid"
- },
- "676320c9bfc2ff3e": {
-  "miss": true,
-  "v": 3,
-  "motiv_loc": "loc_neeligibil",
-  "motiv_ent": "ent_nenotabila"
- },
- "84968cb0031a1f2e": {
-  "miss": true,
-  "v": 3,
-  "motiv_loc": "loc_neeligibil",
-  "motiv_ent": "ent_licenta_sau_format"
- },
- "bd2477ac51fc8f40": {
-  "miss": true,
-  "v": 3,
-  "motiv_loc": "loc_neeligibil",
-  "motiv_ent": "ent_nenotabila"
- },
- "e89acc24ec690354": {
-  "miss": true,
-  "v": 3,
-  "motiv_loc": "loc_neeligibil",
-  "motiv_ent": "ent_licenta_sau_format"
- },
  "2ca87703d76f820c": {
   "miss": true,
   "v": 3,
@@ -14837,18 +14717,6 @@
   "kind": "locality",
   "qid": "Q838838"
  },
- "2dd57e3736c845e2": {
-  "miss": true,
-  "v": 3,
-  "motiv_loc": "loc_negasit_sau_fara_imagine",
-  "motiv_ent": "ent_fara_entitati"
- },
- "affc644f720b1270": {
-  "miss": true,
-  "v": 3,
-  "motiv_loc": "loc_negasit_sau_fara_imagine",
-  "motiv_ent": "ent_fara_entitati"
- },
  "5f1d818befc9a22c": {
   "cover": "leads/loc-Q3573941.c.jpg",
   "art": "leads/loc-Q3573941.jpg",
@@ -14860,12 +14728,6 @@
   "kind": "locality",
   "qid": "Q3573941"
  },
- "b15e35262e1bd06d": {
-  "miss": true,
-  "v": 3,
-  "motiv_loc": "loc_dimensiune_sau_format",
-  "motiv_ent": "ent_fara_entitati"
- },
  "e38c15a9f75ffcb2": {
   "cover": "leads/loc-Q213296.c.jpg",
   "art": "leads/loc-Q213296.jpg",
@@ -14876,12 +14738,6 @@
   "name": "Sinaia",
   "kind": "locality",
   "qid": "Q213296"
- },
- "1824b1cfe063d9e5": {
-  "miss": true,
-  "v": 3,
-  "motiv_loc": "loc_dimensiune_sau_format",
-  "motiv_ent": "ent_fara_entitati"
  },
  "af9bf004ccdb4d15": {
   "cover": "leads/loc-Q213296.c.jpg",
@@ -14904,24 +14760,6 @@
   "name": "Turda",
   "kind": "locality",
   "qid": "Q209809"
- },
- "a0d83c7531414912": {
-  "miss": true,
-  "v": 3,
-  "motiv_loc": "loc_negasit_sau_fara_imagine",
-  "motiv_ent": "ent_fara_entitati"
- },
- "2b539606ef580a6a": {
-  "miss": true,
-  "v": 3,
-  "motiv_loc": "loc_negasit_sau_fara_imagine",
-  "motiv_ent": "ent_fara_entitati"
- },
- "deab57cafe3d5d65": {
-  "miss": true,
-  "v": 3,
-  "motiv_loc": "loc_dimensiune_sau_format",
-  "motiv_ent": "ent_fara_entitati"
  },
  "bce4ccd6a63e2104": {
   "cover": "leads/loc-Q179585.c.jpg",
@@ -14954,30 +14792,6 @@
   "name": "Curtești",
   "kind": "locality",
   "qid": "Q12724689"
- },
- "4e1b7b4179762883": {
-  "miss": true,
-  "v": 3,
-  "motiv_loc": "loc_negasit_sau_fara_imagine",
-  "motiv_ent": "ent_fara_entitati"
- },
- "39dfd5f86411b025": {
-  "miss": true,
-  "v": 3,
-  "motiv_loc": "loc_negasit_sau_fara_imagine",
-  "motiv_ent": "ent_fara_entitati"
- },
- "df0f8e69ef270568": {
-  "miss": true,
-  "v": 3,
-  "motiv_loc": "loc_negasit_sau_fara_imagine",
-  "motiv_ent": "ent_fara_entitati"
- },
- "a80e895f91cf7f3d": {
-  "miss": true,
-  "v": 3,
-  "motiv_loc": "loc_dimensiune_sau_format",
-  "motiv_ent": "ent_fara_entitati"
  },
  "0332c85fac6f8b22": {
   "cover": "leads/loc-Q458422.c.jpg",
@@ -15064,18 +14878,6 @@
   "name": "Roman",
   "kind": "locality"
  },
- "b7ab6b4212a788b0": {
-  "miss": true,
-  "v": 3,
-  "motiv_loc": "loc_negasit_sau_fara_imagine",
-  "motiv_ent": "ent_fara_entitati"
- },
- "d35288bdc39cc939": {
-  "miss": true,
-  "v": 3,
-  "motiv_loc": "loc_negasit_sau_fara_imagine",
-  "motiv_ent": "ent_fara_entitati"
- },
  "251407064499d791": {
   "cover": "leads/loc-Q5059779.c.jpg",
   "art": "leads/loc-Q5059779.jpg",
@@ -15119,18 +14921,6 @@
   "name": "Hemeiuș",
   "kind": "locality"
  },
- "c90ea623e9d621d0": {
-  "miss": true,
-  "v": 3,
-  "motiv_loc": "loc_dimensiune_sau_format",
-  "motiv_ent": "ent_fara_entitati"
- },
- "6f4801b035cdf6ff": {
-  "miss": true,
-  "v": 3,
-  "motiv_loc": "loc_dimensiune_sau_format",
-  "motiv_ent": "ent_fara_entitati"
- },
  "96e85dc495f69fad": {
   "cover": "leads/loc-Q5070458.c.jpg",
   "art": "leads/loc-Q5070458.jpg",
@@ -15163,18 +14953,6 @@
   "name": "Crevedia Mare",
   "kind": "locality",
   "qid": "Q5118300"
- },
- "14a5ccd6706b8ab0": {
-  "miss": true,
-  "v": 3,
-  "motiv_loc": "loc_negasit_sau_fara_imagine",
-  "motiv_ent": "ent_fara_entitati"
- },
- "abf08434b3007190": {
-  "miss": true,
-  "v": 3,
-  "motiv_loc": "loc_negasit_sau_fara_imagine",
-  "motiv_ent": "ent_fara_entitati"
  },
  "4f4bc2aa5d4e19ae": {
   "cover": "leads/loc-Q756593.c.jpg",
@@ -15611,24 +15389,6 @@
   "kind": "locality",
   "qid": "Q685857"
  },
- "bc9ca09d396a6f37": {
-  "miss": true,
-  "v": 3,
-  "motiv_loc": "loc_dimensiune_sau_format",
-  "motiv_ent": "ent_fara_entitati"
- },
- "b30f67c2b0e231d2": {
-  "miss": true,
-  "v": 3,
-  "motiv_loc": "loc_dimensiune_sau_format",
-  "motiv_ent": "ent_fara_entitati"
- },
- "6191924044bf808f": {
-  "miss": true,
-  "v": 3,
-  "motiv_loc": "loc_dimensiune_sau_format",
-  "motiv_ent": "ent_fara_entitati"
- },
  "0023a5ff2644ed35": {
   "cover": "leads/loc-Q803706.c.jpg",
   "art": "leads/loc-Q803706.jpg",
@@ -15640,24 +15400,6 @@
   "kind": "locality",
   "qid": "Q803706"
  },
- "f3d81debee1ea69b": {
-  "miss": true,
-  "v": 3,
-  "motiv_loc": "loc_negasit_sau_fara_imagine",
-  "motiv_ent": "ent_fara_entitati"
- },
- "6ae942ef01ccf4bb": {
-  "miss": true,
-  "v": 3,
-  "motiv_loc": "loc_dimensiune_sau_format",
-  "motiv_ent": "ent_fara_entitati"
- },
- "de95340b106c7635": {
-  "miss": true,
-  "v": 3,
-  "motiv_loc": "loc_dimensiune_sau_format",
-  "motiv_ent": "ent_fara_entitati"
- },
  "ffdc38bfbfb5e900": {
   "cover": "leads/loc-Q508313.c.jpg",
   "art": "leads/loc-Q508313.jpg",
@@ -15668,18 +15410,6 @@
   "name": "Nădlac",
   "kind": "locality",
   "qid": "Q508313"
- },
- "4b452757659e60c9": {
-  "miss": true,
-  "v": 3,
-  "motiv_loc": "loc_dimensiune_sau_format",
-  "motiv_ent": "ent_fara_entitati"
- },
- "140da24cda9b25b0": {
-  "miss": true,
-  "v": 3,
-  "motiv_loc": "loc_negasit_sau_fara_imagine",
-  "motiv_ent": "ent_fara_entitati"
  },
  "d666896b6195c607": {
   "cover": "leads/loc-Q16426237.c.jpg",
@@ -15729,36 +15459,6 @@
   "page": "https://commons.wikimedia.org/wiki/File:N%C4%83vodari,_Buna_Vestire,_1.jpeg",
   "name": "Năvodari",
   "kind": "locality"
- },
- "dbd2072aea2a956c": {
-  "miss": true,
-  "v": 3,
-  "motiv_loc": "loc_dimensiune_sau_format",
-  "motiv_ent": "ent_fara_entitati"
- },
- "c335aabdaa1cf259": {
-  "miss": true,
-  "v": 3,
-  "motiv_loc": "loc_negasit_sau_fara_imagine",
-  "motiv_ent": "ent_fara_entitati"
- },
- "38a5459873ae360f": {
-  "miss": true,
-  "v": 3,
-  "motiv_loc": "loc_dimensiune_sau_format",
-  "motiv_ent": "ent_fara_entitati"
- },
- "249342a2dde877d7": {
-  "miss": true,
-  "v": 3,
-  "motiv_loc": "loc_dimensiune_sau_format",
-  "motiv_ent": "ent_fara_entitati"
- },
- "03baa34c76446a1d": {
-  "miss": true,
-  "v": 3,
-  "motiv_loc": "loc_negasit_sau_fara_imagine",
-  "motiv_ent": "ent_fara_entitati"
  },
  "e7a330c77a794ad3": {
   "miss": true,
@@ -16192,12 +15892,6 @@
   "motiv_ent": "ent_fara_entitati"
  },
  "b938562a9c6de2fe": {
-  "miss": true,
-  "v": 3,
-  "motiv_loc": "loc_negasit_sau_fara_imagine",
-  "motiv_ent": "ent_fara_entitati"
- },
- "7af160633f036a10": {
   "miss": true,
   "v": 3,
   "motiv_loc": "loc_negasit_sau_fara_imagine",
@@ -16993,12 +16687,6 @@
   "motiv_ent": "ent_fara_entitati"
  },
  "d07e9e47c47cd45a": {
-  "miss": true,
-  "v": 3,
-  "motiv_loc": "loc_negasit_sau_fara_imagine",
-  "motiv_ent": "ent_fara_entitati"
- },
- "3c5f768cf9087b88": {
   "miss": true,
   "v": 3,
   "motiv_loc": "loc_negasit_sau_fara_imagine",
@@ -25891,5 +25579,141 @@
   "kind": "oficial",
   "sursa": "Comisia Europeană",
   "data_poza": "2026-11-04"
+ },
+ "39080c9265c1c867": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_dimensiune_sau_format",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "0f2f568583a64d7d": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_negasit_sau_fara_imagine",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "f36dccab48385354": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_dimensiune_sau_format",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "c01972e37b0f69c7": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_dimensiune_sau_format",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "f7a46463b1cf3cd1": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_dimensiune_sau_format",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "9426ad603461a5f6": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_dimensiune_sau_format",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "e536a9377bab453b": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_dimensiune_sau_format",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "c55377b69354661d": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_dimensiune_sau_format",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "d2312a413116c038": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_dimensiune_sau_format",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "428bfb1f6efd0431": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_dimensiune_sau_format",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "903e638f36072860": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_dimensiune_sau_format",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "a0e51c6b7cee1316": {
+  "cover": "leads/loc-Q12724802.c.jpg",
+  "art": "leads/loc-Q12724802.jpg",
+  "webp": "leads/loc-Q12724802.webp",
+  "artist": "Utilizator:Țetcu Mircea Rareș at ro.wikipedia",
+  "license": "CC BY-SA 2.5",
+  "page": "https://commons.wikimedia.org/wiki/File:RO_CJ_Somesu_Rece_33.jpg",
+  "name": "Gilău",
+  "kind": "locality",
+  "qid": "Q12724802"
+ },
+ "c9b4ebac42dd7d45": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_dimensiune_sau_format",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "2a457bebe1fd1b23": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_dimensiune_sau_format",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "dd28e890dcf04b35": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_dimensiune_sau_format",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "70749d4d852f290a": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_negasit_sau_fara_imagine",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "82d17fc88a9a95a0": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_negasit_sau_fara_imagine",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "c71fad71836a11e6": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_dimensiune_sau_format",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "8f54bedd9a661404": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_dimensiune_sau_format",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "8e27bb0d3f994996": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_dimensiune_sau_format",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "689f82e1e64ea15c": {
+  "cover": "leads/loc-Q12724802.c.jpg",
+  "art": "leads/loc-Q12724802.jpg",
+  "webp": "leads/loc-Q12724802.webp",
+  "artist": "Utilizator:Țetcu Mircea Rareș at ro.wikipedia",
+  "license": "CC BY-SA 2.5",
+  "page": "https://commons.wikimedia.org/wiki/File:RO_CJ_Somesu_Rece_33.jpg",
+  "name": "Gilău",
+  "kind": "locality",
+  "qid": "Q12724802"
  }
 }
