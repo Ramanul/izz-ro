@@ -190,3 +190,100 @@ instalate; sandbox-ul de lucru nu are nici browser, nici pachetele, deci **scoru
 numărul de erori pa11y rămân nemăsurate pentru acest slice** — de rulat pe o mașină cu browser
 înainte de merge. Ce s-a rulat: `pytest` (3100 passed, 4 skipped, 8 xfailed), `ruff check .`
 (curat), `csstree-validator` (singurul avertisment e preexistent: `url(#art-gold-grad, ...)`).
+
+## Rebranding „Hârtie curată" — fazele 2–6: masthead, card, articol, coperți, consolidare (2026-11-07)
+
+Aceleași condiții ca mai sus, cu o diferență importantă: **fără browser**. Sandboxul în care s-a
+făcut redesignul nu are Chromium, `lighthouse`, `pa11y` și nici acces la rețea, deci **nu există
+scoruri Lighthouse sau număr de erori pa11y pentru acest slice** — toate cifrele de aici sunt
+octeți pe disc, legături verificate și rapoarte de contrast calculate. De rulat `tools/audit.sh`
+pe o mașină cu browser înainte de merge.
+
+### Greutatea paginilor (build real: 6.496 articole, 11.087 fișiere)
+
+| Pagină | Înainte de fază 3 | După fazele 2–6 | Δ |
+|---|---:|---:|---:|
+| Prima pagină, brut | 593.356 B | **138.964 B** | −458.392 B (−77%) |
+| Prima pagină, gzip | 109.179 B | **36.718 B** | −72.461 B (−66%) |
+| Articol `/ai/competentele-…/`, brut | — (nemăsurat) | **17.955 B** | — |
+| Articol, gzip | 20.542 B | **5.202 B** | −15.340 B (−75%) |
+
+Cauza scăderii nu sunt fonturile: **arta generată a ieșit de pe card** (58 de compoziții inline
+însemnau ~455 KB, 76% din prima pagină). Arta rămâne pe pagina de articol, pe lead și pe coperta
+OG, unde chiar e privită. Prima pagină are acum 25 de carduri vizibile și 10 rubrici.
+
+### CSS: de la trei foi la una
+
+| | Înainte | Acum |
+|---|---:|---:|
+| Fișiere | `styles.css` + `site.css` + `faza2.css` | `styles.css` |
+| Cereri la prima pictare | 3 | **1** |
+| Octeți (brut / gzip) | 90.178 B / 23.873 B | **89.668 B / 23.773 B** |
+
+`site.css` era duplicat cuvânt cu cuvânt al blocului mobil din `styles.css`; `faza2.css` conținea
+`.puls*` și `.progress`, mutate în `styles.css`. Amândouă fuseseră inventate pe 2026-10-02 doar ca
+să ocolească `Cache-Control: immutable` pe `styles.css` — problemă rezolvată între timp de hash-ul
+din `?v=`.
+
+### Rampa hărții, treaptă cu treaptă
+
+Cele cinci trepte erau încă aurul vechi (`#c9a227`). Sunt acum construite pe alama brandului, cu
+**aceleași trepte de lumină**, în ambele teme:
+
+| Treaptă | Înainte | Acum | L* înainte → acum |
+|---|---|---|---:|
+| h0 (neutru) | `#eaecf0` | `#eaecf0` | 93,4 → 93,4 |
+| h1 | `#f2d090` | `#e0d3ba` | 85,0 → 85,0 |
+| h2 | `#d6bb6c` | `#cfbb93` | 76,6 → 76,6 |
+| h3 | `#c9a227` | `#bfa36d` | 68,3 → 68,3 |
+| h4 | `#a8841f` | `#a8823a` (= `--gold`) | 57,0 → 56,7 |
+| dark h1–h4 | `#43371a … #b28c22` | `#423721 … #af8c49` | identice (±0,1) |
+
+Textul închis pe trepte dă 12,12 / 9,55 / 7,41 / 5,05:1 (înainte 12,12 / 9,55 / 7,41 / 5,11) — AA
+păstrat fără halou. Accentul paginii de hartă trece pe `--gold-strong` (5,97:1 pe alb, era 5,08),
+iar `--map-on-accent` devine alb: negru pe alama închisă ar da 3,0:1, sub prag.
+
+Dovadă vizuală: `analiza/rebranding/img/proba-rampa-harta-2026-11-07.jpg`.
+
+### Coperți (OG 1200×630)
+
+1.200 de coperți proprii + 5.296 articole care folosesc coperta de categorie. Newsreader 700 pentru
+titlu (56 px, coboară la 34 px din 4 în 4 până încape în 4 rânduri, pe lățimea sigură a geometriei:
+54% diagonală, 66% coloană, 64% split, 50% arc), Inter 600 pentru kicker și etichete (24 px),
+JPEG q90. Mărime: mediană **98 KB**, între 24 și 283 KB.
+
+### Porți noi, rulate pe build-ul real
+
+| Poartă | Rezultat |
+|---|---|
+| `tools/html_check.py` | 7.679 pagini, **399.474** legături interne, **8.040** imagini: 0 legături moarte, 0 ancore moarte, 0 imagini fără `alt`, 0 active lipsă |
+| `tools/a11y_static.py` (nou) | 7.679 pagini: **0** încălcări tari (nume accesibil, un singur `h1` pe pagină, etichete de formular, id-uri unice, fără `tabindex` pozitiv) |
+| `tools/greutate.py` | 7.679 pagini, prima încărcare **mediană 160 KB**, cea mai grea **532 KB** |
+| `pytest` | **3.110 passed**, 4 skipped, 8 xfailed (10 teste noi, de mutație, pentru poarta de accesibilitate) |
+| `ruff check .` | curat |
+
+### Două erori de măsurare reparate în `tools/greutate.py`
+
+Prima rulare pe build-ul real raporta „cea mai grea pagină 2.016 KB". Nu era o regresie de site, ci
+două defecte ale uneltei, găsite pentru că cifra nu se potrivea cu markup-ul:
+
+1. `<source>` dintr-un `<picture>` nu are atribut `loading` propriu, deci **toate** imaginile de card
+   (`loading="lazy"` pe `<img>`) erau numărate ca „eager": 2.016 KB → 615 KB după reparație.
+2. `<img>` dintr-un `<picture>` cu `<source>` e doar fallback: browserul descarcă sursa, nu și
+   jpg-ul. Se numărau amândouă: 615 KB → **532 KB** după reparație.
+
+Ambele reparate în `tools/greutate.py`, cu motivul scris în docstring. Cifrele din secțiunile
+anterioare ale acestui fișier, măsurate cu unealta veche, sunt deci **ușor umflate** pe paginile cu
+`<picture>` (articolele).
+
+### Ce rămâne nemăsurat / neatins
+
+- **Lighthouse și pa11y**: fără browser, fără scoruri. Nu se inventează.
+- **CLS/LCP reale**: necesită randare. Ce se știe static: toate `<img>` au `width`+`height`
+  (0 imagini fără dimensiuni pe 7.679 pagini), deci spațiul e rezervat înainte de descărcare.
+- **Portrete mari**: 368 de portrete, mediană 33 KB, cinci fișiere între 190 și 371 KB
+  (`ciprian-deac.jpg` 371 KB). Articolul cu cel mai greu portret e și cea mai grea pagină din build
+  (532 KB). Variante `srcset` ar scuti ~1,5 MB; atinge pipeline-ul de media și bugetul de fișiere,
+  deci e listat ca următor pas, nu făcut aici.
+- **Fonturi**: 76.224 B / 5 fișiere, ținta era ≤55 KB / 3 fișiere. Diferența se poate lua doar din
+  Inter (bold sintetizat la `<strong>` dacă iese 700).

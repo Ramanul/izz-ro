@@ -90,6 +90,12 @@ care 1.090 nu se descarcă niciodată pentru cine nu derulează.
 
 Amestecul eager/lazy e chiar motivul pentru care `tools/greutate.py` le raportează separat.
 
+> **Corecție 2026-11-07:** până la rebranding, unealta număra ca „eager" și `<source>`-urile
+> din `<picture>` (care nu au atribut `loading` propriu) și, în plus, și `jpg`-ul de fallback
+> alături de `webp`-ul pe care browserul îl descarcă de fapt. Cifrele de mai sus, măsurate cu
+> logica veche, sunt deci **umflate pe paginile cu `<picture>`**. Ambele defecte sunt reparate;
+> vezi `specs/masuratori-frontend.md` („Două erori de măsurare reparate").
+
 ## Ce NU spun cifrele astea
 
 - **Nu e transfer real.** Sunt octeți pe disc: fără gzip/brotli de la Cloudflare (CSS-ul de 50 KB

@@ -19,7 +19,6 @@
 
 <article class="utility-page">
   <header class="utility-hero">
-    <span class="utility-icon">{{ categorii_icon.get(ent.categorie_ghid, '📌') }}</span>
     <h1>{{ ent.nume }}</h1>
     <p class="utility-subtitle">{{ ent.valoare_curenta.descriere_lunga }}</p>
   </header>
@@ -28,25 +27,25 @@
     {# „Pe scurt" promite o cifra. Ghidurile procedurale n-au una, iar titlul deasupra unei
        simple linii de sursa e o promisiune neonorata — rezumatul lor e subtitlul de mai sus. #}
     {% if ent.valoare_curenta.brut is defined or ent.valoare_curenta.valoare_secundara is defined %}
-    <h2>📌 Pe scurt</h2>
+    <h2>Pe scurt</h2>
     {% endif %}
     {% if ent.valoare_curenta.brut is defined %}
     <div class="utility-value">{{ ent.valoare_curenta.brut | format_int }} {{ ent.valoare_curenta.moneda }}/lună</div>
     <p class="utility-meta">
-      <span>🕐 În vigoare de la: {{ ent.valoare_curenta.in_vigoare_de }}</span>
-      <span>📜 {{ ent.valoare_curenta.act_normativ }}</span>
+      <span>În vigoare de la: {{ ent.valoare_curenta.in_vigoare_de }}</span>
+      <span>Act normativ: {{ ent.valoare_curenta.act_normativ }}</span>
     </p>
     {% endif %}
     {% if ent.valoare_curenta.valoare_secundara is defined %}
     <div class="utility-value-sec">{{ ent.valoare_curenta.valoare_secundara | format_int }} {{ ent.valoare_curenta.valoare_secundara_label }}</div>
     {% endif %}
     {% if ent.valoare_curenta.scutiri %}
-    <p class="utility-note">ℹ️ {{ ent.valoare_curenta.scutiri }}</p>
+    <p class="utility-note">{{ ent.valoare_curenta.scutiri }}</p>
     {% endif %}
     <p class="utility-meta">
-      <span>🔗 Sursă: <a href="{{ ent.valoare_curenta.sursa_url | href_extern }}"{# nosemgrep: generic.html-templates.security.var-in-href.var-in-href #} target="_blank" rel="noopener noreferrer">{{ ent.valoare_curenta.sursa_url | domain_from_url }}</a></span>
+      <span>Sursă: <a href="{{ ent.valoare_curenta.sursa_url | href_extern }}"{# nosemgrep: generic.html-templates.security.var-in-href.var-in-href #} target="_blank" rel="noopener noreferrer">{{ ent.valoare_curenta.sursa_url | domain_from_url }}</a></span>
       {% if ent.verificat %}
-      <span>✅ Verificat: {{ ent.ultima_verificare }}</span>
+      <span>Verificat: {{ ent.ultima_verificare }}</span>
       {% endif %}
     </p>
   </div>
@@ -64,7 +63,7 @@
   {# Istoric #}
   {% if ent.istoric %}
   <section class="utility-section">
-    <h2>📊 Istoric</h2>
+    <h2>Istoric</h2>
     <div class="table-wrap">
       <table class="stats-table">
         <thead><tr><th>Valoare</th><th>În vigoare de la</th><th>Act normativ</th></tr></thead>
@@ -101,7 +100,7 @@
   {# FAQ #}
   {% if ent.faq %}
   <section class="utility-section">
-    <h2>❓ Întrebări frecvente</h2>
+    <h2>Întrebări frecvente</h2>
     <div class="faq-list">
       {% for item in ent.faq %}
       <details class="faq-item">
@@ -116,7 +115,7 @@
   {# Știri legate #}
   {% if related_news %}
   <section class="utility-section">
-    <h2>📰 {{ related_news_eticheta | default('Știri din aceeași categorie') }}</h2>
+    <h2>{{ related_news_eticheta | default('Știri din aceeași categorie') }}</h2>
     <ul class="related-news-list">
       {% for a in related_news %}
       <li><a href="{{ base }}/{{ a.category }}/{{ a.slug }}/">{{ a.title }}</a>
@@ -129,7 +128,7 @@
   {# Termene #}
   {% if ent.termene %}
   <section class="utility-section">
-    <h2>📅 Termene importante</h2>
+    <h2>Termene importante</h2>
     <ul class="timeline">
       {% for t in ent.termene %}
       <li><time datetime="{{ t.data }}">{{ t.data }}</time>{{ t.eveniment }}</li>

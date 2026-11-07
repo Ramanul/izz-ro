@@ -82,6 +82,10 @@ Reiei etapa următoare din episoadele portrete-omonime (istoric: memory portrete
 --- SARCINA E SE TERMINĂ AICI.
 
 ### Sarcina F — Verificare săptămânală styles.css (re-înarmare înainte de luni)
+> **ÎNCHISĂ la 2026-11-07.** Cronul nu mai are obiect: `site.css` și `faza2.css` au fost
+> retrase din repo (faza 6 a rebrandingului, commit `28ba52d`), tot CSS-ul de site stă acum
+> într-un singur `static/styles.css`, iar `?v=<hash>` rezolvă problema de cache pe care
+> deltele o ocoleau. Nu recrea cronul; șterge-l dacă mai există.
 COPIAZĂ DIN AICI PÂNĂ LA SFÂRȘIT:
 ---
 Recreează în sesiunea asta cronul săptămânal: CronCreate, title="Verificare săptămânală styles.css (gardă cotă)", cron="0 9 * * 1", recurring=true, prompt: "Rulează: curl -sL https://izz.ro/static/styles.css | grep -c 'clamp(' și grep -c 'animation-timeline'. Ambele > 0 => raportează că delta site.css e devenită redundantă și propune PR de retragere (nu-l deschide fără acordul lui Alexandru). Ambele 0 => un singur rând: 'styles.css încă vechi pe edge, nimic de făcut'. După 5 săptămâni consecutive vechi => propune investigarea purge-ului Cloudflare. GARDĂ COTĂ: la context 80k => CronDelete pe propria automatizare + o singură notă 'retrasă, re-înarmează din sesiune nouă'."

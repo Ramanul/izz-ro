@@ -2116,11 +2116,6 @@ def _render_ghiduri(env: Environment, articles: list) -> None:
     ghid_tpl = env.get_template("ghid.html")
     ghiduri_tpl = env.get_template("ghiduri.html")
 
-    categorii_icon = {
-        "bani": "💰", "acte": "📄", "auto": "🚗",
-        "locuinte": "🏠", "educatie": "🎓", "sanatate": "🩺",
-    }
-
     entities_by_cat = {}
     for eid, ent in entities.items():
         cat = ent.get("categorie_ghid", "")
@@ -2168,7 +2163,7 @@ def _render_ghiduri(env: Environment, articles: list) -> None:
         _write(os.path.join(OUT_DIR, "ghiduri", eid, "index.html"),
                ghid_tpl.render(**_base_ctx(
                    f"/ghiduri/{eid}/", ent=ent, categorii=categorii,
-                   categorii_icon=categorii_icon, related_news=related,
+                   related_news=related,
                    related_news_eticheta=eticheta_stiri,
                    jsonld_nodes=[breadcrumb_jsonld], jsonld_page=jsonld_page,
                    calculator_html=calculator_html, sectiuni=sectiuni, active_cat=None)))
@@ -2178,13 +2173,13 @@ def _render_ghiduri(env: Environment, articles: list) -> None:
     n_neverificate = sum(1 for ent in entities.values() if not ent.get("verificat"))
     _write(os.path.join(OUT_DIR, "ghiduri", "index.html"),
            ghiduri_tpl.render(**_base_ctx(
-               "/ghiduri/", nav_section="ghiduri", categorii=categorii, categorii_icon=categorii_icon,
+               "/ghiduri/", nav_section="ghiduri", categorii=categorii,
                entities_by_cat=entities_by_cat, n_neverificate=n_neverificate,
                n_ghiduri=len(entities))))
 
     # Instrumente
     tools = [
-        {"url": "/instrumente/calculator-salariu/", "icon": "🧮",
+        {"url": "/instrumente/calculator-salariu/",
          "title": "Calculator salariu net", "desc": "Calculează salariul net în funcție de brut. Datele se actualizează automat."},
     ]
     instr_tpl = env.get_template("instrumente.html")
@@ -2254,7 +2249,7 @@ def _render_calc_salariu(env: Environment, ent: dict) -> str:
     (`script-src 'self'`, _write_headers) le blocheaza tacut: pe live calculatorul afisa
     campul si butoanele si nu calcula nimic. Codul e acum in static/calc-salariu.js."""
     return env.get_template("_calc_salariu.html").render(
-        salariu_minim=_salariu_minim(ent), calc_heading="🧮 Calculator salariu net")
+        salariu_minim=_salariu_minim(ent), calc_heading="Calculator salariu net")
 
 
 def _render_legal(env: Environment) -> None:
