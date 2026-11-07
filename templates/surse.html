@@ -1,9 +1,9 @@
 {% extends "base.html" %}
 {% macro source_name_cell(s) -%}
-  <a href="{{ s.url | href_extern }}"{# nosemgrep: generic.html-templates.security.var-in-href.var-in-href #} target="_blank" rel="noopener noreferrer">{{ s.name }}</a>{% if s.publisher_info %}<span class="source-publisher">{{ s.publisher_info.label }}</span>{% endif %}
+  <a href="{{ s.url | href_extern }}"{# nosemgrep: generic.html-templates.security.var-in-href.var-in-href #} target="_blank" rel="nofollow noopener noreferrer">{{ s.name }}</a>{% if s.publisher_info %}<span class="source-publisher">{{ s.publisher_info.label }}</span>{% endif %}
 {%- endmacro %}
 {% macro source_list_item(s) -%}
-  <li><a href="{{ s.url | href_extern }}"{# nosemgrep: generic.html-templates.security.var-in-href.var-in-href #} target="_blank" rel="noopener noreferrer">{{ s.name }}</a>{% if s.publisher_info %} <span class="source-publisher-inline">({{ s.publisher_info.label }})</span>{% endif %}</li>
+  <li><a href="{{ s.url | href_extern }}"{# nosemgrep: generic.html-templates.security.var-in-href.var-in-href #} target="_blank" rel="nofollow noopener noreferrer">{{ s.name }}</a>{% if s.publisher_info %} <span class="source-publisher-inline">({{ s.publisher_info.label }})</span>{% endif %}</li>
 {%- endmacro %}
 {% macro text_observations_cell(s) -%}
   {% set o = s.text_observations %}

@@ -13,7 +13,9 @@
 > Where the rest lives: `specs/regim-reguli.md` — unified audit closure ·
 > `specs/registru.tsv` — decisions · `CLAUDE.md` — canonical contract.
 
-**Updated:** 2026-11-07 (rebranding #542 merged și LIVE; §8.4 închis integral).
+**Updated:** 2026-11-07 (rebranding #542 merged și LIVE; §8.4 închis integral). SEO 7 nov
+(nofollow pe surse, slug, title/descriere, h2/h3, `llms.txt`) = PR #554, verificat local,
+așteaptă merge — nu e în `## Open` ca să nu devină fantomă la aterizare (§5.4, IZZ-0378).
 
 ## Open
 - **Garda contradicțiilor penalty (eroare Mbappé, CM 2026):** sinteză spunea „transformat penalty-ul”, sursele spuneau „ratat/apărat de Bono”. Fix în `generator/verifica_sinteza.py` (`contradicție_cheie_penalty`, advisory) + teste regresie + `specs/studiu-caz-penalty-mbappe.md`; PR deschisa din `arena/e234d218-izz-ro`.

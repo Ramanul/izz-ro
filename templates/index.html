@@ -1,8 +1,14 @@
 {% extends "base.html" %}
 {% from "_card.html" import card, credit_foto with context %}
 {% from "_art.html" import art with context %}
-{% block title %}{{ site.name }} — {{ site.tagline }}{% endblock %}
-{% block description %}Știri din România și din lume, grupate din surse publice, cu proveniență afișată și rezumate clare. Actualizat automat.{% endblock %}
+{#- Title-ul și descrierea primei pagini sunt scrise pentru SERP, nu reciclate dintr-un
+    tagline de brand: măsurat pe raportul de 7 nov 2026 — 44 de caractere și 119, sub
+    intervalul în care Google mai afișează ceva (50–60 / 140–160) și fără cuvântul pe care
+    cititorul îl tastează („ultimele știri", „știri de azi"). Garda e `tests/test_seo_limite.py`:
+    intervalele se verifică la test, nu în browser; textul de aici rămâne singura sursă a
+    ambului șir. -#}
+{% block title %}{{ site.name }} — Ultimele știri din România și din lume, pe scurt{% endblock %}
+{% block description %}Citește ultimele știri de azi din România și din lume pe IZZ.ro. Rezumate clare, fără reclame, grupate din surse publice, cu sursa originală la vedere.{% endblock %}
 {% block content %}
   <h1 class="visually-hidden">{{ site.name }} — {{ site.tagline }}</h1>
   {% if briefing %}
@@ -46,7 +52,7 @@
         <div>
           {% set top_srcs = top.sources[:6] if (top.model == 'C' and top.sources) else [{'name': top.source_name, 'url': top.original_link}] %}
           <h3>{{ 'Sursă' if top_srcs | length == 1 else 'Surse' }}</h3>
-          <ul>{% for s in top_srcs %}<li><a href="{{ s.url | href_extern }}"{# nosemgrep: generic.html-templates.security.var-in-href.var-in-href #} target="_blank" rel="noopener noreferrer">{{ s.name }}</a></li>{% endfor %}</ul>
+          <ul>{% for s in top_srcs %}<li><a href="{{ s.url | href_extern }}"{# nosemgrep: generic.html-templates.security.var-in-href.var-in-href #} target="_blank" rel="nofollow noopener noreferrer">{{ s.name }}</a></li>{% endfor %}</ul>
         </div>
         <div><h3>Publicat</h3><time datetime="{{ top.published }}">{{ top.published_human }}</time></div>
       </aside>
@@ -77,7 +83,10 @@
         {% for a in items[2:] %}{{ card(a) }}{% endfor %}
       </template>
       {% endif %}
-      <a class="see-all" href="{{ base }}/{{ cat }}/">Vezi toate din {{ cat | cat_label }} &rarr;</a>
+      {#- „Vezi toate din X" apărea de 10 ori ca ancoră identică pe prima pagină (raportul de
+          7 nov 2026, pct. 5). Ancora poartă acum cuvântul căutat — „știri" + numele secțiunii —
+          și rămâne unică per link, deci e la fel de bună și pentru cititorul de ecran. -#}
+      <a class="see-all" href="{{ base }}/{{ cat }}/">Toate știrile din {{ cat | cat_label }} &rarr;</a>
       {% endif %}
     {% endfor %}
   {% endif %}
