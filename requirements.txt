@@ -12,6 +12,6 @@ Markdown==3.11.2
 # `pagefind-bin-extended` (52 MB): masurat pe 1.5.2, ambele produc `wasm.ro.pagefind` si
 # `pagefind.js` identice octet cu octet, deci romana costa la fel in amandoua. Vezi
 # specs/cautare-pagefind.md.
-pagefind-bin==1.5.2
+pagefind-bin==1.6.0
 python-dotenv==1.2.4
 Pillow==13.0.0
