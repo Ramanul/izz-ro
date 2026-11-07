@@ -67,84 +67,77 @@ body {
 }
 a { color: var(--navy); text-decoration: none; }
 
-/* Masthead de ziar: data de azi + numerele zilei (render._numerele_zilei), pe toate
-   paginile. Nu e sticky — se deruleaza odata cu pagina; sticky-ul ramane al antetului. */
-.dateline {
-  margin: 0; padding: var(--s-8) var(--s-34);
-  display: flex; flex-wrap: wrap; gap: 3px var(--s-21); align-items: baseline;
-  justify-content: space-between;
-  background: var(--paper-2); border-bottom: 1px solid var(--line);
-  font-family: var(--font-mono); font-size: var(--fs-eyebrow); font-weight: 700;
-  text-transform: uppercase; letter-spacing: 2px; color: var(--ink-3);
-}
-.day-numbers { font-weight: 400; letter-spacing: 1px; }
-.day-numbers b { color: var(--gold-strong); font-weight: 700; }
 /* Cifrele din meta/dateline se aliniaza in coloana si fara un font monospatiat
-   (--font-mono a iesit din UI): tabular-nums e suportat nativ de Inter. */
+   (--font-mono a iesit din UI): tabular-nums e suportat nativ de Inter.
+   Regulile de asezare ale benzii de stare sunt in sectiunea Masthead. */
 .dateline, .day-numbers, .meta, .article-meta, .sources-inline, .stats-table,
 time, .card-meta, .arhiva-nume { font-variant-numeric: tabular-nums; }
 a:hover { color: var(--ink); }
 :focus-visible { outline: 2px solid var(--navy); outline-offset: 3px; }
 
 /* ---------------------------------------------------------------- Masthead --- */
+/* Ordine de lectura: wordmark + secțiuni, apoi banda de categorii, apoi cifrele zilei.
+   Masthead-ul nu mai poarta bara aurie de 4px: un singur accent (punctul de arama din
+   wordmark) si o linie fina dedesubt. Vezi analiza/rebranding/PROPUNERE.md §4.4. */
+
 /* header + subnav sticky impreuna: inaltimea header-ului variaza (wrap pe mobil,
    padding diferit sub 640px), deci stickyul sta pe container, nu pe .subnav cu un
    `top` calculat din inaltimea lui .site-header (fragil, s-ar desincroniza). */
-.site-header-group { position: sticky; top: 0; z-index: 10; }
+.site-header-group { position: sticky; top: 0; z-index: 10; background: var(--paper); }
 .site-header {
-  border-top: 4px solid var(--gold);              /* bara aurie de broadsheet */
   border-bottom: 1px solid var(--line);
-  background: var(--paper-2);
-  display: flex; align-items: center; justify-content: space-between;
+  background: var(--paper);
+  display: flex; align-items: flex-end; justify-content: space-between;
   gap: var(--s-21); flex-wrap: wrap;
-  padding: var(--s-21) var(--s-34);
+  padding: var(--s-21) var(--s-34) var(--s-8);
 }
-.brand { display: flex; flex-direction: column; align-items: flex-start; gap: 3px; line-height: 1.05; }
-.brand-eyebrow {
-  font-family: var(--font-mono); font-size: var(--fs-eyebrow); font-weight: 700;
-  color: var(--ink-3); text-transform: uppercase; letter-spacing: 2.5px;
-}
+.brand { display: flex; flex-direction: column; align-items: flex-start; gap: 3px; line-height: 1; }
 .brand .logo {
-  font-family: var(--font-display); font-size: 2rem; font-weight: 600;
-  color: var(--ink); letter-spacing: .1px;
+  font-family: var(--font-display); font-size: 2.125rem; font-weight: 600;
+  color: var(--ink); letter-spacing: -.015em;
 }
-.brand .logo b { color: var(--gold-strong); }
+.brand .logo b { color: var(--gold); font-weight: 600; }   /* punctul de arama: singurul accent */
 .brand-descriptor {
-  font-family: var(--font-mono); font-size: var(--fs-eyebrow); color: var(--gold-strong);
-  letter-spacing: 1px;
+  font-family: var(--font-text); font-size: 0.6875rem; font-weight: 600;
+  color: var(--ink-3); text-transform: uppercase; letter-spacing: .13em;
+  padding-bottom: 2px;
 }
-.nav { display: flex; flex-wrap: wrap; gap: var(--s-21); }
+.nav { display: flex; flex-wrap: wrap; gap: var(--s-21); align-items: center; }
 .nav a {
-  color: var(--ink-2); font-family: var(--font-mono); font-weight: 600;
-  font-size: var(--fs-xs); text-transform: uppercase; letter-spacing: 1px;
-  padding-bottom: 3px; border-bottom: 2px solid transparent;
+  color: var(--ink-2); font-family: var(--font-text); font-weight: 600;
+  font-size: 0.875rem; padding-bottom: 5px;
+  border-bottom: 2px solid transparent;
 }
-.nav a:hover, .nav a.active { color: var(--navy); border-bottom-color: var(--gold); }
+.nav a:hover { color: var(--ink); }
+.nav a.active { color: var(--ink); border-bottom-color: var(--navy); }
 
-/* randul secundar: categoriile de tema, strip orizontal (scroll pe mobil) */
+/* randul secundar: categoriile de tema, strip orizontal (scroll pe mobil).
+   Sentinta normala, nu majuscule: 11 categorii in CAPS pe un rand obosesc ochiul si
+   concureaza cu titlurile. Accentul pe rubrica activa rămâne, dar in arama (decor). */
 .subnav {
   display: flex; gap: var(--s-21); align-items: center;
-  padding: var(--s-8) var(--s-34);
-  background: var(--paper-2); border-bottom: 1px solid var(--line);
+  padding: 0 var(--s-34);
+  background: var(--paper); border-bottom: 1px solid var(--line);
   overflow-x: auto; -webkit-overflow-scrolling: touch;
 }
 .subnav a {
-  color: var(--ink-2); font-family: var(--font-mono); font-weight: 600;
-  font-size: var(--fs-xs); text-transform: uppercase; letter-spacing: 1px;
+  color: var(--ink-2); font-family: var(--font-text); font-weight: 400;
+  font-size: 0.8125rem;
   /* WCAG 2.5.8 (AA): tinta de atingere minima 24x24 CSS px. Inainte: 12,6px font + 3px
      padding jos = ~20,6px — regresie prinsa de auditul din 2 oct. +5px sus adauga tactil,
      nu modifica linia vizuala (padding-top nu muta borderul decolativ). */
-  padding: var(--s-5) 0 3px; border-bottom: 2px solid transparent; white-space: nowrap;
+  padding: var(--s-8) 0 7px; border-bottom: 2px solid transparent; white-space: nowrap;
 }
-.subnav a:hover, .subnav a.active { color: var(--navy); border-bottom-color: var(--gold); }
+.subnav a:hover { color: var(--ink); }
+.subnav a.active { color: var(--ink); font-weight: 600; border-bottom-color: var(--gold); }
 .subnav-more { position: relative; flex: 0 0 auto; }
 /* Varianta mobil a «Mai multe secțiuni»: link direct, ascuns pe ecrane late unde
    există dropdown-ul (vezi media query-ul de la 640px). */
 .subnav-more-mobile { display: none; }
 .subnav-more summary {
-  cursor: pointer; list-style: none; color: var(--ink-2); font-family: var(--font-mono);
-  font-weight: 600; font-size: var(--fs-xs); text-transform: uppercase; letter-spacing: 1px;
-  white-space: nowrap; padding: var(--s-5) 0;  /* idem: tinta de atingere >= 24px */
+  cursor: pointer; list-style: none; color: var(--ink-2); font-family: var(--font-text);
+  font-weight: 400; font-size: 0.8125rem;
+  white-space: nowrap; padding: var(--s-8) 0 7px;  /* idem: tinta de atingere >= 24px */
 }
 .subnav-more summary::-webkit-details-marker { display: none; }
 .subnav-more summary::after { content: " ▾"; color: var(--ink-3); }
@@ -178,6 +171,21 @@ a:hover { color: var(--ink); }
     mask-image: linear-gradient(to right, #000 calc(100% - var(--s-34)), transparent);
   }
 }
+
+/* Banda de stare: data + numerele zilei, SUB masthead (ca o linie de sumar de ziar),
+   nu deasupra lui. Text mic, fara majuscule, cifrele in tus secundar — cititorul le
+   gaseste cand le cauta, nu i se urla in primul ecran. */
+.dateline {
+  margin: 0; padding: var(--s-8) var(--s-34);
+  display: flex; flex-wrap: wrap; gap: 3px var(--s-13); align-items: baseline;
+  justify-content: space-between;
+  background: var(--paper); border-bottom: 1px solid var(--line);
+  font-family: var(--font-text); font-size: 0.71875rem; font-weight: 400;
+  color: var(--ink-3);
+}
+.dateline b { color: var(--ink-2); font-weight: 600; }
+.day-numbers { color: var(--ink-3); }
+.day-numbers b { color: var(--ink-2); font-weight: 600; }
 
 /* ---------------------------------------------------------------- Layout --- */
 main { max-width: var(--maxw); margin: 0 auto; padding: var(--s-34) var(--s-34); }
@@ -429,17 +437,54 @@ picture { display: contents; }
 .newsletter code { font-family: var(--font-mono); color: var(--gold-strong); font-size: var(--fs-xs); }
 
 /* -------------------------------------------------------------- Footer --- */
+/* Footer pe caramizi, nu pe un rand de 13 linkuri in majuscule: numele sta in stanga,
+   linkurile se grupeaza pe intrebari (despre / legal / transparenta). Fara chenare —
+   o suprafata afundata si o linie de regula sus sunt destul. */
 .site-footer {
-  max-width: var(--maxw); margin: var(--s-89) auto 0; padding: var(--s-34);
-  border-top: 1px solid var(--line); color: var(--ink-3); font-size: var(--fs-xs);
-  display: flex; flex-wrap: wrap; gap: var(--s-21); justify-content: space-between;
+  margin-top: var(--s-89);
+  border-top: 1px solid var(--line-strong);
+  background: var(--gold-wash);
+  color: var(--ink-3); font-size: var(--fs-xs);
 }
-.site-footer nav { display: flex; flex-wrap: wrap; gap: var(--s-21); }
-.site-footer a { color: var(--ink-3); font-family: var(--font-mono); text-transform: uppercase; letter-spacing: .5px; font-size: var(--fs-eyebrow); }
-.site-footer a:hover { color: var(--navy); }
+.site-footer-in {
+  max-width: var(--maxw); margin: 0 auto;
+  padding: var(--s-55) var(--s-34) var(--s-34);
+  display: grid; grid-template-columns: 1.7fr repeat(3, 1fr); gap: var(--s-34);
+}
+.foot-logo {
+  display: block; font-family: var(--font-display); font-size: 1.5rem; font-weight: 600;
+  color: var(--ink); line-height: 1; margin-bottom: var(--s-8); letter-spacing: -.015em;
+}
+.foot-logo b { color: var(--gold); font-weight: 600; }
+.foot-tagline {
+  margin: 0 0 var(--s-8); font-size: var(--fs-eyebrow); font-weight: 600;
+  text-transform: uppercase; letter-spacing: .13em; color: var(--ink-3);
+}
+.foot-note { margin: 0; max-width: 34ch; font-size: 0.78125rem; color: var(--ink-3); line-height: 1.55; }
+.foot-h {
+  margin: 0 0 var(--s-13); font-size: 0.6875rem; font-weight: 600;
+  text-transform: uppercase; letter-spacing: .13em; color: var(--ink-3);
+}
+.foot-col a { display: block; padding: 3px 0; font-size: 0.8125rem; color: var(--ink-2); }
+.foot-col a:hover { color: var(--navy); }
+.foot-base {
+  max-width: var(--maxw); margin: 0 auto;
+  padding: var(--s-21) var(--s-34) var(--s-34);
+  display: flex; flex-wrap: wrap; gap: var(--s-13) var(--s-21);
+  align-items: center; justify-content: space-between;
+  border-top: 1px solid var(--line);
+  font-size: var(--fs-eyebrow); color: var(--ink-3);
+}
 .empty { text-align: center; color: var(--ink-3); padding: var(--s-89) var(--s-21); }
 
 /* ---------------------------------------------------------- Responsive --- */
+@media (max-width: 900px) {
+  .site-footer-in { grid-template-columns: 1fr 1fr; gap: var(--s-21) var(--s-34); }
+  .foot-brand { grid-column: 1 / -1; }
+}
+@media (max-width: 640px) {
+  .site-footer-in { grid-template-columns: 1fr; }
+}
 @media (max-width: 1000px) {
   .lead-feature { grid-template-columns: 1fr; gap: var(--s-21); }
   .lead-feature .lead-aside { border-left: 0; border-top: 1px solid var(--line); padding-left: 0; padding-top: var(--s-21); flex-direction: row; flex-wrap: wrap; gap: var(--s-34); }
@@ -449,7 +494,7 @@ picture { display: contents; }
   .lead-feature { padding: var(--s-21); }
   .lead-feature h2.lead-title { font-size: var(--fs-lg); margin-bottom: var(--s-13); }
   main { padding: var(--s-21) var(--s-21); }
-  .dateline { padding: var(--s-5) var(--s-21); }
+  .dateline { padding: var(--s-8) var(--s-21); }
   .day-numbers { display: none; }   /* mobil: primul ecran ramane al stirilor */
   .reader-briefing { align-items: flex-start; flex-direction: column; }
   .subnav-more-list { right: 0; left: auto; min-width: min(220px, calc(100vw - 2 * var(--s-21))); }
@@ -458,7 +503,7 @@ picture { display: contents; }
      descriptor ascuns — pe telefon el ocupa un rand intreg doar ca sa repete tagline-ul;
      nav-ul cedeaza si el spatiu prin gap redus. */
   .site-header { padding: var(--s-8) var(--s-21); gap: var(--s-13); }
-  .brand .logo { font-size: var(--fs-lg); }
+  .brand .logo { font-size: 1.625rem; }
   .brand-descriptor { display: none; }
   .lead-feature { padding: var(--s-21); }
   .lead-feature h2.lead-title { font-size: var(--fs-xl); }
@@ -530,7 +575,10 @@ picture { display: contents; }
    Blocul sta ULTIMUL in footer din acelasi motiv pentru care butonul de instalare e fix:
    isi schimba dimensiunea la coada documentului, deci nu poate misca nimic din ce s-a
    pictat deja. */
-.izz-alerte { margin-top: var(--s-21); font-family: var(--font-mono); font-size: var(--fs-xs); }
+.izz-alerte {
+  max-width: var(--maxw); margin: 0 auto; padding: var(--s-13) var(--s-34) 0;
+  font-family: var(--font-text); font-size: var(--fs-xs);
+}
 .izz-alerte[hidden] { display: none; }
 .izz-alerte-btn {
   font-family: inherit; font-size: inherit; cursor: pointer;
@@ -1441,8 +1489,8 @@ picture { display: contents; }
 .timeline ol { margin: var(--s-8) 0 0; padding-left: 1.2rem; }
 .timeline li { margin: var(--s-8) 0; }
 .cat-feed { margin: 0 0 var(--s-21); font-size: var(--fs-xs); }
-.izz-citire { display: flex; flex-wrap: wrap; gap: var(--s-8); align-items: center; margin-top: var(--s-13); }
-.izz-citire span { font-family: var(--font-mono); font-size: var(--fs-eyebrow); color: var(--ink-3); }
+.izz-citire { display: flex; flex-wrap: wrap; gap: var(--s-8); align-items: center; }
+.izz-citire span { font-size: var(--fs-eyebrow); color: var(--ink-3); }
 .izz-citire button {
   margin: 0; padding: var(--s-5) var(--s-8);
   background: none; border: 1px solid var(--line-strong); border-radius: 4px;

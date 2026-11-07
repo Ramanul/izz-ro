@@ -9,7 +9,7 @@
 
 @media (max-width: 640px) {
   .site-header { padding: var(--s-8) var(--s-21); gap: var(--s-13); }
-  .brand .logo { font-size: var(--fs-lg); }
+  .brand .logo { font-size: 1.625rem; }
   .brand-descriptor { display: none; }
 }
 
