@@ -30,7 +30,6 @@
 - **FEREASTRA TTL — 11 zile (aprobată de proprietar, 25 oct):** garda brută 13.025 → 11.833 (plafon 12.600) pe `a7bf06ae`; testul de siguranță neschimbat. Măsurarea pierderii: `generator/config.py`.
 - **Free-readiness — gazda ÎNCĂ PAID [IZZ-0313]:** [IZZ-0386, 0391, 0399, 0421, 0424].
 - **`izz-failover` — SCOS DIN TRAFIC, 31 oct (decizie proprietar):** `izz.ro/*` stă pe `izz-ro` (`wrangler.jsonc`); revenire: `infra/README-failover.md`. Auditurile se fac pe `izz-ro.andifreelancer2.workers.dev`. Oglinda 3,73 GB vs 1 GB la GitHub — nerezolvat.
-- #525 memory-ledger guard: separate review pending.
 
 ## Audit closure status
 - **K1–K14:** re-verified in `specs/regim-reguli.md` — registru, nu substitut pentru teste. **Grounding:** blochează citate inventate și cifre străine, fails closed.
