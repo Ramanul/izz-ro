@@ -382,6 +382,18 @@ jobs:
           keep_files: true
           cname: ""
 
+      - name: Plafon oglinda (peste 950 MB taie cele mai vechi pagini)
+        # `keep_files: true` face din oglinda o arhiva, iar o arhiva creste: arborele publicat
+        # avea 904 MB la 7 nov 2026 (774 MB pagini HTML), cu plafonul platformei la 1 GB —
+        # adica se atinge singur, iar site-ul cade cand se atinge. Unealta taie INTOTDEAUNA
+        # doar pagini mai vechi de 21 de zile, cel mult 30% dintr-o rulare, si refuza (job
+        # rosu) in loc sa goleasca arhiva; paginile raman in istoricul git, deci se recupereaza.
+        # Sub 950 MB nu taie nimic: scrie doar masuratoarea in sumarul rularii.
+        env:
+          MIRROR_DEPLOY_KEY: ${{ secrets.MIRROR_DEPLOY_KEY }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: python tools/curata_oglinda.py plafon --aplica
+
   release-probe:
     needs: [pipeline, mirror]
     if: ${{ needs.pipeline.result == 'success' }}

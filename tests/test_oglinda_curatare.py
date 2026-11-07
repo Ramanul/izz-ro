@@ -224,3 +224,24 @@ def test_plafonul_sterge_directorul_paginii_vechi(oglinda, monkeypatch):
     ramase = _git(oglinda, "ls-tree", "-r", "--name-only", masurare.RAMURA).splitlines()
     assert "local/b-2/index.html" in ramase and not [c for c in ramase if c.startswith("local/a-1/")]
     assert "local/130/index.html" in ramase    # paginarea nu e arhiva, nu se taie
+
+
+def test_jobul_mirror_ruleaza_plafonul_dupa_publicare():
+    """Promisiunea din docstringul uneltei („la fiecare rulare a jobului mirror, după
+    publicare") trebuie să existe și în workflow, altfel plafonul e o unealtă pe care nimeni
+    n-o cheamă: măsurat 7 nov 2026, arborele publicat ajunsese la 904 MB din plafonul de
+    1 GB al platformei, fără ca nimic să-l oprească."""
+    import re
+    from pathlib import Path
+
+    yml = Path(__file__).resolve().parents[1] / ".github" / "workflows" / "build.yml"
+    sursa = yml.read_text(encoding="utf-8")
+    potrivire = re.search(r"^  mirror:\n(.*?)(?=^  [a-z][a-z0-9-]*:\n|\Z)", sursa, re.S | re.M)
+    assert potrivire, "jobul `mirror` a dispărut din build.yml"
+    job = potrivire.group(1)
+    assert "curata_oglinda.py plafon --aplica" in job, (
+        "jobul `mirror` publică cu keep_files, dar nu cheamă plafonul: oglinda crește până "
+        "cade pe plafonul platformei")
+    assert job.index("Publica pe mirror") < job.index("curata_oglinda.py plafon --aplica"), (
+        "plafonul trebuie să ruleze DUPĂ publicare, altfel măsoară arborele de dinainte")
+    assert "MIRROR_DEPLOY_KEY: ${{ secrets.MIRROR_DEPLOY_KEY }}" in job
