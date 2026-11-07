@@ -1,4 +1,6 @@
-# Analiza multidimensională IZZ.ro — 2026-11-07
+# Analiza și propunerile IZZ.ro — 2026-11-07
+
+## Analiza multidimensională
 
 | Fișier | Ce este |
 |---|---|
@@ -16,3 +18,19 @@ python analiza/masuratori.py             # rescrie masuratori.json
 
 Atenție: `pytest` re-randează `output/` cu un fixture de ~190 de articole. Nu rula
 testele între randare și măsurători, altfel cifrele descriu fixture-ul, nu site-ul.
+
+## Propunerea de rebranding vizual
+
+| Fișier | Ce este |
+|---|---|
+| `rebranding/PROPUNERE.md` | Raționamentul, cele trei direcții, tokenii vechi→nou, planul pe faze, riscurile |
+| `rebranding/index.html` | Macheta interactivă (direcții · prima pagină · articol · sistem) |
+| `rebranding/fonts/` | Newsreader variabilă (OFL) + Inter 400/600, doar pentru machetă |
+| `rebranding/img/` | două fotografii CC0 din `output/leads/`, pentru machetă |
+
+Vizualizare locală:
+
+```bash
+python -m http.server 8080 --directory analiza/rebranding
+# → http://localhost:8080
+```
